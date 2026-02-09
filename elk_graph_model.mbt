@@ -1,0 +1,1134 @@
+///|
+pub type ElkNode = Int
+
+///|
+pub type ElkPort = Int
+
+///|
+pub type ElkEdge = Int
+
+///|
+pub type ElkEdgeSection = Int
+
+///|
+pub type ElkLabel = Int
+
+///|
+pub enum ElkConnectableShape {
+  NodeShape(ElkNode)
+  PortShape(ElkPort)
+}
+
+///|
+pub enum ElkLabelParent {
+  NodeLabelParent(ElkNode)
+  PortLabelParent(ElkPort)
+  EdgeLabelParent(ElkEdge)
+  LabelLabelParent(ElkLabel)
+}
+
+///|
+pub fn make_node_label_parent(node : ElkNode) -> ElkLabelParent {
+  NodeLabelParent(node)
+}
+
+///|
+pub fn make_port_label_parent(port : ElkPort) -> ElkLabelParent {
+  PortLabelParent(port)
+}
+
+///|
+pub fn make_edge_label_parent(edge : ElkEdge) -> ElkLabelParent {
+  EdgeLabelParent(edge)
+}
+
+///|
+pub fn make_label_label_parent(label : ElkLabel) -> ElkLabelParent {
+  LabelLabelParent(label)
+}
+
+///|
+pub fn make_node_shape(node : ElkNode) -> ElkConnectableShape {
+  NodeShape(node)
+}
+
+///|
+pub fn make_port_shape(port : ElkPort) -> ElkConnectableShape {
+  PortShape(port)
+}
+
+///|
+priv struct NodeData {
+  parent : ElkNode?
+  children : Array[ElkNode]
+  ports : Array[ElkPort]
+  contained_edges : Array[ElkEdge]
+  identifier : String
+  x : Double
+  y : Double
+  width : Double
+  height : Double
+  double_properties : Map[String, Double]
+  bool_properties : Map[String, Bool]
+  string_properties : Map[String, String]
+  string_set_properties : Map[String, Array[String]]
+  layout_option_string_values : Map[String, String]
+}
+
+///|
+priv struct PortData {
+  parent : ElkNode?
+  layout_option_string_values : Map[String, String]
+}
+
+///|
+priv struct EdgeData {
+  containing_node : ElkNode?
+  sources : Array[ElkConnectableShape]
+  targets : Array[ElkConnectableShape]
+  identifier : String
+  sections : Array[ElkEdgeSection]
+  layout_option_string_values : Map[String, String]
+}
+
+///|
+priv struct EdgeSectionData {
+  edge : ElkEdge
+  mut identifier : String
+  mut start_x : Double
+  mut start_y : Double
+  mut end_x : Double
+  mut end_y : Double
+  mut incoming_shape : ElkConnectableShape?
+  mut outgoing_shape : ElkConnectableShape?
+  incoming_sections : Array[ElkEdgeSection]
+  outgoing_sections : Array[ElkEdgeSection]
+}
+
+///|
+priv struct LabelData {
+  parent : ElkLabelParent?
+  text : String
+  x : Double
+  y : Double
+  width : Double
+  height : Double
+  layout_option_string_values : Map[String, String]
+}
+
+///|
+let node_store : Ref[Array[NodeData]] = Ref::new([])
+
+///|
+let port_store : Ref[Array[PortData]] = Ref::new([])
+
+///|
+let edge_store : Ref[Array[EdgeData]] = Ref::new([])
+
+///|
+let edge_section_store : Ref[Array[EdgeSectionData]] = Ref::new([])
+
+///|
+let label_store : Ref[Array[LabelData]] = Ref::new([])
+
+///|
+fn checked_node(node : ElkNode) -> Unit {
+  if node < 0 || node >= node_store.val.length() {
+    abort("invalid node id")
+  }
+}
+
+///|
+fn checked_port(port : ElkPort) -> Unit {
+  if port < 0 || port >= port_store.val.length() {
+    abort("invalid port id")
+  }
+}
+
+///|
+fn checked_edge(edge : ElkEdge) -> Unit {
+  if edge < 0 || edge >= edge_store.val.length() {
+    abort("invalid edge id")
+  }
+}
+
+///|
+fn checked_edge_section(section : ElkEdgeSection) -> Unit {
+  if section < 0 || section >= edge_section_store.val.length() {
+    abort("invalid edge section id")
+  }
+}
+
+///|
+fn checked_label(label : ElkLabel) -> Unit {
+  if label < 0 || label >= label_store.val.length() {
+    abort("invalid label id")
+  }
+}
+
+///|
+pub fn reset_graph_model_for_test() -> Unit {
+  node_store.val.clear()
+  port_store.val.clear()
+  edge_store.val.clear()
+  edge_section_store.val.clear()
+  label_store.val.clear()
+}
+
+///|
+pub fn create_graph() -> ElkNode {
+  create_node(None)
+}
+
+///|
+fn append_child(parent_id : ElkNode, child_id : ElkNode) -> Unit {
+  let parent_data = node_store.val[parent_id]
+  parent_data.children.push(child_id)
+  node_store.val[parent_id] = parent_data
+}
+
+///|
+fn append_port(parent_id : ElkNode, port_id : ElkPort) -> Unit {
+  let parent_data = node_store.val[parent_id]
+  parent_data.ports.push(port_id)
+  node_store.val[parent_id] = parent_data
+}
+
+///|
+fn append_contained_edge(parent_id : ElkNode, edge_id : ElkEdge) -> Unit {
+  let parent_data = node_store.val[parent_id]
+  parent_data.contained_edges.push(edge_id)
+  node_store.val[parent_id] = parent_data
+}
+
+///|
+fn remove_contained_edge(parent_id : ElkNode, edge_id : ElkEdge) -> Unit {
+  let parent_data = node_store.val[parent_id]
+  let filtered = []
+  for current in parent_data.contained_edges {
+    if current != edge_id {
+      filtered.push(current)
+    }
+  }
+  parent_data.contained_edges.clear()
+  for current in filtered {
+    parent_data.contained_edges.push(current)
+  }
+  node_store.val[parent_id] = parent_data
+}
+
+///|
+pub fn create_node(parent : ElkNode?) -> ElkNode {
+  let id = node_store.val.length()
+  node_store.val.push({
+    parent,
+    children: [],
+    ports: [],
+    contained_edges: [],
+    identifier: "",
+    x: 0.0,
+    y: 0.0,
+    width: 0.0,
+    height: 0.0,
+    double_properties: {},
+    bool_properties: {},
+    string_properties: {},
+    string_set_properties: {},
+    layout_option_string_values: {},
+  })
+  if parent is Some(parent_id) {
+    checked_node(parent_id)
+    append_child(parent_id, id)
+  }
+  id
+}
+
+///|
+pub fn create_port(parent : ElkNode?) -> ElkPort {
+  let id = port_store.val.length()
+  port_store.val.push({ parent, layout_option_string_values: {} })
+  if parent is Some(parent_id) {
+    checked_node(parent_id)
+    append_port(parent_id, id)
+  }
+  id
+}
+
+///|
+pub fn create_edge(containing_node : ElkNode?) -> ElkEdge {
+  if containing_node is Some(node_id) {
+    checked_node(node_id)
+  }
+  let id = edge_store.val.length()
+  edge_store.val.push({
+    containing_node,
+    sources: [],
+    targets: [],
+    identifier: "",
+    sections: [],
+    layout_option_string_values: {},
+  })
+  if containing_node is Some(node_id) {
+    append_contained_edge(node_id, id)
+  }
+  id
+}
+
+///|
+pub fn create_label(parent : ElkLabelParent?) -> ElkLabel {
+  if parent is Some(label_parent) {
+    match label_parent {
+      NodeLabelParent(node) => checked_node(node)
+      PortLabelParent(port) => checked_port(port)
+      EdgeLabelParent(edge) => checked_edge(edge)
+      LabelLabelParent(label) => checked_label(label)
+    }
+  }
+  let id = label_store.val.length()
+  label_store.val.push({
+    parent,
+    text: "",
+    x: 0.0,
+    y: 0.0,
+    width: 0.0,
+    height: 0.0,
+    layout_option_string_values: {},
+  })
+  id
+}
+
+///|
+pub fn edge_add_source(edge : ElkEdge, source : ElkConnectableShape) -> Unit {
+  checked_edge(edge)
+  match source {
+    NodeShape(node) => checked_node(node)
+    PortShape(port) => checked_port(port)
+  }
+  let data = edge_store.val[edge]
+  data.sources.push(source)
+  edge_store.val[edge] = data
+}
+
+///|
+pub fn edge_add_target(edge : ElkEdge, target : ElkConnectableShape) -> Unit {
+  checked_edge(edge)
+  match target {
+    NodeShape(node) => checked_node(node)
+    PortShape(port) => checked_port(port)
+  }
+  let data = edge_store.val[edge]
+  data.targets.push(target)
+  edge_store.val[edge] = data
+}
+
+///|
+pub fn node_parent(node : ElkNode) -> ElkNode? {
+  checked_node(node)
+  node_store.val[node].parent
+}
+
+///|
+pub fn node_children(node : ElkNode) -> Array[ElkNode] {
+  checked_node(node)
+  node_store.val[node].children
+}
+
+///|
+pub fn node_contained_edges(node : ElkNode) -> Array[ElkEdge] {
+  checked_node(node)
+  node_store.val[node].contained_edges
+}
+
+///|
+pub fn node_set_location(node : ElkNode, x : Double, y : Double) -> Unit {
+  checked_node(node)
+  let data = node_store.val[node]
+  node_store.val[node] = {
+    parent: data.parent,
+    children: data.children,
+    ports: data.ports,
+    contained_edges: data.contained_edges,
+    identifier: data.identifier,
+    x,
+    y,
+    width: data.width,
+    height: data.height,
+    double_properties: data.double_properties,
+    bool_properties: data.bool_properties,
+    string_properties: data.string_properties,
+    string_set_properties: data.string_set_properties,
+    layout_option_string_values: data.layout_option_string_values,
+  }
+}
+
+///|
+pub fn node_x(node : ElkNode) -> Double {
+  checked_node(node)
+  node_store.val[node].x
+}
+
+///|
+pub fn node_y(node : ElkNode) -> Double {
+  checked_node(node)
+  node_store.val[node].y
+}
+
+///|
+pub fn node_set_dimensions(
+  node : ElkNode,
+  width : Double,
+  height : Double,
+) -> Unit {
+  checked_node(node)
+  let data = node_store.val[node]
+  node_store.val[node] = {
+    parent: data.parent,
+    children: data.children,
+    ports: data.ports,
+    contained_edges: data.contained_edges,
+    identifier: data.identifier,
+    x: data.x,
+    y: data.y,
+    width,
+    height,
+    double_properties: data.double_properties,
+    bool_properties: data.bool_properties,
+    string_properties: data.string_properties,
+    string_set_properties: data.string_set_properties,
+    layout_option_string_values: data.layout_option_string_values,
+  }
+}
+
+///|
+pub fn node_width(node : ElkNode) -> Double {
+  checked_node(node)
+  node_store.val[node].width
+}
+
+///|
+pub fn node_height(node : ElkNode) -> Double {
+  checked_node(node)
+  node_store.val[node].height
+}
+
+///|
+pub fn node_set_double_property(
+  node : ElkNode,
+  property : IProperty[Double],
+  value : Double,
+) -> Unit {
+  checked_node(node)
+  let data = node_store.val[node]
+  data.double_properties[property.get_id()] = value
+  node_store.val[node] = data
+}
+
+///|
+pub fn node_get_double_property(
+  node : ElkNode,
+  property : IProperty[Double],
+) -> Double {
+  checked_node(node)
+  let data = node_store.val[node]
+  match data.double_properties.get(property.get_id()) {
+    Some(value) => value
+    None => property.get_default()
+  }
+}
+
+///|
+pub fn node_has_double_property(
+  node : ElkNode,
+  property : IProperty[Double],
+) -> Bool {
+  checked_node(node)
+  let data = node_store.val[node]
+  data.double_properties.contains(property.get_id())
+}
+
+///|
+pub fn node_clear_double_property(
+  node : ElkNode,
+  property : IProperty[Double],
+) -> Unit {
+  checked_node(node)
+  let data = node_store.val[node]
+  data.double_properties.remove(property.get_id())
+  node_store.val[node] = data
+}
+
+///|
+pub fn node_set_bool_property(
+  node : ElkNode,
+  property : IProperty[Bool],
+  value : Bool,
+) -> Unit {
+  checked_node(node)
+  let data = node_store.val[node]
+  data.bool_properties[property.get_id()] = value
+  node_store.val[node] = data
+}
+
+///|
+pub fn node_get_bool_property(
+  node : ElkNode,
+  property : IProperty[Bool],
+) -> Bool {
+  checked_node(node)
+  let data = node_store.val[node]
+  match data.bool_properties.get(property.get_id()) {
+    Some(value) => value
+    None => property.get_default()
+  }
+}
+
+///|
+pub fn node_has_bool_property(
+  node : ElkNode,
+  property : IProperty[Bool],
+) -> Bool {
+  checked_node(node)
+  let data = node_store.val[node]
+  data.bool_properties.contains(property.get_id())
+}
+
+///|
+pub fn node_clear_bool_property(
+  node : ElkNode,
+  property : IProperty[Bool],
+) -> Unit {
+  checked_node(node)
+  let data = node_store.val[node]
+  data.bool_properties.remove(property.get_id())
+  node_store.val[node] = data
+}
+
+///|
+pub fn node_set_string_property(
+  node : ElkNode,
+  property : IProperty[String],
+  value : String,
+) -> Unit {
+  checked_node(node)
+  let data = node_store.val[node]
+  data.string_properties[property.get_id()] = value
+  node_store.val[node] = data
+}
+
+///|
+pub fn node_get_string_property(
+  node : ElkNode,
+  property : IProperty[String],
+) -> String {
+  checked_node(node)
+  let data = node_store.val[node]
+  match data.string_properties.get(property.get_id()) {
+    Some(value) => value
+    None => property.get_default()
+  }
+}
+
+///|
+pub fn node_has_string_property(
+  node : ElkNode,
+  property : IProperty[String],
+) -> Bool {
+  checked_node(node)
+  let data = node_store.val[node]
+  data.string_properties.contains(property.get_id())
+}
+
+///|
+pub fn node_clear_string_property(
+  node : ElkNode,
+  property : IProperty[String],
+) -> Unit {
+  checked_node(node)
+  let data = node_store.val[node]
+  data.string_properties.remove(property.get_id())
+  node_store.val[node] = data
+}
+
+///|
+pub fn node_set_identifier(node : ElkNode, identifier : String) -> Unit {
+  checked_node(node)
+  let data = node_store.val[node]
+  node_store.val[node] = {
+    parent: data.parent,
+    children: data.children,
+    ports: data.ports,
+    contained_edges: data.contained_edges,
+    identifier,
+    x: data.x,
+    y: data.y,
+    width: data.width,
+    height: data.height,
+    double_properties: data.double_properties,
+    bool_properties: data.bool_properties,
+    string_properties: data.string_properties,
+    string_set_properties: data.string_set_properties,
+    layout_option_string_values: data.layout_option_string_values,
+  }
+}
+
+///|
+pub fn node_identifier(node : ElkNode) -> String {
+  checked_node(node)
+  node_store.val[node].identifier
+}
+
+///|
+pub fn node_set_string_set_property(
+  node : ElkNode,
+  property : IProperty[Array[String]],
+  value : Array[String],
+) -> Unit {
+  checked_node(node)
+  let data = node_store.val[node]
+  data.string_set_properties[property.get_id()] = value.copy()
+  node_store.val[node] = data
+}
+
+///|
+pub fn node_get_string_set_property(
+  node : ElkNode,
+  property : IProperty[Array[String]],
+) -> Array[String] {
+  checked_node(node)
+  let data = node_store.val[node]
+  match data.string_set_properties.get(property.get_id()) {
+    Some(value) => value.copy()
+    None => property.get_default().copy()
+  }
+}
+
+///|
+pub fn node_has_string_set_property(
+  node : ElkNode,
+  property : IProperty[Array[String]],
+) -> Bool {
+  checked_node(node)
+  let data = node_store.val[node]
+  data.string_set_properties.contains(property.get_id())
+}
+
+///|
+pub fn node_clear_string_set_property(
+  node : ElkNode,
+  property : IProperty[Array[String]],
+) -> Unit {
+  checked_node(node)
+  let data = node_store.val[node]
+  data.string_set_properties.remove(property.get_id())
+  node_store.val[node] = data
+}
+
+///|
+pub fn node_double_property_entries(node : ElkNode) -> Array[(String, Double)] {
+  checked_node(node)
+  node_store.val[node].double_properties.to_array()
+}
+
+///|
+pub fn node_set_layout_option_string_value(
+  node : ElkNode,
+  option : LayoutOptionData,
+  value : String,
+) -> Unit {
+  node_set_layout_option_string_by_id(node, option.get_id(), value)
+}
+
+///|
+pub fn node_set_layout_option_string_by_id(
+  node : ElkNode,
+  option_id : String,
+  value : String,
+) -> Unit {
+  checked_node(node)
+  let data = node_store.val[node]
+  data.layout_option_string_values[option_id] = value
+  node_store.val[node] = data
+}
+
+///|
+pub fn node_layout_option_string_entries(
+  node : ElkNode,
+) -> Array[(String, String)] {
+  checked_node(node)
+  node_store.val[node].layout_option_string_values.to_array()
+}
+
+///|
+pub fn node_layout_option_string_value(
+  node : ElkNode,
+  option_id : String,
+) -> String? {
+  checked_node(node)
+  node_store.val[node].layout_option_string_values.get(option_id)
+}
+
+///|
+pub fn port_set_layout_option_string_by_id(
+  port : ElkPort,
+  option_id : String,
+  value : String,
+) -> Unit {
+  checked_port(port)
+  let data = port_store.val[port]
+  data.layout_option_string_values[option_id] = value
+  port_store.val[port] = data
+}
+
+///|
+pub fn port_layout_option_string_value(
+  port : ElkPort,
+  option_id : String,
+) -> String? {
+  checked_port(port)
+  port_store.val[port].layout_option_string_values.get(option_id)
+}
+
+///|
+pub fn edge_set_layout_option_string_by_id(
+  edge : ElkEdge,
+  option_id : String,
+  value : String,
+) -> Unit {
+  checked_edge(edge)
+  let data = edge_store.val[edge]
+  data.layout_option_string_values[option_id] = value
+  edge_store.val[edge] = data
+}
+
+///|
+pub fn edge_layout_option_string_value(
+  edge : ElkEdge,
+  option_id : String,
+) -> String? {
+  checked_edge(edge)
+  edge_store.val[edge].layout_option_string_values.get(option_id)
+}
+
+///|
+pub fn label_set_layout_option_string_by_id(
+  label : ElkLabel,
+  option_id : String,
+  value : String,
+) -> Unit {
+  checked_label(label)
+  let data = label_store.val[label]
+  data.layout_option_string_values[option_id] = value
+  label_store.val[label] = data
+}
+
+///|
+pub fn label_layout_option_string_value(
+  label : ElkLabel,
+  option_id : String,
+) -> String? {
+  checked_label(label)
+  label_store.val[label].layout_option_string_values.get(option_id)
+}
+
+///|
+pub fn label_set_text(label : ElkLabel, text : String) -> Unit {
+  checked_label(label)
+  let data = label_store.val[label]
+  label_store.val[label] = {
+    parent: data.parent,
+    text,
+    x: data.x,
+    y: data.y,
+    width: data.width,
+    height: data.height,
+    layout_option_string_values: data.layout_option_string_values,
+  }
+}
+
+///|
+pub fn label_text(label : ElkLabel) -> String {
+  checked_label(label)
+  label_store.val[label].text
+}
+
+///|
+pub fn label_set_location(label : ElkLabel, x : Double, y : Double) -> Unit {
+  checked_label(label)
+  let data = label_store.val[label]
+  label_store.val[label] = {
+    parent: data.parent,
+    text: data.text,
+    x,
+    y,
+    width: data.width,
+    height: data.height,
+    layout_option_string_values: data.layout_option_string_values,
+  }
+}
+
+///|
+pub fn label_x(label : ElkLabel) -> Double {
+  checked_label(label)
+  label_store.val[label].x
+}
+
+///|
+pub fn label_y(label : ElkLabel) -> Double {
+  checked_label(label)
+  label_store.val[label].y
+}
+
+///|
+pub fn label_set_dimensions(
+  label : ElkLabel,
+  width : Double,
+  height : Double,
+) -> Unit {
+  checked_label(label)
+  let data = label_store.val[label]
+  label_store.val[label] = {
+    parent: data.parent,
+    text: data.text,
+    x: data.x,
+    y: data.y,
+    width,
+    height,
+    layout_option_string_values: data.layout_option_string_values,
+  }
+}
+
+///|
+pub fn label_width(label : ElkLabel) -> Double {
+  checked_label(label)
+  label_store.val[label].width
+}
+
+///|
+pub fn label_height(label : ElkLabel) -> Double {
+  checked_label(label)
+  label_store.val[label].height
+}
+
+///|
+pub fn node_all_descendants_including_self(root : ElkNode) -> Array[ElkNode] {
+  checked_node(root)
+  let result = []
+  let queue = [root]
+  let mut index = 0
+  while index < queue.length() {
+    let current = queue[index]
+    index += 1
+    result.push(current)
+    for child in node_children(current) {
+      queue.push(child)
+    }
+  }
+  result
+}
+
+///|
+pub fn port_parent(port : ElkPort) -> ElkNode? {
+  checked_port(port)
+  port_store.val[port].parent
+}
+
+///|
+pub fn label_parent(label : ElkLabel) -> ElkLabelParent? {
+  checked_label(label)
+  label_store.val[label].parent
+}
+
+///|
+pub fn node_labels(node : ElkNode) -> Array[ElkLabel] {
+  checked_node(node)
+  let labels = []
+  for i = 0; i < label_store.val.length(); i = i + 1 {
+    match label_store.val[i].parent {
+      Some(NodeLabelParent(parent_node)) =>
+        if parent_node == node {
+          labels.push(i)
+        }
+      Some(_) => ()
+      None => ()
+    }
+  }
+  labels
+}
+
+///|
+pub fn port_labels(port : ElkPort) -> Array[ElkLabel] {
+  checked_port(port)
+  let labels = []
+  for i = 0; i < label_store.val.length(); i = i + 1 {
+    match label_store.val[i].parent {
+      Some(PortLabelParent(parent_port)) =>
+        if parent_port == port {
+          labels.push(i)
+        }
+      Some(_) => ()
+      None => ()
+    }
+  }
+  labels
+}
+
+///|
+pub fn edge_labels(edge : ElkEdge) -> Array[ElkLabel] {
+  checked_edge(edge)
+  let labels = []
+  for i = 0; i < label_store.val.length(); i = i + 1 {
+    match label_store.val[i].parent {
+      Some(EdgeLabelParent(parent_edge)) =>
+        if parent_edge == edge {
+          labels.push(i)
+        }
+      Some(_) => ()
+      None => ()
+    }
+  }
+  labels
+}
+
+///|
+pub fn edge_sources(edge : ElkEdge) -> Array[ElkConnectableShape] {
+  checked_edge(edge)
+  edge_store.val[edge].sources
+}
+
+///|
+pub fn edge_targets(edge : ElkEdge) -> Array[ElkConnectableShape] {
+  checked_edge(edge)
+  edge_store.val[edge].targets
+}
+
+///|
+pub fn edge_is_connected(edge : ElkEdge) -> Bool {
+  checked_edge(edge)
+  !edge_store.val[edge].sources.is_empty() &&
+  !edge_store.val[edge].targets.is_empty()
+}
+
+///|
+pub fn edge_containing_node(edge : ElkEdge) -> ElkNode? {
+  checked_edge(edge)
+  edge_store.val[edge].containing_node
+}
+
+///|
+pub fn edge_set_containing_node(
+  edge : ElkEdge,
+  containing_node : ElkNode?,
+) -> Unit {
+  checked_edge(edge)
+  if containing_node is Some(node_id) {
+    checked_node(node_id)
+  }
+  let data = edge_store.val[edge]
+  if data.containing_node is Some(old_parent) {
+    remove_contained_edge(old_parent, edge)
+  }
+  if containing_node is Some(new_parent) {
+    append_contained_edge(new_parent, edge)
+  }
+  edge_store.val[edge] = {
+    containing_node,
+    sources: data.sources,
+    targets: data.targets,
+    identifier: data.identifier,
+    sections: data.sections,
+    layout_option_string_values: data.layout_option_string_values,
+  }
+}
+
+///|
+pub fn edge_set_identifier(edge : ElkEdge, identifier : String) -> Unit {
+  checked_edge(edge)
+  let data = edge_store.val[edge]
+  edge_store.val[edge] = {
+    containing_node: data.containing_node,
+    sources: data.sources,
+    targets: data.targets,
+    identifier,
+    sections: data.sections,
+    layout_option_string_values: data.layout_option_string_values,
+  }
+}
+
+///|
+pub fn edge_identifier(edge : ElkEdge) -> String {
+  checked_edge(edge)
+  edge_store.val[edge].identifier
+}
+
+///|
+pub fn create_edge_section(edge : ElkEdge) -> ElkEdgeSection {
+  checked_edge(edge)
+  let id = edge_section_store.val.length()
+  edge_section_store.val.push({
+    edge,
+    identifier: "",
+    start_x: 0.0,
+    start_y: 0.0,
+    end_x: 0.0,
+    end_y: 0.0,
+    incoming_shape: None,
+    outgoing_shape: None,
+    incoming_sections: [],
+    outgoing_sections: [],
+  })
+  let edge_data = edge_store.val[edge]
+  edge_data.sections.push(id)
+  edge_store.val[edge] = edge_data
+  id
+}
+
+///|
+pub fn edge_sections(edge : ElkEdge) -> Array[ElkEdgeSection] {
+  checked_edge(edge)
+  edge_store.val[edge].sections
+}
+
+///|
+pub fn edge_section_identifier(section : ElkEdgeSection) -> String {
+  checked_edge_section(section)
+  edge_section_store.val[section].identifier
+}
+
+///|
+pub fn edge_section_set_identifier(
+  section : ElkEdgeSection,
+  identifier : String,
+) -> Unit {
+  checked_edge_section(section)
+  let section_data = edge_section_store.val[section]
+  section_data.identifier = identifier
+  edge_section_store.val[section] = section_data
+}
+
+///|
+pub fn edge_section_set_start(
+  section : ElkEdgeSection,
+  x : Double,
+  y : Double,
+) -> Unit {
+  checked_edge_section(section)
+  let section_data = edge_section_store.val[section]
+  section_data.start_x = x
+  section_data.start_y = y
+  edge_section_store.val[section] = section_data
+}
+
+///|
+pub fn edge_section_set_end(
+  section : ElkEdgeSection,
+  x : Double,
+  y : Double,
+) -> Unit {
+  checked_edge_section(section)
+  let section_data = edge_section_store.val[section]
+  section_data.end_x = x
+  section_data.end_y = y
+  edge_section_store.val[section] = section_data
+}
+
+///|
+pub fn edge_section_start_x(section : ElkEdgeSection) -> Double {
+  checked_edge_section(section)
+  edge_section_store.val[section].start_x
+}
+
+///|
+pub fn edge_section_start_y(section : ElkEdgeSection) -> Double {
+  checked_edge_section(section)
+  edge_section_store.val[section].start_y
+}
+
+///|
+pub fn edge_section_end_x(section : ElkEdgeSection) -> Double {
+  checked_edge_section(section)
+  edge_section_store.val[section].end_x
+}
+
+///|
+pub fn edge_section_end_y(section : ElkEdgeSection) -> Double {
+  checked_edge_section(section)
+  edge_section_store.val[section].end_y
+}
+
+///|
+pub fn edge_section_set_incoming_shape(
+  section : ElkEdgeSection,
+  shape : ElkConnectableShape?,
+) -> Unit {
+  checked_edge_section(section)
+  let section_data = edge_section_store.val[section]
+  section_data.incoming_shape = shape
+  edge_section_store.val[section] = section_data
+}
+
+///|
+pub fn edge_section_set_outgoing_shape(
+  section : ElkEdgeSection,
+  shape : ElkConnectableShape?,
+) -> Unit {
+  checked_edge_section(section)
+  let section_data = edge_section_store.val[section]
+  section_data.outgoing_shape = shape
+  edge_section_store.val[section] = section_data
+}
+
+///|
+pub fn edge_section_incoming_shape(
+  section : ElkEdgeSection,
+) -> ElkConnectableShape? {
+  checked_edge_section(section)
+  edge_section_store.val[section].incoming_shape
+}
+
+///|
+pub fn edge_section_outgoing_shape(
+  section : ElkEdgeSection,
+) -> ElkConnectableShape? {
+  checked_edge_section(section)
+  edge_section_store.val[section].outgoing_shape
+}
+
+///|
+pub fn edge_section_add_incoming_section(
+  section : ElkEdgeSection,
+  incoming_section : ElkEdgeSection,
+) -> Unit {
+  checked_edge_section(section)
+  checked_edge_section(incoming_section)
+  let section_data = edge_section_store.val[section]
+  section_data.incoming_sections.push(incoming_section)
+  edge_section_store.val[section] = section_data
+}
+
+///|
+pub fn edge_section_add_outgoing_section(
+  section : ElkEdgeSection,
+  outgoing_section : ElkEdgeSection,
+) -> Unit {
+  checked_edge_section(section)
+  checked_edge_section(outgoing_section)
+  let section_data = edge_section_store.val[section]
+  section_data.outgoing_sections.push(outgoing_section)
+  edge_section_store.val[section] = section_data
+}
+
+///|
+pub fn edge_section_incoming_sections(
+  section : ElkEdgeSection,
+) -> Array[ElkEdgeSection] {
+  checked_edge_section(section)
+  edge_section_store.val[section].incoming_sections
+}
+
+///|
+pub fn edge_section_outgoing_sections(
+  section : ElkEdgeSection,
+) -> Array[ElkEdgeSection] {
+  checked_edge_section(section)
+  edge_section_store.val[section].outgoing_sections
+}

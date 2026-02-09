@@ -1,0 +1,2187 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "username/moon_elk"
+
+import {
+  "moonbitlang/core/random",
+}
+
+// Values
+pub fn abstract_force_model_avoid_same_position(@random.Rand, FParticle, FParticle) -> Unit
+
+pub fn abstract_force_model_disp_bound(AbstractForceModelState) -> Double
+
+pub fn abstract_force_model_graph(AbstractForceModelState) -> FGraph
+
+pub fn abstract_force_model_initialize(AbstractForceModelState, FGraph) -> Unit
+
+pub fn abstract_force_model_iteration_done(AbstractForceModelState) -> Unit
+
+pub fn abstract_force_model_layout(AbstractForceModelState, FGraph, IElkProgressMonitor, () -> Unit, (Int) -> Bool, (FParticle, FParticle) -> KVector?, () -> Unit) -> Unit
+
+pub fn abstract_force_model_random(AbstractForceModelState) -> @random.Rand
+
+pub let algorithm : IProperty[String]
+
+pub fn[P, G] algorithm_assembler_create(PhaseDescriptor[P]) -> AlgorithmAssembler[P, G]
+
+pub let alignment : IProperty[String]
+
+pub fn alignment_to_string(Alignment) -> String
+
+pub fn apply_visitor(Int, IGraphElementVisitor) -> Unit
+
+pub fn apply_visitors(Int, Array[IGraphElementVisitor]) -> Unit
+
+pub fn approximate_bezier_segment(Int, Array[KVector]) -> Array[KVector]
+
+pub fn approximate_bezier_segment_auto(Array[KVector]) -> Array[KVector]
+
+pub fn approximate_bezier_spline(KVectorChain) -> KVectorChain
+
+pub let aspect_ratio : IProperty[Double]
+
+pub fn averaged(Array[Double]) -> Double
+
+pub fn averagef(Array[Double]) -> Double
+
+pub fn averagei(Array[Int]) -> Int
+
+pub fn averagel(Array[Int64]) -> Int64
+
+pub fn binomiald(Int, Int) -> Double
+
+pub fn binomiall(Int, Int) -> Int64
+
+pub fn boundd(Double, Double, Double) -> Double
+
+pub fn boundf(Double, Double, Double) -> Double
+
+pub fn boundi(Int, Int, Int) -> Int
+
+pub fn boundl(Int64, Int64, Int64) -> Int64
+
+pub let child_area_height : IProperty[Double]
+
+pub let child_area_width : IProperty[Double]
+
+pub let class_graph_element : String
+
+pub let class_node_element : String
+
+pub fn clip_vector(KVector, Double, Double) -> KVector
+
+pub fn connectable_shape_to_node(ElkConnectableShape?) -> Int
+
+pub fn connectable_shape_to_port(ElkConnectableShape?) -> Int?
+
+pub fn contains_rect_line(ElkRectangle, KVector, KVector) -> Bool
+
+pub fn contains_rect_path(ElkRectangle, KVectorChain) -> Bool
+
+pub fn contains_rect_point(ElkRectangle, KVector) -> Bool
+
+pub let content_alignment : IProperty[Array[String]]
+
+pub fn content_alignment_bottom_center() -> Array[ContentAlignment]
+
+pub fn content_alignment_bottom_left() -> Array[ContentAlignment]
+
+pub fn content_alignment_bottom_right() -> Array[ContentAlignment]
+
+pub fn content_alignment_center_center() -> Array[ContentAlignment]
+
+pub fn content_alignment_center_left() -> Array[ContentAlignment]
+
+pub fn content_alignment_center_right() -> Array[ContentAlignment]
+
+pub fn content_alignment_to_string(ContentAlignment) -> String
+
+pub fn content_alignment_top_center() -> Array[ContentAlignment]
+
+pub fn content_alignment_top_left() -> Array[ContentAlignment]
+
+pub fn content_alignment_top_right() -> Array[ContentAlignment]
+
+pub fn content_alignment_values_to_strings(Array[ContentAlignment]) -> Array[String]
+
+pub fn create_edge(Int?) -> Int
+
+pub fn create_edge_section(Int) -> Int
+
+pub fn create_graph() -> Int
+
+pub fn create_label(ElkLabelParent?) -> Int
+
+pub fn create_node(Int?) -> Int
+
+pub fn create_port(Int?) -> Int
+
+pub fn create_simple_edge(Int, Int) -> Int
+
+pub fn cubic_spline_interpolator_as_spline_interpolator(CubicSplineInterpolator) -> ISplineInterpolator
+
+pub let direction : IProperty[String]
+
+pub fn direction_to_string(Direction) -> String
+
+pub fn direction_values() -> Array[Direction]
+
+pub fn distance(KVector, KVector, KVector, KVector, KVector) -> Double
+
+pub fn distance_from_bezier_segment(KVector, KVector, KVector, KVector, KVector) -> Double
+
+pub fn eades_model_attractive(Double, Double) -> Double
+
+pub fn eades_model_repulsive(Double, Double) -> Double
+
+pub fn edge_add_source(Int, ElkConnectableShape) -> Unit
+
+pub fn edge_add_target(Int, ElkConnectableShape) -> Unit
+
+pub fn edge_containing_node(Int) -> Int?
+
+pub fn edge_coords_to_string(EdgeCoords) -> String
+
+pub fn edge_identifier(Int) -> String
+
+pub fn edge_is_connected(Int) -> Bool
+
+pub fn edge_label_placement_to_string(EdgeLabelPlacement) -> String
+
+pub fn edge_labels(Int) -> Array[Int]
+
+pub fn edge_layout_option_string_value(Int, String) -> String?
+
+pub fn edge_routing_to_string(EdgeRouting) -> String
+
+pub fn edge_section_add_incoming_section(Int, Int) -> Unit
+
+pub fn edge_section_add_outgoing_section(Int, Int) -> Unit
+
+pub fn edge_section_end_x(Int) -> Double
+
+pub fn edge_section_end_y(Int) -> Double
+
+pub fn edge_section_identifier(Int) -> String
+
+pub fn edge_section_incoming_sections(Int) -> Array[Int]
+
+pub fn edge_section_incoming_shape(Int) -> ElkConnectableShape?
+
+pub fn edge_section_outgoing_sections(Int) -> Array[Int]
+
+pub fn edge_section_outgoing_shape(Int) -> ElkConnectableShape?
+
+pub fn edge_section_set_end(Int, Double, Double) -> Unit
+
+pub fn edge_section_set_identifier(Int, String) -> Unit
+
+pub fn edge_section_set_incoming_shape(Int, ElkConnectableShape?) -> Unit
+
+pub fn edge_section_set_outgoing_shape(Int, ElkConnectableShape?) -> Unit
+
+pub fn edge_section_set_start(Int, Double, Double) -> Unit
+
+pub fn edge_section_start_x(Int) -> Double
+
+pub fn edge_section_start_y(Int) -> Double
+
+pub fn edge_sections(Int) -> Array[Int]
+
+pub fn edge_set_containing_node(Int, Int?) -> Unit
+
+pub fn edge_set_identifier(Int, String) -> Unit
+
+pub fn edge_set_layout_option_string_by_id(Int, String, String) -> Unit
+
+pub fn edge_sources(Int) -> Array[ElkConnectableShape]
+
+pub fn edge_targets(Int) -> Array[ElkConnectableShape]
+
+pub fn edge_type_to_string(EdgeType) -> String
+
+pub fn elk_graph_importer_as_igraph_importer(ElkGraphImporter) -> IGraphImporter[Int]
+
+pub fn elk_graph_json_for_elk_graph(Int) -> ElkGraphJsonExportBuilder
+
+pub fn elk_graph_json_for_graph(String) -> ElkGraphJsonImportBuilder
+
+pub fn elk_graph_json_for_json_graph(Json) -> ElkGraphJsonImportBuilder
+
+pub fn elk_margin_clone(Spacing) -> Spacing
+
+pub fn elk_padding_clone(Spacing) -> Spacing
+
+pub fn elk_spacings_with_base_value(Double) -> ElkCoreSpacingsBuilder
+
+pub let elk_unknown_work : Double
+
+pub fn[P, G] enum_based_factory_compare(ILayoutProcessorFactory[P, G], ILayoutProcessorFactory[P, G]) -> Int
+
+pub let expand_nodes : IProperty[Bool]
+
+pub fn factd(Int) -> Double
+
+pub fn factl(Int) -> Int64
+
+pub fn fbendpoint_displacement(Int) -> KVector
+
+pub fn fbendpoint_edge(Int) -> Int
+
+pub fn fbendpoint_position(Int) -> KVector
+
+pub fn fbendpoint_radius(Int) -> Double
+
+pub fn fbendpoint_size(Int) -> KVector
+
+pub fn fedge_bendpoints(Int) -> Array[Int]
+
+pub fn fedge_distribute_bendpoints(Int) -> Unit
+
+pub fn fedge_get_bool_property(Int, ForceBoolOption) -> Bool
+
+pub fn fedge_get_double_property(Int, ForceDoubleOption) -> Double
+
+pub fn fedge_get_int_property(Int, ForceIntOption) -> Int
+
+pub fn fedge_has_double_property(Int, ForceDoubleOption) -> Bool
+
+pub fn fedge_labels(Int) -> Array[Int]
+
+pub fn fedge_origin(Int) -> Int?
+
+pub fn fedge_set_bool_property(Int, ForceBoolOption, Bool) -> Unit
+
+pub fn fedge_set_double_property(Int, ForceDoubleOption, Double) -> Unit
+
+pub fn fedge_set_int_property(Int, ForceIntOption, Int) -> Unit
+
+pub fn fedge_set_origin(Int, Int) -> Unit
+
+pub fn fedge_set_source(Int, Int) -> Unit
+
+pub fn fedge_set_target(Int, Int) -> Unit
+
+pub fn fedge_source(Int) -> Int?
+
+pub fn fedge_source_point(Int) -> KVector
+
+pub fn fedge_target(Int) -> Int?
+
+pub fn fedge_target_point(Int) -> KVector
+
+pub fn fedge_to_vector_chain(Int) -> KVectorChain
+
+pub fn fgraph_copy_properties(FGraph, FGraph) -> Unit
+
+pub fn find_best_edge_containment(Int?) -> Int?
+
+pub fn find_lowest_common_ancestor(Int, Int) -> Int?
+
+pub fn flabel_displacement(Int) -> KVector
+
+pub fn flabel_edge(Int) -> Int
+
+pub fn flabel_get_bool_property(Int, ForceBoolOption) -> Bool
+
+pub fn flabel_get_double_property(Int, ForceDoubleOption) -> Double
+
+pub fn flabel_origin(Int) -> Int?
+
+pub fn flabel_position(Int) -> KVector
+
+pub fn flabel_radius(Int) -> Double
+
+pub fn flabel_refresh_position(Int) -> Unit
+
+pub fn flabel_set_bool_property(Int, ForceBoolOption, Bool) -> Unit
+
+pub fn flabel_set_double_property(Int, ForceDoubleOption, Double) -> Unit
+
+pub fn flabel_set_origin(Int, Int) -> Unit
+
+pub fn flabel_size(Int) -> KVector
+
+pub fn flabel_text(Int) -> String
+
+pub fn fnode_add_child(Int, Int) -> Unit
+
+pub fn fnode_children(Int) -> Array[Int]
+
+pub fn fnode_depth(Int) -> Int
+
+pub fn fnode_displacement(Int) -> KVector
+
+pub fn fnode_get_bool_property(Int, ForceBoolOption) -> Bool
+
+pub fn fnode_get_double_property(Int, ForceDoubleOption) -> Double
+
+pub fn fnode_get_int_property(Int, ForceIntOption) -> Int
+
+pub fn fnode_has_bool_property(Int, ForceBoolOption) -> Bool
+
+pub fn fnode_id(Int) -> Int
+
+pub fn fnode_is_compound(Int) -> Bool
+
+pub fn fnode_label(Int) -> String
+
+pub fn fnode_origin(Int) -> Int?
+
+pub fn fnode_parent(Int) -> Int?
+
+pub fn fnode_position(Int) -> KVector
+
+pub fn fnode_radius(Int) -> Double
+
+pub fn fnode_set_bool_property(Int, ForceBoolOption, Bool) -> Unit
+
+pub fn fnode_set_double_property(Int, ForceDoubleOption, Double) -> Unit
+
+pub fn fnode_set_id(Int, Int) -> Unit
+
+pub fn fnode_set_int_property(Int, ForceIntOption, Int) -> Unit
+
+pub fn fnode_set_origin(Int, Int) -> Unit
+
+pub fn fnode_size(Int) -> KVector
+
+pub let force_aspect_ratio : ForceDoubleOption
+
+pub let force_edge_labels_inline : ForceBoolOption
+
+pub let force_interactive : ForceBoolOption
+
+pub let force_internal_bb_low_right : ForceInternalVectorProperty
+
+pub let force_internal_bb_up_left : ForceInternalVectorProperty
+
+pub let force_internal_origin : ForceInternalNodeProperty
+
+pub let force_internal_random : ForceInternalRandomProperty
+
+pub let force_iterations : ForceIntOption
+
+pub fn force_layout_provider_as_layout_provider(ForceLayoutProvider) -> AbstractLayoutProvider
+
+pub fn force_max(Double, Double) -> Double
+
+pub fn force_min(Double, Double) -> Double
+
+pub let force_model : ForceModelOption
+
+pub let force_omit_node_micro_layout : ForceBoolOption
+
+pub let force_padding : ForcePaddingOption
+
+pub let force_priority : ForceIntOption
+
+pub let force_random_seed : ForceIntOption
+
+pub let force_repulsion : ForceDoubleOption
+
+pub let force_repulsive_power : ForceIntOption
+
+pub let force_separate_connected_components : ForceBoolOption
+
+pub let force_spacing_edge_label : ForceDoubleOption
+
+pub let force_spacing_node_node : ForceDoubleOption
+
+pub let force_temperature : ForceDoubleOption
+
+pub fn fparticle_displacement(FParticle) -> KVector
+
+pub fn fparticle_get_int_property(FParticle, ForceIntOption) -> Int
+
+pub fn fparticle_position(FParticle) -> KVector
+
+pub fn fparticle_radius(FParticle) -> Double
+
+pub fn fparticle_size(FParticle) -> KVector
+
+pub fn fr_model_attractive(Double, Double) -> Double
+
+pub fn fr_model_repulsive(Double, Double) -> Double
+
+pub fn get_point_on_bezier_segment(Double, Array[KVector]) -> KVector
+
+pub fn graph_issue_list_to_string(Array[GraphIssue]) -> String
+
+pub fn greater_than(Double) -> ExclusiveLowerBound
+
+pub fn hierarchy_handling_to_string(HierarchyHandling) -> String
+
+pub let inside_self_loops_activate : IProperty[Bool]
+
+pub let instance_pool_infinite : Int
+
+pub fn intersects2(KVector, KVector, KVector, KVector) -> KVector?
+
+pub fn intersects_line(KVector, KVector, KVector, KVector) -> Bool
+
+pub fn intersects_rect_line(ElkRectangle, KVector, KVector) -> Bool
+
+pub fn intersects_rect_path(ElkRectangle, KVectorChain) -> Bool
+
+pub fn is_both_left_or_both_right(Quadrant, Quadrant) -> Bool
+
+pub fn is_descendant(Int, Int) -> Bool
+
+pub fn is_one_left_one_right(Quadrant, Quadrant) -> Bool
+
+pub let issue_error : Int
+
+pub let issue_warning : Int
+
+pub fn kvector_chain_reverse(KVectorChain) -> KVectorChain
+
+pub fn kvector_cross_product(KVector, KVector) -> Double
+
+pub fn kvector_diff(KVector, KVector) -> KVector
+
+pub fn kvector_sum(Array[KVector]) -> KVector
+
+pub fn label_height(Int) -> Double
+
+pub fn label_layout_option_string_value(Int, String) -> String?
+
+pub fn label_parent(Int) -> ElkLabelParent?
+
+pub fn label_set_dimensions(Int, Double, Double) -> Unit
+
+pub fn label_set_layout_option_string_by_id(Int, String, String) -> Unit
+
+pub fn label_set_location(Int, Double, Double) -> Unit
+
+pub fn label_set_text(Int, String) -> Unit
+
+pub fn label_side_to_string(LabelSide) -> String
+
+pub fn label_text(Int) -> String
+
+pub fn label_width(Int) -> Double
+
+pub fn label_x(Int) -> Double
+
+pub fn label_y(Int) -> Double
+
+pub fn layout_configurator_no_overwrite_filter() -> (Int, IProperty[Double]) -> Bool
+
+pub fn layout_data_content_assist_get_layout_algorithm_proposals(String) -> Array[LayoutDataProposal[LayoutAlgorithmData]]
+
+pub fn layout_data_content_assist_get_layout_option_proposals(Int, String) -> Array[LayoutDataProposal[LayoutOptionData]]
+
+pub fn layout_data_content_assist_get_layout_option_proposals_for_edge(Int, String) -> Array[LayoutDataProposal[LayoutOptionData]]
+
+pub fn layout_data_content_assist_get_layout_option_proposals_for_element(LayoutDataContentAssistElement, String) -> Array[LayoutDataProposal[LayoutOptionData]]
+
+pub fn layout_data_content_assist_get_layout_option_proposals_for_label(Int, String) -> Array[LayoutDataProposal[LayoutOptionData]]
+
+pub fn layout_data_content_assist_get_layout_option_proposals_for_port(Int, String) -> Array[LayoutDataProposal[LayoutOptionData]]
+
+pub fn layout_meta_data_for_algorithm(LayoutAlgorithmData) -> ILayoutMetaData
+
+pub fn layout_meta_data_for_category(LayoutCategoryData) -> ILayoutMetaData
+
+pub fn layout_meta_data_for_option(LayoutOptionData) -> ILayoutMetaData
+
+pub fn layout_meta_data_service_algorithm_data_values() -> Array[LayoutAlgorithmData]
+
+pub fn layout_meta_data_service_category_data_values() -> Array[LayoutCategoryData]
+
+pub fn layout_meta_data_service_get_algorithm_data(String) -> LayoutAlgorithmData?
+
+pub fn layout_meta_data_service_get_algorithm_data_by_suffix(String) -> LayoutAlgorithmData?
+
+pub fn layout_meta_data_service_get_category_data(String) -> LayoutCategoryData?
+
+pub fn layout_meta_data_service_get_option_data(String) -> LayoutOptionData
+
+pub fn layout_meta_data_service_get_option_data_by_suffix(String) -> LayoutOptionData?
+
+pub fn layout_meta_data_service_get_option_data_opt(String) -> LayoutOptionData?
+
+pub fn layout_meta_data_service_option_data_values() -> Array[LayoutOptionData]
+
+pub fn layout_meta_data_service_register_algorithm(LayoutAlgorithmData) -> Unit
+
+pub fn layout_meta_data_service_register_category(LayoutCategoryData) -> Unit
+
+pub fn layout_meta_data_service_register_default_algorithms() -> Unit
+
+pub fn layout_meta_data_service_register_default_options() -> Unit
+
+pub fn layout_meta_data_service_register_layout_meta_data_provider(ILayoutMetaDataProvider) -> Unit
+
+pub fn layout_meta_data_service_register_layout_meta_data_providers(Array[ILayoutMetaDataProvider]) -> Unit
+
+pub fn layout_meta_data_service_register_option(LayoutOptionData) -> Unit
+
+pub fn layout_meta_data_service_reset_for_test() -> Unit
+
+pub fn[P, G] layout_processor_configuration_create(PhaseDescriptor[P]) -> LayoutProcessorConfiguration[P, G]
+
+pub fn[P, G] layout_processor_configuration_create_from(LayoutProcessorConfiguration[P, G]) -> LayoutProcessorConfiguration[P, G]
+
+pub fn less_than(Double) -> ExclusiveUpperBound
+
+pub fn make_edge_label_parent(Int) -> ElkLabelParent
+
+pub fn make_label_label_parent(Int) -> ElkLabelParent
+
+pub fn make_node_label_parent(Int) -> ElkLabelParent
+
+pub fn make_node_shape(Int) -> ElkConnectableShape
+
+pub fn make_port_label_parent(Int) -> ElkLabelParent
+
+pub fn make_port_shape(Int) -> ElkConnectableShape
+
+pub fn maxd(Array[Double]) -> Double
+
+pub fn maxf(Array[Double]) -> Double
+
+pub fn maxi(Array[Int]) -> Int
+
+pub fn maxl(Array[Int64]) -> Int64
+
+pub fn[T] maybe_create() -> Maybe[T]
+
+pub fn[T] maybe_of(T) -> Maybe[T]
+
+pub fn mind(Array[Double]) -> Double
+
+pub fn minf(Array[Double]) -> Double
+
+pub fn mini(Array[Int]) -> Int
+
+pub fn minl(Array[Int64]) -> Int64
+
+pub fn new_abstract_force_model_state() -> AbstractForceModelState
+
+pub fn new_abstract_layout_provider((Int, IElkProgressMonitor) -> Unit, initialize_fn? : (String?) -> Unit, dispose_fn? : () -> Unit) -> AbstractLayoutProvider
+
+pub fn[T] new_abstract_random_list_accessor(() -> T) -> AbstractRandomListAccessor[T]
+
+pub fn new_basic_progress_monitor() -> IElkProgressMonitor
+
+pub fn new_bezier_curve(KVector, KVector, KVector, KVector) -> BezierCurve
+
+pub fn new_bezier_spline() -> BezierSpline
+
+pub fn new_binary_indexed_tree(Int) -> BinaryIndexedTree
+
+pub fn new_components_processor() -> ComponentsProcessor
+
+pub fn new_cubic_spline_interpolator() -> CubicSplineInterpolator
+
+pub fn new_data_object((String) -> Unit) -> IDataObject
+
+pub fn new_deprecated_layout_option_replacer() -> DeprecatedLayoutOptionReplacer
+
+pub fn new_eades_model() -> EadesModel
+
+pub fn new_elk_cancel_indicator(canceled? : Bool) -> IElkCancelIndicator
+
+pub fn new_elk_engine(default_layout_options? : Map[String, Json], algorithms? : Array[String]) -> ElkEngine
+
+pub fn new_elk_graph_importer() -> ElkGraphImporter
+
+pub fn new_elk_margin() -> Spacing
+
+pub fn new_elk_margin_any(Double) -> Spacing
+
+pub fn new_elk_margin_copy(Spacing) -> Spacing
+
+pub fn new_elk_margin_left_right_top_bottom(Double, Double) -> Spacing
+
+pub fn new_elk_margin_values(Double, Double, Double, Double) -> Spacing
+
+pub fn new_elk_padding() -> Spacing
+
+pub fn new_elk_padding_any(Double) -> Spacing
+
+pub fn new_elk_padding_copy(Spacing) -> Spacing
+
+pub fn new_elk_padding_left_right_top_bottom(Double, Double) -> Spacing
+
+pub fn new_elk_padding_values(Double, Double, Double, Double) -> Spacing
+
+pub fn new_elk_progress_monitor(task_name? : String) -> IElkProgressMonitor
+
+pub fn new_elk_rectangle() -> ElkRectangle
+
+pub fn new_elk_rectangle_copy(ElkRectangle) -> ElkRectangle
+
+pub fn new_elk_rectangle_xywh(Double, Double, Double, Double) -> ElkRectangle
+
+pub fn[T] new_factory(() -> T, destroy_fn? : (T) -> Unit) -> IFactory[T]
+
+pub fn new_fbendpoint(Int) -> Int
+
+pub fn new_fedge() -> Int
+
+pub fn new_fgraph() -> FGraph
+
+pub fn new_flabel(Int, text? : String) -> Int
+
+pub fn new_fnode(label? : String) -> Int
+
+pub fn new_force_bool_option(String, Bool) -> ForceBoolOption
+
+pub fn new_force_double_option(String, Double) -> ForceDoubleOption
+
+pub fn new_force_int_option(String, Int) -> ForceIntOption
+
+pub fn new_force_internal_node_property(String) -> ForceInternalNodeProperty
+
+pub fn new_force_internal_random_property(String) -> ForceInternalRandomProperty
+
+pub fn new_force_internal_vector_property(String) -> ForceInternalVectorProperty
+
+pub fn new_force_layout_provider() -> ForceLayoutProvider
+
+pub fn new_force_model_option(String, ForceModelStrategy) -> ForceModelOption
+
+pub fn new_force_padding_option(String, Spacing) -> ForcePaddingOption
+
+pub fn new_fruchterman_reingold_model() -> FruchtermanReingoldModel
+
+pub fn new_graph_element_visitor((Int) -> Unit) -> IGraphElementVisitor
+
+pub fn new_graph_issue_edge(Int, String, Int) -> GraphIssue
+
+pub fn new_graph_issue_node(Int, String, Int) -> GraphIssue
+
+pub fn new_graph_layout_engine((Int, IElkProgressMonitor) -> Unit) -> IGraphLayoutEngine
+
+pub fn new_graph_validation_exception() -> GraphValidationException
+
+pub fn new_graph_validation_exception_message(String) -> GraphValidationException
+
+pub fn new_graph_validation_exception_message_issues(String, Array[GraphIssue]) -> GraphValidationException
+
+pub fn new_graph_validator() -> GraphValidator
+
+pub fn[T] new_igraph_importer((T) -> FGraph, (FGraph) -> Unit) -> IGraphImporter[T]
+
+pub fn[T] new_instance_pool(IFactory[T], limit? : Int) -> InstancePool[T]
+
+pub fn new_json_importer() -> JsonImporter
+
+pub fn new_kvector() -> KVector
+
+pub fn new_kvector_angle(Double) -> KVector
+
+pub fn new_kvector_between(KVector, KVector) -> KVector
+
+pub fn new_kvector_chain() -> KVectorChain
+
+pub fn new_kvector_chain_copy(KVectorChain) -> KVectorChain
+
+pub fn new_kvector_chain_from_array(Array[KVector]) -> KVectorChain
+
+pub fn new_kvector_copy(KVector) -> KVector
+
+pub fn new_kvector_xy(Double, Double) -> KVector
+
+pub fn new_layout_algorithm_data(String, name? : String, description? : String, validator? : ((Int) -> Array[GraphIssue])?) -> LayoutAlgorithmData
+
+pub fn new_layout_algorithm_resolver(default_layout_algorithm_id? : String) -> LayoutAlgorithmResolver
+
+pub fn new_layout_category_data(String, name? : String, description? : String) -> LayoutCategoryData
+
+pub fn new_layout_configurator() -> LayoutConfigurator
+
+pub fn[T] new_layout_data_proposal(String, T, label? : String?) -> LayoutDataProposal[T]
+
+pub fn new_layout_meta_data(() -> String, () -> String, () -> String) -> ILayoutMetaData
+
+pub fn new_layout_meta_data_provider((LayoutMetaDataRegistry) -> Unit) -> ILayoutMetaDataProvider
+
+pub fn new_layout_meta_data_registry((LayoutAlgorithmData) -> Unit, (LayoutOptionData) -> Unit, (LayoutCategoryData) -> Unit, (String, String, String?) -> Unit, (String, String, String?) -> Unit) -> LayoutMetaDataRegistry
+
+pub fn new_layout_option_data(String, name? : String, description? : String, group? : String, option_type? : LayoutOptionValueType, lower_bound? : Double?, lower_bound_exclusive? : Bool, targets? : Array[LayoutOptionTarget], visibility? : LayoutOptionVisibility) -> LayoutOptionData
+
+pub fn new_layout_option_validator() -> LayoutOptionValidator
+
+pub fn[P, G] new_layout_phase((G, IElkProgressMonitor?) -> Unit, (G) -> LayoutProcessorConfiguration[P, G]?) -> ILayoutProcessor[P, G]
+
+pub fn[P, G] new_layout_processor((G, IElkProgressMonitor?) -> Unit) -> ILayoutProcessor[P, G]
+
+pub fn[P, G] new_layout_processor_factory(Int, Int, () -> ILayoutProcessor[P, G]) -> ILayoutProcessorFactory[P, G]
+
+pub fn new_logged_graph(String, LoggedGraphType) -> LoggedGraph
+
+pub fn new_null_elk_progress_monitor() -> IElkProgressMonitor
+
+pub fn[P] new_phase_descriptor(Array[P], (P) -> Int) -> PhaseDescriptor[P]
+
+pub fn new_point(Double, Double) -> Point
+
+pub fn new_point_in_quadrant(Double, Double, Quadrant) -> Point
+
+pub fn[T] new_property(String, T) -> IProperty[T]
+
+pub fn[T] new_property_cloneable(String, T, (T) -> T?) -> IProperty[T]
+
+pub fn[T] new_property_cloneable_without_clone(String, T) -> IProperty[T]
+
+pub fn new_rectilinear_convex_hull() -> RectilinearConvexHull
+
+pub fn new_recursive_graph_layout_engine() -> RecursiveGraphLayoutEngine
+
+pub fn new_spacing() -> Spacing
+
+pub fn new_spacing_values(Double, Double, Double, Double) -> Spacing
+
+pub fn new_spline_interpolator((Array[KVector]) -> BezierSpline) -> ISplineInterpolator
+
+pub fn new_stress_layout_provider() -> StressLayoutProvider
+
+pub fn new_stress_majorization() -> StressMajorization
+
+pub fn new_topdown_layout_provider((Int) -> KVector) -> ITopdownLayoutProvider
+
+pub fn new_two_bit_grid(Int, Int) -> TwoBitGrid
+
+pub fn new_unsupported_configuration_exception() -> UnsupportedConfigurationException
+
+pub fn new_unsupported_configuration_exception_message(String) -> UnsupportedConfigurationException
+
+pub fn new_unsupported_configuration_exception_message_cause(String, String) -> UnsupportedConfigurationException
+
+pub fn new_unsupported_graph_exception() -> UnsupportedGraphException
+
+pub fn new_unsupported_graph_exception_message(String) -> UnsupportedGraphException
+
+pub fn new_unsupported_graph_exception_message_cause(String, String) -> UnsupportedGraphException
+
+pub fn new_validating_graph_element_visitor((Int) -> Unit, () -> Array[GraphIssue]) -> IValidatingGraphElementVisitor
+
+pub fn new_wrapped_exception(String) -> WrappedException
+
+pub fn new_wrapped_exception_message_cause(String, String) -> WrappedException
+
+pub let no_layout : IProperty[Bool]
+
+pub fn node_all_descendants_including_self(Int) -> Array[Int]
+
+pub fn node_children(Int) -> Array[Int]
+
+pub fn node_clear_bool_property(Int, IProperty[Bool]) -> Unit
+
+pub fn node_clear_double_property(Int, IProperty[Double]) -> Unit
+
+pub fn node_clear_string_property(Int, IProperty[String]) -> Unit
+
+pub fn node_clear_string_set_property(Int, IProperty[Array[String]]) -> Unit
+
+pub fn node_contained_edges(Int) -> Array[Int]
+
+pub fn node_double_property_entries(Int) -> Array[(String, Double)]
+
+pub fn node_get_bool_property(Int, IProperty[Bool]) -> Bool
+
+pub fn node_get_double_property(Int, IProperty[Double]) -> Double
+
+pub fn node_get_string_property(Int, IProperty[String]) -> String
+
+pub fn node_get_string_set_property(Int, IProperty[Array[String]]) -> Array[String]
+
+pub fn node_has_bool_property(Int, IProperty[Bool]) -> Bool
+
+pub fn node_has_double_property(Int, IProperty[Double]) -> Bool
+
+pub fn node_has_string_property(Int, IProperty[String]) -> Bool
+
+pub fn node_has_string_set_property(Int, IProperty[Array[String]]) -> Bool
+
+pub fn node_height(Int) -> Double
+
+pub fn node_identifier(Int) -> String
+
+pub fn node_label_placement_fixed() -> Array[NodeLabelPlacement]
+
+pub fn node_label_placement_inside_bottom_center() -> Array[NodeLabelPlacement]
+
+pub fn node_label_placement_inside_bottom_left() -> Array[NodeLabelPlacement]
+
+pub fn node_label_placement_inside_bottom_right() -> Array[NodeLabelPlacement]
+
+pub fn node_label_placement_inside_center() -> Array[NodeLabelPlacement]
+
+pub fn node_label_placement_inside_top_center() -> Array[NodeLabelPlacement]
+
+pub fn node_label_placement_inside_top_left() -> Array[NodeLabelPlacement]
+
+pub fn node_label_placement_inside_top_right() -> Array[NodeLabelPlacement]
+
+pub fn node_label_placement_is_valid(Array[NodeLabelPlacement]) -> Bool
+
+pub fn node_label_placement_outside_bottom_center() -> Array[NodeLabelPlacement]
+
+pub fn node_label_placement_outside_bottom_left() -> Array[NodeLabelPlacement]
+
+pub fn node_label_placement_outside_bottom_right() -> Array[NodeLabelPlacement]
+
+pub fn node_label_placement_outside_top_center() -> Array[NodeLabelPlacement]
+
+pub fn node_label_placement_outside_top_left() -> Array[NodeLabelPlacement]
+
+pub fn node_label_placement_outside_top_right() -> Array[NodeLabelPlacement]
+
+pub fn node_label_placement_to_string(NodeLabelPlacement) -> String
+
+pub fn node_label_placement_value_of(Int) -> NodeLabelPlacement
+
+pub fn node_label_placement_values() -> Array[NodeLabelPlacement]
+
+pub fn node_labels(Int) -> Array[Int]
+
+pub let node_labels_placement : IProperty[Array[String]]
+
+pub fn node_layout_option_string_entries(Int) -> Array[(String, String)]
+
+pub fn node_layout_option_string_value(Int, String) -> String?
+
+pub fn node_parent(Int) -> Int?
+
+pub fn node_set_bool_property(Int, IProperty[Bool], Bool) -> Unit
+
+pub fn node_set_dimensions(Int, Double, Double) -> Unit
+
+pub fn node_set_double_property(Int, IProperty[Double], Double) -> Unit
+
+pub fn node_set_identifier(Int, String) -> Unit
+
+pub fn node_set_layout_option_string_by_id(Int, String, String) -> Unit
+
+pub fn node_set_layout_option_string_value(Int, LayoutOptionData, String) -> Unit
+
+pub fn node_set_location(Int, Double, Double) -> Unit
+
+pub fn node_set_string_property(Int, IProperty[String], String) -> Unit
+
+pub fn node_set_string_set_property(Int, IProperty[Array[String]], Array[String]) -> Unit
+
+pub let node_size_constraints : IProperty[Array[String]]
+
+pub let node_size_fixed_graph_size : IProperty[Bool]
+
+pub let node_size_minimum : IProperty[String]
+
+pub let node_size_options : IProperty[Array[String]]
+
+pub fn node_width(Int) -> Double
+
+pub fn node_x(Int) -> Double
+
+pub fn node_y(Int) -> Double
+
+pub let padding : IProperty[String]
+
+pub fn[F, S] pair_create() -> Pair[F, S]
+
+pub fn[F, S] pair_of(F, S) -> Pair[F, S]
+
+pub fn point_from_kvector(KVector) -> Point
+
+pub fn point_with_quadrant(Point, Quadrant) -> Point
+
+pub fn port_alignment_to_string(PortAlignment) -> String
+
+pub let port_constraints : IProperty[String]
+
+pub fn port_constraints_to_string(PortConstraints) -> String
+
+pub fn port_constraints_values() -> Array[PortConstraints]
+
+pub fn port_label_placement_fixed() -> Array[PortLabelPlacement]
+
+pub fn port_label_placement_inside() -> Array[PortLabelPlacement]
+
+pub fn port_label_placement_is_fixed(Array[PortLabelPlacement]) -> Bool
+
+pub fn port_label_placement_is_valid(Array[PortLabelPlacement]) -> Bool
+
+pub fn port_label_placement_outside() -> Array[PortLabelPlacement]
+
+pub fn port_label_placement_to_string(PortLabelPlacement) -> String
+
+pub fn port_label_placement_values() -> Array[PortLabelPlacement]
+
+pub fn port_labels(Int) -> Array[Int]
+
+pub let port_labels_next_to_port_if_possible : IProperty[Bool]
+
+pub let port_labels_placement : IProperty[Array[String]]
+
+pub fn port_layout_option_string_value(Int, String) -> String?
+
+pub fn port_parent(Int) -> Int?
+
+pub fn port_set_layout_option_string_by_id(Int, String, String) -> Unit
+
+pub let port_side : IProperty[String]
+
+pub fn port_side_from_direction(Direction) -> PortSide
+
+pub fn port_side_is_horizontal(PortSide) -> Bool
+
+pub fn port_side_is_vertical(PortSide) -> Bool
+
+pub fn port_side_to_string(PortSide) -> String
+
+pub fn port_side_values() -> Array[PortSide]
+
+pub fn powd(Double, Int) -> Double
+
+pub fn powf(Double, Int) -> Double
+
+pub let priority : IProperty[Double]
+
+pub fn properties_skipping_nodes(Int, include_root? : Bool) -> Array[Int]
+
+pub fn quadrant_eq(Quadrant, Quadrant) -> Bool
+
+pub fn[A, B, C, D] quadruple_of(A, B, C, D) -> Quadruple[A, B, C, D]
+
+pub fn rectilinear_convex_hull_of(Array[Point]) -> RectilinearConvexHull
+
+pub fn reset_force_graph_model_for_test() -> Unit
+
+pub fn reset_graph_model_for_test() -> Unit
+
+pub let resolved_algorithm : IProperty[String]
+
+pub fn[T] scanline_execute(Array[T], (T, T) -> Int, Array[(T) -> Unit]) -> Unit
+
+pub fn[T] scanline_execute_single(Array[T], (T, T) -> Int, (T) -> Unit) -> Unit
+
+pub fn shape_coords_to_string(ShapeCoords) -> String
+
+pub fn shortest_distance(ElkRectangle, ElkRectangle) -> Double
+
+pub let sides_east : Array[PortSide]
+
+pub let sides_east_south : Array[PortSide]
+
+pub let sides_east_south_west : Array[PortSide]
+
+pub let sides_east_west : Array[PortSide]
+
+pub let sides_none : Array[PortSide]
+
+pub let sides_north : Array[PortSide]
+
+pub let sides_north_east : Array[PortSide]
+
+pub let sides_north_east_south : Array[PortSide]
+
+pub let sides_north_east_south_west : Array[PortSide]
+
+pub let sides_north_east_west : Array[PortSide]
+
+pub let sides_north_south : Array[PortSide]
+
+pub let sides_north_south_west : Array[PortSide]
+
+pub let sides_north_west : Array[PortSide]
+
+pub let sides_south : Array[PortSide]
+
+pub let sides_south_west : Array[PortSide]
+
+pub let sides_west : Array[PortSide]
+
+pub fn signum(Double) -> Int
+
+pub fn size_constraint_fixed() -> Array[SizeConstraint]
+
+pub fn size_constraint_free() -> Array[SizeConstraint]
+
+pub fn size_constraint_minimum_size() -> Array[SizeConstraint]
+
+pub fn size_constraint_minimum_size_with_ports() -> Array[SizeConstraint]
+
+pub fn size_constraint_to_string(SizeConstraint) -> String
+
+pub fn size_options_to_string(SizeOptions) -> String
+
+pub fn size_options_value_of(Int) -> SizeOptions
+
+pub fn size_options_values() -> Array[SizeOptions]
+
+pub let spacing_component_component : IProperty[Double]
+
+pub let spacing_edge_edge : IProperty[Double]
+
+pub let spacing_edge_label : IProperty[Double]
+
+pub let spacing_edge_node : IProperty[Double]
+
+pub let spacing_label_label : IProperty[Double]
+
+pub let spacing_label_node : IProperty[Double]
+
+pub let spacing_label_port_horizontal : IProperty[Double]
+
+pub let spacing_label_port_vertical : IProperty[Double]
+
+pub let spacing_node_node : IProperty[Double]
+
+pub let spacing_node_self_loop : IProperty[Double]
+
+pub let spacing_port_port : IProperty[Double]
+
+pub let stress_desired_edge_length : ForceDoubleOption
+
+pub let stress_dimension : ForceIntOption
+
+pub fn stress_dimension_from_int(Int) -> StressDimension
+
+pub let stress_epsilon : ForceDoubleOption
+
+pub let stress_fixed : ForceBoolOption
+
+pub let stress_interactive : ForceBoolOption
+
+pub let stress_iteration_limit : ForceIntOption
+
+pub fn stress_layout_provider_as_layout_provider(StressLayoutProvider) -> AbstractLayoutProvider
+
+pub let stress_omit_node_micro_layout : ForceBoolOption
+
+pub fn topdown_node_type_to_string(TopdownNodeTypes) -> String
+
+pub fn translate(Int, KVector, KVector) -> Unit
+
+pub fn translate_xy(Int, Double, Double) -> Unit
+
+pub fn[F, S, T] triple_of(F, S, T) -> Triple[F, S, T]
+
+pub fn update_containment(Int?) -> Unit
+
+// Errors
+
+// Types and methods
+pub struct AbstractForceModelState {
+  mut random : @random.Rand
+  mut graph : FGraph?
+  mut disp_bound : Double
+}
+
+pub struct AbstractLayoutProvider {
+  graph_layout_engine : IGraphLayoutEngine
+  initialize_fn : (String?) -> Unit
+  dispose_fn : () -> Unit
+}
+pub fn AbstractLayoutProvider::as_graph_layout_engine(Self) -> IGraphLayoutEngine
+pub fn AbstractLayoutProvider::dispose(Self) -> Unit
+pub fn AbstractLayoutProvider::initialize(Self, String?) -> Unit
+pub fn AbstractLayoutProvider::layout(Self, Int, IElkProgressMonitor) -> Unit
+
+pub struct AbstractRandomListAccessor[T] {
+  list : Array[T]
+  provide_default : () -> T
+}
+pub fn[T] AbstractRandomListAccessor::clear_list(Self[T]) -> Unit
+pub fn[T] AbstractRandomListAccessor::ensure_list_size(Self[T], Int) -> Unit
+pub fn[T] AbstractRandomListAccessor::get_list_item(Self[T], Int) -> T
+pub fn[T] AbstractRandomListAccessor::get_list_size(Self[T]) -> Int
+pub fn[T] AbstractRandomListAccessor::set_list_item(Self[T], Int, T) -> Unit
+
+pub struct AlgorithmAssembler[P, G] {
+  mut enable_caching : Bool
+  mut fail_on_missing_phase : Bool
+  mut processor_comparator : (ILayoutProcessorFactory[P, G], ILayoutProcessorFactory[P, G]) -> Int
+  phase_descriptor : PhaseDescriptor[P]
+  number_of_phases : Int
+  configured_phases : Array[Bool]
+  phase_accessor : AbstractRandomListAccessor[ILayoutProcessorFactory[P, G]?]
+  additional_processors : LayoutProcessorConfiguration[P, G]
+  cache : Array[(Int, ILayoutProcessor[P, G])]
+}
+pub fn[P, G] AlgorithmAssembler::add_processor_configuration(Self[P, G], LayoutProcessorConfiguration[P, G]) -> Self[P, G]
+pub fn[P, G] AlgorithmAssembler::build(Self[P, G], G) -> Array[ILayoutProcessor[P, G]]
+pub fn[P, G] AlgorithmAssembler::clear_cache(Self[P, G]) -> Self[P, G]
+pub fn[P, G] AlgorithmAssembler::count_configured_phases(Self[P, G]) -> Int
+pub fn[P, G] AlgorithmAssembler::reset(Self[P, G]) -> Self[P, G]
+pub fn[P, G] AlgorithmAssembler::retrieve_phase(Self[P, G], ILayoutProcessorFactory[P, G]) -> ILayoutProcessor[P, G]
+pub fn[P, G] AlgorithmAssembler::retrieve_processor(Self[P, G], ILayoutProcessorFactory[P, G]) -> ILayoutProcessor[P, G]
+pub fn[P, G] AlgorithmAssembler::retrieve_processors(Self[P, G], Array[ILayoutProcessorFactory[P, G]]) -> Array[ILayoutProcessor[P, G]]
+pub fn[P, G] AlgorithmAssembler::set_phase(Self[P, G], P, ILayoutProcessorFactory[P, G]) -> Self[P, G]
+pub fn[P, G] AlgorithmAssembler::with_caching(Self[P, G], Bool) -> Self[P, G]
+pub fn[P, G] AlgorithmAssembler::with_fail_on_missing_phase(Self[P, G], Bool) -> Self[P, G]
+pub fn[P, G] AlgorithmAssembler::with_processor_comparator(Self[P, G], (ILayoutProcessorFactory[P, G], ILayoutProcessorFactory[P, G]) -> Int) -> Self[P, G]
+
+pub enum Alignment {
+  Automatic
+  Left
+  Right
+  Top
+  Bottom
+  Center
+}
+
+pub struct BezierCurve {
+  start : KVector
+  fst_control_pnt : KVector
+  snd_control_pnt : KVector
+  end : KVector
+}
+pub fn BezierCurve::as_array(Self) -> Array[KVector]
+pub fn BezierCurve::as_vector_list(Self) -> Array[KVector]
+
+pub struct BezierSpline {
+  curves : Array[BezierCurve]
+}
+pub fn BezierSpline::add_curve(Self, BezierCurve) -> Unit
+pub fn BezierSpline::add_curve_points(Self, KVector, KVector, KVector, KVector) -> Unit
+pub fn BezierSpline::add_spline(Self, Self, Bool) -> Unit
+pub fn BezierSpline::get_base_points(Self) -> Array[KVector]
+pub fn BezierSpline::get_curves(Self) -> Array[BezierCurve]
+pub fn BezierSpline::get_end_point(Self) -> KVector
+pub fn BezierSpline::get_inner_points(Self) -> Array[KVector]
+pub fn BezierSpline::get_polyline_apprx(Self, Int) -> Array[KVector]
+pub fn BezierSpline::get_start_point(Self) -> KVector
+pub fn BezierSpline::to_string(Self) -> String
+
+pub struct BinaryIndexedTree {
+  mut binary_sums : Array[Int]
+  mut nums_per_index : Array[Int]
+  mut current_size : Int
+  max_num : Int
+}
+pub fn BinaryIndexedTree::add(Self, Int) -> Unit
+pub fn BinaryIndexedTree::clear(Self) -> Unit
+pub fn BinaryIndexedTree::is_empty(Self) -> Bool
+pub fn BinaryIndexedTree::rank(Self, Int) -> Int
+pub fn BinaryIndexedTree::remove_all(Self, Int) -> Unit
+pub fn BinaryIndexedTree::size(Self) -> Int
+
+pub struct ComponentsProcessor {
+  _dummy : Unit
+}
+pub fn ComponentsProcessor::recombine(Self, Array[FGraph]) -> FGraph
+pub fn ComponentsProcessor::split(Self, FGraph) -> Array[FGraph]
+
+pub enum ContentAlignment {
+  HLeft
+  HCenter
+  HRight
+  VTop
+  VCenter
+  VBottom
+}
+
+pub struct CubicSplineInterpolator {
+  _dummy : Unit
+}
+pub fn CubicSplineInterpolator::calculate_closed_bezier_spline(Self, Array[KVector]) -> BezierSpline
+pub fn CubicSplineInterpolator::interpolate_points(Self, Array[KVector]) -> BezierSpline
+pub fn CubicSplineInterpolator::interpolate_points_with_tangent(Self, Array[KVector], KVector, KVector, Bool) -> BezierSpline
+
+pub struct DeprecatedLayoutOptionReplacer {
+  _dummy : Int
+}
+pub fn DeprecatedLayoutOptionReplacer::visit(Self, Int) -> Unit
+
+pub enum Direction {
+  Undefined
+  Rightward
+  Leftward
+  Downward
+  Upward
+}
+pub fn Direction::is_horizontal(Self) -> Bool
+pub fn Direction::is_vertical(Self) -> Bool
+pub fn Direction::opposite(Self) -> Self
+
+pub struct EadesModel {
+  state : AbstractForceModelState
+  mut max_iterations : Int
+  mut spring_length : Double
+  mut repulsion_factor : Double
+}
+pub fn EadesModel::calc_displacement(Self, FParticle, FParticle) -> KVector
+pub fn EadesModel::initialize(Self, FGraph) -> Unit
+pub fn EadesModel::layout(Self, FGraph, IElkProgressMonitor) -> Unit
+pub fn EadesModel::more_iterations(Self, Int) -> Bool
+
+pub enum EdgeCoords {
+  Inherit
+  Container
+  Parent
+  Root
+}
+
+pub enum EdgeLabelPlacement {
+  Centered
+  Head
+  Tail
+}
+pub fn EdgeLabelPlacement::is_end_label_placement(Self) -> Bool
+
+pub enum EdgeRouting {
+  RoutingUndefined
+  Polyline
+  Orthogonal
+  Splines
+}
+
+pub enum EdgeType {
+  NoneType
+  Directed
+  Undirected
+  Association
+  Generalization
+  Dependency
+}
+
+pub enum ElkConnectableShape {
+  NodeShape(Int)
+  PortShape(Int)
+}
+
+pub struct ElkCoreSpacingsBuilder {
+  base_spacing : Double
+  mut overwrite : Bool
+  factors : Array[(IProperty[Double], Double)]
+}
+pub fn ElkCoreSpacingsBuilder::apply(Self, Int) -> Unit
+pub fn ElkCoreSpacingsBuilder::build(Self) -> (Int) -> Unit
+pub fn ElkCoreSpacingsBuilder::factor_for(Self, IProperty[Double]) -> Double
+pub fn ElkCoreSpacingsBuilder::factors(Self) -> Array[(IProperty[Double], Double)]
+pub fn ElkCoreSpacingsBuilder::to_visitor(Self) -> IGraphElementVisitor
+pub fn ElkCoreSpacingsBuilder::with_factor(Self, IProperty[Double], Double) -> Self
+pub fn ElkCoreSpacingsBuilder::with_overwrite(Self, Bool) -> Self
+pub fn ElkCoreSpacingsBuilder::with_value(Self, IProperty[Double], Double) -> Self
+
+pub struct ElkEngine {
+  default_layout_options : Map[String, Json]
+  algorithms : Array[String]
+}
+pub fn ElkEngine::known_layout_algorithms(Self) -> Array[String]
+pub fn ElkEngine::layout(Self, graph? : Json, layout_options? : Map[String, Json], logging? : Bool, measure_execution_time? : Bool) -> Json raise
+pub fn ElkEngine::terminate_worker(Self) -> Unit
+
+pub struct ElkGraphImporter {
+  _dummy : Unit
+}
+pub fn ElkGraphImporter::apply_layout(Self, FGraph) -> Unit
+pub fn ElkGraphImporter::import_graph(Self, Int) -> FGraph
+
+pub struct ElkGraphJsonExportBuilder {
+  graph : Int
+  pretty_print : Bool
+  omit_zero_position : Bool
+  omit_zero_dimension : Bool
+  omit_layout_information : Bool
+  short_layout_option_keys : Bool
+  omit_unknown_layout_options : Bool
+}
+pub fn ElkGraphJsonExportBuilder::omit_layout(Self, Bool) -> Self
+pub fn ElkGraphJsonExportBuilder::omit_unknown_layout_options(Self, Bool) -> Self
+pub fn ElkGraphJsonExportBuilder::omit_zero_dimension(Self, Bool) -> Self
+pub fn ElkGraphJsonExportBuilder::omit_zero_positions(Self, Bool) -> Self
+pub fn ElkGraphJsonExportBuilder::pretty_print(Self, Bool) -> Self
+pub fn ElkGraphJsonExportBuilder::short_layout_option_keys(Self, Bool) -> Self
+pub fn ElkGraphJsonExportBuilder::to_json(Self) -> String
+
+pub struct ElkGraphJsonImportBuilder {
+  graph : String?
+  json_graph : Json?
+  importer_maybe : Maybe[JsonImporter]?
+  lenient : Bool
+}
+pub fn ElkGraphJsonImportBuilder::lenient(Self, Bool) -> Self
+pub fn ElkGraphJsonImportBuilder::remember_importer(Self, Maybe[JsonImporter]) -> Self
+pub fn ElkGraphJsonImportBuilder::to_elk(Self) -> Int
+
+pub enum ElkLabelParent {
+  NodeLabelParent(Int)
+  PortLabelParent(Int)
+  EdgeLabelParent(Int)
+  LabelLabelParent(Int)
+}
+
+pub struct ElkRectangle {
+  mut x : Double
+  mut y : Double
+  mut width : Double
+  mut height : Double
+}
+pub fn ElkRectangle::equals(Self, Self) -> Bool
+pub fn ElkRectangle::get_bottom_left(Self) -> KVector
+pub fn ElkRectangle::get_bottom_right(Self) -> KVector
+pub fn ElkRectangle::get_center(Self) -> KVector
+pub fn ElkRectangle::get_max_x(Self) -> Double
+pub fn ElkRectangle::get_max_y(Self) -> Double
+pub fn ElkRectangle::get_position(Self) -> KVector
+pub fn ElkRectangle::get_top_left(Self) -> KVector
+pub fn ElkRectangle::get_top_right(Self) -> KVector
+pub fn ElkRectangle::hash_code(Self) -> Int
+pub fn ElkRectangle::intersects(Self, Self) -> Bool
+pub fn ElkRectangle::move(Self, KVector) -> Unit
+pub fn ElkRectangle::set_rect(Self, Double, Double, Double, Double) -> Unit
+pub fn ElkRectangle::to_string(Self) -> String
+pub fn ElkRectangle::union(Self, Self) -> Unit
+
+pub struct ExclusiveLowerBound {
+  exclusive_lower_bound : Double
+}
+pub fn ExclusiveLowerBound::compare_to(Self, Double) -> Int
+pub fn ExclusiveLowerBound::to_string(Self) -> String
+pub fn ExclusiveLowerBound::value(Self) -> Double
+
+pub struct ExclusiveUpperBound {
+  exclusive_upper_bound : Double
+}
+pub fn ExclusiveUpperBound::compare_to(Self, Double) -> Int
+pub fn ExclusiveUpperBound::to_string(Self) -> String
+pub fn ExclusiveUpperBound::value(Self) -> Double
+
+pub struct FGraph {
+  nodes : Array[Int]
+  edges : Array[Int]
+  labels : Array[Int]
+  bendpoints : Array[Int]
+  bool_properties : Map[String, Bool]
+  int_properties : Map[String, Int]
+  double_properties : Map[String, Double]
+  model_properties : Map[String, ForceModelStrategy]
+  padding_properties : Map[String, Spacing]
+  node_properties : Map[String, Int]
+  random_properties : Map[String, @random.Rand]
+  vector_properties : Map[String, KVector]
+  adjacency : Array[Array[Int]]
+}
+pub fn FGraph::add_bendpoint(Self, Int) -> Unit
+pub fn FGraph::add_edge(Self, Int) -> Unit
+pub fn FGraph::add_label(Self, Int) -> Unit
+pub fn FGraph::add_node(Self, Int) -> Unit
+pub fn FGraph::calc_adjacency(Self) -> Unit
+pub fn FGraph::get_bendpoints(Self) -> Array[Int]
+pub fn FGraph::get_connection(Self, FParticle, FParticle) -> Int
+pub fn FGraph::get_double_property(Self, ForceDoubleOption) -> Double
+pub fn FGraph::get_edges(Self) -> Array[Int]
+pub fn FGraph::get_int_property(Self, ForceIntOption) -> Int
+pub fn FGraph::get_internal_node_property(Self, ForceInternalNodeProperty) -> Int?
+pub fn FGraph::get_internal_random_property(Self, ForceInternalRandomProperty) -> @random.Rand?
+pub fn FGraph::get_internal_vector_property(Self, ForceInternalVectorProperty) -> KVector?
+pub fn FGraph::get_labels(Self) -> Array[Int]
+pub fn FGraph::get_model_property(Self, ForceModelOption) -> ForceModelStrategy
+pub fn FGraph::get_nodes(Self) -> Array[Int]
+pub fn FGraph::get_padding_property(Self, ForcePaddingOption) -> Spacing
+pub fn FGraph::get_particles(Self) -> Array[FParticle]
+pub fn FGraph::get_property(Self, ForceBoolOption) -> Bool
+pub fn FGraph::set_double_property(Self, ForceDoubleOption, Double) -> Unit
+pub fn FGraph::set_int_property(Self, ForceIntOption, Int) -> Unit
+pub fn FGraph::set_internal_node_property(Self, ForceInternalNodeProperty, Int) -> Unit
+pub fn FGraph::set_internal_random_property(Self, ForceInternalRandomProperty, @random.Rand) -> Unit
+pub fn FGraph::set_internal_vector_property(Self, ForceInternalVectorProperty, KVector) -> Unit
+pub fn FGraph::set_model_property(Self, ForceModelOption, ForceModelStrategy) -> Unit
+pub fn FGraph::set_padding_property(Self, ForcePaddingOption, Spacing) -> Unit
+pub fn FGraph::set_property(Self, ForceBoolOption, Bool) -> Unit
+
+pub enum FParticle {
+  Node(Int)
+  Label(Int)
+  Bendpoint(Int)
+}
+
+pub struct ForceBoolOption {
+  id : String
+  default_value : Bool
+}
+pub fn ForceBoolOption::get_default(Self) -> Bool
+pub fn ForceBoolOption::get_id(Self) -> String
+
+pub struct ForceDoubleOption {
+  id : String
+  default_value : Double
+}
+pub fn ForceDoubleOption::get_default(Self) -> Double
+pub fn ForceDoubleOption::get_id(Self) -> String
+
+pub struct ForceIntOption {
+  id : String
+  default_value : Int
+}
+pub fn ForceIntOption::get_default(Self) -> Int
+pub fn ForceIntOption::get_id(Self) -> String
+
+pub struct ForceInternalNodeProperty {
+  id : String
+}
+pub fn ForceInternalNodeProperty::get_id(Self) -> String
+
+pub struct ForceInternalRandomProperty {
+  id : String
+}
+pub fn ForceInternalRandomProperty::get_id(Self) -> String
+
+pub struct ForceInternalVectorProperty {
+  id : String
+}
+pub fn ForceInternalVectorProperty::get_id(Self) -> String
+
+pub struct ForceLayoutProvider {
+  mut force_model : ForceModel?
+  components_processor : ComponentsProcessor
+}
+pub fn ForceLayoutProvider::layout(Self, Int, IElkProgressMonitor) -> Unit
+
+pub enum ForceModel {
+  EadesModelValue(EadesModel)
+  FruchtermanReingoldModelValue(FruchtermanReingoldModel)
+}
+
+pub struct ForceModelOption {
+  id : String
+  default_value : ForceModelStrategy
+}
+pub fn ForceModelOption::get_default(Self) -> ForceModelStrategy
+pub fn ForceModelOption::get_id(Self) -> String
+
+pub enum ForceModelStrategy {
+  Eades
+  FruchtermanReingold
+}
+
+pub struct ForcePaddingOption {
+  id : String
+  default_value : Spacing
+}
+pub fn ForcePaddingOption::get_default(Self) -> Spacing
+pub fn ForcePaddingOption::get_id(Self) -> String
+
+pub struct FruchtermanReingoldModel {
+  state : AbstractForceModelState
+  mut temperature : Double
+  mut threshold : Double
+  mut k : Double
+}
+pub fn FruchtermanReingoldModel::calc_displacement(Self, FParticle, FParticle) -> KVector
+pub fn FruchtermanReingoldModel::initialize(Self, FGraph) -> Unit
+pub fn FruchtermanReingoldModel::iteration_done(Self) -> Unit
+pub fn FruchtermanReingoldModel::layout(Self, FGraph, IElkProgressMonitor) -> Unit
+pub fn FruchtermanReingoldModel::more_iterations(Self, Int) -> Bool
+
+pub struct GraphIssue {
+  target : GraphIssueTarget
+  message : String
+  severity : Int
+}
+pub fn GraphIssue::to_string(Self) -> String
+
+pub enum GraphIssueTarget {
+  NodeIssueTarget(Int)
+  EdgeIssueTarget(Int)
+}
+
+pub struct GraphValidationException {
+  message : String?
+  issues : Array[GraphIssue]?
+}
+pub fn GraphValidationException::get_issues(Self) -> Array[GraphIssue]?
+pub fn GraphValidationException::get_message(Self) -> String?
+
+pub struct GraphValidator {
+  issues : Array[GraphIssue]
+}
+pub fn GraphValidator::get_issues(Self) -> Array[GraphIssue]
+pub fn GraphValidator::to_visitor(Self) -> IGraphElementVisitor
+pub fn GraphValidator::visit(Self, Int) -> Unit
+
+pub enum HierarchyHandling {
+  Inherit
+  IncludeChildren
+  SeparateChildren
+}
+
+pub struct HullRectangleEventState {
+  rects : Array[ElkRectangle]
+  mut min_y : Point?
+  mut max_y : Point?
+  mut last_x : Double
+  mut queued : ElkRectangle?
+  mut queued_point : Point?
+}
+
+pub struct IDataObject {
+  parse_fn : (String) -> Unit
+}
+pub fn IDataObject::parse(Self, String) -> Unit
+
+pub struct IElkCancelIndicator {
+  canceled : Bool
+}
+pub fn IElkCancelIndicator::is_canceled(Self) -> Bool
+
+pub struct IElkProgressMonitor {
+  mut running : Bool
+  mut task_name : String
+  canceled : Bool
+  logs : Array[String]
+  logged_graphs : Array[LoggedGraph]
+  null_mode : Bool
+}
+pub fn IElkProgressMonitor::begin(Self, String, Double) -> Bool
+pub fn IElkProgressMonitor::done(Self) -> Unit
+pub fn IElkProgressMonitor::get_execution_time(Self) -> Double
+pub fn IElkProgressMonitor::get_logged_graphs(Self) -> Array[LoggedGraph]
+pub fn IElkProgressMonitor::get_logs(Self) -> Array[String]
+pub fn IElkProgressMonitor::get_parent_monitor(Self) -> Self?
+pub fn IElkProgressMonitor::get_sub_monitors(Self) -> Array[Self]
+pub fn IElkProgressMonitor::get_task_name(Self) -> String
+pub fn IElkProgressMonitor::is_canceled(Self) -> Bool
+pub fn IElkProgressMonitor::is_execution_time_measured(Self) -> Bool
+pub fn IElkProgressMonitor::is_log_persistence_enabled(Self) -> Bool
+pub fn IElkProgressMonitor::is_logging_enabled(Self) -> Bool
+pub fn IElkProgressMonitor::is_running(Self) -> Bool
+pub fn IElkProgressMonitor::log(Self, String) -> Unit
+pub fn IElkProgressMonitor::log_graph(Self, String, graph_type? : LoggedGraphType) -> Unit
+pub fn IElkProgressMonitor::sub_task(Self, Double) -> Self?
+pub fn IElkProgressMonitor::worked(Self, Double) -> Unit
+
+pub struct IFactory[T] {
+  create_fn : () -> T
+  destroy_fn : (T) -> Unit
+}
+pub fn[T] IFactory::create(Self[T]) -> T
+pub fn[T] IFactory::destroy(Self[T], T) -> Unit
+
+pub struct IGraphElementVisitor {
+  visit_fn : (Int) -> Unit
+}
+pub fn IGraphElementVisitor::visit(Self, Int) -> Unit
+
+pub struct IGraphImporter[T] {
+  import_graph_fn : (T) -> FGraph
+  apply_layout_fn : (FGraph) -> Unit
+}
+pub fn[T] IGraphImporter::apply_layout(Self[T], FGraph) -> Unit
+pub fn[T] IGraphImporter::import_graph(Self[T], T) -> FGraph
+
+pub struct IGraphLayoutEngine {
+  layout_fn : (Int, IElkProgressMonitor) -> Unit
+}
+pub fn IGraphLayoutEngine::layout(Self, Int, IElkProgressMonitor) -> Unit
+
+pub struct ILayoutMetaData {
+  get_id_fn : () -> String
+  get_name_fn : () -> String
+  get_description_fn : () -> String
+}
+pub fn ILayoutMetaData::get_description(Self) -> String
+pub fn ILayoutMetaData::get_id(Self) -> String
+pub fn ILayoutMetaData::get_name(Self) -> String
+
+pub struct ILayoutMetaDataProvider {
+  apply_fn : (LayoutMetaDataRegistry) -> Unit
+}
+pub fn ILayoutMetaDataProvider::apply(Self, LayoutMetaDataRegistry) -> Unit
+
+pub struct ILayoutProcessor[P, G] {
+  id : Int
+  process_fn : (G, IElkProgressMonitor?) -> Unit
+  is_phase : Bool
+  get_layout_processor_configuration_fn : (G) -> LayoutProcessorConfiguration[P, G]?
+}
+pub fn[P, G] ILayoutProcessor::get_layout_processor_configuration(Self[P, G], G) -> LayoutProcessorConfiguration[P, G]?
+pub fn[P, G] ILayoutProcessor::instance_id(Self[P, G]) -> Int
+pub fn[P, G] ILayoutProcessor::is_layout_phase(Self[P, G]) -> Bool
+pub fn[P, G] ILayoutProcessor::process(Self[P, G], G, IElkProgressMonitor?) -> Unit
+
+#alias(ILayoutPhaseFactory)
+pub struct ILayoutProcessorFactory[P, G] {
+  id : Int
+  order : Int
+  create_fn : () -> ILayoutProcessor[P, G]
+}
+pub fn[P, G] ILayoutProcessorFactory::create(Self[P, G]) -> ILayoutProcessor[P, G]
+pub fn[P, G] ILayoutProcessorFactory::factory_id(Self[P, G]) -> Int
+pub fn[P, G] ILayoutProcessorFactory::factory_order(Self[P, G]) -> Int
+
+pub struct IProperty[T] {
+  id : String
+  default_value : T
+  clone_required : Bool
+  clone_default_fn : ((T) -> T?)?
+}
+pub fn[T] IProperty::get_default(Self[T]) -> T
+pub fn[T] IProperty::get_id(Self[T]) -> String
+
+pub struct ISplineInterpolator {
+  interpolate_points_fn : (Array[KVector]) -> BezierSpline
+}
+pub fn ISplineInterpolator::interpolate_points(Self, Array[KVector]) -> BezierSpline
+
+pub struct ITopdownLayoutProvider {
+  get_predicted_graph_size_fn : (Int) -> KVector
+}
+pub fn ITopdownLayoutProvider::get_predicted_graph_size(Self, Int) -> KVector
+
+pub struct IValidatingGraphElementVisitor {
+  visitor : IGraphElementVisitor
+  get_issues_fn : () -> Array[GraphIssue]
+}
+pub fn IValidatingGraphElementVisitor::get_issues(Self) -> Array[GraphIssue]
+pub fn IValidatingGraphElementVisitor::to_visitor(Self) -> IGraphElementVisitor
+pub fn IValidatingGraphElementVisitor::visit(Self, Int) -> Unit
+
+pub struct InstancePool[T] {
+  factory : IFactory[T]
+  instances : Array[T]
+  limit : Int
+}
+pub fn[T] InstancePool::clear(Self[T]) -> Unit
+pub fn[T] InstancePool::fetch(Self[T]) -> T
+pub fn[T] InstancePool::release(Self[T], T) -> Unit
+
+pub struct JsonImporter {
+  mut input_model : Map[String, Json]?
+  node_id_map : Map[String, Int]
+  node_json_map : Map[Int, Map[String, Json]]
+  edge_json_map : Map[Int, Map[String, Json]]
+}
+pub fn JsonImporter::get_input_model(Self) -> Map[String, Json]?
+pub fn JsonImporter::transfer_layout(Self, Int) -> Unit
+pub fn JsonImporter::transform(Self, Map[String, Json]) -> Int
+
+pub struct KVector {
+  mut x : Double
+  mut y : Double
+}
+pub fn KVector::add(Self, Self) -> Self
+pub fn KVector::add_xy(Self, Double, Double) -> Self
+pub fn KVector::angle(Self, Self) -> Double
+pub fn KVector::bound(Self, Double, Double, Double, Double) -> Self
+pub fn KVector::clone(Self) -> Self
+pub fn KVector::distance(Self, Self) -> Double
+pub fn KVector::dot_product(Self, Self) -> Double
+pub fn KVector::equals(Self, Self) -> Bool
+pub fn KVector::equals_fuzzily(Self, Self, fuzzyness? : Double) -> Bool
+pub fn KVector::hash_code(Self) -> Int
+pub fn KVector::is_infinite(Self) -> Bool
+pub fn KVector::is_nan(Self) -> Bool
+pub fn KVector::length(Self) -> Double
+pub fn KVector::negate(Self) -> Self
+pub fn KVector::normalize(Self) -> Self
+pub fn KVector::parse(Self, String) -> Unit
+pub fn KVector::reset(Self) -> Self
+pub fn KVector::rotate(Self, Double) -> Self
+pub fn KVector::scale(Self, Double) -> Self
+pub fn KVector::scale_to_length(Self, Double) -> Self
+pub fn KVector::scale_xy(Self, Double, Double) -> Self
+pub fn KVector::set(Self, Self) -> Self
+pub fn KVector::set_xy(Self, Double, Double) -> Self
+pub fn KVector::square_length(Self) -> Double
+pub fn KVector::sub(Self, Self) -> Self
+pub fn KVector::sub_xy(Self, Double, Double) -> Self
+pub fn KVector::to_degrees(Self) -> Double
+pub fn KVector::to_radians(Self) -> Double
+pub fn KVector::to_string(Self) -> String
+pub fn KVector::wiggle(Self, @random.Rand, Double) -> Unit
+
+pub struct KVectorChain {
+  vectors : Array[KVector]
+}
+pub fn KVectorChain::add_all(Self, Array[KVector]) -> Unit
+pub fn KVectorChain::add_all_as_copies(Self, Int, Self) -> Unit
+pub fn KVectorChain::add_first_vector(Self, KVector) -> Unit
+pub fn KVectorChain::add_first_xy(Self, Double, Double) -> Unit
+pub fn KVectorChain::add_first_zero(Self) -> Unit
+pub fn KVectorChain::add_last_vector(Self, KVector) -> Unit
+pub fn KVectorChain::add_last_xy(Self, Double, Double) -> Unit
+pub fn KVectorChain::add_last_zero(Self) -> Unit
+pub fn KVectorChain::add_vector(Self, KVector) -> Unit
+pub fn KVectorChain::add_xy(Self, Double, Double) -> Unit
+pub fn KVectorChain::add_zero(Self) -> Unit
+pub fn KVectorChain::angle_on_line(Self, Double) -> Double
+pub fn KVectorChain::clear(Self) -> Unit
+pub fn KVectorChain::get(Self, Int) -> KVector
+pub fn KVectorChain::has_infinite(Self) -> Bool
+pub fn KVectorChain::has_nan(Self) -> Bool
+pub fn KVectorChain::is_empty(Self) -> Bool
+pub fn KVectorChain::offset(Self, KVector) -> Self
+pub fn KVectorChain::offset_non_mutating(Self, KVector) -> Self
+pub fn KVectorChain::offset_xy(Self, Double, Double) -> Self
+pub fn KVectorChain::parse(Self, String) -> Unit
+pub fn KVectorChain::point_on_line(Self, Double) -> KVector
+pub fn KVectorChain::scale(Self, Double) -> Self
+pub fn KVectorChain::scale_xy(Self, Double, Double) -> Self
+pub fn KVectorChain::size(Self) -> Int
+pub fn KVectorChain::to_array(Self) -> Array[KVector]
+pub fn KVectorChain::to_array_from(Self, Int) -> Array[KVector]
+pub fn KVectorChain::to_string(Self) -> String
+pub fn KVectorChain::total_length(Self) -> Double
+
+pub enum LabelSide {
+  Unknown
+  Above
+  Below
+  Inline
+}
+pub fn LabelSide::opposite(Self) -> Self
+
+pub struct LayoutAlgorithmData {
+  id : String
+  name : String
+  description : String
+  validator : ((Int) -> Array[GraphIssue])?
+  known_options : Map[String, Unit]
+}
+pub fn LayoutAlgorithmData::add_known_option(Self, String) -> Unit
+pub fn LayoutAlgorithmData::get_description(Self) -> String
+pub fn LayoutAlgorithmData::get_id(Self) -> String
+pub fn LayoutAlgorithmData::get_known_option_ids(Self) -> Array[String]
+pub fn LayoutAlgorithmData::get_name(Self) -> String
+pub fn LayoutAlgorithmData::get_validator(Self) -> ((Int) -> Array[GraphIssue])?
+pub fn LayoutAlgorithmData::knows_option(Self, String) -> Bool
+
+pub struct LayoutAlgorithmResolver {
+  default_layout_algorithm_id : String
+}
+pub fn LayoutAlgorithmResolver::resolve_algorithm(Self, Int) -> Unit
+pub fn LayoutAlgorithmResolver::resolve_and_set_algorithm(Self, String, Int) -> Bool
+pub fn LayoutAlgorithmResolver::to_visitor(Self) -> IGraphElementVisitor
+pub fn LayoutAlgorithmResolver::visit(Self, Int) -> Unit
+
+pub struct LayoutCategoryData {
+  id : String
+  name : String
+  description : String
+  layouters : Array[LayoutAlgorithmData]
+}
+pub fn LayoutCategoryData::add_layouter(Self, LayoutAlgorithmData) -> Unit
+pub fn LayoutCategoryData::get_description(Self) -> String
+pub fn LayoutCategoryData::get_id(Self) -> String
+pub fn LayoutCategoryData::get_layouters(Self) -> Array[LayoutAlgorithmData]
+pub fn LayoutCategoryData::get_name(Self) -> String
+
+pub struct LayoutConfigurator {
+  element_option_map : Map[Int, Map[String, (IProperty[Double], Double)]]
+  class_option_map : Map[String, Map[String, (IProperty[Double], Double)]]
+  option_filters : Array[(Int, IProperty[Double]) -> Bool]
+}
+pub fn LayoutConfigurator::add_filter(Self, (Int, IProperty[Double]) -> Bool) -> Unit
+pub fn LayoutConfigurator::configure_class_property(Self, String, IProperty[Double], Double) -> Unit
+pub fn LayoutConfigurator::configure_node_property(Self, Int, IProperty[Double], Double) -> Unit
+pub fn LayoutConfigurator::to_visitor(Self) -> IGraphElementVisitor
+pub fn LayoutConfigurator::visit(Self, Int) -> Unit
+
+pub enum LayoutDataContentAssistElement {
+  NodeLayoutDataElement(Int)
+  EdgeLayoutDataElement(Int)
+  PortLayoutDataElement(Int)
+  LabelLayoutDataElement(Int)
+}
+
+pub struct LayoutDataProposal[T] {
+  proposal : String
+  label : String?
+  data : T
+}
+pub fn[T] LayoutDataProposal::get_data(Self[T]) -> T
+pub fn[T] LayoutDataProposal::get_label(Self[T]) -> String?
+pub fn[T] LayoutDataProposal::get_proposal(Self[T]) -> String
+
+pub struct LayoutMetaDataRegistry {
+  register_algorithm_fn : (LayoutAlgorithmData) -> Unit
+  register_option_fn : (LayoutOptionData) -> Unit
+  register_category_fn : (LayoutCategoryData) -> Unit
+  add_dependency_fn : (String, String, String?) -> Unit
+  add_option_support_fn : (String, String, String?) -> Unit
+}
+pub fn LayoutMetaDataRegistry::add_dependency(Self, String, String, String?) -> Unit
+pub fn LayoutMetaDataRegistry::add_option_support(Self, String, String, String?) -> Unit
+pub fn LayoutMetaDataRegistry::register_algorithm(Self, LayoutAlgorithmData) -> Unit
+pub fn LayoutMetaDataRegistry::register_category(Self, LayoutCategoryData) -> Unit
+pub fn LayoutMetaDataRegistry::register_option(Self, LayoutOptionData) -> Unit
+
+pub struct LayoutOptionData {
+  id : String
+  name : String
+  description : String
+  group : String
+  option_type : LayoutOptionValueType
+  lower_bound : Double?
+  lower_bound_exclusive : Bool
+  targets : Array[LayoutOptionTarget]
+  visibility : LayoutOptionVisibility
+}
+pub fn LayoutOptionData::get_description(Self) -> String
+pub fn LayoutOptionData::get_group(Self) -> String
+pub fn LayoutOptionData::get_id(Self) -> String
+pub fn LayoutOptionData::get_lower_bound(Self) -> Double?
+pub fn LayoutOptionData::get_name(Self) -> String
+pub fn LayoutOptionData::get_targets(Self) -> Array[LayoutOptionTarget]
+pub fn LayoutOptionData::get_type(Self) -> LayoutOptionValueType
+pub fn LayoutOptionData::get_visibility(Self) -> LayoutOptionVisibility
+pub fn LayoutOptionData::is_lower_bound_exclusive(Self) -> Bool
+
+pub enum LayoutOptionTarget {
+  ParentsTarget
+  NodesTarget
+  EdgesTarget
+  PortsTarget
+  LabelsTarget
+}
+
+pub struct LayoutOptionValidator {
+  issues : Array[GraphIssue]
+}
+pub fn LayoutOptionValidator::get_issues(Self) -> Array[GraphIssue]
+pub fn LayoutOptionValidator::to_visitor(Self) -> IGraphElementVisitor
+pub fn LayoutOptionValidator::visit(Self, Int) -> Unit
+
+pub enum LayoutOptionValueType {
+  BoolType
+  IntType
+  DoubleType
+  StringType
+  EnumSetType
+  ObjectType
+}
+
+pub enum LayoutOptionVisibility {
+  VisibleOption
+  AdvancedOption
+  HiddenOption
+}
+
+pub struct LayoutProcessorConfiguration[P, G] {
+  phase_descriptor : PhaseDescriptor[P]
+  list_accessor : AbstractRandomListAccessor[Array[ILayoutProcessorFactory[P, G]]]
+  mut current_index : Int
+}
+pub fn[P, G] LayoutProcessorConfiguration::add(Self[P, G], ILayoutProcessorFactory[P, G]) -> Self[P, G]
+pub fn[P, G] LayoutProcessorConfiguration::add_after(Self[P, G], P, ILayoutProcessorFactory[P, G]) -> Self[P, G]
+pub fn[P, G] LayoutProcessorConfiguration::add_all(Self[P, G], Self[P, G]) -> Self[P, G]
+pub fn[P, G] LayoutProcessorConfiguration::add_before(Self[P, G], P, ILayoutProcessorFactory[P, G]) -> Self[P, G]
+pub fn[P, G] LayoutProcessorConfiguration::after(Self[P, G], P) -> Self[P, G]
+pub fn[P, G] LayoutProcessorConfiguration::before(Self[P, G], P) -> Self[P, G]
+pub fn[P, G] LayoutProcessorConfiguration::clear(Self[P, G]) -> Self[P, G]
+pub fn[P, G] LayoutProcessorConfiguration::do_add(Self[P, G], Int, ILayoutProcessorFactory[P, G]) -> Unit
+pub fn[P, G] LayoutProcessorConfiguration::processors(Self[P, G], Int) -> Array[ILayoutProcessorFactory[P, G]]
+pub fn[P, G] LayoutProcessorConfiguration::processors_after(Self[P, G], P) -> Array[ILayoutProcessorFactory[P, G]]
+pub fn[P, G] LayoutProcessorConfiguration::processors_before(Self[P, G], P) -> Array[ILayoutProcessorFactory[P, G]]
+
+pub struct LoggedGraph {
+  tag : String
+  graph_type : LoggedGraphType
+}
+
+pub enum LoggedGraphType {
+  ElkGraph
+  LGraph
+}
+
+pub struct Maybe[T] {
+  mut object : T?
+}
+pub fn[T] Maybe::clear(Self[T]) -> Unit
+pub fn[T : Eq] Maybe::equals(Self[T], Self[T]) -> Bool
+pub fn[T] Maybe::get(Self[T]) -> T?
+pub fn[T : Hash] Maybe::hash_code(Self[T]) -> Int
+pub fn[T] Maybe::is_empty(Self[T]) -> Bool
+pub fn[T] Maybe::set(Self[T], T?) -> Unit
+pub fn[T : Show] Maybe::to_string(Self[T]) -> String
+
+pub enum NodeLabelPlacement {
+  NodeLabelHLeft
+  NodeLabelHCenter
+  NodeLabelHRight
+  NodeLabelVTop
+  NodeLabelVCenter
+  NodeLabelVBottom
+  NodeLabelInside
+  NodeLabelOutside
+  NodeLabelHPriority
+}
+
+pub struct Pair[F, S] {
+  mut first : F?
+  mut second : S?
+}
+pub fn[F, S] Pair::clear(Self[F, S]) -> Unit
+pub fn[F : Eq, S : Eq] Pair::equals(Self[F, S], Self[F, S]) -> Bool
+pub fn[F, S] Pair::get_first(Self[F, S]) -> F?
+pub fn[F, S] Pair::get_second(Self[F, S]) -> S?
+pub fn[F : Hash, S : Hash] Pair::hash_code(Self[F, S]) -> Int
+pub fn[F, S] Pair::set_first(Self[F, S], F?) -> Unit
+pub fn[F, S] Pair::set_second(Self[F, S], S?) -> Unit
+pub fn[F : Show, S : Show] Pair::to_string(Self[F, S]) -> String
+
+pub struct PhaseDescriptor[P] {
+  phases : Array[P]
+  ordinal : (P) -> Int
+}
+pub fn[P] PhaseDescriptor::ordinal_of(Self[P], P) -> Int
+pub fn[P] PhaseDescriptor::phases(Self[P]) -> Array[P]
+pub fn[P] PhaseDescriptor::size(Self[P]) -> Int
+
+pub struct Point {
+  x : Double
+  y : Double
+  quadrant : Quadrant?
+  mut convex : Bool
+}
+
+pub enum PortAlignment {
+  Distributed
+  Justified
+  Begin
+  Center
+  End
+}
+
+pub enum PortConstraints {
+  Undefined
+  Free
+  FixedSide
+  FixedOrder
+  FixedRatio
+  FixedPos
+}
+pub fn PortConstraints::is_order_fixed(Self) -> Bool
+pub fn PortConstraints::is_pos_fixed(Self) -> Bool
+pub fn PortConstraints::is_ratio_fixed(Self) -> Bool
+pub fn PortConstraints::is_side_fixed(Self) -> Bool
+
+pub enum PortLabelPlacement {
+  Outside
+  Inside
+  NextToPortIfPossible
+  AlwaysSameSide
+  AlwaysOtherSameSide
+  SpaceEfficient
+}
+
+pub enum PortSide {
+  SideUndefined
+  North
+  East
+  South
+  West
+}
+pub fn PortSide::are_adjacent(Self, Self) -> Bool
+pub fn PortSide::left(Self) -> Self
+pub fn PortSide::opposed(Self) -> Self
+pub fn PortSide::right(Self) -> Self
+
+pub enum Quadrant {
+  Q1
+  Q4
+  Q2
+  Q3
+}
+pub fn Quadrant::is_left(Self) -> Bool
+pub fn Quadrant::is_upper(Self) -> Bool
+
+pub struct Quadruple[A, B, C, D] {
+  first : A
+  second : B
+  third : C
+  fourth : D
+}
+pub fn[A : Eq, B : Eq, C : Eq, D : Eq] Quadruple::equals(Self[A, B, C, D], Self[A, B, C, D]) -> Bool
+pub fn[A, B, C, D] Quadruple::get_first(Self[A, B, C, D]) -> A
+pub fn[A, B, C, D] Quadruple::get_fourth(Self[A, B, C, D]) -> D
+pub fn[A, B, C, D] Quadruple::get_second(Self[A, B, C, D]) -> B
+pub fn[A, B, C, D] Quadruple::get_third(Self[A, B, C, D]) -> C
+pub fn[A : Hash, B : Hash, C : Hash, D : Hash] Quadruple::hash_code(Self[A, B, C, D]) -> Int
+pub fn[A : Show, B : Show, C : Show, D : Show] Quadruple::to_string(Self[A, B, C, D]) -> String
+
+pub struct RectilinearConvexHull {
+  hull : Array[Point]
+  mut x_max1 : Point?
+  mut x_max2 : Point?
+  mut x_min1 : Point?
+  mut x_min2 : Point?
+  mut y_max1 : Point?
+  mut y_max2 : Point?
+  mut y_min1 : Point?
+  mut y_min2 : Point?
+}
+pub fn RectilinearConvexHull::get_hull(Self) -> Array[Point]
+pub fn RectilinearConvexHull::split_into_rectangles(Self) -> Array[ElkRectangle]
+
+pub struct RecursiveGraphLayoutEngine {
+  marker : Int
+}
+pub fn RecursiveGraphLayoutEngine::layout(Self, Int, IElkProgressMonitor) -> Unit
+
+pub enum ShapeCoords {
+  Inherit
+  Parent
+  Root
+}
+
+pub enum SizeConstraint {
+  Ports
+  PortLabels
+  NodeLabels
+  MinimumSize
+}
+
+pub enum SizeOptions {
+  DefaultMinimumSize
+  MinimumSizeAccountsForPadding
+  ComputePadding
+  OutsideNodeLabelsOverhang
+  PortsOverhang
+  UniformPortSpacing
+  SpaceEfficientPortLabels
+  ForceTabularNodeLabels
+  Asymmetrical
+}
+
+#alias(ElkMargin)
+#alias(ElkPadding)
+pub struct Spacing {
+  mut top : Double
+  mut bottom : Double
+  mut left : Double
+  mut right : Double
+}
+pub fn Spacing::add(Self, Self) -> Self
+pub fn Spacing::clone(Self) -> Self
+pub fn Spacing::copy(Self, Self) -> Self
+pub fn Spacing::equals(Self, Self) -> Bool
+pub fn Spacing::get_bottom(Self) -> Double
+pub fn Spacing::get_horizontal(Self) -> Double
+pub fn Spacing::get_left(Self) -> Double
+pub fn Spacing::get_right(Self) -> Double
+pub fn Spacing::get_top(Self) -> Double
+pub fn Spacing::get_vertical(Self) -> Double
+pub fn Spacing::hash_code(Self) -> Int
+pub fn Spacing::parse(Self, String) -> Unit
+pub fn Spacing::set_bottom(Self, Double) -> Unit
+pub fn Spacing::set_left(Self, Double) -> Unit
+pub fn Spacing::set_left_right(Self, Double) -> Unit
+pub fn Spacing::set_right(Self, Double) -> Unit
+pub fn Spacing::set_spacing(Self, Self) -> Unit
+pub fn Spacing::set_top(Self, Double) -> Unit
+pub fn Spacing::set_top_bottom(Self, Double) -> Unit
+pub fn Spacing::set_values(Self, Double, Double, Double, Double) -> Unit
+pub fn Spacing::to_string(Self) -> String
+
+pub enum StressDimension {
+  StressDimensionXY
+  StressDimensionX
+  StressDimensionY
+}
+
+pub struct StressLayoutProvider {
+  components_processor : ComponentsProcessor
+  stress_majorization : StressMajorization
+}
+pub fn StressLayoutProvider::layout(Self, Int, IElkProgressMonitor) -> Unit
+
+pub struct StressMajorization {
+  mut graph : FGraph?
+  apsp : Array[Array[Double]]
+  weights : Array[Array[Double]]
+  mut desired_edge_length : Double
+  mut dimension : StressDimension
+  mut epsilon : Double
+  mut iteration_limit : Int
+  connected_edges : Map[Int, Array[Int]]
+  node_by_id : Map[Int, Int]
+}
+pub fn StressMajorization::execute(Self) -> Unit
+pub fn StressMajorization::initialize(Self, FGraph) -> Unit
+
+pub enum TopdownNodeTypes {
+  ParallelNode
+  HierarchicalNode
+  RootNode
+}
+
+pub struct Triple[F, S, T] {
+  first : F
+  second : S
+  third : T
+}
+pub fn[F : Eq, S : Eq, T : Eq] Triple::equals(Self[F, S, T], Self[F, S, T]) -> Bool
+pub fn[F, S, T] Triple::get_first(Self[F, S, T]) -> F
+pub fn[F, S, T] Triple::get_second(Self[F, S, T]) -> S
+pub fn[F, S, T] Triple::get_third(Self[F, S, T]) -> T
+pub fn[F : Hash, S : Hash, T : Hash] Triple::hash_code(Self[F, S, T]) -> Int
+pub fn[F : Show, S : Show, T : Show] Triple::to_string(Self[F, S, T]) -> String
+
+pub struct TwoBitGrid {
+  mut x_size : Int
+  mut y_size : Int
+  mut cells : Array[Int]
+}
+pub fn TwoBitGrid::height(Self) -> Int
+pub fn TwoBitGrid::in_bounds(Self, Int, Int) -> Bool
+pub fn TwoBitGrid::is_blocked(Self, Int, Int) -> Bool
+pub fn TwoBitGrid::is_empty(Self, Int, Int) -> Bool
+pub fn TwoBitGrid::is_weakly_blocked(Self, Int, Int) -> Bool
+pub fn TwoBitGrid::reinitialize(Self, Int, Int) -> Unit
+pub fn TwoBitGrid::set_blocked(Self, Int, Int) -> Unit
+pub fn TwoBitGrid::set_empty(Self, Int, Int) -> Unit
+pub fn TwoBitGrid::set_weakly_blocked(Self, Int, Int) -> Unit
+pub fn TwoBitGrid::to_string(Self) -> String
+pub fn TwoBitGrid::width(Self) -> Int
+
+pub struct UnsupportedConfigurationException {
+  message : String?
+  cause : String?
+}
+pub fn UnsupportedConfigurationException::get_cause(Self) -> String?
+pub fn UnsupportedConfigurationException::get_message(Self) -> String?
+
+pub struct UnsupportedGraphException {
+  message : String?
+  cause : String?
+}
+pub fn UnsupportedGraphException::get_cause(Self) -> String?
+pub fn UnsupportedGraphException::get_message(Self) -> String?
+
+pub struct WrappedException {
+  message : String?
+  cause : String
+}
+pub fn WrappedException::get_cause(Self) -> String
+pub fn WrappedException::get_message(Self) -> String?
+
+// Type aliases
+pub type ElkEdge = Int
+
+pub type ElkEdgeSection = Int
+
+pub type ElkLabel = Int
+
+pub type ElkNode = Int
+
+pub type ElkPort = Int
+
+pub type FBendpoint = Int
+
+pub type FEdge = Int
+
+pub type FLabel = Int
+
+pub type FNode = Int
+
+pub type GraphIssueSeverity = Int
+
+pub type GraphValidationFunction = (Int) -> Array[GraphIssue]
+
+pub type LayoutConfiguratorElementClass = String
+
+pub type LayoutConfiguratorFilter = (Int, IProperty[Double]) -> Bool
+
+pub type ScanlineEventHandler[T] = (T) -> Unit
+
+// Traits
+

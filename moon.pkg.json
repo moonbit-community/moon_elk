@@ -1,0 +1,36 @@
+{
+  "import": [
+    {
+      "path": "moonbitlang/core/buffer",
+      "alias": "buffer"
+    },
+    {
+      "path": "moonbitlang/core/double",
+      "alias": "double"
+    },
+    {
+      "path": "moonbitlang/core/float",
+      "alias": "float"
+    },
+    {
+      "path": "moonbitlang/core/int",
+      "alias": "int"
+    },
+    {
+      "path": "moonbitlang/core/math",
+      "alias": "math"
+    },
+    {
+      "path": "moonbitlang/core/json",
+      "alias": "json"
+    },
+    {
+      "path": "moonbitlang/core/random",
+      "alias": "random"
+    },
+    {
+      "path": "moonbitlang/core/strconv",
+      "alias": "strconv"
+    }
+  ]
+}
