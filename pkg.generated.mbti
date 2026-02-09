@@ -60,6 +60,8 @@ pub fn boundi(Int, Int, Int) -> Int
 
 pub fn boundl(Int64, Int64, Int64) -> Int64
 
+pub fn bowyer_watson_triangulate(Array[KVector], debug_output_file? : String?) -> Array[TEdge]
+
 pub let child_area_height : IProperty[Double]
 
 pub let child_area_width : IProperty[Double]
@@ -406,6 +408,8 @@ pub fn fr_model_repulsive(Double, Double) -> Double
 
 pub fn get_point_on_bezier_segment(Double, Array[KVector]) -> KVector
 
+pub fn get_rect_edges(ElkRectangle) -> Array[TEdge]
+
 pub fn graph_issue_list_to_string(Array[GraphIssue]) -> String
 
 pub fn greater_than(Double) -> ExclusiveLowerBound
@@ -557,6 +561,8 @@ pub fn minf(Array[Double]) -> Double
 pub fn mini(Array[Int]) -> Int
 
 pub fn minl(Array[Int64]) -> Int64
+
+pub fn naive_minst_create_spanning_tree(Array[TEdge], KVector, (TEdge) -> Double, debug_output_file? : String?) -> Tree[KVector]
 
 pub fn new_abstract_force_model_state() -> AbstractForceModelState
 
@@ -742,7 +748,15 @@ pub fn new_stress_layout_provider() -> StressLayoutProvider
 
 pub fn new_stress_majorization() -> StressMajorization
 
+pub fn new_svg_image(String?) -> SvgImage
+
+pub fn new_tedge(KVector, KVector) -> TEdge
+
 pub fn new_topdown_layout_provider((Int) -> KVector) -> ITopdownLayoutProvider
+
+pub fn[T] new_tree(T) -> Tree[T]
+
+pub fn new_ttriangle(KVector, KVector, KVector) -> TTriangle
 
 pub fn new_two_bit_grid(Int, Int) -> TwoBitGrid
 
@@ -879,6 +893,8 @@ pub fn node_width(Int) -> Double
 pub fn node_x(Int) -> Double
 
 pub fn node_y(Int) -> Double
+
+pub fn overlap(ElkRectangle, ElkRectangle) -> Double
 
 pub let padding : IProperty[String]
 
@@ -1036,6 +1052,12 @@ pub let spacing_node_self_loop : IProperty[Double]
 
 pub let spacing_port_port : IProperty[Double]
 
+pub let spore_debug_svg : IProperty[Bool]
+
+pub let spore_fuzziness : Double
+
+pub let spore_overlaps_existed : IProperty[Bool]
+
 pub let stress_desired_edge_length : ForceDoubleOption
 
 pub let stress_dimension : ForceIntOption
@@ -1061,6 +1083,8 @@ pub fn translate(Int, KVector, KVector) -> Unit
 pub fn translate_xy(Int, Double, Double) -> Unit
 
 pub fn[F, S, T] triple_of(F, S, T) -> Triple[F, S, T]
+
+pub fn[F, S, T] unique_triple_of(F, S, T) -> UniqueTriple[F, S, T]
 
 pub fn update_containment(Int?) -> Unit
 
@@ -2098,10 +2122,71 @@ pub struct StressMajorization {
 pub fn StressMajorization::execute(Self) -> Unit
 pub fn StressMajorization::initialize(Self, FGraph) -> Unit
 
+pub struct SvgImage {
+  spacing : Double
+  mut view_box_x : Double
+  mut view_box_y : Double
+  mut view_box_w : Double
+  mut view_box_h : Double
+  mut view_box_x2 : Double
+  mut view_box_y2 : Double
+  mut enable_update_view_box : Bool
+  mut current : String
+  groups : Map[String, String]
+  mut group_order : Array[String]
+  file_name : String?
+  mut index : Int
+  mut debug : Bool
+  max_area : Double
+  mut last_output : String
+}
+pub fn SvgImage::add_circle(Self, Double, Double, r? : Double, attributes? : String) -> Unit
+pub fn SvgImage::add_element_str(Self, String) -> Unit
+pub fn SvgImage::add_groups(Self, Array[String]) -> Unit
+pub fn SvgImage::add_line(Self, Double, Double, Double, Double, attributes? : String) -> Unit
+pub fn SvgImage::add_poly(Self, String, Array[KVector]) -> Unit
+pub fn SvgImage::add_rect(Self, Double, Double, Double, Double, String) -> Unit
+pub fn SvgImage::add_rect_from_elk(Self, ElkRectangle, String) -> Unit
+pub fn SvgImage::add_text(Self, Double, Double, String, String) -> Unit
+pub fn SvgImage::clear(Self) -> Unit
+pub fn SvgImage::clear_group(Self, String) -> Unit
+pub fn SvgImage::g(Self, String) -> Self
+pub fn SvgImage::isave(Self, f_name? : String?) -> Unit
+pub fn SvgImage::remove_group(Self, String) -> Unit
+pub fn SvgImage::save(Self, f_name? : String?) -> Unit
+pub fn SvgImage::set_view_box(Self, Double, Double, Double, Double) -> Unit
+
+pub struct TEdge {
+  u : KVector
+  v : KVector
+}
+pub fn TEdge::equals(Self, Self) -> Bool
+pub fn TEdge::hash_code(Self) -> Int
+
+pub struct TTriangle {
+  a : KVector
+  b : KVector
+  c : KVector
+  t_edges : Array[TEdge]
+  vertices : Array[KVector]
+  circumcenter : KVector
+}
+pub fn TTriangle::contains_edge(Self, TEdge) -> Bool
+pub fn TTriangle::contains_vertex(Self, KVector) -> Bool
+pub fn TTriangle::equals(Self, Self) -> Bool
+pub fn TTriangle::get_circumcenter(Self) -> KVector
+pub fn TTriangle::hash_code(Self) -> Int
+pub fn TTriangle::in_circumcircle(Self, KVector) -> Bool
+
 pub enum TopdownNodeTypes {
   ParallelNode
   HierarchicalNode
   RootNode
+}
+
+pub struct Tree[T] {
+  node : T
+  children : Array[Tree[T]]
 }
 
 pub struct Triple[F, S, T] {
@@ -2132,6 +2217,16 @@ pub fn TwoBitGrid::set_empty(Self, Int, Int) -> Unit
 pub fn TwoBitGrid::set_weakly_blocked(Self, Int, Int) -> Unit
 pub fn TwoBitGrid::to_string(Self) -> String
 pub fn TwoBitGrid::width(Self) -> Int
+
+pub struct UniqueTriple[F, S, T] {
+  first : F
+  second : S
+  third : T
+}
+pub fn[F, S, T] UniqueTriple::get_first(Self[F, S, T]) -> F
+pub fn[F, S, T] UniqueTriple::get_second(Self[F, S, T]) -> S
+pub fn[F, S, T] UniqueTriple::get_third(Self[F, S, T]) -> T
+pub fn[F : Show, S : Show, T : Show] UniqueTriple::to_string(Self[F, S, T]) -> String
 
 pub struct UnsupportedConfigurationException {
   message : String?
@@ -2176,6 +2271,8 @@ pub type FNode = Int
 pub type GraphIssueSeverity = Int
 
 pub type GraphValidationFunction = (Int) -> Array[GraphIssue]
+
+pub type ICostFunction = (TEdge) -> Double
 
 pub type LayoutConfiguratorElementClass = String
 
