@@ -782,6 +782,8 @@ pub fn new_rectilinear_convex_hull() -> RectilinearConvexHull
 
 pub fn new_recursive_graph_layout_engine() -> RecursiveGraphLayoutEngine
 
+pub fn new_scanline_overlap_check((Node, Node) -> Unit, SvgImage) -> ScanlineOverlapCheck
+
 pub fn new_spacing() -> Spacing
 
 pub fn new_spacing_values(Double, Double, Double, Double) -> Spacing
@@ -2375,6 +2377,12 @@ pub struct RecursiveGraphLayoutEngine {
 }
 pub fn RecursiveGraphLayoutEngine::layout(Self, Int, IElkProgressMonitor) -> Unit
 
+pub struct ScanlineOverlapCheck {
+  overlap_handler : (Node, Node) -> Unit
+  svg : SvgImage
+}
+pub fn ScanlineOverlapCheck::sweep(Self, Array[Node]) -> Unit
+
 pub enum ShapeCoords {
   Inherit
   Parent
@@ -2625,6 +2633,8 @@ pub type IConstraintCalculationAlgorithm = (OneDimensionalCompactor) -> Unit
 pub type ICostFunction = (TEdge) -> Double
 
 pub type ILockFunction = (CNode, Direction) -> Bool
+
+pub type IOverlapHandler = (Node, Node) -> Unit
 
 pub type IRectangleStripOverlapRemovalStrategy = (RectangleStripOverlapRemover) -> Double
 
