@@ -998,6 +998,8 @@ pub fn node_x(Int) -> Double
 
 pub fn node_y(Int) -> Double
 
+pub let omit_node_micro_layout : IProperty[Bool]
+
 pub fn one_dimensional_compactor_longest_path_compaction(OneDimensionalCompactor) -> Unit
 
 pub fn one_dimensional_compactor_quadratic_constraints(OneDimensionalCompactor) -> Unit

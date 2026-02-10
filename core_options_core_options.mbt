@@ -159,6 +159,11 @@ pub let no_layout : IProperty[Bool] = new_property(
 )
 
 ///|
+pub let omit_node_micro_layout : IProperty[Bool] = new_property(
+  "org.eclipse.elk.omitNodeMicroLayout", false,
+)
+
+///|
 pub let expand_nodes : IProperty[Bool] = new_property(
   "org.eclipse.elk.expandNodes", false,
 )
