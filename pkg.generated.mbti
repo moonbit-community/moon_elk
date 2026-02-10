@@ -142,6 +142,8 @@ pub fn cubic_spline_interpolator_as_spline_interpolator(CubicSplineInterpolator)
 
 pub fn default_spacing_handler() -> ISpacingsHandler
 
+pub fn depth_first_compaction_compact(Tree[Node], Bool, debug_output_file? : String?) -> Unit
+
 pub let direction : IProperty[String]
 
 pub fn direction_to_string(Direction) -> String
