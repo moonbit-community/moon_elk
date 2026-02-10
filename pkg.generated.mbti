@@ -2022,6 +2022,8 @@ pub fn new_graphviz_tool(Command) -> GraphvizTool
 
 pub fn new_greedy_rectangle_strip_overlap_removal_strategy() -> IRectangleStripOverlapRemovalStrategy
 
+pub fn new_grid_elk_node(Int) -> GridElkNode
+
 pub fn new_icompactor((DCGraph) -> Unit) -> ICompactor
 
 pub fn[T] new_igraph_importer((T) -> FGraph, (FGraph) -> Unit) -> IGraphImporter[T]
@@ -2164,6 +2166,8 @@ pub fn new_ngraph() -> NGraph
 
 pub fn new_node(KVector, ElkRectangle) -> Node
 
+pub fn new_node_arranger((Int) -> KVector) -> INodeArranger
+
 pub fn new_null_elk_progress_monitor() -> IElkProgressMonitor
 
 pub fn new_one_dimensional_compactor(CGraph) -> OneDimensionalCompactor
@@ -2261,6 +2265,14 @@ pub fn new_three_value_grid(() -> Int, () -> Int, (Int, Int) -> Bool, (Int, Int)
 pub fn new_three_value_grid_from_two_bit_grid(TwoBitGrid) -> IThreeValueGrid
 
 pub fn new_topdown_layout_provider((Int) -> KVector) -> ITopdownLayoutProvider
+
+pub fn new_topdownpacking_bottom_row_equal_whitespace_eliminator_layout_phase() -> ILayoutProcessor[TopdownPackingPhases, GridElkNode]
+
+pub fn new_topdownpacking_layout_provider() -> TopdownpackingLayoutProvider
+
+pub fn new_topdownpacking_left_right_top_down_node_placer_layout_phase() -> ILayoutProcessor[TopdownPackingPhases, GridElkNode]
+
+pub fn new_topdownpacking_left_right_top_down_node_placer_node_arranger() -> INodeArranger
 
 pub fn[T] new_tree(T) -> Tree[T]
 
@@ -2759,6 +2771,38 @@ pub fn stress_layout_provider_as_layout_provider(StressLayoutProvider) -> Abstra
 pub let stress_omit_node_micro_layout : ForceBoolOption
 
 pub fn topdown_node_type_to_string(TopdownNodeTypes) -> String
+
+pub let topdownpacking_algorithm_id : String
+
+pub let topdownpacking_hierarchical_node_aspect_ratio : IProperty[Double]
+
+pub let topdownpacking_hierarchical_node_width : IProperty[Double]
+
+pub fn topdownpacking_layout_provider_as_layout_provider(TopdownpackingLayoutProvider) -> AbstractLayoutProvider
+
+pub fn topdownpacking_layout_provider_as_topdown_layout_provider(TopdownpackingLayoutProvider) -> ITopdownLayoutProvider
+
+pub fn topdownpacking_left_right_top_down_node_placer_get_predicted_size(Int) -> KVector
+
+pub let topdownpacking_node_arrangement_strategy : IProperty[String]
+
+pub fn topdownpacking_node_arrangement_strategy_create_node_arranger(NodeArrangementStrategy) -> INodeArranger
+
+pub fn topdownpacking_node_arrangement_strategy_from_string(String) -> NodeArrangementStrategy
+
+pub fn topdownpacking_node_arrangement_strategy_phase_factory(NodeArrangementStrategy) -> ILayoutProcessorFactory[TopdownPackingPhases, GridElkNode]
+
+pub let topdownpacking_padding : IProperty[String]
+
+pub let topdownpacking_phase_descriptor : PhaseDescriptor[TopdownPackingPhases]
+
+pub let topdownpacking_spacing_node_node : IProperty[Double]
+
+pub let topdownpacking_whitespace_elimination_strategy : IProperty[String]
+
+pub fn topdownpacking_whitespace_elimination_strategy_from_string(String) -> WhitespaceEliminationStrategy
+
+pub fn topdownpacking_whitespace_elimination_strategy_phase_factory(WhitespaceEliminationStrategy) -> ILayoutProcessorFactory[TopdownPackingPhases, GridElkNode]
 
 pub fn translate(Int, KVector, KVector) -> Unit
 
@@ -4301,6 +4345,36 @@ pub struct GraphvizWatchdog {
   mut running : Bool
 }
 
+pub struct GridElkNode {
+  node : Int
+  mut grid : Array[Array[Int?]]
+  mut rows : Int
+  mut cols : Int
+}
+pub fn GridElkNode::get(Self, Int, Int) -> Int?
+pub fn GridElkNode::get_bool_property(Self, IProperty[Bool]) -> Bool
+pub fn GridElkNode::get_children(Self) -> Array[Int]
+pub fn GridElkNode::get_column(Self, Int) -> Array[Int?]
+pub fn GridElkNode::get_columns(Self) -> Int
+pub fn GridElkNode::get_double_property(Self, IProperty[Double]) -> Double
+pub fn GridElkNode::get_height(Self) -> Double
+pub fn GridElkNode::get_identifier(Self) -> String
+pub fn GridElkNode::get_node(Self) -> Int
+pub fn GridElkNode::get_row(Self, Int) -> Array[Int?]
+pub fn GridElkNode::get_rows(Self) -> Int
+pub fn GridElkNode::get_string_property(Self, IProperty[String]) -> String
+pub fn GridElkNode::get_width(Self) -> Double
+pub fn GridElkNode::get_x(Self) -> Double
+pub fn GridElkNode::get_y(Self) -> Double
+pub fn GridElkNode::put(Self, Int, Int, Int) -> Unit
+pub fn GridElkNode::set_dimensions(Self, Double, Double) -> Unit
+pub fn GridElkNode::set_grid_size(Self, Int, Int) -> Unit
+pub fn GridElkNode::set_height(Self, Double) -> Unit
+pub fn GridElkNode::set_location(Self, Double, Double) -> Unit
+pub fn GridElkNode::set_width(Self, Double) -> Unit
+pub fn GridElkNode::set_x(Self, Double) -> Unit
+pub fn GridElkNode::set_y(Self, Double) -> Unit
+
 pub enum HierarchyHandling {
   Inherit
   IncludeChildren
@@ -4427,6 +4501,11 @@ pub struct ILayoutProcessorFactory[P, G] {
 pub fn[P, G] ILayoutProcessorFactory::create(Self[P, G]) -> ILayoutProcessor[P, G]
 pub fn[P, G] ILayoutProcessorFactory::factory_id(Self[P, G]) -> Int
 pub fn[P, G] ILayoutProcessorFactory::factory_order(Self[P, G]) -> Int
+
+pub struct INodeArranger {
+  get_predicted_size_fn : (Int) -> KVector
+}
+pub fn INodeArranger::get_predicted_size(Self, Int) -> KVector
 
 pub struct IPolyominoSuccessor {
   apply : (PolyominoCoords, Polyomino) -> PolyominoCoords
@@ -5068,6 +5147,10 @@ pub fn Node::touches(Self, Self) -> Bool
 pub fn Node::translate(Self, KVector) -> Unit
 pub fn Node::underlap(Self, Self) -> Double
 
+pub enum NodeArrangementStrategy {
+  LEFT_RIGHT_TOP_DOWN_NODE_PLACER
+}
+
 pub enum NodeLabelPlacement {
   NodeLabelHLeft
   NodeLabelHCenter
@@ -5604,6 +5687,18 @@ pub enum TopdownNodeTypes {
   RootNode
 }
 
+pub enum TopdownPackingPhases {
+  P1_NODE_ARRANGEMENT
+  P2_WHITESPACE_ELIMINATION
+}
+
+pub struct TopdownpackingLayoutProvider {
+  algorithm_assembler : AlgorithmAssembler[TopdownPackingPhases, GridElkNode]
+}
+pub fn TopdownpackingLayoutProvider::assemble_algorithm(Self, GridElkNode) -> Array[ILayoutProcessor[TopdownPackingPhases, GridElkNode]]
+pub fn TopdownpackingLayoutProvider::get_predicted_graph_size(Self, Int) -> KVector
+pub fn TopdownpackingLayoutProvider::layout(Self, Int, IElkProgressMonitor) -> Unit
+
 pub enum TraversalStrategy {
   Spiral
   LineByLine
@@ -5673,6 +5768,10 @@ pub struct UnsupportedGraphException {
 }
 pub fn UnsupportedGraphException::get_cause(Self) -> String?
 pub fn UnsupportedGraphException::get_message(Self) -> String?
+
+pub enum WhitespaceEliminationStrategy {
+  BOTTOM_ROW_EQUAL_WHITESPACE_ELIMINATOR
+}
 
 pub struct WrappedException {
   message : String?
