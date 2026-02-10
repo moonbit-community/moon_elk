@@ -65,13 +65,18 @@ fn overlaps_test_strategy(
 }
 
 ///|
+fn overlaps_new_test_strategy() -> IRectangleStripOverlapRemovalStrategy {
+  new_irectangle_strip_overlap_removal_strategy(overlaps_test_strategy)
+}
+
+///|
 test "RectangleStripOverlapRemover custom strategy" {
   let rectangle = new_elk_rectangle_xywh(0.0, 0.0, 10.0, 10.0)
 
   let strip_size = create_rectangle_strip_overlap_remover_for_direction(
       overlap_dir_down(),
     )
-    .with_overlap_removal_strategy(overlaps_test_strategy)
+    .with_overlap_removal_strategy(overlaps_new_test_strategy())
     .add_rectangle(rectangle)
     .remove_overlaps()
 

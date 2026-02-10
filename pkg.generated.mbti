@@ -706,9 +706,13 @@ pub fn new_graph_validation_exception_message_issues(String, Array[GraphIssue]) 
 
 pub fn new_graph_validator() -> GraphValidator
 
+pub fn new_greedy_rectangle_strip_overlap_removal_strategy() -> IRectangleStripOverlapRemovalStrategy
+
 pub fn[T] new_igraph_importer((T) -> FGraph, (FGraph) -> Unit) -> IGraphImporter[T]
 
 pub fn[T] new_instance_pool(IFactory[T], limit? : Int) -> InstancePool[T]
+
+pub fn new_irectangle_strip_overlap_removal_strategy((RectangleStripOverlapRemover) -> Double) -> IRectangleStripOverlapRemovalStrategy
 
 pub fn new_json_importer() -> JsonImporter
 
@@ -1806,6 +1810,11 @@ pub struct IProperty[T] {
 pub fn[T] IProperty::get_default(Self[T]) -> T
 pub fn[T] IProperty::get_id(Self[T]) -> String
 
+pub struct IRectangleStripOverlapRemovalStrategy {
+  remove_overlaps : (RectangleStripOverlapRemover) -> Double
+}
+pub fn IRectangleStripOverlapRemovalStrategy::remove_overlaps(Self, RectangleStripOverlapRemover) -> Double
+
 pub struct ISpacingsHandler {
   get_horizontal_spacing : (CNode, CNode) -> Double
   get_vertical_spacing : (CNode, CNode) -> Double
@@ -2348,7 +2357,7 @@ pub struct RectangleStripOverlapRemover {
   mut gap_vertical : Double
   mut gap_horizontal : Double
   mut start_coordinate : Double
-  mut overlap_removal_strategy : ((RectangleStripOverlapRemover) -> Double)?
+  mut overlap_removal_strategy : IRectangleStripOverlapRemovalStrategy?
   rectangle_nodes : Array[RectangleNode]
 }
 pub fn RectangleStripOverlapRemover::add_rectangle(Self, ElkRectangle) -> Self
@@ -2357,7 +2366,7 @@ pub fn RectangleStripOverlapRemover::get_rectangle_nodes(Self) -> Array[Rectangl
 pub fn RectangleStripOverlapRemover::get_vertical_gap(Self) -> Double
 pub fn RectangleStripOverlapRemover::remove_overlaps(Self) -> Double
 pub fn RectangleStripOverlapRemover::with_gap(Self, Double, Double) -> Self
-pub fn RectangleStripOverlapRemover::with_overlap_removal_strategy(Self, (Self) -> Double) -> Self
+pub fn RectangleStripOverlapRemover::with_overlap_removal_strategy(Self, IRectangleStripOverlapRemovalStrategy) -> Self
 pub fn RectangleStripOverlapRemover::with_start_coordinate(Self, Double) -> Self
 
 pub struct RectilinearConvexHull {
@@ -2637,8 +2646,6 @@ pub type ICostFunction = (TEdge) -> Double
 pub type ILockFunction = (CNode, Direction) -> Bool
 
 pub type IOverlapHandler = (Node, Node) -> Unit
-
-pub type IRectangleStripOverlapRemovalStrategy = (RectangleStripOverlapRemover) -> Double
 
 pub type LayoutConfiguratorElementClass = String
 

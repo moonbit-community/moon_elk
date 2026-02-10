@@ -1,5 +1,22 @@
 ///|
-pub type IRectangleStripOverlapRemovalStrategy = (RectangleStripOverlapRemover) -> Double
+pub struct IRectangleStripOverlapRemovalStrategy {
+  remove_overlaps : (RectangleStripOverlapRemover) -> Double
+}
+
+///|
+pub fn new_irectangle_strip_overlap_removal_strategy(
+  remove_overlaps : (RectangleStripOverlapRemover) -> Double,
+) -> IRectangleStripOverlapRemovalStrategy {
+  { remove_overlaps, }
+}
+
+///|
+pub fn IRectangleStripOverlapRemovalStrategy::remove_overlaps(
+  self : IRectangleStripOverlapRemovalStrategy,
+  overlap_remover : RectangleStripOverlapRemover,
+) -> Double {
+  (self.remove_overlaps)(overlap_remover)
+}
 
 ///|
 pub struct RectangleNode {
@@ -290,7 +307,7 @@ pub fn RectangleStripOverlapRemover::remove_overlaps(
 ) -> Double {
   if self.overlap_removal_strategy is None {
     self.overlap_removal_strategy = Some(
-      greedy_rectangle_strip_overlap_remover_remove_overlaps,
+      new_greedy_rectangle_strip_overlap_removal_strategy(),
     )
   }
 
@@ -301,7 +318,7 @@ pub fn RectangleStripOverlapRemover::remove_overlaps(
   rectangle_strip_overlap_remover_compute_overlaps(self)
 
   let strip_size = match self.overlap_removal_strategy {
-    Some(strategy) => strategy(self)
+    Some(strategy) => strategy.remove_overlaps(self)
     None => abort("No overlap removal strategy configured")
   }
 
