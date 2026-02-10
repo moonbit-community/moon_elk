@@ -143,8 +143,24 @@ test "GraphvizDotSyntacticSequencer emits fixed optional keywords" {
     content=",",
   )
   inspect(
+    sequencer.emit_edge_statement___left_square_bracket_keyword_2_0_right_square_bracket_keyword_2_2__q(
+      "",
+      "",
+      [0],
+    ),
+    content="[]",
+  )
+  inspect(
     sequencer.emit_node_statement_comma_keyword_1_1_1_0_q("", "", [0]),
     content=",",
+  )
+  inspect(
+    sequencer.emit_node_statement___left_square_bracket_keyword_1_0_right_square_bracket_keyword_1_2__q(
+      "",
+      "",
+      [0],
+    ),
+    content="[]",
   )
   inspect(
     sequencer.emit_statement_semicolon_keyword_1_q("", "", [0]),
@@ -153,6 +169,33 @@ test "GraphvizDotSyntacticSequencer emits fixed optional keywords" {
   inspect(
     sequencer.emit_subgraph_subgraph_keyword_1_0_q("", "", [0]),
     content="subgraph",
+  )
+}
+
+///|
+test "AbstractGraphvizDotSyntacticSequencer keeps ambiguous syntax defaults" {
+  let sequencer = new_abstract_graphviz_dot_syntactic_sequencer()
+  inspect(sequencer.get_unassigned_rule_call_token("", "", ""), content="")
+  inspect(
+    sequencer.emit_unassigned_tokens("", [
+      "AttributeStatement_CommaKeyword_2_1_0_q", "EdgeStatement___LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q",
+      "NodeStatement___LeftSquareBracketKeyword_1_0_RightSquareBracketKeyword_1_2__q",
+      "Statement_SemicolonKeyword_1_q",
+    ]),
+    content="[\",\", \"[]\", \"[]\", \";\"]",
+  )
+}
+
+///|
+test "AbstractGraphvizDotSemanticSequencer keeps sequence passthrough" {
+  let sequencer = new_abstract_graphviz_dot_semantic_sequencer()
+  inspect(
+    sequencer.sequence_graphviz_model("context", "graphviz-model"),
+    content="graphviz-model",
+  )
+  inspect(
+    sequencer.sequence_attribute("context", "attribute"),
+    content="attribute",
   )
 }
 

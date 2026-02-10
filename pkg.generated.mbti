@@ -1218,6 +1218,10 @@ pub fn new_abstract_force_model_state() -> AbstractForceModelState
 
 pub fn new_abstract_graphviz_dot_runtime_module(properties? : Map[String, String]) -> AbstractGraphvizDotRuntimeModule
 
+pub fn new_abstract_graphviz_dot_semantic_sequencer(grammar_access? : GraphvizDotGrammarAccess) -> AbstractGraphvizDotSemanticSequencer
+
+pub fn new_abstract_graphviz_dot_syntactic_sequencer(grammar_access? : GraphvizDotGrammarAccess) -> AbstractGraphvizDotSyntacticSequencer
+
 pub fn new_abstract_layout_provider((Int, IElkProgressMonitor) -> Unit, initialize_fn? : (String?) -> Unit, dispose_fn? : () -> Unit) -> AbstractLayoutProvider
 
 pub fn[T] new_abstract_random_list_accessor(() -> T) -> AbstractRandomListAccessor[T]
@@ -1983,6 +1987,45 @@ pub fn AbstractGraphvizDotRuntimeModule::configure_formatter_preferences(Self) -
 pub fn AbstractGraphvizDotRuntimeModule::configure_language_name(Self) -> String
 pub fn AbstractGraphvizDotRuntimeModule::configure_runtime_lexer(Self) -> String
 pub fn AbstractGraphvizDotRuntimeModule::provide_internal_graphviz_dot_lexer(Self) -> String
+
+pub struct AbstractGraphvizDotSemanticSequencer {
+  grammar_access : GraphvizDotGrammarAccess
+  marker : Unit
+}
+pub fn AbstractGraphvizDotSemanticSequencer::get_grammar_access(Self) -> GraphvizDotGrammarAccess
+pub fn[T] AbstractGraphvizDotSemanticSequencer::sequence(Self, String, T) -> T
+pub fn[T] AbstractGraphvizDotSemanticSequencer::sequence_attribute(Self, String, T) -> T
+pub fn[T] AbstractGraphvizDotSemanticSequencer::sequence_attribute_statement(Self, String, T) -> T
+pub fn[T] AbstractGraphvizDotSemanticSequencer::sequence_edge_statement(Self, String, T) -> T
+pub fn[T] AbstractGraphvizDotSemanticSequencer::sequence_edge_target(Self, String, T) -> T
+pub fn[T] AbstractGraphvizDotSemanticSequencer::sequence_graph(Self, String, T) -> T
+pub fn[T] AbstractGraphvizDotSemanticSequencer::sequence_graphviz_model(Self, String, T) -> T
+pub fn[T] AbstractGraphvizDotSemanticSequencer::sequence_list_attribute(Self, String, T) -> T
+pub fn[T] AbstractGraphvizDotSemanticSequencer::sequence_node(Self, String, T) -> T
+pub fn[T] AbstractGraphvizDotSemanticSequencer::sequence_node_statement(Self, String, T) -> T
+pub fn[T] AbstractGraphvizDotSemanticSequencer::sequence_port(Self, String, T) -> T
+pub fn[T] AbstractGraphvizDotSemanticSequencer::sequence_subgraph(Self, String, T) -> T
+
+pub struct AbstractGraphvizDotSyntacticSequencer {
+  grammar_access : GraphvizDotGrammarAccess
+  match_attribute_statement_comma_keyword_2_1_0_q : String
+  match_edge_statement_comma_keyword_2_1_1_0_q : String
+  match_edge_statement___left_square_bracket_keyword_2_0_right_square_bracket_keyword_2_2__q : String
+  match_node_statement_comma_keyword_1_1_1_0_q : String
+  match_node_statement___left_square_bracket_keyword_1_0_right_square_bracket_keyword_1_2__q : String
+  match_statement_semicolon_keyword_1_q : String
+  match_subgraph_subgraph_keyword_1_0_q : String
+}
+pub fn[A, B, C] AbstractGraphvizDotSyntacticSequencer::emit_attribute_statement_comma_keyword_2_1_0_q(Self, A, B, Array[C]) -> String
+pub fn[A, B, C] AbstractGraphvizDotSyntacticSequencer::emit_edge_statement___left_square_bracket_keyword_2_0_right_square_bracket_keyword_2_2__q(Self, A, B, Array[C]) -> String
+pub fn[A, B, C] AbstractGraphvizDotSyntacticSequencer::emit_edge_statement_comma_keyword_2_1_1_0_q(Self, A, B, Array[C]) -> String
+pub fn[A, B, C] AbstractGraphvizDotSyntacticSequencer::emit_node_statement___left_square_bracket_keyword_1_0_right_square_bracket_keyword_1_2__q(Self, A, B, Array[C]) -> String
+pub fn[A, B, C] AbstractGraphvizDotSyntacticSequencer::emit_node_statement_comma_keyword_1_1_1_0_q(Self, A, B, Array[C]) -> String
+pub fn[A, B, C] AbstractGraphvizDotSyntacticSequencer::emit_statement_semicolon_keyword_1_q(Self, A, B, Array[C]) -> String
+pub fn[A, B, C] AbstractGraphvizDotSyntacticSequencer::emit_subgraph_subgraph_keyword_1_0_q(Self, A, B, Array[C]) -> String
+pub fn AbstractGraphvizDotSyntacticSequencer::emit_unassigned_tokens(Self, String, Array[String]) -> Array[String]
+pub fn AbstractGraphvizDotSyntacticSequencer::get_grammar_access(Self) -> GraphvizDotGrammarAccess
+pub fn AbstractGraphvizDotSyntacticSequencer::get_unassigned_rule_call_token(Self, String, String, String) -> String
 
 pub struct AbstractLayoutProvider {
   graph_layout_engine : IGraphLayoutEngine
@@ -3166,7 +3209,7 @@ pub struct GraphvizDotSaveOptions {
 pub fn GraphvizDotSaveOptions::is_formatting(Self) -> Bool
 
 pub struct GraphvizDotSemanticSequencer {
-  marker : Unit
+  base : AbstractGraphvizDotSemanticSequencer
 }
 pub fn[T] GraphvizDotSemanticSequencer::sequence(Self, T) -> T
 
@@ -3198,10 +3241,12 @@ pub fn GraphvizDotStatus::get_severity(Self) -> Int
 pub fn GraphvizDotStatus::get_symbolic_name(Self) -> String
 
 pub struct GraphvizDotSyntacticSequencer {
-  marker : Unit
+  base : AbstractGraphvizDotSyntacticSequencer
 }
 pub fn[A, B, C] GraphvizDotSyntacticSequencer::emit_attribute_statement_comma_keyword_2_1_0_q(Self, A, B, Array[C]) -> String
+pub fn[A, B, C] GraphvizDotSyntacticSequencer::emit_edge_statement___left_square_bracket_keyword_2_0_right_square_bracket_keyword_2_2__q(Self, A, B, Array[C]) -> String
 pub fn[A, B, C] GraphvizDotSyntacticSequencer::emit_edge_statement_comma_keyword_2_1_1_0_q(Self, A, B, Array[C]) -> String
+pub fn[A, B, C] GraphvizDotSyntacticSequencer::emit_node_statement___left_square_bracket_keyword_1_0_right_square_bracket_keyword_1_2__q(Self, A, B, Array[C]) -> String
 pub fn[A, B, C] GraphvizDotSyntacticSequencer::emit_node_statement_comma_keyword_1_1_1_0_q(Self, A, B, Array[C]) -> String
 pub fn[A, B, C] GraphvizDotSyntacticSequencer::emit_statement_semicolon_keyword_1_q(Self, A, B, Array[C]) -> String
 pub fn[A, B, C] GraphvizDotSyntacticSequencer::emit_subgraph_subgraph_keyword_1_0_q(Self, A, B, Array[C]) -> String
