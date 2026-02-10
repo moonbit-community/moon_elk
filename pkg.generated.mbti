@@ -50,6 +50,12 @@ pub fn averagei(Array[Int]) -> Int
 
 pub fn averagel(Array[Int64]) -> Int64
 
+pub fn base_grid_visibility_at(Int) -> BaseGridVisibility
+
+pub fn base_grid_visibility_to_string(BaseGridVisibility) -> String
+
+pub fn base_grid_visibility_values() -> Array[BaseGridVisibility]
+
 pub fn binomiald(Int, Int) -> Double
 
 pub fn binomiall(Int, Int) -> Int64
@@ -91,6 +97,42 @@ pub fn compare_fuzzy_le(Double, Double) -> Bool
 pub fn compare_fuzzy_lt(Double, Double) -> Bool
 
 pub let compare_fuzzy_tolerance : Double
+
+pub fn config_state_add_observer(ConfigState, (State) -> Unit) -> Unit
+
+pub fn config_state_draw_ghost_parent(ConfigState) -> Bool
+
+pub fn config_state_draw_labels(ConfigState) -> Bool
+
+pub fn config_state_draw_poly_lines_black(ConfigState) -> Bool
+
+pub fn config_state_get_lower_lvl(ConfigState) -> Int
+
+pub fn config_state_get_max_depth(ConfigState) -> Int?
+
+pub fn config_state_get_pattern_scale(ConfigState) -> Int
+
+pub fn config_state_get_scale(ConfigState) -> Double
+
+pub fn config_state_get_thickness_scale(ConfigState) -> Double
+
+pub fn config_state_get_upper_lvl(ConfigState) -> Int
+
+pub fn config_state_how_to_paint_grid(ConfigState) -> BaseGridVisibility
+
+pub fn config_state_make_solid(ConfigState) -> Bool
+
+pub fn config_state_mark_the_center(ConfigState) -> Bool
+
+pub fn config_state_paint_parent_transparently(ConfigState) -> Bool
+
+pub fn config_state_remove_lvl(ConfigState) -> Bool
+
+pub fn config_state_set_depth(ConfigState, Int) -> Unit
+
+pub fn config_state_set_high(ConfigState, Int) -> Unit
+
+pub fn config_state_set_low(ConfigState, Int) -> Unit
 
 pub fn connectable_shape_to_node(ElkConnectableShape?) -> Int
 
@@ -156,9 +198,157 @@ pub fn direction_to_string(Direction) -> String
 
 pub fn direction_values() -> Array[Direction]
 
+pub fn dis_co_debug_color_dispose(DisCoDebugColor) -> Unit
+
+pub fn dis_co_debug_color_is_disposed(DisCoDebugColor) -> Bool
+
+pub fn dis_co_debug_font_dispose(DisCoDebugFont) -> Unit
+
+pub fn dis_co_debug_font_is_disposed(DisCoDebugFont) -> Bool
+
+pub fn dis_co_debug_pattern_fill_rectangle(DisCoDebugPattern, Int, Int, Int, Int, Int) -> Unit
+
+pub fn dis_co_debug_pattern_get_alpha(DisCoDebugPattern, Int, Int) -> Int
+
+pub fn dis_co_debug_plugin_get_default() -> DisCoDebugPlugin?
+
+pub let dis_co_debug_plugin_id : String
+
+pub fn dis_co_debug_plugin_start(DisCoDebugPlugin) -> Unit
+
+pub fn dis_co_debug_plugin_stop(DisCoDebugPlugin) -> Unit
+
+pub fn dis_co_debug_state_at(Int) -> State
+
+pub fn dis_co_debug_state_to_string(State) -> String
+
+pub fn dis_co_debug_state_values() -> Array[State]
+
+pub fn dis_co_debug_view_find_view() -> DisCoDebugView?
+
+pub fn dis_co_debug_view_get_canvas(DisCoDebugView) -> DisCoGraphRenderingCanvas
+
+pub let dis_co_debug_view_id : String
+
+pub fn dis_co_debug_view_set_focus(DisCoDebugView) -> Unit
+
+pub fn dis_co_debug_view_update_with_graph(Int?) -> Unit
+
+pub fn dis_co_graph_renderer_dispose(DisCoGraphRenderer) -> Unit
+
+pub fn dis_co_graph_renderer_get_base_offset(DisCoGraphRenderer) -> KVector
+
+pub fn dis_co_graph_renderer_get_scale(DisCoGraphRenderer) -> Double
+
+pub fn dis_co_graph_renderer_get_state(DisCoGraphRenderer) -> ConfigState
+
+pub fn dis_co_graph_renderer_is_visible(DisCoGraphRenderer, String) -> Bool
+
+pub fn dis_co_graph_renderer_mark_dirty(DisCoGraphRenderer, DisCoPaintRectangle) -> Unit
+
+pub fn dis_co_graph_renderer_render(DisCoGraphRenderer, Int, DisCoPaintRectangle) -> Unit
+
+pub fn dis_co_graph_renderer_set_base_offset(DisCoGraphRenderer, KVector) -> Unit
+
+pub fn dis_co_graph_renderer_set_visible(DisCoGraphRenderer, String, Bool) -> Unit
+
+pub fn dis_co_graph_rendering_canvas_dispose(DisCoGraphRenderingCanvas) -> Unit
+
+pub fn dis_co_graph_rendering_canvas_get_display(DisCoGraphRenderingCanvas) -> DisCoDebugDisplay
+
+pub fn dis_co_graph_rendering_canvas_get_layout_graph(DisCoGraphRenderingCanvas) -> Int?
+
+pub fn dis_co_graph_rendering_canvas_get_redraw_count(DisCoGraphRenderingCanvas) -> Int
+
+pub fn dis_co_graph_rendering_canvas_get_renderer(DisCoGraphRenderingCanvas) -> DisCoGraphRenderer
+
+pub fn dis_co_graph_rendering_canvas_paint_control(DisCoGraphRenderingCanvas, DisCoPaintEvent) -> Unit
+
+pub fn dis_co_graph_rendering_canvas_redraw(DisCoGraphRenderingCanvas) -> Unit
+
+pub fn dis_co_graph_rendering_canvas_set_layout_graph(DisCoGraphRenderingCanvas, Int?) -> Unit
+
+pub fn dis_co_graph_rendering_configurator_dispose(DisCoGraphRenderingConfigurator) -> Unit
+
+pub fn dis_co_graph_rendering_configurator_get_black(DisCoGraphRenderingConfigurator) -> DisCoDebugColor
+
+pub fn dis_co_graph_rendering_configurator_get_dc_element_border_text_color(DisCoGraphRenderingConfigurator) -> DisCoDebugColor?
+
+pub fn dis_co_graph_rendering_configurator_get_dc_element_external_border_text_color(DisCoGraphRenderingConfigurator) -> DisCoDebugColor?
+
+pub fn dis_co_graph_rendering_configurator_get_dc_element_external_fill_color(DisCoGraphRenderingConfigurator) -> DisCoDebugColor?
+
+pub fn dis_co_graph_rendering_configurator_get_dc_element_fill_color(DisCoGraphRenderingConfigurator) -> DisCoDebugColor?
+
+pub fn dis_co_graph_rendering_configurator_get_display(DisCoGraphRenderingConfigurator) -> DisCoDebugDisplay
+
+pub fn dis_co_graph_rendering_configurator_get_edge_color(DisCoGraphRenderingConfigurator) -> DisCoDebugColor?
+
+pub fn dis_co_graph_rendering_configurator_get_edge_label_font(DisCoGraphRenderingConfigurator) -> DisCoDebugFont?
+
+pub fn dis_co_graph_rendering_configurator_get_label_border_color(DisCoGraphRenderingConfigurator) -> DisCoDebugColor?
+
+pub fn dis_co_graph_rendering_configurator_get_label_fill_color(DisCoGraphRenderingConfigurator) -> DisCoDebugColor?
+
+pub fn dis_co_graph_rendering_configurator_get_label_text_color(DisCoGraphRenderingConfigurator) -> DisCoDebugColor?
+
+pub fn dis_co_graph_rendering_configurator_get_node_border_color(DisCoGraphRenderingConfigurator) -> DisCoDebugColor?
+
+pub fn dis_co_graph_rendering_configurator_get_node_fill_color(DisCoGraphRenderingConfigurator) -> DisCoDebugColor?
+
+pub fn dis_co_graph_rendering_configurator_get_node_label_font(DisCoGraphRenderingConfigurator) -> DisCoDebugFont?
+
+pub fn dis_co_graph_rendering_configurator_get_polyomino_border_text_color(DisCoGraphRenderingConfigurator) -> DisCoDebugColor?
+
+pub fn dis_co_graph_rendering_configurator_get_polyomino_center_color(DisCoGraphRenderingConfigurator) -> DisCoDebugColor?
+
+pub fn dis_co_graph_rendering_configurator_get_polyomino_fill_color(DisCoGraphRenderingConfigurator) -> DisCoDebugColor?
+
+pub fn dis_co_graph_rendering_configurator_get_polyomino_weakly_blocked_border_text_color(DisCoGraphRenderingConfigurator) -> DisCoDebugColor?
+
+pub fn dis_co_graph_rendering_configurator_get_polyomino_weakly_blocked_color(DisCoGraphRenderingConfigurator) -> DisCoDebugColor?
+
+pub fn dis_co_graph_rendering_configurator_get_port_border_color(DisCoGraphRenderingConfigurator) -> DisCoDebugColor?
+
+pub fn dis_co_graph_rendering_configurator_get_port_fill_color(DisCoGraphRenderingConfigurator) -> DisCoDebugColor?
+
+pub fn dis_co_graph_rendering_configurator_get_port_label_font(DisCoGraphRenderingConfigurator) -> DisCoDebugFont?
+
+pub fn dis_co_graph_rendering_configurator_initialize(DisCoGraphRenderingConfigurator, Double) -> Unit
+
+pub fn dis_co_graph_rendering_fill_patterns_get_dc_extension_pattern(DisCoGraphRenderingFillPatterns, Int) -> DisCoDebugPattern
+
+pub fn dis_co_graph_rendering_fill_patterns_get_polyomino_center_pattern(DisCoGraphRenderingFillPatterns, Int) -> DisCoDebugPattern
+
+pub fn dis_co_graph_rendering_fill_patterns_get_polyomino_extension_pattern(DisCoGraphRenderingFillPatterns, Int) -> DisCoDebugPattern
+
+pub fn dis_co_image_export_action_check_file_name(String?) -> String?
+
+pub fn dis_co_image_export_action_get_exported_files() -> Array[String]
+
+pub fn dis_co_image_export_action_get_last_file_name() -> String
+
+pub fn dis_co_image_export_action_reset_for_test() -> Unit
+
+pub fn dis_co_image_export_action_run(DisCoImageExportAction) -> Unit
+
+pub fn dis_co_image_export_action_set_selected_file_name(DisCoImageExportAction, String?) -> Unit
+
+pub fn dis_co_layout_connectors_add_layout_listener(DisCoLayoutListener) -> Unit
+
+pub fn dis_co_layout_connectors_fire_layout_done(DisCoLayoutMapping, IElkProgressMonitor) -> Unit
+
+pub fn dis_co_layout_connectors_remove_layout_listener(DisCoLayoutListener) -> Unit
+
+pub fn dis_co_layout_mapping_get_layout_graph(DisCoLayoutMapping) -> Int?
+
 pub fn dis_co_layout_provider_as_layout_provider(DisCoLayoutProvider) -> AbstractLayoutProvider
 
+pub let dis_co_min_font_height : Int
+
 pub fn dis_co_polyomino_compactor_as_icompactor(DisCoPolyominoCompactor) -> ICompactor
+
+pub let dis_co_swt_normal : Int
 
 pub let disco_aspect_ratio : IProperty[Double]
 
@@ -179,6 +369,18 @@ pub fn distance(KVector, KVector, KVector, KVector, KVector) -> Double
 pub fn distance_from_bezier_segment(KVector, KVector, KVector, KVector, KVector) -> Double
 
 pub fn draw_hitboxes(CGraph, String) -> String
+
+pub fn dropdown_int_range_action_apply_num(DropdownIntRangeAction, Int) -> Unit
+
+pub fn dropdown_int_range_action_dispose(DropdownIntRangeAction) -> Unit
+
+pub fn dropdown_int_range_action_get_menu(DropdownIntRangeAction) -> Array[Int]
+
+pub fn dropdown_int_range_action_get_text(DropdownIntRangeAction) -> String
+
+pub fn dropdown_int_range_action_set_canvas(DropdownIntRangeAction, DisCoGraphRenderingCanvas) -> Unit
+
+pub fn dropdown_int_range_action_update(DropdownIntRangeAction, State) -> Unit
 
 pub fn eades_model_attractive(Double, Double) -> Double
 
@@ -650,6 +852,8 @@ pub fn new_cgraph(Array[Direction]) -> CGraph
 
 pub fn new_components_processor() -> ComponentsProcessor
 
+pub fn new_config_state() -> ConfigState
+
 pub fn new_cubic_spline_interpolator() -> CubicSplineInterpolator
 
 pub fn new_data_object((String) -> Unit) -> IDataObject
@@ -666,9 +870,41 @@ pub fn new_dc_polyomino(DCComponent, Double, Double) -> DCPolyomino
 
 pub fn new_deprecated_layout_option_replacer() -> DeprecatedLayoutOptionReplacer
 
+pub fn new_dis_co_debug_color(DisCoDebugDisplay, Int, Int, Int) -> DisCoDebugColor
+
+pub fn new_dis_co_debug_display() -> DisCoDebugDisplay
+
+pub fn new_dis_co_debug_font(DisCoDebugDisplay, String, Int, Int) -> DisCoDebugFont
+
+pub fn new_dis_co_debug_pattern(Int, Int) -> DisCoDebugPattern
+
+pub fn new_dis_co_debug_plugin() -> DisCoDebugPlugin
+
+pub fn new_dis_co_debug_view(DisCoGraphRenderingCanvas) -> DisCoDebugView
+
+pub fn new_dis_co_graph_renderer(DisCoGraphRenderingConfigurator, scale? : Double) -> DisCoGraphRenderer
+
+pub fn new_dis_co_graph_rendering_canvas(DisCoDebugDisplay) -> DisCoGraphRenderingCanvas
+
+pub fn new_dis_co_graph_rendering_canvas_with_configurator(DisCoDebugDisplay, DisCoGraphRenderingConfigurator) -> DisCoGraphRenderingCanvas
+
+pub fn new_dis_co_graph_rendering_configurator(DisCoDebugDisplay) -> DisCoGraphRenderingConfigurator
+
+pub fn new_dis_co_graph_rendering_fill_patterns(DisCoGraphRenderingConfigurator, Double) -> DisCoGraphRenderingFillPatterns
+
+pub fn new_dis_co_image_export_action(DisCoDebugView) -> DisCoImageExportAction
+
+pub fn new_dis_co_layout_listener((DisCoLayoutMapping, IElkProgressMonitor) -> Unit, (DisCoLayoutMapping, IElkProgressMonitor) -> Unit) -> DisCoLayoutListener
+
+pub fn new_dis_co_layout_mapping(Int?) -> DisCoLayoutMapping
+
 pub fn new_dis_co_layout_provider() -> DisCoLayoutProvider
 
+pub fn new_dis_co_paint_rectangle(Int, Int, Int, Int) -> DisCoPaintRectangle
+
 pub fn new_dis_co_polyomino_compactor() -> DisCoPolyominoCompactor
+
+pub fn new_dropdown_int_range_action(ConfigState, String, Int, Int, Int, State, DisCoGraphRenderingCanvas) -> DropdownIntRangeAction
 
 pub fn new_eades_model() -> EadesModel
 
@@ -861,6 +1097,8 @@ pub fn new_rectilinear_convex_hull() -> RectilinearConvexHull
 pub fn new_recursive_graph_layout_engine() -> RecursiveGraphLayoutEngine
 
 pub fn new_scanline_overlap_check((Node, Node) -> Unit, SvgImage) -> ScanlineOverlapCheck
+
+pub fn new_selective_paint_toggle_action(String, String, String, DisCoGraphRenderingCanvas) -> SelectivePaintToggleAction
 
 pub fn new_spacing() -> Spacing
 
@@ -1148,6 +1386,12 @@ pub fn[T] scanline_execute(Array[T], (T, T) -> Int, Array[(T) -> Unit]) -> Unit
 
 pub fn[T] scanline_execute_single(Array[T], (T, T) -> Int, (T) -> Unit) -> Unit
 
+pub fn selective_paint_toggle_action_get_id(SelectivePaintToggleAction) -> String
+
+pub fn selective_paint_toggle_action_is_checked(SelectivePaintToggleAction) -> Bool
+
+pub fn selective_paint_toggle_action_run(SelectivePaintToggleAction) -> Unit
+
 pub fn shape_coords_to_string(ShapeCoords) -> String
 
 pub fn shortest_distance(ElkRectangle, ElkRectangle) -> Double
@@ -1324,6 +1568,12 @@ pub enum Alignment {
   Center
 }
 
+pub enum BaseGridVisibility {
+  Hidden
+  Simple
+  Traversal
+}
+
 pub struct BezierCurve {
   start : KVector
   fst_control_pnt : KVector
@@ -1465,6 +1715,13 @@ pub struct ComponentsProcessor {
 pub fn ComponentsProcessor::recombine(Self, Array[FGraph]) -> FGraph
 pub fn ComponentsProcessor::split(Self, FGraph) -> Array[FGraph]
 
+pub struct ConfigState {
+  mut lower_lvl : Int
+  mut upper_lvl : Int
+  mut max_depth : Int?
+  observers : Array[(State) -> Unit]
+}
+
 pub enum ContentAlignment {
   HLeft
   HCenter
@@ -1599,11 +1856,125 @@ pub fn Direction::is_horizontal(Self) -> Bool
 pub fn Direction::is_vertical(Self) -> Bool
 pub fn Direction::opposite(Self) -> Self
 
+pub struct DisCoDebugColor {
+  display : DisCoDebugDisplay
+  r : Int
+  g : Int
+  b : Int
+  mut disposed : Bool
+}
+
+pub struct DisCoDebugDisplay {
+  id : Int
+}
+pub impl Eq for DisCoDebugDisplay
+
+pub struct DisCoDebugFont {
+  display : DisCoDebugDisplay
+  name : String
+  size : Int
+  style : Int
+  mut disposed : Bool
+}
+
+pub struct DisCoDebugPattern {
+  width : Int
+  height : Int
+  alpha_data : Array[Int]
+}
+
+pub struct DisCoDebugPlugin {
+  layout_listener : DisCoLayoutListener
+}
+
+pub struct DisCoDebugView {
+  graph_canvas : DisCoGraphRenderingCanvas
+}
+
+pub struct DisCoGraphRenderer {
+  configurator : DisCoGraphRenderingConfigurator
+  scale : Double
+  mut base_offset : KVector
+  state : ConfigState
+  visibility : Map[String, Bool]
+  dirty_areas : Array[DisCoPaintRectangle]
+}
+
+pub struct DisCoGraphRenderingCanvas {
+  mut layout_graph : Int?
+  graph_renderer : DisCoGraphRenderer
+  background_color : DisCoDebugColor
+  display : DisCoDebugDisplay
+  mut redraw_count : Int
+  mut width : Int
+  mut height : Int
+}
+
+pub struct DisCoGraphRenderingConfigurator {
+  black : DisCoDebugColor
+  mut node_border_color : DisCoDebugColor?
+  mut node_fill_color : DisCoDebugColor?
+  mut node_label_font : DisCoDebugFont?
+  mut port_border_color : DisCoDebugColor?
+  mut port_fill_color : DisCoDebugColor?
+  mut port_label_font : DisCoDebugFont?
+  mut edge_color : DisCoDebugColor?
+  mut edge_label_font : DisCoDebugFont?
+  mut label_border_color : DisCoDebugColor?
+  mut label_fill_color : DisCoDebugColor?
+  mut label_text_color : DisCoDebugColor?
+  mut dc_element_fill_color : DisCoDebugColor?
+  mut dc_element_external_color : DisCoDebugColor?
+  mut dc_element_external_border_text_color : DisCoDebugColor?
+  mut dc_element_border_text_color : DisCoDebugColor?
+  mut dc_polyomino_fill_color : DisCoDebugColor?
+  mut dc_polyomino_center_color : DisCoDebugColor?
+  mut dc_polyomino_weakly_blocked_fill_color : DisCoDebugColor?
+  mut dc_polyomino_weakly_blocked_border_text_color : DisCoDebugColor?
+  mut dc_polyomino_border_text_color : DisCoDebugColor?
+  display : DisCoDebugDisplay
+}
+
+pub struct DisCoGraphRenderingFillPatterns {
+  config : DisCoGraphRenderingConfigurator
+  display : DisCoDebugDisplay
+  scale : Int
+}
+
+pub struct DisCoImageExportAction {
+  view : DisCoDebugView
+  mut selected_file_name : String?
+}
+
+pub struct DisCoLayoutListener {
+  id : Int
+  layout_about_to_start : (DisCoLayoutMapping, IElkProgressMonitor) -> Unit
+  layout_done : (DisCoLayoutMapping, IElkProgressMonitor) -> Unit
+}
+
+pub struct DisCoLayoutMapping {
+  layout_graph : Int?
+}
+
 pub struct DisCoLayoutProvider {
   mut result : DCGraph?
   mut component_spacing : Double
 }
 pub fn DisCoLayoutProvider::layout(Self, Int, IElkProgressMonitor) -> Unit
+
+pub struct DisCoPaintEvent {
+  x : Int
+  y : Int
+  width : Int
+  height : Int
+}
+
+pub struct DisCoPaintRectangle {
+  x : Int
+  y : Int
+  width : Int
+  height : Int
+}
 
 pub struct DisCoPolyominoCompactor {
   mut grid_cell_size_x : Double
@@ -1616,6 +1987,17 @@ pub struct DisCoPolyominoCompactor {
   mut fill : Bool
 }
 pub fn DisCoPolyominoCompactor::compact(Self, DCGraph) -> Unit
+
+pub struct DropdownIntRangeAction {
+  mut menu : Array[Int]?
+  lb : Int
+  mut ub : Int
+  label : String
+  bound : State
+  state : ConfigState
+  mut canvas : DisCoGraphRenderingCanvas
+  mut text : String
+}
 
 pub struct EadesModel {
   state : AbstractForceModelState
@@ -2778,6 +3160,17 @@ pub struct ScanlineOverlapCheck {
 }
 pub fn ScanlineOverlapCheck::sweep(Self, Array[Node]) -> Unit
 
+pub struct SelectivePaintToggleAction {
+  id : String
+  title : String
+  tooltip : String
+  canvas : DisCoGraphRenderingCanvas
+  renderer : DisCoGraphRenderer
+  command : String
+  mut val : Bool
+  mut checked : Bool
+}
+
 pub enum ShapeCoords {
   Inherit
   Parent
@@ -2832,6 +3225,12 @@ pub fn Spacing::set_top(Self, Double) -> Unit
 pub fn Spacing::set_top_bottom(Self, Double) -> Unit
 pub fn Spacing::set_values(Self, Double, Double, Double, Double) -> Unit
 pub fn Spacing::to_string(Self) -> String
+
+pub enum State {
+  Lower
+  Upper
+  Depth
+}
 
 pub enum StressDimension {
   StressDimensionXY
@@ -2999,6 +3398,8 @@ pub fn WrappedException::get_cause(Self) -> String
 pub fn WrappedException::get_message(Self) -> String?
 
 // Type aliases
+pub type ConfigStateObserver = (State) -> Unit
+
 pub type ElkEdge = Int
 
 pub type ElkEdgeSection = Int

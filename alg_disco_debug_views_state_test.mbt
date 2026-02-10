@@ -1,0 +1,27 @@
+///|
+test "DisCo debug state and grid enums map to Java names" {
+  inspect(
+    dis_co_debug_state_to_string(dis_co_debug_state_at(0)),
+    content="LOWER",
+  )
+  inspect(
+    dis_co_debug_state_to_string(dis_co_debug_state_at(1)),
+    content="UPPER",
+  )
+  inspect(
+    dis_co_debug_state_to_string(dis_co_debug_state_at(2)),
+    content="DEPTH",
+  )
+  inspect(
+    base_grid_visibility_to_string(base_grid_visibility_at(0)),
+    content="HIDDEN",
+  )
+  inspect(
+    base_grid_visibility_to_string(base_grid_visibility_at(1)),
+    content="SIMPLE",
+  )
+  inspect(
+    base_grid_visibility_to_string(base_grid_visibility_at(2)),
+    content="TRAVERSAL",
+  )
+}
