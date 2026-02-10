@@ -542,6 +542,12 @@ pub fn dot_edge_operator_undirected() -> DotEdgeOperator
 
 pub fn dot_edge_operator_value(DotEdgeOperator) -> Int
 
+pub let dot_exporter_adapt_port_positions : IProperty[Bool]
+
+pub let dot_exporter_cluster_dummy : IProperty[String]
+
+pub let dot_exporter_command : IProperty[Command]
+
 pub fn dot_exporter_create_attribute(String, String) -> DotAttribute
 
 pub fn dot_exporter_create_attribute_double(String, Double) -> DotAttribute
@@ -562,9 +568,29 @@ pub let dot_exporter_def_spacing_xlarge : Double
 
 pub let dot_exporter_dpi : Float
 
+pub fn dot_exporter_get_edge_id(Int, DotTransformationData[Int, DotGraphvizModel]) -> String
+
+pub fn dot_exporter_get_node_id(Int, DotExporterNodeType, DotTransformationData[Int, DotGraphvizModel]) -> String
+
+pub let dot_exporter_graph_elems : IProperty[Map[String, DotGraphElement]]
+
+pub let dot_exporter_hierarchy : IProperty[Bool]
+
 pub fn dot_exporter_is_inside_graph(Int, Int) -> Bool
 
+pub let dot_exporter_next_edge_id : IProperty[Int]
+
+pub let dot_exporter_next_node_id : IProperty[Int]
+
+pub fn dot_exporter_node_type_cluster() -> DotExporterNodeType
+
+pub fn dot_exporter_node_type_dummy() -> DotExporterNodeType
+
+pub fn dot_exporter_node_type_node() -> DotExporterNodeType
+
 pub let dot_exporter_option_edge_labels_placement : String
+
+pub let dot_exporter_option_edge_routing : String
 
 pub let dot_exporter_option_font_name : String
 
@@ -578,7 +604,29 @@ pub fn dot_exporter_set_general_edge_attributes(Array[DotStatement]) -> Array[Do
 
 pub fn dot_exporter_set_general_node_attributes(Array[DotStatement]) -> Array[DotAttribute]
 
+pub let dot_exporter_transform_edge_layout : IProperty[Bool]
+
+pub let dot_exporter_transform_node_labels : IProperty[Bool]
+
+pub let dot_exporter_transform_node_layout : IProperty[Bool]
+
+pub let dot_exporter_use_edge_ids : IProperty[Bool]
+
+pub let dot_exporter_use_splines : IProperty[Bool]
+
 pub let dot_factory_instance : DotFactory
+
+pub fn dot_graph_element_as_edge(DotGraphElement) -> Int?
+
+pub fn dot_graph_element_as_node(DotGraphElement) -> Int?
+
+pub fn dot_graph_element_edge(Int) -> DotGraphElement
+
+pub fn dot_graph_element_label(Int) -> DotGraphElement
+
+pub fn dot_graph_element_node(Int) -> DotGraphElement
+
+pub fn dot_graph_element_port(Int) -> DotGraphElement
 
 pub fn dot_graph_type_digraph() -> DotGraphType
 
@@ -2349,11 +2397,25 @@ pub fn DotEdgeTarget::set_targetnode(Self, DotNode?) -> Unit
 pub struct DotExporter {
   _dummy : Unit
 }
+pub fn DotExporter::apply_edge_label_pos(Self, Int, String, EdgeLabelPlacement, KVector) -> Unit
+pub fn DotExporter::apply_edge_layout(Self, DotEdgeStatement, KVector, DotTransformationData[Int, DotGraphvizModel]) -> Unit
+pub fn DotExporter::apply_layout(Self, Int, Array[DotStatement], KVector, Spacing, DotTransformationData[Int, DotGraphvizModel]) -> Unit
+pub fn DotExporter::apply_node_layout(Self, DotNodeStatement, KVector, Spacing, DotTransformationData[Int, DotGraphvizModel]) -> Unit
 pub fn DotExporter::is_inside_graph(Self, Int, Int) -> Bool
 pub fn DotExporter::set_edge_labels(Self, Int, Array[DotAttribute], Bool) -> Unit
 pub fn DotExporter::set_general_edge_attributes(Self, Array[DotStatement]) -> Array[DotAttribute]
 pub fn DotExporter::set_general_node_attributes(Self, Array[DotStatement]) -> Array[DotAttribute]
-pub fn DotExporter::set_graph_attributes(Self, Array[DotStatement], Int) -> Unit
+pub fn DotExporter::set_graph_attributes(Self, Array[DotStatement], Int, DotTransformationData[Int, DotGraphvizModel]) -> Unit
+pub fn DotExporter::transfer_layout(Self, DotTransformationData[Int, DotGraphvizModel]) -> Unit
+pub fn DotExporter::transform(Self, DotTransformationData[Int, DotGraphvizModel]) -> Unit
+pub fn DotExporter::transform_edges(Self, Int, Array[DotStatement], DotTransformationData[Int, DotGraphvizModel]) -> Unit
+pub fn DotExporter::transform_nodes(Self, Int, Array[DotStatement], KVector, DotTransformationData[Int, DotGraphvizModel]) -> Unit
+
+pub enum DotExporterNodeType {
+  DotExporterNodeTypeNode
+  DotExporterNodeTypeCluster
+  DotExporterNodeTypeDummy
+}
 
 pub struct DotFactory {
   create_graphviz_model_fn : () -> DotGraphvizModel
@@ -2393,6 +2455,13 @@ pub fn DotGraph::is_strict(Self) -> Bool
 pub fn DotGraph::set_name(Self, String?) -> Unit
 pub fn DotGraph::set_strict(Self, Bool) -> Unit
 pub fn DotGraph::set_type(Self, DotGraphType?) -> Unit
+
+pub enum DotGraphElement {
+  DotGraphElementNode(Int)
+  DotGraphElementEdge(Int)
+  DotGraphElementPort(Int)
+  DotGraphElementLabel(Int)
+}
 
 pub enum DotGraphType {
   DotGraphTypeGraph
@@ -2457,12 +2526,24 @@ pub struct DotTransformationData[S, T] {
   mut source_graph : S?
   target_graphs : Array[T]
   log_messages : Array[String]
+  bool_properties : Map[String, Bool]
+  int_properties : Map[String, Int]
+  string_properties : Map[String, String]
+  graph_elem_map_properties : Map[String, Map[String, DotGraphElement]]
 }
+pub fn[S, T] DotTransformationData::get_bool_property(Self[S, T], IProperty[Bool]) -> Bool
+pub fn[S, T] DotTransformationData::get_graph_elem_map_property(Self[S, T], IProperty[Map[String, DotGraphElement]]) -> Map[String, DotGraphElement]
+pub fn[S, T] DotTransformationData::get_int_property(Self[S, T], IProperty[Int]) -> Int
 pub fn[S, T] DotTransformationData::get_messages(Self[S, T]) -> Array[String]
 pub fn[S, T] DotTransformationData::get_source_graph(Self[S, T]) -> S?
+pub fn[S, T] DotTransformationData::get_string_property(Self[S, T], IProperty[String]) -> String
 pub fn[S, T] DotTransformationData::get_target_graphs(Self[S, T]) -> Array[T]
 pub fn[S, T] DotTransformationData::log(Self[S, T], String) -> Unit
+pub fn[S, T] DotTransformationData::set_bool_property(Self[S, T], IProperty[Bool], Bool) -> Unit
+pub fn[S, T] DotTransformationData::set_graph_elem_map_property(Self[S, T], IProperty[Map[String, DotGraphElement]], Map[String, DotGraphElement]) -> Unit
+pub fn[S, T] DotTransformationData::set_int_property(Self[S, T], IProperty[Int], Int) -> Unit
 pub fn[S, T] DotTransformationData::set_source_graph(Self[S, T], S) -> Unit
+pub fn[S, T] DotTransformationData::set_string_property(Self[S, T], IProperty[String], String) -> Unit
 
 pub struct DropdownIntRangeAction {
   mut menu : Array[Int]?

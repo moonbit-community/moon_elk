@@ -11,6 +11,42 @@ pub let dot_exporter_def_spacing_xlarge : Double = 60.0
 pub let dot_exporter_dpi : Float = 72.0
 
 ///|
+pub let dot_exporter_command : IProperty[Command] = new_property(
+  "dotExporter.command",
+  command_parse("dot"),
+)
+
+///|
+pub let dot_exporter_use_edge_ids : IProperty[Bool] = new_property(
+  "dotExporter.useEdgeIds", false,
+)
+
+///|
+pub let dot_exporter_hierarchy : IProperty[Bool] = new_property(
+  "dotExporter.hierarchy", false,
+)
+
+///|
+pub let dot_exporter_transform_node_layout : IProperty[Bool] = new_property(
+  "dotExporter.transformNodeLayout", true,
+)
+
+///|
+pub let dot_exporter_transform_edge_layout : IProperty[Bool] = new_property(
+  "dotExporter.transformEdgeLayout", true,
+)
+
+///|
+pub let dot_exporter_transform_node_labels : IProperty[Bool] = new_property(
+  "dotExporter.transformNodeLabels", true,
+)
+
+///|
+pub let dot_exporter_adapt_port_positions : IProperty[Bool] = new_property(
+  "dotExporter.adaptPortPositions", false,
+)
+
+///|
 pub let dot_exporter_option_edge_labels_placement = "org.eclipse.elk.edgeLabels.placement"
 
 ///|
@@ -21,6 +57,35 @@ pub let dot_exporter_option_font_size = "org.eclipse.elk.font.size"
 
 ///|
 let dot_exporter_font_size_mult : Double = 1.4
+
+///|
+pub let dot_exporter_option_edge_routing = "org.eclipse.elk.edgeRouting"
+
+///|
+pub let dot_exporter_graph_elems : IProperty[Map[String, DotGraphElement]] = new_property(
+  "dotExporter.graphElemMap",
+  {},
+)
+
+///|
+pub let dot_exporter_use_splines : IProperty[Bool] = new_property(
+  "dotExporter.useSplines", false,
+)
+
+///|
+pub let dot_exporter_next_node_id : IProperty[Int] = new_property(
+  "dotExporter.nextNodeId", 1,
+)
+
+///|
+pub let dot_exporter_next_edge_id : IProperty[Int] = new_property(
+  "dotExporter.nextEdgeId", 1,
+)
+
+///|
+pub let dot_exporter_cluster_dummy : IProperty[String] = new_property(
+  "dotExporter.clusterDummy", "",
+)
 
 ///|
 let dot_exporter_min_out_char = ' '
@@ -91,10 +156,12 @@ pub fn DotExporter::set_graph_attributes(
   self : DotExporter,
   statements : Array[DotStatement],
   parent_node : ElkNode,
+  trans_data : DotTransformationData[ElkNode, DotGraphvizModel],
 ) -> Unit {
   let _ = self
   let _ = statements
   let _ = parent_node
+  let _ = trans_data
 }
 
 ///|
@@ -348,6 +415,867 @@ pub fn DotExporter::is_inside_graph(
 }
 
 ///|
+pub enum DotExporterNodeType {
+  DotExporterNodeTypeNode
+  DotExporterNodeTypeCluster
+  DotExporterNodeTypeDummy
+}
+
+///|
+pub fn dot_exporter_node_type_node() -> DotExporterNodeType {
+  DotExporterNodeTypeNode
+}
+
+///|
+pub fn dot_exporter_node_type_cluster() -> DotExporterNodeType {
+  DotExporterNodeTypeCluster
+}
+
+///|
+pub fn dot_exporter_node_type_dummy() -> DotExporterNodeType {
+  DotExporterNodeTypeDummy
+}
+
+///|
+pub fn dot_exporter_get_node_id(
+  node : ElkNode,
+  node_type : DotExporterNodeType,
+  trans_data : DotTransformationData[ElkNode, DotGraphvizModel],
+) -> String {
+  let id = trans_data.get_int_property(dot_exporter_next_node_id)
+  trans_data.set_int_property(dot_exporter_next_node_id, id + 1)
+  let id_string = match node_type {
+    DotExporterNodeTypeNode => "node" + id.to_string()
+    DotExporterNodeTypeCluster => "cluster" + id.to_string()
+    DotExporterNodeTypeDummy => "dummy" + id.to_string()
+  }
+  match node_type {
+    DotExporterNodeTypeNode =>
+      trans_data.get_graph_elem_map_property(dot_exporter_graph_elems)[id_string] = dot_graph_element_node(
+        node,
+      )
+    DotExporterNodeTypeCluster =>
+      trans_data.get_graph_elem_map_property(dot_exporter_graph_elems)[id_string] = dot_graph_element_node(
+        node,
+      )
+    DotExporterNodeTypeDummy =>
+      node_set_string_property(node, dot_exporter_cluster_dummy, id_string)
+  }
+  id_string
+}
+
+///|
+pub fn dot_exporter_get_edge_id(
+  edge : ElkEdge,
+  trans_data : DotTransformationData[ElkNode, DotGraphvizModel],
+) -> String {
+  let id = trans_data.get_int_property(dot_exporter_next_edge_id)
+  trans_data.set_int_property(dot_exporter_next_edge_id, id + 1)
+  let id_string = "edge" + id.to_string()
+  trans_data.get_graph_elem_map_property(dot_exporter_graph_elems)[id_string] = dot_graph_element_edge(
+    edge,
+  )
+  id_string
+}
+
+///|
+fn dot_exporter_all_outgoing_edges(node : ElkNode) -> Array[ElkEdge] {
+  let outgoing = node_outgoing_edges(node).copy()
+  for port in node_ports(node) {
+    for edge in port_outgoing_edges(port) {
+      outgoing.push(edge)
+    }
+  }
+  outgoing
+}
+
+///|
+fn dot_exporter_find_node_id(
+  graph_elems : Map[String, DotGraphElement],
+  node : ElkNode,
+) -> String? {
+  for entry in graph_elems.to_array() {
+    if dot_graph_element_as_node(entry.1) == Some(node) {
+      return Some(entry.0)
+    }
+  }
+  None
+}
+
+///|
+fn dot_exporter_layout_direction_is_vertical(parent : ElkNode) -> Bool {
+  let direction_value = node_get_string_property(parent, direction).to_upper()
+  direction_value == "" ||
+  direction_value == "DOWN" ||
+  direction_value == "UP" ||
+  direction_value == "UNDEFINED"
+}
+
+///|
+fn dot_exporter_parse_padding(node : ElkNode) -> ElkPadding {
+  let value = node_get_string_property(node, padding)
+  let parsed = new_elk_padding()
+  parsed.parse(value)
+  parsed
+}
+
+///|
+fn dot_exporter_first_or_create_edge_section(edge : ElkEdge) -> ElkEdgeSection {
+  let sections = edge_sections(edge)
+  let section = if sections.is_empty() {
+    create_edge_section(edge)
+  } else {
+    sections[0]
+  }
+  if edge_section_incoming_shape(section) is None {
+    let sources = edge_sources(edge)
+    if sources.length() == 1 {
+      edge_section_set_incoming_shape(section, Some(sources[0]))
+    }
+  }
+  if edge_section_outgoing_shape(section) is None {
+    let targets = edge_targets(edge)
+    if targets.length() == 1 {
+      edge_section_set_outgoing_shape(section, Some(targets[0]))
+    }
+  }
+  section
+}
+
+///|
+fn dot_exporter_node_absolute_offset(node : ElkNode?) -> KVector {
+  let offset = new_kvector()
+  let mut current = node
+  while current is Some(value) {
+    ignore(offset.add_xy(node_x(value), node_y(value)))
+    current = node_parent(value)
+  }
+  offset
+}
+
+///|
+fn dot_exporter_to_absolute(
+  point : KVector,
+  reference_node : ElkNode?,
+) -> KVector {
+  new_kvector_copy(point).add(dot_exporter_node_absolute_offset(reference_node))
+}
+
+///|
+pub fn DotExporter::transform(
+  self : DotExporter,
+  trans_data : DotTransformationData[ElkNode, DotGraphvizModel],
+) -> Unit {
+  let source_graph = match trans_data.get_source_graph() {
+    Some(graph) => graph
+    None => return
+  }
+  trans_data.set_graph_elem_map_property(dot_exporter_graph_elems, {})
+  trans_data.set_int_property(dot_exporter_next_node_id, 1)
+  trans_data.set_int_property(dot_exporter_next_edge_id, 1)
+
+  let graphviz_model = dot_create_graphviz_model()
+  let graph = dot_create_graph()
+  graph.set_type(Some(dot_graph_type_digraph()))
+  graphviz_model.get_graphs().push(graph)
+
+  self.transform_nodes(
+    source_graph,
+    graph.get_statements(),
+    new_kvector(),
+    trans_data,
+  )
+  self.transform_edges(source_graph, graph.get_statements(), trans_data)
+  trans_data.get_target_graphs().push(graphviz_model)
+}
+
+///|
+pub fn DotExporter::transform_nodes(
+  self : DotExporter,
+  parent : ElkNode,
+  statements : Array[DotStatement],
+  offset : KVector,
+  trans_data : DotTransformationData[ElkNode, DotGraphvizModel],
+) -> Unit {
+  self.set_graph_attributes(statements, parent, trans_data)
+  let hierarchy = trans_data.get_bool_property(dot_exporter_hierarchy)
+  let transform_node_layout = trans_data.get_bool_property(
+    dot_exporter_transform_node_layout,
+  )
+  let transform_node_labels = trans_data.get_bool_property(
+    dot_exporter_transform_node_labels,
+  )
+
+  for child_node in node_children(parent) {
+    let node_statement = dot_create_node_statement()
+    let attributes = node_statement.get_attributes()
+    let mut node_id = ""
+    if hierarchy && !node_children(child_node).is_empty() {
+      let cluster_node_id = dot_exporter_get_node_id(
+        child_node,
+        dot_exporter_node_type_cluster(),
+        trans_data,
+      )
+      let subgraph = dot_create_subgraph()
+      subgraph.set_name(Some(cluster_node_id))
+      statements.push(dot_statement_subgraph(subgraph))
+
+      let child_padding = dot_exporter_parse_padding(child_node)
+      let subgraph_x = node_x(child_node) + child_padding.get_left()
+      let subgraph_y = node_y(child_node) + child_padding.get_top()
+      self.transform_nodes(
+        child_node,
+        subgraph.get_statements(),
+        new_kvector_copy(offset).add_xy(subgraph_x, subgraph_y),
+        trans_data,
+      )
+
+      node_id = dot_exporter_get_node_id(
+        child_node,
+        dot_exporter_node_type_dummy(),
+        trans_data,
+      )
+      attributes.push(dot_exporter_create_attribute(dot_attr_style, "invis"))
+      attributes.push(dot_exporter_create_attribute_int(dot_attr_width, 0))
+      attributes.push(dot_exporter_create_attribute_int(dot_attr_height, 0))
+      subgraph
+      .get_statements()
+      .push(dot_statement_node_statement(node_statement))
+    } else {
+      node_id = dot_exporter_get_node_id(
+        child_node,
+        dot_exporter_node_type_node(),
+        trans_data,
+      )
+      if node_width(child_node) > 0.0 {
+        attributes.push(
+          dot_exporter_create_attribute_double(
+            dot_attr_width,
+            node_width(child_node) / dot_exporter_dpi.to_double(),
+          ),
+        )
+      }
+      if node_height(child_node) > 0.0 {
+        attributes.push(
+          dot_exporter_create_attribute_double(
+            dot_attr_height,
+            node_height(child_node) / dot_exporter_dpi.to_double(),
+          ),
+        )
+      }
+      let labels = node_labels(child_node)
+      if transform_node_labels &&
+        !labels.is_empty() &&
+        !label_text(labels[0]).is_empty() {
+        attributes.push(
+          dot_exporter_create_attribute(
+            dot_attr_label,
+            dot_exporter_create_string(label_text(labels[0])),
+          ),
+        )
+      }
+      if transform_node_layout &&
+        (node_x(child_node) != 0.0 || node_y(child_node) != 0.0) {
+        let xpos = node_x(child_node) + node_width(child_node) / 2.0 + offset.x
+        let ypos = node_y(child_node) + node_height(child_node) / 2.0 + offset.y
+        let pos_string = "\"" + xpos.to_string() + "," + ypos.to_string() + "\""
+        attributes.push(dot_exporter_create_attribute(dot_attr_pos, pos_string))
+      }
+      statements.push(dot_statement_node_statement(node_statement))
+    }
+    let node = dot_create_node()
+    node.set_name(Some(node_id))
+    node_statement.set_node(Some(node))
+  }
+}
+
+///|
+pub fn DotExporter::transform_edges(
+  self : DotExporter,
+  parent : ElkNode,
+  statements : Array[DotStatement],
+  trans_data : DotTransformationData[ElkNode, DotGraphvizModel],
+) -> Unit {
+  let _ = self
+  let hierarchy = trans_data.get_bool_property(dot_exporter_hierarchy)
+  let transform_edge_layout = trans_data.get_bool_property(
+    dot_exporter_transform_edge_layout,
+  )
+  let vertical = dot_exporter_layout_direction_is_vertical(parent)
+  let graph_elems = trans_data.get_graph_elem_map_property(
+    dot_exporter_graph_elems,
+  )
+  let source_root = match trans_data.get_source_graph() {
+    Some(graph) => graph
+    None => return
+  }
+
+  let nodes = node_children(parent).copy()
+  let mut index = 0
+  while index < nodes.length() {
+    let source = nodes[index]
+    index += 1
+    for edge in dot_exporter_all_outgoing_edges(source) {
+      if edge_sources(edge).length() != 1 || edge_targets(edge).length() != 1 {
+        abort("Hyperedges are not supported.")
+      }
+      let target = connectable_shape_to_node(Some(edge_targets(edge)[0]))
+      if node_parent(source) == node_parent(target) ||
+        (hierarchy && dot_exporter_is_inside_graph(target, source_root)) {
+        let edge_statement = dot_create_edge_statement()
+        let attributes = edge_statement.get_attributes()
+
+        let source_node = dot_create_node()
+        if hierarchy && !node_children(source).is_empty() {
+          source_node.set_name(
+            Some(node_get_string_property(source, dot_exporter_cluster_dummy)),
+          )
+          match dot_exporter_find_node_id(graph_elems, source) {
+            Some(value) =>
+              attributes.push(
+                dot_exporter_create_attribute(dot_attr_ltail, value),
+              )
+            None => ()
+          }
+        } else {
+          match dot_exporter_find_node_id(graph_elems, source) {
+            Some(value) => source_node.set_name(Some(value))
+            None => ()
+          }
+        }
+        edge_statement.set_source_node(Some(source_node))
+
+        let edge_target = dot_create_edge_target()
+        let target_node = dot_create_node()
+        if hierarchy && !node_children(target).is_empty() {
+          target_node.set_name(
+            Some(node_get_string_property(target, dot_exporter_cluster_dummy)),
+          )
+          match dot_exporter_find_node_id(graph_elems, target) {
+            Some(value) =>
+              attributes.push(
+                dot_exporter_create_attribute(dot_attr_lhead, value),
+              )
+            None => ()
+          }
+        } else {
+          match dot_exporter_find_node_id(graph_elems, target) {
+            Some(value) => target_node.set_name(Some(value))
+            None => ()
+          }
+        }
+        edge_target.set_targetnode(Some(target_node))
+        edge_statement.get_edge_targets().push(edge_target)
+
+        dot_exporter_set_edge_labels(edge, attributes, vertical)
+
+        if trans_data.get_bool_property(dot_exporter_use_edge_ids) {
+          let edge_id = dot_exporter_get_edge_id(edge, trans_data)
+          attributes.push(
+            dot_exporter_create_attribute(
+              dot_attr_comment,
+              "\"" + edge_id + "\"",
+            ),
+          )
+        }
+
+        let sections = edge_sections(edge)
+        if transform_edge_layout && !sections.is_empty() {
+          let section = sections[0]
+          if edge_section_start_x(section) != 0.0 ||
+            edge_section_start_y(section) != 0.0 ||
+            edge_section_end_x(section) != 0.0 ||
+            edge_section_end_y(section) != 0.0 {
+            let start_point = dot_exporter_to_absolute(
+              new_kvector_xy(
+                edge_section_start_x(section),
+                edge_section_start_y(section),
+              ),
+              edge_containing_node(edge),
+            )
+            let end_point = dot_exporter_to_absolute(
+              new_kvector_xy(
+                edge_section_end_x(section),
+                edge_section_end_y(section),
+              ),
+              edge_containing_node(edge),
+            )
+            let pos_string = "\"" +
+              start_point.x.to_string() +
+              "," +
+              start_point.y.to_string() +
+              " " +
+              end_point.x.to_string() +
+              "," +
+              end_point.y.to_string() +
+              "\""
+            attributes.push(
+              dot_exporter_create_attribute(dot_attr_pos, pos_string),
+            )
+          }
+        }
+
+        statements.push(dot_statement_edge_statement(edge_statement))
+      }
+    }
+    if hierarchy {
+      for child in node_children(source) {
+        nodes.push(child)
+      }
+    }
+  }
+}
+
+///|
+pub fn DotExporter::transfer_layout(
+  self : DotExporter,
+  trans_data : DotTransformationData[ElkNode, DotGraphvizModel],
+) -> Unit {
+  let source_graph = match trans_data.get_source_graph() {
+    Some(graph) => graph
+    None => return
+  }
+  let target_graphs = trans_data.get_target_graphs()
+  if target_graphs.is_empty() {
+    return
+  }
+  let dot_graphs = target_graphs[0].get_graphs()
+  if dot_graphs.is_empty() {
+    return
+  }
+  let graph = dot_graphs[0]
+  let outer_padding = dot_exporter_parse_padding(source_graph)
+  let base_offset = new_kvector()
+  self.apply_layout(
+    source_graph,
+    graph.get_statements(),
+    base_offset,
+    outer_padding,
+    trans_data,
+  )
+
+  let statements = graph.get_statements().copy()
+  let edge_offset = new_kvector_copy(base_offset).add_xy(
+    outer_padding.get_left(),
+    outer_padding.get_top(),
+  )
+  let mut index = 0
+  while index < statements.length() {
+    let statement = statements[index]
+    index += 1
+    match statement {
+      DotStatementEdgeStatement(edge_statement) =>
+        self.apply_edge_layout(edge_statement, edge_offset, trans_data)
+      DotStatementSubgraph(subgraph) =>
+        for sub_statement in subgraph.get_statements() {
+          statements.push(sub_statement)
+        }
+      _ => ()
+    }
+  }
+}
+
+///|
+fn dot_exporter_is_number_char(c : Char) -> Bool {
+  (c >= '0' && c <= '9') ||
+  c == '-' ||
+  c == '+' ||
+  c == '.' ||
+  c == 'e' ||
+  c == 'E'
+}
+
+///|
+fn dot_exporter_parse_numbers(text : String) -> Array[Double] {
+  let numbers : Array[Double] = []
+  let mut token_start = -1
+  let mut index = 0
+  while index < text.length() {
+    let current = dot_exporter_char_at(text, index)
+    if dot_exporter_is_number_char(current) {
+      if token_start < 0 {
+        token_start = index
+      }
+    } else if token_start >= 0 {
+      match
+        dot_exporter_parse_double_token(
+          text.substring(start=token_start, end=index),
+        ) {
+        Some(value) => numbers.push(value)
+        None => ()
+      }
+      token_start = -1
+    }
+    index += 1
+  }
+  if token_start >= 0 {
+    match dot_exporter_parse_double_token(text.substring(start=token_start)) {
+      Some(value) => numbers.push(value)
+      None => ()
+    }
+  }
+  numbers
+}
+
+///|
+fn dot_exporter_parse_bbox(text : String) -> Array[Double]? {
+  let numbers = dot_exporter_parse_numbers(text)
+  if numbers.length() < 4 {
+    None
+  } else {
+    Some([numbers[0], numbers[1], numbers[2], numbers[3]])
+  }
+}
+
+///|
+fn dot_exporter_parse_first_number(text : String) -> Double? {
+  let numbers = dot_exporter_parse_numbers(text)
+  if numbers.is_empty() {
+    None
+  } else {
+    Some(numbers[0])
+  }
+}
+
+///|
+pub fn DotExporter::apply_layout(
+  self : DotExporter,
+  parent_node : ElkNode,
+  statements : Array[DotStatement],
+  base_offset : KVector,
+  outer_padding : ElkPadding,
+  trans_data : DotTransformationData[ElkNode, DotGraphvizModel],
+) -> Unit {
+  let _ = self
+  let mut padding = new_elk_padding_copy(outer_padding)
+  let node_offset = new_kvector()
+  let source_graph = trans_data.get_source_graph()
+
+  let mut found_bbox = false
+  for statement in statements {
+    if found_bbox {
+      break
+    }
+    match statement {
+      DotStatementAttributeStatement(attribute_statement) =>
+        if dot_attribute_type_value(attribute_statement.get_type()) ==
+          dot_attribute_type_value(dot_attribute_type_graph()) {
+          for attribute in attribute_statement.get_attributes() {
+            if attribute.get_name() == Some(dot_attr_boundingbox) {
+              match attribute.get_value() {
+                Some(value) =>
+                  match dot_exporter_parse_bbox(value) {
+                    Some(bbox) => {
+                      let leftx = bbox[0]
+                      let bottomy = bbox[1]
+                      let rightx = bbox[2]
+                      let topy = bbox[3]
+                      let mut width = rightx - leftx
+                      let mut height = bottomy - topy
+                      if source_graph == Some(parent_node) {
+                        width = width + padding.get_horizontal()
+                        height = height + padding.get_vertical()
+                        ignore(base_offset.add_xy(-leftx, -topy))
+                        ignore(node_offset.add_xy(-leftx, -topy))
+                      } else {
+                        node_set_location(
+                          parent_node,
+                          base_offset.x + leftx + padding.get_left(),
+                          base_offset.y + topy + padding.get_top(),
+                        )
+                        padding = new_elk_padding()
+                        ignore(
+                          node_offset.set_xy(
+                            -(base_offset.x + leftx),
+                            -(base_offset.y + topy),
+                          ),
+                        )
+                      }
+                      node_set_dimensions(parent_node, width, height)
+                      found_bbox = true
+                    }
+                    None => ()
+                  }
+                None => ()
+              }
+            }
+          }
+        }
+      _ => ()
+    }
+  }
+
+  for statement in statements {
+    match statement {
+      DotStatementNodeStatement(node_statement) =>
+        self.apply_node_layout(node_statement, node_offset, padding, trans_data)
+      DotStatementSubgraph(subgraph) =>
+        match subgraph.get_name() {
+          Some(name) =>
+            match
+              trans_data
+              .get_graph_elem_map_property(dot_exporter_graph_elems)
+              .get(name) {
+              Some(graph_elem) =>
+                match dot_graph_element_as_node(graph_elem) {
+                  Some(elknode) => {
+                    self.apply_layout(
+                      elknode,
+                      subgraph.get_statements(),
+                      base_offset,
+                      padding,
+                      trans_data,
+                    )
+                    node_set_location(
+                      elknode,
+                      node_x(elknode) + node_offset.x,
+                      node_y(elknode) + node_offset.y,
+                    )
+                  }
+                  None => ()
+                }
+              None => ()
+            }
+          None => ()
+        }
+      _ => ()
+    }
+  }
+}
+
+///|
+pub fn DotExporter::apply_node_layout(
+  self : DotExporter,
+  node_statement : DotNodeStatement,
+  offset : KVector,
+  padding : ElkPadding,
+  trans_data : DotTransformationData[ElkNode, DotGraphvizModel],
+) -> Unit {
+  let _ = self
+  let node_id = match node_statement.get_node() {
+    Some(node) =>
+      match node.get_name() {
+        Some(name) => name
+        None => return
+      }
+    None => return
+  }
+  let elknode = match
+    trans_data
+    .get_graph_elem_map_property(dot_exporter_graph_elems)
+    .get(node_id) {
+    Some(graph_elem) =>
+      match dot_graph_element_as_node(graph_elem) {
+        Some(node) => node
+        None => return
+      }
+    None => return
+  }
+
+  let mut xpos = 0.0
+  let mut ypos = 0.0
+  let mut width = 0.0
+  let mut height = 0.0
+  for attribute in node_statement.get_attributes() {
+    match attribute.get_name() {
+      Some(name) =>
+        if name == dot_attr_pos {
+          match attribute.get_value() {
+            Some(value) =>
+              match dot_exporter_parse_point_token(value) {
+                Some(pos) => {
+                  xpos = pos.x + offset.x + padding.get_left()
+                  ypos = pos.y + offset.y + padding.get_top()
+                }
+                None => ()
+              }
+            None => ()
+          }
+        } else if name == dot_attr_width {
+          match attribute.get_value() {
+            Some(value) =>
+              match dot_exporter_parse_first_number(value) {
+                Some(parsed) => width = parsed * dot_exporter_dpi.to_double()
+                None => ()
+              }
+            None => ()
+          }
+        } else if name == dot_attr_height {
+          match attribute.get_value() {
+            Some(value) =>
+              match dot_exporter_parse_first_number(value) {
+                Some(parsed) => height = parsed * dot_exporter_dpi.to_double()
+                None => ()
+              }
+            None => ()
+          }
+        }
+      None => ()
+    }
+  }
+  node_set_location(elknode, xpos - width / 2.0, ypos - height / 2.0)
+}
+
+///|
+pub fn DotExporter::apply_edge_layout(
+  self : DotExporter,
+  edge_statement : DotEdgeStatement,
+  edge_offset : KVector,
+  trans_data : DotTransformationData[ElkNode, DotGraphvizModel],
+) -> Unit {
+  let attribute_map = dot_exporter_create_attribute_map(
+    edge_statement.get_attributes(),
+  )
+  let comment_value = match attribute_map.get(dot_attr_comment) {
+    Some(value) => value
+    None => return
+  }
+  let elkedge = match
+    trans_data
+    .get_graph_elem_map_property(dot_exporter_graph_elems)
+    .get(comment_value) {
+    Some(graph_elem) =>
+      match dot_graph_element_as_edge(graph_elem) {
+        Some(edge) => edge
+        None => return
+      }
+    None => return
+  }
+
+  let edge_section = dot_exporter_first_or_create_edge_section(elkedge)
+  let pos_string = match attribute_map.get(dot_attr_pos) {
+    Some(value) => value
+    None => ""
+  }
+
+  let mut reference_node = edge_containing_node(elkedge)
+  let reference = new_kvector()
+  let source_graph = trans_data.get_source_graph()
+  while reference_node is Some(node) {
+    if Some(node) == source_graph {
+      break
+    }
+    ignore(reference.add_xy(node_x(node), node_y(node)))
+    reference_node = node_parent(node)
+  }
+  let offset = new_kvector_copy(edge_offset).sub(reference)
+
+  let splines : Array[KVectorChain] = []
+  let endpoints = dot_exporter_parse_spline_points(pos_string, splines, offset)
+  let mut source_point = endpoints.get_first()
+  let mut target_point = endpoints.get_second()
+  if !splines.is_empty() {
+    if source_point is None {
+      let first_spline_points = splines[0].to_array()
+      if !first_spline_points.is_empty() {
+        source_point = Some(first_spline_points[0])
+      } else {
+        let source_node = connectable_shape_to_node(
+          Some(edge_sources(elkedge)[0]),
+        )
+        source_point = Some(
+          new_kvector_xy(
+            node_x(source_node) + node_width(source_node) / 2.0,
+            node_y(source_node) + node_height(source_node) / 2.0,
+          ),
+        )
+      }
+    }
+    if target_point is None {
+      let last_spline_points = splines[splines.length() - 1].to_array()
+      if !last_spline_points.is_empty() {
+        target_point = Some(last_spline_points[last_spline_points.length() - 1])
+      } else {
+        let target_node = connectable_shape_to_node(
+          Some(edge_targets(elkedge)[0]),
+        )
+        target_point = Some(
+          new_kvector_xy(
+            node_x(target_node) + node_width(target_node) / 2.0,
+            node_y(target_node) + node_height(target_node) / 2.0,
+          ),
+        )
+      }
+    }
+    match (source_point, target_point) {
+      (Some(source), Some(target)) => {
+        edge_section_set_start(edge_section, source.x, source.y)
+        edge_section_set_end(edge_section, target.x, target.y)
+      }
+      _ => ()
+    }
+  }
+
+  if trans_data.get_bool_property(dot_exporter_use_splines) {
+    edge_set_layout_option_string_by_id(
+      elkedge, dot_exporter_option_edge_routing, "SPLINES",
+    )
+  }
+
+  match attribute_map.get(dot_attr_labelpos) {
+    Some(label_pos) =>
+      self.apply_edge_label_pos(elkedge, label_pos, Centered, offset)
+    None => ()
+  }
+  match attribute_map.get(dot_attr_headlp) {
+    Some(label_pos) =>
+      self.apply_edge_label_pos(elkedge, label_pos, Head, offset)
+    None => ()
+  }
+  match attribute_map.get(dot_attr_taillp) {
+    Some(label_pos) =>
+      self.apply_edge_label_pos(elkedge, label_pos, Tail, offset)
+    None => ()
+  }
+}
+
+///|
+pub fn DotExporter::apply_edge_label_pos(
+  self : DotExporter,
+  elkedge : ElkEdge,
+  pos_string : String,
+  placement : EdgeLabelPlacement,
+  offset : KVector,
+) -> Unit {
+  let _ = self
+  let mut combined_width = 0.0
+  let mut combined_height = 0.0
+  for label in edge_labels(elkedge) {
+    let label_placement = dot_exporter_parse_edge_label_placement(
+      label_layout_option_string_value(
+        label, dot_exporter_option_edge_labels_placement,
+      ),
+    )
+    if edge_label_placement_to_string(label_placement) ==
+      edge_label_placement_to_string(placement) {
+      combined_width = @cmp.maximum(combined_width, label_width(label))
+      combined_height = combined_height + label_height(label)
+    }
+  }
+
+  match dot_exporter_parse_point_token(pos_string) {
+    Some(pos) => {
+      let xpos = pos.x - combined_width / 2.0 + offset.x
+      let mut ypos = pos.y - combined_height / 2.0 + offset.y
+      for label in edge_labels(elkedge) {
+        let label_placement = dot_exporter_parse_edge_label_placement(
+          label_layout_option_string_value(
+            label, dot_exporter_option_edge_labels_placement,
+          ),
+        )
+        if edge_label_placement_to_string(label_placement) ==
+          edge_label_placement_to_string(placement) {
+          let xoffset = (combined_width - label_width(label)) / 2.0
+          label_set_location(label, xpos + xoffset, ypos)
+          ypos = ypos + label_height(label)
+        }
+      }
+    }
+    None => ()
+  }
+}
+
+///|
 pub fn dot_exporter_create_string(label : String) -> String {
   let escape_buffer = @buffer.new()
   escape_buffer.write_char('"')
@@ -454,7 +1382,12 @@ fn dot_exporter_parse_double_token(text : String) -> Double? {
 
 ///|
 fn dot_exporter_parse_point_token(token : String) -> KVector? {
-  let normalized = token.trim().to_string()
+  let mut normalized = token.trim().to_string()
+  if normalized.length() >= 2 &&
+    normalized.has_prefix("\"") &&
+    normalized.has_suffix("\"") {
+    normalized = normalized.substring(start=1, end=normalized.length() - 1)
+  }
   if normalized.is_empty() {
     return None
   }

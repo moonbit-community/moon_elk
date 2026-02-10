@@ -43,6 +43,14 @@ fn option_int_to_string(value : Int?) -> String {
 }
 
 ///|
+fn base_option_string_or_none(value : String?) -> String {
+  match value {
+    Some(v) => v
+    None => "none"
+  }
+}
+
+///|
 test "DotTransformationData storage" {
   let data : DotTransformationData[Int, String] = new_dot_transformation_data()
   inspect(option_int_to_string(data.get_source_graph()), content="none")
@@ -59,4 +67,60 @@ test "DotTransformationData storage" {
   inspect(data.get_messages().length(), content="2")
   inspect(data.get_messages()[0], content="m0")
   inspect(data.get_messages()[1], content="m1")
+}
+
+///|
+test "DotTransformationData properties" {
+  let data : DotTransformationData[Int, String] = new_dot_transformation_data()
+
+  let bool_property : IProperty[Bool] = new_property("dot.test.bool", true)
+  inspect(data.get_bool_property(bool_property), content="true")
+  data.set_bool_property(bool_property, false)
+  inspect(data.get_bool_property(bool_property), content="false")
+
+  let int_property : IProperty[Int] = new_property("dot.test.int", 1)
+  inspect(data.get_int_property(int_property), content="1")
+  data.set_int_property(int_property, 42)
+  inspect(data.get_int_property(int_property), content="42")
+
+  let string_property : IProperty[String] = new_property(
+    "dot.test.string", "default",
+  )
+  inspect(data.get_string_property(string_property), content="default")
+  data.set_string_property(string_property, "value")
+  inspect(data.get_string_property(string_property), content="value")
+
+  let graph_elem_property : IProperty[Map[String, DotGraphElement]] = new_property(
+    "dot.test.graphElems",
+    {},
+  )
+  let graph_elems = data.get_graph_elem_map_property(graph_elem_property)
+  inspect(graph_elems.length(), content="0")
+  graph_elems["node-1"] = dot_graph_element_node(1)
+  graph_elems["edge-2"] = dot_graph_element_edge(2)
+
+  let graph_elems2 = data.get_graph_elem_map_property(graph_elem_property)
+  inspect(graph_elems2.length(), content="2")
+  inspect(
+    option_int_to_string(
+      match graph_elems2.get("node-1") {
+        Some(element) => dot_graph_element_as_node(element)
+        None => None
+      },
+    ),
+    content="1",
+  )
+  inspect(
+    base_option_string_or_none(
+      match graph_elems2.get("edge-2") {
+        Some(element) =>
+          match dot_graph_element_as_edge(element) {
+            Some(value) => Some(value.to_string())
+            None => None
+          }
+        None => None
+      },
+    ),
+    content="2",
+  )
 }
