@@ -972,6 +972,8 @@ pub fn point_from_kvector(KVector) -> Point
 
 pub fn point_with_quadrant(Point, Quadrant) -> Point
 
+pub fn polyomino_direction_values() -> Array[PolyominoDirection]
+
 pub fn port_alignment_to_string(PortAlignment) -> String
 
 pub let port_constraints : IProperty[String]
@@ -2292,6 +2294,14 @@ pub struct Point {
   quadrant : Quadrant?
   mut convex : Bool
 }
+
+pub enum PolyominoDirection {
+  North
+  East
+  South
+  West
+}
+pub fn PolyominoDirection::is_horizontal(Self) -> Bool
 
 pub enum PortAlignment {
   Distributed
