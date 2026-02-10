@@ -1295,24 +1295,33 @@ pub fn CNode::add_constraint(Self, Self) -> Unit
 pub fn CNode::c_group_offset(Self) -> KVector
 pub fn CNode::clear_constraints(Self) -> Unit
 pub fn CNode::constraints(Self) -> Array[Self]
+pub fn CNode::get_debug_svg(Self) -> String
 pub fn CNode::group(Self) -> CGroup?
 pub fn CNode::hitbox(Self) -> ElkRectangle
 pub fn CNode::hitbox_pre_compaction(Self) -> ElkRectangle?
 pub fn CNode::id(Self) -> Int
+pub fn CNode::node_type(Self) -> String?
+pub fn CNode::origin(Self) -> String?
 pub fn CNode::replace_constraints(Self, Array[Self]) -> Unit
 pub fn CNode::set_c_group_offset(Self, KVector) -> Unit
 pub fn CNode::set_group(Self, CGroup?) -> Unit
 pub fn CNode::set_hitbox(Self, ElkRectangle) -> Unit
 pub fn CNode::set_hitbox_pre_compaction(Self, ElkRectangle?) -> Unit
 pub fn CNode::set_id(Self, Int) -> Unit
+pub fn CNode::set_node_type(Self, String?) -> Unit
+pub fn CNode::set_origin(Self, String?) -> Unit
 pub fn CNode::set_start_pos(Self, Double) -> Unit
+pub fn CNode::set_to_string_delegate(Self, ((Self) -> String)?) -> Unit
 pub fn CNode::start_pos(Self) -> Double
+pub fn CNode::to_string(Self) -> String
+pub fn CNode::to_string_delegate(Self) -> ((Self) -> String)?
 pub impl Eq for CNode
 
 pub struct CNodeBuilder {
   mut id : Int
   mut origin : String?
   mut node_type : String?
+  mut to_string_delegate : ((CNode) -> String)?
   mut hitbox : ElkRectangle?
   mut group_parent : CNode?
 }
@@ -1322,6 +1331,7 @@ pub fn CNodeBuilder::hitbox(Self, ElkRectangle) -> Self
 pub fn CNodeBuilder::id(Self, Int) -> Self
 pub fn CNodeBuilder::node_type(Self, String) -> Self
 pub fn CNodeBuilder::origin(Self, String) -> Self
+pub fn CNodeBuilder::to_string_delegate(Self, (CNode) -> String) -> Self
 
 pub struct ComponentsProcessor {
   _dummy : Unit

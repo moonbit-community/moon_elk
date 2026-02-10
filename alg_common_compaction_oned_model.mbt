@@ -41,6 +41,7 @@ priv struct CNodeData {
   mut id : Int
   mut origin : String?
   mut node_type : String?
+  mut to_string_delegate : ((CNode) -> String)?
   mut c_group : CGroup?
   mut c_group_offset : KVector
   mut hitbox_pre_compaction : ElkRectangle?
@@ -77,6 +78,7 @@ pub struct CNodeBuilder {
   mut id : Int
   mut origin : String?
   mut node_type : String?
+  mut to_string_delegate : ((CNode) -> String)?
   mut hitbox : ElkRectangle?
   mut group_parent : CNode?
 }
@@ -213,7 +215,14 @@ pub fn CGraph::add_predefined_vertical_constraint(
 
 ///|
 pub fn cnode_of() -> CNodeBuilder {
-  { id: 0, origin: None, node_type: None, hitbox: None, group_parent: None }
+  {
+    id: 0,
+    origin: None,
+    node_type: None,
+    to_string_delegate: None,
+    hitbox: None,
+    group_parent: None,
+  }
 }
 
 ///|
@@ -237,6 +246,15 @@ pub fn CNodeBuilder::node_type(
   node_type : String,
 ) -> CNodeBuilder {
   self.node_type = Some(node_type)
+  self
+}
+
+///|
+pub fn CNodeBuilder::to_string_delegate(
+  self : CNodeBuilder,
+  delegate : (CNode) -> String,
+) -> CNodeBuilder {
+  self.to_string_delegate = Some(delegate)
   self
 }
 
@@ -271,6 +289,7 @@ pub fn CNodeBuilder::create(self : CNodeBuilder, graph : CGraph) -> CNode {
     id: self.id,
     origin: self.origin,
     node_type: self.node_type,
+    to_string_delegate: self.to_string_delegate,
     c_group: None,
     c_group_offset: { x: 0.0, y: 0.0 },
     hitbox_pre_compaction: None,
@@ -367,6 +386,45 @@ pub fn CGroupBuilder::create(self : CGroupBuilder, graph : CGraph) -> CGroup {
 pub fn CNode::id(self : CNode) -> Int {
   checked_cnode(self)
   cnode_store.val[self.handle].id
+}
+
+///|
+pub fn CNode::origin(self : CNode) -> String? {
+  checked_cnode(self)
+  cnode_store.val[self.handle].origin
+}
+
+///|
+pub fn CNode::set_origin(self : CNode, origin : String?) -> Unit {
+  checked_cnode(self)
+  cnode_store.val[self.handle].origin = origin
+}
+
+///|
+pub fn CNode::node_type(self : CNode) -> String? {
+  checked_cnode(self)
+  cnode_store.val[self.handle].node_type
+}
+
+///|
+pub fn CNode::set_node_type(self : CNode, node_type : String?) -> Unit {
+  checked_cnode(self)
+  cnode_store.val[self.handle].node_type = node_type
+}
+
+///|
+pub fn CNode::to_string_delegate(self : CNode) -> ((CNode) -> String)? {
+  checked_cnode(self)
+  cnode_store.val[self.handle].to_string_delegate
+}
+
+///|
+pub fn CNode::set_to_string_delegate(
+  self : CNode,
+  delegate : ((CNode) -> String)?,
+) -> Unit {
+  checked_cnode(self)
+  cnode_store.val[self.handle].to_string_delegate = delegate
 }
 
 ///|
@@ -475,6 +533,30 @@ pub fn CNode::replace_constraints(
     checked_cnode(node)
     cnode_store.val[self.handle].constraints.push(node)
   }
+}
+
+///|
+pub fn CNode::to_string(self : CNode) -> String {
+  checked_cnode(self)
+  match self.to_string_delegate() {
+    Some(delegate) => delegate(self)
+    None => "CNode(\{self.id()})"
+  }
+}
+
+///|
+pub fn CNode::get_debug_svg(self : CNode) -> String {
+  checked_cnode(self)
+  let hitbox = self.hitbox()
+  let width = if hitbox.width > 1.0 { hitbox.width } else { 1.0 }
+  let height = if hitbox.height > 1.0 { hitbox.height } else { 1.0 }
+  let x = hitbox.x
+  let y = hitbox.y
+  let text_x = x + 2.0
+  let text_y = y + 11.0
+  let rect_svg = "<rect x=\"\{x}\" y=\"\{y}\" width=\"\{width}\" height=\"\{height}\" fill=\"green\" stroke=\"black\" opacity=\"0.5\"/>"
+  let text_svg = "<text x=\"\{text_x}\" y=\"\{text_y}\">(\{x.round()}, \{y.round()})\n\{self.to_string()}</text>"
+  rect_svg + text_svg
 }
 
 ///|
