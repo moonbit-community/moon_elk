@@ -334,6 +334,12 @@ pub fn node_children(node : ElkNode) -> Array[ElkNode] {
 }
 
 ///|
+pub fn node_ports(node : ElkNode) -> Array[ElkPort] {
+  checked_node(node)
+  node_store.val[node].ports
+}
+
+///|
 pub fn node_contained_edges(node : ElkNode) -> Array[ElkEdge] {
   checked_node(node)
   node_store.val[node].contained_edges
@@ -899,6 +905,91 @@ pub fn edge_sources(edge : ElkEdge) -> Array[ElkConnectableShape] {
 pub fn edge_targets(edge : ElkEdge) -> Array[ElkConnectableShape] {
   checked_edge(edge)
   edge_store.val[edge].targets
+}
+
+///|
+pub fn all_edges() -> Array[ElkEdge] {
+  let edges = []
+  for edge = 0; edge < edge_store.val.length(); edge = edge + 1 {
+    edges.push(edge)
+  }
+  edges
+}
+
+///|
+pub fn port_incoming_edges(port : ElkPort) -> Array[ElkEdge] {
+  checked_port(port)
+  let incoming = []
+  for edge in all_edges() {
+    for target in edge_targets(edge) {
+      match target {
+        PortShape(target_port) =>
+          if target_port == port {
+            incoming.push(edge)
+            break
+          }
+        _ => ()
+      }
+    }
+  }
+  incoming
+}
+
+///|
+pub fn port_outgoing_edges(port : ElkPort) -> Array[ElkEdge] {
+  checked_port(port)
+  let outgoing = []
+  for edge in all_edges() {
+    for source in edge_sources(edge) {
+      match source {
+        PortShape(source_port) =>
+          if source_port == port {
+            outgoing.push(edge)
+            break
+          }
+        _ => ()
+      }
+    }
+  }
+  outgoing
+}
+
+///|
+pub fn node_incoming_edges(node : ElkNode) -> Array[ElkEdge] {
+  checked_node(node)
+  let incoming = []
+  for edge in all_edges() {
+    for target in edge_targets(edge) {
+      match target {
+        NodeShape(target_node) =>
+          if target_node == node {
+            incoming.push(edge)
+            break
+          }
+        _ => ()
+      }
+    }
+  }
+  incoming
+}
+
+///|
+pub fn node_outgoing_edges(node : ElkNode) -> Array[ElkEdge] {
+  checked_node(node)
+  let outgoing = []
+  for edge in all_edges() {
+    for source in edge_sources(edge) {
+      match source {
+        NodeShape(source_node) =>
+          if source_node == node {
+            outgoing.push(edge)
+            break
+          }
+        _ => ()
+      }
+    }
+  }
+  outgoing
 }
 
 ///|

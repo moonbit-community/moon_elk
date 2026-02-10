@@ -28,6 +28,8 @@ pub let alignment : IProperty[String]
 
 pub fn alignment_to_string(Alignment) -> String
 
+pub fn all_edges() -> Array[Int]
+
 pub fn apply_visitor(Int, IGraphElementVisitor) -> Unit
 
 pub fn apply_visitors(Int, Array[IGraphElementVisitor]) -> Unit
@@ -912,6 +914,8 @@ pub fn node_height(Int) -> Double
 
 pub fn node_identifier(Int) -> String
 
+pub fn node_incoming_edges(Int) -> Array[Int]
+
 pub fn node_label_placement_fixed() -> Array[NodeLabelPlacement]
 
 pub fn node_label_placement_inside_bottom_center() -> Array[NodeLabelPlacement]
@@ -956,7 +960,11 @@ pub fn node_layout_option_string_entries(Int) -> Array[(String, String)]
 
 pub fn node_layout_option_string_value(Int, String) -> String?
 
+pub fn node_outgoing_edges(Int) -> Array[Int]
+
 pub fn node_parent(Int) -> Int?
+
+pub fn node_ports(Int) -> Array[Int]
 
 pub fn node_set_bool_property(Int, IProperty[Bool], Bool) -> Unit
 
@@ -1018,6 +1026,8 @@ pub fn port_constraints_to_string(PortConstraints) -> String
 
 pub fn port_constraints_values() -> Array[PortConstraints]
 
+pub fn port_incoming_edges(Int) -> Array[Int]
+
 pub fn port_label_placement_fixed() -> Array[PortLabelPlacement]
 
 pub fn port_label_placement_inside() -> Array[PortLabelPlacement]
@@ -1039,6 +1049,8 @@ pub let port_labels_next_to_port_if_possible : IProperty[Bool]
 pub let port_labels_placement : IProperty[Array[String]]
 
 pub fn port_layout_option_string_value(Int, String) -> String?
+
+pub fn port_outgoing_edges(Int) -> Array[Int]
 
 pub fn port_parent(Int) -> Int?
 

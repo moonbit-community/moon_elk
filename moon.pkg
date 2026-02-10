@@ -1,0 +1,10 @@
+import {
+  "moonbitlang/core/buffer" @buffer,
+  "moonbitlang/core/double" @double,
+  "moonbitlang/core/float" @float,
+  "moonbitlang/core/int" @int,
+  "moonbitlang/core/math" @math,
+  "moonbitlang/core/json" @json,
+  "moonbitlang/core/random" @random,
+  "moonbitlang/core/strconv" @strconv,
+}
