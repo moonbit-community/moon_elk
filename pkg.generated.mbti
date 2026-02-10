@@ -658,6 +658,10 @@ pub fn new_elk_rectangle_copy(ElkRectangle) -> ElkRectangle
 
 pub fn new_elk_rectangle_xywh(Double, Double, Double, Double) -> ElkRectangle
 
+pub fn new_empty_planar_grid() -> PlanarGrid
+
+pub fn new_empty_polyomino() -> Polyomino
+
 pub fn[T] new_factory(() -> T, destroy_fn? : (T) -> Unit) -> IFactory[T]
 
 pub fn new_fbendpoint(Int) -> Int
@@ -770,9 +774,15 @@ pub fn new_one_dimensional_compactor(CGraph) -> OneDimensionalCompactor
 
 pub fn[P] new_phase_descriptor(Array[P], (P) -> Int) -> PhaseDescriptor[P]
 
+pub fn new_planar_grid(Int, Int) -> PlanarGrid
+
 pub fn new_point(Double, Double) -> Point
 
 pub fn new_point_in_quadrant(Double, Double, Quadrant) -> Point
+
+pub fn new_polyomino(Int, Int) -> Polyomino
+
+pub fn new_polyomino_with_extensions(Int, Int, Array[UniqueTriple[PolyominoDirection, Int, Int]]) -> Polyomino
 
 pub fn[T] new_property(String, T) -> IProperty[T]
 
@@ -2288,12 +2298,78 @@ pub fn[P] PhaseDescriptor::ordinal_of(Self[P], P) -> Int
 pub fn[P] PhaseDescriptor::phases(Self[P]) -> Array[P]
 pub fn[P] PhaseDescriptor::size(Self[P]) -> Int
 
+pub struct PlanarGrid {
+  two_bit_grid : TwoBitGrid
+  mut x_center : Int
+  mut y_center : Int
+}
+pub fn PlanarGrid::add_filled_cells_from(Self, Self, Int, Int) -> Unit
+pub fn PlanarGrid::add_filled_cells_from_polyomino(Self, Polyomino, Int, Int) -> Unit
+pub fn PlanarGrid::get_center_x(Self) -> Int
+pub fn PlanarGrid::get_center_y(Self) -> Int
+pub fn PlanarGrid::get_filled_bounds(Self) -> Quadruple[Int, Int, Int, Int]
+pub fn PlanarGrid::height(Self) -> Int
+pub fn PlanarGrid::in_bounds(Self, Int, Int) -> Bool
+pub fn PlanarGrid::in_bounds_center_based(Self, Int, Int) -> Bool
+pub fn PlanarGrid::intersects_with_center_based(Self, Self, Int, Int) -> Bool
+pub fn PlanarGrid::intersects_with_center_based_polyomino(Self, Polyomino, Int, Int) -> Bool
+pub fn PlanarGrid::is_blocked(Self, Int, Int) -> Bool
+pub fn PlanarGrid::is_blocked_center_based(Self, Int, Int) -> Bool
+pub fn PlanarGrid::is_empty(Self, Int, Int) -> Bool
+pub fn PlanarGrid::is_empty_center_based(Self, Int, Int) -> Bool
+pub fn PlanarGrid::is_weakly_blocked(Self, Int, Int) -> Bool
+pub fn PlanarGrid::is_weakly_blocked_center_based(Self, Int, Int) -> Bool
+pub fn PlanarGrid::reinitialize(Self, Int, Int) -> Unit
+pub fn PlanarGrid::set_blocked(Self, Int, Int) -> Unit
+pub fn PlanarGrid::set_blocked_center_based(Self, Int, Int) -> Unit
+pub fn PlanarGrid::set_empty(Self, Int, Int) -> Unit
+pub fn PlanarGrid::set_empty_center_based(Self, Int, Int) -> Unit
+pub fn PlanarGrid::set_weakly_blocked(Self, Int, Int) -> Unit
+pub fn PlanarGrid::set_weakly_blocked_center_based(Self, Int, Int) -> Unit
+pub fn PlanarGrid::to_string(Self) -> String
+pub fn PlanarGrid::weakly_block_area(Self, Int, Int, Int, Int) -> Unit
+pub fn PlanarGrid::weakly_intersects_area(Self, Int, Int, Int, Int) -> Bool
+pub fn PlanarGrid::width(Self) -> Int
+
 pub struct Point {
   x : Double
   y : Double
   quadrant : Quadrant?
   mut convex : Bool
 }
+
+pub struct Polyomino {
+  planar_grid : PlanarGrid
+  mut x : Int
+  mut y : Int
+  polyomino_extensions : Array[UniqueTriple[PolyominoDirection, Int, Int]]
+}
+pub fn Polyomino::add_extension(Self, PolyominoDirection, Int, Int) -> Unit
+pub fn Polyomino::as_planar_grid(Self) -> PlanarGrid
+pub fn Polyomino::get_center_x(Self) -> Int
+pub fn Polyomino::get_center_y(Self) -> Int
+pub fn Polyomino::get_polyomino_extensions(Self) -> Array[UniqueTriple[PolyominoDirection, Int, Int]]
+pub fn Polyomino::get_x(Self) -> Int
+pub fn Polyomino::get_y(Self) -> Int
+pub fn Polyomino::height(Self) -> Int
+pub fn Polyomino::in_bounds(Self, Int, Int) -> Bool
+pub fn Polyomino::in_bounds_center_based(Self, Int, Int) -> Bool
+pub fn Polyomino::is_blocked(Self, Int, Int) -> Bool
+pub fn Polyomino::is_blocked_center_based(Self, Int, Int) -> Bool
+pub fn Polyomino::is_empty(Self, Int, Int) -> Bool
+pub fn Polyomino::is_empty_center_based(Self, Int, Int) -> Bool
+pub fn Polyomino::is_weakly_blocked(Self, Int, Int) -> Bool
+pub fn Polyomino::is_weakly_blocked_center_based(Self, Int, Int) -> Bool
+pub fn Polyomino::reinitialize(Self, Int, Int) -> Unit
+pub fn Polyomino::set_blocked(Self, Int, Int) -> Unit
+pub fn Polyomino::set_blocked_center_based(Self, Int, Int) -> Unit
+pub fn Polyomino::set_empty(Self, Int, Int) -> Unit
+pub fn Polyomino::set_empty_center_based(Self, Int, Int) -> Unit
+pub fn Polyomino::set_weakly_blocked(Self, Int, Int) -> Unit
+pub fn Polyomino::set_weakly_blocked_center_based(Self, Int, Int) -> Unit
+pub fn Polyomino::set_x(Self, Int) -> Unit
+pub fn Polyomino::set_y(Self, Int) -> Unit
+pub fn Polyomino::width(Self) -> Int
 
 pub enum PolyominoDirection {
   North
