@@ -52,6 +52,36 @@ fn create_two_components_graph() -> FGraph {
 }
 
 ///|
+fn imported_node_by_origin(graph : FGraph, origin : ElkNode) -> FNode? {
+  for node in graph.get_nodes() {
+    if fnode_origin(node) == Some(origin) {
+      return Some(node)
+    }
+  }
+  None
+}
+
+///|
+fn imported_edge_by_origin(graph : FGraph, origin : ElkEdge) -> FEdge? {
+  for edge in graph.get_edges() {
+    if fedge_origin(edge) == Some(origin) {
+      return Some(edge)
+    }
+  }
+  None
+}
+
+///|
+fn imported_label_by_origin(graph : FGraph, origin : ElkLabel) -> FLabel? {
+  for label in graph.get_labels() {
+    if flabel_origin(label) == Some(origin) {
+      return Some(label)
+    }
+  }
+  None
+}
+
+///|
 test "ForceImportTest import simple graph" {
   reset_graph_model_for_test()
   reset_force_graph_model_for_test()
@@ -120,4 +150,187 @@ test "ElkGraphImporter applyLayout respects fixed graph size" {
   assert_eq(node_height(graph), 41.0)
   assert_eq(node_get_double_property(graph, child_area_width), 10.0)
   assert_eq(node_get_double_property(graph, child_area_height), 10.0)
+}
+
+///|
+test "ElkGraphImporter importGraph copies graph and element options" {
+  reset_graph_model_for_test()
+  reset_force_graph_model_for_test()
+  let graph = create_graph()
+  node_set_layout_option_string_by_id(graph, force_model.get_id(), "EADES")
+  node_set_layout_option_string_by_id(graph, force_iterations.get_id(), "17")
+  node_set_layout_option_string_by_id(graph, force_random_seed.get_id(), "42")
+  node_set_layout_option_string_by_id(graph, stress_dimension.get_id(), "Y")
+  node_set_layout_option_string_by_id(
+    graph,
+    stress_iteration_limit.get_id(),
+    "25",
+  )
+  node_set_layout_option_string_by_id(graph, force_temperature.get_id(), "0.25")
+  node_set_layout_option_string_by_id(graph, force_repulsion.get_id(), "7.5")
+  node_set_layout_option_string_by_id(
+    graph,
+    force_spacing_node_node.get_id(),
+    "123.0",
+  )
+  node_set_layout_option_string_by_id(
+    graph,
+    force_aspect_ratio.get_id(),
+    "2.5f",
+  )
+  node_set_layout_option_string_by_id(
+    graph,
+    stress_desired_edge_length.get_id(),
+    "33.3",
+  )
+  node_set_layout_option_string_by_id(graph, stress_epsilon.get_id(), "0.02")
+  node_set_layout_option_string_by_id(
+    graph,
+    force_edge_labels_inline.get_id(),
+    "true",
+  )
+  node_set_layout_option_string_by_id(
+    graph,
+    force_padding.get_id(),
+    "[top=1,right=2,bottom=3,left=4]",
+  )
+  let left = create_node(Some(graph))
+  let right = create_node(Some(graph))
+  let edge = create_simple_edge(left, right)
+  let edge_label = create_label(Some(make_edge_label_parent(edge)))
+  node_set_layout_option_string_by_id(left, force_priority.get_id(), "4")
+  node_set_layout_option_string_by_id(left, stress_fixed.get_id(), "true")
+  edge_set_layout_option_string_by_id(edge, force_priority.get_id(), "9")
+  edge_set_layout_option_string_by_id(edge, force_repulsive_power.get_id(), "3")
+  edge_set_layout_option_string_by_id(
+    edge,
+    stress_desired_edge_length.get_id(),
+    "55.5",
+  )
+  edge_set_layout_option_string_by_id(
+    edge,
+    force_edge_labels_inline.get_id(),
+    "false",
+  )
+  label_set_layout_option_string_by_id(
+    edge_label,
+    force_edge_labels_inline.get_id(),
+    "true",
+  )
+  let importer = new_elk_graph_importer()
+  let force_graph = importer.import_graph(graph)
+  ignore(force_graph.get_model_property(force_model))
+  assert_eq(force_graph.get_int_property(force_iterations), 17)
+  assert_eq(force_graph.get_int_property(force_random_seed), 42)
+  assert_eq(force_graph.get_int_property(stress_dimension), 2)
+  assert_eq(force_graph.get_int_property(stress_iteration_limit), 25)
+  assert_eq(force_graph.get_double_property(force_temperature), 0.25)
+  assert_eq(force_graph.get_double_property(force_repulsion), 7.5)
+  assert_eq(force_graph.get_double_property(force_spacing_node_node), 123.0)
+  assert_eq(force_graph.get_double_property(force_aspect_ratio), 2.5)
+  assert_eq(force_graph.get_double_property(stress_desired_edge_length), 33.3)
+  assert_eq(force_graph.get_double_property(stress_epsilon), 0.02)
+  assert_eq(force_graph.get_property(force_edge_labels_inline), true)
+  let padding = force_graph.get_padding_property(force_padding)
+  assert_eq(padding.get_top(), 1.0)
+  assert_eq(padding.get_right(), 2.0)
+  assert_eq(padding.get_bottom(), 3.0)
+  assert_eq(padding.get_left(), 4.0)
+  let imported_left = match imported_node_by_origin(force_graph, left) {
+    Some(node) => node
+    None => abort("missing imported node")
+  }
+  assert_eq(fnode_get_int_property(imported_left, force_priority), 4)
+  assert_eq(fnode_get_bool_property(imported_left, stress_fixed), true)
+  let imported_edge = match imported_edge_by_origin(force_graph, edge) {
+    Some(imported) => imported
+    None => abort("missing imported edge")
+  }
+  assert_eq(fedge_get_int_property(imported_edge, force_priority), 9)
+  assert_eq(fedge_get_int_property(imported_edge, force_repulsive_power), 3)
+  assert_eq(
+    fedge_get_double_property(imported_edge, stress_desired_edge_length),
+    55.5,
+  )
+  let imported_label = match imported_label_by_origin(force_graph, edge_label) {
+    Some(label) => label
+    None => abort("missing imported label")
+  }
+  assert_eq(
+    flabel_get_bool_property(imported_label, force_edge_labels_inline),
+    true,
+  )
+}
+
+///|
+test "ElkGraphImporter importGraph keeps edge desired length as explicit override only" {
+  reset_graph_model_for_test()
+  reset_force_graph_model_for_test()
+  let graph = create_graph()
+  node_set_layout_option_string_by_id(
+    graph,
+    stress_desired_edge_length.get_id(),
+    "77.0",
+  )
+  node_set_layout_option_string_by_id(
+    graph,
+    force_edge_labels_inline.get_id(),
+    "true",
+  )
+  let a = create_node(Some(graph))
+  let b = create_node(Some(graph))
+  let c = create_node(Some(graph))
+  let edge1 = create_simple_edge(a, b)
+  let edge2 = create_simple_edge(a, c)
+  edge_set_layout_option_string_by_id(
+    edge2,
+    stress_desired_edge_length.get_id(),
+    "12.5",
+  )
+  edge_set_layout_option_string_by_id(
+    edge2,
+    force_edge_labels_inline.get_id(),
+    "false",
+  )
+  let label1 = create_label(Some(make_edge_label_parent(edge1)))
+  let label2 = create_label(Some(make_edge_label_parent(edge2)))
+  let importer = new_elk_graph_importer()
+  let force_graph = importer.import_graph(graph)
+  assert_eq(force_graph.get_double_property(stress_desired_edge_length), 77.0)
+  let imported_edge1 = match imported_edge_by_origin(force_graph, edge1) {
+    Some(edge) => edge
+    None => abort("missing imported edge1")
+  }
+  let imported_edge2 = match imported_edge_by_origin(force_graph, edge2) {
+    Some(edge) => edge
+    None => abort("missing imported edge2")
+  }
+  assert_eq(
+    fedge_has_double_property(imported_edge1, stress_desired_edge_length),
+    false,
+  )
+  assert_eq(
+    fedge_has_double_property(imported_edge2, stress_desired_edge_length),
+    true,
+  )
+  assert_eq(
+    fedge_get_double_property(imported_edge2, stress_desired_edge_length),
+    12.5,
+  )
+  let imported_label1 = match imported_label_by_origin(force_graph, label1) {
+    Some(label) => label
+    None => abort("missing imported label1")
+  }
+  let imported_label2 = match imported_label_by_origin(force_graph, label2) {
+    Some(label) => label
+    None => abort("missing imported label2")
+  }
+  assert_eq(
+    flabel_get_bool_property(imported_label1, force_edge_labels_inline),
+    true,
+  )
+  assert_eq(
+    flabel_get_bool_property(imported_label2, force_edge_labels_inline),
+    false,
+  )
 }
