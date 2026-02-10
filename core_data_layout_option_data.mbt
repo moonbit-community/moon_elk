@@ -9,6 +9,18 @@ pub enum LayoutOptionValueType {
 }
 
 ///|
+pub fn LayoutOptionValueType::to_string(self : LayoutOptionValueType) -> String {
+  match self {
+    BoolType => "BOOLEAN"
+    IntType => "INT"
+    DoubleType => "DOUBLE"
+    StringType => "STRING"
+    EnumSetType => "ENUMSET"
+    ObjectType => "OBJECT"
+  }
+}
+
+///|
 pub enum LayoutOptionTarget {
   ParentsTarget
   NodesTarget
@@ -18,10 +30,32 @@ pub enum LayoutOptionTarget {
 }
 
 ///|
+pub fn LayoutOptionTarget::to_string(self : LayoutOptionTarget) -> String {
+  match self {
+    ParentsTarget => "PARENTS"
+    NodesTarget => "NODES"
+    EdgesTarget => "EDGES"
+    PortsTarget => "PORTS"
+    LabelsTarget => "LABELS"
+  }
+}
+
+///|
 pub enum LayoutOptionVisibility {
   VisibleOption
   AdvancedOption
   HiddenOption
+}
+
+///|
+pub fn LayoutOptionVisibility::to_string(
+  self : LayoutOptionVisibility,
+) -> String {
+  match self {
+    VisibleOption => "VISIBLE"
+    AdvancedOption => "ADVANCED"
+    HiddenOption => "HIDDEN"
+  }
 }
 
 ///|

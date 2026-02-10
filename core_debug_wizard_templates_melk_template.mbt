@@ -1,0 +1,42 @@
+///|
+pub fn melk_template_build_file_content(
+  project_package : String,
+  layout_provider_path : String,
+  layout_provider : String,
+  id_prefix : String,
+  algorithm_name : String,
+  label : String,
+) -> String {
+  let lines = [
+    "package " + project_package,
+    "",
+    "import " + layout_provider_path + "." + layout_provider,
+    "import org.eclipse.elk.core.math.ElkPadding",
+    "",
+    "bundle {",
+    "    metadataClass " + algorithm_name + "MetadataProvider",
+    "    idPrefix " + id_prefix,
+    "}",
+    "",
+    "option reverseInput : boolean {",
+    "    label \"Reverse Input\"",
+    "    description",
+    "        \"True if nodes should be placed in reverse order of their",
+    "        appearance in the graph.\"",
+    "    default = false",
+    "    targets parents",
+    "}",
+    "",
+    "algorithm " + algorithm_name + "(" + layout_provider + ") {",
+    "    label \"" + label + "\"",
+    "    description \"Please insert a short but informative description here\"",
+    "    metadataClass options." + algorithm_name + "Options",
+    "    supports reverseInput",
+    "    supports org.eclipse.elk.padding = new ElkPadding(10)",
+    "    supports org.eclipse.elk.spacing.edgeEdge = 5",
+    "    supports org.eclipse.elk.spacing.edgeNode = 10",
+    "    supports org.eclipse.elk.spacing.nodeNode = 10",
+    "}",
+  ]
+  lines.join("\n")
+}

@@ -7,8 +7,10 @@ pub struct LayoutAlgorithmData {
   name : String
   description : String
   validator : GraphValidationFunction?
+  mut category_id : String
   bundle_name : String
   instance_pool_clear_fn : () -> Unit
+  supported_features : Map[String, GraphFeature]
   known_options : Map[String, Unit]
 }
 
@@ -18,6 +20,7 @@ pub fn new_layout_algorithm_data(
   name? : String = "",
   description? : String = "",
   validator? : GraphValidationFunction? = None,
+  category_id? : String = "",
   bundle_name? : String = "",
   instance_pool_clear_fn? : () -> Unit = () => (),
 ) -> LayoutAlgorithmData {
@@ -26,8 +29,10 @@ pub fn new_layout_algorithm_data(
     name,
     description,
     validator,
+    category_id,
     bundle_name,
     instance_pool_clear_fn,
+    supported_features: {},
     known_options: {},
   }
 }
@@ -64,10 +69,53 @@ pub fn LayoutAlgorithmData::get_bundle_name(
 }
 
 ///|
+pub fn LayoutAlgorithmData::get_category_id(
+  self : LayoutAlgorithmData,
+) -> String {
+  self.category_id
+}
+
+///|
+pub fn LayoutAlgorithmData::set_category_id(
+  self : LayoutAlgorithmData,
+  category_id : String,
+) -> Unit {
+  self.category_id = category_id
+}
+
+///|
 pub fn LayoutAlgorithmData::clear_instance_pool(
   self : LayoutAlgorithmData,
 ) -> Unit {
   (self.instance_pool_clear_fn)()
+}
+
+///|
+pub fn LayoutAlgorithmData::add_supported_feature(
+  self : LayoutAlgorithmData,
+  feature : GraphFeature,
+) -> Unit {
+  self.supported_features[feature.to_string()] = feature
+}
+
+///|
+pub fn LayoutAlgorithmData::supports_feature(
+  self : LayoutAlgorithmData,
+  feature : GraphFeature,
+) -> Bool {
+  self.supported_features.contains(feature.to_string())
+}
+
+///|
+pub fn LayoutAlgorithmData::get_supported_features(
+  self : LayoutAlgorithmData,
+) -> Array[GraphFeature] {
+  let features = []
+  self.supported_features.each((id, feature) => {
+    ignore(id)
+    features.push(feature)
+  })
+  features
 }
 
 ///|

@@ -30,6 +30,8 @@ pub fn alignment_to_string(Alignment) -> String
 
 pub fn all_edges() -> Array[Int]
 
+pub let apply_layout_role : String
+
 pub fn apply_visitor(Int, IGraphElementVisitor) -> Unit
 
 pub fn apply_visitors(Int, Array[IGraphElementVisitor]) -> Unit
@@ -80,9 +82,15 @@ pub let class_graph_element : String
 
 pub let class_node_element : String
 
+pub let clear_execution_action_id : String
+
+pub let clear_executions_action_id : String
+
 pub fn clip_vector(KVector, Double, Double) -> KVector
 
 pub fn cnode_of() -> CNodeBuilder
+
+pub let collapse_execution_tree_action_id : String
 
 pub fn command_parse(String) -> Command
 
@@ -101,6 +109,12 @@ pub fn compare_fuzzy_le(Double, Double) -> Bool
 pub fn compare_fuzzy_lt(Double, Double) -> Bool
 
 pub let compare_fuzzy_tolerance : Double
+
+pub fn compress_log_folder_action_complete_file_name(String?) -> String?
+
+pub let compress_log_folder_action_id : String
+
+pub fn compress_log_folder_action_suggested_file_name(Array[Int]) -> String
 
 pub fn config_state_add_observer(ConfigState, (State) -> Unit) -> Unit
 
@@ -171,6 +185,258 @@ pub fn content_alignment_top_left() -> Array[ContentAlignment]
 pub fn content_alignment_top_right() -> Array[ContentAlignment]
 
 pub fn content_alignment_values_to_strings(Array[ContentAlignment]) -> Array[String]
+
+pub fn core_debug_dialog_settings_section(String) -> CoreDebugDialogSettingsSection
+
+pub fn core_debug_directory_children(String) -> Array[String]
+
+pub fn core_debug_get_launched_programs_for_test() -> Array[String]
+
+pub fn core_debug_get_zip_outputs_for_test() -> Array[CoreDebugZipOutput]
+
+pub let core_debug_grandom_blind_text_character_min_length : Int
+
+pub let core_debug_grandom_blind_text_character_range : Int
+
+pub fn core_debug_grandom_blind_text_generate() -> String
+
+pub fn core_debug_grandom_blind_text_generate_with_random(@random.Rand) -> String
+
+pub fn core_debug_grandom_configuration_parser_parse(CoreDebugGRandomConfiguration, @random.Rand) -> CoreDebugGRandomGeneratorOptions
+
+pub fn core_debug_grandom_constraint_free() -> CoreDebugGRandomConstraintType
+
+pub fn core_debug_grandom_constraint_position() -> CoreDebugGRandomConstraintType
+
+pub let core_debug_grandom_create_node_labels : IProperty[Bool]
+
+pub let core_debug_grandom_create_port_labels : IProperty[Bool]
+
+pub let core_debug_grandom_cross_hier : IProperty[CoreDebugGRandomRandVal]
+
+pub let core_debug_grandom_cross_hierarchy_edges : IProperty[Bool]
+
+pub let core_debug_grandom_cycles : IProperty[Bool]
+
+pub let core_debug_grandom_density : IProperty[CoreDebugGRandomRandVal]
+
+pub fn core_debug_grandom_do_setup() -> CoreDebugGRandomRuntimeModule
+
+pub fn core_debug_grandom_double_quantity_exact(Double) -> CoreDebugGRandomDoubleQuantity
+
+pub fn core_debug_grandom_double_quantity_exists(CoreDebugGRandomDoubleQuantity?) -> Bool
+
+pub fn core_debug_grandom_double_quantity_gaussian(Double, Double) -> CoreDebugGRandomDoubleQuantity
+
+pub fn core_debug_grandom_double_quantity_min_max(Double, Double) -> CoreDebugGRandomDoubleQuantity
+
+pub let core_debug_grandom_edge_determination : IProperty[CoreDebugGRandomEdgeDetermination]
+
+pub fn core_debug_grandom_edge_determination_absolute() -> CoreDebugGRandomEdgeDetermination
+
+pub fn core_debug_grandom_edge_determination_density() -> CoreDebugGRandomEdgeDetermination
+
+pub fn core_debug_grandom_edge_determination_equals(CoreDebugGRandomEdgeDetermination, CoreDebugGRandomEdgeDetermination) -> Bool
+
+pub fn core_debug_grandom_edge_determination_outgoing() -> CoreDebugGRandomEdgeDetermination
+
+pub fn core_debug_grandom_edge_determination_relative() -> CoreDebugGRandomEdgeDetermination
+
+pub let core_debug_grandom_edge_labels : IProperty[Bool]
+
+pub let core_debug_grandom_edges_absolute : IProperty[CoreDebugGRandomRandVal]
+
+pub fn core_debug_grandom_edges_exists(CoreDebugGRandomEdges?) -> Bool
+
+pub let core_debug_grandom_enable_hierarchy : IProperty[Bool]
+
+pub let core_debug_grandom_enable_ports : IProperty[Bool]
+
+pub let core_debug_grandom_exact_relative_hier : IProperty[CoreDebugGRandomRandVal?]
+
+pub let core_debug_grandom_file_format : IProperty[CoreDebugGRandomFileFormat]
+
+pub fn core_debug_grandom_file_format_xtext() -> CoreDebugGRandomFileFormat
+
+pub let core_debug_grandom_file_name : IProperty[String]
+
+pub fn core_debug_grandom_flow_incoming() -> CoreDebugGRandomFlowType
+
+pub fn core_debug_grandom_form_bipartite() -> CoreDebugGRandomForm
+
+pub fn core_debug_grandom_form_custom() -> CoreDebugGRandomForm
+
+pub fn core_debug_grandom_form_trees() -> CoreDebugGRandomForm
+
+pub fn core_debug_grandom_format_elkg() -> CoreDebugGRandomFormats
+
+pub fn core_debug_grandom_format_elkt() -> CoreDebugGRandomFormats
+
+pub let core_debug_grandom_graph_type : IProperty[CoreDebugGRandomGraphType]
+
+pub fn core_debug_grandom_graph_type_acyclic_no_transitive_edges() -> CoreDebugGRandomGraphType
+
+pub fn core_debug_grandom_graph_type_biconnected() -> CoreDebugGRandomGraphType
+
+pub fn core_debug_grandom_graph_type_bipartite() -> CoreDebugGRandomGraphType
+
+pub fn core_debug_grandom_graph_type_custom() -> CoreDebugGRandomGraphType
+
+pub fn core_debug_grandom_graph_type_equals(CoreDebugGRandomGraphType, CoreDebugGRandomGraphType) -> Bool
+
+pub fn core_debug_grandom_graph_type_tree() -> CoreDebugGRandomGraphType
+
+pub fn core_debug_grandom_graph_type_triconnected() -> CoreDebugGRandomGraphType
+
+pub let core_debug_grandom_hierarchy_chance : IProperty[Double]
+
+pub fn core_debug_grandom_hierarchy_exists(CoreDebugGRandomHierarchy?) -> Bool
+
+pub let core_debug_grandom_hierarchy_nodes_factor : IProperty[Double]
+
+pub let core_debug_grandom_hypernode_chance : IProperty[Double]
+
+pub let core_debug_grandom_incoming_east_side : IProperty[Int]
+
+pub let core_debug_grandom_incoming_north_side : IProperty[Int]
+
+pub let core_debug_grandom_incoming_south_side : IProperty[Int]
+
+pub let core_debug_grandom_incoming_west_side : IProperty[Int]
+
+pub let core_debug_grandom_isolated_nodes : IProperty[Bool]
+
+pub let core_debug_grandom_max_degree : IProperty[Int]
+
+pub let core_debug_grandom_max_hierarchy_level : IProperty[CoreDebugGRandomRandVal]
+
+pub let core_debug_grandom_max_width : IProperty[Int]
+
+pub let core_debug_grandom_multi_edges : IProperty[Bool]
+
+pub let core_debug_grandom_node_height : IProperty[CoreDebugGRandomRandVal]
+
+pub let core_debug_grandom_node_width : IProperty[CoreDebugGRandomRandVal]
+
+pub fn core_debug_grandom_nodes_exists(CoreDebugGRandomNodes?) -> Bool
+
+pub let core_debug_grandom_number_hierarchical_nodes : IProperty[CoreDebugGRandomRandVal]
+
+pub let core_debug_grandom_number_of_graphs : IProperty[Int]
+
+pub let core_debug_grandom_number_of_nodes : IProperty[CoreDebugGRandomRandVal]
+
+pub fn core_debug_grandom_options_restrictions(CoreDebugGRandomConfiguration) -> Array[CoreDebugGRandomValidationError]
+
+pub let core_debug_grandom_outgoing_east_side : IProperty[Int]
+
+pub let core_debug_grandom_outgoing_edges : IProperty[CoreDebugGRandomRandVal]
+
+pub let core_debug_grandom_outgoing_north_side : IProperty[Int]
+
+pub let core_debug_grandom_outgoing_south_side : IProperty[Int]
+
+pub let core_debug_grandom_outgoing_west_side : IProperty[Int]
+
+pub let core_debug_grandom_partition_frac : IProperty[CoreDebugGRandomRandVal]
+
+pub let core_debug_grandom_planar : IProperty[Bool]
+
+pub let core_debug_grandom_port_constraints : IProperty[PortConstraints]
+
+pub let core_debug_grandom_port_height : IProperty[CoreDebugGRandomRandVal]
+
+pub let core_debug_grandom_port_separation : Double
+
+pub let core_debug_grandom_port_width : IProperty[CoreDebugGRandomRandVal]
+
+pub fn core_debug_grandom_ports_exists(CoreDebugGRandomPorts?) -> Bool
+
+pub fn core_debug_grandom_rand_val_all_nil() -> CoreDebugGRandomRandVal
+
+pub fn core_debug_grandom_rand_val_exact(Double) -> CoreDebugGRandomRandVal
+
+pub fn core_debug_grandom_rand_val_gaussian(Double, Double) -> CoreDebugGRandomRandVal
+
+pub fn core_debug_grandom_rand_val_min_max(Double, Double) -> CoreDebugGRandomRandVal
+
+pub fn core_debug_grandom_random_graph_generator_generate(CoreDebugGRandomRandomGraphGenerator, CoreDebugGRandomGeneratorOptions) -> Int
+
+pub fn core_debug_grandom_random_graph_generator_generate_from_configuration(CoreDebugGRandomRandomGraphGenerator, CoreDebugGRandomConfiguration) -> Array[Int]
+
+pub let core_debug_grandom_randomization_seed : IProperty[Int]
+
+pub let core_debug_grandom_relative_edges : IProperty[CoreDebugGRandomRandVal]
+
+pub let core_debug_grandom_self_loops : IProperty[Bool]
+
+pub let core_debug_grandom_set_node_size : IProperty[Bool]
+
+pub let core_debug_grandom_set_port_size : IProperty[Bool]
+
+pub fn core_debug_grandom_side_east() -> CoreDebugGRandomSide
+
+pub fn core_debug_grandom_size_exists(CoreDebugGRandomSize?) -> Bool
+
+pub let core_debug_grandom_small_hierarchy : IProperty[Bool]
+
+pub let core_debug_grandom_time_based_randomization : IProperty[Bool]
+
+pub let core_debug_grandom_use_existing_ports_chance : IProperty[CoreDebugGRandomRandVal]
+
+pub let core_debug_grandom_validation_configuration_md : String
+
+pub let core_debug_grandom_validation_configuration_mw : String
+
+pub let core_debug_grandom_validation_configuration_pf : String
+
+pub fn core_debug_is_directory(String) -> Bool
+
+pub fn core_debug_is_regular_file(String) -> Bool
+
+pub fn core_debug_launch_program(String) -> Unit
+
+pub fn core_debug_layout_connectors_add_layout_listener(CoreDebugLayoutListener) -> Unit
+
+pub fn core_debug_layout_connectors_fire_layout_about_to_start(CoreDebugLayoutMapping, IElkProgressMonitor) -> Unit
+
+pub fn core_debug_layout_connectors_fire_layout_done(CoreDebugLayoutMapping, IElkProgressMonitor) -> Unit
+
+pub fn core_debug_layout_connectors_remove_layout_listener(CoreDebugLayoutListener) -> Unit
+
+pub fn core_debug_layout_mapping_get_layout_graph(CoreDebugLayoutMapping) -> Int?
+
+pub fn core_debug_load_graph_from_registered_file(String) -> Int
+
+pub fn core_debug_path_file_name(String) -> String
+
+pub fn core_debug_plugin_get_string_preference(String, String) -> String
+
+pub let core_debug_plugin_id : String
+
+pub fn core_debug_plugin_set_string_preference(String, String) -> Unit
+
+pub let core_debug_pref_debug_execution_time : String
+
+pub let core_debug_pref_debug_logging : String
+
+pub let core_debug_pref_debug_store : String
+
+pub fn core_debug_record_zip_output(String, Array[String]) -> Unit
+
+pub fn core_debug_register_directory_for_test(String, Array[String]) -> Unit
+
+pub fn core_debug_register_graph_file_content_for_test(String, String) -> Unit
+
+pub fn core_debug_register_graph_file_for_test(String, Int) -> Unit
+
+pub fn core_debug_register_regular_file_for_test(String) -> Unit
+
+pub fn core_debug_reset_foundation_for_test() -> Unit
+
+pub fn core_debug_service_get_boolean_preference(String, Bool) -> Bool
+
+pub fn core_debug_service_set_boolean_preference(String, Bool) -> Unit
 
 pub fn create_edge(Int?) -> Int
 
@@ -658,6 +924,16 @@ pub fn dot_statement_node_statement(DotNodeStatement) -> DotStatement
 
 pub fn dot_statement_subgraph(DotSubgraph) -> DotStatement
 
+pub let draw2d_def_min_spacing : Double
+
+pub let draw2d_direction : IProperty[String]
+
+pub let draw2d_padding : IProperty[String]
+
+pub let draw2d_param_compound : String
+
+pub let draw2d_spacing_node_node : IProperty[Double]
+
 pub fn draw_hitboxes(CGraph, String) -> String
 
 pub fn dropdown_int_range_action_apply_num(DropdownIntRangeAction, Int) -> Unit
@@ -742,6 +1018,14 @@ pub fn edge_targets(Int) -> Array[ElkConnectableShape]
 
 pub fn edge_type_to_string(EdgeType) -> String
 
+pub fn elk_debug_plugin_get_default() -> ElkDebugPlugin?
+
+pub fn elk_debug_plugin_image_descriptor_from_plugin(String, String) -> String
+
+pub fn elk_debug_plugin_start(ElkDebugPlugin) -> Unit
+
+pub fn elk_debug_plugin_stop(ElkDebugPlugin) -> Unit
+
 pub fn elk_graph_components_processor_split(Int) -> Array[Array[Int]]
 
 pub fn elk_graph_importer_as_igraph_importer(ElkGraphImporter) -> IGraphImporter[Int]
@@ -763,6 +1047,62 @@ pub fn elk_spacings_with_base_value(Double) -> ElkCoreSpacingsBuilder
 pub let elk_unknown_work : Double
 
 pub fn[P, G] enum_based_factory_compare(ILayoutProcessorFactory[P, G], ILayoutProcessorFactory[P, G]) -> Int
+
+pub fn execution_info_from_progress_monitor(IElkProgressMonitor) -> Int
+
+pub fn execution_info_from_progress_monitor_and_file(IElkProgressMonitor, String, Bool) -> Int
+
+pub fn execution_info_get_children(Int) -> Array[Int]
+
+pub fn execution_info_get_creation_tick(Int) -> Int
+
+pub fn execution_info_get_debug_folder(Int) -> String
+
+pub fn execution_info_get_execution_time_including_children(Int) -> Double
+
+pub fn execution_info_get_execution_time_local(Int) -> Double
+
+pub fn execution_info_get_file_name(Int) -> String?
+
+pub fn execution_info_get_log_messages(Int) -> Array[String]
+
+pub fn execution_info_get_logged_graphs(Int) -> Array[LoggedGraph]
+
+pub fn execution_info_get_name(Int) -> String
+
+pub fn execution_info_get_parent(Int) -> Int?
+
+pub fn execution_info_has_descendants_with_log_messages(Int) -> Bool
+
+pub fn execution_info_has_descendants_with_logged_graphs(Int) -> Bool
+
+pub fn execution_info_has_log_messages(Int) -> Bool
+
+pub fn execution_info_has_logged_graphs(Int) -> Bool
+
+pub fn execution_info_is_execution_time_measured(Int) -> Bool
+
+pub fn execution_info_is_laid_out_after_load(Int) -> Bool
+
+pub fn execution_info_is_loaded_from_file(Int) -> Bool
+
+pub fn execution_info_remove_child(Int, Int) -> Unit
+
+pub fn execution_info_reset_for_test() -> Unit
+
+pub fn execution_info_set_debug_folder_for_test(Int, String) -> Unit
+
+pub fn execution_info_set_execution_time_for_test(Int, Bool, Double, Double) -> Unit
+
+pub fn execution_time_display_local() -> ExecutionTimeDisplayMode
+
+pub fn execution_time_display_name() -> ExecutionTimeDisplayMode
+
+pub fn execution_time_display_total() -> ExecutionTimeDisplayMode
+
+pub let execution_time_view_id : String
+
+pub let expand_execution_tree_action_id : String
 
 pub let expand_nodes : IProperty[Bool]
 
@@ -821,6 +1161,8 @@ pub fn fedge_to_vector_chain(Int) -> KVectorChain
 pub fn fgraph_copy_properties(FGraph, FGraph) -> Unit
 
 pub fn fill_polyomino(Polyomino) -> Unit
+
+pub let filter_execution_tree_action_id : String
 
 pub fn find_best_edge_containment(Int?) -> Int?
 
@@ -961,6 +1303,212 @@ pub fn fr_model_repulsive(Double, Double) -> Double
 pub fn get_point_on_bezier_segment(Double, Array[KVector]) -> KVector
 
 pub fn get_rect_edges(ElkRectangle) -> Array[TEdge]
+
+pub let gmf_core_option_comment_box_id : String
+
+pub fn gmf_diagram_layout_connector_add_offset(Int, GmfPoint) -> Unit
+
+pub fn gmf_diagram_layout_connector_common_parent(Int, Int) -> Int?
+
+pub fn gmf_diagram_layout_connector_get_absolute_bounds(Int) -> GmfRectangle
+
+pub fn gmf_diagram_layout_connector_get_diagram_edit_part(Int) -> Int?
+
+pub fn gmf_diagram_layout_connector_is_parent(Int, Int) -> Bool
+
+pub fn gmf_diagram_layout_engine_invoke_layout(GmfDiagramPart, Bool, Bool) -> Unit
+
+pub let gmf_draw2d_algorithm_id : String
+
+pub fn gmf_edit_part_add_target_connection(Int, Int) -> Unit
+
+pub fn gmf_edit_part_children(Int) -> Array[Int]
+
+pub fn gmf_edit_part_figure(Int) -> Int
+
+pub fn gmf_edit_part_get_installed_edit_policy(Int, String) -> String?
+
+pub fn gmf_edit_part_install_edit_policy(Int, String, String) -> Unit
+
+pub fn gmf_edit_part_key_point(Int) -> Int
+
+pub fn gmf_edit_part_kind(Int) -> GmfEditPartKind
+
+pub fn gmf_edit_part_notation_node(Int) -> String
+
+pub fn gmf_edit_part_notation_view(Int) -> Int?
+
+pub fn gmf_edit_part_parent(Int) -> Int?
+
+pub fn gmf_edit_part_set_key_point(Int, Int) -> Unit
+
+pub fn gmf_edit_part_set_notation_node(Int, String) -> Unit
+
+pub fn gmf_edit_part_set_notation_view(Int, Int?) -> Unit
+
+pub fn gmf_edit_part_set_parent(Int, Int?) -> Unit
+
+pub fn gmf_edit_part_set_source(Int, Int?) -> Unit
+
+pub fn gmf_edit_part_set_target(Int, Int?) -> Unit
+
+pub fn gmf_edit_part_set_top_graphic_edit_part(Int, Int?) -> Unit
+
+pub fn gmf_edit_part_source(Int) -> Int?
+
+pub fn gmf_edit_part_target(Int) -> Int?
+
+pub fn gmf_edit_part_target_connections(Int) -> Array[Int]
+
+pub fn gmf_edit_part_top_graphic_edit_part(Int) -> Int?
+
+pub fn gmf_figure_absolute_bounds(Int) -> GmfRectangle
+
+pub fn gmf_figure_border_item_container(Int) -> Int?
+
+pub fn gmf_figure_bounds(Int) -> GmfRectangle
+
+pub fn gmf_figure_children(Int) -> Array[Int]
+
+pub fn gmf_figure_font_is_disposed(Int) -> Bool
+
+pub fn gmf_figure_font_name(Int) -> String?
+
+pub fn gmf_figure_font_size(Int) -> Int
+
+pub fn gmf_figure_icon_height(Int) -> Int
+
+pub fn gmf_figure_icon_text_gap(Int) -> Int
+
+pub fn gmf_figure_icon_width(Int) -> Int
+
+pub fn gmf_figure_insets(Int) -> GmfInsets
+
+pub fn gmf_figure_is_coordinate_system(Int) -> Bool
+
+pub fn gmf_figure_is_expanded(Int) -> Bool
+
+pub fn gmf_figure_is_visible(Int) -> Bool
+
+pub fn gmf_figure_kind(Int) -> GmfFigureKind
+
+pub fn gmf_figure_minimum_size(Int) -> GmfDimension
+
+pub fn gmf_figure_parent(Int) -> Int?
+
+pub fn gmf_figure_points(Int) -> GmfPointList
+
+pub fn gmf_figure_preferred_size(Int) -> GmfDimension
+
+pub fn gmf_figure_set_border_item_container(Int, Int?) -> Unit
+
+pub fn gmf_figure_set_bounds(Int, GmfRectangle) -> Unit
+
+pub fn gmf_figure_set_coordinate_system(Int, Bool) -> Unit
+
+pub fn gmf_figure_set_expanded(Int, Bool) -> Unit
+
+pub fn gmf_figure_set_font(Int, String, Int) -> Unit
+
+pub fn gmf_figure_set_font_disposed(Int, Bool) -> Unit
+
+pub fn gmf_figure_set_icon(Int, Int, Int, text_gap? : Int) -> Unit
+
+pub fn gmf_figure_set_insets(Int, GmfInsets) -> Unit
+
+pub fn gmf_figure_set_minimum_size(Int, GmfDimension) -> Unit
+
+pub fn gmf_figure_set_parent(Int, Int?) -> Unit
+
+pub fn gmf_figure_set_points(Int, GmfPointList) -> Unit
+
+pub fn gmf_figure_set_preferred_size(Int, GmfDimension) -> Unit
+
+pub fn gmf_figure_set_text(Int, String) -> Unit
+
+pub fn gmf_figure_set_visible(Int, Bool) -> Unit
+
+pub fn gmf_figure_text(Int) -> String
+
+pub fn gmf_find_edit_part_by_notation_node(Int, String) -> Int?
+
+pub fn gmf_get_boolean_preference(String, String, Bool) -> Bool
+
+pub fn gmf_get_layout_element_edge(Int) -> GmfLayoutElementEdge?
+
+pub fn gmf_get_layout_element_shape(Int) -> GmfLayoutElementShape?
+
+pub fn gmf_last_layout_invocation() -> GmfLayoutInvocation?
+
+pub fn gmf_last_layout_invocation_multiple_parts() -> Array[Int]?
+
+pub fn gmf_last_layout_invocation_progress_dialog() -> Bool?
+
+pub fn gmf_last_layout_invocation_single_part() -> Int?
+
+pub fn gmf_last_layout_invocation_zoom_to_fit() -> Bool?
+
+pub let gmf_layout_configuration_prefix : String
+
+pub fn gmf_layout_diagram_file_handler_reset_for_test() -> Unit
+
+pub fn gmf_layout_diagram_file_handler_was_processed_for_test(String) -> Bool
+
+pub fn gmf_layout_meta_data_providers() -> Array[ILayoutMetaDataProvider]
+
+pub fn gmf_register_layout_diagram_file_for_test(String, Int) -> Unit
+
+pub fn gmf_set_boolean_preference(String, String, Bool) -> Unit
+
+pub fn gmf_set_layout_element_edge(Int, GmfPointList, String?, String?, String?) -> Unit
+
+pub fn gmf_set_layout_element_shape(Int, Double, Double, Double, Double) -> Unit
+
+pub fn gmf_view_bendpoints(Int) -> GmfPointList
+
+pub fn gmf_view_get_style(Int, String) -> String?
+
+pub fn gmf_view_height(Int) -> Int
+
+pub fn gmf_view_is_routing_manual(Int) -> Bool
+
+pub fn gmf_view_is_smoothness_none(Int) -> Bool
+
+pub fn gmf_view_location_x(Int) -> Int
+
+pub fn gmf_view_location_y(Int) -> Int
+
+pub fn gmf_view_name(Int) -> String
+
+pub fn gmf_view_remove_style(Int, String) -> Unit
+
+pub fn gmf_view_set_bendpoints(Int, GmfPointList) -> Unit
+
+pub fn gmf_view_set_location(Int, Int, Int) -> Unit
+
+pub fn gmf_view_set_routing_manual(Int, Bool) -> Unit
+
+pub fn gmf_view_set_size(Int, Int, Int) -> Unit
+
+pub fn gmf_view_set_smoothness_none(Int, Bool) -> Unit
+
+pub fn gmf_view_set_source_terminal(Int, String?) -> Unit
+
+pub fn gmf_view_set_style(Int, String, String) -> Unit
+
+pub fn gmf_view_set_target_terminal(Int, String?) -> Unit
+
+pub fn gmf_view_source_terminal(Int) -> String?
+
+pub fn gmf_view_style_entries(Int) -> Array[(String, String)]
+
+pub fn gmf_view_target_terminal(Int) -> String?
+
+pub fn gmf_view_width(Int) -> Int
+
+pub fn graph_feature_values() -> Array[GraphFeature]
+
+pub fn graph_identifier_generator_for_graph(Int) -> GraphIdentifierGenerator
 
 pub fn graph_issue_list_to_string(Array[GraphIssue]) -> String
 
@@ -1166,6 +1714,14 @@ pub fn hierarchy_handling_to_string(HierarchyHandling) -> String
 
 pub fn high_level_sorting_criterion_values() -> Array[HighLevelSortingCriterion]
 
+pub fn image_export_action_complete_file_name(String?) -> String?
+
+pub fn image_export_action_get_exported_files_for_test() -> Array[String]
+
+pub let image_export_action_id : String
+
+pub fn image_export_action_reset_for_test() -> Unit
+
 pub let inside_self_loops_activate : IProperty[Bool]
 
 pub let instance_pool_infinite : Int
@@ -1192,6 +1748,8 @@ pub let issue_error : Int
 
 pub let issue_warning : Int
 
+pub let junction_points_style_name : String
+
 pub fn kvector_chain_reverse(KVectorChain) -> KVectorChain
 
 pub fn kvector_cross_product(KVector, KVector) -> Double
@@ -1202,11 +1760,17 @@ pub fn kvector_sum(Array[KVector]) -> KVector
 
 pub fn label_height(Int) -> Double
 
+pub fn label_identifier(Int) -> String
+
+pub fn label_labels(Int) -> Array[Int]
+
 pub fn label_layout_option_string_value(Int, String) -> String?
 
 pub fn label_parent(Int) -> ElkLabelParent?
 
 pub fn label_set_dimensions(Int, Double, Double) -> Unit
+
+pub fn label_set_identifier(Int, String) -> Unit
 
 pub fn label_set_layout_option_string_by_id(Int, String, String) -> Unit
 
@@ -1224,6 +1788,10 @@ pub fn label_x(Int) -> Double
 
 pub fn label_y(Int) -> Double
 
+pub fn layout_algorithm_data_to_json(LayoutAlgorithmData) -> Json
+
+pub fn layout_category_data_to_json(LayoutCategoryData) -> Json
+
 pub fn layout_configurator_no_overwrite_filter() -> (Int, IProperty[Double]) -> Bool
 
 pub fn layout_data_content_assist_get_layout_algorithm_proposals(String) -> Array[LayoutDataProposal[LayoutAlgorithmData]]
@@ -1237,6 +1805,10 @@ pub fn layout_data_content_assist_get_layout_option_proposals_for_element(Layout
 pub fn layout_data_content_assist_get_layout_option_proposals_for_label(Int, String) -> Array[LayoutDataProposal[LayoutOptionData]]
 
 pub fn layout_data_content_assist_get_layout_option_proposals_for_port(Int, String) -> Array[LayoutDataProposal[LayoutOptionData]]
+
+pub let layout_graph_view_id : String
+
+pub let layout_log_view_id : String
 
 pub fn layout_meta_data_for_algorithm(LayoutAlgorithmData) -> ILayoutMetaData
 
@@ -1278,9 +1850,17 @@ pub fn layout_meta_data_service_register_option(LayoutOptionData) -> Unit
 
 pub fn layout_meta_data_service_reset_for_test() -> Unit
 
+pub fn layout_option_data_to_json(LayoutOptionData) -> Json
+
 pub fn[P, G] layout_processor_configuration_create(PhaseDescriptor[P]) -> LayoutProcessorConfiguration[P, G]
 
 pub fn[P, G] layout_processor_configuration_create_from(LayoutProcessorConfiguration[P, G]) -> LayoutProcessorConfiguration[P, G]
+
+pub fn layout_provider_template_build_file_content(String, String) -> String
+
+pub let layout_upon_load_setting_action_id : String
+
+pub fn layout_upon_load_setting_action_should_layout_upon_load() -> Bool
 
 pub fn less_than(Double) -> ExclusiveUpperBound
 
@@ -1358,6 +1938,16 @@ pub fn libavoid_server_reset_runtime_for_test() -> Unit
 
 pub fn libavoid_server_set_default_output_data_for_test(Map[String, String]?) -> Unit
 
+pub let load_graph_action_id : String
+
+pub fn load_graph_action_layout(String, Int) -> Int
+
+pub fn load_graph_action_layout_internal(String, Bool, Int) -> Int
+
+pub fn load_graph_action_load_from_file(String) -> Int
+
+pub fn load_graph_action_run_file(String?, LayoutGraphView) -> Unit
+
 pub fn longest_path_compaction(OneDimensionalCompactor) -> Unit
 
 pub fn low_level_sorting_criterion_values() -> Array[LowLevelSortingCriterion]
@@ -1385,6 +1975,8 @@ pub fn maxl(Array[Int64]) -> Int64
 pub fn[T] maybe_create() -> Maybe[T]
 
 pub fn[T] maybe_of(T) -> Maybe[T]
+
+pub fn melk_template_build_file_content(String, String, String, String, String, String) -> String
 
 pub fn mind(Array[Double]) -> Double
 
@@ -1762,11 +2354,19 @@ pub fn new_abstract_graphviz_dot_semantic_sequencer(grammar_access? : GraphvizDo
 
 pub fn new_abstract_graphviz_dot_syntactic_sequencer(grammar_access? : GraphvizDotGrammarAccess) -> AbstractGraphvizDotSyntacticSequencer
 
+pub fn new_abstract_layout_debug_view(String, String, (Int) -> Bool) -> AbstractLayoutDebugView
+
 pub fn new_abstract_layout_provider((Int, IElkProgressMonitor) -> Unit, initialize_fn? : (String?) -> Unit, dispose_fn? : () -> Unit) -> AbstractLayoutProvider
 
 pub fn[T] new_abstract_random_list_accessor(() -> T) -> AbstractRandomListAccessor[T]
 
+pub fn new_algorithm_plugin_content_wizard(String, String) -> AlgorithmPluginContentWizard
+
+pub fn new_algorithm_project_creation_page(String) -> AlgorithmProjectCreationPage
+
 pub fn new_annulus_wedge_compaction() -> AnnulusWedgeCompaction
+
+pub fn new_apply_layout_request() -> ApplyLayoutRequest
 
 pub fn new_basic_progress_monitor() -> IElkProgressMonitor
 
@@ -1778,9 +2378,51 @@ pub fn new_binary_indexed_tree(Int) -> BinaryIndexedTree
 
 pub fn new_cgraph(Array[Direction]) -> CGraph
 
+pub fn new_clear_execution_action(AbstractLayoutDebugView) -> ClearExecutionAction
+
+pub fn new_clear_executions_action() -> ClearExecutionsAction
+
+pub fn new_collapse_execution_tree_action(AbstractLayoutDebugView) -> CollapseExecutionTreeAction
+
 pub fn new_components_processor() -> ComponentsProcessor
 
+pub fn new_compress_log_folder_action(AbstractLayoutDebugView) -> CompressLogFolderAction
+
 pub fn new_config_state() -> ConfigState
+
+pub fn new_core_debug_grandom_configuration() -> CoreDebugGRandomConfiguration
+
+pub fn new_core_debug_grandom_double_quantity() -> CoreDebugGRandomDoubleQuantity
+
+pub fn new_core_debug_grandom_edges() -> CoreDebugGRandomEdges
+
+pub fn new_core_debug_grandom_flow(CoreDebugGRandomFlowType, CoreDebugGRandomSide, amount? : CoreDebugGRandomDoubleQuantity?) -> CoreDebugGRandomFlow
+
+pub fn new_core_debug_grandom_generator_options() -> CoreDebugGRandomGeneratorOptions
+
+pub fn new_core_debug_grandom_hierarchy() -> CoreDebugGRandomHierarchy
+
+pub fn new_core_debug_grandom_nodes() -> CoreDebugGRandomNodes
+
+pub fn new_core_debug_grandom_ports() -> CoreDebugGRandomPorts
+
+pub fn new_core_debug_grandom_random_graph_generator(@random.Rand?) -> CoreDebugGRandomRandomGraphGenerator
+
+pub fn new_core_debug_grandom_runtime_module() -> CoreDebugGRandomRuntimeModule
+
+pub fn new_core_debug_grandom_scope_provider() -> CoreDebugGRandomScopeProvider
+
+pub fn new_core_debug_grandom_size() -> CoreDebugGRandomSize
+
+pub fn new_core_debug_grandom_standalone_setup() -> CoreDebugGRandomStandaloneSetup
+
+pub fn new_core_debug_grandom_validation_error(String, String) -> CoreDebugGRandomValidationError
+
+pub fn new_core_debug_layout_listener((CoreDebugLayoutMapping, IElkProgressMonitor) -> Unit, (CoreDebugLayoutMapping, IElkProgressMonitor) -> Unit) -> CoreDebugLayoutListener
+
+pub fn new_core_debug_layout_mapping(Int?) -> CoreDebugLayoutMapping
+
+pub fn new_core_debug_wizard_project(String, natures? : Array[String]) -> CoreDebugWizardProject
 
 pub fn new_cubic_spline_interpolator() -> CubicSplineInterpolator
 
@@ -1842,6 +2484,8 @@ pub fn[R] new_dot_resource_set_provider(() -> R) -> DotResourceSetProvider[R]
 
 pub fn[S, T] new_dot_transformation_data() -> DotTransformationData[S, T]
 
+pub fn new_draw2d_layout_provider() -> Draw2DLayoutProvider
+
 pub fn new_dropdown_int_range_action(ConfigState, String, Int, Int, Int, State, DisCoGraphRenderingCanvas) -> DropdownIntRangeAction
 
 pub fn new_eades_model() -> EadesModel
@@ -1850,11 +2494,15 @@ pub fn new_eclipse_runtime_detector() -> EclipseRuntimeDetector
 
 pub fn new_elk_cancel_indicator(canceled? : Bool) -> IElkCancelIndicator
 
+pub fn new_elk_debug_plugin() -> ElkDebugPlugin
+
 pub fn new_elk_engine(default_layout_options? : Map[String, Json], algorithms? : Array[String]) -> ElkEngine
 
 pub fn new_elk_graph_importer() -> ElkGraphImporter
 
 pub fn new_elk_graph_transformer(component_spacing? : Double) -> ElkGraphTransformer
+
+pub fn new_elk_layout_provider() -> ElkLayoutProvider
 
 pub fn new_elk_margin() -> Spacing
 
@@ -1888,6 +2536,18 @@ pub fn new_empty_planar_grid() -> PlanarGrid
 
 pub fn new_empty_polyomino() -> Polyomino
 
+pub fn new_execution_info_content_provider() -> ExecutionInfoContentProvider
+
+pub fn new_execution_info_model() -> ExecutionInfoModel
+
+pub fn new_execution_info_model_listener(() -> Unit) -> IExecutionInfoModelListener
+
+pub fn new_execution_time_label_provider(ExecutionTimeDisplayMode) -> ExecutionTimeLabelProvider
+
+pub fn new_execution_time_view() -> ExecutionTimeView
+
+pub fn new_expand_execution_tree_action(AbstractLayoutDebugView) -> ExpandExecutionTreeAction
+
 pub fn[T] new_factory(() -> T, destroy_fn? : (T) -> Unit) -> IFactory[T]
 
 pub fn new_fbendpoint(Int) -> Int
@@ -1895,6 +2555,8 @@ pub fn new_fbendpoint(Int) -> Int
 pub fn new_fedge() -> Int
 
 pub fn new_fgraph() -> FGraph
+
+pub fn new_filter_execution_tree_action(AbstractLayoutDebugView) -> FilterExecutionTreeAction
 
 pub fn new_flabel(Int, text? : String) -> Int
 
@@ -1928,6 +2590,46 @@ pub fn new_forwarding_input_stream(GraphvizInputStream, GraphvizOutputStream) ->
 
 pub fn new_fruchterman_reingold_model() -> FruchtermanReingoldModel
 
+pub fn new_gmf_command_stack() -> GmfCommandStack
+
+pub fn new_gmf_connector_layout_settings(animate? : Bool, zoom_to_fit? : Bool, min_anim_time? : Int, max_anim_time? : Int, anim_time_factor? : Int) -> GmfConnectorLayoutSettings
+
+pub fn new_gmf_diagram_layout_connector(edit_part_filter? : IEditPartFilter) -> GmfDiagramLayoutConnector
+
+pub fn new_gmf_dimension(Int, Int) -> GmfDimension
+
+pub fn new_gmf_edit_part(GmfEditPartKind, figure? : Int, notation_node? : String) -> Int
+
+pub fn new_gmf_figure(kind? : GmfFigureKind, bounds? : GmfRectangle) -> Int
+
+pub fn new_gmf_injector(bindings? : Map[String, String]) -> GmfInjector
+
+pub fn new_gmf_insets(top? : Int, right? : Int, bottom? : Int, left? : Int) -> GmfInsets
+
+pub fn new_gmf_layout_command(label? : String, diagram_view? : Int?) -> GmfLayoutCommand
+
+pub fn new_gmf_layout_configuration_store(Int, IEditPartFilter) -> GmfLayoutConfigurationStore
+
+pub fn new_gmf_layout_configuration_store_provider(IEditPartFilter) -> GmfLayoutConfigurationStoreProvider
+
+pub fn new_gmf_layout_edit_policy() -> GmfLayoutEditPolicy
+
+pub fn new_gmf_layout_hint(graphical_edit_part? : Int?) -> GmfLayoutHint
+
+pub fn new_gmf_layout_node(String) -> GmfLayoutNode
+
+pub fn new_gmf_layout_setup() -> GmfLayoutSetup
+
+pub fn new_gmf_meta_data_provider() -> ILayoutMetaDataProvider
+
+pub fn new_gmf_point(Int, Int) -> GmfPoint
+
+pub fn new_gmf_point_list(points? : Array[GmfPoint]) -> GmfPointList
+
+pub fn new_gmf_rectangle(x? : Int, y? : Int, width? : Int, height? : Int) -> GmfRectangle
+
+pub fn new_gmf_view(name? : String, location_x? : Int, location_y? : Int, width? : Int, height? : Int) -> Int
+
 pub fn new_graph_element_visitor((Int) -> Unit) -> IGraphElementVisitor
 
 pub fn new_graph_issue_edge(Int, String, Int) -> GraphIssue
@@ -1935,6 +2637,10 @@ pub fn new_graph_issue_edge(Int, String, Int) -> GraphIssue
 pub fn new_graph_issue_node(Int, String, Int) -> GraphIssue
 
 pub fn new_graph_layout_engine((Int, IElkProgressMonitor) -> Unit) -> IGraphLayoutEngine
+
+pub fn new_graph_list_label_provider() -> GraphListLabelProvider
+
+pub fn new_graph_tree_label_provider() -> GraphTreeLabelProvider
 
 pub fn new_graph_validation_exception() -> GraphValidationException
 
@@ -2024,11 +2730,17 @@ pub fn new_greedy_rectangle_strip_overlap_removal_strategy() -> IRectangleStripO
 
 pub fn new_grid_elk_node(Int) -> GridElkNode
 
+pub fn new_i_edit_part_filter((Int) -> Bool) -> IEditPartFilter
+
+pub fn new_i_edit_part_filter_default_impl() -> IEditPartFilter
+
 pub fn new_icompactor((DCGraph) -> Unit) -> ICompactor
 
 pub fn[T] new_igraph_importer((T) -> FGraph, (FGraph) -> Unit) -> IGraphImporter[T]
 
 pub fn[G] new_igraph_transformer((G) -> DCGraph, () -> Unit) -> IGraphTransformer[G]
+
+pub fn new_image_export_action(LayoutGraphView) -> ImageExportAction
 
 pub fn[T] new_instance_pool(IFactory[T], limit? : Int) -> InstancePool[T]
 
@@ -2043,6 +2755,16 @@ pub fn new_internal_graphviz_dot_parser(Array[GraphvizDotLexToken], grammar_acce
 pub fn new_ipolyomino_successor((PolyominoCoords, Polyomino) -> PolyominoCoords) -> IPolyominoSuccessor
 
 pub fn new_irectangle_strip_overlap_removal_strategy((RectangleStripOverlapRemover) -> Double) -> IRectangleStripOverlapRemovalStrategy
+
+pub fn new_json_adapter() -> JsonAdapter
+
+pub fn new_json_import_exception() -> JsonImportException
+
+pub fn new_json_import_exception_cause(String) -> JsonImportException
+
+pub fn new_json_import_exception_message(String) -> JsonImportException
+
+pub fn new_json_import_exception_message_cause(String, String) -> JsonImportException
 
 pub fn new_json_importer() -> JsonImporter
 
@@ -2062,7 +2784,7 @@ pub fn new_kvector_copy(KVector) -> KVector
 
 pub fn new_kvector_xy(Double, Double) -> KVector
 
-pub fn new_layout_algorithm_data(String, name? : String, description? : String, validator? : ((Int) -> Array[GraphIssue])?, bundle_name? : String, instance_pool_clear_fn? : () -> Unit) -> LayoutAlgorithmData
+pub fn new_layout_algorithm_data(String, name? : String, description? : String, validator? : ((Int) -> Array[GraphIssue])?, category_id? : String, bundle_name? : String, instance_pool_clear_fn? : () -> Unit) -> LayoutAlgorithmData
 
 pub fn new_layout_algorithm_resolver(default_layout_algorithm_id? : String) -> LayoutAlgorithmResolver
 
@@ -2072,7 +2794,17 @@ pub fn new_layout_configurator() -> LayoutConfigurator
 
 pub fn[T] new_layout_data_proposal(String, T, label? : String?) -> LayoutDataProposal[T]
 
+pub fn new_layout_diagram_file_handler() -> LayoutDiagramFileHandler
+
 pub fn new_layout_dot_exporter() -> LayoutDotExporter
+
+pub fn new_layout_edit_policy_provider() -> LayoutEditPolicyProvider
+
+pub fn new_layout_graph_view() -> LayoutGraphView
+
+pub fn new_layout_graph_view_drop_adapter(LayoutGraphView) -> LayoutGraphViewDropAdapter
+
+pub fn new_layout_log_view() -> LayoutLogView
 
 pub fn new_layout_meta_data(() -> String, () -> String, () -> String) -> ILayoutMetaData
 
@@ -2089,6 +2821,8 @@ pub fn[P, G] new_layout_phase((G, IElkProgressMonitor?) -> Unit, (G) -> LayoutPr
 pub fn[P, G] new_layout_processor((G, IElkProgressMonitor?) -> Unit) -> ILayoutProcessor[P, G]
 
 pub fn[P, G] new_layout_processor_factory(Int, Int, () -> ILayoutProcessor[P, G]) -> ILayoutProcessorFactory[P, G]
+
+pub fn new_layout_upon_load_setting_action() -> LayoutUponLoadSettingAction
 
 pub fn new_libavoid_bundle(symbolic_name? : String) -> LibavoidBundle
 
@@ -2107,6 +2841,10 @@ pub fn new_libavoid_server_exception_with_cause(String, String) -> LibavoidServe
 pub fn new_libavoid_server_exception_with_message(String) -> LibavoidServerException
 
 pub fn new_libavoid_server_pool() -> LibavoidServerPool
+
+pub fn new_load_graph_action(LayoutGraphView) -> LoadGraphAction
+
+pub fn new_log_label_provider() -> LogLabelProvider
 
 pub fn new_logged_graph(String, LoggedGraphType) -> LoggedGraph
 
@@ -2192,6 +2930,8 @@ pub fn new_polyomino_with_extensions(Int, Int, Array[UniqueTriple[PolyominoDirec
 
 pub fn new_polyominoes(Array[Polyomino], Double, fill? : Bool) -> Polyominoes
 
+pub fn new_preference_action(String) -> PreferenceAction
+
 pub fn[T] new_property(String, T) -> IProperty[T]
 
 pub fn[T] new_property_cloneable(String, T, (T) -> T?) -> IProperty[T]
@@ -2227,6 +2967,10 @@ pub fn new_radius_extension_overlap_removal_layout_processor() -> ILayoutProcess
 pub fn new_rectilinear_convex_hull() -> RectilinearConvexHull
 
 pub fn new_recursive_graph_layout_engine() -> RecursiveGraphLayoutEngine
+
+pub fn new_reload_from_file_action(LayoutGraphView) -> ReloadFromFileAction
+
+pub fn new_reveal_log_folder_action(AbstractLayoutDebugView) -> RevealLogFolderAction
 
 pub fn new_scanline_overlap_check((Node, Node) -> Unit, SvgImage) -> ScanlineOverlapCheck
 
@@ -2378,6 +3122,10 @@ pub fn node_identifier(Int) -> String
 
 pub fn node_incoming_edges(Int) -> Array[Int]
 
+pub fn node_individual_spacing_option_string_entries(Int) -> Array[(String, String)]
+
+pub fn node_individual_spacing_option_string_value(Int, String) -> String?
+
 pub fn node_label_placement_fixed() -> Array[NodeLabelPlacement]
 
 pub fn node_label_placement_inside_bottom_center() -> Array[NodeLabelPlacement]
@@ -2435,6 +3183,8 @@ pub fn node_set_dimensions(Int, Double, Double) -> Unit
 pub fn node_set_double_property(Int, IProperty[Double], Double) -> Unit
 
 pub fn node_set_identifier(Int, String) -> Unit
+
+pub fn node_set_individual_spacing_option_string_by_id(Int, String, String) -> Unit
 
 pub fn node_set_layout_option_string_by_id(Int, String, String) -> Unit
 
@@ -2498,6 +3248,8 @@ pub fn port_constraints_values() -> Array[PortConstraints]
 
 pub fn port_height(Int) -> Double
 
+pub fn port_identifier(Int) -> String
+
 pub fn port_incoming_edges(Int) -> Array[Int]
 
 pub fn port_label_placement_fixed() -> Array[PortLabelPlacement]
@@ -2528,6 +3280,8 @@ pub fn port_parent(Int) -> Int?
 
 pub fn port_set_dimensions(Int, Double, Double) -> Unit
 
+pub fn port_set_identifier(Int, String) -> Unit
+
 pub fn port_set_layout_option_string_by_id(Int, String, String) -> Unit
 
 pub fn port_set_location(Int, Double, Double) -> Unit
@@ -2553,6 +3307,8 @@ pub fn port_y(Int) -> Double
 pub fn powd(Double, Int) -> Double
 
 pub fn powf(Double, Int) -> Double
+
+pub let preference_action_id : String
 
 pub let priority : IProperty[Double]
 
@@ -2682,7 +3438,13 @@ pub let radial_wedge_criteria : IProperty[String]
 
 pub fn rectilinear_convex_hull_of(Array[Point]) -> RectilinearConvexHull
 
+pub let reload_from_file_action_id : String
+
+pub let req_apply_layout : String
+
 pub fn reset_compaction_oned_model_for_test() -> Unit
+
+pub fn reset_conn_gmf_foundation_for_test() -> Unit
 
 pub fn reset_force_graph_model_for_test() -> Unit
 
@@ -2693,6 +3455,8 @@ pub fn reset_mrtree_graph_model_for_test() -> Unit
 pub fn reset_network_simplex_model_for_test() -> Unit
 
 pub let resolved_algorithm : IProperty[String]
+
+pub let reveal_log_folder_action_id : String
 
 pub fn scanline_constraint_calculation(OneDimensionalCompactor) -> Unit
 
@@ -3063,6 +3827,39 @@ pub fn AbstractGraphvizDotSyntacticSequencer::emit_unassigned_tokens(Self, Strin
 pub fn AbstractGraphvizDotSyntacticSequencer::get_grammar_access(Self) -> GraphvizDotGrammarAccess
 pub fn AbstractGraphvizDotSyntacticSequencer::get_unassigned_rule_call_token(Self, String, String, String) -> String
 
+pub struct AbstractLayoutDebugView {
+  view_id : String
+  preference_id : String
+  model : ExecutionInfoModel
+  tree_content_provider : ExecutionInfoContentProvider
+  tree_filter_fn : (Int) -> Bool
+  mut selected_execution_infos : Array[Int]
+  mut filter_enabled : Bool
+  mut model_listener : IExecutionInfoModelListener?
+  mut tree_expanded : Bool
+  mut refresh_count : Int
+}
+pub fn AbstractLayoutDebugView::attach_model_listener(Self) -> Unit
+pub fn AbstractLayoutDebugView::collapse_all_tree_viewer_elements(Self) -> Unit
+pub fn AbstractLayoutDebugView::dispose(Self) -> Unit
+pub fn AbstractLayoutDebugView::execution_info_changed(Self) -> Unit
+pub fn AbstractLayoutDebugView::expand_all_tree_viewer_elements(Self) -> Unit
+pub fn AbstractLayoutDebugView::get_model(Self) -> ExecutionInfoModel
+pub fn AbstractLayoutDebugView::get_preference_id(Self) -> String
+pub fn AbstractLayoutDebugView::get_refresh_count_for_test(Self) -> Int
+pub fn AbstractLayoutDebugView::get_selected_execution_infos(Self) -> Array[Int]
+pub fn AbstractLayoutDebugView::get_view_id(Self) -> String
+pub fn AbstractLayoutDebugView::get_visible_children_for_test(Self, Int) -> Array[Int]
+pub fn AbstractLayoutDebugView::get_visible_root_infos_for_test(Self) -> Array[Int]
+pub fn AbstractLayoutDebugView::is_filter_tree_enabled(Self) -> Bool
+pub fn AbstractLayoutDebugView::is_tree_expanded(Self) -> Bool
+pub fn AbstractLayoutDebugView::load_state(Self, CoreDebugDialogSettingsSection) -> Unit
+pub fn AbstractLayoutDebugView::persist_state(Self, CoreDebugDialogSettingsSection) -> Unit
+pub fn AbstractLayoutDebugView::retrieve_dialog_settings(Self) -> CoreDebugDialogSettingsSection
+pub fn AbstractLayoutDebugView::set_filter_tree(Self, Bool) -> Unit
+pub fn AbstractLayoutDebugView::set_selected_execution_infos(Self, Array[Int]) -> Unit
+pub fn AbstractLayoutDebugView::tree_selection_changed(Self) -> Unit
+
 pub struct AbstractLayoutProvider {
   graph_layout_engine : IGraphLayoutEngine
   initialize_fn : (String?) -> Unit
@@ -3107,6 +3904,29 @@ pub fn[P, G] AlgorithmAssembler::with_caching(Self[P, G], Bool) -> Self[P, G]
 pub fn[P, G] AlgorithmAssembler::with_fail_on_missing_phase(Self[P, G], Bool) -> Self[P, G]
 pub fn[P, G] AlgorithmAssembler::with_processor_comparator(Self[P, G], (ILayoutProcessorFactory[P, G], ILayoutProcessorFactory[P, G]) -> Int) -> Self[P, G]
 
+pub struct AlgorithmPluginContentWizard {
+  mut id : String
+  mut plug_in_name : String
+  mut algorithm_name : String
+  mut page : AlgorithmProjectCreationPage?
+}
+pub fn AlgorithmPluginContentWizard::add_pages(Self) -> Unit
+pub fn AlgorithmPluginContentWizard::get_dependencies(Self) -> Array[String]
+pub fn AlgorithmPluginContentWizard::get_new_files(Self) -> Array[String]
+pub fn AlgorithmPluginContentWizard::get_page_for_test(Self) -> AlgorithmProjectCreationPage?
+pub fn AlgorithmPluginContentWizard::init(Self, String, String) -> Unit
+pub fn AlgorithmPluginContentWizard::perform_finish(Self) -> Bool
+pub fn AlgorithmPluginContentWizard::perform_finish_with_project(Self, CoreDebugWizardProject) -> Bool
+
+pub struct AlgorithmProjectCreationPage {
+  plug_in_name : String
+  mut algorithm_name : String
+}
+pub fn AlgorithmProjectCreationPage::get_algorithm_name(Self) -> String
+pub fn AlgorithmProjectCreationPage::get_plug_in_name(Self) -> String
+pub fn AlgorithmProjectCreationPage::is_page_complete(Self) -> Bool
+pub fn AlgorithmProjectCreationPage::set_algorithm_name(Self, String) -> Unit
+
 pub enum Alignment {
   Automatic
   Left
@@ -3124,6 +3944,22 @@ pub struct AnnulusWedgeCompaction {
   mut root : Int?
 }
 pub fn AnnulusWedgeCompaction::compact(Self, Int) -> Unit
+
+pub struct ApplyLayoutRequest {
+  request_type : String
+  mapping_list : Array[Pair[Int, Int]]
+  mut boundx : Double
+  mut boundy : Double
+  mut scale : Double
+}
+pub fn ApplyLayoutRequest::add_element(Self, Int, Int) -> Unit
+pub fn ApplyLayoutRequest::get_elements(Self) -> Array[Pair[Int, Int]]
+pub fn ApplyLayoutRequest::get_scale(Self) -> Double
+pub fn ApplyLayoutRequest::get_type(Self) -> String
+pub fn ApplyLayoutRequest::get_x_bound(Self) -> Double
+pub fn ApplyLayoutRequest::get_y_bound(Self) -> Double
+pub fn ApplyLayoutRequest::set_scale(Self, Double) -> Unit
+pub fn ApplyLayoutRequest::set_upper_bound(Self, Double, Double) -> Unit
 
 pub enum BaseGridVisibility {
   Hidden
@@ -3262,6 +4098,26 @@ pub fn CNodeBuilder::node_type(Self, String) -> Self
 pub fn CNodeBuilder::origin(Self, String) -> Self
 pub fn CNodeBuilder::to_string_delegate(Self, (CNode) -> String) -> Self
 
+pub struct ClearExecutionAction {
+  view : AbstractLayoutDebugView
+  mut enabled : Bool
+}
+pub fn ClearExecutionAction::is_enabled(Self) -> Bool
+pub fn ClearExecutionAction::run(Self) -> Unit
+pub fn ClearExecutionAction::update_enablement(Self) -> Unit
+
+pub struct ClearExecutionsAction {
+  mut enabled : Bool
+}
+pub fn ClearExecutionsAction::is_enabled(Self) -> Bool
+pub fn ClearExecutionsAction::run(Self) -> Unit
+pub fn ClearExecutionsAction::update_enablement(Self) -> Unit
+
+pub struct CollapseExecutionTreeAction {
+  view : AbstractLayoutDebugView
+}
+pub fn CollapseExecutionTreeAction::run(Self) -> Unit
+
 pub enum Command {
   Invalid
   Dot
@@ -3281,6 +4137,16 @@ pub struct ComponentsProcessor {
 pub fn ComponentsProcessor::recombine(Self, Array[FGraph]) -> FGraph
 pub fn ComponentsProcessor::split(Self, FGraph) -> Array[FGraph]
 
+pub struct CompressLogFolderAction {
+  view : AbstractLayoutDebugView
+  mut enabled : Bool
+  mut selected_output_file_name : String?
+}
+pub fn CompressLogFolderAction::is_enabled(Self) -> Bool
+pub fn CompressLogFolderAction::run(Self) -> Unit
+pub fn CompressLogFolderAction::set_selected_output_file_name(Self, String?) -> Unit
+pub fn CompressLogFolderAction::update_enablement(Self) -> Unit
+
 pub struct ConfigState {
   mut lower_lvl : Int
   mut upper_lvl : Int
@@ -3295,6 +4161,278 @@ pub enum ContentAlignment {
   VTop
   VCenter
   VBottom
+}
+
+pub struct CoreDebugDialogSettingsSection {
+  section : String
+}
+pub fn CoreDebugDialogSettingsSection::get_bool(Self, String) -> Bool?
+pub fn CoreDebugDialogSettingsSection::get_int(Self, String) -> Int?
+pub fn CoreDebugDialogSettingsSection::get_string(Self, String) -> String?
+pub fn CoreDebugDialogSettingsSection::put_bool(Self, String, Bool) -> Unit
+pub fn CoreDebugDialogSettingsSection::put_int(Self, String, Int) -> Unit
+pub fn CoreDebugDialogSettingsSection::put_string(Self, String, String) -> Unit
+
+pub struct CoreDebugGRandomConfiguration {
+  samples : Int
+  form : CoreDebugGRandomForm
+  nodes : CoreDebugGRandomNodes?
+  edges : CoreDebugGRandomEdges?
+  m_w : Bool
+  max_width : Int?
+  m_d : Bool
+  max_degree : Int?
+  p_f : Bool
+  fraction : CoreDebugGRandomDoubleQuantity?
+  hierarchy : CoreDebugGRandomHierarchy?
+  seed : Int?
+  format : CoreDebugGRandomFormats?
+  filename : String?
+}
+pub fn CoreDebugGRandomConfiguration::set_edges(Self, CoreDebugGRandomEdges?) -> Self
+pub fn CoreDebugGRandomConfiguration::set_form(Self, CoreDebugGRandomForm) -> Self
+pub fn CoreDebugGRandomConfiguration::set_fraction(Self, CoreDebugGRandomDoubleQuantity?) -> Self
+pub fn CoreDebugGRandomConfiguration::set_hierarchy(Self, CoreDebugGRandomHierarchy?) -> Self
+pub fn CoreDebugGRandomConfiguration::set_nodes(Self, CoreDebugGRandomNodes?) -> Self
+pub fn CoreDebugGRandomConfiguration::set_samples(Self, Int) -> Self
+pub fn CoreDebugGRandomConfiguration::set_tree_limits(Self, Int?, Int?) -> Self
+
+pub enum CoreDebugGRandomConstraintType {
+  ConstraintFree
+  ConstraintSide
+  ConstraintPosition
+  ConstraintOrder
+  ConstraintRatio
+}
+
+pub struct CoreDebugGRandomDoubleQuantity {
+  quant : Double?
+  min : Double?
+  min_max : Bool
+  max : Double?
+  mean : Double?
+  gaussian : Bool
+  stddv : Double?
+}
+
+pub enum CoreDebugGRandomEdgeDetermination {
+  EdgeAbsolute
+  EdgeOutgoing
+  EdgeRelative
+  EdgeDensity
+}
+
+pub struct CoreDebugGRandomEdges {
+  density : Bool
+  total : Bool
+  relative : Bool
+  outbound : Bool
+  n_edges : CoreDebugGRandomDoubleQuantity?
+  labels : Bool
+  self_loops : Bool
+}
+pub fn CoreDebugGRandomEdges::set_labels(Self, Bool) -> Self
+pub fn CoreDebugGRandomEdges::set_n_edges(Self, CoreDebugGRandomDoubleQuantity?) -> Self
+pub fn CoreDebugGRandomEdges::set_self_loops(Self, Bool) -> Self
+pub fn CoreDebugGRandomEdges::set_total(Self, Bool) -> Self
+
+pub enum CoreDebugGRandomFileFormat {
+  FileXmi
+  FileXtext
+}
+
+pub struct CoreDebugGRandomFlow {
+  flow_type : CoreDebugGRandomFlowType
+  side : CoreDebugGRandomSide
+  amount : CoreDebugGRandomDoubleQuantity?
+}
+
+pub enum CoreDebugGRandomFlowType {
+  FlowIncoming
+  FlowOutgoing
+}
+
+pub enum CoreDebugGRandomForm {
+  FormTrees
+  FormCustom
+  FormBipartite
+  FormBiconnected
+  FormTriconnected
+  FormAcyclic
+}
+
+pub enum CoreDebugGRandomFormats {
+  FormatElkt
+  FormatElkg
+}
+
+pub struct CoreDebugGRandomGeneratorOptions {
+  bool_values : Map[String, Bool]
+  int_values : Map[String, Int]
+  double_values : Map[String, Double]
+  string_values : Map[String, String]
+  rand_values : Map[String, CoreDebugGRandomRandVal]
+  rand_opt_values : Map[String, CoreDebugGRandomRandVal?]
+  port_constraint_values : Map[String, PortConstraints]
+  file_format_values : Map[String, CoreDebugGRandomFileFormat]
+  graph_type_values : Map[String, CoreDebugGRandomGraphType]
+  edge_determination_values : Map[String, CoreDebugGRandomEdgeDetermination]
+}
+pub fn CoreDebugGRandomGeneratorOptions::get_bool_property(Self, IProperty[Bool]) -> Bool
+pub fn CoreDebugGRandomGeneratorOptions::get_double_property(Self, IProperty[Double]) -> Double
+pub fn CoreDebugGRandomGeneratorOptions::get_edge_determination_property(Self, IProperty[CoreDebugGRandomEdgeDetermination]) -> CoreDebugGRandomEdgeDetermination
+pub fn CoreDebugGRandomGeneratorOptions::get_file_format_property(Self, IProperty[CoreDebugGRandomFileFormat]) -> CoreDebugGRandomFileFormat
+pub fn CoreDebugGRandomGeneratorOptions::get_graph_type_property(Self, IProperty[CoreDebugGRandomGraphType]) -> CoreDebugGRandomGraphType
+pub fn CoreDebugGRandomGeneratorOptions::get_int_property(Self, IProperty[Int]) -> Int
+pub fn CoreDebugGRandomGeneratorOptions::get_optional_rand_property(Self, IProperty[CoreDebugGRandomRandVal?]) -> CoreDebugGRandomRandVal?
+pub fn CoreDebugGRandomGeneratorOptions::get_port_constraints_property(Self, IProperty[PortConstraints]) -> PortConstraints
+pub fn CoreDebugGRandomGeneratorOptions::get_rand_property(Self, IProperty[CoreDebugGRandomRandVal]) -> CoreDebugGRandomRandVal
+pub fn CoreDebugGRandomGeneratorOptions::get_string_property(Self, IProperty[String]) -> String
+pub fn CoreDebugGRandomGeneratorOptions::set_bool_property(Self, IProperty[Bool], Bool) -> Unit
+pub fn CoreDebugGRandomGeneratorOptions::set_double_property(Self, IProperty[Double], Double) -> Unit
+pub fn CoreDebugGRandomGeneratorOptions::set_edge_determination_property(Self, IProperty[CoreDebugGRandomEdgeDetermination], CoreDebugGRandomEdgeDetermination) -> Unit
+pub fn CoreDebugGRandomGeneratorOptions::set_file_format_property(Self, IProperty[CoreDebugGRandomFileFormat], CoreDebugGRandomFileFormat) -> Unit
+pub fn CoreDebugGRandomGeneratorOptions::set_graph_type_property(Self, IProperty[CoreDebugGRandomGraphType], CoreDebugGRandomGraphType) -> Unit
+pub fn CoreDebugGRandomGeneratorOptions::set_int_property(Self, IProperty[Int], Int) -> Unit
+pub fn CoreDebugGRandomGeneratorOptions::set_optional_rand_property(Self, IProperty[CoreDebugGRandomRandVal?], CoreDebugGRandomRandVal?) -> Unit
+pub fn CoreDebugGRandomGeneratorOptions::set_port_constraints_property(Self, IProperty[PortConstraints], PortConstraints) -> Unit
+pub fn CoreDebugGRandomGeneratorOptions::set_quantities(Self, CoreDebugGRandomDoubleQuantity?, IProperty[CoreDebugGRandomRandVal]) -> Unit
+pub fn CoreDebugGRandomGeneratorOptions::set_rand_property(Self, IProperty[CoreDebugGRandomRandVal], CoreDebugGRandomRandVal) -> Unit
+pub fn CoreDebugGRandomGeneratorOptions::set_string_property(Self, IProperty[String], String) -> Unit
+
+pub enum CoreDebugGRandomGraphType {
+  GraphCustom
+  GraphTree
+  GraphBiconnected
+  GraphTriconnected
+  GraphAcyclicNoTransitiveEdges
+  GraphBipartite
+}
+
+pub struct CoreDebugGRandomHierarchy {
+  levels : CoreDebugGRandomDoubleQuantity?
+  edges : CoreDebugGRandomDoubleQuantity?
+  num_hierarch_nodes : CoreDebugGRandomDoubleQuantity?
+  cross_hierarch_rel : CoreDebugGRandomDoubleQuantity?
+}
+pub fn CoreDebugGRandomHierarchy::set_cross_hierarch_rel(Self, CoreDebugGRandomDoubleQuantity?) -> Self
+pub fn CoreDebugGRandomHierarchy::set_edges(Self, CoreDebugGRandomDoubleQuantity?) -> Self
+pub fn CoreDebugGRandomHierarchy::set_levels(Self, CoreDebugGRandomDoubleQuantity?) -> Self
+pub fn CoreDebugGRandomHierarchy::set_num_hierarch_nodes(Self, CoreDebugGRandomDoubleQuantity?) -> Self
+
+pub struct CoreDebugGRandomNodes {
+  n_nodes : CoreDebugGRandomDoubleQuantity?
+  ports : CoreDebugGRandomPorts?
+  labels : Bool
+  size : CoreDebugGRandomSize?
+  remove_isolated : Bool
+}
+pub fn CoreDebugGRandomNodes::set_labels(Self, Bool) -> Self
+pub fn CoreDebugGRandomNodes::set_n_nodes(Self, CoreDebugGRandomDoubleQuantity?) -> Self
+pub fn CoreDebugGRandomNodes::set_ports(Self, CoreDebugGRandomPorts?) -> Self
+pub fn CoreDebugGRandomNodes::set_remove_isolated(Self, Bool) -> Self
+pub fn CoreDebugGRandomNodes::set_size(Self, CoreDebugGRandomSize?) -> Self
+
+pub struct CoreDebugGRandomPorts {
+  labels : Bool
+  re_use : CoreDebugGRandomDoubleQuantity?
+  size : CoreDebugGRandomSize?
+  constraint : CoreDebugGRandomConstraintType?
+  flow : Array[CoreDebugGRandomFlow]
+}
+pub fn CoreDebugGRandomPorts::set_constraint(Self, CoreDebugGRandomConstraintType?) -> Self
+pub fn CoreDebugGRandomPorts::set_flow(Self, Array[CoreDebugGRandomFlow]) -> Self
+pub fn CoreDebugGRandomPorts::set_labels(Self, Bool) -> Self
+pub fn CoreDebugGRandomPorts::set_re_use(Self, CoreDebugGRandomDoubleQuantity?) -> Self
+pub fn CoreDebugGRandomPorts::set_size(Self, CoreDebugGRandomSize?) -> Self
+
+pub struct CoreDebugGRandomRandVal {
+  mut min : Double
+  mut max : Double
+  mut mean : Double
+  mut stddv : Double
+  exact : Double
+  use_min_max : Bool
+  use_exact : Bool
+}
+pub fn CoreDebugGRandomRandVal::default_int(Self) -> Int
+pub fn CoreDebugGRandomRandVal::default_val(Self) -> Double
+pub fn CoreDebugGRandomRandVal::float_val(Self, @random.Rand) -> Double
+pub fn CoreDebugGRandomRandVal::int_val(Self, @random.Rand) -> Int
+pub fn CoreDebugGRandomRandVal::max(Self) -> Double
+pub fn CoreDebugGRandomRandVal::min(Self) -> Double
+pub fn CoreDebugGRandomRandVal::set_max(Self, Int) -> Unit
+pub fn CoreDebugGRandomRandVal::set_mean(Self, Double) -> Unit
+pub fn CoreDebugGRandomRandVal::set_min(Self, Int) -> Unit
+pub fn CoreDebugGRandomRandVal::set_stddv(Self, Double) -> Unit
+pub fn CoreDebugGRandomRandVal::val(Self, @random.Rand) -> Double
+
+pub struct CoreDebugGRandomRandomGraphGenerator {
+  mut options : CoreDebugGRandomGeneratorOptions
+  mut random : @random.Rand
+  mut node_label_counter : Int
+  mut port_label_counter : Int
+  mut max_hierarchy_level : Int
+}
+
+pub struct CoreDebugGRandomRuntimeModule {
+  unit : Unit
+}
+
+pub struct CoreDebugGRandomScopeProvider {
+  unit : Unit
+}
+
+pub enum CoreDebugGRandomSide {
+  SideNorth
+  SideEast
+  SideSouth
+  SideWest
+}
+
+pub struct CoreDebugGRandomSize {
+  height : CoreDebugGRandomDoubleQuantity?
+  width : CoreDebugGRandomDoubleQuantity?
+}
+pub fn CoreDebugGRandomSize::set_height(Self, CoreDebugGRandomDoubleQuantity?) -> Self
+pub fn CoreDebugGRandomSize::set_width(Self, CoreDebugGRandomDoubleQuantity?) -> Self
+
+pub struct CoreDebugGRandomStandaloneSetup {
+  unit : Unit
+}
+pub fn CoreDebugGRandomStandaloneSetup::create_injector_and_do_emf_registration(Self) -> CoreDebugGRandomRuntimeModule
+
+pub struct CoreDebugGRandomValidationError {
+  message : String
+  feature : String
+}
+
+pub struct CoreDebugLayoutListener {
+  id : Int
+  layout_about_to_start : (CoreDebugLayoutMapping, IElkProgressMonitor) -> Unit
+  layout_done : (CoreDebugLayoutMapping, IElkProgressMonitor) -> Unit
+}
+
+pub struct CoreDebugLayoutMapping {
+  layout_graph : Int?
+}
+
+pub struct CoreDebugWizardProject {
+  id : String
+  folders : Array[String]
+  files : Map[String, String]
+  natures : Array[String]
+}
+pub fn CoreDebugWizardProject::add_folder(Self, String) -> Unit
+pub fn CoreDebugWizardProject::add_nature(Self, String) -> Unit
+pub fn CoreDebugWizardProject::get_file(Self, String) -> String?
+pub fn CoreDebugWizardProject::has_folder(Self, String) -> Bool
+pub fn CoreDebugWizardProject::has_nature(Self, String) -> Bool
+pub fn CoreDebugWizardProject::put_file(Self, String, String) -> Unit
+
+pub struct CoreDebugZipOutput {
+  file_name : String
+  entries : Array[String]
 }
 
 pub struct CubicSplineInterpolator {
@@ -3807,6 +4945,13 @@ pub fn[S, T] DotTransformationData::set_int_property(Self[S, T], IProperty[Int],
 pub fn[S, T] DotTransformationData::set_source_graph(Self[S, T], S) -> Unit
 pub fn[S, T] DotTransformationData::set_string_property(Self[S, T], IProperty[String], String) -> Unit
 
+pub struct Draw2DLayoutProvider {
+  mut compound_mode : Bool
+}
+pub fn Draw2DLayoutProvider::initialize(Self, String?) -> Unit
+pub fn Draw2DLayoutProvider::is_compound_mode(Self) -> Bool
+pub fn Draw2DLayoutProvider::layout(Self, Int, IElkProgressMonitor) -> Unit
+
 pub struct DropdownIntRangeAction {
   mut menu : Array[Int]?
   lb : Int
@@ -3893,6 +5038,12 @@ pub fn ElkCoreSpacingsBuilder::with_factor(Self, IProperty[Double], Double) -> S
 pub fn ElkCoreSpacingsBuilder::with_overwrite(Self, Bool) -> Self
 pub fn ElkCoreSpacingsBuilder::with_value(Self, IProperty[Double], Double) -> Self
 
+pub struct ElkDebugPlugin {
+  model : ExecutionInfoModel
+  layout_listener : CoreDebugLayoutListener
+}
+pub fn ElkDebugPlugin::get_model(Self) -> ExecutionInfoModel
+
 pub struct ElkEngine {
   default_layout_options : Map[String, Json]
   algorithms : Array[String]
@@ -3955,6 +5106,13 @@ pub enum ElkLabelParent {
   LabelLabelParent(Int)
 }
 
+pub struct ElkLayoutProvider {
+  unit : Unit
+}
+pub fn ElkLayoutProvider::can_layout_nodes(Self, Array[GmfLayoutNode], Bool, GmfLayoutHint) -> Bool
+pub fn ElkLayoutProvider::layout_layout_nodes(Self, Array[GmfLayoutNode], Bool, GmfLayoutHint) -> () -> Unit
+pub fn ElkLayoutProvider::provides(Self, GmfOperation) -> Bool
+
 pub struct ElkRectangle {
   mut x : Double
   mut y : Double
@@ -3990,6 +5148,59 @@ pub struct ExclusiveUpperBound {
 pub fn ExclusiveUpperBound::compare_to(Self, Double) -> Int
 pub fn ExclusiveUpperBound::to_string(Self) -> String
 pub fn ExclusiveUpperBound::value(Self) -> Double
+
+pub struct ExecutionInfoContentProvider {
+  mut filter_fn : (Int) -> Bool
+  mut filter_is_default : Bool
+}
+pub fn ExecutionInfoContentProvider::get_children(Self, Int?) -> Array[Int]
+pub fn ExecutionInfoContentProvider::get_elements(Self, Array[Int]?) -> Array[Int]
+pub fn ExecutionInfoContentProvider::get_parent(Self, Int?) -> Int?
+pub fn ExecutionInfoContentProvider::has_children(Self, Int?) -> Bool
+pub fn ExecutionInfoContentProvider::is_filtering(Self) -> Bool
+pub fn ExecutionInfoContentProvider::set_filter(Self, ((Int) -> Bool)?) -> Unit
+
+pub struct ExecutionInfoModel {
+  executions : Array[Int]
+  listeners : Array[IExecutionInfoModelListener]
+}
+pub fn ExecutionInfoModel::add_execution(Self, Int) -> Unit
+pub fn ExecutionInfoModel::add_execution_info_model_listener(Self, IExecutionInfoModelListener) -> Unit
+pub fn ExecutionInfoModel::get_execution_infos(Self) -> Array[Int]
+pub fn ExecutionInfoModel::remove_all_execution_infos(Self) -> Unit
+pub fn ExecutionInfoModel::remove_execution_info_model_listener(Self, IExecutionInfoModelListener) -> Unit
+pub fn ExecutionInfoModel::remove_execution_infos(Self, Array[Int]) -> Unit
+pub fn ExecutionInfoModel::replace_execution(Self, Int, Int) -> Unit
+
+pub enum ExecutionTimeDisplayMode {
+  NameDisplay
+  TimeTotalDisplay
+  TimeLocalDisplay
+}
+
+pub struct ExecutionTimeLabelProvider {
+  display_mode : ExecutionTimeDisplayMode
+  element_image : String
+}
+pub fn ExecutionTimeLabelProvider::get_image(Self, Int) -> String?
+pub fn ExecutionTimeLabelProvider::get_text(Self, Int) -> String
+
+pub struct ExecutionTimeView {
+  base : AbstractLayoutDebugView
+  mut name_column_width : Int
+  mut time_column_width : Int
+  mut local_time_column_width : Int
+}
+pub fn ExecutionTimeView::get_base(Self) -> AbstractLayoutDebugView
+pub fn ExecutionTimeView::get_column_widths_for_test(Self) -> (Int, Int, Int)
+pub fn ExecutionTimeView::load_state(Self) -> Unit
+pub fn ExecutionTimeView::persist_state(Self) -> Unit
+pub fn ExecutionTimeView::set_column_widths_for_test(Self, Int, Int, Int) -> Unit
+
+pub struct ExpandExecutionTreeAction {
+  view : AbstractLayoutDebugView
+}
+pub fn ExpandExecutionTreeAction::run(Self) -> Unit
 
 pub struct FGraph {
   nodes : Array[Int]
@@ -4039,6 +5250,14 @@ pub enum FParticle {
   Label(Int)
   Bendpoint(Int)
 }
+
+pub struct FilterExecutionTreeAction {
+  view : AbstractLayoutDebugView
+  mut checked : Bool
+}
+pub fn FilterExecutionTreeAction::is_checked(Self) -> Bool
+pub fn FilterExecutionTreeAction::run(Self) -> Unit
+pub fn FilterExecutionTreeAction::set_checked(Self, Bool) -> Unit
 
 pub struct ForceBoolOption {
   id : String
@@ -4139,6 +5358,297 @@ pub fn FruchtermanReingoldModel::iteration_done(Self) -> Unit
 pub fn FruchtermanReingoldModel::layout(Self, FGraph, IElkProgressMonitor) -> Unit
 pub fn FruchtermanReingoldModel::more_iterations(Self, Int) -> Bool
 
+pub struct GmfCommandStack {
+  executed_labels : Array[String]
+}
+pub fn GmfCommandStack::execute(Self, GmfLayoutCommand) -> Unit
+pub fn GmfCommandStack::execution_count(Self) -> Int
+pub fn GmfCommandStack::last_executed_label(Self) -> String?
+
+pub(all) enum GmfConnectorDiagramPart {
+  DirectEditPart(Int)
+  Selection(Array[Int])
+  NoDiagramPart
+}
+pub impl Show for GmfConnectorDiagramPart
+
+pub struct GmfConnectorLayoutSettings {
+  animate : Bool
+  zoom_to_fit : Bool
+  min_anim_time : Int
+  max_anim_time : Int
+  anim_time_factor : Int
+}
+
+pub(all) enum GmfConnectorWorkbenchPart {
+  DiagramEditorWorkbenchPart(Int)
+  AdaptableWorkbenchPart(Int)
+  OtherWorkbenchPart
+}
+pub impl Show for GmfConnectorWorkbenchPart
+
+pub struct GmfDiagramLayoutConnector {
+  edit_part_filter : IEditPartFilter
+}
+pub fn GmfDiagramLayoutConnector::apply_layout(Self, GmfLayoutMapping, GmfConnectorLayoutSettings, viewer_not_visible? : Bool) -> Unit
+pub fn GmfDiagramLayoutConnector::apply_layout_internal(Self, GmfLayoutMapping, Int) -> Unit
+pub fn GmfDiagramLayoutConnector::apply_transferred_layout(Self, GmfLayoutMapping) -> Unit
+pub fn GmfDiagramLayoutConnector::build_layout_graph(Self, GmfConnectorWorkbenchPart?, GmfConnectorDiagramPart) -> GmfLayoutMapping
+pub fn GmfDiagramLayoutConnector::calc_animation_time(Self, GmfLayoutMapping, GmfConnectorLayoutSettings, Bool) -> Int
+pub fn GmfDiagramLayoutConnector::count_nodes(Self, Int) -> Int
+pub fn GmfDiagramLayoutConnector::transfer_layout(Self, GmfLayoutMapping) -> Unit
+
+pub enum GmfDiagramPart {
+  NoPart
+  Single(Int)
+  Multiple(Array[Int])
+}
+pub impl Show for GmfDiagramPart
+
+pub struct GmfDimension {
+  width : Int
+  height : Int
+}
+pub impl Eq for GmfDimension
+pub impl Show for GmfDimension
+
+pub struct GmfEdgeLayoutData {
+  edge_view : Int
+  bends : GmfPointList?
+  junction_points : String?
+  source_terminal : String?
+  target_terminal : String?
+}
+
+pub(all) enum GmfEditPartKind {
+  GenericEditPart
+  RootEditPart
+  DiagramRootEditPart
+  DiagramEditPart
+  ShapeNodeEditPart
+  AbstractBorderItemEditPart
+  AbstractImageEditPart
+  CompartmentEditPart
+  ResizableCompartmentEditPart
+  ConnectionEditPart
+  LabelEditPart
+  NoteEditPart
+}
+pub impl Eq for GmfEditPartKind
+pub impl Show for GmfEditPartKind
+
+pub(all) enum GmfFigureKind {
+  Generic
+  WrappingLabel
+  Label
+  ResizableCompartmentFigure
+  BorderedNodeFigure
+  BorderItemContainer
+  ConnectionFigure
+}
+pub impl Eq for GmfFigureKind
+pub impl Show for GmfFigureKind
+
+pub struct GmfInjector {
+  bindings : Map[String, String]
+}
+pub fn GmfInjector::binding_of(Self, String) -> String?
+
+pub struct GmfInsets {
+  top : Int
+  right : Int
+  bottom : Int
+  left : Int
+}
+pub impl Eq for GmfInsets
+pub impl Show for GmfInsets
+
+pub struct GmfLayoutCommand {
+  label : String
+  diagram_view : Int?
+  mut shape_layouts : Array[GmfShapeLayoutData]
+  mut edge_layouts : Array[GmfEdgeLayoutData]
+  mut oblique_routing : Bool
+}
+pub fn GmfLayoutCommand::add_edge_layout(Self, Int, GmfPointList?, String?, String?, String?) -> Unit
+pub fn GmfLayoutCommand::add_shape_layout(Self, Int, GmfPoint?, GmfDimension?) -> Unit
+pub fn GmfLayoutCommand::execute(Self) -> Unit
+pub fn GmfLayoutCommand::get_affected_files(Self) -> Array[String]
+pub fn GmfLayoutCommand::get_label(Self) -> String
+pub fn GmfLayoutCommand::set_oblique_routing(Self, Bool) -> Unit
+
+pub struct GmfLayoutConfigurationStore {
+  edit_part : Int
+  edit_part_filter : IEditPartFilter
+}
+pub fn GmfLayoutConfigurationStore::get_affected_options(Self) -> Array[String]
+pub fn GmfLayoutConfigurationStore::get_editing_domain(Self) -> Int
+pub fn GmfLayoutConfigurationStore::get_option_targets(Self) -> Array[GmfLayoutOptionTarget]
+pub fn GmfLayoutConfigurationStore::get_option_value(Self, String) -> String?
+pub fn GmfLayoutConfigurationStore::get_parent(Self) -> Self?
+pub fn GmfLayoutConfigurationStore::set_option_value(Self, String, String?) -> Unit
+
+pub struct GmfLayoutConfigurationStoreProvider {
+  edit_part_filter : IEditPartFilter
+}
+pub fn GmfLayoutConfigurationStoreProvider::get(Self, Int?) -> GmfLayoutConfigurationStore?
+
+pub struct GmfLayoutEditPolicy {
+  point_list_map : Map[Int, GmfPointList]
+}
+pub fn GmfLayoutEditPolicy::get_command(Self, ApplyLayoutRequest, Int) -> GmfLayoutCommand?
+pub fn GmfLayoutEditPolicy::understands_request(Self, String) -> Bool
+
+pub struct GmfLayoutElementEdge {
+  bends : GmfPointList
+  source_terminal : String?
+  target_terminal : String?
+  junction_points : String?
+}
+pub impl Show for GmfLayoutElementEdge
+
+pub struct GmfLayoutElementShape {
+  x : Double
+  y : Double
+  width : Double
+  height : Double
+}
+pub impl Show for GmfLayoutElementShape
+
+pub struct GmfLayoutHint {
+  graphical_edit_part : Int?
+}
+pub fn GmfLayoutHint::get_graphical_edit_part(Self) -> Int?
+
+pub struct GmfLayoutInvocation {
+  diagram_part : GmfDiagramPart
+  progress_dialog : Bool
+  zoom_to_fit : Bool
+}
+pub impl Show for GmfLayoutInvocation
+
+pub struct GmfLayoutMapping {
+  workbench_part : GmfConnectorWorkbenchPart?
+  parent_element : Int?
+  layout_graph : Int
+  node_map : Map[Int, Int]
+  port_map : Map[Int, Int]
+  edge_map : Map[Int, Int]
+  label_map : Map[Int, Int]
+  connections : Array[Int]
+  mut diagram_edit_part : Int?
+  mut layout_command : GmfLayoutCommand?
+  mut command_stack : GmfCommandStack?
+  mut coordinate_offset : GmfPoint?
+  mut animation_time : Int
+}
+pub fn GmfLayoutMapping::get_command_stack(Self) -> GmfCommandStack?
+pub fn GmfLayoutMapping::graph_element_count(Self) -> Int
+pub fn GmfLayoutMapping::set_command_stack(Self, GmfCommandStack?) -> Unit
+
+pub struct GmfLayoutNode {
+  node : String
+}
+pub fn GmfLayoutNode::get_node(Self) -> String
+
+pub enum GmfLayoutOptionTarget {
+  Ports
+  Nodes
+  Parents
+  Edges
+  Labels
+}
+pub impl Eq for GmfLayoutOptionTarget
+pub impl Show for GmfLayoutOptionTarget
+
+pub struct GmfLayoutSetup {
+  unit : Unit
+}
+pub fn GmfLayoutSetup::create_injector(Self, GmfInjector) -> GmfInjector
+pub fn GmfLayoutSetup::supports(Self, GmfLayoutSetupObject) -> Bool
+
+pub(all) enum GmfLayoutSetupObject {
+  DiagramEditor
+  GraphicalEditPart(Int)
+  AdaptableWithDiagramEditor
+  Collection(Array[GmfLayoutSetupObject])
+  Other
+}
+pub impl Show for GmfLayoutSetupObject
+
+pub(all) enum GmfOperation {
+  LayoutNodeOperation
+  CreateEditPoliciesOperation
+  Other(String)
+}
+pub impl Eq for GmfOperation
+pub impl Show for GmfOperation
+
+pub struct GmfPoint {
+  x : Int
+  y : Int
+}
+pub impl Eq for GmfPoint
+pub impl Show for GmfPoint
+
+pub struct GmfPointList {
+  points : Array[GmfPoint]
+}
+pub fn GmfPointList::add_point(Self, GmfPoint) -> Unit
+pub fn GmfPointList::copy(Self) -> Self
+pub fn GmfPointList::get_first_point(Self) -> GmfPoint
+pub fn GmfPointList::get_last_point(Self) -> GmfPoint
+pub fn GmfPointList::get_point(Self, Int) -> GmfPoint
+pub fn GmfPointList::remove_point(Self, Int) -> Unit
+pub fn GmfPointList::reverse(Self) -> Unit
+pub fn GmfPointList::size(Self) -> Int
+pub impl Show for GmfPointList
+
+pub struct GmfRectangle {
+  x : Int
+  y : Int
+  width : Int
+  height : Int
+}
+pub impl Eq for GmfRectangle
+pub impl Show for GmfRectangle
+
+pub(all) enum GmfSelectionItem {
+  DiagramFile(String)
+  OtherSelectionItem
+}
+pub impl Show for GmfSelectionItem
+
+pub struct GmfShapeLayoutData {
+  view : Int
+  location : GmfPoint?
+  size : GmfDimension?
+}
+
+pub enum GraphFeature {
+  SelfLoops
+  InsideSelfLoops
+  MultiEdges
+  EdgeLabels
+  Ports
+  Compound
+  Clusters
+  Disconnected
+}
+pub fn GraphFeature::get_description(Self) -> String
+pub fn GraphFeature::to_string(Self) -> String
+
+pub struct GraphIdentifierGenerator {
+  graph : Int
+  validate : Bool
+  generate : Bool
+  unique : Bool
+}
+pub fn GraphIdentifierGenerator::assert_exists(Self) -> Self
+pub fn GraphIdentifierGenerator::assert_unique(Self) -> Self
+pub fn GraphIdentifierGenerator::assert_valid(Self) -> Self
+pub fn GraphIdentifierGenerator::execute(Self) -> Unit
+
 pub struct GraphIssue {
   target : GraphIssueTarget
   message : String
@@ -4150,6 +5660,21 @@ pub enum GraphIssueTarget {
   NodeIssueTarget(Int)
   EdgeIssueTarget(Int)
 }
+
+pub struct GraphListLabelProvider {
+  elk_image : String
+  json_image : String
+  dot_image : String
+}
+pub fn GraphListLabelProvider::get_image(Self, LoggedGraph) -> String
+pub fn GraphListLabelProvider::get_text(Self, LoggedGraph) -> String
+
+pub struct GraphTreeLabelProvider {
+  graph_image : String
+  no_graph_image : String
+}
+pub fn GraphTreeLabelProvider::get_image(Self, Int) -> String
+pub fn GraphTreeLabelProvider::get_text(Self, Int) -> String
 
 pub struct GraphValidationException {
   message : String?
@@ -4593,6 +6118,11 @@ pub struct IDataObject {
 }
 pub fn IDataObject::parse(Self, String) -> Unit
 
+pub struct IEditPartFilter {
+  filter_fn : (Int) -> Bool
+}
+pub fn IEditPartFilter::filter(Self, Int) -> Bool
+
 pub struct IElkCancelIndicator {
   canceled : Bool
 }
@@ -4623,6 +6153,13 @@ pub fn IElkProgressMonitor::log(Self, String) -> Unit
 pub fn IElkProgressMonitor::log_graph(Self, String, graph_type? : LoggedGraphType) -> Unit
 pub fn IElkProgressMonitor::sub_task(Self, Double) -> Self?
 pub fn IElkProgressMonitor::worked(Self, Double) -> Unit
+
+pub struct IExecutionInfoModelListener {
+  id : Int
+  execution_info_changed_fn : () -> Unit
+}
+pub fn IExecutionInfoModelListener::execution_info_changed(Self) -> Unit
+pub fn IExecutionInfoModelListener::get_id(Self) -> Int
 
 pub struct IFactory[T] {
   create_fn : () -> T
@@ -4760,6 +6297,16 @@ pub fn IValidatingGraphElementVisitor::get_issues(Self) -> Array[GraphIssue]
 pub fn IValidatingGraphElementVisitor::to_visitor(Self) -> IGraphElementVisitor
 pub fn IValidatingGraphElementVisitor::visit(Self, Int) -> Unit
 
+pub struct ImageExportAction {
+  view : LayoutGraphView
+  mut enabled : Bool
+  mut selected_file_name : String?
+}
+pub fn ImageExportAction::is_enabled(Self) -> Bool
+pub fn ImageExportAction::run(Self) -> Unit
+pub fn ImageExportAction::set_selected_file_name_for_test(Self, String?) -> Unit
+pub fn ImageExportAction::update_enablement(Self) -> Unit
+
 pub struct InstancePool[T] {
   factory : IFactory[T]
   instances : Array[T]
@@ -4792,11 +6339,54 @@ pub fn InternalGraphvizDotParser::get_grammar_file_name(Self) -> String
 pub fn InternalGraphvizDotParser::get_token_names(Self) -> Array[String]
 pub fn InternalGraphvizDotParser::rule_graphviz_model(Self) -> DotGraphvizModel
 
+pub struct JsonAdapter {
+  unit : Unit
+}
+pub fn JsonAdapter::add_json_arr_json(Self, Array[Json], Json) -> Unit
+pub fn JsonAdapter::add_json_obj_bool(Self, Map[String, Json], String, Bool) -> Unit
+pub fn JsonAdapter::add_json_obj_json(Self, Map[String, Json], String, Json) -> Unit
+pub fn JsonAdapter::add_json_obj_number(Self, Map[String, Json], String, Double) -> Unit
+pub fn JsonAdapter::add_json_obj_string(Self, Map[String, Json], String, String) -> Unit
+pub fn JsonAdapter::as_id(Self, Json) -> String
+pub fn JsonAdapter::get_id(Self, Map[String, Json]) -> String
+pub fn JsonAdapter::get_id_safe(Self, Map[String, Json]) -> String?
+pub fn JsonAdapter::get_json_arr(Self, Array[Json], Int) -> Json?
+pub fn JsonAdapter::get_json_obj(Self, Map[String, Json], String) -> Json?
+pub fn JsonAdapter::has_json_obj(Self, Map[String, Json], String) -> Bool
+pub fn JsonAdapter::implementation_error(Self) -> String
+pub fn JsonAdapter::is_int(Self, Double) -> Bool
+pub fn JsonAdapter::keys_json_obj(Self, Map[String, Json]) -> Array[String]
+pub fn JsonAdapter::new_json_array(Self) -> Array[Json]
+pub fn JsonAdapter::new_json_object(Self) -> Map[String, Json]
+pub fn JsonAdapter::opt_double(Self, Map[String, Json], String) -> Double?
+pub fn JsonAdapter::opt_json_array(Self, Map[String, Json], String) -> Array[Json]?
+pub fn JsonAdapter::opt_json_object(Self, Map[String, Json], String) -> Map[String, Json]?
+pub fn JsonAdapter::opt_string(Self, Map[String, Json], String) -> String?
+pub fn JsonAdapter::opt_string_at(Self, Array[Json], Int) -> String?
+pub fn JsonAdapter::opt_string_value(Self, Json) -> String?
+pub fn JsonAdapter::remove_json_obj(Self, Map[String, Json], String) -> Unit
+pub fn JsonAdapter::size_json_arr(Self, Array[Json]) -> Int
+pub fn JsonAdapter::to_json_array(Self, Json) -> Array[Json]
+pub fn JsonAdapter::to_json_number(Self, Double) -> Json
+pub fn JsonAdapter::to_json_object(Self, Json) -> Map[String, Json]
+pub fn JsonAdapter::to_json_string(Self, String) -> Json
+
+pub struct JsonImportException {
+  message : String?
+  cause : String?
+}
+pub fn JsonImportException::get_cause(Self) -> String?
+pub fn JsonImportException::get_message(Self) -> String?
+
 pub struct JsonImporter {
   mut input_model : Map[String, Json]?
   node_id_map : Map[String, Int]
+  port_id_map : Map[String, Int]
   node_json_map : Map[Int, Map[String, Json]]
+  port_json_map : Map[Int, Map[String, Json]]
   edge_json_map : Map[Int, Map[String, Json]]
+  label_json_map : Map[Int, Map[String, Json]]
+  edge_original_parent_map : Map[Int, Int]
 }
 pub fn JsonImporter::get_input_model(Self) -> Map[String, Json]?
 pub fn JsonImporter::transfer_layout(Self, Int) -> Unit
@@ -4883,19 +6473,26 @@ pub struct LayoutAlgorithmData {
   name : String
   description : String
   validator : ((Int) -> Array[GraphIssue])?
+  mut category_id : String
   bundle_name : String
   instance_pool_clear_fn : () -> Unit
+  supported_features : Map[String, GraphFeature]
   known_options : Map[String, Unit]
 }
 pub fn LayoutAlgorithmData::add_known_option(Self, String) -> Unit
+pub fn LayoutAlgorithmData::add_supported_feature(Self, GraphFeature) -> Unit
 pub fn LayoutAlgorithmData::clear_instance_pool(Self) -> Unit
 pub fn LayoutAlgorithmData::get_bundle_name(Self) -> String
+pub fn LayoutAlgorithmData::get_category_id(Self) -> String
 pub fn LayoutAlgorithmData::get_description(Self) -> String
 pub fn LayoutAlgorithmData::get_id(Self) -> String
 pub fn LayoutAlgorithmData::get_known_option_ids(Self) -> Array[String]
 pub fn LayoutAlgorithmData::get_name(Self) -> String
+pub fn LayoutAlgorithmData::get_supported_features(Self) -> Array[GraphFeature]
 pub fn LayoutAlgorithmData::get_validator(Self) -> ((Int) -> Array[GraphIssue])?
 pub fn LayoutAlgorithmData::knows_option(Self, String) -> Bool
+pub fn LayoutAlgorithmData::set_category_id(Self, String) -> Unit
+pub fn LayoutAlgorithmData::supports_feature(Self, GraphFeature) -> Bool
 
 pub struct LayoutAlgorithmResolver {
   default_layout_algorithm_id : String
@@ -4944,10 +6541,58 @@ pub fn[T] LayoutDataProposal::get_data(Self[T]) -> T
 pub fn[T] LayoutDataProposal::get_label(Self[T]) -> String?
 pub fn[T] LayoutDataProposal::get_proposal(Self[T]) -> String
 
+pub struct LayoutDiagramFileHandler {
+  unit : Unit
+}
+pub fn LayoutDiagramFileHandler::execute(Self, Array[GmfSelectionItem]) -> Int
+
 pub struct LayoutDotExporter {
   base : DotExporter
 }
 pub fn LayoutDotExporter::transform(Self, DotTransformationData[Int, DotGraphvizModel]) -> Unit
+
+pub struct LayoutEditPolicyProvider {
+  unit : Unit
+}
+pub fn LayoutEditPolicyProvider::create_edit_policies(Self, Int) -> Unit
+pub fn LayoutEditPolicyProvider::provides(Self, GmfOperation) -> Bool
+
+pub struct LayoutGraphView {
+  base : AbstractLayoutDebugView
+  graph_list_label_provider : GraphListLabelProvider
+  mut logged_graphs : Array[LoggedGraph]
+  mut selected_logged_graph : LoggedGraph?
+  mut visual_graph : Int?
+  mut textual_graph : String
+  mut showing_visual_graph : Bool
+}
+pub fn LayoutGraphView::get_base(Self) -> AbstractLayoutDebugView
+pub fn LayoutGraphView::get_canvas_graph_for_test(Self) -> Int?
+pub fn LayoutGraphView::get_logged_graphs_for_test(Self) -> Array[LoggedGraph]
+pub fn LayoutGraphView::get_selected_execution_infos(Self) -> Array[Int]
+pub fn LayoutGraphView::get_textual_graph_for_test(Self) -> String
+pub fn LayoutGraphView::is_showing_visual_graph_for_test(Self) -> Bool
+pub fn LayoutGraphView::list_selection_changed(Self) -> Unit
+pub fn LayoutGraphView::select_logged_graph_for_test(Self, Int) -> Unit
+pub fn LayoutGraphView::set_canvas_graph_for_test(Self, Int?) -> Unit
+pub fn LayoutGraphView::set_selected_execution_infos(Self, Array[Int]) -> Unit
+pub fn LayoutGraphView::show_logged_graph(Self, LoggedGraph) -> Unit
+pub fn LayoutGraphView::tree_selection_changed(Self) -> Unit
+
+pub struct LayoutGraphViewDropAdapter {
+  layout_graph_view : LayoutGraphView
+}
+pub fn LayoutGraphViewDropAdapter::perform_drop(Self, Array[String]) -> Bool
+pub fn LayoutGraphViewDropAdapter::validate_drop(Self) -> Bool
+
+pub struct LayoutLogView {
+  base : AbstractLayoutDebugView
+  mut log_text : String
+}
+pub fn LayoutLogView::get_base(Self) -> AbstractLayoutDebugView
+pub fn LayoutLogView::get_log_text(Self) -> String
+pub fn LayoutLogView::set_selected_execution_infos(Self, Array[Int]) -> Unit
+pub fn LayoutLogView::tree_selection_changed(Self) -> Unit
 
 pub struct LayoutMetaDataRegistry {
   register_algorithm_fn : (LayoutAlgorithmData) -> Unit
@@ -4990,6 +6635,7 @@ pub enum LayoutOptionTarget {
   PortsTarget
   LabelsTarget
 }
+pub fn LayoutOptionTarget::to_string(Self) -> String
 
 pub struct LayoutOptionValidator {
   issues : Array[GraphIssue]
@@ -5006,12 +6652,14 @@ pub enum LayoutOptionValueType {
   EnumSetType
   ObjectType
 }
+pub fn LayoutOptionValueType::to_string(Self) -> String
 
 pub enum LayoutOptionVisibility {
   VisibleOption
   AdvancedOption
   HiddenOption
 }
+pub fn LayoutOptionVisibility::to_string(Self) -> String
 
 pub struct LayoutProcessorConfiguration[P, G] {
   phase_descriptor : PhaseDescriptor[P]
@@ -5029,6 +6677,13 @@ pub fn[P, G] LayoutProcessorConfiguration::do_add(Self[P, G], Int, ILayoutProces
 pub fn[P, G] LayoutProcessorConfiguration::processors(Self[P, G], Int) -> Array[ILayoutProcessorFactory[P, G]]
 pub fn[P, G] LayoutProcessorConfiguration::processors_after(Self[P, G], P) -> Array[ILayoutProcessorFactory[P, G]]
 pub fn[P, G] LayoutProcessorConfiguration::processors_before(Self[P, G], P) -> Array[ILayoutProcessorFactory[P, G]]
+
+pub struct LayoutUponLoadSettingAction {
+  mut checked : Bool
+}
+pub fn LayoutUponLoadSettingAction::is_checked(Self) -> Bool
+pub fn LayoutUponLoadSettingAction::run(Self) -> Unit
+pub fn LayoutUponLoadSettingAction::set_checked(Self, Bool) -> Unit
 
 pub struct LibavoidBundle {
   symbolic_name : String
@@ -5105,6 +6760,20 @@ pub fn LibavoidServerPool::dispose(Self) -> Unit
 pub fn LibavoidServerPool::fetch(Self) -> LibavoidServer
 pub fn LibavoidServerPool::release(Self, LibavoidServer) -> Unit
 pub fn LibavoidServerPool::size(Self) -> Int
+
+pub struct LoadGraphAction {
+  view : LayoutGraphView
+  mut selected_file_name : String?
+}
+pub fn LoadGraphAction::run(Self) -> Unit
+pub fn LoadGraphAction::set_selected_file_name_for_test(Self, String?) -> Unit
+
+pub struct LogLabelProvider {
+  log_image : String
+  no_log_image : String
+}
+pub fn LogLabelProvider::get_image(Self, Int) -> String
+pub fn LogLabelProvider::get_text(Self, Int) -> String
 
 pub struct LoggedGraph {
   tag : String
@@ -5565,6 +7234,15 @@ pub fn PortSide::left(Self) -> Self
 pub fn PortSide::opposed(Self) -> Self
 pub fn PortSide::right(Self) -> Self
 
+pub struct PreferenceAction {
+  preference_id : String
+  mut checked : Bool
+}
+pub fn PreferenceAction::dispose(Self) -> Unit
+pub fn PreferenceAction::is_checked(Self) -> Bool
+pub fn PreferenceAction::run(Self) -> Unit
+pub fn PreferenceAction::update_checked_state(Self) -> Unit
+
 pub enum Quadrant {
   Q1
   Q4
@@ -5725,6 +7403,22 @@ pub fn RecursiveGraphLayoutEngine::layout(Self, Int, IElkProgressMonitor) -> Uni
 pub enum RelativeXPlacerStrategy {
   SIMPLE_X_PLACING
 }
+
+pub struct ReloadFromFileAction {
+  view : LayoutGraphView
+  mut enabled : Bool
+}
+pub fn ReloadFromFileAction::is_enabled(Self) -> Bool
+pub fn ReloadFromFileAction::run(Self) -> Unit
+pub fn ReloadFromFileAction::update_enablement(Self) -> Unit
+
+pub struct RevealLogFolderAction {
+  view : AbstractLayoutDebugView
+  mut enabled : Bool
+}
+pub fn RevealLogFolderAction::is_enabled(Self) -> Bool
+pub fn RevealLogFolderAction::run(Self) -> Unit
+pub fn RevealLogFolderAction::update_enablement(Self) -> Unit
 
 pub enum SPOrEPhases {
   P1_STRUCTURE
@@ -6097,6 +7791,8 @@ pub type ElkNode = Int
 
 pub type ElkPort = Int
 
+pub type ExecutionInfo = Int
+
 pub type FBendpoint = Int
 
 pub type FEdge = Int
@@ -6104,6 +7800,16 @@ pub type FEdge = Int
 pub type FLabel = Int
 
 pub type FNode = Int
+
+pub type GmfEditPart = Int
+
+pub type GmfElkGraphElement = Int
+
+pub type GmfFigure = Int
+
+pub type GmfRunnable = () -> Unit
+
+pub type GmfView = Int
 
 pub type GraphIssueSeverity = Int
 
