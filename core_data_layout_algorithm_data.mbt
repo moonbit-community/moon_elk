@@ -7,6 +7,8 @@ pub struct LayoutAlgorithmData {
   name : String
   description : String
   validator : GraphValidationFunction?
+  bundle_name : String
+  instance_pool_clear_fn : () -> Unit
   known_options : Map[String, Unit]
 }
 
@@ -16,8 +18,18 @@ pub fn new_layout_algorithm_data(
   name? : String = "",
   description? : String = "",
   validator? : GraphValidationFunction? = None,
+  bundle_name? : String = "",
+  instance_pool_clear_fn? : () -> Unit = () => (),
 ) -> LayoutAlgorithmData {
-  { id, name, description, validator, known_options: {} }
+  {
+    id,
+    name,
+    description,
+    validator,
+    bundle_name,
+    instance_pool_clear_fn,
+    known_options: {},
+  }
 }
 
 ///|
@@ -42,6 +54,20 @@ pub fn LayoutAlgorithmData::get_description(
   self : LayoutAlgorithmData,
 ) -> String {
   self.description
+}
+
+///|
+pub fn LayoutAlgorithmData::get_bundle_name(
+  self : LayoutAlgorithmData,
+) -> String {
+  self.bundle_name
+}
+
+///|
+pub fn LayoutAlgorithmData::clear_instance_pool(
+  self : LayoutAlgorithmData,
+) -> Unit {
+  (self.instance_pool_clear_fn)()
 }
 
 ///|
