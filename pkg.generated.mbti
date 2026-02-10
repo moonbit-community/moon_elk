@@ -150,6 +150,8 @@ pub fn distance(KVector, KVector, KVector, KVector, KVector) -> Double
 
 pub fn distance_from_bezier_segment(KVector, KVector, KVector, KVector, KVector) -> Double
 
+pub fn draw_hitboxes(CGraph, String) -> String
+
 pub fn eades_model_attractive(Double, Double) -> Double
 
 pub fn eades_model_repulsive(Double, Double) -> Double
