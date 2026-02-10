@@ -78,6 +78,10 @@ priv struct NodeData {
 ///|
 priv struct PortData {
   parent : ElkNode?
+  x : Double
+  y : Double
+  width : Double
+  height : Double
   layout_option_string_values : Map[String, String]
 }
 
@@ -246,12 +250,75 @@ pub fn create_node(parent : ElkNode?) -> ElkNode {
 ///|
 pub fn create_port(parent : ElkNode?) -> ElkPort {
   let id = port_store.val.length()
-  port_store.val.push({ parent, layout_option_string_values: {} })
+  port_store.val.push({
+    parent,
+    x: 0.0,
+    y: 0.0,
+    width: 0.0,
+    height: 0.0,
+    layout_option_string_values: {},
+  })
   if parent is Some(parent_id) {
     checked_node(parent_id)
     append_port(parent_id, id)
   }
   id
+}
+
+///|
+pub fn port_set_location(port : ElkPort, x : Double, y : Double) -> Unit {
+  checked_port(port)
+  let data = port_store.val[port]
+  port_store.val[port] = {
+    parent: data.parent,
+    x,
+    y,
+    width: data.width,
+    height: data.height,
+    layout_option_string_values: data.layout_option_string_values,
+  }
+}
+
+///|
+pub fn port_x(port : ElkPort) -> Double {
+  checked_port(port)
+  port_store.val[port].x
+}
+
+///|
+pub fn port_y(port : ElkPort) -> Double {
+  checked_port(port)
+  port_store.val[port].y
+}
+
+///|
+pub fn port_set_dimensions(
+  port : ElkPort,
+  width : Double,
+  height : Double,
+) -> Unit {
+  checked_port(port)
+  let data = port_store.val[port]
+  port_store.val[port] = {
+    parent: data.parent,
+    x: data.x,
+    y: data.y,
+    width,
+    height,
+    layout_option_string_values: data.layout_option_string_values,
+  }
+}
+
+///|
+pub fn port_width(port : ElkPort) -> Double {
+  checked_port(port)
+  port_store.val[port].width
+}
+
+///|
+pub fn port_height(port : ElkPort) -> Double {
+  checked_port(port)
+  port_store.val[port].height
 }
 
 ///|

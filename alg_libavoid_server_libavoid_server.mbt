@@ -24,11 +24,17 @@ pub fn libavoid_server_cleanup_stop() -> LibavoidServerCleanup {
 pub let libavoid_server_process_def_timeout : Int = 60000
 
 ///|
+let libavoid_server_default_output_data_ref : Ref[Map[String, String]?] = Ref::new(
+  Some({}),
+)
+
+///|
 pub struct LibavoidServer {
   mut running : Bool
   mut canceled : Bool
   mut process_timeout : Int
   input_sink : GraphvizByteArrayOutputStream
+  mut output_data : Map[String, String]?
 }
 
 ///|
@@ -38,7 +44,20 @@ pub fn new_libavoid_server() -> LibavoidServer {
     canceled: false,
     process_timeout: libavoid_server_process_def_timeout,
     input_sink: new_graphviz_byte_array_output_stream(),
+    output_data: libavoid_server_default_output_data_ref.val,
   }
+}
+
+///|
+pub fn libavoid_server_set_default_output_data_for_test(
+  data : Map[String, String]?,
+) -> Unit {
+  libavoid_server_default_output_data_ref.val = data
+}
+
+///|
+pub fn libavoid_server_reset_runtime_for_test() -> Unit {
+  libavoid_server_default_output_data_ref.val = Some({})
 }
 
 ///|
@@ -75,7 +94,15 @@ pub fn LibavoidServer::read_output_data(
   if !self.running {
     abort("Libavoid server has not been initialized.")
   }
-  Some({})
+  self.output_data
+}
+
+///|
+pub fn LibavoidServer::set_output_data_for_test(
+  self : LibavoidServer,
+  data : Map[String, String]?,
+) -> Unit {
+  self.output_data = data
 }
 
 ///|

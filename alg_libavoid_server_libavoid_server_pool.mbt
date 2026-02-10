@@ -9,6 +9,11 @@ let libavoid_server_pool_instance_ref : Ref[LibavoidServerPool?] = Ref::new(
 )
 
 ///|
+let libavoid_server_pool_factory_ref : Ref[() -> LibavoidServer] = Ref::new(() => {
+  new_libavoid_server()
+})
+
+///|
 pub fn new_libavoid_server_pool() -> LibavoidServerPool {
   { servers: [] }
 }
@@ -28,7 +33,7 @@ pub fn libavoid_server_pool_instance() -> LibavoidServerPool {
 ///|
 pub fn LibavoidServerPool::fetch(self : LibavoidServerPool) -> LibavoidServer {
   if self.servers.is_empty() {
-    new_libavoid_server()
+    (libavoid_server_pool_factory_ref.val)()
   } else {
     self.servers.remove(0)
   }
@@ -58,4 +63,12 @@ pub fn LibavoidServerPool::size(self : LibavoidServerPool) -> Int {
 ///|
 pub fn libavoid_server_pool_reset_for_test() -> Unit {
   libavoid_server_pool_instance_ref.val = None
+  libavoid_server_pool_factory_ref.val = () => new_libavoid_server()
+}
+
+///|
+pub fn libavoid_server_pool_set_factory_for_test(
+  factory : () -> LibavoidServer,
+) -> Unit {
+  libavoid_server_pool_factory_ref.val = factory
 }
