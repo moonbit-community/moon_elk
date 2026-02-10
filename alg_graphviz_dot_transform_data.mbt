@@ -50,6 +50,7 @@ pub struct DotTransformationData[S, T] {
   bool_properties : Map[String, Bool]
   int_properties : Map[String, Int]
   string_properties : Map[String, String]
+  command_properties : Map[String, Command]
   graph_elem_map_properties : Map[String, Map[String, DotGraphElement]]
 }
 
@@ -65,6 +66,7 @@ pub fn[S, T] new_dot_transformation_data() -> DotTransformationData[S, T] {
     bool_properties: {},
     int_properties: {},
     string_properties: {},
+    command_properties: {},
     graph_elem_map_properties: {},
   }
 }
@@ -161,6 +163,26 @@ pub fn[S, T] DotTransformationData::get_string_property(
   property : IProperty[String],
 ) -> String {
   match self.string_properties.get(property.get_id()) {
+    Some(value) => value
+    None => property.get_default()
+  }
+}
+
+///|
+pub fn[S, T] DotTransformationData::set_command_property(
+  self : DotTransformationData[S, T],
+  property : IProperty[Command],
+  value : Command,
+) -> Unit {
+  self.command_properties[property.get_id()] = value
+}
+
+///|
+pub fn[S, T] DotTransformationData::get_command_property(
+  self : DotTransformationData[S, T],
+  property : IProperty[Command],
+) -> Command {
+  match self.command_properties.get(property.get_id()) {
     Some(value) => value
     None => property.get_default()
   }
