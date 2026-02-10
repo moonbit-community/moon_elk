@@ -109,6 +109,32 @@ pub fn DCPolyomino::is_blocked(self : DCPolyomino, x : Int, y : Int) -> Bool {
 }
 
 ///|
+pub fn DCPolyomino::is_weakly_blocked(
+  self : DCPolyomino,
+  x : Int,
+  y : Int,
+) -> Bool {
+  self.polyomino.is_weakly_blocked(x, y)
+}
+
+///|
+pub fn DCPolyomino::get_center_x(self : DCPolyomino) -> Int {
+  self.polyomino.get_center_x()
+}
+
+///|
+pub fn DCPolyomino::get_center_y(self : DCPolyomino) -> Int {
+  self.polyomino.get_center_y()
+}
+
+///|
+pub fn DCPolyomino::get_polyomino_extensions(
+  self : DCPolyomino,
+) -> Array[UniqueTriple[PolyominoDirection, Int, Int]] {
+  self.polyomino.get_polyomino_extensions()
+}
+
+///|
 pub fn DCPolyomino::get_x(self : DCPolyomino) -> Int {
   self.polyomino.get_x()
 }

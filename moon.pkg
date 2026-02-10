@@ -1,4 +1,5 @@
 import {
+  "moonbitlang/core/cmp" @cmp,
   "moonbitlang/core/buffer" @buffer,
   "moonbitlang/core/double" @double,
   "moonbitlang/core/float" @float,
