@@ -1,0 +1,99 @@
+///|
+pub struct RadiusExtensionOverlapRemoval {
+  base : RadialRadiusExtensionCompaction
+  mut sorter : RadialSortingStrategy
+}
+
+///|
+pub fn new_radius_extension_overlap_removal() -> RadiusExtensionOverlapRemoval {
+  {
+    base: new_radial_radius_extension_compaction(),
+    sorter: RadialSortingStrategy::NONE,
+  }
+}
+
+///|
+pub fn RadiusExtensionOverlapRemoval::remove_overlaps(
+  self : RadiusExtensionOverlapRemoval,
+  graph : ElkNode,
+  progress_monitor : IElkProgressMonitor?,
+) -> Unit {
+  let root = match radial_internal_root(graph) {
+    Some(value) => value
+    None => return
+  }
+  self.base.set_root(root)
+  self.sorter = radial_graph_sorting_strategy(graph)
+  self.base.set_spacing(node_get_double_property(graph, spacing_node_node))
+  let successors = radial_get_successors(root)
+  self.extend(graph, successors, progress_monitor)
+}
+
+///|
+pub fn RadiusExtensionOverlapRemoval::extend(
+  self : RadiusExtensionOverlapRemoval,
+  graph : ElkNode,
+  nodes : Array[ElkNode],
+  progress_monitor : IElkProgressMonitor?,
+) -> Unit {
+  if nodes.is_empty() {
+    return
+  }
+  let old_positions = []
+  for node in nodes {
+    old_positions.push(new_kvector_xy(node_x(node), node_y(node)))
+  }
+  match progress_monitor {
+    Some(monitor) => monitor.log_graph("Before removing overlaps")
+    None => ()
+  }
+  while self.base.overlap_layer(nodes) {
+    self.base.contract_layer(nodes, false)
+  }
+  match progress_monitor {
+    Some(monitor) => monitor.log_graph("After removing overlaps")
+    None => ()
+  }
+
+  let mut moved_x = 0.0
+  let mut moved_y = 0.0
+  if !nodes.is_empty() {
+    moved_x = node_x(nodes[0]) - old_positions[0].x
+    moved_y = node_y(nodes[0]) - old_positions[0].y
+  }
+  let moved_distance = (moved_x * moved_x + moved_y * moved_y).sqrt()
+  let next_level_nodes = radial_get_next_level_node_set(nodes)
+  if !next_level_nodes.is_empty() {
+    for next_level_node in next_level_nodes {
+      self.base.move_node(next_level_node, moved_distance)
+    }
+  }
+  let sorted_next_level_nodes = next_level_nodes.copy()
+  radial_sort(self.sorter, sorted_next_level_nodes)
+  self.extend(graph, sorted_next_level_nodes, progress_monitor)
+}
+
+///|
+pub fn new_radius_extension_overlap_removal_layout_processor() -> ILayoutProcessor[
+  RadialLayoutPhases,
+  ElkNode,
+] {
+  new_layout_processor((graph, progress_monitor) => {
+    let removal = new_radius_extension_overlap_removal()
+    match progress_monitor {
+      Some(monitor) => {
+        ignore(monitor.begin("Remove overlaps", 1.0))
+        monitor.log_graph("Before")
+      }
+      None => ()
+    }
+    removal.remove_overlaps(graph, progress_monitor)
+    match progress_monitor {
+      Some(monitor) => {
+        monitor.log_graph("After")
+        monitor.done()
+      }
+      None => ()
+    }
+  })
+}

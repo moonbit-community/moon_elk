@@ -1766,6 +1766,8 @@ pub fn new_abstract_layout_provider((Int, IElkProgressMonitor) -> Unit, initiali
 
 pub fn[T] new_abstract_random_list_accessor(() -> T) -> AbstractRandomListAccessor[T]
 
+pub fn new_annulus_wedge_compaction() -> AnnulusWedgeCompaction
+
 pub fn new_basic_progress_monitor() -> IElkProgressMonitor
 
 pub fn new_bezier_curve(KVector, KVector, KVector, KVector) -> BezierCurve
@@ -2194,6 +2196,28 @@ pub fn new_quadruplet() -> Quadruplet
 
 pub fn new_quadruplet_values(Bool, Bool, Bool, Bool) -> Quadruplet
 
+pub fn new_radial_calculate_graph_size_layout_processor() -> ILayoutProcessor[RadialLayoutPhases, Int]
+
+pub fn new_radial_compaction() -> RadialCompaction
+
+pub fn new_radial_eades_layout_phase() -> ILayoutProcessor[RadialLayoutPhases, Int]
+
+pub fn new_radial_edge_angle_calculator_layout_processor() -> ILayoutProcessor[RadialLayoutPhases, Int]
+
+pub fn new_radial_general_compactor_layout_processor() -> ILayoutProcessor[RadialLayoutPhases, Int]
+
+pub fn new_radial_general_rotator_layout_processor() -> ILayoutProcessor[RadialLayoutPhases, Int]
+
+pub fn new_radial_layout_provider() -> RadialLayoutProvider
+
+pub fn new_radial_radius_extension_compaction() -> RadialRadiusExtensionCompaction
+
+pub fn new_radial_straight_line_edge_router_layout_phase() -> ILayoutProcessor[RadialLayoutPhases, Int]
+
+pub fn new_radius_extension_overlap_removal() -> RadiusExtensionOverlapRemoval
+
+pub fn new_radius_extension_overlap_removal_layout_processor() -> ILayoutProcessor[RadialLayoutPhases, Int]
+
 pub fn new_rectilinear_convex_hull() -> RectilinearConvexHull
 
 pub fn new_recursive_graph_layout_engine() -> RecursiveGraphLayoutEngine
@@ -2490,6 +2514,122 @@ pub fn quadratic_constraint_calculation(OneDimensionalCompactor) -> Unit
 
 pub fn[A, B, C, D] quadruple_of(A, B, C, D) -> Quadruple[A, B, C, D]
 
+pub let radial_algorithm_id : String
+
+pub fn radial_annulus_wedge_criteria_from_string(String) -> RadialAnnulusWedgeCriteria
+
+pub fn radial_calculate_wedge_space(RadialAnnulusWedgeCriteria, Int) -> Double
+
+pub fn radial_center_nodes_on_radi(Int, Double, Double) -> Unit
+
+pub let radial_center_on_root : IProperty[Bool]
+
+pub let radial_compaction_step_size : IProperty[Double]
+
+pub fn radial_compaction_strategy_from_string(String) -> RadialCompactionStrategy
+
+pub let radial_compactor : IProperty[String]
+
+pub fn radial_create_polar_comparator(Double, Double) -> (Int, Int) -> Int
+
+pub fn radial_evaluate_translation(RadialTranslationStrategy, Int) -> Double
+
+pub fn radial_find_largest_node_in_graph(Int) -> Double
+
+pub fn radial_find_root(Int) -> Int?
+
+pub fn radial_find_root_of_node(Int) -> Int
+
+pub fn radial_get_last_level_nodes(Array[Int]) -> Array[Int]
+
+pub fn radial_get_next_level_node_set(Array[Int]) -> Array[Int]
+
+pub fn radial_get_next_level_nodes(Array[Int]) -> Array[Int]
+
+pub fn radial_get_number_of_leaves(Int) -> Int
+
+pub fn radial_get_successor_set(Int) -> Array[Int]
+
+pub fn radial_get_successors(Int) -> Array[Int]
+
+pub fn radial_get_tree_parent(Int) -> Int?
+
+pub fn radial_graph_compaction_step_size(Int) -> Int
+
+pub fn radial_graph_compaction_strategy(Int) -> RadialCompactionStrategy
+
+pub fn radial_graph_sorting_strategy(Int) -> RadialSortingStrategy
+
+pub fn radial_graph_translation_strategy(Int) -> RadialTranslationStrategy
+
+pub fn radial_graph_wedge_criteria(Int) -> RadialAnnulusWedgeCriteria
+
+pub fn radial_intermediate_processor_factory(RadialIntermediateProcessorStrategy) -> ILayoutProcessorFactory[RadialLayoutPhases, Int]
+
+pub fn radial_internal_clear_root(Int) -> Unit
+
+pub fn radial_internal_clear_transient_state() -> Unit
+
+pub fn radial_internal_graph_padding(Int) -> Spacing
+
+pub fn radial_internal_has_order_id(Int) -> Bool
+
+pub fn radial_internal_node_margins(Int) -> Spacing
+
+pub fn radial_internal_order_id(Int) -> Int
+
+pub fn radial_internal_position(Int) -> KVector
+
+pub fn radial_internal_root(Int) -> Int?
+
+pub fn radial_internal_set_order_id(Int, Int) -> Unit
+
+pub fn radial_internal_set_position(Int, KVector) -> Unit
+
+pub fn radial_internal_set_root(Int, Int) -> Unit
+
+pub let radial_layout_phase_descriptor : PhaseDescriptor[RadialLayoutPhases]
+
+pub fn radial_layout_phase_factory(RadialLayoutPhases) -> ILayoutProcessorFactory[RadialLayoutPhases, Int]
+
+pub let radial_omit_node_micro_layout : IProperty[Bool]
+
+pub let radial_optimization_criteria : IProperty[String]
+
+pub let radial_option_margins_id : String
+
+pub let radial_option_position_id : String
+
+pub let radial_order_id : IProperty[Double]
+
+pub fn radial_overlap_removal_strategy_from_string(String) -> RadialOverlapRemovalStrategy
+
+pub let radial_radius : IProperty[Double]
+
+pub let radial_rotate : IProperty[Bool]
+
+pub let radial_rotation_compute_additional_wedge_space : IProperty[Bool]
+
+pub let radial_rotation_outgoing_edge_angles : IProperty[Bool]
+
+pub let radial_rotation_target_angle : IProperty[Double]
+
+pub fn radial_shift_closest_edge_to_radi(Int, Double, Double) -> Unit
+
+pub fn radial_sort(RadialSortingStrategy, Array[Int]) -> Unit
+
+pub fn radial_sort_initialize(RadialSortingStrategy, Int) -> Unit
+
+pub fn radial_sort_nodes(Array[Int], (Int, Int) -> Int) -> Unit
+
+pub let radial_sorter : IProperty[String]
+
+pub fn radial_sorting_strategy_from_string(String) -> RadialSortingStrategy
+
+pub fn radial_translation_strategy_from_string(String) -> RadialTranslationStrategy
+
+pub let radial_wedge_criteria : IProperty[String]
+
 pub fn rectilinear_convex_hull_of(Array[Point]) -> RectilinearConvexHull
 
 pub fn reset_compaction_oned_model_for_test() -> Unit
@@ -2753,6 +2893,15 @@ pub enum Alignment {
   Bottom
   Center
 }
+
+pub struct AnnulusWedgeCompaction {
+  base : RadialRadiusExtensionCompaction
+  left_contour : Map[Int, Array[Int]]
+  right_contour : Map[Int, Array[Int]]
+  mut sorter : RadialSortingStrategy
+  mut root : Int?
+}
+pub fn AnnulusWedgeCompaction::compact(Self, Int) -> Unit
 
 pub enum BaseGridVisibility {
   Hidden
@@ -5165,6 +5314,83 @@ pub fn Quadruplet::apply_or(Self, Self) -> Unit
 pub fn Quadruplet::get(Self, Direction) -> Bool
 pub fn Quadruplet::set(Self, Bool, Bool, Bool, Bool) -> Unit
 pub fn Quadruplet::set_direction(Self, Bool, Direction) -> Unit
+
+pub enum RadialAnnulusWedgeCriteria {
+  LEAF_NUMBER
+  NODE_SIZE
+}
+
+pub struct RadialCompaction {
+  base : RadialRadiusExtensionCompaction
+  mut sorter : RadialSortingStrategy
+  mut last_radius : Double
+}
+pub fn RadialCompaction::compact(Self, Int) -> Unit
+pub fn RadialCompaction::contract(Self, Array[Int]) -> Unit
+
+pub enum RadialCompactionStrategy {
+  NONE
+  RADIAL_COMPACTION
+  WEDGE_COMPACTION
+}
+
+pub enum RadialIntermediateProcessorStrategy {
+  OVERLAP_REMOVAL
+  COMPACTION
+  ROTATION
+  GRAPH_SIZE_CALCULATION
+  OUTGOING_EDGE_ANGLES
+}
+
+pub enum RadialLayoutPhases {
+  P1_NODE_PLACEMENT
+  P2_EDGE_ROUTING
+}
+
+pub struct RadialLayoutProvider {
+  algorithm_assembler : AlgorithmAssembler[RadialLayoutPhases, Int]
+}
+pub fn RadialLayoutProvider::layout(Self, Int, IElkProgressMonitor) -> Unit
+
+pub enum RadialOverlapRemovalStrategy {
+  EXTENT_RADII
+}
+
+pub struct RadialRadiusExtensionCompaction {
+  mut compaction_step : Int
+  mut spacing : Double
+  mut root : Int?
+}
+pub fn RadialRadiusExtensionCompaction::compaction_step(Self) -> Int
+pub fn RadialRadiusExtensionCompaction::contract_layer(Self, Array[Int], Bool) -> Unit
+pub fn RadialRadiusExtensionCompaction::move_node(Self, Int, Double) -> Unit
+pub fn RadialRadiusExtensionCompaction::overlap(Self, Int, Int) -> Bool
+pub fn RadialRadiusExtensionCompaction::overlap_layer(Self, Array[Int]) -> Bool
+pub fn RadialRadiusExtensionCompaction::root(Self) -> Int?
+pub fn RadialRadiusExtensionCompaction::set_compaction_step(Self, Int) -> Unit
+pub fn RadialRadiusExtensionCompaction::set_root(Self, Int) -> Unit
+pub fn RadialRadiusExtensionCompaction::set_spacing(Self, Double) -> Unit
+pub fn RadialRadiusExtensionCompaction::spacing(Self) -> Double
+
+pub enum RadialSortingStrategy {
+  NONE
+  POLAR_COORDINATE
+  ID
+}
+
+pub enum RadialTranslationStrategy {
+  NONE
+  EDGE_LENGTH
+  EDGE_LENGTH_BY_POSITION
+  CROSSING_MINIMIZATION_BY_POSITION
+}
+
+pub struct RadiusExtensionOverlapRemoval {
+  base : RadialRadiusExtensionCompaction
+  mut sorter : RadialSortingStrategy
+}
+pub fn RadiusExtensionOverlapRemoval::extend(Self, Int, Array[Int], IElkProgressMonitor?) -> Unit
+pub fn RadiusExtensionOverlapRemoval::remove_overlaps(Self, Int, IElkProgressMonitor?) -> Unit
 
 pub struct RectangleNode {
   handle : Int
