@@ -18,6 +18,126 @@ fn max_positive(value : Double, fallback : Double) -> Double {
 }
 
 ///|
+fn parse_node_padding(node : ElkNode) -> ElkPadding {
+  let parsed = new_elk_padding()
+  parsed.parse(node_get_string_property(node, padding))
+  parsed
+}
+
+///|
+fn parse_node_minimum_size(node : ElkNode) -> KVector {
+  let parsed = new_kvector()
+  parsed.parse(node_get_string_property(node, node_size_minimum))
+  parsed
+}
+
+///|
+fn has_minimum_size_constraint(node : ElkNode) -> Bool {
+  for value in node_get_string_set_property(node, node_size_constraints) {
+    if value == "MINIMUM_SIZE" || value == "MINIMUM_SIZE_WITH_PORTS" {
+      return true
+    }
+  }
+  false
+}
+
+///|
+fn node_layout_option_value_by_candidates(
+  node : ElkNode,
+  candidates : Array[String],
+) -> String? {
+  for candidate in candidates {
+    match node_layout_option_string_value(node, candidate) {
+      Some(value) => return Some(value)
+      None => ()
+    }
+  }
+  None
+}
+
+///|
+fn node_individual_spacing_value_by_candidates(
+  node : ElkNode,
+  candidates : Array[String],
+) -> String? {
+  for candidate in candidates {
+    match node_individual_spacing_option_string_value(node, candidate) {
+      Some(value) => return Some(value)
+      None => ()
+    }
+  }
+  None
+}
+
+///|
+fn placement_tokens(value : String) -> Array[String] {
+  let normalized = value
+    .replace_all(old="[", new="")
+    .replace_all(old="]", new="")
+  let tokens = []
+  for token_view in normalized.split(",") {
+    let token = token_view.trim().to_string()
+    if !token.is_empty() {
+      tokens.push(token)
+    }
+  }
+  tokens
+}
+
+///|
+fn has_placement_token(tokens : Array[String], expected : String) -> Bool {
+  for token in tokens {
+    if token == expected {
+      return true
+    }
+  }
+  false
+}
+
+///|
+fn node_label_padding_top(node : ElkNode) -> Double {
+  let keys = [
+    "nodeLabels.padding", "elk.nodeLabels.padding", "org.eclipse.elk.nodeLabels.padding",
+  ]
+  let padding_text = match
+    node_individual_spacing_value_by_candidates(node, keys) {
+    Some(value) => value
+    None =>
+      match node_layout_option_value_by_candidates(node, keys) {
+        Some(value) => value
+        None => return 0.0
+      }
+  }
+  let parsed = new_elk_padding()
+  parsed.parse(padding_text)
+  parsed.top
+}
+
+///|
+fn recursive_layout_node_labels(node : ElkNode) -> Unit {
+  let keys = [
+    "nodeLabels.placement", "elk.nodeLabels.placement", "org.eclipse.elk.nodeLabels.placement",
+  ]
+  let tokens = match node_layout_option_value_by_candidates(node, keys) {
+    Some(value) => placement_tokens(value)
+    None =>
+      if node_has_string_set_property(node, node_labels_placement) {
+        node_get_string_set_property(node, node_labels_placement)
+      } else {
+        return
+      }
+  }
+  if !(has_placement_token(tokens, "INSIDE") &&
+    has_placement_token(tokens, "V_TOP")) {
+    return
+  }
+  let top = node_label_padding_top(node)
+  for label in node_labels(node) {
+    label_set_location(label, label_x(label), top)
+  }
+}
+
+///|
 fn ensure_edge_section_for_edge(edge : ElkEdge) -> Unit {
   if !edge_sections(edge).is_empty() {
     return
@@ -63,6 +183,7 @@ fn layout_node_recursively(
     layout_node_recursively(child, progress_monitor)
   }
   if children.is_empty() {
+    recursive_layout_node_labels(node)
     return
   }
   let resolved = node_get_string_property(node, resolved_algorithm)
@@ -97,11 +218,48 @@ fn layout_node_recursively(
   for edge in node_contained_edges(node) {
     ensure_edge_section_for_edge(edge)
   }
-  node_set_dimensions(
-    node,
-    max_positive(rightmost + 12.0, 10.0),
-    max_positive(max_height + 24.0, 10.0),
-  )
+  let padding_value = parse_node_padding(node)
+  if children.length() == 1 {
+    let child = children[0]
+    let child_width = max_positive(node_width(child), 10.0)
+    let child_height = max_positive(node_height(child), 10.0)
+    let requested_width = child_width + padding_value.left + padding_value.right
+    let requested_height = child_height +
+      padding_value.top +
+      padding_value.bottom
+    if requested_width > rightmost + 12.0 {
+      rightmost = requested_width - 12.0
+    }
+    if requested_height > max_height + 24.0 {
+      max_height = requested_height - 24.0
+    }
+  }
+  let mut width = max_positive(rightmost + 12.0, 10.0)
+  let mut height = max_positive(max_height + 24.0, 10.0)
+  if has_minimum_size_constraint(node) {
+    let min_size = parse_node_minimum_size(node)
+    if width < min_size.x {
+      width = min_size.x
+    }
+    if height < min_size.y {
+      height = min_size.y
+    }
+  }
+  node_set_dimensions(node, width, height)
+  if children.length() == 1 {
+    let child = children[0]
+    let child_width = max_positive(
+      node_width(node) - padding_value.left - padding_value.right,
+      0.0,
+    )
+    let child_height = max_positive(
+      node_height(node) - padding_value.top - padding_value.bottom,
+      0.0,
+    )
+    node_set_location(child, padding_value.left, padding_value.top)
+    node_set_dimensions(child, child_width, child_height)
+  }
+  recursive_layout_node_labels(node)
 }
 
 ///|

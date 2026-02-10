@@ -73,11 +73,13 @@ priv struct NodeData {
   string_properties : Map[String, String]
   string_set_properties : Map[String, Array[String]]
   layout_option_string_values : Map[String, String]
+  individual_spacing_option_string_values : Map[String, String]
 }
 
 ///|
 priv struct PortData {
   parent : ElkNode?
+  identifier : String
   x : Double
   y : Double
   width : Double
@@ -112,6 +114,7 @@ priv struct EdgeSectionData {
 ///|
 priv struct LabelData {
   parent : ElkLabelParent?
+  identifier : String
   text : String
   x : Double
   y : Double
@@ -239,6 +242,7 @@ pub fn create_node(parent : ElkNode?) -> ElkNode {
     string_properties: {},
     string_set_properties: {},
     layout_option_string_values: {},
+    individual_spacing_option_string_values: {},
   })
   if parent is Some(parent_id) {
     checked_node(parent_id)
@@ -252,6 +256,7 @@ pub fn create_port(parent : ElkNode?) -> ElkPort {
   let id = port_store.val.length()
   port_store.val.push({
     parent,
+    identifier: "",
     x: 0.0,
     y: 0.0,
     width: 0.0,
@@ -271,6 +276,7 @@ pub fn port_set_location(port : ElkPort, x : Double, y : Double) -> Unit {
   let data = port_store.val[port]
   port_store.val[port] = {
     parent: data.parent,
+    identifier: data.identifier,
     x,
     y,
     width: data.width,
@@ -301,6 +307,7 @@ pub fn port_set_dimensions(
   let data = port_store.val[port]
   port_store.val[port] = {
     parent: data.parent,
+    identifier: data.identifier,
     x: data.x,
     y: data.y,
     width,
@@ -319,6 +326,27 @@ pub fn port_width(port : ElkPort) -> Double {
 pub fn port_height(port : ElkPort) -> Double {
   checked_port(port)
   port_store.val[port].height
+}
+
+///|
+pub fn port_set_identifier(port : ElkPort, identifier : String) -> Unit {
+  checked_port(port)
+  let data = port_store.val[port]
+  port_store.val[port] = {
+    parent: data.parent,
+    identifier,
+    x: data.x,
+    y: data.y,
+    width: data.width,
+    height: data.height,
+    layout_option_string_values: data.layout_option_string_values,
+  }
+}
+
+///|
+pub fn port_identifier(port : ElkPort) -> String {
+  checked_port(port)
+  port_store.val[port].identifier
 }
 
 ///|
@@ -354,6 +382,7 @@ pub fn create_label(parent : ElkLabelParent?) -> ElkLabel {
   let id = label_store.val.length()
   label_store.val.push({
     parent,
+    identifier: "",
     text: "",
     x: 0.0,
     y: 0.0,
@@ -431,6 +460,7 @@ pub fn node_set_location(node : ElkNode, x : Double, y : Double) -> Unit {
     string_properties: data.string_properties,
     string_set_properties: data.string_set_properties,
     layout_option_string_values: data.layout_option_string_values,
+    individual_spacing_option_string_values: data.individual_spacing_option_string_values,
   }
 }
 
@@ -469,6 +499,7 @@ pub fn node_set_dimensions(
     string_properties: data.string_properties,
     string_set_properties: data.string_set_properties,
     layout_option_string_values: data.layout_option_string_values,
+    individual_spacing_option_string_values: data.individual_spacing_option_string_values,
   }
 }
 
@@ -641,6 +672,7 @@ pub fn node_set_identifier(node : ElkNode, identifier : String) -> Unit {
     string_properties: data.string_properties,
     string_set_properties: data.string_set_properties,
     layout_option_string_values: data.layout_option_string_values,
+    individual_spacing_option_string_values: data.individual_spacing_option_string_values,
   }
 }
 
@@ -741,6 +773,35 @@ pub fn node_layout_option_string_value(
 }
 
 ///|
+pub fn node_set_individual_spacing_option_string_by_id(
+  node : ElkNode,
+  option_id : String,
+  value : String,
+) -> Unit {
+  checked_node(node)
+  let data = node_store.val[node]
+  data.individual_spacing_option_string_values[option_id] = value
+  node_store.val[node] = data
+}
+
+///|
+pub fn node_individual_spacing_option_string_entries(
+  node : ElkNode,
+) -> Array[(String, String)] {
+  checked_node(node)
+  node_store.val[node].individual_spacing_option_string_values.to_array()
+}
+
+///|
+pub fn node_individual_spacing_option_string_value(
+  node : ElkNode,
+  option_id : String,
+) -> String? {
+  checked_node(node)
+  node_store.val[node].individual_spacing_option_string_values.get(option_id)
+}
+
+///|
 pub fn port_set_layout_option_string_by_id(
   port : ElkPort,
   option_id : String,
@@ -804,11 +865,34 @@ pub fn label_layout_option_string_value(
 }
 
 ///|
+pub fn label_set_identifier(label : ElkLabel, identifier : String) -> Unit {
+  checked_label(label)
+  let data = label_store.val[label]
+  label_store.val[label] = {
+    parent: data.parent,
+    identifier,
+    text: data.text,
+    x: data.x,
+    y: data.y,
+    width: data.width,
+    height: data.height,
+    layout_option_string_values: data.layout_option_string_values,
+  }
+}
+
+///|
+pub fn label_identifier(label : ElkLabel) -> String {
+  checked_label(label)
+  label_store.val[label].identifier
+}
+
+///|
 pub fn label_set_text(label : ElkLabel, text : String) -> Unit {
   checked_label(label)
   let data = label_store.val[label]
   label_store.val[label] = {
     parent: data.parent,
+    identifier: data.identifier,
     text,
     x: data.x,
     y: data.y,
@@ -830,6 +914,7 @@ pub fn label_set_location(label : ElkLabel, x : Double, y : Double) -> Unit {
   let data = label_store.val[label]
   label_store.val[label] = {
     parent: data.parent,
+    identifier: data.identifier,
     text: data.text,
     x,
     y,
@@ -861,6 +946,7 @@ pub fn label_set_dimensions(
   let data = label_store.val[label]
   label_store.val[label] = {
     parent: data.parent,
+    identifier: data.identifier,
     text: data.text,
     x: data.x,
     y: data.y,
@@ -953,6 +1039,23 @@ pub fn edge_labels(edge : ElkEdge) -> Array[ElkLabel] {
     match label_store.val[i].parent {
       Some(EdgeLabelParent(parent_edge)) =>
         if parent_edge == edge {
+          labels.push(i)
+        }
+      Some(_) => ()
+      None => ()
+    }
+  }
+  labels
+}
+
+///|
+pub fn label_labels(parent : ElkLabel) -> Array[ElkLabel] {
+  checked_label(parent)
+  let labels = []
+  for i = 0; i < label_store.val.length(); i = i + 1 {
+    match label_store.val[i].parent {
+      Some(LabelLabelParent(parent_label)) =>
+        if parent_label == parent {
           labels.push(i)
         }
       Some(_) => ()
