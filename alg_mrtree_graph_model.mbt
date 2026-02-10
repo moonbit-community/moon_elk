@@ -13,6 +13,8 @@ priv struct MrtreeGraphData {
   edges : Array[MrtreeEdge]
   mut origin : ElkNode?
   mut separate_connected_components : Bool
+  mut search_order : String
+  mut removable_edges : Array[MrtreeEdge]
   mut spacing_node_node : Double
   mut aspect_ratio : Double
   mut padding : ElkPadding
@@ -32,10 +34,12 @@ priv struct MrtreeNodeData {
   label : String
   position : KVector
   size : KVector
-  outgoing_edges : Array[MrtreeEdge]
-  incoming_edges : Array[MrtreeEdge]
+  mut outgoing_edges : Array[MrtreeEdge]
+  mut incoming_edges : Array[MrtreeEdge]
   mut origin : ElkNode?
   mut priority : Int
+  mut root : Bool
+  mut dummy : Bool
 }
 
 ///|
@@ -116,6 +120,8 @@ pub fn new_mrtree_graph() -> MrtreeGraph {
     edges: [],
     origin: None,
     separate_connected_components: true,
+    search_order: "DFS",
+    removable_edges: [],
     spacing_node_node: 20.0,
     aspect_ratio: 1.6,
     padding: new_elk_padding_any(20.0),
@@ -148,6 +154,8 @@ pub fn new_mrtree_node(
     incoming_edges: [],
     origin: None,
     priority: 1,
+    root: false,
+    dummy: false,
   })
   let graph_data = mrtree_graph_store.val[graph]
   graph_data.nodes.push(node)
@@ -190,6 +198,8 @@ pub fn mrtree_graph_copy_properties(
   let source_data = mrtree_graph_store.val[source]
   target_data.origin = source_data.origin
   target_data.separate_connected_components = source_data.separate_connected_components
+  target_data.search_order = source_data.search_order
+  target_data.removable_edges = source_data.removable_edges.copy()
   target_data.spacing_node_node = source_data.spacing_node_node
   target_data.aspect_ratio = source_data.aspect_ratio
   target_data.padding = source_data.padding.clone()
@@ -213,6 +223,9 @@ pub fn mrtree_graph_copy_properties_from_elk(
   graph_data.origin = Some(elk_graph)
   graph_data.separate_connected_components = node_get_bool_property(
     elk_graph, mrtree_separate_connected_components,
+  )
+  graph_data.search_order = node_get_string_property(
+    elk_graph, mrtree_search_order,
   )
   graph_data.spacing_node_node = node_get_double_property(
     elk_graph, mrtree_spacing_node_node,
@@ -349,9 +362,101 @@ pub fn mrtree_node_incoming_edges(node : MrtreeNode) -> Array[MrtreeEdge] {
 }
 
 ///|
+pub fn mrtree_node_add_outgoing_edge_unique(
+  node : MrtreeNode,
+  edge : MrtreeEdge,
+) -> Unit {
+  checked_mrtree_node(node)
+  checked_mrtree_edge(edge)
+  let node_data = mrtree_node_store.val[node]
+  if !node_data.outgoing_edges.contains(edge) {
+    node_data.outgoing_edges.push(edge)
+    set_mrtree_node_data(node, node_data)
+  }
+}
+
+///|
+pub fn mrtree_node_add_incoming_edge_unique(
+  node : MrtreeNode,
+  edge : MrtreeEdge,
+) -> Unit {
+  checked_mrtree_node(node)
+  checked_mrtree_edge(edge)
+  let node_data = mrtree_node_store.val[node]
+  if !node_data.incoming_edges.contains(edge) {
+    node_data.incoming_edges.push(edge)
+    set_mrtree_node_data(node, node_data)
+  }
+}
+
+///|
+pub fn mrtree_node_remove_outgoing_edge(
+  node : MrtreeNode,
+  edge : MrtreeEdge,
+) -> Unit {
+  checked_mrtree_node(node)
+  checked_mrtree_edge(edge)
+  let node_data = mrtree_node_store.val[node]
+  let filtered = []
+  for current in node_data.outgoing_edges {
+    if current != edge {
+      filtered.push(current)
+    }
+  }
+  node_data.outgoing_edges = filtered
+  set_mrtree_node_data(node, node_data)
+}
+
+///|
+pub fn mrtree_node_remove_incoming_edge(
+  node : MrtreeNode,
+  edge : MrtreeEdge,
+) -> Unit {
+  checked_mrtree_node(node)
+  checked_mrtree_edge(edge)
+  let node_data = mrtree_node_store.val[node]
+  let filtered = []
+  for current in node_data.incoming_edges {
+    if current != edge {
+      filtered.push(current)
+    }
+  }
+  node_data.incoming_edges = filtered
+  set_mrtree_node_data(node, node_data)
+}
+
+///|
 pub fn mrtree_node_priority(node : MrtreeNode) -> Int {
   checked_mrtree_node(node)
   mrtree_node_store.val[node].priority
+}
+
+///|
+pub fn mrtree_node_set_root(node : MrtreeNode, value : Bool) -> Unit {
+  checked_mrtree_node(node)
+  let node_data = mrtree_node_store.val[node]
+  node_data.root = value
+  set_mrtree_node_data(node, node_data)
+}
+
+///|
+pub fn mrtree_node_root(node : MrtreeNode) -> Bool {
+  checked_mrtree_node(node)
+  mrtree_node_store.val[node].root
+}
+
+///|
+pub fn mrtree_node_set_dummy(node : MrtreeNode, value : Bool) -> Unit {
+  checked_mrtree_node(node)
+  let node_data = mrtree_node_store.val[node]
+  node_data.dummy = value
+  set_mrtree_node_data(node, node_data)
+}
+
+///|
+pub fn mrtree_node_dummy(node : MrtreeNode) -> Bool {
+  checked_mrtree_node(node)
+  mrtree_node_store.val[node].dummy
 }
 
 ///|
@@ -382,6 +487,42 @@ pub fn mrtree_edge_bend_points(edge : MrtreeEdge) -> KVectorChain {
 pub fn mrtree_graph_separate_connected_components(graph : MrtreeGraph) -> Bool {
   checked_mrtree_graph(graph)
   mrtree_graph_store.val[graph].separate_connected_components
+}
+
+///|
+pub fn mrtree_graph_search_order(graph : MrtreeGraph) -> MrtreeTreeifyingOrder {
+  checked_mrtree_graph(graph)
+  mrtree_treeifying_order_from_string(
+    mrtree_graph_store.val[graph].search_order,
+  )
+}
+
+///|
+pub fn mrtree_graph_set_search_order(
+  graph : MrtreeGraph,
+  value : String,
+) -> Unit {
+  checked_mrtree_graph(graph)
+  let graph_data = mrtree_graph_store.val[graph]
+  graph_data.search_order = value
+  set_mrtree_graph_data(graph, graph_data)
+}
+
+///|
+pub fn mrtree_graph_set_removable_edges(
+  graph : MrtreeGraph,
+  edges : Array[MrtreeEdge],
+) -> Unit {
+  checked_mrtree_graph(graph)
+  let graph_data = mrtree_graph_store.val[graph]
+  graph_data.removable_edges = edges.copy()
+  set_mrtree_graph_data(graph, graph_data)
+}
+
+///|
+pub fn mrtree_graph_removable_edges(graph : MrtreeGraph) -> Array[MrtreeEdge] {
+  checked_mrtree_graph(graph)
+  mrtree_graph_store.val[graph].removable_edges
 }
 
 ///|

@@ -1440,6 +1440,10 @@ pub fn mrtree_graph_padding(Int) -> Spacing
 
 pub fn mrtree_graph_priority(Int) -> Int
 
+pub fn mrtree_graph_removable_edges(Int) -> Array[Int]
+
+pub fn mrtree_graph_search_order(Int) -> MrtreeTreeifyingOrder
+
 pub fn mrtree_graph_separate_connected_components(Int) -> Bool
 
 pub fn mrtree_graph_set_bb_low_right(Int, KVector) -> Unit
@@ -1456,9 +1460,23 @@ pub fn mrtree_graph_set_graph_ymin(Int, Double) -> Unit
 
 pub fn mrtree_graph_set_priority(Int, Int) -> Unit
 
+pub fn mrtree_graph_set_removable_edges(Int, Array[Int]) -> Unit
+
+pub fn mrtree_graph_set_search_order(Int, String) -> Unit
+
 pub fn mrtree_graph_spacing_node_node(Int) -> Double
 
+pub fn mrtree_intermediate_processor_factory(MrtreeIntermediateProcessorStrategy) -> ILayoutProcessorFactory[MrtreeTreeLayoutPhases, Int]
+
+pub fn mrtree_layout_levels(Int) -> Unit
+
+pub fn mrtree_node_add_incoming_edge_unique(Int, Int) -> Unit
+
+pub fn mrtree_node_add_outgoing_edge_unique(Int, Int) -> Unit
+
 pub fn mrtree_node_copy_properties_from_elk(Int, Int) -> Unit
+
+pub fn mrtree_node_dummy(Int) -> Bool
 
 pub fn mrtree_node_graph(Int) -> Int
 
@@ -1474,7 +1492,17 @@ pub fn mrtree_node_position(Int) -> KVector
 
 pub fn mrtree_node_priority(Int) -> Int
 
+pub fn mrtree_node_remove_incoming_edge(Int, Int) -> Unit
+
+pub fn mrtree_node_remove_outgoing_edge(Int, Int) -> Unit
+
+pub fn mrtree_node_root(Int) -> Bool
+
+pub fn mrtree_node_set_dummy(Int, Bool) -> Unit
+
 pub fn mrtree_node_set_id(Int, Int) -> Unit
+
+pub fn mrtree_node_set_root(Int, Bool) -> Unit
 
 pub fn mrtree_node_size(Int) -> KVector
 
@@ -1486,11 +1514,19 @@ pub let mrtree_position_constraint : IProperty[Int]
 
 pub let mrtree_priority : IProperty[Double]
 
+pub let mrtree_search_order : IProperty[String]
+
 pub let mrtree_separate_connected_components : IProperty[Bool]
 
 pub let mrtree_spacing_node_node : IProperty[Double]
 
+pub let mrtree_tree_layout_phase_descriptor : PhaseDescriptor[MrtreeTreeLayoutPhases]
+
+pub fn mrtree_tree_layout_phase_factory(MrtreeTreeLayoutPhases) -> ILayoutProcessorFactory[MrtreeTreeLayoutPhases, Int]
+
 pub let mrtree_tree_level : IProperty[Int]
+
+pub fn mrtree_treeifying_order_from_string(String) -> MrtreeTreeifyingOrder
 
 pub fn naive_minst_create_spanning_tree(Array[TEdge], KVector, (TEdge) -> Double, debug_output_file? : String?) -> Tree[KVector]
 
@@ -1856,7 +1892,11 @@ pub fn new_mrtree() -> Mrtree
 
 pub fn new_mrtree_components_processor() -> MrtreeComponentsProcessor
 
+pub fn new_mrtree_dfs_treeifyer_layout_phase() -> ILayoutProcessor[MrtreeTreeLayoutPhases, Int]
+
 pub fn new_mrtree_edge(Int, Int) -> Int
+
+pub fn new_mrtree_edge_router_layout_phase() -> ILayoutProcessor[MrtreeTreeLayoutPhases, Int]
 
 pub fn new_mrtree_elk_graph_importer() -> MrtreeElkGraphImporter
 
@@ -1864,7 +1904,15 @@ pub fn new_mrtree_graph() -> Int
 
 pub fn new_mrtree_node(Int, Int, label? : String) -> Int
 
+pub fn new_mrtree_node_orderer_layout_phase() -> ILayoutProcessor[MrtreeTreeLayoutPhases, Int]
+
+pub fn new_mrtree_node_placer_layout_phase() -> ILayoutProcessor[MrtreeTreeLayoutPhases, Int]
+
+pub fn new_mrtree_root_processor_layout_processor() -> ILayoutProcessor[MrtreeTreeLayoutPhases, Int]
+
 pub fn new_mrtree_tree_layout_provider() -> MrtreeTreeLayoutProvider
+
+pub fn new_mrtree_untreeifyer_layout_processor() -> ILayoutProcessor[MrtreeTreeLayoutPhases, Int]
 
 pub fn new_ngraph() -> NGraph
 
@@ -4436,11 +4484,37 @@ pub struct MrtreeElkGraphImporter {
 pub fn MrtreeElkGraphImporter::apply_layout(Self, Int) -> Unit
 pub fn MrtreeElkGraphImporter::import_graph(Self, Int) -> Int
 
+pub enum MrtreeIntermediateProcessorStrategy {
+  RootProc
+  FanProc
+  LevelProc
+  NeighborsProc
+  LevelHeight
+  DirectionProc
+  NodePositionProc
+  CompactionProc
+  LevelCoords
+  GraphBoundsProc
+  DetreeifyingProc
+}
+
+pub enum MrtreeTreeLayoutPhases {
+  P1Treeification
+  P2NodeOrdering
+  P3NodePlacement
+  P4EdgeRouting
+}
+
 pub struct MrtreeTreeLayoutProvider {
   tree : Mrtree
   components_processor : MrtreeComponentsProcessor
 }
 pub fn MrtreeTreeLayoutProvider::layout(Self, Int, IElkProgressMonitor) -> Unit
+
+pub enum MrtreeTreeifyingOrder {
+  DFS
+  BFS
+}
 
 pub struct NEdge {
   handle : Int

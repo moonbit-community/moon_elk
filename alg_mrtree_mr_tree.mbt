@@ -55,7 +55,7 @@ fn mrtree_build_levels(graph : MrtreeGraph) -> Array[Array[MrtreeNode]] {
 }
 
 ///|
-fn mrtree_layout_levels(graph : MrtreeGraph) -> Unit {
+pub fn mrtree_layout_levels(graph : MrtreeGraph) -> Unit {
   let levels = mrtree_build_levels(graph)
   let spacing = mrtree_graph_spacing_node_node(graph)
   let level_widths = []
@@ -92,6 +92,61 @@ fn mrtree_layout_levels(graph : MrtreeGraph) -> Unit {
 }
 
 ///|
+fn mrtree_update_modules(
+  graph : MrtreeGraph,
+) -> Array[ILayoutProcessor[MrtreeTreeLayoutPhases, MrtreeGraph]] {
+  let algorithm_assembler = algorithm_assembler_create(
+    mrtree_tree_layout_phase_descriptor,
+  )
+  ignore(algorithm_assembler.reset())
+  ignore(
+    algorithm_assembler.set_phase(
+      MrtreeTreeLayoutPhases::P1Treeification,
+      mrtree_tree_layout_phase_factory(MrtreeTreeLayoutPhases::P1Treeification),
+    ),
+  )
+  ignore(
+    algorithm_assembler.set_phase(
+      MrtreeTreeLayoutPhases::P2NodeOrdering,
+      mrtree_tree_layout_phase_factory(MrtreeTreeLayoutPhases::P2NodeOrdering),
+    ),
+  )
+  ignore(
+    algorithm_assembler.set_phase(
+      MrtreeTreeLayoutPhases::P3NodePlacement,
+      mrtree_tree_layout_phase_factory(MrtreeTreeLayoutPhases::P3NodePlacement),
+    ),
+  )
+  ignore(
+    algorithm_assembler.set_phase(
+      MrtreeTreeLayoutPhases::P4EdgeRouting,
+      mrtree_tree_layout_phase_factory(MrtreeTreeLayoutPhases::P4EdgeRouting),
+    ),
+  )
+  algorithm_assembler.build(graph)
+}
+
+///|
+fn mrtree_layout(
+  graph : MrtreeGraph,
+  algorithm : Array[ILayoutProcessor[MrtreeTreeLayoutPhases, MrtreeGraph]],
+  monitor_opt : IElkProgressMonitor?,
+) -> Unit {
+  let monitor = match monitor_opt {
+    Some(existing) => existing
+    None => new_basic_progress_monitor()
+  }
+  ignore(monitor.begin("Layout", algorithm.length().to_double()))
+  for processor in algorithm {
+    if monitor.is_canceled() {
+      return
+    }
+    processor.process(graph, monitor.sub_task(1.0))
+  }
+  monitor.done()
+}
+
+///|
 pub fn Mrtree::do_layout(
   self : Mrtree,
   graph : MrtreeGraph,
@@ -99,7 +154,8 @@ pub fn Mrtree::do_layout(
 ) -> MrtreeGraph {
   ignore(self)
   ignore(progress_monitor.begin("Tree layout", 1.0))
-  mrtree_layout_levels(graph)
+  let algorithm = mrtree_update_modules(graph)
+  mrtree_layout(graph, algorithm, progress_monitor.sub_task(1.0))
   progress_monitor.done()
   graph
 }

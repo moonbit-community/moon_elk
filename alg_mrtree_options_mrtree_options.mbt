@@ -12,6 +12,11 @@ pub let mrtree_compaction : IProperty[Bool] = new_property(
 )
 
 ///|
+pub let mrtree_search_order : IProperty[String] = new_property(
+  "org.eclipse.elk.mrtree.searchOrder", "DFS",
+)
+
+///|
 pub let mrtree_edge_end_texture_length : IProperty[Double] = new_property(
   "org.eclipse.elk.mrtree.edgeEndTextureLength", 7.0,
 )
