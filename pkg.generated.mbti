@@ -968,17 +968,49 @@ pub fn graphviz_dot_activator_get_instance() -> GraphvizDotActivator?
 
 pub fn graphviz_dot_activator_reset_for_test() -> Unit
 
+pub let graphviz_dot_antlr_token_file_content : String
+
+pub let graphviz_dot_antlr_token_file_path : String
+
+pub let graphviz_dot_default_file_extension : String
+
+pub let graphviz_dot_default_language_name : String
+
+pub let graphviz_dot_default_serializer_class_name : String
+
 pub let graphviz_dot_epackage_value : String
 
 pub let graphviz_dot_executable_extension_factory_guicekey : String
 
 pub let graphviz_dot_file_extension : String
 
+pub let graphviz_dot_grammar_name : String
+
 pub fn graphviz_dot_initialization_data_map(Map[String, String]) -> GraphvizDotInitializationData
 
 pub fn graphviz_dot_initialization_data_string(String) -> GraphvizDotInitializationData
 
 pub let graphviz_dot_language_name : String
+
+pub let graphviz_dot_lexer_rule_any_other : Int
+
+pub let graphviz_dot_lexer_rule_float : Int
+
+pub let graphviz_dot_lexer_rule_id : Int
+
+pub let graphviz_dot_lexer_rule_int : Int
+
+pub let graphviz_dot_lexer_rule_ml_comment : Int
+
+pub let graphviz_dot_lexer_rule_prec_line : Int
+
+pub let graphviz_dot_lexer_rule_sl_comment : Int
+
+pub let graphviz_dot_lexer_rule_string : Int
+
+pub let graphviz_dot_lexer_rule_ws : Int
+
+pub let graphviz_dot_lexer_token_names : Array[String]
 
 pub let graphviz_dot_ns_uri : String
 
@@ -1184,6 +1216,8 @@ pub fn network_simplex_for_graph(NGraph) -> NetworkSimplex
 
 pub fn new_abstract_force_model_state() -> AbstractForceModelState
 
+pub fn new_abstract_graphviz_dot_runtime_module(properties? : Map[String, String]) -> AbstractGraphvizDotRuntimeModule
+
 pub fn new_abstract_layout_provider((Int, IElkProgressMonitor) -> Unit, initialize_fn? : (String?) -> Unit, dispose_fn? : () -> Unit) -> AbstractLayoutProvider
 
 pub fn[T] new_abstract_random_list_accessor(() -> T) -> AbstractRandomListAccessor[T]
@@ -1358,6 +1392,8 @@ pub fn new_graph_validator() -> GraphValidator
 
 pub fn new_graphviz_dot_activator() -> GraphvizDotActivator
 
+pub fn new_graphviz_dot_antlr_token_file_provider() -> GraphvizDotAntlrTokenFileProvider
+
 pub fn new_graphviz_dot_bundle(symbolic_name? : String) -> GraphvizDotBundle
 
 pub fn new_graphviz_dot_configuration_element(contributor? : String?) -> GraphvizDotConfigurationElement
@@ -1370,7 +1406,13 @@ pub fn new_graphviz_dot_executable_extension_factory() -> GraphvizDotExecutableE
 
 pub fn new_graphviz_dot_formatter_request() -> GraphvizDotFormatterRequest
 
+pub fn new_graphviz_dot_grammar_access() -> GraphvizDotGrammarAccess
+
 pub fn new_graphviz_dot_injector() -> GraphvizDotInjector
+
+pub fn new_graphviz_dot_lex_token(Int, String, String) -> GraphvizDotLexToken
+
+pub fn new_graphviz_dot_parser(grammar_access? : GraphvizDotGrammarAccess) -> GraphvizDotParser
 
 pub fn new_graphviz_dot_runtime_module(serializer_provider? : () -> GraphvizDotSerializer) -> GraphvizDotRuntimeModule
 
@@ -1397,6 +1439,10 @@ pub fn[T] new_igraph_importer((T) -> FGraph, (FGraph) -> Unit) -> IGraphImporter
 pub fn[G] new_igraph_transformer((G) -> DCGraph, () -> Unit) -> IGraphTransformer[G]
 
 pub fn[T] new_instance_pool(IFactory[T], limit? : Int) -> InstancePool[T]
+
+pub fn new_internal_graphviz_dot_lexer(String) -> InternalGraphvizDotLexer
+
+pub fn new_internal_graphviz_dot_parser(Array[GraphvizDotLexToken], grammar_access? : GraphvizDotGrammarAccess) -> InternalGraphvizDotParser
 
 pub fn new_ipolyomino_successor((PolyominoCoords, Polyomino) -> PolyominoCoords) -> IPolyominoSuccessor
 
@@ -1916,6 +1962,27 @@ pub struct AbstractForceModelState {
   mut graph : FGraph?
   mut disp_bound : Double
 }
+
+pub struct AbstractGraphvizDotRuntimeModule {
+  mut properties : Map[String, String]
+}
+pub fn AbstractGraphvizDotRuntimeModule::bind_class_loader_to_instance(Self) -> String
+pub fn AbstractGraphvizDotRuntimeModule::bind_iantlr_token_file_provider(Self) -> String
+pub fn AbstractGraphvizDotRuntimeModule::bind_iformatter2(Self) -> String
+pub fn AbstractGraphvizDotRuntimeModule::bind_igrammar_access(Self) -> String
+pub fn AbstractGraphvizDotRuntimeModule::bind_iparser(Self) -> String
+pub fn AbstractGraphvizDotRuntimeModule::bind_isemantic_sequencer(Self) -> String
+pub fn AbstractGraphvizDotRuntimeModule::bind_iserializer(Self) -> String
+pub fn AbstractGraphvizDotRuntimeModule::bind_isyntactic_sequencer(Self) -> String
+pub fn AbstractGraphvizDotRuntimeModule::bind_itoken_def_provider(Self) -> String
+pub fn AbstractGraphvizDotRuntimeModule::bind_itoken_to_string_converter(Self) -> String
+pub fn AbstractGraphvizDotRuntimeModule::bind_lexer(Self) -> String
+pub fn AbstractGraphvizDotRuntimeModule::configure(Self, Map[String, String]) -> Unit
+pub fn AbstractGraphvizDotRuntimeModule::configure_file_extensions(Self) -> String
+pub fn AbstractGraphvizDotRuntimeModule::configure_formatter_preferences(Self) -> String
+pub fn AbstractGraphvizDotRuntimeModule::configure_language_name(Self) -> String
+pub fn AbstractGraphvizDotRuntimeModule::configure_runtime_lexer(Self) -> String
+pub fn AbstractGraphvizDotRuntimeModule::provide_internal_graphviz_dot_lexer(Self) -> String
 
 pub struct AbstractLayoutProvider {
   graph_layout_engine : IGraphLayoutEngine
@@ -2984,6 +3051,12 @@ pub fn GraphvizDotActivator::register_injector_provider(Self, String, String, ()
 pub fn GraphvizDotActivator::start(Self) -> Unit
 pub fn GraphvizDotActivator::stop(Self) -> Unit
 
+pub struct GraphvizDotAntlrTokenFileProvider {
+  marker : Unit
+}
+pub fn GraphvizDotAntlrTokenFileProvider::get_antlr_token_file(Self) -> String
+pub fn GraphvizDotAntlrTokenFileProvider::get_antlr_token_file_path(Self) -> String
+
 pub struct GraphvizDotBundle {
   symbolic_name : String
   class_registry : Map[String, Bool]
@@ -3028,6 +3101,21 @@ pub fn GraphvizDotFormatterRequest::set_format_undefined_hidden_regions_only(Sel
 pub fn GraphvizDotFormatterRequest::set_max_line_width(Self, Int) -> Unit
 pub fn GraphvizDotFormatterRequest::set_text(Self, String) -> Unit
 
+pub struct GraphvizDotGrammarAccess {
+  grammar : String
+  rules : Map[String, String]
+}
+pub fn GraphvizDotGrammarAccess::get_attribute_statement_rule(Self) -> String
+pub fn GraphvizDotGrammarAccess::get_edge_statement_rule(Self) -> String
+pub fn GraphvizDotGrammarAccess::get_grammar(Self) -> String
+pub fn GraphvizDotGrammarAccess::get_graph_rule(Self) -> String
+pub fn GraphvizDotGrammarAccess::get_graphviz_model_rule(Self) -> String
+pub fn GraphvizDotGrammarAccess::get_node_statement_rule(Self) -> String
+pub fn GraphvizDotGrammarAccess::get_rule(Self, String) -> String?
+pub fn GraphvizDotGrammarAccess::get_rule_names(Self) -> Array[String]
+pub fn GraphvizDotGrammarAccess::get_statement_rule(Self) -> String
+pub fn GraphvizDotGrammarAccess::get_subgraph_rule(Self) -> String
+
 pub enum GraphvizDotInitializationData {
   GraphvizDotInitializationDataString(String)
   GraphvizDotInitializationDataMap(Map[String, String])
@@ -3041,10 +3129,28 @@ pub fn GraphvizDotInjector::provider_class_names(Self) -> Array[String]
 pub fn GraphvizDotInjector::provider_count(Self) -> Int
 pub fn GraphvizDotInjector::register_provider(Self, String, () -> GraphvizDotObject) -> Unit
 
+pub struct GraphvizDotLexToken {
+  token_type : Int
+  token_name : String
+  lexeme : String
+}
+
 pub enum GraphvizDotObject {
   GraphvizDotObjectSerializer(GraphvizDotSerializer)
   GraphvizDotObjectExecutableExtension(GraphvizDotExecutableExtension)
 }
+
+pub struct GraphvizDotParser {
+  mut grammar_access : GraphvizDotGrammarAccess
+  mut initial_hidden_tokens : Array[String]
+}
+pub fn GraphvizDotParser::create_parser(Self, Array[GraphvizDotLexToken]) -> InternalGraphvizDotParser
+pub fn GraphvizDotParser::get_default_rule_name(Self) -> String
+pub fn GraphvizDotParser::get_grammar_access(Self) -> GraphvizDotGrammarAccess
+pub fn GraphvizDotParser::get_initial_hidden_tokens(Self) -> Array[String]
+pub fn GraphvizDotParser::parse(Self, String) -> DotGraphvizModel
+pub fn GraphvizDotParser::set_grammar_access(Self, GraphvizDotGrammarAccess) -> Unit
+pub fn GraphvizDotParser::set_initial_hidden_tokens(Self, Array[String]) -> Unit
 
 pub struct GraphvizDotRuntimeModule {
   serializer_provider : () -> GraphvizDotSerializer
@@ -3300,6 +3406,24 @@ pub struct InstancePool[T] {
 pub fn[T] InstancePool::clear(Self[T]) -> Unit
 pub fn[T] InstancePool::fetch(Self[T]) -> T
 pub fn[T] InstancePool::release(Self[T], T) -> Unit
+
+pub struct InternalGraphvizDotLexer {
+  input : String
+}
+pub fn InternalGraphvizDotLexer::get_grammar_file_name(Self) -> String
+pub fn InternalGraphvizDotLexer::get_token_names(Self) -> Array[String]
+pub fn InternalGraphvizDotLexer::lex_all(Self) -> Array[GraphvizDotLexToken]
+
+pub struct InternalGraphvizDotParser {
+  tokens : Array[GraphvizDotLexToken]
+  grammar_access : GraphvizDotGrammarAccess
+}
+pub fn InternalGraphvizDotParser::entry_rule_graphviz_model(Self) -> DotGraphvizModel
+pub fn InternalGraphvizDotParser::get_first_rule_name(Self) -> String
+pub fn InternalGraphvizDotParser::get_grammar_access(Self) -> GraphvizDotGrammarAccess
+pub fn InternalGraphvizDotParser::get_grammar_file_name(Self) -> String
+pub fn InternalGraphvizDotParser::get_token_names(Self) -> Array[String]
+pub fn InternalGraphvizDotParser::rule_graphviz_model(Self) -> DotGraphvizModel
 
 pub struct JsonImporter {
   mut input_model : Map[String, Json]?
