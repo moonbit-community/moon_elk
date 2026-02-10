@@ -72,6 +72,34 @@ pub fn mrtree_intermediate_processor_factory(
       new_layout_processor_factory(id, order, () => {
         new_mrtree_untreeifyer_layout_processor()
       })
+    NeighborsProc =>
+      new_layout_processor_factory(id, order, () => {
+        new_mrtree_neighbors_processor_layout_processor()
+      })
+    LevelHeight =>
+      new_layout_processor_factory(id, order, () => {
+        new_mrtree_level_height_processor_layout_processor()
+      })
+    DirectionProc =>
+      new_layout_processor_factory(id, order, () => {
+        new_mrtree_direction_processor_layout_processor()
+      })
+    NodePositionProc =>
+      new_layout_processor_factory(id, order, () => {
+        new_mrtree_node_position_processor_layout_processor()
+      })
+    CompactionProc =>
+      new_layout_processor_factory(id, order, () => {
+        new_mrtree_compaction_processor_layout_processor()
+      })
+    LevelCoords =>
+      new_layout_processor_factory(id, order, () => {
+        new_mrtree_level_coordinates_processor_layout_processor()
+      })
+    GraphBoundsProc =>
+      new_layout_processor_factory(id, order, () => {
+        new_mrtree_graph_bounds_processor_layout_processor()
+      })
     _ =>
       new_layout_processor_factory(
         id, order, mrtree_intermediate_noop_processor,

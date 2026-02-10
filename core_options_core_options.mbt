@@ -144,6 +144,11 @@ pub let algorithm : IProperty[String] = new_property(
 )
 
 ///|
+pub let interactive : IProperty[Bool] = new_property(
+  "org.eclipse.elk.interactive", false,
+)
+
+///|
 pub let direction : IProperty[String] = new_property(
   "org.eclipse.elk.direction", "",
 )

@@ -177,3 +177,14 @@ pub fn MrtreeElkGraphImporter::apply_layout(
     height - padding_value.get_vertical(),
   )
 }
+
+///|
+pub fn new_mrtree_elk_graph_as_igraph_importer() -> MrtreeIGraphImporter[
+  ElkNode,
+] {
+  let importer = new_mrtree_elk_graph_importer()
+  new_mrtree_igraph_importer(
+    fn(graph : ElkNode) { importer.import_graph(graph) },
+    fn(graph : MrtreeGraph) { importer.apply_layout(graph) },
+  )
+}

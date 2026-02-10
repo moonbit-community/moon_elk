@@ -12,6 +12,11 @@ pub let mrtree_compaction : IProperty[Bool] = new_property(
 )
 
 ///|
+pub let mrtree_edge_routing_mode : IProperty[String] = new_property(
+  "org.eclipse.elk.mrtree.edgeRoutingMode", "AVOID_OVERLAP",
+)
+
+///|
 pub let mrtree_weighting : IProperty[String] = new_property(
   "org.eclipse.elk.mrtree.weighting", "MODEL_ORDER",
 )

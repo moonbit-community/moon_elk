@@ -14,10 +14,14 @@ priv struct MrtreeGraphData {
   mut origin : ElkNode?
   mut separate_connected_components : Bool
   mut direction : String
+  mut compaction : Bool
+  mut edge_routing_mode : String
   mut weighting : String
   mut search_order : String
   mut removable_edges : Array[MrtreeEdge]
   mut spacing_node_node : Double
+  mut spacing_edge_node : Double
+  mut edge_end_texture_length : Double
   mut aspect_ratio : Double
   mut padding : ElkPadding
   mut priority : Int
@@ -51,6 +55,14 @@ priv struct MrtreeNodeData {
   mut right_neighbor : MrtreeNode?
   mut left_sibling : MrtreeNode?
   mut right_sibling : MrtreeNode?
+  mut xcoor : Int
+  mut ycoor : Int
+  mut level_min : Double
+  mut level_max : Double
+  mut compact_level_ascension : Bool
+  mut compact_constraints : Array[MrtreeNode]
+  mut prelim : Double
+  mut modifier : Double
   mut root : Bool
   mut dummy : Bool
 }
@@ -133,11 +145,15 @@ pub fn new_mrtree_graph() -> MrtreeGraph {
     edges: [],
     origin: None,
     separate_connected_components: true,
-    direction: "",
+    direction: "UNDEFINED",
+    compaction: false,
+    edge_routing_mode: "AVOID_OVERLAP",
     weighting: "MODEL_ORDER",
     search_order: "DFS",
     removable_edges: [],
     spacing_node_node: 20.0,
+    spacing_edge_node: 3.0,
+    edge_end_texture_length: 7.0,
     aspect_ratio: 1.6,
     padding: new_elk_padding_any(20.0),
     priority: 0,
@@ -180,6 +196,14 @@ pub fn new_mrtree_node(
     right_neighbor: None,
     left_sibling: None,
     right_sibling: None,
+    xcoor: 0,
+    ycoor: 0,
+    level_min: 0.0,
+    level_max: 0.0,
+    compact_level_ascension: false,
+    compact_constraints: [],
+    prelim: 0.0,
+    modifier: 0.0,
     root: false,
     dummy: false,
   })
@@ -225,10 +249,14 @@ pub fn mrtree_graph_copy_properties(
   target_data.origin = source_data.origin
   target_data.separate_connected_components = source_data.separate_connected_components
   target_data.direction = source_data.direction
+  target_data.compaction = source_data.compaction
+  target_data.edge_routing_mode = source_data.edge_routing_mode
   target_data.weighting = source_data.weighting
   target_data.search_order = source_data.search_order
   target_data.removable_edges = source_data.removable_edges.copy()
   target_data.spacing_node_node = source_data.spacing_node_node
+  target_data.spacing_edge_node = source_data.spacing_edge_node
+  target_data.edge_end_texture_length = source_data.edge_end_texture_length
   target_data.aspect_ratio = source_data.aspect_ratio
   target_data.padding = source_data.padding.clone()
   target_data.priority = source_data.priority
@@ -253,12 +281,22 @@ pub fn mrtree_graph_copy_properties_from_elk(
     elk_graph, mrtree_separate_connected_components,
   )
   graph_data.direction = node_get_string_property(elk_graph, direction)
+  graph_data.compaction = node_get_bool_property(elk_graph, mrtree_compaction)
+  graph_data.edge_routing_mode = node_get_string_property(
+    elk_graph, mrtree_edge_routing_mode,
+  )
   graph_data.weighting = node_get_string_property(elk_graph, mrtree_weighting)
   graph_data.search_order = node_get_string_property(
     elk_graph, mrtree_search_order,
   )
   graph_data.spacing_node_node = node_get_double_property(
     elk_graph, mrtree_spacing_node_node,
+  )
+  graph_data.spacing_edge_node = node_get_double_property(
+    elk_graph, spacing_edge_node,
+  )
+  graph_data.edge_end_texture_length = node_get_double_property(
+    elk_graph, mrtree_edge_end_texture_length,
   )
   let parsed_aspect_ratio = node_get_double_property(
     elk_graph, mrtree_aspect_ratio,
@@ -368,6 +406,12 @@ pub fn mrtree_node_set_id(node : MrtreeNode, id : Int) -> Unit {
 pub fn mrtree_node_graph(node : MrtreeNode) -> MrtreeGraph {
   checked_mrtree_node(node)
   mrtree_node_store.val[node].graph
+}
+
+///|
+pub fn mrtree_node_label(node : MrtreeNode) -> String {
+  checked_mrtree_node(node)
+  mrtree_node_store.val[node].label
 }
 
 ///|
@@ -488,6 +532,12 @@ pub fn mrtree_node_parent(node : MrtreeNode) -> MrtreeNode? {
   } else {
     Some(mrtree_edge_source(incoming[0]))
   }
+}
+
+///|
+pub fn mrtree_node_is_leaf(node : MrtreeNode) -> Bool {
+  checked_mrtree_node(node)
+  mrtree_node_store.val[node].outgoing_edges.is_empty()
 }
 
 ///|
@@ -669,6 +719,136 @@ pub fn mrtree_node_right_sibling(node : MrtreeNode) -> MrtreeNode? {
 }
 
 ///|
+pub fn mrtree_node_set_xcoor(node : MrtreeNode, value : Int) -> Unit {
+  checked_mrtree_node(node)
+  let node_data = mrtree_node_store.val[node]
+  node_data.xcoor = value
+  set_mrtree_node_data(node, node_data)
+}
+
+///|
+pub fn mrtree_node_xcoor(node : MrtreeNode) -> Int {
+  checked_mrtree_node(node)
+  mrtree_node_store.val[node].xcoor
+}
+
+///|
+pub fn mrtree_node_set_ycoor(node : MrtreeNode, value : Int) -> Unit {
+  checked_mrtree_node(node)
+  let node_data = mrtree_node_store.val[node]
+  node_data.ycoor = value
+  set_mrtree_node_data(node, node_data)
+}
+
+///|
+pub fn mrtree_node_ycoor(node : MrtreeNode) -> Int {
+  checked_mrtree_node(node)
+  mrtree_node_store.val[node].ycoor
+}
+
+///|
+pub fn mrtree_node_set_level_min(node : MrtreeNode, value : Double) -> Unit {
+  checked_mrtree_node(node)
+  let node_data = mrtree_node_store.val[node]
+  node_data.level_min = value
+  set_mrtree_node_data(node, node_data)
+}
+
+///|
+pub fn mrtree_node_level_min(node : MrtreeNode) -> Double {
+  checked_mrtree_node(node)
+  mrtree_node_store.val[node].level_min
+}
+
+///|
+pub fn mrtree_node_set_level_max(node : MrtreeNode, value : Double) -> Unit {
+  checked_mrtree_node(node)
+  let node_data = mrtree_node_store.val[node]
+  node_data.level_max = value
+  set_mrtree_node_data(node, node_data)
+}
+
+///|
+pub fn mrtree_node_level_max(node : MrtreeNode) -> Double {
+  checked_mrtree_node(node)
+  mrtree_node_store.val[node].level_max
+}
+
+///|
+pub fn mrtree_node_set_compact_level_ascension(
+  node : MrtreeNode,
+  value : Bool,
+) -> Unit {
+  checked_mrtree_node(node)
+  let node_data = mrtree_node_store.val[node]
+  node_data.compact_level_ascension = value
+  set_mrtree_node_data(node, node_data)
+}
+
+///|
+pub fn mrtree_node_compact_level_ascension(node : MrtreeNode) -> Bool {
+  checked_mrtree_node(node)
+  mrtree_node_store.val[node].compact_level_ascension
+}
+
+///|
+pub fn mrtree_node_set_compact_constraints(
+  node : MrtreeNode,
+  constraints : Array[MrtreeNode],
+) -> Unit {
+  checked_mrtree_node(node)
+  let node_data = mrtree_node_store.val[node]
+  node_data.compact_constraints = constraints.copy()
+  set_mrtree_node_data(node, node_data)
+}
+
+///|
+pub fn mrtree_node_compact_constraints(node : MrtreeNode) -> Array[MrtreeNode] {
+  checked_mrtree_node(node)
+  mrtree_node_store.val[node].compact_constraints
+}
+
+///|
+pub fn mrtree_node_add_compact_constraint(
+  node : MrtreeNode,
+  constraint : MrtreeNode,
+) -> Unit {
+  checked_mrtree_node(node)
+  checked_mrtree_node(constraint)
+  let node_data = mrtree_node_store.val[node]
+  node_data.compact_constraints.push(constraint)
+  set_mrtree_node_data(node, node_data)
+}
+
+///|
+pub fn mrtree_node_set_prelim(node : MrtreeNode, value : Double) -> Unit {
+  checked_mrtree_node(node)
+  let node_data = mrtree_node_store.val[node]
+  node_data.prelim = value
+  set_mrtree_node_data(node, node_data)
+}
+
+///|
+pub fn mrtree_node_prelim(node : MrtreeNode) -> Double {
+  checked_mrtree_node(node)
+  mrtree_node_store.val[node].prelim
+}
+
+///|
+pub fn mrtree_node_set_modifier(node : MrtreeNode, value : Double) -> Unit {
+  checked_mrtree_node(node)
+  let node_data = mrtree_node_store.val[node]
+  node_data.modifier = value
+  set_mrtree_node_data(node, node_data)
+}
+
+///|
+pub fn mrtree_node_modifier(node : MrtreeNode) -> Double {
+  checked_mrtree_node(node)
+  mrtree_node_store.val[node].modifier
+}
+
+///|
 pub fn mrtree_node_set_root(node : MrtreeNode, value : Bool) -> Unit {
   checked_mrtree_node(node)
   let node_data = mrtree_node_store.val[node]
@@ -733,9 +913,52 @@ pub fn mrtree_graph_direction(graph : MrtreeGraph) -> String {
 }
 
 ///|
+pub fn mrtree_graph_set_direction(graph : MrtreeGraph, value : String) -> Unit {
+  checked_mrtree_graph(graph)
+  let graph_data = mrtree_graph_store.val[graph]
+  graph_data.direction = value
+  set_mrtree_graph_data(graph, graph_data)
+}
+
+///|
 pub fn mrtree_graph_direction_is_horizontal(graph : MrtreeGraph) -> Bool {
   let current_direction = mrtree_graph_direction(graph)
   current_direction == "LEFT" || current_direction == "RIGHT"
+}
+
+///|
+pub fn mrtree_graph_compaction(graph : MrtreeGraph) -> Bool {
+  checked_mrtree_graph(graph)
+  mrtree_graph_store.val[graph].compaction
+}
+
+///|
+pub fn mrtree_graph_set_compaction(graph : MrtreeGraph, value : Bool) -> Unit {
+  checked_mrtree_graph(graph)
+  let graph_data = mrtree_graph_store.val[graph]
+  graph_data.compaction = value
+  set_mrtree_graph_data(graph, graph_data)
+}
+
+///|
+pub fn mrtree_graph_edge_routing_mode(
+  graph : MrtreeGraph,
+) -> MrtreeEdgeRoutingMode {
+  checked_mrtree_graph(graph)
+  mrtree_edge_routing_mode_from_string(
+    mrtree_graph_store.val[graph].edge_routing_mode,
+  )
+}
+
+///|
+pub fn mrtree_graph_set_edge_routing_mode(
+  graph : MrtreeGraph,
+  value : String,
+) -> Unit {
+  checked_mrtree_graph(graph)
+  let graph_data = mrtree_graph_store.val[graph]
+  graph_data.edge_routing_mode = value
+  set_mrtree_graph_data(graph, graph_data)
 }
 
 ///|
@@ -792,6 +1015,18 @@ pub fn mrtree_graph_removable_edges(graph : MrtreeGraph) -> Array[MrtreeEdge] {
 pub fn mrtree_graph_spacing_node_node(graph : MrtreeGraph) -> Double {
   checked_mrtree_graph(graph)
   mrtree_graph_store.val[graph].spacing_node_node
+}
+
+///|
+pub fn mrtree_graph_spacing_edge_node(graph : MrtreeGraph) -> Double {
+  checked_mrtree_graph(graph)
+  mrtree_graph_store.val[graph].spacing_edge_node
+}
+
+///|
+pub fn mrtree_graph_edge_end_texture_length(graph : MrtreeGraph) -> Double {
+  checked_mrtree_graph(graph)
+  mrtree_graph_store.val[graph].edge_end_texture_length
 }
 
 ///|

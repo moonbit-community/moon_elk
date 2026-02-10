@@ -30,47 +30,6 @@ pub let mrtree_tree_layout_phase_descriptor : PhaseDescriptor[
 )
 
 ///|
-fn mrtree_node_placer_process(
-  graph : MrtreeGraph,
-  progress_monitor : IElkProgressMonitor?,
-) -> Unit {
-  match progress_monitor {
-    Some(monitor) => ignore(monitor.begin("Node placement phase", 1.0))
-    None => ()
-  }
-  mrtree_layout_levels(graph)
-  match progress_monitor {
-    Some(monitor) => monitor.done()
-    None => ()
-  }
-}
-
-///|
-pub fn new_mrtree_node_placer_layout_phase() -> ILayoutProcessor[
-  MrtreeTreeLayoutPhases,
-  MrtreeGraph,
-] {
-  new_layout_phase(mrtree_node_placer_process, _ => None)
-}
-
-///|
-fn mrtree_edge_router_noop_process(
-  graph : MrtreeGraph,
-  progress_monitor : IElkProgressMonitor?,
-) -> Unit {
-  ignore(graph)
-  ignore(progress_monitor)
-}
-
-///|
-pub fn new_mrtree_edge_router_layout_phase() -> ILayoutProcessor[
-  MrtreeTreeLayoutPhases,
-  MrtreeGraph,
-] {
-  new_layout_phase(mrtree_edge_router_noop_process, _ => None)
-}
-
-///|
 pub fn mrtree_tree_layout_phase_factory(
   phase : MrtreeTreeLayoutPhases,
 ) -> ILayoutPhaseFactory[MrtreeTreeLayoutPhases, MrtreeGraph] {

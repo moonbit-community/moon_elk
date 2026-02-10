@@ -18,7 +18,7 @@ pub fn MrtreeTreeLayoutProvider::layout(
   layout_graph : ElkNode,
   progress_monitor : IElkProgressMonitor,
 ) -> Unit {
-  let importer = new_mrtree_elk_graph_importer()
+  let importer = new_mrtree_elk_graph_as_igraph_importer()
   let graph = importer.import_graph(layout_graph)
   let components = self.components_processor.split(graph)
   for component in components {
