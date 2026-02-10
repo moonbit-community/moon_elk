@@ -300,6 +300,8 @@ pub fn fedge_to_vector_chain(Int) -> KVectorChain
 
 pub fn fgraph_copy_properties(FGraph, FGraph) -> Unit
 
+pub fn fill_polyomino(Polyomino) -> Unit
+
 pub fn find_best_edge_containment(Int?) -> Int?
 
 pub fn find_lowest_common_ancestor(Int, Int) -> Int?
@@ -444,6 +446,8 @@ pub fn greedy_rectangle_strip_overlap_remover_remove_overlaps(RectangleStripOver
 
 pub fn hierarchy_handling_to_string(HierarchyHandling) -> String
 
+pub fn high_level_sorting_criterion_values() -> Array[HighLevelSortingCriterion]
+
 pub let inside_self_loops_activate : IProperty[Bool]
 
 pub let instance_pool_infinite : Int
@@ -559,6 +563,8 @@ pub fn[P, G] layout_processor_configuration_create_from(LayoutProcessorConfigura
 pub fn less_than(Double) -> ExclusiveUpperBound
 
 pub fn longest_path_compaction(OneDimensionalCompactor) -> Unit
+
+pub fn low_level_sorting_criterion_values() -> Array[LowLevelSortingCriterion]
 
 pub fn make_edge_label_parent(Int) -> ElkLabelParent
 
@@ -716,6 +722,8 @@ pub fn[T] new_igraph_importer((T) -> FGraph, (FGraph) -> Unit) -> IGraphImporter
 
 pub fn[T] new_instance_pool(IFactory[T], limit? : Int) -> InstancePool[T]
 
+pub fn new_ipolyomino_successor((PolyominoCoords, Polyomino) -> PolyominoCoords) -> IPolyominoSuccessor
+
 pub fn new_irectangle_strip_overlap_removal_strategy((RectangleStripOverlapRemover) -> Double) -> IRectangleStripOverlapRemovalStrategy
 
 pub fn new_json_importer() -> JsonImporter
@@ -782,7 +790,13 @@ pub fn new_point_in_quadrant(Double, Double, Quadrant) -> Point
 
 pub fn new_polyomino(Int, Int) -> Polyomino
 
+pub fn new_polyomino_compactor() -> PolyominoCompactor
+
+pub fn new_polyomino_coords(Int, Int) -> PolyominoCoords
+
 pub fn new_polyomino_with_extensions(Int, Int, Array[UniqueTriple[PolyominoDirection, Int, Int]]) -> Polyomino
+
+pub fn new_polyominoes(Array[Polyomino], Double, fill? : Bool) -> Polyominoes
 
 pub fn[T] new_property(String, T) -> IProperty[T]
 
@@ -811,6 +825,18 @@ pub fn new_spline_interpolator((Array[KVector]) -> BezierSpline) -> ISplineInter
 pub fn new_stress_layout_provider() -> StressLayoutProvider
 
 pub fn new_stress_majorization() -> StressMajorization
+
+pub fn new_successor_combination(IPolyominoSuccessor, IPolyominoSuccessor) -> IPolyominoSuccessor
+
+pub fn new_successor_jitter() -> IPolyominoSuccessor
+
+pub fn new_successor_line_by_line() -> IPolyominoSuccessor
+
+pub fn new_successor_manhattan() -> IPolyominoSuccessor
+
+pub fn new_successor_max_norm_winding_in_math_pos_sense() -> IPolyominoSuccessor
+
+pub fn new_successor_quadrants_generic(IPolyominoSuccessor) -> IPolyominoSuccessor
 
 pub fn new_svg_image(String?) -> SvgImage
 
@@ -1167,6 +1193,8 @@ pub fn topdown_node_type_to_string(TopdownNodeTypes) -> String
 pub fn translate(Int, KVector, KVector) -> Unit
 
 pub fn translate_xy(Int, Double, Double) -> Unit
+
+pub fn traversal_strategy_values() -> Array[TraversalStrategy]
 
 pub fn[F, S, T] triple_of(F, S, T) -> Triple[F, S, T]
 
@@ -1817,6 +1845,11 @@ pub fn[P, G] ILayoutProcessorFactory::create(Self[P, G]) -> ILayoutProcessor[P, 
 pub fn[P, G] ILayoutProcessorFactory::factory_id(Self[P, G]) -> Int
 pub fn[P, G] ILayoutProcessorFactory::factory_order(Self[P, G]) -> Int
 
+pub struct IPolyominoSuccessor {
+  apply : (PolyominoCoords, Polyomino) -> PolyominoCoords
+}
+pub fn IPolyominoSuccessor::apply(Self, PolyominoCoords, Polyomino) -> PolyominoCoords
+
 pub struct IProperty[T] {
   id : String
   default_value : T
@@ -2371,6 +2404,18 @@ pub fn Polyomino::set_x(Self, Int) -> Unit
 pub fn Polyomino::set_y(Self, Int) -> Unit
 pub fn Polyomino::width(Self) -> Int
 
+pub struct PolyominoCompactor {
+  unit : Unit
+}
+pub fn PolyominoCompactor::pack_polyominoes(Self, Polyominoes) -> Unit
+
+pub struct PolyominoCoords {
+  x : Int
+  y : Int
+}
+pub impl Eq for PolyominoCoords
+pub impl Show for PolyominoCoords
+
 pub enum PolyominoDirection {
   North
   East
@@ -2378,6 +2423,22 @@ pub enum PolyominoDirection {
   West
 }
 pub fn PolyominoDirection::is_horizontal(Self) -> Bool
+
+pub struct Polyominoes {
+  polys : Array[Polyomino]
+  grid : PlanarGrid
+  mut high_level_sorting_criterion : HighLevelSortingCriterion
+  mut low_level_sorting_criterion : LowLevelSortingCriterion
+  mut traversal_strategy : TraversalStrategy
+}
+pub fn Polyominoes::get_grid(Self) -> PlanarGrid
+pub fn Polyominoes::get_high_level_sorting_criterion(Self) -> HighLevelSortingCriterion
+pub fn Polyominoes::get_low_level_sorting_criterion(Self) -> LowLevelSortingCriterion
+pub fn Polyominoes::get_polyominoes(Self) -> Array[Polyomino]
+pub fn Polyominoes::get_traversal_strategy(Self) -> TraversalStrategy
+pub fn Polyominoes::set_high_level_sorting_criterion(Self, HighLevelSortingCriterion) -> Self
+pub fn Polyominoes::set_low_level_sorting_criterion(Self, LowLevelSortingCriterion) -> Self
+pub fn Polyominoes::set_traversal_strategy(Self, TraversalStrategy) -> Self
 
 pub enum PortAlignment {
   Distributed
