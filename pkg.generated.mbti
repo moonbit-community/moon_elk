@@ -764,6 +764,10 @@ pub fn[T] new_property_cloneable(String, T, (T) -> T?) -> IProperty[T]
 
 pub fn[T] new_property_cloneable_without_clone(String, T) -> IProperty[T]
 
+pub fn new_quadruplet() -> Quadruplet
+
+pub fn new_quadruplet_values(Bool, Bool, Bool, Bool) -> Quadruplet
+
 pub fn new_rectilinear_convex_hull() -> RectilinearConvexHull
 
 pub fn new_recursive_graph_layout_engine() -> RecursiveGraphLayoutEngine
@@ -1660,6 +1664,11 @@ pub enum HierarchyHandling {
   SeparateChildren
 }
 
+pub enum HighLevelSortingCriterion {
+  NumOfExternalSidesThanNumOfExtensionsLast
+  CornerCasesThanSingleSideLast
+}
+
 pub struct HullRectangleEventState {
   rects : Array[ElkRectangle]
   mut min_y : Point?
@@ -2044,6 +2053,11 @@ pub enum LoggedGraphType {
   LGraph
 }
 
+pub enum LowLevelSortingCriterion {
+  BySize
+  BySizeAndShape
+}
+
 pub struct Maybe[T] {
   mut object : T?
 }
@@ -2273,6 +2287,17 @@ pub fn[A, B, C, D] Quadruple::get_third(Self[A, B, C, D]) -> C
 pub fn[A : Hash, B : Hash, C : Hash, D : Hash] Quadruple::hash_code(Self[A, B, C, D]) -> Int
 pub fn[A : Show, B : Show, C : Show, D : Show] Quadruple::to_string(Self[A, B, C, D]) -> String
 
+pub struct Quadruplet {
+  mut left : Bool
+  mut right : Bool
+  mut up : Bool
+  mut down : Bool
+}
+pub fn Quadruplet::apply_or(Self, Self) -> Unit
+pub fn Quadruplet::get(Self, Direction) -> Bool
+pub fn Quadruplet::set(Self, Bool, Bool, Bool, Bool) -> Unit
+pub fn Quadruplet::set_direction(Self, Bool, Direction) -> Unit
+
 pub struct RectilinearConvexHull {
   hull : Array[Point]
   mut x_max1 : Point?
@@ -2433,6 +2458,18 @@ pub enum TopdownNodeTypes {
   ParallelNode
   HierarchicalNode
   RootNode
+}
+
+pub enum TraversalStrategy {
+  Spiral
+  LineByLine
+  Manhattan
+  Jitter
+  QuadrantsLineByLine
+  QuadrantsManhattan
+  QuadrantsJitter
+  CombineLineByLineManhattan
+  CombineJitterManhattan
 }
 
 pub struct Tree[T] {

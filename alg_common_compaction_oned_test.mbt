@@ -350,6 +350,68 @@ test "OneDimensionalCompactor subsequent directions compaction" {
 }
 
 ///|
+test "OneDimensionalCompactor horizontal spacings" {
+  reset_compaction_oned_model_for_test()
+
+  let graph = new_cgraph(direction_values())
+
+  let one = cnode_of().hitbox(rect(0.0, 0.0, 20.0, 20.0)).create(graph)
+  let two = cnode_of().hitbox(rect(50.0, 0.0, 20.0, 20.0)).create(graph)
+  let three = cnode_of().hitbox(rect(150.0, 0.0, 20.0, 20.0)).create(graph)
+
+  let spacing_handler = new_spacings_handler(
+    (cnode1, cnode2) => {
+      if cnode1 == three || cnode2 == three {
+        10.0
+      } else if cnode1 == two || cnode2 == two {
+        7.0
+      } else if cnode1 == one || cnode2 == one {
+        5.0
+      } else {
+        spacing
+      }
+    },
+    (_, _) => spacing,
+  )
+
+  ignore(
+    compacter(graph)
+    .set_spacings_handler(spacing_handler)
+    .change_direction(dir_left())
+    .compact()
+    .finish(),
+  )
+
+  assert_close(one.hitbox().x, 0.0)
+  assert_close(two.hitbox().x, 27.0)
+  assert_close(three.hitbox().x, 57.0)
+
+  ignore(
+    compacter(graph)
+    .set_spacings_handler(spacing_handler)
+    .change_direction(dir_right())
+    .compact()
+    .finish(),
+  )
+
+  assert_close(one.hitbox().x, 0.0)
+  assert_close(two.hitbox().x, 27.0)
+  assert_close(three.hitbox().x, 57.0)
+
+  ignore(
+    compacter(graph)
+    .set_spacings_handler(spacing_handler)
+    .change_direction(dir_left())
+    .compact()
+    .finish(),
+  )
+
+  assert_close(one.hitbox().x, 0.0)
+  assert_close(two.hitbox().x, 27.0)
+  assert_close(three.hitbox().x, 57.0)
+}
+
+///|
 test "OneDimensionalCompactor vertical spacing during horizontal compaction" {
   reset_compaction_oned_model_for_test()
 
