@@ -1210,6 +1210,8 @@ pub fn new_dot_exporter() -> DotExporter
 
 pub fn new_dot_factory() -> DotFactory
 
+pub fn new_dot_importer() -> DotImporter
+
 pub fn[R] new_dot_resource_set_provider(() -> R) -> DotResourceSetProvider[R]
 
 pub fn[S, T] new_dot_transformation_data() -> DotTransformationData[S, T]
@@ -2472,6 +2474,30 @@ pub struct DotGraphvizModel {
   graphs : Array[DotGraph]
 }
 pub fn DotGraphvizModel::get_graphs(Self) -> Array[DotGraph]
+
+pub struct DotImporter {
+  mut node_id_map : Map[String, Int]
+  mut port_id_map : Map[String, Int]
+  node_statement_map : Map[Int, DotStatement]
+  edge_statement_map : Map[Int, DotEdgeStatement]
+  edge_statement_attached : Map[Int, Bool]
+  root_graph_map : Map[Int, DotGraph]
+}
+pub fn DotImporter::apply_layout_edge(Self, Int, KVector, DotGraph) -> Unit
+pub fn DotImporter::apply_layout_node(Self, Int, KVector, DotGraph) -> Unit
+pub fn DotImporter::transfer_layout(Self, DotTransformationData[DotGraphvizModel, Int]) -> Unit
+pub fn DotImporter::transform(Self, DotTransformationData[DotGraphvizModel, Int]) -> Unit
+pub fn DotImporter::transform_edge_statement(Self, DotEdgeStatement, Int, DotTransformationData[DotGraphvizModel, Int], DotImporterPropertyHolder) -> Unit
+pub fn DotImporter::transform_node_identifier(Self, String?, Int) -> Int
+pub fn DotImporter::transform_node_statement(Self, DotNodeStatement, Int, DotTransformationData[DotGraphvizModel, Int], DotImporterPropertyHolder) -> Unit
+pub fn DotImporter::transform_port_identifier(Self, String?, Int) -> Int
+pub fn DotImporter::transform_statements(Self, Array[DotStatement], Int, DotTransformationData[DotGraphvizModel, Int], DotImporterPropertyHolder, DotImporterPropertyHolder) -> Unit
+
+pub struct DotImporterPropertyHolder {
+  layout_options : Map[String, String]
+  mut def_width : Double?
+  mut def_height : Double?
+}
 
 pub struct DotNode {
   mut name : String?
