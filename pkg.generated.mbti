@@ -1052,6 +1052,10 @@ pub fn graphviz_dot_standalone_setup_do_setup() -> GraphvizDotInjector
 
 pub let graphviz_dot_status_error : Int
 
+pub let graphviz_layout_provider_pref_graphviz_reuse_process : String
+
+pub let graphviz_layout_provider_reuse_process_default : Bool
+
 pub fn graphviz_layouter_is_eclipse_running() -> Bool
 
 pub fn graphviz_layouter_plugin_get_default() -> GraphvizLayouterPlugin?
@@ -1059,6 +1063,8 @@ pub fn graphviz_layouter_plugin_get_default() -> GraphvizLayouterPlugin?
 pub let graphviz_layouter_plugin_id : String
 
 pub fn graphviz_layouter_plugin_reset_for_test() -> Unit
+
+pub fn graphviz_layouter_preference_initializer_initialize_default_preferences() -> Unit
 
 pub fn graphviz_layouter_preference_store_access_get_ui_save_boolean(String, Bool) -> Bool
 
@@ -1093,6 +1099,18 @@ pub let graphviz_option_maxiter : IProperty[Int]
 pub let graphviz_option_neato_model : IProperty[String]
 
 pub let graphviz_option_overlap_mode : IProperty[String]
+
+pub fn graphviz_tool_get_process_default_timeout() -> Int
+
+pub let graphviz_tool_pref_graphviz_executable : String
+
+pub let graphviz_tool_pref_timeout : String
+
+pub let graphviz_tool_process_min_timeout : Int
+
+pub fn graphviz_tool_reset_process_default_timeout_for_test() -> Unit
+
+pub fn graphviz_tool_set_process_default_timeout_for_test(Int) -> Unit
 
 pub fn greater_than(Double) -> ExclusiveLowerBound
 
