@@ -624,7 +624,11 @@ pub fn fnode_set_origin(Int, Int) -> Unit
 
 pub fn fnode_size(Int) -> KVector
 
+pub let force_algorithm_id : String
+
 pub let force_aspect_ratio : ForceDoubleOption
+
+pub let force_category_id : String
 
 pub let force_edge_labels_inline : ForceBoolOption
 
@@ -639,6 +643,8 @@ pub let force_internal_origin : ForceInternalNodeProperty
 pub let force_internal_random : ForceInternalRandomProperty
 
 pub let force_iterations : ForceIntOption
+
+pub fn force_layout_meta_data_providers() -> Array[ILayoutMetaDataProvider]
 
 pub fn force_layout_provider_as_layout_provider(ForceLayoutProvider) -> AbstractLayoutProvider
 
@@ -994,6 +1000,8 @@ pub fn new_force_internal_vector_property(String) -> ForceInternalVectorProperty
 
 pub fn new_force_layout_provider() -> ForceLayoutProvider
 
+pub fn new_force_meta_data_provider() -> ILayoutMetaDataProvider
+
 pub fn new_force_model_option(String, ForceModelStrategy) -> ForceModelOption
 
 pub fn new_force_padding_option(String, Spacing) -> ForcePaddingOption
@@ -1131,6 +1139,8 @@ pub fn new_spline_interpolator((Array[KVector]) -> BezierSpline) -> ISplineInter
 pub fn new_stress_layout_provider() -> StressLayoutProvider
 
 pub fn new_stress_majorization() -> StressMajorization
+
+pub fn new_stress_meta_data_provider() -> ILayoutMetaDataProvider
 
 pub fn new_successor_combination(IPolyominoSuccessor, IPolyominoSuccessor) -> IPolyominoSuccessor
 
@@ -1493,6 +1503,8 @@ pub let spore_debug_svg : IProperty[Bool]
 pub let spore_fuzziness : Double
 
 pub let spore_overlaps_existed : IProperty[Bool]
+
+pub let stress_algorithm_id : String
 
 pub let stress_desired_edge_length : ForceDoubleOption
 
