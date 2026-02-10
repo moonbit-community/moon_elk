@@ -62,6 +62,8 @@ pub fn boundl(Int64, Int64, Int64) -> Int64
 
 pub fn bowyer_watson_triangulate(Array[KVector], debug_output_file? : String?) -> Array[TEdge]
 
+pub fn cgroup_of() -> CGroupBuilder
+
 pub let child_area_height : IProperty[Double]
 
 pub let child_area_width : IProperty[Double]
@@ -71,6 +73,20 @@ pub let class_graph_element : String
 pub let class_node_element : String
 
 pub fn clip_vector(KVector, Double, Double) -> KVector
+
+pub fn cnode_of() -> CNodeBuilder
+
+pub fn compare_fuzzy_eq(Double, Double) -> Bool
+
+pub fn compare_fuzzy_ge(Double, Double) -> Bool
+
+pub fn compare_fuzzy_gt(Double, Double) -> Bool
+
+pub fn compare_fuzzy_le(Double, Double) -> Bool
+
+pub fn compare_fuzzy_lt(Double, Double) -> Bool
+
+pub let compare_fuzzy_tolerance : Double
 
 pub fn connectable_shape_to_node(ElkConnectableShape?) -> Int
 
@@ -121,6 +137,8 @@ pub fn create_port(Int?) -> Int
 pub fn create_simple_edge(Int, Int) -> Int
 
 pub fn cubic_spline_interpolator_as_spline_interpolator(CubicSplineInterpolator) -> ISplineInterpolator
+
+pub fn default_spacing_handler() -> ISpacingsHandler
 
 pub let direction : IProperty[String]
 
@@ -530,6 +548,8 @@ pub fn[P, G] layout_processor_configuration_create_from(LayoutProcessorConfigura
 
 pub fn less_than(Double) -> ExclusiveUpperBound
 
+pub fn longest_path_compaction(OneDimensionalCompactor) -> Unit
+
 pub fn make_edge_label_parent(Int) -> ElkLabelParent
 
 pub fn make_label_label_parent(Int) -> ElkLabelParent
@@ -581,6 +601,8 @@ pub fn new_bezier_curve(KVector, KVector, KVector, KVector) -> BezierCurve
 pub fn new_bezier_spline() -> BezierSpline
 
 pub fn new_binary_indexed_tree(Int) -> BinaryIndexedTree
+
+pub fn new_cgraph(Array[Direction]) -> CGraph
 
 pub fn new_components_processor() -> ComponentsProcessor
 
@@ -728,6 +750,8 @@ pub fn new_ngraph() -> NGraph
 
 pub fn new_null_elk_progress_monitor() -> IElkProgressMonitor
 
+pub fn new_one_dimensional_compactor(CGraph) -> OneDimensionalCompactor
+
 pub fn[P] new_phase_descriptor(Array[P], (P) -> Int) -> PhaseDescriptor[P]
 
 pub fn new_point(Double, Double) -> Point
@@ -747,6 +771,8 @@ pub fn new_recursive_graph_layout_engine() -> RecursiveGraphLayoutEngine
 pub fn new_spacing() -> Spacing
 
 pub fn new_spacing_values(Double, Double, Double, Double) -> Spacing
+
+pub fn new_spacings_handler((CNode, CNode) -> Double, (CNode, CNode) -> Double) -> ISpacingsHandler
 
 pub fn new_spline_interpolator((Array[KVector]) -> BezierSpline) -> ISplineInterpolator
 
@@ -902,6 +928,12 @@ pub fn node_x(Int) -> Double
 
 pub fn node_y(Int) -> Double
 
+pub fn one_dimensional_compactor_longest_path_compaction(OneDimensionalCompactor) -> Unit
+
+pub fn one_dimensional_compactor_quadratic_constraints(OneDimensionalCompactor) -> Unit
+
+pub fn one_dimensional_compactor_scanline_constraints(OneDimensionalCompactor) -> Unit
+
 pub fn overlap(ElkRectangle, ElkRectangle) -> Double
 
 pub let padding : IProperty[String]
@@ -970,9 +1002,13 @@ pub fn properties_skipping_nodes(Int, include_root? : Bool) -> Array[Int]
 
 pub fn quadrant_eq(Quadrant, Quadrant) -> Bool
 
+pub fn quadratic_constraint_calculation(OneDimensionalCompactor) -> Unit
+
 pub fn[A, B, C, D] quadruple_of(A, B, C, D) -> Quadruple[A, B, C, D]
 
 pub fn rectilinear_convex_hull_of(Array[Point]) -> RectilinearConvexHull
+
+pub fn reset_compaction_oned_model_for_test() -> Unit
 
 pub fn reset_force_graph_model_for_test() -> Unit
 
@@ -981,6 +1017,8 @@ pub fn reset_graph_model_for_test() -> Unit
 pub fn reset_network_simplex_model_for_test() -> Unit
 
 pub let resolved_algorithm : IProperty[String]
+
+pub fn scanline_constraint_calculation(OneDimensionalCompactor) -> Unit
 
 pub fn[T] scanline_execute(Array[T], (T, T) -> Int, Array[(T) -> Unit]) -> Unit
 
@@ -1195,6 +1233,91 @@ pub fn BinaryIndexedTree::is_empty(Self) -> Bool
 pub fn BinaryIndexedTree::rank(Self, Int) -> Int
 pub fn BinaryIndexedTree::remove_all(Self, Int) -> Unit
 pub fn BinaryIndexedTree::size(Self) -> Int
+
+pub struct CGraph {
+  c_nodes : Array[CNode]
+  c_groups : Array[CGroup]
+  supported_directions : Array[Direction]
+  predefined_horizontal_constraints : Array[(CNode, CNode)]
+  predefined_vertical_constraints : Array[(CNode, CNode)]
+}
+pub fn CGraph::add_predefined_horizontal_constraint(Self, CNode, CNode) -> Unit
+pub fn CGraph::add_predefined_vertical_constraint(Self, CNode, CNode) -> Unit
+pub fn CGraph::groups(Self) -> Array[CGroup]
+pub fn CGraph::nodes(Self) -> Array[CNode]
+pub fn CGraph::supports(Self, Direction) -> Bool
+
+pub struct CGroup {
+  handle : Int
+}
+pub fn CGroup::add_cnode(Self, CNode) -> Unit
+pub fn CGroup::add_delta(Self, Double) -> Unit
+pub fn CGroup::add_delta_normalized(Self, Double) -> Unit
+pub fn CGroup::add_incoming_constraint(Self, CNode) -> Bool
+pub fn CGroup::c_nodes(Self) -> Array[CNode]
+pub fn CGroup::clear_incoming_constraints(Self) -> Unit
+pub fn CGroup::delta(Self) -> Double
+pub fn CGroup::delta_normalized(Self) -> Double
+pub fn CGroup::id(Self) -> Int
+pub fn CGroup::incoming_constraints(Self) -> Array[CNode]
+pub fn CGroup::master(Self) -> CNode?
+pub fn CGroup::out_degree(Self) -> Int
+pub fn CGroup::out_degree_real(Self) -> Int
+pub fn CGroup::reference(Self) -> CNode?
+pub fn CGroup::remove_cnode(Self, CNode) -> Bool
+pub fn CGroup::set_id(Self, Int) -> Unit
+pub fn CGroup::set_master(Self, CNode) -> Unit
+pub fn CGroup::set_out_degree(Self, Int) -> Unit
+pub fn CGroup::set_out_degree_real(Self, Int) -> Unit
+pub fn CGroup::set_reference(Self, CNode?) -> Unit
+pub fn CGroup::set_start_pos(Self, Double) -> Unit
+pub fn CGroup::start_pos(Self) -> Double
+pub impl Eq for CGroup
+
+pub struct CGroupBuilder {
+  nodes : Array[CNode]
+  mut reference : CNode?
+  mut master : CNode?
+}
+pub fn CGroupBuilder::create(Self, CGraph) -> CGroup
+pub fn CGroupBuilder::master(Self, CNode) -> Self
+pub fn CGroupBuilder::nodes(Self, Array[CNode]) -> Self
+pub fn CGroupBuilder::reference(Self, CNode) -> Self
+
+pub struct CNode {
+  handle : Int
+}
+pub fn CNode::add_constraint(Self, Self) -> Unit
+pub fn CNode::c_group_offset(Self) -> KVector
+pub fn CNode::clear_constraints(Self) -> Unit
+pub fn CNode::constraints(Self) -> Array[Self]
+pub fn CNode::group(Self) -> CGroup?
+pub fn CNode::hitbox(Self) -> ElkRectangle
+pub fn CNode::hitbox_pre_compaction(Self) -> ElkRectangle?
+pub fn CNode::id(Self) -> Int
+pub fn CNode::replace_constraints(Self, Array[Self]) -> Unit
+pub fn CNode::set_c_group_offset(Self, KVector) -> Unit
+pub fn CNode::set_group(Self, CGroup?) -> Unit
+pub fn CNode::set_hitbox(Self, ElkRectangle) -> Unit
+pub fn CNode::set_hitbox_pre_compaction(Self, ElkRectangle?) -> Unit
+pub fn CNode::set_id(Self, Int) -> Unit
+pub fn CNode::set_start_pos(Self, Double) -> Unit
+pub fn CNode::start_pos(Self) -> Double
+pub impl Eq for CNode
+
+pub struct CNodeBuilder {
+  mut id : Int
+  mut origin : String?
+  mut node_type : String?
+  mut hitbox : ElkRectangle?
+  mut group_parent : CNode?
+}
+pub fn CNodeBuilder::create(Self, CGraph) -> CNode
+pub fn CNodeBuilder::group_with(Self, CNode) -> Self
+pub fn CNodeBuilder::hitbox(Self, ElkRectangle) -> Self
+pub fn CNodeBuilder::id(Self, Int) -> Self
+pub fn CNodeBuilder::node_type(Self, String) -> Self
+pub fn CNodeBuilder::origin(Self, String) -> Self
 
 pub struct ComponentsProcessor {
   _dummy : Unit
@@ -1650,6 +1773,11 @@ pub struct IProperty[T] {
 pub fn[T] IProperty::get_default(Self[T]) -> T
 pub fn[T] IProperty::get_id(Self[T]) -> String
 
+pub struct ISpacingsHandler {
+  get_horizontal_spacing : (CNode, CNode) -> Double
+  get_vertical_spacing : (CNode, CNode) -> Double
+}
+
 pub struct ISplineInterpolator {
   interpolate_points_fn : (Array[KVector]) -> BezierSpline
 }
@@ -2031,6 +2159,27 @@ pub enum NodeLabelPlacement {
   NodeLabelHPriority
 }
 
+pub struct OneDimensionalCompactor {
+  c_graph : CGraph
+  mut lock_fun : ((CNode, Direction) -> Bool)?
+  mut spacings_handler : ISpacingsHandler
+  mut direction : Direction
+  mut finished : Bool
+  mut compaction_algorithm : (OneDimensionalCompactor) -> Unit
+  mut constraint_algorithm : (OneDimensionalCompactor) -> Unit
+}
+pub fn OneDimensionalCompactor::calculate_group_offsets(Self) -> Self
+pub fn OneDimensionalCompactor::change_direction(Self, Direction) -> Self
+pub fn OneDimensionalCompactor::compact(Self) -> Self
+pub fn OneDimensionalCompactor::finish(Self) -> Self
+pub fn OneDimensionalCompactor::force_constraints_recalculation(Self) -> Self
+pub fn OneDimensionalCompactor::is_locked_group(Self, CGroup, Direction) -> Bool
+pub fn OneDimensionalCompactor::is_locked_node(Self, CNode, Direction) -> Bool
+pub fn OneDimensionalCompactor::set_compaction_algorithm(Self, (Self) -> Unit) -> Self
+pub fn OneDimensionalCompactor::set_constraint_algorithm(Self, (Self) -> Unit) -> Self
+pub fn OneDimensionalCompactor::set_lock_function(Self, ((CNode, Direction) -> Bool)?) -> Self
+pub fn OneDimensionalCompactor::set_spacings_handler(Self, ISpacingsHandler) -> Self
+
 pub struct Pair[F, S] {
   mut first : F?
   mut second : S?
@@ -2374,7 +2523,13 @@ pub type GraphIssueSeverity = Int
 
 pub type GraphValidationFunction = (Int) -> Array[GraphIssue]
 
+pub type ICompactionAlgorithm = (OneDimensionalCompactor) -> Unit
+
+pub type IConstraintCalculationAlgorithm = (OneDimensionalCompactor) -> Unit
+
 pub type ICostFunction = (TEdge) -> Double
+
+pub type ILockFunction = (CNode, Direction) -> Bool
 
 pub type LayoutConfiguratorElementClass = String
 

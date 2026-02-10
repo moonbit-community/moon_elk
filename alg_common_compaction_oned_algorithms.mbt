@@ -1,0 +1,401 @@
+///|
+priv struct ScanlineTimestamp {
+  node : CNode
+  low : Bool
+}
+
+///|
+fn scanline_center_x(node : CNode) -> Double {
+  let hitbox = node.hitbox()
+  hitbox.x + hitbox.width / 2.0
+}
+
+///|
+fn scanline_interval_floor(intervals : Array[CNode], node : CNode) -> CNode? {
+  let key = scanline_center_x(node)
+  let mut result : CNode? = None
+  for current in intervals {
+    let current_key = scanline_center_x(current)
+    if current_key < key || compare_fuzzy_eq(current_key, key) {
+      result = Some(current)
+    } else {
+      break
+    }
+  }
+  result
+}
+
+///|
+fn scanline_interval_ceiling(intervals : Array[CNode], node : CNode) -> CNode? {
+  let key = scanline_center_x(node)
+  for current in intervals {
+    let current_key = scanline_center_x(current)
+    if current_key > key || compare_fuzzy_eq(current_key, key) {
+      return Some(current)
+    }
+  }
+  None
+}
+
+///|
+fn scanline_interval_lower(intervals : Array[CNode], node : CNode) -> CNode? {
+  let key = scanline_center_x(node)
+  let mut result : CNode? = None
+  for current in intervals {
+    let current_key = scanline_center_x(current)
+    if current_key < key && !compare_fuzzy_eq(current_key, key) {
+      result = Some(current)
+    } else {
+      break
+    }
+  }
+  result
+}
+
+///|
+fn scanline_interval_higher(intervals : Array[CNode], node : CNode) -> CNode? {
+  let key = scanline_center_x(node)
+  for current in intervals {
+    let current_key = scanline_center_x(current)
+    if current_key > key && !compare_fuzzy_eq(current_key, key) {
+      return Some(current)
+    }
+  }
+  None
+}
+
+///|
+fn scanline_interval_insert(intervals : Array[CNode], node : CNode) -> Bool {
+  let key = scanline_center_x(node)
+  let mut insert_index = intervals.length()
+  for i in 0..<intervals.length() {
+    let current_key = scanline_center_x(intervals[i])
+    if compare_fuzzy_eq(current_key, key) {
+      return false
+    }
+    if current_key > key {
+      insert_index = i
+      break
+    }
+  }
+
+  intervals.push(node)
+  let mut i = intervals.length() - 1
+  while i > insert_index {
+    intervals[i] = intervals[i - 1]
+    i = i - 1
+  }
+  intervals[insert_index] = node
+  true
+}
+
+///|
+fn scanline_overlap(n1 : CNode?, n2 : CNode?) -> Bool {
+  match (n1, n2) {
+    (Some(left), Some(right)) => {
+      if left == right {
+        return false
+      }
+      let left_hitbox = left.hitbox()
+      let right_hitbox = right.hitbox()
+      compare_fuzzy_le(left_hitbox.x, right_hitbox.x + right_hitbox.width) &&
+      compare_fuzzy_le(right_hitbox.x, left_hitbox.x + left_hitbox.width)
+    }
+    _ => false
+  }
+}
+
+///|
+fn scanline_timestamp_comparator(
+  left : ScanlineTimestamp,
+  right : ScanlineTimestamp,
+) -> Int {
+  let left_hitbox = left.node.hitbox()
+  let right_hitbox = right.node.hitbox()
+
+  let mut y1 = left_hitbox.y
+  if !left.low {
+    y1 = y1 + left_hitbox.height
+  }
+  let mut y2 = right_hitbox.y
+  if !right.low {
+    y2 = y2 + right_hitbox.height
+  }
+
+  if y1 < y2 {
+    return -1
+  }
+  if y1 > y2 {
+    return 1
+  }
+
+  if !left.low && right.low {
+    return -1
+  }
+  if left.low && !right.low {
+    return 1
+  }
+
+  0
+}
+
+///|
+pub fn quadratic_constraint_calculation(
+  compactor : OneDimensionalCompactor,
+) -> Unit {
+  for cnode in compactor.c_graph.c_nodes {
+    cnode.clear_constraints()
+  }
+
+  for cnode1 in compactor.c_graph.c_nodes {
+    for cnode2 in compactor.c_graph.c_nodes {
+      if cnode1 == cnode2 {
+        continue
+      }
+
+      match (cnode1.group(), cnode2.group()) {
+        (Some(group1), Some(group2)) => if group1 == group2 { continue }
+        _ => ()
+      }
+
+      let spacing = if compactor.direction.is_horizontal() {
+        (compactor.spacings_handler.get_vertical_spacing)(cnode1, cnode2)
+      } else {
+        (compactor.spacings_handler.get_horizontal_spacing)(cnode1, cnode2)
+      }
+
+      let hitbox1 = cnode1.hitbox()
+      let hitbox2 = cnode2.hitbox()
+
+      if (
+          hitbox2.x > hitbox1.x ||
+          (
+            compare_fuzzy_eq(hitbox1.x, hitbox2.x) &&
+            hitbox1.width < hitbox2.width
+          )
+        ) &&
+        compare_fuzzy_gt(hitbox2.y + hitbox2.height + spacing, hitbox1.y) &&
+        compare_fuzzy_lt(hitbox2.y, hitbox1.y + hitbox1.height + spacing) {
+        cnode1.add_constraint(cnode2)
+      }
+    }
+  }
+}
+
+///|
+fn scanline_constraints_sweep(
+  compactor : OneDimensionalCompactor,
+  filter_fun : (CNode) -> Bool,
+) -> Unit {
+  let points : Array[ScanlineTimestamp] = []
+  for node in compactor.c_graph.c_nodes {
+    if filter_fun(node) {
+      points.push({ node, low: true })
+      points.push({ node, low: false })
+    }
+  }
+
+  let intervals : Array[CNode] = []
+  let candidate : Array[CNode?] = []
+  for _ in 0..<compactor.c_graph.c_nodes.length() {
+    candidate.push(None)
+  }
+
+  let mut index = 0
+  for node in compactor.c_graph.c_nodes {
+    node.set_id(index)
+    index = index + 1
+  }
+
+  scanline_execute_single(points, scanline_timestamp_comparator, point => {
+    if point.low {
+      let success = scanline_interval_insert(intervals, point.node)
+      if !success {
+        abort("Invalid hitboxes for scanline constraint calculation.")
+      }
+
+      ignore(
+        scanline_overlap(
+          Some(point.node),
+          scanline_interval_floor(intervals, point.node),
+        ),
+      )
+      ignore(
+        scanline_overlap(
+          Some(point.node),
+          scanline_interval_ceiling(intervals, point.node),
+        ),
+      )
+
+      candidate[point.node.id()] = scanline_interval_lower(
+        intervals,
+        point.node,
+      )
+
+      match scanline_interval_higher(intervals, point.node) {
+        Some(right) => candidate[right.id()] = Some(point.node)
+        None => ()
+      }
+    } else {
+      let left = scanline_interval_lower(intervals, point.node)
+      match left {
+        Some(left_node) =>
+          match candidate[point.node.id()] {
+            Some(cand) =>
+              if cand == left_node {
+                match (left_node.group(), point.node.group()) {
+                  (Some(left_group), Some(current_group)) =>
+                    if left_group != current_group {
+                      left_node.add_constraint(point.node)
+                    }
+                  _ => ()
+                }
+              }
+            None => ()
+          }
+        None => ()
+      }
+
+      let right = scanline_interval_higher(intervals, point.node)
+      match right {
+        Some(right_node) =>
+          match candidate[right_node.id()] {
+            Some(cand) =>
+              if cand == point.node {
+                match (right_node.group(), point.node.group()) {
+                  (Some(right_group), Some(current_group)) =>
+                    if right_group != current_group {
+                      point.node.add_constraint(right_node)
+                    }
+                  _ => ()
+                }
+              }
+            None => ()
+          }
+        None => ()
+      }
+
+      ignore(array_remove_first(intervals, point.node))
+    }
+  })
+}
+
+///|
+pub fn scanline_constraint_calculation(
+  compactor : OneDimensionalCompactor,
+) -> Unit {
+  scanline_constraints_sweep(compactor, _ => true)
+}
+
+///|
+pub fn longest_path_compaction(compactor : OneDimensionalCompactor) -> Unit {
+  let mut min_start_pos = @double.infinity
+  for cnode in compactor.c_graph.c_nodes {
+    let group = match cnode.group() {
+      Some(value) => value
+      None => abort("CNode without CGroup in compaction")
+    }
+
+    let reference = match group.reference() {
+      Some(value) => value
+      None => abort("CGroup without reference node in compaction")
+    }
+
+    let reference_hitbox = reference.hitbox()
+    let candidate = reference_hitbox.x + cnode.c_group_offset().x
+    if candidate < min_start_pos {
+      min_start_pos = candidate
+    }
+  }
+
+  let sinks : Array[CGroup] = []
+  for group in compactor.c_graph.c_groups {
+    group.set_start_pos(min_start_pos)
+    if group.out_degree() == 0 {
+      sinks.push(group)
+    }
+  }
+
+  while !sinks.is_empty() {
+    let group = sinks[0]
+    ignore(sinks.remove(0))
+
+    let reference = match group.reference() {
+      Some(value) => value
+      None => abort("CGroup without reference node in compaction")
+    }
+
+    let mut diff = reference.hitbox().x
+
+    for node in group.c_nodes() {
+      let suggested_x = group.start_pos() + node.c_group_offset().x
+      if !compactor.is_locked_group(group, compactor.direction) ||
+        node.hitbox().x < suggested_x {
+        node.set_start_pos(suggested_x)
+      } else {
+        node.set_start_pos(node.hitbox().x)
+      }
+    }
+
+    diff = diff - reference.start_pos()
+
+    group.add_delta(diff)
+    if direction_eq(compactor.direction, Rightward) ||
+      direction_eq(compactor.direction, Downward) {
+      group.add_delta_normalized(diff)
+    } else {
+      group.add_delta_normalized(-diff)
+    }
+
+    for node in group.c_nodes() {
+      for inc_node in node.constraints() {
+        let spacing = if compactor.direction.is_horizontal() {
+          (compactor.spacings_handler.get_horizontal_spacing)(node, inc_node)
+        } else {
+          (compactor.spacings_handler.get_vertical_spacing)(node, inc_node)
+        }
+
+        let inc_group = match inc_node.group() {
+          Some(value) => value
+          None => abort("Constraint target node without group")
+        }
+
+        let suggested = node.start_pos() +
+          node.hitbox().width +
+          spacing -
+          inc_node.c_group_offset().x
+        if suggested > inc_group.start_pos() {
+          inc_group.set_start_pos(suggested)
+        }
+
+        if compactor.is_locked_node(inc_node, compactor.direction) {
+          let locked_candidate = inc_node.hitbox().x -
+            inc_node.c_group_offset().x
+          if locked_candidate > inc_group.start_pos() {
+            inc_group.set_start_pos(locked_candidate)
+          }
+        }
+
+        inc_group.set_out_degree(inc_group.out_degree() - 1)
+        if inc_group.out_degree() == 0 {
+          sinks.push(inc_group)
+        }
+      }
+    }
+  }
+
+  for cnode in compactor.c_graph.c_nodes {
+    let hitbox = cnode.hitbox()
+    hitbox.x = cnode.start_pos()
+    cnode.set_hitbox(hitbox)
+  }
+}
+
+///|
+pub let one_dimensional_compactor_longest_path_compaction : ICompactionAlgorithm = longest_path_compaction
+
+///|
+pub let one_dimensional_compactor_scanline_constraints : IConstraintCalculationAlgorithm = scanline_constraint_calculation
+
+///|
+pub let one_dimensional_compactor_quadratic_constraints : IConstraintCalculationAlgorithm = quadratic_constraint_calculation
