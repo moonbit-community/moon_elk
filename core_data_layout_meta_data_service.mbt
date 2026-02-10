@@ -59,12 +59,12 @@ pub fn layout_meta_data_service_get_algorithm_data_by_suffix(
   }
   let mut duplicate = false
   let mut result : LayoutAlgorithmData? = None
-  layout_algorithm_data_store.val.each((id, data) => if has_matching_suffix(
-      id, suffix,
-    ) {
-    match result {
-      None => result = Some(data)
-      Some(_) => duplicate = true
+  layout_algorithm_data_store.val.each((id, data) => {
+    if has_matching_suffix(id, suffix) {
+      match result {
+        None => result = Some(data)
+        Some(_) => duplicate = true
+      }
     }
   })
   if duplicate {
@@ -115,17 +115,21 @@ fn layout_meta_data_service_add_option_support(
 ///|
 fn layout_meta_data_service_registry() -> LayoutMetaDataRegistry {
   new_layout_meta_data_registry(
-    algorithm_data => layout_meta_data_service_register_algorithm(
-      algorithm_data,
-    ),
+    algorithm_data => {
+      layout_meta_data_service_register_algorithm(algorithm_data)
+    },
     option_data => layout_meta_data_service_register_option(option_data),
     category_data => layout_meta_data_service_register_category(category_data),
-    (source_option, target_option, required_value) => layout_meta_data_service_add_dependency(
-      source_option, target_option, required_value,
-    ),
-    (algorithm_id, option_id, default_value) => layout_meta_data_service_add_option_support(
-      algorithm_id, option_id, default_value,
-    ),
+    (source_option, target_option, required_value) => {
+      layout_meta_data_service_add_dependency(
+        source_option, target_option, required_value,
+      )
+    },
+    (algorithm_id, option_id, default_value) => {
+      layout_meta_data_service_add_option_support(
+        algorithm_id, option_id, default_value,
+      )
+    },
   )
 }
 
@@ -174,12 +178,12 @@ pub fn layout_meta_data_service_get_option_data_by_suffix(
   }
   let mut duplicate = false
   let mut result : LayoutOptionData? = None
-  layout_option_data_store.val.each((id, data) => if has_matching_suffix(
-      id, suffix,
-    ) {
-    match result {
-      None => result = Some(data)
-      Some(_) => duplicate = true
+  layout_option_data_store.val.each((id, data) => {
+    if has_matching_suffix(id, suffix) {
+      match result {
+        None => result = Some(data)
+        Some(_) => duplicate = true
+      }
     }
   })
   if duplicate {
@@ -254,6 +258,13 @@ pub fn layout_meta_data_service_register_default_algorithms() -> Unit {
     aspect_ratio.get_id(),
   ])
   register_default_algorithm_with_known_option_ids("org.eclipse.elk.layered", [])
+  register_default_algorithm_with_known_option_ids("org.eclipse.elk.mrtree", [
+    padding.get_id(),
+    spacing_node_node.get_id(),
+    aspect_ratio.get_id(),
+    priority.get_id(),
+    mrtree_separate_connected_components.get_id(),
+  ])
 }
 
 ///|

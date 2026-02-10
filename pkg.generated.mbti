@@ -1390,6 +1390,108 @@ pub fn mini(Array[Int]) -> Int
 
 pub fn minl(Array[Int64]) -> Int64
 
+pub let mrtree_algorithm_id : String
+
+pub let mrtree_aspect_ratio : IProperty[Double]
+
+pub let mrtree_compaction : IProperty[Bool]
+
+pub fn mrtree_edge_bend_points(Int) -> KVectorChain
+
+pub let mrtree_edge_end_texture_length : IProperty[Double]
+
+pub fn mrtree_edge_origin(Int) -> Int?
+
+pub fn mrtree_edge_set_origin(Int, Int?) -> Unit
+
+pub fn mrtree_edge_source(Int) -> Int
+
+pub fn mrtree_edge_target(Int) -> Int
+
+pub fn mrtree_graph_add_existing_edge(Int, Int) -> Unit
+
+pub fn mrtree_graph_add_existing_node(Int, Int) -> Unit
+
+pub fn mrtree_graph_aspect_ratio(Int) -> Double
+
+pub fn mrtree_graph_bb_low_right(Int) -> KVector
+
+pub fn mrtree_graph_bb_up_left(Int) -> KVector
+
+pub fn mrtree_graph_copy_properties(Int, Int) -> Unit
+
+pub fn mrtree_graph_copy_properties_from_elk(Int, Int) -> Unit
+
+pub fn mrtree_graph_edges(Int) -> Array[Int]
+
+pub fn mrtree_graph_graph_xmax(Int) -> Double
+
+pub fn mrtree_graph_graph_xmin(Int) -> Double
+
+pub fn mrtree_graph_graph_ymax(Int) -> Double
+
+pub fn mrtree_graph_graph_ymin(Int) -> Double
+
+pub fn mrtree_graph_nodes(Int) -> Array[Int]
+
+pub fn mrtree_graph_origin(Int) -> Int?
+
+pub fn mrtree_graph_padding(Int) -> Spacing
+
+pub fn mrtree_graph_priority(Int) -> Int
+
+pub fn mrtree_graph_separate_connected_components(Int) -> Bool
+
+pub fn mrtree_graph_set_bb_low_right(Int, KVector) -> Unit
+
+pub fn mrtree_graph_set_bb_up_left(Int, KVector) -> Unit
+
+pub fn mrtree_graph_set_graph_xmax(Int, Double) -> Unit
+
+pub fn mrtree_graph_set_graph_xmin(Int, Double) -> Unit
+
+pub fn mrtree_graph_set_graph_ymax(Int, Double) -> Unit
+
+pub fn mrtree_graph_set_graph_ymin(Int, Double) -> Unit
+
+pub fn mrtree_graph_set_priority(Int, Int) -> Unit
+
+pub fn mrtree_graph_spacing_node_node(Int) -> Double
+
+pub fn mrtree_node_copy_properties_from_elk(Int, Int) -> Unit
+
+pub fn mrtree_node_graph(Int) -> Int
+
+pub fn mrtree_node_id(Int) -> Int
+
+pub fn mrtree_node_incoming_edges(Int) -> Array[Int]
+
+pub fn mrtree_node_origin(Int) -> Int?
+
+pub fn mrtree_node_outgoing_edges(Int) -> Array[Int]
+
+pub fn mrtree_node_position(Int) -> KVector
+
+pub fn mrtree_node_priority(Int) -> Int
+
+pub fn mrtree_node_set_id(Int, Int) -> Unit
+
+pub fn mrtree_node_size(Int) -> KVector
+
+pub let mrtree_omit_node_micro_layout : IProperty[Bool]
+
+pub let mrtree_padding : IProperty[String]
+
+pub let mrtree_position_constraint : IProperty[Int]
+
+pub let mrtree_priority : IProperty[Double]
+
+pub let mrtree_separate_connected_components : IProperty[Bool]
+
+pub let mrtree_spacing_node_node : IProperty[Double]
+
+pub let mrtree_tree_level : IProperty[Int]
+
 pub fn naive_minst_create_spanning_tree(Array[TEdge], KVector, (TEdge) -> Double, debug_output_file? : String?) -> Tree[KVector]
 
 pub fn neato_model_literal(NeatoModel) -> String
@@ -1750,6 +1852,20 @@ pub fn new_libavoid_server_pool() -> LibavoidServerPool
 
 pub fn new_logged_graph(String, LoggedGraphType) -> LoggedGraph
 
+pub fn new_mrtree() -> Mrtree
+
+pub fn new_mrtree_components_processor() -> MrtreeComponentsProcessor
+
+pub fn new_mrtree_edge(Int, Int) -> Int
+
+pub fn new_mrtree_elk_graph_importer() -> MrtreeElkGraphImporter
+
+pub fn new_mrtree_graph() -> Int
+
+pub fn new_mrtree_node(Int, Int, label? : String) -> Int
+
+pub fn new_mrtree_tree_layout_provider() -> MrtreeTreeLayoutProvider
+
 pub fn new_ngraph() -> NGraph
 
 pub fn new_node(KVector, ElkRectangle) -> Node
@@ -2089,6 +2205,8 @@ pub fn reset_compaction_oned_model_for_test() -> Unit
 pub fn reset_force_graph_model_for_test() -> Unit
 
 pub fn reset_graph_model_for_test() -> Unit
+
+pub fn reset_mrtree_graph_model_for_test() -> Unit
 
 pub fn reset_network_simplex_model_for_test() -> Unit
 
@@ -4301,6 +4419,29 @@ pub fn[T] Maybe::is_empty(Self[T]) -> Bool
 pub fn[T] Maybe::set(Self[T], T?) -> Unit
 pub fn[T : Show] Maybe::to_string(Self[T]) -> String
 
+pub struct Mrtree {
+  marker : Int
+}
+pub fn Mrtree::do_layout(Self, Int, IElkProgressMonitor) -> Int
+
+pub struct MrtreeComponentsProcessor {
+  marker : Int
+}
+pub fn MrtreeComponentsProcessor::pack(Self, Array[Int]) -> Int
+pub fn MrtreeComponentsProcessor::split(Self, Int) -> Array[Int]
+
+pub struct MrtreeElkGraphImporter {
+  marker : Int
+}
+pub fn MrtreeElkGraphImporter::apply_layout(Self, Int) -> Unit
+pub fn MrtreeElkGraphImporter::import_graph(Self, Int) -> Int
+
+pub struct MrtreeTreeLayoutProvider {
+  tree : Mrtree
+  components_processor : MrtreeComponentsProcessor
+}
+pub fn MrtreeTreeLayoutProvider::layout(Self, Int, IElkProgressMonitor) -> Unit
+
 pub struct NEdge {
   handle : Int
 }
@@ -4986,6 +5127,12 @@ pub type IOverlapHandler = (Node, Node) -> Unit
 pub type LayoutConfiguratorElementClass = String
 
 pub type LayoutConfiguratorFilter = (Int, IProperty[Double]) -> Bool
+
+pub type MrtreeEdge = Int
+
+pub type MrtreeGraph = Int
+
+pub type MrtreeNode = Int
 
 pub type ScanlineEventHandler[T] = (T) -> Unit
 

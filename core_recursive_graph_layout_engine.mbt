@@ -51,13 +51,16 @@ fn ensure_edge_section_for_edge(edge : ElkEdge) -> Unit {
 }
 
 ///|
-fn layout_node_recursively(node : ElkNode) -> Unit {
+fn layout_node_recursively(
+  node : ElkNode,
+  progress_monitor : IElkProgressMonitor,
+) -> Unit {
   if node_get_bool_property(node, no_layout) {
     return
   }
   let children = node_children(node)
   for child in children {
-    layout_node_recursively(child)
+    layout_node_recursively(child, progress_monitor)
   }
   if children.is_empty() {
     return
@@ -68,6 +71,11 @@ fn layout_node_recursively(node : ElkNode) -> Unit {
   }
   if layout_meta_data_service_get_algorithm_data_by_suffix(resolved) is None {
     abort("Resolved algorithm is unknown")
+  }
+  if resolved == mrtree_algorithm_id {
+    let provider = new_mrtree_tree_layout_provider()
+    provider.layout(node, progress_monitor)
+    return
   }
   let mut rightmost = 0.0
   let mut max_height = 0.0
@@ -108,6 +116,6 @@ pub fn RecursiveGraphLayoutEngine::layout(
     let resolver = new_layout_algorithm_resolver()
     apply_visitors(layout_graph, [resolver.to_visitor()])
   }
-  layout_node_recursively(layout_graph)
+  layout_node_recursively(layout_graph, progress_monitor)
   progress_monitor.done()
 }
