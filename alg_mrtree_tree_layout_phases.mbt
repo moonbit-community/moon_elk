@@ -30,23 +30,6 @@ pub let mrtree_tree_layout_phase_descriptor : PhaseDescriptor[
 )
 
 ///|
-fn mrtree_node_orderer_noop_process(
-  graph : MrtreeGraph,
-  progress_monitor : IElkProgressMonitor?,
-) -> Unit {
-  ignore(graph)
-  ignore(progress_monitor)
-}
-
-///|
-pub fn new_mrtree_node_orderer_layout_phase() -> ILayoutProcessor[
-  MrtreeTreeLayoutPhases,
-  MrtreeGraph,
-] {
-  new_layout_phase(mrtree_node_orderer_noop_process, _ => None)
-}
-
-///|
 fn mrtree_node_placer_process(
   graph : MrtreeGraph,
   progress_monitor : IElkProgressMonitor?,

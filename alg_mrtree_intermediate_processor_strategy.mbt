@@ -60,6 +60,14 @@ pub fn mrtree_intermediate_processor_factory(
       new_layout_processor_factory(id, order, () => {
         new_mrtree_root_processor_layout_processor()
       })
+    FanProc =>
+      new_layout_processor_factory(id, order, () => {
+        new_mrtree_fan_processor_layout_processor()
+      })
+    LevelProc =>
+      new_layout_processor_factory(id, order, () => {
+        new_mrtree_level_processor_layout_processor()
+      })
     DetreeifyingProc =>
       new_layout_processor_factory(id, order, () => {
         new_mrtree_untreeifyer_layout_processor()

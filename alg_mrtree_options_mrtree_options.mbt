@@ -12,6 +12,11 @@ pub let mrtree_compaction : IProperty[Bool] = new_property(
 )
 
 ///|
+pub let mrtree_weighting : IProperty[String] = new_property(
+  "org.eclipse.elk.mrtree.weighting", "MODEL_ORDER",
+)
+
+///|
 pub let mrtree_search_order : IProperty[String] = new_property(
   "org.eclipse.elk.mrtree.searchOrder", "DFS",
 )
@@ -27,8 +32,8 @@ pub let mrtree_tree_level : IProperty[Int] = new_property(
 )
 
 ///|
-pub let mrtree_position_constraint : IProperty[Int] = new_property(
-  "org.eclipse.elk.mrtree.positionConstraint", -1,
+pub let mrtree_position_constraint : IProperty[Double] = new_property(
+  "org.eclipse.elk.mrtree.positionConstraint", -1.0,
 )
 
 ///|

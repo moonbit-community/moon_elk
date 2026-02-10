@@ -13,6 +13,8 @@ priv struct MrtreeGraphData {
   edges : Array[MrtreeEdge]
   mut origin : ElkNode?
   mut separate_connected_components : Bool
+  mut direction : String
+  mut weighting : String
   mut search_order : String
   mut removable_edges : Array[MrtreeEdge]
   mut spacing_node_node : Double
@@ -38,6 +40,17 @@ priv struct MrtreeNodeData {
   mut incoming_edges : Array[MrtreeEdge]
   mut origin : ElkNode?
   mut priority : Int
+  mut tree_level : Int
+  mut position_constraint : Int
+  mut fan : Int
+  mut descendants : Int
+  mut internal_id : String
+  mut position_in_level : Int
+  mut level_height : Double
+  mut left_neighbor : MrtreeNode?
+  mut right_neighbor : MrtreeNode?
+  mut left_sibling : MrtreeNode?
+  mut right_sibling : MrtreeNode?
   mut root : Bool
   mut dummy : Bool
 }
@@ -120,6 +133,8 @@ pub fn new_mrtree_graph() -> MrtreeGraph {
     edges: [],
     origin: None,
     separate_connected_components: true,
+    direction: "",
+    weighting: "MODEL_ORDER",
     search_order: "DFS",
     removable_edges: [],
     spacing_node_node: 20.0,
@@ -154,6 +169,17 @@ pub fn new_mrtree_node(
     incoming_edges: [],
     origin: None,
     priority: 1,
+    tree_level: 0,
+    position_constraint: -1,
+    fan: 0,
+    descendants: 1,
+    internal_id: "",
+    position_in_level: 0,
+    level_height: 0.0,
+    left_neighbor: None,
+    right_neighbor: None,
+    left_sibling: None,
+    right_sibling: None,
     root: false,
     dummy: false,
   })
@@ -198,6 +224,8 @@ pub fn mrtree_graph_copy_properties(
   let source_data = mrtree_graph_store.val[source]
   target_data.origin = source_data.origin
   target_data.separate_connected_components = source_data.separate_connected_components
+  target_data.direction = source_data.direction
+  target_data.weighting = source_data.weighting
   target_data.search_order = source_data.search_order
   target_data.removable_edges = source_data.removable_edges.copy()
   target_data.spacing_node_node = source_data.spacing_node_node
@@ -224,6 +252,8 @@ pub fn mrtree_graph_copy_properties_from_elk(
   graph_data.separate_connected_components = node_get_bool_property(
     elk_graph, mrtree_separate_connected_components,
   )
+  graph_data.direction = node_get_string_property(elk_graph, direction)
+  graph_data.weighting = node_get_string_property(elk_graph, mrtree_weighting)
   graph_data.search_order = node_get_string_property(
     elk_graph, mrtree_search_order,
   )
@@ -254,6 +284,9 @@ pub fn mrtree_node_copy_properties_from_elk(
   let node_data = mrtree_node_store.val[node]
   node_data.origin = Some(elk_node)
   node_data.priority = node_get_double_property(elk_node, mrtree_priority).to_int()
+  node_data.position_constraint = node_get_double_property(
+    elk_node, mrtree_position_constraint,
+  ).to_int()
   set_mrtree_node_data(node, node_data)
 }
 
@@ -362,6 +395,17 @@ pub fn mrtree_node_incoming_edges(node : MrtreeNode) -> Array[MrtreeEdge] {
 }
 
 ///|
+pub fn mrtree_node_set_outgoing_edges(
+  node : MrtreeNode,
+  edges : Array[MrtreeEdge],
+) -> Unit {
+  checked_mrtree_node(node)
+  let node_data = mrtree_node_store.val[node]
+  node_data.outgoing_edges = edges.copy()
+  set_mrtree_node_data(node, node_data)
+}
+
+///|
 pub fn mrtree_node_add_outgoing_edge_unique(
   node : MrtreeNode,
   edge : MrtreeEdge,
@@ -426,9 +470,202 @@ pub fn mrtree_node_remove_incoming_edge(
 }
 
 ///|
+pub fn mrtree_node_children_copy(node : MrtreeNode) -> Array[MrtreeNode] {
+  checked_mrtree_node(node)
+  let children = []
+  for edge in mrtree_node_store.val[node].outgoing_edges {
+    children.push(mrtree_edge_target(edge))
+  }
+  children
+}
+
+///|
+pub fn mrtree_node_parent(node : MrtreeNode) -> MrtreeNode? {
+  checked_mrtree_node(node)
+  let incoming = mrtree_node_store.val[node].incoming_edges
+  if incoming.is_empty() {
+    None
+  } else {
+    Some(mrtree_edge_source(incoming[0]))
+  }
+}
+
+///|
 pub fn mrtree_node_priority(node : MrtreeNode) -> Int {
   checked_mrtree_node(node)
   mrtree_node_store.val[node].priority
+}
+
+///|
+pub fn mrtree_node_set_tree_level(node : MrtreeNode, value : Int) -> Unit {
+  checked_mrtree_node(node)
+  let node_data = mrtree_node_store.val[node]
+  node_data.tree_level = value
+  set_mrtree_node_data(node, node_data)
+}
+
+///|
+pub fn mrtree_node_tree_level(node : MrtreeNode) -> Int {
+  checked_mrtree_node(node)
+  mrtree_node_store.val[node].tree_level
+}
+
+///|
+pub fn mrtree_node_set_fan(node : MrtreeNode, value : Int) -> Unit {
+  checked_mrtree_node(node)
+  let node_data = mrtree_node_store.val[node]
+  node_data.fan = value
+  set_mrtree_node_data(node, node_data)
+}
+
+///|
+pub fn mrtree_node_fan(node : MrtreeNode) -> Int {
+  checked_mrtree_node(node)
+  mrtree_node_store.val[node].fan
+}
+
+///|
+pub fn mrtree_node_set_descendants(node : MrtreeNode, value : Int) -> Unit {
+  checked_mrtree_node(node)
+  let node_data = mrtree_node_store.val[node]
+  node_data.descendants = value
+  set_mrtree_node_data(node, node_data)
+}
+
+///|
+pub fn mrtree_node_descendants(node : MrtreeNode) -> Int {
+  checked_mrtree_node(node)
+  mrtree_node_store.val[node].descendants
+}
+
+///|
+pub fn mrtree_node_set_internal_id(node : MrtreeNode, value : String) -> Unit {
+  checked_mrtree_node(node)
+  let node_data = mrtree_node_store.val[node]
+  node_data.internal_id = value
+  set_mrtree_node_data(node, node_data)
+}
+
+///|
+pub fn mrtree_node_internal_id(node : MrtreeNode) -> String {
+  checked_mrtree_node(node)
+  mrtree_node_store.val[node].internal_id
+}
+
+///|
+pub fn mrtree_node_set_position_in_level(
+  node : MrtreeNode,
+  value : Int,
+) -> Unit {
+  checked_mrtree_node(node)
+  let node_data = mrtree_node_store.val[node]
+  node_data.position_in_level = value
+  set_mrtree_node_data(node, node_data)
+}
+
+///|
+pub fn mrtree_node_position_in_level(node : MrtreeNode) -> Int {
+  checked_mrtree_node(node)
+  mrtree_node_store.val[node].position_in_level
+}
+
+///|
+pub fn mrtree_node_position_constraint(node : MrtreeNode) -> Int {
+  checked_mrtree_node(node)
+  mrtree_node_store.val[node].position_constraint
+}
+
+///|
+pub fn mrtree_node_set_position_constraint(
+  node : MrtreeNode,
+  value : Int,
+) -> Unit {
+  checked_mrtree_node(node)
+  let node_data = mrtree_node_store.val[node]
+  node_data.position_constraint = value
+  set_mrtree_node_data(node, node_data)
+}
+
+///|
+pub fn mrtree_node_set_level_height(node : MrtreeNode, value : Double) -> Unit {
+  checked_mrtree_node(node)
+  let node_data = mrtree_node_store.val[node]
+  node_data.level_height = value
+  set_mrtree_node_data(node, node_data)
+}
+
+///|
+pub fn mrtree_node_level_height(node : MrtreeNode) -> Double {
+  checked_mrtree_node(node)
+  mrtree_node_store.val[node].level_height
+}
+
+///|
+pub fn mrtree_node_set_left_neighbor(
+  node : MrtreeNode,
+  value : MrtreeNode?,
+) -> Unit {
+  checked_mrtree_node(node)
+  let node_data = mrtree_node_store.val[node]
+  node_data.left_neighbor = value
+  set_mrtree_node_data(node, node_data)
+}
+
+///|
+pub fn mrtree_node_left_neighbor(node : MrtreeNode) -> MrtreeNode? {
+  checked_mrtree_node(node)
+  mrtree_node_store.val[node].left_neighbor
+}
+
+///|
+pub fn mrtree_node_set_right_neighbor(
+  node : MrtreeNode,
+  value : MrtreeNode?,
+) -> Unit {
+  checked_mrtree_node(node)
+  let node_data = mrtree_node_store.val[node]
+  node_data.right_neighbor = value
+  set_mrtree_node_data(node, node_data)
+}
+
+///|
+pub fn mrtree_node_right_neighbor(node : MrtreeNode) -> MrtreeNode? {
+  checked_mrtree_node(node)
+  mrtree_node_store.val[node].right_neighbor
+}
+
+///|
+pub fn mrtree_node_set_left_sibling(
+  node : MrtreeNode,
+  value : MrtreeNode?,
+) -> Unit {
+  checked_mrtree_node(node)
+  let node_data = mrtree_node_store.val[node]
+  node_data.left_sibling = value
+  set_mrtree_node_data(node, node_data)
+}
+
+///|
+pub fn mrtree_node_left_sibling(node : MrtreeNode) -> MrtreeNode? {
+  checked_mrtree_node(node)
+  mrtree_node_store.val[node].left_sibling
+}
+
+///|
+pub fn mrtree_node_set_right_sibling(
+  node : MrtreeNode,
+  value : MrtreeNode?,
+) -> Unit {
+  checked_mrtree_node(node)
+  let node_data = mrtree_node_store.val[node]
+  node_data.right_sibling = value
+  set_mrtree_node_data(node, node_data)
+}
+
+///|
+pub fn mrtree_node_right_sibling(node : MrtreeNode) -> MrtreeNode? {
+  checked_mrtree_node(node)
+  mrtree_node_store.val[node].right_sibling
 }
 
 ///|
@@ -487,6 +724,32 @@ pub fn mrtree_edge_bend_points(edge : MrtreeEdge) -> KVectorChain {
 pub fn mrtree_graph_separate_connected_components(graph : MrtreeGraph) -> Bool {
   checked_mrtree_graph(graph)
   mrtree_graph_store.val[graph].separate_connected_components
+}
+
+///|
+pub fn mrtree_graph_direction(graph : MrtreeGraph) -> String {
+  checked_mrtree_graph(graph)
+  mrtree_graph_store.val[graph].direction
+}
+
+///|
+pub fn mrtree_graph_direction_is_horizontal(graph : MrtreeGraph) -> Bool {
+  let current_direction = mrtree_graph_direction(graph)
+  current_direction == "LEFT" || current_direction == "RIGHT"
+}
+
+///|
+pub fn mrtree_graph_weighting(graph : MrtreeGraph) -> MrtreeOrderWeighting {
+  checked_mrtree_graph(graph)
+  mrtree_order_weighting_from_string(mrtree_graph_store.val[graph].weighting)
+}
+
+///|
+pub fn mrtree_graph_set_weighting(graph : MrtreeGraph, value : String) -> Unit {
+  checked_mrtree_graph(graph)
+  let graph_data = mrtree_graph_store.val[graph]
+  graph_data.weighting = value
+  set_mrtree_graph_data(graph, graph_data)
 }
 
 ///|
