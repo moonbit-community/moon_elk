@@ -84,6 +84,10 @@ pub fn clip_vector(KVector, Double, Double) -> KVector
 
 pub fn cnode_of() -> CNodeBuilder
 
+pub fn command_parse(String) -> Command
+
+pub fn command_to_string(Command) -> String
+
 pub fn compaction_strategy_values() -> Array[CompactionStrategy]
 
 pub fn compare_fuzzy_eq(Double, Double) -> Bool
@@ -387,6 +391,188 @@ pub let disco_spacing_component_component : IProperty[Double]
 pub fn distance(KVector, KVector, KVector, KVector, KVector) -> Double
 
 pub fn distance_from_bezier_segment(KVector, KVector, KVector, KVector, KVector) -> Double
+
+pub let dot_attr_boundingbox : String
+
+pub let dot_attr_comment : String
+
+pub let dot_attr_compound : String
+
+pub let dot_attr_concentrate : String
+
+pub let dot_attr_crossmin_limit : String
+
+pub let dot_attr_damping : String
+
+pub let dot_attr_edgedir : String
+
+pub let dot_attr_edgelen : String
+
+pub let dot_attr_epsilon : String
+
+pub let dot_attr_fixedsize : String
+
+pub let dot_attr_fontname : String
+
+pub let dot_attr_fontsize : String
+
+pub let dot_attr_headlabel : String
+
+pub let dot_attr_headlp : String
+
+pub let dot_attr_height : String
+
+pub let dot_attr_label : String
+
+pub let dot_attr_labelangle : String
+
+pub let dot_attr_labeldistance : String
+
+pub let dot_attr_labelpos : String
+
+pub let dot_attr_layout : String
+
+pub let dot_attr_lhead : String
+
+pub let dot_attr_ltail : String
+
+pub let dot_attr_margin : String
+
+pub let dot_attr_maxiter : String
+
+pub let dot_attr_mindist : String
+
+pub let dot_attr_neato_model : String
+
+pub let dot_attr_nodesep : String
+
+pub let dot_attr_overlap : String
+
+pub let dot_attr_pack : String
+
+pub let dot_attr_pad : String
+
+pub let dot_attr_pos : String
+
+pub let dot_attr_rankdir : String
+
+pub let dot_attr_ranksep : String
+
+pub let dot_attr_ratio : String
+
+pub let dot_attr_sep : String
+
+pub let dot_attr_shape : String
+
+pub let dot_attr_simplex_limit : String
+
+pub let dot_attr_splines : String
+
+pub let dot_attr_spring_constant : String
+
+pub let dot_attr_start : String
+
+pub let dot_attr_style : String
+
+pub let dot_attr_taillabel : String
+
+pub let dot_attr_taillp : String
+
+pub let dot_attr_weight : String
+
+pub let dot_attr_width : String
+
+pub fn dot_attribute_type_edge() -> DotAttributeType
+
+pub fn dot_attribute_type_from_int(Int) -> DotAttributeType?
+
+pub fn dot_attribute_type_from_name(String) -> DotAttributeType?
+
+pub fn dot_attribute_type_from_string(String) -> DotAttributeType?
+
+pub fn dot_attribute_type_graph() -> DotAttributeType
+
+pub fn dot_attribute_type_literal(DotAttributeType) -> String
+
+pub fn dot_attribute_type_name(DotAttributeType) -> String
+
+pub fn dot_attribute_type_node() -> DotAttributeType
+
+pub fn dot_attribute_type_to_string(DotAttributeType) -> String
+
+pub fn dot_attribute_type_value(DotAttributeType) -> Int
+
+pub fn dot_create_attribute() -> DotAttribute
+
+pub fn dot_create_attribute_statement() -> DotAttributeStatement
+
+pub fn dot_create_edge_statement() -> DotEdgeStatement
+
+pub fn dot_create_edge_target() -> DotEdgeTarget
+
+pub fn dot_create_graph() -> DotGraph
+
+pub fn dot_create_graphviz_model() -> DotGraphvizModel
+
+pub fn dot_create_node() -> DotNode
+
+pub fn dot_create_node_statement() -> DotNodeStatement
+
+pub fn dot_create_port() -> DotPort
+
+pub fn dot_create_statement() -> DotStatement
+
+pub fn dot_create_subgraph() -> DotSubgraph
+
+pub fn dot_edge_operator_directed() -> DotEdgeOperator
+
+pub fn dot_edge_operator_from_int(Int) -> DotEdgeOperator?
+
+pub fn dot_edge_operator_from_name(String) -> DotEdgeOperator?
+
+pub fn dot_edge_operator_from_string(String) -> DotEdgeOperator?
+
+pub fn dot_edge_operator_literal(DotEdgeOperator) -> String
+
+pub fn dot_edge_operator_name(DotEdgeOperator) -> String
+
+pub fn dot_edge_operator_to_string(DotEdgeOperator) -> String
+
+pub fn dot_edge_operator_undirected() -> DotEdgeOperator
+
+pub fn dot_edge_operator_value(DotEdgeOperator) -> Int
+
+pub let dot_factory_instance : DotFactory
+
+pub fn dot_graph_type_digraph() -> DotGraphType
+
+pub fn dot_graph_type_from_int(Int) -> DotGraphType?
+
+pub fn dot_graph_type_from_name(String) -> DotGraphType?
+
+pub fn dot_graph_type_from_string(String) -> DotGraphType?
+
+pub fn dot_graph_type_graph() -> DotGraphType
+
+pub fn dot_graph_type_literal(DotGraphType) -> String
+
+pub fn dot_graph_type_name(DotGraphType) -> String
+
+pub fn dot_graph_type_to_string(DotGraphType) -> String
+
+pub fn dot_graph_type_value(DotGraphType) -> Int
+
+pub fn dot_statement_attribute(DotAttribute) -> DotStatement
+
+pub fn dot_statement_attribute_statement(DotAttributeStatement) -> DotStatement
+
+pub fn dot_statement_base() -> DotStatement
+
+pub fn dot_statement_edge_statement(DotEdgeStatement) -> DotStatement
+
+pub fn dot_statement_node_statement(DotNodeStatement) -> DotStatement
+
+pub fn dot_statement_subgraph(DotSubgraph) -> DotStatement
 
 pub fn draw_hitboxes(CGraph, String) -> String
 
@@ -856,6 +1042,12 @@ pub fn minl(Array[Int64]) -> Int64
 
 pub fn naive_minst_create_spanning_tree(Array[TEdge], KVector, (TEdge) -> Double, debug_output_file? : String?) -> Tree[KVector]
 
+pub fn neato_model_literal(NeatoModel) -> String
+
+pub fn neato_model_parse(String) -> NeatoModel
+
+pub fn neato_model_to_string(NeatoModel) -> String
+
 pub fn nedge_of() -> NEdgeBuilder
 
 pub fn network_simplex_for_graph(NGraph) -> NetworkSimplex
@@ -929,6 +1121,12 @@ pub fn new_dis_co_layout_provider() -> DisCoLayoutProvider
 pub fn new_dis_co_paint_rectangle(Int, Int, Int, Int) -> DisCoPaintRectangle
 
 pub fn new_dis_co_polyomino_compactor() -> DisCoPolyominoCompactor
+
+pub fn new_dot_factory() -> DotFactory
+
+pub fn[R] new_dot_resource_set_provider(() -> R) -> DotResourceSetProvider[R]
+
+pub fn[S, T] new_dot_transformation_data() -> DotTransformationData[S, T]
 
 pub fn new_dropdown_int_range_action(ConfigState, String, Int, Int, Int, State, DisCoGraphRenderingCanvas) -> DropdownIntRangeAction
 
@@ -1321,6 +1519,12 @@ pub fn one_dimensional_compactor_quadratic_constraints(OneDimensionalCompactor) 
 pub fn one_dimensional_compactor_scanline_constraints(OneDimensionalCompactor) -> Unit
 
 pub fn overlap(ElkRectangle, ElkRectangle) -> Double
+
+pub fn overlap_mode_literal(OverlapMode) -> String
+
+pub fn overlap_mode_parse(String) -> OverlapMode
+
+pub fn overlap_mode_to_string(OverlapMode) -> String
 
 pub let padding : IProperty[String]
 
@@ -1737,6 +1941,15 @@ pub fn CNodeBuilder::node_type(Self, String) -> Self
 pub fn CNodeBuilder::origin(Self, String) -> Self
 pub fn CNodeBuilder::to_string_delegate(Self, (CNode) -> String) -> Self
 
+pub enum Command {
+  Invalid
+  Dot
+  Neato
+  Twopi
+  Fdp
+  Circo
+}
+
 pub enum CompactionStrategy {
   Polyomino
 }
@@ -2044,6 +2257,165 @@ pub struct DisCoPolyominoCompactor {
   mut fill : Bool
 }
 pub fn DisCoPolyominoCompactor::compact(Self, DCGraph) -> Unit
+
+pub struct DotAttribute {
+  mut name : String?
+  mut value : String?
+}
+pub fn DotAttribute::get_name(Self) -> String?
+pub fn DotAttribute::get_value(Self) -> String?
+pub fn DotAttribute::set_name(Self, String?) -> Unit
+pub fn DotAttribute::set_value(Self, String?) -> Unit
+
+pub struct DotAttributeStatement {
+  mut type_ : DotAttributeType
+  attributes : Array[DotAttribute]
+}
+pub fn DotAttributeStatement::get_attributes(Self) -> Array[DotAttribute]
+pub fn DotAttributeStatement::get_type(Self) -> DotAttributeType
+pub fn DotAttributeStatement::set_type(Self, DotAttributeType?) -> Unit
+
+pub enum DotAttributeType {
+  DotAttributeTypeGraph
+  DotAttributeTypeNode
+  DotAttributeTypeEdge
+}
+
+pub enum DotEdgeOperator {
+  DotEdgeOperatorDirected
+  DotEdgeOperatorUndirected
+}
+
+pub struct DotEdgeStatement {
+  mut source_node : DotNode?
+  edge_targets : Array[DotEdgeTarget]
+  attributes : Array[DotAttribute]
+}
+pub fn DotEdgeStatement::get_attributes(Self) -> Array[DotAttribute]
+pub fn DotEdgeStatement::get_edge_targets(Self) -> Array[DotEdgeTarget]
+pub fn DotEdgeStatement::get_source_node(Self) -> DotNode?
+pub fn DotEdgeStatement::set_source_node(Self, DotNode?) -> Unit
+
+pub struct DotEdgeTarget {
+  mut operator : DotEdgeOperator
+  mut target_subgraph : DotSubgraph?
+  mut targetnode : DotNode?
+}
+pub fn DotEdgeTarget::get_operator(Self) -> DotEdgeOperator
+pub fn DotEdgeTarget::get_target_subgraph(Self) -> DotSubgraph?
+pub fn DotEdgeTarget::get_targetnode(Self) -> DotNode?
+pub fn DotEdgeTarget::set_operator(Self, DotEdgeOperator?) -> Unit
+pub fn DotEdgeTarget::set_target_subgraph(Self, DotSubgraph?) -> Unit
+pub fn DotEdgeTarget::set_targetnode(Self, DotNode?) -> Unit
+
+pub struct DotFactory {
+  create_graphviz_model_fn : () -> DotGraphvizModel
+  create_graph_fn : () -> DotGraph
+  create_statement_fn : () -> DotStatement
+  create_attribute_fn : () -> DotAttribute
+  create_node_statement_fn : () -> DotNodeStatement
+  create_node_fn : () -> DotNode
+  create_edge_statement_fn : () -> DotEdgeStatement
+  create_edge_target_fn : () -> DotEdgeTarget
+  create_attribute_statement_fn : () -> DotAttributeStatement
+  create_subgraph_fn : () -> DotSubgraph
+  create_port_fn : () -> DotPort
+}
+pub fn DotFactory::create_attribute(Self) -> DotAttribute
+pub fn DotFactory::create_attribute_statement(Self) -> DotAttributeStatement
+pub fn DotFactory::create_edge_statement(Self) -> DotEdgeStatement
+pub fn DotFactory::create_edge_target(Self) -> DotEdgeTarget
+pub fn DotFactory::create_graph(Self) -> DotGraph
+pub fn DotFactory::create_graphviz_model(Self) -> DotGraphvizModel
+pub fn DotFactory::create_node(Self) -> DotNode
+pub fn DotFactory::create_node_statement(Self) -> DotNodeStatement
+pub fn DotFactory::create_port(Self) -> DotPort
+pub fn DotFactory::create_statement(Self) -> DotStatement
+pub fn DotFactory::create_subgraph(Self) -> DotSubgraph
+
+pub struct DotGraph {
+  mut strict : Bool
+  mut type_ : DotGraphType
+  mut name : String?
+  statements : Array[DotStatement]
+}
+pub fn DotGraph::get_name(Self) -> String?
+pub fn DotGraph::get_statements(Self) -> Array[DotStatement]
+pub fn DotGraph::get_type(Self) -> DotGraphType
+pub fn DotGraph::is_strict(Self) -> Bool
+pub fn DotGraph::set_name(Self, String?) -> Unit
+pub fn DotGraph::set_strict(Self, Bool) -> Unit
+pub fn DotGraph::set_type(Self, DotGraphType?) -> Unit
+
+pub enum DotGraphType {
+  DotGraphTypeGraph
+  DotGraphTypeDigraph
+}
+
+pub struct DotGraphvizModel {
+  graphs : Array[DotGraph]
+}
+pub fn DotGraphvizModel::get_graphs(Self) -> Array[DotGraph]
+
+pub struct DotNode {
+  mut name : String?
+  mut port : DotPort?
+}
+pub fn DotNode::get_name(Self) -> String?
+pub fn DotNode::get_port(Self) -> DotPort?
+pub fn DotNode::set_name(Self, String?) -> Unit
+pub fn DotNode::set_port(Self, DotPort?) -> Unit
+
+pub struct DotNodeStatement {
+  mut node : DotNode?
+  attributes : Array[DotAttribute]
+}
+pub fn DotNodeStatement::get_attributes(Self) -> Array[DotAttribute]
+pub fn DotNodeStatement::get_node(Self) -> DotNode?
+pub fn DotNodeStatement::set_node(Self, DotNode?) -> Unit
+
+pub struct DotPort {
+  mut name : String?
+  mut compass_pt : String?
+}
+pub fn DotPort::get_compass_pt(Self) -> String?
+pub fn DotPort::get_name(Self) -> String?
+pub fn DotPort::set_compass_pt(Self, String?) -> Unit
+pub fn DotPort::set_name(Self, String?) -> Unit
+
+pub struct DotResourceSetProvider[R] {
+  resource_set_provider : () -> R
+}
+pub fn[R] DotResourceSetProvider::create_resource_set(Self[R]) -> R
+
+pub enum DotStatement {
+  DotStatementBase
+  DotStatementAttribute(DotAttribute)
+  DotStatementNodeStatement(DotNodeStatement)
+  DotStatementEdgeStatement(DotEdgeStatement)
+  DotStatementAttributeStatement(DotAttributeStatement)
+  DotStatementSubgraph(DotSubgraph)
+}
+
+pub struct DotSubgraph {
+  mut name : String?
+  statements : Array[DotStatement]
+}
+pub fn DotSubgraph::get_name(Self) -> String?
+pub fn DotSubgraph::get_statements(Self) -> Array[DotStatement]
+pub fn DotSubgraph::set_name(Self, String?) -> Unit
+
+#alias(IDotTransformationData)
+pub struct DotTransformationData[S, T] {
+  mut source_graph : S?
+  target_graphs : Array[T]
+  log_messages : Array[String]
+}
+pub fn[S, T] DotTransformationData::get_messages(Self[S, T]) -> Array[String]
+pub fn[S, T] DotTransformationData::get_source_graph(Self[S, T]) -> S?
+pub fn[S, T] DotTransformationData::get_target_graphs(Self[S, T]) -> Array[T]
+pub fn[S, T] DotTransformationData::log(Self[S, T], String) -> Unit
+pub fn[S, T] DotTransformationData::set_source_graph(Self[S, T], S) -> Unit
 
 pub struct DropdownIntRangeAction {
   mut menu : Array[Int]?
@@ -2895,6 +3267,12 @@ pub fn NNodeBuilder::id(Self, Int) -> Self
 pub fn NNodeBuilder::node_type(Self, String) -> Self
 pub fn NNodeBuilder::origin(Self, String) -> Self
 
+pub enum NeatoModel {
+  Shortpath
+  Circuit
+  Subset
+}
+
 pub struct NetworkSimplex {
   graph : NGraph
   mut previous_layering_node_counts : Array[Int]?
@@ -2958,6 +3336,14 @@ pub fn OneDimensionalCompactor::set_compaction_algorithm(Self, (Self) -> Unit) -
 pub fn OneDimensionalCompactor::set_constraint_algorithm(Self, (Self) -> Unit) -> Self
 pub fn OneDimensionalCompactor::set_lock_function(Self, ((CNode, Direction) -> Bool)?) -> Self
 pub fn OneDimensionalCompactor::set_spacings_handler(Self, ISpacingsHandler) -> Self
+
+pub enum OverlapMode {
+  OverlapNone
+  OverlapScale
+  OverlapScalexy
+  OverlapPrism
+  OverlapCompress
+}
 
 pub struct Pair[F, S] {
   mut first : F?
