@@ -2172,6 +2172,8 @@ pub fn new_null_elk_progress_monitor() -> IElkProgressMonitor
 
 pub fn new_one_dimensional_compactor(CGraph) -> OneDimensionalCompactor
 
+pub fn new_outline_node(Double, Double, OutlineNode?) -> OutlineNode
+
 pub fn[P] new_phase_descriptor(Array[P], (P) -> Int) -> PhaseDescriptor[P]
 
 pub fn new_planar_grid(Int, Int) -> PlanarGrid
@@ -2238,6 +2240,30 @@ pub fn new_spacings_handler((CNode, CNode) -> Double, (CNode, CNode) -> Double) 
 
 pub fn new_spline_interpolator((Array[KVector]) -> BezierSpline) -> ISplineInterpolator
 
+pub fn new_spore_delaunay_triangulation_layout_phase() -> ILayoutProcessor[SPOrEPhases, SporeGraph]
+
+pub fn new_spore_elk_graph_as_igraph_importer() -> SporeIGraphImporter[Int]
+
+pub fn new_spore_elk_graph_importer() -> SporeElkGraphImporter
+
+pub fn new_spore_graph((TEdge) -> Double, SporeTreeConstructionStrategy, SporeCompactionStrategy) -> SporeGraph
+
+pub fn new_spore_grow_tree_layout_phase() -> ILayoutProcessor[SPOrEPhases, SporeGraph]
+
+pub fn[T] new_spore_igraph_importer((T) -> SporeGraph, (SporeGraph) -> Unit, (SporeGraph) -> Unit) -> SporeIGraphImporter[T]
+
+pub fn new_spore_max_st_layout_phase() -> ILayoutProcessor[SPOrEPhases, SporeGraph]
+
+pub fn new_spore_min_st_layout_phase() -> ILayoutProcessor[SPOrEPhases, SporeGraph]
+
+pub fn new_spore_overlap_removal_layout_provider() -> SporeOverlapRemovalLayoutProvider
+
+pub fn new_spore_shrink_tree() -> SporeShrinkTree
+
+pub fn new_spore_shrink_tree_compaction_layout_phase() -> ILayoutProcessor[SPOrEPhases, SporeGraph]
+
+pub fn new_spore_shrink_tree_layout_provider() -> SporeShrinkTreeLayoutProvider
+
 pub fn new_stress_layout_provider() -> StressLayoutProvider
 
 pub fn new_stress_majorization() -> StressMajorization
@@ -2293,6 +2319,18 @@ pub fn new_unsupported_graph_exception_message(String) -> UnsupportedGraphExcept
 pub fn new_unsupported_graph_exception_message_cause(String, String) -> UnsupportedGraphException
 
 pub fn new_validating_graph_element_visitor((Int) -> Unit, () -> Array[GraphIssue]) -> IValidatingGraphElementVisitor
+
+pub fn new_vertiflex_absolute_x_placer_layout_phase() -> ILayoutProcessor[VertiFlexLayoutPhases, Int]
+
+pub fn new_vertiflex_bend_edge_router_layout_phase() -> ILayoutProcessor[VertiFlexLayoutPhases, Int]
+
+pub fn new_vertiflex_layout_provider() -> VertiFlexLayoutProvider
+
+pub fn new_vertiflex_node_y_placer_layout_phase() -> ILayoutProcessor[VertiFlexLayoutPhases, Int]
+
+pub fn new_vertiflex_relative_x_placer_layout_phase() -> ILayoutProcessor[VertiFlexLayoutPhases, Int]
+
+pub fn new_vertiflex_straight_edge_router_layout_phase() -> ILayoutProcessor[VertiFlexLayoutPhases, Int]
 
 pub fn new_wrapped_exception(String) -> WrappedException
 
@@ -2744,11 +2782,67 @@ pub let spacing_node_self_loop : IProperty[Double]
 
 pub let spacing_port_port : IProperty[Double]
 
+pub let spore_compaction_algorithm_id : String
+
+pub let spore_compaction_compaction_strategy : IProperty[String]
+
+pub let spore_compaction_orthogonal : IProperty[Bool]
+
+pub fn spore_compaction_strategy_from_string(String) -> SporeCompactionStrategy
+
+pub fn spore_compaction_strategy_phase_factory(SporeCompactionStrategy) -> ILayoutProcessorFactory[SPOrEPhases, SporeGraph]
+
+pub let spore_debug_mode : IProperty[Bool]
+
 pub let spore_debug_svg : IProperty[Bool]
 
 pub let spore_fuzziness : Double
 
+pub fn spore_min_st_convert(Tree[KVector], SporeGraph) -> Unit
+
+pub let spore_overlap_removal_algorithm_id : String
+
+pub fn spore_overlap_removal_layout_provider_as_layout_provider(SporeOverlapRemovalLayoutProvider) -> AbstractLayoutProvider
+
+pub let spore_overlap_removal_max_iterations : IProperty[Double]
+
+pub let spore_overlap_removal_run_scanline : IProperty[Bool]
+
+pub fn spore_overlap_removal_strategy_phase_factory(SporeOverlapRemovalStrategy) -> ILayoutProcessorFactory[SPOrEPhases, SporeGraph]
+
 pub let spore_overlaps_existed : IProperty[Bool]
+
+pub let spore_padding : IProperty[String]
+
+pub let spore_phase_descriptor : PhaseDescriptor[SPOrEPhases]
+
+pub let spore_processing_order_preferred_root : IProperty[String]
+
+pub let spore_processing_order_root_selection : IProperty[String]
+
+pub let spore_processing_order_spanning_tree_cost_function : IProperty[String]
+
+pub let spore_processing_order_tree_construction : IProperty[String]
+
+pub fn spore_root_selection_from_string(String) -> SporeRootSelection
+
+pub fn spore_shrink_tree_layout_provider_as_layout_provider(SporeShrinkTreeLayoutProvider) -> AbstractLayoutProvider
+
+pub let spore_spacing_node_node : IProperty[Double]
+
+pub fn spore_spanning_tree_cost_function_from_string(String) -> SporeSpanningTreeCostFunction
+
+pub let spore_structure_extraction_strategy : IProperty[String]
+
+pub fn spore_structure_extraction_strategy_from_string(String) -> SporeStructureExtractionStrategy
+
+pub fn spore_structure_extraction_strategy_phase_factory(SporeStructureExtractionStrategy) -> ILayoutProcessorFactory[SPOrEPhases, SporeGraph]
+
+pub fn spore_tree_construction_strategy_from_string(String) -> SporeTreeConstructionStrategy
+
+pub fn spore_tree_construction_strategy_phase_factory(SporeTreeConstructionStrategy) -> ILayoutProcessorFactory[SPOrEPhases, SporeGraph]
+
+pub let spore_underlying_layout_algorithm : IProperty[String]
 
 pub let stress_algorithm_id : String
 
@@ -2816,9 +2910,93 @@ pub fn[F, S, T] unique_triple_of(F, S, T) -> UniqueTriple[F, S, T]
 
 pub fn update_containment(Int?) -> Unit
 
+pub fn vertiflex_absolute_x_placer_phase_factory(AbsoluteXPlacerStrategy) -> ILayoutProcessorFactory[VertiFlexLayoutPhases, Int]
+
+pub let vertiflex_algorithm_id : String
+
+pub let vertiflex_consider_node_model_order : IProperty[Bool]
+
+pub fn vertiflex_edge_routing_strategy_from_string(String) -> EdgeRoutingStrategy
+
+pub fn vertiflex_edgerouter_phase_factory(EdgerouterStrategy) -> ILayoutProcessorFactory[VertiFlexLayoutPhases, Int]
+
+pub fn vertiflex_find_root(Int) -> Int?
+
+pub fn vertiflex_internal_child_of_edge(Int) -> Int
+
+pub fn vertiflex_internal_edge_bend_height(Int) -> Double
+
+pub fn vertiflex_internal_left_outline(Int) -> OutlineNode
+
+pub fn vertiflex_internal_max_x(Int) -> Double
+
+pub fn vertiflex_internal_max_y(Int) -> Double
+
+pub fn vertiflex_internal_min_x(Int) -> Double
+
+pub fn vertiflex_internal_min_y(Int) -> Double
+
+pub fn vertiflex_internal_node_margins(Int) -> Spacing
+
+pub fn vertiflex_internal_node_model_order(Int) -> Int
+
+pub fn vertiflex_internal_outline_max_depth(Int) -> Double
+
+pub fn vertiflex_internal_reset() -> Unit
+
+pub fn vertiflex_internal_right_outline(Int) -> OutlineNode
+
+pub fn vertiflex_internal_root_node(Int) -> Int
+
+pub fn vertiflex_internal_set_edge_bend_height(Int, Double) -> Unit
+
+pub fn vertiflex_internal_set_left_outline(Int, OutlineNode) -> Unit
+
+pub fn vertiflex_internal_set_max_x(Int, Double) -> Unit
+
+pub fn vertiflex_internal_set_max_y(Int, Double) -> Unit
+
+pub fn vertiflex_internal_set_min_x(Int, Double) -> Unit
+
+pub fn vertiflex_internal_set_min_y(Int, Double) -> Unit
+
+pub fn vertiflex_internal_set_node_model_order(Int, Int) -> Unit
+
+pub fn vertiflex_internal_set_outline_max_depth(Int, Double) -> Unit
+
+pub fn vertiflex_internal_set_right_outline(Int, OutlineNode) -> Unit
+
+pub fn vertiflex_internal_set_root_node(Int, Int) -> Unit
+
+pub let vertiflex_layer_distance : IProperty[Double]
+
+pub let vertiflex_layout_phase_descriptor : PhaseDescriptor[VertiFlexLayoutPhases]
+
+pub fn vertiflex_layout_provider_as_layout_provider(VertiFlexLayoutProvider) -> AbstractLayoutProvider
+
+pub let vertiflex_layout_strategy : IProperty[String]
+
+pub fn vertiflex_node_y_placer_phase_factory(NodeYPlacerStrategy) -> ILayoutProcessorFactory[VertiFlexLayoutPhases, Int]
+
+pub let vertiflex_omit_node_micro_layout : IProperty[Bool]
+
+pub let vertiflex_option_margins_id : String
+
+pub let vertiflex_padding : IProperty[String]
+
+pub fn vertiflex_relative_x_placer_phase_factory(RelativeXPlacerStrategy) -> ILayoutProcessorFactory[VertiFlexLayoutPhases, Int]
+
+pub let vertiflex_spacing_node_node : IProperty[Double]
+
+pub let vertiflex_vertical_constraint : IProperty[Double]
+
 // Errors
 
 // Types and methods
+pub enum AbsoluteXPlacerStrategy {
+  ABSOLUTE_XPLACING
+}
+
 pub struct AbstractForceModelState {
   mut random : @random.Rand
   mut graph : FGraph?
@@ -3677,6 +3855,11 @@ pub enum EdgeRouting {
   Splines
 }
 
+pub enum EdgeRoutingStrategy {
+  STRAIGHT
+  BEND
+}
+
 pub enum EdgeType {
   NoneType
   Directed
@@ -3684,6 +3867,11 @@ pub enum EdgeType {
   Association
   Generalization
   Dependency
+}
+
+pub enum EdgerouterStrategy {
+  DIRECT_ROUTING
+  BEND_ROUTING
 }
 
 pub enum ElkConnectableShape {
@@ -5137,7 +5325,7 @@ pub fn NetworkSimplex::with_iteration_limit(Self, Int) -> Self
 pub fn NetworkSimplex::with_previous_layering(Self, Array[Int]) -> Self
 
 pub struct Node {
-  original_vertex : KVector
+  mut original_vertex : KVector
   vertex : KVector
   rect : ElkRectangle
 }
@@ -5163,6 +5351,10 @@ pub enum NodeLabelPlacement {
   NodeLabelHPriority
 }
 
+pub enum NodeYPlacerStrategy {
+  SIMPLE_Y_PLACING
+}
+
 pub struct OneDimensionalCompactor {
   c_graph : CGraph
   mut lock_fun : ((CNode, Direction) -> Bool)?
@@ -5183,6 +5375,15 @@ pub fn OneDimensionalCompactor::set_compaction_algorithm(Self, (Self) -> Unit) -
 pub fn OneDimensionalCompactor::set_constraint_algorithm(Self, (Self) -> Unit) -> Self
 pub fn OneDimensionalCompactor::set_lock_function(Self, ((CNode, Direction) -> Bool)?) -> Self
 pub fn OneDimensionalCompactor::set_spacings_handler(Self, ISpacingsHandler) -> Self
+
+pub struct OutlineNode {
+  relative_x : Double
+  absolute_y : Double
+  mut next : OutlineNode?
+}
+pub fn OutlineNode::is_last(Self) -> Bool
+pub fn OutlineNode::print_full_outline(Self) -> Unit
+pub fn OutlineNode::to_string(Self) -> String
 
 pub enum OverlapMode {
   OverlapNone
@@ -5521,6 +5722,16 @@ pub struct RecursiveGraphLayoutEngine {
 }
 pub fn RecursiveGraphLayoutEngine::layout(Self, Int, IElkProgressMonitor) -> Unit
 
+pub enum RelativeXPlacerStrategy {
+  SIMPLE_X_PLACING
+}
+
+pub enum SPOrEPhases {
+  P1_STRUCTURE
+  P2_PROCESSING_ORDER
+  P3_EXECUTION
+}
+
 pub struct ScanlineOverlapCheck {
   overlap_handler : (Node, Node) -> Unit
   svg : SvgImage
@@ -5592,6 +5803,85 @@ pub fn Spacing::set_top(Self, Double) -> Unit
 pub fn Spacing::set_top_bottom(Self, Double) -> Unit
 pub fn Spacing::set_values(Self, Double, Double, Double, Double) -> Unit
 pub fn Spacing::to_string(Self) -> String
+
+pub enum SporeCompactionStrategy {
+  DEPTH_FIRST
+}
+
+pub struct SporeElkGraphImporter {
+  mut graph : SporeGraph?
+  mut node_map : Array[SporeNodeEntry]
+  mut elk_graph : Int?
+  mut spacing_node_node : Double
+}
+pub fn SporeElkGraphImporter::apply_positions(Self, SporeGraph) -> Unit
+pub fn SporeElkGraphImporter::import_graph(Self, Int) -> SporeGraph
+pub fn SporeElkGraphImporter::update_graph(Self, SporeGraph) -> Unit
+
+pub struct SporeGraph {
+  vertices : Array[Node]
+  mut t_edges : Array[TEdge]?
+  tree_construction_strategy : SporeTreeConstructionStrategy
+  mut tree : Tree[Node]?
+  compaction_strategy : SporeCompactionStrategy
+  cost_function : (TEdge) -> Double
+  mut preferred_root : Node?
+  mut orthogonal_compaction : Bool
+  mut debug_svg : Bool
+  mut overlaps_existed : Bool
+}
+
+pub struct SporeIGraphImporter[T] {
+  import_graph_fn : (T) -> SporeGraph
+  apply_positions_fn : (SporeGraph) -> Unit
+  update_graph_fn : (SporeGraph) -> Unit
+}
+pub fn[T] SporeIGraphImporter::apply_positions(Self[T], SporeGraph) -> Unit
+pub fn[T] SporeIGraphImporter::import_graph(Self[T], T) -> SporeGraph
+pub fn[T] SporeIGraphImporter::update_graph(Self[T], SporeGraph) -> Unit
+
+type SporeNodeEntry
+
+pub struct SporeOverlapRemovalLayoutProvider {
+  algorithm_assembler : AlgorithmAssembler[SPOrEPhases, SporeGraph]
+}
+pub fn SporeOverlapRemovalLayoutProvider::layout(Self, Int, IElkProgressMonitor) -> Unit
+
+pub enum SporeOverlapRemovalStrategy {
+  GROW_TREE
+}
+
+pub enum SporeRootSelection {
+  FIXED
+  CENTER_NODE
+}
+
+pub struct SporeShrinkTree {
+  algorithm_assembler : AlgorithmAssembler[SPOrEPhases, SporeGraph]
+}
+pub fn SporeShrinkTree::shrink(Self, SporeGraph, IElkProgressMonitor) -> Unit
+
+pub struct SporeShrinkTreeLayoutProvider {
+  shrink_tree : SporeShrinkTree
+}
+pub fn SporeShrinkTreeLayoutProvider::layout(Self, Int, IElkProgressMonitor) -> Unit
+
+pub enum SporeSpanningTreeCostFunction {
+  CENTER_DISTANCE
+  CIRCLE_UNDERLAP
+  RECTANGLE_UNDERLAP
+  INVERTED_OVERLAP
+  MINIMUM_ROOT_DISTANCE
+}
+
+pub enum SporeStructureExtractionStrategy {
+  DELAUNAY_TRIANGULATION
+}
+
+pub enum SporeTreeConstructionStrategy {
+  MINIMUM_SPANNING_TREE
+  MAXIMUM_SPANNING_TREE
+}
 
 pub enum State {
   Lower
@@ -5768,6 +6058,20 @@ pub struct UnsupportedGraphException {
 }
 pub fn UnsupportedGraphException::get_cause(Self) -> String?
 pub fn UnsupportedGraphException::get_message(Self) -> String?
+
+pub enum VertiFlexLayoutPhases {
+  P1_NODE_Y_PLACEMENT
+  P2_NODE_RELATIVE_PLACEMENT
+  P3_NODE_ABSOLUTE_PLACEMENT
+  P4_EDGE_ROUTING
+}
+
+pub struct VertiFlexLayoutProvider {
+  algorithm_assembler : AlgorithmAssembler[VertiFlexLayoutPhases, Int]
+  mut node_node_spacing : Double
+}
+pub fn VertiFlexLayoutProvider::assemble_algorithm(Self, Int) -> Array[ILayoutProcessor[VertiFlexLayoutPhases, Int]]
+pub fn VertiFlexLayoutProvider::layout(Self, Int, IElkProgressMonitor) -> Unit
 
 pub enum WhitespaceEliminationStrategy {
   BOTTOM_ROW_EQUAL_WHITESPACE_ELIMINATOR

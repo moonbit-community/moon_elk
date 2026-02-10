@@ -1,6 +1,6 @@
 ///|
 pub struct Node {
-  original_vertex : KVector
+  mut original_vertex : KVector
   vertex : KVector
   rect : ElkRectangle
 }
