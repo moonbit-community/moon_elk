@@ -756,6 +756,8 @@ pub fn new_logged_graph(String, LoggedGraphType) -> LoggedGraph
 
 pub fn new_ngraph() -> NGraph
 
+pub fn new_node(KVector, ElkRectangle) -> Node
+
 pub fn new_null_elk_progress_monitor() -> IElkProgressMonitor
 
 pub fn new_one_dimensional_compactor(CGraph) -> OneDimensionalCompactor
@@ -2178,6 +2180,17 @@ pub fn NetworkSimplex::execute(Self, monitor? : IElkProgressMonitor) -> Unit
 pub fn NetworkSimplex::with_balancing(Self, Bool) -> Self
 pub fn NetworkSimplex::with_iteration_limit(Self, Int) -> Self
 pub fn NetworkSimplex::with_previous_layering(Self, Array[Int]) -> Self
+
+pub struct Node {
+  original_vertex : KVector
+  vertex : KVector
+  rect : ElkRectangle
+}
+pub fn Node::distance(Self, Self, KVector) -> Double
+pub fn Node::set_center_position(Self, KVector) -> Unit
+pub fn Node::touches(Self, Self) -> Bool
+pub fn Node::translate(Self, KVector) -> Unit
+pub fn Node::underlap(Self, Self) -> Double
 
 pub enum NodeLabelPlacement {
   NodeLabelHLeft
