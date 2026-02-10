@@ -542,6 +542,42 @@ pub fn dot_edge_operator_undirected() -> DotEdgeOperator
 
 pub fn dot_edge_operator_value(DotEdgeOperator) -> Int
 
+pub fn dot_exporter_create_attribute(String, String) -> DotAttribute
+
+pub fn dot_exporter_create_attribute_double(String, Double) -> DotAttribute
+
+pub fn dot_exporter_create_attribute_float(String, Float) -> DotAttribute
+
+pub fn dot_exporter_create_attribute_int(String, Int) -> DotAttribute
+
+pub fn dot_exporter_create_attribute_map(Array[DotAttribute]) -> Map[String, String]
+
+pub fn dot_exporter_create_string(String) -> String
+
+pub let dot_exporter_def_spacing_large : Double
+
+pub let dot_exporter_def_spacing_small : Double
+
+pub let dot_exporter_def_spacing_xlarge : Double
+
+pub let dot_exporter_dpi : Float
+
+pub fn dot_exporter_is_inside_graph(Int, Int) -> Bool
+
+pub let dot_exporter_option_edge_labels_placement : String
+
+pub let dot_exporter_option_font_name : String
+
+pub let dot_exporter_option_font_size : String
+
+pub fn dot_exporter_parse_spline_points(String, Array[KVectorChain], KVector) -> Pair[KVector, KVector]
+
+pub fn dot_exporter_set_edge_labels(Int, Array[DotAttribute], Bool) -> Unit
+
+pub fn dot_exporter_set_general_edge_attributes(Array[DotStatement]) -> Array[DotAttribute]
+
+pub fn dot_exporter_set_general_node_attributes(Array[DotStatement]) -> Array[DotAttribute]
+
 pub let dot_factory_instance : DotFactory
 
 pub fn dot_graph_type_digraph() -> DotGraphType
@@ -1121,6 +1157,8 @@ pub fn new_dis_co_layout_provider() -> DisCoLayoutProvider
 pub fn new_dis_co_paint_rectangle(Int, Int, Int, Int) -> DisCoPaintRectangle
 
 pub fn new_dis_co_polyomino_compactor() -> DisCoPolyominoCompactor
+
+pub fn new_dot_exporter() -> DotExporter
 
 pub fn new_dot_factory() -> DotFactory
 
@@ -2307,6 +2345,15 @@ pub fn DotEdgeTarget::get_targetnode(Self) -> DotNode?
 pub fn DotEdgeTarget::set_operator(Self, DotEdgeOperator?) -> Unit
 pub fn DotEdgeTarget::set_target_subgraph(Self, DotSubgraph?) -> Unit
 pub fn DotEdgeTarget::set_targetnode(Self, DotNode?) -> Unit
+
+pub struct DotExporter {
+  _dummy : Unit
+}
+pub fn DotExporter::is_inside_graph(Self, Int, Int) -> Bool
+pub fn DotExporter::set_edge_labels(Self, Int, Array[DotAttribute], Bool) -> Unit
+pub fn DotExporter::set_general_edge_attributes(Self, Array[DotStatement]) -> Array[DotAttribute]
+pub fn DotExporter::set_general_node_attributes(Self, Array[DotStatement]) -> Array[DotAttribute]
+pub fn DotExporter::set_graph_attributes(Self, Array[DotStatement], Int) -> Unit
 
 pub struct DotFactory {
   create_graphviz_model_fn : () -> DotGraphvizModel
