@@ -41,12 +41,20 @@ pub struct ComponentsToCGraphTransformer[N, E] {
 
 ///|
 fn components_compaction_double_min(left : Double, right : Double) -> Double {
-  if left < right { left } else { right }
+  if left < right {
+    left
+  } else {
+    right
+  }
 }
 
 ///|
 fn components_compaction_double_max(left : Double, right : Double) -> Double {
-  if left > right { left } else { right }
+  if left > right {
+    left
+  } else {
+    right
+  }
 }
 
 ///|
@@ -164,32 +172,33 @@ fn[N, E] components_compaction_set_lock(
     lock.set_values(true, true, true, true)
   }
   if components_compaction_port_side_set_equals(
-    port_sides,
-    sides_east_south_west,
-  ) {
+      port_sides, sides_east_south_west,
+    ) {
     lock.set_values(true, true, true, true)
   }
   if components_compaction_port_side_set_equals(
-    port_sides,
-    sides_north_south_west,
-  ) {
+      port_sides, sides_north_south_west,
+    ) {
     lock.set_values(true, true, true, true)
   }
   if components_compaction_port_side_set_equals(
-    port_sides,
-    sides_north_east_west,
-  ) {
+      port_sides, sides_north_east_west,
+    ) {
     lock.set_values(true, true, true, true)
   }
 
   if components_compaction_port_side_set_equals(
-    port_sides,
-    sides_north_east_south_west,
-  ) {
+      port_sides, sides_north_east_south_west,
+    ) {
     lock.set_values(true, true, true, true)
   }
 
-  transformer.node_infos.push({ node, rect: node.hitbox(), individual_spacing: None, lock })
+  transformer.node_infos.push({
+    node,
+    rect: node.hitbox(),
+    individual_spacing: None,
+    lock,
+  })
 }
 
 ///|
@@ -212,9 +221,9 @@ fn[N, E] components_compaction_create_rect_node(
   rect : ElkRectangle,
   in_graph : Bool,
 ) -> CNode {
-  let node = cnode_of().hitbox(new_elk_rectangle_copy(rect)).create(
-    transformer.c_graph,
-  )
+  let node = cnode_of()
+    .hitbox(new_elk_rectangle_copy(rect))
+    .create(transformer.c_graph)
   if !in_graph {
     ignore(array_remove_first(transformer.c_graph.c_nodes, node))
   }
@@ -298,9 +307,7 @@ pub fn[N, E] ComponentsToCGraphTransformer::transform(
     for external_extension in component.get_external_extensions() {
       let representor = external_extension.get_representor()
       let representor_node = components_compaction_create_rect_node(
-        self,
-        representor,
-        false,
+        self, representor, false,
       )
       components_compaction_set_lock(self, representor_node, sides)
       for i in 0..<self.node_infos.length() {
@@ -319,12 +326,14 @@ pub fn[N, E] ComponentsToCGraphTransformer::transform(
       match external_extension.get_placeholder() {
         Some(placeholder_rect) => {
           let placeholder_node = components_compaction_create_rect_node(
-            self,
-            placeholder_rect,
-            false,
+            self, placeholder_rect, false,
           )
           components_compaction_set_lock(self, placeholder_node, sides)
-          components_compaction_assign_spacing(self, placeholder_node, Some(1.0))
+          components_compaction_assign_spacing(
+            self,
+            placeholder_node,
+            Some(1.0),
+          )
           for i in 0..<self.node_infos.length() {
             if self.node_infos[i].node == placeholder_node {
               self.node_infos[i].rect = placeholder_rect
@@ -353,7 +362,9 @@ pub fn[N, E] ComponentsToCGraphTransformer::get_offset(
 ) -> KVector {
   for entry in self.component_offsets {
     if entry.component_id == component._instance_id {
-      return entry.old_position.clone().sub(entry.offset_node.hitbox().get_position())
+      return entry.old_position
+        .clone()
+        .sub(entry.offset_node.hitbox().get_position())
     }
   }
   new_kvector()
@@ -415,12 +426,20 @@ pub fn[N, E] components_to_cgraph_spacing_handler(
     (node1, node2) => {
       let spacing1 = components_compaction_node_spacing(transformer, node1)
       let spacing2 = components_compaction_node_spacing(transformer, node2)
-      if spacing1 < spacing2 { spacing1 } else { spacing2 }
+      if spacing1 < spacing2 {
+        spacing1
+      } else {
+        spacing2
+      }
     },
     (node1, node2) => {
       let spacing1 = components_compaction_node_spacing(transformer, node1)
       let spacing2 = components_compaction_node_spacing(transformer, node2)
-      if spacing1 < spacing2 { spacing1 } else { spacing2 }
+      if spacing1 < spacing2 {
+        spacing1
+      } else {
+        spacing2
+      }
     },
   )
 }

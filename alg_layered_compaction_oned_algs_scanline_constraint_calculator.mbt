@@ -6,5 +6,4 @@ pub fn layered_scanline_constraint_calculation(
 }
 
 ///|
-pub let layered_one_dimensional_compactor_scanline_constraints : LayeredIConstraintCalculationAlgorithm =
-  layered_scanline_constraint_calculation
+pub let layered_one_dimensional_compactor_scanline_constraints : LayeredIConstraintCalculationAlgorithm = layered_scanline_constraint_calculation

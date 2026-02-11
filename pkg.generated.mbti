@@ -120,6 +120,8 @@ pub fn compare_fuzzy_lt(Double, Double) -> Bool
 
 pub let compare_fuzzy_tolerance : Double
 
+pub fn[N, E] components_to_cgraph_spacing_handler(ComponentsToCGraphTransformer[N, E]) -> ISpacingsHandler
+
 pub fn compress_log_folder_action_complete_file_name(String?) -> String?
 
 pub let compress_log_folder_action_id : String
@@ -171,6 +173,10 @@ pub fn connectable_shape_to_port(ElkConnectableShape?) -> Int?
 pub fn container_area_to_string(ContainerArea) -> String
 
 pub fn container_area_values() -> Array[ContainerArea]
+
+pub fn container_cell_min_height_of_cell(Cell?, Bool) -> Double
+
+pub fn container_cell_min_width_of_cell(Cell?, Bool) -> Double
 
 pub fn contains_rect_line(ElkRectangle, KVector, KVector) -> Bool
 
@@ -2394,6 +2400,26 @@ pub fn greedy_rectangle_strip_overlap_remover_compare_by_y_coordinate(RectangleN
 
 pub fn greedy_rectangle_strip_overlap_remover_remove_overlaps(RectangleStripOverlapRemover) -> Double
 
+pub fn grid_container_cell_compute_minimum_height(Cell) -> Double
+
+pub fn grid_container_cell_compute_minimum_width(Cell) -> Double
+
+pub fn grid_container_cell_get_cell(Cell, ContainerArea, ContainerArea) -> Cell?
+
+pub fn grid_container_cell_get_center_cell_rectangle(Cell) -> ElkRectangle
+
+pub fn grid_container_cell_get_gap(Cell) -> Double
+
+pub fn grid_container_cell_layout_children_horizontally(Cell) -> Unit
+
+pub fn grid_container_cell_layout_children_vertically(Cell) -> Unit
+
+pub fn grid_container_cell_set_cell(Cell, ContainerArea, ContainerArea, Cell?) -> Unit
+
+pub fn grid_container_cell_set_center_cell_minimum_size(Cell, KVector) -> Unit
+
+pub fn grid_container_cell_set_only_center_cell_contributes_to_minimum_size(Cell, Bool) -> Unit
+
 pub fn hierarchy_handling_to_string(HierarchyHandling) -> String
 
 pub fn high_level_sorting_criterion_values() -> Array[HighLevelSortingCriterion]
@@ -2409,6 +2435,8 @@ pub fn image_export_action_get_exported_files_for_test() -> Array[String]
 pub let image_export_action_id : String
 
 pub fn image_export_action_reset_for_test() -> Unit
+
+pub fn[N, E] init_one_dimensional_components_compaction(IConnectedComponents[N, E], Double) -> OneDimensionalComponentsCompaction[N, E]
 
 pub let inside_self_loops_activate : IProperty[Bool]
 
@@ -2486,6 +2514,10 @@ pub fn label_x(Int) -> Double
 
 pub fn label_y(Int) -> Double
 
+pub fn layered_cgroup_of() -> CGroupBuilder
+
+pub fn layered_cnode_of() -> CNodeBuilder
+
 pub fn layered_compare_fuzzy_eq(Double, Double) -> Bool
 
 pub fn layered_compare_fuzzy_ge(Double, Double) -> Bool
@@ -2498,9 +2530,23 @@ pub fn layered_compare_fuzzy_lt(Double, Double) -> Bool
 
 pub let layered_compare_fuzzy_tolerance : Double
 
+pub fn layered_default_spacing_handler() -> ISpacingsHandler
+
 pub fn layered_is_both_left_or_both_right(LayeredQuadrant, LayeredQuadrant) -> Bool
 
 pub fn layered_is_one_left_one_right(LayeredQuadrant, LayeredQuadrant) -> Bool
+
+pub fn layered_longest_path_compaction(OneDimensionalCompactor) -> Unit
+
+pub fn layered_one_dimensional_compactor_longest_path_compaction(OneDimensionalCompactor) -> Unit
+
+pub fn layered_one_dimensional_compactor_quadratic_constraints(OneDimensionalCompactor) -> Unit
+
+pub fn layered_one_dimensional_compactor_scanline_constraints(OneDimensionalCompactor) -> Unit
+
+pub fn layered_phase_values() -> Array[String]
+
+pub fn layered_phases_to_string(LayeredPhases) -> String
 
 pub fn layered_point_from_kvector(KVector) -> LayeredPoint
 
@@ -2508,7 +2554,11 @@ pub fn layered_point_with_quadrant(LayeredPoint, LayeredQuadrant) -> LayeredPoin
 
 pub fn layered_quadrant_eq(LayeredQuadrant, LayeredQuadrant) -> Bool
 
+pub fn layered_quadratic_constraint_calculation(OneDimensionalCompactor) -> Unit
+
 pub fn layered_rectilinear_convex_hull_of(Array[LayeredPoint]) -> LayeredRectilinearConvexHull
+
+pub fn layered_scanline_constraint_calculation(OneDimensionalCompactor) -> Unit
 
 pub fn[T] layered_scanline_execute(Array[T], (T, T) -> Int, Array[(T) -> Unit]) -> Unit
 
@@ -3104,6 +3154,10 @@ pub fn nedge_of() -> NEdgeBuilder
 
 pub fn network_simplex_for_graph(NGraph) -> NetworkSimplex
 
+pub fn network_simplex_nedge_of() -> NEdgeBuilder
+
+pub fn network_simplex_nnode_of() -> NNodeBuilder
+
 pub fn new_absolute_resource_path(String) -> AbstractResourcePath
 
 pub fn new_abstract_core_debug_grandom_ide_module() -> AbstractCoreDebugGRandomIdeModule
@@ -3192,6 +3246,8 @@ pub fn new_annulus_wedge_compaction() -> AnnulusWedgeCompaction
 
 pub fn new_apply_layout_request() -> ApplyLayoutRequest
 
+pub fn new_atomic_cell() -> Cell
+
 pub fn new_basic_progress_monitor() -> IElkProgressMonitor
 
 pub fn new_bezier_curve(KVector, KVector, KVector, KVector) -> BezierCurve
@@ -3206,6 +3262,8 @@ pub fn[T] new_blackbox_test_method(String, (T, Int) -> Unit, ignored? : Bool) ->
 
 pub fn new_bundle_resource_path(String, String) -> AbstractResourcePath
 
+pub fn new_cell() -> Cell
+
 pub fn new_cgraph(Array[Direction]) -> CGraph
 
 pub fn new_clear_execution_action(AbstractLayoutDebugView) -> ClearExecutionAction
@@ -3214,11 +3272,15 @@ pub fn new_clear_executions_action() -> ClearExecutionsAction
 
 pub fn new_collapse_execution_tree_action(AbstractLayoutDebugView) -> CollapseExecutionTreeAction
 
+pub fn[N, E] new_component(() -> Array[ElkRectangle], () -> Array[IExternalExtension[E]], () -> Array[PortSide]) -> IComponent[N, E]
+
 pub fn new_component_group() -> ComponentGroup
 
 pub fn new_component_group_with_component(LGraph) -> ComponentGroup
 
 pub fn new_components_processor() -> ComponentsProcessor
+
+pub fn[N, E] new_components_to_cgraph_transformer(Double) -> ComponentsToCGraphTransformer[N, E]
 
 pub fn new_compound_graph_element_visitor(visitors? : Array[IGraphElementVisitor]) -> CompoundGraphElementVisitor
 
@@ -3233,6 +3295,10 @@ pub fn new_configurator() -> Configurator
 pub fn new_configurator_provider() -> ConfiguratorProvider
 
 pub fn[T] new_configurator_test_configuration(String, (T) -> LayoutConfigurator, default_configuration? : DefaultConfiguration?) -> ConfiguratorTestConfiguration[T]
+
+pub fn[N, E] new_connected_components(() -> Array[IComponent[N, E]], () -> Bool) -> IConnectedComponents[N, E]
+
+pub fn new_container_cell() -> Cell
 
 pub fn new_convert_graph_handler(project? : GraphTextProject) -> ConvertGraphHandler
 
@@ -3670,6 +3736,8 @@ pub fn[T, G] new_experiment_statement(ExperimentRunner[T, G], RunNotifier) -> Ex
 
 pub fn[T] new_experimental_object(TestAlgorithm, TestConfiguration[T], TestGraph[T]) -> ExperimentalObject[T]
 
+pub fn[E] new_external_extension(() -> E, () -> ElkRectangle, () -> ElkRectangle, () -> Direction, get_placeholder? : () -> ElkRectangle?) -> IExternalExtension[E]
+
 pub fn[T] new_factory(() -> T, destroy_fn? : (T) -> Unit) -> IFactory[T]
 
 pub fn new_fail_if_not_executed() -> FailIfNotExecuted
@@ -3968,6 +4036,8 @@ pub fn new_graphviz_tool(Command) -> GraphvizTool
 
 pub fn new_greedy_rectangle_strip_overlap_removal_strategy() -> IRectangleStripOverlapRemovalStrategy
 
+pub fn new_grid_container_cell(Bool, Bool, Double) -> Cell
+
 pub fn new_grid_elk_node(Int) -> GridElkNode
 
 pub fn new_i_edit_part_filter((Int) -> Bool) -> IEditPartFilter
@@ -4068,6 +4138,24 @@ pub fn new_l_padding() -> Spacing
 
 pub fn new_l_shape() -> LShape
 
+pub fn new_label_cell(Double) -> Cell
+
+pub fn new_label_cell_full(Double, NodeLabelLocation, Bool) -> Cell
+
+pub fn new_label_cell_with_layout_mode(Double, Bool) -> Cell
+
+pub fn new_label_cell_with_node_label_location(Double, NodeLabelLocation) -> Cell
+
+pub fn new_layered_c_graph(Array[Direction]) -> CGraph
+
+pub fn[T] new_layered_c_graph_transformer((T) -> CGraph, () -> Unit) -> LayeredICGraphTransformer[T]
+
+pub fn new_layered_hierarchy_aware_layout_processor() -> Unit
+
+pub fn[T] new_layered_igraph_transformer((T) -> LGraph?, (LGraph) -> Unit) -> LayeredIGraphTransformer[T]
+
+pub fn new_layered_one_dimensional_compactor(CGraph) -> OneDimensionalCompactor
+
 pub fn new_layered_point(Double, Double) -> LayeredPoint
 
 pub fn new_layered_point_in_quadrant(Double, Double, LayeredQuadrant) -> LayeredPoint
@@ -4077,6 +4165,8 @@ pub fn new_layered_quadruplet() -> LayeredQuadruplet
 pub fn new_layered_quadruplet_with_values(Bool, Bool, Bool, Bool) -> LayeredQuadruplet
 
 pub fn new_layered_rectilinear_convex_hull() -> LayeredRectilinearConvexHull
+
+pub fn new_layered_spacings_handler((CNode, CNode) -> Double, (CNode, CNode) -> Double) -> ISpacingsHandler
 
 pub fn new_layout_algorithm_data(String, name? : String, description? : String, validator? : ((Int) -> Array[GraphIssue])?, category_id? : String, bundle_name? : String, preview_image_path? : String, defining_bundle_id? : String, instance_pool_clear_fn? : () -> Unit) -> LayoutAlgorithmData
 
@@ -4304,6 +4394,8 @@ pub fn new_number_value_converter() -> NumberValueConverter
 
 pub fn new_one_dimensional_compactor(CGraph) -> OneDimensionalCompactor
 
+pub fn[N, E] new_one_dimensional_components_compaction(IConnectedComponents[N, E], Double) -> OneDimensionalComponentsCompaction[N, E]
+
 pub fn new_only_on_root_node() -> OnlyOnRootNode
 
 pub fn new_outline_node(Double, Double, OutlineNode?) -> OutlineNode
@@ -4479,6 +4571,8 @@ pub fn new_stress_layout_provider() -> StressLayoutProvider
 pub fn new_stress_majorization() -> StressMajorization
 
 pub fn new_stress_meta_data_provider() -> ILayoutMetaDataProvider
+
+pub fn new_strip_container_cell(Strip, Bool, Double) -> Cell
 
 pub fn new_successor_combination(IPolyominoSuccessor, IPolyominoSuccessor) -> IPolyominoSuccessor
 
@@ -5110,6 +5204,8 @@ pub fn reset_force_graph_model_for_test() -> Unit
 
 pub fn reset_graph_model_for_test() -> Unit
 
+pub fn reset_layered_compaction_oned_model_for_test() -> Unit
+
 pub fn reset_layout_execution_listener_ids_for_test() -> Unit
 
 pub fn reset_layout_listener_ids_for_test() -> Unit
@@ -5307,6 +5403,14 @@ pub let stress_iteration_limit : ForceIntOption
 pub fn stress_layout_provider_as_layout_provider(StressLayoutProvider) -> AbstractLayoutProvider
 
 pub let stress_omit_node_micro_layout : ForceBoolOption
+
+pub fn strip_container_cell_compute_minimum_height(Cell) -> Double
+
+pub fn strip_container_cell_compute_minimum_width(Cell) -> Double
+
+pub fn strip_container_cell_layout_children_horizontally(Cell) -> Unit
+
+pub fn strip_container_cell_layout_children_vertically(Cell) -> Unit
 
 pub fn test_algorithm_from_annotations(Array[Algorithm], Bool, Array[String]) -> Array[TestAlgorithm]
 
@@ -6378,10 +6482,10 @@ pub struct BiLinkedHashMultiMap[V] {
   key_order : Array[Int]
 }
 pub fn[V : Hash + Eq] BiLinkedHashMultiMap::get_key(Self[V], V) -> Int?
-pub fn[V : Hash + Eq] BiLinkedHashMultiMap::get_values(Self[V], Int) -> Array[V]
-pub fn[V : Hash + Eq] BiLinkedHashMultiMap::is_maximal_key(Self[V], Int) -> Bool
-pub fn[V : Hash + Eq] BiLinkedHashMultiMap::is_minimal_key(Self[V], Int) -> Bool
-pub fn[V : Hash + Eq] BiLinkedHashMultiMap::key_set(Self[V]) -> Array[Int]
+pub fn[V] BiLinkedHashMultiMap::get_values(Self[V], Int) -> Array[V]
+pub fn[V] BiLinkedHashMultiMap::is_maximal_key(Self[V], Int) -> Bool
+pub fn[V] BiLinkedHashMultiMap::is_minimal_key(Self[V], Int) -> Bool
+pub fn[V] BiLinkedHashMultiMap::key_set(Self[V]) -> Array[Int]
 pub fn[V : Hash + Eq] BiLinkedHashMultiMap::put(Self[V], Int, V) -> Unit
 pub fn[V : Hash + Eq] BiLinkedHashMultiMap::put_all(Self[V], Int, Array[V]) -> Unit
 
@@ -6469,6 +6573,7 @@ pub fn BlockStack::place_rects_in(Self, Double) -> Unit
 pub fn BlockStack::set_location(Self, Double, Double) -> Unit
 pub fn BlockStack::update_dimension(Self) -> Unit
 
+#alias(LayeredCGraph)
 pub struct CGraph {
   c_nodes : Array[CNode]
   c_groups : Array[CGroup]
@@ -6482,6 +6587,7 @@ pub fn CGraph::groups(Self) -> Array[CGroup]
 pub fn CGraph::nodes(Self) -> Array[CNode]
 pub fn CGraph::supports(Self, Direction) -> Bool
 
+#alias(LayeredCGroup)
 pub struct CGroup {
   handle : Int
 }
@@ -6509,6 +6615,7 @@ pub fn CGroup::set_start_pos(Self, Double) -> Unit
 pub fn CGroup::start_pos(Self) -> Double
 pub impl Eq for CGroup
 
+#alias(LayeredCGroupBuilder)
 pub struct CGroupBuilder {
   nodes : Array[CNode]
   mut reference : CNode?
@@ -6519,14 +6626,17 @@ pub fn CGroupBuilder::master(Self, CNode) -> Self
 pub fn CGroupBuilder::nodes(Self, Array[CNode]) -> Self
 pub fn CGroupBuilder::reference(Self, CNode) -> Self
 
+#alias(LayeredCNode)
 pub struct CNode {
   handle : Int
 }
 pub fn CNode::add_constraint(Self, Self) -> Unit
+pub fn CNode::apply_position(Self) -> Unit
 pub fn CNode::c_group_offset(Self) -> KVector
 pub fn CNode::clear_constraints(Self) -> Unit
 pub fn CNode::constraints(Self) -> Array[Self]
 pub fn CNode::get_debug_svg(Self) -> String
+pub fn CNode::get_position(Self) -> Double
 pub fn CNode::group(Self) -> CGroup?
 pub fn CNode::hitbox(Self) -> ElkRectangle
 pub fn CNode::hitbox_pre_compaction(Self) -> ElkRectangle?
@@ -6548,6 +6658,7 @@ pub fn CNode::to_string(Self) -> String
 pub fn CNode::to_string_delegate(Self) -> ((Self) -> String)?
 pub impl Eq for CNode
 
+#alias(LayeredCNodeBuilder)
 pub struct CNodeBuilder {
   mut id : Int
   mut origin : String?
@@ -6563,6 +6674,73 @@ pub fn CNodeBuilder::id(Self, Int) -> Self
 pub fn CNodeBuilder::node_type(Self, String) -> Self
 pub fn CNodeBuilder::origin(Self, String) -> Self
 pub fn CNodeBuilder::to_string_delegate(Self, (CNode) -> String) -> Self
+
+#alias(AtomicCell)
+#alias(ContainerCell)
+#alias(GridContainerCell)
+#alias(LabelCell)
+#alias(StripContainerCell)
+pub struct Cell {
+  mut kind : CellKind
+  mut padding : Spacing
+  mut cell_rectangle : ElkRectangle
+  mut contributes_to_minimum_width : Bool
+  mut contributes_to_minimum_height : Bool
+  mut minimum_content_area_size : KVector?
+  mut strip_container_mode : Strip?
+  mut strip_symmetrical : Bool
+  mut strip_gap : Double
+  mut strip_cells : Array[Cell?]?
+  mut grid_tabular : Bool
+  mut grid_symmetrical : Bool
+  mut grid_gap : Double
+  mut grid_cells : Array[Array[Cell?]]?
+  mut center_cell_minimum_size : KVector?
+  mut only_center_cell_contributes_to_minimum_size : Bool
+  mut center_cell_rect : ElkRectangle
+  mut label_horizontal_layout_mode : Bool
+  mut label_horizontal_alignment : HorizontalLabelAlignment
+  mut label_vertical_alignment : VerticalLabelAlignment
+  mut label_gap : Double
+  mut labels : Array[Int]?
+}
+pub fn Cell::add_label(Self, Int) -> Unit
+pub fn Cell::apply_horizontal_layout(Self, Self?, Double, Double) -> Unit
+pub fn Cell::apply_label_layout(Self) -> Unit
+pub fn Cell::apply_vertical_layout(Self, Self?, Double, Double) -> Unit
+pub fn Cell::get_cell(Self, ContainerArea) -> Self?
+pub fn Cell::get_cell_rectangle(Self) -> ElkRectangle
+pub fn Cell::get_container_mode(Self) -> Strip
+pub fn Cell::get_gap(Self) -> Double
+pub fn Cell::get_horizontal_alignment(Self) -> HorizontalLabelAlignment
+pub fn Cell::get_labels(Self) -> Array[Int]
+pub fn Cell::get_minimum_content_area_size(Self) -> KVector
+pub fn Cell::get_minimum_height(Self) -> Double
+pub fn Cell::get_minimum_width(Self) -> Double
+pub fn Cell::get_padding(Self) -> Spacing
+pub fn Cell::get_vertical_alignment(Self) -> VerticalLabelAlignment
+pub fn Cell::has_labels(Self) -> Bool
+pub fn Cell::is_contributing_to_minimum_height(Self) -> Bool
+pub fn Cell::is_contributing_to_minimum_width(Self) -> Bool
+pub fn Cell::layout_children_horizontally(Self) -> Unit
+pub fn Cell::layout_children_vertically(Self) -> Unit
+pub fn Cell::set_cell(Self, ContainerArea, Self?) -> Unit
+pub fn Cell::set_cell_rectangle(Self, ElkRectangle) -> Unit
+pub fn Cell::set_contributes_to_minimum_height(Self, Bool) -> Unit
+pub fn Cell::set_contributes_to_minimum_width(Self, Bool) -> Unit
+pub fn Cell::set_horizontal_alignment(Self, HorizontalLabelAlignment) -> Self
+pub fn Cell::set_minimum_content_area_size(Self, KVector, Bool) -> Unit
+pub fn Cell::set_padding(Self, Spacing) -> Unit
+pub fn Cell::set_vertical_alignment(Self, VerticalLabelAlignment) -> Self
+
+pub enum CellKind {
+  BaseCellKind
+  AtomicCellKind
+  ContainerCellKind
+  StripContainerCellKind
+  GridContainerCellKind
+  LabelCellKind
+}
 
 pub enum CenterEdgeLabelPlacementStrategy {
   MedianLayer
@@ -6623,11 +6801,38 @@ pub enum ComponentOrderingStrategy {
   ModelOrder
 }
 
+type ComponentsCompactionComponentOffset
+
+type ComponentsCompactionExternalExtensionEntry[E]
+
+type ComponentsCompactionNodeInfo
+
+type ComponentsCompactionPlaceholderEntry
+
 pub struct ComponentsProcessor {
   _dummy : Unit
 }
 pub fn ComponentsProcessor::recombine(Self, Array[FGraph]) -> FGraph
 pub fn ComponentsProcessor::split(Self, FGraph) -> Array[FGraph]
+
+pub struct ComponentsToCGraphTransformer[N, E] {
+  mut c_graph : CGraph
+  spacing : Double
+  component_offsets : Array[ComponentsCompactionComponentOffset]
+  external_extensions : Array[ComponentsCompactionExternalExtensionEntry[E]]
+  external_placeholders : Array[ComponentsCompactionPlaceholderEntry]
+  node_infos : Array[ComponentsCompactionNodeInfo]
+  mut global_offset : KVector
+  mut graph_size : KVector
+}
+pub fn[N, E] ComponentsToCGraphTransformer::apply_layout(Self[N, E]) -> Unit
+pub fn[N, E] ComponentsToCGraphTransformer::get_external_extensions(Self[N, E]) -> Array[(IExternalExtension[E], (CGroup, CNode))]
+pub fn[N, E] ComponentsToCGraphTransformer::get_external_placeholders(Self[N, E]) -> Array[(Direction, (CGroup, CNode))]
+pub fn[N, E] ComponentsToCGraphTransformer::get_global_offset(Self[N, E]) -> KVector
+pub fn[N, E] ComponentsToCGraphTransformer::get_graph_size(Self[N, E]) -> KVector
+pub fn[N, E] ComponentsToCGraphTransformer::get_offset(Self[N, E], IComponent[N, E]) -> KVector
+pub fn[N, E] ComponentsToCGraphTransformer::is_locked(Self[N, E], CNode, Direction) -> Bool
+pub fn[N, E] ComponentsToCGraphTransformer::transform(Self[N, E], IConnectedComponents[N, E]) -> CGraph
 
 pub struct CompoundGraphElementVisitor {
   graph_visitors : Array[IGraphElementVisitor]
@@ -6676,7 +6881,7 @@ pub enum ConstraintCalculationStrategy {
   Scanline
 }
 
-pub enum ContainerArea {
+pub(all) enum ContainerArea {
   Begin
   Center
   End
@@ -10669,7 +10874,7 @@ pub enum HighLevelSortingCriterion {
   CornerCasesThanSingleSideLast
 }
 
-pub enum HorizontalLabelAlignment {
+pub(all) enum HorizontalLabelAlignment {
   Left
   Center
   Right
@@ -10688,6 +10893,23 @@ pub struct ICompactor {
   compact_fn : (DCGraph) -> Unit
 }
 pub fn ICompactor::compact(Self, DCGraph) -> Unit
+
+pub struct IComponent[N, E] {
+  _instance_id : Int
+  get_hull_fn : () -> Array[ElkRectangle]
+  get_external_extensions_fn : () -> Array[IExternalExtension[E]]
+  get_external_extension_sides_fn : () -> Array[PortSide]
+}
+pub fn[N, E] IComponent::get_external_extension_sides(Self[N, E]) -> Array[PortSide]
+pub fn[N, E] IComponent::get_external_extensions(Self[N, E]) -> Array[IExternalExtension[E]]
+pub fn[N, E] IComponent::get_hull(Self[N, E]) -> Array[ElkRectangle]
+
+pub struct IConnectedComponents[N, E] {
+  get_components_fn : () -> Array[IComponent[N, E]]
+  is_contains_external_extensions_fn : () -> Bool
+}
+pub fn[N, E] IConnectedComponents::get_components(Self[N, E]) -> Array[IComponent[N, E]]
+pub fn[N, E] IConnectedComponents::is_contains_external_extensions(Self[N, E]) -> Bool
 
 pub struct IDataObject {
   parse_fn : (String) -> Unit
@@ -10744,6 +10966,20 @@ pub struct IExecutionInfoModelListener {
 }
 pub fn IExecutionInfoModelListener::execution_info_changed(Self) -> Unit
 pub fn IExecutionInfoModelListener::get_id(Self) -> Int
+
+pub struct IExternalExtension[E] {
+  _instance_id : Int
+  get_representative_fn : () -> E
+  get_representor_fn : () -> ElkRectangle
+  get_placeholder_fn : () -> ElkRectangle?
+  get_parent_fn : () -> ElkRectangle
+  get_direction_fn : () -> Direction
+}
+pub fn[E] IExternalExtension::get_direction(Self[E]) -> Direction
+pub fn[E] IExternalExtension::get_parent(Self[E]) -> ElkRectangle
+pub fn[E] IExternalExtension::get_placeholder(Self[E]) -> ElkRectangle?
+pub fn[E] IExternalExtension::get_representative(Self[E]) -> E
+pub fn[E] IExternalExtension::get_representor(Self[E]) -> ElkRectangle
 
 pub struct IFactory[T] {
   create_fn : () -> T
@@ -10874,6 +11110,7 @@ pub struct IRectangleStripOverlapRemovalStrategy {
 }
 pub fn IRectangleStripOverlapRemovalStrategy::remove_overlaps(Self, RectangleStripOverlapRemover) -> Double
 
+#alias(LayeredISpacingsHandler)
 pub struct ISpacingsHandler {
   get_horizontal_spacing : (CNode, CNode) -> Double
   get_vertical_spacing : (CNode, CNode) -> Double
@@ -11374,6 +11611,28 @@ pub struct LayeredHullRectangleEventState {
   mut last_x : Double
   mut queued : ElkRectangle?
   mut queued_point : LayeredPoint?
+}
+
+pub struct LayeredICGraphTransformer[T] {
+  transform_fn : (T) -> CGraph
+  apply_layout_fn : () -> Unit
+}
+pub fn[T] LayeredICGraphTransformer::apply_layout(Self[T]) -> Unit
+pub fn[T] LayeredICGraphTransformer::transform(Self[T], T) -> CGraph
+
+pub struct LayeredIGraphTransformer[T] {
+  import_graph_fn : (T) -> LGraph?
+  apply_layout_fn : (LGraph) -> Unit
+}
+pub fn[T] LayeredIGraphTransformer::apply_layout(Self[T], LGraph) -> Unit
+pub fn[T] LayeredIGraphTransformer::import_graph(Self[T], T) -> LGraph?
+
+pub enum LayeredPhases {
+  P1CycleBreaking
+  P2Layering
+  P3NodeOrdering
+  P4NodePlacement
+  P5EdgeRouting
 }
 
 pub struct LayeredPoint {
@@ -12430,6 +12689,7 @@ pub fn MultipleOptionsCellEditor::set_next_dialog_result_for_test(Self, Array[St
 pub fn MultipleOptionsCellEditor::set_value(Self, Array[String]) -> Unit
 pub fn MultipleOptionsCellEditor::update_contents(Self) -> String
 
+#alias(NetworkSimplexNEdge)
 pub struct NEdge {
   handle : Int
 }
@@ -12450,6 +12710,7 @@ pub fn NEdge::set_tree_edge(Self, Bool) -> Unit
 pub fn NEdge::set_weight(Self, Double) -> Unit
 pub impl Eq for NEdge
 
+#alias(NetworkSimplexNEdgeBuilder)
 pub struct NEdgeBuilder {
   mut id : Int
   mut origin : String?
@@ -12473,6 +12734,7 @@ pub fn NGraph::is_acyclic(Self) -> Bool
 pub fn NGraph::make_connected(Self) -> NNode?
 pub fn NGraph::write_debug_graph(Self, String) -> Unit
 
+#alias(NetworkSimplexNNode)
 pub struct NNode {
   handle : Int
 }
@@ -12492,6 +12754,7 @@ pub fn NNode::set_tree_node(Self, Bool) -> Unit
 pub fn NNode::unknown_cutvalues(Self) -> Array[NEdge]
 pub impl Eq for NNode
 
+#alias(NetworkSimplexNNodeBuilder)
 pub struct NNodeBuilder {
   mut id : Int
   mut origin : String?
@@ -12628,6 +12891,7 @@ pub struct NumberValueConverter {
 pub fn NumberValueConverter::to_string(Self, Double?) -> String
 pub fn NumberValueConverter::to_value(Self, String) -> Double
 
+#alias(LayeredOneDimensionalCompactor)
 pub struct OneDimensionalCompactor {
   c_graph : CGraph
   mut lock_fun : ((CNode, Direction) -> Bool)?
@@ -12637,6 +12901,8 @@ pub struct OneDimensionalCompactor {
   mut compaction_algorithm : (OneDimensionalCompactor) -> Unit
   mut constraint_algorithm : (OneDimensionalCompactor) -> Unit
 }
+pub fn OneDimensionalCompactor::apply_locking_strategy(Self) -> Self
+pub fn OneDimensionalCompactor::apply_locking_strategy_with_direction(Self, Direction) -> Self
 pub fn OneDimensionalCompactor::calculate_group_offsets(Self) -> Self
 pub fn OneDimensionalCompactor::change_direction(Self, Direction) -> Self
 pub fn OneDimensionalCompactor::compact(Self) -> Self
@@ -12647,7 +12913,20 @@ pub fn OneDimensionalCompactor::is_locked_node(Self, CNode, Direction) -> Bool
 pub fn OneDimensionalCompactor::set_compaction_algorithm(Self, (Self) -> Unit) -> Self
 pub fn OneDimensionalCompactor::set_constraint_algorithm(Self, (Self) -> Unit) -> Self
 pub fn OneDimensionalCompactor::set_lock_function(Self, ((CNode, Direction) -> Bool)?) -> Self
+pub fn OneDimensionalCompactor::set_locking_strategy(Self, (CNode, Direction) -> Bool) -> Self
 pub fn OneDimensionalCompactor::set_spacings_handler(Self, ISpacingsHandler) -> Self
+
+pub struct OneDimensionalComponentsCompaction[N, E] {
+  compaction_graph : CGraph
+  transformer : ComponentsToCGraphTransformer[N, E]
+  vertical_external_extensions : Array[(CGroup, CNode)]
+  horizontal_external_extensions : Array[(CGroup, CNode)]
+  mut top_left : KVector
+  mut bottom_right : KVector
+}
+pub fn[N, E] OneDimensionalComponentsCompaction::compact(Self[N, E], IElkProgressMonitor) -> Unit
+pub fn[N, E] OneDimensionalComponentsCompaction::get_graph_size(Self[N, E]) -> KVector
+pub fn[N, E] OneDimensionalComponentsCompaction::get_offset(Self[N, E], IComponent[N, E]) -> KVector
 
 pub struct OnlyOnRootNode {
   marker : Int
@@ -13473,6 +13752,11 @@ pub struct StressMajorization {
 pub fn StressMajorization::execute(Self) -> Unit
 pub fn StressMajorization::initialize(Self, FGraph) -> Unit
 
+pub(all) enum Strip {
+  Vertical
+  Horizontal
+}
+
 pub struct SvgImage {
   spacing : Double
   mut view_box_x : Double
@@ -13772,7 +14056,7 @@ pub struct VertiFlexLayoutProvider {
 pub fn VertiFlexLayoutProvider::assemble_algorithm(Self, Int) -> Array[ILayoutProcessor[VertiFlexLayoutPhases, Int]]
 pub fn VertiFlexLayoutProvider::layout(Self, Int, IElkProgressMonitor) -> Unit
 
-pub enum VerticalLabelAlignment {
+pub(all) enum VerticalLabelAlignment {
   Top
   Center
   Bottom
@@ -13881,6 +14165,14 @@ pub type ICostFunction = (TEdge) -> Double
 pub type ILockFunction = (CNode, Direction) -> Bool
 
 pub type IOverlapHandler = (Node, Node) -> Unit
+
+pub type LayeredICompactionAlgorithm = (OneDimensionalCompactor) -> Unit
+
+pub type LayeredIConstraintCalculationAlgorithm = (OneDimensionalCompactor) -> Unit
+
+pub type LayeredIHierarchyAwareLayoutProcessor = Unit
+
+pub type LayeredILockFunction = (CNode, Direction) -> Bool
 
 pub type LayeredScanlineEventHandler[T] = (T) -> Unit
 

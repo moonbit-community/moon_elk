@@ -1,2 +1,4 @@
 ///|
-pub type LayeredIConstraintCalculationAlgorithm = (LayeredOneDimensionalCompactor) -> Unit
+pub type LayeredIConstraintCalculationAlgorithm = (
+  LayeredOneDimensionalCompactor,
+) -> Unit

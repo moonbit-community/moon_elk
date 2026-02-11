@@ -1,5 +1,7 @@
 ///|
-fn compaction_rect_to_tuple(rect : ElkRectangle) -> (Double, Double, Double, Double) {
+fn compaction_rect_to_tuple(
+  rect : ElkRectangle,
+) -> (Double, Double, Double, Double) {
   (rect.x, rect.y, rect.width, rect.height)
 }
 
@@ -44,7 +46,10 @@ test "IExternalExtension default placeholder is none and accessors delegate" {
   )
 
   assert_eq(ext.get_representative(), "edge-1")
-  assert_eq(compaction_rect_to_tuple(ext.get_representor()), (1.0, 2.0, 3.0, 4.0))
+  assert_eq(
+    compaction_rect_to_tuple(ext.get_representor()),
+    (1.0, 2.0, 3.0, 4.0),
+  )
   assert_eq(compaction_rect_to_tuple(ext.get_parent()), (5.0, 6.0, 7.0, 8.0))
   assert_eq(direction_to_string(ext.get_direction()), "RIGHT")
   assert_eq(compaction_rect_opt_to_tuple(ext.get_placeholder()), None)

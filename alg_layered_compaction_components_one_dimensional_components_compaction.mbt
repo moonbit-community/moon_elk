@@ -6,12 +6,20 @@ priv enum ComponentsCompactionAxis {
 
 ///|
 fn components_compaction_od_double_min(left : Double, right : Double) -> Double {
-  if left < right { left } else { right }
+  if left < right {
+    left
+  } else {
+    right
+  }
 }
 
 ///|
 fn components_compaction_od_double_max(left : Double, right : Double) -> Double {
-  if left > right { left } else { right }
+  if left > right {
+    left
+  } else {
+    right
+  }
 }
 
 ///|
@@ -179,7 +187,10 @@ fn[N, E] OneDimensionalComponentsCompaction::add_placeholders(
     }
     match node.group() {
       Some(group) =>
-        if !components_compaction_contains(self.compaction_graph.c_groups, group) {
+        if !components_compaction_contains(
+            self.compaction_graph.c_groups,
+            group,
+          ) {
           self.compaction_graph.c_groups.push(group)
         }
       None => ()
@@ -200,7 +211,8 @@ fn[N, E] OneDimensionalComponentsCompaction::remove_placeholders(
     }
     ignore(array_remove_first(self.compaction_graph.c_nodes, node))
     match node.group() {
-      Some(group) => ignore(array_remove_first(self.compaction_graph.c_groups, group))
+      Some(group) =>
+        ignore(array_remove_first(self.compaction_graph.c_groups, group))
       None => ()
     }
   }
@@ -238,7 +250,10 @@ fn[N, E] OneDimensionalComponentsCompaction::update_external_extension_dimension
   for external_extension_entry in self.transformer.get_external_extensions() {
     let (external_extension, group_node_pair) = external_extension_entry
     let (group, node) = group_node_pair
-    if !components_compaction_direction_in_axis(external_extension.get_direction(), axis) {
+    if !components_compaction_direction_in_axis(
+        external_extension.get_direction(),
+        axis,
+      ) {
       continue
     }
 
@@ -355,7 +370,9 @@ pub fn[N, E] OneDimensionalComponentsCompaction::compact(
 
   let compactor = new_one_dimensional_compactor(self.compaction_graph)
   ignore(
-    compactor.set_spacings_handler(components_to_cgraph_spacing_handler(self.transformer)),
+    compactor.set_spacings_handler(
+      components_to_cgraph_spacing_handler(self.transformer),
+    ),
   )
 
   self.remove_external_edge_representations(self.horizontal_external_extensions)
@@ -393,12 +410,16 @@ pub fn[N, E] OneDimensionalComponentsCompaction::compact(
     return
   }
 
-  ignore(compactor.set_lock_function(Some((node, _direction) => {
-    match node.group() {
-      Some(group) => group.out_degree() != 0
-      None => false
-    }
-  })))
+  ignore(
+    compactor.set_lock_function(
+      Some((node, _direction) => {
+        match node.group() {
+          Some(group) => group.out_degree() != 0
+          None => false
+        }
+      }),
+    ),
+  )
 
   let mut run = 0
   let mut delta = 0.0
@@ -406,19 +427,23 @@ pub fn[N, E] OneDimensionalComponentsCompaction::compact(
   while should_continue {
     delta = self.compact_iteration(compactor)
     run = run + 1
-    should_continue =
-      (run < 2 || delta > components_compaction_epsilon) &&
+    should_continue = (run < 2 || delta > components_compaction_epsilon) &&
       run < components_compaction_max_iteration
   }
 
-  ignore(compactor.set_lock_function(Some((node, direction) => {
-    self.transformer.is_locked(node, direction) ||
-    (match node.group() {
-      Some(group) =>
-        group.out_degree() != 0 && self.transformer.is_locked(node, direction)
-      None => false
-    })
-  })))
+  ignore(
+    compactor.set_lock_function(
+      Some((node, direction) => {
+        self.transformer.is_locked(node, direction) ||
+        (match node.group() {
+          Some(group) =>
+            group.out_degree() != 0 &&
+            self.transformer.is_locked(node, direction)
+          None => false
+        })
+      }),
+    ),
+  )
   ignore(self.compact_iteration(compactor))
 
   ignore(compactor.finish())
@@ -437,7 +462,8 @@ pub fn[N, E] OneDimensionalComponentsCompaction::get_offset(
   self : OneDimensionalComponentsCompaction[N, E],
   component : IComponent[N, E],
 ) -> KVector {
-  self.transformer.get_offset(component).negate().add(
-    self.transformer.get_global_offset(),
-  )
+  self.transformer
+  .get_offset(component)
+  .negate()
+  .add(self.transformer.get_global_offset())
 }

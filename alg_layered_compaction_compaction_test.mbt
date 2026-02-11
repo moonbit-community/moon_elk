@@ -55,10 +55,18 @@ test "ComponentsToCGraphTransformer applies lock, spacing and rectangle layout" 
   assert_eq(graph.c_nodes.length(), 1)
   let node = graph.c_nodes[0]
 
-  assert_true(transformer.is_locked(node, layered_compaction_test_direction("LEFT")))
-  assert_true(transformer.is_locked(node, layered_compaction_test_direction("RIGHT")))
-  assert_true(transformer.is_locked(node, layered_compaction_test_direction("UP")))
-  assert_false(transformer.is_locked(node, layered_compaction_test_direction("DOWN")))
+  assert_true(
+    transformer.is_locked(node, layered_compaction_test_direction("LEFT")),
+  )
+  assert_true(
+    transformer.is_locked(node, layered_compaction_test_direction("RIGHT")),
+  )
+  assert_true(
+    transformer.is_locked(node, layered_compaction_test_direction("UP")),
+  )
+  assert_false(
+    transformer.is_locked(node, layered_compaction_test_direction("DOWN")),
+  )
 
   let extension_entries = transformer.get_external_extensions()
   assert_eq(extension_entries.length(), 1)
@@ -100,7 +108,11 @@ test "ComponentsToCGraphTransformer applies lock, spacing and rectangle layout" 
 ///|
 test "OneDimensionalComponentsCompaction keeps single component size and offset" {
   let hull = new_elk_rectangle_xywh(0.0, 0.0, 20.0, 10.0)
-  let component : IComponent[Unit, Int] = new_component(() => [hull], () => [], () => [])
+  let component : IComponent[Unit, Int] = new_component(
+    () => [hull],
+    () => [],
+    () => [],
+  )
   let connected : IConnectedComponents[Unit, Int] = new_connected_components(
     () => [component],
     () => false,

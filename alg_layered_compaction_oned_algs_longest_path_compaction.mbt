@@ -6,5 +6,4 @@ pub fn layered_longest_path_compaction(
 }
 
 ///|
-pub let layered_one_dimensional_compactor_longest_path_compaction : LayeredICompactionAlgorithm =
-  layered_longest_path_compaction
+pub let layered_one_dimensional_compactor_longest_path_compaction : LayeredICompactionAlgorithm = layered_longest_path_compaction

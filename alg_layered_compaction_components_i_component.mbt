@@ -31,7 +31,9 @@ pub fn[N, E] new_component(
 }
 
 ///|
-pub fn[N, E] IComponent::get_hull(self : IComponent[N, E]) -> Array[ElkRectangle] {
+pub fn[N, E] IComponent::get_hull(
+  self : IComponent[N, E],
+) -> Array[ElkRectangle] {
   (self.get_hull_fn)()
 }
 

@@ -70,7 +70,12 @@ test "Layered OneDimensionalCompactor left compaction" {
     .hitbox(layered_oned_rect(30.0, 0.0, 20.0, 20.0))
     .create(graph)
 
-  ignore(layered_oned_compactor(graph).change_direction(layered_oned_dir_left()).compact().finish())
+  ignore(
+    layered_oned_compactor(graph)
+    .change_direction(layered_oned_dir_left())
+    .compact()
+    .finish(),
+  )
 
   layered_oned_assert_close(left.hitbox().x, 0.0)
   layered_oned_assert_close(right.hitbox().x, 20.0)
@@ -88,7 +93,12 @@ test "Layered OneDimensionalCompactor right compaction" {
     .hitbox(layered_oned_rect(30.0, 0.0, 20.0, 20.0))
     .create(graph)
 
-  ignore(layered_oned_compactor(graph).change_direction(layered_oned_dir_right()).compact().finish())
+  ignore(
+    layered_oned_compactor(graph)
+    .change_direction(layered_oned_dir_right())
+    .compact()
+    .finish(),
+  )
 
   layered_oned_assert_close(left.hitbox().x, 10.0)
   layered_oned_assert_close(right.hitbox().x, 30.0)
@@ -110,7 +120,12 @@ test "Layered OneDimensionalCompactor preserves grouped offsets" {
     .create(graph)
 
   ignore(layered_cgroup_of().nodes([upper_right, lower_right]).create(graph))
-  ignore(layered_oned_compactor(graph).change_direction(layered_oned_dir_left()).compact().finish())
+  ignore(
+    layered_oned_compactor(graph)
+    .change_direction(layered_oned_dir_left())
+    .compact()
+    .finish(),
+  )
 
   layered_oned_assert_close(left.hitbox().x, 0.0)
   layered_oned_assert_close(upper_right.hitbox().x, 20.0)
