@@ -1,2 +1,10 @@
-// Upstream counterpart: alg_common_networksimplex_n_edge.mbt
-// Implementation is currently provided in aggregated translated files.
+///|
+pub type NetworkSimplexNEdge = NEdge
+
+///|
+pub type NetworkSimplexNEdgeBuilder = NEdgeBuilder
+
+///|
+pub fn network_simplex_nedge_of() -> NetworkSimplexNEdgeBuilder {
+  nedge_of()
+}

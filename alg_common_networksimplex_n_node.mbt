@@ -1,2 +1,10 @@
-// Upstream counterpart: alg_common_networksimplex_n_node.mbt
-// Implementation is currently provided in aggregated translated files.
+///|
+pub type NetworkSimplexNNode = NNode
+
+///|
+pub type NetworkSimplexNNodeBuilder = NNodeBuilder
+
+///|
+pub fn network_simplex_nnode_of() -> NetworkSimplexNNodeBuilder {
+  nnode_of()
+}
