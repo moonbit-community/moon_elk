@@ -2430,6 +2430,10 @@ pub fn horizontal_label_alignment_to_string(HorizontalLabelAlignment) -> String
 
 pub fn horizontal_label_alignment_values() -> Array[HorizontalLabelAlignment]
 
+pub fn i_crossing_minimization_heuristic_init(Array[ICrossingMinimizationHeuristic], Array[Array[LNode]]) -> Unit
+
+pub fn i_initializable_init(Array[IInitializable], Array[Array[LNode]]) -> Unit
+
 pub fn image_export_action_complete_file_name(String?) -> String?
 
 pub fn image_export_action_get_exported_files_for_test() -> Array[String]
@@ -4056,9 +4060,13 @@ pub fn new_grid_container_cell(Bool, Bool, Double) -> Cell
 
 pub fn new_grid_elk_node(Int) -> GridElkNode
 
+pub fn new_i_crossing_minimization_heuristic(() -> Bool, (Array[Array[LNode]], Bool) -> Bool, (Array[Array[LNode]], Int, Bool, Bool) -> Bool, () -> Bool, init_at_layer_level? : (Int, Array[Array[LNode]]) -> Unit, init_at_node_level? : (Int, Int, Array[Array[LNode]]) -> Unit, init_at_port_level? : (Int, Int, Int, Array[Array[LNode]]) -> Unit, init_at_edge_level? : (Int, Int, Int, Int, LEdge, Array[Array[LNode]]) -> Unit, init_after_traversal? : () -> Unit) -> ICrossingMinimizationHeuristic
+
 pub fn new_i_edit_part_filter((Int) -> Bool) -> IEditPartFilter
 
 pub fn new_i_edit_part_filter_default_impl() -> IEditPartFilter
+
+pub fn new_i_initializable(init_at_layer_level? : (Int, Array[Array[LNode]]) -> Unit, init_at_node_level? : (Int, Int, Array[Array[LNode]]) -> Unit, init_at_port_level? : (Int, Int, Int, Array[Array[LNode]]) -> Unit, init_at_edge_level? : (Int, Int, Int, Int, LEdge, Array[Array[LNode]]) -> Unit, init_after_traversal? : () -> Unit) -> IInitializable
 
 pub fn new_icompactor((DCGraph) -> Unit) -> ICompactor
 
@@ -10951,6 +10959,24 @@ pub struct IConnectedComponents[N, E] {
 pub fn[N, E] IConnectedComponents::get_components(Self[N, E]) -> Array[IComponent[N, E]]
 pub fn[N, E] IConnectedComponents::is_contains_external_extensions(Self[N, E]) -> Bool
 
+pub struct ICrossingMinimizationHeuristic {
+  initializable : IInitializable
+  always_improves_fn : () -> Bool
+  set_first_layer_order_fn : (Array[Array[LNode]], Bool) -> Bool
+  minimize_crossings_fn : (Array[Array[LNode]], Int, Bool, Bool) -> Bool
+  is_deterministic_fn : () -> Bool
+}
+pub fn ICrossingMinimizationHeuristic::always_improves(Self) -> Bool
+pub fn ICrossingMinimizationHeuristic::as_initializable(Self) -> IInitializable
+pub fn ICrossingMinimizationHeuristic::init_after_traversal(Self) -> Unit
+pub fn ICrossingMinimizationHeuristic::init_at_edge_level(Self, Int, Int, Int, Int, LEdge, Array[Array[LNode]]) -> Unit
+pub fn ICrossingMinimizationHeuristic::init_at_layer_level(Self, Int, Array[Array[LNode]]) -> Unit
+pub fn ICrossingMinimizationHeuristic::init_at_node_level(Self, Int, Int, Array[Array[LNode]]) -> Unit
+pub fn ICrossingMinimizationHeuristic::init_at_port_level(Self, Int, Int, Int, Array[Array[LNode]]) -> Unit
+pub fn ICrossingMinimizationHeuristic::is_deterministic(Self) -> Bool
+pub fn ICrossingMinimizationHeuristic::minimize_crossings(Self, Array[Array[LNode]], Int, Bool, Bool) -> Bool
+pub fn ICrossingMinimizationHeuristic::set_first_layer_order(Self, Array[Array[LNode]], Bool) -> Bool
+
 pub struct IDataObject {
   parse_fn : (String) -> Unit
 }
@@ -11051,6 +11077,19 @@ pub struct IGraphTransformer[G] {
 }
 pub fn[G] IGraphTransformer::apply_layout(Self[G]) -> Unit
 pub fn[G] IGraphTransformer::import_graph(Self[G], G) -> DCGraph
+
+pub struct IInitializable {
+  init_at_layer_level_fn : (Int, Array[Array[LNode]]) -> Unit
+  init_at_node_level_fn : (Int, Int, Array[Array[LNode]]) -> Unit
+  init_at_port_level_fn : (Int, Int, Int, Array[Array[LNode]]) -> Unit
+  init_at_edge_level_fn : (Int, Int, Int, Int, LEdge, Array[Array[LNode]]) -> Unit
+  init_after_traversal_fn : () -> Unit
+}
+pub fn IInitializable::init_after_traversal(Self) -> Unit
+pub fn IInitializable::init_at_edge_level(Self, Int, Int, Int, Int, LEdge, Array[Array[LNode]]) -> Unit
+pub fn IInitializable::init_at_layer_level(Self, Int, Array[Array[LNode]]) -> Unit
+pub fn IInitializable::init_at_node_level(Self, Int, Int, Array[Array[LNode]]) -> Unit
+pub fn IInitializable::init_at_port_level(Self, Int, Int, Int, Array[Array[LNode]]) -> Unit
 
 pub struct ILayoutConfigurationStore {
   get_editing_domain_fn : () -> Int?
