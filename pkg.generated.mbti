@@ -30,6 +30,10 @@ pub fn alignment_to_string(Alignment) -> String
 
 pub fn all_edges() -> Array[Int]
 
+pub let all_files_recursive_suffix : String
+
+pub let all_files_suffix : String
+
 pub let apply_layout_role : String
 
 pub fn apply_visitor(Int, IGraphElementVisitor) -> Unit
@@ -58,6 +62,8 @@ pub fn base_grid_visibility_to_string(BaseGridVisibility) -> String
 
 pub fn base_grid_visibility_values() -> Array[BaseGridVisibility]
 
+pub fn base_path_for_property(String) -> String
+
 pub fn binomiald(Int, Int) -> Double
 
 pub fn binomiall(Int, Int) -> Int64
@@ -71,6 +77,8 @@ pub fn boundi(Int, Int, Int) -> Int
 pub fn boundl(Int64, Int64, Int64) -> Int64
 
 pub fn bowyer_watson_triangulate(Array[KVector], debug_output_file? : String?) -> Array[TEdge]
+
+pub let bundle_resource_path_property : String
 
 pub fn cgroup_of() -> CGroupBuilder
 
@@ -151,6 +159,8 @@ pub fn config_state_set_depth(ConfigState, Int) -> Unit
 pub fn config_state_set_high(ConfigState, Int) -> Unit
 
 pub fn config_state_set_low(ConfigState, Int) -> Unit
+
+pub fn[T] configurator_test_configuration_from_providers(Array[(String, (T) -> LayoutConfigurator)], default_configuration? : DefaultConfiguration?) -> Array[ConfiguratorTestConfiguration[T]]
 
 pub fn connectable_shape_to_node(ElkConnectableShape?) -> Int
 
@@ -1426,6 +1436,8 @@ pub fn elk_ui_plugin_reset_for_test() -> Unit
 
 pub let elk_unknown_work : Double
 
+pub fn ensure_results_path_exists() -> Unit
+
 pub fn[P, G] enum_based_factory_compare(ILayoutProcessorFactory[P, G], ILayoutProcessorFactory[P, G]) -> Int
 
 pub fn execution_info_from_progress_monitor(IElkProgressMonitor) -> Int
@@ -1485,6 +1497,8 @@ pub let execution_time_view_id : String
 pub let expand_execution_tree_action_id : String
 
 pub let expand_nodes : IProperty[Bool]
+
+pub fn[T] experimental_object_inflate(Array[TestAlgorithm], Array[TestConfiguration[T]], Array[TestGraph[T]]) -> Array[ExperimentalObject[T]]
 
 pub let extp_id_layout_connectors : String
 
@@ -1894,6 +1908,14 @@ pub fn grandom_activator_reset_for_test() -> Unit
 
 pub fn graph_feature_values() -> Array[GraphFeature]
 
+pub fn graph_from_file_filter() -> FileExtensionFilter
+
+pub fn graph_from_file_from_resource_paths(Array[AbstractResourcePath]) -> Array[GraphFromFile]
+
+pub fn graph_from_file_register_content_for_test(String, String) -> Unit
+
+pub fn graph_from_file_reset_content_for_test() -> Unit
+
 pub fn graph_identifier_generator_for_graph(Int) -> GraphIdentifierGenerator
 
 pub fn graph_issue_list_to_string(Array[GraphIssue]) -> String
@@ -2023,6 +2045,26 @@ pub fn graph_json_text_ui_object_tag(GraphJsonTextUiObject) -> String
 pub let graph_json_text_ui_plugin_id : String
 
 pub let graph_json_text_ui_status_error : Int
+
+pub fn graph_test_shape_label(Int) -> GraphTestShape
+
+pub fn graph_test_shape_node(Int) -> GraphTestShape
+
+pub fn graph_test_shape_port(Int) -> GraphTestShape
+
+pub fn graph_test_utils_all_nodes(Int, Bool) -> Array[Int]
+
+pub fn graph_test_utils_create_hierarchical_graph() -> Int
+
+pub fn graph_test_utils_create_simple_graph() -> Int
+
+pub fn graph_test_utils_create_three_node_graph() -> Int
+
+pub fn graph_test_utils_get_child(Int, Array[String]) -> Int
+
+pub fn graph_test_utils_get_port(Int, String) -> Int
+
+pub fn graph_test_utils_have_overlaps(Array[GraphTestShape]) -> Bool
 
 pub let graph_text_antlr_token_file_content : String
 
@@ -2622,6 +2664,8 @@ pub fn meta_activator_reset_for_test() -> Unit
 
 pub fn meta_data_standalone_setup_do_setup() -> CoreMetaInjector
 
+pub fn[T] method_test_configuration_from_methods(Array[(String, (T, Int) -> Unit)], default_configuration? : DefaultConfiguration?) -> Array[MethodTestConfiguration[T]]
+
 pub fn mind(Array[Double]) -> Double
 
 pub fn minf(Array[Double]) -> Double
@@ -2629,6 +2673,8 @@ pub fn minf(Array[Double]) -> Double
 pub fn mini(Array[Int]) -> Int
 
 pub fn minl(Array[Int64]) -> Int64
+
+pub let model_resource_path_property : String
 
 pub fn monitored_operation_status_ok() -> MonitoredOperationStatus
 
@@ -2992,6 +3038,8 @@ pub fn nedge_of() -> NEdgeBuilder
 
 pub fn network_simplex_for_graph(NGraph) -> NetworkSimplex
 
+pub fn new_absolute_resource_path(String) -> AbstractResourcePath
+
 pub fn new_abstract_core_debug_grandom_ide_module() -> AbstractCoreDebugGRandomIdeModule
 
 pub fn new_abstract_core_debug_grandom_proposal_provider() -> AbstractCoreDebugGRandomProposalProvider
@@ -3054,7 +3102,11 @@ pub fn new_abstract_meta_data_validator() -> AbstractMetaDataValidator
 
 pub fn[T] new_abstract_random_list_accessor(() -> T) -> AbstractRandomListAccessor[T]
 
+pub fn new_abstract_resource_path(String?, String) -> AbstractResourcePath
+
 pub fn new_active_editor_supported_tester() -> ActiveEditorSupportedTester
+
+pub fn new_algorithm(String) -> Algorithm
 
 pub fn new_algorithm_cell_editor(String) -> AlgorithmCellEditor
 
@@ -3065,6 +3117,10 @@ pub fn new_algorithm_plugin_content_wizard(String, String) -> AlgorithmPluginCon
 pub fn new_algorithm_project_creation_page(String) -> AlgorithmProjectCreationPage
 
 pub fn new_algorithm_selection_dialog(String) -> AlgorithmSelectionDialog
+
+pub fn new_algorithms(Array[Algorithm]) -> Algorithms
+
+pub fn new_all_algorithms() -> AllAlgorithms
 
 pub fn new_annulus_wedge_compaction() -> AnnulusWedgeCompaction
 
@@ -3077,6 +3133,10 @@ pub fn new_bezier_curve(KVector, KVector, KVector, KVector) -> BezierCurve
 pub fn new_bezier_spline() -> BezierSpline
 
 pub fn new_binary_indexed_tree(Int) -> BinaryIndexedTree
+
+pub fn[T] new_blackbox_test_method(String, (T, Int) -> Unit, ignored? : Bool) -> BlackboxTestMethod[T]
+
+pub fn new_bundle_resource_path(String, String) -> AbstractResourcePath
 
 pub fn new_cgraph(Array[Direction]) -> CGraph
 
@@ -3095,6 +3155,12 @@ pub fn new_compound_graph_element_visitor_with_mode(Bool, visitors? : Array[IGra
 pub fn new_compress_log_folder_action(AbstractLayoutDebugView) -> CompressLogFolderAction
 
 pub fn new_config_state() -> ConfigState
+
+pub fn new_configurator() -> Configurator
+
+pub fn new_configurator_provider() -> ConfiguratorProvider
+
+pub fn[T] new_configurator_test_configuration(String, (T) -> LayoutConfigurator, default_configuration? : DefaultConfiguration?) -> ConfiguratorTestConfiguration[T]
 
 pub fn new_convert_graph_handler(project? : GraphTextProject) -> ConvertGraphHandler
 
@@ -3271,6 +3337,8 @@ pub fn new_dc_extension(DCElement, DCDirection, KVector, Double) -> DCExtension
 pub fn new_dc_graph(Array[Array[DCElement]], inset? : Double) -> DCGraph
 
 pub fn new_dc_polyomino(DCComponent, Double, Double) -> DCPolyomino
+
+pub fn new_default_configuration(edges? : Bool, nodes? : Bool, ports? : Bool, edge_labels? : Bool) -> DefaultConfiguration
 
 pub fn new_default_module() -> CoreServiceInjector
 
@@ -3524,13 +3592,29 @@ pub fn new_execution_time_view() -> ExecutionTimeView
 
 pub fn new_expand_execution_tree_action(AbstractLayoutDebugView) -> ExpandExecutionTreeAction
 
+pub fn[T, G] new_experiment_runner(() -> T, ExperimentalObject[T], Array[BlackboxTestMethod[T]], Array[WhiteboxTestMethod[T, G]]) -> ExperimentRunner[T, G]
+
+pub fn[T, G] new_experiment_statement(ExperimentRunner[T, G], RunNotifier) -> ExperimentStatement[T, G]
+
+pub fn[T] new_experimental_object(TestAlgorithm, TestConfiguration[T], TestGraph[T]) -> ExperimentalObject[T]
+
 pub fn[T] new_factory(() -> T, destroy_fn? : (T) -> Unit) -> IFactory[T]
+
+pub fn new_fail_if_not_executed() -> FailIfNotExecuted
 
 pub fn new_fbendpoint(Int) -> Int
 
 pub fn new_fedge() -> Int
 
 pub fn new_fgraph() -> FGraph
+
+pub fn new_file_extension_filter(String) -> FileExtensionFilter
+
+pub fn new_file_extension_filter_with_extensions(Array[String]) -> FileExtensionFilter
+
+pub fn new_file_name_filter(String) -> FileNameFilter
+
+pub fn new_file_name_filter_with_expressions(Array[String]) -> FileNameFilter
 
 pub fn new_filter_execution_tree_action(AbstractLayoutDebugView) -> FilterExecutionTreeAction
 
@@ -3610,6 +3694,10 @@ pub fn new_grandom_activator() -> GrandomActivator
 
 pub fn new_graph_element_visitor((Int) -> Unit) -> IGraphElementVisitor
 
+pub fn new_graph_from_file(AbstractResourcePath) -> GraphFromFile
+
+pub fn[T] new_graph_from_method(String, (T) -> Int) -> GraphFromMethod[T]
+
 pub fn new_graph_issue_edge(Int, String, Int) -> GraphIssue
 
 pub fn new_graph_issue_node(Int, String, Int) -> GraphIssue
@@ -3668,6 +3756,8 @@ pub fn new_graph_layout_engine((Int, IElkProgressMonitor) -> Unit) -> IGraphLayo
 
 pub fn new_graph_list_label_provider() -> GraphListLabelProvider
 
+pub fn new_graph_provider() -> GraphProvider
+
 pub fn new_graph_renderer(GraphRenderingConfigurator) -> GraphRenderer
 
 pub fn new_graph_rendering_canvas(CoreUiDisplay) -> GraphRenderingCanvas
@@ -3675,6 +3765,8 @@ pub fn new_graph_rendering_canvas(CoreUiDisplay) -> GraphRenderingCanvas
 pub fn new_graph_rendering_canvas_with_configurator(CoreUiDisplay, GraphRenderingConfigurator) -> GraphRenderingCanvas
 
 pub fn new_graph_rendering_configurator(CoreUiDisplay) -> GraphRenderingConfigurator
+
+pub fn new_graph_resource_provider() -> GraphResourceProvider
 
 pub fn new_graph_text_assignment(String) -> GraphTextAssignment
 
@@ -3824,6 +3916,8 @@ pub fn new_interactive_mrtree_graph_element_visitor() -> IGraphElementVisitor
 
 pub fn new_interactive_mrtree_graph_visitor() -> InteractiveMrtreeGraphVisitor
 
+pub fn new_interactive_rectpacking_graph_visitor() -> InteractiveRectPackingGraphVisitor
+
 pub fn new_internal_core_debug_grandom_lexer(String) -> InternalCoreDebugGRandomLexer
 
 pub fn new_internal_core_debug_grandom_parser(Array[CoreDebugGRandomIdeLexToken], grammar_access? : CoreDebugGRandomIdeGrammarAccess) -> InternalCoreDebugGRandomParser
@@ -3912,6 +4006,8 @@ pub fn new_layout_dot_exporter() -> LayoutDotExporter
 
 pub fn new_layout_edit_policy_provider() -> LayoutEditPolicyProvider
 
+pub fn[G] new_layout_execution_listener((Int, G, Bool) -> Unit, (Int, G, Bool) -> Unit) -> ILayoutExecutionListener[G]
+
 pub fn new_layout_graph_dialog(Int, String?, GraphRenderingConfigurator) -> LayoutGraphDialog
 
 pub fn new_layout_graph_view() -> LayoutGraphView
@@ -3959,6 +4055,8 @@ pub fn new_layout_property_source_provider(configuration_store_provider? : Layou
 pub fn new_layout_setup((LayoutSetupObject) -> Bool, (CoreServiceInjector) -> CoreServiceInjector) -> ILayoutSetup
 
 pub fn new_layout_setup_default_impl() -> ILayoutSetup
+
+pub fn[T, G] new_layout_test_runner(() -> T, Array[TestAlgorithm], Array[TestConfiguration[T]], Array[TestGraph[T]], Array[BlackboxTestMethod[T]], Array[WhiteboxTestMethod[T, G]]) -> LayoutTestRunner[T, G]
 
 pub fn new_layout_upon_load_setting_action() -> LayoutUponLoadSettingAction
 
@@ -4034,6 +4132,10 @@ pub fn new_meta_data_ui_module(plugin_id? : String) -> MetaDataUiModule
 
 pub fn new_meta_data_validator(base? : AbstractMetaDataValidator) -> MetaDataValidator
 
+pub fn[T] new_method_test_configuration(String, (T, Int) -> Unit, default_configuration? : DefaultConfiguration?) -> MethodTestConfiguration[T]
+
+pub fn new_model_resource_path(String) -> AbstractResourcePath
+
 pub fn new_monitored_operation((IElkProgressMonitor) -> MonitoredOperationStatus, create_monitor_fn? : () -> IElkProgressMonitor, pre_uiexec_fn? : () -> Unit, post_uiexec_fn? : () -> Unit, cancel_indicator? : IElkCancelIndicator?, handle_status_fn? : (MonitoredOperationStatus) -> Unit) -> MonitoredOperation
 
 pub fn new_mrtree() -> Mrtree
@@ -4101,6 +4203,8 @@ pub fn new_null_elk_progress_monitor() -> IElkProgressMonitor
 pub fn new_number_value_converter() -> NumberValueConverter
 
 pub fn new_one_dimensional_compactor(CGraph) -> OneDimensionalCompactor
+
+pub fn new_only_on_root_node() -> OnlyOnRootNode
 
 pub fn new_outline_node(Double, Double, OutlineNode?) -> OutlineNode
 
@@ -4170,13 +4274,65 @@ pub fn new_radius_extension_overlap_removal() -> RadiusExtensionOverlapRemoval
 
 pub fn new_radius_extension_overlap_removal_layout_processor() -> ILayoutProcessor[RadialLayoutPhases, Int]
 
+pub fn new_random_generator_file() -> RandomGeneratorFile
+
+pub fn new_random_generator_options() -> RandomGeneratorOptions
+
+pub fn new_random_graph_from_file(AbstractResourcePath, Int) -> RandomGraphFromFile
+
+pub fn new_random_graph_from_method(String, Int) -> RandomGraphFromMethod
+
 pub fn new_rectilinear_convex_hull() -> RectilinearConvexHull
+
+pub fn new_rectpacking_area_approximation(Double, RectpackingOptimizationGoal, Bool) -> RectpackingAreaApproximation
+
+pub fn new_rectpacking_block(Double, Double, RectRow, Double) -> Block
+
+pub fn new_rectpacking_block_row(Double, Double, Double) -> BlockRow
+
+pub fn new_rectpacking_block_stack(Double, Double, Double) -> BlockStack
+
+pub fn new_rectpacking_compactor_layout_phase() -> ILayoutProcessor[RectPackingLayoutPhases, Int]
+
+pub fn new_rectpacking_drawing_data(Double, Double, Double, RectpackingDrawingDataDescriptor, next_x_coordinate? : Double, next_y_coordinate? : Double) -> RectpackingDrawingData
+
+pub fn new_rectpacking_equal_whitespace_eliminator_layout_phase() -> ILayoutProcessor[RectPackingLayoutPhases, Int]
+
+pub fn new_rectpacking_greedy_width_approximator_layout_phase() -> ILayoutProcessor[RectPackingLayoutPhases, Int]
+
+pub fn new_rectpacking_interactive_node_reorderer_layout_processor() -> ILayoutProcessor[RectPackingLayoutPhases, Int]
+
+pub fn new_rectpacking_layout_provider() -> RectPackingLayoutProvider
+
+pub fn new_rectpacking_min_size_post_processor_layout_processor() -> ILayoutProcessor[RectPackingLayoutPhases, Int]
+
+pub fn new_rectpacking_min_size_pre_processor_layout_processor() -> ILayoutProcessor[RectPackingLayoutPhases, Int]
+
+pub fn new_rectpacking_no_placement_layout_phase() -> ILayoutProcessor[RectPackingLayoutPhases, Int]
+
+pub fn new_rectpacking_node_size_reorderer_layout_processor() -> ILayoutProcessor[RectPackingLayoutPhases, Int]
+
+pub fn new_rectpacking_rect_row(Double, Double) -> RectRow
+
+pub fn new_rectpacking_row_filling_and_compaction(Double, Double) -> RectpackingRowFillingAndCompaction
+
+pub fn new_rectpacking_simple_placement_layout_phase() -> ILayoutProcessor[RectPackingLayoutPhases, Int]
+
+pub fn new_rectpacking_target_width_approximator_layout_phase() -> ILayoutProcessor[RectPackingLayoutPhases, Int]
+
+pub fn new_rectpacking_to_aspectratio_node_expander_layout_phase() -> ILayoutProcessor[RectPackingLayoutPhases, Int]
 
 pub fn new_recursive_graph_layout_engine() -> RecursiveGraphLayoutEngine
 
 pub fn new_reload_from_file_action(LayoutGraphView) -> ReloadFromFileAction
 
+pub fn new_results_resource_path(String) -> AbstractResourcePath
+
 pub fn new_reveal_log_folder_action(AbstractLayoutDebugView) -> RevealLogFolderAction
+
+pub fn new_run_failure(String, String) -> RunFailure
+
+pub fn new_run_notifier() -> RunNotifier
 
 pub fn new_scanline_overlap_check((Node, Node) -> Unit, SvgImage) -> ScanlineOverlapCheck
 
@@ -4240,6 +4396,26 @@ pub fn new_svg_image(String?) -> SvgImage
 
 pub fn new_tedge(KVector, KVector) -> TEdge
 
+pub fn new_test_after_processor(String) -> TestAfterProcessor
+
+pub fn new_test_after_processors(Array[TestAfterProcessor]) -> TestAfterProcessors
+
+pub fn new_test_algorithm(LayoutAlgorithmData?) -> TestAlgorithm
+
+pub fn new_test_before_processor(String) -> TestBeforeProcessor
+
+pub fn new_test_before_processors(Array[TestBeforeProcessor]) -> TestBeforeProcessors
+
+pub fn new_test_class_constructor_signature(Bool, Int) -> TestClassConstructorSignature
+
+pub fn[T] new_test_configuration(default_configuration? : DefaultConfiguration?, apply_base_configuration_fn? : (T, Int) -> Unit) -> TestConfiguration[T]
+
+pub fn[G] new_test_controller(String) -> TestController[G]
+
+pub fn[T] new_test_graph((T) -> Int, String) -> TestGraph[T]
+
+pub fn new_test_method_signature(String, Bool, String, Array[String], annotations? : Array[String]) -> TestMethodSignature
+
 pub fn new_text_activator() -> TextActivator
 
 pub fn new_text_layout_connector() -> TextLayoutConnector
@@ -4297,6 +4473,12 @@ pub fn new_vertiflex_node_y_placer_layout_phase() -> ILayoutProcessor[VertiFlexL
 pub fn new_vertiflex_relative_x_placer_layout_phase() -> ILayoutProcessor[VertiFlexLayoutPhases, Int]
 
 pub fn new_vertiflex_straight_edge_router_layout_phase() -> ILayoutProcessor[VertiFlexLayoutPhases, Int]
+
+pub fn[G] new_white_box_testable((TestController[G]?) -> Unit) -> IWhiteBoxTestable[G]
+
+pub fn new_whitebox_recorder() -> WhiteboxRecorder
+
+pub fn[T, G] new_whitebox_test_method(String, (T, G) -> Unit, ignored? : Bool, fail_if_not_executed? : Bool, only_on_root_node? : Bool, before_processor_ids? : Array[String], after_processor_ids? : Array[String]) -> WhiteboxTestMethod[T, G]
 
 pub fn new_wrapped_exception(String) -> WrappedException
 
@@ -4453,6 +4635,10 @@ pub let padding : IProperty[String]
 pub fn[F, S] pair_create() -> Pair[F, S]
 
 pub fn[F, S] pair_of(F, S) -> Pair[F, S]
+
+pub fn plain_java_initialization_initialize_plain_java_layout() -> Unit
+
+pub fn plain_java_initialization_reset_for_test() -> Unit
 
 pub fn point_from_kvector(KVector) -> Point
 
@@ -4658,7 +4844,143 @@ pub fn radial_translation_strategy_from_string(String) -> RadialTranslationStrat
 
 pub let radial_wedge_criteria : IProperty[String]
 
+pub fn random_graph_from_file_filter() -> FileExtensionFilter
+
+pub fn random_graph_from_file_from_resource_paths(Array[AbstractResourcePath]) -> Array[RandomGraphFromFile]
+
+pub fn random_graph_from_file_register_content_for_test(String, String) -> Unit
+
+pub fn random_graph_from_file_reset_content_for_test() -> Unit
+
+pub fn random_graph_from_method_from_options(String, CoreDebugGRandomGeneratorOptions) -> RandomGraphFromMethod
+
 pub fn rectilinear_convex_hull_of(Array[Point]) -> RectilinearConvexHull
+
+pub let rectpacking_algorithm_id : String
+
+pub fn rectpacking_area_filter(Array[RectpackingDrawingData], Double, Spacing) -> Array[RectpackingDrawingData]
+
+pub let rectpacking_aspect_ratio : IProperty[Double]
+
+pub fn rectpacking_aspect_ratio_filter(Array[RectpackingDrawingData], Double, Spacing) -> Array[RectpackingDrawingData]
+
+pub fn rectpacking_calculate_dimensions_rectangles(Array[Int]) -> KVector
+
+pub fn rectpacking_calculate_dimensions_rows(Array[RectRow], Double) -> KVector
+
+pub fn rectpacking_calculations_area_lpb(Int, Int, RectpackingDrawingData) -> Double
+
+pub fn rectpacking_calculations_area_lpr(Int, Int, RectpackingDrawingData) -> Double
+
+pub fn rectpacking_calculations_height_lpr_or_lpb(Double, Double, Double) -> Double
+
+pub fn rectpacking_calculations_width_lpr_or_lpb(Double, Double, Double) -> Double
+
+pub fn rectpacking_calculations_x_for_lpb(Double, Array[Int], Int, Double) -> Double
+
+pub fn rectpacking_calculations_y_for_lpr(Double, Array[Int], Int, Double) -> Double
+
+pub fn rectpacking_compaction_compact(Int, Array[RectRow], Double, Double, Bool) -> (Bool, Bool)
+
+pub fn rectpacking_compute_scale_measure(Double, Double, Double) -> Double
+
+pub let rectpacking_current_position : IProperty[Double]
+
+pub let rectpacking_desired_position : IProperty[Double]
+
+pub let rectpacking_in_new_row : IProperty[Bool]
+
+pub fn rectpacking_initial_placement_is_similar_height(Block, Int, Double) -> Bool
+
+pub fn rectpacking_initial_placement_place(Array[Int], Double, Double) -> Array[RectRow]
+
+pub fn rectpacking_initial_placement_place_rect_in_block(RectRow, Block, Int, Double, Double) -> Bool
+
+pub let rectpacking_interactive : IProperty[Bool]
+
+pub fn rectpacking_intermediate_processor_factory(RectpackingIntermediateProcessorStrategy) -> ILayoutProcessorFactory[RectPackingLayoutPhases, Int]
+
+pub let rectpacking_internal_additional_height : IProperty[Double]
+
+pub fn rectpacking_internal_clear_rows(Int) -> Unit
+
+pub let rectpacking_internal_drawing_height : IProperty[Double]
+
+pub let rectpacking_internal_drawing_width : IProperty[Double]
+
+pub fn rectpacking_internal_get_rows(Int) -> Array[RectRow]?
+
+pub fn rectpacking_internal_has_rows(Int) -> Bool
+
+pub let rectpacking_internal_max_row_decrease : IProperty[Double]
+
+pub let rectpacking_internal_max_row_increase : IProperty[Double]
+
+pub let rectpacking_internal_min_height : IProperty[Double]
+
+pub let rectpacking_internal_min_row_decrease : IProperty[Double]
+
+pub let rectpacking_internal_min_row_increase : IProperty[Double]
+
+pub let rectpacking_internal_min_width : IProperty[Double]
+
+pub fn rectpacking_internal_set_rows(Int, Array[RectRow]) -> Unit
+
+pub let rectpacking_internal_target_width : IProperty[Double]
+
+pub fn rectpacking_layout_provider_as_layout_provider(RectPackingLayoutProvider) -> AbstractLayoutProvider
+
+pub fn rectpacking_node_size_compare(Int, Int) -> Int
+
+pub let rectpacking_node_size_fixed_graph_size : IProperty[Bool]
+
+pub let rectpacking_omit_node_micro_layout : IProperty[Bool]
+
+pub fn rectpacking_optimization_goal_from_string(String) -> RectpackingOptimizationGoal
+
+pub let rectpacking_order_by_size : IProperty[Bool]
+
+pub let rectpacking_packing_compaction_iterations : IProperty[Double]
+
+pub let rectpacking_packing_compaction_row_height_reevaluation : IProperty[Bool]
+
+pub let rectpacking_packing_strategy : IProperty[String]
+
+pub fn rectpacking_packing_strategy_from_string(String) -> RectpackingPackingStrategy
+
+pub fn rectpacking_packing_strategy_phase_factory(RectpackingPackingStrategy) -> ILayoutProcessorFactory[RectPackingLayoutPhases, Int]
+
+pub let rectpacking_padding : IProperty[String]
+
+pub let rectpacking_phase_descriptor : PhaseDescriptor[RectPackingLayoutPhases]
+
+pub fn rectpacking_rectangle_expansion_expand(Array[RectRow], Double, Double, Double) -> Unit
+
+pub fn rectpacking_reset_coordinates(Array[Int]) -> Unit
+
+pub fn rectpacking_scale_measure_filter(Array[RectpackingDrawingData], Double, Spacing) -> Array[RectpackingDrawingData]
+
+pub let rectpacking_spacing_node_node : IProperty[Double]
+
+pub let rectpacking_trybox : IProperty[Bool]
+
+pub let rectpacking_white_space_elimination_strategy : IProperty[String]
+
+pub fn rectpacking_whitespace_elimination_strategy_from_string(String) -> RectpackingWhiteSpaceEliminationStrategy
+
+pub fn rectpacking_whitespace_elimination_strategy_phase_factory(RectpackingWhiteSpaceEliminationStrategy) -> ILayoutProcessorFactory[RectPackingLayoutPhases, Int]
+
+pub let rectpacking_width_approximation_last_place_shift : IProperty[Bool]
+
+pub let rectpacking_width_approximation_optimization_goal : IProperty[String]
+
+pub let rectpacking_width_approximation_strategy : IProperty[String]
+
+pub fn rectpacking_width_approximation_strategy_from_string(String) -> RectpackingWidthApproximationStrategy
+
+pub fn rectpacking_width_approximation_strategy_phase_factory(RectpackingWidthApproximationStrategy) -> ILayoutProcessorFactory[RectPackingLayoutPhases, Int]
+
+pub let rectpacking_width_approximation_target_width : IProperty[Double]
 
 pub let reload_from_file_action_id : String
 
@@ -4668,9 +4990,13 @@ pub fn reset_compaction_oned_model_for_test() -> Unit
 
 pub fn reset_conn_gmf_foundation_for_test() -> Unit
 
+pub fn reset_experiment_runner_ids_for_test() -> Unit
+
 pub fn reset_force_graph_model_for_test() -> Unit
 
 pub fn reset_graph_model_for_test() -> Unit
+
+pub fn reset_layout_execution_listener_ids_for_test() -> Unit
 
 pub fn reset_layout_listener_ids_for_test() -> Unit
 
@@ -4681,6 +5007,14 @@ pub fn reset_mrtree_graph_model_for_test() -> Unit
 pub fn reset_network_simplex_model_for_test() -> Unit
 
 pub let resolved_algorithm : IProperty[String]
+
+pub fn resource_path_clear_properties_for_test() -> Unit
+
+pub fn resource_path_property_value(String) -> String?
+
+pub fn resource_path_set_property_for_test(String, String) -> Unit
+
+pub let results_resource_path_property : String
 
 pub let reveal_log_folder_action_id : String
 
@@ -4853,6 +5187,24 @@ pub let stress_iteration_limit : ForceIntOption
 pub fn stress_layout_provider_as_layout_provider(StressLayoutProvider) -> AbstractLayoutProvider
 
 pub let stress_omit_node_micro_layout : ForceBoolOption
+
+pub fn test_algorithm_from_annotations(Array[Algorithm], Bool, Array[String]) -> Array[TestAlgorithm]
+
+pub fn test_algorithm_identity() -> TestAlgorithm
+
+pub fn test_method_signature_name(TestMethodSignature) -> String
+
+pub fn[T] test_util_create_test_class_instance(() -> T) -> T
+
+pub fn test_util_ensure_not_annotated_with(TestMethodSignature, Array[String], Array[String]) -> Bool
+
+pub fn test_util_ensure_parameters(TestMethodSignature, Array[String], Array[String]) -> Bool
+
+pub fn test_util_ensure_public(TestMethodSignature, Array[String]) -> Bool
+
+pub fn test_util_ensure_returns_type(TestMethodSignature, Array[String], String) -> Bool
+
+pub fn test_util_ensure_single_public_no_parameter_constructor(Array[TestClassConstructorSignature], Array[String]) -> Bool
 
 pub fn text_activator_get_instance() -> TextActivator?
 
@@ -5686,10 +6038,36 @@ pub fn[T] AbstractRandomListAccessor::get_list_item(Self[T], Int) -> T
 pub fn[T] AbstractRandomListAccessor::get_list_size(Self[T]) -> Int
 pub fn[T] AbstractRandomListAccessor::set_list_item(Self[T], Int, T) -> Unit
 
+#alias(AbsoluteResourcePath)
+#alias(AbstractPropertyDependentResourcePath)
+#alias(BundleResourcePath)
+#alias(ModelResourcePath)
+#alias(ResultsResourcePath)
+pub struct AbstractResourcePath {
+  mut file : String
+  mut is_directory : Bool
+  mut is_recursive : Bool
+  mut filter : ((String) -> Bool)?
+}
+pub fn AbstractResourcePath::get_file(Self) -> String
+pub fn AbstractResourcePath::get_filter(Self) -> ((String) -> Bool)?
+pub fn AbstractResourcePath::initialize(Self, String?, String) -> Unit
+pub fn AbstractResourcePath::is_directory(Self) -> Bool
+pub fn AbstractResourcePath::is_recursive(Self) -> Bool
+pub fn AbstractResourcePath::list_resources(Self) -> Array[Self]
+pub fn AbstractResourcePath::set_filter(Self, ((String) -> Bool)?) -> Unit
+pub fn AbstractResourcePath::to_string(Self) -> String
+pub fn AbstractResourcePath::with_filter(Self, ((String) -> Bool)?) -> Self
+
 pub struct ActiveEditorSupportedTester {
   _dummy : Int
 }
 pub fn ActiveEditorSupportedTester::is_supported(Self, Int?) -> Bool
+
+pub struct Algorithm {
+  value : String
+}
+pub fn Algorithm::get_value(Self) -> String
 
 pub struct AlgorithmAssembler[P, G] {
   mut enable_caching : Bool
@@ -5798,6 +6176,11 @@ pub fn AlgorithmSelectionDialog::select(Self, CoreUiLayoutMetaData) -> Unit
 pub fn AlgorithmSelectionDialog::update_filter_text(Self, String) -> Unit
 pub fn AlgorithmSelectionDialog::update_value(Self, CoreUiLayoutMetaData) -> Unit
 
+pub struct Algorithms {
+  value : Array[Algorithm]
+}
+pub fn Algorithms::get_value(Self) -> Array[Algorithm]
+
 pub enum Alignment {
   Automatic
   Left
@@ -5805,6 +6188,10 @@ pub enum Alignment {
   Top
   Bottom
   Center
+}
+
+pub struct AllAlgorithms {
+  marker : Int
 }
 
 pub struct AnnulusWedgeCompaction {
@@ -5873,6 +6260,77 @@ pub fn BinaryIndexedTree::is_empty(Self) -> Bool
 pub fn BinaryIndexedTree::rank(Self, Int) -> Int
 pub fn BinaryIndexedTree::remove_all(Self, Int) -> Unit
 pub fn BinaryIndexedTree::size(Self) -> Int
+
+pub struct BlackboxTestMethod[T] {
+  method_name : String
+  ignored : Bool
+  run_fn : (T, Int) -> Unit
+}
+pub fn[T] BlackboxTestMethod::get_method_name(Self[T]) -> String
+pub fn[T] BlackboxTestMethod::invoke(Self[T], T, Int) -> Unit
+pub fn[T] BlackboxTestMethod::is_ignored(Self[T]) -> Bool
+
+pub struct Block {
+  id : Int
+  mut smallest_rect_width : Double
+  mut min_width : Double
+  mut width : Double
+  mut min_height : Double
+  mut smallest_rect_height : Double
+  mut average_height : Double
+  mut max_height : Double
+  mut height : Double
+  children : Array[Int]
+  mut rows : Array[BlockRow]
+  mut x : Double
+  mut y : Double
+  mut parent_row : RectRow
+  mut stack : BlockStack?
+  node_node_spacing : Double
+  mut fixed : Bool
+  mut position_fixed : Bool
+}
+pub fn Block::add_child(Self, Int) -> Unit
+pub fn Block::add_child_in_new_row(Self, Int) -> Unit
+pub fn Block::expand(Self, Double, Double) -> Unit
+pub fn Block::get_height_for_target_width(Self, Double) -> Double
+pub fn Block::get_width_for_target_height(Self, Double) -> Double
+pub fn Block::last_row(Self) -> BlockRow
+pub fn Block::last_row_new_x(Self) -> Double
+pub fn Block::last_row_y(Self) -> Double
+pub fn Block::place_rects_in(Self, Double, Double) -> Bool
+pub fn Block::place_rects_in_width(Self, Double) -> Bool
+pub fn Block::remove_child(Self, Int) -> Unit
+pub fn Block::reset_block(Self) -> Unit
+pub fn Block::set_location(Self, Double, Double) -> Unit
+
+pub struct BlockRow {
+  mut x : Double
+  mut y : Double
+  mut width : Double
+  mut height : Double
+  node_node_spacing : Double
+  nodes : Array[Int]
+}
+pub fn BlockRow::add_rectangle(Self, Int) -> Bool
+pub fn BlockRow::expand(Self, Double, Double, Int) -> Unit
+pub fn BlockRow::remove_rectangle(Self, Int, Bool) -> Unit
+pub fn BlockRow::update_row(Self) -> Unit
+
+pub struct BlockStack {
+  blocks : Array[Block]
+  mut x : Double
+  mut y : Double
+  mut width : Double
+  mut height : Double
+  node_node_spacing : Double
+}
+pub fn BlockStack::add_block(Self, Block) -> Unit
+pub fn BlockStack::expand(Self, Double, Double) -> Unit
+pub fn BlockStack::get_width_for_fixed_height(Self, Double) -> Double
+pub fn BlockStack::place_rects_in(Self, Double) -> Unit
+pub fn BlockStack::set_location(Self, Double, Double) -> Unit
+pub fn BlockStack::update_dimension(Self) -> Unit
 
 pub struct CGraph {
   c_nodes : Array[CNode]
@@ -6033,6 +6491,22 @@ pub struct ConfigState {
   mut max_depth : Int?
   observers : Array[(State) -> Unit]
 }
+
+pub struct Configurator {
+  marker : Int
+}
+
+pub struct ConfiguratorProvider {
+  marker : Int
+}
+
+pub struct ConfiguratorTestConfiguration[T] {
+  base : TestConfiguration[T]
+  configurator_method_name : String
+}
+pub fn[T] ConfiguratorTestConfiguration::apply(Self[T], T, Int) -> Unit
+pub fn[T] ConfiguratorTestConfiguration::as_test_configuration(Self[T]) -> TestConfiguration[T]
+pub fn[T] ConfiguratorTestConfiguration::to_string(Self[T]) -> String
 
 pub enum ContentAlignment {
   HLeft
@@ -7155,6 +7629,17 @@ pub fn DCPolyomino::set_id(Self, Int) -> Unit
 pub fn DCPolyomino::set_x(Self, Int) -> Unit
 pub fn DCPolyomino::set_y(Self, Int) -> Unit
 pub fn DCPolyomino::width(Self) -> Int
+
+pub struct DefaultConfiguration {
+  edges : Bool
+  nodes : Bool
+  ports : Bool
+  edge_labels : Bool
+}
+pub fn DefaultConfiguration::edge_labels_enabled(Self) -> Bool
+pub fn DefaultConfiguration::edges_enabled(Self) -> Bool
+pub fn DefaultConfiguration::nodes_enabled(Self) -> Bool
+pub fn DefaultConfiguration::ports_enabled(Self) -> Bool
 
 pub struct DeprecatedLayoutOptionReplacer {
   _dummy : Int
@@ -8403,6 +8888,54 @@ pub struct ExpandExecutionTreeAction {
 }
 pub fn ExpandExecutionTreeAction::run(Self) -> Unit
 
+pub struct ExperimentRunner[T, G] {
+  runner_id : Int
+  create_test_instance_fn : () -> T
+  experimental_object : ExperimentalObject[T]
+  blackbox_tests : Array[BlackboxTestMethod[T]]
+  whitebox_tests : Array[WhiteboxTestMethod[T, G]]
+  whitebox_before_tests : Map[String, Array[WhiteboxTestMethod[T, G]]]
+  whitebox_after_tests : Map[String, Array[WhiteboxTestMethod[T, G]]]
+  test_descriptions : Map[String, String]
+}
+pub fn[T, G] ExperimentRunner::create_test_instance(Self[T, G]) -> T
+pub fn[T, G] ExperimentRunner::describe_blackbox_test(Self[T, G], BlackboxTestMethod[T]) -> String
+pub fn[T, G] ExperimentRunner::describe_method_name(Self[T, G], String) -> String
+pub fn[T, G] ExperimentRunner::describe_whitebox_test(Self[T, G], WhiteboxTestMethod[T, G]) -> String
+pub fn[T, G] ExperimentRunner::get_blackbox_tests(Self[T, G]) -> Array[BlackboxTestMethod[T]]
+pub fn[T, G] ExperimentRunner::get_experimental_object(Self[T, G]) -> ExperimentalObject[T]
+pub fn[T, G] ExperimentRunner::get_name(Self[T, G]) -> String
+pub fn[T, G] ExperimentRunner::get_runner_id(Self[T, G]) -> Int
+pub fn[T, G] ExperimentRunner::get_whitebox_after_tests(Self[T, G], String) -> Array[WhiteboxTestMethod[T, G]]
+pub fn[T, G] ExperimentRunner::get_whitebox_before_tests(Self[T, G], String) -> Array[WhiteboxTestMethod[T, G]]
+pub fn[T, G] ExperimentRunner::get_whitebox_tests(Self[T, G]) -> Array[WhiteboxTestMethod[T, G]]
+pub fn[T, G] ExperimentRunner::is_blackbox_ignored(Self[T, G], BlackboxTestMethod[T]) -> Bool
+pub fn[T, G] ExperimentRunner::is_whitebox_ignored(Self[T, G], WhiteboxTestMethod[T, G]) -> Bool
+
+pub struct ExperimentStatement[T, G] {
+  experiment_runner : ExperimentRunner[T, G]
+  notifier : RunNotifier
+  whitebox_recorder : WhiteboxRecorder
+  mut whitebox_events : Array[WhiteboxLayoutEvent[G]]
+  mut test_graph : Int?
+}
+pub fn[T, G] ExperimentStatement::add_layout_processor_finished_event(Self[T, G], String, G, Bool) -> Unit
+pub fn[T, G] ExperimentStatement::add_layout_processor_ready_event(Self[T, G], String, G, Bool) -> Unit
+pub fn[T, G] ExperimentStatement::evaluate(Self[T, G]) -> Unit
+pub fn[T, G] ExperimentStatement::get_notifier(Self[T, G]) -> RunNotifier
+pub fn[T, G] ExperimentStatement::get_whitebox_recorder(Self[T, G]) -> WhiteboxRecorder
+
+pub struct ExperimentalObject[T] {
+  layout_algorithm : TestAlgorithm
+  configuration : TestConfiguration[T]
+  graph : TestGraph[T]
+}
+pub fn[T] ExperimentalObject::get_configuration(Self[T]) -> TestConfiguration[T]
+pub fn[T] ExperimentalObject::get_graph(Self[T]) -> TestGraph[T]
+pub fn[T] ExperimentalObject::get_layout_algorithm(Self[T]) -> TestAlgorithm
+pub fn[T] ExperimentalObject::realize(Self[T], T) -> Int
+pub fn[T] ExperimentalObject::to_string(Self[T]) -> String
+
 pub struct FGraph {
   nodes : Array[Int]
   edges : Array[Int]
@@ -8451,6 +8984,22 @@ pub enum FParticle {
   Label(Int)
   Bendpoint(Int)
 }
+
+pub struct FailIfNotExecuted {
+  marker : Int
+}
+
+pub struct FileExtensionFilter {
+  extensions : Array[String]
+}
+pub fn FileExtensionFilter::accept(Self, String) -> Bool
+pub fn FileExtensionFilter::to_filter(Self) -> (String) -> Bool
+
+pub struct FileNameFilter {
+  expressions : Array[String]
+}
+pub fn FileNameFilter::accept(Self, String) -> Bool
+pub fn FileNameFilter::to_filter(Self) -> (String) -> Bool
 
 pub struct FilterExecutionTreeAction {
   view : AbstractLayoutDebugView
@@ -8855,6 +9404,21 @@ pub enum GraphFeature {
 pub fn GraphFeature::get_description(Self) -> String
 pub fn GraphFeature::to_string(Self) -> String
 
+pub struct GraphFromFile {
+  resource_path : AbstractResourcePath
+}
+pub fn GraphFromFile::provide_graph(Self, Unit) -> Int
+pub fn GraphFromFile::to_string(Self) -> String
+pub fn GraphFromFile::to_test_graph(Self) -> TestGraph[Unit]
+
+pub struct GraphFromMethod[T] {
+  method_name : String
+  provider_fn : (T) -> Int
+}
+pub fn[T] GraphFromMethod::provide_graph(Self[T], T) -> Int
+pub fn[T] GraphFromMethod::to_string(Self[T]) -> String
+pub fn[T] GraphFromMethod::to_test_graph(Self[T]) -> TestGraph[T]
+
 pub struct GraphIdentifierGenerator {
   graph : Int
   validate : Bool
@@ -9122,6 +9686,10 @@ pub struct GraphListLabelProvider {
 pub fn GraphListLabelProvider::get_image(Self, LoggedGraph) -> String
 pub fn GraphListLabelProvider::get_text(Self, LoggedGraph) -> String
 
+pub struct GraphProvider {
+  marker : Int
+}
+
 pub struct GraphRenderer {
   bounds_map : Map[String, CoreUiPaintRectangle]
   configurator : GraphRenderingConfigurator
@@ -9208,6 +9776,18 @@ pub fn GraphRenderingConfigurator::get_port_label_font(Self) -> CoreUiFont?
 pub fn GraphRenderingConfigurator::get_root_node_color(Self) -> CoreUiColor?
 pub fn GraphRenderingConfigurator::initialize(Self) -> Unit
 pub fn GraphRenderingConfigurator::set_scale(Self, Double) -> Unit
+
+pub struct GraphResourceProvider {
+  marker : Int
+}
+
+type GraphTestRectangle
+
+pub enum GraphTestShape {
+  GraphTestNode(Int)
+  GraphTestPort(Int)
+  GraphTestLabel(Int)
+}
 
 pub struct GraphTextAssignment {
   terminal : String
@@ -9937,6 +10517,15 @@ pub fn ILayoutConfigurationStore::get_option_value(Self, String) -> String?
 pub fn ILayoutConfigurationStore::get_parent(Self) -> Self?
 pub fn ILayoutConfigurationStore::set_option_value(Self, String, String?) -> Unit
 
+pub struct ILayoutExecutionListener[G] {
+  id : Int
+  layout_processor_ready_fn : (Int, G, Bool) -> Unit
+  layout_processor_finished_fn : (Int, G, Bool) -> Unit
+}
+pub fn[G] ILayoutExecutionListener::layout_processor_finished(Self[G], Int, G, Bool) -> Unit
+pub fn[G] ILayoutExecutionListener::layout_processor_ready(Self[G], Int, G, Bool) -> Unit
+pub fn[G] ILayoutExecutionListener::listener_id(Self[G]) -> Int
+
 pub struct ILayoutListener {
   id : Int
   layout_about_to_start_fn : (LayoutMapping, IElkProgressMonitor) -> Unit
@@ -10057,6 +10646,11 @@ pub fn IValidatingGraphElementVisitor::get_issues(Self) -> Array[GraphIssue]
 pub fn IValidatingGraphElementVisitor::to_visitor(Self) -> IGraphElementVisitor
 pub fn IValidatingGraphElementVisitor::visit(Self, Int) -> Unit
 
+pub struct IWhiteBoxTestable[G] {
+  set_test_controller_fn : (TestController[G]?) -> Unit
+}
+pub fn[G] IWhiteBoxTestable::set_test_controller(Self[G], TestController[G]?) -> Unit
+
 pub struct ImageExportAction {
   view : LayoutGraphView
   mut enabled : Bool
@@ -10080,6 +10674,12 @@ pub struct InteractiveMrtreeGraphVisitor {
   marker : Int
 }
 pub fn InteractiveMrtreeGraphVisitor::visit(Self, Int) -> Unit
+
+pub struct InteractiveRectPackingGraphVisitor {
+  visitor : IGraphElementVisitor
+}
+pub fn InteractiveRectPackingGraphVisitor::set_interactive_options(Self, Int) -> Unit
+pub fn InteractiveRectPackingGraphVisitor::visit(Self, Int) -> Unit
 
 pub struct InternalCoreDebugGRandomLexer {
   input : String
@@ -10840,6 +11440,24 @@ pub enum LayoutSetupObject {
 }
 pub impl Show for LayoutSetupObject
 
+pub struct LayoutTestRunner[T, G] {
+  create_test_instance_fn : () -> T
+  test_algorithms : Array[TestAlgorithm]
+  test_configurations : Array[TestConfiguration[T]]
+  test_graphs : Array[TestGraph[T]]
+  blackbox_tests : Array[BlackboxTestMethod[T]]
+  whitebox_tests : Array[WhiteboxTestMethod[T, G]]
+  child_runners : Array[ExperimentRunner[T, G]]
+}
+pub fn[T, G] LayoutTestRunner::get_blackbox_tests(Self[T, G]) -> Array[BlackboxTestMethod[T]]
+pub fn[T, G] LayoutTestRunner::get_children(Self[T, G]) -> Array[ExperimentRunner[T, G]]
+pub fn[T, G] LayoutTestRunner::get_test_algorithms(Self[T, G]) -> Array[TestAlgorithm]
+pub fn[T, G] LayoutTestRunner::get_test_configurations(Self[T, G]) -> Array[TestConfiguration[T]]
+pub fn[T, G] LayoutTestRunner::get_test_graphs(Self[T, G]) -> Array[TestGraph[T]]
+pub fn[T, G] LayoutTestRunner::get_whitebox_tests(Self[T, G]) -> Array[WhiteboxTestMethod[T, G]]
+pub fn[T, G] LayoutTestRunner::run(Self[T, G], RunNotifier) -> Unit
+pub fn[T, G] LayoutTestRunner::run_child(Self[T, G], ExperimentRunner[T, G], RunNotifier) -> Unit
+
 pub struct LayoutUponLoadSettingAction {
   mut checked : Bool
 }
@@ -11242,6 +11860,14 @@ pub struct MetaDataValidator {
 pub fn MetaDataValidator::check_duplicate_member_id(Self, CoreMetaMdBundle) -> Array[CoreMetaValidationIssue]
 pub fn MetaDataValidator::get_epackages(Self) -> Array[String]
 
+pub struct MethodTestConfiguration[T] {
+  base : TestConfiguration[T]
+  configurator_method_name : String
+}
+pub fn[T] MethodTestConfiguration::apply(Self[T], T, Int) -> Unit
+pub fn[T] MethodTestConfiguration::as_test_configuration(Self[T]) -> TestConfiguration[T]
+pub fn[T] MethodTestConfiguration::to_string(Self[T]) -> String
+
 pub struct MonitoredOperation {
   mut timestamp : Int
   mut is_canceled_flag : Bool
@@ -11532,6 +12158,10 @@ pub fn OneDimensionalCompactor::set_compaction_algorithm(Self, (Self) -> Unit) -
 pub fn OneDimensionalCompactor::set_constraint_algorithm(Self, (Self) -> Unit) -> Self
 pub fn OneDimensionalCompactor::set_lock_function(Self, ((CNode, Direction) -> Bool)?) -> Self
 pub fn OneDimensionalCompactor::set_spacings_handler(Self, ISpacingsHandler) -> Self
+
+pub struct OnlyOnRootNode {
+  marker : Int
+}
 
 pub struct OutlineNode {
   relative_x : Double
@@ -11890,6 +12520,62 @@ pub struct RadiusExtensionOverlapRemoval {
 pub fn RadiusExtensionOverlapRemoval::extend(Self, Int, Array[Int], IElkProgressMonitor?) -> Unit
 pub fn RadiusExtensionOverlapRemoval::remove_overlaps(Self, Int, IElkProgressMonitor?) -> Unit
 
+pub struct RandomGeneratorFile {
+  marker : Int
+}
+
+pub struct RandomGeneratorOptions {
+  marker : Int
+}
+
+pub struct RandomGraphFromFile {
+  resource_path : AbstractResourcePath
+  graph : Int
+}
+pub fn RandomGraphFromFile::provide_graph(Self, Unit) -> Int
+pub fn RandomGraphFromFile::to_string(Self) -> String
+pub fn RandomGraphFromFile::to_test_graph(Self) -> TestGraph[Unit]
+
+pub struct RandomGraphFromMethod {
+  configurator_method_name : String
+  graph : Int
+}
+pub fn RandomGraphFromMethod::provide_graph(Self, Unit) -> Int
+pub fn RandomGraphFromMethod::to_string(Self) -> String
+pub fn RandomGraphFromMethod::to_test_graph(Self) -> TestGraph[Unit]
+
+pub enum RectPackingLayoutPhases {
+  P1_WIDTH_APPROXIMATION
+  P2_PACKING
+  P3_WHITESPACE_ELIMINATION
+}
+
+pub struct RectPackingLayoutProvider {
+  algorithm_assembler : AlgorithmAssembler[RectPackingLayoutPhases, Int]
+}
+pub fn RectPackingLayoutProvider::assemble_algorithm(Self, Int) -> Array[ILayoutProcessor[RectPackingLayoutPhases, Int]]
+pub fn RectPackingLayoutProvider::layout(Self, Int, IElkProgressMonitor) -> Unit
+
+pub struct RectRow {
+  mut height : Double
+  mut width : Double
+  mut y : Double
+  node_node_spacing : Double
+  children : Array[Block]
+  mut stacks : Array[BlockStack]
+  potential_additional_width_to_get_last_block : Double
+}
+pub fn RectRow::add_block(Self, Block) -> Unit
+pub fn RectRow::calculate_block_stacks(Self) -> Unit
+pub fn RectRow::expand(Self, Double, Double) -> Unit
+pub fn RectRow::first_block(Self) -> Block
+pub fn RectRow::last_block(Self) -> Block
+pub fn RectRow::notify_about_node_change(Self) -> Unit
+pub fn RectRow::number_of_assigned_blocks(Self) -> Int
+pub fn RectRow::remove_block(Self, Block) -> Unit
+pub fn RectRow::reset_stacks(Self) -> Unit
+pub fn RectRow::set_y(Self, Double) -> Unit
+
 pub struct RectangleNode {
   handle : Int
 }
@@ -11931,6 +12617,75 @@ pub struct RectilinearConvexHull {
 pub fn RectilinearConvexHull::get_hull(Self) -> Array[Point]
 pub fn RectilinearConvexHull::split_into_rectangles(Self) -> Array[ElkRectangle]
 
+pub struct RectpackingAreaApproximation {
+  aspect_ratio : Double
+  goal : RectpackingOptimizationGoal
+  last_place_shift : Bool
+}
+pub fn RectpackingAreaApproximation::approx_bounding_box(Self, Array[Int], Double, Spacing) -> RectpackingDrawingData
+
+pub struct RectpackingDrawingData {
+  mut scale_measure : Double
+  mut drawing_width : Double
+  mut drawing_height : Double
+  mut area : Double
+  mut aspect_ratio : Double
+  desired_aspect_ratio : Double
+  mut placement_option : RectpackingDrawingDataDescriptor
+  next_x_coordinate : Double
+  next_y_coordinate : Double
+}
+pub fn RectpackingDrawingData::set_drawing_height(Self, Double) -> Unit
+pub fn RectpackingDrawingData::set_drawing_width(Self, Double) -> Unit
+
+pub enum RectpackingDrawingDataDescriptor {
+  CANDIDATE_POSITION_LAST_PLACED_RIGHT
+  CANDIDATE_POSITION_LAST_PLACED_BELOW
+  CANDIDATE_POSITION_WHOLE_DRAWING_RIGHT
+  CANDIDATE_POSITION_WHOLE_DRAWING_BELOW
+  WHOLE_DRAWING
+}
+
+pub enum RectpackingIntermediateProcessorStrategy {
+  NODE_SIZE_REORDERER
+  INTERACTIVE_NODE_REORDERER
+  MIN_SIZE_PRE_PROCESSOR
+  MIN_SIZE_POST_PROCESSOR
+}
+
+pub enum RectpackingOptimizationGoal {
+  ASPECT_RATIO_DRIVEN
+  MAX_SCALE_DRIVEN
+  AREA_DRIVEN
+}
+
+pub enum RectpackingPackingStrategy {
+  COMPACTION
+  SIMPLE
+  NONE
+}
+
+pub struct RectpackingRowFillingAndCompaction {
+  aspect_ratio : Double
+  node_node_spacing : Double
+  mut potential_row_width_decrease_min : Double
+  mut potential_row_width_decrease_max : Double
+  mut potential_row_width_increase_min : Double
+  mut potential_row_width_increase_max : Double
+}
+pub fn RectpackingRowFillingAndCompaction::start(Self, Array[Int], IElkProgressMonitor?, Int, Spacing) -> RectpackingDrawingData
+
+pub enum RectpackingWhiteSpaceEliminationStrategy {
+  EQUAL_BETWEEN_STRUCTURES
+  TO_ASPECT_RATIO
+  NONE
+}
+
+pub enum RectpackingWidthApproximationStrategy {
+  GREEDY
+  TARGET_WIDTH
+}
+
 pub struct RecursiveGraphLayoutEngine {
   marker : Int
 }
@@ -11955,6 +12710,31 @@ pub struct RevealLogFolderAction {
 pub fn RevealLogFolderAction::is_enabled(Self) -> Bool
 pub fn RevealLogFolderAction::run(Self) -> Unit
 pub fn RevealLogFolderAction::update_enablement(Self) -> Unit
+
+pub struct RunFailure {
+  description : String
+  message : String
+}
+pub fn RunFailure::get_description(Self) -> String
+pub fn RunFailure::get_message(Self) -> String
+
+pub struct RunNotifier {
+  started : Array[String]
+  finished : Array[String]
+  ignored : Array[String]
+  failures : Array[RunFailure]
+}
+pub fn RunNotifier::finished_tests(Self) -> Array[String]
+pub fn RunNotifier::fire_test_assumption_failed(Self, RunFailure) -> Unit
+pub fn RunNotifier::fire_test_failure(Self, RunFailure) -> Unit
+pub fn RunNotifier::fire_test_finished(Self, String) -> Unit
+pub fn RunNotifier::fire_test_ignored(Self, String) -> Unit
+pub fn RunNotifier::fire_test_run_finished(Self) -> Unit
+pub fn RunNotifier::fire_test_run_started(Self, String) -> Unit
+pub fn RunNotifier::fire_test_started(Self, String) -> Unit
+pub fn RunNotifier::ignored_tests(Self) -> Array[String]
+pub fn RunNotifier::started_tests(Self) -> Array[String]
+pub fn RunNotifier::test_failures(Self) -> Array[RunFailure]
 
 pub enum SPOrEPhases {
   P1_STRUCTURE
@@ -12207,6 +12987,79 @@ pub fn TTriangle::get_circumcenter(Self) -> KVector
 pub fn TTriangle::hash_code(Self) -> Int
 pub fn TTriangle::in_circumcircle(Self, KVector) -> Bool
 
+pub struct TestAfterProcessor {
+  processor_id : String
+}
+pub fn TestAfterProcessor::get_processor_id(Self) -> String
+
+pub struct TestAfterProcessors {
+  value : Array[TestAfterProcessor]
+}
+pub fn TestAfterProcessors::get_value(Self) -> Array[TestAfterProcessor]
+
+pub struct TestAlgorithm {
+  algorithm_data : LayoutAlgorithmData?
+}
+pub fn TestAlgorithm::apply(Self, Int) -> Unit
+pub fn TestAlgorithm::get_algorithm_data(Self) -> LayoutAlgorithmData?
+pub fn TestAlgorithm::to_string(Self) -> String
+
+pub struct TestBeforeProcessor {
+  processor_id : String
+}
+pub fn TestBeforeProcessor::get_processor_id(Self) -> String
+
+pub struct TestBeforeProcessors {
+  value : Array[TestBeforeProcessor]
+}
+pub fn TestBeforeProcessors::get_value(Self) -> Array[TestBeforeProcessor]
+
+pub struct TestClassConstructorSignature {
+  is_public : Bool
+  parameter_count : Int
+}
+
+pub struct TestConfiguration[T] {
+  use_default_node_config : Bool
+  use_default_port_config : Bool
+  use_default_edge_config : Bool
+  add_random_edge_labels : Bool
+  apply_base_configuration_fn : (T, Int) -> Unit
+}
+pub fn[T] TestConfiguration::apply(Self[T], T, Int) -> Unit
+pub fn[T] TestConfiguration::to_string(Self[T]) -> String
+
+pub struct TestController[G] {
+  layout_algorithm_id : String
+  mut current_layout_provider : IWhiteBoxTestable[G]?
+  listeners : Array[ILayoutExecutionListener[G]]
+}
+pub fn[G] TestController::add_layout_execution_listener(Self[G], ILayoutExecutionListener[G]) -> Unit
+pub fn[G] TestController::get_target_algorithm_id(Self[G]) -> String
+pub fn[G] TestController::install(Self[G], IWhiteBoxTestable[G]) -> Unit
+pub fn[P, G] TestController::notify_processor_finished(Self[G], G, ILayoutProcessor[P, G]) -> Unit
+pub fn[P, G] TestController::notify_processor_ready(Self[G], G, ILayoutProcessor[P, G]) -> Unit
+pub fn[P, G] TestController::notify_root_processor_finished(Self[G], G, ILayoutProcessor[P, G]) -> Unit
+pub fn[P, G] TestController::notify_root_processor_ready(Self[G], G, ILayoutProcessor[P, G]) -> Unit
+pub fn[G] TestController::remove_layout_execution_listener(Self[G], ILayoutExecutionListener[G]) -> Unit
+pub fn[G] TestController::targets(Self[G], LayoutAlgorithmData) -> Bool
+pub fn[G] TestController::uninstall(Self[G]) -> Unit
+
+pub struct TestGraph[T] {
+  provide_graph_fn : (T) -> Int
+  description : String
+}
+pub fn[T] TestGraph::provide_graph(Self[T], T) -> Int
+pub fn[T] TestGraph::to_string(Self[T]) -> String
+
+pub struct TestMethodSignature {
+  name : String
+  is_public : Bool
+  return_type : String
+  parameter_types : Array[String]
+  annotations : Array[String]
+}
+
 pub struct TextActivator {
   bundle : GraphTextUiBundle
   injectors : Map[String, GraphTextUiInjector]
@@ -12371,6 +13224,40 @@ pub struct VertiFlexLayoutProvider {
 pub fn VertiFlexLayoutProvider::assemble_algorithm(Self, Int) -> Array[ILayoutProcessor[VertiFlexLayoutPhases, Int]]
 pub fn VertiFlexLayoutProvider::layout(Self, Int, IElkProgressMonitor) -> Unit
 
+type WhiteboxLayoutEvent[G]
+
+pub struct WhiteboxRecorder {
+  executed_whitebox_tests : Array[String]
+  whitebox_test_failures : Map[String, Array[RunFailure]]
+  mut currently_running_test : String?
+}
+pub fn WhiteboxRecorder::fire_test_assumption_failed(Self, RunFailure) -> Unit
+pub fn WhiteboxRecorder::fire_test_failure(Self, RunFailure) -> Unit
+pub fn WhiteboxRecorder::fire_test_finished(Self, String) -> Unit
+pub fn WhiteboxRecorder::fire_test_ignored(Self, String) -> Unit
+pub fn WhiteboxRecorder::fire_test_run_finished(Self) -> Unit
+pub fn WhiteboxRecorder::fire_test_run_started(Self, String) -> Unit
+pub fn WhiteboxRecorder::fire_test_started(Self, String) -> Unit
+pub fn WhiteboxRecorder::get_failures(Self, String) -> Array[RunFailure]
+pub fn WhiteboxRecorder::was_executed(Self, String) -> Bool
+
+pub struct WhiteboxTestMethod[T, G] {
+  method_name : String
+  ignored : Bool
+  fail_if_not_executed : Bool
+  only_on_root_node : Bool
+  before_processor_ids : Array[String]
+  after_processor_ids : Array[String]
+  run_fn : (T, G) -> Unit
+}
+pub fn[T, G] WhiteboxTestMethod::get_after_processor_ids(Self[T, G]) -> Array[String]
+pub fn[T, G] WhiteboxTestMethod::get_before_processor_ids(Self[T, G]) -> Array[String]
+pub fn[T, G] WhiteboxTestMethod::get_fail_if_not_executed(Self[T, G]) -> Bool
+pub fn[T, G] WhiteboxTestMethod::get_method_name(Self[T, G]) -> String
+pub fn[T, G] WhiteboxTestMethod::get_only_on_root_node(Self[T, G]) -> Bool
+pub fn[T, G] WhiteboxTestMethod::invoke(Self[T, G], T, G) -> Unit
+pub fn[T, G] WhiteboxTestMethod::is_ignored(Self[T, G]) -> Bool
+
 pub enum WhitespaceEliminationStrategy {
   BOTTOM_ROW_EQUAL_WHITESPACE_ELIMINATOR
 }
@@ -12446,6 +13333,10 @@ pub type MrtreeEdge = Int
 pub type MrtreeGraph = Int
 
 pub type MrtreeNode = Int
+
+pub type RectpackingBestCandidateFilter = (Array[RectpackingDrawingData], Double, Spacing) -> Array[RectpackingDrawingData]
+
+pub type ResourcePathFilter = (String) -> Bool
 
 pub type ScanlineEventHandler[T] = (T) -> Unit
 

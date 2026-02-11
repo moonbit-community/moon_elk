@@ -1,23 +1,4 @@
 ///|
-pub type FNode = Int
-
-///|
-pub type FEdge = Int
-
-///|
-pub type FLabel = Int
-
-///|
-pub type FBendpoint = Int
-
-///|
-pub enum FParticle {
-  Node(FNode)
-  Label(FLabel)
-  Bendpoint(FBendpoint)
-}
-
-///|
 priv struct FNodeData {
   mut id : Int
   label : String

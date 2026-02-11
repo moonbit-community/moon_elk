@@ -1,0 +1,2 @@
+///|
+pub type FEdge = Int
