@@ -51,7 +51,10 @@ pub struct LNode {
   padding : LPadding
   int_properties : Map[String, Int]
   bool_properties : Map[String, Bool]
+  double_properties : Map[String, Double]
   port_side_properties : Map[String, PortSide]
+  node_properties : Map[String, LNode]
+  node_array_properties : Map[String, Array[LNode]]
 }
 
 ///|
@@ -69,7 +72,10 @@ pub fn new_l_node(graph? : LGraph? = None) -> LNode {
     padding: new_l_padding(),
     int_properties: {},
     bool_properties: {},
+    double_properties: {},
     port_side_properties: {},
+    node_properties: {},
+    node_array_properties: {},
   }
 }
 
@@ -369,11 +375,31 @@ pub fn LNode::set_property_bool(
 }
 
 ///|
+pub fn LNode::set_property_double(
+  self : LNode,
+  property : IProperty[Double],
+  value : Double,
+) -> Unit {
+  self.double_properties[property.get_id()] = value
+}
+
+///|
 pub fn LNode::get_property_bool(
   self : LNode,
   property : IProperty[Bool],
 ) -> Bool {
   match self.bool_properties.get(property.get_id()) {
+    Some(value) => value
+    None => property.get_default()
+  }
+}
+
+///|
+pub fn LNode::get_property_double(
+  self : LNode,
+  property : IProperty[Double],
+) -> Double {
+  match self.double_properties.get(property.get_id()) {
     Some(value) => value
     None => property.get_default()
   }
@@ -397,6 +423,94 @@ pub fn LNode::get_property_port_side(
     Some(value) => value
     None => property.get_default()
   }
+}
+
+///|
+pub fn LNode::has_property_int(self : LNode, property : IProperty[Int]) -> Bool {
+  self.int_properties.contains(property.get_id())
+}
+
+///|
+pub fn LNode::has_property_bool(
+  self : LNode,
+  property : IProperty[Bool],
+) -> Bool {
+  self.bool_properties.contains(property.get_id())
+}
+
+///|
+pub fn LNode::has_property_double(
+  self : LNode,
+  property : IProperty[Double],
+) -> Bool {
+  self.double_properties.contains(property.get_id())
+}
+
+///|
+pub fn LNode::has_property_port_side(
+  self : LNode,
+  property : IProperty[PortSide],
+) -> Bool {
+  self.port_side_properties.contains(property.get_id())
+}
+
+///|
+pub fn LNode::set_property_l_node(
+  self : LNode,
+  property : IProperty[LNode?],
+  value : LNode?,
+) -> Unit {
+  match value {
+    Some(node) => self.node_properties[property.get_id()] = node
+    None => ignore(self.node_properties.remove(property.get_id()))
+  }
+}
+
+///|
+pub fn LNode::get_property_l_node(
+  self : LNode,
+  property : IProperty[LNode?],
+) -> LNode? {
+  match self.node_properties.get(property.get_id()) {
+    Some(value) => Some(value)
+    None => property.get_default()
+  }
+}
+
+///|
+pub fn LNode::has_property_l_node(
+  self : LNode,
+  property : IProperty[LNode?],
+) -> Bool {
+  self.node_properties.contains(property.get_id())
+}
+
+///|
+pub fn LNode::set_property_l_node_array(
+  self : LNode,
+  property : IProperty[Array[LNode]],
+  value : Array[LNode],
+) -> Unit {
+  self.node_array_properties[property.get_id()] = value.copy()
+}
+
+///|
+pub fn LNode::get_property_l_node_array(
+  self : LNode,
+  property : IProperty[Array[LNode]],
+) -> Array[LNode] {
+  match self.node_array_properties.get(property.get_id()) {
+    Some(value) => value.copy()
+    None => property.get_default().copy()
+  }
+}
+
+///|
+pub fn LNode::has_property_l_node_array(
+  self : LNode,
+  property : IProperty[Array[LNode]],
+) -> Bool {
+  self.node_array_properties.contains(property.get_id())
 }
 
 ///|

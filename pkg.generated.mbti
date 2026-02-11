@@ -2454,15 +2454,31 @@ pub let interactive : IProperty[Bool]
 
 pub fn interactive_mrtree_graph_visitor_set_interactive_options(Int) -> Unit
 
+pub let internal_properties_barycenter_associates : IProperty[Array[LNode]]
+
 pub let internal_properties_ext_port_connections : IProperty[Array[PortSide]]
 
+pub let internal_properties_in_layer_layout_unit : IProperty[LNode?]
+
+pub let internal_properties_in_layer_successor_constraints : IProperty[Array[LNode]]
+
+pub let internal_properties_in_layer_successor_constraints_between_non_dummies : IProperty[Bool]
+
 pub let internal_properties_is_part_of_cycle : IProperty[Bool]
+
+pub let internal_properties_origin_l_node : IProperty[LNode?]
+
+pub let internal_properties_origin_l_port : IProperty[LPort?]
+
+pub let internal_properties_port_dummy : IProperty[LNode?]
 
 pub let internal_properties_tarjan_id : IProperty[Int]
 
 pub let internal_properties_tarjan_lowlink : IProperty[Int]
 
 pub let internal_properties_tarjan_on_stack : IProperty[Bool]
+
+pub let internal_properties_weight : IProperty[Double]
 
 pub fn intersects2(KVector, KVector, KVector, KVector) -> KVector?
 
@@ -3264,11 +3280,15 @@ pub fn new_algorithms(Array[Algorithm]) -> Algorithms
 
 pub fn new_all_algorithms() -> AllAlgorithms
 
+pub fn new_all_crossings_counter(Array[Array[LNode]]) -> AllCrossingsCounter
+
 pub fn new_annulus_wedge_compaction() -> AnnulusWedgeCompaction
 
 pub fn new_apply_layout_request() -> ApplyLayoutRequest
 
 pub fn new_atomic_cell() -> Cell
+
+pub fn new_barycenter_state(LNode) -> BarycenterState
 
 pub fn new_basic_progress_monitor() -> IElkProgressMonitor
 
@@ -3483,6 +3503,8 @@ pub fn new_core_ui_preference_store() -> CoreUiPreferenceStore
 pub fn new_core_ui_property_editor(CoreUiPropertyEditorKind, validator? : (CoreUiValue) -> String?) -> CoreUiPropertyEditor
 
 pub fn new_core_ui_show_layout_view_event(can_open? : Bool) -> CoreUiShowLayoutViewEvent
+
+pub fn new_crossings_counter(Array[Int]) -> CrossingsCounter
 
 pub fn new_cubic_spline_interpolator() -> CubicSplineInterpolator
 
@@ -3808,6 +3830,8 @@ pub fn new_forked_output_stream(Array[GraphvizOutputStream]) -> ForkedOutputStre
 
 pub fn new_forked_output_stream2(GraphvizOutputStream, GraphvizOutputStream) -> ForkedOutputStream
 
+pub fn new_forster_constraint_resolver(Array[Array[LNode]]) -> ForsterConstraintResolver
+
 pub fn new_forwarding_input_stream(GraphvizInputStream, GraphvizOutputStream) -> ForwardingInputStream
 
 pub fn new_fruchterman_reingold_model() -> FruchtermanReingoldModel
@@ -4061,6 +4085,8 @@ pub fn new_greedy_rectangle_strip_overlap_removal_strategy() -> IRectangleStripO
 pub fn new_grid_container_cell(Bool, Bool, Double) -> Cell
 
 pub fn new_grid_elk_node(Int) -> GridElkNode
+
+pub fn new_hyperedge_crossings_counter(Array[Int], Array[Bool], Array[Int]) -> HyperedgeCrossingsCounter
 
 pub fn new_i_crossing_minimization_heuristic(() -> Bool, (Array[Array[LNode]], Bool) -> Bool, (Array[Array[LNode]], Int, Bool, Bool) -> Bool, () -> Bool, init_at_layer_level? : (Int, Array[Array[LNode]]) -> Unit, init_at_node_level? : (Int, Int, Array[Array[LNode]]) -> Unit, init_at_port_level? : (Int, Int, Int, Array[Array[LNode]]) -> Unit, init_at_edge_level? : (Int, Int, Int, Int, LEdge, Array[Array[LNode]]) -> Unit, init_after_traversal? : () -> Unit) -> ICrossingMinimizationHeuristic
 
@@ -4319,6 +4345,8 @@ pub fn new_load_graph_action(LayoutGraphView) -> LoadGraphAction
 pub fn new_log_label_provider() -> LogLabelProvider
 
 pub fn new_logged_graph(String, LoggedGraphType) -> LoggedGraph
+
+pub fn new_median_heuristic(@random.Rand) -> MedianHeuristic
 
 pub fn new_melk_documentation_generator() -> MelkDocumentationGenerator
 
@@ -6472,6 +6500,21 @@ pub struct AllAlgorithms {
   marker : Int
 }
 
+pub struct AllCrossingsCounter {
+  mut crossing_counter : CrossingsCounter?
+  has_hyper_edges_east_of_index : Array[Bool]
+  mut hyperedge_crossings_counter : HyperedgeCrossingsCounter?
+  in_layer_edge_counts : Array[Int]
+  has_north_south_ports : Array[Bool]
+  mut n_ports : Int
+}
+pub fn AllCrossingsCounter::as_initializable(Self) -> IInitializable
+pub fn AllCrossingsCounter::count_all_crossings(Self, Array[Array[LNode]]) -> Int
+pub fn AllCrossingsCounter::init_after_traversal(Self) -> Unit
+pub fn AllCrossingsCounter::init_at_edge_level(Self, Int, Int, Int, Int, LEdge, Array[Array[LNode]]) -> Unit
+pub fn AllCrossingsCounter::init_at_node_level(Self, Int, Int, Array[Array[LNode]]) -> Unit
+pub fn AllCrossingsCounter::init_at_port_level(Self, Int, Int, Int, Array[Array[LNode]]) -> Unit
+
 pub struct AnnulusWedgeCompaction {
   base : RadialRadiusExtensionCompaction
   left_contour : Map[Int, Array[Int]]
@@ -6496,6 +6539,15 @@ pub fn ApplyLayoutRequest::get_x_bound(Self) -> Double
 pub fn ApplyLayoutRequest::get_y_bound(Self) -> Double
 pub fn ApplyLayoutRequest::set_scale(Self, Double) -> Unit
 pub fn ApplyLayoutRequest::set_upper_bound(Self, Double, Double) -> Unit
+
+pub struct BarycenterState {
+  node : LNode
+  summed_weight : Double
+  degree : Int
+  mut barycenter : Double?
+  visited : Bool
+}
+pub fn BarycenterState::to_string(Self) -> String
 
 pub enum BaseGridVisibility {
   Hidden
@@ -6930,6 +6982,8 @@ pub enum ConstraintCalculationStrategy {
   Quadratic
   Scanline
 }
+
+type ConstraintGroup
 
 pub(all) enum ContainerArea {
   Begin
@@ -7952,6 +8006,22 @@ pub enum CrossingMinimizationStrategy {
   CmsInteractive
   CmsNone
 }
+
+pub struct CrossingsCounter {
+  port_positions : Array[Int]
+  mut index_tree : BinaryIndexedTree?
+  ends : Array[Int]
+  mut node_cardinalities : Array[Int]
+}
+pub fn CrossingsCounter::count_crossings_between_layers(Self, Array[LNode], Array[LNode]) -> Int
+pub fn CrossingsCounter::count_crossings_between_ports_in_both_orders(Self, LPort, LPort) -> Pair[Int, Int]
+pub fn CrossingsCounter::count_in_layer_crossings_between_nodes_in_both_orders(Self, LNode, LNode, PortSide) -> Pair[Int, Int]
+pub fn CrossingsCounter::count_in_layer_crossings_on_side(Self, Array[LNode], PortSide) -> Int
+pub fn CrossingsCounter::count_north_south_port_crossings_in_layer(Self, Array[LNode]) -> Int
+pub fn CrossingsCounter::init_for_counting_between(Self, Array[LNode], Array[LNode]) -> Unit
+pub fn CrossingsCounter::init_port_positions_for_in_layer_crossings(Self, Array[LNode], PortSide) -> Array[LPort]
+pub fn CrossingsCounter::switch_nodes(Self, LNode, LNode, PortSide) -> Unit
+pub fn CrossingsCounter::switch_ports(Self, LPort, LPort) -> Unit
 
 pub struct CubicSplineInterpolator {
   _dummy : Unit
@@ -9571,6 +9641,19 @@ pub fn ForkedOutputStream::close(Self) -> Unit
 pub fn ForkedOutputStream::flush(Self) -> Unit
 pub fn ForkedOutputStream::write(Self, Int) -> Unit
 
+pub struct ForsterConstraintResolver {
+  constraints_between_non_dummies : Bool
+  layout_units : Map[Int, Array[LNode]]
+  barycenter_states : Array[Array[BarycenterState?]]
+  constraint_groups : Array[Array[ConstraintGroup?]]
+}
+pub fn ForsterConstraintResolver::as_initializable(Self) -> IInitializable
+pub fn ForsterConstraintResolver::get_barycenter_states(Self) -> Array[Array[BarycenterState?]]
+pub fn ForsterConstraintResolver::init_at_layer_level(Self, Int, Array[Array[LNode]]) -> Unit
+pub fn ForsterConstraintResolver::init_at_node_level(Self, Int, Int, Array[Array[LNode]]) -> Unit
+pub fn ForsterConstraintResolver::process_constraints(Self, Array[LNode]) -> Unit
+pub fn ForsterConstraintResolver::set_barycenter(Self, LNode, Double?) -> Unit
+
 pub struct ForwardingInputStream {
   input_stream : GraphvizInputStream
   output_stream : GraphvizOutputStream
@@ -10939,6 +11022,17 @@ pub struct HullRectangleEventState {
   mut queued_point : Point?
 }
 
+type Hyperedge
+
+type HyperedgeCorner
+
+type HyperedgeCornerType
+
+pub struct HyperedgeCrossingsCounter {
+  port_pos : Array[Int]
+}
+pub fn HyperedgeCrossingsCounter::count_crossings(Self, Array[LNode], Array[LNode]) -> Int
+
 pub struct ICompactor {
   compact_fn : (DCGraph) -> Unit
 }
@@ -11719,7 +11813,10 @@ pub struct LNode {
   padding : Spacing
   int_properties : Map[String, Int]
   bool_properties : Map[String, Bool]
+  double_properties : Map[String, Double]
   port_side_properties : Map[String, PortSide]
+  node_properties : Map[String, LNode]
+  node_array_properties : Map[String, Array[LNode]]
 }
 pub fn LNode::add_port(Self, LPort) -> Unit
 pub fn LNode::get_connected_edges(Self) -> Array[LEdge]
@@ -11741,17 +11838,29 @@ pub fn LNode::get_ports_by_type(Self, PortType) -> Array[LPort]
 pub fn LNode::get_ports_by_type_and_side(Self, PortType, PortSide) -> Array[LPort]
 pub fn LNode::get_position(Self) -> KVector
 pub fn LNode::get_property_bool(Self, IProperty[Bool]) -> Bool
+pub fn LNode::get_property_double(Self, IProperty[Double]) -> Double
 pub fn LNode::get_property_int(Self, IProperty[Int]) -> Int
+pub fn LNode::get_property_l_node(Self, IProperty[Self?]) -> Self?
+pub fn LNode::get_property_l_node_array(Self, IProperty[Array[Self]]) -> Array[Self]
 pub fn LNode::get_property_port_side(Self, IProperty[PortSide]) -> PortSide
 pub fn LNode::get_size(Self) -> KVector
 pub fn LNode::get_type(Self) -> NodeType
+pub fn LNode::has_property_bool(Self, IProperty[Bool]) -> Bool
+pub fn LNode::has_property_double(Self, IProperty[Double]) -> Bool
+pub fn LNode::has_property_int(Self, IProperty[Int]) -> Bool
+pub fn LNode::has_property_l_node(Self, IProperty[Self?]) -> Bool
+pub fn LNode::has_property_l_node_array(Self, IProperty[Array[Self]]) -> Bool
+pub fn LNode::has_property_port_side(Self, IProperty[PortSide]) -> Bool
 pub fn LNode::remove_port(Self, LPort) -> Unit
 pub fn LNode::set_graph(Self, LGraph?) -> Unit
 pub fn LNode::set_id(Self, Int) -> Unit
 pub fn LNode::set_layer(Self, Layer?) -> Unit
 pub fn LNode::set_nested_graph(Self, LGraph?) -> Unit
 pub fn LNode::set_property_bool(Self, IProperty[Bool], Bool) -> Unit
+pub fn LNode::set_property_double(Self, IProperty[Double], Double) -> Unit
 pub fn LNode::set_property_int(Self, IProperty[Int], Int) -> Unit
+pub fn LNode::set_property_l_node(Self, IProperty[Self?], Self?) -> Unit
+pub fn LNode::set_property_l_node_array(Self, IProperty[Array[Self]], Array[Self]) -> Unit
 pub fn LNode::set_property_port_side(Self, IProperty[PortSide], PortSide) -> Unit
 pub fn LNode::set_type(Self, NodeType) -> Unit
 pub fn LNode::to_string(Self) -> String
@@ -11769,6 +11878,8 @@ pub struct LPort {
   outgoing_edges : Array[LEdge]
   mut connected_to_external_nodes : Bool
   bool_properties : Map[String, Bool]
+  node_properties : Map[String, LNode]
+  port_properties : Map[String, LPort]
 }
 pub fn LPort::add_incoming_edge(Self, LEdge) -> Unit
 pub fn LPort::add_outgoing_edge(Self, LEdge) -> Unit
@@ -11788,8 +11899,13 @@ pub fn LPort::get_node(Self) -> LNode?
 pub fn LPort::get_outgoing_edges(Self) -> Array[LEdge]
 pub fn LPort::get_position(Self) -> KVector
 pub fn LPort::get_property_bool(Self, IProperty[Bool]) -> Bool
+pub fn LPort::get_property_l_node(Self, IProperty[LNode?]) -> LNode?
+pub fn LPort::get_property_l_port(Self, IProperty[Self?]) -> Self?
 pub fn LPort::get_side(Self) -> PortSide
 pub fn LPort::get_size(Self) -> KVector
+pub fn LPort::has_property_bool(Self, IProperty[Bool]) -> Bool
+pub fn LPort::has_property_l_node(Self, IProperty[LNode?]) -> Bool
+pub fn LPort::has_property_l_port(Self, IProperty[Self?]) -> Bool
 pub fn LPort::is_connected_to_external_nodes(Self) -> Bool
 pub fn LPort::is_explicitly_supplied_port_anchor(Self) -> Bool
 pub fn LPort::remove_incoming_edge(Self, LEdge) -> Unit
@@ -11799,6 +11915,8 @@ pub fn LPort::set_explicitly_supplied_port_anchor(Self, Bool) -> Unit
 pub fn LPort::set_id(Self, Int) -> Unit
 pub fn LPort::set_node(Self, LNode?) -> Unit
 pub fn LPort::set_property_bool(Self, IProperty[Bool], Bool) -> Unit
+pub fn LPort::set_property_l_node(Self, IProperty[LNode?], LNode?) -> Unit
+pub fn LPort::set_property_l_port(Self, IProperty[Self?], Self?) -> Unit
 pub fn LPort::set_side(Self, PortSide) -> Unit
 pub fn LPort::to_string(Self) -> String
 
@@ -12586,6 +12704,15 @@ pub fn[T] Maybe::is_empty(Self[T]) -> Bool
 pub fn[T] Maybe::set(Self[T], T?) -> Unit
 pub fn[T : Show] Maybe::to_string(Self[T]) -> String
 
+pub struct MedianHeuristic {
+  random : @random.Rand
+}
+pub fn MedianHeuristic::always_improves(Self) -> Bool
+pub fn MedianHeuristic::as_i_crossing_minimization_heuristic(Self) -> ICrossingMinimizationHeuristic
+pub fn MedianHeuristic::is_deterministic(Self) -> Bool
+pub fn MedianHeuristic::minimize_crossings(Self, Array[Array[LNode]], Int, Bool, Bool) -> Bool
+pub fn MedianHeuristic::set_first_layer_order(Self, Array[Array[LNode]], Bool) -> Bool
+
 pub struct MelkDocumentationGenerator {
   marker : Unit
 }
@@ -13203,6 +13330,8 @@ pub enum NodeType {
 pub enum NodeYPlacerStrategy {
   SIMPLE_Y_PLACING
 }
+
+type NorthSouthTargetAndDegree
 
 pub struct NumberValueConverter {
   marker : Unit

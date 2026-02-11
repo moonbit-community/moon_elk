@@ -27,6 +27,8 @@ pub struct LPort {
   outgoing_edges : Array[LEdge]
   mut connected_to_external_nodes : Bool
   bool_properties : Map[String, Bool]
+  node_properties : Map[String, LNode]
+  port_properties : Map[String, LPort]
 }
 
 ///|
@@ -44,6 +46,8 @@ pub fn new_l_port() -> LPort {
     outgoing_edges: [],
     connected_to_external_nodes: true,
     bool_properties: {},
+    node_properties: {},
+    port_properties: {},
   }
 }
 
@@ -325,6 +329,76 @@ pub fn LPort::get_property_bool(
     Some(value) => value
     None => property.get_default()
   }
+}
+
+///|
+pub fn LPort::has_property_bool(
+  self : LPort,
+  property : IProperty[Bool],
+) -> Bool {
+  self.bool_properties.contains(property.get_id())
+}
+
+///|
+pub fn LPort::set_property_l_node(
+  self : LPort,
+  property : IProperty[LNode?],
+  value : LNode?,
+) -> Unit {
+  match value {
+    Some(node) => self.node_properties[property.get_id()] = node
+    None => ignore(self.node_properties.remove(property.get_id()))
+  }
+}
+
+///|
+pub fn LPort::get_property_l_node(
+  self : LPort,
+  property : IProperty[LNode?],
+) -> LNode? {
+  match self.node_properties.get(property.get_id()) {
+    Some(value) => Some(value)
+    None => property.get_default()
+  }
+}
+
+///|
+pub fn LPort::has_property_l_node(
+  self : LPort,
+  property : IProperty[LNode?],
+) -> Bool {
+  self.node_properties.contains(property.get_id())
+}
+
+///|
+pub fn LPort::set_property_l_port(
+  self : LPort,
+  property : IProperty[LPort?],
+  value : LPort?,
+) -> Unit {
+  match value {
+    Some(port) => self.port_properties[property.get_id()] = port
+    None => ignore(self.port_properties.remove(property.get_id()))
+  }
+}
+
+///|
+pub fn LPort::get_property_l_port(
+  self : LPort,
+  property : IProperty[LPort?],
+) -> LPort? {
+  match self.port_properties.get(property.get_id()) {
+    Some(value) => Some(value)
+    None => property.get_default()
+  }
+}
+
+///|
+pub fn LPort::has_property_l_port(
+  self : LPort,
+  property : IProperty[LPort?],
+) -> Bool {
+  self.port_properties.contains(property.get_id())
 }
 
 ///|
