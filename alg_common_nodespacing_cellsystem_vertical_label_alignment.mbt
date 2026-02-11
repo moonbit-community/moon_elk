@@ -1,2 +1,22 @@
-// Upstream counterpart: alg_common_nodespacing_cellsystem_vertical_label_alignment.mbt
-// Implementation is currently provided in aggregated translated files.
+///|
+pub enum VerticalLabelAlignment {
+  Top
+  Center
+  Bottom
+}
+
+///|
+pub fn vertical_label_alignment_values() -> Array[VerticalLabelAlignment] {
+  [Top, Center, Bottom]
+}
+
+///|
+pub fn vertical_label_alignment_to_string(
+  value : VerticalLabelAlignment,
+) -> String {
+  match value {
+    Top => "TOP"
+    Center => "CENTER"
+    Bottom => "BOTTOM"
+  }
+}

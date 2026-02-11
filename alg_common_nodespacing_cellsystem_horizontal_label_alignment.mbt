@@ -1,2 +1,22 @@
-// Upstream counterpart: alg_common_nodespacing_cellsystem_horizontal_label_alignment.mbt
-// Implementation is currently provided in aggregated translated files.
+///|
+pub enum HorizontalLabelAlignment {
+  Left
+  Center
+  Right
+}
+
+///|
+pub fn horizontal_label_alignment_values() -> Array[HorizontalLabelAlignment] {
+  [Left, Center, Right]
+}
+
+///|
+pub fn horizontal_label_alignment_to_string(
+  value : HorizontalLabelAlignment,
+) -> String {
+  match value {
+    Left => "LEFT"
+    Center => "CENTER"
+    Right => "RIGHT"
+  }
+}

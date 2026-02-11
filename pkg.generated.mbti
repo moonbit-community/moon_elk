@@ -166,6 +166,10 @@ pub fn connectable_shape_to_node(ElkConnectableShape?) -> Int
 
 pub fn connectable_shape_to_port(ElkConnectableShape?) -> Int?
 
+pub fn container_area_to_string(ContainerArea) -> String
+
+pub fn container_area_values() -> Array[ContainerArea]
+
 pub fn contains_rect_line(ElkRectangle, KVector, KVector) -> Bool
 
 pub fn contains_rect_path(ElkRectangle, KVectorChain) -> Bool
@@ -2380,6 +2384,10 @@ pub fn hierarchy_handling_to_string(HierarchyHandling) -> String
 
 pub fn high_level_sorting_criterion_values() -> Array[HighLevelSortingCriterion]
 
+pub fn horizontal_label_alignment_to_string(HorizontalLabelAlignment) -> String
+
+pub fn horizontal_label_alignment_values() -> Array[HorizontalLabelAlignment]
+
 pub fn image_export_action_complete_file_name(String?) -> String?
 
 pub fn image_export_action_get_exported_files_for_test() -> Array[String]
@@ -4530,6 +4538,12 @@ pub fn node_individual_spacing_option_string_entries(Int) -> Array[(String, Stri
 
 pub fn node_individual_spacing_option_string_value(Int, String) -> String?
 
+pub fn node_label_location_from_node_label_placement(Array[NodeLabelPlacement]) -> NodeLabelLocation
+
+pub fn node_label_location_to_string(NodeLabelLocation) -> String
+
+pub fn node_label_location_values() -> Array[NodeLabelLocation]
+
 pub fn node_label_placement_fixed() -> Array[NodeLabelPlacement]
 
 pub fn node_label_placement_inside_bottom_center() -> Array[NodeLabelPlacement]
@@ -5255,6 +5269,10 @@ pub fn[F, S, T] triple_of(F, S, T) -> Triple[F, S, T]
 pub fn[F, S, T] unique_triple_of(F, S, T) -> UniqueTriple[F, S, T]
 
 pub fn update_containment(Int?) -> Unit
+
+pub fn vertical_label_alignment_to_string(VerticalLabelAlignment) -> String
+
+pub fn vertical_label_alignment_values() -> Array[VerticalLabelAlignment]
 
 pub fn vertiflex_absolute_x_placer_phase_factory(AbsoluteXPlacerStrategy) -> ILayoutProcessorFactory[VertiFlexLayoutPhases, Int]
 
@@ -6507,6 +6525,12 @@ pub struct ConfiguratorTestConfiguration[T] {
 pub fn[T] ConfiguratorTestConfiguration::apply(Self[T], T, Int) -> Unit
 pub fn[T] ConfiguratorTestConfiguration::as_test_configuration(Self[T]) -> TestConfiguration[T]
 pub fn[T] ConfiguratorTestConfiguration::to_string(Self[T]) -> String
+
+pub enum ContainerArea {
+  Begin
+  Center
+  End
+}
 
 pub enum ContentAlignment {
   HLeft
@@ -10401,6 +10425,12 @@ pub enum HighLevelSortingCriterion {
   CornerCasesThanSingleSideLast
 }
 
+pub enum HorizontalLabelAlignment {
+  Left
+  Center
+  Right
+}
+
 pub struct HullRectangleEventState {
   rects : Array[ElkRectangle]
   mut min_y : Point?
@@ -12116,6 +12146,37 @@ pub enum NodeArrangementStrategy {
   LEFT_RIGHT_TOP_DOWN_NODE_PLACER
 }
 
+pub enum NodeLabelLocation {
+  OutTL
+  OutTC
+  OutTR
+  OutBL
+  OutBC
+  OutBR
+  OutLT
+  OutLC
+  OutLB
+  OutRT
+  OutRC
+  OutRB
+  InTL
+  InTC
+  InTR
+  InCL
+  InCC
+  InCR
+  InBL
+  InBC
+  InBR
+  UndefinedNodeLabelLocation
+}
+pub fn NodeLabelLocation::container_column(Self) -> ContainerArea?
+pub fn NodeLabelLocation::container_row(Self) -> ContainerArea?
+pub fn NodeLabelLocation::horizontal_alignment(Self) -> HorizontalLabelAlignment?
+pub fn NodeLabelLocation::is_inside_location(Self) -> Bool
+pub fn NodeLabelLocation::outside_side(Self) -> PortSide
+pub fn NodeLabelLocation::vertical_alignment(Self) -> VerticalLabelAlignment?
+
 pub enum NodeLabelPlacement {
   NodeLabelHLeft
   NodeLabelHCenter
@@ -13223,6 +13284,12 @@ pub struct VertiFlexLayoutProvider {
 }
 pub fn VertiFlexLayoutProvider::assemble_algorithm(Self, Int) -> Array[ILayoutProcessor[VertiFlexLayoutPhases, Int]]
 pub fn VertiFlexLayoutProvider::layout(Self, Int, IElkProgressMonitor) -> Unit
+
+pub enum VerticalLabelAlignment {
+  Top
+  Center
+  Bottom
+}
 
 type WhiteboxLayoutEvent[G]
 
