@@ -4096,6 +4096,14 @@ pub fn new_greedy_rectangle_strip_overlap_removal_strategy() -> IRectangleStripO
 
 pub fn new_greedy_switch_heuristic(GreedySwitchType, GraphInfoHolder) -> GreedySwitchHeuristic
 
+pub fn new_greedy_switch_in_layer_edge_test_graph_creator() -> GreedySwitchInLayerEdgeTestGraphCreator
+
+pub fn new_greedy_switch_mock_random() -> GreedySwitchMockRandom
+
+pub fn new_greedy_switch_north_south_edge_test_graph_creator() -> GreedySwitchNorthSouthEdgeTestGraphCreator
+
+pub fn new_greedy_switch_test_graph_creator() -> GreedySwitchTestGraphCreator
+
 pub fn new_grid_container_cell(Bool, Bool, Double) -> Cell
 
 pub fn new_grid_elk_node(Int) -> GridElkNode
@@ -11081,6 +11089,145 @@ pub fn GreedySwitchHeuristic::init_at_port_level(Self, Int, Int, Int, Array[Arra
 pub fn GreedySwitchHeuristic::is_deterministic(Self) -> Bool
 pub fn GreedySwitchHeuristic::minimize_crossings(Self, Array[Array[LNode]], Int, Bool, Bool) -> Bool
 pub fn GreedySwitchHeuristic::set_first_layer_order(Self, Array[Array[LNode]], Bool) -> Bool
+
+pub struct GreedySwitchInLayerEdgeTestGraphCreator {
+  base : GreedySwitchTestGraphCreator
+}
+pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_fixed_port_order_two_in_layer_edges_cross_each_other(Self) -> LGraph
+pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_graph(Self) -> LGraph
+pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_crossings_on_both_sides(Self) -> LGraph
+pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_crossings_but_no_fixed_order(Self) -> LGraph
+pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_crossings_no_fixed_order_no_edge_between_upper_and_lower(Self) -> LGraph
+pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_crossings_no_fixed_order_no_edge_between_upper_and_lower_upside_down(Self) -> LGraph
+pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_downward_graph_no_fixed_order(Self) -> LGraph
+pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_fixed_port_order_in_layer_and_in_between_layer_crossing(Self) -> LGraph
+pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_fixed_port_order_in_layer_crossing(Self) -> LGraph
+pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_graph_with_crossings_to_between_layer_edge_with_fixed_port_order(Self) -> LGraph
+pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_multiple_edges_into_single_port(Self) -> LGraph
+pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_with_fixed_port_order_and_normal_edge_crossings(Self) -> LGraph
+pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_one_layer_no_crossings(Self) -> LGraph
+pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_one_layer_with_in_layer_crossings(Self) -> LGraph
+
+pub struct GreedySwitchMockRandom {
+  mut current : Float
+  mut change_by : Double
+  mut next_boolean : Bool
+}
+pub fn GreedySwitchMockRandom::next_boolean(Self) -> Bool
+pub fn GreedySwitchMockRandom::next_double(Self) -> Double
+pub fn GreedySwitchMockRandom::next_float(Self) -> Float
+pub fn GreedySwitchMockRandom::set_change_by(Self, Double) -> Unit
+pub fn GreedySwitchMockRandom::set_current(Self, Float) -> Unit
+pub fn GreedySwitchMockRandom::set_next_boolean(Self, Bool) -> Unit
+
+pub struct GreedySwitchNorthSouthEdgeTestGraphCreator {
+  base : GreedySwitchTestGraphCreator
+}
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_graph(Self) -> LGraph
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_graph_layout_unit_does_not_prevent_switch_with_long_edge_dummy(Self) -> LGraph
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_graph_layout_unit_prevents_switch_with_node_with_node_with_northern_edges(Self) -> LGraph
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_graph_layout_unit_prevents_switch_with_node_with_node_with_southern_edges(Self) -> LGraph
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_graph_where_layout_unit_prevents_switch(Self) -> LGraph
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_long_edge_dummy_and_normal_node_with_unused_ports_on_northern_side(Self) -> LGraph
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_long_edge_dummy_and_normal_node_with_unused_ports_on_southern_side(Self) -> LGraph
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_multiple_north_south_and_long_edge_dummies_on_both_sides(Self) -> LGraph
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_port_ond_normal_node_above_long_edge_dummy(Self) -> LGraph
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_all_sides_multiple_crossings(Self) -> LGraph
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_downward_crossing_graph(Self) -> LGraph
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_downward_multiple_crossing_graph(Self) -> LGraph
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_edges_from_east_and_west_and_cross(Self) -> LGraph
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_northern_eastern_port_to_west_western_port_to_east(Self) -> LGraph
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_northern_western_edges(Self) -> LGraph
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_southern_three_western_edges(Self) -> LGraph
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_southern_two_western_edges(Self) -> LGraph
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_southern_western_port_to_east_and_eastern_port_to_west(Self) -> LGraph
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_upward_crossing_graph(Self) -> LGraph
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_upward_multiple_crossing_graph(Self) -> LGraph
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_northern_north_south_dummy_edge_crossing_graph(Self) -> LGraph
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_northern_north_south_graph_edges_from_east_and_west_no_crossings(Self) -> LGraph
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_northern_north_south_graph_edges_from_east_and_west_no_crossings_upper_edge_east(Self) -> LGraph
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_south_port_on_normal_node_below_long_edge_dummy(Self) -> LGraph
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_southern_north_south_dummy_edge_crossing_graph(Self) -> LGraph
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_southern_north_south_dummy_edge_two_crossing_graph(Self) -> LGraph
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_southern_north_south_edges_both_to_east(Self) -> LGraph
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_southern_north_south_graph_edges_from_east_and_west_no_crossings(Self) -> LGraph
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_southern_two_dummy_edge_and_north_south_crossing_graph(Self) -> LGraph
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_three_layer_north_south_crossing_graph(Self) -> LGraph
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_three_layer_north_south_crossing_should_switch_graph(Self) -> LGraph
+
+pub struct GreedySwitchTestGraphCreator {
+  mut port_id : Int
+  mut node_id : Int
+  mut edge_id : Int
+  mut graph : LGraph
+  mut random : GreedySwitchMockRandom
+}
+pub fn GreedySwitchTestGraphCreator::add_edge_between_ports(Self, LPort, LPort) -> Unit
+pub fn GreedySwitchTestGraphCreator::add_external_port_dummies_to_layer(Self, Layer, Array[LPort]) -> Array[LNode]
+pub fn GreedySwitchTestGraphCreator::add_external_port_dummy_node_to_layer(Self, Layer, LPort) -> LNode
+pub fn GreedySwitchTestGraphCreator::add_in_layer_edge_node_port(Self, LNode, LPort, PortSide) -> Unit
+pub fn GreedySwitchTestGraphCreator::add_in_layer_edge_nodes(Self, LNode, LNode, PortSide) -> Unit
+pub fn GreedySwitchTestGraphCreator::add_in_layer_edge_port_node(Self, LPort, LNode) -> Unit
+pub fn GreedySwitchTestGraphCreator::add_node_to_layer(Self, Layer) -> LNode
+pub fn GreedySwitchTestGraphCreator::add_nodes_to_layer(Self, Int, Layer) -> Array[LNode]
+pub fn GreedySwitchTestGraphCreator::add_north_south_edge(Self, PortSide, LNode, LNode, LNode, Bool) -> Unit
+pub fn GreedySwitchTestGraphCreator::add_port_on_side(Self, LNode, PortSide) -> LPort
+pub fn GreedySwitchTestGraphCreator::add_ports_on_side(Self, Int, LNode, PortSide) -> Array[LPort]
+pub fn[T] GreedySwitchTestGraphCreator::copy_of_list_switching_order(Self, Int, Int, Array[T]) -> Array[T]
+pub fn GreedySwitchTestGraphCreator::copy_of_nodes_in_layer(Self, Int) -> Array[LNode]
+pub fn GreedySwitchTestGraphCreator::copy_of_switch_order_of_nodes_in_layer(Self, Int, Int, Int) -> Array[LNode]
+pub fn GreedySwitchTestGraphCreator::copy_ports_in_index_order(Self, LNode, Array[Int]) -> Array[LPort]
+pub fn GreedySwitchTestGraphCreator::east_west_edge_from_to_node_port(Self, LNode, LPort) -> Unit
+pub fn GreedySwitchTestGraphCreator::east_west_edge_from_to_nodes(Self, LNode, LNode) -> Unit
+pub fn GreedySwitchTestGraphCreator::east_west_edge_from_to_port_node(Self, LPort, LNode) -> Unit
+pub fn GreedySwitchTestGraphCreator::east_west_edges_from_to(Self, Int, LNode, LNode) -> Unit
+pub fn GreedySwitchTestGraphCreator::get_copy_with_switched_order(Self, Int, Int, Array[LNode]) -> Array[LNode]
+pub fn GreedySwitchTestGraphCreator::get_cross_formed_graph(Self) -> LGraph
+pub fn GreedySwitchTestGraphCreator::get_cross_formed_graph_constraints_prevent_any_switch(Self) -> LGraph
+pub fn GreedySwitchTestGraphCreator::get_cross_formed_graph_with_constraints_in_second_layer(Self) -> LGraph
+pub fn GreedySwitchTestGraphCreator::get_cross_with_extra_edge_in_between_graph(Self) -> LGraph
+pub fn GreedySwitchTestGraphCreator::get_cross_with_many_self_loops_graph(Self) -> LGraph
+pub fn GreedySwitchTestGraphCreator::get_current_order(Self, LGraph) -> Array[Array[LNode]]
+pub fn GreedySwitchTestGraphCreator::get_empty_graph(Self) -> LGraph
+pub fn GreedySwitchTestGraphCreator::get_fixed_port_order_graph(Self) -> LGraph
+pub fn GreedySwitchTestGraphCreator::get_fixed_port_order_in_layer_edges_dont_cross_each_other(Self) -> LGraph
+pub fn GreedySwitchTestGraphCreator::get_fixed_port_order_in_layer_edges_with_crossings(Self) -> LGraph
+pub fn GreedySwitchTestGraphCreator::get_graph(Self) -> LGraph
+pub fn GreedySwitchTestGraphCreator::get_graph_no_crossings_due_to_port_order_not_fixed(Self) -> LGraph
+pub fn GreedySwitchTestGraphCreator::get_graph_which_could_be_worsened_by_switch(Self) -> LGraph
+pub fn GreedySwitchTestGraphCreator::get_in_layer_edges_graph(Self) -> LGraph
+pub fn GreedySwitchTestGraphCreator::get_in_layer_edges_graph_which_results_in_crossings_when_switched(Self) -> LGraph
+pub fn[T] GreedySwitchTestGraphCreator::get_list_copy_in_index_order(Self, Array[T], Array[Int]) -> Array[T]
+pub fn GreedySwitchTestGraphCreator::get_more_complex_in_layer_graph(Self) -> LGraph
+pub fn GreedySwitchTestGraphCreator::get_more_complex_three_layer_graph(Self) -> LGraph
+pub fn GreedySwitchTestGraphCreator::get_multiple_edges_between_same_nodes_graph(Self) -> LGraph
+pub fn GreedySwitchTestGraphCreator::get_nodes_in_different_layout_units_prevent_switch(Self) -> LGraph
+pub fn GreedySwitchTestGraphCreator::get_one_node_graph(Self) -> LGraph
+pub fn GreedySwitchTestGraphCreator::get_random(Self) -> GreedySwitchMockRandom
+pub fn GreedySwitchTestGraphCreator::get_switch_only_east_one_sided(Self) -> LGraph
+pub fn GreedySwitchTestGraphCreator::get_switch_only_one_sided(Self) -> LGraph
+pub fn GreedySwitchTestGraphCreator::get_switched_problem_graph(Self) -> LGraph
+pub fn GreedySwitchTestGraphCreator::get_two_nodes_no_connection_graph(Self) -> LGraph
+pub fn GreedySwitchTestGraphCreator::make_layer(Self, LGraph) -> Layer
+pub fn GreedySwitchTestGraphCreator::make_layers(Self, Int) -> Array[Layer]
+pub fn GreedySwitchTestGraphCreator::make_layers_in_graph(Self, Int, LGraph) -> Array[Layer]
+pub fn GreedySwitchTestGraphCreator::multiple_edges_and_single_edge(Self) -> LGraph
+pub fn GreedySwitchTestGraphCreator::multiple_in_between_layer_edges_into_node_with_no_fixed_port_order(Self) -> LGraph
+pub fn GreedySwitchTestGraphCreator::multiple_in_between_layer_edges_into_node_with_no_fixed_port_order_cause_crossings(Self) -> LGraph
+pub fn GreedySwitchTestGraphCreator::nested_graph(Self, LNode) -> LGraph
+pub fn GreedySwitchTestGraphCreator::self_loop_on(Self, LNode, PortSide) -> Unit
+pub fn GreedySwitchTestGraphCreator::set_as_long_edge_dummy(Self, LNode) -> Unit
+pub fn GreedySwitchTestGraphCreator::set_as_north_south_node(Self, LNode) -> Unit
+pub fn GreedySwitchTestGraphCreator::set_fixed_order_constraint(Self, LNode) -> Unit
+pub fn GreedySwitchTestGraphCreator::set_fixed_order_constraint_on_nodes(Self, Array[LNode]) -> Unit
+pub fn GreedySwitchTestGraphCreator::set_in_layer_order_constraint(Self, LNode, LNode) -> Unit
+pub fn GreedySwitchTestGraphCreator::set_port_order_fixed(Self, LNode) -> Unit
+pub fn GreedySwitchTestGraphCreator::set_random(Self, GreedySwitchMockRandom) -> Unit
+pub fn GreedySwitchTestGraphCreator::set_up_graph(Self, LGraph) -> LGraph
+pub fn GreedySwitchTestGraphCreator::set_up_ids(Self) -> Unit
+pub fn[T] GreedySwitchTestGraphCreator::switch_order_in_array(Self, Int, Int, Array[T]) -> Array[T]
+pub fn GreedySwitchTestGraphCreator::switch_order_of_nodes_in_layer(Self, Int, Int, Layer) -> Array[LNode]
+pub fn GreedySwitchTestGraphCreator::two_edges_into_same_port(Self) -> LGraph
 
 pub enum GreedySwitchType {
   OneSided
