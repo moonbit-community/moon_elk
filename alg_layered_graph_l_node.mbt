@@ -14,6 +14,18 @@ fn lnode_internal_handle(node : LNode) -> Int {
 }
 
 ///|
+fn lnode_port_side_equals(left : PortSide, right : PortSide) -> Bool {
+  match (left, right) {
+    (North, North) => true
+    (East, East) => true
+    (South, South) => true
+    (West, West) => true
+    (SideUndefined, SideUndefined) => true
+    _ => false
+  }
+}
+
+///|
 pub enum NodeType {
   Normal
   LongEdge
@@ -166,6 +178,72 @@ pub fn LNode::get_ports(self : LNode) -> Array[LPort] {
 }
 
 ///|
+pub fn LNode::get_ports_by_type(
+  self : LNode,
+  port_type : PortType,
+) -> Array[LPort] {
+  let result = []
+  match port_type {
+    Input =>
+      for port in self.ports {
+        if !port.get_incoming_edges().is_empty() {
+          result.push(port)
+        }
+      }
+    Output =>
+      for port in self.ports {
+        if !port.get_outgoing_edges().is_empty() {
+          result.push(port)
+        }
+      }
+    Undefined => ()
+  }
+  result
+}
+
+///|
+pub fn LNode::get_ports_by_side(self : LNode, side : PortSide) -> Array[LPort] {
+  let result = []
+  for port in self.ports {
+    if lnode_port_side_equals(port.get_side(), side) {
+      result.push(port)
+    }
+  }
+  result
+}
+
+///|
+pub fn LNode::get_port_side_view(self : LNode, side : PortSide) -> Array[LPort] {
+  self.get_ports_by_side(side)
+}
+
+///|
+pub fn LNode::get_ports_by_type_and_side(
+  self : LNode,
+  port_type : PortType,
+  side : PortSide,
+) -> Array[LPort] {
+  let ports_on_side = self.get_ports_by_side(side)
+  let result = []
+  match port_type {
+    Input =>
+      for port in ports_on_side {
+        if !port.get_incoming_edges().is_empty() {
+          result.push(port)
+        }
+      }
+    Output =>
+      for port in ports_on_side {
+        if !port.get_outgoing_edges().is_empty() {
+          result.push(port)
+        }
+      }
+    Undefined => ()
+  }
+  result
+}
+
+///|
 pub fn LNode::add_port(self : LNode, port : LPort) -> Unit {
   for existing in self.ports {
     if lport_internal_handle(existing) == lport_internal_handle(port) {
@@ -237,6 +315,28 @@ pub fn LNode::get_connected_edges(self : LNode) -> Array[LEdge] {
       if !exists {
         result.push(edge)
       }
+    }
+  }
+  result
+}
+
+///|
+pub fn LNode::get_incoming_edges(self : LNode) -> Array[LEdge] {
+  let result = []
+  for port in self.ports {
+    for edge in port.get_incoming_edges() {
+      result.push(edge)
+    }
+  }
+  result
+}
+
+///|
+pub fn LNode::get_outgoing_edges(self : LNode) -> Array[LEdge] {
+  let result = []
+  for port in self.ports {
+    for edge in port.get_outgoing_edges() {
+      result.push(edge)
     }
   }
   result

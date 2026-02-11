@@ -2442,6 +2442,8 @@ pub let image_export_action_id : String
 
 pub fn image_export_action_reset_for_test() -> Unit
 
+pub fn in_north_south_east_west_order(LNode, PortSide) -> Array[LPort]
+
 pub fn[N, E] init_one_dimensional_components_compaction(IConnectedComponents[N, E], Double) -> OneDimensionalComponentsCompaction[N, E]
 
 pub let inside_self_loops_activate : IProperty[Bool]
@@ -11725,12 +11727,18 @@ pub fn LNode::get_designation(Self) -> String?
 pub fn LNode::get_graph(Self) -> LGraph
 pub fn LNode::get_handle(Self) -> Int
 pub fn LNode::get_id(Self) -> Int
+pub fn LNode::get_incoming_edges(Self) -> Array[LEdge]
 pub fn LNode::get_labels(Self) -> Array[LLabel]
 pub fn LNode::get_layer(Self) -> Layer?
 pub fn LNode::get_margin(Self) -> Spacing
 pub fn LNode::get_nested_graph(Self) -> LGraph?
+pub fn LNode::get_outgoing_edges(Self) -> Array[LEdge]
 pub fn LNode::get_padding(Self) -> Spacing
+pub fn LNode::get_port_side_view(Self, PortSide) -> Array[LPort]
 pub fn LNode::get_ports(Self) -> Array[LPort]
+pub fn LNode::get_ports_by_side(Self, PortSide) -> Array[LPort]
+pub fn LNode::get_ports_by_type(Self, PortType) -> Array[LPort]
+pub fn LNode::get_ports_by_type_and_side(Self, PortType, PortSide) -> Array[LPort]
 pub fn LNode::get_position(Self) -> KVector
 pub fn LNode::get_property_bool(Self, IProperty[Bool]) -> Bool
 pub fn LNode::get_property_int(Self, IProperty[Int]) -> Int
