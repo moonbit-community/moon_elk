@@ -4162,6 +4162,10 @@ pub fn new_meta_data_validator(base? : AbstractMetaDataValidator) -> MetaDataVal
 
 pub fn[T] new_method_test_configuration(String, (T, Int) -> Unit, default_configuration? : DefaultConfiguration?) -> MethodTestConfiguration[T]
 
+pub fn new_model_order_component_group() -> ModelOrderComponentGroup
+
+pub fn new_model_order_component_group_with_component(LGraph) -> ModelOrderComponentGroup
+
 pub fn new_model_resource_path(String) -> AbstractResourcePath
 
 pub fn new_monitored_operation((IElkProgressMonitor) -> MonitoredOperationStatus, create_monitor_fn? : () -> IElkProgressMonitor, pre_uiexec_fn? : () -> Unit, post_uiexec_fn? : () -> Unit, cancel_indicator? : IElkCancelIndicator?, handle_status_fn? : (MonitoredOperationStatus) -> Unit) -> MonitoredOperation
@@ -6506,6 +6510,13 @@ pub fn ComponentGroup::can_add(Self, LGraph) -> Bool
 pub fn ComponentGroup::get_components(Self) -> Array[LGraph]
 pub fn ComponentGroup::get_components_with_connections(Self, Array[PortSide]) -> Array[LGraph]
 pub fn ComponentGroup::get_port_sides(Self) -> Array[Array[PortSide]]
+
+pub enum ComponentOrderingStrategy {
+  NoneType
+  InsidePortSideGroups
+  GroupModelOrder
+  ModelOrder
+}
 
 pub struct ComponentsProcessor {
   _dummy : Unit
@@ -11941,6 +11952,17 @@ pub struct MethodTestConfiguration[T] {
 pub fn[T] MethodTestConfiguration::apply(Self[T], T, Int) -> Unit
 pub fn[T] MethodTestConfiguration::as_test_configuration(Self[T]) -> TestConfiguration[T]
 pub fn[T] MethodTestConfiguration::to_string(Self[T]) -> String
+
+pub struct ModelOrderComponentGroup {
+  components : Map[Int, Array[LGraph]]
+  component_order : Array[LGraph]
+}
+pub fn ModelOrderComponentGroup::add(Self, LGraph) -> Bool
+pub fn ModelOrderComponentGroup::can_add(Self, LGraph) -> Bool
+pub fn ModelOrderComponentGroup::get_component_order(Self) -> Array[LGraph]
+pub fn ModelOrderComponentGroup::get_components(Self) -> Array[LGraph]
+pub fn ModelOrderComponentGroup::get_components_with_connections(Self, Array[PortSide]) -> Array[LGraph]
+pub fn ModelOrderComponentGroup::get_port_sides(Self) -> Array[Array[PortSide]]
 
 pub struct MonitoredOperation {
   mut timestamp : Int
