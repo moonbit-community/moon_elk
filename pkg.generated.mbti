@@ -502,6 +502,18 @@ pub fn default_spacing_handler() -> ISpacingsHandler
 
 pub fn depth_first_compaction_compact(Tree[Node], Bool, debug_output_file? : String?) -> Unit
 
+pub fn diagram_layout_engine_invoke_layout(Int?, Int?, params? : DiagramLayoutEngineParameters) -> LayoutMapping?
+
+pub let diagram_layout_engine_mapping_connector_key : String
+
+pub let diagram_layout_engine_mapping_status_key : String
+
+pub let diagram_layout_engine_pref_debug_exec_time : String
+
+pub let diagram_layout_engine_pref_debug_logging : String
+
+pub let diagram_layout_engine_pref_debug_store : String
+
 pub let direction : IProperty[String]
 
 pub fn direction_to_string(Direction) -> String
@@ -1082,6 +1094,14 @@ pub fn elk_margin_clone(Spacing) -> Spacing
 
 pub fn elk_padding_clone(Spacing) -> Spacing
 
+pub fn elk_service_plugin_get_instance() -> ElkServicePlugin
+
+pub let elk_service_plugin_id : String
+
+pub fn elk_service_plugin_target_key(Int?, Int?) -> String
+
+pub fn elk_service_plugin_unload() -> Unit
+
 pub fn elk_spacings_with_base_value(Double) -> ElkCoreSpacingsBuilder
 
 pub let elk_unknown_work : Double
@@ -1145,6 +1165,8 @@ pub let execution_time_view_id : String
 pub let expand_execution_tree_action_id : String
 
 pub let expand_nodes : IProperty[Bool]
+
+pub let extp_id_layout_connectors : String
 
 pub fn factd(Int) -> Double
 
@@ -1838,6 +1860,16 @@ pub fn layout_category_data_to_json(LayoutCategoryData) -> Json
 
 pub fn layout_configurator_no_overwrite_filter() -> (Int, IProperty[Double]) -> Bool
 
+pub let layout_connectors_attribute_class : String
+
+pub let layout_connectors_attribute_priority : String
+
+pub let layout_connectors_element_setup : String
+
+pub fn layout_connectors_service_get_instance() -> LayoutConnectorsService
+
+pub fn layout_connectors_service_unload() -> Unit
+
 pub fn layout_data_content_assist_get_layout_algorithm_proposals(String) -> Array[LayoutDataProposal[LayoutAlgorithmData]]
 
 pub fn layout_data_content_assist_get_layout_option_proposals(Int, String) -> Array[LayoutDataProposal[LayoutOptionData]]
@@ -2029,6 +2061,8 @@ pub fn minf(Array[Double]) -> Double
 pub fn mini(Array[Int]) -> Int
 
 pub fn minl(Array[Int64]) -> Int64
+
+pub fn monitored_operation_status_ok() -> MonitoredOperationStatus
 
 pub let mrtree_algorithm_id : String
 
@@ -2436,6 +2470,10 @@ pub fn new_collapse_execution_tree_action(AbstractLayoutDebugView) -> CollapseEx
 
 pub fn new_components_processor() -> ComponentsProcessor
 
+pub fn new_compound_graph_element_visitor(visitors? : Array[IGraphElementVisitor]) -> CompoundGraphElementVisitor
+
+pub fn new_compound_graph_element_visitor_with_mode(Bool, visitors? : Array[IGraphElementVisitor]) -> CompoundGraphElementVisitor
+
 pub fn new_compress_log_folder_action(AbstractLayoutDebugView) -> CompressLogFolderAction
 
 pub fn new_config_state() -> ConfigState
@@ -2526,6 +2564,8 @@ pub fn new_core_debug_layout_mapping(Int?) -> CoreDebugLayoutMapping
 
 pub fn new_core_debug_wizard_project(String, natures? : Array[String]) -> CoreDebugWizardProject
 
+pub fn new_core_service_injector(bindings? : Map[String, String], diagram_layout_connector? : IDiagramLayoutConnector?, layout_configuration_store_provider? : LayoutConfigurationStoreProvider?, layout_configuration_manager? : LayoutConfigurationManager?, graph_layout_engine? : IGraphLayoutEngine?) -> CoreServiceInjector
+
 pub fn new_cubic_spline_interpolator() -> CubicSplineInterpolator
 
 pub fn new_data_object((String) -> Unit) -> IDataObject
@@ -2540,7 +2580,15 @@ pub fn new_dc_graph(Array[Array[DCElement]], inset? : Double) -> DCGraph
 
 pub fn new_dc_polyomino(DCComponent, Double, Double) -> DCPolyomino
 
+pub fn new_default_module() -> CoreServiceInjector
+
 pub fn new_deprecated_layout_option_replacer() -> DeprecatedLayoutOptionReplacer
+
+pub fn new_diagram_layout_connector(build_layout_graph_fn? : (Int?, Int?) -> LayoutMapping?, apply_layout_fn? : (LayoutMapping, Map[String, String]) -> Unit, id? : String) -> IDiagramLayoutConnector
+
+pub fn new_diagram_layout_engine(IDiagramLayoutConnector, config_manager? : LayoutConfigurationManager, graph_layout_engine? : IGraphLayoutEngine, algorithm_resolver? : LayoutAlgorithmResolver, connectors_service? : LayoutConnectorsService) -> DiagramLayoutEngine
+
+pub fn new_diagram_layout_engine_parameters() -> DiagramLayoutEngineParameters
 
 pub fn new_dis_co_debug_color(DisCoDebugDisplay, Int, Int, Int) -> DisCoDebugColor
 
@@ -2898,7 +2946,15 @@ pub fn new_layout_algorithm_resolver(default_layout_algorithm_id? : String) -> L
 
 pub fn new_layout_category_data(String, name? : String, description? : String) -> LayoutCategoryData
 
+pub fn new_layout_configuration_manager(config_provider? : LayoutConfigurationStoreProvider?, layout_algorithm_resolver? : LayoutAlgorithmResolver) -> LayoutConfigurationManager
+
+pub fn new_layout_configuration_store(get_editing_domain_fn? : () -> Int?, get_option_value_fn? : (String) -> String?, set_option_value_fn? : (String, String?) -> Unit, get_affected_options_fn? : () -> Array[String], get_option_targets_fn? : () -> Array[LayoutOptionTarget], get_parent_fn? : () -> ILayoutConfigurationStore?) -> ILayoutConfigurationStore
+
+pub fn new_layout_configuration_store_provider((Int?, Int?) -> ILayoutConfigurationStore?) -> LayoutConfigurationStoreProvider
+
 pub fn new_layout_configurator() -> LayoutConfigurator
+
+pub fn new_layout_connectors_service() -> LayoutConnectorsService
 
 pub fn[T] new_layout_data_proposal(String, T, label? : String?) -> LayoutDataProposal[T]
 
@@ -2912,7 +2968,13 @@ pub fn new_layout_graph_view() -> LayoutGraphView
 
 pub fn new_layout_graph_view_drop_adapter(LayoutGraphView) -> LayoutGraphViewDropAdapter
 
+pub fn new_layout_listener(layout_about_to_start_fn? : (LayoutMapping, IElkProgressMonitor) -> Unit, layout_done_fn? : (LayoutMapping, IElkProgressMonitor) -> Unit) -> ILayoutListener
+
 pub fn new_layout_log_view() -> LayoutLogView
+
+pub fn new_layout_mapping(workbench_part? : Int?) -> LayoutMapping
+
+pub fn new_layout_mapping_with_graph(Int?, Int?, Int) -> LayoutMapping
 
 pub fn new_layout_meta_data(() -> String, () -> String, () -> String) -> ILayoutMetaData
 
@@ -2929,6 +2991,10 @@ pub fn[P, G] new_layout_phase((G, IElkProgressMonitor?) -> Unit, (G) -> LayoutPr
 pub fn[P, G] new_layout_processor((G, IElkProgressMonitor?) -> Unit) -> ILayoutProcessor[P, G]
 
 pub fn[P, G] new_layout_processor_factory(Int, Int, () -> ILayoutProcessor[P, G]) -> ILayoutProcessorFactory[P, G]
+
+pub fn new_layout_setup((LayoutSetupObject) -> Bool, (CoreServiceInjector) -> CoreServiceInjector) -> ILayoutSetup
+
+pub fn new_layout_setup_default_impl() -> ILayoutSetup
 
 pub fn new_layout_upon_load_setting_action() -> LayoutUponLoadSettingAction
 
@@ -2955,6 +3021,8 @@ pub fn new_load_graph_action(LayoutGraphView) -> LoadGraphAction
 pub fn new_log_label_provider() -> LogLabelProvider
 
 pub fn new_logged_graph(String, LoggedGraphType) -> LoggedGraph
+
+pub fn new_monitored_operation((IElkProgressMonitor) -> MonitoredOperationStatus, create_monitor_fn? : () -> IElkProgressMonitor, pre_uiexec_fn? : () -> Unit, post_uiexec_fn? : () -> Unit, cancel_indicator? : IElkCancelIndicator?, handle_status_fn? : (MonitoredOperationStatus) -> Unit) -> MonitoredOperation
 
 pub fn new_mrtree() -> Mrtree
 
@@ -3042,6 +3110,8 @@ pub fn new_polyominoes(Array[Polyomino], Double, fill? : Bool) -> Polyominoes
 
 pub fn new_preference_action(String) -> PreferenceAction
 
+pub fn new_progress_monitor_adapter(IElkProgressMonitor, max_hierarchy_levels? : Int) -> ProgressMonitorAdapter
+
 pub fn[T] new_property(String, T) -> IProperty[T]
 
 pub fn[T] new_property_cloneable(String, T, (T) -> T?) -> IProperty[T]
@@ -3085,6 +3155,8 @@ pub fn new_reveal_log_folder_action(AbstractLayoutDebugView) -> RevealLogFolderA
 pub fn new_scanline_overlap_check((Node, Node) -> Unit, SvgImage) -> ScanlineOverlapCheck
 
 pub fn new_selective_paint_toggle_action(String, String, String, DisCoGraphRenderingCanvas) -> SelectivePaintToggleAction
+
+pub fn new_simple_layout_configuration_store(options? : Map[String, String], option_targets? : Array[LayoutOptionTarget], parent? : ILayoutConfigurationStore?, editing_domain? : Int?) -> ILayoutConfigurationStore
 
 pub fn new_spacing() -> Spacing
 
@@ -3559,6 +3631,10 @@ pub fn reset_conn_gmf_foundation_for_test() -> Unit
 pub fn reset_force_graph_model_for_test() -> Unit
 
 pub fn reset_graph_model_for_test() -> Unit
+
+pub fn reset_layout_listener_ids_for_test() -> Unit
+
+pub fn reset_monitored_operation_timestamp_for_test() -> Unit
 
 pub fn reset_mrtree_graph_model_for_test() -> Unit
 
@@ -4317,6 +4393,15 @@ pub struct ComponentsProcessor {
 pub fn ComponentsProcessor::recombine(Self, Array[FGraph]) -> FGraph
 pub fn ComponentsProcessor::split(Self, FGraph) -> Array[FGraph]
 
+pub struct CompoundGraphElementVisitor {
+  graph_visitors : Array[IGraphElementVisitor]
+  apply_to_full_graph_first : Bool
+}
+pub fn CompoundGraphElementVisitor::add_graph_visitors(Self, Array[IGraphElementVisitor]) -> Unit
+pub fn CompoundGraphElementVisitor::get_graph_visitors(Self) -> Array[IGraphElementVisitor]
+pub fn CompoundGraphElementVisitor::to_visitor(Self) -> IGraphElementVisitor
+pub fn CompoundGraphElementVisitor::visit(Self, Int) -> Unit
+
 pub struct CompressLogFolderAction {
   view : AbstractLayoutDebugView
   mut enabled : Bool
@@ -4798,6 +4883,25 @@ pub struct CoreDebugZipOutput {
   entries : Array[String]
 }
 
+pub struct CoreServiceInjector {
+  bindings : Map[String, String]
+  mut diagram_layout_connector : IDiagramLayoutConnector?
+  mut layout_configuration_store_provider : LayoutConfigurationStoreProvider?
+  mut layout_configuration_manager : LayoutConfigurationManager?
+  mut graph_layout_engine : IGraphLayoutEngine?
+}
+pub fn CoreServiceInjector::binding_of(Self, String) -> String?
+pub fn CoreServiceInjector::copy(Self) -> Self
+pub fn CoreServiceInjector::get_connector(Self) -> IDiagramLayoutConnector?
+pub fn CoreServiceInjector::get_graph_layout_engine(Self) -> IGraphLayoutEngine?
+pub fn CoreServiceInjector::get_layout_configuration_manager(Self) -> LayoutConfigurationManager?
+pub fn CoreServiceInjector::get_layout_configuration_store_provider(Self) -> LayoutConfigurationStoreProvider?
+pub fn CoreServiceInjector::set_binding(Self, String, String) -> Unit
+pub fn CoreServiceInjector::set_connector(Self, IDiagramLayoutConnector?) -> Unit
+pub fn CoreServiceInjector::set_graph_layout_engine(Self, IGraphLayoutEngine?) -> Unit
+pub fn CoreServiceInjector::set_layout_configuration_manager(Self, LayoutConfigurationManager?) -> Unit
+pub fn CoreServiceInjector::set_layout_configuration_store_provider(Self, LayoutConfigurationStoreProvider?) -> Unit
+
 pub struct CubicSplineInterpolator {
   _dummy : Unit
 }
@@ -4915,6 +5019,28 @@ pub struct DeprecatedLayoutOptionReplacer {
   _dummy : Int
 }
 pub fn DeprecatedLayoutOptionReplacer::visit(Self, Int) -> Unit
+
+pub struct DiagramLayoutEngine {
+  connector : IDiagramLayoutConnector
+  config_manager : LayoutConfigurationManager
+  graph_layout_engine : IGraphLayoutEngine
+  algorithm_resolver : LayoutAlgorithmResolver
+  connectors_service : LayoutConnectorsService
+}
+pub fn DiagramLayoutEngine::layout(Self, Int?, Int?, progress_monitor? : IElkProgressMonitor, params? : DiagramLayoutEngineParameters) -> LayoutMapping?
+
+pub struct DiagramLayoutEngineParameters {
+  configurators : Array[IGraphElementVisitor]
+  global_settings : Map[String, String]
+  mut override_diagram_config : Bool
+}
+pub fn DiagramLayoutEngineParameters::add_layout_run(Self, IGraphElementVisitor) -> IGraphElementVisitor
+pub fn DiagramLayoutEngineParameters::add_layout_run_configurator(Self) -> LayoutConfigurator
+pub fn DiagramLayoutEngineParameters::get_global_bool_setting(Self, String, Bool) -> Bool
+pub fn DiagramLayoutEngineParameters::get_global_string_setting(Self, String) -> String?
+pub fn DiagramLayoutEngineParameters::set_global_bool_setting(Self, String, Bool) -> Self
+pub fn DiagramLayoutEngineParameters::set_global_string_setting(Self, String, String) -> Self
+pub fn DiagramLayoutEngineParameters::set_override_diagram_config(Self, Bool) -> Self
 
 pub enum Direction {
   Undefined
@@ -5497,6 +5623,20 @@ pub fn ElkRectangle::move(Self, KVector) -> Unit
 pub fn ElkRectangle::set_rect(Self, Double, Double, Double, Double) -> Unit
 pub fn ElkRectangle::to_string(Self) -> String
 pub fn ElkRectangle::union(Self, Self) -> Unit
+
+pub struct ElkServicePlugin {
+  mut started : Bool
+  preference_store : Map[String, Bool]
+  running_operations : Map[String, Array[MonitoredOperation]]
+}
+pub fn ElkServicePlugin::add_running_operation(Self, Int?, Int?, MonitoredOperation) -> Unit
+pub fn ElkServicePlugin::get_boolean_preference(Self, String, Bool) -> Bool
+pub fn ElkServicePlugin::get_running_operations(Self, Int?, Int?) -> Array[MonitoredOperation]
+pub fn ElkServicePlugin::is_started(Self) -> Bool
+pub fn ElkServicePlugin::remove_running_operation(Self, Int?, Int?, MonitoredOperation) -> Unit
+pub fn ElkServicePlugin::set_boolean_preference(Self, String, Bool) -> Unit
+pub fn ElkServicePlugin::start(Self) -> Unit
+pub fn ElkServicePlugin::stop(Self) -> Unit
 
 pub struct ExclusiveLowerBound {
   exclusive_lower_bound : Double
@@ -6497,6 +6637,14 @@ pub struct IDataObject {
 }
 pub fn IDataObject::parse(Self, String) -> Unit
 
+pub struct IDiagramLayoutConnector {
+  id : String
+  build_layout_graph_fn : (Int?, Int?) -> LayoutMapping?
+  apply_layout_fn : (LayoutMapping, Map[String, String]) -> Unit
+}
+pub fn IDiagramLayoutConnector::apply_layout(Self, LayoutMapping, Map[String, String]) -> Unit
+pub fn IDiagramLayoutConnector::build_layout_graph(Self, Int?, Int?) -> LayoutMapping?
+
 pub struct IEditPartFilter {
   filter_fn : (Int) -> Bool
 }
@@ -6571,6 +6719,29 @@ pub struct IGraphTransformer[G] {
 pub fn[G] IGraphTransformer::apply_layout(Self[G]) -> Unit
 pub fn[G] IGraphTransformer::import_graph(Self[G], G) -> DCGraph
 
+pub struct ILayoutConfigurationStore {
+  get_editing_domain_fn : () -> Int?
+  get_option_value_fn : (String) -> String?
+  set_option_value_fn : (String, String?) -> Unit
+  get_affected_options_fn : () -> Array[String]
+  get_option_targets_fn : () -> Array[LayoutOptionTarget]
+  get_parent_fn : () -> ILayoutConfigurationStore?
+}
+pub fn ILayoutConfigurationStore::get_affected_options(Self) -> Array[String]
+pub fn ILayoutConfigurationStore::get_editing_domain(Self) -> Int?
+pub fn ILayoutConfigurationStore::get_option_targets(Self) -> Array[LayoutOptionTarget]
+pub fn ILayoutConfigurationStore::get_option_value(Self, String) -> String?
+pub fn ILayoutConfigurationStore::get_parent(Self) -> Self?
+pub fn ILayoutConfigurationStore::set_option_value(Self, String, String?) -> Unit
+
+pub struct ILayoutListener {
+  id : Int
+  layout_about_to_start_fn : (LayoutMapping, IElkProgressMonitor) -> Unit
+  layout_done_fn : (LayoutMapping, IElkProgressMonitor) -> Unit
+}
+pub fn ILayoutListener::layout_about_to_start(Self, LayoutMapping, IElkProgressMonitor) -> Unit
+pub fn ILayoutListener::layout_done(Self, LayoutMapping, IElkProgressMonitor) -> Unit
+
 pub struct ILayoutMetaData {
   get_id_fn : () -> String
   get_name_fn : () -> String
@@ -6605,6 +6776,13 @@ pub struct ILayoutProcessorFactory[P, G] {
 pub fn[P, G] ILayoutProcessorFactory::create(Self[P, G]) -> ILayoutProcessor[P, G]
 pub fn[P, G] ILayoutProcessorFactory::factory_id(Self[P, G]) -> Int
 pub fn[P, G] ILayoutProcessorFactory::factory_order(Self[P, G]) -> Int
+
+pub struct ILayoutSetup {
+  supports_fn : (LayoutSetupObject) -> Bool
+  create_injector_fn : (CoreServiceInjector) -> CoreServiceInjector
+}
+pub fn ILayoutSetup::create_injector(Self, CoreServiceInjector) -> CoreServiceInjector
+pub fn ILayoutSetup::supports(Self, LayoutSetupObject) -> Bool
 
 pub struct INodeArranger {
   get_predicted_size_fn : (Int) -> KVector
@@ -6911,6 +7089,26 @@ pub fn LayoutCategoryData::get_id(Self) -> String
 pub fn LayoutCategoryData::get_layouters(Self) -> Array[LayoutAlgorithmData]
 pub fn LayoutCategoryData::get_name(Self) -> String
 
+pub struct LayoutConfigurationManager {
+  mut config_provider : LayoutConfigurationStoreProvider?
+  layout_algorithm_resolver : LayoutAlgorithmResolver
+}
+pub fn LayoutConfigurationManager::clear_option_values(Self, ILayoutConfigurationStore) -> Unit
+pub fn LayoutConfigurationManager::create_configurator(Self, LayoutMapping) -> LayoutConfigurator
+pub fn LayoutConfigurationManager::get_algorithm(Self, ILayoutConfigurationStore) -> LayoutAlgorithmData?
+pub fn LayoutConfigurationManager::get_option_value(Self, LayoutOptionData, ILayoutConfigurationStore) -> String?
+pub fn LayoutConfigurationManager::get_raw_option_value(Self, String, ILayoutConfigurationStore) -> String?
+pub fn LayoutConfigurationManager::get_responsible_parent(Self, ILayoutConfigurationStore) -> ILayoutConfigurationStore?
+pub fn LayoutConfigurationManager::get_root(Self, ILayoutConfigurationStore) -> ILayoutConfigurationStore
+pub fn LayoutConfigurationManager::get_supported_options(Self, ILayoutConfigurationStore) -> Array[LayoutOptionData]
+pub fn LayoutConfigurationManager::is_full_hierarchy_layout(Self, ILayoutConfigurationStore) -> Bool
+pub fn LayoutConfigurationManager::set_config_provider(Self, LayoutConfigurationStoreProvider?) -> Unit
+
+pub struct LayoutConfigurationStoreProvider {
+  get_fn : (Int?, Int?) -> ILayoutConfigurationStore?
+}
+pub fn LayoutConfigurationStoreProvider::get(Self, Int?, Int?) -> ILayoutConfigurationStore?
+
 pub struct LayoutConfigurator {
   element_option_map : Map[Int, Map[String, (IProperty[Double], Double)]]
   class_option_map : Map[String, Map[String, (IProperty[Double], Double)]]
@@ -6921,6 +7119,21 @@ pub fn LayoutConfigurator::configure_class_property(Self, String, IProperty[Doub
 pub fn LayoutConfigurator::configure_node_property(Self, Int, IProperty[Double], Double) -> Unit
 pub fn LayoutConfigurator::to_visitor(Self) -> IGraphElementVisitor
 pub fn LayoutConfigurator::visit(Self, Int) -> Unit
+
+pub struct LayoutConnectorsService {
+  mut entries : Array[LayoutSetupEntry]
+  mut layout_listeners : Array[ILayoutListener]
+}
+pub fn LayoutConnectorsService::add_layout_listener(Self, ILayoutListener) -> Unit
+pub fn LayoutConnectorsService::clear_listeners_for_test(Self) -> Unit
+pub fn LayoutConnectorsService::clear_setups_for_test(Self) -> Unit
+pub fn LayoutConnectorsService::fire_layout_about_to_start(Self, LayoutMapping, IElkProgressMonitor) -> Unit
+pub fn LayoutConnectorsService::fire_layout_done(Self, LayoutMapping, IElkProgressMonitor) -> Unit
+pub fn LayoutConnectorsService::get_connector(Self, Int?, Int?) -> IDiagramLayoutConnector?
+pub fn LayoutConnectorsService::get_injector(Self, Int?, Int?) -> CoreServiceInjector?
+pub fn LayoutConnectorsService::register_setup(Self, ILayoutSetup, priority? : Int) -> Unit
+pub fn LayoutConnectorsService::registered_priorities_for_test(Self) -> Array[Int]
+pub fn LayoutConnectorsService::remove_layout_listener(Self, ILayoutListener) -> Unit
 
 pub enum LayoutDataContentAssistElement {
   NodeLayoutDataElement(Int)
@@ -6990,6 +7203,42 @@ pub fn LayoutLogView::get_base(Self) -> AbstractLayoutDebugView
 pub fn LayoutLogView::get_log_text(Self) -> String
 pub fn LayoutLogView::set_selected_execution_infos(Self, Array[Int]) -> Unit
 pub fn LayoutLogView::tree_selection_changed(Self) -> Unit
+
+pub struct LayoutMapping {
+  graph_elem_map : Map[Int, Int]
+  diagram_elem_map : Map[Int, Int]
+  mut layout_graph : Int?
+  mut parent_element : Int?
+  workbench_part : Int?
+  mut status : LayoutMappingStatus?
+  mut connector_id : String?
+  properties : Map[String, String]
+}
+pub fn LayoutMapping::get_connector_id(Self) -> String?
+pub fn LayoutMapping::get_diagram_element(Self, Int) -> Int?
+pub fn LayoutMapping::get_graph_element(Self, Int) -> Int?
+pub fn LayoutMapping::get_layout_graph(Self) -> Int?
+pub fn LayoutMapping::get_parent_element(Self) -> Int?
+pub fn LayoutMapping::get_property(Self, String) -> String?
+pub fn LayoutMapping::get_status(Self) -> LayoutMappingStatus?
+pub fn LayoutMapping::get_workbench_part(Self) -> Int?
+pub fn LayoutMapping::graph_map_entries(Self) -> Array[(Int, Int)]
+pub fn LayoutMapping::graph_map_size(Self) -> Int
+pub fn LayoutMapping::put_graph_mapping(Self, Int, Int) -> Unit
+pub fn LayoutMapping::set_connector_id(Self, String?) -> Unit
+pub fn LayoutMapping::set_layout_graph(Self, Int?) -> Unit
+pub fn LayoutMapping::set_parent_element(Self, Int?) -> Unit
+pub fn LayoutMapping::set_property(Self, String, String) -> Unit
+pub fn LayoutMapping::set_status(Self, LayoutMappingStatus?) -> Unit
+
+pub enum LayoutMappingStatus {
+  OkStatus
+  WarningStatus(String)
+  ErrorStatus(String)
+  CanceledStatus
+}
+pub impl Eq for LayoutMappingStatus
+pub impl Show for LayoutMappingStatus
 
 pub struct LayoutMetaDataRegistry {
   register_algorithm_fn : (LayoutAlgorithmData) -> Unit
@@ -7074,6 +7323,16 @@ pub fn[P, G] LayoutProcessorConfiguration::do_add(Self[P, G], Int, ILayoutProces
 pub fn[P, G] LayoutProcessorConfiguration::processors(Self[P, G], Int) -> Array[ILayoutProcessorFactory[P, G]]
 pub fn[P, G] LayoutProcessorConfiguration::processors_after(Self[P, G], P) -> Array[ILayoutProcessorFactory[P, G]]
 pub fn[P, G] LayoutProcessorConfiguration::processors_before(Self[P, G], P) -> Array[ILayoutProcessorFactory[P, G]]
+
+type LayoutSetupEntry
+
+pub enum LayoutSetupObject {
+  WorkbenchPartObject(Int)
+  DiagramPartObject(Int)
+  SelectionObject(Array[Int])
+  OtherObject
+}
+pub impl Show for LayoutSetupObject
 
 pub struct LayoutUponLoadSettingAction {
   mut checked : Bool
@@ -7197,6 +7456,31 @@ pub fn[T : Hash] Maybe::hash_code(Self[T]) -> Int
 pub fn[T] Maybe::is_empty(Self[T]) -> Bool
 pub fn[T] Maybe::set(Self[T], T?) -> Unit
 pub fn[T : Show] Maybe::to_string(Self[T]) -> String
+
+pub struct MonitoredOperation {
+  mut timestamp : Int
+  mut is_canceled_flag : Bool
+  cancel_indicator : IElkCancelIndicator?
+  create_monitor_fn : () -> IElkProgressMonitor
+  pre_uiexec_fn : () -> Unit
+  execute_fn : (IElkProgressMonitor) -> MonitoredOperationStatus
+  post_uiexec_fn : () -> Unit
+  handle_status_fn : (MonitoredOperationStatus) -> Unit
+}
+pub fn MonitoredOperation::cancel(Self) -> Unit
+pub fn MonitoredOperation::get_timestamp(Self) -> Int
+pub fn MonitoredOperation::is_canceled(Self) -> Bool
+pub fn MonitoredOperation::run_monitored(Self) -> MonitoredOperationStatus
+pub fn MonitoredOperation::run_unmonitored(Self) -> MonitoredOperationStatus
+
+pub enum MonitoredOperationStatus {
+  OperationOk
+  OperationWarning
+  OperationError
+  OperationCanceled
+}
+pub impl Eq for MonitoredOperationStatus
+pub impl Show for MonitoredOperationStatus
 
 pub struct Mrtree {
   marker : Int
@@ -7645,6 +7929,17 @@ pub fn PreferenceAction::dispose(Self) -> Unit
 pub fn PreferenceAction::is_checked(Self) -> Bool
 pub fn PreferenceAction::run(Self) -> Unit
 pub fn PreferenceAction::update_checked_state(Self) -> Unit
+
+pub struct ProgressMonitorAdapter {
+  progress_monitor : IElkProgressMonitor
+  mut submitted_work : Int
+  max_hierarchy_levels : Int
+}
+pub fn ProgressMonitorAdapter::begin(Self, String, Double, top_instance? : Bool) -> Unit
+pub fn ProgressMonitorAdapter::done(Self, top_instance? : Bool) -> Unit
+pub fn ProgressMonitorAdapter::is_canceled(Self) -> Bool
+pub fn ProgressMonitorAdapter::sub_task(Self, Double) -> Self
+pub fn ProgressMonitorAdapter::worked(Self, Double, Double, top_instance? : Bool) -> Unit
 
 pub enum Quadrant {
   Q1
@@ -8230,6 +8525,8 @@ pub type ILockFunction = (CNode, Direction) -> Bool
 
 pub type IOverlapHandler = (Node, Node) -> Unit
 
+pub type LayoutApplySettings = Map[String, String]
+
 pub type LayoutConfiguratorElementClass = String
 
 pub type LayoutConfiguratorFilter = (Int, IProperty[Double]) -> Bool
@@ -8241,6 +8538,12 @@ pub type MrtreeGraph = Int
 pub type MrtreeNode = Int
 
 pub type ScanlineEventHandler[T] = (T) -> Unit
+
+pub type ServiceDiagramElement = Int
+
+pub type ServiceGraphElement = Int
+
+pub type ServiceWorkbenchPart = Int
 
 // Traits
 
