@@ -52,6 +52,7 @@ pub struct LNode {
   int_properties : Map[String, Int]
   bool_properties : Map[String, Bool]
   double_properties : Map[String, Double]
+  string_properties : Map[String, String]
   port_side_properties : Map[String, PortSide]
   node_properties : Map[String, LNode]
   node_array_properties : Map[String, Array[LNode]]
@@ -73,6 +74,7 @@ pub fn new_l_node(graph? : LGraph? = None) -> LNode {
     int_properties: {},
     bool_properties: {},
     double_properties: {},
+    string_properties: {},
     port_side_properties: {},
     node_properties: {},
     node_array_properties: {},
@@ -384,6 +386,15 @@ pub fn LNode::set_property_double(
 }
 
 ///|
+pub fn LNode::set_property_string(
+  self : LNode,
+  property : IProperty[String],
+  value : String,
+) -> Unit {
+  self.string_properties[property.get_id()] = value
+}
+
+///|
 pub fn LNode::get_property_bool(
   self : LNode,
   property : IProperty[Bool],
@@ -400,6 +411,17 @@ pub fn LNode::get_property_double(
   property : IProperty[Double],
 ) -> Double {
   match self.double_properties.get(property.get_id()) {
+    Some(value) => value
+    None => property.get_default()
+  }
+}
+
+///|
+pub fn LNode::get_property_string(
+  self : LNode,
+  property : IProperty[String],
+) -> String {
+  match self.string_properties.get(property.get_id()) {
     Some(value) => value
     None => property.get_default()
   }
@@ -444,6 +466,14 @@ pub fn LNode::has_property_double(
   property : IProperty[Double],
 ) -> Bool {
   self.double_properties.contains(property.get_id())
+}
+
+///|
+pub fn LNode::has_property_string(
+  self : LNode,
+  property : IProperty[String],
+) -> Bool {
+  self.string_properties.contains(property.get_id())
 }
 
 ///|

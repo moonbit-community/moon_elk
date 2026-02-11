@@ -2434,6 +2434,8 @@ pub fn i_crossing_minimization_heuristic_init(Array[ICrossingMinimizationHeurist
 
 pub fn i_initializable_init(Array[IInitializable], Array[Array[LNode]]) -> Unit
 
+pub fn i_sweep_port_distributor_init(Array[ISweepPortDistributor], Array[Array[LNode]]) -> Unit
+
 pub fn image_export_action_complete_file_name(String?) -> String?
 
 pub fn image_export_action_get_exported_files_for_test() -> Array[String]
@@ -3197,6 +3199,8 @@ pub fn network_simplex_nedge_of() -> NEdgeBuilder
 pub fn network_simplex_nnode_of() -> NNodeBuilder
 
 pub fn new_absolute_resource_path(String) -> AbstractResourcePath
+
+pub fn new_abstract_barycenter_port_distributor(Int, (AbstractBarycenterPortDistributor, LNode, Double, PortType) -> Double) -> AbstractBarycenterPortDistributor
 
 pub fn new_abstract_core_debug_grandom_ide_module() -> AbstractCoreDebugGRandomIdeModule
 
@@ -4096,6 +4100,8 @@ pub fn new_i_edit_part_filter_default_impl() -> IEditPartFilter
 
 pub fn new_i_initializable(init_at_layer_level? : (Int, Array[Array[LNode]]) -> Unit, init_at_node_level? : (Int, Int, Array[Array[LNode]]) -> Unit, init_at_port_level? : (Int, Int, Int, Array[Array[LNode]]) -> Unit, init_at_edge_level? : (Int, Int, Int, Int, LEdge, Array[Array[LNode]]) -> Unit, init_after_traversal? : () -> Unit) -> IInitializable
 
+pub fn new_i_sweep_port_distributor((Array[Array[LNode]], Int, Bool) -> Bool, init_at_layer_level? : (Int, Array[Array[LNode]]) -> Unit, init_at_node_level? : (Int, Int, Array[Array[LNode]]) -> Unit, init_at_port_level? : (Int, Int, Int, Array[Array[LNode]]) -> Unit, init_at_edge_level? : (Int, Int, Int, Int, LEdge, Array[Array[LNode]]) -> Unit, init_after_traversal? : () -> Unit) -> ISweepPortDistributor
+
 pub fn new_icompactor((DCGraph) -> Unit) -> ICompactor
 
 pub fn[T] new_igraph_importer((T) -> FGraph, (FGraph) -> Unit) -> IGraphImporter[T]
@@ -4205,6 +4211,8 @@ pub fn new_label_cell_with_layout_mode(Double, Bool) -> Cell
 pub fn new_label_cell_with_node_label_location(Double, NodeLabelLocation) -> Cell
 
 pub fn new_layer(LGraph) -> Layer
+
+pub fn new_layer_total_port_distributor(Int) -> LayerTotalPortDistributor
 
 pub fn new_layered_abstract_graph_placer() -> LayeredAbstractGraphPlacer
 
@@ -4463,6 +4471,8 @@ pub fn new_ngraph() -> NGraph
 pub fn new_node(KVector, ElkRectangle) -> Node
 
 pub fn new_node_arranger((Int) -> KVector) -> INodeArranger
+
+pub fn new_node_relative_port_distributor(Int) -> NodeRelativePortDistributor
 
 pub fn new_null_elk_progress_monitor() -> IElkProgressMonitor
 
@@ -5648,6 +5658,27 @@ pub let vertiflex_vertical_constraint : IProperty[Double]
 pub enum AbsoluteXPlacerStrategy {
   ABSOLUTE_XPLACING
 }
+
+pub struct AbstractBarycenterPortDistributor {
+  mut port_ranks : Array[Double]
+  mut min_barycenter : Double
+  mut max_barycenter : Double
+  node_positions : Array[Array[Int]]
+  mut port_barycenter : Array[Double]
+  in_layer_ports : Array[LPort]
+  mut n_ports : Int
+  calculate_port_ranks_fn : (AbstractBarycenterPortDistributor, LNode, Double, PortType) -> Double
+}
+pub fn AbstractBarycenterPortDistributor::as_i_sweep_port_distributor(Self) -> ISweepPortDistributor
+pub fn AbstractBarycenterPortDistributor::as_initializable(Self) -> IInitializable
+pub fn AbstractBarycenterPortDistributor::calculate_port_ranks(Self, Array[LNode], PortType) -> Unit
+pub fn AbstractBarycenterPortDistributor::calculate_port_ranks_on_node(Self, LNode, Double, PortType) -> Double
+pub fn AbstractBarycenterPortDistributor::distribute_ports_while_sweeping(Self, Array[Array[LNode]], Int, Bool) -> Bool
+pub fn AbstractBarycenterPortDistributor::get_port_ranks(Self) -> Array[Double]
+pub fn AbstractBarycenterPortDistributor::init_after_traversal(Self) -> Unit
+pub fn AbstractBarycenterPortDistributor::init_at_layer_level(Self, Int, Array[Array[LNode]]) -> Unit
+pub fn AbstractBarycenterPortDistributor::init_at_node_level(Self, Int, Int, Array[Array[LNode]]) -> Unit
+pub fn AbstractBarycenterPortDistributor::init_at_port_level(Self, Int, Int, Int, Array[Array[LNode]]) -> Unit
 
 pub struct AbstractCoreDebugGRandomIdeModule {
   unit : Unit
@@ -11296,6 +11327,18 @@ pub struct ISplineInterpolator {
 }
 pub fn ISplineInterpolator::interpolate_points(Self, Array[KVector]) -> BezierSpline
 
+pub struct ISweepPortDistributor {
+  initializable : IInitializable
+  distribute_ports_while_sweeping_fn : (Array[Array[LNode]], Int, Bool) -> Bool
+}
+pub fn ISweepPortDistributor::as_initializable(Self) -> IInitializable
+pub fn ISweepPortDistributor::distribute_ports_while_sweeping(Self, Array[Array[LNode]], Int, Bool) -> Bool
+pub fn ISweepPortDistributor::init_after_traversal(Self) -> Unit
+pub fn ISweepPortDistributor::init_at_edge_level(Self, Int, Int, Int, Int, LEdge, Array[Array[LNode]]) -> Unit
+pub fn ISweepPortDistributor::init_at_layer_level(Self, Int, Array[Array[LNode]]) -> Unit
+pub fn ISweepPortDistributor::init_at_node_level(Self, Int, Int, Array[Array[LNode]]) -> Unit
+pub fn ISweepPortDistributor::init_at_port_level(Self, Int, Int, Int, Array[Array[LNode]]) -> Unit
+
 pub struct IThreeValueGrid {
   get_width_fn : () -> Int
   get_height_fn : () -> Int
@@ -11814,6 +11857,7 @@ pub struct LNode {
   int_properties : Map[String, Int]
   bool_properties : Map[String, Bool]
   double_properties : Map[String, Double]
+  string_properties : Map[String, String]
   port_side_properties : Map[String, PortSide]
   node_properties : Map[String, LNode]
   node_array_properties : Map[String, Array[LNode]]
@@ -11843,6 +11887,7 @@ pub fn LNode::get_property_int(Self, IProperty[Int]) -> Int
 pub fn LNode::get_property_l_node(Self, IProperty[Self?]) -> Self?
 pub fn LNode::get_property_l_node_array(Self, IProperty[Array[Self]]) -> Array[Self]
 pub fn LNode::get_property_port_side(Self, IProperty[PortSide]) -> PortSide
+pub fn LNode::get_property_string(Self, IProperty[String]) -> String
 pub fn LNode::get_size(Self) -> KVector
 pub fn LNode::get_type(Self) -> NodeType
 pub fn LNode::has_property_bool(Self, IProperty[Bool]) -> Bool
@@ -11851,6 +11896,7 @@ pub fn LNode::has_property_int(Self, IProperty[Int]) -> Bool
 pub fn LNode::has_property_l_node(Self, IProperty[Self?]) -> Bool
 pub fn LNode::has_property_l_node_array(Self, IProperty[Array[Self]]) -> Bool
 pub fn LNode::has_property_port_side(Self, IProperty[PortSide]) -> Bool
+pub fn LNode::has_property_string(Self, IProperty[String]) -> Bool
 pub fn LNode::remove_port(Self, LPort) -> Unit
 pub fn LNode::set_graph(Self, LGraph?) -> Unit
 pub fn LNode::set_id(Self, Int) -> Unit
@@ -11862,6 +11908,7 @@ pub fn LNode::set_property_int(Self, IProperty[Int], Int) -> Unit
 pub fn LNode::set_property_l_node(Self, IProperty[Self?], Self?) -> Unit
 pub fn LNode::set_property_l_node_array(Self, IProperty[Array[Self]], Array[Self]) -> Unit
 pub fn LNode::set_property_port_side(Self, IProperty[PortSide], PortSide) -> Unit
+pub fn LNode::set_property_string(Self, IProperty[String], String) -> Unit
 pub fn LNode::set_type(Self, NodeType) -> Unit
 pub fn LNode::to_string(Self) -> String
 
@@ -11962,6 +12009,19 @@ pub enum LayerConstraint {
   Last
   LastSeparate
 }
+
+pub struct LayerTotalPortDistributor {
+  distributor : AbstractBarycenterPortDistributor
+}
+pub fn LayerTotalPortDistributor::as_i_sweep_port_distributor(Self) -> ISweepPortDistributor
+pub fn LayerTotalPortDistributor::as_initializable(Self) -> IInitializable
+pub fn LayerTotalPortDistributor::calculate_port_ranks(Self, Array[LNode], PortType) -> Unit
+pub fn LayerTotalPortDistributor::distribute_ports_while_sweeping(Self, Array[Array[LNode]], Int, Bool) -> Bool
+pub fn LayerTotalPortDistributor::get_port_ranks(Self) -> Array[Double]
+pub fn LayerTotalPortDistributor::init_after_traversal(Self) -> Unit
+pub fn LayerTotalPortDistributor::init_at_layer_level(Self, Int, Array[Array[LNode]]) -> Unit
+pub fn LayerTotalPortDistributor::init_at_node_level(Self, Int, Int, Array[Array[LNode]]) -> Unit
+pub fn LayerTotalPortDistributor::init_at_port_level(Self, Int, Int, Int, Array[Array[LNode]]) -> Unit
 
 pub enum LayerUnzippingStrategy {
   NoneType
@@ -13315,6 +13375,19 @@ pub enum NodePromotionStrategy {
   ModelOrderLeftToRight
   ModelOrderRightToLeft
 }
+
+pub struct NodeRelativePortDistributor {
+  distributor : AbstractBarycenterPortDistributor
+}
+pub fn NodeRelativePortDistributor::as_i_sweep_port_distributor(Self) -> ISweepPortDistributor
+pub fn NodeRelativePortDistributor::as_initializable(Self) -> IInitializable
+pub fn NodeRelativePortDistributor::calculate_port_ranks(Self, Array[LNode], PortType) -> Unit
+pub fn NodeRelativePortDistributor::distribute_ports_while_sweeping(Self, Array[Array[LNode]], Int, Bool) -> Bool
+pub fn NodeRelativePortDistributor::get_port_ranks(Self) -> Array[Double]
+pub fn NodeRelativePortDistributor::init_after_traversal(Self) -> Unit
+pub fn NodeRelativePortDistributor::init_at_layer_level(Self, Int, Array[Array[LNode]]) -> Unit
+pub fn NodeRelativePortDistributor::init_at_node_level(Self, Int, Int, Array[Array[LNode]]) -> Unit
+pub fn NodeRelativePortDistributor::init_at_port_level(Self, Int, Int, Int, Array[Array[LNode]]) -> Unit
 
 pub enum NodeType {
   Normal
