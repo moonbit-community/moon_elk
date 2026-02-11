@@ -798,7 +798,15 @@ pub fn create_rectangle_strip_overlap_remover_for_direction(Direction) -> Rectan
 
 pub fn create_simple_edge(Int, Int) -> Int
 
+pub fn crossing_minimization_strategy_to_string(CrossingMinimizationStrategy) -> String
+
+pub fn crossing_minimization_strategy_values() -> Array[String]
+
 pub fn cubic_spline_interpolator_as_spline_interpolator(CubicSplineInterpolator) -> ISplineInterpolator
+
+pub fn cycle_breaking_strategy_to_string(CycleBreakingStrategy) -> String
+
+pub fn cycle_breaking_strategy_values() -> Array[String]
 
 pub fn dc_direction_values() -> Array[DCDirection]
 
@@ -2490,6 +2498,26 @@ pub fn layered_compare_fuzzy_lt(Double, Double) -> Bool
 
 pub let layered_compare_fuzzy_tolerance : Double
 
+pub fn layered_is_both_left_or_both_right(LayeredQuadrant, LayeredQuadrant) -> Bool
+
+pub fn layered_is_one_left_one_right(LayeredQuadrant, LayeredQuadrant) -> Bool
+
+pub fn layered_point_from_kvector(KVector) -> LayeredPoint
+
+pub fn layered_point_with_quadrant(LayeredPoint, LayeredQuadrant) -> LayeredPoint
+
+pub fn layered_quadrant_eq(LayeredQuadrant, LayeredQuadrant) -> Bool
+
+pub fn layered_rectilinear_convex_hull_of(Array[LayeredPoint]) -> LayeredRectilinearConvexHull
+
+pub fn[T] layered_scanline_execute(Array[T], (T, T) -> Int, Array[(T) -> Unit]) -> Unit
+
+pub fn[T] layered_scanline_execute_single(Array[T], (T, T) -> Int, (T) -> Unit) -> Unit
+
+pub fn layering_strategy_to_string(LayeringStrategy) -> String
+
+pub fn layering_strategy_values() -> Array[String]
+
 pub fn layout_algorithm_data_to_json(LayoutAlgorithmData) -> Json
 
 pub fn layout_category_data_to_json(LayoutCategoryData) -> Json
@@ -4038,9 +4066,15 @@ pub fn new_l_padding() -> Spacing
 
 pub fn new_l_shape() -> LShape
 
+pub fn new_layered_point(Double, Double) -> LayeredPoint
+
+pub fn new_layered_point_in_quadrant(Double, Double, LayeredQuadrant) -> LayeredPoint
+
 pub fn new_layered_quadruplet() -> LayeredQuadruplet
 
 pub fn new_layered_quadruplet_with_values(Bool, Bool, Bool, Bool) -> LayeredQuadruplet
+
+pub fn new_layered_rectilinear_convex_hull() -> LayeredRectilinearConvexHull
 
 pub fn new_layout_algorithm_data(String, name? : String, description? : String, validator? : ((Int) -> Array[GraphIssue])?, category_id? : String, bundle_name? : String, preview_image_path? : String, defining_bundle_id? : String, instance_pool_clear_fn? : () -> Unit) -> LayoutAlgorithmData
 
@@ -4568,6 +4602,10 @@ pub fn node_contained_edges(Int) -> Array[Int]
 
 pub fn node_double_property_entries(Int) -> Array[(String, Double)]
 
+pub fn node_flexibility_flags() -> Array[Bool]
+
+pub fn node_flexibility_is_at_least_values() -> Array[Bool]
+
 pub fn node_get_bool_property(Int, IProperty[Bool]) -> Bool
 
 pub fn node_get_double_property(Int, IProperty[Double]) -> Double
@@ -4647,6 +4685,10 @@ pub fn node_layout_option_string_value(Int, String) -> String?
 pub fn node_outgoing_edges(Int) -> Array[Int]
 
 pub fn node_parent(Int) -> Int?
+
+pub fn node_placement_strategy_to_string(NodePlacementStrategy) -> String
+
+pub fn node_placement_strategy_values() -> Array[String]
 
 pub fn node_ports(Int) -> Array[Int]
 
@@ -5099,6 +5141,12 @@ pub fn selective_paint_toggle_action_get_id(SelectivePaintToggleAction) -> Strin
 pub fn selective_paint_toggle_action_is_checked(SelectivePaintToggleAction) -> Bool
 
 pub fn selective_paint_toggle_action_run(SelectivePaintToggleAction) -> Unit
+
+pub fn self_loop_type_from_port_sides(Array[PortSide]) -> SelfLoopType?
+
+pub fn self_loop_type_option_to_string(SelfLoopType?) -> String
+
+pub fn self_loop_type_to_string(SelfLoopType) -> String
 
 pub fn shape_coords_to_string(ShapeCoords) -> String
 
@@ -7628,6 +7676,13 @@ pub enum CoreUiValue {
   CoreUiNoValue
 }
 
+pub enum CrossingMinimizationStrategy {
+  CmsLayerSweep
+  CmsMedianLayerSweep
+  CmsInteractive
+  CmsNone
+}
+
 pub struct CubicSplineInterpolator {
   _dummy : Unit
 }
@@ -7639,6 +7694,18 @@ pub enum CuttingStrategy {
   Ard
   Msd
   Manual
+}
+
+pub enum CycleBreakingStrategy {
+  CbsGreedy
+  CbsDepthFirst
+  CbsInteractive
+  CbsModelOrder
+  CbsGreedyModelOrder
+  CbsSccConnectivity
+  CbsSccNodeType
+  CbsDfsNodeOrder
+  CbsBfsNodeOrder
 }
 
 pub struct DCComponent {
@@ -11285,6 +11352,31 @@ pub enum LayerUnzippingStrategy {
   Alternating
 }
 
+pub struct LayeredHullRectangleEventState {
+  rects : Array[ElkRectangle]
+  mut min_y : LayeredPoint?
+  mut max_y : LayeredPoint?
+  mut last_x : Double
+  mut queued : ElkRectangle?
+  mut queued_point : LayeredPoint?
+}
+
+pub struct LayeredPoint {
+  x : Double
+  y : Double
+  quadrant : LayeredQuadrant?
+  mut convex : Bool
+}
+
+pub enum LayeredQuadrant {
+  LQ1
+  LQ4
+  LQ2
+  LQ3
+}
+pub fn LayeredQuadrant::is_left(Self) -> Bool
+pub fn LayeredQuadrant::is_upper(Self) -> Bool
+
 pub struct LayeredQuadruplet {
   mut left : Bool
   mut right : Bool
@@ -11294,6 +11386,32 @@ pub struct LayeredQuadruplet {
 pub fn LayeredQuadruplet::get(Self, Direction) -> Bool
 pub fn LayeredQuadruplet::set_for_direction(Self, Bool, Direction) -> Unit
 pub fn LayeredQuadruplet::set_values(Self, Bool, Bool, Bool, Bool) -> Unit
+
+pub struct LayeredRectilinearConvexHull {
+  hull : Array[LayeredPoint]
+  mut x_max1 : LayeredPoint?
+  mut x_max2 : LayeredPoint?
+  mut x_min1 : LayeredPoint?
+  mut x_min2 : LayeredPoint?
+  mut y_max1 : LayeredPoint?
+  mut y_max2 : LayeredPoint?
+  mut y_min1 : LayeredPoint?
+  mut y_min2 : LayeredPoint?
+}
+pub fn LayeredRectilinearConvexHull::get_hull(Self) -> Array[LayeredPoint]
+pub fn LayeredRectilinearConvexHull::split_into_rectangles(Self) -> Array[ElkRectangle]
+
+pub enum LayeringStrategy {
+  LsNetworkSimplex
+  LsLongestPath
+  LsLongestPathSource
+  LsCoffmanGraham
+  LsInteractive
+  LsStretchWidth
+  LsMinWidth
+  LsBfModelOrder
+  LsDfModelOrder
+}
 
 pub struct LayoutAlgorithmData {
   id : String
@@ -12410,6 +12528,17 @@ pub enum NodeArrangementStrategy {
   LEFT_RIGHT_TOP_DOWN_NODE_PLACER
 }
 
+pub enum NodeFlexibility {
+  NfNone
+  NfPortPosition
+  NfNodeSizeWhereSpacePermits
+  NfNodeSize
+}
+pub fn NodeFlexibility::is_at_least(Self, Self) -> Bool
+pub fn NodeFlexibility::is_flexible_ports(Self) -> Bool
+pub fn NodeFlexibility::is_flexible_size(Self) -> Bool
+pub fn NodeFlexibility::is_flexible_size_where_space_permits(Self) -> Bool
+
 pub enum NodeLabelLocation {
   OutTL
   OutTC
@@ -12451,6 +12580,14 @@ pub enum NodeLabelPlacement {
   NodeLabelInside
   NodeLabelOutside
   NodeLabelHPriority
+}
+
+pub enum NodePlacementStrategy {
+  NpsSimple
+  NpsInteractive
+  NpsLinearSegments
+  NpsBrandesKoepf
+  NpsNetworkSimplex
 }
 
 pub enum NodePromotionStrategy {
@@ -13133,6 +13270,14 @@ pub enum SelfLoopPlacementStrategy {
   NorthSequence
 }
 
+pub enum SelfLoopType {
+  OneSide
+  TwoSidesCorner
+  TwoSidesOpposing
+  ThreeSides
+  FourSides
+}
+
 pub enum ShapeCoords {
   Inherit
   Parent
@@ -13721,6 +13866,8 @@ pub type ICostFunction = (TEdge) -> Double
 pub type ILockFunction = (CNode, Direction) -> Bool
 
 pub type IOverlapHandler = (Node, Node) -> Unit
+
+pub type LayeredScanlineEventHandler[T] = (T) -> Unit
 
 pub type LayoutApplySettings = Map[String, String]
 
