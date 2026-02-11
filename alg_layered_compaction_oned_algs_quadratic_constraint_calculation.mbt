@@ -1,2 +1,10 @@
-// Upstream counterpart: alg_layered_compaction_oned_algs_quadratic_constraint_calculation.mbt
-// Implementation is currently provided in aggregated translated files.
+///|
+pub fn layered_quadratic_constraint_calculation(
+  compactor : LayeredOneDimensionalCompactor,
+) -> Unit {
+  quadratic_constraint_calculation(compactor)
+}
+
+///|
+pub let layered_one_dimensional_compactor_quadratic_constraints : LayeredIConstraintCalculationAlgorithm =
+  layered_quadratic_constraint_calculation
