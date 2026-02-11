@@ -1,2 +1,13 @@
-// Upstream counterpart: alg_layered_options_graph_properties.mbt
-// Implementation is currently provided in aggregated translated files.
+///|
+pub enum GraphProperties {
+  Comments
+  ExternalPorts
+  Hyperedges
+  Hypernodes
+  NonFreePorts
+  NorthSouthPorts
+  SelfLoops
+  CenterLabels
+  EndLabels
+  Partitions
+}

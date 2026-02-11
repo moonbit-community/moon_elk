@@ -80,6 +80,8 @@ pub fn bowyer_watson_triangulate(Array[KVector], debug_output_file? : String?) -
 
 pub let bundle_resource_path_property : String
 
+pub fn center_edge_label_placement_strategy_uses_label_size_information_values() -> Array[Bool]
+
 pub fn cgroup_of() -> CGroupBuilder
 
 pub let child_area_height : IProperty[Double]
@@ -1319,6 +1321,10 @@ pub fn edge_identifier(Int) -> String
 pub fn edge_is_connected(Int) -> Bool
 
 pub fn edge_label_placement_to_string(EdgeLabelPlacement) -> String
+
+pub fn edge_label_side_selection_to_string(EdgeLabelSideSelection) -> String
+
+pub fn edge_label_side_selection_transpose_values() -> Array[String]
 
 pub fn edge_labels(Int) -> Array[Int]
 
@@ -2645,6 +2651,8 @@ pub fn load_graph_action_layout_internal(String, Bool, Int) -> Int
 pub fn load_graph_action_load_from_file(String) -> Int
 
 pub fn load_graph_action_run_file(String?, LayoutGraphView) -> Unit
+
+pub fn long_edge_ordering_strategy_return_values() -> Array[Int]
 
 pub fn longest_path_compaction(OneDimensionalCompactor) -> Unit
 
@@ -4006,9 +4014,17 @@ pub fn new_kvector_xy(Double, Double) -> KVector
 
 pub fn new_l_graph() -> LGraph
 
+pub fn new_l_graph_element() -> LGraphElement
+
+pub fn new_l_label() -> LLabel
+
+pub fn new_l_label_text(String) -> LLabel
+
 pub fn new_l_margin() -> Spacing
 
 pub fn new_l_padding() -> Spacing
+
+pub fn new_l_shape() -> LShape
 
 pub fn new_layout_algorithm_data(String, name? : String, description? : String, validator? : ((Int) -> Array[GraphIssue])?, category_id? : String, bundle_name? : String, preview_image_path? : String, defining_bundle_id? : String, instance_pool_clear_fn? : () -> Unit) -> LayoutAlgorithmData
 
@@ -6469,6 +6485,16 @@ pub fn CNodeBuilder::node_type(Self, String) -> Self
 pub fn CNodeBuilder::origin(Self, String) -> Self
 pub fn CNodeBuilder::to_string_delegate(Self, (CNode) -> String) -> Self
 
+pub enum CenterEdgeLabelPlacementStrategy {
+  MedianLayer
+  TailLayer
+  HeadLayer
+  SpaceEfficientLayer
+  WidestLayer
+  CenterLayer
+}
+pub fn CenterEdgeLabelPlacementStrategy::uses_label_size_information(Self) -> Bool
+
 pub struct ClearExecutionAction {
   view : AbstractLayoutDebugView
   mut enabled : Bool
@@ -6565,6 +6591,11 @@ pub struct ConfiguratorTestConfiguration[T] {
 pub fn[T] ConfiguratorTestConfiguration::apply(Self[T], T, Int) -> Unit
 pub fn[T] ConfiguratorTestConfiguration::as_test_configuration(Self[T]) -> TestConfiguration[T]
 pub fn[T] ConfiguratorTestConfiguration::to_string(Self[T]) -> String
+
+pub enum ConstraintCalculationStrategy {
+  Quadratic
+  Scanline
+}
 
 pub enum ContainerArea {
   Begin
@@ -7588,6 +7619,12 @@ pub fn CubicSplineInterpolator::calculate_closed_bezier_spline(Self, Array[KVect
 pub fn CubicSplineInterpolator::interpolate_points(Self, Array[KVector]) -> BezierSpline
 pub fn CubicSplineInterpolator::interpolate_points_with_tangent(Self, Array[KVector], KVector, KVector, Bool) -> BezierSpline
 
+pub enum CuttingStrategy {
+  Ard
+  Msd
+  Manual
+}
+
 pub struct DCComponent {
   mut offset : KVector
   shapes : Array[DCElement]
@@ -7742,6 +7779,11 @@ pub enum Direction {
 pub fn Direction::is_horizontal(Self) -> Bool
 pub fn Direction::is_vertical(Self) -> Bool
 pub fn Direction::opposite(Self) -> Self
+
+pub enum DirectionCongruency {
+  ReadingDirection
+  Rotation
+}
 
 pub struct DisCoDebugColor {
   display : DisCoDebugDisplay
@@ -8158,6 +8200,12 @@ pub struct EclipseRuntimeDetector {
 }
 pub fn EclipseRuntimeDetector::is_eclipse_running(Self) -> Bool
 
+pub enum EdgeConstraint {
+  NoneType
+  IncomingOnly
+  OutgoingOnly
+}
+
 pub enum EdgeCoords {
   Inherit
   Container
@@ -8172,6 +8220,16 @@ pub enum EdgeLabelPlacement {
 }
 pub fn EdgeLabelPlacement::is_end_label_placement(Self) -> Bool
 
+pub enum EdgeLabelSideSelection {
+  AlwaysUp
+  AlwaysDown
+  DirectionUp
+  DirectionDown
+  SmartUp
+  SmartDown
+}
+pub fn EdgeLabelSideSelection::transpose(Self) -> Self
+
 pub enum EdgeRouting {
   RoutingUndefined
   Polyline
@@ -8182,6 +8240,11 @@ pub enum EdgeRouting {
 pub enum EdgeRoutingStrategy {
   STRAIGHT
   BEND
+}
+
+pub enum EdgeStraighteningStrategy {
+  NoneType
+  ImproveStraightness
 }
 
 pub enum EdgeType {
@@ -9073,6 +9136,15 @@ pub fn FilterExecutionTreeAction::is_checked(Self) -> Bool
 pub fn FilterExecutionTreeAction::run(Self) -> Unit
 pub fn FilterExecutionTreeAction::set_checked(Self, Bool) -> Unit
 
+pub enum FixedAlignment {
+  NoneType
+  LeftUp
+  RightUp
+  LeftDown
+  RightDown
+  Balanced
+}
+
 pub struct ForceBoolOption {
   id : String
   default_value : Bool
@@ -9455,6 +9527,15 @@ pub fn GrandomActivator::register_injector_provider(Self, String, String, () -> 
 pub fn GrandomActivator::start(Self) -> Unit
 pub fn GrandomActivator::stop(Self) -> Unit
 
+pub enum GraphCompactionStrategy {
+  NoneType
+  Left
+  Right
+  LeftRightConstraintLocking
+  LeftRightConnectionLocking
+  EdgeLength
+}
+
 pub enum GraphFeature {
   SelfLoops
   InsideSelfLoops
@@ -9749,6 +9830,19 @@ pub struct GraphListLabelProvider {
 }
 pub fn GraphListLabelProvider::get_image(Self, LoggedGraph) -> String
 pub fn GraphListLabelProvider::get_text(Self, LoggedGraph) -> String
+
+pub enum GraphProperties {
+  Comments
+  ExternalPorts
+  Hyperedges
+  Hypernodes
+  NonFreePorts
+  NorthSouthPorts
+  SelfLoops
+  CenterLabels
+  EndLabels
+  Partitions
+}
 
 pub struct GraphProvider {
   marker : Int
@@ -10424,6 +10518,12 @@ pub struct GraphvizWatchdog {
   mut running : Bool
 }
 
+pub enum GreedySwitchType {
+  OneSided
+  TwoSided
+  Off
+}
+
 pub struct GridElkNode {
   node : Int
   mut grid : Array[Array[Int?]]
@@ -10453,6 +10553,12 @@ pub fn GridElkNode::set_location(Self, Double, Double) -> Unit
 pub fn GridElkNode::set_width(Self, Double) -> Unit
 pub fn GridElkNode::set_x(Self, Double) -> Unit
 pub fn GridElkNode::set_y(Self, Double) -> Unit
+
+pub enum GroupOrderStrategy {
+  OnlyWithinGroup
+  ModelOrder
+  Enforced
+}
 
 pub enum HierarchyHandling {
   Inherit
@@ -10731,6 +10837,12 @@ pub fn ImageExportAction::run(Self) -> Unit
 pub fn ImageExportAction::set_selected_file_name_for_test(Self, String?) -> Unit
 pub fn ImageExportAction::update_enablement(Self) -> Unit
 
+pub enum InLayerConstraint {
+  NoneType
+  Top
+  Bottom
+}
+
 pub struct InstancePool[T] {
   factory : IFactory[T]
   instances : Array[T]
@@ -10750,6 +10862,11 @@ pub struct InteractiveRectPackingGraphVisitor {
 }
 pub fn InteractiveRectPackingGraphVisitor::set_interactive_options(Self, Int) -> Unit
 pub fn InteractiveRectPackingGraphVisitor::visit(Self, Int) -> Unit
+
+pub enum InteractiveReferencePoint {
+  Center
+  TopLeft
+}
 
 pub struct InternalCoreDebugGRandomLexer {
   input : String
@@ -11096,6 +11213,41 @@ pub fn LGraph::set_property_bool(Self, IProperty[Bool], Bool) -> Unit
 pub fn LGraph::set_property_int(Self, IProperty[Int], Int) -> Unit
 pub fn LGraph::set_property_port_side_array(Self, IProperty[Array[PortSide]], Array[PortSide]) -> Unit
 
+pub struct LGraphElement {
+  mut id : Int
+  mut origin_identifier : String?
+}
+pub fn LGraphElement::get_designation(Self) -> String?
+pub fn LGraphElement::get_id(Self) -> Int
+pub fn LGraphElement::get_origin_identifier(Self) -> String?
+pub fn LGraphElement::set_id(Self, Int) -> Unit
+pub fn LGraphElement::set_origin_identifier(Self, String?) -> Unit
+
+pub struct LLabel {
+  shape : LShape
+  text : String
+}
+pub fn LLabel::get_designation(Self) -> String?
+pub fn LLabel::get_id(Self) -> Int
+pub fn LLabel::get_position(Self) -> KVector
+pub fn LLabel::get_size(Self) -> KVector
+pub fn LLabel::get_text(Self) -> String
+pub fn LLabel::set_id(Self, Int) -> Unit
+pub fn LLabel::set_origin_identifier(Self, String?) -> Unit
+pub fn LLabel::to_string(Self) -> String
+
+pub struct LShape {
+  graph_element : LGraphElement
+  position : KVector
+  size : KVector
+}
+pub fn LShape::get_designation(Self) -> String?
+pub fn LShape::get_id(Self) -> Int
+pub fn LShape::get_position(Self) -> KVector
+pub fn LShape::get_size(Self) -> KVector
+pub fn LShape::set_id(Self, Int) -> Unit
+pub fn LShape::set_origin_identifier(Self, String?) -> Unit
+
 pub enum LabelSide {
   Unknown
   Above
@@ -11103,6 +11255,19 @@ pub enum LabelSide {
   Inline
 }
 pub fn LabelSide::opposite(Self) -> Self
+
+pub enum LayerConstraint {
+  NoneType
+  First
+  FirstSeparate
+  Last
+  LastSeparate
+}
+
+pub enum LayerUnzippingStrategy {
+  NoneType
+  Alternating
+}
 
 pub struct LayoutAlgorithmData {
   id : String
@@ -11671,6 +11836,13 @@ pub enum LoggedGraphType {
   ElkGraph
   LGraph
 }
+
+pub enum LongEdgeOrderingStrategy {
+  DummyNodeOver
+  DummyNodeUnder
+  Equal
+}
+pub fn LongEdgeOrderingStrategy::return_value(Self) -> Int
 
 pub enum LowLevelSortingCriterion {
   BySize
@@ -12255,6 +12427,19 @@ pub enum NodeLabelPlacement {
   NodeLabelHPriority
 }
 
+pub enum NodePromotionStrategy {
+  NoneType
+  Nikolov
+  NikolovPixel
+  NikolovImproved
+  NikolovImprovedPixel
+  DummyNodePercentage
+  NodeCountPercentage
+  NoBoundary
+  ModelOrderLeftToRight
+  ModelOrderRightToLeft
+}
+
 pub enum NodeYPlacerStrategy {
   SIMPLE_Y_PLACING
 }
@@ -12288,6 +12473,13 @@ pub fn OneDimensionalCompactor::set_spacings_handler(Self, ISpacingsHandler) -> 
 
 pub struct OnlyOnRootNode {
   marker : Int
+}
+
+pub enum OrderingStrategy {
+  NoneType
+  NodesAndEdges
+  PreferEdges
+  PreferNodes
 }
 
 pub struct OutlineNode {
@@ -12502,6 +12694,17 @@ pub fn PortSide::are_adjacent(Self, Self) -> Bool
 pub fn PortSide::left(Self) -> Self
 pub fn PortSide::opposed(Self) -> Self
 pub fn PortSide::right(Self) -> Self
+
+pub enum PortSortingStrategy {
+  InputOrder
+  PortDegree
+}
+
+pub enum PortType {
+  Undefined
+  Input
+  Output
+}
 
 pub struct PreferenceAction {
   preference_id : String
@@ -12886,6 +13089,24 @@ pub struct SelectivePaintToggleAction {
   mut checked : Bool
 }
 
+pub enum SelfLoopDistributionStrategy {
+  Equally
+  North
+  NorthSouth
+}
+
+pub enum SelfLoopOrderingStrategy {
+  Stacked
+  ReverseStacked
+  Sequenced
+}
+
+pub enum SelfLoopPlacementStrategy {
+  EquallyDistributed
+  NorthStacked
+  NorthSequence
+}
+
 pub enum ShapeCoords {
   Inherit
   Parent
@@ -12948,6 +13169,12 @@ pub fn Spacing::set_top(Self, Double) -> Unit
 pub fn Spacing::set_top_bottom(Self, Double) -> Unit
 pub fn Spacing::set_values(Self, Double, Double, Double, Double) -> Unit
 pub fn Spacing::to_string(Self) -> String
+
+pub enum SplineRoutingMode {
+  Conservative
+  ConservativeSoft
+  Sloppy
+}
 
 pub enum SporeCompactionStrategy {
   DEPTH_FIRST
@@ -13339,6 +13566,12 @@ pub fn ValidatingPropertySheetEntry::set_source(Self, LayoutPropertySource?) -> 
 pub fn ValidatingPropertySheetEntry::set_values(Self, Array[CoreUiValue]) -> Unit
 pub fn ValidatingPropertySheetEntry::validate(Self) -> Array[GraphIssue]
 
+pub enum ValidifyStrategy {
+  No
+  Greedy
+  LookBack
+}
+
 pub enum VertiFlexLayoutPhases {
   P1_NODE_Y_PLACEMENT
   P2_NODE_RELATIVE_PLACEMENT
@@ -13403,6 +13636,12 @@ pub struct WrappedException {
 }
 pub fn WrappedException::get_cause(Self) -> String
 pub fn WrappedException::get_message(Self) -> String?
+
+pub enum WrappingStrategy {
+  Off
+  SingleEdge
+  MultiEdge
+}
 
 // Type aliases
 pub type ConfigStateObserver = (State) -> Unit

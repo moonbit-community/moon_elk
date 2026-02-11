@@ -1,2 +1,5 @@
-// Upstream counterpart: alg_layered_options_layer_unzipping_strategy.mbt
-// Implementation is currently provided in aggregated translated files.
+///|
+pub enum LayerUnzippingStrategy {
+  NoneType
+  Alternating
+}
