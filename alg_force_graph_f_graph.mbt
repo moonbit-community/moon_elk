@@ -850,16 +850,22 @@ pub fn new_fgraph() -> FGraph {
 pub fn fgraph_copy_properties(target : FGraph, source : FGraph) -> Unit {
   source.bool_properties.each((id, value) => target.bool_properties[id] = value)
   source.int_properties.each((id, value) => target.int_properties[id] = value)
-  source.double_properties.each((id, value) => target.double_properties[id] = value)
-  source.model_properties.each((id, value) => target.model_properties[id] = value)
-  source.padding_properties.each((id, value) => target.padding_properties[id] = elk_padding_clone(
-    value,
-  ))
+  source.double_properties.each((id, value) => {
+    target.double_properties[id] = value
+  })
+  source.model_properties.each((id, value) => {
+    target.model_properties[id] = value
+  })
+  source.padding_properties.each((id, value) => {
+    target.padding_properties[id] = elk_padding_clone(value)
+  })
   source.node_properties.each((id, value) => target.node_properties[id] = value)
-  source.random_properties.each((id, value) => target.random_properties[id] = value)
-  source.vector_properties.each((id, value) => target.vector_properties[id] = new_kvector_copy(
-    value,
-  ))
+  source.random_properties.each((id, value) => {
+    target.random_properties[id] = value
+  })
+  source.vector_properties.each((id, value) => {
+    target.vector_properties[id] = new_kvector_copy(value)
+  })
 }
 
 ///|

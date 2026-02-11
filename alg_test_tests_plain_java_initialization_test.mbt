@@ -6,8 +6,9 @@ fn tests_plain_java_initialization_test_setup() -> Unit {
 }
 
 ///|
-fn tests_plain_java_initialization_default_configuration(
-) -> TestConfiguration[Unit] {
+fn tests_plain_java_initialization_default_configuration() -> TestConfiguration[
+  Unit,
+] {
   new_test_configuration(apply_base_configuration_fn=(
     _test_instance : Unit,
     _graph : ElkNode,

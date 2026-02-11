@@ -67,7 +67,7 @@ pub fn StressLayoutProvider::layout(
 pub fn stress_layout_provider_as_layout_provider(
   provider : StressLayoutProvider,
 ) -> AbstractLayoutProvider {
-  new_abstract_layout_provider((graph, monitor) => provider.layout(
-    graph, monitor,
-  ))
+  new_abstract_layout_provider((graph, monitor) => {
+    provider.layout(graph, monitor)
+  })
 }

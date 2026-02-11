@@ -1,32 +1,4 @@
 ///|
-pub type ILockFunction = (CNode, Direction) -> Bool
-
-///|
-pub type IConstraintCalculationAlgorithm = (OneDimensionalCompactor) -> Unit
-
-///|
-pub type ICompactionAlgorithm = (OneDimensionalCompactor) -> Unit
-
-///|
-pub struct ISpacingsHandler {
-  get_horizontal_spacing : (CNode, CNode) -> Double
-  get_vertical_spacing : (CNode, CNode) -> Double
-}
-
-///|
-pub fn default_spacing_handler() -> ISpacingsHandler {
-  { get_horizontal_spacing: (_, _) => 0.0, get_vertical_spacing: (_, _) => 0.0 }
-}
-
-///|
-pub fn new_spacings_handler(
-  get_horizontal_spacing : (CNode, CNode) -> Double,
-  get_vertical_spacing : (CNode, CNode) -> Double,
-) -> ISpacingsHandler {
-  { get_horizontal_spacing, get_vertical_spacing }
-}
-
-///|
 pub struct CNode {
   handle : Int
 } derive(Eq)
@@ -721,32 +693,4 @@ pub fn CGroup::add_delta_normalized(self : CGroup, delta : Double) -> Unit {
   checked_cgroup(self)
   cgroup_store.val[self.handle].delta_normalized = cgroup_store.val[self.handle].delta_normalized +
     delta
-}
-
-///|
-pub let compare_fuzzy_tolerance = 0.0001
-
-///|
-pub fn compare_fuzzy_eq(d1 : Double, d2 : Double) -> Bool {
-  (d1 - d2).abs() <= compare_fuzzy_tolerance
-}
-
-///|
-pub fn compare_fuzzy_gt(d1 : Double, d2 : Double) -> Bool {
-  d1 - d2 > compare_fuzzy_tolerance
-}
-
-///|
-pub fn compare_fuzzy_lt(d1 : Double, d2 : Double) -> Bool {
-  d2 - d1 > compare_fuzzy_tolerance
-}
-
-///|
-pub fn compare_fuzzy_ge(d1 : Double, d2 : Double) -> Bool {
-  d1 > d2 || compare_fuzzy_eq(d1, d2)
-}
-
-///|
-pub fn compare_fuzzy_le(d1 : Double, d2 : Double) -> Bool {
-  d1 < d2 || compare_fuzzy_eq(d1, d2)
 }
