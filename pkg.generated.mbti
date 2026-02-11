@@ -4140,6 +4140,8 @@ pub fn new_kvector_copy(KVector) -> KVector
 
 pub fn new_kvector_xy(Double, Double) -> KVector
 
+pub fn new_l_edge() -> LEdge
+
 pub fn new_l_graph() -> LGraph
 
 pub fn new_l_graph_element() -> LGraphElement
@@ -4150,7 +4152,11 @@ pub fn new_l_label_text(String) -> LLabel
 
 pub fn new_l_margin() -> Spacing
 
+pub fn new_l_node(graph? : LGraph?) -> LNode
+
 pub fn new_l_padding() -> Spacing
+
+pub fn new_l_port() -> LPort
 
 pub fn new_l_shape() -> LShape
 
@@ -4161,6 +4167,8 @@ pub fn new_label_cell_full(Double, NodeLabelLocation, Bool) -> Cell
 pub fn new_label_cell_with_layout_mode(Double, Bool) -> Cell
 
 pub fn new_label_cell_with_node_label_location(Double, NodeLabelLocation) -> Cell
+
+pub fn new_layer(LGraph) -> Layer
 
 pub fn new_layered_abstract_graph_placer() -> LayeredAbstractGraphPlacer
 
@@ -4617,6 +4625,8 @@ pub fn new_successor_max_norm_winding_in_math_pos_sense() -> IPolyominoSuccessor
 pub fn new_successor_quadrants_generic(IPolyominoSuccessor) -> IPolyominoSuccessor
 
 pub fn new_svg_image(String?) -> SvgImage
+
+pub fn new_tarjan(Array[LEdge]) -> Tarjan
 
 pub fn new_tedge(KVector, KVector) -> TEdge
 
@@ -11563,6 +11573,34 @@ pub fn KVectorChain::to_array_from(Self, Int) -> Array[KVector]
 pub fn KVectorChain::to_string(Self) -> String
 pub fn KVectorChain::total_length(Self) -> Double
 
+pub struct LEdge {
+  graph_element : LGraphElement
+  edge_handle : Int
+  bend_points : KVectorChain
+  mut source : LPort?
+  mut target : LPort?
+  labels : Array[LLabel]
+  bool_properties : Map[String, Bool]
+}
+pub fn LEdge::get_bend_points(Self) -> KVectorChain
+pub fn LEdge::get_designation(Self) -> String?
+pub fn LEdge::get_handle(Self) -> Int
+pub fn LEdge::get_id(Self) -> Int
+pub fn LEdge::get_labels(Self) -> Array[LLabel]
+pub fn LEdge::get_other_node(Self, LNode) -> LNode
+pub fn LEdge::get_other_port(Self, LPort) -> LPort
+pub fn LEdge::get_property_bool(Self, IProperty[Bool]) -> Bool
+pub fn LEdge::get_source(Self) -> LPort?
+pub fn LEdge::get_target(Self) -> LPort?
+pub fn LEdge::is_in_layer_edge(Self) -> Bool
+pub fn LEdge::is_self_loop(Self) -> Bool
+pub fn LEdge::set_id(Self, Int) -> Unit
+pub fn LEdge::set_origin_identifier(Self, String?) -> Unit
+pub fn LEdge::set_property_bool(Self, IProperty[Bool], Bool) -> Unit
+pub fn LEdge::set_source(Self, LPort?) -> Unit
+pub fn LEdge::set_target(Self, LPort?) -> Unit
+pub fn LEdge::to_string(Self) -> String
+
 pub struct LGraph {
   mut id : Int
   port_side_array_properties : Map[String, Array[PortSide]]
@@ -11574,10 +11612,16 @@ pub struct LGraph {
   direction_properties : Map[String, Direction]
   size : KVector
   offset : KVector
+  layerless_nodes : Array[LNode]
+  layers : Array[Layer]
+  mut parent_node : LNode?
 }
 pub fn LGraph::copy_properties(Self, Self) -> Unit
 pub fn LGraph::get_id(Self) -> Int
+pub fn LGraph::get_layerless_nodes(Self) -> Array[LNode]
+pub fn LGraph::get_layers(Self) -> Array[Layer]
 pub fn LGraph::get_offset(Self) -> KVector
+pub fn LGraph::get_parent_node(Self) -> LNode?
 pub fn LGraph::get_property_bool(Self, IProperty[Bool]) -> Bool
 pub fn LGraph::get_property_component_ordering_strategy(Self, IProperty[ComponentOrderingStrategy]) -> ComponentOrderingStrategy
 pub fn LGraph::get_property_direction(Self, IProperty[Direction]) -> Direction
@@ -11588,6 +11632,7 @@ pub fn LGraph::get_property_string(Self, IProperty[String]) -> String
 pub fn LGraph::get_size(Self) -> KVector
 pub fn LGraph::set_id(Self, Int) -> Unit
 pub fn LGraph::set_offset_xy(Self, Double, Double) -> Unit
+pub fn LGraph::set_parent_node(Self, LNode?) -> Unit
 pub fn LGraph::set_property_bool(Self, IProperty[Bool], Bool) -> Unit
 pub fn LGraph::set_property_component_ordering_strategy(Self, IProperty[ComponentOrderingStrategy], ComponentOrderingStrategy) -> Unit
 pub fn LGraph::set_property_direction(Self, IProperty[Direction], Direction) -> Unit
@@ -11620,6 +11665,96 @@ pub fn LLabel::set_id(Self, Int) -> Unit
 pub fn LLabel::set_origin_identifier(Self, String?) -> Unit
 pub fn LLabel::to_string(Self) -> String
 
+pub struct LNode {
+  shape : LShape
+  node_handle : Int
+  mut graph : LGraph?
+  mut layer : Layer?
+  mut node_type : NodeType
+  ports : Array[LPort]
+  labels : Array[LLabel]
+  mut nested_graph : LGraph?
+  margin : Spacing
+  padding : Spacing
+  int_properties : Map[String, Int]
+  bool_properties : Map[String, Bool]
+  port_side_properties : Map[String, PortSide]
+}
+pub fn LNode::add_port(Self, LPort) -> Unit
+pub fn LNode::get_connected_edges(Self) -> Array[LEdge]
+pub fn LNode::get_designation(Self) -> String?
+pub fn LNode::get_graph(Self) -> LGraph
+pub fn LNode::get_handle(Self) -> Int
+pub fn LNode::get_id(Self) -> Int
+pub fn LNode::get_labels(Self) -> Array[LLabel]
+pub fn LNode::get_layer(Self) -> Layer?
+pub fn LNode::get_margin(Self) -> Spacing
+pub fn LNode::get_nested_graph(Self) -> LGraph?
+pub fn LNode::get_padding(Self) -> Spacing
+pub fn LNode::get_ports(Self) -> Array[LPort]
+pub fn LNode::get_position(Self) -> KVector
+pub fn LNode::get_property_bool(Self, IProperty[Bool]) -> Bool
+pub fn LNode::get_property_int(Self, IProperty[Int]) -> Int
+pub fn LNode::get_property_port_side(Self, IProperty[PortSide]) -> PortSide
+pub fn LNode::get_size(Self) -> KVector
+pub fn LNode::get_type(Self) -> NodeType
+pub fn LNode::remove_port(Self, LPort) -> Unit
+pub fn LNode::set_graph(Self, LGraph?) -> Unit
+pub fn LNode::set_id(Self, Int) -> Unit
+pub fn LNode::set_layer(Self, Layer?) -> Unit
+pub fn LNode::set_nested_graph(Self, LGraph?) -> Unit
+pub fn LNode::set_property_bool(Self, IProperty[Bool], Bool) -> Unit
+pub fn LNode::set_property_int(Self, IProperty[Int], Int) -> Unit
+pub fn LNode::set_property_port_side(Self, IProperty[PortSide], PortSide) -> Unit
+pub fn LNode::set_type(Self, NodeType) -> Unit
+pub fn LNode::to_string(Self) -> String
+
+pub struct LPort {
+  shape : LShape
+  port_handle : Int
+  mut owner : LNode?
+  mut side : PortSide
+  anchor : KVector
+  mut explicitly_supplied_port_anchor : Bool
+  margin : Spacing
+  labels : Array[LLabel]
+  incoming_edges : Array[LEdge]
+  outgoing_edges : Array[LEdge]
+  mut connected_to_external_nodes : Bool
+  bool_properties : Map[String, Bool]
+}
+pub fn LPort::add_incoming_edge(Self, LEdge) -> Unit
+pub fn LPort::add_outgoing_edge(Self, LEdge) -> Unit
+pub fn LPort::get_absolute_anchor(Self) -> KVector
+pub fn LPort::get_anchor(Self) -> KVector
+pub fn LPort::get_connected_edges(Self) -> Array[LEdge]
+pub fn LPort::get_connected_ports(Self) -> Array[Self]
+pub fn LPort::get_degree(Self) -> Int
+pub fn LPort::get_designation(Self) -> String?
+pub fn LPort::get_handle(Self) -> Int
+pub fn LPort::get_id(Self) -> Int
+pub fn LPort::get_incoming_edges(Self) -> Array[LEdge]
+pub fn LPort::get_labels(Self) -> Array[LLabel]
+pub fn LPort::get_margin(Self) -> Spacing
+pub fn LPort::get_net_flow(Self) -> Int
+pub fn LPort::get_node(Self) -> LNode?
+pub fn LPort::get_outgoing_edges(Self) -> Array[LEdge]
+pub fn LPort::get_position(Self) -> KVector
+pub fn LPort::get_property_bool(Self, IProperty[Bool]) -> Bool
+pub fn LPort::get_side(Self) -> PortSide
+pub fn LPort::get_size(Self) -> KVector
+pub fn LPort::is_connected_to_external_nodes(Self) -> Bool
+pub fn LPort::is_explicitly_supplied_port_anchor(Self) -> Bool
+pub fn LPort::remove_incoming_edge(Self, LEdge) -> Unit
+pub fn LPort::remove_outgoing_edge(Self, LEdge) -> Unit
+pub fn LPort::set_connected_to_external_nodes(Self, Bool) -> Unit
+pub fn LPort::set_explicitly_supplied_port_anchor(Self, Bool) -> Unit
+pub fn LPort::set_id(Self, Int) -> Unit
+pub fn LPort::set_node(Self, LNode?) -> Unit
+pub fn LPort::set_property_bool(Self, IProperty[Bool], Bool) -> Unit
+pub fn LPort::set_side(Self, PortSide) -> Unit
+pub fn LPort::to_string(Self) -> String
+
 pub struct LShape {
   graph_element : LGraphElement
   position : KVector
@@ -11639,6 +11774,21 @@ pub enum LabelSide {
   Inline
 }
 pub fn LabelSide::opposite(Self) -> Self
+
+pub struct Layer {
+  graph_element : LGraphElement
+  layer_handle : Int
+  graph : LGraph
+  size : KVector
+  nodes : Array[LNode]
+}
+pub fn Layer::get_graph(Self) -> LGraph
+pub fn Layer::get_id(Self) -> Int
+pub fn Layer::get_index(Self) -> Int
+pub fn Layer::get_nodes(Self) -> Array[LNode]
+pub fn Layer::get_size(Self) -> KVector
+pub fn Layer::set_id(Self, Int) -> Unit
+pub fn Layer::to_string(Self) -> String
 
 pub enum LayerConstraint {
   NoneType
@@ -12992,6 +13142,17 @@ pub enum NodePromotionStrategy {
   ModelOrderRightToLeft
 }
 
+pub enum NodeType {
+  Normal
+  LongEdge
+  ExternalPort
+  NorthSouthPort
+  LabelNode
+  BreakingPoint
+  Placeholder
+  NonshiftingPlaceholder
+}
+
 pub enum NodeYPlacerStrategy {
   SIMPLE_Y_PLACING
 }
@@ -13923,6 +14084,19 @@ pub fn TTriangle::equals(Self, Self) -> Bool
 pub fn TTriangle::get_circumcenter(Self) -> KVector
 pub fn TTriangle::hash_code(Self) -> Int
 pub fn TTriangle::in_circumcircle(Self, KVector) -> Bool
+
+pub struct Tarjan {
+  edges_to_be_reversed : Array[LEdge]
+  mut index : Int
+  strongly_connected_components : Array[Array[LNode]]
+  stack : Array[LNode]
+  node_to_scc_id : Map[Int, Int]
+}
+pub fn Tarjan::get_node_to_scc_id(Self) -> Map[Int, Int]
+pub fn Tarjan::get_strongly_connected_components(Self) -> Array[Array[LNode]]
+pub fn Tarjan::reset_tarjan(Self, LGraph) -> Unit
+pub fn Tarjan::strongly_connected(Self, LNode) -> Unit
+pub fn Tarjan::tarjan(Self, LGraph) -> Unit
 
 pub struct TestAfterProcessor {
   processor_id : String

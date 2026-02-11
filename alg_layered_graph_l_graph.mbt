@@ -13,6 +13,9 @@ pub struct LGraph {
   direction_properties : Map[String, Direction]
   size : KVector
   offset : KVector
+  layerless_nodes : Array[LNode]
+  layers : Array[Layer]
+  mut parent_node : LNode?
 }
 
 ///|
@@ -28,6 +31,9 @@ pub fn new_l_graph() -> LGraph {
     direction_properties: {},
     size: new_kvector(),
     offset: new_kvector(),
+    layerless_nodes: [],
+    layers: [],
+    parent_node: None,
   }
 }
 
@@ -201,6 +207,26 @@ pub fn LGraph::get_offset(self : LGraph) -> KVector {
 pub fn LGraph::set_offset_xy(self : LGraph, x : Double, y : Double) -> Unit {
   self.offset.x = x
   self.offset.y = y
+}
+
+///|
+pub fn LGraph::get_layerless_nodes(self : LGraph) -> Array[LNode] {
+  self.layerless_nodes
+}
+
+///|
+pub fn LGraph::get_layers(self : LGraph) -> Array[Layer] {
+  self.layers
+}
+
+///|
+pub fn LGraph::get_parent_node(self : LGraph) -> LNode? {
+  self.parent_node
+}
+
+///|
+pub fn LGraph::set_parent_node(self : LGraph, parent_node : LNode?) -> Unit {
+  self.parent_node = parent_node
 }
 
 ///|
