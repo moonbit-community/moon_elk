@@ -3296,6 +3296,8 @@ pub fn new_barycenter_state(LNode) -> BarycenterState
 
 pub fn new_basic_progress_monitor() -> IElkProgressMonitor
 
+pub fn new_between_layer_edge_two_node_crossings_counter(Array[Array[LNode]], Int) -> BetweenLayerEdgeTwoNodeCrossingsCounter
+
 pub fn new_bezier_curve(KVector, KVector, KVector, KVector) -> BezierCurve
 
 pub fn new_bezier_spline() -> BezierSpline
@@ -3507,6 +3509,8 @@ pub fn new_core_ui_preference_store() -> CoreUiPreferenceStore
 pub fn new_core_ui_property_editor(CoreUiPropertyEditorKind, validator? : (CoreUiValue) -> String?) -> CoreUiPropertyEditor
 
 pub fn new_core_ui_show_layout_view_event(can_open? : Bool) -> CoreUiShowLayoutViewEvent
+
+pub fn new_crossing_matrix_filler(GreedySwitchType, Array[Array[LNode]], Int, CrossingCountSide) -> CrossingMatrixFiller
 
 pub fn new_crossings_counter(Array[Int]) -> CrossingsCounter
 
@@ -3888,6 +3892,8 @@ pub fn new_graph_from_file(AbstractResourcePath) -> GraphFromFile
 
 pub fn[T] new_graph_from_method(String, (T) -> Int) -> GraphFromMethod[T]
 
+pub fn new_graph_info_holder(Array[Array[LNode]], parent? : LNode?, parent_graph_data? : GraphInfoHolder?, dont_sweep_into? : Bool, port_positions? : Array[Int]) -> GraphInfoHolder
+
 pub fn new_graph_issue_edge(Int, String, Int) -> GraphIssue
 
 pub fn new_graph_issue_node(Int, String, Int) -> GraphIssue
@@ -4084,7 +4090,11 @@ pub fn new_graphviz_process(GraphvizOutputStream, GraphvizInputStream, GraphvizI
 
 pub fn new_graphviz_tool(Command) -> GraphvizTool
 
+pub fn new_greedy_port_distributor() -> GreedyPortDistributor
+
 pub fn new_greedy_rectangle_strip_overlap_removal_strategy() -> IRectangleStripOverlapRemovalStrategy
+
+pub fn new_greedy_switch_heuristic(GreedySwitchType, GraphInfoHolder) -> GreedySwitchHeuristic
 
 pub fn new_grid_container_cell(Bool, Bool, Double) -> Cell
 
@@ -4474,6 +4484,8 @@ pub fn new_node_arranger((Int) -> KVector) -> INodeArranger
 
 pub fn new_node_relative_port_distributor(Int) -> NodeRelativePortDistributor
 
+pub fn new_north_south_edge_neighbouring_node_crossings_counter(Array[LNode]) -> NorthSouthEdgeNeighbouringNodeCrossingsCounter
+
 pub fn new_null_elk_progress_monitor() -> IElkProgressMonitor
 
 pub fn new_number_value_converter() -> NumberValueConverter
@@ -4673,6 +4685,8 @@ pub fn new_successor_max_norm_winding_in_math_pos_sense() -> IPolyominoSuccessor
 pub fn new_successor_quadrants_generic(IPolyominoSuccessor) -> IPolyominoSuccessor
 
 pub fn new_svg_image(String?) -> SvgImage
+
+pub fn new_switch_decider(Int, Array[Array[LNode]], CrossingMatrixFiller, Array[Int], GraphInfoHolder, Bool) -> SwitchDecider
 
 pub fn new_tarjan(Array[LEdge]) -> Tarjan
 
@@ -6586,6 +6600,25 @@ pub enum BaseGridVisibility {
   Traversal
 }
 
+type BetweenLayerAdjacency
+
+type BetweenLayerAdjacencyList
+
+pub struct BetweenLayerEdgeTwoNodeCrossingsCounter {
+  mut upper_lower_crossings : Int
+  mut lower_upper_crossings : Int
+  current_node_order : Array[Array[LNode]]
+  free_layer_index : Int
+  port_positions : Map[Int, Int]
+  eastern_adjacencies : Map[Int, BetweenLayerAdjacencyList]
+  western_adjacencies : Map[Int, BetweenLayerAdjacencyList]
+}
+pub fn BetweenLayerEdgeTwoNodeCrossingsCounter::count_both_side_crossings(Self, LNode, LNode) -> Unit
+pub fn BetweenLayerEdgeTwoNodeCrossingsCounter::count_eastern_edge_crossings(Self, LNode, LNode) -> Unit
+pub fn BetweenLayerEdgeTwoNodeCrossingsCounter::count_western_edge_crossings(Self, LNode, LNode) -> Unit
+pub fn BetweenLayerEdgeTwoNodeCrossingsCounter::get_lower_upper_crossings(Self) -> Int
+pub fn BetweenLayerEdgeTwoNodeCrossingsCounter::get_upper_lower_crossings(Self) -> Int
+
 pub struct BezierCurve {
   start : KVector
   fst_control_pnt : KVector
@@ -8030,6 +8063,20 @@ pub enum CoreUiValue {
   CoreUiStringsValue(Array[String])
   CoreUiNoValue
 }
+
+pub enum CrossingCountSide {
+  West
+  East
+}
+
+pub struct CrossingMatrixFiller {
+  is_crossing_matrix_filled : Array[Array[Bool]]
+  crossing_matrix : Array[Array[Int]]
+  in_between_layer_crossing_counter : BetweenLayerEdgeTwoNodeCrossingsCounter
+  direction : CrossingCountSide
+  one_sided : Bool
+}
+pub fn CrossingMatrixFiller::get_crossing_matrix_entry(Self, LNode, LNode) -> Int
 
 pub enum CrossingMinimizationStrategy {
   CmsLayerSweep
@@ -10042,6 +10089,26 @@ pub fn GraphIdentifierGenerator::assert_unique(Self) -> Self
 pub fn GraphIdentifierGenerator::assert_valid(Self) -> Self
 pub fn GraphIdentifierGenerator::execute(Self) -> Unit
 
+pub struct GraphInfoHolder {
+  mut current_node_order_ref : Array[Array[LNode]]
+  mut port_positions_ref : Array[Int]
+  mut use_bottom_up : Bool
+  mut parent_ref : LNode?
+  mut parent_graph_data_ref : GraphInfoHolder?
+}
+pub fn GraphInfoHolder::current_node_order(Self) -> Array[Array[LNode]]
+pub fn GraphInfoHolder::dont_sweep_into(Self) -> Bool
+pub fn GraphInfoHolder::has_parent(Self) -> Bool
+pub fn GraphInfoHolder::parent(Self) -> LNode
+pub fn GraphInfoHolder::parent_graph_data(Self) -> Self
+pub fn GraphInfoHolder::parent_layer_id(Self) -> Int
+pub fn GraphInfoHolder::port_positions(Self) -> Array[Int]
+pub fn GraphInfoHolder::set_current_node_order(Self, Array[Array[LNode]]) -> Unit
+pub fn GraphInfoHolder::set_dont_sweep_into(Self, Bool) -> Unit
+pub fn GraphInfoHolder::set_parent(Self, LNode?) -> Unit
+pub fn GraphInfoHolder::set_parent_graph_data(Self, Self?) -> Unit
+pub fn GraphInfoHolder::set_port_positions(Self, Array[Int]) -> Unit
+
 pub struct GraphIssue {
   target : GraphIssueTarget
   message : String
@@ -10984,6 +11051,36 @@ pub enum GraphvizToolCleanup {
 pub struct GraphvizWatchdog {
   mut running : Bool
 }
+
+pub struct GreedyPortDistributor {
+  mut crossings_counter : CrossingsCounter?
+  mut n_ports : Int
+  mut port_pos : Array[Int]
+  mut hierarchical_crossings_counter : BetweenLayerEdgeTwoNodeCrossingsCounter?
+}
+pub fn GreedyPortDistributor::as_i_sweep_port_distributor(Self) -> ISweepPortDistributor
+pub fn GreedyPortDistributor::as_initializable(Self) -> IInitializable
+pub fn GreedyPortDistributor::distribute_ports_while_sweeping(Self, Array[Array[LNode]], Int, Bool) -> Bool
+pub fn GreedyPortDistributor::init_after_traversal(Self) -> Unit
+pub fn GreedyPortDistributor::init_at_node_level(Self, Int, Int, Array[Array[LNode]]) -> Unit
+
+pub struct GreedySwitchHeuristic {
+  greedy_switch_type : GreedySwitchType
+  mut current_node_order : Array[Array[LNode]]
+  mut switch_decider : SwitchDecider?
+  mut port_positions : Array[Int]
+  graph_data : GraphInfoHolder
+  mut n_ports : Int
+}
+pub fn GreedySwitchHeuristic::always_improves(Self) -> Bool
+pub fn GreedySwitchHeuristic::as_i_crossing_minimization_heuristic(Self) -> ICrossingMinimizationHeuristic
+pub fn GreedySwitchHeuristic::as_initializable(Self) -> IInitializable
+pub fn GreedySwitchHeuristic::init_after_traversal(Self) -> Unit
+pub fn GreedySwitchHeuristic::init_at_layer_level(Self, Int, Array[Array[LNode]]) -> Unit
+pub fn GreedySwitchHeuristic::init_at_port_level(Self, Int, Int, Int, Array[Array[LNode]]) -> Unit
+pub fn GreedySwitchHeuristic::is_deterministic(Self) -> Bool
+pub fn GreedySwitchHeuristic::minimize_crossings(Self, Array[Array[LNode]], Int, Bool, Bool) -> Bool
+pub fn GreedySwitchHeuristic::set_first_layer_order(Self, Array[Array[LNode]], Bool) -> Bool
 
 pub enum GreedySwitchType {
   OneSided
@@ -13404,6 +13501,16 @@ pub enum NodeYPlacerStrategy {
   SIMPLE_Y_PLACING
 }
 
+pub struct NorthSouthEdgeNeighbouringNodeCrossingsCounter {
+  mut upper_lower_crossings : Int
+  mut lower_upper_crossings : Int
+  port_positions : Map[Int, Int]
+  layer : Array[LNode]
+}
+pub fn NorthSouthEdgeNeighbouringNodeCrossingsCounter::count_crossings(Self, LNode, LNode) -> Unit
+pub fn NorthSouthEdgeNeighbouringNodeCrossingsCounter::get_lower_upper_crossings(Self) -> Int
+pub fn NorthSouthEdgeNeighbouringNodeCrossingsCounter::get_upper_lower_crossings(Self) -> Int
+
 type NorthSouthTargetAndDegree
 
 pub struct NumberValueConverter {
@@ -14311,6 +14418,19 @@ pub fn SvgImage::isave(Self, f_name? : String?) -> Unit
 pub fn SvgImage::remove_group(Self, String) -> Unit
 pub fn SvgImage::save(Self, f_name? : String?) -> Unit
 pub fn SvgImage::set_view_box(Self, Double, Double, Double, Double) -> Unit
+
+pub struct SwitchDecider {
+  free_layer : Array[LNode]
+  left_in_layer_counter : CrossingsCounter
+  right_in_layer_counter : CrossingsCounter
+  north_south_counter : NorthSouthEdgeNeighbouringNodeCrossingsCounter
+  crossing_matrix_filler : CrossingMatrixFiller
+  graph_data : GraphInfoHolder
+  mut parent_cross_counter : CrossingsCounter?
+  count_crossings_caused_by_port_switch : Bool
+}
+pub fn SwitchDecider::does_switch_reduce_crossings(Self, Int, Int) -> Bool
+pub fn SwitchDecider::notify_of_switch(Self, LNode, LNode) -> Unit
 
 pub struct TEdge {
   u : KVector
