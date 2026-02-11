@@ -5,6 +5,7 @@ pub let elk_service_plugin_id : String = "org.eclipse.elk.core.service"
 pub struct ElkServicePlugin {
   mut started : Bool
   preference_store : Map[String, Bool]
+  preference_defaults : Map[String, Bool]
   running_operations : Map[String, Array[MonitoredOperation]]
 }
 
@@ -13,7 +14,12 @@ let elk_service_plugin_ref : Ref[ElkServicePlugin?] = Ref::new(None)
 
 ///|
 fn new_elk_service_plugin() -> ElkServicePlugin {
-  { started: false, preference_store: {}, running_operations: {} }
+  {
+    started: false,
+    preference_store: {},
+    preference_defaults: {},
+    running_operations: {},
+  }
 }
 
 ///|
@@ -42,7 +48,28 @@ pub fn ElkServicePlugin::start(self : ElkServicePlugin) -> Unit {
 pub fn ElkServicePlugin::stop(self : ElkServicePlugin) -> Unit {
   self.started = false
   self.preference_store.clear()
+  self.preference_defaults.clear()
   self.running_operations.clear()
+}
+
+///|
+pub fn ElkServicePlugin::set_default_boolean_preference(
+  self : ElkServicePlugin,
+  key : String,
+  value : Bool,
+) -> Unit {
+  self.preference_defaults[key] = value
+}
+
+///|
+pub fn ElkServicePlugin::get_default_boolean_preference(
+  self : ElkServicePlugin,
+  key : String,
+) -> Bool {
+  match self.preference_defaults.get(key) {
+    Some(value) => value
+    None => false
+  }
 }
 
 ///|
@@ -67,7 +94,11 @@ pub fn ElkServicePlugin::get_boolean_preference(
 ) -> Bool {
   match self.preference_store.get(key) {
     Some(value) => value
-    None => default_value
+    None =>
+      match self.preference_defaults.get(key) {
+        Some(value) => value
+        None => default_value
+      }
   }
 }
 

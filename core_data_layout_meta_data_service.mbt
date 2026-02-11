@@ -94,9 +94,11 @@ fn layout_meta_data_service_add_dependency(
   target_option : String,
   required_value : String?,
 ) -> Unit {
-  ignore(source_option)
-  ignore(target_option)
-  ignore(required_value)
+  match layout_option_data_store.val.get(source_option) {
+    Some(option_data) =>
+      option_data.add_dependency(target_option, expected_value=required_value)
+    None => ()
+  }
 }
 
 ///|

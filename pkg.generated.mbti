@@ -686,6 +686,86 @@ pub let core_meta_ui_status_error : Int
 
 pub let core_meta_unique_class_name_validator_class_name : String
 
+pub fn core_ui_color_dispose(CoreUiColor) -> Unit
+
+pub fn core_ui_color_is_disposed(CoreUiColor) -> Bool
+
+pub let core_ui_disco_layout_alg_id : String
+
+pub fn core_ui_elk_ui_util_get_option_data(LayoutAlgorithmData, String) -> LayoutOptionData?
+
+pub fn core_ui_elk_ui_util_get_option_data_from_providers(Array[LayoutAlgorithmData], String) -> LayoutOptionData?
+
+pub fn core_ui_elk_ui_util_model_change_labels_for_domain(Int) -> Array[String]
+
+pub fn core_ui_elk_ui_util_reset_for_test() -> Unit
+
+pub fn core_ui_elk_ui_util_run_model_change(() -> Unit, editing_domain? : Int?, label? : String) -> Unit
+
+pub fn core_ui_font_dispose(CoreUiFont) -> Unit
+
+pub fn core_ui_font_is_disposed(CoreUiFont) -> Bool
+
+pub fn core_ui_layout_meta_data_get_description(CoreUiLayoutMetaData) -> String
+
+pub fn core_ui_layout_meta_data_get_id(CoreUiLayoutMetaData) -> String
+
+pub fn core_ui_layout_meta_data_get_name(CoreUiLayoutMetaData) -> String
+
+pub fn core_ui_layout_preference_page_get_launched_paths_for_test() -> Array[String]
+
+pub fn core_ui_layout_preference_page_mark_path_exists_for_test(String, Bool) -> Unit
+
+pub fn core_ui_layout_preference_page_reset_for_test() -> Unit
+
+pub fn core_ui_layout_preference_page_set_debug_folder_for_test(String) -> Unit
+
+pub let core_ui_layout_property_descriptor_disco_layout_alg_id : String
+
+pub fn core_ui_layout_property_source_get_layout_hint(String) -> String?
+
+pub let core_ui_layout_view_id : String
+
+pub fn core_ui_layout_view_part_reset_for_test() -> Unit
+
+pub let core_ui_layout_view_pref_advanced : String
+
+pub let core_ui_layout_view_pref_categories : String
+
+pub let core_ui_messages_bundle_name : String
+
+pub fn core_ui_messages_get_string(String) -> String
+
+pub let core_ui_min_font_height : Int
+
+pub let core_ui_param_layout_scope : String
+
+pub let core_ui_pref_animation : String
+
+pub let core_ui_pref_progress : String
+
+pub let core_ui_pref_zoom : String
+
+pub fn core_ui_preference_initializer_initialize_default_preferences() -> Unit
+
+pub let core_ui_property_sheet_entry_filter_expert : String
+
+pub let core_ui_swt_normal : Int
+
+pub let core_ui_val_diagram : String
+
+pub let core_ui_val_selection : String
+
+pub fn core_ui_value_as_bool(CoreUiValue) -> Bool?
+
+pub fn core_ui_value_as_int(CoreUiValue) -> Int?
+
+pub fn core_ui_value_as_string(CoreUiValue) -> String?
+
+pub fn core_ui_value_as_strings(CoreUiValue) -> Array[String]?
+
+pub fn core_ui_value_to_string(CoreUiValue) -> String
+
 pub fn create_edge(Int?) -> Int
 
 pub fn create_edge_section(Int) -> Int
@@ -1312,6 +1392,26 @@ pub fn elk_service_plugin_unload() -> Unit
 
 pub fn elk_spacings_with_base_value(Double) -> ElkCoreSpacingsBuilder
 
+pub let elk_ui_img_choice : String
+
+pub let elk_ui_img_double : String
+
+pub let elk_ui_img_false : String
+
+pub let elk_ui_img_int : String
+
+pub let elk_ui_img_text : String
+
+pub let elk_ui_img_true : String
+
+pub fn elk_ui_plugin_get_image_descriptor(String) -> CoreUiImageDescriptor
+
+pub fn elk_ui_plugin_get_instance() -> ElkUiPlugin
+
+pub let elk_ui_plugin_id : String
+
+pub fn elk_ui_plugin_reset_for_test() -> Unit
+
 pub let elk_unknown_work : Double
 
 pub fn[P, G] enum_based_factory_compare(ILayoutProcessorFactory[P, G], ILayoutProcessorFactory[P, G]) -> Int
@@ -1786,6 +1886,8 @@ pub fn graph_identifier_generator_for_graph(Int) -> GraphIdentifierGenerator
 
 pub fn graph_issue_list_to_string(Array[GraphIssue]) -> String
 
+pub fn graph_issue_severity_get_user_string(Int) -> String
+
 pub fn graphviz_cleanup_error() -> GraphvizToolCleanup
 
 pub fn graphviz_cleanup_normal() -> GraphvizToolCleanup
@@ -2145,6 +2247,10 @@ pub fn layout_provider_template_build_file_content(String, String) -> String
 pub let layout_upon_load_setting_action_id : String
 
 pub fn layout_upon_load_setting_action_should_layout_upon_load() -> Bool
+
+pub fn layout_view_part_find_view() -> LayoutViewPart?
+
+pub fn layout_view_part_open() -> LayoutViewPart
 
 pub fn less_than(Double) -> ExclusiveUpperBound
 
@@ -2668,9 +2774,17 @@ pub fn new_abstract_meta_data_validator() -> AbstractMetaDataValidator
 
 pub fn[T] new_abstract_random_list_accessor(() -> T) -> AbstractRandomListAccessor[T]
 
+pub fn new_active_editor_supported_tester() -> ActiveEditorSupportedTester
+
+pub fn new_algorithm_cell_editor(String) -> AlgorithmCellEditor
+
+pub fn new_algorithm_content_provider() -> AlgorithmContentProvider
+
 pub fn new_algorithm_plugin_content_wizard(String, String) -> AlgorithmPluginContentWizard
 
 pub fn new_algorithm_project_creation_page(String) -> AlgorithmProjectCreationPage
+
+pub fn new_algorithm_selection_dialog(String) -> AlgorithmSelectionDialog
 
 pub fn new_annulus_wedge_compaction() -> AnnulusWedgeCompaction
 
@@ -2838,6 +2952,30 @@ pub fn new_core_meta_validation_issue(String, String, String?) -> CoreMetaValida
 
 pub fn new_core_service_injector(bindings? : Map[String, String], diagram_layout_connector? : IDiagramLayoutConnector?, layout_configuration_store_provider? : LayoutConfigurationStoreProvider?, layout_configuration_manager? : LayoutConfigurationManager?, graph_layout_engine? : IGraphLayoutEngine?) -> CoreServiceInjector
 
+pub fn new_core_ui_algorithm_selection_listener((CoreUiLayoutMetaData) -> Unit) -> CoreUiAlgorithmSelectionListener
+
+pub fn new_core_ui_color(CoreUiDisplay, Int, Int, Int) -> CoreUiColor
+
+pub fn new_core_ui_display() -> CoreUiDisplay
+
+pub fn new_core_ui_execution_event(parameters? : Map[String, String], selection? : CoreUiLayoutSelection, active_editor? : Int?) -> CoreUiExecutionEvent
+
+pub fn new_core_ui_font(CoreUiDisplay, String, Int, Int) -> CoreUiFont
+
+pub fn new_core_ui_graphics() -> CoreUiGraphics
+
+pub fn new_core_ui_image_registry() -> CoreUiImageRegistry
+
+pub fn new_core_ui_paint_event(Int, Int, Int, Int, CoreUiGraphics) -> CoreUiPaintEvent
+
+pub fn new_core_ui_paint_rectangle(Int, Int, Int, Int) -> CoreUiPaintRectangle
+
+pub fn new_core_ui_preference_store() -> CoreUiPreferenceStore
+
+pub fn new_core_ui_property_editor(CoreUiPropertyEditorKind, validator? : (CoreUiValue) -> String?) -> CoreUiPropertyEditor
+
+pub fn new_core_ui_show_layout_view_event(can_open? : Bool) -> CoreUiShowLayoutViewEvent
+
 pub fn new_cubic_spline_interpolator() -> CubicSplineInterpolator
 
 pub fn new_data_object((String) -> Unit) -> IDataObject
@@ -2954,6 +3092,8 @@ pub fn new_elk_rectangle_copy(ElkRectangle) -> ElkRectangle
 
 pub fn new_elk_rectangle_xywh(Double, Double, Double, Double) -> ElkRectangle
 
+pub fn new_elk_ui_plugin() -> ElkUiPlugin
+
 pub fn new_empty_planar_grid() -> PlanarGrid
 
 pub fn new_empty_polyomino() -> Polyomino
@@ -3063,6 +3203,14 @@ pub fn new_graph_issue_node(Int, String, Int) -> GraphIssue
 pub fn new_graph_layout_engine((Int, IElkProgressMonitor) -> Unit) -> IGraphLayoutEngine
 
 pub fn new_graph_list_label_provider() -> GraphListLabelProvider
+
+pub fn new_graph_renderer(GraphRenderingConfigurator) -> GraphRenderer
+
+pub fn new_graph_rendering_canvas(CoreUiDisplay) -> GraphRenderingCanvas
+
+pub fn new_graph_rendering_canvas_with_configurator(CoreUiDisplay, GraphRenderingConfigurator) -> GraphRenderingCanvas
+
+pub fn new_graph_rendering_configurator(CoreUiDisplay) -> GraphRenderingConfigurator
 
 pub fn new_graph_tree_label_provider() -> GraphTreeLabelProvider
 
@@ -3220,7 +3368,7 @@ pub fn new_kvector_copy(KVector) -> KVector
 
 pub fn new_kvector_xy(Double, Double) -> KVector
 
-pub fn new_layout_algorithm_data(String, name? : String, description? : String, validator? : ((Int) -> Array[GraphIssue])?, category_id? : String, bundle_name? : String, instance_pool_clear_fn? : () -> Unit) -> LayoutAlgorithmData
+pub fn new_layout_algorithm_data(String, name? : String, description? : String, validator? : ((Int) -> Array[GraphIssue])?, category_id? : String, bundle_name? : String, preview_image_path? : String, defining_bundle_id? : String, instance_pool_clear_fn? : () -> Unit) -> LayoutAlgorithmData
 
 pub fn new_layout_algorithm_resolver(default_layout_algorithm_id? : String) -> LayoutAlgorithmResolver
 
@@ -3244,9 +3392,13 @@ pub fn new_layout_dot_exporter() -> LayoutDotExporter
 
 pub fn new_layout_edit_policy_provider() -> LayoutEditPolicyProvider
 
+pub fn new_layout_graph_dialog(Int, String?, GraphRenderingConfigurator) -> LayoutGraphDialog
+
 pub fn new_layout_graph_view() -> LayoutGraphView
 
 pub fn new_layout_graph_view_drop_adapter(LayoutGraphView) -> LayoutGraphViewDropAdapter
+
+pub fn new_layout_handler(invoke_layout_fn? : (CoreUiLayoutInvocation) -> Unit) -> LayoutHandler
 
 pub fn new_layout_listener(layout_about_to_start_fn? : (LayoutMapping, IElkProgressMonitor) -> Unit, layout_done_fn? : (LayoutMapping, IElkProgressMonitor) -> Unit) -> ILayoutListener
 
@@ -3262,21 +3414,35 @@ pub fn new_layout_meta_data_provider((LayoutMetaDataRegistry) -> Unit) -> ILayou
 
 pub fn new_layout_meta_data_registry((LayoutAlgorithmData) -> Unit, (LayoutOptionData) -> Unit, (LayoutCategoryData) -> Unit, (String, String, String?) -> Unit, (String, String, String?) -> Unit) -> LayoutMetaDataRegistry
 
-pub fn new_layout_option_data(String, name? : String, description? : String, group? : String, option_type? : LayoutOptionValueType, lower_bound? : Double?, lower_bound_exclusive? : Bool, targets? : Array[LayoutOptionTarget], visibility? : LayoutOptionVisibility) -> LayoutOptionData
+pub fn new_layout_option_data(String, name? : String, description? : String, group? : String, option_type? : LayoutOptionValueType, lower_bound? : Double?, lower_bound_exclusive? : Bool, targets? : Array[LayoutOptionTarget], visibility? : LayoutOptionVisibility, choices? : Array[String], dependencies? : Array[LayoutOptionDependency], advanced_choices? : Array[String], experimental_choices? : Array[String]) -> LayoutOptionData
+
+pub fn new_layout_option_dependency(String, expected_value? : String?) -> LayoutOptionDependency
+
+pub fn new_layout_option_label_provider(LayoutOptionData) -> LayoutOptionLabelProvider
 
 pub fn new_layout_option_validator() -> LayoutOptionValidator
 
 pub fn[P, G] new_layout_phase((G, IElkProgressMonitor?) -> Unit, (G) -> LayoutProcessorConfiguration[P, G]?) -> ILayoutProcessor[P, G]
 
+pub fn new_layout_preference_page() -> LayoutPreferencePage
+
 pub fn[P, G] new_layout_processor((G, IElkProgressMonitor?) -> Unit) -> ILayoutProcessor[P, G]
 
 pub fn[P, G] new_layout_processor_factory(Int, Int, () -> ILayoutProcessor[P, G]) -> ILayoutProcessorFactory[P, G]
+
+pub fn new_layout_property_descriptor(LayoutPropertySource, LayoutOptionData, Array[LayoutOptionTarget]?) -> LayoutPropertyDescriptor
+
+pub fn new_layout_property_source(ILayoutConfigurationStore, LayoutConfigurationManager) -> LayoutPropertySource
+
+pub fn new_layout_property_source_provider(configuration_store_provider? : LayoutConfigurationStoreProvider?, config_manager? : LayoutConfigurationManager, layout_option_validator_provider? : () -> LayoutOptionValidator) -> LayoutPropertySourceProvider
 
 pub fn new_layout_setup((LayoutSetupObject) -> Bool, (CoreServiceInjector) -> CoreServiceInjector) -> ILayoutSetup
 
 pub fn new_layout_setup_default_impl() -> ILayoutSetup
 
 pub fn new_layout_upon_load_setting_action() -> LayoutUponLoadSettingAction
+
+pub fn new_layout_view_part() -> LayoutViewPart
 
 pub fn new_libavoid_bundle(symbolic_name? : String) -> LibavoidBundle
 
@@ -3402,6 +3568,8 @@ pub fn new_mrtree_tree_layout_provider() -> MrtreeTreeLayoutProvider
 
 pub fn new_mrtree_untreeifyer_layout_processor() -> ILayoutProcessor[MrtreeTreeLayoutPhases, Int]
 
+pub fn new_multiple_options_cell_editor(Array[String], Bool) -> MultipleOptionsCellEditor
+
 pub fn new_ngraph() -> NGraph
 
 pub fn new_node(KVector, ElkRectangle) -> Node
@@ -3483,6 +3651,8 @@ pub fn new_reveal_log_folder_action(AbstractLayoutDebugView) -> RevealLogFolderA
 pub fn new_scanline_overlap_check((Node, Node) -> Unit, SvgImage) -> ScanlineOverlapCheck
 
 pub fn new_selective_paint_toggle_action(String, String, String, DisCoGraphRenderingCanvas) -> SelectivePaintToggleAction
+
+pub fn new_show_layout_view_handler() -> ShowLayoutViewHandler
 
 pub fn new_simple_layout_configuration_store(options? : Map[String, String], option_targets? : Array[LayoutOptionTarget], parent? : ILayoutConfigurationStore?, editing_domain? : Int?) -> ILayoutConfigurationStore
 
@@ -3573,6 +3743,8 @@ pub fn new_unsupported_graph_exception_message(String) -> UnsupportedGraphExcept
 pub fn new_unsupported_graph_exception_message_cause(String, String) -> UnsupportedGraphException
 
 pub fn new_validating_graph_element_visitor((Int) -> Unit, () -> Array[GraphIssue]) -> IValidatingGraphElementVisitor
+
+pub fn new_validating_property_sheet_entry() -> ValidatingPropertySheetEntry
 
 pub fn new_vertiflex_absolute_x_placer_layout_phase() -> ILayoutProcessor[VertiFlexLayoutPhases, Int]
 
@@ -4581,6 +4753,11 @@ pub fn[T] AbstractRandomListAccessor::get_list_item(Self[T], Int) -> T
 pub fn[T] AbstractRandomListAccessor::get_list_size(Self[T]) -> Int
 pub fn[T] AbstractRandomListAccessor::set_list_item(Self[T], Int, T) -> Unit
 
+pub struct ActiveEditorSupportedTester {
+  _dummy : Int
+}
+pub fn ActiveEditorSupportedTester::is_supported(Self, Int?) -> Bool
+
 pub struct AlgorithmAssembler[P, G] {
   mut enable_caching : Bool
   mut fail_on_missing_phase : Bool
@@ -4605,6 +4782,37 @@ pub fn[P, G] AlgorithmAssembler::with_caching(Self[P, G], Bool) -> Self[P, G]
 pub fn[P, G] AlgorithmAssembler::with_fail_on_missing_phase(Self[P, G], Bool) -> Self[P, G]
 pub fn[P, G] AlgorithmAssembler::with_processor_comparator(Self[P, G], (ILayoutProcessorFactory[P, G], ILayoutProcessorFactory[P, G]) -> Int) -> Self[P, G]
 
+pub struct AlgorithmCellEditor {
+  label_provider : LayoutOptionLabelProvider
+  mut value : String
+  mut apply_count : Int
+  mut cancel_count : Int
+  mut next_dialog_result : String?
+}
+pub fn AlgorithmCellEditor::fire_apply_editor_value(Self) -> Unit
+pub fn AlgorithmCellEditor::get_counts_for_test(Self) -> (Int, Int)
+pub fn AlgorithmCellEditor::get_value(Self) -> String
+pub fn AlgorithmCellEditor::on_double_click(Self) -> Unit
+pub fn AlgorithmCellEditor::open_dialog_box(Self) -> String?
+pub fn AlgorithmCellEditor::set_next_dialog_result_for_test(Self, String?) -> Unit
+pub fn AlgorithmCellEditor::set_value(Self, String) -> Unit
+pub fn AlgorithmCellEditor::update_contents(Self) -> String
+
+pub struct AlgorithmContentProvider {
+  filter_map : Map[String, Bool]
+  mut filter_value : String
+  mut best_filter_match : CoreUiLayoutMetaData?
+}
+pub fn AlgorithmContentProvider::apply_filter(Self, CoreUiLayoutMetaData) -> Bool
+pub fn AlgorithmContentProvider::dispose(Self) -> Unit
+pub fn AlgorithmContentProvider::get_best_filter_match(Self) -> CoreUiLayoutMetaData?
+pub fn AlgorithmContentProvider::get_children(Self, CoreUiLayoutMetaData) -> Array[CoreUiLayoutMetaData]
+pub fn AlgorithmContentProvider::get_elements(Self) -> Array[CoreUiLayoutMetaData]
+pub fn AlgorithmContentProvider::get_parent(Self, CoreUiLayoutMetaData) -> CoreUiLayoutMetaData?
+pub fn AlgorithmContentProvider::has_children(Self, CoreUiLayoutMetaData) -> Bool
+pub fn AlgorithmContentProvider::input_changed(Self, _old_input? : String?, _new_input? : String?) -> Unit
+pub fn AlgorithmContentProvider::update_filter(Self, String?) -> Unit
+
 pub struct AlgorithmPluginContentWizard {
   mut id : String
   mut plug_in_name : String
@@ -4627,6 +4835,35 @@ pub fn AlgorithmProjectCreationPage::get_algorithm_name(Self) -> String
 pub fn AlgorithmProjectCreationPage::get_plug_in_name(Self) -> String
 pub fn AlgorithmProjectCreationPage::is_page_complete(Self) -> Bool
 pub fn AlgorithmProjectCreationPage::set_algorithm_name(Self, String) -> Unit
+
+pub struct AlgorithmSelectionDialog {
+  mut layouter_hint : String
+  mut display_name : String
+  mut description : String
+  mut image : CoreUiImageDescriptor?
+  content_provider : AlgorithmContentProvider
+  image_cache : Map[String, CoreUiImageDescriptor]
+  mut selection_listeners : Array[CoreUiAlgorithmSelectionListener]
+  mut selected_data : CoreUiLayoutMetaData?
+  mut ok_enabled : Bool
+  mut filter_text : String
+  mut shell_text : String
+}
+pub fn AlgorithmSelectionDialog::add_algorithm_selection_listener(Self, CoreUiAlgorithmSelectionListener) -> Unit
+pub fn AlgorithmSelectionDialog::close(Self) -> Bool
+pub fn AlgorithmSelectionDialog::configure_shell(Self) -> Unit
+pub fn AlgorithmSelectionDialog::create_dialog_area(Self) -> Unit
+pub fn AlgorithmSelectionDialog::get_description(Self) -> String
+pub fn AlgorithmSelectionDialog::get_display_name(Self) -> String
+pub fn AlgorithmSelectionDialog::get_filter_text(Self) -> String
+pub fn AlgorithmSelectionDialog::get_image(Self) -> CoreUiImageDescriptor?
+pub fn AlgorithmSelectionDialog::get_selected_hint(Self) -> String
+pub fn AlgorithmSelectionDialog::get_shell_text(Self) -> String
+pub fn AlgorithmSelectionDialog::is_ok_enabled(Self) -> Bool
+pub fn AlgorithmSelectionDialog::remove_algorithm_selection_listener(Self, CoreUiAlgorithmSelectionListener) -> Unit
+pub fn AlgorithmSelectionDialog::select(Self, CoreUiLayoutMetaData) -> Unit
+pub fn AlgorithmSelectionDialog::update_filter_text(Self, String) -> Unit
+pub fn AlgorithmSelectionDialog::update_value(Self, CoreUiLayoutMetaData) -> Unit
 
 pub enum Alignment {
   Automatic
@@ -5719,6 +5956,143 @@ pub fn CoreServiceInjector::set_graph_layout_engine(Self, IGraphLayoutEngine?) -
 pub fn CoreServiceInjector::set_layout_configuration_manager(Self, LayoutConfigurationManager?) -> Unit
 pub fn CoreServiceInjector::set_layout_configuration_store_provider(Self, LayoutConfigurationStoreProvider?) -> Unit
 
+pub struct CoreUiAlgorithmSelectionListener {
+  id : Int
+  on_selection_fn : (CoreUiLayoutMetaData) -> Unit
+}
+
+pub struct CoreUiColor {
+  display : CoreUiDisplay
+  r : Int
+  g : Int
+  b : Int
+  mut disposed : Bool
+}
+
+pub struct CoreUiDisplay {
+  id : Int
+}
+pub impl Eq for CoreUiDisplay
+
+pub struct CoreUiExecutionEvent {
+  parameters : Map[String, String]
+  selection : CoreUiLayoutSelection
+  active_editor : Int?
+}
+pub fn CoreUiExecutionEvent::get_parameter(Self, String) -> String?
+
+pub struct CoreUiFont {
+  display : CoreUiDisplay
+  name : String
+  size : Int
+  style : Int
+  mut disposed : Bool
+}
+
+pub struct CoreUiGraphics {
+  operations : Array[String]
+  mut alpha : Int
+  mut font : CoreUiFont?
+}
+pub fn CoreUiGraphics::font_height(Self) -> Int
+pub fn CoreUiGraphics::set_alpha(Self, Int) -> Unit
+pub fn CoreUiGraphics::set_font(Self, CoreUiFont?) -> Unit
+
+pub struct CoreUiImageDescriptor {
+  plugin_id : String
+  path : String
+}
+pub fn CoreUiImageDescriptor::to_string(Self) -> String
+
+pub struct CoreUiImageRegistry {
+  images : Map[String, CoreUiImageDescriptor]
+}
+pub fn CoreUiImageRegistry::get(Self, String) -> CoreUiImageDescriptor?
+pub fn CoreUiImageRegistry::put(Self, String, CoreUiImageDescriptor) -> Unit
+pub fn CoreUiImageRegistry::size(Self) -> Int
+
+pub struct CoreUiLayoutInvocation {
+  editor : Int?
+  diagram_part : Int?
+  selection : CoreUiLayoutSelection
+  animation : Bool
+  progress_dialog : Bool
+  zoom_to_fit : Bool
+}
+
+pub enum CoreUiLayoutMetaData {
+  CoreUiLayoutAlgorithmMeta(LayoutAlgorithmData)
+  CoreUiLayoutCategoryMeta(LayoutCategoryData)
+}
+
+pub enum CoreUiLayoutSelection {
+  CoreUiLayoutSelectionNone
+  CoreUiLayoutSelectionSingle(Int)
+  CoreUiLayoutSelectionMultiple(Array[Int])
+}
+
+pub struct CoreUiPaintEvent {
+  x : Int
+  y : Int
+  width : Int
+  height : Int
+  graphics : CoreUiGraphics
+}
+
+pub struct CoreUiPaintRectangle {
+  x : Int
+  y : Int
+  width : Int
+  height : Int
+  mut painted : Bool
+}
+
+pub struct CoreUiPoint {
+  x : Int
+  y : Int
+}
+
+pub struct CoreUiPreferenceStore {
+  bool_values : Map[String, Bool]
+  bool_defaults : Map[String, Bool]
+  string_values : Map[String, String]
+  string_defaults : Map[String, String]
+}
+pub fn CoreUiPreferenceStore::clear(Self) -> Unit
+pub fn CoreUiPreferenceStore::get_boolean(Self, String) -> Bool
+pub fn CoreUiPreferenceStore::get_default_boolean(Self, String) -> Bool
+pub fn CoreUiPreferenceStore::get_string(Self, String) -> String
+pub fn CoreUiPreferenceStore::set_boolean(Self, String, Bool) -> Unit
+pub fn CoreUiPreferenceStore::set_default_boolean(Self, String, Bool) -> Unit
+pub fn CoreUiPreferenceStore::set_default_string(Self, String, String) -> Unit
+pub fn CoreUiPreferenceStore::set_string(Self, String, String) -> Unit
+
+pub struct CoreUiPropertyEditor {
+  kind : CoreUiPropertyEditorKind
+  validator : (CoreUiValue) -> String?
+}
+pub fn CoreUiPropertyEditor::validate(Self, CoreUiValue) -> String?
+
+pub enum CoreUiPropertyEditorKind {
+  CoreUiPropertyEditorText
+  CoreUiPropertyEditorAlgorithm(String)
+  CoreUiPropertyEditorCombo(Array[String])
+  CoreUiPropertyEditorMultiple(Array[String], Bool)
+}
+
+pub struct CoreUiShowLayoutViewEvent {
+  can_open : Bool
+}
+
+pub enum CoreUiValue {
+  CoreUiStringValue(String)
+  CoreUiIntValue(Int)
+  CoreUiDoubleValue(Double)
+  CoreUiBoolValue(Bool)
+  CoreUiStringsValue(Array[String])
+  CoreUiNoValue
+}
+
 pub struct CubicSplineInterpolator {
   _dummy : Unit
 }
@@ -6444,16 +6818,30 @@ pub fn ElkRectangle::union(Self, Self) -> Unit
 pub struct ElkServicePlugin {
   mut started : Bool
   preference_store : Map[String, Bool]
+  preference_defaults : Map[String, Bool]
   running_operations : Map[String, Array[MonitoredOperation]]
 }
 pub fn ElkServicePlugin::add_running_operation(Self, Int?, Int?, MonitoredOperation) -> Unit
 pub fn ElkServicePlugin::get_boolean_preference(Self, String, Bool) -> Bool
+pub fn ElkServicePlugin::get_default_boolean_preference(Self, String) -> Bool
 pub fn ElkServicePlugin::get_running_operations(Self, Int?, Int?) -> Array[MonitoredOperation]
 pub fn ElkServicePlugin::is_started(Self) -> Bool
 pub fn ElkServicePlugin::remove_running_operation(Self, Int?, Int?, MonitoredOperation) -> Unit
 pub fn ElkServicePlugin::set_boolean_preference(Self, String, Bool) -> Unit
+pub fn ElkServicePlugin::set_default_boolean_preference(Self, String, Bool) -> Unit
 pub fn ElkServicePlugin::start(Self) -> Unit
 pub fn ElkServicePlugin::stop(Self) -> Unit
+
+pub struct ElkUiPlugin {
+  mut started : Bool
+  image_registry : CoreUiImageRegistry
+  preference_store : CoreUiPreferenceStore
+}
+pub fn ElkUiPlugin::get_image_registry(Self) -> CoreUiImageRegistry
+pub fn ElkUiPlugin::get_preference_store(Self) -> CoreUiPreferenceStore
+pub fn ElkUiPlugin::is_started(Self) -> Bool
+pub fn ElkUiPlugin::start(Self, _context? : String) -> Unit
+pub fn ElkUiPlugin::stop(Self, _context? : String) -> Unit
 
 pub struct ExclusiveLowerBound {
   exclusive_lower_bound : Double
@@ -6990,6 +7378,8 @@ pub struct GraphIssue {
   message : String
   severity : Int
 }
+pub fn GraphIssue::get_message(Self) -> String
+pub fn GraphIssue::get_severity(Self) -> Int
 pub fn GraphIssue::to_string(Self) -> String
 
 pub enum GraphIssueTarget {
@@ -7004,6 +7394,93 @@ pub struct GraphListLabelProvider {
 }
 pub fn GraphListLabelProvider::get_image(Self, LoggedGraph) -> String
 pub fn GraphListLabelProvider::get_text(Self, LoggedGraph) -> String
+
+pub struct GraphRenderer {
+  bounds_map : Map[String, CoreUiPaintRectangle]
+  configurator : GraphRenderingConfigurator
+  mut scale : Double
+  mut base_offset : KVector
+  mut most_recently_drawn_graph : Int?
+}
+pub fn GraphRenderer::calculate_base_offset_from_top_level_graph(Self, Int) -> Unit
+pub fn GraphRenderer::dispose(Self) -> Unit
+pub fn GraphRenderer::flush_cache(Self) -> Unit
+pub fn GraphRenderer::get_base_offset(Self) -> KVector
+pub fn GraphRenderer::get_scale(Self) -> Double
+pub fn GraphRenderer::make_arrow_for_test(Self, KVector, KVector) -> Array[Int]?
+pub fn GraphRenderer::mark_dirty(Self, CoreUiPaintRectangle?) -> Unit
+pub fn GraphRenderer::render(Self, Int, CoreUiGraphics, CoreUiPaintRectangle) -> Unit
+pub fn GraphRenderer::set_base_offset(Self, KVector?) -> Unit
+pub fn GraphRenderer::set_scale(Self, Double) -> Unit
+
+pub struct GraphRenderingCanvas {
+  mut layout_graph : Int?
+  graph_renderer : GraphRenderer
+  background_color : CoreUiColor
+  display : CoreUiDisplay
+  mut redraw_count : Int
+  mut width : Int
+  mut height : Int
+  mut mouse_interaction_enabled : Bool
+  mut is_dragging : Bool
+  mut last_x : Int
+  mut last_y : Int
+}
+pub fn GraphRenderingCanvas::calculate_required_canvas_size_and_base_offset(Self, Int?) -> KVector
+pub fn GraphRenderingCanvas::compute_size(Self, Int, Int, _changed? : Bool) -> CoreUiPoint
+pub fn GraphRenderingCanvas::dispose(Self) -> Unit
+pub fn GraphRenderingCanvas::get_display(Self) -> CoreUiDisplay
+pub fn GraphRenderingCanvas::get_layout_graph(Self) -> Int?
+pub fn GraphRenderingCanvas::get_redraw_count(Self) -> Int
+pub fn GraphRenderingCanvas::get_renderer(Self) -> GraphRenderer
+pub fn GraphRenderingCanvas::get_size_for_test(Self) -> (Int, Int)
+pub fn GraphRenderingCanvas::handle_mouse_wheel(Self, Int, Int, Int) -> Unit
+pub fn GraphRenderingCanvas::mouse_down(Self, Int, Int) -> Unit
+pub fn GraphRenderingCanvas::mouse_move(Self, Int, Int) -> Unit
+pub fn GraphRenderingCanvas::mouse_up(Self, Int, Int) -> Unit
+pub fn GraphRenderingCanvas::paint_control(Self, CoreUiPaintEvent) -> Unit
+pub fn GraphRenderingCanvas::pan(Self, KVector) -> Unit
+pub fn GraphRenderingCanvas::redraw(Self) -> Unit
+pub fn GraphRenderingCanvas::set_layout_graph(Self, Int?) -> Unit
+pub fn GraphRenderingCanvas::setup_mouse_interaction(Self) -> Unit
+pub fn GraphRenderingCanvas::zoom(Self, Double, KVector) -> Unit
+
+pub struct GraphRenderingConfigurator {
+  mut node_border_color : CoreUiColor?
+  mut node_fill_color : CoreUiColor?
+  mut node_label_font : CoreUiFont?
+  mut node_font_size : Int
+  mut port_border_color : CoreUiColor?
+  mut port_fill_color : CoreUiColor?
+  mut port_label_font : CoreUiFont?
+  mut port_font_size : Int
+  mut edge_color : CoreUiColor?
+  mut edge_label_font : CoreUiFont?
+  mut edge_font_size : Int
+  mut label_border_color : CoreUiColor?
+  mut label_fill_color : CoreUiColor?
+  mut label_text_color : CoreUiColor?
+  mut out_of_bounds_color : CoreUiColor?
+  mut root_node_color : CoreUiColor?
+  display : CoreUiDisplay
+}
+pub fn GraphRenderingConfigurator::dispose(Self) -> Unit
+pub fn GraphRenderingConfigurator::get_display(Self) -> CoreUiDisplay
+pub fn GraphRenderingConfigurator::get_edge_color(Self) -> CoreUiColor?
+pub fn GraphRenderingConfigurator::get_edge_label_font(Self) -> CoreUiFont?
+pub fn GraphRenderingConfigurator::get_label_border_color(Self) -> CoreUiColor?
+pub fn GraphRenderingConfigurator::get_label_fill_color(Self) -> CoreUiColor?
+pub fn GraphRenderingConfigurator::get_label_text_color(Self) -> CoreUiColor?
+pub fn GraphRenderingConfigurator::get_node_border_color(Self) -> CoreUiColor?
+pub fn GraphRenderingConfigurator::get_node_fill_color(Self) -> CoreUiColor?
+pub fn GraphRenderingConfigurator::get_node_label_font(Self) -> CoreUiFont?
+pub fn GraphRenderingConfigurator::get_out_of_bounds_color(Self) -> CoreUiColor?
+pub fn GraphRenderingConfigurator::get_port_border_color(Self) -> CoreUiColor?
+pub fn GraphRenderingConfigurator::get_port_fill_color(Self) -> CoreUiColor?
+pub fn GraphRenderingConfigurator::get_port_label_font(Self) -> CoreUiFont?
+pub fn GraphRenderingConfigurator::get_root_node_color(Self) -> CoreUiColor?
+pub fn GraphRenderingConfigurator::initialize(Self) -> Unit
+pub fn GraphRenderingConfigurator::set_scale(Self, Double) -> Unit
 
 pub struct GraphTreeLabelProvider {
   graph_image : String
@@ -7903,6 +8380,8 @@ pub struct LayoutAlgorithmData {
   validator : ((Int) -> Array[GraphIssue])?
   mut category_id : String
   bundle_name : String
+  mut preview_image_path : String
+  mut defining_bundle_id : String
   instance_pool_clear_fn : () -> Unit
   supported_features : Map[String, GraphFeature]
   known_options : Map[String, Unit]
@@ -7912,14 +8391,18 @@ pub fn LayoutAlgorithmData::add_supported_feature(Self, GraphFeature) -> Unit
 pub fn LayoutAlgorithmData::clear_instance_pool(Self) -> Unit
 pub fn LayoutAlgorithmData::get_bundle_name(Self) -> String
 pub fn LayoutAlgorithmData::get_category_id(Self) -> String
+pub fn LayoutAlgorithmData::get_defining_bundle_id(Self) -> String
 pub fn LayoutAlgorithmData::get_description(Self) -> String
 pub fn LayoutAlgorithmData::get_id(Self) -> String
 pub fn LayoutAlgorithmData::get_known_option_ids(Self) -> Array[String]
 pub fn LayoutAlgorithmData::get_name(Self) -> String
+pub fn LayoutAlgorithmData::get_preview_image_path(Self) -> String
 pub fn LayoutAlgorithmData::get_supported_features(Self) -> Array[GraphFeature]
 pub fn LayoutAlgorithmData::get_validator(Self) -> ((Int) -> Array[GraphIssue])?
 pub fn LayoutAlgorithmData::knows_option(Self, String) -> Bool
 pub fn LayoutAlgorithmData::set_category_id(Self, String) -> Unit
+pub fn LayoutAlgorithmData::set_defining_bundle_id(Self, String) -> Unit
+pub fn LayoutAlgorithmData::set_preview_image_path(Self, String) -> Unit
 pub fn LayoutAlgorithmData::supports_feature(Self, GraphFeature) -> Bool
 
 pub struct LayoutAlgorithmResolver {
@@ -8020,6 +8503,19 @@ pub struct LayoutEditPolicyProvider {
 pub fn LayoutEditPolicyProvider::create_edit_policies(Self, Int) -> Unit
 pub fn LayoutEditPolicyProvider::provides(Self, GmfOperation) -> Bool
 
+pub struct LayoutGraphDialog {
+  graph : Int
+  resource_file_name : String?
+  configurator : GraphRenderingConfigurator
+  mut graph_canvas : GraphRenderingCanvas?
+  mut shell_text : String
+}
+pub fn LayoutGraphDialog::configure_shell(Self) -> Unit
+pub fn LayoutGraphDialog::create_contents(Self, CoreUiDisplay) -> GraphRenderingCanvas
+pub fn LayoutGraphDialog::get_graph_canvas(Self) -> GraphRenderingCanvas?
+pub fn LayoutGraphDialog::get_shell_text(Self) -> String
+pub fn LayoutGraphDialog::is_resizable(Self) -> Bool
+
 pub struct LayoutGraphView {
   base : AbstractLayoutDebugView
   graph_list_label_provider : GraphListLabelProvider
@@ -8047,6 +8543,13 @@ pub struct LayoutGraphViewDropAdapter {
 }
 pub fn LayoutGraphViewDropAdapter::perform_drop(Self, Array[String]) -> Bool
 pub fn LayoutGraphViewDropAdapter::validate_drop(Self) -> Bool
+
+pub struct LayoutHandler {
+  invoke_layout_fn : (CoreUiLayoutInvocation) -> Unit
+  mut last_invocation : CoreUiLayoutInvocation?
+}
+pub fn LayoutHandler::execute(Self, CoreUiExecutionEvent) -> Unit
+pub fn LayoutHandler::get_last_invocation(Self) -> CoreUiLayoutInvocation?
 
 pub struct LayoutLogView {
   base : AbstractLayoutDebugView
@@ -8116,8 +8619,18 @@ pub struct LayoutOptionData {
   lower_bound_exclusive : Bool
   targets : Array[LayoutOptionTarget]
   visibility : LayoutOptionVisibility
+  mut choices : Array[String]
+  dependencies : Array[LayoutOptionDependency]
+  advanced_choices : Array[String]
+  experimental_choices : Array[String]
 }
+pub fn LayoutOptionData::add_choice(Self, String) -> Unit
+pub fn LayoutOptionData::add_dependency(Self, String, expected_value? : String?) -> Unit
+pub fn LayoutOptionData::get_choices(Self) -> Array[String]
+pub fn LayoutOptionData::get_dependencies(Self) -> Array[LayoutOptionDependency]
 pub fn LayoutOptionData::get_description(Self) -> String
+pub fn LayoutOptionData::get_enum_value(Self, Int) -> String
+pub fn LayoutOptionData::get_enum_value_count(Self) -> Int
 pub fn LayoutOptionData::get_group(Self) -> String
 pub fn LayoutOptionData::get_id(Self) -> String
 pub fn LayoutOptionData::get_lower_bound(Self) -> Double?
@@ -8125,7 +8638,26 @@ pub fn LayoutOptionData::get_name(Self) -> String
 pub fn LayoutOptionData::get_targets(Self) -> Array[LayoutOptionTarget]
 pub fn LayoutOptionData::get_type(Self) -> LayoutOptionValueType
 pub fn LayoutOptionData::get_visibility(Self) -> LayoutOptionVisibility
+pub fn LayoutOptionData::is_advanced_choice(Self, String) -> Bool
+pub fn LayoutOptionData::is_experimental_choice(Self, String) -> Bool
 pub fn LayoutOptionData::is_lower_bound_exclusive(Self) -> Bool
+pub fn LayoutOptionData::mark_advanced_choice(Self, String) -> Unit
+pub fn LayoutOptionData::mark_experimental_choice(Self, String) -> Unit
+pub fn LayoutOptionData::parse_value(Self, String) -> String
+pub fn LayoutOptionData::set_choices(Self, Array[String]) -> Unit
+
+pub struct LayoutOptionDependency {
+  option_id : String
+  expected_value : String?
+}
+pub fn LayoutOptionDependency::get_expected_value(Self) -> String?
+pub fn LayoutOptionDependency::get_option_id(Self) -> String
+
+pub struct LayoutOptionLabelProvider {
+  option_data : LayoutOptionData
+}
+pub fn LayoutOptionLabelProvider::get_image(Self, CoreUiValue) -> CoreUiImageDescriptor?
+pub fn LayoutOptionLabelProvider::get_text(Self, CoreUiValue) -> String
 
 pub enum LayoutOptionTarget {
   ParentsTarget
@@ -8139,6 +8671,7 @@ pub fn LayoutOptionTarget::to_string(Self) -> String
 pub struct LayoutOptionValidator {
   issues : Array[GraphIssue]
 }
+pub fn LayoutOptionValidator::check_property(Self, LayoutOptionData, String, _context? : Unit?) -> Array[GraphIssue]
 pub fn LayoutOptionValidator::get_issues(Self) -> Array[GraphIssue]
 pub fn LayoutOptionValidator::to_visitor(Self) -> IGraphElementVisitor
 pub fn LayoutOptionValidator::visit(Self, Int) -> Unit
@@ -8160,6 +8693,29 @@ pub enum LayoutOptionVisibility {
 }
 pub fn LayoutOptionVisibility::to_string(Self) -> String
 
+pub struct LayoutPreferencePage {
+  mut preference_store : CoreUiPreferenceStore?
+  mut animation : Bool
+  mut zoom : Bool
+  mut progress : Bool
+  mut enable_logging : Bool
+  mut store_logs : Bool
+  mut exec_time : Bool
+}
+pub fn LayoutPreferencePage::create_contents(Self) -> Unit
+pub fn LayoutPreferencePage::get_preference_store(Self) -> CoreUiPreferenceStore?
+pub fn LayoutPreferencePage::get_values(Self) -> (Bool, Bool, Bool, Bool, Bool, Bool)
+pub fn LayoutPreferencePage::init(Self) -> Unit
+pub fn LayoutPreferencePage::open_log_folder(Self) -> Unit
+pub fn LayoutPreferencePage::perform_defaults(Self) -> Unit
+pub fn LayoutPreferencePage::perform_ok(Self) -> Bool
+pub fn LayoutPreferencePage::set_animation(Self, Bool) -> Unit
+pub fn LayoutPreferencePage::set_enable_logging(Self, Bool) -> Unit
+pub fn LayoutPreferencePage::set_exec_time(Self, Bool) -> Unit
+pub fn LayoutPreferencePage::set_progress(Self, Bool) -> Unit
+pub fn LayoutPreferencePage::set_store_logs(Self, Bool) -> Unit
+pub fn LayoutPreferencePage::set_zoom(Self, Bool) -> Unit
+
 pub struct LayoutProcessorConfiguration[P, G] {
   phase_descriptor : PhaseDescriptor[P]
   list_accessor : AbstractRandomListAccessor[Array[ILayoutProcessorFactory[P, G]]]
@@ -8177,6 +8733,57 @@ pub fn[P, G] LayoutProcessorConfiguration::processors(Self[P, G], Int) -> Array[
 pub fn[P, G] LayoutProcessorConfiguration::processors_after(Self[P, G], P) -> Array[ILayoutProcessorFactory[P, G]]
 pub fn[P, G] LayoutProcessorConfiguration::processors_before(Self[P, G], P) -> Array[ILayoutProcessorFactory[P, G]]
 
+pub struct LayoutPropertyDescriptor {
+  source : LayoutPropertySource
+  option_data : LayoutOptionData
+  element_targets : Array[LayoutOptionTarget]?
+  mut label_provider : LayoutOptionLabelProvider?
+}
+pub fn LayoutPropertyDescriptor::create_property_editor(Self) -> CoreUiPropertyEditor?
+pub fn LayoutPropertyDescriptor::get_category(Self) -> String?
+pub fn LayoutPropertyDescriptor::get_description(Self) -> String
+pub fn LayoutPropertyDescriptor::get_display_name(Self) -> String
+pub fn LayoutPropertyDescriptor::get_filter_flags(Self) -> Array[String]?
+pub fn LayoutPropertyDescriptor::get_id(Self) -> String
+pub fn LayoutPropertyDescriptor::get_label_provider(Self) -> LayoutOptionLabelProvider
+pub fn LayoutPropertyDescriptor::get_long_description(Self) -> String
+pub fn LayoutPropertyDescriptor::get_option_data(Self) -> LayoutOptionData
+pub fn LayoutPropertyDescriptor::is_compatible_with(Self, Self) -> Bool
+
+pub struct LayoutPropertySource {
+  layout_config : ILayoutConfigurationStore
+  mut property_descriptors : Array[LayoutPropertyDescriptor]?
+  dependency_options : Map[String, Unit]
+  config_manager : LayoutConfigurationManager
+  mut layout_option_validator : LayoutOptionValidator?
+}
+pub fn LayoutPropertySource::get_editable_value(Self) -> CoreUiValue
+pub fn LayoutPropertySource::get_layout_config(Self) -> ILayoutConfigurationStore
+pub fn LayoutPropertySource::get_property_descriptors(Self) -> Array[LayoutPropertyDescriptor]
+pub fn LayoutPropertySource::get_property_value(Self, String) -> CoreUiValue
+pub fn LayoutPropertySource::is_property_set(Self, String) -> Bool
+pub fn LayoutPropertySource::reset_property_value(Self, String) -> Unit
+pub fn LayoutPropertySource::set_property_value(Self, String, CoreUiValue) -> Unit
+pub fn LayoutPropertySource::set_validator(Self, LayoutOptionValidator) -> Unit
+pub fn LayoutPropertySource::translate_from_ui(Self, CoreUiValue, LayoutOptionData) -> String
+pub fn LayoutPropertySource::translate_to_ui(Self, String?, LayoutOptionData) -> CoreUiValue
+pub fn LayoutPropertySource::validate_property_value(Self, LayoutOptionData, String) -> Array[GraphIssue]?
+
+pub struct LayoutPropertySourceProvider {
+  mut configuration_store_provider : LayoutConfigurationStoreProvider?
+  config_manager : LayoutConfigurationManager
+  layout_option_validator_provider : () -> LayoutOptionValidator
+  mut workbench_part : Int?
+  config_stores : Array[ILayoutConfigurationStore]
+}
+pub fn LayoutPropertySourceProvider::create_property_source(Self, ILayoutConfigurationStore) -> LayoutPropertySource
+pub fn LayoutPropertySourceProvider::get_configuration_manager(Self) -> LayoutConfigurationManager
+pub fn LayoutPropertySourceProvider::get_configuration_stores(Self) -> Array[ILayoutConfigurationStore]
+pub fn LayoutPropertySourceProvider::get_property_source(Self, Int?) -> LayoutPropertySource?
+pub fn LayoutPropertySourceProvider::get_workbench_part(Self) -> Int?
+pub fn LayoutPropertySourceProvider::set_configuration_store_provider(Self, LayoutConfigurationStoreProvider?) -> Unit
+pub fn LayoutPropertySourceProvider::set_workbench_part(Self, Int?) -> Unit
+
 type LayoutSetupEntry
 
 pub enum LayoutSetupObject {
@@ -8193,6 +8800,28 @@ pub struct LayoutUponLoadSettingAction {
 pub fn LayoutUponLoadSettingAction::is_checked(Self) -> Bool
 pub fn LayoutUponLoadSettingAction::run(Self) -> Unit
 pub fn LayoutUponLoadSettingAction::set_checked(Self, Bool) -> Unit
+
+pub struct LayoutViewPart {
+  mut current_prop_source_provider : LayoutPropertySourceProvider?
+  mut categories_checked : Bool
+  mut advanced_checked : Bool
+  mut refresh_count : Int
+  mut selection_entries : Array[ValidatingPropertySheetEntry]
+  mut focused : Bool
+}
+pub fn LayoutViewPart::create_part_control(Self) -> Unit
+pub fn LayoutViewPart::dispose(Self) -> Unit
+pub fn LayoutViewPart::get_property_source_provider(Self) -> LayoutPropertySourceProvider?
+pub fn LayoutViewPart::get_refresh_count(Self) -> Int
+pub fn LayoutViewPart::get_selection(Self) -> Array[ValidatingPropertySheetEntry]
+pub fn LayoutViewPart::get_toolbar_state(Self) -> (Bool, Bool)
+pub fn LayoutViewPart::is_focused(Self) -> Bool
+pub fn LayoutViewPart::refresh(Self) -> Unit
+pub fn LayoutViewPart::set_advanced_checked(Self, Bool) -> Unit
+pub fn LayoutViewPart::set_categories_checked(Self, Bool) -> Unit
+pub fn LayoutViewPart::set_focus(Self) -> Unit
+pub fn LayoutViewPart::set_property_source_provider(Self, LayoutPropertySourceProvider?) -> Unit
+pub fn LayoutViewPart::set_selection(Self, Array[ValidatingPropertySheetEntry]) -> Unit
 
 pub struct LibavoidBundle {
   symbolic_name : String
@@ -8685,6 +9314,22 @@ pub enum MrtreeTreeifyingOrder {
   DFS
   BFS
 }
+
+pub struct MultipleOptionsCellEditor {
+  items : Array[String]
+  decorated_item_values : Bool
+  mut value : Array[String]
+  mut next_dialog_result : Array[String]?
+  mut apply_count : Int
+  mut cancel_count : Int
+}
+pub fn MultipleOptionsCellEditor::get_counts_for_test(Self) -> (Int, Int)
+pub fn MultipleOptionsCellEditor::get_value(Self) -> Array[String]
+pub fn MultipleOptionsCellEditor::on_double_click(Self) -> Unit
+pub fn MultipleOptionsCellEditor::open_dialog_box(Self) -> Array[String]?
+pub fn MultipleOptionsCellEditor::set_next_dialog_result_for_test(Self, Array[String]?) -> Unit
+pub fn MultipleOptionsCellEditor::set_value(Self, Array[String]) -> Unit
+pub fn MultipleOptionsCellEditor::update_contents(Self) -> String
 
 pub struct NEdge {
   handle : Int
@@ -9263,6 +9908,12 @@ pub enum ShapeCoords {
   Root
 }
 
+pub struct ShowLayoutViewHandler {
+  mut last_error : String?
+}
+pub fn ShowLayoutViewHandler::execute(Self, CoreUiShowLayoutViewEvent) -> Unit
+pub fn ShowLayoutViewHandler::get_last_error(Self) -> String?
+
 pub enum SizeConstraint {
   Ports
   PortLabels
@@ -9566,6 +10217,27 @@ pub struct UnsupportedGraphException {
 }
 pub fn UnsupportedGraphException::get_cause(Self) -> String?
 pub fn UnsupportedGraphException::get_message(Self) -> String?
+
+pub struct ValidatingPropertySheetEntry {
+  mut parent : ValidatingPropertySheetEntry?
+  mut source : LayoutPropertySource?
+  mut descriptor : LayoutPropertyDescriptor?
+  mut values : Array[CoreUiValue]
+  mut image : CoreUiImageDescriptor?
+  mut description : String
+}
+pub fn ValidatingPropertySheetEntry::create_child_entry(Self) -> Self
+pub fn ValidatingPropertySheetEntry::get_description(Self) -> String
+pub fn ValidatingPropertySheetEntry::get_image(Self) -> CoreUiImageDescriptor?
+pub fn ValidatingPropertySheetEntry::get_parent(Self) -> Self?
+pub fn ValidatingPropertySheetEntry::get_source(Self) -> LayoutPropertySource?
+pub fn ValidatingPropertySheetEntry::set_description(Self, String) -> Unit
+pub fn ValidatingPropertySheetEntry::set_descriptor(Self, LayoutPropertyDescriptor?) -> Unit
+pub fn ValidatingPropertySheetEntry::set_image(Self, CoreUiImageDescriptor?) -> Unit
+pub fn ValidatingPropertySheetEntry::set_parent(Self, Self?) -> Unit
+pub fn ValidatingPropertySheetEntry::set_source(Self, LayoutPropertySource?) -> Unit
+pub fn ValidatingPropertySheetEntry::set_values(Self, Array[CoreUiValue]) -> Unit
+pub fn ValidatingPropertySheetEntry::validate(Self) -> Array[GraphIssue]
 
 pub enum VertiFlexLayoutPhases {
   P1_NODE_Y_PLACEMENT

@@ -9,6 +9,8 @@ pub struct LayoutAlgorithmData {
   validator : GraphValidationFunction?
   mut category_id : String
   bundle_name : String
+  mut preview_image_path : String
+  mut defining_bundle_id : String
   instance_pool_clear_fn : () -> Unit
   supported_features : Map[String, GraphFeature]
   known_options : Map[String, Unit]
@@ -22,6 +24,8 @@ pub fn new_layout_algorithm_data(
   validator? : GraphValidationFunction? = None,
   category_id? : String = "",
   bundle_name? : String = "",
+  preview_image_path? : String = "",
+  defining_bundle_id? : String = "",
   instance_pool_clear_fn? : () -> Unit = () => (),
 ) -> LayoutAlgorithmData {
   {
@@ -31,6 +35,8 @@ pub fn new_layout_algorithm_data(
     validator,
     category_id,
     bundle_name,
+    preview_image_path,
+    defining_bundle_id,
     instance_pool_clear_fn,
     supported_features: {},
     known_options: {},
@@ -66,6 +72,36 @@ pub fn LayoutAlgorithmData::get_bundle_name(
   self : LayoutAlgorithmData,
 ) -> String {
   self.bundle_name
+}
+
+///|
+pub fn LayoutAlgorithmData::get_preview_image_path(
+  self : LayoutAlgorithmData,
+) -> String {
+  self.preview_image_path
+}
+
+///|
+pub fn LayoutAlgorithmData::set_preview_image_path(
+  self : LayoutAlgorithmData,
+  path : String,
+) -> Unit {
+  self.preview_image_path = path
+}
+
+///|
+pub fn LayoutAlgorithmData::get_defining_bundle_id(
+  self : LayoutAlgorithmData,
+) -> String {
+  self.defining_bundle_id
+}
+
+///|
+pub fn LayoutAlgorithmData::set_defining_bundle_id(
+  self : LayoutAlgorithmData,
+  bundle_id : String,
+) -> Unit {
+  self.defining_bundle_id = bundle_id
 }
 
 ///|

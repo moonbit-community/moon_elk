@@ -48,6 +48,17 @@ fn graph_issue_severity_to_string(severity : GraphIssueSeverity) -> String {
 }
 
 ///|
+pub fn graph_issue_severity_get_user_string(
+  severity : GraphIssueSeverity,
+) -> String {
+  if severity == issue_warning {
+    "Warning"
+  } else {
+    "Error"
+  }
+}
+
+///|
 fn describe_node_for_path(node : ElkNode) -> String {
   match node_parent(node) {
     None => "Root Node"
@@ -112,6 +123,16 @@ fn graph_issue_path(target : GraphIssueTarget) -> String {
 ///|
 pub fn GraphIssue::to_string(self : GraphIssue) -> String {
   "\{graph_issue_severity_to_string(self.severity)}: \{self.message} (\{graph_issue_path(self.target)})"
+}
+
+///|
+pub fn GraphIssue::get_message(self : GraphIssue) -> String {
+  self.message
+}
+
+///|
+pub fn GraphIssue::get_severity(self : GraphIssue) -> GraphIssueSeverity {
+  self.severity
 }
 
 ///|

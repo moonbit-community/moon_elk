@@ -59,6 +59,34 @@ pub fn LayoutOptionVisibility::to_string(
 }
 
 ///|
+pub struct LayoutOptionDependency {
+  option_id : String
+  expected_value : String?
+}
+
+///|
+pub fn new_layout_option_dependency(
+  option_id : String,
+  expected_value? : String? = None,
+) -> LayoutOptionDependency {
+  { option_id, expected_value }
+}
+
+///|
+pub fn LayoutOptionDependency::get_option_id(
+  self : LayoutOptionDependency,
+) -> String {
+  self.option_id
+}
+
+///|
+pub fn LayoutOptionDependency::get_expected_value(
+  self : LayoutOptionDependency,
+) -> String? {
+  self.expected_value
+}
+
+///|
 pub struct LayoutOptionData {
   id : String
   name : String
@@ -69,6 +97,10 @@ pub struct LayoutOptionData {
   lower_bound_exclusive : Bool
   targets : Array[LayoutOptionTarget]
   visibility : LayoutOptionVisibility
+  mut choices : Array[String]
+  dependencies : Array[LayoutOptionDependency]
+  advanced_choices : Array[String]
+  experimental_choices : Array[String]
 }
 
 ///|
@@ -82,6 +114,10 @@ pub fn new_layout_option_data(
   lower_bound_exclusive? : Bool = false,
   targets? : Array[LayoutOptionTarget] = [],
   visibility? : LayoutOptionVisibility = VisibleOption,
+  choices? : Array[String] = [],
+  dependencies? : Array[LayoutOptionDependency] = [],
+  advanced_choices? : Array[String] = [],
+  experimental_choices? : Array[String] = [],
 ) -> LayoutOptionData {
   {
     id,
@@ -93,6 +129,10 @@ pub fn new_layout_option_data(
     lower_bound_exclusive,
     targets,
     visibility,
+    choices,
+    dependencies,
+    advanced_choices,
+    experimental_choices,
   }
 }
 
@@ -147,4 +187,157 @@ pub fn LayoutOptionData::get_visibility(
   self : LayoutOptionData,
 ) -> LayoutOptionVisibility {
   self.visibility
+}
+
+///|
+pub fn LayoutOptionData::set_choices(
+  self : LayoutOptionData,
+  choices : Array[String],
+) -> Unit {
+  self.choices = choices
+}
+
+///|
+pub fn LayoutOptionData::add_choice(
+  self : LayoutOptionData,
+  choice : String,
+) -> Unit {
+  self.choices.push(choice)
+}
+
+///|
+pub fn LayoutOptionData::get_choices(self : LayoutOptionData) -> Array[String] {
+  self.choices
+}
+
+///|
+pub fn LayoutOptionData::get_enum_value_count(self : LayoutOptionData) -> Int {
+  self.choices.length()
+}
+
+///|
+pub fn LayoutOptionData::get_enum_value(
+  self : LayoutOptionData,
+  index : Int,
+) -> String {
+  self.choices[index]
+}
+
+///|
+pub fn LayoutOptionData::add_dependency(
+  self : LayoutOptionData,
+  option_id : String,
+  expected_value? : String? = None,
+) -> Unit {
+  self.dependencies.push(
+    new_layout_option_dependency(option_id, expected_value~),
+  )
+}
+
+///|
+pub fn LayoutOptionData::get_dependencies(
+  self : LayoutOptionData,
+) -> Array[LayoutOptionDependency] {
+  self.dependencies
+}
+
+///|
+pub fn LayoutOptionData::mark_advanced_choice(
+  self : LayoutOptionData,
+  choice : String,
+) -> Unit {
+  self.advanced_choices.push(choice)
+}
+
+///|
+pub fn LayoutOptionData::mark_experimental_choice(
+  self : LayoutOptionData,
+  choice : String,
+) -> Unit {
+  self.experimental_choices.push(choice)
+}
+
+///|
+fn layout_option_data_contains(values : Array[String], target : String) -> Bool {
+  for value in values {
+    if value == target {
+      return true
+    }
+  }
+  false
+}
+
+///|
+pub fn LayoutOptionData::is_advanced_choice(
+  self : LayoutOptionData,
+  choice : String,
+) -> Bool {
+  layout_option_data_contains(self.advanced_choices, choice)
+}
+
+///|
+pub fn LayoutOptionData::is_experimental_choice(
+  self : LayoutOptionData,
+  choice : String,
+) -> Bool {
+  layout_option_data_contains(self.experimental_choices, choice)
+}
+
+///|
+fn parse_bool_text(value : String) -> Bool? {
+  let normalized = value.trim().to_lower()
+  if normalized == "true" || normalized == "1" || normalized == "yes" {
+    Some(true)
+  } else if normalized == "false" || normalized == "0" || normalized == "no" {
+    Some(false)
+  } else {
+    None
+  }
+}
+
+///|
+fn split_enumset_values(value : String) -> Array[String] {
+  let normalized = value.replace(old=",", new=" ")
+  let result : Array[String] = []
+  for part in normalized.split(" ") {
+    let trimmed = part.trim()
+    if !trimmed.is_empty() {
+      result.push(trimmed.to_string())
+    }
+  }
+  result
+}
+
+///|
+pub fn LayoutOptionData::parse_value(
+  self : LayoutOptionData,
+  value : String,
+) -> String {
+  match self.option_type {
+    BoolType =>
+      match parse_bool_text(value) {
+        Some(parsed) => if parsed { "true" } else { "false" }
+        None => value
+      }
+    IntType => {
+      let parsed : Result[Int, @strconv.StrConvError] = try? @strconv.parse_int(
+        value.trim(),
+      )
+      match parsed {
+        Ok(parsed) => parsed.to_string()
+        Err(_) => value
+      }
+    }
+    DoubleType => {
+      let parsed : Result[Double, @strconv.StrConvError] = try? @strconv.parse_double(
+        value.trim(),
+      )
+      match parsed {
+        Ok(parsed) => parsed.to_string()
+        Err(_) => value
+      }
+    }
+    EnumSetType => split_enumset_values(value).join(" ")
+    _ => value
+  }
 }
