@@ -1,2 +1,7 @@
-// Upstream counterpart: alg_layered_graph_l_padding.mbt
-// Implementation is currently provided in aggregated translated files.
+///|
+pub type LPadding = ElkPadding
+
+///|
+pub fn new_l_padding() -> LPadding {
+  new_elk_padding()
+}

@@ -2404,6 +2404,16 @@ pub let interactive : IProperty[Bool]
 
 pub fn interactive_mrtree_graph_visitor_set_interactive_options(Int) -> Unit
 
+pub let internal_properties_ext_port_connections : IProperty[Array[PortSide]]
+
+pub let internal_properties_is_part_of_cycle : IProperty[Bool]
+
+pub let internal_properties_tarjan_id : IProperty[Int]
+
+pub let internal_properties_tarjan_lowlink : IProperty[Int]
+
+pub let internal_properties_tarjan_on_stack : IProperty[Bool]
+
 pub fn intersects2(KVector, KVector, KVector, KVector) -> KVector?
 
 pub fn intersects_line(KVector, KVector, KVector, KVector) -> Bool
@@ -3153,6 +3163,10 @@ pub fn new_clear_execution_action(AbstractLayoutDebugView) -> ClearExecutionActi
 pub fn new_clear_executions_action() -> ClearExecutionsAction
 
 pub fn new_collapse_execution_tree_action(AbstractLayoutDebugView) -> CollapseExecutionTreeAction
+
+pub fn new_component_group() -> ComponentGroup
+
+pub fn new_component_group_with_component(LGraph) -> ComponentGroup
 
 pub fn new_components_processor() -> ComponentsProcessor
 
@@ -3989,6 +4003,12 @@ pub fn new_kvector_chain_from_array(Array[KVector]) -> KVectorChain
 pub fn new_kvector_copy(KVector) -> KVector
 
 pub fn new_kvector_xy(Double, Double) -> KVector
+
+pub fn new_l_graph() -> LGraph
+
+pub fn new_l_margin() -> Spacing
+
+pub fn new_l_padding() -> Spacing
 
 pub fn new_layout_algorithm_data(String, name? : String, description? : String, validator? : ((Int) -> Array[GraphIssue])?, category_id? : String, bundle_name? : String, preview_image_path? : String, defining_bundle_id? : String, instance_pool_clear_fn? : () -> Unit) -> LayoutAlgorithmData
 
@@ -6477,6 +6497,15 @@ pub enum Command {
 pub enum CompactionStrategy {
   Polyomino
 }
+
+pub struct ComponentGroup {
+  components : Map[Int, Array[LGraph]]
+}
+pub fn ComponentGroup::add(Self, LGraph) -> Bool
+pub fn ComponentGroup::can_add(Self, LGraph) -> Bool
+pub fn ComponentGroup::get_components(Self) -> Array[LGraph]
+pub fn ComponentGroup::get_components_with_connections(Self, Array[PortSide]) -> Array[LGraph]
+pub fn ComponentGroup::get_port_sides(Self) -> Array[Array[PortSide]]
 
 pub struct ComponentsProcessor {
   _dummy : Unit
@@ -11041,6 +11070,21 @@ pub fn KVectorChain::to_array_from(Self, Int) -> Array[KVector]
 pub fn KVectorChain::to_string(Self) -> String
 pub fn KVectorChain::total_length(Self) -> Double
 
+pub struct LGraph {
+  mut id : Int
+  port_side_array_properties : Map[String, Array[PortSide]]
+  int_properties : Map[String, Int]
+  bool_properties : Map[String, Bool]
+}
+pub fn LGraph::get_id(Self) -> Int
+pub fn LGraph::get_property_bool(Self, IProperty[Bool]) -> Bool
+pub fn LGraph::get_property_int(Self, IProperty[Int]) -> Int
+pub fn LGraph::get_property_port_side_array(Self, IProperty[Array[PortSide]]) -> Array[PortSide]
+pub fn LGraph::set_id(Self, Int) -> Unit
+pub fn LGraph::set_property_bool(Self, IProperty[Bool], Bool) -> Unit
+pub fn LGraph::set_property_int(Self, IProperty[Int], Int) -> Unit
+pub fn LGraph::set_property_port_side_array(Self, IProperty[Array[PortSide]], Array[PortSide]) -> Unit
+
 pub enum LabelSide {
   Unknown
   Above
@@ -12853,6 +12897,8 @@ pub enum SizeOptions {
 
 #alias(ElkMargin)
 #alias(ElkPadding)
+#alias(LMargin)
+#alias(LPadding)
 pub struct Spacing {
   mut top : Double
   mut bottom : Double
