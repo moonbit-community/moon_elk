@@ -2478,6 +2478,18 @@ pub fn label_x(Int) -> Double
 
 pub fn label_y(Int) -> Double
 
+pub fn layered_compare_fuzzy_eq(Double, Double) -> Bool
+
+pub fn layered_compare_fuzzy_ge(Double, Double) -> Bool
+
+pub fn layered_compare_fuzzy_gt(Double, Double) -> Bool
+
+pub fn layered_compare_fuzzy_le(Double, Double) -> Bool
+
+pub fn layered_compare_fuzzy_lt(Double, Double) -> Bool
+
+pub let layered_compare_fuzzy_tolerance : Double
+
 pub fn layout_algorithm_data_to_json(LayoutAlgorithmData) -> Json
 
 pub fn layout_category_data_to_json(LayoutCategoryData) -> Json
@@ -4025,6 +4037,10 @@ pub fn new_l_margin() -> Spacing
 pub fn new_l_padding() -> Spacing
 
 pub fn new_l_shape() -> LShape
+
+pub fn new_layered_quadruplet() -> LayeredQuadruplet
+
+pub fn new_layered_quadruplet_with_values(Bool, Bool, Bool, Bool) -> LayeredQuadruplet
 
 pub fn new_layout_algorithm_data(String, name? : String, description? : String, validator? : ((Int) -> Array[GraphIssue])?, category_id? : String, bundle_name? : String, preview_image_path? : String, defining_bundle_id? : String, instance_pool_clear_fn? : () -> Unit) -> LayoutAlgorithmData
 
@@ -11268,6 +11284,16 @@ pub enum LayerUnzippingStrategy {
   NoneType
   Alternating
 }
+
+pub struct LayeredQuadruplet {
+  mut left : Bool
+  mut right : Bool
+  mut up : Bool
+  mut down : Bool
+}
+pub fn LayeredQuadruplet::get(Self, Direction) -> Bool
+pub fn LayeredQuadruplet::set_for_direction(Self, Bool, Direction) -> Unit
+pub fn LayeredQuadruplet::set_values(Self, Bool, Bool, Bool, Bool) -> Unit
 
 pub struct LayoutAlgorithmData {
   id : String
