@@ -2584,6 +2584,8 @@ pub fn layered_one_dimensional_compactor_quadratic_constraints(OneDimensionalCom
 
 pub fn layered_one_dimensional_compactor_scanline_constraints(OneDimensionalCompactor) -> Unit
 
+pub let layered_options_crossing_minimization_hierarchical_sweepiness : IProperty[Double]
+
 pub fn layered_phase_values() -> Array[String]
 
 pub fn layered_phases_to_string(LayeredPhases) -> String
@@ -3892,7 +3894,7 @@ pub fn new_graph_from_file(AbstractResourcePath) -> GraphFromFile
 
 pub fn[T] new_graph_from_method(String, (T) -> Int) -> GraphFromMethod[T]
 
-pub fn new_graph_info_holder(Array[Array[LNode]], parent? : LNode?, parent_graph_data? : GraphInfoHolder?, dont_sweep_into? : Bool, port_positions? : Array[Int]) -> GraphInfoHolder
+pub fn new_graph_info_holder(Array[Array[LNode]], parent? : LNode?, parent_graph_data? : GraphInfoHolder?, dont_sweep_into? : Bool, port_positions? : Array[Int], l_graph? : LGraph?, cross_min_deterministic? : Bool) -> GraphInfoHolder
 
 pub fn new_graph_issue_edge(Int, String, Int) -> GraphIssue
 
@@ -4230,6 +4232,10 @@ pub fn new_label_cell_with_node_label_location(Double, NodeLabelLocation) -> Cel
 
 pub fn new_layer(LGraph) -> Layer
 
+pub fn new_layer_sweep_type_decider(GraphInfoHolder) -> LayerSweepTypeDecider
+
+pub fn new_layer_sweep_type_decider_node_info() -> LayerSweepTypeDeciderNodeInfo
+
 pub fn new_layer_total_port_distributor(Int) -> LayerTotalPortDistributor
 
 pub fn new_layered_abstract_graph_placer() -> LayeredAbstractGraphPlacer
@@ -4421,6 +4427,8 @@ pub fn new_meta_data_ui_module(plugin_id? : String) -> MetaDataUiModule
 pub fn new_meta_data_validator(base? : AbstractMetaDataValidator) -> MetaDataValidator
 
 pub fn[T] new_method_test_configuration(String, (T, Int) -> Unit, default_configuration? : DefaultConfiguration?) -> MethodTestConfiguration[T]
+
+pub fn new_mock_random() -> GreedySwitchMockRandom
 
 pub fn new_model_order_component_group() -> ModelOrderComponentGroup
 
@@ -4717,6 +4725,8 @@ pub fn[T] new_test_configuration(default_configuration? : DefaultConfiguration?,
 pub fn[G] new_test_controller(String) -> TestController[G]
 
 pub fn[T] new_test_graph((T) -> Int, String) -> TestGraph[T]
+
+pub fn new_test_graph_creator() -> GreedySwitchTestGraphCreator
 
 pub fn new_test_method_signature(String, Bool, String, Array[String], annotations? : Array[String]) -> TestMethodSignature
 
@@ -10103,16 +10113,22 @@ pub struct GraphInfoHolder {
   mut use_bottom_up : Bool
   mut parent_ref : LNode?
   mut parent_graph_data_ref : GraphInfoHolder?
+  mut l_graph_ref : LGraph?
+  mut cross_min_deterministic_ref : Bool
 }
+pub fn GraphInfoHolder::cross_min_deterministic(Self) -> Bool
 pub fn GraphInfoHolder::current_node_order(Self) -> Array[Array[LNode]]
 pub fn GraphInfoHolder::dont_sweep_into(Self) -> Bool
 pub fn GraphInfoHolder::has_parent(Self) -> Bool
+pub fn GraphInfoHolder::l_graph(Self) -> LGraph
 pub fn GraphInfoHolder::parent(Self) -> LNode
 pub fn GraphInfoHolder::parent_graph_data(Self) -> Self
 pub fn GraphInfoHolder::parent_layer_id(Self) -> Int
 pub fn GraphInfoHolder::port_positions(Self) -> Array[Int]
+pub fn GraphInfoHolder::set_cross_min_deterministic(Self, Bool) -> Unit
 pub fn GraphInfoHolder::set_current_node_order(Self, Array[Array[LNode]]) -> Unit
 pub fn GraphInfoHolder::set_dont_sweep_into(Self, Bool) -> Unit
+pub fn GraphInfoHolder::set_l_graph(Self, LGraph?) -> Unit
 pub fn GraphInfoHolder::set_parent(Self, LNode?) -> Unit
 pub fn GraphInfoHolder::set_parent_graph_data(Self, Self?) -> Unit
 pub fn GraphInfoHolder::set_port_positions(Self, Array[Int]) -> Unit
@@ -11108,6 +11124,7 @@ pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_with_fixed_po
 pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_one_layer_no_crossings(Self) -> LGraph
 pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_one_layer_with_in_layer_crossings(Self) -> LGraph
 
+#alias(MockRandom)
 pub struct GreedySwitchMockRandom {
   mut current : Float
   mut change_by : Double
@@ -11155,6 +11172,7 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_southern_two_dummy_edge_a
 pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_three_layer_north_south_crossing_graph(Self) -> LGraph
 pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_three_layer_north_south_crossing_should_switch_graph(Self) -> LGraph
 
+#alias(TestGraphCreator)
 pub struct GreedySwitchTestGraphCreator {
   mut port_id : Int
   mut node_id : Int
@@ -11220,6 +11238,7 @@ pub fn GreedySwitchTestGraphCreator::set_as_long_edge_dummy(Self, LNode) -> Unit
 pub fn GreedySwitchTestGraphCreator::set_as_north_south_node(Self, LNode) -> Unit
 pub fn GreedySwitchTestGraphCreator::set_fixed_order_constraint(Self, LNode) -> Unit
 pub fn GreedySwitchTestGraphCreator::set_fixed_order_constraint_on_nodes(Self, Array[LNode]) -> Unit
+pub fn GreedySwitchTestGraphCreator::set_graph(Self, LGraph) -> LGraph
 pub fn GreedySwitchTestGraphCreator::set_in_layer_order_constraint(Self, LNode, LNode) -> Unit
 pub fn GreedySwitchTestGraphCreator::set_port_order_fixed(Self, LNode) -> Unit
 pub fn GreedySwitchTestGraphCreator::set_random(Self, GreedySwitchMockRandom) -> Unit
@@ -12253,6 +12272,22 @@ pub enum LayerConstraint {
   Last
   LastSeparate
 }
+
+pub struct LayerSweepTypeDecider {
+  node_info : Array[Array[LayerSweepTypeDeciderNodeInfo]]
+  graph_data : GraphInfoHolder
+}
+pub fn LayerSweepTypeDecider::as_initializable(Self) -> IInitializable
+pub fn LayerSweepTypeDecider::init_at_layer_level(Self, Int, Array[Array[LNode]]) -> Unit
+pub fn LayerSweepTypeDecider::init_at_node_level(Self, Int, Int, Array[Array[LNode]]) -> Unit
+pub fn LayerSweepTypeDecider::use_bottom_up(Self) -> Bool
+
+pub struct LayerSweepTypeDeciderNodeInfo {
+  mut connected_edges : Int
+  mut hierarchical_influence : Int
+  mut random_influence : Int
+}
+pub fn LayerSweepTypeDeciderNodeInfo::transfer(Self, Self) -> Unit
 
 pub struct LayerTotalPortDistributor {
   distributor : AbstractBarycenterPortDistributor

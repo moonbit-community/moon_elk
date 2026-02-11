@@ -24,6 +24,8 @@ pub struct GraphInfoHolder {
   mut use_bottom_up : Bool
   mut parent_ref : LNode?
   mut parent_graph_data_ref : GraphInfoHolder?
+  mut l_graph_ref : LGraph?
+  mut cross_min_deterministic_ref : Bool
 }
 
 ///|
@@ -33,6 +35,8 @@ pub fn new_graph_info_holder(
   parent_graph_data? : GraphInfoHolder? = None,
   dont_sweep_into? : Bool = false,
   port_positions? : Array[Int] = [],
+  l_graph? : LGraph? = None,
+  cross_min_deterministic? : Bool = false,
 ) -> GraphInfoHolder {
   let actual_port_positions = if port_positions.length() == 0 {
     Array::make(graph_info_count_ports(current_node_order), 0)
@@ -45,6 +49,8 @@ pub fn new_graph_info_holder(
     use_bottom_up: dont_sweep_into,
     parent_ref: parent,
     parent_graph_data_ref: parent_graph_data,
+    l_graph_ref: l_graph,
+    cross_min_deterministic_ref: cross_min_deterministic,
   }
 }
 
@@ -129,6 +135,35 @@ pub fn GraphInfoHolder::set_parent_graph_data(
   parent_graph_data : GraphInfoHolder?,
 ) -> Unit {
   self.parent_graph_data_ref = parent_graph_data
+}
+
+///|
+pub fn GraphInfoHolder::l_graph(self : GraphInfoHolder) -> LGraph {
+  match self.l_graph_ref {
+    Some(graph) => graph
+    None => abort("graph info holder has no graph")
+  }
+}
+
+///|
+pub fn GraphInfoHolder::set_l_graph(
+  self : GraphInfoHolder,
+  graph : LGraph?,
+) -> Unit {
+  self.l_graph_ref = graph
+}
+
+///|
+pub fn GraphInfoHolder::cross_min_deterministic(self : GraphInfoHolder) -> Bool {
+  self.cross_min_deterministic_ref
+}
+
+///|
+pub fn GraphInfoHolder::set_cross_min_deterministic(
+  self : GraphInfoHolder,
+  deterministic : Bool,
+) -> Unit {
+  self.cross_min_deterministic_ref = deterministic
 }
 
 ///|

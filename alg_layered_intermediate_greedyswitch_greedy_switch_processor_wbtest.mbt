@@ -32,8 +32,161 @@ fn greedy_switch_processor_test_assert_layer_order(
   let actual_handles = greedy_switch_processor_test_node_handles(actual)
   let expected_handles = greedy_switch_processor_test_node_handles(expected)
   if actual_handles != expected_handles {
-    abort("unexpected layer order")
+    abort(
+      "unexpected layer order actual=" +
+      actual_handles.to_string() +
+      " expected=" +
+      expected_handles.to_string(),
+    )
   }
+}
+
+///|
+struct GreedySwitchProcessorSweepSnapshot {
+  node_order : Array[Array[LNode]]
+  port_orders : Array[Array[Array[LPort]]]
+}
+
+///|
+fn greedy_switch_processor_test_take_snapshot(
+  node_order : Array[Array[LNode]],
+) -> GreedySwitchProcessorSweepSnapshot {
+  let snapshot_node_order = []
+  let snapshot_port_orders = []
+  for layer in node_order {
+    let snapshot_layer_nodes = []
+    let snapshot_layer_ports = []
+    for node in layer {
+      snapshot_layer_nodes.push(node)
+      snapshot_layer_ports.push(node.get_ports().copy())
+    }
+    snapshot_node_order.push(snapshot_layer_nodes)
+    snapshot_port_orders.push(snapshot_layer_ports)
+  }
+  { node_order: snapshot_node_order, port_orders: snapshot_port_orders }
+}
+
+///|
+fn greedy_switch_processor_test_restore_snapshot(
+  node_order : Array[Array[LNode]],
+  snapshot : GreedySwitchProcessorSweepSnapshot,
+) -> Unit {
+  for layer_index in 0..<node_order.length() {
+    let live_layer = node_order[layer_index]
+    let snapshot_layer = snapshot.node_order[layer_index]
+    for node_index in 0..<live_layer.length() {
+      live_layer[node_index] = snapshot_layer[node_index]
+    }
+
+    let snapshot_layer_ports = snapshot.port_orders[layer_index]
+    for node_index in 0..<snapshot_layer.length() {
+      let node = snapshot_layer[node_index]
+      let ports = node.get_ports()
+      ports.clear()
+      for port in snapshot_layer_ports[node_index] {
+        ports.push(port)
+      }
+    }
+  }
+}
+
+///|
+fn greedy_switch_processor_test_transfer_node_order_to_graph(
+  graph : LGraph,
+  node_order : Array[Array[LNode]],
+) -> Unit {
+  let layers = graph.get_layers()
+  for layer_index in 0..<layers.length() {
+    let layer_nodes = layers[layer_index].get_nodes()
+    for node_index in 0..<layer_nodes.length() {
+      layer_nodes[node_index] = node_order[layer_index][node_index]
+    }
+  }
+}
+
+///|
+fn greedy_switch_processor_test_first_index(
+  is_forward_sweep : Bool,
+  length : Int,
+) -> Int {
+  if is_forward_sweep {
+    0
+  } else {
+    length - 1
+  }
+}
+
+///|
+fn greedy_switch_processor_test_first_free(
+  is_forward_sweep : Bool,
+  length : Int,
+) -> Int {
+  if is_forward_sweep {
+    1
+  } else {
+    length - 2
+  }
+}
+
+///|
+fn greedy_switch_processor_test_next(is_forward_sweep : Bool) -> Int {
+  if is_forward_sweep {
+    1
+  } else {
+    -1
+  }
+}
+
+///|
+fn greedy_switch_processor_test_is_not_end(
+  length : Int,
+  free_layer_index : Int,
+  is_forward_sweep : Bool,
+) -> Bool {
+  if is_forward_sweep {
+    free_layer_index < length
+  } else {
+    free_layer_index >= 0
+  }
+}
+
+///|
+fn greedy_switch_processor_test_sweep_reducing_crossings(
+  node_order : Array[Array[LNode]],
+  heuristic : GreedySwitchHeuristic,
+  port_distributor : ISweepPortDistributor,
+  is_forward_sweep : Bool,
+  is_first_sweep : Bool,
+) -> Bool {
+  let length = node_order.length()
+  if length <= 1 {
+    return false
+  }
+
+  let mut improved = port_distributor.distribute_ports_while_sweeping(
+    node_order,
+    greedy_switch_processor_test_first_index(is_forward_sweep, length),
+    is_forward_sweep,
+  )
+
+  let mut free_layer_index = greedy_switch_processor_test_first_free(
+    is_forward_sweep, length,
+  )
+  while greedy_switch_processor_test_is_not_end(
+          length, free_layer_index, is_forward_sweep,
+        ) {
+    improved = heuristic.minimize_crossings(
+        node_order, free_layer_index, is_forward_sweep, is_first_sweep,
+      ) ||
+      improved
+    improved = port_distributor.distribute_ports_while_sweeping(
+        node_order, free_layer_index, is_forward_sweep,
+      ) ||
+      improved
+    free_layer_index = free_layer_index +
+      greedy_switch_processor_test_next(is_forward_sweep)
+  }
+  improved
 }
 
 ///|
@@ -41,63 +194,83 @@ fn greedy_switch_processor_test_start_greedy_switcher(
   creator : GreedySwitchTestGraphCreator,
   greedy_type : GreedySwitchType,
 ) -> Unit {
-  let node_order = creator.get_current_order(creator.get_graph())
+  let graph = creator.get_graph()
+  let node_order = creator.get_current_order(graph)
   let graph_data = new_graph_info_holder(node_order)
   let heuristic = new_greedy_switch_heuristic(greedy_type, graph_data)
-  i_initializable_init([heuristic.as_initializable()], node_order)
+  let port_distributor = new_greedy_port_distributor().as_i_sweep_port_distributor()
+  let all_crossings_counter = new_all_crossings_counter(node_order)
+  i_initializable_init(
+    [
+      port_distributor.as_initializable(),
+      heuristic.as_initializable(),
+      all_crossings_counter.as_initializable(),
+    ],
+    node_order,
+  )
 
   if node_order.length() <= 1 {
     return
   }
 
-  let mut is_forward_sweep = true
-  let mut improved = true
-  let mut rounds = 0
-  while improved && rounds < 8 {
-    improved = false
-    improved = heuristic.set_first_layer_order(node_order, is_forward_sweep) ||
-      improved
+  let mut is_forward_sweep = creator.get_random().next_boolean()
+  if !greedy_switch_processor_test_is_one_sided(greedy_type) {
+    let mut improved = true
+    while improved {
+      improved = false
+      improved = heuristic.set_first_layer_order(node_order, is_forward_sweep) ||
+        improved
+      improved = greedy_switch_processor_test_sweep_reducing_crossings(
+          node_order, heuristic, port_distributor, is_forward_sweep, false,
+        ) ||
+        improved
+      is_forward_sweep = !is_forward_sweep
+    }
+    greedy_switch_processor_test_transfer_node_order_to_graph(graph, node_order)
+    return
+  }
 
-    if is_forward_sweep {
-      for free_layer_index in 1..<node_order.length() {
-        improved = heuristic.minimize_crossings(
-            node_order,
-            free_layer_index,
-            true,
-            rounds == 0,
-          ) ||
-          improved
-      }
-    } else {
-      let mut free_layer_index = node_order.length() - 2
-      while true {
-        improved = heuristic.minimize_crossings(
-            node_order,
-            free_layer_index,
-            false,
-            rounds == 0,
-          ) ||
-          improved
-        if free_layer_index == 0 {
-          break
-        }
-        free_layer_index = free_layer_index - 1
-      }
+  ignore(heuristic.set_first_layer_order(node_order, is_forward_sweep))
+  ignore(
+    greedy_switch_processor_test_sweep_reducing_crossings(
+      node_order, heuristic, port_distributor, is_forward_sweep, true,
+    ),
+  )
+
+  let mut crossings_in_graph = all_crossings_counter.count_all_crossings(
+    node_order,
+  )
+  while true {
+    if crossings_in_graph == 0 {
+      greedy_switch_processor_test_transfer_node_order_to_graph(
+        graph, node_order,
+      )
+      return
     }
 
-    if greedy_switch_processor_test_is_one_sided(greedy_type) {
-      // One-sided mode in ELK uses counters and can stop without full oscillation.
-      if !improved || rounds > 1 {
-        break
-      }
-    }
-    rounds = rounds + 1
     is_forward_sweep = !is_forward_sweep
+    let best_snapshot = greedy_switch_processor_test_take_snapshot(node_order)
+    let old_crossings = crossings_in_graph
+
+    ignore(
+      greedy_switch_processor_test_sweep_reducing_crossings(
+        node_order, heuristic, port_distributor, is_forward_sweep, false,
+      ),
+    )
+    crossings_in_graph = all_crossings_counter.count_all_crossings(node_order)
+
+    if old_crossings <= crossings_in_graph {
+      greedy_switch_processor_test_restore_snapshot(node_order, best_snapshot)
+      greedy_switch_processor_test_transfer_node_order_to_graph(
+        graph, node_order,
+      )
+      return
+    }
   }
 }
 
 ///|
-fn greedy_switch_processor_pending_should_switch_cross() -> Unit {
+test "GreedySwitchProcessor should_switch_cross" {
   for greedy_type in greedy_switch_processor_test_types() {
     let creator = new_greedy_switch_test_graph_creator()
     ignore(creator.get_cross_formed_graph())
@@ -130,7 +303,7 @@ fn greedy_switch_processor_pending_should_switch_cross() -> Unit {
 }
 
 ///|
-fn greedy_switch_processor_pending_constraints_prevent_switch_in_second_layer() -> Unit {
+test "GreedySwitchProcessor constraints_prevent_switch_in_second_layer" {
   for greedy_type in greedy_switch_processor_test_types() {
     let creator = new_greedy_switch_test_graph_creator()
     ignore(creator.get_cross_formed_graph_with_constraints_in_second_layer())
@@ -203,7 +376,7 @@ test "GreedySwitchProcessor one_node" {
 }
 
 ///|
-fn greedy_switch_processor_pending_in_layer_switchable() -> Unit {
+test "GreedySwitchProcessor in_layer_switchable" {
   for greedy_type in greedy_switch_processor_test_types() {
     let creator = new_greedy_switch_test_graph_creator()
     ignore(creator.get_in_layer_edges_graph())
@@ -220,7 +393,7 @@ fn greedy_switch_processor_pending_in_layer_switchable() -> Unit {
 }
 
 ///|
-fn greedy_switch_processor_pending_multiple_edges_between_same_nodes() -> Unit {
+test "GreedySwitchProcessor multiple_edges_between_same_nodes" {
   for greedy_type in greedy_switch_processor_test_types() {
     let creator = new_greedy_switch_test_graph_creator()
     ignore(creator.get_multiple_edges_between_same_nodes_graph())
@@ -253,7 +426,7 @@ fn greedy_switch_processor_pending_multiple_edges_between_same_nodes() -> Unit {
 }
 
 ///|
-fn greedy_switch_processor_pending_self_loops() -> Unit {
+test "GreedySwitchProcessor self_loops" {
   for greedy_type in greedy_switch_processor_test_types() {
     let creator = new_greedy_switch_test_graph_creator()
 
@@ -318,11 +491,11 @@ fn greedy_switch_processor_pending_self_loops() -> Unit {
 }
 
 ///|
-fn greedy_switch_processor_pending_north_south_port_crossing() -> Unit {
+test "GreedySwitchProcessor north_south_port_crossing" {
   for greedy_type in greedy_switch_processor_test_types() {
     let creator = new_greedy_switch_test_graph_creator()
     let graph = new_greedy_switch_north_south_edge_test_graph_creator().get_north_south_downward_crossing_graph()
-    ignore(creator.set_up_graph(graph))
+    ignore(creator.set_graph(graph))
 
     let layer_index = 0
     let expected_order_two_sided = creator.copy_of_nodes_in_layer(layer_index)
@@ -347,7 +520,7 @@ fn greedy_switch_processor_pending_north_south_port_crossing() -> Unit {
 }
 
 ///|
-fn greedy_switch_processor_pending_more_complex() -> Unit {
+test "GreedySwitchProcessor more_complex" {
   for greedy_type in greedy_switch_processor_test_types() {
     let creator = new_greedy_switch_test_graph_creator()
     ignore(creator.get_more_complex_three_layer_graph())
@@ -371,7 +544,7 @@ fn greedy_switch_processor_pending_more_complex() -> Unit {
 }
 
 ///|
-fn greedy_switch_processor_pending_switch_only_for_one_sided() -> Unit {
+test "GreedySwitchProcessor switch_only_for_one_sided" {
   for greedy_type in greedy_switch_processor_test_types() {
     let creator = new_greedy_switch_test_graph_creator()
     ignore(creator.get_switch_only_one_sided())
@@ -421,7 +594,7 @@ test "GreedySwitchProcessor does_not_worsen_cross_amount" {
 }
 
 ///|
-fn greedy_switch_processor_pending_switch_more_than_once() -> Unit {
+test "GreedySwitchProcessor switch_more_than_once" {
   for greedy_type in greedy_switch_processor_test_types() {
     let creator = new_greedy_switch_test_graph_creator()
     let left_nodes = creator.add_nodes_to_layer(

@@ -142,6 +142,15 @@ pub fn GreedySwitchTestGraphCreator::get_graph(
 }
 
 ///|
+pub fn GreedySwitchTestGraphCreator::set_graph(
+  self : GreedySwitchTestGraphCreator,
+  graph : LGraph,
+) -> LGraph {
+  self.graph = graph
+  self.set_up_graph(self.graph)
+}
+
+///|
 pub fn GreedySwitchTestGraphCreator::set_up_graph(
   self : GreedySwitchTestGraphCreator,
   graph : LGraph,
