@@ -1,5 +1,5 @@
 ///|
-pub enum VerticalLabelAlignment {
+pub(all) enum VerticalLabelAlignment {
   Top
   Center
   Bottom

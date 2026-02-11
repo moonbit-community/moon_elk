@@ -1,5 +1,5 @@
 ///|
-pub enum HorizontalLabelAlignment {
+pub(all) enum HorizontalLabelAlignment {
   Left
   Center
   Right

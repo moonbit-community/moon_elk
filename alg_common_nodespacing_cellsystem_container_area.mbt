@@ -1,5 +1,5 @@
 ///|
-pub enum ContainerArea {
+pub(all) enum ContainerArea {
   Begin
   Center
   End
