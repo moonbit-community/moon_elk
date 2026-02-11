@@ -1,0 +1,474 @@
+///|
+pub let graph_json_text_disco_layout_alg_id : String = "org.eclipse.elk.disco.componentCompaction.componentLayoutAlgorithm"
+
+///|
+fn graph_json_text_disabled_keyword(keyword : String) -> Bool {
+  keyword == "}" || keyword == "]"
+}
+
+///|
+pub struct GraphJsonTextIdeContentAssistEntry {
+  proposal : String
+  prefix : String
+  kind : String
+  label : String?
+  description : String?
+  documentation : String?
+  source : String?
+}
+
+///|
+pub fn new_graph_json_text_ide_content_assist_entry(
+  proposal : String,
+  prefix : String,
+  kind : String,
+  label? : String? = None,
+  description? : String? = None,
+  documentation? : String? = None,
+  source? : String? = None,
+) -> GraphJsonTextIdeContentAssistEntry {
+  { proposal, prefix, kind, label, description, documentation, source }
+}
+
+///|
+pub struct GraphJsonTextIdeCompletionProposalAcceptor {
+  entries : Array[GraphJsonTextIdeContentAssistEntry]
+}
+
+///|
+pub fn new_graph_json_text_ide_completion_proposal_acceptor() -> GraphJsonTextIdeCompletionProposalAcceptor {
+  { entries: [] }
+}
+
+///|
+pub fn GraphJsonTextIdeCompletionProposalAcceptor::accept(
+  self : GraphJsonTextIdeCompletionProposalAcceptor,
+  entry : GraphJsonTextIdeContentAssistEntry,
+) -> Unit {
+  self.entries.push(entry)
+}
+
+///|
+pub fn GraphJsonTextIdeCompletionProposalAcceptor::get_entries(
+  self : GraphJsonTextIdeCompletionProposalAcceptor,
+) -> Array[GraphJsonTextIdeContentAssistEntry] {
+  self.entries
+}
+
+///|
+pub fn GraphJsonTextIdeCompletionProposalAcceptor::get_proposals(
+  self : GraphJsonTextIdeCompletionProposalAcceptor,
+) -> Array[String] {
+  let result : Array[String] = []
+  for entry in self.entries {
+    result.push(entry.proposal)
+  }
+  result
+}
+
+///|
+pub struct GraphJsonTextIdeContentAssistContext {
+  prefix : String
+  current_model : GraphJsonTextElement?
+  current_property_key : GraphJsonTextPropertyKey?
+  current_edge_section : ElkEdgeSection?
+  conflict_on_a : Bool
+}
+
+///|
+pub fn new_graph_json_text_ide_content_assist_context(
+  prefix? : String = "",
+  current_model? : GraphJsonTextElement? = None,
+  current_property_key? : GraphJsonTextPropertyKey? = None,
+  current_edge_section? : ElkEdgeSection? = None,
+  conflict_on_a? : Bool = false,
+) -> GraphJsonTextIdeContentAssistContext {
+  {
+    prefix,
+    current_model,
+    current_property_key,
+    current_edge_section,
+    conflict_on_a,
+  }
+}
+
+///|
+fn graph_json_text_ide_option_description(
+  option_data : LayoutOptionData,
+) -> String {
+  option_data.get_name() + " (" + option_data.get_id() + ")"
+}
+
+///|
+fn graph_json_text_ide_quote_property_key(text : String) -> String {
+  if text.has_prefix("\"") && text.has_suffix("\"") {
+    text
+  } else {
+    "\"" + text + "\""
+  }
+}
+
+///|
+fn graph_json_text_ide_algorithm_description(
+  algorithm_data : LayoutAlgorithmData,
+) -> String {
+  algorithm_data.get_name() + " (" + algorithm_data.get_id() + ")"
+}
+
+///|
+fn graph_json_text_ide_layout_option_proposals_for_element(
+  element : GraphJsonTextElement,
+  prefix : String,
+) -> Array[LayoutDataProposal[LayoutOptionData]] {
+  match element {
+    GraphJsonTextNode(node) =>
+      layout_data_content_assist_get_layout_option_proposals(node, prefix)
+    GraphJsonTextEdge(edge) =>
+      layout_data_content_assist_get_layout_option_proposals_for_edge(
+        edge, prefix,
+      )
+    GraphJsonTextPort(port) =>
+      layout_data_content_assist_get_layout_option_proposals_for_port(
+        port, prefix,
+      )
+    GraphJsonTextLabel(label) =>
+      layout_data_content_assist_get_layout_option_proposals_for_label(
+        label, prefix,
+      )
+  }
+}
+
+///|
+fn graph_json_text_ide_shape_equals(
+  left : ElkConnectableShape,
+  right : ElkConnectableShape,
+) -> Bool {
+  match (left, right) {
+    (NodeShape(left_node), NodeShape(right_node)) => left_node == right_node
+    (PortShape(left_port), PortShape(right_port)) => left_port == right_port
+    _ => false
+  }
+}
+
+///|
+fn graph_json_text_ide_shape_in_list(
+  shape : ElkConnectableShape,
+  values : Array[ElkConnectableShape],
+) -> Bool {
+  for value in values {
+    if graph_json_text_ide_shape_equals(shape, value) {
+      return true
+    }
+  }
+  false
+}
+
+///|
+fn graph_json_text_ide_find_parent_edge(section : ElkEdgeSection) -> ElkEdge? {
+  for edge in all_edges() {
+    for existing in edge_sections(edge) {
+      if existing == section {
+        return Some(edge)
+      }
+    }
+  }
+  None
+}
+
+///|
+pub struct ElkGraphJsonIdeProposalProvider {
+  grammar : ElkGraphJsonGrammarAccess
+}
+
+///|
+pub fn new_elk_graph_json_ide_proposal_provider(
+  grammar? : ElkGraphJsonGrammarAccess = new_elk_graph_json_grammar_access(),
+) -> ElkGraphJsonIdeProposalProvider {
+  { grammar, }
+}
+
+///|
+pub fn ElkGraphJsonIdeProposalProvider::filter_keyword(
+  self : ElkGraphJsonIdeProposalProvider,
+  keyword : String,
+  context : GraphJsonTextIdeContentAssistContext,
+) -> Bool {
+  ignore(self)
+  !graph_json_text_disabled_keyword(keyword) && keyword != context.prefix
+}
+
+///|
+pub fn ElkGraphJsonIdeProposalProvider::create_keyword_proposals(
+  self : ElkGraphJsonIdeProposalProvider,
+  keyword : String,
+  context : GraphJsonTextIdeContentAssistContext,
+  acceptor : GraphJsonTextIdeCompletionProposalAcceptor,
+) -> Unit {
+  if !self.filter_keyword(keyword, context) {
+    return
+  }
+  acceptor.accept(
+    new_graph_json_text_ide_content_assist_entry(
+      keyword,
+      context.prefix,
+      "keyword",
+      label=Some(keyword),
+      source=Some("keyword"),
+    ),
+  )
+}
+
+///|
+pub fn ElkGraphJsonIdeProposalProvider::complete_rule_call(
+  self : ElkGraphJsonIdeProposalProvider,
+  terminal : String,
+  context : GraphJsonTextIdeContentAssistContext,
+  acceptor : GraphJsonTextIdeCompletionProposalAcceptor,
+) -> Unit {
+  ignore(self)
+  acceptor.accept(
+    new_graph_json_text_ide_content_assist_entry(
+      terminal,
+      context.prefix,
+      "rule",
+      label=Some(terminal),
+      source=Some("rule"),
+    ),
+  )
+}
+
+///|
+pub fn ElkGraphJsonIdeProposalProvider::lookup_cross_reference(
+  self : ElkGraphJsonIdeProposalProvider,
+  terminal : String,
+  context : GraphJsonTextIdeContentAssistContext,
+  acceptor : GraphJsonTextIdeCompletionProposalAcceptor,
+) -> Unit {
+  ignore(self)
+  acceptor.accept(
+    new_graph_json_text_ide_content_assist_entry(
+      terminal,
+      context.prefix,
+      "crossref",
+      label=Some(terminal),
+      source=Some("crossref"),
+    ),
+  )
+}
+
+///|
+pub fn ElkGraphJsonIdeProposalProvider::complete_property_key(
+  self : ElkGraphJsonIdeProposalProvider,
+  context : GraphJsonTextIdeContentAssistContext,
+  acceptor : GraphJsonTextIdeCompletionProposalAcceptor,
+) -> Unit {
+  ignore(self)
+  if context.conflict_on_a {
+    return
+  }
+  let model = match context.current_model {
+    Some(value) => value
+    None => return
+  }
+  let mut emitted = false
+  for
+    proposal in graph_json_text_ide_layout_option_proposals_for_element(
+      model,
+      context.prefix,
+    ) {
+    let option_data = proposal.get_data()
+    let quoted_proposal = graph_json_text_ide_quote_property_key(
+      proposal.get_proposal(),
+    )
+    let label = match proposal.get_label() {
+      Some(value) => value
+      None => proposal.get_proposal()
+    }
+    acceptor.accept(
+      new_graph_json_text_ide_content_assist_entry(
+        quoted_proposal,
+        context.prefix,
+        "property",
+        label=Some(label),
+        description=Some(graph_json_text_ide_option_description(option_data)),
+        documentation=Some(option_data.get_description()),
+        source=Some(option_data.get_id()),
+      ),
+    )
+    emitted = true
+  }
+
+  if emitted {
+    return
+  }
+  let fallback = ["id", "children", "ports", "edges", "labels", "layoutOptions"]
+  for key in fallback {
+    if key.has_prefix(context.prefix) {
+      acceptor.accept(
+        new_graph_json_text_ide_content_assist_entry(
+          graph_json_text_ide_quote_property_key(key),
+          context.prefix,
+          "property",
+          label=Some(key),
+          source=Some("json-keyword"),
+        ),
+      )
+    }
+  }
+}
+
+///|
+fn graph_json_text_ide_push_value_entry(
+  acceptor : GraphJsonTextIdeCompletionProposalAcceptor,
+  context : GraphJsonTextIdeContentAssistContext,
+  proposal : String,
+  description? : String? = None,
+) -> Unit {
+  acceptor.accept(
+    new_graph_json_text_ide_content_assist_entry(
+      proposal,
+      context.prefix,
+      "value",
+      label=Some(proposal),
+      description~,
+      source=Some("value"),
+    ),
+  )
+}
+
+///|
+pub fn ElkGraphJsonIdeProposalProvider::propose_algorithms(
+  self : ElkGraphJsonIdeProposalProvider,
+  context : GraphJsonTextIdeContentAssistContext,
+  acceptor : GraphJsonTextIdeCompletionProposalAcceptor,
+) -> Unit {
+  ignore(self)
+  if context.conflict_on_a {
+    return
+  }
+  for
+    proposal in layout_data_content_assist_get_layout_algorithm_proposals(
+      context.prefix,
+    ) {
+    let algorithm_data = proposal.get_data()
+    let label = match proposal.get_label() {
+      Some(value) => value
+      None => proposal.get_proposal()
+    }
+    acceptor.accept(
+      new_graph_json_text_ide_content_assist_entry(
+        proposal.get_proposal(),
+        context.prefix,
+        "value",
+        label=Some(label),
+        description=Some(
+          graph_json_text_ide_algorithm_description(algorithm_data),
+        ),
+        documentation=Some(algorithm_data.get_description()),
+        source=Some(algorithm_data.get_id()),
+      ),
+    )
+  }
+}
+
+///|
+pub fn ElkGraphJsonIdeProposalProvider::complete_property_value(
+  self : ElkGraphJsonIdeProposalProvider,
+  context : GraphJsonTextIdeContentAssistContext,
+  acceptor : GraphJsonTextIdeCompletionProposalAcceptor,
+) -> Unit {
+  let property_key = match context.current_property_key {
+    Some(value) => value
+    None => return
+  }
+  match property_key {
+    GraphJsonTextLayoutOption(option_data) => {
+      if option_data.get_id() == algorithm.get_id() ||
+        option_data.get_id() == graph_json_text_disco_layout_alg_id {
+        self.propose_algorithms(context, acceptor)
+        return
+      }
+      match option_data.get_type() {
+        BoolType => {
+          graph_json_text_ide_push_value_entry(acceptor, context, "true")
+          graph_json_text_ide_push_value_entry(acceptor, context, "false")
+        }
+        IntType =>
+          for choice in option_data.get_choices() {
+            graph_json_text_ide_push_value_entry(acceptor, context, choice)
+          }
+        DoubleType =>
+          for choice in option_data.get_choices() {
+            graph_json_text_ide_push_value_entry(acceptor, context, choice)
+          }
+        EnumSetType =>
+          for choice in option_data.get_choices() {
+            graph_json_text_ide_push_value_entry(acceptor, context, choice)
+          }
+        _ =>
+          for choice in option_data.get_choices() {
+            graph_json_text_ide_push_value_entry(acceptor, context, choice)
+          }
+      }
+    }
+    GraphJsonTextCustomProperty(_) => ()
+  }
+}
+
+///|
+pub fn ElkGraphJsonIdeProposalProvider::create_assignment_proposals(
+  self : ElkGraphJsonIdeProposalProvider,
+  assignment_key : String,
+  terminal : String,
+  context : GraphJsonTextIdeContentAssistContext,
+  acceptor : GraphJsonTextIdeCompletionProposalAcceptor,
+) -> Unit {
+  ignore(self.grammar)
+  if assignment_key == "Property.KeyAssignment_0" {
+    self.complete_property_key(context, acceptor)
+    return
+  }
+  if assignment_key == "Property.ValueAssignment_2_0" ||
+    assignment_key == "Property.ValueAssignment_2_1" ||
+    assignment_key == "Property.ValueAssignment_2_2" ||
+    assignment_key == "Property.ValueAssignment_2_3" {
+    self.complete_property_value(context, acceptor)
+    return
+  }
+  self.complete_rule_call(terminal, context, acceptor)
+}
+
+///|
+pub fn ElkGraphJsonIdeProposalProvider::filter_cross_reference_candidates(
+  self : ElkGraphJsonIdeProposalProvider,
+  reference_key : String,
+  context : GraphJsonTextIdeContentAssistContext,
+  candidates : Array[ElkConnectableShape],
+) -> Array[ElkConnectableShape] {
+  ignore(self)
+  let section = match context.current_edge_section {
+    Some(value) => value
+    None => return candidates
+  }
+  let edge = match graph_json_text_ide_find_parent_edge(section) {
+    Some(value) => value
+    None => return candidates
+  }
+  let allowed = if reference_key == "ElkEdgeSection.IncomingShape" ||
+    reference_key == "ElkSingleEdgeSection.IncomingShape" {
+    edge_sources(edge)
+  } else if reference_key == "ElkEdgeSection.OutgoingShape" ||
+    reference_key == "ElkSingleEdgeSection.OutgoingShape" {
+    edge_targets(edge)
+  } else {
+    return candidates
+  }
+
+  let result : Array[ElkConnectableShape] = []
+  for candidate in candidates {
+    if graph_json_text_ide_shape_in_list(candidate, allowed) {
+      result.push(candidate)
+    }
+  }
+  result
+}
