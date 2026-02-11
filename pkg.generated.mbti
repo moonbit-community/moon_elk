@@ -120,6 +120,8 @@ pub fn compare_fuzzy_lt(Double, Double) -> Bool
 
 pub let compare_fuzzy_tolerance : Double
 
+pub fn component_ordering_strategy_equals(ComponentOrderingStrategy, ComponentOrderingStrategy) -> Bool
+
 pub fn[N, E] components_to_cgraph_spacing_handler(ComponentsToCGraphTransformer[N, E]) -> ISpacingsHandler
 
 pub fn compress_log_folder_action_complete_file_name(String?) -> String?
@@ -2530,6 +2532,20 @@ pub fn layered_compare_fuzzy_lt(Double, Double) -> Bool
 
 pub let layered_compare_fuzzy_tolerance : Double
 
+pub let layered_components_compaction_connected_components : IProperty[Bool]
+
+pub let layered_components_consider_model_order_components : IProperty[ComponentOrderingStrategy]
+
+pub let layered_components_direction : IProperty[Direction]
+
+pub let layered_components_edge_routing : IProperty[String]
+
+pub let layered_components_has_external_ports : IProperty[Bool]
+
+pub let layered_components_priority : IProperty[Int]
+
+pub let layered_components_separate_connected_components : IProperty[Bool]
+
 pub fn layered_default_spacing_handler() -> ISpacingsHandler
 
 pub fn layered_is_both_left_or_both_right(LayeredQuadrant, LayeredQuadrant) -> Bool
@@ -4146,13 +4162,25 @@ pub fn new_label_cell_with_layout_mode(Double, Bool) -> Cell
 
 pub fn new_label_cell_with_node_label_location(Double, NodeLabelLocation) -> Cell
 
+pub fn new_layered_abstract_graph_placer() -> LayeredAbstractGraphPlacer
+
 pub fn new_layered_c_graph(Array[Direction]) -> CGraph
 
 pub fn[T] new_layered_c_graph_transformer((T) -> CGraph, () -> Unit) -> LayeredICGraphTransformer[T]
 
+pub fn new_layered_component_group_graph_placer() -> LayeredComponentGroupGraphPlacer
+
+pub fn new_layered_component_group_model_order_graph_placer() -> LayeredComponentGroupModelOrderGraphPlacer
+
+pub fn new_layered_components_compactor() -> LayeredComponentsCompactor
+
+pub fn new_layered_components_processor() -> LayeredComponentsProcessor
+
 pub fn new_layered_hierarchy_aware_layout_processor() -> Unit
 
 pub fn[T] new_layered_igraph_transformer((T) -> LGraph?, (LGraph) -> Unit) -> LayeredIGraphTransformer[T]
+
+pub fn new_layered_model_order_row_graph_placer() -> LayeredModelOrderRowGraphPlacer
 
 pub fn new_layered_one_dimensional_compactor(CGraph) -> OneDimensionalCompactor
 
@@ -4165,6 +4193,8 @@ pub fn new_layered_quadruplet() -> LayeredQuadruplet
 pub fn new_layered_quadruplet_with_values(Bool, Bool, Bool, Bool) -> LayeredQuadruplet
 
 pub fn new_layered_rectilinear_convex_hull() -> LayeredRectilinearConvexHull
+
+pub fn new_layered_simple_row_graph_placer() -> LayeredSimpleRowGraphPlacer
 
 pub fn new_layered_spacings_handler((CNode, CNode) -> Double, (CNode, CNode) -> Double) -> ISpacingsHandler
 
@@ -11538,15 +11568,34 @@ pub struct LGraph {
   port_side_array_properties : Map[String, Array[PortSide]]
   int_properties : Map[String, Int]
   bool_properties : Map[String, Bool]
+  double_properties : Map[String, Double]
+  string_properties : Map[String, String]
+  component_ordering_strategy_properties : Map[String, ComponentOrderingStrategy]
+  direction_properties : Map[String, Direction]
+  size : KVector
+  offset : KVector
 }
+pub fn LGraph::copy_properties(Self, Self) -> Unit
 pub fn LGraph::get_id(Self) -> Int
+pub fn LGraph::get_offset(Self) -> KVector
 pub fn LGraph::get_property_bool(Self, IProperty[Bool]) -> Bool
+pub fn LGraph::get_property_component_ordering_strategy(Self, IProperty[ComponentOrderingStrategy]) -> ComponentOrderingStrategy
+pub fn LGraph::get_property_direction(Self, IProperty[Direction]) -> Direction
+pub fn LGraph::get_property_double(Self, IProperty[Double]) -> Double
 pub fn LGraph::get_property_int(Self, IProperty[Int]) -> Int
 pub fn LGraph::get_property_port_side_array(Self, IProperty[Array[PortSide]]) -> Array[PortSide]
+pub fn LGraph::get_property_string(Self, IProperty[String]) -> String
+pub fn LGraph::get_size(Self) -> KVector
 pub fn LGraph::set_id(Self, Int) -> Unit
+pub fn LGraph::set_offset_xy(Self, Double, Double) -> Unit
 pub fn LGraph::set_property_bool(Self, IProperty[Bool], Bool) -> Unit
+pub fn LGraph::set_property_component_ordering_strategy(Self, IProperty[ComponentOrderingStrategy], ComponentOrderingStrategy) -> Unit
+pub fn LGraph::set_property_direction(Self, IProperty[Direction], Direction) -> Unit
+pub fn LGraph::set_property_double(Self, IProperty[Double], Double) -> Unit
 pub fn LGraph::set_property_int(Self, IProperty[Int], Int) -> Unit
 pub fn LGraph::set_property_port_side_array(Self, IProperty[Array[PortSide]], Array[PortSide]) -> Unit
+pub fn LGraph::set_property_string(Self, IProperty[String], String) -> Unit
+pub fn LGraph::set_size_xy(Self, Double, Double) -> Unit
 
 pub struct LGraphElement {
   mut id : Int
@@ -11604,6 +11653,54 @@ pub enum LayerUnzippingStrategy {
   Alternating
 }
 
+pub struct LayeredAbstractGraphPlacer {
+  _dummy : Unit
+}
+pub fn LayeredAbstractGraphPlacer::move_graph(Self, LGraph, LGraph, Double, Double) -> Unit
+pub fn LayeredAbstractGraphPlacer::move_graphs(Self, LGraph, Array[LGraph], Double, Double) -> Unit
+pub fn LayeredAbstractGraphPlacer::offset_graph(Self, LGraph, Double, Double) -> Unit
+pub fn LayeredAbstractGraphPlacer::offset_graphs(Self, Array[LGraph], Double, Double) -> Unit
+
+pub struct LayeredComponentGroupGraphPlacer {
+  base : LayeredAbstractGraphPlacer
+  component_groups : Array[ComponentGroup]
+}
+pub fn LayeredComponentGroupGraphPlacer::add_component(Self, LGraph) -> Unit
+pub fn LayeredComponentGroupGraphPlacer::combine(Self, Array[LGraph], LGraph) -> Unit
+pub fn LayeredComponentGroupGraphPlacer::place_components(Self, ComponentGroup, Double) -> KVector
+pub fn LayeredComponentGroupGraphPlacer::place_components_horizontally(Self, Array[LGraph], Double) -> KVector
+pub fn LayeredComponentGroupGraphPlacer::place_components_in_rows(Self, Array[LGraph], Double) -> KVector
+pub fn LayeredComponentGroupGraphPlacer::place_components_vertically(Self, Array[LGraph], Double) -> KVector
+
+pub struct LayeredComponentGroupModelOrderGraphPlacer {
+  base : LayeredAbstractGraphPlacer
+  helper : LayeredComponentGroupGraphPlacer
+  component_groups : Array[ModelOrderComponentGroup]
+}
+pub fn LayeredComponentGroupModelOrderGraphPlacer::add_component(Self, LGraph) -> Unit
+pub fn LayeredComponentGroupModelOrderGraphPlacer::combine(Self, Array[LGraph], LGraph) -> Unit
+pub fn LayeredComponentGroupModelOrderGraphPlacer::place_components(Self, ModelOrderComponentGroup, Double) -> KVector
+
+pub struct LayeredComponentsCompactor {
+  mut offset : KVector
+  mut graph_size : KVector
+}
+pub fn LayeredComponentsCompactor::compact(Self, Array[LGraph], KVector, Double) -> Unit
+pub fn LayeredComponentsCompactor::get_graph_size(Self) -> KVector
+pub fn LayeredComponentsCompactor::get_offset(Self) -> KVector
+
+pub struct LayeredComponentsProcessor {
+  component_group_graph_placer : LayeredComponentGroupGraphPlacer
+  component_group_model_order_graph_placer : LayeredComponentGroupModelOrderGraphPlacer
+  model_order_row_graph_placer : LayeredModelOrderRowGraphPlacer
+  simple_row_graph_placer : LayeredSimpleRowGraphPlacer
+  mut graph_placer_kind : LayeredGraphPlacerKind
+}
+pub fn LayeredComponentsProcessor::combine(Self, Array[LGraph], LGraph) -> Unit
+pub fn LayeredComponentsProcessor::split(Self, LGraph) -> Array[LGraph]
+
+type LayeredGraphPlacerKind
+
 pub struct LayeredHullRectangleEventState {
   rects : Array[ElkRectangle]
   mut min_y : LayeredPoint?
@@ -11626,6 +11723,13 @@ pub struct LayeredIGraphTransformer[T] {
 }
 pub fn[T] LayeredIGraphTransformer::apply_layout(Self[T], LGraph) -> Unit
 pub fn[T] LayeredIGraphTransformer::import_graph(Self[T], T) -> LGraph?
+
+pub struct LayeredModelOrderRowGraphPlacer {
+  base : LayeredAbstractGraphPlacer
+}
+pub fn LayeredModelOrderRowGraphPlacer::combine(Self, Array[LGraph], LGraph) -> Unit
+pub fn LayeredModelOrderRowGraphPlacer::place_components(Self, Array[LGraph], LGraph, Double, Double) -> Unit
+pub fn LayeredModelOrderRowGraphPlacer::sort_components(Self, Array[LGraph], LGraph) -> Unit
 
 pub enum LayeredPhases {
   P1CycleBreaking
@@ -11674,6 +11778,13 @@ pub struct LayeredRectilinearConvexHull {
 }
 pub fn LayeredRectilinearConvexHull::get_hull(Self) -> Array[LayeredPoint]
 pub fn LayeredRectilinearConvexHull::split_into_rectangles(Self) -> Array[ElkRectangle]
+
+pub struct LayeredSimpleRowGraphPlacer {
+  base : LayeredAbstractGraphPlacer
+}
+pub fn LayeredSimpleRowGraphPlacer::combine(Self, Array[LGraph], LGraph) -> Unit
+pub fn LayeredSimpleRowGraphPlacer::place_components(Self, Array[LGraph], LGraph, Double, Double) -> Unit
+pub fn LayeredSimpleRowGraphPlacer::sort_components(Self, Array[LGraph], LGraph) -> Unit
 
 pub enum LayeringStrategy {
   LsNetworkSimplex
