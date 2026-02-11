@@ -296,6 +296,28 @@ pub let core_debug_grandom_hierarchy_nodes_factor : IProperty[Double]
 
 pub let core_debug_grandom_hypernode_chance : IProperty[Double]
 
+pub let core_debug_grandom_ide_content_assist_lexer_binding : String
+
+pub let core_debug_grandom_ide_grammar_name : String
+
+pub let core_debug_grandom_ide_language_name : String
+
+pub let core_debug_grandom_ide_rule_any_other : Int
+
+pub let core_debug_grandom_ide_rule_id : Int
+
+pub let core_debug_grandom_ide_rule_int : Int
+
+pub let core_debug_grandom_ide_rule_ml_comment : Int
+
+pub let core_debug_grandom_ide_rule_sl_comment : Int
+
+pub let core_debug_grandom_ide_rule_string : Int
+
+pub let core_debug_grandom_ide_rule_ws : Int
+
+pub let core_debug_grandom_ide_token_names : Array[String]
+
 pub let core_debug_grandom_incoming_east_side : IProperty[Int]
 
 pub let core_debug_grandom_incoming_north_side : IProperty[Int]
@@ -303,6 +325,10 @@ pub let core_debug_grandom_incoming_north_side : IProperty[Int]
 pub let core_debug_grandom_incoming_south_side : IProperty[Int]
 
 pub let core_debug_grandom_incoming_west_side : IProperty[Int]
+
+pub fn core_debug_grandom_initialization_data_map(Map[String, String]) -> CoreDebugGRandomInitializationData
+
+pub fn core_debug_grandom_initialization_data_string(String) -> CoreDebugGRandomInitializationData
 
 pub let core_debug_grandom_isolated_nodes : IProperty[Bool]
 
@@ -381,6 +407,20 @@ pub fn core_debug_grandom_size_exists(CoreDebugGRandomSize?) -> Bool
 pub let core_debug_grandom_small_hierarchy : IProperty[Bool]
 
 pub let core_debug_grandom_time_based_randomization : IProperty[Bool]
+
+pub let core_debug_grandom_ui_extension_factory_guicekey : String
+
+pub let core_debug_grandom_ui_language_name : String
+
+pub fn core_debug_grandom_ui_object_executable_extension(CoreDebugGRandomExecutableExtension) -> CoreDebugGRandomUiObject
+
+pub fn core_debug_grandom_ui_object_named(String) -> CoreDebugGRandomUiObject
+
+pub fn core_debug_grandom_ui_object_tag(CoreDebugGRandomUiObject) -> String
+
+pub let core_debug_grandom_ui_plugin_id : String
+
+pub let core_debug_grandom_ui_status_error : Int
 
 pub let core_debug_grandom_use_existing_ports_chance : IProperty[CoreDebugGRandomRandVal]
 
@@ -1506,6 +1546,10 @@ pub fn gmf_view_target_terminal(Int) -> String?
 
 pub fn gmf_view_width(Int) -> Int
 
+pub fn grandom_activator_get_instance() -> GrandomActivator?
+
+pub fn grandom_activator_reset_for_test() -> Unit
+
 pub fn graph_feature_values() -> Array[GraphFeature]
 
 pub fn graph_identifier_generator_for_graph(Int) -> GraphIdentifierGenerator
@@ -2346,6 +2390,12 @@ pub fn nedge_of() -> NEdgeBuilder
 
 pub fn network_simplex_for_graph(NGraph) -> NetworkSimplex
 
+pub fn new_abstract_core_debug_grandom_ide_module() -> AbstractCoreDebugGRandomIdeModule
+
+pub fn new_abstract_core_debug_grandom_proposal_provider() -> AbstractCoreDebugGRandomProposalProvider
+
+pub fn new_abstract_core_debug_grandom_ui_module(plugin_id? : String) -> AbstractCoreDebugGRandomUiModule
+
 pub fn new_abstract_force_model_state() -> AbstractForceModelState
 
 pub fn new_abstract_graphviz_dot_runtime_module(properties? : Map[String, String]) -> AbstractGraphvizDotRuntimeModule
@@ -2390,21 +2440,61 @@ pub fn new_compress_log_folder_action(AbstractLayoutDebugView) -> CompressLogFol
 
 pub fn new_config_state() -> ConfigState
 
+pub fn new_core_debug_grandom_assignment(String) -> CoreDebugGRandomAssignment
+
+pub fn new_core_debug_grandom_completion_proposal_acceptor() -> CoreDebugGRandomCompletionProposalAcceptor
+
 pub fn new_core_debug_grandom_configuration() -> CoreDebugGRandomConfiguration
+
+pub fn new_core_debug_grandom_configuration_element(contributor? : String?) -> CoreDebugGRandomConfigurationElement
+
+pub fn new_core_debug_grandom_content_assist_context(root_model? : CoreDebugGRandomRandGraph?, current_model_index? : Int?) -> CoreDebugGRandomContentAssistContext
 
 pub fn new_core_debug_grandom_double_quantity() -> CoreDebugGRandomDoubleQuantity
 
 pub fn new_core_debug_grandom_edges() -> CoreDebugGRandomEdges
 
+pub fn new_core_debug_grandom_executable_extension(set_initialization_data_fn? : (CoreDebugGRandomConfigurationElement?, String?, CoreDebugGRandomInitializationData?) -> Unit) -> CoreDebugGRandomExecutableExtension
+
+pub fn new_core_debug_grandom_executable_extension_factory() -> CoreDebugGRandomExecutableExtensionFactory
+
 pub fn new_core_debug_grandom_flow(CoreDebugGRandomFlowType, CoreDebugGRandomSide, amount? : CoreDebugGRandomDoubleQuantity?) -> CoreDebugGRandomFlow
 
 pub fn new_core_debug_grandom_generator_options() -> CoreDebugGRandomGeneratorOptions
 
+pub fn new_core_debug_grandom_graph_maker(CoreDebugGRandomRandGraph) -> CoreDebugGRandomGraphMaker
+
+pub fn new_core_debug_grandom_handler(project? : CoreDebugGRandomProject) -> CoreDebugGRandomHandler
+
 pub fn new_core_debug_grandom_hierarchy() -> CoreDebugGRandomHierarchy
+
+pub fn new_core_debug_grandom_ide_content_assist_lexer_binding(String, String) -> CoreDebugGRandomIdeContentAssistLexerBinding
+
+pub fn new_core_debug_grandom_ide_grammar_access() -> CoreDebugGRandomIdeGrammarAccess
+
+pub fn new_core_debug_grandom_ide_injector(CoreDebugGRandomRuntimeModule, CoreDebugGRandomIdeModule) -> CoreDebugGRandomIdeInjector
+
+pub fn new_core_debug_grandom_ide_lex_token(Int, String, String) -> CoreDebugGRandomIdeLexToken
+
+pub fn new_core_debug_grandom_ide_module() -> CoreDebugGRandomIdeModule
+
+pub fn new_core_debug_grandom_ide_setup() -> CoreDebugGRandomIdeSetup
+
+pub fn new_core_debug_grandom_name_mappings(CoreDebugGRandomIdeGrammarAccess) -> CoreDebugGRandomNameMappings
 
 pub fn new_core_debug_grandom_nodes() -> CoreDebugGRandomNodes
 
+pub fn new_core_debug_grandom_parser(grammar_access? : CoreDebugGRandomIdeGrammarAccess) -> CoreDebugGRandomParser
+
 pub fn new_core_debug_grandom_ports() -> CoreDebugGRandomPorts
+
+pub fn new_core_debug_grandom_project() -> CoreDebugGRandomProject
+
+pub fn new_core_debug_grandom_proposal_provider() -> CoreDebugGRandomProposalProvider
+
+pub fn new_core_debug_grandom_quickfix_provider() -> CoreDebugGRandomQuickfixProvider
+
+pub fn new_core_debug_grandom_rand_graph(configs? : Array[CoreDebugGRandomConfiguration]) -> CoreDebugGRandomRandGraph
 
 pub fn new_core_debug_grandom_random_graph_generator(@random.Rand?) -> CoreDebugGRandomRandomGraphGenerator
 
@@ -2415,6 +2505,18 @@ pub fn new_core_debug_grandom_scope_provider() -> CoreDebugGRandomScopeProvider
 pub fn new_core_debug_grandom_size() -> CoreDebugGRandomSize
 
 pub fn new_core_debug_grandom_standalone_setup() -> CoreDebugGRandomStandaloneSetup
+
+pub fn new_core_debug_grandom_ui_bundle(symbolic_name? : String) -> CoreDebugGRandomUiBundle
+
+pub fn new_core_debug_grandom_ui_core_exception(CoreDebugGRandomUiStatus) -> CoreDebugGRandomUiCoreException
+
+pub fn new_core_debug_grandom_ui_injector() -> CoreDebugGRandomUiInjector
+
+pub fn new_core_debug_grandom_ui_lexer_binding(String, String) -> CoreDebugGRandomUiLexerBinding
+
+pub fn new_core_debug_grandom_ui_module(plugin_id? : String) -> CoreDebugGRandomUiModule
+
+pub fn new_core_debug_grandom_ui_status(Int, String, String) -> CoreDebugGRandomUiStatus
 
 pub fn new_core_debug_grandom_validation_error(String, String) -> CoreDebugGRandomValidationError
 
@@ -2630,6 +2732,8 @@ pub fn new_gmf_rectangle(x? : Int, y? : Int, width? : Int, height? : Int) -> Gmf
 
 pub fn new_gmf_view(name? : String, location_x? : Int, location_y? : Int, width? : Int, height? : Int) -> Int
 
+pub fn new_grandom_activator() -> GrandomActivator
+
 pub fn new_graph_element_visitor((Int) -> Unit) -> IGraphElementVisitor
 
 pub fn new_graph_issue_edge(Int, String, Int) -> GraphIssue
@@ -2747,6 +2851,10 @@ pub fn[T] new_instance_pool(IFactory[T], limit? : Int) -> InstancePool[T]
 pub fn new_interactive_mrtree_graph_element_visitor() -> IGraphElementVisitor
 
 pub fn new_interactive_mrtree_graph_visitor() -> InteractiveMrtreeGraphVisitor
+
+pub fn new_internal_core_debug_grandom_lexer(String) -> InternalCoreDebugGRandomLexer
+
+pub fn new_internal_core_debug_grandom_parser(Array[CoreDebugGRandomIdeLexToken], grammar_access? : CoreDebugGRandomIdeGrammarAccess) -> InternalCoreDebugGRandomParser
 
 pub fn new_internal_graphviz_dot_lexer(String) -> InternalGraphvizDotLexer
 
@@ -2911,6 +3019,8 @@ pub fn new_null_elk_progress_monitor() -> IElkProgressMonitor
 pub fn new_one_dimensional_compactor(CGraph) -> OneDimensionalCompactor
 
 pub fn new_outline_node(Double, Double, OutlineNode?) -> OutlineNode
+
+pub fn new_partial_core_debug_grandom_content_assist_parser() -> PartialCoreDebugGRandomContentAssistParser
 
 pub fn[P] new_phase_descriptor(Array[P], (P) -> Int) -> PhaseDescriptor[P]
 
@@ -3761,6 +3871,76 @@ pub enum AbsoluteXPlacerStrategy {
   ABSOLUTE_XPLACING
 }
 
+pub struct AbstractCoreDebugGRandomIdeModule {
+  unit : Unit
+}
+pub fn AbstractCoreDebugGRandomIdeModule::bind_i_content_assist_parser(Self) -> String
+pub fn AbstractCoreDebugGRandomIdeModule::bind_i_prefix_matcher(Self) -> String
+pub fn AbstractCoreDebugGRandomIdeModule::bind_i_proposal_conflict_helper(Self) -> String
+pub fn AbstractCoreDebugGRandomIdeModule::bind_i_rename_service(Self) -> String
+pub fn AbstractCoreDebugGRandomIdeModule::bind_i_rename_strategy2(Self) -> String
+pub fn AbstractCoreDebugGRandomIdeModule::configure_content_assist_lexer(Self) -> CoreDebugGRandomIdeContentAssistLexerBinding
+
+pub struct AbstractCoreDebugGRandomProposalProvider {
+  unit : Unit
+}
+pub fn AbstractCoreDebugGRandomProposalProvider::complete_configuration_edges(Self, CoreDebugGRandomAssignment, CoreDebugGRandomContentAssistContext, CoreDebugGRandomCompletionProposalAcceptor) -> Unit
+pub fn AbstractCoreDebugGRandomProposalProvider::complete_configuration_filename(Self, CoreDebugGRandomAssignment, CoreDebugGRandomContentAssistContext, CoreDebugGRandomCompletionProposalAcceptor) -> Unit
+pub fn AbstractCoreDebugGRandomProposalProvider::complete_configuration_form(Self, CoreDebugGRandomAssignment, CoreDebugGRandomContentAssistContext, CoreDebugGRandomCompletionProposalAcceptor) -> Unit
+pub fn AbstractCoreDebugGRandomProposalProvider::complete_configuration_format(Self, CoreDebugGRandomAssignment, CoreDebugGRandomContentAssistContext, CoreDebugGRandomCompletionProposalAcceptor) -> Unit
+pub fn AbstractCoreDebugGRandomProposalProvider::complete_configuration_fraction(Self, CoreDebugGRandomAssignment, CoreDebugGRandomContentAssistContext, CoreDebugGRandomCompletionProposalAcceptor) -> Unit
+pub fn AbstractCoreDebugGRandomProposalProvider::complete_configuration_hierarchy(Self, CoreDebugGRandomAssignment, CoreDebugGRandomContentAssistContext, CoreDebugGRandomCompletionProposalAcceptor) -> Unit
+pub fn AbstractCoreDebugGRandomProposalProvider::complete_configuration_max_degree(Self, CoreDebugGRandomAssignment, CoreDebugGRandomContentAssistContext, CoreDebugGRandomCompletionProposalAcceptor) -> Unit
+pub fn AbstractCoreDebugGRandomProposalProvider::complete_configuration_max_width(Self, CoreDebugGRandomAssignment, CoreDebugGRandomContentAssistContext, CoreDebugGRandomCompletionProposalAcceptor) -> Unit
+pub fn AbstractCoreDebugGRandomProposalProvider::complete_configuration_nodes(Self, CoreDebugGRandomAssignment, CoreDebugGRandomContentAssistContext, CoreDebugGRandomCompletionProposalAcceptor) -> Unit
+pub fn AbstractCoreDebugGRandomProposalProvider::complete_configuration_samples(Self, CoreDebugGRandomAssignment, CoreDebugGRandomContentAssistContext, CoreDebugGRandomCompletionProposalAcceptor) -> Unit
+pub fn AbstractCoreDebugGRandomProposalProvider::complete_configuration_seed(Self, CoreDebugGRandomAssignment, CoreDebugGRandomContentAssistContext, CoreDebugGRandomCompletionProposalAcceptor) -> Unit
+pub fn AbstractCoreDebugGRandomProposalProvider::complete_edges_n_edges(Self, CoreDebugGRandomAssignment, CoreDebugGRandomContentAssistContext, CoreDebugGRandomCompletionProposalAcceptor) -> Unit
+pub fn AbstractCoreDebugGRandomProposalProvider::complete_flow_amount(Self, CoreDebugGRandomAssignment, CoreDebugGRandomContentAssistContext, CoreDebugGRandomCompletionProposalAcceptor) -> Unit
+pub fn AbstractCoreDebugGRandomProposalProvider::complete_flow_side(Self, CoreDebugGRandomAssignment, CoreDebugGRandomContentAssistContext, CoreDebugGRandomCompletionProposalAcceptor) -> Unit
+pub fn AbstractCoreDebugGRandomProposalProvider::complete_hierarchy_edges(Self, CoreDebugGRandomAssignment, CoreDebugGRandomContentAssistContext, CoreDebugGRandomCompletionProposalAcceptor) -> Unit
+pub fn AbstractCoreDebugGRandomProposalProvider::complete_hierarchy_levels(Self, CoreDebugGRandomAssignment, CoreDebugGRandomContentAssistContext, CoreDebugGRandomCompletionProposalAcceptor) -> Unit
+pub fn AbstractCoreDebugGRandomProposalProvider::complete_keyword(Self, String, CoreDebugGRandomContentAssistContext, CoreDebugGRandomCompletionProposalAcceptor) -> Unit
+pub fn AbstractCoreDebugGRandomProposalProvider::complete_nodes_n_nodes(Self, CoreDebugGRandomAssignment, CoreDebugGRandomContentAssistContext, CoreDebugGRandomCompletionProposalAcceptor) -> Unit
+pub fn AbstractCoreDebugGRandomProposalProvider::complete_rule_call(Self, String, CoreDebugGRandomContentAssistContext, CoreDebugGRandomCompletionProposalAcceptor) -> Unit
+
+pub struct AbstractCoreDebugGRandomUiModule {
+  plugin_id : String
+}
+pub fn AbstractCoreDebugGRandomUiModule::bind_content_assist_context_factory(Self) -> String
+pub fn AbstractCoreDebugGRandomUiModule::bind_document_based_dirty_resource(Self) -> String
+pub fn AbstractCoreDebugGRandomUiModule::bind_i_content_assist_parser(Self) -> String
+pub fn AbstractCoreDebugGRandomUiModule::bind_i_content_proposal_provider(Self) -> String
+pub fn AbstractCoreDebugGRandomUiModule::bind_i_contextual_output_configuration_provider(Self) -> String
+pub fn AbstractCoreDebugGRandomUiModule::bind_i_dependent_elements_calculator(Self) -> String
+pub fn AbstractCoreDebugGRandomUiModule::bind_i_partial_editing_content_assist_context_factory(Self) -> String
+pub fn AbstractCoreDebugGRandomUiModule::bind_i_partial_editing_content_assist_parser(Self) -> String
+pub fn AbstractCoreDebugGRandomUiModule::bind_i_proposal_conflict_helper(Self) -> String
+pub fn AbstractCoreDebugGRandomUiModule::bind_i_reference_updater(Self) -> String
+pub fn AbstractCoreDebugGRandomUiModule::bind_i_rename_refactoring_provider(Self) -> String
+pub fn AbstractCoreDebugGRandomUiModule::bind_i_rename_strategy(Self) -> String
+pub fn AbstractCoreDebugGRandomUiModule::bind_i_rename_support_factory(Self) -> String
+pub fn AbstractCoreDebugGRandomUiModule::bind_i_viewer_creator(Self) -> String
+pub fn AbstractCoreDebugGRandomUiModule::bind_i_workspace_root_to_instance(Self) -> String
+pub fn AbstractCoreDebugGRandomUiModule::bind_i_xtext_builder_participant(Self) -> String
+pub fn AbstractCoreDebugGRandomUiModule::bind_i_xtext_editor_callback(Self) -> String
+pub fn AbstractCoreDebugGRandomUiModule::bind_issue_resolution_provider(Self) -> String
+pub fn AbstractCoreDebugGRandomUiModule::bind_language_registrar(Self) -> String
+pub fn AbstractCoreDebugGRandomUiModule::bind_prefix_matcher(Self) -> String
+pub fn AbstractCoreDebugGRandomUiModule::bind_xtext_template_preference_page(Self) -> String
+pub fn AbstractCoreDebugGRandomUiModule::configure_builder_preference_store_initializer(Self) -> String
+pub fn AbstractCoreDebugGRandomUiModule::configure_compare_viewer_title(Self) -> String
+pub fn AbstractCoreDebugGRandomUiModule::configure_content_assist_lexer(Self) -> CoreDebugGRandomUiLexerBinding
+pub fn AbstractCoreDebugGRandomUiModule::configure_content_assist_lexer_provider(Self) -> String
+pub fn AbstractCoreDebugGRandomUiModule::configure_highlighting_lexer(Self) -> CoreDebugGRandomUiLexerBinding
+pub fn AbstractCoreDebugGRandomUiModule::configure_highlighting_token_def_provider(Self) -> CoreDebugGRandomUiLexerBinding
+pub fn AbstractCoreDebugGRandomUiModule::configure_i_preference_store_initializer(Self) -> String
+pub fn AbstractCoreDebugGRandomUiModule::configure_i_resource_descriptions_builder_scope(Self) -> String
+pub fn AbstractCoreDebugGRandomUiModule::configure_i_resource_descriptions_persisted(Self) -> String
+pub fn AbstractCoreDebugGRandomUiModule::provide_i_all_containers_state(Self) -> String
+pub fn AbstractCoreDebugGRandomUiModule::provide_language_registry(Self) -> String
+pub fn AbstractCoreDebugGRandomUiModule::provide_templates_language_configuration(Self) -> String
+
 pub struct AbstractForceModelState {
   mut random : @random.Rand
   mut graph : FGraph?
@@ -4173,6 +4353,16 @@ pub fn CoreDebugDialogSettingsSection::put_bool(Self, String, Bool) -> Unit
 pub fn CoreDebugDialogSettingsSection::put_int(Self, String, Int) -> Unit
 pub fn CoreDebugDialogSettingsSection::put_string(Self, String, String) -> Unit
 
+pub struct CoreDebugGRandomAssignment {
+  terminal : String
+}
+
+pub struct CoreDebugGRandomCompletionProposalAcceptor {
+  proposals : Array[String]
+}
+pub fn CoreDebugGRandomCompletionProposalAcceptor::accept(Self, String) -> Unit
+pub fn CoreDebugGRandomCompletionProposalAcceptor::get_proposals(Self) -> Array[String]
+
 pub struct CoreDebugGRandomConfiguration {
   samples : Int
   form : CoreDebugGRandomForm
@@ -4190,12 +4380,20 @@ pub struct CoreDebugGRandomConfiguration {
   filename : String?
 }
 pub fn CoreDebugGRandomConfiguration::set_edges(Self, CoreDebugGRandomEdges?) -> Self
+pub fn CoreDebugGRandomConfiguration::set_filename(Self, String?) -> Self
 pub fn CoreDebugGRandomConfiguration::set_form(Self, CoreDebugGRandomForm) -> Self
+pub fn CoreDebugGRandomConfiguration::set_format(Self, CoreDebugGRandomFormats?) -> Self
 pub fn CoreDebugGRandomConfiguration::set_fraction(Self, CoreDebugGRandomDoubleQuantity?) -> Self
 pub fn CoreDebugGRandomConfiguration::set_hierarchy(Self, CoreDebugGRandomHierarchy?) -> Self
 pub fn CoreDebugGRandomConfiguration::set_nodes(Self, CoreDebugGRandomNodes?) -> Self
 pub fn CoreDebugGRandomConfiguration::set_samples(Self, Int) -> Self
+pub fn CoreDebugGRandomConfiguration::set_seed(Self, Int?) -> Self
 pub fn CoreDebugGRandomConfiguration::set_tree_limits(Self, Int?, Int?) -> Self
+
+pub struct CoreDebugGRandomConfigurationElement {
+  contributor : String?
+}
+pub fn CoreDebugGRandomConfigurationElement::get_contributor(Self) -> String?
 
 pub enum CoreDebugGRandomConstraintType {
   ConstraintFree
@@ -4203,6 +4401,11 @@ pub enum CoreDebugGRandomConstraintType {
   ConstraintPosition
   ConstraintOrder
   ConstraintRatio
+}
+
+pub struct CoreDebugGRandomContentAssistContext {
+  root_model : CoreDebugGRandomRandGraph?
+  current_model_index : Int?
 }
 
 pub struct CoreDebugGRandomDoubleQuantity {
@@ -4235,6 +4438,18 @@ pub fn CoreDebugGRandomEdges::set_labels(Self, Bool) -> Self
 pub fn CoreDebugGRandomEdges::set_n_edges(Self, CoreDebugGRandomDoubleQuantity?) -> Self
 pub fn CoreDebugGRandomEdges::set_self_loops(Self, Bool) -> Self
 pub fn CoreDebugGRandomEdges::set_total(Self, Bool) -> Self
+
+pub struct CoreDebugGRandomExecutableExtension {
+  set_initialization_data_fn : (CoreDebugGRandomConfigurationElement?, String?, CoreDebugGRandomInitializationData?) -> Unit
+}
+pub fn CoreDebugGRandomExecutableExtension::set_initialization_data(Self, CoreDebugGRandomConfigurationElement?, String?, CoreDebugGRandomInitializationData?) -> Unit
+
+pub struct CoreDebugGRandomExecutableExtensionFactory {
+  mut clazz_name : String?
+  mut config : CoreDebugGRandomConfigurationElement?
+}
+pub fn CoreDebugGRandomExecutableExtensionFactory::create(Self) -> Result[CoreDebugGRandomUiObject, CoreDebugGRandomUiCoreException]
+pub fn CoreDebugGRandomExecutableExtensionFactory::set_initialization_data(Self, CoreDebugGRandomConfigurationElement?, String?, CoreDebugGRandomInitializationData?) -> Unit
 
 pub enum CoreDebugGRandomFileFormat {
   FileXmi
@@ -4300,6 +4515,12 @@ pub fn CoreDebugGRandomGeneratorOptions::set_quantities(Self, CoreDebugGRandomDo
 pub fn CoreDebugGRandomGeneratorOptions::set_rand_property(Self, IProperty[CoreDebugGRandomRandVal], CoreDebugGRandomRandVal) -> Unit
 pub fn CoreDebugGRandomGeneratorOptions::set_string_property(Self, IProperty[String], String) -> Unit
 
+pub struct CoreDebugGRandomGraphMaker {
+  configs : Array[CoreDebugGRandomConfiguration]
+}
+pub fn CoreDebugGRandomGraphMaker::gen(Self, CoreDebugGRandomProject) -> Unit
+pub fn CoreDebugGRandomGraphMaker::load_graph(Self) -> Array[Int]
+
 pub enum CoreDebugGRandomGraphType {
   GraphCustom
   GraphTree
@@ -4308,6 +4529,15 @@ pub enum CoreDebugGRandomGraphType {
   GraphAcyclicNoTransitiveEdges
   GraphBipartite
 }
+
+pub struct CoreDebugGRandomHandler {
+  project : CoreDebugGRandomProject
+  errors : Array[String]
+}
+pub fn CoreDebugGRandomHandler::execute(Self, Array[CoreDebugGRandomSelectionItem]) -> Int
+pub fn CoreDebugGRandomHandler::get_errors(Self) -> Array[String]
+pub fn CoreDebugGRandomHandler::get_project(Self) -> CoreDebugGRandomProject
+pub fn CoreDebugGRandomHandler::record_error(Self, String) -> Unit
 
 pub struct CoreDebugGRandomHierarchy {
   levels : CoreDebugGRandomDoubleQuantity?
@@ -4319,6 +4549,53 @@ pub fn CoreDebugGRandomHierarchy::set_cross_hierarch_rel(Self, CoreDebugGRandomD
 pub fn CoreDebugGRandomHierarchy::set_edges(Self, CoreDebugGRandomDoubleQuantity?) -> Self
 pub fn CoreDebugGRandomHierarchy::set_levels(Self, CoreDebugGRandomDoubleQuantity?) -> Self
 pub fn CoreDebugGRandomHierarchy::set_num_hierarch_nodes(Self, CoreDebugGRandomDoubleQuantity?) -> Self
+
+pub struct CoreDebugGRandomIdeContentAssistLexerBinding {
+  binding_name : String
+  lexer_class_name : String
+}
+
+pub struct CoreDebugGRandomIdeGrammarAccess {
+  grammar : String
+  rules : Map[String, String]
+}
+pub fn CoreDebugGRandomIdeGrammarAccess::get_grammar(Self) -> String
+pub fn CoreDebugGRandomIdeGrammarAccess::get_rule(Self, String) -> String?
+pub fn CoreDebugGRandomIdeGrammarAccess::get_rule_names(Self) -> Array[String]
+
+pub struct CoreDebugGRandomIdeInjector {
+  runtime_module : CoreDebugGRandomRuntimeModule
+  ide_module : CoreDebugGRandomIdeModule
+}
+pub fn CoreDebugGRandomIdeInjector::get_ide_module(Self) -> CoreDebugGRandomIdeModule
+pub fn CoreDebugGRandomIdeInjector::get_runtime_module(Self) -> CoreDebugGRandomRuntimeModule
+
+pub struct CoreDebugGRandomIdeLexToken {
+  token_type : Int
+  token_name : String
+  lexeme : String
+}
+
+pub struct CoreDebugGRandomIdeModule {
+  base : AbstractCoreDebugGRandomIdeModule
+}
+pub fn CoreDebugGRandomIdeModule::get_base(Self) -> AbstractCoreDebugGRandomIdeModule
+
+pub struct CoreDebugGRandomIdeSetup {
+  unit : Unit
+}
+pub fn CoreDebugGRandomIdeSetup::create_injector(Self) -> CoreDebugGRandomIdeInjector
+pub fn CoreDebugGRandomIdeSetup::create_injector_and_do_emf_registration(Self) -> CoreDebugGRandomIdeInjector
+
+pub enum CoreDebugGRandomInitializationData {
+  CoreDebugGRandomInitializationDataString(String)
+  CoreDebugGRandomInitializationDataMap(Map[String, String])
+}
+
+pub struct CoreDebugGRandomNameMappings {
+  mappings : Map[String, String]
+}
+pub fn CoreDebugGRandomNameMappings::get_rule_name(Self, String) -> String?
 
 pub struct CoreDebugGRandomNodes {
   n_nodes : CoreDebugGRandomDoubleQuantity?
@@ -4333,6 +4610,21 @@ pub fn CoreDebugGRandomNodes::set_ports(Self, CoreDebugGRandomPorts?) -> Self
 pub fn CoreDebugGRandomNodes::set_remove_isolated(Self, Bool) -> Self
 pub fn CoreDebugGRandomNodes::set_size(Self, CoreDebugGRandomSize?) -> Self
 
+pub struct CoreDebugGRandomParser {
+  mut name_mappings : CoreDebugGRandomNameMappings
+  mut grammar_access : CoreDebugGRandomIdeGrammarAccess
+  mut initial_hidden_tokens : Array[String]
+}
+pub fn CoreDebugGRandomParser::create_parser(Self, Array[CoreDebugGRandomIdeLexToken]) -> InternalCoreDebugGRandomParser
+pub fn CoreDebugGRandomParser::get_grammar_access(Self) -> CoreDebugGRandomIdeGrammarAccess
+pub fn CoreDebugGRandomParser::get_initial_hidden_tokens(Self) -> Array[String]
+pub fn CoreDebugGRandomParser::get_name_mappings(Self) -> CoreDebugGRandomNameMappings
+pub fn CoreDebugGRandomParser::get_rule_name(Self, String) -> String?
+pub fn CoreDebugGRandomParser::parse(Self, String) -> CoreDebugGRandomRandGraph
+pub fn CoreDebugGRandomParser::set_grammar_access(Self, CoreDebugGRandomIdeGrammarAccess) -> Unit
+pub fn CoreDebugGRandomParser::set_initial_hidden_tokens(Self, Array[String]) -> Unit
+pub fn CoreDebugGRandomParser::set_name_mappings(Self, CoreDebugGRandomNameMappings) -> Unit
+
 pub struct CoreDebugGRandomPorts {
   labels : Bool
   re_use : CoreDebugGRandomDoubleQuantity?
@@ -4345,6 +4637,29 @@ pub fn CoreDebugGRandomPorts::set_flow(Self, Array[CoreDebugGRandomFlow]) -> Sel
 pub fn CoreDebugGRandomPorts::set_labels(Self, Bool) -> Self
 pub fn CoreDebugGRandomPorts::set_re_use(Self, CoreDebugGRandomDoubleQuantity?) -> Self
 pub fn CoreDebugGRandomPorts::set_size(Self, CoreDebugGRandomSize?) -> Self
+
+pub struct CoreDebugGRandomProject {
+  files : Map[String, String]
+}
+pub fn CoreDebugGRandomProject::file_exists(Self, String) -> Bool
+pub fn CoreDebugGRandomProject::list_files(Self) -> Array[String]
+pub fn CoreDebugGRandomProject::read_file(Self, String) -> String?
+pub fn CoreDebugGRandomProject::write_file(Self, String, String) -> Unit
+
+pub struct CoreDebugGRandomProposalProvider {
+  base : AbstractCoreDebugGRandomProposalProvider
+}
+pub fn CoreDebugGRandomProposalProvider::complete_keyword(Self, String, CoreDebugGRandomContentAssistContext, CoreDebugGRandomCompletionProposalAcceptor) -> Unit
+pub fn CoreDebugGRandomProposalProvider::get_keyword_display_string(Self, String) -> String
+
+pub struct CoreDebugGRandomQuickfixProvider {
+  unit : Unit
+}
+
+pub struct CoreDebugGRandomRandGraph {
+  configs : Array[CoreDebugGRandomConfiguration]
+}
+pub fn CoreDebugGRandomRandGraph::add_config(Self, CoreDebugGRandomConfiguration) -> Self
 
 pub struct CoreDebugGRandomRandVal {
   mut min : Double
@@ -4383,6 +4698,12 @@ pub struct CoreDebugGRandomScopeProvider {
   unit : Unit
 }
 
+pub(all) enum CoreDebugGRandomSelectionItem {
+  CoreDebugGRandomSelectionFile(String)
+  CoreDebugGRandomSelectionOther
+}
+pub impl Show for CoreDebugGRandomSelectionItem
+
 pub enum CoreDebugGRandomSide {
   SideNorth
   SideEast
@@ -4401,6 +4722,48 @@ pub struct CoreDebugGRandomStandaloneSetup {
   unit : Unit
 }
 pub fn CoreDebugGRandomStandaloneSetup::create_injector_and_do_emf_registration(Self) -> CoreDebugGRandomRuntimeModule
+
+pub struct CoreDebugGRandomUiBundle {
+  symbolic_name : String
+  classes : Map[String, Bool]
+}
+pub fn CoreDebugGRandomUiBundle::get_symbolic_name(Self) -> String
+pub fn CoreDebugGRandomUiBundle::load_class(Self, String) -> Bool
+pub fn CoreDebugGRandomUiBundle::register_class(Self, String) -> Unit
+
+pub struct CoreDebugGRandomUiCoreException {
+  status : CoreDebugGRandomUiStatus
+}
+pub fn CoreDebugGRandomUiCoreException::get_status(Self) -> CoreDebugGRandomUiStatus
+
+pub struct CoreDebugGRandomUiInjector {
+  providers : Map[String, () -> CoreDebugGRandomUiObject]
+}
+pub fn CoreDebugGRandomUiInjector::get_instance(Self, String) -> CoreDebugGRandomUiObject?
+pub fn CoreDebugGRandomUiInjector::provider_count(Self) -> Int
+pub fn CoreDebugGRandomUiInjector::register_provider(Self, String, () -> CoreDebugGRandomUiObject) -> Unit
+
+pub struct CoreDebugGRandomUiLexerBinding {
+  binding_name : String
+  class_name : String
+}
+
+pub struct CoreDebugGRandomUiModule {
+  plugin_id : String
+  base : AbstractCoreDebugGRandomUiModule
+}
+pub fn CoreDebugGRandomUiModule::get_base(Self) -> AbstractCoreDebugGRandomUiModule
+
+pub enum CoreDebugGRandomUiObject {
+  CoreDebugGRandomUiObjectNamed(String)
+  CoreDebugGRandomUiObjectExecutableExtension(CoreDebugGRandomExecutableExtension)
+}
+
+pub struct CoreDebugGRandomUiStatus {
+  severity : Int
+  symbolic_name : String
+  message : String
+}
 
 pub struct CoreDebugGRandomValidationError {
   message : String
@@ -5625,6 +5988,22 @@ pub struct GmfShapeLayoutData {
   size : GmfDimension?
 }
 
+pub struct GrandomActivator {
+  bundle : CoreDebugGRandomUiBundle
+  injectors : Map[String, CoreDebugGRandomUiInjector]
+}
+pub fn GrandomActivator::create_injector(Self, String) -> CoreDebugGRandomUiInjector
+pub fn GrandomActivator::get_bundle(Self) -> CoreDebugGRandomUiBundle
+pub fn GrandomActivator::get_injector(Self, String) -> CoreDebugGRandomUiInjector
+pub fn GrandomActivator::get_runtime_module(Self, String) -> CoreDebugGRandomRuntimeModule
+pub fn GrandomActivator::get_shared_state_module(Self) -> String
+pub fn GrandomActivator::get_ui_module(Self, String) -> CoreDebugGRandomUiModule
+pub fn GrandomActivator::injector_count(Self) -> Int
+pub fn GrandomActivator::register_bundle_class(Self, String) -> Unit
+pub fn GrandomActivator::register_injector_provider(Self, String, String, () -> CoreDebugGRandomUiObject) -> Unit
+pub fn GrandomActivator::start(Self) -> Unit
+pub fn GrandomActivator::stop(Self) -> Unit
+
 pub enum GraphFeature {
   SelfLoops
   InsideSelfLoops
@@ -6320,6 +6699,24 @@ pub struct InteractiveMrtreeGraphVisitor {
   marker : Int
 }
 pub fn InteractiveMrtreeGraphVisitor::visit(Self, Int) -> Unit
+
+pub struct InternalCoreDebugGRandomLexer {
+  input : String
+}
+pub fn InternalCoreDebugGRandomLexer::get_grammar_file_name(Self) -> String
+pub fn InternalCoreDebugGRandomLexer::get_token_names(Self) -> Array[String]
+pub fn InternalCoreDebugGRandomLexer::lex_all(Self) -> Array[CoreDebugGRandomIdeLexToken]
+
+pub struct InternalCoreDebugGRandomParser {
+  tokens : Array[CoreDebugGRandomIdeLexToken]
+  grammar_access : CoreDebugGRandomIdeGrammarAccess
+}
+pub fn InternalCoreDebugGRandomParser::entry_rule_rand_graph(Self) -> CoreDebugGRandomRandGraph
+pub fn InternalCoreDebugGRandomParser::get_first_rule_name(Self) -> String
+pub fn InternalCoreDebugGRandomParser::get_grammar_access(Self) -> CoreDebugGRandomIdeGrammarAccess
+pub fn InternalCoreDebugGRandomParser::get_grammar_file_name(Self) -> String
+pub fn InternalCoreDebugGRandomParser::get_token_names(Self) -> Array[String]
+pub fn InternalCoreDebugGRandomParser::rule_rand_graph(Self) -> CoreDebugGRandomRandGraph
 
 pub struct InternalGraphvizDotLexer {
   input : String
@@ -7074,6 +7471,12 @@ pub fn[F : Hash, S : Hash] Pair::hash_code(Self[F, S]) -> Int
 pub fn[F, S] Pair::set_first(Self[F, S], F?) -> Unit
 pub fn[F, S] Pair::set_second(Self[F, S], S?) -> Unit
 pub fn[F : Show, S : Show] Pair::to_string(Self[F, S]) -> String
+
+pub struct PartialCoreDebugGRandomContentAssistParser {
+  mut rule : String?
+}
+pub fn PartialCoreDebugGRandomContentAssistParser::get_follow_elements(Self, CoreDebugGRandomParser) -> Array[String]
+pub fn PartialCoreDebugGRandomContentAssistParser::initialize_for(Self, String?) -> Unit
 
 pub struct PhaseDescriptor[P] {
   phases : Array[P]

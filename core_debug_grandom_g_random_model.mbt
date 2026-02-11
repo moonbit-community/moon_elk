@@ -761,3 +761,94 @@ pub fn CoreDebugGRandomConfiguration::set_hierarchy(
     filename: self.filename,
   }
 }
+
+///|
+pub fn CoreDebugGRandomConfiguration::set_seed(
+  self : CoreDebugGRandomConfiguration,
+  seed : Int?,
+) -> CoreDebugGRandomConfiguration {
+  {
+    samples: self.samples,
+    form: self.form,
+    nodes: self.nodes,
+    edges: self.edges,
+    m_w: self.m_w,
+    max_width: self.max_width,
+    m_d: self.m_d,
+    max_degree: self.max_degree,
+    p_f: self.p_f,
+    fraction: self.fraction,
+    hierarchy: self.hierarchy,
+    seed,
+    format: self.format,
+    filename: self.filename,
+  }
+}
+
+///|
+pub fn CoreDebugGRandomConfiguration::set_format(
+  self : CoreDebugGRandomConfiguration,
+  format : CoreDebugGRandomFormats?,
+) -> CoreDebugGRandomConfiguration {
+  {
+    samples: self.samples,
+    form: self.form,
+    nodes: self.nodes,
+    edges: self.edges,
+    m_w: self.m_w,
+    max_width: self.max_width,
+    m_d: self.m_d,
+    max_degree: self.max_degree,
+    p_f: self.p_f,
+    fraction: self.fraction,
+    hierarchy: self.hierarchy,
+    seed: self.seed,
+    format,
+    filename: self.filename,
+  }
+}
+
+///|
+pub fn CoreDebugGRandomConfiguration::set_filename(
+  self : CoreDebugGRandomConfiguration,
+  filename : String?,
+) -> CoreDebugGRandomConfiguration {
+  {
+    samples: self.samples,
+    form: self.form,
+    nodes: self.nodes,
+    edges: self.edges,
+    m_w: self.m_w,
+    max_width: self.max_width,
+    m_d: self.m_d,
+    max_degree: self.max_degree,
+    p_f: self.p_f,
+    fraction: self.fraction,
+    hierarchy: self.hierarchy,
+    seed: self.seed,
+    format: self.format,
+    filename,
+  }
+}
+
+///|
+pub struct CoreDebugGRandomRandGraph {
+  configs : Array[CoreDebugGRandomConfiguration]
+}
+
+///|
+pub fn new_core_debug_grandom_rand_graph(
+  configs? : Array[CoreDebugGRandomConfiguration] = [],
+) -> CoreDebugGRandomRandGraph {
+  { configs: configs.copy() }
+}
+
+///|
+pub fn CoreDebugGRandomRandGraph::add_config(
+  self : CoreDebugGRandomRandGraph,
+  config : CoreDebugGRandomConfiguration,
+) -> CoreDebugGRandomRandGraph {
+  let next_configs = self.configs.copy()
+  next_configs.push(config)
+  { configs: next_configs }
+}
