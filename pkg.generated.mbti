@@ -3198,6 +3198,8 @@ pub fn new_bezier_curve(KVector, KVector, KVector, KVector) -> BezierCurve
 
 pub fn new_bezier_spline() -> BezierSpline
 
+pub fn[V : Hash + Eq] new_bi_linked_hash_multi_map() -> BiLinkedHashMultiMap[V]
+
 pub fn new_binary_indexed_tree(Int) -> BinaryIndexedTree
 
 pub fn[T] new_blackbox_test_method(String, (T, Int) -> Unit, ignored? : Bool) -> BlackboxTestMethod[T]
@@ -6369,6 +6371,19 @@ pub fn BezierSpline::get_inner_points(Self) -> Array[KVector]
 pub fn BezierSpline::get_polyline_apprx(Self, Int) -> Array[KVector]
 pub fn BezierSpline::get_start_point(Self) -> KVector
 pub fn BezierSpline::to_string(Self) -> String
+
+pub struct BiLinkedHashMultiMap[V] {
+  key_to_values : Map[Int, Array[V]]
+  value_to_key : Map[V, Int]
+  key_order : Array[Int]
+}
+pub fn[V : Hash + Eq] BiLinkedHashMultiMap::get_key(Self[V], V) -> Int?
+pub fn[V : Hash + Eq] BiLinkedHashMultiMap::get_values(Self[V], Int) -> Array[V]
+pub fn[V : Hash + Eq] BiLinkedHashMultiMap::is_maximal_key(Self[V], Int) -> Bool
+pub fn[V : Hash + Eq] BiLinkedHashMultiMap::is_minimal_key(Self[V], Int) -> Bool
+pub fn[V : Hash + Eq] BiLinkedHashMultiMap::key_set(Self[V]) -> Array[Int]
+pub fn[V : Hash + Eq] BiLinkedHashMultiMap::put(Self[V], Int, V) -> Unit
+pub fn[V : Hash + Eq] BiLinkedHashMultiMap::put_all(Self[V], Int, Array[V]) -> Unit
 
 pub struct BinaryIndexedTree {
   mut binary_sums : Array[Int]
