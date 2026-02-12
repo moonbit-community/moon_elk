@@ -79,6 +79,13 @@ pub fn NodeRelativePortDistributor::get_port_ranks(
 }
 
 ///|
+pub fn NodeRelativePortDistributor::as_abstract_barycenter_port_distributor(
+  self : NodeRelativePortDistributor,
+) -> AbstractBarycenterPortDistributor {
+  self.distributor
+}
+
+///|
 pub fn NodeRelativePortDistributor::distribute_ports_while_sweeping(
   self : NodeRelativePortDistributor,
   node_order : Array[Array[LNode]],

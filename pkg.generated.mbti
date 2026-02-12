@@ -3294,6 +3294,8 @@ pub fn new_apply_layout_request() -> ApplyLayoutRequest
 
 pub fn new_atomic_cell() -> Cell
 
+pub fn new_barycenter_heuristic(ForsterConstraintResolver, GreedySwitchMockRandom, AbstractBarycenterPortDistributor, Array[Array[LNode]]) -> BarycenterHeuristic
+
 pub fn new_barycenter_state(LNode) -> BarycenterState
 
 pub fn new_basic_progress_monitor() -> IElkProgressMonitor
@@ -4702,6 +4704,10 @@ pub fn new_successor_quadrants_generic(IPolyominoSuccessor) -> IPolyominoSuccess
 
 pub fn new_svg_image(String?) -> SvgImage
 
+pub fn new_sweep_copy(Array[Array[LNode]]) -> SweepCopy
+
+pub fn new_sweep_copy_from(SweepCopy) -> SweepCopy
+
 pub fn new_switch_decider(Int, Array[Array[LNode]], CrossingMatrixFiller, Array[Int], GraphInfoHolder, Bool) -> SwitchDecider
 
 pub fn new_tarjan(Array[LEdge]) -> Tarjan
@@ -5033,6 +5039,8 @@ pub fn port_side_is_vertical(PortSide) -> Bool
 pub fn port_side_to_string(PortSide) -> String
 
 pub fn port_side_values() -> Array[PortSide]
+
+pub fn port_type_values() -> Array[PortType]
 
 pub fn port_width(Int) -> Double
 
@@ -6603,12 +6611,28 @@ pub fn ApplyLayoutRequest::get_y_bound(Self) -> Double
 pub fn ApplyLayoutRequest::set_scale(Self, Double) -> Unit
 pub fn ApplyLayoutRequest::set_upper_bound(Self, Double, Double) -> Unit
 
+pub struct BarycenterHeuristic {
+  mut port_ranks : Array[Double]
+  random : GreedySwitchMockRandom
+  constraint_resolver : ForsterConstraintResolver
+  mut barycenter_state : Array[Array[BarycenterState?]]
+  port_distributor : AbstractBarycenterPortDistributor
+}
+pub fn BarycenterHeuristic::always_improves(Self) -> Bool
+pub fn BarycenterHeuristic::as_i_crossing_minimization_heuristic(Self) -> ICrossingMinimizationHeuristic
+pub fn BarycenterHeuristic::init_after_traversal(Self) -> Unit
+pub fn BarycenterHeuristic::init_at_layer_level(Self, Int, Array[Array[LNode]]) -> Unit
+pub fn BarycenterHeuristic::is_deterministic(Self) -> Bool
+pub fn BarycenterHeuristic::minimize_crossings(Self, Array[Array[LNode]], Int, Bool, Bool) -> Bool
+pub fn BarycenterHeuristic::minimize_crossings_layer(Self, Array[LNode], Bool, Bool, Bool) -> Unit
+pub fn BarycenterHeuristic::set_first_layer_order(Self, Array[Array[LNode]], Bool) -> Bool
+
 pub struct BarycenterState {
   node : LNode
-  summed_weight : Double
-  degree : Int
+  mut summed_weight : Double
+  mut degree : Int
   mut barycenter : Double?
-  visited : Bool
+  mut visited : Bool
 }
 pub fn BarycenterState::to_string(Self) -> String
 
@@ -13658,6 +13682,7 @@ pub enum NodePromotionStrategy {
 pub struct NodeRelativePortDistributor {
   distributor : AbstractBarycenterPortDistributor
 }
+pub fn NodeRelativePortDistributor::as_abstract_barycenter_port_distributor(Self) -> AbstractBarycenterPortDistributor
 pub fn NodeRelativePortDistributor::as_i_sweep_port_distributor(Self) -> ISweepPortDistributor
 pub fn NodeRelativePortDistributor::as_initializable(Self) -> IInitializable
 pub fn NodeRelativePortDistributor::calculate_port_ranks(Self, Array[LNode], PortType) -> Unit
@@ -14600,6 +14625,13 @@ pub fn SvgImage::isave(Self, f_name? : String?) -> Unit
 pub fn SvgImage::remove_group(Self, String) -> Unit
 pub fn SvgImage::save(Self, f_name? : String?) -> Unit
 pub fn SvgImage::set_view_box(Self, Double, Double, Double, Double) -> Unit
+
+pub struct SweepCopy {
+  node_order : Array[Array[LNode]]
+  port_orders : Array[Array[Array[LPort]]]
+}
+pub fn SweepCopy::nodes(Self) -> Array[Array[LNode]]
+pub fn SweepCopy::transfer_node_and_port_orders_to_graph(Self, LGraph, Bool) -> Unit
 
 pub struct SwitchDecider {
   free_layer : Array[LNode]

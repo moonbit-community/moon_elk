@@ -72,10 +72,10 @@ fn forster_group_barycenter_value(group : ConstraintGroup) -> Double {
 ///|
 pub struct BarycenterState {
   node : LNode
-  summed_weight : Double
-  degree : Int
+  mut summed_weight : Double
+  mut degree : Int
   mut barycenter : Double?
-  visited : Bool
+  mut visited : Bool
 }
 
 ///|

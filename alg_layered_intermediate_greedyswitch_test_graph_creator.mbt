@@ -813,22 +813,30 @@ pub fn GreedySwitchTestGraphCreator::add_north_south_edge(
     Some(north_south_dummy),
   )
 
-  node_with_ns_ports
-  .get_property_l_node_array(internal_properties_barycenter_associates)
-  .push(north_south_dummy)
+  let barycenter_associates = node_with_ns_ports.get_property_l_node_array(
+    internal_properties_barycenter_associates,
+  )
+  barycenter_associates.push(north_south_dummy)
+  node_with_ns_ports.set_property_l_node_array(
+    internal_properties_barycenter_associates, barycenter_associates,
+  )
 
   if test_graph_creator_side_equals(side, PortSide::North) {
-    north_south_dummy
-    .get_property_l_node_array(
+    let successor_constraints = north_south_dummy.get_property_l_node_array(
       internal_properties_in_layer_successor_constraints,
     )
-    .push(node_with_ns_ports)
+    successor_constraints.push(node_with_ns_ports)
+    north_south_dummy.set_property_l_node_array(
+      internal_properties_in_layer_successor_constraints, successor_constraints,
+    )
   } else {
-    node_with_ns_ports
-    .get_property_l_node_array(
+    let successor_constraints = node_with_ns_ports.get_property_l_node_array(
       internal_properties_in_layer_successor_constraints,
     )
-    .push(north_south_dummy)
+    successor_constraints.push(north_south_dummy)
+    node_with_ns_ports.set_property_l_node_array(
+      internal_properties_in_layer_successor_constraints, successor_constraints,
+    )
   }
 }
 
