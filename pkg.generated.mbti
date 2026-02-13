@@ -3838,6 +3838,8 @@ pub fn new_draw2d_layout_provider() -> Draw2DLayoutProvider
 
 pub fn new_dropdown_int_range_action(ConfigState, String, Int, Int, Int, State, DisCoGraphRenderingCanvas) -> DropdownIntRangeAction
 
+pub fn new_dummy_self_loop_processor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
+
 pub fn new_eades_model() -> EadesModel
 
 pub fn new_eclipse_runtime_detector() -> EclipseRuntimeDetector
