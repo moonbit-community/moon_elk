@@ -2,6 +2,7 @@
 pub struct LGraph {
   mut id : Int
   port_side_array_properties : Map[String, Array[PortSide]]
+  graph_properties_array_properties : Map[String, Array[GraphProperties]]
   int_properties : Map[String, Int]
   bool_properties : Map[String, Bool]
   double_properties : Map[String, Double]
@@ -11,6 +12,7 @@ pub struct LGraph {
     ComponentOrderingStrategy,
   ]
   direction_properties : Map[String, Direction]
+  spline_routing_mode_properties : Map[String, SplineRoutingMode]
   size : KVector
   offset : KVector
   layerless_nodes : Array[LNode]
@@ -23,12 +25,14 @@ pub fn new_l_graph() -> LGraph {
   {
     id: 0,
     port_side_array_properties: {},
+    graph_properties_array_properties: {},
     int_properties: {},
     bool_properties: {},
     double_properties: {},
     string_properties: {},
     component_ordering_strategy_properties: {},
     direction_properties: {},
+    spline_routing_mode_properties: {},
     size: new_kvector(),
     offset: new_kvector(),
     layerless_nodes: [],
@@ -57,11 +61,31 @@ pub fn LGraph::set_property_port_side_array(
 }
 
 ///|
+pub fn LGraph::set_property_graph_properties_array(
+  self : LGraph,
+  property : IProperty[Array[GraphProperties]],
+  value : Array[GraphProperties],
+) -> Unit {
+  self.graph_properties_array_properties[property.get_id()] = value.copy()
+}
+
+///|
 pub fn LGraph::get_property_port_side_array(
   self : LGraph,
   property : IProperty[Array[PortSide]],
 ) -> Array[PortSide] {
   match self.port_side_array_properties.get(property.get_id()) {
+    Some(value) => value.copy()
+    None => property.get_default().copy()
+  }
+}
+
+///|
+pub fn LGraph::get_property_graph_properties_array(
+  self : LGraph,
+  property : IProperty[Array[GraphProperties]],
+) -> Array[GraphProperties] {
+  match self.graph_properties_array_properties.get(property.get_id()) {
     Some(value) => value.copy()
     None => property.get_default().copy()
   }
@@ -88,6 +112,14 @@ pub fn LGraph::get_property_int(
 }
 
 ///|
+pub fn LGraph::has_property_int(
+  self : LGraph,
+  property : IProperty[Int],
+) -> Bool {
+  self.int_properties.contains(property.get_id())
+}
+
+///|
 pub fn LGraph::set_property_bool(
   self : LGraph,
   property : IProperty[Bool],
@@ -105,6 +137,14 @@ pub fn LGraph::get_property_bool(
     Some(value) => value
     None => property.get_default()
   }
+}
+
+///|
+pub fn LGraph::has_property_bool(
+  self : LGraph,
+  property : IProperty[Bool],
+) -> Bool {
+  self.bool_properties.contains(property.get_id())
 }
 
 ///|
@@ -128,6 +168,14 @@ pub fn LGraph::get_property_double(
 }
 
 ///|
+pub fn LGraph::has_property_double(
+  self : LGraph,
+  property : IProperty[Double],
+) -> Bool {
+  self.double_properties.contains(property.get_id())
+}
+
+///|
 pub fn LGraph::set_property_string(
   self : LGraph,
   property : IProperty[String],
@@ -145,6 +193,14 @@ pub fn LGraph::get_property_string(
     Some(value) => value
     None => property.get_default()
   }
+}
+
+///|
+pub fn LGraph::has_property_string(
+  self : LGraph,
+  property : IProperty[String],
+) -> Bool {
+  self.string_properties.contains(property.get_id())
 }
 
 ///|
@@ -185,6 +241,34 @@ pub fn LGraph::get_property_direction(
     Some(value) => value
     None => property.get_default()
   }
+}
+
+///|
+pub fn LGraph::set_property_spline_routing_mode(
+  self : LGraph,
+  property : IProperty[SplineRoutingMode],
+  value : SplineRoutingMode,
+) -> Unit {
+  self.spline_routing_mode_properties[property.get_id()] = value
+}
+
+///|
+pub fn LGraph::get_property_spline_routing_mode(
+  self : LGraph,
+  property : IProperty[SplineRoutingMode],
+) -> SplineRoutingMode {
+  match self.spline_routing_mode_properties.get(property.get_id()) {
+    Some(value) => value
+    None => property.get_default()
+  }
+}
+
+///|
+pub fn LGraph::has_property_spline_routing_mode(
+  self : LGraph,
+  property : IProperty[SplineRoutingMode],
+) -> Bool {
+  self.spline_routing_mode_properties.contains(property.get_id())
 }
 
 ///|
@@ -237,6 +321,12 @@ pub fn LGraph::copy_properties(self : LGraph, source : LGraph) -> Unit {
     self.port_side_array_properties[key] = value.copy()
   }
 
+  self.graph_properties_array_properties.clear()
+  for entry in source.graph_properties_array_properties.to_array() {
+    let (key, value) = entry
+    self.graph_properties_array_properties[key] = value.copy()
+  }
+
   self.int_properties.clear()
   for entry in source.int_properties.to_array() {
     let (key, value) = entry
@@ -271,5 +361,11 @@ pub fn LGraph::copy_properties(self : LGraph, source : LGraph) -> Unit {
   for entry in source.direction_properties.to_array() {
     let (key, value) = entry
     self.direction_properties[key] = value
+  }
+
+  self.spline_routing_mode_properties.clear()
+  for entry in source.spline_routing_mode_properties.to_array() {
+    let (key, value) = entry
+    self.spline_routing_mode_properties[key] = value
   }
 }

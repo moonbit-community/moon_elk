@@ -2,7 +2,10 @@
 let spline_edge_router_wb_tolerance : Double = 0.0001
 
 ///|
-fn spline_edge_router_wb_assert_close(actual : Double, expected : Double) -> Unit {
+fn spline_edge_router_wb_assert_close(
+  actual : Double,
+  expected : Double,
+) -> Unit {
   let diff = (actual - expected).abs()
   if diff > spline_edge_router_wb_tolerance {
     abort("expected=\{expected} actual=\{actual} diff=\{diff}")
@@ -137,7 +140,9 @@ test "spline edge router compute sloppy spacing uses max vertical span" {
   edge.set_source(Some(source_port))
   edge.set_target(Some(target_port))
 
-  let spacing = spline_edge_router_compute_sloppy_spacing(right_layer, 5.0, 20.0, 2.0)
+  let spacing = spline_edge_router_compute_sloppy_spacing(
+    right_layer, 5.0, 20.0, 2.0,
+  )
   spline_edge_router_wb_assert_close(spacing, 5.0)
 }
 
@@ -165,9 +170,7 @@ test "spline edge router edge chain and spline path follow successor map" {
   assert_eq(ledge_internal_handle(edge_chain[1]), ledge_internal_handle(edge_2))
 
   let segment_chain = spline_edge_router_get_spline_path(
-    edge_1,
-    successing_edge,
-    edge_to_segment_map,
+    edge_1, successing_edge, edge_to_segment_map,
   )
   assert_eq(segment_chain.length(), 2)
   assert_true(segment_chain[0].initial_segment)
@@ -271,11 +274,7 @@ test "spline edge router create segments and ranking assigns topological ranks" 
 
   let random = @random.Rand::new()
   spline_edge_router_create_segments_and_compute_ranking(
-    left_ports,
-    right_ports,
-    edges_remaining,
-    spline_segments,
-    edge_to_segment_map,
+    left_ports, right_ports, edges_remaining, spline_segments, edge_to_segment_map,
     random,
   )
 
@@ -343,12 +342,20 @@ test "spline edge router clear then fill mappings collects layer-local sets" {
   )
 
   assert_eq(edges_remaining_layer.length(), 1)
-  assert_eq(ledge_internal_handle(edges_remaining_layer[0]), ledge_internal_handle(edge))
+  assert_eq(
+    ledge_internal_handle(edges_remaining_layer[0]),
+    ledge_internal_handle(edge),
+  )
   assert_eq(self_loops_layer.length(), 1)
-  assert_eq(ledge_internal_handle(self_loops_layer[0]), ledge_internal_handle(self_loop))
+  assert_eq(
+    ledge_internal_handle(self_loops_layer[0]),
+    ledge_internal_handle(self_loop),
+  )
   assert_eq(start_edges.length(), 1)
   assert_eq(ledge_internal_handle(start_edges[0]), ledge_internal_handle(edge))
   assert_true(spline_edge_router_port_set_contains(left_ports_layer, left_port))
-  assert_true(spline_edge_router_port_set_contains(right_ports_layer, right_port))
+  assert_true(
+    spline_edge_router_port_set_contains(right_ports_layer, right_port),
+  )
   assert_eq(spline_segments_layer.length(), 0)
 }

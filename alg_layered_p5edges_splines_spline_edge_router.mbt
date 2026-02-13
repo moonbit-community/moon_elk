@@ -117,6 +117,113 @@ fn spline_edge_router_graph_properties_contain(
 }
 
 ///|
+fn spline_edge_router_port_side_equals(
+  left : PortSide,
+  right : PortSide,
+) -> Bool {
+  match (left, right) {
+    (North, North) => true
+    (East, East) => true
+    (South, South) => true
+    (West, West) => true
+    (SideUndefined, SideUndefined) => true
+    _ => false
+  }
+}
+
+///|
+fn spline_edge_router_is_external_west_or_east_port(node : LNode) -> Bool {
+  match node.get_type() {
+    NodeType::ExternalPort => {
+      let ext_port_side = node.get_property_port_side(
+        internal_properties_ext_port_side,
+      )
+      spline_edge_router_port_side_equals(ext_port_side, PortSide::West) ||
+      spline_edge_router_port_side_equals(ext_port_side, PortSide::East)
+    }
+    _ => false
+  }
+}
+
+///|
+fn spline_edge_router_all_external_west_or_east_ports(layer : Layer) -> Bool {
+  for node in layer.get_nodes() {
+    if !spline_edge_router_is_external_west_or_east_port(node) {
+      return false
+    }
+  }
+  true
+}
+
+///|
+fn spline_edge_router_place_nodes_horizontally(
+  layer : Layer,
+  xoffset : Double,
+) -> Unit {
+  let mut max_left_margin = 0.0
+  let mut max_right_margin = 0.0
+  for node in layer.get_nodes() {
+    let margin = node.get_margin()
+    if margin.left > max_left_margin {
+      max_left_margin = margin.left
+    }
+    if margin.right > max_right_margin {
+      max_right_margin = margin.right
+    }
+  }
+
+  for node in layer.get_nodes() {
+    let alignment_value = node.get_property_string(alignment)
+    let ratio = if alignment_value == "LEFT" {
+      0.0
+    } else if alignment_value == "RIGHT" {
+      1.0
+    } else if alignment_value == "CENTER" {
+      0.5
+    } else {
+      let mut inports = 0
+      let mut outports = 0
+      for port in node.get_ports() {
+        if !port.get_incoming_edges().is_empty() {
+          inports += 1
+        }
+        if !port.get_outgoing_edges().is_empty() {
+          outports += 1
+        }
+      }
+
+      if inports + outports == 0 {
+        0.5
+      } else {
+        outports.to_double() / (inports + outports).to_double()
+      }
+    }
+
+    let size = layer.get_size()
+    let node_size = node.get_size().x
+    let mut xpos = (size.x - node_size) * ratio
+
+    if ratio > 0.5 {
+      xpos -= max_right_margin * 2.0 * (ratio - 0.5)
+    } else if ratio < 0.5 {
+      xpos += max_left_margin * 2.0 * (0.5 - ratio)
+    }
+
+    let left_margin = node.get_margin().left
+    if xpos < left_margin {
+      xpos = left_margin
+    }
+
+    let right_margin = node.get_margin().right
+    if xpos > size.x - right_margin - node_size {
+      xpos = size.x - right_margin - node_size
+    }
+
+    node.get_position().x = xoffset + xpos
+  }
+}
+
+///|
 fn spline_edge_router_edge_source(edge : LEdge) -> LPort {
   match edge.get_source() {
     Some(source) => source
@@ -149,7 +256,9 @@ fn spline_edge_router_segment_identity(segment : SplineSegment) -> Int {
 }
 
 ///|
-fn spline_edge_router_dependency_source(dependency : SplineDependency) -> SplineSegment {
+fn spline_edge_router_dependency_source(
+  dependency : SplineDependency,
+) -> SplineSegment {
   match dependency.source {
     Some(source) => source
     None => abort("dependency source is missing")
@@ -157,7 +266,9 @@ fn spline_edge_router_dependency_source(dependency : SplineDependency) -> Spline
 }
 
 ///|
-fn spline_edge_router_dependency_target(dependency : SplineDependency) -> SplineSegment {
+fn spline_edge_router_dependency_target(
+  dependency : SplineDependency,
+) -> SplineSegment {
   match dependency.target {
     Some(target) => target
     None => abort("dependency target is missing")
@@ -193,7 +304,10 @@ fn spline_edge_router_port_set_contains(
 }
 
 ///|
-fn spline_edge_router_port_set_add(ports : Array[LPort], candidate : LPort) -> Unit {
+fn spline_edge_router_port_set_add(
+  ports : Array[LPort],
+  candidate : LPort,
+) -> Unit {
   if !spline_edge_router_port_set_contains(ports, candidate) {
     ports.push(candidate)
   }
@@ -214,7 +328,10 @@ fn spline_edge_router_edge_set_contains(
 }
 
 ///|
-fn spline_edge_router_edge_set_add(edges : Array[LEdge], candidate : LEdge) -> Unit {
+fn spline_edge_router_edge_set_add(
+  edges : Array[LEdge],
+  candidate : LEdge,
+) -> Unit {
   if !spline_edge_router_edge_set_contains(edges, candidate) {
     edges.push(candidate)
   }
@@ -268,12 +385,14 @@ fn spline_edge_router_dependency_equals(
   left.weight == right.weight &&
   spline_edge_router_segment_identity(
     spline_edge_router_dependency_source(left),
-  ) == spline_edge_router_segment_identity(
+  ) ==
+  spline_edge_router_segment_identity(
     spline_edge_router_dependency_source(right),
   ) &&
   spline_edge_router_segment_identity(
     spline_edge_router_dependency_target(left),
-  ) == spline_edge_router_segment_identity(
+  ) ==
+  spline_edge_router_segment_identity(
     spline_edge_router_dependency_target(right),
   )
 }
@@ -297,7 +416,9 @@ fn spline_edge_router_find_and_add_successor(
   edge : LEdge,
   successing_edge : Map[Int, LEdge],
 ) -> Unit {
-  let target_node = spline_edge_router_port_node(spline_edge_router_edge_target(edge))
+  let target_node = spline_edge_router_port_node(
+    spline_edge_router_edge_target(edge),
+  )
   if spline_edge_router_is_normal_node(target_node) {
     return
   }
@@ -351,7 +472,7 @@ fn spline_edge_router_clear_then_fill_mappings(
   self_loops_layer.clear()
 
   match left_layer {
-    Some(layer) => {
+    Some(layer) =>
       for node in layer.get_nodes() {
         for source_port in node.get_ports_by_side(PortSide::East) {
           spline_edge_router_port_set_add(left_ports_layer, source_port)
@@ -378,17 +499,18 @@ fn spline_edge_router_clear_then_fill_mappings(
             } else if spline_edge_router_layer_equals(target_layer, left_layer) {
               spline_edge_router_port_set_add(left_ports_layer, target_port)
             } else {
-              ignore(spline_edge_router_edge_set_remove(edges_remaining_layer, edge))
+              ignore(
+                spline_edge_router_edge_set_remove(edges_remaining_layer, edge),
+              )
             }
           }
         }
       }
-    }
     None => ()
   }
 
   match right_layer {
-    Some(layer) => {
+    Some(layer) =>
       for node in layer.get_nodes() {
         for port in node.get_ports() {
           for edge in port.get_outgoing_edges() {
@@ -423,12 +545,13 @@ fn spline_edge_router_clear_then_fill_mappings(
             } else if spline_edge_router_layer_equals(target_layer, left_layer) {
               spline_edge_router_port_set_add(left_ports_layer, target_port)
             } else {
-              ignore(spline_edge_router_edge_set_remove(edges_remaining_layer, edge))
+              ignore(
+                spline_edge_router_edge_set_remove(edges_remaining_layer, edge),
+              )
             }
           }
         }
       }
-    }
     None => ()
   }
 }
@@ -444,16 +567,12 @@ fn spline_edge_router_create_spline_segments(
   for edge in edges {
     let source_port = spline_edge_router_edge_source(edge)
     let source_side = spline_edge_router_side_for_port(
-      source_port,
-      left_ports,
-      right_ports,
+      source_port, left_ports, right_ports,
     )
 
     let target_port = spline_edge_router_edge_target(edge)
     let target_side = spline_edge_router_side_for_port(
-      target_port,
-      left_ports,
-      right_ports,
+      target_port, left_ports, right_ports,
     )
 
     let segment = new_spline_segment_single_edge(edge, source_side, target_side)
@@ -504,7 +623,9 @@ fn spline_edge_router_create_spline_segments_for_hyper_edges(
         continue
       }
 
-      let other_side = if spline_edge_router_port_set_contains(left_ports, other_port) {
+      let other_side = if spline_edge_router_port_set_contains(
+          left_ports, other_port,
+        ) {
         SplineSideToProcess::Left
       } else {
         SplineSideToProcess::Right
@@ -518,7 +639,9 @@ fn spline_edge_router_create_spline_segments_for_hyper_edges(
     }
 
     if up_edges.length() > 1 {
-      let segment = new_spline_segment_hyper_edge(single_port, up_edges, side_to_process)
+      let segment = new_spline_segment_hyper_edge(
+        single_port, up_edges, side_to_process,
+      )
       for pair in up_edges {
         let edge = match pair.get_second() {
           Some(value) => value
@@ -531,9 +654,7 @@ fn spline_edge_router_create_spline_segments_for_hyper_edges(
     }
     if down_edges.length() > 1 {
       let segment = new_spline_segment_hyper_edge(
-        single_port,
-        down_edges,
-        side_to_process,
+        single_port, down_edges, side_to_process,
       )
       for pair in down_edges {
         let edge = match pair.get_second() {
@@ -594,18 +715,17 @@ fn spline_edge_router_create_segments_and_compute_ranking(
     edge_to_segment_map,
   )
   spline_edge_router_create_spline_segments(
-    edges_remaining,
-    left_ports,
-    right_ports,
-    spline_segments,
-    edge_to_segment_map,
+    edges_remaining, left_ports, right_ports, spline_segments, edge_to_segment_map,
   )
 
   let mut i = 0
   while i < spline_segments.length() {
     let mut j = i + 1
     while j < spline_segments.length() {
-      spline_edge_router_create_dependency(spline_segments[i], spline_segments[j])
+      spline_edge_router_create_dependency(
+        spline_segments[i],
+        spline_segments[j],
+      )
       j += 1
     }
     i += 1
@@ -626,10 +746,8 @@ fn spline_edge_router_compute_sloppy_spacing(
   for node in right_layer.get_nodes() {
     let mut max_curr_input_y_diff = 0.0
     for incoming_edge in node.get_incoming_edges() {
-      let source_pos =
-        spline_edge_router_edge_source(incoming_edge).get_absolute_anchor().y
-      let target_pos =
-        spline_edge_router_edge_target(incoming_edge).get_absolute_anchor().y
+      let source_pos = spline_edge_router_edge_source(incoming_edge).get_absolute_anchor().y
+      let target_pos = spline_edge_router_edge_target(incoming_edge).get_absolute_anchor().y
       let diff = (target_pos - source_pos).abs()
       if diff > max_curr_input_y_diff {
         max_curr_input_y_diff = diff
@@ -659,37 +777,37 @@ fn spline_edge_router_create_dependency(
 
   for port in edge0.right_ports {
     if splines_math_is_between_double(
-      port.get_absolute_anchor().y,
-      edge1.hyper_edge_top_y_pos,
-      edge1.hyper_edge_bottom_y_pos,
-    ) {
+        port.get_absolute_anchor().y,
+        edge1.hyper_edge_top_y_pos,
+        edge1.hyper_edge_bottom_y_pos,
+      ) {
       edge0_counter += 1
     }
   }
   for port in edge0.left_ports {
     if splines_math_is_between_double(
-      port.get_absolute_anchor().y,
-      edge1.hyper_edge_top_y_pos,
-      edge1.hyper_edge_bottom_y_pos,
-    ) {
+        port.get_absolute_anchor().y,
+        edge1.hyper_edge_top_y_pos,
+        edge1.hyper_edge_bottom_y_pos,
+      ) {
       edge0_counter -= 1
     }
   }
   for port in edge1.right_ports {
     if splines_math_is_between_double(
-      port.get_absolute_anchor().y,
-      edge0.hyper_edge_top_y_pos,
-      edge0.hyper_edge_bottom_y_pos,
-    ) {
+        port.get_absolute_anchor().y,
+        edge0.hyper_edge_top_y_pos,
+        edge0.hyper_edge_bottom_y_pos,
+      ) {
       edge1_counter += 1
     }
   }
   for port in edge1.left_ports {
     if splines_math_is_between_double(
-      port.get_absolute_anchor().y,
-      edge0.hyper_edge_top_y_pos,
-      edge0.hyper_edge_bottom_y_pos,
-    ) {
+        port.get_absolute_anchor().y,
+        edge0.hyper_edge_top_y_pos,
+        edge0.hyper_edge_bottom_y_pos,
+      ) {
       edge1_counter -= 1
     }
   }
@@ -824,7 +942,9 @@ fn spline_edge_router_break_cycles(
       let target = spline_edge_router_dependency_target(dependency)
       if source.mark > target.mark {
         ignore(source.outgoing.remove(index))
-        ignore(spline_edge_router_dependency_remove(target.incoming, dependency))
+        ignore(
+          spline_edge_router_dependency_remove(target.incoming, dependency),
+        )
 
         if dependency.weight > 0 {
           dependency.source = Some(target)
@@ -840,7 +960,9 @@ fn spline_edge_router_break_cycles(
 }
 
 ///|
-fn spline_edge_router_topological_numbering(edges : Array[SplineSegment]) -> Unit {
+fn spline_edge_router_topological_numbering(
+  edges : Array[SplineSegment],
+) -> Unit {
   let sources : Array[SplineSegment] = []
   let rightward_targets : Array[SplineSegment] = []
 
@@ -940,7 +1062,9 @@ fn spline_edge_router_get_spline_path(
   initial_segment.initial_segment = true
   let initial_edge = initial_segment.edges[0]
   let initial_source = spline_edge_router_edge_source(initial_edge)
-  initial_segment.source_node = Some(spline_edge_router_port_node(initial_source))
+  initial_segment.source_node = Some(
+    spline_edge_router_port_node(initial_source),
+  )
 
   let last_segment = segment_chain[segment_chain.length() - 1]
   last_segment.last_segment = true
@@ -955,21 +1079,23 @@ fn spline_edge_router_get_spline_path(
 fn spline_edge_router_configuration(
   graph : LGraph,
 ) -> LayoutProcessorConfiguration[LayeredPhases, LGraph]? {
-  let configuration = layout_processor_configuration_create(layered_phase_descriptor)
+  let configuration = layout_processor_configuration_create(
+    layered_phase_descriptor,
+  )
   ignore(
     configuration
     .add_after(
-        LayeredPhases::P5EdgeRouting,
-        layered_intermediate_processor_factory(
-          IntermediateProcessorStrategy::FinalSplineBendpointsCalculator,
-        ),
-      )
-    .add_before(
-        LayeredPhases::P3NodeOrdering,
-        layered_intermediate_processor_factory(
-          IntermediateProcessorStrategy::InvertedPortProcessor,
-        ),
+      LayeredPhases::P5EdgeRouting,
+      layered_intermediate_processor_factory(
+        IntermediateProcessorStrategy::FinalSplineBendpointsCalculator,
       ),
+    )
+    .add_before(
+      LayeredPhases::P3NodeOrdering,
+      layered_intermediate_processor_factory(
+        IntermediateProcessorStrategy::InvertedPortProcessor,
+      ),
+    ),
   )
 
   let graph_properties = graph.get_property_graph_properties_array(
@@ -980,17 +1106,17 @@ fn spline_edge_router_configuration(
     ignore(
       configuration
       .add_before(
-          LayeredPhases::P1CycleBreaking,
-          layered_intermediate_processor_factory(
-            IntermediateProcessorStrategy::SelfLoopPreprocessor,
-          ),
-        )
+        LayeredPhases::P1CycleBreaking,
+        layered_intermediate_processor_factory(
+          IntermediateProcessorStrategy::SelfLoopPreprocessor,
+        ),
+      )
       .add_after(
-          LayeredPhases::P5EdgeRouting,
-          layered_intermediate_processor_factory(
-            IntermediateProcessorStrategy::SelfLoopPostprocessor,
-          ),
-        )
+        LayeredPhases::P5EdgeRouting,
+        layered_intermediate_processor_factory(
+          IntermediateProcessorStrategy::SelfLoopPostprocessor,
+        ),
+      )
       .before(LayeredPhases::P4NodePlacement)
       .add(
         layered_intermediate_processor_factory(
@@ -1009,47 +1135,50 @@ fn spline_edge_router_configuration(
     ignore(
       configuration
       .add_before(
-          LayeredPhases::P2Layering,
-          layered_intermediate_processor_factory(
-            IntermediateProcessorStrategy::LabelDummyInserter,
-          ),
-        )
-      .add_before(
-          LayeredPhases::P4NodePlacement,
-          layered_intermediate_processor_factory(
-            IntermediateProcessorStrategy::LabelDummySwitcher,
-          ),
-        )
-      .add_before(
-          LayeredPhases::P4NodePlacement,
-          layered_intermediate_processor_factory(
-            IntermediateProcessorStrategy::LabelSideSelector,
-          ),
-        )
-      .add_after(
-          LayeredPhases::P5EdgeRouting,
-          layered_intermediate_processor_factory(
-            IntermediateProcessorStrategy::LabelDummyRemover,
-          ),
+        LayeredPhases::P2Layering,
+        layered_intermediate_processor_factory(
+          IntermediateProcessorStrategy::LabelDummyInserter,
         ),
+      )
+      .add_before(
+        LayeredPhases::P4NodePlacement,
+        layered_intermediate_processor_factory(
+          IntermediateProcessorStrategy::LabelDummySwitcher,
+        ),
+      )
+      .add_before(
+        LayeredPhases::P4NodePlacement,
+        layered_intermediate_processor_factory(
+          IntermediateProcessorStrategy::LabelSideSelector,
+        ),
+      )
+      .add_after(
+        LayeredPhases::P5EdgeRouting,
+        layered_intermediate_processor_factory(
+          IntermediateProcessorStrategy::LabelDummyRemover,
+        ),
+      ),
     )
   }
 
-  if spline_edge_router_graph_properties_contain(graph_properties, NorthSouthPorts) {
+  if spline_edge_router_graph_properties_contain(
+      graph_properties,
+      NorthSouthPorts,
+    ) {
     ignore(
       configuration
       .add_before(
-          LayeredPhases::P3NodeOrdering,
-          layered_intermediate_processor_factory(
-            IntermediateProcessorStrategy::NorthSouthPortPreprocessor,
-          ),
-        )
-      .add_before(
-          LayeredPhases::P5EdgeRouting,
-          layered_intermediate_processor_factory(
-            IntermediateProcessorStrategy::NorthSouthPortPostprocessor,
-          ),
+        LayeredPhases::P3NodeOrdering,
+        layered_intermediate_processor_factory(
+          IntermediateProcessorStrategy::NorthSouthPortPreprocessor,
         ),
+      )
+      .add_before(
+        LayeredPhases::P5EdgeRouting,
+        layered_intermediate_processor_factory(
+          IntermediateProcessorStrategy::NorthSouthPortPostprocessor,
+        ),
+      ),
     )
   }
 
@@ -1057,23 +1186,23 @@ fn spline_edge_router_configuration(
     ignore(
       configuration
       .add_before(
-          LayeredPhases::P4NodePlacement,
-          layered_intermediate_processor_factory(
-            IntermediateProcessorStrategy::LabelSideSelector,
-          ),
-        )
-      .add_before(
-          LayeredPhases::P4NodePlacement,
-          layered_intermediate_processor_factory(
-            IntermediateProcessorStrategy::EndLabelPreprocessor,
-          ),
-        )
-      .add_after(
-          LayeredPhases::P5EdgeRouting,
-          layered_intermediate_processor_factory(
-            IntermediateProcessorStrategy::EndLabelPostprocessor,
-          ),
+        LayeredPhases::P4NodePlacement,
+        layered_intermediate_processor_factory(
+          IntermediateProcessorStrategy::LabelSideSelector,
         ),
+      )
+      .add_before(
+        LayeredPhases::P4NodePlacement,
+        layered_intermediate_processor_factory(
+          IntermediateProcessorStrategy::EndLabelPreprocessor,
+        ),
+      )
+      .add_after(
+        LayeredPhases::P5EdgeRouting,
+        layered_intermediate_processor_factory(
+          IntermediateProcessorStrategy::EndLabelPostprocessor,
+        ),
+      ),
     )
   }
 
@@ -1096,6 +1225,171 @@ fn spline_edge_router_process(
     actual_monitor.done()
     return
   }
+
+  let node_node_spacing = layered_graph.get_property_double(
+    layered_options_spacing_node_node_between_layers,
+  )
+  let edge_node_spacing = layered_graph.get_property_double(
+    layered_options_spacing_edge_node_between_layers,
+  )
+  let edge_edge_spacing = layered_graph.get_property_double(
+    layered_options_spacing_edge_edge_between_layers,
+  )
+
+  let mode = layered_graph.get_property_spline_routing_mode(
+    layered_options_edge_routing_splines_mode,
+  )
+  let sloppy_routing = match mode {
+    SplineRoutingMode::Sloppy => true
+    _ => false
+  }
+  let sloppy_layer_spacing_factor = layered_graph.get_property_double(
+    layered_options_edge_routing_splines_sloppy_layer_spacing_factor,
+  )
+
+  let edges_remaining_layer : Array[LEdge] = []
+  let spline_segments_layer : Array[SplineSegment] = []
+  let left_ports_layer : Array[LPort] = []
+  let right_ports_layer : Array[LPort] = []
+  let self_loops_layer : Array[LEdge] = []
+
+  let start_edges : Array[LEdge] = []
+  let all_spline_segments : Array[SplineSegment] = []
+  let edge_to_segment_map : Map[Int, SplineSegment] = {}
+  let successing_edge : Map[Int, LEdge] = {}
+
+  let layers = layered_graph.get_layers()
+  let first_layer = layers[0]
+  let is_left_layer_external = spline_edge_router_all_external_west_or_east_ports(
+    first_layer,
+  )
+  let last_layer = layers[layers.length() - 1]
+  let is_right_layer_external = spline_edge_router_all_external_west_or_east_ports(
+    last_layer,
+  )
+
+  let random = @random.Rand::new()
+  let mut layer_index = 0
+  let mut left_layer : Layer? = None
+  let mut xpos = 0.0
+
+  let mut continue_loop = true
+  while continue_loop {
+    let right_layer = if layer_index < layers.length() {
+      let layer = layers[layer_index]
+      layer_index += 1
+      Some(layer)
+    } else {
+      None
+    }
+
+    spline_edge_router_clear_then_fill_mappings(
+      left_layer, right_layer, left_ports_layer, right_ports_layer, edges_remaining_layer,
+      spline_segments_layer, self_loops_layer, start_edges, successing_edge,
+    )
+
+    spline_edge_router_create_segments_and_compute_ranking(
+      left_ports_layer, right_ports_layer, edges_remaining_layer, spline_segments_layer,
+      edge_to_segment_map, random,
+    )
+
+    let mut slot_count = 0
+    for segment in spline_segments_layer {
+      if !segment.is_straight {
+        let required_slots = segment.rank + 1
+        if required_slots > slot_count {
+          slot_count = required_slots
+        }
+      }
+    }
+
+    let mut x_segment_delta = 0.0
+    let mut right_layer_position = xpos
+    let is_special_left_layer = left_layer is None ||
+      (
+        is_left_layer_external &&
+        spline_edge_router_layer_equals(left_layer, Some(first_layer))
+      )
+    let is_special_right_layer = right_layer is None ||
+      (
+        is_right_layer_external &&
+        spline_edge_router_layer_equals(right_layer, Some(last_layer))
+      )
+
+    if slot_count > 0 {
+      let mut increment = 0.0
+      if left_layer is Some(_) {
+        increment += edge_node_spacing
+      }
+      increment += (slot_count - 1).to_double() * edge_edge_spacing
+      if right_layer is Some(_) {
+        increment += edge_node_spacing
+      }
+
+      if sloppy_routing {
+        match right_layer {
+          Some(layer) => {
+            let sloppy_spacing = spline_edge_router_compute_sloppy_spacing(
+              layer, edge_edge_spacing, node_node_spacing, sloppy_layer_spacing_factor,
+            )
+            if sloppy_spacing > increment {
+              increment = sloppy_spacing
+            }
+          }
+          None => ()
+        }
+      }
+
+      if increment < node_node_spacing &&
+        !is_special_left_layer &&
+        !is_special_right_layer {
+        x_segment_delta = (node_node_spacing - increment) / 2.0
+        increment = node_node_spacing
+      }
+      right_layer_position += increment
+    } else if !is_special_left_layer && !is_special_right_layer {
+      right_layer_position += node_node_spacing
+    }
+
+    match right_layer {
+      Some(layer) =>
+        spline_edge_router_place_nodes_horizontally(layer, right_layer_position)
+      None => ()
+    }
+
+    for segment in spline_segments_layer {
+      segment.bounding_box.x = xpos
+      segment.bounding_box.width = right_layer_position - xpos
+      segment.x_delta = x_segment_delta
+      segment.is_west_of_initial_layer = left_layer is None
+      all_spline_segments.push(segment)
+    }
+
+    xpos = right_layer_position
+    match right_layer {
+      Some(layer) => xpos += layer.get_size().x
+      None => ()
+    }
+
+    left_layer = right_layer
+    continue_loop = right_layer is Some(_)
+  }
+
+  for edge in start_edges {
+    let edge_chain = spline_edge_router_get_edge_chain(edge, successing_edge)
+    edge.set_property_l_edge_array(
+      internal_properties_spline_edge_chain, edge_chain,
+    )
+
+    let spline = spline_edge_router_get_spline_path(
+      edge, successing_edge, edge_to_segment_map,
+    )
+    edge.set_property_spline_segment_array(
+      internal_properties_spline_route_start, spline,
+    )
+  }
+
+  layered_graph.set_size_xy(xpos, layered_graph.get_size().y)
 
   actual_monitor.done()
 }

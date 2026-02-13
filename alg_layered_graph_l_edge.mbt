@@ -24,6 +24,8 @@ pub struct LEdge {
   int_properties : Map[String, Int]
   kvector_chain_properties : Map[String, KVectorChain]
   bool_properties : Map[String, Bool]
+  l_edge_array_properties : Map[String, Array[LEdge]]
+  spline_segment_array_properties : Map[String, Array[SplineSegment]]
 }
 
 ///|
@@ -38,6 +40,8 @@ pub fn new_l_edge() -> LEdge {
     int_properties: {},
     kvector_chain_properties: {},
     bool_properties: {},
+    l_edge_array_properties: {},
+    spline_segment_array_properties: {},
   }
 }
 
@@ -238,6 +242,62 @@ pub fn LEdge::has_property_kvector_chain(
   property : IProperty[KVectorChain],
 ) -> Bool {
   self.kvector_chain_properties.contains(property.get_id())
+}
+
+///|
+pub fn LEdge::set_property_l_edge_array(
+  self : LEdge,
+  property : IProperty[Array[LEdge]],
+  value : Array[LEdge],
+) -> Unit {
+  self.l_edge_array_properties[property.get_id()] = value.copy()
+}
+
+///|
+pub fn LEdge::get_property_l_edge_array(
+  self : LEdge,
+  property : IProperty[Array[LEdge]],
+) -> Array[LEdge] {
+  match self.l_edge_array_properties.get(property.get_id()) {
+    Some(value) => value.copy()
+    None => property.get_default().copy()
+  }
+}
+
+///|
+pub fn LEdge::has_property_l_edge_array(
+  self : LEdge,
+  property : IProperty[Array[LEdge]],
+) -> Bool {
+  self.l_edge_array_properties.contains(property.get_id())
+}
+
+///|
+pub fn LEdge::set_property_spline_segment_array(
+  self : LEdge,
+  property : IProperty[Array[SplineSegment]],
+  value : Array[SplineSegment],
+) -> Unit {
+  self.spline_segment_array_properties[property.get_id()] = value.copy()
+}
+
+///|
+pub fn LEdge::get_property_spline_segment_array(
+  self : LEdge,
+  property : IProperty[Array[SplineSegment]],
+) -> Array[SplineSegment] {
+  match self.spline_segment_array_properties.get(property.get_id()) {
+    Some(value) => value.copy()
+    None => property.get_default().copy()
+  }
+}
+
+///|
+pub fn LEdge::has_property_spline_segment_array(
+  self : LEdge,
+  property : IProperty[Array[SplineSegment]],
+) -> Bool {
+  self.spline_segment_array_properties.contains(property.get_id())
 }
 
 ///|

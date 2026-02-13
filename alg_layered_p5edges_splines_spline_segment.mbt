@@ -128,8 +128,8 @@ pub struct SplineSegment {
   edges : Array[LEdge]
   mut is_straight : Bool
   bounding_box : ElkRectangle
-  is_west_of_initial_layer : Bool
-  x_delta : Double
+  mut is_west_of_initial_layer : Bool
+  mut x_delta : Double
   mut source_port : LPort?
   mut target_port : LPort?
   mut initial_segment : Bool

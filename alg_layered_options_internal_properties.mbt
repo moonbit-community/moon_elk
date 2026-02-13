@@ -66,6 +66,12 @@ pub let internal_properties_ext_port_connections : IProperty[Array[PortSide]] = 
 )
 
 ///|
+pub let internal_properties_ext_port_side : IProperty[PortSide] = new_property(
+  "externalPortSide",
+  PortSide::SideUndefined,
+)
+
+///|
 pub let internal_properties_tarjan_lowlink : IProperty[Int] = new_property(
   "tarjan.lowlink", @int.max_value,
 )
@@ -139,4 +145,22 @@ pub let internal_properties_random_next_boolean : IProperty[Bool] = new_property
 ///|
 pub let internal_properties_spline_ns_port_y_coord : IProperty[Double] = new_property(
   "splineNsPortYCoord", 0.0,
+)
+
+///|
+pub let internal_properties_graph_properties : IProperty[Array[GraphProperties]] = new_property(
+  "graphProperties",
+  [],
+)
+
+///|
+pub let internal_properties_spline_route_start : IProperty[Array[SplineSegment]] = new_property(
+  "splines.route.start",
+  [],
+)
+
+///|
+pub let internal_properties_spline_edge_chain : IProperty[Array[LEdge]] = new_property(
+  "splines.edgeChain",
+  [],
 )

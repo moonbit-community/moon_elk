@@ -30,6 +30,28 @@ fn spline_edge_router_test_graph_property(name : String) -> GraphProperties {
 }
 
 ///|
+fn spline_edge_router_test_port_side(name : String) -> PortSide {
+  for side in port_side_values() {
+    if port_side_to_string(side) == name {
+      return side
+    }
+  }
+  abort("unknown port side")
+}
+
+///|
+fn spline_edge_router_test_spline_routing_mode(
+  name : String,
+) -> SplineRoutingMode {
+  for mode in spline_routing_mode_values() {
+    if spline_routing_mode_to_string(mode) == name {
+      return mode
+    }
+  }
+  abort("unknown spline routing mode")
+}
+
+///|
 fn spline_edge_router_test_strategy(
   name : String,
 ) -> IntermediateProcessorStrategy {
@@ -53,6 +75,66 @@ fn spline_edge_router_test_contains_factory(
     }
   }
   false
+}
+
+///|
+fn spline_edge_router_test_build_two_layer_graph(
+  mode : SplineRoutingMode,
+  sloppy_factor : Double,
+) -> (LGraph, LNode, LNode, LEdge) {
+  let graph = new_l_graph()
+  graph.set_property_double(
+    layered_options_spacing_edge_node_between_layers, 10.0,
+  )
+  graph.set_property_double(
+    layered_options_spacing_edge_edge_between_layers, 10.0,
+  )
+  graph.set_property_double(
+    layered_options_spacing_node_node_between_layers, 20.0,
+  )
+  graph.set_property_spline_routing_mode(
+    layered_options_edge_routing_splines_mode, mode,
+  )
+  graph.set_property_double(
+    layered_options_edge_routing_splines_sloppy_layer_spacing_factor, sloppy_factor,
+  )
+
+  let left_layer = new_layer(graph)
+  let right_layer = new_layer(graph)
+  let left_layer_size = left_layer.get_size()
+  ignore(left_layer_size.set_xy(30.0, left_layer_size.y))
+  let right_layer_size = right_layer.get_size()
+  ignore(right_layer_size.set_xy(40.0, right_layer_size.y))
+  graph.get_layers().push(left_layer)
+  graph.get_layers().push(right_layer)
+
+  let left_node = new_l_node()
+  left_node.set_layer(Some(left_layer))
+  let left_node_size = left_node.get_size()
+  ignore(left_node_size.set_xy(30.0, left_node_size.y))
+  let left_node_position = left_node.get_position()
+  ignore(left_node_position.set_xy(left_node_position.x, 0.0))
+
+  let right_node = new_l_node()
+  right_node.set_layer(Some(right_layer))
+  let right_node_size = right_node.get_size()
+  ignore(right_node_size.set_xy(40.0, right_node_size.y))
+  let right_node_position = right_node.get_position()
+  ignore(right_node_position.set_xy(right_node_position.x, 50.0))
+
+  let left_port = new_l_port()
+  left_port.set_side(spline_edge_router_test_port_side("EAST"))
+  left_port.set_node(Some(left_node))
+
+  let right_port = new_l_port()
+  right_port.set_side(spline_edge_router_test_port_side("WEST"))
+  right_port.set_node(Some(right_node))
+
+  let edge = new_l_edge()
+  edge.set_source(Some(left_port))
+  edge.set_target(Some(right_port))
+
+  (graph, left_node, right_node, edge)
 }
 
 ///|
@@ -110,6 +192,48 @@ test "spline edge router process sets width to zero for empty layered graph" {
 }
 
 ///|
+test "spline edge router process routes two-layer graph and stores edge chain" {
+  let phase = new_spline_edge_router_layout_phase()
+  let (graph, left_node, right_node, edge) = spline_edge_router_test_build_two_layer_graph(
+    spline_edge_router_test_spline_routing_mode("CONSERVATIVE"),
+    1.0,
+  )
+
+  phase.process(graph, None)
+
+  assert_eq(left_node.get_position().x, 0.0)
+  assert_eq(right_node.get_position().x, 50.0)
+  assert_eq(graph.get_size().x, 90.0)
+
+  let chain = edge.get_property_l_edge_array(
+    internal_properties_spline_edge_chain,
+  )
+  assert_eq(chain.length(), 1)
+  assert_eq(chain[0].get_handle(), edge.get_handle())
+
+  let spline_route = edge.get_property_spline_segment_array(
+    internal_properties_spline_route_start,
+  )
+  assert_eq(spline_route.length(), 1)
+  assert_true(spline_route[0].initial_segment)
+  assert_true(spline_route[0].last_segment)
+}
+
+///|
+test "spline edge router process uses sloppy mode spacing factor" {
+  let phase = new_spline_edge_router_layout_phase()
+  let (graph, _, right_node, _) = spline_edge_router_test_build_two_layer_graph(
+    spline_edge_router_test_spline_routing_mode("SLOPPY"),
+    1.0,
+  )
+
+  phase.process(graph, None)
+
+  assert_eq(right_node.get_position().x, 55.0)
+  assert_eq(graph.get_size().x, 95.0)
+}
+
+///|
 test "spline edge router configuration includes baseline processor dependencies" {
   let phase = new_spline_edge_router_layout_phase()
   let graph = new_l_graph()
@@ -139,12 +263,15 @@ test "spline edge router configuration includes baseline processor dependencies"
 test "spline edge router configuration adds optional processors by graph properties" {
   let phase = new_spline_edge_router_layout_phase()
   let graph = new_l_graph()
-  graph.set_property_graph_properties_array(internal_properties_graph_properties, [
-    spline_edge_router_test_graph_property("SELF_LOOPS"),
-    spline_edge_router_test_graph_property("CENTER_LABELS"),
-    spline_edge_router_test_graph_property("NORTH_SOUTH_PORTS"),
-    spline_edge_router_test_graph_property("END_LABELS"),
-  ])
+  graph.set_property_graph_properties_array(
+    internal_properties_graph_properties,
+    [
+      spline_edge_router_test_graph_property("SELF_LOOPS"),
+      spline_edge_router_test_graph_property("CENTER_LABELS"),
+      spline_edge_router_test_graph_property("NORTH_SOUTH_PORTS"),
+      spline_edge_router_test_graph_property("END_LABELS"),
+    ],
+  )
 
   let configuration = match phase.get_layout_processor_configuration(graph) {
     Some(value) => value
