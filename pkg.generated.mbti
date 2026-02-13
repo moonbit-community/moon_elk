@@ -828,6 +828,8 @@ pub fn crossing_minimization_strategy_values() -> Array[String]
 
 pub fn cubic_spline_interpolator_as_spline_interpolator(CubicSplineInterpolator) -> ISplineInterpolator
 
+pub fn cutting_utils_insert_dummies(LGraph, LEdge, Int) -> Array[LEdge]
+
 pub fn cycle_breaking_strategy_to_string(CycleBreakingStrategy) -> String
 
 pub fn cycle_breaking_strategy_values() -> Array[String]
@@ -4990,6 +4992,8 @@ pub fn new_show_layout_view_handler() -> ShowLayoutViewHandler
 
 pub fn new_simple_layout_configuration_store(options? : Map[String, String], option_targets? : Array[LayoutOptionTarget], parent? : ILayoutConfigurationStore?, editing_domain? : Int?) -> ILayoutConfigurationStore
 
+pub fn new_single_edge_graph_wrapper_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
+
 pub fn new_south_to_north_routing_strategy() -> BaseRoutingDirectionStrategy
 
 pub fn new_spacing() -> Spacing
@@ -5815,6 +5819,10 @@ pub let sides_south_west : Array[PortSide]
 pub let sides_west : Array[PortSide]
 
 pub fn signum(Double) -> Int
+
+pub fn single_edge_graph_wrapper_validify_indexes_greedily(GraphStats, Array[Int]) -> Array[Int]
+
+pub fn single_edge_graph_wrapper_validify_indexes_looking_back(GraphStats, Array[Int]) -> Array[Int]
 
 pub fn size_constraint_fixed() -> Array[SizeConstraint]
 
