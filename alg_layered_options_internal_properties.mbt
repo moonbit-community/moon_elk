@@ -89,6 +89,18 @@ pub let internal_properties_target_node_model_order : IProperty[Map[Int, Int]] =
 )
 
 ///|
+pub let internal_properties_hidden_nodes : IProperty[Array[LNode]] = new_property(
+  "hiddenNodes",
+  [],
+)
+
+///|
+pub let internal_properties_original_opposite_port : IProperty[LPort?] = new_property(
+  "originalOppositePort",
+  None,
+)
+
+///|
 pub let internal_properties_ext_port_connections : IProperty[Array[PortSide]] = new_property(
   "externalPortConnections", sides_none,
 )

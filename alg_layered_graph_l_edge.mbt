@@ -27,6 +27,7 @@ pub struct LEdge {
   bool_properties : Map[String, Bool]
   l_edge_array_properties : Map[String, Array[LEdge]]
   spline_segment_array_properties : Map[String, Array[SplineSegment]]
+  port_properties : Map[String, LPort]
 }
 
 ///|
@@ -44,6 +45,7 @@ pub fn new_l_edge() -> LEdge {
     bool_properties: {},
     l_edge_array_properties: {},
     spline_segment_array_properties: {},
+    port_properties: {},
   }
 }
 
@@ -188,6 +190,12 @@ pub fn LEdge::copy_properties(self : LEdge, source : LEdge) -> Unit {
   for entry in source.spline_segment_array_properties.to_array() {
     let (key, value) = entry
     self.spline_segment_array_properties[key] = value.copy()
+  }
+
+  self.port_properties.clear()
+  for entry in source.port_properties.to_array() {
+    let (key, value) = entry
+    self.port_properties[key] = value
   }
 }
 
@@ -367,6 +375,37 @@ pub fn LEdge::has_property_spline_segment_array(
   property : IProperty[Array[SplineSegment]],
 ) -> Bool {
   self.spline_segment_array_properties.contains(property.get_id())
+}
+
+///|
+pub fn LEdge::set_property_l_port(
+  self : LEdge,
+  property : IProperty[LPort?],
+  value : LPort?,
+) -> Unit {
+  match value {
+    Some(port) => self.port_properties[property.get_id()] = port
+    None => ignore(self.port_properties.remove(property.get_id()))
+  }
+}
+
+///|
+pub fn LEdge::get_property_l_port(
+  self : LEdge,
+  property : IProperty[LPort?],
+) -> LPort? {
+  match self.port_properties.get(property.get_id()) {
+    Some(value) => Some(value)
+    None => property.get_default()
+  }
+}
+
+///|
+pub fn LEdge::has_property_l_port(
+  self : LEdge,
+  property : IProperty[LPort?],
+) -> Bool {
+  self.port_properties.contains(property.get_id())
 }
 
 ///|

@@ -2526,6 +2526,8 @@ pub let internal_properties_first_try_with_initial_order : IProperty[Bool]
 
 pub let internal_properties_graph_properties : IProperty[Array[GraphProperties]]
 
+pub let internal_properties_hidden_nodes : IProperty[Array[LNode]]
+
 pub let internal_properties_in_layer_constraint : IProperty[String]
 
 pub let internal_properties_in_layer_layout_unit : IProperty[LNode?]
@@ -2557,6 +2559,8 @@ pub let internal_properties_origin_l_node : IProperty[LNode?]
 pub let internal_properties_origin_l_port : IProperty[LPort?]
 
 pub let internal_properties_original_dummy_node_position : IProperty[Double]
+
+pub let internal_properties_original_opposite_port : IProperty[LPort?]
 
 pub let internal_properties_port_dummy : IProperty[LNode?]
 
@@ -4511,6 +4515,10 @@ pub fn new_label_cell_with_layout_mode(Double, Bool) -> Cell
 pub fn new_label_cell_with_node_label_location(Double, NodeLabelLocation) -> Cell
 
 pub fn new_layer(LGraph) -> Layer
+
+pub fn new_layer_constraint_postprocessor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
+
+pub fn new_layer_constraint_preprocessor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_layer_size_and_graph_height_calculator_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
@@ -12755,6 +12763,7 @@ pub struct LEdge {
   bool_properties : Map[String, Bool]
   l_edge_array_properties : Map[String, Array[LEdge]]
   spline_segment_array_properties : Map[String, Array[SplineSegment]]
+  port_properties : Map[String, LPort]
 }
 pub fn LEdge::copy_properties(Self, Self) -> Unit
 pub fn LEdge::get_bend_points(Self) -> KVectorChain
@@ -12769,6 +12778,7 @@ pub fn LEdge::get_property_double(Self, IProperty[Double]) -> Double
 pub fn LEdge::get_property_int(Self, IProperty[Int]) -> Int
 pub fn LEdge::get_property_kvector_chain(Self, IProperty[KVectorChain]) -> KVectorChain
 pub fn LEdge::get_property_l_edge_array(Self, IProperty[Array[Self]]) -> Array[Self]
+pub fn LEdge::get_property_l_port(Self, IProperty[LPort?]) -> LPort?
 pub fn LEdge::get_property_spline_segment_array(Self, IProperty[Array[SplineSegment]]) -> Array[SplineSegment]
 pub fn LEdge::get_source(Self) -> LPort?
 pub fn LEdge::get_target(Self) -> LPort?
@@ -12776,6 +12786,7 @@ pub fn LEdge::has_property_double(Self, IProperty[Double]) -> Bool
 pub fn LEdge::has_property_int(Self, IProperty[Int]) -> Bool
 pub fn LEdge::has_property_kvector_chain(Self, IProperty[KVectorChain]) -> Bool
 pub fn LEdge::has_property_l_edge_array(Self, IProperty[Array[Self]]) -> Bool
+pub fn LEdge::has_property_l_port(Self, IProperty[LPort?]) -> Bool
 pub fn LEdge::has_property_spline_segment_array(Self, IProperty[Array[SplineSegment]]) -> Bool
 pub fn LEdge::is_in_layer_edge(Self) -> Bool
 pub fn LEdge::is_self_loop(Self) -> Bool
@@ -12786,6 +12797,7 @@ pub fn LEdge::set_property_double(Self, IProperty[Double], Double) -> Unit
 pub fn LEdge::set_property_int(Self, IProperty[Int], Int) -> Unit
 pub fn LEdge::set_property_kvector_chain(Self, IProperty[KVectorChain], KVectorChain) -> Unit
 pub fn LEdge::set_property_l_edge_array(Self, IProperty[Array[Self]], Array[Self]) -> Unit
+pub fn LEdge::set_property_l_port(Self, IProperty[LPort?], LPort?) -> Unit
 pub fn LEdge::set_property_spline_segment_array(Self, IProperty[Array[SplineSegment]], Array[SplineSegment]) -> Unit
 pub fn LEdge::set_source(Self, LPort?) -> Unit
 pub fn LEdge::set_target(Self, LPort?) -> Unit
@@ -12795,6 +12807,7 @@ pub struct LGraph {
   mut id : Int
   port_side_array_properties : Map[String, Array[PortSide]]
   graph_properties_array_properties : Map[String, Array[GraphProperties]]
+  node_array_properties : Map[String, Array[LNode]]
   int_properties : Map[String, Int]
   bool_properties : Map[String, Bool]
   double_properties : Map[String, Double]
@@ -12822,6 +12835,7 @@ pub fn LGraph::get_property_double(Self, IProperty[Double]) -> Double
 pub fn LGraph::get_property_elk_margin(Self, IProperty[Spacing]) -> Spacing
 pub fn LGraph::get_property_graph_properties_array(Self, IProperty[Array[GraphProperties]]) -> Array[GraphProperties]
 pub fn LGraph::get_property_int(Self, IProperty[Int]) -> Int
+pub fn LGraph::get_property_l_node_array(Self, IProperty[Array[LNode]]) -> Array[LNode]
 pub fn LGraph::get_property_port_side_array(Self, IProperty[Array[PortSide]]) -> Array[PortSide]
 pub fn LGraph::get_property_spline_routing_mode(Self, IProperty[SplineRoutingMode]) -> SplineRoutingMode
 pub fn LGraph::get_property_string(Self, IProperty[String]) -> String
@@ -12830,6 +12844,7 @@ pub fn LGraph::has_property_bool(Self, IProperty[Bool]) -> Bool
 pub fn LGraph::has_property_double(Self, IProperty[Double]) -> Bool
 pub fn LGraph::has_property_elk_margin(Self, IProperty[Spacing]) -> Bool
 pub fn LGraph::has_property_int(Self, IProperty[Int]) -> Bool
+pub fn LGraph::has_property_l_node_array(Self, IProperty[Array[LNode]]) -> Bool
 pub fn LGraph::has_property_spline_routing_mode(Self, IProperty[SplineRoutingMode]) -> Bool
 pub fn LGraph::has_property_string(Self, IProperty[String]) -> Bool
 pub fn LGraph::set_id(Self, Int) -> Unit
@@ -12842,6 +12857,7 @@ pub fn LGraph::set_property_double(Self, IProperty[Double], Double) -> Unit
 pub fn LGraph::set_property_elk_margin(Self, IProperty[Spacing], Spacing) -> Unit
 pub fn LGraph::set_property_graph_properties_array(Self, IProperty[Array[GraphProperties]], Array[GraphProperties]) -> Unit
 pub fn LGraph::set_property_int(Self, IProperty[Int], Int) -> Unit
+pub fn LGraph::set_property_l_node_array(Self, IProperty[Array[LNode]], Array[LNode]) -> Unit
 pub fn LGraph::set_property_port_side_array(Self, IProperty[Array[PortSide]], Array[PortSide]) -> Unit
 pub fn LGraph::set_property_spline_routing_mode(Self, IProperty[SplineRoutingMode], SplineRoutingMode) -> Unit
 pub fn LGraph::set_property_string(Self, IProperty[String], String) -> Unit

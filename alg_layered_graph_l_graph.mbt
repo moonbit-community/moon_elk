@@ -3,6 +3,7 @@ pub struct LGraph {
   mut id : Int
   port_side_array_properties : Map[String, Array[PortSide]]
   graph_properties_array_properties : Map[String, Array[GraphProperties]]
+  node_array_properties : Map[String, Array[LNode]]
   int_properties : Map[String, Int]
   bool_properties : Map[String, Bool]
   double_properties : Map[String, Double]
@@ -27,6 +28,7 @@ pub fn new_l_graph() -> LGraph {
     id: 0,
     port_side_array_properties: {},
     graph_properties_array_properties: {},
+    node_array_properties: {},
     int_properties: {},
     bool_properties: {},
     double_properties: {},
@@ -91,6 +93,34 @@ pub fn LGraph::get_property_graph_properties_array(
     Some(value) => value.copy()
     None => property.get_default().copy()
   }
+}
+
+///|
+pub fn LGraph::set_property_l_node_array(
+  self : LGraph,
+  property : IProperty[Array[LNode]],
+  value : Array[LNode],
+) -> Unit {
+  self.node_array_properties[property.get_id()] = value.copy()
+}
+
+///|
+pub fn LGraph::get_property_l_node_array(
+  self : LGraph,
+  property : IProperty[Array[LNode]],
+) -> Array[LNode] {
+  match self.node_array_properties.get(property.get_id()) {
+    Some(value) => value.copy()
+    None => property.get_default().copy()
+  }
+}
+
+///|
+pub fn LGraph::has_property_l_node_array(
+  self : LGraph,
+  property : IProperty[Array[LNode]],
+) -> Bool {
+  self.node_array_properties.contains(property.get_id())
 }
 
 ///|
@@ -355,6 +385,12 @@ pub fn LGraph::copy_properties(self : LGraph, source : LGraph) -> Unit {
   for entry in source.graph_properties_array_properties.to_array() {
     let (key, value) = entry
     self.graph_properties_array_properties[key] = value.copy()
+  }
+
+  self.node_array_properties.clear()
+  for entry in source.node_array_properties.to_array() {
+    let (key, value) = entry
+    self.node_array_properties[key] = value.copy()
   }
 
   self.int_properties.clear()
