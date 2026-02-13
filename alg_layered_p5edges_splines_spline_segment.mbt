@@ -121,21 +121,21 @@ pub struct SplineSegment {
   right_ports : Array[LPort]
   outgoing : Array[SplineDependency]
   incoming : Array[SplineDependency]
-  mark : Int
-  inweight : Int
-  outweight : Int
-  rank : Int
+  mut mark : Int
+  mut inweight : Int
+  mut outweight : Int
+  mut rank : Int
   edges : Array[LEdge]
   mut is_straight : Bool
   bounding_box : ElkRectangle
   is_west_of_initial_layer : Bool
   x_delta : Double
-  source_port : LPort?
-  target_port : LPort?
-  initial_segment : Bool
-  last_segment : Bool
-  source_node : LNode?
-  target_node : LNode?
+  mut source_port : LPort?
+  mut target_port : LPort?
+  mut initial_segment : Bool
+  mut last_segment : Bool
+  mut source_node : LNode?
+  mut target_node : LNode?
   inverse_order : Bool
   mut hyper_edge_top_y_pos : Double
   mut hyper_edge_bottom_y_pos : Double
