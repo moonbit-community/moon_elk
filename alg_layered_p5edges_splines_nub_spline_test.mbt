@@ -75,3 +75,14 @@ test "nub spline can evaluate points on curve at endpoints and interior" {
   assert_true(middle.x > 0.0)
   assert_true(middle.x < 30.0)
 }
+
+///|
+test "nub spline can generate predefined nice curve sample" {
+  let nice = nub_spline_generate_nice_curve()
+  assert_eq(nice.get_dim(), 3)
+  assert_eq(nice.get_control_points_size(), 21)
+  let start = nice.get_control_point(0)
+  let finish = nice.get_control_point(20)
+  assert_false(start.is_nan())
+  assert_false(finish.is_nan())
+}

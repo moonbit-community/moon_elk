@@ -600,6 +600,52 @@ pub fn nub_spline_get_last_horizontal_point(
 }
 
 ///|
+fn nub_spline_mirror_on_x(original : KVector, x_value : Double) -> KVector {
+  new_kvector_xy(x_value + x_value - original.x, original.y)
+}
+
+///|
+pub fn nub_spline_generate_nice_curve() -> NubSpline {
+  let nice_chain = new_kvector_chain()
+  let vector1 = new_kvector_xy(5.5, 23.0)
+  let vector2 = new_kvector_xy(2.5, 12.0)
+  let vector3 = new_kvector_xy(5.0, 10.0)
+  let vector4 = new_kvector_xy(5.0, 9.0)
+  let vector5 = new_kvector_xy(3.8, 5.5)
+  let vector6 = new_kvector_xy(7.0, 4.0)
+  let vector7 = new_kvector_xy(7.0, 3.5)
+  let vector8 = new_kvector_xy(6.0, 2.2)
+  let vector9 = new_kvector_xy(8.0, 0.5)
+
+  nice_chain.add_vector(vector1)
+  nice_chain.add_vector(vector1)
+  nice_chain.add_vector(vector1)
+  nice_chain.add_vector(vector2)
+  nice_chain.add_vector(vector3)
+  nice_chain.add_vector(vector4)
+  nice_chain.add_vector(vector5)
+  nice_chain.add_vector(vector6)
+  nice_chain.add_vector(vector7)
+  nice_chain.add_vector(vector8)
+  nice_chain.add_vector(vector9)
+  nice_chain.add_vector(nub_spline_mirror_on_x(vector8, vector9.x))
+  nice_chain.add_vector(nub_spline_mirror_on_x(vector7, vector9.x))
+  nice_chain.add_vector(nub_spline_mirror_on_x(vector6, vector9.x))
+  nice_chain.add_vector(nub_spline_mirror_on_x(vector5, vector9.x))
+  nice_chain.add_vector(nub_spline_mirror_on_x(vector4, vector9.x))
+  nice_chain.add_vector(nub_spline_mirror_on_x(vector3, vector9.x))
+  nice_chain.add_vector(nub_spline_mirror_on_x(vector2, vector9.x))
+  nice_chain.add_vector(nub_spline_mirror_on_x(vector1, vector9.x))
+  nice_chain.add_vector(nub_spline_mirror_on_x(vector1, vector9.x))
+  nice_chain.add_vector(nub_spline_mirror_on_x(vector1, vector9.x))
+
+  ignore(nice_chain.scale(5.0))
+  ignore(nice_chain.offset_xy(-50.0, -80.0))
+
+  new_nub_spline(true, 3, nice_chain.to_array())
+}
+
+///|
 pub fn NubSpline::to_string(self : NubSpline) -> String {
   let pieces = []
   for control_point in self.control_points {
