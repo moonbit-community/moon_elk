@@ -21,6 +21,12 @@ pub let internal_properties_origin_l_port : IProperty[LPort?] = new_property(
 )
 
 ///|
+pub let internal_properties_end_label_edge : IProperty[LEdge?] = new_property(
+  "endLabelEdge",
+  None,
+)
+
+///|
 pub let internal_properties_in_layer_layout_unit : IProperty[LNode?] = new_property(
   "inLayerLayoutUnit",
   None,

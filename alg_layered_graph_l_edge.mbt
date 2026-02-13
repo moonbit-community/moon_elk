@@ -151,6 +151,39 @@ pub fn LEdge::get_labels(self : LEdge) -> Array[LLabel] {
 }
 
 ///|
+pub fn LEdge::copy_properties(self : LEdge, source : LEdge) -> Unit {
+  self.int_properties.clear()
+  for entry in source.int_properties.to_array() {
+    let (key, value) = entry
+    self.int_properties[key] = value
+  }
+
+  self.kvector_chain_properties.clear()
+  for entry in source.kvector_chain_properties.to_array() {
+    let (key, value) = entry
+    self.kvector_chain_properties[key] = new_kvector_chain_copy(value)
+  }
+
+  self.bool_properties.clear()
+  for entry in source.bool_properties.to_array() {
+    let (key, value) = entry
+    self.bool_properties[key] = value
+  }
+
+  self.l_edge_array_properties.clear()
+  for entry in source.l_edge_array_properties.to_array() {
+    let (key, value) = entry
+    self.l_edge_array_properties[key] = value.copy()
+  }
+
+  self.spline_segment_array_properties.clear()
+  for entry in source.spline_segment_array_properties.to_array() {
+    let (key, value) = entry
+    self.spline_segment_array_properties[key] = value.copy()
+  }
+}
+
+///|
 pub fn LEdge::get_other_port(self : LEdge, port : LPort) -> LPort {
   match (self.source, self.target) {
     (Some(source), Some(target)) =>

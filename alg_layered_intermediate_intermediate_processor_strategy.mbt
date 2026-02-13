@@ -163,6 +163,8 @@ fn intermediate_processor_create(
   match strategy {
     IntermediateProcessorStrategy::ReversedEdgeRestorer =>
       new_reversed_edge_restorer_layout_processor()
+    IntermediateProcessorStrategy::InvertedPortProcessor =>
+      new_inverted_port_processor_layout_processor()
     IntermediateProcessorStrategy::EdgeAndLayerConstraintEdgeReverser =>
       new_edge_and_layer_constraint_edge_reverser_layout_processor()
     _ => new_layout_processor(intermediate_processor_noop_process)

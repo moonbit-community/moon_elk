@@ -92,6 +92,11 @@ pub let port_constraints : IProperty[String] = new_property(
 )
 
 ///|
+pub let edge_labels_placement : IProperty[String] = new_property(
+  "org.eclipse.elk.edgeLabels.placement", "CENTER",
+)
+
+///|
 pub let port_side : IProperty[String] = new_property(
   "org.eclipse.elk.port.side", "UNDEFINED",
 )

@@ -1358,6 +1358,8 @@ pub fn edge_label_side_selection_transpose_values() -> Array[String]
 
 pub fn edge_labels(Int) -> Array[Int]
 
+pub let edge_labels_placement : IProperty[String]
+
 pub fn edge_layout_option_string_value(Int, String) -> String?
 
 pub fn edge_router_factory_factory_for(EdgeRouting) -> ILayoutProcessorFactory[LayeredPhases, LGraph]
@@ -2504,6 +2506,8 @@ pub let internal_properties_cb_num_model_order_groups : IProperty[Int]
 
 pub let internal_properties_cyclic : IProperty[Bool]
 
+pub let internal_properties_end_label_edge : IProperty[LEdge?]
+
 pub let internal_properties_ext_port_connections : IProperty[Array[PortSide]]
 
 pub let internal_properties_ext_port_side : IProperty[PortSide]
@@ -2706,13 +2710,19 @@ pub let layered_options_crossing_minimization_hierarchical_sweepiness : IPropert
 
 pub let layered_options_crossing_minimization_strategy : IProperty[String]
 
+pub let layered_options_edge_routing_polyline_sloped_edge_zone_width : IProperty[Double]
+
 pub let layered_options_edge_routing_splines_mode : IProperty[SplineRoutingMode]
 
 pub let layered_options_edge_routing_splines_sloppy_layer_spacing_factor : IProperty[Double]
 
+pub let layered_options_feedback_edges : IProperty[Bool]
+
 pub let layered_options_hierarchy_handling : IProperty[String]
 
 pub fn layered_options_int_list_contains(Array[Int], Int) -> Bool
+
+pub let layered_options_junction_points : IProperty[KVectorChain]
 
 pub let layered_options_layering_layer_constraint : IProperty[String]
 
@@ -3762,6 +3772,8 @@ pub fn new_eades_model() -> EadesModel
 
 pub fn new_eclipse_runtime_detector() -> EclipseRuntimeDetector
 
+pub fn new_edge_and_layer_constraint_edge_reverser_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
+
 pub fn new_elk_cancel_indicator(canceled? : Bool) -> IElkCancelIndicator
 
 pub fn new_elk_debug_plugin() -> ElkDebugPlugin
@@ -4353,6 +4365,8 @@ pub fn new_internal_graphviz_dot_parser(Array[GraphvizDotLexToken], grammar_acce
 pub fn new_internal_meta_data_lexer(String) -> InternalMetaDataLexer
 
 pub fn new_internal_meta_data_parser(Array[CoreMetaLexToken], grammar_access? : MetaDataGrammarAccess) -> InternalMetaDataParser
+
+pub fn new_inverted_port_processor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_ipolyomino_successor((PolyominoCoords, Polyomino) -> PolyominoCoords) -> IPolyominoSuccessor
 
@@ -5267,6 +5281,8 @@ pub fn plain_java_initialization_reset_for_test() -> Unit
 pub fn point_from_kvector(KVector) -> Point
 
 pub fn point_with_quadrant(Point, Quadrant) -> Point
+
+pub fn polyline_edge_router_is_external_west_or_east_port(LNode) -> Bool
 
 pub fn polyomino_direction_values() -> Array[PolyominoDirection]
 
@@ -12238,6 +12254,12 @@ pub enum IntermediateProcessorStrategy {
   NorthSouthPortPostprocessor
   EndLabelPreprocessor
   EndLabelPostprocessor
+  HyperedgeDummyMerger
+  HierarchicalPortConstraintProcessor
+  HierarchicalPortDummySizeProcessor
+  HierarchicalPortOrthogonalEdgeRouter
+  HypernodeProcessor
+  EdgeAndLayerConstraintEdgeReverser
 }
 
 pub struct InternalCoreDebugGRandomLexer {
@@ -12583,6 +12605,7 @@ pub struct LEdge {
   l_edge_array_properties : Map[String, Array[LEdge]]
   spline_segment_array_properties : Map[String, Array[SplineSegment]]
 }
+pub fn LEdge::copy_properties(Self, Self) -> Unit
 pub fn LEdge::get_bend_points(Self) -> KVectorChain
 pub fn LEdge::get_designation(Self) -> String?
 pub fn LEdge::get_handle(Self) -> Int
@@ -12679,14 +12702,22 @@ pub fn LGraphElement::set_origin_identifier(Self, String?) -> Unit
 pub struct LLabel {
   shape : LShape
   text : String
+  string_properties : Map[String, String]
+  l_edge_properties : Map[String, LEdge]
 }
 pub fn LLabel::get_designation(Self) -> String?
 pub fn LLabel::get_id(Self) -> Int
 pub fn LLabel::get_position(Self) -> KVector
+pub fn LLabel::get_property_l_edge(Self, IProperty[LEdge?]) -> LEdge?
+pub fn LLabel::get_property_string(Self, IProperty[String]) -> String
 pub fn LLabel::get_size(Self) -> KVector
 pub fn LLabel::get_text(Self) -> String
+pub fn LLabel::has_property_l_edge(Self, IProperty[LEdge?]) -> Bool
+pub fn LLabel::has_property_string(Self, IProperty[String]) -> Bool
 pub fn LLabel::set_id(Self, Int) -> Unit
 pub fn LLabel::set_origin_identifier(Self, String?) -> Unit
+pub fn LLabel::set_property_l_edge(Self, IProperty[LEdge?], LEdge?) -> Unit
+pub fn LLabel::set_property_string(Self, IProperty[String], String) -> Unit
 pub fn LLabel::to_string(Self) -> String
 
 pub struct LNode {
@@ -12707,6 +12738,7 @@ pub struct LNode {
   port_side_properties : Map[String, PortSide]
   node_properties : Map[String, LNode]
   node_array_properties : Map[String, Array[LNode]]
+  port_properties : Map[String, LPort]
 }
 pub fn LNode::add_port(Self, LPort) -> Unit
 pub fn LNode::get_connected_edges(Self) -> Array[LEdge]
@@ -12732,6 +12764,7 @@ pub fn LNode::get_property_double(Self, IProperty[Double]) -> Double
 pub fn LNode::get_property_int(Self, IProperty[Int]) -> Int
 pub fn LNode::get_property_l_node(Self, IProperty[Self?]) -> Self?
 pub fn LNode::get_property_l_node_array(Self, IProperty[Array[Self]]) -> Array[Self]
+pub fn LNode::get_property_l_port(Self, IProperty[LPort?]) -> LPort?
 pub fn LNode::get_property_port_side(Self, IProperty[PortSide]) -> PortSide
 pub fn LNode::get_property_string(Self, IProperty[String]) -> String
 pub fn LNode::get_size(Self) -> KVector
@@ -12741,6 +12774,7 @@ pub fn LNode::has_property_double(Self, IProperty[Double]) -> Bool
 pub fn LNode::has_property_int(Self, IProperty[Int]) -> Bool
 pub fn LNode::has_property_l_node(Self, IProperty[Self?]) -> Bool
 pub fn LNode::has_property_l_node_array(Self, IProperty[Array[Self]]) -> Bool
+pub fn LNode::has_property_l_port(Self, IProperty[LPort?]) -> Bool
 pub fn LNode::has_property_port_side(Self, IProperty[PortSide]) -> Bool
 pub fn LNode::has_property_string(Self, IProperty[String]) -> Bool
 pub fn LNode::remove_port(Self, LPort) -> Unit
@@ -12753,6 +12787,7 @@ pub fn LNode::set_property_double(Self, IProperty[Double], Double) -> Unit
 pub fn LNode::set_property_int(Self, IProperty[Int], Int) -> Unit
 pub fn LNode::set_property_l_node(Self, IProperty[Self?], Self?) -> Unit
 pub fn LNode::set_property_l_node_array(Self, IProperty[Array[Self]], Array[Self]) -> Unit
+pub fn LNode::set_property_l_port(Self, IProperty[LPort?], LPort?) -> Unit
 pub fn LNode::set_property_port_side(Self, IProperty[PortSide], PortSide) -> Unit
 pub fn LNode::set_property_string(Self, IProperty[String], String) -> Unit
 pub fn LNode::set_type(Self, NodeType) -> Unit
@@ -14437,7 +14472,7 @@ pub enum OrderingStrategy {
 }
 
 pub struct OrthogonalRoutingGenerator {
-  segment_splitter : HyperEdgeSegmentSplitter?
+  mut segment_splitter : HyperEdgeSegmentSplitter?
   routing_strategy : BaseRoutingDirectionStrategy
   edge_spacing : Double
   conflict_threshold : Double
@@ -14449,6 +14484,7 @@ pub fn OrthogonalRoutingGenerator::get_critical_conflict_threshold(Self) -> Doub
 pub fn OrthogonalRoutingGenerator::get_edge_spacing(Self) -> Double
 pub fn OrthogonalRoutingGenerator::get_routing_strategy(Self) -> BaseRoutingDirectionStrategy
 pub fn OrthogonalRoutingGenerator::minimum_horizontal_segment_distance(Self, Array[HyperEdgeSegment]) -> Double
+pub fn OrthogonalRoutingGenerator::route_edges(Self, IElkProgressMonitor, LGraph, Array[LNode]?, Int, Array[LNode]?, Double) -> Int
 pub fn OrthogonalRoutingGenerator::set_critical_conflict_threshold(Self, Double) -> Unit
 
 pub struct OutlineNode {

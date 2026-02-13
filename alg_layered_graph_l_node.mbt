@@ -70,6 +70,7 @@ pub struct LNode {
   port_side_properties : Map[String, PortSide]
   node_properties : Map[String, LNode]
   node_array_properties : Map[String, Array[LNode]]
+  port_properties : Map[String, LPort]
 }
 
 ///|
@@ -92,6 +93,7 @@ pub fn new_l_node(graph? : LGraph? = None) -> LNode {
     port_side_properties: {},
     node_properties: {},
     node_array_properties: {},
+    port_properties: {},
   }
 }
 
@@ -555,6 +557,37 @@ pub fn LNode::has_property_l_node_array(
   property : IProperty[Array[LNode]],
 ) -> Bool {
   self.node_array_properties.contains(property.get_id())
+}
+
+///|
+pub fn LNode::set_property_l_port(
+  self : LNode,
+  property : IProperty[LPort?],
+  value : LPort?,
+) -> Unit {
+  match value {
+    Some(port) => self.port_properties[property.get_id()] = port
+    None => ignore(self.port_properties.remove(property.get_id()))
+  }
+}
+
+///|
+pub fn LNode::get_property_l_port(
+  self : LNode,
+  property : IProperty[LPort?],
+) -> LPort? {
+  match self.port_properties.get(property.get_id()) {
+    Some(value) => Some(value)
+    None => property.get_default()
+  }
+}
+
+///|
+pub fn LNode::has_property_l_port(
+  self : LNode,
+  property : IProperty[LPort?],
+) -> Bool {
+  self.port_properties.contains(property.get_id())
 }
 
 ///|
