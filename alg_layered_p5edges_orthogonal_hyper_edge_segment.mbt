@@ -30,7 +30,7 @@ pub struct HyperEdgeSegment {
   segment_handle : Int
   routing_strategy : BaseRoutingDirectionStrategy
   ports : Array[LPort]
-  mark : Int
+  mut mark : Int
   mut routing_slot : Int
   mut start_position : Double
   mut end_position : Double
@@ -126,8 +126,23 @@ pub fn HyperEdgeSegment::get_ports(self : HyperEdgeSegment) -> Array[LPort] {
 }
 
 ///|
+pub fn HyperEdgeSegment::get_handle(self : HyperEdgeSegment) -> Int {
+  self.segment_handle
+}
+
+///|
 pub fn HyperEdgeSegment::get_routing_slot(self : HyperEdgeSegment) -> Int {
   self.routing_slot
+}
+
+///|
+pub fn HyperEdgeSegment::get_mark(self : HyperEdgeSegment) -> Int {
+  self.mark
+}
+
+///|
+pub fn HyperEdgeSegment::set_mark(self : HyperEdgeSegment, mark : Int) -> Unit {
+  self.mark = mark
 }
 
 ///|
@@ -387,7 +402,7 @@ pub fn HyperEdgeSegment::compare_to(
   self : HyperEdgeSegment,
   other : HyperEdgeSegment,
 ) -> Int {
-  self.mark - other.mark
+  self.get_mark() - other.get_mark()
 }
 
 ///|
@@ -395,12 +410,12 @@ pub fn HyperEdgeSegment::equals(
   self : HyperEdgeSegment,
   other : HyperEdgeSegment,
 ) -> Bool {
-  self.mark == other.mark
+  self.get_mark() == other.get_mark()
 }
 
 ///|
 pub fn HyperEdgeSegment::hash_code(self : HyperEdgeSegment) -> Int {
-  self.mark
+  self.get_mark()
 }
 
 ///|
