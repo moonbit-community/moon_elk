@@ -49,11 +49,22 @@ fn intermediate_processor_noop_process(
 }
 
 ///|
+fn intermediate_processor_create(
+  strategy : IntermediateProcessorStrategy,
+) -> ILayoutProcessor[LayeredPhases, LGraph] {
+  match strategy {
+    IntermediateProcessorStrategy::ReversedEdgeRestorer =>
+      new_reversed_edge_restorer_layout_processor()
+    _ => new_layout_processor(intermediate_processor_noop_process)
+  }
+}
+
+///|
 pub fn layered_intermediate_processor_factory(
   strategy : IntermediateProcessorStrategy,
 ) -> ILayoutProcessorFactory[LayeredPhases, LGraph] {
   let ordinal = intermediate_processor_strategy_ordinal(strategy)
   new_layout_processor_factory(23000 + ordinal, ordinal, () => {
-    new_layout_processor(intermediate_processor_noop_process)
+    intermediate_processor_create(strategy)
   })
 }
