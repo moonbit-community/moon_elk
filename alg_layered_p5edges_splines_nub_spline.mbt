@@ -342,6 +342,264 @@ pub fn NubSpline::get_knot_vector(self : NubSpline) -> Array[Double] {
 }
 
 ///|
+fn nub_spline_get_zero_y_of_control_polygon(nub_spline : NubSpline) -> Double {
+  if nub_spline.control_points.length() < 2 {
+    return 0.0
+  }
+
+  let mut second_cp = nub_spline.control_points[0]
+  let mut second_y = second_cp.get_cp().y
+  let mut second_is_positive = second_y > nub_spline_epsilon
+  let mut second_is_negative = second_y < -nub_spline_epsilon
+
+  for i in 1..<nub_spline.control_points.length() {
+    let first_cp = second_cp
+    let first_y = second_y
+    let first_is_positive = second_is_positive
+    let first_is_negative = second_is_negative
+
+    second_cp = nub_spline.control_points[i]
+    second_y = second_cp.get_cp().y
+    second_is_positive = second_y > nub_spline_epsilon
+    second_is_negative = second_y < -nub_spline_epsilon
+
+    if !(second_is_positive || second_is_negative) {
+      return nub_spline_get_t_from_control_point(second_cp)
+    }
+
+    if (first_is_positive && second_is_negative) ||
+      (first_is_negative && second_is_positive) {
+      let factor = first_y / (first_y - second_y)
+      let t1 = nub_spline_get_t_from_control_point(first_cp)
+      let t2 = nub_spline_get_t_from_control_point(second_cp)
+      return factor * t1 + (1.0 - factor) * t2
+    }
+  }
+
+  0.0
+}
+
+///|
+fn nub_spline_get_zero_x_of_control_polygon(nub_spline : NubSpline) -> Double {
+  if nub_spline.control_points.length() < 2 {
+    return 0.0
+  }
+
+  let mut second_cp = nub_spline.control_points[0]
+  let mut second_x = second_cp.get_cp().x
+  let mut second_is_positive = second_x > nub_spline_epsilon
+  let mut second_is_negative = second_x < -nub_spline_epsilon
+
+  for i in 1..<nub_spline.control_points.length() {
+    let first_cp = second_cp
+    let first_x = second_x
+    let first_is_positive = second_is_positive
+    let first_is_negative = second_is_negative
+
+    second_cp = nub_spline.control_points[i]
+    second_x = second_cp.get_cp().x
+    second_is_positive = second_x > nub_spline_epsilon
+    second_is_negative = second_x < -nub_spline_epsilon
+
+    if !(second_is_positive || second_is_negative) {
+      return nub_spline_get_t_from_control_point(second_cp)
+    }
+
+    if (first_is_positive && second_is_negative) ||
+      (first_is_negative && second_is_positive) {
+      let factor = first_x / (first_x - second_x)
+      let t1 = nub_spline_get_t_from_control_point(first_cp)
+      let t2 = nub_spline_get_t_from_control_point(second_cp)
+      return factor * t1 + (1.0 - factor) * t2
+    }
+  }
+
+  0.0
+}
+
+///|
+fn NubSpline::find_span(self : NubSpline, t : Double) -> Int {
+  let n = self.control_points.length() - 1
+  let degree = self.dim_nubs - 1
+  if n < 0 || degree < 0 {
+    return 0
+  }
+
+  if t >= self.knot_vector[n + 1] {
+    return n
+  }
+  if t <= self.knot_vector[degree] {
+    return degree
+  }
+
+  let mut low = degree
+  let mut high = n + 1
+  let mut mid = (low + high) / 2
+  while t < self.knot_vector[mid] || t >= self.knot_vector[mid + 1] {
+    if t < self.knot_vector[mid] {
+      high = mid
+    } else {
+      low = mid
+    }
+    mid = (low + high) / 2
+  }
+  mid
+}
+
+///|
+pub fn NubSpline::get_point_on_curve(self : NubSpline, t : Double) -> KVector {
+  let n = self.control_points.length() - 1
+  let degree = self.dim_nubs - 1
+  if n < 0 {
+    return new_kvector()
+  }
+  if degree <= 0 {
+    return self.control_points[0].get_cp().clone()
+  }
+  if (t - self.min_knot).abs() < nub_spline_epsilon {
+    return self.control_points[0].get_cp().clone()
+  }
+  if (t - self.max_knot).abs() < nub_spline_epsilon {
+    return self.control_points[self.control_points.length() - 1]
+      .get_cp()
+      .clone()
+  }
+
+  let span = self.find_span(t)
+  let d = []
+  for j in 0..<=degree {
+    d.push(self.control_points[span - degree + j].get_cp().clone())
+  }
+
+  for r in 1..<=degree {
+    let mut j = degree
+    while j >= r {
+      let i = span - degree + j
+      let denominator = self.knot_vector[i + degree - r + 1] -
+        self.knot_vector[i]
+      let alpha = if denominator.abs() < nub_spline_epsilon {
+        0.0
+      } else {
+        (t - self.knot_vector[i]) / denominator
+      }
+
+      let left = d[j - 1].clone().scale(1.0 - alpha)
+      let right = d[j].clone().scale(alpha)
+      d[j] = left.add(right)
+
+      if j == r {
+        break
+      }
+      j -= 1
+    }
+  }
+
+  d[degree]
+}
+
+///|
+pub fn NubSpline::get_point_on_curve_with_modify(
+  self : NubSpline,
+  t : Double,
+  modify : Bool,
+) -> KVector {
+  ignore(modify)
+  self.get_point_on_curve(t)
+}
+
+///|
+pub fn nub_spline_get_first_vertical_point(
+  nub_spline : NubSpline,
+  accuracy : Double,
+  max_recursion : Int,
+) -> KVector {
+  let first_derive = nub_spline_generate_derived(nub_spline)
+  let mut current_accuracy = @double.infinity
+  let mut current_vector = new_kvector()
+  let mut loop_count = 0
+  let mut knot = 0.0
+
+  while current_accuracy > accuracy && loop_count < max_recursion {
+    knot = nub_spline_get_zero_x_of_control_polygon(first_derive)
+    current_vector = first_derive.get_point_on_curve_with_modify(knot, true)
+    current_accuracy = current_vector.x.abs()
+    loop_count += 1
+  }
+
+  nub_spline.get_point_on_curve_with_modify(knot, false)
+}
+
+///|
+pub fn nub_spline_get_last_vertical_point(
+  nub_spline : NubSpline,
+  accuracy : Double,
+  max_recursion : Int,
+) -> KVector {
+  let first_derive = nub_spline_generate_inverted(
+    nub_spline_generate_derived(nub_spline),
+  )
+  let mut current_accuracy = @double.infinity
+  let mut current_vector = new_kvector()
+  let mut loop_count = 0
+  let mut knot = 0.0
+
+  while current_accuracy > accuracy && loop_count < max_recursion {
+    knot = nub_spline_get_zero_x_of_control_polygon(first_derive)
+    current_vector = first_derive.get_point_on_curve_with_modify(knot, true)
+    current_accuracy = current_vector.x.abs()
+    loop_count += 1
+  }
+
+  nub_spline.get_point_on_curve_with_modify(nub_spline.max_knot - knot, false)
+}
+
+///|
+pub fn nub_spline_get_first_horizontal_point(
+  nub_spline : NubSpline,
+  accuracy : Double,
+  max_recursion : Int,
+) -> KVector {
+  let first_derive = nub_spline_generate_derived(nub_spline)
+  let mut current_accuracy = @double.infinity
+  let mut current_vector = new_kvector()
+  let mut loop_count = 0
+  let mut knot = 0.0
+
+  while current_accuracy > accuracy && loop_count < max_recursion {
+    knot = nub_spline_get_zero_y_of_control_polygon(first_derive)
+    current_vector = first_derive.get_point_on_curve_with_modify(knot, true)
+    current_accuracy = current_vector.y.abs()
+    loop_count += 1
+  }
+
+  nub_spline.get_point_on_curve_with_modify(knot, false)
+}
+
+///|
+pub fn nub_spline_get_last_horizontal_point(
+  nub_spline : NubSpline,
+  accuracy : Double,
+  max_recursion : Int,
+) -> KVector {
+  let first_derive = nub_spline_generate_inverted(
+    nub_spline_generate_derived(nub_spline),
+  )
+  let mut current_accuracy = @double.infinity
+  let mut current_vector = new_kvector()
+  let mut loop_count = 0
+  let mut knot = 0.0
+
+  while current_accuracy > accuracy && loop_count < max_recursion {
+    knot = nub_spline_get_zero_y_of_control_polygon(first_derive)
+    current_vector = first_derive.get_point_on_curve_with_modify(knot, true)
+    current_accuracy = current_vector.y.abs()
+    loop_count += 1
+  }
+
+  nub_spline.get_point_on_curve_with_modify(nub_spline.max_knot - knot, false)
+}
+
+///|
 pub fn NubSpline::to_string(self : NubSpline) -> String {
   let pieces = []
   for control_point in self.control_points {

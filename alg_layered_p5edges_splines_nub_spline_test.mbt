@@ -54,3 +54,24 @@ test "nub spline derived and inverted generators keep expected shape metadata" {
   nub_spline_test_assert_close(first_inverted_cp.x, 30.0)
   nub_spline_test_assert_close(first_inverted_cp.y, 10.0)
 }
+
+///|
+test "nub spline can evaluate points on curve at endpoints and interior" {
+  let spline = new_nub_spline(true, 3, [
+    new_kvector_xy(0.0, 0.0),
+    new_kvector_xy(10.0, 0.0),
+    new_kvector_xy(20.0, 10.0),
+    new_kvector_xy(30.0, 10.0),
+  ])
+
+  let start = spline.get_point_on_curve(0.0)
+  let end = spline.get_point_on_curve(1.0)
+  let middle = spline.get_point_on_curve(0.5)
+
+  nub_spline_test_assert_close(start.x, 0.0)
+  nub_spline_test_assert_close(start.y, 0.0)
+  nub_spline_test_assert_close(end.x, 30.0)
+  nub_spline_test_assert_close(end.y, 10.0)
+  assert_true(middle.x > 0.0)
+  assert_true(middle.x < 30.0)
+}
