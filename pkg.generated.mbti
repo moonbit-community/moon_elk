@@ -2716,6 +2716,8 @@ pub let layered_options_crossing_minimization_greedy_switch_type : IProperty[Str
 
 pub let layered_options_crossing_minimization_hierarchical_sweepiness : IProperty[Double]
 
+pub let layered_options_crossing_minimization_position_id : IProperty[Int]
+
 pub let layered_options_crossing_minimization_strategy : IProperty[String]
 
 pub let layered_options_edge_routing_polyline_sloped_edge_zone_width : IProperty[Double]
@@ -2733,6 +2735,8 @@ pub fn layered_options_int_list_contains(Array[Int], Int) -> Bool
 pub let layered_options_junction_points : IProperty[KVectorChain]
 
 pub let layered_options_layering_layer_constraint : IProperty[String]
+
+pub let layered_options_layering_layer_id : IProperty[Int]
 
 pub fn layered_options_parse_int_list(String) -> Array[Int]
 
@@ -3535,6 +3539,8 @@ pub fn new_configurator_provider() -> ConfiguratorProvider
 pub fn[T] new_configurator_test_configuration(String, (T) -> LayoutConfigurator, default_configuration? : DefaultConfiguration?) -> ConfiguratorTestConfiguration[T]
 
 pub fn[N, E] new_connected_components(() -> Array[IComponent[N, E]], () -> Bool) -> IConnectedComponents[N, E]
+
+pub fn new_constraints_postprocessor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_container_cell() -> Cell
 

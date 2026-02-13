@@ -4,6 +4,11 @@ pub let layered_options_layering_layer_constraint : IProperty[String] = new_prop
 )
 
 ///|
+pub let layered_options_layering_layer_id : IProperty[Int] = new_property(
+  "org.eclipse.elk.layered.layering.layerId", 0,
+)
+
+///|
 pub let layered_options_crossing_minimization_force_node_model_order : IProperty[
   Bool,
 ] = new_property(
@@ -13,6 +18,11 @@ pub let layered_options_crossing_minimization_force_node_model_order : IProperty
 ///|
 pub let layered_options_crossing_minimization_strategy : IProperty[String] = new_property(
   "org.eclipse.elk.layered.crossingMinimization.strategy", "LAYER_SWEEP",
+)
+
+///|
+pub let layered_options_crossing_minimization_position_id : IProperty[Int] = new_property(
+  "org.eclipse.elk.layered.crossingMinimization.positionId", 0,
 )
 
 ///|
