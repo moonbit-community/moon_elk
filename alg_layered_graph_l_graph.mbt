@@ -7,6 +7,7 @@ pub struct LGraph {
   bool_properties : Map[String, Bool]
   double_properties : Map[String, Double]
   string_properties : Map[String, String]
+  elk_margin_properties : Map[String, ElkMargin]
   component_ordering_strategy_properties : Map[
     String,
     ComponentOrderingStrategy,
@@ -30,6 +31,7 @@ pub fn new_l_graph() -> LGraph {
     bool_properties: {},
     double_properties: {},
     string_properties: {},
+    elk_margin_properties: {},
     component_ordering_strategy_properties: {},
     direction_properties: {},
     spline_routing_mode_properties: {},
@@ -204,6 +206,34 @@ pub fn LGraph::has_property_string(
 }
 
 ///|
+pub fn LGraph::set_property_elk_margin(
+  self : LGraph,
+  property : IProperty[ElkMargin],
+  value : ElkMargin,
+) -> Unit {
+  self.elk_margin_properties[property.get_id()] = value.clone()
+}
+
+///|
+pub fn LGraph::get_property_elk_margin(
+  self : LGraph,
+  property : IProperty[ElkMargin],
+) -> ElkMargin {
+  match self.elk_margin_properties.get(property.get_id()) {
+    Some(value) => value.clone()
+    None => property.get_default().clone()
+  }
+}
+
+///|
+pub fn LGraph::has_property_elk_margin(
+  self : LGraph,
+  property : IProperty[ElkMargin],
+) -> Bool {
+  self.elk_margin_properties.contains(property.get_id())
+}
+
+///|
 pub fn LGraph::set_property_component_ordering_strategy(
   self : LGraph,
   property : IProperty[ComponentOrderingStrategy],
@@ -349,6 +379,12 @@ pub fn LGraph::copy_properties(self : LGraph, source : LGraph) -> Unit {
   for entry in source.string_properties.to_array() {
     let (key, value) = entry
     self.string_properties[key] = value
+  }
+
+  self.elk_margin_properties.clear()
+  for entry in source.elk_margin_properties.to_array() {
+    let (key, value) = entry
+    self.elk_margin_properties[key] = value.clone()
   }
 
   self.component_ordering_strategy_properties.clear()

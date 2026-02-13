@@ -122,6 +122,12 @@ pub let layered_options_spacing_comment_node : IProperty[Double] = new_property(
 )
 
 ///|
+pub let layered_options_spacing_ports_surrounding : IProperty[ElkMargin] = new_property(
+  "org.eclipse.elk.spacing.portsSurrounding",
+  new_elk_margin(),
+)
+
+///|
 pub let layered_options_comment_box : IProperty[Bool] = new_property(
   "org.eclipse.elk.commentBox", false,
 )
