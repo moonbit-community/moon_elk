@@ -1085,12 +1085,18 @@ fn spline_edge_router_process(
   layered_graph : LGraph,
   monitor : IElkProgressMonitor?,
 ) -> Unit {
-  ignore(layered_graph)
   let actual_monitor = match monitor {
     Some(value) => value
     None => new_null_elk_progress_monitor()
   }
   ignore(actual_monitor.begin("Spline edge routing", 1.0))
+
+  if layered_graph.get_layers().is_empty() {
+    layered_graph.set_size_xy(0.0, layered_graph.get_size().y)
+    actual_monitor.done()
+    return
+  }
+
   actual_monitor.done()
 }
 
