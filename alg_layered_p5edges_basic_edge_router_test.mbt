@@ -11,23 +11,27 @@ pub fn basic_edge_router_test_check_edge_route_is_orthogonal(
   }
 
   let mut horizontal = basic_edge_router_test_is_horizontal(
-    route.get(0), route.get(1),
+    route.get(0),
+    route.get(1),
   )
 
   let mut prev = route.get(0)
   for i in 1..<route.size() {
     let curr = route.get(i)
-    let error = edge + ": horizontal = " + horizontal.to_string() +
-      " prev = " + prev.to_string() + " curr = " + curr.to_string()
+    let error = edge +
+      ": horizontal = " +
+      horizontal.to_string() +
+      " prev = " +
+      prev.to_string() +
+      " curr = " +
+      curr.to_string()
 
     if horizontal {
       if (prev.y - curr.y).abs() >= basic_edge_router_test_tolerance {
         fail(error)
       }
-    } else {
-      if (prev.x - curr.x).abs() >= basic_edge_router_test_tolerance {
-        fail(error)
-      }
+    } else if (prev.x - curr.x).abs() >= basic_edge_router_test_tolerance {
+      fail(error)
     }
 
     horizontal = !horizontal
@@ -36,10 +40,7 @@ pub fn basic_edge_router_test_check_edge_route_is_orthogonal(
 }
 
 ///|
-pub fn basic_edge_router_test_is_horizontal(
-  p1 : KVector,
-  p2 : KVector,
-) -> Bool {
+pub fn basic_edge_router_test_is_horizontal(p1 : KVector, p2 : KVector) -> Bool {
   (p1.y - p2.y).abs() < basic_edge_router_test_tolerance
 }
 

@@ -1,5 +1,8 @@
 ///|
-fn splines_rectangle_test_assert_near(actual : Double, expected : Double) -> Unit {
+fn splines_rectangle_test_assert_near(
+  actual : Double,
+  expected : Double,
+) -> Unit {
   let diff = (actual - expected).abs()
   if diff > 0.0000001 {
     abort("expected=\{expected} actual=\{actual} diff=\{diff}")

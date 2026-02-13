@@ -64,7 +64,9 @@ test "SplinesMath supports direction-based intersection and angle helpers" {
   )
   splines_math_test_assert_near(right_angle, splines_math_half_pi)
 
-  let direction_angle = splines_math_inner_angle_directions(0.0, splines_math_half_pi)
+  let direction_angle = splines_math_inner_angle_directions(
+    0.0, splines_math_half_pi,
+  )
   splines_math_test_assert_near(direction_angle, splines_math_half_pi)
 }
 
@@ -84,7 +86,10 @@ test "SplinesMath port-side helpers and between checks match upstream formulas" 
     splines_math_port_side_to_direction(south),
     splines_math_half_pi,
   )
-  splines_math_test_assert_near(splines_math_port_side_to_direction(west), @math.PI)
+  splines_math_test_assert_near(
+    splines_math_port_side_to_direction(west),
+    @math.PI,
+  )
 
   let node = new_l_node()
   ignore(node.get_size().set_xy(20.0, 30.0))
@@ -98,10 +103,22 @@ test "SplinesMath port-side helpers and between checks match upstream formulas" 
   ignore(port.get_position().set_xy(5.0, 7.0))
   ignore(port.get_anchor().set_xy(2.0, 3.0))
 
-  splines_math_test_assert_near(splines_math_dist_port_to_node_edge(port, north), -10.0)
-  splines_math_test_assert_near(splines_math_dist_port_to_node_edge(port, east), 13.0)
-  splines_math_test_assert_near(splines_math_dist_port_to_node_edge(port, south), 20.0)
-  splines_math_test_assert_near(splines_math_dist_port_to_node_edge(port, west), -7.0)
+  splines_math_test_assert_near(
+    splines_math_dist_port_to_node_edge(port, north),
+    -10.0,
+  )
+  splines_math_test_assert_near(
+    splines_math_dist_port_to_node_edge(port, east),
+    13.0,
+  )
+  splines_math_test_assert_near(
+    splines_math_dist_port_to_node_edge(port, south),
+    20.0,
+  )
+  splines_math_test_assert_near(
+    splines_math_dist_port_to_node_edge(port, west),
+    -7.0,
+  )
 
   assert_eq(splines_math_get_margin_on_port_side(node, north), 1.0)
   assert_eq(splines_math_get_margin_on_port_side(node, east), 2.0)

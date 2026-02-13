@@ -12,7 +12,8 @@ pub let splines_math_quarter_pi : Double = splines_math_half_pi / 2.0
 
 ///|
 pub let splines_math_three_half_pi : Double = splines_math_half_pi +
-  splines_math_half_pi + splines_math_half_pi
+  splines_math_half_pi +
+  splines_math_half_pi
 
 ///|
 pub let splines_math_two_pi : Double = 2.0 * @math.PI
@@ -122,7 +123,9 @@ pub fn splines_math_convert_kvector_array_to_string(
 
   let buffer = @buffer.new()
   for i in 0..<vectors.length() {
-    buffer.write_string(splines_math_convert_kvector_to_string(Some(vectors[i])))
+    buffer.write_string(
+      splines_math_convert_kvector_to_string(Some(vectors[i])),
+    )
     if i + 1 < vectors.length() {
       buffer.write_string(", ")
     }
@@ -136,7 +139,8 @@ pub fn splines_math_length_to_orthogonal(
   point : KVector,
 ) -> Double {
   let mut angle = splines_math_inner_angle_directions(
-    direction, point.to_radians(),
+    direction,
+    point.to_radians(),
   )
   let mut factor = 1
 
@@ -200,10 +204,10 @@ pub fn splines_math_is_between_double(
     return true
   }
 
-  if (boundary_0 - value) > splines_math_epsilon {
-    (value - boundary_1) > splines_math_epsilon
+  if boundary_0 - value > splines_math_epsilon {
+    value - boundary_1 > splines_math_epsilon
   } else {
-    (boundary_1 - value) > splines_math_epsilon
+    boundary_1 - value > splines_math_epsilon
   }
 }
 

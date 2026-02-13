@@ -52,12 +52,7 @@ pub fn new_rectangle_copy(rectangle : Rectangle) -> Rectangle {
 
 ///|
 pub fn new_rectangle_position(position : KVector) -> Rectangle {
-  {
-    top: position.y,
-    right: position.x,
-    bottom: position.y,
-    left: position.x,
-  }
+  { top: position.y, right: position.x, bottom: position.y, left: position.x }
 }
 
 ///|
@@ -111,7 +106,10 @@ pub fn Rectangle::union_shape(self : Rectangle, shape : LShape) -> Unit {
 }
 
 ///|
-pub fn Rectangle::union_rectangle(self : Rectangle, rectangle : Rectangle) -> Unit {
+pub fn Rectangle::union_rectangle(
+  self : Rectangle,
+  rectangle : Rectangle,
+) -> Unit {
   self.top = rectangle_min_double(self.top, rectangle.top)
   self.right = rectangle_max_double(self.right, rectangle.right)
   self.bottom = rectangle_max_double(self.bottom, rectangle.bottom)
@@ -119,7 +117,10 @@ pub fn Rectangle::union_rectangle(self : Rectangle, rectangle : Rectangle) -> Un
 }
 
 ///|
-pub fn rectangle_union(rectangle1 : Rectangle, rectangle2 : Rectangle) -> Rectangle {
+pub fn rectangle_union(
+  rectangle1 : Rectangle,
+  rectangle2 : Rectangle,
+) -> Rectangle {
   let ret_val = new_rectangle_copy(rectangle1)
   ret_val.union_rectangle(rectangle2)
   ret_val
@@ -179,7 +180,10 @@ pub fn Rectangle::get_left(self : Rectangle) -> Double {
 }
 
 ///|
-pub fn Rectangle::get_from_port_side(self : Rectangle, side : PortSide) -> Double {
+pub fn Rectangle::get_from_port_side(
+  self : Rectangle,
+  side : PortSide,
+) -> Double {
   match side {
     North => self.top
     East => self.right
@@ -190,14 +194,26 @@ pub fn Rectangle::get_from_port_side(self : Rectangle, side : PortSide) -> Doubl
 }
 
 ///|
-pub fn Rectangle::to_node_margins(self : Rectangle, shape : LShape) -> ElkMargin {
+pub fn Rectangle::to_node_margins(
+  self : Rectangle,
+  shape : LShape,
+) -> ElkMargin {
   let ret_val = new_elk_margin()
 
-  let shape_rectangle = new_rectangle_values(0.0, 0.0, shape.get_size().x, shape.get_size().y)
+  let shape_rectangle = new_rectangle_values(
+    0.0,
+    0.0,
+    shape.get_size().x,
+    shape.get_size().y,
+  )
   ret_val.set_top(rectangle_max_double(0.0, shape_rectangle.top - self.top))
   ret_val.set_left(rectangle_max_double(0.0, shape_rectangle.left - self.left))
-  ret_val.set_bottom(rectangle_max_double(0.0, self.bottom - shape_rectangle.bottom))
-  ret_val.set_right(rectangle_max_double(0.0, self.right - shape_rectangle.right))
+  ret_val.set_bottom(
+    rectangle_max_double(0.0, self.bottom - shape_rectangle.bottom),
+  )
+  ret_val.set_right(
+    rectangle_max_double(0.0, self.right - shape_rectangle.right),
+  )
 
   ret_val
 }
@@ -222,9 +238,13 @@ fn rectangle_format_1_decimal(value : Double) -> String {
 ///|
 pub fn Rectangle::to_string(self : Rectangle) -> String {
   "[" +
-  "top= " + rectangle_format_1_decimal(self.top) +
-  ",left= " + rectangle_format_1_decimal(self.left) +
-  ",bottom= " + rectangle_format_1_decimal(self.bottom) +
-  ",right= " + rectangle_format_1_decimal(self.right) +
+  "top= " +
+  rectangle_format_1_decimal(self.top) +
+  ",left= " +
+  rectangle_format_1_decimal(self.left) +
+  ",bottom= " +
+  rectangle_format_1_decimal(self.bottom) +
+  ",right= " +
+  rectangle_format_1_decimal(self.right) +
   "]"
 }
