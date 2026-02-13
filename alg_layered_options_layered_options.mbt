@@ -9,6 +9,16 @@ pub let layered_options_layering_layer_id : IProperty[Int] = new_property(
 )
 
 ///|
+pub let layered_options_partitioning_activate : IProperty[Bool] = new_property(
+  "org.eclipse.elk.partitioning.activate", false,
+)
+
+///|
+pub let layered_options_partitioning_partition : IProperty[Int] = new_property(
+  "org.eclipse.elk.partitioning.partition", 0,
+)
+
+///|
 pub let layered_options_crossing_minimization_force_node_model_order : IProperty[
   Bool,
 ] = new_property(

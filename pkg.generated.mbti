@@ -2760,6 +2760,10 @@ pub let layered_options_layering_layer_id : IProperty[Int]
 
 pub fn layered_options_parse_int_list(String) -> Array[Int]
 
+pub let layered_options_partitioning_activate : IProperty[Bool]
+
+pub let layered_options_partitioning_partition : IProperty[Int]
+
 pub let layered_options_port_index : IProperty[Int]
 
 pub let layered_options_port_sorting_strategy : IProperty[String]
@@ -4860,7 +4864,11 @@ pub fn new_partial_elk_graph_content_assist_parser() -> PartialElkGraphContentAs
 
 pub fn new_partial_elk_graph_json_content_assist_parser() -> PartialElkGraphJsonContentAssistParser
 
+pub fn new_partition_midprocessor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
+
 pub fn new_partition_postprocessor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
+
+pub fn new_partition_preprocessor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn[P] new_phase_descriptor(Array[P], (P) -> Int) -> PhaseDescriptor[P]
 
