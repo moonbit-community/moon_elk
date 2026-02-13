@@ -120,6 +120,24 @@ pub let internal_properties_barycenter_associates : IProperty[Array[LNode]] = ne
 )
 
 ///|
+pub let internal_properties_top_comments : IProperty[Array[LNode]] = new_property(
+  "TopSideComments",
+  [],
+)
+
+///|
+pub let internal_properties_bottom_comments : IProperty[Array[LNode]] = new_property(
+  "BottomSideComments",
+  [],
+)
+
+///|
+pub let internal_properties_comment_conn_port : IProperty[LPort?] = new_property(
+  "CommentConnectionPort",
+  None,
+)
+
+///|
 pub let internal_properties_weight : IProperty[Double] = new_property(
   "medianHeuristic.weight", 0.0,
 )

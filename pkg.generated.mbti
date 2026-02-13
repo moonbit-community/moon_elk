@@ -2504,7 +2504,11 @@ pub fn intermediate_processor_strategy_values() -> Array[IntermediateProcessorSt
 
 pub let internal_properties_barycenter_associates : IProperty[Array[LNode]]
 
+pub let internal_properties_bottom_comments : IProperty[Array[LNode]]
+
 pub let internal_properties_cb_num_model_order_groups : IProperty[Int]
+
+pub let internal_properties_comment_conn_port : IProperty[LPort?]
 
 pub let internal_properties_cyclic : IProperty[Bool]
 
@@ -2569,6 +2573,8 @@ pub let internal_properties_tarjan_id : IProperty[Int]
 pub let internal_properties_tarjan_lowlink : IProperty[Int]
 
 pub let internal_properties_tarjan_on_stack : IProperty[Bool]
+
+pub let internal_properties_top_comments : IProperty[Array[LNode]]
 
 pub let internal_properties_weight : IProperty[Double]
 
@@ -2745,6 +2751,10 @@ pub let layered_options_port_index : IProperty[Int]
 pub let layered_options_port_sorting_strategy : IProperty[String]
 
 pub let layered_options_spacing_base_value : IProperty[Double]
+
+pub let layered_options_spacing_comment_comment : IProperty[Double]
+
+pub let layered_options_spacing_comment_node : IProperty[Double]
 
 pub let layered_options_spacing_edge_edge_between_layers : IProperty[Double]
 
@@ -3513,6 +3523,8 @@ pub fn new_clear_execution_action(AbstractLayoutDebugView) -> ClearExecutionActi
 pub fn new_clear_executions_action() -> ClearExecutionsAction
 
 pub fn new_collapse_execution_tree_action(AbstractLayoutDebugView) -> CollapseExecutionTreeAction
+
+pub fn new_comment_node_margin_calculator_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn[N, E] new_component(() -> Array[ElkRectangle], () -> Array[IExternalExtension[E]], () -> Array[PortSide]) -> IComponent[N, E]
 
