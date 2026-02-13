@@ -142,6 +142,11 @@ pub let layered_options_feedback_edges : IProperty[Bool] = new_property(
 )
 
 ///|
+pub let layered_options_unnecessary_bendpoints : IProperty[Bool] = new_property(
+  "org.eclipse.elk.layered.unnecessaryBendpoints", false,
+)
+
+///|
 pub let layered_options_junction_points : IProperty[KVectorChain] = new_property(
   "org.eclipse.elk.junctionPoints",
   new_kvector_chain(),

@@ -2744,6 +2744,8 @@ pub let layered_options_spacing_node_node_between_layers : IProperty[Double]
 
 pub let layered_options_thoroughness : IProperty[Int]
 
+pub let layered_options_unnecessary_bendpoints : IProperty[Bool]
+
 pub fn layered_phase_constants() -> Array[LayeredPhases]
 
 pub let layered_phase_descriptor : PhaseDescriptor[LayeredPhases]
@@ -2951,6 +2953,8 @@ pub fn load_graph_action_layout_internal(String, Bool, Int) -> Int
 pub fn load_graph_action_load_from_file(String) -> Int
 
 pub fn load_graph_action_run_file(String?, LayoutGraphView) -> Unit
+
+pub fn long_edge_joiner_join_at(LNode, Bool) -> Unit
 
 pub fn long_edge_ordering_strategy_return_values() -> Array[Int]
 
@@ -4589,6 +4593,8 @@ pub fn new_load_graph_action(LayoutGraphView) -> LoadGraphAction
 pub fn new_log_label_provider() -> LogLabelProvider
 
 pub fn new_logged_graph(String, LoggedGraphType) -> LoggedGraph
+
+pub fn new_long_edge_joiner_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_long_edge_splitter_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
