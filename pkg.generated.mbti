@@ -4778,6 +4778,8 @@ pub fn new_polyomino_with_extensions(Int, Int, Array[UniqueTriple[PolyominoDirec
 
 pub fn new_polyominoes(Array[Polyomino], Double, fill? : Bool) -> Polyominoes
 
+pub fn new_port_side_processor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
+
 pub fn new_preference_action(String) -> PreferenceAction
 
 pub fn new_progress_monitor_adapter(IElkProgressMonitor, max_hierarchy_levels? : Int) -> ProgressMonitorAdapter
@@ -5341,6 +5343,8 @@ pub fn port_side_from_direction(Direction) -> PortSide
 pub fn port_side_is_horizontal(PortSide) -> Bool
 
 pub fn port_side_is_vertical(PortSide) -> Bool
+
+pub fn port_side_processor_set_port_side(LPort) -> Unit
 
 pub fn port_side_to_string(PortSide) -> String
 
