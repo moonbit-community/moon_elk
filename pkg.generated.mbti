@@ -3526,6 +3526,8 @@ pub fn new_collapse_execution_tree_action(AbstractLayoutDebugView) -> CollapseEx
 
 pub fn new_comment_node_margin_calculator_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
+pub fn new_comment_postprocessor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
+
 pub fn[N, E] new_component(() -> Array[ElkRectangle], () -> Array[IExternalExtension[E]], () -> Array[PortSide]) -> IComponent[N, E]
 
 pub fn new_component_group() -> ComponentGroup

@@ -38,7 +38,7 @@ fn comment_node_margin_calculator_process_comments(node : LNode) -> Unit {
   )
 
   let mut top_width = 0.0
-  if !top_boxes.is_empty() {
+  if has_top {
     let mut max_height = 0.0
     for comment_box in top_boxes {
       max_height = comment_node_margin_calculator_max(
@@ -53,7 +53,7 @@ fn comment_node_margin_calculator_process_comments(node : LNode) -> Unit {
   }
 
   let mut bottom_width = 0.0
-  if !bottom_boxes.is_empty() {
+  if has_bottom {
     let mut max_height = 0.0
     for comment_box in bottom_boxes {
       max_height = comment_node_margin_calculator_max(

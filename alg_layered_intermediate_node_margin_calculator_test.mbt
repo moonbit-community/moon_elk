@@ -73,3 +73,25 @@ test "comment node margin calculator keeps margins unchanged without comments" {
   inspect(node.get_margin().get_bottom(), content="4")
   inspect(node.get_margin().get_left(), content="5")
 }
+
+///|
+test "comment node margin calculator treats empty comment list as present property" {
+  let graph = new_l_graph()
+  graph.set_property_double(layered_options_spacing_comment_comment, 5.0)
+  graph.set_property_double(layered_options_spacing_comment_node, 7.0)
+
+  let layer = new_layer(graph)
+  graph.get_layers().push(layer)
+
+  let node = node_margin_calculator_test_new_node(graph, layer, 20, 100.0, 40.0)
+  node.get_margin().set_values(2.0, 3.0, 4.0, 5.0)
+  node.set_property_l_node_array(internal_properties_top_comments, [])
+
+  let processor = new_comment_node_margin_calculator_layout_processor()
+  processor.process(graph, None)
+
+  inspect(node.get_margin().get_top(), content="9")
+  inspect(node.get_margin().get_right(), content="3")
+  inspect(node.get_margin().get_bottom(), content="4")
+  inspect(node.get_margin().get_left(), content="5")
+}
