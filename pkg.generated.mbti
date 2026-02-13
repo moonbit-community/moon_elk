@@ -46,6 +46,8 @@ pub fn approximate_bezier_segment_auto(Array[KVector]) -> Array[KVector]
 
 pub fn approximate_bezier_spline(KVectorChain) -> KVectorChain
 
+pub fn ard_cut_index_heuristic_get_chunk_count(GraphStats) -> Int
+
 pub let aspect_ratio : IProperty[Double]
 
 pub fn averaged(Array[Double]) -> Double
@@ -2768,6 +2770,28 @@ pub let layered_options_thoroughness : IProperty[Int]
 
 pub let layered_options_unnecessary_bendpoints : IProperty[Bool]
 
+pub let layered_options_wrapping_additional_edge_spacing : IProperty[Double]
+
+pub let layered_options_wrapping_correction_factor : IProperty[Double]
+
+pub let layered_options_wrapping_cutting_cuts : IProperty[String]
+
+pub let layered_options_wrapping_cutting_msd_freedom : IProperty[Int]
+
+pub let layered_options_wrapping_cutting_strategy : IProperty[String]
+
+pub let layered_options_wrapping_multi_edge_distance_penalty : IProperty[Double]
+
+pub let layered_options_wrapping_multi_edge_improve_cuts : IProperty[Bool]
+
+pub let layered_options_wrapping_multi_edge_improve_wrapped_edges : IProperty[Bool]
+
+pub let layered_options_wrapping_strategy : IProperty[String]
+
+pub let layered_options_wrapping_validify_forbidden_indices : IProperty[String]
+
+pub let layered_options_wrapping_validify_strategy : IProperty[String]
+
 pub fn layered_phase_constants() -> Array[LayeredPhases]
 
 pub let layered_phase_descriptor : PhaseDescriptor[LayeredPhases]
@@ -3490,6 +3514,8 @@ pub fn new_annulus_wedge_compaction() -> AnnulusWedgeCompaction
 
 pub fn new_apply_layout_request() -> ApplyLayoutRequest
 
+pub fn new_ard_cut_index_heuristic() -> ICutIndexCalculator
+
 pub fn new_atomic_cell() -> Cell
 
 pub fn new_barycenter_heuristic(ForsterConstraintResolver, GreedySwitchMockRandom, AbstractBarycenterPortDistributor, Array[Array[LNode]]) -> BarycenterHeuristic
@@ -4190,6 +4216,8 @@ pub fn new_graph_rendering_configurator(CoreUiDisplay) -> GraphRenderingConfigur
 
 pub fn new_graph_resource_provider() -> GraphResourceProvider
 
+pub fn new_graph_stats(LGraph) -> GraphStats
+
 pub fn new_graph_text_assignment(String) -> GraphTextAssignment
 
 pub fn new_graph_text_configuration_element(contributor? : String?) -> GraphTextConfigurationElement
@@ -4347,6 +4375,8 @@ pub fn new_hyper_edge_segment_splitter(OrthogonalRoutingGenerator) -> HyperEdgeS
 pub fn new_hyperedge_crossings_counter(Array[Int], Array[Bool], Array[Int]) -> HyperedgeCrossingsCounter
 
 pub fn new_i_crossing_minimization_heuristic(() -> Bool, (Array[Array[LNode]], Bool) -> Bool, (Array[Array[LNode]], Int, Bool, Bool) -> Bool, () -> Bool, init_at_layer_level? : (Int, Array[Array[LNode]]) -> Unit, init_at_node_level? : (Int, Int, Array[Array[LNode]]) -> Unit, init_at_port_level? : (Int, Int, Int, Array[Array[LNode]]) -> Unit, init_at_edge_level? : (Int, Int, Int, Int, LEdge, Array[Array[LNode]]) -> Unit, init_after_traversal? : () -> Unit) -> ICrossingMinimizationHeuristic
+
+pub fn new_i_cut_index_calculator((LGraph, GraphStats) -> Array[Int], () -> Bool) -> ICutIndexCalculator
 
 pub fn new_i_edit_part_filter((Int) -> Bool) -> IEditPartFilter
 
@@ -4630,6 +4660,8 @@ pub fn new_long_edge_joiner_layout_processor() -> ILayoutProcessor[LayeredPhases
 
 pub fn new_long_edge_splitter_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
+pub fn new_manual_cut_index_calculator() -> ICutIndexCalculator
+
 pub fn new_median_heuristic(@random.Rand) -> MedianHeuristic
 
 pub fn new_melk_documentation_generator() -> MelkDocumentationGenerator
@@ -4755,6 +4787,8 @@ pub fn new_mrtree_root_processor_layout_processor() -> ILayoutProcessor[MrtreeTr
 pub fn new_mrtree_tree_layout_provider() -> MrtreeTreeLayoutProvider
 
 pub fn new_mrtree_untreeifyer_layout_processor() -> ILayoutProcessor[MrtreeTreeLayoutPhases, Int]
+
+pub fn new_msd_cut_index_heuristic() -> ICutIndexCalculator
 
 pub fn new_multiple_options_cell_editor(Array[String], Bool) -> MultipleOptionsCellEditor
 
@@ -11011,6 +11045,33 @@ pub struct GraphResourceProvider {
   marker : Int
 }
 
+pub struct GraphStats {
+  graph : LGraph
+  spacing : Double
+  in_layer_spacing : Double
+  dar : Double
+  longest_path : Int
+  mut max_width : Double?
+  mut max_height : Double?
+  mut sum_width : Double?
+  mut widths : Array[Double]?
+  mut heights : Array[Double]?
+  mut cuts_allowed : Array[Bool]?
+}
+pub fn GraphStats::get_approximate_chunk_based_layering_height(Self, Array[Int]) -> Double
+pub fn GraphStats::get_approximate_chunk_based_layering_width(Self, Array[Int]) -> Double
+pub fn GraphStats::get_approximate_layer_height(Self, Layer) -> Double
+pub fn GraphStats::get_approximate_layer_width(Self, Layer) -> Double
+pub fn GraphStats::get_approximate_layering_height(Self) -> Double
+pub fn GraphStats::get_approximate_layering_width(Self) -> Double
+pub fn GraphStats::get_cuts_allowed(Self) -> Array[Bool]
+pub fn GraphStats::get_heights(Self) -> Array[Double]
+pub fn GraphStats::get_max_height(Self) -> Double
+pub fn GraphStats::get_max_width(Self) -> Double
+pub fn GraphStats::get_sum_width(Self) -> Double
+pub fn GraphStats::get_widths(Self) -> Array[Double]
+pub fn GraphStats::is_cut_allowed(Self, Int) -> Bool
+
 type GraphTestRectangle
 
 pub enum GraphTestShape {
@@ -11971,6 +12032,13 @@ pub fn ICrossingMinimizationHeuristic::init_at_port_level(Self, Int, Int, Int, A
 pub fn ICrossingMinimizationHeuristic::is_deterministic(Self) -> Bool
 pub fn ICrossingMinimizationHeuristic::minimize_crossings(Self, Array[Array[LNode]], Int, Bool, Bool) -> Bool
 pub fn ICrossingMinimizationHeuristic::set_first_layer_order(Self, Array[Array[LNode]], Bool) -> Bool
+
+pub struct ICutIndexCalculator {
+  get_cut_indexes : (LGraph, GraphStats) -> Array[Int]
+  guarantee_valid : () -> Bool
+}
+pub fn ICutIndexCalculator::get_cut_indexes(Self, LGraph, GraphStats) -> Array[Int]
+pub fn ICutIndexCalculator::guarantee_valid(Self) -> Bool
 
 pub struct IDataObject {
   parse_fn : (String) -> Unit

@@ -219,6 +219,63 @@ pub let layered_options_consider_model_order_long_edge_strategy : IProperty[
 )
 
 ///|
+pub let layered_options_wrapping_strategy : IProperty[String] = new_property(
+  "org.eclipse.elk.layered.wrapping.strategy", "OFF",
+)
+
+///|
+pub let layered_options_wrapping_additional_edge_spacing : IProperty[Double] = new_property(
+  "org.eclipse.elk.layered.wrapping.additionalEdgeSpacing", 10.0,
+)
+
+///|
+pub let layered_options_wrapping_correction_factor : IProperty[Double] = new_property(
+  "org.eclipse.elk.layered.wrapping.correctionFactor", 1.0,
+)
+
+///|
+pub let layered_options_wrapping_cutting_strategy : IProperty[String] = new_property(
+  "org.eclipse.elk.layered.wrapping.cutting.strategy", "MSD",
+)
+
+///|
+pub let layered_options_wrapping_cutting_cuts : IProperty[String] = new_property(
+  "org.eclipse.elk.layered.wrapping.cutting.cuts", "",
+)
+
+///|
+pub let layered_options_wrapping_cutting_msd_freedom : IProperty[Int] = new_property(
+  "org.eclipse.elk.layered.wrapping.cutting.msd.freedom", 1,
+)
+
+///|
+pub let layered_options_wrapping_validify_strategy : IProperty[String] = new_property(
+  "org.eclipse.elk.layered.wrapping.validify.strategy", "GREEDY",
+)
+
+///|
+pub let layered_options_wrapping_validify_forbidden_indices : IProperty[String] = new_property(
+  "org.eclipse.elk.layered.wrapping.validify.forbiddenIndices", "",
+)
+
+///|
+pub let layered_options_wrapping_multi_edge_improve_cuts : IProperty[Bool] = new_property(
+  "org.eclipse.elk.layered.wrapping.multiEdge.improveCuts", true,
+)
+
+///|
+pub let layered_options_wrapping_multi_edge_distance_penalty : IProperty[Double] = new_property(
+  "org.eclipse.elk.layered.wrapping.multiEdge.distancePenalty", 2.0,
+)
+
+///|
+pub let layered_options_wrapping_multi_edge_improve_wrapped_edges : IProperty[
+  Bool,
+] = new_property(
+  "org.eclipse.elk.layered.wrapping.multiEdge.improveWrappedEdges", true,
+)
+
+///|
 pub fn layered_options_parse_int_list(value : String) -> Array[Int] {
   let normalized = value
     .replace_all(old="[", new="")
