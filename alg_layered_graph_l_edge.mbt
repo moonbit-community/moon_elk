@@ -21,6 +21,8 @@ pub struct LEdge {
   mut source : LPort?
   mut target : LPort?
   labels : Array[LLabel]
+  int_properties : Map[String, Int]
+  kvector_chain_properties : Map[String, KVectorChain]
   bool_properties : Map[String, Bool]
 }
 
@@ -33,6 +35,8 @@ pub fn new_l_edge() -> LEdge {
     source: None,
     target: None,
     labels: [],
+    int_properties: {},
+    kvector_chain_properties: {},
     bool_properties: {},
   }
 }
@@ -184,6 +188,56 @@ pub fn LEdge::set_property_bool(
   value : Bool,
 ) -> Unit {
   self.bool_properties[property.get_id()] = value
+}
+
+///|
+pub fn LEdge::set_property_int(
+  self : LEdge,
+  property : IProperty[Int],
+  value : Int,
+) -> Unit {
+  self.int_properties[property.get_id()] = value
+}
+
+///|
+pub fn LEdge::get_property_int(self : LEdge, property : IProperty[Int]) -> Int {
+  match self.int_properties.get(property.get_id()) {
+    Some(value) => value
+    None => property.get_default()
+  }
+}
+
+///|
+pub fn LEdge::has_property_int(self : LEdge, property : IProperty[Int]) -> Bool {
+  self.int_properties.contains(property.get_id())
+}
+
+///|
+pub fn LEdge::set_property_kvector_chain(
+  self : LEdge,
+  property : IProperty[KVectorChain],
+  value : KVectorChain,
+) -> Unit {
+  self.kvector_chain_properties[property.get_id()] = value
+}
+
+///|
+pub fn LEdge::get_property_kvector_chain(
+  self : LEdge,
+  property : IProperty[KVectorChain],
+) -> KVectorChain {
+  match self.kvector_chain_properties.get(property.get_id()) {
+    Some(value) => value
+    None => property.get_default()
+  }
+}
+
+///|
+pub fn LEdge::has_property_kvector_chain(
+  self : LEdge,
+  property : IProperty[KVectorChain],
+) -> Bool {
+  self.kvector_chain_properties.contains(property.get_id())
 }
 
 ///|
