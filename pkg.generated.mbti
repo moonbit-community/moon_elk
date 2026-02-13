@@ -4386,6 +4386,8 @@ pub fn new_grid_elk_node(Int) -> GridElkNode
 
 pub fn new_group_model_order_calculator() -> GroupModelOrderCalculator
 
+pub fn new_hierarchical_port_dummy_size_processor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
+
 pub fn new_hyper_edge_segment(BaseRoutingDirectionStrategy) -> HyperEdgeSegment
 
 pub fn new_hyper_edge_segment_splitter(OrthogonalRoutingGenerator) -> HyperEdgeSegmentSplitter
