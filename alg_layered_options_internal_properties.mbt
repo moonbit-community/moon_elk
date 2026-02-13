@@ -83,6 +83,12 @@ pub let internal_properties_long_edge_target_node : IProperty[LNode?] = new_prop
 )
 
 ///|
+pub let internal_properties_target_node_model_order : IProperty[Map[Int, Int]] = new_property(
+  "targetNode.modelOrder",
+  {},
+)
+
+///|
 pub let internal_properties_ext_port_connections : IProperty[Array[PortSide]] = new_property(
   "externalPortConnections", sides_none,
 )

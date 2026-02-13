@@ -26,6 +26,15 @@ fn lnode_port_side_equals(left : PortSide, right : PortSide) -> Bool {
 }
 
 ///|
+fn lnode_clone_int_int_map(source : Map[Int, Int]) -> Map[Int, Int] {
+  let copied : Map[Int, Int] = {}
+  for entry in source.to_array() {
+    copied[entry.0] = entry.1
+  }
+  copied
+}
+
+///|
 pub enum NodeType {
   Normal
   LongEdge
@@ -70,6 +79,7 @@ pub struct LNode {
   port_side_properties : Map[String, PortSide]
   node_properties : Map[String, LNode]
   node_array_properties : Map[String, Array[LNode]]
+  int_int_map_properties : Map[String, Map[Int, Int]]
   port_properties : Map[String, LPort]
   edge_properties : Map[String, LEdge]
 }
@@ -94,6 +104,7 @@ pub fn new_l_node(graph? : LGraph? = None) -> LNode {
     port_side_properties: {},
     node_properties: {},
     node_array_properties: {},
+    int_int_map_properties: {},
     port_properties: {},
     edge_properties: {},
   }
@@ -559,6 +570,40 @@ pub fn LNode::has_property_l_node_array(
   property : IProperty[Array[LNode]],
 ) -> Bool {
   self.node_array_properties.contains(property.get_id())
+}
+
+///|
+pub fn LNode::set_property_int_int_map(
+  self : LNode,
+  property : IProperty[Map[Int, Int]],
+  value : Map[Int, Int],
+) -> Unit {
+  self.int_int_map_properties[property.get_id()] = lnode_clone_int_int_map(
+    value,
+  )
+}
+
+///|
+pub fn LNode::get_property_int_int_map(
+  self : LNode,
+  property : IProperty[Map[Int, Int]],
+) -> Map[Int, Int] {
+  match self.int_int_map_properties.get(property.get_id()) {
+    Some(value) => value
+    None => {
+      let created = lnode_clone_int_int_map(property.get_default())
+      self.int_int_map_properties[property.get_id()] = created
+      created
+    }
+  }
+}
+
+///|
+pub fn LNode::has_property_int_int_map(
+  self : LNode,
+  property : IProperty[Map[Int, Int]],
+) -> Bool {
+  self.int_int_map_properties.contains(property.get_id())
 }
 
 ///|

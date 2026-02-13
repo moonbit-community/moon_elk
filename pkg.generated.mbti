@@ -2572,6 +2572,8 @@ pub let internal_properties_spline_ns_port_y_coord : IProperty[Double]
 
 pub let internal_properties_spline_route_start : IProperty[Array[SplineSegment]]
 
+pub let internal_properties_target_node_model_order : IProperty[Map[Int, Int]]
+
 pub let internal_properties_tarjan_id : IProperty[Int]
 
 pub let internal_properties_tarjan_lowlink : IProperty[Int]
@@ -5000,6 +5002,8 @@ pub fn new_simple_layout_configuration_store(options? : Map[String, String], opt
 
 pub fn new_single_edge_graph_wrapper_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
+pub fn new_sort_by_input_model_processor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
+
 pub fn new_south_to_north_routing_strategy() -> BaseRoutingDirectionStrategy
 
 pub fn new_spacing() -> Spacing
@@ -5845,6 +5849,14 @@ pub fn size_options_to_string(SizeOptions) -> String
 pub fn size_options_value_of(Int) -> SizeOptions
 
 pub fn size_options_values() -> Array[SizeOptions]
+
+pub fn sort_by_input_model_processor_get_target_node(LPort) -> LNode?
+
+pub fn sort_by_input_model_processor_insertion_sort(Array[LNode], ModelOrderNodeComparator) -> Unit
+
+pub fn sort_by_input_model_processor_insertion_sort_port(Array[LPort], ModelOrderPortComparator) -> Unit
+
+pub fn sort_by_input_model_processor_long_edge_target_node_preprocessing(LNode) -> Map[Int, Int]
 
 pub let spacing_component_component : IProperty[Double]
 
@@ -12884,6 +12896,7 @@ pub struct LNode {
   port_side_properties : Map[String, PortSide]
   node_properties : Map[String, LNode]
   node_array_properties : Map[String, Array[LNode]]
+  int_int_map_properties : Map[String, Map[Int, Int]]
   port_properties : Map[String, LPort]
   edge_properties : Map[String, LEdge]
 }
@@ -12909,6 +12922,7 @@ pub fn LNode::get_position(Self) -> KVector
 pub fn LNode::get_property_bool(Self, IProperty[Bool]) -> Bool
 pub fn LNode::get_property_double(Self, IProperty[Double]) -> Double
 pub fn LNode::get_property_int(Self, IProperty[Int]) -> Int
+pub fn LNode::get_property_int_int_map(Self, IProperty[Map[Int, Int]]) -> Map[Int, Int]
 pub fn LNode::get_property_l_edge(Self, IProperty[LEdge?]) -> LEdge?
 pub fn LNode::get_property_l_node(Self, IProperty[Self?]) -> Self?
 pub fn LNode::get_property_l_node_array(Self, IProperty[Array[Self]]) -> Array[Self]
@@ -12920,6 +12934,7 @@ pub fn LNode::get_type(Self) -> NodeType
 pub fn LNode::has_property_bool(Self, IProperty[Bool]) -> Bool
 pub fn LNode::has_property_double(Self, IProperty[Double]) -> Bool
 pub fn LNode::has_property_int(Self, IProperty[Int]) -> Bool
+pub fn LNode::has_property_int_int_map(Self, IProperty[Map[Int, Int]]) -> Bool
 pub fn LNode::has_property_l_edge(Self, IProperty[LEdge?]) -> Bool
 pub fn LNode::has_property_l_node(Self, IProperty[Self?]) -> Bool
 pub fn LNode::has_property_l_node_array(Self, IProperty[Array[Self]]) -> Bool
@@ -12934,6 +12949,7 @@ pub fn LNode::set_nested_graph(Self, LGraph?) -> Unit
 pub fn LNode::set_property_bool(Self, IProperty[Bool], Bool) -> Unit
 pub fn LNode::set_property_double(Self, IProperty[Double], Double) -> Unit
 pub fn LNode::set_property_int(Self, IProperty[Int], Int) -> Unit
+pub fn LNode::set_property_int_int_map(Self, IProperty[Map[Int, Int]], Map[Int, Int]) -> Unit
 pub fn LNode::set_property_l_edge(Self, IProperty[LEdge?], LEdge?) -> Unit
 pub fn LNode::set_property_l_node(Self, IProperty[Self?], Self?) -> Unit
 pub fn LNode::set_property_l_node_array(Self, IProperty[Array[Self]], Array[Self]) -> Unit
