@@ -2690,6 +2690,8 @@ pub fn layered_one_dimensional_compactor_quadratic_constraints(OneDimensionalCom
 
 pub fn layered_one_dimensional_compactor_scanline_constraints(OneDimensionalCompactor) -> Unit
 
+pub let layered_options_comment_box : IProperty[Bool]
+
 pub let layered_options_consider_model_order_crossing_counter_node_influence : IProperty[Double]
 
 pub let layered_options_consider_model_order_crossing_counter_port_influence : IProperty[Double]
@@ -3527,6 +3529,8 @@ pub fn new_collapse_execution_tree_action(AbstractLayoutDebugView) -> CollapseEx
 pub fn new_comment_node_margin_calculator_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_comment_postprocessor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
+
+pub fn new_comment_preprocessor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn[N, E] new_component(() -> Array[ElkRectangle], () -> Array[IExternalExtension[E]], () -> Array[PortSide]) -> IComponent[N, E]
 
