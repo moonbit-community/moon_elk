@@ -324,6 +324,116 @@ fn spline_edge_router_side_for_port(
 }
 
 ///|
+fn spline_edge_router_layer_equals(left : Layer?, right : Layer?) -> Bool {
+  match (left, right) {
+    (Some(left_layer), Some(right_layer)) =>
+      layer_internal_handle(left_layer) == layer_internal_handle(right_layer)
+    _ => false
+  }
+}
+
+///|
+fn spline_edge_router_clear_then_fill_mappings(
+  left_layer : Layer?,
+  right_layer : Layer?,
+  left_ports_layer : Array[LPort],
+  right_ports_layer : Array[LPort],
+  edges_remaining_layer : Array[LEdge],
+  spline_segments_layer : Array[SplineSegment],
+  self_loops_layer : Array[LEdge],
+  start_edges : Array[LEdge],
+  successing_edge : Map[Int, LEdge],
+) -> Unit {
+  left_ports_layer.clear()
+  right_ports_layer.clear()
+  edges_remaining_layer.clear()
+  spline_segments_layer.clear()
+  self_loops_layer.clear()
+
+  match left_layer {
+    Some(layer) => {
+      for node in layer.get_nodes() {
+        for source_port in node.get_ports_by_side(PortSide::East) {
+          spline_edge_router_port_set_add(left_ports_layer, source_port)
+
+          for edge in source_port.get_outgoing_edges() {
+            if edge.is_self_loop() {
+              continue
+            }
+
+            spline_edge_router_edge_set_add(edges_remaining_layer, edge)
+            spline_edge_router_find_and_add_successor(edge, successing_edge)
+
+            let source_node = spline_edge_router_port_node(
+              spline_edge_router_edge_source(edge),
+            )
+            if spline_edge_router_is_qualified_as_starting_node(source_node) {
+              spline_edge_router_edge_set_add(start_edges, edge)
+            }
+
+            let target_port = spline_edge_router_edge_target(edge)
+            let target_layer = spline_edge_router_port_node(target_port).get_layer()
+            if spline_edge_router_layer_equals(target_layer, right_layer) {
+              spline_edge_router_port_set_add(right_ports_layer, target_port)
+            } else if spline_edge_router_layer_equals(target_layer, left_layer) {
+              spline_edge_router_port_set_add(left_ports_layer, target_port)
+            } else {
+              ignore(spline_edge_router_edge_set_remove(edges_remaining_layer, edge))
+            }
+          }
+        }
+      }
+    }
+    None => ()
+  }
+
+  match right_layer {
+    Some(layer) => {
+      for node in layer.get_nodes() {
+        for port in node.get_ports() {
+          for edge in port.get_outgoing_edges() {
+            if edge.is_self_loop() {
+              spline_edge_router_edge_set_add(self_loops_layer, edge)
+            }
+          }
+        }
+
+        for source_port in node.get_ports_by_side(PortSide::West) {
+          spline_edge_router_port_set_add(right_ports_layer, source_port)
+
+          for edge in source_port.get_outgoing_edges() {
+            if edge.is_self_loop() {
+              continue
+            }
+
+            spline_edge_router_edge_set_add(edges_remaining_layer, edge)
+            spline_edge_router_find_and_add_successor(edge, successing_edge)
+
+            let source_node = spline_edge_router_port_node(
+              spline_edge_router_edge_source(edge),
+            )
+            if spline_edge_router_is_qualified_as_starting_node(source_node) {
+              spline_edge_router_edge_set_add(start_edges, edge)
+            }
+
+            let target_port = spline_edge_router_edge_target(edge)
+            let target_layer = spline_edge_router_port_node(target_port).get_layer()
+            if spline_edge_router_layer_equals(target_layer, right_layer) {
+              spline_edge_router_port_set_add(right_ports_layer, target_port)
+            } else if spline_edge_router_layer_equals(target_layer, left_layer) {
+              spline_edge_router_port_set_add(left_ports_layer, target_port)
+            } else {
+              ignore(spline_edge_router_edge_set_remove(edges_remaining_layer, edge))
+            }
+          }
+        }
+      }
+    }
+    None => ()
+  }
+}
+
+///|
 fn spline_edge_router_create_spline_segments(
   edges : Array[LEdge],
   left_ports : Array[LPort],

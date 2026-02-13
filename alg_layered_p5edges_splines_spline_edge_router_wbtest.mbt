@@ -291,3 +291,64 @@ test "spline edge router create segments and ranking assigns topological ranks" 
     }
   }
 }
+
+///|
+test "spline edge router clear then fill mappings collects layer-local sets" {
+  let graph = new_l_graph()
+  let left_layer = new_layer(graph)
+  let right_layer = new_layer(graph)
+  graph.get_layers().push(left_layer)
+  graph.get_layers().push(right_layer)
+
+  let left_node = new_l_node()
+  left_node.set_layer(Some(left_layer))
+  let right_node = new_l_node()
+  right_node.set_layer(Some(right_layer))
+
+  let left_port = new_l_port()
+  left_port.set_side(PortSide::East)
+  left_port.set_node(Some(left_node))
+  let right_port = new_l_port()
+  right_port.set_side(PortSide::West)
+  right_port.set_node(Some(right_node))
+  let edge = new_l_edge()
+  edge.set_source(Some(left_port))
+  edge.set_target(Some(right_port))
+
+  let loop_port = new_l_port()
+  loop_port.set_side(PortSide::North)
+  loop_port.set_node(Some(right_node))
+  let self_loop = new_l_edge()
+  self_loop.set_source(Some(loop_port))
+  self_loop.set_target(Some(loop_port))
+
+  let left_ports_layer : Array[LPort] = []
+  let right_ports_layer : Array[LPort] = []
+  let edges_remaining_layer : Array[LEdge] = []
+  let spline_segments_layer : Array[SplineSegment] = []
+  let self_loops_layer : Array[LEdge] = []
+  let start_edges : Array[LEdge] = []
+  let successing_edge : Map[Int, LEdge] = {}
+
+  spline_edge_router_clear_then_fill_mappings(
+    Some(left_layer),
+    Some(right_layer),
+    left_ports_layer,
+    right_ports_layer,
+    edges_remaining_layer,
+    spline_segments_layer,
+    self_loops_layer,
+    start_edges,
+    successing_edge,
+  )
+
+  assert_eq(edges_remaining_layer.length(), 1)
+  assert_eq(ledge_internal_handle(edges_remaining_layer[0]), ledge_internal_handle(edge))
+  assert_eq(self_loops_layer.length(), 1)
+  assert_eq(ledge_internal_handle(self_loops_layer[0]), ledge_internal_handle(self_loop))
+  assert_eq(start_edges.length(), 1)
+  assert_eq(ledge_internal_handle(start_edges[0]), ledge_internal_handle(edge))
+  assert_true(spline_edge_router_port_set_contains(left_ports_layer, left_port))
+  assert_true(spline_edge_router_port_set_contains(right_ports_layer, right_port))
+  assert_eq(spline_segments_layer.length(), 0)
+}
