@@ -72,7 +72,7 @@ fn between_layer_add_adjacency(
   edge : LEdge,
   side : PortSide,
   port_positions : Map[Int, Int],
-) -> Unit {
+) -> Bool {
   match between_layer_adjacent_port_of(edge, side) {
     Some(adjacent_port) =>
       match port_positions.get(lport_internal_handle(adjacent_port)) {
@@ -92,10 +92,11 @@ fn between_layer_add_adjacency(
               current_cardinality: 1,
             })
           }
+          true
         }
-        None => ()
+        None => false
       }
-    None => ()
+    None => false
   }
 }
 
@@ -117,9 +118,10 @@ fn between_layer_collect_adjacencies(
   for port in in_north_south_east_west_order(node, side) {
     for edge in between_layer_connected_edges(port, side) {
       if !edge.is_self_loop() && between_layer_is_not_in_layer(edge) {
-        between_layer_add_adjacency(list, edge, side, port_positions)
-        list.size = list.size + 1
-        list.current_size = list.current_size + 1
+        if between_layer_add_adjacency(list, edge, side, port_positions) {
+          list.size = list.size + 1
+          list.current_size = list.current_size + 1
+        }
       }
     }
   }

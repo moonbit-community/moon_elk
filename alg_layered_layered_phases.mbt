@@ -8,6 +8,34 @@ pub enum LayeredPhases {
 }
 
 ///|
+fn layered_phase_ordinal(phase : LayeredPhases) -> Int {
+  match phase {
+    P1CycleBreaking => 0
+    P2Layering => 1
+    P3NodeOrdering => 2
+    P4NodePlacement => 3
+    P5EdgeRouting => 4
+  }
+}
+
+///|
+pub fn layered_phase_constants() -> Array[LayeredPhases] {
+  [
+    LayeredPhases::P1CycleBreaking,
+    LayeredPhases::P2Layering,
+    LayeredPhases::P3NodeOrdering,
+    LayeredPhases::P4NodePlacement,
+    LayeredPhases::P5EdgeRouting,
+  ]
+}
+
+///|
+pub let layered_phase_descriptor : PhaseDescriptor[LayeredPhases] = new_phase_descriptor(
+  layered_phase_constants(),
+  layered_phase_ordinal,
+)
+
+///|
 pub fn layered_phases_to_string(value : LayeredPhases) -> String {
   match value {
     P1CycleBreaking => "P1_CYCLE_BREAKING"

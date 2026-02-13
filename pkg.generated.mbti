@@ -64,6 +64,8 @@ pub fn base_grid_visibility_values() -> Array[BaseGridVisibility]
 
 pub fn base_path_for_property(String) -> String
 
+pub fn base_routing_direction_strategy_for_routing_direction(RoutingDirection) -> BaseRoutingDirectionStrategy
+
 pub fn binomiald(Int, Int) -> Double
 
 pub fn binomiall(Int, Int) -> Int64
@@ -97,6 +99,12 @@ pub let clear_execution_action_id : String
 pub let clear_executions_action_id : String
 
 pub fn clip_vector(KVector, Double, Double) -> KVector
+
+pub fn cm_group_model_order_calculate_model_order_or_group_model_order(LNode, LNode, LGraph, Int) -> Int
+
+pub fn cm_group_model_order_calculate_model_order_or_group_model_order_edge(LEdge, LEdge, LGraph, Int) -> Int
+
+pub fn cm_group_model_order_calculate_model_order_or_group_model_order_port(LPort, LPort, LGraph, Int) -> Int
 
 pub fn cnode_of() -> CNodeBuilder
 
@@ -806,6 +814,12 @@ pub fn create_rectangle_strip_overlap_remover_for_direction(Direction) -> Rectan
 
 pub fn create_simple_edge(Int, Int) -> Int
 
+pub let critical_dependency_weight : Int
+
+pub fn cross_min_type_constants() -> Array[CrossMinType]
+
+pub fn crossing_count_side_values() -> Array[CrossingCountSide]
+
 pub fn crossing_minimization_strategy_to_string(CrossingMinimizationStrategy) -> String
 
 pub fn crossing_minimization_strategy_values() -> Array[String]
@@ -1346,7 +1360,11 @@ pub fn edge_labels(Int) -> Array[Int]
 
 pub fn edge_layout_option_string_value(Int, String) -> String?
 
+pub fn edge_router_factory_factory_for(EdgeRouting) -> ILayoutProcessorFactory[LayeredPhases, LGraph]
+
 pub fn edge_routing_to_string(EdgeRouting) -> String
+
+pub fn edge_routing_values() -> Array[EdgeRouting]
 
 pub fn edge_section_add_incoming_section(Int, Int) -> Unit
 
@@ -2072,6 +2090,10 @@ pub let graph_json_text_ui_plugin_id : String
 
 pub let graph_json_text_ui_status_error : Int
 
+pub fn graph_properties_to_string(GraphProperties) -> String
+
+pub fn graph_properties_values() -> Array[GraphProperties]
+
 pub fn graph_test_shape_label(Int) -> GraphTestShape
 
 pub fn graph_test_shape_node(Int) -> GraphTestShape
@@ -2402,6 +2424,8 @@ pub fn greedy_rectangle_strip_overlap_remover_compare_by_y_coordinate(RectangleN
 
 pub fn greedy_rectangle_strip_overlap_remover_remove_overlaps(RectangleStripOverlapRemover) -> Double
 
+pub fn greedy_switch_type_values() -> Array[GreedySwitchType]
+
 pub fn grid_container_cell_compute_minimum_height(Cell) -> Double
 
 pub fn grid_container_cell_compute_minimum_width(Cell) -> Double
@@ -2422,6 +2446,14 @@ pub fn grid_container_cell_set_center_cell_minimum_size(Cell, KVector) -> Unit
 
 pub fn grid_container_cell_set_only_center_cell_contributes_to_minimum_size(Cell, Bool) -> Unit
 
+pub fn group_order_strategy_equals(GroupOrderStrategy, GroupOrderStrategy) -> Bool
+
+pub fn group_order_strategy_from_string(String) -> GroupOrderStrategy
+
+pub fn group_order_strategy_to_string(GroupOrderStrategy) -> String
+
+pub fn group_order_strategy_values() -> Array[String]
+
 pub fn hierarchy_handling_to_string(HierarchyHandling) -> String
 
 pub fn high_level_sorting_criterion_values() -> Array[HighLevelSortingCriterion]
@@ -2429,6 +2461,12 @@ pub fn high_level_sorting_criterion_values() -> Array[HighLevelSortingCriterion]
 pub fn horizontal_label_alignment_to_string(HorizontalLabelAlignment) -> String
 
 pub fn horizontal_label_alignment_values() -> Array[HorizontalLabelAlignment]
+
+pub fn hyper_edge_cycle_detector_detect_cycles(Array[HyperEdgeSegment], Bool, @random.Rand) -> Array[HyperEdgeSegmentDependency]
+
+pub fn hyper_edge_segment_dependency_create_and_add_critical(HyperEdgeSegment, HyperEdgeSegment) -> HyperEdgeSegmentDependency
+
+pub fn hyper_edge_segment_dependency_create_and_add_regular(HyperEdgeSegment, HyperEdgeSegment, Int) -> HyperEdgeSegmentDependency
 
 pub fn i_crossing_minimization_heuristic_init(Array[ICrossingMinimizationHeuristic], Array[Array[LNode]]) -> Unit
 
@@ -2456,9 +2494,23 @@ pub let interactive : IProperty[Bool]
 
 pub fn interactive_mrtree_graph_visitor_set_interactive_options(Int) -> Unit
 
+pub fn intermediate_processor_strategy_to_string(IntermediateProcessorStrategy) -> String
+
+pub fn intermediate_processor_strategy_values() -> Array[IntermediateProcessorStrategy]
+
 pub let internal_properties_barycenter_associates : IProperty[Array[LNode]]
 
+pub let internal_properties_cb_num_model_order_groups : IProperty[Int]
+
+pub let internal_properties_cyclic : IProperty[Bool]
+
 pub let internal_properties_ext_port_connections : IProperty[Array[PortSide]]
+
+pub let internal_properties_ext_port_side : IProperty[PortSide]
+
+pub let internal_properties_first_try_with_initial_order : IProperty[Bool]
+
+pub let internal_properties_graph_properties : IProperty[Array[GraphProperties]]
 
 pub let internal_properties_in_layer_layout_unit : IProperty[LNode?]
 
@@ -2466,13 +2518,39 @@ pub let internal_properties_in_layer_successor_constraints : IProperty[Array[LNo
 
 pub let internal_properties_in_layer_successor_constraints_between_non_dummies : IProperty[Bool]
 
+pub let internal_properties_inside_connections : IProperty[Bool]
+
 pub let internal_properties_is_part_of_cycle : IProperty[Bool]
+
+pub let internal_properties_long_edge_source : IProperty[LPort?]
+
+pub let internal_properties_long_edge_target : IProperty[LPort?]
+
+pub let internal_properties_long_edge_target_node : IProperty[LNode?]
+
+pub let internal_properties_max_model_order_nodes : IProperty[Int]
+
+pub let internal_properties_model_order : IProperty[Int]
 
 pub let internal_properties_origin_l_node : IProperty[LNode?]
 
 pub let internal_properties_origin_l_port : IProperty[LPort?]
 
+pub let internal_properties_original_dummy_node_position : IProperty[Double]
+
 pub let internal_properties_port_dummy : IProperty[LNode?]
+
+pub let internal_properties_random_next_boolean : IProperty[Bool]
+
+pub let internal_properties_reversed : IProperty[Bool]
+
+pub let internal_properties_second_try_with_initial_order : IProperty[Bool]
+
+pub let internal_properties_spline_edge_chain : IProperty[Array[LEdge]]
+
+pub let internal_properties_spline_ns_port_y_coord : IProperty[Double]
+
+pub let internal_properties_spline_route_start : IProperty[Array[SplineSegment]]
 
 pub let internal_properties_tarjan_id : IProperty[Int]
 
@@ -2540,6 +2618,14 @@ pub fn label_x(Int) -> Double
 
 pub fn label_y(Int) -> Double
 
+pub fn layer_constraint_from_string(String) -> LayerConstraint
+
+pub fn layer_constraint_is_first_or_last_separate(LayerConstraint) -> Bool
+
+pub fn layer_constraint_to_string(LayerConstraint) -> String
+
+pub fn layer_constraint_values() -> Array[String]
+
 pub fn layered_cgroup_of() -> CGroupBuilder
 
 pub fn layered_cnode_of() -> CNodeBuilder
@@ -2572,6 +2658,8 @@ pub let layered_components_separate_connected_components : IProperty[Bool]
 
 pub fn layered_default_spacing_handler() -> ISpacingsHandler
 
+pub fn layered_intermediate_processor_factory(IntermediateProcessorStrategy) -> ILayoutProcessorFactory[LayeredPhases, LGraph]
+
 pub fn layered_is_both_left_or_both_right(LayeredQuadrant, LayeredQuadrant) -> Bool
 
 pub fn layered_is_one_left_one_right(LayeredQuadrant, LayeredQuadrant) -> Bool
@@ -2584,7 +2672,65 @@ pub fn layered_one_dimensional_compactor_quadratic_constraints(OneDimensionalCom
 
 pub fn layered_one_dimensional_compactor_scanline_constraints(OneDimensionalCompactor) -> Unit
 
+pub let layered_options_consider_model_order_crossing_counter_node_influence : IProperty[Double]
+
+pub let layered_options_consider_model_order_crossing_counter_port_influence : IProperty[Double]
+
+pub let layered_options_consider_model_order_group_model_order_cb_group_order_strategy : IProperty[String]
+
+pub let layered_options_consider_model_order_group_model_order_cb_preferred_source_id : IProperty[Int]
+
+pub let layered_options_consider_model_order_group_model_order_cb_preferred_target_id : IProperty[Int]
+
+pub let layered_options_consider_model_order_group_model_order_cm_enforced_group_orders : IProperty[String]
+
+pub let layered_options_consider_model_order_group_model_order_cm_group_order_strategy : IProperty[String]
+
+pub let layered_options_consider_model_order_group_model_order_component_group_id : IProperty[Int]
+
+pub let layered_options_consider_model_order_group_model_order_crossing_minimization_id : IProperty[Int]
+
+pub let layered_options_consider_model_order_group_model_order_cycle_breaking_id : IProperty[Int]
+
+pub let layered_options_consider_model_order_long_edge_strategy : IProperty[String]
+
+pub let layered_options_consider_model_order_port_model_order : IProperty[Bool]
+
+pub let layered_options_consider_model_order_strategy : IProperty[String]
+
+pub let layered_options_crossing_minimization_force_node_model_order : IProperty[Bool]
+
+pub let layered_options_crossing_minimization_greedy_switch_type : IProperty[String]
+
 pub let layered_options_crossing_minimization_hierarchical_sweepiness : IProperty[Double]
+
+pub let layered_options_crossing_minimization_strategy : IProperty[String]
+
+pub let layered_options_edge_routing_splines_mode : IProperty[SplineRoutingMode]
+
+pub let layered_options_edge_routing_splines_sloppy_layer_spacing_factor : IProperty[Double]
+
+pub let layered_options_hierarchy_handling : IProperty[String]
+
+pub fn layered_options_int_list_contains(Array[Int], Int) -> Bool
+
+pub let layered_options_layering_layer_constraint : IProperty[String]
+
+pub fn layered_options_parse_int_list(String) -> Array[Int]
+
+pub let layered_options_spacing_base_value : IProperty[Double]
+
+pub let layered_options_spacing_edge_edge_between_layers : IProperty[Double]
+
+pub let layered_options_spacing_edge_node_between_layers : IProperty[Double]
+
+pub let layered_options_spacing_node_node_between_layers : IProperty[Double]
+
+pub let layered_options_thoroughness : IProperty[Int]
+
+pub fn layered_phase_constants() -> Array[LayeredPhases]
+
+pub let layered_phase_descriptor : PhaseDescriptor[LayeredPhases]
 
 pub fn layered_phase_values() -> Array[String]
 
@@ -2605,6 +2751,12 @@ pub fn layered_scanline_constraint_calculation(OneDimensionalCompactor) -> Unit
 pub fn[T] layered_scanline_execute(Array[T], (T, T) -> Int, Array[(T) -> Unit]) -> Unit
 
 pub fn[T] layered_scanline_execute_single(Array[T], (T, T) -> Int, (T) -> Unit) -> Unit
+
+pub let layered_spacings_base_spacing_option : IProperty[Double]
+
+pub fn layered_spacings_get_individual_or_default(LNode, IProperty[Double]) -> Double
+
+pub fn layered_spacings_with_base_value(Double) -> LayeredSpacingsBuilder
 
 pub fn layering_strategy_to_string(LayeringStrategy) -> String
 
@@ -2831,6 +2983,8 @@ pub fn minf(Array[Double]) -> Double
 pub fn mini(Array[Int]) -> Int
 
 pub fn minl(Array[Int64]) -> Int64
+
+pub fn model_order_barycenter_heuristic_insertion_sort(Array[LNode], (LNode, LNode) -> Int, ModelOrderBarycenterHeuristic) -> Unit
 
 pub let model_resource_path_property : String
 
@@ -3298,6 +3452,8 @@ pub fn new_barycenter_heuristic(ForsterConstraintResolver, GreedySwitchMockRando
 
 pub fn new_barycenter_state(LNode) -> BarycenterState
 
+pub fn new_base_routing_direction_strategy(RoutingDirectionStrategyType) -> BaseRoutingDirectionStrategy
+
 pub fn new_basic_progress_monitor() -> IElkProgressMonitor
 
 pub fn new_between_layer_edge_two_node_crossings_counter(Array[Array[LNode]], Int) -> BetweenLayerEdgeTwoNodeCrossingsCounter
@@ -3305,6 +3461,8 @@ pub fn new_between_layer_edge_two_node_crossings_counter(Array[Array[LNode]], In
 pub fn new_bezier_curve(KVector, KVector, KVector, KVector) -> BezierCurve
 
 pub fn new_bezier_spline() -> BezierSpline
+
+pub fn new_bfs_node_order_cycle_breaker_layout_phase() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn[V : Hash + Eq] new_bi_linked_hash_multi_map() -> BiLinkedHashMultiMap[V]
 
@@ -3514,6 +3672,10 @@ pub fn new_core_ui_property_editor(CoreUiPropertyEditorKind, validator? : (CoreU
 
 pub fn new_core_ui_show_layout_view_event(can_open? : Bool) -> CoreUiShowLayoutViewEvent
 
+pub fn new_cross_hierarchy_edge(LEdge, LGraph, PortType) -> CrossHierarchyEdge
+
+pub fn new_cross_hierarchy_edge_comparator(LGraph) -> CrossHierarchyEdgeComparator
+
 pub fn new_crossing_matrix_filler(GreedySwitchType, Array[Array[LNode]], Int, CrossingCountSide) -> CrossingMatrixFiller
 
 pub fn new_crossings_counter(Array[Int]) -> CrossingsCounter
@@ -3537,6 +3699,10 @@ pub fn new_default_configuration(edges? : Bool, nodes? : Bool, ports? : Bool, ed
 pub fn new_default_module() -> CoreServiceInjector
 
 pub fn new_deprecated_layout_option_replacer() -> DeprecatedLayoutOptionReplacer
+
+pub fn new_depth_first_cycle_breaker_layout_phase() -> ILayoutProcessor[LayeredPhases, LGraph]
+
+pub fn new_dfs_node_order_cycle_breaker_layout_phase() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_diagram_layout_connector(build_layout_graph_fn? : (Int?, Int?) -> LayoutMapping?, apply_layout_fn? : (LayoutMapping, Map[String, String]) -> Unit, id? : String) -> IDiagramLayoutConnector
 
@@ -3898,6 +4064,8 @@ pub fn[T] new_graph_from_method(String, (T) -> Int) -> GraphFromMethod[T]
 
 pub fn new_graph_info_holder(Array[Array[LNode]], parent? : LNode?, parent_graph_data? : GraphInfoHolder?, dont_sweep_into? : Bool, port_positions? : Array[Int], l_graph? : LGraph?, cross_min_deterministic? : Bool) -> GraphInfoHolder
 
+pub fn new_graph_info_holder_from_graph(LGraph, CrossMinType, Array[GraphInfoHolder]) -> GraphInfoHolder
+
 pub fn new_graph_issue_edge(Int, String, Int) -> GraphIssue
 
 pub fn new_graph_issue_node(Int, String, Int) -> GraphIssue
@@ -4094,6 +4262,10 @@ pub fn new_graphviz_process(GraphvizOutputStream, GraphvizInputStream, GraphvizI
 
 pub fn new_graphviz_tool(Command) -> GraphvizTool
 
+pub fn new_greedy_cycle_breaker_layout_phase() -> ILayoutProcessor[LayeredPhases, LGraph]
+
+pub fn new_greedy_model_order_cycle_breaker_layout_phase() -> ILayoutProcessor[LayeredPhases, LGraph]
+
 pub fn new_greedy_port_distributor() -> GreedyPortDistributor
 
 pub fn new_greedy_rectangle_strip_overlap_removal_strategy() -> IRectangleStripOverlapRemovalStrategy
@@ -4111,6 +4283,12 @@ pub fn new_greedy_switch_test_graph_creator() -> GreedySwitchTestGraphCreator
 pub fn new_grid_container_cell(Bool, Bool, Double) -> Cell
 
 pub fn new_grid_elk_node(Int) -> GridElkNode
+
+pub fn new_group_model_order_calculator() -> GroupModelOrderCalculator
+
+pub fn new_hyper_edge_segment(BaseRoutingDirectionStrategy) -> HyperEdgeSegment
+
+pub fn new_hyper_edge_segment_splitter(OrthogonalRoutingGenerator) -> HyperEdgeSegmentSplitter
 
 pub fn new_hyperedge_crossings_counter(Array[Int], Array[Bool], Array[Int]) -> HyperedgeCrossingsCounter
 
@@ -4133,6 +4311,10 @@ pub fn[G] new_igraph_transformer((G) -> DCGraph, () -> Unit) -> IGraphTransforme
 pub fn new_image_export_action(LayoutGraphView) -> ImageExportAction
 
 pub fn[T] new_instance_pool(IFactory[T], limit? : Int) -> InstancePool[T]
+
+pub fn new_interactive_crossing_minimizer_layout_phase() -> ILayoutProcessor[LayeredPhases, LGraph]
+
+pub fn new_interactive_cycle_breaker_layout_phase() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_interactive_mrtree_graph_element_visitor() -> IGraphElementVisitor
 
@@ -4234,6 +4416,10 @@ pub fn new_label_cell_with_node_label_location(Double, NodeLabelLocation) -> Cel
 
 pub fn new_layer(LGraph) -> Layer
 
+pub fn new_layer_sweep_crossing_minimizer(CrossMinType) -> LayerSweepCrossingMinimizer
+
+pub fn new_layer_sweep_crossing_minimizer_layout_phase(CrossMinType) -> ILayoutProcessor[LayeredPhases, LGraph]
+
 pub fn new_layer_sweep_type_decider(GraphInfoHolder) -> LayerSweepTypeDecider
 
 pub fn new_layer_sweep_type_decider_node_info() -> LayerSweepTypeDeciderNodeInfo
@@ -4273,6 +4459,8 @@ pub fn new_layered_quadruplet_with_values(Bool, Bool, Bool, Bool) -> LayeredQuad
 pub fn new_layered_rectilinear_convex_hull() -> LayeredRectilinearConvexHull
 
 pub fn new_layered_simple_row_graph_placer() -> LayeredSimpleRowGraphPlacer
+
+pub fn new_layered_spacings(LGraph) -> Spacings
 
 pub fn new_layered_spacings_handler((CNode, CNode) -> Double, (CNode, CNode) -> Double) -> ISpacingsHandler
 
@@ -4432,9 +4620,23 @@ pub fn[T] new_method_test_configuration(String, (T, Int) -> Unit, default_config
 
 pub fn new_mock_random() -> GreedySwitchMockRandom
 
+pub fn new_model_order_barycenter_heuristic(ForsterConstraintResolver, GreedySwitchMockRandom, AbstractBarycenterPortDistributor, Array[Array[LNode]]) -> ModelOrderBarycenterHeuristic
+
 pub fn new_model_order_component_group() -> ModelOrderComponentGroup
 
 pub fn new_model_order_component_group_with_component(LGraph) -> ModelOrderComponentGroup
+
+pub fn new_model_order_cycle_breaker_layout_phase() -> ILayoutProcessor[LayeredPhases, LGraph]
+
+pub fn new_model_order_node_comparator(LGraph, Array[LNode], OrderingStrategy, LongEdgeOrderingStrategy, GroupOrderStrategy, Bool) -> ModelOrderNodeComparator
+
+pub fn new_model_order_node_comparator_from_layer(LGraph, Layer, OrderingStrategy, LongEdgeOrderingStrategy, GroupOrderStrategy, Bool) -> ModelOrderNodeComparator
+
+pub fn new_model_order_port_comparator(LGraph, Array[LNode], OrderingStrategy, Map[Int, Int], Bool) -> ModelOrderPortComparator
+
+pub fn new_model_order_port_comparator_from_layer(LGraph, Layer, OrderingStrategy, Map[Int, Int], Bool) -> ModelOrderPortComparator
+
+pub fn new_model_order_port_comparator_without_target_node_model_order(LGraph, Array[LNode], OrderingStrategy, Bool) -> ModelOrderPortComparator
 
 pub fn new_model_resource_path(String) -> AbstractResourcePath
 
@@ -4496,6 +4698,8 @@ pub fn new_multiple_options_cell_editor(Array[String], Bool) -> MultipleOptionsC
 
 pub fn new_ngraph() -> NGraph
 
+pub fn new_no_crossing_minimizer_layout_phase() -> ILayoutProcessor[LayeredPhases, LGraph]
+
 pub fn new_node(KVector, ElkRectangle) -> Node
 
 pub fn new_node_arranger((Int) -> KVector) -> INodeArranger
@@ -4503,6 +4707,18 @@ pub fn new_node_arranger((Int) -> KVector) -> INodeArranger
 pub fn new_node_relative_port_distributor(Int) -> NodeRelativePortDistributor
 
 pub fn new_north_south_edge_neighbouring_node_crossings_counter(Array[LNode]) -> NorthSouthEdgeNeighbouringNodeCrossingsCounter
+
+pub fn new_north_to_south_routing_strategy() -> BaseRoutingDirectionStrategy
+
+pub fn new_nub_spline(Bool, Int, Array[KVector]) -> NubSpline
+
+pub fn new_nub_spline_copy(NubSpline) -> NubSpline
+
+pub fn new_nubs_self_loop(Int, Array[KVector]) -> NubsSelfLoop
+
+pub fn new_nubs_self_loop_copy(NubsSelfLoop) -> NubsSelfLoop
+
+pub fn new_nubs_self_loop_with_clamped(Bool, Int, Array[KVector]) -> NubsSelfLoop
 
 pub fn new_null_elk_progress_monitor() -> IElkProgressMonitor
 
@@ -4513,6 +4729,10 @@ pub fn new_one_dimensional_compactor(CGraph) -> OneDimensionalCompactor
 pub fn[N, E] new_one_dimensional_components_compaction(IConnectedComponents[N, E], Double) -> OneDimensionalComponentsCompaction[N, E]
 
 pub fn new_only_on_root_node() -> OnlyOnRootNode
+
+pub fn new_orthogonal_edge_router_layout_phase() -> ILayoutProcessor[LayeredPhases, LGraph]
+
+pub fn new_orthogonal_routing_generator(RoutingDirection, Double, String?) -> OrthogonalRoutingGenerator
 
 pub fn new_outline_node(Double, Double, OutlineNode?) -> OutlineNode
 
@@ -4531,6 +4751,8 @@ pub fn new_planar_grid(Int, Int) -> PlanarGrid
 pub fn new_point(Double, Double) -> Point
 
 pub fn new_point_in_quadrant(Double, Double, Quadrant) -> Point
+
+pub fn new_polyline_edge_router_layout_phase() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_polyomino(Int, Int) -> Polyomino
 
@@ -4590,6 +4812,16 @@ pub fn new_random_graph_from_file(AbstractResourcePath, Int) -> RandomGraphFromF
 
 pub fn new_random_graph_from_method(String, Int) -> RandomGraphFromMethod
 
+pub fn new_rectangle_copy(Rectangle) -> Rectangle
+
+pub fn new_rectangle_position(KVector) -> Rectangle
+
+pub fn new_rectangle_shape(LShape) -> Rectangle
+
+pub fn new_rectangle_values(Double, Double, Double, Double) -> Rectangle
+
+pub fn new_rectangle_vectors(Array[KVector]) -> Rectangle
+
 pub fn new_rectilinear_convex_hull() -> RectilinearConvexHull
 
 pub fn new_rectpacking_area_approximation(Double, RectpackingOptimizationGoal, Bool) -> RectpackingAreaApproximation
@@ -4638,11 +4870,19 @@ pub fn new_results_resource_path(String) -> AbstractResourcePath
 
 pub fn new_reveal_log_folder_action(AbstractLayoutDebugView) -> RevealLogFolderAction
 
+pub fn new_reversed_edge_restorer_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
+
 pub fn new_run_failure(String, String) -> RunFailure
 
 pub fn new_run_notifier() -> RunNotifier
 
+pub fn new_sc_connectivity_cycle_breaker_layout_phase() -> ILayoutProcessor[LayeredPhases, LGraph]
+
 pub fn new_scanline_overlap_check((Node, Node) -> Unit, SvgImage) -> ScanlineOverlapCheck
+
+pub fn new_scc_model_order_cycle_breaker_layout_phase() -> ILayoutProcessor[LayeredPhases, LGraph]
+
+pub fn new_scc_node_type_cycle_breaker_layout_phase() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_selective_paint_toggle_action(String, String, String, DisCoGraphRenderingCanvas) -> SelectivePaintToggleAction
 
@@ -4650,13 +4890,23 @@ pub fn new_show_layout_view_handler() -> ShowLayoutViewHandler
 
 pub fn new_simple_layout_configuration_store(options? : Map[String, String], option_targets? : Array[LayoutOptionTarget], parent? : ILayoutConfigurationStore?, editing_domain? : Int?) -> ILayoutConfigurationStore
 
+pub fn new_south_to_north_routing_strategy() -> BaseRoutingDirectionStrategy
+
 pub fn new_spacing() -> Spacing
 
 pub fn new_spacing_values(Double, Double, Double, Double) -> Spacing
 
 pub fn new_spacings_handler((CNode, CNode) -> Double, (CNode, CNode) -> Double) -> ISpacingsHandler
 
+pub fn new_spline_dependency(SplineSegment, SplineSegment, Int) -> SplineDependency
+
+pub fn new_spline_edge_router_layout_phase() -> ILayoutProcessor[LayeredPhases, LGraph]
+
 pub fn new_spline_interpolator((Array[KVector]) -> BezierSpline) -> ISplineInterpolator
+
+pub fn new_spline_segment_hyper_edge(LPort, Array[Pair[SplineSideToProcess, LEdge]], SplineSideToProcess) -> SplineSegment
+
+pub fn new_spline_segment_single_edge(LEdge, SplineSideToProcess, SplineSideToProcess) -> SplineSegment
 
 pub fn new_spore_delaunay_triangulation_layout_phase() -> ILayoutProcessor[SPOrEPhases, SporeGraph]
 
@@ -4793,6 +5043,8 @@ pub fn new_vertiflex_node_y_placer_layout_phase() -> ILayoutProcessor[VertiFlexL
 pub fn new_vertiflex_relative_x_placer_layout_phase() -> ILayoutProcessor[VertiFlexLayoutPhases, Int]
 
 pub fn new_vertiflex_straight_edge_router_layout_phase() -> ILayoutProcessor[VertiFlexLayoutPhases, Int]
+
+pub fn new_west_to_east_routing_strategy() -> BaseRoutingDirectionStrategy
 
 pub fn[G] new_white_box_testable((TestController[G]?) -> Unit) -> IWhiteBoxTestable[G]
 
@@ -4942,11 +5194,41 @@ pub let node_size_minimum : IProperty[String]
 
 pub let node_size_options : IProperty[Array[String]]
 
+pub fn node_type_values() -> Array[NodeType]
+
 pub fn node_width(Int) -> Double
 
 pub fn node_x(Int) -> Double
 
 pub fn node_y(Int) -> Double
+
+pub let nub_spline_dim : Int
+
+pub fn nub_spline_generate_derived(NubSpline) -> NubSpline
+
+pub fn nub_spline_generate_inverted(NubSpline) -> NubSpline
+
+pub fn nub_spline_generate_nice_curve() -> NubSpline
+
+pub fn nub_spline_get_first_horizontal_point(NubSpline, Double, Int) -> KVector
+
+pub fn nub_spline_get_first_vertical_point(NubSpline, Double, Int) -> KVector
+
+pub fn nub_spline_get_last_horizontal_point(NubSpline, Double, Int) -> KVector
+
+pub fn nub_spline_get_last_vertical_point(NubSpline, Double, Int) -> KVector
+
+pub fn nub_spline_get_t_from_control_point(PolarCP) -> Double
+
+pub fn nubs_self_loop_create_across_self_loop(LPort, LPort, KVector, Array[KVector], KVector) -> NubsSelfLoop
+
+pub fn nubs_self_loop_create_corner_self_loop(LPort, LPort, Double, Double) -> NubsSelfLoop
+
+pub fn nubs_self_loop_create_four_side_self_loop(LPort, LPort, KVector, Array[KVector], KVector) -> NubsSelfLoop
+
+pub fn nubs_self_loop_create_side_self_loop(LPort, LPort, Double) -> NubsSelfLoop
+
+pub fn nubs_self_loop_create_three_side_self_loop(LPort, LPort, KVector, Array[KVector], KVector) -> NubsSelfLoop
 
 pub let omit_node_micro_layout : IProperty[Bool]
 
@@ -4955,6 +5237,14 @@ pub fn one_dimensional_compactor_longest_path_compaction(OneDimensionalCompactor
 pub fn one_dimensional_compactor_quadratic_constraints(OneDimensionalCompactor) -> Unit
 
 pub fn one_dimensional_compactor_scanline_constraints(OneDimensionalCompactor) -> Unit
+
+pub fn orthogonal_routing_generator_break_non_critical_cycles(Array[HyperEdgeSegment], @random.Rand) -> Unit
+
+pub fn orthogonal_routing_generator_count_crossings(Array[Double], Double, Double) -> Int
+
+pub let orthogonal_routing_generator_tolerance : Double
+
+pub fn orthogonal_routing_generator_topological_numbering(Array[HyperEdgeSegment]) -> Unit
 
 pub fn overlap(ElkRectangle, ElkRectangle) -> Double
 
@@ -5190,6 +5480,10 @@ pub fn random_graph_from_file_reset_content_for_test() -> Unit
 
 pub fn random_graph_from_method_from_options(String, CoreDebugGRandomGeneratorOptions) -> RandomGraphFromMethod
 
+pub fn rectangle_union(Rectangle, Rectangle) -> Rectangle
+
+pub fn rectangle_union_collection(Array[Rectangle]) -> Rectangle
+
 pub fn rectilinear_convex_hull_of(Array[Point]) -> RectilinearConvexHull
 
 pub let rectpacking_algorithm_id : String
@@ -5356,6 +5650,10 @@ pub let results_resource_path_property : String
 
 pub let reveal_log_folder_action_id : String
 
+pub fn routing_direction_to_string(RoutingDirection) -> String
+
+pub fn routing_direction_values() -> Array[RoutingDirection]
+
 pub fn scanline_constraint_calculation(OneDimensionalCompactor) -> Unit
 
 pub fn[T] scanline_execute(Array[T], (T, T) -> Int, Array[(T) -> Unit]) -> Unit
@@ -5449,6 +5747,56 @@ pub let spacing_node_node : IProperty[Double]
 pub let spacing_node_self_loop : IProperty[Double]
 
 pub let spacing_port_port : IProperty[Double]
+
+pub fn spline_edge_router_is_normal_node(LNode) -> Bool
+
+pub fn spline_edge_router_is_qualified_as_starting_node(LNode) -> Bool
+
+pub fn spline_edge_router_is_straight(Double, Double) -> Bool
+
+pub let spline_edge_router_spline_dimension : Int
+
+pub fn spline_routing_mode_to_string(SplineRoutingMode) -> String
+
+pub fn spline_routing_mode_values() -> Array[SplineRoutingMode]
+
+pub fn spline_side_to_process_to_string(SplineSideToProcess) -> String
+
+pub fn spline_side_to_process_values() -> Array[SplineSideToProcess]
+
+pub fn splines_math_convert_kvector_array_to_string(Array[KVector]) -> String
+
+pub fn splines_math_convert_kvector_to_string(KVector?) -> String
+
+pub fn splines_math_dist_port_to_node_edge(LPort, PortSide) -> Double
+
+pub fn splines_math_get_margin_on_port_side(LNode, PortSide) -> Double
+
+pub let splines_math_half_pi : Double
+
+pub fn splines_math_inner_angle_directions(Double, Double) -> Double
+
+pub fn splines_math_inner_angle_vectors(KVector, KVector) -> Double
+
+pub fn splines_math_intersect(KVector, KVector, KVector, KVector) -> KVector?
+
+pub fn splines_math_intersect_by_directions(KVector, KVector, Double, Double) -> KVector?
+
+pub fn splines_math_is_between_double(Double, Double, Double) -> Bool
+
+pub fn splines_math_is_between_int(Int, Int, Int) -> Bool
+
+pub fn splines_math_length_to_orthogonal(Double, KVector) -> Double
+
+pub fn splines_math_port_side_to_direction(PortSide) -> Double
+
+pub let splines_math_quarter_pi : Double
+
+pub let splines_math_three : Double
+
+pub let splines_math_three_half_pi : Double
+
+pub let splines_math_two_pi : Double
 
 pub let spore_compaction_algorithm_id : String
 
@@ -6642,6 +6990,18 @@ pub enum BaseGridVisibility {
   Traversal
 }
 
+pub struct BaseRoutingDirectionStrategy {
+  strategy_type : RoutingDirectionStrategyType
+  created_junction_points : Array[KVector]
+}
+pub fn BaseRoutingDirectionStrategy::add_junction_point_if_necessary(Self, LEdge, HyperEdgeSegment, KVector, Bool) -> Unit
+pub fn BaseRoutingDirectionStrategy::calculate_bend_points(Self, HyperEdgeSegment, Double, Double) -> Unit
+pub fn BaseRoutingDirectionStrategy::clear_created_junction_points(Self) -> Unit
+pub fn BaseRoutingDirectionStrategy::get_created_junction_points(Self) -> Array[KVector]
+pub fn BaseRoutingDirectionStrategy::get_port_position_on_hyper_node(Self, LPort) -> Double
+pub fn BaseRoutingDirectionStrategy::get_source_port_side(Self) -> PortSide
+pub fn BaseRoutingDirectionStrategy::get_target_port_side(Self) -> PortSide
+
 type BetweenLayerAdjacency
 
 type BetweenLayerAdjacencyList
@@ -6683,6 +7043,8 @@ pub fn BezierSpline::get_inner_points(Self) -> Array[KVector]
 pub fn BezierSpline::get_polyline_apprx(Self, Int) -> Array[KVector]
 pub fn BezierSpline::get_start_point(Self) -> KVector
 pub fn BezierSpline::to_string(Self) -> String
+
+type BfsNodeOrderCycleBreakerState
 
 pub struct BiLinkedHashMultiMap[V] {
   key_to_values : Map[Int, Array[V]]
@@ -8106,6 +8468,30 @@ pub enum CoreUiValue {
   CoreUiNoValue
 }
 
+pub struct CrossHierarchyEdge {
+  new_edge : LEdge
+  graph : LGraph
+  port_type : PortType
+}
+pub fn CrossHierarchyEdge::get_actual_source(Self) -> LPort
+pub fn CrossHierarchyEdge::get_actual_target(Self) -> LPort
+pub fn CrossHierarchyEdge::get_edge(Self) -> LEdge
+pub fn CrossHierarchyEdge::get_graph(Self) -> LGraph
+pub fn CrossHierarchyEdge::get_type(Self) -> PortType
+pub fn CrossHierarchyEdge::to_string(Self) -> String
+
+pub struct CrossHierarchyEdgeComparator {
+  graph : LGraph
+}
+pub fn CrossHierarchyEdgeComparator::compare(Self, CrossHierarchyEdge, CrossHierarchyEdge) -> Int
+
+pub enum CrossMinType {
+  Barycenter
+  OneSidedGreedySwitch
+  TwoSidedGreedySwitch
+  Median
+}
+
 pub enum CrossingCountSide {
   West
   East
@@ -8285,10 +8671,17 @@ pub fn DefaultConfiguration::edges_enabled(Self) -> Bool
 pub fn DefaultConfiguration::nodes_enabled(Self) -> Bool
 pub fn DefaultConfiguration::ports_enabled(Self) -> Bool
 
+pub enum DependencyType {
+  Regular
+  Critical
+}
+
 pub struct DeprecatedLayoutOptionReplacer {
   _dummy : Int
 }
 pub fn DeprecatedLayoutOptionReplacer::visit(Self, Int) -> Unit
+
+type DfsNodeOrderCycleBreakerState
 
 pub struct DiagramLayoutEngine {
   connector : IDiagramLayoutConnector
@@ -10132,25 +10525,50 @@ pub fn GraphIdentifierGenerator::assert_valid(Self) -> Self
 pub fn GraphIdentifierGenerator::execute(Self) -> Unit
 
 pub struct GraphInfoHolder {
+  mut l_graph_ref : LGraph?
   mut current_node_order_ref : Array[Array[LNode]]
+  mut currently_best_node_and_port_order_ref : SweepCopy?
+  mut best_node_and_port_order_ref : SweepCopy?
   mut port_positions_ref : Array[Int]
   mut use_bottom_up : Bool
+  child_graphs_ref : Array[LGraph]
+  mut has_external_ports_ref : Bool
   mut parent_ref : LNode?
   mut parent_graph_data_ref : GraphInfoHolder?
-  mut l_graph_ref : LGraph?
+  mut cross_minimizer_ref : ICrossingMinimizationHeuristic?
+  mut port_distributor_ref : ISweepPortDistributor?
+  mut crossings_counter_ref : AllCrossingsCounter?
+  mut random_ref : GreedySwitchMockRandom?
+  mut n_ports : Int
   mut cross_min_deterministic_ref : Bool
+  mut cross_min_always_improves_ref : Bool
 }
+pub fn GraphInfoHolder::as_initializable(Self) -> IInitializable
+pub fn GraphInfoHolder::best_node_n_port_order(Self) -> SweepCopy?
+pub fn GraphInfoHolder::child_graphs(Self) -> Array[LGraph]
+pub fn GraphInfoHolder::cross_counter(Self) -> AllCrossingsCounter
+pub fn GraphInfoHolder::cross_min_always_improves(Self) -> Bool
 pub fn GraphInfoHolder::cross_min_deterministic(Self) -> Bool
+pub fn GraphInfoHolder::cross_minimizer(Self) -> ICrossingMinimizationHeuristic
 pub fn GraphInfoHolder::current_node_order(Self) -> Array[Array[LNode]]
+pub fn GraphInfoHolder::currently_best_node_and_port_order(Self) -> SweepCopy?
 pub fn GraphInfoHolder::dont_sweep_into(Self) -> Bool
+pub fn GraphInfoHolder::get_best_sweep(Self) -> SweepCopy?
+pub fn GraphInfoHolder::has_external_ports(Self) -> Bool
 pub fn GraphInfoHolder::has_parent(Self) -> Bool
+pub fn GraphInfoHolder::init_after_traversal(Self) -> Unit
+pub fn GraphInfoHolder::init_at_node_level(Self, Int, Int, Array[Array[LNode]]) -> Unit
+pub fn GraphInfoHolder::init_at_port_level(Self, Int, Int, Int, Array[Array[LNode]]) -> Unit
 pub fn GraphInfoHolder::l_graph(Self) -> LGraph
 pub fn GraphInfoHolder::parent(Self) -> LNode
 pub fn GraphInfoHolder::parent_graph_data(Self) -> Self
 pub fn GraphInfoHolder::parent_layer_id(Self) -> Int
+pub fn GraphInfoHolder::port_distributor(Self) -> ISweepPortDistributor
 pub fn GraphInfoHolder::port_positions(Self) -> Array[Int]
+pub fn GraphInfoHolder::set_best_node_n_port_order(Self, SweepCopy?) -> Unit
 pub fn GraphInfoHolder::set_cross_min_deterministic(Self, Bool) -> Unit
 pub fn GraphInfoHolder::set_current_node_order(Self, Array[Array[LNode]]) -> Unit
+pub fn GraphInfoHolder::set_currently_best_node_and_port_order(Self, SweepCopy?) -> Unit
 pub fn GraphInfoHolder::set_dont_sweep_into(Self, Bool) -> Unit
 pub fn GraphInfoHolder::set_l_graph(Self, LGraph?) -> Unit
 pub fn GraphInfoHolder::set_parent(Self, LNode?) -> Unit
@@ -11100,6 +11518,8 @@ pub struct GraphvizWatchdog {
   mut running : Bool
 }
 
+type GreedyCycleBreakerState
+
 pub struct GreedyPortDistributor {
   mut crossings_counter : CrossingsCounter?
   mut n_ports : Int
@@ -11308,6 +11728,14 @@ pub fn GridElkNode::set_width(Self, Double) -> Unit
 pub fn GridElkNode::set_x(Self, Double) -> Unit
 pub fn GridElkNode::set_y(Self, Double) -> Unit
 
+pub struct GroupModelOrderCalculator {
+  mut first_separate_nodes : Int
+  mut last_separate_nodes : Int
+}
+pub fn GroupModelOrderCalculator::compute_constraint_group_model_order(Self, LNode, Int, Int) -> Int
+pub fn GroupModelOrderCalculator::compute_constraint_model_order(Self, LNode, Int) -> Int
+pub fn GroupModelOrderCalculator::reset_internal_counters(Self) -> Unit
+
 pub enum GroupOrderStrategy {
   OnlyWithinGroup
   ModelOrder
@@ -11339,6 +11767,87 @@ pub struct HullRectangleEventState {
   mut queued : ElkRectangle?
   mut queued_point : Point?
 }
+
+pub struct HyperEdgeSegment {
+  segment_handle : Int
+  routing_strategy : BaseRoutingDirectionStrategy
+  ports : Array[LPort]
+  mut mark : Int
+  mut routing_slot : Int
+  mut start_position : Double
+  mut end_position : Double
+  incoming_connection_coordinates : Array[Double]
+  outgoing_connection_coordinates : Array[Double]
+  outgoing_segment_dependencies : Array[HyperEdgeSegmentDependency]
+  mut out_dep_weight : Int
+  mut critical_out_dep_weight : Int
+  incoming_segment_dependencies : Array[HyperEdgeSegmentDependency]
+  mut in_dep_weight : Int
+  mut critical_in_dep_weight : Int
+  mut split_partner : HyperEdgeSegment?
+  mut split_by : HyperEdgeSegment?
+}
+pub fn HyperEdgeSegment::add_port_positions(Self, LPort, Map[Int, Self]) -> Unit
+pub fn HyperEdgeSegment::compare_to(Self, Self) -> Int
+pub fn HyperEdgeSegment::equals(Self, Self) -> Bool
+pub fn HyperEdgeSegment::get_critical_in_weight(Self) -> Int
+pub fn HyperEdgeSegment::get_critical_out_weight(Self) -> Int
+pub fn HyperEdgeSegment::get_end_coordinate(Self) -> Double
+pub fn HyperEdgeSegment::get_handle(Self) -> Int
+pub fn HyperEdgeSegment::get_in_weight(Self) -> Int
+pub fn HyperEdgeSegment::get_incoming_connection_coordinates(Self) -> Array[Double]
+pub fn HyperEdgeSegment::get_incoming_segment_dependencies(Self) -> Array[HyperEdgeSegmentDependency]
+pub fn HyperEdgeSegment::get_length(Self) -> Double
+pub fn HyperEdgeSegment::get_mark(Self) -> Int
+pub fn HyperEdgeSegment::get_out_weight(Self) -> Int
+pub fn HyperEdgeSegment::get_outgoing_connection_coordinates(Self) -> Array[Double]
+pub fn HyperEdgeSegment::get_outgoing_segment_dependencies(Self) -> Array[HyperEdgeSegmentDependency]
+pub fn HyperEdgeSegment::get_ports(Self) -> Array[LPort]
+pub fn HyperEdgeSegment::get_routing_slot(Self) -> Int
+pub fn HyperEdgeSegment::get_split_by(Self) -> Self?
+pub fn HyperEdgeSegment::get_split_partner(Self) -> Self?
+pub fn HyperEdgeSegment::get_start_coordinate(Self) -> Double
+pub fn HyperEdgeSegment::hash_code(Self) -> Int
+pub fn HyperEdgeSegment::is_dummy(Self) -> Bool
+pub fn HyperEdgeSegment::recompute_extent(Self) -> Unit
+pub fn HyperEdgeSegment::represents_hyperedge(Self) -> Bool
+pub fn HyperEdgeSegment::set_critical_in_weight(Self, Int) -> Unit
+pub fn HyperEdgeSegment::set_critical_out_weight(Self, Int) -> Unit
+pub fn HyperEdgeSegment::set_in_weight(Self, Int) -> Unit
+pub fn HyperEdgeSegment::set_mark(Self, Int) -> Unit
+pub fn HyperEdgeSegment::set_out_weight(Self, Int) -> Unit
+pub fn HyperEdgeSegment::set_routing_slot(Self, Int) -> Unit
+pub fn HyperEdgeSegment::set_split_by(Self, Self?) -> Unit
+pub fn HyperEdgeSegment::set_split_partner(Self, Self?) -> Unit
+pub fn HyperEdgeSegment::simulate_split(Self) -> Pair[Self, Self]
+pub fn HyperEdgeSegment::split_at(Self, Double) -> Self
+pub fn HyperEdgeSegment::to_string(Self) -> String
+
+pub struct HyperEdgeSegmentDependency {
+  dependency_handle : Int
+  dependency_type : DependencyType
+  mut source : HyperEdgeSegment?
+  mut target : HyperEdgeSegment?
+  weight : Int
+}
+pub fn HyperEdgeSegmentDependency::get_source(Self) -> HyperEdgeSegment?
+pub fn HyperEdgeSegmentDependency::get_target(Self) -> HyperEdgeSegment?
+pub fn HyperEdgeSegmentDependency::get_type(Self) -> DependencyType
+pub fn HyperEdgeSegmentDependency::get_weight(Self) -> Int
+pub fn HyperEdgeSegmentDependency::remove(Self) -> Unit
+pub fn HyperEdgeSegmentDependency::reverse(Self) -> Unit
+pub fn HyperEdgeSegmentDependency::set_source(Self, HyperEdgeSegment?) -> Unit
+pub fn HyperEdgeSegmentDependency::set_target(Self, HyperEdgeSegment?) -> Unit
+pub fn HyperEdgeSegmentDependency::to_string(Self) -> String
+
+pub struct HyperEdgeSegmentSplitter {
+  routing_generator : OrthogonalRoutingGenerator
+}
+pub fn HyperEdgeSegmentSplitter::split_segments(Self, Array[HyperEdgeSegmentDependency], Array[HyperEdgeSegment], Double) -> Unit
+
+type HyperEdgeSegmentSplitterAreaRating
+
+type HyperEdgeSegmentSplitterFreeArea
 
 type Hyperedge
 
@@ -11708,6 +12217,29 @@ pub enum InteractiveReferencePoint {
   TopLeft
 }
 
+pub enum IntermediateProcessorStrategy {
+  LongEdgeSplitter
+  InLayerConstraintProcessor
+  LongEdgeJoiner
+  PortListSorter
+  ReversedEdgeRestorer
+  InteractiveExternalPortPositioner
+  FinalSplineBendpointsCalculator
+  InvertedPortProcessor
+  SelfLoopPreprocessor
+  SelfLoopPostprocessor
+  SelfLoopPortRestorer
+  SelfLoopRouter
+  LabelDummyInserter
+  LabelDummySwitcher
+  LabelSideSelector
+  LabelDummyRemover
+  NorthSouthPortPreprocessor
+  NorthSouthPortPostprocessor
+  EndLabelPreprocessor
+  EndLabelPostprocessor
+}
+
 pub struct InternalCoreDebugGRandomLexer {
   input : String
 }
@@ -12045,7 +12577,11 @@ pub struct LEdge {
   mut source : LPort?
   mut target : LPort?
   labels : Array[LLabel]
+  int_properties : Map[String, Int]
+  kvector_chain_properties : Map[String, KVectorChain]
   bool_properties : Map[String, Bool]
+  l_edge_array_properties : Map[String, Array[LEdge]]
+  spline_segment_array_properties : Map[String, Array[SplineSegment]]
 }
 pub fn LEdge::get_bend_points(Self) -> KVectorChain
 pub fn LEdge::get_designation(Self) -> String?
@@ -12055,13 +12591,25 @@ pub fn LEdge::get_labels(Self) -> Array[LLabel]
 pub fn LEdge::get_other_node(Self, LNode) -> LNode
 pub fn LEdge::get_other_port(Self, LPort) -> LPort
 pub fn LEdge::get_property_bool(Self, IProperty[Bool]) -> Bool
+pub fn LEdge::get_property_int(Self, IProperty[Int]) -> Int
+pub fn LEdge::get_property_kvector_chain(Self, IProperty[KVectorChain]) -> KVectorChain
+pub fn LEdge::get_property_l_edge_array(Self, IProperty[Array[Self]]) -> Array[Self]
+pub fn LEdge::get_property_spline_segment_array(Self, IProperty[Array[SplineSegment]]) -> Array[SplineSegment]
 pub fn LEdge::get_source(Self) -> LPort?
 pub fn LEdge::get_target(Self) -> LPort?
+pub fn LEdge::has_property_int(Self, IProperty[Int]) -> Bool
+pub fn LEdge::has_property_kvector_chain(Self, IProperty[KVectorChain]) -> Bool
+pub fn LEdge::has_property_l_edge_array(Self, IProperty[Array[Self]]) -> Bool
+pub fn LEdge::has_property_spline_segment_array(Self, IProperty[Array[SplineSegment]]) -> Bool
 pub fn LEdge::is_in_layer_edge(Self) -> Bool
 pub fn LEdge::is_self_loop(Self) -> Bool
 pub fn LEdge::set_id(Self, Int) -> Unit
 pub fn LEdge::set_origin_identifier(Self, String?) -> Unit
 pub fn LEdge::set_property_bool(Self, IProperty[Bool], Bool) -> Unit
+pub fn LEdge::set_property_int(Self, IProperty[Int], Int) -> Unit
+pub fn LEdge::set_property_kvector_chain(Self, IProperty[KVectorChain], KVectorChain) -> Unit
+pub fn LEdge::set_property_l_edge_array(Self, IProperty[Array[Self]], Array[Self]) -> Unit
+pub fn LEdge::set_property_spline_segment_array(Self, IProperty[Array[SplineSegment]], Array[SplineSegment]) -> Unit
 pub fn LEdge::set_source(Self, LPort?) -> Unit
 pub fn LEdge::set_target(Self, LPort?) -> Unit
 pub fn LEdge::to_string(Self) -> String
@@ -12069,12 +12617,14 @@ pub fn LEdge::to_string(Self) -> String
 pub struct LGraph {
   mut id : Int
   port_side_array_properties : Map[String, Array[PortSide]]
+  graph_properties_array_properties : Map[String, Array[GraphProperties]]
   int_properties : Map[String, Int]
   bool_properties : Map[String, Bool]
   double_properties : Map[String, Double]
   string_properties : Map[String, String]
   component_ordering_strategy_properties : Map[String, ComponentOrderingStrategy]
   direction_properties : Map[String, Direction]
+  spline_routing_mode_properties : Map[String, SplineRoutingMode]
   size : KVector
   offset : KVector
   layerless_nodes : Array[LNode]
@@ -12091,10 +12641,17 @@ pub fn LGraph::get_property_bool(Self, IProperty[Bool]) -> Bool
 pub fn LGraph::get_property_component_ordering_strategy(Self, IProperty[ComponentOrderingStrategy]) -> ComponentOrderingStrategy
 pub fn LGraph::get_property_direction(Self, IProperty[Direction]) -> Direction
 pub fn LGraph::get_property_double(Self, IProperty[Double]) -> Double
+pub fn LGraph::get_property_graph_properties_array(Self, IProperty[Array[GraphProperties]]) -> Array[GraphProperties]
 pub fn LGraph::get_property_int(Self, IProperty[Int]) -> Int
 pub fn LGraph::get_property_port_side_array(Self, IProperty[Array[PortSide]]) -> Array[PortSide]
+pub fn LGraph::get_property_spline_routing_mode(Self, IProperty[SplineRoutingMode]) -> SplineRoutingMode
 pub fn LGraph::get_property_string(Self, IProperty[String]) -> String
 pub fn LGraph::get_size(Self) -> KVector
+pub fn LGraph::has_property_bool(Self, IProperty[Bool]) -> Bool
+pub fn LGraph::has_property_double(Self, IProperty[Double]) -> Bool
+pub fn LGraph::has_property_int(Self, IProperty[Int]) -> Bool
+pub fn LGraph::has_property_spline_routing_mode(Self, IProperty[SplineRoutingMode]) -> Bool
+pub fn LGraph::has_property_string(Self, IProperty[String]) -> Bool
 pub fn LGraph::set_id(Self, Int) -> Unit
 pub fn LGraph::set_offset_xy(Self, Double, Double) -> Unit
 pub fn LGraph::set_parent_node(Self, LNode?) -> Unit
@@ -12102,8 +12659,10 @@ pub fn LGraph::set_property_bool(Self, IProperty[Bool], Bool) -> Unit
 pub fn LGraph::set_property_component_ordering_strategy(Self, IProperty[ComponentOrderingStrategy], ComponentOrderingStrategy) -> Unit
 pub fn LGraph::set_property_direction(Self, IProperty[Direction], Direction) -> Unit
 pub fn LGraph::set_property_double(Self, IProperty[Double], Double) -> Unit
+pub fn LGraph::set_property_graph_properties_array(Self, IProperty[Array[GraphProperties]], Array[GraphProperties]) -> Unit
 pub fn LGraph::set_property_int(Self, IProperty[Int], Int) -> Unit
 pub fn LGraph::set_property_port_side_array(Self, IProperty[Array[PortSide]], Array[PortSide]) -> Unit
+pub fn LGraph::set_property_spline_routing_mode(Self, IProperty[SplineRoutingMode], SplineRoutingMode) -> Unit
 pub fn LGraph::set_property_string(Self, IProperty[String], String) -> Unit
 pub fn LGraph::set_size_xy(Self, Double, Double) -> Unit
 
@@ -12211,7 +12770,9 @@ pub struct LPort {
   incoming_edges : Array[LEdge]
   outgoing_edges : Array[LEdge]
   mut connected_to_external_nodes : Bool
+  int_properties : Map[String, Int]
   bool_properties : Map[String, Bool]
+  double_properties : Map[String, Double]
   node_properties : Map[String, LNode]
   port_properties : Map[String, LPort]
 }
@@ -12233,11 +12794,15 @@ pub fn LPort::get_node(Self) -> LNode?
 pub fn LPort::get_outgoing_edges(Self) -> Array[LEdge]
 pub fn LPort::get_position(Self) -> KVector
 pub fn LPort::get_property_bool(Self, IProperty[Bool]) -> Bool
+pub fn LPort::get_property_double(Self, IProperty[Double]) -> Double
+pub fn LPort::get_property_int(Self, IProperty[Int]) -> Int
 pub fn LPort::get_property_l_node(Self, IProperty[LNode?]) -> LNode?
 pub fn LPort::get_property_l_port(Self, IProperty[Self?]) -> Self?
 pub fn LPort::get_side(Self) -> PortSide
 pub fn LPort::get_size(Self) -> KVector
 pub fn LPort::has_property_bool(Self, IProperty[Bool]) -> Bool
+pub fn LPort::has_property_double(Self, IProperty[Double]) -> Bool
+pub fn LPort::has_property_int(Self, IProperty[Int]) -> Bool
 pub fn LPort::has_property_l_node(Self, IProperty[LNode?]) -> Bool
 pub fn LPort::has_property_l_port(Self, IProperty[Self?]) -> Bool
 pub fn LPort::is_connected_to_external_nodes(Self) -> Bool
@@ -12249,6 +12814,8 @@ pub fn LPort::set_explicitly_supplied_port_anchor(Self, Bool) -> Unit
 pub fn LPort::set_id(Self, Int) -> Unit
 pub fn LPort::set_node(Self, LNode?) -> Unit
 pub fn LPort::set_property_bool(Self, IProperty[Bool], Bool) -> Unit
+pub fn LPort::set_property_double(Self, IProperty[Double], Double) -> Unit
+pub fn LPort::set_property_int(Self, IProperty[Int], Int) -> Unit
 pub fn LPort::set_property_l_node(Self, IProperty[LNode?], LNode?) -> Unit
 pub fn LPort::set_property_l_port(Self, IProperty[Self?], Self?) -> Unit
 pub fn LPort::set_side(Self, PortSide) -> Unit
@@ -12296,6 +12863,14 @@ pub enum LayerConstraint {
   Last
   LastSeparate
 }
+
+pub struct LayerSweepCrossingMinimizer {
+  cross_min_type : CrossMinType
+  graph_info_holders : Array[GraphInfoHolder]
+  graphs_whose_node_order_changed : Array[GraphInfoHolder]
+  random : GreedySwitchMockRandom
+}
+pub fn LayerSweepCrossingMinimizer::process(Self, LGraph, progress_monitor? : IElkProgressMonitor?) -> Unit
 
 pub struct LayerSweepTypeDecider {
   node_info : Array[Array[LayerSweepTypeDeciderNodeInfo]]
@@ -12463,6 +13038,19 @@ pub struct LayeredSimpleRowGraphPlacer {
 pub fn LayeredSimpleRowGraphPlacer::combine(Self, Array[LGraph], LGraph) -> Unit
 pub fn LayeredSimpleRowGraphPlacer::place_components(Self, Array[LGraph], LGraph, Double, Double) -> Unit
 pub fn LayeredSimpleRowGraphPlacer::sort_components(Self, Array[LGraph], LGraph) -> Unit
+
+pub struct LayeredSpacingsBuilder {
+  base_spacing : Double
+  mut overwrite : Bool
+  factors : Array[(IProperty[Double], Double)]
+}
+pub fn LayeredSpacingsBuilder::apply(Self, LGraph) -> Unit
+pub fn LayeredSpacingsBuilder::build(Self) -> (LGraph) -> Unit
+pub fn LayeredSpacingsBuilder::factor_for(Self, IProperty[Double]) -> Double
+pub fn LayeredSpacingsBuilder::factors(Self) -> Array[(IProperty[Double], Double)]
+pub fn LayeredSpacingsBuilder::with_factor(Self, IProperty[Double], Double) -> Self
+pub fn LayeredSpacingsBuilder::with_overwrite(Self, Bool) -> Self
+pub fn LayeredSpacingsBuilder::with_value(Self, IProperty[Double], Double) -> Self
 
 pub enum LayeringStrategy {
   LsNetworkSimplex
@@ -13341,6 +13929,21 @@ pub fn[T] MethodTestConfiguration::apply(Self[T], T, Int) -> Unit
 pub fn[T] MethodTestConfiguration::as_test_configuration(Self[T]) -> TestConfiguration[T]
 pub fn[T] MethodTestConfiguration::to_string(Self[T]) -> String
 
+pub struct ModelOrderBarycenterHeuristic {
+  base : BarycenterHeuristic
+  mut bigger_than : Map[Int, Array[Int]]
+  mut smaller_than : Map[Int, Array[Int]]
+}
+pub fn ModelOrderBarycenterHeuristic::always_improves(Self) -> Bool
+pub fn ModelOrderBarycenterHeuristic::as_i_crossing_minimization_heuristic(Self) -> ICrossingMinimizationHeuristic
+pub fn ModelOrderBarycenterHeuristic::clear_transitive_ordering(Self) -> Unit
+pub fn ModelOrderBarycenterHeuristic::init_after_traversal(Self) -> Unit
+pub fn ModelOrderBarycenterHeuristic::init_at_layer_level(Self, Int, Array[Array[LNode]]) -> Unit
+pub fn ModelOrderBarycenterHeuristic::is_deterministic(Self) -> Bool
+pub fn ModelOrderBarycenterHeuristic::minimize_crossings(Self, Array[Array[LNode]], Int, Bool, Bool) -> Bool
+pub fn ModelOrderBarycenterHeuristic::minimize_crossings_layer(Self, Array[LNode], Bool, Bool, Bool) -> Unit
+pub fn ModelOrderBarycenterHeuristic::set_first_layer_order(Self, Array[Array[LNode]], Bool) -> Bool
+
 pub struct ModelOrderComponentGroup {
   components : Map[Int, Array[LGraph]]
   component_order : Array[LGraph]
@@ -13351,6 +13954,33 @@ pub fn ModelOrderComponentGroup::get_component_order(Self) -> Array[LGraph]
 pub fn ModelOrderComponentGroup::get_components(Self) -> Array[LGraph]
 pub fn ModelOrderComponentGroup::get_components_with_connections(Self, Array[PortSide]) -> Array[LGraph]
 pub fn ModelOrderComponentGroup::get_port_sides(Self) -> Array[Array[PortSide]]
+
+pub struct ModelOrderNodeComparator {
+  previous_layer : Array[LNode]
+  graph : LGraph
+  ordering_strategy : OrderingStrategy
+  group_order_strategy : GroupOrderStrategy
+  mut bigger_than : Map[Int, Array[Int]]
+  mut smaller_than : Map[Int, Array[Int]]
+  long_edge_node_order : LongEdgeOrderingStrategy
+  before_ports : Bool
+}
+pub fn ModelOrderNodeComparator::clear_transitive_ordering(Self) -> Unit
+pub fn ModelOrderNodeComparator::compare(Self, LNode, LNode) -> Int
+
+pub struct ModelOrderPortComparator {
+  target_node_model_order : Map[Int, Int]
+  has_target_node_model_order : Bool
+  port_model_order : Bool
+  previous_layer : Array[LNode]
+  graph : LGraph
+  strategy : OrderingStrategy
+  mut bigger_than : Map[Int, Array[Int]]
+  mut smaller_than : Map[Int, Array[Int]]
+}
+pub fn ModelOrderPortComparator::check_port_model_order(Self, LPort, LPort) -> Int
+pub fn ModelOrderPortComparator::clear_transitive_ordering(Self) -> Unit
+pub fn ModelOrderPortComparator::compare(Self, LPort, LPort) -> Int
 
 pub struct MonitoredOperation {
   mut timestamp : Int
@@ -13720,6 +14350,38 @@ pub fn NorthSouthEdgeNeighbouringNodeCrossingsCounter::get_upper_lower_crossings
 
 type NorthSouthTargetAndDegree
 
+pub struct NubSpline {
+  knot_vector : Array[Double]
+  control_points : Array[PolarCP]
+  dim_nubs : Int
+  is_uniform : Bool
+  is_clamped : Bool
+  mut outer_box : Rectangle?
+  is_bezier : Bool
+  min_knot : Double
+  max_knot : Double
+}
+pub fn NubSpline::get_control_point(Self, Int) -> KVector
+pub fn NubSpline::get_control_points(Self) -> KVectorChain
+pub fn NubSpline::get_control_points_size(Self) -> Int
+pub fn NubSpline::get_dim(Self) -> Int
+pub fn NubSpline::get_knot_vector(Self) -> Array[Double]
+pub fn NubSpline::get_outer_box(Self) -> Rectangle
+pub fn NubSpline::get_point_on_curve(Self, Double) -> KVector
+pub fn NubSpline::get_point_on_curve_with_modify(Self, Double, Bool) -> KVector
+pub fn NubSpline::set_outer_box(Self, Rectangle) -> Unit
+pub fn NubSpline::to_string(Self) -> String
+
+pub struct NubsSelfLoop {
+  nub_spline : NubSpline
+  mut first_label_position : KVector
+}
+pub fn NubsSelfLoop::as_nub_spline(Self) -> NubSpline
+pub fn NubsSelfLoop::get_control_points(Self) -> KVectorChain
+pub fn NubsSelfLoop::get_dim(Self) -> Int
+pub fn NubsSelfLoop::get_first_label_position(Self) -> KVector
+pub fn NubsSelfLoop::set_first_label_position(Self, KVector) -> Unit
+
 pub struct NumberValueConverter {
   marker : Unit
 }
@@ -13773,6 +14435,21 @@ pub enum OrderingStrategy {
   PreferEdges
   PreferNodes
 }
+
+pub struct OrthogonalRoutingGenerator {
+  segment_splitter : HyperEdgeSegmentSplitter?
+  routing_strategy : BaseRoutingDirectionStrategy
+  edge_spacing : Double
+  conflict_threshold : Double
+  mut critical_conflict_threshold : Double
+  debug_prefix : String?
+}
+pub fn OrthogonalRoutingGenerator::create_dependency_if_necessary(Self, HyperEdgeSegment, HyperEdgeSegment) -> Int
+pub fn OrthogonalRoutingGenerator::get_critical_conflict_threshold(Self) -> Double
+pub fn OrthogonalRoutingGenerator::get_edge_spacing(Self) -> Double
+pub fn OrthogonalRoutingGenerator::get_routing_strategy(Self) -> BaseRoutingDirectionStrategy
+pub fn OrthogonalRoutingGenerator::minimum_horizontal_segment_distance(Self, Array[HyperEdgeSegment]) -> Double
+pub fn OrthogonalRoutingGenerator::set_critical_conflict_threshold(Self, Double) -> Unit
 
 pub struct OutlineNode {
   relative_x : Double
@@ -13874,6 +14551,11 @@ pub struct Point {
   y : Double
   quadrant : Quadrant?
   mut convex : Bool
+}
+
+pub struct PolarCP {
+  cp : KVector
+  polar_coordinate : Array[Double]
 }
 
 pub struct Polyomino {
@@ -14198,6 +14880,26 @@ pub fn RectRow::remove_block(Self, Block) -> Unit
 pub fn RectRow::reset_stacks(Self) -> Unit
 pub fn RectRow::set_y(Self, Double) -> Unit
 
+pub struct Rectangle {
+  mut top : Double
+  mut bottom : Double
+  mut left : Double
+  mut right : Double
+}
+pub fn Rectangle::enlarge(Self, Double) -> Unit
+pub fn Rectangle::get_bottom(Self) -> Double
+pub fn Rectangle::get_from_port_side(Self, PortSide) -> Double
+pub fn Rectangle::get_height(Self) -> Double
+pub fn Rectangle::get_left(Self) -> Double
+pub fn Rectangle::get_right(Self) -> Double
+pub fn Rectangle::get_top(Self) -> Double
+pub fn Rectangle::get_width(Self) -> Double
+pub fn Rectangle::to_node_margins(Self, LShape) -> Spacing
+pub fn Rectangle::to_string(Self) -> String
+pub fn Rectangle::union_rectangle(Self, Self) -> Unit
+pub fn Rectangle::union_shape(Self, LShape) -> Unit
+pub fn Rectangle::union_vector(Self, KVector) -> Unit
+
 pub struct RectangleNode {
   handle : Int
 }
@@ -14332,6 +15034,18 @@ pub struct RevealLogFolderAction {
 pub fn RevealLogFolderAction::is_enabled(Self) -> Bool
 pub fn RevealLogFolderAction::run(Self) -> Unit
 pub fn RevealLogFolderAction::update_enablement(Self) -> Unit
+
+pub enum RoutingDirection {
+  WestToEast
+  NorthToSouth
+  SouthToNorth
+}
+
+pub enum RoutingDirectionStrategyType {
+  WestToEastRoutingStrategyType
+  NorthToSouthRoutingStrategyType
+  SouthToNorthRoutingStrategyType
+}
 
 pub struct RunFailure {
   description : String
@@ -14470,10 +15184,72 @@ pub fn Spacing::set_top_bottom(Self, Double) -> Unit
 pub fn Spacing::set_values(Self, Double, Double, Double, Double) -> Unit
 pub fn Spacing::to_string(Self) -> String
 
+pub struct Spacings {
+  graph : LGraph
+  node_type_spacing_options_horizontal : Array[Array[IProperty[Double]?]]
+  node_type_spacing_options_vertical : Array[Array[IProperty[Double]?]]
+}
+pub fn Spacings::get_horizontal_spacing(Self, LNode, LNode) -> Double
+pub fn Spacings::get_horizontal_spacing_for_node_type(Self, NodeType, NodeType) -> Double
+pub fn Spacings::get_vertical_spacing(Self, LNode, LNode) -> Double
+pub fn Spacings::get_vertical_spacing_for_node_type(Self, NodeType, NodeType) -> Double
+
+pub struct SplineDependency {
+  mut source : SplineSegment?
+  mut target : SplineSegment?
+  weight : Int
+}
+pub fn SplineDependency::to_string(Self) -> String
+
 pub enum SplineRoutingMode {
   Conservative
   ConservativeSoft
   Sloppy
+}
+
+pub struct SplineSegment {
+  handled : Bool
+  left_ports : Array[LPort]
+  right_ports : Array[LPort]
+  outgoing : Array[SplineDependency]
+  incoming : Array[SplineDependency]
+  mut mark : Int
+  mut inweight : Int
+  mut outweight : Int
+  mut rank : Int
+  edges : Array[LEdge]
+  mut is_straight : Bool
+  bounding_box : ElkRectangle
+  mut is_west_of_initial_layer : Bool
+  mut x_delta : Double
+  mut source_port : LPort?
+  mut target_port : LPort?
+  mut initial_segment : Bool
+  mut last_segment : Bool
+  mut source_node : LNode?
+  mut target_node : LNode?
+  inverse_order : Bool
+  mut hyper_edge_top_y_pos : Double
+  mut hyper_edge_bottom_y_pos : Double
+  mut center_control_point_y : Double
+  edge_information : Map[Int, SplineSegmentEdgeInformation]
+}
+pub fn SplineSegment::compare_to(Self, Self) -> Int
+pub fn SplineSegment::get_edge_information(Self, LEdge) -> SplineSegmentEdgeInformation?
+pub fn SplineSegment::is_hyper_edge(Self) -> Bool
+
+pub struct SplineSegmentEdgeInformation {
+  start_y : Double
+  end_y : Double
+  normal_source_node : Bool
+  normal_target_node : Bool
+  inverted_left : Bool
+  inverted_right : Bool
+}
+
+pub enum SplineSideToProcess {
+  Left
+  Right
 }
 
 pub enum SporeCompactionStrategy {

@@ -63,6 +63,52 @@ fn orthogonal_routing_generator_test_west_to_east() -> RoutingDirection {
 }
 
 ///|
+fn orthogonal_routing_generator_test_port_side(name : String) -> PortSide {
+  for side in port_side_values() {
+    if port_side_to_string(side) == name {
+      return side
+    }
+  }
+  abort("unknown port side")
+}
+
+///|
+fn orthogonal_routing_generator_test_build_graph_with_edge() -> (
+  LGraph,
+  LNode,
+  LNode,
+  LEdge,
+) {
+  let graph = new_l_graph()
+  let left_layer = new_layer(graph)
+  let right_layer = new_layer(graph)
+  graph.get_layers().push(left_layer)
+  graph.get_layers().push(right_layer)
+
+  let left_node = new_l_node()
+  left_node.set_layer(Some(left_layer))
+  ignore(left_node.get_position().set_xy(0.0, 0.0))
+
+  let right_node = new_l_node()
+  right_node.set_layer(Some(right_layer))
+  ignore(right_node.get_position().set_xy(0.0, 30.0))
+
+  let left_port = new_l_port()
+  left_port.set_side(orthogonal_routing_generator_test_port_side("EAST"))
+  left_port.set_node(Some(left_node))
+
+  let right_port = new_l_port()
+  right_port.set_side(orthogonal_routing_generator_test_port_side("WEST"))
+  right_port.set_node(Some(right_node))
+
+  let edge = new_l_edge()
+  edge.set_source(Some(left_port))
+  edge.set_target(Some(right_port))
+
+  (graph, left_node, right_node, edge)
+}
+
+///|
 test "OrthogonalRoutingGenerator creates zero-weight two-cycle for symmetric penalties" {
   let generator = new_orthogonal_routing_generator(
     orthogonal_routing_generator_test_west_to_east(),
@@ -125,4 +171,31 @@ test "OrthogonalRoutingGenerator topological numbering assigns increasing routin
 
   assert_eq(first.get_routing_slot(), 0)
   assert_eq(second.get_routing_slot(), 1)
+}
+
+///|
+test "OrthogonalRoutingGenerator routes edges between layers and creates bend points" {
+  let generator = new_orthogonal_routing_generator(
+    orthogonal_routing_generator_test_west_to_east(),
+    10.0,
+    None,
+  )
+  let (graph, left_node, right_node, edge) = orthogonal_routing_generator_test_build_graph_with_edge()
+
+  let slots = generator.route_edges(
+    new_elk_progress_monitor(),
+    graph,
+    Some([left_node]),
+    0,
+    Some([right_node]),
+    20.0,
+  )
+
+  assert_eq(slots, 1)
+  let bends = edge.get_bend_points()
+  assert_eq(bends.size(), 2)
+  assert_eq(bends.get(0).x, 20.0)
+  assert_eq(bends.get(0).y, 0.0)
+  assert_eq(bends.get(1).x, 20.0)
+  assert_eq(bends.get(1).y, 30.0)
 }

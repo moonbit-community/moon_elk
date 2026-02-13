@@ -38,6 +38,20 @@ pub enum NodeType {
 }
 
 ///|
+pub fn node_type_values() -> Array[NodeType] {
+  [
+    NodeType::Normal,
+    NodeType::LongEdge,
+    NodeType::ExternalPort,
+    NodeType::NorthSouthPort,
+    NodeType::LabelNode,
+    NodeType::BreakingPoint,
+    NodeType::Placeholder,
+    NodeType::NonshiftingPlaceholder,
+  ]
+}
+
+///|
 pub struct LNode {
   shape : LShape
   node_handle : Int

@@ -73,7 +73,7 @@ fn orthogonal_routing_generator_minimum_difference(
 
 ///|
 pub struct OrthogonalRoutingGenerator {
-  segment_splitter : HyperEdgeSegmentSplitter?
+  mut segment_splitter : HyperEdgeSegmentSplitter?
   routing_strategy : BaseRoutingDirectionStrategy
   edge_spacing : Double
   conflict_threshold : Double
@@ -127,6 +127,159 @@ pub fn OrthogonalRoutingGenerator::get_critical_conflict_threshold(
   self : OrthogonalRoutingGenerator,
 ) -> Double {
   self.critical_conflict_threshold
+}
+
+///|
+fn orthogonal_routing_generator_seeded_random(
+  seed_value : Int64,
+) -> @random.Rand {
+  let seed = @buffer.new()
+  seed.write_int64_le(seed_value)
+  seed.write_int64_le(0)
+  seed.write_int64_le(0)
+  seed.write_int64_le(0)
+  @random.Rand::chacha8(seed=seed.to_bytes())
+}
+
+///|
+fn orthogonal_routing_generator_graph_random(
+  layered_graph : LGraph,
+) -> @random.Rand {
+  let use_one = layered_graph.get_property_bool(
+    internal_properties_random_next_boolean,
+  )
+  layered_graph.set_property_bool(
+    internal_properties_random_next_boolean,
+    !use_one,
+  )
+  if use_one {
+    orthogonal_routing_generator_seeded_random(1)
+  } else {
+    orthogonal_routing_generator_seeded_random(2)
+  }
+}
+
+///|
+fn OrthogonalRoutingGenerator::create_hyper_edge_segments(
+  self : OrthogonalRoutingGenerator,
+  nodes : Array[LNode]?,
+  port_side : PortSide,
+  hyper_edges : Array[HyperEdgeSegment],
+  port_to_hyper_edge_segment_map : Map[Int, HyperEdgeSegment],
+) -> Unit {
+  match nodes {
+    Some(layer_nodes) =>
+      for node in layer_nodes {
+        for port in node.get_ports_by_type_and_side(PortType::Output, port_side) {
+          if port_to_hyper_edge_segment_map.contains(port.get_handle()) {
+            continue
+          }
+          let hyper_edge = new_hyper_edge_segment(self.routing_strategy)
+          hyper_edges.push(hyper_edge)
+          hyper_edge.add_port_positions(port, port_to_hyper_edge_segment_map)
+        }
+      }
+    None => ()
+  }
+}
+
+///|
+fn OrthogonalRoutingGenerator::break_critical_cycles(
+  self : OrthogonalRoutingGenerator,
+  edge_segments : Array[HyperEdgeSegment],
+  random : @random.Rand,
+) -> Unit {
+  let cycle_dependencies = hyper_edge_cycle_detector_detect_cycles(
+    edge_segments, true, random,
+  )
+
+  if self.segment_splitter is None {
+    self.segment_splitter = Some(new_hyper_edge_segment_splitter(self))
+  }
+
+  match self.segment_splitter {
+    Some(splitter) =>
+      splitter.split_segments(
+        cycle_dependencies,
+        edge_segments,
+        self.critical_conflict_threshold,
+      )
+    None => ()
+  }
+}
+
+///|
+pub fn OrthogonalRoutingGenerator::route_edges(
+  self : OrthogonalRoutingGenerator,
+  monitor : IElkProgressMonitor,
+  layered_graph : LGraph,
+  source_layer_nodes : Array[LNode]?,
+  source_layer_index : Int,
+  target_layer_nodes : Array[LNode]?,
+  start_pos : Double,
+) -> Int {
+  ignore(monitor)
+  ignore(source_layer_index)
+  ignore(self.debug_prefix)
+
+  let port_to_edge_segment_map : Map[Int, HyperEdgeSegment] = {}
+  let edge_segments = []
+
+  self.create_hyper_edge_segments(
+    source_layer_nodes,
+    self.routing_strategy.get_source_port_side(),
+    edge_segments,
+    port_to_edge_segment_map,
+  )
+  self.create_hyper_edge_segments(
+    target_layer_nodes,
+    self.routing_strategy.get_target_port_side(),
+    edge_segments,
+    port_to_edge_segment_map,
+  )
+
+  self.critical_conflict_threshold = orthogonal_routing_generator_critical_conflict_threshold_factor *
+    self.minimum_horizontal_segment_distance(edge_segments)
+
+  let mut critical_dependency_count = 0
+  for first_index in 0..<edge_segments.length() {
+    let mut second_index = first_index + 1
+    while second_index < edge_segments.length() {
+      critical_dependency_count = critical_dependency_count +
+        self.create_dependency_if_necessary(
+          edge_segments[first_index],
+          edge_segments[second_index],
+        )
+      second_index = second_index + 1
+    }
+  }
+
+  let random = orthogonal_routing_generator_graph_random(layered_graph)
+  if critical_dependency_count >= 2 {
+    self.break_critical_cycles(edge_segments, random)
+  }
+  orthogonal_routing_generator_break_non_critical_cycles(edge_segments, random)
+  orthogonal_routing_generator_topological_numbering(edge_segments)
+
+  let mut rank_count = -1
+  for node in edge_segments {
+    if (node.get_start_coordinate() - node.get_end_coordinate()).abs() <
+      orthogonal_routing_generator_tolerance {
+      continue
+    }
+
+    if node.get_routing_slot() > rank_count {
+      rank_count = node.get_routing_slot()
+    }
+    self.routing_strategy.calculate_bend_points(
+      node,
+      start_pos,
+      self.edge_spacing,
+    )
+  }
+
+  self.routing_strategy.clear_created_junction_points()
+  rank_count + 1
 }
 
 ///|

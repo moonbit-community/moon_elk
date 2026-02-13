@@ -130,6 +130,24 @@ pub let layered_options_edge_routing_splines_sloppy_layer_spacing_factor : IProp
 )
 
 ///|
+pub let layered_options_edge_routing_polyline_sloped_edge_zone_width : IProperty[
+  Double,
+] = new_property(
+  "org.eclipse.elk.layered.edgeRouting.polyline.slopedEdgeZoneWidth", 2.0,
+)
+
+///|
+pub let layered_options_feedback_edges : IProperty[Bool] = new_property(
+  "org.eclipse.elk.layered.feedbackEdges", false,
+)
+
+///|
+pub let layered_options_junction_points : IProperty[KVectorChain] = new_property(
+  "org.eclipse.elk.junctionPoints",
+  new_kvector_chain(),
+)
+
+///|
 pub let layered_options_hierarchy_handling : IProperty[String] = new_property(
   "org.eclipse.elk.hierarchyHandling", "INHERIT",
 )

@@ -155,8 +155,14 @@ pub fn GreedySwitchTestGraphCreator::set_up_graph(
   self : GreedySwitchTestGraphCreator,
   graph : LGraph,
 ) -> LGraph {
-  ignore(self.random)
   self.set_up_ids()
+  graph.set_property_bool(
+    internal_properties_random_next_boolean,
+    self.random.next_boolean(),
+  )
+  graph.set_property_string(
+    layered_options_hierarchy_handling, "INCLUDE_CHILDREN",
+  )
   graph
 }
 
