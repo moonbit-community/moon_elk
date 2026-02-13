@@ -26,7 +26,9 @@ pub struct LPort {
   incoming_edges : Array[LEdge]
   outgoing_edges : Array[LEdge]
   mut connected_to_external_nodes : Bool
+  int_properties : Map[String, Int]
   bool_properties : Map[String, Bool]
+  double_properties : Map[String, Double]
   node_properties : Map[String, LNode]
   port_properties : Map[String, LPort]
 }
@@ -45,7 +47,9 @@ pub fn new_l_port() -> LPort {
     incoming_edges: [],
     outgoing_edges: [],
     connected_to_external_nodes: true,
+    int_properties: {},
     bool_properties: {},
+    double_properties: {},
     node_properties: {},
     port_properties: {},
   }
@@ -329,6 +333,56 @@ pub fn LPort::get_property_bool(
     Some(value) => value
     None => property.get_default()
   }
+}
+
+///|
+pub fn LPort::set_property_int(
+  self : LPort,
+  property : IProperty[Int],
+  value : Int,
+) -> Unit {
+  self.int_properties[property.get_id()] = value
+}
+
+///|
+pub fn LPort::set_property_double(
+  self : LPort,
+  property : IProperty[Double],
+  value : Double,
+) -> Unit {
+  self.double_properties[property.get_id()] = value
+}
+
+///|
+pub fn LPort::get_property_int(self : LPort, property : IProperty[Int]) -> Int {
+  match self.int_properties.get(property.get_id()) {
+    Some(value) => value
+    None => property.get_default()
+  }
+}
+
+///|
+pub fn LPort::get_property_double(
+  self : LPort,
+  property : IProperty[Double],
+) -> Double {
+  match self.double_properties.get(property.get_id()) {
+    Some(value) => value
+    None => property.get_default()
+  }
+}
+
+///|
+pub fn LPort::has_property_int(self : LPort, property : IProperty[Int]) -> Bool {
+  self.int_properties.contains(property.get_id())
+}
+
+///|
+pub fn LPort::has_property_double(
+  self : LPort,
+  property : IProperty[Double],
+) -> Bool {
+  self.double_properties.contains(property.get_id())
 }
 
 ///|
