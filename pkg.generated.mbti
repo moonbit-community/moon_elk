@@ -5098,6 +5098,8 @@ pub fn new_validating_graph_element_visitor((Int) -> Unit, () -> Array[GraphIssu
 
 pub fn new_validating_property_sheet_entry() -> ValidatingPropertySheetEntry
 
+pub fn new_vertical_segment(KVector, KVector, CNode?, LEdge) -> VerticalSegment
+
 pub fn new_vertiflex_absolute_x_placer_layout_phase() -> ILayoutProcessor[VertiFlexLayoutPhases, Int]
 
 pub fn new_vertiflex_bend_edge_router_layout_phase() -> ILayoutProcessor[VertiFlexLayoutPhases, Int]
@@ -15803,6 +15805,25 @@ pub(all) enum VerticalLabelAlignment {
   Center
   Bottom
 }
+
+pub struct VerticalSegment {
+  potential_group_parents : Array[CNode]
+  represented_l_edges : Array[LEdge]
+  affected_bends : Array[KVector]
+  affected_bounding_boxes : Array[ElkRectangle]
+  hitbox : ElkRectangle
+  junction_points : KVectorChain
+  ignore_spacing : Quadruplet
+  constraints : Array[VerticalSegment]
+  mut a_port : LPort?
+  joined : Array[VerticalSegment]
+}
+pub fn VerticalSegment::compare_to(Self, Self) -> Int
+pub fn VerticalSegment::get_a_port(Self) -> LPort?
+pub fn VerticalSegment::intersects(Self, Self) -> Bool
+pub fn VerticalSegment::join_with(Self, Self) -> Self
+pub fn VerticalSegment::set_a_port(Self, LPort?) -> Unit
+pub fn VerticalSegment::to_string(Self) -> String
 
 type WhiteboxLayoutEvent[G]
 
