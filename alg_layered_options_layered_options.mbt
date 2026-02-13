@@ -142,6 +142,16 @@ pub let layered_options_feedback_edges : IProperty[Bool] = new_property(
 )
 
 ///|
+pub let layered_options_port_sorting_strategy : IProperty[String] = new_property(
+  "org.eclipse.elk.layered.portSortingStrategy", "INPUT_ORDER",
+)
+
+///|
+pub let layered_options_port_index : IProperty[Int] = new_property(
+  "org.eclipse.elk.port.index", -1,
+)
+
+///|
 pub let layered_options_unnecessary_bendpoints : IProperty[Bool] = new_property(
   "org.eclipse.elk.layered.unnecessaryBendpoints", false,
 )

@@ -165,6 +165,8 @@ fn intermediate_processor_create(
       new_long_edge_splitter_layout_processor()
     IntermediateProcessorStrategy::LongEdgeJoiner =>
       new_long_edge_joiner_layout_processor()
+    IntermediateProcessorStrategy::PortListSorter =>
+      new_port_list_sorter_layout_processor()
     IntermediateProcessorStrategy::ReversedEdgeRestorer =>
       new_reversed_edge_restorer_layout_processor()
     IntermediateProcessorStrategy::InvertedPortProcessor =>

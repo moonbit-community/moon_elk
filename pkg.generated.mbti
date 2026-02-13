@@ -2734,6 +2734,10 @@ pub let layered_options_layering_layer_constraint : IProperty[String]
 
 pub fn layered_options_parse_int_list(String) -> Array[Int]
 
+pub let layered_options_port_index : IProperty[Int]
+
+pub let layered_options_port_sorting_strategy : IProperty[String]
+
 pub let layered_options_spacing_base_value : IProperty[Double]
 
 pub let layered_options_spacing_edge_edge_between_layers : IProperty[Double]
@@ -4793,6 +4797,8 @@ pub fn new_polyomino_coords(Int, Int) -> PolyominoCoords
 pub fn new_polyomino_with_extensions(Int, Int, Array[UniqueTriple[PolyominoDirection, Int, Int]]) -> Polyomino
 
 pub fn new_polyominoes(Array[Polyomino], Double, fill? : Bool) -> Polyominoes
+
+pub fn new_port_list_sorter_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_port_side_processor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
