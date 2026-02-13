@@ -1,2 +1,20 @@
-// Upstream counterpart: alg_layered_p5edges_orthogonal_direction_routing_direction.mbt
-// Implementation is currently provided in aggregated translated files.
+///|
+pub enum RoutingDirection {
+  WestToEast
+  NorthToSouth
+  SouthToNorth
+}
+
+///|
+pub fn routing_direction_values() -> Array[RoutingDirection] {
+  [WestToEast, NorthToSouth, SouthToNorth]
+}
+
+///|
+pub fn routing_direction_to_string(direction : RoutingDirection) -> String {
+  match direction {
+    WestToEast => "WEST_TO_EAST"
+    NorthToSouth => "NORTH_TO_SOUTH"
+    SouthToNorth => "SOUTH_TO_NORTH"
+  }
+}
