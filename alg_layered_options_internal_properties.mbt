@@ -101,6 +101,11 @@ pub let internal_properties_original_opposite_port : IProperty[LPort?] = new_pro
 )
 
 ///|
+pub let internal_properties_partition_dummy : IProperty[Bool] = new_property(
+  "partitionDummy", false,
+)
+
+///|
 pub let internal_properties_ext_port_connections : IProperty[Array[PortSide]] = new_property(
   "externalPortConnections", sides_none,
 )

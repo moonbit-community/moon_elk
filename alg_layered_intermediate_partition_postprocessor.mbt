@@ -1,2 +1,36 @@
-// Upstream counterpart: alg_layered_intermediate_partition_postprocessor.mbt
-// Implementation is currently provided in aggregated translated files.
+///|
+fn partition_postprocessor_process(
+  graph : LGraph,
+  progress_monitor : IElkProgressMonitor?,
+) -> Unit {
+  let monitor = match progress_monitor {
+    Some(value) => value
+    None => new_null_elk_progress_monitor()
+  }
+  ignore(monitor.begin("Partition postprocessing", 1.0))
+
+  for layer in graph.get_layers() {
+    for node in layer.get_nodes() {
+      let ports = node.get_ports()
+      let mut index = 0
+      while index < ports.length() {
+        let port = ports[index]
+        if port.get_property_bool(internal_properties_partition_dummy) {
+          port.set_node(None)
+        } else {
+          index += 1
+        }
+      }
+    }
+  }
+
+  monitor.done()
+}
+
+///|
+pub fn new_partition_postprocessor_layout_processor() -> ILayoutProcessor[
+  LayeredPhases,
+  LGraph,
+] {
+  new_layout_processor(partition_postprocessor_process)
+}
