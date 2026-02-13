@@ -306,3 +306,315 @@ test "BFSNodeOrderCycleBreaker adds reversed-edge-restorer slot after P5" {
     [23004],
   )
 }
+
+///|
+test "DFSNodeOrderCycleBreaker removes directed 3-cycle" {
+  let graph = new_l_graph()
+  let n1 = basic_cycle_breaker_add_layerless_node(graph)
+  let n2 = basic_cycle_breaker_add_layerless_node(graph)
+  let n3 = basic_cycle_breaker_add_layerless_node(graph)
+  n1.set_property_int(internal_properties_model_order, 0)
+  n2.set_property_int(internal_properties_model_order, 1)
+  n3.set_property_int(internal_properties_model_order, 2)
+  ignore(basic_cycle_breaker_connect(n1, n2))
+  ignore(basic_cycle_breaker_connect(n2, n3))
+  ignore(basic_cycle_breaker_connect(n3, n1))
+
+  assert_eq(basic_cycle_breaker_has_cycle(graph), true)
+
+  let phase = new_dfs_node_order_cycle_breaker_layout_phase()
+  phase.process(graph, None)
+
+  assert_eq(basic_cycle_breaker_has_cycle(graph), false)
+  assert_eq(graph.get_property_bool(internal_properties_cyclic), true)
+}
+
+///|
+test "DFSNodeOrderCycleBreaker adds reversed-edge-restorer slot after P5" {
+  let graph = new_l_graph()
+  let phase = new_dfs_node_order_cycle_breaker_layout_phase()
+  let configuration = match phase.get_layout_processor_configuration(graph) {
+    Some(value) => value
+    None => abort("dfs node-order configuration must exist")
+  }
+  let phase_constants = layered_phase_constants()
+  let p5_edge_routing = phase_constants[4]
+  assert_eq(
+    basic_cycle_breaker_factory_ids(
+      configuration.processors_after(p5_edge_routing),
+    ),
+    [23004],
+  )
+}
+
+///|
+test "ModelOrderCycleBreaker removes backward edge by model order" {
+  let graph = new_l_graph()
+  let n1 = basic_cycle_breaker_add_layerless_node(graph)
+  let n2 = basic_cycle_breaker_add_layerless_node(graph)
+  let n3 = basic_cycle_breaker_add_layerless_node(graph)
+  n1.set_property_int(internal_properties_model_order, 0)
+  n2.set_property_int(internal_properties_model_order, 1)
+  n3.set_property_int(internal_properties_model_order, 2)
+  ignore(basic_cycle_breaker_connect(n1, n2))
+  ignore(basic_cycle_breaker_connect(n2, n3))
+  ignore(basic_cycle_breaker_connect(n3, n1))
+
+  assert_eq(basic_cycle_breaker_has_cycle(graph), true)
+
+  let phase = new_model_order_cycle_breaker_layout_phase()
+  phase.process(graph, None)
+
+  assert_eq(basic_cycle_breaker_has_cycle(graph), false)
+  assert_eq(graph.get_property_bool(internal_properties_cyclic), true)
+}
+
+///|
+test "ModelOrderCycleBreaker adds reversed-edge-restorer slot after P5" {
+  let graph = new_l_graph()
+  let phase = new_model_order_cycle_breaker_layout_phase()
+  let configuration = match phase.get_layout_processor_configuration(graph) {
+    Some(value) => value
+    None => abort("model-order configuration must exist")
+  }
+  let phase_constants = layered_phase_constants()
+  let p5_edge_routing = phase_constants[4]
+  assert_eq(
+    basic_cycle_breaker_factory_ids(
+      configuration.processors_after(p5_edge_routing),
+    ),
+    [23004],
+  )
+}
+
+///|
+test "GreedyCycleBreaker removes directed 3-cycle" {
+  let graph = new_l_graph()
+  let n1 = basic_cycle_breaker_add_layerless_node(graph)
+  let n2 = basic_cycle_breaker_add_layerless_node(graph)
+  let n3 = basic_cycle_breaker_add_layerless_node(graph)
+  ignore(basic_cycle_breaker_connect(n1, n2))
+  ignore(basic_cycle_breaker_connect(n2, n3))
+  ignore(basic_cycle_breaker_connect(n3, n1))
+
+  assert_eq(basic_cycle_breaker_has_cycle(graph), true)
+
+  let phase = new_greedy_cycle_breaker_layout_phase()
+  phase.process(graph, None)
+
+  assert_eq(basic_cycle_breaker_has_cycle(graph), false)
+  assert_eq(graph.get_property_bool(internal_properties_cyclic), true)
+}
+
+///|
+test "GreedyCycleBreaker adds reversed-edge-restorer slot after P5" {
+  let graph = new_l_graph()
+  let phase = new_greedy_cycle_breaker_layout_phase()
+  let configuration = match phase.get_layout_processor_configuration(graph) {
+    Some(value) => value
+    None => abort("greedy configuration must exist")
+  }
+  let phase_constants = layered_phase_constants()
+  let p5_edge_routing = phase_constants[4]
+  assert_eq(
+    basic_cycle_breaker_factory_ids(
+      configuration.processors_after(p5_edge_routing),
+    ),
+    [23004],
+  )
+}
+
+///|
+test "GreedyModelOrderCycleBreaker removes directed 3-cycle" {
+  let graph = new_l_graph()
+  let n1 = basic_cycle_breaker_add_layerless_node(graph)
+  let n2 = basic_cycle_breaker_add_layerless_node(graph)
+  let n3 = basic_cycle_breaker_add_layerless_node(graph)
+  n1.set_property_int(internal_properties_model_order, 0)
+  n2.set_property_int(internal_properties_model_order, 1)
+  n3.set_property_int(internal_properties_model_order, 2)
+  ignore(basic_cycle_breaker_connect(n1, n2))
+  ignore(basic_cycle_breaker_connect(n2, n3))
+  ignore(basic_cycle_breaker_connect(n3, n1))
+
+  assert_eq(basic_cycle_breaker_has_cycle(graph), true)
+
+  let phase = new_greedy_model_order_cycle_breaker_layout_phase()
+  phase.process(graph, None)
+
+  assert_eq(basic_cycle_breaker_has_cycle(graph), false)
+  assert_eq(graph.get_property_bool(internal_properties_cyclic), true)
+}
+
+///|
+test "GreedyModelOrderCycleBreaker adds reversed-edge-restorer slot after P5" {
+  let graph = new_l_graph()
+  let phase = new_greedy_model_order_cycle_breaker_layout_phase()
+  let configuration = match phase.get_layout_processor_configuration(graph) {
+    Some(value) => value
+    None => abort("greedy model-order configuration must exist")
+  }
+  let phase_constants = layered_phase_constants()
+  let p5_edge_routing = phase_constants[4]
+  assert_eq(
+    basic_cycle_breaker_factory_ids(
+      configuration.processors_after(p5_edge_routing),
+    ),
+    [23004],
+  )
+}
+
+///|
+test "SCCModelOrderCycleBreaker removes directed 3-cycle" {
+  let graph = new_l_graph()
+  let n1 = basic_cycle_breaker_add_layerless_node(graph)
+  let n2 = basic_cycle_breaker_add_layerless_node(graph)
+  let n3 = basic_cycle_breaker_add_layerless_node(graph)
+  n1.set_property_int(internal_properties_model_order, 0)
+  n2.set_property_int(internal_properties_model_order, 1)
+  n3.set_property_int(internal_properties_model_order, 2)
+  ignore(basic_cycle_breaker_connect(n1, n2))
+  ignore(basic_cycle_breaker_connect(n2, n3))
+  ignore(basic_cycle_breaker_connect(n3, n1))
+
+  assert_eq(basic_cycle_breaker_has_cycle(graph), true)
+
+  let phase = new_scc_model_order_cycle_breaker_layout_phase()
+  phase.process(graph, None)
+
+  assert_eq(basic_cycle_breaker_has_cycle(graph), false)
+  assert_eq(graph.get_property_bool(internal_properties_cyclic), true)
+}
+
+///|
+test "SCCModelOrderCycleBreaker adds reversed-edge-restorer slot after P5" {
+  let graph = new_l_graph()
+  let phase = new_scc_model_order_cycle_breaker_layout_phase()
+  let configuration = match phase.get_layout_processor_configuration(graph) {
+    Some(value) => value
+    None => abort("scc model-order configuration must exist")
+  }
+  let phase_constants = layered_phase_constants()
+  let p5_edge_routing = phase_constants[4]
+  assert_eq(
+    basic_cycle_breaker_factory_ids(
+      configuration.processors_after(p5_edge_routing),
+    ),
+    [23004],
+  )
+}
+
+///|
+test "SCConnectivityCycleBreaker removes directed 3-cycle" {
+  let graph = new_l_graph()
+  let n1 = basic_cycle_breaker_add_layerless_node(graph)
+  let n2 = basic_cycle_breaker_add_layerless_node(graph)
+  let n3 = basic_cycle_breaker_add_layerless_node(graph)
+  n1.set_property_int(internal_properties_model_order, 0)
+  n2.set_property_int(internal_properties_model_order, 1)
+  n3.set_property_int(internal_properties_model_order, 2)
+  ignore(basic_cycle_breaker_connect(n1, n2))
+  ignore(basic_cycle_breaker_connect(n2, n3))
+  ignore(basic_cycle_breaker_connect(n3, n1))
+
+  assert_eq(basic_cycle_breaker_has_cycle(graph), true)
+
+  let phase = new_sc_connectivity_cycle_breaker_layout_phase()
+  phase.process(graph, None)
+
+  assert_eq(basic_cycle_breaker_has_cycle(graph), false)
+  assert_eq(graph.get_property_bool(internal_properties_cyclic), true)
+}
+
+///|
+test "SCConnectivityCycleBreaker adds reversed-edge-restorer slot after P5" {
+  let graph = new_l_graph()
+  let phase = new_sc_connectivity_cycle_breaker_layout_phase()
+  let configuration = match phase.get_layout_processor_configuration(graph) {
+    Some(value) => value
+    None => abort("sc-connectivity configuration must exist")
+  }
+  let phase_constants = layered_phase_constants()
+  let p5_edge_routing = phase_constants[4]
+  assert_eq(
+    basic_cycle_breaker_factory_ids(
+      configuration.processors_after(p5_edge_routing),
+    ),
+    [23004],
+  )
+}
+
+///|
+test "SCCNodeTypeCycleBreaker honors preferred source node id" {
+  let graph = new_l_graph()
+  let n1 = basic_cycle_breaker_add_layerless_node(graph)
+  let n2 = basic_cycle_breaker_add_layerless_node(graph)
+  let n3 = basic_cycle_breaker_add_layerless_node(graph)
+  n1.set_property_int(internal_properties_model_order, 0)
+  n2.set_property_int(internal_properties_model_order, 1)
+  n3.set_property_int(internal_properties_model_order, 2)
+  n1.set_property_int(
+    layered_options_consider_model_order_group_model_order_cycle_breaking_id, 42,
+  )
+  n2.set_property_int(
+    layered_options_consider_model_order_group_model_order_cycle_breaking_id, 7,
+  )
+  n3.set_property_int(
+    layered_options_consider_model_order_group_model_order_cycle_breaking_id, 9,
+  )
+  graph.set_property_int(
+    layered_options_consider_model_order_group_model_order_cb_preferred_source_id,
+    42,
+  )
+  graph.set_property_int(
+    layered_options_consider_model_order_group_model_order_cb_preferred_target_id,
+    -1,
+  )
+  ignore(basic_cycle_breaker_connect(n1, n2))
+  ignore(basic_cycle_breaker_connect(n2, n3))
+  ignore(basic_cycle_breaker_connect(n3, n1))
+
+  assert_eq(
+    match basic_cycle_breaker_find_edge(n3, n1) {
+      Some(_) => true
+      None => false
+    },
+    true,
+  )
+
+  let phase = new_scc_node_type_cycle_breaker_layout_phase()
+  phase.process(graph, None)
+
+  assert_eq(basic_cycle_breaker_has_cycle(graph), false)
+  assert_eq(
+    match basic_cycle_breaker_find_edge(n3, n1) {
+      Some(_) => true
+      None => false
+    },
+    false,
+  )
+  let reversed_edge = match basic_cycle_breaker_find_edge(n1, n3) {
+    Some(value) => value
+    None => abort("preferred-source incoming edge should be reversed")
+  }
+  assert_eq(reversed_edge.get_property_bool(internal_properties_reversed), true)
+  assert_eq(graph.get_property_bool(internal_properties_cyclic), true)
+}
+
+///|
+test "SCCNodeTypeCycleBreaker adds reversed-edge-restorer slot after P5" {
+  let graph = new_l_graph()
+  let phase = new_scc_node_type_cycle_breaker_layout_phase()
+  let configuration = match phase.get_layout_processor_configuration(graph) {
+    Some(value) => value
+    None => abort("scc node-type configuration must exist")
+  }
+  let phase_constants = layered_phase_constants()
+  let p5_edge_routing = phase_constants[4]
+  assert_eq(
+    basic_cycle_breaker_factory_ids(
+      configuration.processors_after(p5_edge_routing),
+    ),
+    [23004],
+  )
+}
