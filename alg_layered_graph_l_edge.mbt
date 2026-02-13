@@ -22,6 +22,7 @@ pub struct LEdge {
   mut target : LPort?
   labels : Array[LLabel]
   int_properties : Map[String, Int]
+  double_properties : Map[String, Double]
   kvector_chain_properties : Map[String, KVectorChain]
   bool_properties : Map[String, Bool]
   l_edge_array_properties : Map[String, Array[LEdge]]
@@ -38,6 +39,7 @@ pub fn new_l_edge() -> LEdge {
     target: None,
     labels: [],
     int_properties: {},
+    double_properties: {},
     kvector_chain_properties: {},
     bool_properties: {},
     l_edge_array_properties: {},
@@ -158,6 +160,12 @@ pub fn LEdge::copy_properties(self : LEdge, source : LEdge) -> Unit {
     self.int_properties[key] = value
   }
 
+  self.double_properties.clear()
+  for entry in source.double_properties.to_array() {
+    let (key, value) = entry
+    self.double_properties[key] = value
+  }
+
   self.kvector_chain_properties.clear()
   for entry in source.kvector_chain_properties.to_array() {
     let (key, value) = entry
@@ -237,6 +245,15 @@ pub fn LEdge::set_property_int(
 }
 
 ///|
+pub fn LEdge::set_property_double(
+  self : LEdge,
+  property : IProperty[Double],
+  value : Double,
+) -> Unit {
+  self.double_properties[property.get_id()] = value
+}
+
+///|
 pub fn LEdge::get_property_int(self : LEdge, property : IProperty[Int]) -> Int {
   match self.int_properties.get(property.get_id()) {
     Some(value) => value
@@ -245,8 +262,27 @@ pub fn LEdge::get_property_int(self : LEdge, property : IProperty[Int]) -> Int {
 }
 
 ///|
+pub fn LEdge::get_property_double(
+  self : LEdge,
+  property : IProperty[Double],
+) -> Double {
+  match self.double_properties.get(property.get_id()) {
+    Some(value) => value
+    None => property.get_default()
+  }
+}
+
+///|
 pub fn LEdge::has_property_int(self : LEdge, property : IProperty[Int]) -> Bool {
   self.int_properties.contains(property.get_id())
+}
+
+///|
+pub fn LEdge::has_property_double(
+  self : LEdge,
+  property : IProperty[Double],
+) -> Bool {
+  self.double_properties.contains(property.get_id())
 }
 
 ///|

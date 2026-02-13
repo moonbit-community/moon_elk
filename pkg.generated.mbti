@@ -1412,6 +1412,8 @@ pub fn edge_sources(Int) -> Array[ElkConnectableShape]
 
 pub fn edge_targets(Int) -> Array[ElkConnectableShape]
 
+pub let edge_thickness : IProperty[Double]
+
 pub fn edge_type_to_string(EdgeType) -> String
 
 pub fn elk_debug_plugin_get_default() -> ElkDebugPlugin?
@@ -2526,6 +2528,8 @@ pub let internal_properties_inside_connections : IProperty[Bool]
 
 pub let internal_properties_is_part_of_cycle : IProperty[Bool]
 
+pub let internal_properties_long_edge_has_label_dummies : IProperty[Bool]
+
 pub let internal_properties_long_edge_source : IProperty[LPort?]
 
 pub let internal_properties_long_edge_target : IProperty[LPort?]
@@ -2535,6 +2539,8 @@ pub let internal_properties_long_edge_target_node : IProperty[LNode?]
 pub let internal_properties_max_model_order_nodes : IProperty[Int]
 
 pub let internal_properties_model_order : IProperty[Int]
+
+pub let internal_properties_origin_l_edge : IProperty[LEdge?]
 
 pub let internal_properties_origin_l_node : IProperty[LNode?]
 
@@ -2947,6 +2953,8 @@ pub fn load_graph_action_load_from_file(String) -> Int
 pub fn load_graph_action_run_file(String?, LayoutGraphView) -> Unit
 
 pub fn long_edge_ordering_strategy_return_values() -> Array[Int]
+
+pub fn long_edge_splitter_split_edge(LEdge, LNode) -> LEdge
 
 pub fn longest_path_compaction(OneDimensionalCompactor) -> Unit
 
@@ -4581,6 +4589,8 @@ pub fn new_load_graph_action(LayoutGraphView) -> LoadGraphAction
 pub fn new_log_label_provider() -> LogLabelProvider
 
 pub fn new_logged_graph(String, LoggedGraphType) -> LoggedGraph
+
+pub fn new_long_edge_splitter_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_median_heuristic(@random.Rand) -> MedianHeuristic
 
@@ -12604,6 +12614,7 @@ pub struct LEdge {
   mut target : LPort?
   labels : Array[LLabel]
   int_properties : Map[String, Int]
+  double_properties : Map[String, Double]
   kvector_chain_properties : Map[String, KVectorChain]
   bool_properties : Map[String, Bool]
   l_edge_array_properties : Map[String, Array[LEdge]]
@@ -12618,12 +12629,14 @@ pub fn LEdge::get_labels(Self) -> Array[LLabel]
 pub fn LEdge::get_other_node(Self, LNode) -> LNode
 pub fn LEdge::get_other_port(Self, LPort) -> LPort
 pub fn LEdge::get_property_bool(Self, IProperty[Bool]) -> Bool
+pub fn LEdge::get_property_double(Self, IProperty[Double]) -> Double
 pub fn LEdge::get_property_int(Self, IProperty[Int]) -> Int
 pub fn LEdge::get_property_kvector_chain(Self, IProperty[KVectorChain]) -> KVectorChain
 pub fn LEdge::get_property_l_edge_array(Self, IProperty[Array[Self]]) -> Array[Self]
 pub fn LEdge::get_property_spline_segment_array(Self, IProperty[Array[SplineSegment]]) -> Array[SplineSegment]
 pub fn LEdge::get_source(Self) -> LPort?
 pub fn LEdge::get_target(Self) -> LPort?
+pub fn LEdge::has_property_double(Self, IProperty[Double]) -> Bool
 pub fn LEdge::has_property_int(Self, IProperty[Int]) -> Bool
 pub fn LEdge::has_property_kvector_chain(Self, IProperty[KVectorChain]) -> Bool
 pub fn LEdge::has_property_l_edge_array(Self, IProperty[Array[Self]]) -> Bool
@@ -12633,6 +12646,7 @@ pub fn LEdge::is_self_loop(Self) -> Bool
 pub fn LEdge::set_id(Self, Int) -> Unit
 pub fn LEdge::set_origin_identifier(Self, String?) -> Unit
 pub fn LEdge::set_property_bool(Self, IProperty[Bool], Bool) -> Unit
+pub fn LEdge::set_property_double(Self, IProperty[Double], Double) -> Unit
 pub fn LEdge::set_property_int(Self, IProperty[Int], Int) -> Unit
 pub fn LEdge::set_property_kvector_chain(Self, IProperty[KVectorChain], KVectorChain) -> Unit
 pub fn LEdge::set_property_l_edge_array(Self, IProperty[Array[Self]], Array[Self]) -> Unit
@@ -12743,6 +12757,7 @@ pub struct LNode {
   node_properties : Map[String, LNode]
   node_array_properties : Map[String, Array[LNode]]
   port_properties : Map[String, LPort]
+  edge_properties : Map[String, LEdge]
 }
 pub fn LNode::add_port(Self, LPort) -> Unit
 pub fn LNode::get_connected_edges(Self) -> Array[LEdge]
@@ -12766,6 +12781,7 @@ pub fn LNode::get_position(Self) -> KVector
 pub fn LNode::get_property_bool(Self, IProperty[Bool]) -> Bool
 pub fn LNode::get_property_double(Self, IProperty[Double]) -> Double
 pub fn LNode::get_property_int(Self, IProperty[Int]) -> Int
+pub fn LNode::get_property_l_edge(Self, IProperty[LEdge?]) -> LEdge?
 pub fn LNode::get_property_l_node(Self, IProperty[Self?]) -> Self?
 pub fn LNode::get_property_l_node_array(Self, IProperty[Array[Self]]) -> Array[Self]
 pub fn LNode::get_property_l_port(Self, IProperty[LPort?]) -> LPort?
@@ -12776,6 +12792,7 @@ pub fn LNode::get_type(Self) -> NodeType
 pub fn LNode::has_property_bool(Self, IProperty[Bool]) -> Bool
 pub fn LNode::has_property_double(Self, IProperty[Double]) -> Bool
 pub fn LNode::has_property_int(Self, IProperty[Int]) -> Bool
+pub fn LNode::has_property_l_edge(Self, IProperty[LEdge?]) -> Bool
 pub fn LNode::has_property_l_node(Self, IProperty[Self?]) -> Bool
 pub fn LNode::has_property_l_node_array(Self, IProperty[Array[Self]]) -> Bool
 pub fn LNode::has_property_l_port(Self, IProperty[LPort?]) -> Bool
@@ -12789,6 +12806,7 @@ pub fn LNode::set_nested_graph(Self, LGraph?) -> Unit
 pub fn LNode::set_property_bool(Self, IProperty[Bool], Bool) -> Unit
 pub fn LNode::set_property_double(Self, IProperty[Double], Double) -> Unit
 pub fn LNode::set_property_int(Self, IProperty[Int], Int) -> Unit
+pub fn LNode::set_property_l_edge(Self, IProperty[LEdge?], LEdge?) -> Unit
 pub fn LNode::set_property_l_node(Self, IProperty[Self?], Self?) -> Unit
 pub fn LNode::set_property_l_node_array(Self, IProperty[Array[Self]], Array[Self]) -> Unit
 pub fn LNode::set_property_l_port(Self, IProperty[LPort?], LPort?) -> Unit

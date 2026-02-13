@@ -161,6 +161,8 @@ fn intermediate_processor_create(
   strategy : IntermediateProcessorStrategy,
 ) -> ILayoutProcessor[LayeredPhases, LGraph] {
   match strategy {
+    IntermediateProcessorStrategy::LongEdgeSplitter =>
+      new_long_edge_splitter_layout_processor()
     IntermediateProcessorStrategy::ReversedEdgeRestorer =>
       new_reversed_edge_restorer_layout_processor()
     IntermediateProcessorStrategy::InvertedPortProcessor =>

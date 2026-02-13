@@ -71,6 +71,7 @@ pub struct LNode {
   node_properties : Map[String, LNode]
   node_array_properties : Map[String, Array[LNode]]
   port_properties : Map[String, LPort]
+  edge_properties : Map[String, LEdge]
 }
 
 ///|
@@ -94,6 +95,7 @@ pub fn new_l_node(graph? : LGraph? = None) -> LNode {
     node_properties: {},
     node_array_properties: {},
     port_properties: {},
+    edge_properties: {},
   }
 }
 
@@ -588,6 +590,37 @@ pub fn LNode::has_property_l_port(
   property : IProperty[LPort?],
 ) -> Bool {
   self.port_properties.contains(property.get_id())
+}
+
+///|
+pub fn LNode::set_property_l_edge(
+  self : LNode,
+  property : IProperty[LEdge?],
+  value : LEdge?,
+) -> Unit {
+  match value {
+    Some(edge) => self.edge_properties[property.get_id()] = edge
+    None => ignore(self.edge_properties.remove(property.get_id()))
+  }
+}
+
+///|
+pub fn LNode::get_property_l_edge(
+  self : LNode,
+  property : IProperty[LEdge?],
+) -> LEdge? {
+  match self.edge_properties.get(property.get_id()) {
+    Some(value) => Some(value)
+    None => property.get_default()
+  }
+}
+
+///|
+pub fn LNode::has_property_l_edge(
+  self : LNode,
+  property : IProperty[LEdge?],
+) -> Bool {
+  self.edge_properties.contains(property.get_id())
 }
 
 ///|

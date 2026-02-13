@@ -21,6 +21,12 @@ pub let internal_properties_origin_l_port : IProperty[LPort?] = new_property(
 )
 
 ///|
+pub let internal_properties_origin_l_edge : IProperty[LEdge?] = new_property(
+  "origin",
+  None,
+)
+
+///|
 pub let internal_properties_end_label_edge : IProperty[LEdge?] = new_property(
   "endLabelEdge",
   None,
@@ -58,6 +64,11 @@ pub let internal_properties_long_edge_source : IProperty[LPort?] = new_property(
 pub let internal_properties_long_edge_target : IProperty[LPort?] = new_property(
   "longEdgeTarget",
   None,
+)
+
+///|
+pub let internal_properties_long_edge_has_label_dummies : IProperty[Bool] = new_property(
+  "longEdgeHasLabelDummies", false,
 )
 
 ///|
