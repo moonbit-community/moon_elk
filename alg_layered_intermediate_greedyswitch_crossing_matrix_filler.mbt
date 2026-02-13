@@ -31,6 +31,11 @@ pub enum CrossingCountSide {
 }
 
 ///|
+pub fn crossing_count_side_values() -> Array[CrossingCountSide] {
+  [CrossingCountSide::West, CrossingCountSide::East]
+}
+
+///|
 pub struct CrossingMatrixFiller {
   is_crossing_matrix_filled : Array[Array[Bool]]
   crossing_matrix : Array[Array[Int]]
