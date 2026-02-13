@@ -179,6 +179,63 @@ fn spline_edge_router_segment_set_contains(
 }
 
 ///|
+fn spline_edge_router_port_set_contains(
+  ports : Array[LPort],
+  candidate : LPort,
+) -> Bool {
+  let wanted = lport_internal_handle(candidate)
+  for port in ports {
+    if lport_internal_handle(port) == wanted {
+      return true
+    }
+  }
+  false
+}
+
+///|
+fn spline_edge_router_port_set_add(ports : Array[LPort], candidate : LPort) -> Unit {
+  if !spline_edge_router_port_set_contains(ports, candidate) {
+    ports.push(candidate)
+  }
+}
+
+///|
+fn spline_edge_router_edge_set_contains(
+  edges : Array[LEdge],
+  candidate : LEdge,
+) -> Bool {
+  let wanted = ledge_internal_handle(candidate)
+  for edge in edges {
+    if ledge_internal_handle(edge) == wanted {
+      return true
+    }
+  }
+  false
+}
+
+///|
+fn spline_edge_router_edge_set_add(edges : Array[LEdge], candidate : LEdge) -> Unit {
+  if !spline_edge_router_edge_set_contains(edges, candidate) {
+    edges.push(candidate)
+  }
+}
+
+///|
+fn spline_edge_router_edge_set_remove(
+  edges : Array[LEdge],
+  candidate : LEdge,
+) -> Bool {
+  let wanted = ledge_internal_handle(candidate)
+  for i in 0..<edges.length() {
+    if ledge_internal_handle(edges[i]) == wanted {
+      ignore(edges.remove(i))
+      return true
+    }
+  }
+  false
+}
+
+///|
 fn spline_edge_router_segment_set_add(
   segments : Array[SplineSegment],
   candidate : SplineSegment,
@@ -233,6 +290,219 @@ fn spline_edge_router_dependency_remove(
     }
   }
   false
+}
+
+///|
+fn spline_edge_router_find_and_add_successor(
+  edge : LEdge,
+  successing_edge : Map[Int, LEdge],
+) -> Unit {
+  let target_node = spline_edge_router_port_node(spline_edge_router_edge_target(edge))
+  if spline_edge_router_is_normal_node(target_node) {
+    return
+  }
+
+  let outgoing = target_node.get_outgoing_edges()
+  if !outgoing.is_empty() {
+    successing_edge[ledge_internal_handle(edge)] = outgoing[0]
+  }
+}
+
+///|
+fn spline_edge_router_side_for_port(
+  port : LPort,
+  left_ports : Array[LPort],
+  right_ports : Array[LPort],
+) -> SplineSideToProcess {
+  if spline_edge_router_port_set_contains(left_ports, port) {
+    Left
+  } else if spline_edge_router_port_set_contains(right_ports, port) {
+    Right
+  } else {
+    abort("port must be in one of the side sets")
+  }
+}
+
+///|
+fn spline_edge_router_create_spline_segments(
+  edges : Array[LEdge],
+  left_ports : Array[LPort],
+  right_ports : Array[LPort],
+  hyper_edges : Array[SplineSegment],
+  edge_to_segment_map : Map[Int, SplineSegment],
+) -> Unit {
+  for edge in edges {
+    let source_port = spline_edge_router_edge_source(edge)
+    let source_side = spline_edge_router_side_for_port(
+      source_port,
+      left_ports,
+      right_ports,
+    )
+
+    let target_port = spline_edge_router_edge_target(edge)
+    let target_side = spline_edge_router_side_for_port(
+      target_port,
+      left_ports,
+      right_ports,
+    )
+
+    let segment = new_spline_segment_single_edge(edge, source_side, target_side)
+    edge_to_segment_map[ledge_internal_handle(edge)] = segment
+    hyper_edges.push(segment)
+  }
+}
+
+///|
+fn spline_edge_router_create_spline_segments_for_hyper_edges(
+  left_ports : Array[LPort],
+  right_ports : Array[LPort],
+  side_to_process : SplineSideToProcess,
+  reversed : Bool,
+  edges_remaining : Array[LEdge],
+  hyper_edges : Array[SplineSegment],
+  edge_to_segment_map : Map[Int, SplineSegment],
+) -> Unit {
+  let ports_to_process = match side_to_process {
+    Left => left_ports
+    Right => right_ports
+  }
+
+  for single_port in ports_to_process {
+    let single_port_position = single_port.get_absolute_anchor().y
+    let up_edges : Array[Pair[SplineSideToProcess, LEdge]] = []
+    let down_edges : Array[Pair[SplineSideToProcess, LEdge]] = []
+
+    for edge in single_port.get_connected_edges() {
+      if edge.get_property_bool(internal_properties_reversed) != reversed {
+        continue
+      }
+      if !spline_edge_router_edge_set_contains(edges_remaining, edge) {
+        continue
+      }
+
+      let source_port = spline_edge_router_edge_source(edge)
+      let target_port = spline_edge_router_edge_target(edge)
+      let other_port = if lport_internal_handle(target_port) ==
+        lport_internal_handle(single_port) {
+        source_port
+      } else {
+        target_port
+      }
+
+      let other_position = other_port.get_absolute_anchor().y
+      if spline_edge_router_is_straight(other_position, single_port_position) {
+        continue
+      }
+
+      let other_side = if spline_edge_router_port_set_contains(left_ports, other_port) {
+        SplineSideToProcess::Left
+      } else {
+        SplineSideToProcess::Right
+      }
+
+      if other_position < single_port_position {
+        up_edges.push(pair_of(other_side, edge))
+      } else {
+        down_edges.push(pair_of(other_side, edge))
+      }
+    }
+
+    if up_edges.length() > 1 {
+      let segment = new_spline_segment_hyper_edge(single_port, up_edges, side_to_process)
+      for pair in up_edges {
+        let edge = match pair.get_second() {
+          Some(value) => value
+          None => abort("edge pair without edge")
+        }
+        edge_to_segment_map[ledge_internal_handle(edge)] = segment
+        ignore(spline_edge_router_edge_set_remove(edges_remaining, edge))
+      }
+      hyper_edges.push(segment)
+    }
+    if down_edges.length() > 1 {
+      let segment = new_spline_segment_hyper_edge(
+        single_port,
+        down_edges,
+        side_to_process,
+      )
+      for pair in down_edges {
+        let edge = match pair.get_second() {
+          Some(value) => value
+          None => abort("edge pair without edge")
+        }
+        edge_to_segment_map[ledge_internal_handle(edge)] = segment
+        ignore(spline_edge_router_edge_set_remove(edges_remaining, edge))
+      }
+      hyper_edges.push(segment)
+    }
+  }
+}
+
+///|
+fn spline_edge_router_create_segments_and_compute_ranking(
+  left_ports : Array[LPort],
+  right_ports : Array[LPort],
+  edges_remaining : Array[LEdge],
+  spline_segments : Array[SplineSegment],
+  edge_to_segment_map : Map[Int, SplineSegment],
+  random : @random.Rand,
+) -> Unit {
+  spline_edge_router_create_spline_segments_for_hyper_edges(
+    left_ports,
+    right_ports,
+    Left,
+    true,
+    edges_remaining,
+    spline_segments,
+    edge_to_segment_map,
+  )
+  spline_edge_router_create_spline_segments_for_hyper_edges(
+    left_ports,
+    right_ports,
+    Left,
+    false,
+    edges_remaining,
+    spline_segments,
+    edge_to_segment_map,
+  )
+  spline_edge_router_create_spline_segments_for_hyper_edges(
+    left_ports,
+    right_ports,
+    Right,
+    true,
+    edges_remaining,
+    spline_segments,
+    edge_to_segment_map,
+  )
+  spline_edge_router_create_spline_segments_for_hyper_edges(
+    left_ports,
+    right_ports,
+    Right,
+    false,
+    edges_remaining,
+    spline_segments,
+    edge_to_segment_map,
+  )
+  spline_edge_router_create_spline_segments(
+    edges_remaining,
+    left_ports,
+    right_ports,
+    spline_segments,
+    edge_to_segment_map,
+  )
+
+  let mut i = 0
+  while i < spline_segments.length() {
+    let mut j = i + 1
+    while j < spline_segments.length() {
+      spline_edge_router_create_dependency(spline_segments[i], spline_segments[j])
+      j += 1
+    }
+    i += 1
+  }
+
+  spline_edge_router_break_cycles(spline_segments, random)
+  spline_edge_router_topological_numbering(spline_segments)
 }
 
 ///|

@@ -175,3 +175,119 @@ test "spline edge router edge chain and spline path follow successor map" {
   assert_true(segment_chain[0].source_node is Some(_))
   assert_true(segment_chain[1].target_node is Some(_))
 }
+
+///|
+test "spline edge router find and add successor maps through dummy target node" {
+  let source_port = spline_edge_router_wb_new_port(0.0, PortSide::East)
+  let dummy_node = new_l_node()
+  dummy_node.set_type(NodeType::LongEdge)
+  let dummy_in = new_l_port()
+  dummy_in.set_side(PortSide::West)
+  dummy_in.set_node(Some(dummy_node))
+  let dummy_out = new_l_port()
+  dummy_out.set_side(PortSide::East)
+  dummy_out.set_node(Some(dummy_node))
+  let next_target = spline_edge_router_wb_new_port(10.0, PortSide::West)
+
+  let first = spline_edge_router_wb_new_edge(source_port, dummy_in)
+  let second = spline_edge_router_wb_new_edge(dummy_out, next_target)
+  let successors : Map[Int, LEdge] = {}
+  spline_edge_router_find_and_add_successor(first, successors)
+
+  let next = successors.get(ledge_internal_handle(first)).unwrap()
+  assert_eq(ledge_internal_handle(next), ledge_internal_handle(second))
+}
+
+///|
+test "spline edge router create hyper edge segments groups upward edges" {
+  let left_ports : Array[LPort] = []
+  let right_ports : Array[LPort] = []
+  let edges_remaining : Array[LEdge] = []
+  let hyper_edges : Array[SplineSegment] = []
+  let edge_to_segment_map : Map[Int, SplineSegment] = {}
+
+  let source_node = new_l_node()
+  ignore(source_node.get_position().set_xy(0.0, 10.0))
+  let source_port = new_l_port()
+  source_port.set_side(PortSide::West)
+  source_port.set_node(Some(source_node))
+
+  let target_a = spline_edge_router_wb_new_port(1.0, PortSide::West)
+  let target_b = spline_edge_router_wb_new_port(2.0, PortSide::West)
+  let edge_a = spline_edge_router_wb_new_edge(source_port, target_a)
+  let edge_b = spline_edge_router_wb_new_edge(source_port, target_b)
+
+  spline_edge_router_port_set_add(left_ports, source_port)
+  spline_edge_router_port_set_add(left_ports, target_a)
+  spline_edge_router_port_set_add(left_ports, target_b)
+  spline_edge_router_edge_set_add(edges_remaining, edge_a)
+  spline_edge_router_edge_set_add(edges_remaining, edge_b)
+
+  spline_edge_router_create_spline_segments_for_hyper_edges(
+    left_ports,
+    right_ports,
+    Left,
+    false,
+    edges_remaining,
+    hyper_edges,
+    edge_to_segment_map,
+  )
+
+  assert_eq(hyper_edges.length(), 1)
+  assert_true(hyper_edges[0].is_hyper_edge())
+  assert_eq(edges_remaining.length(), 0)
+  assert_true(edge_to_segment_map.get(ledge_internal_handle(edge_a)) is Some(_))
+  assert_true(edge_to_segment_map.get(ledge_internal_handle(edge_b)) is Some(_))
+}
+
+///|
+test "spline edge router create segments and ranking assigns topological ranks" {
+  let left_ports : Array[LPort] = []
+  let right_ports : Array[LPort] = []
+  let edges_remaining : Array[LEdge] = []
+  let spline_segments : Array[SplineSegment] = []
+  let edge_to_segment_map : Map[Int, SplineSegment] = {}
+
+  let edge_a = spline_edge_router_wb_new_edge(
+    spline_edge_router_wb_new_port(0.0, PortSide::West),
+    spline_edge_router_wb_new_port(10.0, PortSide::East),
+  )
+  let edge_b = spline_edge_router_wb_new_edge(
+    spline_edge_router_wb_new_port(1.0, PortSide::West),
+    spline_edge_router_wb_new_port(11.0, PortSide::East),
+  )
+  let edge_c = spline_edge_router_wb_new_edge(
+    spline_edge_router_wb_new_port(12.0, PortSide::West),
+    spline_edge_router_wb_new_port(2.0, PortSide::East),
+  )
+
+  for edge in [edge_a, edge_b, edge_c] {
+    let source = edge.get_source().unwrap()
+    let target = edge.get_target().unwrap()
+    spline_edge_router_port_set_add(left_ports, source)
+    spline_edge_router_port_set_add(right_ports, target)
+    spline_edge_router_edge_set_add(edges_remaining, edge)
+  }
+
+  let random = @random.Rand::new()
+  spline_edge_router_create_segments_and_compute_ranking(
+    left_ports,
+    right_ports,
+    edges_remaining,
+    spline_segments,
+    edge_to_segment_map,
+    random,
+  )
+
+  assert_eq(spline_segments.length(), 3)
+  assert_true(edge_to_segment_map.get(ledge_internal_handle(edge_a)) is Some(_))
+  assert_true(edge_to_segment_map.get(ledge_internal_handle(edge_b)) is Some(_))
+  assert_true(edge_to_segment_map.get(ledge_internal_handle(edge_c)) is Some(_))
+  for segment in spline_segments {
+    for dependency in segment.outgoing {
+      let source = spline_edge_router_dependency_source(dependency)
+      let target = spline_edge_router_dependency_target(dependency)
+      assert_true(target.rank >= source.rank)
+    }
+  }
+}
