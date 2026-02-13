@@ -2518,6 +2518,8 @@ pub let internal_properties_first_try_with_initial_order : IProperty[Bool]
 
 pub let internal_properties_graph_properties : IProperty[Array[GraphProperties]]
 
+pub let internal_properties_in_layer_constraint : IProperty[String]
+
 pub let internal_properties_in_layer_layout_unit : IProperty[LNode?]
 
 pub let internal_properties_in_layer_successor_constraints : IProperty[Array[LNode]]
@@ -4337,6 +4339,8 @@ pub fn[T] new_igraph_importer((T) -> FGraph, (FGraph) -> Unit) -> IGraphImporter
 pub fn[G] new_igraph_transformer((G) -> DCGraph, () -> Unit) -> IGraphTransformer[G]
 
 pub fn new_image_export_action(LayoutGraphView) -> ImageExportAction
+
+pub fn new_in_layer_constraint_processor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn[T] new_instance_pool(IFactory[T], limit? : Int) -> InstancePool[T]
 

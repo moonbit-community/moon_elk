@@ -39,6 +39,11 @@ pub let internal_properties_in_layer_layout_unit : IProperty[LNode?] = new_prope
 )
 
 ///|
+pub let internal_properties_in_layer_constraint : IProperty[String] = new_property(
+  "inLayerConstraint", "NONE",
+)
+
+///|
 pub let internal_properties_in_layer_successor_constraints : IProperty[
   Array[LNode],
 ] = new_property("inLayerSuccessorConstraint", [])

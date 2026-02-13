@@ -163,6 +163,8 @@ fn intermediate_processor_create(
   match strategy {
     IntermediateProcessorStrategy::LongEdgeSplitter =>
       new_long_edge_splitter_layout_processor()
+    IntermediateProcessorStrategy::InLayerConstraintProcessor =>
+      new_in_layer_constraint_processor_layout_processor()
     IntermediateProcessorStrategy::LongEdgeJoiner =>
       new_long_edge_joiner_layout_processor()
     IntermediateProcessorStrategy::PortListSorter =>
