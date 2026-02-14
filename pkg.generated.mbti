@@ -3592,6 +3592,8 @@ pub fn new_binary_indexed_tree(Int) -> BinaryIndexedTree
 
 pub fn[T] new_blackbox_test_method(String, (T, Int) -> Unit, ignored? : Bool) -> BlackboxTestMethod[T]
 
+pub fn new_breadth_first_model_order_layerer_layout_phase() -> ILayoutProcessor[LayeredPhases, LGraph]
+
 pub fn new_bundle_resource_path(String, String) -> AbstractResourcePath
 
 pub fn new_cell() -> Cell
@@ -4737,6 +4739,10 @@ pub fn new_logged_graph(String, LoggedGraphType) -> LoggedGraph
 pub fn new_long_edge_joiner_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_long_edge_splitter_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
+
+pub fn new_longest_path_layerer_layout_phase() -> ILayoutProcessor[LayeredPhases, LGraph]
+
+pub fn new_longest_path_source_layerer_layout_phase() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_manual_cut_index_calculator() -> ICutIndexCalculator
 
