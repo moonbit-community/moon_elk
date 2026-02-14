@@ -72,6 +72,11 @@ pub let internal_properties_port_dummy : IProperty[LNode?] = new_property(
 )
 
 ///|
+pub let internal_properties_crossing_hint : IProperty[Int] = new_property(
+  "crossingHint", 0,
+)
+
+///|
 pub let internal_properties_original_port_constraints : IProperty[String] = new_property(
   "originalPortConstraints", "UNDEFINED",
 )
@@ -142,6 +147,23 @@ pub let internal_properties_ext_port_connections : IProperty[Array[PortSide]] = 
 pub let internal_properties_ext_port_side : IProperty[PortSide] = new_property(
   "externalPortSide",
   PortSide::SideUndefined,
+)
+
+///|
+pub let internal_properties_port_ratio_or_position : IProperty[Double] = new_property(
+  "portRatioOrPosition", 0.0,
+)
+
+///|
+pub let internal_properties_ext_port_replaced_dummy : IProperty[LNode?] = new_property(
+  "externalPortReplacedDummy",
+  None,
+)
+
+///|
+pub let internal_properties_ext_port_replaced_dummies : IProperty[Array[LNode]] = new_property(
+  "externalPortReplacedDummies",
+  [],
 )
 
 ///|

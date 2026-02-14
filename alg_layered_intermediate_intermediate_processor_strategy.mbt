@@ -192,10 +192,14 @@ fn intermediate_processor_create(
       new_label_dummy_inserter_layout_processor()
     IntermediateProcessorStrategy::LabelDummyRemover =>
       new_label_dummy_remover_layout_processor()
+    IntermediateProcessorStrategy::NorthSouthPortPreprocessor =>
+      new_north_south_port_preprocessor_layout_processor()
     IntermediateProcessorStrategy::NorthSouthPortPostprocessor =>
       new_north_south_port_postprocessor_layout_processor()
     IntermediateProcessorStrategy::HyperedgeDummyMerger =>
       new_hyperedge_dummy_merger_layout_processor()
+    IntermediateProcessorStrategy::HierarchicalPortConstraintProcessor =>
+      new_hierarchical_port_constraint_processor_layout_processor()
     IntermediateProcessorStrategy::HierarchicalPortDummySizeProcessor =>
       new_hierarchical_port_dummy_size_processor_layout_processor()
     IntermediateProcessorStrategy::HypernodeProcessor =>

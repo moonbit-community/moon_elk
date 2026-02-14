@@ -2518,11 +2518,17 @@ pub let internal_properties_cb_num_model_order_groups : IProperty[Int]
 
 pub let internal_properties_comment_conn_port : IProperty[LPort?]
 
+pub let internal_properties_crossing_hint : IProperty[Int]
+
 pub let internal_properties_cyclic : IProperty[Bool]
 
 pub let internal_properties_end_label_edge : IProperty[LEdge?]
 
 pub let internal_properties_ext_port_connections : IProperty[Array[PortSide]]
+
+pub let internal_properties_ext_port_replaced_dummies : IProperty[Array[LNode]]
+
+pub let internal_properties_ext_port_replaced_dummy : IProperty[LNode?]
 
 pub let internal_properties_ext_port_side : IProperty[PortSide]
 
@@ -2575,6 +2581,8 @@ pub let internal_properties_original_port_constraints : IProperty[String]
 pub let internal_properties_partition_dummy : IProperty[Bool]
 
 pub let internal_properties_port_dummy : IProperty[LNode?]
+
+pub let internal_properties_port_ratio_or_position : IProperty[Double]
 
 pub let internal_properties_random_next_boolean : IProperty[Bool]
 
@@ -2715,6 +2723,8 @@ pub fn layered_one_dimensional_compactor_longest_path_compaction(OneDimensionalC
 pub fn layered_one_dimensional_compactor_quadratic_constraints(OneDimensionalCompactor) -> Unit
 
 pub fn layered_one_dimensional_compactor_scanline_constraints(OneDimensionalCompactor) -> Unit
+
+pub let layered_options_allow_non_flow_ports_to_switch_sides : IProperty[Bool]
 
 pub let layered_options_comment_box : IProperty[Bool]
 
@@ -4410,6 +4420,8 @@ pub fn new_grid_elk_node(Int) -> GridElkNode
 
 pub fn new_group_model_order_calculator() -> GroupModelOrderCalculator
 
+pub fn new_hierarchical_port_constraint_processor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
+
 pub fn new_hierarchical_port_dummy_size_processor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_hyper_edge_segment(BaseRoutingDirectionStrategy) -> HyperEdgeSegment
@@ -4867,6 +4879,8 @@ pub fn new_node_relative_port_distributor(Int) -> NodeRelativePortDistributor
 pub fn new_north_south_edge_neighbouring_node_crossings_counter(Array[LNode]) -> NorthSouthEdgeNeighbouringNodeCrossingsCounter
 
 pub fn new_north_south_port_postprocessor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
+
+pub fn new_north_south_port_preprocessor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_north_to_south_routing_strategy() -> BaseRoutingDirectionStrategy
 

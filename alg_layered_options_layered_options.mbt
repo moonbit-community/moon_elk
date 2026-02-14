@@ -54,6 +54,11 @@ pub let layered_options_consider_model_order_strategy : IProperty[String] = new_
 )
 
 ///|
+pub let layered_options_allow_non_flow_ports_to_switch_sides : IProperty[Bool] = new_property(
+  "org.eclipse.elk.layered.allowNonFlowPortsToSwitchSides", false,
+)
+
+///|
 pub let layered_options_consider_model_order_group_model_order_cycle_breaking_id : IProperty[
   Int,
 ] = new_property(
