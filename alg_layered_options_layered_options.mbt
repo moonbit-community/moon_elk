@@ -54,6 +54,16 @@ pub let layered_options_consider_model_order_strategy : IProperty[String] = new_
 )
 
 ///|
+pub let layered_options_layering_node_promotion_strategy : IProperty[String] = new_property(
+  "org.eclipse.elk.layered.nodePromotion.strategy", "NONE",
+)
+
+///|
+pub let layered_options_layering_node_promotion_max_iterations : IProperty[Int] = new_property(
+  "org.eclipse.elk.layered.nodePromotion.maxIterations", 0,
+)
+
+///|
 pub let layered_options_allow_non_flow_ports_to_switch_sides : IProperty[Bool] = new_property(
   "org.eclipse.elk.layered.allowNonFlowPortsToSwitchSides", false,
 )

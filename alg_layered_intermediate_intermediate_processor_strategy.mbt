@@ -26,6 +26,7 @@ pub enum IntermediateProcessorStrategy {
   HierarchicalPortOrthogonalEdgeRouter
   HypernodeProcessor
   EdgeAndLayerConstraintEdgeReverser
+  NodePromotion
   SemiInteractiveCrossMinProcessor
 }
 
@@ -60,7 +61,8 @@ fn intermediate_processor_strategy_ordinal(
     IntermediateProcessorStrategy::HierarchicalPortOrthogonalEdgeRouter => 23
     IntermediateProcessorStrategy::HypernodeProcessor => 24
     IntermediateProcessorStrategy::EdgeAndLayerConstraintEdgeReverser => 25
-    IntermediateProcessorStrategy::SemiInteractiveCrossMinProcessor => 26
+    IntermediateProcessorStrategy::NodePromotion => 26
+    IntermediateProcessorStrategy::SemiInteractiveCrossMinProcessor => 27
   }
 }
 
@@ -95,6 +97,7 @@ pub fn intermediate_processor_strategy_values() -> Array[
     HierarchicalPortOrthogonalEdgeRouter,
     HypernodeProcessor,
     EdgeAndLayerConstraintEdgeReverser,
+    NodePromotion,
     SemiInteractiveCrossMinProcessor,
   ]
 }
@@ -147,6 +150,7 @@ pub fn intermediate_processor_strategy_to_string(
     IntermediateProcessorStrategy::HypernodeProcessor => "HYPERNODE_PROCESSOR"
     IntermediateProcessorStrategy::EdgeAndLayerConstraintEdgeReverser =>
       "EDGE_AND_LAYER_CONSTRAINT_EDGE_REVERSER"
+    IntermediateProcessorStrategy::NodePromotion => "NODE_PROMOTION"
     IntermediateProcessorStrategy::SemiInteractiveCrossMinProcessor =>
       "SEMI_INTERACTIVE_CROSSMIN_PROCESSOR"
   }
@@ -208,6 +212,8 @@ fn intermediate_processor_create(
       new_hypernodes_processor_layout_processor()
     IntermediateProcessorStrategy::EdgeAndLayerConstraintEdgeReverser =>
       new_edge_and_layer_constraint_edge_reverser_layout_processor()
+    IntermediateProcessorStrategy::NodePromotion =>
+      new_node_promotion_layout_processor()
     IntermediateProcessorStrategy::SemiInteractiveCrossMinProcessor =>
       new_semi_interactive_cross_min_processor_layout_processor()
     _ => new_layout_processor(intermediate_processor_noop_process)

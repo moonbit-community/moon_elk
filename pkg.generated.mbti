@@ -2790,6 +2790,10 @@ pub let layered_options_layering_layer_constraint : IProperty[String]
 
 pub let layered_options_layering_layer_id : IProperty[Int]
 
+pub let layered_options_layering_node_promotion_max_iterations : IProperty[Int]
+
+pub let layered_options_layering_node_promotion_strategy : IProperty[String]
+
 pub fn layered_options_parse_int_list(String) -> Array[Int]
 
 pub let layered_options_partitioning_activate : IProperty[Bool]
@@ -3603,6 +3607,8 @@ pub fn new_cgraph(Array[Direction]) -> CGraph
 pub fn new_clear_execution_action(AbstractLayoutDebugView) -> ClearExecutionAction
 
 pub fn new_clear_executions_action() -> ClearExecutionsAction
+
+pub fn new_coffman_graham_layerer_layout_phase() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_collapse_execution_tree_action(AbstractLayoutDebugView) -> CollapseExecutionTreeAction
 
@@ -4800,6 +4806,8 @@ pub fn new_meta_data_validator(base? : AbstractMetaDataValidator) -> MetaDataVal
 
 pub fn[T] new_method_test_configuration(String, (T, Int) -> Unit, default_configuration? : DefaultConfiguration?) -> MethodTestConfiguration[T]
 
+pub fn new_min_width_layerer_layout_phase() -> ILayoutProcessor[LayeredPhases, LGraph]
+
 pub fn new_mock_random() -> GreedySwitchMockRandom
 
 pub fn new_model_order_barycenter_heuristic(ForsterConstraintResolver, GreedySwitchMockRandom, AbstractBarycenterPortDistributor, Array[Array[LNode]]) -> ModelOrderBarycenterHeuristic
@@ -4880,6 +4888,8 @@ pub fn new_msd_cut_index_heuristic() -> ICutIndexCalculator
 
 pub fn new_multiple_options_cell_editor(Array[String], Bool) -> MultipleOptionsCellEditor
 
+pub fn new_network_simplex_layerer_layout_phase() -> ILayoutProcessor[LayeredPhases, LGraph]
+
 pub fn new_ngraph() -> NGraph
 
 pub fn new_no_crossing_minimizer_layout_phase() -> ILayoutProcessor[LayeredPhases, LGraph]
@@ -4887,6 +4897,8 @@ pub fn new_no_crossing_minimizer_layout_phase() -> ILayoutProcessor[LayeredPhase
 pub fn new_node(KVector, ElkRectangle) -> Node
 
 pub fn new_node_arranger((Int) -> KVector) -> INodeArranger
+
+pub fn new_node_promotion_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_node_relative_port_distributor(Int) -> NodeRelativePortDistributor
 
@@ -5173,6 +5185,8 @@ pub fn new_stress_layout_provider() -> StressLayoutProvider
 pub fn new_stress_majorization() -> StressMajorization
 
 pub fn new_stress_meta_data_provider() -> ILayoutMetaDataProvider
+
+pub fn new_stretch_width_layerer_layout_phase() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_strip_container_cell(Strip, Bool, Double) -> Cell
 
@@ -12579,6 +12593,7 @@ pub enum IntermediateProcessorStrategy {
   HierarchicalPortOrthogonalEdgeRouter
   HypernodeProcessor
   EdgeAndLayerConstraintEdgeReverser
+  NodePromotion
   SemiInteractiveCrossMinProcessor
 }
 
