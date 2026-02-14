@@ -4866,6 +4866,8 @@ pub fn new_node_relative_port_distributor(Int) -> NodeRelativePortDistributor
 
 pub fn new_north_south_edge_neighbouring_node_crossings_counter(Array[LNode]) -> NorthSouthEdgeNeighbouringNodeCrossingsCounter
 
+pub fn new_north_south_port_postprocessor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
+
 pub fn new_north_to_south_routing_strategy() -> BaseRoutingDirectionStrategy
 
 pub fn new_nub_spline(Bool, Int, Array[KVector]) -> NubSpline
