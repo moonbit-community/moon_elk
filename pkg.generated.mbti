@@ -72,6 +72,14 @@ pub fn binomiald(Int, Int) -> Double
 
 pub fn binomiall(Int, Int) -> Int64
 
+pub fn bk_hdirection_is_left(BKHDirection) -> Bool
+
+pub fn bk_hdirection_is_right(BKHDirection) -> Bool
+
+pub fn bk_vdirection_is_down(BKVDirection) -> Bool
+
+pub fn bk_vdirection_is_up(BKVDirection) -> Bool
+
 pub fn boundd(Double, Double, Double) -> Double
 
 pub fn boundf(Double, Double, Double) -> Double
@@ -3470,6 +3478,8 @@ pub fn neato_model_to_string(NeatoModel) -> String
 
 pub fn nedge_of() -> NEdgeBuilder
 
+pub fn neighborhood_information_build_for(LGraph) -> NeighborhoodInformation
+
 pub fn network_simplex_for_graph(NGraph) -> NetworkSimplex
 
 pub fn network_simplex_nedge_of() -> NEdgeBuilder
@@ -3593,6 +3603,20 @@ pub fn new_bfs_node_order_cycle_breaker_layout_phase() -> ILayoutProcessor[Layer
 pub fn[V : Hash + Eq] new_bi_linked_hash_multi_map() -> BiLinkedHashMultiMap[V]
 
 pub fn new_binary_indexed_tree(Int) -> BinaryIndexedTree
+
+pub fn new_bk_aligned_layout(LGraph, Int, BKVDirection?, BKHDirection?) -> BKAlignedLayout
+
+pub fn new_bk_aligner(LGraph, NeighborhoodInformation) -> BKAligner
+
+pub fn new_bk_compactor(LGraph, NeighborhoodInformation) -> BKCompactor
+
+pub fn new_bk_i_compactor((BKAlignedLayout) -> Unit) -> BkICompactor
+
+pub fn new_bk_node_placer_layout_phase() -> ILayoutProcessor[LayeredPhases, LGraph]
+
+pub fn new_bk_null_threshold_strategy() -> BkThresholdStrategy
+
+pub fn new_bk_simple_threshold_strategy() -> BkThresholdStrategy
 
 pub fn[T] new_blackbox_test_method(String, (T, Int) -> Unit, ignored? : Bool) -> BlackboxTestMethod[T]
 
@@ -5131,6 +5155,8 @@ pub fn new_semi_interactive_cross_min_processor_layout_processor() -> ILayoutPro
 pub fn new_show_layout_view_handler() -> ShowLayoutViewHandler
 
 pub fn new_simple_layout_configuration_store(options? : Map[String, String], option_targets? : Array[LayoutOptionTarget], parent? : ILayoutConfigurationStore?, editing_domain? : Int?) -> ILayoutConfigurationStore
+
+pub fn new_simple_node_placer_layout_phase() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_single_edge_graph_wrapper_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
@@ -7263,6 +7289,71 @@ pub fn ApplyLayoutRequest::get_y_bound(Self) -> Double
 pub fn ApplyLayoutRequest::set_scale(Self, Double) -> Unit
 pub fn ApplyLayoutRequest::set_upper_bound(Self, Double, Double) -> Unit
 
+pub struct BKAlignedLayout {
+  layered_graph : LGraph
+  spacings : Spacings
+  root : Array[LNode?]
+  block_size : Array[Double]
+  align : Array[LNode?]
+  inner_shift : Array[Double]
+  sink : Array[LNode?]
+  shift : Array[Double]
+  y : Array[Double?]
+  vdir : BKVDirection?
+  hdir : BKHDirection?
+  su : Array[Bool]
+  od : Array[Bool]
+}
+pub fn BKAlignedLayout::calculate_delta(Self, LPort, LPort) -> Double
+pub fn BKAlignedLayout::check_space_above(Self, LNode, Double, NeighborhoodInformation) -> Double
+pub fn BKAlignedLayout::check_space_below(Self, LNode, Double, NeighborhoodInformation) -> Double
+pub fn BKAlignedLayout::cleanup(Self) -> Unit
+pub fn BKAlignedLayout::get_max_y(Self, LNode) -> Double
+pub fn BKAlignedLayout::get_min_y(Self, LNode) -> Double
+pub fn BKAlignedLayout::layout_size(Self) -> Double
+pub fn BKAlignedLayout::require_align(Self, LNode) -> LNode
+pub fn BKAlignedLayout::require_align_by_id(Self, Int) -> LNode
+pub fn BKAlignedLayout::require_hdir(Self) -> BKHDirection
+pub fn BKAlignedLayout::require_root(Self, LNode) -> LNode
+pub fn BKAlignedLayout::require_root_by_id(Self, Int) -> LNode
+pub fn BKAlignedLayout::require_sink(Self, LNode) -> LNode
+pub fn BKAlignedLayout::require_sink_by_id(Self, Int) -> LNode
+pub fn BKAlignedLayout::require_vdir(Self) -> BKVDirection
+pub fn BKAlignedLayout::require_y(Self, LNode) -> Double
+pub fn BKAlignedLayout::require_y_by_id(Self, Int) -> Double
+pub fn BKAlignedLayout::set_y_by_id(Self, Int, Double) -> Unit
+pub fn BKAlignedLayout::shift_block(Self, LNode, Double) -> Unit
+pub fn BKAlignedLayout::to_string(Self) -> String
+
+pub struct BKAligner {
+  layered_graph : LGraph
+  ni : NeighborhoodInformation
+}
+pub fn BKAligner::inside_block_shift(Self, BKAlignedLayout) -> Unit
+pub fn BKAligner::vertical_alignment(Self, BKAlignedLayout, Map[Int, Bool]) -> Unit
+
+pub struct BKCompactor {
+  layered_graph : LGraph
+  thresh_strategy : BkThresholdStrategy
+  ni : NeighborhoodInformation
+  spacings : Spacings
+  class_nodes : Map[Int, LNode]
+  class_outgoing : Map[Int, Array[(Int, Double)]]
+  class_indegree : Map[Int, Int]
+  class_shift : Map[Int, Double]
+}
+pub fn BKCompactor::horizontal_compaction(Self, BKAlignedLayout) -> Unit
+
+pub enum BKHDirection {
+  Right
+  Left
+}
+
+pub enum BKVDirection {
+  Down
+  Up
+}
+
 pub struct BarycenterHeuristic {
   mut port_ranks : Array[Double]
   random : GreedySwitchMockRandom
@@ -7375,6 +7466,37 @@ pub fn BinaryIndexedTree::is_empty(Self) -> Bool
 pub fn BinaryIndexedTree::rank(Self, Int) -> Int
 pub fn BinaryIndexedTree::remove_all(Self, Int) -> Unit
 pub fn BinaryIndexedTree::size(Self) -> Int
+
+pub struct BkICompactor {
+  horizontal_compaction_fn : (BKAlignedLayout) -> Unit
+}
+pub fn BkICompactor::horizontal_compaction(Self, BKAlignedLayout) -> Unit
+
+pub struct BkPostprocessable {
+  free : LNode
+  is_root : Bool
+  mut has_edges : Bool
+  mut edge : LEdge?
+}
+
+pub struct BkThresholdStrategy {
+  kind : BkThresholdStrategyKind
+  mut bal : BKAlignedLayout?
+  mut ni : NeighborhoodInformation?
+  block_finished : Map[Int, Bool]
+  post_processables_queue : Array[BkPostprocessable]
+  post_processables_stack : Array[BkPostprocessable]
+}
+pub fn BkThresholdStrategy::calculate_threshold(Self, Double, LNode, LNode) -> Double
+pub fn BkThresholdStrategy::finish_block(Self, LNode) -> Unit
+pub fn BkThresholdStrategy::get_other(Self, LEdge, LNode) -> LNode
+pub fn BkThresholdStrategy::init(Self, BKAlignedLayout, NeighborhoodInformation) -> Unit
+pub fn BkThresholdStrategy::post_process(Self) -> Unit
+
+pub enum BkThresholdStrategyKind {
+  NullThreshold
+  SimpleThreshold
+}
 
 pub struct BlackboxTestMethod[T] {
   method_name : String
@@ -14622,6 +14744,15 @@ pub enum NeatoModel {
   Circuit
   Subset
 }
+
+pub struct NeighborhoodInformation {
+  mut node_count : Int
+  mut layer_index : Array[Int]
+  mut node_index : Array[Int]
+  mut left_neighbors : Array[Array[(LNode, LEdge)]]
+  mut right_neighbors : Array[Array[(LNode, LEdge)]]
+}
+pub fn NeighborhoodInformation::cleanup(Self) -> Unit
 
 pub struct NetworkSimplex {
   graph : NGraph
