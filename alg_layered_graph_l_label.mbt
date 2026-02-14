@@ -4,6 +4,7 @@ pub struct LLabel {
   text : String
   bool_properties : Map[String, Bool]
   string_properties : Map[String, String]
+  label_side_properties : Map[String, LabelSide]
   l_edge_properties : Map[String, LEdge]
 }
 
@@ -19,6 +20,7 @@ pub fn new_l_label_text(thetext : String) -> LLabel {
     text: thetext,
     bool_properties: {},
     string_properties: {},
+    label_side_properties: {},
     l_edge_properties: {},
   }
 }
@@ -127,6 +129,34 @@ pub fn LLabel::has_property_string(
   property : IProperty[String],
 ) -> Bool {
   self.string_properties.contains(property.get_id())
+}
+
+///|
+pub fn LLabel::set_property_label_side(
+  self : LLabel,
+  property : IProperty[LabelSide],
+  value : LabelSide,
+) -> Unit {
+  self.label_side_properties[property.get_id()] = value
+}
+
+///|
+pub fn LLabel::get_property_label_side(
+  self : LLabel,
+  property : IProperty[LabelSide],
+) -> LabelSide {
+  match self.label_side_properties.get(property.get_id()) {
+    Some(value) => value
+    None => property.get_default()
+  }
+}
+
+///|
+pub fn LLabel::has_property_label_side(
+  self : LLabel,
+  property : IProperty[LabelSide],
+) -> Bool {
+  self.label_side_properties.contains(property.get_id())
 }
 
 ///|

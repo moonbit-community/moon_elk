@@ -154,6 +154,11 @@ pub let layered_options_comment_box : IProperty[Bool] = new_property(
 )
 
 ///|
+pub let layered_options_edge_labels_side_selection : IProperty[String] = new_property(
+  "org.eclipse.elk.layered.edgeLabels.sideSelection", "SMART_DOWN",
+)
+
+///|
 pub let layered_options_hypernode : IProperty[Bool] = new_property(
   "org.eclipse.elk.hypernode", false,
 )
