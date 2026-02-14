@@ -36,6 +36,12 @@ pub let layered_options_crossing_minimization_position_id : IProperty[Int] = new
 )
 
 ///|
+pub let layered_options_position : IProperty[KVector] = new_property(
+  "org.eclipse.elk.position",
+  new_kvector(),
+)
+
+///|
 pub let layered_options_crossing_minimization_greedy_switch_type : IProperty[
   String,
 ] = new_property(
@@ -175,6 +181,16 @@ pub let layered_options_edge_routing_polyline_sloped_edge_zone_width : IProperty
   Double,
 ] = new_property(
   "org.eclipse.elk.layered.edgeRouting.polyline.slopedEdgeZoneWidth", 2.0,
+)
+
+///|
+pub let layered_options_edge_routing_self_loop_distribution : IProperty[String] = new_property(
+  "org.eclipse.elk.layered.edgeRouting.selfLoopDistribution", "NORTH",
+)
+
+///|
+pub let layered_options_edge_routing_self_loop_ordering : IProperty[String] = new_property(
+  "org.eclipse.elk.layered.edgeRouting.selfLoopOrdering", "STACKED",
 )
 
 ///|

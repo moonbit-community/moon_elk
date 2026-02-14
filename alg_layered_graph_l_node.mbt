@@ -75,6 +75,7 @@ pub struct LNode {
   int_properties : Map[String, Int]
   bool_properties : Map[String, Bool]
   double_properties : Map[String, Double]
+  kvector_properties : Map[String, KVector]
   string_properties : Map[String, String]
   port_side_properties : Map[String, PortSide]
   node_properties : Map[String, LNode]
@@ -82,6 +83,7 @@ pub struct LNode {
   int_int_map_properties : Map[String, Map[Int, Int]]
   port_properties : Map[String, LPort]
   edge_properties : Map[String, LEdge]
+  self_loop_holder_properties : Map[String, SelfLoopHolder]
 }
 
 ///|
@@ -100,6 +102,7 @@ pub fn new_l_node(graph? : LGraph? = None) -> LNode {
     int_properties: {},
     bool_properties: {},
     double_properties: {},
+    kvector_properties: {},
     string_properties: {},
     port_side_properties: {},
     node_properties: {},
@@ -107,6 +110,7 @@ pub fn new_l_node(graph? : LGraph? = None) -> LNode {
     int_int_map_properties: {},
     port_properties: {},
     edge_properties: {},
+    self_loop_holder_properties: {},
   }
 }
 
@@ -415,6 +419,15 @@ pub fn LNode::set_property_double(
 }
 
 ///|
+pub fn LNode::set_property_kvector(
+  self : LNode,
+  property : IProperty[KVector],
+  value : KVector,
+) -> Unit {
+  self.kvector_properties[property.get_id()] = value.clone()
+}
+
+///|
 pub fn LNode::set_property_string(
   self : LNode,
   property : IProperty[String],
@@ -442,6 +455,17 @@ pub fn LNode::get_property_double(
   match self.double_properties.get(property.get_id()) {
     Some(value) => value
     None => property.get_default()
+  }
+}
+
+///|
+pub fn LNode::get_property_kvector(
+  self : LNode,
+  property : IProperty[KVector],
+) -> KVector {
+  match self.kvector_properties.get(property.get_id()) {
+    Some(value) => value.clone()
+    None => property.get_default().clone()
   }
 }
 
@@ -495,6 +519,14 @@ pub fn LNode::has_property_double(
   property : IProperty[Double],
 ) -> Bool {
   self.double_properties.contains(property.get_id())
+}
+
+///|
+pub fn LNode::has_property_kvector(
+  self : LNode,
+  property : IProperty[KVector],
+) -> Bool {
+  self.kvector_properties.contains(property.get_id())
 }
 
 ///|
@@ -666,6 +698,37 @@ pub fn LNode::has_property_l_edge(
   property : IProperty[LEdge?],
 ) -> Bool {
   self.edge_properties.contains(property.get_id())
+}
+
+///|
+pub fn LNode::set_property_self_loop_holder(
+  self : LNode,
+  property : IProperty[SelfLoopHolder?],
+  value : SelfLoopHolder?,
+) -> Unit {
+  match value {
+    Some(holder) => self.self_loop_holder_properties[property.get_id()] = holder
+    None => ignore(self.self_loop_holder_properties.remove(property.get_id()))
+  }
+}
+
+///|
+pub fn LNode::get_property_self_loop_holder(
+  self : LNode,
+  property : IProperty[SelfLoopHolder?],
+) -> SelfLoopHolder? {
+  match self.self_loop_holder_properties.get(property.get_id()) {
+    Some(value) => Some(value)
+    None => property.get_default()
+  }
+}
+
+///|
+pub fn LNode::has_property_self_loop_holder(
+  self : LNode,
+  property : IProperty[SelfLoopHolder?],
+) -> Bool {
+  self.self_loop_holder_properties.contains(property.get_id())
 }
 
 ///|

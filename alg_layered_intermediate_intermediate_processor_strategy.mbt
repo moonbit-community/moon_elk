@@ -26,6 +26,7 @@ pub enum IntermediateProcessorStrategy {
   HierarchicalPortOrthogonalEdgeRouter
   HypernodeProcessor
   EdgeAndLayerConstraintEdgeReverser
+  SemiInteractiveCrossMinProcessor
 }
 
 ///|
@@ -59,6 +60,7 @@ fn intermediate_processor_strategy_ordinal(
     IntermediateProcessorStrategy::HierarchicalPortOrthogonalEdgeRouter => 23
     IntermediateProcessorStrategy::HypernodeProcessor => 24
     IntermediateProcessorStrategy::EdgeAndLayerConstraintEdgeReverser => 25
+    IntermediateProcessorStrategy::SemiInteractiveCrossMinProcessor => 26
   }
 }
 
@@ -93,6 +95,7 @@ pub fn intermediate_processor_strategy_values() -> Array[
     HierarchicalPortOrthogonalEdgeRouter,
     HypernodeProcessor,
     EdgeAndLayerConstraintEdgeReverser,
+    SemiInteractiveCrossMinProcessor,
   ]
 }
 
@@ -144,6 +147,8 @@ pub fn intermediate_processor_strategy_to_string(
     IntermediateProcessorStrategy::HypernodeProcessor => "HYPERNODE_PROCESSOR"
     IntermediateProcessorStrategy::EdgeAndLayerConstraintEdgeReverser =>
       "EDGE_AND_LAYER_CONSTRAINT_EDGE_REVERSER"
+    IntermediateProcessorStrategy::SemiInteractiveCrossMinProcessor =>
+      "SEMI_INTERACTIVE_CROSSMIN_PROCESSOR"
   }
 }
 
@@ -175,10 +180,20 @@ fn intermediate_processor_create(
       new_interactive_external_port_positioner_layout_processor()
     IntermediateProcessorStrategy::InvertedPortProcessor =>
       new_inverted_port_processor_layout_processor()
+    IntermediateProcessorStrategy::SelfLoopPreprocessor =>
+      new_self_loop_pre_processor_layout_processor()
+    IntermediateProcessorStrategy::SelfLoopPostprocessor =>
+      new_self_loop_post_processor_layout_processor()
+    IntermediateProcessorStrategy::SelfLoopPortRestorer =>
+      new_self_loop_port_restorer_layout_processor()
+    IntermediateProcessorStrategy::SelfLoopRouter =>
+      new_self_loop_router_layout_processor()
     IntermediateProcessorStrategy::HierarchicalPortDummySizeProcessor =>
       new_hierarchical_port_dummy_size_processor_layout_processor()
     IntermediateProcessorStrategy::EdgeAndLayerConstraintEdgeReverser =>
       new_edge_and_layer_constraint_edge_reverser_layout_processor()
+    IntermediateProcessorStrategy::SemiInteractiveCrossMinProcessor =>
+      new_semi_interactive_cross_min_processor_layout_processor()
     _ => new_layout_processor(intermediate_processor_noop_process)
   }
 }

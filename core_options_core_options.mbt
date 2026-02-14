@@ -97,6 +97,11 @@ pub let edge_labels_placement : IProperty[String] = new_property(
 )
 
 ///|
+pub let edge_routing : IProperty[String] = new_property(
+  "org.eclipse.elk.edgeRouting", "UNDEFINED",
+)
+
+///|
 pub let edge_thickness : IProperty[Double] = new_property(
   "org.eclipse.elk.edge.thickness", 1.0,
 )

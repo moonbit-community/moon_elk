@@ -60,6 +60,18 @@ pub let internal_properties_port_dummy : IProperty[LNode?] = new_property(
 )
 
 ///|
+pub let internal_properties_original_port_constraints : IProperty[String] = new_property(
+  "originalPortConstraints",
+  "UNDEFINED",
+)
+
+///|
+pub let internal_properties_self_loop_holder : IProperty[SelfLoopHolder?] = new_property(
+  "selfLoopHolder",
+  None,
+)
+
+///|
 pub let internal_properties_long_edge_source : IProperty[LPort?] = new_property(
   "longEdgeSource",
   None,

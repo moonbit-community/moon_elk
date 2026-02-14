@@ -1,2 +1,19 @@
-// Upstream counterpart: alg_layered_intermediate_loops_routing_abstract_self_loop_router.mbt
-// Implementation is currently provided in aggregated translated files.
+///|
+pub struct AbstractSelfLoopRouter {
+  route_self_loops_fn : (SelfLoopHolder) -> Unit
+}
+
+///|
+pub fn new_abstract_self_loop_router(
+  route_self_loops_fn : (SelfLoopHolder) -> Unit,
+) -> AbstractSelfLoopRouter {
+  { route_self_loops_fn }
+}
+
+///|
+pub fn AbstractSelfLoopRouter::route_self_loops(
+  self : AbstractSelfLoopRouter,
+  sl_holder : SelfLoopHolder,
+) -> Unit {
+  (self.route_self_loops_fn)(sl_holder)
+}
