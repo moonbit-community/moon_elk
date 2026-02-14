@@ -196,6 +196,8 @@ fn intermediate_processor_create(
       new_hyperedge_dummy_merger_layout_processor()
     IntermediateProcessorStrategy::HierarchicalPortDummySizeProcessor =>
       new_hierarchical_port_dummy_size_processor_layout_processor()
+    IntermediateProcessorStrategy::HypernodeProcessor =>
+      new_hypernodes_processor_layout_processor()
     IntermediateProcessorStrategy::EdgeAndLayerConstraintEdgeReverser =>
       new_edge_and_layer_constraint_edge_reverser_layout_processor()
     IntermediateProcessorStrategy::SemiInteractiveCrossMinProcessor =>

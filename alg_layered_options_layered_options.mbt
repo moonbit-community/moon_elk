@@ -149,6 +149,11 @@ pub let layered_options_comment_box : IProperty[Bool] = new_property(
 )
 
 ///|
+pub let layered_options_hypernode : IProperty[Bool] = new_property(
+  "org.eclipse.elk.hypernode", false,
+)
+
+///|
 pub let layered_options_spacing_edge_node_between_layers : IProperty[Double] = new_property(
   "org.eclipse.elk.layered.spacing.edgeNodeBetweenLayers", 10.0,
 )

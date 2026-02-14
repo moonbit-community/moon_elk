@@ -2768,6 +2768,8 @@ pub let layered_options_feedback_edges : IProperty[Bool]
 
 pub let layered_options_hierarchy_handling : IProperty[String]
 
+pub let layered_options_hypernode : IProperty[Bool]
+
 pub fn layered_options_int_list_contains(Array[Int], Int) -> Bool
 
 pub let layered_options_junction_points : IProperty[KVectorChain]
@@ -4417,6 +4419,8 @@ pub fn new_hyper_edge_segment_splitter(OrthogonalRoutingGenerator) -> HyperEdgeS
 pub fn new_hyperedge_crossings_counter(Array[Int], Array[Bool], Array[Int]) -> HyperedgeCrossingsCounter
 
 pub fn new_hyperedge_dummy_merger_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
+
+pub fn new_hypernodes_processor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_i_crossing_minimization_heuristic(() -> Bool, (Array[Array[LNode]], Bool) -> Bool, (Array[Array[LNode]], Int, Bool, Bool) -> Bool, () -> Bool, init_at_layer_level? : (Int, Array[Array[LNode]]) -> Unit, init_at_node_level? : (Int, Int, Array[Array[LNode]]) -> Unit, init_at_port_level? : (Int, Int, Int, Array[Array[LNode]]) -> Unit, init_at_edge_level? : (Int, Int, Int, Int, LEdge, Array[Array[LNode]]) -> Unit, init_after_traversal? : () -> Unit) -> ICrossingMinimizationHeuristic
 
