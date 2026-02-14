@@ -11,7 +11,9 @@ fn routing_director_port_side_equals(left : PortSide, right : PortSide) -> Bool 
 }
 
 ///|
-fn routing_director_require_leftmost_port(sl_loop : SelfHyperLoop) -> SelfLoopPort {
+fn routing_director_require_leftmost_port(
+  sl_loop : SelfHyperLoop,
+) -> SelfLoopPort {
   match sl_loop.get_leftmost_port() {
     Some(port) => port
     None => abort("self hyper loop has no leftmost port")
@@ -19,7 +21,9 @@ fn routing_director_require_leftmost_port(sl_loop : SelfHyperLoop) -> SelfLoopPo
 }
 
 ///|
-fn routing_director_require_rightmost_port(sl_loop : SelfHyperLoop) -> SelfLoopPort {
+fn routing_director_require_rightmost_port(
+  sl_loop : SelfHyperLoop,
+) -> SelfLoopPort {
   match sl_loop.get_rightmost_port() {
     Some(port) => port
     None => abort("self hyper loop has no rightmost port")
@@ -27,7 +31,9 @@ fn routing_director_require_rightmost_port(sl_loop : SelfHyperLoop) -> SelfLoopP
 }
 
 ///|
-fn routing_director_require_self_loop_type(sl_loop : SelfHyperLoop) -> SelfLoopType {
+fn routing_director_require_self_loop_type(
+  sl_loop : SelfHyperLoop,
+) -> SelfLoopType {
   match sl_loop.get_self_loop_type() {
     Some(self_loop_type) => self_loop_type
     None => abort("self hyper loop type not computed")
@@ -40,7 +46,8 @@ fn routing_director_sort_sl_ports_by_id(sl_ports : Array[SelfLoopPort]) -> Unit 
   while i < sl_ports.length() {
     let mut j = i
     while j > 0 &&
-      sl_ports[j - 1].get_l_port().get_id() > sl_ports[j].get_l_port().get_id() {
+          sl_ports[j - 1].get_l_port().get_id() >
+          sl_ports[j].get_l_port().get_id() {
       let temp = sl_ports[j - 1]
       sl_ports[j - 1] = sl_ports[j]
       sl_ports[j] = temp
@@ -61,7 +68,10 @@ pub fn new_routing_director() -> RoutingDirector {
 }
 
 ///|
-fn RoutingDirector::assign_port_ids(self : RoutingDirector, l_ports : Array[LPort]) -> Unit {
+fn RoutingDirector::assign_port_ids(
+  self : RoutingDirector,
+  l_ports : Array[LPort],
+) -> Unit {
   ignore(self)
   for i in 0..<l_ports.length() {
     l_ports[i].set_id(i)
@@ -88,8 +98,12 @@ fn RoutingDirector::compute_occupied_port_sides(
   let occupied_sides = sl_loop.get_occupied_port_sides()
   occupied_sides.clear()
 
-  let mut curr_side = routing_director_require_leftmost_port(sl_loop).get_l_port().get_side()
-  let target_side = routing_director_require_rightmost_port(sl_loop).get_l_port().get_side()
+  let mut curr_side = routing_director_require_leftmost_port(sl_loop)
+    .get_l_port()
+    .get_side()
+  let target_side = routing_director_require_rightmost_port(sl_loop)
+    .get_l_port()
+    .get_side()
 
   while !routing_director_port_side_equals(curr_side, target_side) {
     occupied_sides.push(curr_side)
@@ -105,8 +119,12 @@ fn RoutingDirector::assign_leftmost_rightmost_ports(
   leftmost_side : PortSide,
   rightmost_side : PortSide,
 ) -> Unit {
-  sl_loop.set_leftmost_port(Some(self.lowest_port_on_side(sl_loop, leftmost_side)))
-  sl_loop.set_rightmost_port(Some(self.highest_port_on_side(sl_loop, rightmost_side)))
+  sl_loop.set_leftmost_port(
+    Some(self.lowest_port_on_side(sl_loop, leftmost_side)),
+  )
+  sl_loop.set_rightmost_port(
+    Some(self.highest_port_on_side(sl_loop, rightmost_side)),
+  )
 }
 
 ///|
@@ -178,12 +196,7 @@ fn RoutingDirector::determine_two_side_opposing_loop_routes(
   sl_loop : SelfHyperLoop,
 ) -> Unit {
   let sides = []
-  for side in [
-    PortSide::North,
-    PortSide::East,
-    PortSide::South,
-    PortSide::West,
-  ] {
+  for side in [PortSide::North, PortSide::East, PortSide::South, PortSide::West] {
     if sl_loop.has_sl_ports_on_side(side) {
       sides.push(side)
     }
@@ -223,12 +236,7 @@ fn RoutingDirector::compute_missing_port_side(
   sl_loop : SelfHyperLoop,
 ) -> PortSide {
   ignore(self)
-  for side in [
-    PortSide::North,
-    PortSide::East,
-    PortSide::South,
-    PortSide::West,
-  ] {
+  for side in [PortSide::North, PortSide::East, PortSide::South, PortSide::West] {
     if !sl_loop.has_sl_ports_on_side(side) {
       return side
     }
@@ -306,13 +314,17 @@ fn RoutingDirector::determine_four_side_loop_routes(
 }
 
 ///|
-fn RoutingDirector::compute_penalties(self : RoutingDirector, sl_holder : SelfLoopHolder) -> Unit {
+fn RoutingDirector::compute_penalties(
+  self : RoutingDirector,
+  sl_holder : SelfLoopHolder,
+) -> Unit {
   let ports = sl_holder.get_l_node().get_ports()
   let penalties = []
   let mut penalty_sum = 0
 
   for port in ports {
-    if port.get_incoming_edges().is_empty() && port.get_outgoing_edges().is_empty() {
+    if port.get_incoming_edges().is_empty() &&
+      port.get_outgoing_edges().is_empty() {
       penalty_sum += 1
     } else {
       penalty_sum += 3
@@ -324,7 +336,9 @@ fn RoutingDirector::compute_penalties(self : RoutingDirector, sl_holder : SelfLo
 }
 
 ///|
-fn RoutingDirector::require_port_penalties(self : RoutingDirector) -> Array[Int] {
+fn RoutingDirector::require_port_penalties(
+  self : RoutingDirector,
+) -> Array[Int] {
   match self.port_penalties {
     Some(penalties) => penalties
     None => abort("port penalties not initialized")
@@ -355,7 +369,8 @@ fn RoutingDirector::compute_edge_penalty(
   if leftmost_port_id <= left_of_rightmost_port_id {
     penalties[left_of_rightmost_port_id] - penalties[leftmost_port_id]
   } else {
-    penalties[port_count - 1] - penalties[leftmost_port_id] +
+    penalties[port_count - 1] -
+    penalties[leftmost_port_id] +
     penalties[left_of_rightmost_port_id]
   }
 }

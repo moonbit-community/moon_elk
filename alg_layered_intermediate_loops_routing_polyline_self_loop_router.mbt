@@ -44,20 +44,20 @@ fn polyline_self_loop_router_are_orthogonally_routed(
   next : KVector,
 ) -> Bool {
   let vertical_horizontal = polyline_self_loop_router_fuzzy_equals(
-    previous.x,
-    corner.x,
-    polyline_self_loop_router_tolerance,
-  ) &&
+      previous.x,
+      corner.x,
+      polyline_self_loop_router_tolerance,
+    ) &&
     polyline_self_loop_router_fuzzy_equals(
       corner.y,
       next.y,
       polyline_self_loop_router_tolerance,
     )
   let horizontal_vertical = polyline_self_loop_router_fuzzy_equals(
-    previous.y,
-    corner.y,
-    polyline_self_loop_router_tolerance,
-  ) &&
+      previous.y,
+      corner.y,
+      polyline_self_loop_router_tolerance,
+    ) &&
     polyline_self_loop_router_fuzzy_equals(
       corner.x,
       next.x,
@@ -84,7 +84,9 @@ pub fn polyline_self_loop_router_cut_corners(
     corner = next
     next = bend_points.get(index)
 
-    if !polyline_self_loop_router_are_orthogonally_routed(previous, corner, next) {
+    if !polyline_self_loop_router_are_orthogonally_routed(
+        previous, corner, next,
+      ) {
       continue
     }
 
@@ -135,8 +137,7 @@ fn polyline_self_loop_router_modify_bend_points(
   )
 
   polyline_self_loop_router_cut_corners(
-    bend_points,
-    polyline_self_loop_router_corner_distance,
+    bend_points, polyline_self_loop_router_corner_distance,
   )
 }
 
@@ -145,8 +146,7 @@ pub fn polyline_self_loop_router_route_self_loops(
   sl_holder : SelfLoopHolder,
 ) -> Unit {
   orthogonal_self_loop_router_route_with_modifier(
-    sl_holder,
-    polyline_self_loop_router_modify_bend_points,
+    sl_holder, polyline_self_loop_router_modify_bend_points,
   )
 }
 

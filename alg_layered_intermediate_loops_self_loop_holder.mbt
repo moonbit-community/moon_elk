@@ -44,7 +44,9 @@ pub fn self_loop_holder_needs_self_loop_processing(l_node : LNode) -> Bool {
 ///|
 pub fn self_loop_holder_install(l_node : LNode) -> SelfLoopHolder {
   if !self_loop_holder_needs_self_loop_processing(l_node) {
-    abort("self loop holder can only be installed on normal nodes with self loops")
+    abort(
+      "self loop holder can only be installed on normal nodes with self loops",
+    )
   }
 
   let holder = new_self_loop_holder(l_node)

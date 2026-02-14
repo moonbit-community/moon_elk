@@ -1,5 +1,7 @@
 ///|
-fn semi_interactive_test_strategy(name : String) -> IntermediateProcessorStrategy {
+fn semi_interactive_test_strategy(
+  name : String,
+) -> IntermediateProcessorStrategy {
   for strategy in intermediate_processor_strategy_values() {
     if intermediate_processor_strategy_to_string(strategy) == name {
       return strategy
@@ -35,7 +37,10 @@ fn semi_interactive_test_node_type(name : String) -> NodeType {
 }
 
 ///|
-fn semi_interactive_test_node_type_equals(left : NodeType, right : NodeType) -> Bool {
+fn semi_interactive_test_node_type_equals(
+  left : NodeType,
+  right : NodeType,
+) -> Bool {
   match (left, right) {
     (NodeType::Normal, NodeType::Normal) => true
     (NodeType::LongEdge, NodeType::LongEdge) => true
@@ -71,9 +76,10 @@ fn semi_interactive_test_new_layered_node(
 ///|
 fn semi_interactive_test_successor_ids(node : LNode) -> Array[Int] {
   let result = []
-  for successor in node.get_property_l_node_array(
-    internal_properties_in_layer_successor_constraints,
-  ) {
+  for
+    successor in node.get_property_l_node_array(
+      internal_properties_in_layer_successor_constraints,
+    ) {
     result.push(successor.get_id())
   }
   result
@@ -161,8 +167,7 @@ test "semi interactive processor keeps graph flag false when no constraints are 
 
   let processor = layered_intermediate_processor_factory(
     semi_interactive_test_strategy("SEMI_INTERACTIVE_CROSSMIN_PROCESSOR"),
-  )
-    .create()
+  ).create()
   processor.process(graph, None)
 
   assert_false(

@@ -169,9 +169,7 @@ pub fn SelfHyperLoop::get_sl_labels(
 }
 
 ///|
-pub fn SelfHyperLoop::get_self_loop_type(
-  self : SelfHyperLoop,
-) -> SelfLoopType? {
+pub fn SelfHyperLoop::get_self_loop_type(self : SelfHyperLoop) -> SelfLoopType? {
   self.self_loop_type
 }
 
@@ -204,9 +202,7 @@ pub fn SelfHyperLoop::has_sl_ports_on_side(
 }
 
 ///|
-pub fn SelfHyperLoop::get_leftmost_port(
-  self : SelfHyperLoop,
-) -> SelfLoopPort? {
+pub fn SelfHyperLoop::get_leftmost_port(self : SelfHyperLoop) -> SelfLoopPort? {
   self.leftmost_port
 }
 
@@ -219,9 +215,7 @@ pub fn SelfHyperLoop::set_leftmost_port(
 }
 
 ///|
-pub fn SelfHyperLoop::get_rightmost_port(
-  self : SelfHyperLoop,
-) -> SelfLoopPort? {
+pub fn SelfHyperLoop::get_rightmost_port(self : SelfHyperLoop) -> SelfLoopPort? {
   self.rightmost_port
 }
 

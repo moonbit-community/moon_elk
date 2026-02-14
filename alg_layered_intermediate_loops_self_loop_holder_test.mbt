@@ -1,5 +1,7 @@
 ///|
-fn self_loop_holder_test_edge_handle_set(edges : Array[LEdge]) -> Map[Int, Bool] {
+fn self_loop_holder_test_edge_handle_set(
+  edges : Array[LEdge],
+) -> Map[Int, Bool] {
   let handles : Map[Int, Bool] = {}
   for edge in edges {
     handles[edge.get_handle()] = true
@@ -64,9 +66,13 @@ test "self loop holder initializes basic self loop model" {
     l_node.has_property_self_loop_holder(internal_properties_self_loop_holder),
   )
 
-  match l_node.get_property_self_loop_holder(internal_properties_self_loop_holder) {
+  match
+    l_node.get_property_self_loop_holder(internal_properties_self_loop_holder) {
     Some(saved_holder) =>
-      assert_eq(saved_holder.get_sl_port_map().length(), sl_holder.get_sl_port_map().length())
+      assert_eq(
+        saved_holder.get_sl_port_map().length(),
+        sl_holder.get_sl_port_map().length(),
+      )
     None => abort("node should have SELF_LOOP_HOLDER property")
   }
 
@@ -119,20 +125,16 @@ test "self loop holder groups disconnected self loops into separate hyper loops"
   let second_loop_edges = self_loop_holder_test_edge_handle_set(second_loops)
 
   let match_first = self_loop_holder_test_same_edge_handle_set(
-    first_hyper_edges,
-    first_loop_edges,
-  ) &&
+      first_hyper_edges, first_loop_edges,
+    ) &&
     self_loop_holder_test_same_edge_handle_set(
-      second_hyper_edges,
-      second_loop_edges,
+      second_hyper_edges, second_loop_edges,
     )
   let match_second = self_loop_holder_test_same_edge_handle_set(
-    first_hyper_edges,
-    second_loop_edges,
-  ) &&
+      first_hyper_edges, second_loop_edges,
+    ) &&
     self_loop_holder_test_same_edge_handle_set(
-      second_hyper_edges,
-      first_loop_edges,
+      second_hyper_edges, first_loop_edges,
     )
 
   assert_true(match_first || match_second)

@@ -31,8 +31,7 @@ fn label_placer_ordering_equals(
     (
       SelfLoopOrderingStrategy::ReverseStacked,
       SelfLoopOrderingStrategy::ReverseStacked,
-    ) =>
-      true
+    ) => true
     (SelfLoopOrderingStrategy::Sequenced, SelfLoopOrderingStrategy::Sequenced) =>
       true
     _ => false
@@ -105,8 +104,12 @@ fn label_placer_sort_loops_by_leftmost_id(
   while i < sl_loops.length() {
     let mut j = i
     while j > 0 {
-      let left_id = label_placer_require_leftmost(sl_loops[j - 1]).get_l_port().get_id()
-      let right_id = label_placer_require_leftmost(sl_loops[j]).get_l_port().get_id()
+      let left_id = label_placer_require_leftmost(sl_loops[j - 1])
+        .get_l_port()
+        .get_id()
+      let right_id = label_placer_require_leftmost(sl_loops[j])
+        .get_l_port()
+        .get_id()
       let should_swap = if ascending {
         left_id > right_id
       } else {
@@ -207,17 +210,17 @@ fn LabelPlacer::assign_one_sided_sequenced_side_and_alignment(
     let right_loop = sl_loops[right_loop_index]
 
     let left_loop_alignment_reference = if label_placer_port_side_equals(
-      port_side,
-      North,
-    ) {
+        port_side,
+        North,
+      ) {
       label_placer_require_rightmost(left_loop)
     } else {
       label_placer_require_leftmost(left_loop)
     }
     let right_loop_alignment_reference = if label_placer_port_side_equals(
-      port_side,
-      North,
-    ) {
+        port_side,
+        North,
+      ) {
       label_placer_require_leftmost(right_loop)
     } else {
       label_placer_require_rightmost(right_loop)
@@ -256,8 +259,12 @@ fn LabelPlacer::assign_two_sides_corner_side_and_alignment(
   sl_loop : SelfHyperLoop,
 ) -> Unit {
   ignore(self)
-  let leftmost_port_side = label_placer_require_leftmost(sl_loop).get_l_port().get_side()
-  let rightmost_port_side = label_placer_require_rightmost(sl_loop).get_l_port().get_side()
+  let leftmost_port_side = label_placer_require_leftmost(sl_loop)
+    .get_l_port()
+    .get_side()
+  let rightmost_port_side = label_placer_require_rightmost(sl_loop)
+    .get_l_port()
+    .get_side()
 
   if label_placer_port_side_equals(leftmost_port_side, North) {
     label_placer_side_and_alignment(
@@ -345,8 +352,12 @@ fn LabelPlacer::assign_four_sides_side_and_alignment(
   sl_loop : SelfHyperLoop,
 ) -> Unit {
   ignore(self)
-  let leftmost_port_side = label_placer_require_leftmost(sl_loop).get_l_port().get_side()
-  let rightmost_port_side = label_placer_require_leftmost(sl_loop).get_l_port().get_side()
+  let leftmost_port_side = label_placer_require_leftmost(sl_loop)
+    .get_l_port()
+    .get_side()
+  let rightmost_port_side = label_placer_require_leftmost(sl_loop)
+    .get_l_port()
+    .get_side()
 
   if label_placer_port_side_equals(leftmost_port_side, North) ||
     label_placer_port_side_equals(rightmost_port_side, North) {
@@ -372,9 +383,9 @@ fn LabelPlacer::assign_side_and_alignment(
   sl_holder : SelfLoopHolder,
 ) -> Unit {
   let ordering_strategy = label_placer_parse_ordering(
-    sl_holder.get_l_node().get_property_string(
-      layered_options_edge_routing_self_loop_ordering,
-    ),
+    sl_holder
+    .get_l_node()
+    .get_property_string(layered_options_edge_routing_self_loop_ordering),
   )
   let northern_one_sided = []
   let southern_one_sided = []
@@ -385,11 +396,7 @@ fn LabelPlacer::assign_side_and_alignment(
 
   for sl_loop in sl_holder.get_sl_hyper_loops() {
     match sl_loop.get_sl_labels() {
-      Some(sl_labels) => {
-        if sl_labels.get_l_labels().is_empty() {
-          continue
-        }
-      }
+      Some(sl_labels) => if sl_labels.get_l_labels().is_empty() { continue }
       None => continue
     }
 
@@ -435,7 +442,10 @@ fn LabelPlacer::assign_side_and_alignment(
 }
 
 ///|
-fn LabelPlacer::compute_coordinates(self : LabelPlacer, sl_loop : SelfHyperLoop) -> Unit {
+fn LabelPlacer::compute_coordinates(
+  self : LabelPlacer,
+  sl_loop : SelfHyperLoop,
+) -> Unit {
   ignore(self)
   let sl_labels = label_placer_require_labels(sl_loop)
   let size = sl_labels.get_size()
@@ -446,7 +456,8 @@ fn LabelPlacer::compute_coordinates(self : LabelPlacer, sl_loop : SelfHyperLoop)
       pos.x = (sl_loop.get_sl_holder().get_l_node().get_size().x - size.x) / 2.0
     Some(SelfHyperLoopLabelAlignment::Left) => {
       let align_ref = label_placer_require_alignment_reference(sl_labels)
-      pos.x = align_ref.get_l_port().get_position().x + align_ref.get_l_port().get_anchor().x
+      pos.x = align_ref.get_l_port().get_position().x +
+        align_ref.get_l_port().get_anchor().x
     }
     Some(SelfHyperLoopLabelAlignment::Right) => {
       let align_ref = label_placer_require_alignment_reference(sl_labels)
@@ -456,7 +467,8 @@ fn LabelPlacer::compute_coordinates(self : LabelPlacer, sl_loop : SelfHyperLoop)
     }
     Some(SelfHyperLoopLabelAlignment::Top) => {
       let align_ref = label_placer_require_alignment_reference(sl_labels)
-      pos.y = align_ref.get_l_port().get_position().y + align_ref.get_l_port().get_anchor().y
+      pos.y = align_ref.get_l_port().get_position().y +
+        align_ref.get_l_port().get_anchor().y
     }
     None => ()
   }

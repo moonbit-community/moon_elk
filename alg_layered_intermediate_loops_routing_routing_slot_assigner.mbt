@@ -1,5 +1,8 @@
 ///|
-fn routing_slot_assigner_port_side_equals(left : PortSide, right : PortSide) -> Bool {
+fn routing_slot_assigner_port_side_equals(
+  left : PortSide,
+  right : PortSide,
+) -> Bool {
   match (left, right) {
     (SideUndefined, SideUndefined) => true
     (North, North) => true
@@ -11,7 +14,10 @@ fn routing_slot_assigner_port_side_equals(left : PortSide, right : PortSide) -> 
 }
 
 ///|
-fn routing_slot_assigner_contains_int(values : Array[Int], target : Int) -> Bool {
+fn routing_slot_assigner_contains_int(
+  values : Array[Int],
+  target : Int,
+) -> Bool {
   for value in values {
     if value == target {
       return true
@@ -21,14 +27,20 @@ fn routing_slot_assigner_contains_int(values : Array[Int], target : Int) -> Bool
 }
 
 ///|
-fn routing_slot_assigner_add_unique_int(values : Array[Int], target : Int) -> Unit {
+fn routing_slot_assigner_add_unique_int(
+  values : Array[Int],
+  target : Int,
+) -> Unit {
   if !routing_slot_assigner_contains_int(values, target) {
     values.push(target)
   }
 }
 
 ///|
-fn routing_slot_assigner_has_side(sl_loop : SelfHyperLoop, side : PortSide) -> Bool {
+fn routing_slot_assigner_has_side(
+  sl_loop : SelfHyperLoop,
+  side : PortSide,
+) -> Bool {
   for occupied_side in sl_loop.get_occupied_port_sides() {
     if routing_slot_assigner_port_side_equals(occupied_side, side) {
       return true
@@ -46,7 +58,8 @@ fn routing_slot_assigner_sort_loops_by_side_slot(
   while i < sl_loops.length() {
     let mut j = i
     while j > 0 &&
-      sl_loops[j - 1].get_routing_slot(side) > sl_loops[j].get_routing_slot(side) {
+          sl_loops[j - 1].get_routing_slot(side) >
+          sl_loops[j].get_routing_slot(side) {
       let temp = sl_loops[j - 1]
       sl_loops[j - 1] = sl_loops[j]
       sl_loops[j] = temp
@@ -156,7 +169,9 @@ fn RoutingSlotAssigner::compute_label_crossing_matrix(
     }
   }
 
-  let crossing_matrix = routing_slot_assigner_new_label_crossing_matrix(label_id)
+  let crossing_matrix = routing_slot_assigner_new_label_crossing_matrix(
+    label_id,
+  )
   let sl_loops = sl_holder.get_sl_hyper_loops()
 
   for sl_1_index in 0..<sl_loops.length() {
@@ -279,31 +294,31 @@ fn RoutingSlotAssigner::create_dependencies(
   )
 
   if first_above_second_crossings < second_above_first_crossings {
-    ignore(hyper_edge_segment_dependency_create_and_add_regular(
-      segment_1,
-      segment_2,
-      second_above_first_crossings - first_above_second_crossings,
-    ))
+    ignore(
+      hyper_edge_segment_dependency_create_and_add_regular(
+        segment_1,
+        segment_2,
+        second_above_first_crossings - first_above_second_crossings,
+      ),
+    )
   } else if second_above_first_crossings < first_above_second_crossings {
-    ignore(hyper_edge_segment_dependency_create_and_add_regular(
-      segment_2,
-      segment_1,
-      first_above_second_crossings - second_above_first_crossings,
-    ))
+    ignore(
+      hyper_edge_segment_dependency_create_and_add_regular(
+        segment_2,
+        segment_1,
+        first_above_second_crossings - second_above_first_crossings,
+      ),
+    )
   } else if first_above_second_crossings != 0 ||
     self.labels_overlap_by_matrix(sl_loop_1, sl_loop_2, label_crossing_matrix) {
     ignore(
       hyper_edge_segment_dependency_create_and_add_regular(
-        segment_1,
-        segment_2,
-        0,
+        segment_1, segment_2, 0,
       ),
     )
     ignore(
       hyper_edge_segment_dependency_create_and_add_regular(
-        segment_2,
-        segment_1,
-        0,
+        segment_2, segment_1, 0,
       ),
     )
   }
@@ -463,9 +478,8 @@ fn RoutingSlotAssigner::shift_towards_node_on_side(
             }
           }
           while routing_slot_assigner_contains_int(
-            slots_with_label_conflicts,
-            lowest_available_slot,
-          ) {
+                  slots_with_label_conflicts, lowest_available_slot,
+                ) {
             lowest_available_slot += 1
           }
         }
@@ -547,7 +561,9 @@ pub fn RoutingSlotAssigner::assign_routing_slots(
   self.create_crossing_graph(sl_holder, label_crossing_matrix)
   orthogonal_routing_generator_break_non_critical_cycles(
     self.hyper_edge_segments,
-    orthogonal_routing_generator_graph_random(sl_holder.get_l_node().get_graph()),
+    orthogonal_routing_generator_graph_random(
+      sl_holder.get_l_node().get_graph(),
+    ),
   )
   self.do_assign_routing_slots(sl_holder, label_crossing_matrix)
 

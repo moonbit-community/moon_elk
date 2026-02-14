@@ -1,5 +1,7 @@
 ///|
-fn semi_interactive_cross_min_processor_node_type_is_normal(node : LNode) -> Bool {
+fn semi_interactive_cross_min_processor_node_type_is_normal(
+  node : LNode,
+) -> Bool {
   match node.get_type() {
     NodeType::Normal => true
     _ => false
@@ -17,7 +19,9 @@ fn semi_interactive_cross_min_processor_insert_sorted(
 
   for i in 0..<nodes.length() {
     let current = nodes[i]
-    let current_position = current.get_property_kvector(layered_options_position)
+    let current_position = current.get_property_kvector(
+      layered_options_position,
+    )
     if node_y < current_position.y {
       insert_index = i
       break
@@ -60,8 +64,7 @@ fn semi_interactive_cross_min_processor_apply_successor_constraints(
     )
     successor_constraints.push(current)
     previous.set_property_l_node_array(
-      internal_properties_in_layer_successor_constraints,
-      successor_constraints,
+      internal_properties_in_layer_successor_constraints, successor_constraints,
     )
     previous = current
   }
@@ -81,10 +84,9 @@ fn semi_interactive_cross_min_processor_process(
 
   let mut added_constraints = false
   for layer in layered_graph.get_layers() {
-    let sorted_nodes =
-      semi_interactive_cross_min_processor_collect_sorted_positioned_normals(
-        layer,
-      )
+    let sorted_nodes = semi_interactive_cross_min_processor_collect_sorted_positioned_normals(
+      layer,
+    )
     if semi_interactive_cross_min_processor_apply_successor_constraints(
         sorted_nodes,
       ) {
@@ -94,8 +96,7 @@ fn semi_interactive_cross_min_processor_process(
 
   if added_constraints {
     layered_graph.set_property_bool(
-      internal_properties_in_layer_successor_constraints_between_non_dummies,
-      true,
+      internal_properties_in_layer_successor_constraints_between_non_dummies, true,
     )
   }
 

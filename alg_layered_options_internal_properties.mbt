@@ -100,6 +100,11 @@ pub let internal_properties_long_edge_has_label_dummies : IProperty[Bool] = new_
 )
 
 ///|
+pub let internal_properties_long_edge_before_label_dummy : IProperty[Bool] = new_property(
+  "longEdgeBeforeLabelDummy", false,
+)
+
+///|
 pub let internal_properties_long_edge_target_node : IProperty[LNode?] = new_property(
   "longEdgeTargetNode",
   None,

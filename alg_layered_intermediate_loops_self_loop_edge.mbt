@@ -35,12 +35,7 @@ pub fn new_self_loop_edge(
     abort("SelfLoopEdge source/target ports must match the represented edge")
   }
 
-  let sl_edge = {
-    l_edge,
-    sl_hyper_loop: None,
-    sl_source,
-    sl_target,
-  }
+  let sl_edge = { l_edge, sl_hyper_loop: None, sl_source, sl_target }
 
   sl_source.get_outgoing_sl_edges().push(sl_edge)
   sl_target.get_incoming_sl_edges().push(sl_edge)
@@ -54,9 +49,7 @@ pub fn SelfLoopEdge::get_l_edge(self : SelfLoopEdge) -> LEdge {
 }
 
 ///|
-pub fn SelfLoopEdge::get_sl_hyper_loop(
-  self : SelfLoopEdge,
-) -> SelfHyperLoop? {
+pub fn SelfLoopEdge::get_sl_hyper_loop(self : SelfLoopEdge) -> SelfHyperLoop? {
   self.sl_hyper_loop
 }
 

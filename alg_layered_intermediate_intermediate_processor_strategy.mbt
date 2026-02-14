@@ -188,8 +188,12 @@ fn intermediate_processor_create(
       new_self_loop_port_restorer_layout_processor()
     IntermediateProcessorStrategy::SelfLoopRouter =>
       new_self_loop_router_layout_processor()
+    IntermediateProcessorStrategy::LabelDummyInserter =>
+      new_label_dummy_inserter_layout_processor()
     IntermediateProcessorStrategy::LabelDummyRemover =>
       new_label_dummy_remover_layout_processor()
+    IntermediateProcessorStrategy::HyperedgeDummyMerger =>
+      new_hyperedge_dummy_merger_layout_processor()
     IntermediateProcessorStrategy::HierarchicalPortDummySizeProcessor =>
       new_hierarchical_port_dummy_size_processor_layout_processor()
     IntermediateProcessorStrategy::EdgeAndLayerConstraintEdgeReverser =>

@@ -20,7 +20,9 @@ pub struct SelfHyperLoopLabels {
 }
 
 ///|
-fn self_hyper_loop_labels_layout_direction(sl_loop : SelfHyperLoop) -> Direction {
+fn self_hyper_loop_labels_layout_direction(
+  sl_loop : SelfHyperLoop,
+) -> Direction {
   let l_node = sl_loop.get_sl_holder().get_l_node()
   l_node.get_graph().get_property_direction(layered_components_direction)
 }
@@ -32,7 +34,9 @@ fn self_hyper_loop_labels_spacing(sl_loop : SelfHyperLoop) -> Double {
 }
 
 ///|
-pub fn new_self_hyper_loop_labels(sl_loop : SelfHyperLoop) -> SelfHyperLoopLabels {
+pub fn new_self_hyper_loop_labels(
+  sl_loop : SelfHyperLoop,
+) -> SelfHyperLoopLabels {
   {
     id: 0,
     l_labels: [],
@@ -116,14 +120,11 @@ fn self_hyper_loop_labels_apply_horizontal_layout(
     let label_size = l_label.get_size()
 
     match (labels.alignment, labels.side) {
-      (Some(SelfHyperLoopLabelAlignment::Left), _) =>
-        label_pos.x = x
-      (_, Some(East)) =>
-        label_pos.x = x
+      (Some(SelfHyperLoopLabelAlignment::Left), _) => label_pos.x = x
+      (_, Some(East)) => label_pos.x = x
       (Some(SelfHyperLoopLabelAlignment::Right), _) =>
         label_pos.x = x + labels.size.x - label_size.x
-      (_, Some(West)) =>
-        label_pos.x = x + labels.size.x - label_size.x
+      (_, Some(West)) => label_pos.x = x + labels.size.x - label_size.x
       _ => label_pos.x = x + (labels.size.x - label_size.x) / 2.0
     }
 

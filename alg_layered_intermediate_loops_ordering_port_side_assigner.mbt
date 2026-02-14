@@ -1,5 +1,8 @@
 ///|
-fn port_side_assigner_port_side_equals(left : PortSide, right : PortSide) -> Bool {
+fn port_side_assigner_port_side_equals(
+  left : PortSide,
+  right : PortSide,
+) -> Bool {
   match (left, right) {
     (SideUndefined, SideUndefined) => true
     (North, North) => true
@@ -45,7 +48,9 @@ pub fn new_port_side_assigner() -> PortSideAssigner {
 }
 
 ///|
-fn port_side_assigner_hidden_ports(sl_loop : SelfHyperLoop) -> Array[SelfLoopPort] {
+fn port_side_assigner_hidden_ports(
+  sl_loop : SelfHyperLoop,
+) -> Array[SelfLoopPort] {
   let hidden = []
   for sl_port in sl_loop.get_sl_ports() {
     if sl_port.is_hidden() {
@@ -63,8 +68,8 @@ fn port_side_assigner_sort_ports_by_net_flow(
   while i < sl_ports.length() {
     let mut j = i
     while j > 0 &&
-      sl_ports[j - 1].get_l_port().get_net_flow() >
-      sl_ports[j].get_l_port().get_net_flow() {
+          sl_ports[j - 1].get_l_port().get_net_flow() >
+          sl_ports[j].get_l_port().get_net_flow() {
       let temp = sl_ports[j - 1]
       sl_ports[j - 1] = sl_ports[j]
       sl_ports[j] = temp
@@ -82,8 +87,8 @@ fn port_side_assigner_sort_loops_by_port_count_desc(
   while i < sl_loops.length() {
     let mut j = i
     while j > 0 &&
-      sl_loops[j - 1].get_sl_ports().length() <
-      sl_loops[j].get_sl_ports().length() {
+          sl_loops[j - 1].get_sl_ports().length() <
+          sl_loops[j].get_sl_ports().length() {
       let temp = sl_loops[j - 1]
       sl_loops[j - 1] = sl_loops[j]
       sl_loops[j] = temp
@@ -150,14 +155,10 @@ fn port_side_assigner_target_sides(
   target : PortSideAssignerTarget,
 ) -> (PortSide, PortSide) {
   match target {
-    PortSideAssignerTarget::NorthTarget =>
-      (PortSide::North, PortSide::North)
-    PortSideAssignerTarget::SouthTarget =>
-      (PortSide::South, PortSide::South)
-    PortSideAssignerTarget::EastTarget =>
-      (PortSide::East, PortSide::East)
-    PortSideAssignerTarget::WestTarget =>
-      (PortSide::West, PortSide::West)
+    PortSideAssignerTarget::NorthTarget => (PortSide::North, PortSide::North)
+    PortSideAssignerTarget::SouthTarget => (PortSide::South, PortSide::South)
+    PortSideAssignerTarget::EastTarget => (PortSide::East, PortSide::East)
+    PortSideAssignerTarget::WestTarget => (PortSide::West, PortSide::West)
     PortSideAssignerTarget::NorthWestCornerTarget =>
       (PortSide::West, PortSide::North)
     PortSideAssignerTarget::NorthEastCornerTarget =>

@@ -10,7 +10,8 @@ fn self_loop_router_parse_edge_routing(value : String) -> EdgeRouting {
 
 ///|
 fn self_loop_router_router_for_graph(graph : LGraph) -> AbstractSelfLoopRouter {
-  match self_loop_router_parse_edge_routing(graph.get_property_string(edge_routing)) {
+  match
+    self_loop_router_parse_edge_routing(graph.get_property_string(edge_routing)) {
     EdgeRouting::Polyline => new_polyline_self_loop_router()
     EdgeRouting::Splines => new_spline_self_loop_router()
     _ => new_orthogonal_self_loop_router()
@@ -58,12 +59,15 @@ fn self_loop_router_process(
       if !self_loop_router_node_type_is_normal(l_node.get_type()) {
         continue
       }
-      if !l_node.has_property_self_loop_holder(internal_properties_self_loop_holder) {
+      if !l_node.has_property_self_loop_holder(
+          internal_properties_self_loop_holder,
+        ) {
         continue
       }
-      match l_node.get_property_self_loop_holder(
-        internal_properties_self_loop_holder,
-      ) {
+      match
+        l_node.get_property_self_loop_holder(
+          internal_properties_self_loop_holder,
+        ) {
         Some(sl_holder) =>
           self_loop_router_process_node(sl_holder, router, Some(monitor))
         None => ()

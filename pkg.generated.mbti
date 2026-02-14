@@ -2546,6 +2546,8 @@ pub let internal_properties_is_part_of_cycle : IProperty[Bool]
 
 pub let internal_properties_label_side : IProperty[LabelSide]
 
+pub let internal_properties_long_edge_before_label_dummy : IProperty[Bool]
+
 pub let internal_properties_long_edge_has_label_dummies : IProperty[Bool]
 
 pub let internal_properties_long_edge_source : IProperty[LPort?]
@@ -4414,6 +4416,8 @@ pub fn new_hyper_edge_segment_splitter(OrthogonalRoutingGenerator) -> HyperEdgeS
 
 pub fn new_hyperedge_crossings_counter(Array[Int], Array[Bool], Array[Int]) -> HyperedgeCrossingsCounter
 
+pub fn new_hyperedge_dummy_merger_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
+
 pub fn new_i_crossing_minimization_heuristic(() -> Bool, (Array[Array[LNode]], Bool) -> Bool, (Array[Array[LNode]], Int, Bool, Bool) -> Bool, () -> Bool, init_at_layer_level? : (Int, Array[Array[LNode]]) -> Unit, init_at_node_level? : (Int, Int, Array[Array[LNode]]) -> Unit, init_at_port_level? : (Int, Int, Int, Array[Array[LNode]]) -> Unit, init_at_edge_level? : (Int, Int, Int, Int, LEdge, Array[Array[LNode]]) -> Unit, init_after_traversal? : () -> Unit) -> ICrossingMinimizationHeuristic
 
 pub fn new_i_cut_index_calculator((LGraph, GraphStats) -> Array[Int], () -> Bool) -> ICutIndexCalculator
@@ -4543,6 +4547,8 @@ pub fn new_label_cell_full(Double, NodeLabelLocation, Bool) -> Cell
 pub fn new_label_cell_with_layout_mode(Double, Bool) -> Cell
 
 pub fn new_label_cell_with_node_label_location(Double, NodeLabelLocation) -> Cell
+
+pub fn new_label_dummy_inserter_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_label_dummy_remover_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
@@ -12141,6 +12147,8 @@ pub struct HyperedgeCrossingsCounter {
   port_pos : Array[Int]
 }
 pub fn HyperedgeCrossingsCounter::count_crossings(Self, Array[LNode], Array[LNode]) -> Int
+
+type HyperedgeDummyMergerMergeState
 
 pub struct ICompactor {
   compact_fn : (DCGraph) -> Unit

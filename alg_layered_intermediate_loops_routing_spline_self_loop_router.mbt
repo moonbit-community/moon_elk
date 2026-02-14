@@ -5,7 +5,9 @@ let spline_self_loop_router_dim : Int = 3
 let spline_self_loop_router_half : Double = 0.5
 
 ///|
-fn spline_self_loop_router_relative_port_anchor(sl_port : SelfLoopPort) -> KVector {
+fn spline_self_loop_router_relative_port_anchor(
+  sl_port : SelfLoopPort,
+) -> KVector {
   let l_port = sl_port.get_l_port()
   new_kvector_copy(l_port.get_position()).add(l_port.get_anchor())
 }
@@ -29,9 +31,9 @@ fn spline_self_loop_router_add_spline_control_points(
     let second_bp = ortho_bend_points.get(second_bp_index)
     new_bend_points.add_last_vector(first_bp)
 
-    let mid_bp = new_kvector_copy(first_bp).add(second_bp).scale(
-      spline_self_loop_router_half,
-    )
+    let mid_bp = new_kvector_copy(first_bp)
+      .add(second_bp)
+      .scale(spline_self_loop_router_half)
     let offset = new_kvector_angle(
       splines_math_port_side_to_direction(curr_port_side),
     ).scale(edge_label_distance)
@@ -45,7 +47,9 @@ fn spline_self_loop_router_add_spline_control_points(
     }
   }
 
-  new_bend_points.add_last_vector(ortho_bend_points.get(ortho_bend_points.size() - 1))
+  new_bend_points.add_last_vector(
+    ortho_bend_points.get(ortho_bend_points.size() - 1),
+  )
 }
 
 ///|
@@ -68,18 +72,17 @@ fn spline_self_loop_router_modify_bend_points(
     spline_self_loop_router_relative_port_anchor(sl_edge.get_sl_source()),
   )
   spline_self_loop_router_add_spline_control_points(
-    sl_edge,
-    routing_direction,
-    bend_points,
-    spline_bend_points,
-    edge_label_distance,
+    sl_edge, routing_direction, bend_points, spline_bend_points, edge_label_distance,
   )
   spline_bend_points.add_last_vector(
     spline_self_loop_router_relative_port_anchor(sl_edge.get_sl_target()),
   )
 
-  new_nub_spline(true, spline_self_loop_router_dim, spline_bend_points.to_array())
-    .get_control_points()
+  new_nub_spline(
+    true,
+    spline_self_loop_router_dim,
+    spline_bend_points.to_array(),
+  ).get_control_points()
 }
 
 ///|
@@ -87,8 +90,7 @@ pub fn spline_self_loop_router_route_self_loops(
   sl_holder : SelfLoopHolder,
 ) -> Unit {
   orthogonal_self_loop_router_route_with_modifier(
-    sl_holder,
-    spline_self_loop_router_modify_bend_points,
+    sl_holder, spline_self_loop_router_modify_bend_points,
   )
 }
 

@@ -45,8 +45,7 @@ fn basic_consider_model_order_connect(
 fn basic_consider_model_order_new_graph() -> (LGraph, Layer, Layer) {
   let graph = new_l_graph()
   graph.set_property_string(
-    layered_options_consider_model_order_long_edge_strategy,
-    "DUMMY_NODE_OVER",
+    layered_options_consider_model_order_long_edge_strategy, "DUMMY_NODE_OVER",
   )
   graph.set_property_string(
     layered_options_consider_model_order_group_model_order_cm_group_order_strategy,
@@ -67,19 +66,18 @@ fn basic_consider_model_order_run_case(
   use_port_model_order : Bool,
 ) -> Unit {
   let (graph, layer0, layer1) = basic_consider_model_order_new_graph()
-  graph.set_property_string(layered_options_consider_model_order_strategy, strategy)
+  graph.set_property_string(
+    layered_options_consider_model_order_strategy, strategy,
+  )
   graph.set_property_bool(
-    layered_options_consider_model_order_port_model_order,
-    use_port_model_order,
+    layered_options_consider_model_order_port_model_order, use_port_model_order,
   )
   if weighted {
     graph.set_property_double(
-      layered_options_consider_model_order_crossing_counter_node_influence,
-      0.001,
+      layered_options_consider_model_order_crossing_counter_node_influence, 0.001,
     )
     graph.set_property_double(
-      layered_options_consider_model_order_crossing_counter_port_influence,
-      0.001,
+      layered_options_consider_model_order_crossing_counter_port_influence, 0.001,
     )
   }
 

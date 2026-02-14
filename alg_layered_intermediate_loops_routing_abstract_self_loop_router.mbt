@@ -7,7 +7,7 @@ pub struct AbstractSelfLoopRouter {
 pub fn new_abstract_self_loop_router(
   route_self_loops_fn : (SelfLoopHolder) -> Unit,
 ) -> AbstractSelfLoopRouter {
-  { route_self_loops_fn }
+  { route_self_loops_fn, }
 }
 
 ///|

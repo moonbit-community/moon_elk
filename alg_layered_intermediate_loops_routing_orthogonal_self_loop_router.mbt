@@ -63,28 +63,30 @@ fn orthogonal_self_loop_router_compute_edge_routing_direction(
   let target_l_port = sl_edge.get_sl_target().get_l_port()
   let target_port_side = target_l_port.get_side()
 
-  if orthogonal_self_loop_router_port_side_equals(source_port_side, target_port_side) {
+  if orthogonal_self_loop_router_port_side_equals(
+      source_port_side, target_port_side,
+    ) {
     if source_l_port.get_id() < target_l_port.get_id() {
       EdgeRoutingDirection::Clockwise
     } else {
       EdgeRoutingDirection::CounterClockwise
     }
   } else if orthogonal_self_loop_router_port_side_equals(
-    source_port_side.right(),
-    target_port_side,
-  ) {
+      source_port_side.right(),
+      target_port_side,
+    ) {
     EdgeRoutingDirection::Clockwise
   } else if orthogonal_self_loop_router_port_side_equals(
-    source_port_side.left(),
-    target_port_side,
-  ) {
+      source_port_side.left(),
+      target_port_side,
+    ) {
     EdgeRoutingDirection::CounterClockwise
   } else {
     let sl_loop = orthogonal_self_loop_router_require_hyper_loop(sl_edge)
     if orthogonal_self_loop_router_occupied_contains(
-      sl_loop.get_occupied_port_sides(),
-      source_port_side.right(),
-    ) {
+        sl_loop.get_occupied_port_sides(),
+        source_port_side.right(),
+      ) {
       EdgeRoutingDirection::Clockwise
     } else {
       EdgeRoutingDirection::CounterClockwise
@@ -118,16 +120,12 @@ fn orthogonal_self_loop_router_update_new_node_margins_labels(
 ) -> Unit {
   let position = sl_labels.get_position().clone()
   orthogonal_self_loop_router_update_new_node_margins_point(
-    node_size,
-    new_node_margins,
-    position,
+    node_size, new_node_margins, position,
   )
 
   ignore(position.add(sl_labels.get_size()))
   orthogonal_self_loop_router_update_new_node_margins_point(
-    node_size,
-    new_node_margins,
-    position,
+    node_size, new_node_margins, position,
   )
 }
 
@@ -137,18 +135,22 @@ fn orthogonal_self_loop_router_initialize_with_max_label_height(
   sl_holder : SelfLoopHolder,
   port_side : PortSide,
 ) -> Unit {
-  let side_positions = positions[orthogonal_self_loop_router_side_index(port_side)]
+  let side_positions = positions[orthogonal_self_loop_router_side_index(
+      port_side,
+    )]
   for sl_loop in sl_holder.get_sl_hyper_loops() {
     match sl_loop.get_sl_labels() {
-      Some(sl_labels) => {
-        if orthogonal_self_loop_router_port_side_equals(sl_labels.get_side(), port_side) {
+      Some(sl_labels) =>
+        if orthogonal_self_loop_router_port_side_equals(
+            sl_labels.get_side(),
+            port_side,
+          ) {
           let routing_slot = sl_loop.get_routing_slot(port_side)
           side_positions[routing_slot] = @math.maximum(
             side_positions[routing_slot],
             sl_labels.get_size().y,
           )
         }
-      }
       None => ()
     }
   }
@@ -181,9 +183,7 @@ fn orthogonal_self_loop_router_compute_positions(
   node_self_loop_distance : Double,
 ) -> Unit {
   let mut curr_pos = orthogonal_self_loop_router_compute_baseline_position(
-    sl_holder,
-    port_side,
-    node_self_loop_distance,
+    sl_holder, port_side, node_self_loop_distance,
   )
 
   let factor = if orthogonal_self_loop_router_port_side_equals(port_side, North) ||
@@ -193,7 +193,9 @@ fn orthogonal_self_loop_router_compute_positions(
     1.0
   }
 
-  let side_positions = positions[orthogonal_self_loop_router_side_index(port_side)]
+  let side_positions = positions[orthogonal_self_loop_router_side_index(
+      port_side,
+    )]
   for slot in 0..<side_positions.length() {
     let mut largest_label_size = side_positions[slot]
     if largest_label_size > 0.0 {
@@ -277,8 +279,8 @@ fn orthogonal_self_loop_router_get_base_vector(
   routing_slot_positions : Array[Array[Double]],
 ) -> KVector {
   let position = routing_slot_positions[orthogonal_self_loop_router_side_index(
-    port_side,
-  )][routing_slot]
+      port_side,
+    )][routing_slot]
   match port_side {
     North => new_kvector_xy(0.0, position)
     South => new_kvector_xy(0.0, position)
@@ -363,9 +365,9 @@ fn orthogonal_self_loop_router_add_corner_bend_points(
 
   let mut curr_port_side = source_port.get_side()
   while !orthogonal_self_loop_router_port_side_equals(
-      curr_port_side,
-      target_port.get_side(),
-    ) {
+          curr_port_side,
+          target_port.get_side(),
+        ) {
     let next_port_side = match routing_direction {
       EdgeRoutingDirection::Clockwise => curr_port_side.right()
       EdgeRoutingDirection::CounterClockwise => curr_port_side.left()
@@ -384,20 +386,17 @@ fn orthogonal_self_loop_router_add_corner_bend_points(
 
     if inline &&
       !orthogonal_self_loop_router_port_side_equals(label_side, SideUndefined) {
-      if orthogonal_self_loop_router_port_side_equals(curr_port_side, label_side) {
+      if orthogonal_self_loop_router_port_side_equals(
+          curr_port_side, label_side,
+        ) {
         orthogonal_self_loop_router_adjust_vector_for_label_side(
-          curr_component,
-          label_side,
-          label_size,
+          curr_component, label_side, label_size,
         )
       } else if orthogonal_self_loop_router_port_side_equals(
-        next_port_side,
-        label_side,
-      ) {
+          next_port_side, label_side,
+        ) {
         orthogonal_self_loop_router_adjust_vector_for_label_side(
-          next_component,
-          label_side,
-          label_size,
+          next_component, label_side, label_size,
         )
       }
     }
@@ -421,10 +420,7 @@ fn orthogonal_self_loop_router_compute_orthogonal_bend_points(
     bend_points,
   )
   orthogonal_self_loop_router_add_corner_bend_points(
-    sl_edge,
-    routing_direction,
-    routing_slot_positions,
-    bend_points,
+    sl_edge, routing_direction, routing_slot_positions, bend_points,
   )
   orthogonal_self_loop_router_add_outer_bend_point(
     sl_edge,
@@ -444,8 +440,8 @@ fn orthogonal_self_loop_router_place_labels(
 ) -> Unit {
   let label_side = sl_labels.get_side()
   let mut label_position = routing_slot_positions[orthogonal_self_loop_router_side_index(
-    label_side,
-  )][sl_loop.get_routing_slot(label_side)]
+      label_side,
+    )][sl_loop.get_routing_slot(label_side)]
 
   match label_side {
     North => {
@@ -482,11 +478,7 @@ fn orthogonal_self_loop_router_default_modify_bend_points(
 ///|
 pub fn orthogonal_self_loop_router_route_with_modifier(
   sl_holder : SelfLoopHolder,
-  modify_bend_points : (
-    SelfLoopEdge,
-    EdgeRoutingDirection,
-    KVectorChain,
-  ) -> KVectorChain,
+  modify_bend_points : (SelfLoopEdge, EdgeRoutingDirection, KVectorChain) -> KVectorChain,
 ) -> Unit {
   let l_node = sl_holder.get_l_node()
   let node_size = l_node.get_size()
@@ -494,16 +486,15 @@ pub fn orthogonal_self_loop_router_route_with_modifier(
 
   let edge_edge_distance = l_node.get_property_double(spacing_edge_edge)
   let edge_label_distance = l_node.get_property_double(spacing_edge_label)
-  let node_self_loop_distance = l_node.get_property_double(spacing_node_self_loop)
+  let node_self_loop_distance = l_node.get_property_double(
+    spacing_node_self_loop,
+  )
 
   let new_node_margins = new_l_margin()
   new_node_margins.set_spacing(node_margins)
 
   let routing_slot_positions = orthogonal_self_loop_router_compute_routing_slot_positions(
-    sl_holder,
-    edge_edge_distance,
-    edge_label_distance,
-    node_self_loop_distance,
+    sl_holder, edge_edge_distance, edge_label_distance, node_self_loop_distance,
   )
 
   for sl_loop in sl_holder.get_sl_hyper_loops() {
@@ -514,23 +505,17 @@ pub fn orthogonal_self_loop_router_route_with_modifier(
       )
 
       let bend_points = orthogonal_self_loop_router_compute_orthogonal_bend_points(
-        sl_edge,
-        routing_direction,
-        routing_slot_positions,
+        sl_edge, routing_direction, routing_slot_positions,
       )
       let modified_bend_points = modify_bend_points(
-        sl_edge,
-        routing_direction,
-        bend_points,
+        sl_edge, routing_direction, bend_points,
       )
 
       l_edge.get_bend_points().clear()
       l_edge.get_bend_points().add_all(modified_bend_points.to_array())
       for bend_point in modified_bend_points.to_array() {
         orthogonal_self_loop_router_update_new_node_margins_point(
-          node_size,
-          new_node_margins,
-          bend_point,
+          node_size, new_node_margins, bend_point,
         )
       }
     }
@@ -538,15 +523,10 @@ pub fn orthogonal_self_loop_router_route_with_modifier(
     match sl_loop.get_sl_labels() {
       Some(sl_labels) => {
         orthogonal_self_loop_router_place_labels(
-          sl_loop,
-          sl_labels,
-          routing_slot_positions,
-          edge_label_distance,
+          sl_loop, sl_labels, routing_slot_positions, edge_label_distance,
         )
         orthogonal_self_loop_router_update_new_node_margins_labels(
-          node_size,
-          new_node_margins,
-          sl_labels,
+          node_size, new_node_margins, sl_labels,
         )
       }
       None => ()
@@ -561,8 +541,7 @@ pub fn orthogonal_self_loop_router_route_self_loops(
   sl_holder : SelfLoopHolder,
 ) -> Unit {
   orthogonal_self_loop_router_route_with_modifier(
-    sl_holder,
-    orthogonal_self_loop_router_default_modify_bend_points,
+    sl_holder, orthogonal_self_loop_router_default_modify_bend_points,
   )
 }
 

@@ -19,9 +19,8 @@ fn self_loop_post_processor_restore_edge(
 
 ///|
 fn self_loop_post_processor_process_node(l_node : LNode) -> Unit {
-  let sl_holder = match l_node.get_property_self_loop_holder(
-    internal_properties_self_loop_holder,
-  ) {
+  let sl_holder = match
+    l_node.get_property_self_loop_holder(internal_properties_self_loop_holder) {
     Some(holder) => holder
     None => abort("node missing SELF_LOOP_HOLDER property")
   }
@@ -56,7 +55,9 @@ fn self_loop_post_processor_process(
       if !self_loop_post_processor_is_normal(l_node) {
         continue
       }
-      if !l_node.has_property_self_loop_holder(internal_properties_self_loop_holder) {
+      if !l_node.has_property_self_loop_holder(
+          internal_properties_self_loop_holder,
+        ) {
         continue
       }
       self_loop_post_processor_process_node(l_node)

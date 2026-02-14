@@ -44,7 +44,10 @@ pub fn self_loop_test_graph_creator_node(l_graph : LGraph) -> LNode {
 }
 
 ///|
-pub fn self_loop_test_graph_creator_edge(source : LPort, target : LPort) -> LEdge {
+pub fn self_loop_test_graph_creator_edge(
+  source : LPort,
+  target : LPort,
+) -> LEdge {
   let l_edge = new_l_edge()
   l_edge.set_source(Some(source))
   l_edge.set_target(Some(target))

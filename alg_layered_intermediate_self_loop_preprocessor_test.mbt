@@ -42,7 +42,9 @@ fn self_loop_preprocessor_test_assert_node_contains_ports(
 }
 
 ///|
-fn self_loop_preprocessor_test_add_ports(test_graph : SelfLoopPreprocessorTestGraph) -> Unit {
+fn self_loop_preprocessor_test_add_ports(
+  test_graph : SelfLoopPreprocessorTestGraph,
+) -> Unit {
   self_loop_test_graph_creator_ports(test_graph.self_loop_node, 2, 2, 2, 1)
 
   let mut north = 10.0
@@ -83,7 +85,9 @@ fn self_loop_preprocessor_test_add_ports(test_graph : SelfLoopPreprocessorTestGr
 }
 
 ///|
-fn self_loop_preprocessor_test_add_edges(test_graph : SelfLoopPreprocessorTestGraph) -> Unit {
+fn self_loop_preprocessor_test_add_edges(
+  test_graph : SelfLoopPreprocessorTestGraph,
+) -> Unit {
   let ports = test_graph.self_loop_node.get_ports()
 
   ignore(self_loop_test_graph_creator_edge(ports[0], ports[1]))
@@ -93,11 +97,26 @@ fn self_loop_preprocessor_test_add_edges(test_graph : SelfLoopPreprocessorTestGr
 
   self_loop_preprocessor_test_add_port(test_graph.regular_ports, ports[0])
 
-  self_loop_preprocessor_test_add_port(test_graph.only_self_loop_ports, ports[1])
-  self_loop_preprocessor_test_add_port(test_graph.only_self_loop_ports, ports[2])
-  self_loop_preprocessor_test_add_port(test_graph.only_self_loop_ports, ports[3])
-  self_loop_preprocessor_test_add_port(test_graph.only_self_loop_ports, ports[4])
-  self_loop_preprocessor_test_add_port(test_graph.only_self_loop_ports, ports[5])
+  self_loop_preprocessor_test_add_port(
+    test_graph.only_self_loop_ports,
+    ports[1],
+  )
+  self_loop_preprocessor_test_add_port(
+    test_graph.only_self_loop_ports,
+    ports[2],
+  )
+  self_loop_preprocessor_test_add_port(
+    test_graph.only_self_loop_ports,
+    ports[3],
+  )
+  self_loop_preprocessor_test_add_port(
+    test_graph.only_self_loop_ports,
+    ports[4],
+  )
+  self_loop_preprocessor_test_add_port(
+    test_graph.only_self_loop_ports,
+    ports[5],
+  )
 
   self_loop_preprocessor_test_add_port(test_graph.unconnected_ports, ports[6])
   self_loop_preprocessor_test_add_port(test_graph.unconnected_ports, ports[7])
@@ -142,10 +161,15 @@ fn self_loop_preprocessor_test_assert_hidden_edges(
 }
 
 ///|
-fn self_loop_preprocessor_test_ports_hidden(constraints : PortConstraints) -> Unit {
+fn self_loop_preprocessor_test_ports_hidden(
+  constraints : PortConstraints,
+) -> Unit {
   let test_graph = self_loop_preprocessor_test_new_graph(constraints)
   let processor = new_self_loop_pre_processor_layout_processor()
-  processor.process(test_graph.test_graph, Some(new_null_elk_progress_monitor()))
+  processor.process(
+    test_graph.test_graph,
+    Some(new_null_elk_progress_monitor()),
+  )
 
   if test_graph.self_loop_node.get_ports().length() !=
     test_graph.regular_ports.length() + test_graph.unconnected_ports.length() {
@@ -169,12 +193,15 @@ fn self_loop_preprocessor_test_ports_untouched(
 ) -> Unit {
   let test_graph = self_loop_preprocessor_test_new_graph(constraints)
   let processor = new_self_loop_pre_processor_layout_processor()
-  processor.process(test_graph.test_graph, Some(new_null_elk_progress_monitor()))
+  processor.process(
+    test_graph.test_graph,
+    Some(new_null_elk_progress_monitor()),
+  )
 
   if test_graph.self_loop_node.get_ports().length() !=
     test_graph.regular_ports.length() +
-      test_graph.only_self_loop_ports.length() +
-      test_graph.unconnected_ports.length() {
+    test_graph.only_self_loop_ports.length() +
+    test_graph.unconnected_ports.length() {
     abort("port count changed although constraints fix port order")
   }
 
@@ -182,7 +209,9 @@ fn self_loop_preprocessor_test_ports_untouched(
 }
 
 ///|
-fn self_loop_preprocessor_test_port_constraints(name : String) -> PortConstraints {
+fn self_loop_preprocessor_test_port_constraints(
+  name : String,
+) -> PortConstraints {
   for constraints in port_constraints_values() {
     if port_constraints_to_string(constraints) == name {
       return constraints

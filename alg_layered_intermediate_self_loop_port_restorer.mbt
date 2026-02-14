@@ -50,9 +50,9 @@ fn self_loop_port_restorer_process_node(
 
   if sl_holder.are_ports_hidden() {
     let constraints = self_loop_port_restorer_port_constraints_from_string(
-      sl_holder.get_l_node().get_property_string(
-        internal_properties_original_port_constraints,
-      ),
+      sl_holder
+      .get_l_node()
+      .get_property_string(internal_properties_original_port_constraints),
     )
 
     if constraints.is_side_fixed() {
@@ -61,7 +61,9 @@ fn self_loop_port_restorer_process_node(
       return
     }
 
-    if self_loop_port_restorer_port_constraints_is_free_or_undefined(constraints) {
+    if self_loop_port_restorer_port_constraints_is_free_or_undefined(
+        constraints,
+      ) {
       port_side_assigner.assign_port_sides(sl_holder)
       self_loop_port_restorer_compute_self_loop_types(sl_holder)
       port_restorer.restore_ports(sl_holder, monitor)
@@ -87,14 +89,18 @@ fn self_loop_port_restorer_process(
       if !self_loop_port_restorer_node_type_is_normal(l_node.get_type()) {
         continue
       }
-      if !l_node.has_property_self_loop_holder(internal_properties_self_loop_holder) {
+      if !l_node.has_property_self_loop_holder(
+          internal_properties_self_loop_holder,
+        ) {
         continue
       }
 
-      match l_node.get_property_self_loop_holder(
-        internal_properties_self_loop_holder,
-      ) {
-        Some(sl_holder) => self_loop_port_restorer_process_node(sl_holder, Some(monitor))
+      match
+        l_node.get_property_self_loop_holder(
+          internal_properties_self_loop_holder,
+        ) {
+        Some(sl_holder) =>
+          self_loop_port_restorer_process_node(sl_holder, Some(monitor))
         None => ()
       }
     }
