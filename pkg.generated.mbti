@@ -3834,6 +3834,8 @@ pub fn new_deprecated_layout_option_replacer() -> DeprecatedLayoutOptionReplacer
 
 pub fn new_depth_first_cycle_breaker_layout_phase() -> ILayoutProcessor[LayeredPhases, LGraph]
 
+pub fn new_depth_first_model_order_layerer_layout_phase() -> ILayoutProcessor[LayeredPhases, LGraph]
+
 pub fn new_dfs_node_order_cycle_breaker_layout_phase() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_diagram_layout_connector(build_layout_graph_fn? : (Int?, Int?) -> LayoutMapping?, apply_layout_fn? : (LayoutMapping, Map[String, String]) -> Unit, id? : String) -> IDiagramLayoutConnector
@@ -4467,6 +4469,8 @@ pub fn new_interactive_crossing_minimizer_layout_phase() -> ILayoutProcessor[Lay
 pub fn new_interactive_cycle_breaker_layout_phase() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_interactive_external_port_positioner_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
+
+pub fn new_interactive_layerer_layout_phase() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_interactive_mrtree_graph_element_visitor() -> IGraphElementVisitor
 
@@ -8967,6 +8971,8 @@ pub struct DeprecatedLayoutOptionReplacer {
 }
 pub fn DeprecatedLayoutOptionReplacer::visit(Self, Int) -> Unit
 
+type DepthFirstModelOrderLayererState
+
 type DfsNodeOrderCycleBreakerState
 
 pub struct DiagramLayoutEngine {
@@ -12527,6 +12533,8 @@ pub struct InstancePool[T] {
 pub fn[T] InstancePool::clear(Self[T]) -> Unit
 pub fn[T] InstancePool::fetch(Self[T]) -> T
 pub fn[T] InstancePool::release(Self[T], T) -> Unit
+
+type InteractiveLayererLayerSpan
 
 pub struct InteractiveMrtreeGraphVisitor {
   marker : Int
