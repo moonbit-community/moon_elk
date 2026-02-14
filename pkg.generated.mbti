@@ -1362,11 +1362,15 @@ pub fn edge_label_side_selection_transpose_values() -> Array[String]
 
 pub fn edge_labels(Int) -> Array[Int]
 
+pub let edge_labels_inline : IProperty[Bool]
+
 pub let edge_labels_placement : IProperty[String]
 
 pub fn edge_layout_option_string_value(Int, String) -> String?
 
 pub fn edge_router_factory_factory_for(EdgeRouting) -> ILayoutProcessorFactory[LayeredPhases, LGraph]
+
+pub let edge_routing : IProperty[String]
 
 pub fn edge_routing_to_string(EdgeRouting) -> String
 
@@ -2540,6 +2544,8 @@ pub let internal_properties_inside_connections : IProperty[Bool]
 
 pub let internal_properties_is_part_of_cycle : IProperty[Bool]
 
+pub let internal_properties_label_side : IProperty[LabelSide]
+
 pub let internal_properties_long_edge_has_label_dummies : IProperty[Bool]
 
 pub let internal_properties_long_edge_source : IProperty[LPort?]
@@ -2562,15 +2568,21 @@ pub let internal_properties_original_dummy_node_position : IProperty[Double]
 
 pub let internal_properties_original_opposite_port : IProperty[LPort?]
 
+pub let internal_properties_original_port_constraints : IProperty[String]
+
 pub let internal_properties_partition_dummy : IProperty[Bool]
 
 pub let internal_properties_port_dummy : IProperty[LNode?]
 
 pub let internal_properties_random_next_boolean : IProperty[Bool]
 
+pub let internal_properties_represented_labels : IProperty[Array[LLabel]]
+
 pub let internal_properties_reversed : IProperty[Bool]
 
 pub let internal_properties_second_try_with_initial_order : IProperty[Bool]
+
+pub let internal_properties_self_loop_holder : IProperty[SelfLoopHolder?]
 
 pub let internal_properties_spline_edge_chain : IProperty[Array[LEdge]]
 
@@ -2742,6 +2754,10 @@ pub let layered_options_crossing_minimization_strategy : IProperty[String]
 
 pub let layered_options_edge_routing_polyline_sloped_edge_zone_width : IProperty[Double]
 
+pub let layered_options_edge_routing_self_loop_distribution : IProperty[String]
+
+pub let layered_options_edge_routing_self_loop_ordering : IProperty[String]
+
 pub let layered_options_edge_routing_splines_mode : IProperty[SplineRoutingMode]
 
 pub let layered_options_edge_routing_splines_sloppy_layer_spacing_factor : IProperty[Double]
@@ -2767,6 +2783,8 @@ pub let layered_options_partitioning_partition : IProperty[Int]
 pub let layered_options_port_index : IProperty[Int]
 
 pub let layered_options_port_sorting_strategy : IProperty[String]
+
+pub let layered_options_position : IProperty[KVector]
 
 pub let layered_options_spacing_base_value : IProperty[Double]
 
@@ -3505,6 +3523,8 @@ pub fn new_abstract_meta_data_validator() -> AbstractMetaDataValidator
 pub fn[T] new_abstract_random_list_accessor(() -> T) -> AbstractRandomListAccessor[T]
 
 pub fn new_abstract_resource_path(String?, String) -> AbstractResourcePath
+
+pub fn new_abstract_self_loop_router((SelfLoopHolder) -> Unit) -> AbstractSelfLoopRouter
 
 pub fn new_active_editor_supported_tester() -> ActiveEditorSupportedTester
 
@@ -4524,6 +4544,10 @@ pub fn new_label_cell_with_layout_mode(Double, Bool) -> Cell
 
 pub fn new_label_cell_with_node_label_location(Double, NodeLabelLocation) -> Cell
 
+pub fn new_label_dummy_remover_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
+
+pub fn new_label_placer() -> LabelPlacer
+
 pub fn new_layer(LGraph) -> Layer
 
 pub fn new_layer_constraint_postprocessor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
@@ -4858,6 +4882,8 @@ pub fn new_orthogonal_edge_router_layout_phase() -> ILayoutProcessor[LayeredPhas
 
 pub fn new_orthogonal_routing_generator(RoutingDirection, Double, String?) -> OrthogonalRoutingGenerator
 
+pub fn new_orthogonal_self_loop_router() -> AbstractSelfLoopRouter
+
 pub fn new_outline_node(Double, Double, OutlineNode?) -> OutlineNode
 
 pub fn new_partial_core_debug_grandom_content_assist_parser() -> PartialCoreDebugGRandomContentAssistParser
@@ -4884,6 +4910,8 @@ pub fn new_point_in_quadrant(Double, Double, Quadrant) -> Point
 
 pub fn new_polyline_edge_router_layout_phase() -> ILayoutProcessor[LayeredPhases, LGraph]
 
+pub fn new_polyline_self_loop_router() -> AbstractSelfLoopRouter
+
 pub fn new_polyomino(Int, Int) -> Polyomino
 
 pub fn new_polyomino_compactor() -> PolyominoCompactor
@@ -4895,6 +4923,10 @@ pub fn new_polyomino_with_extensions(Int, Int, Array[UniqueTriple[PolyominoDirec
 pub fn new_polyominoes(Array[Polyomino], Double, fill? : Bool) -> Polyominoes
 
 pub fn new_port_list_sorter_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
+
+pub fn new_port_restorer() -> PortRestorer
+
+pub fn new_port_side_assigner() -> PortSideAssigner
 
 pub fn new_port_side_processor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
@@ -5006,6 +5038,10 @@ pub fn new_reveal_log_folder_action(AbstractLayoutDebugView) -> RevealLogFolderA
 
 pub fn new_reversed_edge_restorer_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
+pub fn new_routing_director() -> RoutingDirector
+
+pub fn new_routing_slot_assigner() -> RoutingSlotAssigner
+
 pub fn new_run_failure(String, String) -> RunFailure
 
 pub fn new_run_notifier() -> RunNotifier
@@ -5019,6 +5055,26 @@ pub fn new_scc_model_order_cycle_breaker_layout_phase() -> ILayoutProcessor[Laye
 pub fn new_scc_node_type_cycle_breaker_layout_phase() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_selective_paint_toggle_action(String, String, String, DisCoGraphRenderingCanvas) -> SelectivePaintToggleAction
+
+pub fn new_self_hyper_loop(SelfLoopHolder) -> SelfHyperLoop
+
+pub fn new_self_hyper_loop_labels(SelfHyperLoop) -> SelfHyperLoopLabels
+
+pub fn new_self_loop_edge(LEdge, SelfLoopPort, SelfLoopPort) -> SelfLoopEdge
+
+pub fn new_self_loop_holder(LNode) -> SelfLoopHolder
+
+pub fn new_self_loop_port(LPort) -> SelfLoopPort
+
+pub fn new_self_loop_port_restorer_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
+
+pub fn new_self_loop_post_processor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
+
+pub fn new_self_loop_pre_processor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
+
+pub fn new_self_loop_router_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
+
+pub fn new_semi_interactive_cross_min_processor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_show_layout_view_handler() -> ShowLayoutViewHandler
 
@@ -5045,6 +5101,8 @@ pub fn new_spline_interpolator((Array[KVector]) -> BezierSpline) -> ISplineInter
 pub fn new_spline_segment_hyper_edge(LPort, Array[Pair[SplineSideToProcess, LEdge]], SplineSideToProcess) -> SplineSegment
 
 pub fn new_spline_segment_single_edge(LEdge, SplineSideToProcess, SplineSideToProcess) -> SplineSegment
+
+pub fn new_spline_self_loop_router() -> AbstractSelfLoopRouter
 
 pub fn new_spore_delaunay_triangulation_layout_phase() -> ILayoutProcessor[SPOrEPhases, SporeGraph]
 
@@ -5386,6 +5444,10 @@ pub let orthogonal_routing_generator_tolerance : Double
 
 pub fn orthogonal_routing_generator_topological_numbering(Array[HyperEdgeSegment]) -> Unit
 
+pub fn orthogonal_self_loop_router_route_self_loops(SelfLoopHolder) -> Unit
+
+pub fn orthogonal_self_loop_router_route_with_modifier(SelfLoopHolder, (SelfLoopEdge, EdgeRoutingDirection, KVectorChain) -> KVectorChain) -> Unit
+
 pub fn overlap(ElkRectangle, ElkRectangle) -> Double
 
 pub fn overlap_mode_literal(OverlapMode) -> String
@@ -5409,6 +5471,10 @@ pub fn point_from_kvector(KVector) -> Point
 pub fn point_with_quadrant(Point, Quadrant) -> Point
 
 pub fn polyline_edge_router_is_external_west_or_east_port(LNode) -> Bool
+
+pub fn polyline_self_loop_router_cut_corners(KVectorChain, Double) -> KVectorChain
+
+pub fn polyline_self_loop_router_route_self_loops(SelfLoopHolder) -> Unit
 
 pub fn polyomino_direction_values() -> Array[PolyominoDirection]
 
@@ -5451,6 +5517,8 @@ pub fn port_layout_option_string_value(Int, String) -> String?
 pub fn port_outgoing_edges(Int) -> Array[Int]
 
 pub fn port_parent(Int) -> Int?
+
+pub fn port_restorer_sorted_two_side_loop_port_sides(SelfHyperLoop) -> Array[PortSide]
 
 pub fn port_set_dimensions(Int, Double, Double) -> Unit
 
@@ -5810,6 +5878,20 @@ pub fn selective_paint_toggle_action_is_checked(SelectivePaintToggleAction) -> B
 
 pub fn selective_paint_toggle_action_run(SelectivePaintToggleAction) -> Unit
 
+pub fn self_loop_holder_install(LNode) -> SelfLoopHolder
+
+pub fn self_loop_holder_needs_self_loop_processing(LNode) -> Bool
+
+pub fn self_loop_test_graph_creator_basic_graph_with_self_loops() -> LGraph
+
+pub fn self_loop_test_graph_creator_basic_graph_without_self_loops() -> LGraph
+
+pub fn self_loop_test_graph_creator_edge(LPort, LPort) -> LEdge
+
+pub fn self_loop_test_graph_creator_node(LGraph) -> LNode
+
+pub fn self_loop_test_graph_creator_ports(LNode, Int, Int, Int, Int) -> Unit
+
 pub fn self_loop_type_from_port_sides(Array[PortSide]) -> SelfLoopType?
 
 pub fn self_loop_type_option_to_string(SelfLoopType?) -> String
@@ -5915,6 +5997,8 @@ pub let spline_edge_router_spline_dimension : Int
 pub fn spline_routing_mode_to_string(SplineRoutingMode) -> String
 
 pub fn spline_routing_mode_values() -> Array[SplineRoutingMode]
+
+pub fn spline_self_loop_router_route_self_loops(SelfLoopHolder) -> Unit
 
 pub fn spline_side_to_process_to_string(SplineSideToProcess) -> String
 
@@ -6940,10 +7024,20 @@ pub fn AbstractResourcePath::set_filter(Self, ((String) -> Bool)?) -> Unit
 pub fn AbstractResourcePath::to_string(Self) -> String
 pub fn AbstractResourcePath::with_filter(Self, ((String) -> Bool)?) -> Self
 
+pub struct AbstractSelfLoopRouter {
+  route_self_loops_fn : (SelfLoopHolder) -> Unit
+}
+pub fn AbstractSelfLoopRouter::route_self_loops(Self, SelfLoopHolder) -> Unit
+
 pub struct ActiveEditorSupportedTester {
   _dummy : Int
 }
 pub fn ActiveEditorSupportedTester::is_supported(Self, Int?) -> Bool
+
+pub enum AddMode {
+  Prepend
+  Append
+}
 
 pub struct Algorithm {
   value : String
@@ -9327,6 +9421,11 @@ pub enum EdgeRouting {
   Polyline
   Orthogonal
   Splines
+}
+
+pub enum EdgeRoutingDirection {
+  Clockwise
+  CounterClockwise
 }
 
 pub enum EdgeRoutingStrategy {
@@ -12434,6 +12533,7 @@ pub enum IntermediateProcessorStrategy {
   HierarchicalPortOrthogonalEdgeRouter
   HypernodeProcessor
   EdgeAndLayerConstraintEdgeReverser
+  SemiInteractiveCrossMinProcessor
 }
 
 pub struct InternalCoreDebugGRandomLexer {
@@ -12892,20 +12992,24 @@ pub fn LGraphElement::set_origin_identifier(Self, String?) -> Unit
 pub struct LLabel {
   shape : LShape
   text : String
+  bool_properties : Map[String, Bool]
   string_properties : Map[String, String]
   l_edge_properties : Map[String, LEdge]
 }
 pub fn LLabel::get_designation(Self) -> String?
 pub fn LLabel::get_id(Self) -> Int
 pub fn LLabel::get_position(Self) -> KVector
+pub fn LLabel::get_property_bool(Self, IProperty[Bool]) -> Bool
 pub fn LLabel::get_property_l_edge(Self, IProperty[LEdge?]) -> LEdge?
 pub fn LLabel::get_property_string(Self, IProperty[String]) -> String
 pub fn LLabel::get_size(Self) -> KVector
 pub fn LLabel::get_text(Self) -> String
+pub fn LLabel::has_property_bool(Self, IProperty[Bool]) -> Bool
 pub fn LLabel::has_property_l_edge(Self, IProperty[LEdge?]) -> Bool
 pub fn LLabel::has_property_string(Self, IProperty[String]) -> Bool
 pub fn LLabel::set_id(Self, Int) -> Unit
 pub fn LLabel::set_origin_identifier(Self, String?) -> Unit
+pub fn LLabel::set_property_bool(Self, IProperty[Bool], Bool) -> Unit
 pub fn LLabel::set_property_l_edge(Self, IProperty[LEdge?], LEdge?) -> Unit
 pub fn LLabel::set_property_string(Self, IProperty[String], String) -> Unit
 pub fn LLabel::to_string(Self) -> String
@@ -12924,13 +13028,17 @@ pub struct LNode {
   int_properties : Map[String, Int]
   bool_properties : Map[String, Bool]
   double_properties : Map[String, Double]
+  kvector_properties : Map[String, KVector]
   string_properties : Map[String, String]
   port_side_properties : Map[String, PortSide]
+  label_side_properties : Map[String, LabelSide]
   node_properties : Map[String, LNode]
   node_array_properties : Map[String, Array[LNode]]
+  label_array_properties : Map[String, Array[LLabel]]
   int_int_map_properties : Map[String, Map[Int, Int]]
   port_properties : Map[String, LPort]
   edge_properties : Map[String, LEdge]
+  self_loop_holder_properties : Map[String, SelfLoopHolder]
 }
 pub fn LNode::add_port(Self, LPort) -> Unit
 pub fn LNode::get_connected_edges(Self) -> Array[LEdge]
@@ -12955,11 +13063,15 @@ pub fn LNode::get_property_bool(Self, IProperty[Bool]) -> Bool
 pub fn LNode::get_property_double(Self, IProperty[Double]) -> Double
 pub fn LNode::get_property_int(Self, IProperty[Int]) -> Int
 pub fn LNode::get_property_int_int_map(Self, IProperty[Map[Int, Int]]) -> Map[Int, Int]
+pub fn LNode::get_property_kvector(Self, IProperty[KVector]) -> KVector
 pub fn LNode::get_property_l_edge(Self, IProperty[LEdge?]) -> LEdge?
+pub fn LNode::get_property_l_label_array(Self, IProperty[Array[LLabel]]) -> Array[LLabel]
 pub fn LNode::get_property_l_node(Self, IProperty[Self?]) -> Self?
 pub fn LNode::get_property_l_node_array(Self, IProperty[Array[Self]]) -> Array[Self]
 pub fn LNode::get_property_l_port(Self, IProperty[LPort?]) -> LPort?
+pub fn LNode::get_property_label_side(Self, IProperty[LabelSide]) -> LabelSide
 pub fn LNode::get_property_port_side(Self, IProperty[PortSide]) -> PortSide
+pub fn LNode::get_property_self_loop_holder(Self, IProperty[SelfLoopHolder?]) -> SelfLoopHolder?
 pub fn LNode::get_property_string(Self, IProperty[String]) -> String
 pub fn LNode::get_size(Self) -> KVector
 pub fn LNode::get_type(Self) -> NodeType
@@ -12967,12 +13079,17 @@ pub fn LNode::has_property_bool(Self, IProperty[Bool]) -> Bool
 pub fn LNode::has_property_double(Self, IProperty[Double]) -> Bool
 pub fn LNode::has_property_int(Self, IProperty[Int]) -> Bool
 pub fn LNode::has_property_int_int_map(Self, IProperty[Map[Int, Int]]) -> Bool
+pub fn LNode::has_property_kvector(Self, IProperty[KVector]) -> Bool
 pub fn LNode::has_property_l_edge(Self, IProperty[LEdge?]) -> Bool
+pub fn LNode::has_property_l_label_array(Self, IProperty[Array[LLabel]]) -> Bool
 pub fn LNode::has_property_l_node(Self, IProperty[Self?]) -> Bool
 pub fn LNode::has_property_l_node_array(Self, IProperty[Array[Self]]) -> Bool
 pub fn LNode::has_property_l_port(Self, IProperty[LPort?]) -> Bool
+pub fn LNode::has_property_label_side(Self, IProperty[LabelSide]) -> Bool
 pub fn LNode::has_property_port_side(Self, IProperty[PortSide]) -> Bool
+pub fn LNode::has_property_self_loop_holder(Self, IProperty[SelfLoopHolder?]) -> Bool
 pub fn LNode::has_property_string(Self, IProperty[String]) -> Bool
+pub fn LNode::is_inline_edge_label(Self) -> Bool
 pub fn LNode::remove_port(Self, LPort) -> Unit
 pub fn LNode::set_graph(Self, LGraph?) -> Unit
 pub fn LNode::set_id(Self, Int) -> Unit
@@ -12982,11 +13099,15 @@ pub fn LNode::set_property_bool(Self, IProperty[Bool], Bool) -> Unit
 pub fn LNode::set_property_double(Self, IProperty[Double], Double) -> Unit
 pub fn LNode::set_property_int(Self, IProperty[Int], Int) -> Unit
 pub fn LNode::set_property_int_int_map(Self, IProperty[Map[Int, Int]], Map[Int, Int]) -> Unit
+pub fn LNode::set_property_kvector(Self, IProperty[KVector], KVector) -> Unit
 pub fn LNode::set_property_l_edge(Self, IProperty[LEdge?], LEdge?) -> Unit
+pub fn LNode::set_property_l_label_array(Self, IProperty[Array[LLabel]], Array[LLabel]) -> Unit
 pub fn LNode::set_property_l_node(Self, IProperty[Self?], Self?) -> Unit
 pub fn LNode::set_property_l_node_array(Self, IProperty[Array[Self]], Array[Self]) -> Unit
 pub fn LNode::set_property_l_port(Self, IProperty[LPort?], LPort?) -> Unit
+pub fn LNode::set_property_label_side(Self, IProperty[LabelSide], LabelSide) -> Unit
 pub fn LNode::set_property_port_side(Self, IProperty[PortSide], PortSide) -> Unit
+pub fn LNode::set_property_self_loop_holder(Self, IProperty[SelfLoopHolder?], SelfLoopHolder?) -> Unit
 pub fn LNode::set_property_string(Self, IProperty[String], String) -> Unit
 pub fn LNode::set_type(Self, NodeType) -> Unit
 pub fn LNode::to_string(Self) -> String
@@ -13065,6 +13186,11 @@ pub fn LShape::get_position(Self) -> KVector
 pub fn LShape::get_size(Self) -> KVector
 pub fn LShape::set_id(Self, Int) -> Unit
 pub fn LShape::set_origin_identifier(Self, String?) -> Unit
+
+pub struct LabelPlacer {
+  _reserved : Int
+}
+pub fn LabelPlacer::place_labels(Self, SelfLoopHolder, IElkProgressMonitor?) -> Unit
 
 pub enum LabelSide {
   Unknown
@@ -14891,6 +15017,12 @@ pub enum PortLabelPlacement {
   SpaceEfficient
 }
 
+pub struct PortRestorer {
+  mut sl_loops_by_type : Map[Int, Array[SelfHyperLoop]]
+  target_areas : Map[String, Array[SelfLoopPort]]
+}
+pub fn PortRestorer::restore_ports(Self, SelfLoopHolder, IElkProgressMonitor?) -> Unit
+
 pub enum PortSide {
   SideUndefined
   North
@@ -14902,6 +15034,28 @@ pub fn PortSide::are_adjacent(Self, Self) -> Bool
 pub fn PortSide::left(Self) -> Self
 pub fn PortSide::opposed(Self) -> Self
 pub fn PortSide::right(Self) -> Self
+
+pub enum PortSideArea {
+  Start
+  Middle
+  End
+}
+
+pub struct PortSideAssigner {
+  _reserved : Int
+}
+pub fn PortSideAssigner::assign_port_sides(Self, SelfLoopHolder) -> Unit
+
+pub enum PortSideAssignerTarget {
+  NorthTarget
+  SouthTarget
+  EastTarget
+  WestTarget
+  NorthWestCornerTarget
+  NorthEastCornerTarget
+  SouthWestCornerTarget
+  SouthEastCornerTarget
+}
 
 pub enum PortSortingStrategy {
   InputOrder
@@ -15281,6 +15435,18 @@ pub enum RoutingDirectionStrategyType {
   SouthToNorthRoutingStrategyType
 }
 
+pub struct RoutingDirector {
+  mut port_penalties : Array[Int]?
+}
+pub fn RoutingDirector::determine_loop_routes(Self, SelfLoopHolder) -> Unit
+
+pub struct RoutingSlotAssigner {
+  hyper_edge_segments : Array[HyperEdgeSegment]
+  sl_loop_to_segment_map : Map[Int, HyperEdgeSegment]
+  sl_loop_activity_over_ports : Map[Int, Array[Bool]]
+}
+pub fn RoutingSlotAssigner::assign_routing_slots(Self, SelfLoopHolder) -> Unit
+
 pub struct RunFailure {
   description : String
   message : String
@@ -15329,11 +15495,105 @@ pub struct SelectivePaintToggleAction {
   mut checked : Bool
 }
 
+pub struct SelfHyperLoop {
+  mut id : Int
+  sl_holder : SelfLoopHolder
+  sl_ports : Array[SelfLoopPort]
+  sl_edges : Array[SelfLoopEdge]
+  mut sl_labels : SelfHyperLoopLabels?
+  mut self_loop_type : SelfLoopType?
+  sl_ports_by_side : Map[Int, Array[SelfLoopPort]]
+  mut leftmost_port : SelfLoopPort?
+  mut rightmost_port : SelfLoopPort?
+  occupied_port_sides : Array[PortSide]
+  routing_slot : Array[Int]
+}
+pub fn SelfHyperLoop::add_self_loop_edge(Self, SelfLoopEdge) -> Unit
+pub fn SelfHyperLoop::compute_ports_per_side(Self) -> Unit
+pub fn SelfHyperLoop::get_id(Self) -> Int
+pub fn SelfHyperLoop::get_leftmost_port(Self) -> SelfLoopPort?
+pub fn SelfHyperLoop::get_occupied_port_sides(Self) -> Array[PortSide]
+pub fn SelfHyperLoop::get_rightmost_port(Self) -> SelfLoopPort?
+pub fn SelfHyperLoop::get_routing_slot(Self, PortSide) -> Int
+pub fn SelfHyperLoop::get_self_loop_type(Self) -> SelfLoopType?
+pub fn SelfHyperLoop::get_sl_edges(Self) -> Array[SelfLoopEdge]
+pub fn SelfHyperLoop::get_sl_holder(Self) -> SelfLoopHolder
+pub fn SelfHyperLoop::get_sl_labels(Self) -> SelfHyperLoopLabels?
+pub fn SelfHyperLoop::get_sl_ports(Self) -> Array[SelfLoopPort]
+pub fn SelfHyperLoop::get_sl_ports_by_side(Self, PortSide) -> Array[SelfLoopPort]
+pub fn SelfHyperLoop::get_sl_ports_by_side_map(Self) -> Map[Int, Array[SelfLoopPort]]
+pub fn SelfHyperLoop::has_sl_ports_on_side(Self, PortSide) -> Bool
+pub fn SelfHyperLoop::set_id(Self, Int) -> Unit
+pub fn SelfHyperLoop::set_leftmost_port(Self, SelfLoopPort?) -> Unit
+pub fn SelfHyperLoop::set_rightmost_port(Self, SelfLoopPort?) -> Unit
+pub fn SelfHyperLoop::set_routing_slot(Self, PortSide, Int) -> Unit
+
+pub enum SelfHyperLoopLabelAlignment {
+  Center
+  Left
+  Right
+  Top
+}
+
+pub struct SelfHyperLoopLabels {
+  mut id : Int
+  l_labels : Array[LLabel]
+  size : KVector
+  position : KVector
+  layout_direction : Direction
+  label_label_spacing : Double
+  mut side : PortSide?
+  mut alignment : SelfHyperLoopLabelAlignment?
+  mut alignment_reference_sl_port : SelfLoopPort?
+}
+pub fn SelfHyperLoopLabels::add_l_labels(Self, Array[LLabel]) -> Unit
+pub fn SelfHyperLoopLabels::apply_placement(Self, KVector) -> Unit
+pub fn SelfHyperLoopLabels::get_alignment(Self) -> SelfHyperLoopLabelAlignment?
+pub fn SelfHyperLoopLabels::get_alignment_reference_sl_port(Self) -> SelfLoopPort?
+pub fn SelfHyperLoopLabels::get_id(Self) -> Int
+pub fn SelfHyperLoopLabels::get_l_labels(Self) -> Array[LLabel]
+pub fn SelfHyperLoopLabels::get_position(Self) -> KVector
+pub fn SelfHyperLoopLabels::get_side(Self) -> PortSide
+pub fn SelfHyperLoopLabels::get_size(Self) -> KVector
+pub fn SelfHyperLoopLabels::set_alignment(Self, SelfHyperLoopLabelAlignment) -> Unit
+pub fn SelfHyperLoopLabels::set_alignment_reference_sl_port(Self, SelfLoopPort?) -> Unit
+pub fn SelfHyperLoopLabels::set_id(Self, Int) -> Unit
+pub fn SelfHyperLoopLabels::set_side(Self, PortSide) -> Unit
+
 pub enum SelfLoopDistributionStrategy {
   Equally
   North
   NorthSouth
 }
+
+pub struct SelfLoopEdge {
+  l_edge : LEdge
+  mut sl_hyper_loop : SelfHyperLoop?
+  sl_source : SelfLoopPort
+  sl_target : SelfLoopPort
+}
+pub fn SelfLoopEdge::get_l_edge(Self) -> LEdge
+pub fn SelfLoopEdge::get_label_side(Self) -> PortSide
+pub fn SelfLoopEdge::get_sl_hyper_loop(Self) -> SelfHyperLoop?
+pub fn SelfLoopEdge::get_sl_source(Self) -> SelfLoopPort
+pub fn SelfLoopEdge::get_sl_target(Self) -> SelfLoopPort
+pub fn SelfLoopEdge::is_inline(Self) -> Bool
+pub fn SelfLoopEdge::set_sl_hyper_loop(Self, SelfHyperLoop) -> Unit
+
+pub struct SelfLoopHolder {
+  l_node : LNode
+  sl_hyper_loops : Array[SelfHyperLoop]
+  sl_ports : Map[Int, SelfLoopPort]
+  sl_port_order : Array[Int]
+  mut are_ports_hidden : Bool
+  routing_slot_count : Array[Int]
+}
+pub fn SelfLoopHolder::are_ports_hidden(Self) -> Bool
+pub fn SelfLoopHolder::get_l_node(Self) -> LNode
+pub fn SelfLoopHolder::get_routing_slot_count(Self) -> Array[Int]
+pub fn SelfLoopHolder::get_sl_hyper_loops(Self) -> Array[SelfHyperLoop]
+pub fn SelfLoopHolder::get_sl_port_map(Self) -> Map[Int, SelfLoopPort]
+pub fn SelfLoopHolder::set_ports_hidden(Self, Bool) -> Unit
 
 pub enum SelfLoopOrderingStrategy {
   Stacked
@@ -15346,6 +15606,21 @@ pub enum SelfLoopPlacementStrategy {
   NorthStacked
   NorthSequence
 }
+
+pub struct SelfLoopPort {
+  l_port : LPort
+  had_only_self_loops : Bool
+  incoming_sl_edges : Array[SelfLoopEdge]
+  outgoing_sl_edges : Array[SelfLoopEdge]
+  mut hidden : Bool
+}
+pub fn SelfLoopPort::get_incoming_sl_edges(Self) -> Array[SelfLoopEdge]
+pub fn SelfLoopPort::get_l_port(Self) -> LPort
+pub fn SelfLoopPort::get_outgoing_sl_edges(Self) -> Array[SelfLoopEdge]
+pub fn SelfLoopPort::get_sl_net_flow(Self) -> Int
+pub fn SelfLoopPort::had_only_self_loops(Self) -> Bool
+pub fn SelfLoopPort::is_hidden(Self) -> Bool
+pub fn SelfLoopPort::set_hidden(Self, Bool) -> Unit
 
 pub enum SelfLoopType {
   OneSide

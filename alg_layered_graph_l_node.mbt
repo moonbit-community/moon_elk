@@ -35,6 +35,14 @@ fn lnode_clone_int_int_map(source : Map[Int, Int]) -> Map[Int, Int] {
 }
 
 ///|
+fn lnode_node_type_is_label_node(node_type : NodeType) -> Bool {
+  match node_type {
+    NodeType::LabelNode => true
+    _ => false
+  }
+}
+
+///|
 pub enum NodeType {
   Normal
   LongEdge
@@ -78,8 +86,10 @@ pub struct LNode {
   kvector_properties : Map[String, KVector]
   string_properties : Map[String, String]
   port_side_properties : Map[String, PortSide]
+  label_side_properties : Map[String, LabelSide]
   node_properties : Map[String, LNode]
   node_array_properties : Map[String, Array[LNode]]
+  label_array_properties : Map[String, Array[LLabel]]
   int_int_map_properties : Map[String, Map[Int, Int]]
   port_properties : Map[String, LPort]
   edge_properties : Map[String, LEdge]
@@ -105,8 +115,10 @@ pub fn new_l_node(graph? : LGraph? = None) -> LNode {
     kvector_properties: {},
     string_properties: {},
     port_side_properties: {},
+    label_side_properties: {},
     node_properties: {},
     node_array_properties: {},
+    label_array_properties: {},
     int_int_map_properties: {},
     port_properties: {},
     edge_properties: {},
@@ -501,6 +513,26 @@ pub fn LNode::get_property_port_side(
 }
 
 ///|
+pub fn LNode::set_property_label_side(
+  self : LNode,
+  property : IProperty[LabelSide],
+  value : LabelSide,
+) -> Unit {
+  self.label_side_properties[property.get_id()] = value
+}
+
+///|
+pub fn LNode::get_property_label_side(
+  self : LNode,
+  property : IProperty[LabelSide],
+) -> LabelSide {
+  match self.label_side_properties.get(property.get_id()) {
+    Some(value) => value
+    None => property.get_default()
+  }
+}
+
+///|
 pub fn LNode::has_property_int(self : LNode, property : IProperty[Int]) -> Bool {
   self.int_properties.contains(property.get_id())
 }
@@ -543,6 +575,14 @@ pub fn LNode::has_property_port_side(
   property : IProperty[PortSide],
 ) -> Bool {
   self.port_side_properties.contains(property.get_id())
+}
+
+///|
+pub fn LNode::has_property_label_side(
+  self : LNode,
+  property : IProperty[LabelSide],
+) -> Bool {
+  self.label_side_properties.contains(property.get_id())
 }
 
 ///|
@@ -602,6 +642,34 @@ pub fn LNode::has_property_l_node_array(
   property : IProperty[Array[LNode]],
 ) -> Bool {
   self.node_array_properties.contains(property.get_id())
+}
+
+///|
+pub fn LNode::set_property_l_label_array(
+  self : LNode,
+  property : IProperty[Array[LLabel]],
+  value : Array[LLabel],
+) -> Unit {
+  self.label_array_properties[property.get_id()] = value.copy()
+}
+
+///|
+pub fn LNode::get_property_l_label_array(
+  self : LNode,
+  property : IProperty[Array[LLabel]],
+) -> Array[LLabel] {
+  match self.label_array_properties.get(property.get_id()) {
+    Some(value) => value.copy()
+    None => property.get_default().copy()
+  }
+}
+
+///|
+pub fn LNode::has_property_l_label_array(
+  self : LNode,
+  property : IProperty[Array[LLabel]],
+) -> Bool {
+  self.label_array_properties.contains(property.get_id())
 }
 
 ///|
@@ -729,6 +797,27 @@ pub fn LNode::has_property_self_loop_holder(
   property : IProperty[SelfLoopHolder?],
 ) -> Bool {
   self.self_loop_holder_properties.contains(property.get_id())
+}
+
+///|
+pub fn LNode::is_inline_edge_label(self : LNode) -> Bool {
+  if !lnode_node_type_is_label_node(self.get_type()) {
+    return false
+  }
+
+  let represented_labels = self.get_property_l_label_array(
+    internal_properties_represented_labels,
+  )
+  if represented_labels.is_empty() {
+    return false
+  }
+
+  for label in represented_labels {
+    if !label.get_property_bool(edge_labels_inline) {
+      return false
+    }
+  }
+  true
 }
 
 ///|

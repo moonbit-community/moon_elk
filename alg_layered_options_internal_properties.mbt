@@ -33,6 +33,18 @@ pub let internal_properties_end_label_edge : IProperty[LEdge?] = new_property(
 )
 
 ///|
+pub let internal_properties_represented_labels : IProperty[Array[LLabel]] = new_property(
+  "representedLabels",
+  [],
+)
+
+///|
+pub let internal_properties_label_side : IProperty[LabelSide] = new_property(
+  "labelSide",
+  LabelSide::Unknown,
+)
+
+///|
 pub let internal_properties_in_layer_layout_unit : IProperty[LNode?] = new_property(
   "inLayerLayoutUnit",
   None,
@@ -61,8 +73,7 @@ pub let internal_properties_port_dummy : IProperty[LNode?] = new_property(
 
 ///|
 pub let internal_properties_original_port_constraints : IProperty[String] = new_property(
-  "originalPortConstraints",
-  "UNDEFINED",
+  "originalPortConstraints", "UNDEFINED",
 )
 
 ///|

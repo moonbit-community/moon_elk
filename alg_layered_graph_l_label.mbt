@@ -2,6 +2,7 @@
 pub struct LLabel {
   shape : LShape
   text : String
+  bool_properties : Map[String, Bool]
   string_properties : Map[String, String]
   l_edge_properties : Map[String, LEdge]
 }
@@ -16,6 +17,7 @@ pub fn new_l_label_text(thetext : String) -> LLabel {
   {
     shape: new_l_shape(),
     text: thetext,
+    bool_properties: {},
     string_properties: {},
     l_edge_properties: {},
   }
@@ -69,6 +71,34 @@ pub fn LLabel::to_string(self : LLabel) -> String {
     Some(designation) => "l_" + designation
     None => "label"
   }
+}
+
+///|
+pub fn LLabel::set_property_bool(
+  self : LLabel,
+  property : IProperty[Bool],
+  value : Bool,
+) -> Unit {
+  self.bool_properties[property.get_id()] = value
+}
+
+///|
+pub fn LLabel::get_property_bool(
+  self : LLabel,
+  property : IProperty[Bool],
+) -> Bool {
+  match self.bool_properties.get(property.get_id()) {
+    Some(value) => value
+    None => property.get_default()
+  }
+}
+
+///|
+pub fn LLabel::has_property_bool(
+  self : LLabel,
+  property : IProperty[Bool],
+) -> Bool {
+  self.bool_properties.contains(property.get_id())
 }
 
 ///|
