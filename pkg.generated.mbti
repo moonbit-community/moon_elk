@@ -4422,6 +4422,8 @@ pub fn new_interactive_crossing_minimizer_layout_phase() -> ILayoutProcessor[Lay
 
 pub fn new_interactive_cycle_breaker_layout_phase() -> ILayoutProcessor[LayeredPhases, LGraph]
 
+pub fn new_interactive_external_port_positioner_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
+
 pub fn new_interactive_mrtree_graph_element_visitor() -> IGraphElementVisitor
 
 pub fn new_interactive_mrtree_graph_visitor() -> InteractiveMrtreeGraphVisitor
