@@ -33,6 +33,11 @@ pub fn LShape::set_origin_identifier(
 }
 
 ///|
+pub fn LShape::get_origin_identifier(self : LShape) -> String? {
+  self.graph_element.get_origin_identifier()
+}
+
+///|
 pub fn LShape::get_designation(self : LShape) -> String? {
   self.graph_element.get_designation()
 }

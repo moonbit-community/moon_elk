@@ -2488,6 +2488,24 @@ pub fn hierarchy_handling_to_string(HierarchyHandling) -> String
 
 pub fn high_level_sorting_criterion_values() -> Array[HighLevelSortingCriterion]
 
+pub fn horizontal_graph_compactor_clear_origin_lookup() -> Unit
+
+pub fn horizontal_graph_compactor_get_lnode_or_null(CNode) -> LNode?
+
+pub fn horizontal_graph_compactor_get_vertical_segment_or_null(CNode) -> VerticalSegment?
+
+pub fn horizontal_graph_compactor_is_vertical_segments_of_same_edge(CNode, CNode) -> Bool
+
+pub fn horizontal_graph_compactor_lnode_origin_key(LNode) -> String
+
+pub fn horizontal_graph_compactor_network_simplex_compaction(OneDimensionalCompactor) -> Unit
+
+pub fn horizontal_graph_compactor_register_origin_lnode(String, LNode) -> Unit
+
+pub fn horizontal_graph_compactor_register_origin_vertical_segment(String, VerticalSegment) -> Unit
+
+pub fn horizontal_graph_compactor_vertical_segment_origin_key(VerticalSegment) -> String
+
 pub fn horizontal_label_alignment_to_string(HorizontalLabelAlignment) -> String
 
 pub fn horizontal_label_alignment_values() -> Array[HorizontalLabelAlignment]
@@ -2674,6 +2692,8 @@ pub fn kvector_diff(KVector, KVector) -> KVector
 
 pub fn kvector_sum(Array[KVector]) -> KVector
 
+pub let label_dummy_switcher_include_label : IProperty[Bool]
+
 pub fn label_height(Int) -> Double
 
 pub fn label_identifier(Int) -> String
@@ -2681,6 +2701,12 @@ pub fn label_identifier(Int) -> String
 pub fn label_labels(Int) -> Array[Int]
 
 pub fn label_layout_option_string_value(Int, String) -> String?
+
+pub let label_management_options_label_manager : IProperty[ILabelManager?]
+
+pub fn label_management_processor_do_manage_labels(ILabelManager, Array[LLabel], Double, Double, Bool) -> KVector
+
+pub let label_management_processor_min_width_edge_labels : Double
 
 pub fn label_parent(Int) -> ElkLabelParent?
 
@@ -2764,6 +2790,8 @@ pub let layered_options_allow_non_flow_ports_to_switch_sides : IProperty[Bool]
 
 pub let layered_options_comment_box : IProperty[Bool]
 
+pub let layered_options_compaction_post_compaction_constraints : IProperty[String]
+
 pub let layered_options_compaction_post_compaction_strategy : IProperty[String]
 
 pub let layered_options_consider_model_order_crossing_counter_node_influence : IProperty[Double]
@@ -2801,6 +2829,8 @@ pub let layered_options_crossing_minimization_hierarchical_sweepiness : IPropert
 pub let layered_options_crossing_minimization_position_id : IProperty[Int]
 
 pub let layered_options_crossing_minimization_strategy : IProperty[String]
+
+pub let layered_options_edge_labels_center_label_placement_strategy : IProperty[String]
 
 pub let layered_options_edge_labels_side_selection : IProperty[String]
 
@@ -3528,6 +3558,8 @@ pub fn nedge_of() -> NEdgeBuilder
 
 pub fn neighborhood_information_build_for(LGraph) -> NeighborhoodInformation
 
+pub fn network_simplex_compaction(OneDimensionalCompactor) -> Unit
+
 pub fn network_simplex_for_graph(NGraph) -> NetworkSimplex
 
 pub fn network_simplex_nedge_of() -> NEdgeBuilder
@@ -3991,6 +4023,8 @@ pub fn new_eades_model() -> EadesModel
 pub fn new_eclipse_runtime_detector() -> EclipseRuntimeDetector
 
 pub fn new_edge_and_layer_constraint_edge_reverser_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
+
+pub fn new_edge_aware_scanline_constraint_calculation(LGraph) -> (OneDimensionalCompactor) -> Unit
 
 pub fn new_elk_cancel_indicator(canceled? : Bool) -> IElkCancelIndicator
 
@@ -4544,6 +4578,8 @@ pub fn new_hierarchical_port_position_processor_layout_processor() -> ILayoutPro
 
 pub fn new_high_degree_node_layering_processor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
+pub fn new_horizontal_graph_compactor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
+
 pub fn new_hyper_edge_segment(BaseRoutingDirectionStrategy) -> HyperEdgeSegment
 
 pub fn new_hyper_edge_segment_splitter(OrthogonalRoutingGenerator) -> HyperEdgeSegmentSplitter
@@ -4563,6 +4599,8 @@ pub fn new_i_edit_part_filter((Int) -> Bool) -> IEditPartFilter
 pub fn new_i_edit_part_filter_default_impl() -> IEditPartFilter
 
 pub fn new_i_initializable(init_at_layer_level? : (Int, Array[Array[LNode]]) -> Unit, init_at_node_level? : (Int, Int, Array[Array[LNode]]) -> Unit, init_at_port_level? : (Int, Int, Int, Array[Array[LNode]]) -> Unit, init_at_edge_level? : (Int, Int, Int, Int, LEdge, Array[Array[LNode]]) -> Unit, init_after_traversal? : () -> Unit) -> IInitializable
+
+pub fn new_i_label_manager((String, Double) -> KVector?) -> ILabelManager
 
 pub fn new_i_sweep_port_distributor((Array[Array[LNode]], Int, Bool) -> Bool, init_at_layer_level? : (Int, Array[Array[LNode]]) -> Unit, init_at_node_level? : (Int, Int, Array[Array[LNode]]) -> Unit, init_at_port_level? : (Int, Int, Int, Array[Array[LNode]]) -> Unit, init_at_edge_level? : (Int, Int, Int, Int, LEdge, Array[Array[LNode]]) -> Unit, init_after_traversal? : () -> Unit) -> ISweepPortDistributor
 
@@ -4693,6 +4731,12 @@ pub fn new_label_cell_with_node_label_location(Double, NodeLabelLocation) -> Cel
 pub fn new_label_dummy_inserter_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_label_dummy_remover_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
+
+pub fn new_label_dummy_switcher_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
+
+pub fn new_label_management_processor(Bool) -> LabelManagementProcessor
+
+pub fn new_label_management_processor_layout_processor(Bool) -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_label_placer() -> LabelPlacer
 
@@ -4833,6 +4877,8 @@ pub fn[T, G] new_layout_test_runner(() -> T, Array[TestAlgorithm], Array[TestCon
 pub fn new_layout_upon_load_setting_action() -> LayoutUponLoadSettingAction
 
 pub fn new_layout_view_part() -> LayoutViewPart
+
+pub fn new_lgraph_to_cgraph_transformer() -> LGraphToCGraphTransformer
 
 pub fn new_libavoid_bundle(symbolic_name? : String) -> LibavoidBundle
 
@@ -6437,6 +6483,8 @@ pub fn vertical_label_alignment_to_string(VerticalLabelAlignment) -> String
 pub fn vertical_label_alignment_values() -> Array[VerticalLabelAlignment]
 
 pub fn vertical_port_placement_size_calculator_calculate_vertical_port_placement_size(NodeContext) -> Unit
+
+pub fn vertical_segment_origin_key(VerticalSegment) -> String
 
 pub fn vertiflex_absolute_x_placer_phase_factory(AbsoluteXPlacerStrategy) -> ILayoutProcessorFactory[VertiFlexLayoutPhases, Int]
 
@@ -12703,6 +12751,11 @@ pub fn IInitializable::init_at_layer_level(Self, Int, Array[Array[LNode]]) -> Un
 pub fn IInitializable::init_at_node_level(Self, Int, Int, Array[Array[LNode]]) -> Unit
 pub fn IInitializable::init_at_port_level(Self, Int, Int, Int, Array[Array[LNode]]) -> Unit
 
+pub struct ILabelManager {
+  manage_label_size_fn : (String, Double) -> KVector?
+}
+pub fn ILabelManager::manage_label_size(Self, String, Double) -> KVector?
+
 pub struct ILayoutConfigurationStore {
   get_editing_domain_fn : () -> Int?
   get_option_value_fn : (String) -> String?
@@ -13340,6 +13393,7 @@ pub struct LGraph {
   double_properties : Map[String, Double]
   string_properties : Map[String, String]
   string_array_properties : Map[String, Array[String]]
+  label_manager_properties : Map[String, ILabelManager]
   elk_margin_properties : Map[String, Spacing]
   component_ordering_strategy_properties : Map[String, ComponentOrderingStrategy]
   direction_properties : Map[String, Direction]
@@ -13365,6 +13419,7 @@ pub fn LGraph::get_property_direction(Self, IProperty[Direction]) -> Direction
 pub fn LGraph::get_property_double(Self, IProperty[Double]) -> Double
 pub fn LGraph::get_property_elk_margin(Self, IProperty[Spacing]) -> Spacing
 pub fn LGraph::get_property_graph_properties_array(Self, IProperty[Array[GraphProperties]]) -> Array[GraphProperties]
+pub fn LGraph::get_property_i_label_manager(Self, IProperty[ILabelManager?]) -> ILabelManager?
 pub fn LGraph::get_property_int(Self, IProperty[Int]) -> Int
 pub fn LGraph::get_property_l_node_array(Self, IProperty[Array[LNode]]) -> Array[LNode]
 pub fn LGraph::get_property_port_side_array(Self, IProperty[Array[PortSide]]) -> Array[PortSide]
@@ -13375,6 +13430,7 @@ pub fn LGraph::get_size(Self) -> KVector
 pub fn LGraph::has_property_bool(Self, IProperty[Bool]) -> Bool
 pub fn LGraph::has_property_double(Self, IProperty[Double]) -> Bool
 pub fn LGraph::has_property_elk_margin(Self, IProperty[Spacing]) -> Bool
+pub fn LGraph::has_property_i_label_manager(Self, IProperty[ILabelManager?]) -> Bool
 pub fn LGraph::has_property_int(Self, IProperty[Int]) -> Bool
 pub fn LGraph::has_property_l_node_array(Self, IProperty[Array[LNode]]) -> Bool
 pub fn LGraph::has_property_spline_routing_mode(Self, IProperty[SplineRoutingMode]) -> Bool
@@ -13389,6 +13445,7 @@ pub fn LGraph::set_property_direction(Self, IProperty[Direction], Direction) -> 
 pub fn LGraph::set_property_double(Self, IProperty[Double], Double) -> Unit
 pub fn LGraph::set_property_elk_margin(Self, IProperty[Spacing], Spacing) -> Unit
 pub fn LGraph::set_property_graph_properties_array(Self, IProperty[Array[GraphProperties]], Array[GraphProperties]) -> Unit
+pub fn LGraph::set_property_i_label_manager(Self, IProperty[ILabelManager?], ILabelManager?) -> Unit
 pub fn LGraph::set_property_int(Self, IProperty[Int], Int) -> Unit
 pub fn LGraph::set_property_l_node_array(Self, IProperty[Array[LNode]], Array[LNode]) -> Unit
 pub fn LGraph::set_property_port_side_array(Self, IProperty[Array[PortSide]], Array[PortSide]) -> Unit
@@ -13407,6 +13464,20 @@ pub fn LGraphElement::get_origin_identifier(Self) -> String?
 pub fn LGraphElement::set_id(Self, Int) -> Unit
 pub fn LGraphElement::set_origin_identifier(Self, String?) -> Unit
 
+pub struct LGraphToCGraphTransformer {
+  mut c_graph : CGraph?
+  mut layered_graph : LGraph?
+  mut edge_routing : EdgeRouting
+  comment_offsets : Array[(LNode, LNode, KVector)]
+  mut nodes_map : Map[Int, CNode]
+  mut vertical_segments_map : Map[Int, CNode]
+  mut lock_map : Map[String, Quadruplet]
+}
+pub fn LGraphToCGraphTransformer::apply_layout(Self) -> Unit
+pub fn LGraphToCGraphTransformer::get_lock(Self, CNode) -> Quadruplet?
+pub fn LGraphToCGraphTransformer::get_lock_map(Self) -> Map[String, Quadruplet]
+pub fn LGraphToCGraphTransformer::transform(Self, LGraph) -> CGraph
+
 pub struct LLabel {
   shape : LShape
   text : String
@@ -13417,6 +13488,7 @@ pub struct LLabel {
 }
 pub fn LLabel::get_designation(Self) -> String?
 pub fn LLabel::get_id(Self) -> Int
+pub fn LLabel::get_origin_identifier(Self) -> String?
 pub fn LLabel::get_position(Self) -> KVector
 pub fn LLabel::get_property_bool(Self, IProperty[Bool]) -> Bool
 pub fn LLabel::get_property_l_edge(Self, IProperty[LEdge?]) -> LEdge?
@@ -13617,10 +13689,18 @@ pub struct LShape {
 }
 pub fn LShape::get_designation(Self) -> String?
 pub fn LShape::get_id(Self) -> Int
+pub fn LShape::get_origin_identifier(Self) -> String?
 pub fn LShape::get_position(Self) -> KVector
 pub fn LShape::get_size(Self) -> KVector
 pub fn LShape::set_id(Self, Int) -> Unit
 pub fn LShape::set_origin_identifier(Self, String?) -> Unit
+
+type LabelDummySwitcherInfo
+
+pub struct LabelManagementProcessor {
+  center_labels : Bool
+}
+pub fn LabelManagementProcessor::process(Self, LGraph, IElkProgressMonitor?) -> Unit
 
 pub struct LabelPlacer {
   _reserved : Int
@@ -16704,6 +16784,7 @@ pub(all) enum VerticalLabelAlignment {
 }
 
 pub struct VerticalSegment {
+  id : Int
   potential_group_parents : Array[CNode]
   represented_l_edges : Array[LEdge]
   affected_bends : Array[KVector]
@@ -16717,6 +16798,7 @@ pub struct VerticalSegment {
 }
 pub fn VerticalSegment::compare_to(Self, Self) -> Int
 pub fn VerticalSegment::get_a_port(Self) -> LPort?
+pub fn VerticalSegment::get_id(Self) -> Int
 pub fn VerticalSegment::intersects(Self, Self) -> Bool
 pub fn VerticalSegment::join_with(Self, Self) -> Self
 pub fn VerticalSegment::set_a_port(Self, LPort?) -> Unit

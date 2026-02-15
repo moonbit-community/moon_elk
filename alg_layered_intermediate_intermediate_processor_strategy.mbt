@@ -221,6 +221,8 @@ fn intermediate_processor_create(
       new_self_loop_router_layout_processor()
     IntermediateProcessorStrategy::LabelDummyInserter =>
       new_label_dummy_inserter_layout_processor()
+    IntermediateProcessorStrategy::LabelDummySwitcher =>
+      new_label_dummy_switcher_layout_processor()
     IntermediateProcessorStrategy::LabelSideSelector =>
       new_label_side_selector_layout_processor()
     IntermediateProcessorStrategy::LabelDummyRemover =>

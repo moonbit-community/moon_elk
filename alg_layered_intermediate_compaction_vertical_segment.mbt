@@ -33,7 +33,18 @@ fn vertical_segment_represented_edges_to_string(
 }
 
 ///|
+let vertical_segment_next_id_ref : Ref[Int] = Ref::new(0)
+
+///|
+fn vertical_segment_next_id() -> Int {
+  let id = vertical_segment_next_id_ref.val
+  vertical_segment_next_id_ref.val = id + 1
+  id
+}
+
+///|
 pub struct VerticalSegment {
+  id : Int
   potential_group_parents : Array[CNode]
   represented_l_edges : Array[LEdge]
   affected_bends : Array[KVector]
@@ -89,6 +100,7 @@ pub fn new_vertical_segment(
     represented_l_edges,
     affected_bends,
     affected_bounding_boxes: [],
+    id: vertical_segment_next_id(),
     hitbox,
     junction_points,
     ignore_spacing: new_quadruplet(),
@@ -96,6 +108,16 @@ pub fn new_vertical_segment(
     a_port: None,
     joined: [],
   }
+}
+
+///|
+pub fn VerticalSegment::get_id(self : VerticalSegment) -> Int {
+  self.id
+}
+
+///|
+pub fn vertical_segment_origin_key(segment : VerticalSegment) -> String {
+  "vs:" + segment.get_id().to_string()
 }
 
 ///|

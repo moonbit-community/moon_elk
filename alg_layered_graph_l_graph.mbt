@@ -9,6 +9,7 @@ pub struct LGraph {
   double_properties : Map[String, Double]
   string_properties : Map[String, String]
   string_array_properties : Map[String, Array[String]]
+  label_manager_properties : Map[String, ILabelManager]
   elk_margin_properties : Map[String, ElkMargin]
   component_ordering_strategy_properties : Map[
     String,
@@ -36,6 +37,7 @@ pub fn new_l_graph() -> LGraph {
     double_properties: {},
     string_properties: {},
     string_array_properties: {},
+    label_manager_properties: {},
     elk_margin_properties: {},
     component_ordering_strategy_properties: {},
     direction_properties: {},
@@ -268,6 +270,38 @@ pub fn LGraph::has_property_string_array(
 }
 
 ///|
+pub fn LGraph::set_property_i_label_manager(
+  self : LGraph,
+  property : IProperty[ILabelManager?],
+  value : ILabelManager?,
+) -> Unit {
+  match value {
+    Some(label_manager) =>
+      self.label_manager_properties[property.get_id()] = label_manager
+    None => ignore(self.label_manager_properties.remove(property.get_id()))
+  }
+}
+
+///|
+pub fn LGraph::get_property_i_label_manager(
+  self : LGraph,
+  property : IProperty[ILabelManager?],
+) -> ILabelManager? {
+  match self.label_manager_properties.get(property.get_id()) {
+    Some(value) => Some(value)
+    None => property.get_default()
+  }
+}
+
+///|
+pub fn LGraph::has_property_i_label_manager(
+  self : LGraph,
+  property : IProperty[ILabelManager?],
+) -> Bool {
+  self.label_manager_properties.contains(property.get_id())
+}
+
+///|
 pub fn LGraph::set_property_elk_margin(
   self : LGraph,
   property : IProperty[ElkMargin],
@@ -466,6 +500,12 @@ pub fn LGraph::copy_properties(self : LGraph, source : LGraph) -> Unit {
   for entry in source.string_array_properties.to_array() {
     let (key, value) = entry
     self.string_array_properties[key] = value.copy()
+  }
+
+  self.label_manager_properties.clear()
+  for entry in source.label_manager_properties.to_array() {
+    let (key, value) = entry
+    self.label_manager_properties[key] = value
   }
 
   self.elk_margin_properties.clear()

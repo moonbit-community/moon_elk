@@ -84,6 +84,13 @@ pub let layered_options_compaction_post_compaction_strategy : IProperty[String] 
 )
 
 ///|
+pub let layered_options_compaction_post_compaction_constraints : IProperty[
+  String,
+] = new_property(
+  "org.eclipse.elk.alg.layered.compaction.postCompaction.constraints", "QUADRATIC",
+)
+
+///|
 pub let layered_options_allow_non_flow_ports_to_switch_sides : IProperty[Bool] = new_property(
   "org.eclipse.elk.layered.allowNonFlowPortsToSwitchSides", false,
 )
@@ -206,6 +213,13 @@ pub let layered_options_comment_box : IProperty[Bool] = new_property(
 ///|
 pub let layered_options_edge_labels_side_selection : IProperty[String] = new_property(
   "org.eclipse.elk.layered.edgeLabels.sideSelection", "SMART_DOWN",
+)
+
+///|
+pub let layered_options_edge_labels_center_label_placement_strategy : IProperty[
+  String,
+] = new_property(
+  "org.eclipse.elk.layered.edgeLabels.centerLabelPlacementStrategy", "MEDIAN_LAYER",
 )
 
 ///|

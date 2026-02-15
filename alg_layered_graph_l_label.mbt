@@ -39,6 +39,11 @@ pub fn LLabel::set_origin_identifier(
 }
 
 ///|
+pub fn LLabel::get_origin_identifier(self : LLabel) -> String? {
+  self.shape.get_origin_identifier()
+}
+
+///|
 pub fn LLabel::get_id(self : LLabel) -> Int {
   self.shape.get_id()
 }
