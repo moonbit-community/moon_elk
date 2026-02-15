@@ -1,61 +1,298 @@
 ///|
-fn alternating_layer_unzipper_test_setup_plain_java_layout() -> Unit {
-  layout_meta_data_service_reset_for_test()
-  plain_java_initialization_reset_for_test()
-  plain_java_initialization_initialize_plain_java_layout()
+fn alternating_layer_unzipper_test_node_type_equals(
+  left : NodeType,
+  right : NodeType,
+) -> Bool {
+  match (left, right) {
+    (NodeType::Normal, NodeType::Normal) => true
+    (NodeType::LongEdge, NodeType::LongEdge) => true
+    (NodeType::ExternalPort, NodeType::ExternalPort) => true
+    (NodeType::NorthSouthPort, NodeType::NorthSouthPort) => true
+    (NodeType::LabelNode, NodeType::LabelNode) => true
+    (NodeType::BreakingPoint, NodeType::BreakingPoint) => true
+    (NodeType::Placeholder, NodeType::Placeholder) => true
+    (NodeType::NonshiftingPlaceholder, NodeType::NonshiftingPlaceholder) => true
+    _ => false
+  }
 }
 
 ///|
-fn alternating_layer_unzipper_test_layout(graph : ElkNode) -> Unit {
-  let resolver = new_layout_algorithm_resolver()
-  apply_visitors(graph, [resolver.to_visitor()])
-  let layout_engine = new_recursive_graph_layout_engine()
-  layout_engine.layout(graph, new_null_elk_progress_monitor())
+fn alternating_layer_unzipper_test_node_type(name : String) -> NodeType {
+  for node_type in node_type_values() {
+    match node_type {
+      NodeType::Normal => if name == "NORMAL" { return node_type }
+      NodeType::LongEdge => if name == "LONG_EDGE" { return node_type }
+      NodeType::ExternalPort => if name == "EXTERNAL_PORT" { return node_type }
+      NodeType::NorthSouthPort =>
+        if name == "NORTH_SOUTH_PORT" {
+          return node_type
+        }
+      NodeType::LabelNode => if name == "LABEL_NODE" { return node_type }
+      NodeType::BreakingPoint =>
+        if name == "BREAKING_POINT" {
+          return node_type
+        }
+      NodeType::Placeholder => if name == "PLACEHOLDER" { return node_type }
+      NodeType::NonshiftingPlaceholder =>
+        if name == "NONSHIFTING_PLACEHOLDER" {
+          return node_type
+        }
+    }
+  }
+  abort("unknown node type")
 }
 
 ///|
-#skip
-test "AlternatingLayerUnzipper split patterns preserve relative layer order" {
-  reset_graph_model_for_test()
-  alternating_layer_unzipper_test_setup_plain_java_layout()
+fn alternating_layer_unzipper_test_port_side(name : String) -> PortSide {
+  for side in port_side_values() {
+    if port_side_to_string(side) == name {
+      return side
+    }
+  }
+  abort("unknown port side")
+}
 
-  // Direct translation target: reproduce upstream scenarios simpleTwoSplit,
-  // simpleThreeSplit, danglingOutgoing, danglingIncoming, multipleLayersSplit,
-  // and multipleIncomingEdges.
-  let graph = create_graph()
-  node_set_layout_option_string_by_id(
-    graph, "org.eclipse.elk.layered.layerUnzipping.strategy", "ALTERNATING",
+///|
+fn alternating_layer_unzipper_test_strategy(
+  name : String,
+) -> IntermediateProcessorStrategy {
+  for strategy in intermediate_processor_strategy_values() {
+    if intermediate_processor_strategy_to_string(strategy) == name {
+      return strategy
+    }
+  }
+  abort("unknown strategy")
+}
+
+///|
+fn alternating_layer_unzipper_test_require_layer(node : LNode) -> Layer {
+  match node.get_layer() {
+    Some(value) => value
+    None => abort("node has no layer")
+  }
+}
+
+///|
+fn alternating_layer_unzipper_test_new_node(
+  graph : LGraph,
+  layer : Layer,
+  node_type : NodeType,
+) -> LNode {
+  let node = new_l_node(graph=Some(graph))
+  node.set_type(node_type)
+  node.set_layer(Some(layer))
+  node
+}
+
+///|
+fn alternating_layer_unzipper_test_new_edge(
+  source : LNode,
+  target : LNode,
+) -> LEdge {
+  let source_port = new_l_port()
+  source_port.set_side(alternating_layer_unzipper_test_port_side("EAST"))
+  source_port.set_node(Some(source))
+
+  let target_port = new_l_port()
+  target_port.set_side(alternating_layer_unzipper_test_port_side("WEST"))
+  target_port.set_node(Some(target))
+
+  let edge = new_l_edge()
+  edge.set_source(Some(source_port))
+  edge.set_target(Some(target_port))
+  edge
+}
+
+///|
+fn alternating_layer_unzipper_test_assert_no_placeholders(
+  graph : LGraph,
+) -> Unit raise {
+  for layer in graph.get_layers() {
+    for node in layer.get_nodes() {
+      assert_true(
+        !alternating_layer_unzipper_test_node_type_equals(
+          node.get_type(),
+          alternating_layer_unzipper_test_node_type("PLACEHOLDER"),
+        ),
+      )
+      assert_true(
+        !alternating_layer_unzipper_test_node_type_equals(
+          node.get_type(),
+          alternating_layer_unzipper_test_node_type("NONSHIFTING_PLACEHOLDER"),
+        ),
+      )
+    }
+  }
+}
+
+///|
+test "alternating layer unzipper splits one layer in A-B-A order" {
+  let graph = new_l_graph()
+  let layer0 = new_layer(graph)
+  let layer1 = new_layer(graph)
+  let layer2 = new_layer(graph)
+  graph.get_layers().push(layer0)
+  graph.get_layers().push(layer1)
+  graph.get_layers().push(layer2)
+
+  let source = alternating_layer_unzipper_test_new_node(
+    graph,
+    layer0,
+    alternating_layer_unzipper_test_node_type("NORMAL"),
+  )
+  let mid_a = alternating_layer_unzipper_test_new_node(
+    graph,
+    layer1,
+    alternating_layer_unzipper_test_node_type("NORMAL"),
+  )
+  let mid_b = alternating_layer_unzipper_test_new_node(
+    graph,
+    layer1,
+    alternating_layer_unzipper_test_node_type("NORMAL"),
+  )
+  let mid_c = alternating_layer_unzipper_test_new_node(
+    graph,
+    layer1,
+    alternating_layer_unzipper_test_node_type("NORMAL"),
+  )
+  let target = alternating_layer_unzipper_test_new_node(
+    graph,
+    layer2,
+    alternating_layer_unzipper_test_node_type("NORMAL"),
   )
 
-  let source = create_node(Some(graph))
-  let mid_a = create_node(Some(graph))
-  let mid_b = create_node(Some(graph))
-  let target = create_node(Some(graph))
+  ignore(alternating_layer_unzipper_test_new_edge(source, mid_a))
+  ignore(alternating_layer_unzipper_test_new_edge(source, mid_b))
+  ignore(alternating_layer_unzipper_test_new_edge(source, mid_c))
+  ignore(alternating_layer_unzipper_test_new_edge(mid_a, target))
+  ignore(alternating_layer_unzipper_test_new_edge(mid_b, target))
+  ignore(alternating_layer_unzipper_test_new_edge(mid_c, target))
 
-  for node in [source, mid_a, mid_b, target] {
-    node_set_dimensions(node, 30.0, 30.0)
-  }
+  mid_a.set_property_int(layered_options_layer_unzipping_layer_split, 2)
 
-  let e1 = create_edge(None)
-  edge_add_source(e1, make_node_shape(source))
-  edge_add_target(e1, make_node_shape(mid_a))
-  update_containment(Some(e1))
+  let processor = new_alternating_layer_unzipper_layout_processor()
+  processor.process(graph, None)
 
-  let e2 = create_edge(None)
-  edge_add_source(e2, make_node_shape(source))
-  edge_add_target(e2, make_node_shape(mid_b))
-  update_containment(Some(e2))
+  assert_eq(graph.get_layers().length(), 4)
+  assert_eq(
+    alternating_layer_unzipper_test_require_layer(source).get_index(),
+    0,
+  )
+  assert_eq(alternating_layer_unzipper_test_require_layer(mid_a).get_index(), 1)
+  assert_eq(alternating_layer_unzipper_test_require_layer(mid_b).get_index(), 2)
+  assert_eq(alternating_layer_unzipper_test_require_layer(mid_c).get_index(), 1)
+  assert_eq(
+    alternating_layer_unzipper_test_require_layer(target).get_index(),
+    3,
+  )
+  alternating_layer_unzipper_test_assert_no_placeholders(graph)
+}
 
-  let e3 = create_edge(None)
-  edge_add_source(e3, make_node_shape(mid_a))
-  edge_add_target(e3, make_node_shape(target))
-  update_containment(Some(e3))
+///|
+test "alternating layer unzipper resets alternation at long-edge nodes when enabled" {
+  let graph = new_l_graph()
+  let layer = new_layer(graph)
+  graph.get_layers().push(layer)
 
-  let e4 = create_edge(None)
-  edge_add_source(e4, make_node_shape(mid_b))
-  edge_add_target(e4, make_node_shape(target))
-  update_containment(Some(e4))
+  let a = alternating_layer_unzipper_test_new_node(
+    graph,
+    layer,
+    alternating_layer_unzipper_test_node_type("NORMAL"),
+  )
+  let long_dummy = alternating_layer_unzipper_test_new_node(
+    graph,
+    layer,
+    alternating_layer_unzipper_test_node_type("LONG_EDGE"),
+  )
+  let b = alternating_layer_unzipper_test_new_node(
+    graph,
+    layer,
+    alternating_layer_unzipper_test_node_type("NORMAL"),
+  )
+  let c = alternating_layer_unzipper_test_new_node(
+    graph,
+    layer,
+    alternating_layer_unzipper_test_node_type("NORMAL"),
+  )
+  let d = alternating_layer_unzipper_test_new_node(
+    graph,
+    layer,
+    alternating_layer_unzipper_test_node_type("NORMAL"),
+  )
 
-  alternating_layer_unzipper_test_layout(graph)
-  assert_eq(node_contained_edges(graph).length(), 4)
+  a.set_property_int(layered_options_layer_unzipping_layer_split, 3)
+  a.set_property_bool(layered_options_layer_unzipping_reset_on_long_edges, true)
+
+  let processor = new_alternating_layer_unzipper_layout_processor()
+  processor.process(graph, None)
+
+  assert_eq(alternating_layer_unzipper_test_require_layer(a).get_index(), 0)
+  assert_eq(
+    alternating_layer_unzipper_test_require_layer(long_dummy).get_index(),
+    1,
+  )
+  assert_eq(alternating_layer_unzipper_test_require_layer(b).get_index(), 0)
+  assert_eq(alternating_layer_unzipper_test_require_layer(c).get_index(), 1)
+  assert_eq(alternating_layer_unzipper_test_require_layer(d).get_index(), 2)
+  alternating_layer_unzipper_test_assert_no_placeholders(graph)
+}
+
+///|
+test "alternating layer unzipper keeps pure round-robin when reset_on_long_edges is false" {
+  let graph = new_l_graph()
+  let layer = new_layer(graph)
+  graph.get_layers().push(layer)
+
+  let a = alternating_layer_unzipper_test_new_node(
+    graph,
+    layer,
+    alternating_layer_unzipper_test_node_type("NORMAL"),
+  )
+  let long_dummy = alternating_layer_unzipper_test_new_node(
+    graph,
+    layer,
+    alternating_layer_unzipper_test_node_type("LONG_EDGE"),
+  )
+  let b = alternating_layer_unzipper_test_new_node(
+    graph,
+    layer,
+    alternating_layer_unzipper_test_node_type("NORMAL"),
+  )
+  let c = alternating_layer_unzipper_test_new_node(
+    graph,
+    layer,
+    alternating_layer_unzipper_test_node_type("NORMAL"),
+  )
+  let d = alternating_layer_unzipper_test_new_node(
+    graph,
+    layer,
+    alternating_layer_unzipper_test_node_type("NORMAL"),
+  )
+
+  a.set_property_int(layered_options_layer_unzipping_layer_split, 3)
+  a.set_property_bool(
+    layered_options_layer_unzipping_reset_on_long_edges, false,
+  )
+
+  let processor = new_alternating_layer_unzipper_layout_processor()
+  processor.process(graph, None)
+
+  assert_eq(alternating_layer_unzipper_test_require_layer(a).get_index(), 0)
+  assert_eq(
+    alternating_layer_unzipper_test_require_layer(long_dummy).get_index(),
+    1,
+  )
+  assert_eq(alternating_layer_unzipper_test_require_layer(b).get_index(), 2)
+  assert_eq(alternating_layer_unzipper_test_require_layer(c).get_index(), 0)
+  assert_eq(alternating_layer_unzipper_test_require_layer(d).get_index(), 1)
+  alternating_layer_unzipper_test_assert_no_placeholders(graph)
+}
+
+///|
+test "intermediate strategy factory exposes alternating layer unzipper" {
+  let factory = layered_intermediate_processor_factory(
+    alternating_layer_unzipper_test_strategy("ALTERNATING_LAYER_UNZIPPER"),
+  )
+  assert_eq(factory.factory_id(), 23026)
+  assert_eq(factory.factory_order(), 26)
 }

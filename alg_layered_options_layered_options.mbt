@@ -69,6 +69,26 @@ pub let layered_options_allow_non_flow_ports_to_switch_sides : IProperty[Bool] =
 )
 
 ///|
+pub let layered_options_layer_unzipping_strategy : IProperty[String] = new_property(
+  "org.eclipse.elk.layered.layerUnzipping.strategy", "NONE",
+)
+
+///|
+pub let layered_options_layer_unzipping_minimize_edge_length : IProperty[Bool] = new_property(
+  "org.eclipse.elk.layered.layerUnzipping.minimizeEdgeLength", false,
+)
+
+///|
+pub let layered_options_layer_unzipping_layer_split : IProperty[Int] = new_property(
+  "org.eclipse.elk.layered.layerUnzipping.layerSplit", 2,
+)
+
+///|
+pub let layered_options_layer_unzipping_reset_on_long_edges : IProperty[Bool] = new_property(
+  "org.eclipse.elk.layered.layerUnzipping.resetOnLongEdges", true,
+)
+
+///|
 pub let layered_options_consider_model_order_group_model_order_cycle_breaking_id : IProperty[
   Int,
 ] = new_property(

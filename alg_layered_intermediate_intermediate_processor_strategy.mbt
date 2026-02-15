@@ -4,6 +4,7 @@ pub enum IntermediateProcessorStrategy {
   InLayerConstraintProcessor
   LongEdgeJoiner
   PortListSorter
+  EndLabelSorter
   ReversedEdgeRestorer
   InteractiveExternalPortPositioner
   FinalSplineBendpointsCalculator
@@ -11,6 +12,7 @@ pub enum IntermediateProcessorStrategy {
   SelfLoopPreprocessor
   SelfLoopPostprocessor
   SelfLoopPortRestorer
+  AlternatingLayerUnzipper
   SelfLoopRouter
   LabelDummyInserter
   LabelDummySwitcher
@@ -39,6 +41,7 @@ fn intermediate_processor_strategy_ordinal(
     IntermediateProcessorStrategy::InLayerConstraintProcessor => 28
     IntermediateProcessorStrategy::LongEdgeJoiner => 46
     IntermediateProcessorStrategy::PortListSorter => 19
+    IntermediateProcessorStrategy::EndLabelSorter => 53
     IntermediateProcessorStrategy::ReversedEdgeRestorer => 54
     IntermediateProcessorStrategy::InteractiveExternalPortPositioner => 3
     IntermediateProcessorStrategy::FinalSplineBendpointsCalculator => 52
@@ -46,6 +49,7 @@ fn intermediate_processor_strategy_ordinal(
     IntermediateProcessorStrategy::SelfLoopPreprocessor => 6
     IntermediateProcessorStrategy::SelfLoopPostprocessor => 47
     IntermediateProcessorStrategy::SelfLoopPortRestorer => 25
+    IntermediateProcessorStrategy::AlternatingLayerUnzipper => 26
     IntermediateProcessorStrategy::SelfLoopRouter => 32
     IntermediateProcessorStrategy::LabelDummyInserter => 5
     IntermediateProcessorStrategy::LabelDummySwitcher => 35
@@ -83,6 +87,7 @@ pub fn intermediate_processor_strategy_values() -> Array[
     PortListSorter,
     NorthSouthPortPreprocessor,
     SelfLoopPortRestorer,
+    AlternatingLayerUnzipper,
     InLayerConstraintProcessor,
     SelfLoopRouter,
     EndLabelPreprocessor,
@@ -93,6 +98,7 @@ pub fn intermediate_processor_strategy_values() -> Array[
     HypernodeProcessor,
     HierarchicalPortOrthogonalEdgeRouter,
     LongEdgeJoiner,
+    EndLabelSorter,
     SelfLoopPostprocessor,
     NorthSouthPortPostprocessor,
     LabelDummyRemover,
@@ -112,6 +118,7 @@ pub fn intermediate_processor_strategy_to_string(
       "IN_LAYER_CONSTRAINT_PROCESSOR"
     IntermediateProcessorStrategy::LongEdgeJoiner => "LONG_EDGE_JOINER"
     IntermediateProcessorStrategy::PortListSorter => "PORT_LIST_SORTER"
+    IntermediateProcessorStrategy::EndLabelSorter => "END_LABEL_SORTER"
     IntermediateProcessorStrategy::ReversedEdgeRestorer =>
       "REVERSED_EDGE_RESTORER"
     IntermediateProcessorStrategy::InteractiveExternalPortPositioner =>
@@ -126,6 +133,8 @@ pub fn intermediate_processor_strategy_to_string(
       "SELF_LOOP_POSTPROCESSOR"
     IntermediateProcessorStrategy::SelfLoopPortRestorer =>
       "SELF_LOOP_PORT_RESTORER"
+    IntermediateProcessorStrategy::AlternatingLayerUnzipper =>
+      "ALTERNATING_LAYER_UNZIPPER"
     IntermediateProcessorStrategy::SelfLoopRouter => "SELF_LOOP_ROUTER"
     IntermediateProcessorStrategy::LabelDummyInserter => "LABEL_DUMMY_INSERTER"
     IntermediateProcessorStrategy::LabelDummySwitcher => "LABEL_DUMMY_SWITCHER"
@@ -178,6 +187,8 @@ fn intermediate_processor_create(
       new_long_edge_joiner_layout_processor()
     IntermediateProcessorStrategy::PortListSorter =>
       new_port_list_sorter_layout_processor()
+    IntermediateProcessorStrategy::EndLabelSorter =>
+      new_end_label_sorter_layout_processor()
     IntermediateProcessorStrategy::ReversedEdgeRestorer =>
       new_reversed_edge_restorer_layout_processor()
     IntermediateProcessorStrategy::InteractiveExternalPortPositioner =>
@@ -190,6 +201,8 @@ fn intermediate_processor_create(
       new_self_loop_post_processor_layout_processor()
     IntermediateProcessorStrategy::SelfLoopPortRestorer =>
       new_self_loop_port_restorer_layout_processor()
+    IntermediateProcessorStrategy::AlternatingLayerUnzipper =>
+      new_alternating_layer_unzipper_layout_processor()
     IntermediateProcessorStrategy::SelfLoopRouter =>
       new_self_loop_router_layout_processor()
     IntermediateProcessorStrategy::LabelDummyInserter =>

@@ -1,40 +1,99 @@
 ///|
-fn label_and_node_size_offset_test_setup_plain_java_layout() -> Unit {
-  layout_meta_data_service_reset_for_test()
-  plain_java_initialization_reset_for_test()
-  plain_java_initialization_initialize_plain_java_layout()
+fn label_and_node_size_offset_test_port_side(name : String) -> PortSide {
+  for side in port_side_values() {
+    if port_side_to_string(side) == name {
+      return side
+    }
+  }
+  abort("unknown port side")
 }
 
 ///|
-fn label_and_node_size_offset_test_layout(graph : ElkNode) -> Unit {
-  let resolver = new_layout_algorithm_resolver()
-  apply_visitors(graph, [resolver.to_visitor()])
-  let layout_engine = new_recursive_graph_layout_engine()
-  layout_engine.layout(graph, new_null_elk_progress_monitor())
+fn label_and_node_size_offset_test_new_port(
+  node : LNode,
+  side : PortSide,
+  x : Double,
+  y : Double,
+) -> LPort {
+  let port = new_l_port()
+  port.set_property_double(nodespacing_port_border_offset_property, 0.0)
+  port.set_side(side)
+  ignore(port.get_position().set_xy(x, y))
+  port.set_node(Some(node))
+  port
 }
 
 ///|
-#skip
-test "LabelAndNodeSizeProcessor applies zero border offset on all port sides" {
-  reset_graph_model_for_test()
-  label_and_node_size_offset_test_setup_plain_java_layout()
+fn label_and_node_size_offset_test_generate_node(
+  graph : LGraph,
+  constraints : String,
+) -> LNode {
+  let node = new_l_node(graph=Some(graph))
+  node.set_property_string(port_constraints, constraints)
+  ignore(node.get_size().set_xy(100.0, 100.0))
+  graph.get_layerless_nodes().push(node)
 
-  // Direct translation target: assert processor-level port coordinates for
-  // FREE/FIXED_SIDE/FIXED_ORDER/FIXED_RATIO/FIXED_POS constraints.
-  let graph = create_graph()
-  let node = create_node(Some(graph))
-  node_set_dimensions(node, 100.0, 100.0)
-
-  let north = create_port(Some(node))
-  port_set_dimensions(north, 10.0, 10.0)
-  port_set_location(north, 50.0, -300.0)
-  port_set_layout_option_string_by_id(
-    north, "org.eclipse.elk.port.side", "NORTH",
+  ignore(
+    label_and_node_size_offset_test_new_port(
+      node,
+      label_and_node_size_offset_test_port_side("NORTH"),
+      50.0,
+      -300.0,
+    ),
   )
-  port_set_layout_option_string_by_id(
-    north, "org.eclipse.elk.port.borderOffset", "0.0",
+  ignore(
+    label_and_node_size_offset_test_new_port(
+      node,
+      label_and_node_size_offset_test_port_side("SOUTH"),
+      50.0,
+      300.0,
+    ),
+  )
+  ignore(
+    label_and_node_size_offset_test_new_port(
+      node,
+      label_and_node_size_offset_test_port_side("EAST"),
+      300.0,
+      50.0,
+    ),
+  )
+  ignore(
+    label_and_node_size_offset_test_new_port(
+      node,
+      label_and_node_size_offset_test_port_side("WEST"),
+      -300.0,
+      50.0,
+    ),
   )
 
-  label_and_node_size_offset_test_layout(graph)
-  assert_eq(node_ports(node).length(), 1)
+  node
+}
+
+///|
+test "label and node size processor places ports on node border with zero offset" {
+  let graph = new_l_graph()
+  ignore(label_and_node_size_offset_test_generate_node(graph, "FREE"))
+  ignore(label_and_node_size_offset_test_generate_node(graph, "FIXED_SIDE"))
+  ignore(label_and_node_size_offset_test_generate_node(graph, "FIXED_ORDER"))
+  ignore(label_and_node_size_offset_test_generate_node(graph, "FIXED_RATIO"))
+  ignore(label_and_node_size_offset_test_generate_node(graph, "FIXED_POS"))
+
+  let processor = new_label_and_node_size_processor_layout_processor()
+  processor.process(graph, None)
+
+  for node in graph.get_layerless_nodes() {
+    for port in node.get_ports() {
+      match port.get_side() {
+        PortSide::North =>
+          assert_double_eq(port.get_position().y, -port.get_size().y, 0.0)
+        PortSide::South =>
+          assert_double_eq(port.get_position().y, node.get_size().y, 0.0)
+        PortSide::East =>
+          assert_double_eq(port.get_position().x, node.get_size().x, 0.0)
+        PortSide::West =>
+          assert_double_eq(port.get_position().x, -port.get_size().x, 0.0)
+        _ => abort("unexpected port side")
+      }
+    }
+  }
 }

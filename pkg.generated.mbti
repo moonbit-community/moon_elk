@@ -2806,6 +2806,14 @@ pub fn layered_options_int_list_contains(Array[Int], Int) -> Bool
 
 pub let layered_options_junction_points : IProperty[KVectorChain]
 
+pub let layered_options_layer_unzipping_layer_split : IProperty[Int]
+
+pub let layered_options_layer_unzipping_minimize_edge_length : IProperty[Bool]
+
+pub let layered_options_layer_unzipping_reset_on_long_edges : IProperty[Bool]
+
+pub let layered_options_layer_unzipping_strategy : IProperty[String]
+
 pub let layered_options_layering_layer_constraint : IProperty[String]
 
 pub let layered_options_layering_layer_id : IProperty[Int]
@@ -3588,6 +3596,8 @@ pub fn new_all_algorithms() -> AllAlgorithms
 
 pub fn new_all_crossings_counter(Array[Array[LNode]]) -> AllCrossingsCounter
 
+pub fn new_alternating_layer_unzipper_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
+
 pub fn new_annulus_wedge_compaction() -> AnnulusWedgeCompaction
 
 pub fn new_apply_layout_request() -> ApplyLayoutRequest
@@ -4119,6 +4129,8 @@ pub fn new_elk_ui_plugin() -> ElkUiPlugin
 pub fn new_empty_planar_grid() -> PlanarGrid
 
 pub fn new_empty_polyomino() -> Polyomino
+
+pub fn new_end_label_sorter_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_execution_info_content_provider() -> ExecutionInfoContentProvider
 
@@ -7349,6 +7361,8 @@ pub fn AllCrossingsCounter::init_after_traversal(Self) -> Unit
 pub fn AllCrossingsCounter::init_at_edge_level(Self, Int, Int, Int, Int, LEdge, Array[Array[LNode]]) -> Unit
 pub fn AllCrossingsCounter::init_at_node_level(Self, Int, Int, Array[Array[LNode]]) -> Unit
 pub fn AllCrossingsCounter::init_at_port_level(Self, Int, Int, Int, Array[Array[LNode]]) -> Unit
+
+type AlternatingLayerUnzipperPendingLayer
 
 pub struct AnnulusWedgeCompaction {
   base : RadialRadiusExtensionCompaction
@@ -12779,6 +12793,7 @@ pub enum IntermediateProcessorStrategy {
   InLayerConstraintProcessor
   LongEdgeJoiner
   PortListSorter
+  EndLabelSorter
   ReversedEdgeRestorer
   InteractiveExternalPortPositioner
   FinalSplineBendpointsCalculator
@@ -12786,6 +12801,7 @@ pub enum IntermediateProcessorStrategy {
   SelfLoopPreprocessor
   SelfLoopPostprocessor
   SelfLoopPortRestorer
+  AlternatingLayerUnzipper
   SelfLoopRouter
   LabelDummyInserter
   LabelDummySwitcher
