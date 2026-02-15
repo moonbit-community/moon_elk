@@ -23,7 +23,6 @@ fn issue405_fuzzy_equal(
 }
 
 ///|
-#skip
 test "Issue405 symmetric port and port-label positions" {
   reset_graph_model_for_test()
   issue405_test_setup_plain_java_layout()

@@ -14,7 +14,6 @@ fn issue515_test_layout(graph : ElkNode) -> Unit {
 }
 
 ///|
-#skip
 test "Issue515 edge routes avoid node box overlaps" {
   reset_graph_model_for_test()
   issue515_test_setup_plain_java_layout()

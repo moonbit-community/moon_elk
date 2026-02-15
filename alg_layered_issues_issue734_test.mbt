@@ -14,7 +14,6 @@ fn issue734_test_layout(graph : ElkNode) -> Unit {
 }
 
 ///|
-#skip
 test "Issue734 node-edge spacing remains centered around node span" {
   reset_graph_model_for_test()
   issue734_test_setup_plain_java_layout()

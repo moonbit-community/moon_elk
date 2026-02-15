@@ -14,7 +14,6 @@ fn issue905_test_layout(graph : ElkNode) -> Unit {
 }
 
 ///|
-#skip
 test "Issue905 begin/center/head edge label coordinates are deterministic" {
   reset_graph_model_for_test()
   issue905_test_setup_plain_java_layout()

@@ -23,7 +23,6 @@ fn issue405_2_fuzzy_equal(
 }
 
 ///|
-#skip
 test "Issue405_2 permissive coordinate matching for asymmetric label placement" {
   reset_graph_model_for_test()
   issue405_2_test_setup_plain_java_layout()

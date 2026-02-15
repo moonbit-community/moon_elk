@@ -14,7 +14,6 @@ fn issue447_test_layout(graph : ElkNode) -> Unit {
 }
 
 ///|
-#skip
 test "Issue447 edge endpoints connect to hierarchical port anchors" {
   reset_graph_model_for_test()
   issue447_test_setup_plain_java_layout()

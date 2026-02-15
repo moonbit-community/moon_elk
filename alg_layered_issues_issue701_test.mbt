@@ -14,7 +14,6 @@ fn issue701_test_layout(graph : ElkNode) -> Unit {
 }
 
 ///|
-#skip
 test "Issue701 fixed/inside/outside port-label placement parity" {
   reset_graph_model_for_test()
   issue701_test_setup_plain_java_layout()

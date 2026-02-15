@@ -14,7 +14,6 @@ fn issue143_and318_test_layout(graph : ElkNode) -> Unit {
 }
 
 ///|
-#skip
 test "Issue143 and Issue318 horizontal edge segment spacing" {
   reset_graph_model_for_test()
   issue143_and318_test_setup_plain_java_layout()
