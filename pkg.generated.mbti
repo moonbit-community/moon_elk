@@ -1632,6 +1632,8 @@ pub fn fill_polyomino(Polyomino) -> Unit
 
 pub let filter_execution_tree_action_id : String
 
+pub let final_spline_node_to_straightening_cp_gap : Double
+
 pub fn find_best_edge_containment(Int?) -> Int?
 
 pub fn find_lowest_common_ancestor(Int, Int) -> Int?
@@ -2761,6 +2763,8 @@ pub fn layered_one_dimensional_compactor_scanline_constraints(OneDimensionalComp
 pub let layered_options_allow_non_flow_ports_to_switch_sides : IProperty[Bool]
 
 pub let layered_options_comment_box : IProperty[Bool]
+
+pub let layered_options_compaction_post_compaction_strategy : IProperty[String]
 
 pub let layered_options_consider_model_order_crossing_counter_node_influence : IProperty[Double]
 
@@ -4215,6 +4219,8 @@ pub fn new_file_name_filter(String) -> FileNameFilter
 pub fn new_file_name_filter_with_expressions(Array[String]) -> FileNameFilter
 
 pub fn new_filter_execution_tree_action(AbstractLayoutDebugView) -> FilterExecutionTreeAction
+
+pub fn new_final_spline_bendpoints_calculator_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_flabel(Int, text? : String) -> Int
 
@@ -12415,8 +12421,6 @@ pub enum HierarchyHandling {
   SeparateChildren
 }
 
-type HighDegreeNodeCandidate
-
 pub struct HighDegreeNodeInformation {
   mut inc_trees_max_height : Int
   inc_tree_roots : Array[LNode]
@@ -16201,7 +16205,7 @@ pub enum SplineRoutingMode {
 }
 
 pub struct SplineSegment {
-  handled : Bool
+  mut handled : Bool
   left_ports : Array[LPort]
   right_ports : Array[LPort]
   outgoing : Array[SplineDependency]

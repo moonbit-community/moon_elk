@@ -79,6 +79,11 @@ pub let layered_options_high_degree_nodes_tree_height : IProperty[Int] = new_pro
 )
 
 ///|
+pub let layered_options_compaction_post_compaction_strategy : IProperty[String] = new_property(
+  "org.eclipse.elk.alg.layered.compaction.postCompaction.strategy", "NONE",
+)
+
+///|
 pub let layered_options_allow_non_flow_ports_to_switch_sides : IProperty[Bool] = new_property(
   "org.eclipse.elk.layered.allowNonFlowPortsToSwitchSides", false,
 )

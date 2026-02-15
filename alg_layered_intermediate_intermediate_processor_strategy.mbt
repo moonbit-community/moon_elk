@@ -203,6 +203,8 @@ fn intermediate_processor_create(
       new_reversed_edge_restorer_layout_processor()
     IntermediateProcessorStrategy::InteractiveExternalPortPositioner =>
       new_interactive_external_port_positioner_layout_processor()
+    IntermediateProcessorStrategy::FinalSplineBendpointsCalculator =>
+      new_final_spline_bendpoints_calculator_layout_processor()
     IntermediateProcessorStrategy::InvertedPortProcessor =>
       new_inverted_port_processor_layout_processor()
     IntermediateProcessorStrategy::SelfLoopPreprocessor =>

@@ -116,7 +116,7 @@ pub struct SplineSegmentEdgeInformation {
 
 ///|
 pub struct SplineSegment {
-  handled : Bool
+  mut handled : Bool
   left_ports : Array[LPort]
   right_ports : Array[LPort]
   outgoing : Array[SplineDependency]
