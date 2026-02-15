@@ -4630,6 +4630,8 @@ pub fn new_interactive_mrtree_graph_element_visitor() -> IGraphElementVisitor
 
 pub fn new_interactive_mrtree_graph_visitor() -> InteractiveMrtreeGraphVisitor
 
+pub fn new_interactive_node_placer_layout_phase() -> ILayoutProcessor[LayeredPhases, LGraph]
+
 pub fn new_interactive_rectpacking_graph_visitor() -> InteractiveRectPackingGraphVisitor
 
 pub fn new_internal_core_debug_grandom_lexer(String) -> InternalCoreDebugGRandomLexer

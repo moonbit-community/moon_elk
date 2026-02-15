@@ -1039,6 +1039,10 @@ fn recursive_layered_node_placement_factory(
       new_layout_processor_factory(24100, 3, () => {
         new_simple_node_placer_layout_phase()
       })
+    "INTERACTIVE" =>
+      new_layout_processor_factory(24101, 3, () => {
+        new_interactive_node_placer_layout_phase()
+      })
     "BRANDES_KOEPF" =>
       new_layout_processor_factory(24103, 3, () => {
         new_bk_node_placer_layout_phase()
