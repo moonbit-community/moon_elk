@@ -14,7 +14,6 @@ fn issue596_test_layout(graph : ElkNode) -> Unit {
 }
 
 ///|
-#skip
 test "Issue596 single child stays centered in outer node" {
   reset_graph_model_for_test()
   issue596_test_setup_plain_java_layout()

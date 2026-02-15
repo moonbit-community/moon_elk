@@ -14,7 +14,6 @@ fn issue476_test_layout(graph : ElkNode) -> Unit {
 }
 
 ///|
-#skip
 test "Issue476 node labels remain horizontally centered" {
   reset_graph_model_for_test()
   issue476_test_setup_plain_java_layout()

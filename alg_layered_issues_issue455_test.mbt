@@ -14,7 +14,6 @@ fn issue455_test_layout(graph : ElkNode) -> Unit {
 }
 
 ///|
-#skip
 test "Issue455 hierarchical child nodes stay in one layer" {
   reset_graph_model_for_test()
   issue455_test_setup_plain_java_layout()
