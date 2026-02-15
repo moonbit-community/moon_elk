@@ -90,6 +90,10 @@ pub fn boundl(Int64, Int64, Int64) -> Int64
 
 pub fn bowyer_watson_triangulate(Array[KVector], debug_output_file? : String?) -> Array[TEdge]
 
+pub fn bp_info_is_end(LNode) -> Bool
+
+pub fn bp_info_is_start(LNode) -> Bool
+
 pub let bundle_resource_path_property : String
 
 pub fn cell_system_configurator_configure_cell_system_size_contributions(NodeContext) -> Unit
@@ -2532,6 +2536,8 @@ pub let internal_properties_barycenter_associates : IProperty[Array[LNode]]
 
 pub let internal_properties_bottom_comments : IProperty[Array[LNode]]
 
+pub let internal_properties_breaking_point_info : IProperty[BPInfo?]
+
 pub let internal_properties_cb_num_model_order_groups : IProperty[Int]
 
 pub let internal_properties_comment_conn_port : IProperty[LPort?]
@@ -2623,6 +2629,8 @@ pub let internal_properties_spline_edge_chain : IProperty[Array[LEdge]]
 pub let internal_properties_spline_ns_port_y_coord : IProperty[Double]
 
 pub let internal_properties_spline_route_start : IProperty[Array[SplineSegment]]
+
+pub let internal_properties_spline_surviving_edge : IProperty[LEdge?]
 
 pub let internal_properties_target_node_model_order : IProperty[Map[Int, Int]]
 
@@ -3652,7 +3660,15 @@ pub fn new_bk_simple_threshold_strategy() -> BkThresholdStrategy
 
 pub fn[T] new_blackbox_test_method(String, (T, Int) -> Unit, ignored? : Bool) -> BlackboxTestMethod[T]
 
+pub fn new_bp_info(LNode, LNode, LEdge, LEdge, LEdge) -> BPInfo
+
 pub fn new_breadth_first_model_order_layerer_layout_phase() -> ILayoutProcessor[LayeredPhases, LGraph]
+
+pub fn new_breaking_point_inserter_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
+
+pub fn new_breaking_point_processor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
+
+pub fn new_breaking_point_remover_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_bundle_resource_path(String, String) -> AbstractResourcePath
 
@@ -7482,6 +7498,26 @@ pub enum BKVDirection {
   Up
 }
 
+pub struct BPInfo {
+  start : LNode
+  end : LNode
+  node_start_edge : LEdge
+  start_end_edge : LEdge
+  original_edge : LEdge
+  mut start_in_layer_dummy : LNode?
+  mut start_in_layer_edge : LEdge?
+  mut end_in_layer_dummy : LNode?
+  mut end_in_layer_edge : LEdge?
+  mut prev : BPInfo?
+  mut next : BPInfo?
+}
+pub fn BPInfo::set_end_in_layer_dummy(Self, LNode?) -> Unit
+pub fn BPInfo::set_end_in_layer_edge(Self, LEdge?) -> Unit
+pub fn BPInfo::set_next(Self, Self?) -> Unit
+pub fn BPInfo::set_prev(Self, Self?) -> Unit
+pub fn BPInfo::set_start_in_layer_dummy(Self, LNode?) -> Unit
+pub fn BPInfo::set_start_in_layer_edge(Self, LEdge?) -> Unit
+
 pub struct BarycenterHeuristic {
   mut port_ranks : Array[Double]
   random : GreedySwitchMockRandom
@@ -7696,6 +7732,14 @@ pub fn BlockStack::get_width_for_fixed_height(Self, Double) -> Double
 pub fn BlockStack::place_rects_in(Self, Double) -> Unit
 pub fn BlockStack::set_location(Self, Double, Double) -> Unit
 pub fn BlockStack::update_dimension(Self) -> Unit
+
+pub struct BreakingPointInserterCut {
+  mut index : Int
+  mut new_index : Int
+  mut prev : BreakingPointInserterCut?
+  mut suc : BreakingPointInserterCut?
+  mut assigned : Bool
+}
 
 #alias(LayeredCGraph)
 pub struct CGraph {
@@ -13219,6 +13263,7 @@ pub struct LEdge {
   l_edge_array_properties : Map[String, Array[LEdge]]
   spline_segment_array_properties : Map[String, Array[SplineSegment]]
   port_properties : Map[String, LPort]
+  edge_properties : Map[String, LEdge]
 }
 pub fn LEdge::copy_properties(Self, Self) -> Unit
 pub fn LEdge::get_bend_points(Self) -> KVectorChain
@@ -13232,6 +13277,7 @@ pub fn LEdge::get_property_bool(Self, IProperty[Bool]) -> Bool
 pub fn LEdge::get_property_double(Self, IProperty[Double]) -> Double
 pub fn LEdge::get_property_int(Self, IProperty[Int]) -> Int
 pub fn LEdge::get_property_kvector_chain(Self, IProperty[KVectorChain]) -> KVectorChain
+pub fn LEdge::get_property_l_edge(Self, IProperty[Self?]) -> Self?
 pub fn LEdge::get_property_l_edge_array(Self, IProperty[Array[Self]]) -> Array[Self]
 pub fn LEdge::get_property_l_port(Self, IProperty[LPort?]) -> LPort?
 pub fn LEdge::get_property_spline_segment_array(Self, IProperty[Array[SplineSegment]]) -> Array[SplineSegment]
@@ -13240,6 +13286,7 @@ pub fn LEdge::get_target(Self) -> LPort?
 pub fn LEdge::has_property_double(Self, IProperty[Double]) -> Bool
 pub fn LEdge::has_property_int(Self, IProperty[Int]) -> Bool
 pub fn LEdge::has_property_kvector_chain(Self, IProperty[KVectorChain]) -> Bool
+pub fn LEdge::has_property_l_edge(Self, IProperty[Self?]) -> Bool
 pub fn LEdge::has_property_l_edge_array(Self, IProperty[Array[Self]]) -> Bool
 pub fn LEdge::has_property_l_port(Self, IProperty[LPort?]) -> Bool
 pub fn LEdge::has_property_spline_segment_array(Self, IProperty[Array[SplineSegment]]) -> Bool
@@ -13251,6 +13298,7 @@ pub fn LEdge::set_property_bool(Self, IProperty[Bool], Bool) -> Unit
 pub fn LEdge::set_property_double(Self, IProperty[Double], Double) -> Unit
 pub fn LEdge::set_property_int(Self, IProperty[Int], Int) -> Unit
 pub fn LEdge::set_property_kvector_chain(Self, IProperty[KVectorChain], KVectorChain) -> Unit
+pub fn LEdge::set_property_l_edge(Self, IProperty[Self?], Self?) -> Unit
 pub fn LEdge::set_property_l_edge_array(Self, IProperty[Array[Self]], Array[Self]) -> Unit
 pub fn LEdge::set_property_l_port(Self, IProperty[LPort?], LPort?) -> Unit
 pub fn LEdge::set_property_spline_segment_array(Self, IProperty[Array[SplineSegment]], Array[SplineSegment]) -> Unit
@@ -13386,6 +13434,7 @@ pub struct LNode {
   int_int_map_properties : Map[String, Map[Int, Int]]
   port_properties : Map[String, LPort]
   edge_properties : Map[String, LEdge]
+  bp_info_properties : Map[String, BPInfo]
   self_loop_holder_properties : Map[String, SelfLoopHolder]
 }
 pub fn LNode::add_port(Self, LPort) -> Unit
@@ -13409,6 +13458,7 @@ pub fn LNode::get_ports_by_type(Self, PortType) -> Array[LPort]
 pub fn LNode::get_ports_by_type_and_side(Self, PortType, PortSide) -> Array[LPort]
 pub fn LNode::get_position(Self) -> KVector
 pub fn LNode::get_property_bool(Self, IProperty[Bool]) -> Bool
+pub fn LNode::get_property_bp_info(Self, IProperty[BPInfo?]) -> BPInfo?
 pub fn LNode::get_property_double(Self, IProperty[Double]) -> Double
 pub fn LNode::get_property_end_label_cell_array(Self, IProperty[Array[EndLabelCell]]) -> Array[EndLabelCell]
 pub fn LNode::get_property_int(Self, IProperty[Int]) -> Int
@@ -13427,6 +13477,7 @@ pub fn LNode::get_property_string_array(Self, IProperty[Array[String]]) -> Array
 pub fn LNode::get_size(Self) -> KVector
 pub fn LNode::get_type(Self) -> NodeType
 pub fn LNode::has_property_bool(Self, IProperty[Bool]) -> Bool
+pub fn LNode::has_property_bp_info(Self, IProperty[BPInfo?]) -> Bool
 pub fn LNode::has_property_double(Self, IProperty[Double]) -> Bool
 pub fn LNode::has_property_end_label_cell_array(Self, IProperty[Array[EndLabelCell]]) -> Bool
 pub fn LNode::has_property_int(Self, IProperty[Int]) -> Bool
@@ -13449,6 +13500,7 @@ pub fn LNode::set_id(Self, Int) -> Unit
 pub fn LNode::set_layer(Self, Layer?) -> Unit
 pub fn LNode::set_nested_graph(Self, LGraph?) -> Unit
 pub fn LNode::set_property_bool(Self, IProperty[Bool], Bool) -> Unit
+pub fn LNode::set_property_bp_info(Self, IProperty[BPInfo?], BPInfo?) -> Unit
 pub fn LNode::set_property_double(Self, IProperty[Double], Double) -> Unit
 pub fn LNode::set_property_end_label_cell_array(Self, IProperty[Array[EndLabelCell]], Array[EndLabelCell]) -> Unit
 pub fn LNode::set_property_int(Self, IProperty[Int], Int) -> Unit
@@ -16145,7 +16197,7 @@ pub struct SplineSegment {
   mut last_segment : Bool
   mut source_node : LNode?
   mut target_node : LNode?
-  inverse_order : Bool
+  mut inverse_order : Bool
   mut hyper_edge_top_y_pos : Double
   mut hyper_edge_bottom_y_pos : Double
   mut center_control_point_y : Double

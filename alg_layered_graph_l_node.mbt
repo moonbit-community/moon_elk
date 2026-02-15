@@ -95,6 +95,7 @@ pub struct LNode {
   int_int_map_properties : Map[String, Map[Int, Int]]
   port_properties : Map[String, LPort]
   edge_properties : Map[String, LEdge]
+  bp_info_properties : Map[String, BPInfo]
   self_loop_holder_properties : Map[String, SelfLoopHolder]
 }
 
@@ -126,6 +127,7 @@ pub fn new_l_node(graph? : LGraph? = None) -> LNode {
     int_int_map_properties: {},
     port_properties: {},
     edge_properties: {},
+    bp_info_properties: {},
     self_loop_holder_properties: {},
   }
 }
@@ -813,6 +815,37 @@ pub fn LNode::has_property_l_edge(
   property : IProperty[LEdge?],
 ) -> Bool {
   self.edge_properties.contains(property.get_id())
+}
+
+///|
+pub fn LNode::set_property_bp_info(
+  self : LNode,
+  property : IProperty[BPInfo?],
+  value : BPInfo?,
+) -> Unit {
+  match value {
+    Some(info) => self.bp_info_properties[property.get_id()] = info
+    None => ignore(self.bp_info_properties.remove(property.get_id()))
+  }
+}
+
+///|
+pub fn LNode::get_property_bp_info(
+  self : LNode,
+  property : IProperty[BPInfo?],
+) -> BPInfo? {
+  match self.bp_info_properties.get(property.get_id()) {
+    Some(value) => Some(value)
+    None => property.get_default()
+  }
+}
+
+///|
+pub fn LNode::has_property_bp_info(
+  self : LNode,
+  property : IProperty[BPInfo?],
+) -> Bool {
+  self.bp_info_properties.contains(property.get_id())
 }
 
 ///|

@@ -136,7 +136,7 @@ pub struct SplineSegment {
   mut last_segment : Bool
   mut source_node : LNode?
   mut target_node : LNode?
-  inverse_order : Bool
+  mut inverse_order : Bool
   mut hyper_edge_top_y_pos : Double
   mut hyper_edge_bottom_y_pos : Double
   mut center_control_point_y : Double

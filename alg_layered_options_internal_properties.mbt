@@ -294,3 +294,15 @@ pub let internal_properties_spline_edge_chain : IProperty[Array[LEdge]] = new_pr
   "splines.edgeChain",
   [],
 )
+
+///|
+pub let internal_properties_spline_surviving_edge : IProperty[LEdge?] = new_property(
+  "splines.survivingEdge",
+  None,
+)
+
+///|
+pub let internal_properties_breaking_point_info : IProperty[BPInfo?] = new_property(
+  "breakingPointInfo",
+  None,
+)
