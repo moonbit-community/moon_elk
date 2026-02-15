@@ -143,6 +143,35 @@ fn p4nodes_test_layer_has_proper_coordinates(layer : Layer) -> Bool {
 }
 
 ///|
+fn p4nodes_test_proper_coordinate_graph() -> LGraph {
+  let graph = new_l_graph()
+  let layer0 = p4nodes_test_add_layer(graph)
+  let layer1 = p4nodes_test_add_layer(graph)
+
+  let source_a = p4nodes_test_add_basic_node(layer0, 7.0)
+  let source_b = p4nodes_test_add_basic_node(layer0, 11.0)
+  let source_c = p4nodes_test_add_basic_node(layer0, 5.0)
+  let target_a = p4nodes_test_add_basic_node(layer1, 8.0)
+  let target_b = p4nodes_test_add_basic_node(layer1, 6.0)
+
+  ignore(p4nodes_test_connect_nodes(source_a, target_a))
+  ignore(p4nodes_test_connect_nodes(source_b, target_a))
+  ignore(p4nodes_test_connect_nodes(source_b, target_b))
+  ignore(p4nodes_test_connect_nodes(source_c, target_b))
+  graph
+}
+
+///|
+fn p4nodes_test_graph_has_proper_coordinates(graph : LGraph) -> Bool {
+  for layer in graph.get_layers() {
+    if !p4nodes_test_layer_has_proper_coordinates(layer) {
+      return false
+    }
+  }
+  true
+}
+
+///|
 test "linear segments node placer layout phase starts monitor with expected task" {
   let phase = new_linear_segments_node_placer_layout_phase()
   assert_true(phase.is_layout_phase())
@@ -197,6 +226,30 @@ test "linear segments node placer config is none without external ports" {
     },
     false,
   )
+}
+
+///|
+test "linear segments node placer assigns proper coordinates in each layer" {
+  let graph = p4nodes_test_proper_coordinate_graph()
+  let phase = new_linear_segments_node_placer_layout_phase()
+  phase.process(graph, None)
+  assert_true(p4nodes_test_graph_has_proper_coordinates(graph))
+}
+
+///|
+test "simple node placer assigns proper coordinates in each layer" {
+  let graph = p4nodes_test_proper_coordinate_graph()
+  let phase = new_simple_node_placer_layout_phase()
+  phase.process(graph, None)
+  assert_true(p4nodes_test_graph_has_proper_coordinates(graph))
+}
+
+///|
+test "bk node placer assigns proper coordinates in each layer" {
+  let graph = p4nodes_test_proper_coordinate_graph()
+  let phase = new_bk_node_placer_layout_phase()
+  phase.process(graph, None)
+  assert_true(p4nodes_test_graph_has_proper_coordinates(graph))
 }
 
 ///|
@@ -317,22 +370,10 @@ test "network simplex node placer prepare assigns sequential node and edge ids" 
 
 ///|
 test "network simplex node placer assigns proper coordinates in each layer" {
-  let graph = new_l_graph()
-  let layer0 = p4nodes_test_add_layer(graph)
-  let layer1 = p4nodes_test_add_layer(graph)
-
-  ignore(p4nodes_test_add_basic_node(layer0, 7.0))
-  ignore(p4nodes_test_add_basic_node(layer0, 11.0))
-  ignore(p4nodes_test_add_basic_node(layer0, 5.0))
-  ignore(p4nodes_test_add_basic_node(layer1, 8.0))
-  ignore(p4nodes_test_add_basic_node(layer1, 6.0))
-
+  let graph = p4nodes_test_proper_coordinate_graph()
   let phase = new_network_simplex_placer_layout_phase()
   phase.process(graph, None)
-
-  for layer in graph.get_layers() {
-    assert_true(p4nodes_test_layer_has_proper_coordinates(layer))
-  }
+  assert_true(p4nodes_test_graph_has_proper_coordinates(graph))
 }
 
 ///|
