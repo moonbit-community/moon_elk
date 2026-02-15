@@ -64,6 +64,21 @@ pub let layered_options_layering_node_promotion_max_iterations : IProperty[Int] 
 )
 
 ///|
+pub let layered_options_high_degree_nodes_treatment : IProperty[Bool] = new_property(
+  "org.eclipse.elk.alg.layered.highDegreeNodes.treatment", false,
+)
+
+///|
+pub let layered_options_high_degree_nodes_threshold : IProperty[Int] = new_property(
+  "org.eclipse.elk.alg.layered.highDegreeNodes.threshold", 16,
+)
+
+///|
+pub let layered_options_high_degree_nodes_tree_height : IProperty[Int] = new_property(
+  "org.eclipse.elk.alg.layered.highDegreeNodes.treeHeight", 5,
+)
+
+///|
 pub let layered_options_allow_non_flow_ports_to_switch_sides : IProperty[Bool] = new_property(
   "org.eclipse.elk.layered.allowNonFlowPortsToSwitchSides", false,
 )

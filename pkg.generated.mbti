@@ -2814,6 +2814,12 @@ pub let layered_options_feedback_edges : IProperty[Bool]
 
 pub let layered_options_hierarchy_handling : IProperty[String]
 
+pub let layered_options_high_degree_nodes_threshold : IProperty[Int]
+
+pub let layered_options_high_degree_nodes_treatment : IProperty[Bool]
+
+pub let layered_options_high_degree_nodes_tree_height : IProperty[Int]
+
 pub let layered_options_hypernode : IProperty[Bool]
 
 pub fn layered_options_int_list_contains(Array[Int], Int) -> Bool
@@ -4529,6 +4535,8 @@ pub fn new_hierarchical_port_dummy_size_processor_layout_processor() -> ILayoutP
 pub fn new_hierarchical_port_orthogonal_edge_router_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_hierarchical_port_position_processor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
+
+pub fn new_high_degree_node_layering_processor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_hyper_edge_segment(BaseRoutingDirectionStrategy) -> HyperEdgeSegment
 
@@ -12407,6 +12415,15 @@ pub enum HierarchyHandling {
   SeparateChildren
 }
 
+type HighDegreeNodeCandidate
+
+pub struct HighDegreeNodeInformation {
+  mut inc_trees_max_height : Int
+  inc_tree_roots : Array[LNode]
+  mut out_trees_max_height : Int
+  out_tree_roots : Array[LNode]
+}
+
 pub enum HighLevelSortingCriterion {
   NumOfExternalSidesThanNumOfExtensionsLast
   CornerCasesThanSingleSideLast
@@ -12898,6 +12915,7 @@ pub enum IntermediateProcessorStrategy {
   FinalSplineBendpointsCalculator
   InvertedPortProcessor
   SelfLoopPreprocessor
+  HighDegreeNodeLayerProcessor
   SelfLoopPostprocessor
   SelfLoopPortRestorer
   AlternatingLayerUnzipper

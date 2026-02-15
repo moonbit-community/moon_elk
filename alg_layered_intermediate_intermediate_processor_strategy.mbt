@@ -10,6 +10,7 @@ pub enum IntermediateProcessorStrategy {
   FinalSplineBendpointsCalculator
   InvertedPortProcessor
   SelfLoopPreprocessor
+  HighDegreeNodeLayerProcessor
   SelfLoopPostprocessor
   SelfLoopPortRestorer
   AlternatingLayerUnzipper
@@ -48,6 +49,7 @@ fn intermediate_processor_strategy_ordinal(
     IntermediateProcessorStrategy::FinalSplineBendpointsCalculator => 52
     IntermediateProcessorStrategy::InvertedPortProcessor => 18
     IntermediateProcessorStrategy::SelfLoopPreprocessor => 6
+    IntermediateProcessorStrategy::HighDegreeNodeLayerProcessor => 9
     IntermediateProcessorStrategy::SelfLoopPostprocessor => 47
     IntermediateProcessorStrategy::SelfLoopPortRestorer => 25
     IntermediateProcessorStrategy::AlternatingLayerUnzipper => 26
@@ -81,6 +83,7 @@ pub fn intermediate_processor_strategy_values() -> Array[
     InteractiveExternalPortPositioner,
     LabelDummyInserter,
     SelfLoopPreprocessor,
+    HighDegreeNodeLayerProcessor,
     NodePromotion,
     HierarchicalPortConstraintProcessor,
     SemiInteractiveCrossMinProcessor,
@@ -132,6 +135,8 @@ pub fn intermediate_processor_strategy_to_string(
       "INVERTED_PORT_PROCESSOR"
     IntermediateProcessorStrategy::SelfLoopPreprocessor =>
       "SELF_LOOP_PREPROCESSOR"
+    IntermediateProcessorStrategy::HighDegreeNodeLayerProcessor =>
+      "HIGH_DEGREE_NODE_LAYER_PROCESSOR"
     IntermediateProcessorStrategy::SelfLoopPostprocessor =>
       "SELF_LOOP_POSTPROCESSOR"
     IntermediateProcessorStrategy::SelfLoopPortRestorer =>
@@ -202,6 +207,8 @@ fn intermediate_processor_create(
       new_inverted_port_processor_layout_processor()
     IntermediateProcessorStrategy::SelfLoopPreprocessor =>
       new_self_loop_pre_processor_layout_processor()
+    IntermediateProcessorStrategy::HighDegreeNodeLayerProcessor =>
+      new_high_degree_node_layering_processor_layout_processor()
     IntermediateProcessorStrategy::SelfLoopPostprocessor =>
       new_self_loop_post_processor_layout_processor()
     IntermediateProcessorStrategy::SelfLoopPortRestorer =>
