@@ -56,17 +56,19 @@ fn issue871_configure_parent(parent : ElkNode, feedback_edges : Bool) -> Unit {
 
 ///|
 fn issue871_assert_close(
+  context : String,
   actual : Double,
   expected : Double,
   epsilon : Double,
 ) -> Unit {
   if (actual - expected).abs() > epsilon {
-    abort("expected=\{expected}, actual=\{actual}, epsilon=\{epsilon}")
+    let message = "\{context}: expected=\{expected}, actual=\{actual}, epsilon=\{epsilon}"
+    println(message)
+    abort(message)
   }
 }
 
 ///|
-#skip
 test "Issue871 feedback edge below keeps aligned node pair" {
   reset_graph_model_for_test()
   issue871_test_setup_plain_java_layout()
@@ -94,11 +96,15 @@ test "Issue871 feedback edge below keeps aligned node pair" {
   let layout_engine = new_recursive_graph_layout_engine()
   layout_engine.layout(parent, new_basic_progress_monitor())
 
-  issue871_assert_close(node_y(n2), node_y(n4), 0.1)
+  issue871_assert_close(
+    "feedback-below n2.y vs n4.y",
+    node_y(n2),
+    node_y(n4),
+    0.1,
+  )
 }
 
 ///|
-#skip
 test "Issue871 basic feedback edge keeps aligned nodes" {
   reset_graph_model_for_test()
   issue871_test_setup_plain_java_layout()
@@ -122,11 +128,15 @@ test "Issue871 basic feedback edge keeps aligned nodes" {
   let layout_engine = new_recursive_graph_layout_engine()
   layout_engine.layout(parent, new_basic_progress_monitor())
 
-  issue871_assert_close(node_y(n2), node_y(n3), 0.1)
+  issue871_assert_close(
+    "feedback-basic n2.y vs n3.y",
+    node_y(n2),
+    node_y(n3),
+    0.1,
+  )
 }
 
 ///|
-#skip
 test "Issue871 no-feedback case keeps reference coordinates" {
   reset_graph_model_for_test()
   issue871_test_setup_plain_java_layout()
@@ -157,12 +167,12 @@ test "Issue871 no-feedback case keeps reference coordinates" {
   let layout_engine = new_recursive_graph_layout_engine()
   layout_engine.layout(parent, new_basic_progress_monitor())
 
-  issue871_assert_close(node_x(n1), 0.0, 0.1)
-  issue871_assert_close(node_y(n1), 31.0, 0.1)
-  issue871_assert_close(node_x(n2), 70.0, 0.1)
-  issue871_assert_close(node_y(n2), 6.0, 0.1)
-  issue871_assert_close(node_x(n3), 120.0, 0.1)
-  issue871_assert_close(node_y(n3), 11.0, 0.1)
-  issue871_assert_close(node_x(n4), 170.0, 0.1)
-  issue871_assert_close(node_y(n4), 11.0, 0.1)
+  issue871_assert_close("no-feedback n1.x", node_x(n1), 0.0, 0.1)
+  issue871_assert_close("no-feedback n1.y", node_y(n1), 31.0, 0.1)
+  issue871_assert_close("no-feedback n2.x", node_x(n2), 70.0, 0.1)
+  issue871_assert_close("no-feedback n2.y", node_y(n2), 6.0, 0.1)
+  issue871_assert_close("no-feedback n3.x", node_x(n3), 120.0, 0.1)
+  issue871_assert_close("no-feedback n3.y", node_y(n3), 11.0, 0.1)
+  issue871_assert_close("no-feedback n4.x", node_x(n4), 170.0, 0.1)
+  issue871_assert_close("no-feedback n4.y", node_y(n4), 11.0, 0.1)
 }

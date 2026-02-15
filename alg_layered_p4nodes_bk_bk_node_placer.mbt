@@ -487,9 +487,23 @@ fn bk_node_placer_process(
 fn bk_node_placer_configuration(
   graph : LGraph,
 ) -> LayoutProcessorConfiguration[LayeredPhases, LGraph]? {
-  ignore(graph)
-  // The current MoonBit repository does not provide
-  // HierarchicalPortPositionProcessor yet.
+  for
+    property in graph.get_property_graph_properties_array(
+      internal_properties_graph_properties,
+    ) {
+    match property {
+      GraphProperties::ExternalPorts =>
+        return Some(
+          layout_processor_configuration_create(layered_phase_descriptor).add_before(
+            LayeredPhases::P5EdgeRouting,
+            layered_intermediate_processor_factory(
+              IntermediateProcessorStrategy::HierarchicalPortPositionProcessor,
+            ),
+          ),
+        )
+      _ => ()
+    }
+  }
   None
 }
 

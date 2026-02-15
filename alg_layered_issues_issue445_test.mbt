@@ -6,7 +6,6 @@ fn issue445_test_setup_plain_java_layout() -> Unit {
 }
 
 ///|
-#skip
 test "Issue445 feedback edge tail labels are not left at origin" {
   reset_graph_model_for_test()
   issue445_test_setup_plain_java_layout()

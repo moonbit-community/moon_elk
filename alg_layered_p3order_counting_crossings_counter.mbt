@@ -291,7 +291,8 @@ fn CrossingsCounter::count_crossings_on_ports(
     tree.remove_all(self.position_of(port))
 
     for edge in port.get_connected_edges() {
-      let end_position = self.position_of(self.other_end_of(edge, port))
+      let other_port = self.other_end_of(edge, port)
+      let end_position = self.position_of(other_port)
       if end_position > self.position_of(port) {
         crossings = crossings + tree.rank(end_position)
         self.ends.push(end_position)
@@ -299,7 +300,8 @@ fn CrossingsCounter::count_crossings_on_ports(
     }
 
     while !self.ends.is_empty() {
-      tree.add(crossings_counter_pop_end(self.ends))
+      let end_position = crossings_counter_pop_end(self.ends)
+      tree.add(end_position)
     }
   }
 

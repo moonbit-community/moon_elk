@@ -42,10 +42,12 @@ fn port_side_processor_process_node(node : LNode) -> Unit {
 ///|
 pub fn port_side_processor_set_port_side(port : LPort) -> Unit {
   match port.get_property_l_node(internal_properties_port_dummy) {
-    Some(port_dummy) =>
-      port.set_side(
-        port_dummy.get_property_port_side(internal_properties_ext_port_side),
+    Some(port_dummy) => {
+      let resolved_side = port_dummy.get_property_port_side(
+        internal_properties_ext_port_side,
       )
+      port.set_side(resolved_side)
+    }
     None =>
       if port.get_net_flow() < 0 {
         port.set_side(PortSide::East)

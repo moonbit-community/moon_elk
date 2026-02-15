@@ -10,6 +10,10 @@ struct Issue680TestGraph {
   graph : ElkNode
   parent : ElkNode
   child : ElkNode
+  p1 : ElkPort
+  p2 : ElkPort
+  child_p1 : ElkPort
+  child_p2 : ElkPort
 }
 
 ///|
@@ -58,11 +62,10 @@ fn issue680_test_graph() -> Issue680TestGraph {
   edge_add_target(edge2, make_port_shape(p2))
   update_containment(Some(edge2))
 
-  { graph, parent, child }
+  { graph, parent, child, p1, p2, child_p1, child_p2 }
 }
 
 ///|
-#skip
 test "Issue680 parent and child Y positions stay stable" {
   reset_graph_model_for_test()
   issue680_test_setup_plain_java_layout()
@@ -72,6 +75,35 @@ test "Issue680 parent and child Y positions stay stable" {
   layout_engine.layout(test_graph.graph, new_null_elk_progress_monitor())
 
   let epsilon = 0.00001
-  assert_true((node_y(test_graph.parent) - 157.0).abs() <= epsilon)
-  assert_true((node_y(test_graph.child) - 57.0).abs() <= epsilon)
+  let parent_y = node_y(test_graph.parent)
+  let parent_x = node_x(test_graph.parent)
+  let child_y = node_y(test_graph.child)
+  let child_x = node_x(test_graph.child)
+  let child_w = node_width(test_graph.child)
+  let child_h = node_height(test_graph.child)
+  let parent_w = node_width(test_graph.parent)
+  let parent_h = node_height(test_graph.parent)
+  let graph_w = node_width(test_graph.graph)
+  let graph_h = node_height(test_graph.graph)
+  let graph_padding = node_get_string_property(test_graph.graph, padding)
+  let parent_padding = node_get_string_property(test_graph.parent, padding)
+  let child_padding = node_get_string_property(test_graph.child, padding)
+  let p1_xy = "(\{port_x(test_graph.p1)},\{port_y(test_graph.p1)})"
+  let p2_xy = "(\{port_x(test_graph.p2)},\{port_y(test_graph.p2)})"
+  let cp1_xy = "(\{port_x(test_graph.child_p1)},\{port_y(test_graph.child_p1)})"
+  let cp2_xy = "(\{port_x(test_graph.child_p2)},\{port_y(test_graph.child_p2)})"
+  let p1_side = match
+    port_layout_option_string_value(test_graph.p1, "org.eclipse.elk.port.side") {
+    Some(value) => value
+    None => "NONE"
+  }
+  let p2_side = match
+    port_layout_option_string_value(test_graph.p2, "org.eclipse.elk.port.side") {
+    Some(value) => value
+    None => "NONE"
+  }
+  assert_true(
+    (parent_y - 157.0).abs() <= epsilon && (child_y - 57.0).abs() <= epsilon,
+    msg="parent=(\{parent_x},\{parent_y}) expected_y=157.0; child=(\{child_x},\{child_y}) expected_y=57.0; child_size=(\{child_w},\{child_h}); parent_size=(\{parent_w},\{parent_h}); graph_size=(\{graph_w},\{graph_h}); graph_padding=\{graph_padding}; parent_padding=\{parent_padding}; child_padding=\{child_padding}; p1=\{p1_xy}; p2=\{p2_xy}; child_p1=\{cp1_xy}; child_p2=\{cp2_xy}; p1_side=\{p1_side}; p2_side=\{p2_side}",
+  )
 }

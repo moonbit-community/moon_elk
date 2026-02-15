@@ -150,6 +150,12 @@ pub let internal_properties_ext_port_side : IProperty[PortSide] = new_property(
 )
 
 ///|
+pub let internal_properties_ext_port_size : IProperty[KVector] = new_property(
+  "externalPortSize",
+  new_kvector(),
+)
+
+///|
 pub let internal_properties_port_ratio_or_position : IProperty[Double] = new_property(
   "portRatioOrPosition", 0.0,
 )

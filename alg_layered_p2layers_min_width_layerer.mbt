@@ -43,7 +43,7 @@ fn min_width_layerer_layer_constraint_preprocessor_factory() -> ILayoutProcessor
   LayeredPhases,
   LGraph,
 ] {
-  new_layout_processor_factory(23027, 27, () => {
+  new_layout_processor_factory(23007, 7, () => {
     new_layer_constraint_preprocessor_layout_processor()
   })
 }
@@ -53,7 +53,7 @@ fn min_width_layerer_layer_constraint_postprocessor_factory() -> ILayoutProcesso
   LayeredPhases,
   LGraph,
 ] {
-  new_layout_processor_factory(23028, 28, () => {
+  new_layout_processor_factory(23011, 11, () => {
     new_layer_constraint_postprocessor_layout_processor()
   })
 }

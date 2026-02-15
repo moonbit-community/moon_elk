@@ -57,7 +57,23 @@ pub fn new_simple_node_placer_layout_phase() -> ILayoutProcessor[
   LGraph,
 ] {
   new_layout_phase(simple_node_placer_process, graph => {
-    ignore(graph)
+    for
+      property in graph.get_property_graph_properties_array(
+        internal_properties_graph_properties,
+      ) {
+      match property {
+        GraphProperties::ExternalPorts =>
+          return Some(
+            layout_processor_configuration_create(layered_phase_descriptor).add_before(
+              LayeredPhases::P5EdgeRouting,
+              layered_intermediate_processor_factory(
+                IntermediateProcessorStrategy::HierarchicalPortPositionProcessor,
+              ),
+            ),
+          )
+        _ => ()
+      }
+    }
     None
   })
 }

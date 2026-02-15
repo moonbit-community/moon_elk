@@ -2550,6 +2550,8 @@ pub let internal_properties_ext_port_replaced_dummy : IProperty[LNode?]
 
 pub let internal_properties_ext_port_side : IProperty[PortSide]
 
+pub let internal_properties_ext_port_size : IProperty[KVector]
+
 pub let internal_properties_first_try_with_initial_order : IProperty[Bool]
 
 pub let internal_properties_graph_properties : IProperty[Array[GraphProperties]]
@@ -2827,6 +2829,10 @@ pub fn layered_options_parse_int_list(String) -> Array[Int]
 pub let layered_options_partitioning_activate : IProperty[Bool]
 
 pub let layered_options_partitioning_partition : IProperty[Int]
+
+pub let layered_options_port_anchor : IProperty[KVector]
+
+pub let layered_options_port_border_offset : IProperty[Double]
 
 pub let layered_options_port_index : IProperty[Int]
 
@@ -3896,6 +3902,10 @@ pub fn new_diagram_layout_engine(IDiagramLayoutConnector, config_manager? : Layo
 
 pub fn new_diagram_layout_engine_parameters() -> DiagramLayoutEngineParameters
 
+pub fn new_direction_postprocessor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
+
+pub fn new_direction_preprocessor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
+
 pub fn new_dis_co_debug_color(DisCoDebugDisplay, Int, Int, Int) -> DisCoDebugColor
 
 pub fn new_dis_co_debug_display() -> DisCoDebugDisplay
@@ -4370,6 +4380,8 @@ pub fn new_graph_text_ui_status(Int, String, String) -> GraphTextUiStatus
 
 pub fn new_graph_text_validation_issue(String, String, Int, code? : String?) -> GraphTextValidationIssue
 
+pub fn new_graph_transformer_layout_processor(GraphTransformerMode) -> ILayoutProcessor[LayeredPhases, LGraph]
+
 pub fn new_graph_tree_label_provider() -> GraphTreeLabelProvider
 
 pub fn new_graph_validation_exception() -> GraphValidationException
@@ -4483,6 +4495,10 @@ pub fn new_group_model_order_calculator() -> GroupModelOrderCalculator
 pub fn new_hierarchical_port_constraint_processor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_hierarchical_port_dummy_size_processor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
+
+pub fn new_hierarchical_port_orthogonal_edge_router_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
+
+pub fn new_hierarchical_port_position_processor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_hyper_edge_segment(BaseRoutingDirectionStrategy) -> HyperEdgeSegment
 
@@ -11689,6 +11705,11 @@ pub struct GraphTextValidationIssue {
   code : String?
 }
 
+pub enum GraphTransformerMode {
+  ToInternalLtr
+  ToInputDirection
+}
+
 pub struct GraphTreeLabelProvider {
   graph_image : String
   no_graph_image : String
@@ -12814,6 +12835,7 @@ pub enum IntermediateProcessorStrategy {
   HyperedgeDummyMerger
   HierarchicalPortConstraintProcessor
   HierarchicalPortDummySizeProcessor
+  HierarchicalPortPositionProcessor
   HierarchicalPortOrthogonalEdgeRouter
   HypernodeProcessor
   EdgeAndLayerConstraintEdgeReverser
@@ -13218,16 +13240,19 @@ pub struct LGraph {
   direction_properties : Map[String, Direction]
   spline_routing_mode_properties : Map[String, SplineRoutingMode]
   size : KVector
+  padding : Spacing
   offset : KVector
   layerless_nodes : Array[LNode]
   layers : Array[Layer]
   mut parent_node : LNode?
 }
 pub fn LGraph::copy_properties(Self, Self) -> Unit
+pub fn LGraph::get_actual_size(Self) -> KVector
 pub fn LGraph::get_id(Self) -> Int
 pub fn LGraph::get_layerless_nodes(Self) -> Array[LNode]
 pub fn LGraph::get_layers(Self) -> Array[Layer]
 pub fn LGraph::get_offset(Self) -> KVector
+pub fn LGraph::get_padding(Self) -> Spacing
 pub fn LGraph::get_parent_node(Self) -> LNode?
 pub fn LGraph::get_property_bool(Self, IProperty[Bool]) -> Bool
 pub fn LGraph::get_property_component_ordering_strategy(Self, IProperty[ComponentOrderingStrategy]) -> ComponentOrderingStrategy

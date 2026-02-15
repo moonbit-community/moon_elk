@@ -25,6 +25,7 @@ pub enum IntermediateProcessorStrategy {
   HyperedgeDummyMerger
   HierarchicalPortConstraintProcessor
   HierarchicalPortDummySizeProcessor
+  HierarchicalPortPositionProcessor
   HierarchicalPortOrthogonalEdgeRouter
   HypernodeProcessor
   EdgeAndLayerConstraintEdgeReverser
@@ -62,6 +63,7 @@ fn intermediate_processor_strategy_ordinal(
     IntermediateProcessorStrategy::HyperedgeDummyMerger => 38
     IntermediateProcessorStrategy::HierarchicalPortConstraintProcessor => 13
     IntermediateProcessorStrategy::HierarchicalPortDummySizeProcessor => 39
+    IntermediateProcessorStrategy::HierarchicalPortPositionProcessor => 43
     IntermediateProcessorStrategy::HierarchicalPortOrthogonalEdgeRouter => 45
     IntermediateProcessorStrategy::HypernodeProcessor => 44
     IntermediateProcessorStrategy::EdgeAndLayerConstraintEdgeReverser => 2
@@ -95,6 +97,7 @@ pub fn intermediate_processor_strategy_values() -> Array[
     LabelSideSelector,
     HyperedgeDummyMerger,
     HierarchicalPortDummySizeProcessor,
+    HierarchicalPortPositionProcessor,
     HypernodeProcessor,
     HierarchicalPortOrthogonalEdgeRouter,
     LongEdgeJoiner,
@@ -154,6 +157,8 @@ pub fn intermediate_processor_strategy_to_string(
       "HIERARCHICAL_PORT_CONSTRAINT_PROCESSOR"
     IntermediateProcessorStrategy::HierarchicalPortDummySizeProcessor =>
       "HIERARCHICAL_PORT_DUMMY_SIZE_PROCESSOR"
+    IntermediateProcessorStrategy::HierarchicalPortPositionProcessor =>
+      "HIERARCHICAL_PORT_POSITION_PROCESSOR"
     IntermediateProcessorStrategy::HierarchicalPortOrthogonalEdgeRouter =>
       "HIERARCHICAL_PORT_ORTHOGONAL_EDGE_ROUTER"
     IntermediateProcessorStrategy::HypernodeProcessor => "HYPERNODE_PROCESSOR"
@@ -221,6 +226,10 @@ fn intermediate_processor_create(
       new_hierarchical_port_constraint_processor_layout_processor()
     IntermediateProcessorStrategy::HierarchicalPortDummySizeProcessor =>
       new_hierarchical_port_dummy_size_processor_layout_processor()
+    IntermediateProcessorStrategy::HierarchicalPortPositionProcessor =>
+      new_hierarchical_port_position_processor_layout_processor()
+    IntermediateProcessorStrategy::HierarchicalPortOrthogonalEdgeRouter =>
+      new_hierarchical_port_orthogonal_edge_router_layout_processor()
     IntermediateProcessorStrategy::HypernodeProcessor =>
       new_hypernodes_processor_layout_processor()
     IntermediateProcessorStrategy::EdgeAndLayerConstraintEdgeReverser =>

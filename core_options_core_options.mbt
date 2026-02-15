@@ -118,7 +118,7 @@ pub let port_side : IProperty[String] = new_property(
 
 ///|
 pub let padding : IProperty[String] = new_property(
-  "org.eclipse.elk.padding", "[left=0, top=0, right=0, bottom=0]",
+  "org.eclipse.elk.padding", "[left=12, top=12, right=12, bottom=12]",
 )
 
 ///|

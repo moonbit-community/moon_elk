@@ -254,6 +254,17 @@ pub let layered_options_port_index : IProperty[Int] = new_property(
 )
 
 ///|
+pub let layered_options_port_anchor : IProperty[KVector] = new_property(
+  "org.eclipse.elk.port.anchor",
+  new_kvector(),
+)
+
+///|
+pub let layered_options_port_border_offset : IProperty[Double] = new_property(
+  "org.eclipse.elk.port.borderOffset", 0.0,
+)
+
+///|
 pub let layered_options_unnecessary_bendpoints : IProperty[Bool] = new_property(
   "org.eclipse.elk.layered.unnecessaryBendpoints", false,
 )

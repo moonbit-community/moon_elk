@@ -31,7 +31,6 @@ fn issue603_rectangles_overlap(
 }
 
 ///|
-#skip
 test "Issue603 no overlap between compound labels and child nodes" {
   reset_graph_model_for_test()
   issue603_test_setup_plain_java_layout()
@@ -51,16 +50,18 @@ test "Issue603 no overlap between compound labels and child nodes" {
 
   issue603_test_layout(graph)
 
+  let overlaps = issue603_rectangles_overlap(
+    label_x(parent_label),
+    label_y(parent_label),
+    label_width(parent_label),
+    label_height(parent_label),
+    node_x(child),
+    node_y(child),
+    node_width(child),
+    node_height(child),
+  )
   assert_false(
-    issue603_rectangles_overlap(
-      label_x(parent_label),
-      label_y(parent_label),
-      label_width(parent_label),
-      label_height(parent_label),
-      node_x(child),
-      node_y(child),
-      node_width(child),
-      node_height(child),
-    ),
+    overlaps,
+    msg="label=(\{label_x(parent_label)},\{label_y(parent_label)},\{label_width(parent_label)},\{label_height(parent_label)}), child=(\{node_x(child)},\{node_y(child)},\{node_width(child)},\{node_height(child)}), parent=(\{node_x(parent)},\{node_y(parent)},\{node_width(parent)},\{node_height(parent)})",
   )
 }

@@ -16,6 +16,7 @@ pub struct LGraph {
   direction_properties : Map[String, Direction]
   spline_routing_mode_properties : Map[String, SplineRoutingMode]
   size : KVector
+  padding : LPadding
   offset : KVector
   layerless_nodes : Array[LNode]
   layers : Array[Layer]
@@ -38,6 +39,7 @@ pub fn new_l_graph() -> LGraph {
     direction_properties: {},
     spline_routing_mode_properties: {},
     size: new_kvector(),
+    padding: new_l_padding(),
     offset: new_kvector(),
     layerless_nodes: [],
     layers: [],
@@ -340,6 +342,19 @@ pub fn LGraph::get_size(self : LGraph) -> KVector {
 pub fn LGraph::set_size_xy(self : LGraph, x : Double, y : Double) -> Unit {
   self.size.x = x
   self.size.y = y
+}
+
+///|
+pub fn LGraph::get_actual_size(self : LGraph) -> KVector {
+  new_kvector_xy(
+    self.size.x + self.padding.left + self.padding.right,
+    self.size.y + self.padding.top + self.padding.bottom,
+  )
+}
+
+///|
+pub fn LGraph::get_padding(self : LGraph) -> LPadding {
+  self.padding
 }
 
 ///|

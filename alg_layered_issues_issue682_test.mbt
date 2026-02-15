@@ -35,7 +35,20 @@ fn issue682_test_graph(layout_direction : String) -> Issue682TestGraph {
 }
 
 ///|
-#skip
+fn issue682_test_assert_close(
+  actual : Double,
+  expected : Double,
+  epsilon : Double,
+  context : String,
+) -> Unit {
+  if (actual - expected).abs() > epsilon {
+    abort(
+      "\{context}: expected=\{expected}, actual=\{actual}, epsilon=\{epsilon}",
+    )
+  }
+}
+
+///|
 test "Issue682 node label padding respects all directions" {
   reset_graph_model_for_test()
   issue682_test_setup_plain_java_layout()
@@ -47,12 +60,23 @@ test "Issue682 node label padding respects all directions" {
     layout_engine.layout(test_graph.graph, new_null_elk_progress_monitor())
 
     let label = test_graph.label
-    assert_true((label_x(label) - 54.0).abs() <= epsilon)
-    assert_true((label_y(label) - 21.0).abs() <= epsilon)
-    assert_true(
-      (node_width(test_graph.parent) -
-      (label_x(label) + label_width(label) + 32.0)).abs() <=
+    issue682_test_assert_close(
+      label_x(label),
+      54.0,
       epsilon,
+      "\{layout_direction}.label_x",
+    )
+    issue682_test_assert_close(
+      label_y(label),
+      21.0,
+      epsilon,
+      "\{layout_direction}.label_y",
+    )
+    issue682_test_assert_close(
+      node_width(test_graph.parent),
+      label_x(label) + label_width(label) + 32.0,
+      epsilon,
+      "\{layout_direction}.parent_width",
     )
   }
 }
