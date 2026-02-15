@@ -1043,9 +1043,17 @@ fn recursive_layered_node_placement_factory(
       new_layout_processor_factory(24101, 3, () => {
         new_interactive_node_placer_layout_phase()
       })
+    "LINEAR_SEGMENTS" =>
+      new_layout_processor_factory(24102, 3, () => {
+        new_linear_segments_node_placer_layout_phase()
+      })
     "BRANDES_KOEPF" =>
       new_layout_processor_factory(24103, 3, () => {
         new_bk_node_placer_layout_phase()
+      })
+    "NETWORK_SIMPLEX" =>
+      new_layout_processor_factory(24104, 3, () => {
+        new_network_simplex_placer_layout_phase()
       })
     _ =>
       new_layout_processor_factory(24103, 3, () => {

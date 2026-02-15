@@ -55,3 +55,46 @@ test "BasicNodePlacement strategies route graph without overlap crash" {
     "org.eclipse.elk.layered",
   )
 }
+
+///|
+test "BasicNodePlacement network simplex strategy routes graph without overlap crash" {
+  reset_graph_model_for_test()
+  p4_basic_node_placement_test_setup_plain_java_layout()
+
+  let graph = create_graph()
+  node_set_layout_option_string_by_id(
+    graph, "org.eclipse.elk.layered.nodePlacement.strategy", "NETWORK_SIMPLEX",
+  )
+
+  let source = create_node(Some(graph))
+  let mid_a = create_node(Some(graph))
+  let mid_b = create_node(Some(graph))
+  let target = create_node(Some(graph))
+
+  let e1 = create_edge(None)
+  edge_add_source(e1, make_node_shape(source))
+  edge_add_target(e1, make_node_shape(mid_a))
+  update_containment(Some(e1))
+
+  let e2 = create_edge(None)
+  edge_add_source(e2, make_node_shape(source))
+  edge_add_target(e2, make_node_shape(mid_b))
+  update_containment(Some(e2))
+
+  let e3 = create_edge(None)
+  edge_add_source(e3, make_node_shape(mid_a))
+  edge_add_target(e3, make_node_shape(target))
+  update_containment(Some(e3))
+
+  let e4 = create_edge(None)
+  edge_add_source(e4, make_node_shape(mid_b))
+  edge_add_target(e4, make_node_shape(target))
+  update_containment(Some(e4))
+
+  p4_basic_node_placement_test_layout(graph)
+
+  assert_eq(
+    node_get_string_property(graph, resolved_algorithm),
+    "org.eclipse.elk.layered",
+  )
+}

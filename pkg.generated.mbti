@@ -4900,6 +4900,8 @@ pub fn new_libavoid_server_exception_with_message(String) -> LibavoidServerExcep
 
 pub fn new_libavoid_server_pool() -> LibavoidServerPool
 
+pub fn new_linear_segments_node_placer_layout_phase() -> ILayoutProcessor[LayeredPhases, LGraph]
+
 pub fn new_load_graph_action(LayoutGraphView) -> LoadGraphAction
 
 pub fn new_log_label_provider() -> LogLabelProvider
@@ -5049,6 +5051,8 @@ pub fn new_msd_cut_index_heuristic() -> ICutIndexCalculator
 pub fn new_multiple_options_cell_editor(Array[String], Bool) -> MultipleOptionsCellEditor
 
 pub fn new_network_simplex_layerer_layout_phase() -> ILayoutProcessor[LayeredPhases, LGraph]
+
+pub fn new_network_simplex_placer_layout_phase() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_ngraph() -> NGraph
 
@@ -14483,6 +14487,12 @@ pub fn LibavoidServerPool::dispose(Self) -> Unit
 pub fn LibavoidServerPool::fetch(Self) -> LibavoidServer
 pub fn LibavoidServerPool::release(Self, LibavoidServer) -> Unit
 pub fn LibavoidServerPool::size(Self) -> Int
+
+type LinearSegment
+
+type LinearSegmentsMode
+
+type LinearSegmentsState
 
 pub struct LoadGraphAction {
   view : LayoutGraphView
