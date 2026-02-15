@@ -4,9 +4,21 @@ let network_simplex_node_flexibility : IProperty[String] = new_property(
 )
 
 ///|
-fn network_simplex_node_flexibility_is_flexible(value : String) -> Bool {
+let network_simplex_node_flexibility_default : IProperty[String] = new_property(
+  "org.eclipse.elk.layered.nodePlacement.networkSimplex.nodeFlexibility.default",
+  "NONE",
+)
+
+///|
+fn network_simplex_node_flexibility_is_none(value : String) -> Bool {
+  value == "NONE"
+}
+
+///|
+fn network_simplex_node_flexibility_is_flexible_size_where_space_permits(
+  value : String,
+) -> Bool {
   match value {
-    "PORT_POSITION" => true
     "NODE_SIZE_WHERE_SPACE_PERMITS" => true
     "NODE_SIZE" => true
     _ => false
@@ -14,21 +26,89 @@ fn network_simplex_node_flexibility_is_flexible(value : String) -> Bool {
 }
 
 ///|
-fn network_simplex_port_constraints_allows_flexible(value : String) -> Bool {
-  value != "FIXED_POS" && value != "FIXED_RATIO"
+fn network_simplex_port_constraints_is_pos_fixed(value : String) -> Bool {
+  value == "FIXED_POS" || value == "FIXED_RATIO"
+}
+
+///|
+fn network_simplex_node_flexibility_value(node : LNode) -> String {
+  if node.has_property_string(network_simplex_node_flexibility) {
+    return node.get_property_string(network_simplex_node_flexibility)
+  }
+
+  node.get_graph().get_property_string(network_simplex_node_flexibility_default)
+}
+
+///|
+fn network_simplex_node_requires_more_height_for_flexible_ports(
+  node : LNode,
+) -> Bool {
+  let port_spacing = layered_spacings_get_individual_or_default(
+    node, spacing_port_port,
+  )
+  let graph = node.get_graph()
+  let additional_port_spacing = if graph.has_property_elk_margin(
+      layered_options_spacing_ports_surrounding,
+    ) {
+    graph.get_property_elk_margin(layered_options_spacing_ports_surrounding)
+  } else {
+    new_elk_margin_values(
+      port_spacing, port_spacing, port_spacing, port_spacing,
+    )
+  }
+
+  let west_ports = node.get_port_side_view(PortSide::West)
+  let required_west_height = additional_port_spacing.top +
+    additional_port_spacing.bottom +
+    (west_ports.length() - 1).to_double() * port_spacing
+  if required_west_height > node.get_size().y {
+    return true
+  }
+
+  let east_ports = node.get_port_side_view(PortSide::East)
+  let required_east_height = additional_port_spacing.top +
+    additional_port_spacing.bottom +
+    (east_ports.length() - 1).to_double() * port_spacing
+  required_east_height > node.get_size().y
+}
+
+///|
+fn network_simplex_node_type_is_normal(node_type : NodeType) -> Bool {
+  match node_type {
+    NodeType::Normal => true
+    _ => false
+  }
 }
 
 ///|
 fn network_simplex_node_is_flexible(node : LNode) -> Bool {
-  if !network_simplex_port_constraints_allows_flexible(
+  if !network_simplex_node_type_is_normal(node.get_type()) {
+    return false
+  }
+
+  if node.get_ports().length() <= 1 {
+    return false
+  }
+
+  if network_simplex_port_constraints_is_pos_fixed(
       node.get_property_string(port_constraints),
     ) {
     return false
   }
 
-  network_simplex_node_flexibility_is_flexible(
-    node.get_property_string(network_simplex_node_flexibility),
-  )
+  let node_flexibility = network_simplex_node_flexibility_value(node)
+  if network_simplex_node_flexibility_is_none(node_flexibility) {
+    return false
+  }
+
+  if !network_simplex_node_flexibility_is_flexible_size_where_space_permits(
+      node_flexibility,
+    ) &&
+    network_simplex_node_requires_more_height_for_flexible_ports(node) {
+    return false
+  }
+
+  true
 }
 
 ///|

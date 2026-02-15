@@ -86,6 +86,27 @@ let p4nodes_test_network_simplex_node_flexibility : IProperty[String] = new_prop
 )
 
 ///|
+let p4nodes_test_network_simplex_node_flexibility_default : IProperty[String] = new_property(
+  "org.eclipse.elk.layered.nodePlacement.networkSimplex.nodeFlexibility.default",
+  "NONE",
+)
+
+///|
+fn p4nodes_test_add_port(
+  node : LNode,
+  side : PortSide,
+  anchor_y : Double,
+  position_y : Double,
+) -> LPort {
+  let port = new_l_port()
+  port.set_node(Some(node))
+  port.set_side(side)
+  ignore(port.get_anchor().set_xy(port.get_anchor().x, anchor_y))
+  ignore(port.get_position().set_xy(port.get_position().x, position_y))
+  port
+}
+
+///|
 fn p4nodes_test_connect_nodes(source : LNode, target : LNode) -> LEdge {
   let source_port = new_l_port()
   source_port.set_node(Some(source))
@@ -164,11 +185,12 @@ test "network simplex node placer integerifies non-flexible port y positions dur
   let layer = p4nodes_test_add_layer(graph)
   let node = p4nodes_test_add_basic_node(layer, 10.0)
 
-  let port = new_l_port()
-  port.set_node(Some(node))
-  port.set_side(p4nodes_test_port_side("EAST"))
-  ignore(port.get_anchor().set_xy(port.get_anchor().x, 0.4))
-  ignore(port.get_position().set_xy(port.get_position().x, 2.2))
+  let port = p4nodes_test_add_port(
+    node,
+    p4nodes_test_port_side("EAST"),
+    0.4,
+    2.2,
+  )
 
   let phase = new_network_simplex_placer_layout_phase()
   phase.process(graph, None)
@@ -182,25 +204,79 @@ test "network simplex node placer integerifies non-flexible port y positions dur
 test "network simplex node placer integerifies flexible node anchor and absolute port y" {
   let graph = new_l_graph()
   let layer = p4nodes_test_add_layer(graph)
-  let node = p4nodes_test_add_basic_node(layer, 10.0)
+  let node = p4nodes_test_add_basic_node(layer, 100.0)
   node.set_property_string(port_constraints, "FIXED_ORDER")
   node.set_property_string(
     p4nodes_test_network_simplex_node_flexibility, "PORT_POSITION",
   )
 
-  let port = new_l_port()
-  port.set_node(Some(node))
-  port.set_side(p4nodes_test_port_side("EAST"))
-  ignore(port.get_anchor().set_xy(port.get_anchor().x, 0.4))
-  ignore(port.get_position().set_xy(port.get_position().x, 2.2))
+  let east_port = p4nodes_test_add_port(
+    node,
+    p4nodes_test_port_side("EAST"),
+    0.4,
+    2.2,
+  )
+  ignore(p4nodes_test_add_port(node, p4nodes_test_port_side("WEST"), 0.0, 7.0))
 
   let phase = new_network_simplex_placer_layout_phase()
   phase.process(graph, None)
 
-  assert_true(p4nodes_test_assert_integral(port.get_anchor().y))
+  assert_true(p4nodes_test_assert_integral(east_port.get_anchor().y))
+  assert_true(
+    p4nodes_test_assert_integral(
+      east_port.get_position().y + east_port.get_anchor().y,
+    ),
+  )
+}
+
+///|
+test "network simplex node placer does not integerify one-port PORT_POSITION anchor" {
+  let graph = new_l_graph()
+  let layer = p4nodes_test_add_layer(graph)
+  let node = p4nodes_test_add_basic_node(layer, 100.0)
+  node.set_property_string(port_constraints, "FIXED_ORDER")
+  node.set_property_string(
+    p4nodes_test_network_simplex_node_flexibility, "PORT_POSITION",
+  )
+
+  let port = p4nodes_test_add_port(
+    node,
+    p4nodes_test_port_side("EAST"),
+    0.4,
+    2.2,
+  )
+
+  let phase = new_network_simplex_placer_layout_phase()
+  phase.process(graph, None)
+
+  assert_eq(port.get_anchor().y, 0.4)
   assert_true(
     p4nodes_test_assert_integral(port.get_position().y + port.get_anchor().y),
   )
+}
+
+///|
+test "network simplex node placer uses graph default flexibility during prepare" {
+  let graph = new_l_graph()
+  graph.set_property_string(
+    p4nodes_test_network_simplex_node_flexibility_default, "PORT_POSITION",
+  )
+  let layer = p4nodes_test_add_layer(graph)
+  let node = p4nodes_test_add_basic_node(layer, 100.0)
+  node.set_property_string(port_constraints, "FIXED_ORDER")
+
+  let east_port = p4nodes_test_add_port(
+    node,
+    p4nodes_test_port_side("EAST"),
+    0.4,
+    2.2,
+  )
+  ignore(p4nodes_test_add_port(node, p4nodes_test_port_side("WEST"), 0.0, 7.0))
+
+  let phase = new_network_simplex_placer_layout_phase()
+  phase.process(graph, None)
+
+  assert_true(p4nodes_test_assert_integral(east_port.get_anchor().y))
 }
 
 ///|
