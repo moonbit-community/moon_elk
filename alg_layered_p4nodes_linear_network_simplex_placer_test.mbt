@@ -123,6 +123,26 @@ fn p4nodes_test_connect_nodes(source : LNode, target : LNode) -> LEdge {
 }
 
 ///|
+fn p4nodes_test_layer_has_proper_coordinates(layer : Layer) -> Bool {
+  let nodes = layer.get_nodes()
+  if nodes.length() <= 1 {
+    return true
+  }
+
+  let mut last_bottom_y = nodes[0].get_position().y + nodes[0].get_size().y
+  let mut idx = 1
+  while idx < nodes.length() {
+    let node = nodes[idx]
+    if last_bottom_y >= node.get_position().y {
+      return false
+    }
+    last_bottom_y = node.get_position().y + node.get_size().y
+    idx += 1
+  }
+  true
+}
+
+///|
 test "linear segments node placer layout phase starts monitor with expected task" {
   let phase = new_linear_segments_node_placer_layout_phase()
   assert_true(phase.is_layout_phase())
@@ -293,6 +313,26 @@ test "network simplex node placer prepare assigns sequential node and edge ids" 
   assert_eq(source.get_id(), 0)
   assert_eq(target.get_id(), 1)
   assert_eq(edge.get_id(), 0)
+}
+
+///|
+test "network simplex node placer assigns proper coordinates in each layer" {
+  let graph = new_l_graph()
+  let layer0 = p4nodes_test_add_layer(graph)
+  let layer1 = p4nodes_test_add_layer(graph)
+
+  ignore(p4nodes_test_add_basic_node(layer0, 7.0))
+  ignore(p4nodes_test_add_basic_node(layer0, 11.0))
+  ignore(p4nodes_test_add_basic_node(layer0, 5.0))
+  ignore(p4nodes_test_add_basic_node(layer1, 8.0))
+  ignore(p4nodes_test_add_basic_node(layer1, 6.0))
+
+  let phase = new_network_simplex_placer_layout_phase()
+  phase.process(graph, None)
+
+  for layer in graph.get_layers() {
+    assert_true(p4nodes_test_layer_has_proper_coordinates(layer))
+  }
 }
 
 ///|
