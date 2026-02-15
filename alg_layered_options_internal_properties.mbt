@@ -33,6 +33,17 @@ pub let internal_properties_end_label_edge : IProperty[LEdge?] = new_property(
 )
 
 ///|
+pub let internal_properties_end_labels : IProperty[Array[EndLabelCell]] = new_property(
+  "endLabels",
+  [],
+)
+
+///|
+pub let internal_properties_max_edge_thickness : IProperty[Double] = new_property(
+  "maxEdgeThickness", 0.0,
+)
+
+///|
 pub let internal_properties_represented_labels : IProperty[Array[LLabel]] = new_property(
   "representedLabels",
   [],

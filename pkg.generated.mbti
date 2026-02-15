@@ -2542,6 +2542,8 @@ pub let internal_properties_cyclic : IProperty[Bool]
 
 pub let internal_properties_end_label_edge : IProperty[LEdge?]
 
+pub let internal_properties_end_labels : IProperty[Array[EndLabelCell]]
+
 pub let internal_properties_ext_port_connections : IProperty[Array[PortSide]]
 
 pub let internal_properties_ext_port_replaced_dummies : IProperty[Array[LNode]]
@@ -2581,6 +2583,8 @@ pub let internal_properties_long_edge_source : IProperty[LPort?]
 pub let internal_properties_long_edge_target : IProperty[LPort?]
 
 pub let internal_properties_long_edge_target_node : IProperty[LNode?]
+
+pub let internal_properties_max_edge_thickness : IProperty[Double]
 
 pub let internal_properties_max_model_order_nodes : IProperty[Int]
 
@@ -4139,6 +4143,14 @@ pub fn new_elk_ui_plugin() -> ElkUiPlugin
 pub fn new_empty_planar_grid() -> PlanarGrid
 
 pub fn new_empty_polyomino() -> Polyomino
+
+pub fn new_end_label_cell(Double, Bool, LabelSide) -> EndLabelCell
+
+pub fn new_end_label_cell_label(Int, LLabel) -> EndLabelCellLabel
+
+pub fn new_end_label_postprocessor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
+
+pub fn new_end_label_preprocessor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_end_label_sorter_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
@@ -10433,6 +10445,26 @@ pub fn ElkUiPlugin::is_started(Self) -> Bool
 pub fn ElkUiPlugin::start(Self, _context? : String) -> Unit
 pub fn ElkUiPlugin::stop(Self, _context? : String) -> Unit
 
+pub struct EndLabelCell {
+  label_cell : Cell
+  label_side : LabelSide
+  labels : Array[EndLabelCellLabel]
+}
+pub fn EndLabelCell::add_l_label(Self, LLabel) -> Unit
+pub fn EndLabelCell::apply_label_layout(Self) -> Unit
+pub fn EndLabelCell::get_cell_rectangle(Self) -> ElkRectangle
+pub fn EndLabelCell::get_label_side(Self) -> LabelSide
+pub fn EndLabelCell::get_minimum_height(Self) -> Double
+pub fn EndLabelCell::get_minimum_width(Self) -> Double
+pub fn EndLabelCell::has_labels(Self) -> Bool
+pub fn EndLabelCell::set_horizontal_alignment(Self, HorizontalLabelAlignment) -> Unit
+pub fn EndLabelCell::set_vertical_alignment(Self, VerticalLabelAlignment) -> Unit
+
+pub struct EndLabelCellLabel {
+  elk_label : Int
+  l_label : LLabel
+}
+
 pub struct ExclusiveLowerBound {
   exclusive_lower_bound : Double
 }
@@ -13350,12 +13382,14 @@ pub struct LNode {
   node_properties : Map[String, LNode]
   node_array_properties : Map[String, Array[LNode]]
   label_array_properties : Map[String, Array[LLabel]]
+  end_label_cell_array_properties : Map[String, Array[EndLabelCell]]
   int_int_map_properties : Map[String, Map[Int, Int]]
   port_properties : Map[String, LPort]
   edge_properties : Map[String, LEdge]
   self_loop_holder_properties : Map[String, SelfLoopHolder]
 }
 pub fn LNode::add_port(Self, LPort) -> Unit
+pub fn LNode::clear_property_end_label_cell_array(Self, IProperty[Array[EndLabelCell]]) -> Unit
 pub fn LNode::get_connected_edges(Self) -> Array[LEdge]
 pub fn LNode::get_designation(Self) -> String?
 pub fn LNode::get_graph(Self) -> LGraph
@@ -13376,6 +13410,7 @@ pub fn LNode::get_ports_by_type_and_side(Self, PortType, PortSide) -> Array[LPor
 pub fn LNode::get_position(Self) -> KVector
 pub fn LNode::get_property_bool(Self, IProperty[Bool]) -> Bool
 pub fn LNode::get_property_double(Self, IProperty[Double]) -> Double
+pub fn LNode::get_property_end_label_cell_array(Self, IProperty[Array[EndLabelCell]]) -> Array[EndLabelCell]
 pub fn LNode::get_property_int(Self, IProperty[Int]) -> Int
 pub fn LNode::get_property_int_int_map(Self, IProperty[Map[Int, Int]]) -> Map[Int, Int]
 pub fn LNode::get_property_kvector(Self, IProperty[KVector]) -> KVector
@@ -13393,6 +13428,7 @@ pub fn LNode::get_size(Self) -> KVector
 pub fn LNode::get_type(Self) -> NodeType
 pub fn LNode::has_property_bool(Self, IProperty[Bool]) -> Bool
 pub fn LNode::has_property_double(Self, IProperty[Double]) -> Bool
+pub fn LNode::has_property_end_label_cell_array(Self, IProperty[Array[EndLabelCell]]) -> Bool
 pub fn LNode::has_property_int(Self, IProperty[Int]) -> Bool
 pub fn LNode::has_property_int_int_map(Self, IProperty[Map[Int, Int]]) -> Bool
 pub fn LNode::has_property_kvector(Self, IProperty[KVector]) -> Bool
@@ -13414,6 +13450,7 @@ pub fn LNode::set_layer(Self, Layer?) -> Unit
 pub fn LNode::set_nested_graph(Self, LGraph?) -> Unit
 pub fn LNode::set_property_bool(Self, IProperty[Bool], Bool) -> Unit
 pub fn LNode::set_property_double(Self, IProperty[Double], Double) -> Unit
+pub fn LNode::set_property_end_label_cell_array(Self, IProperty[Array[EndLabelCell]], Array[EndLabelCell]) -> Unit
 pub fn LNode::set_property_int(Self, IProperty[Int], Int) -> Unit
 pub fn LNode::set_property_int_int_map(Self, IProperty[Map[Int, Int]], Map[Int, Int]) -> Unit
 pub fn LNode::set_property_kvector(Self, IProperty[KVector], KVector) -> Unit

@@ -91,6 +91,7 @@ pub struct LNode {
   node_properties : Map[String, LNode]
   node_array_properties : Map[String, Array[LNode]]
   label_array_properties : Map[String, Array[LLabel]]
+  end_label_cell_array_properties : Map[String, Array[EndLabelCell]]
   int_int_map_properties : Map[String, Map[Int, Int]]
   port_properties : Map[String, LPort]
   edge_properties : Map[String, LEdge]
@@ -121,6 +122,7 @@ pub fn new_l_node(graph? : LGraph? = None) -> LNode {
     node_properties: {},
     node_array_properties: {},
     label_array_properties: {},
+    end_label_cell_array_properties: {},
     int_int_map_properties: {},
     port_properties: {},
     edge_properties: {},
@@ -679,6 +681,42 @@ pub fn LNode::has_property_l_label_array(
   property : IProperty[Array[LLabel]],
 ) -> Bool {
   self.label_array_properties.contains(property.get_id())
+}
+
+///|
+pub fn LNode::set_property_end_label_cell_array(
+  self : LNode,
+  property : IProperty[Array[EndLabelCell]],
+  value : Array[EndLabelCell],
+) -> Unit {
+  self.end_label_cell_array_properties[property.get_id()] = value.copy()
+}
+
+///|
+pub fn LNode::clear_property_end_label_cell_array(
+  self : LNode,
+  property : IProperty[Array[EndLabelCell]],
+) -> Unit {
+  ignore(self.end_label_cell_array_properties.remove(property.get_id()))
+}
+
+///|
+pub fn LNode::get_property_end_label_cell_array(
+  self : LNode,
+  property : IProperty[Array[EndLabelCell]],
+) -> Array[EndLabelCell] {
+  match self.end_label_cell_array_properties.get(property.get_id()) {
+    Some(value) => value.copy()
+    None => property.get_default().copy()
+  }
+}
+
+///|
+pub fn LNode::has_property_end_label_cell_array(
+  self : LNode,
+  property : IProperty[Array[EndLabelCell]],
+) -> Bool {
+  self.end_label_cell_array_properties.contains(property.get_id())
 }
 
 ///|

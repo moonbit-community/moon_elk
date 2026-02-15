@@ -220,6 +220,8 @@ fn intermediate_processor_create(
       new_north_south_port_preprocessor_layout_processor()
     IntermediateProcessorStrategy::NorthSouthPortPostprocessor =>
       new_north_south_port_postprocessor_layout_processor()
+    IntermediateProcessorStrategy::EndLabelPreprocessor =>
+      new_end_label_preprocessor_layout_processor()
     IntermediateProcessorStrategy::HyperedgeDummyMerger =>
       new_hyperedge_dummy_merger_layout_processor()
     IntermediateProcessorStrategy::HierarchicalPortConstraintProcessor =>
@@ -238,6 +240,8 @@ fn intermediate_processor_create(
       new_node_promotion_layout_processor()
     IntermediateProcessorStrategy::SemiInteractiveCrossMinProcessor =>
       new_semi_interactive_cross_min_processor_layout_processor()
+    IntermediateProcessorStrategy::EndLabelPostprocessor =>
+      new_end_label_postprocessor_layout_processor()
     _ => new_layout_processor(intermediate_processor_noop_process)
   }
 }
