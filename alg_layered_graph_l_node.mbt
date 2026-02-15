@@ -85,6 +85,7 @@ pub struct LNode {
   double_properties : Map[String, Double]
   kvector_properties : Map[String, KVector]
   string_properties : Map[String, String]
+  string_array_properties : Map[String, Array[String]]
   port_side_properties : Map[String, PortSide]
   label_side_properties : Map[String, LabelSide]
   node_properties : Map[String, LNode]
@@ -114,6 +115,7 @@ pub fn new_l_node(graph? : LGraph? = None) -> LNode {
     double_properties: {},
     kvector_properties: {},
     string_properties: {},
+    string_array_properties: {},
     port_side_properties: {},
     label_side_properties: {},
     node_properties: {},
@@ -345,29 +347,8 @@ pub fn LNode::set_nested_graph(self : LNode, graph : LGraph?) -> Unit {
 pub fn LNode::get_connected_edges(self : LNode) -> Array[LEdge] {
   let result = []
   for port in self.ports {
-    for edge in port.get_incoming_edges() {
-      let mut exists = false
-      for existing in result {
-        if ledge_internal_handle(existing) == ledge_internal_handle(edge) {
-          exists = true
-          break
-        }
-      }
-      if !exists {
-        result.push(edge)
-      }
-    }
-    for edge in port.get_outgoing_edges() {
-      let mut exists = false
-      for existing in result {
-        if ledge_internal_handle(existing) == ledge_internal_handle(edge) {
-          exists = true
-          break
-        }
-      }
-      if !exists {
-        result.push(edge)
-      }
+    for edge in port.get_connected_edges() {
+      result.push(edge)
     }
   }
   result
@@ -449,6 +430,15 @@ pub fn LNode::set_property_string(
 }
 
 ///|
+pub fn LNode::set_property_string_array(
+  self : LNode,
+  property : IProperty[Array[String]],
+  value : Array[String],
+) -> Unit {
+  self.string_array_properties[property.get_id()] = value.copy()
+}
+
+///|
 pub fn LNode::get_property_bool(
   self : LNode,
   property : IProperty[Bool],
@@ -489,6 +479,17 @@ pub fn LNode::get_property_string(
   match self.string_properties.get(property.get_id()) {
     Some(value) => value
     None => property.get_default()
+  }
+}
+
+///|
+pub fn LNode::get_property_string_array(
+  self : LNode,
+  property : IProperty[Array[String]],
+) -> Array[String] {
+  match self.string_array_properties.get(property.get_id()) {
+    Some(value) => value.copy()
+    None => property.get_default().copy()
   }
 }
 
@@ -567,6 +568,14 @@ pub fn LNode::has_property_string(
   property : IProperty[String],
 ) -> Bool {
   self.string_properties.contains(property.get_id())
+}
+
+///|
+pub fn LNode::has_property_string_array(
+  self : LNode,
+  property : IProperty[Array[String]],
+) -> Bool {
+  self.string_array_properties.contains(property.get_id())
 }
 
 ///|

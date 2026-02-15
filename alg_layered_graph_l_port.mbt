@@ -245,16 +245,7 @@ pub fn LPort::get_connected_edges(self : LPort) -> Array[LEdge] {
     result.push(edge)
   }
   for edge in self.outgoing_edges {
-    let mut exists = false
-    for existing in result {
-      if ledge_internal_handle(existing) == ledge_internal_handle(edge) {
-        exists = true
-        break
-      }
-    }
-    if !exists {
-      result.push(edge)
-    }
+    result.push(edge)
   }
   result
 }

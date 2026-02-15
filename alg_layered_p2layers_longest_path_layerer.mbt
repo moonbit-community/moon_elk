@@ -103,21 +103,12 @@ fn longest_path_layerer_visit(
 fn longest_path_layerer_configuration(
   graph : LGraph,
 ) -> LayoutProcessorConfiguration[LayeredPhases, LGraph]? {
-  let configuration = layout_processor_configuration_create_from(
-    longest_path_layerer_baseline_processing_configuration,
+  ignore(graph)
+  Some(
+    layout_processor_configuration_create_from(
+      longest_path_layerer_baseline_processing_configuration,
+    ),
   )
-  if graph.get_property_string(layered_options_layering_node_promotion_strategy) !=
-    "NONE" {
-    ignore(
-      configuration.add_before(
-        LayeredPhases::P3NodeOrdering,
-        layered_intermediate_processor_factory(
-          IntermediateProcessorStrategy::NodePromotion,
-        ),
-      ),
-    )
-  }
-  Some(configuration)
 }
 
 ///|

@@ -272,10 +272,10 @@ fn sort_by_input_model_processor_process(
         sort_by_input_model_processor_long_edge_target_node_preprocessing(node),
         port_model_order,
       )
-      sort_by_input_model_processor_insertion_sort_port(
-        node.get_ports(),
-        port_comparator,
-      )
+      node
+      .get_ports()
+      .sort_by((left, right) => port_comparator.compare(left, right))
+      port_comparator.clear_transitive_ordering()
 
       if monitor.is_logging_enabled() {
         monitor.log(

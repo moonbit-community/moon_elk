@@ -216,9 +216,9 @@ fn port_list_sorter_reverse(
     return
   }
 
-  let swaps = (high_idx - low_idx) / 2
+  let n = (high_idx - low_idx) / 2
   let mut i = 0
-  while i < swaps {
+  while i < n {
     let tmp = ports[low_idx + i]
     ports[low_idx + i] = ports[high_idx - i - 1]
     ports[high_idx - i - 1] = tmp

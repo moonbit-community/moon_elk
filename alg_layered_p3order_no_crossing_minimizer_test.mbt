@@ -56,18 +56,18 @@ test "NoCrossingMinimizer configuration matches upstream processor slots" {
     no_crossing_test_factory_ids(
       configuration.processors_before(p3_node_ordering),
     ),
-    [23000, 23003],
+    [23016, 23019],
   )
   assert_eq(
     no_crossing_test_factory_ids(
       configuration.processors_before(p4_node_placement),
     ),
-    [23001],
+    [23028],
   )
   assert_eq(
     no_crossing_test_factory_ids(
       configuration.processors_after(p5_edge_routing),
     ),
-    [23002],
+    [23046],
   )
 }

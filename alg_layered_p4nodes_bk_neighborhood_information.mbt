@@ -46,9 +46,23 @@ fn neighborhood_information_sort_neighbors(
   ni : NeighborhoodInformation,
   neighbors : Array[(LNode, LEdge)],
 ) -> Unit {
-  neighbors.sort_by((left, right) => {
-    ni.node_index[left.0.get_id()] - ni.node_index[right.0.get_id()]
-  })
+  let mut i = 1
+  while i < neighbors.length() {
+    let current = neighbors[i]
+    let current_index = ni.node_index[current.0.get_id()]
+    let mut j = i
+    while j > 0 {
+      let previous = neighbors[j - 1]
+      let previous_index = ni.node_index[previous.0.get_id()]
+      if previous_index <= current_index {
+        break
+      }
+      neighbors[j] = previous
+      j -= 1
+    }
+    neighbors[j] = current
+    i += 1
+  }
 }
 
 ///|

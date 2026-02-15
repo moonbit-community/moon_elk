@@ -92,6 +92,10 @@ pub fn bowyer_watson_triangulate(Array[KVector], debug_output_file? : String?) -
 
 pub let bundle_resource_path_property : String
 
+pub fn cell_system_configurator_configure_cell_system_size_contributions(NodeContext) -> Unit
+
+pub fn cell_system_configurator_update_vertical_inside_port_label_cell_padding(NodeContext) -> Unit
+
 pub fn center_edge_label_placement_strategy_uses_label_size_information_values() -> Array[Bool]
 
 pub fn cgroup_of() -> CGroupBuilder
@@ -2482,6 +2486,10 @@ pub fn horizontal_label_alignment_to_string(HorizontalLabelAlignment) -> String
 
 pub fn horizontal_label_alignment_values() -> Array[HorizontalLabelAlignment]
 
+pub fn horizontal_port_placement_size_calculator_calculate_horizontal_port_placement_size(NodeContext) -> Unit
+
+pub fn horizontal_port_placement_size_calculator_min_size_required_to_respect_spacing(Double, Double, Double) -> Double
+
 pub fn hyper_edge_cycle_detector_detect_cycles(Array[HyperEdgeSegment], Bool, @random.Rand) -> Array[HyperEdgeSegmentDependency]
 
 pub fn hyper_edge_segment_dependency_create_and_add_critical(HyperEdgeSegment, HyperEdgeSegment) -> HyperEdgeSegmentDependency
@@ -2505,6 +2513,8 @@ pub fn image_export_action_reset_for_test() -> Unit
 pub fn in_north_south_east_west_order(LNode, PortSide) -> Array[LPort]
 
 pub fn[N, E] init_one_dimensional_components_compaction(IConnectedComponents[N, E], Double) -> OneDimensionalComponentsCompaction[N, E]
+
+pub fn inside_port_label_cell_creator_create_inside_port_label_cells(NodeContext) -> Unit
 
 pub let inside_self_loops_activate : IProperty[Bool]
 
@@ -2657,6 +2667,8 @@ pub fn label_labels(Int) -> Array[Int]
 pub fn label_layout_option_string_value(Int, String) -> String?
 
 pub fn label_parent(Int) -> ElkLabelParent?
+
+pub fn label_placer_place_labels(NodeContext) -> Unit
 
 pub fn label_set_dimensions(Int, Double, Double) -> Unit
 
@@ -4492,6 +4504,8 @@ pub fn new_image_export_action(LayoutGraphView) -> ImageExportAction
 
 pub fn new_in_layer_constraint_processor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
+pub fn new_innermost_node_margin_calculator_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
+
 pub fn[T] new_instance_pool(IFactory[T], limit? : Int) -> InstancePool[T]
 
 pub fn new_interactive_crossing_minimizer_layout_phase() -> ILayoutProcessor[LayeredPhases, LGraph]
@@ -4593,6 +4607,8 @@ pub fn new_l_padding() -> Spacing
 pub fn new_l_port() -> LPort
 
 pub fn new_l_shape() -> LShape
+
+pub fn new_label_and_node_size_processor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_label_cell(Double) -> Cell
 
@@ -4922,6 +4938,8 @@ pub fn new_node(KVector, ElkRectangle) -> Node
 
 pub fn new_node_arranger((Int) -> KVector) -> INodeArranger
 
+pub fn new_node_context(LNode) -> NodeContext
+
 pub fn new_node_promotion_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_node_relative_port_distributor(Int) -> NodeRelativePortDistributor
@@ -4997,6 +5015,8 @@ pub fn new_polyomino_coords(Int, Int) -> PolyominoCoords
 pub fn new_polyomino_with_extensions(Int, Int, Array[UniqueTriple[PolyominoDirection, Int, Int]]) -> Polyomino
 
 pub fn new_polyominoes(Array[Polyomino], Double, fill? : Bool) -> Polyominoes
+
+pub fn new_port_context(NodeContext, LPort, Int) -> PortContext
 
 pub fn new_port_list_sorter_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
@@ -5352,6 +5372,24 @@ pub fn node_clear_string_set_property(Int, IProperty[Array[String]]) -> Unit
 
 pub fn node_contained_edges(Int) -> Array[Int]
 
+pub fn node_context_add_port_context(NodeContext, PortSide, PortContext) -> Unit
+
+pub fn node_context_compare_port_sides(PortSide, PortSide) -> Int
+
+pub fn node_context_get_all_port_contexts(NodeContext) -> Array[PortContext]
+
+pub fn node_context_get_port_contexts(NodeContext, PortSide) -> Array[PortContext]
+
+pub fn node_context_node_label_location_key(NodeLabelLocation) -> String
+
+pub fn node_context_port_alignment_equals(PortAlignment, PortAlignment) -> Bool
+
+pub fn node_context_port_constraints_equals(PortConstraints, PortConstraints) -> Bool
+
+pub fn node_context_port_side_key(PortSide) -> String
+
+pub fn node_dimension_calculation_calculate_label_and_node_sizes_for_layered_graph(LGraph) -> Unit
+
 pub fn node_double_property_entries(Int) -> Array[(String, Double)]
 
 pub fn node_flexibility_flags() -> Array[Bool]
@@ -5383,6 +5421,30 @@ pub fn node_incoming_edges(Int) -> Array[Int]
 pub fn node_individual_spacing_option_string_entries(Int) -> Array[(String, String)]
 
 pub fn node_individual_spacing_option_string_value(Int, String) -> String?
+
+pub fn node_label_and_size_calculator_process_layered_graph(LGraph) -> Unit
+
+pub fn node_label_and_size_utilities_apply_stuff(NodeContext) -> Unit
+
+pub fn node_label_and_size_utilities_are_size_constraints_fixed(NodeContext) -> Bool
+
+pub fn node_label_and_size_utilities_get_minimum_client_area_size(NodeContext) -> KVector?
+
+pub fn node_label_and_size_utilities_get_minimum_node_or_client_area_size(NodeContext) -> KVector
+
+pub fn node_label_and_size_utilities_get_minimum_node_size(NodeContext) -> KVector?
+
+pub fn node_label_and_size_utilities_is_first_outside_port_label_placed_differently(NodeContext, PortSide) -> Bool
+
+pub fn node_label_and_size_utilities_offset_southern_ports_by_node_size(NodeContext) -> Unit
+
+pub fn node_label_and_size_utilities_set_node_padding(NodeContext) -> Unit
+
+pub fn node_label_and_size_utilities_setup_minimum_client_area_size(NodeContext) -> Unit
+
+pub fn node_label_and_size_utilities_setup_node_padding_for_ports_with_offset(NodeContext) -> Unit
+
+pub fn node_label_cell_creator_create_node_label_cells(NodeContext, Bool, Bool) -> Unit
 
 pub fn node_label_location_from_node_label_placement(Array[NodeLabelPlacement]) -> NodeLabelLocation
 
@@ -5464,6 +5526,10 @@ pub fn node_set_string_property(Int, IProperty[String], String) -> Unit
 
 pub fn node_set_string_set_property(Int, IProperty[Array[String]], Array[String]) -> Unit
 
+pub fn node_size_calculator_set_node_height(NodeContext) -> Unit
+
+pub fn node_size_calculator_set_node_width(NodeContext) -> Unit
+
 pub let node_size_constraints : IProperty[Array[String]]
 
 pub let node_size_fixed_graph_size : IProperty[Bool]
@@ -5479,6 +5545,12 @@ pub fn node_width(Int) -> Double
 pub fn node_x(Int) -> Double
 
 pub fn node_y(Int) -> Double
+
+pub let nodespacing_port_border_offset_property : IProperty[Double]
+
+pub fn nodespacing_port_border_offset_value(LPort) -> Double
+
+pub fn nodespacing_port_labels_bounds(LPort) -> ElkRectangle
 
 pub let nub_spline_dim : Int
 
@@ -5566,11 +5638,17 @@ pub fn port_constraints_to_string(PortConstraints) -> String
 
 pub fn port_constraints_values() -> Array[PortConstraints]
 
+pub fn port_context_creator_create_port_contexts(NodeContext, Bool) -> Unit
+
 pub fn port_height(Int) -> Double
 
 pub fn port_identifier(Int) -> String
 
 pub fn port_incoming_edges(Int) -> Array[Int]
+
+pub fn port_label_placement_calculator_place_horizontal_port_labels(NodeContext) -> Unit
+
+pub fn port_label_placement_calculator_place_vertical_port_labels(NodeContext) -> Unit
 
 pub fn port_label_placement_fixed() -> Array[PortLabelPlacement]
 
@@ -5597,6 +5675,12 @@ pub fn port_layout_option_string_value(Int, String) -> String?
 pub fn port_outgoing_edges(Int) -> Array[Int]
 
 pub fn port_parent(Int) -> Int?
+
+pub fn port_placement_calculator_place_horizontal_ports(NodeContext) -> Unit
+
+pub fn port_placement_calculator_place_vertical_ports(NodeContext) -> Unit
+
+pub let port_placement_calculator_port_ratio_or_position : IProperty[Double]
 
 pub fn port_restorer_sorted_two_side_loop_port_sides(SelfHyperLoop) -> Array[PortSide]
 
@@ -6279,6 +6363,8 @@ pub fn update_containment(Int?) -> Unit
 pub fn vertical_label_alignment_to_string(VerticalLabelAlignment) -> String
 
 pub fn vertical_label_alignment_values() -> Array[VerticalLabelAlignment]
+
+pub fn vertical_port_placement_size_calculator_calculate_vertical_port_placement_size(NodeContext) -> Unit
 
 pub fn vertiflex_absolute_x_placer_phase_factory(AbsoluteXPlacerStrategy) -> ILayoutProcessorFactory[VertiFlexLayoutPhases, Int]
 
@@ -13217,6 +13303,7 @@ pub struct LNode {
   double_properties : Map[String, Double]
   kvector_properties : Map[String, KVector]
   string_properties : Map[String, String]
+  string_array_properties : Map[String, Array[String]]
   port_side_properties : Map[String, PortSide]
   label_side_properties : Map[String, LabelSide]
   node_properties : Map[String, LNode]
@@ -13260,6 +13347,7 @@ pub fn LNode::get_property_label_side(Self, IProperty[LabelSide]) -> LabelSide
 pub fn LNode::get_property_port_side(Self, IProperty[PortSide]) -> PortSide
 pub fn LNode::get_property_self_loop_holder(Self, IProperty[SelfLoopHolder?]) -> SelfLoopHolder?
 pub fn LNode::get_property_string(Self, IProperty[String]) -> String
+pub fn LNode::get_property_string_array(Self, IProperty[Array[String]]) -> Array[String]
 pub fn LNode::get_size(Self) -> KVector
 pub fn LNode::get_type(Self) -> NodeType
 pub fn LNode::has_property_bool(Self, IProperty[Bool]) -> Bool
@@ -13276,6 +13364,7 @@ pub fn LNode::has_property_label_side(Self, IProperty[LabelSide]) -> Bool
 pub fn LNode::has_property_port_side(Self, IProperty[PortSide]) -> Bool
 pub fn LNode::has_property_self_loop_holder(Self, IProperty[SelfLoopHolder?]) -> Bool
 pub fn LNode::has_property_string(Self, IProperty[String]) -> Bool
+pub fn LNode::has_property_string_array(Self, IProperty[Array[String]]) -> Bool
 pub fn LNode::is_inline_edge_label(Self) -> Bool
 pub fn LNode::remove_port(Self, LPort) -> Unit
 pub fn LNode::set_graph(Self, LGraph?) -> Unit
@@ -13296,6 +13385,7 @@ pub fn LNode::set_property_label_side(Self, IProperty[LabelSide], LabelSide) -> 
 pub fn LNode::set_property_port_side(Self, IProperty[PortSide], PortSide) -> Unit
 pub fn LNode::set_property_self_loop_holder(Self, IProperty[SelfLoopHolder?], SelfLoopHolder?) -> Unit
 pub fn LNode::set_property_string(Self, IProperty[String], String) -> Unit
+pub fn LNode::set_property_string_array(Self, IProperty[Array[String]], Array[String]) -> Unit
 pub fn LNode::set_type(Self, NodeType) -> Unit
 pub fn LNode::to_string(Self) -> String
 
@@ -14789,6 +14879,39 @@ pub enum NodeArrangementStrategy {
   LEFT_RIGHT_TOP_DOWN_NODE_PLACER
 }
 
+pub struct NodeContext {
+  node : LNode
+  node_size : KVector
+  treat_as_compound_node : Bool
+  size_constraints : Array[SizeConstraint]
+  size_options : Array[SizeOptions]
+  port_constraints : PortConstraints
+  port_labels_placement : Array[PortLabelPlacement]
+  port_labels_treat_as_group : Bool
+  node_label_placement : Array[NodeLabelPlacement]
+  node_labels_padding : Spacing
+  node_label_spacing : Double
+  label_label_spacing : Double
+  label_cell_spacing : Double
+  port_port_spacing : Double
+  port_label_spacing_horizontal : Double
+  port_label_spacing_vertical : Double
+  surrounding_port_margins : Spacing
+  topdown_layout : Bool
+  port_contexts : Map[String, Array[PortContext]]
+  node_container : Cell
+  node_container_middle_row : Cell
+  mut inside_node_label_container : Cell
+  inside_port_label_cells : Map[String, Cell]
+  outside_node_label_containers : Map[String, Cell]
+  node_label_cells : Map[String, Cell]
+}
+pub fn NodeContext::apply_node_size(Self) -> Unit
+pub fn NodeContext::get_port_alignment(Self, PortSide) -> PortAlignment
+pub fn NodeContext::has_port_label_placement(Self, PortLabelPlacement) -> Bool
+pub fn NodeContext::has_size_constraint(Self, SizeConstraint) -> Bool
+pub fn NodeContext::has_size_option(Self, SizeOptions) -> Bool
+
 pub enum NodeFlexibility {
   NfNone
   NfPortPosition
@@ -15203,6 +15326,17 @@ pub fn PortConstraints::is_order_fixed(Self) -> Bool
 pub fn PortConstraints::is_pos_fixed(Self) -> Bool
 pub fn PortConstraints::is_ratio_fixed(Self) -> Bool
 pub fn PortConstraints::is_side_fixed(Self) -> Bool
+
+pub struct PortContext {
+  parent_node_context : NodeContext
+  port : LPort
+  port_position : KVector
+  labels_next_to_port : Bool
+  volatile_id : Int
+  port_margin : Spacing
+  port_label_cell : Cell?
+}
+pub fn PortContext::apply_port_position(Self) -> Unit
 
 pub enum PortLabelPlacement {
   Outside

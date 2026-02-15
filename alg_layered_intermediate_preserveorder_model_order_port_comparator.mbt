@@ -362,7 +362,7 @@ pub fn ModelOrderPortComparator::compare(
     self.smaller_than,
     p2_handle,
   )
-  if model_order_port_contains(p2_smaller, p1_handle) {
+  if model_order_port_contains(p2_bigger, p1_handle) {
     return 1
   }
 

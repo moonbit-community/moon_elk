@@ -35,34 +35,34 @@ fn intermediate_processor_strategy_ordinal(
   strategy : IntermediateProcessorStrategy,
 ) -> Int {
   match strategy {
-    IntermediateProcessorStrategy::LongEdgeSplitter => 0
-    IntermediateProcessorStrategy::InLayerConstraintProcessor => 1
-    IntermediateProcessorStrategy::LongEdgeJoiner => 2
-    IntermediateProcessorStrategy::PortListSorter => 3
-    IntermediateProcessorStrategy::ReversedEdgeRestorer => 4
-    IntermediateProcessorStrategy::InteractiveExternalPortPositioner => 5
-    IntermediateProcessorStrategy::FinalSplineBendpointsCalculator => 6
-    IntermediateProcessorStrategy::InvertedPortProcessor => 7
-    IntermediateProcessorStrategy::SelfLoopPreprocessor => 8
-    IntermediateProcessorStrategy::SelfLoopPostprocessor => 9
-    IntermediateProcessorStrategy::SelfLoopPortRestorer => 10
-    IntermediateProcessorStrategy::SelfLoopRouter => 11
-    IntermediateProcessorStrategy::LabelDummyInserter => 12
-    IntermediateProcessorStrategy::LabelDummySwitcher => 13
-    IntermediateProcessorStrategy::LabelSideSelector => 14
-    IntermediateProcessorStrategy::LabelDummyRemover => 15
-    IntermediateProcessorStrategy::NorthSouthPortPreprocessor => 16
-    IntermediateProcessorStrategy::NorthSouthPortPostprocessor => 17
-    IntermediateProcessorStrategy::EndLabelPreprocessor => 18
-    IntermediateProcessorStrategy::EndLabelPostprocessor => 19
-    IntermediateProcessorStrategy::HyperedgeDummyMerger => 20
-    IntermediateProcessorStrategy::HierarchicalPortConstraintProcessor => 21
-    IntermediateProcessorStrategy::HierarchicalPortDummySizeProcessor => 22
-    IntermediateProcessorStrategy::HierarchicalPortOrthogonalEdgeRouter => 23
-    IntermediateProcessorStrategy::HypernodeProcessor => 24
-    IntermediateProcessorStrategy::EdgeAndLayerConstraintEdgeReverser => 25
-    IntermediateProcessorStrategy::NodePromotion => 26
-    IntermediateProcessorStrategy::SemiInteractiveCrossMinProcessor => 27
+    IntermediateProcessorStrategy::LongEdgeSplitter => 16
+    IntermediateProcessorStrategy::InLayerConstraintProcessor => 28
+    IntermediateProcessorStrategy::LongEdgeJoiner => 46
+    IntermediateProcessorStrategy::PortListSorter => 19
+    IntermediateProcessorStrategy::ReversedEdgeRestorer => 54
+    IntermediateProcessorStrategy::InteractiveExternalPortPositioner => 3
+    IntermediateProcessorStrategy::FinalSplineBendpointsCalculator => 52
+    IntermediateProcessorStrategy::InvertedPortProcessor => 18
+    IntermediateProcessorStrategy::SelfLoopPreprocessor => 6
+    IntermediateProcessorStrategy::SelfLoopPostprocessor => 47
+    IntermediateProcessorStrategy::SelfLoopPortRestorer => 25
+    IntermediateProcessorStrategy::SelfLoopRouter => 32
+    IntermediateProcessorStrategy::LabelDummyInserter => 5
+    IntermediateProcessorStrategy::LabelDummySwitcher => 35
+    IntermediateProcessorStrategy::LabelSideSelector => 37
+    IntermediateProcessorStrategy::LabelDummyRemover => 51
+    IntermediateProcessorStrategy::NorthSouthPortPreprocessor => 21
+    IntermediateProcessorStrategy::NorthSouthPortPostprocessor => 49
+    IntermediateProcessorStrategy::EndLabelPreprocessor => 34
+    IntermediateProcessorStrategy::EndLabelPostprocessor => 55
+    IntermediateProcessorStrategy::HyperedgeDummyMerger => 38
+    IntermediateProcessorStrategy::HierarchicalPortConstraintProcessor => 13
+    IntermediateProcessorStrategy::HierarchicalPortDummySizeProcessor => 39
+    IntermediateProcessorStrategy::HierarchicalPortOrthogonalEdgeRouter => 45
+    IntermediateProcessorStrategy::HypernodeProcessor => 44
+    IntermediateProcessorStrategy::EdgeAndLayerConstraintEdgeReverser => 2
+    IntermediateProcessorStrategy::NodePromotion => 10
+    IntermediateProcessorStrategy::SemiInteractiveCrossMinProcessor => 14
   }
 }
 
@@ -71,34 +71,34 @@ pub fn intermediate_processor_strategy_values() -> Array[
   IntermediateProcessorStrategy,
 ] {
   [
-    LongEdgeSplitter,
-    InLayerConstraintProcessor,
-    LongEdgeJoiner,
-    PortListSorter,
-    ReversedEdgeRestorer,
+    EdgeAndLayerConstraintEdgeReverser,
     InteractiveExternalPortPositioner,
-    FinalSplineBendpointsCalculator,
-    InvertedPortProcessor,
-    SelfLoopPreprocessor,
-    SelfLoopPostprocessor,
-    SelfLoopPortRestorer,
-    SelfLoopRouter,
     LabelDummyInserter,
+    SelfLoopPreprocessor,
+    NodePromotion,
+    HierarchicalPortConstraintProcessor,
+    SemiInteractiveCrossMinProcessor,
+    LongEdgeSplitter,
+    InvertedPortProcessor,
+    PortListSorter,
+    NorthSouthPortPreprocessor,
+    SelfLoopPortRestorer,
+    InLayerConstraintProcessor,
+    SelfLoopRouter,
+    EndLabelPreprocessor,
     LabelDummySwitcher,
     LabelSideSelector,
-    LabelDummyRemover,
-    NorthSouthPortPreprocessor,
-    NorthSouthPortPostprocessor,
-    EndLabelPreprocessor,
-    EndLabelPostprocessor,
     HyperedgeDummyMerger,
-    HierarchicalPortConstraintProcessor,
     HierarchicalPortDummySizeProcessor,
-    HierarchicalPortOrthogonalEdgeRouter,
     HypernodeProcessor,
-    EdgeAndLayerConstraintEdgeReverser,
-    NodePromotion,
-    SemiInteractiveCrossMinProcessor,
+    HierarchicalPortOrthogonalEdgeRouter,
+    LongEdgeJoiner,
+    SelfLoopPostprocessor,
+    NorthSouthPortPostprocessor,
+    LabelDummyRemover,
+    FinalSplineBendpointsCalculator,
+    ReversedEdgeRestorer,
+    EndLabelPostprocessor,
   ]
 }
 

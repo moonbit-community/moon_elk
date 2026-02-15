@@ -196,7 +196,7 @@ pub fn long_edge_splitter_split_edge(edge : LEdge, dummy_node : LNode) -> LEdge 
     edge.set_property_double(edge_thickness, thickness)
   }
   dummy_node.get_size().y = thickness
-  let port_pos = thickness / 2.0
+  let port_pos = (thickness / 2.0).floor()
 
   let dummy_input = new_l_port()
   dummy_input.set_side(PortSide::West)

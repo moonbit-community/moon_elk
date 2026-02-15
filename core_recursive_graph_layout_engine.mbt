@@ -378,19 +378,19 @@ fn recursive_layered_crossing_factory(
 ) -> ILayoutProcessorFactory[LayeredPhases, LGraph] {
   match strategy {
     "NONE" =>
-      new_layout_processor_factory(23002, 2, () => {
+      new_layout_processor_factory(24002, 2, () => {
         new_no_crossing_minimizer_layout_phase()
       })
     "INTERACTIVE" =>
-      new_layout_processor_factory(23003, 2, () => {
+      new_layout_processor_factory(24003, 2, () => {
         new_interactive_crossing_minimizer_layout_phase()
       })
     "MEDIAN_LAYER_SWEEP" =>
-      new_layout_processor_factory(23001, 2, () => {
+      new_layout_processor_factory(24001, 2, () => {
         new_layer_sweep_crossing_minimizer_layout_phase(CrossMinType::Median)
       })
     _ =>
-      new_layout_processor_factory(23000, 2, () => {
+      new_layout_processor_factory(24000, 2, () => {
         new_layer_sweep_crossing_minimizer_layout_phase(
           CrossMinType::Barycenter,
         )
@@ -431,6 +431,17 @@ fn recursive_layered_primary_option(
 }
 
 ///|
+fn recursive_layered_parse_bool(value : String) -> Bool? {
+  if value == "true" {
+    Some(true)
+  } else if value == "false" {
+    Some(false)
+  } else {
+    None
+  }
+}
+
+///|
 fn recursive_layered_create_context(node : ElkNode) -> RecursiveLayeredContext? {
   let layered_graph = new_l_graph()
   let elk_to_lnode : Map[ElkNode, LNode] = {}
@@ -466,6 +477,19 @@ fn recursive_layered_create_context(node : ElkNode) -> RecursiveLayeredContext? 
     node,
     "org.eclipse.elk.edgeRouting",
     node_get_string_property(node, edge_routing),
+  )
+  let direction_value = recursive_layered_primary_option(
+    node,
+    "org.eclipse.elk.direction",
+    node_get_string_property(node, direction),
+  )
+  let fixed_alignment_value = recursive_layered_primary_option(
+    node,
+    "org.eclipse.elk.layered.nodePlacement.bk.fixedAlignment",
+    bk_layered_option_node_placement_bk_fixed_alignment.get_default(),
+  )
+  let favor_straight_edges_value = recursive_layered_primary_option(
+    node, "org.eclipse.elk.layered.nodePlacement.favorStraightEdges", "",
   )
   let cycle_breaking_strategy = recursive_layered_primary_option(
     node, "org.eclipse.elk.layered.cycleBreaking.strategy", "GREEDY",
@@ -518,6 +542,17 @@ fn recursive_layered_create_context(node : ElkNode) -> RecursiveLayeredContext? 
       edge_routing_value
     },
   )
+  layered_graph.set_property_string(direction, direction_value)
+  layered_graph.set_property_string(
+    bk_layered_option_node_placement_bk_fixed_alignment, fixed_alignment_value,
+  )
+  match recursive_layered_parse_bool(favor_straight_edges_value) {
+    Some(value) =>
+      layered_graph.set_property_bool(
+        bk_layered_option_node_placement_favor_straight_edges, value,
+      )
+    None => ()
+  }
   layered_graph.set_property_graph_properties_array(
     internal_properties_graph_properties,
     [],
@@ -771,6 +806,13 @@ fn recursive_layered_try_layout(
       layered_options_crossing_minimization_strategy,
     ),
   )
+  let node_promotion_strategy = recursive_layered_primary_option(
+    node,
+    "org.eclipse.elk.layered.nodePromotion.strategy",
+    context.layered_graph.get_property_string(
+      layered_options_layering_node_promotion_strategy,
+    ),
+  )
   let node_placement_strategy = recursive_layered_primary_option(
     node, "org.eclipse.elk.layered.nodePlacement.strategy", "BRANDES_KOEPF",
   )
@@ -816,19 +858,44 @@ fn recursive_layered_try_layout(
     assembler.add_processor_configuration(
       layout_processor_configuration_create(layered_phase_descriptor)
       .add_before(
+        LayeredPhases::P4NodePlacement,
+        new_layout_processor_factory(95024, 31, () => {
+          new_innermost_node_margin_calculator_layout_processor()
+        }),
+      )
+      .add_before(
+        LayeredPhases::P4NodePlacement,
+        new_layout_processor_factory(95025, 30, () => {
+          new_label_and_node_size_processor_layout_processor()
+        }),
+      )
+      .add_before(
         LayeredPhases::P3NodeOrdering,
-        new_layout_processor_factory(23030, 30, () => {
+        new_layout_processor_factory(95030, 17, () => {
           new_port_side_processor_layout_processor()
         }),
       )
       .add_before(
         LayeredPhases::P5EdgeRouting,
-        new_layout_processor_factory(23040, 40, () => {
+        new_layout_processor_factory(95040, 40, () => {
           new_layer_size_and_graph_height_calculator_layout_processor()
         }),
       ),
     ),
   )
+
+  if node_promotion_strategy != "NONE" {
+    ignore(
+      assembler.add_processor_configuration(
+        layout_processor_configuration_create(layered_phase_descriptor).add_before(
+          LayeredPhases::P3NodeOrdering,
+          new_layout_processor_factory(95026, 10, () => {
+            new_node_promotion_layout_processor()
+          }),
+        ),
+      ),
+    )
+  }
 
   if context.layered_graph.get_property_string(
       layered_options_consider_model_order_strategy,
@@ -838,7 +905,7 @@ fn recursive_layered_try_layout(
       assembler.add_processor_configuration(
         layout_processor_configuration_create(layered_phase_descriptor).add_before(
           LayeredPhases::P3NodeOrdering,
-          new_layout_processor_factory(23039, 39, () => {
+          new_layout_processor_factory(95039, 20, () => {
             new_sort_by_input_model_processor_layout_processor()
           }),
         ),
