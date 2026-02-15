@@ -4520,6 +4520,8 @@ pub fn new_grid_elk_node(Int) -> GridElkNode
 
 pub fn new_group_model_order_calculator() -> GroupModelOrderCalculator
 
+pub fn new_hierarchical_node_resizing_processor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
+
 pub fn new_hierarchical_port_constraint_processor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_hierarchical_port_dummy_size_processor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
@@ -13315,6 +13317,7 @@ pub struct LGraph {
   bool_properties : Map[String, Bool]
   double_properties : Map[String, Double]
   string_properties : Map[String, String]
+  string_array_properties : Map[String, Array[String]]
   elk_margin_properties : Map[String, Spacing]
   component_ordering_strategy_properties : Map[String, ComponentOrderingStrategy]
   direction_properties : Map[String, Direction]
@@ -13345,6 +13348,7 @@ pub fn LGraph::get_property_l_node_array(Self, IProperty[Array[LNode]]) -> Array
 pub fn LGraph::get_property_port_side_array(Self, IProperty[Array[PortSide]]) -> Array[PortSide]
 pub fn LGraph::get_property_spline_routing_mode(Self, IProperty[SplineRoutingMode]) -> SplineRoutingMode
 pub fn LGraph::get_property_string(Self, IProperty[String]) -> String
+pub fn LGraph::get_property_string_array(Self, IProperty[Array[String]]) -> Array[String]
 pub fn LGraph::get_size(Self) -> KVector
 pub fn LGraph::has_property_bool(Self, IProperty[Bool]) -> Bool
 pub fn LGraph::has_property_double(Self, IProperty[Double]) -> Bool
@@ -13353,6 +13357,7 @@ pub fn LGraph::has_property_int(Self, IProperty[Int]) -> Bool
 pub fn LGraph::has_property_l_node_array(Self, IProperty[Array[LNode]]) -> Bool
 pub fn LGraph::has_property_spline_routing_mode(Self, IProperty[SplineRoutingMode]) -> Bool
 pub fn LGraph::has_property_string(Self, IProperty[String]) -> Bool
+pub fn LGraph::has_property_string_array(Self, IProperty[Array[String]]) -> Bool
 pub fn LGraph::set_id(Self, Int) -> Unit
 pub fn LGraph::set_offset_xy(Self, Double, Double) -> Unit
 pub fn LGraph::set_parent_node(Self, LNode?) -> Unit
@@ -13367,6 +13372,7 @@ pub fn LGraph::set_property_l_node_array(Self, IProperty[Array[LNode]], Array[LN
 pub fn LGraph::set_property_port_side_array(Self, IProperty[Array[PortSide]], Array[PortSide]) -> Unit
 pub fn LGraph::set_property_spline_routing_mode(Self, IProperty[SplineRoutingMode], SplineRoutingMode) -> Unit
 pub fn LGraph::set_property_string(Self, IProperty[String], String) -> Unit
+pub fn LGraph::set_property_string_array(Self, IProperty[Array[String]], Array[String]) -> Unit
 pub fn LGraph::set_size_xy(Self, Double, Double) -> Unit
 
 pub struct LGraphElement {

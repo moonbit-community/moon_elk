@@ -8,6 +8,7 @@ pub struct LGraph {
   bool_properties : Map[String, Bool]
   double_properties : Map[String, Double]
   string_properties : Map[String, String]
+  string_array_properties : Map[String, Array[String]]
   elk_margin_properties : Map[String, ElkMargin]
   component_ordering_strategy_properties : Map[
     String,
@@ -34,6 +35,7 @@ pub fn new_l_graph() -> LGraph {
     bool_properties: {},
     double_properties: {},
     string_properties: {},
+    string_array_properties: {},
     elk_margin_properties: {},
     component_ordering_strategy_properties: {},
     direction_properties: {},
@@ -219,6 +221,15 @@ pub fn LGraph::set_property_string(
 }
 
 ///|
+pub fn LGraph::set_property_string_array(
+  self : LGraph,
+  property : IProperty[Array[String]],
+  value : Array[String],
+) -> Unit {
+  self.string_array_properties[property.get_id()] = value.copy()
+}
+
+///|
 pub fn LGraph::get_property_string(
   self : LGraph,
   property : IProperty[String],
@@ -235,6 +246,25 @@ pub fn LGraph::has_property_string(
   property : IProperty[String],
 ) -> Bool {
   self.string_properties.contains(property.get_id())
+}
+
+///|
+pub fn LGraph::get_property_string_array(
+  self : LGraph,
+  property : IProperty[Array[String]],
+) -> Array[String] {
+  match self.string_array_properties.get(property.get_id()) {
+    Some(value) => value.copy()
+    None => property.get_default().copy()
+  }
+}
+
+///|
+pub fn LGraph::has_property_string_array(
+  self : LGraph,
+  property : IProperty[Array[String]],
+) -> Bool {
+  self.string_array_properties.contains(property.get_id())
 }
 
 ///|
@@ -430,6 +460,12 @@ pub fn LGraph::copy_properties(self : LGraph, source : LGraph) -> Unit {
   for entry in source.string_properties.to_array() {
     let (key, value) = entry
     self.string_properties[key] = value
+  }
+
+  self.string_array_properties.clear()
+  for entry in source.string_array_properties.to_array() {
+    let (key, value) = entry
+    self.string_array_properties[key] = value.copy()
   }
 
   self.elk_margin_properties.clear()
