@@ -641,12 +641,16 @@ test "LayerSweep resolves simple hierarchical cross with sweepiness enabled" {
       creator, right_outer_node, right_outer_ports,
     )
 
-    let expected_external_dummy_order_right_unchanged = right_inner_graph.get_layers()[0]
-      .get_nodes()
-      .copy()
-    let expected_normal_node_order_right_unchanged = right_inner_graph.get_layers()[1]
-      .get_nodes()
-      .copy()
+    let expected_external_dummy_order_right = creator.switch_order_of_nodes_in_layer(
+      0,
+      1,
+      right_inner_graph.get_layers()[0],
+    )
+    let expected_normal_node_order_right = creator.switch_order_of_nodes_in_layer(
+      0,
+      1,
+      right_inner_graph.get_layers()[1],
+    )
     let expected_port_order_right = creator.get_list_copy_in_index_order(
       right_outer_ports,
       [1, 0],
@@ -657,13 +661,11 @@ test "LayerSweep resolves simple hierarchical cross with sweepiness enabled" {
     )
     layer_sweep_test_run(creator, cross_min_type)
 
-    let expected_external_dummy_order = expected_external_dummy_order_right_unchanged
-    let expected_normal_node_order = expected_normal_node_order_right_unchanged
     assert_eq(
       layer_sweep_test_node_handles(
         right_inner_graph.get_layers()[0].get_nodes(),
       ),
-      layer_sweep_test_node_handles(expected_external_dummy_order),
+      layer_sweep_test_node_handles(expected_external_dummy_order_right),
     )
     assert_eq(
       layer_sweep_test_port_handles(right_outer_node.get_ports()),
@@ -673,7 +675,7 @@ test "LayerSweep resolves simple hierarchical cross with sweepiness enabled" {
       layer_sweep_test_node_handles(
         right_inner_graph.get_layers()[1].get_nodes(),
       ),
-      layer_sweep_test_node_handles(expected_normal_node_order),
+      layer_sweep_test_node_handles(expected_normal_node_order_right),
     )
   }
 }
@@ -848,9 +850,11 @@ test "LayerSweep sorts wrongly seeded external dummies and resolves crossing" {
       right_inner_nodes[1],
     )
 
-    let expected_normal_node_order_right_unchanged = right_inner_graph.get_layers()[1]
-      .get_nodes()
-      .copy()
+    let expected_normal_node_order_right = creator.switch_order_of_nodes_in_layer(
+      0,
+      1,
+      right_inner_graph.get_layers()[1],
+    )
     let expected_order_of_ports_right = creator.get_list_copy_in_index_order(
       right_outer_ports,
       [1, 0],
@@ -868,12 +872,11 @@ test "LayerSweep sorts wrongly seeded external dummies and resolves crossing" {
       layer_sweep_test_port_handles(right_outer_node.get_ports()),
       layer_sweep_test_port_handles(expected_order_of_ports_right),
     )
-    let expected_normal_node_order = expected_normal_node_order_right_unchanged
     assert_eq(
       layer_sweep_test_node_handles(
         right_inner_graph.get_layers()[1].get_nodes(),
       ),
-      layer_sweep_test_node_handles(expected_normal_node_order),
+      layer_sweep_test_node_handles(expected_normal_node_order_right),
     )
   }
 }
@@ -1445,12 +1448,16 @@ test "LayerSweep handles hierarchical cross with north-south edge" {
     let right_inner_graph = layer_sweep_test_make_nested_two_node_graph_with_western_ports(
       creator, right_outer_node, right_outer_ports,
     )
-    let expected_external_dummy_order_right = right_inner_graph.get_layers()[0]
-      .get_nodes()
-      .copy()
-    let expected_normal_node_order_right = right_inner_graph.get_layers()[1]
-      .get_nodes()
-      .copy()
+    let expected_external_dummy_order_right = creator.switch_order_of_nodes_in_layer(
+      0,
+      1,
+      right_inner_graph.get_layers()[0],
+    )
+    let expected_normal_node_order_right = creator.switch_order_of_nodes_in_layer(
+      0,
+      1,
+      right_inner_graph.get_layers()[1],
+    )
     let expected_order_of_ports_right = [
       right_outer_node.get_ports()[0],
       right_outer_ports[1],
@@ -1459,24 +1466,22 @@ test "LayerSweep handles hierarchical cross with north-south edge" {
 
     layer_sweep_test_run(creator, cross_min_type)
 
-    if index == 0 {
-      assert_eq(
-        layer_sweep_test_node_handles(
-          right_inner_graph.get_layers()[0].get_nodes(),
-        ),
-        layer_sweep_test_node_handles(expected_external_dummy_order_right),
-      )
-      assert_eq(
-        layer_sweep_test_port_handles(right_outer_node.get_ports()),
-        layer_sweep_test_port_handles(expected_order_of_ports_right),
-      )
-      assert_eq(
-        layer_sweep_test_node_handles(
-          right_inner_graph.get_layers()[1].get_nodes(),
-        ),
-        layer_sweep_test_node_handles(expected_normal_node_order_right),
-      )
-    }
+    assert_eq(
+      layer_sweep_test_node_handles(
+        right_inner_graph.get_layers()[0].get_nodes(),
+      ),
+      layer_sweep_test_node_handles(expected_external_dummy_order_right),
+    )
+    assert_eq(
+      layer_sweep_test_port_handles(right_outer_node.get_ports()),
+      layer_sweep_test_port_handles(expected_order_of_ports_right),
+    )
+    assert_eq(
+      layer_sweep_test_node_handles(
+        right_inner_graph.get_layers()[1].get_nodes(),
+      ),
+      layer_sweep_test_node_handles(expected_normal_node_order_right),
+    )
   }
 }
 
@@ -1783,7 +1788,6 @@ test "LayerSweep marks fixed-order transfer graphs for hierarchical sweep" {
 }
 
 ///|
-#skip
 test "LayerSweep marks hierarchical transfer graphs for hierarchical sweep" {
   for cross_min_type in layer_sweep_test_cross_types() {
     let creator = new_test_graph_creator()

@@ -304,14 +304,20 @@ fn LayerSweepTypeDecider::is_eastern_dummy(
   node : LNode,
 ) -> Bool {
   ignore(self)
-  if node.get_ports().is_empty() {
-    return false
-  }
-  let dummy_port = node.get_ports()[0]
-  match dummy_port.get_property_l_port(internal_properties_origin_l_port) {
+  match node.get_property_l_port(internal_properties_origin_l_port) {
     Some(origin_port) =>
       layer_sweep_type_decider_is_side(origin_port, PortSide::East)
-    None => false
+    None => {
+      if node.get_ports().is_empty() {
+        return false
+      }
+      let dummy_port = node.get_ports()[0]
+      match dummy_port.get_property_l_port(internal_properties_origin_l_port) {
+        Some(fallback_origin_port) =>
+          layer_sweep_type_decider_is_side(fallback_origin_port, PortSide::East)
+        None => false
+      }
+    }
   }
 }
 

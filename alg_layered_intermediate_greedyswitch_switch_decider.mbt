@@ -63,13 +63,20 @@ fn switch_decider_is_north_south_port(node : LNode) -> Bool {
 
 ///|
 fn switch_decider_origin_port_of_external_dummy(node : LNode) -> LPort {
-  if node.get_ports().is_empty() {
-    abort("external port dummy has no ports")
-  }
-  match
-    node.get_ports()[0].get_property_l_port(internal_properties_origin_l_port) {
+  match node.get_property_l_port(internal_properties_origin_l_port) {
     Some(origin_port) => origin_port
-    None => abort("external port dummy has no origin port")
+    None => {
+      if node.get_ports().is_empty() {
+        abort("external port dummy has no ports")
+      }
+      match
+        node.get_ports()[0].get_property_l_port(
+          internal_properties_origin_l_port,
+        ) {
+        Some(origin_port) => origin_port
+        None => abort("external port dummy has no origin port")
+      }
+    }
   }
 }
 

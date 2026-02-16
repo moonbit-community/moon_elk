@@ -1108,9 +1108,32 @@ pub fn GreedySwitchTestGraphCreator::add_external_port_dummy_node_to_layer(
   let node = self.add_node_to_layer(layer)
   node.set_type(NodeType::ExternalPort)
   node.set_property_l_port(internal_properties_origin_l_port, Some(port))
-  let dummy_port = self.add_port_on_side(node, port.get_side())
-  dummy_port.set_property_l_port(internal_properties_origin_l_port, Some(port))
+  node.set_property_port_side(
+    internal_properties_ext_port_side,
+    port.get_side(),
+  )
   port.set_property_l_node(internal_properties_port_dummy, Some(node))
+  port.set_property_bool(internal_properties_inside_connections, true)
+  let graph = node.get_graph()
+  let graph_properties = graph.get_property_graph_properties_array(
+    internal_properties_graph_properties,
+  )
+  let mut has_external_ports = false
+  for property in graph_properties {
+    match property {
+      GraphProperties::ExternalPorts => {
+        has_external_ports = true
+        break
+      }
+      _ => ()
+    }
+  }
+  if !has_external_ports {
+    graph_properties.push(GraphProperties::ExternalPorts)
+    graph.set_property_graph_properties_array(
+      internal_properties_graph_properties, graph_properties,
+    )
+  }
   node
 }
 

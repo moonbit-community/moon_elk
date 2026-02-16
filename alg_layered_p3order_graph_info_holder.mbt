@@ -30,11 +30,6 @@ fn graph_info_contains_node(nodes : Array[LNode], candidate : LNode) -> Bool {
 
 ///|
 fn graph_info_add_unique_graph(graphs : Array[LGraph], graph : LGraph) -> Unit {
-  for existing in graphs {
-    if existing.get_id() == graph.get_id() {
-      return
-    }
-  }
   graphs.push(graph)
 }
 
