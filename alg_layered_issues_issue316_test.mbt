@@ -39,10 +39,7 @@ fn issue316_label_inside_node(label : ElkLabel, node : ElkNode) -> Bool {
 }
 
 ///|
-test "Issue316 ports do not overlap and hierarchical labels stay inside" {
-  reset_graph_model_for_test()
-  issue316_test_setup_plain_java_layout()
-
+fn issue316_test_create_graph() -> ElkNode {
   let graph = create_graph()
   let parent = create_node(Some(graph))
   node_set_dimensions(parent, 120.0, 80.0)
@@ -62,16 +59,38 @@ test "Issue316 ports do not overlap and hierarchical labels stay inside" {
   label_set_location(parent_label, 5.0, 5.0)
   label_set_dimensions(parent_label, 20.0, 10.0)
 
+  graph
+}
+
+///|
+fn issue316_test_build_and_layout_graph() -> ElkNode {
+  reset_graph_model_for_test()
+  issue316_test_setup_plain_java_layout()
+
+  let graph = issue316_test_create_graph()
   let resolver = new_layout_algorithm_resolver()
   apply_visitors(graph, [resolver.to_visitor()])
   let layout_engine = new_recursive_graph_layout_engine()
   layout_engine.layout(graph, new_null_elk_progress_monitor())
+  graph
+}
 
-  assert_false(issue316_any_port_overlap(parent))
+///|
+test "Issue316 ensure ports do not overlap" {
+  let graph = issue316_test_build_and_layout_graph()
+  for node in graph_test_utils_all_nodes(graph, false) {
+    assert_false(issue316_any_port_overlap(node))
+  }
+}
 
-  if !node_children(parent).is_empty() {
-    for label in node_labels(parent) {
-      assert_true(issue316_label_inside_node(label, parent))
+///|
+test "Issue316 ensure hierarchical node labels stay inside" {
+  let graph = issue316_test_build_and_layout_graph()
+  for node in graph_test_utils_all_nodes(graph, false) {
+    if !node_children(node).is_empty() {
+      for label in node_labels(node) {
+        assert_true(issue316_label_inside_node(label, node))
+      }
     }
   }
 }

@@ -188,21 +188,26 @@ fn layer_sweep_test_assert_nested_graphs_not_marked_dont_sweep(
 }
 
 ///|
-test "LayerSweep handles empty and one-node graphs" {
+test "LayerSweep given one node should not crash" {
   for cross_min_type in layer_sweep_test_cross_types() {
-    let empty_creator = new_test_graph_creator()
-    let empty_graph = empty_creator.get_empty_graph()
-    let empty_cross_min = new_layer_sweep_crossing_minimizer(cross_min_type)
-    empty_cross_min.process(
-      empty_graph,
+    let creator = new_test_graph_creator()
+    let graph = creator.get_one_node_graph()
+    let cross_min = new_layer_sweep_crossing_minimizer(cross_min_type)
+    cross_min.process(
+      graph,
       progress_monitor=Some(new_basic_progress_monitor()),
     )
+  }
+}
 
-    let single_creator = new_test_graph_creator()
-    let one_node_graph = single_creator.get_one_node_graph()
-    let single_cross_min = new_layer_sweep_crossing_minimizer(cross_min_type)
-    single_cross_min.process(
-      one_node_graph,
+///|
+test "LayerSweep given no node should not crash" {
+  for cross_min_type in layer_sweep_test_cross_types() {
+    let creator = new_test_graph_creator()
+    let graph = creator.get_empty_graph()
+    let cross_min = new_layer_sweep_crossing_minimizer(cross_min_type)
+    cross_min.process(
+      graph,
       progress_monitor=Some(new_basic_progress_monitor()),
     )
   }

@@ -355,6 +355,47 @@ fn recursive_layered_edge_endpoint_port(
 }
 
 ///|
+fn recursive_layered_direct_child_for_endpoint(
+  root_node : ElkNode,
+  endpoint_node : ElkNode,
+) -> ElkNode? {
+  if endpoint_node == root_node {
+    return None
+  }
+
+  let mut current = endpoint_node
+  while true {
+    match node_parent(current) {
+      Some(parent) =>
+        if parent == root_node {
+          return Some(current)
+        } else {
+          current = parent
+        }
+      None => return None
+    }
+  }
+  None
+}
+
+///|
+fn recursive_layered_endpoint_lnode(
+  root_node : ElkNode,
+  endpoint_node : ElkNode,
+  elk_to_lnode : Map[ElkNode, LNode],
+) -> LNode? {
+  match elk_to_lnode.get(endpoint_node) {
+    Some(found) => Some(found)
+    None =>
+      match
+        recursive_layered_direct_child_for_endpoint(root_node, endpoint_node) {
+        Some(child) => elk_to_lnode.get(child)
+        None => None
+      }
+  }
+}
+
+///|
 fn recursive_layered_port_side_from_string(value : String) -> PortSide {
   match value {
     "NORTH" => PortSide::North
@@ -919,6 +960,7 @@ fn recursive_layered_needs_model_order(
 
 ///|
 fn recursive_layered_new_edge_port(owner : LNode, side : PortSide) -> LPort {
+  owner.set_property_string(port_constraints, "FIXED_SIDE")
   let port = new_l_port()
   port.set_node(Some(owner))
   port.set_side(side)
@@ -1529,12 +1571,28 @@ fn recursive_layered_create_context(node : ElkNode) -> RecursiveLayeredContext? 
                     node, parent_port, direction_value, layered_graph, elk_to_lport,
                   )
                 } else {
-                  return None
+                  match
+                    recursive_layered_endpoint_lnode(
+                      node, parent_of_port, elk_to_lnode,
+                    ) {
+                    Some(source_lnode) => {
+                      let mut source_side = recursive_layered_port_side_from_string(
+                        recursive_layered_port_side_option(parent_port),
+                      )
+                      match source_side {
+                        PortSide::SideUndefined => source_side = PortSide::East
+                        _ => ()
+                      }
+                      recursive_layered_new_edge_port(source_lnode, source_side)
+                    }
+                    None => return None
+                  }
                 }
               None => return None
             }
           NodeShape(source_node) =>
-            match elk_to_lnode.get(source_node) {
+            match
+              recursive_layered_endpoint_lnode(node, source_node, elk_to_lnode) {
               Some(source_lnode) =>
                 recursive_layered_new_edge_port(source_lnode, PortSide::East)
               None => return None
@@ -1554,12 +1612,28 @@ fn recursive_layered_create_context(node : ElkNode) -> RecursiveLayeredContext? 
                     node, parent_port, direction_value, layered_graph, elk_to_lport,
                   )
                 } else {
-                  return None
+                  match
+                    recursive_layered_endpoint_lnode(
+                      node, parent_of_port, elk_to_lnode,
+                    ) {
+                    Some(target_lnode) => {
+                      let mut target_side = recursive_layered_port_side_from_string(
+                        recursive_layered_port_side_option(parent_port),
+                      )
+                      match target_side {
+                        PortSide::SideUndefined => target_side = PortSide::West
+                        _ => ()
+                      }
+                      recursive_layered_new_edge_port(target_lnode, target_side)
+                    }
+                    None => return None
+                  }
                 }
               None => return None
             }
           NodeShape(target_node) =>
-            match elk_to_lnode.get(target_node) {
+            match
+              recursive_layered_endpoint_lnode(node, target_node, elk_to_lnode) {
               Some(target_lnode) =>
                 recursive_layered_new_edge_port(target_lnode, PortSide::West)
               None => return None

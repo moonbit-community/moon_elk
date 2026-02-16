@@ -14,19 +14,17 @@ fn p4_basic_node_placement_test_layout(graph : ElkNode) -> Unit {
 }
 
 ///|
-test "BasicNodePlacement strategies route graph without overlap crash" {
-  reset_graph_model_for_test()
-  p4_basic_node_placement_test_setup_plain_java_layout()
-
+fn p4_basic_node_placement_test_build_diamond_graph() -> Array[ElkNode] {
   let graph = create_graph()
-  node_set_layout_option_string_by_id(
-    graph, "org.eclipse.elk.layered.nodePlacement.strategy", "LINEAR_SEGMENTS",
-  )
-
   let source = create_node(Some(graph))
   let mid_a = create_node(Some(graph))
   let mid_b = create_node(Some(graph))
   let target = create_node(Some(graph))
+
+  node_set_dimensions(source, 16.0, 10.0)
+  node_set_dimensions(mid_a, 16.0, 14.0)
+  node_set_dimensions(mid_b, 16.0, 12.0)
+  node_set_dimensions(target, 16.0, 10.0)
 
   let e1 = create_edge(None)
   edge_add_source(e1, make_node_shape(source))
@@ -48,53 +46,117 @@ test "BasicNodePlacement strategies route graph without overlap crash" {
   edge_add_target(e4, make_node_shape(target))
   update_containment(Some(e4))
 
+  [graph, source, mid_a, mid_b, target]
+}
+
+///|
+fn p4_basic_node_placement_test_nodes_do_not_overlap_vertically(
+  first : ElkNode,
+  second : ElkNode,
+) -> Bool {
+  let first_top = node_y(first)
+  let first_bottom = first_top + node_height(first)
+  let second_top = node_y(second)
+  let second_bottom = second_top + node_height(second)
+  first_bottom < second_top || second_bottom < first_top
+}
+
+///|
+fn p4_basic_node_placement_test_layout_ok_for_config(
+  strategy : String,
+  bk_edge_straightening : String?,
+  bk_fixed_alignment : String?,
+) -> Bool {
+  reset_graph_model_for_test()
+  p4_basic_node_placement_test_setup_plain_java_layout()
+
+  let nodes = p4_basic_node_placement_test_build_diamond_graph()
+  let graph = nodes[0]
+  let mid_a = nodes[2]
+  let mid_b = nodes[3]
+
+  node_set_layout_option_string_by_id(
+    graph, "org.eclipse.elk.layered.nodePlacement.strategy", strategy,
+  )
+  match bk_edge_straightening {
+    Some(value) =>
+      node_set_layout_option_string_by_id(
+        graph, "org.eclipse.elk.layered.nodePlacement.bk.edgeStraightening", value,
+      )
+    None => ()
+  }
+  match bk_fixed_alignment {
+    Some(value) =>
+      node_set_layout_option_string_by_id(
+        graph, "org.eclipse.elk.layered.nodePlacement.bk.fixedAlignment", value,
+      )
+    None => ()
+  }
+
   p4_basic_node_placement_test_layout(graph)
 
-  assert_eq(
-    node_get_string_property(graph, resolved_algorithm),
-    "org.eclipse.elk.layered",
+  let algorithm_resolved = node_get_string_property(graph, resolved_algorithm) ==
+    "org.eclipse.elk.layered"
+  let middle_nodes_non_overlapping = p4_basic_node_placement_test_nodes_do_not_overlap_vertically(
+    mid_a, mid_b,
+  )
+  algorithm_resolved && middle_nodes_non_overlapping
+}
+
+///|
+test "BasicNodePlacement LINEAR_SEGMENTS places middle-layer nodes without overlap" {
+  assert_true(
+    p4_basic_node_placement_test_layout_ok_for_config(
+      "LINEAR_SEGMENTS",
+      None,
+      None,
+    ),
   )
 }
 
 ///|
-test "BasicNodePlacement network simplex strategy routes graph without overlap crash" {
-  reset_graph_model_for_test()
-  p4_basic_node_placement_test_setup_plain_java_layout()
-
-  let graph = create_graph()
-  node_set_layout_option_string_by_id(
-    graph, "org.eclipse.elk.layered.nodePlacement.strategy", "NETWORK_SIMPLEX",
+test "BasicNodePlacement NETWORK_SIMPLEX places middle-layer nodes without overlap" {
+  assert_true(
+    p4_basic_node_placement_test_layout_ok_for_config(
+      "NETWORK_SIMPLEX",
+      None,
+      None,
+    ),
   )
+}
 
-  let source = create_node(Some(graph))
-  let mid_a = create_node(Some(graph))
-  let mid_b = create_node(Some(graph))
-  let target = create_node(Some(graph))
-
-  let e1 = create_edge(None)
-  edge_add_source(e1, make_node_shape(source))
-  edge_add_target(e1, make_node_shape(mid_a))
-  update_containment(Some(e1))
-
-  let e2 = create_edge(None)
-  edge_add_source(e2, make_node_shape(source))
-  edge_add_target(e2, make_node_shape(mid_b))
-  update_containment(Some(e2))
-
-  let e3 = create_edge(None)
-  edge_add_source(e3, make_node_shape(mid_a))
-  edge_add_target(e3, make_node_shape(target))
-  update_containment(Some(e3))
-
-  let e4 = create_edge(None)
-  edge_add_source(e4, make_node_shape(mid_b))
-  edge_add_target(e4, make_node_shape(target))
-  update_containment(Some(e4))
-
-  p4_basic_node_placement_test_layout(graph)
-
-  assert_eq(
-    node_get_string_property(graph, resolved_algorithm),
-    "org.eclipse.elk.layered",
+///|
+test "BasicNodePlacement SIMPLE places middle-layer nodes without overlap" {
+  assert_true(
+    p4_basic_node_placement_test_layout_ok_for_config("SIMPLE", None, None),
   )
+}
+
+///|
+test "BasicNodePlacement BRANDES_KOEPF matrix places middle-layer nodes without overlap" {
+  let none_alignments = [
+    "NONE", "LEFTUP", "LEFTDOWN", "RIGHTUP", "RIGHTDOWN", "BALANCED",
+  ]
+  for alignment in none_alignments {
+    assert_true(
+      p4_basic_node_placement_test_layout_ok_for_config(
+        "BRANDES_KOEPF",
+        Some("NONE"),
+        Some(alignment),
+      ),
+    )
+  }
+
+  let improve_alignments = [
+    "LEFTUP", "LEFTDOWN", "RIGHTUP", "RIGHTDOWN", "BALANCED",
+  ]
+  for alignment in improve_alignments {
+    assert_true(
+      p4_basic_node_placement_test_layout_ok_for_config(
+        "BRANDES_KOEPF",
+        Some("IMPROVE_STRAIGHTNESS"),
+        Some(alignment),
+      ),
+    )
+  }
 }

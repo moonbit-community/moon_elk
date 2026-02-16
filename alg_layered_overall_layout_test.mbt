@@ -14,43 +14,88 @@ fn overall_layout_test_layout(graph : ElkNode) -> Unit {
 }
 
 ///|
-test "Overall layered layout assigns positive coordinates and size" {
-  reset_graph_model_for_test()
-  overall_layout_test_setup_plain_java_layout()
+fn overall_layout_test_size_constraint_strings(
+  constraints : Array[SizeConstraint],
+) -> Array[String] {
+  let values : Array[String] = []
+  for constraint in constraints {
+    values.push(size_constraint_to_string(constraint))
+  }
+  values
+}
 
+///|
+fn overall_layout_test_create_simple_graph() -> ElkNode {
   let graph = create_graph()
   node_set_string_property(graph, edge_routing, "ORTHOGONAL")
 
-  let n1 = create_node(Some(graph))
-  node_set_dimensions(n1, 30.0, 30.0)
-  let n2 = create_node(Some(graph))
-  node_set_dimensions(n2, 30.0, 30.0)
+  let fixed_constraints = overall_layout_test_size_constraint_strings(
+    size_constraint_fixed(),
+  )
+
+  let node1 = create_node(Some(graph))
+  node_set_dimensions(node1, 30.0, 30.0)
+  node_set_string_set_property(node1, node_size_constraints, fixed_constraints)
+
+  let node2 = create_node(Some(graph))
+  node_set_dimensions(node2, 30.0, 30.0)
+  node_set_string_set_property(node2, node_size_constraints, fixed_constraints)
 
   let edge = create_edge(None)
-  edge_add_source(edge, make_node_shape(n1))
-  edge_add_target(edge, make_node_shape(n2))
+  edge_add_source(edge, make_node_shape(node1))
+  edge_add_target(edge, make_node_shape(node2))
   update_containment(Some(edge))
 
-  overall_layout_test_layout(graph)
+  graph
+}
 
+///|
+fn overall_layout_test_build_and_layout_simple_graph() -> ElkNode {
+  reset_graph_model_for_test()
+  overall_layout_test_setup_plain_java_layout()
+  let graph = overall_layout_test_create_simple_graph()
+  overall_layout_test_layout(graph)
+  graph
+}
+
+///|
+test "OverallLayoutTest node coordinates are positive" {
+  let graph = overall_layout_test_build_and_layout_simple_graph()
   for node in node_children(graph) {
     assert_true(node_x(node) > 0.0)
     assert_true(node_y(node) > 0.0)
   }
+}
 
+///|
+test "OverallLayoutTest edge coordinates are positive" {
+  let graph = overall_layout_test_build_and_layout_simple_graph()
   for routed_edge in node_contained_edges(graph) {
     for section in edge_sections(routed_edge) {
       assert_true(edge_section_start_x(section) > 0.0)
       assert_true(edge_section_start_y(section) > 0.0)
       assert_true(edge_section_end_x(section) > 0.0)
       assert_true(edge_section_end_y(section) > 0.0)
+    }
+  }
+}
+
+///|
+test "OverallLayoutTest graph size is positive" {
+  let graph = overall_layout_test_build_and_layout_simple_graph()
+  assert_true(node_width(graph) > 0.0)
+  assert_true(node_height(graph) > 0.0)
+}
+
+///|
+test "OverallLayoutTest edge routing is orthogonal" {
+  let graph = overall_layout_test_build_and_layout_simple_graph()
+  for routed_edge in node_contained_edges(graph) {
+    for section in edge_sections(routed_edge) {
       assert_true(
         edge_section_start_x(section) == edge_section_end_x(section) ||
         edge_section_start_y(section) == edge_section_end_y(section),
       )
     }
   }
-
-  assert_true(node_width(graph) > 0.0)
-  assert_true(node_height(graph) > 0.0)
 }

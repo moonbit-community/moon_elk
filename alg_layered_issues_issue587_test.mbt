@@ -6,9 +6,8 @@ fn issue587_test_setup_plain_java_layout() -> Unit {
 }
 
 ///|
-fn issue587_test_build_graph(edge_routing_value : String) -> ElkNode {
+fn issue587_test_build_graph() -> ElkNode {
   let graph = create_graph()
-  node_set_string_property(graph, edge_routing, edge_routing_value)
   let n1 = create_node(Some(graph))
   let n2 = create_node(Some(graph))
   let edge = create_edge(None)
@@ -19,19 +18,62 @@ fn issue587_test_build_graph(edge_routing_value : String) -> ElkNode {
 }
 
 ///|
-test "Issue587 all edge-routing strategies avoid exception" {
+fn issue587_test_layout_with_optional_routing(
+  edge_routing_value : String?,
+) -> ElkNode {
   reset_graph_model_for_test()
   issue587_test_setup_plain_java_layout()
 
-  for routing in ["ORTHOGONAL", "POLYLINE", "SPLINES"] {
-    let graph = issue587_test_build_graph(routing)
-    let resolver = new_layout_algorithm_resolver()
-    apply_visitors(graph, [resolver.to_visitor()])
-    let layout_engine = new_recursive_graph_layout_engine()
-    layout_engine.layout(graph, new_null_elk_progress_monitor())
-    assert_eq(
-      node_get_string_property(graph, resolved_algorithm),
-      "org.eclipse.elk.layered",
-    )
+  let graph = issue587_test_build_graph()
+  match edge_routing_value {
+    Some(value) => node_set_string_property(graph, edge_routing, value)
+    None => ()
   }
+  let resolver = new_layout_algorithm_resolver()
+  apply_visitors(graph, [resolver.to_visitor()])
+  let layout_engine = new_recursive_graph_layout_engine()
+  layout_engine.layout(graph, new_null_elk_progress_monitor())
+  graph
+}
+
+///|
+fn issue587_test_layout_success(graph : ElkNode) -> Bool {
+  node_get_string_property(graph, resolved_algorithm) ==
+  "org.eclipse.elk.layered"
+}
+
+///|
+test "Issue587 default routing avoids exception" {
+  assert_true(
+    issue587_test_layout_success(
+      issue587_test_layout_with_optional_routing(None),
+    ),
+  )
+}
+
+///|
+test "Issue587 ORTHOGONAL routing avoids exception" {
+  assert_true(
+    issue587_test_layout_success(
+      issue587_test_layout_with_optional_routing(Some("ORTHOGONAL")),
+    ),
+  )
+}
+
+///|
+test "Issue587 POLYLINE routing avoids exception" {
+  assert_true(
+    issue587_test_layout_success(
+      issue587_test_layout_with_optional_routing(Some("POLYLINE")),
+    ),
+  )
+}
+
+///|
+test "Issue587 SPLINES routing avoids exception" {
+  assert_true(
+    issue587_test_layout_success(
+      issue587_test_layout_with_optional_routing(Some("SPLINES")),
+    ),
+  )
 }
