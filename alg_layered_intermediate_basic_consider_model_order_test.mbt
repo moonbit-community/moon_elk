@@ -45,6 +45,9 @@ fn basic_consider_model_order_connect(
 fn basic_consider_model_order_new_graph() -> (LGraph, Layer, Layer) {
   let graph = new_l_graph()
   graph.set_property_string(
+    layered_options_crossing_minimization_strategy, "LAYER_SWEEP",
+  )
+  graph.set_property_string(
     layered_options_consider_model_order_long_edge_strategy, "DUMMY_NODE_OVER",
   )
   graph.set_property_string(
@@ -64,7 +67,7 @@ fn basic_consider_model_order_run_case(
   strategy : String,
   weighted : Bool,
   use_port_model_order : Bool,
-) -> Unit {
+) -> Array[Int] {
   let (graph, layer0, layer1) = basic_consider_model_order_new_graph()
   graph.set_property_string(
     layered_options_consider_model_order_strategy, strategy,
@@ -112,24 +115,74 @@ fn basic_consider_model_order_run_case(
   if sorted_nodes.length() != 2 {
     abort("unexpected source-layer node count")
   }
-  if sorted_nodes[0].get_property_int(internal_properties_model_order) != 0 {
-    abort("expected first source node with model order 0")
-  }
-  if sorted_nodes[1].get_property_int(internal_properties_model_order) != 1 {
-    abort("expected second source node with model order 1")
-  }
+  [
+    sorted_nodes[0].get_property_int(internal_properties_model_order),
+    sorted_nodes[1].get_property_int(internal_properties_model_order),
+  ]
 }
 
 ///|
-test "basic consider model order smoke cases" {
-  basic_consider_model_order_run_case("NODES_AND_EDGES", false, false)
-  basic_consider_model_order_run_case("NODES_AND_EDGES", true, false)
-  basic_consider_model_order_run_case("PREFER_EDGES", false, false)
-  basic_consider_model_order_run_case("PREFER_EDGES", true, false)
-  basic_consider_model_order_run_case("PREFER_NODES", false, false)
-  basic_consider_model_order_run_case("PREFER_NODES", true, false)
+test "BasicConsiderModelOrder nodesAndEdgesConfigurator" {
+  assert_eq(
+    basic_consider_model_order_run_case("NODES_AND_EDGES", false, false),
+    [0, 1],
+  )
+}
 
-  basic_consider_model_order_run_case("PREFER_EDGES", false, true)
-  basic_consider_model_order_run_case("NODES_AND_EDGES", false, true)
-  basic_consider_model_order_run_case("PREFER_NODES", false, true)
+///|
+test "BasicConsiderModelOrder nodesAndEdgesWeightedConfigurator" {
+  assert_eq(
+    basic_consider_model_order_run_case("NODES_AND_EDGES", true, false),
+    [0, 1],
+  )
+}
+
+///|
+test "BasicConsiderModelOrder preferEdgesConfigurator" {
+  assert_eq(basic_consider_model_order_run_case("PREFER_EDGES", false, false), [
+    0, 1,
+  ])
+}
+
+///|
+test "BasicConsiderModelOrder preferEdgesWeightedConfigurator" {
+  assert_eq(basic_consider_model_order_run_case("PREFER_EDGES", true, false), [
+    0, 1,
+  ])
+}
+
+///|
+test "BasicConsiderModelOrder preferNodesConfigurator" {
+  assert_eq(basic_consider_model_order_run_case("PREFER_NODES", false, false), [
+    0, 1,
+  ])
+}
+
+///|
+test "BasicConsiderModelOrder preferNodesWeightedConfigurator" {
+  assert_eq(basic_consider_model_order_run_case("PREFER_NODES", true, false), [
+    0, 1,
+  ])
+}
+
+///|
+test "BasicConsiderModelOrder portModelOrderPreferEdges" {
+  assert_eq(basic_consider_model_order_run_case("PREFER_EDGES", false, true), [
+    0, 1,
+  ])
+}
+
+///|
+test "BasicConsiderModelOrder portModelOrderNodesAndEdges" {
+  assert_eq(
+    basic_consider_model_order_run_case("NODES_AND_EDGES", false, true),
+    [0, 1],
+  )
+}
+
+///|
+test "BasicConsiderModelOrder portModelOrderPreferNodes" {
+  assert_eq(basic_consider_model_order_run_case("PREFER_NODES", false, true), [
+    0, 1,
+  ])
 }
