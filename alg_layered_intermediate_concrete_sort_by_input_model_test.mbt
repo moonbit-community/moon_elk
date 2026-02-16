@@ -146,6 +146,114 @@ fn concrete_sort_by_input_model_new_multiple_case(
 }
 
 ///|
+fn concrete_sort_by_input_model_ports_are_ordered(
+  node : LNode,
+  first : LPort,
+  second : LPort,
+) -> Bool {
+  let first_index = concrete_sort_by_input_model_port_index(node, first)
+  let second_index = concrete_sort_by_input_model_port_index(node, second)
+  first_index >= 0 && second_index >= 0 && first_index < second_index
+}
+
+///|
+fn concrete_sort_by_input_model_nodes_are_ordered(
+  layer : Layer,
+  first : LNode,
+  second : LNode,
+) -> Bool {
+  let first_index = concrete_sort_by_input_model_node_index(layer, first)
+  let second_index = concrete_sort_by_input_model_node_index(layer, second)
+  first_index >= 0 && second_index >= 0 && first_index < second_index
+}
+
+///|
+fn concrete_sort_by_input_model_target_order_is_p3_before_p4(
+  target : LNode,
+  p3 : LPort,
+  p4 : LPort,
+) -> Bool {
+  concrete_sort_by_input_model_ports_are_ordered(target, p3, p4)
+}
+
+///|
+fn concrete_sort_by_input_model_expected_source_p1_before_p2(
+  source_side : String,
+) -> Bool {
+  source_side == "EAST" || source_side == "NORTH"
+}
+
+///|
+fn concrete_sort_by_input_model_assert_single_case_expectation(
+  source_side : String,
+  target_side : String,
+  expect_p3_before_p4 : Bool,
+) -> Unit raise {
+  let (graph, source, p1, p2, target, p3, p4) = concrete_sort_by_input_model_new_single_case(
+    source_side, target_side,
+  )
+
+  concrete_sort_by_input_model_run(graph, false)
+  let p1_before_p2_first = concrete_sort_by_input_model_ports_are_ordered(
+    source, p1, p2,
+  )
+  let p2_before_p1_first = concrete_sort_by_input_model_ports_are_ordered(
+    source, p2, p1,
+  )
+  assert_true(p1_before_p2_first || p2_before_p1_first)
+  assert_eq(
+    p1_before_p2_first,
+    concrete_sort_by_input_model_expected_source_p1_before_p2(source_side),
+  )
+  assert_eq(
+    concrete_sort_by_input_model_target_order_is_p3_before_p4(target, p3, p4),
+    expect_p3_before_p4,
+  )
+
+  concrete_sort_by_input_model_run(graph, true)
+  let p1_before_p2_second = concrete_sort_by_input_model_ports_are_ordered(
+    source, p1, p2,
+  )
+  let p2_before_p1_second = concrete_sort_by_input_model_ports_are_ordered(
+    source, p2, p1,
+  )
+  assert_true(p1_before_p2_second || p2_before_p1_second)
+  assert_eq(
+    p1_before_p2_second,
+    concrete_sort_by_input_model_expected_source_p1_before_p2(source_side),
+  )
+  assert_eq(
+    concrete_sort_by_input_model_target_order_is_p3_before_p4(target, p3, p4),
+    expect_p3_before_p4,
+  )
+}
+
+///|
+fn concrete_sort_by_input_model_assert_multiple_case_expectation(
+  source_side : String,
+  target_side : String,
+  expect_p3_before_p4 : Bool,
+) -> Unit raise {
+  let (graph, layer0, n1, ni, target, p3, p4) = concrete_sort_by_input_model_new_multiple_case(
+    source_side, target_side,
+  )
+
+  concrete_sort_by_input_model_run(graph, false)
+  assert_true(concrete_sort_by_input_model_nodes_are_ordered(layer0, n1, ni))
+  assert_eq(
+    concrete_sort_by_input_model_target_order_is_p3_before_p4(target, p3, p4),
+    expect_p3_before_p4,
+  )
+
+  concrete_sort_by_input_model_run(graph, true)
+  assert_true(concrete_sort_by_input_model_nodes_are_ordered(layer0, n1, ni))
+  assert_eq(
+    concrete_sort_by_input_model_target_order_is_p3_before_p4(target, p3, p4),
+    expect_p3_before_p4,
+  )
+}
+
+///|
 test "concrete sort by input model keeps source-port order and target ordering mode-invariant" {
   let source_sides = ["EAST", "NORTH", "SOUTH", "WEST"]
   let target_sides = ["WEST", "NORTH", "SOUTH", "EAST"]
@@ -183,6 +291,230 @@ test "concrete sort by input model keeps source-port order and target ordering m
       assert_eq(p3_before_p4_second, p3_before_p4_first)
     }
   }
+}
+
+///|
+test "concrete sort by input model outgoing east incoming west" {
+  concrete_sort_by_input_model_assert_single_case_expectation(
+    "EAST", "WEST", true,
+  )
+}
+
+///|
+test "concrete sort by input model outgoing east incoming west multiple nodes" {
+  concrete_sort_by_input_model_assert_multiple_case_expectation(
+    "EAST", "WEST", true,
+  )
+}
+
+///|
+test "concrete sort by input model outgoing east incoming north" {
+  concrete_sort_by_input_model_assert_single_case_expectation(
+    "EAST", "NORTH", true,
+  )
+}
+
+///|
+test "concrete sort by input model outgoing east incoming north multiple nodes" {
+  concrete_sort_by_input_model_assert_multiple_case_expectation(
+    "EAST", "NORTH", true,
+  )
+}
+
+///|
+test "concrete sort by input model outgoing east incoming south" {
+  concrete_sort_by_input_model_assert_single_case_expectation(
+    "EAST", "SOUTH", true,
+  )
+}
+
+///|
+test "concrete sort by input model outgoing east incoming south multiple nodes" {
+  concrete_sort_by_input_model_assert_multiple_case_expectation(
+    "EAST", "SOUTH", true,
+  )
+}
+
+///|
+test "concrete sort by input model outgoing east incoming east" {
+  concrete_sort_by_input_model_assert_single_case_expectation(
+    "EAST", "EAST", false,
+  )
+}
+
+///|
+test "concrete sort by input model outgoing east incoming east multiple nodes" {
+  concrete_sort_by_input_model_assert_multiple_case_expectation(
+    "EAST", "EAST", false,
+  )
+}
+
+///|
+test "concrete sort by input model outgoing north incoming west" {
+  concrete_sort_by_input_model_assert_single_case_expectation(
+    "NORTH", "WEST", true,
+  )
+}
+
+///|
+test "concrete sort by input model outgoing north incoming west multiple nodes" {
+  concrete_sort_by_input_model_assert_multiple_case_expectation(
+    "NORTH", "WEST", true,
+  )
+}
+
+///|
+test "concrete sort by input model outgoing north incoming north" {
+  concrete_sort_by_input_model_assert_single_case_expectation(
+    "NORTH", "NORTH", true,
+  )
+}
+
+///|
+test "concrete sort by input model outgoing north incoming north multiple nodes" {
+  concrete_sort_by_input_model_assert_multiple_case_expectation(
+    "NORTH", "NORTH", true,
+  )
+}
+
+///|
+test "concrete sort by input model outgoing north incoming south" {
+  concrete_sort_by_input_model_assert_single_case_expectation(
+    "NORTH", "SOUTH", true,
+  )
+}
+
+///|
+test "concrete sort by input model outgoing north incoming south multiple nodes" {
+  concrete_sort_by_input_model_assert_multiple_case_expectation(
+    "NORTH", "SOUTH", true,
+  )
+}
+
+///|
+test "concrete sort by input model outgoing north incoming east" {
+  concrete_sort_by_input_model_assert_single_case_expectation(
+    "NORTH", "EAST", false,
+  )
+}
+
+///|
+test "concrete sort by input model outgoing north incoming east multiple nodes" {
+  concrete_sort_by_input_model_assert_multiple_case_expectation(
+    "NORTH", "EAST", false,
+  )
+}
+
+///|
+test "concrete sort by input model outgoing south incoming west" {
+  concrete_sort_by_input_model_assert_single_case_expectation(
+    "SOUTH", "WEST", false,
+  )
+}
+
+///|
+test "concrete sort by input model outgoing south incoming west multiple nodes" {
+  concrete_sort_by_input_model_assert_multiple_case_expectation(
+    "SOUTH", "WEST", true,
+  )
+}
+
+///|
+test "concrete sort by input model outgoing south incoming north" {
+  concrete_sort_by_input_model_assert_single_case_expectation(
+    "SOUTH", "NORTH", false,
+  )
+}
+
+///|
+test "concrete sort by input model outgoing south incoming north multiple nodes" {
+  concrete_sort_by_input_model_assert_multiple_case_expectation(
+    "SOUTH", "NORTH", true,
+  )
+}
+
+///|
+test "concrete sort by input model outgoing south incoming south" {
+  concrete_sort_by_input_model_assert_single_case_expectation(
+    "SOUTH", "SOUTH", false,
+  )
+}
+
+///|
+test "concrete sort by input model outgoing south incoming south multiple nodes" {
+  concrete_sort_by_input_model_assert_multiple_case_expectation(
+    "SOUTH", "SOUTH", true,
+  )
+}
+
+///|
+test "concrete sort by input model outgoing south incoming east" {
+  concrete_sort_by_input_model_assert_single_case_expectation(
+    "SOUTH", "EAST", true,
+  )
+}
+
+///|
+test "concrete sort by input model outgoing south incoming east multiple nodes" {
+  concrete_sort_by_input_model_assert_multiple_case_expectation(
+    "SOUTH", "EAST", false,
+  )
+}
+
+///|
+test "concrete sort by input model outgoing west incoming west" {
+  concrete_sort_by_input_model_assert_single_case_expectation(
+    "WEST", "WEST", false,
+  )
+}
+
+///|
+test "concrete sort by input model outgoing west incoming west multiple nodes" {
+  concrete_sort_by_input_model_assert_multiple_case_expectation(
+    "WEST", "WEST", true,
+  )
+}
+
+///|
+test "concrete sort by input model outgoing west incoming north" {
+  concrete_sort_by_input_model_assert_single_case_expectation(
+    "WEST", "NORTH", false,
+  )
+}
+
+///|
+test "concrete sort by input model outgoing west incoming north multiple nodes" {
+  concrete_sort_by_input_model_assert_multiple_case_expectation(
+    "WEST", "NORTH", true,
+  )
+}
+
+///|
+test "concrete sort by input model outgoing west incoming south" {
+  concrete_sort_by_input_model_assert_single_case_expectation(
+    "WEST", "SOUTH", false,
+  )
+}
+
+///|
+test "concrete sort by input model outgoing west incoming south multiple nodes" {
+  concrete_sort_by_input_model_assert_multiple_case_expectation(
+    "WEST", "SOUTH", true,
+  )
+}
+
+///|
+test "concrete sort by input model outgoing west incoming east" {
+  concrete_sort_by_input_model_assert_single_case_expectation(
+    "WEST", "EAST", true,
+  )
+}
+
+///|
+test "concrete sort by input model outgoing west incoming east multiple nodes" {
+  concrete_sort_by_input_model_assert_multiple_case_expectation(
+    "WEST", "EAST", false,
+  )
 }
 
 ///|
