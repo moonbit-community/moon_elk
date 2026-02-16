@@ -12,6 +12,7 @@ test "Issue457 node minimum size respected for box layout" {
   node_set_string_property(root, algorithm, "org.eclipse.elk.box")
   for _ in 0..<2 {
     let node = create_node(Some(root))
+    node_set_string_property(node, algorithm, "org.eclipse.elk.box")
     let child = create_node(Some(node))
     node_set_dimensions(child, 5.0, 5.0)
     node_set_string_set_property(node, node_size_constraints, ["MINIMUM_SIZE"])
@@ -43,6 +44,7 @@ test "Issue489 child placement respects node padding" {
   ]
   for pair in configured {
     let node = create_node(Some(root))
+    node_set_string_property(node, algorithm, "org.eclipse.elk.box")
     node_set_dimensions(node, pair.0.x, pair.0.y)
     node_set_string_property(
       node,

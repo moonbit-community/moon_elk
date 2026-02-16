@@ -328,6 +328,54 @@ priv struct RecursiveLayeredContext {
 }
 
 ///|
+let recursive_layered_transform_context_next_id : Ref[Int] = Ref::new(1)
+
+///|
+let recursive_layered_transform_context_store : Ref[
+  Map[Int, (RecursiveLayeredContext, ElkNode)],
+] = Ref::new({})
+
+///|
+fn recursive_layered_transform_register_context(
+  context : RecursiveLayeredContext,
+  parent_node : ElkNode,
+) -> LGraph {
+  let context_id = recursive_layered_transform_context_next_id.val
+  recursive_layered_transform_context_next_id.val = context_id + 1
+  context.layered_graph.set_id(context_id)
+  recursive_layered_transform_context_store.val[context_id] = (
+    context, parent_node,
+  )
+  context.layered_graph
+}
+
+///|
+pub fn recursive_layered_import_graph_for_transform(
+  parent_node : ElkNode,
+) -> LGraph? {
+  match recursive_layered_create_context(parent_node) {
+    Some(context) =>
+      Some(recursive_layered_transform_register_context(context, parent_node))
+    None => None
+  }
+}
+
+///|
+pub fn recursive_layered_apply_transformed_graph(
+  layered_graph : LGraph,
+) -> Bool {
+  let context_id = layered_graph.get_id()
+  match recursive_layered_transform_context_store.val.get(context_id) {
+    Some((context, parent_node)) => {
+      ignore(recursive_layered_transform_context_store.val.remove(context_id))
+      recursive_layered_apply_layout(context, parent_node)
+      true
+    }
+    None => false
+  }
+}
+
+///|
 fn recursive_layered_edge_endpoint_node(
   edge_shapes : Array[ElkConnectableShape],
 ) -> ElkNode? {
@@ -383,14 +431,14 @@ fn recursive_layered_endpoint_lnode(
   root_node : ElkNode,
   endpoint_node : ElkNode,
   elk_to_lnode : Map[ElkNode, LNode],
-) -> LNode? {
+) -> (LNode?, Bool) {
   match elk_to_lnode.get(endpoint_node) {
-    Some(found) => Some(found)
+    Some(found) => (Some(found), false)
     None =>
       match
         recursive_layered_direct_child_for_endpoint(root_node, endpoint_node) {
-        Some(child) => elk_to_lnode.get(child)
-        None => None
+        Some(child) => (elk_to_lnode.get(child), true)
+        None => (None, false)
       }
   }
 }
@@ -959,8 +1007,14 @@ fn recursive_layered_needs_model_order(
 }
 
 ///|
-fn recursive_layered_new_edge_port(owner : LNode, side : PortSide) -> LPort {
-  owner.set_property_string(port_constraints, "FIXED_SIDE")
+fn recursive_layered_new_edge_port(
+  owner : LNode,
+  side : PortSide,
+  fix_owner_side? : Bool = false,
+) -> LPort {
+  if fix_owner_side {
+    owner.set_property_string(port_constraints, "FIXED_SIDE")
+  }
   let port = new_l_port()
   port.set_node(Some(owner))
   port.set_side(side)
@@ -1273,6 +1327,13 @@ fn recursive_layered_create_context(node : ElkNode) -> RecursiveLayeredContext? 
   let feedback_edges = node_get_bool_property(
     node, layered_options_feedback_edges,
   )
+  let mut hierarchical_layout = false
+  for child in node_children(node) {
+    if !node_children(child).is_empty() {
+      hierarchical_layout = true
+      break
+    }
+  }
   let needs_model_order = recursive_layered_needs_model_order(
     cycle_breaking_strategy, layering_strategy, node_promotion_strategy, consider_model_order,
   )
@@ -1575,7 +1636,7 @@ fn recursive_layered_create_context(node : ElkNode) -> RecursiveLayeredContext? 
                     recursive_layered_endpoint_lnode(
                       node, parent_of_port, elk_to_lnode,
                     ) {
-                    Some(source_lnode) => {
+                    (Some(source_lnode), fix_owner_side) => {
                       let mut source_side = recursive_layered_port_side_from_string(
                         recursive_layered_port_side_option(parent_port),
                       )
@@ -1583,9 +1644,13 @@ fn recursive_layered_create_context(node : ElkNode) -> RecursiveLayeredContext? 
                         PortSide::SideUndefined => source_side = PortSide::East
                         _ => ()
                       }
-                      recursive_layered_new_edge_port(source_lnode, source_side)
+                      recursive_layered_new_edge_port(
+                        source_lnode,
+                        source_side,
+                        fix_owner_side=fix_owner_side || hierarchical_layout,
+                      )
                     }
-                    None => return None
+                    (None, _) => return None
                   }
                 }
               None => return None
@@ -1593,9 +1658,13 @@ fn recursive_layered_create_context(node : ElkNode) -> RecursiveLayeredContext? 
           NodeShape(source_node) =>
             match
               recursive_layered_endpoint_lnode(node, source_node, elk_to_lnode) {
-              Some(source_lnode) =>
-                recursive_layered_new_edge_port(source_lnode, PortSide::East)
-              None => return None
+              (Some(source_lnode), fix_owner_side) =>
+                recursive_layered_new_edge_port(
+                  source_lnode,
+                  PortSide::East,
+                  fix_owner_side=fix_owner_side || hierarchical_layout,
+                )
+              (None, _) => return None
             }
         }
     }
@@ -1616,7 +1685,7 @@ fn recursive_layered_create_context(node : ElkNode) -> RecursiveLayeredContext? 
                     recursive_layered_endpoint_lnode(
                       node, parent_of_port, elk_to_lnode,
                     ) {
-                    Some(target_lnode) => {
+                    (Some(target_lnode), fix_owner_side) => {
                       let mut target_side = recursive_layered_port_side_from_string(
                         recursive_layered_port_side_option(parent_port),
                       )
@@ -1624,9 +1693,13 @@ fn recursive_layered_create_context(node : ElkNode) -> RecursiveLayeredContext? 
                         PortSide::SideUndefined => target_side = PortSide::West
                         _ => ()
                       }
-                      recursive_layered_new_edge_port(target_lnode, target_side)
+                      recursive_layered_new_edge_port(
+                        target_lnode,
+                        target_side,
+                        fix_owner_side=fix_owner_side || hierarchical_layout,
+                      )
                     }
-                    None => return None
+                    (None, _) => return None
                   }
                 }
               None => return None
@@ -1634,9 +1707,13 @@ fn recursive_layered_create_context(node : ElkNode) -> RecursiveLayeredContext? 
           NodeShape(target_node) =>
             match
               recursive_layered_endpoint_lnode(node, target_node, elk_to_lnode) {
-              Some(target_lnode) =>
-                recursive_layered_new_edge_port(target_lnode, PortSide::West)
-              None => return None
+              (Some(target_lnode), fix_owner_side) =>
+                recursive_layered_new_edge_port(
+                  target_lnode,
+                  PortSide::West,
+                  fix_owner_side=fix_owner_side || hierarchical_layout,
+                )
+              (None, _) => return None
             }
         }
     }

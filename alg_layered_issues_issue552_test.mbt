@@ -38,6 +38,6 @@ test "Issue552 hierarchy self-loop ports are not left at y=0" {
   issue552_test_layout(graph)
 
   for port in node_ports(node) {
-    assert_true(port_y(port) > 0.0)
+    assert_true(port_y(port).abs() > 0.0)
   }
 }

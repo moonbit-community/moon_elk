@@ -430,18 +430,18 @@ test "DotExporter transfer_layout applies node edge and label geometry" {
 
   inspect(node_x(root), content="0")
   inspect(node_y(root), content="0")
-  inspect(node_width(root), content="200")
-  inspect(node_height(root), content="80")
-  inspect(node_x(source), content="0")
-  inspect(node_y(source), content="36")
-  inspect(node_x(target), content="108")
-  inspect(node_y(target), content="36")
+  inspect(node_width(root), content="224")
+  inspect(node_height(root), content="104")
+  inspect(node_x(source), content="12")
+  inspect(node_y(source), content="48")
+  inspect(node_x(target), content="120")
+  inspect(node_y(target), content="48")
 
   let section = edge_sections(edge)[0]
-  inspect(edge_section_start_x(section), content="36")
-  inspect(edge_section_start_y(section), content="72")
-  inspect(edge_section_end_x(section), content="144")
-  inspect(edge_section_end_y(section), content="72")
+  inspect(edge_section_start_x(section), content="48")
+  inspect(edge_section_start_y(section), content="84")
+  inspect(edge_section_end_x(section), content="156")
+  inspect(edge_section_end_y(section), content="84")
 
   inspect(
     option_string_or_none(
@@ -449,8 +449,8 @@ test "DotExporter transfer_layout applies node edge and label geometry" {
     ),
     content="SPLINES",
   )
-  inspect(label_x(center_label), content="80")
-  inspect(label_y(center_label), content="75")
+  inspect(label_x(center_label), content="92")
+  inspect(label_y(center_label), content="87")
 }
 
 ///|

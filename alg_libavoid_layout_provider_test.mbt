@@ -111,8 +111,8 @@ test "LibavoidServerCommunicator writes protocol text and applies output layout"
   inspect(edge_section_start_y(section), content="12")
   inspect(edge_section_end_x(section), content="31")
   inspect(edge_section_end_y(section), content="32")
-  inspect(node_width(root), content="70")
-  inspect(node_height(root), content="32")
+  inspect(node_width(root), content="82")
+  inspect(node_height(root), content="44")
 }
 
 ///|

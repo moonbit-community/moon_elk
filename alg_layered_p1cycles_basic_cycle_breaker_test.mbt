@@ -181,7 +181,7 @@ test "DepthFirstCycleBreaker adds reversed-edge-restorer slot after P5" {
     basic_cycle_breaker_factory_ids(
       configuration.processors_after(p5_edge_routing),
     ),
-    [23004],
+    [23054],
   )
 }
 
@@ -257,13 +257,13 @@ test "InteractiveCycleBreaker config adds pre-P1 and post-P5 processors" {
     basic_cycle_breaker_factory_ids(
       configuration.processors_before(p1_cycle_breaking),
     ),
-    [23005],
+    [23003],
   )
   assert_eq(
     basic_cycle_breaker_factory_ids(
       configuration.processors_after(p5_edge_routing),
     ),
-    [23004],
+    [23054],
   )
 }
 
@@ -303,7 +303,7 @@ test "BFSNodeOrderCycleBreaker adds reversed-edge-restorer slot after P5" {
     basic_cycle_breaker_factory_ids(
       configuration.processors_after(p5_edge_routing),
     ),
-    [23004],
+    [23054],
   )
 }
 
@@ -343,7 +343,7 @@ test "DFSNodeOrderCycleBreaker adds reversed-edge-restorer slot after P5" {
     basic_cycle_breaker_factory_ids(
       configuration.processors_after(p5_edge_routing),
     ),
-    [23004],
+    [23054],
   )
 }
 
@@ -383,7 +383,7 @@ test "ModelOrderCycleBreaker adds reversed-edge-restorer slot after P5" {
     basic_cycle_breaker_factory_ids(
       configuration.processors_after(p5_edge_routing),
     ),
-    [23004],
+    [23054],
   )
 }
 
@@ -420,7 +420,7 @@ test "GreedyCycleBreaker adds reversed-edge-restorer slot after P5" {
     basic_cycle_breaker_factory_ids(
       configuration.processors_after(p5_edge_routing),
     ),
-    [23004],
+    [23054],
   )
 }
 
@@ -460,7 +460,7 @@ test "GreedyModelOrderCycleBreaker adds reversed-edge-restorer slot after P5" {
     basic_cycle_breaker_factory_ids(
       configuration.processors_after(p5_edge_routing),
     ),
-    [23004],
+    [23054],
   )
 }
 
@@ -500,7 +500,7 @@ test "SCCModelOrderCycleBreaker adds reversed-edge-restorer slot after P5" {
     basic_cycle_breaker_factory_ids(
       configuration.processors_after(p5_edge_routing),
     ),
-    [23004],
+    [23054],
   )
 }
 
@@ -540,7 +540,7 @@ test "SCConnectivityCycleBreaker adds reversed-edge-restorer slot after P5" {
     basic_cycle_breaker_factory_ids(
       configuration.processors_after(p5_edge_routing),
     ),
-    [23004],
+    [23054],
   )
 }
 
@@ -615,6 +615,6 @@ test "SCCNodeTypeCycleBreaker adds reversed-edge-restorer slot after P5" {
     basic_cycle_breaker_factory_ids(
       configuration.processors_after(p5_edge_routing),
     ),
-    [23004],
+    [23054],
   )
 }
