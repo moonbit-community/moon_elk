@@ -1144,7 +1144,6 @@ test "LayerSweep transports switched port order through hierarchy west-east" {
 }
 
 ///|
-#skip
 test "LayerSweep transports switched port order through hierarchy east-west" {
   let cross_min_type = layer_sweep_test_cross_types()[0]
   let creator = new_test_graph_creator()
@@ -1564,7 +1563,6 @@ test "LayerSweep all-recursive first-level cross removes crossing" {
 }
 
 ///|
-#skip
 test "LayerSweep handles in-layer crossings in left-most layer" {
   for cross_min_type in layer_sweep_test_cross_types() {
     let creator = new_test_graph_creator()

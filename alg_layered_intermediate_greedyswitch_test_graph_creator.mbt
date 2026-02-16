@@ -1107,6 +1107,7 @@ pub fn GreedySwitchTestGraphCreator::add_external_port_dummy_node_to_layer(
 ) -> LNode {
   let node = self.add_node_to_layer(layer)
   node.set_type(NodeType::ExternalPort)
+  node.set_property_l_port(internal_properties_origin_l_port, Some(port))
   let dummy_port = self.add_port_on_side(node, port.get_side())
   dummy_port.set_property_l_port(internal_properties_origin_l_port, Some(port))
   port.set_property_l_node(internal_properties_port_dummy, Some(node))

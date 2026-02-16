@@ -261,11 +261,7 @@ fn LayerSweepCrossingMinimizer::origin_port(
   node : LNode,
 ) -> LPort {
   ignore(self)
-  let ports = node.get_ports()
-  if ports.is_empty() {
-    abort("external port dummy has no ports")
-  }
-  match ports[0].get_property_l_port(internal_properties_origin_l_port) {
+  match node.get_property_l_port(internal_properties_origin_l_port) {
     Some(origin) => origin
     None => abort("external port dummy has no origin port")
   }
