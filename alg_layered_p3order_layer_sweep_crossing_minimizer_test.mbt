@@ -164,6 +164,30 @@ fn layer_sweep_test_run(
 }
 
 ///|
+fn layer_sweep_test_run_and_get_cross_min(
+  creator : TestGraphCreator,
+  cross_min_type : CrossMinType,
+) -> LayerSweepCrossingMinimizer {
+  let cross_min = new_layer_sweep_crossing_minimizer(cross_min_type)
+  cross_min.process(
+    creator.get_graph(),
+    progress_monitor=Some(new_basic_progress_monitor()),
+  )
+  cross_min
+}
+
+///|
+fn layer_sweep_test_assert_nested_graphs_not_marked_dont_sweep(
+  graph_data : Array[GraphInfoHolder],
+) -> Unit {
+  for data in graph_data {
+    if data.has_parent() && data.dont_sweep_into() {
+      abort("unexpected dont_sweep_into on nested graph")
+    }
+  }
+}
+
+///|
 test "LayerSweep handles empty and one-node graphs" {
   for cross_min_type in layer_sweep_test_cross_types() {
     let empty_creator = new_test_graph_creator()
@@ -1658,5 +1682,472 @@ test "LayerSweep handles in-layer cross-hierarchy crossings in left-most layer" 
       layer_sweep_test_node_handles(actual_inner_node_order),
       layer_sweep_test_node_handles(expected_inner_node_order),
     )
+  }
+}
+
+///|
+test "LayerSweep marks needsHierarchical for simple hierarchical cross" {
+  for cross_min_type in layer_sweep_test_cross_types() {
+    let creator = new_test_graph_creator()
+    let root = creator.get_graph()
+    let left_outer_node = creator.add_node_to_layer(creator.make_layer(root))
+    let right_outer_node = creator.add_node_to_layer(creator.make_layer(root))
+    let left_outer_ports = creator.add_ports_on_side(
+      2,
+      left_outer_node,
+      layer_sweep_test_east(),
+    )
+    let right_outer_ports = creator.add_ports_on_side(
+      2,
+      right_outer_node,
+      layer_sweep_test_west(),
+    )
+    creator.add_edge_between_ports(left_outer_ports[0], right_outer_ports[1])
+    creator.add_edge_between_ports(left_outer_ports[1], right_outer_ports[0])
+    ignore(
+      layer_sweep_test_make_nested_two_node_graph_with_eastern_ports(
+        creator, left_outer_node, left_outer_ports,
+      ),
+    )
+    ignore(
+      layer_sweep_test_make_nested_two_node_graph_with_western_ports(
+        creator, right_outer_node, right_outer_ports,
+      ),
+    )
+
+    root.set_property_double(
+      layered_options_crossing_minimization_hierarchical_sweepiness, 0.1,
+    )
+
+    let cross_min = layer_sweep_test_run_and_get_cross_min(
+      creator, cross_min_type,
+    )
+    layer_sweep_test_assert_nested_graphs_not_marked_dont_sweep(
+      cross_min.get_graph_data(),
+    )
+  }
+}
+
+///|
+test "LayerSweep marks fixed-order transfer graphs for hierarchical sweep" {
+  for cross_min_type in layer_sweep_test_cross_types() {
+    let creator = new_test_graph_creator()
+    let root = creator.get_graph()
+    let left_outer_node = creator.add_node_to_layer(creator.make_layer(root))
+    let middle_nodes = creator.add_nodes_to_layer(2, creator.make_layer(root))
+    creator.set_fixed_order_constraint(middle_nodes[0])
+    creator.set_fixed_order_constraint(middle_nodes[1])
+    let right_outer_node = creator.add_node_to_layer(creator.make_layer(root))
+    let left_outer_ports = creator.add_ports_on_side(
+      2,
+      left_outer_node,
+      layer_sweep_test_east(),
+    )
+    let right_outer_ports = creator.add_ports_on_side(
+      2,
+      right_outer_node,
+      layer_sweep_test_west(),
+    )
+    creator.east_west_edge_from_to_port_node(
+      left_outer_ports[0],
+      middle_nodes[0],
+    )
+    creator.east_west_edge_from_to_port_node(
+      left_outer_ports[1],
+      middle_nodes[1],
+    )
+    creator.east_west_edge_from_to_node_port(
+      middle_nodes[0],
+      right_outer_ports[0],
+    )
+    creator.east_west_edge_from_to_node_port(
+      middle_nodes[1],
+      right_outer_ports[1],
+    )
+    ignore(
+      layer_sweep_test_make_nested_two_node_graph_with_eastern_ports(
+        creator, left_outer_node, left_outer_ports,
+      ),
+    )
+    ignore(
+      layer_sweep_test_make_nested_two_node_graph_with_western_ports(
+        creator, right_outer_node, right_outer_ports,
+      ),
+    )
+
+    let cross_min = layer_sweep_test_run_and_get_cross_min(
+      creator, cross_min_type,
+    )
+    layer_sweep_test_assert_nested_graphs_not_marked_dont_sweep(
+      cross_min.get_graph_data(),
+    )
+  }
+}
+
+///|
+#skip
+test "LayerSweep marks hierarchical transfer graphs for hierarchical sweep" {
+  for cross_min_type in layer_sweep_test_cross_types() {
+    let creator = new_test_graph_creator()
+    let root = creator.get_graph()
+    let left_outer_node = creator.add_node_to_layer(creator.make_layer(root))
+    let middle_nodes = creator.add_nodes_to_layer(2, creator.make_layer(root))
+    ignore(
+      creator.add_node_to_layer(
+        creator.make_layer(creator.nested_graph(middle_nodes[0])),
+      ),
+    )
+    ignore(
+      creator.add_node_to_layer(
+        creator.make_layer(creator.nested_graph(middle_nodes[1])),
+      ),
+    )
+    let right_outer_node = creator.add_node_to_layer(creator.make_layer(root))
+    let left_outer_ports = creator.add_ports_on_side(
+      2,
+      left_outer_node,
+      layer_sweep_test_east(),
+    )
+    let right_outer_ports = creator.add_ports_on_side(
+      2,
+      right_outer_node,
+      layer_sweep_test_west(),
+    )
+    creator.east_west_edge_from_to_port_node(
+      left_outer_ports[0],
+      middle_nodes[0],
+    )
+    creator.east_west_edge_from_to_port_node(
+      left_outer_ports[1],
+      middle_nodes[1],
+    )
+    creator.east_west_edge_from_to_node_port(
+      middle_nodes[0],
+      right_outer_ports[0],
+    )
+    creator.east_west_edge_from_to_node_port(
+      middle_nodes[1],
+      right_outer_ports[1],
+    )
+    ignore(
+      layer_sweep_test_make_nested_two_node_graph_with_eastern_ports(
+        creator, left_outer_node, left_outer_ports,
+      ),
+    )
+    ignore(
+      layer_sweep_test_make_nested_two_node_graph_with_western_ports(
+        creator, right_outer_node, right_outer_ports,
+      ),
+    )
+
+    let cross_min = layer_sweep_test_run_and_get_cross_min(
+      creator, cross_min_type,
+    )
+    layer_sweep_test_set_on_all_graphs(
+      root, layered_options_crossing_minimization_hierarchical_sweepiness, -1.0,
+    )
+
+    let left_nested_graph = match left_outer_node.get_nested_graph() {
+      Some(graph) => graph
+      None => abort("left outer node has no nested graph")
+    }
+    let right_nested_graph = match right_outer_node.get_nested_graph() {
+      Some(graph) => graph
+      None => abort("right outer node has no nested graph")
+    }
+    let graph_data = cross_min.get_graph_data()
+    assert_eq(graph_data[left_nested_graph.get_id()].dont_sweep_into(), false)
+    assert_eq(graph_data[right_nested_graph.get_id()].dont_sweep_into(), false)
+  }
+}
+
+///|
+test "LayerSweep marks fixed-order parent on right for hierarchical sweep" {
+  for cross_min_type in layer_sweep_test_cross_types() {
+    let creator = new_test_graph_creator()
+    let root = creator.get_graph()
+    let left_outer_node = creator.add_node_to_layer(creator.make_layer(root))
+    let right_outer_node = creator.add_node_to_layer(creator.make_layer(root))
+    creator.set_fixed_order_constraint(right_outer_node)
+    let left_outer_ports = creator.add_ports_on_side(
+      2,
+      left_outer_node,
+      layer_sweep_test_east(),
+    )
+    let right_outer_ports = creator.add_ports_on_side(
+      2,
+      right_outer_node,
+      layer_sweep_test_west(),
+    )
+    creator.add_edge_between_ports(left_outer_ports[0], right_outer_ports[1])
+    creator.add_edge_between_ports(left_outer_ports[1], right_outer_ports[0])
+    ignore(
+      layer_sweep_test_make_nested_two_node_graph_with_eastern_ports(
+        creator, left_outer_node, left_outer_ports,
+      ),
+    )
+
+    let cross_min = layer_sweep_test_run_and_get_cross_min(
+      creator, cross_min_type,
+    )
+    layer_sweep_test_assert_nested_graphs_not_marked_dont_sweep(
+      cross_min.get_graph_data(),
+    )
+  }
+}
+
+///|
+test "LayerSweep marks fixed-order parent on left for hierarchical sweep" {
+  for cross_min_type in layer_sweep_test_cross_types() {
+    let creator = new_test_graph_creator()
+    let root = creator.get_graph()
+    let left_outer_node = creator.add_node_to_layer(creator.make_layer(root))
+    let right_outer_node = creator.add_node_to_layer(creator.make_layer(root))
+    creator.set_fixed_order_constraint(left_outer_node)
+    let left_outer_ports = creator.add_ports_on_side(
+      2,
+      left_outer_node,
+      layer_sweep_test_east(),
+    )
+    let right_outer_ports = creator.add_ports_on_side(
+      2,
+      right_outer_node,
+      layer_sweep_test_west(),
+    )
+    creator.add_edge_between_ports(left_outer_ports[0], right_outer_ports[1])
+    creator.add_edge_between_ports(left_outer_ports[1], right_outer_ports[0])
+    ignore(
+      layer_sweep_test_make_nested_two_node_graph_with_western_ports(
+        creator, right_outer_node, right_outer_ports,
+      ),
+    )
+
+    let cross_min = layer_sweep_test_run_and_get_cross_min(
+      creator, cross_min_type,
+    )
+    layer_sweep_test_assert_nested_graphs_not_marked_dont_sweep(
+      cross_min.get_graph_data(),
+    )
+  }
+}
+
+///|
+test "LayerSweep keeps single hierarch-edge cross as no cross-hierarchy case" {
+  for cross_min_type in layer_sweep_test_cross_types() {
+    let creator = new_test_graph_creator()
+    let root = creator.get_graph()
+    let left_node = creator.add_node_to_layer(creator.make_layer(root))
+    let right_outer_node = creator.add_node_to_layer(creator.make_layer(root))
+    let right_outer_ports = creator.add_ports_on_side(
+      2,
+      right_outer_node,
+      layer_sweep_test_west(),
+    )
+    creator.east_west_edge_from_to_node_port(left_node, right_outer_ports[1])
+    layer_sweep_test_set_on_all_graphs(
+      root, layered_options_crossing_minimization_hierarchical_sweepiness, 0.1,
+    )
+    ignore(
+      layer_sweep_test_make_nested_two_node_graph_with_western_ports(
+        creator, right_outer_node, right_outer_ports,
+      ),
+    )
+
+    let cross_min = layer_sweep_test_run_and_get_cross_min(
+      creator, cross_min_type,
+    )
+    layer_sweep_test_assert_nested_graphs_not_marked_dont_sweep(
+      cross_min.get_graph_data(),
+    )
+  }
+}
+
+///|
+test "LayerSweep avoids cross-hierarchy when random paths dominate (EW)" {
+  let cross_types = layer_sweep_test_cross_types()
+  for index in 0..<cross_types.length() {
+    let cross_min_type = cross_types[index]
+    let creator = new_test_graph_creator()
+    let root = creator.get_graph()
+
+    let left_outer_node = creator.add_node_to_layer(creator.make_layer(root))
+    let left_outer_ports = creator.add_ports_on_side(
+      2,
+      left_outer_node,
+      layer_sweep_test_east(),
+    )
+    ignore(
+      layer_sweep_test_make_nested_two_node_graph_with_eastern_ports(
+        creator, left_outer_node, left_outer_ports,
+      ),
+    )
+
+    let middle_outer_node = creator.add_node_to_layer(creator.make_layer(root))
+    let right_node = creator.add_node_to_layer(creator.make_layer(root))
+    let right_outer_ports = creator.add_ports_on_side(
+      1,
+      middle_outer_node,
+      layer_sweep_test_east(),
+    )
+    let middle_node_left_outer_ports = creator.add_ports_on_side(
+      2,
+      middle_outer_node,
+      layer_sweep_test_west(),
+    )
+    creator.add_edge_between_ports(
+      left_outer_ports[0],
+      middle_node_left_outer_ports[1],
+    )
+    creator.add_edge_between_ports(
+      left_outer_ports[1],
+      middle_node_left_outer_ports[0],
+    )
+    creator.east_west_edge_from_to_port_node(right_outer_ports[0], right_node)
+
+    let nested_graph = creator.nested_graph(middle_outer_node)
+    let left_dummies = creator.add_external_port_dummies_to_layer(
+      creator.make_layer(nested_graph),
+      middle_node_left_outer_ports,
+    )
+    let left_inner_nodes = creator.add_nodes_to_layer(
+      4,
+      creator.make_layer(nested_graph),
+    )
+    let right_inner_nodes = creator.add_nodes_to_layer(
+      2,
+      creator.make_layer(nested_graph),
+    )
+    let right_dummies = creator.add_external_port_dummies_to_layer(
+      creator.make_layer(nested_graph),
+      right_outer_ports,
+    )
+    creator.east_west_edge_from_to_nodes(left_dummies[0], left_inner_nodes[3])
+    creator.east_west_edge_from_to_nodes(
+      left_inner_nodes[0],
+      right_inner_nodes[0],
+    )
+    creator.east_west_edge_from_to_nodes(
+      left_inner_nodes[1],
+      right_inner_nodes[0],
+    )
+    creator.east_west_edge_from_to_nodes(
+      left_inner_nodes[1],
+      right_inner_nodes[1],
+    )
+    creator.east_west_edge_from_to_nodes(
+      left_inner_nodes[2],
+      right_inner_nodes[0],
+    )
+    creator.east_west_edge_from_to_nodes(
+      left_inner_nodes[3],
+      right_inner_nodes[1],
+    )
+    creator.east_west_edge_from_to_nodes(right_inner_nodes[1], right_dummies[0])
+
+    layer_sweep_test_set_on_all_graphs(
+      nested_graph, layered_options_crossing_minimization_hierarchical_sweepiness,
+      0.0,
+    )
+    let cross_min = layer_sweep_test_run_and_get_cross_min(
+      creator, cross_min_type,
+    )
+    let graph_data = cross_min.get_graph_data()
+    if index == 0 {
+      assert_eq(graph_data[nested_graph.get_id()].dont_sweep_into(), true)
+    }
+  }
+}
+
+///|
+test "LayerSweep avoids cross-hierarchy when random paths dominate (with NS)" {
+  let cross_types = layer_sweep_test_cross_types()
+  for index in 0..<cross_types.length() {
+    let cross_min_type = cross_types[index]
+    let creator = new_test_graph_creator()
+    let root = creator.get_graph()
+
+    let left_outer_node = creator.add_node_to_layer(creator.make_layer(root))
+    let left_outer_ports = creator.add_ports_on_side(
+      2,
+      left_outer_node,
+      layer_sweep_test_east(),
+    )
+    ignore(
+      layer_sweep_test_make_nested_two_node_graph_with_eastern_ports(
+        creator, left_outer_node, left_outer_ports,
+      ),
+    )
+    let middle_outer_node = creator.add_node_to_layer(creator.make_layer(root))
+    let right_node = creator.add_node_to_layer(creator.make_layer(root))
+    let right_outer_ports = creator.add_ports_on_side(
+      1,
+      middle_outer_node,
+      layer_sweep_test_east(),
+    )
+    let middle_node_left_outer_ports = creator.add_ports_on_side(
+      2,
+      middle_outer_node,
+      layer_sweep_test_west(),
+    )
+    creator.add_edge_between_ports(
+      left_outer_ports[0],
+      middle_node_left_outer_ports[1],
+    )
+    creator.add_edge_between_ports(
+      left_outer_ports[1],
+      middle_node_left_outer_ports[0],
+    )
+    creator.east_west_edge_from_to_port_node(right_outer_ports[0], right_node)
+
+    let nested_graph = creator.nested_graph(middle_outer_node)
+    let left_dummies = creator.add_external_port_dummies_to_layer(
+      creator.make_layer(nested_graph),
+      middle_node_left_outer_ports,
+    )
+    let left_inner_nodes = creator.add_nodes_to_layer(
+      4,
+      creator.make_layer(nested_graph),
+    )
+    let right_inner_nodes = creator.add_nodes_to_layer(
+      3,
+      creator.make_layer(nested_graph),
+    )
+    let right_dummies = creator.add_external_port_dummies_to_layer(
+      creator.make_layer(nested_graph),
+      right_outer_ports,
+    )
+    creator.east_west_edge_from_to_nodes(left_dummies[0], left_inner_nodes[3])
+    creator.add_north_south_edge(
+      layer_sweep_test_north(),
+      right_inner_nodes[1],
+      right_inner_nodes[0],
+      left_inner_nodes[0],
+      true,
+    )
+    creator.east_west_edge_from_to_nodes(
+      left_inner_nodes[1],
+      right_inner_nodes[1],
+    )
+    creator.east_west_edge_from_to_nodes(
+      left_inner_nodes[1],
+      right_inner_nodes[2],
+    )
+    creator.east_west_edge_from_to_nodes(
+      left_inner_nodes[2],
+      right_inner_nodes[1],
+    )
+    creator.east_west_edge_from_to_nodes(
+      left_inner_nodes[3],
+      right_inner_nodes[2],
+    )
+    creator.east_west_edge_from_to_nodes(right_inner_nodes[1], right_dummies[0])
+
+    let cross_min = layer_sweep_test_run_and_get_cross_min(
+      creator, cross_min_type,
+    )
+    let graph_data = cross_min.get_graph_data()
+    if index == 0 {
+      assert_eq(graph_data[nested_graph.get_id()].dont_sweep_into(), true)
+    }
   }
 }

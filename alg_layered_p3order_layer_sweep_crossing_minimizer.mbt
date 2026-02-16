@@ -790,6 +790,13 @@ pub fn LayerSweepCrossingMinimizer::process(
 }
 
 ///|
+pub fn LayerSweepCrossingMinimizer::get_graph_data(
+  self : LayerSweepCrossingMinimizer,
+) -> Array[GraphInfoHolder] {
+  self.graph_info_holders
+}
+
+///|
 fn layer_sweep_configuration(
   graph : LGraph,
 ) -> LayoutProcessorConfiguration[LayeredPhases, LGraph]? {

@@ -13780,6 +13780,7 @@ pub struct LayerSweepCrossingMinimizer {
   graphs_whose_node_order_changed : Array[GraphInfoHolder]
   random : GreedySwitchMockRandom
 }
+pub fn LayerSweepCrossingMinimizer::get_graph_data(Self) -> Array[GraphInfoHolder]
 pub fn LayerSweepCrossingMinimizer::process(Self, LGraph, progress_monitor? : IElkProgressMonitor?) -> Unit
 
 pub struct LayerSweepTypeDecider {
