@@ -59,6 +59,11 @@ pub let aspect_ratio : IProperty[Double] = new_property(
 )
 
 ///|
+pub let random_seed : IProperty[Int] = new_property(
+  "org.eclipse.elk.randomSeed", 1,
+)
+
+///|
 pub let content_alignment : IProperty[Array[String]] = new_property(
   "org.eclipse.elk.contentAlignment",
   ["V_TOP", "H_LEFT"],

@@ -12,6 +12,17 @@ fn graph_configurator_test_graph(layerless_node_count : Int) -> LGraph {
 let graph_configurator_test_double_eq_epsilon = 0.00001
 
 ///|
+fn graph_configurator_test_seeded_next_boolean(seed_value : Int64) -> Bool {
+  let seed = @buffer.new()
+  seed.write_int64_le(seed_value)
+  seed.write_int64_le(0)
+  seed.write_int64_le(0)
+  seed.write_int64_le(0)
+  let random = @random.Rand::chacha8(seed=seed.to_bytes())
+  random.int(limit=2) == 0
+}
+
+///|
 fn graph_configurator_test_set_non_hierarchical_defaults(
   graph : LGraph,
 ) -> Unit {
@@ -213,6 +224,55 @@ test "graph configurator preserves explicit favor-straight-edges value" {
     explicit_false.get_property_bool(
       layered_options_node_placement_favor_straight_edges,
     ),
+  )
+}
+
+///|
+test "graph configurator initializes random-next-boolean from random seed" {
+  let graph = graph_configurator_test_graph(0)
+  graph.set_property_int(random_seed, 42)
+
+  graph_configurator_initialize_random_next_boolean(graph)
+
+  assert_true(graph.has_property_bool(internal_properties_random_next_boolean))
+  assert_eq(
+    graph.get_property_bool(internal_properties_random_next_boolean),
+    graph_configurator_test_seeded_next_boolean(42),
+  )
+}
+
+///|
+test "graph configurator configures graph properties in one call" {
+  let graph = graph_configurator_test_graph(0)
+  graph.set_property_double(spacing_edge_edge, 1.0)
+  graph.set_property_double(aspect_ratio, 0.5)
+  graph.set_property_string(edge_routing, "ORTHOGONAL")
+  graph.set_property_int(random_seed, 5)
+
+  let layerless_node = new_l_node(graph=Some(graph))
+  layerless_node.set_property_string(port_constraints, "FIXED_ORDER")
+  graph.get_layerless_nodes().push(layerless_node)
+
+  graph_configurator_configure_graph_properties(graph)
+
+  assert_double_eq(
+    graph.get_property_double(spacing_edge_edge),
+    2.0,
+    graph_configurator_test_double_eq_epsilon,
+  )
+  assert_eq(graph.get_property_string(direction), "DOWN")
+  assert_true(
+    graph.get_property_bool(layered_options_node_placement_favor_straight_edges),
+  )
+  assert_eq(
+    layerless_node.get_property_string(
+      internal_properties_original_port_constraints,
+    ),
+    "FIXED_ORDER",
+  )
+  assert_eq(
+    graph.get_property_bool(internal_properties_random_next_boolean),
+    graph_configurator_test_seeded_next_boolean(5),
   )
 }
 

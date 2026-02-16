@@ -1086,12 +1086,39 @@ fn recursive_layered_parse_bool(value : String) -> Bool? {
 }
 
 ///|
+fn recursive_layered_parse_int(value : String) -> Int? {
+  let parsed : Result[Int, @strconv.StrConvError] = try? @strconv.parse_int(
+    value.trim().to_string(),
+  )
+  match parsed {
+    Ok(result) => Some(result)
+    Err(_) => None
+  }
+}
+
+///|
 fn recursive_layered_requires_direction_transform(
   direction_value : String,
 ) -> Bool {
   direction_value == "LEFT" ||
   direction_value == "DOWN" ||
   direction_value == "UP"
+}
+
+///|
+fn recursive_layered_normalize_port_constraints(lgraph : LGraph) -> Unit {
+  for node in lgraph.get_layerless_nodes() {
+    if node.get_property_string(port_constraints) == "UNDEFINED" {
+      node.set_property_string(port_constraints, "FREE")
+    }
+  }
+  for layer in lgraph.get_layers() {
+    for node in layer.get_nodes() {
+      if node.get_property_string(port_constraints) == "UNDEFINED" {
+        node.set_property_string(port_constraints, "FREE")
+      }
+    }
+  }
 }
 
 ///|
@@ -1114,12 +1141,16 @@ fn recursive_layered_create_context(node : ElkNode) -> RecursiveLayeredContext? 
   }
 
   let spacing_node = node_get_double_property(node, spacing_node_node)
+  let spacing_edge_edge_value = node_get_double_property(
+    node, spacing_edge_edge,
+  )
   let spacing_between_layers = node_get_double_property(
     node, layered_options_spacing_node_node_between_layers,
   )
   let spacing_edge_edge_between_layers = node_get_double_property(
     node, layered_options_spacing_edge_edge_between_layers,
   )
+  let aspect_ratio_value = node_get_double_property(node, aspect_ratio)
   let consider_model_order = node_get_string_property(
     node, layered_options_consider_model_order_strategy,
   )
@@ -1161,6 +1192,17 @@ fn recursive_layered_create_context(node : ElkNode) -> RecursiveLayeredContext? 
   let layering_strategy = recursive_layered_primary_option(
     node, "org.eclipse.elk.layered.layering.strategy", "NETWORK_SIMPLEX",
   )
+  let random_seed_value = match
+    recursive_layered_parse_int(
+      recursive_layered_primary_option(
+        node,
+        "org.eclipse.elk.randomSeed",
+        random_seed.get_default().to_string(),
+      ),
+    ) {
+    Some(value) => value
+    None => random_seed.get_default()
+  }
   let graph_port_constraints = recursive_layered_primary_option(
     node,
     "org.eclipse.elk.portConstraints",
@@ -1182,6 +1224,14 @@ fn recursive_layered_create_context(node : ElkNode) -> RecursiveLayeredContext? 
     },
   )
   layered_graph.set_property_double(
+    spacing_edge_edge,
+    if spacing_edge_edge_value > 0.0 {
+      spacing_edge_edge_value
+    } else {
+      spacing_edge_edge.get_default()
+    },
+  )
+  layered_graph.set_property_double(
     layered_options_spacing_node_node_between_layers,
     if spacing_between_layers > 0.0 {
       spacing_between_layers
@@ -1197,6 +1247,15 @@ fn recursive_layered_create_context(node : ElkNode) -> RecursiveLayeredContext? 
       layered_options_spacing_edge_edge_between_layers.get_default()
     },
   )
+  layered_graph.set_property_double(
+    aspect_ratio,
+    if aspect_ratio_value > 0.0 {
+      aspect_ratio_value
+    } else {
+      1.0
+    },
+  )
+  layered_graph.set_property_int(random_seed, random_seed_value)
   layered_graph.set_property_string(
     layered_options_consider_model_order_strategy, consider_model_order,
   )
@@ -1266,10 +1325,7 @@ fn recursive_layered_create_context(node : ElkNode) -> RecursiveLayeredContext? 
     } else {
       original_port_constraints
     }
-    lnode.set_property_string(
-      internal_properties_original_port_constraints, original_port_constraints,
-    )
-    lnode.set_property_string(port_constraints, resolved_port_constraints)
+    lnode.set_property_string(port_constraints, original_port_constraints)
     if original_port_constraints != "UNDEFINED" &&
       original_port_constraints != "FREE" {
       recursive_layered_add_graph_property(
@@ -1519,6 +1575,8 @@ fn recursive_layered_create_context(node : ElkNode) -> RecursiveLayeredContext? 
 
     edge_to_ledge[edge] = l_edge
   }
+  graph_configurator_configure_graph_properties(layered_graph)
+  recursive_layered_normalize_port_constraints(layered_graph)
 
   Some({
     layered_graph,

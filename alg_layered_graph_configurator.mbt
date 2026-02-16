@@ -24,6 +24,17 @@ fn graph_configurator_direction_is_undefined(direction_value : String) -> Bool {
 }
 
 ///|
+fn graph_configurator_seeded_random_next_boolean(seed_value : Int64) -> Bool {
+  let seed = @buffer.new()
+  seed.write_int64_le(seed_value)
+  seed.write_int64_le(0)
+  seed.write_int64_le(0)
+  seed.write_int64_le(0)
+  let random = @random.Rand::chacha8(seed=seed.to_bytes())
+  random.int(limit=2) == 0
+}
+
+///|
 pub fn graph_configurator_activate_greedy_switch_for(lgraph : LGraph) -> Bool {
   if graph_configurator_is_hierarchical_layout(lgraph) {
     let is_root_graph = match lgraph.get_parent_node() {
@@ -91,6 +102,30 @@ pub fn graph_configurator_default_favor_straight_edges(lgraph : LGraph) -> Unit 
       lgraph.get_property_string(edge_routing) == "ORTHOGONAL",
     )
   }
+}
+
+///|
+pub fn graph_configurator_initialize_random_next_boolean(
+  lgraph : LGraph,
+) -> Unit {
+  let seed_value = lgraph.get_property_int(random_seed)
+  let next_boolean = if seed_value == 0 {
+    @random.Rand::new().int(limit=2) == 0
+  } else {
+    graph_configurator_seeded_random_next_boolean(seed_value.to_int64())
+  }
+  lgraph.set_property_bool(
+    internal_properties_random_next_boolean, next_boolean,
+  )
+}
+
+///|
+pub fn graph_configurator_configure_graph_properties(lgraph : LGraph) -> Unit {
+  graph_configurator_enforce_min_edge_spacing(lgraph)
+  graph_configurator_enforce_direction(lgraph)
+  graph_configurator_initialize_random_next_boolean(lgraph)
+  graph_configurator_default_favor_straight_edges(lgraph)
+  graph_configurator_copy_port_constraints(lgraph)
 }
 
 ///|

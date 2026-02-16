@@ -1982,6 +1982,8 @@ pub fn grandom_activator_reset_for_test() -> Unit
 
 pub fn graph_configurator_activate_greedy_switch_for(LGraph) -> Bool
 
+pub fn graph_configurator_configure_graph_properties(LGraph) -> Unit
+
 pub fn graph_configurator_copy_port_constraints(LGraph) -> Unit
 
 pub fn graph_configurator_default_favor_straight_edges(LGraph) -> Unit
@@ -1989,6 +1991,8 @@ pub fn graph_configurator_default_favor_straight_edges(LGraph) -> Unit
 pub fn graph_configurator_enforce_direction(LGraph) -> Unit
 
 pub fn graph_configurator_enforce_min_edge_spacing(LGraph) -> Unit
+
+pub fn graph_configurator_initialize_random_next_boolean(LGraph) -> Unit
 
 pub fn graph_feature_values() -> Array[GraphFeature]
 
@@ -5999,6 +6003,8 @@ pub fn random_graph_from_file_register_content_for_test(String, String) -> Unit
 pub fn random_graph_from_file_reset_content_for_test() -> Unit
 
 pub fn random_graph_from_method_from_options(String, CoreDebugGRandomGeneratorOptions) -> RandomGraphFromMethod
+
+pub let random_seed : IProperty[Int]
 
 pub fn rectangle_union(Rectangle, Rectangle) -> Rectangle
 
