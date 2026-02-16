@@ -378,6 +378,26 @@ fn recursive_layered_port_side_option(port : ElkPort) -> String {
 }
 
 ///|
+fn recursive_layered_port_allow_non_flow_switch_sides(port : ElkPort) -> Bool {
+  let candidates = [
+    layered_options_allow_non_flow_ports_to_switch_sides.get_id(),
+    "elk.layered.allowNonFlowPortsToSwitchSides",
+    "layered.allowNonFlowPortsToSwitchSides",
+  ]
+  for candidate in candidates {
+    match port_layout_option_string_value(port, candidate) {
+      Some(raw_value) =>
+        match recursive_layered_parse_bool(raw_value) {
+          Some(value) => return value
+          None => ()
+        }
+      None => ()
+    }
+  }
+  layered_options_allow_non_flow_ports_to_switch_sides.get_default()
+}
+
+///|
 let recursive_layered_ext_port_border_offset_property : IProperty[Double] = new_property(
   "recursive.layered.extPortBorderOffset", 0.0,
 )
@@ -1317,9 +1337,16 @@ fn recursive_layered_create_context(node : ElkNode) -> RecursiveLayeredContext? 
     let lnode = new_l_node(graph=Some(layered_graph))
     lnode.get_size().x = max_positive(node_width(child), 10.0)
     lnode.get_size().y = max_positive(node_height(child), 10.0)
-    let original_port_constraints = node_get_string_property(
-      child, port_constraints,
-    )
+    let original_port_constraints = match
+      node_layout_option_value_by_candidates(child, [
+        port_constraints.get_id(),
+        "org.eclipse.elk.portConstraints",
+        "elk.portConstraints",
+        "portConstraints",
+      ]) {
+      Some(value) => value
+      None => node_get_string_property(child, port_constraints)
+    }
     let resolved_port_constraints = if original_port_constraints == "UNDEFINED" {
       "FREE"
     } else {
@@ -1368,6 +1395,14 @@ fn recursive_layered_create_context(node : ElkNode) -> RecursiveLayeredContext? 
       lport.set_property_bool(
         internal_properties_inside_connections,
         recursive_layered_port_has_inside_connections(child, elk_port),
+      )
+      let allow_non_flow_switch = if resolved_port_constraints == "FIXED_POS" {
+        false
+      } else {
+        recursive_layered_port_allow_non_flow_switch_sides(elk_port)
+      }
+      lport.set_property_bool(
+        layered_options_allow_non_flow_ports_to_switch_sides, allow_non_flow_switch,
       )
       lport.set_side(
         recursive_layered_port_side_from_string(
