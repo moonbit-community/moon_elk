@@ -13531,6 +13531,7 @@ pub struct LNode {
   bool_properties : Map[String, Bool]
   double_properties : Map[String, Double]
   kvector_properties : Map[String, KVector]
+  elk_margin_properties : Map[String, Spacing]
   string_properties : Map[String, String]
   string_array_properties : Map[String, Array[String]]
   port_side_properties : Map[String, PortSide]
@@ -13568,6 +13569,7 @@ pub fn LNode::get_position(Self) -> KVector
 pub fn LNode::get_property_bool(Self, IProperty[Bool]) -> Bool
 pub fn LNode::get_property_bp_info(Self, IProperty[BPInfo?]) -> BPInfo?
 pub fn LNode::get_property_double(Self, IProperty[Double]) -> Double
+pub fn LNode::get_property_elk_margin(Self, IProperty[Spacing]) -> Spacing
 pub fn LNode::get_property_end_label_cell_array(Self, IProperty[Array[EndLabelCell]]) -> Array[EndLabelCell]
 pub fn LNode::get_property_int(Self, IProperty[Int]) -> Int
 pub fn LNode::get_property_int_int_map(Self, IProperty[Map[Int, Int]]) -> Map[Int, Int]
@@ -13587,6 +13589,7 @@ pub fn LNode::get_type(Self) -> NodeType
 pub fn LNode::has_property_bool(Self, IProperty[Bool]) -> Bool
 pub fn LNode::has_property_bp_info(Self, IProperty[BPInfo?]) -> Bool
 pub fn LNode::has_property_double(Self, IProperty[Double]) -> Bool
+pub fn LNode::has_property_elk_margin(Self, IProperty[Spacing]) -> Bool
 pub fn LNode::has_property_end_label_cell_array(Self, IProperty[Array[EndLabelCell]]) -> Bool
 pub fn LNode::has_property_int(Self, IProperty[Int]) -> Bool
 pub fn LNode::has_property_int_int_map(Self, IProperty[Map[Int, Int]]) -> Bool
@@ -13610,6 +13613,7 @@ pub fn LNode::set_nested_graph(Self, LGraph?) -> Unit
 pub fn LNode::set_property_bool(Self, IProperty[Bool], Bool) -> Unit
 pub fn LNode::set_property_bp_info(Self, IProperty[BPInfo?], BPInfo?) -> Unit
 pub fn LNode::set_property_double(Self, IProperty[Double], Double) -> Unit
+pub fn LNode::set_property_elk_margin(Self, IProperty[Spacing], Spacing) -> Unit
 pub fn LNode::set_property_end_label_cell_array(Self, IProperty[Array[EndLabelCell]], Array[EndLabelCell]) -> Unit
 pub fn LNode::set_property_int(Self, IProperty[Int], Int) -> Unit
 pub fn LNode::set_property_int_int_map(Self, IProperty[Map[Int, Int]], Map[Int, Int]) -> Unit

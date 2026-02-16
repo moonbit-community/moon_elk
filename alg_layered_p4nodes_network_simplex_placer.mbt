@@ -162,21 +162,37 @@ fn network_simplex_node_flexibility_value(node : LNode) -> String {
 }
 
 ///|
+fn network_simplex_get_individual_or_default_elk_margin(
+  node : LNode,
+  property : IProperty[ElkMargin],
+) -> ElkMargin {
+  if node.has_property_elk_margin(property) {
+    node.get_property_elk_margin(property)
+  } else {
+    node.get_graph().get_property_elk_margin(property)
+  }
+}
+
+///|
 fn network_simplex_node_requires_more_height_for_flexible_ports(
   node : LNode,
 ) -> Bool {
   let port_spacing = layered_spacings_get_individual_or_default(
     node, spacing_port_port,
   )
-  let graph = node.get_graph()
-  let additional_port_spacing = if graph.has_property_elk_margin(
+  let additional_port_spacing = if node.has_property_elk_margin(
       layered_options_spacing_ports_surrounding,
     ) {
-    graph.get_property_elk_margin(layered_options_spacing_ports_surrounding)
+    node.get_property_elk_margin(layered_options_spacing_ports_surrounding)
   } else {
-    new_elk_margin_values(
-      port_spacing, port_spacing, port_spacing, port_spacing,
-    )
+    let graph = node.get_graph()
+    if graph.has_property_elk_margin(layered_options_spacing_ports_surrounding) {
+      graph.get_property_elk_margin(layered_options_spacing_ports_surrounding)
+    } else {
+      new_elk_margin_values(
+        port_spacing, port_spacing, port_spacing, port_spacing,
+      )
+    }
   }
 
   let west_ports = node.get_port_side_view(PortSide::West)
@@ -480,14 +496,10 @@ fn network_simplex_transform_ports(
     corners.origin,
     spacing_port_port,
   )
-  let graph = corners.origin.get_graph()
-  let port_surrounding = if graph.has_property_elk_margin(
-      layered_options_spacing_ports_surrounding,
-    ) {
-    graph.get_property_elk_margin(layered_options_spacing_ports_surrounding)
-  } else {
-    new_elk_margin()
-  }
+  let port_surrounding = network_simplex_get_individual_or_default_elk_margin(
+    corners.origin,
+    layered_options_spacing_ports_surrounding,
+  )
 
   let mut last_nnode = corners.head
   let mut last_port : LPort? = None
@@ -923,15 +935,9 @@ fn network_simplex_execute_auxiliary_graph(
 
 ///|
 fn network_simplex_favor_straight_edges(layered_graph : LGraph) -> Bool {
-  if layered_graph.has_property_bool(
-      network_simplex_node_placement_favor_straight_edges,
-    ) {
-    return layered_graph.get_property_bool(
-      network_simplex_node_placement_favor_straight_edges,
-    )
-  }
-
-  layered_graph.get_property_string(edge_routing) == "ORTHOGONAL"
+  layered_graph.get_property_bool(
+    network_simplex_node_placement_favor_straight_edges,
+  )
 }
 
 ///|

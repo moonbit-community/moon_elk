@@ -353,6 +353,46 @@ test "network simplex node placer uses graph default flexibility during prepare"
 }
 
 ///|
+test "network simplex node placer uses node portsSurrounding before graph value" {
+  let graph = new_l_graph()
+  graph.set_property_elk_margin(
+    layered_options_spacing_ports_surrounding,
+    new_elk_margin_values(80.0, 0.0, 80.0, 0.0),
+  )
+  let layer = p4nodes_test_add_layer(graph)
+  let node = p4nodes_test_add_basic_node(layer, 300.0)
+  node.set_property_string(port_constraints, "FIXED_ORDER")
+  node.set_property_string(
+    p4nodes_test_network_simplex_node_flexibility, "PORT_POSITION",
+  )
+  node.set_property_elk_margin(
+    layered_options_spacing_ports_surrounding,
+    new_elk_margin_values(7.0, 0.0, 3.0, 0.0),
+  )
+
+  let east_port_0 = p4nodes_test_add_port(
+    node,
+    p4nodes_test_port_side("EAST"),
+    0.4,
+    0.0,
+  )
+  let east_port_1 = p4nodes_test_add_port(
+    node,
+    p4nodes_test_port_side("EAST"),
+    0.0,
+    0.0,
+  )
+  ignore(p4nodes_test_add_port(node, p4nodes_test_port_side("WEST"), 0.0, 0.0))
+
+  let phase = new_network_simplex_placer_layout_phase()
+  phase.process(graph, None)
+
+  assert_eq(east_port_0.get_anchor().y, 0.0)
+  assert_eq(east_port_0.get_position().y, 7.0)
+  assert_eq(east_port_1.get_position().y, 17.0)
+}
+
+///|
 test "network simplex node placer prepare assigns sequential node and edge ids" {
   let graph = new_l_graph()
   let layer = p4nodes_test_add_layer(graph)

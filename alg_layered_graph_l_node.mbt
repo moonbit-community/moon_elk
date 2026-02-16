@@ -84,6 +84,7 @@ pub struct LNode {
   bool_properties : Map[String, Bool]
   double_properties : Map[String, Double]
   kvector_properties : Map[String, KVector]
+  elk_margin_properties : Map[String, ElkMargin]
   string_properties : Map[String, String]
   string_array_properties : Map[String, Array[String]]
   port_side_properties : Map[String, PortSide]
@@ -116,6 +117,7 @@ pub fn new_l_node(graph? : LGraph? = None) -> LNode {
     bool_properties: {},
     double_properties: {},
     kvector_properties: {},
+    elk_margin_properties: {},
     string_properties: {},
     string_array_properties: {},
     port_side_properties: {},
@@ -425,6 +427,15 @@ pub fn LNode::set_property_kvector(
 }
 
 ///|
+pub fn LNode::set_property_elk_margin(
+  self : LNode,
+  property : IProperty[ElkMargin],
+  value : ElkMargin,
+) -> Unit {
+  self.elk_margin_properties[property.get_id()] = value.clone()
+}
+
+///|
 pub fn LNode::set_property_string(
   self : LNode,
   property : IProperty[String],
@@ -470,6 +481,17 @@ pub fn LNode::get_property_kvector(
   property : IProperty[KVector],
 ) -> KVector {
   match self.kvector_properties.get(property.get_id()) {
+    Some(value) => value.clone()
+    None => property.get_default().clone()
+  }
+}
+
+///|
+pub fn LNode::get_property_elk_margin(
+  self : LNode,
+  property : IProperty[ElkMargin],
+) -> ElkMargin {
+  match self.elk_margin_properties.get(property.get_id()) {
     Some(value) => value.clone()
     None => property.get_default().clone()
   }
@@ -564,6 +586,14 @@ pub fn LNode::has_property_kvector(
   property : IProperty[KVector],
 ) -> Bool {
   self.kvector_properties.contains(property.get_id())
+}
+
+///|
+pub fn LNode::has_property_elk_margin(
+  self : LNode,
+  property : IProperty[ElkMargin],
+) -> Bool {
+  self.elk_margin_properties.contains(property.get_id())
 }
 
 ///|
