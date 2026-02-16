@@ -49,6 +49,26 @@ pub let layered_options_crossing_minimization_greedy_switch_type : IProperty[
 )
 
 ///|
+pub let layered_options_crossing_minimization_greedy_switch_activation_threshold : IProperty[
+  Int,
+] = new_property(
+  "org.eclipse.elk.layered.crossingMinimization.greedySwitch.activationThreshold",
+  40,
+)
+
+///|
+pub let layered_options_crossing_minimization_greedy_switch_hierarchical_type : IProperty[
+  String,
+] = new_property(
+  "org.eclipse.elk.layered.crossingMinimization.greedySwitchHierarchical.type", "OFF",
+)
+
+///|
+pub let layered_options_crossing_minimization_semi_interactive : IProperty[Bool] = new_property(
+  "org.eclipse.elk.layered.crossingMinimization.semiInteractive", false,
+)
+
+///|
 pub let layered_options_consider_model_order_strategy : IProperty[String] = new_property(
   "org.eclipse.elk.layered.considerModelOrder.strategy", "NONE",
 )

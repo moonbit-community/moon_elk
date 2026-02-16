@@ -1980,6 +1980,8 @@ pub fn grandom_activator_get_instance() -> GrandomActivator?
 
 pub fn grandom_activator_reset_for_test() -> Unit
 
+pub fn graph_configurator_activate_greedy_switch_for(LGraph) -> Bool
+
 pub fn graph_feature_values() -> Array[GraphFeature]
 
 pub fn graph_from_file_filter() -> FileExtensionFilter
@@ -2822,11 +2824,17 @@ pub let layered_options_consider_model_order_strategy : IProperty[String]
 
 pub let layered_options_crossing_minimization_force_node_model_order : IProperty[Bool]
 
+pub let layered_options_crossing_minimization_greedy_switch_activation_threshold : IProperty[Int]
+
+pub let layered_options_crossing_minimization_greedy_switch_hierarchical_type : IProperty[String]
+
 pub let layered_options_crossing_minimization_greedy_switch_type : IProperty[String]
 
 pub let layered_options_crossing_minimization_hierarchical_sweepiness : IProperty[Double]
 
 pub let layered_options_crossing_minimization_position_id : IProperty[Int]
+
+pub let layered_options_crossing_minimization_semi_interactive : IProperty[Bool]
 
 pub let layered_options_crossing_minimization_strategy : IProperty[String]
 
