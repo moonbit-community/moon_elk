@@ -1003,16 +1003,20 @@ fn network_simplex_mark_crossing_edges(
           continue
         }
 
-        let mut cursor = open_edges.length()
-        while cursor > 0 {
-          cursor -= 1
-          let last = open_edges[cursor]
-          if last.get_handle() == edge.get_handle() {
-            ignore(open_edges.remove(cursor))
-            break
-          }
+        if open_edges.is_empty() {
+          continue
+        }
+
+        let mut cursor = open_edges.length() - 1
+        let mut last = open_edges[cursor]
+        while last.get_handle() != edge.get_handle() && cursor > 0 {
           state.crossing[last.get_id()] = true
           state.crossing[edge.get_id()] = true
+          cursor -= 1
+          last = open_edges[cursor]
+        }
+        if cursor > 0 {
+          ignore(open_edges.remove(cursor))
         }
       }
     }
