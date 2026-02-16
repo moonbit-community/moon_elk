@@ -852,6 +852,12 @@ pub fn cycle_breaking_strategy_values() -> Array[String]
 
 pub fn dc_direction_values() -> Array[DCDirection]
 
+pub fn debug_util_log_debug_graph(IElkProgressMonitor, LGraph, Int, String) -> Unit
+
+pub fn debug_util_log_debug_graph_hypernodes(IElkProgressMonitor, LGraph, Int, Array[HyperEdgeSegment], String, String) -> Unit
+
+pub fn debug_util_log_debug_graph_linear_segments(IElkProgressMonitor, LGraph, Array[LinearSegment], Array[Array[LinearSegment]]) -> Unit
+
 pub fn default_spacing_handler() -> ISpacingsHandler
 
 pub fn depth_first_compaction_compact(Tree[Node], Bool, debug_output_file? : String?) -> Unit
@@ -1195,6 +1201,12 @@ pub fn dot_create_port() -> DotPort
 pub fn dot_create_statement() -> DotStatement
 
 pub fn dot_create_subgraph() -> DotSubgraph
+
+pub fn dot_debug_util_create_debug_graph(LGraph) -> String
+
+pub fn dot_debug_util_create_debug_graph_hypernodes(LGraph, Array[HyperEdgeSegment]) -> String
+
+pub fn dot_debug_util_create_debug_graph_linear_segments(LGraph, Array[LinearSegment], Array[Array[LinearSegment]]) -> String
 
 pub fn dot_edge_operator_directed() -> DotEdgeOperator
 
@@ -2696,6 +2708,12 @@ pub let issue_error : Int
 
 pub let issue_warning : Int
 
+pub fn json_debug_util_create_debug_graph(LGraph) -> String
+
+pub fn json_debug_util_create_debug_graph_hypernodes(LGraph, Array[HyperEdgeSegment]) -> String
+
+pub fn json_debug_util_create_debug_graph_linear_segments(LGraph, Array[LinearSegment], Array[Array[LinearSegment]]) -> String
+
 pub let junction_points_style_name : String
 
 pub fn kvector_chain_reverse(KVectorChain) -> KVectorChain
@@ -2786,11 +2804,15 @@ pub let layered_components_separate_connected_components : IProperty[Bool]
 
 pub fn layered_default_spacing_handler() -> ISpacingsHandler
 
+pub fn layered_elk_graph_transformer_get_origin_identifier(LGraphElement) -> String?
+
 pub fn layered_intermediate_processor_factory(IntermediateProcessorStrategy) -> ILayoutProcessorFactory[LayeredPhases, LGraph]
 
 pub fn layered_is_both_left_or_both_right(LayeredQuadrant, LayeredQuadrant) -> Bool
 
 pub fn layered_is_one_left_one_right(LayeredQuadrant, LayeredQuadrant) -> Bool
+
+pub fn layered_layout_provider_as_layout_provider(LayeredLayoutProvider) -> AbstractLayoutProvider
 
 pub fn layered_longest_path_compaction(OneDimensionalCompactor) -> Unit
 
@@ -4798,9 +4820,17 @@ pub fn new_layered_components_compactor() -> LayeredComponentsCompactor
 
 pub fn new_layered_components_processor() -> LayeredComponentsProcessor
 
+pub fn new_layered_elk_graph_importer() -> LayeredElkGraphImporter
+
+pub fn new_layered_elk_graph_layout_transferrer() -> LayeredElkGraphLayoutTransferrer
+
+pub fn new_layered_elk_graph_transformer() -> LayeredElkGraphTransformer
+
 pub fn new_layered_hierarchy_aware_layout_processor() -> Unit
 
 pub fn[T] new_layered_igraph_transformer((T) -> LGraph?, (LGraph) -> Unit) -> LayeredIGraphTransformer[T]
+
+pub fn new_layered_layout_provider() -> LayeredLayoutProvider
 
 pub fn new_layered_model_order_row_graph_placer() -> LayeredModelOrderRowGraphPlacer
 
@@ -6137,6 +6167,10 @@ pub fn rectpacking_width_approximation_strategy_from_string(String) -> Rectpacki
 pub fn rectpacking_width_approximation_strategy_phase_factory(RectpackingWidthApproximationStrategy) -> ILayoutProcessorFactory[RectPackingLayoutPhases, Int]
 
 pub let rectpacking_width_approximation_target_width : IProperty[Double]
+
+pub fn recursive_layered_apply_transformed_graph(LGraph) -> Bool
+
+pub fn recursive_layered_import_graph_for_transform(Int) -> LGraph?
 
 pub let reload_from_file_action_id : String
 
@@ -13863,6 +13897,24 @@ pub struct LayeredComponentsProcessor {
 pub fn LayeredComponentsProcessor::combine(Self, Array[LGraph], LGraph) -> Unit
 pub fn LayeredComponentsProcessor::split(Self, LGraph) -> Array[LGraph]
 
+pub struct LayeredElkGraphImporter {
+  marker : Int
+}
+pub fn LayeredElkGraphImporter::import_graph(Self, Int) -> LGraph
+
+pub struct LayeredElkGraphLayoutTransferrer {
+  marker : Int
+}
+pub fn LayeredElkGraphLayoutTransferrer::apply_layout(Self, LGraph) -> Unit
+
+pub struct LayeredElkGraphTransformer {
+  importer : LayeredElkGraphImporter
+  layout_transferrer : LayeredElkGraphLayoutTransferrer
+}
+pub fn LayeredElkGraphTransformer::apply_layout(Self, LGraph) -> Unit
+pub fn LayeredElkGraphTransformer::as_layered_igraph_transformer(Self) -> LayeredIGraphTransformer[Int]
+pub fn LayeredElkGraphTransformer::import_graph(Self, Int) -> LGraph
+
 type LayeredGraphPlacerKind
 
 pub struct LayeredHullRectangleEventState {
@@ -13887,6 +13939,11 @@ pub struct LayeredIGraphTransformer[T] {
 }
 pub fn[T] LayeredIGraphTransformer::apply_layout(Self[T], LGraph) -> Unit
 pub fn[T] LayeredIGraphTransformer::import_graph(Self[T], T) -> LGraph?
+
+pub struct LayeredLayoutProvider {
+  layout_engine : RecursiveGraphLayoutEngine
+}
+pub fn LayeredLayoutProvider::layout(Self, Int, IElkProgressMonitor) -> Unit
 
 pub struct LayeredModelOrderRowGraphPlacer {
   base : LayeredAbstractGraphPlacer
