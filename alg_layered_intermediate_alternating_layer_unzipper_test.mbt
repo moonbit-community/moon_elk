@@ -258,6 +258,264 @@ test "alternating layer unzipper splits one layer in A-B-C-A order" {
 }
 
 ///|
+test "alternating layer unzipper handles dangling outgoing split layers" {
+  let graph = new_l_graph()
+  let layer0 = new_layer(graph)
+  let layer1 = new_layer(graph)
+  graph.get_layers().push(layer0)
+  graph.get_layers().push(layer1)
+
+  let node1 = alternating_layer_unzipper_test_new_node(
+    graph,
+    layer0,
+    alternating_layer_unzipper_test_node_type("NORMAL"),
+  )
+  let node2 = alternating_layer_unzipper_test_new_node(
+    graph,
+    layer1,
+    alternating_layer_unzipper_test_node_type("NORMAL"),
+  )
+  let node3 = alternating_layer_unzipper_test_new_node(
+    graph,
+    layer1,
+    alternating_layer_unzipper_test_node_type("NORMAL"),
+  )
+  let node4 = alternating_layer_unzipper_test_new_node(
+    graph,
+    layer1,
+    alternating_layer_unzipper_test_node_type("NORMAL"),
+  )
+  let node5 = alternating_layer_unzipper_test_new_node(
+    graph,
+    layer1,
+    alternating_layer_unzipper_test_node_type("NORMAL"),
+  )
+
+  ignore(alternating_layer_unzipper_test_new_edge(node1, node2))
+  ignore(alternating_layer_unzipper_test_new_edge(node1, node3))
+  ignore(alternating_layer_unzipper_test_new_edge(node1, node4))
+  ignore(alternating_layer_unzipper_test_new_edge(node1, node5))
+
+  node2.set_property_int(layered_options_layer_unzipping_layer_split, 2)
+
+  let processor = new_alternating_layer_unzipper_layout_processor()
+  processor.process(graph, None)
+
+  assert_true(
+    alternating_layer_unzipper_test_layer_index(node1) <
+    alternating_layer_unzipper_test_layer_index(node2),
+  )
+  assert_true(
+    alternating_layer_unzipper_test_layer_index(node1) <
+    alternating_layer_unzipper_test_layer_index(node4),
+  )
+  assert_true(
+    alternating_layer_unzipper_test_layer_index(node2) <
+    alternating_layer_unzipper_test_layer_index(node3),
+  )
+  assert_true(
+    alternating_layer_unzipper_test_layer_index(node2) <
+    alternating_layer_unzipper_test_layer_index(node5),
+  )
+  assert_true(
+    alternating_layer_unzipper_test_layer_index(node4) <
+    alternating_layer_unzipper_test_layer_index(node3),
+  )
+  assert_true(
+    alternating_layer_unzipper_test_layer_index(node4) <
+    alternating_layer_unzipper_test_layer_index(node5),
+  )
+  alternating_layer_unzipper_test_assert_no_placeholders(graph)
+}
+
+///|
+test "alternating layer unzipper handles dangling incoming split layers" {
+  let graph = new_l_graph()
+  let layer0 = new_layer(graph)
+  let layer1 = new_layer(graph)
+  graph.get_layers().push(layer0)
+  graph.get_layers().push(layer1)
+
+  let node1 = alternating_layer_unzipper_test_new_node(
+    graph,
+    layer0,
+    alternating_layer_unzipper_test_node_type("NORMAL"),
+  )
+  let node2 = alternating_layer_unzipper_test_new_node(
+    graph,
+    layer0,
+    alternating_layer_unzipper_test_node_type("NORMAL"),
+  )
+  let node3 = alternating_layer_unzipper_test_new_node(
+    graph,
+    layer0,
+    alternating_layer_unzipper_test_node_type("NORMAL"),
+  )
+  let node4 = alternating_layer_unzipper_test_new_node(
+    graph,
+    layer0,
+    alternating_layer_unzipper_test_node_type("NORMAL"),
+  )
+  let node5 = alternating_layer_unzipper_test_new_node(
+    graph,
+    layer0,
+    alternating_layer_unzipper_test_node_type("NORMAL"),
+  )
+  let node_final = alternating_layer_unzipper_test_new_node(
+    graph,
+    layer1,
+    alternating_layer_unzipper_test_node_type("NORMAL"),
+  )
+
+  ignore(alternating_layer_unzipper_test_new_edge(node1, node_final))
+  ignore(alternating_layer_unzipper_test_new_edge(node2, node_final))
+  ignore(alternating_layer_unzipper_test_new_edge(node3, node_final))
+  ignore(alternating_layer_unzipper_test_new_edge(node4, node_final))
+  ignore(alternating_layer_unzipper_test_new_edge(node5, node_final))
+
+  node2.set_property_int(layered_options_layer_unzipping_layer_split, 2)
+
+  let processor = new_alternating_layer_unzipper_layout_processor()
+  processor.process(graph, None)
+
+  assert_true(
+    alternating_layer_unzipper_test_layer_index(node1) <
+    alternating_layer_unzipper_test_layer_index(node2),
+  )
+  assert_true(
+    alternating_layer_unzipper_test_layer_index(node1) <
+    alternating_layer_unzipper_test_layer_index(node4),
+  )
+  assert_true(
+    alternating_layer_unzipper_test_layer_index(node3) <
+    alternating_layer_unzipper_test_layer_index(node2),
+  )
+  assert_true(
+    alternating_layer_unzipper_test_layer_index(node3) <
+    alternating_layer_unzipper_test_layer_index(node4),
+  )
+  assert_true(
+    alternating_layer_unzipper_test_layer_index(node5) <
+    alternating_layer_unzipper_test_layer_index(node2),
+  )
+  assert_true(
+    alternating_layer_unzipper_test_layer_index(node5) <
+    alternating_layer_unzipper_test_layer_index(node4),
+  )
+  assert_true(
+    alternating_layer_unzipper_test_layer_index(node2) <
+    alternating_layer_unzipper_test_layer_index(node_final),
+  )
+  assert_true(
+    alternating_layer_unzipper_test_layer_index(node4) <
+    alternating_layer_unzipper_test_layer_index(node_final),
+  )
+  alternating_layer_unzipper_test_assert_no_placeholders(graph)
+}
+
+///|
+test "alternating layer unzipper splits multiple consecutive layers" {
+  let graph = new_l_graph()
+  let layer0 = new_layer(graph)
+  let layer1 = new_layer(graph)
+  graph.get_layers().push(layer0)
+  graph.get_layers().push(layer1)
+
+  let node1 = alternating_layer_unzipper_test_new_node(
+    graph,
+    layer0,
+    alternating_layer_unzipper_test_node_type("NORMAL"),
+  )
+  let node2 = alternating_layer_unzipper_test_new_node(
+    graph,
+    layer0,
+    alternating_layer_unzipper_test_node_type("NORMAL"),
+  )
+  let node3 = alternating_layer_unzipper_test_new_node(
+    graph,
+    layer0,
+    alternating_layer_unzipper_test_node_type("NORMAL"),
+  )
+  let node4 = alternating_layer_unzipper_test_new_node(
+    graph,
+    layer0,
+    alternating_layer_unzipper_test_node_type("NORMAL"),
+  )
+
+  let node21 = alternating_layer_unzipper_test_new_node(
+    graph,
+    layer1,
+    alternating_layer_unzipper_test_node_type("NORMAL"),
+  )
+  let node22 = alternating_layer_unzipper_test_new_node(
+    graph,
+    layer1,
+    alternating_layer_unzipper_test_node_type("NORMAL"),
+  )
+  let node23 = alternating_layer_unzipper_test_new_node(
+    graph,
+    layer1,
+    alternating_layer_unzipper_test_node_type("NORMAL"),
+  )
+
+  ignore(alternating_layer_unzipper_test_new_edge(node1, node21))
+  ignore(alternating_layer_unzipper_test_new_edge(node2, node21))
+  ignore(alternating_layer_unzipper_test_new_edge(node2, node22))
+  ignore(alternating_layer_unzipper_test_new_edge(node3, node21))
+  ignore(alternating_layer_unzipper_test_new_edge(node3, node22))
+  ignore(alternating_layer_unzipper_test_new_edge(node4, node22))
+  ignore(alternating_layer_unzipper_test_new_edge(node4, node23))
+
+  node1.set_property_int(layered_options_layer_unzipping_layer_split, 2)
+  node21.set_property_int(layered_options_layer_unzipping_layer_split, 2)
+
+  let processor = new_alternating_layer_unzipper_layout_processor()
+  processor.process(graph, None)
+
+  assert_true(
+    alternating_layer_unzipper_test_layer_index(node1) <
+    alternating_layer_unzipper_test_layer_index(node2),
+  )
+  assert_true(
+    alternating_layer_unzipper_test_layer_index(node1) <
+    alternating_layer_unzipper_test_layer_index(node4),
+  )
+  assert_true(
+    alternating_layer_unzipper_test_layer_index(node3) <
+    alternating_layer_unzipper_test_layer_index(node2),
+  )
+  assert_true(
+    alternating_layer_unzipper_test_layer_index(node3) <
+    alternating_layer_unzipper_test_layer_index(node4),
+  )
+  assert_true(
+    alternating_layer_unzipper_test_layer_index(node2) <
+    alternating_layer_unzipper_test_layer_index(node21),
+  )
+  assert_true(
+    alternating_layer_unzipper_test_layer_index(node2) <
+    alternating_layer_unzipper_test_layer_index(node23),
+  )
+  assert_true(
+    alternating_layer_unzipper_test_layer_index(node4) <
+    alternating_layer_unzipper_test_layer_index(node21),
+  )
+  assert_true(
+    alternating_layer_unzipper_test_layer_index(node4) <
+    alternating_layer_unzipper_test_layer_index(node23),
+  )
+  assert_true(
+    alternating_layer_unzipper_test_layer_index(node21) <
+    alternating_layer_unzipper_test_layer_index(node22),
+  )
+  assert_true(
+    alternating_layer_unzipper_test_layer_index(node23) <
+    alternating_layer_unzipper_test_layer_index(node22),
+  )
+  alternating_layer_unzipper_test_assert_no_placeholders(graph)
+}
+
+///|
 test "alternating layer unzipper handles multiple incoming edges on a split layer" {
   let graph = new_l_graph()
   let layer0 = new_layer(graph)
