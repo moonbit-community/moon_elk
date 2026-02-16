@@ -33,6 +33,16 @@ fn layer_sweep_test_west() -> PortSide {
 }
 
 ///|
+fn layer_sweep_test_north() -> PortSide {
+  port_side_values()[1]
+}
+
+///|
+fn layer_sweep_test_south() -> PortSide {
+  port_side_values()[3]
+}
+
+///|
 fn layer_sweep_test_pop_graph(graphs : Array[LGraph]) -> LGraph {
   match graphs.pop() {
     Some(graph) => graph
@@ -1352,6 +1362,174 @@ test "LayerSweep recursive first-level cross sorts parent ports accordingly" {
       assert_eq(
         layer_sweep_test_port_handles(left_outer_node.get_ports()),
         layer_sweep_test_port_handles(expected_port_order_left),
+      )
+      assert_eq(
+        layer_sweep_test_node_handles(root.get_layers()[1].get_nodes()),
+        layer_sweep_test_node_handles(expected_order_right),
+      )
+    }
+  }
+}
+
+///|
+test "LayerSweep handles hierarchical cross with north-south edge" {
+  let cross_types = layer_sweep_test_cross_types()
+  for index in 0..<cross_types.length() {
+    let cross_min_type = cross_types[index]
+    let creator = new_test_graph_creator()
+    let root = creator.get_graph()
+
+    let left_nodes = creator.add_nodes_to_layer(3, creator.make_layer(root))
+    let left_outer_node = left_nodes[1]
+    let right_nodes = creator.add_nodes_to_layer(3, creator.make_layer(root))
+    let right_outer_node = right_nodes[1]
+
+    creator.add_north_south_edge(
+      layer_sweep_test_north(),
+      right_outer_node,
+      right_nodes[0],
+      left_nodes[0],
+      true,
+    )
+
+    let left_outer_ports = creator.add_ports_on_side(
+      2,
+      left_outer_node,
+      layer_sweep_test_east(),
+    )
+    let right_outer_ports = creator.add_ports_on_side(
+      2,
+      right_outer_node,
+      layer_sweep_test_west(),
+    )
+    creator.add_edge_between_ports(left_outer_ports[0], right_outer_ports[0])
+    creator.add_edge_between_ports(left_outer_ports[1], right_outer_ports[1])
+
+    ignore(
+      layer_sweep_test_make_nested_two_node_graph_with_eastern_ports(
+        creator, left_outer_node, left_outer_ports,
+      ),
+    )
+
+    creator.add_north_south_edge(
+      layer_sweep_test_south(),
+      left_outer_node,
+      left_nodes[2],
+      right_nodes[2],
+      false,
+    )
+
+    let right_inner_graph = layer_sweep_test_make_nested_two_node_graph_with_western_ports(
+      creator, right_outer_node, right_outer_ports,
+    )
+    let expected_external_dummy_order_right = right_inner_graph.get_layers()[0]
+      .get_nodes()
+      .copy()
+    let expected_normal_node_order_right = right_inner_graph.get_layers()[1]
+      .get_nodes()
+      .copy()
+    let expected_order_of_ports_right = [
+      right_outer_node.get_ports()[0],
+      right_outer_ports[1],
+      right_outer_ports[0],
+    ]
+
+    layer_sweep_test_run(creator, cross_min_type)
+
+    if index == 0 {
+      assert_eq(
+        layer_sweep_test_node_handles(
+          right_inner_graph.get_layers()[0].get_nodes(),
+        ),
+        layer_sweep_test_node_handles(expected_external_dummy_order_right),
+      )
+      assert_eq(
+        layer_sweep_test_port_handles(right_outer_node.get_ports()),
+        layer_sweep_test_port_handles(expected_order_of_ports_right),
+      )
+      assert_eq(
+        layer_sweep_test_node_handles(
+          right_inner_graph.get_layers()[1].get_nodes(),
+        ),
+        layer_sweep_test_node_handles(expected_normal_node_order_right),
+      )
+    }
+  }
+}
+
+///|
+test "LayerSweep all-recursive first-level cross removes crossing" {
+  let cross_types = layer_sweep_test_cross_types()
+  for index in 0..<cross_types.length() {
+    let cross_min_type = cross_types[index]
+    let creator = new_test_graph_creator()
+    let root = creator.get_graph()
+
+    let left_outer_node = creator.add_node_to_layer(creator.make_layer(root))
+    let right_nodes = creator.add_nodes_to_layer(2, creator.make_layer(root))
+    let left_outer_ports = creator.add_ports_on_side(
+      2,
+      left_outer_node,
+      layer_sweep_test_east(),
+    )
+    creator.east_west_edge_from_to_port_node(
+      left_outer_ports[0],
+      right_nodes[0],
+    )
+    creator.east_west_edge_from_to_port_node(
+      left_outer_ports[1],
+      right_nodes[1],
+    )
+
+    let left_inner_graph = creator.nested_graph(left_outer_node)
+    let left_inner_nodes_left = creator.add_nodes_to_layer(
+      2,
+      creator.make_layer(left_inner_graph),
+    )
+    let left_inner_nodes_right = creator.add_nodes_to_layer(
+      2,
+      creator.make_layer(left_inner_graph),
+    )
+    let left_inner_dummy_nodes = creator.add_external_port_dummies_to_layer(
+      creator.make_layer(left_inner_graph),
+      left_outer_ports,
+    )
+    creator.east_west_edge_from_to_nodes(
+      left_inner_nodes_right[0],
+      left_inner_dummy_nodes[0],
+    )
+    creator.east_west_edge_from_to_nodes(
+      left_inner_nodes_right[1],
+      left_inner_dummy_nodes[1],
+    )
+    creator.east_west_edge_from_to_nodes(
+      left_inner_nodes_left[0],
+      left_inner_nodes_right[1],
+    )
+    creator.east_west_edge_from_to_nodes(
+      left_inner_nodes_left[1],
+      left_inner_nodes_right[0],
+    )
+    root.set_property_double(
+      layered_options_crossing_minimization_hierarchical_sweepiness, -1.0,
+    )
+
+    let expected_order_right = creator.copy_of_switch_order_of_nodes_in_layer(
+      0, 1, 1,
+    )
+    let expected_inner_order_right = creator.get_list_copy_in_index_order(
+      left_inner_nodes_right,
+      [1, 0],
+    )
+
+    layer_sweep_test_run(creator, cross_min_type)
+
+    if index == 0 {
+      assert_eq(
+        layer_sweep_test_node_handles(
+          left_inner_graph.get_layers()[1].get_nodes(),
+        ),
+        layer_sweep_test_node_handles(expected_inner_order_right),
       )
       assert_eq(
         layer_sweep_test_node_handles(root.get_layers()[1].get_nodes()),
