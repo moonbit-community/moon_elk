@@ -1982,6 +1982,14 @@ pub fn grandom_activator_reset_for_test() -> Unit
 
 pub fn graph_configurator_activate_greedy_switch_for(LGraph) -> Bool
 
+pub fn graph_configurator_copy_port_constraints(LGraph) -> Unit
+
+pub fn graph_configurator_default_favor_straight_edges(LGraph) -> Unit
+
+pub fn graph_configurator_enforce_direction(LGraph) -> Unit
+
+pub fn graph_configurator_enforce_min_edge_spacing(LGraph) -> Unit
+
 pub fn graph_feature_values() -> Array[GraphFeature]
 
 pub fn graph_from_file_filter() -> FileExtensionFilter
@@ -2883,6 +2891,8 @@ pub let layered_options_layering_layer_id : IProperty[Int]
 pub let layered_options_layering_node_promotion_max_iterations : IProperty[Int]
 
 pub let layered_options_layering_node_promotion_strategy : IProperty[String]
+
+pub let layered_options_node_placement_favor_straight_edges : IProperty[Bool]
 
 pub fn layered_options_parse_int_list(String) -> Array[Int]
 

@@ -69,6 +69,11 @@ pub let layered_options_crossing_minimization_semi_interactive : IProperty[Bool]
 )
 
 ///|
+pub let layered_options_node_placement_favor_straight_edges : IProperty[Bool] = new_property(
+  "org.eclipse.elk.layered.nodePlacement.favorStraightEdges", false,
+)
+
+///|
 pub let layered_options_consider_model_order_strategy : IProperty[String] = new_property(
   "org.eclipse.elk.layered.considerModelOrder.strategy", "NONE",
 )
