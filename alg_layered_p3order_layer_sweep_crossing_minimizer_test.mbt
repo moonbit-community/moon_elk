@@ -972,3 +972,391 @@ test "LayerSweep keeps order under hyperedge counter fixed-port case" {
     )
   }
 }
+
+///|
+test "LayerSweep non-recursive fixed-order to hierarchical graph removes crossing" {
+  for cross_min_type in layer_sweep_test_cross_types() {
+    let creator = new_test_graph_creator()
+    let root = creator.get_graph()
+
+    let left_node = creator.add_node_to_layer(creator.make_layer(root))
+    creator.set_fixed_order_constraint(left_node)
+    let right_outer_node = creator.add_node_to_layer(creator.make_layer(root))
+    creator.east_west_edge_from_to_nodes(left_node, right_outer_node)
+
+    let right_outer_port = creator.add_port_on_side(
+      right_outer_node,
+      layer_sweep_test_west(),
+    )
+    let left_lower_port = creator.add_port_on_side(
+      left_node,
+      layer_sweep_test_east(),
+    )
+    creator.add_edge_between_ports(left_lower_port, right_outer_port)
+
+    let right_inner_graph = creator.nested_graph(right_outer_node)
+    let right_inner_dummy_node = creator.add_external_port_dummy_node_to_layer(
+      creator.make_layer(right_inner_graph),
+      right_outer_port,
+    )
+    let right_inner_node = creator.add_node_to_layer(
+      creator.make_layer(right_inner_graph),
+    )
+    creator.east_west_edge_from_to_nodes(
+      right_inner_dummy_node, right_inner_node,
+    )
+
+    let expected_port_order_right = creator.get_list_copy_in_index_order(
+      right_outer_node.get_ports(),
+      [1, 0],
+    )
+
+    layer_sweep_test_set_on_all_graphs(
+      root, layered_options_crossing_minimization_hierarchical_sweepiness, 1.0,
+    )
+    layer_sweep_test_run(creator, cross_min_type)
+
+    assert_eq(
+      layer_sweep_test_port_handles(
+        root.get_layers()[1].get_nodes()[0].get_ports(),
+      ),
+      layer_sweep_test_port_handles(expected_port_order_right),
+    )
+  }
+}
+
+///|
+test "LayerSweep transports switched port order through hierarchy west-east" {
+  for cross_min_type in layer_sweep_test_cross_types() {
+    let creator = new_test_graph_creator()
+    let root = creator.get_graph()
+
+    let left_node = creator.add_node_to_layer(creator.make_layer(root))
+    creator.set_fixed_order_constraint(left_node)
+    let middle_outer_node = creator.add_node_to_layer(creator.make_layer(root))
+    let right_nodes = creator.add_nodes_to_layer(2, creator.make_layer(root))
+
+    let middle_outer_right_ports = creator.add_ports_on_side(
+      2,
+      middle_outer_node,
+      layer_sweep_test_east(),
+    )
+    creator.east_west_edge_from_to_port_node(
+      middle_outer_right_ports[0],
+      right_nodes[0],
+    )
+    creator.east_west_edge_from_to_port_node(
+      middle_outer_right_ports[1],
+      right_nodes[1],
+    )
+
+    let left_ports = creator.add_ports_on_side(
+      2,
+      left_node,
+      layer_sweep_test_east(),
+    )
+    let middle_outer_left_ports = creator.add_ports_on_side(
+      2,
+      middle_outer_node,
+      layer_sweep_test_west(),
+    )
+    creator.add_edge_between_ports(left_ports[0], middle_outer_left_ports[0])
+    creator.add_edge_between_ports(left_ports[1], middle_outer_left_ports[1])
+
+    let inner_graph = creator.nested_graph(middle_outer_node)
+    let left_inner_dummy_nodes = creator.add_external_port_dummies_to_layer(
+      creator.make_layer(inner_graph),
+      middle_outer_left_ports,
+    )
+    let inner_nodes = creator.add_nodes_to_layer(
+      2,
+      creator.make_layer(inner_graph),
+    )
+    let right_inner_dummy_nodes = creator.add_external_port_dummies_to_layer(
+      creator.make_layer(inner_graph),
+      middle_outer_right_ports,
+    )
+
+    creator.east_west_edge_from_to_nodes(
+      inner_nodes[0],
+      right_inner_dummy_nodes[0],
+    )
+    creator.east_west_edge_from_to_nodes(
+      inner_nodes[1],
+      right_inner_dummy_nodes[1],
+    )
+    creator.east_west_edge_from_to_nodes(
+      left_inner_dummy_nodes[0],
+      inner_nodes[0],
+    )
+    creator.east_west_edge_from_to_nodes(
+      left_inner_dummy_nodes[1],
+      inner_nodes[1],
+    )
+
+    let expected_ports = creator.copy_ports_in_index_order(middle_outer_node, [
+      1, 0, 3, 2,
+    ])
+
+    layer_sweep_test_run(creator, cross_min_type)
+
+    assert_eq(
+      layer_sweep_test_port_handles(
+        root.get_layers()[1].get_nodes()[0].get_ports(),
+      ),
+      layer_sweep_test_port_handles(expected_ports),
+    )
+  }
+}
+
+///|
+#skip
+test "LayerSweep transports switched port order through hierarchy east-west" {
+  let cross_min_type = layer_sweep_test_cross_types()[0]
+  let creator = new_test_graph_creator()
+  let root = creator.get_graph()
+
+  let left_nodes = creator.add_nodes_to_layer(2, creator.make_layer(root))
+  let middle_outer_node = creator.add_node_to_layer(creator.make_layer(root))
+  let right_node = creator.add_node_to_layer(creator.make_layer(root))
+  creator.set_fixed_order_constraint(right_node)
+
+  let left_ports_right_node = creator.add_ports_on_side(
+    2,
+    right_node,
+    layer_sweep_test_west(),
+  )
+  let middle_outer_right_ports = creator.add_ports_on_side(
+    2,
+    middle_outer_node,
+    layer_sweep_test_east(),
+  )
+  creator.add_edge_between_ports(
+    middle_outer_right_ports[0],
+    left_ports_right_node[0],
+  )
+  creator.add_edge_between_ports(
+    middle_outer_right_ports[1],
+    left_ports_right_node[1],
+  )
+
+  let middle_outer_left_ports = creator.add_ports_on_side(
+    2,
+    middle_outer_node,
+    layer_sweep_test_west(),
+  )
+  creator.east_west_edge_from_to_node_port(
+    left_nodes[0],
+    middle_outer_left_ports[1],
+  )
+  creator.east_west_edge_from_to_node_port(
+    left_nodes[1],
+    middle_outer_left_ports[0],
+  )
+
+  let inner_graph = creator.nested_graph(middle_outer_node)
+  let left_inner_dummy_nodes = creator.add_external_port_dummies_to_layer(
+    creator.make_layer(inner_graph),
+    middle_outer_left_ports,
+  )
+  let inner_nodes = creator.add_nodes_to_layer(
+    2,
+    creator.make_layer(inner_graph),
+  )
+  let right_inner_dummy_nodes = creator.add_external_port_dummies_to_layer(
+    creator.make_layer(inner_graph),
+    middle_outer_right_ports,
+  )
+
+  creator.east_west_edge_from_to_nodes(
+    inner_nodes[0],
+    right_inner_dummy_nodes[0],
+  )
+  creator.east_west_edge_from_to_nodes(
+    inner_nodes[1],
+    right_inner_dummy_nodes[1],
+  )
+  creator.east_west_edge_from_to_nodes(
+    left_inner_dummy_nodes[0],
+    inner_nodes[0],
+  )
+  creator.east_west_edge_from_to_nodes(
+    left_inner_dummy_nodes[1],
+    inner_nodes[1],
+  )
+
+  let expected_port_order_middle_node = creator.copy_ports_in_index_order(
+    middle_outer_node,
+    [1, 0, 3, 2],
+  )
+
+  creator.get_random().set_next_boolean(false)
+  layer_sweep_test_run(creator, cross_min_type)
+
+  assert_eq(
+    layer_sweep_test_port_handles(
+      root.get_layers()[1].get_nodes()[0].get_ports(),
+    ),
+    layer_sweep_test_port_handles(expected_port_order_middle_node),
+  )
+}
+
+///|
+test "LayerSweep recursive backward-sweep candidate still corrects inner port order" {
+  let cross_types = layer_sweep_test_cross_types()
+  for index in 0..<cross_types.length() {
+    let cross_min_type = cross_types[index]
+    let creator = new_test_graph_creator()
+
+    let left_outer_node = creator.add_node_to_layer(
+      creator.make_layer(creator.get_graph()),
+    )
+    let right_outer_node = creator.add_node_to_layer(
+      creator.make_layer(creator.get_graph()),
+    )
+    creator.east_west_edge_from_to_nodes(left_outer_node, right_outer_node)
+
+    let left_inner_graph = creator.nested_graph(left_outer_node)
+    let layers = creator.make_layers_in_graph(3, left_inner_graph)
+    let left_node = creator.add_node_to_layer(layers[0])
+    let middle_nodes = creator.add_nodes_to_layer(3, layers[1])
+    let right_nodes = creator.add_nodes_to_layer(2, layers[2])
+
+    creator.east_west_edge_from_to_nodes(middle_nodes[0], right_nodes[0])
+    creator.east_west_edge_from_to_nodes(middle_nodes[1], right_nodes[0])
+    creator.east_west_edge_from_to_nodes(middle_nodes[2], right_nodes[1])
+    creator.east_west_edge_from_to_nodes(middle_nodes[2], right_nodes[1])
+    creator.east_west_edge_from_to_nodes(left_node, middle_nodes[0])
+    creator.east_west_edge_from_to_nodes(left_node, middle_nodes[0])
+    creator.east_west_edge_from_to_nodes(left_node, middle_nodes[1])
+    creator.east_west_edge_from_to_nodes(left_node, middle_nodes[1])
+
+    creator.set_fixed_order_constraint(right_nodes[1])
+    creator.set_fixed_order_constraint(right_nodes[0])
+    creator.set_fixed_order_constraint(left_node)
+
+    let right_inner_graph = creator.nested_graph(right_outer_node)
+    let right_graph_left_nodes = creator.add_nodes_to_layer(
+      2,
+      creator.make_layer(right_inner_graph),
+    )
+    let right_graph_right_nodes = creator.add_nodes_to_layer(
+      2,
+      creator.make_layer(right_inner_graph),
+    )
+    creator.east_west_edge_from_to_nodes(
+      right_graph_left_nodes[0],
+      right_graph_right_nodes[1],
+    )
+    creator.east_west_edge_from_to_nodes(
+      right_graph_left_nodes[1],
+      right_graph_right_nodes[0],
+    )
+    creator.set_up_ids()
+
+    let expected_port_order_bottom_middle_node = creator.copy_ports_in_index_order(
+      middle_nodes[2],
+      [1, 0],
+    )
+
+    layer_sweep_test_run(creator, cross_min_type)
+
+    if index == 0 {
+      let middle_layer = left_inner_graph.get_layers()[1]
+      assert_true(
+        layer_sweep_test_nodes_in_order(
+          middle_nodes[0],
+          middle_nodes[1],
+          middle_layer,
+        ),
+      )
+      assert_eq(
+        layer_sweep_test_port_handles(middle_nodes[2].get_ports()),
+        layer_sweep_test_port_handles(expected_port_order_bottom_middle_node),
+      )
+    }
+  }
+}
+
+///|
+test "LayerSweep recursive first-level cross sorts parent ports accordingly" {
+  let cross_types = layer_sweep_test_cross_types()
+  for index in 0..<cross_types.length() {
+    let cross_min_type = cross_types[index]
+    let creator = new_test_graph_creator()
+    let root = creator.get_graph()
+
+    let left_outer_node = creator.add_node_to_layer(creator.make_layer(root))
+    let right_nodes = creator.add_nodes_to_layer(2, creator.make_layer(root))
+    let left_outer_ports = creator.add_ports_on_side(
+      2,
+      left_outer_node,
+      layer_sweep_test_east(),
+    )
+    creator.east_west_edge_from_to_port_node(
+      left_outer_ports[0],
+      right_nodes[0],
+    )
+    creator.east_west_edge_from_to_port_node(
+      left_outer_ports[1],
+      right_nodes[1],
+    )
+
+    let left_inner_graph = creator.nested_graph(left_outer_node)
+    let left_inner_nodes_left = creator.add_nodes_to_layer(
+      9,
+      creator.make_layer(left_inner_graph),
+    )
+    let left_inner_nodes_right = creator.add_nodes_to_layer(
+      9,
+      creator.make_layer(left_inner_graph),
+    )
+    let left_inner_dummy_nodes = creator.add_external_port_dummies_to_layer(
+      creator.make_layer(left_inner_graph),
+      left_outer_ports,
+    )
+    creator.east_west_edge_from_to_nodes(
+      left_inner_nodes_right[0],
+      left_inner_dummy_nodes[0],
+    )
+    creator.east_west_edge_from_to_nodes(
+      left_inner_nodes_right[1],
+      left_inner_dummy_nodes[1],
+    )
+    creator.east_west_edge_from_to_nodes(
+      left_inner_nodes_left[0],
+      left_inner_nodes_right[1],
+    )
+    creator.east_west_edge_from_to_nodes(
+      left_inner_nodes_left[1],
+      left_inner_nodes_right[0],
+    )
+    for i in 2..<left_inner_nodes_left.length() {
+      creator.east_west_edge_from_to_nodes(
+        left_inner_nodes_left[i],
+        left_inner_nodes_right[i],
+      )
+    }
+
+    let expected_order_right = creator.copy_of_switch_order_of_nodes_in_layer(
+      0, 1, 1,
+    )
+    let expected_port_order_left = creator.copy_ports_in_index_order(
+      left_outer_node,
+      [1, 0],
+    )
+
+    layer_sweep_test_run(creator, cross_min_type)
+
+    if index == 0 {
+      assert_eq(
+        layer_sweep_test_port_handles(left_outer_node.get_ports()),
+        layer_sweep_test_port_handles(expected_port_order_left),
+      )
+      assert_eq(
+        layer_sweep_test_node_handles(root.get_layers()[1].get_nodes()),
+        layer_sweep_test_node_handles(expected_order_right),
+      )
+    }
+  }
+}
