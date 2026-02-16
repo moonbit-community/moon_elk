@@ -1538,3 +1538,125 @@ test "LayerSweep all-recursive first-level cross removes crossing" {
     }
   }
 }
+
+///|
+#skip
+test "LayerSweep handles in-layer crossings in left-most layer" {
+  for cross_min_type in layer_sweep_test_cross_types() {
+    let creator = new_test_graph_creator()
+    let root = creator.get_graph()
+
+    let nodes = creator.add_nodes_to_layer(4, creator.make_layer(root))
+    let right_node = creator.add_node_to_layer(creator.make_layer(root))
+    let right_outer_ports = creator.add_ports_on_side(
+      2,
+      right_node,
+      layer_sweep_test_west(),
+    )
+    ignore(
+      layer_sweep_test_make_nested_two_node_graph_with_western_ports(
+        creator, right_node, right_outer_ports,
+      ),
+    )
+    creator.east_west_edge_from_to_node_port(nodes[1], right_outer_ports[1])
+    creator.east_west_edge_from_to_node_port(nodes[2], right_outer_ports[0])
+    creator.add_in_layer_edge_nodes(nodes[0], nodes[2], layer_sweep_test_west())
+    let port_one = creator.add_port_on_side(nodes[1], layer_sweep_test_west())
+    let port_two = creator.add_port_on_side(nodes[3], layer_sweep_test_west())
+    creator.add_edge_between_ports(port_one, port_two)
+    creator.add_edge_between_ports(port_one, port_two)
+    creator.set_fixed_order_constraint(right_node)
+
+    let actual_order = root.get_layers()[0].get_nodes()
+    let expected_order = creator.get_list_copy_in_index_order(actual_order, [
+      1, 0, 2, 3,
+    ])
+
+    layer_sweep_test_run(creator, cross_min_type)
+
+    assert_eq(
+      layer_sweep_test_node_handles(actual_order),
+      layer_sweep_test_node_handles(expected_order),
+    )
+  }
+}
+
+///|
+test "LayerSweep handles in-layer cross-hierarchy crossings in left-most layer" {
+  for cross_min_type in layer_sweep_test_cross_types() {
+    let creator = new_test_graph_creator()
+    let root = creator.get_graph()
+
+    let nodes = creator.add_nodes_to_layer(5, creator.make_layer(root))
+    ignore(creator.add_ports_on_side(2, nodes[0], layer_sweep_test_west()))
+    ignore(creator.add_node_to_layer(creator.make_layer(root)))
+    let top_node_ports = creator.add_ports_on_side(
+      2,
+      nodes[0],
+      layer_sweep_test_west(),
+    )
+    let second_node_ports = creator.add_ports_on_side(
+      3,
+      nodes[1],
+      layer_sweep_test_west(),
+    )
+    creator.add_edge_between_ports(top_node_ports[0], second_node_ports[2])
+    creator.add_edge_between_ports(top_node_ports[1], second_node_ports[1])
+
+    let outer_ports = creator.add_ports_on_side(
+      2,
+      nodes[2],
+      layer_sweep_test_west(),
+    )
+    let inner = layer_sweep_test_make_nested_two_node_graph_with_western_ports(
+      creator,
+      nodes[2],
+      outer_ports,
+    )
+
+    let fifth_node_ports = creator.add_ports_on_side(
+      3,
+      nodes[3],
+      layer_sweep_test_west(),
+    )
+    let sixth_node_ports = creator.add_ports_on_side(
+      2,
+      nodes[4],
+      layer_sweep_test_west(),
+    )
+    creator.add_edge_between_ports(fifth_node_ports[0], sixth_node_ports[1])
+    creator.add_edge_between_ports(fifth_node_ports[1], sixth_node_ports[0])
+    creator.add_edge_between_ports(outer_ports[0], fifth_node_ports[2])
+
+    let actual_port_order = nodes[2].get_ports()
+    let expected_port_order = creator.get_list_copy_in_index_order(
+      actual_port_order,
+      [1, 0],
+    )
+    let actual_node_order = root.get_layers()[0].get_nodes()
+    let expected_node_order = actual_node_order.copy()
+    let actual_inner_node_order = inner.get_layers()[1].get_nodes()
+    let expected_inner_node_order = creator.get_list_copy_in_index_order(
+      actual_inner_node_order,
+      [1, 0],
+    )
+
+    root.set_property_double(
+      layered_options_crossing_minimization_hierarchical_sweepiness, 1.0,
+    )
+    layer_sweep_test_run(creator, cross_min_type)
+
+    assert_eq(
+      layer_sweep_test_node_handles(actual_node_order),
+      layer_sweep_test_node_handles(expected_node_order),
+    )
+    assert_eq(
+      layer_sweep_test_port_handles(actual_port_order),
+      layer_sweep_test_port_handles(expected_port_order),
+    )
+    assert_eq(
+      layer_sweep_test_node_handles(actual_inner_node_order),
+      layer_sweep_test_node_handles(expected_inner_node_order),
+    )
+  }
+}
