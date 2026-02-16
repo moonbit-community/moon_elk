@@ -22,11 +22,6 @@ let node_context_port_labels_placement_property : IProperty[Array[String]] = new
 )
 
 ///|
-let node_context_port_labels_treat_as_group_property : IProperty[Bool] = new_property(
-  "org.eclipse.elk.portLabels.treatAsGroup", true,
-)
-
-///|
 let node_context_node_labels_placement_property : IProperty[Array[String]] = new_property(
   "org.eclipse.elk.nodeLabels.placement",
   [],
@@ -286,7 +281,7 @@ pub fn new_node_context(node : LNode) -> NodeContext {
     abort("Invalid port label placement.")
   }
   let port_labels_treat_as_group = node.get_property_bool(
-    node_context_port_labels_treat_as_group_property,
+    port_labels_treat_as_group,
   )
   let node_label_placement = node_context_parse_node_label_placement(
     node.get_property_string_array(node_context_node_labels_placement_property),

@@ -5794,6 +5794,8 @@ pub let port_labels_next_to_port_if_possible : IProperty[Bool]
 
 pub let port_labels_placement : IProperty[Array[String]]
 
+pub let port_labels_treat_as_group : IProperty[Bool]
+
 pub fn port_layout_option_string_value(Int, String) -> String?
 
 pub fn port_outgoing_edges(Int) -> Array[Int]

@@ -392,6 +392,15 @@ pub fn layout_meta_data_service_register_default_options() -> Unit {
   )
   layout_meta_data_service_register_option(
     new_layout_option_data(
+      port_labels_treat_as_group.get_id(),
+      name="Treat Port Labels as Group",
+      group="portLabels",
+      option_type=BoolType,
+      targets=[NodesTarget],
+    ),
+  )
+  layout_meta_data_service_register_option(
+    new_layout_option_data(
       padding.get_id(),
       name="Padding",
       group="spacing",

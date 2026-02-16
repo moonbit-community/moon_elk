@@ -81,6 +81,11 @@ pub let port_labels_placement : IProperty[Array[String]] = new_property(
 )
 
 ///|
+pub let port_labels_treat_as_group : IProperty[Bool] = new_property(
+  "org.eclipse.elk.portLabels.treatAsGroup", true,
+)
+
+///|
 pub let node_labels_placement : IProperty[Array[String]] = new_property(
   "org.eclipse.elk.nodeLabels.placement",
   [],
