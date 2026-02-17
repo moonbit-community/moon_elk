@@ -419,16 +419,16 @@ pub fn ModelOrderPortComparator::compare(
       }
     }
 
-    if (match p1_source_port.get_node() {
-        Some(node) =>
-          model_order_port_node_type_equals(node.get_type(), NodeType::LongEdge)
-        None => false
-      }) &&
-      (match p2_source_port.get_node() {
-        Some(node) =>
-          model_order_port_node_type_equals(node.get_type(), NodeType::LongEdge)
-        None => false
-      }) {
+    if p1_source_port.get_node() is Some(p1_source_port_node) &&
+      model_order_port_node_type_equals(
+        p1_source_port_node.get_type(),
+        NodeType::LongEdge,
+      ) &&
+      p2_source_port.get_node() is Some(p2_source_port_node) &&
+      model_order_port_node_type_equals(
+        p2_source_port_node.get_type(),
+        NodeType::LongEdge,
+      ) {
       let p1_source_node = model_order_port_require_node(Some(p1_source_port))
       let p2_source_node = model_order_port_require_node(Some(p2_source_port))
       let p1_source_layer = match p1_source_node.get_layer() {

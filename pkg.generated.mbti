@@ -4804,9 +4804,13 @@ pub fn new_i_initializable(init_at_layer_level? : (Int, Array[Array[LNode]]) -> 
 
 pub fn new_i_label_manager((String, Double) -> KVector?) -> ILabelManager
 
+pub fn new_i_radial_sorter((Array[Int]) -> Unit, initialize? : (Int) -> Unit) -> IRadialSorter
+
 pub fn new_i_sweep_port_distributor((Array[Array[LNode]], Int, Bool) -> Bool, init_at_layer_level? : (Int, Array[Array[LNode]]) -> Unit, init_at_node_level? : (Int, Int, Array[Array[LNode]]) -> Unit, init_at_port_level? : (Int, Int, Int, Array[Array[LNode]]) -> Unit, init_at_edge_level? : (Int, Int, Int, Int, LEdge, Array[Array[LNode]]) -> Unit, init_after_traversal? : () -> Unit) -> ISweepPortDistributor
 
 pub fn new_icompactor((DCGraph) -> Unit) -> ICompactor
+
+pub fn new_id_sorter() -> IDSorter
 
 pub fn[T] new_igraph_importer((T) -> FGraph, (FGraph) -> Unit) -> IGraphImporter[T]
 
@@ -5359,6 +5363,8 @@ pub fn new_planar_grid(Int, Int) -> PlanarGrid
 pub fn new_point(Double, Double) -> Point
 
 pub fn new_point_in_quadrant(Double, Double, Quadrant) -> Point
+
+pub fn new_polar_coordinate_sorter() -> PolarCoordinateSorter
 
 pub fn new_polyline_edge_router_layout_phase() -> ILayoutProcessor[LayeredPhases, LGraph]
 
@@ -13129,6 +13135,12 @@ pub struct ICutIndexCalculator {
 pub fn ICutIndexCalculator::get_cut_indexes(Self, LGraph, GraphStats) -> Array[Int]
 pub fn ICutIndexCalculator::guarantee_valid(Self) -> Bool
 
+pub struct IDSorter {
+  sorter : IRadialSorter
+}
+pub fn IDSorter::initialize(Self, Int) -> Unit
+pub fn IDSorter::sort(Self, Array[Int]) -> Unit
+
 pub struct IDataObject {
   parse_fn : (String) -> Unit
 }
@@ -13391,6 +13403,13 @@ pub struct IProperty[T] {
 }
 pub fn[T] IProperty::get_default(Self[T]) -> T
 pub fn[T] IProperty::get_id(Self[T]) -> String
+
+pub struct IRadialSorter {
+  sort_fn : (Array[Int]) -> Unit
+  initialize_fn : (Int) -> Unit
+}
+pub fn IRadialSorter::initialize(Self, Int) -> Unit
+pub fn IRadialSorter::sort(Self, Array[Int]) -> Unit
 
 pub struct IRectangleStripOverlapRemovalStrategy {
   remove_overlaps : (RectangleStripOverlapRemover) -> Double
@@ -16283,6 +16302,16 @@ pub struct PolarCP {
   cp : KVector
   polar_coordinate : Array[Double]
 }
+
+pub struct PolarCoordinateSorter {
+  comp_right : (Int, Int) -> Int
+  comp_left : (Int, Int) -> Int
+  comp_top : (Int, Int) -> Int
+  comp_bottom : (Int, Int) -> Int
+  mut id_sorter : IDSorter?
+}
+pub fn PolarCoordinateSorter::initialize(Self, Int) -> Unit
+pub fn PolarCoordinateSorter::sort(Self, Array[Int]) -> Unit
 
 pub struct Polyomino {
   planar_grid : PlanarGrid
