@@ -1,1 +1,21 @@
-// Upstream counterpart file; declarations are currently aggregated in core_math_elk_margin.mbt, core_util_ielk_progress_monitor.mbt, or core_options_alignment.mbt.
+///|
+pub enum EdgeType {
+  NoneType
+  Directed
+  Undirected
+  Association
+  Generalization
+  Dependency
+}
+
+///|
+pub fn edge_type_to_string(edge_type : EdgeType) -> String {
+  match edge_type {
+    NoneType => "NONE"
+    Directed => "DIRECTED"
+    Undirected => "UNDIRECTED"
+    Association => "ASSOCIATION"
+    Generalization => "GENERALIZATION"
+    Dependency => "DEPENDENCY"
+  }
+}

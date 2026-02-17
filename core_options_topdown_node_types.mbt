@@ -1,1 +1,15 @@
-// Upstream counterpart file; declarations are currently aggregated in core_math_elk_margin.mbt, core_util_ielk_progress_monitor.mbt, or core_options_alignment.mbt.
+///|
+pub enum TopdownNodeTypes {
+  ParallelNode
+  HierarchicalNode
+  RootNode
+}
+
+///|
+pub fn topdown_node_type_to_string(node_type : TopdownNodeTypes) -> String {
+  match node_type {
+    ParallelNode => "PARALLEL_NODE"
+    HierarchicalNode => "HIERARCHICAL_NODE"
+    RootNode => "ROOT_NODE"
+  }
+}

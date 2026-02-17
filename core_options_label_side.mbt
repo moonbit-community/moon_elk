@@ -1,1 +1,27 @@
-// Upstream counterpart file; declarations are currently aggregated in core_math_elk_margin.mbt, core_util_ielk_progress_monitor.mbt, or core_options_alignment.mbt.
+///|
+pub enum LabelSide {
+  Unknown
+  Above
+  Below
+  Inline
+}
+
+///|
+pub fn label_side_to_string(side : LabelSide) -> String {
+  match side {
+    Unknown => "UNKNOWN"
+    Above => "ABOVE"
+    Below => "BELOW"
+    Inline => "INLINE"
+  }
+}
+
+///|
+pub fn LabelSide::opposite(self : LabelSide) -> LabelSide {
+  match self {
+    Above => Below
+    Below => Above
+    Inline => Inline
+    Unknown => Unknown
+  }
+}

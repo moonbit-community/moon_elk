@@ -1,1 +1,19 @@
-// Upstream counterpart file; declarations are currently aggregated in core_math_elk_margin.mbt, core_util_ielk_progress_monitor.mbt, or core_options_alignment.mbt.
+///|
+pub enum PortAlignment {
+  Distributed
+  Justified
+  Begin
+  Center
+  End
+}
+
+///|
+pub fn port_alignment_to_string(alignment : PortAlignment) -> String {
+  match alignment {
+    Distributed => "DISTRIBUTED"
+    Justified => "JUSTIFIED"
+    Begin => "BEGIN"
+    Center => "CENTER"
+    End => "END"
+  }
+}
