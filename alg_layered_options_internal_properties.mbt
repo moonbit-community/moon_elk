@@ -93,6 +93,16 @@ pub let internal_properties_original_port_constraints : IProperty[String] = new_
 )
 
 ///|
+pub let internal_properties_input_collect : IProperty[Bool] = new_property(
+  "inputCollect", false,
+)
+
+///|
+pub let internal_properties_output_collect : IProperty[Bool] = new_property(
+  "outputCollect", false,
+)
+
+///|
 pub let internal_properties_self_loop_holder : IProperty[SelfLoopHolder?] = new_property(
   "selfLoopHolder",
   None,

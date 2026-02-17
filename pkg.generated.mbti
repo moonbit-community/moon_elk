@@ -104,6 +104,8 @@ pub fn center_edge_label_placement_strategy_uses_label_size_information_values()
 
 pub fn cgroup_of() -> CGroupBuilder
 
+pub fn change_coord_system(KVector, LGraph, LGraph) -> Unit
+
 pub let child_area_height : IProperty[Double]
 
 pub let child_area_width : IProperty[Double]
@@ -2566,6 +2568,8 @@ pub fn in_north_south_east_west_order(LNode, PortSide) -> Array[LPort]
 
 pub fn[N, E] init_one_dimensional_components_compaction(IConnectedComponents[N, E], Double) -> OneDimensionalComponentsCompaction[N, E]
 
+pub fn initialize_port(LPort, PortConstraints, Direction, KVector?) -> Unit
+
 pub fn inside_port_label_cell_creator_create_inside_port_label_cells(NodeContext) -> Unit
 
 pub let inside_self_loops_activate : IProperty[Bool]
@@ -2622,6 +2626,8 @@ pub let internal_properties_in_layer_successor_constraints : IProperty[Array[LNo
 
 pub let internal_properties_in_layer_successor_constraints_between_non_dummies : IProperty[Bool]
 
+pub let internal_properties_input_collect : IProperty[Bool]
+
 pub let internal_properties_inside_connections : IProperty[Bool]
 
 pub let internal_properties_is_part_of_cycle : IProperty[Bool]
@@ -2655,6 +2661,8 @@ pub let internal_properties_original_dummy_node_position : IProperty[Double]
 pub let internal_properties_original_opposite_port : IProperty[LPort?]
 
 pub let internal_properties_original_port_constraints : IProperty[String]
+
+pub let internal_properties_output_collect : IProperty[Bool]
 
 pub let internal_properties_partition_dummy : IProperty[Bool]
 
@@ -2703,6 +2711,8 @@ pub fn intersects_rect_path(ElkRectangle, KVectorChain) -> Bool
 pub fn is_both_left_or_both_right(Quadrant, Quadrant) -> Bool
 
 pub fn is_descendant(Int, Int) -> Bool
+
+pub fn is_descendant_l_node(LNode, LNode) -> Bool
 
 pub fn is_one_left_one_right(Quadrant, Quadrant) -> Bool
 
@@ -5909,6 +5919,8 @@ pub let preference_action_id : String
 pub let priority : IProperty[Double]
 
 pub fn properties_skipping_nodes(Int, include_root? : Bool) -> Array[Int]
+
+pub fn provide_collector_port(LGraph, LNode, PortType, PortSide) -> LPort
 
 pub fn quadrant_eq(Quadrant, Quadrant) -> Bool
 

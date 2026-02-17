@@ -12,6 +12,46 @@ fn l_graph_util_test_node_type_long_edge() -> NodeType {
 }
 
 ///|
+fn l_graph_util_test_direction_rightward() -> Direction {
+  direction_values()[1]
+}
+
+///|
+fn l_graph_util_test_port_constraints_free() -> PortConstraints {
+  port_constraints_values()[1]
+}
+
+///|
+fn l_graph_util_test_port_constraints_fixed_side() -> PortConstraints {
+  port_constraints_values()[2]
+}
+
+///|
+fn l_graph_util_test_port_constraints_fixed_ratio() -> PortConstraints {
+  port_constraints_values()[4]
+}
+
+///|
+fn l_graph_util_test_port_type_input() -> PortType {
+  port_type_values()[1]
+}
+
+///|
+fn l_graph_util_test_port_type_output() -> PortType {
+  port_type_values()[2]
+}
+
+///|
+fn l_graph_util_test_port_side_west() -> PortSide {
+  port_side_values()[4]
+}
+
+///|
+fn l_graph_util_test_port_side_east() -> PortSide {
+  port_side_values()[2]
+}
+
+///|
 test "to_*_array returns copies" {
   let graph = new_l_graph()
   let node_a = new_l_node(graph=Some(graph))
@@ -179,4 +219,160 @@ test "find_max_non_dummy_node_width respects margins and vertical direction" {
 
   graph.set_property_string(direction, "DOWN")
   inspect(find_max_non_dummy_node_width(layer, true), content="0")
+}
+
+///|
+test "provide_collector_port reuses per-type collector ports" {
+  let graph = new_l_graph()
+  let node = new_l_node(graph=Some(graph))
+  ignore(node.get_size().set_xy(40.0, 20.0))
+
+  let in_collector = provide_collector_port(
+    graph,
+    node,
+    l_graph_util_test_port_type_input(),
+    l_graph_util_test_port_side_west(),
+  )
+  let in_collector_again = provide_collector_port(
+    graph,
+    node,
+    l_graph_util_test_port_type_input(),
+    l_graph_util_test_port_side_east(),
+  )
+
+  inspect(
+    in_collector.get_handle() == in_collector_again.get_handle(),
+    content="true",
+  )
+  inspect(
+    in_collector.get_property_bool(internal_properties_input_collect),
+    content="true",
+  )
+  inspect(port_side_to_string(in_collector.get_side()), content="WEST")
+  inspect(in_collector.get_position().x, content="0")
+  inspect(in_collector.get_position().y, content="10")
+
+  let out_collector = provide_collector_port(
+    graph,
+    node,
+    l_graph_util_test_port_type_output(),
+    l_graph_util_test_port_side_east(),
+  )
+  inspect(
+    out_collector.get_property_bool(internal_properties_output_collect),
+    content="true",
+  )
+  inspect(port_side_to_string(out_collector.get_side()), content="EAST")
+  inspect(out_collector.get_position().x, content="40")
+  inspect(out_collector.get_position().y, content="10")
+}
+
+///|
+test "initialize_port sets side, offset, ratio, and explicit anchor like Java" {
+  let graph = new_l_graph()
+  let node = new_l_node(graph=Some(graph))
+  ignore(node.get_size().set_xy(10.0, 10.0))
+
+  let side_port = new_l_port()
+  side_port.set_node(Some(node))
+  ignore(side_port.get_size().set_xy(2.0, 2.0))
+  ignore(side_port.get_position().set_xy(11.0, 4.0))
+
+  initialize_port(
+    side_port,
+    l_graph_util_test_port_constraints_fixed_side(),
+    l_graph_util_test_direction_rightward(),
+    None,
+  )
+
+  inspect(port_side_to_string(side_port.get_side()), content="EAST")
+  inspect(
+    side_port.get_property_double(layered_options_port_border_offset),
+    content="1",
+  )
+  inspect(side_port.get_anchor().x, content="2")
+  inspect(side_port.get_anchor().y, content="1")
+
+  let ratio_port = new_l_port()
+  ratio_port.set_node(Some(node))
+  ignore(ratio_port.get_size().set_xy(2.0, 2.0))
+  ignore(ratio_port.get_position().set_xy(5.0, 0.0))
+  initialize_port(
+    ratio_port,
+    l_graph_util_test_port_constraints_fixed_ratio(),
+    l_graph_util_test_direction_rightward(),
+    None,
+  )
+  inspect(
+    ratio_port.get_property_double(internal_properties_port_ratio_or_position),
+    content="0.5",
+  )
+
+  let explicit_anchor_port = new_l_port()
+  explicit_anchor_port.set_node(Some(node))
+  ignore(explicit_anchor_port.get_size().set_xy(4.0, 6.0))
+  let explicit_anchor = new_kvector_xy(3.0, 4.0)
+  initialize_port(
+    explicit_anchor_port,
+    l_graph_util_test_port_constraints_free(),
+    l_graph_util_test_direction_rightward(),
+    Some(explicit_anchor),
+  )
+  inspect(explicit_anchor_port.get_anchor().x, content="3")
+  inspect(explicit_anchor_port.get_anchor().y, content="4")
+  inspect(
+    explicit_anchor_port.is_explicitly_supplied_port_anchor(),
+    content="true",
+  )
+}
+
+///|
+test "is_descendant_l_node follows parent graph chain" {
+  let root_graph = new_l_graph()
+  let root_node = new_l_node(graph=Some(root_graph))
+
+  let child_graph = new_l_graph()
+  child_graph.set_parent_node(Some(root_node))
+  root_node.set_nested_graph(Some(child_graph))
+  let child_node = new_l_node(graph=Some(child_graph))
+
+  let grandchild_graph = new_l_graph()
+  grandchild_graph.set_parent_node(Some(child_node))
+  child_node.set_nested_graph(Some(grandchild_graph))
+  let grandchild_node = new_l_node(graph=Some(grandchild_graph))
+
+  inspect(is_descendant_l_node(child_node, root_node), content="true")
+  inspect(is_descendant_l_node(grandchild_node, root_node), content="true")
+  inspect(is_descendant_l_node(root_node, child_node), content="false")
+}
+
+///|
+test "change_coord_system converts points between nested graph coordinate systems" {
+  let root_graph = new_l_graph()
+  root_graph.set_offset_xy(5.0, 7.0)
+
+  let parent_node = new_l_node(graph=Some(root_graph))
+  ignore(parent_node.get_position().set_xy(100.0, 200.0))
+
+  let child_graph = new_l_graph()
+  child_graph.set_parent_node(Some(parent_node))
+  parent_node.set_nested_graph(Some(child_graph))
+  child_graph.set_offset_xy(10.0, 20.0)
+  child_graph.get_padding().set_left(3.0)
+  child_graph.get_padding().set_top(4.0)
+
+  let point_from_child = new_kvector_xy(1.0, 2.0)
+  change_coord_system(point_from_child, child_graph, root_graph)
+  inspect(point_from_child.x, content="114")
+  inspect(point_from_child.y, content="226")
+
+  let point_from_root = new_kvector_xy(114.0, 226.0)
+  change_coord_system(point_from_root, root_graph, child_graph)
+  inspect(point_from_root.x, content="1")
+  inspect(point_from_root.y, content="2")
+
+  let unchanged = new_kvector_xy(9.0, 9.0)
+  change_coord_system(unchanged, child_graph, child_graph)
+  inspect(unchanged.x, content="9")
+  inspect(unchanged.y, content="9")
 }

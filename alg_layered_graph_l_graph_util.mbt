@@ -169,3 +169,302 @@ pub fn find_max_non_dummy_node_width(
 
   max_width
 }
+
+///|
+fn l_graph_util_port_side_is_defined(side : PortSide) -> Bool {
+  match side {
+    PortSide::SideUndefined => false
+    _ => true
+  }
+}
+
+///|
+fn calc_port_side(port : LPort, direction : Direction) -> PortSide {
+  let node = match port.get_node() {
+    Some(value) => value
+    None => return PortSide::SideUndefined
+  }
+  let node_width = node.get_size().x
+  let node_height = node.get_size().y
+  if node_width <= 0.0 && node_height <= 0.0 {
+    return PortSide::SideUndefined
+  }
+
+  let xpos = port.get_position().x
+  let ypos = port.get_position().y
+  let width = port.get_size().x
+  let height = port.get_size().y
+
+  match direction {
+    Direction::Leftward =>
+      if xpos < 0.0 {
+        return PortSide::West
+      } else if xpos + width > node_width {
+        return PortSide::East
+      }
+    Direction::Rightward =>
+      if xpos < 0.0 {
+        return PortSide::West
+      } else if xpos + width > node_width {
+        return PortSide::East
+      }
+    Direction::Upward =>
+      if ypos < 0.0 {
+        return PortSide::North
+      } else if ypos + height > node_height {
+        return PortSide::South
+      }
+    Direction::Downward =>
+      if ypos < 0.0 {
+        return PortSide::North
+      } else if ypos + height > node_height {
+        return PortSide::South
+      }
+    Direction::Undefined => ()
+  }
+
+  let width_percent = (xpos + width / 2.0) / node_width
+  let height_percent = (ypos + height / 2.0) / node_height
+  if width_percent + height_percent <= 1.0 &&
+    width_percent - height_percent <= 0.0 {
+    PortSide::West
+  } else if width_percent + height_percent >= 1.0 &&
+    width_percent - height_percent >= 0.0 {
+    PortSide::East
+  } else if height_percent < 1.0 / 2.0 {
+    PortSide::North
+  } else {
+    PortSide::South
+  }
+}
+
+///|
+fn calc_port_offset(port : LPort, side : PortSide) -> Double {
+  let node = match port.get_node() {
+    Some(value) => value
+    None => return 0.0
+  }
+  match side {
+    PortSide::North => -(port.get_position().y + port.get_size().y)
+    PortSide::East => port.get_position().x - node.get_size().x
+    PortSide::South => port.get_position().y - node.get_size().y
+    PortSide::West => -(port.get_position().x + port.get_size().x)
+    PortSide::SideUndefined => 0.0
+  }
+}
+
+///|
+fn center_point(point : KVector, boundary : KVector, side : PortSide) -> Unit {
+  match side {
+    PortSide::North => {
+      point.x = boundary.x / 2.0
+      point.y = 0.0
+    }
+    PortSide::East => {
+      point.x = boundary.x
+      point.y = boundary.y / 2.0
+    }
+    PortSide::South => {
+      point.x = boundary.x / 2.0
+      point.y = boundary.y
+    }
+    PortSide::West => {
+      point.x = 0.0
+      point.y = boundary.y / 2.0
+    }
+    PortSide::SideUndefined => ()
+  }
+}
+
+///|
+pub fn provide_collector_port(
+  _layered_graph : LGraph,
+  node : LNode,
+  port_type : PortType,
+  side : PortSide,
+) -> LPort {
+  let port = match port_type {
+    PortType::Input => {
+      for inport in node.get_ports() {
+        if inport.get_property_bool(internal_properties_input_collect) {
+          return inport
+        }
+      }
+      let created = new_l_port()
+      created.set_property_bool(internal_properties_input_collect, true)
+      created
+    }
+    PortType::Output => {
+      for outport in node.get_ports() {
+        if outport.get_property_bool(internal_properties_output_collect) {
+          return outport
+        }
+      }
+      let created = new_l_port()
+      created.set_property_bool(internal_properties_output_collect, true)
+      created
+    }
+    PortType::Undefined => abort("Port type must be INPUT or OUTPUT.")
+  }
+  port.set_node(Some(node))
+  port.set_side(side)
+  center_point(port.get_position(), node.get_size(), side)
+  port
+}
+
+///|
+pub fn initialize_port(
+  port : LPort,
+  port_constraints : PortConstraints,
+  direction : Direction,
+  anchor_pos : KVector?,
+) -> Unit {
+  let mut port_side = port.get_side()
+
+  if !l_graph_util_port_side_is_defined(port_side) &&
+    port_constraints.is_side_fixed() {
+    port_side = calc_port_side(port, direction)
+    port.set_side(port_side)
+
+    let position = port.get_position()
+    if !port.has_property_double(layered_options_port_border_offset) &&
+      l_graph_util_port_side_is_defined(port_side) &&
+      (position.x != 0.0 || position.y != 0.0) {
+      port.set_property_double(
+        layered_options_port_border_offset,
+        calc_port_offset(port, port_side),
+      )
+    }
+  }
+
+  if port_constraints.is_ratio_fixed() {
+    let mut ratio = 0.0
+    match port_side {
+      PortSide::North => {
+        let node_width = match port.get_node() {
+          Some(node) => node.get_size().x
+          None => 0.0
+        }
+        if node_width > 0.0 {
+          ratio = port.get_position().x / node_width
+        }
+      }
+      PortSide::South => {
+        let node_width = match port.get_node() {
+          Some(node) => node.get_size().x
+          None => 0.0
+        }
+        if node_width > 0.0 {
+          ratio = port.get_position().x / node_width
+        }
+      }
+      PortSide::East => {
+        let node_height = match port.get_node() {
+          Some(node) => node.get_size().y
+          None => 0.0
+        }
+        if node_height > 0.0 {
+          ratio = port.get_position().y / node_height
+        }
+      }
+      PortSide::West => {
+        let node_height = match port.get_node() {
+          Some(node) => node.get_size().y
+          None => 0.0
+        }
+        if node_height > 0.0 {
+          ratio = port.get_position().y / node_height
+        }
+      }
+      PortSide::SideUndefined => ()
+    }
+    port.set_property_double(internal_properties_port_ratio_or_position, ratio)
+  }
+
+  let port_size = port.get_size()
+  let port_anchor = port.get_anchor()
+  match anchor_pos {
+    Some(anchor) => {
+      port_anchor.x = anchor.x
+      port_anchor.y = anchor.y
+      port.set_explicitly_supplied_port_anchor(true)
+    }
+    None =>
+      if port_constraints.is_side_fixed() &&
+        l_graph_util_port_side_is_defined(port_side) {
+        match port_side {
+          PortSide::North => port_anchor.x = port_size.x / 2.0
+          PortSide::East => {
+            port_anchor.x = port_size.x
+            port_anchor.y = port_size.y / 2.0
+          }
+          PortSide::South => {
+            port_anchor.x = port_size.x / 2.0
+            port_anchor.y = port_size.y
+          }
+          PortSide::West => port_anchor.y = port_size.y / 2.0
+          PortSide::SideUndefined => ()
+        }
+      } else {
+        port_anchor.x = port_size.x / 2.0
+        port_anchor.y = port_size.y / 2.0
+      }
+  }
+}
+
+///|
+pub fn is_descendant_l_node(child : LNode, parent : LNode) -> Bool {
+  let mut current = child
+  let mut next = current.get_graph().get_parent_node()
+  while true {
+    match next {
+      Some(node) => {
+        current = node
+        if current.get_handle() == parent.get_handle() {
+          return true
+        }
+        next = current.get_graph().get_parent_node()
+      }
+      None => break
+    }
+  }
+  false
+}
+
+///|
+pub fn change_coord_system(
+  point : KVector,
+  old_graph : LGraph,
+  new_graph : LGraph,
+) -> Unit {
+  let mut graph = old_graph
+  let mut node : LNode? = None
+  while true {
+    ignore(point.add(graph.get_offset()))
+    node = graph.get_parent_node()
+    match node {
+      Some(value) => {
+        let padding = graph.get_padding()
+        ignore(point.add_xy(padding.left, padding.top))
+        ignore(point.add(value.get_position()))
+        graph = value.get_graph()
+      }
+      None => break
+    }
+  }
+
+  graph = new_graph
+  while true {
+    ignore(point.sub(graph.get_offset()))
+    node = graph.get_parent_node()
+    match node {
+      Some(value) => {
+        let padding = graph.get_padding()
+        ignore(point.sub_xy(padding.left, padding.top))
+        ignore(point.sub(value.get_position()))
+        graph = value.get_graph()
+      }
+      None => break
+    }
+  }
+}
