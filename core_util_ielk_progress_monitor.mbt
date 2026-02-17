@@ -2,43 +2,6 @@
 pub let elk_unknown_work = -1.0
 
 ///|
-pub struct IElkCancelIndicator {
-  canceled : Bool
-}
-
-///|
-pub fn new_elk_cancel_indicator(
-  canceled? : Bool = false,
-) -> IElkCancelIndicator {
-  { canceled, }
-}
-
-///|
-pub fn IElkCancelIndicator::is_canceled(self : IElkCancelIndicator) -> Bool {
-  self.canceled
-}
-
-///|
-pub enum LoggedGraphType {
-  ElkGraph
-  LGraph
-}
-
-///|
-pub struct LoggedGraph {
-  tag : String
-  graph_type : LoggedGraphType
-}
-
-///|
-pub fn new_logged_graph(
-  tag : String,
-  graph_type : LoggedGraphType,
-) -> LoggedGraph {
-  { tag, graph_type }
-}
-
-///|
 pub struct IElkProgressMonitor {
   mut running : Bool
   mut task_name : String
@@ -59,18 +22,6 @@ pub fn new_elk_progress_monitor(
     logs: [],
     logged_graphs: [],
     null_mode: false,
-  }
-}
-
-///|
-pub fn new_null_elk_progress_monitor() -> IElkProgressMonitor {
-  {
-    running: false,
-    task_name: "",
-    canceled: false,
-    logs: [],
-    logged_graphs: [],
-    null_mode: true,
   }
 }
 

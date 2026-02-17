@@ -1,1 +1,19 @@
-// Upstream counterpart file; declarations are currently aggregated in core_math_elk_margin.mbt, core_util_ielk_progress_monitor.mbt, or core_options_alignment.mbt.
+///|
+pub enum LoggedGraphType {
+  ElkGraph
+  LGraph
+}
+
+///|
+pub struct LoggedGraph {
+  tag : String
+  graph_type : LoggedGraphType
+}
+
+///|
+pub fn new_logged_graph(
+  tag : String,
+  graph_type : LoggedGraphType,
+) -> LoggedGraph {
+  { tag, graph_type }
+}
