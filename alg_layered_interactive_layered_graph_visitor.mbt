@@ -139,6 +139,7 @@ fn interactive_layered_graph_visitor_set_kvector_option(
   option : IProperty[KVector],
   value : KVector,
 ) -> Unit {
+  node_set_kvector_property(node, option, value)
   node_set_layout_option_string_by_id(node, option.get_id(), value.to_string())
 }
 

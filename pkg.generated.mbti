@@ -5710,6 +5710,8 @@ pub fn node_clear_double_property(Int, IProperty[Double]) -> Unit
 
 pub fn node_clear_int_property(Int, IProperty[Int]) -> Unit
 
+pub fn node_clear_kvector_property(Int, IProperty[KVector]) -> Unit
+
 pub fn node_clear_string_property(Int, IProperty[String]) -> Unit
 
 pub fn node_clear_string_set_property(Int, IProperty[Array[String]]) -> Unit
@@ -5760,6 +5762,8 @@ pub fn node_get_double_property(Int, IProperty[Double]) -> Double
 
 pub fn node_get_int_property(Int, IProperty[Int]) -> Int
 
+pub fn node_get_kvector_property(Int, IProperty[KVector]) -> KVector
+
 pub fn node_get_string_property(Int, IProperty[String]) -> String
 
 pub fn node_get_string_set_property(Int, IProperty[Array[String]]) -> Array[String]
@@ -5769,6 +5773,8 @@ pub fn node_has_bool_property(Int, IProperty[Bool]) -> Bool
 pub fn node_has_double_property(Int, IProperty[Double]) -> Bool
 
 pub fn node_has_int_property(Int, IProperty[Int]) -> Bool
+
+pub fn node_has_kvector_property(Int, IProperty[KVector]) -> Bool
 
 pub fn node_has_string_property(Int, IProperty[String]) -> Bool
 
@@ -5883,6 +5889,8 @@ pub fn node_set_identifier(Int, String) -> Unit
 pub fn node_set_individual_spacing_option_string_by_id(Int, String, String) -> Unit
 
 pub fn node_set_int_property(Int, IProperty[Int], Int) -> Unit
+
+pub fn node_set_kvector_property(Int, IProperty[KVector], KVector) -> Unit
 
 pub fn node_set_layout_option_string_by_id(Int, String, String) -> Unit
 

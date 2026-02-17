@@ -50,6 +50,20 @@ fn interactive_layered_graph_visitor_test_require_position(
 }
 
 ///|
+fn interactive_layered_graph_visitor_test_expect_typed_position(
+  node : ElkNode,
+) -> Bool {
+  if !node_has_kvector_property(node, layered_options_position) {
+    return false
+  }
+  let typed_position = node_get_kvector_property(node, layered_options_position)
+  let option_position = interactive_layered_graph_visitor_test_require_position(
+    node,
+  )
+  typed_position.x == option_position.x && typed_position.y == option_position.y
+}
+
+///|
 test "interactive layered graph visitor sets interactive strategies" {
   reset_graph_model_for_test()
   let root = create_graph()
@@ -408,13 +422,22 @@ test "interactive layered graph visitor propagates position constraints through 
     first,
     layered_options_position.get_id(),
   )
+  assert_true(
+    interactive_layered_graph_visitor_test_expect_typed_position(first),
+  )
   interactive_layered_graph_visitor_test_expect_non_empty_layout_option(
     second,
     layered_options_position.get_id(),
   )
+  assert_true(
+    interactive_layered_graph_visitor_test_expect_typed_position(second),
+  )
   interactive_layered_graph_visitor_test_expect_non_empty_layout_option(
     plain,
     layered_options_position.get_id(),
+  )
+  assert_true(
+    interactive_layered_graph_visitor_test_expect_typed_position(plain),
   )
 }
 
@@ -630,4 +653,10 @@ test "interactive layered graph visitor assigns orthogonal pseudo positions in D
     second,
   )
   assert_true(second_position.x > first_position.x)
+  assert_true(
+    interactive_layered_graph_visitor_test_expect_typed_position(first),
+  )
+  assert_true(
+    interactive_layered_graph_visitor_test_expect_typed_position(second),
+  )
 }

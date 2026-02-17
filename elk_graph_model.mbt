@@ -70,6 +70,7 @@ priv struct NodeData {
   height : Double
   int_properties : Map[String, Int]
   double_properties : Map[String, Double]
+  kvector_properties : Map[String, KVector]
   bool_properties : Map[String, Bool]
   string_properties : Map[String, String]
   string_set_properties : Map[String, Array[String]]
@@ -189,6 +190,15 @@ fn clone_string_double_map(source : Map[String, Double]) -> Map[String, Double] 
 }
 
 ///|
+fn clone_string_kvector_map(
+  source : Map[String, KVector],
+) -> Map[String, KVector] {
+  let result = {}
+  source.each((key, value) => result[key] = value.clone())
+  result
+}
+
+///|
 fn clone_string_bool_map(source : Map[String, Bool]) -> Map[String, Bool] {
   let result = {}
   source.each((key, value) => result[key] = value)
@@ -277,6 +287,7 @@ pub fn create_node(parent : ElkNode?) -> ElkNode {
     height: 0.0,
     int_properties: {},
     double_properties: {},
+    kvector_properties: {},
     bool_properties: {},
     string_properties: {},
     string_set_properties: {},
@@ -496,6 +507,7 @@ pub fn node_set_location(node : ElkNode, x : Double, y : Double) -> Unit {
     height: data.height,
     int_properties: data.int_properties,
     double_properties: data.double_properties,
+    kvector_properties: data.kvector_properties,
     bool_properties: data.bool_properties,
     string_properties: data.string_properties,
     string_set_properties: data.string_set_properties,
@@ -536,6 +548,7 @@ pub fn node_set_dimensions(
     height,
     int_properties: data.int_properties,
     double_properties: data.double_properties,
+    kvector_properties: data.kvector_properties,
     bool_properties: data.bool_properties,
     string_properties: data.string_properties,
     string_set_properties: data.string_set_properties,
@@ -609,6 +622,18 @@ pub fn node_set_double_property(
 }
 
 ///|
+pub fn node_set_kvector_property(
+  node : ElkNode,
+  property : IProperty[KVector],
+  value : KVector,
+) -> Unit {
+  checked_node(node)
+  let data = node_store.val[node]
+  data.kvector_properties[property.get_id()] = value.clone()
+  node_store.val[node] = data
+}
+
+///|
 pub fn node_get_double_property(
   node : ElkNode,
   property : IProperty[Double],
@@ -618,6 +643,19 @@ pub fn node_get_double_property(
   match data.double_properties.get(property.get_id()) {
     Some(value) => value
     None => property.get_default()
+  }
+}
+
+///|
+pub fn node_get_kvector_property(
+  node : ElkNode,
+  property : IProperty[KVector],
+) -> KVector {
+  checked_node(node)
+  let data = node_store.val[node]
+  match data.kvector_properties.get(property.get_id()) {
+    Some(value) => value.clone()
+    None => property.get_default().clone()
   }
 }
 
@@ -632,6 +670,16 @@ pub fn node_has_double_property(
 }
 
 ///|
+pub fn node_has_kvector_property(
+  node : ElkNode,
+  property : IProperty[KVector],
+) -> Bool {
+  checked_node(node)
+  let data = node_store.val[node]
+  data.kvector_properties.contains(property.get_id())
+}
+
+///|
 pub fn node_clear_double_property(
   node : ElkNode,
   property : IProperty[Double],
@@ -639,6 +687,17 @@ pub fn node_clear_double_property(
   checked_node(node)
   let data = node_store.val[node]
   data.double_properties.remove(property.get_id())
+  node_store.val[node] = data
+}
+
+///|
+pub fn node_clear_kvector_property(
+  node : ElkNode,
+  property : IProperty[KVector],
+) -> Unit {
+  checked_node(node)
+  let data = node_store.val[node]
+  data.kvector_properties.remove(property.get_id())
   node_store.val[node] = data
 }
 
@@ -750,6 +809,7 @@ pub fn node_set_identifier(node : ElkNode, identifier : String) -> Unit {
     height: data.height,
     int_properties: data.int_properties,
     double_properties: data.double_properties,
+    kvector_properties: data.kvector_properties,
     bool_properties: data.bool_properties,
     string_properties: data.string_properties,
     string_set_properties: data.string_set_properties,
@@ -901,6 +961,7 @@ pub fn node_copy_properties(target : ElkNode, source : ElkNode) -> Unit {
     height: target_data.height,
     int_properties: clone_string_int_map(source_data.int_properties),
     double_properties: clone_string_double_map(source_data.double_properties),
+    kvector_properties: clone_string_kvector_map(source_data.kvector_properties),
     bool_properties: clone_string_bool_map(source_data.bool_properties),
     string_properties: clone_string_string_map(source_data.string_properties),
     string_set_properties: clone_string_string_array_map(
