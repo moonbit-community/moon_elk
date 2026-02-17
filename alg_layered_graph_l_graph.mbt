@@ -319,6 +319,14 @@ pub fn LGraph::has_property_string(
 }
 
 ///|
+pub fn LGraph::clear_property_string(
+  self : LGraph,
+  property : IProperty[String],
+) -> Unit {
+  ignore(self.string_properties.remove(property.get_id()))
+}
+
+///|
 pub fn LGraph::get_property_string_array(
   self : LGraph,
   property : IProperty[Array[String]],

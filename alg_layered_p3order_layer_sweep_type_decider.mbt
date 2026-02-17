@@ -1,11 +1,4 @@
 ///|
-pub let layered_options_crossing_minimization_hierarchical_sweepiness : IProperty[
-  Double,
-] = new_property(
-  "org.eclipse.elk.layered.crossingMinimization.hierarchicalSweepiness", 0.1,
-)
-
-///|
 fn layer_sweep_type_decider_port_constraints_from_string(
   value : String,
 ) -> PortConstraints {

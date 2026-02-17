@@ -74,7 +74,7 @@ pub fn LayeredSimpleRowGraphPlacer::combine(
   self.place_components(components, target, max_row_width, component_spacing)
 
   if first_component.get_property_bool(
-      layered_components_compaction_connected_components,
+      layered_options_compaction_connected_components,
     ) {
     let compactor = new_layered_components_compactor()
     compactor.compact(components, target.get_size(), component_spacing)
@@ -97,7 +97,7 @@ pub fn LayeredSimpleRowGraphPlacer::sort_components(
 ) -> Unit {
   ignore(self)
   let ordering = target.get_property_component_ordering_strategy(
-    layered_components_consider_model_order_components,
+    layered_options_consider_model_order_components,
   )
   if !component_ordering_strategy_equals(
       ordering,

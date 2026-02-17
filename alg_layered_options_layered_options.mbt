@@ -39,6 +39,13 @@ pub let layered_options_crossing_minimization_strategy : IProperty[String] = new
 )
 
 ///|
+pub let layered_options_crossing_minimization_hierarchical_sweepiness : IProperty[
+  Double,
+] = new_property(
+  "org.eclipse.elk.layered.crossingMinimization.hierarchicalSweepiness", 0.1,
+)
+
+///|
 pub let layered_options_crossing_minimization_position_id : IProperty[Int] = new_property(
   "org.eclipse.elk.layered.crossingMinimization.positionId", 0,
 )
@@ -118,8 +125,46 @@ pub let layered_options_node_placement_favor_straight_edges : IProperty[Bool] = 
 )
 
 ///|
+pub let layered_options_node_placement_strategy : IProperty[String] = new_property(
+  "org.eclipse.elk.layered.nodePlacement.strategy", "BRANDES_KOEPF",
+)
+
+///|
+pub let layered_options_node_placement_bk_fixed_alignment : IProperty[String] = new_property(
+  "org.eclipse.elk.layered.nodePlacement.bk.fixedAlignment", "NONE",
+)
+
+///|
+pub let layered_options_node_placement_bk_edge_straightening : IProperty[String] = new_property(
+  "org.eclipse.elk.layered.nodePlacement.bk.edgeStraightening", "IMPROVE_STRAIGHTNESS",
+)
+
+///|
+pub let layered_options_node_placement_network_simplex_node_flexibility : IProperty[
+  String,
+] = new_property(
+  "org.eclipse.elk.layered.nodePlacement.networkSimplex.nodeFlexibility", "NONE",
+)
+
+///|
+pub let layered_options_node_placement_network_simplex_node_flexibility_default : IProperty[
+  String,
+] = new_property(
+  "org.eclipse.elk.layered.nodePlacement.networkSimplex.nodeFlexibility.default",
+  "NONE",
+)
+
+///|
 pub let layered_options_consider_model_order_strategy : IProperty[String] = new_property(
   "org.eclipse.elk.layered.considerModelOrder.strategy", "NONE",
+)
+
+///|
+pub let layered_options_consider_model_order_components : IProperty[
+  ComponentOrderingStrategy,
+] = new_property(
+  "org.eclipse.elk.layered.considerModelOrder.components",
+  ComponentOrderingStrategy::NoneType,
 )
 
 ///|
@@ -130,6 +175,11 @@ pub let layered_options_cycle_breaking_strategy : IProperty[String] = new_proper
 ///|
 pub let layered_options_layering_strategy : IProperty[String] = new_property(
   "org.eclipse.elk.layered.layering.strategy", "NETWORK_SIMPLEX",
+)
+
+///|
+pub let layered_options_layering_coffman_graham_layer_bound : IProperty[Int] = new_property(
+  "org.eclipse.elk.layered.layering.coffmanGraham.layerBound", @int.max_value,
 )
 
 ///|
@@ -167,6 +217,26 @@ pub let layered_options_compaction_post_compaction_constraints : IProperty[
   String,
 ] = new_property(
   "org.eclipse.elk.alg.layered.compaction.postCompaction.constraints", "QUADRATIC",
+)
+
+///|
+pub let layered_options_compaction_connected_components : IProperty[Bool] = new_property(
+  "org.eclipse.elk.layered.compaction.connectedComponents", false,
+)
+
+///|
+pub let layered_options_priority_direction : IProperty[Int] = new_property(
+  "org.eclipse.elk.layered.priority.direction", 0,
+)
+
+///|
+pub let layered_options_priority_shortness : IProperty[Int] = new_property(
+  "org.eclipse.elk.layered.priority.shortness", 0,
+)
+
+///|
+pub let layered_options_priority_straightness : IProperty[Int] = new_property(
+  "priority.straightness", 0,
 )
 
 ///|

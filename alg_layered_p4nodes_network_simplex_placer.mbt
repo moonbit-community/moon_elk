@@ -1,25 +1,4 @@
 ///|
-let network_simplex_node_flexibility : IProperty[String] = new_property(
-  "org.eclipse.elk.layered.nodePlacement.networkSimplex.nodeFlexibility", "NONE",
-)
-
-///|
-let network_simplex_node_flexibility_default : IProperty[String] = new_property(
-  "org.eclipse.elk.layered.nodePlacement.networkSimplex.nodeFlexibility.default",
-  "NONE",
-)
-
-///|
-let network_simplex_priority_straightness : IProperty[Int] = new_property(
-  "priority.straightness", 0,
-)
-
-///|
-let network_simplex_node_placement_favor_straight_edges : IProperty[Bool] = new_property(
-  "org.eclipse.elk.layered.nodePlacement.favorStraightEdges", false,
-)
-
-///|
 let network_simplex_edge_weight_base : Double = 4.0
 
 ///|
@@ -154,11 +133,19 @@ fn network_simplex_port_constraints_is_pos_fixed(value : String) -> Bool {
 
 ///|
 fn network_simplex_node_flexibility_value(node : LNode) -> String {
-  if node.has_property_string(network_simplex_node_flexibility) {
-    return node.get_property_string(network_simplex_node_flexibility)
+  if node.has_property_string(
+      layered_options_node_placement_network_simplex_node_flexibility,
+    ) {
+    return node.get_property_string(
+      layered_options_node_placement_network_simplex_node_flexibility,
+    )
   }
 
-  node.get_graph().get_property_string(network_simplex_node_flexibility_default)
+  node
+  .get_graph()
+  .get_property_string(
+    layered_options_node_placement_network_simplex_node_flexibility_default,
+  )
 }
 
 ///|
@@ -381,7 +368,7 @@ fn network_simplex_get_edge_weight(edge : LEdge) -> Double {
   let target_node = network_simplex_require_port_node(target_port)
   let priority = network_simplex_int_max(
     1,
-    edge.get_property_int(network_simplex_priority_straightness),
+    edge.get_property_int(layered_options_priority_straightness),
   )
   priority.to_double() *
   network_simplex_node_type_edge_weight(
@@ -936,7 +923,7 @@ fn network_simplex_execute_auxiliary_graph(
 ///|
 fn network_simplex_favor_straight_edges(layered_graph : LGraph) -> Bool {
   layered_graph.get_property_bool(
-    network_simplex_node_placement_favor_straight_edges,
+    layered_options_node_placement_favor_straight_edges,
   )
 }
 

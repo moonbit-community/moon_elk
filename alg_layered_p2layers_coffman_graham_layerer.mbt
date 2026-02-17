@@ -1,9 +1,4 @@
 ///|
-let layered_options_layering_coffman_graham_layer_bound : IProperty[Int] = new_property(
-  "org.eclipse.elk.layered.layering.coffmanGraham.layerBound", @int.max_value,
-)
-
-///|
 fn coffman_graham_layerer_layer_constraint_preprocessor_factory() -> ILayoutProcessorFactory[
   LayeredPhases,
   LGraph,

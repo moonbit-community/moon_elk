@@ -17,10 +17,45 @@ fn layered_components_test_new_graph(
 }
 
 ///|
+fn layered_components_test_add_layerless_node(graph : LGraph) -> LNode {
+  let node = new_l_node(graph=Some(graph))
+  graph.get_layerless_nodes().push(node)
+  node
+}
+
+///|
+test "LayeredComponentsProcessor splits disconnected layerless nodes" {
+  let graph = new_l_graph()
+  ignore(layered_components_test_add_layerless_node(graph))
+  ignore(layered_components_test_add_layerless_node(graph))
+
+  let components = new_layered_components_processor().split(graph)
+  assert_eq(components.length(), 2)
+  assert_eq(components[0].get_layerless_nodes().length(), 1)
+  assert_eq(components[1].get_layerless_nodes().length(), 1)
+}
+
+///|
+test "LayeredComponentsProcessor does not split when external ports require fixed order" {
+  let graph = new_l_graph()
+  graph.set_property_graph_properties_array(
+    internal_properties_graph_properties,
+    [GraphProperties::ExternalPorts],
+  )
+  graph.set_property_string(port_constraints, "FIXED_ORDER")
+  ignore(layered_components_test_add_layerless_node(graph))
+  ignore(layered_components_test_add_layerless_node(graph))
+
+  let components = new_layered_components_processor().split(graph)
+  assert_eq(components.length(), 1)
+  assert_eq(components[0].get_layerless_nodes().length(), 2)
+}
+
+///|
 test "LayeredSimpleRowGraphPlacer places components into one row" {
   let target = new_l_graph()
   target.set_property_component_ordering_strategy(
-    layered_components_consider_model_order_components,
+    layered_options_consider_model_order_components,
     ComponentOrderingStrategy::ModelOrder,
   )
 
@@ -96,9 +131,12 @@ test "LayeredComponentGroupModelOrderGraphPlacer honors horizontal model-order b
 ///|
 test "LayeredComponentsProcessor picks model-order row placer for model-order strategy" {
   let config = new_l_graph()
-  config.set_property_bool(layered_components_has_external_ports, true)
+  config.set_property_graph_properties_array(
+    internal_properties_graph_properties,
+    [GraphProperties::ExternalPorts],
+  )
   config.set_property_component_ordering_strategy(
-    layered_components_consider_model_order_components,
+    layered_options_consider_model_order_components,
     ComponentOrderingStrategy::ModelOrder,
   )
 

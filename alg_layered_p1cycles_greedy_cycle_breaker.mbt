@@ -1,9 +1,4 @@
 ///|
-let layered_options_priority_direction : IProperty[Int] = new_property(
-  "org.eclipse.elk.layered.priority.direction", 0,
-)
-
-///|
 struct GreedyCycleBreakerState {
   indeg : Array[Int]
   outdeg : Array[Int]

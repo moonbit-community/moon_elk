@@ -33,21 +33,6 @@ fn elk_layered_has_nested_graph(node : LNode) -> Bool {
 }
 
 ///|
-let elk_layered_cycle_breaking_strategy : IProperty[String] = new_property(
-  "org.eclipse.elk.layered.cycleBreaking.strategy", "GREEDY",
-)
-
-///|
-let elk_layered_layering_strategy : IProperty[String] = new_property(
-  "org.eclipse.elk.layered.layering.strategy", "NETWORK_SIMPLEX",
-)
-
-///|
-let elk_layered_node_placement_strategy : IProperty[String] = new_property(
-  "org.eclipse.elk.layered.nodePlacement.strategy", "BRANDES_KOEPF",
-)
-
-///|
 let elk_layered_default_min_width = 20.0
 
 ///|
@@ -337,10 +322,10 @@ fn elk_layered_collect_algorithm_for_graph(
   lgraph : LGraph,
 ) -> Array[ILayoutProcessor[LayeredPhases, LGraph]] {
   let layering_strategy = lgraph.get_property_string(
-    elk_layered_layering_strategy,
+    layered_options_layering_strategy,
   )
   let cycle_breaking_strategy = lgraph.get_property_string(
-    elk_layered_cycle_breaking_strategy,
+    layered_options_cycle_breaking_strategy,
   )
   let crossing_strategy = lgraph.get_property_string(
     layered_options_crossing_minimization_strategy,
@@ -364,7 +349,7 @@ fn elk_layered_collect_algorithm_for_graph(
     layered_options_wrapping_strategy,
   )
   let node_placement_strategy = lgraph.get_property_string(
-    elk_layered_node_placement_strategy,
+    layered_options_node_placement_strategy,
   )
   let direction_value = lgraph.get_property_string(direction)
   let feedback_edges = lgraph.get_property_bool(layered_options_feedback_edges)

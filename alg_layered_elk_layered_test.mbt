@@ -12,8 +12,8 @@ test "elk layered do_layout scaffold completes monitor lifecycle" {
 ///|
 test "elk layered do_compound_layout notifies installed test controller" {
   let elk_layered = new_elk_layered()
-  let expected_graph = new_l_graph()
-  let lgraph = new_l_graph()
+  let expected_graph = elk_layered_test_graph_with_greedy_switch_off()
+  let lgraph = elk_layered_test_graph_with_greedy_switch_off()
   let monitor = new_elk_progress_monitor()
 
   let expected_state = elk_layered.prepare_layout_test(expected_graph)
@@ -62,7 +62,9 @@ test "elk layered do_compound_layout notifies installed test controller" {
 ///|
 test "elk layered run_layout_test_until follows inclusive boundary semantics" {
   let elk_layered = new_elk_layered()
-  let state = elk_layered.prepare_layout_test(new_l_graph())
+  let state = elk_layered.prepare_layout_test(
+    elk_layered_test_graph_with_greedy_switch_off(),
+  )
   let algorithm = elk_layered.get_layout_test_configuration(state)
   assert_false(algorithm.is_empty())
 
@@ -83,6 +85,8 @@ test "elk layered run_layout_test_until follows inclusive boundary semantics" {
 ///|
 fn elk_layered_test_graph_with_greedy_switch_off() -> LGraph {
   let graph = new_l_graph()
+  let node = new_l_node(graph=Some(graph))
+  graph.get_layerless_nodes().push(node)
   graph.set_property_string(
     layered_options_crossing_minimization_greedy_switch_type, "OFF",
   )

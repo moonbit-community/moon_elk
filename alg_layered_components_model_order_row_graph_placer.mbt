@@ -62,7 +62,7 @@ pub fn LayeredModelOrderRowGraphPlacer::combine(
   self.place_components(components, target, max_row_width, component_spacing)
 
   if first_component.get_property_bool(
-      layered_components_compaction_connected_components,
+      layered_options_compaction_connected_components,
     ) {
     let compactor = new_layered_components_compactor()
     compactor.compact(components, target.get_size(), component_spacing)

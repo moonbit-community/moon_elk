@@ -119,10 +119,9 @@ pub fn LayeredComponentGroupModelOrderGraphPlacer::combine(
   )
 
   if first_component.get_property_bool(
-      layered_components_compaction_connected_components,
+      layered_options_compaction_connected_components,
     ) &&
-    first_component.get_property_string(layered_components_edge_routing) ==
-    "ORTHOGONAL" {
+    first_component.get_property_string(edge_routing) == "ORTHOGONAL" {
     for graph in components {
       let graph_offset = graph.get_offset()
       self.base.offset_graph(graph, graph_offset.x, graph_offset.y)

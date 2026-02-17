@@ -9,11 +9,6 @@ let linear_segments_output_prio : IProperty[Int] = new_property(
 )
 
 ///|
-let linear_segments_priority_straightness : IProperty[Int] = new_property(
-  "priority.straightness", 0,
-)
-
-///|
 let linear_segments_option_deflection_dampening : IProperty[Double] = new_property(
   "org.eclipse.elk.alg.layered.nodePlacement.linearSegments.deflectionDampening",
   0.3,
@@ -384,7 +379,7 @@ fn linear_segments_sort_linear_segments(
       for port in node.get_ports() {
         for edge in port.get_incoming_edges() {
           let prio = edge.get_property_int(
-            linear_segments_priority_straightness,
+            layered_options_priority_straightness,
           )
           if prio > in_prio {
             in_prio = prio
@@ -392,7 +387,7 @@ fn linear_segments_sort_linear_segments(
         }
         for edge in port.get_outgoing_edges() {
           let prio = edge.get_property_int(
-            linear_segments_priority_straightness,
+            layered_options_priority_straightness,
           )
           if prio > out_prio {
             out_prio = prio
@@ -577,7 +572,7 @@ fn linear_segments_calc_deflection(
               other_output_prio
             }
             let prio = edge.get_property_int(
-              linear_segments_priority_straightness,
+              layered_options_priority_straightness,
             )
             if prio >= min_prio && prio >= other_prio {
               node_deflection = node_deflection +
@@ -611,7 +606,7 @@ fn linear_segments_calc_deflection(
               other_output_prio
             }
             let prio = edge.get_property_int(
-              linear_segments_priority_straightness,
+              layered_options_priority_straightness,
             )
             if prio >= min_prio && prio >= other_prio {
               node_deflection = node_deflection +

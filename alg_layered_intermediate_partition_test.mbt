@@ -1,9 +1,4 @@
 ///|
-let partition_test_priority_direction : IProperty[Int] = new_property(
-  "org.eclipse.elk.layered.priority.direction", 0,
-)
-
-///|
 fn partition_test_port_side(name : String) -> PortSide {
   for side in port_side_values() {
     if port_side_to_string(side) == name {
@@ -115,7 +110,7 @@ test "partition preprocessor reverses higher-to-lower direct partition edge and 
   let target_in = partition_test_new_port(target, "WEST")
 
   let edge = partition_test_new_edge(source_out, target_in)
-  edge.set_property_int(partition_test_priority_direction, 7)
+  edge.set_property_int(layered_options_priority_direction, 7)
 
   preprocessor.process(graph, None)
 
@@ -128,7 +123,7 @@ test "partition preprocessor reverses higher-to-lower direct partition edge and 
     source_out.get_handle(),
   )
   assert_true(edge.get_property_bool(internal_properties_reversed))
-  assert_eq(edge.get_property_int(partition_test_priority_direction), 1007)
+  assert_eq(edge.get_property_int(layered_options_priority_direction), 1007)
 }
 
 ///|

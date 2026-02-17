@@ -1,14 +1,4 @@
 ///|
-let bk_layered_option_node_placement_bk_fixed_alignment : IProperty[String] = new_property(
-  "org.eclipse.elk.layered.nodePlacement.bk.fixedAlignment", "NONE",
-)
-
-///|
-let bk_layered_option_node_placement_favor_straight_edges : IProperty[Bool] = new_property(
-  "org.eclipse.elk.layered.nodePlacement.favorStraightEdges", false,
-)
-
-///|
 fn bk_node_placer_same_node(left : LNode, right : LNode) -> Bool {
   left.get_handle() == right.get_handle()
 }
@@ -61,10 +51,10 @@ fn bk_node_placer_parse_fixed_alignment(value : String) -> FixedAlignment {
 ///|
 fn bk_node_placer_favor_straight_edges(layered_graph : LGraph) -> Bool {
   if layered_graph.has_property_bool(
-      bk_layered_option_node_placement_favor_straight_edges,
+      layered_options_node_placement_favor_straight_edges,
     ) {
     return layered_graph.get_property_bool(
-      bk_layered_option_node_placement_favor_straight_edges,
+      layered_options_node_placement_favor_straight_edges,
     )
   }
 
@@ -333,7 +323,7 @@ fn bk_node_placer_process(
 
   let fixed_alignment = bk_node_placer_parse_fixed_alignment(
     layered_graph.get_property_string(
-      bk_layered_option_node_placement_bk_fixed_alignment,
+      layered_options_node_placement_bk_fixed_alignment,
     ),
   )
   let favor_straight_edges = bk_node_placer_favor_straight_edges(layered_graph)

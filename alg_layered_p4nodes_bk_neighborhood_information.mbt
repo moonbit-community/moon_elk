@@ -1,9 +1,4 @@
 ///|
-let bk_priority_straightness : IProperty[Int] = new_property(
-  "priority.straightness", 0,
-)
-
-///|
 pub struct NeighborhoodInformation {
   mut node_count : Int
   mut layer_index : Array[Int]
@@ -80,7 +75,9 @@ fn neighborhood_information_determine_all_right_neighbors(
           continue
         }
 
-        let edge_priority = edge.get_property_int(bk_priority_straightness)
+        let edge_priority = edge.get_property_int(
+          layered_options_priority_straightness,
+        )
         if edge_priority > max_priority {
           max_priority = edge_priority
           result.clear()
@@ -119,7 +116,9 @@ fn neighborhood_information_determine_all_left_neighbors(
           continue
         }
 
-        let edge_priority = edge.get_property_int(bk_priority_straightness)
+        let edge_priority = edge.get_property_int(
+          layered_options_priority_straightness,
+        )
         if edge_priority > max_priority {
           max_priority = edge_priority
           result.clear()

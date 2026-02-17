@@ -1,9 +1,4 @@
 ///|
-let partition_preprocessor_priority_direction : IProperty[Int] = new_property(
-  "org.eclipse.elk.layered.priority.direction", 0,
-)
-
-///|
 let partition_preprocessor_partition_constraint_edge_priority : Int = 1000
 
 ///|
@@ -62,10 +57,10 @@ fn partition_preprocessor_reverse(edge : LEdge, graph : LGraph) -> Unit {
   ignore(graph)
   partition_preprocessor_reverse_edge(edge)
   let mut priority = partition_preprocessor_partition_constraint_edge_priority
-  if edge.has_property_int(partition_preprocessor_priority_direction) {
-    priority += edge.get_property_int(partition_preprocessor_priority_direction)
+  if edge.has_property_int(layered_options_priority_direction) {
+    priority += edge.get_property_int(layered_options_priority_direction)
   }
-  edge.set_property_int(partition_preprocessor_priority_direction, priority)
+  edge.set_property_int(layered_options_priority_direction, priority)
 }
 
 ///|

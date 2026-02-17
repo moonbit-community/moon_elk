@@ -2,11 +2,6 @@
 let network_simplex_layerer_iter_limit_factor = 4
 
 ///|
-let layered_options_priority_shortness : IProperty[Int] = new_property(
-  "org.eclipse.elk.layered.priority.shortness", 0,
-)
-
-///|
 fn network_simplex_layerer_layer_constraint_preprocessor_factory() -> ILayoutProcessorFactory[
   LayeredPhases,
   LGraph,

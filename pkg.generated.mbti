@@ -2866,15 +2866,7 @@ pub fn layered_compare_fuzzy_lt(Double, Double) -> Bool
 
 pub let layered_compare_fuzzy_tolerance : Double
 
-pub let layered_components_compaction_connected_components : IProperty[Bool]
-
-pub let layered_components_consider_model_order_components : IProperty[ComponentOrderingStrategy]
-
 pub let layered_components_direction : IProperty[Direction]
-
-pub let layered_components_edge_routing : IProperty[String]
-
-pub let layered_components_has_external_ports : IProperty[Bool]
 
 pub let layered_components_priority : IProperty[Int]
 
@@ -2904,9 +2896,13 @@ pub let layered_options_allow_non_flow_ports_to_switch_sides : IProperty[Bool]
 
 pub let layered_options_comment_box : IProperty[Bool]
 
+pub let layered_options_compaction_connected_components : IProperty[Bool]
+
 pub let layered_options_compaction_post_compaction_constraints : IProperty[String]
 
 pub let layered_options_compaction_post_compaction_strategy : IProperty[String]
+
+pub let layered_options_consider_model_order_components : IProperty[ComponentOrderingStrategy]
 
 pub let layered_options_consider_model_order_crossing_counter_node_influence : IProperty[Double]
 
@@ -3000,6 +2996,8 @@ pub let layered_options_layer_unzipping_reset_on_long_edges : IProperty[Bool]
 
 pub let layered_options_layer_unzipping_strategy : IProperty[String]
 
+pub let layered_options_layering_coffman_graham_layer_bound : IProperty[Int]
+
 pub let layered_options_layering_layer_choice_constraint : IProperty[Int]
 
 pub let layered_options_layering_layer_constraint : IProperty[String]
@@ -3016,7 +3014,17 @@ pub let layered_options_merge_edges : IProperty[Bool]
 
 pub let layered_options_merge_hierarchy_edges : IProperty[Bool]
 
+pub let layered_options_node_placement_bk_edge_straightening : IProperty[String]
+
+pub let layered_options_node_placement_bk_fixed_alignment : IProperty[String]
+
 pub let layered_options_node_placement_favor_straight_edges : IProperty[Bool]
+
+pub let layered_options_node_placement_network_simplex_node_flexibility : IProperty[String]
+
+pub let layered_options_node_placement_network_simplex_node_flexibility_default : IProperty[String]
+
+pub let layered_options_node_placement_strategy : IProperty[String]
 
 pub fn layered_options_parse_int_list(String) -> Array[Int]
 
@@ -3033,6 +3041,12 @@ pub let layered_options_port_index : IProperty[Int]
 pub let layered_options_port_sorting_strategy : IProperty[String]
 
 pub let layered_options_position : IProperty[KVector]
+
+pub let layered_options_priority_direction : IProperty[Int]
+
+pub let layered_options_priority_shortness : IProperty[Int]
+
+pub let layered_options_priority_straightness : IProperty[Int]
 
 pub let layered_options_spacing_base_value : IProperty[Double]
 
@@ -13984,6 +13998,7 @@ pub struct LGraph {
   layers : Array[Layer]
   mut parent_node : LNode?
 }
+pub fn LGraph::clear_property_string(Self, IProperty[String]) -> Unit
 pub fn LGraph::copy_properties(Self, Self) -> Unit
 pub fn LGraph::get_actual_size(Self) -> KVector
 pub fn LGraph::get_id(Self) -> Int

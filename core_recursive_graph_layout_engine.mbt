@@ -1334,7 +1334,7 @@ fn recursive_layered_create_context(node : ElkNode) -> RecursiveLayeredContext? 
   let fixed_alignment_value = recursive_layered_primary_option(
     node,
     "org.eclipse.elk.layered.nodePlacement.bk.fixedAlignment",
-    bk_layered_option_node_placement_bk_fixed_alignment.get_default(),
+    layered_options_node_placement_bk_fixed_alignment.get_default(),
   )
   let favor_straight_edges_value = recursive_layered_primary_option(
     node, "org.eclipse.elk.layered.nodePlacement.favorStraightEdges", "",
@@ -1446,12 +1446,12 @@ fn recursive_layered_create_context(node : ElkNode) -> RecursiveLayeredContext? 
     layered_options_feedback_edges, feedback_edges,
   )
   layered_graph.set_property_string(
-    bk_layered_option_node_placement_bk_fixed_alignment, fixed_alignment_value,
+    layered_options_node_placement_bk_fixed_alignment, fixed_alignment_value,
   )
   match recursive_layered_parse_bool(favor_straight_edges_value) {
     Some(value) =>
       layered_graph.set_property_bool(
-        bk_layered_option_node_placement_favor_straight_edges, value,
+        layered_options_node_placement_favor_straight_edges, value,
       )
     None => ()
   }
