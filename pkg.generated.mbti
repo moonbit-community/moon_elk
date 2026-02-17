@@ -4096,6 +4096,8 @@ pub fn new_default_configuration(edges? : Bool, nodes? : Bool, ports? : Bool, ed
 
 pub fn new_default_module() -> CoreServiceInjector
 
+pub fn new_default_selection_iterator(Int, Bool, Bool) -> DefaultSelectionIterator
+
 pub fn new_deprecated_layout_option_replacer() -> DeprecatedLayoutOptionReplacer
 
 pub fn new_depth_first_cycle_breaker_layout_phase() -> ILayoutProcessor[LayeredPhases, LGraph]
@@ -5467,6 +5469,8 @@ pub fn new_scanline_overlap_check((Node, Node) -> Unit, SvgImage) -> ScanlineOve
 pub fn new_scc_model_order_cycle_breaker_layout_phase() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_scc_node_type_cycle_breaker_layout_phase() -> ILayoutProcessor[LayeredPhases, LGraph]
+
+pub fn new_selection_iterator() -> SelectionIterator
 
 pub fn new_selective_paint_toggle_action(String, String, String, DisCoGraphRenderingCanvas) -> SelectivePaintToggleAction
 
@@ -9647,6 +9651,18 @@ pub fn DefaultConfiguration::edge_labels_enabled(Self) -> Bool
 pub fn DefaultConfiguration::edges_enabled(Self) -> Bool
 pub fn DefaultConfiguration::nodes_enabled(Self) -> Bool
 pub fn DefaultConfiguration::ports_enabled(Self) -> Bool
+
+pub struct DefaultSelectionIterator {
+  base : SelectionIterator
+  add_ports : Bool
+  follow_edge_direction : Bool
+  start_edge : Int
+  mut initialized : Bool
+  stack : Array[SelectionGraphElement]
+}
+pub fn DefaultSelectionIterator::attach_visited_set(Self, Array[Int]) -> Unit
+pub fn DefaultSelectionIterator::has_next(Self) -> Bool
+pub fn DefaultSelectionIterator::next(Self) -> SelectionGraphElement?
 
 pub enum DependencyType {
   Regular
@@ -16727,6 +16743,16 @@ pub struct ScanlineOverlapCheck {
   svg : SvgImage
 }
 pub fn ScanlineOverlapCheck::sweep(Self, Array[Node]) -> Unit
+
+pub enum SelectionGraphElement {
+  SelectionEdge(Int)
+  SelectionPort(Int)
+}
+
+pub struct SelectionIterator {
+  mut visited : Array[Int]
+}
+pub fn SelectionIterator::attach_visited_set(Self, Array[Int]) -> Unit
 
 pub struct SelectivePaintToggleAction {
   id : String
