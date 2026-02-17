@@ -158,6 +158,11 @@ pub fn LGraphAdapter::set_position(
 }
 
 ///|
+pub fn LGraphAdapter::get_graph(self : LGraphAdapter) -> LGraph {
+  self.element
+}
+
+///|
 pub fn LGraphAdapter::get_property_int(
   self : LGraphAdapter,
   property : IProperty[Int],

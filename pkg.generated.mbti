@@ -5204,6 +5204,8 @@ pub fn new_node_arranger((Int) -> KVector) -> INodeArranger
 
 pub fn new_node_context(LNode) -> NodeContext
 
+pub fn new_node_margin_calculator(LGraphAdapter) -> NodeMarginCalculator
+
 pub fn new_node_promotion_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_node_relative_port_distributor(Int) -> NodeRelativePortDistributor
@@ -5654,7 +5656,19 @@ pub fn node_context_port_constraints_equals(PortConstraints, PortConstraints) ->
 
 pub fn node_context_port_side_key(PortSide) -> String
 
+pub fn node_dimension_calculation_calculate_label_and_node_sizes(LGraphAdapter) -> Unit
+
 pub fn node_dimension_calculation_calculate_label_and_node_sizes_for_layered_graph(LGraph) -> Unit
+
+pub fn node_dimension_calculation_calculate_node_margins(LGraphAdapter) -> Unit
+
+pub fn node_dimension_calculation_calculate_node_margins_for_layered_graph(LGraph) -> Unit
+
+pub fn node_dimension_calculation_get_node_margin_calculator(LGraphAdapter) -> NodeMarginCalculator
+
+pub fn node_dimension_calculation_sort_port_lists(LGraphAdapter) -> Unit
+
+pub fn node_dimension_calculation_sort_port_lists_for_layered_graph(LGraph) -> Unit
 
 pub fn node_double_property_entries(Int) -> Array[(String, Double)]
 
@@ -5761,6 +5775,10 @@ pub let node_labels_placement : IProperty[Array[String]]
 pub fn node_layout_option_string_entries(Int) -> Array[(String, String)]
 
 pub fn node_layout_option_string_value(Int, String) -> String?
+
+pub fn node_micro_layout_for_adapter(LGraphAdapter) -> NodeMicroLayout
+
+pub fn node_micro_layout_for_graph(LGraph) -> NodeMicroLayout
 
 pub fn node_outgoing_edges(Int) -> Array[Int]
 
@@ -13711,6 +13729,7 @@ pub struct LGraphAdapter {
   transparent_comment_nodes : Bool
   node_filter : (LNode) -> Bool
 }
+pub fn LGraphAdapter::get_graph(Self) -> LGraph
 pub fn LGraphAdapter::get_nodes(Self) -> Array[LNodeAdapter]
 pub fn LGraphAdapter::get_position(Self) -> KVector
 pub fn LGraphAdapter::get_property_bool(Self, IProperty[Bool]) -> Bool
@@ -15596,6 +15615,25 @@ pub enum NodeLabelPlacement {
   NodeLabelOutside
   NodeLabelHPriority
 }
+
+pub struct NodeMarginCalculator {
+  mut include_labels : Bool
+  mut include_ports : Bool
+  mut include_port_labels : Bool
+  mut include_edge_head_tail_labels : Bool
+  adapter : LGraphAdapter
+}
+pub fn NodeMarginCalculator::exclude_edge_head_tail_labels(Self) -> Self
+pub fn NodeMarginCalculator::exclude_labels(Self) -> Self
+pub fn NodeMarginCalculator::exclude_port_labels(Self) -> Self
+pub fn NodeMarginCalculator::exclude_ports(Self) -> Self
+pub fn NodeMarginCalculator::process(Self) -> Unit
+pub fn NodeMarginCalculator::process_node(Self, LNodeAdapter) -> Unit
+
+pub struct NodeMicroLayout {
+  adapter : LGraphAdapter
+}
+pub fn NodeMicroLayout::execute(Self) -> Unit
 
 pub enum NodePlacementStrategy {
   NpsSimple
