@@ -82,11 +82,6 @@ fn l_graph_util_test_node_type_external_port() -> NodeType {
 }
 
 ///|
-let l_graph_util_test_layered_options_merge_edges : IProperty[Bool] = new_property(
-  "org.eclipse.elk.layered.mergeEdges", false,
-)
-
-///|
 fn l_graph_util_test_graph_has_property_name(
   graph : LGraph,
   expected_name : String,
@@ -593,7 +588,7 @@ test "create_port_for_edge mirrors collector and side inference behavior" {
 
   let merge_node = new_l_node(graph=Some(graph))
   ignore(merge_node.get_size().set_xy(20.0, 20.0))
-  graph.set_property_bool(l_graph_util_test_layered_options_merge_edges, true)
+  graph.set_property_bool(layered_options_merge_edges, true)
 
   let collector_a = create_port_for_edge(
     merge_node,
@@ -610,7 +605,7 @@ test "create_port_for_edge mirrors collector and side inference behavior" {
   inspect(collector_a.get_handle() == collector_b.get_handle(), content="true")
   inspect(port_side_to_string(collector_a.get_side()), content="EAST")
 
-  graph.set_property_bool(l_graph_util_test_layered_options_merge_edges, false)
+  graph.set_property_bool(layered_options_merge_edges, false)
   let inferred_node = new_l_node(graph=Some(graph))
   ignore(inferred_node.get_size().set_xy(10.0, 10.0))
   ignore(inferred_node.get_position().set_xy(5.0, 7.0))

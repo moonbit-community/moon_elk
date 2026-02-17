@@ -340,6 +340,60 @@ pub fn LNode::get_padding(self : LNode) -> LPadding {
 }
 
 ///|
+pub fn LNode::get_index(self : LNode) -> Int {
+  match self.layer {
+    Some(layer) => {
+      let nodes = layer.get_nodes()
+      for i in 0..<nodes.length() {
+        if lnode_internal_handle(nodes[i]) == lnode_internal_handle(self) {
+          return i
+        }
+      }
+      -1
+    }
+    None => -1
+  }
+}
+
+///|
+pub fn LNode::border_to_content_area_coordinates(
+  self : LNode,
+  horizontal : Bool,
+  vertical : Bool,
+) -> Unit {
+  let the_graph = self.get_graph()
+  let graph_padding = the_graph.get_padding()
+  let offset = the_graph.get_offset()
+  let pos = self.get_position()
+
+  if horizontal {
+    pos.x = pos.x - graph_padding.left - offset.x
+  }
+  if vertical {
+    pos.y = pos.y - graph_padding.top - offset.y
+  }
+}
+
+///|
+pub fn LNode::get_interactive_reference_point(self : LNode) -> KVector {
+  let interactive_reference_point = self
+    .get_graph()
+    .get_property_string(layered_options_interactive_reference_point)
+
+  if interactive_reference_point ==
+    interactive_reference_point_to_string(TopLeft) {
+    self.get_position().clone()
+  } else {
+    let node_pos = self.get_position()
+    let node_size = self.get_size()
+    new_kvector_xy(
+      node_pos.x + node_size.x / 2.0,
+      node_pos.y + node_size.y / 2.0,
+    )
+  }
+}
+
+///|
 pub fn LNode::get_nested_graph(self : LNode) -> LGraph? {
   self.nested_graph
 }

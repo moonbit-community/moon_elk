@@ -98,6 +98,21 @@ pub let layered_options_crossing_minimization_semi_interactive : IProperty[Bool]
 )
 
 ///|
+pub let layered_options_interactive_reference_point : IProperty[String] = new_property(
+  "org.eclipse.elk.layered.interactiveReferencePoint", "CENTER",
+)
+
+///|
+pub let layered_options_merge_edges : IProperty[Bool] = new_property(
+  "org.eclipse.elk.layered.mergeEdges", false,
+)
+
+///|
+pub let layered_options_merge_hierarchy_edges : IProperty[Bool] = new_property(
+  "org.eclipse.elk.layered.mergeHierarchyEdges", true,
+)
+
+///|
 pub let layered_options_node_placement_favor_straight_edges : IProperty[Bool] = new_property(
   "org.eclipse.elk.layered.nodePlacement.favorStraightEdges", false,
 )

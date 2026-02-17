@@ -57,6 +57,51 @@ test "Layer attaches nodes and exposes layer index" {
 
   assert_eq(layer.get_nodes().length(), 1)
   assert_eq(layer.get_index(), 0)
+  assert_eq(node.get_index(), 0)
+}
+
+///|
+test "LNode border-to-content conversion uses graph padding and offset" {
+  let graph = new_l_graph()
+  graph.get_padding().left = 3.0
+  graph.get_padding().top = 5.0
+  graph.get_offset().x = 7.0
+  graph.get_offset().y = 11.0
+
+  let layer = new_layer(graph)
+  graph.get_layers().push(layer)
+
+  let node = new_l_node()
+  node.get_position().x = 20.0
+  node.get_position().y = 40.0
+  node.set_layer(Some(layer))
+
+  node.border_to_content_area_coordinates(true, true)
+
+  assert_eq(node.get_position().x, 10.0)
+  assert_eq(node.get_position().y, 24.0)
+}
+
+///|
+test "LNode interactive reference point follows configured mode" {
+  let graph = new_l_graph()
+  let node = new_l_node(graph=Some(graph))
+  node.get_position().x = 10.0
+  node.get_position().y = 24.0
+  node.get_size().x = 8.0
+  node.get_size().y = 6.0
+
+  let center_ref = node.get_interactive_reference_point()
+  assert_eq(center_ref.x, 14.0)
+  assert_eq(center_ref.y, 27.0)
+
+  graph.set_property_string(
+    layered_options_interactive_reference_point,
+    interactive_reference_point_to_string(TopLeft),
+  )
+  let top_left_ref = node.get_interactive_reference_point()
+  assert_eq(top_left_ref.x, 10.0)
+  assert_eq(top_left_ref.y, 24.0)
 }
 
 ///|

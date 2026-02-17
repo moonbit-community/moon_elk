@@ -9,11 +9,6 @@ let compound_graph_preprocessor_internal_properties_original_label_edge : IPrope
 ] = new_property("originalLabelEdge", None)
 
 ///|
-let compound_graph_preprocessor_layered_options_merge_hierarchy_edges : IProperty[
-  Bool,
-] = new_property("org.eclipse.elk.layered.mergeHierarchyEdges", true)
-
-///|
 let compound_graph_preprocessor_layered_options_inside_self_loops_yo : IProperty[
   Bool,
 ] = new_property("org.eclipse.elk.insideSelfLoops.yo", false)
@@ -1042,7 +1037,7 @@ fn compound_graph_preprocessor_introduce_hierarchical_edge_segment(
   dummy_node_entries : Array[(LPort, LNode)],
 ) -> CompoundGraphPreprocessorExternalPort {
   let merge_external_ports = graph.get_property_bool(
-    compound_graph_preprocessor_layered_options_merge_hierarchy_edges,
+    layered_options_merge_hierarchy_edges,
   )
 
   let mut parent_end_port : LPort? = None

@@ -2632,6 +2632,10 @@ pub fn interactive_layered_graph_visitor_set_interactive_options_and_pseudo_posi
 
 pub fn interactive_mrtree_graph_visitor_set_interactive_options(Int) -> Unit
 
+pub fn interactive_reference_point_to_string(InteractiveReferencePoint) -> String
+
+pub fn interactive_reference_point_values() -> Array[String]
+
 pub fn intermediate_processor_strategy_to_string(IntermediateProcessorStrategy) -> String
 
 pub fn intermediate_processor_strategy_values() -> Array[IntermediateProcessorStrategy]
@@ -2651,6 +2655,8 @@ pub let internal_properties_compound_node : IProperty[Bool]
 pub let internal_properties_crossing_hint : IProperty[Int]
 
 pub let internal_properties_cyclic : IProperty[Bool]
+
+pub let internal_properties_edge_constraint : IProperty[String]
 
 pub let internal_properties_end_label_edge : IProperty[LEdge?]
 
@@ -2982,6 +2988,8 @@ pub let layered_options_hypernode : IProperty[Bool]
 
 pub fn layered_options_int_list_contains(Array[Int], Int) -> Bool
 
+pub let layered_options_interactive_reference_point : IProperty[String]
+
 pub let layered_options_junction_points : IProperty[KVectorChain]
 
 pub let layered_options_layer_unzipping_layer_split : IProperty[Int]
@@ -3003,6 +3011,10 @@ pub let layered_options_layering_node_promotion_max_iterations : IProperty[Int]
 pub let layered_options_layering_node_promotion_strategy : IProperty[String]
 
 pub let layered_options_layering_strategy : IProperty[String]
+
+pub let layered_options_merge_edges : IProperty[Bool]
+
+pub let layered_options_merge_hierarchy_edges : IProperty[Bool]
 
 pub let layered_options_node_placement_favor_straight_edges : IProperty[Bool]
 
@@ -14163,6 +14175,7 @@ pub struct LNode {
   self_loop_holder_properties : Map[String, SelfLoopHolder]
 }
 pub fn LNode::add_port(Self, LPort) -> Unit
+pub fn LNode::border_to_content_area_coordinates(Self, Bool, Bool) -> Unit
 pub fn LNode::clear_property_end_label_cell_array(Self, IProperty[Array[EndLabelCell]]) -> Unit
 pub fn LNode::get_connected_edges(Self) -> Array[LEdge]
 pub fn LNode::get_designation(Self) -> String?
@@ -14170,6 +14183,8 @@ pub fn LNode::get_graph(Self) -> LGraph
 pub fn LNode::get_handle(Self) -> Int
 pub fn LNode::get_id(Self) -> Int
 pub fn LNode::get_incoming_edges(Self) -> Array[LEdge]
+pub fn LNode::get_index(Self) -> Int
+pub fn LNode::get_interactive_reference_point(Self) -> KVector
 pub fn LNode::get_labels(Self) -> Array[LLabel]
 pub fn LNode::get_layer(Self) -> Layer?
 pub fn LNode::get_margin(Self) -> Spacing

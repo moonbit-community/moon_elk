@@ -131,6 +131,11 @@ pub let internal_properties_long_edge_before_label_dummy : IProperty[Bool] = new
 )
 
 ///|
+pub let internal_properties_edge_constraint : IProperty[String] = new_property(
+  "edgeConstraint", "NONE",
+)
+
+///|
 pub let internal_properties_long_edge_target_node : IProperty[LNode?] = new_property(
   "longEdgeTargetNode",
   None,

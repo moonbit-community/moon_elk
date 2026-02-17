@@ -26,16 +26,6 @@ pub fn to_port_array(ports : Array[LPort]) -> Array[LPort] {
 }
 
 ///|
-let l_graph_util_layered_options_merge_edges : IProperty[Bool] = new_property(
-  "org.eclipse.elk.layered.mergeEdges", false,
-)
-
-///|
-let l_graph_util_internal_properties_edge_constraint : IProperty[String] = new_property(
-  "edgeConstraint", "NONE",
-)
-
-///|
 fn l_graph_util_in_layer_constraint_to_string(
   value : InLayerConstraint,
 ) -> String {
@@ -520,9 +510,7 @@ pub fn create_port_for_edge(
   layered_graph : LGraph,
 ) -> LPort {
   let direction = get_direction(layered_graph)
-  let merge_ports = layered_graph.get_property_bool(
-    l_graph_util_layered_options_merge_edges,
-  )
+  let merge_ports = layered_graph.get_property_bool(layered_options_merge_edges)
   let node_port_constraints = node.get_property_string(port_constraints)
 
   if (merge_ports || node.get_property_bool(layered_options_hypernode)) &&
@@ -932,7 +920,7 @@ pub fn create_external_port_dummy(
         layer_constraint_to_string(LayerConstraint::FirstSeparate),
       )
       dummy.set_property_string(
-        l_graph_util_internal_properties_edge_constraint,
+        internal_properties_edge_constraint,
         l_graph_util_edge_constraint_to_string(EdgeConstraint::OutgoingOnly),
       )
       dummy.get_size().y = port_size.y
@@ -951,7 +939,7 @@ pub fn create_external_port_dummy(
         layer_constraint_to_string(LayerConstraint::LastSeparate),
       )
       dummy.set_property_string(
-        l_graph_util_internal_properties_edge_constraint,
+        internal_properties_edge_constraint,
         l_graph_util_edge_constraint_to_string(EdgeConstraint::IncomingOnly),
       )
       dummy.get_size().y = port_size.y

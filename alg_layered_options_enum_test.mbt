@@ -40,6 +40,10 @@ test "additional layered strategy enums keep upstream constant names" {
     node_placement_strategy_values(),
     content="[\"SIMPLE\", \"INTERACTIVE\", \"LINEAR_SEGMENTS\", \"BRANDES_KOEPF\", \"NETWORK_SIMPLEX\"]",
   )
+  inspect(
+    interactive_reference_point_values(),
+    content="[\"CENTER\", \"TOP_LEFT\"]",
+  )
 }
 
 ///|
