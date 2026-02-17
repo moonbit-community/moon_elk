@@ -3772,6 +3772,8 @@ pub fn new_algorithm_cell_editor(String) -> AlgorithmCellEditor
 
 pub fn new_algorithm_content_provider() -> AlgorithmContentProvider
 
+pub fn new_algorithm_factory(() -> AbstractLayoutProvider, parameter? : String?) -> AlgorithmFactory
+
 pub fn new_algorithm_plugin_content_wizard(String, String) -> AlgorithmPluginContentWizard
 
 pub fn new_algorithm_project_creation_page(String) -> AlgorithmProjectCreationPage
@@ -4093,6 +4095,8 @@ pub fn new_dc_polyomino(DCComponent, Double, Double) -> DCPolyomino
 pub fn[T] new_decider((Array[(T, Array[(Int, Double)])]) -> T?) -> IDecider[T]
 
 pub fn new_default_configuration(edges? : Bool, nodes? : Bool, ports? : Bool, edge_labels? : Bool) -> DefaultConfiguration
+
+pub fn[T] new_default_factory(() -> T) -> DefaultFactory[T]
 
 pub fn new_default_module() -> CoreServiceInjector
 
@@ -7660,6 +7664,14 @@ pub fn AlgorithmContentProvider::has_children(Self, CoreUiLayoutMetaData) -> Boo
 pub fn AlgorithmContentProvider::input_changed(Self, _old_input? : String?, _new_input? : String?) -> Unit
 pub fn AlgorithmContentProvider::update_filter(Self, String?) -> Unit
 
+pub struct AlgorithmFactory {
+  create_algorithm_fn : () -> AbstractLayoutProvider
+  parameter : String?
+}
+pub fn AlgorithmFactory::as_factory(Self) -> IFactory[AbstractLayoutProvider]
+pub fn AlgorithmFactory::create(Self) -> AbstractLayoutProvider
+pub fn AlgorithmFactory::destroy(Self, AbstractLayoutProvider) -> Unit
+
 pub struct AlgorithmPluginContentWizard {
   mut id : String
   mut plug_in_name : String
@@ -9651,6 +9663,13 @@ pub fn DefaultConfiguration::edge_labels_enabled(Self) -> Bool
 pub fn DefaultConfiguration::edges_enabled(Self) -> Bool
 pub fn DefaultConfiguration::nodes_enabled(Self) -> Bool
 pub fn DefaultConfiguration::ports_enabled(Self) -> Bool
+
+pub struct DefaultFactory[T] {
+  create_fn : () -> T
+}
+pub fn[T] DefaultFactory::as_factory(Self[T]) -> IFactory[T]
+pub fn[T] DefaultFactory::create(Self[T]) -> T
+pub fn[T] DefaultFactory::destroy(Self[T], T) -> Unit
 
 pub struct DefaultSelectionIterator {
   base : SelectionIterator
