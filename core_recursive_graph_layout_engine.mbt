@@ -150,11 +150,48 @@ let recursive_layered_node_labels_padding_property : IProperty[String] = new_pro
 )
 
 ///|
+fn recursive_layered_individual_spacing_options() -> Array[IProperty[Double]] {
+  [
+    spacing_node_node, spacing_component_component, spacing_edge_edge, spacing_edge_label,
+    spacing_edge_node, spacing_label_label, spacing_label_node, spacing_label_port_horizontal,
+    spacing_label_port_vertical, spacing_node_self_loop, spacing_port_port, layered_options_spacing_edge_edge_between_layers,
+    layered_options_spacing_edge_node_between_layers, layered_options_spacing_node_node_between_layers,
+  ]
+}
+
+///|
+fn recursive_layered_copy_individual_spacing_options(
+  source_node : ElkNode,
+  target_node : LNode,
+) -> Unit {
+  for property in recursive_layered_individual_spacing_options() {
+    match
+      node_individual_spacing_option_string_value(
+        source_node,
+        property.get_id(),
+      ) {
+      Some(raw_value) => {
+        let parsed : Result[Double, @strconv.StrConvError] = try? @strconv.parse_double(
+          raw_value.trim().to_string(),
+        )
+        match parsed {
+          Ok(value) => target_node.set_property_double(property, value)
+          Err(_) => ()
+        }
+      }
+      None => ()
+    }
+  }
+}
+
+///|
 fn recursive_layered_copy_nodespacing_options(
   graph_node : ElkNode,
   source_node : ElkNode,
   target_node : LNode,
 ) -> Unit {
+  recursive_layered_copy_individual_spacing_options(source_node, target_node)
+
   if node_has_string_set_property(source_node, node_size_constraints) {
     target_node.set_property_string_array(
       node_size_constraints,

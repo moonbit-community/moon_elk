@@ -62,10 +62,10 @@ fn spline_self_loop_router_modify_bend_points(
     Some(curr_loop) => curr_loop
     None => return bend_points
   }
-  let edge_label_distance = sl_loop
-    .get_sl_holder()
-    .get_l_node()
-    .get_property_double(spacing_edge_label)
+  let edge_label_distance = get_individual_or_inherited(
+    sl_loop.get_sl_holder().get_l_node(),
+    spacing_edge_label,
+  )
 
   let spline_bend_points = new_kvector_chain()
   spline_bend_points.add_last_vector(

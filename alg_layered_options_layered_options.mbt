@@ -1,6 +1,14 @@
 ///|
+pub let layered_algorithm_id = "org.eclipse.elk.layered"
+
+///|
 pub let layered_options_layering_layer_constraint : IProperty[String] = new_property(
   "org.eclipse.elk.layered.layering.layerConstraint", "NONE",
+)
+
+///|
+pub let layered_options_layering_layer_choice_constraint : IProperty[Int] = new_property(
+  "org.eclipse.elk.layered.layering.layerChoiceConstraint", -1,
 )
 
 ///|
@@ -33,6 +41,27 @@ pub let layered_options_crossing_minimization_strategy : IProperty[String] = new
 ///|
 pub let layered_options_crossing_minimization_position_id : IProperty[Int] = new_property(
   "org.eclipse.elk.layered.crossingMinimization.positionId", 0,
+)
+
+///|
+pub let layered_options_crossing_minimization_position_choice_constraint : IProperty[
+  Int,
+] = new_property(
+  "org.eclipse.elk.layered.crossingMinimization.positionChoiceConstraint", -1,
+)
+
+///|
+pub let layered_options_crossing_minimization_in_layer_pred_of : IProperty[
+  String,
+] = new_property(
+  "org.eclipse.elk.layered.crossingMinimization.inLayerPredOf", "",
+)
+
+///|
+pub let layered_options_crossing_minimization_in_layer_succ_of : IProperty[
+  String,
+] = new_property(
+  "org.eclipse.elk.layered.crossingMinimization.inLayerSuccOf", "",
 )
 
 ///|
@@ -76,6 +105,16 @@ pub let layered_options_node_placement_favor_straight_edges : IProperty[Bool] = 
 ///|
 pub let layered_options_consider_model_order_strategy : IProperty[String] = new_property(
   "org.eclipse.elk.layered.considerModelOrder.strategy", "NONE",
+)
+
+///|
+pub let layered_options_cycle_breaking_strategy : IProperty[String] = new_property(
+  "org.eclipse.elk.layered.cycleBreaking.strategy", "GREEDY",
+)
+
+///|
+pub let layered_options_layering_strategy : IProperty[String] = new_property(
+  "org.eclipse.elk.layered.layering.strategy", "NETWORK_SIMPLEX",
 )
 
 ///|
@@ -326,6 +365,11 @@ pub let layered_options_port_border_offset : IProperty[Double] = new_property(
 ///|
 pub let layered_options_unnecessary_bendpoints : IProperty[Bool] = new_property(
   "org.eclipse.elk.layered.unnecessaryBendpoints", false,
+)
+
+///|
+pub let layered_options_generate_position_and_layer_ids : IProperty[Bool] = new_property(
+  "org.eclipse.elk.layered.generatePositionAndLayerIds", false,
 )
 
 ///|

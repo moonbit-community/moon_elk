@@ -23,6 +23,7 @@ pub struct LEdge {
   labels : Array[LLabel]
   int_properties : Map[String, Int]
   double_properties : Map[String, Double]
+  kvector_properties : Map[String, KVector]
   kvector_chain_properties : Map[String, KVectorChain]
   bool_properties : Map[String, Bool]
   l_edge_array_properties : Map[String, Array[LEdge]]
@@ -42,6 +43,7 @@ pub fn new_l_edge() -> LEdge {
     labels: [],
     int_properties: {},
     double_properties: {},
+    kvector_properties: {},
     kvector_chain_properties: {},
     bool_properties: {},
     l_edge_array_properties: {},
@@ -170,6 +172,12 @@ pub fn LEdge::copy_properties(self : LEdge, source : LEdge) -> Unit {
     self.double_properties[key] = value
   }
 
+  self.kvector_properties.clear()
+  for entry in source.kvector_properties.to_array() {
+    let (key, value) = entry
+    self.kvector_properties[key] = value.clone()
+  }
+
   self.kvector_chain_properties.clear()
   for entry in source.kvector_chain_properties.to_array() {
     let (key, value) = entry
@@ -270,6 +278,15 @@ pub fn LEdge::set_property_double(
 }
 
 ///|
+pub fn LEdge::set_property_kvector(
+  self : LEdge,
+  property : IProperty[KVector],
+  value : KVector,
+) -> Unit {
+  self.kvector_properties[property.get_id()] = value.clone()
+}
+
+///|
 pub fn LEdge::get_property_int(self : LEdge, property : IProperty[Int]) -> Int {
   match self.int_properties.get(property.get_id()) {
     Some(value) => value
@@ -289,6 +306,17 @@ pub fn LEdge::get_property_double(
 }
 
 ///|
+pub fn LEdge::get_property_kvector(
+  self : LEdge,
+  property : IProperty[KVector],
+) -> KVector {
+  match self.kvector_properties.get(property.get_id()) {
+    Some(value) => value.clone()
+    None => property.get_default().clone()
+  }
+}
+
+///|
 pub fn LEdge::has_property_int(self : LEdge, property : IProperty[Int]) -> Bool {
   self.int_properties.contains(property.get_id())
 }
@@ -299,6 +327,14 @@ pub fn LEdge::has_property_double(
   property : IProperty[Double],
 ) -> Bool {
   self.double_properties.contains(property.get_id())
+}
+
+///|
+pub fn LEdge::has_property_kvector(
+  self : LEdge,
+  property : IProperty[KVector],
+) -> Bool {
+  self.kvector_properties.contains(property.get_id())
 }
 
 ///|
@@ -327,6 +363,14 @@ pub fn LEdge::has_property_kvector_chain(
   property : IProperty[KVectorChain],
 ) -> Bool {
   self.kvector_chain_properties.contains(property.get_id())
+}
+
+///|
+pub fn LEdge::clear_property_kvector_chain(
+  self : LEdge,
+  property : IProperty[KVectorChain],
+) -> Unit {
+  ignore(self.kvector_chain_properties.remove(property.get_id()))
 }
 
 ///|

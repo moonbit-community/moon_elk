@@ -484,10 +484,14 @@ pub fn orthogonal_self_loop_router_route_with_modifier(
   let node_size = l_node.get_size()
   let node_margins = l_node.get_margin()
 
-  let edge_edge_distance = l_node.get_property_double(spacing_edge_edge)
-  let edge_label_distance = l_node.get_property_double(spacing_edge_label)
-  let node_self_loop_distance = l_node.get_property_double(
-    spacing_node_self_loop,
+  let edge_edge_distance = get_individual_or_inherited(
+    l_node, spacing_edge_edge,
+  )
+  let edge_label_distance = get_individual_or_inherited(
+    l_node, spacing_edge_label,
+  )
+  let node_self_loop_distance = get_individual_or_inherited(
+    l_node, spacing_node_self_loop,
   )
 
   let new_node_margins = new_l_margin()

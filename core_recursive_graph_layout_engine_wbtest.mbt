@@ -72,3 +72,30 @@ test "recursive layered context applies graph configurator properties" {
   )
   assert_eq(undefined_lnode.get_property_string(port_constraints), "FREE")
 }
+
+///|
+test "recursive layered context copies individual spacing overrides to LNode" {
+  reset_graph_model_for_test()
+  let graph = create_graph()
+  node_set_double_property(graph, spacing_edge_label, 7.0)
+
+  let child = create_node(Some(graph))
+  node_set_dimensions(child, 10.0, 10.0)
+  node_set_individual_spacing_option_string_by_id(
+    child,
+    spacing_edge_label.get_id(),
+    "42.5",
+  )
+
+  let context = match recursive_layered_create_context(graph) {
+    Some(value) => value
+    None => fail("expected layered context")
+  }
+  let lnode = match context.elk_to_lnode.get(child) {
+    Some(value) => value
+    None => fail("missing node mapping")
+  }
+
+  assert_true(lnode.has_property_double(spacing_edge_label))
+  assert_eq(get_individual_or_inherited(lnode, spacing_edge_label), 42.5)
+}

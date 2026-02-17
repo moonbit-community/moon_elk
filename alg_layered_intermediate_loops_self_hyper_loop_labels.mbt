@@ -30,7 +30,7 @@ fn self_hyper_loop_labels_layout_direction(
 ///|
 fn self_hyper_loop_labels_spacing(sl_loop : SelfHyperLoop) -> Double {
   let l_node = sl_loop.get_sl_holder().get_l_node()
-  l_node.get_graph().get_property_double(spacing_label_label)
+  get_individual_or_inherited(l_node, spacing_label_label)
 }
 
 ///|
