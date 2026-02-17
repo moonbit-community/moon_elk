@@ -57,9 +57,19 @@ fn interactive_layered_graph_visitor_int_option_value(
     Some(value) =>
       match interactive_layered_graph_visitor_parse_int(value) {
         Some(parsed) => parsed
-        None => option.get_default()
+        None =>
+          if node_has_int_property(node, option) {
+            node_get_int_property(node, option)
+          } else {
+            option.get_default()
+          }
       }
-    None => option.get_default()
+    None =>
+      if node_has_int_property(node, option) {
+        node_get_int_property(node, option)
+      } else {
+        option.get_default()
+      }
   }
 }
 
@@ -69,8 +79,10 @@ fn interactive_layered_graph_visitor_has_int_option(
   option : IProperty[Int],
 ) -> Bool {
   match node_layout_option_string_value(node, option.get_id()) {
-    Some(value) => !value.trim().to_string().is_empty()
-    None => false
+    Some(value) =>
+      !value.trim().to_string().is_empty() ||
+      node_has_int_property(node, option)
+    None => node_has_int_property(node, option)
   }
 }
 
@@ -80,6 +92,7 @@ fn interactive_layered_graph_visitor_set_int_option(
   option : IProperty[Int],
   value : Int,
 ) -> Unit {
+  node_set_int_property(node, option, value)
   node_set_layout_option_string_by_id(node, option.get_id(), value.to_string())
 }
 

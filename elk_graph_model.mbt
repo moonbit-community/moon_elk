@@ -175,6 +175,43 @@ fn checked_label(label : ElkLabel) -> Unit {
 }
 
 ///|
+fn clone_string_int_map(source : Map[String, Int]) -> Map[String, Int] {
+  let result = {}
+  source.each((key, value) => result[key] = value)
+  result
+}
+
+///|
+fn clone_string_double_map(source : Map[String, Double]) -> Map[String, Double] {
+  let result = {}
+  source.each((key, value) => result[key] = value)
+  result
+}
+
+///|
+fn clone_string_bool_map(source : Map[String, Bool]) -> Map[String, Bool] {
+  let result = {}
+  source.each((key, value) => result[key] = value)
+  result
+}
+
+///|
+fn clone_string_string_map(source : Map[String, String]) -> Map[String, String] {
+  let result = {}
+  source.each((key, value) => result[key] = value)
+  result
+}
+
+///|
+fn clone_string_string_array_map(
+  source : Map[String, Array[String]],
+) -> Map[String, Array[String]] {
+  let result = {}
+  source.each((key, value) => result[key] = value.copy())
+  result
+}
+
+///|
 pub fn reset_graph_model_for_test() -> Unit {
   node_store.val.clear()
   port_store.val.clear()
@@ -847,6 +884,38 @@ pub fn node_individual_spacing_option_string_value(
 }
 
 ///|
+pub fn node_copy_properties(target : ElkNode, source : ElkNode) -> Unit {
+  checked_node(target)
+  checked_node(source)
+  let target_data = node_store.val[target]
+  let source_data = node_store.val[source]
+  node_store.val[target] = {
+    parent: target_data.parent,
+    children: target_data.children,
+    ports: target_data.ports,
+    contained_edges: target_data.contained_edges,
+    identifier: target_data.identifier,
+    x: target_data.x,
+    y: target_data.y,
+    width: target_data.width,
+    height: target_data.height,
+    int_properties: clone_string_int_map(source_data.int_properties),
+    double_properties: clone_string_double_map(source_data.double_properties),
+    bool_properties: clone_string_bool_map(source_data.bool_properties),
+    string_properties: clone_string_string_map(source_data.string_properties),
+    string_set_properties: clone_string_string_array_map(
+      source_data.string_set_properties,
+    ),
+    layout_option_string_values: clone_string_string_map(
+      source_data.layout_option_string_values,
+    ),
+    individual_spacing_option_string_values: clone_string_string_map(
+      source_data.individual_spacing_option_string_values,
+    ),
+  }
+}
+
+///|
 pub fn port_set_layout_option_string_by_id(
   port : ElkPort,
   option_id : String,
@@ -886,6 +955,32 @@ pub fn edge_layout_option_string_value(
 ) -> String? {
   checked_edge(edge)
   edge_store.val[edge].layout_option_string_values.get(option_id)
+}
+
+///|
+pub fn edge_layout_option_string_entries(
+  edge : ElkEdge,
+) -> Array[(String, String)] {
+  checked_edge(edge)
+  edge_store.val[edge].layout_option_string_values.to_array()
+}
+
+///|
+pub fn edge_copy_properties(target : ElkEdge, source : ElkEdge) -> Unit {
+  checked_edge(target)
+  checked_edge(source)
+  let target_data = edge_store.val[target]
+  let source_data = edge_store.val[source]
+  edge_store.val[target] = {
+    containing_node: target_data.containing_node,
+    sources: target_data.sources,
+    targets: target_data.targets,
+    identifier: target_data.identifier,
+    sections: target_data.sections,
+    layout_option_string_values: clone_string_string_map(
+      source_data.layout_option_string_values,
+    ),
+  }
 }
 
 ///|

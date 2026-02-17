@@ -178,6 +178,8 @@ pub let compress_log_folder_action_id : String
 
 pub fn compress_log_folder_action_suggested_file_name(Array[Int]) -> String
 
+pub fn compute_child_area_dimensions(Int) -> Unit
+
 pub fn compute_graph_properties(LGraph) -> Unit
 
 pub fn config_state_add_observer(ConfigState, (State) -> Unit) -> Unit
@@ -1410,6 +1412,8 @@ pub fn edge_containing_node(Int) -> Int?
 
 pub fn edge_coords_to_string(EdgeCoords) -> String
 
+pub fn edge_copy_properties(Int, Int) -> Unit
+
 pub fn edge_identifier(Int) -> String
 
 pub fn edge_is_connected(Int) -> Bool
@@ -1425,6 +1429,8 @@ pub fn edge_labels(Int) -> Array[Int]
 pub let edge_labels_inline : IProperty[Bool]
 
 pub let edge_labels_placement : IProperty[String]
+
+pub fn edge_layout_option_string_entries(Int) -> Array[(String, String)]
 
 pub fn edge_layout_option_string_value(Int, String) -> String?
 
@@ -3163,6 +3169,8 @@ pub fn layout_meta_data_service_register_option(LayoutOptionData) -> Unit
 pub fn layout_meta_data_service_reset_for_test() -> Unit
 
 pub fn layout_option_data_to_json(LayoutOptionData) -> Json
+
+pub fn layout_option_proxy_set_proxy_value(Map[String, LayoutOptionProxy], String, String) -> Unit
 
 pub fn[P, G] layout_processor_configuration_create(PhaseDescriptor[P]) -> LayoutProcessorConfiguration[P, G]
 
@@ -5044,6 +5052,8 @@ pub fn new_layout_option_dependency(String, expected_value? : String?) -> Layout
 
 pub fn new_layout_option_label_provider(LayoutOptionData) -> LayoutOptionLabelProvider
 
+pub fn new_layout_option_proxy(String) -> LayoutOptionProxy
+
 pub fn new_layout_option_validator() -> LayoutOptionValidator
 
 pub fn[P, G] new_layout_phase((G, IElkProgressMonitor?) -> Unit, (G) -> LayoutProcessorConfiguration[P, G]?) -> ILayoutProcessor[P, G]
@@ -5721,6 +5731,8 @@ pub fn node_context_port_alignment_equals(PortAlignment, PortAlignment) -> Bool
 pub fn node_context_port_constraints_equals(PortConstraints, PortConstraints) -> Bool
 
 pub fn node_context_port_side_key(PortSide) -> String
+
+pub fn node_copy_properties(Int, Int) -> Unit
 
 pub fn node_dimension_calculation_calculate_label_and_node_sizes(LGraphAdapter) -> Unit
 
@@ -6694,7 +6706,19 @@ pub fn to_node_array(Array[LNode]) -> Array[LNode]
 
 pub fn to_port_array(Array[LPort]) -> Array[LPort]
 
+pub let topdown_hierarchical_node_aspect_ratio : IProperty[Double]
+
+pub let topdown_hierarchical_node_width : IProperty[Double]
+
 pub fn topdown_node_type_to_string(TopdownNodeTypes) -> String
+
+pub let topdown_size_approximator : IProperty[String]
+
+pub fn topdown_size_approximator_as_interface(TopdownSizeApproximator) -> ITopdownSizeApproximator
+
+pub fn topdown_size_approximator_from_string(String) -> TopdownSizeApproximator?
+
+pub fn topdown_size_approximator_to_string(TopdownSizeApproximator) -> String
 
 pub fn topdown_size_approximator_util_get_graph_size(Int) -> Int
 
@@ -14902,6 +14926,15 @@ pub struct LayoutOptionLabelProvider {
 pub fn LayoutOptionLabelProvider::get_image(Self, CoreUiValue) -> CoreUiImageDescriptor?
 pub fn LayoutOptionLabelProvider::get_text(Self, CoreUiValue) -> String
 
+pub struct LayoutOptionProxy {
+  value : String
+}
+pub fn LayoutOptionProxy::equals(Self, Self) -> Bool
+pub fn LayoutOptionProxy::hash_code(Self) -> Int
+pub fn LayoutOptionProxy::resolve_value(Self, IProperty[String]?) -> String?
+pub fn LayoutOptionProxy::resolve_value_with_option(Self, LayoutOptionData?) -> String?
+pub fn LayoutOptionProxy::to_string(Self) -> String
+
 pub enum LayoutOptionTarget {
   ParentsTarget
   NodesTarget
@@ -17429,6 +17462,14 @@ pub enum TopdownPackingPhases {
   P1_NODE_ARRANGEMENT
   P2_WHITESPACE_ELIMINATION
 }
+
+pub enum TopdownSizeApproximator {
+  CountChildren
+  LookaheadLayout
+  FixedIntegerRatioBoxes
+  LayoutNextLevel
+}
+pub fn TopdownSizeApproximator::get_size(Self, Int) -> KVector
 
 pub struct TopdownpackingLayoutProvider {
   algorithm_assembler : AlgorithmAssembler[TopdownPackingPhases, GridElkNode]

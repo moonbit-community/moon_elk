@@ -67,3 +67,138 @@ pub fn translate_xy(
     )
   }
 }
+
+///|
+fn parse_shape_margins(value : String?) -> ElkMargin {
+  let margins = new_elk_margin()
+  if value is Some(text) {
+    margins.parse(text)
+  }
+  margins
+}
+
+///|
+fn update_bounds(
+  min_x : Ref[Double],
+  min_y : Ref[Double],
+  max_x : Ref[Double],
+  max_y : Ref[Double],
+  x : Double,
+  y : Double,
+  width : Double,
+  height : Double,
+  margins : ElkMargin,
+) -> Unit {
+  let left = x - margins.left
+  let top = y - margins.top
+  let right = x + width + margins.right
+  let bottom = y + height + margins.bottom
+  if left < min_x.val {
+    min_x.val = left
+  }
+  if top < min_y.val {
+    min_y.val = top
+  }
+  if right > max_x.val {
+    max_x.val = right
+  }
+  if bottom > max_y.val {
+    max_y.val = bottom
+  }
+}
+
+///|
+pub fn compute_child_area_dimensions(node : ElkNode) -> Unit {
+  let min_x : Ref[Double] = Ref::new(@double.infinity)
+  let min_y : Ref[Double] = Ref::new(@double.infinity)
+  let max_x : Ref[Double] = Ref::new(0.0)
+  let max_y : Ref[Double] = Ref::new(0.0)
+
+  for label in node_labels(node) {
+    update_bounds(
+      min_x,
+      min_y,
+      max_x,
+      max_y,
+      label_x(label),
+      label_y(label),
+      label_width(label),
+      label_height(label),
+      parse_shape_margins(
+        label_layout_option_string_value(label, "org.eclipse.elk.margins"),
+      ),
+    )
+  }
+
+  for child in node_children(node) {
+    update_bounds(
+      min_x,
+      min_y,
+      max_x,
+      max_y,
+      node_x(child),
+      node_y(child),
+      node_width(child),
+      node_height(child),
+      parse_shape_margins(
+        node_layout_option_string_value(child, "org.eclipse.elk.margins"),
+      ),
+    )
+  }
+
+  for edge in node_contained_edges(node) {
+    for label in edge_labels(edge) {
+      update_bounds(
+        min_x,
+        min_y,
+        max_x,
+        max_y,
+        label_x(label),
+        label_y(label),
+        label_width(label),
+        label_height(label),
+        parse_shape_margins(
+          label_layout_option_string_value(label, "org.eclipse.elk.margins"),
+        ),
+      )
+    }
+  }
+
+  for edge in node_contained_edges(node) {
+    for section in edge_sections(edge) {
+      let sx = edge_section_start_x(section)
+      let sy = edge_section_start_y(section)
+      let ex = edge_section_end_x(section)
+      let ey = edge_section_end_y(section)
+
+      if sx < min_x.val {
+        min_x.val = sx
+      }
+      if ex < min_x.val {
+        min_x.val = ex
+      }
+      if sy < min_y.val {
+        min_y.val = sy
+      }
+      if ey < min_y.val {
+        min_y.val = ey
+      }
+
+      if sx > max_x.val {
+        max_x.val = sx
+      }
+      if ex > max_x.val {
+        max_x.val = ex
+      }
+      if sy > max_y.val {
+        max_y.val = sy
+      }
+      if ey > max_y.val {
+        max_y.val = ey
+      }
+    }
+  }
+
+  node_set_double_property(node, child_area_width, max_x.val - min_x.val)
+  node_set_double_property(node, child_area_height, max_y.val - min_y.val)
+}

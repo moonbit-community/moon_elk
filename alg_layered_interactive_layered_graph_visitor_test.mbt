@@ -293,6 +293,53 @@ test "interactive layered graph visitor shifts same-layer neighbors for constrai
 }
 
 ///|
+test "interactive layered graph visitor reads typed layer choice constraints like Java properties" {
+  reset_graph_model_for_test()
+  let root = create_graph()
+  let source = create_node(Some(root))
+  let target = create_node(Some(root))
+  node_set_identifier(source, "source")
+  node_set_identifier(target, "target")
+  node_set_dimensions(source, 0.0, 0.0)
+  node_set_dimensions(target, 0.0, 0.0)
+
+  node_set_layout_option_string_by_id(
+    root,
+    algorithm.get_id(),
+    layered_algorithm_id,
+  )
+  node_set_layout_option_string_by_id(root, direction.get_id(), "RIGHT")
+  node_set_layout_option_string_by_id(
+    source,
+    layered_options_layering_layer_id.get_id(),
+    "0",
+  )
+  node_set_layout_option_string_by_id(
+    target,
+    layered_options_layering_layer_id.get_id(),
+    "0",
+  )
+  node_set_int_property(
+    source, layered_options_layering_layer_choice_constraint, 0,
+  )
+
+  let edge = create_edge(Some(root))
+  edge_add_source(edge, make_node_shape(source))
+  edge_add_target(edge, make_node_shape(target))
+
+  let visitor = new_interactive_layered_graph_visitor()
+  visitor.visit(root)
+
+  interactive_layered_graph_visitor_test_expect_layout_option(
+    target,
+    layered_options_layering_layer_id.get_id(),
+    "1",
+  )
+  assert_true(node_has_int_property(target, layered_options_layering_layer_id))
+  assert_eq(node_get_int_property(target, layered_options_layering_layer_id), 1)
+}
+
+///|
 test "interactive layered graph visitor propagates position constraints through relative constraints" {
   reset_graph_model_for_test()
   let root = create_graph()

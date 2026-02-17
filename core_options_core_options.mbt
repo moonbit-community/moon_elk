@@ -179,6 +179,21 @@ pub let topdown_size_categories_hierarchical_node_weight : IProperty[Int] = new_
 )
 
 ///|
+pub let topdown_size_approximator : IProperty[String] = new_property(
+  "org.eclipse.elk.topdown.sizeApproximator", "",
+)
+
+///|
+pub let topdown_hierarchical_node_width : IProperty[Double] = new_property(
+  "org.eclipse.elk.topdown.hierarchicalNodeWidth", 150.0,
+)
+
+///|
+pub let topdown_hierarchical_node_aspect_ratio : IProperty[Double] = new_property(
+  "org.eclipse.elk.topdown.hierarchicalNodeAspectRatio", 1.414,
+)
+
+///|
 pub let algorithm : IProperty[String] = new_property(
   "org.eclipse.elk.algorithm", "",
 )
