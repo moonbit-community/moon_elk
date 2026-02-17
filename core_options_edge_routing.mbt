@@ -1,1 +1,22 @@
-// Upstream counterpart file; declarations are currently aggregated in core_math_elk_margin.mbt, core_util_ielk_progress_monitor.mbt, or core_options_alignment.mbt.
+///|
+pub enum EdgeRouting {
+  RoutingUndefined
+  Polyline
+  Orthogonal
+  Splines
+}
+
+///|
+pub fn edge_routing_values() -> Array[EdgeRouting] {
+  [RoutingUndefined, Polyline, Orthogonal, Splines]
+}
+
+///|
+pub fn edge_routing_to_string(routing : EdgeRouting) -> String {
+  match routing {
+    RoutingUndefined => "UNDEFINED"
+    Polyline => "POLYLINE"
+    Orthogonal => "ORTHOGONAL"
+    Splines => "SPLINES"
+  }
+}

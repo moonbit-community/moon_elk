@@ -1,1 +1,17 @@
-// Upstream counterpart file; declarations are currently aggregated in core_math_elk_margin.mbt, core_util_ielk_progress_monitor.mbt, or core_options_alignment.mbt.
+///|
+pub enum EdgeCoords {
+  Inherit
+  Container
+  Parent
+  Root
+}
+
+///|
+pub fn edge_coords_to_string(value : EdgeCoords) -> String {
+  match value {
+    Inherit => "INHERIT"
+    Container => "CONTAINER"
+    Parent => "PARENT"
+    Root => "ROOT"
+  }
+}
