@@ -1650,6 +1650,8 @@ pub fn find_best_edge_containment(Int?) -> Int?
 
 pub fn find_lowest_common_ancestor(Int, Int) -> Int?
 
+pub fn find_max_non_dummy_node_width(Layer, Bool) -> Double
+
 pub fn flabel_displacement(Int) -> KVector
 
 pub fn flabel_edge(Int) -> Int
@@ -5756,6 +5758,10 @@ pub fn nubs_self_loop_create_side_self_loop(LPort, LPort, Double) -> NubsSelfLoo
 
 pub fn nubs_self_loop_create_three_side_self_loop(LPort, LPort, KVector, Array[KVector], KVector) -> NubsSelfLoop
 
+pub fn offset_graph(LGraph, Double, Double) -> Unit
+
+pub fn offset_graphs(Array[LGraph], Double, Double) -> Unit
+
 pub let omit_node_micro_layout : IProperty[Bool]
 
 pub fn one_dimensional_compactor_longest_path_compaction(OneDimensionalCompactor) -> Unit
@@ -5789,6 +5795,8 @@ pub let padding : IProperty[String]
 pub fn[F, S] pair_create() -> Pair[F, S]
 
 pub fn[F, S] pair_of(F, S) -> Pair[F, S]
+
+pub fn place_nodes_horizontally(Layer, Double) -> Unit
 
 pub fn plain_java_initialization_initialize_plain_java_layout() -> Unit
 
@@ -6497,6 +6505,12 @@ pub fn test_util_ensure_single_public_no_parameter_constructor(Array[TestClassCo
 pub fn text_activator_get_instance() -> TextActivator?
 
 pub fn text_activator_reset_for_test() -> Unit
+
+pub fn to_edge_array(Array[LEdge]) -> Array[LEdge]
+
+pub fn to_node_array(Array[LNode]) -> Array[LNode]
+
+pub fn to_port_array(Array[LPort]) -> Array[LPort]
 
 pub fn topdown_node_type_to_string(TopdownNodeTypes) -> String
 
