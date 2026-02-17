@@ -23,6 +23,18 @@ fn label_cell_labels(cell : LabelCell) -> Array[ElkLabel] {
 }
 
 ///|
+fn label_cell_l_labels(cell : LabelCell) -> Array[LLabel] {
+  match cell.l_labels {
+    Some(labels) => labels
+    None => {
+      let labels = []
+      cell.l_labels = Some(labels)
+      labels
+    }
+  }
+}
+
+///|
 fn label_cell_content_area_size(cell : LabelCell) -> KVector {
   match cell.minimum_content_area_size {
     Some(size) => size
@@ -137,7 +149,13 @@ pub fn LabelCell::get_labels(self : LabelCell) -> Array[ElkLabel] {
 }
 
 ///|
+pub fn LabelCell::get_l_labels(self : LabelCell) -> Array[LLabel] {
+  label_cell_l_labels(self)
+}
+
+///|
 pub fn LabelCell::add_label(self : LabelCell, label : ElkLabel) -> Unit {
+  let had_labels = self.label_count() > 0
   let labels = label_cell_labels(self)
   labels.push(label)
 
@@ -151,7 +169,7 @@ pub fn LabelCell::add_label(self : LabelCell, label : ElkLabel) -> Unit {
       label_w,
     )
     minimum_content_area_size.y += label_h
-    if labels.length() > 1 {
+    if had_labels {
       minimum_content_area_size.y += self.label_gap
     }
   } else {
@@ -160,15 +178,51 @@ pub fn LabelCell::add_label(self : LabelCell, label : ElkLabel) -> Unit {
       minimum_content_area_size.y,
       label_h,
     )
-    if labels.length() > 1 {
+    if had_labels {
       minimum_content_area_size.x += self.label_gap
     }
   }
 }
 
 ///|
+pub fn LabelCell::add_l_label(self : LabelCell, label : LLabel) -> Unit {
+  let had_labels = self.label_count() > 0
+  let labels = label_cell_l_labels(self)
+  labels.push(label)
+
+  let label_w = label.get_size().x
+  let label_h = label.get_size().y
+  let minimum_content_area_size = label_cell_content_area_size(self)
+
+  if self.label_horizontal_layout_mode {
+    minimum_content_area_size.x = label_cell_max(
+      minimum_content_area_size.x,
+      label_w,
+    )
+    minimum_content_area_size.y += label_h
+    if had_labels {
+      minimum_content_area_size.y += self.label_gap
+    }
+  } else {
+    minimum_content_area_size.x += label_w
+    minimum_content_area_size.y = label_cell_max(
+      minimum_content_area_size.y,
+      label_h,
+    )
+    if had_labels {
+      minimum_content_area_size.x += self.label_gap
+    }
+  }
+}
+
+///|
+pub fn LabelCell::label_count(self : LabelCell) -> Int {
+  label_cell_labels(self).length() + label_cell_l_labels(self).length()
+}
+
+///|
 pub fn LabelCell::has_labels(self : LabelCell) -> Bool {
-  label_cell_labels(self).length() > 0
+  self.label_count() > 0
 }
 
 ///|
@@ -204,6 +258,27 @@ fn label_cell_apply_horizontal_mode_layout(cell : LabelCell) -> Unit {
 
     label_set_location(label, label_x, label_y)
   }
+
+  for label in label_cell_l_labels(cell) {
+    let label_w = label.get_size().x
+    let label_h = label.get_size().y
+
+    let label_y = y_pos
+    y_pos += label_h + cell.label_gap
+
+    let label_x = match cell.label_horizontal_alignment {
+      Left => cell_rectangle.x + cell_padding.left
+      Center =>
+        cell_rectangle.x +
+        cell_padding.left +
+        (cell_rectangle.width - label_w) / 2.0
+      Right =>
+        cell_rectangle.x + cell_rectangle.width - cell_padding.right - label_w
+    }
+
+    label.get_position().x = label_x
+    label.get_position().y = label_y
+  }
 }
 
 ///|
@@ -238,6 +313,27 @@ fn label_cell_apply_vertical_mode_layout(cell : LabelCell) -> Unit {
     }
 
     label_set_location(label, label_x, label_y)
+  }
+
+  for label in label_cell_l_labels(cell) {
+    let label_w = label.get_size().x
+    let label_h = label.get_size().y
+
+    let label_x = x_pos
+    x_pos += label_w + cell.label_gap
+
+    let label_y = match cell.label_vertical_alignment {
+      Top => cell_rectangle.y + cell_padding.top
+      Center =>
+        cell_rectangle.y +
+        cell_padding.top +
+        (cell_rectangle.height - label_h) / 2.0
+      Bottom =>
+        cell_rectangle.y + cell_rectangle.height - cell_padding.bottom - label_h
+    }
+
+    label.get_position().x = label_x
+    label.get_position().y = label_y
   }
 }
 

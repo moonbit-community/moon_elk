@@ -8283,7 +8283,9 @@ pub struct Cell {
   mut label_vertical_alignment : VerticalLabelAlignment
   mut label_gap : Double
   mut labels : Array[Int]?
+  mut l_labels : Array[LLabel]?
 }
+pub fn Cell::add_l_label(Self, LLabel) -> Unit
 pub fn Cell::add_label(Self, Int) -> Unit
 pub fn Cell::apply_horizontal_layout(Self, Self?, Double, Double) -> Unit
 pub fn Cell::apply_label_layout(Self) -> Unit
@@ -8293,6 +8295,7 @@ pub fn Cell::get_cell_rectangle(Self) -> ElkRectangle
 pub fn Cell::get_container_mode(Self) -> Strip
 pub fn Cell::get_gap(Self) -> Double
 pub fn Cell::get_horizontal_alignment(Self) -> HorizontalLabelAlignment
+pub fn Cell::get_l_labels(Self) -> Array[LLabel]
 pub fn Cell::get_labels(Self) -> Array[Int]
 pub fn Cell::get_minimum_content_area_size(Self) -> KVector
 pub fn Cell::get_minimum_height(Self) -> Double
@@ -8302,6 +8305,7 @@ pub fn Cell::get_vertical_alignment(Self) -> VerticalLabelAlignment
 pub fn Cell::has_labels(Self) -> Bool
 pub fn Cell::is_contributing_to_minimum_height(Self) -> Bool
 pub fn Cell::is_contributing_to_minimum_width(Self) -> Bool
+pub fn Cell::label_count(Self) -> Int
 pub fn Cell::layout_children_horizontally(Self) -> Unit
 pub fn Cell::layout_children_vertically(Self) -> Unit
 pub fn Cell::set_cell(Self, ContainerArea, Self?) -> Unit
@@ -14073,6 +14077,7 @@ pub struct LLabel {
   text : String
   bool_properties : Map[String, Bool]
   string_properties : Map[String, String]
+  string_array_properties : Map[String, Array[String]]
   label_side_properties : Map[String, LabelSide]
   l_edge_properties : Map[String, LEdge]
 }
@@ -14084,18 +14089,21 @@ pub fn LLabel::get_property_bool(Self, IProperty[Bool]) -> Bool
 pub fn LLabel::get_property_l_edge(Self, IProperty[LEdge?]) -> LEdge?
 pub fn LLabel::get_property_label_side(Self, IProperty[LabelSide]) -> LabelSide
 pub fn LLabel::get_property_string(Self, IProperty[String]) -> String
+pub fn LLabel::get_property_string_array(Self, IProperty[Array[String]]) -> Array[String]
 pub fn LLabel::get_size(Self) -> KVector
 pub fn LLabel::get_text(Self) -> String
 pub fn LLabel::has_property_bool(Self, IProperty[Bool]) -> Bool
 pub fn LLabel::has_property_l_edge(Self, IProperty[LEdge?]) -> Bool
 pub fn LLabel::has_property_label_side(Self, IProperty[LabelSide]) -> Bool
 pub fn LLabel::has_property_string(Self, IProperty[String]) -> Bool
+pub fn LLabel::has_property_string_array(Self, IProperty[Array[String]]) -> Bool
 pub fn LLabel::set_id(Self, Int) -> Unit
 pub fn LLabel::set_origin_identifier(Self, String?) -> Unit
 pub fn LLabel::set_property_bool(Self, IProperty[Bool], Bool) -> Unit
 pub fn LLabel::set_property_l_edge(Self, IProperty[LEdge?], LEdge?) -> Unit
 pub fn LLabel::set_property_label_side(Self, IProperty[LabelSide], LabelSide) -> Unit
 pub fn LLabel::set_property_string(Self, IProperty[String], String) -> Unit
+pub fn LLabel::set_property_string_array(Self, IProperty[Array[String]], Array[String]) -> Unit
 pub fn LLabel::to_string(Self) -> String
 
 pub struct LLabelAdapter {
@@ -16340,7 +16348,7 @@ pub struct PortContext {
   labels_next_to_port : Bool
   volatile_id : Int
   port_margin : Spacing
-  port_label_cell : Cell?
+  mut port_label_cell : Cell?
 }
 pub fn PortContext::apply_port_position(Self) -> Unit
 

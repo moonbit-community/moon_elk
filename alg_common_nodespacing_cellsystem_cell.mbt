@@ -32,6 +32,7 @@ pub struct Cell {
   mut label_vertical_alignment : VerticalLabelAlignment
   mut label_gap : Double
   mut labels : Array[ElkLabel]?
+  mut l_labels : Array[LLabel]?
 }
 
 ///|
@@ -59,6 +60,7 @@ pub fn new_cell() -> Cell {
     label_vertical_alignment: Center,
     label_gap: 0.0,
     labels: None,
+    l_labels: None,
   }
 }
 

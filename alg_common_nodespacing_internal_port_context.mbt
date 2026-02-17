@@ -1,7 +1,6 @@
 ///|
 fn port_context_has_compound_connections(port : LPort) -> Bool {
-  ignore(port)
-  false
+  port.get_property_bool(internal_properties_inside_connections)
 }
 
 ///|
@@ -12,7 +11,7 @@ pub struct PortContext {
   labels_next_to_port : Bool
   volatile_id : Int
   port_margin : ElkMargin
-  port_label_cell : LabelCell?
+  mut port_label_cell : LabelCell?
 }
 
 ///|

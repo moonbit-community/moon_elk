@@ -8,12 +8,13 @@ fn port_context_creator_create_port_context(
   let port_context = new_port_context(node_context, port, volatile_id)
   node_context_add_port_context(node_context, port.get_side(), port_context)
 
-  // Port label handling requires adapting LLabel to the label cell's ElkLabel contract.
-  // Keep the behavior equivalent for unlabeled ports, which is the dominant layered case.
   if im_port_labels &&
-    !port_label_placement_is_fixed(node_context.port_labels_placement) &&
-    !port.get_labels().is_empty() {
-    ignore(port_context)
+    !port_label_placement_is_fixed(node_context.port_labels_placement) {
+    let port_label_cell = new_label_cell(node_context.label_label_spacing)
+    for label in port.get_labels() {
+      port_label_cell.add_l_label(label)
+    }
+    port_context.port_label_cell = Some(port_label_cell)
   }
 }
 

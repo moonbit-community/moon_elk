@@ -36,6 +36,23 @@ fn vertical_port_placement_size_calculator_unify_port_margins(
 }
 
 ///|
+fn vertical_port_placement_size_calculator_first_label_height(
+  port_label_cell : LabelCell,
+) -> Double {
+  let labels = port_label_cell.get_labels()
+  if !labels.is_empty() {
+    return label_height(labels[0])
+  }
+
+  let l_labels = port_label_cell.get_l_labels()
+  if !l_labels.is_empty() {
+    return l_labels[0].get_size().y
+  }
+
+  0.0
+}
+
+///|
 fn vertical_port_placement_size_calculator_compute_vertical_port_margins(
   node_context : NodeContext,
   port_side : PortSide,
@@ -53,12 +70,14 @@ fn vertical_port_placement_size_calculator_compute_vertical_port_margins(
           match port_context.port_label_cell {
             Some(port_label_cell) =>
               if node_context.port_labels_treat_as_group ||
-                port_label_cell.get_labels().length() == 1 {
+                port_label_cell.label_count() == 1 {
                 let overhang = (label_height - port_height) / 2.0
                 port_context.port_margin.top = overhang
                 port_context.port_margin.bottom = overhang
               } else {
-                let first_label_height = label_height
+                let first_label_height = vertical_port_placement_size_calculator_first_label_height(
+                  port_label_cell,
+                )
                 let first_label_overhang = (first_label_height - port_height) /
                   2.0
                 port_context.port_margin.top = @cmp.maximum(
