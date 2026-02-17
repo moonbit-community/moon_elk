@@ -30,11 +30,21 @@ pub fn adapt_l_label(LLabel) -> LLabelAdapter
 
 pub fn adapt_l_node(LNode, Bool) -> LNodeAdapter
 
+pub fn aggregated_match_decider_avg(Array[Double]) -> Double
+
+pub fn aggregated_match_decider_max(Array[Double]) -> Double
+
+pub fn aggregated_match_decider_min(Array[Double]) -> Double
+
+pub fn aggregated_match_decider_sum(Array[Double]) -> Double
+
 pub let algorithm : IProperty[String]
 
 pub fn[P, G] algorithm_assembler_create(PhaseDescriptor[P]) -> AlgorithmAssembler[P, G]
 
 pub let alignment : IProperty[String]
+
+pub fn alignment_matcher_alignment(ElkRectangle, ElkRectangle) -> Double
 
 pub fn alignment_to_string(Alignment) -> String
 
@@ -1089,6 +1099,8 @@ pub let disco_spacing_component_component : IProperty[Double]
 pub fn distance(KVector, KVector, KVector, KVector, KVector) -> Double
 
 pub fn distance_from_bezier_segment(KVector, KVector, KVector, KVector, KVector) -> Double
+
+pub fn distance_matcher_distance(ElkRectangle, ElkRectangle) -> Double
 
 pub let dot_attr_boundingbox : String
 
@@ -3742,6 +3754,8 @@ pub fn new_abstract_meta_data_ui_module(plugin_id? : String) -> AbstractMetaData
 
 pub fn new_abstract_meta_data_validator() -> AbstractMetaDataValidator
 
+pub fn[C, T] new_abstract_normalized_matcher((C, T) -> Double) -> AbstractNormalizedMatcher[C, T]
+
 pub fn[T] new_abstract_random_list_accessor(() -> T) -> AbstractRandomListAccessor[T]
 
 pub fn new_abstract_resource_path(String?, String) -> AbstractResourcePath
@@ -3749,6 +3763,8 @@ pub fn new_abstract_resource_path(String?, String) -> AbstractResourcePath
 pub fn new_abstract_self_loop_router((SelfLoopHolder) -> Unit) -> AbstractSelfLoopRouter
 
 pub fn new_active_editor_supported_tester() -> ActiveEditorSupportedTester
+
+pub fn[T] new_aggregated_match_decider() -> AggregatedMatchDecider[T]
 
 pub fn new_algorithm(String) -> Algorithm
 
@@ -3763,6 +3779,8 @@ pub fn new_algorithm_project_creation_page(String) -> AlgorithmProjectCreationPa
 pub fn new_algorithm_selection_dialog(String) -> AlgorithmSelectionDialog
 
 pub fn new_algorithms(Array[Algorithm]) -> Algorithms
+
+pub fn[C, T] new_alignment_matcher() -> AlignmentMatcher[C, T]
 
 pub fn new_all_algorithms() -> AllAlgorithms
 
@@ -3814,6 +3832,10 @@ pub fn new_bk_simple_threshold_strategy() -> BkThresholdStrategy
 
 pub fn[T] new_blackbox_test_method(String, (T, Int) -> Unit, ignored? : Bool) -> BlackboxTestMethod[T]
 
+pub fn[C, T] new_bounds_provider((C) -> ElkRectangle?, (T) -> ElkRectangle?, (IDataProvider[C, T], Bool) -> Unit, () -> Unit) -> IBoundsProvider[C, T]
+
+pub fn[C, T] new_bounds_provider_with_default_lifecycle((C) -> ElkRectangle?, (T) -> ElkRectangle?) -> IBoundsProvider[C, T]
+
 pub fn new_bp_info(LNode, LNode, LEdge, LEdge, LEdge) -> BPInfo
 
 pub fn new_breadth_first_model_order_layerer_layout_phase() -> ILayoutProcessor[LayeredPhases, LGraph]
@@ -3837,6 +3859,8 @@ pub fn new_clear_executions_action() -> ClearExecutionsAction
 pub fn new_coffman_graham_layerer_layout_phase() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_collapse_execution_tree_action(AbstractLayoutDebugView) -> CollapseExecutionTreeAction
+
+pub fn[C, T] new_comment_attacher() -> CommentAttacher[C, T]
 
 pub fn new_comment_node_margin_calculator_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
@@ -4052,6 +4076,10 @@ pub fn new_cubic_spline_interpolator() -> CubicSplineInterpolator
 
 pub fn new_data_object((String) -> Unit) -> IDataObject
 
+pub fn[C, T] new_data_provider(() -> Array[C], () -> Array[T], (C) -> Array[T], () -> Array[IDataProvider[C, T]], (C, T) -> Unit) -> IDataProvider[C, T]
+
+pub fn[C, T] new_data_provider_with_default_targets_for(() -> Array[C], () -> Array[T], () -> Array[IDataProvider[C, T]], (C, T) -> Unit) -> IDataProvider[C, T]
+
 pub fn new_dc_component() -> DCComponent
 
 pub fn new_dc_element(KVectorChain) -> DCElement
@@ -4061,6 +4089,8 @@ pub fn new_dc_extension(DCElement, DCDirection, KVector, Double) -> DCExtension
 pub fn new_dc_graph(Array[Array[DCElement]], inset? : Double) -> DCGraph
 
 pub fn new_dc_polyomino(DCComponent, Double, Double) -> DCPolyomino
+
+pub fn[T] new_decider((Array[(T, Array[(Int, Double)])]) -> T?) -> IDecider[T]
 
 pub fn new_default_configuration(edges? : Bool, nodes? : Bool, ports? : Bool, edge_labels? : Bool) -> DefaultConfiguration
 
@@ -4118,6 +4148,8 @@ pub fn new_dis_co_paint_rectangle(Int, Int, Int, Int) -> DisCoPaintRectangle
 
 pub fn new_dis_co_polyomino_compactor() -> DisCoPolyominoCompactor
 
+pub fn[C, T] new_distance_matcher() -> DistanceMatcher[C, T]
+
 pub fn new_dot_exporter() -> DotExporter
 
 pub fn new_dot_factory() -> DotFactory
@@ -4149,6 +4181,10 @@ pub fn new_elk_debug_plugin() -> ElkDebugPlugin
 pub fn new_elk_engine(default_layout_options? : Map[String, Json], algorithms? : Array[String]) -> ElkEngine
 
 pub fn new_elk_graph_antlr_token_file_provider() -> ElkGraphAntlrTokenFileProvider
+
+pub fn new_elk_graph_bounds_provider() -> IBoundsProvider[Int, Int]
+
+pub fn new_elk_graph_data_provider(Int) -> ElkGraphDataProvider
 
 pub fn new_elk_graph_description_label_provider() -> ElkGraphDescriptionLabelProvider
 
@@ -4350,6 +4386,10 @@ pub fn[T, G] new_experiment_statement(ExperimentRunner[T, G], RunNotifier) -> Ex
 
 pub fn[T] new_experimental_object(TestAlgorithm, TestConfiguration[T], TestGraph[T]) -> ExperimentalObject[T]
 
+pub fn[C, T] new_explicit_attachment_provider((C) -> T?, (IDataProvider[C, T], Bool) -> Unit, () -> Unit) -> IExplicitAttachmentProvider[C, T]
+
+pub fn[C, T] new_explicit_attachment_provider_with_default_lifecycle((C) -> T?) -> IExplicitAttachmentProvider[C, T]
+
 pub fn[E] new_external_extension(() -> E, () -> ElkRectangle, () -> ElkRectangle, () -> Direction, get_placeholder? : () -> ElkRectangle?) -> IExternalExtension[E]
 
 pub fn[T] new_factory(() -> T, destroy_fn? : (T) -> Unit) -> IFactory[T]
@@ -4370,7 +4410,11 @@ pub fn new_file_name_filter(String) -> FileNameFilter
 
 pub fn new_file_name_filter_with_expressions(Array[String]) -> FileNameFilter
 
+pub fn[C, T] new_filter((C) -> Bool, (IDataProvider[C, T], Bool) -> Unit, () -> Unit) -> IFilter[C, T]
+
 pub fn new_filter_execution_tree_action(AbstractLayoutDebugView) -> FilterExecutionTreeAction
+
+pub fn[C, T] new_filter_with_default_lifecycle((C) -> Bool) -> IFilter[C, T]
 
 pub fn new_final_spline_bendpoints_calculator_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
@@ -5058,6 +5102,10 @@ pub fn new_longest_path_source_layerer_layout_phase() -> ILayoutProcessor[Layere
 
 pub fn new_manual_cut_index_calculator() -> ICutIndexCalculator
 
+pub fn[C, T] new_matcher((C, T) -> Double, (C, T) -> Double, (IDataProvider[C, T], Bool) -> Unit, () -> Unit) -> IMatcher[C, T]
+
+pub fn[C, T] new_matcher_with_default_lifecycle((C, T) -> Double, (C, T) -> Double) -> IMatcher[C, T]
+
 pub fn new_median_heuristic(@random.Rand) -> MedianHeuristic
 
 pub fn new_melk_documentation_generator() -> MelkDocumentationGenerator
@@ -5207,6 +5255,8 @@ pub fn new_node_context(LNode) -> NodeContext
 pub fn new_node_margin_calculator(LGraphAdapter) -> NodeMarginCalculator
 
 pub fn new_node_promotion_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
+
+pub fn[C, T] new_node_reference_matcher() -> NodeReferenceMatcher[C, T]
 
 pub fn new_node_relative_port_distributor(Int) -> NodeRelativePortDistributor
 
@@ -5448,6 +5498,8 @@ pub fn new_simple_node_placer_layout_phase() -> ILayoutProcessor[LayeredPhases, 
 
 pub fn new_single_edge_graph_wrapper_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
+pub fn[C, T] new_size_filter() -> SizeFilter[C, T]
+
 pub fn new_sort_by_input_model_processor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_south_to_north_routing_strategy() -> BaseRoutingDirectionStrategy
@@ -5559,6 +5611,8 @@ pub fn new_text_layout_mapping(String, Int, Int) -> TextLayoutMapping
 pub fn new_text_layout_module() -> TextLayoutModule
 
 pub fn new_text_layout_setup() -> TextLayoutSetup
+
+pub fn[C, T] new_text_prefix_filter() -> TextPrefixFilter[C, T]
 
 pub fn new_three_value_grid(() -> Int, () -> Int, (Int, Int) -> Bool, (Int, Int) -> Bool, (Int, Int) -> Bool, (Int, Int) -> Bool, (Int, Int) -> Unit, (Int, Int) -> Unit, (Int, Int) -> Unit, (Int, Int) -> Unit) -> IThreeValueGrid
 
@@ -7469,6 +7523,22 @@ pub struct AbstractMetaDataValidator {
 }
 pub fn AbstractMetaDataValidator::get_epackages(Self) -> Array[String]
 
+pub struct AbstractNormalizedMatcher[C, T] {
+  raw_fn : (C, T) -> Double
+  mut worst_raw_value : Double
+  mut best_raw_value : Double
+  mut normalization_function : NormalizationFunction
+}
+pub fn[C, T] AbstractNormalizedMatcher::as_matcher(Self[C, T]) -> IMatcher[C, T]
+pub fn[C, T] AbstractNormalizedMatcher::get_best_raw_value(Self[C, T]) -> Double
+pub fn[C, T] AbstractNormalizedMatcher::get_worst_raw_value(Self[C, T]) -> Double
+pub fn[C, T] AbstractNormalizedMatcher::normalize_binary(Self[C, T], Double) -> Double
+pub fn[C, T] AbstractNormalizedMatcher::normalize_linear(Self[C, T], Double) -> Double
+pub fn[C, T] AbstractNormalizedMatcher::normalized(Self[C, T], C, T) -> Double
+pub fn[C, T] AbstractNormalizedMatcher::raw(Self[C, T], C, T) -> Double
+pub fn[C, T] AbstractNormalizedMatcher::with_bounds(Self[C, T], Double, Double) -> Self[C, T]
+pub fn[C, T] AbstractNormalizedMatcher::with_normalization_function(Self[C, T], NormalizationFunction) -> Self[C, T]
+
 pub struct AbstractRandomListAccessor[T] {
   list : Array[T]
   provide_default : () -> T
@@ -7514,6 +7584,17 @@ pub enum AddMode {
   Prepend
   Append
 }
+
+pub struct AggregatedMatchDecider[T] {
+  mut aggregator : (Array[Double]) -> Double
+  mut lower_boundary : Double
+  mut include_lower_boundary : Bool
+}
+pub fn[T] AggregatedMatchDecider::as_decider(Self[T]) -> IDecider[T]
+pub fn[T] AggregatedMatchDecider::make_attachment_decision(Self[T], Array[(T, Array[(Int, Double)])]) -> T?
+pub fn[T] AggregatedMatchDecider::with_aggregator(Self[T], (Array[Double]) -> Double) -> Self[T]
+pub fn[T] AggregatedMatchDecider::with_lower_attachment_boundary(Self[T], Double) -> Self[T]
+pub fn[T] AggregatedMatchDecider::with_lower_boundary_included(Self[T], Bool) -> Self[T]
 
 pub struct Algorithm {
   value : String
@@ -7640,6 +7721,25 @@ pub enum Alignment {
   Bottom
   Center
 }
+
+pub struct AlignmentMatcher[C, T] {
+  mut bounds_provider : IBoundsProvider[C, T]?
+  mut worst_raw_value : Double
+  mut best_raw_value : Double
+  mut normalization_function : NormalizationFunction
+}
+pub fn[C, T] AlignmentMatcher::as_matcher(Self[C, T]) -> IMatcher[C, T]
+pub fn[C, T] AlignmentMatcher::check_configuration(Self[C, T]) -> Unit
+pub fn[C, T] AlignmentMatcher::get_best_raw_value(Self[C, T]) -> Double
+pub fn[C, T] AlignmentMatcher::get_worst_raw_value(Self[C, T]) -> Double
+pub fn[C, T] AlignmentMatcher::normalize_binary(Self[C, T], Double) -> Double
+pub fn[C, T] AlignmentMatcher::normalize_linear(Self[C, T], Double) -> Double
+pub fn[C, T] AlignmentMatcher::normalized(Self[C, T], C, T) -> Double
+pub fn[C, T] AlignmentMatcher::preprocess(Self[C, T], IDataProvider[C, T], Bool) -> Unit
+pub fn[C, T] AlignmentMatcher::raw(Self[C, T], C, T) -> Double
+pub fn[C, T] AlignmentMatcher::with_bounds_provider(Self[C, T], IBoundsProvider[C, T]) -> Self[C, T]
+pub fn[C, T] AlignmentMatcher::with_maximum_alignment_offset(Self[C, T], Double) -> Self[C, T]
+pub fn[C, T] AlignmentMatcher::with_normalization_function(Self[C, T], NormalizationFunction) -> Self[C, T]
 
 pub struct AllAlgorithms {
   marker : Int
@@ -8202,6 +8302,29 @@ pub enum Command {
   Fdp
   Circo
 }
+
+pub struct CommentAttacher[C, T] {
+  mut include_hierarchy : Bool
+  mut explicit_attachments_disable_heuristics : Bool
+  mut explicit_attachment_provider : IExplicitAttachmentProvider[C, T]
+  mut bounds_provider : IBoundsProvider[C, T]?
+  filters : Array[IFilter[C, T]]
+  matchers : Array[IMatcher[C, T]]
+  mut decider : IDecider[T]
+}
+pub fn[C, T] CommentAttacher::add_filter(Self[C, T], IFilter[C, T]) -> Self[C, T]
+pub fn[C, T] CommentAttacher::add_matcher(Self[C, T], IMatcher[C, T]) -> Self[C, T]
+pub fn[C, T] CommentAttacher::attach_comments(Self[C, T], IDataProvider[C, T]) -> Unit
+pub fn[C, T] CommentAttacher::cleanup(Self[C, T]) -> Unit
+pub fn[C, T] CommentAttacher::edgeify_found_attachments(Self[C, T], IDataProvider[C, T], Array[(C, T)], Array[(C, T)]) -> Unit
+pub fn[C, T] CommentAttacher::find_match(Self[C, T], IDataProvider[C, T], C) -> T?
+pub fn[C, T] CommentAttacher::is_eligible_for_heuristic_attachment(Self[C, T], C) -> Bool
+pub fn[C, T] CommentAttacher::keep_heuristics_enabled_with_explicit_attachments(Self[C, T], Bool) -> Self[C, T]
+pub fn[C, T] CommentAttacher::limit_to_current_hierarchy_level(Self[C, T], Bool) -> Self[C, T]
+pub fn[C, T] CommentAttacher::preprocess(Self[C, T], IDataProvider[C, T]) -> Unit
+pub fn[C, T] CommentAttacher::with_attachment_decider(Self[C, T], IDecider[T]) -> Self[C, T]
+pub fn[C, T] CommentAttacher::with_bounds_provider(Self[C, T], IBoundsProvider[C, T]) -> Self[C, T]
+pub fn[C, T] CommentAttacher::with_explicit_attachment_provider(Self[C, T], IExplicitAttachmentProvider[C, T]?) -> Self[C, T]
 
 pub enum CompactionStrategy {
   Polyomino
@@ -9730,6 +9853,25 @@ pub struct DisCoPolyominoCompactor {
 }
 pub fn DisCoPolyominoCompactor::compact(Self, DCGraph) -> Unit
 
+pub struct DistanceMatcher[C, T] {
+  mut bounds_provider : IBoundsProvider[C, T]?
+  mut worst_raw_value : Double
+  mut best_raw_value : Double
+  mut normalization_function : NormalizationFunction
+}
+pub fn[C, T] DistanceMatcher::as_matcher(Self[C, T]) -> IMatcher[C, T]
+pub fn[C, T] DistanceMatcher::check_configuration(Self[C, T]) -> Unit
+pub fn[C, T] DistanceMatcher::get_best_raw_value(Self[C, T]) -> Double
+pub fn[C, T] DistanceMatcher::get_worst_raw_value(Self[C, T]) -> Double
+pub fn[C, T] DistanceMatcher::normalize_binary(Self[C, T], Double) -> Double
+pub fn[C, T] DistanceMatcher::normalize_linear(Self[C, T], Double) -> Double
+pub fn[C, T] DistanceMatcher::normalized(Self[C, T], C, T) -> Double
+pub fn[C, T] DistanceMatcher::preprocess(Self[C, T], IDataProvider[C, T], Bool) -> Unit
+pub fn[C, T] DistanceMatcher::raw(Self[C, T], C, T) -> Double
+pub fn[C, T] DistanceMatcher::with_bounds_provider(Self[C, T], IBoundsProvider[C, T]) -> Self[C, T]
+pub fn[C, T] DistanceMatcher::with_maximum_attachment_distance(Self[C, T], Double) -> Self[C, T]
+pub fn[C, T] DistanceMatcher::with_normalization_function(Self[C, T], NormalizationFunction) -> Self[C, T]
+
 pub struct DotAttribute {
   mut name : String?
   mut value : String?
@@ -10096,6 +10238,15 @@ pub struct ElkGraphAntlrTokenFileProvider {
 }
 pub fn ElkGraphAntlrTokenFileProvider::get_antlr_token_file(Self) -> String
 pub fn ElkGraphAntlrTokenFileProvider::get_antlr_token_file_path(Self) -> String
+
+pub struct ElkGraphDataProvider {
+  graph : Int
+}
+pub fn ElkGraphDataProvider::as_data_provider(Self) -> IDataProvider[Int, Int]
+pub fn ElkGraphDataProvider::attach(Self, Int, Int) -> Unit
+pub fn ElkGraphDataProvider::provide_comments(Self) -> Array[Int]
+pub fn ElkGraphDataProvider::provide_sub_hierarchies(Self) -> Array[IDataProvider[Int, Int]]
+pub fn ElkGraphDataProvider::provide_targets(Self) -> Array[Int]
 
 pub struct ElkGraphDescriptionLabelProvider {
   unit : Unit
@@ -12804,6 +12955,18 @@ pub fn HyperedgeCrossingsCounter::count_crossings(Self, Array[LNode], Array[LNod
 
 type HyperedgeDummyMergerMergeState
 
+pub struct IBoundsProvider[C, T] {
+  bounds_for_comment_fn : (C) -> ElkRectangle?
+  bounds_for_target_fn : (T) -> ElkRectangle?
+  preprocess_fn : (IDataProvider[C, T], Bool) -> Unit
+  cleanup_fn : () -> Unit
+}
+pub fn[C, T] IBoundsProvider::bounds_for_comment(Self[C, T], C) -> ElkRectangle?
+pub fn[C, T] IBoundsProvider::bounds_for_target(Self[C, T], T) -> ElkRectangle?
+pub fn[C : Eq, T : Eq] IBoundsProvider::cached(Self[C, T]) -> Self[C, T]
+pub fn[C, T] IBoundsProvider::cleanup(Self[C, T]) -> Unit
+pub fn[C, T] IBoundsProvider::preprocess(Self[C, T], IDataProvider[C, T], Bool) -> Unit
+
 pub struct ICompactor {
   compact_fn : (DCGraph) -> Unit
 }
@@ -12856,6 +13019,25 @@ pub struct IDataObject {
 }
 pub fn IDataObject::parse(Self, String) -> Unit
 
+pub struct IDataProvider[C, T] {
+  provide_comments_fn : () -> Array[C]
+  provide_targets_fn : () -> Array[T]
+  provide_targets_for_fn : (C) -> Array[T]
+  provide_sub_hierarchies_fn : () -> Array[IDataProvider[C, T]]
+  attach_fn : (C, T) -> Unit
+}
+pub fn[C, T] IDataProvider::attach(Self[C, T], C, T) -> Unit
+pub fn[C : Eq, T] IDataProvider::cached(Self[C, T]) -> Self[C, T]
+pub fn[C, T] IDataProvider::provide_comments(Self[C, T]) -> Array[C]
+pub fn[C, T] IDataProvider::provide_sub_hierarchies(Self[C, T]) -> Array[Self[C, T]]
+pub fn[C, T] IDataProvider::provide_targets(Self[C, T]) -> Array[T]
+pub fn[C, T] IDataProvider::provide_targets_for(Self[C, T], C) -> Array[T]
+
+pub struct IDecider[T] {
+  make_attachment_decision_fn : (Array[(T, Array[(Int, Double)])]) -> T?
+}
+pub fn[T] IDecider::make_attachment_decision(Self[T], Array[(T, Array[(Int, Double)])]) -> T?
+
 pub struct IDiagramLayoutConnector {
   id : String
   build_layout_graph_fn : (Int?, Int?) -> LayoutMapping?
@@ -12907,6 +13089,15 @@ pub struct IExecutionInfoModelListener {
 pub fn IExecutionInfoModelListener::execution_info_changed(Self) -> Unit
 pub fn IExecutionInfoModelListener::get_id(Self) -> Int
 
+pub struct IExplicitAttachmentProvider[C, T] {
+  find_explicit_attachment_fn : (C) -> T?
+  preprocess_fn : (IDataProvider[C, T], Bool) -> Unit
+  cleanup_fn : () -> Unit
+}
+pub fn[C, T] IExplicitAttachmentProvider::cleanup(Self[C, T]) -> Unit
+pub fn[C, T] IExplicitAttachmentProvider::find_explicit_attachment(Self[C, T], C) -> T?
+pub fn[C, T] IExplicitAttachmentProvider::preprocess(Self[C, T], IDataProvider[C, T], Bool) -> Unit
+
 pub struct IExternalExtension[E] {
   _instance_id : Int
   get_representative_fn : () -> E
@@ -12927,6 +13118,15 @@ pub struct IFactory[T] {
 }
 pub fn[T] IFactory::create(Self[T]) -> T
 pub fn[T] IFactory::destroy(Self[T], T) -> Unit
+
+pub struct IFilter[C, T] {
+  eligible_for_attachment_fn : (C) -> Bool
+  preprocess_fn : (IDataProvider[C, T], Bool) -> Unit
+  cleanup_fn : () -> Unit
+}
+pub fn[C, T] IFilter::cleanup(Self[C, T]) -> Unit
+pub fn[C, T] IFilter::eligible_for_attachment(Self[C, T], C) -> Bool
+pub fn[C, T] IFilter::preprocess(Self[C, T], IDataProvider[C, T], Bool) -> Unit
 
 pub struct IGraphElementVisitor {
   visit_fn : (Int) -> Unit
@@ -13043,6 +13243,19 @@ pub struct ILayoutSetup {
 }
 pub fn ILayoutSetup::create_injector(Self, CoreServiceInjector) -> CoreServiceInjector
 pub fn ILayoutSetup::supports(Self, LayoutSetupObject) -> Bool
+
+pub struct IMatcher[C, T] {
+  id : Int
+  raw_fn : (C, T) -> Double
+  normalized_fn : (C, T) -> Double
+  preprocess_fn : (IDataProvider[C, T], Bool) -> Unit
+  cleanup_fn : () -> Unit
+}
+pub fn[C, T] IMatcher::cleanup(Self[C, T]) -> Unit
+pub fn[C, T] IMatcher::matcher_id(Self[C, T]) -> Int
+pub fn[C, T] IMatcher::normalized(Self[C, T], C, T) -> Double
+pub fn[C, T] IMatcher::preprocess(Self[C, T], IDataProvider[C, T], Bool) -> Unit
+pub fn[C, T] IMatcher::raw(Self[C, T], C, T) -> Double
 
 pub struct INodeArranger {
   get_predicted_size_fn : (Int) -> KVector
@@ -15656,6 +15869,28 @@ pub enum NodePromotionStrategy {
   ModelOrderRightToLeft
 }
 
+pub struct NodeReferenceMatcher[C, T] {
+  mut comment_text_provider : ((C) -> String)?
+  mut target_name_provider : ((T) -> String)?
+  mut bounds_provider : IBoundsProvider[C, T]?
+  mut max_distance : Double
+  mut fuzzy : Bool
+  mut found_attachments : Array[(C, T)]
+}
+pub fn[C : Eq, T : Eq] NodeReferenceMatcher::as_matcher(Self[C, T]) -> IMatcher[C, T]
+pub fn[C, T] NodeReferenceMatcher::check_configuration(Self[C, T]) -> Unit
+pub fn[C, T] NodeReferenceMatcher::cleanup(Self[C, T]) -> Unit
+pub fn[C, T] NodeReferenceMatcher::get_attachments(Self[C, T]) -> Array[(C, T)]
+pub fn[C, T] NodeReferenceMatcher::go_find_matches(Self[C, T], Array[(C, String)], Array[(T, String)]) -> Unit
+pub fn[C : Eq, T : Eq] NodeReferenceMatcher::normalized(Self[C, T], C, T) -> Double
+pub fn[C, T] NodeReferenceMatcher::preprocess(Self[C, T], IDataProvider[C, T], Bool) -> Unit
+pub fn[C : Eq, T : Eq] NodeReferenceMatcher::raw(Self[C, T], C, T) -> Double
+pub fn[C, T] NodeReferenceMatcher::with_bounds_provider(Self[C, T], IBoundsProvider[C, T]) -> Self[C, T]
+pub fn[C, T] NodeReferenceMatcher::with_comment_text_provider(Self[C, T], (C) -> String) -> Self[C, T]
+pub fn[C, T] NodeReferenceMatcher::with_fuzzy_matching(Self[C, T]) -> Self[C, T]
+pub fn[C, T] NodeReferenceMatcher::with_maximum_attachment_distance(Self[C, T], Double) -> Self[C, T]
+pub fn[C, T] NodeReferenceMatcher::with_target_name_provider(Self[C, T], (T) -> String) -> Self[C, T]
+
 pub struct NodeRelativePortDistributor {
   distributor : AbstractBarycenterPortDistributor
 }
@@ -15683,6 +15918,11 @@ pub enum NodeType {
 
 pub enum NodeYPlacerStrategy {
   SIMPLE_Y_PLACING
+}
+
+pub enum NormalizationFunction {
+  Linear
+  Binary
 }
 
 pub struct NorthSouthEdgeNeighbouringNodeCrossingsCounter {
@@ -16653,6 +16893,17 @@ pub enum SizeConstraint {
   MinimumSize
 }
 
+pub struct SizeFilter[C, T] {
+  mut bounds_provider : IBoundsProvider[C, T]?
+  mut max_area : Double
+}
+pub fn[C, T] SizeFilter::as_filter(Self[C, T]) -> IFilter[C, T]
+pub fn[C, T] SizeFilter::check_configuration(Self[C, T]) -> Unit
+pub fn[C, T] SizeFilter::eligible_for_attachment(Self[C, T], C) -> Bool
+pub fn[C, T] SizeFilter::preprocess(Self[C, T], IDataProvider[C, T], Bool) -> Unit
+pub fn[C, T] SizeFilter::with_bounds_provider(Self[C, T], IBoundsProvider[C, T]) -> Self[C, T]
+pub fn[C, T] SizeFilter::with_maximum_area(Self[C, T], Double) -> Self[C, T]
+
 pub enum SizeOptions {
   DefaultMinimumSize
   MinimumSizeAccountsForPadding
@@ -17084,6 +17335,21 @@ pub struct TextLayoutSetup {
 pub fn TextLayoutSetup::create_injector(Self, String) -> String
 pub fn TextLayoutSetup::supports(Self, String) -> Bool
 
+pub struct TextPrefixFilter[C, T] {
+  mut comment_text_provider : ((C) -> String)?
+  prefixes : Array[String]
+  mut reject_comment_on_prefix_match : Bool
+  mut case_sensitive : Bool
+}
+pub fn[C, T] TextPrefixFilter::add_prefix(Self[C, T], String) -> Self[C, T]
+pub fn[C, T] TextPrefixFilter::as_filter(Self[C, T]) -> IFilter[C, T]
+pub fn[C, T] TextPrefixFilter::check_configuration(Self[C, T]) -> Unit
+pub fn[C, T] TextPrefixFilter::eligible_for_attachment(Self[C, T], C) -> Bool
+pub fn[C, T] TextPrefixFilter::preprocess(Self[C, T], IDataProvider[C, T], Bool) -> Unit
+pub fn[C, T] TextPrefixFilter::with_case_sensitive_matching(Self[C, T]) -> Self[C, T]
+pub fn[C, T] TextPrefixFilter::with_comment_text_provider(Self[C, T], (C) -> String) -> Self[C, T]
+pub fn[C, T] TextPrefixFilter::with_prefix_match_required_for_eligibility(Self[C, T]) -> Self[C, T]
+
 pub enum TopdownNodeTypes {
   ParallelNode
   HierarchicalNode
@@ -17294,9 +17560,13 @@ pub enum WrappingStrategy {
 // Type aliases
 pub type ConfigStateObserver = (State) -> Unit
 
+pub type DeciderHeuristicResult[T] = Array[(T, Array[(Int, Double)])]
+
 pub type ElkEdge = Int
 
 pub type ElkEdgeSection = Int
+
+pub type ElkGraphBoundsProvider = IBoundsProvider[Int, Int]
 
 pub type ElkLabel = Int
 
