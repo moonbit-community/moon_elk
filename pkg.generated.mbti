@@ -13232,6 +13232,7 @@ pub struct ILayoutMetaDataProvider {
 }
 pub fn ILayoutMetaDataProvider::apply(Self, LayoutMetaDataRegistry) -> Unit
 
+#alias(ILayoutPhase)
 pub struct ILayoutProcessor[P, G] {
   id : Int
   process_fn : (G, IElkProgressMonitor?) -> Unit

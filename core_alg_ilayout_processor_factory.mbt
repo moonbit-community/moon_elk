@@ -6,9 +6,6 @@ pub struct ILayoutProcessorFactory[P, G] {
 }
 
 ///|
-pub type ILayoutPhaseFactory[P, G] = ILayoutProcessorFactory[P, G]
-
-///|
 pub fn[P, G] new_layout_processor_factory(
   id : Int,
   order : Int,
