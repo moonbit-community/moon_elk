@@ -3,13 +3,22 @@ pub struct LGraph {
   mut id : Int
   port_side_array_properties : Map[String, Array[PortSide]]
   graph_properties_array_properties : Map[String, Array[GraphProperties]]
+  cross_hierarchy_map_entry_array_properties : Map[
+    String,
+    Array[(LEdge, (LEdge, LGraph, PortType))],
+  ]
   node_array_properties : Map[String, Array[LNode]]
+  layout_processor_array_properties : Map[
+    String,
+    Array[ILayoutProcessor[LayeredPhases, LGraph]],
+  ]
   int_properties : Map[String, Int]
   bool_properties : Map[String, Bool]
   double_properties : Map[String, Double]
   string_properties : Map[String, String]
   string_array_properties : Map[String, Array[String]]
   label_manager_properties : Map[String, ILabelManager]
+  spacings_properties : Map[String, Spacings]
   elk_margin_properties : Map[String, ElkMargin]
   component_ordering_strategy_properties : Map[
     String,
@@ -31,13 +40,16 @@ pub fn new_l_graph() -> LGraph {
     id: 0,
     port_side_array_properties: {},
     graph_properties_array_properties: {},
+    cross_hierarchy_map_entry_array_properties: {},
     node_array_properties: {},
+    layout_processor_array_properties: {},
     int_properties: {},
     bool_properties: {},
     double_properties: {},
     string_properties: {},
     string_array_properties: {},
     label_manager_properties: {},
+    spacings_properties: {},
     elk_margin_properties: {},
     component_ordering_strategy_properties: {},
     direction_properties: {},
@@ -102,6 +114,34 @@ pub fn LGraph::get_property_graph_properties_array(
 }
 
 ///|
+pub fn LGraph::set_property_cross_hierarchy_map_entry_array(
+  self : LGraph,
+  property : IProperty[Array[(LEdge, (LEdge, LGraph, PortType))]],
+  value : Array[(LEdge, (LEdge, LGraph, PortType))],
+) -> Unit {
+  self.cross_hierarchy_map_entry_array_properties[property.get_id()] = value.copy()
+}
+
+///|
+pub fn LGraph::get_property_cross_hierarchy_map_entry_array(
+  self : LGraph,
+  property : IProperty[Array[(LEdge, (LEdge, LGraph, PortType))]],
+) -> Array[(LEdge, (LEdge, LGraph, PortType))] {
+  match self.cross_hierarchy_map_entry_array_properties.get(property.get_id()) {
+    Some(value) => value.copy()
+    None => property.get_default().copy()
+  }
+}
+
+///|
+pub fn LGraph::has_property_cross_hierarchy_map_entry_array(
+  self : LGraph,
+  property : IProperty[Array[(LEdge, (LEdge, LGraph, PortType))]],
+) -> Bool {
+  self.cross_hierarchy_map_entry_array_properties.contains(property.get_id())
+}
+
+///|
 pub fn LGraph::set_property_l_node_array(
   self : LGraph,
   property : IProperty[Array[LNode]],
@@ -127,6 +167,34 @@ pub fn LGraph::has_property_l_node_array(
   property : IProperty[Array[LNode]],
 ) -> Bool {
   self.node_array_properties.contains(property.get_id())
+}
+
+///|
+pub fn LGraph::set_property_layout_processor_array(
+  self : LGraph,
+  property : IProperty[Array[ILayoutProcessor[LayeredPhases, LGraph]]],
+  value : Array[ILayoutProcessor[LayeredPhases, LGraph]],
+) -> Unit {
+  self.layout_processor_array_properties[property.get_id()] = value.copy()
+}
+
+///|
+pub fn LGraph::get_property_layout_processor_array(
+  self : LGraph,
+  property : IProperty[Array[ILayoutProcessor[LayeredPhases, LGraph]]],
+) -> Array[ILayoutProcessor[LayeredPhases, LGraph]] {
+  match self.layout_processor_array_properties.get(property.get_id()) {
+    Some(value) => value.copy()
+    None => property.get_default().copy()
+  }
+}
+
+///|
+pub fn LGraph::has_property_layout_processor_array(
+  self : LGraph,
+  property : IProperty[Array[ILayoutProcessor[LayeredPhases, LGraph]]],
+) -> Bool {
+  self.layout_processor_array_properties.contains(property.get_id())
 }
 
 ///|
@@ -302,6 +370,37 @@ pub fn LGraph::has_property_i_label_manager(
 }
 
 ///|
+pub fn LGraph::set_property_spacings(
+  self : LGraph,
+  property : IProperty[Spacings?],
+  value : Spacings?,
+) -> Unit {
+  match value {
+    Some(spacings) => self.spacings_properties[property.get_id()] = spacings
+    None => ignore(self.spacings_properties.remove(property.get_id()))
+  }
+}
+
+///|
+pub fn LGraph::get_property_spacings(
+  self : LGraph,
+  property : IProperty[Spacings?],
+) -> Spacings? {
+  match self.spacings_properties.get(property.get_id()) {
+    Some(value) => Some(value)
+    None => property.get_default()
+  }
+}
+
+///|
+pub fn LGraph::has_property_spacings(
+  self : LGraph,
+  property : IProperty[Spacings?],
+) -> Bool {
+  self.spacings_properties.contains(property.get_id())
+}
+
+///|
 pub fn LGraph::set_property_elk_margin(
   self : LGraph,
   property : IProperty[ElkMargin],
@@ -466,10 +565,22 @@ pub fn LGraph::copy_properties(self : LGraph, source : LGraph) -> Unit {
     self.graph_properties_array_properties[key] = value.copy()
   }
 
+  self.cross_hierarchy_map_entry_array_properties.clear()
+  for entry in source.cross_hierarchy_map_entry_array_properties.to_array() {
+    let (key, value) = entry
+    self.cross_hierarchy_map_entry_array_properties[key] = value.copy()
+  }
+
   self.node_array_properties.clear()
   for entry in source.node_array_properties.to_array() {
     let (key, value) = entry
     self.node_array_properties[key] = value.copy()
+  }
+
+  self.layout_processor_array_properties.clear()
+  for entry in source.layout_processor_array_properties.to_array() {
+    let (key, value) = entry
+    self.layout_processor_array_properties[key] = value.copy()
   }
 
   self.int_properties.clear()
@@ -506,6 +617,12 @@ pub fn LGraph::copy_properties(self : LGraph, source : LGraph) -> Unit {
   for entry in source.label_manager_properties.to_array() {
     let (key, value) = entry
     self.label_manager_properties[key] = value
+  }
+
+  self.spacings_properties.clear()
+  for entry in source.spacings_properties.to_array() {
+    let (key, value) = entry
+    self.spacings_properties[key] = value
   }
 
   self.elk_margin_properties.clear()

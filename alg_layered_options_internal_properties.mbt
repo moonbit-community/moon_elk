@@ -258,6 +258,11 @@ pub let internal_properties_cb_num_model_order_groups : IProperty[Int] = new_pro
 )
 
 ///|
+pub let internal_properties_compound_node : IProperty[Bool] = new_property(
+  "compoundNode", false,
+)
+
+///|
 pub let internal_properties_inside_connections : IProperty[Bool] = new_property(
   "insideConnections", false,
 )
@@ -280,6 +285,17 @@ pub let internal_properties_original_dummy_node_position : IProperty[Double] = n
 ///|
 pub let internal_properties_random_next_boolean : IProperty[Bool] = new_property(
   "random.nextBoolean", true,
+)
+
+///|
+pub let internal_properties_processors : IProperty[
+  Array[ILayoutProcessor[LayeredPhases, LGraph]],
+] = new_property("processors", [])
+
+///|
+pub let internal_properties_spacings : IProperty[Spacings?] = new_property(
+  "spacings",
+  None,
 )
 
 ///|

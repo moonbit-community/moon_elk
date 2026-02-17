@@ -274,6 +274,26 @@ test "graph configurator configures graph properties in one call" {
     graph.get_property_bool(internal_properties_random_next_boolean),
     graph_configurator_test_seeded_next_boolean(5),
   )
+  assert_true(graph.has_property_spacings(internal_properties_spacings))
+  assert_true(
+    graph.get_property_spacings(internal_properties_spacings) is Some(_),
+  )
+}
+
+///|
+test "graph configurator prepares graph for layout and stores processors" {
+  let graph = graph_configurator_test_graph(0)
+
+  graph_configurator_prepare_graph_for_layout(graph)
+
+  assert_true(
+    graph.has_property_layout_processor_array(internal_properties_processors),
+  )
+  assert_false(
+    graph
+    .get_property_layout_processor_array(internal_properties_processors)
+    .is_empty(),
+  )
 }
 
 ///|

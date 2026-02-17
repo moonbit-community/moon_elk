@@ -126,6 +126,19 @@ pub fn graph_configurator_configure_graph_properties(lgraph : LGraph) -> Unit {
   graph_configurator_initialize_random_next_boolean(lgraph)
   graph_configurator_default_favor_straight_edges(lgraph)
   graph_configurator_copy_port_constraints(lgraph)
+  lgraph.set_property_spacings(
+    internal_properties_spacings,
+    Some(new_layered_spacings(lgraph)),
+  )
+}
+
+///|
+pub fn graph_configurator_prepare_graph_for_layout(lgraph : LGraph) -> Unit {
+  graph_configurator_configure_graph_properties(lgraph)
+  lgraph.set_property_layout_processor_array(
+    internal_properties_processors,
+    elk_layered_collect_algorithm_for_graph(lgraph),
+  )
 }
 
 ///|
