@@ -68,6 +68,7 @@ priv struct NodeData {
   y : Double
   width : Double
   height : Double
+  int_properties : Map[String, Int]
   double_properties : Map[String, Double]
   bool_properties : Map[String, Bool]
   string_properties : Map[String, String]
@@ -237,6 +238,7 @@ pub fn create_node(parent : ElkNode?) -> ElkNode {
     y: 0.0,
     width: 0.0,
     height: 0.0,
+    int_properties: {},
     double_properties: {},
     bool_properties: {},
     string_properties: {},
@@ -455,6 +457,7 @@ pub fn node_set_location(node : ElkNode, x : Double, y : Double) -> Unit {
     y,
     width: data.width,
     height: data.height,
+    int_properties: data.int_properties,
     double_properties: data.double_properties,
     bool_properties: data.bool_properties,
     string_properties: data.string_properties,
@@ -494,6 +497,7 @@ pub fn node_set_dimensions(
     y: data.y,
     width,
     height,
+    int_properties: data.int_properties,
     double_properties: data.double_properties,
     bool_properties: data.bool_properties,
     string_properties: data.string_properties,
@@ -513,6 +517,46 @@ pub fn node_width(node : ElkNode) -> Double {
 pub fn node_height(node : ElkNode) -> Double {
   checked_node(node)
   node_store.val[node].height
+}
+
+///|
+pub fn node_set_int_property(
+  node : ElkNode,
+  property : IProperty[Int],
+  value : Int,
+) -> Unit {
+  checked_node(node)
+  let data = node_store.val[node]
+  data.int_properties[property.get_id()] = value
+  node_store.val[node] = data
+}
+
+///|
+pub fn node_get_int_property(node : ElkNode, property : IProperty[Int]) -> Int {
+  checked_node(node)
+  let data = node_store.val[node]
+  match data.int_properties.get(property.get_id()) {
+    Some(value) => value
+    None => property.get_default()
+  }
+}
+
+///|
+pub fn node_has_int_property(node : ElkNode, property : IProperty[Int]) -> Bool {
+  checked_node(node)
+  let data = node_store.val[node]
+  data.int_properties.contains(property.get_id())
+}
+
+///|
+pub fn node_clear_int_property(
+  node : ElkNode,
+  property : IProperty[Int],
+) -> Unit {
+  checked_node(node)
+  let data = node_store.val[node]
+  data.int_properties.remove(property.get_id())
+  node_store.val[node] = data
 }
 
 ///|
@@ -667,6 +711,7 @@ pub fn node_set_identifier(node : ElkNode, identifier : String) -> Unit {
     y: data.y,
     width: data.width,
     height: data.height,
+    int_properties: data.int_properties,
     double_properties: data.double_properties,
     bool_properties: data.bool_properties,
     string_properties: data.string_properties,

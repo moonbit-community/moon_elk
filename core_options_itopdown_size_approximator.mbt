@@ -1,1 +1,19 @@
-// Upstream counterpart file; declarations are currently aggregated in core_math_elk_margin.mbt, core_util_ielk_progress_monitor.mbt, or core_options_alignment.mbt.
+///|
+pub struct ITopdownSizeApproximator {
+  get_size_fn : (ElkNode) -> KVector
+}
+
+///|
+pub fn new_topdown_size_approximator(
+  get_size_fn : (ElkNode) -> KVector,
+) -> ITopdownSizeApproximator {
+  { get_size_fn, }
+}
+
+///|
+pub fn ITopdownSizeApproximator::get_size(
+  self : ITopdownSizeApproximator,
+  node : ElkNode,
+) -> KVector {
+  (self.get_size_fn)(node)
+}

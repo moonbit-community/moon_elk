@@ -5628,6 +5628,8 @@ pub fn new_three_value_grid_from_two_bit_grid(TwoBitGrid) -> IThreeValueGrid
 
 pub fn new_topdown_layout_provider((Int) -> KVector) -> ITopdownLayoutProvider
 
+pub fn new_topdown_size_approximator((Int) -> KVector) -> ITopdownSizeApproximator
+
 pub fn new_topdownpacking_bottom_row_equal_whitespace_eliminator_layout_phase() -> ILayoutProcessor[TopdownPackingPhases, GridElkNode]
 
 pub fn new_topdownpacking_layout_provider() -> TopdownpackingLayoutProvider
@@ -5696,6 +5698,8 @@ pub fn node_clear_bool_property(Int, IProperty[Bool]) -> Unit
 
 pub fn node_clear_double_property(Int, IProperty[Double]) -> Unit
 
+pub fn node_clear_int_property(Int, IProperty[Int]) -> Unit
+
 pub fn node_clear_string_property(Int, IProperty[String]) -> Unit
 
 pub fn node_clear_string_set_property(Int, IProperty[Array[String]]) -> Unit
@@ -5742,6 +5746,8 @@ pub fn node_get_bool_property(Int, IProperty[Bool]) -> Bool
 
 pub fn node_get_double_property(Int, IProperty[Double]) -> Double
 
+pub fn node_get_int_property(Int, IProperty[Int]) -> Int
+
 pub fn node_get_string_property(Int, IProperty[String]) -> String
 
 pub fn node_get_string_set_property(Int, IProperty[Array[String]]) -> Array[String]
@@ -5749,6 +5755,8 @@ pub fn node_get_string_set_property(Int, IProperty[Array[String]]) -> Array[Stri
 pub fn node_has_bool_property(Int, IProperty[Bool]) -> Bool
 
 pub fn node_has_double_property(Int, IProperty[Double]) -> Bool
+
+pub fn node_has_int_property(Int, IProperty[Int]) -> Bool
 
 pub fn node_has_string_property(Int, IProperty[String]) -> Bool
 
@@ -5861,6 +5869,8 @@ pub fn node_set_double_property(Int, IProperty[Double], Double) -> Unit
 pub fn node_set_identifier(Int, String) -> Unit
 
 pub fn node_set_individual_spacing_option_string_by_id(Int, String, String) -> Unit
+
+pub fn node_set_int_property(Int, IProperty[Int], Int) -> Unit
 
 pub fn node_set_layout_option_string_by_id(Int, String, String) -> Unit
 
@@ -6685,6 +6695,14 @@ pub fn to_node_array(Array[LNode]) -> Array[LNode]
 pub fn to_port_array(Array[LPort]) -> Array[LPort]
 
 pub fn topdown_node_type_to_string(TopdownNodeTypes) -> String
+
+pub fn topdown_size_approximator_util_get_graph_size(Int) -> Int
+
+pub fn topdown_size_approximator_util_get_size_category_multiplier(Int) -> Double
+
+pub let topdown_size_categories : IProperty[Int]
+
+pub let topdown_size_categories_hierarchical_node_weight : IProperty[Int]
 
 pub let topdownpacking_algorithm_id : String
 
@@ -13367,6 +13385,11 @@ pub struct ITopdownLayoutProvider {
   get_predicted_graph_size_fn : (Int) -> KVector
 }
 pub fn ITopdownLayoutProvider::get_predicted_graph_size(Self, Int) -> KVector
+
+pub struct ITopdownSizeApproximator {
+  get_size_fn : (Int) -> KVector
+}
+pub fn ITopdownSizeApproximator::get_size(Self, Int) -> KVector
 
 pub struct IValidatingGraphElementVisitor {
   visitor : IGraphElementVisitor

@@ -169,6 +169,16 @@ pub let child_area_height : IProperty[Double] = new_property(
 )
 
 ///|
+pub let topdown_size_categories : IProperty[Int] = new_property(
+  "org.eclipse.elk.topdown.sizeCategories", 3,
+)
+
+///|
+pub let topdown_size_categories_hierarchical_node_weight : IProperty[Int] = new_property(
+  "org.eclipse.elk.topdown.sizeCategoriesHierarchicalNodeWeight", 4,
+)
+
+///|
 pub let algorithm : IProperty[String] = new_property(
   "org.eclipse.elk.algorithm", "",
 )
