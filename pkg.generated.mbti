@@ -4310,6 +4310,8 @@ pub fn new_elk_edge_adapter(Int) -> ElkEdgeAdapter
 
 pub fn new_elk_edge_impl(containing_node? : Int?) -> Int
 
+pub fn new_elk_edge_section_impl(Int) -> Int
+
 pub fn new_elk_engine(default_layout_options? : Map[String, Json], algorithms? : Array[String]) -> ElkEngine
 
 pub fn new_elk_graph_adapter(Int) -> ElkGraphAdapter
@@ -10565,6 +10567,7 @@ pub fn ElkBendPoint::set(Self, Double, Double) -> Unit
 pub fn ElkBendPoint::set_x(Self, Double) -> Unit
 pub fn ElkBendPoint::set_y(Self, Double) -> Unit
 
+#alias(ElkConnectableShapeImpl)
 pub enum ElkConnectableShape {
   NodeShape(Int)
   PortShape(Int)
@@ -18343,7 +18346,13 @@ pub type ElkEdgeImpl = Int
 
 pub type ElkEdgeSection = Int
 
+pub type ElkEdgeSectionImpl = Int
+
 pub type ElkGraphBoundsProvider = IBoundsProvider[Int, Int]
+
+pub type ElkGraphElement = Int
+
+pub type ElkGraphElementImpl = Int
 
 pub type ElkLabel = Int
 
@@ -18356,6 +18365,10 @@ pub type ElkNodeImpl = Int
 pub type ElkPort = Int
 
 pub type ElkPortImpl = Int
+
+pub type ElkShape = Int
+
+pub type ElkShapeImpl = Int
 
 pub type ExecutionInfo = Int
 
