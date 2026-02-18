@@ -201,18 +201,15 @@ fn mrtree_move_graph(
 
 ///|
 fn mrtree_process_graph_bounds(graph : MrtreeGraph) -> Unit {
-  if mrtree_graph_nodes(graph).is_empty() {
-    mrtree_graph_set_graph_xmin(graph, 0.0)
-    mrtree_graph_set_graph_ymin(graph, 0.0)
-    mrtree_graph_set_graph_xmax(graph, 0.0)
-    mrtree_graph_set_graph_ymax(graph, 0.0)
-    return
+  let nodes = mrtree_graph_nodes(graph)
+  if nodes.is_empty() {
+    abort("Mrtree graph bounds processor requires at least one node.")
   }
-  let mut min_x = 1.0e20
-  let mut min_y = 1.0e20
-  let mut max_x = -1.0e20
-  let mut max_y = -1.0e20
-  for node in mrtree_graph_nodes(graph) {
+  let mut min_x = @double.infinity
+  let mut min_y = @double.infinity
+  let mut max_x = @double.neg_infinity
+  let mut max_y = @double.neg_infinity
+  for node in nodes {
     let position = mrtree_node_position(node)
     let size = mrtree_node_size(node)
     min_x = if position.x < min_x { position.x } else { min_x }
