@@ -1,9 +1,4 @@
 ///|
-pub struct DotGraphvizModel {
-  graphs : Array[DotGraph]
-}
-
-///|
 pub struct DotGraph {
   mut strict : Bool
   mut type_ : DotGraphType
@@ -59,11 +54,6 @@ pub struct DotEdgeTarget {
   mut operator : DotEdgeOperator
   mut target_subgraph : DotSubgraph?
   mut targetnode : DotNode?
-}
-
-///|
-pub fn dot_create_graphviz_model() -> DotGraphvizModel {
-  { graphs: [] }
 }
 
 ///|
@@ -201,11 +191,6 @@ pub fn DotFactory::create_subgraph(self : DotFactory) -> DotSubgraph {
 ///|
 pub fn DotFactory::create_port(self : DotFactory) -> DotPort {
   (self.create_port_fn)()
-}
-
-///|
-pub fn DotGraphvizModel::get_graphs(self : DotGraphvizModel) -> Array[DotGraph] {
-  self.graphs
 }
 
 ///|
