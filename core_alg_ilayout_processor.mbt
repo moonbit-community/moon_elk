@@ -13,6 +13,7 @@ pub struct ILayoutProcessor[P, G] {
   id : Int
   process_fn : (G, IElkProgressMonitor?) -> Unit
   is_phase : Bool
+  is_hierarchy_aware : Bool
   get_layout_processor_configuration_fn : (G) -> LayoutProcessorConfiguration[
     P,
     G,
@@ -27,6 +28,7 @@ pub fn[P, G] new_layout_processor(
     id: next_layout_processor_id(),
     process_fn,
     is_phase: false,
+    is_hierarchy_aware: false,
     get_layout_processor_configuration_fn: _ => None,
   }
 }
@@ -43,6 +45,24 @@ pub fn[P, G] new_layout_phase(
     id: next_layout_processor_id(),
     process_fn,
     is_phase: true,
+    is_hierarchy_aware: false,
+    get_layout_processor_configuration_fn,
+  }
+}
+
+///|
+pub fn[P, G] new_hierarchy_aware_layout_phase(
+  process_fn : (G, IElkProgressMonitor?) -> Unit,
+  get_layout_processor_configuration_fn : (G) -> LayoutProcessorConfiguration[
+    P,
+    G,
+  ]?,
+) -> ILayoutProcessor[P, G] {
+  {
+    id: next_layout_processor_id(),
+    process_fn,
+    is_phase: true,
+    is_hierarchy_aware: true,
     get_layout_processor_configuration_fn,
   }
 }
@@ -61,6 +81,13 @@ pub fn[P, G] ILayoutProcessor::is_layout_phase(
   self : ILayoutProcessor[P, G],
 ) -> Bool {
   self.is_phase
+}
+
+///|
+pub fn[P, G] ILayoutProcessor::is_hierarchy_aware_layout_processor(
+  self : ILayoutProcessor[P, G],
+) -> Bool {
+  self.is_hierarchy_aware
 }
 
 ///|

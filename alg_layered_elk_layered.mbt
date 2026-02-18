@@ -262,25 +262,10 @@ fn elk_layered_node_placement_factory(
 }
 
 ///|
-fn elk_layered_is_hierarchy_aware_crossing_strategy(strategy : String) -> Bool {
-  strategy != "NONE" && strategy != "INTERACTIVE"
-}
-
-///|
 fn elk_layered_is_hierarchy_aware_processor(
-  lgraph : LGraph,
   processor : ILayoutProcessor[LayeredPhases, LGraph],
-  phase_index : Int,
 ) -> Bool {
-  if !processor.is_layout_phase() {
-    return false
-  }
-  if phase_index != 2 {
-    return false
-  }
-  elk_layered_is_hierarchy_aware_crossing_strategy(
-    lgraph.get_property_string(layered_options_crossing_minimization_strategy),
-  )
+  processor.is_hierarchy_aware_layout_processor()
 }
 
 ///|
@@ -929,7 +914,6 @@ fn ElkLayered::hierarchical_layout(
 
   let algorithms : Array[Array[ILayoutProcessor[LayeredPhases, LGraph]]] = []
   let processor_indices : Array[Int] = []
-  let phase_indices : Array[Int] = []
   let mut total_work = 0
 
   for graph in graphs {
@@ -940,7 +924,6 @@ fn ElkLayered::hierarchical_layout(
     total_work = total_work + algorithm.length()
     algorithms.push(algorithm)
     processor_indices.push(0)
-    phase_indices.push(0)
   }
 
   ignore(monitor.begin("Recursive hierarchical layout", total_work.to_double()))
@@ -962,17 +945,11 @@ fn ElkLayered::hierarchical_layout(
         }
 
         let processor_index = processor_indices[i]
-        let phase_index = phase_indices[i]
         let processor = algorithm[processor_index]
 
         processor_indices[i] = processor_index + 1
-        if processor.is_layout_phase() {
-          phase_indices[i] = phase_index + 1
-        }
 
-        if !elk_layered_is_hierarchy_aware_processor(
-            graph, processor, phase_index,
-          ) {
+        if !elk_layered_is_hierarchy_aware_processor(processor) {
           self.notify_processor_ready(graph, processor)
           processor.process(graph, monitor.sub_task(1.0))
           self.notify_processor_finished(graph, processor)

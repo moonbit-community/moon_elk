@@ -816,7 +816,7 @@ pub fn new_layer_sweep_crossing_minimizer_layout_phase(
   cross_min_type : CrossMinType,
 ) -> ILayoutProcessor[LayeredPhases, LGraph] {
   let minimizer = new_layer_sweep_crossing_minimizer(cross_min_type)
-  new_layout_phase(
+  new_hierarchy_aware_layout_phase(
     (graph, monitor) => minimizer.process_internal(graph, monitor),
     layer_sweep_configuration,
   )

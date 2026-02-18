@@ -4810,6 +4810,8 @@ pub fn new_hierarchical_port_orthogonal_edge_router_layout_processor() -> ILayou
 
 pub fn new_hierarchical_port_position_processor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
+pub fn[P, G] new_hierarchy_aware_layout_phase((G, IElkProgressMonitor?) -> Unit, (G) -> LayoutProcessorConfiguration[P, G]?) -> ILayoutProcessor[P, G]
+
 pub fn new_high_degree_node_layering_processor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_horizontal_graph_compactor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
@@ -13457,10 +13459,12 @@ pub struct ILayoutProcessor[P, G] {
   id : Int
   process_fn : (G, IElkProgressMonitor?) -> Unit
   is_phase : Bool
+  is_hierarchy_aware : Bool
   get_layout_processor_configuration_fn : (G) -> LayoutProcessorConfiguration[P, G]?
 }
 pub fn[P, G] ILayoutProcessor::get_layout_processor_configuration(Self[P, G], G) -> LayoutProcessorConfiguration[P, G]?
 pub fn[P, G] ILayoutProcessor::instance_id(Self[P, G]) -> Int
+pub fn[P, G] ILayoutProcessor::is_hierarchy_aware_layout_processor(Self[P, G]) -> Bool
 pub fn[P, G] ILayoutProcessor::is_layout_phase(Self[P, G]) -> Bool
 pub fn[P, G] ILayoutProcessor::process(Self[P, G], G, IElkProgressMonitor?) -> Unit
 
