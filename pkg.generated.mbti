@@ -1603,6 +1603,18 @@ pub fn elk_margin_clone(Spacing) -> Spacing
 
 pub fn elk_padding_clone(Spacing) -> Spacing
 
+pub fn elk_reflect_clone(String, Json) -> Json?
+
+pub fn elk_reflect_new_instance(String) -> Json?
+
+pub fn elk_reflect_register(String, new_fun? : (() -> Json)?, clone_fun? : ((Json) -> Json)?) -> Unit
+
+pub fn elk_reflect_register_clone(String, (Json) -> Json) -> Unit
+
+pub fn elk_reflect_register_new_instance(String, () -> Json) -> Unit
+
+pub fn elk_reflect_reset_for_test() -> Unit
+
 pub fn elk_service_plugin_get_instance() -> ElkServicePlugin
 
 pub let elk_service_plugin_id : String
@@ -1612,6 +1624,30 @@ pub fn elk_service_plugin_target_key(Int?, Int?) -> String
 pub fn elk_service_plugin_unload() -> Unit
 
 pub fn elk_spacings_with_base_value(Double) -> ElkCoreSpacingsBuilder
+
+pub fn elk_switch_target_e_map_property_holder(MapPropertyHolder) -> ElkGraphSwitchTarget
+
+pub fn elk_switch_target_elk_bend_point(ElkBendPoint) -> ElkGraphSwitchTarget
+
+pub fn elk_switch_target_elk_connectable_shape(ElkConnectableShape) -> ElkGraphSwitchTarget
+
+pub fn elk_switch_target_elk_edge(Int) -> ElkGraphSwitchTarget
+
+pub fn elk_switch_target_elk_edge_section(Int) -> ElkGraphSwitchTarget
+
+pub fn elk_switch_target_elk_graph_element(Int) -> ElkGraphSwitchTarget
+
+pub fn elk_switch_target_elk_label(Int) -> ElkGraphSwitchTarget
+
+pub fn elk_switch_target_elk_node(Int) -> ElkGraphSwitchTarget
+
+pub fn elk_switch_target_elk_port(Int) -> ElkGraphSwitchTarget
+
+pub fn elk_switch_target_elk_property_to_value_map_entry(Json) -> ElkGraphSwitchTarget
+
+pub fn elk_switch_target_elk_shape(Int) -> ElkGraphSwitchTarget
+
+pub fn elk_switch_target_i_property_holder(MapPropertyHolder) -> ElkGraphSwitchTarget
 
 pub let elk_ui_img_choice : String
 
@@ -4359,6 +4395,8 @@ pub fn new_elk_engine(default_layout_options? : Map[String, Json], algorithms? :
 
 pub fn new_elk_graph_adapter(Int) -> ElkGraphAdapter
 
+pub fn new_elk_graph_adapter_factory() -> ElkGraphAdapterFactory
+
 pub fn new_elk_graph_antlr_token_file_provider() -> ElkGraphAntlrTokenFileProvider
 
 pub fn new_elk_graph_bounds_provider() -> IBoundsProvider[Int, Int]
@@ -4488,6 +4526,8 @@ pub fn new_elk_graph_semantic_sequencer(base? : AbstractElkGraphSemanticSequence
 pub fn new_elk_graph_standalone_setup() -> ElkGraphStandaloneSetup
 
 pub fn new_elk_graph_standalone_setup_generated() -> ElkGraphStandaloneSetupGenerated
+
+pub fn[T] new_elk_graph_switch(case_i_property_holder? : (MapPropertyHolder) -> T?, case_e_map_property_holder? : (MapPropertyHolder) -> T?, case_elk_graph_element? : (Int) -> T?, case_elk_shape? : (Int) -> T?, case_elk_label? : (Int) -> T?, case_elk_connectable_shape? : (ElkConnectableShape) -> T?, case_elk_node? : (Int) -> T?, case_elk_port? : (Int) -> T?, case_elk_edge? : (Int) -> T?, case_elk_bend_point? : (ElkBendPoint) -> T?, case_elk_edge_section? : (Int) -> T?, case_elk_property_to_value_map_entry? : (Json) -> T?, default_case? : () -> T?) -> ElkGraphSwitch[T]
 
 pub fn new_elk_graph_syntactic_sequencer(base? : AbstractElkGraphSyntacticSequencer) -> ElkGraphSyntacticSequencer
 
@@ -10687,6 +10727,25 @@ pub fn ElkGraphAdapter::set_position(Self, KVector) -> Unit
 pub fn ElkGraphAdapter::set_size(Self, KVector) -> Unit
 pub fn ElkGraphAdapter::set_volatile_id(Self, Int) -> Unit
 
+pub struct ElkGraphAdapterFactory {
+  model_package : String
+}
+pub fn ElkGraphAdapterFactory::create_adapter(Self, ElkGraphSwitchTarget) -> Unit?
+pub fn ElkGraphAdapterFactory::create_e_map_property_holder_adapter(Self, MapPropertyHolder) -> Unit?
+pub fn ElkGraphAdapterFactory::create_e_object_adapter(Self) -> Unit?
+pub fn ElkGraphAdapterFactory::create_elk_bend_point_adapter(Self, ElkBendPoint) -> Unit?
+pub fn ElkGraphAdapterFactory::create_elk_connectable_shape_adapter(Self, ElkConnectableShape) -> Unit?
+pub fn ElkGraphAdapterFactory::create_elk_edge_adapter(Self, Int) -> Unit?
+pub fn ElkGraphAdapterFactory::create_elk_edge_section_adapter(Self, Int) -> Unit?
+pub fn ElkGraphAdapterFactory::create_elk_graph_element_adapter(Self, Int) -> Unit?
+pub fn ElkGraphAdapterFactory::create_elk_label_adapter(Self, Int) -> Unit?
+pub fn ElkGraphAdapterFactory::create_elk_node_adapter(Self, Int) -> Unit?
+pub fn ElkGraphAdapterFactory::create_elk_port_adapter(Self, Int) -> Unit?
+pub fn ElkGraphAdapterFactory::create_elk_property_to_value_map_entry_adapter(Self, Json) -> Unit?
+pub fn ElkGraphAdapterFactory::create_elk_shape_adapter(Self, Int) -> Unit?
+pub fn ElkGraphAdapterFactory::create_i_property_holder_adapter(Self, MapPropertyHolder) -> Unit?
+pub fn ElkGraphAdapterFactory::is_factory_for_type(Self, String) -> Bool
+
 pub struct ElkGraphAntlrTokenFileProvider {
   marker : Unit
 }
@@ -11237,6 +11296,38 @@ pub struct ElkGraphStandaloneSetupGenerated {
 pub fn ElkGraphStandaloneSetupGenerated::create_injector(Self) -> GraphTextInjector
 pub fn ElkGraphStandaloneSetupGenerated::create_injector_and_do_emf_registration(Self) -> GraphTextInjector
 pub fn ElkGraphStandaloneSetupGenerated::register(Self, GraphTextInjector) -> Unit
+
+pub struct ElkGraphSwitch[T] {
+  case_i_property_holder_fn : (MapPropertyHolder) -> T?
+  case_e_map_property_holder_fn : (MapPropertyHolder) -> T?
+  case_elk_graph_element_fn : (Int) -> T?
+  case_elk_shape_fn : (Int) -> T?
+  case_elk_label_fn : (Int) -> T?
+  case_elk_connectable_shape_fn : (ElkConnectableShape) -> T?
+  case_elk_node_fn : (Int) -> T?
+  case_elk_port_fn : (Int) -> T?
+  case_elk_edge_fn : (Int) -> T?
+  case_elk_bend_point_fn : (ElkBendPoint) -> T?
+  case_elk_edge_section_fn : (Int) -> T?
+  case_elk_property_to_value_map_entry_fn : (Json) -> T?
+  default_case_fn : () -> T?
+}
+pub fn[T] ElkGraphSwitch::do_switch(Self[T], ElkGraphSwitchTarget) -> T?
+
+pub enum ElkGraphSwitchTarget {
+  IPropertyHolderTarget(MapPropertyHolder)
+  EMapPropertyHolderTarget(MapPropertyHolder)
+  ElkGraphElementTarget(Int)
+  ElkShapeTarget(Int)
+  ElkLabelTarget(Int)
+  ElkConnectableShapeTarget(ElkConnectableShape)
+  ElkNodeTarget(Int)
+  ElkPortTarget(Int)
+  ElkEdgeTarget(Int)
+  ElkBendPointTarget(ElkBendPoint)
+  ElkEdgeSectionTarget(Int)
+  ElkPropertyToValueMapEntryTarget(Json)
+}
 
 pub struct ElkGraphSyntacticSequencer {
   base : AbstractElkGraphSyntacticSequencer
@@ -18458,6 +18549,8 @@ pub type ElkGraphElement = Int
 
 pub type ElkGraphElementImpl = Int
 
+pub type ElkGraphModelAdapter = Unit
+
 pub type ElkGraphPackage = String
 
 pub type ElkGraphPackageImpl = String
@@ -18473,6 +18566,10 @@ pub type ElkNodeImpl = Int
 pub type ElkPort = Int
 
 pub type ElkPortImpl = Int
+
+pub type ElkReflectCloneFunction = (Json) -> Json
+
+pub type ElkReflectNewInstanceFunction = () -> Json
 
 pub type ElkShape = Int
 
