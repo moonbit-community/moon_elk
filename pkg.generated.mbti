@@ -3674,6 +3674,8 @@ pub fn mrtree_tree_layout_phase_factory(MrtreeTreeLayoutPhases) -> ILayoutProces
 
 pub let mrtree_tree_level : IProperty[Int]
 
+pub fn mrtree_tree_util_depth(Int) -> Int
+
 pub fn mrtree_tree_util_direction_is_horizontal(String) -> Bool
 
 pub fn mrtree_tree_util_direction_is_vertical(String) -> Bool
@@ -3681,6 +3683,10 @@ pub fn mrtree_tree_util_direction_is_vertical(String) -> Bool
 pub fn mrtree_tree_util_get_all_incoming_edges(Int, Int) -> Array[Int]
 
 pub fn mrtree_tree_util_get_all_outgoing_edges(Int, Int) -> Array[Int]
+
+pub fn mrtree_tree_util_get_children(Int) -> Array[Int]
+
+pub fn mrtree_tree_util_get_direction(Int) -> String
 
 pub fn mrtree_tree_util_get_direction_vector(String) -> KVector
 
@@ -3692,13 +3698,25 @@ pub fn mrtree_tree_util_get_left_most(Array[Int], depth? : Int) -> Int?
 
 pub fn mrtree_tree_util_get_lowest_parent(Int, Int) -> Int?
 
+pub fn mrtree_tree_util_get_node_size_in_direction(Int, String) -> Double
+
+pub fn mrtree_tree_util_get_node_size_vector_in_direction(Int, String) -> KVector
+
 pub fn mrtree_tree_util_get_root(Int) -> Int?
+
+pub fn mrtree_tree_util_get_subtree(Int) -> Array[Int]
 
 pub fn mrtree_tree_util_get_unique_long(Int, Int) -> Int
 
 pub fn mrtree_tree_util_is_cycle_inducing(Int, Int) -> Bool
 
+pub fn mrtree_tree_util_root_distance(Int, Int) -> Int
+
 pub fn mrtree_tree_util_to_node_border(KVector, KVector, KVector) -> Unit
+
+pub fn mrtree_tree_util_turn_left(String) -> String
+
+pub fn mrtree_tree_util_turn_right(String) -> String
 
 pub fn mrtree_treeifying_order_from_string(String) -> MrtreeTreeifyingOrder
 

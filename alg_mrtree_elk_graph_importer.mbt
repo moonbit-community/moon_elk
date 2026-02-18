@@ -20,6 +20,110 @@ fn mrtree_target_node_from_edge(edge : ElkEdge) -> ElkNode? {
 }
 
 ///|
+fn mrtree_all_outgoing_edges(node : ElkNode) -> Array[ElkEdge] {
+  let outgoing = []
+  let seen : Map[ElkEdge, Bool] = {}
+
+  for edge in node_outgoing_edges(node) {
+    if !seen.contains(edge) {
+      seen[edge] = true
+      outgoing.push(edge)
+    }
+  }
+
+  for port in node_ports(node) {
+    for edge in port_outgoing_edges(port) {
+      if !seen.contains(edge) {
+        seen[edge] = true
+        outgoing.push(edge)
+      }
+    }
+  }
+
+  outgoing
+}
+
+///|
+fn mrtree_edge_is_hierarchical(
+  parent_node : ElkNode,
+  target_node : ElkNode,
+) -> Bool {
+  if node_parent(target_node) is Some(target_parent) {
+    target_parent != parent_node
+  } else {
+    true
+  }
+}
+
+///|
+fn mrtree_first_or_create_edge_section(edge : ElkEdge) -> ElkEdgeSection {
+  let sections = edge_sections(edge)
+  let section = if sections.is_empty() {
+    create_edge_section(edge)
+  } else {
+    sections[0]
+  }
+  if edge_section_incoming_shape(section) is None {
+    let sources = edge_sources(edge)
+    if sources.length() == 1 {
+      edge_section_set_incoming_shape(section, Some(sources[0]))
+    }
+  }
+  if edge_section_outgoing_shape(section) is None {
+    let targets = edge_targets(edge)
+    if targets.length() == 1 {
+      edge_section_set_outgoing_shape(section, Some(targets[0]))
+    }
+  }
+  section
+}
+
+///|
+fn mrtree_apply_vector_chain_to_edge(
+  vector_chain : KVectorChain,
+  edge : ElkEdge,
+) -> Unit {
+  if vector_chain.size() < 2 {
+    return
+  }
+
+  let first_section = mrtree_first_or_create_edge_section(edge)
+  let first_point = vector_chain.get(0)
+  edge_section_set_start(first_section, first_point.x, first_point.y)
+
+  if vector_chain.size() == 2 {
+    let last_point = vector_chain.get(1)
+    edge_section_set_end(first_section, last_point.x, last_point.y)
+    let targets = edge_targets(edge)
+    if targets.length() == 1 {
+      edge_section_set_outgoing_shape(first_section, Some(targets[0]))
+    }
+    return
+  }
+
+  edge_section_set_outgoing_shape(first_section, None)
+  let mut previous_section = first_section
+  for i in 1..<(vector_chain.size() - 1) {
+    let middle_point = vector_chain.get(i)
+    edge_section_set_end(previous_section, middle_point.x, middle_point.y)
+    let next_section = create_edge_section(edge)
+    edge_section_set_start(next_section, middle_point.x, middle_point.y)
+    edge_section_set_incoming_shape(next_section, None)
+    edge_section_set_outgoing_shape(next_section, None)
+    edge_section_add_outgoing_section(previous_section, next_section)
+    edge_section_add_incoming_section(next_section, previous_section)
+    previous_section = next_section
+  }
+
+  let last_point = vector_chain.get(vector_chain.size() - 1)
+  edge_section_set_end(previous_section, last_point.x, last_point.y)
+  let targets = edge_targets(edge)
+  if targets.length() == 1 {
+    edge_section_set_outgoing_shape(previous_section, Some(targets[0]))
+  }
+}
+
+///|
 fn mrtree_transform_nodes(
   parent_node : ElkNode,
   graph : MrtreeGraph,
@@ -36,9 +140,9 @@ fn mrtree_transform_nodes(
     mrtree_node_copy_properties_from_elk(node, elk_node)
     let position = mrtree_node_position(node)
     let size = mrtree_node_size(node)
-    position.x = node_x(elk_node)
-    position.y = node_y(elk_node)
+    position.y = node_y(elk_node) + node_height(elk_node) / 2.0
     size.x = if node_width(elk_node) > 1.0 { node_width(elk_node) } else { 1.0 }
+    position.x = node_x(elk_node) + node_width(elk_node) / 2.0
     size.y = if node_height(elk_node) > 1.0 {
       node_height(elk_node)
     } else {
@@ -59,12 +163,19 @@ fn mrtree_transform_edges(
       Some(node) => node
       None => continue
     }
-    for elk_edge in node_outgoing_edges(source_elk) {
+    for elk_edge in mrtree_all_outgoing_edges(source_elk) {
+      if edge_sources(elk_edge).length() != 1 ||
+        edge_targets(elk_edge).length() != 1 {
+        continue
+      }
       let target_elk = match mrtree_target_node_from_edge(elk_edge) {
         Some(node) => node
         None => continue
       }
       if source_elk == target_elk {
+        continue
+      }
+      if mrtree_edge_is_hierarchical(parent_node, target_elk) {
         continue
       }
       let target = match elem_map.get(target_elk) {
@@ -94,31 +205,8 @@ pub fn MrtreeElkGraphImporter::import_graph(
 ///|
 fn mrtree_apply_edges(graph : MrtreeGraph) -> Unit {
   for edge in mrtree_graph_edges(graph) {
-    match mrtree_edge_origin(edge) {
-      Some(elk_edge) => {
-        let source = mrtree_edge_source(edge)
-        let target = mrtree_edge_target(edge)
-        let source_position = mrtree_node_position(source)
-        let source_size = mrtree_node_size(source)
-        let target_position = mrtree_node_position(target)
-        let target_size = mrtree_node_size(target)
-        let section = if edge_sections(elk_edge).is_empty() {
-          create_edge_section(elk_edge)
-        } else {
-          edge_sections(elk_edge)[0]
-        }
-        edge_section_set_start(
-          section,
-          source_position.x + source_size.x,
-          source_position.y + source_size.y / 2.0,
-        )
-        edge_section_set_end(
-          section,
-          target_position.x,
-          target_position.y + target_size.y / 2.0,
-        )
-      }
-      None => ()
+    if mrtree_edge_origin(edge) is Some(elk_edge) {
+      mrtree_apply_vector_chain_to_edge(mrtree_edge_bend_points(edge), elk_edge)
     }
   }
 }

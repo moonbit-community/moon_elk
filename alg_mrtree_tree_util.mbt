@@ -19,6 +19,68 @@ pub fn mrtree_tree_util_get_root(graph : MrtreeGraph) -> MrtreeNode? {
 }
 
 ///|
+pub fn mrtree_tree_util_depth(root : MrtreeNode) -> Int {
+  let children = mrtree_tree_util_get_children(root)
+  if children.length() == 0 {
+    1
+  } else {
+    let mut max_depth = 0
+    for child in children {
+      let child_depth = mrtree_tree_util_depth(child)
+      if child_depth > max_depth {
+        max_depth = child_depth
+      }
+    }
+    max_depth + 1
+  }
+}
+
+///|
+pub fn mrtree_tree_util_get_children(node : MrtreeNode) -> Array[MrtreeNode] {
+  let children = []
+  let seen : Map[MrtreeNode, Bool] = {}
+  for edge in mrtree_node_outgoing_edges(node) {
+    let target = mrtree_edge_target(edge)
+    if !seen.contains(target) {
+      seen[target] = true
+      children.push(target)
+    }
+  }
+  children
+}
+
+///|
+pub fn mrtree_tree_util_root_distance(
+  node : MrtreeNode,
+  root : MrtreeNode,
+) -> Int {
+  if node == root {
+    return 0
+  }
+  if mrtree_node_incoming_edges(node).is_empty() {
+    return 0
+  }
+  let parent = mrtree_edge_source(mrtree_node_incoming_edges(node)[0])
+  mrtree_tree_util_root_distance(parent, root) + 1
+}
+
+///|
+pub fn mrtree_tree_util_get_subtree(node : MrtreeNode) -> Array[MrtreeNode] {
+  let children = mrtree_tree_util_get_children(node)
+  if children.length() == 0 {
+    return [node]
+  }
+  let subtree = []
+  for child in children {
+    for subtree_node in mrtree_tree_util_get_subtree(child) {
+      subtree.push(subtree_node)
+    }
+  }
+  subtree.push(node)
+  subtree
+}
+
+///|
 pub fn mrtree_tree_util_get_first_point(edge : MrtreeEdge) -> KVector {
   let bend_points = mrtree_edge_bend_points(edge)
   if bend_points.size() == 0 {
@@ -41,6 +103,11 @@ pub fn mrtree_tree_util_get_last_point(edge : MrtreeEdge) -> KVector {
 }
 
 ///|
+pub fn mrtree_tree_util_get_direction(graph : MrtreeGraph) -> String {
+  mrtree_graph_direction(graph)
+}
+
+///|
 pub fn mrtree_tree_util_get_direction_vector(
   direction_value : String,
 ) -> KVector {
@@ -52,6 +119,64 @@ pub fn mrtree_tree_util_get_direction_vector(
     new_kvector_xy(-1.0, 0.0)
   } else {
     new_kvector_xy(0.0, 1.0)
+  }
+}
+
+///|
+pub fn mrtree_tree_util_get_node_size_in_direction(
+  node : MrtreeNode,
+  direction_value : String,
+) -> Double {
+  if direction_value == "LEFT" {
+    -mrtree_node_size(node).x / 2.0
+  } else if direction_value == "UP" {
+    -mrtree_node_size(node).y / 2.0
+  } else if direction_value == "RIGHT" {
+    mrtree_node_size(node).x / 2.0
+  } else {
+    mrtree_node_size(node).y / 2.0
+  }
+}
+
+///|
+pub fn mrtree_tree_util_get_node_size_vector_in_direction(
+  node : MrtreeNode,
+  direction_value : String,
+) -> KVector {
+  if direction_value == "LEFT" {
+    new_kvector_xy(-mrtree_node_size(node).x / 2.0, 0.0)
+  } else if direction_value == "UP" {
+    new_kvector_xy(0.0, -mrtree_node_size(node).y / 2.0)
+  } else if direction_value == "RIGHT" {
+    new_kvector_xy(mrtree_node_size(node).x / 2.0, 0.0)
+  } else {
+    new_kvector_xy(0.0, mrtree_node_size(node).y / 2.0)
+  }
+}
+
+///|
+pub fn mrtree_tree_util_turn_right(direction_value : String) -> String {
+  if direction_value == "LEFT" {
+    "UP"
+  } else if direction_value == "UP" {
+    "RIGHT"
+  } else if direction_value == "RIGHT" {
+    "DOWN"
+  } else {
+    "LEFT"
+  }
+}
+
+///|
+pub fn mrtree_tree_util_turn_left(direction_value : String) -> String {
+  if direction_value == "RIGHT" {
+    "UP"
+  } else if direction_value == "UP" {
+    "LEFT"
+  } else if direction_value == "LEFT" {
+    "DOWN"
+  } else {
+    "RIGHT"
   }
 }
 
