@@ -204,6 +204,11 @@ pub let interactive : IProperty[Bool] = new_property(
 )
 
 ///|
+pub let box_packing_mode : IProperty[String] = new_property(
+  "org.eclipse.elk.box.packingMode", "SIMPLE",
+)
+
+///|
 pub let direction : IProperty[String] = new_property(
   "org.eclipse.elk.direction", "",
 )

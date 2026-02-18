@@ -122,6 +122,10 @@ pub fn boundl(Int64, Int64, Int64) -> Int64
 
 pub fn bowyer_watson_triangulate(Array[KVector], debug_output_file? : String?) -> Array[TEdge]
 
+pub fn box_layout_provider_as_layout_provider(BoxLayoutProvider) -> AbstractLayoutProvider
+
+pub let box_packing_mode : IProperty[String]
+
 pub fn bp_info_is_end(LNode) -> Bool
 
 pub fn bp_info_is_start(LNode) -> Bool
@@ -3933,6 +3937,8 @@ pub fn[T] new_blackbox_test_method(String, (T, Int) -> Unit, ignored? : Bool) ->
 pub fn[C, T] new_bounds_provider((C) -> ElkRectangle?, (T) -> ElkRectangle?, (IDataProvider[C, T], Bool) -> Unit, () -> Unit) -> IBoundsProvider[C, T]
 
 pub fn[C, T] new_bounds_provider_with_default_lifecycle((C) -> ElkRectangle?, (T) -> ElkRectangle?) -> IBoundsProvider[C, T]
+
+pub fn new_box_layout_provider() -> BoxLayoutProvider
 
 pub fn new_bp_info(LNode, LNode, LEdge, LEdge, LEdge) -> BPInfo
 
@@ -8340,6 +8346,18 @@ pub fn BlockStack::get_width_for_fixed_height(Self, Double) -> Double
 pub fn BlockStack::place_rects_in(Self, Double) -> Unit
 pub fn BlockStack::set_location(Self, Double, Double) -> Unit
 pub fn BlockStack::update_dimension(Self) -> Unit
+
+pub struct BoxLayoutProvider {
+  initialized : Bool
+}
+pub fn BoxLayoutProvider::layout(Self, Int, IElkProgressMonitor) -> Unit
+
+pub enum BoxPackingMode {
+  SIMPLE
+  GROUP_DEC
+  GROUP_MIXED
+  GROUP_INC
+}
 
 pub struct BreakingPointInserterCut {
   mut index : Int

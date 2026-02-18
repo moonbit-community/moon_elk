@@ -248,10 +248,12 @@ pub fn layout_meta_data_service_register_default_algorithms() -> Unit {
     spacing_node_node.get_id(),
     priority.get_id(),
     expand_nodes.get_id(),
+    interactive.get_id(),
     node_size_constraints.get_id(),
     node_size_options.get_id(),
     aspect_ratio.get_id(),
     node_size_minimum.get_id(),
+    box_packing_mode.get_id(),
     content_alignment.get_id(),
   ])
   register_default_algorithm_with_known_option_ids("org.eclipse.elk.random", [
@@ -450,6 +452,24 @@ pub fn layout_meta_data_service_register_default_options() -> Unit {
       name="Expand Nodes",
       group="nodeSize",
       option_type=BoolType,
+      targets=[ParentsTarget],
+    ),
+  )
+  layout_meta_data_service_register_option(
+    new_layout_option_data(
+      interactive.get_id(),
+      name="Interactive",
+      group="algorithm",
+      option_type=BoolType,
+      targets=[ParentsTarget],
+    ),
+  )
+  layout_meta_data_service_register_option(
+    new_layout_option_data(
+      box_packing_mode.get_id(),
+      name="Box Layout Mode",
+      group="box",
+      option_type=StringType,
       targets=[ParentsTarget],
     ),
   )
