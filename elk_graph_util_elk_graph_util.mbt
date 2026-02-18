@@ -223,12 +223,23 @@ pub fn update_containment(edge : ElkEdge?) -> Unit {
 }
 
 ///|
-pub fn create_simple_edge(source : ElkNode, target : ElkNode) -> ElkEdge {
+pub fn create_simple_edge_for_shapes(
+  source : ElkConnectableShape,
+  target : ElkConnectableShape,
+) -> ElkEdge {
   let edge = create_edge(None)
-  edge_add_source(edge, make_node_shape(source))
-  edge_add_target(edge, make_node_shape(target))
+  edge_add_source(edge, source)
+  edge_add_target(edge, target)
   update_containment(Some(edge))
   edge
+}
+
+///|
+pub fn create_simple_edge(source : ElkNode, target : ElkNode) -> ElkEdge {
+  create_simple_edge_for_shapes(
+    make_node_shape(source),
+    make_node_shape(target),
+  )
 }
 
 ///|

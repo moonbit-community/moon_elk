@@ -878,6 +878,8 @@ pub fn create_rectangle_strip_overlap_remover_for_direction(Direction) -> Rectan
 
 pub fn create_simple_edge(Int, Int) -> Int
 
+pub fn create_simple_edge_for_shapes(ElkConnectableShape, ElkConnectableShape) -> Int
+
 pub let critical_dependency_weight : Int
 
 pub fn cross_min_type_constants() -> Array[CrossMinType]

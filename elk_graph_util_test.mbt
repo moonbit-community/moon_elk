@@ -155,6 +155,33 @@ test "ElkGraphUtil createHyperedge" {
 }
 
 ///|
+test "ElkGraphUtil createSimpleEdgeForShapes" {
+  reset_graph_model_for_test()
+  let graph = create_graph()
+  let node1 = create_node(Some(graph))
+  let node2 = create_node(Some(graph))
+  let port1 = create_port(Some(node1))
+  let port2 = create_port(Some(node2))
+
+  let edge = create_simple_edge_for_shapes(
+    make_port_shape(port1),
+    make_port_shape(port2),
+  )
+
+  assert_eq(edge_sources(edge).length(), 1)
+  assert_eq(edge_targets(edge).length(), 1)
+  match edge_sources(edge)[0] {
+    PortShape(port) => assert_eq(port, port1)
+    _ => abort("Expected port source")
+  }
+  match edge_targets(edge)[0] {
+    PortShape(port) => assert_eq(port, port2)
+    _ => abort("Expected port target")
+  }
+  assert_eq(edge_containing_node(edge), Some(graph))
+}
+
+///|
 test "ElkGraphUtil findBestEdgeContainment" {
   reset_graph_model_for_test()
   let graph1 = create_graph()
