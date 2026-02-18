@@ -2630,6 +2630,12 @@ pub fn image_export_action_reset_for_test() -> Unit
 
 pub fn in_north_south_east_west_order(LNode, PortSide) -> Array[LPort]
 
+pub fn individual_spacings_apply_to_node(IndividualSpacings, Int) -> Unit
+
+pub fn individual_spacings_from_node(Int) -> IndividualSpacings
+
+pub fn individual_spacings_get_individual_or_inherited(Int, IProperty[Double]) -> Double
+
 pub fn[N, E] init_one_dimensional_components_compaction(IConnectedComponents[N, E], Double) -> OneDimensionalComponentsCompaction[N, E]
 
 pub fn initialize_port(LPort, PortConstraints, Direction, KVector?) -> Unit
@@ -4887,6 +4893,10 @@ pub fn[G] new_igraph_transformer((G) -> DCGraph, () -> Unit) -> IGraphTransforme
 pub fn new_image_export_action(LayoutGraphView) -> ImageExportAction
 
 pub fn new_in_layer_constraint_processor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
+
+pub fn new_individual_spacings() -> IndividualSpacings
+
+pub fn new_individual_spacings_from(IndividualSpacings) -> IndividualSpacings
 
 pub fn new_innermost_node_margin_calculator_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
@@ -13655,6 +13665,16 @@ pub enum InLayerConstraint {
   Top
   Bottom
 }
+
+pub struct IndividualSpacings {
+  values : Map[String, String]
+}
+pub fn IndividualSpacings::entries(Self) -> Array[(String, String)]
+pub fn IndividualSpacings::get_option(Self, String) -> String?
+pub fn IndividualSpacings::has_option(Self, String) -> Bool
+pub fn IndividualSpacings::parse(Self, String) -> Unit
+pub fn IndividualSpacings::set_option(Self, String, String) -> Unit
+pub fn IndividualSpacings::to_string(Self) -> String
 
 pub struct InstancePool[T] {
   factory : IFactory[T]
