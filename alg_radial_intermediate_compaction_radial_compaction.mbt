@@ -21,7 +21,7 @@ pub fn RadialCompaction::compact(
 ) -> Unit {
   let root = match radial_internal_root(graph) {
     Some(value) => value
-    None => return
+    None => abort("radial root node is missing")
   }
   self.base.set_root(root)
   self.sorter = radial_sorting_strategy_create(
@@ -45,7 +45,7 @@ fn RadialCompaction::calculate_radius(
   let y_pos = node_y(node)
   let root = match self.base.root() {
     Some(value) => value
-    None => return 0.0
+    None => abort("radial root node is missing")
   }
   let root_x = node_x(root)
   let root_y = node_y(root)

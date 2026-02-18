@@ -16,12 +16,10 @@ pub fn new_radial_general_rotator_layout_processor() -> ILayoutProcessor[
     let rotator = new_angle_rotation().as_i_radial_rotator()
     rotator.rotate(graph)
     match progress_monitor {
-      Some(monitor) => {
+      Some(monitor) =>
         if monitor.is_logging_enabled() {
           monitor.log_graph("After")
         }
-        monitor.done()
-      }
       None => ()
     }
   })

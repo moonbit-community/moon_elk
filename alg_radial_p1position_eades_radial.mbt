@@ -20,7 +20,7 @@ pub fn new_radial_eades_layout_phase() -> ILayoutProcessor[
       }
       let root = match radial_internal_root(graph) {
         Some(value) => value
-        None => return
+        None => abort("radial root node is missing")
       }
       let radius = node_get_double_property(graph, radial_radius)
       let sorter = radial_sorting_strategy_create(
@@ -34,10 +34,7 @@ pub fn new_radial_eades_layout_phase() -> ILayoutProcessor[
       )
       radial_translate(graph, root, radius, sorter, wedge_criteria, optimizer)
       match progress_monitor {
-        Some(monitor) => {
-          monitor.log_graph("After")
-          monitor.done()
-        }
+        Some(monitor) => monitor.log_graph("After")
         None => ()
       }
     },

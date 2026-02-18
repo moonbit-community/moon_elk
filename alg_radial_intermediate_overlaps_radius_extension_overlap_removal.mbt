@@ -26,7 +26,7 @@ pub fn RadiusExtensionOverlapRemoval::remove_overlaps(
 ) -> Unit {
   let root = match radial_internal_root(graph) {
     Some(value) => value
-    None => return
+    None => abort("radial root node is missing")
   }
   self.base.set_root(root)
   self.sorter = radial_sorting_strategy_create(

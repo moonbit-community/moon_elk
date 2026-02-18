@@ -11,23 +11,7 @@ pub fn new_radial_calculate_graph_size_layout_processor() -> ILayoutProcessor[
       }
       None => ()
     }
-
     let children = node_children(graph)
-    if children.is_empty() {
-      if !node_get_bool_property(graph, node_size_fixed_graph_size) {
-        node_set_dimensions(graph, 0.0, 0.0)
-      }
-      node_set_double_property(graph, child_area_width, 0.0)
-      node_set_double_property(graph, child_area_height, 0.0)
-      match progress_monitor {
-        Some(monitor) => {
-          monitor.log_graph("After")
-          monitor.done()
-        }
-        None => ()
-      }
-      return
-    }
 
     let mut min_x_pos = @double.max_value
     let mut min_y_pos = @double.max_value
@@ -72,40 +56,39 @@ pub fn new_radial_calculate_graph_size_layout_processor() -> ILayoutProcessor[
     let mut height = max_y_pos - min_y_pos + padding_value.get_vertical()
 
     if node_get_bool_property(graph, radial_center_on_root) {
-      match radial_internal_root(graph) {
-        Some(root) => {
-          let root_margins = radial_internal_node_margins(root)
-          let root_x = node_x(root) +
-            node_width(root) / 2.0 +
-            (root_margins.left + root_margins.right) / 2.0 -
-            offset.x
-          let root_y = node_y(root) +
-            node_height(root) / 2.0 +
-            (root_margins.top + root_margins.bottom) / 2.0 -
-            offset.y
+      let root = match radial_internal_root(graph) {
+        Some(value) => value
+        None => abort("radial root node is missing")
+      }
+      let root_margins = radial_internal_node_margins(root)
+      let root_x = node_x(root) +
+        node_width(root) / 2.0 +
+        (root_margins.left + root_margins.right) / 2.0 -
+        offset.x
+      let root_y = node_y(root) +
+        node_height(root) / 2.0 +
+        (root_margins.top + root_margins.bottom) / 2.0 -
+        offset.y
 
-          let dx = width - root_x
-          let dy = height - root_y
+      let dx = width - root_x
+      let dy = height - root_y
 
-          if dx < width / 2.0 {
-            let additional_x = dx - root_x
-            width += additional_x
-            offset.x -= additional_x
-          } else {
-            let additional_x = root_x - dx
-            width += additional_x
-          }
+      if dx < width / 2.0 {
+        let additional_x = dx - root_x
+        width += additional_x
+        offset.x -= additional_x
+      } else {
+        let additional_x = root_x - dx
+        width += additional_x
+      }
 
-          if dy < height / 2.0 {
-            let additional_y = dy - root_y
-            height += additional_y
-            offset.y -= additional_y
-          } else {
-            let additional_y = root_y - dy
-            height += additional_y
-          }
-        }
-        None => ()
+      if dy < height / 2.0 {
+        let additional_y = dy - root_y
+        height += additional_y
+        offset.y -= additional_y
+      } else {
+        let additional_y = root_y - dy
+        height += additional_y
       }
     }
 
@@ -127,10 +110,7 @@ pub fn new_radial_calculate_graph_size_layout_processor() -> ILayoutProcessor[
       height - padding_value.get_vertical(),
     )
     match progress_monitor {
-      Some(monitor) => {
-        monitor.log_graph("After")
-        monitor.done()
-      }
+      Some(monitor) => monitor.log_graph("After")
       None => ()
     }
   })

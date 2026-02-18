@@ -18,7 +18,7 @@ pub fn AbstractRadiusExtensionCompaction::contract_layer(
 ) -> Unit {
   let root = match self.root {
     Some(r) => r
-    None => return
+    None => abort("radial root node is missing")
   }
   for node in layer_nodes {
     let mut x_pos = node_x(node) + node_width(node) / 2.0
@@ -53,7 +53,7 @@ pub fn AbstractRadiusExtensionCompaction::move_node(
 ) -> Unit {
   let root = match self.root {
     Some(r) => r
-    None => return
+    None => abort("radial root node is missing")
   }
   let root_x = node_x(root) + node_width(root) / 2.0
   let root_y = node_y(root) + node_height(root) / 2.0
