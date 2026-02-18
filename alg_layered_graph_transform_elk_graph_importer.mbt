@@ -16,6 +16,6 @@ pub fn LayeredElkGraphImporter::import_graph(
   ignore(self)
   match recursive_layered_import_graph_for_transform(graph) {
     Some(layered_graph) => layered_graph
-    None => new_l_graph()
+    None => abort("layered elk graph import failed")
   }
 }
