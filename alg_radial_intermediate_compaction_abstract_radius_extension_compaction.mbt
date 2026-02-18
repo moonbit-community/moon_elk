@@ -1,18 +1,18 @@
 ///|
-pub struct RadialRadiusExtensionCompaction {
+pub struct AbstractRadiusExtensionCompaction {
   mut compaction_step : Int
   mut spacing : Double
   mut root : ElkNode?
 }
 
 ///|
-pub fn new_radial_radius_extension_compaction() -> RadialRadiusExtensionCompaction {
+pub fn new_abstract_radius_extension_compaction() -> AbstractRadiusExtensionCompaction {
   { compaction_step: 1, spacing: 0.0, root: None }
 }
 
 ///|
-pub fn RadialRadiusExtensionCompaction::contract_layer(
-  self : RadialRadiusExtensionCompaction,
+pub fn AbstractRadiusExtensionCompaction::contract_layer(
+  self : AbstractRadiusExtensionCompaction,
   layer_nodes : Array[ElkNode],
   is_contracting : Bool,
 ) -> Unit {
@@ -46,8 +46,8 @@ pub fn RadialRadiusExtensionCompaction::contract_layer(
 }
 
 ///|
-pub fn RadialRadiusExtensionCompaction::move_node(
-  self : RadialRadiusExtensionCompaction,
+pub fn AbstractRadiusExtensionCompaction::move_node(
+  self : AbstractRadiusExtensionCompaction,
   node : ElkNode,
   distance : Double,
 ) -> Unit {
@@ -72,8 +72,8 @@ pub fn RadialRadiusExtensionCompaction::move_node(
 }
 
 ///|
-pub fn RadialRadiusExtensionCompaction::overlap(
-  self : RadialRadiusExtensionCompaction,
+pub fn AbstractRadiusExtensionCompaction::overlap(
+  self : AbstractRadiusExtensionCompaction,
   node1 : ElkNode,
   node2 : ElkNode,
 ) -> Bool {
@@ -101,8 +101,8 @@ pub fn RadialRadiusExtensionCompaction::overlap(
 }
 
 ///|
-pub fn RadialRadiusExtensionCompaction::overlap_layer(
-  self : RadialRadiusExtensionCompaction,
+pub fn AbstractRadiusExtensionCompaction::overlap_layer(
+  self : AbstractRadiusExtensionCompaction,
   nodes : Array[ElkNode],
 ) -> Bool {
   if nodes.length() < 2 {
@@ -122,46 +122,46 @@ pub fn RadialRadiusExtensionCompaction::overlap_layer(
 }
 
 ///|
-pub fn RadialRadiusExtensionCompaction::set_compaction_step(
-  self : RadialRadiusExtensionCompaction,
+pub fn AbstractRadiusExtensionCompaction::set_compaction_step(
+  self : AbstractRadiusExtensionCompaction,
   compaction_step : Int,
 ) -> Unit {
   self.compaction_step = compaction_step
 }
 
 ///|
-pub fn RadialRadiusExtensionCompaction::compaction_step(
-  self : RadialRadiusExtensionCompaction,
+pub fn AbstractRadiusExtensionCompaction::compaction_step(
+  self : AbstractRadiusExtensionCompaction,
 ) -> Int {
   self.compaction_step
 }
 
 ///|
-pub fn RadialRadiusExtensionCompaction::set_spacing(
-  self : RadialRadiusExtensionCompaction,
+pub fn AbstractRadiusExtensionCompaction::set_spacing(
+  self : AbstractRadiusExtensionCompaction,
   spacing : Double,
 ) -> Unit {
   self.spacing = spacing
 }
 
 ///|
-pub fn RadialRadiusExtensionCompaction::spacing(
-  self : RadialRadiusExtensionCompaction,
+pub fn AbstractRadiusExtensionCompaction::spacing(
+  self : AbstractRadiusExtensionCompaction,
 ) -> Double {
   self.spacing
 }
 
 ///|
-pub fn RadialRadiusExtensionCompaction::set_root(
-  self : RadialRadiusExtensionCompaction,
+pub fn AbstractRadiusExtensionCompaction::set_root(
+  self : AbstractRadiusExtensionCompaction,
   root : ElkNode,
 ) -> Unit {
   self.root = Some(root)
 }
 
 ///|
-pub fn RadialRadiusExtensionCompaction::root(
-  self : RadialRadiusExtensionCompaction,
+pub fn AbstractRadiusExtensionCompaction::root(
+  self : AbstractRadiusExtensionCompaction,
 ) -> ElkNode? {
   self.root
 }

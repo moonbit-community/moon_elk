@@ -8,39 +8,6 @@ pub let radial_option_position_id = "org.eclipse.elk.position"
 pub let radial_option_margins_id = "org.eclipse.elk.margins"
 
 ///|
-pub enum RadialSortingStrategy {
-  NONE
-  POLAR_COORDINATE
-  ID
-}
-
-///|
-pub enum RadialAnnulusWedgeCriteria {
-  LEAF_NUMBER
-  NODE_SIZE
-}
-
-///|
-pub enum RadialTranslationStrategy {
-  NONE
-  EDGE_LENGTH
-  EDGE_LENGTH_BY_POSITION
-  CROSSING_MINIMIZATION_BY_POSITION
-}
-
-///|
-pub enum RadialCompactionStrategy {
-  NONE
-  RADIAL_COMPACTION
-  WEDGE_COMPACTION
-}
-
-///|
-pub enum RadialOverlapRemovalStrategy {
-  EXTENT_RADII
-}
-
-///|
 pub let radial_center_on_root : IProperty[Bool] = new_property(
   "org.eclipse.elk.radial.centerOnRoot", false,
 )

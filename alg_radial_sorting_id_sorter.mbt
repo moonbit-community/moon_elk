@@ -26,3 +26,8 @@ pub fn IDSorter::sort(self : IDSorter, nodes : Array[ElkNode]) -> Unit {
 pub fn IDSorter::initialize(self : IDSorter, root : ElkNode) -> Unit {
   self.sorter.initialize(root)
 }
+
+///|
+pub fn IDSorter::as_i_radial_sorter(self : IDSorter) -> IRadialSorter {
+  self.sorter
+}

@@ -1,13 +1,9 @@
 ///|
 fn radial_compact(graph : ElkNode) -> Unit {
-  let compactor = radial_graph_compaction_strategy(graph)
-  match compactor {
-    RadialCompactionStrategy::NONE => ()
-    RadialCompactionStrategy::RADIAL_COMPACTION =>
-      new_radial_compaction().compact(graph)
-    RadialCompactionStrategy::WEDGE_COMPACTION =>
-      new_annulus_wedge_compaction().compact(graph)
-  }
+  let compactor = radial_compaction_strategy_create(
+    radial_graph_compaction_strategy(graph),
+  )
+  compactor.compact(graph)
 }
 
 ///|

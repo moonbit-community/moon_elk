@@ -1,5 +1,5 @@
 ///|
-fn radial_rotate_angle(graph : ElkNode) -> Unit {
+fn angle_rotation_rotate(graph : ElkNode) -> Unit {
   let mut target_angle = node_get_double_property(
     graph, radial_rotation_target_angle,
   )
@@ -58,29 +58,23 @@ fn radial_rotate_angle(graph : ElkNode) -> Unit {
 }
 
 ///|
-pub fn new_radial_general_rotator_layout_processor() -> ILayoutProcessor[
-  RadialLayoutPhases,
-  ElkNode,
-] {
-  new_layout_processor((graph, progress_monitor) => {
-    match progress_monitor {
-      Some(monitor) => {
-        ignore(monitor.begin("General 'Rotator", 1.0))
-        if monitor.is_logging_enabled() {
-          monitor.log_graph("Before")
-        }
-      }
-      None => ()
-    }
-    radial_rotate_angle(graph)
-    match progress_monitor {
-      Some(monitor) => {
-        if monitor.is_logging_enabled() {
-          monitor.log_graph("After")
-        }
-        monitor.done()
-      }
-      None => ()
-    }
-  })
+pub struct AngleRotation {
+  rotator : IRadialRotator
+}
+
+///|
+pub fn new_angle_rotation() -> AngleRotation {
+  { rotator: new_i_radial_rotator(angle_rotation_rotate) }
+}
+
+///|
+pub fn AngleRotation::rotate(self : AngleRotation, graph : ElkNode) -> Unit {
+  self.rotator.rotate(graph)
+}
+
+///|
+pub fn AngleRotation::as_i_radial_rotator(
+  self : AngleRotation,
+) -> IRadialRotator {
+  self.rotator
 }

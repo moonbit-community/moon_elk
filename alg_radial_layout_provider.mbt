@@ -13,6 +13,11 @@ pub fn new_radial_layout_provider() -> RadialLayoutProvider {
 }
 
 ///|
+fn radial_node_micro_layout_execute(layout_graph : ElkNode) -> Unit {
+  ignore(layout_graph)
+}
+
+///|
 fn radial_layout_provider_assemble_algorithm(
   provider : RadialLayoutProvider,
   layout_graph : ElkNode,
@@ -100,6 +105,9 @@ pub fn RadialLayoutProvider::layout(
   ignore(
     progress_monitor.begin("Radial layout", algorithm.length().to_double()),
   )
+  if !node_get_bool_property(layout_graph, radial_omit_node_micro_layout) {
+    radial_node_micro_layout_execute(layout_graph)
+  }
 
   let root = radial_find_root(layout_graph)
   match root {
@@ -119,7 +127,6 @@ pub fn RadialLayoutProvider::layout(
         processor.process(layout_graph, progress_monitor.sub_task(1.0))
       }
       progress_monitor.done()
-      radial_internal_clear_root(layout_graph)
     }
     None => abort("The given graph is not a tree!")
   }

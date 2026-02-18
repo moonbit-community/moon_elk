@@ -23,9 +23,15 @@ pub fn new_radial_eades_layout_phase() -> ILayoutProcessor[
         None => return
       }
       let radius = node_get_double_property(graph, radial_radius)
-      let sorter = radial_graph_sorting_strategy(graph)
-      let wedge_criteria = radial_graph_wedge_criteria(graph)
-      let optimizer = radial_graph_translation_strategy(graph)
+      let sorter = radial_sorting_strategy_create(
+        radial_graph_sorting_strategy(graph),
+      )
+      let wedge_criteria = radial_annulus_wedge_criteria_create(
+        radial_graph_wedge_criteria(graph),
+      )
+      let optimizer = radial_translation_strategy_create(
+        radial_graph_translation_strategy(graph),
+      )
       radial_translate(graph, root, radius, sorter, wedge_criteria, optimizer)
       match progress_monitor {
         Some(monitor) => {
@@ -44,18 +50,14 @@ fn radial_translate(
   graph : ElkNode,
   root : ElkNode,
   radius : Double,
-  sorter : RadialSortingStrategy,
-  wedge_criteria : RadialAnnulusWedgeCriteria,
-  optimizer : RadialTranslationStrategy,
+  sorter : IRadialSorter?,
+  wedge_criteria : IAnnulusWedgeCriteria,
+  optimizer : IEvaluation?,
 ) -> Unit {
   ignore(graph)
   let mut optimal_offset = 0.0
   let mut optimal_value = @double.max_value
-  let should_optimize = match optimizer {
-    RadialTranslationStrategy::NONE => false
-    _ => true
-  }
-  if should_optimize {
+  if optimizer is Some(evaluation) {
     let mut i = 0
     while i < radial_circle_degrees {
       let offset = i.to_double() * radial_degree_to_rad
@@ -70,7 +72,7 @@ fn radial_translate(
         2.0 * @math.PI,
         offset,
       )
-      let translated_value = radial_evaluate_translation(optimizer, root)
+      let translated_value = evaluation.evaluate(root)
       if translated_value < optimal_value {
         optimal_offset = offset
         optimal_value = translated_value
@@ -96,8 +98,8 @@ fn radial_position_nodes(
   root : ElkNode,
   node : ElkNode,
   radius : Double,
-  sorter : RadialSortingStrategy,
-  wedge_criteria : RadialAnnulusWedgeCriteria,
+  sorter : IRadialSorter?,
+  wedge_criteria : IAnnulusWedgeCriteria,
   current_radius : Double,
   min_alpha : Double,
   max_alpha : Double,
@@ -109,7 +111,7 @@ fn radial_position_nodes(
   let y_pos = current_radius * @math.sin(alpha_point)
   radial_center_nodes_on_radi(node, x_pos, y_pos)
 
-  let number_of_leafs = radial_calculate_wedge_space(wedge_criteria, node)
+  let number_of_leafs = wedge_criteria.calculate_wedge_space(node)
   let tau = 2.0 * @math.acos(current_radius / current_radius + radius)
   let mut s = 0.0
   let mut alpha = 0.0
@@ -121,18 +123,12 @@ fn radial_position_nodes(
     alpha = min_alpha
   }
   let successors = radial_get_successors(node)
-  let should_sort = match sorter {
-    RadialSortingStrategy::NONE => false
-    _ => true
-  }
-  if should_sort {
-    radial_sort_initialize(sorter, root)
-    radial_sort(sorter, successors)
+  if sorter is Some(sorter_impl) {
+    sorter_impl.initialize(root)
+    sorter_impl.sort(successors)
   }
   for child in successors {
-    let number_of_child_leafs = radial_calculate_wedge_space(
-      wedge_criteria, child,
-    )
+    let number_of_child_leafs = wedge_criteria.calculate_wedge_space(child)
     radial_position_nodes(
       root,
       child,

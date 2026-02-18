@@ -1,15 +1,21 @@
 ///|
 pub struct RadiusExtensionOverlapRemoval {
-  base : RadialRadiusExtensionCompaction
-  mut sorter : RadialSortingStrategy
+  base : AbstractRadiusExtensionCompaction
+  mut sorter : IRadialSorter?
 }
 
 ///|
 pub fn new_radius_extension_overlap_removal() -> RadiusExtensionOverlapRemoval {
-  {
-    base: new_radial_radius_extension_compaction(),
-    sorter: RadialSortingStrategy::NONE,
-  }
+  { base: new_abstract_radius_extension_compaction(), sorter: None }
+}
+
+///|
+pub fn RadiusExtensionOverlapRemoval::as_i_overlap_removal(
+  self : RadiusExtensionOverlapRemoval,
+) -> IOverlapRemoval {
+  new_i_overlap_removal((graph, progress_monitor) => {
+    self.remove_overlaps(graph, progress_monitor)
+  })
 }
 
 ///|
@@ -23,7 +29,9 @@ pub fn RadiusExtensionOverlapRemoval::remove_overlaps(
     None => return
   }
   self.base.set_root(root)
-  self.sorter = radial_graph_sorting_strategy(graph)
+  self.sorter = radial_sorting_strategy_create(
+    radial_graph_sorting_strategy(graph),
+  )
   self.base.set_spacing(node_get_double_property(graph, spacing_node_node))
   let successors = radial_get_successors(root)
   self.extend(graph, successors, progress_monitor)
@@ -67,10 +75,16 @@ pub fn RadiusExtensionOverlapRemoval::extend(
     for next_level_node in next_level_nodes {
       self.base.move_node(next_level_node, moved_distance)
     }
+    match progress_monitor {
+      Some(monitor) => monitor.log_graph("Child movement 1")
+      None => ()
+    }
   }
-  let sorted_next_level_nodes = next_level_nodes.copy()
-  radial_sort(self.sorter, sorted_next_level_nodes)
-  self.extend(graph, sorted_next_level_nodes, progress_monitor)
+  if self.sorter is Some(sorter) {
+    let sorted_next_level_nodes = next_level_nodes.copy()
+    sorter.sort(sorted_next_level_nodes)
+  }
+  self.extend(graph, next_level_nodes.copy(), progress_monitor)
 }
 
 ///|
@@ -89,10 +103,7 @@ pub fn new_radius_extension_overlap_removal_layout_processor() -> ILayoutProcess
     }
     removal.remove_overlaps(graph, progress_monitor)
     match progress_monitor {
-      Some(monitor) => {
-        monitor.log_graph("After")
-        monitor.done()
-      }
+      Some(monitor) => monitor.log_graph("After")
       None => ()
     }
   })

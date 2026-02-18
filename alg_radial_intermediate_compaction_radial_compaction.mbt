@@ -1,15 +1,15 @@
 ///|
 pub struct RadialCompaction {
-  base : RadialRadiusExtensionCompaction
-  mut sorter : RadialSortingStrategy
+  base : AbstractRadiusExtensionCompaction
+  mut sorter : IRadialSorter?
   mut last_radius : Double
 }
 
 ///|
 pub fn new_radial_compaction() -> RadialCompaction {
   {
-    base: new_radial_radius_extension_compaction(),
-    sorter: RadialSortingStrategy::NONE,
+    base: new_abstract_radius_extension_compaction(),
+    sorter: None,
     last_radius: 0.0,
   }
 }
@@ -24,11 +24,15 @@ pub fn RadialCompaction::compact(
     None => return
   }
   self.base.set_root(root)
-  self.sorter = radial_graph_sorting_strategy(graph)
+  self.sorter = radial_sorting_strategy_create(
+    radial_graph_sorting_strategy(graph),
+  )
   self.base.set_compaction_step(radial_graph_compaction_step_size(graph))
   self.base.set_spacing(node_get_double_property(graph, spacing_node_node))
   let first_level_nodes = radial_get_successors(root)
-  radial_sort(self.sorter, first_level_nodes)
+  if self.sorter is Some(sorter) {
+    sorter.sort(first_level_nodes)
+  }
   self.contract(first_level_nodes)
 }
 
@@ -89,7 +93,9 @@ pub fn RadialCompaction::contract(
     self.base.contract_layer(nodes, false)
   }
   let next_level_nodes = radial_get_next_level_nodes(nodes)
-  radial_sort(self.sorter, next_level_nodes)
+  if self.sorter is Some(sorter) {
+    sorter.sort(next_level_nodes)
+  }
   self.last_radius = self.calculate_radius(nodes[0])
   self.contract(next_level_nodes)
 }

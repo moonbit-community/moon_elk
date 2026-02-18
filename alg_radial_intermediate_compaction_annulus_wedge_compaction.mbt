@@ -1,19 +1,19 @@
 ///|
 pub struct AnnulusWedgeCompaction {
-  base : RadialRadiusExtensionCompaction
+  base : AbstractRadiusExtensionCompaction
   left_contour : Map[ElkNode, Array[ElkNode]]
   right_contour : Map[ElkNode, Array[ElkNode]]
-  mut sorter : RadialSortingStrategy
+  mut sorter : IRadialSorter?
   mut root : ElkNode?
 }
 
 ///|
 pub fn new_annulus_wedge_compaction() -> AnnulusWedgeCompaction {
   {
-    base: new_radial_radius_extension_compaction(),
+    base: new_abstract_radius_extension_compaction(),
     left_contour: {},
     right_contour: {},
-    sorter: RadialSortingStrategy::NONE,
+    sorter: None,
     root: None,
   }
 }
@@ -54,13 +54,17 @@ pub fn AnnulusWedgeCompaction::compact(
   }
   self.root = Some(root)
   self.base.set_root(root)
-  self.sorter = radial_graph_sorting_strategy(graph)
+  self.sorter = radial_sorting_strategy_create(
+    radial_graph_sorting_strategy(graph),
+  )
   self.base.set_compaction_step(radial_graph_compaction_step_size(graph))
   self.base.set_spacing(node_get_double_property(graph, spacing_node_node))
   self.left_contour.clear()
   self.right_contour.clear()
   let successors = radial_get_successors(root)
-  radial_sort(self.sorter, successors)
+  if self.sorter is Some(sorter) {
+    sorter.sort(successors)
+  }
   self.construct_contour(successors)
 
   let root_list = [root]
@@ -118,7 +122,9 @@ fn AnnulusWedgeCompaction::contract_wedge(
   }
   let next_level_nodes = radial_get_next_level_nodes(current_radius_nodes)
   if !next_level_nodes.is_empty() {
-    radial_sort(self.sorter, next_level_nodes)
+    if self.sorter is Some(sorter) {
+      sorter.sort(next_level_nodes)
+    }
     self.contract_wedge(
       wedge_parent, current_radius_nodes, radial_predecessor, radial_successor, next_level_nodes,
     )
@@ -153,7 +159,9 @@ fn AnnulusWedgeCompaction::overlapping(
   right_parent : ElkNode,
   layer_nodes : Array[ElkNode],
 ) -> Bool {
-  radial_sort(self.sorter, layer_nodes)
+  if self.sorter is Some(sorter) {
+    sorter.sort(layer_nodes)
+  }
   let first_node = layer_nodes[0]
   if self.contour_overlap(left_parent, first_node, false) {
     return true
@@ -187,7 +195,9 @@ fn AnnulusWedgeCompaction::construct_contour(
     if successors.is_empty() {
       continue
     }
-    radial_sort(self.sorter, successors)
+    if self.sorter is Some(sorter) {
+      sorter.sort(successors)
+    }
     annulus_wedge_contour_put(self.left_contour, node, successors[0])
     annulus_wedge_contour_put(
       self.right_contour,
@@ -196,7 +206,9 @@ fn AnnulusWedgeCompaction::construct_contour(
     )
     while !radial_get_next_level_nodes(successors).is_empty() {
       successors = radial_get_next_level_nodes(successors)
-      radial_sort(self.sorter, successors)
+      if self.sorter is Some(sorter) {
+        sorter.sort(successors)
+      }
       annulus_wedge_contour_put(self.left_contour, node, successors[0])
       annulus_wedge_contour_put(
         self.right_contour,

@@ -86,6 +86,23 @@ fn label_placer_side_and_alignment(
 }
 
 ///|
+fn label_placer_clear_inline_property(sl_loop : SelfHyperLoop) -> Unit {
+  for label in label_placer_require_labels(sl_loop).get_l_labels() {
+    label.set_property_bool(edge_labels_inline, false)
+  }
+}
+
+///|
+fn label_placer_has_inline_labels(sl_loop : SelfHyperLoop) -> Bool {
+  for label in label_placer_require_labels(sl_loop).get_l_labels() {
+    if label.get_property_bool(edge_labels_inline) {
+      return true
+    }
+  }
+  false
+}
+
+///|
 pub struct LabelPlacer {
   _reserved : Int
 }
@@ -134,6 +151,7 @@ fn LabelPlacer::assign_one_sided_simple_side_and_alignment(
   loop_side : PortSide,
 ) -> Unit {
   ignore(self)
+  label_placer_clear_inline_property(sl_loop)
   match loop_side {
     East => {
       let mut topmost_port = label_placer_require_leftmost(sl_loop)
@@ -266,6 +284,8 @@ fn LabelPlacer::assign_two_sides_corner_side_and_alignment(
     .get_l_port()
     .get_side()
 
+  label_placer_clear_inline_property(sl_loop)
+
   if label_placer_port_side_equals(leftmost_port_side, North) {
     label_placer_side_and_alignment(
       sl_loop,
@@ -314,6 +334,7 @@ fn LabelPlacer::assign_two_sides_opposing_and_three_sides_side_and_alignment(
 ) -> Unit {
   ignore(self)
   let occupied_sides = sl_loop.get_occupied_port_sides()
+  let has_inline_labels = label_placer_has_inline_labels(sl_loop)
 
   if !label_placer_has_side(occupied_sides, North) {
     label_placer_side_and_alignment(
@@ -330,19 +351,37 @@ fn LabelPlacer::assign_two_sides_opposing_and_three_sides_side_and_alignment(
       None,
     )
   } else if !label_placer_has_side(occupied_sides, West) {
-    label_placer_side_and_alignment(
-      sl_loop,
-      North,
-      SelfHyperLoopLabelAlignment::Left,
-      Some(label_placer_require_leftmost(sl_loop)),
-    )
+    if has_inline_labels {
+      label_placer_side_and_alignment(
+        sl_loop,
+        East,
+        SelfHyperLoopLabelAlignment::Center,
+        None,
+      )
+    } else {
+      label_placer_side_and_alignment(
+        sl_loop,
+        North,
+        SelfHyperLoopLabelAlignment::Left,
+        Some(label_placer_require_leftmost(sl_loop)),
+      )
+    }
   } else if !label_placer_has_side(occupied_sides, East) {
-    label_placer_side_and_alignment(
-      sl_loop,
-      North,
-      SelfHyperLoopLabelAlignment::Right,
-      Some(label_placer_require_rightmost(sl_loop)),
-    )
+    if has_inline_labels {
+      label_placer_side_and_alignment(
+        sl_loop,
+        West,
+        SelfHyperLoopLabelAlignment::Center,
+        None,
+      )
+    } else {
+      label_placer_side_and_alignment(
+        sl_loop,
+        North,
+        SelfHyperLoopLabelAlignment::Right,
+        Some(label_placer_require_rightmost(sl_loop)),
+      )
+    }
   }
 }
 
@@ -358,6 +397,8 @@ fn LabelPlacer::assign_four_sides_side_and_alignment(
   let rightmost_port_side = label_placer_require_leftmost(sl_loop)
     .get_l_port()
     .get_side()
+
+  label_placer_clear_inline_property(sl_loop)
 
   if label_placer_port_side_equals(leftmost_port_side, North) ||
     label_placer_port_side_equals(rightmost_port_side, North) {
@@ -442,6 +483,46 @@ fn LabelPlacer::assign_side_and_alignment(
 }
 
 ///|
+fn LabelPlacer::manage_labels(
+  self : LabelPlacer,
+  sl_loop : SelfHyperLoop,
+  label_manager : ILabelManager,
+) -> Unit {
+  ignore(self)
+  let sl_labels = label_placer_require_labels(sl_loop)
+  let l_node = sl_loop.get_sl_holder().get_l_node()
+  let l_node_size = l_node.get_size()
+  let l_node_margin = l_node.get_margin()
+
+  let mut target_width = 0.0
+  match sl_labels.get_alignment() {
+    Some(SelfHyperLoopLabelAlignment::Center) =>
+      target_width = l_node_margin.left + l_node_size.x + l_node_margin.right
+    Some(SelfHyperLoopLabelAlignment::Left) => {
+      let align_ref = label_placer_require_alignment_reference(sl_labels)
+      target_width = l_node_size.x -
+        align_ref.get_l_port().get_position().x -
+        align_ref.get_l_port().get_anchor().x +
+        l_node_margin.right
+    }
+    Some(SelfHyperLoopLabelAlignment::Right) => {
+      let align_ref = label_placer_require_alignment_reference(sl_labels)
+      target_width = l_node_margin.left +
+        align_ref.get_l_port().get_position().x +
+        align_ref.get_l_port().get_anchor().x
+    }
+    Some(SelfHyperLoopLabelAlignment::Top) =>
+      target_width = label_management_processor_min_width_edge_labels
+    None => ()
+  }
+
+  if target_width < label_management_processor_min_width_edge_labels {
+    target_width = label_management_processor_min_width_edge_labels
+  }
+  sl_labels.apply_label_management(label_manager, target_width)
+}
+
+///|
 fn LabelPlacer::compute_coordinates(
   self : LabelPlacer,
   sl_loop : SelfHyperLoop,
@@ -478,12 +559,16 @@ fn LabelPlacer::compute_coordinates(
 pub fn LabelPlacer::place_labels(
   self : LabelPlacer,
   sl_holder : SelfLoopHolder,
+  label_manager : ILabelManager?,
   monitor : IElkProgressMonitor?,
 ) -> Unit {
   ignore(monitor)
   self.assign_side_and_alignment(sl_holder)
   for sl_loop in sl_holder.get_sl_hyper_loops() {
-    if sl_loop.get_sl_labels().is_some() {
+    if sl_loop.get_sl_labels() is Some(_) {
+      if label_manager is Some(manager) {
+        self.manage_labels(sl_loop, manager)
+      }
       self.compute_coordinates(sl_loop)
     }
   }

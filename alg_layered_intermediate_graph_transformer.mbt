@@ -5,6 +5,58 @@ pub enum GraphTransformerMode {
 }
 
 ///|
+fn graph_transformer_mode_to_string(mode : GraphTransformerMode) -> String {
+  match mode {
+    GraphTransformerMode::ToInternalLtr => "TO_INTERNAL_LTR"
+    GraphTransformerMode::ToInputDirection => "TO_INPUT_DIRECTION"
+  }
+}
+
+///|
+let graph_transformer_direction_congruency_property : IProperty[String] = new_property(
+  "org.eclipse.elk.layered.directionCongruency", "READING_DIRECTION",
+)
+
+///|
+let graph_transformer_node_labels_padding_property : IProperty[String] = new_property(
+  "org.eclipse.elk.nodeLabels.padding", "[top=5,left=5,bottom=5,right=5]",
+)
+
+///|
+fn graph_transformer_parse_direction_congruency(
+  value : String,
+) -> DirectionCongruency {
+  if value == "READING_DIRECTION" {
+    DirectionCongruency::ReadingDirection
+  } else {
+    DirectionCongruency::Rotation
+  }
+}
+
+///|
+fn graph_transformer_get_direction_congruency_value(
+  layered_graph : LGraph,
+) -> String {
+  layered_graph.get_property_string(
+    graph_transformer_direction_congruency_property,
+  )
+}
+
+///|
+fn graph_transformer_parse_edge_label_side_selection(
+  value : String,
+) -> EdgeLabelSideSelection {
+  match value {
+    "ALWAYS_UP" => EdgeLabelSideSelection::AlwaysUp
+    "ALWAYS_DOWN" => EdgeLabelSideSelection::AlwaysDown
+    "DIRECTION_UP" => EdgeLabelSideSelection::DirectionUp
+    "DIRECTION_DOWN" => EdgeLabelSideSelection::DirectionDown
+    "SMART_UP" => EdgeLabelSideSelection::SmartUp
+    _ => EdgeLabelSideSelection::SmartDown
+  }
+}
+
+///|
 fn graph_transformer_mirror_port_side_x(side : PortSide) -> PortSide {
   match side {
     PortSide::East => PortSide::West
@@ -76,6 +128,318 @@ fn graph_transformer_transpose_padding(padding_value : LPadding) -> Unit {
   padding_value.bottom = old_right
   padding_value.left = old_top
   padding_value.right = old_bottom
+}
+
+///|
+fn graph_transformer_contains_string(
+  values : Array[String],
+  needle : String,
+) -> Bool {
+  for value in values {
+    if value == needle {
+      return true
+    }
+  }
+  false
+}
+
+///|
+fn graph_transformer_add_unique_string(
+  values : Array[String],
+  value : String,
+) -> Unit {
+  if !graph_transformer_contains_string(values, value) {
+    values.push(value)
+  }
+}
+
+///|
+fn graph_transformer_mirror_node_label_placement_x_values(
+  values : Array[String],
+) -> Array[String] {
+  if graph_transformer_contains_string(values, "H_LEFT") {
+    let mirrored = []
+    for value in values {
+      if value == "H_LEFT" {
+        graph_transformer_add_unique_string(mirrored, "H_RIGHT")
+      } else if value != "H_RIGHT" {
+        graph_transformer_add_unique_string(mirrored, value)
+      }
+    }
+    mirrored
+  } else if graph_transformer_contains_string(values, "H_RIGHT") {
+    let mirrored = []
+    for value in values {
+      if value == "H_RIGHT" {
+        graph_transformer_add_unique_string(mirrored, "H_LEFT")
+      } else if value != "H_LEFT" {
+        graph_transformer_add_unique_string(mirrored, value)
+      }
+    }
+    mirrored
+  } else {
+    values.copy()
+  }
+}
+
+///|
+fn graph_transformer_mirror_node_label_placement_y_values(
+  values : Array[String],
+) -> Array[String] {
+  if graph_transformer_contains_string(values, "V_TOP") {
+    let mirrored = []
+    for value in values {
+      if value == "V_TOP" {
+        graph_transformer_add_unique_string(mirrored, "V_BOTTOM")
+      } else if value != "V_BOTTOM" {
+        graph_transformer_add_unique_string(mirrored, value)
+      }
+    }
+    mirrored
+  } else if graph_transformer_contains_string(values, "V_BOTTOM") {
+    let mirrored = []
+    for value in values {
+      if value == "V_BOTTOM" {
+        graph_transformer_add_unique_string(mirrored, "V_TOP")
+      } else if value != "V_TOP" {
+        graph_transformer_add_unique_string(mirrored, value)
+      }
+    }
+    mirrored
+  } else {
+    values.copy()
+  }
+}
+
+///|
+fn graph_transformer_transpose_node_label_placement_values(
+  values : Array[String],
+) -> Array[String] {
+  if values.is_empty() {
+    return []
+  }
+
+  let transposed = []
+  if graph_transformer_contains_string(values, "INSIDE") {
+    graph_transformer_add_unique_string(transposed, "INSIDE")
+  } else {
+    graph_transformer_add_unique_string(transposed, "OUTSIDE")
+  }
+
+  if !graph_transformer_contains_string(values, "H_PRIORITY") {
+    graph_transformer_add_unique_string(transposed, "H_PRIORITY")
+  }
+
+  if graph_transformer_contains_string(values, "H_LEFT") {
+    graph_transformer_add_unique_string(transposed, "V_TOP")
+  } else if graph_transformer_contains_string(values, "H_CENTER") {
+    graph_transformer_add_unique_string(transposed, "V_CENTER")
+  } else if graph_transformer_contains_string(values, "H_RIGHT") {
+    graph_transformer_add_unique_string(transposed, "V_BOTTOM")
+  }
+
+  if graph_transformer_contains_string(values, "V_TOP") {
+    graph_transformer_add_unique_string(transposed, "H_LEFT")
+  } else if graph_transformer_contains_string(values, "V_CENTER") {
+    graph_transformer_add_unique_string(transposed, "H_CENTER")
+  } else if graph_transformer_contains_string(values, "V_BOTTOM") {
+    graph_transformer_add_unique_string(transposed, "H_RIGHT")
+  }
+
+  transposed
+}
+
+///|
+fn graph_transformer_mirror_node_label_placement_x_node(node : LNode) -> Unit {
+  if !node.has_property_string_array(node_labels_placement) {
+    return
+  }
+  let old_placement = node.get_property_string_array(node_labels_placement)
+  node.set_property_string_array(
+    node_labels_placement,
+    graph_transformer_mirror_node_label_placement_x_values(old_placement),
+  )
+}
+
+///|
+fn graph_transformer_mirror_node_label_placement_x_label(
+  label : LLabel,
+) -> Unit {
+  if !label.has_property_string_array(node_labels_placement) {
+    return
+  }
+  let old_placement = label.get_property_string_array(node_labels_placement)
+  label.set_property_string_array(
+    node_labels_placement,
+    graph_transformer_mirror_node_label_placement_x_values(old_placement),
+  )
+}
+
+///|
+fn graph_transformer_mirror_node_label_placement_y_node(node : LNode) -> Unit {
+  if !node.has_property_string_array(node_labels_placement) {
+    return
+  }
+  let old_placement = node.get_property_string_array(node_labels_placement)
+  node.set_property_string_array(
+    node_labels_placement,
+    graph_transformer_mirror_node_label_placement_y_values(old_placement),
+  )
+}
+
+///|
+fn graph_transformer_mirror_node_label_placement_y_label(
+  label : LLabel,
+) -> Unit {
+  if !label.has_property_string_array(node_labels_placement) {
+    return
+  }
+  let old_placement = label.get_property_string_array(node_labels_placement)
+  label.set_property_string_array(
+    node_labels_placement,
+    graph_transformer_mirror_node_label_placement_y_values(old_placement),
+  )
+}
+
+///|
+fn graph_transformer_transpose_node_label_placement_node(node : LNode) -> Unit {
+  if !node.has_property_string_array(node_labels_placement) {
+    return
+  }
+  let old_placement = node.get_property_string_array(node_labels_placement)
+  node.set_property_string_array(
+    node_labels_placement,
+    graph_transformer_transpose_node_label_placement_values(old_placement),
+  )
+}
+
+///|
+fn graph_transformer_transpose_node_label_placement_label(
+  label : LLabel,
+) -> Unit {
+  if !label.has_property_string_array(node_labels_placement) {
+    return
+  }
+  let old_placement = label.get_property_string_array(node_labels_placement)
+  label.set_property_string_array(
+    node_labels_placement,
+    graph_transformer_transpose_node_label_placement_values(old_placement),
+  )
+}
+
+///|
+fn graph_transformer_mirror_alignment_x(node : LNode) -> Unit {
+  let old_alignment = node.get_property_string(alignment)
+  if old_alignment == "LEFT" {
+    node.set_property_string(alignment, "RIGHT")
+  } else if old_alignment == "RIGHT" {
+    node.set_property_string(alignment, "LEFT")
+  }
+}
+
+///|
+fn graph_transformer_mirror_alignment_y(node : LNode) -> Unit {
+  let old_alignment = node.get_property_string(alignment)
+  if old_alignment == "TOP" {
+    node.set_property_string(alignment, "BOTTOM")
+  } else if old_alignment == "BOTTOM" {
+    node.set_property_string(alignment, "TOP")
+  }
+}
+
+///|
+fn graph_transformer_transpose_node_properties(node : LNode) -> Unit {
+  let min_size = new_kvector()
+  min_size.parse(node.get_property_string(node_size_minimum))
+  node.set_property_string(
+    node_size_minimum,
+    new_kvector_xy(min_size.y, min_size.x).to_string(),
+  )
+
+  let old_alignment = node.get_property_string(alignment)
+  if old_alignment == "LEFT" {
+    node.set_property_string(alignment, "TOP")
+  } else if old_alignment == "RIGHT" {
+    node.set_property_string(alignment, "BOTTOM")
+  } else if old_alignment == "TOP" {
+    node.set_property_string(alignment, "LEFT")
+  } else if old_alignment == "BOTTOM" {
+    node.set_property_string(alignment, "RIGHT")
+  }
+
+  if node.has_property_kvector(layered_options_position) {
+    let position = node.get_property_kvector(layered_options_position)
+    graph_transformer_transpose_vector(position)
+    node.set_property_kvector(layered_options_position, position)
+  }
+}
+
+///|
+fn graph_transformer_mirror_x_node_labels_padding(
+  layered_graph : LGraph,
+) -> Unit {
+  let node_labels_padding = new_spacing()
+  node_labels_padding.parse(
+    layered_graph.get_property_string(
+      graph_transformer_node_labels_padding_property,
+    ),
+  )
+  graph_transformer_mirror_x_padding(node_labels_padding)
+  layered_graph.set_property_string(
+    graph_transformer_node_labels_padding_property,
+    node_labels_padding.to_string(),
+  )
+}
+
+///|
+fn graph_transformer_mirror_y_node_labels_padding(
+  layered_graph : LGraph,
+) -> Unit {
+  let node_labels_padding = new_spacing()
+  node_labels_padding.parse(
+    layered_graph.get_property_string(
+      graph_transformer_node_labels_padding_property,
+    ),
+  )
+  graph_transformer_mirror_y_padding(node_labels_padding)
+  layered_graph.set_property_string(
+    graph_transformer_node_labels_padding_property,
+    node_labels_padding.to_string(),
+  )
+}
+
+///|
+fn graph_transformer_transpose_node_labels_padding(
+  layered_graph : LGraph,
+) -> Unit {
+  let node_labels_padding = new_spacing()
+  node_labels_padding.parse(
+    layered_graph.get_property_string(
+      graph_transformer_node_labels_padding_property,
+    ),
+  )
+  graph_transformer_transpose_padding(node_labels_padding)
+  layered_graph.set_property_string(
+    graph_transformer_node_labels_padding_property,
+    node_labels_padding.to_string(),
+  )
+}
+
+///|
+fn graph_transformer_transpose_edge_label_placement(
+  layered_graph : LGraph,
+) -> Unit {
+  let old_side = graph_transformer_parse_edge_label_side_selection(
+    layered_graph.get_property_string(
+      layered_options_edge_labels_side_selection,
+    ),
+  )
+  layered_graph.set_property_string(
+    layered_options_edge_labels_side_selection,
+    edge_label_side_selection_to_string(
+      EdgeLabelSideSelection::transpose(old_side),
+    ),
+  )
 }
 
 ///|
@@ -189,6 +553,15 @@ fn graph_transformer_mirror_x(
     let node_padding = node.get_padding()
     graph_transformer_mirror_x_vector(node_position, offset - node_size.x)
     graph_transformer_mirror_x_padding(node_padding)
+    graph_transformer_mirror_node_label_placement_x_node(node)
+
+    if node.has_property_kvector(layered_options_position) {
+      let position = node.get_property_kvector(layered_options_position)
+      graph_transformer_mirror_x_vector(position, offset - node_size.x)
+      node.set_property_kvector(layered_options_position, position)
+    }
+
+    graph_transformer_mirror_alignment_x(node)
 
     for port in node.get_ports() {
       let port_position = port.get_position()
@@ -244,6 +617,7 @@ fn graph_transformer_mirror_x(
     }
 
     for label in node.get_labels() {
+      graph_transformer_mirror_node_label_placement_x_label(label)
       graph_transformer_mirror_x_vector(
         label.get_position(),
         node_size.x - label.get_size().x,
@@ -252,6 +626,7 @@ fn graph_transformer_mirror_x(
   }
 
   graph_transformer_mirror_x_padding(layered_graph.get_padding())
+  graph_transformer_mirror_x_node_labels_padding(layered_graph)
 }
 
 ///|
@@ -283,6 +658,15 @@ fn graph_transformer_mirror_y(
     let node_padding = node.get_padding()
     graph_transformer_mirror_y_vector(node_position, offset - node_size.y)
     graph_transformer_mirror_y_padding(node_padding)
+    graph_transformer_mirror_node_label_placement_y_node(node)
+
+    if node.has_property_kvector(layered_options_position) {
+      let position = node.get_property_kvector(layered_options_position)
+      graph_transformer_mirror_y_vector(position, offset - node_size.y)
+      node.set_property_kvector(layered_options_position, position)
+    }
+
+    graph_transformer_mirror_alignment_y(node)
 
     for port in node.get_ports() {
       let port_position = port.get_position()
@@ -338,6 +722,7 @@ fn graph_transformer_mirror_y(
     }
 
     for label in node.get_labels() {
+      graph_transformer_mirror_node_label_placement_y_label(label)
       graph_transformer_mirror_y_vector(
         label.get_position(),
         node_size.y - label.get_size().y,
@@ -346,6 +731,7 @@ fn graph_transformer_mirror_y(
   }
 
   graph_transformer_mirror_y_padding(layered_graph.get_padding())
+  graph_transformer_mirror_y_node_labels_padding(layered_graph)
 }
 
 ///|
@@ -357,6 +743,8 @@ fn graph_transformer_transpose(
     graph_transformer_transpose_vector(node.get_position())
     graph_transformer_transpose_vector(node.get_size())
     graph_transformer_transpose_padding(node.get_padding())
+    graph_transformer_transpose_node_label_placement_node(node)
+    graph_transformer_transpose_node_properties(node)
 
     for port in node.get_ports() {
       graph_transformer_transpose_vector(port.get_position())
@@ -403,14 +791,17 @@ fn graph_transformer_transpose(
     }
 
     for label in node.get_labels() {
-      graph_transformer_transpose_vector(label.get_position())
+      graph_transformer_transpose_node_label_placement_label(label)
       graph_transformer_transpose_vector(label.get_size())
+      graph_transformer_transpose_vector(label.get_position())
     }
   }
 
+  graph_transformer_transpose_edge_label_placement(layered_graph)
   graph_transformer_transpose_vector(layered_graph.get_offset())
   graph_transformer_transpose_vector(layered_graph.get_size())
   graph_transformer_transpose_padding(layered_graph.get_padding())
+  graph_transformer_transpose_node_labels_padding(layered_graph)
 }
 
 ///|
@@ -438,26 +829,40 @@ fn graph_transformer_process_mode(
 ) -> Unit {
   let nodes = graph_transformer_collect_nodes(layered_graph)
   let direction_value = layered_graph.get_property_string(direction)
+  let congruency = graph_transformer_parse_direction_congruency(
+    graph_transformer_get_direction_congruency_value(layered_graph),
+  )
 
-  match mode {
-    GraphTransformerMode::ToInputDirection =>
-      if direction_value == "LEFT" {
-        graph_transformer_mirror_x(layered_graph, nodes)
+  if congruency is DirectionCongruency::ReadingDirection {
+    if direction_value == "LEFT" {
+      graph_transformer_mirror_x(layered_graph, nodes)
+    } else if direction_value == "DOWN" {
+      graph_transformer_transpose(layered_graph, nodes)
+    } else if direction_value == "UP" {
+      if mode is GraphTransformerMode::ToInternalLtr {
+        graph_transformer_transpose(layered_graph, nodes)
         graph_transformer_mirror_y(layered_graph, nodes)
-      } else if direction_value == "DOWN" {
-        graph_transformer_rotate_90_counter_clockwise(layered_graph, nodes)
-      } else if direction_value == "UP" {
-        graph_transformer_rotate_90_clockwise(layered_graph, nodes)
-      }
-    GraphTransformerMode::ToInternalLtr =>
-      if direction_value == "LEFT" {
-        graph_transformer_mirror_x(layered_graph, nodes)
+      } else {
         graph_transformer_mirror_y(layered_graph, nodes)
-      } else if direction_value == "DOWN" {
-        graph_transformer_rotate_90_clockwise(layered_graph, nodes)
-      } else if direction_value == "UP" {
-        graph_transformer_rotate_90_counter_clockwise(layered_graph, nodes)
+        graph_transformer_transpose(layered_graph, nodes)
       }
+    }
+  } else if mode is GraphTransformerMode::ToInternalLtr {
+    if direction_value == "LEFT" {
+      graph_transformer_mirror_x(layered_graph, nodes)
+      graph_transformer_mirror_y(layered_graph, nodes)
+    } else if direction_value == "DOWN" {
+      graph_transformer_rotate_90_clockwise(layered_graph, nodes)
+    } else if direction_value == "UP" {
+      graph_transformer_rotate_90_counter_clockwise(layered_graph, nodes)
+    }
+  } else if direction_value == "LEFT" {
+    graph_transformer_mirror_x(layered_graph, nodes)
+    graph_transformer_mirror_y(layered_graph, nodes)
+  } else if direction_value == "DOWN" {
+    graph_transformer_rotate_90_counter_clockwise(layered_graph, nodes)
+  } else if direction_value == "UP" {
+    graph_transformer_rotate_90_clockwise(layered_graph, nodes)
   }
 }
 
@@ -471,7 +876,12 @@ fn graph_transformer_process(
     Some(value) => value
     None => new_null_elk_progress_monitor()
   }
-  ignore(monitor.begin("Graph transformation", 1.0))
+  ignore(
+    monitor.begin(
+      "Graph transformation (" + graph_transformer_mode_to_string(mode) + ")",
+      1.0,
+    ),
+  )
   graph_transformer_process_mode(layered_graph, mode)
   monitor.done()
 }

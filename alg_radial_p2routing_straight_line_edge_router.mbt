@@ -15,7 +15,7 @@ fn radial_first_edge_section(
 }
 
 ///|
-fn radial_route_edges(node : ElkNode) -> Unit {
+fn straight_line_edge_router_route_edges(node : ElkNode) -> Unit {
   for edge in node_outgoing_edges(node) {
     let sources = edge_sources(edge)
     if sources.is_empty() ||
@@ -54,8 +54,35 @@ fn radial_route_edges(node : ElkNode) -> Unit {
       }
       None => ()
     }
-    radial_route_edges(target)
+    straight_line_edge_router_route_edges(target)
   }
+}
+
+///|
+pub struct StraightLineEdgeRouter {
+  edge_router : IRadialEdgeRouter
+}
+
+///|
+pub fn new_straight_line_edge_router() -> StraightLineEdgeRouter {
+  {
+    edge_router: new_i_radial_edge_router(straight_line_edge_router_route_edges),
+  }
+}
+
+///|
+pub fn StraightLineEdgeRouter::route_edges(
+  self : StraightLineEdgeRouter,
+  node : ElkNode,
+) -> Unit {
+  self.edge_router.route_edges(node)
+}
+
+///|
+pub fn StraightLineEdgeRouter::as_i_radial_edge_router(
+  self : StraightLineEdgeRouter,
+) -> IRadialEdgeRouter {
+  self.edge_router
 }
 
 ///|
@@ -73,14 +100,11 @@ pub fn new_radial_straight_line_edge_router_layout_phase() -> ILayoutProcessor[
         None => ()
       }
       match radial_internal_root(graph) {
-        Some(root) => radial_route_edges(root)
+        Some(root) => new_straight_line_edge_router().route_edges(root)
         None => ()
       }
       match progress_monitor {
-        Some(monitor) => {
-          monitor.log_graph("After")
-          monitor.done()
-        }
+        Some(monitor) => monitor.log_graph("After")
         None => ()
       }
     },

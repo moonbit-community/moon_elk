@@ -3790,6 +3790,8 @@ pub fn new_abstract_meta_data_validator() -> AbstractMetaDataValidator
 
 pub fn[C, T] new_abstract_normalized_matcher((C, T) -> Double) -> AbstractNormalizedMatcher[C, T]
 
+pub fn new_abstract_radius_extension_compaction() -> AbstractRadiusExtensionCompaction
+
 pub fn[T] new_abstract_random_list_accessor(() -> T) -> AbstractRandomListAccessor[T]
 
 pub fn new_abstract_resource_path(String?, String) -> AbstractResourcePath
@@ -3823,6 +3825,12 @@ pub fn new_all_algorithms() -> AllAlgorithms
 pub fn new_all_crossings_counter(Array[Array[LNode]]) -> AllCrossingsCounter
 
 pub fn new_alternating_layer_unzipper_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
+
+pub fn new_angle_rotation() -> AngleRotation
+
+pub fn new_annulus_wedge_by_leafs() -> AnnulusWedgeByLeafs
+
+pub fn new_annulus_wedge_by_node_space() -> AnnulusWedgeByNodeSpace
 
 pub fn new_annulus_wedge_compaction() -> AnnulusWedgeCompaction
 
@@ -4106,6 +4114,8 @@ pub fn new_cross_hierarchy_edge_comparator(LGraph) -> CrossHierarchyEdgeComparat
 
 pub fn new_crossing_matrix_filler(GreedySwitchType, Array[Array[LNode]], Int, CrossingCountSide) -> CrossingMatrixFiller
 
+pub fn new_crossing_minimization_position() -> CrossingMinimizationPosition
+
 pub fn new_crossings_counter(Array[Int]) -> CrossingsCounter
 
 pub fn new_cubic_spline_interpolator() -> CubicSplineInterpolator
@@ -4213,6 +4223,10 @@ pub fn new_eclipse_runtime_detector() -> EclipseRuntimeDetector
 pub fn new_edge_and_layer_constraint_edge_reverser_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_edge_aware_scanline_constraint_calculation(LGraph) -> (OneDimensionalCompactor) -> Unit
+
+pub fn new_edge_length_optimization() -> EdgeLengthOptimization
+
+pub fn new_edge_length_position_optimization() -> EdgeLengthPositionOptimization
 
 pub fn new_elk_cancel_indicator(canceled? : Bool) -> IElkCancelIndicator
 
@@ -4792,6 +4806,8 @@ pub fn new_hyperedge_dummy_merger_layout_processor() -> ILayoutProcessor[Layered
 
 pub fn new_hypernodes_processor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
+pub fn new_i_annulus_wedge_criteria((Int) -> Double) -> IAnnulusWedgeCriteria
+
 pub fn new_i_crossing_minimization_heuristic(() -> Bool, (Array[Array[LNode]], Bool) -> Bool, (Array[Array[LNode]], Int, Bool, Bool) -> Bool, () -> Bool, init_at_layer_level? : (Int, Array[Array[LNode]]) -> Unit, init_at_node_level? : (Int, Int, Array[Array[LNode]]) -> Unit, init_at_port_level? : (Int, Int, Int, Array[Array[LNode]]) -> Unit, init_at_edge_level? : (Int, Int, Int, Int, LEdge, Array[Array[LNode]]) -> Unit, init_after_traversal? : () -> Unit) -> ICrossingMinimizationHeuristic
 
 pub fn new_i_cut_index_calculator((LGraph, GraphStats) -> Array[Int], () -> Bool) -> ICutIndexCalculator
@@ -4800,9 +4816,19 @@ pub fn new_i_edit_part_filter((Int) -> Bool) -> IEditPartFilter
 
 pub fn new_i_edit_part_filter_default_impl() -> IEditPartFilter
 
+pub fn new_i_evaluation((Int) -> Double) -> IEvaluation
+
 pub fn new_i_initializable(init_at_layer_level? : (Int, Array[Array[LNode]]) -> Unit, init_at_node_level? : (Int, Int, Array[Array[LNode]]) -> Unit, init_at_port_level? : (Int, Int, Int, Array[Array[LNode]]) -> Unit, init_at_edge_level? : (Int, Int, Int, Int, LEdge, Array[Array[LNode]]) -> Unit, init_after_traversal? : () -> Unit) -> IInitializable
 
 pub fn new_i_label_manager((String, Double) -> KVector?) -> ILabelManager
+
+pub fn new_i_overlap_removal((Int, IElkProgressMonitor?) -> Unit) -> IOverlapRemoval
+
+pub fn new_i_radial_compactor((Int) -> Unit) -> IRadialCompactor
+
+pub fn new_i_radial_edge_router((Int) -> Unit) -> IRadialEdgeRouter
+
+pub fn new_i_radial_rotator((Int) -> Unit) -> IRadialRotator
 
 pub fn new_i_radial_sorter((Array[Int]) -> Unit, initialize? : (Int) -> Unit) -> IRadialSorter
 
@@ -5424,8 +5450,6 @@ pub fn new_radial_general_rotator_layout_processor() -> ILayoutProcessor[RadialL
 
 pub fn new_radial_layout_provider() -> RadialLayoutProvider
 
-pub fn new_radial_radius_extension_compaction() -> RadialRadiusExtensionCompaction
-
 pub fn new_radial_straight_line_edge_router_layout_phase() -> ILayoutProcessor[RadialLayoutPhases, Int]
 
 pub fn new_radius_extension_overlap_removal() -> RadiusExtensionOverlapRemoval
@@ -5595,6 +5619,8 @@ pub fn new_spore_shrink_tree() -> SporeShrinkTree
 pub fn new_spore_shrink_tree_compaction_layout_phase() -> ILayoutProcessor[SPOrEPhases, SporeGraph]
 
 pub fn new_spore_shrink_tree_layout_provider() -> SporeShrinkTreeLayoutProvider
+
+pub fn new_straight_line_edge_router() -> StraightLineEdgeRouter
 
 pub fn new_stress_layout_provider() -> StressLayoutProvider
 
@@ -6150,6 +6176,8 @@ pub fn[A, B, C, D] quadruple_of(A, B, C, D) -> Quadruple[A, B, C, D]
 
 pub let radial_algorithm_id : String
 
+pub fn radial_annulus_wedge_criteria_create(RadialAnnulusWedgeCriteria) -> IAnnulusWedgeCriteria
+
 pub fn radial_annulus_wedge_criteria_from_string(String) -> RadialAnnulusWedgeCriteria
 
 pub fn radial_calculate_wedge_space(RadialAnnulusWedgeCriteria, Int) -> Double
@@ -6159,6 +6187,8 @@ pub fn radial_center_nodes_on_radi(Int, Double, Double) -> Unit
 pub let radial_center_on_root : IProperty[Bool]
 
 pub let radial_compaction_step_size : IProperty[Double]
+
+pub fn radial_compaction_strategy_create(RadialCompactionStrategy) -> IRadialCompactor
 
 pub fn radial_compaction_strategy_from_string(String) -> RadialCompactionStrategy
 
@@ -6236,6 +6266,8 @@ pub let radial_option_position_id : String
 
 pub let radial_order_id : IProperty[Double]
 
+pub fn radial_overlap_removal_strategy_create(RadialOverlapRemovalStrategy) -> IOverlapRemoval
+
 pub fn radial_overlap_removal_strategy_from_string(String) -> RadialOverlapRemovalStrategy
 
 pub let radial_radius : IProperty[Double]
@@ -6258,7 +6290,11 @@ pub fn radial_sort_nodes(Array[Int], (Int, Int) -> Int) -> Unit
 
 pub let radial_sorter : IProperty[String]
 
+pub fn radial_sorting_strategy_create(RadialSortingStrategy) -> IRadialSorter?
+
 pub fn radial_sorting_strategy_from_string(String) -> RadialSortingStrategy
+
+pub fn radial_translation_strategy_create(RadialTranslationStrategy) -> IEvaluation?
 
 pub fn radial_translation_strategy_from_string(String) -> RadialTranslationStrategy
 
@@ -7629,6 +7665,22 @@ pub fn[C, T] AbstractNormalizedMatcher::raw(Self[C, T], C, T) -> Double
 pub fn[C, T] AbstractNormalizedMatcher::with_bounds(Self[C, T], Double, Double) -> Self[C, T]
 pub fn[C, T] AbstractNormalizedMatcher::with_normalization_function(Self[C, T], NormalizationFunction) -> Self[C, T]
 
+pub struct AbstractRadiusExtensionCompaction {
+  mut compaction_step : Int
+  mut spacing : Double
+  mut root : Int?
+}
+pub fn AbstractRadiusExtensionCompaction::compaction_step(Self) -> Int
+pub fn AbstractRadiusExtensionCompaction::contract_layer(Self, Array[Int], Bool) -> Unit
+pub fn AbstractRadiusExtensionCompaction::move_node(Self, Int, Double) -> Unit
+pub fn AbstractRadiusExtensionCompaction::overlap(Self, Int, Int) -> Bool
+pub fn AbstractRadiusExtensionCompaction::overlap_layer(Self, Array[Int]) -> Bool
+pub fn AbstractRadiusExtensionCompaction::root(Self) -> Int?
+pub fn AbstractRadiusExtensionCompaction::set_compaction_step(Self, Int) -> Unit
+pub fn AbstractRadiusExtensionCompaction::set_root(Self, Int) -> Unit
+pub fn AbstractRadiusExtensionCompaction::set_spacing(Self, Double) -> Unit
+pub fn AbstractRadiusExtensionCompaction::spacing(Self) -> Double
+
 pub struct AbstractRandomListAccessor[T] {
   list : Array[T]
   provide_default : () -> T
@@ -7860,11 +7912,29 @@ pub fn AllCrossingsCounter::init_at_port_level(Self, Int, Int, Int, Array[Array[
 
 type AlternatingLayerUnzipperPendingLayer
 
+pub struct AngleRotation {
+  rotator : IRadialRotator
+}
+pub fn AngleRotation::as_i_radial_rotator(Self) -> IRadialRotator
+pub fn AngleRotation::rotate(Self, Int) -> Unit
+
+pub struct AnnulusWedgeByLeafs {
+  criteria : IAnnulusWedgeCriteria
+}
+pub fn AnnulusWedgeByLeafs::as_i_annulus_wedge_criteria(Self) -> IAnnulusWedgeCriteria
+pub fn AnnulusWedgeByLeafs::calculate_wedge_space(Self, Int) -> Double
+
+pub struct AnnulusWedgeByNodeSpace {
+  criteria : IAnnulusWedgeCriteria
+}
+pub fn AnnulusWedgeByNodeSpace::as_i_annulus_wedge_criteria(Self) -> IAnnulusWedgeCriteria
+pub fn AnnulusWedgeByNodeSpace::calculate_wedge_space(Self, Int) -> Double
+
 pub struct AnnulusWedgeCompaction {
-  base : RadialRadiusExtensionCompaction
+  base : AbstractRadiusExtensionCompaction
   left_contour : Map[Int, Array[Int]]
   right_contour : Map[Int, Array[Int]]
-  mut sorter : RadialSortingStrategy
+  mut sorter : IRadialSorter?
   mut root : Int?
 }
 pub fn AnnulusWedgeCompaction::compact(Self, Int) -> Unit
@@ -9585,6 +9655,12 @@ pub struct CrossingMatrixFiller {
 }
 pub fn CrossingMatrixFiller::get_crossing_matrix_entry(Self, LNode, LNode) -> Int
 
+pub struct CrossingMinimizationPosition {
+  evaluator : IEvaluation
+}
+pub fn CrossingMinimizationPosition::as_i_evaluation(Self) -> IEvaluation
+pub fn CrossingMinimizationPosition::evaluate(Self, Int) -> Double
+
 pub enum CrossingMinimizationStrategy {
   CmsLayerSweep
   CmsMedianLayerSweep
@@ -10284,6 +10360,18 @@ pub enum EdgeLabelSideSelection {
   SmartDown
 }
 pub fn EdgeLabelSideSelection::transpose(Self) -> Self
+
+pub struct EdgeLengthOptimization {
+  evaluator : IEvaluation
+}
+pub fn EdgeLengthOptimization::as_i_evaluation(Self) -> IEvaluation
+pub fn EdgeLengthOptimization::evaluate(Self, Int) -> Double
+
+pub struct EdgeLengthPositionOptimization {
+  evaluator : IEvaluation
+}
+pub fn EdgeLengthPositionOptimization::as_i_evaluation(Self) -> IEvaluation
+pub fn EdgeLengthPositionOptimization::evaluate(Self, Int) -> Double
 
 pub enum EdgeRouting {
   RoutingUndefined
@@ -13076,6 +13164,11 @@ pub fn HyperedgeCrossingsCounter::count_crossings(Self, Array[LNode], Array[LNod
 
 type HyperedgeDummyMergerMergeState
 
+pub struct IAnnulusWedgeCriteria {
+  calculate_wedge_space_fn : (Int) -> Double
+}
+pub fn IAnnulusWedgeCriteria::calculate_wedge_space(Self, Int) -> Double
+
 pub struct IBoundsProvider[C, T] {
   bounds_for_comment_fn : (C) -> ElkRectangle?
   bounds_for_target_fn : (T) -> ElkRectangle?
@@ -13138,6 +13231,7 @@ pub fn ICutIndexCalculator::guarantee_valid(Self) -> Bool
 pub struct IDSorter {
   sorter : IRadialSorter
 }
+pub fn IDSorter::as_i_radial_sorter(Self) -> IRadialSorter
 pub fn IDSorter::initialize(Self, Int) -> Unit
 pub fn IDSorter::sort(Self, Array[Int]) -> Unit
 
@@ -13208,6 +13302,11 @@ pub fn IElkProgressMonitor::log(Self, String) -> Unit
 pub fn IElkProgressMonitor::log_graph(Self, String, graph_type? : LoggedGraphType) -> Unit
 pub fn IElkProgressMonitor::sub_task(Self, Double) -> Self?
 pub fn IElkProgressMonitor::worked(Self, Double) -> Unit
+
+pub struct IEvaluation {
+  evaluate_fn : (Int) -> Double
+}
+pub fn IEvaluation::evaluate(Self, Int) -> Double
 
 pub struct IExecutionInfoModelListener {
   id : Int
@@ -13390,6 +13489,11 @@ pub struct INodeArranger {
 }
 pub fn INodeArranger::get_predicted_size(Self, Int) -> KVector
 
+pub struct IOverlapRemoval {
+  remove_overlaps_fn : (Int, IElkProgressMonitor?) -> Unit
+}
+pub fn IOverlapRemoval::remove_overlaps(Self, Int, IElkProgressMonitor?) -> Unit
+
 pub struct IPolyominoSuccessor {
   apply : (PolyominoCoords, Polyomino) -> PolyominoCoords
 }
@@ -13403,6 +13507,21 @@ pub struct IProperty[T] {
 }
 pub fn[T] IProperty::get_default(Self[T]) -> T
 pub fn[T] IProperty::get_id(Self[T]) -> String
+
+pub struct IRadialCompactor {
+  compact_fn : (Int) -> Unit
+}
+pub fn IRadialCompactor::compact(Self, Int) -> Unit
+
+pub struct IRadialEdgeRouter {
+  route_edges_fn : (Int) -> Unit
+}
+pub fn IRadialEdgeRouter::route_edges(Self, Int) -> Unit
+
+pub struct IRadialRotator {
+  rotate_fn : (Int) -> Unit
+}
+pub fn IRadialRotator::rotate(Self, Int) -> Unit
 
 pub struct IRadialSorter {
   sort_fn : (Array[Int]) -> Unit
@@ -14448,7 +14567,7 @@ pub fn LabelManagementProcessor::process(Self, LGraph, IElkProgressMonitor?) -> 
 pub struct LabelPlacer {
   _reserved : Int
 }
-pub fn LabelPlacer::place_labels(Self, SelfLoopHolder, IElkProgressMonitor?) -> Unit
+pub fn LabelPlacer::place_labels(Self, SelfLoopHolder, ILabelManager?, IElkProgressMonitor?) -> Unit
 
 pub enum LabelSide {
   Unknown
@@ -16310,6 +16429,7 @@ pub struct PolarCoordinateSorter {
   comp_bottom : (Int, Int) -> Int
   mut id_sorter : IDSorter?
 }
+pub fn PolarCoordinateSorter::as_i_radial_sorter(Self) -> IRadialSorter
 pub fn PolarCoordinateSorter::initialize(Self, Int) -> Unit
 pub fn PolarCoordinateSorter::sort(Self, Array[Int]) -> Unit
 
@@ -16552,8 +16672,8 @@ pub enum RadialAnnulusWedgeCriteria {
 }
 
 pub struct RadialCompaction {
-  base : RadialRadiusExtensionCompaction
-  mut sorter : RadialSortingStrategy
+  base : AbstractRadiusExtensionCompaction
+  mut sorter : IRadialSorter?
   mut last_radius : Double
 }
 pub fn RadialCompaction::compact(Self, Int) -> Unit
@@ -16587,22 +16707,6 @@ pub enum RadialOverlapRemovalStrategy {
   EXTENT_RADII
 }
 
-pub struct RadialRadiusExtensionCompaction {
-  mut compaction_step : Int
-  mut spacing : Double
-  mut root : Int?
-}
-pub fn RadialRadiusExtensionCompaction::compaction_step(Self) -> Int
-pub fn RadialRadiusExtensionCompaction::contract_layer(Self, Array[Int], Bool) -> Unit
-pub fn RadialRadiusExtensionCompaction::move_node(Self, Int, Double) -> Unit
-pub fn RadialRadiusExtensionCompaction::overlap(Self, Int, Int) -> Bool
-pub fn RadialRadiusExtensionCompaction::overlap_layer(Self, Array[Int]) -> Bool
-pub fn RadialRadiusExtensionCompaction::root(Self) -> Int?
-pub fn RadialRadiusExtensionCompaction::set_compaction_step(Self, Int) -> Unit
-pub fn RadialRadiusExtensionCompaction::set_root(Self, Int) -> Unit
-pub fn RadialRadiusExtensionCompaction::set_spacing(Self, Double) -> Unit
-pub fn RadialRadiusExtensionCompaction::spacing(Self) -> Double
-
 pub enum RadialSortingStrategy {
   NONE
   POLAR_COORDINATE
@@ -16617,9 +16721,10 @@ pub enum RadialTranslationStrategy {
 }
 
 pub struct RadiusExtensionOverlapRemoval {
-  base : RadialRadiusExtensionCompaction
-  mut sorter : RadialSortingStrategy
+  base : AbstractRadiusExtensionCompaction
+  mut sorter : IRadialSorter?
 }
+pub fn RadiusExtensionOverlapRemoval::as_i_overlap_removal(Self) -> IOverlapRemoval
 pub fn RadiusExtensionOverlapRemoval::extend(Self, Int, Array[Int], IElkProgressMonitor?) -> Unit
 pub fn RadiusExtensionOverlapRemoval::remove_overlaps(Self, Int, IElkProgressMonitor?) -> Unit
 
@@ -16968,6 +17073,7 @@ pub struct SelfHyperLoopLabels {
   mut alignment_reference_sl_port : SelfLoopPort?
 }
 pub fn SelfHyperLoopLabels::add_l_labels(Self, Array[LLabel]) -> Unit
+pub fn SelfHyperLoopLabels::apply_label_management(Self, ILabelManager, Double) -> Unit
 pub fn SelfHyperLoopLabels::apply_placement(Self, KVector) -> Unit
 pub fn SelfHyperLoopLabels::get_alignment(Self) -> SelfHyperLoopLabelAlignment?
 pub fn SelfHyperLoopLabels::get_alignment_reference_sl_port(Self) -> SelfLoopPort?
@@ -17277,6 +17383,12 @@ pub enum State {
   Upper
   Depth
 }
+
+pub struct StraightLineEdgeRouter {
+  edge_router : IRadialEdgeRouter
+}
+pub fn StraightLineEdgeRouter::as_i_radial_edge_router(Self) -> IRadialEdgeRouter
+pub fn StraightLineEdgeRouter::route_edges(Self, Int) -> Unit
 
 pub enum StressDimension {
   StressDimensionXY

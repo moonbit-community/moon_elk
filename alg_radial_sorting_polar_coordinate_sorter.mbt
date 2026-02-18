@@ -101,3 +101,13 @@ pub fn PolarCoordinateSorter::sort(
     id_sorter.sort(nodes)
   }
 }
+
+///|
+pub fn PolarCoordinateSorter::as_i_radial_sorter(
+  self : PolarCoordinateSorter,
+) -> IRadialSorter {
+  let sorter = self
+  new_i_radial_sorter(fn(nodes : Array[ElkNode]) { sorter.sort(nodes) }, initialize=(
+    root : ElkNode,
+  ) => sorter.initialize(root))
+}

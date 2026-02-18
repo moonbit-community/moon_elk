@@ -108,6 +108,22 @@ pub fn SelfHyperLoopLabels::get_l_labels(
 }
 
 ///|
+pub fn SelfHyperLoopLabels::apply_label_management(
+  self : SelfHyperLoopLabels,
+  label_manager : ILabelManager,
+  target_width : Double,
+) -> Unit {
+  let managed_size = label_management_processor_do_manage_labels(
+    label_manager,
+    self.l_labels,
+    target_width,
+    self.label_label_spacing,
+    self.layout_direction.is_vertical(),
+  )
+  ignore(self.size.set(managed_size))
+}
+
+///|
 fn self_hyper_loop_labels_apply_horizontal_layout(
   labels : SelfHyperLoopLabels,
   offset : KVector,
