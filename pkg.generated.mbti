@@ -18297,6 +18297,8 @@ pub enum WrappingStrategy {
 }
 
 // Type aliases
+pub type AdvancedPropertyValue = Unit
+
 pub type ConfigStateObserver = (State) -> Unit
 
 pub type DeciderHeuristicResult[T] = Array[(T, Array[(Int, Double)])]
@@ -18314,6 +18316,8 @@ pub type ElkNode = Int
 pub type ElkPort = Int
 
 pub type ExecutionInfo = Int
+
+pub type ExperimentalPropertyValue = Unit
 
 pub type FBendpoint = Int
 
