@@ -14,23 +14,6 @@ pub enum MrtreeIntermediateProcessorStrategy {
 }
 
 ///|
-fn mrtree_intermediate_noop_process(
-  graph : MrtreeGraph,
-  progress_monitor : IElkProgressMonitor?,
-) -> Unit {
-  ignore(graph)
-  ignore(progress_monitor)
-}
-
-///|
-fn mrtree_intermediate_noop_processor() -> ILayoutProcessor[
-  MrtreeTreeLayoutPhases,
-  MrtreeGraph,
-] {
-  new_layout_processor(mrtree_intermediate_noop_process)
-}
-
-///|
 fn mrtree_intermediate_strategy_ordinal(
   strategy : MrtreeIntermediateProcessorStrategy,
 ) -> Int {
@@ -68,10 +51,6 @@ pub fn mrtree_intermediate_processor_factory(
       new_layout_processor_factory(id, order, () => {
         new_mrtree_level_processor_layout_processor()
       })
-    DetreeifyingProc =>
-      new_layout_processor_factory(id, order, () => {
-        new_mrtree_untreeifyer_layout_processor()
-      })
     NeighborsProc =>
       new_layout_processor_factory(id, order, () => {
         new_mrtree_neighbors_processor_layout_processor()
@@ -100,9 +79,9 @@ pub fn mrtree_intermediate_processor_factory(
       new_layout_processor_factory(id, order, () => {
         new_mrtree_graph_bounds_processor_layout_processor()
       })
-    _ =>
-      new_layout_processor_factory(
-        id, order, mrtree_intermediate_noop_processor,
-      )
+    DetreeifyingProc =>
+      new_layout_processor_factory(id, order, () => {
+        new_mrtree_untreeifyer_layout_processor()
+      })
   }
 }
