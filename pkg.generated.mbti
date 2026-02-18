@@ -1511,6 +1511,28 @@ pub fn dot_statement_node_statement(DotNodeStatement) -> DotStatement
 
 pub fn dot_statement_subgraph(DotSubgraph) -> DotStatement
 
+pub fn dot_switch_target_attribute(DotAttribute) -> DotSwitchTarget
+
+pub fn dot_switch_target_attribute_statement(DotAttributeStatement) -> DotSwitchTarget
+
+pub fn dot_switch_target_edge_statement(DotEdgeStatement) -> DotSwitchTarget
+
+pub fn dot_switch_target_edge_target(DotEdgeTarget) -> DotSwitchTarget
+
+pub fn dot_switch_target_graph(DotGraph) -> DotSwitchTarget
+
+pub fn dot_switch_target_graphviz_model(DotGraphvizModel) -> DotSwitchTarget
+
+pub fn dot_switch_target_node(DotNode) -> DotSwitchTarget
+
+pub fn dot_switch_target_node_statement(DotNodeStatement) -> DotSwitchTarget
+
+pub fn dot_switch_target_port(DotPort) -> DotSwitchTarget
+
+pub fn dot_switch_target_statement(DotStatement) -> DotSwitchTarget
+
+pub fn dot_switch_target_subgraph(DotSubgraph) -> DotSwitchTarget
+
 pub let draw2d_def_min_spacing : Double
 
 pub let draw2d_direction : IProperty[String]
@@ -4451,6 +4473,8 @@ pub fn new_dis_co_polyomino_compactor() -> DisCoPolyominoCompactor
 
 pub fn[C, T] new_distance_matcher() -> DistanceMatcher[C, T]
 
+pub fn new_dot_adapter_factory() -> DotAdapterFactory
+
 pub fn new_dot_exporter() -> DotExporter
 
 pub fn new_dot_factory() -> DotFactory
@@ -4458,6 +4482,8 @@ pub fn new_dot_factory() -> DotFactory
 pub fn new_dot_importer() -> DotImporter
 
 pub fn[R] new_dot_resource_set_provider(() -> R) -> DotResourceSetProvider[R]
+
+pub fn[T] new_dot_switch(case_graphviz_model? : (DotGraphvizModel) -> T?, case_graph? : (DotGraph) -> T?, case_statement? : (DotStatement) -> T?, case_attribute? : (DotAttribute) -> T?, case_node_statement? : (DotNodeStatement) -> T?, case_node? : (DotNode) -> T?, case_edge_statement? : (DotEdgeStatement) -> T?, case_edge_target? : (DotEdgeTarget) -> T?, case_attribute_statement? : (DotAttributeStatement) -> T?, case_subgraph? : (DotSubgraph) -> T?, case_port? : (DotPort) -> T?, default_case? : () -> T?) -> DotSwitch[T]
 
 pub fn[S, T] new_dot_transformation_data() -> DotTransformationData[S, T]
 
@@ -10410,6 +10436,24 @@ pub fn[C, T] DistanceMatcher::with_bounds_provider(Self[C, T], IBoundsProvider[C
 pub fn[C, T] DistanceMatcher::with_maximum_attachment_distance(Self[C, T], Double) -> Self[C, T]
 pub fn[C, T] DistanceMatcher::with_normalization_function(Self[C, T], NormalizationFunction) -> Self[C, T]
 
+pub struct DotAdapterFactory {
+  model_package : String
+}
+pub fn DotAdapterFactory::create_adapter(Self, DotSwitchTarget) -> Unit?
+pub fn DotAdapterFactory::create_attribute_adapter(Self) -> Unit?
+pub fn DotAdapterFactory::create_attribute_statement_adapter(Self) -> Unit?
+pub fn DotAdapterFactory::create_e_object_adapter(Self) -> Unit?
+pub fn DotAdapterFactory::create_edge_statement_adapter(Self) -> Unit?
+pub fn DotAdapterFactory::create_edge_target_adapter(Self) -> Unit?
+pub fn DotAdapterFactory::create_graph_adapter(Self) -> Unit?
+pub fn DotAdapterFactory::create_graphviz_model_adapter(Self) -> Unit?
+pub fn DotAdapterFactory::create_node_adapter(Self) -> Unit?
+pub fn DotAdapterFactory::create_node_statement_adapter(Self) -> Unit?
+pub fn DotAdapterFactory::create_port_adapter(Self) -> Unit?
+pub fn DotAdapterFactory::create_statement_adapter(Self) -> Unit?
+pub fn DotAdapterFactory::create_subgraph_adapter(Self) -> Unit?
+pub fn DotAdapterFactory::is_factory_for_type(Self, String) -> Bool
+
 pub struct DotAttribute {
   mut name : String?
   mut value : String?
@@ -10612,6 +10656,38 @@ pub struct DotSubgraph {
 pub fn DotSubgraph::get_name(Self) -> String?
 pub fn DotSubgraph::get_statements(Self) -> Array[DotStatement]
 pub fn DotSubgraph::set_name(Self, String?) -> Unit
+
+pub struct DotSwitch[T] {
+  model_package : String
+  case_graphviz_model_fn : (DotGraphvizModel) -> T?
+  case_graph_fn : (DotGraph) -> T?
+  case_statement_fn : (DotStatement) -> T?
+  case_attribute_fn : (DotAttribute) -> T?
+  case_node_statement_fn : (DotNodeStatement) -> T?
+  case_node_fn : (DotNode) -> T?
+  case_edge_statement_fn : (DotEdgeStatement) -> T?
+  case_edge_target_fn : (DotEdgeTarget) -> T?
+  case_attribute_statement_fn : (DotAttributeStatement) -> T?
+  case_subgraph_fn : (DotSubgraph) -> T?
+  case_port_fn : (DotPort) -> T?
+  default_case_fn : () -> T?
+}
+pub fn[T] DotSwitch::do_switch(Self[T], DotSwitchTarget) -> T?
+pub fn[T] DotSwitch::is_switch_for(Self[T], String) -> Bool
+
+pub enum DotSwitchTarget {
+  DotGraphvizModelTarget(DotGraphvizModel)
+  DotGraphTarget(DotGraph)
+  DotStatementTarget(DotStatement)
+  DotAttributeTarget(DotAttribute)
+  DotNodeStatementTarget(DotNodeStatement)
+  DotNodeTarget(DotNode)
+  DotEdgeStatementTarget(DotEdgeStatement)
+  DotEdgeTargetTarget(DotEdgeTarget)
+  DotAttributeStatementTarget(DotAttributeStatement)
+  DotSubgraphTarget(DotSubgraph)
+  DotPortTarget(DotPort)
+}
 
 #alias(IDotTransformationData)
 pub struct DotTransformationData[S, T] {
@@ -18644,6 +18720,8 @@ pub type AdvancedPropertyValue = Unit
 pub type ConfigStateObserver = (State) -> Unit
 
 pub type DeciderHeuristicResult[T] = Array[(T, Array[(Int, Double)])]
+
+pub type DotModelAdapter = Unit
 
 pub type DotPackage = String
 
