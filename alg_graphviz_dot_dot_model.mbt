@@ -1,17 +1,4 @@
 ///|
-pub struct DotEdgeStatement {
-  mut source_node : DotNode?
-  edge_targets : Array[DotEdgeTarget]
-  attributes : Array[DotAttribute]
-}
-
-///|
-pub struct DotAttributeStatement {
-  mut type_ : DotAttributeType
-  attributes : Array[DotAttribute]
-}
-
-///|
 pub struct DotSubgraph {
   mut name : String?
   statements : Array[DotStatement]
@@ -25,18 +12,8 @@ pub struct DotEdgeTarget {
 }
 
 ///|
-pub fn dot_create_edge_statement() -> DotEdgeStatement {
-  { source_node: None, edge_targets: [], attributes: [] }
-}
-
-///|
 pub fn dot_create_edge_target() -> DotEdgeTarget {
   { operator: DotEdgeOperatorDirected, target_subgraph: None, targetnode: None }
-}
-
-///|
-pub fn dot_create_attribute_statement() -> DotAttributeStatement {
-  { type_: DotAttributeTypeGraph, attributes: [] }
 }
 
 ///|
@@ -134,58 +111,6 @@ pub fn DotFactory::create_subgraph(self : DotFactory) -> DotSubgraph {
 ///|
 pub fn DotFactory::create_port(self : DotFactory) -> DotPort {
   (self.create_port_fn)()
-}
-
-///|
-pub fn DotEdgeStatement::get_source_node(self : DotEdgeStatement) -> DotNode? {
-  self.source_node
-}
-
-///|
-pub fn DotEdgeStatement::set_source_node(
-  self : DotEdgeStatement,
-  value : DotNode?,
-) -> Unit {
-  self.source_node = value
-}
-
-///|
-pub fn DotEdgeStatement::get_edge_targets(
-  self : DotEdgeStatement,
-) -> Array[DotEdgeTarget] {
-  self.edge_targets
-}
-
-///|
-pub fn DotEdgeStatement::get_attributes(
-  self : DotEdgeStatement,
-) -> Array[DotAttribute] {
-  self.attributes
-}
-
-///|
-pub fn DotAttributeStatement::get_type(
-  self : DotAttributeStatement,
-) -> DotAttributeType {
-  self.type_
-}
-
-///|
-pub fn DotAttributeStatement::set_type(
-  self : DotAttributeStatement,
-  value : DotAttributeType?,
-) -> Unit {
-  match value {
-    Some(v) => self.type_ = v
-    None => self.type_ = DotAttributeTypeGraph
-  }
-}
-
-///|
-pub fn DotAttributeStatement::get_attributes(
-  self : DotAttributeStatement,
-) -> Array[DotAttribute] {
-  self.attributes
 }
 
 ///|
