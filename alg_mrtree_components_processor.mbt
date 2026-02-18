@@ -184,7 +184,13 @@ fn mrtree_move_graph(
     ignore(mrtree_node_position(node).add(graph_offset))
     mrtree_graph_add_existing_node(destination_graph, node)
   }
+  let distinct_edges = []
   for edge in mrtree_graph_edges(source_graph) {
+    if !distinct_edges.contains(edge) {
+      distinct_edges.push(edge)
+    }
+  }
+  for edge in distinct_edges {
     let bend_points = mrtree_edge_bend_points(edge).to_array()
     for point in bend_points {
       ignore(point.add(graph_offset))
@@ -250,7 +256,6 @@ pub fn MrtreeComponentsProcessor::pack(
   ignore(self)
   if components.length() == 1 {
     let component = components[0]
-    mrtree_process_graph_bounds(component)
     mrtree_apply_padding_and_normalize_positions(component)
     return component
   }
@@ -300,7 +305,8 @@ pub fn MrtreeComponentsProcessor::pack(
     x_pos += size.x + spacing
   }
 
-  mrtree_process_graph_bounds(result)
+  let bounds_processor = new_mrtree_graph_bounds_processor_layout_processor()
+  bounds_processor.process(result, Some(new_null_elk_progress_monitor()))
   mrtree_apply_padding_and_normalize_positions(result)
   result
 }
