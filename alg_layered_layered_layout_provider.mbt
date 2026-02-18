@@ -1,11 +1,11 @@
 ///|
 pub struct LayeredLayoutProvider {
-  layout_engine : RecursiveGraphLayoutEngine
+  elk_layered : ElkLayered
 }
 
 ///|
 pub fn new_layered_layout_provider() -> LayeredLayoutProvider {
-  { layout_engine: new_recursive_graph_layout_engine() }
+  { elk_layered: new_elk_layered() }
 }
 
 ///|
@@ -14,10 +14,44 @@ pub fn LayeredLayoutProvider::layout(
   elk_graph : ElkNode,
   progress_monitor : IElkProgressMonitor,
 ) -> Unit {
-  if recursive_layered_try_layout(elk_graph, progress_monitor) {
-    return
+  let graph_transformer = new_layered_elk_graph_transformer()
+  let layered_graph = graph_transformer.import_graph(elk_graph)
+
+  if node_get_string_property(elk_graph, layered_options_hierarchy_handling) ==
+    "INCLUDE_CHILDREN" {
+    self.elk_layered.do_compound_layout(layered_graph, Some(progress_monitor))
+  } else {
+    self.elk_layered.do_layout(layered_graph, Some(progress_monitor))
   }
-  self.layout_engine.layout(elk_graph, progress_monitor)
+
+  if !progress_monitor.is_canceled() {
+    graph_transformer.apply_layout(layered_graph)
+  }
+}
+
+///|
+pub fn LayeredLayoutProvider::start_layout_test(
+  self : LayeredLayoutProvider,
+  elk_graph : ElkNode,
+) -> ElkLayeredTestExecutionState {
+  let graph_importer = new_layered_elk_graph_transformer()
+  let layered_graph = graph_importer.import_graph(elk_graph)
+  self.elk_layered.prepare_layout_test(layered_graph)
+}
+
+///|
+pub fn LayeredLayoutProvider::get_layout_algorithm(
+  self : LayeredLayoutProvider,
+) -> ElkLayered {
+  self.elk_layered
+}
+
+///|
+pub fn LayeredLayoutProvider::set_test_controller(
+  self : LayeredLayoutProvider,
+  controller : TestController[LGraph]?,
+) -> Unit {
+  self.elk_layered.set_test_controller(controller)
 }
 
 ///|

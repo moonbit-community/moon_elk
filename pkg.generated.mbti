@@ -14743,9 +14743,12 @@ pub fn[T] LayeredIGraphTransformer::apply_layout(Self[T], LGraph) -> Unit
 pub fn[T] LayeredIGraphTransformer::import_graph(Self[T], T) -> LGraph?
 
 pub struct LayeredLayoutProvider {
-  layout_engine : RecursiveGraphLayoutEngine
+  elk_layered : ElkLayered
 }
+pub fn LayeredLayoutProvider::get_layout_algorithm(Self) -> ElkLayered
 pub fn LayeredLayoutProvider::layout(Self, Int, IElkProgressMonitor) -> Unit
+pub fn LayeredLayoutProvider::set_test_controller(Self, TestController[LGraph]?) -> Unit
+pub fn LayeredLayoutProvider::start_layout_test(Self, Int) -> ElkLayeredTestExecutionState
 
 pub struct LayeredModelOrderRowGraphPlacer {
   base : LayeredAbstractGraphPlacer
