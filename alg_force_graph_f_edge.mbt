@@ -2,6 +2,9 @@
 pub type FEdge = Int
 
 ///|
+let fedge_store : Ref[Array[FEdgeData]] = Ref::new([])
+
+///|
 priv struct FEdgeData {
   mut source : FNode?
   mut target : FNode?
@@ -11,6 +14,19 @@ priv struct FEdgeData {
   double_properties : Map[String, Double]
   bool_properties : Map[String, Bool]
   mut origin : ElkEdge?
+}
+
+///|
+fn checked_fedge(edge : FEdge) -> Unit {
+  if edge < 0 || edge >= fedge_store.val.length() {
+    abort("invalid force edge id")
+  }
+}
+
+///|
+fn set_fedge_data(edge : FEdge, data : FEdgeData) -> Unit {
+  checked_fedge(edge)
+  fedge_store.val[edge] = data
 }
 
 ///|

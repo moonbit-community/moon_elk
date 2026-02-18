@@ -2,6 +2,9 @@
 pub type FLabel = Int
 
 ///|
+let flabel_store : Ref[Array[FLabelData]] = Ref::new([])
+
+///|
 priv struct FLabelData {
   edge : FEdge
   text : String
@@ -11,6 +14,19 @@ priv struct FLabelData {
   bool_properties : Map[String, Bool]
   double_properties : Map[String, Double]
   mut origin : ElkLabel?
+}
+
+///|
+fn checked_flabel(label : FLabel) -> Unit {
+  if label < 0 || label >= flabel_store.val.length() {
+    abort("invalid force label id")
+  }
+}
+
+///|
+fn set_flabel_data(label : FLabel, data : FLabelData) -> Unit {
+  checked_flabel(label)
+  flabel_store.val[label] = data
 }
 
 ///|

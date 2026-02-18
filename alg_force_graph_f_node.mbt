@@ -2,6 +2,9 @@
 pub type FNode = Int
 
 ///|
+let fnode_store : Ref[Array[FNodeData]] = Ref::new([])
+
+///|
 priv struct FNodeData {
   mut id : Int
   label : String
@@ -14,6 +17,19 @@ priv struct FNodeData {
   double_properties : Map[String, Double]
   bool_properties : Map[String, Bool]
   mut origin : ElkNode?
+}
+
+///|
+fn checked_fnode(node : FNode) -> Unit {
+  if node < 0 || node >= fnode_store.val.length() {
+    abort("invalid force node id")
+  }
+}
+
+///|
+fn set_fnode_data(node : FNode, data : FNodeData) -> Unit {
+  checked_fnode(node)
+  fnode_store.val[node] = data
 }
 
 ///|
