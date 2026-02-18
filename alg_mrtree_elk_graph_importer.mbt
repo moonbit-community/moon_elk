@@ -164,10 +164,6 @@ fn mrtree_transform_edges(
       None => continue
     }
     for elk_edge in mrtree_all_outgoing_edges(source_elk) {
-      if edge_sources(elk_edge).length() != 1 ||
-        edge_targets(elk_edge).length() != 1 {
-        continue
-      }
       let target_elk = match mrtree_target_node_from_edge(elk_edge) {
         Some(node) => node
         None => continue
