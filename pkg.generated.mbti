@@ -14710,8 +14710,7 @@ pub struct LayeredElkGraphLayoutTransferrer {
 pub fn LayeredElkGraphLayoutTransferrer::apply_layout(Self, LGraph) -> Unit
 
 pub struct LayeredElkGraphTransformer {
-  importer : LayeredElkGraphImporter
-  layout_transferrer : LayeredElkGraphLayoutTransferrer
+  unit : Unit
 }
 pub fn LayeredElkGraphTransformer::apply_layout(Self, LGraph) -> Unit
 pub fn LayeredElkGraphTransformer::as_layered_igraph_transformer(Self) -> LayeredIGraphTransformer[Int]

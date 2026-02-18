@@ -1,15 +1,11 @@
 ///|
 pub struct LayeredElkGraphTransformer {
-  importer : LayeredElkGraphImporter
-  layout_transferrer : LayeredElkGraphLayoutTransferrer
+  unit : Unit
 }
 
 ///|
 pub fn new_layered_elk_graph_transformer() -> LayeredElkGraphTransformer {
-  {
-    importer: new_layered_elk_graph_importer(),
-    layout_transferrer: new_layered_elk_graph_layout_transferrer(),
-  }
+  { unit: () }
 }
 
 ///|
@@ -17,7 +13,8 @@ pub fn LayeredElkGraphTransformer::import_graph(
   self : LayeredElkGraphTransformer,
   graph : ElkNode,
 ) -> LGraph {
-  self.importer.import_graph(graph)
+  ignore(self)
+  new_layered_elk_graph_importer().import_graph(graph)
 }
 
 ///|
@@ -25,7 +22,8 @@ pub fn LayeredElkGraphTransformer::apply_layout(
   self : LayeredElkGraphTransformer,
   layered_graph : LGraph,
 ) -> Unit {
-  self.layout_transferrer.apply_layout(layered_graph)
+  ignore(self)
+  new_layered_elk_graph_layout_transferrer().apply_layout(layered_graph)
 }
 
 ///|
