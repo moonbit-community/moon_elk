@@ -1666,19 +1666,13 @@ fn edge_adjust_y(importer : JsonImporter, edge : ElkEdge, y : Double) -> Double 
 fn label_adjusted_x(importer : JsonImporter, label : ElkLabel) -> Double {
   match label_parent(label) {
     Some(NodeLabelParent(node)) =>
-      if (match node_shape_coords_mode(node) {
-          ShapeRoot => true
-          _ => false
-        }) {
+      if node_shape_coords_mode(node) is ShapeRoot {
         label_x(label) + node_global_x(node)
       } else {
         label_x(label)
       }
     Some(PortLabelParent(port)) =>
-      if (match port_shape_coords_mode(port) {
-          ShapeRoot => true
-          _ => false
-        }) {
+      if port_shape_coords_mode(port) is ShapeRoot {
         label_x(label) + port_global_x(port)
       } else {
         label_x(label)
@@ -1694,19 +1688,13 @@ fn label_adjusted_x(importer : JsonImporter, label : ElkLabel) -> Double {
 fn label_adjusted_y(importer : JsonImporter, label : ElkLabel) -> Double {
   match label_parent(label) {
     Some(NodeLabelParent(node)) =>
-      if (match node_shape_coords_mode(node) {
-          ShapeRoot => true
-          _ => false
-        }) {
+      if node_shape_coords_mode(node) is ShapeRoot {
         label_y(label) + node_global_y(node)
       } else {
         label_y(label)
       }
     Some(PortLabelParent(port)) =>
-      if (match port_shape_coords_mode(port) {
-          ShapeRoot => true
-          _ => false
-        }) {
+      if port_shape_coords_mode(port) is ShapeRoot {
         label_y(label) + port_global_y(port)
       } else {
         label_y(label)
@@ -1840,10 +1828,7 @@ fn importer_transfer_layout_node(
   }
   let output_x = match node_parent(node) {
     Some(parent) =>
-      if (match node_shape_coords_mode(parent) {
-          ShapeRoot => true
-          _ => false
-        }) {
+      if node_shape_coords_mode(parent) is ShapeRoot {
         node_x(node) + node_global_x(parent)
       } else {
         node_x(node)
@@ -1852,10 +1837,7 @@ fn importer_transfer_layout_node(
   }
   let output_y = match node_parent(node) {
     Some(parent) =>
-      if (match node_shape_coords_mode(parent) {
-          ShapeRoot => true
-          _ => false
-        }) {
+      if node_shape_coords_mode(parent) is ShapeRoot {
         node_y(node) + node_global_y(parent)
       } else {
         node_y(node)
@@ -1866,18 +1848,12 @@ fn importer_transfer_layout_node(
   for port in node_ports(node) {
     match importer.port_json_map.get(port) {
       Some(json_port) => {
-        let port_output_x = if (match node_shape_coords_mode(node) {
-            ShapeRoot => true
-            _ => false
-          }) {
+        let port_output_x = if node_shape_coords_mode(node) is ShapeRoot {
           port_x(port) + node_global_x(node)
         } else {
           port_x(port)
         }
-        let port_output_y = if (match node_shape_coords_mode(node) {
-            ShapeRoot => true
-            _ => false
-          }) {
+        let port_output_y = if node_shape_coords_mode(node) is ShapeRoot {
           port_y(port) + node_global_y(node)
         } else {
           port_y(port)
@@ -1928,10 +1904,7 @@ fn importer_transfer_layout_node(
       Some(original_parent) => node_edge_coords_mode(original_parent)
       None => EdgeContainer
     }
-    if (match edge_mode {
-        EdgeContainer => true
-        _ => false
-      }) {
+    if edge_mode is EdgeContainer {
       match edge_containing_node(edge) {
         Some(container) =>
           if !node_identifier(container).is_empty() {
