@@ -48,6 +48,11 @@ test "elk graph switch dispatches case handler and default" {
     Some("holder"),
     content="true",
   )
+  inspect(
+    inherited_switcher.is_switch_for(elk_graph_package_instance),
+    content="true",
+  )
+  inspect(inherited_switcher.is_switch_for("other.package"), content="false")
 }
 
 ///|

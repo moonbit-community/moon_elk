@@ -90,6 +90,7 @@ pub fn elk_switch_target_elk_property_to_value_map_entry(
 
 ///|
 pub struct ElkGraphSwitch[T] {
+  model_package : ElkGraphPackage
   case_i_property_holder_fn : (IPropertyHolder) -> T?
   case_e_map_property_holder_fn : (EMapPropertyHolder) -> T?
   case_elk_graph_element_fn : (ElkGraphElement) -> T?
@@ -122,6 +123,7 @@ pub fn[T] new_elk_graph_switch(
   default_case? : () -> T? = () => None,
 ) -> ElkGraphSwitch[T] {
   {
+    model_package: elk_graph_package_instance,
     case_i_property_holder_fn: case_i_property_holder,
     case_e_map_property_holder_fn: case_e_map_property_holder,
     case_elk_graph_element_fn: case_elk_graph_element,
@@ -136,6 +138,14 @@ pub fn[T] new_elk_graph_switch(
     case_elk_property_to_value_map_entry_fn: case_elk_property_to_value_map_entry,
     default_case_fn: default_case,
   }
+}
+
+///|
+pub fn[T] ElkGraphSwitch::is_switch_for(
+  self : ElkGraphSwitch[T],
+  package_id : ElkGraphPackage,
+) -> Bool {
+  package_id == self.model_package
 }
 
 ///|
