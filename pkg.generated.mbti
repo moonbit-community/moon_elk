@@ -862,7 +862,11 @@ pub fn create_external_port_dummy(LPort, PortConstraints, PortSide, Int, KVector
 
 pub fn create_graph() -> Int
 
+pub fn create_hyperedge(Array[ElkConnectableShape], Array[ElkConnectableShape]) -> Int
+
 pub fn create_label(ElkLabelParent?) -> Int
+
+pub fn create_label_with_text(String, ElkLabelParent?) -> Int
 
 pub fn create_node(Int?) -> Int
 

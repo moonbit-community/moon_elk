@@ -232,6 +232,32 @@ pub fn create_simple_edge(source : ElkNode, target : ElkNode) -> ElkEdge {
 }
 
 ///|
+pub fn create_hyperedge(
+  sources : Array[ElkConnectableShape],
+  targets : Array[ElkConnectableShape],
+) -> ElkEdge {
+  let edge = create_edge(None)
+  for source in sources {
+    edge_add_source(edge, source)
+  }
+  for target in targets {
+    edge_add_target(edge, target)
+  }
+  update_containment(Some(edge))
+  edge
+}
+
+///|
+pub fn create_label_with_text(
+  text : String,
+  parent : ElkLabelParent?,
+) -> ElkLabel {
+  let label = create_label(parent)
+  label_set_text(label, text)
+  label
+}
+
+///|
 pub fn properties_skipping_nodes(
   graph : ElkNode,
   include_root? : Bool = true,

@@ -107,6 +107,54 @@ test "ElkGraphUtil allIncidentSections" {
 }
 
 ///|
+test "ElkGraphUtil createLabelWithText" {
+  reset_graph_model_for_test()
+  let graph = create_graph()
+  let node = create_node(Some(graph))
+  let label = create_label_with_text(
+    "hello",
+    Some(make_node_label_parent(node)),
+  )
+
+  assert_eq(label_text(label), "hello")
+  match label_parent(label) {
+    Some(NodeLabelParent(parent_node)) => assert_eq(parent_node, node)
+    _ => abort("Expected node label parent")
+  }
+}
+
+///|
+test "ElkGraphUtil createHyperedge" {
+  reset_graph_model_for_test()
+  let graph = create_graph()
+  let node1 = create_node(Some(graph))
+  let node2 = create_node(Some(graph))
+  let compound = create_node(Some(graph))
+  let child = create_node(Some(compound))
+
+  let edge = create_hyperedge(
+    [make_node_shape(node1), make_node_shape(child)],
+    [make_node_shape(node2)],
+  )
+
+  assert_eq(edge_sources(edge).length(), 2)
+  assert_eq(edge_targets(edge).length(), 1)
+  match edge_sources(edge)[0] {
+    NodeShape(node) => assert_eq(node, node1)
+    _ => abort("Expected node source")
+  }
+  match edge_sources(edge)[1] {
+    NodeShape(node) => assert_eq(node, child)
+    _ => abort("Expected node source")
+  }
+  match edge_targets(edge)[0] {
+    NodeShape(node) => assert_eq(node, node2)
+    _ => abort("Expected node target")
+  }
+  assert_eq(edge_containing_node(edge), Some(graph))
+}
+
+///|
 test "ElkGraphUtil findBestEdgeContainment" {
   reset_graph_model_for_test()
   let graph1 = create_graph()
