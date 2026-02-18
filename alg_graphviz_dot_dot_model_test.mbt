@@ -110,6 +110,7 @@ test "Dot factory instance" {
     option_string_to_string(model.get_graphs()[0].get_name()),
     content="from_factory",
   )
+  inspect(factory.get_dot_package(), content=alg_graphviz_dot_dot_ens_uri)
 }
 
 ///|

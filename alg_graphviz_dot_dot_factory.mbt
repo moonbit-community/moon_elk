@@ -11,6 +11,7 @@ pub struct DotFactory {
   create_attribute_statement_fn : () -> DotAttributeStatement
   create_subgraph_fn : () -> DotSubgraph
   create_port_fn : () -> DotPort
+  get_dot_package_fn : () -> DotPackage
 }
 
 ///|
@@ -27,6 +28,7 @@ pub fn new_dot_factory() -> DotFactory {
     create_attribute_statement_fn: dot_create_attribute_statement,
     create_subgraph_fn: dot_create_subgraph,
     create_port_fn: dot_create_port,
+    get_dot_package_fn: () => dot_package_instance,
   }
 }
 
@@ -88,4 +90,9 @@ pub fn DotFactory::create_subgraph(self : DotFactory) -> DotSubgraph {
 ///|
 pub fn DotFactory::create_port(self : DotFactory) -> DotPort {
   (self.create_port_fn)()
+}
+
+///|
+pub fn DotFactory::get_dot_package(self : DotFactory) -> DotPackage {
+  (self.get_dot_package_fn)()
 }
