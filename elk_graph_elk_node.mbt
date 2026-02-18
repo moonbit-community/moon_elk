@@ -33,6 +33,52 @@ fn checked_node(node : ElkNode) -> Unit {
 }
 
 ///|
+fn clone_string_int_map(source : Map[String, Int]) -> Map[String, Int] {
+  let result = {}
+  source.each((key, value) => result[key] = value)
+  result
+}
+
+///|
+fn clone_string_double_map(source : Map[String, Double]) -> Map[String, Double] {
+  let result = {}
+  source.each((key, value) => result[key] = value)
+  result
+}
+
+///|
+fn clone_string_kvector_map(
+  source : Map[String, KVector],
+) -> Map[String, KVector] {
+  let result = {}
+  source.each((key, value) => result[key] = value.clone())
+  result
+}
+
+///|
+fn clone_string_bool_map(source : Map[String, Bool]) -> Map[String, Bool] {
+  let result = {}
+  source.each((key, value) => result[key] = value)
+  result
+}
+
+///|
+fn clone_string_string_map(source : Map[String, String]) -> Map[String, String] {
+  let result = {}
+  source.each((key, value) => result[key] = value)
+  result
+}
+
+///|
+fn clone_string_string_array_map(
+  source : Map[String, Array[String]],
+) -> Map[String, Array[String]] {
+  let result = {}
+  source.each((key, value) => result[key] = value.copy())
+  result
+}
+
+///|
 pub fn create_graph() -> ElkNode {
   create_node(None)
 }
