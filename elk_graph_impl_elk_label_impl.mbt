@@ -1,2 +1,7 @@
-// Upstream counterpart: org.eclipse.elk.graph/impl/ElkLabelImpl.java
-// Implementation is currently provided in aggregated graph model/properties files.
+///|
+pub type ElkLabelImpl = ElkLabel
+
+///|
+pub fn new_elk_label_impl(parent? : ElkLabelParent? = None) -> ElkLabelImpl {
+  create_label(parent)
+}

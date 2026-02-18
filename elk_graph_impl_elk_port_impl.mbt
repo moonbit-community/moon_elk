@@ -1,2 +1,7 @@
-// Upstream counterpart: org.eclipse.elk.graph/impl/ElkPortImpl.java
-// Implementation is currently provided in aggregated graph model/properties files.
+///|
+pub type ElkPortImpl = ElkPort
+
+///|
+pub fn new_elk_port_impl(parent? : ElkNode? = None) -> ElkPortImpl {
+  create_port(parent)
+}

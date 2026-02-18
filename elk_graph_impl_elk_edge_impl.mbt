@@ -1,2 +1,7 @@
-// Upstream counterpart: org.eclipse.elk.graph/impl/ElkEdgeImpl.java
-// Implementation is currently provided in aggregated graph model/properties files.
+///|
+pub type ElkEdgeImpl = ElkEdge
+
+///|
+pub fn new_elk_edge_impl(containing_node? : ElkNode? = None) -> ElkEdgeImpl {
+  create_edge(containing_node)
+}

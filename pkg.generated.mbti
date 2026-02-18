@@ -4308,6 +4308,8 @@ pub fn new_elk_debug_plugin() -> ElkDebugPlugin
 
 pub fn new_elk_edge_adapter(Int) -> ElkEdgeAdapter
 
+pub fn new_elk_edge_impl(containing_node? : Int?) -> Int
+
 pub fn new_elk_engine(default_layout_options? : Map[String, Json], algorithms? : Array[String]) -> ElkEngine
 
 pub fn new_elk_graph_adapter(Int) -> ElkGraphAdapter
@@ -4464,6 +4466,8 @@ pub fn new_elk_graph_xmi_save(ElkGraphXMIHelper) -> ElkGraphXMISave
 
 pub fn new_elk_label_adapter(Int) -> ElkLabelAdapter
 
+pub fn new_elk_label_impl(parent? : ElkLabelParent?) -> Int
+
 pub fn new_elk_layered() -> ElkLayered
 
 pub fn new_elk_layout_provider() -> ElkLayoutProvider
@@ -4480,6 +4484,8 @@ pub fn new_elk_margin_values(Double, Double, Double, Double) -> Spacing
 
 pub fn new_elk_node_adapter(ElkGraphAdapter?, Int) -> ElkNodeAdapter
 
+pub fn new_elk_node_impl(parent? : Int?) -> Int
+
 pub fn new_elk_padding() -> Spacing
 
 pub fn new_elk_padding_any(Double) -> Spacing
@@ -4495,6 +4501,8 @@ pub fn new_elk_persistent_entry(key? : String, value? : String?) -> ElkPersisten
 pub fn new_elk_port_adapter(Int) -> ElkPortAdapter
 
 pub fn new_elk_port_comparator() -> ElkPortComparator
+
+pub fn new_elk_port_impl(parent? : Int?) -> Int
 
 pub fn new_elk_progress_monitor(task_name? : String) -> IElkProgressMonitor
 
@@ -18331,15 +18339,23 @@ pub type DeciderHeuristicResult[T] = Array[(T, Array[(Int, Double)])]
 
 pub type ElkEdge = Int
 
+pub type ElkEdgeImpl = Int
+
 pub type ElkEdgeSection = Int
 
 pub type ElkGraphBoundsProvider = IBoundsProvider[Int, Int]
 
 pub type ElkLabel = Int
 
+pub type ElkLabelImpl = Int
+
 pub type ElkNode = Int
 
+pub type ElkNodeImpl = Int
+
 pub type ElkPort = Int
+
+pub type ElkPortImpl = Int
 
 pub type ExecutionInfo = Int
 
