@@ -4274,6 +4274,8 @@ pub fn new_eades_model() -> EadesModel
 
 pub fn new_eclipse_runtime_detector() -> EclipseRuntimeDetector
 
+pub fn[T, L] new_edge_adapter(T, () -> Array[L]) -> EdgeAdapter[T, L]
+
 pub fn new_edge_and_layer_constraint_edge_reverser_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_edge_aware_scanline_constraint_calculation(LGraph) -> (OneDimensionalCompactor) -> Unit
@@ -4613,6 +4615,10 @@ pub fn new_gmf_rectangle(x? : Int, y? : Int, width? : Int, height? : Int) -> Gmf
 pub fn new_gmf_view(name? : String, location_x? : Int, location_y? : Int, width? : Int, height? : Int) -> Int
 
 pub fn new_grandom_activator() -> GrandomActivator
+
+pub fn[T, N] new_graph_adapter(GraphElementAdapter[T], () -> Array[N]) -> GraphAdapter[T, N]
+
+pub fn[T] new_graph_element_adapter(T, () -> KVector, (KVector) -> Unit, () -> KVector, (KVector) -> Unit, (IProperty[Int]) -> Int, (IProperty[Int]) -> Bool, (IProperty[Bool]) -> Bool, (IProperty[Bool]) -> Bool, (IProperty[Double]) -> Double, (IProperty[Double]) -> Bool, (IProperty[String]) -> String, (IProperty[String]) -> Bool, (IProperty[Array[String]]) -> Array[String], (IProperty[Array[String]]) -> Bool) -> GraphElementAdapter[T]
 
 pub fn new_graph_element_visitor((Int) -> Unit) -> IGraphElementVisitor
 
@@ -5038,6 +5044,8 @@ pub fn new_l_port_adapter(LPort, Bool) -> LPortAdapter
 
 pub fn new_l_shape() -> LShape
 
+pub fn[T] new_label_adapter(GraphElementAdapter[T], () -> LabelSide, () -> String) -> LabelAdapter[T]
+
 pub fn new_label_and_node_size_processor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_label_cell(Double) -> Cell
@@ -5392,6 +5400,8 @@ pub fn new_no_crossing_minimizer_layout_phase() -> ILayoutProcessor[LayeredPhase
 
 pub fn new_node(KVector, ElkRectangle) -> Node
 
+pub fn[T, G, L, P, E] new_node_adapter(GraphElementAdapter[T], () -> G?, () -> Array[L], () -> Array[P], () -> Array[E], () -> Array[E], () -> Unit, ((P, P) -> Int) -> Unit, () -> Bool, () -> Spacing, (Spacing) -> Unit, () -> Spacing, (Spacing) -> Unit) -> NodeAdapter[T, G, L, P, E]
+
 pub fn new_node_arranger((Int) -> KVector) -> INodeArranger
 
 pub fn new_node_context(LNode) -> NodeContext
@@ -5477,6 +5487,8 @@ pub fn new_polyomino_coords(Int, Int) -> PolyominoCoords
 pub fn new_polyomino_with_extensions(Int, Int, Array[UniqueTriple[PolyominoDirection, Int, Int]]) -> Polyomino
 
 pub fn new_polyominoes(Array[Polyomino], Double, fill? : Bool) -> Polyominoes
+
+pub fn[T, L, E] new_port_adapter(GraphElementAdapter[T], () -> PortSide, () -> Array[L], () -> Spacing, (Spacing) -> Unit, () -> Array[E], () -> Array[E], () -> Bool) -> PortAdapter[T, L, E]
 
 pub fn new_port_comparator() -> PortComparator
 
@@ -10405,6 +10417,13 @@ pub struct EclipseRuntimeDetector {
 }
 pub fn EclipseRuntimeDetector::is_eclipse_running(Self) -> Bool
 
+pub struct EdgeAdapter[T, L] {
+  element : T
+  get_labels_fn : () -> Array[L]
+}
+pub fn[T, L] EdgeAdapter::get_element(Self[T, L]) -> T
+pub fn[T, L] EdgeAdapter::get_labels(Self[T, L]) -> Array[L]
+
 pub enum EdgeConstraint {
   NoneType
   IncomingOnly
@@ -11859,6 +11878,13 @@ pub fn GrandomActivator::register_injector_provider(Self, String, String, () -> 
 pub fn GrandomActivator::start(Self) -> Unit
 pub fn GrandomActivator::stop(Self) -> Unit
 
+pub struct GraphAdapter[T, N] {
+  element_adapter : GraphElementAdapter[T]
+  get_nodes_fn : () -> Array[N]
+}
+pub fn[T, N] GraphAdapter::element_adapter(Self[T, N]) -> GraphElementAdapter[T]
+pub fn[T, N] GraphAdapter::get_nodes(Self[T, N]) -> Array[N]
+
 pub enum GraphCompactionStrategy {
   NoneType
   Left
@@ -11867,6 +11893,42 @@ pub enum GraphCompactionStrategy {
   LeftRightConnectionLocking
   EdgeLength
 }
+
+pub struct GraphElementAdapter[T] {
+  element : T
+  get_size_fn : () -> KVector
+  set_size_fn : (KVector) -> Unit
+  get_position_fn : () -> KVector
+  set_position_fn : (KVector) -> Unit
+  get_property_int_fn : (IProperty[Int]) -> Int
+  has_property_int_fn : (IProperty[Int]) -> Bool
+  get_property_bool_fn : (IProperty[Bool]) -> Bool
+  has_property_bool_fn : (IProperty[Bool]) -> Bool
+  get_property_double_fn : (IProperty[Double]) -> Double
+  has_property_double_fn : (IProperty[Double]) -> Bool
+  get_property_string_fn : (IProperty[String]) -> String
+  has_property_string_fn : (IProperty[String]) -> Bool
+  get_property_string_array_fn : (IProperty[Array[String]]) -> Array[String]
+  has_property_string_array_fn : (IProperty[Array[String]]) -> Bool
+  mut volatile_id : Int
+}
+pub fn[T] GraphElementAdapter::get_element(Self[T]) -> T
+pub fn[T] GraphElementAdapter::get_position(Self[T]) -> KVector
+pub fn[T] GraphElementAdapter::get_property_bool(Self[T], IProperty[Bool]) -> Bool
+pub fn[T] GraphElementAdapter::get_property_double(Self[T], IProperty[Double]) -> Double
+pub fn[T] GraphElementAdapter::get_property_int(Self[T], IProperty[Int]) -> Int
+pub fn[T] GraphElementAdapter::get_property_string(Self[T], IProperty[String]) -> String
+pub fn[T] GraphElementAdapter::get_property_string_array(Self[T], IProperty[Array[String]]) -> Array[String]
+pub fn[T] GraphElementAdapter::get_size(Self[T]) -> KVector
+pub fn[T] GraphElementAdapter::get_volatile_id(Self[T]) -> Int
+pub fn[T] GraphElementAdapter::has_property_bool(Self[T], IProperty[Bool]) -> Bool
+pub fn[T] GraphElementAdapter::has_property_double(Self[T], IProperty[Double]) -> Bool
+pub fn[T] GraphElementAdapter::has_property_int(Self[T], IProperty[Int]) -> Bool
+pub fn[T] GraphElementAdapter::has_property_string(Self[T], IProperty[String]) -> Bool
+pub fn[T] GraphElementAdapter::has_property_string_array(Self[T], IProperty[Array[String]]) -> Bool
+pub fn[T] GraphElementAdapter::set_position(Self[T], KVector) -> Unit
+pub fn[T] GraphElementAdapter::set_size(Self[T], KVector) -> Unit
+pub fn[T] GraphElementAdapter::set_volatile_id(Self[T], Int) -> Unit
 
 pub enum GraphFeature {
   SelfLoops
@@ -14689,6 +14751,15 @@ pub fn LShape::get_size(Self) -> KVector
 pub fn LShape::set_id(Self, Int) -> Unit
 pub fn LShape::set_origin_identifier(Self, String?) -> Unit
 
+pub struct LabelAdapter[T] {
+  element_adapter : GraphElementAdapter[T]
+  get_side_fn : () -> LabelSide
+  get_text_fn : () -> String
+}
+pub fn[T] LabelAdapter::element_adapter(Self[T]) -> GraphElementAdapter[T]
+pub fn[T] LabelAdapter::get_side(Self[T]) -> LabelSide
+pub fn[T] LabelAdapter::get_text(Self[T]) -> String
+
 type LabelDummySwitcherInfo
 
 pub struct LabelManagementProcessor {
@@ -16148,6 +16219,35 @@ pub fn Node::touches(Self, Self) -> Bool
 pub fn Node::translate(Self, KVector) -> Unit
 pub fn Node::underlap(Self, Self) -> Double
 
+pub struct NodeAdapter[T, G, L, P, E] {
+  element_adapter : GraphElementAdapter[T]
+  get_graph_fn : () -> G?
+  get_labels_fn : () -> Array[L]
+  get_ports_fn : () -> Array[P]
+  get_incoming_edges_fn : () -> Array[E]
+  get_outgoing_edges_fn : () -> Array[E]
+  sort_port_list_fn : () -> Unit
+  sort_port_list_with_fn : ((P, P) -> Int) -> Unit
+  is_compound_node_fn : () -> Bool
+  get_padding_fn : () -> Spacing
+  set_padding_fn : (Spacing) -> Unit
+  get_margin_fn : () -> Spacing
+  set_margin_fn : (Spacing) -> Unit
+}
+pub fn[T, G, L, P, E] NodeAdapter::element_adapter(Self[T, G, L, P, E]) -> GraphElementAdapter[T]
+pub fn[T, G, L, P, E] NodeAdapter::get_graph(Self[T, G, L, P, E]) -> G?
+pub fn[T, G, L, P, E] NodeAdapter::get_incoming_edges(Self[T, G, L, P, E]) -> Array[E]
+pub fn[T, G, L, P, E] NodeAdapter::get_labels(Self[T, G, L, P, E]) -> Array[L]
+pub fn[T, G, L, P, E] NodeAdapter::get_margin(Self[T, G, L, P, E]) -> Spacing
+pub fn[T, G, L, P, E] NodeAdapter::get_outgoing_edges(Self[T, G, L, P, E]) -> Array[E]
+pub fn[T, G, L, P, E] NodeAdapter::get_padding(Self[T, G, L, P, E]) -> Spacing
+pub fn[T, G, L, P, E] NodeAdapter::get_ports(Self[T, G, L, P, E]) -> Array[P]
+pub fn[T, G, L, P, E] NodeAdapter::is_compound_node(Self[T, G, L, P, E]) -> Bool
+pub fn[T, G, L, P, E] NodeAdapter::set_margin(Self[T, G, L, P, E], Spacing) -> Unit
+pub fn[T, G, L, P, E] NodeAdapter::set_padding(Self[T, G, L, P, E], Spacing) -> Unit
+pub fn[T, G, L, P, E] NodeAdapter::sort_port_list(Self[T, G, L, P, E]) -> Unit
+pub fn[T, G, L, P, E] NodeAdapter::sort_port_list_with(Self[T, G, L, P, E], (P, P) -> Int) -> Unit
+
 pub enum NodeArrangementStrategy {
   LEFT_RIGHT_TOP_DOWN_NODE_PLACER
 }
@@ -16635,6 +16735,25 @@ pub fn Polyominoes::get_traversal_strategy(Self) -> TraversalStrategy
 pub fn Polyominoes::set_high_level_sorting_criterion(Self, HighLevelSortingCriterion) -> Self
 pub fn Polyominoes::set_low_level_sorting_criterion(Self, LowLevelSortingCriterion) -> Self
 pub fn Polyominoes::set_traversal_strategy(Self, TraversalStrategy) -> Self
+
+pub struct PortAdapter[T, L, E] {
+  element_adapter : GraphElementAdapter[T]
+  get_side_fn : () -> PortSide
+  get_labels_fn : () -> Array[L]
+  get_margin_fn : () -> Spacing
+  set_margin_fn : (Spacing) -> Unit
+  get_incoming_edges_fn : () -> Array[E]
+  get_outgoing_edges_fn : () -> Array[E]
+  has_compound_connections_fn : () -> Bool
+}
+pub fn[T, L, E] PortAdapter::element_adapter(Self[T, L, E]) -> GraphElementAdapter[T]
+pub fn[T, L, E] PortAdapter::get_incoming_edges(Self[T, L, E]) -> Array[E]
+pub fn[T, L, E] PortAdapter::get_labels(Self[T, L, E]) -> Array[L]
+pub fn[T, L, E] PortAdapter::get_margin(Self[T, L, E]) -> Spacing
+pub fn[T, L, E] PortAdapter::get_outgoing_edges(Self[T, L, E]) -> Array[E]
+pub fn[T, L, E] PortAdapter::get_side(Self[T, L, E]) -> PortSide
+pub fn[T, L, E] PortAdapter::has_compound_connections(Self[T, L, E]) -> Bool
+pub fn[T, L, E] PortAdapter::set_margin(Self[T, L, E], Spacing) -> Unit
 
 pub enum PortAlignment {
   Distributed
