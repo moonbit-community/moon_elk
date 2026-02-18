@@ -10,7 +10,6 @@ fn mrtree_root_processor_process(
 
   let roots = []
   for node in mrtree_graph_nodes(graph) {
-    mrtree_node_set_root(node, false)
     if mrtree_node_incoming_edges(node).is_empty() {
       mrtree_node_set_root(node, true)
       roots.push(node)
@@ -18,12 +17,11 @@ fn mrtree_root_processor_process(
   }
 
   match roots.length() {
-    0 =>
-      if mrtree_graph_nodes(graph).is_empty() {
-        let root = new_mrtree_node(0, graph, label="DUMMY_ROOT")
-        mrtree_node_set_root(root, true)
-        mrtree_node_set_dummy(root, true)
-      }
+    0 => {
+      let root = new_mrtree_node(0, graph, label="DUMMY_ROOT")
+      mrtree_node_set_root(root, true)
+      mrtree_node_set_dummy(root, true)
+    }
     1 => ()
     _ => {
       let super_root = new_mrtree_node(0, graph, label="SUPER_ROOT")
