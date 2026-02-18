@@ -1534,11 +1534,17 @@ pub fn elk_graph_json_standalone_setup_do_setup() -> GraphJsonTextInjector
 
 pub let elk_graph_qualified_name_converter_delimiter : Char
 
+pub let elk_graph_resource_default_encoding : String
+
 pub fn elk_graph_standalone_setup_do_setup() -> GraphTextInjector
 
 pub fn elk_graph_text_util_get_algorithm(GraphTextElement) -> LayoutAlgorithmData?
 
 pub fn elk_graph_transformer_as_igraph_transformer(ElkGraphTransformer) -> IGraphTransformer[Int]
+
+pub let elk_graph_xmi_data_type_iproperty : ElkGraphXmiDataType
+
+pub let elk_graph_xmi_data_type_property_value : ElkGraphXmiDataType
 
 pub fn elk_margin_clone(Spacing) -> Spacing
 
@@ -1707,6 +1713,8 @@ pub fn find_best_edge_containment(Int?) -> Int?
 pub fn find_lowest_common_ancestor(Int, Int) -> Int?
 
 pub fn find_max_non_dummy_node_width(Layer, Bool) -> Double
+
+pub fn fixed_layout_provider_as_layout_provider(FixedLayoutProvider) -> AbstractLayoutProvider
 
 pub fn flabel_displacement(Int) -> KVector
 
@@ -4392,6 +4400,10 @@ pub fn new_elk_graph_qualified_name_provider() -> ElkGraphQualifiedNameProvider
 
 pub fn new_elk_graph_quickfix_provider() -> ElkGraphQuickfixProvider
 
+pub fn new_elk_graph_resource(String) -> ElkGraphResource
+
+pub fn new_elk_graph_resource_factory() -> ElkGraphResourceFactory
+
 pub fn new_elk_graph_runtime_module(base? : AbstractElkGraphRuntimeModule) -> ElkGraphRuntimeModule
 
 pub fn new_elk_graph_scope_provider(base? : AbstractElkGraphScopeProvider) -> ElkGraphScopeProvider
@@ -4419,6 +4431,12 @@ pub fn new_elk_graph_ui_proposal_provider(ide_provider? : ElkGraphIdeProposalPro
 pub fn new_elk_graph_validator(base? : AbstractElkGraphValidator, layout_option_validator? : LayoutOptionValidator, value_converter? : PropertyValueValueConverter) -> ElkGraphValidator
 
 pub fn new_elk_graph_value_converter_service(number_value_converter? : NumberValueConverter, property_key_value_converter? : PropertyKeyValueConverter, property_value_value_converter? : PropertyValueValueConverter) -> ElkGraphValueConverterService
+
+pub fn new_elk_graph_xmi_data_type_other(String) -> ElkGraphXmiDataType
+
+pub fn new_elk_graph_xmi_helper(ElkGraphResource) -> ElkGraphXMIHelper
+
+pub fn new_elk_graph_xmi_save(ElkGraphXMIHelper) -> ElkGraphXMISave
 
 pub fn new_elk_layered() -> ElkLayered
 
@@ -4517,6 +4535,8 @@ pub fn new_filter_execution_tree_action(AbstractLayoutDebugView) -> FilterExecut
 pub fn[C, T] new_filter_with_default_lifecycle((C) -> Bool) -> IFilter[C, T]
 
 pub fn new_final_spline_bendpoints_calculator_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
+
+pub fn new_fixed_layout_provider() -> FixedLayoutProvider
 
 pub fn new_flabel(Int, text? : String) -> Int
 
@@ -10973,6 +10993,22 @@ pub struct ElkGraphQuickfixProvider {
 pub fn ElkGraphQuickfixProvider::remove_option(Self, Array[GraphTextPropertyAssignment], Int) -> Array[GraphTextPropertyAssignment]
 pub fn ElkGraphQuickfixProvider::supports_issue(Self, String) -> Bool
 
+pub struct ElkGraphResource {
+  uri : String
+  mut encoding : String
+}
+pub fn ElkGraphResource::create_xml_helper(Self) -> ElkGraphXMIHelper
+pub fn ElkGraphResource::create_xml_save(Self) -> ElkGraphXMISave
+pub fn ElkGraphResource::create_xml_save_with_options(Self, Map[String, String]) -> ElkGraphXMISave
+pub fn ElkGraphResource::get_encoding(Self) -> String
+pub fn ElkGraphResource::get_uri(Self) -> String
+pub fn ElkGraphResource::set_encoding(Self, String) -> Unit
+
+pub struct ElkGraphResourceFactory {
+  initialized : Bool
+}
+pub fn ElkGraphResourceFactory::create_resource(Self, String) -> ElkGraphResource
+
 pub struct ElkGraphRuntimeModule {
   base : AbstractElkGraphRuntimeModule
 }
@@ -11090,6 +11126,31 @@ pub fn ElkGraphValueConverterService::number_value(Self) -> PropertyValueValueCo
 pub fn ElkGraphValueConverterService::property_key(Self) -> PropertyKeyValueConverter
 pub fn ElkGraphValueConverterService::qualified_id_value(Self) -> PropertyValueValueConverter
 pub fn ElkGraphValueConverterService::string_value(Self) -> PropertyValueValueConverter
+
+pub struct ElkGraphXMIHelper {
+  resource_uri : String
+}
+pub fn ElkGraphXMIHelper::create_from_string(Self, ElkGraphXmiDataType, String) -> ElkGraphXmiValue
+pub fn ElkGraphXMIHelper::get_resource_uri(Self) -> String
+
+pub struct ElkGraphXMISave {
+  helper : ElkGraphXMIHelper
+}
+pub fn ElkGraphXMISave::get_helper(Self) -> ElkGraphXMIHelper
+pub fn ElkGraphXMISave::save_property_entry(Self, Map[String, String], String?, String) -> Bool
+pub fn ElkGraphXMISave::should_save_property_entry(Self, String?) -> Bool
+
+pub enum ElkGraphXmiDataType {
+  IPropertyDataType
+  PropertyValueDataType
+  OtherDataType(String)
+}
+
+pub enum ElkGraphXmiValue {
+  PropertyValue(LayoutOptionProxy)
+  PropertyId(IProperty[String])
+  RawValue(String)
+}
 
 pub enum ElkLabelParent {
   NodeLabelParent(Int)
@@ -11393,6 +11454,11 @@ pub enum FixedAlignment {
   RightDown
   Balanced
 }
+
+pub struct FixedLayoutProvider {
+  initialized : Bool
+}
+pub fn FixedLayoutProvider::layout(Self, Int, IElkProgressMonitor) -> Unit
 
 pub struct ForceBoolOption {
   id : String
