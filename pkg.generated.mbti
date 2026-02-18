@@ -5536,6 +5536,8 @@ pub fn new_random_graph_from_file(AbstractResourcePath, Int) -> RandomGraphFromF
 
 pub fn new_random_graph_from_method(String, Int) -> RandomGraphFromMethod
 
+pub fn new_random_layout_provider() -> RandomLayoutProvider
+
 pub fn new_rectangle_copy(Rectangle) -> Rectangle
 
 pub fn new_rectangle_position(KVector) -> Rectangle
@@ -6379,6 +6381,8 @@ pub fn random_graph_from_file_register_content_for_test(String, String) -> Unit
 pub fn random_graph_from_file_reset_content_for_test() -> Unit
 
 pub fn random_graph_from_method_from_options(String, CoreDebugGRandomGeneratorOptions) -> RandomGraphFromMethod
+
+pub fn random_layout_provider_as_layout_provider(RandomLayoutProvider) -> AbstractLayoutProvider
 
 pub let random_seed : IProperty[Int]
 
@@ -16896,6 +16900,11 @@ pub struct RandomGraphFromMethod {
 pub fn RandomGraphFromMethod::provide_graph(Self, Unit) -> Int
 pub fn RandomGraphFromMethod::to_string(Self) -> String
 pub fn RandomGraphFromMethod::to_test_graph(Self) -> TestGraph[Unit]
+
+pub struct RandomLayoutProvider {
+  initialized : Bool
+}
+pub fn RandomLayoutProvider::layout(Self, Int, IElkProgressMonitor) -> Unit
 
 pub enum RectPackingLayoutPhases {
   P1_WIDTH_APPROXIMATION
