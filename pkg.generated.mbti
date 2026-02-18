@@ -6218,6 +6218,12 @@ pub let priority : IProperty[Double]
 
 pub fn properties_skipping_nodes(Int, include_root? : Bool) -> Array[Int]
 
+pub fn property_constants_delegator_create_empty() -> PropertyConstantsDelegator
+
+pub fn property_constants_delegator_create_for_layout_algorithm_data(LayoutAlgorithmData) -> PropertyConstantsDelegator
+
+pub fn property_constants_delegator_create_for_layout_algorithm_with_id(String) -> PropertyConstantsDelegator
+
 pub fn provide_collector_port(LGraph, LNode, PortType, PortSide) -> LPort
 
 pub fn quadrant_eq(Quadrant, Quadrant) -> Bool
@@ -16676,6 +16682,21 @@ pub fn ProgressMonitorAdapter::done(Self, top_instance? : Bool) -> Unit
 pub fn ProgressMonitorAdapter::is_canceled(Self) -> Bool
 pub fn ProgressMonitorAdapter::sub_task(Self, Double) -> Self
 pub fn ProgressMonitorAdapter::worked(Self, Double, Double, top_instance? : Bool) -> Unit
+
+pub struct PropertyConstantsDelegator {
+  property_delegate_ids : Map[String, Unit]
+}
+pub fn[T] PropertyConstantsDelegator::add_delegate(Self, IProperty[T]) -> Self
+pub fn PropertyConstantsDelegator::get_individual_or_inherited_property(Self, Int, IProperty[Double]) -> Double
+pub fn PropertyConstantsDelegator::get_property_bool(Self, Int, IProperty[Bool]) -> Bool
+pub fn PropertyConstantsDelegator::get_property_double(Self, Int, IProperty[Double]) -> Double
+pub fn PropertyConstantsDelegator::get_property_int(Self, Int, IProperty[Int]) -> Int
+pub fn PropertyConstantsDelegator::get_property_kvector(Self, Int, IProperty[KVector]) -> KVector
+pub fn[T] PropertyConstantsDelegator::get_property_or_delegate(Self, IProperty[T]) -> IProperty[T]
+pub fn PropertyConstantsDelegator::get_property_string(Self, Int, IProperty[String]) -> String
+pub fn PropertyConstantsDelegator::get_property_string_set(Self, Int, IProperty[Array[String]]) -> Array[String]
+pub fn[T, P] PropertyConstantsDelegator::get_property_with(Self, P, IProperty[T], (P, IProperty[T]) -> T) -> T
+pub fn PropertyConstantsDelegator::has_delegate_for(Self, String) -> Bool
 
 pub struct PropertyKeyValueConverter {
   mut id_rule : String
