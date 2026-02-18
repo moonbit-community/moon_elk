@@ -1,2 +1,7 @@
-// Upstream counterpart: org.eclipse.elk.graph/impl/EMapPropertyHolderImpl.java
-// Implementation is currently provided in aggregated graph model/properties files.
+///|
+pub type EMapPropertyHolderImpl = EMapPropertyHolder
+
+///|
+pub fn new_e_map_property_holder_impl() -> EMapPropertyHolderImpl {
+  new_map_property_holder()
+}

@@ -2,6 +2,7 @@
 package "username/moon_elk"
 
 import {
+  "moonbitlang/core/json",
   "moonbitlang/core/random",
 }
 
@@ -4324,6 +4325,8 @@ pub fn new_dropdown_int_range_action(ConfigState, String, Int, Int, Int, State, 
 
 pub fn new_dummy_self_loop_processor_layout_processor() -> ILayoutProcessor[LayeredPhases, LGraph]
 
+pub fn new_e_map_property_holder_impl() -> MapPropertyHolder
+
 pub fn new_eades_model() -> EadesModel
 
 pub fn new_eclipse_runtime_detector() -> EclipseRuntimeDetector
@@ -4551,6 +4554,8 @@ pub fn new_elk_port_comparator() -> ElkPortComparator
 pub fn new_elk_port_impl(parent? : Int?) -> Int
 
 pub fn new_elk_progress_monitor(task_name? : String) -> IElkProgressMonitor
+
+pub fn[T] new_elk_property_to_value_map_entry_impl(key? : IProperty[T]?, value? : T?) -> ElkPropertyToValueMapEntryImpl[T]
 
 pub fn new_elk_rectangle() -> ElkRectangle
 
@@ -5340,6 +5345,8 @@ pub fn new_longest_path_source_layerer_layout_phase() -> ILayoutProcessor[Layere
 
 pub fn new_manual_cut_index_calculator() -> ICutIndexCalculator
 
+pub fn new_map_property_holder() -> MapPropertyHolder
+
 pub fn[C, T] new_matcher((C, T) -> Double, (C, T) -> Double, (IDataProvider[C, T], Bool) -> Unit, () -> Unit) -> IMatcher[C, T]
 
 pub fn[C, T] new_matcher_with_default_lifecycle((C, T) -> Double, (C, T) -> Double) -> IMatcher[C, T]
@@ -5599,6 +5606,8 @@ pub fn[T] new_property_cloneable(String, T, (T) -> T?) -> IProperty[T]
 pub fn[T] new_property_cloneable_without_clone(String, T) -> IProperty[T]
 
 pub fn new_property_key_value_converter() -> PropertyKeyValueConverter
+
+pub fn[T] new_property_value_proxy((IProperty[T]) -> T?) -> IPropertyValueProxy[T]
 
 pub fn new_property_value_value_converter(qualified_name_converter? : ElkGraphQualifiedNameConverter) -> PropertyValueValueConverter
 
@@ -6343,6 +6352,8 @@ pub fn property_constants_delegator_create_empty() -> PropertyConstantsDelegator
 pub fn property_constants_delegator_create_for_layout_algorithm_data(LayoutAlgorithmData) -> PropertyConstantsDelegator
 
 pub fn property_constants_delegator_create_for_layout_algorithm_with_id(String) -> PropertyConstantsDelegator
+
+pub fn[T : Compare + @json.FromJson] property_holder_comparator_with(IProperty[T]) -> PropertyHolderComparator[T]
 
 pub fn provide_collector_port(LGraph, LNode, PortType, PortSide) -> LPort
 
@@ -11479,6 +11490,15 @@ pub struct ElkPortComparator {
 }
 pub fn ElkPortComparator::compare(Self, Int, Int) -> Int
 
+pub struct ElkPropertyToValueMapEntryImpl[T] {
+  mut key : IProperty[T]?
+  mut value : T?
+}
+pub fn[T] ElkPropertyToValueMapEntryImpl::get_typed_key(Self[T]) -> IProperty[T]?
+pub fn[T] ElkPropertyToValueMapEntryImpl::get_typed_value(Self[T]) -> T?
+pub fn[T] ElkPropertyToValueMapEntryImpl::set_typed_key(Self[T], IProperty[T]?) -> Unit
+pub fn[T] ElkPropertyToValueMapEntryImpl::set_typed_value(Self[T], T?) -> Unit
+
 pub struct ElkRectangle {
   mut x : Double
   mut y : Double
@@ -13960,6 +13980,11 @@ pub struct IProperty[T] {
 pub fn[T] IProperty::get_default(Self[T]) -> T
 pub fn[T] IProperty::get_id(Self[T]) -> String
 
+pub struct IPropertyValueProxy[T] {
+  resolve_value_fn : (IProperty[T]) -> T?
+}
+pub fn[T] IPropertyValueProxy::resolve_value(Self[T], IProperty[T]) -> T?
+
 pub struct IRadialCompactor {
   compact_fn : (Int) -> Unit
 }
@@ -15892,6 +15917,18 @@ pub enum LowLevelSortingCriterion {
   BySizeAndShape
 }
 
+#alias(EMapPropertyHolder)
+#alias(EMapPropertyHolderImpl)
+#alias(IPropertyHolder)
+pub struct MapPropertyHolder {
+  property_map : Map[String, Json]
+}
+pub fn MapPropertyHolder::copy_properties(Self, Self?) -> Self
+pub fn MapPropertyHolder::get_all_properties(Self) -> Map[String, Json]
+pub fn[T : @json.FromJson] MapPropertyHolder::get_property(Self, IProperty[T]) -> T
+pub fn[T] MapPropertyHolder::has_property(Self, IProperty[T]) -> Bool
+pub fn[T : ToJson] MapPropertyHolder::set_property(Self, IProperty[T], T?) -> Self
+
 pub struct Maybe[T] {
   mut object : T?
 }
@@ -17154,6 +17191,11 @@ pub fn PropertyConstantsDelegator::get_property_string(Self, Int, IProperty[Stri
 pub fn PropertyConstantsDelegator::get_property_string_set(Self, Int, IProperty[Array[String]]) -> Array[String]
 pub fn[T, P] PropertyConstantsDelegator::get_property_with(Self, P, IProperty[T], (P, IProperty[T]) -> T) -> T
 pub fn PropertyConstantsDelegator::has_delegate_for(Self, String) -> Bool
+
+pub struct PropertyHolderComparator[T] {
+  property : IProperty[T]
+}
+pub fn[T : Compare + @json.FromJson] PropertyHolderComparator::compare(Self[T], MapPropertyHolder, MapPropertyHolder) -> Int
 
 pub struct PropertyKeyValueConverter {
   mut id_rule : String
