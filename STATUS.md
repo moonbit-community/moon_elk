@@ -14,6 +14,8 @@ Direct transliteration is complete for the tracked ELK Java -> MoonBit scope.
 
 ### Recent Completed Milestones (latest first)
 
+- `2d631cf`: Aligned `elk.graph.util.ElkGraphAdapterFactory` method signatures with elk-reference (`createXXXAdapter()` no-arg shape) and closed `moon_elk-tpz.78`.
+- `9576110`: Ported `elk.graph` utility stubs (`ElkGraphSwitch`, `ElkGraphAdapterFactory`, `ElkReflect`) with dedicated tests and closed `moon_elk-tpz.77`.
 - `bef3888`: Closed remaining package-level `bd` tasks (`common`, `layered.intermediate`, `layered`) and closed epic `moon_elk-tpz` after full-suite validation.
 - `4d427d1`: Aligned `mrtree` `Untreeifyer` semantics with elk-reference (`Untreeify` monitor stage + non-deduplicating removable-edge reinsertion), added regression test.
 - `e09c53b`: Closed layered test migration tasks after full test pass.
@@ -24,7 +26,10 @@ Direct transliteration is complete for the tracked ELK Java -> MoonBit scope.
 
 Validated during recent porting work:
 
-- `moon test --no-render` (`1483/1483` passed)
+- `moon test --no-render` (`1539/1539` passed)
+- `moon test -p username/moon_elk -f elk_graph_util_switch_adapter_reflect_test.mbt --no-render` (`3/3`)
+- `moon test -p username/moon_elk -f elk_graph_properties_property_holder_test.mbt --no-render` (`4/4`)
+- `moon test -p username/moon_elk -f elk_graph_factory_package_test.mbt --no-render` (`2/2`)
 - `moon test -p username/moon_elk -f alg_mrtree_intermediate_untreeifyer_test.mbt --no-render` (`1/1`)
 - `moon test -p username/moon_elk -f alg_mrtree_p1treeify_test.mbt --no-render` (`3/3`)
 - `moon test -p username/moon_elk -f alg_mrtree_p2order_test.mbt --no-render` (`2/2`)
@@ -39,6 +44,8 @@ Validated during recent porting work:
 - Open / in-progress issues:
   - none
 - Closed in this completion pass:
+  - `moon_elk-tpz.78` (`elk.graph.util` adapter factory signature alignment)
+  - `moon_elk-tpz.77` (`elk.graph.util` switch/adapter/reflect stubs)
   - `moon_elk-tpz.59` (`mrtree`)
   - `moon_elk-tpz.58` (`radial`)
   - `moon_elk-tpz.7.24` (`InteractiveLayeredGraphVisitor` slice 2)
