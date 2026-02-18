@@ -3528,7 +3528,11 @@ pub fn mrtree_layout_levels(Int) -> Unit
 
 pub fn mrtree_node_add_compact_constraint(Int, Int) -> Unit
 
+pub fn mrtree_node_add_incoming_edge(Int, Int) -> Unit
+
 pub fn mrtree_node_add_incoming_edge_unique(Int, Int) -> Unit
+
+pub fn mrtree_node_add_outgoing_edge(Int, Int) -> Unit
 
 pub fn mrtree_node_add_outgoing_edge_unique(Int, Int) -> Unit
 

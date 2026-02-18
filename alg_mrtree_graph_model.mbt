@@ -450,6 +450,30 @@ pub fn mrtree_node_set_outgoing_edges(
 }
 
 ///|
+pub fn mrtree_node_add_outgoing_edge(
+  node : MrtreeNode,
+  edge : MrtreeEdge,
+) -> Unit {
+  checked_mrtree_node(node)
+  checked_mrtree_edge(edge)
+  let node_data = mrtree_node_store.val[node]
+  node_data.outgoing_edges.push(edge)
+  set_mrtree_node_data(node, node_data)
+}
+
+///|
+pub fn mrtree_node_add_incoming_edge(
+  node : MrtreeNode,
+  edge : MrtreeEdge,
+) -> Unit {
+  checked_mrtree_node(node)
+  checked_mrtree_edge(edge)
+  let node_data = mrtree_node_store.val[node]
+  node_data.incoming_edges.push(edge)
+  set_mrtree_node_data(node, node_data)
+}
+
+///|
 pub fn mrtree_node_add_outgoing_edge_unique(
   node : MrtreeNode,
   edge : MrtreeEdge,
@@ -458,8 +482,7 @@ pub fn mrtree_node_add_outgoing_edge_unique(
   checked_mrtree_edge(edge)
   let node_data = mrtree_node_store.val[node]
   if !node_data.outgoing_edges.contains(edge) {
-    node_data.outgoing_edges.push(edge)
-    set_mrtree_node_data(node, node_data)
+    mrtree_node_add_outgoing_edge(node, edge)
   }
 }
 
@@ -472,8 +495,7 @@ pub fn mrtree_node_add_incoming_edge_unique(
   checked_mrtree_edge(edge)
   let node_data = mrtree_node_store.val[node]
   if !node_data.incoming_edges.contains(edge) {
-    node_data.incoming_edges.push(edge)
-    set_mrtree_node_data(node, node_data)
+    mrtree_node_add_incoming_edge(node, edge)
   }
 }
 
