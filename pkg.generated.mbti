@@ -4486,6 +4486,8 @@ pub fn new_elk_padding_left_right_top_bottom(Double, Double) -> Spacing
 
 pub fn new_elk_padding_values(Double, Double, Double, Double) -> Spacing
 
+pub fn new_elk_persistent_entry(key? : String, value? : String?) -> ElkPersistentEntry
+
 pub fn new_elk_port_adapter(Int) -> ElkPortAdapter
 
 pub fn new_elk_port_comparator() -> ElkPortComparator
@@ -11342,6 +11344,15 @@ pub fn ElkNodeAdapter::set_size(Self, KVector) -> Unit
 pub fn ElkNodeAdapter::set_volatile_id(Self, Int) -> Unit
 pub fn ElkNodeAdapter::sort_port_list(Self) -> Unit
 pub fn ElkNodeAdapter::sort_port_list_with(Self, (ElkPortAdapter, ElkPortAdapter) -> Int) -> Unit
+
+pub struct ElkPersistentEntry {
+  mut key : String
+  mut value : String?
+}
+pub fn ElkPersistentEntry::get_key(Self) -> String
+pub fn ElkPersistentEntry::get_value(Self) -> String?
+pub fn ElkPersistentEntry::set_key(Self, String) -> Unit
+pub fn ElkPersistentEntry::set_value(Self, String?) -> Unit
 
 pub struct ElkPortAdapter {
   element : Int
