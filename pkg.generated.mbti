@@ -6180,8 +6180,6 @@ pub fn radial_annulus_wedge_criteria_create(RadialAnnulusWedgeCriteria) -> IAnnu
 
 pub fn radial_annulus_wedge_criteria_from_string(String) -> RadialAnnulusWedgeCriteria
 
-pub fn radial_calculate_wedge_space(RadialAnnulusWedgeCriteria, Int) -> Double
-
 pub fn radial_center_nodes_on_radi(Int, Double, Double) -> Unit
 
 pub let radial_center_on_root : IProperty[Bool]
@@ -6195,8 +6193,6 @@ pub fn radial_compaction_strategy_from_string(String) -> RadialCompactionStrateg
 pub let radial_compactor : IProperty[String]
 
 pub fn radial_create_polar_comparator(Double, Double) -> (Int, Int) -> Int
-
-pub fn radial_evaluate_translation(RadialTranslationStrategy, Int) -> Double
 
 pub fn radial_find_largest_node_in_graph(Int) -> Double
 
@@ -6281,10 +6277,6 @@ pub let radial_rotation_outgoing_edge_angles : IProperty[Bool]
 pub let radial_rotation_target_angle : IProperty[Double]
 
 pub fn radial_shift_closest_edge_to_radi(Int, Double, Double) -> Unit
-
-pub fn radial_sort(RadialSortingStrategy, Array[Int]) -> Unit
-
-pub fn radial_sort_initialize(RadialSortingStrategy, Int) -> Unit
 
 pub fn radial_sort_nodes(Array[Int], (Int, Int) -> Int) -> Unit
 
