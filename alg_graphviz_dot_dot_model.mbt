@@ -1,28 +1,4 @@
 ///|
-pub struct DotPort {
-  mut name : String?
-  mut compass_pt : String?
-}
-
-///|
-pub struct DotNode {
-  mut name : String?
-  mut port : DotPort?
-}
-
-///|
-pub struct DotAttribute {
-  mut name : String?
-  mut value : String?
-}
-
-///|
-pub struct DotNodeStatement {
-  mut node : DotNode?
-  attributes : Array[DotAttribute]
-}
-
-///|
 pub struct DotEdgeStatement {
   mut source_node : DotNode?
   edge_targets : Array[DotEdgeTarget]
@@ -49,21 +25,6 @@ pub struct DotEdgeTarget {
 }
 
 ///|
-pub fn dot_create_attribute() -> DotAttribute {
-  { name: None, value: None }
-}
-
-///|
-pub fn dot_create_node_statement() -> DotNodeStatement {
-  { node: None, attributes: [] }
-}
-
-///|
-pub fn dot_create_node() -> DotNode {
-  { name: None, port: None }
-}
-
-///|
 pub fn dot_create_edge_statement() -> DotEdgeStatement {
   { source_node: None, edge_targets: [], attributes: [] }
 }
@@ -81,11 +42,6 @@ pub fn dot_create_attribute_statement() -> DotAttributeStatement {
 ///|
 pub fn dot_create_subgraph() -> DotSubgraph {
   { name: None, statements: [] }
-}
-
-///|
-pub fn dot_create_port() -> DotPort {
-  { name: None, compass_pt: None }
 }
 
 ///|
@@ -178,86 +134,6 @@ pub fn DotFactory::create_subgraph(self : DotFactory) -> DotSubgraph {
 ///|
 pub fn DotFactory::create_port(self : DotFactory) -> DotPort {
   (self.create_port_fn)()
-}
-
-///|
-pub fn DotPort::get_name(self : DotPort) -> String? {
-  self.name
-}
-
-///|
-pub fn DotPort::set_name(self : DotPort, value : String?) -> Unit {
-  self.name = value
-}
-
-///|
-pub fn DotPort::get_compass_pt(self : DotPort) -> String? {
-  self.compass_pt
-}
-
-///|
-pub fn DotPort::set_compass_pt(self : DotPort, value : String?) -> Unit {
-  self.compass_pt = value
-}
-
-///|
-pub fn DotNode::get_name(self : DotNode) -> String? {
-  self.name
-}
-
-///|
-pub fn DotNode::set_name(self : DotNode, value : String?) -> Unit {
-  self.name = value
-}
-
-///|
-pub fn DotNode::get_port(self : DotNode) -> DotPort? {
-  self.port
-}
-
-///|
-pub fn DotNode::set_port(self : DotNode, value : DotPort?) -> Unit {
-  self.port = value
-}
-
-///|
-pub fn DotAttribute::get_name(self : DotAttribute) -> String? {
-  self.name
-}
-
-///|
-pub fn DotAttribute::set_name(self : DotAttribute, value : String?) -> Unit {
-  self.name = value
-}
-
-///|
-pub fn DotAttribute::get_value(self : DotAttribute) -> String? {
-  self.value
-}
-
-///|
-pub fn DotAttribute::set_value(self : DotAttribute, value : String?) -> Unit {
-  self.value = value
-}
-
-///|
-pub fn DotNodeStatement::get_node(self : DotNodeStatement) -> DotNode? {
-  self.node
-}
-
-///|
-pub fn DotNodeStatement::set_node(
-  self : DotNodeStatement,
-  value : DotNode?,
-) -> Unit {
-  self.node = value
-}
-
-///|
-pub fn DotNodeStatement::get_attributes(
-  self : DotNodeStatement,
-) -> Array[DotAttribute] {
-  self.attributes
 }
 
 ///|
