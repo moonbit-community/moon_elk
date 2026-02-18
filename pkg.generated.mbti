@@ -1463,6 +1463,8 @@ pub let dot_exporter_use_edge_ids : IProperty[Bool]
 
 pub let dot_exporter_use_splines : IProperty[Bool]
 
+pub fn dot_factory_impl_init() -> DotFactory
+
 pub let dot_factory_instance : DotFactory
 
 pub fn dot_graph_element_as_edge(DotGraphElement) -> Int?
@@ -1496,6 +1498,8 @@ pub fn dot_graph_type_to_string(DotGraphType) -> String
 pub fn dot_graph_type_value(DotGraphType) -> Int
 
 pub fn dot_package_id() -> String
+
+pub fn dot_package_impl_init() -> String
 
 pub let dot_package_instance : String
 
@@ -4475,13 +4479,39 @@ pub fn[C, T] new_distance_matcher() -> DistanceMatcher[C, T]
 
 pub fn new_dot_adapter_factory() -> DotAdapterFactory
 
+pub fn new_dot_attribute_impl() -> DotAttribute
+
+pub fn new_dot_attribute_statement_impl() -> DotAttributeStatement
+
+pub fn new_dot_edge_statement_impl() -> DotEdgeStatement
+
+pub fn new_dot_edge_target_impl() -> DotEdgeTarget
+
 pub fn new_dot_exporter() -> DotExporter
 
 pub fn new_dot_factory() -> DotFactory
 
+pub fn new_dot_factory_impl() -> DotFactory
+
+pub fn new_dot_graph_impl() -> DotGraph
+
+pub fn new_dot_graphviz_model_impl() -> DotGraphvizModel
+
 pub fn new_dot_importer() -> DotImporter
 
+pub fn new_dot_node_impl() -> DotNode
+
+pub fn new_dot_node_statement_impl() -> DotNodeStatement
+
+pub fn new_dot_package_impl() -> String
+
+pub fn new_dot_port_impl() -> DotPort
+
 pub fn[R] new_dot_resource_set_provider(() -> R) -> DotResourceSetProvider[R]
+
+pub fn new_dot_statement_impl() -> DotStatement
+
+pub fn new_dot_subgraph_impl() -> DotSubgraph
 
 pub fn[T] new_dot_switch(case_graphviz_model? : (DotGraphvizModel) -> T?, case_graph? : (DotGraph) -> T?, case_statement? : (DotStatement) -> T?, case_attribute? : (DotAttribute) -> T?, case_node_statement? : (DotNodeStatement) -> T?, case_node? : (DotNode) -> T?, case_edge_statement? : (DotEdgeStatement) -> T?, case_edge_target? : (DotEdgeTarget) -> T?, case_attribute_statement? : (DotAttributeStatement) -> T?, case_subgraph? : (DotSubgraph) -> T?, case_port? : (DotPort) -> T?, default_case? : () -> T?) -> DotSwitch[T]
 
@@ -10454,6 +10484,7 @@ pub fn DotAdapterFactory::create_statement_adapter(Self) -> Unit?
 pub fn DotAdapterFactory::create_subgraph_adapter(Self) -> Unit?
 pub fn DotAdapterFactory::is_factory_for_type(Self, String) -> Bool
 
+#alias(DotAttributeImpl)
 pub struct DotAttribute {
   mut name : String?
   mut value : String?
@@ -10463,6 +10494,7 @@ pub fn DotAttribute::get_value(Self) -> String?
 pub fn DotAttribute::set_name(Self, String?) -> Unit
 pub fn DotAttribute::set_value(Self, String?) -> Unit
 
+#alias(DotAttributeStatementImpl)
 pub struct DotAttributeStatement {
   mut type_ : DotAttributeType
   attributes : Array[DotAttribute]
@@ -10482,6 +10514,7 @@ pub enum DotEdgeOperator {
   DotEdgeOperatorUndirected
 }
 
+#alias(DotEdgeStatementImpl)
 pub struct DotEdgeStatement {
   mut source_node : DotNode?
   edge_targets : Array[DotEdgeTarget]
@@ -10492,6 +10525,7 @@ pub fn DotEdgeStatement::get_edge_targets(Self) -> Array[DotEdgeTarget]
 pub fn DotEdgeStatement::get_source_node(Self) -> DotNode?
 pub fn DotEdgeStatement::set_source_node(Self, DotNode?) -> Unit
 
+#alias(DotEdgeTargetImpl)
 pub struct DotEdgeTarget {
   mut operator : DotEdgeOperator
   mut target_subgraph : DotSubgraph?
@@ -10527,6 +10561,7 @@ pub enum DotExporterNodeType {
   DotExporterNodeTypeDummy
 }
 
+#alias(DotFactoryImpl)
 pub struct DotFactory {
   create_graphviz_model_fn : () -> DotGraphvizModel
   create_graph_fn : () -> DotGraph
@@ -10554,6 +10589,7 @@ pub fn DotFactory::create_statement(Self) -> DotStatement
 pub fn DotFactory::create_subgraph(Self) -> DotSubgraph
 pub fn DotFactory::get_dot_package(Self) -> String
 
+#alias(DotGraphImpl)
 pub struct DotGraph {
   mut strict : Bool
   mut type_ : DotGraphType
@@ -10580,6 +10616,7 @@ pub enum DotGraphType {
   DotGraphTypeDigraph
 }
 
+#alias(DotGraphvizModelImpl)
 pub struct DotGraphvizModel {
   graphs : Array[DotGraph]
 }
@@ -10609,6 +10646,7 @@ pub struct DotImporterPropertyHolder {
   mut def_height : Double?
 }
 
+#alias(DotNodeImpl)
 pub struct DotNode {
   mut name : String?
   mut port : DotPort?
@@ -10618,6 +10656,7 @@ pub fn DotNode::get_port(Self) -> DotPort?
 pub fn DotNode::set_name(Self, String?) -> Unit
 pub fn DotNode::set_port(Self, DotPort?) -> Unit
 
+#alias(DotNodeStatementImpl)
 pub struct DotNodeStatement {
   mut node : DotNode?
   attributes : Array[DotAttribute]
@@ -10626,6 +10665,7 @@ pub fn DotNodeStatement::get_attributes(Self) -> Array[DotAttribute]
 pub fn DotNodeStatement::get_node(Self) -> DotNode?
 pub fn DotNodeStatement::set_node(Self, DotNode?) -> Unit
 
+#alias(DotPortImpl)
 pub struct DotPort {
   mut name : String?
   mut compass_pt : String?
@@ -10640,6 +10680,7 @@ pub struct DotResourceSetProvider[R] {
 }
 pub fn[R] DotResourceSetProvider::create_resource_set(Self[R]) -> R
 
+#alias(DotStatementImpl)
 pub enum DotStatement {
   DotStatementBase
   DotStatementAttribute(DotAttribute)
@@ -10649,6 +10690,7 @@ pub enum DotStatement {
   DotStatementSubgraph(DotSubgraph)
 }
 
+#alias(DotSubgraphImpl)
 pub struct DotSubgraph {
   mut name : String?
   statements : Array[DotStatement]
@@ -18724,6 +18766,8 @@ pub type DeciderHeuristicResult[T] = Array[(T, Array[(Int, Double)])]
 pub type DotModelAdapter = Unit
 
 pub type DotPackage = String
+
+pub type DotPackageImpl = String
 
 pub type ElkEdge = Int
 
