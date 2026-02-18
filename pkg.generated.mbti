@@ -1530,7 +1530,41 @@ pub let elk_default_portlist_sorter : ElkPortComparator
 
 pub fn elk_graph_components_processor_split(Int) -> Array[Array[Int]]
 
+pub let elk_graph_elk_bend_point_classifier_id : Int
+
+pub let elk_graph_elk_connectable_shape_classifier_id : Int
+
+pub let elk_graph_elk_edge_classifier_id : Int
+
+pub let elk_graph_elk_edge_section_classifier_id : Int
+
+pub let elk_graph_elk_graph_element_classifier_id : Int
+
+pub let elk_graph_elk_label_classifier_id : Int
+
+pub let elk_graph_elk_node_classifier_id : Int
+
+pub let elk_graph_elk_port_classifier_id : Int
+
+pub let elk_graph_elk_property_to_value_map_entry_classifier_id : Int
+
+pub let elk_graph_elk_shape_classifier_id : Int
+
+pub let elk_graph_emap_property_holder_classifier_id : Int
+
+pub let elk_graph_ename : String
+
+pub let elk_graph_ens_prefix : String
+
+pub let elk_graph_ens_uri : String
+
+pub let elk_graph_factory_instance : ElkGraphFactory
+
 pub fn elk_graph_importer_as_igraph_importer(ElkGraphImporter) -> IGraphImporter[Int]
+
+pub let elk_graph_iproperty_classifier_id : Int
+
+pub let elk_graph_iproperty_holder_classifier_id : Int
 
 pub fn elk_graph_json_for_elk_graph(Int) -> ElkGraphJsonExportBuilder
 
@@ -1543,6 +1577,12 @@ pub fn elk_graph_json_json_text_util_get_algorithm(GraphJsonTextElement) -> Layo
 pub let elk_graph_json_qualified_name_converter_delimiter : Char
 
 pub fn elk_graph_json_standalone_setup_do_setup() -> GraphJsonTextInjector
+
+pub fn elk_graph_package_id() -> String
+
+pub let elk_graph_package_instance : String
+
+pub let elk_graph_property_value_classifier_id : Int
 
 pub let elk_graph_qualified_name_converter_delimiter : Char
 
@@ -4326,6 +4366,8 @@ pub fn new_elk_graph_description_label_provider() -> ElkGraphDescriptionLabelPro
 
 pub fn new_elk_graph_executable_extension_factory() -> ElkGraphExecutableExtensionFactory
 
+pub fn new_elk_graph_factory_impl() -> ElkGraphFactory
+
 pub fn new_elk_graph_formatter(indent_size? : Int) -> ElkGraphFormatter
 
 pub fn new_elk_graph_grammar_access() -> ElkGraphGrammarAccess
@@ -4419,6 +4461,8 @@ pub fn new_elk_graph_lex_token(Int, String, String) -> ElkGraphLexToken
 pub fn new_elk_graph_linker() -> ElkGraphLinker
 
 pub fn new_elk_graph_outline_tree_provider() -> ElkGraphOutlineTreeProvider
+
+pub fn new_elk_graph_package_impl() -> String
 
 pub fn new_elk_graph_parser(grammar_access? : ElkGraphGrammarAccess) -> ElkGraphParser
 
@@ -10658,6 +10702,24 @@ pub struct ElkGraphExecutableExtensionFactory {
 }
 pub fn ElkGraphExecutableExtensionFactory::create(Self) -> Result[GraphTextUiObject, GraphTextUiCoreException]
 pub fn ElkGraphExecutableExtensionFactory::set_initialization_data(Self, GraphTextConfigurationElement?, String?, GraphTextInitializationData?) -> Unit
+
+#alias(ElkGraphFactoryImpl)
+pub struct ElkGraphFactory {
+  create_elk_label_fn : () -> Int
+  create_elk_node_fn : () -> Int
+  create_elk_port_fn : () -> Int
+  create_elk_edge_fn : () -> Int
+  create_elk_bend_point_fn : () -> ElkBendPoint
+  create_elk_edge_section_fn : (Int) -> Int
+  get_elk_graph_package_fn : () -> String
+}
+pub fn ElkGraphFactory::create_elk_bend_point(Self) -> ElkBendPoint
+pub fn ElkGraphFactory::create_elk_edge(Self) -> Int
+pub fn ElkGraphFactory::create_elk_edge_section(Self, Int) -> Int
+pub fn ElkGraphFactory::create_elk_label(Self) -> Int
+pub fn ElkGraphFactory::create_elk_node(Self) -> Int
+pub fn ElkGraphFactory::create_elk_port(Self) -> Int
+pub fn ElkGraphFactory::get_elk_graph_package(Self) -> String
 
 pub struct ElkGraphFormatter {
   indent_size : Int
@@ -18353,6 +18415,10 @@ pub type ElkGraphBoundsProvider = IBoundsProvider[Int, Int]
 pub type ElkGraphElement = Int
 
 pub type ElkGraphElementImpl = Int
+
+pub type ElkGraphPackage = String
+
+pub type ElkGraphPackageImpl = String
 
 pub type ElkLabel = Int
 

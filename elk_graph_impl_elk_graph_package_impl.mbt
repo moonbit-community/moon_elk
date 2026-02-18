@@ -1,2 +1,7 @@
-// Upstream counterpart: org.eclipse.elk.graph/impl/ElkGraphPackageImpl.java
-// Implementation is currently provided in aggregated graph model/properties files.
+///|
+pub type ElkGraphPackageImpl = ElkGraphPackage
+
+///|
+pub fn new_elk_graph_package_impl() -> ElkGraphPackageImpl {
+  elk_graph_package_instance
+}
