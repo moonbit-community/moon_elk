@@ -10731,19 +10731,19 @@ pub struct ElkGraphAdapterFactory {
   model_package : String
 }
 pub fn ElkGraphAdapterFactory::create_adapter(Self, ElkGraphSwitchTarget) -> Unit?
-pub fn ElkGraphAdapterFactory::create_e_map_property_holder_adapter(Self, MapPropertyHolder) -> Unit?
+pub fn ElkGraphAdapterFactory::create_e_map_property_holder_adapter(Self) -> Unit?
 pub fn ElkGraphAdapterFactory::create_e_object_adapter(Self) -> Unit?
-pub fn ElkGraphAdapterFactory::create_elk_bend_point_adapter(Self, ElkBendPoint) -> Unit?
-pub fn ElkGraphAdapterFactory::create_elk_connectable_shape_adapter(Self, ElkConnectableShape) -> Unit?
-pub fn ElkGraphAdapterFactory::create_elk_edge_adapter(Self, Int) -> Unit?
-pub fn ElkGraphAdapterFactory::create_elk_edge_section_adapter(Self, Int) -> Unit?
-pub fn ElkGraphAdapterFactory::create_elk_graph_element_adapter(Self, Int) -> Unit?
-pub fn ElkGraphAdapterFactory::create_elk_label_adapter(Self, Int) -> Unit?
-pub fn ElkGraphAdapterFactory::create_elk_node_adapter(Self, Int) -> Unit?
-pub fn ElkGraphAdapterFactory::create_elk_port_adapter(Self, Int) -> Unit?
-pub fn ElkGraphAdapterFactory::create_elk_property_to_value_map_entry_adapter(Self, Json) -> Unit?
-pub fn ElkGraphAdapterFactory::create_elk_shape_adapter(Self, Int) -> Unit?
-pub fn ElkGraphAdapterFactory::create_i_property_holder_adapter(Self, MapPropertyHolder) -> Unit?
+pub fn ElkGraphAdapterFactory::create_elk_bend_point_adapter(Self) -> Unit?
+pub fn ElkGraphAdapterFactory::create_elk_connectable_shape_adapter(Self) -> Unit?
+pub fn ElkGraphAdapterFactory::create_elk_edge_adapter(Self) -> Unit?
+pub fn ElkGraphAdapterFactory::create_elk_edge_section_adapter(Self) -> Unit?
+pub fn ElkGraphAdapterFactory::create_elk_graph_element_adapter(Self) -> Unit?
+pub fn ElkGraphAdapterFactory::create_elk_label_adapter(Self) -> Unit?
+pub fn ElkGraphAdapterFactory::create_elk_node_adapter(Self) -> Unit?
+pub fn ElkGraphAdapterFactory::create_elk_port_adapter(Self) -> Unit?
+pub fn ElkGraphAdapterFactory::create_elk_property_to_value_map_entry_adapter(Self) -> Unit?
+pub fn ElkGraphAdapterFactory::create_elk_shape_adapter(Self) -> Unit?
+pub fn ElkGraphAdapterFactory::create_i_property_holder_adapter(Self) -> Unit?
 pub fn ElkGraphAdapterFactory::is_factory_for_type(Self, String) -> Bool
 
 pub struct ElkGraphAntlrTokenFileProvider {
