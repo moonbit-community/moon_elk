@@ -4298,6 +4298,10 @@ pub fn new_edge_length_optimization() -> EdgeLengthOptimization
 
 pub fn new_edge_length_position_optimization() -> EdgeLengthPositionOptimization
 
+pub fn new_elk_bend_point(x? : Double, y? : Double) -> ElkBendPoint
+
+pub fn new_elk_bend_point_impl(x? : Double, y? : Double) -> ElkBendPoint
+
 pub fn new_elk_cancel_indicator(canceled? : Bool) -> IElkCancelIndicator
 
 pub fn new_elk_debug_plugin() -> ElkDebugPlugin
@@ -10541,6 +10545,17 @@ pub enum EdgerouterStrategy {
   DIRECT_ROUTING
   BEND_ROUTING
 }
+
+#alias(ElkBendPointImpl)
+pub struct ElkBendPoint {
+  mut x : Double
+  mut y : Double
+}
+pub fn ElkBendPoint::get_x(Self) -> Double
+pub fn ElkBendPoint::get_y(Self) -> Double
+pub fn ElkBendPoint::set(Self, Double, Double) -> Unit
+pub fn ElkBendPoint::set_x(Self, Double) -> Unit
+pub fn ElkBendPoint::set_y(Self, Double) -> Unit
 
 pub enum ElkConnectableShape {
   NodeShape(Int)
