@@ -1,4 +1,7 @@
 ///|
+let radial_java_double_min_value = 4.9406564584124654e-324
+
+///|
 pub fn new_radial_calculate_graph_size_layout_processor() -> ILayoutProcessor[
   RadialLayoutPhases,
   ElkNode,
@@ -15,8 +18,8 @@ pub fn new_radial_calculate_graph_size_layout_processor() -> ILayoutProcessor[
 
     let mut min_x_pos = @double.max_value
     let mut min_y_pos = @double.max_value
-    let mut max_x_pos = -@double.max_value
-    let mut max_y_pos = -@double.max_value
+    let mut max_x_pos = radial_java_double_min_value
+    let mut max_y_pos = radial_java_double_min_value
 
     for node in children {
       let pos_x = node_x(node)
