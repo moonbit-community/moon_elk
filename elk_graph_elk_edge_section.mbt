@@ -1,2 +1,2 @@
-// Upstream counterpart: org.eclipse.elk.graph/ElkEdgeSection.java
-// Implementation is currently provided in aggregated graph model/properties files.
+///|
+pub type ElkEdgeSection = Int

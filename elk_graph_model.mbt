@@ -1,25 +1,4 @@
 ///|
-pub type ElkNode = Int
-
-///|
-pub type ElkPort = Int
-
-///|
-pub type ElkEdge = Int
-
-///|
-pub type ElkEdgeSection = Int
-
-///|
-pub type ElkLabel = Int
-
-///|
-pub enum ElkConnectableShape {
-  NodeShape(ElkNode)
-  PortShape(ElkPort)
-}
-
-///|
 pub enum ElkLabelParent {
   NodeLabelParent(ElkNode)
   PortLabelParent(ElkPort)
@@ -45,16 +24,6 @@ pub fn make_edge_label_parent(edge : ElkEdge) -> ElkLabelParent {
 ///|
 pub fn make_label_label_parent(label : ElkLabel) -> ElkLabelParent {
   LabelLabelParent(label)
-}
-
-///|
-pub fn make_node_shape(node : ElkNode) -> ElkConnectableShape {
-  NodeShape(node)
-}
-
-///|
-pub fn make_port_shape(port : ElkPort) -> ElkConnectableShape {
-  PortShape(port)
 }
 
 ///|
