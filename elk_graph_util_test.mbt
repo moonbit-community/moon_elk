@@ -42,6 +42,71 @@ test "panic ElkGraphUtil connectableShapeToPort with none" {
 }
 
 ///|
+test "ElkGraphUtil edge convenience iterables" {
+  reset_graph_model_for_test()
+  let graph = create_graph()
+  let node1 = create_node(Some(graph))
+  let node2 = create_node(Some(graph))
+  let node3 = create_node(Some(graph))
+  let port1 = create_port(Some(node1))
+  let port2 = create_port(Some(node2))
+
+  let edge0 = create_edge_without_containment(
+    source=Some(make_node_shape(node1)),
+    target=Some(make_node_shape(node2)),
+  )
+  let edge1 = create_edge_without_containment(
+    source=Some(make_port_shape(port1)),
+    target=Some(make_node_shape(node2)),
+  )
+  let edge2 = create_edge_without_containment(
+    source=Some(make_node_shape(node3)),
+    target=Some(make_port_shape(port2)),
+  )
+  let edge3 = create_edge_without_containment(
+    source=Some(make_port_shape(port1)),
+    target=Some(make_port_shape(port2)),
+  )
+  let edge4 = create_edge_without_containment(
+    source=Some(make_node_shape(node2)),
+    target=Some(make_node_shape(node3)),
+  )
+
+  assert_eq(all_outgoing_edges(node1), [edge0, edge1, edge3])
+  assert_eq(all_incoming_edges(node2), [edge0, edge1, edge2, edge3])
+  assert_eq(all_incident_edges(node2), [edge4, edge0, edge1, edge2, edge3])
+
+  assert_eq(all_incident_edges_for_shape(make_node_shape(node2)), [
+    edge0, edge1, edge4,
+  ])
+  assert_eq(all_incident_edges_for_shape(make_port_shape(port2)), [edge2, edge3])
+  let incident_shapes = all_incident_shapes(edge3)
+  assert_eq(incident_shapes.length(), 2)
+  match incident_shapes[0] {
+    PortShape(port) => assert_eq(port, port1)
+    _ => abort("Expected source port shape")
+  }
+  match incident_shapes[1] {
+    PortShape(port) => assert_eq(port, port2)
+    _ => abort("Expected target port shape")
+  }
+}
+
+///|
+test "ElkGraphUtil allIncidentSections" {
+  reset_graph_model_for_test()
+  let edge = create_edge(None)
+  let section0 = create_edge_section(edge)
+  let section1 = create_edge_section(edge)
+  let section2 = create_edge_section(edge)
+
+  edge_section_add_incoming_section(section0, section1)
+  edge_section_add_outgoing_section(section0, section2)
+
+  assert_eq(all_incident_sections(section0), [section1, section2])
+}
+
+///|
 test "ElkGraphUtil findBestEdgeContainment" {
   reset_graph_model_for_test()
   let graph1 = create_graph()

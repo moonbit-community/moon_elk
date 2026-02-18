@@ -54,6 +54,18 @@ pub let all_files_recursive_suffix : String
 
 pub let all_files_suffix : String
 
+pub fn all_incident_edges(Int) -> Array[Int]
+
+pub fn all_incident_edges_for_shape(ElkConnectableShape) -> Array[Int]
+
+pub fn all_incident_sections(Int) -> Array[Int]
+
+pub fn all_incident_shapes(Int) -> Array[ElkConnectableShape]
+
+pub fn all_incoming_edges(Int) -> Array[Int]
+
+pub fn all_outgoing_edges(Int) -> Array[Int]
+
 pub let apply_layout_role : String
 
 pub fn apply_visitor(Int, IGraphElementVisitor) -> Unit

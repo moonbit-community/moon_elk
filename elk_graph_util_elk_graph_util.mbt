@@ -32,13 +32,79 @@ pub fn connectable_shape_to_port(
 }
 
 ///|
-fn all_incident_shapes(edge : ElkEdge) -> Array[ElkConnectableShape] {
+pub fn all_incoming_edges(node : ElkNode) -> Array[ElkEdge] {
+  let incoming = node_incoming_edges(node)
+  for port in node_ports(node) {
+    for edge in port_incoming_edges(port) {
+      incoming.push(edge)
+    }
+  }
+  incoming
+}
+
+///|
+pub fn all_outgoing_edges(node : ElkNode) -> Array[ElkEdge] {
+  let outgoing = node_outgoing_edges(node)
+  for port in node_ports(node) {
+    for edge in port_outgoing_edges(port) {
+      outgoing.push(edge)
+    }
+  }
+  outgoing
+}
+
+///|
+pub fn all_incident_edges_for_shape(
+  shape : ElkConnectableShape,
+) -> Array[ElkEdge] {
+  let incident = []
+  match shape {
+    NodeShape(node) => {
+      for edge in node_incoming_edges(node) {
+        incident.push(edge)
+      }
+      for edge in node_outgoing_edges(node) {
+        incident.push(edge)
+      }
+    }
+    PortShape(port) => {
+      for edge in port_incoming_edges(port) {
+        incident.push(edge)
+      }
+      for edge in port_outgoing_edges(port) {
+        incident.push(edge)
+      }
+    }
+  }
+  incident
+}
+
+///|
+pub fn all_incident_edges(node : ElkNode) -> Array[ElkEdge] {
+  let incident = all_outgoing_edges(node)
+  for edge in all_incoming_edges(node) {
+    incident.push(edge)
+  }
+  incident
+}
+
+///|
+pub fn all_incident_shapes(edge : ElkEdge) -> Array[ElkConnectableShape] {
   let all = []
   for source in edge_sources(edge) {
     all.push(source)
   }
   for target in edge_targets(edge) {
     all.push(target)
+  }
+  all
+}
+
+///|
+pub fn all_incident_sections(section : ElkEdgeSection) -> Array[ElkEdgeSection] {
+  let all = edge_section_incoming_sections(section)
+  for outgoing_section in edge_section_outgoing_sections(section) {
+    all.push(outgoing_section)
   }
   all
 }
