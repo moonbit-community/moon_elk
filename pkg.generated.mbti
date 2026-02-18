@@ -20,6 +20,8 @@ pub fn abstract_force_model_layout(AbstractForceModelState, FGraph, IElkProgress
 
 pub fn abstract_force_model_random(AbstractForceModelState) -> @random.Rand
 
+pub fn adapt(Int) -> ElkGraphAdapter
+
 pub fn adapt_l_graph(LGraph) -> LGraphAdapter
 
 pub fn adapt_l_graph_with_options(LGraph, Bool, Bool, (LNode) -> Bool) -> LGraphAdapter
@@ -29,6 +31,10 @@ pub fn adapt_l_graph_with_transparent_north_south_edges(LGraph, Bool) -> LGraphA
 pub fn adapt_l_label(LLabel) -> LLabelAdapter
 
 pub fn adapt_l_node(LNode, Bool) -> LNodeAdapter
+
+pub fn adapt_single_node(Int) -> ElkNodeAdapter
+
+pub fn adapt_single_port(Int) -> ElkPortAdapter
 
 pub fn aggregated_match_decider_avg(Array[Double]) -> Double
 
@@ -1519,6 +1525,8 @@ pub fn elk_debug_plugin_image_descriptor_from_plugin(String, String) -> String
 pub fn elk_debug_plugin_start(ElkDebugPlugin) -> Unit
 
 pub fn elk_debug_plugin_stop(ElkDebugPlugin) -> Unit
+
+pub let elk_default_portlist_sorter : ElkPortComparator
 
 pub fn elk_graph_components_processor_split(Int) -> Array[Array[Int]]
 
@@ -4294,7 +4302,11 @@ pub fn new_elk_cancel_indicator(canceled? : Bool) -> IElkCancelIndicator
 
 pub fn new_elk_debug_plugin() -> ElkDebugPlugin
 
+pub fn new_elk_edge_adapter(Int) -> ElkEdgeAdapter
+
 pub fn new_elk_engine(default_layout_options? : Map[String, Json], algorithms? : Array[String]) -> ElkEngine
+
+pub fn new_elk_graph_adapter(Int) -> ElkGraphAdapter
 
 pub fn new_elk_graph_antlr_token_file_provider() -> ElkGraphAntlrTokenFileProvider
 
@@ -4446,6 +4458,8 @@ pub fn new_elk_graph_xmi_helper(ElkGraphResource) -> ElkGraphXMIHelper
 
 pub fn new_elk_graph_xmi_save(ElkGraphXMIHelper) -> ElkGraphXMISave
 
+pub fn new_elk_label_adapter(Int) -> ElkLabelAdapter
+
 pub fn new_elk_layered() -> ElkLayered
 
 pub fn new_elk_layout_provider() -> ElkLayoutProvider
@@ -4460,6 +4474,8 @@ pub fn new_elk_margin_left_right_top_bottom(Double, Double) -> Spacing
 
 pub fn new_elk_margin_values(Double, Double, Double, Double) -> Spacing
 
+pub fn new_elk_node_adapter(ElkGraphAdapter?, Int) -> ElkNodeAdapter
+
 pub fn new_elk_padding() -> Spacing
 
 pub fn new_elk_padding_any(Double) -> Spacing
@@ -4469,6 +4485,10 @@ pub fn new_elk_padding_copy(Spacing) -> Spacing
 pub fn new_elk_padding_left_right_top_bottom(Double, Double) -> Spacing
 
 pub fn new_elk_padding_values(Double, Double, Double, Double) -> Spacing
+
+pub fn new_elk_port_adapter(Int) -> ElkPortAdapter
+
+pub fn new_elk_port_comparator() -> ElkPortComparator
 
 pub fn new_elk_progress_monitor(task_name? : String) -> IElkProgressMonitor
 
@@ -10545,6 +10565,13 @@ pub struct ElkDebugPlugin {
 }
 pub fn ElkDebugPlugin::get_model(Self) -> ExecutionInfoModel
 
+pub struct ElkEdgeAdapter {
+  element : Int
+  mut label_adapters : Array[ElkLabelAdapter]?
+}
+pub fn ElkEdgeAdapter::get_element(Self) -> Int
+pub fn ElkEdgeAdapter::get_labels(Self) -> Array[ElkLabelAdapter]
+
 pub struct ElkEngine {
   default_layout_options : Map[String, Json]
   algorithms : Array[String]
@@ -10552,6 +10579,30 @@ pub struct ElkEngine {
 pub fn ElkEngine::known_layout_algorithms(Self) -> Array[String]
 pub fn ElkEngine::layout(Self, graph? : Json, layout_options? : Map[String, Json], logging? : Bool, measure_execution_time? : Bool) -> Json raise
 pub fn ElkEngine::terminate_worker(Self) -> Unit
+
+pub struct ElkGraphAdapter {
+  element : Int
+  mut child_nodes : Array[ElkNodeAdapter]?
+  mut volatile_id : Int
+}
+pub fn ElkGraphAdapter::get_graph(Self) -> Int
+pub fn ElkGraphAdapter::get_nodes(Self) -> Array[ElkNodeAdapter]
+pub fn ElkGraphAdapter::get_position(Self) -> KVector
+pub fn ElkGraphAdapter::get_property_bool(Self, IProperty[Bool]) -> Bool
+pub fn ElkGraphAdapter::get_property_double(Self, IProperty[Double]) -> Double
+pub fn ElkGraphAdapter::get_property_int(Self, IProperty[Int]) -> Int
+pub fn ElkGraphAdapter::get_property_string(Self, IProperty[String]) -> String
+pub fn ElkGraphAdapter::get_property_string_array(Self, IProperty[Array[String]]) -> Array[String]
+pub fn ElkGraphAdapter::get_size(Self) -> KVector
+pub fn ElkGraphAdapter::get_volatile_id(Self) -> Int
+pub fn ElkGraphAdapter::has_property_bool(Self, IProperty[Bool]) -> Bool
+pub fn ElkGraphAdapter::has_property_double(Self, IProperty[Double]) -> Bool
+pub fn ElkGraphAdapter::has_property_int(Self, IProperty[Int]) -> Bool
+pub fn ElkGraphAdapter::has_property_string(Self, IProperty[String]) -> Bool
+pub fn ElkGraphAdapter::has_property_string_array(Self, IProperty[Array[String]]) -> Bool
+pub fn ElkGraphAdapter::set_position(Self, KVector) -> Unit
+pub fn ElkGraphAdapter::set_size(Self, KVector) -> Unit
+pub fn ElkGraphAdapter::set_volatile_id(Self, Int) -> Unit
 
 pub struct ElkGraphAntlrTokenFileProvider {
   marker : Unit
@@ -11193,6 +11244,30 @@ pub enum ElkGraphXmiValue {
   RawValue(String)
 }
 
+pub struct ElkLabelAdapter {
+  element : Int
+  mut volatile_id : Int
+}
+pub fn ElkLabelAdapter::get_label(Self) -> Int
+pub fn ElkLabelAdapter::get_position(Self) -> KVector
+pub fn ElkLabelAdapter::get_property_bool(Self, IProperty[Bool]) -> Bool
+pub fn ElkLabelAdapter::get_property_double(Self, IProperty[Double]) -> Double
+pub fn ElkLabelAdapter::get_property_int(Self, IProperty[Int]) -> Int
+pub fn ElkLabelAdapter::get_property_string(Self, IProperty[String]) -> String
+pub fn ElkLabelAdapter::get_property_string_array(Self, IProperty[Array[String]]) -> Array[String]
+pub fn ElkLabelAdapter::get_side(Self) -> LabelSide
+pub fn ElkLabelAdapter::get_size(Self) -> KVector
+pub fn ElkLabelAdapter::get_text(Self) -> String
+pub fn ElkLabelAdapter::get_volatile_id(Self) -> Int
+pub fn ElkLabelAdapter::has_property_bool(Self, IProperty[Bool]) -> Bool
+pub fn ElkLabelAdapter::has_property_double(Self, IProperty[Double]) -> Bool
+pub fn ElkLabelAdapter::has_property_int(Self, IProperty[Int]) -> Bool
+pub fn ElkLabelAdapter::has_property_string(Self, IProperty[String]) -> Bool
+pub fn ElkLabelAdapter::has_property_string_array(Self, IProperty[Array[String]]) -> Bool
+pub fn ElkLabelAdapter::set_position(Self, KVector) -> Unit
+pub fn ElkLabelAdapter::set_size(Self, KVector) -> Unit
+pub fn ElkLabelAdapter::set_volatile_id(Self, Int) -> Unit
+
 pub enum ElkLabelParent {
   NodeLabelParent(Int)
   PortLabelParent(Int)
@@ -11228,6 +11303,82 @@ pub struct ElkLayoutProvider {
 pub fn ElkLayoutProvider::can_layout_nodes(Self, Array[GmfLayoutNode], Bool, GmfLayoutHint) -> Bool
 pub fn ElkLayoutProvider::layout_layout_nodes(Self, Array[GmfLayoutNode], Bool, GmfLayoutHint) -> () -> Unit
 pub fn ElkLayoutProvider::provides(Self, GmfOperation) -> Bool
+
+pub struct ElkNodeAdapter {
+  parent_graph_adapter : ElkGraphAdapter?
+  element : Int
+  mut label_adapters : Array[ElkLabelAdapter]?
+  mut port_adapters : Array[ElkPortAdapter]?
+  mut incoming_edge_adapters : Array[ElkEdgeAdapter]?
+  mut outgoing_edge_adapters : Array[ElkEdgeAdapter]?
+  mut volatile_id : Int
+}
+pub fn ElkNodeAdapter::get_graph(Self) -> ElkGraphAdapter?
+pub fn ElkNodeAdapter::get_incoming_edges(Self) -> Array[ElkEdgeAdapter]
+pub fn ElkNodeAdapter::get_labels(Self) -> Array[ElkLabelAdapter]
+pub fn ElkNodeAdapter::get_margin(Self) -> Spacing
+pub fn ElkNodeAdapter::get_node(Self) -> Int
+pub fn ElkNodeAdapter::get_outgoing_edges(Self) -> Array[ElkEdgeAdapter]
+pub fn ElkNodeAdapter::get_padding(Self) -> Spacing
+pub fn ElkNodeAdapter::get_ports(Self) -> Array[ElkPortAdapter]
+pub fn ElkNodeAdapter::get_position(Self) -> KVector
+pub fn ElkNodeAdapter::get_property_bool(Self, IProperty[Bool]) -> Bool
+pub fn ElkNodeAdapter::get_property_double(Self, IProperty[Double]) -> Double
+pub fn ElkNodeAdapter::get_property_int(Self, IProperty[Int]) -> Int
+pub fn ElkNodeAdapter::get_property_string(Self, IProperty[String]) -> String
+pub fn ElkNodeAdapter::get_property_string_array(Self, IProperty[Array[String]]) -> Array[String]
+pub fn ElkNodeAdapter::get_size(Self) -> KVector
+pub fn ElkNodeAdapter::get_volatile_id(Self) -> Int
+pub fn ElkNodeAdapter::has_property_bool(Self, IProperty[Bool]) -> Bool
+pub fn ElkNodeAdapter::has_property_double(Self, IProperty[Double]) -> Bool
+pub fn ElkNodeAdapter::has_property_int(Self, IProperty[Int]) -> Bool
+pub fn ElkNodeAdapter::has_property_string(Self, IProperty[String]) -> Bool
+pub fn ElkNodeAdapter::has_property_string_array(Self, IProperty[Array[String]]) -> Bool
+pub fn ElkNodeAdapter::is_compound_node(Self) -> Bool
+pub fn ElkNodeAdapter::set_margin(Self, Spacing) -> Unit
+pub fn ElkNodeAdapter::set_padding(Self, Spacing) -> Unit
+pub fn ElkNodeAdapter::set_position(Self, KVector) -> Unit
+pub fn ElkNodeAdapter::set_size(Self, KVector) -> Unit
+pub fn ElkNodeAdapter::set_volatile_id(Self, Int) -> Unit
+pub fn ElkNodeAdapter::sort_port_list(Self) -> Unit
+pub fn ElkNodeAdapter::sort_port_list_with(Self, (ElkPortAdapter, ElkPortAdapter) -> Int) -> Unit
+
+pub struct ElkPortAdapter {
+  element : Int
+  mut label_adapters : Array[ElkLabelAdapter]?
+  mut incoming_edge_adapters : Array[ElkEdgeAdapter]?
+  mut outgoing_edge_adapters : Array[ElkEdgeAdapter]?
+  mut volatile_id : Int
+}
+pub fn ElkPortAdapter::get_incoming_edges(Self) -> Array[ElkEdgeAdapter]
+pub fn ElkPortAdapter::get_labels(Self) -> Array[ElkLabelAdapter]
+pub fn ElkPortAdapter::get_margin(Self) -> Spacing
+pub fn ElkPortAdapter::get_outgoing_edges(Self) -> Array[ElkEdgeAdapter]
+pub fn ElkPortAdapter::get_port(Self) -> Int
+pub fn ElkPortAdapter::get_position(Self) -> KVector
+pub fn ElkPortAdapter::get_property_bool(Self, IProperty[Bool]) -> Bool
+pub fn ElkPortAdapter::get_property_double(Self, IProperty[Double]) -> Double
+pub fn ElkPortAdapter::get_property_int(Self, IProperty[Int]) -> Int
+pub fn ElkPortAdapter::get_property_string(Self, IProperty[String]) -> String
+pub fn ElkPortAdapter::get_property_string_array(Self, IProperty[Array[String]]) -> Array[String]
+pub fn ElkPortAdapter::get_side(Self) -> PortSide
+pub fn ElkPortAdapter::get_size(Self) -> KVector
+pub fn ElkPortAdapter::get_volatile_id(Self) -> Int
+pub fn ElkPortAdapter::has_compound_connections(Self) -> Bool
+pub fn ElkPortAdapter::has_property_bool(Self, IProperty[Bool]) -> Bool
+pub fn ElkPortAdapter::has_property_double(Self, IProperty[Double]) -> Bool
+pub fn ElkPortAdapter::has_property_int(Self, IProperty[Int]) -> Bool
+pub fn ElkPortAdapter::has_property_string(Self, IProperty[String]) -> Bool
+pub fn ElkPortAdapter::has_property_string_array(Self, IProperty[Array[String]]) -> Bool
+pub fn ElkPortAdapter::set_margin(Self, Spacing) -> Unit
+pub fn ElkPortAdapter::set_position(Self, KVector) -> Unit
+pub fn ElkPortAdapter::set_size(Self, KVector) -> Unit
+pub fn ElkPortAdapter::set_volatile_id(Self, Int) -> Unit
+
+pub struct ElkPortComparator {
+  unit : Unit
+}
+pub fn ElkPortComparator::compare(Self, Int, Int) -> Int
 
 pub struct ElkRectangle {
   mut x : Double
