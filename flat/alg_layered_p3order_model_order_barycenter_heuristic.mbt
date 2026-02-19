@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.alg.layered/alg_layered_p3order_model_order_barycenter_heuristic.mbt

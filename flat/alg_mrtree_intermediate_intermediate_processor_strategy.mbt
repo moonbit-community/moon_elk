@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.alg.mrtree/alg_mrtree_intermediate_intermediate_processor_strategy.mbt

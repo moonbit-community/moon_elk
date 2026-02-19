@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.core.meta/core_meta_md_option_target_type.mbt

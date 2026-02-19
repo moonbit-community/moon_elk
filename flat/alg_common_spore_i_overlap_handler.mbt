@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.alg.common/alg_common_spore_i_overlap_handler.mbt

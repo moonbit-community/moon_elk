@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.alg.layered.test/alg_layered_intermediate_greedyswitch_greedy_switch_processor_wbtest.mbt

@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.graph.json.text/graph_json_text_parser_antlr_internal_internal_elk_graph_json_parser.mbt

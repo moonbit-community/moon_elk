@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.alg.spore/alg_spore_p2processingorder_max_st_phase.mbt

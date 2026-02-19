@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.alg.rectpacking/alg_rectpacking_p3whitespaceelimination_rectangle_expansion.mbt

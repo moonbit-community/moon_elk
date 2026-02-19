@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.conn.gmf.test/conn_gmf_layouter_gmf_meta_data_provider_test.mbt

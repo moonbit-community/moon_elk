@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.alg.force/alg_force_model_abstract_force_model.mbt

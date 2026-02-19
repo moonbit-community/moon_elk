@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.core.debug.grandom.ide/core_debug_grandom_ide_grandom_ide_setup.mbt

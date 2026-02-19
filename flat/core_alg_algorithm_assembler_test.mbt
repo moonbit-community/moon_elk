@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.core.test/core_alg_algorithm_assembler_test.mbt

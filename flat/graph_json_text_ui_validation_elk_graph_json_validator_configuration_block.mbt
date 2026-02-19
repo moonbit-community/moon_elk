@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.graph.json.text.ui/graph_json_text_ui_validation_elk_graph_json_validator_configuration_block.mbt

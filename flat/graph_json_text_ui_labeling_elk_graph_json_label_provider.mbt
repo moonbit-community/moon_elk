@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.graph.json.text.ui/graph_json_text_ui_labeling_elk_graph_json_label_provider.mbt

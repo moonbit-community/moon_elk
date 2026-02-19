@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.alg.test/alg_test_framework_graph_graph_from_method.mbt

@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.alg.force.test/alg_force_force_import_test.mbt

@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.alg.radial/alg_radial_options_overlap_removal_strategy.mbt

@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.alg.rectpacking.test/alg_rectpacking_intermediate_min_size_processors_test.mbt

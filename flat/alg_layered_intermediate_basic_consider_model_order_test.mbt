@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.alg.layered.test/alg_layered_intermediate_basic_consider_model_order_test.mbt

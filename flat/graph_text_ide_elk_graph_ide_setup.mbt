@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.graph.text.ide/graph_text_ide_elk_graph_ide_setup.mbt

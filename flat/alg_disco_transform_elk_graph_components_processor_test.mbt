@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.alg.disco.test/alg_disco_transform_elk_graph_components_processor_test.mbt

@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.core.ui.test/core_ui_wbtest.mbt

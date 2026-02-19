@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.core.test/core_util_adapters_graph_adapters_test.mbt

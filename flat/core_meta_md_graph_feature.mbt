@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.core.meta/core_meta_md_graph_feature.mbt

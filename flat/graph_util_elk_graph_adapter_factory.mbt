@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.graph/graph_util_elk_graph_adapter_factory.mbt

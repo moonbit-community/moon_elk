@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.core.service.test/core_service_test.mbt

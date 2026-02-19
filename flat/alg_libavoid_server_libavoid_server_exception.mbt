@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.alg.libavoid/alg_libavoid_server_libavoid_server_exception.mbt

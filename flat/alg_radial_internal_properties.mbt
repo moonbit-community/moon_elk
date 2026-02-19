@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.alg.radial/alg_radial_internal_properties.mbt

@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.core.test/core_math_cubic_spline_interpolator_test.mbt

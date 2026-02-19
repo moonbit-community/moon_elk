@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.graph.text/graph_text_serializer_abstract_elk_graph_syntactic_sequencer.mbt

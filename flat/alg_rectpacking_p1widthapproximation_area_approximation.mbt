@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.alg.rectpacking/alg_rectpacking_p1widthapproximation_area_approximation.mbt

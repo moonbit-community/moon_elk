@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.graph.text/graph_text_validation_issue_codes.mbt

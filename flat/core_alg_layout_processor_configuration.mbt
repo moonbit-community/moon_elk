@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.core/core_alg_layout_processor_configuration.mbt

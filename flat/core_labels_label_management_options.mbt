@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.core/core_labels_label_management_options.mbt

@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.alg.force/alg_force_options_force_model_strategy.mbt

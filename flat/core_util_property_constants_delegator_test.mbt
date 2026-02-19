@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.core.test/core_util_property_constants_delegator_test.mbt

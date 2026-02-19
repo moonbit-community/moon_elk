@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.graph.text/graph_text_conversion_elk_graph_value_converter_service.mbt

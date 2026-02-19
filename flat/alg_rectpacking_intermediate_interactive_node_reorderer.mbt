@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.alg.rectpacking/alg_rectpacking_intermediate_interactive_node_reorderer.mbt

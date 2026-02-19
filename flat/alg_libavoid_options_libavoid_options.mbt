@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.alg.libavoid/alg_libavoid_options_libavoid_options.mbt

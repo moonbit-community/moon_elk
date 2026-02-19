@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.alg.layered.test/alg_layered_intermediate_self_loop_preprocessor_test.mbt

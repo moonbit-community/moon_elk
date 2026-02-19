@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.alg.rectpacking/alg_rectpacking_p2packing_no_placement.mbt

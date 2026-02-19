@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.core.ui/core_ui_active_editor_supported_tester.mbt

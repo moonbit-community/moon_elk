@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.core.meta.ui/core_meta_ui_labeling_meta_data_label_provider.mbt

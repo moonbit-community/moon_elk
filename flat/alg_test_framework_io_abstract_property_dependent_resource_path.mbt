@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.alg.test/alg_test_framework_io_abstract_property_dependent_resource_path.mbt

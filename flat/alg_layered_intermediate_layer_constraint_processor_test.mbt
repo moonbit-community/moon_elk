@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.alg.layered.test/alg_layered_intermediate_layer_constraint_processor_test.mbt

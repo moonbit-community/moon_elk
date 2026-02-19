@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.graph.text/graph_text_serializer_elk_graph_transient_value_service.mbt

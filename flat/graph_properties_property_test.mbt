@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.graph.test/graph_properties_property_test.mbt

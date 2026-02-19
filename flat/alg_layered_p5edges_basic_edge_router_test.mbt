@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.alg.layered.test/alg_layered_p5edges_basic_edge_router_test.mbt

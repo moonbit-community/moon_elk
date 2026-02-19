@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.graph.text.ide.test/graph_text_ide_ui_test.mbt

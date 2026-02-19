@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.alg.layered.test/alg_layered_p3order_forster_constraint_resolver_test.mbt

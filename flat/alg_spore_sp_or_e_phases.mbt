@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.alg.spore/alg_spore_sp_or_e_phases.mbt

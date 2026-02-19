@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.core.debug/core_debug_views_graph_reload_from_file_action.mbt

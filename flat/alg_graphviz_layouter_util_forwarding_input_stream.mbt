@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.alg.graphviz.layouter/alg_graphviz_layouter_util_forwarding_input_stream.mbt

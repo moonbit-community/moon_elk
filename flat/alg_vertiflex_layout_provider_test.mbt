@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.alg.vertiflex.test/alg_vertiflex_layout_provider_test.mbt

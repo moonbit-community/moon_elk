@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.alg.layered/alg_layered_p5edges_splines_splines_math.mbt

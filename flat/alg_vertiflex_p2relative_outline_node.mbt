@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.alg.vertiflex/alg_vertiflex_p2relative_outline_node.mbt

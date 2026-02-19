@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.graph.text/graph_text_services_elk_graph_grammar_access.mbt

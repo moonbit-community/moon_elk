@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.graph.text/graph_text_scoping_abstract_elk_graph_scope_provider.mbt

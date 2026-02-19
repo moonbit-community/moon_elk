@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.core.test/core_data_ilayout_meta_data_test.mbt

@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.alg.layered.test/alg_layered_intermediate_wrapping_breaking_point_processor_test.mbt

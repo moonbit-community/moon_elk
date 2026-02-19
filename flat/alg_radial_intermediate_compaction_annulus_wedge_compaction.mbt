@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.alg.radial/alg_radial_intermediate_compaction_annulus_wedge_compaction.mbt

@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.graph.text/graph_text_parser_antlr_elk_graph_antlr_token_file_provider.mbt

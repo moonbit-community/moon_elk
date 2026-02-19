@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.core.meta/core_meta_validation_melk_unique_class_name_validator.mbt

@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.core.test/core_validation_graph_validation_exception_test.mbt

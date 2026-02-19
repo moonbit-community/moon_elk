@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.graph.json.test/graph_json_json_import_exception_test.mbt

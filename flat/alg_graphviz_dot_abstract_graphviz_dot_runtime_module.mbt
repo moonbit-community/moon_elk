@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.alg.graphviz.dot/alg_graphviz_dot_abstract_graphviz_dot_runtime_module.mbt

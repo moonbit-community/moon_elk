@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.conn.gmf/conn_gmf_layout_edit_policy_provider.mbt

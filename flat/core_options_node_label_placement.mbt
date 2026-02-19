@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.core/core_options_node_label_placement.mbt

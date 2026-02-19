@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.core.meta.ui/core_meta_ui_outline_meta_data_outline_tree_provider.mbt

@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.core/core_util_individual_spacings.mbt

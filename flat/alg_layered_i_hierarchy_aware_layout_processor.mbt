@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.alg.layered/alg_layered_i_hierarchy_aware_layout_processor.mbt

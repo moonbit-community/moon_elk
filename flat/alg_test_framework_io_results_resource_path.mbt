@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.alg.test/alg_test_framework_io_results_resource_path.mbt

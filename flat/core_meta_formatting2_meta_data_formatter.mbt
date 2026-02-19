@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.core.meta/core_meta_formatting2_meta_data_formatter.mbt

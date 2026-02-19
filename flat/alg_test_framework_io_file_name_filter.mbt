@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.alg.test/alg_test_framework_io_file_name_filter.mbt

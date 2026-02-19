@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.shared.test/shared_test_direct_layout_test.mbt

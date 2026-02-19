@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.core.meta.test/core_meta_generated_parser_test.mbt

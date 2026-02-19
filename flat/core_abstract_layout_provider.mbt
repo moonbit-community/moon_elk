@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.core/core_abstract_layout_provider.mbt

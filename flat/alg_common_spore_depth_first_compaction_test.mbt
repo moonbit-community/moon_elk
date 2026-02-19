@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.alg.common.test/alg_common_spore_depth_first_compaction_test.mbt

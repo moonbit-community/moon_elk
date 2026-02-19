@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.alg.layered/alg_layered_intermediate_final_spline_bendpoints_calculator.mbt

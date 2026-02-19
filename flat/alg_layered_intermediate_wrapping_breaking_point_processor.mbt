@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.alg.layered/alg_layered_intermediate_wrapping_breaking_point_processor.mbt

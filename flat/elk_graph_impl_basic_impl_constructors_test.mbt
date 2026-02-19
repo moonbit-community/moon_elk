@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.graph.test/elk_graph_impl_basic_impl_constructors_test.mbt

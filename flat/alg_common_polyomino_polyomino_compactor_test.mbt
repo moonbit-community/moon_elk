@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.alg.common.test/alg_common_polyomino_polyomino_compactor_test.mbt

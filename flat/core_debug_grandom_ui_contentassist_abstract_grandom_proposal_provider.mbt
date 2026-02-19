@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.core.debug.grandom.ui/core_debug_grandom_ui_contentassist_abstract_grandom_proposal_provider.mbt

@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.core.ui/core_ui_views_layout_view_part.mbt

@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.alg.common.test/alg_common_nodespacing_port_label_placement_variants_test.mbt

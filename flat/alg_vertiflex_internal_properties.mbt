@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.alg.vertiflex/alg_vertiflex_internal_properties.mbt

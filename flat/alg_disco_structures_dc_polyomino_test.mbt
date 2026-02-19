@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.alg.disco.test/alg_disco_structures_dc_polyomino_test.mbt

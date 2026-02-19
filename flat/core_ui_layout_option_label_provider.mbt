@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.core.ui/core_ui_layout_option_label_provider.mbt

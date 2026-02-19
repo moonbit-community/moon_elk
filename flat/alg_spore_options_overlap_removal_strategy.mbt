@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.alg.spore/alg_spore_options_overlap_removal_strategy.mbt

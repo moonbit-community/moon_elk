@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.core/core_data_layout_category_data.mbt

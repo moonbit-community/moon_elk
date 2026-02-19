@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.alg.common.test/alg_common_rectilinear_convex_hull_test.mbt

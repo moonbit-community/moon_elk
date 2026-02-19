@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.alg.mrtree.test/alg_mrtree_interactive_mrtree_graph_visitor_test.mbt

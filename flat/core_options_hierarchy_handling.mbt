@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.core/core_options_hierarchy_handling.mbt

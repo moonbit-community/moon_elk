@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.core.test/core_data_deprecated_layout_option_replacer_test.mbt

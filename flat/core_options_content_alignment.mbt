@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.core/core_options_content_alignment.mbt

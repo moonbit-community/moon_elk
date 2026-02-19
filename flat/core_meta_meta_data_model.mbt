@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.core.meta/core_meta_meta_data_model.mbt

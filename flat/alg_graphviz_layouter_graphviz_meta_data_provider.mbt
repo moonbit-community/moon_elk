@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.alg.graphviz.layouter/alg_graphviz_layouter_graphviz_meta_data_provider.mbt

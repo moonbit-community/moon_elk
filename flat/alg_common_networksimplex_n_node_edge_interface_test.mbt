@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.alg.common.test/alg_common_networksimplex_n_node_edge_interface_test.mbt

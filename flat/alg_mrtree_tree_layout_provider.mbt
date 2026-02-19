@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.alg.mrtree/alg_mrtree_tree_layout_provider.mbt

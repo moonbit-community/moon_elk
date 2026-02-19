@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.alg.force/alg_force_options_meta_data_provider.mbt

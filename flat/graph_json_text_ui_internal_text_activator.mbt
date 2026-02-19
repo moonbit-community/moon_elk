@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.graph.json.text.ui/graph_json_text_ui_internal_text_activator.mbt

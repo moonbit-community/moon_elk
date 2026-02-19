@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.core.meta/core_meta_validation_abstract_meta_data_validator.mbt

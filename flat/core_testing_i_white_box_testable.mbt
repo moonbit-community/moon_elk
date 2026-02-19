@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.core/core_testing_i_white_box_testable.mbt

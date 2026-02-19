@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.alg.topdownpacking.test/alg_topdownpacking_layout_provider_test.mbt

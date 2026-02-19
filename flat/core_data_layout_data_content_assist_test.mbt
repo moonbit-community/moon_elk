@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.core.test/core_data_layout_data_content_assist_test.mbt

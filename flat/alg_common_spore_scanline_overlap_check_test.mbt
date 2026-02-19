@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.alg.common.test/alg_common_spore_scanline_overlap_check_test.mbt

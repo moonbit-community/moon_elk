@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.core.ui/core_ui_views_multiple_options_cell_editor.mbt

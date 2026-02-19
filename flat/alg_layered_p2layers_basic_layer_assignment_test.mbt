@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.alg.layered.test/alg_layered_p2layers_basic_layer_assignment_test.mbt

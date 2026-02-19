@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.core.meta/core_meta_jvmmodel_melk_documentation_generator.mbt

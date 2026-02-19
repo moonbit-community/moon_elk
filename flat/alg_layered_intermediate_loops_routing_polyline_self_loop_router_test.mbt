@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.alg.layered.test/alg_layered_intermediate_loops_routing_polyline_self_loop_router_test.mbt

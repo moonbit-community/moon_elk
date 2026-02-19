@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.conn.gmf/conn_gmf_layout_diagram_file_handler.mbt

@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.core/core_options_shape_coords.mbt

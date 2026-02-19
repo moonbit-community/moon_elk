@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.core.test/core_alg_spacing_configuration_test.mbt

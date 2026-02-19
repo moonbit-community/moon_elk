@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.alg.disco.test/alg_disco_dis_co_layout_provider_test.mbt

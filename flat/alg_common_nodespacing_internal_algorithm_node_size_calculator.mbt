@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.alg.common/alg_common_nodespacing_internal_algorithm_node_size_calculator.mbt

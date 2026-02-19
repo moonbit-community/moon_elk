@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.alg.disco.debug.test/alg_disco_debug_views_config_state_test.mbt

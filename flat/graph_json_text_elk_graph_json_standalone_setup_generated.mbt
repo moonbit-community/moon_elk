@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.graph.json.text/graph_json_text_elk_graph_json_standalone_setup_generated.mbt

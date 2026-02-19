@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.alg.common/alg_common_nodespacing_internal_algorithm_vertical_port_placement_size_calculator.mbt

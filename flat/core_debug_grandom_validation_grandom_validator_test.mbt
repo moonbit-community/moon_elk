@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.core.debug.grandom.test/core_debug_grandom_validation_grandom_validator_test.mbt

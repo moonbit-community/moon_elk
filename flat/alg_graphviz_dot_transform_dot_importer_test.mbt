@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.alg.graphviz.dot.test/alg_graphviz_dot_transform_dot_importer_test.mbt

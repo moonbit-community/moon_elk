@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.alg.radial.test/alg_radial_center_on_root_test.mbt

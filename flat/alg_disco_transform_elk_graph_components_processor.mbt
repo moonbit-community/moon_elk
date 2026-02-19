@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.alg.disco/alg_disco_transform_elk_graph_components_processor.mbt

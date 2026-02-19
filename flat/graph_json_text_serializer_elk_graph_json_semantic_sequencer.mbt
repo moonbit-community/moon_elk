@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.graph.json.text/graph_json_text_serializer_elk_graph_json_semantic_sequencer.mbt

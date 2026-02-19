@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.graph.text.test/graph_text_runtime_test.mbt

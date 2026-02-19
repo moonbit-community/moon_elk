@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.alg.rectpacking.test/alg_rectpacking_issues_issue_583_test.mbt

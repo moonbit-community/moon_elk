@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.core.test/core_options_enums_test.mbt

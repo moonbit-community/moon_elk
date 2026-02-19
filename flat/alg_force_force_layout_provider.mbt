@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.alg.force/alg_force_force_layout_provider.mbt

@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.core.debug.test/core_debug_wizard_test.mbt

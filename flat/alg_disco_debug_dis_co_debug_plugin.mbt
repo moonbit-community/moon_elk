@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.alg.disco.debug/alg_disco_debug_dis_co_debug_plugin.mbt

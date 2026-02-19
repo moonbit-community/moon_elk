@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.alg.layered.test/alg_layered_intermediate_compaction_horizontal_graph_compactor_test.mbt

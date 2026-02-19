@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.alg.layered/alg_layered_intermediate_loops_self_loop_test_graph_creator.mbt

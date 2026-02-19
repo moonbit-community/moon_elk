@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.core.debug.grandom.ide/core_debug_grandom_ide_contentassist_antlr_partial_grandom_content_assist_parser.mbt

@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.core.ui/core_ui_preferences_preference_initializer.mbt

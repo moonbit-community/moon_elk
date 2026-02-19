@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.alg.layered.test/alg_layered_compound_compound_graph_postprocessor_test.mbt

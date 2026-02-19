@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.core.test/core_recursive_graph_layout_engine_wbtest.mbt

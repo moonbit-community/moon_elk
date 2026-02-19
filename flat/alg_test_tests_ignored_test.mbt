@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.alg.test.test/alg_test_tests_ignored_test.mbt

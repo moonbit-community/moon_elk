@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.alg.disco/alg_disco_i_compactor.mbt

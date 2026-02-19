@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.conn.gmf/conn_gmf_i_edit_part_filter.mbt

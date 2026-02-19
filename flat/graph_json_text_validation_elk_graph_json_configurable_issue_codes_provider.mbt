@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.graph.json.text/graph_json_text_validation_elk_graph_json_configurable_issue_codes_provider.mbt

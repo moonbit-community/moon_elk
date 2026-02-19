@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.core.test/core_util_persistence_elk_graph_resource_test.mbt

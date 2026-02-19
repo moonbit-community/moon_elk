@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.core.debug/core_debug_wizard_algorithm_plugin_content_wizard.mbt

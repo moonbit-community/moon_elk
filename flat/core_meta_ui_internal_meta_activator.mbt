@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.core.meta.ui/core_meta_ui_internal_meta_activator.mbt

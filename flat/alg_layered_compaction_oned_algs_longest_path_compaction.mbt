@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.alg.layered/alg_layered_compaction_oned_algs_longest_path_compaction.mbt

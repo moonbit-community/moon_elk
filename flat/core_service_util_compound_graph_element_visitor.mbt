@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.core.service/core_service_util_compound_graph_element_visitor.mbt

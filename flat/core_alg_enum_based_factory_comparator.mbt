@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.core/core_alg_enum_based_factory_comparator.mbt

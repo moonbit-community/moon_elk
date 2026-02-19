@@ -1,0 +1,1 @@
+../test/org.eclipse.elk.alg.layered.test/alg_layered_p3order_counting_north_south_edge_all_crossings_counter_test.mbt

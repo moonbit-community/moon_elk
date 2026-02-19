@@ -1,0 +1,1 @@
+../plugins/org.eclipse.elk.graph.text.ui/graph_text_ui_quickfix_elk_graph_quickfix_provider.mbt
