@@ -33,17 +33,23 @@ pub fn ILayoutMetaData::get_description(self : ILayoutMetaData) -> String {
 pub fn layout_meta_data_for_algorithm(
   data : LayoutAlgorithmData,
 ) -> ILayoutMetaData {
-  new_layout_meta_data(() => data.get_id(), () => data.get_name(), () => data.get_description())
+  new_layout_meta_data(() => data.get_id(), () => data.get_name(), () => {
+    data.get_description()
+  })
 }
 
 ///|
 pub fn layout_meta_data_for_option(data : LayoutOptionData) -> ILayoutMetaData {
-  new_layout_meta_data(() => data.get_id(), () => data.get_name(), () => data.get_description())
+  new_layout_meta_data(() => data.get_id(), () => data.get_name(), () => {
+    data.get_description()
+  })
 }
 
 ///|
 pub fn layout_meta_data_for_category(
   data : LayoutCategoryData,
 ) -> ILayoutMetaData {
-  new_layout_meta_data(() => data.get_id(), () => data.get_name(), () => data.get_description())
+  new_layout_meta_data(() => data.get_id(), () => data.get_name(), () => {
+    data.get_description()
+  })
 }
