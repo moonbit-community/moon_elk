@@ -1,10 +1,21 @@
 ///|
 fn mrtree_run_p2_processors(graph : MrtreeGraph) -> Unit {
-  let monitor = Some(new_basic_progress_monitor())
-  new_mrtree_root_processor_layout_processor().process(graph, monitor)
-  new_mrtree_fan_processor_layout_processor().process(graph, monitor)
-  new_mrtree_level_processor_layout_processor().process(graph, monitor)
-  new_mrtree_node_orderer_layout_phase().process(graph, monitor)
+  new_mrtree_root_processor_layout_processor().process(
+    graph,
+    Some(new_basic_progress_monitor()),
+  )
+  new_mrtree_fan_processor_layout_processor().process(
+    graph,
+    Some(new_basic_progress_monitor()),
+  )
+  new_mrtree_level_processor_layout_processor().process(
+    graph,
+    Some(new_basic_progress_monitor()),
+  )
+  new_mrtree_node_orderer_layout_phase().process(
+    graph,
+    Some(new_basic_progress_monitor()),
+  )
 }
 
 ///|

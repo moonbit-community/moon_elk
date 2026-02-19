@@ -94,7 +94,7 @@ test "Dot/Json debug graph generation for segments and hypernodes" {
 
 ///|
 test "DebugUtil logs dot/json tags" {
-  let monitor = new_elk_progress_monitor()
+  let monitor = new_elk_progress_monitor().with_logging(true)
   let (graph, _, _, _) = layered_debug_util_test_graph_fixture()
 
   let strategy = new_west_to_east_routing_strategy()

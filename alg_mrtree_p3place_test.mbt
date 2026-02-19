@@ -13,13 +13,30 @@ test "Mrtree NodePlacer computes walker coordinates and final positions" {
   ignore(mrtree_node_size(left).set_xy(10.0, 10.0))
   ignore(mrtree_node_size(right).set_xy(10.0, 10.0))
 
-  let monitor = Some(new_basic_progress_monitor())
-  new_mrtree_root_processor_layout_processor().process(graph, monitor)
-  new_mrtree_level_height_processor_layout_processor().process(graph, monitor)
-  new_mrtree_neighbors_processor_layout_processor().process(graph, monitor)
-  new_mrtree_node_placer_layout_phase().process(graph, monitor)
-  new_mrtree_direction_processor_layout_processor().process(graph, monitor)
-  new_mrtree_node_position_processor_layout_processor().process(graph, monitor)
+  new_mrtree_root_processor_layout_processor().process(
+    graph,
+    Some(new_basic_progress_monitor()),
+  )
+  new_mrtree_level_height_processor_layout_processor().process(
+    graph,
+    Some(new_basic_progress_monitor()),
+  )
+  new_mrtree_neighbors_processor_layout_processor().process(
+    graph,
+    Some(new_basic_progress_monitor()),
+  )
+  new_mrtree_node_placer_layout_phase().process(
+    graph,
+    Some(new_basic_progress_monitor()),
+  )
+  new_mrtree_direction_processor_layout_processor().process(
+    graph,
+    Some(new_basic_progress_monitor()),
+  )
+  new_mrtree_node_position_processor_layout_processor().process(
+    graph,
+    Some(new_basic_progress_monitor()),
+  )
 
   inspect(mrtree_node_xcoor(root), content="15")
   inspect(mrtree_node_ycoor(root), content="0")
