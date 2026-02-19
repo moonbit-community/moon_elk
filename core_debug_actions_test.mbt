@@ -6,6 +6,7 @@ fn new_execution_info_for_core_debug_test(
 ) -> ExecutionInfo {
   let monitor = new_elk_progress_monitor(task_name=name)
   if with_log {
+    ignore(monitor.with_logging(true))
     monitor.log("log:" + name)
   }
   let info = execution_info_from_progress_monitor(monitor)

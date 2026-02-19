@@ -14140,6 +14140,17 @@ pub struct IElkProgressMonitor {
   logs : Array[String]
   logged_graphs : Array[LoggedGraph]
   null_mode : Bool
+  mut parent_monitor : IElkProgressMonitor?
+  children : Array[IElkProgressMonitor]
+  mut max_levels : Int
+  mut closed : Bool
+  mut total_work : Double
+  mut completed_work : Double
+  mut current_child_work : Double
+  mut record_logs : Bool
+  mut persist_logs : Bool
+  mut record_execution_time : Bool
+  mut execution_time : Double
 }
 pub fn IElkProgressMonitor::begin(Self, String, Double) -> Bool
 pub fn IElkProgressMonitor::done(Self) -> Unit
@@ -14157,6 +14168,10 @@ pub fn IElkProgressMonitor::is_running(Self) -> Bool
 pub fn IElkProgressMonitor::log(Self, String) -> Unit
 pub fn IElkProgressMonitor::log_graph(Self, String, graph_type? : LoggedGraphType) -> Unit
 pub fn IElkProgressMonitor::sub_task(Self, Double) -> Self?
+pub fn IElkProgressMonitor::with_execution_time_measurement(Self, Bool) -> Self
+pub fn IElkProgressMonitor::with_log_persistence(Self, Bool) -> Self
+pub fn IElkProgressMonitor::with_logging(Self, Bool) -> Self
+pub fn IElkProgressMonitor::with_max_hierarchy_levels(Self, Int) -> Self
 pub fn IElkProgressMonitor::worked(Self, Double) -> Unit
 
 pub struct IEvaluation {

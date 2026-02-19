@@ -2,6 +2,7 @@
 test "ExecutionInfo can be built from monitor and file metadata" {
   execution_info_reset_for_test()
   let monitor = new_elk_progress_monitor(task_name="Layout Task")
+  ignore(monitor.with_logging(true))
   monitor.log("log-1")
   monitor.log_graph("graph-1")
 
@@ -50,6 +51,7 @@ test "ExecutionInfoModel add replace remove notifies listener" {
 test "ExecutionInfoContentProvider filters elements and children" {
   execution_info_reset_for_test()
   let monitor_a = new_elk_progress_monitor(task_name="with-log")
+  ignore(monitor_a.with_logging(true))
   monitor_a.log("x")
   let info_a = execution_info_from_progress_monitor(monitor_a)
   let info_b = execution_info_from_progress_monitor(

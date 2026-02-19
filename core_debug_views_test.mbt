@@ -5,6 +5,9 @@ fn new_execution_info_for_core_debug_views_test(
   with_graph? : Bool = false,
 ) -> ExecutionInfo {
   let monitor = new_elk_progress_monitor(task_name=name)
+  if with_log || with_graph {
+    ignore(monitor.with_logging(true))
+  }
   if with_log {
     monitor.log("log:" + name)
   }

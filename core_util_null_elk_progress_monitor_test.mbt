@@ -20,6 +20,7 @@ test "NullElkProgressMonitor behaves as no-op monitor" {
 ///|
 test "Regular progress monitor keeps existing behavior" {
   let monitor = new_elk_progress_monitor()
+  ignore(monitor.with_logging(true))
   inspect(monitor.begin("task", 1.0), content="true")
   inspect(monitor.is_running(), content="true")
   monitor.log("first")
