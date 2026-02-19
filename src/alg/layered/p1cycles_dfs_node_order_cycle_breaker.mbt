@@ -1,5 +1,5 @@
 ///|
-struct DfsNodeOrderCycleBreakerState {
+priv struct DfsNodeOrderCycleBreakerState {
   graph : LGraph
   visited : Array[Bool]
   active : Array[Bool]

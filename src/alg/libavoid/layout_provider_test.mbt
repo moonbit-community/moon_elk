@@ -36,7 +36,12 @@ fn libavoid_test_bytes_contains(bytes : Array[Int], token : String) -> Bool {
 }
 
 ///|
-fn libavoid_test_main_graph() -> (@graph.ElkNode, @graph.ElkPort, @graph.ElkPort, @graph.ElkEdge) {
+fn libavoid_test_main_graph() -> (
+  @graph.ElkNode,
+  @graph.ElkPort,
+  @graph.ElkPort,
+  @graph.ElkEdge,
+) {
   reset_graph_model_for_test()
   let root = create_graph()
   let left = @graph.create_node(Some(root))
@@ -68,7 +73,9 @@ test "LibavoidServerCommunicator writes protocol text and applies output layout"
   ignore(src_port)
   ignore(tgt_port)
 
-  @graph.node_set_string_property(root, libavoid_option_edge_routing, "ORTHOGONAL")
+  @graph.node_set_string_property(
+    root, libavoid_option_edge_routing, "ORTHOGONAL",
+  )
   @graph.node_set_string_property(root, libavoid_option_direction, "RIGHT")
   @graph.node_set_bool_property(
     root, libavoid_option_enable_hyperedges_from_common_source, true,
@@ -125,7 +132,12 @@ test "panic LibavoidServerCommunicator fails if server has no output" {
 }
 
 ///|
-fn libavoid_test_provider_graph() -> (@graph.ElkNode, @graph.ElkPort, @graph.ElkPort, @graph.ElkEdge) {
+fn libavoid_test_provider_graph() -> (
+  @graph.ElkNode,
+  @graph.ElkPort,
+  @graph.ElkPort,
+  @graph.ElkEdge,
+) {
   reset_graph_model_for_test()
   let root = create_graph()
   @graph.node_set_string_property(root, libavoid_option_direction, "RIGHT")

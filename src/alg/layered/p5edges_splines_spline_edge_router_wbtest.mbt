@@ -13,7 +13,10 @@ fn spline_edge_router_wb_assert_close(
 }
 
 ///|
-fn spline_edge_router_wb_new_port(node_y : Double, side : @core.PortSide) -> LPort {
+fn spline_edge_router_wb_new_port(
+  node_y : Double,
+  side : @core.PortSide,
+) -> LPort {
   let node = new_l_node()
   ignore(node.get_position().set_xy(node.get_position().x, node_y))
   let port = new_l_port()

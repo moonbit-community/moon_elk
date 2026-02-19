@@ -143,7 +143,9 @@ pub fn graph_configurator_prepare_graph_for_layout(lgraph : LGraph) -> Unit {
 
 ///|
 fn graph_configurator_copy_port_constraints_for_node(node : LNode) -> Unit {
-  let original_port_constraints = node.get_property_string(@core.port_constraints)
+  let original_port_constraints = node.get_property_string(
+    @core.port_constraints,
+  )
   node.set_property_string(
     internal_properties_original_port_constraints, original_port_constraints,
   )

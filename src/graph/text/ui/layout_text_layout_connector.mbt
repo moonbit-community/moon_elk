@@ -22,7 +22,9 @@ pub fn TextLayoutMapping::get_parent_element(
 }
 
 ///|
-pub fn TextLayoutMapping::get_layout_graph(self : TextLayoutMapping) -> @graph.ElkNode {
+pub fn TextLayoutMapping::get_layout_graph(
+  self : TextLayoutMapping,
+) -> @graph.ElkNode {
   self.layout_graph
 }
 

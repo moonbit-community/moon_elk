@@ -60,6 +60,7 @@ pub(all) struct AggregatedMatchDecider[T] {
   mut aggregator : (Array[Double]) -> Double
   mut lower_boundary : Double
   mut include_lower_boundary : Bool
+  _phantom : T?
 }
 
 ///|
@@ -68,6 +69,7 @@ pub fn[T] new_aggregated_match_decider() -> AggregatedMatchDecider[T] {
     aggregator: aggregated_match_decider_max,
     lower_boundary: 0.0,
     include_lower_boundary: false,
+    _phantom: None,
   }
 }
 
@@ -95,9 +97,9 @@ pub fn[T] AggregatedMatchDecider::with_lower_attachment_boundary(
 ///|
 pub fn[T] AggregatedMatchDecider::with_lower_boundary_included(
   self : AggregatedMatchDecider[T],
-  include : Bool,
+  include_boundary : Bool,
 ) -> AggregatedMatchDecider[T] {
-  self.include_lower_boundary = include
+  self.include_lower_boundary = include_boundary
   self
 }
 

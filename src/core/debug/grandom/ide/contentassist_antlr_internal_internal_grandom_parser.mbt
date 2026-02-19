@@ -290,7 +290,9 @@ fn core_debug_grandom_ide_parser_parse_hierarchy(
     )
     match core_debug_grandom_ide_parser_parse_double_at(tokens, value_index) {
       Some((value, consumed)) => {
-        let quantity = Some(@grandom.core_debug_grandom_double_quantity_exact(value))
+        let quantity = Some(
+          @grandom.core_debug_grandom_double_quantity_exact(value),
+        )
         if key == "levels" {
           hierarchy = hierarchy.set_levels(quantity)
         } else if key == "cross-hierarchy edges" {
@@ -421,9 +423,13 @@ fn core_debug_grandom_ide_parser_parse_configuration(
       if value_index < tokens.length() {
         let value = tokens[value_index].lexeme
         if value == "elkt" {
-          config = config.set_format(Some(@grandom.core_debug_grandom_format_elkt()))
+          config = config.set_format(
+            Some(@grandom.core_debug_grandom_format_elkt()),
+          )
         } else if value == "elkg" {
-          config = config.set_format(Some(@grandom.core_debug_grandom_format_elkg()))
+          config = config.set_format(
+            Some(@grandom.core_debug_grandom_format_elkg()),
+          )
         }
         index = value_index + 1
       } else {

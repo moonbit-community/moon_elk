@@ -14,6 +14,7 @@ pub(all) struct TextPrefixFilter[C, T] {
   prefixes : Array[String]
   mut reject_comment_on_prefix_match : Bool
   mut case_sensitive : Bool
+  _phantom : T?
 }
 
 ///|
@@ -23,6 +24,7 @@ pub fn[C, T] new_text_prefix_filter() -> TextPrefixFilter[C, T] {
     prefixes: [],
     reject_comment_on_prefix_match: true,
     case_sensitive: false,
+    _phantom: None,
   }
 }
 

@@ -6,7 +6,7 @@ fn successor_max_norm_winding_in_math_pos_sense_apply(
   ignore(poly)
   let x = coords.x
   let y = coords.y
-  let cost = @math.maximum(x.abs(), y.abs())
+  let cost = @cmp.maximum(x.abs(), y.abs())
   if x < cost && y == -cost {
     return new_polyomino_coords(x + 1, y)
   }

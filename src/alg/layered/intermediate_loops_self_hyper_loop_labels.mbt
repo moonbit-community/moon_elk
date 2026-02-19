@@ -187,17 +187,23 @@ pub fn SelfHyperLoopLabels::apply_placement(
 }
 
 ///|
-pub fn SelfHyperLoopLabels::get_size(self : SelfHyperLoopLabels) -> @core.KVector {
+pub fn SelfHyperLoopLabels::get_size(
+  self : SelfHyperLoopLabels,
+) -> @core.KVector {
   self.size
 }
 
 ///|
-pub fn SelfHyperLoopLabels::get_position(self : SelfHyperLoopLabels) -> @core.KVector {
+pub fn SelfHyperLoopLabels::get_position(
+  self : SelfHyperLoopLabels,
+) -> @core.KVector {
   self.position
 }
 
 ///|
-pub fn SelfHyperLoopLabels::get_side(self : SelfHyperLoopLabels) -> @core.PortSide {
+pub fn SelfHyperLoopLabels::get_side(
+  self : SelfHyperLoopLabels,
+) -> @core.PortSide {
   match self.side {
     Some(side) => side
     None => @core.PortSide::SideUndefined

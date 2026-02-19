@@ -368,7 +368,10 @@ fn core_ui_graph_renderer_render_port(
   match renderer.configurator.get_port_label_font() {
     Some(font) => {
       graphics.set_font(Some(font))
-      let port_offset = @core.new_kvector_xy(rect.x.to_double(), rect.y.to_double())
+      let port_offset = @core.new_kvector_xy(
+        rect.x.to_double(),
+        rect.y.to_double(),
+      )
       for label in @graph.port_labels(port) {
         core_ui_graph_renderer_render_label(
           renderer, label, graphics, area, port_offset, label_alpha,
@@ -587,7 +590,10 @@ fn core_ui_graph_renderer_render_node_children(
         renderer.scale,
       ),
     )
-    let child_offset = @core.new_kvector_xy(rect.x.to_double(), rect.y.to_double())
+    let child_offset = @core.new_kvector_xy(
+      rect.x.to_double(),
+      rect.y.to_double(),
+    )
     if !rect.painted && core_ui_paint_rectangle_intersects(rect, area) {
       graphics.set_alpha(node_alpha)
       core_ui_graphics_record(

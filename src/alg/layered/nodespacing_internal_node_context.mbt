@@ -4,10 +4,9 @@ let node_context_topdown_layout_property : @graph.IProperty[Bool] = @graph.new_p
 )
 
 ///|
-let node_context_node_size_constraints_property : @graph.IProperty[Array[String]] = @graph.new_property(
-  "org.eclipse.elk.nodeSize.constraints",
-  [],
-)
+let node_context_node_size_constraints_property : @graph.IProperty[
+  Array[String],
+] = @graph.new_property("org.eclipse.elk.nodeSize.constraints", [])
 
 ///|
 let node_context_node_size_options_property : @graph.IProperty[Array[String]] = @graph.new_property(
@@ -16,16 +15,14 @@ let node_context_node_size_options_property : @graph.IProperty[Array[String]] = 
 )
 
 ///|
-let node_context_port_labels_placement_property : @graph.IProperty[Array[String]] = @graph.new_property(
-  "org.eclipse.elk.portLabels.placement",
-  ["OUTSIDE"],
-)
+let node_context_port_labels_placement_property : @graph.IProperty[
+  Array[String],
+] = @graph.new_property("org.eclipse.elk.portLabels.placement", ["OUTSIDE"])
 
 ///|
-let node_context_node_labels_placement_property : @graph.IProperty[Array[String]] = @graph.new_property(
-  "org.eclipse.elk.nodeLabels.placement",
-  [],
-)
+let node_context_node_labels_placement_property : @graph.IProperty[
+  Array[String],
+] = @graph.new_property("org.eclipse.elk.nodeLabels.placement", [])
 
 ///|
 let node_context_node_labels_padding_property : @graph.IProperty[String] = @graph.new_property(
@@ -205,7 +202,8 @@ pub fn node_context_port_constraints_equals(
   left : @core.PortConstraints,
   right : @core.PortConstraints,
 ) -> Bool {
-  @core.port_constraints_to_string(left) == @core.port_constraints_to_string(right)
+  @core.port_constraints_to_string(left) ==
+  @core.port_constraints_to_string(right)
 }
 
 ///|
@@ -443,7 +441,13 @@ pub fn node_context_get_all_port_contexts(
   node_context : NodeContext,
 ) -> Array[PortContext] {
   let contexts : Array[PortContext] = []
-  for side in [@core.PortSide::North, @core.PortSide::East, @core.PortSide::South, @core.PortSide::West] {
+  for
+    side in [
+      @core.PortSide::North,
+      @core.PortSide::East,
+      @core.PortSide::South,
+      @core.PortSide::West,
+    ] {
     for port_context in node_context_get_port_contexts(node_context, side) {
       contexts.push(port_context)
     }

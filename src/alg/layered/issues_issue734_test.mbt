@@ -30,7 +30,9 @@ fn issue734_test_assert_close(
 ///|
 fn issue734_test_parse_model(content : String) -> @graph.ElkNode {
   let graph = new_elk_graph_parser().parse(content)
-  @graph.node_set_string_property(graph, @core.algorithm, "org.eclipse.elk.layered")
+  @graph.node_set_string_property(
+    graph, @core.algorithm, "org.eclipse.elk.layered",
+  )
   graph
 }
 

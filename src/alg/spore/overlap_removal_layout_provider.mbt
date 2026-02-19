@@ -1,5 +1,8 @@
 ///|
-fn spore_overlap_edges_add_unique(edges : Array[@common.TEdge], edge : @common.TEdge) -> Unit {
+fn spore_overlap_edges_add_unique(
+  edges : Array[@common.TEdge],
+  edge : @common.TEdge,
+) -> Unit {
   for existing in edges {
     if existing.equals(edge) {
       return
@@ -15,7 +18,11 @@ pub struct SporeOverlapRemovalLayoutProvider {
 
 ///|
 pub fn new_spore_overlap_removal_layout_provider() -> SporeOverlapRemovalLayoutProvider {
-  { algorithm_assembler: @core.algorithm_assembler_create(spore_phase_descriptor) }
+  {
+    algorithm_assembler: @core.algorithm_assembler_create(
+      spore_phase_descriptor,
+    ),
+  }
 }
 
 ///|
@@ -24,7 +31,9 @@ pub fn SporeOverlapRemovalLayoutProvider::layout(
   layout_graph : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor,
 ) -> Unit {
-  if @graph.node_has_string_property(layout_graph, spore_underlying_layout_algorithm) {
+  if @graph.node_has_string_property(
+      layout_graph, spore_underlying_layout_algorithm,
+    ) {
     let requested_algorithm = @graph.node_get_string_property(
       layout_graph, spore_underlying_layout_algorithm,
     )
@@ -75,9 +84,13 @@ pub fn SporeOverlapRemovalLayoutProvider::layout(
   let mut overlaps_existed = true
   let mut iteration = 0
   while iteration < max_iterations && overlaps_existed {
-    if @graph.node_get_bool_property(layout_graph, spore_overlap_removal_run_scanline) {
+    if @graph.node_get_bool_property(
+        layout_graph, spore_overlap_removal_run_scanline,
+      ) {
       overlap_edges.clear()
-      @common.new_scanline_overlap_check(overlap_handler, svg).sweep(graph.vertices)
+      @common.new_scanline_overlap_check(overlap_handler, svg).sweep(
+        graph.vertices,
+      )
       if overlap_edges.is_empty() {
         break
       }

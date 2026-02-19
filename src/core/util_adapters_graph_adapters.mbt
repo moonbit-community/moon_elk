@@ -13,7 +13,9 @@ pub(all) struct GraphElementAdapter[T] {
   has_property_double_fn : (@graph.IProperty[Double]) -> Bool
   get_property_string_fn : (@graph.IProperty[String]) -> String
   has_property_string_fn : (@graph.IProperty[String]) -> Bool
-  get_property_string_array_fn : (@graph.IProperty[Array[String]]) -> Array[String]
+  get_property_string_array_fn : (@graph.IProperty[Array[String]]) -> Array[
+    String,
+  ]
   has_property_string_array_fn : (@graph.IProperty[Array[String]]) -> Bool
   mut volatile_id : Int
 }
@@ -33,7 +35,9 @@ pub fn[T] new_graph_element_adapter(
   has_property_double_fn : (@graph.IProperty[Double]) -> Bool,
   get_property_string_fn : (@graph.IProperty[String]) -> String,
   has_property_string_fn : (@graph.IProperty[String]) -> Bool,
-  get_property_string_array_fn : (@graph.IProperty[Array[String]]) -> Array[String],
+  get_property_string_array_fn : (@graph.IProperty[Array[String]]) -> Array[
+    String,
+  ],
   has_property_string_array_fn : (@graph.IProperty[Array[String]]) -> Bool,
 ) -> GraphElementAdapter[T] {
   {

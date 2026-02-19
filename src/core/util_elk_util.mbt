@@ -11,7 +11,10 @@ pub fn apply_visitors(
 }
 
 ///|
-pub fn apply_visitor(graph : @graph.ElkNode, visitor : IGraphElementVisitor) -> Unit {
+pub fn apply_visitor(
+  graph : @graph.ElkNode,
+  visitor : IGraphElementVisitor,
+) -> Unit {
   apply_visitors(graph, [visitor])
 }
 
@@ -125,7 +128,9 @@ pub fn compute_child_area_dimensions(node : @graph.ElkNode) -> Unit {
       @graph.label_width(label),
       @graph.label_height(label),
       parse_shape_margins(
-        @graph.label_layout_option_string_value(label, "org.eclipse.elk.margins"),
+        @graph.label_layout_option_string_value(
+          label, "org.eclipse.elk.margins",
+        ),
       ),
     )
   }
@@ -158,7 +163,9 @@ pub fn compute_child_area_dimensions(node : @graph.ElkNode) -> Unit {
         @graph.label_width(label),
         @graph.label_height(label),
         parse_shape_margins(
-          @graph.label_layout_option_string_value(label, "org.eclipse.elk.margins"),
+          @graph.label_layout_option_string_value(
+            label, "org.eclipse.elk.margins",
+          ),
         ),
       )
     }
@@ -200,5 +207,9 @@ pub fn compute_child_area_dimensions(node : @graph.ElkNode) -> Unit {
   }
 
   @graph.node_set_double_property(node, child_area_width, max_x.val - min_x.val)
-  @graph.node_set_double_property(node, child_area_height, max_y.val - min_y.val)
+  @graph.node_set_double_property(
+    node,
+    child_area_height,
+    max_y.val - min_y.val,
+  )
 }

@@ -230,7 +230,11 @@ fn label_and_node_size_processor_process(
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()
   }
-  ignore(monitor.begin("@common.Node and Port Label Placement and @common.Node Sizing", 1.0))
+  ignore(
+    monitor.begin(
+      "@common.Node and Port Label Placement and @common.Node Sizing", 1.0,
+    ),
+  )
 
   node_dimension_calculation_calculate_label_and_node_sizes_for_layered_graph(
     layered_graph,

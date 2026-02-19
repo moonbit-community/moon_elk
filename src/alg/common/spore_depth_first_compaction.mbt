@@ -79,7 +79,7 @@ fn depth_first_compaction_compact_tree(tree : Tree[Node]) -> Unit {
           child_rect.y < root_rect.y + root_rect.height {
           ignore(
             compaction_vector.scale_to_length(
-              @math.maximum(
+              @cmp.maximum(
                 root_rect.x - (child_rect.x + child_rect.width),
                 child_rect.x - (root_rect.x + root_rect.width),
               ),
@@ -92,7 +92,7 @@ fn depth_first_compaction_compact_tree(tree : Tree[Node]) -> Unit {
           child_rect.x < root_rect.x + root_rect.width {
           ignore(
             compaction_vector.scale_to_length(
-              @math.maximum(
+              @cmp.maximum(
                 root_rect.y - (child_rect.y + child_rect.height),
                 child_rect.y - (root_rect.y + root_rect.height),
               ),
@@ -124,7 +124,7 @@ fn depth_first_compaction_get_min_underlap(
   current_min_underlap : Double,
   compaction_vector : @core.KVector,
 ) -> Double {
-  let mut min_underlap = @math.minimum(
+  let mut min_underlap = @cmp.minimum(
     current_min_underlap,
     depth_first_compaction_min_underlap_with_subtree(
       tree.node,
@@ -136,7 +136,7 @@ fn depth_first_compaction_get_min_underlap(
 
   for sub_tree in tree.children {
     if !depth_first_compaction_tree_identity_eq(sub_tree, child) {
-      min_underlap = @math.minimum(
+      min_underlap = @cmp.minimum(
         min_underlap,
         depth_first_compaction_get_min_underlap(
           sub_tree, child, min_underlap, compaction_vector,
@@ -195,13 +195,13 @@ fn depth_first_compaction_min_underlap_with_subtree(
         break
       }
     } else {
-      min_underlap = @math.minimum(
+      min_underlap = @cmp.minimum(
         min_underlap,
         root_node.distance(child_node, compaction_vector),
       )
     }
 
-    min_underlap = @math.minimum(
+    min_underlap = @cmp.minimum(
       min_underlap,
       depth_first_compaction_min_underlap_with_subtree(
         root_node, child, min_underlap, compaction_vector,

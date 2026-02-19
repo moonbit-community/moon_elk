@@ -62,7 +62,9 @@ fn issue143_and318_test_connect_ports(
 ///|
 fn issue143_and318_test_build_issue143_graph() -> @graph.ElkNode {
   let graph = create_graph()
-  @graph.node_set_string_property(graph, @core.algorithm, "org.eclipse.elk.layered")
+  @graph.node_set_string_property(
+    graph, @core.algorithm, "org.eclipse.elk.layered",
+  )
   @graph.node_set_string_property(graph, @core.edge_routing, "ORTHOGONAL")
   @graph.node_set_layout_option_string_by_id(
     graph, "org.eclipse.elk.layered.nodePlacement.strategy", "SIMPLE",
@@ -90,7 +92,9 @@ fn issue143_and318_test_build_issue143_graph() -> @graph.ElkNode {
 ///|
 fn issue143_and318_test_build_issue318_graph() -> @graph.ElkNode {
   let graph = create_graph()
-  @graph.node_set_string_property(graph, @core.algorithm, "org.eclipse.elk.layered")
+  @graph.node_set_string_property(
+    graph, @core.algorithm, "org.eclipse.elk.layered",
+  )
   @graph.node_set_string_property(graph, @core.edge_routing, "ORTHOGONAL")
   @graph.node_set_layout_option_string_by_id(
     graph, "org.eclipse.elk.layered.nodePlacement.strategy", "SIMPLE",
@@ -123,11 +127,17 @@ fn issue143_and318_test_collect_section_chain_points(
   let visited : Map[@graph.ElkEdgeSection, Unit] = {}
   let mut current = section
   points.push(
-    @core.new_kvector_xy(@graph.edge_section_start_x(current), @graph.edge_section_start_y(current)),
+    @core.new_kvector_xy(
+      @graph.edge_section_start_x(current),
+      @graph.edge_section_start_y(current),
+    ),
   )
   while true {
     points.push(
-      @core.new_kvector_xy(@graph.edge_section_end_x(current), @graph.edge_section_end_y(current)),
+      @core.new_kvector_xy(
+        @graph.edge_section_end_x(current),
+        @graph.edge_section_end_y(current),
+      ),
     )
     visited[current] = ()
     let outgoing = @graph.edge_section_outgoing_sections(current)
@@ -144,7 +154,9 @@ fn issue143_and318_test_collect_section_chain_points(
 }
 
 ///|
-fn issue143_and318_test_absolute_node_position(node : @graph.ElkNode) -> @core.KVector {
+fn issue143_and318_test_absolute_node_position(
+  node : @graph.ElkNode,
+) -> @core.KVector {
   let absolute = @core.new_kvector_xy(@graph.node_x(node), @graph.node_y(node))
   match @graph.node_parent(node) {
     Some(parent) =>
@@ -155,7 +167,9 @@ fn issue143_and318_test_absolute_node_position(node : @graph.ElkNode) -> @core.K
 }
 
 ///|
-fn issue143_and318_test_absolute_port_position(port : @graph.ElkPort) -> @core.KVector {
+fn issue143_and318_test_absolute_port_position(
+  port : @graph.ElkPort,
+) -> @core.KVector {
   match @graph.port_parent(port) {
     Some(parent_node) =>
       issue143_and318_test_absolute_node_position(parent_node).add_xy(
@@ -171,7 +185,9 @@ fn issue143_and318_test_absolute_port_position(port : @graph.ElkPort) -> @core.K
 }
 
 ///|
-fn issue143_and318_test_shape_anchor(shape : @graph.ElkConnectableShape) -> @core.KVector {
+fn issue143_and318_test_shape_anchor(
+  shape : @graph.ElkConnectableShape,
+) -> @core.KVector {
   match shape {
     NodeShape(node) =>
       issue143_and318_test_absolute_node_position(node).add_xy(

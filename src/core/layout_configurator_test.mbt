@@ -24,7 +24,10 @@ test "LayoutConfigurator element overrides class" {
   configurator.configure_node_property(graph.n1, spacing_node_node, 12.0)
   configurator.configure_node_property(graph.n2, spacing_node_node, 32.0)
   apply_visitors(graph.root, [configurator.to_visitor()])
-  assert_eq(@graph.node_get_double_property(graph.root, spacing_node_node), 22.0)
+  assert_eq(
+    @graph.node_get_double_property(graph.root, spacing_node_node),
+    22.0,
+  )
   assert_eq(@graph.node_get_double_property(graph.n1, spacing_node_node), 12.0)
   assert_eq(@graph.node_get_double_property(graph.n2, spacing_node_node), 32.0)
 }
@@ -69,7 +72,10 @@ test "LayoutConfigurator overrides existing options" {
     class_node_element, spacing_node_node, 42.0,
   )
   apply_visitors(graph.root, [configurator.to_visitor()])
-  assert_eq(@graph.node_get_double_property(graph.root, spacing_node_node), 42.0)
+  assert_eq(
+    @graph.node_get_double_property(graph.root, spacing_node_node),
+    42.0,
+  )
 }
 
 ///|
@@ -83,5 +89,8 @@ test "LayoutConfigurator no-overwrite filter" {
   )
   configurator.add_filter(layout_configurator_no_overwrite_filter())
   apply_visitors(graph.root, [configurator.to_visitor()])
-  assert_eq(@graph.node_get_double_property(graph.root, spacing_node_node), 13.0)
+  assert_eq(
+    @graph.node_get_double_property(graph.root, spacing_node_node),
+    13.0,
+  )
 }

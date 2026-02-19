@@ -1,6 +1,9 @@
 ///|
 fn rectpacking_has_minimum_size_constraint(graph : @graph.ElkNode) -> Bool {
-  for value in @graph.node_get_string_set_property(graph, @core.node_size_constraints) {
+  for
+    value in @graph.node_get_string_set_property(
+      graph, @core.node_size_constraints,
+    ) {
     if value == "MINIMUM_SIZE" || value == "MINIMUM_SIZE_WITH_PORTS" {
       return true
     }
@@ -9,7 +12,9 @@ fn rectpacking_has_minimum_size_constraint(graph : @graph.ElkNode) -> Bool {
 }
 
 ///|
-fn rectpacking_effective_min_size_constraint_for(graph : @graph.ElkNode) -> @core.KVector {
+fn rectpacking_effective_min_size_constraint_for(
+  graph : @graph.ElkNode,
+) -> @core.KVector {
   if !rectpacking_has_minimum_size_constraint(graph) {
     return @core.new_kvector_xy(0.0, 0.0)
   }
@@ -30,8 +35,16 @@ fn rectpacking_min_size_pre_processor_process(
   }
 
   let min_size = rectpacking_effective_min_size_constraint_for(graph)
-  @graph.node_set_double_property(graph, rectpacking_internal_min_width, min_size.x)
-  @graph.node_set_double_property(graph, rectpacking_internal_min_height, min_size.y)
+  @graph.node_set_double_property(
+    graph,
+    rectpacking_internal_min_width,
+    min_size.x,
+  )
+  @graph.node_set_double_property(
+    graph,
+    rectpacking_internal_min_height,
+    min_size.y,
+  )
 
   match progress_monitor {
     Some(monitor) => monitor.done()

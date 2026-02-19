@@ -19,7 +19,7 @@ fn graph_info_to_node_array(graph : LGraph) -> Array[Array[LNode]] {
 }
 
 ///|
-fn graph_info_contains_node(nodes : Array[LNode], candidate : LNode) -> Bool {
+fn _graph_info_contains_node(nodes : Array[LNode], candidate : LNode) -> Bool {
   for node in nodes {
     if lnode_internal_handle(node) == lnode_internal_handle(candidate) {
       return true

@@ -77,7 +77,9 @@ fn horizontal_port_placement_size_calculator_compute_horizontal_port_margins(
         port_context.port_margin.right = node_context.port_label_spacing_horizontal +
           label_width
       }
-    } else if @core.port_label_placement_is_fixed(node_context.port_labels_placement) {
+    } else if @core.port_label_placement_is_fixed(
+        node_context.port_labels_placement,
+      ) {
       let labels_bounds = nodespacing_port_labels_bounds(port_context.port)
       if labels_bounds.x < 0.0 {
         port_context.port_margin.left = -labels_bounds.x

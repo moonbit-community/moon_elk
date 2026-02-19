@@ -14,12 +14,10 @@ pub fn new_mrtree_tree_layout_provider() -> MrtreeTreeLayoutProvider {
 
 ///|
 fn init {
-  @core.recursive_graph_layout_engine_register_handler(
-    mrtree_algorithm_id,
-    (layout_graph, progress_monitor) => {
-      new_mrtree_tree_layout_provider().layout(layout_graph, progress_monitor)
-    },
-  )
+  @core.recursive_graph_layout_engine_register_handler(mrtree_algorithm_id, (
+    layout_graph,
+    progress_monitor,
+  ) => new_mrtree_tree_layout_provider().layout(layout_graph, progress_monitor))
 }
 
 ///|

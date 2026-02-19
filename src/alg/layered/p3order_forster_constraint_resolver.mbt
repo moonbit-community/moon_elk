@@ -559,7 +559,7 @@ fn ForsterConstraintResolver::build_constraints_graph(
 
 ///|
 fn ForsterConstraintResolver::find_violated_constraint(
-  self : ForsterConstraintResolver,
+  _self : ForsterConstraintResolver,
   groups : Array[ConstraintGroup],
 ) -> (ConstraintGroup, ConstraintGroup)? {
   let active_groups = []
@@ -615,7 +615,7 @@ let forster_barycenter_equality_delta : Double = 0.0001
 
 ///|
 fn ForsterConstraintResolver::handle_violated_constraint(
-  self : ForsterConstraintResolver,
+  _self : ForsterConstraintResolver,
   first_group : ConstraintGroup,
   second_group : ConstraintGroup,
   node_groups : Array[ConstraintGroup],

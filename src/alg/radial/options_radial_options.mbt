@@ -131,7 +131,9 @@ pub fn radial_overlap_removal_strategy_from_string(
 }
 
 ///|
-pub fn radial_graph_sorting_strategy(graph : @graph.ElkNode) -> RadialSortingStrategy {
+pub fn radial_graph_sorting_strategy(
+  graph : @graph.ElkNode,
+) -> RadialSortingStrategy {
   radial_sorting_strategy_from_string(
     @graph.node_get_string_property(graph, radial_sorter),
   )
@@ -166,7 +168,9 @@ pub fn radial_graph_compaction_strategy(
 
 ///|
 pub fn radial_graph_compaction_step_size(graph : @graph.ElkNode) -> Int {
-  let value = @graph.node_get_double_property(graph, radial_compaction_step_size)
+  let value = @graph.node_get_double_property(
+    graph, radial_compaction_step_size,
+  )
   if value < 0.0 {
     0
   } else {

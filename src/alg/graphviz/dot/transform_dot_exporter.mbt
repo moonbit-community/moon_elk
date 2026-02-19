@@ -62,10 +62,9 @@ let dot_exporter_font_size_mult : Double = 1.4
 pub let dot_exporter_option_edge_routing = "org.eclipse.elk.edgeRouting"
 
 ///|
-pub let dot_exporter_graph_elems : @graph.IProperty[Map[String, DotGraphElement]] = @graph.new_property(
-  "dotExporter.graphElemMap",
-  {},
-)
+pub let dot_exporter_graph_elems : @graph.IProperty[
+  Map[String, DotGraphElement],
+] = @graph.new_property("dotExporter.graphElemMap", {})
 
 ///|
 pub let dot_exporter_use_splines : @graph.IProperty[Bool] = @graph.new_property(
@@ -235,7 +234,11 @@ fn dot_exporter_parse_int_token(text : String?) -> Int? {
 
 ///|
 fn dot_exporter_parse_edge_label_spacing(edge : @graph.ElkEdge) -> Double {
-  match @graph.edge_layout_option_string_value(edge, @core.spacing_edge_label.get_id()) {
+  match
+    @graph.edge_layout_option_string_value(
+      edge,
+      @core.spacing_edge_label.get_id(),
+    ) {
     Some(raw_value) =>
       match dot_exporter_parse_double_token(raw_value) {
         Some(value) => value
@@ -303,7 +306,10 @@ pub fn dot_exporter_set_edge_labels(
         is_center_font_name = true
         take_font_size = font_size <= 0 || !is_center_font_size
         is_center_font_size = true
-        mid_label = dot_exporter_append_label_line(mid_label, @graph.label_text(label))
+        mid_label = dot_exporter_append_label_line(
+          mid_label,
+          @graph.label_text(label),
+        )
       }
     }
     if take_font_name {
@@ -314,7 +320,9 @@ pub fn dot_exporter_set_edge_labels(
     if take_font_size {
       match
         dot_exporter_parse_int_token(
-          @graph.label_layout_option_string_value(label, dot_exporter_option_font_size),
+          @graph.label_layout_option_string_value(
+            label, dot_exporter_option_font_size,
+          ),
         ) {
         Some(parsed_size) => {
           font_size = parsed_size
@@ -393,7 +401,10 @@ pub fn DotExporter::set_edge_labels(
 }
 
 ///|
-pub fn dot_exporter_is_inside_graph(node : @graph.ElkNode, root : @graph.ElkNode) -> Bool {
+pub fn dot_exporter_is_inside_graph(
+  node : @graph.ElkNode,
+  root : @graph.ElkNode,
+) -> Bool {
   let mut current : @graph.ElkNode? = Some(node)
   while current is Some(value) {
     if value == root {
@@ -459,7 +470,9 @@ pub fn dot_exporter_get_node_id(
         node,
       )
     DotExporterNodeTypeDummy =>
-      @graph.node_set_string_property(node, dot_exporter_cluster_dummy, id_string)
+      @graph.node_set_string_property(
+        node, dot_exporter_cluster_dummy, id_string,
+      )
   }
   id_string
 }
@@ -479,7 +492,9 @@ pub fn dot_exporter_get_edge_id(
 }
 
 ///|
-fn dot_exporter_all_outgoing_edges(node : @graph.ElkNode) -> Array[@graph.ElkEdge] {
+fn dot_exporter_all_outgoing_edges(
+  node : @graph.ElkNode,
+) -> Array[@graph.ElkEdge] {
   let outgoing = @graph.node_outgoing_edges(node).copy()
   for port in @graph.node_ports(node) {
     for edge in @graph.port_outgoing_edges(port) {
@@ -520,7 +535,9 @@ fn dot_exporter_parse_padding(node : @graph.ElkNode) -> @core.ElkPadding {
 }
 
 ///|
-fn dot_exporter_first_or_create_edge_section(edge : @graph.ElkEdge) -> @graph.ElkEdgeSection {
+fn dot_exporter_first_or_create_edge_section(
+  edge : @graph.ElkEdge,
+) -> @graph.ElkEdgeSection {
   let sections = @graph.edge_sections(edge)
   let section = if sections.is_empty() {
     @graph.create_edge_section(edge)
@@ -558,7 +575,9 @@ fn dot_exporter_to_absolute(
   point : @core.KVector,
   reference_node : @graph.ElkNode?,
 ) -> @core.KVector {
-  @core.new_kvector_copy(point).add(dot_exporter_node_absolute_offset(reference_node))
+  @core.new_kvector_copy(point).add(
+    dot_exporter_node_absolute_offset(reference_node),
+  )
 }
 
 ///|
@@ -676,8 +695,12 @@ pub fn DotExporter::transform_nodes(
       }
       if transform_node_layout &&
         (@graph.node_x(child_node) != 0.0 || @graph.node_y(child_node) != 0.0) {
-        let xpos = @graph.node_x(child_node) + @graph.node_width(child_node) / 2.0 + offset.x
-        let ypos = @graph.node_y(child_node) + @graph.node_height(child_node) / 2.0 + offset.y
+        let xpos = @graph.node_x(child_node) +
+          @graph.node_width(child_node) / 2.0 +
+          offset.x
+        let ypos = @graph.node_y(child_node) +
+          @graph.node_height(child_node) / 2.0 +
+          offset.y
         let pos_string = "\"" + xpos.to_string() + "," + ypos.to_string() + "\""
         attributes.push(dot_exporter_create_attribute(dot_attr_pos, pos_string))
       }
@@ -716,10 +739,13 @@ pub fn DotExporter::transform_edges(
     let source = nodes[index]
     index += 1
     for edge in dot_exporter_all_outgoing_edges(source) {
-      if @graph.edge_sources(edge).length() != 1 || @graph.edge_targets(edge).length() != 1 {
+      if @graph.edge_sources(edge).length() != 1 ||
+        @graph.edge_targets(edge).length() != 1 {
         abort("Hyperedges are not supported.")
       }
-      let target = @graph.connectable_shape_to_node(Some(@graph.edge_targets(edge)[0]))
+      let target = @graph.connectable_shape_to_node(
+        Some(@graph.edge_targets(edge)[0]),
+      )
       if @graph.node_parent(source) == @graph.node_parent(target) ||
         (hierarchy && dot_exporter_is_inside_graph(target, source_root)) {
         let edge_statement = dot_create_edge_statement()
@@ -728,7 +754,11 @@ pub fn DotExporter::transform_edges(
         let source_node = dot_create_node()
         if hierarchy && !@graph.node_children(source).is_empty() {
           source_node.set_name(
-            Some(@graph.node_get_string_property(source, dot_exporter_cluster_dummy)),
+            Some(
+              @graph.node_get_string_property(
+                source, dot_exporter_cluster_dummy,
+              ),
+            ),
           )
           match dot_exporter_find_node_id(graph_elems, source) {
             Some(value) =>
@@ -749,7 +779,11 @@ pub fn DotExporter::transform_edges(
         let target_node = dot_create_node()
         if hierarchy && !@graph.node_children(target).is_empty() {
           target_node.set_name(
-            Some(@graph.node_get_string_property(target, dot_exporter_cluster_dummy)),
+            Some(
+              @graph.node_get_string_property(
+                target, dot_exporter_cluster_dummy,
+              ),
+            ),
           )
           match dot_exporter_find_node_id(graph_elems, target) {
             Some(value) =>
@@ -886,6 +920,24 @@ fn dot_exporter_is_number_char(c : Char) -> Bool {
 }
 
 ///|
+fn dot_exporter_slice(text : String, start : Int, end_ : Int) -> String {
+  try text[start:end_] catch {
+    _ => ""
+  } noraise {
+    value => value.to_string()
+  }
+}
+
+///|
+fn dot_exporter_slice_from(text : String, start : Int) -> String {
+  try text[start:] catch {
+    _ => ""
+  } noraise {
+    value => value.to_string()
+  }
+}
+
+///|
 fn dot_exporter_parse_numbers(text : String) -> Array[Double] {
   let numbers : Array[Double] = []
   let mut token_start = -1
@@ -899,7 +951,7 @@ fn dot_exporter_parse_numbers(text : String) -> Array[Double] {
     } else if token_start >= 0 {
       match
         dot_exporter_parse_double_token(
-          text.substring(start=token_start, end=index),
+          dot_exporter_slice(text, token_start, index),
         ) {
         Some(value) => numbers.push(value)
         None => ()
@@ -909,7 +961,10 @@ fn dot_exporter_parse_numbers(text : String) -> Array[Double] {
     index += 1
   }
   if token_start >= 0 {
-    match dot_exporter_parse_double_token(text.substring(start=token_start)) {
+    match
+      dot_exporter_parse_double_token(
+        dot_exporter_slice_from(text, token_start),
+      ) {
       Some(value) => numbers.push(value)
       None => ()
     }
@@ -1323,8 +1378,7 @@ fn dot_exporter_split_on_quote_and_semicolon(text : String) -> Array[String] {
     let current = dot_exporter_char_at(text, index)
     if current == '"' || current == ';' {
       if token_start < index {
-        let token = text
-          .substring(start=token_start, end=index)
+        let token = dot_exporter_slice(text, token_start, index)
           .trim()
           .to_string()
         if !token.is_empty() {
@@ -1336,7 +1390,7 @@ fn dot_exporter_split_on_quote_and_semicolon(text : String) -> Array[String] {
     index += 1
   }
   if token_start < text.length() {
-    let token = text.substring(start=token_start).trim().to_string()
+    let token = dot_exporter_slice_from(text, token_start).trim().to_string()
     if !token.is_empty() {
       tokens.push(token)
     }
@@ -1353,14 +1407,14 @@ fn dot_exporter_split_on_whitespace(text : String) -> Array[String] {
     let current = dot_exporter_char_at(text, index)
     if current == ' ' || current == '\t' || current == '\n' || current == '\r' {
       if token_start < index {
-        tokens.push(text.substring(start=token_start, end=index))
+        tokens.push(dot_exporter_slice(text, token_start, index))
       }
       token_start = index + 1
     }
     index += 1
   }
   if token_start < text.length() {
-    tokens.push(text.substring(start=token_start))
+    tokens.push(dot_exporter_slice_from(text, token_start))
   }
   tokens
 }
@@ -1386,7 +1440,7 @@ fn dot_exporter_parse_point_token(token : String) -> @core.KVector? {
   if normalized.length() >= 2 &&
     normalized.has_prefix("\"") &&
     normalized.has_suffix("\"") {
-    normalized = normalized.substring(start=1, end=normalized.length() - 1)
+    normalized = dot_exporter_slice(normalized, 1, normalized.length() - 1)
   }
   if normalized.is_empty() {
     return None
@@ -1410,7 +1464,7 @@ fn dot_exporter_suffix_after_first_comma(token : String) -> String {
   let mut index = 0
   while index < token.length() {
     if dot_exporter_char_at(token, index) == ',' {
-      return token.substring(start=index + 1)
+      return dot_exporter_slice_from(token, index + 1)
     }
     index += 1
   }

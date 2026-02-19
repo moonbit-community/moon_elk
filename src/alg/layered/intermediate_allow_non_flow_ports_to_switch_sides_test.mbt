@@ -224,7 +224,9 @@ fn allow_non_flow_ports_test_edge_segments(
     return segments
   }
 
-  let point_of_shape = fn(shape : @graph.ElkConnectableShape) -> (Double, Double) {
+  let point_of_shape = fn(
+    shape : @graph.ElkConnectableShape,
+  ) -> (Double, Double) {
     match shape {
       NodeShape(node) =>
         (

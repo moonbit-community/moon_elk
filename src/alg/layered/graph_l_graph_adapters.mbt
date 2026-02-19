@@ -137,7 +137,10 @@ pub fn LGraphAdapter::get_size(self : LGraphAdapter) -> @core.KVector {
 }
 
 ///|
-pub fn LGraphAdapter::set_size(self : LGraphAdapter, size : @core.KVector) -> Unit {
+pub fn LGraphAdapter::set_size(
+  self : LGraphAdapter,
+  size : @core.KVector,
+) -> Unit {
   self.element.get_size().x = size.x
   self.element.get_size().y = size.y
 }
@@ -334,7 +337,10 @@ pub fn LNodeAdapter::get_size(self : LNodeAdapter) -> @core.KVector {
 }
 
 ///|
-pub fn LNodeAdapter::set_size(self : LNodeAdapter, size : @core.KVector) -> Unit {
+pub fn LNodeAdapter::set_size(
+  self : LNodeAdapter,
+  size : @core.KVector,
+) -> Unit {
   self.element.get_size().x = size.x
   self.element.get_size().y = size.y
 }
@@ -546,7 +552,12 @@ pub fn LNodeAdapter::is_compound_node(self : LNodeAdapter) -> Bool {
 ///|
 pub fn LNodeAdapter::get_padding(self : LNodeAdapter) -> @core.ElkPadding {
   let padding = self.element.get_padding()
-  @core.new_spacing_values(padding.top, padding.right, padding.bottom, padding.left)
+  @core.new_spacing_values(
+    padding.top,
+    padding.right,
+    padding.bottom,
+    padding.left,
+  )
 }
 
 ///|
@@ -608,7 +619,10 @@ pub fn LPortAdapter::get_size(self : LPortAdapter) -> @core.KVector {
 }
 
 ///|
-pub fn LPortAdapter::set_size(self : LPortAdapter, size : @core.KVector) -> Unit {
+pub fn LPortAdapter::set_size(
+  self : LPortAdapter,
+  size : @core.KVector,
+) -> Unit {
   self.element.get_size().x = size.x
   self.element.get_size().y = size.y
 }
@@ -889,7 +903,10 @@ pub fn LLabelAdapter::get_size(self : LLabelAdapter) -> @core.KVector {
 }
 
 ///|
-pub fn LLabelAdapter::set_size(self : LLabelAdapter, size : @core.KVector) -> Unit {
+pub fn LLabelAdapter::set_size(
+  self : LLabelAdapter,
+  size : @core.KVector,
+) -> Unit {
   self.element.get_size().x = size.x
   self.element.get_size().y = size.y
 }

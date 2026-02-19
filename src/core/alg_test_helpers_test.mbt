@@ -76,16 +76,14 @@ pub fn test_processor_factory(
   processor : TestProcessors,
 ) -> ILayoutProcessorFactory[TestPhases, StringBuffer?] {
   let ordinal = test_processor_ordinal(processor)
-  new_layout_processor_factory(10_000 + ordinal, ordinal, () => new_layout_processor((
-      graph,
-      progress_monitor,
-    ) => {
+  new_layout_processor_factory(10_000 + ordinal, ordinal, () => {
+    new_layout_processor((graph, progress_monitor) => {
       ignore(progress_monitor)
       if graph is Some(buffer) {
         buffer.append(test_processor_label(processor))
       }
-    },
-  ))
+    })
+  })
 }
 
 ///|
@@ -93,23 +91,29 @@ pub fn test_phase_factory(
   phase : TestPhases,
 ) -> ILayoutPhaseFactory[TestPhases, StringBuffer?] {
   let ordinal = test_phase_ordinal(phase)
-  new_layout_processor_factory(20_000 + ordinal, ordinal, () => new_layout_phase(
-    (graph, progress_monitor) => {
-      ignore(progress_monitor)
-      if graph is Some(buffer) {
-        buffer.append(test_phase_label(phase))
-      }
-    },
-    _ => {
-      let config = layout_processor_configuration_create(test_phase_descriptor)
-      let phase_processor = match phase {
-        Phase1 => Processor1
-        Phase2 => Processor2
-      }
-      ignore(config.add_before(phase, test_processor_factory(phase_processor)))
-      Some(config)
-    },
-  ))
+  new_layout_processor_factory(20_000 + ordinal, ordinal, () => {
+    new_layout_phase(
+      (graph, progress_monitor) => {
+        ignore(progress_monitor)
+        if graph is Some(buffer) {
+          buffer.append(test_phase_label(phase))
+        }
+      },
+      _ => {
+        let config = layout_processor_configuration_create(
+          test_phase_descriptor,
+        )
+        let phase_processor = match phase {
+          Phase1 => Processor1
+          Phase2 => Processor2
+        }
+        ignore(
+          config.add_before(phase, test_processor_factory(phase_processor)),
+        )
+        Some(config)
+      },
+    )
+  })
 }
 
 ///|

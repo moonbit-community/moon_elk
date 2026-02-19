@@ -46,7 +46,8 @@ fn disco_transform_parse_double_or_default(
 
 ///|
 fn disco_transform_edge_thickness(edge : @graph.ElkEdge) -> Double {
-  match @graph.edge_layout_option_string_value(edge, disco_edge_thickness.get_id()) {
+  match
+    @graph.edge_layout_option_string_value(edge, disco_edge_thickness.get_id()) {
     Some(value) => disco_transform_parse_double_or_default(value, 1.0)
     None => 1.0
   }
@@ -91,7 +92,9 @@ fn disco_transform_target_port(edge : @graph.ElkEdge) -> @graph.ElkPort? {
 }
 
 ///|
-fn disco_transform_all_incident_edges(node : @graph.ElkNode) -> Array[@graph.ElkEdge] {
+fn disco_transform_all_incident_edges(
+  node : @graph.ElkNode,
+) -> Array[@graph.ElkEdge] {
   let edges_map : Map[@graph.ElkEdge, Unit] = {}
   for edge in @graph.node_incoming_edges(node) {
     edges_map[edge] = ()
@@ -138,13 +141,21 @@ fn disco_transform_first_or_create_edge_section(
 }
 
 ///|
-fn disco_transform_edge_points(section : @graph.ElkEdgeSection) -> @core.KVectorChain {
+fn disco_transform_edge_points(
+  section : @graph.ElkEdgeSection,
+) -> @core.KVectorChain {
   let points = @core.new_kvector_chain()
   let visited : Map[@graph.ElkEdgeSection, Unit] = {}
   let mut current = section
-  points.add_xy(@graph.edge_section_start_x(current), @graph.edge_section_start_y(current))
+  points.add_xy(
+    @graph.edge_section_start_x(current),
+    @graph.edge_section_start_y(current),
+  )
   while true {
-    points.add_xy(@graph.edge_section_end_x(current), @graph.edge_section_end_y(current))
+    points.add_xy(
+      @graph.edge_section_end_x(current),
+      @graph.edge_section_end_y(current),
+    )
     visited[current] = ()
     let outgoing = @graph.edge_section_outgoing_sections(current)
     if outgoing.is_empty() {
@@ -434,7 +445,10 @@ fn disco_transform_import_elk_edge(
 }
 
 ///|
-fn disco_transform_nearest_side(point : @core.KVector, node : @graph.ElkNode) -> DCDirection {
+fn disco_transform_nearest_side(
+  point : @core.KVector,
+  node : @graph.ElkNode,
+) -> DCDirection {
   let mut shortest_distance = point.y.abs()
   let mut result = DCNorth
 
@@ -654,7 +668,10 @@ pub fn ElkGraphTransformer::import_graph(
 }
 
 ///|
-fn disco_transform_offset_edge(edge : @graph.ElkEdge, offset : @core.KVector) -> Unit {
+fn disco_transform_offset_edge(
+  edge : @graph.ElkEdge,
+  offset : @core.KVector,
+) -> Unit {
   for section in @graph.edge_sections(edge) {
     @graph.edge_section_set_start(
       section,
@@ -730,7 +747,11 @@ pub fn ElkGraphTransformer::apply_layout(self : ElkGraphTransformer) -> Unit {
 
   self.node_mapping.each((node, poly) => {
     let offset = poly.get_offset()
-    @graph.node_set_location(node, @graph.node_x(node) + offset.x, @graph.node_y(node) + offset.y)
+    @graph.node_set_location(
+      node,
+      @graph.node_x(node) + offset.x,
+      @graph.node_y(node) + offset.y,
+    )
   })
   self.label_mapping.each((label, poly) => {
     let offset = poly.get_offset()
@@ -768,7 +789,9 @@ pub fn ElkGraphTransformer::apply_layout(self : ElkGraphTransformer) -> Unit {
   })
   self.outgoing_extensions_mapping.each((edge, extension) => {
     let section = disco_transform_first_or_create_edge_section(edge)
-    let reversed = @core.kvector_chain_reverse(disco_transform_edge_points(section))
+    let reversed = @core.kvector_chain_reverse(
+      disco_transform_edge_points(section),
+    )
     let new_points_reversed = disco_transform_adjust_first_segment(
       disco_transform_target_node(edge),
       reversed,

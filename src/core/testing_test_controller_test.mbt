@@ -33,7 +33,10 @@ test "TestController notifies listeners and keeps Java remove bug semantics" {
     "org.eclipse.elk.test",
   )
   controller.add_layout_execution_listener(listener)
-  let processor = new_layout_processor((_graph : Int, _monitor) => ())
+  let processor : ILayoutProcessor[Unit, Int] = new_layout_processor((
+    _graph : Int,
+    _monitor,
+  ) => ())
   controller.notify_processor_ready(7, processor)
   assert_eq(ready_count.val, 1)
   controller.remove_layout_execution_listener(listener)

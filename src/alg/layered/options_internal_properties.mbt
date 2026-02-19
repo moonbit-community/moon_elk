@@ -126,9 +126,9 @@ pub let internal_properties_long_edge_has_label_dummies : @graph.IProperty[Bool]
 )
 
 ///|
-pub let internal_properties_long_edge_before_label_dummy : @graph.IProperty[Bool] = @graph.new_property(
-  "longEdgeBeforeLabelDummy", false,
-)
+pub let internal_properties_long_edge_before_label_dummy : @graph.IProperty[
+  Bool,
+] = @graph.new_property("longEdgeBeforeLabelDummy", false)
 
 ///|
 pub let internal_properties_edge_constraint : @graph.IProperty[String] = @graph.new_property(
@@ -142,10 +142,9 @@ pub let internal_properties_long_edge_target_node : @graph.IProperty[LNode?] = @
 )
 
 ///|
-pub let internal_properties_target_node_model_order : @graph.IProperty[Map[Int, Int]] = @graph.new_property(
-  "targetNode.modelOrder",
-  {},
-)
+pub let internal_properties_target_node_model_order : @graph.IProperty[
+  Map[Int, Int],
+] = @graph.new_property("targetNode.modelOrder", {})
 
 ///|
 pub let internal_properties_hidden_nodes : @graph.IProperty[Array[LNode]] = @graph.new_property(
@@ -165,9 +164,9 @@ pub let internal_properties_partition_dummy : @graph.IProperty[Bool] = @graph.ne
 )
 
 ///|
-pub let internal_properties_ext_port_connections : @graph.IProperty[Array[@core.PortSide]] = @graph.new_property(
-  "externalPortConnections", @core.sides_none,
-)
+pub let internal_properties_ext_port_connections : @graph.IProperty[
+  Array[@core.PortSide],
+] = @graph.new_property("externalPortConnections", @core.sides_none)
 
 ///|
 pub let internal_properties_ext_port_side : @graph.IProperty[@core.PortSide] = @graph.new_property(
@@ -193,10 +192,9 @@ pub let internal_properties_ext_port_replaced_dummy : @graph.IProperty[LNode?] =
 )
 
 ///|
-pub let internal_properties_ext_port_replaced_dummies : @graph.IProperty[Array[LNode]] = @graph.new_property(
-  "externalPortReplacedDummies",
-  [],
-)
+pub let internal_properties_ext_port_replaced_dummies : @graph.IProperty[
+  Array[LNode],
+] = @graph.new_property("externalPortReplacedDummies", [])
 
 ///|
 pub let internal_properties_tarjan_lowlink : @graph.IProperty[Int] = @graph.new_property(
@@ -219,10 +217,9 @@ pub let internal_properties_is_part_of_cycle : @graph.IProperty[Bool] = @graph.n
 )
 
 ///|
-pub let internal_properties_barycenter_associates : @graph.IProperty[Array[LNode]] = @graph.new_property(
-  "barycenterAssociates",
-  [],
-)
+pub let internal_properties_barycenter_associates : @graph.IProperty[
+  Array[LNode],
+] = @graph.new_property("barycenterAssociates", [])
 
 ///|
 pub let internal_properties_top_comments : @graph.IProperty[Array[LNode]] = @graph.new_property(
@@ -273,19 +270,19 @@ pub let internal_properties_inside_connections : @graph.IProperty[Bool] = @graph
 )
 
 ///|
-pub let internal_properties_first_try_with_initial_order : @graph.IProperty[Bool] = @graph.new_property(
-  "crossingMinimization.firstTryWithInitialOrder", false,
-)
+pub let internal_properties_first_try_with_initial_order : @graph.IProperty[
+  Bool,
+] = @graph.new_property("crossingMinimization.firstTryWithInitialOrder", false)
 
 ///|
-pub let internal_properties_second_try_with_initial_order : @graph.IProperty[Bool] = @graph.new_property(
-  "crossingMinimization.secondTryWithInitialOrder", false,
-)
+pub let internal_properties_second_try_with_initial_order : @graph.IProperty[
+  Bool,
+] = @graph.new_property("crossingMinimization.secondTryWithInitialOrder", false)
 
 ///|
-pub let internal_properties_original_dummy_node_position : @graph.IProperty[Double] = @graph.new_property(
-  "originalDummyNodePosition", 0.0,
-)
+pub let internal_properties_original_dummy_node_position : @graph.IProperty[
+  Double,
+] = @graph.new_property("originalDummyNodePosition", 0.0)
 
 ///|
 pub let internal_properties_random_next_boolean : @graph.IProperty[Bool] = @graph.new_property(
@@ -309,16 +306,14 @@ pub let internal_properties_spline_ns_port_y_coord : @graph.IProperty[Double] = 
 )
 
 ///|
-pub let internal_properties_graph_properties : @graph.IProperty[Array[GraphProperties]] = @graph.new_property(
-  "graphProperties",
-  [],
-)
+pub let internal_properties_graph_properties : @graph.IProperty[
+  Array[GraphProperties],
+] = @graph.new_property("graphProperties", [])
 
 ///|
-pub let internal_properties_spline_route_start : @graph.IProperty[Array[SplineSegment]] = @graph.new_property(
-  "splines.route.start",
-  [],
-)
+pub let internal_properties_spline_route_start : @graph.IProperty[
+  Array[SplineSegment],
+] = @graph.new_property("splines.route.start", [])
 
 ///|
 pub let internal_properties_spline_edge_chain : @graph.IProperty[Array[LEdge]] = @graph.new_property(

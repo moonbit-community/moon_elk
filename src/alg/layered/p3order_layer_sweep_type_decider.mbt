@@ -14,7 +14,10 @@ fn layer_sweep_type_decider_port_constraints_from_string(
 }
 
 ///|
-fn layer_sweep_type_decider_is_side(port : LPort, side : @core.PortSide) -> Bool {
+fn layer_sweep_type_decider_is_side(
+  port : LPort,
+  side : @core.PortSide,
+) -> Bool {
   match (port.get_side(), side) {
     (@core.PortSide::North, @core.PortSide::North) => true
     (@core.PortSide::East, @core.PortSide::East) => true
@@ -307,7 +310,10 @@ fn LayerSweepTypeDecider::is_eastern_dummy(
       let dummy_port = node.get_ports()[0]
       match dummy_port.get_property_l_port(internal_properties_origin_l_port) {
         Some(fallback_origin_port) =>
-          layer_sweep_type_decider_is_side(fallback_origin_port, @core.PortSide::East)
+          layer_sweep_type_decider_is_side(
+            fallback_origin_port,
+            @core.PortSide::East,
+          )
         None => false
       }
     }

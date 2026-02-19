@@ -53,7 +53,10 @@ fn greedy_switch_processor_test_run(
 }
 
 ///|
-fn greedy_switch_processor_test_horizontal_sides() -> (@core.PortSide, @core.PortSide) {
+fn greedy_switch_processor_test_horizontal_sides() -> (
+  @core.PortSide,
+  @core.PortSide,
+) {
   let creator = new_greedy_switch_test_graph_creator()
   let layers = creator.make_layers(2)
   let left = creator.add_node_to_layer(layers[0])

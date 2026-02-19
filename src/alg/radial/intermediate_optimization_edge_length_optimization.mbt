@@ -16,7 +16,13 @@ fn edge_length_optimization_evaluate(root : @graph.ElkNode) -> Double {
 
     let vector = @core.new_kvector_xy(target_x - root_x, target_y - root_y)
     let source_clip = @core.new_kvector_copy(vector)
-    ignore(@core.clip_vector(source_clip, @graph.node_width(root), @graph.node_height(root)))
+    ignore(
+      @core.clip_vector(
+        source_clip,
+        @graph.node_width(root),
+        @graph.node_height(root),
+      ),
+    )
     vector.x -= source_clip.x
     vector.y -= source_clip.y
 
@@ -24,7 +30,13 @@ fn edge_length_optimization_evaluate(root : @graph.ElkNode) -> Double {
     root_y = target_y - vector.y
 
     let target_clip = @core.new_kvector_copy(vector)
-    ignore(@core.clip_vector(target_clip, @graph.node_width(target), @graph.node_height(target)))
+    ignore(
+      @core.clip_vector(
+        target_clip,
+        @graph.node_width(target),
+        @graph.node_height(target),
+      ),
+    )
     vector.x -= target_clip.x
     vector.y -= target_clip.y
 

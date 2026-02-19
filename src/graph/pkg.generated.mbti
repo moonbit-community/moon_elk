@@ -1,0 +1,612 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/moon_elk/graph"
+
+import {
+  "moonbitlang/core/json",
+}
+
+// Values
+pub fn all_edges() -> Array[Int]
+
+pub fn all_incident_edges(Int) -> Array[Int]
+
+pub fn all_incident_edges_for_shape(ElkConnectableShape) -> Array[Int]
+
+pub fn all_incident_sections(Int) -> Array[Int]
+
+pub fn all_incident_shapes(Int) -> Array[ElkConnectableShape]
+
+pub fn all_incoming_edges(Int) -> Array[Int]
+
+pub fn all_outgoing_edges(Int) -> Array[Int]
+
+pub fn connectable_shape_to_node(ElkConnectableShape?) -> Int
+
+pub fn connectable_shape_to_port(ElkConnectableShape?) -> Int?
+
+pub fn create_edge(Int?) -> Int
+
+pub fn create_edge_section(Int) -> Int
+
+pub fn create_graph() -> Int
+
+pub fn create_hyperedge(Array[ElkConnectableShape], Array[ElkConnectableShape]) -> Int
+
+pub fn create_label(ElkLabelParent?) -> Int
+
+pub fn create_label_with_text(String, ElkLabelParent?) -> Int
+
+pub fn create_node(Int?) -> Int
+
+pub fn create_port(Int?) -> Int
+
+pub fn create_simple_edge(Int, Int) -> Int
+
+pub fn create_simple_edge_for_shapes(ElkConnectableShape, ElkConnectableShape) -> Int
+
+pub fn edge_add_source(Int, ElkConnectableShape) -> Unit
+
+pub fn edge_add_target(Int, ElkConnectableShape) -> Unit
+
+pub fn edge_containing_node(Int) -> Int?
+
+pub fn edge_copy_properties(Int, Int) -> Unit
+
+pub fn edge_identifier(Int) -> String
+
+pub fn edge_is_connected(Int) -> Bool
+
+pub fn edge_labels(Int) -> Array[Int]
+
+pub fn edge_layout_option_string_entries(Int) -> Array[(String, String)]
+
+pub fn edge_layout_option_string_value(Int, String) -> String?
+
+pub fn edge_section_add_incoming_section(Int, Int) -> Unit
+
+pub fn edge_section_add_outgoing_section(Int, Int) -> Unit
+
+pub fn edge_section_end_x(Int) -> Double
+
+pub fn edge_section_end_y(Int) -> Double
+
+pub fn edge_section_identifier(Int) -> String
+
+pub fn edge_section_incoming_sections(Int) -> Array[Int]
+
+pub fn edge_section_incoming_shape(Int) -> ElkConnectableShape?
+
+pub fn edge_section_outgoing_sections(Int) -> Array[Int]
+
+pub fn edge_section_outgoing_shape(Int) -> ElkConnectableShape?
+
+pub fn edge_section_set_end(Int, Double, Double) -> Unit
+
+pub fn edge_section_set_identifier(Int, String) -> Unit
+
+pub fn edge_section_set_incoming_shape(Int, ElkConnectableShape?) -> Unit
+
+pub fn edge_section_set_outgoing_shape(Int, ElkConnectableShape?) -> Unit
+
+pub fn edge_section_set_start(Int, Double, Double) -> Unit
+
+pub fn edge_section_start_x(Int) -> Double
+
+pub fn edge_section_start_y(Int) -> Double
+
+pub fn edge_sections(Int) -> Array[Int]
+
+pub fn edge_set_containing_node(Int, Int?) -> Unit
+
+pub fn edge_set_identifier(Int, String) -> Unit
+
+pub fn edge_set_layout_option_string_by_id(Int, String, String) -> Unit
+
+pub fn edge_sources(Int) -> Array[ElkConnectableShape]
+
+pub fn edge_targets(Int) -> Array[ElkConnectableShape]
+
+pub let elk_graph_elk_bend_point_classifier_id : Int
+
+pub let elk_graph_elk_connectable_shape_classifier_id : Int
+
+pub let elk_graph_elk_edge_classifier_id : Int
+
+pub let elk_graph_elk_edge_section_classifier_id : Int
+
+pub let elk_graph_elk_graph_element_classifier_id : Int
+
+pub let elk_graph_elk_label_classifier_id : Int
+
+pub let elk_graph_elk_node_classifier_id : Int
+
+pub let elk_graph_elk_port_classifier_id : Int
+
+pub let elk_graph_elk_property_to_value_map_entry_classifier_id : Int
+
+pub let elk_graph_elk_shape_classifier_id : Int
+
+pub let elk_graph_emap_property_holder_classifier_id : Int
+
+pub let elk_graph_ename : String
+
+pub let elk_graph_ens_prefix : String
+
+pub let elk_graph_ens_uri : String
+
+pub let elk_graph_factory_instance : ElkGraphFactory
+
+pub let elk_graph_iproperty_classifier_id : Int
+
+pub let elk_graph_iproperty_holder_classifier_id : Int
+
+pub fn elk_graph_package_id() -> String
+
+pub let elk_graph_package_instance : String
+
+pub let elk_graph_property_value_classifier_id : Int
+
+pub fn elk_reflect_clone(String, Json) -> Json?
+
+pub fn elk_reflect_new_instance(String) -> Json?
+
+pub fn elk_reflect_register(String, new_fun? : (() -> Json)?, clone_fun? : ((Json) -> Json)?) -> Unit
+
+pub fn elk_reflect_register_clone(String, (Json) -> Json) -> Unit
+
+pub fn elk_reflect_register_new_instance(String, () -> Json) -> Unit
+
+pub fn elk_reflect_reset_for_test() -> Unit
+
+pub fn elk_switch_target_e_map_property_holder(MapPropertyHolder) -> ElkGraphSwitchTarget
+
+pub fn elk_switch_target_elk_bend_point(ElkBendPoint) -> ElkGraphSwitchTarget
+
+pub fn elk_switch_target_elk_connectable_shape(ElkConnectableShape) -> ElkGraphSwitchTarget
+
+pub fn elk_switch_target_elk_edge(Int) -> ElkGraphSwitchTarget
+
+pub fn elk_switch_target_elk_edge_section(Int) -> ElkGraphSwitchTarget
+
+pub fn elk_switch_target_elk_graph_element(Int) -> ElkGraphSwitchTarget
+
+pub fn elk_switch_target_elk_label(Int) -> ElkGraphSwitchTarget
+
+pub fn elk_switch_target_elk_node(Int) -> ElkGraphSwitchTarget
+
+pub fn elk_switch_target_elk_port(Int) -> ElkGraphSwitchTarget
+
+pub fn elk_switch_target_elk_property_to_value_map_entry(Json) -> ElkGraphSwitchTarget
+
+pub fn elk_switch_target_elk_shape(Int) -> ElkGraphSwitchTarget
+
+pub fn elk_switch_target_i_property_holder(MapPropertyHolder) -> ElkGraphSwitchTarget
+
+pub fn find_best_edge_containment(Int?) -> Int?
+
+pub fn find_lowest_common_ancestor(Int, Int) -> Int?
+
+pub fn graph_feature_values() -> Array[GraphFeature]
+
+pub fn graph_identifier_generator_for_graph(Int) -> GraphIdentifierGenerator
+
+pub fn is_descendant(Int, Int) -> Bool
+
+pub fn label_height(Int) -> Double
+
+pub fn label_identifier(Int) -> String
+
+pub fn label_labels(Int) -> Array[Int]
+
+pub fn label_layout_option_string_value(Int, String) -> String?
+
+pub fn label_parent(Int) -> ElkLabelParent?
+
+pub fn label_set_dimensions(Int, Double, Double) -> Unit
+
+pub fn label_set_identifier(Int, String) -> Unit
+
+pub fn label_set_layout_option_string_by_id(Int, String, String) -> Unit
+
+pub fn label_set_location(Int, Double, Double) -> Unit
+
+pub fn label_set_text(Int, String) -> Unit
+
+pub fn label_text(Int) -> String
+
+pub fn label_width(Int) -> Double
+
+pub fn label_x(Int) -> Double
+
+pub fn label_y(Int) -> Double
+
+pub fn make_edge_label_parent(Int) -> ElkLabelParent
+
+pub fn make_label_label_parent(Int) -> ElkLabelParent
+
+pub fn make_node_label_parent(Int) -> ElkLabelParent
+
+pub fn make_node_shape(Int) -> ElkConnectableShape
+
+pub fn make_port_label_parent(Int) -> ElkLabelParent
+
+pub fn make_port_shape(Int) -> ElkConnectableShape
+
+pub fn new_e_map_property_holder_impl() -> MapPropertyHolder
+
+pub fn new_elk_bend_point(x? : Double, y? : Double) -> ElkBendPoint
+
+pub fn new_elk_bend_point_impl(x? : Double, y? : Double) -> ElkBendPoint
+
+pub fn new_elk_edge_impl(containing_node? : Int?) -> Int
+
+pub fn new_elk_edge_section_impl(Int) -> Int
+
+pub fn new_elk_graph_adapter_factory() -> ElkGraphAdapterFactory
+
+pub fn new_elk_graph_factory_impl() -> ElkGraphFactory
+
+pub fn new_elk_graph_package_impl() -> String
+
+pub fn[T] new_elk_graph_switch(case_i_property_holder? : (MapPropertyHolder) -> T?, case_e_map_property_holder? : (MapPropertyHolder) -> T?, case_elk_graph_element? : (Int) -> T?, case_elk_shape? : (Int) -> T?, case_elk_label? : (Int) -> T?, case_elk_connectable_shape? : (ElkConnectableShape) -> T?, case_elk_node? : (Int) -> T?, case_elk_port? : (Int) -> T?, case_elk_edge? : (Int) -> T?, case_elk_bend_point? : (ElkBendPoint) -> T?, case_elk_edge_section? : (Int) -> T?, case_elk_property_to_value_map_entry? : (Json) -> T?, default_case? : () -> T?) -> ElkGraphSwitch[T]
+
+pub fn new_elk_label_impl(parent? : ElkLabelParent?) -> Int
+
+pub fn new_elk_node_impl(parent? : Int?) -> Int
+
+pub fn new_elk_persistent_entry(key? : String, value? : String?) -> ElkPersistentEntry
+
+pub fn new_elk_port_impl(parent? : Int?) -> Int
+
+pub fn[T] new_elk_property_to_value_map_entry_impl(key? : IProperty[T]?, value? : T?) -> ElkPropertyToValueMapEntryImpl[T]
+
+pub fn new_map_property_holder() -> MapPropertyHolder
+
+pub fn[T] new_property(String, T) -> IProperty[T]
+
+pub fn[T] new_property_cloneable(String, T, (T) -> T?) -> IProperty[T]
+
+pub fn[T] new_property_cloneable_without_clone(String, T) -> IProperty[T]
+
+pub fn[T] new_property_value_proxy((IProperty[T]) -> T?) -> IPropertyValueProxy[T]
+
+pub fn node_all_descendants_including_self(Int) -> Array[Int]
+
+pub fn node_children(Int) -> Array[Int]
+
+pub fn node_clear_bool_property(Int, IProperty[Bool]) -> Unit
+
+pub fn node_clear_double_property(Int, IProperty[Double]) -> Unit
+
+pub fn node_clear_int_property(Int, IProperty[Int]) -> Unit
+
+pub fn node_clear_string_property(Int, IProperty[String]) -> Unit
+
+pub fn node_clear_string_set_property(Int, IProperty[Array[String]]) -> Unit
+
+pub fn node_contained_edges(Int) -> Array[Int]
+
+pub fn node_copy_properties(Int, Int) -> Unit
+
+pub fn node_double_property_entries(Int) -> Array[(String, Double)]
+
+pub fn node_get_bool_property(Int, IProperty[Bool]) -> Bool
+
+pub fn node_get_double_property(Int, IProperty[Double]) -> Double
+
+pub fn node_get_int_property(Int, IProperty[Int]) -> Int
+
+pub fn node_get_string_property(Int, IProperty[String]) -> String
+
+pub fn node_get_string_set_property(Int, IProperty[Array[String]]) -> Array[String]
+
+pub fn node_has_bool_property(Int, IProperty[Bool]) -> Bool
+
+pub fn node_has_double_property(Int, IProperty[Double]) -> Bool
+
+pub fn node_has_int_property(Int, IProperty[Int]) -> Bool
+
+pub fn node_has_string_property(Int, IProperty[String]) -> Bool
+
+pub fn node_has_string_set_property(Int, IProperty[Array[String]]) -> Bool
+
+pub fn node_height(Int) -> Double
+
+pub fn node_identifier(Int) -> String
+
+pub fn node_incoming_edges(Int) -> Array[Int]
+
+pub fn node_individual_spacing_option_string_entries(Int) -> Array[(String, String)]
+
+pub fn node_individual_spacing_option_string_value(Int, String) -> String?
+
+pub fn node_labels(Int) -> Array[Int]
+
+pub fn node_layout_option_string_entries(Int) -> Array[(String, String)]
+
+pub fn node_layout_option_string_value(Int, String) -> String?
+
+pub fn node_outgoing_edges(Int) -> Array[Int]
+
+pub fn node_parent(Int) -> Int?
+
+pub fn node_ports(Int) -> Array[Int]
+
+pub fn node_set_bool_property(Int, IProperty[Bool], Bool) -> Unit
+
+pub fn node_set_dimensions(Int, Double, Double) -> Unit
+
+pub fn node_set_double_property(Int, IProperty[Double], Double) -> Unit
+
+pub fn node_set_identifier(Int, String) -> Unit
+
+pub fn node_set_individual_spacing_option_string_by_id(Int, String, String) -> Unit
+
+pub fn node_set_int_property(Int, IProperty[Int], Int) -> Unit
+
+pub fn node_set_layout_option_string_by_id(Int, String, String) -> Unit
+
+pub fn node_set_location(Int, Double, Double) -> Unit
+
+pub fn node_set_string_property(Int, IProperty[String], String) -> Unit
+
+pub fn node_set_string_set_property(Int, IProperty[Array[String]], Array[String]) -> Unit
+
+pub fn node_width(Int) -> Double
+
+pub fn node_x(Int) -> Double
+
+pub fn node_y(Int) -> Double
+
+pub fn port_height(Int) -> Double
+
+pub fn port_identifier(Int) -> String
+
+pub fn port_incoming_edges(Int) -> Array[Int]
+
+pub fn port_labels(Int) -> Array[Int]
+
+pub fn port_layout_option_string_value(Int, String) -> String?
+
+pub fn port_outgoing_edges(Int) -> Array[Int]
+
+pub fn port_parent(Int) -> Int?
+
+pub fn port_set_dimensions(Int, Double, Double) -> Unit
+
+pub fn port_set_identifier(Int, String) -> Unit
+
+pub fn port_set_layout_option_string_by_id(Int, String, String) -> Unit
+
+pub fn port_set_location(Int, Double, Double) -> Unit
+
+pub fn port_width(Int) -> Double
+
+pub fn port_x(Int) -> Double
+
+pub fn port_y(Int) -> Double
+
+pub fn properties_skipping_nodes(Int, include_root? : Bool) -> Array[Int]
+
+pub fn[T] property_holder_comparator_with(IProperty[T]) -> PropertyHolderComparator[T]
+
+pub fn reset_graph_model_for_test() -> Unit
+
+pub fn update_containment(Int?) -> Unit
+
+// Errors
+
+// Types and methods
+#alias(ElkBendPointImpl)
+pub struct ElkBendPoint {
+  mut x : Double
+  mut y : Double
+}
+pub fn ElkBendPoint::get_x(Self) -> Double
+pub fn ElkBendPoint::get_y(Self) -> Double
+pub fn ElkBendPoint::set(Self, Double, Double) -> Unit
+pub fn ElkBendPoint::set_x(Self, Double) -> Unit
+pub fn ElkBendPoint::set_y(Self, Double) -> Unit
+
+#alias(ElkConnectableShapeImpl)
+pub enum ElkConnectableShape {
+  NodeShape(Int)
+  PortShape(Int)
+}
+
+pub struct ElkGraphAdapterFactory {
+  model_package : String
+}
+pub fn ElkGraphAdapterFactory::create_adapter(Self, ElkGraphSwitchTarget) -> Unit?
+pub fn ElkGraphAdapterFactory::create_e_map_property_holder_adapter(Self) -> Unit?
+pub fn ElkGraphAdapterFactory::create_e_object_adapter(Self) -> Unit?
+pub fn ElkGraphAdapterFactory::create_elk_bend_point_adapter(Self) -> Unit?
+pub fn ElkGraphAdapterFactory::create_elk_connectable_shape_adapter(Self) -> Unit?
+pub fn ElkGraphAdapterFactory::create_elk_edge_adapter(Self) -> Unit?
+pub fn ElkGraphAdapterFactory::create_elk_edge_section_adapter(Self) -> Unit?
+pub fn ElkGraphAdapterFactory::create_elk_graph_element_adapter(Self) -> Unit?
+pub fn ElkGraphAdapterFactory::create_elk_label_adapter(Self) -> Unit?
+pub fn ElkGraphAdapterFactory::create_elk_node_adapter(Self) -> Unit?
+pub fn ElkGraphAdapterFactory::create_elk_port_adapter(Self) -> Unit?
+pub fn ElkGraphAdapterFactory::create_elk_property_to_value_map_entry_adapter(Self) -> Unit?
+pub fn ElkGraphAdapterFactory::create_elk_shape_adapter(Self) -> Unit?
+pub fn ElkGraphAdapterFactory::create_i_property_holder_adapter(Self) -> Unit?
+pub fn ElkGraphAdapterFactory::is_factory_for_type(Self, String) -> Bool
+
+#alias(ElkGraphFactoryImpl)
+pub struct ElkGraphFactory {
+  create_elk_label_fn : () -> Int
+  create_elk_node_fn : () -> Int
+  create_elk_port_fn : () -> Int
+  create_elk_edge_fn : () -> Int
+  create_elk_bend_point_fn : () -> ElkBendPoint
+  create_elk_edge_section_fn : (Int) -> Int
+  get_elk_graph_package_fn : () -> String
+}
+pub fn ElkGraphFactory::create_elk_bend_point(Self) -> ElkBendPoint
+pub fn ElkGraphFactory::create_elk_edge(Self) -> Int
+pub fn ElkGraphFactory::create_elk_edge_section(Self, Int) -> Int
+pub fn ElkGraphFactory::create_elk_label(Self) -> Int
+pub fn ElkGraphFactory::create_elk_node(Self) -> Int
+pub fn ElkGraphFactory::create_elk_port(Self) -> Int
+pub fn ElkGraphFactory::get_elk_graph_package(Self) -> String
+
+pub struct ElkGraphSwitch[T] {
+  model_package : String
+  case_i_property_holder_fn : (MapPropertyHolder) -> T?
+  case_e_map_property_holder_fn : (MapPropertyHolder) -> T?
+  case_elk_graph_element_fn : (Int) -> T?
+  case_elk_shape_fn : (Int) -> T?
+  case_elk_label_fn : (Int) -> T?
+  case_elk_connectable_shape_fn : (ElkConnectableShape) -> T?
+  case_elk_node_fn : (Int) -> T?
+  case_elk_port_fn : (Int) -> T?
+  case_elk_edge_fn : (Int) -> T?
+  case_elk_bend_point_fn : (ElkBendPoint) -> T?
+  case_elk_edge_section_fn : (Int) -> T?
+  case_elk_property_to_value_map_entry_fn : (Json) -> T?
+  default_case_fn : () -> T?
+}
+pub fn[T] ElkGraphSwitch::do_switch(Self[T], ElkGraphSwitchTarget) -> T?
+pub fn[T] ElkGraphSwitch::is_switch_for(Self[T], String) -> Bool
+
+pub enum ElkGraphSwitchTarget {
+  IPropertyHolderTarget(MapPropertyHolder)
+  EMapPropertyHolderTarget(MapPropertyHolder)
+  ElkGraphElementTarget(Int)
+  ElkShapeTarget(Int)
+  ElkLabelTarget(Int)
+  ElkConnectableShapeTarget(ElkConnectableShape)
+  ElkNodeTarget(Int)
+  ElkPortTarget(Int)
+  ElkEdgeTarget(Int)
+  ElkBendPointTarget(ElkBendPoint)
+  ElkEdgeSectionTarget(Int)
+  ElkPropertyToValueMapEntryTarget(Json)
+}
+
+pub enum ElkLabelParent {
+  NodeLabelParent(Int)
+  PortLabelParent(Int)
+  EdgeLabelParent(Int)
+  LabelLabelParent(Int)
+}
+
+pub struct ElkPersistentEntry {
+  mut key : String
+  mut value : String?
+}
+pub fn ElkPersistentEntry::get_key(Self) -> String
+pub fn ElkPersistentEntry::get_value(Self) -> String?
+pub fn ElkPersistentEntry::set_key(Self, String) -> Unit
+pub fn ElkPersistentEntry::set_value(Self, String?) -> Unit
+
+pub struct ElkPropertyToValueMapEntryImpl[T] {
+  mut key : IProperty[T]?
+  mut value : T?
+}
+pub fn[T] ElkPropertyToValueMapEntryImpl::get_typed_key(Self[T]) -> IProperty[T]?
+pub fn[T] ElkPropertyToValueMapEntryImpl::get_typed_value(Self[T]) -> T?
+pub fn[T] ElkPropertyToValueMapEntryImpl::set_typed_key(Self[T], IProperty[T]?) -> Unit
+pub fn[T] ElkPropertyToValueMapEntryImpl::set_typed_value(Self[T], T?) -> Unit
+
+pub(all) enum GraphFeature {
+  SelfLoops
+  InsideSelfLoops
+  MultiEdges
+  EdgeLabels
+  Ports
+  Compound
+  Clusters
+  Disconnected
+}
+pub fn GraphFeature::get_description(Self) -> String
+pub fn GraphFeature::to_string(Self) -> String
+
+pub struct GraphIdentifierGenerator {
+  graph : Int
+  validate : Bool
+  generate : Bool
+  unique : Bool
+}
+pub fn GraphIdentifierGenerator::assert_exists(Self) -> Self
+pub fn GraphIdentifierGenerator::assert_unique(Self) -> Self
+pub fn GraphIdentifierGenerator::assert_valid(Self) -> Self
+pub fn GraphIdentifierGenerator::execute(Self) -> Unit
+
+pub struct IProperty[T] {
+  id : String
+  default_value : T
+  clone_required : Bool
+  clone_default_fn : ((T) -> T?)?
+}
+pub fn[T] IProperty::get_default(Self[T]) -> T
+pub fn[T] IProperty::get_id(Self[T]) -> String
+
+pub struct IPropertyValueProxy[T] {
+  resolve_value_fn : (IProperty[T]) -> T?
+}
+pub fn[T] IPropertyValueProxy::resolve_value(Self[T], IProperty[T]) -> T?
+
+#alias(EMapPropertyHolder)
+#alias(EMapPropertyHolderImpl)
+#alias(IPropertyHolder)
+pub struct MapPropertyHolder {
+  property_map : Map[String, Json]
+}
+pub fn MapPropertyHolder::copy_properties(Self, Self?) -> Self
+pub fn MapPropertyHolder::get_all_properties(Self) -> Map[String, Json]
+pub fn[T : @json.FromJson] MapPropertyHolder::get_property(Self, IProperty[T]) -> T
+pub fn[T] MapPropertyHolder::has_property(Self, IProperty[T]) -> Bool
+pub fn[T : ToJson] MapPropertyHolder::set_property(Self, IProperty[T], T?) -> Self
+
+pub struct PropertyHolderComparator[T] {
+  property : IProperty[T]
+}
+pub fn[T : Compare + @json.FromJson] PropertyHolderComparator::compare(Self[T], MapPropertyHolder, MapPropertyHolder) -> Int
+
+// Type aliases
+pub type AdvancedPropertyValue = Unit
+
+pub type ElkEdge = Int
+
+pub type ElkEdgeImpl = Int
+
+pub type ElkEdgeSection = Int
+
+pub type ElkEdgeSectionImpl = Int
+
+pub type ElkGraphElement = Int
+
+pub type ElkGraphElementImpl = Int
+
+pub type ElkGraphModelAdapter = Unit
+
+pub type ElkGraphPackage = String
+
+pub type ElkGraphPackageImpl = String
+
+pub type ElkLabel = Int
+
+pub type ElkLabelImpl = Int
+
+pub type ElkNode = Int
+
+pub type ElkNodeImpl = Int
+
+pub type ElkPort = Int
+
+pub type ElkPortImpl = Int
+
+pub type ElkReflectCloneFunction = (Json) -> Json
+
+pub type ElkReflectNewInstanceFunction = () -> Json
+
+pub type ElkShape = Int
+
+pub type ElkShapeImpl = Int
+
+pub type ExperimentalPropertyValue = Unit
+
+// Traits
+

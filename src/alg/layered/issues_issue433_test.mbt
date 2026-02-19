@@ -30,6 +30,12 @@ test "Issue433 self-loop label stays inside graph bounds" {
 
   assert_true(@graph.label_x(label) >= 0.0)
   assert_true(@graph.label_y(label) >= 0.0)
-  assert_true(@graph.label_x(label) + @graph.label_width(label) <= @graph.node_width(graph))
-  assert_true(@graph.label_y(label) + @graph.label_height(label) <= @graph.node_height(graph))
+  assert_true(
+    @graph.label_x(label) + @graph.label_width(label) <=
+    @graph.node_width(graph),
+  )
+  assert_true(
+    @graph.label_y(label) + @graph.label_height(label) <=
+    @graph.node_height(graph),
+  )
 }

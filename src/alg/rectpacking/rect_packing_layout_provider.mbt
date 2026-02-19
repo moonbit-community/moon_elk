@@ -1,6 +1,9 @@
 ///|
 pub struct RectPackingLayoutProvider {
-  algorithm_assembler : @core.AlgorithmAssembler[RectPackingLayoutPhases, @graph.ElkNode]
+  algorithm_assembler : @core.AlgorithmAssembler[
+    RectPackingLayoutPhases,
+    @graph.ElkNode,
+  ]
 }
 
 ///|
@@ -109,7 +112,9 @@ pub fn RectPackingLayoutProvider::assemble_algorithm(
       RectPackingLayoutPhases::P2_PACKING,
       rectpacking_packing_strategy_phase_factory(
         rectpacking_packing_strategy_from_string(
-          @graph.node_get_string_property(layout_graph, rectpacking_packing_strategy),
+          @graph.node_get_string_property(
+            layout_graph, rectpacking_packing_strategy,
+          ),
         ),
       ),
     ),
@@ -170,9 +175,13 @@ pub fn RectPackingLayoutProvider::layout(
       region2 = region3
       region3 = rectangles[counter + 2]
       if @graph.node_height(region1) >=
-        @graph.node_height(region2) + @graph.node_height(region3) + node_node_spacing ||
+        @graph.node_height(region2) +
+        @graph.node_height(region3) +
+        node_node_spacing ||
         @graph.node_height(region3) >=
-        @graph.node_height(region1) + @graph.node_height(region2) + node_node_spacing {
+        @graph.node_height(region1) +
+        @graph.node_height(region2) +
+        node_node_spacing {
         stackable = true
         break
       } else {
@@ -196,14 +205,22 @@ pub fn RectPackingLayoutProvider::layout(
   let mut real_width = 0.0
   let mut real_height = 0.0
   for rect in rectangles {
-    real_width = @math.maximum(real_width, @graph.node_x(rect) + @graph.node_width(rect))
-    real_height = @math.maximum(real_height, @graph.node_y(rect) + @graph.node_height(rect))
+    real_width = @cmp.maximum(
+      real_width,
+      @graph.node_x(rect) + @graph.node_width(rect),
+    )
+    real_height = @cmp.maximum(
+      real_height,
+      @graph.node_y(rect) + @graph.node_height(rect),
+    )
   }
 
   @core.translate(
     layout_graph,
     @core.new_kvector_xy(
-      @graph.node_get_double_property(layout_graph, rectpacking_internal_drawing_width),
+      @graph.node_get_double_property(
+        layout_graph, rectpacking_internal_drawing_width,
+      ),
       @graph.node_get_double_property(
         layout_graph, rectpacking_internal_drawing_height,
       ),
@@ -216,7 +233,9 @@ pub fn RectPackingLayoutProvider::layout(
   if !fixed_graph_size {
     @graph.node_set_dimensions(
       layout_graph,
-      @graph.node_get_double_property(layout_graph, rectpacking_internal_drawing_width) +
+      @graph.node_get_double_property(
+        layout_graph, rectpacking_internal_drawing_width,
+      ) +
       padding.get_horizontal(),
       @graph.node_get_double_property(
         layout_graph, rectpacking_internal_drawing_height,

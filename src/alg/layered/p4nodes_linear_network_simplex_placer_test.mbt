@@ -86,7 +86,9 @@ let p4nodes_test_network_simplex_node_flexibility : @graph.IProperty[String] = @
 )
 
 ///|
-let p4nodes_test_network_simplex_node_flexibility_default : @graph.IProperty[String] = @graph.new_property(
+let p4nodes_test_network_simplex_node_flexibility_default : @graph.IProperty[
+  String,
+] = @graph.new_property(
   "org.eclipse.elk.layered.nodePlacement.networkSimplex.nodeFlexibility.default",
   "NONE",
 )

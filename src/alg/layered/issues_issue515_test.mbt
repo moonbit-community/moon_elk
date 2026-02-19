@@ -43,7 +43,9 @@ fn issue515_test_connect(
 ///|
 fn issue515_test_build_graph() -> @graph.ElkNode {
   let graph = create_graph()
-  @graph.node_set_string_property(graph, @core.algorithm, "org.eclipse.elk.layered")
+  @graph.node_set_string_property(
+    graph, @core.algorithm, "org.eclipse.elk.layered",
+  )
   @graph.node_set_string_property(graph, @core.direction, "RIGHT")
   @graph.node_set_string_property(graph, @core.edge_routing, "ORTHOGONAL")
 
@@ -65,7 +67,9 @@ fn issue515_test_build_graph() -> @graph.ElkNode {
 }
 
 ///|
-fn issue515_test_all_nodes_as_boxes(graph : @graph.ElkNode) -> Array[@core.ElkRectangle] {
+fn issue515_test_all_nodes_as_boxes(
+  graph : @graph.ElkNode,
+) -> Array[@core.ElkRectangle] {
   let boxes : Array[@core.ElkRectangle] = []
   for node in @graph.node_children(graph) {
     boxes.push(

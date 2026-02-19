@@ -44,7 +44,10 @@ fn spore_overlap_exists(graph : @graph.ElkNode) -> Bool {
 }
 
 ///|
-fn spore_run_overlap_removal(graph : @graph.ElkNode, run_scanline : Bool) -> Unit {
+fn spore_run_overlap_removal(
+  graph : @graph.ElkNode,
+  run_scanline : Bool,
+) -> Unit {
   @graph.node_set_bool_property(
     graph, spore_overlap_removal_run_scanline, run_scanline,
   )

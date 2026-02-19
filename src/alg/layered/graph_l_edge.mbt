@@ -287,7 +287,10 @@ pub fn LEdge::set_property_kvector(
 }
 
 ///|
-pub fn LEdge::get_property_int(self : LEdge, property : @graph.IProperty[Int]) -> Int {
+pub fn LEdge::get_property_int(
+  self : LEdge,
+  property : @graph.IProperty[Int],
+) -> Int {
   match self.int_properties.get(property.get_id()) {
     Some(value) => value
     None => property.get_default()
@@ -317,7 +320,10 @@ pub fn LEdge::get_property_kvector(
 }
 
 ///|
-pub fn LEdge::has_property_int(self : LEdge, property : @graph.IProperty[Int]) -> Bool {
+pub fn LEdge::has_property_int(
+  self : LEdge,
+  property : @graph.IProperty[Int],
+) -> Bool {
   self.int_properties.contains(property.get_id())
 }
 

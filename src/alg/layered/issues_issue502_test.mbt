@@ -46,7 +46,8 @@ fn issue502_test_large_enough(node : @graph.ElkNode) -> Bool {
     }
   }
 
-  @graph.node_width(node) >= required_width && @graph.node_height(node) >= required_height
+  @graph.node_width(node) >= required_width &&
+  @graph.node_height(node) >= required_height
 }
 
 ///|

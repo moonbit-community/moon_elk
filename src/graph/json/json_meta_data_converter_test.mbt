@@ -79,7 +79,9 @@ test "layout category metadata converts only layouters with ids" {
     name="Default",
     description="Category",
   )
-  category.add_layouter(@core.new_layout_algorithm_data("org.eclipse.elk.alg.a"))
+  category.add_layouter(
+    @core.new_layout_algorithm_data("org.eclipse.elk.alg.a"),
+  )
   category.add_layouter(@core.new_layout_algorithm_data(""))
 
   let obj = json_meta_expect_object(layout_category_data_to_json(category))
@@ -96,7 +98,9 @@ test "layout category metadata converts only layouters with ids" {
 test "layout option metadata converts enum type and targets" {
   @core.layout_meta_data_service_reset_for_test()
   @core.layout_meta_data_service_register_default_options()
-  let option = @core.layout_meta_data_service_get_option_data(@core.no_layout.get_id())
+  let option = @core.layout_meta_data_service_get_option_data(
+    @core.no_layout.get_id(),
+  )
   let obj = json_meta_expect_object(layout_option_data_to_json(option))
   assert_eq(json_meta_expect_string(obj["id"]), @core.no_layout.get_id())
   assert_eq(json_meta_expect_string(obj["group"]), "algorithm")

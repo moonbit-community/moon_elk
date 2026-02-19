@@ -21,6 +21,9 @@ pub fn IRadialSorter::sort(
 }
 
 ///|
-pub fn IRadialSorter::initialize(self : IRadialSorter, root : @graph.ElkNode) -> Unit {
+pub fn IRadialSorter::initialize(
+  self : IRadialSorter,
+  root : @graph.ElkNode,
+) -> Unit {
   (self.initialize_fn)(root)
 }

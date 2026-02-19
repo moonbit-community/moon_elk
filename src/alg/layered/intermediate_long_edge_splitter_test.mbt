@@ -60,7 +60,10 @@ fn long_edge_splitter_test_new_node(graph : LGraph, layer : Layer) -> LNode {
 }
 
 ///|
-fn long_edge_splitter_test_new_port(node : LNode, side : @core.PortSide) -> LPort {
+fn long_edge_splitter_test_new_port(
+  node : LNode,
+  side : @core.PortSide,
+) -> LPort {
   let port = new_l_port()
   port.set_side(side)
   port.set_node(Some(node))

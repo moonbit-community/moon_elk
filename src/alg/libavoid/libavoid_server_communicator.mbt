@@ -103,7 +103,9 @@ fn LibavoidServerCommunicator::render_text(
 }
 
 ///|
-fn libavoid_communicator_process_timeout_of(layout_node : @graph.ElkNode) -> Int {
+fn libavoid_communicator_process_timeout_of(
+  layout_node : @graph.ElkNode,
+) -> Int {
   let timeout_text = match
     @graph.node_layout_option_string_value(
       layout_node,
@@ -389,10 +391,18 @@ fn LibavoidServerCommunicator::write_text_graph(
 
 ///|
 fn libavoid_communicator_option_id(id : String) -> String {
-  if id.starts_with("org.eclipse.elk.alg.libavoid.") {
-    id.substring(start="org.eclipse.elk.alg.libavoid.".length())
-  } else if id.starts_with("org.eclipse.elk.") {
-    id.substring(start="org.eclipse.elk.".length())
+  if id.has_prefix("org.eclipse.elk.alg.libavoid.") {
+    try id["org.eclipse.elk.alg.libavoid.".length():] catch {
+      _ => id
+    } noraise {
+      value => value.to_string()
+    }
+  } else if id.has_prefix("org.eclipse.elk.") {
+    try id["org.eclipse.elk.".length():] catch {
+      _ => id
+    } noraise {
+      value => value.to_string()
+    }
   } else {
     id
   }
@@ -452,7 +462,9 @@ fn LibavoidServerCommunicator::transform_options(
     )
   }
 
-  let node_direction = @graph.node_get_string_property(node, libavoid_option_direction)
+  let node_direction = @graph.node_get_string_property(
+    node, libavoid_option_direction,
+  )
   if node_direction != "UNDEFINED" {
     self.add_option_line(
       libavoid_option_direction.get_id(),
@@ -483,15 +495,21 @@ fn LibavoidServerCommunicator::transform_options(
   )
   self.add_penalty_line(
     libavoid_option_cluster_crossing_penalty.get_id(),
-    @graph.node_get_double_property(node, libavoid_option_cluster_crossing_penalty),
+    @graph.node_get_double_property(
+      node, libavoid_option_cluster_crossing_penalty,
+    ),
   )
   self.add_penalty_line(
     libavoid_option_fixed_shared_path_penalty.get_id(),
-    @graph.node_get_double_property(node, libavoid_option_fixed_shared_path_penalty),
+    @graph.node_get_double_property(
+      node, libavoid_option_fixed_shared_path_penalty,
+    ),
   )
   self.add_penalty_line(
     libavoid_option_port_direction_penalty.get_id(),
-    @graph.node_get_double_property(node, libavoid_option_port_direction_penalty),
+    @graph.node_get_double_property(
+      node, libavoid_option_port_direction_penalty,
+    ),
   )
   self.add_penalty_line(
     libavoid_option_shape_buffer_distance.get_id(),
@@ -499,11 +517,15 @@ fn LibavoidServerCommunicator::transform_options(
   )
   self.add_penalty_line(
     libavoid_option_ideal_nudging_distance.get_id(),
-    @graph.node_get_double_property(node, libavoid_option_ideal_nudging_distance),
+    @graph.node_get_double_property(
+      node, libavoid_option_ideal_nudging_distance,
+    ),
   )
   self.add_penalty_line(
     libavoid_option_reverse_direction_penalty.get_id(),
-    @graph.node_get_double_property(node, libavoid_option_reverse_direction_penalty),
+    @graph.node_get_double_property(
+      node, libavoid_option_reverse_direction_penalty,
+    ),
   )
 
   self.add_routing_option_line(
@@ -657,11 +679,13 @@ fn LibavoidServerCommunicator::is_cluster_edge(
   let tgt_node = @graph.connectable_shape_to_node(Some(targets[0]))
 
   let src_parent_is_cluster = match @graph.node_parent(src_node) {
-    Some(parent) => @graph.node_has_bool_property(parent, libavoid_option_is_cluster)
+    Some(parent) =>
+      @graph.node_has_bool_property(parent, libavoid_option_is_cluster)
     None => false
   }
   let tgt_parent_is_cluster = match @graph.node_parent(tgt_node) {
-    Some(parent) => @graph.node_has_bool_property(parent, libavoid_option_is_cluster)
+    Some(parent) =>
+      @graph.node_has_bool_property(parent, libavoid_option_is_cluster)
     None => false
   }
   src_parent_is_cluster || tgt_parent_is_cluster
@@ -799,7 +823,9 @@ fn libavoid_communicator_opposed_side(side : String) -> String {
 }
 
 ///|
-fn libavoid_communicator_port_side_or_undefined(port : @graph.ElkPort) -> String {
+fn libavoid_communicator_port_side_or_undefined(
+  port : @graph.ElkPort,
+) -> String {
   match @graph.port_layout_option_string_value(port, @core.port_side.get_id()) {
     Some(value) => value
     None => "UNDEFINED"
@@ -845,12 +871,15 @@ fn LibavoidServerCommunicator::is_cluster(
   node : @graph.ElkNode,
 ) -> Bool {
   ignore(self)
-  let cluster_marked = @graph.node_get_bool_property(node, libavoid_option_is_cluster)
+  let cluster_marked = @graph.node_get_bool_property(
+    node, libavoid_option_is_cluster,
+  )
   if !cluster_marked {
     return false
   }
   let parent_not_cluster = match @graph.node_parent(node) {
-    Some(parent) => !@graph.node_get_bool_property(parent, libavoid_option_is_cluster)
+    Some(parent) =>
+      !@graph.node_get_bool_property(parent, libavoid_option_is_cluster)
     None => false
   }
   parent_not_cluster &&
@@ -903,7 +932,11 @@ fn LibavoidServerCommunicator::transform_cluster(
   let x = @graph.node_x(node)
   let y = @graph.node_y(node)
   for child in @graph.node_children(node) {
-    self.transform_node_at(child, @graph.node_x(child) + x, @graph.node_x(child) + y)
+    self.transform_node_at(
+      child,
+      @graph.node_x(child) + x,
+      @graph.node_x(child) + y,
+    )
   }
 }
 

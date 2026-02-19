@@ -842,7 +842,7 @@ fn node_promotion_set_new_layering_model_order(
 }
 
 ///|
-fn node_promotion_configuration(
+fn _node_promotion_configuration(
   graph : LGraph,
 ) -> @core.LayoutProcessorConfiguration[LayeredPhases, LGraph]? {
   ignore(graph)

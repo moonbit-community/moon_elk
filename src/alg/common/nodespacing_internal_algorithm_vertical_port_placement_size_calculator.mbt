@@ -94,7 +94,9 @@ fn vertical_port_placement_size_calculator_compute_vertical_port_margins(
         port_context.port_margin.bottom = node_context.port_label_spacing_vertical +
           label_height
       }
-    } else if @core.port_label_placement_is_fixed(node_context.port_labels_placement) {
+    } else if @core.port_label_placement_is_fixed(
+        node_context.port_labels_placement,
+      ) {
       let labels_bounds = nodespacing_port_labels_bounds(port_context.port)
       if labels_bounds.y < 0.0 {
         port_context.port_margin.top = -labels_bounds.y

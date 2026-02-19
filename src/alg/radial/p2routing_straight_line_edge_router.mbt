@@ -45,17 +45,29 @@ fn straight_line_edge_router_route_edges(node : @graph.ElkNode) -> Unit {
     if source is PortShape(_) {
       continue
     }
-    let target = @graph.connectable_shape_to_node(Some(@graph.edge_targets(edge)[0]))
+    let target = @graph.connectable_shape_to_node(
+      Some(@graph.edge_targets(edge)[0]),
+    )
     if @graph.node_parent(node) == @graph.node_parent(target) {
       let mut source_x = @graph.node_x(node) + @graph.node_width(node) / 2.0
       let mut source_y = @graph.node_y(node) + @graph.node_height(node) / 2.0
 
       let mut target_x = @graph.node_x(target) + @graph.node_width(target) / 2.0
-      let mut target_y = @graph.node_y(target) + @graph.node_height(target) / 2.0
+      let mut target_y = @graph.node_y(target) +
+        @graph.node_height(target) / 2.0
 
-      let vector = @core.new_kvector_xy(target_x - source_x, target_y - source_y)
+      let vector = @core.new_kvector_xy(
+        target_x - source_x,
+        target_y - source_y,
+      )
       let source_clip = @core.new_kvector_copy(vector)
-      ignore(@core.clip_vector(source_clip, @graph.node_width(node), @graph.node_height(node)))
+      ignore(
+        @core.clip_vector(
+          source_clip,
+          @graph.node_width(node),
+          @graph.node_height(node),
+        ),
+      )
       vector.x -= source_clip.x
       vector.y -= source_clip.y
 
@@ -63,7 +75,13 @@ fn straight_line_edge_router_route_edges(node : @graph.ElkNode) -> Unit {
       source_y = target_y - vector.y
 
       let target_clip = @core.new_kvector_copy(vector)
-      ignore(@core.clip_vector(target_clip, @graph.node_width(target), @graph.node_height(target)))
+      ignore(
+        @core.clip_vector(
+          target_clip,
+          @graph.node_width(target),
+          @graph.node_height(target),
+        ),
+      )
       vector.x -= target_clip.x
       vector.y -= target_clip.y
 

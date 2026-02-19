@@ -8,7 +8,9 @@ fn rectpacking_greedy_width_approximator_process(
     None => ()
   }
 
-  let aspect_ratio = @graph.node_get_double_property(graph, rectpacking_aspect_ratio)
+  let aspect_ratio = @graph.node_get_double_property(
+    graph, rectpacking_aspect_ratio,
+  )
   let padding = @core.new_elk_padding()
   padding.parse(@graph.node_get_string_property(graph, rectpacking_padding))
   let goal = rectpacking_optimization_goal_from_string(
@@ -50,5 +52,7 @@ pub fn new_rectpacking_greedy_width_approximator_layout_phase() -> @core.ILayout
   RectPackingLayoutPhases,
   @graph.ElkNode,
 ] {
-  @core.new_layout_phase(rectpacking_greedy_width_approximator_process, _ => None)
+  @core.new_layout_phase(rectpacking_greedy_width_approximator_process, _ => {
+    None
+  })
 }

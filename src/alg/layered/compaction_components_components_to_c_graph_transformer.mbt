@@ -37,6 +37,7 @@ pub struct ComponentsToCGraphTransformer[N, E] {
   node_infos : Array[ComponentsCompactionNodeInfo]
   mut global_offset : @core.KVector
   mut graph_size : @core.KVector
+  _phantom : N?
 }
 
 ///|
@@ -162,27 +163,41 @@ fn[N, E] components_compaction_set_lock(
     lock.set_values(true, false, true, true)
   }
 
-  if components_compaction_port_side_set_equals(port_sides, @core.sides_north_east) {
+  if components_compaction_port_side_set_equals(
+      port_sides, @core.sides_north_east,
+    ) {
     lock.set_values(false, true, true, false)
   }
-  if components_compaction_port_side_set_equals(port_sides, @core.sides_east_south) {
+  if components_compaction_port_side_set_equals(
+      port_sides, @core.sides_east_south,
+    ) {
     lock.set_values(false, true, false, true)
   }
-  if components_compaction_port_side_set_equals(port_sides, @core.sides_south_west) {
+  if components_compaction_port_side_set_equals(
+      port_sides, @core.sides_south_west,
+    ) {
     lock.set_values(true, false, false, true)
   }
-  if components_compaction_port_side_set_equals(port_sides, @core.sides_north_west) {
+  if components_compaction_port_side_set_equals(
+      port_sides, @core.sides_north_west,
+    ) {
     lock.set_values(true, false, true, false)
   }
 
-  if components_compaction_port_side_set_equals(port_sides, @core.sides_north_south) {
+  if components_compaction_port_side_set_equals(
+      port_sides, @core.sides_north_south,
+    ) {
     lock.set_values(true, true, true, true)
   }
-  if components_compaction_port_side_set_equals(port_sides, @core.sides_east_west) {
+  if components_compaction_port_side_set_equals(
+      port_sides, @core.sides_east_west,
+    ) {
     lock.set_values(true, true, true, true)
   }
 
-  if components_compaction_port_side_set_equals(port_sides, @core.sides_north_south) {
+  if components_compaction_port_side_set_equals(
+      port_sides, @core.sides_north_south,
+    ) {
     lock.set_values(true, true, true, true)
   }
   if components_compaction_port_side_set_equals(
@@ -254,7 +269,9 @@ fn[N, E] components_compaction_add_placeholder_group(
   transformer : ComponentsToCGraphTransformer[N, E],
   placeholder : @common.CNode,
 ) -> Unit {
-  let dummy_group = @common.cgroup_of().nodes([placeholder]).create(transformer.c_graph)
+  let dummy_group = @common.cgroup_of()
+    .nodes([placeholder])
+    .create(transformer.c_graph)
   ignore(
     components_compaction_transformer_array_remove_first(
       transformer.c_graph.c_groups,
@@ -276,6 +293,7 @@ pub fn[N, E] new_components_to_cgraph_transformer(
     node_infos: [],
     global_offset: @core.new_kvector(),
     graph_size: @core.new_kvector(),
+    _phantom: None,
   }
 }
 

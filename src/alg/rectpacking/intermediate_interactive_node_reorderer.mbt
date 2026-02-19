@@ -1,5 +1,7 @@
 ///|
-fn rectpacking_sort_nodes_by_desired_position(nodes : Array[@graph.ElkNode]) -> Unit {
+fn rectpacking_sort_nodes_by_desired_position(
+  nodes : Array[@graph.ElkNode],
+) -> Unit {
   let mut i = 1
   while i < nodes.length() {
     let value = nodes[i]
@@ -9,7 +11,9 @@ fn rectpacking_sort_nodes_by_desired_position(nodes : Array[@graph.ElkNode]) -> 
         nodes[j - 1],
         rectpacking_desired_position,
       ).to_int()
-      let pos_b = @graph.node_get_double_property(value, rectpacking_desired_position).to_int()
+      let pos_b = @graph.node_get_double_property(
+        value, rectpacking_desired_position,
+      ).to_int()
       let cmp = if pos_a == pos_b { -1 } else if pos_a < pos_b { -1 } else { 1 }
       if cmp <= 0 {
         break

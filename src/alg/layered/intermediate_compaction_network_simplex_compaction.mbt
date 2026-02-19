@@ -14,7 +14,9 @@ fn network_simplex_compaction_int_max(left : Int, right : Int) -> Int {
 }
 
 ///|
-fn network_simplex_compaction_require_group(node : @common.CNode) -> @common.CGroup {
+fn network_simplex_compaction_require_group(
+  node : @common.CNode,
+) -> @common.CGroup {
   match node.group() {
     Some(group) => group
     None => abort("Compaction node has no group.")
@@ -379,7 +381,9 @@ fn network_simplex_compaction_add_artificial_source_node(
 }
 
 ///|
-pub fn network_simplex_compaction(compactor : @common.OneDimensionalCompactor) -> Unit {
+pub fn network_simplex_compaction(
+  compactor : @common.OneDimensionalCompactor,
+) -> Unit {
   let network_graph = @common.new_ngraph()
   let n_nodes : Array[@common.NNode] = []
   let mut index = 0

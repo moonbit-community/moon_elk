@@ -90,10 +90,11 @@ fn parse_double_layout_value(value : String) -> Double? {
         normalized.has_suffix("F") ||
         normalized.has_suffix("d") ||
         normalized.has_suffix("D") {
-        let without_suffix = normalized.substring(
-          start=0,
-          end=normalized.length() - 1,
-        )
+        let without_suffix = try normalized[:normalized.length() - 1] catch {
+          _ => ""
+        } noraise {
+          value => value.to_string()
+        }
         if without_suffix.is_empty() {
           return None
         }
@@ -284,7 +285,10 @@ fn force_copy_graph_properties(graph : @graph.ElkNode, fgraph : FGraph) -> Bool 
     ),
   )
   let graph_edge_labels_inline = bool_option_with_default(
-    @graph.node_layout_option_string_value(graph, force_edge_labels_inline.get_id()),
+    @graph.node_layout_option_string_value(
+      graph,
+      force_edge_labels_inline.get_id(),
+    ),
     force_edge_labels_inline.get_default(),
   )
   fgraph.set_property(force_edge_labels_inline, graph_edge_labels_inline)
@@ -304,7 +308,8 @@ fn force_copy_graph_properties(graph : @graph.ElkNode, fgraph : FGraph) -> Bool 
   )
   fgraph.set_int_property(
     stress_dimension,
-    match @graph.node_layout_option_string_value(graph, stress_dimension.get_id()) {
+    match
+      @graph.node_layout_option_string_value(graph, stress_dimension.get_id()) {
       Some(value) =>
         match parse_stress_dimension_layout_value(value) {
           Some(parsed) => parsed
@@ -316,7 +321,10 @@ fn force_copy_graph_properties(graph : @graph.ElkNode, fgraph : FGraph) -> Bool 
   fgraph.set_int_property(
     stress_iteration_limit,
     int_option_with_default(
-      @graph.node_layout_option_string_value(graph, stress_iteration_limit.get_id()),
+      @graph.node_layout_option_string_value(
+        graph,
+        stress_iteration_limit.get_id(),
+      ),
       stress_iteration_limit.get_default(),
     ),
   )
@@ -337,14 +345,20 @@ fn force_copy_graph_properties(graph : @graph.ElkNode, fgraph : FGraph) -> Bool 
   fgraph.set_double_property(
     force_spacing_node_node,
     double_option_with_default(
-      @graph.node_layout_option_string_value(graph, force_spacing_node_node.get_id()),
+      @graph.node_layout_option_string_value(
+        graph,
+        force_spacing_node_node.get_id(),
+      ),
       @graph.node_get_double_property(graph, @core.spacing_node_node),
     ),
   )
   fgraph.set_double_property(
     force_spacing_edge_label,
     double_option_with_default(
-      @graph.node_layout_option_string_value(graph, force_spacing_edge_label.get_id()),
+      @graph.node_layout_option_string_value(
+        graph,
+        force_spacing_edge_label.get_id(),
+      ),
       force_spacing_edge_label.get_default(),
     ),
   )
@@ -385,7 +399,8 @@ fn force_copy_graph_properties(graph : @graph.ElkNode, fgraph : FGraph) -> Bool 
   )
   fgraph.set_padding_property(
     force_padding,
-    match @graph.node_layout_option_string_value(graph, force_padding.get_id()) {
+    match
+      @graph.node_layout_option_string_value(graph, force_padding.get_id()) {
       Some(value) =>
         match parse_padding_layout_value(value) {
           Some(padding) => padding
@@ -408,8 +423,10 @@ fn force_transform_nodes(
     let new_node = new_fnode(label=first_node_label_text(node))
     fnode_set_origin(new_node, node)
     fnode_set_id(new_node, index)
-    fnode_position(new_node).x = @graph.node_x(node) + @graph.node_width(node) / 2.0
-    fnode_position(new_node).y = @graph.node_y(node) + @graph.node_height(node) / 2.0
+    fnode_position(new_node).x = @graph.node_x(node) +
+      @graph.node_width(node) / 2.0
+    fnode_position(new_node).y = @graph.node_y(node) +
+      @graph.node_height(node) / 2.0
     fnode_size(new_node).x = force_max(@graph.node_width(node), 1.0)
     fnode_size(new_node).y = force_max(@graph.node_height(node), 1.0)
     let priority_value = int_option_with_default(
@@ -459,7 +476,10 @@ fn force_transform_edges(
           new_edge,
           force_priority,
           int_option_with_default(
-            @graph.edge_layout_option_string_value(edge, force_priority.get_id()),
+            @graph.edge_layout_option_string_value(
+              edge,
+              force_priority.get_id(),
+            ),
             force_priority.get_default(),
           ),
         )
@@ -498,10 +518,19 @@ fn force_transform_edges(
           graph_edge_labels_inline,
         )
         for edge_label in @graph.edge_labels(edge) {
-          let new_label = new_flabel(new_edge, text=@graph.label_text(edge_label))
+          let new_label = new_flabel(
+            new_edge,
+            text=@graph.label_text(edge_label),
+          )
           flabel_set_origin(new_label, edge_label)
-          flabel_size(new_label).x = force_max(@graph.label_width(edge_label), 1.0)
-          flabel_size(new_label).y = force_max(@graph.label_height(edge_label), 1.0)
+          flabel_size(new_label).x = force_max(
+            @graph.label_width(edge_label),
+            1.0,
+          )
+          flabel_size(new_label).y = force_max(
+            @graph.label_height(edge_label),
+            1.0,
+          )
           flabel_set_bool_property(
             new_label,
             force_edge_labels_inline,
@@ -598,7 +627,11 @@ pub fn ElkGraphImporter::apply_layout(
             start_position.x,
             start_position.y,
           )
-          @graph.edge_section_set_end(first_section, end_position.x, end_position.y)
+          @graph.edge_section_set_end(
+            first_section,
+            end_position.x,
+            end_position.y,
+          )
         } else {
           @graph.edge_section_set_start(
             first_section,
@@ -624,14 +657,25 @@ pub fn ElkGraphImporter::apply_layout(
             )
             @graph.edge_section_set_incoming_shape(next_section, None)
             @graph.edge_section_set_outgoing_shape(next_section, None)
-            @graph.edge_section_add_outgoing_section(previous_section, next_section)
-            @graph.edge_section_add_incoming_section(next_section, previous_section)
+            @graph.edge_section_add_outgoing_section(
+              previous_section, next_section,
+            )
+            @graph.edge_section_add_incoming_section(
+              next_section, previous_section,
+            )
             previous_section = next_section
           }
-          @graph.edge_section_set_end(previous_section, end_position.x, end_position.y)
+          @graph.edge_section_set_end(
+            previous_section,
+            end_position.x,
+            end_position.y,
+          )
           let targets = @graph.edge_targets(origin_edge)
           if targets.length() == 1 {
-            @graph.edge_section_set_outgoing_shape(previous_section, Some(targets[0]))
+            @graph.edge_section_set_outgoing_shape(
+              previous_section,
+              Some(targets[0]),
+            )
           }
         }
       }
@@ -642,7 +686,11 @@ pub fn ElkGraphImporter::apply_layout(
     match flabel_origin(label) {
       Some(origin_label) => {
         let label_position = flabel_position(label).clone().add(offset)
-        @graph.label_set_location(origin_label, label_position.x, label_position.y)
+        @graph.label_set_location(
+          origin_label,
+          label_position.x,
+          label_position.y,
+        )
       }
       None => ()
     }

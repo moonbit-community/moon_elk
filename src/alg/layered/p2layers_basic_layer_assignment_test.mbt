@@ -100,7 +100,9 @@ fn p2_basic_layer_assignment_test_layout_ok_for_strategy(
 
   p2_basic_layer_assignment_test_layout(graph)
 
-  let algorithm_resolved = @graph.node_get_string_property(graph, resolved_algorithm) ==
+  let algorithm_resolved = @graph.node_get_string_property(
+      graph, resolved_algorithm,
+    ) ==
     "org.eclipse.elk.layered"
   let edges_point_forward = p2_basic_layer_assignment_test_has_forward_x_for_all_edges(
     nodes,

@@ -7,7 +7,11 @@ pub struct Node {
 
 ///|
 pub fn new_node(v : @core.KVector, r : @core.ElkRectangle) -> Node {
-  { original_vertex: v, vertex: v.clone(), rect: @core.new_elk_rectangle_copy(r) }
+  {
+    original_vertex: v,
+    vertex: v.clone(),
+    rect: @core.new_elk_rectangle_copy(r),
+  }
 }
 
 ///|
@@ -73,7 +77,13 @@ pub fn Node::distance(self : Node, other : Node, v : @core.KVector) -> Double {
   let mut result = @double.infinity
   for edge1 in get_rect_edges(self.rect) {
     for edge2 in get_rect_edges(other.rect) {
-      let current_distance = @core.distance(edge1.u, edge1.v, edge2.u, edge2.v, v)
+      let current_distance = @core.distance(
+        edge1.u,
+        edge1.v,
+        edge2.u,
+        edge2.v,
+        v,
+      )
       if current_distance < result {
         result = current_distance
       }

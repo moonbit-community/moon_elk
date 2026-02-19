@@ -26,7 +26,8 @@ fn issue587_test_layout_with_optional_routing(
 
   let graph = issue587_test_build_graph()
   match edge_routing_value {
-    Some(value) => @graph.node_set_string_property(graph, @core.edge_routing, value)
+    Some(value) =>
+      @graph.node_set_string_property(graph, @core.edge_routing, value)
     None => ()
   }
   let resolver = new_layout_algorithm_resolver()

@@ -1,0 +1,374 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/moon_elk/alg/radial"
+
+import {
+  "Milky2018/moon_elk/core",
+  "Milky2018/moon_elk/graph",
+}
+
+// Values
+pub fn new_abstract_radius_extension_compaction() -> AbstractRadiusExtensionCompaction
+
+pub fn new_angle_rotation() -> AngleRotation
+
+pub fn new_annulus_wedge_by_leafs() -> AnnulusWedgeByLeafs
+
+pub fn new_annulus_wedge_by_node_space() -> AnnulusWedgeByNodeSpace
+
+pub fn new_annulus_wedge_compaction() -> AnnulusWedgeCompaction
+
+pub fn new_crossing_minimization_position() -> CrossingMinimizationPosition
+
+pub fn new_edge_length_optimization() -> EdgeLengthOptimization
+
+pub fn new_edge_length_position_optimization() -> EdgeLengthPositionOptimization
+
+pub fn new_i_annulus_wedge_criteria((Int) -> Double) -> IAnnulusWedgeCriteria
+
+pub fn new_i_evaluation((Int) -> Double) -> IEvaluation
+
+pub fn new_i_overlap_removal((Int, @core.IElkProgressMonitor?) -> Unit) -> IOverlapRemoval
+
+pub fn new_i_radial_compactor((Int) -> Unit) -> IRadialCompactor
+
+pub fn new_i_radial_edge_router((Int) -> Unit) -> IRadialEdgeRouter
+
+pub fn new_i_radial_rotator((Int) -> Unit) -> IRadialRotator
+
+pub fn new_i_radial_sorter((Array[Int]) -> Unit, initialize? : (Int) -> Unit) -> IRadialSorter
+
+pub fn new_id_sorter() -> IDSorter
+
+pub fn new_polar_coordinate_sorter() -> PolarCoordinateSorter
+
+pub fn new_radial_calculate_graph_size_layout_processor() -> @core.ILayoutProcessor[RadialLayoutPhases, Int]
+
+pub fn new_radial_compaction() -> RadialCompaction
+
+pub fn new_radial_eades_layout_phase() -> @core.ILayoutProcessor[RadialLayoutPhases, Int]
+
+pub fn new_radial_edge_angle_calculator_layout_processor() -> @core.ILayoutProcessor[RadialLayoutPhases, Int]
+
+pub fn new_radial_general_compactor_layout_processor() -> @core.ILayoutProcessor[RadialLayoutPhases, Int]
+
+pub fn new_radial_general_rotator_layout_processor() -> @core.ILayoutProcessor[RadialLayoutPhases, Int]
+
+pub fn new_radial_layout_provider() -> RadialLayoutProvider
+
+pub fn new_radial_straight_line_edge_router_layout_phase() -> @core.ILayoutProcessor[RadialLayoutPhases, Int]
+
+pub fn new_radius_extension_overlap_removal() -> RadiusExtensionOverlapRemoval
+
+pub fn new_radius_extension_overlap_removal_layout_processor() -> @core.ILayoutProcessor[RadialLayoutPhases, Int]
+
+pub fn new_straight_line_edge_router() -> StraightLineEdgeRouter
+
+pub let radial_algorithm_id : String
+
+pub fn radial_annulus_wedge_criteria_create(RadialAnnulusWedgeCriteria) -> IAnnulusWedgeCriteria
+
+pub fn radial_annulus_wedge_criteria_from_string(String) -> RadialAnnulusWedgeCriteria
+
+pub fn radial_center_nodes_on_radi(Int, Double, Double) -> Unit
+
+pub let radial_center_on_root : @graph.IProperty[Bool]
+
+pub let radial_compaction_step_size : @graph.IProperty[Double]
+
+pub fn radial_compaction_strategy_create(RadialCompactionStrategy) -> IRadialCompactor
+
+pub fn radial_compaction_strategy_from_string(String) -> RadialCompactionStrategy
+
+pub let radial_compactor : @graph.IProperty[String]
+
+pub fn radial_create_polar_comparator(Double, Double) -> (Int, Int) -> Int
+
+pub fn radial_find_largest_node_in_graph(Int) -> Double
+
+pub fn radial_find_root(Int) -> Int?
+
+pub fn radial_find_root_of_node(Int) -> Int
+
+pub fn radial_get_last_level_nodes(Array[Int]) -> Array[Int]
+
+pub fn radial_get_next_level_node_set(Array[Int]) -> Array[Int]
+
+pub fn radial_get_next_level_nodes(Array[Int]) -> Array[Int]
+
+pub fn radial_get_number_of_leaves(Int) -> Int
+
+pub fn radial_get_successor_set(Int) -> Array[Int]
+
+pub fn radial_get_successors(Int) -> Array[Int]
+
+pub fn radial_get_tree_parent(Int) -> Int?
+
+pub fn radial_graph_compaction_step_size(Int) -> Int
+
+pub fn radial_graph_compaction_strategy(Int) -> RadialCompactionStrategy
+
+pub fn radial_graph_sorting_strategy(Int) -> RadialSortingStrategy
+
+pub fn radial_graph_translation_strategy(Int) -> RadialTranslationStrategy
+
+pub fn radial_graph_wedge_criteria(Int) -> RadialAnnulusWedgeCriteria
+
+pub fn radial_intermediate_processor_factory(RadialIntermediateProcessorStrategy) -> @core.ILayoutProcessorFactory[RadialLayoutPhases, Int]
+
+pub fn radial_internal_clear_root(Int) -> Unit
+
+pub fn radial_internal_clear_transient_state() -> Unit
+
+pub fn radial_internal_graph_padding(Int) -> @core.Spacing
+
+pub fn radial_internal_has_order_id(Int) -> Bool
+
+pub fn radial_internal_node_margins(Int) -> @core.Spacing
+
+pub fn radial_internal_order_id(Int) -> Int
+
+pub fn radial_internal_position(Int) -> @core.KVector
+
+pub fn radial_internal_root(Int) -> Int?
+
+pub fn radial_internal_set_order_id(Int, Int) -> Unit
+
+pub fn radial_internal_set_position(Int, @core.KVector) -> Unit
+
+pub fn radial_internal_set_root(Int, Int) -> Unit
+
+pub let radial_layout_phase_descriptor : @core.PhaseDescriptor[RadialLayoutPhases]
+
+pub fn radial_layout_phase_factory(RadialLayoutPhases) -> @core.ILayoutProcessorFactory[RadialLayoutPhases, Int]
+
+pub let radial_omit_node_micro_layout : @graph.IProperty[Bool]
+
+pub let radial_optimization_criteria : @graph.IProperty[String]
+
+pub let radial_option_margins_id : String
+
+pub let radial_option_position_id : String
+
+pub let radial_order_id : @graph.IProperty[Double]
+
+pub fn radial_overlap_removal_strategy_create(RadialOverlapRemovalStrategy) -> IOverlapRemoval
+
+pub fn radial_overlap_removal_strategy_from_string(String) -> RadialOverlapRemovalStrategy
+
+pub let radial_radius : @graph.IProperty[Double]
+
+pub let radial_rotate : @graph.IProperty[Bool]
+
+pub let radial_rotation_compute_additional_wedge_space : @graph.IProperty[Bool]
+
+pub let radial_rotation_outgoing_edge_angles : @graph.IProperty[Bool]
+
+pub let radial_rotation_target_angle : @graph.IProperty[Double]
+
+pub fn radial_shift_closest_edge_to_radi(Int, Double, Double) -> Unit
+
+pub fn radial_sort_nodes(Array[Int], (Int, Int) -> Int) -> Unit
+
+pub let radial_sorter : @graph.IProperty[String]
+
+pub fn radial_sorting_strategy_create(RadialSortingStrategy) -> IRadialSorter?
+
+pub fn radial_sorting_strategy_from_string(String) -> RadialSortingStrategy
+
+pub fn radial_translation_strategy_create(RadialTranslationStrategy) -> IEvaluation?
+
+pub fn radial_translation_strategy_from_string(String) -> RadialTranslationStrategy
+
+pub let radial_wedge_criteria : @graph.IProperty[String]
+
+// Errors
+
+// Types and methods
+pub struct AbstractRadiusExtensionCompaction {
+  mut compaction_step : Int
+  mut spacing : Double
+  mut root : Int?
+}
+pub fn AbstractRadiusExtensionCompaction::compaction_step(Self) -> Int
+pub fn AbstractRadiusExtensionCompaction::contract_layer(Self, Array[Int], Bool) -> Unit
+pub fn AbstractRadiusExtensionCompaction::move_node(Self, Int, Double) -> Unit
+pub fn AbstractRadiusExtensionCompaction::overlap(Self, Int, Int) -> Bool
+pub fn AbstractRadiusExtensionCompaction::overlap_layer(Self, Array[Int]) -> Bool
+pub fn AbstractRadiusExtensionCompaction::root(Self) -> Int?
+pub fn AbstractRadiusExtensionCompaction::set_compaction_step(Self, Int) -> Unit
+pub fn AbstractRadiusExtensionCompaction::set_root(Self, Int) -> Unit
+pub fn AbstractRadiusExtensionCompaction::set_spacing(Self, Double) -> Unit
+pub fn AbstractRadiusExtensionCompaction::spacing(Self) -> Double
+
+pub struct AngleRotation {
+  rotator : IRadialRotator
+}
+pub fn AngleRotation::as_i_radial_rotator(Self) -> IRadialRotator
+pub fn AngleRotation::rotate(Self, Int) -> Unit
+
+pub struct AnnulusWedgeByLeafs {
+  criteria : IAnnulusWedgeCriteria
+}
+pub fn AnnulusWedgeByLeafs::as_i_annulus_wedge_criteria(Self) -> IAnnulusWedgeCriteria
+pub fn AnnulusWedgeByLeafs::calculate_wedge_space(Self, Int) -> Double
+
+pub struct AnnulusWedgeByNodeSpace {
+  criteria : IAnnulusWedgeCriteria
+}
+pub fn AnnulusWedgeByNodeSpace::as_i_annulus_wedge_criteria(Self) -> IAnnulusWedgeCriteria
+pub fn AnnulusWedgeByNodeSpace::calculate_wedge_space(Self, Int) -> Double
+
+pub struct AnnulusWedgeCompaction {
+  base : AbstractRadiusExtensionCompaction
+  left_contour : Map[Int, Array[Int]]
+  right_contour : Map[Int, Array[Int]]
+  mut sorter : IRadialSorter?
+  mut root : Int?
+}
+pub fn AnnulusWedgeCompaction::compact(Self, Int) -> Unit
+
+pub struct CrossingMinimizationPosition {
+  evaluator : IEvaluation
+}
+pub fn CrossingMinimizationPosition::as_i_evaluation(Self) -> IEvaluation
+pub fn CrossingMinimizationPosition::evaluate(Self, Int) -> Double
+
+pub struct EdgeLengthOptimization {
+  evaluator : IEvaluation
+}
+pub fn EdgeLengthOptimization::as_i_evaluation(Self) -> IEvaluation
+pub fn EdgeLengthOptimization::evaluate(Self, Int) -> Double
+
+pub struct EdgeLengthPositionOptimization {
+  evaluator : IEvaluation
+}
+pub fn EdgeLengthPositionOptimization::as_i_evaluation(Self) -> IEvaluation
+pub fn EdgeLengthPositionOptimization::evaluate(Self, Int) -> Double
+
+pub struct IAnnulusWedgeCriteria {
+  calculate_wedge_space_fn : (Int) -> Double
+}
+pub fn IAnnulusWedgeCriteria::calculate_wedge_space(Self, Int) -> Double
+
+pub struct IDSorter {
+  sorter : IRadialSorter
+}
+pub fn IDSorter::as_i_radial_sorter(Self) -> IRadialSorter
+pub fn IDSorter::initialize(Self, Int) -> Unit
+pub fn IDSorter::sort(Self, Array[Int]) -> Unit
+
+pub struct IEvaluation {
+  evaluate_fn : (Int) -> Double
+}
+pub fn IEvaluation::evaluate(Self, Int) -> Double
+
+pub struct IOverlapRemoval {
+  remove_overlaps_fn : (Int, @core.IElkProgressMonitor?) -> Unit
+}
+pub fn IOverlapRemoval::remove_overlaps(Self, Int, @core.IElkProgressMonitor?) -> Unit
+
+pub struct IRadialCompactor {
+  compact_fn : (Int) -> Unit
+}
+pub fn IRadialCompactor::compact(Self, Int) -> Unit
+
+pub struct IRadialEdgeRouter {
+  route_edges_fn : (Int) -> Unit
+}
+pub fn IRadialEdgeRouter::route_edges(Self, Int) -> Unit
+
+pub struct IRadialRotator {
+  rotate_fn : (Int) -> Unit
+}
+pub fn IRadialRotator::rotate(Self, Int) -> Unit
+
+pub struct IRadialSorter {
+  sort_fn : (Array[Int]) -> Unit
+  initialize_fn : (Int) -> Unit
+}
+pub fn IRadialSorter::initialize(Self, Int) -> Unit
+pub fn IRadialSorter::sort(Self, Array[Int]) -> Unit
+
+pub struct PolarCoordinateSorter {
+  comp_right : (Int, Int) -> Int
+  comp_left : (Int, Int) -> Int
+  comp_top : (Int, Int) -> Int
+  comp_bottom : (Int, Int) -> Int
+  mut id_sorter : IDSorter?
+}
+pub fn PolarCoordinateSorter::as_i_radial_sorter(Self) -> IRadialSorter
+pub fn PolarCoordinateSorter::initialize(Self, Int) -> Unit
+pub fn PolarCoordinateSorter::sort(Self, Array[Int]) -> Unit
+
+pub enum RadialAnnulusWedgeCriteria {
+  LEAF_NUMBER
+  NODE_SIZE
+}
+
+pub struct RadialCompaction {
+  base : AbstractRadiusExtensionCompaction
+  mut sorter : IRadialSorter?
+  mut last_radius : Double
+}
+pub fn RadialCompaction::compact(Self, Int) -> Unit
+pub fn RadialCompaction::contract(Self, Array[Int]) -> Unit
+
+pub enum RadialCompactionStrategy {
+  NONE
+  RADIAL_COMPACTION
+  WEDGE_COMPACTION
+}
+
+pub enum RadialIntermediateProcessorStrategy {
+  OVERLAP_REMOVAL
+  COMPACTION
+  ROTATION
+  GRAPH_SIZE_CALCULATION
+  OUTGOING_EDGE_ANGLES
+}
+
+pub enum RadialLayoutPhases {
+  P1_NODE_PLACEMENT
+  P2_EDGE_ROUTING
+}
+
+pub struct RadialLayoutProvider {
+  algorithm_assembler : @core.AlgorithmAssembler[RadialLayoutPhases, Int]
+}
+pub fn RadialLayoutProvider::layout(Self, Int, @core.IElkProgressMonitor) -> Unit
+
+pub enum RadialOverlapRemovalStrategy {
+  EXTENT_RADII
+}
+
+pub enum RadialSortingStrategy {
+  NONE
+  POLAR_COORDINATE
+  ID
+}
+
+pub enum RadialTranslationStrategy {
+  NONE
+  EDGE_LENGTH
+  EDGE_LENGTH_BY_POSITION
+  CROSSING_MINIMIZATION_BY_POSITION
+}
+
+pub struct RadiusExtensionOverlapRemoval {
+  base : AbstractRadiusExtensionCompaction
+  mut sorter : IRadialSorter?
+}
+pub fn RadiusExtensionOverlapRemoval::as_i_overlap_removal(Self) -> IOverlapRemoval
+pub fn RadiusExtensionOverlapRemoval::extend(Self, Int, Array[Int], @core.IElkProgressMonitor?) -> Unit
+pub fn RadiusExtensionOverlapRemoval::remove_overlaps(Self, Int, @core.IElkProgressMonitor?) -> Unit
+
+pub struct StraightLineEdgeRouter {
+  edge_router : IRadialEdgeRouter
+}
+pub fn StraightLineEdgeRouter::as_i_radial_edge_router(Self) -> IRadialEdgeRouter
+pub fn StraightLineEdgeRouter::route_edges(Self, Int) -> Unit
+
+// Type aliases
+
+// Traits
+

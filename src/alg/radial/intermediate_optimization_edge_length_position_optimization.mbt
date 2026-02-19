@@ -12,7 +12,9 @@ fn edge_length_position_optimization_evaluate(root : @graph.ElkNode) -> Double {
     let target_y = @graph.node_y(target) + @graph.node_height(target) / 2.0
 
     let position = radial_internal_position(target)
-    let root_x = @graph.node_x(root) + position.x + @graph.node_width(root) / 2.0
+    let root_x = @graph.node_x(root) +
+      position.x +
+      @graph.node_width(root) / 2.0
     let root_y = @graph.node_y(root) + position.y + @graph.node_height(root)
 
     let vector_x = target_x - root_x

@@ -109,7 +109,10 @@ test "InternalElkGraphParser parses root node with children and edge sections" {
   let edge = @graph.node_contained_edges(root)[0]
   inspect(@graph.edge_identifier(edge), content="e")
   inspect(@graph.edge_sections(edge).length(), content="1")
-  inspect(@graph.edge_section_identifier(@graph.edge_sections(edge)[0]), content="s1")
+  inspect(
+    @graph.edge_section_identifier(@graph.edge_sections(edge)[0]),
+    content="s1",
+  )
 }
 
 ///|

@@ -19,14 +19,18 @@ fn random_layout_provider_max(a : Double, b : Double) -> Double {
 }
 
 ///|
-fn random_layout_provider_parse_padding(layout_node : @graph.ElkNode) -> ElkPadding {
+fn random_layout_provider_parse_padding(
+  layout_node : @graph.ElkNode,
+) -> ElkPadding {
   let parsed = new_elk_padding()
   parsed.parse(@graph.node_get_string_property(layout_node, padding))
   parsed
 }
 
 ///|
-fn random_layout_provider_create_random(parent_node : @graph.ElkNode) -> @random.Rand {
+fn random_layout_provider_create_random(
+  parent_node : @graph.ElkNode,
+) -> @random.Rand {
   let random_seed_value = @graph.node_get_int_property(parent_node, random_seed)
   if random_seed_value != 0 {
     let seed_buffer = @buffer.new()
@@ -75,7 +79,9 @@ fn random_layout_provider_shape_y(shape : @graph.ElkConnectableShape) -> Double 
 }
 
 ///|
-fn random_layout_provider_shape_width(shape : @graph.ElkConnectableShape) -> Double {
+fn random_layout_provider_shape_width(
+  shape : @graph.ElkConnectableShape,
+) -> Double {
   if shape is NodeShape(node) {
     @graph.node_width(node)
   } else if shape is PortShape(port) {
@@ -86,7 +92,9 @@ fn random_layout_provider_shape_width(shape : @graph.ElkConnectableShape) -> Dou
 }
 
 ///|
-fn random_layout_provider_shape_height(shape : @graph.ElkConnectableShape) -> Double {
+fn random_layout_provider_shape_height(
+  shape : @graph.ElkConnectableShape,
+) -> Double {
   if shape is NodeShape(node) {
     @graph.node_height(node)
   } else if shape is PortShape(port) {
@@ -318,8 +326,12 @@ pub fn RandomLayoutProvider::layout(
   }
 
   let random = random_layout_provider_create_random(parent_node)
-  let aspect_ratio_value = @graph.node_get_double_property(parent_node, aspect_ratio)
-  let spacing_value = @graph.node_get_double_property(parent_node, spacing_node_node)
+  let aspect_ratio_value = @graph.node_get_double_property(
+    parent_node, aspect_ratio,
+  )
+  let spacing_value = @graph.node_get_double_property(
+    parent_node, spacing_node_node,
+  )
   let padding_value = random_layout_provider_parse_padding(parent_node)
   random_layout_provider_randomize(
     parent_node, random, aspect_ratio_value, spacing_value, padding_value,

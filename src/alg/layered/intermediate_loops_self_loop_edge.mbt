@@ -58,7 +58,7 @@ pub fn SelfLoopEdge::set_sl_hyper_loop(
   self : SelfLoopEdge,
   sl_hyper_loop : SelfHyperLoop,
 ) -> Unit {
-  if self.sl_hyper_loop.is_some() {
+  if self.sl_hyper_loop is Some(_) {
     abort("SelfLoopEdge hyper loop may only be set once")
   }
   self.sl_hyper_loop = Some(sl_hyper_loop)
@@ -75,7 +75,7 @@ pub fn SelfLoopEdge::get_sl_target(self : SelfLoopEdge) -> SelfLoopPort {
 }
 
 ///|
-pub fn SelfLoopEdge::is_inline(self : SelfLoopEdge) -> Bool {
+pub fn SelfLoopEdge::is_inline(_self : SelfLoopEdge) -> Bool {
   false
 }
 

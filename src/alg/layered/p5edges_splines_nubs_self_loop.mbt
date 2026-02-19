@@ -53,7 +53,9 @@ pub fn new_nubs_self_loop_with_clamped(
 }
 
 ///|
-pub fn NubsSelfLoop::get_first_label_position(self : NubsSelfLoop) -> @core.KVector {
+pub fn NubsSelfLoop::get_first_label_position(
+  self : NubsSelfLoop,
+) -> @core.KVector {
   self.first_label_position
 }
 
@@ -66,7 +68,9 @@ pub fn NubsSelfLoop::set_first_label_position(
 }
 
 ///|
-pub fn NubsSelfLoop::get_control_points(self : NubsSelfLoop) -> @core.KVectorChain {
+pub fn NubsSelfLoop::get_control_points(
+  self : NubsSelfLoop,
+) -> @core.KVectorChain {
   self.nub_spline.get_control_points()
 }
 

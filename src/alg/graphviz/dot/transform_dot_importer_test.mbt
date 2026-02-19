@@ -123,7 +123,10 @@ test "DotImporter transform basic graph" {
   inspect(data.get_target_graphs().length(), content="1")
   let root = data.get_target_graphs()[0]
   inspect(@graph.node_children(root).length(), content="2")
-  inspect(@graph.node_get_string_property(root, @core.direction), content="RIGHT")
+  inspect(
+    @graph.node_get_string_property(root, @core.direction),
+    content="RIGHT",
+  )
 
   let node_a_imported = match
     dot_importer_test_find_node_by_identifier(root, "a") {
@@ -133,7 +136,10 @@ test "DotImporter transform basic graph" {
   inspect(@graph.node_width(node_a_imported), content="144")
   inspect(@graph.node_height(node_a_imported), content="72")
   inspect(@graph.node_labels(node_a_imported).length(), content="1")
-  inspect(@graph.label_text(@graph.node_labels(node_a_imported)[0]), content="node-a")
+  inspect(
+    @graph.label_text(@graph.node_labels(node_a_imported)[0]),
+    content="node-a",
+  )
 
   inspect(@graph.node_outgoing_edges(node_a_imported).length(), content="1")
   let edge = @graph.node_outgoing_edges(node_a_imported)[0]

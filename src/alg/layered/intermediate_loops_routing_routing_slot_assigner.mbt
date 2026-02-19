@@ -176,12 +176,12 @@ fn RoutingSlotAssigner::compute_label_crossing_matrix(
 
   for sl_1_index in 0..<sl_loops.length() {
     let sl_loop_1 = sl_loops[sl_1_index]
-    if sl_loop_1.get_sl_labels().is_none() {
+    if sl_loop_1.get_sl_labels() is None {
       continue
     }
     for sl_2_index in (sl_1_index + 1)..<sl_loops.length() {
       let sl_loop_2 = sl_loops[sl_2_index]
-      if sl_loop_2.get_sl_labels().is_none() {
+      if sl_loop_2.get_sl_labels() is None {
         continue
       }
       let overlap = routing_slot_assigner_labels_overlap(sl_loop_1, sl_loop_2)

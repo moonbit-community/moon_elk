@@ -12,8 +12,12 @@ fn rectpacking_equal_whitespace_eliminator_process(
     Some(rows) =>
       rectpacking_rectangle_expansion_expand(
         rows,
-        @graph.node_get_double_property(graph, rectpacking_internal_drawing_width),
-        @graph.node_get_double_property(graph, rectpacking_internal_additional_height),
+        @graph.node_get_double_property(
+          graph, rectpacking_internal_drawing_width,
+        ),
+        @graph.node_get_double_property(
+          graph, rectpacking_internal_additional_height,
+        ),
         @graph.node_get_double_property(graph, rectpacking_spacing_node_node),
       )
     None => abort("The graph does not contain rows.")
@@ -30,5 +34,7 @@ pub fn new_rectpacking_equal_whitespace_eliminator_layout_phase() -> @core.ILayo
   RectPackingLayoutPhases,
   @graph.ElkNode,
 ] {
-  @core.new_layout_phase(rectpacking_equal_whitespace_eliminator_process, _ => None)
+  @core.new_layout_phase(rectpacking_equal_whitespace_eliminator_process, _ => {
+    None
+  })
 }

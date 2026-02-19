@@ -180,21 +180,27 @@ fn end_label_preprocessor_place_labels_for_port(
 
   match port.get_side() {
     @core.PortSide::North => {
-      label_cell.set_vertical_alignment(@common.vertical_label_alignment_bottom())
+      label_cell.set_vertical_alignment(
+        @common.vertical_label_alignment_bottom(),
+      )
       label_cell_rect.y = -node_margin.top -
         edge_label_spacing -
         label_cell_rect.height
 
       match label_cell.get_label_side() {
         @core.LabelSide::Above => {
-          label_cell.set_horizontal_alignment(@common.horizontal_label_alignment_right())
+          label_cell.set_horizontal_alignment(
+            @common.horizontal_label_alignment_right(),
+          )
           label_cell_rect.x = port_anchor.x -
             end_label_preprocessor_max_edge_thickness(port) -
             edge_label_spacing -
             label_cell_rect.width
         }
         _ => {
-          label_cell.set_horizontal_alignment(@common.horizontal_label_alignment_left())
+          label_cell.set_horizontal_alignment(
+            @common.horizontal_label_alignment_left(),
+          )
           label_cell_rect.x = port_anchor.x +
             end_label_preprocessor_max_edge_thickness(port) +
             edge_label_spacing
@@ -202,19 +208,25 @@ fn end_label_preprocessor_place_labels_for_port(
       }
     }
     @core.PortSide::East => {
-      label_cell.set_horizontal_alignment(@common.horizontal_label_alignment_left())
+      label_cell.set_horizontal_alignment(
+        @common.horizontal_label_alignment_left(),
+      )
       label_cell_rect.x = node_size.x + node_margin.right + edge_label_spacing
 
       match label_cell.get_label_side() {
         @core.LabelSide::Above => {
-          label_cell.set_vertical_alignment(@common.vertical_label_alignment_bottom())
+          label_cell.set_vertical_alignment(
+            @common.vertical_label_alignment_bottom(),
+          )
           label_cell_rect.y = port_anchor.y -
             end_label_preprocessor_max_edge_thickness(port) -
             edge_label_spacing -
             label_cell_rect.height
         }
         _ => {
-          label_cell.set_vertical_alignment(@common.vertical_label_alignment_top())
+          label_cell.set_vertical_alignment(
+            @common.vertical_label_alignment_top(),
+          )
           label_cell_rect.y = port_anchor.y +
             end_label_preprocessor_max_edge_thickness(port) +
             edge_label_spacing
@@ -227,14 +239,18 @@ fn end_label_preprocessor_place_labels_for_port(
 
       match label_cell.get_label_side() {
         @core.LabelSide::Above => {
-          label_cell.set_horizontal_alignment(@common.horizontal_label_alignment_right())
+          label_cell.set_horizontal_alignment(
+            @common.horizontal_label_alignment_right(),
+          )
           label_cell_rect.x = port_anchor.x -
             end_label_preprocessor_max_edge_thickness(port) -
             edge_label_spacing -
             label_cell_rect.width
         }
         _ => {
-          label_cell.set_horizontal_alignment(@common.horizontal_label_alignment_left())
+          label_cell.set_horizontal_alignment(
+            @common.horizontal_label_alignment_left(),
+          )
           label_cell_rect.x = port_anchor.x +
             end_label_preprocessor_max_edge_thickness(port) +
             edge_label_spacing
@@ -242,21 +258,27 @@ fn end_label_preprocessor_place_labels_for_port(
       }
     }
     @core.PortSide::West => {
-      label_cell.set_horizontal_alignment(@common.horizontal_label_alignment_right())
+      label_cell.set_horizontal_alignment(
+        @common.horizontal_label_alignment_right(),
+      )
       label_cell_rect.x = -node_margin.left -
         edge_label_spacing -
         label_cell_rect.width
 
       match label_cell.get_label_side() {
         @core.LabelSide::Above => {
-          label_cell.set_vertical_alignment(@common.vertical_label_alignment_bottom())
+          label_cell.set_vertical_alignment(
+            @common.vertical_label_alignment_bottom(),
+          )
           label_cell_rect.y = port_anchor.y -
             end_label_preprocessor_max_edge_thickness(port) -
             edge_label_spacing -
             label_cell_rect.height
         }
         _ => {
-          label_cell.set_vertical_alignment(@common.vertical_label_alignment_top())
+          label_cell.set_vertical_alignment(
+            @common.vertical_label_alignment_top(),
+          )
           label_cell_rect.y = port_anchor.y +
             end_label_preprocessor_max_edge_thickness(port) +
             edge_label_spacing
@@ -291,7 +313,8 @@ fn end_label_preprocessor_calculate_overlap_start_coordinate(
 
   match port_side {
     @core.PortSide::North => -node_margin.top - edge_label_spacing
-    @core.PortSide::South => node_size.y + node_margin.bottom + edge_label_spacing
+    @core.PortSide::South =>
+      node_size.y + node_margin.bottom + edge_label_spacing
     @core.PortSide::East => node_size.x + node_margin.right + edge_label_spacing
     @core.PortSide::West => -node_margin.left - edge_label_spacing
     _ => 0.0
@@ -478,7 +501,9 @@ fn end_label_preprocessor_process(
   }
   ignore(monitor.begin("End label pre-processing", 1.0))
 
-  let edge_label_spacing = layered_graph.get_property_double(@core.spacing_edge_label)
+  let edge_label_spacing = layered_graph.get_property_double(
+    @core.spacing_edge_label,
+  )
   let label_label_spacing = layered_graph.get_property_double(
     @core.spacing_label_label,
   )

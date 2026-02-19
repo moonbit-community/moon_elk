@@ -11,7 +11,9 @@ let min_width_layerer_compensator_range_lower = 1
 let min_width_layerer_compensator_range_upper = 2
 
 ///|
-let layered_options_layering_min_width_upper_bound_on_width : @graph.IProperty[Int] = @graph.new_property(
+let layered_options_layering_min_width_upper_bound_on_width : @graph.IProperty[
+  Int,
+] = @graph.new_property(
   "org.eclipse.elk.alg.layered.layering.minWidth.upperBoundOnWidth", 4,
 )
 
@@ -429,5 +431,7 @@ pub fn new_min_width_layerer_layout_phase() -> @core.ILayoutProcessor[
   LayeredPhases,
   LGraph,
 ] {
-  @core.new_layout_phase(min_width_layerer_process, min_width_layerer_configuration)
+  @core.new_layout_phase(
+    min_width_layerer_process, min_width_layerer_configuration,
+  )
 }

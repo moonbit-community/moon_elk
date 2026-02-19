@@ -47,9 +47,9 @@ pub fn MetaDataJvmModelInferrer::infer(
 
   match model.get_bundle() {
     Some(bundle) =>
-      for member in bundle.get_members() {
-        let tag = core_meta_md_bundle_member_tag(member)
-        let name = match core_meta_md_bundle_member_name(member) {
+      for bundle_member in bundle.get_members() {
+        let tag = core_meta_md_bundle_member_tag(bundle_member)
+        let name = match core_meta_md_bundle_member_name(bundle_member) {
           Some(value) => value
           None => "unnamed"
         }

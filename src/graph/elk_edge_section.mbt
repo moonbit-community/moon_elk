@@ -3,7 +3,7 @@ pub type ElkEdgeSection = Int
 
 ///|
 priv struct EdgeSectionData {
-  edge : ElkEdge
+  _edge : ElkEdge
   mut identifier : String
   mut start_x : Double
   mut start_y : Double
@@ -30,7 +30,7 @@ pub fn create_edge_section(edge : ElkEdge) -> ElkEdgeSection {
   checked_edge(edge)
   let id = edge_section_store.val.length()
   edge_section_store.val.push({
-    edge,
+    _edge: edge,
     identifier: "",
     start_x: 0.0,
     start_y: 0.0,

@@ -2,38 +2,84 @@
 fn init_model_order_component_group_constraints() -> Map[Int, Array[Int]] {
   let constraints : Map[Int, Array[Int]] = {}
 
-  component_group_add_constraint(constraints, @core.sides_north, @core.sides_none)
-  component_group_add_constraint(constraints, @core.sides_west, @core.sides_none)
-  component_group_add_constraint(constraints, @core.sides_north_east, @core.sides_none)
-  component_group_add_constraint(constraints, @core.sides_north_west, @core.sides_none)
+  component_group_add_constraint(
+    constraints, @core.sides_north, @core.sides_none,
+  )
+  component_group_add_constraint(
+    constraints, @core.sides_west, @core.sides_none,
+  )
+  component_group_add_constraint(
+    constraints, @core.sides_north_east, @core.sides_none,
+  )
+  component_group_add_constraint(
+    constraints, @core.sides_north_west, @core.sides_none,
+  )
   component_group_add_constraint(
     constraints, @core.sides_north_south_west, @core.sides_none,
   )
-  component_group_add_constraint(constraints, @core.sides_north_east_west, @core.sides_none)
+  component_group_add_constraint(
+    constraints, @core.sides_north_east_west, @core.sides_none,
+  )
 
-  component_group_add_constraint(constraints, @core.sides_north_west, @core.sides_north)
+  component_group_add_constraint(
+    constraints, @core.sides_north_west, @core.sides_north,
+  )
 
-  component_group_add_constraint(constraints, @core.sides_none, @core.sides_east)
-  component_group_add_constraint(constraints, @core.sides_north, @core.sides_east)
-  component_group_add_constraint(constraints, @core.sides_west, @core.sides_east)
-  component_group_add_constraint(constraints, @core.sides_north_east, @core.sides_east)
-  component_group_add_constraint(constraints, @core.sides_north_south, @core.sides_east)
-  component_group_add_constraint(constraints, @core.sides_north_west, @core.sides_east)
+  component_group_add_constraint(
+    constraints, @core.sides_none, @core.sides_east,
+  )
+  component_group_add_constraint(
+    constraints, @core.sides_north, @core.sides_east,
+  )
+  component_group_add_constraint(
+    constraints, @core.sides_west, @core.sides_east,
+  )
+  component_group_add_constraint(
+    constraints, @core.sides_north_east, @core.sides_east,
+  )
+  component_group_add_constraint(
+    constraints, @core.sides_north_south, @core.sides_east,
+  )
+  component_group_add_constraint(
+    constraints, @core.sides_north_west, @core.sides_east,
+  )
   component_group_add_constraint(
     constraints, @core.sides_north_south_west, @core.sides_east,
   )
-  component_group_add_constraint(constraints, @core.sides_north_east_west, @core.sides_east)
-  component_group_add_constraint(constraints, @core.sides_east_west, @core.sides_east)
+  component_group_add_constraint(
+    constraints, @core.sides_north_east_west, @core.sides_east,
+  )
+  component_group_add_constraint(
+    constraints, @core.sides_east_west, @core.sides_east,
+  )
 
-  component_group_add_constraint(constraints, @core.sides_none, @core.sides_south)
-  component_group_add_constraint(constraints, @core.sides_north, @core.sides_south)
-  component_group_add_constraint(constraints, @core.sides_east, @core.sides_south)
-  component_group_add_constraint(constraints, @core.sides_west, @core.sides_south)
-  component_group_add_constraint(constraints, @core.sides_north_east, @core.sides_south)
-  component_group_add_constraint(constraints, @core.sides_north_south, @core.sides_south)
-  component_group_add_constraint(constraints, @core.sides_north_west, @core.sides_south)
-  component_group_add_constraint(constraints, @core.sides_east_west, @core.sides_south)
-  component_group_add_constraint(constraints, @core.sides_south_west, @core.sides_south)
+  component_group_add_constraint(
+    constraints, @core.sides_none, @core.sides_south,
+  )
+  component_group_add_constraint(
+    constraints, @core.sides_north, @core.sides_south,
+  )
+  component_group_add_constraint(
+    constraints, @core.sides_east, @core.sides_south,
+  )
+  component_group_add_constraint(
+    constraints, @core.sides_west, @core.sides_south,
+  )
+  component_group_add_constraint(
+    constraints, @core.sides_north_east, @core.sides_south,
+  )
+  component_group_add_constraint(
+    constraints, @core.sides_north_south, @core.sides_south,
+  )
+  component_group_add_constraint(
+    constraints, @core.sides_north_west, @core.sides_south,
+  )
+  component_group_add_constraint(
+    constraints, @core.sides_east_west, @core.sides_south,
+  )
+  component_group_add_constraint(
+    constraints, @core.sides_south_west, @core.sides_south,
+  )
   component_group_add_constraint(
     constraints, @core.sides_north_south_west, @core.sides_south,
   )
@@ -44,13 +90,25 @@ fn init_model_order_component_group_constraints() -> Map[Int, Array[Int]] {
     constraints, @core.sides_north_east_west, @core.sides_south,
   )
 
-  component_group_add_constraint(constraints, @core.sides_north, @core.sides_west)
-  component_group_add_constraint(constraints, @core.sides_north_east, @core.sides_west)
-  component_group_add_constraint(constraints, @core.sides_north_west, @core.sides_west)
-  component_group_add_constraint(constraints, @core.sides_north_east_west, @core.sides_west)
+  component_group_add_constraint(
+    constraints, @core.sides_north, @core.sides_west,
+  )
+  component_group_add_constraint(
+    constraints, @core.sides_north_east, @core.sides_west,
+  )
+  component_group_add_constraint(
+    constraints, @core.sides_north_west, @core.sides_west,
+  )
+  component_group_add_constraint(
+    constraints, @core.sides_north_east_west, @core.sides_west,
+  )
 
-  component_group_add_constraint(constraints, @core.sides_north, @core.sides_north_east)
-  component_group_add_constraint(constraints, @core.sides_west, @core.sides_north_east)
+  component_group_add_constraint(
+    constraints, @core.sides_north, @core.sides_north_east,
+  )
+  component_group_add_constraint(
+    constraints, @core.sides_west, @core.sides_north_east,
+  )
   component_group_add_constraint(
     constraints, @core.sides_north_west, @core.sides_north_east,
   )
@@ -61,11 +119,21 @@ fn init_model_order_component_group_constraints() -> Map[Int, Array[Int]] {
     constraints, @core.sides_north_south_west, @core.sides_north_east,
   )
 
-  component_group_add_constraint(constraints, @core.sides_none, @core.sides_east_south)
-  component_group_add_constraint(constraints, @core.sides_north, @core.sides_east_south)
-  component_group_add_constraint(constraints, @core.sides_east, @core.sides_east_south)
-  component_group_add_constraint(constraints, @core.sides_south, @core.sides_east_south)
-  component_group_add_constraint(constraints, @core.sides_west, @core.sides_east_south)
+  component_group_add_constraint(
+    constraints, @core.sides_none, @core.sides_east_south,
+  )
+  component_group_add_constraint(
+    constraints, @core.sides_north, @core.sides_east_south,
+  )
+  component_group_add_constraint(
+    constraints, @core.sides_east, @core.sides_east_south,
+  )
+  component_group_add_constraint(
+    constraints, @core.sides_south, @core.sides_east_south,
+  )
+  component_group_add_constraint(
+    constraints, @core.sides_west, @core.sides_east_south,
+  )
   component_group_add_constraint(
     constraints, @core.sides_north_east, @core.sides_east_south,
   )
@@ -78,7 +146,9 @@ fn init_model_order_component_group_constraints() -> Map[Int, Array[Int]] {
   component_group_add_constraint(
     constraints, @core.sides_south_west, @core.sides_east_south,
   )
-  component_group_add_constraint(constraints, @core.sides_east_west, @core.sides_east_south)
+  component_group_add_constraint(
+    constraints, @core.sides_east_west, @core.sides_east_south,
+  )
   component_group_add_constraint(
     constraints, @core.sides_north_east_west, @core.sides_east_south,
   )
@@ -89,10 +159,18 @@ fn init_model_order_component_group_constraints() -> Map[Int, Array[Int]] {
     constraints, @core.sides_north_east_south_west, @core.sides_east_south,
   )
 
-  component_group_add_constraint(constraints, @core.sides_none, @core.sides_south_west)
-  component_group_add_constraint(constraints, @core.sides_north, @core.sides_south_west)
-  component_group_add_constraint(constraints, @core.sides_east, @core.sides_south_west)
-  component_group_add_constraint(constraints, @core.sides_west, @core.sides_south_west)
+  component_group_add_constraint(
+    constraints, @core.sides_none, @core.sides_south_west,
+  )
+  component_group_add_constraint(
+    constraints, @core.sides_north, @core.sides_south_west,
+  )
+  component_group_add_constraint(
+    constraints, @core.sides_east, @core.sides_south_west,
+  )
+  component_group_add_constraint(
+    constraints, @core.sides_west, @core.sides_south_west,
+  )
   component_group_add_constraint(
     constraints, @core.sides_north_east, @core.sides_south_west,
   )
@@ -102,7 +180,9 @@ fn init_model_order_component_group_constraints() -> Map[Int, Array[Int]] {
   component_group_add_constraint(
     constraints, @core.sides_north_west, @core.sides_south_west,
   )
-  component_group_add_constraint(constraints, @core.sides_east_west, @core.sides_south_west)
+  component_group_add_constraint(
+    constraints, @core.sides_east_west, @core.sides_south_west,
+  )
   component_group_add_constraint(
     constraints, @core.sides_north_east_west, @core.sides_south_west,
   )
@@ -113,11 +193,21 @@ fn init_model_order_component_group_constraints() -> Map[Int, Array[Int]] {
     constraints, @core.sides_north_east_south_west, @core.sides_south_west,
   )
 
-  component_group_add_constraint(constraints, @core.sides_north, @core.sides_east_west)
-  component_group_add_constraint(constraints, @core.sides_west, @core.sides_east_west)
-  component_group_add_constraint(constraints, @core.sides_north_east, @core.sides_east_west)
-  component_group_add_constraint(constraints, @core.sides_north_west, @core.sides_east_west)
-  component_group_add_constraint(constraints, @core.sides_south_west, @core.sides_east_west)
+  component_group_add_constraint(
+    constraints, @core.sides_north, @core.sides_east_west,
+  )
+  component_group_add_constraint(
+    constraints, @core.sides_west, @core.sides_east_west,
+  )
+  component_group_add_constraint(
+    constraints, @core.sides_north_east, @core.sides_east_west,
+  )
+  component_group_add_constraint(
+    constraints, @core.sides_north_west, @core.sides_east_west,
+  )
+  component_group_add_constraint(
+    constraints, @core.sides_south_west, @core.sides_east_west,
+  )
   component_group_add_constraint(
     constraints, @core.sides_north_east_west, @core.sides_east_west,
   )
@@ -125,12 +215,18 @@ fn init_model_order_component_group_constraints() -> Map[Int, Array[Int]] {
     constraints, @core.sides_north_south_west, @core.sides_east_west,
   )
 
-  component_group_add_constraint(constraints, @core.sides_none, @core.sides_east_south_west)
+  component_group_add_constraint(
+    constraints, @core.sides_none, @core.sides_east_south_west,
+  )
   component_group_add_constraint(
     constraints, @core.sides_north, @core.sides_east_south_west,
   )
-  component_group_add_constraint(constraints, @core.sides_east, @core.sides_east_south_west)
-  component_group_add_constraint(constraints, @core.sides_west, @core.sides_east_south_west)
+  component_group_add_constraint(
+    constraints, @core.sides_east, @core.sides_east_south_west,
+  )
+  component_group_add_constraint(
+    constraints, @core.sides_west, @core.sides_east_south_west,
+  )
   component_group_add_constraint(
     constraints, @core.sides_north_east, @core.sides_east_south_west,
   )
@@ -189,13 +285,25 @@ fn init_model_order_component_group_constraints() -> Map[Int, Array[Int]] {
     constraints, @core.sides_north_east, @core.sides_north_east_south_west,
   )
 
-  component_group_add_constraint(constraints, @core.sides_east_west, @core.sides_none)
-  component_group_add_constraint(constraints, @core.sides_east_west, @core.sides_west)
-  component_group_add_constraint(constraints, @core.sides_east_west, @core.sides_east)
+  component_group_add_constraint(
+    constraints, @core.sides_east_west, @core.sides_none,
+  )
+  component_group_add_constraint(
+    constraints, @core.sides_east_west, @core.sides_west,
+  )
+  component_group_add_constraint(
+    constraints, @core.sides_east_west, @core.sides_east,
+  )
 
-  component_group_add_constraint(constraints, @core.sides_north_south, @core.sides_none)
-  component_group_add_constraint(constraints, @core.sides_north_south, @core.sides_north)
-  component_group_add_constraint(constraints, @core.sides_north_south, @core.sides_south)
+  component_group_add_constraint(
+    constraints, @core.sides_north_south, @core.sides_none,
+  )
+  component_group_add_constraint(
+    constraints, @core.sides_north_south, @core.sides_north,
+  )
+  component_group_add_constraint(
+    constraints, @core.sides_north_south, @core.sides_south,
+  )
 
   constraints
 }

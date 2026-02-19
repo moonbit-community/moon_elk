@@ -1,11 +1,14 @@
 ///|
-let vertiflex_left_outline_store : Ref[Map[@graph.ElkNode, OutlineNode]] = Ref::new({})
+let vertiflex_left_outline_store : Ref[Map[@graph.ElkNode, OutlineNode]] = Ref::new({},
+)
 
 ///|
-let vertiflex_right_outline_store : Ref[Map[@graph.ElkNode, OutlineNode]] = Ref::new({})
+let vertiflex_right_outline_store : Ref[Map[@graph.ElkNode, OutlineNode]] = Ref::new({},
+)
 
 ///|
-let vertiflex_outline_max_depth_store : Ref[Map[@graph.ElkNode, Double]] = Ref::new({})
+let vertiflex_outline_max_depth_store : Ref[Map[@graph.ElkNode, Double]] = Ref::new({},
+)
 
 ///|
 let vertiflex_min_x_store : Ref[Map[@graph.ElkNode, Double]] = Ref::new({})
@@ -20,13 +23,16 @@ let vertiflex_min_y_store : Ref[Map[@graph.ElkNode, Double]] = Ref::new({})
 let vertiflex_max_y_store : Ref[Map[@graph.ElkNode, Double]] = Ref::new({})
 
 ///|
-let vertiflex_root_node_store : Ref[Map[@graph.ElkNode, @graph.ElkNode]] = Ref::new({})
+let vertiflex_root_node_store : Ref[Map[@graph.ElkNode, @graph.ElkNode]] = Ref::new({},
+)
 
 ///|
-let vertiflex_edge_bend_height_store : Ref[Map[@graph.ElkNode, Double]] = Ref::new({})
+let vertiflex_edge_bend_height_store : Ref[Map[@graph.ElkNode, Double]] = Ref::new({},
+)
 
 ///|
-let vertiflex_node_model_order_store : Ref[Map[@graph.ElkNode, Int]] = Ref::new({})
+let vertiflex_node_model_order_store : Ref[Map[@graph.ElkNode, Int]] = Ref::new({},
+)
 
 ///|
 pub fn vertiflex_internal_reset() -> Unit {
@@ -101,7 +107,10 @@ pub fn vertiflex_internal_outline_max_depth(node : @graph.ElkNode) -> Double {
 }
 
 ///|
-pub fn vertiflex_internal_set_min_x(node : @graph.ElkNode, value : Double) -> Unit {
+pub fn vertiflex_internal_set_min_x(
+  node : @graph.ElkNode,
+  value : Double,
+) -> Unit {
   vertiflex_min_x_store.val[node] = value
 }
 
@@ -114,7 +123,10 @@ pub fn vertiflex_internal_min_x(node : @graph.ElkNode) -> Double {
 }
 
 ///|
-pub fn vertiflex_internal_set_max_x(node : @graph.ElkNode, value : Double) -> Unit {
+pub fn vertiflex_internal_set_max_x(
+  node : @graph.ElkNode,
+  value : Double,
+) -> Unit {
   vertiflex_max_x_store.val[node] = value
 }
 
@@ -127,7 +139,10 @@ pub fn vertiflex_internal_max_x(node : @graph.ElkNode) -> Double {
 }
 
 ///|
-pub fn vertiflex_internal_set_min_y(node : @graph.ElkNode, value : Double) -> Unit {
+pub fn vertiflex_internal_set_min_y(
+  node : @graph.ElkNode,
+  value : Double,
+) -> Unit {
   vertiflex_min_y_store.val[node] = value
 }
 
@@ -140,7 +155,10 @@ pub fn vertiflex_internal_min_y(node : @graph.ElkNode) -> Double {
 }
 
 ///|
-pub fn vertiflex_internal_set_max_y(node : @graph.ElkNode, value : Double) -> Unit {
+pub fn vertiflex_internal_set_max_y(
+  node : @graph.ElkNode,
+  value : Double,
+) -> Unit {
   vertiflex_max_y_store.val[node] = value
 }
 
@@ -198,8 +216,11 @@ pub fn vertiflex_internal_node_model_order(node : @graph.ElkNode) -> Int {
 }
 
 ///|
-pub fn vertiflex_internal_node_margins(node : @graph.ElkNode) -> @core.ElkMargin {
-  match @graph.node_layout_option_string_value(node, vertiflex_option_margins_id) {
+pub fn vertiflex_internal_node_margins(
+  node : @graph.ElkNode,
+) -> @core.ElkMargin {
+  match
+    @graph.node_layout_option_string_value(node, vertiflex_option_margins_id) {
     Some(text) => {
       let margins = @core.new_elk_margin()
       margins.parse(text)
@@ -210,7 +231,9 @@ pub fn vertiflex_internal_node_margins(node : @graph.ElkNode) -> @core.ElkMargin
 }
 
 ///|
-pub fn vertiflex_internal_child_of_edge(edge : @graph.ElkEdge) -> @graph.ElkNode {
+pub fn vertiflex_internal_child_of_edge(
+  edge : @graph.ElkEdge,
+) -> @graph.ElkNode {
   let targets = @graph.edge_targets(edge)
   if targets.is_empty() {
     abort("VertiFlex expects every tree edge to have a target.")

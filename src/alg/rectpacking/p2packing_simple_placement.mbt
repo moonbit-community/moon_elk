@@ -42,12 +42,12 @@ fn rectpacking_simple_placement_process(
     rectpacking_calculate_dimensions_rows(rows, node_node_spacing)
   }
 
-  let width = @math.maximum(
+  let width = @cmp.maximum(
     size.x,
     @graph.node_get_double_property(graph, rectpacking_internal_min_width) -
     padding.get_horizontal(),
   )
-  let height = @math.maximum(
+  let height = @cmp.maximum(
     size.y,
     @graph.node_get_double_property(graph, rectpacking_internal_min_height) -
     padding.get_vertical(),
@@ -56,7 +56,9 @@ fn rectpacking_simple_placement_process(
   @graph.node_set_double_property(
     graph, rectpacking_internal_additional_height, additional_height,
   )
-  @graph.node_set_double_property(graph, rectpacking_internal_drawing_width, width)
+  @graph.node_set_double_property(
+    graph, rectpacking_internal_drawing_width, width,
+  )
   @graph.node_set_double_property(
     graph,
     rectpacking_internal_drawing_height,

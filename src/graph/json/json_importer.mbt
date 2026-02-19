@@ -42,7 +42,8 @@ fn importer_apply_option(
   }
   if is_no_layout_option_id(canonical_id) {
     match parse_bool_option(value) {
-      Some(parsed) => @graph.node_set_bool_property(node, @core.no_layout, parsed)
+      Some(parsed) =>
+        @graph.node_set_bool_property(node, @core.no_layout, parsed)
       None => ()
     }
   }
@@ -326,7 +327,9 @@ fn importer_transform_labels_for_node(
               Some(text_json) => json_value_as_string(text_json).unwrap_or("")
               None => ""
             }
-            let label = @graph.create_label(Some(@graph.make_node_label_parent(node)))
+            let label = @graph.create_label(
+              Some(@graph.make_node_label_parent(node)),
+            )
             @graph.label_set_text(label, text)
             importer.label_json_map[label] = label_obj
             importer_transform_properties_label(label_obj, label)
@@ -354,7 +357,9 @@ fn importer_transform_labels_for_port(
               Some(text_json) => json_value_as_string(text_json).unwrap_or("")
               None => ""
             }
-            let label = @graph.create_label(Some(@graph.make_port_label_parent(port)))
+            let label = @graph.create_label(
+              Some(@graph.make_port_label_parent(port)),
+            )
             @graph.label_set_text(label, text)
             importer.label_json_map[label] = label_obj
             importer_transform_properties_label(label_obj, label)
@@ -382,7 +387,9 @@ fn importer_transform_labels_for_edge(
               Some(text_json) => json_value_as_string(text_json).unwrap_or("")
               None => ""
             }
-            let label = @graph.create_label(Some(@graph.make_edge_label_parent(edge)))
+            let label = @graph.create_label(
+              Some(@graph.make_edge_label_parent(edge)),
+            )
             @graph.label_set_text(label, text)
             importer.label_json_map[label] = label_obj
             importer_transform_properties_label(label_obj, label)
@@ -719,8 +726,14 @@ fn importer_transform_edge_sections(
     let section = @graph.edge_sections(edge)[0]
     if @graph.edge_section_incoming_shape(section) is None &&
       @graph.edge_section_outgoing_shape(section) is None {
-      @graph.edge_section_set_incoming_shape(section, Some(@graph.edge_sources(edge)[0]))
-      @graph.edge_section_set_outgoing_shape(section, Some(@graph.edge_targets(edge)[0]))
+      @graph.edge_section_set_incoming_shape(
+        section,
+        Some(@graph.edge_sources(edge)[0]),
+      )
+      @graph.edge_section_set_outgoing_shape(
+        section,
+        Some(@graph.edge_targets(edge)[0]),
+      )
     }
   }
 }
@@ -916,7 +929,11 @@ fn port_shape_coords_mode(port : @graph.ElkPort) -> JsonShapeCoordsMode {
 }
 
 ///|
-fn edge_adjust_x(importer : JsonImporter, edge : @graph.ElkEdge, x : Double) -> Double {
+fn edge_adjust_x(
+  importer : JsonImporter,
+  edge : @graph.ElkEdge,
+  x : Double,
+) -> Double {
   let original_parent = match importer.edge_original_parent_map.get(edge) {
     Some(parent) => parent
     None =>
@@ -937,7 +954,11 @@ fn edge_adjust_x(importer : JsonImporter, edge : @graph.ElkEdge, x : Double) -> 
 }
 
 ///|
-fn edge_adjust_y(importer : JsonImporter, edge : @graph.ElkEdge, y : Double) -> Double {
+fn edge_adjust_y(
+  importer : JsonImporter,
+  edge : @graph.ElkEdge,
+  y : Double,
+) -> Double {
   let original_parent = match importer.edge_original_parent_map.get(edge) {
     Some(parent) => parent
     None =>
@@ -972,7 +993,8 @@ fn label_adjusted_x(importer : JsonImporter, label : @graph.ElkLabel) -> Double 
       } else {
         @graph.label_x(label)
       }
-    Some(EdgeLabelParent(edge)) => edge_adjust_x(importer, edge, @graph.label_x(label))
+    Some(EdgeLabelParent(edge)) =>
+      edge_adjust_x(importer, edge, @graph.label_x(label))
     Some(LabelLabelParent(parent_label)) =>
       @graph.label_x(label) + label_adjusted_x(importer, parent_label)
     None => @graph.label_x(label)
@@ -994,7 +1016,8 @@ fn label_adjusted_y(importer : JsonImporter, label : @graph.ElkLabel) -> Double 
       } else {
         @graph.label_y(label)
       }
-    Some(EdgeLabelParent(edge)) => edge_adjust_y(importer, edge, @graph.label_y(label))
+    Some(EdgeLabelParent(edge)) =>
+      edge_adjust_y(importer, edge, @graph.label_y(label))
     Some(LabelLabelParent(parent_label)) =>
       @graph.label_y(label) + label_adjusted_y(importer, parent_label)
     None => @graph.label_y(label)
@@ -1002,7 +1025,10 @@ fn label_adjusted_y(importer : JsonImporter, label : @graph.ElkLabel) -> Double 
 }
 
 ///|
-fn importer_node_id_by_node(importer : JsonImporter, node : @graph.ElkNode) -> String? {
+fn importer_node_id_by_node(
+  importer : JsonImporter,
+  node : @graph.ElkNode,
+) -> String? {
   let mut result : String? = None
   importer.node_id_map.each((id, mapped) => {
     if mapped == node {
@@ -1087,7 +1113,9 @@ fn importer_transfer_edge_sections(
       let incoming_refs = []
       for referenced in @graph.edge_section_incoming_sections(section) {
         if !@graph.edge_section_identifier(referenced).is_empty() {
-          incoming_refs.push(Json::string(@graph.edge_section_identifier(referenced)))
+          incoming_refs.push(
+            Json::string(@graph.edge_section_identifier(referenced)),
+          )
         }
       }
       if !incoming_refs.is_empty() {
@@ -1098,7 +1126,9 @@ fn importer_transfer_edge_sections(
       let outgoing_refs = []
       for referenced in @graph.edge_section_outgoing_sections(section) {
         if !@graph.edge_section_identifier(referenced).is_empty() {
-          outgoing_refs.push(Json::string(@graph.edge_section_identifier(referenced)))
+          outgoing_refs.push(
+            Json::string(@graph.edge_section_identifier(referenced)),
+          )
         }
       }
       if !outgoing_refs.is_empty() {
@@ -1203,7 +1233,9 @@ fn importer_transfer_layout_node(
       match @graph.edge_containing_node(edge) {
         Some(container) =>
           if !@graph.node_identifier(container).is_empty() {
-            json_edge["container"] = Json::string(@graph.node_identifier(container))
+            json_edge["container"] = Json::string(
+              @graph.node_identifier(container),
+            )
           }
         None => ()
       }

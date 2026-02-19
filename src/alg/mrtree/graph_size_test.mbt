@@ -42,7 +42,9 @@ fn mrtree_apply_graph_size_case(
   layout_meta_data_service_register_default_algorithms()
 
   let graph = create_graph()
-  @graph.node_set_string_property(graph, @core.algorithm, "org.eclipse.elk.mrtree")
+  @graph.node_set_string_property(
+    graph, @core.algorithm, "org.eclipse.elk.mrtree",
+  )
   @graph.node_set_string_property(
     graph,
     @core.padding,
@@ -50,7 +52,9 @@ fn mrtree_apply_graph_size_case(
       padding_left, padding_right, padding_top, padding_bottom,
     ),
   )
-  @graph.node_set_double_property(graph, @core.spacing_node_node, node_node_spacing)
+  @graph.node_set_double_property(
+    graph, @core.spacing_node_node, node_node_spacing,
+  )
 
   let n1 = @graph.create_node(Some(graph))
   @graph.node_set_dimensions(n1, node_width_value, node_height_value)
@@ -94,7 +98,9 @@ fn mrtree_apply_components_graph_size_case(
   layout_meta_data_service_register_default_algorithms()
 
   let graph = create_graph()
-  @graph.node_set_string_property(graph, @core.algorithm, "org.eclipse.elk.mrtree")
+  @graph.node_set_string_property(
+    graph, @core.algorithm, "org.eclipse.elk.mrtree",
+  )
   @graph.node_set_string_property(
     graph,
     @core.padding,

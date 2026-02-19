@@ -76,9 +76,9 @@ fn layer_constraint_preprocessor_hidden_connections_combine(
 }
 
 ///|
-let layer_constraint_preprocessor_hidden_node_connections : @graph.IProperty[String] = @graph.new_property(
-  "separateLayerConnections", "NONE",
-)
+let layer_constraint_preprocessor_hidden_node_connections : @graph.IProperty[
+  String,
+] = @graph.new_property("separateLayerConnections", "NONE")
 
 ///|
 fn layer_constraint_preprocessor_update_opposite_node_layer_constraints(

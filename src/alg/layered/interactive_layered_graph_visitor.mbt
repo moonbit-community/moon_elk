@@ -36,7 +36,9 @@ fn interactive_layered_graph_visitor_string_option_value(
     }
     None =>
       if @graph.node_has_string_property(node, option) {
-        let value = @graph.node_get_string_property(node, option).trim().to_string()
+        let value = @graph.node_get_string_property(node, option)
+          .trim()
+          .to_string()
         if value.is_empty() {
           None
         } else {
@@ -93,7 +95,11 @@ fn interactive_layered_graph_visitor_set_int_option(
   value : Int,
 ) -> Unit {
   @graph.node_set_int_property(node, option, value)
-  @graph.node_set_layout_option_string_by_id(node, option.get_id(), value.to_string())
+  @graph.node_set_layout_option_string_by_id(
+    node,
+    option.get_id(),
+    value.to_string(),
+  )
 }
 
 ///|
@@ -139,7 +145,11 @@ fn interactive_layered_graph_visitor_set_kvector_option(
   option : @graph.IProperty[@core.KVector],
   value : @core.KVector,
 ) -> Unit {
-  @graph.node_set_layout_option_string_by_id(node, option.get_id(), value.to_string())
+  @graph.node_set_layout_option_string_by_id(
+    node,
+    option.get_id(),
+    value.to_string(),
+  )
 }
 
 ///|
@@ -339,7 +349,8 @@ fn interactive_layered_graph_visitor_require_elk_node(
 ) -> @graph.ElkNode {
   match interactive_layered_graph_visitor_get_elk_node(nodes, id) {
     Some(node) => node
-    None => abort("@core.interactive layered graph visitor cannot resolve node id")
+    None =>
+      abort("@core.interactive layered graph visitor cannot resolve node id")
   }
 }
 
@@ -505,7 +516,8 @@ fn interactive_layered_graph_visitor_sort_rc_nodes(
             current, layered_options_crossing_minimization_in_layer_pred_of,
           ) {
           Some(value) => value
-          None => abort("@core.interactive layered graph visitor missing pred target")
+          None =>
+            abort("@core.interactive layered graph visitor missing pred target")
         }
         let target = interactive_layered_graph_visitor_require_elk_node(
           all_nodes, target_name,
@@ -524,7 +536,8 @@ fn interactive_layered_graph_visitor_sort_rc_nodes(
             current, layered_options_crossing_minimization_in_layer_succ_of,
           ) {
           Some(value) => value
-          None => abort("@core.interactive layered graph visitor missing succ target")
+          None =>
+            abort("@core.interactive layered graph visitor missing succ target")
         }
         let target = interactive_layered_graph_visitor_require_elk_node(
           all_nodes, target_name,
@@ -642,7 +655,8 @@ fn interactive_layered_graph_visitor_handle_nodes_with_pc_and_rc(
           node, layered_options_crossing_minimization_in_layer_pred_of,
         ) {
         Some(result) => result
-        None => abort("@core.interactive layered graph visitor missing pred target")
+        None =>
+          abort("@core.interactive layered graph visitor missing pred target")
       }
       targets.push(
         interactive_layered_graph_visitor_require_elk_node(
@@ -661,7 +675,8 @@ fn interactive_layered_graph_visitor_handle_nodes_with_pc_and_rc(
           node, layered_options_crossing_minimization_in_layer_succ_of,
         ) {
         Some(result) => result
-        None => abort("@core.interactive layered graph visitor missing succ target")
+        None =>
+          abort("@core.interactive layered graph visitor missing succ target")
       }
       targets.push(
         interactive_layered_graph_visitor_require_elk_node(
@@ -997,7 +1012,8 @@ fn interactive_layered_graph_visitor_update_lists_for_layer_assignment(
           node, layered_options_crossing_minimization_in_layer_pred_of,
         ) {
         Some(value) => value
-        None => abort("@core.interactive layered graph visitor missing pred target")
+        None =>
+          abort("@core.interactive layered graph visitor missing pred target")
       }
       targets.push(
         interactive_layered_graph_visitor_require_elk_node(nodes, target_name),
@@ -1009,7 +1025,8 @@ fn interactive_layered_graph_visitor_update_lists_for_layer_assignment(
           node, layered_options_crossing_minimization_in_layer_succ_of,
         ) {
         Some(value) => value
-        None => abort("@core.interactive layered graph visitor missing succ target")
+        None =>
+          abort("@core.interactive layered graph visitor missing succ target")
       }
       targets.push(
         interactive_layered_graph_visitor_require_elk_node(nodes, target_name),
@@ -1103,13 +1120,17 @@ fn interactive_layered_graph_visitor_set_coordinate_in_layout_direction(
         @core.Direction::Undefined => {
           interactive_layered_graph_visitor_set_node_x(node, position)
           if position + @graph.node_width(node) / 2.0 >= next_position {
-            next_position = @graph.node_x(node) + @graph.node_width(node) + spacing
+            next_position = @graph.node_x(node) +
+              @graph.node_width(node) +
+              spacing
           }
         }
         @core.Direction::Rightward => {
           interactive_layered_graph_visitor_set_node_x(node, position)
           if position + @graph.node_width(node) / 2.0 >= next_position {
-            next_position = @graph.node_x(node) + @graph.node_width(node) + spacing
+            next_position = @graph.node_x(node) +
+              @graph.node_width(node) +
+              spacing
           }
         }
         @core.Direction::Leftward => {
@@ -1121,7 +1142,9 @@ fn interactive_layered_graph_visitor_set_coordinate_in_layout_direction(
         @core.Direction::Downward => {
           interactive_layered_graph_visitor_set_node_y(node, position)
           if position + @graph.node_height(node) >= next_position {
-            next_position = @graph.node_y(node) + @graph.node_height(node) + spacing
+            next_position = @graph.node_y(node) +
+              @graph.node_height(node) +
+              spacing
           }
         }
         @core.Direction::Upward => {
@@ -1183,7 +1206,8 @@ fn interactive_layered_graph_visitor_set_coordinates_orthogonal_to_layout_direct
         node, layered_options_crossing_minimization_in_layer_pred_of,
       ) {
       Some(value) => value
-      None => abort("@core.interactive layered graph visitor missing pred target")
+      None =>
+        abort("@core.interactive layered graph visitor missing pred target")
     }
     let target = interactive_layered_graph_visitor_require_elk_node(
       all_nodes, target_name,
@@ -1245,7 +1269,8 @@ fn interactive_layered_graph_visitor_set_coordinates_orthogonal_to_layout_direct
       let target_name = match
         interactive_layered_graph_visitor_string_option_value(node, property) {
         Some(value) => value
-        None => abort("@core.interactive layered graph visitor missing pred target")
+        None =>
+          abort("@core.interactive layered graph visitor missing pred target")
       }
       targets[0] = interactive_layered_graph_visitor_get_elk_node(
         all_nodes, target_name,
@@ -1255,7 +1280,8 @@ fn interactive_layered_graph_visitor_set_coordinates_orthogonal_to_layout_direct
       let target_name = match
         interactive_layered_graph_visitor_string_option_value(node, property) {
         Some(value) => value
-        None => abort("@core.interactive layered graph visitor missing succ target")
+        None =>
+          abort("@core.interactive layered graph visitor missing succ target")
       }
       targets[1] = interactive_layered_graph_visitor_get_elk_node(
         all_nodes, target_name,
@@ -1383,7 +1409,9 @@ fn interactive_layered_graph_visitor_set_coordinates_orthogonal_to_layout_direct
 }
 
 ///|
-fn interactive_layered_graph_visitor_set_coordinates(root : @graph.ElkNode) -> Unit {
+fn interactive_layered_graph_visitor_set_coordinates(
+  root : @graph.ElkNode,
+) -> Unit {
   let layers = interactive_layered_graph_visitor_calc_layer_nodes(
     @graph.node_children(root),
   )
@@ -1512,5 +1540,7 @@ pub fn InteractiveLayeredGraphVisitor::visit(
 ///|
 pub fn new_interactive_layered_graph_element_visitor() -> @core.IGraphElementVisitor {
   let visitor = new_interactive_layered_graph_visitor()
-  @core.new_graph_element_visitor(fn(element : @graph.ElkNode) { visitor.visit(element) })
+  @core.new_graph_element_visitor(fn(element : @graph.ElkNode) {
+    visitor.visit(element)
+  })
 }

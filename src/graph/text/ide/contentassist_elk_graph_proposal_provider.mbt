@@ -93,7 +93,9 @@ pub fn new_graph_text_ide_content_assist_context(
 }
 
 ///|
-fn graph_text_ide_option_description(option_data : @core.LayoutOptionData) -> String {
+fn graph_text_ide_option_description(
+  option_data : @core.LayoutOptionData,
+) -> String {
   option_data.get_name() + " (" + option_data.get_id() + ")"
 }
 
@@ -153,7 +155,9 @@ fn graph_text_ide_shape_in_list(
 }
 
 ///|
-fn graph_text_ide_find_parent_edge(section : @graph.ElkEdgeSection) -> @graph.ElkEdge? {
+fn graph_text_ide_find_parent_edge(
+  section : @graph.ElkEdgeSection,
+) -> @graph.ElkEdge? {
   for edge in @graph.all_edges() {
     for existing in @graph.edge_sections(edge) {
       if existing == section {

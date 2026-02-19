@@ -437,7 +437,9 @@ fn bezier(
   left : Array[KVector]?,
   right : Array[KVector]?,
 ) -> KVector {
-  let p = Array::makei(w_degree + 1, _ => Array::makei(w_degree + 1, _ => new_kvector()))
+  let p = Array::makei(w_degree + 1, _ => {
+    Array::makei(w_degree + 1, _ => new_kvector())
+  })
   let mut j = 0
   while j <= degree {
     p[0][j] = new_kvector_copy(c[j])

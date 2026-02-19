@@ -48,9 +48,17 @@ test "Issue405 symmetric port and port-label positions" {
   assert_true(issue405_fuzzy_equal(port_x(p_right), port_x(p_down), 0.001))
   assert_true(issue405_fuzzy_equal(port_y(p_right), port_y(p_down), 0.001))
   assert_true(
-    issue405_fuzzy_equal(@graph.label_x(right_label), @graph.label_x(down_label), 0.001),
+    issue405_fuzzy_equal(
+      @graph.label_x(right_label),
+      @graph.label_x(down_label),
+      0.001,
+    ),
   )
   assert_true(
-    issue405_fuzzy_equal(@graph.label_y(right_label), @graph.label_y(down_label), 0.001),
+    issue405_fuzzy_equal(
+      @graph.label_y(right_label),
+      @graph.label_y(down_label),
+      0.001,
+    ),
   )
 }

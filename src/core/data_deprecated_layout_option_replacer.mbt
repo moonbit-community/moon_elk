@@ -34,9 +34,13 @@ fn remove_string(values : Array[String], value : String) -> Unit {
 
 ///|
 fn replace_next_to_port_if_possible(element : @graph.ElkNode) -> Unit {
-  let placements = @graph.node_get_string_set_property(element, port_labels_placement)
+  let placements = @graph.node_get_string_set_property(
+    element, port_labels_placement,
+  )
   add_unique_string(placements, "NEXT_TO_PORT_IF_POSSIBLE")
-  @graph.node_set_string_set_property(element, port_labels_placement, placements)
+  @graph.node_set_string_set_property(
+    element, port_labels_placement, placements,
+  )
   @graph.node_clear_bool_property(element, port_labels_next_to_port_if_possible)
 }
 
@@ -57,10 +61,16 @@ fn move_space_efficient_port_labels(element : @graph.ElkNode) -> Unit {
       element, port_labels_placement,
     )
     add_unique_string(placements, "SPACE_EFFICIENT")
-    @graph.node_set_string_set_property(element, port_labels_placement, placements)
-    size_options = @graph.node_get_string_set_property(element, node_size_options)
+    @graph.node_set_string_set_property(
+      element, port_labels_placement, placements,
+    )
+    size_options = @graph.node_get_string_set_property(
+      element, node_size_options,
+    )
     remove_string(size_options, "SPACE_EFFICIENT_PORT_LABELS")
-    @graph.node_set_string_set_property(element, node_size_options, size_options)
+    @graph.node_set_string_set_property(
+      element, node_size_options, size_options,
+    )
   }
 }
 
@@ -70,7 +80,9 @@ pub fn DeprecatedLayoutOptionReplacer::visit(
   element : @graph.ElkNode,
 ) -> Unit {
   ignore(self)
-  if @graph.node_has_bool_property(element, port_labels_next_to_port_if_possible) {
+  if @graph.node_has_bool_property(
+      element, port_labels_next_to_port_if_possible,
+    ) {
     replace_next_to_port_if_possible(element)
   }
   if @graph.node_has_string_set_property(element, node_size_options) {

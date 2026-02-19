@@ -33,7 +33,8 @@ pub fn LayoutConfigurationManager::get_algorithm(
           self.layout_algorithm_resolver.default_layout_algorithm_id,
         )
       } else {
-        match @core.layout_meta_data_service_get_algorithm_data_by_suffix(value) {
+        match
+          @core.layout_meta_data_service_get_algorithm_data_by_suffix(value) {
           Some(data) => Some(data)
           None =>
             @core.layout_meta_data_service_get_algorithm_data_by_suffix(

@@ -59,7 +59,9 @@ pub fn DCPolyomino::get_offset(self : DCPolyomino) -> @core.KVector {
 }
 
 ///|
-pub fn DCPolyomino::get_min_corner_on_canvas(self : DCPolyomino) -> @core.KVector {
+pub fn DCPolyomino::get_min_corner_on_canvas(
+  self : DCPolyomino,
+) -> @core.KVector {
   self.representee.get_min_corner().clone().sub(self.get_offset())
 }
 

@@ -284,7 +284,7 @@ pub fn OrthogonalRoutingGenerator::route_edges(
 
 ///|
 pub fn OrthogonalRoutingGenerator::minimum_horizontal_segment_distance(
-  self : OrthogonalRoutingGenerator,
+  _self : OrthogonalRoutingGenerator,
   edge_segments : Array[HyperEdgeSegment],
 ) -> Double {
   let incoming_values = []

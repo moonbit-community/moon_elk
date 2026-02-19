@@ -46,7 +46,10 @@ fn run_algorithm_specific_validation(
 }
 
 ///|
-pub fn GraphValidator::visit(self : GraphValidator, node : @graph.ElkNode) -> Unit {
+pub fn GraphValidator::visit(
+  self : GraphValidator,
+  node : @graph.ElkNode,
+) -> Unit {
   for edge in @graph.node_contained_edges(node) {
     if !@graph.edge_is_connected(edge) {
       self.issues.push(

@@ -95,7 +95,9 @@ fn p4_basic_node_placement_test_layout_ok_for_config(
 
   p4_basic_node_placement_test_layout(graph)
 
-  let algorithm_resolved = @graph.node_get_string_property(graph, resolved_algorithm) ==
+  let algorithm_resolved = @graph.node_get_string_property(
+      graph, resolved_algorithm,
+    ) ==
     "org.eclipse.elk.layered"
   let middle_nodes_non_overlapping = p4_basic_node_placement_test_nodes_do_not_overlap_vertically(
     mid_a, mid_b,

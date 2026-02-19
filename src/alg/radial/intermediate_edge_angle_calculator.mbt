@@ -23,8 +23,12 @@ pub fn new_radial_edge_angle_calculator_layout_processor() -> @core.ILayoutProce
       let edge_vector = @core.kvector_diff(end, start)
       let angle = @math.atan2(edge_vector.y, edge_vector.x)
 
-      let target = @graph.connectable_shape_to_node(Some(@graph.edge_targets(edge)[0]))
-      @graph.node_set_double_property(target, radial_rotation_target_angle, angle)
+      let target = @graph.connectable_shape_to_node(
+        Some(@graph.edge_targets(edge)[0]),
+      )
+      @graph.node_set_double_property(
+        target, radial_rotation_target_angle, angle,
+      )
     }
   })
 }

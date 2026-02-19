@@ -50,5 +50,7 @@ pub fn new_spore_max_st_layout_phase() -> @core.ILayoutProcessor[
   SPOrEPhases,
   SporeGraph,
 ] {
-  @core.new_layout_phase(spore_max_st_phase_process, spore_max_st_phase_configuration)
+  @core.new_layout_phase(
+    spore_max_st_phase_process, spore_max_st_phase_configuration,
+  )
 }

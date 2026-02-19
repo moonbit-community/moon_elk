@@ -47,7 +47,10 @@ pub fn InternalElkGraphIdeParser::get_grammar_access(
 pub fn InternalElkGraphIdeParser::entry_rule_root_node(
   self : InternalElkGraphIdeParser,
 ) -> @graph.ElkNode {
-  @text.new_internal_elk_graph_parser(self.tokens, grammar_access=self.grammar_access).entry_rule_root_node()
+  @text.new_internal_elk_graph_parser(
+    self.tokens,
+    grammar_access=self.grammar_access,
+  ).entry_rule_root_node()
 }
 
 ///|

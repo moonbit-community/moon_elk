@@ -7,7 +7,10 @@ fn spore_shrink_tree_compaction_phase_configuration(
 }
 
 ///|
-fn spore_shrink_tree_compaction_draw(tree : @common.Tree[@common.Node], svg : @common.SvgImage) -> Unit {
+fn spore_shrink_tree_compaction_draw(
+  tree : @common.Tree[@common.Node],
+  svg : @common.SvgImage,
+) -> Unit {
   svg.add_rect_from_elk(tree.node.rect, "fill=\"none\" stroke=\"black\"")
   for child in tree.children {
     svg.add_line(
@@ -31,7 +34,9 @@ fn spore_shrink_tree_compaction_draw(tree : @common.Tree[@common.Node], svg : @c
 }
 
 ///|
-fn spore_shrink_tree_compaction_debug_out(tree : @common.Tree[@common.Node]) -> Unit {
+fn spore_shrink_tree_compaction_debug_out(
+  tree : @common.Tree[@common.Node],
+) -> Unit {
   let svg = @common.new_svg_image(Some("spore_30Tree"))
   svg.clear()
   svg.add_circle(

@@ -18,10 +18,16 @@ fn vertiflex_absolute_x_placer_find_minimal_x(tree : @graph.ElkNode) -> Double {
 }
 
 ///|
-fn vertiflex_absolute_x_placer_absolute_tree_coords(tree : @graph.ElkNode) -> Unit {
+fn vertiflex_absolute_x_placer_absolute_tree_coords(
+  tree : @graph.ElkNode,
+) -> Unit {
   for edge in @graph.node_outgoing_edges(tree) {
     let child = vertiflex_internal_child_of_edge(edge)
-    @graph.node_set_location(child, @graph.node_x(child) + @graph.node_x(tree), @graph.node_y(child))
+    @graph.node_set_location(
+      child,
+      @graph.node_x(child) + @graph.node_x(tree),
+      @graph.node_y(child),
+    )
     vertiflex_absolute_x_placer_absolute_tree_coords(child)
   }
 }

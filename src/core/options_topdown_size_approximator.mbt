@@ -60,7 +60,9 @@ fn topdown_size_approximator_connectable_shape_to_node(
 }
 
 ///|
-fn topdown_size_approximator_first_target_node(edge : @graph.ElkEdge) -> @graph.ElkNode {
+fn topdown_size_approximator_first_target_node(
+  edge : @graph.ElkEdge,
+) -> @graph.ElkNode {
   let targets = @graph.edge_targets(edge)
   if targets.is_empty() {
     abort("Edge without target in topdown size approximator")
@@ -69,19 +71,25 @@ fn topdown_size_approximator_first_target_node(edge : @graph.ElkEdge) -> @graph.
 }
 
 ///|
-fn topdown_size_approximator_layout_graph(layout_graph : @graph.ElkNode) -> Unit {
+fn topdown_size_approximator_layout_graph(
+  layout_graph : @graph.ElkNode,
+) -> Unit {
   let progress_monitor = new_null_elk_progress_monitor()
   new_recursive_graph_layout_engine().layout(layout_graph, progress_monitor)
 }
 
 ///|
 fn topdown_size_approximator_count_children(node : @graph.ElkNode) -> KVector {
-  let size = @graph.node_get_double_property(node, topdown_hierarchical_node_width) *
+  let size = @graph.node_get_double_property(
+      node, topdown_hierarchical_node_width,
+    ) *
     @graph.node_children(node).length().to_double().sqrt()
   new_kvector_xy(
     size,
     size /
-    @graph.node_get_double_property(node, topdown_hierarchical_node_aspect_ratio),
+    @graph.node_get_double_property(
+      node, topdown_hierarchical_node_aspect_ratio,
+    ),
   )
 }
 
@@ -195,7 +203,9 @@ fn topdown_size_approximator_fixed_integer_ratio_boxes(
 
   let mut node_node_spacing = spacing_node_node.get_default()
   if @graph.node_parent(original_graph) is Some(parent) {
-    node_node_spacing = @graph.node_get_double_property(parent, spacing_node_node)
+    node_node_spacing = @graph.node_get_double_property(
+      parent, spacing_node_node,
+    )
   }
 
   new_kvector_xy(base_width, base_height)
@@ -243,8 +253,12 @@ fn topdown_size_approximator_layout_next_level(
           @graph.node_get_string_property(child_node, padding),
         )
         let size = new_kvector_xy(
-          @graph.node_get_double_property(child_node, topdown_hierarchical_node_width),
-          @graph.node_get_double_property(child_node, topdown_hierarchical_node_width) /
+          @graph.node_get_double_property(
+            child_node, topdown_hierarchical_node_width,
+          ),
+          @graph.node_get_double_property(
+            child_node, topdown_hierarchical_node_width,
+          ) /
           @graph.node_get_double_property(
             child_node, topdown_hierarchical_node_aspect_ratio,
           ),
@@ -270,7 +284,9 @@ fn topdown_size_approximator_layout_next_level(
 
   topdown_size_approximator_layout_graph(original_graph)
 
-  @graph.node_set_string_property(original_graph, algorithm, "org.eclipse.elk.fixed")
+  @graph.node_set_string_property(
+    original_graph, algorithm, "org.eclipse.elk.fixed",
+  )
   apply_visitors(original_graph, [new_layout_algorithm_resolver().to_visitor()])
 
   compute_child_area_dimensions(original_graph)

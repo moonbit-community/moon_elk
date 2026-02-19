@@ -7,7 +7,10 @@ fn spore_delaunay_phase_configuration(
 }
 
 ///|
-fn spore_append_tedge_unique(edges : Array[@common.TEdge], edge : @common.TEdge) -> Unit {
+fn spore_append_tedge_unique(
+  edges : Array[@common.TEdge],
+  edge : @common.TEdge,
+) -> Unit {
   for existing in edges {
     if existing.equals(edge) {
       return

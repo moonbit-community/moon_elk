@@ -9,7 +9,9 @@ test "ElkGraphTransformer imports and applies offsets" {
   let root = @graph.create_graph()
   @graph.node_set_dimensions(root, 60.0, 30.0)
 
-  let root_label = @graph.create_label(Some(@graph.make_node_label_parent(root)))
+  let root_label = @graph.create_label(
+    Some(@graph.make_node_label_parent(root)),
+  )
   @graph.label_set_location(root_label, 10.0, 5.0)
   @graph.label_set_dimensions(root_label, 8.0, 4.0)
 
@@ -24,9 +26,17 @@ test "ElkGraphTransformer imports and applies offsets" {
   let section = @graph.create_edge_section(edge)
   @graph.edge_section_set_start(section, 20.0, 15.0)
   @graph.edge_section_set_end(section, 40.0, 15.0)
-  @graph.edge_section_set_incoming_shape(section, Some(@graph.make_node_shape(left)))
-  @graph.edge_section_set_outgoing_shape(section, Some(@graph.make_node_shape(right)))
-  let edge_label = @graph.create_label(Some(@graph.make_edge_label_parent(edge)))
+  @graph.edge_section_set_incoming_shape(
+    section,
+    Some(@graph.make_node_shape(left)),
+  )
+  @graph.edge_section_set_outgoing_shape(
+    section,
+    Some(@graph.make_node_shape(right)),
+  )
+  let edge_label = @graph.create_label(
+    Some(@graph.make_edge_label_parent(edge)),
+  )
   @graph.label_set_location(edge_label, 30.0, 12.0)
   @graph.label_set_dimensions(edge_label, 6.0, 3.0)
 
@@ -51,8 +61,14 @@ test "ElkGraphTransformer imports and applies offsets" {
     disco_transform_test_close(@graph.edge_section_start_y(section), 22.0),
     true,
   )
-  assert_eq(disco_transform_test_close(@graph.edge_section_end_x(section), 45.0), true)
-  assert_eq(disco_transform_test_close(@graph.edge_section_end_y(section), 22.0), true)
+  assert_eq(
+    disco_transform_test_close(@graph.edge_section_end_x(section), 45.0),
+    true,
+  )
+  assert_eq(
+    disco_transform_test_close(@graph.edge_section_end_y(section), 22.0),
+    true,
+  )
 
   assert_eq(disco_transform_test_close(@graph.label_x(edge_label), 35.0), true)
   assert_eq(disco_transform_test_close(@graph.label_y(edge_label), 19.0), true)

@@ -263,6 +263,15 @@ fn core_meta_lexer_push_symbol_token(
 }
 
 ///|
+fn core_meta_lexer_slice(text : String, start : Int, end_ : Int) -> String {
+  try text[start:end_] catch {
+    _ => ""
+  } noraise {
+    value => value.to_string()
+  }
+}
+
+///|
 pub fn InternalMetaDataLexer::lex_all(
   self : InternalMetaDataLexer,
 ) -> Array[CoreMetaLexToken] {
@@ -315,7 +324,7 @@ pub fn InternalMetaDataLexer::lex_all(
           index += 1
         }
       }
-      let lexeme = text.substring(start~, end=index)
+      let lexeme = core_meta_lexer_slice(text, start, index)
       tokens.push(
         new_core_meta_lex_token(
           core_meta_lexer_rule_string,
@@ -341,7 +350,7 @@ pub fn InternalMetaDataLexer::lex_all(
             core_meta_lexer_is_id_part(text[index].unsafe_to_char()) {
         index += 1
       }
-      let lexeme = text.substring(start~, end=index)
+      let lexeme = core_meta_lexer_slice(text, start, index)
       match core_meta_lexer_keyword_token_type(lexeme) {
         Some(token_type) =>
           tokens.push(
@@ -370,7 +379,7 @@ pub fn InternalMetaDataLexer::lex_all(
             core_meta_lexer_is_digit(text[index].unsafe_to_char()) {
         index += 1
       }
-      let lexeme = text.substring(start~, end=index)
+      let lexeme = core_meta_lexer_slice(text, start, index)
       tokens.push(
         new_core_meta_lex_token(
           core_meta_lexer_rule_int,
@@ -381,7 +390,7 @@ pub fn InternalMetaDataLexer::lex_all(
       continue
     }
 
-    let symbol = text.substring(start=index, end=index + 1)
+    let symbol = core_meta_lexer_slice(text, index, index + 1)
     core_meta_lexer_push_symbol_token(tokens, symbol)
     index += 1
   }

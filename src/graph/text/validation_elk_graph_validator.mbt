@@ -246,7 +246,9 @@ pub fn ElkGraphValidator::check_property_value(
       }
       if option.get_id() == @core.algorithm.get_id() {
         match
-          @core.layout_meta_data_service_get_algorithm_data_by_suffix(text_value) {
+          @core.layout_meta_data_service_get_algorithm_data_by_suffix(
+            text_value,
+          ) {
           Some(_) => ()
           None =>
             issues.push(
@@ -416,7 +418,9 @@ pub fn ElkGraphValidator::check_unique_names_for_node(
 }
 
 ///|
-fn graph_text_validator_find_parent_edge(section : @graph.ElkEdgeSection) -> @graph.ElkEdge? {
+fn graph_text_validator_find_parent_edge(
+  section : @graph.ElkEdgeSection,
+) -> @graph.ElkEdge? {
   for edge in @graph.all_edges() {
     for candidate in @graph.edge_sections(edge) {
       if candidate == section {
@@ -468,7 +472,8 @@ pub fn ElkGraphValidator::check_edge_container(
   edge : @graph.ElkEdge,
 ) -> Array[GraphTextValidationIssue] {
   ignore(self)
-  if @graph.edge_sources(edge).length() == 0 && @graph.edge_targets(edge).length() == 0 {
+  if @graph.edge_sources(edge).length() == 0 &&
+    @graph.edge_targets(edge).length() == 0 {
     return []
   }
   let issues : Array[GraphTextValidationIssue] = []

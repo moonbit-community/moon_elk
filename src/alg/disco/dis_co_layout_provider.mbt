@@ -10,7 +10,9 @@ pub fn new_dis_co_layout_provider() -> DisCoLayoutProvider {
 }
 
 ///|
-fn dis_co_compaction_strategy(layout_graph : @graph.ElkNode) -> CompactionStrategy {
+fn dis_co_compaction_strategy(
+  layout_graph : @graph.ElkNode,
+) -> CompactionStrategy {
   let value = @graph.node_get_string_property(
     layout_graph, disco_component_compaction_strategy,
   )
@@ -32,7 +34,9 @@ pub fn DisCoLayoutProvider::layout(
     layout_graph, disco_spacing_component_component,
   )
 
-  if @graph.node_has_string_property(layout_graph, disco_component_layout_algorithm) {
+  if @graph.node_has_string_property(
+      layout_graph, disco_component_layout_algorithm,
+    ) {
     let requested_algorithm = @graph.node_get_string_property(
       layout_graph, disco_component_layout_algorithm,
     )

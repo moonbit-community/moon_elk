@@ -10,7 +10,7 @@ fn successor_jitter_apply(
   let mut new_x = x
   let mut new_y = y
 
-  let cost = @math.maximum(x.abs(), y.abs())
+  let cost = @cmp.maximum(x.abs(), y.abs())
 
   if x <= 0 && x == y {
     new_x = 0

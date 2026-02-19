@@ -26,7 +26,9 @@ pub fn new_layout_listener(
     _,
     _,
   ) => (),
-  layout_done_fn? : (LayoutMapping, @core.IElkProgressMonitor) -> Unit = (_, _) => (),
+  layout_done_fn? : (LayoutMapping, @core.IElkProgressMonitor) -> Unit = (_, _) => {
+    ()
+  },
 ) -> ILayoutListener {
   { id: next_layout_listener_id(), layout_about_to_start_fn, layout_done_fn }
 }

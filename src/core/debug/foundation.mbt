@@ -340,7 +340,9 @@ pub fn core_debug_register_graph_file_content_for_test(
 }
 
 ///|
-pub fn core_debug_load_graph_from_registered_file(path : String) -> @graph.ElkNode {
+pub fn core_debug_load_graph_from_registered_file(
+  path : String,
+) -> @graph.ElkNode {
   match core_debug_graph_file_contents_ref.val.get(path) {
     Some(content) => @graph_json.elk_graph_json_for_graph(content).to_elk()
     None => abort("graph file not registered")

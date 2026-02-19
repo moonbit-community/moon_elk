@@ -11,7 +11,9 @@ pub fn new_elk_graph_scope_provider(
 }
 
 ///|
-fn graph_text_scope_find_parent_edge(section : @graph.ElkEdgeSection) -> @graph.ElkEdge? {
+fn graph_text_scope_find_parent_edge(
+  section : @graph.ElkEdgeSection,
+) -> @graph.ElkEdge? {
   for edge in @graph.all_edges() {
     for candidate in @graph.edge_sections(edge) {
       if candidate == section {
@@ -23,7 +25,9 @@ fn graph_text_scope_find_parent_edge(section : @graph.ElkEdgeSection) -> @graph.
 }
 
 ///|
-fn graph_text_scope_for_edge_section(section : @graph.ElkEdgeSection) -> Array[String] {
+fn graph_text_scope_for_edge_section(
+  section : @graph.ElkEdgeSection,
+) -> Array[String] {
   match graph_text_scope_find_parent_edge(section) {
     Some(edge) => {
       let names : Array[String] = []

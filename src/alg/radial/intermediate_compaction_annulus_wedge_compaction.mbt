@@ -58,7 +58,9 @@ pub fn AnnulusWedgeCompaction::compact(
     radial_graph_sorting_strategy(graph),
   )
   self.base.set_compaction_step(radial_graph_compaction_step_size(graph))
-  self.base.set_spacing(@graph.node_get_double_property(graph, @core.spacing_node_node))
+  self.base.set_spacing(
+    @graph.node_get_double_property(graph, @core.spacing_node_node),
+  )
   self.left_contour.clear()
   self.right_contour.clear()
   let successors = radial_get_successors(root)

@@ -1,0 +1,155 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/moon_elk/alg/vertiflex"
+
+import {
+  "Milky2018/moon_elk/core",
+  "Milky2018/moon_elk/graph",
+}
+
+// Values
+pub fn new_outline_node(Double, Double, OutlineNode?) -> OutlineNode
+
+pub fn new_vertiflex_absolute_x_placer_layout_phase() -> @core.ILayoutProcessor[VertiFlexLayoutPhases, Int]
+
+pub fn new_vertiflex_bend_edge_router_layout_phase() -> @core.ILayoutProcessor[VertiFlexLayoutPhases, Int]
+
+pub fn new_vertiflex_layout_provider() -> VertiFlexLayoutProvider
+
+pub fn new_vertiflex_node_y_placer_layout_phase() -> @core.ILayoutProcessor[VertiFlexLayoutPhases, Int]
+
+pub fn new_vertiflex_relative_x_placer_layout_phase() -> @core.ILayoutProcessor[VertiFlexLayoutPhases, Int]
+
+pub fn new_vertiflex_straight_edge_router_layout_phase() -> @core.ILayoutProcessor[VertiFlexLayoutPhases, Int]
+
+pub fn vertiflex_absolute_x_placer_phase_factory(AbsoluteXPlacerStrategy) -> @core.ILayoutProcessorFactory[VertiFlexLayoutPhases, Int]
+
+pub let vertiflex_algorithm_id : String
+
+pub let vertiflex_consider_node_model_order : @graph.IProperty[Bool]
+
+pub fn vertiflex_edge_routing_strategy_from_string(String) -> EdgeRoutingStrategy
+
+pub fn vertiflex_edgerouter_phase_factory(EdgerouterStrategy) -> @core.ILayoutProcessorFactory[VertiFlexLayoutPhases, Int]
+
+pub fn vertiflex_find_root(Int) -> Int?
+
+pub fn vertiflex_internal_child_of_edge(Int) -> Int
+
+pub fn vertiflex_internal_edge_bend_height(Int) -> Double
+
+pub fn vertiflex_internal_left_outline(Int) -> OutlineNode
+
+pub fn vertiflex_internal_max_x(Int) -> Double
+
+pub fn vertiflex_internal_max_y(Int) -> Double
+
+pub fn vertiflex_internal_min_x(Int) -> Double
+
+pub fn vertiflex_internal_min_y(Int) -> Double
+
+pub fn vertiflex_internal_node_margins(Int) -> @core.Spacing
+
+pub fn vertiflex_internal_node_model_order(Int) -> Int
+
+pub fn vertiflex_internal_outline_max_depth(Int) -> Double
+
+pub fn vertiflex_internal_reset() -> Unit
+
+pub fn vertiflex_internal_right_outline(Int) -> OutlineNode
+
+pub fn vertiflex_internal_root_node(Int) -> Int
+
+pub fn vertiflex_internal_set_edge_bend_height(Int, Double) -> Unit
+
+pub fn vertiflex_internal_set_left_outline(Int, OutlineNode) -> Unit
+
+pub fn vertiflex_internal_set_max_x(Int, Double) -> Unit
+
+pub fn vertiflex_internal_set_max_y(Int, Double) -> Unit
+
+pub fn vertiflex_internal_set_min_x(Int, Double) -> Unit
+
+pub fn vertiflex_internal_set_min_y(Int, Double) -> Unit
+
+pub fn vertiflex_internal_set_node_model_order(Int, Int) -> Unit
+
+pub fn vertiflex_internal_set_outline_max_depth(Int, Double) -> Unit
+
+pub fn vertiflex_internal_set_right_outline(Int, OutlineNode) -> Unit
+
+pub fn vertiflex_internal_set_root_node(Int, Int) -> Unit
+
+pub let vertiflex_layer_distance : @graph.IProperty[Double]
+
+pub let vertiflex_layout_phase_descriptor : @core.PhaseDescriptor[VertiFlexLayoutPhases]
+
+pub fn vertiflex_layout_provider_as_layout_provider(VertiFlexLayoutProvider) -> @core.AbstractLayoutProvider
+
+pub let vertiflex_layout_strategy : @graph.IProperty[String]
+
+pub fn vertiflex_node_y_placer_phase_factory(NodeYPlacerStrategy) -> @core.ILayoutProcessorFactory[VertiFlexLayoutPhases, Int]
+
+pub let vertiflex_omit_node_micro_layout : @graph.IProperty[Bool]
+
+pub let vertiflex_option_margins_id : String
+
+pub let vertiflex_padding : @graph.IProperty[String]
+
+pub fn vertiflex_relative_x_placer_phase_factory(RelativeXPlacerStrategy) -> @core.ILayoutProcessorFactory[VertiFlexLayoutPhases, Int]
+
+pub let vertiflex_spacing_node_node : @graph.IProperty[Double]
+
+pub let vertiflex_vertical_constraint : @graph.IProperty[Double]
+
+// Errors
+
+// Types and methods
+pub enum AbsoluteXPlacerStrategy {
+  ABSOLUTE_XPLACING
+}
+
+pub enum EdgeRoutingStrategy {
+  STRAIGHT
+  BEND
+}
+
+pub enum EdgerouterStrategy {
+  DIRECT_ROUTING
+  BEND_ROUTING
+}
+
+pub enum NodeYPlacerStrategy {
+  SIMPLE_Y_PLACING
+}
+
+pub struct OutlineNode {
+  relative_x : Double
+  absolute_y : Double
+  mut next : OutlineNode?
+}
+pub fn OutlineNode::is_last(Self) -> Bool
+pub fn OutlineNode::print_full_outline(Self) -> Unit
+pub fn OutlineNode::to_string(Self) -> String
+
+pub enum RelativeXPlacerStrategy {
+  SIMPLE_X_PLACING
+}
+
+pub enum VertiFlexLayoutPhases {
+  P1_NODE_Y_PLACEMENT
+  P2_NODE_RELATIVE_PLACEMENT
+  P3_NODE_ABSOLUTE_PLACEMENT
+  P4_EDGE_ROUTING
+}
+
+pub struct VertiFlexLayoutProvider {
+  algorithm_assembler : @core.AlgorithmAssembler[VertiFlexLayoutPhases, Int]
+  mut node_node_spacing : Double
+}
+pub fn VertiFlexLayoutProvider::assemble_algorithm(Self, Int) -> Array[@core.ILayoutProcessor[VertiFlexLayoutPhases, Int]]
+pub fn VertiFlexLayoutProvider::layout(Self, Int, @core.IElkProgressMonitor) -> Unit
+
+// Type aliases
+
+// Traits
+

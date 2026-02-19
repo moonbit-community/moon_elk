@@ -1,5 +1,7 @@
 ///|
-fn json_meta_data_create_common(data : @core.ILayoutMetaData) -> Map[String, Json] {
+fn json_meta_data_create_common(
+  data : @core.ILayoutMetaData,
+) -> Map[String, Json] {
   let adapter = new_json_adapter()
   let json_obj = adapter.new_json_object()
   adapter.add_json_obj_string(json_obj, "id", data.get_id())
@@ -74,7 +76,9 @@ pub fn layout_category_data_to_json(lcd : @core.LayoutCategoryData) -> Json {
 ///|
 pub fn layout_option_data_to_json(lod : @core.LayoutOptionData) -> Json {
   let adapter = new_json_adapter()
-  let json_obj = json_meta_data_create_common(@core.layout_meta_data_for_option(lod))
+  let json_obj = json_meta_data_create_common(
+    @core.layout_meta_data_for_option(lod),
+  )
   if !lod.get_group().is_empty() {
     adapter.add_json_obj_string(json_obj, "group", lod.get_group())
   }

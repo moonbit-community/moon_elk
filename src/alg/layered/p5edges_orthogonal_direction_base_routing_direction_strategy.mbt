@@ -6,7 +6,9 @@ pub enum RoutingDirectionStrategyType {
 }
 
 ///|
-let base_routing_direction_strategy_junction_points : @graph.IProperty[@core.KVectorChain] = @graph.new_property(
+let base_routing_direction_strategy_junction_points : @graph.IProperty[
+  @core.KVectorChain,
+] = @graph.new_property(
   "org.eclipse.elk.junctionPoints",
   @core.new_kvector_chain(),
 )

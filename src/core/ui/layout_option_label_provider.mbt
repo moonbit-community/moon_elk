@@ -27,7 +27,8 @@ fn layout_option_label_provider_is_true(value : CoreUiValue) -> Bool {
 fn layout_option_label_provider_algorithm_name(
   algorithm_id : String,
 ) -> String? {
-  match @core.layout_meta_data_service_get_algorithm_data_by_suffix(algorithm_id) {
+  match
+    @core.layout_meta_data_service_get_algorithm_data_by_suffix(algorithm_id) {
     Some(algorithm_data) => {
       let bundle_name = algorithm_data.get_bundle_name()
       if bundle_name.is_empty() {
@@ -45,7 +46,8 @@ fn layout_option_label_provider_is_algorithm_option(
   option_data : @core.LayoutOptionData,
 ) -> Bool {
   let option_id = option_data.get_id()
-  option_id == @core.algorithm.get_id() || option_id == core_ui_disco_layout_alg_id
+  option_id == @core.algorithm.get_id() ||
+  option_id == core_ui_disco_layout_alg_id
 }
 
 ///|

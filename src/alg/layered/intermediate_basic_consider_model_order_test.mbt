@@ -22,7 +22,10 @@ fn basic_consider_model_order_new_node(
 }
 
 ///|
-fn basic_consider_model_order_new_port(node : LNode, side : @core.PortSide) -> LPort {
+fn basic_consider_model_order_new_port(
+  node : LNode,
+  side : @core.PortSide,
+) -> LPort {
   let port = new_l_port()
   port.set_side(side)
   port.set_node(Some(node))

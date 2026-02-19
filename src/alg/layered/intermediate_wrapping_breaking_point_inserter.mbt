@@ -380,7 +380,9 @@ fn breaking_point_inserter_apply_cuts(graph : LGraph, cuts : Array[Int]) -> Int 
         }
 
         let bp_start_marker = new_l_node(graph=Some(graph))
-        bp_start_marker.set_property_string(@core.port_constraints, "FIXED_SIDE")
+        bp_start_marker.set_property_string(
+          @core.port_constraints, "FIXED_SIDE",
+        )
         bp_start_marker.set_layer(Some(bp_layer_1))
         bp_start_marker.set_type(NodeType::BreakingPoint)
         let in_port_bp_1 = new_l_port()

@@ -615,7 +615,10 @@ fn graph_json_text_parser_parse_edge_layout(
             graph_json_text_parser_last_segment(pending.target_id),
           ) {
           Some(target_section) =>
-            @graph.edge_section_add_outgoing_section(pending.source, target_section)
+            @graph.edge_section_add_outgoing_section(
+              pending.source,
+              target_section,
+            )
           None => ()
         }
     }
@@ -648,7 +651,9 @@ fn graph_json_text_parser_parse_label(
   if start >= tokens.length() || tokens[start].lexeme != "label" {
     return None
   }
-  let label = @graph.create_label(Some(graph_json_text_label_owner_to_parent(owner)))
+  let label = @graph.create_label(
+    Some(graph_json_text_label_owner_to_parent(owner)),
+  )
   let mut index = start + 1
   if index + 1 < tokens.length() &&
     tokens[index].token_type == graph_json_text_lexer_rule_id &&
@@ -881,7 +886,7 @@ fn graph_json_text_parser_parse_edge(
 }
 
 ///|
-fn graph_json_text_parser_parse_node(
+fn _graph_json_text_parser_parse_node(
   tokens : Array[ElkGraphJsonLexToken],
   start : Int,
   parent : @graph.ElkNode,
@@ -942,7 +947,7 @@ fn graph_json_text_parser_parse_node(
       }
       if tokens[index].lexeme == "node" {
         match
-          graph_json_text_parser_parse_node(tokens, index, node, id_to_shape) {
+          _graph_json_text_parser_parse_node(tokens, index, node, id_to_shape) {
           Some((_, next_index)) => {
             index = next_index
             continue

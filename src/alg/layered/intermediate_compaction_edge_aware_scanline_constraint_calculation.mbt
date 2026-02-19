@@ -142,7 +142,10 @@ fn edge_aware_scanline_interval_insert(
 }
 
 ///|
-fn edge_aware_scanline_overlap(n1 : @common.CNode?, n2 : @common.CNode?) -> Bool {
+fn edge_aware_scanline_overlap(
+  n1 : @common.CNode?,
+  n2 : @common.CNode?,
+) -> Bool {
   match (n1, n2) {
     (Some(left), Some(right)) => {
       if left == right {
@@ -150,8 +153,14 @@ fn edge_aware_scanline_overlap(n1 : @common.CNode?, n2 : @common.CNode?) -> Bool
       }
       let left_hitbox = left.hitbox()
       let right_hitbox = right.hitbox()
-      @common.compare_fuzzy_le(left_hitbox.x, right_hitbox.x + right_hitbox.width) &&
-      @common.compare_fuzzy_le(right_hitbox.x, left_hitbox.x + left_hitbox.width)
+      @common.compare_fuzzy_le(
+        left_hitbox.x,
+        right_hitbox.x + right_hitbox.width,
+      ) &&
+      @common.compare_fuzzy_le(
+        right_hitbox.x,
+        left_hitbox.x + left_hitbox.width,
+      )
     }
     _ => false
   }
@@ -216,77 +225,81 @@ fn edge_aware_scanline_sweep(
     index = index + 1
   }
 
-  @common.scanline_execute_single(points, edge_aware_scanline_timestamp_comparator, point => {
-    if point.low {
-      let success = edge_aware_scanline_interval_insert(intervals, point.node)
-      if !success {
-        abort("Invalid hitboxes for scanline constraint calculation.")
-      }
+  @common.scanline_execute_single(
+    points,
+    edge_aware_scanline_timestamp_comparator,
+    point => {
+      if point.low {
+        let success = edge_aware_scanline_interval_insert(intervals, point.node)
+        if !success {
+          abort("Invalid hitboxes for scanline constraint calculation.")
+        }
 
-      ignore(
-        edge_aware_scanline_overlap(
-          Some(point.node),
-          edge_aware_scanline_interval_floor(intervals, point.node),
-        ),
-      )
-      ignore(
-        edge_aware_scanline_overlap(
-          Some(point.node),
-          edge_aware_scanline_interval_ceiling(intervals, point.node),
-        ),
-      )
+        ignore(
+          edge_aware_scanline_overlap(
+            Some(point.node),
+            edge_aware_scanline_interval_floor(intervals, point.node),
+          ),
+        )
+        ignore(
+          edge_aware_scanline_overlap(
+            Some(point.node),
+            edge_aware_scanline_interval_ceiling(intervals, point.node),
+          ),
+        )
 
-      candidate[point.node.id()] = edge_aware_scanline_interval_lower(
-        intervals,
-        point.node,
-      )
+        candidate[point.node.id()] = edge_aware_scanline_interval_lower(
+          intervals,
+          point.node,
+        )
 
-      match edge_aware_scanline_interval_higher(intervals, point.node) {
-        Some(right) => candidate[right.id()] = Some(point.node)
-        None => ()
-      }
-    } else {
-      let left = edge_aware_scanline_interval_lower(intervals, point.node)
-      match left {
-        Some(left_node) =>
-          match candidate[point.node.id()] {
-            Some(cand) =>
-              if cand == left_node {
-                match (left_node.group(), point.node.group()) {
-                  (Some(left_group), Some(current_group)) =>
-                    if left_group != current_group {
-                      left_node.add_constraint(point.node)
-                    }
-                  _ => ()
+        match edge_aware_scanline_interval_higher(intervals, point.node) {
+          Some(right) => candidate[right.id()] = Some(point.node)
+          None => ()
+        }
+      } else {
+        let left = edge_aware_scanline_interval_lower(intervals, point.node)
+        match left {
+          Some(left_node) =>
+            match candidate[point.node.id()] {
+              Some(cand) =>
+                if cand == left_node {
+                  match (left_node.group(), point.node.group()) {
+                    (Some(left_group), Some(current_group)) =>
+                      if left_group != current_group {
+                        left_node.add_constraint(point.node)
+                      }
+                    _ => ()
+                  }
                 }
-              }
-            None => ()
-          }
-        None => ()
-      }
+              None => ()
+            }
+          None => ()
+        }
 
-      let right = edge_aware_scanline_interval_higher(intervals, point.node)
-      match right {
-        Some(right_node) =>
-          match candidate[right_node.id()] {
-            Some(cand) =>
-              if cand == point.node {
-                match (right_node.group(), point.node.group()) {
-                  (Some(right_group), Some(current_group)) =>
-                    if right_group != current_group {
-                      point.node.add_constraint(right_node)
-                    }
-                  _ => ()
+        let right = edge_aware_scanline_interval_higher(intervals, point.node)
+        match right {
+          Some(right_node) =>
+            match candidate[right_node.id()] {
+              Some(cand) =>
+                if cand == point.node {
+                  match (right_node.group(), point.node.group()) {
+                    (Some(right_group), Some(current_group)) =>
+                      if right_group != current_group {
+                        point.node.add_constraint(right_node)
+                      }
+                    _ => ()
+                  }
                 }
-              }
-            None => ()
-          }
-        None => ()
-      }
+              None => ()
+            }
+          None => ()
+        }
 
-      ignore(edge_aware_scanline_remove_first(intervals, point.node))
-    }
-  })
+        ignore(edge_aware_scanline_remove_first(intervals, point.node))
+      }
+    },
+  )
 }
 
 ///|
@@ -530,7 +543,9 @@ pub fn new_edge_aware_scanline_constraint_calculation(
   graph : LGraph,
 ) -> @common.IConstraintCalculationAlgorithm {
   let calculation : EdgeAwareScanlineCalculation = {
-    vertical_edge_edge_spacing: graph.get_property_double(@core.spacing_edge_edge),
+    vertical_edge_edge_spacing: graph.get_property_double(
+      @core.spacing_edge_edge,
+    ),
     edge_routing: edge_aware_scanline_parse_edge_routing(
       graph.get_property_string(@core.edge_routing),
     ),

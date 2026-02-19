@@ -179,7 +179,11 @@ fn node_margin_calculator_process_node(
 
       if node
         .get_property_string_array(@core.port_labels_placement)
-        .contains(@core.port_label_placement_to_string(@core.PortLabelPlacement::Outside)) {
+        .contains(
+          @core.port_label_placement_to_string(
+            @core.PortLabelPlacement::Outside,
+          ),
+        ) {
         for label in port.get_labels() {
           let label_size = label.get_size()
           required_port_label_space.x += label_size.x + label_spacing

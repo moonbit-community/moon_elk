@@ -1,0 +1,152 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/moon_elk/core/debug/grandom/ide"
+
+import {
+  "Milky2018/moon_elk/core/debug/grandom",
+}
+
+// Values
+pub let core_debug_grandom_ide_content_assist_lexer_binding : String
+
+pub let core_debug_grandom_ide_grammar_name : String
+
+pub let core_debug_grandom_ide_language_name : String
+
+pub let core_debug_grandom_ide_rule_any_other : Int
+
+pub let core_debug_grandom_ide_rule_id : Int
+
+pub let core_debug_grandom_ide_rule_int : Int
+
+pub let core_debug_grandom_ide_rule_ml_comment : Int
+
+pub let core_debug_grandom_ide_rule_sl_comment : Int
+
+pub let core_debug_grandom_ide_rule_string : Int
+
+pub let core_debug_grandom_ide_rule_ws : Int
+
+pub let core_debug_grandom_ide_token_names : Array[String]
+
+pub fn new_abstract_core_debug_grandom_ide_module() -> AbstractCoreDebugGRandomIdeModule
+
+pub fn new_core_debug_grandom_ide_content_assist_lexer_binding(String, String) -> CoreDebugGRandomIdeContentAssistLexerBinding
+
+pub fn new_core_debug_grandom_ide_grammar_access() -> CoreDebugGRandomIdeGrammarAccess
+
+pub fn new_core_debug_grandom_ide_injector(@grandom.CoreDebugGRandomRuntimeModule, CoreDebugGRandomIdeModule) -> CoreDebugGRandomIdeInjector
+
+pub fn new_core_debug_grandom_ide_lex_token(Int, String, String) -> CoreDebugGRandomIdeLexToken
+
+pub fn new_core_debug_grandom_ide_module() -> CoreDebugGRandomIdeModule
+
+pub fn new_core_debug_grandom_ide_setup() -> CoreDebugGRandomIdeSetup
+
+pub fn new_core_debug_grandom_name_mappings(CoreDebugGRandomIdeGrammarAccess) -> CoreDebugGRandomNameMappings
+
+pub fn new_core_debug_grandom_parser(grammar_access? : CoreDebugGRandomIdeGrammarAccess) -> CoreDebugGRandomParser
+
+pub fn new_internal_core_debug_grandom_lexer(String) -> InternalCoreDebugGRandomLexer
+
+pub fn new_internal_core_debug_grandom_parser(Array[CoreDebugGRandomIdeLexToken], grammar_access? : CoreDebugGRandomIdeGrammarAccess) -> InternalCoreDebugGRandomParser
+
+pub fn new_partial_core_debug_grandom_content_assist_parser() -> PartialCoreDebugGRandomContentAssistParser
+
+// Errors
+
+// Types and methods
+pub(all) struct AbstractCoreDebugGRandomIdeModule {
+  unit : Unit
+}
+pub fn AbstractCoreDebugGRandomIdeModule::bind_i_content_assist_parser(Self) -> String
+pub fn AbstractCoreDebugGRandomIdeModule::bind_i_prefix_matcher(Self) -> String
+pub fn AbstractCoreDebugGRandomIdeModule::bind_i_proposal_conflict_helper(Self) -> String
+pub fn AbstractCoreDebugGRandomIdeModule::bind_i_rename_service(Self) -> String
+pub fn AbstractCoreDebugGRandomIdeModule::bind_i_rename_strategy2(Self) -> String
+pub fn AbstractCoreDebugGRandomIdeModule::configure_content_assist_lexer(Self) -> CoreDebugGRandomIdeContentAssistLexerBinding
+
+pub(all) struct CoreDebugGRandomIdeContentAssistLexerBinding {
+  binding_name : String
+  lexer_class_name : String
+}
+
+pub(all) struct CoreDebugGRandomIdeGrammarAccess {
+  grammar : String
+  rules : Map[String, String]
+}
+pub fn CoreDebugGRandomIdeGrammarAccess::get_grammar(Self) -> String
+pub fn CoreDebugGRandomIdeGrammarAccess::get_rule(Self, String) -> String?
+pub fn CoreDebugGRandomIdeGrammarAccess::get_rule_names(Self) -> Array[String]
+
+pub(all) struct CoreDebugGRandomIdeInjector {
+  runtime_module : @grandom.CoreDebugGRandomRuntimeModule
+  ide_module : CoreDebugGRandomIdeModule
+}
+pub fn CoreDebugGRandomIdeInjector::get_ide_module(Self) -> CoreDebugGRandomIdeModule
+pub fn CoreDebugGRandomIdeInjector::get_runtime_module(Self) -> @grandom.CoreDebugGRandomRuntimeModule
+
+pub(all) struct CoreDebugGRandomIdeLexToken {
+  token_type : Int
+  token_name : String
+  lexeme : String
+}
+
+pub(all) struct CoreDebugGRandomIdeModule {
+  base : AbstractCoreDebugGRandomIdeModule
+}
+pub fn CoreDebugGRandomIdeModule::get_base(Self) -> AbstractCoreDebugGRandomIdeModule
+
+pub(all) struct CoreDebugGRandomIdeSetup {
+  unit : Unit
+}
+pub fn CoreDebugGRandomIdeSetup::create_injector(Self) -> CoreDebugGRandomIdeInjector
+pub fn CoreDebugGRandomIdeSetup::create_injector_and_do_emf_registration(Self) -> CoreDebugGRandomIdeInjector
+
+pub(all) struct CoreDebugGRandomNameMappings {
+  mappings : Map[String, String]
+}
+pub fn CoreDebugGRandomNameMappings::get_rule_name(Self, String) -> String?
+
+pub(all) struct CoreDebugGRandomParser {
+  mut name_mappings : CoreDebugGRandomNameMappings
+  mut grammar_access : CoreDebugGRandomIdeGrammarAccess
+  mut initial_hidden_tokens : Array[String]
+}
+pub fn CoreDebugGRandomParser::create_parser(Self, Array[CoreDebugGRandomIdeLexToken]) -> InternalCoreDebugGRandomParser
+pub fn CoreDebugGRandomParser::get_grammar_access(Self) -> CoreDebugGRandomIdeGrammarAccess
+pub fn CoreDebugGRandomParser::get_initial_hidden_tokens(Self) -> Array[String]
+pub fn CoreDebugGRandomParser::get_name_mappings(Self) -> CoreDebugGRandomNameMappings
+pub fn CoreDebugGRandomParser::get_rule_name(Self, String) -> String?
+pub fn CoreDebugGRandomParser::parse(Self, String) -> @grandom.CoreDebugGRandomRandGraph
+pub fn CoreDebugGRandomParser::set_grammar_access(Self, CoreDebugGRandomIdeGrammarAccess) -> Unit
+pub fn CoreDebugGRandomParser::set_initial_hidden_tokens(Self, Array[String]) -> Unit
+pub fn CoreDebugGRandomParser::set_name_mappings(Self, CoreDebugGRandomNameMappings) -> Unit
+
+pub(all) struct InternalCoreDebugGRandomLexer {
+  input : String
+}
+pub fn InternalCoreDebugGRandomLexer::get_grammar_file_name(Self) -> String
+pub fn InternalCoreDebugGRandomLexer::get_token_names(Self) -> Array[String]
+pub fn InternalCoreDebugGRandomLexer::lex_all(Self) -> Array[CoreDebugGRandomIdeLexToken]
+
+pub(all) struct InternalCoreDebugGRandomParser {
+  tokens : Array[CoreDebugGRandomIdeLexToken]
+  grammar_access : CoreDebugGRandomIdeGrammarAccess
+}
+pub fn InternalCoreDebugGRandomParser::entry_rule_rand_graph(Self) -> @grandom.CoreDebugGRandomRandGraph
+pub fn InternalCoreDebugGRandomParser::get_first_rule_name(Self) -> String
+pub fn InternalCoreDebugGRandomParser::get_grammar_access(Self) -> CoreDebugGRandomIdeGrammarAccess
+pub fn InternalCoreDebugGRandomParser::get_grammar_file_name(Self) -> String
+pub fn InternalCoreDebugGRandomParser::get_token_names(Self) -> Array[String]
+pub fn InternalCoreDebugGRandomParser::rule_rand_graph(Self) -> @grandom.CoreDebugGRandomRandGraph
+
+pub(all) struct PartialCoreDebugGRandomContentAssistParser {
+  mut rule : String?
+}
+pub fn PartialCoreDebugGRandomContentAssistParser::get_follow_elements(Self, CoreDebugGRandomParser) -> Array[String]
+pub fn PartialCoreDebugGRandomContentAssistParser::initialize_for(Self, String?) -> Unit
+
+// Type aliases
+
+// Traits
+

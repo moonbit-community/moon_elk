@@ -96,7 +96,11 @@ pub fn new_radial_calculate_graph_size_layout_processor() -> @core.ILayoutProces
     }
 
     for node in children {
-      @graph.node_set_location(node, @graph.node_x(node) - offset.x, @graph.node_y(node) - offset.y)
+      @graph.node_set_location(
+        node,
+        @graph.node_x(node) - offset.x,
+        @graph.node_y(node) - offset.y,
+      )
     }
 
     if !@graph.node_get_bool_property(graph, @core.node_size_fixed_graph_size) {

@@ -19,12 +19,16 @@ struct Issue680TestGraph {
 ///|
 fn issue680_test_graph() -> Issue680TestGraph {
   let graph = create_graph()
-  @graph.node_set_string_property(graph, @core.algorithm, "org.eclipse.elk.layered")
+  @graph.node_set_string_property(
+    graph, @core.algorithm, "org.eclipse.elk.layered",
+  )
   @graph.node_set_string_property(graph, @core.edge_routing, "ORTHOGONAL")
   @graph.node_set_string_property(graph, @core.direction, "DOWN")
 
   let parent = @graph.create_node(Some(graph))
-  @graph.node_set_string_property(parent, @core.algorithm, "org.eclipse.elk.layered")
+  @graph.node_set_string_property(
+    parent, @core.algorithm, "org.eclipse.elk.layered",
+  )
   @graph.node_set_string_property(parent, @core.edge_routing, "ORTHOGONAL")
   @graph.node_set_string_property(parent, @core.direction, "DOWN")
 
@@ -85,9 +89,18 @@ test "Issue680 parent and child Y positions stay stable" {
   let parent_h = @graph.node_height(test_graph.parent)
   let graph_w = @graph.node_width(test_graph.graph)
   let graph_h = @graph.node_height(test_graph.graph)
-  let graph_padding = @graph.node_get_string_property(test_graph.graph, @core.padding)
-  let parent_padding = @graph.node_get_string_property(test_graph.parent, @core.padding)
-  let child_padding = @graph.node_get_string_property(test_graph.child, @core.padding)
+  let graph_padding = @graph.node_get_string_property(
+    test_graph.graph,
+    @core.padding,
+  )
+  let parent_padding = @graph.node_get_string_property(
+    test_graph.parent,
+    @core.padding,
+  )
+  let child_padding = @graph.node_get_string_property(
+    test_graph.child,
+    @core.padding,
+  )
   let p1_xy = "(\{port_x(test_graph.p1)},\{port_y(test_graph.p1)})"
   let p2_xy = "(\{port_x(test_graph.p2)},\{port_y(test_graph.p2)})"
   let cp1_xy = "(\{port_x(test_graph.child_p1)},\{port_y(test_graph.child_p1)})"

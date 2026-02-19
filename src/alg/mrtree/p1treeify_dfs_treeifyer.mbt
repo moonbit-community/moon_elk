@@ -4,7 +4,9 @@ fn mrtree_dfs_treeifyer_configuration(
 ) -> @core.LayoutProcessorConfiguration[MrtreeTreeLayoutPhases, MrtreeGraph]? {
   ignore(graph)
   Some(
-    @core.layout_processor_configuration_create(mrtree_tree_layout_phase_descriptor).add_after(
+    @core.layout_processor_configuration_create(
+      mrtree_tree_layout_phase_descriptor,
+    ).add_after(
       MrtreeTreeLayoutPhases::P3NodePlacement,
       mrtree_intermediate_processor_factory(
         MrtreeIntermediateProcessorStrategy::DetreeifyingProc,

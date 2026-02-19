@@ -77,7 +77,10 @@ pub fn DCElement::get_bounds(self : DCElement) -> @core.ElkRectangle {
 }
 
 ///|
-pub fn DCElement::set_parent_coords(self : DCElement, coords : @core.KVector) -> Unit {
+pub fn DCElement::set_parent_coords(
+  self : DCElement,
+  coords : @core.KVector,
+) -> Unit {
   self.parent_coords = Some(coords)
 }
 
@@ -95,6 +98,10 @@ pub fn DCElement::set_component(
 }
 
 ///|
-pub fn DCElement::intersects(self : DCElement, rect : @core.ElkRectangle) -> Bool {
-  @core.intersects_rect_path(rect, self.shape) || @core.contains_rect_path(rect, self.shape)
+pub fn DCElement::intersects(
+  self : DCElement,
+  rect : @core.ElkRectangle,
+) -> Bool {
+  @core.intersects_rect_path(rect, self.shape) ||
+  @core.contains_rect_path(rect, self.shape)
 }

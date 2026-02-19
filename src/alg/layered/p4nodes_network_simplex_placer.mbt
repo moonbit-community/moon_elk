@@ -35,7 +35,7 @@ priv struct NetworkSimplexNodeRep {
 
 ///|
 priv struct NetworkSimplexEdgeRep {
-  origin : LEdge
+  _origin : LEdge
   left : @common.NEdge
   right : @common.NEdge
 }
@@ -660,7 +660,7 @@ fn network_simplex_transform_edge(
     .source(dummy)
     .target(network_simplex_require_port_rep(state, target_port))
     .create()
-  state.edge_reps[edge.get_id()] = Some({ origin: edge, left, right })
+  state.edge_reps[edge.get_id()] = Some({ _origin: edge, left, right })
 }
 
 ///|
@@ -1515,7 +1515,9 @@ pub fn new_network_simplex_placer_layout_phase() -> @core.ILayoutProcessor[
       match property {
         GraphProperties::ExternalPorts =>
           return Some(
-            @core.layout_processor_configuration_create(layered_phase_descriptor).add_before(
+            @core.layout_processor_configuration_create(
+              layered_phase_descriptor,
+            ).add_before(
               LayeredPhases::P5EdgeRouting,
               layered_intermediate_processor_factory(
                 IntermediateProcessorStrategy::HierarchicalPortPositionProcessor,

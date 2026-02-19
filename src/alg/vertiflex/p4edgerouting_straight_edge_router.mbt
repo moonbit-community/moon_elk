@@ -1,5 +1,7 @@
 ///|
-fn vertiflex_first_or_create_edge_section(edge : @graph.ElkEdge) -> @graph.ElkEdgeSection {
+fn vertiflex_first_or_create_edge_section(
+  edge : @graph.ElkEdge,
+) -> @graph.ElkEdgeSection {
   let sections = @graph.edge_sections(edge)
   if sections.is_empty() {
     @graph.create_edge_section(edge)

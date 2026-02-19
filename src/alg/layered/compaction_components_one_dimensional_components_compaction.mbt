@@ -47,7 +47,9 @@ fn[T : Eq] components_compaction_array_remove_first(
 }
 
 ///|
-fn components_compaction_direction_is_horizontal(direction : @core.Direction) -> Bool {
+fn components_compaction_direction_is_horizontal(
+  direction : @core.Direction,
+) -> Bool {
   match direction {
     Leftward => true
     Rightward => true
@@ -56,7 +58,9 @@ fn components_compaction_direction_is_horizontal(direction : @core.Direction) ->
 }
 
 ///|
-fn components_compaction_direction_is_vertical(direction : @core.Direction) -> Bool {
+fn components_compaction_direction_is_vertical(
+  direction : @core.Direction,
+) -> Bool {
   match direction {
     Upward => true
     Downward => true
@@ -65,7 +69,7 @@ fn components_compaction_direction_is_vertical(direction : @core.Direction) -> B
 }
 
 ///|
-fn components_compaction_axis_directions(
+fn _components_compaction_axis_directions(
   axis : ComponentsCompactionAxis,
 ) -> Array[@core.Direction] {
   match axis {
@@ -86,7 +90,9 @@ fn components_compaction_direction_in_axis(
 }
 
 ///|
-fn components_compaction_reset_group_deltas(groups : Array[@common.CGroup]) -> Unit {
+fn components_compaction_reset_group_deltas(
+  groups : Array[@common.CGroup],
+) -> Unit {
   for group in groups {
     let current_delta = group.delta()
     if current_delta != 0.0 {
@@ -185,7 +191,12 @@ fn[N, E] OneDimensionalComponentsCompaction::remove_external_edge_representation
 ) -> Unit {
   for external_edge in external_edges {
     let (group, node) = external_edge
-    ignore(components_compaction_array_remove_first(self.compaction_graph.c_nodes, node))
+    ignore(
+      components_compaction_array_remove_first(
+        self.compaction_graph.c_nodes,
+        node,
+      ),
+    )
     ignore(group.remove_cnode(node))
   }
 }
@@ -228,11 +239,19 @@ fn[N, E] OneDimensionalComponentsCompaction::remove_placeholders(
     if !components_compaction_direction_in_axis(direction, axis) {
       continue
     }
-    ignore(components_compaction_array_remove_first(self.compaction_graph.c_nodes, node))
+    ignore(
+      components_compaction_array_remove_first(
+        self.compaction_graph.c_nodes,
+        node,
+      ),
+    )
     match node.group() {
       Some(group) =>
         ignore(
-          components_compaction_array_remove_first(self.compaction_graph.c_groups, group),
+          components_compaction_array_remove_first(
+            self.compaction_graph.c_groups,
+            group,
+          ),
         )
       None => ()
     }

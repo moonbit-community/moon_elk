@@ -60,7 +60,9 @@ test "LayeredSimpleRowGraphPlacer places components into one row" {
   )
 
   let first = layered_components_test_new_graph(1, 30.0, 10.0, @core.sides_none)
-  let second = layered_components_test_new_graph(2, 30.0, 10.0, @core.sides_none)
+  let second = layered_components_test_new_graph(
+    2, 30.0, 10.0, @core.sides_none,
+  )
   let third = layered_components_test_new_graph(3, 30.0, 10.0, @core.sides_none)
 
   new_layered_simple_row_graph_placer().combine([first, second, third], target)
@@ -79,7 +81,9 @@ test "LayeredSimpleRowGraphPlacer places components into one row" {
 test "LayeredModelOrderRowGraphPlacer starts a new row for west connections" {
   let target = new_l_graph()
   let first = layered_components_test_new_graph(1, 20.0, 10.0, @core.sides_none)
-  let second = layered_components_test_new_graph(2, 20.0, 10.0, @core.sides_north)
+  let second = layered_components_test_new_graph(
+    2, 20.0, 10.0, @core.sides_north,
+  )
   let third = layered_components_test_new_graph(3, 20.0, 10.0, @core.sides_west)
 
   new_layered_model_order_row_graph_placer().combine(
@@ -100,7 +104,9 @@ test "LayeredModelOrderRowGraphPlacer starts a new row for west connections" {
 ///|
 test "LayeredComponentGroupGraphPlacer places incompatible groups diagonally" {
   let target = new_l_graph()
-  let first = layered_components_test_new_graph(1, 20.0, 10.0, @core.sides_east_west)
+  let first = layered_components_test_new_graph(
+    1, 20.0, 10.0, @core.sides_east_west,
+  )
   let second = layered_components_test_new_graph(
     2, 20.0, 10.0, @core.sides_north_south,
   )
@@ -117,8 +123,13 @@ test "LayeredComponentGroupGraphPlacer places incompatible groups diagonally" {
 test "LayeredComponentGroupModelOrderGraphPlacer honors horizontal model-order blocking" {
   let target = new_l_graph()
   let first = layered_components_test_new_graph(1, 20.0, 10.0, @core.sides_none)
-  let second = layered_components_test_new_graph(2, 20.0, 10.0, @core.sides_north)
-  first.set_property_direction(layered_components_direction, @core.Direction::Rightward)
+  let second = layered_components_test_new_graph(
+    2, 20.0, 10.0, @core.sides_north,
+  )
+  first.set_property_direction(
+    layered_components_direction,
+    @core.Direction::Rightward,
+  )
 
   new_layered_component_group_model_order_graph_placer().combine(
     [first, second],
@@ -145,7 +156,9 @@ test "LayeredComponentsProcessor picks model-order row placer for model-order st
 
   let target = new_l_graph()
   let first = layered_components_test_new_graph(1, 20.0, 10.0, @core.sides_none)
-  let second = layered_components_test_new_graph(2, 20.0, 10.0, @core.sides_west)
+  let second = layered_components_test_new_graph(
+    2, 20.0, 10.0, @core.sides_west,
+  )
   processor.combine([first, second], target)
 
   assert_true(second.get_offset().y > first.get_offset().y)

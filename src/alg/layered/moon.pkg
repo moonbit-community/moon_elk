@@ -16,7 +16,3 @@ import {
 import {
   "Milky2018/moon_elk/alg/test",
 } for "test"
-
-import {
-  "Milky2018/moon_elk/alg/test",
-} for "wbtest"

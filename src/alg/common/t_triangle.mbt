@@ -10,7 +10,11 @@ fn fuzzy_compare(left : Double, right : Double, fuzziness : Double) -> Int {
 }
 
 ///|
-fn calculate_circumcenter(a : @core.KVector, b : @core.KVector, c : @core.KVector) -> @core.KVector {
+fn calculate_circumcenter(
+  a : @core.KVector,
+  b : @core.KVector,
+  c : @core.KVector,
+) -> @core.KVector {
   let ab = b.clone().sub(a)
   let ac = c.clone().sub(a)
   let bc = c.clone().sub(b)
@@ -33,7 +37,11 @@ pub struct TTriangle {
 }
 
 ///|
-pub fn new_ttriangle(a : @core.KVector, b : @core.KVector, c : @core.KVector) -> TTriangle {
+pub fn new_ttriangle(
+  a : @core.KVector,
+  b : @core.KVector,
+  c : @core.KVector,
+) -> TTriangle {
   {
     a,
     b,
@@ -79,7 +87,10 @@ pub fn TTriangle::contains_edge(self : TTriangle, t_edge : TEdge) -> Bool {
 }
 
 ///|
-pub fn TTriangle::contains_vertex(self : TTriangle, vertex : @core.KVector) -> Bool {
+pub fn TTriangle::contains_vertex(
+  self : TTriangle,
+  vertex : @core.KVector,
+) -> Bool {
   vertex.equals(self.vertices[0]) ||
   vertex.equals(self.vertices[1]) ||
   vertex.equals(self.vertices[2])

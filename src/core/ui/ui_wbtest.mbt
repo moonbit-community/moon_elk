@@ -92,7 +92,9 @@ test "core.ui messages and plugin registry behavior" {
 ///|
 test "ActiveEditorSupportedTester delegates to connector service" {
   let service = core_ui_test_reset_environment()
-  let connector = @service.new_diagram_layout_connector(id="core-ui-test-connector")
+  let connector = @service.new_diagram_layout_connector(
+    id="core-ui-test-connector",
+  )
   service.register_setup(core_ui_test_make_setup(7, connector), priority=1)
 
   let tester = new_active_editor_supported_tester()
@@ -178,9 +180,11 @@ test "LayoutOptionLabelProvider and handler use expected UI semantics" {
     content="Layered (ELK)",
   )
 
-  let bool_option = @core.new_layout_option_data("opt.bool", option_type=BoolType, choices=[
-    "false", "true",
-  ])
+  let bool_option = @core.new_layout_option_data(
+    "opt.bool",
+    option_type=BoolType,
+    choices=["false", "true"],
+  )
   let bool_provider = new_layout_option_label_provider(bool_option)
   inspect(
     match bool_provider.get_image(CoreUiIntValue(0)) {
@@ -190,9 +194,11 @@ test "LayoutOptionLabelProvider and handler use expected UI semantics" {
     content="icons/obj16/prop_false.gif",
   )
 
-  let enum_like = @core.new_layout_option_data("opt.enum", option_type=StringType, choices=[
-    "A", "B",
-  ])
+  let enum_like = @core.new_layout_option_data(
+    "opt.enum",
+    option_type=StringType,
+    choices=["A", "B"],
+  )
   let enum_provider = new_layout_option_label_provider(enum_like)
   inspect(enum_provider.get_text(CoreUiIntValue(1)), content="B")
 
@@ -398,7 +404,9 @@ test "ElkUiUtil and property source stack perform translations and validation" {
 
   let provider = new_layout_property_source_provider(
     configuration_store_provider=Some(
-      @service.new_layout_configuration_store_provider((_wb, _obj) => Some(config)),
+      @service.new_layout_configuration_store_provider((_wb, _obj) => {
+        Some(config)
+      }),
     ),
     config_manager=manager,
   )
@@ -433,9 +441,10 @@ test "Validating property sheet entry builds overlay image and error description
   let numeric_options : Map[String, String] = {}
   numeric_options[@core.algorithm.get_id()] = algorithm_data.get_id()
   numeric_options["opt.numeric"] = "2.0"
-  let config = @service.new_simple_layout_configuration_store(options=numeric_options, option_targets=[
-    @core.NodesTarget,
-  ])
+  let config = @service.new_simple_layout_configuration_store(
+    options=numeric_options,
+    option_targets=[@core.NodesTarget],
+  )
   let source = new_layout_property_source(
     config,
     @service.new_layout_configuration_manager(),

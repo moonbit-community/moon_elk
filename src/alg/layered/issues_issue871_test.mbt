@@ -6,7 +6,10 @@ fn issue871_test_setup_plain_java_layout() -> Unit {
 }
 
 ///|
-fn issue871_connect_nodes(source : @graph.ElkNode, target : @graph.ElkNode) -> @graph.ElkEdge {
+fn issue871_connect_nodes(
+  source : @graph.ElkNode,
+  target : @graph.ElkNode,
+) -> @graph.ElkEdge {
   let edge = create_edge(None)
   edge_add_source(edge, make_node_shape(source))
   edge_add_target(edge, make_node_shape(target))
@@ -27,8 +30,13 @@ fn issue871_add_edge_label(edge : @graph.ElkEdge, text : String) -> Unit {
 }
 
 ///|
-fn issue871_configure_parent(parent : @graph.ElkNode, feedback_edges : Bool) -> Unit {
-  @graph.node_set_string_property(parent, @core.algorithm, "org.eclipse.elk.layered")
+fn issue871_configure_parent(
+  parent : @graph.ElkNode,
+  feedback_edges : Bool,
+) -> Unit {
+  @graph.node_set_string_property(
+    parent, @core.algorithm, "org.eclipse.elk.layered",
+  )
   @graph.node_set_string_property(parent, @core.direction, "RIGHT")
   @graph.node_set_layout_option_string_by_id(
     parent, "org.eclipse.elk.layered.cycleBreaking.strategy", "MODEL_ORDER",
@@ -51,7 +59,9 @@ fn issue871_configure_parent(parent : @graph.ElkNode, feedback_edges : Bool) -> 
   @graph.node_set_double_property(
     parent, layered_options_spacing_node_node_between_layers, 20.0,
   )
-  @graph.node_set_bool_property(parent, layered_options_feedback_edges, feedback_edges)
+  @graph.node_set_bool_property(
+    parent, layered_options_feedback_edges, feedback_edges,
+  )
 }
 
 ///|

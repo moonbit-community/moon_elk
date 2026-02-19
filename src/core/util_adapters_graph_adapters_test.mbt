@@ -6,10 +6,13 @@ test "graph element adapter forwards base accessors and properties" {
   let int_property = @graph.new_property("graph.adapters.test.int", 7)
   let bool_property = @graph.new_property("graph.adapters.test.bool", true)
   let double_property = @graph.new_property("graph.adapters.test.double", 1.5)
-  let string_property = @graph.new_property("graph.adapters.test.string", "value")
-  let string_array_property = @graph.new_property("graph.adapters.test.string-array", [
-    "a", "b",
-  ])
+  let string_property = @graph.new_property(
+    "graph.adapters.test.string", "value",
+  )
+  let string_array_property = @graph.new_property(
+    "graph.adapters.test.string-array",
+    ["a", "b"],
+  )
 
   let adapter = new_graph_element_adapter(
     42,

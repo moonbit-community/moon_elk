@@ -2,10 +2,12 @@
 fn register_foo_algorithm_for_graph_validator_test() -> Unit {
   let algorithm_data = new_layout_algorithm_data(
     "foo.algorithm",
-    validator=Some(node => if @graph.node_identifier(node) == "foo" {
-      [new_graph_issue_node(node, "FOO!", issue_error)]
-    } else {
-      []
+    validator=Some(node => {
+      if @graph.node_identifier(node) == "foo" {
+        [new_graph_issue_node(node, "FOO!", issue_error)]
+      } else {
+        []
+      }
     }),
   )
   layout_meta_data_service_register_algorithm(algorithm_data)

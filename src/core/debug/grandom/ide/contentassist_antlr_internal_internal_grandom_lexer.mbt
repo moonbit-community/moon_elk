@@ -218,6 +218,19 @@ fn core_debug_grandom_ide_lexer_symbol_token_type(symbol : String) -> Int? {
 }
 
 ///|
+fn core_debug_grandom_ide_lexer_slice(
+  text : String,
+  start : Int,
+  end_ : Int,
+) -> String {
+  try text[start:end_] catch {
+    _ => ""
+  } noraise {
+    value => value.to_string()
+  }
+}
+
+///|
 fn core_debug_grandom_ide_lexer_is_word_boundary(
   text : String,
   index : Int,
@@ -249,7 +262,11 @@ fn core_debug_grandom_ide_lexer_match_keyword(
     if start + keyword_length > text.length() {
       continue
     }
-    let candidate = text.substring(start~, end=start + keyword_length)
+    let candidate = core_debug_grandom_ide_lexer_slice(
+      text,
+      start,
+      start + keyword_length,
+    )
     if candidate == keyword &&
       core_debug_grandom_ide_lexer_is_word_boundary(text, start - 1) &&
       core_debug_grandom_ide_lexer_is_word_boundary(
@@ -333,7 +350,7 @@ pub fn InternalCoreDebugGRandomLexer::lex_all(
           index += 1
         }
       }
-      let lexeme = text.substring(start~, end=index)
+      let lexeme = core_debug_grandom_ide_lexer_slice(text, start, index)
       tokens.push(
         new_core_debug_grandom_ide_lex_token(
           core_debug_grandom_ide_rule_string,
@@ -359,7 +376,7 @@ pub fn InternalCoreDebugGRandomLexer::lex_all(
           core_debug_grandom_ide_lexer_token_name(
             core_debug_grandom_ide_rule_int,
           ),
-          text.substring(start~, end=index),
+          core_debug_grandom_ide_lexer_slice(text, start, index),
         ),
       )
       continue
@@ -374,7 +391,7 @@ pub fn InternalCoreDebugGRandomLexer::lex_all(
             ) {
         index += 1
       }
-      let lexeme = text.substring(start~, end=index)
+      let lexeme = core_debug_grandom_ide_lexer_slice(text, start, index)
       tokens.push(
         new_core_debug_grandom_ide_lex_token(
           core_debug_grandom_ide_rule_id,
@@ -387,7 +404,7 @@ pub fn InternalCoreDebugGRandomLexer::lex_all(
       continue
     }
 
-    let symbol = text.substring(start=index, end=index + 1)
+    let symbol = core_debug_grandom_ide_lexer_slice(text, index, index + 1)
     match core_debug_grandom_ide_lexer_symbol_token_type(symbol) {
       Some(token_type) => {
         tokens.push(

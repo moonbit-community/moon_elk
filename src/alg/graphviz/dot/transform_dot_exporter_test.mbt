@@ -203,7 +203,9 @@ test "DotExporter transform basic graph" {
   let source = @graph.create_node(Some(root))
   @graph.node_set_dimensions(source, 72.0, 36.0)
   @graph.node_set_location(source, 10.0, 20.0)
-  let source_label = @graph.create_label(Some(@graph.make_node_label_parent(source)))
+  let source_label = @graph.create_label(
+    Some(@graph.make_node_label_parent(source)),
+  )
   @graph.label_set_text(source_label, "source")
 
   let target = @graph.create_node(Some(root))
@@ -359,7 +361,9 @@ test "DotExporter transfer_layout applies node edge and label geometry" {
   @graph.edge_add_source(edge, @graph.make_node_shape(source))
   @graph.edge_add_target(edge, @graph.make_node_shape(target))
 
-  let center_label = @graph.create_label(Some(@graph.make_edge_label_parent(edge)))
+  let center_label = @graph.create_label(
+    Some(@graph.make_edge_label_parent(edge)),
+  )
   @graph.label_set_text(center_label, "mid")
   @graph.label_set_layout_option_string_by_id(
     center_label, dot_exporter_option_edge_labels_placement, "CENTER",
@@ -445,7 +449,9 @@ test "DotExporter transfer_layout applies node edge and label geometry" {
 
   inspect(
     option_string_or_none(
-      @graph.edge_layout_option_string_value(edge, dot_exporter_option_edge_routing),
+      @graph.edge_layout_option_string_value(
+        edge, dot_exporter_option_edge_routing,
+      ),
     ),
     content="SPLINES",
   )
@@ -461,9 +467,15 @@ test "DotExporter set_edge_labels stacks and formats labels" {
   let edge = @graph.create_edge(Some(root))
   @graph.edge_add_source(edge, @graph.make_node_shape(source))
   @graph.edge_add_target(edge, @graph.make_node_shape(target))
-  @graph.edge_set_layout_option_string_by_id(edge, @core.spacing_edge_label.get_id(), "3")
+  @graph.edge_set_layout_option_string_by_id(
+    edge,
+    @core.spacing_edge_label.get_id(),
+    "3",
+  )
 
-  let center_label = @graph.create_label(Some(@graph.make_edge_label_parent(edge)))
+  let center_label = @graph.create_label(
+    Some(@graph.make_edge_label_parent(edge)),
+  )
   @graph.label_set_text(center_label, "mid")
   @graph.label_set_layout_option_string_by_id(
     center_label, dot_exporter_option_edge_labels_placement, "CENTER",
@@ -475,13 +487,17 @@ test "DotExporter set_edge_labels stacks and formats labels" {
     center_label, dot_exporter_option_font_size, "10",
   )
 
-  let head_label = @graph.create_label(Some(@graph.make_edge_label_parent(edge)))
+  let head_label = @graph.create_label(
+    Some(@graph.make_edge_label_parent(edge)),
+  )
   @graph.label_set_text(head_label, "head")
   @graph.label_set_layout_option_string_by_id(
     head_label, dot_exporter_option_edge_labels_placement, "HEAD",
   )
 
-  let tail_label = @graph.create_label(Some(@graph.make_edge_label_parent(edge)))
+  let tail_label = @graph.create_label(
+    Some(@graph.make_edge_label_parent(edge)),
+  )
   @graph.label_set_text(tail_label, "tail")
   @graph.label_set_layout_option_string_by_id(
     tail_label, dot_exporter_option_edge_labels_placement, "TAIL",

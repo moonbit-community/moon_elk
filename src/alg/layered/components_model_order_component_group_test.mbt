@@ -34,7 +34,9 @@ test "ModelOrderComponentGroup applies additional model-order constraints" {
     true,
   )
   assert_eq(
-    group.add(model_order_component_group_test_generate_graph(@core.sides_north)),
+    group.add(
+      model_order_component_group_test_generate_graph(@core.sides_north),
+    ),
     false,
   )
 

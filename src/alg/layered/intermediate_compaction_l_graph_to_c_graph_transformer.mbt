@@ -50,7 +50,8 @@ fn lgraph_to_cgraph_transformer_edge_routing_equals(
   right : @core.EdgeRouting,
 ) -> Bool {
   match (left, right) {
-    (@core.EdgeRouting::RoutingUndefined, @core.EdgeRouting::RoutingUndefined) => true
+    (@core.EdgeRouting::RoutingUndefined, @core.EdgeRouting::RoutingUndefined) =>
+      true
     (@core.EdgeRouting::Polyline, @core.EdgeRouting::Polyline) => true
     (@core.EdgeRouting::Orthogonal, @core.EdgeRouting::Orthogonal) => true
     (@core.EdgeRouting::Splines, @core.EdgeRouting::Splines) => true
@@ -247,12 +248,24 @@ fn lgraph_to_cgraph_transformer_collect_vertical_segments_orthogonal(
             if first {
               first = false
               if bend2.y < c_hitbox.y {
-                current.ignore_spacing.set_direction(true, @core.Direction::Downward)
+                current.ignore_spacing.set_direction(
+                  true,
+                  @core.Direction::Downward,
+                )
               } else if bend2.y > c_hitbox.y + c_hitbox.height {
-                current.ignore_spacing.set_direction(true, @core.Direction::Upward)
+                current.ignore_spacing.set_direction(
+                  true,
+                  @core.Direction::Upward,
+                )
               } else {
-                current.ignore_spacing.set_direction(true, @core.Direction::Upward)
-                current.ignore_spacing.set_direction(true, @core.Direction::Downward)
+                current.ignore_spacing.set_direction(
+                  true,
+                  @core.Direction::Upward,
+                )
+                current.ignore_spacing.set_direction(
+                  true,
+                  @core.Direction::Downward,
+                )
               }
             }
           }
@@ -273,12 +286,24 @@ fn lgraph_to_cgraph_transformer_collect_vertical_segments_orthogonal(
               Some(target_c_node) => {
                 let target_hitbox = target_c_node.hitbox()
                 if bend1.y < target_hitbox.y {
-                  segment.ignore_spacing.set_direction(true, @core.Direction::Downward)
+                  segment.ignore_spacing.set_direction(
+                    true,
+                    @core.Direction::Downward,
+                  )
                 } else if bend1.y > target_hitbox.y + target_hitbox.height {
-                  segment.ignore_spacing.set_direction(true, @core.Direction::Upward)
+                  segment.ignore_spacing.set_direction(
+                    true,
+                    @core.Direction::Upward,
+                  )
                 } else {
-                  segment.ignore_spacing.set_direction(true, @core.Direction::Upward)
-                  segment.ignore_spacing.set_direction(true, @core.Direction::Downward)
+                  segment.ignore_spacing.set_direction(
+                    true,
+                    @core.Direction::Upward,
+                  )
+                  segment.ignore_spacing.set_direction(
+                    true,
+                    @core.Direction::Downward,
+                  )
                 }
               }
               None => ()

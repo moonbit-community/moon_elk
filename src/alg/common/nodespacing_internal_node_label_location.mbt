@@ -334,7 +334,9 @@ pub fn NodeLabelLocation::is_inside_location(self : NodeLabelLocation) -> Bool {
 }
 
 ///|
-pub fn NodeLabelLocation::outside_side(self : NodeLabelLocation) -> @core.PortSide {
+pub fn NodeLabelLocation::outside_side(
+  self : NodeLabelLocation,
+) -> @core.PortSide {
   match self {
     OutTL | OutTC | OutTR => North
     OutBL | OutBC | OutBR => South

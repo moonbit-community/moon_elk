@@ -27,7 +27,11 @@ pub fn GridElkNode::put(
 }
 
 ///|
-pub fn GridElkNode::get(self : GridElkNode, col : Int, row : Int) -> @graph.ElkNode? {
+pub fn GridElkNode::get(
+  self : GridElkNode,
+  col : Int,
+  row : Int,
+) -> @graph.ElkNode? {
   if col >= self.cols || row >= self.rows {
     abort(
       "The grid has a size of (\{self.cols} x \{self.rows}). The requested index of (\{col} x \{row}) is out of bounds.",
@@ -37,7 +41,10 @@ pub fn GridElkNode::get(self : GridElkNode, col : Int, row : Int) -> @graph.ElkN
 }
 
 ///|
-pub fn GridElkNode::get_row(self : GridElkNode, row : Int) -> Array[@graph.ElkNode?] {
+pub fn GridElkNode::get_row(
+  self : GridElkNode,
+  row : Int,
+) -> Array[@graph.ElkNode?] {
   if row >= self.rows {
     abort(
       "The grid has a size of (\{self.cols} x \{self.rows}). The requested row \{row}) is out of bounds.",

@@ -8,9 +8,11 @@ test "AbstractLayoutProvider forwards lifecycle and layout calls" {
       ignore(monitor)
       laid_out_node.val = node
     },
-    initialize_fn=parameter => initialized.val = match parameter {
-      Some(value) => value
-      None => ""
+    initialize_fn=parameter => {
+      initialized.val = match parameter {
+        Some(value) => value
+        None => ""
+      }
     },
     dispose_fn=() => disposed.val = true,
   )

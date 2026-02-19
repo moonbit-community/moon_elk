@@ -14,7 +14,9 @@ pub fn SporeShrinkTreeLayoutProvider::layout(
   layout_graph : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor,
 ) -> Unit {
-  if @graph.node_has_string_property(layout_graph, spore_underlying_layout_algorithm) {
+  if @graph.node_has_string_property(
+      layout_graph, spore_underlying_layout_algorithm,
+    ) {
     let requested_algorithm = @graph.node_get_string_property(
       layout_graph, spore_underlying_layout_algorithm,
     )

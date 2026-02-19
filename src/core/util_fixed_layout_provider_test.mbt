@@ -7,10 +7,14 @@ test "fixed layout provider applies fixed positions and minimum size" {
   @graph.node_set_layout_option_string_by_id(
     child, "org.eclipse.elk.position", "(20,30)",
   )
-  @graph.node_set_string_set_property(child, node_size_constraints, ["MINIMUM_SIZE"])
+  @graph.node_set_string_set_property(child, node_size_constraints, [
+    "MINIMUM_SIZE",
+  ])
   @graph.node_set_string_property(child, node_size_minimum, "(40,25)")
 
-  let node_label = @graph.create_label(Some(@graph.make_node_label_parent(child)))
+  let node_label = @graph.create_label(
+    Some(@graph.make_node_label_parent(child)),
+  )
   @graph.label_set_dimensions(node_label, 5.0, 4.0)
   @graph.label_set_layout_option_string_by_id(
     node_label, "org.eclipse.elk.position", "(1,2)",
@@ -18,9 +22,13 @@ test "fixed layout provider applies fixed positions and minimum size" {
 
   let port = @graph.create_port(Some(child))
   @graph.port_set_dimensions(port, 6.0, 6.0)
-  @graph.port_set_layout_option_string_by_id(port, "org.eclipse.elk.position", "(3,4)")
+  @graph.port_set_layout_option_string_by_id(
+    port, "org.eclipse.elk.position", "(3,4)",
+  )
 
-  let port_label = @graph.create_label(Some(@graph.make_port_label_parent(port)))
+  let port_label = @graph.create_label(
+    Some(@graph.make_port_label_parent(port)),
+  )
   @graph.label_set_dimensions(port_label, 2.0, 2.0)
   @graph.label_set_layout_option_string_by_id(
     port_label, "org.eclipse.elk.position", "(5,6)",

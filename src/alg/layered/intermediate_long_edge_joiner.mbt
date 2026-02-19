@@ -14,7 +14,10 @@ fn long_edge_joiner_node_type_equals(left : NodeType, right : NodeType) -> Bool 
 }
 
 ///|
-fn long_edge_joiner_port_side_equals(left : @core.PortSide, right : @core.PortSide) -> Bool {
+fn long_edge_joiner_port_side_equals(
+  left : @core.PortSide,
+  right : @core.PortSide,
+) -> Bool {
   match (left, right) {
     (@core.PortSide::North, @core.PortSide::North) => true
     (@core.PortSide::East, @core.PortSide::East) => true
@@ -26,7 +29,7 @@ fn long_edge_joiner_port_side_equals(left : @core.PortSide, right : @core.PortSi
 }
 
 ///|
-fn long_edge_joiner_require_source(edge : LEdge) -> LPort {
+fn _long_edge_joiner_require_source(edge : LEdge) -> LPort {
   match edge.get_source() {
     Some(value) => value
     None => abort("edge has no source")
@@ -130,7 +133,9 @@ pub fn long_edge_joiner_join_at(
 
     let surviving_bend_points = surviving_edge.get_bend_points()
     if add_unnecessary_bendpoints {
-      surviving_bend_points.add_vector(@core.new_kvector_copy(unnecessary_bendpoint))
+      surviving_bend_points.add_vector(
+        @core.new_kvector_copy(unnecessary_bendpoint),
+      )
     }
     for bend_point in dropped_edge.get_bend_points().to_array() {
       surviving_bend_points.add_vector(@core.new_kvector_copy(bend_point))
@@ -158,7 +163,9 @@ pub fn long_edge_joiner_join_at(
         layered_options_junction_points,
       )
       for junction_point in dropped_junction_points.to_array() {
-        surviving_junction_points.add_vector(@core.new_kvector_copy(junction_point))
+        surviving_junction_points.add_vector(
+          @core.new_kvector_copy(junction_point),
+        )
       }
     }
 

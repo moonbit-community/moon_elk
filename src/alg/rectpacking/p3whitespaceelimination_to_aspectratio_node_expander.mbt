@@ -25,7 +25,9 @@ fn rectpacking_to_aspectratio_node_expander_process(
 
   if aspect_ratio < desired_aspect_ratio {
     width = height * desired_aspect_ratio
-    @graph.node_set_double_property(graph, rectpacking_internal_drawing_width, width)
+    @graph.node_set_double_property(
+      graph, rectpacking_internal_drawing_width, width,
+    )
   } else {
     additional_height += width / desired_aspect_ratio - height
     @graph.node_set_double_property(
@@ -51,5 +53,7 @@ pub fn new_rectpacking_to_aspectratio_node_expander_layout_phase() -> @core.ILay
   RectPackingLayoutPhases,
   @graph.ElkNode,
 ] {
-  @core.new_layout_phase(rectpacking_to_aspectratio_node_expander_process, _ => None)
+  @core.new_layout_phase(rectpacking_to_aspectratio_node_expander_process, _ => {
+    None
+  })
 }

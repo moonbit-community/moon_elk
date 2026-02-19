@@ -20,7 +20,9 @@ pub let spore_processing_order_tree_construction : @graph.IProperty[String] = @g
 )
 
 ///|
-pub let spore_processing_order_spanning_tree_cost_function : @graph.IProperty[String] = @graph.new_property(
+pub let spore_processing_order_spanning_tree_cost_function : @graph.IProperty[
+  String,
+] = @graph.new_property(
   "org.eclipse.elk.spore.spanningTreeCostFunction", "CIRCLE_UNDERLAP",
 )
 

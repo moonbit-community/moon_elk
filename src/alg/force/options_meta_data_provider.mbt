@@ -27,7 +27,11 @@ fn register_force_algorithm(registry : @core.LayoutMetaDataRegistry) -> Unit {
       description="Force-based @core.algorithm provided by the Eclipse Layout Kernel.",
     ),
   )
-  registry.add_option_support(force_algorithm_id, @core.priority.get_id(), Some("1"))
+  registry.add_option_support(
+    force_algorithm_id,
+    @core.priority.get_id(),
+    Some("1"),
+  )
   registry.add_option_support(
     force_algorithm_id,
     @core.spacing_node_node.get_id(),
@@ -339,6 +343,8 @@ pub fn new_stress_meta_data_provider() -> @core.ILayoutMetaDataProvider {
 }
 
 ///|
-pub fn force_layout_meta_data_providers() -> Array[@core.ILayoutMetaDataProvider] {
+pub fn force_layout_meta_data_providers() -> Array[
+  @core.ILayoutMetaDataProvider,
+] {
   [new_force_meta_data_provider(), new_stress_meta_data_provider()]
 }

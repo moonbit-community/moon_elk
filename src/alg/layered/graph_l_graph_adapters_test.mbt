@@ -266,7 +266,10 @@ test "l graph adapters delegate property accessors to wrapped elements" {
   label.set_property_string(@core.edge_labels_placement, "HEAD")
   let label_adapter = new_l_label_adapter(label)
   assert_true(label_adapter.has_property_string(@core.edge_labels_placement))
-  assert_eq(label_adapter.get_property_string(@core.edge_labels_placement), "HEAD")
+  assert_eq(
+    label_adapter.get_property_string(@core.edge_labels_placement),
+    "HEAD",
+  )
 }
 
 ///|

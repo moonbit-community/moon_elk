@@ -32,7 +32,9 @@ pub fn ElkGraphOutlineTreeProvider::create_children_for_edge(
   ignore(self)
   let children : Array[GraphTextOutlineNode] = []
   for label in @graph.edge_labels(edge) {
-    children.push(new_graph_text_outline_node("label", @graph.label_identifier(label)))
+    children.push(
+      new_graph_text_outline_node("label", @graph.label_identifier(label)),
+    )
   }
   children
 }
@@ -42,7 +44,10 @@ pub fn ElkGraphOutlineTreeProvider::create_outline(
   self : ElkGraphOutlineTreeProvider,
   root : @graph.ElkNode,
 ) -> GraphTextOutlineNode {
-  let root_node = new_graph_text_outline_node("graph", @graph.node_identifier(root))
+  let root_node = new_graph_text_outline_node(
+    "graph",
+    @graph.node_identifier(root),
+  )
   for edge in @graph.node_contained_edges(root) {
     root_node.children.push(
       new_graph_text_outline_node(

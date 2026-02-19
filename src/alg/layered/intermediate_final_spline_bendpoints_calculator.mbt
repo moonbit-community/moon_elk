@@ -8,7 +8,10 @@ pub let final_spline_node_to_straightening_cp_gap : Double = 5.0
 let final_spline_sloppy_center_cp_multiplier : Double = 0.4
 
 ///|
-fn final_spline_port_side_equals(left : @core.PortSide, right : @core.PortSide) -> Bool {
+fn final_spline_port_side_equals(
+  left : @core.PortSide,
+  right : @core.PortSide,
+) -> Bool {
   match (left, right) {
     (North, North) => true
     (East, East) => true
@@ -296,7 +299,7 @@ fn final_spline_compute_sloppy_center_y(
   let mut indegree = 0
   let mut outdegree = 0
 
-  if edge.get_source().is_some() {
+  if edge.get_source() is Some(_) {
     match edge.get_target() {
       Some(target_port) =>
         match target_port.get_node() {
@@ -312,7 +315,7 @@ fn final_spline_compute_sloppy_center_y(
     indegree = 1
   }
 
-  if edge.get_target().is_some() {
+  if edge.get_target() is Some(_) {
     match edge.get_source() {
       Some(source_port) =>
         match source_port.get_node() {
@@ -396,7 +399,9 @@ fn final_spline_calculate_control_points_sloppy(
 
               let neighbor = source_layer.get_nodes()[neighbor_index]
               let box = final_spline_node_to_bounding_box(neighbor)
-              short_cut_source = !(@core.intersects_rect_line(box, v1, approx_center) ||
+              short_cut_source = !(@core.intersects_rect_line(
+                  box, v1, approx_center,
+                ) ||
                 @core.contains_rect_line(box, v1, approx_center))
             }
           }
@@ -428,7 +433,9 @@ fn final_spline_calculate_control_points_sloppy(
 
               let neighbor = target_layer.get_nodes()[neighbor_index]
               let box = final_spline_node_to_bounding_box(neighbor)
-              short_cut_target = !(@core.intersects_rect_line(box, approx_center, v3) ||
+              short_cut_target = !(@core.intersects_rect_line(
+                  box, approx_center, v3,
+                ) ||
                 @core.contains_rect_line(box, approx_center, v3))
             }
           }
@@ -526,11 +533,17 @@ fn final_spline_calculate_bezier_bend_points(
   }
 
   all_control_points.add_last_vector(source_port.get_absolute_anchor())
-  if final_spline_port_side_in_array(source_port.get_side(), @core.sides_north_south) {
+  if final_spline_port_side_in_array(
+      source_port.get_side(),
+      @core.sides_north_south,
+    ) {
     let y = source_port.get_property_double(
       internal_properties_spline_ns_port_y_coord,
     )
-    let north_south_cp = @core.new_kvector_xy(source_port.get_absolute_anchor().x, y)
+    let north_south_cp = @core.new_kvector_xy(
+      source_port.get_absolute_anchor().x,
+      y,
+    )
     all_control_points.add_last_vector(north_south_cp)
   }
 
@@ -565,11 +578,17 @@ fn final_spline_calculate_bezier_bend_points(
   }
 
   let target_port = final_spline_require_edge_target(edge)
-  if final_spline_port_side_in_array(target_port.get_side(), @core.sides_north_south) {
+  if final_spline_port_side_in_array(
+      target_port.get_side(),
+      @core.sides_north_south,
+    ) {
     let y = target_port.get_property_double(
       internal_properties_spline_ns_port_y_coord,
     )
-    let north_south_cp = @core.new_kvector_xy(target_port.get_absolute_anchor().x, y)
+    let north_south_cp = @core.new_kvector_xy(
+      target_port.get_absolute_anchor().x,
+      y,
+    )
     all_control_points.add_last_vector(north_south_cp)
   }
   all_control_points.add_last_vector(target_port.get_absolute_anchor())

@@ -610,8 +610,16 @@ fn gmf_diagram_layout_connector_build_layout_graph_for_root(
       None,
       Some(top_node),
     )
-    @graph.node_set_location(top_node, @graph.node_x(root_node), @graph.node_y(root_node))
-    @graph.node_set_dimensions(top_node, @graph.node_width(root_node), @graph.node_height(root_node))
+    @graph.node_set_location(
+      top_node,
+      @graph.node_x(root_node),
+      @graph.node_y(root_node),
+    )
+    @graph.node_set_dimensions(
+      top_node,
+      @graph.node_width(root_node),
+      @graph.node_height(root_node),
+    )
   } else {
     let root_bounds = gmf_figure_bounds(gmf_edit_part_figure(layout_root_part))
     @graph.node_set_location(
@@ -630,7 +638,9 @@ fn gmf_diagram_layout_connector_build_layout_graph_for_root(
         Some(view) => {
           let label_text = gmf_view_name(view)
           if !label_text.is_empty() {
-            let label = @graph.create_label(Some(@graph.make_node_label_parent(top_node)))
+            let label = @graph.create_label(
+              Some(@graph.make_node_label_parent(top_node)),
+            )
             @graph.label_set_text(label, label_text)
             mapping.label_map[label] = layout_root_part
           }

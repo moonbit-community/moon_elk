@@ -244,7 +244,9 @@ fn inverted_port_processor_process(
         _ => continue
       }
 
-      let constraints_value = if node.has_property_string(@core.port_constraints) {
+      let constraints_value = if node.has_property_string(
+          @core.port_constraints,
+        ) {
         node.get_property_string(@core.port_constraints)
       } else {
         @core.port_constraints.get_default()
@@ -257,7 +259,10 @@ fn inverted_port_processor_process(
       }
 
       for
-        port in node.get_ports_by_type_and_side(PortType::Input, @core.PortSide::East) {
+        port in node.get_ports_by_type_and_side(
+          PortType::Input,
+          @core.PortSide::East,
+        ) {
         for edge in port.get_incoming_edges().copy() {
           inverted_port_processor_create_east_port_side_dummies(
             layered_graph, port, edge, unassigned_nodes,

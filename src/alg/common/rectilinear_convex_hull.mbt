@@ -332,9 +332,9 @@ pub fn RectilinearConvexHull::split_into_rectangles(
     None => left1
   }
   let state = new_hull_rectangle_event_state(min_double(left1, left2))
-  scanline_execute_single(self.hull, right_special_order, point => hull_rectangle_event_handle(
-    state, point,
-  ))
+  scanline_execute_single(self.hull, right_special_order, point => {
+    hull_rectangle_event_handle(state, point)
+  })
   match state.queued {
     Some(rect) => state.rects.push(rect)
     None => ()

@@ -1,5 +1,8 @@
 ///|
-fn individual_find_node_by_id(root : @graph.ElkNode, identifier : String) -> @graph.ElkNode {
+fn individual_find_node_by_id(
+  root : @graph.ElkNode,
+  identifier : String,
+) -> @graph.ElkNode {
   let stack = [root]
   while !stack.is_empty() {
     let node = stack.pop().unwrap()

@@ -127,7 +127,9 @@ pub fn cutting_utils_insert_dummies(
   original_edge : LEdge,
   offset_first_in_layer_dummy : Int,
 ) -> Array[LEdge] {
-  let edge_node_spacing = layered_graph.get_property_double(@core.spacing_edge_node)
+  let edge_node_spacing = layered_graph.get_property_double(
+    @core.spacing_edge_node,
+  )
   let additional_spacing = layered_graph.get_property_double(
     layered_options_wrapping_additional_edge_spacing,
   )
@@ -162,7 +164,9 @@ pub fn cutting_utils_insert_dummies(
       Some(edge),
     )
     dummy_node.set_property_string(@core.port_constraints, "FIXED_POS")
-    dummy_node.set_property_double(@core.spacing_edge_node, dummy_edge_node_spacing)
+    dummy_node.set_property_double(
+      @core.spacing_edge_node, dummy_edge_node_spacing,
+    )
 
     let next_layer = layered_graph.get_layers()[i]
     if i == source_index {

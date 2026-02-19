@@ -34,11 +34,7 @@ fn new_abstract_layout_provider(
   initialize_fn? : (String?) -> Unit = _ => (),
   dispose_fn? : () -> Unit = () => (),
 ) -> @core.AbstractLayoutProvider {
-  @core.new_abstract_layout_provider(
-    layout_fn,
-    initialize_fn=initialize_fn,
-    dispose_fn=dispose_fn,
-  )
+  @core.new_abstract_layout_provider(layout_fn, initialize_fn~, dispose_fn~)
 }
 
 ///|
@@ -115,6 +111,9 @@ let interactive = @core.interactive
 
 ///|
 let no_layout = @core.no_layout
+
+///|
+let _layered_algorithm_id = @layered.layered_algorithm_id
 
 ///|
 let radial_radius = @radial.radial_radius

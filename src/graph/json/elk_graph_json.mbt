@@ -35,6 +35,9 @@ priv enum JsonEdgeCoordsMode {
 }
 
 ///|
+let _graph_json_layered_algorithm_id = @layered.layered_algorithm_id
+
+///|
 pub fn elk_graph_json_for_graph(graph : String) -> ElkGraphJsonImportBuilder {
   { graph: Some(graph), json_graph: None, importer_maybe: None, lenient: true }
 }
@@ -61,7 +64,7 @@ pub fn elk_graph_json_for_elk_graph(
 
 ///|
 fn parse_non_lenient_json(graph : String) -> Json {
-  let parsed = try @json.parse(graph) catch {
+  let parsed = try @core_json.parse(graph) catch {
     _ => abort("JsonIOException")
   } noraise {
     parsed => parsed
@@ -72,6 +75,24 @@ fn parse_non_lenient_json(graph : String) -> Json {
 ///|
 fn char_at(source : String, index : Int) -> Char {
   source[index].unsafe_to_char()
+}
+
+///|
+fn safe_slice(source : String, start : Int, end_ : Int) -> String {
+  try source[start:end_] catch {
+    _ => ""
+  } noraise {
+    value => value.to_string()
+  }
+}
+
+///|
+fn safe_slice_from(source : String, start : Int) -> String {
+  try source[start:] catch {
+    _ => ""
+  } noraise {
+    value => value.to_string()
+  }
 }
 
 ///|
@@ -327,7 +348,7 @@ fn quote_unquoted_object_keys(source : String) -> String {
             is_unquoted_key_part(char_at(source, index)) {
         index += 1
       }
-      let token = source.substring(start=token_start, end=index)
+      let token = safe_slice(source, token_start, index)
       let mut next = index
       while next < source.length() &&
             char_at(source, next).is_ascii_whitespace() {
@@ -517,7 +538,7 @@ fn short_layout_option_id(id : String) -> String {
     return "elk.json.edgeCoords"
   }
   if id.has_prefix("org.eclipse.elk.") {
-    return "elk." + id.substring(start=16)
+    return "elk." + safe_slice_from(id, 16)
   }
   id
 }
@@ -571,7 +592,7 @@ fn layout_option_lookup_keys(option_id : String) -> Array[String] {
     keys.push(short)
   }
   if canonical.has_prefix("org.eclipse.elk.") {
-    let suffix = canonical.substring(start=16)
+    let suffix = safe_slice_from(canonical, 16)
     if !keys.contains(suffix) {
       keys.push(suffix)
     }
@@ -608,7 +629,7 @@ fn port_layout_option_value_by_any_id(
 }
 
 ///|
-fn edge_layout_option_value_by_any_id(
+fn _edge_layout_option_value_by_any_id(
   edge : @graph.ElkEdge,
   option_id : String,
 ) -> String? {
@@ -622,7 +643,7 @@ fn edge_layout_option_value_by_any_id(
 }
 
 ///|
-fn label_layout_option_value_by_any_id(
+fn _label_layout_option_value_by_any_id(
   label : @graph.ElkLabel,
   option_id : String,
 ) -> String? {

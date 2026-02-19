@@ -1,0 +1,185 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/moon_elk/alg/libavoid"
+
+import {
+  "Milky2018/moon_elk/alg/graphviz/layouter",
+  "Milky2018/moon_elk/core",
+  "Milky2018/moon_elk/graph",
+}
+
+// Values
+pub fn libavoid_layout_provider_as_layout_provider(LibavoidLayoutProvider) -> @core.AbstractLayoutProvider
+
+pub let libavoid_option_angle_penalty : @graph.IProperty[Double]
+
+pub let libavoid_option_cluster_crossing_penalty : @graph.IProperty[Double]
+
+pub let libavoid_option_crossing_penalty : @graph.IProperty[Double]
+
+pub let libavoid_option_debug_mode : @graph.IProperty[Bool]
+
+pub let libavoid_option_direction : @graph.IProperty[String]
+
+pub let libavoid_option_edge_routing : @graph.IProperty[String]
+
+pub let libavoid_option_enable_hyperedges_from_common_source : @graph.IProperty[Bool]
+
+pub let libavoid_option_fixed_shared_path_penalty : @graph.IProperty[Double]
+
+pub let libavoid_option_ideal_nudging_distance : @graph.IProperty[Double]
+
+pub let libavoid_option_improve_hyperedge_routes_moving_adding_and_deleting_junctions : @graph.IProperty[Bool]
+
+pub let libavoid_option_improve_hyperedge_routes_moving_junctions : @graph.IProperty[Bool]
+
+pub let libavoid_option_is_cluster : @graph.IProperty[Bool]
+
+pub let libavoid_option_junction_points_id : String
+
+pub let libavoid_option_nudge_orthogonal_segments_connected_to_shapes : @graph.IProperty[Bool]
+
+pub let libavoid_option_nudge_orthogonal_touching_colinear_segments : @graph.IProperty[Bool]
+
+pub let libavoid_option_nudge_shared_paths_with_common_end_point : @graph.IProperty[Bool]
+
+pub let libavoid_option_omit_node_micro_layout : @graph.IProperty[Bool]
+
+pub let libavoid_option_penalise_orthogonal_shared_paths_at_conn_ends : @graph.IProperty[Bool]
+
+pub let libavoid_option_perform_unifying_nudging_preprocessing_step : @graph.IProperty[Bool]
+
+pub let libavoid_option_port_direction_penalty : @graph.IProperty[Double]
+
+pub let libavoid_option_process_timeout : @graph.IProperty[Int]
+
+pub let libavoid_option_reverse_direction_penalty : @graph.IProperty[Double]
+
+pub let libavoid_option_segment_penalty : @graph.IProperty[Double]
+
+pub let libavoid_option_shape_buffer_distance : @graph.IProperty[Double]
+
+pub fn libavoid_plugin_get_default() -> LibavoidPlugin?
+
+pub let libavoid_plugin_id : String
+
+pub fn libavoid_plugin_reset_for_test() -> Unit
+
+pub fn libavoid_server_cleanup_error() -> LibavoidServerCleanup
+
+pub fn libavoid_server_cleanup_normal() -> LibavoidServerCleanup
+
+pub fn libavoid_server_cleanup_stop() -> LibavoidServerCleanup
+
+pub fn libavoid_server_pool_instance() -> LibavoidServerPool
+
+pub fn libavoid_server_pool_reset_for_test() -> Unit
+
+pub fn libavoid_server_pool_set_factory_for_test(() -> LibavoidServer) -> Unit
+
+pub let libavoid_server_process_def_timeout : Int
+
+pub fn libavoid_server_reset_runtime_for_test() -> Unit
+
+pub fn libavoid_server_set_default_output_data_for_test(Map[String, String]?) -> Unit
+
+pub fn new_libavoid_bundle(symbolic_name? : String) -> LibavoidBundle
+
+pub fn new_libavoid_layout_provider() -> LibavoidLayoutProvider
+
+pub fn new_libavoid_plugin(bundle? : LibavoidBundle) -> LibavoidPlugin
+
+pub fn new_libavoid_server() -> LibavoidServer
+
+pub fn new_libavoid_server_communicator() -> LibavoidServerCommunicator
+
+pub fn new_libavoid_server_exception() -> LibavoidServerException
+
+pub fn new_libavoid_server_exception_with_cause(String, String) -> LibavoidServerException
+
+pub fn new_libavoid_server_exception_with_message(String) -> LibavoidServerException
+
+pub fn new_libavoid_server_pool() -> LibavoidServerPool
+
+// Errors
+
+// Types and methods
+pub struct LibavoidBundle {
+  symbolic_name : String
+}
+pub fn LibavoidBundle::get_symbolic_name(Self) -> String
+
+pub struct LibavoidLayoutProvider {
+  parent_node_to_server : Map[Int, LibavoidServer]
+  comm : LibavoidServerCommunicator
+}
+pub fn LibavoidLayoutProvider::cancel_layouting(Self, Int) -> Bool
+pub fn LibavoidLayoutProvider::layout(Self, Int, @core.IElkProgressMonitor) -> Unit
+pub fn LibavoidLayoutProvider::prepare_graph(Self, Int) -> Unit
+pub fn LibavoidLayoutProvider::register_server_for_test(Self, Int, LibavoidServer) -> Unit
+
+pub struct LibavoidPlugin {
+  bundle : LibavoidBundle
+}
+pub fn LibavoidPlugin::get_bundle(Self) -> LibavoidBundle
+pub fn LibavoidPlugin::start(Self, _context? : String) -> Unit
+pub fn LibavoidPlugin::stop(Self, _context? : String) -> Unit
+
+pub struct LibavoidServer {
+  mut running : Bool
+  mut canceled : Bool
+  mut process_timeout : Int
+  input_sink : @layouter.GraphvizByteArrayOutputStream
+  mut output_data : Map[String, String]?
+}
+pub fn LibavoidServer::cancel_process(Self) -> Unit
+pub fn LibavoidServer::cleanup(Self, LibavoidServerCleanup) -> Unit
+pub fn LibavoidServer::get_input_bytes(Self) -> Array[Int]
+pub fn LibavoidServer::get_process_timeout(Self) -> Int
+pub fn LibavoidServer::initialize(Self) -> Unit
+pub fn LibavoidServer::input(Self) -> @layouter.GraphvizOutputStream
+pub fn LibavoidServer::is_canceled(Self) -> Bool
+pub fn LibavoidServer::is_running(Self) -> Bool
+pub fn LibavoidServer::read_output_data(Self) -> Map[String, String]?
+pub fn LibavoidServer::set_output_data_for_test(Self, Map[String, String]?) -> Unit
+pub fn LibavoidServer::set_process_timeout(Self, Int) -> Unit
+
+pub enum LibavoidServerCleanup {
+  LibavoidServerCleanupNormal
+  LibavoidServerCleanupError
+  LibavoidServerCleanupStop
+}
+
+pub struct LibavoidServerCommunicator {
+  node_id_map : Map[Int, Int]
+  node_inverse_map : Map[Int, Int]
+  port_id_map : Map[Int, Int]
+  port_inverse_map : Map[Int, Int]
+  edge_id_map : Map[Int, Int]
+  edge_inverse_map : Map[Int, Int]
+  mut node_id_counter : Int
+  mut port_id_counter : Int
+  mut edge_id_counter : Int
+  lines : Array[String]
+}
+pub fn LibavoidServerCommunicator::request_layout(Self, Int, @core.IElkProgressMonitor, LibavoidServer) -> Unit
+
+pub struct LibavoidServerException {
+  message : String
+  cause : String?
+}
+pub fn LibavoidServerException::get_cause(Self) -> String?
+pub fn LibavoidServerException::get_message(Self) -> String
+pub fn LibavoidServerException::to_string(Self) -> String
+
+pub struct LibavoidServerPool {
+  servers : Array[LibavoidServer]
+}
+pub fn LibavoidServerPool::dispose(Self) -> Unit
+pub fn LibavoidServerPool::fetch(Self) -> LibavoidServer
+pub fn LibavoidServerPool::release(Self, LibavoidServer) -> Unit
+pub fn LibavoidServerPool::size(Self) -> Int
+
+// Type aliases
+
+// Traits
+

@@ -196,8 +196,11 @@ pub fn graph_json_text_shape_set_size(
   height : Double,
 ) -> Unit {
   match shape {
-    GraphJsonTextShapeNode(node) => @graph.node_set_dimensions(node, width, height)
-    GraphJsonTextShapePort(port) => @graph.port_set_dimensions(port, width, height)
-    GraphJsonTextShapeLabel(label) => @graph.label_set_dimensions(label, width, height)
+    GraphJsonTextShapeNode(node) =>
+      @graph.node_set_dimensions(node, width, height)
+    GraphJsonTextShapePort(port) =>
+      @graph.port_set_dimensions(port, width, height)
+    GraphJsonTextShapeLabel(label) =>
+      @graph.label_set_dimensions(label, width, height)
   }
 }

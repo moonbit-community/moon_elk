@@ -210,10 +210,14 @@ pub fn SporeElkGraphImporter::import_graph(
     ),
   )
   let compaction_strategy = spore_compaction_strategy_from_string(
-    @graph.node_get_string_property(input_graph, spore_compaction_compaction_strategy),
+    @graph.node_get_string_property(
+      input_graph, spore_compaction_compaction_strategy,
+    ),
   )
   let root_selection = spore_root_selection_from_string(
-    @graph.node_get_string_property(input_graph, spore_processing_order_root_selection),
+    @graph.node_get_string_property(
+      input_graph, spore_processing_order_root_selection,
+    ),
   )
   self.spacing_node_node = @graph.node_get_double_property(
     input_graph, spore_spacing_node_node,
@@ -302,7 +306,12 @@ pub fn SporeElkGraphImporter::import_graph(
       )
       ignore(center.scale(0.5))
       ignore(
-        center.add(@core.new_kvector_xy(@graph.node_x(input_graph), @graph.node_y(input_graph))),
+        center.add(
+          @core.new_kvector_xy(
+            @graph.node_x(input_graph),
+            @graph.node_y(input_graph),
+          ),
+        ),
       )
       let mut closest = @double.infinity
       for node in graph.vertices {
@@ -365,13 +374,13 @@ pub fn SporeElkGraphImporter::apply_positions(
       None => continue
     }
     @graph.node_set_location(entry.elk_node, node.rect.x, node.rect.y)
-    min_x = @math.minimum(min_x, @graph.node_x(entry.elk_node))
-    min_y = @math.minimum(min_y, @graph.node_y(entry.elk_node))
-    max_x = @math.maximum(
+    min_x = @cmp.minimum(min_x, @graph.node_x(entry.elk_node))
+    min_y = @cmp.minimum(min_y, @graph.node_y(entry.elk_node))
+    max_x = @cmp.maximum(
       max_x,
       @graph.node_x(entry.elk_node) + @graph.node_width(entry.elk_node),
     )
-    max_y = @math.maximum(
+    max_y = @cmp.maximum(
       max_y,
       @graph.node_y(entry.elk_node) + @graph.node_height(entry.elk_node),
     )
@@ -385,7 +394,11 @@ pub fn SporeElkGraphImporter::apply_positions(
   let dx = -min_x + padding.left
   let dy = -min_y + padding.top
   for child in @graph.node_children(elk_graph) {
-    @graph.node_set_location(child, @graph.node_x(child) + dx, @graph.node_y(child) + dy)
+    @graph.node_set_location(
+      child,
+      @graph.node_x(child) + dx,
+      @graph.node_y(child) + dy,
+    )
   }
   spore_apply_translation_to_sections(elk_graph, dx, dy)
 
@@ -412,10 +425,22 @@ pub fn SporeElkGraphImporter::apply_positions(
       @graph.node_y(target) + @graph.node_height(target) / 2.0,
     )
     let uv = end_location.clone().sub(start_location)
-    ignore(@core.clip_vector(uv, @graph.node_width(source), @graph.node_height(source)))
+    ignore(
+      @core.clip_vector(
+        uv,
+        @graph.node_width(source),
+        @graph.node_height(source),
+      ),
+    )
     ignore(start_location.add(uv))
     let vu = start_location.clone().sub(end_location)
-    ignore(@core.clip_vector(vu, @graph.node_width(target), @graph.node_height(target)))
+    ignore(
+      @core.clip_vector(
+        vu,
+        @graph.node_width(target),
+        @graph.node_height(target),
+      ),
+    )
     ignore(end_location.add(vu))
     @graph.edge_section_set_start(section, start_location.x, start_location.y)
     @graph.edge_section_set_end(section, end_location.x, end_location.y)
@@ -423,7 +448,9 @@ pub fn SporeElkGraphImporter::apply_positions(
 }
 
 ///|
-pub fn new_spore_elk_graph_as_igraph_importer() -> SporeIGraphImporter[@graph.ElkNode] {
+pub fn new_spore_elk_graph_as_igraph_importer() -> SporeIGraphImporter[
+  @graph.ElkNode,
+] {
   let importer = new_spore_elk_graph_importer()
   new_spore_igraph_importer(
     graph => importer.import_graph(graph),

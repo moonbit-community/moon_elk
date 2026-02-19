@@ -8,7 +8,7 @@ pub fn rectpacking_area_filter(
   let remaining_candidates = []
   let mut min_area = @double.infinity
   for opt in candidates {
-    min_area = @math.minimum(
+    min_area = @cmp.minimum(
       min_area,
       (opt.drawing_width + padding.get_horizontal()) *
       (opt.drawing_height + padding.get_vertical()),

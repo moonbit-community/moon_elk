@@ -27,7 +27,7 @@ let linear_segments_final_iters : Int = 3
 let linear_segments_overlap_detect : Double = 0.0001
 
 ///|
-enum LinearSegmentsMode {
+priv enum LinearSegmentsMode {
   ForwPendulum
   BackwPendulum
   Rubber
@@ -42,7 +42,7 @@ struct LinearSegment {
   mut deflection : Double
   mut weight : Int
   mut ref_segment_id : Int
-  mut node_type : NodeType
+  mut _node_type : NodeType
 }
 
 ///|
@@ -55,12 +55,12 @@ fn new_linear_segment(id : Int) -> LinearSegment {
     deflection: 0.0,
     weight: 0,
     ref_segment_id: -1,
-    node_type: NodeType::Normal,
+    _node_type: NodeType::Normal,
   }
 }
 
 ///|
-struct LinearSegmentsState {
+priv struct LinearSegmentsState {
   mut linear_segments : Array[LinearSegment]
   mut spacings : Spacings?
 }
@@ -218,7 +218,7 @@ fn linear_segments_fill_segment(
   node.set_id(segment_id)
   let segment = segment_list[segment_id]
   segment.nodes.push(node)
-  segment.node_type = node_type
+  segment._node_type = node_type
   segment_list[segment_id] = segment
 
   if linear_segments_node_type_is_dummy(node_type) {
@@ -487,7 +487,9 @@ fn linear_segments_create_unbalanced_placement(
       let layer_index = layer.get_index()
       node_count[layer_index] = node_count[layer_index] + 1
 
-      let mut spacing = layered_graph.get_property_double(@core.spacing_edge_edge)
+      let mut spacing = layered_graph.get_property_double(
+        @core.spacing_edge_edge,
+      )
       if node_count[layer_index] > 0 {
         match recent_node[layer_index] {
           Some(previous) =>

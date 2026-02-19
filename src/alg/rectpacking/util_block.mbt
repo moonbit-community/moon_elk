@@ -66,12 +66,19 @@ fn rectpacking_block_adjust_children_xy(
   y_change : Double,
 ) -> Unit {
   for rect in block.children {
-    @graph.node_set_location(rect, @graph.node_x(rect) + x_change, @graph.node_y(rect) + y_change)
+    @graph.node_set_location(
+      rect,
+      @graph.node_x(rect) + x_change,
+      @graph.node_y(rect) + y_change,
+    )
   }
 }
 
 ///|
-fn rectpacking_block_adjust_size_add(block : Block, rect : @graph.ElkNode) -> Unit {
+fn rectpacking_block_adjust_size_add(
+  block : Block,
+  rect : @graph.ElkNode,
+) -> Unit {
   let width_of_last_row = block.last_row().width
   block.smallest_rect_width = @cmp.minimum(
     block.smallest_rect_width,
@@ -201,7 +208,10 @@ fn rectpacking_block_place_rects_in_width_internal(
     }
     width_in_row += @graph.node_width(rect) +
       (if index > 0 { block.node_node_spacing } else { 0.0 })
-    max_height_in_row = @cmp.maximum(max_height_in_row, @graph.node_height(rect))
+    max_height_in_row = @cmp.maximum(
+      max_height_in_row,
+      @graph.node_height(rect),
+    )
     if place_rects {
       ignore(block.rows[row].add_rectangle(rect))
     }

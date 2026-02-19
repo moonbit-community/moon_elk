@@ -1,5 +1,5 @@
 ///|
-fn bk_node_placer_same_node(left : LNode, right : LNode) -> Bool {
+fn _bk_node_placer_same_node(left : LNode, right : LNode) -> Bool {
   left.get_handle() == right.get_handle()
 }
 
@@ -28,7 +28,7 @@ fn bk_node_placer_fixed_alignment_is_balanced(value : FixedAlignment) -> Bool {
 }
 
 ///|
-fn bk_node_placer_reverse_layers(layers : Array[Layer]) -> Array[Layer] {
+fn _bk_node_placer_reverse_layers(layers : Array[Layer]) -> Array[Layer] {
   let reversed : Array[Layer] = []
   for i = layers.length() - 1; i >= 0; i = i - 1 {
     reversed.push(layers[i])

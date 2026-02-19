@@ -4,3 +4,10 @@ pub enum SelfLoopPlacementStrategy {
   NorthStacked
   NorthSequence
 }
+
+///|
+let _self_loop_placement_strategy_all_values : Array[SelfLoopPlacementStrategy] = [
+  EquallyDistributed,
+  NorthStacked,
+  NorthSequence,
+]

@@ -23,6 +23,8 @@ pub let topdownpacking_node_arrangement_strategy : @graph.IProperty[String] = @g
 )
 
 ///|
-pub let topdownpacking_whitespace_elimination_strategy : @graph.IProperty[String] = @graph.new_property(
+pub let topdownpacking_whitespace_elimination_strategy : @graph.IProperty[
+  String,
+] = @graph.new_property(
   "org.eclipse.elk.topdownpacking.whitespaceElimination.strategy", "BOTTOM_ROW_EQUAL_WHITESPACE_ELIMINATOR",
 )

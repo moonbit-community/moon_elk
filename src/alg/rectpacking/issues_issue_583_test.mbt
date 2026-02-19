@@ -8,7 +8,9 @@ test "Rectpacking issue 583 decrease approximated width" {
   let n3 = @graph.create_node(Some(parent))
   let n4 = @graph.create_node(Some(parent))
 
-  @graph.node_set_string_property(parent, @core.algorithm, rectpacking_algorithm_id)
+  @graph.node_set_string_property(
+    parent, @core.algorithm, rectpacking_algorithm_id,
+  )
   @graph.node_set_double_property(parent, rectpacking_aspect_ratio, 1.3)
   @graph.node_set_double_property(parent, rectpacking_spacing_node_node, 0.0)
   @graph.node_set_string_property(
@@ -31,7 +33,9 @@ test "Rectpacking issue 583 decrease approximated width" {
   provider.layout(parent, @core.new_basic_progress_monitor())
   rectpacking_assert_close(@graph.node_width(parent), 60.0, 1.0)
 
-  @graph.node_set_string_property(parent, rectpacking_packing_strategy, "COMPACTION")
+  @graph.node_set_string_property(
+    parent, rectpacking_packing_strategy, "COMPACTION",
+  )
   let provider2 = new_rectpacking_layout_provider()
   provider2.layout(parent, @core.new_basic_progress_monitor())
   rectpacking_assert_close(@graph.node_width(parent), 40.0, 1.0)

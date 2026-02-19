@@ -25,12 +25,20 @@ fn issue628_test_assert_close(
 }
 
 ///|
-fn issue628_test_build_graph() -> (@graph.ElkNode, @graph.ElkNode, @graph.ElkNode) {
+fn issue628_test_build_graph() -> (
+  @graph.ElkNode,
+  @graph.ElkNode,
+  @graph.ElkNode,
+) {
   let graph = create_graph()
-  @graph.node_set_string_property(graph, @core.algorithm, "org.eclipse.elk.layered")
+  @graph.node_set_string_property(
+    graph, @core.algorithm, "org.eclipse.elk.layered",
+  )
 
   let l1 = @graph.create_node(Some(graph))
-  @graph.node_set_string_property(l1, @core.algorithm, "org.eclipse.elk.layered")
+  @graph.node_set_string_property(
+    l1, @core.algorithm, "org.eclipse.elk.layered",
+  )
   @graph.node_set_string_property(l1, @core.direction, "RIGHT")
   @graph.node_set_double_property(l1, @core.spacing_node_node, 10.0)
   @graph.node_set_double_property(
@@ -84,7 +92,8 @@ fn issue628_test_assert_sibling_alignment_and_spacing(
 ) -> Unit {
   let y1 = @graph.node_y(l2_1)
   let y2 = @graph.node_y(l2_2)
-  let spacing = @graph.node_x(l2_2) - (@graph.node_x(l2_1) + @graph.node_width(l2_1))
+  let spacing = @graph.node_x(l2_2) -
+    (@graph.node_x(l2_1) + @graph.node_width(l2_1))
 
   issue628_test_assert_close(y1, y2, 0.00001)
   issue628_test_assert_close(spacing, 10.0, 0.00001)

@@ -9,10 +9,7 @@ pub fn node_dimension_calculation_calculate_label_and_node_sizes_for_layered_gra
 ) -> Unit {
   node_dimension_calculation_calculate_label_and_node_sizes(
     adapt_l_graph_with_options(
-      layered_graph,
-      true,
-      true,
-      node_dimension_calculation_is_normal_node,
+      layered_graph, true, true, node_dimension_calculation_is_normal_node,
     ),
   )
 }

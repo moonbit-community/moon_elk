@@ -73,12 +73,16 @@ test "DotTransformationData storage" {
 test "DotTransformationData properties" {
   let data : DotTransformationData[Int, String] = new_dot_transformation_data()
 
-  let bool_property : @graph.IProperty[Bool] = @graph.new_property("dot.test.bool", true)
+  let bool_property : @graph.IProperty[Bool] = @graph.new_property(
+    "dot.test.bool", true,
+  )
   inspect(data.get_bool_property(bool_property), content="true")
   data.set_bool_property(bool_property, false)
   inspect(data.get_bool_property(bool_property), content="false")
 
-  let int_property : @graph.IProperty[Int] = @graph.new_property("dot.test.int", 1)
+  let int_property : @graph.IProperty[Int] = @graph.new_property(
+    "dot.test.int", 1,
+  )
   inspect(data.get_int_property(int_property), content="1")
   data.set_int_property(int_property, 42)
   inspect(data.get_int_property(int_property), content="42")

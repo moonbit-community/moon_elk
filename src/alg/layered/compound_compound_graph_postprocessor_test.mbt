@@ -4,16 +4,14 @@ let compound_graph_postprocessor_test_cross_hierarchy_map : @graph.IProperty[
 ] = @graph.new_property("crossHierarchyMap", [])
 
 ///|
-let compound_graph_postprocessor_test_original_label_edge : @graph.IProperty[LEdge?] = @graph.new_property(
-  "originalLabelEdge",
-  None,
-)
+let compound_graph_postprocessor_test_original_label_edge : @graph.IProperty[
+  LEdge?,
+] = @graph.new_property("originalLabelEdge", None)
 
 ///|
-let compound_graph_postprocessor_test_target_offset : @graph.IProperty[@core.KVector] = @graph.new_property(
-  "targetOffset",
-  @core.new_kvector(),
-)
+let compound_graph_postprocessor_test_target_offset : @graph.IProperty[
+  @core.KVector,
+] = @graph.new_property("targetOffset", @core.new_kvector())
 
 ///|
 fn compound_graph_postprocessor_test_west() -> @core.PortSide {

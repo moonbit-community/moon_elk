@@ -20,7 +20,9 @@ fn label_dummy_remover_parse_edge_routing(value : String) -> @core.EdgeRouting {
 }
 
 ///|
-fn label_dummy_remover_direction_is_vertical(direction : @core.Direction) -> Bool {
+fn label_dummy_remover_direction_is_vertical(
+  direction : @core.Direction,
+) -> Bool {
   match direction {
     @core.Direction::Upward => true
     @core.Direction::Downward => true
@@ -147,7 +149,9 @@ fn label_dummy_remover_process(
   }
   ignore(monitor.begin("Label dummy removal", 1.0))
 
-  let edge_label_spacing = layered_graph.get_property_double(@core.spacing_edge_label)
+  let edge_label_spacing = layered_graph.get_property_double(
+    @core.spacing_edge_label,
+  )
   let label_label_spacing = layered_graph.get_property_double(
     @core.spacing_label_label,
   )

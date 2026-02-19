@@ -14,7 +14,10 @@ fn lnode_internal_handle(node : LNode) -> Int {
 }
 
 ///|
-fn lnode_port_side_equals(left : @core.PortSide, right : @core.PortSide) -> Bool {
+fn lnode_port_side_equals(
+  left : @core.PortSide,
+  right : @core.PortSide,
+) -> Bool {
   match (left, right) {
     (North, North) => true
     (East, East) => true
@@ -263,7 +266,10 @@ pub fn LNode::get_ports_by_type(
 }
 
 ///|
-pub fn LNode::get_ports_by_side(self : LNode, side : @core.PortSide) -> Array[LPort] {
+pub fn LNode::get_ports_by_side(
+  self : LNode,
+  side : @core.PortSide,
+) -> Array[LPort] {
   let result = []
   for port in self.ports {
     if lnode_port_side_equals(port.get_side(), side) {
@@ -274,7 +280,10 @@ pub fn LNode::get_ports_by_side(self : LNode, side : @core.PortSide) -> Array[LP
 }
 
 ///|
-pub fn LNode::get_port_side_view(self : LNode, side : @core.PortSide) -> Array[LPort] {
+pub fn LNode::get_port_side_view(
+  self : LNode,
+  side : @core.PortSide,
+) -> Array[LPort] {
   self.get_ports_by_side(side)
 }
 
@@ -446,7 +455,10 @@ pub fn LNode::set_property_int(
 }
 
 ///|
-pub fn LNode::get_property_int(self : LNode, property : @graph.IProperty[Int]) -> Int {
+pub fn LNode::get_property_int(
+  self : LNode,
+  property : @graph.IProperty[Int],
+) -> Int {
   match self.int_properties.get(property.get_id()) {
     Some(value) => value
     None => property.get_default()
@@ -614,7 +626,10 @@ pub fn LNode::get_property_label_side(
 }
 
 ///|
-pub fn LNode::has_property_int(self : LNode, property : @graph.IProperty[Int]) -> Bool {
+pub fn LNode::has_property_int(
+  self : LNode,
+  property : @graph.IProperty[Int],
+) -> Bool {
   self.int_properties.contains(property.get_id())
 }
 

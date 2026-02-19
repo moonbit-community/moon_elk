@@ -35,7 +35,10 @@ fn port_list_sorter_port_side_rank(side : @core.PortSide) -> Int {
 }
 
 ///|
-fn port_list_sorter_port_side_equals(left : @core.PortSide, right : @core.PortSide) -> Bool {
+fn _port_list_sorter_port_side_equals(
+  left : @core.PortSide,
+  right : @core.PortSide,
+) -> Bool {
   match (left, right) {
     (@core.PortSide::North, @core.PortSide::North) => true
     (@core.PortSide::East, @core.PortSide::East) => true
@@ -269,7 +272,9 @@ fn port_list_sorter_process(
 
   for layer in layered_graph.get_layers() {
     for node in layer.get_nodes() {
-      let constraints_value = if node.has_property_string(@core.port_constraints) {
+      let constraints_value = if node.has_property_string(
+          @core.port_constraints,
+        ) {
         node.get_property_string(@core.port_constraints)
       } else {
         @core.port_constraints.get_default()

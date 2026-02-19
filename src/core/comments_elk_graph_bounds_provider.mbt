@@ -9,7 +9,10 @@ fn elk_graph_bounds_provider_bounds(node : @graph.ElkNode) -> ElkRectangle {
 }
 
 ///|
-pub type ElkGraphBoundsProvider = IBoundsProvider[@graph.ElkNode, @graph.ElkNode]
+pub type ElkGraphBoundsProvider = IBoundsProvider[
+  @graph.ElkNode,
+  @graph.ElkNode,
+]
 
 ///|
 pub fn new_elk_graph_bounds_provider() -> ElkGraphBoundsProvider {

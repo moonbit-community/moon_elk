@@ -24,7 +24,10 @@ pub fn new_dc_component() -> DCComponent {
 }
 
 ///|
-pub fn DCComponent::set_offset(self : DCComponent, offset : @core.KVector) -> Unit {
+pub fn DCComponent::set_offset(
+  self : DCComponent,
+  offset : @core.KVector,
+) -> Unit {
   self.changed = true
   self.offset = offset
 }
@@ -58,7 +61,10 @@ pub fn DCComponent::get_min_corner(self : DCComponent) -> @core.KVector {
 }
 
 ///|
-pub fn DCComponent::intersects(self : DCComponent, rect : @core.ElkRectangle) -> Bool {
+pub fn DCComponent::intersects(
+  self : DCComponent,
+  rect : @core.ElkRectangle,
+) -> Bool {
   for elem in self.shapes {
     if elem.intersects(rect) {
       return true

@@ -345,7 +345,10 @@ pub fn LPort::set_property_double(
 }
 
 ///|
-pub fn LPort::get_property_int(self : LPort, property : @graph.IProperty[Int]) -> Int {
+pub fn LPort::get_property_int(
+  self : LPort,
+  property : @graph.IProperty[Int],
+) -> Int {
   match self.int_properties.get(property.get_id()) {
     Some(value) => value
     None => property.get_default()
@@ -364,7 +367,10 @@ pub fn LPort::get_property_double(
 }
 
 ///|
-pub fn LPort::has_property_int(self : LPort, property : @graph.IProperty[Int]) -> Bool {
+pub fn LPort::has_property_int(
+  self : LPort,
+  property : @graph.IProperty[Int],
+) -> Bool {
   self.int_properties.contains(property.get_id())
 }
 

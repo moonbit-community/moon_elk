@@ -40,7 +40,10 @@ pub fn basic_edge_router_test_check_edge_route_is_orthogonal(
 }
 
 ///|
-pub fn basic_edge_router_test_is_horizontal(p1 : @core.KVector, p2 : @core.KVector) -> Bool {
+pub fn basic_edge_router_test_is_horizontal(
+  p1 : @core.KVector,
+  p2 : @core.KVector,
+) -> Bool {
   (p1.y - p2.y).abs() < basic_edge_router_test_tolerance
 }
 

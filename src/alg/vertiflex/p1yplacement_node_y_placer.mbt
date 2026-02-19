@@ -17,7 +17,7 @@ fn vertiflex_node_y_placer_set_y_levels(
   let new_min_height = constrained_min_height +
     layer_distance +
     @graph.node_height(node) +
-    @math.maximum(margins.bottom, node_node_spacing)
+    @cmp.maximum(margins.bottom, node_node_spacing)
   for edge in @graph.node_outgoing_edges(node) {
     let child = vertiflex_internal_child_of_edge(edge)
     vertiflex_node_y_placer_set_y_levels(
@@ -37,7 +37,9 @@ fn vertiflex_node_y_placer_process(
   }
   ignore(monitor.begin("YPlacer", 1.0))
 
-  let layer_distance = @graph.node_get_double_property(graph, vertiflex_layer_distance)
+  let layer_distance = @graph.node_get_double_property(
+    graph, vertiflex_layer_distance,
+  )
   let node_node_spacing = @graph.node_get_double_property(
     graph, vertiflex_spacing_node_node,
   )

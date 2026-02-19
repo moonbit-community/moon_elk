@@ -22,7 +22,9 @@ pub fn new_atomic_cell() -> AtomicCell {
 }
 
 ///|
-pub fn AtomicCell::get_minimum_content_area_size(self : AtomicCell) -> @core.KVector {
+pub fn AtomicCell::get_minimum_content_area_size(
+  self : AtomicCell,
+) -> @core.KVector {
   atomic_cell_content_area_size(self)
 }
 

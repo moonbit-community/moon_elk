@@ -123,12 +123,18 @@ pub fn mrtree_graph_copy_properties_from_elk(
   graph_data.separate_connected_components = @graph.node_get_bool_property(
     elk_graph, mrtree_separate_connected_components,
   )
-  graph_data.direction = @graph.node_get_string_property(elk_graph, @core.direction)
-  graph_data.compaction = @graph.node_get_bool_property(elk_graph, mrtree_compaction)
+  graph_data.direction = @graph.node_get_string_property(
+    elk_graph, @core.direction,
+  )
+  graph_data.compaction = @graph.node_get_bool_property(
+    elk_graph, mrtree_compaction,
+  )
   graph_data.edge_routing_mode = @graph.node_get_string_property(
     elk_graph, mrtree_edge_routing_mode,
   )
-  graph_data.weighting = @graph.node_get_string_property(elk_graph, mrtree_weighting)
+  graph_data.weighting = @graph.node_get_string_property(
+    elk_graph, mrtree_weighting,
+  )
   graph_data.search_order = @graph.node_get_string_property(
     elk_graph, mrtree_search_order,
   )
@@ -152,7 +158,9 @@ pub fn mrtree_graph_copy_properties_from_elk(
   graph_data.padding = mrtree_parse_padding(
     @graph.node_get_string_property(elk_graph, mrtree_padding),
   )
-  graph_data.priority = @graph.node_get_double_property(elk_graph, mrtree_priority).to_int()
+  graph_data.priority = @graph.node_get_double_property(
+    elk_graph, mrtree_priority,
+  ).to_int()
   set_mrtree_graph_data(graph, graph_data)
 }
 

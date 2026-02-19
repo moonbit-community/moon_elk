@@ -31,5 +31,8 @@ test "DisCoLayoutProvider runs polyomino compaction end-to-end" {
   assert_eq(monitor.is_running(), false)
   assert_true(@graph.node_width(root) > 0.0)
   assert_true(@graph.node_height(root) > 0.0)
-  assert_true(@graph.node_x(left) != before_left_x || @graph.node_x(right) != before_right_x)
+  assert_true(
+    @graph.node_x(left) != before_left_x ||
+    @graph.node_x(right) != before_right_x,
+  )
 }

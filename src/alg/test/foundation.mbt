@@ -297,10 +297,7 @@ pub fn port_set_layout_option_string_by_id(
 }
 
 ///|
-pub fn port_layout_option_string_value(
-  port : ElkPort,
-  id : String,
-) -> String? {
+pub fn port_layout_option_string_value(port : ElkPort, id : String) -> String? {
   @graph.port_layout_option_string_value(port, id)
 }
 
@@ -320,12 +317,18 @@ pub fn edge_containing_node(edge : ElkEdge) -> ElkNode? {
 }
 
 ///|
-pub fn edge_add_source(edge : ElkEdge, shape : @graph.ElkConnectableShape) -> Unit {
+pub fn edge_add_source(
+  edge : ElkEdge,
+  shape : @graph.ElkConnectableShape,
+) -> Unit {
   @graph.edge_add_source(edge, shape)
 }
 
 ///|
-pub fn edge_add_target(edge : ElkEdge, shape : @graph.ElkConnectableShape) -> Unit {
+pub fn edge_add_target(
+  edge : ElkEdge,
+  shape : @graph.ElkConnectableShape,
+) -> Unit {
   @graph.edge_add_target(edge, shape)
 }
 
@@ -411,7 +414,9 @@ pub fn compare_fuzzy_ge(first : Double, second : Double) -> Bool {
 }
 
 ///|
-pub fn elk_graph_json_for_graph(json : String) -> @json.ElkGraphJsonImportBuilder {
+pub fn elk_graph_json_for_graph(
+  json : String,
+) -> @json.ElkGraphJsonImportBuilder {
   @json.elk_graph_json_for_graph(json)
 }
 
@@ -436,7 +441,9 @@ pub fn apply_visitors(
 }
 
 ///|
-pub fn new_graph_element_visitor(visit_fn : (ElkNode) -> Unit) -> @core.IGraphElementVisitor {
+pub fn new_graph_element_visitor(
+  visit_fn : (ElkNode) -> Unit,
+) -> @core.IGraphElementVisitor {
   @core.new_graph_element_visitor(visit_fn)
 }
 
@@ -451,12 +458,16 @@ pub fn new_basic_progress_monitor() -> @core.IElkProgressMonitor {
 }
 
 ///|
-pub fn layout_meta_data_service_get_algorithm_data(id : String) -> LayoutAlgorithmData? {
+pub fn layout_meta_data_service_get_algorithm_data(
+  id : String,
+) -> LayoutAlgorithmData? {
   @core.layout_meta_data_service_get_algorithm_data(id)
 }
 
 ///|
-pub fn layout_meta_data_service_algorithm_data_values() -> Array[LayoutAlgorithmData] {
+pub fn layout_meta_data_service_algorithm_data_values() -> Array[
+  LayoutAlgorithmData,
+] {
   @core.layout_meta_data_service_algorithm_data_values()
 }
 
@@ -495,7 +506,9 @@ pub fn layout_meta_data_service_register_layout_meta_data_providers(
 }
 
 ///|
-pub fn force_layout_meta_data_providers() -> Array[@core.ILayoutMetaDataProvider] {
+pub fn force_layout_meta_data_providers() -> Array[
+  @core.ILayoutMetaDataProvider,
+] {
   @force.force_layout_meta_data_providers()
 }
 
@@ -569,7 +582,9 @@ pub fn core_debug_grandom_random_graph_generator_generate(
   generator : @grandom.CoreDebugGRandomRandomGraphGenerator,
   options : CoreDebugGRandomGeneratorOptions,
 ) -> ElkNode {
-  @grandom.core_debug_grandom_random_graph_generator_generate(generator, options)
+  @grandom.core_debug_grandom_random_graph_generator_generate(
+    generator, options,
+  )
 }
 
 ///|

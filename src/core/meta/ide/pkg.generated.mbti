@@ -1,0 +1,116 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/moon_elk/core/meta/ide"
+
+import {
+  "Milky2018/moon_elk/core/meta",
+}
+
+// Values
+pub let core_meta_ide_content_assist_lexer_binding : String
+
+pub let core_meta_ide_language_name : String
+
+pub fn new_abstract_core_meta_ide_module() -> AbstractCoreMetaIdeModule
+
+pub fn new_core_meta_ide_content_assist_lexer_binding(String, String) -> CoreMetaIdeContentAssistLexerBinding
+
+pub fn new_core_meta_ide_injector(@meta.MetaDataRuntimeModule, CoreMetaIdeModule) -> CoreMetaIdeInjector
+
+pub fn new_core_meta_ide_module() -> CoreMetaIdeModule
+
+pub fn new_core_meta_ide_name_mappings(@meta.MetaDataGrammarAccess) -> CoreMetaIdeNameMappings
+
+pub fn new_core_meta_ide_parser(grammar_access? : @meta.MetaDataGrammarAccess) -> CoreMetaIdeParser
+
+pub fn new_core_meta_ide_setup() -> CoreMetaIdeSetup
+
+pub fn new_internal_core_meta_ide_lexer(String) -> InternalCoreMetaIdeLexer
+
+pub fn new_internal_core_meta_ide_parser(Array[@meta.CoreMetaLexToken], grammar_access? : @meta.MetaDataGrammarAccess) -> InternalCoreMetaIdeParser
+
+pub fn new_partial_core_meta_content_assist_parser() -> PartialCoreMetaContentAssistParser
+
+// Errors
+
+// Types and methods
+pub(all) struct AbstractCoreMetaIdeModule {
+  unit : Unit
+}
+pub fn AbstractCoreMetaIdeModule::bind_i_content_assist_parser(Self) -> String
+pub fn AbstractCoreMetaIdeModule::bind_i_prefix_matcher(Self) -> String
+pub fn AbstractCoreMetaIdeModule::bind_i_proposal_conflict_helper(Self) -> String
+pub fn AbstractCoreMetaIdeModule::bind_i_rename_service(Self) -> String
+pub fn AbstractCoreMetaIdeModule::bind_i_rename_strategy2(Self) -> String
+pub fn AbstractCoreMetaIdeModule::configure_content_assist_lexer(Self) -> CoreMetaIdeContentAssistLexerBinding
+
+pub(all) struct CoreMetaIdeContentAssistLexerBinding {
+  binding_name : String
+  lexer_class_name : String
+}
+
+pub(all) struct CoreMetaIdeInjector {
+  runtime_module : @meta.MetaDataRuntimeModule
+  ide_module : CoreMetaIdeModule
+}
+pub fn CoreMetaIdeInjector::get_ide_module(Self) -> CoreMetaIdeModule
+pub fn CoreMetaIdeInjector::get_runtime_module(Self) -> @meta.MetaDataRuntimeModule
+
+pub(all) struct CoreMetaIdeModule {
+  base : AbstractCoreMetaIdeModule
+}
+pub fn CoreMetaIdeModule::get_base(Self) -> AbstractCoreMetaIdeModule
+
+pub(all) struct CoreMetaIdeNameMappings {
+  mappings : Map[String, String]
+}
+pub fn CoreMetaIdeNameMappings::get_rule_name(Self, String) -> String?
+
+pub(all) struct CoreMetaIdeParser {
+  mut name_mappings : CoreMetaIdeNameMappings
+  mut grammar_access : @meta.MetaDataGrammarAccess
+  mut initial_hidden_tokens : Array[String]
+}
+pub fn CoreMetaIdeParser::create_parser(Self, Array[@meta.CoreMetaLexToken]) -> InternalCoreMetaIdeParser
+pub fn CoreMetaIdeParser::get_grammar_access(Self) -> @meta.MetaDataGrammarAccess
+pub fn CoreMetaIdeParser::get_initial_hidden_tokens(Self) -> Array[String]
+pub fn CoreMetaIdeParser::get_name_mappings(Self) -> CoreMetaIdeNameMappings
+pub fn CoreMetaIdeParser::get_rule_name(Self, String) -> String?
+pub fn CoreMetaIdeParser::parse(Self, String) -> @meta.CoreMetaMdModel
+pub fn CoreMetaIdeParser::set_grammar_access(Self, @meta.MetaDataGrammarAccess) -> Unit
+pub fn CoreMetaIdeParser::set_initial_hidden_tokens(Self, Array[String]) -> Unit
+pub fn CoreMetaIdeParser::set_name_mappings(Self, CoreMetaIdeNameMappings) -> Unit
+
+pub(all) struct CoreMetaIdeSetup {
+  unit : Unit
+}
+pub fn CoreMetaIdeSetup::create_injector(Self) -> CoreMetaIdeInjector
+pub fn CoreMetaIdeSetup::create_injector_and_do_emf_registration(Self) -> CoreMetaIdeInjector
+
+pub(all) struct InternalCoreMetaIdeLexer {
+  delegate : @meta.InternalMetaDataLexer
+}
+pub fn InternalCoreMetaIdeLexer::get_grammar_file_name(Self) -> String
+pub fn InternalCoreMetaIdeLexer::get_token_names(Self) -> Array[String]
+pub fn InternalCoreMetaIdeLexer::lex_all(Self) -> Array[@meta.CoreMetaLexToken]
+
+pub(all) struct InternalCoreMetaIdeParser {
+  tokens : Array[@meta.CoreMetaLexToken]
+  grammar_access : @meta.MetaDataGrammarAccess
+}
+pub fn InternalCoreMetaIdeParser::entry_rule_md_model(Self) -> @meta.CoreMetaMdModel
+pub fn InternalCoreMetaIdeParser::get_first_rule_name(Self) -> String
+pub fn InternalCoreMetaIdeParser::get_follow_elements(Self) -> Array[String]
+pub fn InternalCoreMetaIdeParser::get_grammar_access(Self) -> @meta.MetaDataGrammarAccess
+pub fn InternalCoreMetaIdeParser::get_grammar_file_name(Self) -> String
+pub fn InternalCoreMetaIdeParser::get_token_names(Self) -> Array[String]
+
+pub(all) struct PartialCoreMetaContentAssistParser {
+  mut rule : String?
+}
+pub fn PartialCoreMetaContentAssistParser::get_follow_elements(Self, CoreMetaIdeParser) -> Array[String]
+pub fn PartialCoreMetaContentAssistParser::initialize_for(Self, String?) -> Unit
+
+// Type aliases
+
+// Traits
+

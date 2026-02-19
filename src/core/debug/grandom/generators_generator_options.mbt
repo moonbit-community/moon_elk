@@ -295,19 +295,19 @@ pub let core_debug_grandom_file_name : @graph.IProperty[String] = @graph.new_pro
 )
 
 ///|
-pub let core_debug_grandom_file_format : @graph.IProperty[CoreDebugGRandomFileFormat] = @graph.new_property(
-  "randomWizard.fileFormat",
-  FileXtext,
-)
+pub let core_debug_grandom_file_format : @graph.IProperty[
+  CoreDebugGRandomFileFormat,
+] = @graph.new_property("randomWizard.fileFormat", FileXtext)
 
 ///|
-pub let core_debug_grandom_graph_type : @graph.IProperty[CoreDebugGRandomGraphType] = @graph.new_property(
-  "basic.graphType",
-  GraphCustom,
-)
+pub let core_debug_grandom_graph_type : @graph.IProperty[
+  CoreDebugGRandomGraphType,
+] = @graph.new_property("basic.graphType", GraphCustom)
 
 ///|
-pub let core_debug_grandom_number_of_nodes : @graph.IProperty[CoreDebugGRandomRandVal] = @graph.new_property(
+pub let core_debug_grandom_number_of_nodes : @graph.IProperty[
+  CoreDebugGRandomRandVal,
+] = @graph.new_property(
   "basic.numNodes",
   core_debug_grandom_rand_val_exact(10.0),
 )
@@ -318,16 +318,17 @@ pub let core_debug_grandom_edge_determination : @graph.IProperty[
 ] = @graph.new_property("basic.edgeDetermination", EdgeAbsolute)
 
 ///|
-pub let core_debug_grandom_edges_absolute : @graph.IProperty[CoreDebugGRandomRandVal] = @graph.new_property(
+pub let core_debug_grandom_edges_absolute : @graph.IProperty[
+  CoreDebugGRandomRandVal,
+] = @graph.new_property(
   "basic.numberOfEdges",
   core_debug_grandom_rand_val_exact(20.0),
 )
 
 ///|
-pub let core_debug_grandom_relative_edges : @graph.IProperty[CoreDebugGRandomRandVal] = @graph.new_property(
-  "basic.relEdges",
-  core_debug_grandom_rand_val_all_nil(),
-)
+pub let core_debug_grandom_relative_edges : @graph.IProperty[
+  CoreDebugGRandomRandVal,
+] = @graph.new_property("basic.relEdges", core_debug_grandom_rand_val_all_nil())
 
 ///|
 pub let core_debug_grandom_density : @graph.IProperty[CoreDebugGRandomRandVal] = @graph.new_property(
@@ -397,13 +398,17 @@ pub let core_debug_grandom_set_node_size : @graph.IProperty[Bool] = @graph.new_p
 )
 
 ///|
-pub let core_debug_grandom_node_width : @graph.IProperty[CoreDebugGRandomRandVal] = @graph.new_property(
+pub let core_debug_grandom_node_width : @graph.IProperty[
+  CoreDebugGRandomRandVal,
+] = @graph.new_property(
   "basic.minNodeWidth",
   core_debug_grandom_rand_val_exact(30.0),
 )
 
 ///|
-pub let core_debug_grandom_node_height : @graph.IProperty[CoreDebugGRandomRandVal] = @graph.new_property(
+pub let core_debug_grandom_node_height : @graph.IProperty[
+  CoreDebugGRandomRandVal,
+] = @graph.new_property(
   "basic.minNodeHeight",
   core_debug_grandom_rand_val_exact(30.0),
 )
@@ -419,13 +424,17 @@ pub let core_debug_grandom_set_port_size : @graph.IProperty[Bool] = @graph.new_p
 )
 
 ///|
-pub let core_debug_grandom_port_width : @graph.IProperty[CoreDebugGRandomRandVal] = @graph.new_property(
+pub let core_debug_grandom_port_width : @graph.IProperty[
+  CoreDebugGRandomRandVal,
+] = @graph.new_property(
   "basic.portWidth",
   core_debug_grandom_rand_val_exact(4.0),
 )
 
 ///|
-pub let core_debug_grandom_port_height : @graph.IProperty[CoreDebugGRandomRandVal] = @graph.new_property(
+pub let core_debug_grandom_port_height : @graph.IProperty[
+  CoreDebugGRandomRandVal,
+] = @graph.new_property(
   "basic.portHeight",
   core_debug_grandom_rand_val_exact(4.0),
 )
@@ -436,10 +445,9 @@ pub let core_debug_grandom_create_port_labels : @graph.IProperty[Bool] = @graph.
 )
 
 ///|
-pub let core_debug_grandom_port_constraints : @graph.IProperty[@core.PortConstraints] = @graph.new_property(
-  "layout.portConstraints",
-  Undefined,
-)
+pub let core_debug_grandom_port_constraints : @graph.IProperty[
+  @core.PortConstraints,
+] = @graph.new_property("layout.portConstraints", Undefined)
 
 ///|
 pub let core_debug_grandom_incoming_north_side : @graph.IProperty[Int] = @graph.new_property(
@@ -482,7 +490,9 @@ pub let core_debug_grandom_outgoing_west_side : @graph.IProperty[Int] = @graph.n
 )
 
 ///|
-pub let core_debug_grandom_outgoing_edges : @graph.IProperty[CoreDebugGRandomRandVal] = @graph.new_property(
+pub let core_debug_grandom_outgoing_edges : @graph.IProperty[
+  CoreDebugGRandomRandVal,
+] = @graph.new_property(
   "basic.minOutgoingEdges",
   core_debug_grandom_rand_val_all_nil(),
 )
@@ -528,7 +538,9 @@ pub let core_debug_grandom_planar : @graph.IProperty[Bool] = @graph.new_property
 )
 
 ///|
-pub let core_debug_grandom_partition_frac : @graph.IProperty[CoreDebugGRandomRandVal] = @graph.new_property(
+pub let core_debug_grandom_partition_frac : @graph.IProperty[
+  CoreDebugGRandomRandVal,
+] = @graph.new_property(
   "basic.minPartitionFraction",
   core_debug_grandom_rand_val_exact(0.4),
 )
@@ -541,10 +553,15 @@ pub let core_debug_grandom_small_hierarchy : @graph.IProperty[Bool] = @graph.new
 ///|
 pub let core_debug_grandom_number_hierarchical_nodes : @graph.IProperty[
   CoreDebugGRandomRandVal,
-] = @graph.new_property("basic.HIERARCH_NODE", core_debug_grandom_rand_val_all_nil())
+] = @graph.new_property(
+  "basic.HIERARCH_NODE",
+  core_debug_grandom_rand_val_all_nil(),
+)
 
 ///|
-pub let core_debug_grandom_cross_hier : @graph.IProperty[CoreDebugGRandomRandVal] = @graph.new_property(
+pub let core_debug_grandom_cross_hier : @graph.IProperty[
+  CoreDebugGRandomRandVal,
+] = @graph.new_property(
   "basic.CROSS_HIER",
   core_debug_grandom_rand_val_all_nil(),
 )

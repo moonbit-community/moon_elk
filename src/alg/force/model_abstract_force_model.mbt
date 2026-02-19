@@ -163,9 +163,9 @@ pub fn abstract_force_model_avoid_same_position(
       (Bendpoint(forcee_bendpoint), Bendpoint(forcer_bendpoint)) =>
         if !tried_for_bendpoints {
           let forcee_edge = fbendpoint_edge(forcee_bendpoint)
-          let forcee_vector = @core.new_kvector_copy(fedge_target_point(forcee_edge)).sub(
-            fedge_source_point(forcee_edge),
-          )
+          let forcee_vector = @core.new_kvector_copy(
+            fedge_target_point(forcee_edge),
+          ).sub(fedge_source_point(forcee_edge))
           let forcee_length = forcee_vector.length()
           if forcee_length > 0.0 {
             let orthogonal_forcee = @core.new_kvector_xy(
@@ -175,9 +175,9 @@ pub fn abstract_force_model_avoid_same_position(
             ignore(forcee_position.add(orthogonal_forcee))
           }
           let forcer_edge = fbendpoint_edge(forcer_bendpoint)
-          let forcer_vector = @core.new_kvector_copy(fedge_target_point(forcer_edge)).sub(
-            fedge_source_point(forcer_edge),
-          )
+          let forcer_vector = @core.new_kvector_copy(
+            fedge_target_point(forcer_edge),
+          ).sub(fedge_source_point(forcer_edge))
           let forcer_length = forcer_vector.length()
           if forcer_length > 0.0 {
             let axis_factor = if forcee_vector.equals(forcer_vector) {

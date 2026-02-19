@@ -113,7 +113,10 @@ test "InternalElkGraphJsonParser parses node graph from json text" {
   inspect(@graph.node_identifier(root), content="root")
   inspect(@graph.node_children(root).length(), content="1")
   inspect(@graph.node_contained_edges(root).length(), content="1")
-  inspect(@graph.edge_identifier(@graph.node_contained_edges(root)[0]), content="e1")
+  inspect(
+    @graph.edge_identifier(@graph.node_contained_edges(root)[0]),
+    content="e1",
+  )
 }
 
 ///|

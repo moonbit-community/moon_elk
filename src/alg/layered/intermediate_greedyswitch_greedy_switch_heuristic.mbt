@@ -199,7 +199,7 @@ pub fn GreedySwitchHeuristic::always_improves(
 
 ///|
 pub fn GreedySwitchHeuristic::is_deterministic(
-  self : GreedySwitchHeuristic,
+  _self : GreedySwitchHeuristic,
 ) -> Bool {
   true
 }

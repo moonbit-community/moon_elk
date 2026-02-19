@@ -171,7 +171,9 @@ fn elk_graph_adapters_node_set_margin(
 ) -> Unit {
   let copied = new_elk_margin_copy(margin_value)
   let text = copied.to_string()
-  @graph.node_set_string_property(node, elk_graph_adapters_margins_property, text)
+  @graph.node_set_string_property(
+    node, elk_graph_adapters_margins_property, text,
+  )
   @graph.node_set_layout_option_string_by_id(
     node,
     elk_graph_adapters_margins_property.get_id(),
@@ -209,14 +211,17 @@ fn elk_graph_adapters_port_set_margin(
 }
 
 ///|
-fn elk_graph_adapters_node_port_constraints(node : @graph.ElkNode) -> PortConstraints {
+fn elk_graph_adapters_node_port_constraints(
+  node : @graph.ElkNode,
+) -> PortConstraints {
   if @graph.node_has_string_property(node, port_constraints) {
     return elk_graph_adapters_parse_port_constraints(
       @graph.node_get_string_property(node, port_constraints),
     )
   }
 
-  match @graph.node_layout_option_string_value(node, port_constraints.get_id()) {
+  match
+    @graph.node_layout_option_string_value(node, port_constraints.get_id()) {
     Some(raw) => elk_graph_adapters_parse_port_constraints(raw)
     None =>
       elk_graph_adapters_parse_port_constraints(port_constraints.get_default())
@@ -224,13 +229,18 @@ fn elk_graph_adapters_node_port_constraints(node : @graph.ElkNode) -> PortConstr
 }
 
 ///|
-fn elk_graph_adapters_node_inside_self_loops_activate(node : @graph.ElkNode) -> Bool {
+fn elk_graph_adapters_node_inside_self_loops_activate(
+  node : @graph.ElkNode,
+) -> Bool {
   if @graph.node_has_bool_property(node, inside_self_loops_activate) {
     return @graph.node_get_bool_property(node, inside_self_loops_activate)
   }
 
   match
-    @graph.node_layout_option_string_value(node, inside_self_loops_activate.get_id()) {
+    @graph.node_layout_option_string_value(
+      node,
+      inside_self_loops_activate.get_id(),
+    ) {
     Some(raw) =>
       match elk_graph_adapters_parse_bool(raw) {
         Some(value) => value
@@ -442,7 +452,10 @@ pub fn new_elk_graph_adapter(node : @graph.ElkNode) -> ElkGraphAdapter {
 
 ///|
 pub fn ElkGraphAdapter::get_size(self : ElkGraphAdapter) -> KVector {
-  new_kvector_xy(@graph.node_width(self.element), @graph.node_height(self.element))
+  new_kvector_xy(
+    @graph.node_width(self.element),
+    @graph.node_height(self.element),
+  )
 }
 
 ///|
@@ -505,7 +518,8 @@ pub fn ElkGraphAdapter::get_property_double(
 ) -> Double {
   if property.get_id() ==
     elk_graph_adapters_port_border_offset_property.get_id() {
-    match @graph.node_layout_option_string_value(self.element, property.get_id()) {
+    match
+      @graph.node_layout_option_string_value(self.element, property.get_id()) {
       Some(raw) =>
         match elk_graph_adapters_parse_double(raw) {
           Some(value) => value
@@ -622,7 +636,10 @@ pub fn new_elk_node_adapter(
 
 ///|
 pub fn ElkNodeAdapter::get_size(self : ElkNodeAdapter) -> KVector {
-  new_kvector_xy(@graph.node_width(self.element), @graph.node_height(self.element))
+  new_kvector_xy(
+    @graph.node_width(self.element),
+    @graph.node_height(self.element),
+  )
 }
 
 ///|
@@ -682,7 +699,8 @@ pub fn ElkNodeAdapter::get_property_double(
 ) -> Double {
   if property.get_id() ==
     elk_graph_adapters_port_border_offset_property.get_id() {
-    match @graph.node_layout_option_string_value(self.element, property.get_id()) {
+    match
+      @graph.node_layout_option_string_value(self.element, property.get_id()) {
       Some(raw) =>
         match elk_graph_adapters_parse_double(raw) {
           Some(value) => value
@@ -928,7 +946,10 @@ pub fn new_elk_port_adapter(port : @graph.ElkPort) -> ElkPortAdapter {
 
 ///|
 pub fn ElkPortAdapter::get_size(self : ElkPortAdapter) -> KVector {
-  new_kvector_xy(@graph.port_width(self.element), @graph.port_height(self.element))
+  new_kvector_xy(
+    @graph.port_width(self.element),
+    @graph.port_height(self.element),
+  )
 }
 
 ///|
@@ -962,7 +983,8 @@ pub fn ElkPortAdapter::has_property_int(
   self : ElkPortAdapter,
   property : @graph.IProperty[Int],
 ) -> Bool {
-  @graph.port_layout_option_string_value(self.element, property.get_id()) is Some(_)
+  @graph.port_layout_option_string_value(self.element, property.get_id())
+  is Some(_)
 }
 
 ///|
@@ -978,7 +1000,8 @@ pub fn ElkPortAdapter::has_property_bool(
   self : ElkPortAdapter,
   property : @graph.IProperty[Bool],
 ) -> Bool {
-  @graph.port_layout_option_string_value(self.element, property.get_id()) is Some(_)
+  @graph.port_layout_option_string_value(self.element, property.get_id())
+  is Some(_)
 }
 
 ///|
@@ -1001,7 +1024,8 @@ pub fn ElkPortAdapter::has_property_double(
   self : ElkPortAdapter,
   property : @graph.IProperty[Double],
 ) -> Bool {
-  @graph.port_layout_option_string_value(self.element, property.get_id()) is Some(_)
+  @graph.port_layout_option_string_value(self.element, property.get_id())
+  is Some(_)
 }
 
 ///|
@@ -1017,7 +1041,8 @@ pub fn ElkPortAdapter::has_property_string(
   self : ElkPortAdapter,
   property : @graph.IProperty[String],
 ) -> Bool {
-  @graph.port_layout_option_string_value(self.element, property.get_id()) is Some(_)
+  @graph.port_layout_option_string_value(self.element, property.get_id())
+  is Some(_)
 }
 
 ///|
@@ -1033,7 +1058,8 @@ pub fn ElkPortAdapter::has_property_string_array(
   self : ElkPortAdapter,
   property : @graph.IProperty[Array[String]],
 ) -> Bool {
-  @graph.port_layout_option_string_value(self.element, property.get_id()) is Some(_)
+  @graph.port_layout_option_string_value(self.element, property.get_id())
+  is Some(_)
 }
 
 ///|
@@ -1166,7 +1192,10 @@ pub fn new_elk_label_adapter(label : @graph.ElkLabel) -> ElkLabelAdapter {
 
 ///|
 pub fn ElkLabelAdapter::get_size(self : ElkLabelAdapter) -> KVector {
-  new_kvector_xy(@graph.label_width(self.element), @graph.label_height(self.element))
+  new_kvector_xy(
+    @graph.label_width(self.element),
+    @graph.label_height(self.element),
+  )
 }
 
 ///|
@@ -1203,7 +1232,8 @@ pub fn ElkLabelAdapter::has_property_int(
   self : ElkLabelAdapter,
   property : @graph.IProperty[Int],
 ) -> Bool {
-  @graph.label_layout_option_string_value(self.element, property.get_id()) is Some(_)
+  @graph.label_layout_option_string_value(self.element, property.get_id())
+  is Some(_)
 }
 
 ///|
@@ -1219,7 +1249,8 @@ pub fn ElkLabelAdapter::has_property_bool(
   self : ElkLabelAdapter,
   property : @graph.IProperty[Bool],
 ) -> Bool {
-  @graph.label_layout_option_string_value(self.element, property.get_id()) is Some(_)
+  @graph.label_layout_option_string_value(self.element, property.get_id())
+  is Some(_)
 }
 
 ///|
@@ -1242,7 +1273,8 @@ pub fn ElkLabelAdapter::has_property_double(
   self : ElkLabelAdapter,
   property : @graph.IProperty[Double],
 ) -> Bool {
-  @graph.label_layout_option_string_value(self.element, property.get_id()) is Some(_)
+  @graph.label_layout_option_string_value(self.element, property.get_id())
+  is Some(_)
 }
 
 ///|
@@ -1258,7 +1290,8 @@ pub fn ElkLabelAdapter::has_property_string(
   self : ElkLabelAdapter,
   property : @graph.IProperty[String],
 ) -> Bool {
-  @graph.label_layout_option_string_value(self.element, property.get_id()) is Some(_)
+  @graph.label_layout_option_string_value(self.element, property.get_id())
+  is Some(_)
 }
 
 ///|
@@ -1277,7 +1310,8 @@ pub fn ElkLabelAdapter::has_property_string_array(
   self : ElkLabelAdapter,
   property : @graph.IProperty[Array[String]],
 ) -> Bool {
-  @graph.label_layout_option_string_value(self.element, property.get_id()) is Some(_)
+  @graph.label_layout_option_string_value(self.element, property.get_id())
+  is Some(_)
 }
 
 ///|
@@ -1390,13 +1424,25 @@ pub fn ElkPortComparator::compare(
 
   match elk_graph_adapters_port_side(port1) {
     PortSide::North =>
-      elk_graph_adapters_compare_double(@graph.port_x(port1), @graph.port_x(port2))
+      elk_graph_adapters_compare_double(
+        @graph.port_x(port1),
+        @graph.port_x(port2),
+      )
     PortSide::East =>
-      elk_graph_adapters_compare_double(@graph.port_y(port1), @graph.port_y(port2))
+      elk_graph_adapters_compare_double(
+        @graph.port_y(port1),
+        @graph.port_y(port2),
+      )
     PortSide::South =>
-      elk_graph_adapters_compare_double(@graph.port_x(port2), @graph.port_x(port1))
+      elk_graph_adapters_compare_double(
+        @graph.port_x(port2),
+        @graph.port_x(port1),
+      )
     PortSide::West =>
-      elk_graph_adapters_compare_double(@graph.port_y(port2), @graph.port_y(port1))
+      elk_graph_adapters_compare_double(
+        @graph.port_y(port2),
+        @graph.port_y(port1),
+      )
     PortSide::SideUndefined => abort("Port side is undefined")
   }
 }

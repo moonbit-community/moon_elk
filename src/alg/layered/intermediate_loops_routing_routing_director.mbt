@@ -1,5 +1,8 @@
 ///|
-fn routing_director_port_side_equals(left : @core.PortSide, right : @core.PortSide) -> Bool {
+fn routing_director_port_side_equals(
+  left : @core.PortSide,
+  right : @core.PortSide,
+) -> Bool {
   match (left, right) {
     (@core.SideUndefined, @core.SideUndefined) => true
     (North, North) => true
@@ -196,7 +199,13 @@ fn RoutingDirector::determine_two_side_opposing_loop_routes(
   sl_loop : SelfHyperLoop,
 ) -> Unit {
   let sides = []
-  for side in [@core.PortSide::North, @core.PortSide::East, @core.PortSide::South, @core.PortSide::West] {
+  for
+    side in [
+      @core.PortSide::North,
+      @core.PortSide::East,
+      @core.PortSide::South,
+      @core.PortSide::West,
+    ] {
     if sl_loop.has_sl_ports_on_side(side) {
       sides.push(side)
     }
@@ -236,7 +245,13 @@ fn RoutingDirector::compute_missing_port_side(
   sl_loop : SelfHyperLoop,
 ) -> @core.PortSide {
   ignore(self)
-  for side in [@core.PortSide::North, @core.PortSide::East, @core.PortSide::South, @core.PortSide::West] {
+  for
+    side in [
+      @core.PortSide::North,
+      @core.PortSide::East,
+      @core.PortSide::South,
+      @core.PortSide::West,
+    ] {
     if !sl_loop.has_sl_ports_on_side(side) {
       return side
     }
@@ -352,7 +367,7 @@ fn RoutingDirector::compute_edge_penalty(
   leftmost_port : SelfLoopPort,
   rightmost_port : SelfLoopPort,
 ) -> Int {
-  if self.port_penalties.is_none() {
+  if self.port_penalties is None {
     self.compute_penalties(sl_holder)
   }
   let penalties = self.require_port_penalties()

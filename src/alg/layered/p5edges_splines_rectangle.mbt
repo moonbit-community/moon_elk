@@ -92,7 +92,10 @@ pub fn new_rectangle_vectors(vectors : Array[@core.KVector]) -> Rectangle {
 }
 
 ///|
-pub fn Rectangle::union_vector(self : Rectangle, vector : @core.KVector) -> Unit {
+pub fn Rectangle::union_vector(
+  self : Rectangle,
+  vector : @core.KVector,
+) -> Unit {
   self.top = rectangle_min_double(self.top, vector.y)
   self.right = rectangle_max_double(self.right, vector.x)
   self.bottom = rectangle_max_double(self.bottom, vector.y)

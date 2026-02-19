@@ -32,7 +32,9 @@ pub fn RadiusExtensionOverlapRemoval::remove_overlaps(
   self.sorter = radial_sorting_strategy_create(
     radial_graph_sorting_strategy(graph),
   )
-  self.base.set_spacing(@graph.node_get_double_property(graph, @core.spacing_node_node))
+  self.base.set_spacing(
+    @graph.node_get_double_property(graph, @core.spacing_node_node),
+  )
   let successors = radial_get_successors(root)
   self.extend(graph, successors, progress_monitor)
 }
@@ -49,7 +51,9 @@ pub fn RadiusExtensionOverlapRemoval::extend(
   }
   let old_positions = []
   for node in nodes {
-    old_positions.push(@core.new_kvector_xy(@graph.node_x(node), @graph.node_y(node)))
+    old_positions.push(
+      @core.new_kvector_xy(@graph.node_x(node), @graph.node_y(node)),
+    )
   }
   match progress_monitor {
     Some(monitor) => monitor.log_graph("Before removing overlaps")

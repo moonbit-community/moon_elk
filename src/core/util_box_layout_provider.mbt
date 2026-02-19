@@ -50,7 +50,9 @@ fn box_layout_provider_compare_double(left : Double, right : Double) -> Int {
 }
 
 ///|
-fn box_layout_provider_parse_padding(layout_node : @graph.ElkNode) -> ElkPadding {
+fn box_layout_provider_parse_padding(
+  layout_node : @graph.ElkNode,
+) -> ElkPadding {
   let parsed = new_elk_padding()
   parsed.parse(@graph.node_get_string_property(layout_node, padding))
   parsed
@@ -70,7 +72,9 @@ fn box_layout_provider_contains_value(
 }
 
 ///|
-fn box_layout_provider_has_minimum_size_constraint(node : @graph.ElkNode) -> Bool {
+fn box_layout_provider_has_minimum_size_constraint(
+  node : @graph.ElkNode,
+) -> Bool {
   for value in @graph.node_get_string_set_property(node, node_size_constraints) {
     if value == "MINIMUM_SIZE" || value == "MINIMUM_SIZE_WITH_PORTS" {
       return true
@@ -130,7 +134,9 @@ fn box_layout_provider_resize_node(
 }
 
 ///|
-fn box_layout_provider_resize_node_to_constraints(node : @graph.ElkNode) -> Unit {
+fn box_layout_provider_resize_node_to_constraints(
+  node : @graph.ElkNode,
+) -> Unit {
   ignore(
     box_layout_provider_resize_node(
       node,
@@ -269,7 +275,11 @@ fn box_layout_provider_group_translate(
   y : Double,
 ) -> BoxGroup {
   if group.node is Some(node) {
-    @graph.node_set_location(node, @graph.node_x(node) + x, @graph.node_y(node) + y)
+    @graph.node_set_location(
+      node,
+      @graph.node_x(node) + x,
+      @graph.node_y(node) + y,
+    )
     group
   } else {
     let mut index = 0
@@ -454,7 +464,10 @@ fn box_layout_provider_place_boxes_sorted(
   let mut total_area = 0.0
   for box in sorted_boxes {
     box_layout_provider_resize_node_to_constraints(box)
-    max_row_width = box_layout_provider_max(max_row_width, @graph.node_width(box))
+    max_row_width = box_layout_provider_max(
+      max_row_width,
+      @graph.node_width(box),
+    )
     total_area = total_area + @graph.node_width(box) * @graph.node_height(box)
   }
 
@@ -977,7 +990,9 @@ fn box_layout_provider_place_boxes_grouping(
   expand_nodes_value : Bool,
 ) -> Unit {
   let min_size = new_kvector()
-  min_size.parse(@graph.node_get_string_property(parent_node, node_size_minimum))
+  min_size.parse(
+    @graph.node_get_string_property(parent_node, node_size_minimum),
+  )
   min_size.x = box_layout_provider_max(
     min_size.x - padding_value.left - padding_value.right,
     0.0,
@@ -1081,9 +1096,13 @@ pub fn BoxLayoutProvider::layout(
   ignore(self.initialized)
   ignore(progress_monitor.begin("Box layout", 2.0))
 
-  let obj_spacing = @graph.node_get_double_property(layout_node, spacing_node_node)
+  let obj_spacing = @graph.node_get_double_property(
+    layout_node, spacing_node_node,
+  )
   let padding_value = box_layout_provider_parse_padding(layout_node)
-  let expand_nodes_value = @graph.node_get_bool_property(layout_node, expand_nodes)
+  let expand_nodes_value = @graph.node_get_bool_property(
+    layout_node, expand_nodes,
+  )
   let interactive_mode = @graph.node_get_bool_property(layout_node, interactive)
 
   let mode = box_layout_provider_mode_from_string(

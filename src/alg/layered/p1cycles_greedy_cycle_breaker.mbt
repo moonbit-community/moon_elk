@@ -1,5 +1,5 @@
 ///|
-struct GreedyCycleBreakerState {
+priv struct GreedyCycleBreakerState {
   indeg : Array[Int]
   outdeg : Array[Int]
   mark : Array[Int]

@@ -40,9 +40,8 @@ test "ForceMetaDataProvider registers algorithms and category" {
   )
   inspect(
     match force_algorithm {
-      Some(algorithm_data) => algorithm_data.knows_option(
-        force_repulsive_power.get_id(),
-      )
+      Some(algorithm_data) =>
+        algorithm_data.knows_option(force_repulsive_power.get_id())
       None => false
     },
     content="true",

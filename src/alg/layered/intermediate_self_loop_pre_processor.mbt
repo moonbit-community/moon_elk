@@ -94,7 +94,7 @@ fn self_loop_preprocessor_hide_ports(sl_holder : SelfLoopHolder) -> Unit {
     sl_port.set_hidden(true)
     sl_holder.set_ports_hidden(true)
 
-    if l_port.get_property_l_node(internal_properties_port_dummy).is_some() {
+    if l_port.get_property_l_node(internal_properties_port_dummy) is Some(_) {
       abort("self loop preprocessor should not encounter PORT_DUMMY here")
     }
   }

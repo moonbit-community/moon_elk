@@ -25,7 +25,6 @@ fn hyper_edge_segment_splitter_test_contains_dependency(
     let type_matches = match dependency.get_type() {
       DependencyType::Critical => critical
       DependencyType::Regular => !critical
-      _ => false
     }
     if !type_matches {
       continue

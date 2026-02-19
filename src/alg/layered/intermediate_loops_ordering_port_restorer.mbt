@@ -1,5 +1,8 @@
 ///|
-fn port_restorer_port_side_equals(left : @core.PortSide, right : @core.PortSide) -> Bool {
+fn port_restorer_port_side_equals(
+  left : @core.PortSide,
+  right : @core.PortSide,
+) -> Bool {
   match (left, right) {
     (@core.SideUndefined, @core.SideUndefined) => true
     (North, North) => true
@@ -76,7 +79,9 @@ fn port_restorer_target_area_key(
   side : @core.PortSide,
   area : PortSideArea,
 ) -> String {
-  @core.port_side_to_string(side) + ":" + port_restorer_port_side_area_to_string(area)
+  @core.port_side_to_string(side) +
+  ":" +
+  port_restorer_port_side_area_to_string(area)
 }
 
 ///|
@@ -205,7 +210,7 @@ fn PortRestorer::init_target_areas(self : PortRestorer) -> Unit {
 
 ///|
 fn PortRestorer::gather_self_loops_by_type(
-  self : PortRestorer,
+  _self : PortRestorer,
   sl_holder : SelfLoopHolder,
 ) -> Map[Int, Array[SelfHyperLoop]] {
   let loops : Map[Int, Array[SelfHyperLoop]] = {}
@@ -402,7 +407,13 @@ pub fn port_restorer_sorted_two_side_loop_port_sides(
   sl_loop : SelfHyperLoop,
 ) -> Array[@core.PortSide] {
   let sides = []
-  for side in [@core.PortSide::North, @core.PortSide::East, @core.PortSide::South, @core.PortSide::West] {
+  for
+    side in [
+      @core.PortSide::North,
+      @core.PortSide::East,
+      @core.PortSide::South,
+      @core.PortSide::West,
+    ] {
     if sl_loop.has_sl_ports_on_side(side) {
       sides.push(side)
     }
@@ -535,7 +546,12 @@ fn PortRestorer::process_four_side_loops(self : PortRestorer) -> Unit {
       FourSides,
     ) {
     for
-      side in [@core.PortSide::North, @core.PortSide::East, @core.PortSide::South, @core.PortSide::West] {
+      side in [
+        @core.PortSide::North,
+        @core.PortSide::East,
+        @core.PortSide::South,
+        @core.PortSide::West,
+      ] {
       if sl_loop.has_sl_ports_on_side(side) {
         self.add_to_target_area_loop(
           sl_loop,
@@ -594,7 +610,10 @@ fn port_restorer_side_set_contains(
 }
 
 ///|
-fn port_restorer_side_set_add(sides : Array[@core.PortSide], side : @core.PortSide) -> Unit {
+fn port_restorer_side_set_add(
+  sides : Array[@core.PortSide],
+  side : @core.PortSide,
+) -> Unit {
   if !port_restorer_side_set_contains(sides, side) {
     sides.push(side)
   }

@@ -15,7 +15,10 @@ test "layout_option_proxy set_proxy_value stores proxy by key" {
 test "layout_option_proxy resolve_value resolves by property metadata" {
   layout_meta_data_service_reset_for_test()
   layout_meta_data_service_register_default_options()
-  let property : @graph.IProperty[String] = @graph.new_property(no_layout.get_id(), "")
+  let property : @graph.IProperty[String] = @graph.new_property(
+    no_layout.get_id(),
+    "",
+  )
   let proxy = new_layout_option_proxy("1")
   inspect(proxy.resolve_value(Some(property)), content="Some(\"true\")")
   inspect(proxy.resolve_value(None), content="None")

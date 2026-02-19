@@ -15,7 +15,9 @@ fn abstract_barycenter_port_constraints_from_string(
 
 ///|
 fn abstract_barycenter_is_order_fixed(node : LNode) -> Bool {
-  let port_constraints_value = if node.has_property_string(@core.port_constraints) {
+  let port_constraints_value = if node.has_property_string(
+      @core.port_constraints,
+    ) {
     node.get_property_string(@core.port_constraints)
   } else {
     @core.port_constraints.get_default()
@@ -110,7 +112,11 @@ pub fn AbstractBarycenterPortDistributor::distribute_ports_while_sweeping(
 ) -> Bool {
   self.update_node_positions(node_order, current_index)
   let free_layer = node_order[current_index]
-  let side = if is_forward_sweep { @core.PortSide::West } else { @core.PortSide::East }
+  let side = if is_forward_sweep {
+    @core.PortSide::West
+  } else {
+    @core.PortSide::East
+  }
 
   if self.is_not_first_layer(
       node_order.length(),
@@ -280,8 +286,8 @@ fn AbstractBarycenterPortDistributor::iterate_ports_and_collect_in_layer_ports(
     if port.get_degree() > 0 {
       let barycenter = sum / port.get_degree().to_double()
       self.port_barycenter[port.get_id()] = barycenter
-      self.min_barycenter = @math.minimum(self.min_barycenter, barycenter)
-      self.max_barycenter = @math.maximum(self.max_barycenter, barycenter)
+      self.min_barycenter = @cmp.minimum(self.min_barycenter, barycenter)
+      self.max_barycenter = @cmp.maximum(self.max_barycenter, barycenter)
     } else if north_south_port {
       self.port_barycenter[port.get_id()] = sum
     }

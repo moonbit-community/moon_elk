@@ -293,10 +293,16 @@ test "get_individual_or_inherited follows node override then graph fallback" {
   graph.set_property_double(@core.spacing_edge_label, 17.0)
 
   let node = new_l_node(graph=Some(graph))
-  inspect(get_individual_or_inherited(node, @core.spacing_edge_label), content="17")
+  inspect(
+    get_individual_or_inherited(node, @core.spacing_edge_label),
+    content="17",
+  )
 
   node.set_property_double(@core.spacing_edge_label, 3.0)
-  inspect(get_individual_or_inherited(node, @core.spacing_edge_label), content="3")
+  inspect(
+    get_individual_or_inherited(node, @core.spacing_edge_label),
+    content="3",
+  )
 }
 
 ///|
@@ -329,7 +335,9 @@ test "compute_graph_properties follows LGraphUtil reference rules" {
   let non_free_port_constraints_node = new_l_node(graph=Some(graph))
   non_free_port_constraints_node.set_property_string(
     @core.port_constraints,
-    @core.port_constraints_to_string(l_graph_util_test_port_constraints_fixed_side()),
+    @core.port_constraints_to_string(
+      l_graph_util_test_port_constraints_fixed_side(),
+    ),
   )
   graph.get_layerless_nodes().push(non_free_port_constraints_node)
 

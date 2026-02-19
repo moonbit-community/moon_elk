@@ -24,9 +24,7 @@ fn graph_from_file_parse(path : String, content : String) -> ElkNode {
   if path.has_suffix(".json") {
     return elk_graph_json_for_graph(content).to_elk()
   }
-  new_elk_graph_parser().parse(content) catch {
-    _ => abort("Unable to parse graph file: " + path)
-  }
+  new_elk_graph_parser().parse(content)
 }
 
 ///|

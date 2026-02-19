@@ -439,7 +439,10 @@ test "GreedySwitchProcessor self_loops" {
     let bottom_right = creator.add_node_to_layer(right_layer)
 
     let top_left_port = creator.add_port_on_side(top_left, @core.PortSide::East)
-    let bottom_left_port = creator.add_port_on_side(bottom_left, @core.PortSide::East)
+    let bottom_left_port = creator.add_port_on_side(
+      bottom_left,
+      @core.PortSide::East,
+    )
     creator.set_up_ids()
 
     let self_loop_cross_graph = creator.get_graph()
@@ -454,7 +457,10 @@ test "GreedySwitchProcessor self_loops" {
       }
     }
 
-    let top_right_port = creator.add_port_on_side(top_right, @core.PortSide::West)
+    let top_right_port = creator.add_port_on_side(
+      top_right,
+      @core.PortSide::West,
+    )
     let bottom_right_port = creator.add_port_on_side(
       bottom_right,
       @core.PortSide::West,
@@ -605,7 +611,10 @@ test "GreedySwitchProcessor switch_more_than_once" {
       4,
       creator.make_layer(creator.get_graph()),
     )
-    let left_top_port = creator.add_port_on_side(left_nodes[0], @core.PortSide::East)
+    let left_top_port = creator.add_port_on_side(
+      left_nodes[0],
+      @core.PortSide::East,
+    )
     let left_lower_port = creator.add_port_on_side(
       left_nodes[1],
       @core.PortSide::East,

@@ -593,7 +593,10 @@ fn graph_text_parser_parse_edge_layout(
         match
           section_by_id.get(graph_text_parser_last_segment(pending.target_id)) {
           Some(target_section) =>
-            @graph.edge_section_add_outgoing_section(pending.source, target_section)
+            @graph.edge_section_add_outgoing_section(
+              pending.source,
+              target_section,
+            )
           None => ()
         }
     }
@@ -639,7 +642,10 @@ fn graph_text_parser_parse_label(
   }
   if index < tokens.length() &&
     tokens[index].token_type == graph_text_lexer_rule_string {
-    @graph.label_set_text(label, graph_text_parser_strip_quotes(tokens[index].lexeme))
+    @graph.label_set_text(
+      label,
+      graph_text_parser_strip_quotes(tokens[index].lexeme),
+    )
     index += 1
   }
   if index < tokens.length() && tokens[index].lexeme == "{" {
@@ -703,7 +709,11 @@ fn graph_text_parser_parse_port(
   let port = @graph.create_port(Some(parent))
   let port_id = graph_text_parser_decode_id(tokens[index].lexeme)
   @graph.port_set_identifier(port, port_id)
-  graph_text_parser_register_shape(id_to_shape, port_id, @graph.make_port_shape(port))
+  graph_text_parser_register_shape(
+    id_to_shape,
+    port_id,
+    @graph.make_port_shape(port),
+  )
   index += 1
   if index < tokens.length() && tokens[index].lexeme == "{" {
     index += 1
@@ -763,7 +773,10 @@ fn graph_text_parser_parse_edge(
   if index + 1 < tokens.length() &&
     tokens[index].token_type == graph_text_lexer_rule_id &&
     tokens[index + 1].lexeme == ":" {
-    @graph.edge_set_identifier(edge, graph_text_parser_decode_id(tokens[index].lexeme))
+    @graph.edge_set_identifier(
+      edge,
+      graph_text_parser_decode_id(tokens[index].lexeme),
+    )
     index += 2
   }
   let mut read_sources = false
@@ -866,7 +879,11 @@ fn graph_text_parser_parse_node(
   let node = @graph.create_node(Some(parent))
   let node_id = graph_text_parser_decode_id(tokens[index].lexeme)
   @graph.node_set_identifier(node, node_id)
-  graph_text_parser_register_shape(id_to_shape, node_id, @graph.make_node_shape(node))
+  graph_text_parser_register_shape(
+    id_to_shape,
+    node_id,
+    @graph.make_node_shape(node),
+  )
   index += 1
   if index < tokens.length() && tokens[index].lexeme == "{" {
     index += 1

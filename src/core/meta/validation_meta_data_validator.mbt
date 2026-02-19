@@ -76,8 +76,8 @@ fn core_meta_validator_check_duplicate_ids_in_group_or_options(
   seen_option_ids : Map[String, Int],
   issues : Array[CoreMetaValidationIssue],
 ) -> Unit {
-  for member in members {
-    match member {
+  for group_or_option_member in members {
+    match group_or_option_member {
       CoreMetaMdGroupOrOptionGroup(group) => {
         match group.get_name() {
           Some(name) =>
@@ -117,8 +117,8 @@ pub fn MetaDataValidator::check_duplicate_member_id(
   let option_ids : Map[String, Int] = {}
   let group_ids : Map[String, Int] = {}
 
-  for member in bundle.get_members() {
-    match member {
+  for bundle_member in bundle.get_members() {
+    match bundle_member {
       CoreMetaMdBundleMemberAlgorithm(algorithm) =>
         match algorithm.get_name() {
           Some(name) =>

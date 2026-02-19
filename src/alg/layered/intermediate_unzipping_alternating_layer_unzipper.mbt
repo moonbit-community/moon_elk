@@ -1,5 +1,5 @@
 ///|
-struct AlternatingLayerUnzipperPendingLayer {
+priv struct AlternatingLayerUnzipperPendingLayer {
   layer : Layer
   insertion_index : Int
 }

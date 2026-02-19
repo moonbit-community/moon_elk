@@ -31,7 +31,9 @@ fn transfer_sample_graph() -> Json {
 }
 
 ///|
-fn required_importer(maybe_importer : @core.Maybe[JsonImporter]) -> JsonImporter {
+fn required_importer(
+  maybe_importer : @core.Maybe[JsonImporter],
+) -> JsonImporter {
   match maybe_importer.get() {
     Some(importer) => importer
     None => abort("missing importer")

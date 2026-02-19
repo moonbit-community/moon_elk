@@ -298,7 +298,9 @@ fn BKCompactor::place_block(
           }
         }
       } else {
-        let spacing = self.layered_graph.get_property_double(@core.spacing_node_node)
+        let spacing = self.layered_graph.get_property_double(
+          @core.spacing_node_node,
+        )
 
         let source_sink = bal.require_sink(root)
         let target_sink = bal.require_sink(neighbor_root)

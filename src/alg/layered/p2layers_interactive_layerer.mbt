@@ -1,5 +1,5 @@
 ///|
-struct InteractiveLayererLayerSpan {
+priv struct InteractiveLayererLayerSpan {
   mut start : Double
   mut end : Double
   nodes : Array[LNode]

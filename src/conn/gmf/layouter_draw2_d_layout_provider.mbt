@@ -49,11 +49,14 @@ fn draw2d_layout_is_vertical(layout_node : @graph.ElkNode) -> Bool {
 }
 
 ///|
-fn draw2d_layout_collect_edges(layout_node : @graph.ElkNode) -> Array[@graph.ElkEdge] {
+fn draw2d_layout_collect_edges(
+  layout_node : @graph.ElkNode,
+) -> Array[@graph.ElkEdge] {
   let edge_map : Map[Int, Bool] = {}
   for child in @graph.node_children(layout_node) {
     for edge in @graph.node_outgoing_edges(child) {
-      if @graph.edge_targets(edge).length() == 1 && @graph.edge_sources(edge).length() == 1 {
+      if @graph.edge_targets(edge).length() == 1 &&
+        @graph.edge_sources(edge).length() == 1 {
         edge_map[edge] = true
       }
     }
@@ -135,8 +138,10 @@ fn draw2d_layout_apply_edges(layout_node : @graph.ElkNode) -> Unit {
       @graph.edge_sections(edge)[0]
     }
 
-    let start_x = @graph.node_x(source_node) + @graph.node_width(source_node) / 2.0
-    let start_y = @graph.node_y(source_node) + @graph.node_height(source_node) / 2.0
+    let start_x = @graph.node_x(source_node) +
+      @graph.node_width(source_node) / 2.0
+    let start_y = @graph.node_y(source_node) +
+      @graph.node_height(source_node) / 2.0
 
     // Keep the original Java logic, including the end-point assignment bug.
     @graph.edge_section_set_start(section, start_x, start_y)

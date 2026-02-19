@@ -76,6 +76,24 @@ fn dot_importer_is_number_char(c : Char) -> Bool {
 }
 
 ///|
+fn dot_importer_slice(text : String, start : Int, end_ : Int) -> String {
+  try text[start:end_] catch {
+    _ => ""
+  } noraise {
+    value => value.to_string()
+  }
+}
+
+///|
+fn dot_importer_slice_from(text : String, start : Int) -> String {
+  try text[start:] catch {
+    _ => ""
+  } noraise {
+    value => value.to_string()
+  }
+}
+
+///|
 fn dot_importer_parse_numbers(text : String) -> Array[Double] {
   let numbers : Array[Double] = []
   let mut token_start = -1
@@ -89,7 +107,7 @@ fn dot_importer_parse_numbers(text : String) -> Array[Double] {
     } else if token_start >= 0 {
       match
         dot_exporter_parse_double_token(
-          text.substring(start=token_start, end=index),
+          dot_importer_slice(text, token_start, index),
         ) {
         Some(value) => numbers.push(value)
         None => ()
@@ -99,7 +117,10 @@ fn dot_importer_parse_numbers(text : String) -> Array[Double] {
     index += 1
   }
   if token_start >= 0 {
-    match dot_exporter_parse_double_token(text.substring(start=token_start)) {
+    match
+      dot_exporter_parse_double_token(
+        dot_importer_slice_from(text, token_start),
+      ) {
       Some(value) => numbers.push(value)
       None => ()
     }
@@ -154,7 +175,7 @@ fn dot_importer_trim_value(attribute : DotAttribute) -> String {
     None => "true"
   }
   if value.length() >= 2 && value.has_prefix("\"") && value.has_suffix("\"") {
-    value.substring(start=1, end=value.length() - 1).trim().to_string()
+    dot_importer_slice(value, 1, value.length() - 1).trim().to_string()
   } else {
     value
   }
@@ -321,7 +342,7 @@ fn dot_importer_apply_attribute_to_holder(
     if value.has_prefix("random") {
       let random_value = match
         dot_importer_parse_optional_int(
-          value.substring(start="random".length()),
+          dot_importer_slice_from(value, "random".length()),
         ) {
         Some(parsed) => parsed
         None => 0
@@ -331,7 +352,9 @@ fn dot_importer_apply_attribute_to_holder(
   } else if name == dot_attr_weight {
     match dot_importer_parse_optional_double(value) {
       Some(parsed) =>
-        holder.layout_options[@core.priority.get_id()] = parsed.to_int().to_string()
+        holder.layout_options[@core.priority.get_id()] = parsed
+          .to_int()
+          .to_string()
       None =>
         trans_data.log(
           "Discarding attribute \{name}=\{value} since its value could not be parsed correctly.",
@@ -363,7 +386,8 @@ fn dot_importer_apply_attribute_to_node(
       }
     } else if entry.0 == @core.priority.get_id() {
       match dot_importer_parse_optional_double(entry.1) {
-        Some(parsed) => @graph.node_set_double_property(node, @core.priority, parsed)
+        Some(parsed) =>
+          @graph.node_set_double_property(node, @core.priority, parsed)
         None => ()
       }
     } else {
@@ -405,7 +429,8 @@ fn dot_importer_apply_holder_to_node(
       }
     } else if entry.0 == @core.priority.get_id() {
       match dot_importer_parse_optional_double(entry.1) {
-        Some(parsed) => @graph.node_set_double_property(node, @core.priority, parsed)
+        Some(parsed) =>
+          @graph.node_set_double_property(node, @core.priority, parsed)
         None => ()
       }
     } else {
@@ -413,11 +438,13 @@ fn dot_importer_apply_holder_to_node(
     }
   }
   match holder.def_width {
-    Some(width) => @graph.node_set_dimensions(node, width, @graph.node_height(node))
+    Some(width) =>
+      @graph.node_set_dimensions(node, width, @graph.node_height(node))
     None => ()
   }
   match holder.def_height {
-    Some(height) => @graph.node_set_dimensions(node, @graph.node_width(node), height)
+    Some(height) =>
+      @graph.node_set_dimensions(node, @graph.node_width(node), height)
     None => ()
   }
 }
@@ -557,7 +584,9 @@ pub fn DotImporter::transform_node_statement(
     }
     let value = dot_importer_trim_value(attr)
     if attr_name == dot_attr_label {
-      let label = @graph.create_label(Some(@graph.make_node_label_parent(elknode)))
+      let label = @graph.create_label(
+        Some(@graph.make_node_label_parent(elknode)),
+      )
       @graph.label_set_text(label, value)
     } else if attr_name == dot_attr_pos {
       match dot_exporter_parse_point_token(value) {
@@ -654,7 +683,8 @@ pub fn DotImporter::transform_edge_statement(
     let edge_target = original_targets[target_index]
     let elkedge = @graph.create_edge(None)
     match source_port {
-      Some(port) => @graph.edge_add_source(elkedge, @graph.make_port_shape(port))
+      Some(port) =>
+        @graph.edge_add_source(elkedge, @graph.make_port_shape(port))
       None => @graph.edge_add_source(elkedge, @graph.make_node_shape(source))
     }
 
@@ -699,7 +729,8 @@ pub fn DotImporter::transform_edge_statement(
     }
 
     match target_port {
-      Some(port) => @graph.edge_add_target(elkedge, @graph.make_port_shape(port))
+      Some(port) =>
+        @graph.edge_add_target(elkedge, @graph.make_port_shape(port))
       None => @graph.edge_add_target(elkedge, @graph.make_node_shape(target))
     }
 
@@ -729,19 +760,25 @@ pub fn DotImporter::transform_edge_statement(
       }
       let value = dot_importer_trim_value(attr)
       if attr_name == dot_attr_label {
-        let label = @graph.create_label(Some(@graph.make_edge_label_parent(elkedge)))
+        let label = @graph.create_label(
+          Some(@graph.make_edge_label_parent(elkedge)),
+        )
         @graph.label_set_text(label, value)
         @graph.label_set_layout_option_string_by_id(
           label, dot_exporter_option_edge_labels_placement, "CENTER",
         )
       } else if attr_name == dot_attr_headlabel {
-        let label = @graph.create_label(Some(@graph.make_edge_label_parent(elkedge)))
+        let label = @graph.create_label(
+          Some(@graph.make_edge_label_parent(elkedge)),
+        )
         @graph.label_set_text(label, value)
         @graph.label_set_layout_option_string_by_id(
           label, dot_exporter_option_edge_labels_placement, "HEAD",
         )
       } else if attr_name == dot_attr_taillabel {
-        let label = @graph.create_label(Some(@graph.make_edge_label_parent(elkedge)))
+        let label = @graph.create_label(
+          Some(@graph.make_edge_label_parent(elkedge)),
+        )
         @graph.label_set_text(label, value)
         @graph.label_set_layout_option_string_by_id(
           label, dot_exporter_option_edge_labels_placement, "TAIL",
@@ -976,8 +1013,12 @@ pub fn DotImporter::apply_layout_node(
       DotStatementNodeStatement(node_statement) => {
         let attributes = node_statement.get_attributes()
         dot_importer_remove_attributes(attributes, dot_attr_pos)
-        let xpos = @graph.node_x(elknode) + @graph.node_width(elknode) / 2.0 + offset.x
-        let ypos = @graph.node_y(elknode) + @graph.node_height(elknode) / 2.0 + offset.y
+        let xpos = @graph.node_x(elknode) +
+          @graph.node_width(elknode) / 2.0 +
+          offset.x
+        let ypos = @graph.node_y(elknode) +
+          @graph.node_height(elknode) / 2.0 +
+          offset.y
         let pos_string = "\"" + xpos.to_string() + "," + ypos.to_string() + "\""
         attributes.push(dot_exporter_create_attribute(dot_attr_pos, pos_string))
         dot_importer_remove_attributes(attributes, dot_attr_width)
@@ -998,7 +1039,10 @@ pub fn DotImporter::apply_layout_node(
       DotStatementSubgraph(_) =>
         self.apply_layout_node(
           elknode,
-          @core.new_kvector_copy(offset).add_xy(@graph.node_x(elknode), @graph.node_y(elknode)),
+          @core.new_kvector_copy(offset).add_xy(
+            @graph.node_x(elknode),
+            @graph.node_y(elknode),
+          ),
           graph,
         )
       _ => ()
@@ -1079,8 +1123,12 @@ pub fn DotImporter::apply_layout_edge(
     match attr_key {
       Some(key) => {
         dot_importer_remove_attributes(attributes, key)
-        let xpos = @graph.label_x(label) + @graph.label_width(label) / 2.0 + offset.x
-        let ypos = @graph.label_y(label) + @graph.label_height(label) / 2.0 + offset.y
+        let xpos = @graph.label_x(label) +
+          @graph.label_width(label) / 2.0 +
+          offset.x
+        let ypos = @graph.label_y(label) +
+          @graph.label_height(label) / 2.0 +
+          offset.y
         let pos_string = "\"" + xpos.to_string() + "," + ypos.to_string() + "\""
         attributes.push(dot_exporter_create_attribute(key, pos_string))
       }
@@ -1096,7 +1144,8 @@ pub fn DotImporter::transfer_layout(
 ) -> Unit {
   for layout_node in trans_data.get_target_graphs() {
     match self.root_graph_map.get(layout_node) {
-      Some(graph) => self.apply_layout_node(layout_node, @core.new_kvector(), graph)
+      Some(graph) =>
+        self.apply_layout_node(layout_node, @core.new_kvector(), graph)
       None => ()
     }
   }

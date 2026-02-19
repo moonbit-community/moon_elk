@@ -20,10 +20,11 @@ fn layout_dot_exporter_parse_double(text : String?) -> Double? {
         normalized.has_suffix("F") ||
         normalized.has_suffix("d") ||
         normalized.has_suffix("D") {
-        let without_suffix = normalized.substring(
-          start=0,
-          end=normalized.length() - 1,
-        )
+        let without_suffix = try normalized[:normalized.length() - 1] catch {
+          _ => ""
+        } noraise {
+          value => value.to_string()
+        }
         if without_suffix.is_empty() {
           None
         } else {
@@ -265,7 +266,11 @@ fn layout_dot_exporter_has_end_labels(edge : @graph.ElkEdge) -> Bool {
 ///|
 fn layout_dot_exporter_unquote(text : String) -> String {
   if text.length() >= 2 && text.has_prefix("\"") && text.has_suffix("\"") {
-    text.substring(start=1, end=text.length() - 1)
+    try text[1:text.length() - 1] catch {
+      _ => text
+    } noraise {
+      value => value.to_string()
+    }
   } else {
     text
   }
@@ -287,28 +292,44 @@ fn layout_dot_exporter_append_graph_attributes(
 ) -> Unit {
   let graph_attr_statement = @dot.dot_create_attribute_statement()
   graph_attr_statement.set_type(Some(@dot.dot_attribute_type_graph()))
-  statements.insert(0, @dot.dot_statement_attribute_statement(graph_attr_statement))
+  statements.insert(
+    0,
+    @dot.dot_statement_attribute_statement(graph_attr_statement),
+  )
   let graph_attrs = graph_attr_statement.get_attributes()
 
   let node_attr_statement = @dot.dot_create_attribute_statement()
   node_attr_statement.set_type(Some(@dot.dot_attribute_type_node()))
-  statements.insert(1, @dot.dot_statement_attribute_statement(node_attr_statement))
+  statements.insert(
+    1,
+    @dot.dot_statement_attribute_statement(node_attr_statement),
+  )
   let node_attrs = node_attr_statement.get_attributes()
-  node_attrs.push(@dot.dot_exporter_create_attribute(@dot.dot_attr_shape, "box"))
-  node_attrs.push(@dot.dot_exporter_create_attribute(@dot.dot_attr_fixedsize, "true"))
+  node_attrs.push(
+    @dot.dot_exporter_create_attribute(@dot.dot_attr_shape, "box"),
+  )
+  node_attrs.push(
+    @dot.dot_exporter_create_attribute(@dot.dot_attr_fixedsize, "true"),
+  )
 
   let edge_attr_statement = @dot.dot_create_attribute_statement()
   edge_attr_statement.set_type(Some(@dot.dot_attribute_type_edge()))
-  statements.insert(2, @dot.dot_statement_attribute_statement(edge_attr_statement))
+  statements.insert(
+    2,
+    @dot.dot_statement_attribute_statement(edge_attr_statement),
+  )
   let edge_attrs = edge_attr_statement.get_attributes()
-  edge_attrs.push(@dot.dot_exporter_create_attribute(@dot.dot_attr_edgedir, "none"))
+  edge_attrs.push(
+    @dot.dot_exporter_create_attribute(@dot.dot_attr_edgedir, "none"),
+  )
 
   let mut spacing = layout_dot_exporter_node_option_double(
     parent_node, @core.spacing_node_node,
   )
   if spacing < 0.0 {
     match command {
-      @dot.Circo | @dot.Fdp | @dot.Neato => spacing = @dot.dot_exporter_def_spacing_large
+      @dot.Circo | @dot.Fdp | @dot.Neato =>
+        spacing = @dot.dot_exporter_def_spacing_large
       @dot.Twopi => spacing = @dot.dot_exporter_def_spacing_xlarge
       _ => spacing = @dot.dot_exporter_def_spacing_small
     }
@@ -331,15 +352,25 @@ fn layout_dot_exporter_append_graph_attributes(
           rank_sep_factor * spacing / @dot.dot_exporter_dpi.to_double(),
         ),
       )
-      let direction_value = @graph.node_get_string_property(parent_node, @core.direction).to_upper()
+      let direction_value = @graph.node_get_string_property(
+        parent_node, @core.direction,
+      ).to_upper()
       if direction_value == "UP" {
-        graph_attrs.push(@dot.dot_exporter_create_attribute(@dot.dot_attr_rankdir, "BT"))
+        graph_attrs.push(
+          @dot.dot_exporter_create_attribute(@dot.dot_attr_rankdir, "BT"),
+        )
       } else if direction_value == "LEFT" {
-        graph_attrs.push(@dot.dot_exporter_create_attribute(@dot.dot_attr_rankdir, "RL"))
+        graph_attrs.push(
+          @dot.dot_exporter_create_attribute(@dot.dot_attr_rankdir, "RL"),
+        )
       } else if direction_value == "RIGHT" {
-        graph_attrs.push(@dot.dot_exporter_create_attribute(@dot.dot_attr_rankdir, "LR"))
+        graph_attrs.push(
+          @dot.dot_exporter_create_attribute(@dot.dot_attr_rankdir, "LR"),
+        )
       } else {
-        graph_attrs.push(@dot.dot_exporter_create_attribute(@dot.dot_attr_rankdir, "TB"))
+        graph_attrs.push(
+          @dot.dot_exporter_create_attribute(@dot.dot_attr_rankdir, "TB"),
+        )
       }
       let iterations_factor = layout_dot_exporter_node_option_double(
         parent_node, graphviz_option_iterations_factor,
@@ -410,7 +441,9 @@ fn layout_dot_exporter_append_graph_attributes(
       )
       if epsilon > 0.0 {
         graph_attrs.push(
-          @dot.dot_exporter_create_attribute_double(@dot.dot_attr_epsilon, epsilon),
+          @dot.dot_exporter_create_attribute_double(
+            @dot.dot_attr_epsilon, epsilon,
+          ),
         )
       }
       let model = layout_dot_exporter_parse_neato_model(
@@ -473,7 +506,10 @@ fn layout_dot_exporter_append_graph_attributes(
     )
     if layout_dot_exporter_is_command_twopi(command) || pack {
       graph_attrs.push(
-        @dot.dot_exporter_create_attribute_int(@dot.dot_attr_pack, spacing.to_int()),
+        @dot.dot_exporter_create_attribute_int(
+          @dot.dot_attr_pack,
+          spacing.to_int(),
+        ),
       )
     }
   }
@@ -486,9 +522,13 @@ fn layout_dot_exporter_append_graph_attributes(
       @dot.dot_exporter_create_attribute(@dot.dot_attr_splines, "polyline"),
     )
   } else if edge_routing == "ORTHOGONAL" {
-    graph_attrs.push(@dot.dot_exporter_create_attribute(@dot.dot_attr_splines, "ortho"))
+    graph_attrs.push(
+      @dot.dot_exporter_create_attribute(@dot.dot_attr_splines, "ortho"),
+    )
   } else {
-    graph_attrs.push(@dot.dot_exporter_create_attribute(@dot.dot_attr_splines, "spline"))
+    graph_attrs.push(
+      @dot.dot_exporter_create_attribute(@dot.dot_attr_splines, "spline"),
+    )
     trans_data.set_bool_property(@dot.dot_exporter_use_splines, true)
   }
 
@@ -571,7 +611,9 @@ fn layout_dot_exporter_set_edge_labels_for_statement(
     )
     if distance >= 0.0 {
       attributes.push(
-        @dot.dot_exporter_create_attribute_double(@dot.dot_attr_labeldistance, distance),
+        @dot.dot_exporter_create_attribute_double(
+          @dot.dot_attr_labeldistance, distance,
+        ),
       )
     }
   }

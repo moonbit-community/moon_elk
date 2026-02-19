@@ -1,6 +1,8 @@
 ///|
 fn greedy_port_distributor_is_order_fixed(node : LNode) -> Bool {
-  let port_constraints_value = if node.has_property_string(@core.port_constraints) {
+  let port_constraints_value = if node.has_property_string(
+      @core.port_constraints,
+    ) {
     node.get_property_string(@core.port_constraints)
   } else {
     @core.port_constraints.get_default()
@@ -242,7 +244,11 @@ fn GreedyPortDistributor::distribute_ports_in_layer(
   current_index : Int,
   is_forward_sweep : Bool,
 ) -> Bool {
-  let side = if is_forward_sweep { @core.PortSide::West } else { @core.PortSide::East }
+  let side = if is_forward_sweep {
+    @core.PortSide::West
+  } else {
+    @core.PortSide::East
+  }
   let mut improved = false
 
   for node in node_order[current_index] {

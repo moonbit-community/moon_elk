@@ -43,21 +43,17 @@ fn abstract_port_test_distribute_ports_in_complete_graph(
   let nodes = abstract_port_test_order(graph)
   for i in 0..<nodes.length() {
     ignore(
-      graph_data.port_distributor().distribute_ports_while_sweeping(
-        nodes,
-        i,
-        true,
-      ),
+      graph_data
+      .port_distributor()
+      .distribute_ports_while_sweeping(nodes, i, true),
     )
   }
   for i in 0..<nodes.length() {
     let index = nodes.length() - 1 - i
     ignore(
-      graph_data.port_distributor().distribute_ports_while_sweeping(
-        nodes,
-        index,
-        false,
-      ),
+      graph_data
+      .port_distributor()
+      .distribute_ports_while_sweeping(nodes, index, false),
     )
   }
 }

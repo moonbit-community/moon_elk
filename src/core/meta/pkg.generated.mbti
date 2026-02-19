@@ -1,0 +1,703 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/moon_elk/core/meta"
+
+// Values
+pub let core_meta_antlr_token_file_content : String
+
+pub let core_meta_antlr_token_file_path : String
+
+pub fn core_meta_create_md_algorithm() -> CoreMetaMdAlgorithm
+
+pub fn core_meta_create_md_bundle() -> CoreMetaMdBundle
+
+pub fn core_meta_create_md_category() -> CoreMetaMdCategory
+
+pub fn core_meta_create_md_group() -> CoreMetaMdGroup
+
+pub fn core_meta_create_md_model() -> CoreMetaMdModel
+
+pub fn core_meta_create_md_option() -> CoreMetaMdOption
+
+pub fn core_meta_create_md_option_dependency() -> CoreMetaMdOptionDependency
+
+pub fn core_meta_create_md_option_support() -> CoreMetaMdOptionSupport
+
+pub let core_meta_default_file_extension : String
+
+pub let core_meta_default_language_name : String
+
+pub let core_meta_default_serializer_class_name : String
+
+pub let core_meta_epackage_value : String
+
+pub let core_meta_file_extension : String
+
+pub let core_meta_generator_class_name : String
+
+pub let core_meta_grammar_name : String
+
+pub let core_meta_lexer_rule_any_other : Int
+
+pub let core_meta_lexer_rule_id : Int
+
+pub let core_meta_lexer_rule_int : Int
+
+pub let core_meta_lexer_rule_ml_comment : Int
+
+pub let core_meta_lexer_rule_sl_comment : Int
+
+pub let core_meta_lexer_rule_string : Int
+
+pub let core_meta_lexer_rule_ws : Int
+
+pub let core_meta_md_algorithm_classifier_id : Int
+
+pub let core_meta_md_bundle_classifier_id : Int
+
+pub fn core_meta_md_bundle_member_algorithm(CoreMetaMdAlgorithm) -> CoreMetaMdBundleMember
+
+pub fn core_meta_md_bundle_member_as_algorithm(CoreMetaMdBundleMember) -> CoreMetaMdAlgorithm?
+
+pub fn core_meta_md_bundle_member_as_category(CoreMetaMdBundleMember) -> CoreMetaMdCategory?
+
+pub fn core_meta_md_bundle_member_as_group_or_option(CoreMetaMdBundleMember) -> CoreMetaMdGroupOrOption?
+
+pub fn core_meta_md_bundle_member_category(CoreMetaMdCategory) -> CoreMetaMdBundleMember
+
+pub let core_meta_md_bundle_member_classifier_id : Int
+
+pub fn core_meta_md_bundle_member_group_or_option(CoreMetaMdGroupOrOption) -> CoreMetaMdBundleMember
+
+pub fn core_meta_md_bundle_member_name(CoreMetaMdBundleMember) -> String?
+
+pub let core_meta_md_bundle_member_name_feature : String
+
+pub fn core_meta_md_bundle_member_tag(CoreMetaMdBundleMember) -> String
+
+pub let core_meta_md_category_classifier_id : Int
+
+pub let core_meta_md_graph_feature_classifier_id : Int
+
+pub fn core_meta_md_graph_feature_clusters() -> CoreMetaMdGraphFeature
+
+pub fn core_meta_md_graph_feature_compound() -> CoreMetaMdGraphFeature
+
+pub fn core_meta_md_graph_feature_disconnected() -> CoreMetaMdGraphFeature
+
+pub fn core_meta_md_graph_feature_edge_labels() -> CoreMetaMdGraphFeature
+
+pub fn core_meta_md_graph_feature_from_int(Int) -> CoreMetaMdGraphFeature?
+
+pub fn core_meta_md_graph_feature_from_name(String) -> CoreMetaMdGraphFeature?
+
+pub fn core_meta_md_graph_feature_from_string(String) -> CoreMetaMdGraphFeature?
+
+pub fn core_meta_md_graph_feature_inside_self_loops() -> CoreMetaMdGraphFeature
+
+pub fn core_meta_md_graph_feature_literal(CoreMetaMdGraphFeature) -> String
+
+pub fn core_meta_md_graph_feature_multi_edges() -> CoreMetaMdGraphFeature
+
+pub fn core_meta_md_graph_feature_name(CoreMetaMdGraphFeature) -> String
+
+pub fn core_meta_md_graph_feature_ports() -> CoreMetaMdGraphFeature
+
+pub fn core_meta_md_graph_feature_self_loops() -> CoreMetaMdGraphFeature
+
+pub fn core_meta_md_graph_feature_to_string(CoreMetaMdGraphFeature) -> String
+
+pub fn core_meta_md_graph_feature_value(CoreMetaMdGraphFeature) -> Int
+
+pub let core_meta_md_group_classifier_id : Int
+
+pub fn core_meta_md_group_or_option_as_group(CoreMetaMdGroupOrOption) -> CoreMetaMdGroup?
+
+pub fn core_meta_md_group_or_option_as_option(CoreMetaMdGroupOrOption) -> CoreMetaMdOption?
+
+pub let core_meta_md_group_or_option_classifier_id : Int
+
+pub fn core_meta_md_group_or_option_group(CoreMetaMdGroup) -> CoreMetaMdGroupOrOption
+
+pub fn core_meta_md_group_or_option_option(CoreMetaMdOption) -> CoreMetaMdGroupOrOption
+
+pub fn core_meta_md_group_or_option_tag(CoreMetaMdGroupOrOption) -> String
+
+pub let core_meta_md_model_classifier_id : Int
+
+pub let core_meta_md_option_classifier_id : Int
+
+pub let core_meta_md_option_dependency_classifier_id : Int
+
+pub let core_meta_md_option_support_classifier_id : Int
+
+pub let core_meta_md_option_target_type_classifier_id : Int
+
+pub fn core_meta_md_option_target_type_edges() -> CoreMetaMdOptionTargetType
+
+pub fn core_meta_md_option_target_type_from_int(Int) -> CoreMetaMdOptionTargetType?
+
+pub fn core_meta_md_option_target_type_from_name(String) -> CoreMetaMdOptionTargetType?
+
+pub fn core_meta_md_option_target_type_from_string(String) -> CoreMetaMdOptionTargetType?
+
+pub fn core_meta_md_option_target_type_labels() -> CoreMetaMdOptionTargetType
+
+pub fn core_meta_md_option_target_type_literal(CoreMetaMdOptionTargetType) -> String
+
+pub fn core_meta_md_option_target_type_name(CoreMetaMdOptionTargetType) -> String
+
+pub fn core_meta_md_option_target_type_nodes() -> CoreMetaMdOptionTargetType
+
+pub fn core_meta_md_option_target_type_parents() -> CoreMetaMdOptionTargetType
+
+pub fn core_meta_md_option_target_type_ports() -> CoreMetaMdOptionTargetType
+
+pub fn core_meta_md_option_target_type_to_string(CoreMetaMdOptionTargetType) -> String
+
+pub fn core_meta_md_option_target_type_value(CoreMetaMdOptionTargetType) -> Int
+
+pub let core_meta_meta_data_ename : String
+
+pub let core_meta_meta_data_ens_prefix : String
+
+pub let core_meta_meta_data_ens_uri : String
+
+pub let core_meta_meta_data_factory_instance : CoreMetaMetaDataFactory
+
+pub fn core_meta_meta_data_package_id() -> String
+
+pub let core_meta_ns_uri : String
+
+pub let core_meta_output_configuration_ad_input : String
+
+pub let core_meta_reference_md_option_dependency_target : String
+
+pub let core_meta_reference_md_option_support_option : String
+
+pub fn core_meta_registered_epackage(String) -> String?
+
+pub fn core_meta_registered_resource_factory(String) -> String?
+
+pub fn core_meta_registered_resource_service_provider(String) -> String?
+
+pub fn core_meta_reset_registries_for_test() -> Unit
+
+pub let core_meta_resource_factory_value : String
+
+pub let core_meta_resource_service_provider_value : String
+
+pub let core_meta_unique_class_name_validator_class_name : String
+
+pub fn meta_data_standalone_setup_do_setup() -> CoreMetaInjector
+
+pub fn new_abstract_meta_data_runtime_module(properties? : Map[String, String]) -> AbstractMetaDataRuntimeModule
+
+pub fn new_abstract_meta_data_scope_provider() -> AbstractMetaDataScopeProvider
+
+pub fn new_abstract_meta_data_validator() -> AbstractMetaDataValidator
+
+pub fn new_core_meta_inferred_type(String, Array[String]) -> CoreMetaInferredType
+
+pub fn new_core_meta_injector(MetaDataRuntimeModule) -> CoreMetaInjector
+
+pub fn new_core_meta_lex_token(Int, String, String) -> CoreMetaLexToken
+
+pub fn new_core_meta_meta_data_factory() -> CoreMetaMetaDataFactory
+
+pub fn new_core_meta_name_mappings(MetaDataGrammarAccess) -> CoreMetaNameMappings
+
+pub fn new_core_meta_output_configuration(String, String, String) -> CoreMetaOutputConfiguration
+
+pub fn new_core_meta_validation_issue(String, String, String?) -> CoreMetaValidationIssue
+
+pub fn new_internal_meta_data_lexer(String) -> InternalMetaDataLexer
+
+pub fn new_internal_meta_data_parser(Array[CoreMetaLexToken], grammar_access? : MetaDataGrammarAccess) -> InternalMetaDataParser
+
+pub fn new_melk_documentation_generator() -> MelkDocumentationGenerator
+
+pub fn new_melk_unique_class_name_validator() -> MelkUniqueClassNameValidator
+
+pub fn new_meta_data_antlr_token_file_provider() -> MetaDataAntlrTokenFileProvider
+
+pub fn new_meta_data_formatter(grammar_access? : MetaDataGrammarAccess) -> MetaDataFormatter
+
+pub fn new_meta_data_grammar_access() -> MetaDataGrammarAccess
+
+pub fn new_meta_data_jvm_model_inferrer() -> MetaDataJvmModelInferrer
+
+pub fn new_meta_data_parser(grammar_access? : MetaDataGrammarAccess) -> MetaDataParser
+
+pub fn new_meta_data_runtime_module(base? : AbstractMetaDataRuntimeModule) -> MetaDataRuntimeModule
+
+pub fn new_meta_data_scope_provider(base? : AbstractMetaDataScopeProvider) -> MetaDataScopeProvider
+
+pub fn new_meta_data_semantic_sequencer(grammar_access? : MetaDataGrammarAccess) -> MetaDataSemanticSequencer
+
+pub fn new_meta_data_standalone_setup() -> MetaDataStandaloneSetup
+
+pub fn new_meta_data_standalone_setup_generated() -> MetaDataStandaloneSetupGenerated
+
+pub fn new_meta_data_syntactic_sequencer(grammar_access? : MetaDataGrammarAccess) -> MetaDataSyntacticSequencer
+
+pub fn new_meta_data_validator(base? : AbstractMetaDataValidator) -> MetaDataValidator
+
+// Errors
+
+// Types and methods
+pub(all) struct AbstractMetaDataRuntimeModule {
+  mut properties : Map[String, String]
+}
+pub fn AbstractMetaDataRuntimeModule::bind_class_loader_to_instance(Self) -> String
+pub fn AbstractMetaDataRuntimeModule::bind_default_batch_type_resolver(Self) -> String
+pub fn AbstractMetaDataRuntimeModule::bind_default_reentrant_type_resolver(Self) -> String
+pub fn AbstractMetaDataRuntimeModule::bind_feature_name_validator(Self) -> String
+pub fn AbstractMetaDataRuntimeModule::bind_i_all_containers_state_provider(Self) -> String
+pub fn AbstractMetaDataRuntimeModule::bind_i_batch_scope_provider(Self) -> String
+pub fn AbstractMetaDataRuntimeModule::bind_i_container_manager(Self) -> String
+pub fn AbstractMetaDataRuntimeModule::bind_i_global_scope_provider(Self) -> String
+pub fn AbstractMetaDataRuntimeModule::bind_i_jvm_model_inferrer(Self) -> String
+pub fn AbstractMetaDataRuntimeModule::bind_i_location_in_file_provider(Self) -> String
+pub fn AbstractMetaDataRuntimeModule::bind_i_qualified_name_provider(Self) -> String
+pub fn AbstractMetaDataRuntimeModule::bind_i_resource_validator(Self) -> String
+pub fn AbstractMetaDataRuntimeModule::bind_iantlr_token_file_provider(Self) -> String
+pub fn AbstractMetaDataRuntimeModule::bind_iformatter2(Self) -> String
+pub fn AbstractMetaDataRuntimeModule::bind_igrammar_access(Self) -> String
+pub fn AbstractMetaDataRuntimeModule::bind_iparser(Self) -> String
+pub fn AbstractMetaDataRuntimeModule::bind_isemantic_sequencer(Self) -> String
+pub fn AbstractMetaDataRuntimeModule::bind_iserializer(Self) -> String
+pub fn AbstractMetaDataRuntimeModule::bind_isyntactic_sequencer(Self) -> String
+pub fn AbstractMetaDataRuntimeModule::bind_itoken_def_provider(Self) -> String
+pub fn AbstractMetaDataRuntimeModule::bind_itoken_to_string_converter(Self) -> String
+pub fn AbstractMetaDataRuntimeModule::bind_iunordered_group_helper(Self) -> String
+pub fn AbstractMetaDataRuntimeModule::bind_lexer(Self) -> String
+pub fn AbstractMetaDataRuntimeModule::bind_meta_data_validator(Self) -> String
+pub fn AbstractMetaDataRuntimeModule::configure(Self, Map[String, String]) -> Unit
+pub fn AbstractMetaDataRuntimeModule::configure_file_extensions(Self) -> String
+pub fn AbstractMetaDataRuntimeModule::configure_formatter_preferences(Self) -> String
+pub fn AbstractMetaDataRuntimeModule::configure_i_resource_descriptions(Self) -> String
+pub fn AbstractMetaDataRuntimeModule::configure_i_resource_descriptions_persisted(Self) -> String
+pub fn AbstractMetaDataRuntimeModule::configure_i_scope_provider_delegate(Self) -> String
+pub fn AbstractMetaDataRuntimeModule::configure_ignore_case_linking(Self) -> Bool
+pub fn AbstractMetaDataRuntimeModule::configure_language_name(Self) -> String
+pub fn AbstractMetaDataRuntimeModule::configure_runtime_lexer(Self) -> String
+pub fn AbstractMetaDataRuntimeModule::provide_internal_meta_data_lexer(Self) -> String
+
+pub(all) struct AbstractMetaDataScopeProvider {
+  marker : Unit
+}
+pub fn AbstractMetaDataScopeProvider::get_scope(Self, String, String) -> String
+
+pub(all) struct AbstractMetaDataValidator {
+  epackages : Array[String]
+}
+pub fn AbstractMetaDataValidator::get_epackages(Self) -> Array[String]
+
+pub(all) struct CoreMetaInferredType {
+  qualified_name : String
+  members : Array[String]
+}
+
+pub(all) struct CoreMetaInjector {
+  runtime_module : MetaDataRuntimeModule
+}
+pub fn CoreMetaInjector::get_runtime_module(Self) -> MetaDataRuntimeModule
+
+pub(all) struct CoreMetaLexToken {
+  token_type : Int
+  token_name : String
+  lexeme : String
+}
+
+pub(all) struct CoreMetaMdAlgorithm {
+  mut name : String?
+  mut documentation : String?
+  mut deprecated : Bool
+  mut provider : String?
+  mut parameter : String?
+  mut label : String?
+  mut target_class : String?
+  mut description : String?
+  mut category : CoreMetaMdCategory?
+  mut category_name : String?
+  mut preview_image : String?
+  supported_features : Array[CoreMetaMdGraphFeature]
+  mut validator : String?
+  supported_options : Array[CoreMetaMdOptionSupport]
+}
+pub fn CoreMetaMdAlgorithm::get_category(Self) -> CoreMetaMdCategory?
+pub fn CoreMetaMdAlgorithm::get_category_name(Self) -> String?
+pub fn CoreMetaMdAlgorithm::get_description(Self) -> String?
+pub fn CoreMetaMdAlgorithm::get_documentation(Self) -> String?
+pub fn CoreMetaMdAlgorithm::get_label(Self) -> String?
+pub fn CoreMetaMdAlgorithm::get_name(Self) -> String?
+pub fn CoreMetaMdAlgorithm::get_parameter(Self) -> String?
+pub fn CoreMetaMdAlgorithm::get_preview_image(Self) -> String?
+pub fn CoreMetaMdAlgorithm::get_provider(Self) -> String?
+pub fn CoreMetaMdAlgorithm::get_supported_features(Self) -> Array[CoreMetaMdGraphFeature]
+pub fn CoreMetaMdAlgorithm::get_supported_options(Self) -> Array[CoreMetaMdOptionSupport]
+pub fn CoreMetaMdAlgorithm::get_target_class(Self) -> String?
+pub fn CoreMetaMdAlgorithm::get_validator(Self) -> String?
+pub fn CoreMetaMdAlgorithm::is_deprecated(Self) -> Bool
+pub fn CoreMetaMdAlgorithm::set_category(Self, CoreMetaMdCategory?) -> Unit
+pub fn CoreMetaMdAlgorithm::set_category_name(Self, String?) -> Unit
+pub fn CoreMetaMdAlgorithm::set_deprecated(Self, Bool) -> Unit
+pub fn CoreMetaMdAlgorithm::set_description(Self, String?) -> Unit
+pub fn CoreMetaMdAlgorithm::set_documentation(Self, String?) -> Unit
+pub fn CoreMetaMdAlgorithm::set_label(Self, String?) -> Unit
+pub fn CoreMetaMdAlgorithm::set_name(Self, String?) -> Unit
+pub fn CoreMetaMdAlgorithm::set_parameter(Self, String?) -> Unit
+pub fn CoreMetaMdAlgorithm::set_preview_image(Self, String?) -> Unit
+pub fn CoreMetaMdAlgorithm::set_provider(Self, String?) -> Unit
+pub fn CoreMetaMdAlgorithm::set_target_class(Self, String?) -> Unit
+pub fn CoreMetaMdAlgorithm::set_validator(Self, String?) -> Unit
+
+pub(all) struct CoreMetaMdBundle {
+  mut label : String?
+  mut target_class : String?
+  mut documentation_folder : String?
+  mut id_prefix : String?
+  members : Array[CoreMetaMdBundleMember]
+}
+pub fn CoreMetaMdBundle::get_documentation_folder(Self) -> String?
+pub fn CoreMetaMdBundle::get_id_prefix(Self) -> String?
+pub fn CoreMetaMdBundle::get_label(Self) -> String?
+pub fn CoreMetaMdBundle::get_members(Self) -> Array[CoreMetaMdBundleMember]
+pub fn CoreMetaMdBundle::get_target_class(Self) -> String?
+pub fn CoreMetaMdBundle::set_documentation_folder(Self, String?) -> Unit
+pub fn CoreMetaMdBundle::set_id_prefix(Self, String?) -> Unit
+pub fn CoreMetaMdBundle::set_label(Self, String?) -> Unit
+pub fn CoreMetaMdBundle::set_target_class(Self, String?) -> Unit
+
+pub(all) enum CoreMetaMdBundleMember {
+  CoreMetaMdBundleMemberGroupOrOption(CoreMetaMdGroupOrOption)
+  CoreMetaMdBundleMemberAlgorithm(CoreMetaMdAlgorithm)
+  CoreMetaMdBundleMemberCategory(CoreMetaMdCategory)
+}
+
+pub(all) struct CoreMetaMdCategory {
+  mut name : String?
+  mut documentation : String?
+  mut deprecated : Bool
+  mut label : String?
+  mut description : String?
+}
+pub fn CoreMetaMdCategory::get_description(Self) -> String?
+pub fn CoreMetaMdCategory::get_documentation(Self) -> String?
+pub fn CoreMetaMdCategory::get_label(Self) -> String?
+pub fn CoreMetaMdCategory::get_name(Self) -> String?
+pub fn CoreMetaMdCategory::is_deprecated(Self) -> Bool
+pub fn CoreMetaMdCategory::set_deprecated(Self, Bool) -> Unit
+pub fn CoreMetaMdCategory::set_description(Self, String?) -> Unit
+pub fn CoreMetaMdCategory::set_documentation(Self, String?) -> Unit
+pub fn CoreMetaMdCategory::set_label(Self, String?) -> Unit
+pub fn CoreMetaMdCategory::set_name(Self, String?) -> Unit
+
+pub(all) enum CoreMetaMdGraphFeature {
+  CoreMetaMdGraphFeatureSelfLoops
+  CoreMetaMdGraphFeatureInsideSelfLoops
+  CoreMetaMdGraphFeatureMultiEdges
+  CoreMetaMdGraphFeatureEdgeLabels
+  CoreMetaMdGraphFeaturePorts
+  CoreMetaMdGraphFeatureCompound
+  CoreMetaMdGraphFeatureClusters
+  CoreMetaMdGraphFeatureDisconnected
+}
+
+pub(all) struct CoreMetaMdGroup {
+  mut name : String?
+  mut documentation : String?
+  children : Array[CoreMetaMdGroupOrOption]
+}
+pub fn CoreMetaMdGroup::get_children(Self) -> Array[CoreMetaMdGroupOrOption]
+pub fn CoreMetaMdGroup::get_documentation(Self) -> String?
+pub fn CoreMetaMdGroup::get_name(Self) -> String?
+pub fn CoreMetaMdGroup::set_documentation(Self, String?) -> Unit
+pub fn CoreMetaMdGroup::set_name(Self, String?) -> Unit
+
+pub(all) enum CoreMetaMdGroupOrOption {
+  CoreMetaMdGroupOrOptionGroup(CoreMetaMdGroup)
+  CoreMetaMdGroupOrOptionOption(CoreMetaMdOption)
+}
+
+pub(all) struct CoreMetaMdModel {
+  mut name : String?
+  mut import_section : String?
+  mut bundle : CoreMetaMdBundle?
+}
+pub fn CoreMetaMdModel::get_bundle(Self) -> CoreMetaMdBundle?
+pub fn CoreMetaMdModel::get_import_section(Self) -> String?
+pub fn CoreMetaMdModel::get_name(Self) -> String?
+pub fn CoreMetaMdModel::set_bundle(Self, CoreMetaMdBundle?) -> Unit
+pub fn CoreMetaMdModel::set_import_section(Self, String?) -> Unit
+pub fn CoreMetaMdModel::set_name(Self, String?) -> Unit
+
+pub(all) struct CoreMetaMdOption {
+  mut name : String?
+  mut documentation : String?
+  mut deprecated : Bool
+  mut advanced : Bool
+  mut programmatic : Bool
+  mut output : Bool
+  mut global : Bool
+  mut type_ref : String?
+  mut label : String?
+  mut description : String?
+  mut default_value : String?
+  mut lower_bound : String?
+  mut upper_bound : String?
+  targets : Array[CoreMetaMdOptionTargetType]
+  legacy_ids : Array[String]
+  dependencies : Array[CoreMetaMdOptionDependency]
+}
+pub fn CoreMetaMdOption::get_default_value(Self) -> String?
+pub fn CoreMetaMdOption::get_dependencies(Self) -> Array[CoreMetaMdOptionDependency]
+pub fn CoreMetaMdOption::get_description(Self) -> String?
+pub fn CoreMetaMdOption::get_documentation(Self) -> String?
+pub fn CoreMetaMdOption::get_label(Self) -> String?
+pub fn CoreMetaMdOption::get_legacy_ids(Self) -> Array[String]
+pub fn CoreMetaMdOption::get_lower_bound(Self) -> String?
+pub fn CoreMetaMdOption::get_name(Self) -> String?
+pub fn CoreMetaMdOption::get_targets(Self) -> Array[CoreMetaMdOptionTargetType]
+pub fn CoreMetaMdOption::get_type_ref(Self) -> String?
+pub fn CoreMetaMdOption::get_upper_bound(Self) -> String?
+pub fn CoreMetaMdOption::is_advanced(Self) -> Bool
+pub fn CoreMetaMdOption::is_deprecated(Self) -> Bool
+pub fn CoreMetaMdOption::is_global(Self) -> Bool
+pub fn CoreMetaMdOption::is_output(Self) -> Bool
+pub fn CoreMetaMdOption::is_programmatic(Self) -> Bool
+pub fn CoreMetaMdOption::set_advanced(Self, Bool) -> Unit
+pub fn CoreMetaMdOption::set_default_value(Self, String?) -> Unit
+pub fn CoreMetaMdOption::set_deprecated(Self, Bool) -> Unit
+pub fn CoreMetaMdOption::set_description(Self, String?) -> Unit
+pub fn CoreMetaMdOption::set_documentation(Self, String?) -> Unit
+pub fn CoreMetaMdOption::set_global(Self, Bool) -> Unit
+pub fn CoreMetaMdOption::set_label(Self, String?) -> Unit
+pub fn CoreMetaMdOption::set_lower_bound(Self, String?) -> Unit
+pub fn CoreMetaMdOption::set_name(Self, String?) -> Unit
+pub fn CoreMetaMdOption::set_output(Self, Bool) -> Unit
+pub fn CoreMetaMdOption::set_programmatic(Self, Bool) -> Unit
+pub fn CoreMetaMdOption::set_type_ref(Self, String?) -> Unit
+pub fn CoreMetaMdOption::set_upper_bound(Self, String?) -> Unit
+
+pub(all) struct CoreMetaMdOptionDependency {
+  mut target : CoreMetaMdOption?
+  mut target_name : String?
+  mut value : String?
+}
+pub fn CoreMetaMdOptionDependency::get_target(Self) -> CoreMetaMdOption?
+pub fn CoreMetaMdOptionDependency::get_target_name(Self) -> String?
+pub fn CoreMetaMdOptionDependency::get_value(Self) -> String?
+pub fn CoreMetaMdOptionDependency::set_target(Self, CoreMetaMdOption?) -> Unit
+pub fn CoreMetaMdOptionDependency::set_target_name(Self, String?) -> Unit
+pub fn CoreMetaMdOptionDependency::set_value(Self, String?) -> Unit
+
+pub(all) struct CoreMetaMdOptionSupport {
+  mut option : CoreMetaMdOption?
+  mut option_name : String?
+  mut value : String?
+  mut documentation : String?
+}
+pub fn CoreMetaMdOptionSupport::get_documentation(Self) -> String?
+pub fn CoreMetaMdOptionSupport::get_option(Self) -> CoreMetaMdOption?
+pub fn CoreMetaMdOptionSupport::get_option_name(Self) -> String?
+pub fn CoreMetaMdOptionSupport::get_value(Self) -> String?
+pub fn CoreMetaMdOptionSupport::set_documentation(Self, String?) -> Unit
+pub fn CoreMetaMdOptionSupport::set_option(Self, CoreMetaMdOption?) -> Unit
+pub fn CoreMetaMdOptionSupport::set_option_name(Self, String?) -> Unit
+pub fn CoreMetaMdOptionSupport::set_value(Self, String?) -> Unit
+
+pub(all) enum CoreMetaMdOptionTargetType {
+  CoreMetaMdOptionTargetTypeParents
+  CoreMetaMdOptionTargetTypeNodes
+  CoreMetaMdOptionTargetTypeEdges
+  CoreMetaMdOptionTargetTypePorts
+  CoreMetaMdOptionTargetTypeLabels
+}
+
+pub(all) struct CoreMetaMetaDataFactory {
+  create_md_model_fn : () -> CoreMetaMdModel
+  create_md_bundle_fn : () -> CoreMetaMdBundle
+  create_md_group_fn : () -> CoreMetaMdGroup
+  create_md_option_fn : () -> CoreMetaMdOption
+  create_md_option_dependency_fn : () -> CoreMetaMdOptionDependency
+  create_md_algorithm_fn : () -> CoreMetaMdAlgorithm
+  create_md_category_fn : () -> CoreMetaMdCategory
+  create_md_option_support_fn : () -> CoreMetaMdOptionSupport
+}
+pub fn CoreMetaMetaDataFactory::create_md_algorithm(Self) -> CoreMetaMdAlgorithm
+pub fn CoreMetaMetaDataFactory::create_md_bundle(Self) -> CoreMetaMdBundle
+pub fn CoreMetaMetaDataFactory::create_md_category(Self) -> CoreMetaMdCategory
+pub fn CoreMetaMetaDataFactory::create_md_group(Self) -> CoreMetaMdGroup
+pub fn CoreMetaMetaDataFactory::create_md_model(Self) -> CoreMetaMdModel
+pub fn CoreMetaMetaDataFactory::create_md_option(Self) -> CoreMetaMdOption
+pub fn CoreMetaMetaDataFactory::create_md_option_dependency(Self) -> CoreMetaMdOptionDependency
+pub fn CoreMetaMetaDataFactory::create_md_option_support(Self) -> CoreMetaMdOptionSupport
+
+pub(all) struct CoreMetaNameMappings {
+  mappings : Map[String, String]
+}
+pub fn CoreMetaNameMappings::get_rule_name(Self, String) -> String?
+
+pub(all) struct CoreMetaOutputConfiguration {
+  id : String
+  description : String
+  output_directory : String
+}
+
+pub(all) struct CoreMetaValidationIssue {
+  message : String
+  feature : String
+  member_name : String?
+}
+
+pub(all) struct InternalMetaDataLexer {
+  input : String
+}
+pub fn InternalMetaDataLexer::get_grammar_file_name(Self) -> String
+pub fn InternalMetaDataLexer::get_token_names(Self) -> Array[String]
+pub fn InternalMetaDataLexer::lex_all(Self) -> Array[CoreMetaLexToken]
+
+pub(all) struct InternalMetaDataParser {
+  tokens : Array[CoreMetaLexToken]
+  grammar_access : MetaDataGrammarAccess
+}
+pub fn InternalMetaDataParser::entry_rule_md_model(Self) -> CoreMetaMdModel
+pub fn InternalMetaDataParser::get_first_rule_name(Self) -> String
+pub fn InternalMetaDataParser::get_grammar_access(Self) -> MetaDataGrammarAccess
+pub fn InternalMetaDataParser::get_grammar_file_name(Self) -> String
+pub fn InternalMetaDataParser::get_token_names(Self) -> Array[String]
+pub fn InternalMetaDataParser::rule_md_model(Self) -> CoreMetaMdModel
+
+pub(all) struct MelkDocumentationGenerator {
+  marker : Unit
+}
+pub fn MelkDocumentationGenerator::generate_algorithm_doc(Self, CoreMetaMdAlgorithm) -> String
+pub fn MelkDocumentationGenerator::generate_option_doc(Self, CoreMetaMdOption) -> String
+
+pub(all) struct MelkUniqueClassNameValidator {
+  src_segment : String
+}
+pub fn MelkUniqueClassNameValidator::do_check_unique_name(Self, String, Array[String], Array[(String, Array[String])]) -> Bool
+
+pub(all) struct MetaDataAntlrTokenFileProvider {
+  marker : Unit
+}
+pub fn MetaDataAntlrTokenFileProvider::get_antlr_token_file(Self) -> String
+pub fn MetaDataAntlrTokenFileProvider::get_antlr_token_file_path(Self) -> String
+
+pub(all) struct MetaDataFormatter {
+  grammar_access : MetaDataGrammarAccess
+}
+pub fn MetaDataFormatter::format_bundle(Self, CoreMetaMdBundle) -> String
+pub fn MetaDataFormatter::format_text(Self, String) -> String
+pub fn MetaDataFormatter::get_grammar_access(Self) -> MetaDataGrammarAccess
+
+pub(all) struct MetaDataGrammarAccess {
+  grammar : String
+  rules : Map[String, String]
+}
+pub fn MetaDataGrammarAccess::get_array_brackets_rule(Self) -> String
+pub fn MetaDataGrammarAccess::get_grammar(Self) -> String
+pub fn MetaDataGrammarAccess::get_md_algorithm_rule(Self) -> String
+pub fn MetaDataGrammarAccess::get_md_bundle_rule(Self) -> String
+pub fn MetaDataGrammarAccess::get_md_category_rule(Self) -> String
+pub fn MetaDataGrammarAccess::get_md_model_rule(Self) -> String
+pub fn MetaDataGrammarAccess::get_md_option_rule(Self) -> String
+pub fn MetaDataGrammarAccess::get_op_single_assign_rule(Self) -> String
+pub fn MetaDataGrammarAccess::get_rule(Self, String) -> String?
+pub fn MetaDataGrammarAccess::get_rule_names(Self) -> Array[String]
+
+pub(all) struct MetaDataJvmModelInferrer {
+  marker : Unit
+}
+pub fn MetaDataJvmModelInferrer::infer(Self, CoreMetaMdModel) -> Array[CoreMetaInferredType]
+
+pub(all) struct MetaDataParser {
+  mut name_mappings : CoreMetaNameMappings
+  mut grammar_access : MetaDataGrammarAccess
+  mut initial_hidden_tokens : Array[String]
+}
+pub fn MetaDataParser::create_parser(Self, Array[CoreMetaLexToken]) -> InternalMetaDataParser
+pub fn MetaDataParser::get_default_rule_name(Self) -> String
+pub fn MetaDataParser::get_grammar_access(Self) -> MetaDataGrammarAccess
+pub fn MetaDataParser::get_initial_hidden_tokens(Self) -> Array[String]
+pub fn MetaDataParser::get_name_mappings(Self) -> CoreMetaNameMappings
+pub fn MetaDataParser::get_rule_name(Self, String) -> String?
+pub fn MetaDataParser::parse(Self, String) -> CoreMetaMdModel
+pub fn MetaDataParser::set_grammar_access(Self, MetaDataGrammarAccess) -> Unit
+pub fn MetaDataParser::set_initial_hidden_tokens(Self, Array[String]) -> Unit
+pub fn MetaDataParser::set_name_mappings(Self, CoreMetaNameMappings) -> Unit
+
+pub(all) struct MetaDataRuntimeModule {
+  base : AbstractMetaDataRuntimeModule
+}
+pub fn MetaDataRuntimeModule::bind_igenerator(Self) -> String
+pub fn MetaDataRuntimeModule::bind_unique_class_name_validator(Self) -> String
+pub fn MetaDataRuntimeModule::configure(Self, Map[String, String]) -> Unit
+pub fn MetaDataRuntimeModule::create_injector(Self) -> CoreMetaInjector
+pub fn MetaDataRuntimeModule::get_base(Self) -> AbstractMetaDataRuntimeModule
+pub fn MetaDataRuntimeModule::get_output_configurations(Self) -> Array[CoreMetaOutputConfiguration]
+
+pub(all) struct MetaDataScopeProvider {
+  base : AbstractMetaDataScopeProvider
+  delegate_scope_name : String
+}
+pub fn MetaDataScopeProvider::get_scope(Self, String, String) -> String
+
+pub(all) struct MetaDataSemanticSequencer {
+  grammar_access : MetaDataGrammarAccess
+}
+pub fn MetaDataSemanticSequencer::get_grammar_access(Self) -> MetaDataGrammarAccess
+pub fn[T] MetaDataSemanticSequencer::sequence(Self, String, T) -> T
+pub fn[T] MetaDataSemanticSequencer::sequence_md_algorithm(Self, String, T) -> T
+pub fn[T] MetaDataSemanticSequencer::sequence_md_bundle(Self, String, T) -> T
+pub fn[T] MetaDataSemanticSequencer::sequence_md_category(Self, String, T) -> T
+pub fn[T] MetaDataSemanticSequencer::sequence_md_model(Self, String, T) -> T
+pub fn[T] MetaDataSemanticSequencer::sequence_md_option(Self, String, T) -> T
+pub fn[T] MetaDataSemanticSequencer::sequence_md_option_dependency(Self, String, T) -> T
+pub fn[T] MetaDataSemanticSequencer::sequence_md_option_support(Self, String, T) -> T
+
+pub(all) struct MetaDataStandaloneSetup {
+  marker : Unit
+}
+pub fn MetaDataStandaloneSetup::create_injector_and_do_emf_registration(Self) -> CoreMetaInjector
+
+pub(all) struct MetaDataStandaloneSetupGenerated {
+  marker : Unit
+}
+pub fn MetaDataStandaloneSetupGenerated::create_injector(Self) -> CoreMetaInjector
+pub fn MetaDataStandaloneSetupGenerated::create_injector_and_do_emf_registration(Self) -> CoreMetaInjector
+pub fn MetaDataStandaloneSetupGenerated::register(Self, CoreMetaInjector) -> Unit
+
+pub(all) struct MetaDataSyntacticSequencer {
+  grammar_access : MetaDataGrammarAccess
+  match_md_bundle___bundle_keyword_1_0_left_curly_bracket_keyword_1_1_right_curly_bracket_keyword_1_3__q : String
+  match_x_block_expression_semicolon_keyword_2_1_q : String
+  match_x_expression_in_closure_semicolon_keyword_1_1_q : String
+  match_x_function_type_ref___left_parenthesis_keyword_0_0_right_parenthesis_keyword_0_2__q : String
+  match_x_import_declaration_semicolon_keyword_2_q : String
+  match_x_parenthesized_expression_left_parenthesis_keyword_0_a : String
+  match_x_parenthesized_expression_left_parenthesis_keyword_0_p : String
+}
+pub fn[A, B, C] MetaDataSyntacticSequencer::emit_md_bundle___bundle_keyword_1_0_left_curly_bracket_keyword_1_1_right_curly_bracket_keyword_1_3__q(Self, A, B, Array[C]) -> String
+pub fn MetaDataSyntacticSequencer::emit_unassigned_tokens(Self, String, Array[String]) -> Array[String]
+pub fn[A, B, C] MetaDataSyntacticSequencer::emit_x_block_expression_semicolon_keyword_2_1_q(Self, A, B, Array[C]) -> String
+pub fn[A, B, C] MetaDataSyntacticSequencer::emit_x_expression_in_closure_semicolon_keyword_1_1_q(Self, A, B, Array[C]) -> String
+pub fn[A, B, C] MetaDataSyntacticSequencer::emit_x_function_type_ref___left_parenthesis_keyword_0_0_right_parenthesis_keyword_0_2__q(Self, A, B, Array[C]) -> String
+pub fn[A, B, C] MetaDataSyntacticSequencer::emit_x_import_declaration_semicolon_keyword_2_q(Self, A, B, Array[C]) -> String
+pub fn[A, B, C] MetaDataSyntacticSequencer::emit_x_parenthesized_expression_left_parenthesis_keyword_0_a(Self, A, B, Array[C]) -> String
+pub fn[A, B, C] MetaDataSyntacticSequencer::emit_x_parenthesized_expression_left_parenthesis_keyword_0_p(Self, A, B, Array[C]) -> String
+pub fn MetaDataSyntacticSequencer::get_grammar_access(Self) -> MetaDataGrammarAccess
+pub fn MetaDataSyntacticSequencer::get_unassigned_rule_call_token(Self, String, String, String) -> String
+
+pub(all) struct MetaDataValidator {
+  base : AbstractMetaDataValidator
+}
+pub fn MetaDataValidator::check_duplicate_member_id(Self, CoreMetaMdBundle) -> Array[CoreMetaValidationIssue]
+pub fn MetaDataValidator::get_epackages(Self) -> Array[String]
+
+// Type aliases
+
+// Traits
+

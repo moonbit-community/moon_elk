@@ -67,7 +67,9 @@ test "NorthSouthEdgeNeighbouringNodeCrossingsCounter counts two north/south dumm
     internal_properties_origin_l_node,
     Some(normal),
   )
-  ignore(north_south_counter_test_new_port(upper_dummy, @core.PortSide::West, 3))
+  ignore(
+    north_south_counter_test_new_port(upper_dummy, @core.PortSide::West, 3),
+  )
 
   let lower_dummy = north_south_counter_test_new_node(
     layer,
@@ -94,7 +96,11 @@ test "NorthSouthEdgeNeighbouringNodeCrossingsCounter counts two north/south dumm
   )
 
   let target = north_south_counter_test_new_node(layer, 3, NodeType::Normal)
-  let target_west = north_south_counter_test_new_port(target, @core.PortSide::West, 6)
+  let target_west = north_south_counter_test_new_port(
+    target,
+    @core.PortSide::West,
+    6,
+  )
   north_south_counter_test_connect(lower_east, target_west)
 
   let counter = new_north_south_edge_neighbouring_node_crossings_counter([
@@ -172,7 +178,11 @@ test "NorthSouthEdgeNeighbouringNodeCrossingsCounter counts normal node north/so
     NodeType::LongEdge,
   )
 
-  let north_port = north_south_counter_test_new_port(normal, @core.PortSide::North, 0)
+  let north_port = north_south_counter_test_new_port(
+    normal,
+    @core.PortSide::North,
+    0,
+  )
   north_port.set_property_l_node(
     internal_properties_port_dummy,
     Some(marker_dummy),

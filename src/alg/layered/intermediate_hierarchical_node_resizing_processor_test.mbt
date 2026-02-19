@@ -78,9 +78,13 @@ test "hierarchical node resizing processor flattens layers and applies @core.ali
   let graph = new_l_graph()
   graph.set_size_xy(20.0, 10.0)
   graph.set_property_string_array(@core.node_size_constraints, ["MINIMUM_SIZE"])
-  graph.set_property_string_array(@core.node_size_options, ["DEFAULT_MINIMUM_SIZE"])
+  graph.set_property_string_array(@core.node_size_options, [
+    "DEFAULT_MINIMUM_SIZE",
+  ])
   graph.set_property_string(@core.node_size_minimum, "(50.0, 30.0)")
-  graph.set_property_string_array(@core.content_alignment, ["H_CENTER", "V_BOTTOM"])
+  graph.set_property_string_array(@core.content_alignment, [
+    "H_CENTER", "V_BOTTOM",
+  ])
   graph.set_property_graph_properties_array(
     internal_properties_graph_properties,
     [hierarchical_node_resizing_test_graph_property("EXTERNAL_PORTS")],
@@ -164,7 +168,10 @@ test "hierarchical node resizing processor transfers nested graph layout to pare
 
   assert_eq(parent_node.get_size().x, 100.0)
   assert_eq(parent_node.get_size().y, 50.0)
-  assert_eq(parent_node.get_property_string(@core.port_constraints), "FIXED_POS")
+  assert_eq(
+    parent_node.get_property_string(@core.port_constraints),
+    "FIXED_POS",
+  )
 
   let parent_properties = parent_graph.get_property_graph_properties_array(
     internal_properties_graph_properties,

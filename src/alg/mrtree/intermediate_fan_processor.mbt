@@ -8,6 +8,15 @@ fn mrtree_fan_format_right(value : Int, len : Int) -> String {
 }
 
 ///|
+fn mrtree_fan_safe_slice(text : String, start : Int, end_ : Int) -> String {
+  try text[start:end_] catch {
+    _ => ""
+  } noraise {
+    value => value.to_string()
+  }
+}
+
+///|
 fn mrtree_fan_calculate(
   current_level : Array[MrtreeNode],
   global_fan_map : Map[String, Int],
@@ -49,7 +58,7 @@ fn mrtree_fan_calculate(
   let prefix_count = last_assigned_id.length() - digits
   for i = 0; i < prefix_count; i = i + 1 {
     for node in current_level {
-      let key = mrtree_node_internal_id(node).substring(start=0, end=i + 1)
+      let key = mrtree_fan_safe_slice(mrtree_node_internal_id(node), 0, i + 1)
       let block_size = match local_fan_map.get(key) {
         Some(value) => value + 1
         None => 1

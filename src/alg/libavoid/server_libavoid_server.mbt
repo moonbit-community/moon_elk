@@ -80,7 +80,9 @@ pub fn LibavoidServer::get_process_timeout(self : LibavoidServer) -> Int {
 }
 
 ///|
-pub fn LibavoidServer::input(self : LibavoidServer) -> @layouter.GraphvizOutputStream {
+pub fn LibavoidServer::input(
+  self : LibavoidServer,
+) -> @layouter.GraphvizOutputStream {
   if !self.running {
     abort("Libavoid server has not been initialized.")
   }

@@ -1,5 +1,5 @@
 ///|
-struct DepthFirstModelOrderLayererState {
+priv struct DepthFirstModelOrderLayererState {
   layered_graph : LGraph
   mut current_layer : Layer
   mut current_layer_id : Int

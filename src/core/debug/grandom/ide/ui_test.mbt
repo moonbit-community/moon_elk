@@ -184,7 +184,9 @@ test "GRandom graph maker generates file names with collision handling" {
         ),
       ),
     )
-  let rand_graph = @grandom.new_core_debug_grandom_rand_graph(configs=[configuration])
+  let rand_graph = @grandom.new_core_debug_grandom_rand_graph(configs=[
+    configuration,
+  ])
   let maker = @ui.new_core_debug_grandom_graph_maker(rand_graph)
   maker.gen(project)
 
@@ -222,7 +224,9 @@ test "GRandom proposal provider filters keywords by form and appends docs" {
     @grandom.core_debug_grandom_form_trees(),
   )
   let trees_context = @ui.new_core_debug_grandom_content_assist_context(
-    root_model=Some(@grandom.new_core_debug_grandom_rand_graph(configs=[trees_config])),
+    root_model=Some(
+      @grandom.new_core_debug_grandom_rand_graph(configs=[trees_config]),
+    ),
     current_model_index=Some(0),
   )
   let trees_acceptor = @ui.new_core_debug_grandom_completion_proposal_acceptor()
@@ -233,7 +237,9 @@ test "GRandom proposal provider filters keywords by form and appends docs" {
     @grandom.core_debug_grandom_form_custom(),
   )
   let custom_context = @ui.new_core_debug_grandom_content_assist_context(
-    root_model=Some(@grandom.new_core_debug_grandom_rand_graph(configs=[custom_config])),
+    root_model=Some(
+      @grandom.new_core_debug_grandom_rand_graph(configs=[custom_config]),
+    ),
     current_model_index=Some(0),
   )
   let custom_acceptor = @ui.new_core_debug_grandom_completion_proposal_acceptor()

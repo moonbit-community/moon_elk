@@ -15,7 +15,10 @@ type DoublePropertyAssignment = (@graph.IProperty[Double], Double)
 
 ///|
 pub(all) struct LayoutConfigurator {
-  element_option_map : Map[@graph.ElkNode, Map[String, DoublePropertyAssignment]]
+  element_option_map : Map[
+    @graph.ElkNode,
+    Map[String, DoublePropertyAssignment],
+  ]
   class_option_map : Map[String, Map[String, DoublePropertyAssignment]]
   option_filters : Array[LayoutConfiguratorFilter]
 }

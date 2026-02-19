@@ -253,7 +253,9 @@ fn sort_by_input_model_processor_process(
     )
 
     for node in layer.get_nodes() {
-      let constraints_value = if node.has_property_string(@core.port_constraints) {
+      let constraints_value = if node.has_property_string(
+          @core.port_constraints,
+        ) {
         node.get_property_string(@core.port_constraints)
       } else {
         @core.port_constraints.get_default()

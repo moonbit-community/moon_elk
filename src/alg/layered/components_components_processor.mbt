@@ -1,7 +1,7 @@
 ///|
-pub let layered_components_separate_connected_components : @graph.IProperty[Bool] = @graph.new_property(
-  "org.eclipse.elk.separateConnectedComponents", true,
-)
+pub let layered_components_separate_connected_components : @graph.IProperty[
+  Bool,
+] = @graph.new_property("org.eclipse.elk.separateConnectedComponents", true)
 
 ///|
 pub let layered_components_direction : @graph.IProperty[@core.Direction] = @graph.new_property(

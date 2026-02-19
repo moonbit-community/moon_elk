@@ -762,7 +762,9 @@ fn elk_layered_review_and_correct_hierarchical_processors(
 
 ///|
 fn elk_layered_resize_graph(lgraph : LGraph) -> Unit {
-  let size_constraint = lgraph.get_property_string_array(@core.node_size_constraints)
+  let size_constraint = lgraph.get_property_string_array(
+    @core.node_size_constraints,
+  )
   let size_options = lgraph.get_property_string_array(@core.node_size_options)
 
   let calculated_size = lgraph.get_actual_size()

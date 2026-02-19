@@ -114,7 +114,9 @@ pub let libavoid_option_nudge_shared_paths_with_common_end_point : @graph.IPrope
 )
 
 ///|
-pub let libavoid_option_enable_hyperedges_from_common_source : @graph.IProperty[Bool] = @graph.new_property(
+pub let libavoid_option_enable_hyperedges_from_common_source : @graph.IProperty[
+  Bool,
+] = @graph.new_property(
   "org.eclipse.elk.alg.libavoid.enableHyperedgesFromCommonSource", false,
 )
 

@@ -28,7 +28,9 @@ pub fn RadialCompaction::compact(
     radial_graph_sorting_strategy(graph),
   )
   self.base.set_compaction_step(radial_graph_compaction_step_size(graph))
-  self.base.set_spacing(@graph.node_get_double_property(graph, @core.spacing_node_node))
+  self.base.set_spacing(
+    @graph.node_get_double_property(graph, @core.spacing_node_node),
+  )
   let first_level_nodes = radial_get_successors(root)
   if self.sorter is Some(sorter) {
     sorter.sort(first_level_nodes)

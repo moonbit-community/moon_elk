@@ -11,7 +11,10 @@ fn spline_segment_side_to_process_equals(
 }
 
 ///|
-fn spline_segment_port_side_equals(left : @core.PortSide, right : @core.PortSide) -> Bool {
+fn spline_segment_port_side_equals(
+  left : @core.PortSide,
+  right : @core.PortSide,
+) -> Bool {
   match (left, right) {
     (North, North) => true
     (East, East) => true
@@ -33,7 +36,9 @@ fn spline_segment_pair_side(
 }
 
 ///|
-fn spline_segment_pair_edge(pair : @core.Pair[SplineSideToProcess, LEdge]) -> LEdge {
+fn spline_segment_pair_edge(
+  pair : @core.Pair[SplineSideToProcess, LEdge],
+) -> LEdge {
   match pair.get_second() {
     Some(edge) => edge
     None => abort("missing edge in edge pair")

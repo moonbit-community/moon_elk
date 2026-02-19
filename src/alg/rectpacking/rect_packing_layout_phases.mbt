@@ -15,7 +15,9 @@ fn rectpacking_layout_phase_ordinal(phase : RectPackingLayoutPhases) -> Int {
 }
 
 ///|
-pub let rectpacking_phase_descriptor : @core.PhaseDescriptor[RectPackingLayoutPhases] = @core.new_phase_descriptor(
+pub let rectpacking_phase_descriptor : @core.PhaseDescriptor[
+  RectPackingLayoutPhases,
+] = @core.new_phase_descriptor(
   [
     RectPackingLayoutPhases::P1_WIDTH_APPROXIMATION,
     RectPackingLayoutPhases::P2_PACKING,

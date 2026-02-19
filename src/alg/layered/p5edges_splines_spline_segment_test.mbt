@@ -32,7 +32,10 @@ fn spline_segment_test_side_to_process_by_name(
 }
 
 ///|
-fn spline_segment_test_new_port(node_y : Double, side : @core.PortSide) -> LPort {
+fn spline_segment_test_new_port(
+  node_y : Double,
+  side : @core.PortSide,
+) -> LPort {
   let node = new_l_node()
   ignore(node.get_position().set_xy(node.get_position().x, node_y))
   let port = new_l_port()

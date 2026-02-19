@@ -211,7 +211,9 @@ fn rectpacking_area_approximation_calc_values_for_opt(
   let mut height = 0.0
   match option {
     RectpackingDrawingDataDescriptor::CANDIDATE_POSITION_LAST_PLACED_RIGHT => {
-      x = @graph.node_x(last_placed) + @graph.node_width(last_placed) + node_node_spacing
+      x = @graph.node_x(last_placed) +
+        @graph.node_width(last_placed) +
+        node_node_spacing
       if approximation.last_place_shift {
         y = rectpacking_calculations_y_for_lpr(
           x, placed_rects, last_placed, node_node_spacing,
@@ -227,7 +229,9 @@ fn rectpacking_area_approximation_calc_values_for_opt(
       )
     }
     RectpackingDrawingDataDescriptor::CANDIDATE_POSITION_LAST_PLACED_BELOW => {
-      y = @graph.node_y(last_placed) + @graph.node_height(last_placed) + node_node_spacing
+      y = @graph.node_y(last_placed) +
+        @graph.node_height(last_placed) +
+        node_node_spacing
       if approximation.last_place_shift {
         x = rectpacking_calculations_x_for_lpb(
           y, placed_rects, last_placed, node_node_spacing,

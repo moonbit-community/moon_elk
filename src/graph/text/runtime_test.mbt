@@ -158,7 +158,9 @@ test "ElkGraph syntactic and semantic sequencers keep generated defaults" {
 
   @core.layout_meta_data_service_reset_for_test()
   @core.layout_meta_data_service_register_default_options()
-  let option = @core.layout_meta_data_service_get_option_data(@core.algorithm.get_id())
+  let option = @core.layout_meta_data_service_get_option_data(
+    @core.algorithm.get_id(),
+  )
   let semantic = new_elk_graph_semantic_sequencer()
   let result = semantic.sequence_property(
     "Property",
@@ -260,7 +262,9 @@ test "ElkGraphValidator checks property values and uniqueness" {
   )
 
   let unknown_algo_entry = new_graph_text_property_assignment(
-    LayoutOption(@core.layout_meta_data_service_get_option_data(@core.algorithm.get_id())),
+    LayoutOption(
+      @core.layout_meta_data_service_get_option_data(@core.algorithm.get_id()),
+    ),
     ProxyValue("org.eclipse.elk.unknown"),
   )
   let algorithm_issues = validator.check_property_value(

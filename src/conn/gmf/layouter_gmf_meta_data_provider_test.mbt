@@ -12,7 +12,8 @@ test "GmfMetaDataProvider registers Draw2D algorithm support" {
   inspect(draw2d is Some(_), content="true")
   inspect(
     match draw2d {
-      Some(algorithm) => algorithm.knows_option(@core.spacing_node_node.get_id())
+      Some(algorithm) =>
+        algorithm.knows_option(@core.spacing_node_node.get_id())
       None => false
     },
     content="true",
@@ -33,7 +34,8 @@ test "GmfMetaDataProvider registers Draw2D algorithm support" {
   )
   inspect(
     match draw2d {
-      Some(algorithm) => algorithm.knows_option(@core.node_size_constraints.get_id())
+      Some(algorithm) =>
+        algorithm.knows_option(@core.node_size_constraints.get_id())
       None => false
     },
     content="true",

@@ -4,7 +4,7 @@ pub fn rectpacking_calculations_width_lpr_or_lpb(
   x : Double,
   width : Double,
 ) -> Double {
-  @math.maximum(drawing_width, x + width)
+  @cmp.maximum(drawing_width, x + width)
 }
 
 ///|
@@ -13,7 +13,7 @@ pub fn rectpacking_calculations_height_lpr_or_lpb(
   y : Double,
   height : Double,
 ) -> Double {
-  @math.maximum(drawing_height, y + height)
+  @cmp.maximum(drawing_height, y + height)
 }
 
 ///|
@@ -22,7 +22,10 @@ fn rectpacking_calculations_vertical_order_constraint(
   x : Double,
   node_node_spacing : Double,
 ) -> Bool {
-  x < @graph.node_x(placed_rect) + @graph.node_width(placed_rect) + node_node_spacing
+  x <
+  @graph.node_x(placed_rect) +
+  @graph.node_width(placed_rect) +
+  node_node_spacing
 }
 
 ///|
@@ -32,7 +35,9 @@ fn rectpacking_calculations_horizontal_order_constraint(
   node_node_spacing : Double,
 ) -> Bool {
   y_coord_rect_to_place <
-  @graph.node_y(placed_rect) + @graph.node_height(placed_rect) + node_node_spacing
+  @graph.node_y(placed_rect) +
+  @graph.node_height(placed_rect) +
+  node_node_spacing
 }
 
 ///|
@@ -85,7 +90,8 @@ pub fn rectpacking_calculations_x_for_lpb(
   let mut closest_neighbor_right_border = 0.0
 
   for placed_rect in placed_rects {
-    let placed_rect_right_border = @graph.node_x(placed_rect) + @graph.node_width(placed_rect)
+    let placed_rect_right_border = @graph.node_x(placed_rect) +
+      @graph.node_width(placed_rect)
     if rectpacking_calculations_horizontal_order_constraint(
         placed_rect, y, node_node_spacing,
       ) {
@@ -99,7 +105,8 @@ pub fn rectpacking_calculations_x_for_lpb(
       }
       match closest_left_neighbor {
         Some(closest) =>
-          closest_neighbor_right_border = @graph.node_x(closest) + @graph.node_width(closest)
+          closest_neighbor_right_border = @graph.node_x(closest) +
+            @graph.node_width(closest)
         None => ()
       }
     }
@@ -117,14 +124,16 @@ pub fn rectpacking_calculations_area_lpr(
   to_place : @graph.ElkNode,
   lpr_opt : RectpackingDrawingData,
 ) -> Double {
-  let last_placed_bottom_border = @graph.node_y(last_placed) + @graph.node_height(last_placed)
-  let to_place_bottom_border = lpr_opt.next_y_coordinate + @graph.node_height(to_place)
-  let max_y_lpr = @math.maximum(
+  let last_placed_bottom_border = @graph.node_y(last_placed) +
+    @graph.node_height(last_placed)
+  let to_place_bottom_border = lpr_opt.next_y_coordinate +
+    @graph.node_height(to_place)
+  let max_y_lpr = @cmp.maximum(
     last_placed_bottom_border, to_place_bottom_border,
   )
 
   let height_lpr = max_y_lpr -
-    @math.minimum(@graph.node_y(last_placed), lpr_opt.next_y_coordinate)
+    @cmp.minimum(@graph.node_y(last_placed), lpr_opt.next_y_coordinate)
   let width_lpr = lpr_opt.next_x_coordinate +
     @graph.node_width(to_place) -
     @graph.node_x(last_placed)
@@ -138,12 +147,14 @@ pub fn rectpacking_calculations_area_lpb(
   to_place : @graph.ElkNode,
   lpb_opt : RectpackingDrawingData,
 ) -> Double {
-  let last_placed_right_border = @graph.node_x(last_placed) + @graph.node_width(last_placed)
-  let to_place_right_border = lpb_opt.next_x_coordinate + @graph.node_width(to_place)
-  let max_x_lpb = @math.maximum(last_placed_right_border, to_place_right_border)
+  let last_placed_right_border = @graph.node_x(last_placed) +
+    @graph.node_width(last_placed)
+  let to_place_right_border = lpb_opt.next_x_coordinate +
+    @graph.node_width(to_place)
+  let max_x_lpb = @cmp.maximum(last_placed_right_border, to_place_right_border)
 
   let width_lpb = max_x_lpb -
-    @math.minimum(@graph.node_x(last_placed), lpb_opt.next_x_coordinate)
+    @cmp.minimum(@graph.node_x(last_placed), lpb_opt.next_x_coordinate)
   let height_lpb = lpb_opt.next_y_coordinate +
     @graph.node_height(to_place) -
     @graph.node_y(last_placed)

@@ -1,5 +1,7 @@
 ///|
-fn breaking_point_remover_parse_edge_routing(value : String) -> @core.EdgeRouting {
+fn breaking_point_remover_parse_edge_routing(
+  value : String,
+) -> @core.EdgeRouting {
   match value {
     "POLYLINE" => @core.EdgeRouting::Polyline
     "SPLINES" => @core.EdgeRouting::Splines

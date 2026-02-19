@@ -61,7 +61,9 @@ fn issue603_test_create_labeled_compound(
 ) -> @graph.ElkNode {
   let compound = @graph.create_node(Some(parent))
   @graph.node_set_identifier(compound, id_prefix + "_compound")
-  @graph.node_set_string_property(compound, @core.algorithm, "org.eclipse.elk.layered")
+  @graph.node_set_string_property(
+    compound, @core.algorithm, "org.eclipse.elk.layered",
+  )
   @graph.node_set_dimensions(compound, 220.0, 140.0)
 
   let label = @graph.create_label(Some(make_node_label_parent(compound)))
@@ -86,7 +88,9 @@ fn issue603_test_create_labeled_compound(
 ///|
 fn issue603_test_build_graph() -> @graph.ElkNode {
   let graph = create_graph()
-  @graph.node_set_string_property(graph, @core.algorithm, "org.eclipse.elk.layered")
+  @graph.node_set_string_property(
+    graph, @core.algorithm, "org.eclipse.elk.layered",
+  )
   @graph.node_set_string_property(graph, @core.direction, "RIGHT")
 
   ignore(issue603_test_create_labeled_compound(graph, "left"))

@@ -117,7 +117,8 @@ pub fn GraphJsonTextPropertyKeyValueConverter::to_string(
           Some(current) => current
           None => ""
         }
-        match @core.layout_meta_data_service_get_option_data_by_suffix(maybe_suffix) {
+        match
+          @core.layout_meta_data_service_get_option_data_by_suffix(maybe_suffix) {
           Some(known_option) =>
             if known_option.get_group() == "" ||
               maybe_suffix.contains(known_option.get_group()) {

@@ -7,7 +7,7 @@ pub fn rectpacking_aspect_ratio_filter(
   let remaining_candidates = []
   let mut smallest_deviation = @double.infinity
   for opt in candidates {
-    smallest_deviation = @math.minimum(
+    smallest_deviation = @cmp.minimum(
       smallest_deviation,
       ((opt.drawing_width + padding.get_horizontal()) /
       (opt.drawing_height + padding.get_vertical()) -

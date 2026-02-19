@@ -1,6 +1,9 @@
 ///|
 pub struct RadialLayoutProvider {
-  algorithm_assembler : @core.AlgorithmAssembler[RadialLayoutPhases, @graph.ElkNode]
+  algorithm_assembler : @core.AlgorithmAssembler[
+    RadialLayoutPhases,
+    @graph.ElkNode,
+  ]
 }
 
 ///|
@@ -79,7 +82,9 @@ fn radial_layout_provider_assemble_algorithm(
       ),
     ),
   )
-  if @graph.node_get_bool_property(layout_graph, radial_rotation_outgoing_edge_angles) {
+  if @graph.node_get_bool_property(
+      layout_graph, radial_rotation_outgoing_edge_angles,
+    ) {
     ignore(
       configuration.add_after(
         RadialLayoutPhases::P2_EDGE_ROUTING,
@@ -119,7 +124,9 @@ pub fn RadialLayoutProvider::layout(
       if layout_radius == 0.0 {
         layout_radius = radial_find_largest_node_in_graph(layout_graph)
       }
-      @graph.node_set_double_property(layout_graph, radial_radius, layout_radius)
+      @graph.node_set_double_property(
+        layout_graph, radial_radius, layout_radius,
+      )
       for
         processor in radial_layout_provider_assemble_algorithm(
           self, layout_graph,

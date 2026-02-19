@@ -15,7 +15,9 @@ test "Issue457 node minimum size respected for box layout" {
     @graph.node_set_string_property(node, algorithm, "org.eclipse.elk.box")
     let child = @graph.create_node(Some(node))
     @graph.node_set_dimensions(child, 5.0, 5.0)
-    @graph.node_set_string_set_property(node, node_size_constraints, ["MINIMUM_SIZE"])
+    @graph.node_set_string_set_property(node, node_size_constraints, [
+      "MINIMUM_SIZE",
+    ])
     @graph.node_set_string_property(
       node,
       node_size_minimum,
@@ -63,7 +65,12 @@ test "Issue489 child placement respects node padding" {
     let child = @graph.node_children(node)[0]
     assert_true((@graph.node_x(child) - 5.0).abs() <= 0.1)
     assert_true((@graph.node_y(child) - 5.0).abs() <= 0.1)
-    assert_true((@graph.node_width(child) - (@graph.node_width(node) - 10.0)).abs() <= 0.1)
-    assert_true((@graph.node_height(child) - (@graph.node_height(node) - 10.0)).abs() <= 0.1)
+    assert_true(
+      (@graph.node_width(child) - (@graph.node_width(node) - 10.0)).abs() <= 0.1,
+    )
+    assert_true(
+      (@graph.node_height(child) - (@graph.node_height(node) - 10.0)).abs() <=
+      0.1,
+    )
   }
 }

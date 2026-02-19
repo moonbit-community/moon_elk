@@ -448,7 +448,10 @@ pub fn GraphvizLayoutProvider::layout(
 
   let resource_set = self.dot_resource_set_provider.create_resource_set()
   let dot_exporter = new_layout_dot_exporter()
-  let trans_data : @dot.DotTransformationData[@graph.ElkNode, @dot.DotGraphvizModel] = @dot.new_dot_transformation_data()
+  let trans_data : @dot.DotTransformationData[
+    @graph.ElkNode,
+    @dot.DotGraphvizModel,
+  ] = @dot.new_dot_transformation_data()
   trans_data.set_source_graph(parent_node)
   trans_data.set_command_property(@dot.dot_exporter_command, self.command)
   dot_exporter.transform(trans_data)

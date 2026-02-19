@@ -107,7 +107,8 @@ pub fn PolarCoordinateSorter::as_i_radial_sorter(
   self : PolarCoordinateSorter,
 ) -> IRadialSorter {
   let sorter = self
-  new_i_radial_sorter(fn(nodes : Array[@graph.ElkNode]) { sorter.sort(nodes) }, initialize=(
-    root : @graph.ElkNode,
-  ) => sorter.initialize(root))
+  new_i_radial_sorter(
+    fn(nodes : Array[@graph.ElkNode]) { sorter.sort(nodes) },
+    initialize=(root : @graph.ElkNode) => sorter.initialize(root),
+  )
 }

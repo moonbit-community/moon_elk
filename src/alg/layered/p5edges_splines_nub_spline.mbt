@@ -262,7 +262,9 @@ pub fn nub_spline_generate_inverted(nub_spline : NubSpline) -> NubSpline {
     ignore(new_knot_vector.insert(0, max_vector - vector))
   }
 
-  let reversed_chain = @core.kvector_chain_reverse(nub_spline.get_control_points())
+  let reversed_chain = @core.kvector_chain_reverse(
+    nub_spline.get_control_points(),
+  )
   let new_control_points = reversed_chain.to_array()
 
   let polar_coordinate = []
@@ -447,7 +449,10 @@ fn NubSpline::find_span(self : NubSpline, t : Double) -> Int {
 }
 
 ///|
-pub fn NubSpline::get_point_on_curve(self : NubSpline, t : Double) -> @core.KVector {
+pub fn NubSpline::get_point_on_curve(
+  self : NubSpline,
+  t : Double,
+) -> @core.KVector {
   let n = self.control_points.length() - 1
   let degree = self.dim_nubs - 1
   if n < 0 {
@@ -600,7 +605,10 @@ pub fn nub_spline_get_last_horizontal_point(
 }
 
 ///|
-fn nub_spline_mirror_on_x(original : @core.KVector, x_value : Double) -> @core.KVector {
+fn nub_spline_mirror_on_x(
+  original : @core.KVector,
+  x_value : Double,
+) -> @core.KVector {
   @core.new_kvector_xy(x_value + x_value - original.x, original.y)
 }
 

@@ -1,6 +1,12 @@
 ///|
 fn string_starts_with_null_prefix(value : String) -> Bool {
-  value.length() >= 4 && value.substring(start=0, end=4) == "null"
+  value.length() >= 4 &&
+  (try value[0:4] catch {
+    _ => ""
+  } noraise {
+    prefix => prefix.to_string()
+  }) ==
+  "null"
 }
 
 ///|
@@ -269,7 +275,10 @@ pub fn SvgImage::add_line(
     self.add_element_str(
       "<line x1=\"\{x1}\" y1=\"\{y1}\" x2=\"\{x2}\" y2=\"\{y2}\" \{attributes} />",
     )
-    svg_update_view_box(self, [@core.new_kvector_xy(x1, y1), @core.new_kvector_xy(x2, y2)])
+    svg_update_view_box(self, [
+      @core.new_kvector_xy(x1, y1),
+      @core.new_kvector_xy(x2, y2),
+    ])
   }
 }
 

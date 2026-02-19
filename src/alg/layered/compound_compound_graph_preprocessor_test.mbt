@@ -4,18 +4,17 @@ let compound_graph_preprocessor_test_cross_hierarchy_map : @graph.IProperty[
 ] = @graph.new_property("crossHierarchyMap", [])
 
 ///|
-let compound_graph_preprocessor_test_original_label_edge : @graph.IProperty[LEdge?] = @graph.new_property(
-  "originalLabelEdge",
-  None,
-)
+let compound_graph_preprocessor_test_original_label_edge : @graph.IProperty[
+  LEdge?,
+] = @graph.new_property("originalLabelEdge", None)
 
 ///|
-let compound_graph_preprocessor_test_inside_self_loops_yo : @graph.IProperty[Bool] = @graph.new_property(
-  "org.eclipse.elk.insideSelfLoops.yo", false,
-)
+let compound_graph_preprocessor_test_inside_self_loops_yo : @graph.IProperty[
+  Bool,
+] = @graph.new_property("org.eclipse.elk.insideSelfLoops.yo", false)
 
 ///|
-fn compound_graph_preprocessor_test_port_type_output() -> PortType {
+fn _compound_graph_preprocessor_test_port_type_output() -> PortType {
   port_type_values()[2]
 }
 

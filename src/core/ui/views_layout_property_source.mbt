@@ -55,7 +55,9 @@ fn layout_property_source_matches_dependency(
   dependency : @core.LayoutOptionDependency,
 ) -> Bool {
   match
-    @core.layout_meta_data_service_get_option_data_opt(dependency.get_option_id()) {
+    @core.layout_meta_data_service_get_option_data_opt(
+      dependency.get_option_id(),
+    ) {
     Some(target_option) =>
       match
         source.config_manager.get_option_value(

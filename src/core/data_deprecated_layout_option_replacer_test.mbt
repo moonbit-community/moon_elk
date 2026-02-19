@@ -13,7 +13,9 @@ test "DeprecatedLayoutOptionReplacer testReplacesNextToPortIfPossible" {
   @graph.reset_graph_model_for_test()
   let replacer = new_deprecated_layout_option_replacer()
   let node = @graph.create_graph()
-  @graph.node_set_bool_property(node, port_labels_next_to_port_if_possible, true)
+  @graph.node_set_bool_property(
+    node, port_labels_next_to_port_if_possible, true,
+  )
   replacer.visit(node)
   assert_false(
     @graph.node_has_bool_property(node, port_labels_next_to_port_if_possible),

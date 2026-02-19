@@ -35,7 +35,9 @@ fn breaking_point_remover_test_node_type(name : String) -> NodeType {
 }
 
 ///|
-fn breaking_point_remover_test_parse_edge_routing(name : String) -> @core.EdgeRouting {
+fn breaking_point_remover_test_parse_edge_routing(
+  name : String,
+) -> @core.EdgeRouting {
   for routing in @core.edge_routing_values() {
     if @core.edge_routing_to_string(routing) == name {
       return routing
@@ -79,7 +81,10 @@ fn breaking_point_remover_test_build_single_breaking_point_graph(
   routing : @core.EdgeRouting,
 ) -> (LGraph, LNode, LNode, LNode, LNode, LEdge, LEdge, LEdge, LPort) {
   let graph = new_l_graph()
-  graph.set_property_string(@core.edge_routing, @core.edge_routing_to_string(routing))
+  graph.set_property_string(
+    @core.edge_routing,
+    @core.edge_routing_to_string(routing),
+  )
 
   let source_layer = new_layer(graph)
   let start_layer = new_layer(graph)

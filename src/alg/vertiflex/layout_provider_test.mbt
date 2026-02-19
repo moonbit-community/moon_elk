@@ -28,7 +28,9 @@ fn vertiflex_set_required_options(
   spacing : Double,
   strategy : String,
 ) -> Unit {
-  @graph.node_set_double_property(graph, vertiflex_layer_distance, layer_distance)
+  @graph.node_set_double_property(
+    graph, vertiflex_layer_distance, layer_distance,
+  )
   @graph.node_set_double_property(graph, vertiflex_spacing_node_node, spacing)
   @graph.node_set_string_property(graph, vertiflex_layout_strategy, strategy)
   @graph.node_set_bool_property(graph, vertiflex_omit_node_micro_layout, true)
@@ -75,13 +77,21 @@ test "Vertiflex layout sets y levels and routes straight edges" {
     @graph.node_y(root) + @graph.node_height(root),
     0.0001,
   )
-  vertiflex_assert_close(@graph.edge_section_end_y(s1), @graph.node_y(left), 0.0001)
+  vertiflex_assert_close(
+    @graph.edge_section_end_y(s1),
+    @graph.node_y(left),
+    0.0001,
+  )
   vertiflex_assert_close(
     @graph.edge_section_start_y(s2),
     @graph.node_y(root) + @graph.node_height(root),
     0.0001,
   )
-  vertiflex_assert_close(@graph.edge_section_end_y(s2), @graph.node_y(right), 0.0001)
+  vertiflex_assert_close(
+    @graph.edge_section_end_y(s2),
+    @graph.node_y(right),
+    0.0001,
+  )
 }
 
 ///|
@@ -95,7 +105,10 @@ test "panic Vertiflex rejects invalid vertical constraints" {
   vertiflex_set_required_options(graph, 10.0, 0.0, "STRAIGHT")
   @graph.node_set_double_property(child, vertiflex_vertical_constraint, 0.0)
 
-  new_vertiflex_layout_provider().layout(graph, @core.new_basic_progress_monitor())
+  new_vertiflex_layout_provider().layout(
+    graph,
+    @core.new_basic_progress_monitor(),
+  )
 }
 
 ///|
@@ -115,7 +128,10 @@ test "Vertiflex bend strategy sets bend heights on branching tree" {
 
   vertiflex_set_required_options(graph, 10.0, 2.0, "BEND")
 
-  new_vertiflex_layout_provider().layout(graph, @core.new_basic_progress_monitor())
+  new_vertiflex_layout_provider().layout(
+    graph,
+    @core.new_basic_progress_monitor(),
+  )
 
   inspect(@graph.edge_sections(e1).length(), content="1")
   inspect(@graph.edge_sections(e2).length(), content="1")
@@ -143,5 +159,8 @@ test "panic Vertiflex rejects node with multiple parents" {
 
   vertiflex_set_required_options(graph, 10.0, 0.0, "STRAIGHT")
 
-  new_vertiflex_layout_provider().layout(graph, @core.new_basic_progress_monitor())
+  new_vertiflex_layout_provider().layout(
+    graph,
+    @core.new_basic_progress_monitor(),
+  )
 }

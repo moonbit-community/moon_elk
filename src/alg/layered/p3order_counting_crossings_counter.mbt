@@ -1,5 +1,5 @@
 ///|
-struct NorthSouthTargetAndDegree {
+priv struct NorthSouthTargetAndDegree {
   target : LPort
   degree : Int
 }
@@ -457,8 +457,20 @@ fn CrossingsCounter::init_port_positions_counter_clockwise(
   right_layer_nodes : Array[LNode],
 ) -> Array[LPort] {
   let ports = []
-  self.init_positions(left_layer_nodes, ports, @core.PortSide::East, true, false)
-  self.init_positions(right_layer_nodes, ports, @core.PortSide::West, false, false)
+  self.init_positions(
+    left_layer_nodes,
+    ports,
+    @core.PortSide::East,
+    true,
+    false,
+  )
+  self.init_positions(
+    right_layer_nodes,
+    ports,
+    @core.PortSide::West,
+    false,
+    false,
+  )
   ports
 }
 
@@ -571,7 +583,7 @@ fn CrossingsCounter::empty_stack(
 
 ///|
 fn CrossingsCounter::get_ports(
-  self : CrossingsCounter,
+  _self : CrossingsCounter,
   node : LNode,
   side : @core.PortSide,
   top_down : Bool,
@@ -590,7 +602,7 @@ fn CrossingsCounter::get_ports(
 
 ///|
 fn CrossingsCounter::get_north_south_ports_with_incident_edges(
-  self : CrossingsCounter,
+  _self : CrossingsCounter,
   node : LNode,
   side : @core.PortSide,
 ) -> Array[LPort] {
@@ -605,7 +617,7 @@ fn CrossingsCounter::get_north_south_ports_with_incident_edges(
 
 ///|
 fn CrossingsCounter::start(
-  self : CrossingsCounter,
+  _self : CrossingsCounter,
   nodes : Array[LNode],
   top_down : Bool,
 ) -> Int {
@@ -618,7 +630,7 @@ fn CrossingsCounter::start(
 
 ///|
 fn CrossingsCounter::end(
-  self : CrossingsCounter,
+  _self : CrossingsCounter,
   i : Int,
   top_down : Bool,
   nodes : Array[LNode],
@@ -631,7 +643,7 @@ fn CrossingsCounter::end(
 }
 
 ///|
-fn CrossingsCounter::step(self : CrossingsCounter, top_down : Bool) -> Int {
+fn CrossingsCounter::step(_self : CrossingsCounter, top_down : Bool) -> Int {
   if top_down {
     1
   } else {
@@ -640,7 +652,10 @@ fn CrossingsCounter::step(self : CrossingsCounter, top_down : Bool) -> Int {
 }
 
 ///|
-fn CrossingsCounter::is_in_layer(self : CrossingsCounter, edge : LEdge) -> Bool {
+fn CrossingsCounter::is_in_layer(
+  _self : CrossingsCounter,
+  edge : LEdge,
+) -> Bool {
   let source_layer = match edge.get_source() {
     Some(source_port) =>
       match source_port.get_node() {
@@ -673,7 +688,7 @@ fn CrossingsCounter::position_of(self : CrossingsCounter, port : LPort) -> Int {
 
 ///|
 fn CrossingsCounter::other_end_of(
-  self : CrossingsCounter,
+  _self : CrossingsCounter,
   edge : LEdge,
   from_port : LPort,
 ) -> LPort {
@@ -690,7 +705,7 @@ fn CrossingsCounter::other_end_of(
 
 ///|
 fn CrossingsCounter::is_port_self_loop(
-  self : CrossingsCounter,
+  _self : CrossingsCounter,
   edge : LEdge,
 ) -> Bool {
   match (edge.get_source(), edge.get_target()) {
@@ -702,7 +717,7 @@ fn CrossingsCounter::is_port_self_loop(
 
 ///|
 fn CrossingsCounter::is_layout_unit_changed(
-  self : CrossingsCounter,
+  _self : CrossingsCounter,
   last_unit : LNode?,
   node : LNode,
 ) -> Bool {

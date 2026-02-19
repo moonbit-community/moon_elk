@@ -1,5 +1,5 @@
 ///|
-fn layered_components_max3(a : Double, b : Double, c : Double) -> Double {
+fn _layered_components_max3(a : Double, b : Double, c : Double) -> Double {
   layered_components_max(a, layered_components_max(b, c))
 }
 

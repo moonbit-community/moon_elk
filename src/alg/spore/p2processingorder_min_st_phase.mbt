@@ -43,7 +43,10 @@ fn spore_min_st_add_node(
 }
 
 ///|
-pub fn spore_min_st_convert(tree : @common.Tree[@core.KVector], graph : SporeGraph) -> Unit {
+pub fn spore_min_st_convert(
+  tree : @common.Tree[@core.KVector],
+  graph : SporeGraph,
+) -> Unit {
   let node_map : Array[SporeKVectorNodeEntry] = []
   for node in graph.vertices {
     node_map.push({ vector: node.original_vertex, node })
@@ -98,5 +101,7 @@ pub fn new_spore_min_st_layout_phase() -> @core.ILayoutProcessor[
   SPOrEPhases,
   SporeGraph,
 ] {
-  @core.new_layout_phase(spore_min_st_phase_process, spore_min_st_phase_configuration)
+  @core.new_layout_phase(
+    spore_min_st_phase_process, spore_min_st_phase_configuration,
+  )
 }

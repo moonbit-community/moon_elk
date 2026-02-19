@@ -143,10 +143,16 @@ pub fn ElkCoreSpacingsBuilder::build(
   let overwrite = self.overwrite
   let base_spacing = self.base_spacing
   let factors = self.factors.copy()
-  element => for entry in factors {
-    let (property, factor) = entry
-    if overwrite || !@graph.node_has_double_property(element, property) {
-      @graph.node_set_double_property(element, property, factor * base_spacing)
+  element => {
+    for entry in factors {
+      let (property, factor) = entry
+      if overwrite || !@graph.node_has_double_property(element, property) {
+        @graph.node_set_double_property(
+          element,
+          property,
+          factor * base_spacing,
+        )
+      }
     }
   }
 }

@@ -33,7 +33,7 @@ fn rectpacking_row_filling_adjust_width_and_height(
   let mut index = 0
   for stack in row.stacks {
     stack.update_dimension()
-    max_height = @math.maximum(max_height, stack.height)
+    max_height = @cmp.maximum(max_height, stack.height)
     max_width += stack.width +
       (if index > 0 { compaction.node_node_spacing } else { 0.0 })
     index += 1
@@ -102,14 +102,14 @@ pub fn RectpackingRowFillingAndCompaction::start(
       rectpacking_row_filling_adjust_width_and_height(self, current_row)
 
       if row_idx + 1 < rows.length() {
-        self.potential_row_width_increase_max = @math.maximum(
+        self.potential_row_width_increase_max = @cmp.maximum(
           current_row.width +
           self.node_node_spacing +
           rows[row_idx + 1].first_block().width -
           target_width,
           self.potential_row_width_decrease_max,
         )
-        self.potential_row_width_increase_min = @math.minimum(
+        self.potential_row_width_increase_min = @cmp.minimum(
           current_row.width +
           self.node_node_spacing +
           rows[row_idx + 1].first_block().width -
@@ -117,7 +117,7 @@ pub fn RectpackingRowFillingAndCompaction::start(
           self.potential_row_width_decrease_min,
         )
         if !current_row.stacks.is_empty() {
-          self.potential_row_width_decrease_max = @math.maximum(
+          self.potential_row_width_decrease_max = @cmp.maximum(
             self.potential_row_width_decrease_max,
             current_row.stacks[current_row.stacks.length() - 1].width +
             (if current_row.stacks.length() <= 1 {
@@ -126,7 +126,7 @@ pub fn RectpackingRowFillingAndCompaction::start(
               self.node_node_spacing
             }),
           )
-          self.potential_row_width_decrease_min = @math.minimum(
+          self.potential_row_width_decrease_min = @cmp.minimum(
             self.potential_row_width_decrease_max,
             current_row.stacks[current_row.stacks.length() - 1].width +
             (if current_row.stacks.length() <= 1 {
@@ -142,19 +142,19 @@ pub fn RectpackingRowFillingAndCompaction::start(
         let last_stack = current_row.stacks[current_row.stacks.length() - 1]
         let last_block = last_stack.blocks[last_stack.blocks.length() - 1]
         for block_row in last_block.rows {
-          self.potential_row_width_decrease_max = @math.maximum(
+          self.potential_row_width_decrease_max = @cmp.maximum(
             self.potential_row_width_decrease_max,
             last_block.width - block_row.width,
           )
-          self.potential_row_width_decrease_min = @math.minimum(
+          self.potential_row_width_decrease_min = @cmp.minimum(
             self.potential_row_width_decrease_min,
             last_block.width - block_row.width,
           )
-          self.potential_row_width_increase_max = @math.maximum(
+          self.potential_row_width_increase_max = @cmp.maximum(
             self.potential_row_width_increase_max,
             block_row.width + self.node_node_spacing,
           )
-          self.potential_row_width_increase_min = @math.minimum(
+          self.potential_row_width_increase_min = @cmp.minimum(
             self.potential_row_width_increase_min,
             block_row.width + self.node_node_spacing,
           )
@@ -166,8 +166,8 @@ pub fn RectpackingRowFillingAndCompaction::start(
   }
 
   let size = rectpacking_calculate_dimensions_rows(rows, self.node_node_spacing)
-  let total_width = @math.maximum(size.x, min_width - padding.get_horizontal())
-  let height = @math.maximum(size.y, min_height - padding.get_vertical())
+  let total_width = @cmp.maximum(size.x, min_width - padding.get_horizontal())
+  let height = @cmp.maximum(size.y, min_height - padding.get_vertical())
   let additional_height = height - size.y
 
   @graph.node_set_double_property(

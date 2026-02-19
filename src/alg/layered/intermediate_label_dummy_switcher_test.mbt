@@ -47,7 +47,7 @@ fn label_dummy_switcher_test_node_type(name : String) -> NodeType {
 }
 
 ///|
-fn label_dummy_switcher_test_require_source(edge : LEdge) -> LPort {
+fn _label_dummy_switcher_test_require_source(edge : LEdge) -> LPort {
   match edge.get_source() {
     Some(value) => value
     None => abort("edge has no source")

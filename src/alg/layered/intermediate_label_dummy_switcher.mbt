@@ -4,7 +4,7 @@ pub let label_dummy_switcher_include_label : @graph.IProperty[Bool] = @graph.new
 )
 
 ///|
-struct LabelDummySwitcherInfo {
+priv struct LabelDummySwitcherInfo {
   label_dummy : LNode
   mut placement_strategy : CenterEdgeLabelPlacementStrategy
   left_long_edge_dummies : Array[LNode]
@@ -525,9 +525,15 @@ fn label_dummy_switcher_set_end_layer_node_alignment(
   let reversed = label_dummy_switcher_is_part_of_reversed_edge(info)
 
   if (is_head_label && !reversed) || (!is_head_label && reversed) {
-    info.label_dummy.set_property_string(@core.alignment, @core.alignment_to_string(Right))
+    info.label_dummy.set_property_string(
+      @core.alignment,
+      @core.alignment_to_string(Right),
+    )
   } else {
-    info.label_dummy.set_property_string(@core.alignment, @core.alignment_to_string(Left))
+    info.label_dummy.set_property_string(
+      @core.alignment,
+      @core.alignment_to_string(Left),
+    )
   }
 }
 

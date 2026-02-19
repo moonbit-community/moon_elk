@@ -13,7 +13,9 @@ fn spacings_node_type_ordinal(node_type : NodeType) -> Int {
 }
 
 ///|
-fn spacings_new_option_grid(size : Int) -> Array[Array[@graph.IProperty[Double]?]] {
+fn spacings_new_option_grid(
+  size : Int,
+) -> Array[Array[@graph.IProperty[Double]?]] {
   let grid : Array[Array[@graph.IProperty[Double]?]] = []
   for _ in 0..<size {
     let row : Array[@graph.IProperty[Double]?] = []
@@ -26,7 +28,9 @@ fn spacings_new_option_grid(size : Int) -> Array[Array[@graph.IProperty[Double]?
 }
 
 ///|
-fn spacings_require_option(option : @graph.IProperty[Double]?) -> @graph.IProperty[Double] {
+fn spacings_require_option(
+  option : @graph.IProperty[Double]?,
+) -> @graph.IProperty[Double] {
   match option {
     Some(value) => value
     None => abort("Unspecified spacing for node types.")
@@ -198,7 +202,10 @@ fn Spacings::precalculate_node_type_spacings(self : Spacings) -> Unit {
     @core.spacing_label_node,
   )
 
-  self.set_same_type_spacing_vertical(NodeType::ExternalPort, @core.spacing_port_port)
+  self.set_same_type_spacing_vertical(
+    NodeType::ExternalPort,
+    @core.spacing_port_port,
+  )
   self.set_pair_spacing(
     NodeType::ExternalPort,
     NodeType::LabelNode,
@@ -239,7 +246,7 @@ fn Spacings::precalculate_node_type_spacings(self : Spacings) -> Unit {
 
 ///|
 fn Spacings::get_local_spacing(
-  self : Spacings,
+  _self : Spacings,
   first : LNode,
   second : LNode,
   mapping : Array[Array[@graph.IProperty[Double]?]],

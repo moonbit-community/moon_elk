@@ -154,8 +154,8 @@ fn algorithm_content_provider_is_better_match(
     None => true
     Some(best) => {
       let best_name = core_ui_layout_meta_data_get_name(best).to_lower()
-      candidate_name.starts_with(filter_value) &&
-      !best_name.starts_with(filter_value)
+      candidate_name.has_prefix(filter_value) &&
+      !best_name.has_prefix(filter_value)
     }
   }
 }

@@ -709,7 +709,8 @@ fn core_debug_grandom_generator_generate_tree(
       continue
     }
 
-    if max_degree != 0 && @graph.node_outgoing_edges(node).length() + 1 == max_degree {
+    if max_degree != 0 &&
+      @graph.node_outgoing_edges(node).length() + 1 == max_degree {
       possible_nodes[random_index] = possible_nodes[max_index]
       possible_ids[random_index] = possible_ids[max_index]
       ignore(possible_nodes.remove(max_index))
@@ -1308,7 +1309,9 @@ fn core_debug_grandom_generator_create_node(
     generator, core_debug_grandom_hypernode_chance,
   )
   if hypernode_chance > 0.0 && generator.random.double() < hypernode_chance {
-    @graph.node_set_bool_property(node, core_debug_grandom_hypernode_property, true)
+    @graph.node_set_bool_property(
+      node, core_debug_grandom_hypernode_property, true,
+    )
   }
 
   let node_id = generator.node_label_counter.to_string()
@@ -1526,7 +1529,9 @@ fn core_debug_grandom_generator_retrieve_port(
           !@graph.port_incoming_edges(port).is_empty() && !source
         ) ||
         (!@graph.port_outgoing_edges(port).is_empty() && source)
-      let connected_to_bad = (!@graph.port_incoming_edges(port).is_empty() && source) ||
+      let connected_to_bad = (
+          !@graph.port_incoming_edges(port).is_empty() && source
+        ) ||
         (!@graph.port_outgoing_edges(port).is_empty() && !source)
       if connected_to_desired && !connected_to_bad {
         reuse_candidates.push(port)
@@ -1625,7 +1630,9 @@ fn core_debug_grandom_generator_edge_has_source_node(
 }
 
 ///|
-fn core_debug_grandom_generator_remove_unused_port(port : @graph.ElkPort) -> Unit {
+fn core_debug_grandom_generator_remove_unused_port(
+  port : @graph.ElkPort,
+) -> Unit {
   if @graph.port_outgoing_edges(port).length() == 0 &&
     @graph.port_incoming_edges(port).length() == 1 {
     match @graph.port_parent(port) {
@@ -1712,7 +1719,8 @@ fn core_debug_grandom_generator_move_source(
       Some(new_node) =>
         if !core_debug_grandom_generator_is_hypernode(new_node) {
           match new_port_opt {
-            Some(new_port) => @graph.edge_sources(edge).push(@graph.make_port_shape(new_port))
+            Some(new_port) =>
+              @graph.edge_sources(edge).push(@graph.make_port_shape(new_port))
             None => ()
           }
         }
@@ -1803,7 +1811,8 @@ fn core_debug_grandom_generator_move_target(
       Some(new_node) =>
         if !core_debug_grandom_generator_is_hypernode(new_node) {
           match new_port_opt {
-            Some(new_port) => @graph.edge_targets(edge).push(@graph.make_port_shape(new_port))
+            Some(new_port) =>
+              @graph.edge_targets(edge).push(@graph.make_port_shape(new_port))
             None => ()
           }
         }
@@ -2023,7 +2032,9 @@ fn core_debug_grandom_generator_determine_outgoing_edges_total(
 }
 
 ///|
-fn core_debug_grandom_generator_remove_isolated_nodes(parent : @graph.ElkNode) -> Unit {
+fn core_debug_grandom_generator_remove_isolated_nodes(
+  parent : @graph.ElkNode,
+) -> Unit {
   let children = @graph.node_children(parent)
   let mut index = 0
   while index < children.length() {

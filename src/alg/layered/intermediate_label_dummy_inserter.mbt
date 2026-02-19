@@ -109,7 +109,9 @@ fn label_dummy_inserter_process(
 
   let new_dummy_nodes = []
 
-  let edge_label_spacing = layered_graph.get_property_double(@core.spacing_edge_label)
+  let edge_label_spacing = layered_graph.get_property_double(
+    @core.spacing_edge_label,
+  )
   let label_label_spacing = layered_graph.get_property_double(
     @core.spacing_label_label,
   )

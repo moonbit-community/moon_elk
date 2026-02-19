@@ -42,7 +42,10 @@ pub fn DCGraph::get_dimensions(self : DCGraph) -> @core.KVector {
 }
 
 ///|
-pub fn DCGraph::set_dimensions(self : DCGraph, dimensions : @core.KVector) -> Unit {
+pub fn DCGraph::set_dimensions(
+  self : DCGraph,
+  dimensions : @core.KVector,
+) -> Unit {
   self.dimensions = dimensions
 }
 

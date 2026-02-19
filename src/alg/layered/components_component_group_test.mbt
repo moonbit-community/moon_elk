@@ -1,5 +1,7 @@
 ///|
-fn component_group_test_generate_graph(connections : Array[@core.PortSide]) -> LGraph {
+fn component_group_test_generate_graph(
+  connections : Array[@core.PortSide],
+) -> LGraph {
   let graph = new_l_graph()
   graph.set_property_port_side_array(
     internal_properties_ext_port_connections, connections,
@@ -10,16 +12,46 @@ fn component_group_test_generate_graph(connections : Array[@core.PortSide]) -> L
 ///|
 test "ComponentGroup valid constraints" {
   let mut group = new_component_group()
-  assert_eq(group.add(component_group_test_generate_graph(@core.sides_north)), true)
-  assert_eq(group.add(component_group_test_generate_graph(@core.sides_north)), true)
-  assert_eq(group.add(component_group_test_generate_graph(@core.sides_south)), true)
-  assert_eq(group.add(component_group_test_generate_graph(@core.sides_south)), true)
-  assert_eq(group.add(component_group_test_generate_graph(@core.sides_west)), true)
-  assert_eq(group.add(component_group_test_generate_graph(@core.sides_west)), true)
-  assert_eq(group.add(component_group_test_generate_graph(@core.sides_east)), true)
-  assert_eq(group.add(component_group_test_generate_graph(@core.sides_east)), true)
-  assert_eq(group.add(component_group_test_generate_graph(@core.sides_none)), true)
-  assert_eq(group.add(component_group_test_generate_graph(@core.sides_none)), true)
+  assert_eq(
+    group.add(component_group_test_generate_graph(@core.sides_north)),
+    true,
+  )
+  assert_eq(
+    group.add(component_group_test_generate_graph(@core.sides_north)),
+    true,
+  )
+  assert_eq(
+    group.add(component_group_test_generate_graph(@core.sides_south)),
+    true,
+  )
+  assert_eq(
+    group.add(component_group_test_generate_graph(@core.sides_south)),
+    true,
+  )
+  assert_eq(
+    group.add(component_group_test_generate_graph(@core.sides_west)),
+    true,
+  )
+  assert_eq(
+    group.add(component_group_test_generate_graph(@core.sides_west)),
+    true,
+  )
+  assert_eq(
+    group.add(component_group_test_generate_graph(@core.sides_east)),
+    true,
+  )
+  assert_eq(
+    group.add(component_group_test_generate_graph(@core.sides_east)),
+    true,
+  )
+  assert_eq(
+    group.add(component_group_test_generate_graph(@core.sides_none)),
+    true,
+  )
+  assert_eq(
+    group.add(component_group_test_generate_graph(@core.sides_none)),
+    true,
+  )
 
   group = new_component_group()
   assert_eq(
@@ -30,12 +62,30 @@ test "ComponentGroup valid constraints" {
     group.add(component_group_test_generate_graph(@core.sides_east_west)),
     true,
   )
-  assert_eq(group.add(component_group_test_generate_graph(@core.sides_west)), true)
-  assert_eq(group.add(component_group_test_generate_graph(@core.sides_west)), true)
-  assert_eq(group.add(component_group_test_generate_graph(@core.sides_east)), true)
-  assert_eq(group.add(component_group_test_generate_graph(@core.sides_east)), true)
-  assert_eq(group.add(component_group_test_generate_graph(@core.sides_none)), true)
-  assert_eq(group.add(component_group_test_generate_graph(@core.sides_none)), true)
+  assert_eq(
+    group.add(component_group_test_generate_graph(@core.sides_west)),
+    true,
+  )
+  assert_eq(
+    group.add(component_group_test_generate_graph(@core.sides_west)),
+    true,
+  )
+  assert_eq(
+    group.add(component_group_test_generate_graph(@core.sides_east)),
+    true,
+  )
+  assert_eq(
+    group.add(component_group_test_generate_graph(@core.sides_east)),
+    true,
+  )
+  assert_eq(
+    group.add(component_group_test_generate_graph(@core.sides_none)),
+    true,
+  )
+  assert_eq(
+    group.add(component_group_test_generate_graph(@core.sides_none)),
+    true,
+  )
 
   group = new_component_group()
   assert_eq(
@@ -46,16 +96,36 @@ test "ComponentGroup valid constraints" {
     group.add(component_group_test_generate_graph(@core.sides_north_south)),
     true,
   )
-  assert_eq(group.add(component_group_test_generate_graph(@core.sides_north)), true)
-  assert_eq(group.add(component_group_test_generate_graph(@core.sides_north)), true)
-  assert_eq(group.add(component_group_test_generate_graph(@core.sides_south)), true)
-  assert_eq(group.add(component_group_test_generate_graph(@core.sides_south)), true)
-  assert_eq(group.add(component_group_test_generate_graph(@core.sides_none)), true)
-  assert_eq(group.add(component_group_test_generate_graph(@core.sides_none)), true)
+  assert_eq(
+    group.add(component_group_test_generate_graph(@core.sides_north)),
+    true,
+  )
+  assert_eq(
+    group.add(component_group_test_generate_graph(@core.sides_north)),
+    true,
+  )
+  assert_eq(
+    group.add(component_group_test_generate_graph(@core.sides_south)),
+    true,
+  )
+  assert_eq(
+    group.add(component_group_test_generate_graph(@core.sides_south)),
+    true,
+  )
+  assert_eq(
+    group.add(component_group_test_generate_graph(@core.sides_none)),
+    true,
+  )
+  assert_eq(
+    group.add(component_group_test_generate_graph(@core.sides_none)),
+    true,
+  )
 
   group = new_component_group()
   assert_eq(
-    group.add(component_group_test_generate_graph(@core.sides_north_east_south_west)),
+    group.add(
+      component_group_test_generate_graph(@core.sides_north_east_south_west),
+    ),
     true,
   )
   assert_eq(
@@ -150,10 +220,15 @@ test "ComponentGroup invalid constraints" {
 
   group = new_component_group()
   assert_eq(
-    group.add(component_group_test_generate_graph(@core.sides_north_east_south_west)),
+    group.add(
+      component_group_test_generate_graph(@core.sides_north_east_south_west),
+    ),
     true,
   )
-  assert_eq(group.add(component_group_test_generate_graph(@core.sides_none)), false)
+  assert_eq(
+    group.add(component_group_test_generate_graph(@core.sides_none)),
+    false,
+  )
   assert_eq(
     group.add(component_group_test_generate_graph(@core.sides_north_south)),
     false,
@@ -179,7 +254,9 @@ test "ComponentGroup invalid constraints" {
     false,
   )
   assert_eq(
-    group.add(component_group_test_generate_graph(@core.sides_north_east_south_west)),
+    group.add(
+      component_group_test_generate_graph(@core.sides_north_east_south_west),
+    ),
     false,
   )
 }

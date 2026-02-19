@@ -47,7 +47,10 @@ pub fn InternalCoreMetaIdeParser::get_grammar_access(
 pub fn InternalCoreMetaIdeParser::entry_rule_md_model(
   self : InternalCoreMetaIdeParser,
 ) -> @meta.CoreMetaMdModel {
-  @meta.new_internal_meta_data_parser(self.tokens, grammar_access=self.grammar_access).entry_rule_md_model()
+  @meta.new_internal_meta_data_parser(
+    self.tokens,
+    grammar_access=self.grammar_access,
+  ).entry_rule_md_model()
 }
 
 ///|

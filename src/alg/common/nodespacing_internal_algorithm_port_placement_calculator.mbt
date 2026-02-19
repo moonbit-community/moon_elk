@@ -1,7 +1,7 @@
 ///|
-pub let port_placement_calculator_port_ratio_or_position : @graph.IProperty[Double] = @graph.new_property(
-  "portRatioOrPosition", 0.0,
-)
+pub let port_placement_calculator_port_ratio_or_position : @graph.IProperty[
+  Double,
+] = @graph.new_property("portRatioOrPosition", 0.0)
 
 ///|
 fn port_placement_calculator_side_equals(

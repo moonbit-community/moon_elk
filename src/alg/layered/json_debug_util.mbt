@@ -17,34 +17,34 @@ fn json_debug_util_calculate_min_max_positions(
   max : @core.KVector,
   node : LNode,
 ) -> Unit {
-  min.x = @math.minimum(min.x, node.get_position().x - node.get_margin().left)
-  max.x = @math.maximum(
+  min.x = @cmp.minimum(min.x, node.get_position().x - node.get_margin().left)
+  max.x = @cmp.maximum(
     max.x,
     node.get_position().x + node.get_size().x + node.get_margin().right,
   )
-  min.y = @math.minimum(min.y, node.get_position().y - node.get_margin().top)
-  max.y = @math.maximum(
+  min.y = @cmp.minimum(min.y, node.get_position().y - node.get_margin().top)
+  max.y = @cmp.maximum(
     max.y,
     node.get_position().y + node.get_size().y + node.get_margin().bottom,
   )
 
   for port in node.get_ports() {
-    min.x = @math.minimum(
+    min.x = @cmp.minimum(
       min.x,
       node.get_position().x + port.get_position().x - port.get_margin().left,
     )
-    max.x = @math.maximum(
+    max.x = @cmp.maximum(
       max.x,
       node.get_position().x +
       port.get_position().x +
       port.get_size().x +
       port.get_margin().right,
     )
-    min.y = @math.minimum(
+    min.y = @cmp.minimum(
       min.y,
       node.get_position().y + port.get_position().y - port.get_margin().top,
     )
-    max.y = @math.maximum(
+    max.y = @cmp.maximum(
       max.y,
       node.get_position().y +
       port.get_position().y +
@@ -55,16 +55,18 @@ fn json_debug_util_calculate_min_max_positions(
 
   for edge in node.get_outgoing_edges() {
     for bendpoint in edge.get_bend_points().to_array() {
-      min.x = @math.minimum(min.x, bendpoint.x)
-      max.x = @math.maximum(max.x, bendpoint.x)
-      min.y = @math.minimum(min.y, bendpoint.y)
-      max.y = @math.maximum(max.y, bendpoint.y)
+      min.x = @cmp.minimum(min.x, bendpoint.x)
+      max.x = @cmp.maximum(max.x, bendpoint.x)
+      min.y = @cmp.minimum(min.y, bendpoint.y)
+      max.y = @cmp.maximum(max.y, bendpoint.y)
     }
   }
 }
 
 ///|
-fn json_debug_util_calculate_graph_size(lgraph : LGraph) -> (@core.KVector, @core.KVector) {
+fn json_debug_util_calculate_graph_size(
+  lgraph : LGraph,
+) -> (@core.KVector, @core.KVector) {
   let min = @core.new_kvector()
   let max = @core.new_kvector()
 

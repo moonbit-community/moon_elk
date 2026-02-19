@@ -184,7 +184,10 @@ fn exporter_add_individual_spacings(
 }
 
 ///|
-fn exporter_transform_edge(exporter : JsonExporter, edge : @graph.ElkEdge) -> Json {
+fn exporter_transform_edge(
+  exporter : JsonExporter,
+  edge : @graph.ElkEdge,
+) -> Json {
   let json_edge : Map[String, Json] = {}
   json_edge["id"] = Json::string(exporter_edge_id(exporter, edge))
   let sources = []
@@ -207,7 +210,10 @@ fn exporter_transform_edge(exporter : JsonExporter, edge : @graph.ElkEdge) -> Js
 }
 
 ///|
-fn exporter_transform_node(exporter : JsonExporter, node : @graph.ElkNode) -> Json {
+fn exporter_transform_node(
+  exporter : JsonExporter,
+  node : @graph.ElkNode,
+) -> Json {
   let json_node : Map[String, Json] = {}
   json_node["id"] = Json::string(exporter_node_id(exporter, node))
   let children = []

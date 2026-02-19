@@ -1,0 +1,521 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/moon_elk/graph/text"
+
+import {
+  "Milky2018/moon_elk/core",
+  "Milky2018/moon_elk/graph",
+}
+
+// Values
+pub let elk_graph_qualified_name_converter_delimiter : Char
+
+pub fn elk_graph_standalone_setup_do_setup() -> GraphTextInjector
+
+pub fn elk_graph_text_util_get_algorithm(GraphTextElement) -> @core.LayoutAlgorithmData?
+
+pub let graph_text_antlr_token_file_content : String
+
+pub let graph_text_antlr_token_file_path : String
+
+pub let graph_text_default_file_extension : String
+
+pub let graph_text_default_language_name : String
+
+pub let graph_text_default_serializer_class_name : String
+
+pub fn graph_text_element_identifier(GraphTextElement) -> String?
+
+pub let graph_text_feature_edge_section_identifier : String
+
+pub let graph_text_feature_edge_section_incoming_shape : String
+
+pub let graph_text_feature_edge_section_outgoing_shape : String
+
+pub let graph_text_feature_graph_identifier : String
+
+pub let graph_text_feature_property_key : String
+
+pub let graph_text_feature_property_value : String
+
+pub let graph_text_file_extension : String
+
+pub let graph_text_grammar_name : String
+
+pub let graph_text_issue_error : Int
+
+pub let graph_text_issue_warning : Int
+
+pub fn graph_text_label_owner_to_parent(GraphTextLabelOwner) -> @graph.ElkLabelParent
+
+pub let graph_text_lexer_rule_any_other : Int
+
+pub let graph_text_lexer_rule_float : Int
+
+pub let graph_text_lexer_rule_id : Int
+
+pub let graph_text_lexer_rule_int : Int
+
+pub let graph_text_lexer_rule_ml_comment : Int
+
+pub let graph_text_lexer_rule_signed_int : Int
+
+pub let graph_text_lexer_rule_sl_comment : Int
+
+pub let graph_text_lexer_rule_string : Int
+
+pub let graph_text_lexer_rule_ws : Int
+
+pub let graph_text_lexer_token_names : Array[String]
+
+pub let graph_text_opposite_ref_incoming_edges : String
+
+pub let graph_text_opposite_ref_incoming_sections : String
+
+pub let graph_text_opposite_ref_outgoing_edges : String
+
+pub let graph_text_option_not_applicable : String
+
+pub fn graph_text_property_key_group(GraphTextPropertyKey) -> String
+
+pub fn graph_text_property_key_id(GraphTextPropertyKey) -> String
+
+pub fn graph_text_property_key_to_layout_option(GraphTextPropertyKey) -> @core.LayoutOptionData?
+
+pub fn graph_text_property_value_to_string(GraphTextPropertyValue) -> String
+
+pub let graph_text_reference_elk_edge_section_outgoing_sections : String
+
+pub fn graph_text_registered_resource_factory(String) -> String?
+
+pub fn graph_text_registered_resource_service_provider(String) -> String?
+
+pub fn graph_text_reset_registries_for_test() -> Unit
+
+pub let graph_text_resource_factory_value : String
+
+pub let graph_text_resource_service_provider_value : String
+
+pub fn graph_text_shape_set_location(GraphTextShape, Double, Double) -> Unit
+
+pub fn graph_text_shape_set_size(GraphTextShape, Double, Double) -> Unit
+
+pub fn new_abstract_elk_graph_runtime_module(properties? : Map[String, String]) -> AbstractElkGraphRuntimeModule
+
+pub fn new_abstract_elk_graph_scope_provider() -> AbstractElkGraphScopeProvider
+
+pub fn new_abstract_elk_graph_semantic_sequencer(grammar_access? : ElkGraphGrammarAccess) -> AbstractElkGraphSemanticSequencer
+
+pub fn new_abstract_elk_graph_syntactic_sequencer(grammar_access? : ElkGraphGrammarAccess) -> AbstractElkGraphSyntacticSequencer
+
+pub fn new_abstract_elk_graph_validator() -> AbstractElkGraphValidator
+
+pub fn new_elk_graph_antlr_token_file_provider() -> ElkGraphAntlrTokenFileProvider
+
+pub fn new_elk_graph_formatter(indent_size? : Int) -> ElkGraphFormatter
+
+pub fn new_elk_graph_grammar_access() -> ElkGraphGrammarAccess
+
+pub fn new_elk_graph_lex_token(Int, String, String) -> ElkGraphLexToken
+
+pub fn new_elk_graph_linker() -> ElkGraphLinker
+
+pub fn new_elk_graph_parser(grammar_access? : ElkGraphGrammarAccess) -> ElkGraphParser
+
+pub fn new_elk_graph_qualified_name_converter() -> ElkGraphQualifiedNameConverter
+
+pub fn new_elk_graph_qualified_name_provider() -> ElkGraphQualifiedNameProvider
+
+pub fn new_elk_graph_runtime_module(base? : AbstractElkGraphRuntimeModule) -> ElkGraphRuntimeModule
+
+pub fn new_elk_graph_scope_provider(base? : AbstractElkGraphScopeProvider) -> ElkGraphScopeProvider
+
+pub fn new_elk_graph_semantic_sequencer(base? : AbstractElkGraphSemanticSequencer, value_converter? : PropertyValueValueConverter) -> ElkGraphSemanticSequencer
+
+pub fn new_elk_graph_standalone_setup() -> ElkGraphStandaloneSetup
+
+pub fn new_elk_graph_standalone_setup_generated() -> ElkGraphStandaloneSetupGenerated
+
+pub fn new_elk_graph_syntactic_sequencer(base? : AbstractElkGraphSyntacticSequencer) -> ElkGraphSyntacticSequencer
+
+pub fn new_elk_graph_text_util() -> ElkGraphTextUtil
+
+pub fn new_elk_graph_transient_value_service() -> ElkGraphTransientValueService
+
+pub fn new_elk_graph_validator(base? : AbstractElkGraphValidator, layout_option_validator? : @core.LayoutOptionValidator, value_converter? : PropertyValueValueConverter) -> ElkGraphValidator
+
+pub fn new_elk_graph_value_converter_service(number_value_converter? : NumberValueConverter, property_key_value_converter? : PropertyKeyValueConverter, property_value_value_converter? : PropertyValueValueConverter) -> ElkGraphValueConverterService
+
+pub fn new_graph_text_injector() -> GraphTextInjector
+
+pub fn new_graph_text_pending_outgoing_section(Int, String) -> GraphTextPendingOutgoingSection
+
+pub fn new_graph_text_property_assignment(GraphTextPropertyKey, GraphTextPropertyValue) -> GraphTextPropertyAssignment
+
+pub fn new_graph_text_validation_issue(String, String, Int, code? : String?) -> GraphTextValidationIssue
+
+pub fn new_internal_elk_graph_lexer(String) -> InternalElkGraphLexer
+
+pub fn new_internal_elk_graph_parser(Array[ElkGraphLexToken], grammar_access? : ElkGraphGrammarAccess) -> InternalElkGraphParser
+
+pub fn new_number_value_converter() -> NumberValueConverter
+
+pub fn new_property_key_value_converter() -> PropertyKeyValueConverter
+
+pub fn new_property_value_value_converter(qualified_name_converter? : ElkGraphQualifiedNameConverter) -> PropertyValueValueConverter
+
+// Errors
+
+// Types and methods
+pub struct AbstractElkGraphRuntimeModule {
+  mut properties : Map[String, String]
+}
+pub fn AbstractElkGraphRuntimeModule::bind_class_loader_to_instance(Self) -> String
+pub fn AbstractElkGraphRuntimeModule::bind_elk_graph_validator(Self) -> String
+pub fn AbstractElkGraphRuntimeModule::bind_i_all_containers_state_provider(Self) -> String
+pub fn AbstractElkGraphRuntimeModule::bind_i_container_manager(Self) -> String
+pub fn AbstractElkGraphRuntimeModule::bind_i_global_scope_provider(Self) -> String
+pub fn AbstractElkGraphRuntimeModule::bind_i_qualified_name_provider(Self) -> String
+pub fn AbstractElkGraphRuntimeModule::bind_i_scope_provider(Self) -> String
+pub fn AbstractElkGraphRuntimeModule::bind_iantlr_token_file_provider(Self) -> String
+pub fn AbstractElkGraphRuntimeModule::bind_iformatter2(Self) -> String
+pub fn AbstractElkGraphRuntimeModule::bind_igrammar_access(Self) -> String
+pub fn AbstractElkGraphRuntimeModule::bind_iparser(Self) -> String
+pub fn AbstractElkGraphRuntimeModule::bind_isemantic_sequencer(Self) -> String
+pub fn AbstractElkGraphRuntimeModule::bind_iserializer(Self) -> String
+pub fn AbstractElkGraphRuntimeModule::bind_isyntactic_sequencer(Self) -> String
+pub fn AbstractElkGraphRuntimeModule::bind_itoken_def_provider(Self) -> String
+pub fn AbstractElkGraphRuntimeModule::bind_itoken_to_string_converter(Self) -> String
+pub fn AbstractElkGraphRuntimeModule::bind_iunordered_group_helper(Self) -> String
+pub fn AbstractElkGraphRuntimeModule::bind_lexer(Self) -> String
+pub fn AbstractElkGraphRuntimeModule::configure(Self, Map[String, String]) -> Unit
+pub fn AbstractElkGraphRuntimeModule::configure_file_extensions(Self) -> String
+pub fn AbstractElkGraphRuntimeModule::configure_formatter_preferences(Self) -> String
+pub fn AbstractElkGraphRuntimeModule::configure_i_resource_descriptions(Self) -> String
+pub fn AbstractElkGraphRuntimeModule::configure_i_resource_descriptions_persisted(Self) -> String
+pub fn AbstractElkGraphRuntimeModule::configure_i_scope_provider_delegate(Self) -> String
+pub fn AbstractElkGraphRuntimeModule::configure_ignore_case_linking(Self) -> Bool
+pub fn AbstractElkGraphRuntimeModule::configure_language_name(Self) -> String
+pub fn AbstractElkGraphRuntimeModule::configure_runtime_lexer(Self) -> String
+pub fn AbstractElkGraphRuntimeModule::provide_internal_elk_graph_lexer(Self) -> String
+
+pub struct AbstractElkGraphScopeProvider {
+  marker : Unit
+}
+pub fn AbstractElkGraphScopeProvider::get_scope(Self, Int, String) -> Array[String]
+
+pub struct AbstractElkGraphSemanticSequencer {
+  grammar_access : ElkGraphGrammarAccess
+}
+pub fn AbstractElkGraphSemanticSequencer::get_grammar_access(Self) -> ElkGraphGrammarAccess
+pub fn[T] AbstractElkGraphSemanticSequencer::sequence(Self, String, T) -> T
+pub fn[T] AbstractElkGraphSemanticSequencer::sequence_edge_layout_elk_edge(Self, String, T) -> T
+pub fn[T] AbstractElkGraphSemanticSequencer::sequence_elk_bend_point(Self, String, T) -> T
+pub fn[T] AbstractElkGraphSemanticSequencer::sequence_elk_edge_section(Self, String, T) -> T
+pub fn[T] AbstractElkGraphSemanticSequencer::sequence_elk_label_shape_layout(Self, String, T) -> T
+pub fn[T] AbstractElkGraphSemanticSequencer::sequence_elk_node_shape_layout(Self, String, T) -> T
+pub fn[T] AbstractElkGraphSemanticSequencer::sequence_elk_port_shape_layout(Self, String, T) -> T
+pub fn[T] AbstractElkGraphSemanticSequencer::sequence_elk_single_edge_section(Self, String, T) -> T
+pub fn[T] AbstractElkGraphSemanticSequencer::sequence_property(Self, String, T) -> T
+pub fn[T] AbstractElkGraphSemanticSequencer::sequence_root_node_shape_layout(Self, String, T) -> T
+
+pub struct AbstractElkGraphSyntacticSequencer {
+  grammar_access : ElkGraphGrammarAccess
+  match_elk_edge___left_curly_bracket_keyword_7_0_right_curly_bracket_keyword_7_4__q : String
+}
+pub fn[A, B, C] AbstractElkGraphSyntacticSequencer::emit_elk_edge___left_curly_bracket_keyword_7_0_right_curly_bracket_keyword_7_4__q(Self, A, B, Array[C]) -> String
+pub fn AbstractElkGraphSyntacticSequencer::emit_unassigned_tokens(Self, String, Array[String]) -> Array[String]
+pub fn AbstractElkGraphSyntacticSequencer::get_grammar_access(Self) -> ElkGraphGrammarAccess
+pub fn AbstractElkGraphSyntacticSequencer::get_unassigned_rule_call_token(Self, String, String, String) -> String
+
+pub struct AbstractElkGraphValidator {
+  epackages : Array[String]
+}
+pub fn AbstractElkGraphValidator::get_epackages(Self) -> Array[String]
+
+pub struct ElkGraphAntlrTokenFileProvider {
+  marker : Unit
+}
+pub fn ElkGraphAntlrTokenFileProvider::get_antlr_token_file(Self) -> String
+pub fn ElkGraphAntlrTokenFileProvider::get_antlr_token_file_path(Self) -> String
+
+pub struct ElkGraphFormatter {
+  indent_size : Int
+}
+pub fn ElkGraphFormatter::format(Self, Int) -> String
+
+pub struct ElkGraphGrammarAccess {
+  grammar : String
+  rules : Map[String, String]
+}
+pub fn ElkGraphGrammarAccess::get_boolean_value_rule(Self) -> String
+pub fn ElkGraphGrammarAccess::get_edge_layout_rule(Self) -> String
+pub fn ElkGraphGrammarAccess::get_elk_bend_point_rule(Self) -> String
+pub fn ElkGraphGrammarAccess::get_elk_edge_rule(Self) -> String
+pub fn ElkGraphGrammarAccess::get_elk_edge_section_rule(Self) -> String
+pub fn ElkGraphGrammarAccess::get_elk_label_rule(Self) -> String
+pub fn ElkGraphGrammarAccess::get_elk_node_rule(Self) -> String
+pub fn ElkGraphGrammarAccess::get_elk_port_rule(Self) -> String
+pub fn ElkGraphGrammarAccess::get_elk_single_edge_section_rule(Self) -> String
+pub fn ElkGraphGrammarAccess::get_grammar(Self) -> String
+pub fn ElkGraphGrammarAccess::get_id_rule(Self) -> String
+pub fn ElkGraphGrammarAccess::get_number_rule(Self) -> String
+pub fn ElkGraphGrammarAccess::get_number_value_rule(Self) -> String
+pub fn ElkGraphGrammarAccess::get_property_key_rule(Self) -> String
+pub fn ElkGraphGrammarAccess::get_property_rule(Self) -> String
+pub fn ElkGraphGrammarAccess::get_qualified_id_rule(Self) -> String
+pub fn ElkGraphGrammarAccess::get_qualified_id_value_rule(Self) -> String
+pub fn ElkGraphGrammarAccess::get_root_node_rule(Self) -> String
+pub fn ElkGraphGrammarAccess::get_rule(Self, String) -> String?
+pub fn ElkGraphGrammarAccess::get_rule_names(Self) -> Array[String]
+pub fn ElkGraphGrammarAccess::get_shape_layout_rule(Self) -> String
+pub fn ElkGraphGrammarAccess::get_string_value_rule(Self) -> String
+
+pub struct ElkGraphLexToken {
+  token_type : Int
+  token_name : String
+  lexeme : String
+}
+
+pub struct ElkGraphLinker {
+  opposite_refs : Map[String, Unit]
+}
+pub fn ElkGraphLinker::clear_reference(Self, String, String) -> Bool
+
+pub struct ElkGraphParser {
+  mut grammar_access : ElkGraphGrammarAccess
+  mut initial_hidden_tokens : Array[String]
+}
+pub fn ElkGraphParser::create_parser(Self, Array[ElkGraphLexToken]) -> InternalElkGraphParser
+pub fn ElkGraphParser::get_default_rule_name(Self) -> String
+pub fn ElkGraphParser::get_grammar_access(Self) -> ElkGraphGrammarAccess
+pub fn ElkGraphParser::get_initial_hidden_tokens(Self) -> Array[String]
+pub fn ElkGraphParser::parse(Self, String) -> Int
+pub fn ElkGraphParser::set_grammar_access(Self, ElkGraphGrammarAccess) -> Unit
+pub fn ElkGraphParser::set_initial_hidden_tokens(Self, Array[String]) -> Unit
+
+pub struct ElkGraphQualifiedNameConverter {
+  mut id_rule : String
+}
+pub fn ElkGraphQualifiedNameConverter::initialize(Self, ElkGraphGrammarAccess) -> Unit
+pub fn ElkGraphQualifiedNameConverter::to_qualified_name(Self, String) -> Array[String]
+pub fn ElkGraphQualifiedNameConverter::to_string(Self, Array[String]) -> String
+
+pub struct ElkGraphQualifiedNameProvider {
+  marker : Unit
+}
+pub fn ElkGraphQualifiedNameProvider::qualified_name(Self, GraphTextElement) -> Array[String]
+pub fn ElkGraphQualifiedNameProvider::qualified_name_for_edge_section(Self, Int) -> Array[String]
+
+pub struct ElkGraphRuntimeModule {
+  base : AbstractElkGraphRuntimeModule
+}
+pub fn ElkGraphRuntimeModule::bind_i_qualified_name_converter(Self) -> String
+pub fn ElkGraphRuntimeModule::bind_i_qualified_name_provider(Self) -> String
+pub fn ElkGraphRuntimeModule::bind_i_transient_value_service2(Self) -> String
+pub fn ElkGraphRuntimeModule::bind_i_value_converter_service(Self) -> String
+pub fn ElkGraphRuntimeModule::bind_ilinker(Self) -> String
+pub fn ElkGraphRuntimeModule::configure(Self, Map[String, String]) -> Unit
+pub fn ElkGraphRuntimeModule::create_injector(Self) -> GraphTextInjector
+pub fn ElkGraphRuntimeModule::get_base(Self) -> AbstractElkGraphRuntimeModule
+
+pub struct ElkGraphScopeProvider {
+  base : AbstractElkGraphScopeProvider
+}
+pub fn ElkGraphScopeProvider::get_scope(Self, Int, String) -> Array[String]
+
+pub struct ElkGraphSemanticSequencer {
+  base : AbstractElkGraphSemanticSequencer
+  value_converter : PropertyValueValueConverter
+}
+pub fn[T] ElkGraphSemanticSequencer::sequence(Self, String, T) -> T
+pub fn ElkGraphSemanticSequencer::sequence_property(Self, String, GraphTextPropertyAssignment) -> GraphTextPropertyAssignment
+
+pub struct ElkGraphStandaloneSetup {
+  marker : Unit
+}
+pub fn ElkGraphStandaloneSetup::create_injector_and_do_emf_registration(Self) -> GraphTextInjector
+
+pub struct ElkGraphStandaloneSetupGenerated {
+  marker : Unit
+}
+pub fn ElkGraphStandaloneSetupGenerated::create_injector(Self) -> GraphTextInjector
+pub fn ElkGraphStandaloneSetupGenerated::create_injector_and_do_emf_registration(Self) -> GraphTextInjector
+pub fn ElkGraphStandaloneSetupGenerated::register(Self, GraphTextInjector) -> Unit
+
+pub struct ElkGraphSyntacticSequencer {
+  base : AbstractElkGraphSyntacticSequencer
+}
+pub fn[A, B, C] ElkGraphSyntacticSequencer::emit_elk_edge___left_curly_bracket_keyword_7_0_right_curly_bracket_keyword_7_4__q(Self, A, B, Array[C]) -> String
+
+pub struct ElkGraphTextUtil {
+  marker : Unit
+}
+
+pub struct ElkGraphTransientValueService {
+  marker : Unit
+}
+pub fn ElkGraphTransientValueService::is_list_transient(Self, String, String) -> GraphTextListTransient
+
+pub struct ElkGraphValidator {
+  base : AbstractElkGraphValidator
+  layout_option_validator : @core.LayoutOptionValidator
+  value_converter : PropertyValueValueConverter
+}
+pub fn ElkGraphValidator::check_edge_container(Self, Int) -> Array[GraphTextValidationIssue]
+pub fn ElkGraphValidator::check_edge_section(Self, Int) -> Array[GraphTextValidationIssue]
+pub fn ElkGraphValidator::check_property_key(Self, GraphTextPropertyAssignment) -> Array[GraphTextValidationIssue]
+pub fn ElkGraphValidator::check_property_value(Self, GraphTextPropertyAssignment, GraphTextElement) -> Array[GraphTextValidationIssue]
+pub fn ElkGraphValidator::check_unique_names_for_node(Self, Int) -> Array[GraphTextValidationIssue]
+pub fn ElkGraphValidator::check_unique_properties(Self, Array[GraphTextPropertyAssignment]) -> Array[GraphTextValidationIssue]
+pub fn ElkGraphValidator::check_unique_section_names(Self, Int) -> Array[GraphTextValidationIssue]
+pub fn ElkGraphValidator::get_epackages(Self) -> Array[String]
+
+pub struct ElkGraphValueConverterService {
+  number_value_converter : NumberValueConverter
+  property_key_value_converter : PropertyKeyValueConverter
+  property_value_value_converter : PropertyValueValueConverter
+}
+pub fn ElkGraphValueConverterService::boolean_value(Self) -> PropertyValueValueConverter
+pub fn ElkGraphValueConverterService::number(Self) -> NumberValueConverter
+pub fn ElkGraphValueConverterService::number_value(Self) -> PropertyValueValueConverter
+pub fn ElkGraphValueConverterService::property_key(Self) -> PropertyKeyValueConverter
+pub fn ElkGraphValueConverterService::qualified_id_value(Self) -> PropertyValueValueConverter
+pub fn ElkGraphValueConverterService::string_value(Self) -> PropertyValueValueConverter
+
+pub(all) enum GraphTextElement {
+  GraphNode(Int)
+  GraphPort(Int)
+  GraphEdge(Int)
+  GraphLabel(Int)
+}
+
+pub struct GraphTextInjector {
+  providers : Map[String, () -> String]
+}
+pub fn GraphTextInjector::get_instance(Self, String) -> String?
+pub fn GraphTextInjector::register_provider(Self, String, () -> String) -> Unit
+
+pub(all) enum GraphTextLabelOwner {
+  LabelOnNode(Int)
+  LabelOnPort(Int)
+  LabelOnEdge(Int)
+  LabelOnLabel(Int)
+}
+
+pub(all) enum GraphTextListTransient {
+  ListTransientYes
+  ListTransientNo
+}
+pub impl Show for GraphTextListTransient
+
+pub struct GraphTextPendingOutgoingSection {
+  source : Int
+  target_id : String
+}
+
+pub struct GraphTextPropertyAssignment {
+  key : GraphTextPropertyKey
+  value : GraphTextPropertyValue
+}
+
+pub(all) enum GraphTextPropertyKey {
+  LayoutOption(@core.LayoutOptionData)
+  CustomProperty(String)
+}
+
+pub(all) enum GraphTextPropertyValue {
+  NullValue
+  StringValue(String)
+  NumberValue(Double)
+  BooleanValue(Bool)
+  ProxyValue(String)
+}
+pub impl Show for GraphTextPropertyValue
+
+pub(all) enum GraphTextShape {
+  ShapeNode(Int)
+  ShapePort(Int)
+  ShapeLabel(Int)
+}
+
+pub struct GraphTextValidationIssue {
+  message : String
+  feature : String
+  severity : Int
+  code : String?
+}
+
+pub struct InternalElkGraphLexer {
+  input : String
+}
+pub fn InternalElkGraphLexer::get_grammar_file_name(Self) -> String
+pub fn InternalElkGraphLexer::get_token_names(Self) -> Array[String]
+pub fn InternalElkGraphLexer::lex_all(Self) -> Array[ElkGraphLexToken]
+
+pub struct InternalElkGraphParser {
+  tokens : Array[ElkGraphLexToken]
+  grammar_access : ElkGraphGrammarAccess
+}
+pub fn InternalElkGraphParser::entry_rule_boolean_value(Self) -> GraphTextPropertyValue
+pub fn InternalElkGraphParser::entry_rule_elk_bend_point(Self) -> (Double, Double)
+pub fn InternalElkGraphParser::entry_rule_elk_edge(Self) -> Int
+pub fn InternalElkGraphParser::entry_rule_elk_edge_section(Self) -> Int
+pub fn InternalElkGraphParser::entry_rule_elk_label(Self) -> Int
+pub fn InternalElkGraphParser::entry_rule_elk_node(Self) -> Int
+pub fn InternalElkGraphParser::entry_rule_elk_port(Self) -> Int
+pub fn InternalElkGraphParser::entry_rule_elk_single_edge_section(Self) -> Int
+pub fn InternalElkGraphParser::entry_rule_number(Self) -> Double
+pub fn InternalElkGraphParser::entry_rule_number_value(Self) -> GraphTextPropertyValue
+pub fn InternalElkGraphParser::entry_rule_property(Self) -> GraphTextPropertyAssignment
+pub fn InternalElkGraphParser::entry_rule_property_key(Self) -> GraphTextPropertyKey
+pub fn InternalElkGraphParser::entry_rule_qualified_id(Self) -> String
+pub fn InternalElkGraphParser::entry_rule_qualified_id_value(Self) -> GraphTextPropertyValue
+pub fn InternalElkGraphParser::entry_rule_root_node(Self) -> Int
+pub fn InternalElkGraphParser::entry_rule_string_value(Self) -> GraphTextPropertyValue
+pub fn InternalElkGraphParser::get_first_rule_name(Self) -> String
+pub fn InternalElkGraphParser::get_grammar_access(Self) -> ElkGraphGrammarAccess
+pub fn InternalElkGraphParser::get_grammar_file_name(Self) -> String
+pub fn InternalElkGraphParser::get_token_names(Self) -> Array[String]
+pub fn InternalElkGraphParser::rule_boolean_value(Self) -> GraphTextPropertyValue
+pub fn InternalElkGraphParser::rule_edge_layout(Self, Int) -> Int
+pub fn InternalElkGraphParser::rule_elk_bend_point(Self) -> (Double, Double)
+pub fn InternalElkGraphParser::rule_elk_edge(Self) -> Int
+pub fn InternalElkGraphParser::rule_elk_edge_section(Self) -> Int
+pub fn InternalElkGraphParser::rule_elk_label(Self) -> Int
+pub fn InternalElkGraphParser::rule_elk_node(Self) -> Int
+pub fn InternalElkGraphParser::rule_elk_port(Self) -> Int
+pub fn InternalElkGraphParser::rule_elk_single_edge_section(Self) -> Int
+pub fn InternalElkGraphParser::rule_number(Self) -> Double
+pub fn InternalElkGraphParser::rule_number_value(Self) -> GraphTextPropertyValue
+pub fn InternalElkGraphParser::rule_property(Self) -> GraphTextPropertyAssignment
+pub fn InternalElkGraphParser::rule_property_key(Self) -> GraphTextPropertyKey
+pub fn InternalElkGraphParser::rule_qualified_id(Self) -> String
+pub fn InternalElkGraphParser::rule_qualified_id_value(Self) -> GraphTextPropertyValue
+pub fn InternalElkGraphParser::rule_root_node(Self) -> Int
+pub fn InternalElkGraphParser::rule_shape_layout(Self, GraphTextShape) -> GraphTextShape
+pub fn InternalElkGraphParser::rule_string_value(Self) -> GraphTextPropertyValue
+
+pub struct NumberValueConverter {
+  marker : Unit
+}
+pub fn NumberValueConverter::to_string(Self, Double?) -> String
+pub fn NumberValueConverter::to_value(Self, String) -> Double
+
+pub struct PropertyKeyValueConverter {
+  mut id_rule : String
+}
+pub fn PropertyKeyValueConverter::initialize(Self, ElkGraphGrammarAccess) -> Unit
+pub fn PropertyKeyValueConverter::to_string(Self, GraphTextPropertyKey?) -> String
+pub fn PropertyKeyValueConverter::to_value(Self, String) -> GraphTextPropertyKey
+
+pub struct PropertyValueValueConverter {
+  qualified_name_converter : ElkGraphQualifiedNameConverter
+}
+pub fn PropertyValueValueConverter::to_string(Self, GraphTextPropertyValue) -> String
+pub fn PropertyValueValueConverter::to_value(Self, String, property_key? : GraphTextPropertyKey?) -> GraphTextPropertyValue
+
+// Type aliases
+pub type GraphTextIssueSeverity = Int
+
+// Traits
+

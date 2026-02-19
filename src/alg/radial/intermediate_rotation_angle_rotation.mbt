@@ -10,11 +10,17 @@ fn angle_rotation_rotate(graph : @graph.ElkNode) -> Unit {
       Some(root) => {
         let outgoing = @graph.node_outgoing_edges(root)
         if !outgoing.is_empty() {
-          let last_targets = @graph.edge_targets(outgoing[outgoing.length() - 1])
+          let last_targets = @graph.edge_targets(
+            outgoing[outgoing.length() - 1],
+          )
           let first_targets = @graph.edge_targets(outgoing[0])
           if !last_targets.is_empty() && !first_targets.is_empty() {
-            let last_node = @graph.connectable_shape_to_node(Some(last_targets[0]))
-            let first_node = @graph.connectable_shape_to_node(Some(first_targets[0]))
+            let last_node = @graph.connectable_shape_to_node(
+              Some(last_targets[0]),
+            )
+            let first_node = @graph.connectable_shape_to_node(
+              Some(first_targets[0]),
+            )
             let last_vector = @core.new_kvector_xy(
               @graph.node_x(last_node) + @graph.node_width(last_node) / 2.0,
               @graph.node_y(last_node) + @graph.node_height(last_node) / 2.0,
@@ -68,7 +74,10 @@ pub fn new_angle_rotation() -> AngleRotation {
 }
 
 ///|
-pub fn AngleRotation::rotate(self : AngleRotation, graph : @graph.ElkNode) -> Unit {
+pub fn AngleRotation::rotate(
+  self : AngleRotation,
+  graph : @graph.ElkNode,
+) -> Unit {
   self.rotator.rotate(graph)
 }
 

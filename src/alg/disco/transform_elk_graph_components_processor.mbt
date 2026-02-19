@@ -70,7 +70,9 @@ fn disco_add_nodes_to_incidence_set(
 }
 
 ///|
-fn disco_get_inner_neighbors_of_port(port : @graph.ElkPort) -> Map[@graph.ElkNode, Unit] {
+fn disco_get_inner_neighbors_of_port(
+  port : @graph.ElkPort,
+) -> Map[@graph.ElkNode, Unit] {
   let port_parent_node = match @graph.port_parent(port) {
     Some(parent) => parent
     None => return {}
@@ -83,8 +85,10 @@ fn disco_get_inner_neighbors_of_port(port : @graph.ElkPort) -> Map[@graph.ElkNod
   for edge in all_edges {
     let source_node = disco_edge_source_node(edge)
     let target_node = disco_edge_target_node(edge)
-    let source_inside = @graph.node_parent(source_node) == Some(port_parent_node)
-    let target_inside = @graph.node_parent(target_node) == Some(port_parent_node)
+    let source_inside = @graph.node_parent(source_node) ==
+      Some(port_parent_node)
+    let target_inside = @graph.node_parent(target_node) ==
+      Some(port_parent_node)
     if source_inside || target_inside {
       if source_node == port_parent_node {
         neighbors[target_node] = ()
@@ -121,7 +125,10 @@ fn disco_compute_incidences(
   nodes : Array[@graph.ElkNode],
   incidence_map : Map[@graph.ElkNode, Map[@graph.ElkNode, Unit]],
 ) -> Unit {
-  let adjacent_and_inside_parent : Map[@graph.ElkPort, Map[@graph.ElkNode, Unit]] = {}
+  let adjacent_and_inside_parent : Map[
+    @graph.ElkPort,
+    Map[@graph.ElkNode, Unit],
+  ] = {}
   for node in nodes {
     let adjacent_nodes : Map[@graph.ElkNode, Unit] = {}
     incidence_map[node] = adjacent_nodes

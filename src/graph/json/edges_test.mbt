@@ -1,5 +1,8 @@
 ///|
-fn edges_find_node_by_id(parent : @graph.ElkNode, identifier : String) -> @graph.ElkNode {
+fn edges_find_node_by_id(
+  parent : @graph.ElkNode,
+  identifier : String,
+) -> @graph.ElkNode {
   for child in @graph.node_children(parent) {
     if @graph.node_identifier(child) == identifier {
       return child

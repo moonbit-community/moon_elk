@@ -90,8 +90,8 @@ pub fn MetaDataOutlineTreeProvider::create_outline(
   match model.get_bundle() {
     Some(bundle) => {
       let bundle_node = new_core_meta_outline_node("bundle", "bundle")
-      for member in bundle.get_members() {
-        match core_meta_outline_bundle_member_node(member) {
+      for bundle_member in bundle.get_members() {
+        match core_meta_outline_bundle_member_node(bundle_member) {
           Some(child) => bundle_node.children.push(child)
           None => ()
         }

@@ -24,7 +24,10 @@ fn network_simplex_wbtest_add_basic_node(layer : Layer) -> LNode {
 }
 
 ///|
-fn network_simplex_wbtest_add_port(node : LNode, side : @core.PortSide) -> LPort {
+fn network_simplex_wbtest_add_port(
+  node : LNode,
+  side : @core.PortSide,
+) -> LPort {
   let port = new_l_port()
   port.set_node(Some(node))
   port.set_side(side)

@@ -39,7 +39,7 @@ test "SplinesMath computes line intersection and parallel case" {
     @core.new_kvector_xy(0.0, 1.0),
     @core.new_kvector_xy(1.0, 2.0),
   )
-  assert_true(parallel.is_empty())
+  assert_true(parallel is None)
 }
 
 ///|

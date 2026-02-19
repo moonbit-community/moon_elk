@@ -97,7 +97,9 @@ fn horizontal_graph_compactor_edge_list_intersects(
 }
 
 ///|
-fn horizontal_graph_compactor_require_group(node : @common.CNode) -> @common.CGroup {
+fn horizontal_graph_compactor_require_group(
+  node : @common.CNode,
+) -> @common.CGroup {
   match node.group() {
     Some(group) => group
     None => abort("Compaction node has no group.")
@@ -139,7 +141,9 @@ pub fn horizontal_graph_compactor_vertical_segment_origin_key(
 }
 
 ///|
-pub fn horizontal_graph_compactor_get_lnode_or_null(c_node : @common.CNode) -> LNode? {
+pub fn horizontal_graph_compactor_get_lnode_or_null(
+  c_node : @common.CNode,
+) -> LNode? {
   match c_node.origin() {
     Some(origin_key) =>
       match horizontal_graph_compactor_lnode_origin_lookup.val.get(origin_key) {
@@ -282,7 +286,9 @@ fn horizontal_graph_compactor_process(
   }
 
   let transformer = new_lgraph_to_cgraph_transformer()
-  let odc = @common.new_one_dimensional_compactor(transformer.transform(layered_graph))
+  let odc = @common.new_one_dimensional_compactor(
+    transformer.transform(layered_graph),
+  )
   ignore(
     odc.set_spacings_handler(
       horizontal_graph_compactor_spacings_handler(layered_graph),

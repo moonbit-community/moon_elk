@@ -34,7 +34,9 @@ pub let layered_options_crossing_minimization_force_node_model_order : @graph.IP
 )
 
 ///|
-pub let layered_options_crossing_minimization_strategy : @graph.IProperty[String] = @graph.new_property(
+pub let layered_options_crossing_minimization_strategy : @graph.IProperty[
+  String,
+] = @graph.new_property(
   "org.eclipse.elk.layered.crossingMinimization.strategy", "LAYER_SWEEP",
 )
 
@@ -46,7 +48,9 @@ pub let layered_options_crossing_minimization_hierarchical_sweepiness : @graph.I
 )
 
 ///|
-pub let layered_options_crossing_minimization_position_id : @graph.IProperty[Int] = @graph.new_property(
+pub let layered_options_crossing_minimization_position_id : @graph.IProperty[
+  Int,
+] = @graph.new_property(
   "org.eclipse.elk.layered.crossingMinimization.positionId", 0,
 )
 
@@ -100,7 +104,9 @@ pub let layered_options_crossing_minimization_greedy_switch_hierarchical_type : 
 )
 
 ///|
-pub let layered_options_crossing_minimization_semi_interactive : @graph.IProperty[Bool] = @graph.new_property(
+pub let layered_options_crossing_minimization_semi_interactive : @graph.IProperty[
+  Bool,
+] = @graph.new_property(
   "org.eclipse.elk.layered.crossingMinimization.semiInteractive", false,
 )
 
@@ -120,7 +126,9 @@ pub let layered_options_merge_hierarchy_edges : @graph.IProperty[Bool] = @graph.
 )
 
 ///|
-pub let layered_options_node_placement_favor_straight_edges : @graph.IProperty[Bool] = @graph.new_property(
+pub let layered_options_node_placement_favor_straight_edges : @graph.IProperty[
+  Bool,
+] = @graph.new_property(
   "org.eclipse.elk.layered.nodePlacement.favorStraightEdges", false,
 )
 
@@ -130,12 +138,16 @@ pub let layered_options_node_placement_strategy : @graph.IProperty[String] = @gr
 )
 
 ///|
-pub let layered_options_node_placement_bk_fixed_alignment : @graph.IProperty[String] = @graph.new_property(
+pub let layered_options_node_placement_bk_fixed_alignment : @graph.IProperty[
+  String,
+] = @graph.new_property(
   "org.eclipse.elk.layered.nodePlacement.bk.fixedAlignment", "NONE",
 )
 
 ///|
-pub let layered_options_node_placement_bk_edge_straightening : @graph.IProperty[String] = @graph.new_property(
+pub let layered_options_node_placement_bk_edge_straightening : @graph.IProperty[
+  String,
+] = @graph.new_property(
   "org.eclipse.elk.layered.nodePlacement.bk.edgeStraightening", "IMPROVE_STRAIGHTNESS",
 )
 
@@ -178,17 +190,23 @@ pub let layered_options_layering_strategy : @graph.IProperty[String] = @graph.ne
 )
 
 ///|
-pub let layered_options_layering_coffman_graham_layer_bound : @graph.IProperty[Int] = @graph.new_property(
+pub let layered_options_layering_coffman_graham_layer_bound : @graph.IProperty[
+  Int,
+] = @graph.new_property(
   "org.eclipse.elk.layered.layering.coffmanGraham.layerBound", @int.max_value,
 )
 
 ///|
-pub let layered_options_layering_node_promotion_strategy : @graph.IProperty[String] = @graph.new_property(
+pub let layered_options_layering_node_promotion_strategy : @graph.IProperty[
+  String,
+] = @graph.new_property(
   "org.eclipse.elk.layered.nodePromotion.strategy", "NONE",
 )
 
 ///|
-pub let layered_options_layering_node_promotion_max_iterations : @graph.IProperty[Int] = @graph.new_property(
+pub let layered_options_layering_node_promotion_max_iterations : @graph.IProperty[
+  Int,
+] = @graph.new_property(
   "org.eclipse.elk.layered.nodePromotion.maxIterations", 0,
 )
 
@@ -208,7 +226,9 @@ pub let layered_options_high_degree_nodes_tree_height : @graph.IProperty[Int] = 
 )
 
 ///|
-pub let layered_options_compaction_post_compaction_strategy : @graph.IProperty[String] = @graph.new_property(
+pub let layered_options_compaction_post_compaction_strategy : @graph.IProperty[
+  String,
+] = @graph.new_property(
   "org.eclipse.elk.alg.layered.compaction.postCompaction.strategy", "NONE",
 )
 
@@ -240,7 +260,9 @@ pub let layered_options_priority_straightness : @graph.IProperty[Int] = @graph.n
 )
 
 ///|
-pub let layered_options_allow_non_flow_ports_to_switch_sides : @graph.IProperty[Bool] = @graph.new_property(
+pub let layered_options_allow_non_flow_ports_to_switch_sides : @graph.IProperty[
+  Bool,
+] = @graph.new_property(
   "org.eclipse.elk.layered.allowNonFlowPortsToSwitchSides", false,
 )
 
@@ -250,7 +272,9 @@ pub let layered_options_layer_unzipping_strategy : @graph.IProperty[String] = @g
 )
 
 ///|
-pub let layered_options_layer_unzipping_minimize_edge_length : @graph.IProperty[Bool] = @graph.new_property(
+pub let layered_options_layer_unzipping_minimize_edge_length : @graph.IProperty[
+  Bool,
+] = @graph.new_property(
   "org.eclipse.elk.layered.layerUnzipping.minimizeEdgeLength", false,
 )
 
@@ -260,7 +284,9 @@ pub let layered_options_layer_unzipping_layer_split : @graph.IProperty[Int] = @g
 )
 
 ///|
-pub let layered_options_layer_unzipping_reset_on_long_edges : @graph.IProperty[Bool] = @graph.new_property(
+pub let layered_options_layer_unzipping_reset_on_long_edges : @graph.IProperty[
+  Bool,
+] = @graph.new_property(
   "org.eclipse.elk.layered.layerUnzipping.resetOnLongEdges", true,
 )
 
@@ -349,7 +375,9 @@ pub let layered_options_spacing_comment_node : @graph.IProperty[Double] = @graph
 )
 
 ///|
-pub let layered_options_spacing_ports_surrounding : @graph.IProperty[@core.ElkMargin] = @graph.new_property(
+pub let layered_options_spacing_ports_surrounding : @graph.IProperty[
+  @core.ElkMargin,
+] = @graph.new_property(
   "org.eclipse.elk.spacing.portsSurrounding",
   @core.new_elk_margin(),
 )
@@ -377,22 +405,30 @@ pub let layered_options_hypernode : @graph.IProperty[Bool] = @graph.new_property
 )
 
 ///|
-pub let layered_options_spacing_edge_node_between_layers : @graph.IProperty[Double] = @graph.new_property(
+pub let layered_options_spacing_edge_node_between_layers : @graph.IProperty[
+  Double,
+] = @graph.new_property(
   "org.eclipse.elk.layered.spacing.edgeNodeBetweenLayers", 10.0,
 )
 
 ///|
-pub let layered_options_spacing_edge_edge_between_layers : @graph.IProperty[Double] = @graph.new_property(
+pub let layered_options_spacing_edge_edge_between_layers : @graph.IProperty[
+  Double,
+] = @graph.new_property(
   "org.eclipse.elk.layered.spacing.edgeEdgeBetweenLayers", 10.0,
 )
 
 ///|
-pub let layered_options_spacing_node_node_between_layers : @graph.IProperty[Double] = @graph.new_property(
+pub let layered_options_spacing_node_node_between_layers : @graph.IProperty[
+  Double,
+] = @graph.new_property(
   "org.eclipse.elk.layered.spacing.nodeNodeBetweenLayers", 20.0,
 )
 
 ///|
-pub let layered_options_edge_routing_splines_mode : @graph.IProperty[SplineRoutingMode] = @graph.new_property(
+pub let layered_options_edge_routing_splines_mode : @graph.IProperty[
+  SplineRoutingMode,
+] = @graph.new_property(
   "org.eclipse.elk.layered.edgeRouting.splines.mode",
   SplineRoutingMode::Sloppy,
 )
@@ -412,12 +448,16 @@ pub let layered_options_edge_routing_polyline_sloped_edge_zone_width : @graph.IP
 )
 
 ///|
-pub let layered_options_edge_routing_self_loop_distribution : @graph.IProperty[String] = @graph.new_property(
+pub let layered_options_edge_routing_self_loop_distribution : @graph.IProperty[
+  String,
+] = @graph.new_property(
   "org.eclipse.elk.layered.edgeRouting.selfLoopDistribution", "NORTH",
 )
 
 ///|
-pub let layered_options_edge_routing_self_loop_ordering : @graph.IProperty[String] = @graph.new_property(
+pub let layered_options_edge_routing_self_loop_ordering : @graph.IProperty[
+  String,
+] = @graph.new_property(
   "org.eclipse.elk.layered.edgeRouting.selfLoopOrdering", "STACKED",
 )
 
@@ -483,7 +523,9 @@ pub let layered_options_consider_model_order_crossing_counter_port_influence : @
 )
 
 ///|
-pub let layered_options_consider_model_order_port_model_order : @graph.IProperty[Bool] = @graph.new_property(
+pub let layered_options_consider_model_order_port_model_order : @graph.IProperty[
+  Bool,
+] = @graph.new_property(
   "org.eclipse.elk.layered.considerModelOrder.portModelOrder", false,
 )
 
@@ -500,7 +542,9 @@ pub let layered_options_wrapping_strategy : @graph.IProperty[String] = @graph.ne
 )
 
 ///|
-pub let layered_options_wrapping_additional_edge_spacing : @graph.IProperty[Double] = @graph.new_property(
+pub let layered_options_wrapping_additional_edge_spacing : @graph.IProperty[
+  Double,
+] = @graph.new_property(
   "org.eclipse.elk.layered.wrapping.additionalEdgeSpacing", 10.0,
 )
 
@@ -530,17 +574,23 @@ pub let layered_options_wrapping_validify_strategy : @graph.IProperty[String] = 
 )
 
 ///|
-pub let layered_options_wrapping_validify_forbidden_indices : @graph.IProperty[String] = @graph.new_property(
+pub let layered_options_wrapping_validify_forbidden_indices : @graph.IProperty[
+  String,
+] = @graph.new_property(
   "org.eclipse.elk.layered.wrapping.validify.forbiddenIndices", "",
 )
 
 ///|
-pub let layered_options_wrapping_multi_edge_improve_cuts : @graph.IProperty[Bool] = @graph.new_property(
+pub let layered_options_wrapping_multi_edge_improve_cuts : @graph.IProperty[
+  Bool,
+] = @graph.new_property(
   "org.eclipse.elk.layered.wrapping.multiEdge.improveCuts", true,
 )
 
 ///|
-pub let layered_options_wrapping_multi_edge_distance_penalty : @graph.IProperty[Double] = @graph.new_property(
+pub let layered_options_wrapping_multi_edge_distance_penalty : @graph.IProperty[
+  Double,
+] = @graph.new_property(
   "org.eclipse.elk.layered.wrapping.multiEdge.distancePenalty", 2.0,
 )
 

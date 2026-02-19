@@ -16,7 +16,9 @@ fn polyline_self_loop_router_sign(value : Double) -> Double {
 }
 
 ///|
-fn polyline_self_loop_router_near_zero_to_zero(vector : @core.KVector) -> @core.KVector {
+fn polyline_self_loop_router_near_zero_to_zero(
+  vector : @core.KVector,
+) -> @core.KVector {
   if vector.x >= -polyline_self_loop_router_tolerance &&
     vector.x <= polyline_self_loop_router_tolerance {
     vector.x = 0.0
@@ -98,11 +100,11 @@ pub fn polyline_self_loop_router_cut_corners(
     )
 
     let mut effective_distance = distance
-    effective_distance = @math.minimum(
+    effective_distance = @cmp.minimum(
       effective_distance,
       (offset_1.x + offset_1.y).abs() / 2.0,
     )
-    effective_distance = @math.minimum(
+    effective_distance = @cmp.minimum(
       effective_distance,
       (offset_2.x + offset_2.y).abs() / 2.0,
     )

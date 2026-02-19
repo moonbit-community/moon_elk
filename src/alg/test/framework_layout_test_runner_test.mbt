@@ -32,7 +32,7 @@ test "LayoutTestRunner inflates all algorithm configuration graph combinations" 
     ),
   ]
 
-  let runner = new_layout_test_runner(
+  let runner : LayoutTestRunner[Unit, Unit] = new_layout_test_runner(
     () => (),
     algorithms,
     configurations,
@@ -57,7 +57,7 @@ test "ExperimentRunner appends runner id to test descriptions" {
     _test_instance : Unit,
     _graph : ElkNode,
   ) => ())
-  let runner = new_layout_test_runner(
+  let runner : LayoutTestRunner[Unit, Unit] = new_layout_test_runner(
     () => (),
     [test_algorithm_identity()],
     [layout_runner_test_default_configuration()],

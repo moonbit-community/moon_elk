@@ -1,5 +1,8 @@
 ///|
-fn sections_find_node_by_id(parent : @graph.ElkNode, identifier : String) -> @graph.ElkNode {
+fn sections_find_node_by_id(
+  parent : @graph.ElkNode,
+  identifier : String,
+) -> @graph.ElkNode {
   for child in @graph.node_children(parent) {
     if @graph.node_identifier(child) == identifier {
       return child
@@ -9,7 +12,10 @@ fn sections_find_node_by_id(parent : @graph.ElkNode, identifier : String) -> @gr
 }
 
 ///|
-fn sections_find_by_id(edge : @graph.ElkEdge, identifier : String) -> @graph.ElkEdgeSection {
+fn sections_find_by_id(
+  edge : @graph.ElkEdge,
+  identifier : String,
+) -> @graph.ElkEdgeSection {
   for section in @graph.edge_sections(edge) {
     if @graph.edge_section_identifier(section) == identifier {
       return section

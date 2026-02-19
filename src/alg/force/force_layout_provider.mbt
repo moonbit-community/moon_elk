@@ -98,7 +98,7 @@ pub fn ForceLayoutProvider::layout(
 pub fn force_layout_provider_as_layout_provider(
   provider : ForceLayoutProvider,
 ) -> @core.AbstractLayoutProvider {
-  @core.new_abstract_layout_provider((graph, monitor) => provider.layout(
-    graph, monitor,
-  ))
+  @core.new_abstract_layout_provider((graph, monitor) => {
+    provider.layout(graph, monitor)
+  })
 }

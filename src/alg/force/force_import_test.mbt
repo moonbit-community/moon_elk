@@ -72,7 +72,10 @@ fn imported_edge_by_origin(graph : FGraph, origin : @graph.ElkEdge) -> FEdge? {
 }
 
 ///|
-fn imported_label_by_origin(graph : FGraph, origin : @graph.ElkLabel) -> FLabel? {
+fn imported_label_by_origin(
+  graph : FGraph,
+  origin : @graph.ElkLabel,
+) -> FLabel? {
   for label in graph.get_labels() {
     if flabel_origin(label) == Some(origin) {
       return Some(label)
@@ -130,8 +133,14 @@ test "ElkGraphImporter applyLayout resizes parent and sets child area" {
   importer.apply_layout(force_graph)
   assert_eq(@graph.node_width(graph), 110.0)
   assert_eq(@graph.node_height(graph), 110.0)
-  assert_eq(@graph.node_get_double_property(graph, @core.child_area_width), 10.0)
-  assert_eq(@graph.node_get_double_property(graph, @core.child_area_height), 10.0)
+  assert_eq(
+    @graph.node_get_double_property(graph, @core.child_area_width),
+    10.0,
+  )
+  assert_eq(
+    @graph.node_get_double_property(graph, @core.child_area_height),
+    10.0,
+  )
 }
 
 ///|
@@ -148,8 +157,14 @@ test "ElkGraphImporter applyLayout respects fixed graph size" {
   importer.apply_layout(force_graph)
   assert_eq(@graph.node_width(graph), 37.0)
   assert_eq(@graph.node_height(graph), 41.0)
-  assert_eq(@graph.node_get_double_property(graph, @core.child_area_width), 10.0)
-  assert_eq(@graph.node_get_double_property(graph, @core.child_area_height), 10.0)
+  assert_eq(
+    @graph.node_get_double_property(graph, @core.child_area_width),
+    10.0,
+  )
+  assert_eq(
+    @graph.node_get_double_property(graph, @core.child_area_height),
+    10.0,
+  )
 }
 
 ///|
@@ -157,17 +172,41 @@ test "ElkGraphImporter importGraph copies graph and element options" {
   reset_graph_model_for_test()
   reset_force_graph_model_for_test()
   let graph = create_graph()
-  @graph.node_set_layout_option_string_by_id(graph, force_model.get_id(), "EADES")
-  @graph.node_set_layout_option_string_by_id(graph, force_iterations.get_id(), "17")
-  @graph.node_set_layout_option_string_by_id(graph, force_random_seed.get_id(), "42")
-  @graph.node_set_layout_option_string_by_id(graph, stress_dimension.get_id(), "Y")
+  @graph.node_set_layout_option_string_by_id(
+    graph,
+    force_model.get_id(),
+    "EADES",
+  )
+  @graph.node_set_layout_option_string_by_id(
+    graph,
+    force_iterations.get_id(),
+    "17",
+  )
+  @graph.node_set_layout_option_string_by_id(
+    graph,
+    force_random_seed.get_id(),
+    "42",
+  )
+  @graph.node_set_layout_option_string_by_id(
+    graph,
+    stress_dimension.get_id(),
+    "Y",
+  )
   @graph.node_set_layout_option_string_by_id(
     graph,
     stress_iteration_limit.get_id(),
     "25",
   )
-  @graph.node_set_layout_option_string_by_id(graph, force_temperature.get_id(), "0.25")
-  @graph.node_set_layout_option_string_by_id(graph, force_repulsion.get_id(), "7.5")
+  @graph.node_set_layout_option_string_by_id(
+    graph,
+    force_temperature.get_id(),
+    "0.25",
+  )
+  @graph.node_set_layout_option_string_by_id(
+    graph,
+    force_repulsion.get_id(),
+    "7.5",
+  )
   @graph.node_set_layout_option_string_by_id(
     graph,
     force_spacing_node_node.get_id(),
@@ -183,7 +222,11 @@ test "ElkGraphImporter importGraph copies graph and element options" {
     stress_desired_edge_length.get_id(),
     "33.3",
   )
-  @graph.node_set_layout_option_string_by_id(graph, stress_epsilon.get_id(), "0.02")
+  @graph.node_set_layout_option_string_by_id(
+    graph,
+    stress_epsilon.get_id(),
+    "0.02",
+  )
   @graph.node_set_layout_option_string_by_id(
     graph,
     force_edge_labels_inline.get_id(),
@@ -199,7 +242,11 @@ test "ElkGraphImporter importGraph copies graph and element options" {
   let edge = create_simple_edge(left, right)
   let edge_label = @graph.create_label(Some(make_edge_label_parent(edge)))
   @graph.node_set_layout_option_string_by_id(left, force_priority.get_id(), "4")
-  @graph.node_set_layout_option_string_by_id(left, stress_fixed.get_id(), "true")
+  @graph.node_set_layout_option_string_by_id(
+    left,
+    stress_fixed.get_id(),
+    "true",
+  )
   edge_set_layout_option_string_by_id(edge, force_priority.get_id(), "9")
   edge_set_layout_option_string_by_id(edge, force_repulsive_power.get_id(), "3")
   edge_set_layout_option_string_by_id(

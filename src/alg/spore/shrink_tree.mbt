@@ -5,7 +5,11 @@ pub struct SporeShrinkTree {
 
 ///|
 pub fn new_spore_shrink_tree() -> SporeShrinkTree {
-  { algorithm_assembler: @core.algorithm_assembler_create(spore_phase_descriptor) }
+  {
+    algorithm_assembler: @core.algorithm_assembler_create(
+      spore_phase_descriptor,
+    ),
+  }
 }
 
 ///|

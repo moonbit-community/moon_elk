@@ -19,8 +19,10 @@ fn hierarchical_port_orthogonal_port_constraints_equals(
     (@core.PortConstraints::Undefined, @core.PortConstraints::Undefined) => true
     (@core.PortConstraints::Free, @core.PortConstraints::Free) => true
     (@core.PortConstraints::FixedSide, @core.PortConstraints::FixedSide) => true
-    (@core.PortConstraints::FixedOrder, @core.PortConstraints::FixedOrder) => true
-    (@core.PortConstraints::FixedRatio, @core.PortConstraints::FixedRatio) => true
+    (@core.PortConstraints::FixedOrder, @core.PortConstraints::FixedOrder) =>
+      true
+    (@core.PortConstraints::FixedRatio, @core.PortConstraints::FixedRatio) =>
+      true
     (@core.PortConstraints::FixedPos, @core.PortConstraints::FixedPos) => true
     _ => false
   }
@@ -82,7 +84,9 @@ fn hierarchical_port_orthogonal_side_is_west(side : @core.PortSide) -> Bool {
 }
 
 ///|
-fn hierarchical_port_orthogonal_side_is_east_or_west(side : @core.PortSide) -> Bool {
+fn hierarchical_port_orthogonal_side_is_east_or_west(
+  side : @core.PortSide,
+) -> Bool {
   hierarchical_port_orthogonal_side_is_east(side) ||
   hierarchical_port_orthogonal_side_is_west(side)
 }

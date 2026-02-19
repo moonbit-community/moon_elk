@@ -9,7 +9,7 @@ priv struct StretchWidthLayererState {
   mut already_placed_nodes : Map[Int, Bool]
   mut already_placed_in_other_layers : Map[Int, Bool]
   mut temp_layerless_nodes : Array[LNode]
-  mut successors : Array[Map[Int, Bool]]
+  mut _successors : Array[Map[Int, Bool]]
   mut out_degree : Array[Int]
   mut remaining_out_going : Array[Int]
   mut in_degree : Array[Int]
@@ -74,7 +74,7 @@ fn stretch_width_layerer_new_state(
     already_placed_nodes: {},
     already_placed_in_other_layers: {},
     temp_layerless_nodes: [],
-    successors: [],
+    _successors: [],
     out_degree: [],
     remaining_out_going: [],
     in_degree: [],
@@ -170,7 +170,7 @@ fn stretch_width_layerer_compute_successors(
     successors.push(curr_succ)
     i += 1
   }
-  state.successors = successors
+  state._successors = successors
 }
 
 ///|

@@ -277,7 +277,10 @@ fn stress_compute_new_position(
     StressDimensionY =>
       @core.new_kvector_xy(fnode_position(node).x, y_displacement / weight_sum)
     StressDimensionXY =>
-      @core.new_kvector_xy(x_displacement / weight_sum, y_displacement / weight_sum)
+      @core.new_kvector_xy(
+        x_displacement / weight_sum,
+        y_displacement / weight_sum,
+      )
   }
 }
 

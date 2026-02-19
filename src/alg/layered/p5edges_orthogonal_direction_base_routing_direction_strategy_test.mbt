@@ -77,20 +77,38 @@ test "BaseRoutingDirectionStrategy picks correct source and target sides" {
   let west_to_east = base_routing_direction_strategy_for_routing_direction(
     directions[0],
   )
-  assert_eq(@core.port_side_to_string(west_to_east.get_source_port_side()), "EAST")
-  assert_eq(@core.port_side_to_string(west_to_east.get_target_port_side()), "WEST")
+  assert_eq(
+    @core.port_side_to_string(west_to_east.get_source_port_side()),
+    "EAST",
+  )
+  assert_eq(
+    @core.port_side_to_string(west_to_east.get_target_port_side()),
+    "WEST",
+  )
 
   let north_to_south = base_routing_direction_strategy_for_routing_direction(
     directions[1],
   )
-  assert_eq(@core.port_side_to_string(north_to_south.get_source_port_side()), "SOUTH")
-  assert_eq(@core.port_side_to_string(north_to_south.get_target_port_side()), "NORTH")
+  assert_eq(
+    @core.port_side_to_string(north_to_south.get_source_port_side()),
+    "SOUTH",
+  )
+  assert_eq(
+    @core.port_side_to_string(north_to_south.get_target_port_side()),
+    "NORTH",
+  )
 
   let south_to_north = base_routing_direction_strategy_for_routing_direction(
     directions[2],
   )
-  assert_eq(@core.port_side_to_string(south_to_north.get_source_port_side()), "NORTH")
-  assert_eq(@core.port_side_to_string(south_to_north.get_target_port_side()), "SOUTH")
+  assert_eq(
+    @core.port_side_to_string(south_to_north.get_source_port_side()),
+    "NORTH",
+  )
+  assert_eq(
+    @core.port_side_to_string(south_to_north.get_target_port_side()),
+    "SOUTH",
+  )
 }
 
 ///|

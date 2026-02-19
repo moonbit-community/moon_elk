@@ -112,7 +112,9 @@ test "ElkGraph ide proposal provider exposes property and crossref behavior" {
     content="true",
   )
 
-  let option = @core.layout_meta_data_service_get_option_data(@core.algorithm.get_id())
+  let option = @core.layout_meta_data_service_get_option_data(
+    @core.algorithm.get_id(),
+  )
   let value_acceptor = new_graph_text_ide_completion_proposal_acceptor()
   provider.create_assignment_proposals(
     "Property.ValueAssignment_2_1",
@@ -179,7 +181,9 @@ test "ElkGraph ui module and activator wiring works" {
   )
 
   let ui_activator = @ui.new_elk_graph_text_ui_activator()
-  let ui_injector = ui_activator.create_injector(@ui.graph_text_ui_language_name)
+  let ui_injector = ui_activator.create_injector(
+    @ui.graph_text_ui_language_name,
+  )
   inspect(ui_injector.provider_count(), content="2")
 }
 
@@ -216,7 +220,9 @@ test "ElkGraph executable extension factory resolves provider and initializes ex
   let factory = @ui.new_elk_graph_executable_extension_factory()
   factory.set_initialization_data(
     Some(
-      @ui.new_graph_text_configuration_element(contributor=Some("text-contributor")),
+      @ui.new_graph_text_configuration_element(
+        contributor=Some("text-contributor"),
+      ),
     ),
     None,
     Some(@ui.graph_text_initialization_data_map(data_map)),
@@ -314,8 +320,14 @@ test "ElkGraph ui providers expose generated behavior" {
     content="true",
   )
   let properties = [
-    @text.new_graph_text_property_assignment(CustomProperty("a"), StringValue("1")),
-    @text.new_graph_text_property_assignment(CustomProperty("b"), StringValue("2")),
+    @text.new_graph_text_property_assignment(
+      CustomProperty("a"),
+      StringValue("1"),
+    ),
+    @text.new_graph_text_property_assignment(
+      CustomProperty("b"),
+      StringValue("2"),
+    ),
   ]
   inspect(quickfix_provider.remove_option(properties, 0).length(), content="1")
 }

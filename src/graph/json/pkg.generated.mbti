@@ -1,0 +1,119 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/moon_elk/graph/json"
+
+import {
+  "Milky2018/moon_elk/core",
+}
+
+// Values
+pub fn elk_graph_json_for_elk_graph(Int) -> ElkGraphJsonExportBuilder
+
+pub fn elk_graph_json_for_graph(String) -> ElkGraphJsonImportBuilder
+
+pub fn elk_graph_json_for_json_graph(Json) -> ElkGraphJsonImportBuilder
+
+pub fn layout_algorithm_data_to_json(@core.LayoutAlgorithmData) -> Json
+
+pub fn layout_category_data_to_json(@core.LayoutCategoryData) -> Json
+
+pub fn layout_option_data_to_json(@core.LayoutOptionData) -> Json
+
+pub fn new_json_adapter() -> JsonAdapter
+
+pub fn new_json_import_exception() -> JsonImportException
+
+pub fn new_json_import_exception_cause(String) -> JsonImportException
+
+pub fn new_json_import_exception_message(String) -> JsonImportException
+
+pub fn new_json_import_exception_message_cause(String, String) -> JsonImportException
+
+pub fn new_json_importer() -> JsonImporter
+
+// Errors
+
+// Types and methods
+pub struct ElkGraphJsonExportBuilder {
+  graph : Int
+  pretty_print : Bool
+  omit_zero_position : Bool
+  omit_zero_dimension : Bool
+  omit_layout_information : Bool
+  short_layout_option_keys : Bool
+  omit_unknown_layout_options : Bool
+}
+pub fn ElkGraphJsonExportBuilder::omit_layout(Self, Bool) -> Self
+pub fn ElkGraphJsonExportBuilder::omit_unknown_layout_options(Self, Bool) -> Self
+pub fn ElkGraphJsonExportBuilder::omit_zero_dimension(Self, Bool) -> Self
+pub fn ElkGraphJsonExportBuilder::omit_zero_positions(Self, Bool) -> Self
+pub fn ElkGraphJsonExportBuilder::pretty_print(Self, Bool) -> Self
+pub fn ElkGraphJsonExportBuilder::short_layout_option_keys(Self, Bool) -> Self
+pub fn ElkGraphJsonExportBuilder::to_json(Self) -> String
+
+pub struct ElkGraphJsonImportBuilder {
+  graph : String?
+  json_graph : Json?
+  importer_maybe : @core.Maybe[JsonImporter]?
+  lenient : Bool
+}
+pub fn ElkGraphJsonImportBuilder::lenient(Self, Bool) -> Self
+pub fn ElkGraphJsonImportBuilder::remember_importer(Self, @core.Maybe[JsonImporter]) -> Self
+pub fn ElkGraphJsonImportBuilder::to_elk(Self) -> Int
+
+pub struct JsonAdapter {
+  unit : Unit
+}
+pub fn JsonAdapter::add_json_arr_json(Self, Array[Json], Json) -> Unit
+pub fn JsonAdapter::add_json_obj_bool(Self, Map[String, Json], String, Bool) -> Unit
+pub fn JsonAdapter::add_json_obj_json(Self, Map[String, Json], String, Json) -> Unit
+pub fn JsonAdapter::add_json_obj_number(Self, Map[String, Json], String, Double) -> Unit
+pub fn JsonAdapter::add_json_obj_string(Self, Map[String, Json], String, String) -> Unit
+pub fn JsonAdapter::as_id(Self, Json) -> String
+pub fn JsonAdapter::get_id(Self, Map[String, Json]) -> String
+pub fn JsonAdapter::get_id_safe(Self, Map[String, Json]) -> String?
+pub fn JsonAdapter::get_json_arr(Self, Array[Json], Int) -> Json?
+pub fn JsonAdapter::get_json_obj(Self, Map[String, Json], String) -> Json?
+pub fn JsonAdapter::has_json_obj(Self, Map[String, Json], String) -> Bool
+pub fn JsonAdapter::implementation_error(Self) -> String
+pub fn JsonAdapter::is_int(Self, Double) -> Bool
+pub fn JsonAdapter::keys_json_obj(Self, Map[String, Json]) -> Array[String]
+pub fn JsonAdapter::new_json_array(Self) -> Array[Json]
+pub fn JsonAdapter::new_json_object(Self) -> Map[String, Json]
+pub fn JsonAdapter::opt_double(Self, Map[String, Json], String) -> Double?
+pub fn JsonAdapter::opt_json_array(Self, Map[String, Json], String) -> Array[Json]?
+pub fn JsonAdapter::opt_json_object(Self, Map[String, Json], String) -> Map[String, Json]?
+pub fn JsonAdapter::opt_string(Self, Map[String, Json], String) -> String?
+pub fn JsonAdapter::opt_string_at(Self, Array[Json], Int) -> String?
+pub fn JsonAdapter::opt_string_value(Self, Json) -> String?
+pub fn JsonAdapter::remove_json_obj(Self, Map[String, Json], String) -> Unit
+pub fn JsonAdapter::size_json_arr(Self, Array[Json]) -> Int
+pub fn JsonAdapter::to_json_array(Self, Json) -> Array[Json]
+pub fn JsonAdapter::to_json_number(Self, Double) -> Json
+pub fn JsonAdapter::to_json_object(Self, Json) -> Map[String, Json]
+pub fn JsonAdapter::to_json_string(Self, String) -> Json
+
+pub struct JsonImportException {
+  message : String?
+  cause : String?
+}
+pub fn JsonImportException::get_cause(Self) -> String?
+pub fn JsonImportException::get_message(Self) -> String?
+
+pub struct JsonImporter {
+  mut input_model : Map[String, Json]?
+  node_id_map : Map[String, Int]
+  port_id_map : Map[String, Int]
+  node_json_map : Map[Int, Map[String, Json]]
+  port_json_map : Map[Int, Map[String, Json]]
+  edge_json_map : Map[Int, Map[String, Json]]
+  label_json_map : Map[Int, Map[String, Json]]
+  edge_original_parent_map : Map[Int, Int]
+}
+pub fn JsonImporter::get_input_model(Self) -> Map[String, Json]?
+pub fn JsonImporter::transfer_layout(Self, Int) -> Unit
+pub fn JsonImporter::transform(Self, Map[String, Json]) -> Int
+
+// Type aliases
+
+// Traits
+

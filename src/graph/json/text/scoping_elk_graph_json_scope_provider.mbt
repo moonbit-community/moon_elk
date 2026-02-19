@@ -11,7 +11,9 @@ pub fn new_elk_graph_json_scope_provider(
 }
 
 ///|
-fn graph_json_text_scope_find_parent_edge(section : @graph.ElkEdgeSection) -> @graph.ElkEdge? {
+fn graph_json_text_scope_find_parent_edge(
+  section : @graph.ElkEdgeSection,
+) -> @graph.ElkEdge? {
   for edge in @graph.all_edges() {
     for candidate in @graph.edge_sections(edge) {
       if candidate == section {

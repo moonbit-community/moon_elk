@@ -17,7 +17,7 @@ fn end_label_postprocessor_process_node(node : LNode) -> Unit {
   let node_pos = node.get_position()
 
   for label_cell in end_label_cells {
-    label_cell.get_cell_rectangle().move(node_pos)
+    label_cell.get_cell_rectangle().move_by(node_pos)
     label_cell.apply_label_layout()
   }
 

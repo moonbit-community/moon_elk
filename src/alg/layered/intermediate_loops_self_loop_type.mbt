@@ -8,7 +8,10 @@ pub enum SelfLoopType {
 }
 
 ///|
-fn self_loop_port_side_eq(left : @core.PortSide, right : @core.PortSide) -> Bool {
+fn self_loop_port_side_eq(
+  left : @core.PortSide,
+  right : @core.PortSide,
+) -> Bool {
   match (left, right) {
     (@core.PortSide::SideUndefined, @core.PortSide::SideUndefined) => true
     (North, North) => true
@@ -33,7 +36,9 @@ fn self_loop_port_sides_contains(
 }
 
 ///|
-fn self_loop_unique_port_sides(port_sides : Array[@core.PortSide]) -> Array[@core.PortSide] {
+fn self_loop_unique_port_sides(
+  port_sides : Array[@core.PortSide],
+) -> Array[@core.PortSide] {
   let unique = []
   for side in port_sides {
     if !self_loop_port_sides_contains(unique, side) {

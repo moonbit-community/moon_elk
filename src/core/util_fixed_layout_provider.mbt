@@ -37,7 +37,9 @@ fn fixed_layout_provider_parse_edge_routing(
 }
 
 ///|
-fn fixed_layout_provider_parse_padding(layout_node : @graph.ElkNode) -> ElkPadding {
+fn fixed_layout_provider_parse_padding(
+  layout_node : @graph.ElkNode,
+) -> ElkPadding {
   let parsed = new_elk_padding()
   parsed.parse(@graph.node_get_string_property(layout_node, padding))
   parsed
@@ -105,7 +107,9 @@ fn fixed_layout_provider_update_max(
 }
 
 ///|
-fn fixed_layout_provider_source_parent(edge : @graph.ElkEdge) -> @graph.ElkNode? {
+fn fixed_layout_provider_source_parent(
+  edge : @graph.ElkEdge,
+) -> @graph.ElkNode? {
   let sources = @graph.edge_sources(edge)
   if sources.is_empty() {
     None
@@ -127,8 +131,12 @@ fn fixed_layout_provider_process_edge(
     return maxv
   }
 
-  let source_parent = @graph.node_parent(@graph.connectable_shape_to_node(Some(sources[0])))
-  let target_parent = @graph.node_parent(@graph.connectable_shape_to_node(Some(targets[0])))
+  let source_parent = @graph.node_parent(
+    @graph.connectable_shape_to_node(Some(sources[0])),
+  )
+  let target_parent = @graph.node_parent(
+    @graph.connectable_shape_to_node(Some(targets[0])),
+  )
   let same_hierarchy = source_parent == target_parent
 
   if fixed_layout_provider_parse_bend_points(
@@ -200,7 +208,9 @@ fn fixed_layout_provider_process_edge(
 }
 
 ///|
-fn fixed_layout_provider_generate_junction_points(edge : @graph.ElkEdge) -> Unit {
+fn fixed_layout_provider_generate_junction_points(
+  edge : @graph.ElkEdge,
+) -> Unit {
   ignore(edge)
 }
 

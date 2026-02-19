@@ -1,5 +1,8 @@
 ///|
-fn dummy_self_loop_test_side_equals(left : @core.PortSide, right : @core.PortSide) -> Bool {
+fn dummy_self_loop_test_side_equals(
+  left : @core.PortSide,
+  right : @core.PortSide,
+) -> Bool {
   @core.port_side_to_string(left) == @core.port_side_to_string(right)
 }
 

@@ -39,7 +39,9 @@ fn north_south_port_preprocessor_ordering_strategy_is_none(
 }
 
 ///|
-fn north_south_port_preprocessor_port_side_is_north(side : @core.PortSide) -> Bool {
+fn north_south_port_preprocessor_port_side_is_north(
+  side : @core.PortSide,
+) -> Bool {
   match side {
     @core.PortSide::North => true
     _ => false
@@ -47,7 +49,9 @@ fn north_south_port_preprocessor_port_side_is_north(side : @core.PortSide) -> Bo
 }
 
 ///|
-fn north_south_port_preprocessor_port_side_is_south(side : @core.PortSide) -> Bool {
+fn north_south_port_preprocessor_port_side_is_south(
+  side : @core.PortSide,
+) -> Bool {
   match side {
     @core.PortSide::South => true
     _ => false

@@ -12,6 +12,5 @@ import {
 }
 
 import {
-  "Milky2018/moon_elk/alg/test",
   "Milky2018/moon_elk/alg/layered",
 } for "test"

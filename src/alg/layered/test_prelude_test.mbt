@@ -17,8 +17,10 @@ type SizeConstraint = @core.SizeConstraint
 let make_node_shape = @graph.make_node_shape
 
 ///|
-fn new_elk_progress_monitor(task_name? : String = "") -> @core.IElkProgressMonitor {
-  @core.new_elk_progress_monitor(task_name=task_name)
+fn new_elk_progress_monitor(
+  task_name? : String = "",
+) -> @core.IElkProgressMonitor {
+  @core.new_elk_progress_monitor(task_name~)
 }
 
 ///|
@@ -73,9 +75,7 @@ let port_set_location = @graph.port_set_location
 fn new_layout_algorithm_resolver(
   default_layout_algorithm_id? : String = "org.eclipse.elk.layered",
 ) -> @core.LayoutAlgorithmResolver {
-  @core.new_layout_algorithm_resolver(
-    default_layout_algorithm_id=default_layout_algorithm_id,
-  )
+  @core.new_layout_algorithm_resolver(default_layout_algorithm_id~)
 }
 
 ///|
@@ -156,8 +156,7 @@ fn[T] new_layout_execution_listener(
   layout_processor_finished_fn : (Int, T, Bool) -> Unit,
 ) -> ILayoutExecutionListener[T] {
   @core.new_layout_execution_listener(
-    layout_processor_ready_fn,
-    layout_processor_finished_fn,
+    layout_processor_ready_fn, layout_processor_finished_fn,
   )
 }
 

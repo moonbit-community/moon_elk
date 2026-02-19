@@ -11,7 +11,9 @@ fn self_loop_router_parse_edge_routing(value : String) -> @core.EdgeRouting {
 ///|
 fn self_loop_router_router_for_graph(graph : LGraph) -> AbstractSelfLoopRouter {
   match
-    self_loop_router_parse_edge_routing(graph.get_property_string(@core.edge_routing)) {
+    self_loop_router_parse_edge_routing(
+      graph.get_property_string(@core.edge_routing),
+    ) {
     @core.EdgeRouting::Polyline => new_polyline_self_loop_router()
     @core.EdgeRouting::Splines => new_spline_self_loop_router()
     _ => new_orthogonal_self_loop_router()

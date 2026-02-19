@@ -9,7 +9,9 @@ pub(all) struct ElkGraphDataProvider {
 }
 
 ///|
-pub fn new_elk_graph_data_provider(graph : @graph.ElkNode) -> ElkGraphDataProvider {
+pub fn new_elk_graph_data_provider(
+  graph : @graph.ElkNode,
+) -> ElkGraphDataProvider {
   { graph, }
 }
 

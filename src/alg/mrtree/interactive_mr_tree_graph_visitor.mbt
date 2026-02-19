@@ -9,7 +9,9 @@ pub fn new_interactive_mrtree_graph_visitor() -> InteractiveMrtreeGraphVisitor {
 }
 
 ///|
-fn interactive_mrtree_graph_visitor_algorithm_value(root : @graph.ElkNode) -> String? {
+fn interactive_mrtree_graph_visitor_algorithm_value(
+  root : @graph.ElkNode,
+) -> String? {
   match @graph.node_layout_option_string_value(root, @core.algorithm.get_id()) {
     Some(value) => Some(value)
     None =>
@@ -50,5 +52,7 @@ pub fn InteractiveMrtreeGraphVisitor::visit(
 ///|
 pub fn new_interactive_mrtree_graph_element_visitor() -> @core.IGraphElementVisitor {
   let visitor = new_interactive_mrtree_graph_visitor()
-  @core.new_graph_element_visitor(fn(element : @graph.ElkNode) { visitor.visit(element) })
+  @core.new_graph_element_visitor(fn(element : @graph.ElkNode) {
+    visitor.visit(element)
+  })
 }

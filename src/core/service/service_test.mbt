@@ -99,9 +99,10 @@ test "DiagramLayoutEngine invoke flow calls connector build layout and apply" {
 
   let events : Array[String] = []
   let connector = core_service_test_make_connector("flow", events)
-  let graph_layout_engine = @core.new_graph_layout_engine((_layout_graph, _monitor) => {
-    events.push("layout")
-  })
+  let graph_layout_engine = @core.new_graph_layout_engine((
+    _layout_graph,
+    _monitor,
+  ) => events.push("layout"))
   let setup = core_service_test_make_setup(
     7,
     9,
@@ -174,8 +175,12 @@ test "CompoundGraphElementVisitor supports element-first and full-graph-first mo
 
   let element_first_events : Array[String] = []
   let element_first = new_compound_graph_element_visitor(visitors=[
-    @core.new_graph_element_visitor(node => element_first_events.push("v1:\{node}")),
-    @core.new_graph_element_visitor(node => element_first_events.push("v2:\{node}")),
+    @core.new_graph_element_visitor(node => {
+      element_first_events.push("v1:\{node}")
+    }),
+    @core.new_graph_element_visitor(node => {
+      element_first_events.push("v2:\{node}")
+    }),
   ])
   element_first.visit(root)
   element_first.visit(child)
@@ -188,8 +193,12 @@ test "CompoundGraphElementVisitor supports element-first and full-graph-first mo
 
   let full_graph_first_events : Array[String] = []
   let full_graph_first = new_compound_graph_element_visitor_with_mode(true, visitors=[
-    @core.new_graph_element_visitor(node => full_graph_first_events.push("v1:\{node}")),
-    @core.new_graph_element_visitor(node => full_graph_first_events.push("v2:\{node}")),
+    @core.new_graph_element_visitor(node => {
+      full_graph_first_events.push("v1:\{node}")
+    }),
+    @core.new_graph_element_visitor(node => {
+      full_graph_first_events.push("v2:\{node}")
+    }),
   ])
   full_graph_first.visit(root)
   full_graph_first.visit(child)

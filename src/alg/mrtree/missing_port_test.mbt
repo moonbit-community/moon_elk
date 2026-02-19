@@ -20,14 +20,19 @@ test "InteractiveMrtreeGraphVisitor sets @core.interactive options on root" {
 
   let root = create_graph()
   ignore(@graph.create_node(Some(root)))
-  @graph.node_set_string_property(root, @core.algorithm, "org.eclipse.elk.mrtree")
+  @graph.node_set_string_property(
+    root, @core.algorithm, "org.eclipse.elk.mrtree",
+  )
   @graph.node_set_string_property(root, mrtree_weighting, "MODEL_ORDER")
 
   let visitor = new_interactive_mrtree_graph_visitor()
   visitor.visit(root)
 
   assert_eq(@graph.node_get_bool_property(root, @core.interactive), true)
-  assert_eq(@graph.node_get_string_property(root, mrtree_weighting), "CONSTRAINT")
+  assert_eq(
+    @graph.node_get_string_property(root, mrtree_weighting),
+    "CONSTRAINT",
+  )
 }
 
 ///|

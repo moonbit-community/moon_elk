@@ -16,7 +16,9 @@ fn mrtree_edge_router_layout_processor_configuration(
 ) -> @core.LayoutProcessorConfiguration[MrtreeTreeLayoutPhases, MrtreeGraph]? {
   ignore(graph)
   Some(
-    @core.layout_processor_configuration_create(mrtree_tree_layout_phase_descriptor)
+    @core.layout_processor_configuration_create(
+      mrtree_tree_layout_phase_descriptor,
+    )
     .before(MrtreeTreeLayoutPhases::P4EdgeRouting)
     .add(
       mrtree_intermediate_processor_factory(
@@ -743,7 +745,9 @@ fn mrtree_edge_router_avoid_overlap_special_edges(
 
         if !next_level_nodes.is_empty() {
           let start = if mrtree_edge_bend_points(edge).size() == 0 {
-            @core.new_kvector_copy(mrtree_node_position(mrtree_edge_source(edge)))
+            @core.new_kvector_copy(
+              mrtree_node_position(mrtree_edge_source(edge)),
+            )
           } else {
             mrtree_edge_bend_points(edge).get(
               mrtree_edge_bend_points(edge).size() - 1,

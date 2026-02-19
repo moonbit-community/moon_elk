@@ -1399,5 +1399,7 @@ pub fn new_spline_edge_router_layout_phase() -> @core.ILayoutProcessor[
   LayeredPhases,
   LGraph,
 ] {
-  @core.new_layout_phase(spline_edge_router_process, spline_edge_router_configuration)
+  @core.new_layout_phase(
+    spline_edge_router_process, spline_edge_router_configuration,
+  )
 }

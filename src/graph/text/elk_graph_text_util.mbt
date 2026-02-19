@@ -63,12 +63,17 @@ pub fn elk_graph_text_util_get_algorithm(
   match node {
     Some(container_node) =>
       match
-        @graph.node_layout_option_string_value(container_node, @core.algorithm.get_id()) {
+        @graph.node_layout_option_string_value(
+          container_node,
+          @core.algorithm.get_id(),
+        ) {
         Some(algorithm_id) =>
           if algorithm_id == "" {
             None
           } else {
-            @core.layout_meta_data_service_get_algorithm_data_by_suffix(algorithm_id)
+            @core.layout_meta_data_service_get_algorithm_data_by_suffix(
+              algorithm_id,
+            )
           }
         None => None
       }

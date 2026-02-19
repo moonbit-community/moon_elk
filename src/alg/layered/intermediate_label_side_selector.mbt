@@ -80,7 +80,8 @@ fn label_side_selector_port_side_option_equals(
   right : @core.PortSide?,
 ) -> Bool {
   match (left, right) {
-    (Some(@core.PortSide::SideUndefined), Some(@core.PortSide::SideUndefined)) => true
+    (Some(@core.PortSide::SideUndefined), Some(@core.PortSide::SideUndefined)) =>
+      true
     (Some(@core.PortSide::North), Some(@core.PortSide::North)) => true
     (Some(@core.PortSide::East), Some(@core.PortSide::East)) => true
     (Some(@core.PortSide::South), Some(@core.PortSide::South)) => true
@@ -91,7 +92,9 @@ fn label_side_selector_port_side_option_equals(
 }
 
 ///|
-fn label_side_selector_port_side_is_north_or_east(side : @core.PortSide) -> Bool {
+fn label_side_selector_port_side_is_north_or_east(
+  side : @core.PortSide,
+) -> Bool {
   match side {
     @core.PortSide::North => true
     @core.PortSide::East => true
@@ -542,7 +545,10 @@ fn label_side_selector_based_on_direction(
 }
 
 ///|
-fn label_side_selector_smart(graph : LGraph, default_side : @core.LabelSide) -> Unit {
+fn label_side_selector_smart(
+  graph : LGraph,
+  default_side : @core.LabelSide,
+) -> Unit {
   let dummy_node_queue : Array[LNode] = []
 
   for layer in graph.get_layers() {
@@ -611,9 +617,15 @@ fn label_side_selector_process(
     EdgeLabelSideSelection::AlwaysDown =>
       label_side_selector_same_side(layered_graph, @core.LabelSide::Below)
     EdgeLabelSideSelection::DirectionUp =>
-      label_side_selector_based_on_direction(layered_graph, @core.LabelSide::Above)
+      label_side_selector_based_on_direction(
+        layered_graph,
+        @core.LabelSide::Above,
+      )
     EdgeLabelSideSelection::DirectionDown =>
-      label_side_selector_based_on_direction(layered_graph, @core.LabelSide::Below)
+      label_side_selector_based_on_direction(
+        layered_graph,
+        @core.LabelSide::Below,
+      )
     EdgeLabelSideSelection::SmartUp =>
       label_side_selector_smart(layered_graph, @core.LabelSide::Above)
     EdgeLabelSideSelection::SmartDown =>

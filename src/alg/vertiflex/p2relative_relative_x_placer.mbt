@@ -44,7 +44,7 @@ fn vertiflex_outline_distance(
       let new_dist = x1 -
         x2 -
         (o1_value.absolute_y - o2_value.absolute_y) * delta_x / delta_y
-      dist = @math.maximum(dist, new_dist)
+      dist = @cmp.maximum(dist, new_dist)
       o1 = o1_value.next
       if o1 is Some(next_o1) {
         x1 += next_o1.relative_x
@@ -69,7 +69,7 @@ fn vertiflex_outline_distance(
       let new_dist = x1 -
         x2 +
         (o2_value.absolute_y - o1_value.absolute_y) * delta_x / delta_y
-      dist = @math.maximum(dist, new_dist)
+      dist = @cmp.maximum(dist, new_dist)
       o2 = o2_value.next
       if o2 is Some(next_o2) {
         x2 += next_o2.relative_x
@@ -468,14 +468,15 @@ fn vertiflex_recursive_straightline_placement(
           let mut right_outline = vertiflex_internal_right_outline(children[i])
           let mut right_outline_x = @graph.node_x(children[i]) +
             right_outline.relative_x
-          let pos_x = @graph.node_x(children[j]) + @graph.node_width(children[j]) / 2.0
+          let pos_x = @graph.node_x(children[j]) +
+            @graph.node_width(children[j]) / 2.0
           while right_outline.absolute_y < max_depth {
             let new_move_root = pos_x -
               @graph.node_width(graph) / 2.0 +
               (pos_x - right_outline_x) *
               (@graph.node_y(graph) + @graph.node_height(graph) - max_depth) /
               (max_depth - right_outline.absolute_y)
-            better_move_root = @math.maximum(better_move_root, new_move_root)
+            better_move_root = @cmp.maximum(better_move_root, new_move_root)
             match right_outline.next {
               Some(next_outline) => {
                 right_outline = next_outline
@@ -492,15 +493,17 @@ fn vertiflex_recursive_straightline_placement(
       for i = pos; i < children.length(); i = i + 1 {
         for j = pos - 1; j < i; j = j + 1 {
           let mut left_outline = vertiflex_internal_left_outline(children[i])
-          let mut left_outline_x = @graph.node_x(children[i]) + left_outline.relative_x
-          let pos_x = @graph.node_x(children[j]) + @graph.node_width(children[j]) / 2.0
+          let mut left_outline_x = @graph.node_x(children[i]) +
+            left_outline.relative_x
+          let pos_x = @graph.node_x(children[j]) +
+            @graph.node_width(children[j]) / 2.0
           while left_outline.absolute_y < max_depth {
             let new_move_root = pos_x -
               @graph.node_width(graph) / 2.0 +
               (pos_x - left_outline_x) *
               (@graph.node_y(graph) + @graph.node_height(graph) - max_depth) /
               (max_depth - left_outline.absolute_y)
-            better_move_root = @math.minimum(better_move_root, new_move_root)
+            better_move_root = @cmp.minimum(better_move_root, new_move_root)
             match left_outline.next {
               Some(next_outline) => {
                 left_outline = next_outline
@@ -516,7 +519,11 @@ fn vertiflex_recursive_straightline_placement(
   }
 
   for child in children {
-    @graph.node_set_location(child, @graph.node_x(child) - move_root, @graph.node_y(child))
+    @graph.node_set_location(
+      child,
+      @graph.node_x(child) - move_root,
+      @graph.node_y(child),
+    )
   }
 
   let graph_left_outline = vertiflex_internal_left_outline(graph)
@@ -554,21 +561,21 @@ fn vertiflex_recursive_straightline_placement(
   for child in children {
     vertiflex_internal_set_outline_max_depth(
       graph,
-      @math.maximum(
+      @cmp.maximum(
         vertiflex_internal_outline_max_depth(graph),
         vertiflex_internal_outline_max_depth(child),
       ),
     )
     vertiflex_internal_set_min_x(
       graph,
-      @math.minimum(
+      @cmp.minimum(
         vertiflex_internal_min_x(graph),
         @graph.node_x(child) + vertiflex_internal_min_x(child),
       ),
     )
     vertiflex_internal_set_max_x(
       graph,
-      @math.maximum(
+      @cmp.maximum(
         vertiflex_internal_max_x(graph),
         @graph.node_x(child) + vertiflex_internal_max_x(child),
       ),
@@ -610,7 +617,11 @@ fn vertiflex_recursive_bentline_placement(
     2.0 -
     @graph.node_x(graph)
   for child in children {
-    @graph.node_set_location(child, @graph.node_x(child) - move_root, @graph.node_y(child))
+    @graph.node_set_location(
+      child,
+      @graph.node_x(child) - move_root,
+      @graph.node_y(child),
+    )
     vertiflex_internal_set_edge_bend_height(
       child,
       vertiflex_internal_left_outline(child).absolute_y,
@@ -698,21 +709,21 @@ fn vertiflex_recursive_bentline_placement(
   for child in children {
     vertiflex_internal_set_outline_max_depth(
       graph,
-      @math.maximum(
+      @cmp.maximum(
         vertiflex_internal_outline_max_depth(graph),
         vertiflex_internal_outline_max_depth(child),
       ),
     )
     vertiflex_internal_set_min_x(
       graph,
-      @math.minimum(
+      @cmp.minimum(
         vertiflex_internal_min_x(graph),
         @graph.node_x(child) + vertiflex_internal_min_x(child),
       ),
     )
     vertiflex_internal_set_max_x(
       graph,
-      @math.maximum(
+      @cmp.maximum(
         vertiflex_internal_max_x(graph),
         @graph.node_x(child) + vertiflex_internal_max_x(child),
       ),

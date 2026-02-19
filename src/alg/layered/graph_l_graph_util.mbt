@@ -54,8 +54,10 @@ fn l_graph_util_port_constraints_equals(
     (@core.PortConstraints::Undefined, @core.PortConstraints::Undefined) => true
     (@core.PortConstraints::Free, @core.PortConstraints::Free) => true
     (@core.PortConstraints::FixedSide, @core.PortConstraints::FixedSide) => true
-    (@core.PortConstraints::FixedOrder, @core.PortConstraints::FixedOrder) => true
-    (@core.PortConstraints::FixedRatio, @core.PortConstraints::FixedRatio) => true
+    (@core.PortConstraints::FixedOrder, @core.PortConstraints::FixedOrder) =>
+      true
+    (@core.PortConstraints::FixedRatio, @core.PortConstraints::FixedRatio) =>
+      true
     (@core.PortConstraints::FixedPos, @core.PortConstraints::FixedPos) => true
     _ => false
   }
@@ -292,7 +294,10 @@ fn l_graph_util_direction_from_string(value : String) -> @core.Direction {
 }
 
 ///|
-fn l_graph_util_direction_equals(left : @core.Direction, right : @core.Direction) -> Bool {
+fn l_graph_util_direction_equals(
+  left : @core.Direction,
+  right : @core.Direction,
+) -> Bool {
   match (left, right) {
     (@core.Direction::Undefined, @core.Direction::Undefined) => true
     (@core.Direction::Rightward, @core.Direction::Rightward) => true
@@ -379,7 +384,8 @@ pub fn compute_graph_properties(layered_graph : LGraph) -> Unit {
     let node_port_constraints = node.get_property_string(@core.port_constraints)
     if node_port_constraints ==
       @core.port_constraints_to_string(@core.PortConstraints::Undefined) {
-      node.set_property_string(@core.port_constraints,
+      node.set_property_string(
+        @core.port_constraints,
         @core.port_constraints_to_string(@core.PortConstraints::Free),
       )
     } else if node_port_constraints !=
@@ -458,7 +464,9 @@ pub fn compute_graph_properties(layered_graph : LGraph) -> Unit {
         for label in edge.get_labels() {
           let placement = label.get_property_string(@core.edge_labels_placement)
           if placement ==
-            @core.edge_label_placement_to_string(@core.EdgeLabelPlacement::Centered) {
+            @core.edge_label_placement_to_string(
+              @core.EdgeLabelPlacement::Centered,
+            ) {
             l_graph_util_add_graph_property(
               props,
               GraphProperties::CenterLabels,
@@ -498,7 +506,8 @@ fn l_graph_util_port_constraints_string_is_side_fixed(
   constraints : String,
 ) -> Bool {
   constraints != @core.port_constraints_to_string(@core.PortConstraints::Free) &&
-  constraints != @core.port_constraints_to_string(@core.PortConstraints::Undefined)
+  constraints !=
+  @core.port_constraints_to_string(@core.PortConstraints::Undefined)
 }
 
 ///|
@@ -704,7 +713,11 @@ fn calc_port_offset(port : LPort, side : @core.PortSide) -> Double {
 }
 
 ///|
-fn center_point(point : @core.KVector, boundary : @core.KVector, side : @core.PortSide) -> Unit {
+fn center_point(
+  point : @core.KVector,
+  boundary : @core.KVector,
+  side : @core.PortSide,
+) -> Unit {
   match side {
     @core.PortSide::North => {
       point.x = boundary.x / 2.0
@@ -879,7 +892,8 @@ pub fn create_external_port_dummy(
   let dummy = new_l_node(graph=Some(layered_graph))
   dummy.set_type(NodeType::ExternalPort)
   dummy.set_property_kvector(internal_properties_ext_port_size, port_size)
-  dummy.set_property_string(@core.port_constraints,
+  dummy.set_property_string(
+    @core.port_constraints,
     @core.port_constraints_to_string(@core.PortConstraints::FixedPos),
   )
   let port_border_offset = property_holder.get_property_double(
@@ -893,13 +907,20 @@ pub fn create_external_port_dummy(
   dummy_port.set_node(Some(dummy))
 
   if !ext_port_constraints.is_side_fixed() {
-    if l_graph_util_direction_equals(layout_direction, @core.Direction::Undefined) {
+    if l_graph_util_direction_equals(
+        layout_direction,
+        @core.Direction::Undefined,
+      ) {
       abort("Layout direction must not be UNDEFINED.")
     }
     if net_flow >= 0 {
-      final_external_port_side = @core.port_side_from_direction(layout_direction)
+      final_external_port_side = @core.port_side_from_direction(
+        layout_direction,
+      )
     } else {
-      final_external_port_side = @core.port_side_from_direction(layout_direction).opposed()
+      final_external_port_side = @core.port_side_from_direction(
+        layout_direction,
+      ).opposed()
     }
     property_holder.set_side(final_external_port_side)
   }
@@ -978,7 +999,8 @@ pub fn create_external_port_dummy(
         anchor.y = 0.0
       }
     }
-    @core.PortSide::SideUndefined => abort("Unexpected external port side UNDEFINED.")
+    @core.PortSide::SideUndefined =>
+      abort("Unexpected external port side UNDEFINED.")
   }
 
   ignore(dummy_port.get_position().set(anchor))

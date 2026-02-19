@@ -1,5 +1,7 @@
 ///|
-fn label_management_processor_parse_direction(value : String) -> @core.Direction {
+fn label_management_processor_parse_direction(
+  value : String,
+) -> @core.Direction {
   match value {
     "RIGHT" => @core.Direction::Rightward
     "LEFT" => @core.Direction::Leftward

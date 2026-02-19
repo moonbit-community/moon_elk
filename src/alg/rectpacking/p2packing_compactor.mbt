@@ -32,7 +32,9 @@ fn rectpacking_compactor_configure_second_iteration(
   drawing : RectpackingDrawingData,
 ) -> Unit {
   let padding = @core.new_elk_padding()
-  padding.parse(@graph.node_get_string_property(layout_graph, rectpacking_padding))
+  padding.parse(
+    @graph.node_get_string_property(layout_graph, rectpacking_padding),
+  )
   let aspect_ratio = @graph.node_get_double_property(
     layout_graph, rectpacking_aspect_ratio,
   )
@@ -48,7 +50,9 @@ fn rectpacking_compactor_configure_second_iteration(
     @graph.node_set_double_property(
       clone,
       rectpacking_internal_target_width,
-      @graph.node_get_double_property(layout_graph, rectpacking_internal_target_width) +
+      @graph.node_get_double_property(
+        layout_graph, rectpacking_internal_target_width,
+      ) +
       @graph.node_get_double_property(
         layout_graph, rectpacking_internal_min_row_increase,
       ),
@@ -64,9 +68,13 @@ fn rectpacking_compactor_configure_second_iteration(
     @graph.node_set_double_property(
       clone,
       rectpacking_internal_target_width,
-      @math.maximum(
-        @graph.node_get_double_property(layout_graph, rectpacking_internal_min_width),
-        @graph.node_get_double_property(clone, rectpacking_internal_target_width) -
+      @cmp.maximum(
+        @graph.node_get_double_property(
+          layout_graph, rectpacking_internal_min_width,
+        ),
+        @graph.node_get_double_property(
+          clone, rectpacking_internal_target_width,
+        ) -
         @graph.node_get_double_property(
           layout_graph, rectpacking_internal_min_row_decrease,
         ),
@@ -81,7 +89,11 @@ fn rectpacking_compactor_clone_node(
   parent : @graph.ElkNode?,
 ) -> @graph.ElkNode {
   let cloned = @graph.create_node(parent)
-  @graph.node_set_dimensions(cloned, @graph.node_width(node), @graph.node_height(node))
+  @graph.node_set_dimensions(
+    cloned,
+    @graph.node_width(node),
+    @graph.node_height(node),
+  )
   @graph.node_set_identifier(cloned, @graph.node_identifier(node))
   @graph.node_set_location(cloned, @graph.node_x(node), @graph.node_y(node))
 
@@ -172,8 +184,15 @@ fn rectpacking_compactor_clone_graph(node : @graph.ElkNode) -> @graph.ElkNode {
 }
 
 ///|
-fn rectpacking_compactor_copy_position(node : @graph.ElkNode, other : @graph.ElkNode) -> Unit {
-  @graph.node_set_dimensions(other, @graph.node_width(node), @graph.node_height(node))
+fn rectpacking_compactor_copy_position(
+  node : @graph.ElkNode,
+  other : @graph.ElkNode,
+) -> Unit {
+  @graph.node_set_dimensions(
+    other,
+    @graph.node_width(node),
+    @graph.node_height(node),
+  )
   @graph.node_set_location(other, @graph.node_x(node), @graph.node_y(node))
 
   let source_children = @graph.node_children(node)
@@ -196,7 +215,9 @@ fn rectpacking_compactor_process(
   }
 
   let rectangles = @graph.node_children(graph)
-  let aspect_ratio = @graph.node_get_double_property(graph, rectpacking_aspect_ratio)
+  let aspect_ratio = @graph.node_get_double_property(
+    graph, rectpacking_aspect_ratio,
+  )
   let node_node_spacing = @graph.node_get_double_property(
     graph, rectpacking_spacing_node_node,
   )

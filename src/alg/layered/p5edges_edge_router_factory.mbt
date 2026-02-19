@@ -33,9 +33,11 @@ pub fn edge_router_factory_factory_for(
     Some(factory) => factory
     None => {
       let ordinal = edge_router_factory_strategy_ordinal(edge_routing_strategy)
-      let factory = @core.new_layout_processor_factory(24000 + ordinal, ordinal, () => {
-        edge_router_factory_create_router(edge_routing_strategy)
-      })
+      let factory = @core.new_layout_processor_factory(
+        24000 + ordinal,
+        ordinal,
+        () => edge_router_factory_create_router(edge_routing_strategy),
+      )
       edge_router_factory_cache.val[key] = factory
       factory
     }

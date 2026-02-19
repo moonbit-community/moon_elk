@@ -1,0 +1,587 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/moon_elk/alg/mrtree"
+
+import {
+  "Milky2018/moon_elk/core",
+  "Milky2018/moon_elk/graph",
+}
+
+// Values
+pub fn interactive_mrtree_graph_visitor_set_interactive_options(Int) -> Unit
+
+pub let mrtree_algorithm_id : String
+
+pub let mrtree_aspect_ratio : @graph.IProperty[Double]
+
+pub let mrtree_compaction : @graph.IProperty[Bool]
+
+pub fn mrtree_compaction_mode_from_string(String) -> MrtreeCompactionMode
+
+pub fn mrtree_edge_bend_points(Int) -> @core.KVectorChain
+
+pub let mrtree_edge_end_texture_length : @graph.IProperty[Double]
+
+pub fn mrtree_edge_labels(Int) -> Array[Int]
+
+pub fn mrtree_edge_origin(Int) -> Int?
+
+pub let mrtree_edge_routing_mode : @graph.IProperty[String]
+
+pub fn mrtree_edge_routing_mode_from_string(String) -> MrtreeEdgeRoutingMode
+
+pub fn mrtree_edge_set_origin(Int, Int?) -> Unit
+
+pub fn mrtree_edge_set_source(Int, Int) -> Unit
+
+pub fn mrtree_edge_set_target(Int, Int) -> Unit
+
+pub fn mrtree_edge_source(Int) -> Int
+
+pub fn mrtree_edge_target(Int) -> Int
+
+pub fn mrtree_edge_to_string(Int) -> String
+
+pub fn mrtree_graph_add_existing_edge(Int, Int) -> Unit
+
+pub fn mrtree_graph_add_existing_node(Int, Int) -> Unit
+
+pub fn mrtree_graph_aspect_ratio(Int) -> Double
+
+pub fn mrtree_graph_bb_low_right(Int) -> @core.KVector
+
+pub fn mrtree_graph_bb_up_left(Int) -> @core.KVector
+
+pub fn mrtree_graph_compaction(Int) -> Bool
+
+pub fn mrtree_graph_copy_properties(Int, Int) -> Unit
+
+pub fn mrtree_graph_copy_properties_from_elk(Int, Int) -> Unit
+
+pub fn mrtree_graph_direction(Int) -> String
+
+pub fn mrtree_graph_direction_is_horizontal(Int) -> Bool
+
+pub fn mrtree_graph_edge_end_texture_length(Int) -> Double
+
+pub fn mrtree_graph_edge_routing_mode(Int) -> MrtreeEdgeRoutingMode
+
+pub fn mrtree_graph_edges(Int) -> Array[Int]
+
+pub fn mrtree_graph_graph_xmax(Int) -> Double
+
+pub fn mrtree_graph_graph_xmin(Int) -> Double
+
+pub fn mrtree_graph_graph_ymax(Int) -> Double
+
+pub fn mrtree_graph_graph_ymin(Int) -> Double
+
+pub fn mrtree_graph_nodes(Int) -> Array[Int]
+
+pub fn mrtree_graph_origin(Int) -> Int?
+
+pub fn mrtree_graph_padding(Int) -> @core.Spacing
+
+pub fn mrtree_graph_priority(Int) -> Int
+
+pub fn mrtree_graph_property_from_string(String) -> MrtreeGraphProperty
+
+pub fn mrtree_graph_removable_edges(Int) -> Array[Int]
+
+pub fn mrtree_graph_search_order(Int) -> MrtreeTreeifyingOrder
+
+pub fn mrtree_graph_separate_connected_components(Int) -> Bool
+
+pub fn mrtree_graph_set_bb_low_right(Int, @core.KVector) -> Unit
+
+pub fn mrtree_graph_set_bb_up_left(Int, @core.KVector) -> Unit
+
+pub fn mrtree_graph_set_compaction(Int, Bool) -> Unit
+
+pub fn mrtree_graph_set_direction(Int, String) -> Unit
+
+pub fn mrtree_graph_set_edge_routing_mode(Int, String) -> Unit
+
+pub fn mrtree_graph_set_graph_xmax(Int, Double) -> Unit
+
+pub fn mrtree_graph_set_graph_xmin(Int, Double) -> Unit
+
+pub fn mrtree_graph_set_graph_ymax(Int, Double) -> Unit
+
+pub fn mrtree_graph_set_graph_ymin(Int, Double) -> Unit
+
+pub fn mrtree_graph_set_priority(Int, Int) -> Unit
+
+pub fn mrtree_graph_set_removable_edges(Int, Array[Int]) -> Unit
+
+pub fn mrtree_graph_set_search_order(Int, String) -> Unit
+
+pub fn mrtree_graph_set_weighting(Int, String) -> Unit
+
+pub fn mrtree_graph_spacing_edge_node(Int) -> Double
+
+pub fn mrtree_graph_spacing_node_node(Int) -> Double
+
+pub fn mrtree_graph_weighting(Int) -> MrtreeOrderWeighting
+
+pub fn mrtree_intermediate_processor_factory(MrtreeIntermediateProcessorStrategy) -> @core.ILayoutProcessorFactory[MrtreeTreeLayoutPhases, Int]
+
+pub let mrtree_internal_bb_low_right : String
+
+pub let mrtree_internal_bb_up_left : String
+
+pub let mrtree_internal_compact_constraints : String
+
+pub let mrtree_internal_compact_level_ascension : String
+
+pub let mrtree_internal_depth : String
+
+pub let mrtree_internal_descendants : String
+
+pub let mrtree_internal_dummy : String
+
+pub let mrtree_internal_fan : String
+
+pub let mrtree_internal_graph_xmax : String
+
+pub let mrtree_internal_graph_xmin : String
+
+pub let mrtree_internal_graph_ymax : String
+
+pub let mrtree_internal_graph_ymin : String
+
+pub let mrtree_internal_id : String
+
+pub let mrtree_internal_left_neighbor : String
+
+pub let mrtree_internal_left_sibling : String
+
+pub let mrtree_internal_level : String
+
+pub let mrtree_internal_level_height : String
+
+pub let mrtree_internal_level_max : String
+
+pub let mrtree_internal_level_min : String
+
+pub let mrtree_internal_modifier : String
+
+pub let mrtree_internal_origin : String
+
+pub let mrtree_internal_position : String
+
+pub let mrtree_internal_prelim : String
+
+pub let mrtree_internal_random : String
+
+pub let mrtree_internal_removable_edges : String
+
+pub let mrtree_internal_right_neighbor : String
+
+pub let mrtree_internal_right_sibling : String
+
+pub let mrtree_internal_root : String
+
+pub let mrtree_internal_xcoor : String
+
+pub let mrtree_internal_ycoor : String
+
+pub fn mrtree_label_edge(Int) -> Int
+
+pub fn mrtree_label_position(Int) -> @core.KVector
+
+pub fn mrtree_label_size(Int) -> @core.KVector
+
+pub fn mrtree_label_text(Int) -> String
+
+pub fn mrtree_label_to_string(Int) -> String
+
+pub fn mrtree_layout_levels(Int) -> Unit
+
+pub fn mrtree_node_add_compact_constraint(Int, Int) -> Unit
+
+pub fn mrtree_node_add_incoming_edge(Int, Int) -> Unit
+
+pub fn mrtree_node_add_incoming_edge_unique(Int, Int) -> Unit
+
+pub fn mrtree_node_add_outgoing_edge(Int, Int) -> Unit
+
+pub fn mrtree_node_add_outgoing_edge_unique(Int, Int) -> Unit
+
+pub fn mrtree_node_children_copy(Int) -> Array[Int]
+
+pub fn mrtree_node_compact_constraints(Int) -> Array[Int]
+
+pub fn mrtree_node_compact_level_ascension(Int) -> Bool
+
+pub fn mrtree_node_copy_properties_from_elk(Int, Int) -> Unit
+
+pub fn mrtree_node_descendants(Int) -> Int
+
+pub fn mrtree_node_dummy(Int) -> Bool
+
+pub fn mrtree_node_fan(Int) -> Int
+
+pub fn mrtree_node_graph(Int) -> Int
+
+pub fn mrtree_node_id(Int) -> Int
+
+pub fn mrtree_node_incoming_edges(Int) -> Array[Int]
+
+pub fn mrtree_node_internal_id(Int) -> String
+
+pub fn mrtree_node_is_leaf(Int) -> Bool
+
+pub fn mrtree_node_label(Int) -> String
+
+pub fn mrtree_node_left_neighbor(Int) -> Int?
+
+pub fn mrtree_node_left_sibling(Int) -> Int?
+
+pub fn mrtree_node_level_height(Int) -> Double
+
+pub fn mrtree_node_level_max(Int) -> Double
+
+pub fn mrtree_node_level_min(Int) -> Double
+
+pub fn mrtree_node_modifier(Int) -> Double
+
+pub fn mrtree_node_origin(Int) -> Int?
+
+pub fn mrtree_node_outgoing_edges(Int) -> Array[Int]
+
+pub fn mrtree_node_parent(Int) -> Int?
+
+pub fn mrtree_node_position(Int) -> @core.KVector
+
+pub fn mrtree_node_position_constraint(Int) -> Int
+
+pub fn mrtree_node_position_in_level(Int) -> Int
+
+pub fn mrtree_node_prelim(Int) -> Double
+
+pub fn mrtree_node_priority(Int) -> Int
+
+pub fn mrtree_node_remove_incoming_edge(Int, Int) -> Unit
+
+pub fn mrtree_node_remove_outgoing_edge(Int, Int) -> Unit
+
+pub fn mrtree_node_right_neighbor(Int) -> Int?
+
+pub fn mrtree_node_right_sibling(Int) -> Int?
+
+pub fn mrtree_node_root(Int) -> Bool
+
+pub fn mrtree_node_set_compact_constraints(Int, Array[Int]) -> Unit
+
+pub fn mrtree_node_set_compact_level_ascension(Int, Bool) -> Unit
+
+pub fn mrtree_node_set_descendants(Int, Int) -> Unit
+
+pub fn mrtree_node_set_dummy(Int, Bool) -> Unit
+
+pub fn mrtree_node_set_fan(Int, Int) -> Unit
+
+pub fn mrtree_node_set_id(Int, Int) -> Unit
+
+pub fn mrtree_node_set_internal_id(Int, String) -> Unit
+
+pub fn mrtree_node_set_left_neighbor(Int, Int?) -> Unit
+
+pub fn mrtree_node_set_left_sibling(Int, Int?) -> Unit
+
+pub fn mrtree_node_set_level_height(Int, Double) -> Unit
+
+pub fn mrtree_node_set_level_max(Int, Double) -> Unit
+
+pub fn mrtree_node_set_level_min(Int, Double) -> Unit
+
+pub fn mrtree_node_set_modifier(Int, Double) -> Unit
+
+pub fn mrtree_node_set_outgoing_edges(Int, Array[Int]) -> Unit
+
+pub fn mrtree_node_set_position_constraint(Int, Int) -> Unit
+
+pub fn mrtree_node_set_position_in_level(Int, Int) -> Unit
+
+pub fn mrtree_node_set_prelim(Int, Double) -> Unit
+
+pub fn mrtree_node_set_right_neighbor(Int, Int?) -> Unit
+
+pub fn mrtree_node_set_right_sibling(Int, Int?) -> Unit
+
+pub fn mrtree_node_set_root(Int, Bool) -> Unit
+
+pub fn mrtree_node_set_tree_level(Int, Int) -> Unit
+
+pub fn mrtree_node_set_xcoor(Int, Int) -> Unit
+
+pub fn mrtree_node_set_ycoor(Int, Int) -> Unit
+
+pub fn mrtree_node_size(Int) -> @core.KVector
+
+pub fn mrtree_node_to_string(Int) -> String
+
+pub fn mrtree_node_tree_level(Int) -> Int
+
+pub fn mrtree_node_xcoor(Int) -> Int
+
+pub fn mrtree_node_ycoor(Int) -> Int
+
+pub let mrtree_omit_node_micro_layout : @graph.IProperty[Bool]
+
+pub fn mrtree_order_balance_process(Int, @core.IElkProgressMonitor?) -> Unit
+
+pub fn mrtree_order_weighting_from_string(String) -> MrtreeOrderWeighting
+
+pub let mrtree_padding : @graph.IProperty[String]
+
+pub let mrtree_position_constraint : @graph.IProperty[Double]
+
+pub let mrtree_priority : @graph.IProperty[Double]
+
+pub let mrtree_search_order : @graph.IProperty[String]
+
+pub let mrtree_separate_connected_components : @graph.IProperty[Bool]
+
+pub fn mrtree_shape_position(MrtreeShape) -> @core.KVector
+
+pub fn mrtree_shape_size(MrtreeShape) -> @core.KVector
+
+pub let mrtree_spacing_node_node : @graph.IProperty[Double]
+
+pub let mrtree_tree_layout_phase_descriptor : @core.PhaseDescriptor[MrtreeTreeLayoutPhases]
+
+pub fn mrtree_tree_layout_phase_factory(MrtreeTreeLayoutPhases) -> @core.ILayoutProcessorFactory[MrtreeTreeLayoutPhases, Int]
+
+pub let mrtree_tree_level : @graph.IProperty[Int]
+
+pub fn mrtree_tree_util_depth(Int) -> Int
+
+pub fn mrtree_tree_util_direction_is_horizontal(String) -> Bool
+
+pub fn mrtree_tree_util_direction_is_vertical(String) -> Bool
+
+pub fn mrtree_tree_util_get_all_incoming_edges(Int, Int) -> Array[Int]
+
+pub fn mrtree_tree_util_get_all_outgoing_edges(Int, Int) -> Array[Int]
+
+pub fn mrtree_tree_util_get_children(Int) -> Array[Int]
+
+pub fn mrtree_tree_util_get_direction(Int) -> String
+
+pub fn mrtree_tree_util_get_direction_vector(String) -> @core.KVector
+
+pub fn mrtree_tree_util_get_first_point(Int) -> @core.KVector
+
+pub fn mrtree_tree_util_get_last_point(Int) -> @core.KVector
+
+pub fn mrtree_tree_util_get_left_most(Array[Int], depth? : Int) -> Int?
+
+pub fn mrtree_tree_util_get_lowest_parent(Int, Int) -> Int?
+
+pub fn mrtree_tree_util_get_node_size_in_direction(Int, String) -> Double
+
+pub fn mrtree_tree_util_get_node_size_vector_in_direction(Int, String) -> @core.KVector
+
+pub fn mrtree_tree_util_get_root(Int) -> Int?
+
+pub fn mrtree_tree_util_get_subtree(Int) -> Array[Int]
+
+pub fn mrtree_tree_util_get_unique_long(Int, Int) -> Int
+
+pub fn mrtree_tree_util_is_cycle_inducing(Int, Int) -> Bool
+
+pub fn mrtree_tree_util_root_distance(Int, Int) -> Int
+
+pub fn mrtree_tree_util_to_node_border(@core.KVector, @core.KVector, @core.KVector) -> Unit
+
+pub fn mrtree_tree_util_turn_left(String) -> String
+
+pub fn mrtree_tree_util_turn_right(String) -> String
+
+pub fn mrtree_treeifying_order_from_string(String) -> MrtreeTreeifyingOrder
+
+pub let mrtree_weighting : @graph.IProperty[String]
+
+pub fn new_interactive_mrtree_graph_element_visitor() -> @core.IGraphElementVisitor
+
+pub fn new_interactive_mrtree_graph_visitor() -> InteractiveMrtreeGraphVisitor
+
+pub fn new_mrtree() -> Mrtree
+
+pub fn new_mrtree_compaction_processor_layout_processor() -> @core.ILayoutProcessor[MrtreeTreeLayoutPhases, Int]
+
+pub fn new_mrtree_components_processor() -> MrtreeComponentsProcessor
+
+pub fn new_mrtree_dfs_treeifyer_layout_phase() -> @core.ILayoutProcessor[MrtreeTreeLayoutPhases, Int]
+
+pub fn new_mrtree_direction_processor_layout_processor() -> @core.ILayoutProcessor[MrtreeTreeLayoutPhases, Int]
+
+pub fn new_mrtree_edge(Int, Int) -> Int
+
+pub fn new_mrtree_edge_router_layout_phase() -> @core.ILayoutProcessor[MrtreeTreeLayoutPhases, Int]
+
+pub fn new_mrtree_elk_graph_as_igraph_importer() -> MrtreeIGraphImporter[Int]
+
+pub fn new_mrtree_elk_graph_importer() -> MrtreeElkGraphImporter
+
+pub fn new_mrtree_fan_processor_layout_processor() -> @core.ILayoutProcessor[MrtreeTreeLayoutPhases, Int]
+
+pub fn new_mrtree_graph() -> Int
+
+pub fn new_mrtree_graph_bounds_processor_layout_processor() -> @core.ILayoutProcessor[MrtreeTreeLayoutPhases, Int]
+
+pub fn[T] new_mrtree_igraph_importer((T) -> Int, (Int) -> Unit) -> MrtreeIGraphImporter[T]
+
+pub fn new_mrtree_label(Int, String) -> Int
+
+pub fn new_mrtree_label_shape(Int) -> MrtreeShape
+
+pub fn new_mrtree_level_coordinates_processor_layout_processor() -> @core.ILayoutProcessor[MrtreeTreeLayoutPhases, Int]
+
+pub fn new_mrtree_level_height_processor_layout_processor() -> @core.ILayoutProcessor[MrtreeTreeLayoutPhases, Int]
+
+pub fn new_mrtree_level_processor_layout_processor() -> @core.ILayoutProcessor[MrtreeTreeLayoutPhases, Int]
+
+pub fn new_mrtree_multi_level_edge_node_node_gap(Int?, Int?, @core.Triple[@core.KVector, @core.KVector, Int], Int) -> MrtreeMultiLevelEdgeNodeNodeGap
+
+pub fn new_mrtree_neighbors_processor_layout_processor() -> @core.ILayoutProcessor[MrtreeTreeLayoutPhases, Int]
+
+pub fn new_mrtree_node(Int, Int, label? : String) -> Int
+
+pub fn new_mrtree_node_orderer_layout_phase() -> @core.ILayoutProcessor[MrtreeTreeLayoutPhases, Int]
+
+pub fn new_mrtree_node_placer_layout_phase() -> @core.ILayoutProcessor[MrtreeTreeLayoutPhases, Int]
+
+pub fn new_mrtree_node_position_processor_layout_processor() -> @core.ILayoutProcessor[MrtreeTreeLayoutPhases, Int]
+
+pub fn new_mrtree_node_shape(Int) -> MrtreeShape
+
+pub fn new_mrtree_order_balance_layout_phase() -> @core.ILayoutProcessor[MrtreeTreeLayoutPhases, Int]
+
+pub fn new_mrtree_root_processor_layout_processor() -> @core.ILayoutProcessor[MrtreeTreeLayoutPhases, Int]
+
+pub fn new_mrtree_tree_layout_provider() -> MrtreeTreeLayoutProvider
+
+pub fn new_mrtree_untreeifyer_layout_processor() -> @core.ILayoutProcessor[MrtreeTreeLayoutPhases, Int]
+
+pub fn reset_mrtree_graph_model_for_test() -> Unit
+
+// Errors
+
+// Types and methods
+pub struct InteractiveMrtreeGraphVisitor {
+  marker : Int
+}
+pub fn InteractiveMrtreeGraphVisitor::visit(Self, Int) -> Unit
+
+pub struct Mrtree {
+  marker : Int
+}
+pub fn Mrtree::do_layout(Self, Int, @core.IElkProgressMonitor) -> Int
+
+pub enum MrtreeCompactionMode {
+  NONE
+  LEVEL_PRESERVING
+  AGGRESSIVE
+}
+
+pub struct MrtreeComponentsProcessor {
+  marker : Int
+}
+pub fn MrtreeComponentsProcessor::pack(Self, Array[Int]) -> Int
+pub fn MrtreeComponentsProcessor::split(Self, Int) -> Array[Int]
+
+pub enum MrtreeEdgeRoutingMode {
+  NONE
+  MIDDLE_TO_MIDDLE
+  AVOID_OVERLAP
+}
+
+pub struct MrtreeElkGraphImporter {
+  marker : Int
+}
+pub fn MrtreeElkGraphImporter::apply_layout(Self, Int) -> Unit
+pub fn MrtreeElkGraphImporter::import_graph(Self, Int) -> Int
+
+pub enum MrtreeGraphProperty {
+  SELF_LOOPS
+}
+
+pub struct MrtreeIGraphImporter[T] {
+  import_graph_fn : (T) -> Int
+  apply_layout_fn : (Int) -> Unit
+}
+pub fn[T] MrtreeIGraphImporter::apply_layout(Self[T], Int) -> Unit
+pub fn[T] MrtreeIGraphImporter::import_graph(Self[T], T) -> Int
+
+pub enum MrtreeIntermediateProcessorStrategy {
+  RootProc
+  FanProc
+  LevelProc
+  NeighborsProc
+  LevelHeight
+  DirectionProc
+  NodePositionProc
+  CompactionProc
+  LevelCoords
+  GraphBoundsProc
+  DetreeifyingProc
+}
+
+pub struct MrtreeMultiLevelEdgeNodeNodeGap {
+  neighbor_one : Int?
+  neighbor_two : Int?
+  bend_points : Array[@core.Triple[@core.KVector, @core.KVector, Int]]
+  direction_value : String
+  node_bendpoint_padding : Double
+  mut on_first_node_side : Bool
+  mut on_last_node_side : Bool
+}
+pub fn MrtreeMultiLevelEdgeNodeNodeGap::add_bend_points(Self, @core.Triple[@core.KVector, @core.KVector, Int]) -> Unit
+pub fn MrtreeMultiLevelEdgeNodeNodeGap::neighbor_one(Self) -> Int?
+pub fn MrtreeMultiLevelEdgeNodeNodeGap::neighbor_two(Self) -> Int?
+pub fn MrtreeMultiLevelEdgeNodeNodeGap::on_first_node_side(Self) -> Bool
+pub fn MrtreeMultiLevelEdgeNodeNodeGap::on_last_node_side(Self) -> Bool
+
+pub enum MrtreeOrderWeighting {
+  MODEL_ORDER
+  DESCENDANTS
+  FAN
+  CONSTRAINT
+}
+
+pub enum MrtreeShape {
+  MrtreeNodeShape(Int)
+  MrtreeLabelShape(Int)
+}
+
+pub enum MrtreeTreeLayoutPhases {
+  P1Treeification
+  P2NodeOrdering
+  P3NodePlacement
+  P4EdgeRouting
+}
+
+pub struct MrtreeTreeLayoutProvider {
+  tree : Mrtree
+  components_processor : MrtreeComponentsProcessor
+}
+pub fn MrtreeTreeLayoutProvider::layout(Self, Int, @core.IElkProgressMonitor) -> Unit
+
+pub enum MrtreeTreeifyingOrder {
+  DFS
+  BFS
+}
+
+// Type aliases
+pub type MrtreeEdge = Int
+
+pub type MrtreeGraph = Int
+
+pub type MrtreeLabel = Int
+
+pub type MrtreeNode = Int
+
+// Traits
+

@@ -113,7 +113,10 @@ test "DisCoDebugPlugin listens for layout done notifications" {
   let root = @graph.create_graph()
   @graph.node_set_dimensions(root, 33.0, 44.0)
   let mapping = new_dis_co_layout_mapping(Some(root))
-  dis_co_layout_connectors_fire_layout_done(mapping, @core.new_elk_progress_monitor())
+  dis_co_layout_connectors_fire_layout_done(
+    mapping,
+    @core.new_elk_progress_monitor(),
+  )
 
   let graph_on_canvas = dis_co_graph_rendering_canvas_get_layout_graph(canvas)
   inspect(@graph.node_width(expect_some_node(graph_on_canvas)), content="33")

@@ -163,9 +163,15 @@ pub fn GraphRenderingCanvas::calculate_required_canvas_size_and_base_offset(
 
       for node in @graph.node_children(layout_graph) {
         min_x.val = @cmp.minimum(min_x.val, @graph.node_x(node))
-        max_x.val = @cmp.maximum(max_x.val, @graph.node_x(node) + @graph.node_width(node))
+        max_x.val = @cmp.maximum(
+          max_x.val,
+          @graph.node_x(node) + @graph.node_width(node),
+        )
         min_y.val = @cmp.minimum(min_y.val, @graph.node_y(node))
-        max_y.val = @cmp.maximum(max_y.val, @graph.node_y(node) + @graph.node_height(node))
+        max_y.val = @cmp.maximum(
+          max_y.val,
+          @graph.node_y(node) + @graph.node_height(node),
+        )
 
         for node_label in @graph.node_labels(node) {
           min_x.val = @cmp.minimum(
@@ -174,7 +180,9 @@ pub fn GraphRenderingCanvas::calculate_required_canvas_size_and_base_offset(
           )
           max_x.val = @cmp.maximum(
             max_x.val,
-            @graph.node_x(node) + @graph.label_x(node_label) + @graph.label_width(node_label),
+            @graph.node_x(node) +
+            @graph.label_x(node_label) +
+            @graph.label_width(node_label),
           )
           min_y.val = @cmp.minimum(
             min_y.val,
@@ -182,7 +190,9 @@ pub fn GraphRenderingCanvas::calculate_required_canvas_size_and_base_offset(
           )
           max_y.val = @cmp.maximum(
             max_y.val,
-            @graph.node_y(node) + @graph.label_y(node_label) + @graph.label_height(node_label),
+            @graph.node_y(node) +
+            @graph.label_y(node_label) +
+            @graph.label_height(node_label),
           )
         }
       }

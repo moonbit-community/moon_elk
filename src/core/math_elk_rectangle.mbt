@@ -98,7 +98,7 @@ pub fn ElkRectangle::union(self : ElkRectangle, other : ElkRectangle) -> Unit {
 }
 
 ///|
-pub fn ElkRectangle::move(self : ElkRectangle, offset : KVector) -> Unit {
+pub fn ElkRectangle::move_by(self : ElkRectangle, offset : KVector) -> Unit {
   self.x = self.x + offset.x
   self.y = self.y + offset.y
 }

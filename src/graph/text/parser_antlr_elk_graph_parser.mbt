@@ -62,7 +62,10 @@ pub fn ElkGraphParser::set_grammar_access(
 }
 
 ///|
-pub fn ElkGraphParser::parse(self : ElkGraphParser, input : String) -> @graph.ElkNode {
+pub fn ElkGraphParser::parse(
+  self : ElkGraphParser,
+  input : String,
+) -> @graph.ElkNode {
   let lexer = new_internal_elk_graph_lexer(input)
   let parser = self.create_parser(lexer.lex_all())
   parser.entry_rule_root_node()

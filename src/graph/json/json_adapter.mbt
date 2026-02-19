@@ -9,7 +9,7 @@ pub fn new_json_adapter() -> JsonAdapter {
 }
 
 ///|
-fn json_adapter_format_error(msg : String) -> JsonImportException {
+fn _json_adapter_format_error(msg : String) -> JsonImportException {
   new_json_import_exception_message(msg)
 }
 

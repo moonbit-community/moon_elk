@@ -105,7 +105,9 @@ pub fn mrtree_node_copy_properties_from_elk(
   checked_mrtree_node(node)
   let node_data = mrtree_node_store.val[node]
   node_data.origin = Some(elk_node)
-  node_data.priority = @graph.node_get_double_property(elk_node, mrtree_priority).to_int()
+  node_data.priority = @graph.node_get_double_property(
+    elk_node, mrtree_priority,
+  ).to_int()
   node_data.position_constraint = @graph.node_get_double_property(
     elk_node, mrtree_position_constraint,
   ).to_int()

@@ -22,9 +22,9 @@ test "GraphValidationException carries message and issues" {
 test "IValidatingGraphElementVisitor exposes collected issues" {
   @graph.reset_graph_model_for_test()
   let root = @graph.create_graph()
-  let visitor = new_validating_graph_element_visitor(_ => (), () => [
-    new_graph_issue_node(root, "warn", issue_warning),
-  ])
+  let visitor = new_validating_graph_element_visitor(_ => (), () => {
+    [new_graph_issue_node(root, "warn", issue_warning)]
+  })
   visitor.visit(root)
   inspect(visitor.get_issues().length(), content="1")
 }

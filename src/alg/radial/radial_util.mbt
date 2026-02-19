@@ -44,7 +44,10 @@ fn radial_node_set(nodes : Array[@graph.ElkNode]) -> Map[@graph.ElkNode, Bool] {
 }
 
 ///|
-fn radial_contains_node(set : Map[@graph.ElkNode, Bool], node : @graph.ElkNode) -> Bool {
+fn radial_contains_node(
+  set : Map[@graph.ElkNode, Bool],
+  node : @graph.ElkNode,
+) -> Bool {
   set.contains(node)
 }
 
@@ -173,7 +176,9 @@ pub fn radial_find_largest_node_in_graph(graph : @graph.ElkNode) -> Double {
 }
 
 ///|
-pub fn radial_get_next_level_nodes(nodes : Array[@graph.ElkNode]) -> Array[@graph.ElkNode] {
+pub fn radial_get_next_level_nodes(
+  nodes : Array[@graph.ElkNode],
+) -> Array[@graph.ElkNode] {
   let successors = []
   for node in nodes {
     for successor in radial_get_successors(node) {
@@ -184,7 +189,9 @@ pub fn radial_get_next_level_nodes(nodes : Array[@graph.ElkNode]) -> Array[@grap
 }
 
 ///|
-pub fn radial_get_next_level_node_set(nodes : Array[@graph.ElkNode]) -> Array[@graph.ElkNode] {
+pub fn radial_get_next_level_node_set(
+  nodes : Array[@graph.ElkNode],
+) -> Array[@graph.ElkNode] {
   let unique = {}
   let successors = []
   for node in nodes {
@@ -199,7 +206,9 @@ pub fn radial_get_next_level_node_set(nodes : Array[@graph.ElkNode]) -> Array[@g
 }
 
 ///|
-pub fn radial_get_last_level_nodes(nodes : Array[@graph.ElkNode]) -> Array[@graph.ElkNode] {
+pub fn radial_get_last_level_nodes(
+  nodes : Array[@graph.ElkNode],
+) -> Array[@graph.ElkNode] {
   let parents = []
   for node in nodes {
     match radial_get_tree_parent(node) {

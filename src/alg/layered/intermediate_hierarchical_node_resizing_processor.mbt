@@ -66,7 +66,8 @@ fn hierarchical_node_resizing_processor_resize_node(
   let height_diff = new_size.y - old_size.y
 
   if move_ports {
-    let fixed_ports = node.get_property_string(@core.port_constraints) == "FIXED_POS"
+    let fixed_ports = node.get_property_string(@core.port_constraints) ==
+      "FIXED_POS"
     for port in node.get_ports() {
       match port.get_side() {
         North =>
@@ -254,7 +255,9 @@ fn hierarchical_node_resizing_processor_graph_layout_to_node(
 
 ///|
 fn hierarchical_node_resizing_processor_resize_graph(lgraph : LGraph) -> Unit {
-  let size_constraint = lgraph.get_property_string_array(@core.node_size_constraints)
+  let size_constraint = lgraph.get_property_string_array(
+    @core.node_size_constraints,
+  )
   let size_options = lgraph.get_property_string_array(@core.node_size_options)
 
   let calculated_size = lgraph.get_actual_size()

@@ -56,7 +56,9 @@ fn mrtree_edge_is_hierarchical(
 }
 
 ///|
-fn mrtree_first_or_create_edge_section(edge : @graph.ElkEdge) -> @graph.ElkEdgeSection {
+fn mrtree_first_or_create_edge_section(
+  edge : @graph.ElkEdge,
+) -> @graph.ElkEdgeSection {
   let sections = @graph.edge_sections(edge)
   let section = if sections.is_empty() {
     @graph.create_edge_section(edge)
@@ -105,7 +107,11 @@ fn mrtree_apply_vector_chain_to_edge(
   let mut previous_section = first_section
   for i in 1..<(vector_chain.size() - 1) {
     let middle_point = vector_chain.get(i)
-    @graph.edge_section_set_end(previous_section, middle_point.x, middle_point.y)
+    @graph.edge_section_set_end(
+      previous_section,
+      middle_point.x,
+      middle_point.y,
+    )
     let next_section = @graph.create_edge_section(edge)
     @graph.edge_section_set_start(next_section, middle_point.x, middle_point.y)
     @graph.edge_section_set_incoming_shape(next_section, None)
@@ -141,7 +147,11 @@ fn mrtree_transform_nodes(
     let position = mrtree_node_position(node)
     let size = mrtree_node_size(node)
     position.y = @graph.node_y(elk_node) + @graph.node_height(elk_node) / 2.0
-    size.x = if @graph.node_width(elk_node) > 1.0 { @graph.node_width(elk_node) } else { 1.0 }
+    size.x = if @graph.node_width(elk_node) > 1.0 {
+      @graph.node_width(elk_node)
+    } else {
+      1.0
+    }
     position.x = @graph.node_x(elk_node) + @graph.node_width(elk_node) / 2.0
     size.y = if @graph.node_height(elk_node) > 1.0 {
       @graph.node_height(elk_node)
@@ -237,7 +247,8 @@ pub fn MrtreeElkGraphImporter::apply_layout(
       max_y
     }
     match mrtree_node_origin(node) {
-      Some(elk_node) => @graph.node_set_location(elk_node, position.x, position.y)
+      Some(elk_node) =>
+        @graph.node_set_location(elk_node, position.x, position.y)
       None => ()
     }
   }

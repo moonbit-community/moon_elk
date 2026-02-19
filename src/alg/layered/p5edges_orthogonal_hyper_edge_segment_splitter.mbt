@@ -1,5 +1,5 @@
 ///|
-struct HyperEdgeSegmentSplitterFreeArea {
+priv struct HyperEdgeSegmentSplitterFreeArea {
   start_position : Double
   end_position : Double
   size : Double
@@ -14,7 +14,7 @@ fn new_hyper_edge_segment_splitter_free_area(
 }
 
 ///|
-struct HyperEdgeSegmentSplitterAreaRating {
+priv struct HyperEdgeSegmentSplitterAreaRating {
   mut dependencies : Int
   mut crossings : Int
 }

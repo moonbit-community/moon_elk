@@ -183,11 +183,9 @@ test "CrossingsCounter countCrossingsBetweenLayers_crossFormedMultipleEdgesBetwe
     [],
   )
   ignore(
-    graph_data.port_distributor().distribute_ports_while_sweeping(
-      order,
-      1,
-      true,
-    ),
+    graph_data
+    .port_distributor()
+    .distribute_ports_while_sweeping(order, 1, true),
   )
 
   let counter = crossings_bb_counter_for(graph)
@@ -225,11 +223,9 @@ test "CrossingsCounter countCrossingsBetweenLayers_moreComplexThreeLayerGraph" {
     [],
   )
   ignore(
-    graph_data.port_distributor().distribute_ports_while_sweeping(
-      order,
-      1,
-      true,
-    ),
+    graph_data
+    .port_distributor()
+    .distribute_ports_while_sweeping(order, 1, true),
   )
 
   let counter = crossings_bb_counter_for(graph)

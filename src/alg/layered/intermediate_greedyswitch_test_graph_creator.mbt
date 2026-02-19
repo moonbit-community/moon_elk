@@ -43,7 +43,10 @@ fn[T] test_graph_creator_get_by_indices(
 }
 
 ///|
-fn test_graph_creator_side_equals(left : @core.PortSide, right : @core.PortSide) -> Bool {
+fn test_graph_creator_side_equals(
+  left : @core.PortSide,
+  right : @core.PortSide,
+) -> Bool {
   match (left, right) {
     (@core.PortSide::North, @core.PortSide::North) => true
     (@core.PortSide::East, @core.PortSide::East) => true
@@ -307,7 +310,11 @@ pub fn GreedySwitchTestGraphCreator::get_in_layer_edges_graph(
 
   self.east_west_edge_from_to_nodes(middle_nodes[1], right_node)
   self.east_west_edge_from_to_nodes(left_node, middle_nodes[1])
-  self.add_in_layer_edge_nodes(middle_nodes[0], middle_nodes[2], @core.PortSide::West)
+  self.add_in_layer_edge_nodes(
+    middle_nodes[0],
+    middle_nodes[2],
+    @core.PortSide::West,
+  )
   self.set_up_ids()
   self.graph
 }
@@ -322,7 +329,11 @@ pub fn GreedySwitchTestGraphCreator::get_in_layer_edges_graph_which_results_in_c
   let left_node = self.add_node_to_layer(left_layer)
   let right_nodes = self.add_nodes_to_layer(3, right_layer)
 
-  self.add_in_layer_edge_nodes(right_nodes[0], right_nodes[1], @core.PortSide::West)
+  self.add_in_layer_edge_nodes(
+    right_nodes[0],
+    right_nodes[1],
+    @core.PortSide::West,
+  )
   self.east_west_edge_from_to_nodes(left_node, right_nodes[2])
 
   self.set_up_ids()
@@ -381,7 +392,10 @@ pub fn GreedySwitchTestGraphCreator::get_cross_with_many_self_loops_graph(
   let bottom_right = self.add_node_to_layer(right_layer)
 
   let top_left_port = self.add_port_on_side(top_left, @core.PortSide::East)
-  let bottom_left_port = self.add_port_on_side(bottom_left, @core.PortSide::East)
+  let bottom_left_port = self.add_port_on_side(
+    bottom_left,
+    @core.PortSide::East,
+  )
   self.set_up_ids()
   let self_loop_cross_graph = self.graph
   for layer in self_loop_cross_graph.get_layers() {
@@ -395,7 +409,10 @@ pub fn GreedySwitchTestGraphCreator::get_cross_with_many_self_loops_graph(
     }
   }
   let top_right_port = self.add_port_on_side(top_right, @core.PortSide::West)
-  let bottom_right_port = self.add_port_on_side(bottom_right, @core.PortSide::West)
+  let bottom_right_port = self.add_port_on_side(
+    bottom_right,
+    @core.PortSide::West,
+  )
 
   self.add_edge_between_ports(top_left_port, bottom_right_port)
   self.add_edge_between_ports(bottom_left_port, top_right_port)
@@ -556,10 +573,22 @@ pub fn GreedySwitchTestGraphCreator::get_fixed_port_order_in_layer_edges_dont_cr
   self.set_fixed_order_constraint(nodes[0])
   self.set_fixed_order_constraint(nodes[1])
 
-  let upper_port_upper_node = self.add_port_on_side(nodes[0], @core.PortSide::East)
-  let lower_port_upper_node = self.add_port_on_side(nodes[0], @core.PortSide::East)
-  let upper_port_lower_node = self.add_port_on_side(nodes[1], @core.PortSide::East)
-  let lower_port_lower_node = self.add_port_on_side(nodes[1], @core.PortSide::East)
+  let upper_port_upper_node = self.add_port_on_side(
+    nodes[0],
+    @core.PortSide::East,
+  )
+  let lower_port_upper_node = self.add_port_on_side(
+    nodes[0],
+    @core.PortSide::East,
+  )
+  let upper_port_lower_node = self.add_port_on_side(
+    nodes[1],
+    @core.PortSide::East,
+  )
+  let lower_port_lower_node = self.add_port_on_side(
+    nodes[1],
+    @core.PortSide::East,
+  )
   self.add_edge_between_ports(upper_port_upper_node, lower_port_lower_node)
   self.add_edge_between_ports(lower_port_upper_node, upper_port_lower_node)
   self.set_up_ids()
@@ -595,11 +624,23 @@ pub fn GreedySwitchTestGraphCreator::get_more_complex_in_layer_graph(
 
   self.east_west_edge_from_to_nodes(left_nodes[3], middle_nodes[1])
   self.east_west_edge_from_to_nodes(left_nodes[2], middle_nodes[1])
-  self.add_in_layer_edge_nodes(middle_nodes[0], middle_nodes[1], @core.PortSide::West)
+  self.add_in_layer_edge_nodes(
+    middle_nodes[0],
+    middle_nodes[1],
+    @core.PortSide::West,
+  )
   self.east_west_edge_from_to_nodes(left_nodes[0], middle_nodes[0])
-  self.add_in_layer_edge_nodes(middle_nodes[0], middle_nodes[2], @core.PortSide::West)
+  self.add_in_layer_edge_nodes(
+    middle_nodes[0],
+    middle_nodes[2],
+    @core.PortSide::West,
+  )
 
-  self.add_in_layer_edge_nodes(middle_nodes[0], middle_nodes[1], @core.PortSide::East)
+  self.add_in_layer_edge_nodes(
+    middle_nodes[0],
+    middle_nodes[1],
+    @core.PortSide::East,
+  )
   self.east_west_edge_from_to_nodes(middle_nodes[0], right_node)
 
   self.set_up_ids()
@@ -669,7 +710,11 @@ pub fn GreedySwitchTestGraphCreator::multiple_in_between_layer_edges_into_node_w
   let right_layer = self.make_layer(self.graph)
   let right_nodes = self.add_nodes_to_layer(2, right_layer)
 
-  self.add_in_layer_edge_nodes(right_nodes[0], right_nodes[1], @core.PortSide::West)
+  self.add_in_layer_edge_nodes(
+    right_nodes[0],
+    right_nodes[1],
+    @core.PortSide::West,
+  )
   self.east_west_edge_from_to_nodes(left_nodes[0], right_nodes[1])
   self.east_west_edge_from_to_nodes(left_nodes[0], right_nodes[1])
   self.set_up_ids()
@@ -685,7 +730,11 @@ pub fn GreedySwitchTestGraphCreator::multiple_in_between_layer_edges_into_node_w
   let right_layer = self.make_layer(self.graph)
   let right_nodes = self.add_nodes_to_layer(3, right_layer)
 
-  self.add_in_layer_edge_nodes(right_nodes[0], right_nodes[2], @core.PortSide::West)
+  self.add_in_layer_edge_nodes(
+    right_nodes[0],
+    right_nodes[2],
+    @core.PortSide::West,
+  )
   self.east_west_edge_from_to_nodes(left_nodes[0], right_nodes[1])
   self.east_west_edge_from_to_nodes(left_nodes[0], right_nodes[1])
   self.set_up_ids()
@@ -731,8 +780,14 @@ pub fn GreedySwitchTestGraphCreator::two_edges_into_same_port(
     bottom_left,
     @core.PortSide::East,
   )
-  let top_right_first_port = self.add_port_on_side(top_right, @core.PortSide::West)
-  let top_right_second_port = self.add_port_on_side(top_right, @core.PortSide::West)
+  let top_right_first_port = self.add_port_on_side(
+    top_right,
+    @core.PortSide::West,
+  )
+  let top_right_second_port = self.add_port_on_side(
+    top_right,
+    @core.PortSide::West,
+  )
 
   self.add_edge_between_ports(bottom_left_first_port, top_right_first_port)
   self.add_edge_between_ports(bottom_left_second_port, top_right_second_port)
@@ -965,7 +1020,7 @@ pub fn GreedySwitchTestGraphCreator::add_nodes_to_layer(
 
 ///|
 pub fn GreedySwitchTestGraphCreator::make_layer(
-  self : GreedySwitchTestGraphCreator,
+  _self : GreedySwitchTestGraphCreator,
   graph : LGraph,
 ) -> Layer {
   let layer = new_layer(graph)
@@ -1149,7 +1204,10 @@ pub fn GreedySwitchTestGraphCreator::add_external_port_dummies_to_layer(
   let nodes = []
   let side = ports[0].get_side()
   for i in 0..<ports.length() {
-    let port_index = if test_graph_creator_side_equals(side, @core.PortSide::East) {
+    let port_index = if test_graph_creator_side_equals(
+        side,
+        @core.PortSide::East,
+      ) {
       i
     } else {
       ports.length() - 1 - i

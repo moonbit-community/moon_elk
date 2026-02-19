@@ -18,9 +18,7 @@ pub fn node_dimension_calculation_calculate_label_and_node_sizes(
 pub fn node_dimension_calculation_calculate_node_margins_for_layered_graph(
   layered_graph : @graph.ElkNode,
 ) -> Unit {
-  node_dimension_calculation_calculate_node_margins(
-    @core.adapt(layered_graph),
-  )
+  node_dimension_calculation_calculate_node_margins(@core.adapt(layered_graph))
 }
 
 ///|

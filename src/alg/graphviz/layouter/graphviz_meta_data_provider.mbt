@@ -69,6 +69,6 @@ pub let graphviz_core_option_random_seed : @graph.IProperty[Int] = @graph.new_pr
 )
 
 ///|
-pub let graphviz_core_option_separate_connected_components : @graph.IProperty[Bool] = @graph.new_property(
-  "org.eclipse.elk.separateConnectedComponents", false,
-)
+pub let graphviz_core_option_separate_connected_components : @graph.IProperty[
+  Bool,
+] = @graph.new_property("org.eclipse.elk.separateConnectedComponents", false)

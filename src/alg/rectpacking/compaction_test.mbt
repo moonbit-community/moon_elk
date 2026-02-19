@@ -16,7 +16,9 @@ fn rectpacking_compaction_setup_parent(
   spacing : Double,
 ) -> @graph.ElkNode {
   let parent = create_graph()
-  @graph.node_set_string_property(parent, @core.algorithm, rectpacking_algorithm_id)
+  @graph.node_set_string_property(
+    parent, @core.algorithm, rectpacking_algorithm_id,
+  )
   @graph.node_set_double_property(parent, rectpacking_aspect_ratio, 1.3)
   @graph.node_set_double_property(
     parent, rectpacking_width_approximation_target_width, target_width,
@@ -24,11 +26,15 @@ fn rectpacking_compaction_setup_parent(
   @graph.node_set_string_property(
     parent, rectpacking_width_approximation_strategy, "TARGET_WIDTH",
   )
-  @graph.node_set_double_property(parent, rectpacking_spacing_node_node, spacing)
+  @graph.node_set_double_property(
+    parent, rectpacking_spacing_node_node, spacing,
+  )
   @graph.node_set_string_property(
     parent, rectpacking_padding, "[top=0,right=0,bottom=0,left=0]",
   )
-  @graph.node_set_string_property(parent, rectpacking_packing_strategy, "COMPACTION")
+  @graph.node_set_string_property(
+    parent, rectpacking_packing_strategy, "COMPACTION",
+  )
   @graph.node_set_string_property(
     parent, rectpacking_white_space_elimination_strategy, "NONE",
   )

@@ -1,5 +1,8 @@
 ///|
-fn model_order_port_side_equals(left : @core.PortSide, right : @core.PortSide) -> Bool {
+fn model_order_port_side_equals(
+  left : @core.PortSide,
+  right : @core.PortSide,
+) -> Bool {
   match (left, right) {
     (North, North) => true
     (East, East) => true
@@ -132,7 +135,7 @@ fn model_order_port_require_source(edge : LEdge?) -> LPort {
 }
 
 ///|
-fn model_order_port_require_target(edge : LEdge?) -> LPort {
+fn _model_order_port_require_target(edge : LEdge?) -> LPort {
   match edge {
     Some(value) =>
       match value.get_target() {
@@ -287,7 +290,7 @@ fn ModelOrderPortComparator::update_bigger_and_smaller_associations(
 
 ///|
 fn ModelOrderPortComparator::check_reference_layer(
-  self : ModelOrderPortComparator,
+  _self : ModelOrderPortComparator,
   layer : Array[LNode],
   p1_node : LNode,
   p2_node : LNode,
@@ -358,7 +361,7 @@ pub fn ModelOrderPortComparator::compare(
   if model_order_port_contains(p1_smaller, p2_handle) {
     return -1
   }
-  let p2_smaller = model_order_port_associations_for(
+  let _p2_smaller = model_order_port_associations_for(
     self.smaller_than,
     p2_handle,
   )

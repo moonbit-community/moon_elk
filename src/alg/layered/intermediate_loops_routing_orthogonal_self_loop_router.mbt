@@ -100,13 +100,13 @@ fn orthogonal_self_loop_router_update_new_node_margins_point(
   new_node_margins : LMargin,
   bend_point : @core.KVector,
 ) -> Unit {
-  new_node_margins.left = @math.maximum(new_node_margins.left, -bend_point.x)
-  new_node_margins.right = @math.maximum(
+  new_node_margins.left = @cmp.maximum(new_node_margins.left, -bend_point.x)
+  new_node_margins.right = @cmp.maximum(
     new_node_margins.right,
     bend_point.x - node_size.x,
   )
-  new_node_margins.top = @math.maximum(new_node_margins.top, -bend_point.y)
-  new_node_margins.bottom = @math.maximum(
+  new_node_margins.top = @cmp.maximum(new_node_margins.top, -bend_point.y)
+  new_node_margins.bottom = @cmp.maximum(
     new_node_margins.bottom,
     bend_point.y - node_size.y,
   )
@@ -146,7 +146,7 @@ fn orthogonal_self_loop_router_initialize_with_max_label_height(
             port_side,
           ) {
           let routing_slot = sl_loop.get_routing_slot(port_side)
-          side_positions[routing_slot] = @math.maximum(
+          side_positions[routing_slot] = @cmp.maximum(
             side_positions[routing_slot],
             sl_labels.get_size().y,
           )
@@ -385,7 +385,10 @@ fn orthogonal_self_loop_router_add_corner_bend_points(
     )
 
     if inline &&
-      !orthogonal_self_loop_router_port_side_equals(label_side, @core.PortSide::SideUndefined) {
+      !orthogonal_self_loop_router_port_side_equals(
+        label_side,
+        @core.PortSide::SideUndefined,
+      ) {
       if orthogonal_self_loop_router_port_side_equals(
           curr_port_side, label_side,
         ) {

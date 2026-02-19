@@ -31,7 +31,7 @@ fn self_loop_holder_test_same_edge_handle_set(
 
   for entry in left.to_array() {
     let (handle, _) = entry
-    if right.get(handle).is_empty() {
+    if right.get(handle) is None {
       return false
     }
   }

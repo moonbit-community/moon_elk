@@ -1,0 +1,165 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/moon_elk/graph/json/text/ide"
+
+import {
+  "Milky2018/moon_elk/graph",
+  "Milky2018/moon_elk/graph/json/text",
+}
+
+// Values
+pub let graph_json_text_disco_layout_alg_id : String
+
+pub let graph_json_text_ide_content_assist_lexer_binding : String
+
+pub let graph_json_text_ide_language_name : String
+
+pub fn new_abstract_elk_graph_json_ide_module() -> AbstractElkGraphJsonIdeModule
+
+pub fn new_elk_graph_json_ide_injector(@text.ElkGraphJsonRuntimeModule, ElkGraphJsonIdeModule) -> ElkGraphJsonIdeInjector
+
+pub fn new_elk_graph_json_ide_module() -> ElkGraphJsonIdeModule
+
+pub fn new_elk_graph_json_ide_name_mappings(@text.ElkGraphJsonGrammarAccess) -> ElkGraphJsonIdeNameMappings
+
+pub fn new_elk_graph_json_ide_parser(grammar_access? : @text.ElkGraphJsonGrammarAccess) -> ElkGraphJsonIdeParser
+
+pub fn new_elk_graph_json_ide_proposal_provider(grammar? : @text.ElkGraphJsonGrammarAccess) -> ElkGraphJsonIdeProposalProvider
+
+pub fn new_elk_graph_json_ide_setup() -> ElkGraphJsonIdeSetup
+
+pub fn new_graph_json_text_ide_completion_proposal_acceptor() -> GraphJsonTextIdeCompletionProposalAcceptor
+
+pub fn new_graph_json_text_ide_content_assist_context(prefix? : String, current_model? : @text.GraphJsonTextElement?, current_property_key? : @text.GraphJsonTextPropertyKey?, current_edge_section? : Int?, conflict_on_a? : Bool) -> GraphJsonTextIdeContentAssistContext
+
+pub fn new_graph_json_text_ide_content_assist_entry(String, String, String, label? : String?, description? : String?, documentation? : String?, source? : String?) -> GraphJsonTextIdeContentAssistEntry
+
+pub fn new_graph_json_text_ide_content_assist_lexer_binding(String, String) -> GraphJsonTextIdeContentAssistLexerBinding
+
+pub fn new_internal_elk_graph_json_ide_lexer(String) -> InternalElkGraphJsonIdeLexer
+
+pub fn new_internal_elk_graph_json_ide_parser(Array[@text.ElkGraphJsonLexToken], grammar_access? : @text.ElkGraphJsonGrammarAccess) -> InternalElkGraphJsonIdeParser
+
+pub fn new_partial_elk_graph_json_content_assist_parser() -> PartialElkGraphJsonContentAssistParser
+
+// Errors
+
+// Types and methods
+pub struct AbstractElkGraphJsonIdeModule {
+  unit : Unit
+}
+pub fn AbstractElkGraphJsonIdeModule::bind_i_content_assist_parser(Self) -> String
+pub fn AbstractElkGraphJsonIdeModule::bind_i_prefix_matcher(Self) -> String
+pub fn AbstractElkGraphJsonIdeModule::bind_i_proposal_conflict_helper(Self) -> String
+pub fn AbstractElkGraphJsonIdeModule::configure_content_assist_lexer(Self) -> GraphJsonTextIdeContentAssistLexerBinding
+
+pub struct ElkGraphJsonIdeInjector {
+  runtime_module : @text.ElkGraphJsonRuntimeModule
+  ide_module : ElkGraphJsonIdeModule
+}
+pub fn ElkGraphJsonIdeInjector::get_ide_module(Self) -> ElkGraphJsonIdeModule
+pub fn ElkGraphJsonIdeInjector::get_runtime_module(Self) -> @text.ElkGraphJsonRuntimeModule
+
+pub struct ElkGraphJsonIdeModule {
+  base : AbstractElkGraphJsonIdeModule
+}
+pub fn ElkGraphJsonIdeModule::bind_ide_content_proposal_provider(Self) -> String
+pub fn ElkGraphJsonIdeModule::get_base(Self) -> AbstractElkGraphJsonIdeModule
+
+pub struct ElkGraphJsonIdeNameMappings {
+  mappings : Map[String, String]
+}
+pub fn ElkGraphJsonIdeNameMappings::get_rule_name(Self, String) -> String?
+
+pub struct ElkGraphJsonIdeParser {
+  mut name_mappings : ElkGraphJsonIdeNameMappings
+  mut grammar_access : @text.ElkGraphJsonGrammarAccess
+  mut initial_hidden_tokens : Array[String]
+}
+pub fn ElkGraphJsonIdeParser::create_parser(Self, Array[@text.ElkGraphJsonLexToken]) -> InternalElkGraphJsonIdeParser
+pub fn ElkGraphJsonIdeParser::get_grammar_access(Self) -> @text.ElkGraphJsonGrammarAccess
+pub fn ElkGraphJsonIdeParser::get_initial_hidden_tokens(Self) -> Array[String]
+pub fn ElkGraphJsonIdeParser::get_name_mappings(Self) -> ElkGraphJsonIdeNameMappings
+pub fn ElkGraphJsonIdeParser::get_rule_name(Self, String) -> String?
+pub fn ElkGraphJsonIdeParser::parse(Self, String) -> Int
+pub fn ElkGraphJsonIdeParser::set_grammar_access(Self, @text.ElkGraphJsonGrammarAccess) -> Unit
+pub fn ElkGraphJsonIdeParser::set_initial_hidden_tokens(Self, Array[String]) -> Unit
+pub fn ElkGraphJsonIdeParser::set_name_mappings(Self, ElkGraphJsonIdeNameMappings) -> Unit
+
+pub struct ElkGraphJsonIdeProposalProvider {
+  grammar : @text.ElkGraphJsonGrammarAccess
+}
+pub fn ElkGraphJsonIdeProposalProvider::complete_property_key(Self, GraphJsonTextIdeContentAssistContext, GraphJsonTextIdeCompletionProposalAcceptor) -> Unit
+pub fn ElkGraphJsonIdeProposalProvider::complete_property_value(Self, GraphJsonTextIdeContentAssistContext, GraphJsonTextIdeCompletionProposalAcceptor) -> Unit
+pub fn ElkGraphJsonIdeProposalProvider::complete_rule_call(Self, String, GraphJsonTextIdeContentAssistContext, GraphJsonTextIdeCompletionProposalAcceptor) -> Unit
+pub fn ElkGraphJsonIdeProposalProvider::create_assignment_proposals(Self, String, String, GraphJsonTextIdeContentAssistContext, GraphJsonTextIdeCompletionProposalAcceptor) -> Unit
+pub fn ElkGraphJsonIdeProposalProvider::create_keyword_proposals(Self, String, GraphJsonTextIdeContentAssistContext, GraphJsonTextIdeCompletionProposalAcceptor) -> Unit
+pub fn ElkGraphJsonIdeProposalProvider::filter_cross_reference_candidates(Self, String, GraphJsonTextIdeContentAssistContext, Array[@graph.ElkConnectableShape]) -> Array[@graph.ElkConnectableShape]
+pub fn ElkGraphJsonIdeProposalProvider::filter_keyword(Self, String, GraphJsonTextIdeContentAssistContext) -> Bool
+pub fn ElkGraphJsonIdeProposalProvider::lookup_cross_reference(Self, String, GraphJsonTextIdeContentAssistContext, GraphJsonTextIdeCompletionProposalAcceptor) -> Unit
+pub fn ElkGraphJsonIdeProposalProvider::propose_algorithms(Self, GraphJsonTextIdeContentAssistContext, GraphJsonTextIdeCompletionProposalAcceptor) -> Unit
+
+pub struct ElkGraphJsonIdeSetup {
+  unit : Unit
+}
+pub fn ElkGraphJsonIdeSetup::create_injector(Self) -> ElkGraphJsonIdeInjector
+pub fn ElkGraphJsonIdeSetup::create_injector_and_do_emf_registration(Self) -> ElkGraphJsonIdeInjector
+
+pub struct GraphJsonTextIdeCompletionProposalAcceptor {
+  entries : Array[GraphJsonTextIdeContentAssistEntry]
+}
+pub fn GraphJsonTextIdeCompletionProposalAcceptor::accept(Self, GraphJsonTextIdeContentAssistEntry) -> Unit
+pub fn GraphJsonTextIdeCompletionProposalAcceptor::get_entries(Self) -> Array[GraphJsonTextIdeContentAssistEntry]
+pub fn GraphJsonTextIdeCompletionProposalAcceptor::get_proposals(Self) -> Array[String]
+
+pub struct GraphJsonTextIdeContentAssistContext {
+  prefix : String
+  current_model : @text.GraphJsonTextElement?
+  current_property_key : @text.GraphJsonTextPropertyKey?
+  current_edge_section : Int?
+  conflict_on_a : Bool
+}
+
+pub struct GraphJsonTextIdeContentAssistEntry {
+  proposal : String
+  prefix : String
+  kind : String
+  label : String?
+  description : String?
+  documentation : String?
+  source : String?
+}
+
+pub struct GraphJsonTextIdeContentAssistLexerBinding {
+  binding_name : String
+  lexer_class_name : String
+}
+
+pub struct InternalElkGraphJsonIdeLexer {
+  delegate : @text.InternalElkGraphJsonLexer
+}
+pub fn InternalElkGraphJsonIdeLexer::get_grammar_file_name(Self) -> String
+pub fn InternalElkGraphJsonIdeLexer::get_token_names(Self) -> Array[String]
+pub fn InternalElkGraphJsonIdeLexer::lex_all(Self) -> Array[@text.ElkGraphJsonLexToken]
+
+pub struct InternalElkGraphJsonIdeParser {
+  tokens : Array[@text.ElkGraphJsonLexToken]
+  grammar_access : @text.ElkGraphJsonGrammarAccess
+}
+pub fn InternalElkGraphJsonIdeParser::entry_rule_elk_node(Self) -> Int
+pub fn InternalElkGraphJsonIdeParser::entry_rule_root_node(Self) -> Int
+pub fn InternalElkGraphJsonIdeParser::get_first_rule_name(Self) -> String
+pub fn InternalElkGraphJsonIdeParser::get_follow_elements(Self) -> Array[String]
+pub fn InternalElkGraphJsonIdeParser::get_grammar_access(Self) -> @text.ElkGraphJsonGrammarAccess
+pub fn InternalElkGraphJsonIdeParser::get_grammar_file_name(Self) -> String
+pub fn InternalElkGraphJsonIdeParser::get_token_names(Self) -> Array[String]
+
+pub struct PartialElkGraphJsonContentAssistParser {
+  mut rule : String?
+}
+pub fn PartialElkGraphJsonContentAssistParser::get_follow_elements(Self, ElkGraphJsonIdeParser) -> Array[String]
+pub fn PartialElkGraphJsonContentAssistParser::initialize_for(Self, String?) -> Unit
+
+// Type aliases
+
+// Traits
+

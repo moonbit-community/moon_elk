@@ -7,7 +7,10 @@ fn spore_grow_tree_phase_configuration(
 }
 
 ///|
-fn spore_grow_tree_draw_tree(tree : @common.Tree[@common.Node], svg : @common.SvgImage) -> Unit {
+fn spore_grow_tree_draw_tree(
+  tree : @common.Tree[@common.Node],
+  svg : @common.SvgImage,
+) -> Unit {
   svg.g("n").add_rect_from_elk(tree.node.rect, "fill=\"none\" stroke=\"black\"")
   for child in tree.children {
     svg

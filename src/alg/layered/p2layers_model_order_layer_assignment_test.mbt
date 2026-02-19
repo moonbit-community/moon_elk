@@ -50,7 +50,9 @@ fn p2_model_order_layer_assignment_test_configure(
   layering_strategy : String,
   node_promotion_strategy : String,
 ) -> Unit {
-  @graph.node_set_string_property(parent, @core.algorithm, "org.eclipse.elk.layered")
+  @graph.node_set_string_property(
+    parent, @core.algorithm, "org.eclipse.elk.layered",
+  )
   @graph.node_set_string_property(parent, @core.direction, "RIGHT")
   @graph.node_set_layout_option_string_by_id(
     parent, "org.eclipse.elk.algorithm", "org.eclipse.elk.layered",
@@ -118,16 +120,56 @@ test "ModelOrderLayerAssignment forward promotion disregards edge length" {
 
   p2_model_order_layer_assignment_test_layout(parent)
 
-  p2_model_order_layer_assignment_test_assert_close("n1.x", @graph.node_x(n1), 0.0)
-  p2_model_order_layer_assignment_test_assert_close("n1.y", @graph.node_y(n1), 7.5)
-  p2_model_order_layer_assignment_test_assert_close("n2.x", @graph.node_x(n2), 60.0)
-  p2_model_order_layer_assignment_test_assert_close("n2.y", @graph.node_y(n2), 0.0)
-  p2_model_order_layer_assignment_test_assert_close("n3.x", @graph.node_x(n3), 110.0)
-  p2_model_order_layer_assignment_test_assert_close("n3.y", @graph.node_y(n3), 0.0)
-  p2_model_order_layer_assignment_test_assert_close("n4.x", @graph.node_x(n4), 110.0)
-  p2_model_order_layer_assignment_test_assert_close("n4.y", @graph.node_y(n4), 40.0)
-  p2_model_order_layer_assignment_test_assert_close("n5.x", @graph.node_x(n5), 160.0)
-  p2_model_order_layer_assignment_test_assert_close("n5.y", @graph.node_y(n5), 5.0)
+  p2_model_order_layer_assignment_test_assert_close(
+    "n1.x",
+    @graph.node_x(n1),
+    0.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n1.y",
+    @graph.node_y(n1),
+    7.5,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n2.x",
+    @graph.node_x(n2),
+    60.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n2.y",
+    @graph.node_y(n2),
+    0.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n3.x",
+    @graph.node_x(n3),
+    110.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n3.y",
+    @graph.node_y(n3),
+    0.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n4.x",
+    @graph.node_x(n4),
+    110.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n4.y",
+    @graph.node_y(n4),
+    40.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n5.x",
+    @graph.node_x(n5),
+    160.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n5.y",
+    @graph.node_y(n5),
+    5.0,
+  )
 }
 
 ///|
@@ -155,16 +197,56 @@ test "ModelOrderLayerAssignment backward promotion disregards edge length" {
 
   p2_model_order_layer_assignment_test_layout(parent)
 
-  p2_model_order_layer_assignment_test_assert_close("n1.x", @graph.node_x(n1), 0.0)
-  p2_model_order_layer_assignment_test_assert_close("n1.y", @graph.node_y(n1), 5.0)
-  p2_model_order_layer_assignment_test_assert_close("n2.x", @graph.node_x(n2), 50.0)
-  p2_model_order_layer_assignment_test_assert_close("n2.y", @graph.node_y(n2), 0.0)
-  p2_model_order_layer_assignment_test_assert_close("n3.x", @graph.node_x(n3), 50.0)
-  p2_model_order_layer_assignment_test_assert_close("n3.y", @graph.node_y(n3), 40.0)
-  p2_model_order_layer_assignment_test_assert_close("n4.x", @graph.node_x(n4), 100.0)
-  p2_model_order_layer_assignment_test_assert_close("n4.y", @graph.node_y(n4), 40.0)
-  p2_model_order_layer_assignment_test_assert_close("n5.x", @graph.node_x(n5), 150.0)
-  p2_model_order_layer_assignment_test_assert_close("n5.y", @graph.node_y(n5), 6.0)
+  p2_model_order_layer_assignment_test_assert_close(
+    "n1.x",
+    @graph.node_x(n1),
+    0.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n1.y",
+    @graph.node_y(n1),
+    5.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n2.x",
+    @graph.node_x(n2),
+    50.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n2.y",
+    @graph.node_y(n2),
+    0.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n3.x",
+    @graph.node_x(n3),
+    50.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n3.y",
+    @graph.node_y(n3),
+    40.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n4.x",
+    @graph.node_x(n4),
+    100.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n4.y",
+    @graph.node_y(n4),
+    40.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n5.x",
+    @graph.node_x(n5),
+    150.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n5.y",
+    @graph.node_y(n5),
+    6.0,
+  )
 }
 
 ///|
@@ -195,18 +277,66 @@ test "ModelOrderLayerAssignment forward promotion more nodes" {
 
   p2_model_order_layer_assignment_test_layout(parent)
 
-  p2_model_order_layer_assignment_test_assert_close("n1.x", @graph.node_x(n1), 0.0)
-  p2_model_order_layer_assignment_test_assert_close("n1.y", @graph.node_y(n1), 9.0)
-  p2_model_order_layer_assignment_test_assert_close("n2.x", @graph.node_x(n2), 70.0)
-  p2_model_order_layer_assignment_test_assert_close("n2.y", @graph.node_y(n2), 0.0)
-  p2_model_order_layer_assignment_test_assert_close("n3.x", @graph.node_x(n3), 120.0)
-  p2_model_order_layer_assignment_test_assert_close("n3.y", @graph.node_y(n3), 0.0)
-  p2_model_order_layer_assignment_test_assert_close("n4.x", @graph.node_x(n4), 120.0)
-  p2_model_order_layer_assignment_test_assert_close("n4.y", @graph.node_y(n4), 40.0)
-  p2_model_order_layer_assignment_test_assert_close("n5.x", @graph.node_x(n5), 120.0)
-  p2_model_order_layer_assignment_test_assert_close("n5.y", @graph.node_y(n5), 80.0)
-  p2_model_order_layer_assignment_test_assert_close("n6.x", @graph.node_x(n6), 170.0)
-  p2_model_order_layer_assignment_test_assert_close("n6.y", @graph.node_y(n6), 40.0)
+  p2_model_order_layer_assignment_test_assert_close(
+    "n1.x",
+    @graph.node_x(n1),
+    0.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n1.y",
+    @graph.node_y(n1),
+    9.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n2.x",
+    @graph.node_x(n2),
+    70.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n2.y",
+    @graph.node_y(n2),
+    0.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n3.x",
+    @graph.node_x(n3),
+    120.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n3.y",
+    @graph.node_y(n3),
+    0.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n4.x",
+    @graph.node_x(n4),
+    120.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n4.y",
+    @graph.node_y(n4),
+    40.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n5.x",
+    @graph.node_x(n5),
+    120.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n5.y",
+    @graph.node_y(n5),
+    80.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n6.x",
+    @graph.node_x(n6),
+    170.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n6.y",
+    @graph.node_y(n6),
+    40.0,
+  )
 }
 
 ///|
@@ -237,18 +367,66 @@ test "ModelOrderLayerAssignment backward promotion more nodes" {
 
   p2_model_order_layer_assignment_test_layout(parent)
 
-  p2_model_order_layer_assignment_test_assert_close("n1.x", @graph.node_x(n1), 0.0)
-  p2_model_order_layer_assignment_test_assert_close("n1.y", @graph.node_y(n1), 7.5)
-  p2_model_order_layer_assignment_test_assert_close("n2.x", @graph.node_x(n2), 60.0)
-  p2_model_order_layer_assignment_test_assert_close("n2.y", @graph.node_y(n2), 0.0)
-  p2_model_order_layer_assignment_test_assert_close("n3.x", @graph.node_x(n3), 60.0)
-  p2_model_order_layer_assignment_test_assert_close("n3.y", @graph.node_y(n3), 40.0)
-  p2_model_order_layer_assignment_test_assert_close("n4.x", @graph.node_x(n4), 60.0)
-  p2_model_order_layer_assignment_test_assert_close("n4.y", @graph.node_y(n4), 80.0)
-  p2_model_order_layer_assignment_test_assert_close("n5.x", @graph.node_x(n5), 110.0)
-  p2_model_order_layer_assignment_test_assert_close("n5.y", @graph.node_y(n5), 80.0)
-  p2_model_order_layer_assignment_test_assert_close("n6.x", @graph.node_x(n6), 170.0)
-  p2_model_order_layer_assignment_test_assert_close("n6.y", @graph.node_y(n6), 9.0)
+  p2_model_order_layer_assignment_test_assert_close(
+    "n1.x",
+    @graph.node_x(n1),
+    0.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n1.y",
+    @graph.node_y(n1),
+    7.5,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n2.x",
+    @graph.node_x(n2),
+    60.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n2.y",
+    @graph.node_y(n2),
+    0.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n3.x",
+    @graph.node_x(n3),
+    60.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n3.y",
+    @graph.node_y(n3),
+    40.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n4.x",
+    @graph.node_x(n4),
+    60.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n4.y",
+    @graph.node_y(n4),
+    80.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n5.x",
+    @graph.node_x(n5),
+    110.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n5.y",
+    @graph.node_y(n5),
+    80.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n6.x",
+    @graph.node_x(n6),
+    170.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n6.y",
+    @graph.node_y(n6),
+    9.0,
+  )
 }
 
 ///|
@@ -273,14 +451,46 @@ test "ModelOrderLayerAssignment forward promotion no end node" {
 
   p2_model_order_layer_assignment_test_layout(parent)
 
-  p2_model_order_layer_assignment_test_assert_close("n1.x", @graph.node_x(n1), 0.0)
-  p2_model_order_layer_assignment_test_assert_close("n1.y", @graph.node_y(n1), 7.5)
-  p2_model_order_layer_assignment_test_assert_close("n2.x", @graph.node_x(n2), 60.0)
-  p2_model_order_layer_assignment_test_assert_close("n2.y", @graph.node_y(n2), 0.0)
-  p2_model_order_layer_assignment_test_assert_close("n3.x", @graph.node_x(n3), 110.0)
-  p2_model_order_layer_assignment_test_assert_close("n3.y", @graph.node_y(n3), 0.0)
-  p2_model_order_layer_assignment_test_assert_close("n4.x", @graph.node_x(n4), 110.0)
-  p2_model_order_layer_assignment_test_assert_close("n4.y", @graph.node_y(n4), 40.0)
+  p2_model_order_layer_assignment_test_assert_close(
+    "n1.x",
+    @graph.node_x(n1),
+    0.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n1.y",
+    @graph.node_y(n1),
+    7.5,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n2.x",
+    @graph.node_x(n2),
+    60.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n2.y",
+    @graph.node_y(n2),
+    0.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n3.x",
+    @graph.node_x(n3),
+    110.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n3.y",
+    @graph.node_y(n3),
+    0.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n4.x",
+    @graph.node_x(n4),
+    110.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n4.y",
+    @graph.node_y(n4),
+    40.0,
+  )
 }
 
 ///|
@@ -305,14 +515,46 @@ test "ModelOrderLayerAssignment backward promotion no end node" {
 
   p2_model_order_layer_assignment_test_layout(parent)
 
-  p2_model_order_layer_assignment_test_assert_close("n1.x", @graph.node_x(n1), 0.0)
-  p2_model_order_layer_assignment_test_assert_close("n1.y", @graph.node_y(n1), 0.0)
-  p2_model_order_layer_assignment_test_assert_close("n2.x", @graph.node_x(n2), 0.0)
-  p2_model_order_layer_assignment_test_assert_close("n2.y", @graph.node_y(n2), 40.0)
-  p2_model_order_layer_assignment_test_assert_close("n3.x", @graph.node_x(n3), 50.0)
-  p2_model_order_layer_assignment_test_assert_close("n3.y", @graph.node_y(n3), 40.0)
-  p2_model_order_layer_assignment_test_assert_close("n4.x", @graph.node_x(n4), 100.0)
-  p2_model_order_layer_assignment_test_assert_close("n4.y", @graph.node_y(n4), 6.0)
+  p2_model_order_layer_assignment_test_assert_close(
+    "n1.x",
+    @graph.node_x(n1),
+    0.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n1.y",
+    @graph.node_y(n1),
+    0.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n2.x",
+    @graph.node_x(n2),
+    0.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n2.y",
+    @graph.node_y(n2),
+    40.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n3.x",
+    @graph.node_x(n3),
+    50.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n3.y",
+    @graph.node_y(n3),
+    40.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n4.x",
+    @graph.node_x(n4),
+    100.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n4.y",
+    @graph.node_y(n4),
+    6.0,
+  )
 }
 
 ///|
@@ -336,12 +578,44 @@ test "ModelOrderLayerAssignment backward promotion no end node 2" {
 
   p2_model_order_layer_assignment_test_layout(parent)
 
-  p2_model_order_layer_assignment_test_assert_close("n1.x", @graph.node_x(n1), 0.0)
-  p2_model_order_layer_assignment_test_assert_close("n1.y", @graph.node_y(n1), 5.0)
-  p2_model_order_layer_assignment_test_assert_close("n2.x", @graph.node_x(n2), 50.0)
-  p2_model_order_layer_assignment_test_assert_close("n2.y", @graph.node_y(n2), 0.0)
-  p2_model_order_layer_assignment_test_assert_close("n3.x", @graph.node_x(n3), 50.0)
-  p2_model_order_layer_assignment_test_assert_close("n3.y", @graph.node_y(n3), 40.0)
-  p2_model_order_layer_assignment_test_assert_close("n4.x", @graph.node_x(n4), 100.0)
-  p2_model_order_layer_assignment_test_assert_close("n4.y", @graph.node_y(n4), 40.0)
+  p2_model_order_layer_assignment_test_assert_close(
+    "n1.x",
+    @graph.node_x(n1),
+    0.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n1.y",
+    @graph.node_y(n1),
+    5.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n2.x",
+    @graph.node_x(n2),
+    50.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n2.y",
+    @graph.node_y(n2),
+    0.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n3.x",
+    @graph.node_x(n3),
+    50.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n3.y",
+    @graph.node_y(n3),
+    40.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n4.x",
+    @graph.node_x(n4),
+    100.0,
+  )
+  p2_model_order_layer_assignment_test_assert_close(
+    "n4.y",
+    @graph.node_y(n4),
+    40.0,
+  )
 }

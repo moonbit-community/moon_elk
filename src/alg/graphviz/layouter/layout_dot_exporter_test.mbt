@@ -70,18 +70,28 @@ test "LayoutDotExporter sets DOT graph attributes and transformation flags" {
   @graph.node_set_string_property(
     root, graphviz_core_option_hierarchy_handling, "INCLUDE_CHILDREN",
   )
-  @graph.node_set_double_property(root, graphviz_option_layer_spacing_factor, 2.0)
+  @graph.node_set_double_property(
+    root, graphviz_option_layer_spacing_factor, 2.0,
+  )
   @graph.node_set_double_property(root, graphviz_option_iterations_factor, 0.5)
   @graph.node_set_bool_property(root, graphviz_option_concentrate, true)
-  @graph.node_set_bool_property(root, graphviz_option_adapt_port_positions, false)
+  @graph.node_set_bool_property(
+    root, graphviz_option_adapt_port_positions, false,
+  )
   let cluster = @graph.create_node(Some(root))
   ignore(@graph.create_node(Some(cluster)))
 
-  let data = layout_dot_exporter_test_setup_data(root, @dot.command_parse("dot"))
+  let data = layout_dot_exporter_test_setup_data(
+    root,
+    @dot.command_parse("dot"),
+  )
   let exporter = new_layout_dot_exporter()
   exporter.transform(data)
 
-  inspect(data.get_bool_property(@dot.dot_exporter_use_edge_ids), content="true")
+  inspect(
+    data.get_bool_property(@dot.dot_exporter_use_edge_ids),
+    content="true",
+  )
   inspect(data.get_bool_property(@dot.dot_exporter_hierarchy), content="true")
   inspect(
     data.get_bool_property(@dot.dot_exporter_transform_node_layout),
@@ -177,18 +187,26 @@ test "LayoutDotExporter sets NEATO specific graph and edge attributes" {
   @graph.node_set_bool_property(
     root, graphviz_core_option_separate_connected_components, true,
   )
-  @graph.node_set_string_property(root, graphviz_core_option_edge_routing, "POLYLINE")
+  @graph.node_set_string_property(
+    root, graphviz_core_option_edge_routing, "POLYLINE",
+  )
   let n0 = @graph.create_node(Some(root))
   let n1 = @graph.create_node(Some(root))
   let edge = @graph.create_edge(Some(root))
   @graph.edge_add_source(edge, @graph.make_node_shape(n0))
   @graph.edge_add_target(edge, @graph.make_node_shape(n1))
 
-  let data = layout_dot_exporter_test_setup_data(root, @dot.command_parse("neato"))
+  let data = layout_dot_exporter_test_setup_data(
+    root,
+    @dot.command_parse("neato"),
+  )
   let exporter = new_layout_dot_exporter()
   exporter.transform(data)
 
-  inspect(data.get_bool_property(@dot.dot_exporter_use_splines), content="false")
+  inspect(
+    data.get_bool_property(@dot.dot_exporter_use_splines),
+    content="false",
+  )
 
   let graph = data.get_target_graphs()[0].get_graphs()[0]
   let graph_attrs = layout_dot_exporter_test_find_attribute_map(
@@ -287,7 +305,10 @@ test "LayoutDotExporter appends label distance and angle for head/tail labels" {
     label, @dot.dot_exporter_option_edge_labels_placement, "HEAD",
   )
 
-  let data = layout_dot_exporter_test_setup_data(root, @dot.command_parse("dot"))
+  let data = layout_dot_exporter_test_setup_data(
+    root,
+    @dot.command_parse("dot"),
+  )
   let exporter = new_layout_dot_exporter()
   exporter.transform(data)
 

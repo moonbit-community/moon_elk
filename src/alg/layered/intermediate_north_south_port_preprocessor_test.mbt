@@ -64,7 +64,9 @@ fn north_south_port_preprocessor_test_node_type(name : String) -> NodeType {
 }
 
 ///|
-fn north_south_port_preprocessor_test_port_side(name : String) -> @core.PortSide {
+fn north_south_port_preprocessor_test_port_side(
+  name : String,
+) -> @core.PortSide {
   for side in @core.port_side_values() {
     if @core.port_side_to_string(side) == name {
       return side
@@ -177,8 +179,14 @@ test "north south port preprocessor isolates north and south ports for fixed-sid
     south_dummy_node.get_ports()[0].get_handle(),
   )
 
-  assert_eq(north_dummy_node.get_property_string(@core.port_constraints), "FIXED_POS")
-  assert_eq(south_dummy_node.get_property_string(@core.port_constraints), "FIXED_POS")
+  assert_eq(
+    north_dummy_node.get_property_string(@core.port_constraints),
+    "FIXED_POS",
+  )
+  assert_eq(
+    south_dummy_node.get_property_string(@core.port_constraints),
+    "FIXED_POS",
+  )
 
   assert_true(
     north_dummy_node.has_property_l_node(

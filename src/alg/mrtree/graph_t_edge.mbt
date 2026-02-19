@@ -52,7 +52,10 @@ pub fn new_mrtree_edge(source : MrtreeNode, target : MrtreeNode) -> MrtreeEdge {
 }
 
 ///|
-pub fn mrtree_edge_set_origin(edge : MrtreeEdge, origin : @graph.ElkEdge?) -> Unit {
+pub fn mrtree_edge_set_origin(
+  edge : MrtreeEdge,
+  origin : @graph.ElkEdge?,
+) -> Unit {
   checked_mrtree_edge(edge)
   let edge_data = mrtree_edge_store.val[edge]
   edge_data.origin = origin

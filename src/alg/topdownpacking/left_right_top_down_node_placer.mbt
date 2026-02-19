@@ -10,7 +10,9 @@ fn topdownpacking_left_right_top_down_node_placer_configuration(
   graph : GridElkNode,
 ) -> @core.LayoutProcessorConfiguration[TopdownPackingPhases, GridElkNode]? {
   ignore(graph)
-  Some(@core.layout_processor_configuration_create(topdownpacking_phase_descriptor))
+  Some(
+    @core.layout_processor_configuration_create(topdownpacking_phase_descriptor),
+  )
 }
 
 ///|

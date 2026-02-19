@@ -1,0 +1,409 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/moon_elk/graph/json/text/ui"
+
+import {
+  "Milky2018/moon_elk/core",
+  "Milky2018/moon_elk/graph/json/text",
+  "Milky2018/moon_elk/graph/json/text/ide",
+}
+
+// Values
+pub fn graph_json_text_activator_get_instance() -> GraphJsonTextActivator?
+
+pub fn graph_json_text_activator_reset_for_test() -> Unit
+
+pub let graph_json_text_extension_factory_guicekey : String
+
+pub fn graph_json_text_initialization_data_map(Map[String, String]) -> GraphJsonTextInitializationData
+
+pub fn graph_json_text_initialization_data_string(String) -> GraphJsonTextInitializationData
+
+pub let graph_json_text_target_ext_elkg : String
+
+pub let graph_json_text_target_ext_elkj : String
+
+pub let graph_json_text_ui_extension_factory_guicekey : String
+
+pub let graph_json_text_ui_language_name : String
+
+pub let graph_json_text_ui_max_entries : Int
+
+pub fn graph_json_text_ui_object_executable_extension(GraphJsonTextExecutableExtension) -> GraphJsonTextUiObject
+
+pub fn graph_json_text_ui_object_named(String) -> GraphJsonTextUiObject
+
+pub fn graph_json_text_ui_object_tag(GraphJsonTextUiObject) -> String
+
+pub let graph_json_text_ui_plugin_id : String
+
+pub let graph_json_text_ui_status_error : Int
+
+pub fn new_abstract_elk_graph_json_proposal_provider() -> AbstractElkGraphJsonProposalProvider
+
+pub fn new_abstract_elk_graph_json_ui_module(plugin_id? : String) -> AbstractElkGraphJsonUiModule
+
+pub fn new_elk_graph_json_description_label_provider() -> ElkGraphJsonDescriptionLabelProvider
+
+pub fn new_elk_graph_json_executable_extension_factory() -> ElkGraphJsonExecutableExtensionFactory
+
+pub fn new_elk_graph_json_json_text_ui_activator() -> ElkGraphJsonJsonTextUiActivator
+
+pub fn new_elk_graph_json_label_provider(name_provider? : @text.ElkGraphJsonQualifiedNameProvider) -> ElkGraphJsonLabelProvider
+
+pub fn new_elk_graph_json_outline_tree_provider() -> ElkGraphJsonOutlineTreeProvider
+
+pub fn new_elk_graph_json_quickfix_provider() -> ElkGraphJsonQuickfixProvider
+
+pub fn new_elk_graph_json_ui_module(plugin_id? : String) -> ElkGraphJsonUiModule
+
+pub fn new_elk_graph_json_ui_proposal_provider(ide_provider? : @ide.ElkGraphJsonIdeProposalProvider, grammar? : @text.ElkGraphJsonGrammarAccess) -> ElkGraphJsonUiProposalProvider
+
+pub fn new_elk_graph_json_validator_configuration_block(provider? : @text.ElkGraphJsonConfigurableIssueCodesProvider) -> ElkGraphJsonValidatorConfigurationBlock
+
+pub fn new_graph_json_text_activator() -> GraphJsonTextActivator
+
+pub fn new_graph_json_text_assignment(String) -> GraphJsonTextAssignment
+
+pub fn new_graph_json_text_configuration_element(contributor? : String?) -> GraphJsonTextConfigurationElement
+
+pub fn new_graph_json_text_convert_graph_handler(project? : GraphJsonTextProject) -> GraphJsonTextConvertGraphHandler
+
+pub fn new_graph_json_text_executable_extension(set_initialization_data_fn? : (GraphJsonTextConfigurationElement?, String?, GraphJsonTextInitializationData?) -> Unit) -> GraphJsonTextExecutableExtension
+
+pub fn new_graph_json_text_outline_node(String, String, children? : Array[GraphJsonTextOutlineNode]) -> GraphJsonTextOutlineNode
+
+pub fn new_graph_json_text_project() -> GraphJsonTextProject
+
+pub fn new_graph_json_text_ui_bundle(symbolic_name? : String) -> GraphJsonTextUiBundle
+
+pub fn new_graph_json_text_ui_completion_proposal_acceptor() -> GraphJsonTextUiCompletionProposalAcceptor
+
+pub fn new_graph_json_text_ui_content_assist_context(prefix? : String, current_model? : @text.GraphJsonTextElement?, current_property_key? : @text.GraphJsonTextPropertyKey?, current_edge_section? : Int?, conflict_on_a? : Bool) -> GraphJsonTextUiContentAssistContext
+
+pub fn new_graph_json_text_ui_core_exception(GraphJsonTextUiStatus) -> GraphJsonTextUiCoreException
+
+pub fn new_graph_json_text_ui_injector() -> GraphJsonTextUiInjector
+
+pub fn new_graph_json_text_ui_lexer_binding(String, String) -> GraphJsonTextUiLexerBinding
+
+pub fn new_graph_json_text_ui_status(Int, String, String) -> GraphJsonTextUiStatus
+
+// Errors
+
+// Types and methods
+pub struct AbstractElkGraphJsonProposalProvider {
+  unit : Unit
+}
+pub fn AbstractElkGraphJsonProposalProvider::complete_boolean_value(Self, String, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_edge_layout(Self, String, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_edge_layout_sections(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_elk_bend_point(Self, String, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_elk_bend_point_x(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_elk_bend_point_y(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_elk_edge(Self, String, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_elk_edge_identifier(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_elk_edge_labels(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_elk_edge_properties(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_elk_edge_section(Self, String, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_elk_edge_section_bend_points(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_elk_edge_section_end_x(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_elk_edge_section_end_y(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_elk_edge_section_identifier(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_elk_edge_section_incoming_shape(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_elk_edge_section_outgoing_sections(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_elk_edge_section_outgoing_shape(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_elk_edge_section_properties(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_elk_edge_section_start_x(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_elk_edge_section_start_y(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_elk_edge_sources(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_elk_edge_targets(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_elk_label(Self, String, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_elk_label_identifier(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_elk_label_labels(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_elk_label_properties(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_elk_label_text(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_elk_node(Self, String, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_elk_node_children(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_elk_node_contained_edges(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_elk_node_identifier(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_elk_node_labels(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_elk_node_ports(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_elk_node_properties(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_elk_port(Self, String, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_elk_port_identifier(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_elk_port_labels(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_elk_port_properties(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_elk_single_edge_section(Self, String, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_elk_single_edge_section_bend_points(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_elk_single_edge_section_end_x(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_elk_single_edge_section_end_y(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_elk_single_edge_section_incoming_shape(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_elk_single_edge_section_outgoing_shape(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_elk_single_edge_section_properties(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_elk_single_edge_section_start_x(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_elk_single_edge_section_start_y(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_float(Self, String, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_number(Self, String, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_number_value(Self, String, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_property(Self, String, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_property_key(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_property_key_rule(Self, String, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_property_value(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_qualified_id(Self, String, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_qualified_id_value(Self, String, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_root_node(Self, String, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_root_node_children(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_root_node_contained_edges(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_root_node_identifier(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_root_node_labels(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_root_node_ports(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_root_node_properties(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_rule_call(Self, String, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_shape_layout(Self, String, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_shape_layout_height(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_shape_layout_width(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_shape_layout_x(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_shape_layout_y(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_signed_int(Self, String, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::complete_string_value(Self, String, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn AbstractElkGraphJsonProposalProvider::lookup_cross_reference(Self, String, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+
+pub struct AbstractElkGraphJsonUiModule {
+  plugin_id : String
+}
+pub fn AbstractElkGraphJsonUiModule::bind_abstract_validator_configuration_block(Self) -> String
+pub fn AbstractElkGraphJsonUiModule::bind_content_assist_context_factory(Self) -> String
+pub fn AbstractElkGraphJsonUiModule::bind_document_based_dirty_resource(Self) -> String
+pub fn AbstractElkGraphJsonUiModule::bind_i_content_assist_parser(Self) -> String
+pub fn AbstractElkGraphJsonUiModule::bind_i_content_formatter_factory(Self) -> String
+pub fn AbstractElkGraphJsonUiModule::bind_i_content_proposal_provider(Self) -> String
+pub fn AbstractElkGraphJsonUiModule::bind_i_contextual_output_configuration_provider(Self) -> String
+pub fn AbstractElkGraphJsonUiModule::bind_i_dependent_elements_calculator(Self) -> String
+pub fn AbstractElkGraphJsonUiModule::bind_i_label_provider(Self) -> String
+pub fn AbstractElkGraphJsonUiModule::bind_i_outline_tree_provider(Self) -> String
+pub fn AbstractElkGraphJsonUiModule::bind_i_outline_tree_structure_provider(Self) -> String
+pub fn AbstractElkGraphJsonUiModule::bind_i_partial_editing_content_assist_context_factory(Self) -> String
+pub fn AbstractElkGraphJsonUiModule::bind_i_partial_editing_content_assist_parser(Self) -> String
+pub fn AbstractElkGraphJsonUiModule::bind_i_proposal_conflict_helper(Self) -> String
+pub fn AbstractElkGraphJsonUiModule::bind_i_reference_updater(Self) -> String
+pub fn AbstractElkGraphJsonUiModule::bind_i_rename_refactoring_provider(Self) -> String
+pub fn AbstractElkGraphJsonUiModule::bind_i_rename_strategy(Self) -> String
+pub fn AbstractElkGraphJsonUiModule::bind_i_rename_support_factory(Self) -> String
+pub fn AbstractElkGraphJsonUiModule::bind_i_viewer_creator(Self) -> String
+pub fn AbstractElkGraphJsonUiModule::bind_i_workspace_root_to_instance(Self) -> String
+pub fn AbstractElkGraphJsonUiModule::bind_i_xtext_builder_participant(Self) -> String
+pub fn AbstractElkGraphJsonUiModule::bind_i_xtext_editor_callback(Self) -> String
+pub fn AbstractElkGraphJsonUiModule::bind_issue_resolution_provider(Self) -> String
+pub fn AbstractElkGraphJsonUiModule::bind_language_registrar(Self) -> String
+pub fn AbstractElkGraphJsonUiModule::bind_prefix_matcher(Self) -> String
+pub fn AbstractElkGraphJsonUiModule::bind_xtext_template_preference_page(Self) -> String
+pub fn AbstractElkGraphJsonUiModule::configure_builder_preference_store_initializer(Self) -> String
+pub fn AbstractElkGraphJsonUiModule::configure_compare_viewer_title(Self) -> String
+pub fn AbstractElkGraphJsonUiModule::configure_content_assist_lexer(Self) -> GraphJsonTextUiLexerBinding
+pub fn AbstractElkGraphJsonUiModule::configure_content_assist_lexer_provider(Self) -> String
+pub fn AbstractElkGraphJsonUiModule::configure_highlighting_lexer(Self) -> GraphJsonTextUiLexerBinding
+pub fn AbstractElkGraphJsonUiModule::configure_highlighting_token_def_provider(Self) -> GraphJsonTextUiLexerBinding
+pub fn AbstractElkGraphJsonUiModule::configure_i_preference_store_initializer(Self) -> String
+pub fn AbstractElkGraphJsonUiModule::configure_i_resource_descriptions_builder_scope(Self) -> String
+pub fn AbstractElkGraphJsonUiModule::configure_i_resource_descriptions_persisted(Self) -> String
+pub fn AbstractElkGraphJsonUiModule::configure_resource_ui_service_label_provider(Self) -> String
+pub fn AbstractElkGraphJsonUiModule::get_plugin_id(Self) -> String
+pub fn AbstractElkGraphJsonUiModule::provide_i_all_containers_state(Self) -> String
+pub fn AbstractElkGraphJsonUiModule::provide_language_registry(Self) -> String
+pub fn AbstractElkGraphJsonUiModule::provide_templates_language_configuration(Self) -> String
+
+pub struct ElkGraphJsonDescriptionLabelProvider {
+  unit : Unit
+}
+pub fn ElkGraphJsonDescriptionLabelProvider::image(Self, String) -> String?
+
+pub struct ElkGraphJsonExecutableExtensionFactory {
+  mut clazz_name : String?
+  mut config : GraphJsonTextConfigurationElement?
+}
+pub fn ElkGraphJsonExecutableExtensionFactory::create(Self) -> Result[GraphJsonTextUiObject, GraphJsonTextUiCoreException]
+pub fn ElkGraphJsonExecutableExtensionFactory::set_initialization_data(Self, GraphJsonTextConfigurationElement?, String?, GraphJsonTextInitializationData?) -> Unit
+
+pub struct ElkGraphJsonJsonTextUiActivator {
+  base : GraphJsonTextActivator
+}
+pub fn ElkGraphJsonJsonTextUiActivator::create_injector(Self, String) -> GraphJsonTextUiInjector
+pub fn ElkGraphJsonJsonTextUiActivator::get_base(Self) -> GraphJsonTextActivator
+pub fn ElkGraphJsonJsonTextUiActivator::get_ide_module(Self, String) -> @ide.ElkGraphJsonIdeModule
+pub fn ElkGraphJsonJsonTextUiActivator::start(Self) -> Unit
+pub fn ElkGraphJsonJsonTextUiActivator::stop(Self) -> Unit
+
+pub struct ElkGraphJsonLabelProvider {
+  name_provider : @text.ElkGraphJsonQualifiedNameProvider
+}
+pub fn ElkGraphJsonLabelProvider::image_elk_edge(Self, Int) -> String
+pub fn ElkGraphJsonLabelProvider::image_elk_label(Self, Int) -> String
+pub fn ElkGraphJsonLabelProvider::image_elk_node(Self, Int) -> String
+pub fn ElkGraphJsonLabelProvider::image_elk_port(Self, Int) -> String
+pub fn ElkGraphJsonLabelProvider::text_elk_edge(Self, Int) -> String
+pub fn ElkGraphJsonLabelProvider::text_elk_label(Self, Int) -> String
+pub fn ElkGraphJsonLabelProvider::text_elk_node(Self, Int) -> String
+
+pub struct ElkGraphJsonOutlineTreeProvider {
+  unit : Unit
+}
+pub fn ElkGraphJsonOutlineTreeProvider::create_children_for_edge(Self, Int) -> Array[GraphJsonTextOutlineNode]
+pub fn ElkGraphJsonOutlineTreeProvider::create_children_for_node(Self, Int) -> Array[GraphJsonTextOutlineNode]
+pub fn ElkGraphJsonOutlineTreeProvider::create_outline(Self, Int) -> GraphJsonTextOutlineNode
+
+pub struct ElkGraphJsonQuickfixProvider {
+  unit : Unit
+}
+pub fn ElkGraphJsonQuickfixProvider::remove_option(Self, Array[@text.GraphJsonTextPropertyAssignment], Int) -> Array[@text.GraphJsonTextPropertyAssignment]
+pub fn ElkGraphJsonQuickfixProvider::supports_issue(Self, String) -> Bool
+
+pub struct ElkGraphJsonUiModule {
+  plugin_id : String
+  base : AbstractElkGraphJsonUiModule
+}
+pub fn ElkGraphJsonUiModule::get_base(Self) -> AbstractElkGraphJsonUiModule
+
+pub struct ElkGraphJsonUiProposalProvider {
+  base : AbstractElkGraphJsonProposalProvider
+  ide_provider : @ide.ElkGraphJsonIdeProposalProvider
+  grammar : @text.ElkGraphJsonGrammarAccess
+}
+pub fn ElkGraphJsonUiProposalProvider::complete_assignment(Self, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn ElkGraphJsonUiProposalProvider::complete_keyword(Self, String, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn ElkGraphJsonUiProposalProvider::complete_rule_call(Self, String, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn ElkGraphJsonUiProposalProvider::create_assignment_proposals(Self, String, GraphJsonTextAssignment, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn ElkGraphJsonUiProposalProvider::create_keyword_proposals(Self, String, GraphJsonTextUiContentAssistContext, GraphJsonTextUiCompletionProposalAcceptor) -> Unit
+pub fn ElkGraphJsonUiProposalProvider::get_keyword_image(Self, String) -> String?
+pub fn ElkGraphJsonUiProposalProvider::get_layout_option_image(Self, @core.LayoutOptionData, String) -> String
+
+pub struct ElkGraphJsonValidatorConfigurationBlock {
+  provider : @text.ElkGraphJsonConfigurableIssueCodesProvider
+}
+pub fn ElkGraphJsonValidatorConfigurationBlock::get_issue_code_prefix(Self) -> String
+
+pub struct GraphJsonTextActivator {
+  bundle : GraphJsonTextUiBundle
+  injectors : Map[String, GraphJsonTextUiInjector]
+}
+pub fn GraphJsonTextActivator::create_injector(Self, String) -> GraphJsonTextUiInjector
+pub fn GraphJsonTextActivator::get_bundle(Self) -> GraphJsonTextUiBundle
+pub fn GraphJsonTextActivator::get_injector(Self, String) -> GraphJsonTextUiInjector
+pub fn GraphJsonTextActivator::get_runtime_module(Self, String) -> @text.ElkGraphJsonRuntimeModule
+pub fn GraphJsonTextActivator::get_shared_state_module(Self) -> String
+pub fn GraphJsonTextActivator::get_ui_module(Self, String) -> ElkGraphJsonUiModule
+pub fn GraphJsonTextActivator::injector_count(Self) -> Int
+pub fn GraphJsonTextActivator::register_bundle_class(Self, String) -> Unit
+pub fn GraphJsonTextActivator::register_injector_provider(Self, String, String, () -> GraphJsonTextUiObject) -> Unit
+pub fn GraphJsonTextActivator::start(Self) -> Unit
+pub fn GraphJsonTextActivator::stop(Self) -> Unit
+
+pub struct GraphJsonTextAssignment {
+  terminal : String
+}
+
+pub struct GraphJsonTextConfigurationElement {
+  contributor : String?
+}
+pub fn GraphJsonTextConfigurationElement::get_contributor(Self) -> String?
+
+pub struct GraphJsonTextConvertGraphHandler {
+  project : GraphJsonTextProject
+  mut target_extension : String
+  errors : Array[String]
+}
+pub fn GraphJsonTextConvertGraphHandler::convert(Self, String, String) -> Unit
+pub fn GraphJsonTextConvertGraphHandler::create_target(Self, String) -> String
+pub fn GraphJsonTextConvertGraphHandler::execute(Self, Array[GraphJsonTextSelectionItem], String) -> Int
+pub fn GraphJsonTextConvertGraphHandler::get_errors(Self) -> Array[String]
+pub fn GraphJsonTextConvertGraphHandler::get_project(Self) -> GraphJsonTextProject
+pub fn GraphJsonTextConvertGraphHandler::is_valid_target_extension(Self, String) -> Bool
+pub fn GraphJsonTextConvertGraphHandler::read_model(Self, String) -> Int
+pub fn GraphJsonTextConvertGraphHandler::remove_invalid_properties(Self, Int) -> Int
+pub fn GraphJsonTextConvertGraphHandler::remove_unnecessary_layouts(Self, Int) -> Int
+pub fn GraphJsonTextConvertGraphHandler::save_model(Self, Int, String) -> Unit
+pub fn GraphJsonTextConvertGraphHandler::transform(Self, Int) -> Int
+
+pub struct GraphJsonTextExecutableExtension {
+  set_initialization_data_fn : (GraphJsonTextConfigurationElement?, String?, GraphJsonTextInitializationData?) -> Unit
+}
+pub fn GraphJsonTextExecutableExtension::set_initialization_data(Self, GraphJsonTextConfigurationElement?, String?, GraphJsonTextInitializationData?) -> Unit
+
+pub enum GraphJsonTextInitializationData {
+  GraphJsonTextInitializationDataString(String)
+  GraphJsonTextInitializationDataMap(Map[String, String])
+}
+
+pub struct GraphJsonTextOutlineNode {
+  kind : String
+  label : String
+  children : Array[GraphJsonTextOutlineNode]
+}
+
+pub struct GraphJsonTextProject {
+  files : Map[String, String]
+}
+pub fn GraphJsonTextProject::file_exists(Self, String) -> Bool
+pub fn GraphJsonTextProject::list_files(Self) -> Array[String]
+pub fn GraphJsonTextProject::read_file(Self, String) -> String?
+pub fn GraphJsonTextProject::write_file(Self, String, String) -> Unit
+
+pub(all) enum GraphJsonTextSelectionItem {
+  GraphJsonTextSelectionFile(String, String)
+  GraphJsonTextSelectionOther
+}
+pub impl Show for GraphJsonTextSelectionItem
+
+pub struct GraphJsonTextUiBundle {
+  symbolic_name : String
+  classes : Map[String, Bool]
+}
+pub fn GraphJsonTextUiBundle::get_symbolic_name(Self) -> String
+pub fn GraphJsonTextUiBundle::load_class(Self, String) -> Bool
+pub fn GraphJsonTextUiBundle::register_class(Self, String) -> Unit
+
+pub struct GraphJsonTextUiCompletionProposalAcceptor {
+  proposals : Array[String]
+}
+pub fn GraphJsonTextUiCompletionProposalAcceptor::accept(Self, String) -> Unit
+pub fn GraphJsonTextUiCompletionProposalAcceptor::get_proposals(Self) -> Array[String]
+
+pub struct GraphJsonTextUiContentAssistContext {
+  prefix : String
+  current_model : @text.GraphJsonTextElement?
+  current_property_key : @text.GraphJsonTextPropertyKey?
+  current_edge_section : Int?
+  conflict_on_a : Bool
+}
+
+pub struct GraphJsonTextUiCoreException {
+  status : GraphJsonTextUiStatus
+}
+pub fn GraphJsonTextUiCoreException::get_status(Self) -> GraphJsonTextUiStatus
+
+pub struct GraphJsonTextUiInjector {
+  providers : Map[String, () -> GraphJsonTextUiObject]
+}
+pub fn GraphJsonTextUiInjector::get_instance(Self, String) -> GraphJsonTextUiObject?
+pub fn GraphJsonTextUiInjector::provider_count(Self) -> Int
+pub fn GraphJsonTextUiInjector::register_provider(Self, String, () -> GraphJsonTextUiObject) -> Unit
+
+pub struct GraphJsonTextUiLexerBinding {
+  binding_name : String
+  class_name : String
+}
+
+pub enum GraphJsonTextUiObject {
+  GraphJsonTextUiObjectNamed(String)
+  GraphJsonTextUiObjectExecutableExtension(GraphJsonTextExecutableExtension)
+}
+
+pub struct GraphJsonTextUiStatus {
+  severity : Int
+  symbolic_name : String
+  message : String
+}
+
+// Type aliases
+
+// Traits
+

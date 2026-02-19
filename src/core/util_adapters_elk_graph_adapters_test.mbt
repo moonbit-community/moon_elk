@@ -3,7 +3,11 @@ fn elk_graph_adapters_test_set_port_side(
   port : @graph.ElkPort,
   side_name : String,
 ) -> Unit {
-  @graph.port_set_layout_option_string_by_id(port, port_side.get_id(), side_name)
+  @graph.port_set_layout_option_string_by_id(
+    port,
+    port_side.get_id(),
+    side_name,
+  )
 }
 
 ///|

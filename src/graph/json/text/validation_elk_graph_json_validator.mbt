@@ -253,7 +253,9 @@ pub fn ElkGraphJsonValidator::check_property_value(
       }
       if option.get_id() == @core.algorithm.get_id() {
         match
-          @core.layout_meta_data_service_get_algorithm_data_by_suffix(text_value) {
+          @core.layout_meta_data_service_get_algorithm_data_by_suffix(
+            text_value,
+          ) {
           Some(_) => ()
           None =>
             issues.push(
@@ -480,7 +482,8 @@ pub fn ElkGraphJsonValidator::check_edge_container(
   edge : @graph.ElkEdge,
 ) -> Array[GraphJsonTextValidationIssue] {
   ignore(self)
-  if @graph.edge_sources(edge).length() == 0 && @graph.edge_targets(edge).length() == 0 {
+  if @graph.edge_sources(edge).length() == 0 &&
+    @graph.edge_targets(edge).length() == 0 {
     return []
   }
   let issues : Array[GraphJsonTextValidationIssue] = []

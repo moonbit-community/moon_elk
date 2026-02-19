@@ -27,7 +27,9 @@ pub fn dot_graph_element_label(label : @graph.ElkLabel) -> DotGraphElement {
 }
 
 ///|
-pub fn dot_graph_element_as_node(graph_element : DotGraphElement) -> @graph.ElkNode? {
+pub fn dot_graph_element_as_node(
+  graph_element : DotGraphElement,
+) -> @graph.ElkNode? {
   match graph_element {
     DotGraphElementNode(node) => Some(node)
     _ => None
@@ -35,7 +37,9 @@ pub fn dot_graph_element_as_node(graph_element : DotGraphElement) -> @graph.ElkN
 }
 
 ///|
-pub fn dot_graph_element_as_edge(graph_element : DotGraphElement) -> @graph.ElkEdge? {
+pub fn dot_graph_element_as_edge(
+  graph_element : DotGraphElement,
+) -> @graph.ElkEdge? {
   match graph_element {
     DotGraphElementEdge(edge) => Some(edge)
     _ => None

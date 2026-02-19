@@ -11,13 +11,15 @@ test "Property default primitive values" {
 ///|
 test "Property default clone map" {
   let default_value : Map[String, Int] = { "x": 2, "y": 3 }
-  let property = new_property_cloneable("dummyMap", default_value, value => Some(
-    {
-      let copy = {}
-      value.each((key, element) => copy[key] = element)
-      copy
-    },
-  ))
+  let property = new_property_cloneable("dummyMap", default_value, value => {
+    Some(
+      {
+        let copy = {}
+        value.each((key, element) => copy[key] = element)
+        copy
+      },
+    )
+  })
   let cloned = property.get_default()
   cloned["x"] = 99
   assert_eq(default_value.get("x"), Some(2))
@@ -27,9 +29,9 @@ test "Property default clone map" {
 ///|
 test "Property default clone nested array" {
   let default_value = [[1, 2], [3, 4]]
-  let property = new_property_cloneable("dummyNestedArray", default_value, value => Some(
-    value.map(values => values.copy()),
-  ))
+  let property = new_property_cloneable("dummyNestedArray", default_value, value => {
+    Some(value.map(values => values.copy()))
+  })
   let cloned = property.get_default()
   cloned[0].push(5)
   assert_eq(default_value[0].length(), 2)
@@ -39,9 +41,9 @@ test "Property default clone nested array" {
 ///|
 test "Property default clone array" {
   let default_value = [1, 2, 3]
-  let property = new_property_cloneable("dummyArray", default_value, value => Some(
-    value.copy(),
-  ))
+  let property = new_property_cloneable("dummyArray", default_value, value => {
+    Some(value.copy())
+  })
   let cloned = property.get_default()
   cloned.push(4)
   assert_eq(default_value.length(), 3)

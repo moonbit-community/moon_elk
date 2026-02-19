@@ -4,7 +4,7 @@ pub struct PropertyHolderComparator[T] {
 }
 
 ///|
-pub fn[T : Compare + FromJson] property_holder_comparator_with(
+pub fn[T] property_holder_comparator_with(
   property : IProperty[T],
 ) -> PropertyHolderComparator[T] {
   { property, }

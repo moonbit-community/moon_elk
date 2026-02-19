@@ -2,7 +2,9 @@
 pub let gmf_draw2d_algorithm_id : String = "org.eclipse.elk.conn.gmf.draw2d"
 
 ///|
-fn gmf_register_draw2d_algorithm(registry : @core.LayoutMetaDataRegistry) -> Unit {
+fn gmf_register_draw2d_algorithm(
+  registry : @core.LayoutMetaDataRegistry,
+) -> Unit {
   registry.register_algorithm(
     @core.new_layout_algorithm_data(
       gmf_draw2d_algorithm_id,

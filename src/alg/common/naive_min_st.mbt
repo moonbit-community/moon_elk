@@ -11,7 +11,10 @@ priv struct TreeNodeEntry {
 }
 
 ///|
-fn contains_tree_node(entries : Array[TreeNodeEntry], node : @core.KVector) -> Bool {
+fn contains_tree_node(
+  entries : Array[TreeNodeEntry],
+  node : @core.KVector,
+) -> Bool {
   for entry in entries {
     if entry.node.equals(node) {
       return true

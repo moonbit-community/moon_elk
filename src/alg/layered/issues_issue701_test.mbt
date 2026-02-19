@@ -74,8 +74,13 @@ fn issue701_test_absolute_label_parent_position(
 }
 
 ///|
-fn issue701_test_absolute_label_position(label : @graph.ElkLabel) -> @core.KVector {
-  let absolute = @core.new_kvector_xy(@graph.label_x(label), @graph.label_y(label))
+fn issue701_test_absolute_label_position(
+  label : @graph.ElkLabel,
+) -> @core.KVector {
+  let absolute = @core.new_kvector_xy(
+    @graph.label_x(label),
+    @graph.label_y(label),
+  )
   match label_parent(label) {
     Some(parent) =>
       ignore(absolute.add(issue701_test_absolute_label_parent_position(parent)))
@@ -85,13 +90,18 @@ fn issue701_test_absolute_label_position(label : @graph.ElkLabel) -> @core.KVect
 }
 
 ///|
-fn issue701_test_label_inside_node(label : @graph.ElkLabel, node : @graph.ElkNode) -> Bool {
+fn issue701_test_label_inside_node(
+  label : @graph.ElkLabel,
+  node : @graph.ElkNode,
+) -> Bool {
   let label_position = issue701_test_absolute_label_position(label)
   let node_position = issue701_test_absolute_node_position(node)
   label_position.x >= node_position.x &&
   label_position.y >= node_position.y &&
-  label_position.x + @graph.label_width(label) <= node_position.x + @graph.node_width(node) &&
-  label_position.y + @graph.label_height(label) <= node_position.y + @graph.node_height(node)
+  label_position.x + @graph.label_width(label) <=
+  node_position.x + @graph.node_width(node) &&
+  label_position.y + @graph.label_height(label) <=
+  node_position.y + @graph.node_height(node)
 }
 
 ///|
@@ -133,7 +143,10 @@ fn issue701_test_array_contains(
 }
 
 ///|
-fn issue701_test_connect(source : @graph.ElkPort, target : @graph.ElkPort) -> Unit {
+fn issue701_test_connect(
+  source : @graph.ElkPort,
+  target : @graph.ElkPort,
+) -> Unit {
   let edge = create_edge(None)
   edge_add_source(edge, make_port_shape(source))
   edge_add_target(edge, make_port_shape(target))
@@ -189,7 +202,9 @@ test "Issue701 inside labels" {
   issue701_test_setup_plain_java_layout()
 
   let graph = create_graph()
-  @graph.node_set_string_property(graph, @core.algorithm, "org.eclipse.elk.layered")
+  @graph.node_set_string_property(
+    graph, @core.algorithm, "org.eclipse.elk.layered",
+  )
   @graph.node_set_string_property(graph, @core.edge_routing, "ORTHOGONAL")
 
   let container = @graph.create_node(Some(graph))
@@ -268,7 +283,9 @@ test "Issue701 outside labels" {
   issue701_test_setup_plain_java_layout()
 
   let graph = create_graph()
-  @graph.node_set_string_property(graph, @core.algorithm, "org.eclipse.elk.layered")
+  @graph.node_set_string_property(
+    graph, @core.algorithm, "org.eclipse.elk.layered",
+  )
   @graph.node_set_string_property(graph, @core.edge_routing, "ORTHOGONAL")
 
   let container = @graph.create_node(Some(graph))
@@ -327,7 +344,9 @@ test "Issue701 mix inside and outside labels" {
   issue701_test_setup_plain_java_layout()
 
   let graph = create_graph()
-  @graph.node_set_string_property(graph, @core.algorithm, "org.eclipse.elk.layered")
+  @graph.node_set_string_property(
+    graph, @core.algorithm, "org.eclipse.elk.layered",
+  )
   @graph.node_set_string_property(graph, @core.edge_routing, "ORTHOGONAL")
 
   let container = @graph.create_node(Some(graph))
@@ -377,25 +396,33 @@ test "Issue701 mix inside and outside labels" {
   assert_false(issue701_test_has_label_overlaps(container))
   assert_true(
     issue701_test_array_contains(
-      @graph.node_get_string_set_property(inside_node_north, @core.port_labels_placement),
+      @graph.node_get_string_set_property(
+        inside_node_north, @core.port_labels_placement,
+      ),
       "INSIDE",
     ),
   )
   assert_true(
     issue701_test_array_contains(
-      @graph.node_get_string_set_property(inside_node_south, @core.port_labels_placement),
+      @graph.node_get_string_set_property(
+        inside_node_south, @core.port_labels_placement,
+      ),
       "INSIDE",
     ),
   )
   assert_false(
     issue701_test_array_contains(
-      @graph.node_get_string_set_property(outside_node_east, @core.port_labels_placement),
+      @graph.node_get_string_set_property(
+        outside_node_east, @core.port_labels_placement,
+      ),
       "INSIDE",
     ),
   )
   assert_false(
     issue701_test_array_contains(
-      @graph.node_get_string_set_property(outside_node_west, @core.port_labels_placement),
+      @graph.node_get_string_set_property(
+        outside_node_west, @core.port_labels_placement,
+      ),
       "INSIDE",
     ),
   )
@@ -407,7 +434,9 @@ test "Issue701 fixed inside labels" {
   issue701_test_setup_plain_java_layout()
 
   let graph = create_graph()
-  @graph.node_set_string_property(graph, @core.algorithm, "org.eclipse.elk.layered")
+  @graph.node_set_string_property(
+    graph, @core.algorithm, "org.eclipse.elk.layered",
+  )
   @graph.node_set_string_property(graph, @core.edge_routing, "ORTHOGONAL")
 
   let container = @graph.create_node(Some(graph))
@@ -439,11 +468,15 @@ test "Issue701 fixed outside labels" {
   issue701_test_setup_plain_java_layout()
 
   let graph = create_graph()
-  @graph.node_set_string_property(graph, @core.algorithm, "org.eclipse.elk.layered")
+  @graph.node_set_string_property(
+    graph, @core.algorithm, "org.eclipse.elk.layered",
+  )
   @graph.node_set_string_property(graph, @core.edge_routing, "ORTHOGONAL")
 
   let container = @graph.create_node(Some(graph))
-  @graph.node_set_identifier(container, "Container_OneBorderNode_LabelFixedOutside")
+  @graph.node_set_identifier(
+    container, "Container_OneBorderNode_LabelFixedOutside",
+  )
 
   let (node, port, label) = issue701_test_create_node_with_port_label(
     container,
@@ -467,7 +500,9 @@ test "Issue701 fixed mix inside and outside labels" {
   issue701_test_setup_plain_java_layout()
 
   let graph = create_graph()
-  @graph.node_set_string_property(graph, @core.algorithm, "org.eclipse.elk.layered")
+  @graph.node_set_string_property(
+    graph, @core.algorithm, "org.eclipse.elk.layered",
+  )
   @graph.node_set_string_property(graph, @core.edge_routing, "ORTHOGONAL")
 
   let container = @graph.create_node(Some(graph))
@@ -497,7 +532,9 @@ test "Issue701 fixed mix inside and outside labels" {
 
   assert_false(issue701_test_has_label_overlaps(container))
   assert_true(
-    @graph.node_get_string_set_property(inside_node, @core.port_labels_placement).is_empty(),
+    @graph.node_get_string_set_property(
+      inside_node, @core.port_labels_placement,
+    ).is_empty(),
   )
   assert_false(issue701_test_label_inside_node(outside_label, outside_node))
 }

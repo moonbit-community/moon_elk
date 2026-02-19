@@ -88,12 +88,16 @@ fn graphviz_tool_add_default_location(location : String) -> Unit {
   if normalized.is_empty() {
     return
   }
-  if normalized.starts_with("\"") &&
-    normalized.ends_with("\"") &&
+  if normalized.has_prefix("\"") &&
+    normalized.has_suffix("\"") &&
     normalized.length() >= 2 {
-    normalized = normalized.substring(start=1, end=normalized.length() - 1)
+    normalized = try normalized[1:normalized.length() - 1] catch {
+      _ => normalized
+    } noraise {
+      value => value.to_string()
+    }
   }
-  if !normalized.ends_with(graphviz_tool_file_separator_ref.val) {
+  if !normalized.has_suffix(graphviz_tool_file_separator_ref.val) {
     normalized = normalized + graphviz_tool_file_separator_ref.val
   }
   graphviz_tool_default_locs_ref.val.push(normalized)

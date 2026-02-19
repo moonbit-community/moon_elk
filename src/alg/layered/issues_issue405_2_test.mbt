@@ -41,7 +41,15 @@ test "Issue405_2 permissive coordinate matching for asymmetric label placement" 
 
   issue405_2_test_layout(graph)
 
-  let x_matches = issue405_2_fuzzy_equal(@graph.label_x(l1), @graph.label_x(l2), 0.001)
-  let y_matches = issue405_2_fuzzy_equal(@graph.label_y(l1), @graph.label_y(l2), 0.001)
+  let x_matches = issue405_2_fuzzy_equal(
+    @graph.label_x(l1),
+    @graph.label_x(l2),
+    0.001,
+  )
+  let y_matches = issue405_2_fuzzy_equal(
+    @graph.label_y(l1),
+    @graph.label_y(l2),
+    0.001,
+  )
   assert_true(x_matches || y_matches)
 }

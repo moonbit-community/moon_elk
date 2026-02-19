@@ -16,14 +16,10 @@ fn node_label_and_size_calculator_process_node(
   let layout_direction = @core.adapt(layered_graph).get_property_string(
     node_label_and_size_calculator_direction_property,
   )
-  let horizontal_layout_mode = layout_direction ==
-    "" ||
-    layout_direction ==
-    @core.direction_to_string(Undefined) ||
-    layout_direction ==
-    @core.direction_to_string(Rightward) ||
-    layout_direction ==
-    @core.direction_to_string(Leftward)
+  let horizontal_layout_mode = layout_direction == "" ||
+    layout_direction == @core.direction_to_string(Undefined) ||
+    layout_direction == @core.direction_to_string(Rightward) ||
+    layout_direction == @core.direction_to_string(Leftward)
 
   node_label_cell_creator_create_node_label_cells(
     node_context, false, horizontal_layout_mode,

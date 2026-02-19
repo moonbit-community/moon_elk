@@ -22,7 +22,6 @@ fn orthogonal_routing_generator_test_is_type(
   match dependency.get_type() {
     DependencyType::Critical => critical
     DependencyType::Regular => !critical
-    _ => false
   }
 }
 

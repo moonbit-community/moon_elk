@@ -714,7 +714,7 @@ fn core_meta_parser_parse_md_bundle(
 
   while index_ref.val < tokens.length() {
     match core_meta_parser_parse_md_bundle_member(tokens, index_ref) {
-      Some(member) => bundle.get_members().push(member)
+      Some(bundle_member) => bundle.get_members().push(bundle_member)
       None => index_ref.val += 1
     }
   }

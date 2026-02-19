@@ -149,7 +149,9 @@ pub fn LabelCell::get_labels(self : LabelCell) -> Array[@graph.ElkLabel] {
 }
 
 ///|
-pub fn LabelCell::get_l_labels(self : LabelCell) -> Array[@core.ElkLabelAdapter] {
+pub fn LabelCell::get_l_labels(
+  self : LabelCell,
+) -> Array[@core.ElkLabelAdapter] {
   label_cell_l_labels(self)
 }
 
@@ -185,7 +187,10 @@ pub fn LabelCell::add_label(self : LabelCell, label : @graph.ElkLabel) -> Unit {
 }
 
 ///|
-pub fn LabelCell::add_l_label(self : LabelCell, label : @core.ElkLabelAdapter) -> Unit {
+pub fn LabelCell::add_l_label(
+  self : LabelCell,
+  label : @core.ElkLabelAdapter,
+) -> Unit {
   let had_labels = self.label_count() > 0
   let labels = label_cell_l_labels(self)
   labels.push(label)

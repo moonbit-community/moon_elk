@@ -113,7 +113,9 @@ pub fn ForcePaddingOption::get_id(self : ForcePaddingOption) -> String {
 }
 
 ///|
-pub fn ForcePaddingOption::get_default(self : ForcePaddingOption) -> @core.ElkPadding {
+pub fn ForcePaddingOption::get_default(
+  self : ForcePaddingOption,
+) -> @core.ElkPadding {
   self.default_value
 }
 

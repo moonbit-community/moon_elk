@@ -4,11 +4,16 @@ pub struct IRadialRotator {
 }
 
 ///|
-pub fn new_i_radial_rotator(rotate : (@graph.ElkNode) -> Unit) -> IRadialRotator {
+pub fn new_i_radial_rotator(
+  rotate : (@graph.ElkNode) -> Unit,
+) -> IRadialRotator {
   { rotate_fn: rotate }
 }
 
 ///|
-pub fn IRadialRotator::rotate(self : IRadialRotator, graph : @graph.ElkNode) -> Unit {
+pub fn IRadialRotator::rotate(
+  self : IRadialRotator,
+  graph : @graph.ElkNode,
+) -> Unit {
   (self.rotate_fn)(graph)
 }

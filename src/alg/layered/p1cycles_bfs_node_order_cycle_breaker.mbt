@@ -1,5 +1,5 @@
 ///|
-struct BfsNodeOrderCycleBreakerState {
+priv struct BfsNodeOrderCycleBreakerState {
   sources : Map[Int, Bool]
   sinks : Map[Int, Bool]
   visited : Array[Bool]

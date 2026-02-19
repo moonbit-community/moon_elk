@@ -1,5 +1,7 @@
 ///|
-fn sweep_copy_port_constraints_from_string(value : String) -> @core.PortConstraints {
+fn sweep_copy_port_constraints_from_string(
+  value : String,
+) -> @core.PortConstraints {
   match value {
     "UNDEFINED" => @core.PortConstraints::Undefined
     "FREE" => @core.PortConstraints::Free
@@ -23,7 +25,10 @@ fn sweep_copy_port_side_ordinal(side : @core.PortSide) -> Int {
 }
 
 ///|
-fn sweep_copy_port_side_is(side : @core.PortSide, expected : @core.PortSide) -> Bool {
+fn sweep_copy_port_side_is(
+  side : @core.PortSide,
+  expected : @core.PortSide,
+) -> Bool {
   sweep_copy_port_side_ordinal(side) == sweep_copy_port_side_ordinal(expected)
 }
 
@@ -50,7 +55,9 @@ fn sweep_copy_compare_ports(left : LPort, right : LPort) -> Int {
     Some(node) => node
     None => return 0
   }
-  let port_constraints_value = if node.has_property_string(@core.port_constraints) {
+  let port_constraints_value = if node.has_property_string(
+      @core.port_constraints,
+    ) {
     node.get_property_string(@core.port_constraints)
   } else {
     @core.port_constraints.get_default()
@@ -184,7 +191,9 @@ pub fn SweepCopy::transfer_node_and_port_orders_to_graph(
       }
 
       if set_port_constraints {
-        let current_constraints = if node.has_property_string(@core.port_constraints) {
+        let current_constraints = if node.has_property_string(
+            @core.port_constraints,
+          ) {
           node.get_property_string(@core.port_constraints)
         } else {
           @core.port_constraints.get_default()

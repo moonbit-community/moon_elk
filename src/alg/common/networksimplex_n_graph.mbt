@@ -12,8 +12,8 @@ pub struct NEdge {
 priv struct NNodeData {
   id : Int
   mut internal_id : Int
-  origin : String?
-  node_type : String
+  _origin : String?
+  _node_type : String
   mut layer : Int
   outgoing_edges : Array[NEdge]
   incoming_edges : Array[NEdge]
@@ -25,7 +25,7 @@ priv struct NNodeData {
 priv struct NEdgeData {
   id : Int
   mut internal_id : Int
-  origin : String?
+  _origin : String?
   mut source : NNode?
   mut target : NNode?
   mut weight : Double
@@ -147,8 +147,8 @@ pub fn NNodeBuilder::create(self : NNodeBuilder, graph : NGraph) -> NNode {
   nnode_store.val.push({
     id: self.id,
     internal_id: 0,
-    origin: self.origin,
-    node_type: self.node_type,
+    _origin: self.origin,
+    _node_type: self.node_type,
     layer: 0,
     outgoing_edges: [],
     incoming_edges: [],
@@ -231,7 +231,7 @@ pub fn NEdgeBuilder::create(self : NEdgeBuilder) -> NEdge {
   nedge_store.val.push({
     id: self.id,
     internal_id: 0,
-    origin: self.origin,
+    _origin: self.origin,
     source: Some(source),
     target: Some(target),
     weight: self.weight,

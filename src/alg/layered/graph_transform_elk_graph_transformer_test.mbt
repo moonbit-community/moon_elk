@@ -7,7 +7,9 @@ fn layered_graph_transform_test_fixture() -> (
 ) {
   reset_graph_model_for_test()
   let graph = create_graph()
-  @graph.node_set_string_property(graph, @core.padding, "[top=0,left=0,bottom=0,right=0]")
+  @graph.node_set_string_property(
+    graph, @core.padding, "[top=0,left=0,bottom=0,right=0]",
+  )
 
   let left = @graph.create_node(Some(graph))
   @graph.node_set_identifier(left, "left")

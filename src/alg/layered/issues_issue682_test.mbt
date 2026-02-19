@@ -15,7 +15,9 @@ struct Issue682TestGraph {
 ///|
 fn issue682_test_graph(layout_direction : String) -> Issue682TestGraph {
   let graph = create_graph()
-  @graph.node_set_string_property(graph, @core.algorithm, "org.eclipse.elk.layered")
+  @graph.node_set_string_property(
+    graph, @core.algorithm, "org.eclipse.elk.layered",
+  )
   @graph.node_set_string_property(graph, @core.edge_routing, "ORTHOGONAL")
   @graph.node_set_string_property(graph, @core.direction, layout_direction)
   @graph.node_set_layout_option_string_by_id(
@@ -23,7 +25,9 @@ fn issue682_test_graph(layout_direction : String) -> Issue682TestGraph {
   )
 
   let parent = @graph.create_node(Some(graph))
-  node_set_string_set_property(parent, @core.node_size_constraints, ["NODE_LABELS"])
+  node_set_string_set_property(parent, @core.node_size_constraints, [
+    "NODE_LABELS",
+  ])
   node_set_string_set_property(parent, @core.node_labels_placement, [
     "INSIDE", "V_TOP", "H_CENTER",
   ])
@@ -57,7 +61,10 @@ test "Issue682 node label @core.padding respects all directions" {
   for layout_direction in ["RIGHT", "DOWN", "UP", "LEFT"] {
     let test_graph = issue682_test_graph(layout_direction)
     let layout_engine = new_recursive_graph_layout_engine()
-    layout_engine.layout(test_graph.graph, @core.new_null_elk_progress_monitor())
+    layout_engine.layout(
+      test_graph.graph,
+      @core.new_null_elk_progress_monitor(),
+    )
 
     let label = test_graph.label
     issue682_test_assert_close(

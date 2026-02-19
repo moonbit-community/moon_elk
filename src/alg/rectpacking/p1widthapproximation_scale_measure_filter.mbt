@@ -8,7 +8,7 @@ pub fn rectpacking_scale_measure_filter(
   let remaining_candidates = []
   let mut max_scale = @double.neg_infinity
   for opt in candidates {
-    max_scale = @math.maximum(
+    max_scale = @cmp.maximum(
       max_scale,
       rectpacking_compute_scale_measure(
         opt.drawing_width + padding.get_horizontal(),

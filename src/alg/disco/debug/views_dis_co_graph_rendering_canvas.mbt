@@ -7,6 +7,14 @@ pub struct DisCoPaintEvent {
 }
 
 ///|
+let _dis_co_default_paint_event : DisCoPaintEvent = {
+  x: 0,
+  y: 0,
+  width: 0,
+  height: 0,
+}
+
+///|
 pub struct DisCoGraphRenderingCanvas {
   mut layout_graph : @graph.ElkNode?
   graph_renderer : DisCoGraphRenderer

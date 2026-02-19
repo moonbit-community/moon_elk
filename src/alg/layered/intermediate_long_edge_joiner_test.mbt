@@ -88,7 +88,7 @@ fn long_edge_joiner_test_strategy(
 }
 
 ///|
-fn long_edge_joiner_test_require_source(edge : LEdge) -> LPort {
+fn _long_edge_joiner_test_require_source(edge : LEdge) -> LPort {
   match edge.get_source() {
     Some(value) => value
     None => abort("edge has no source")
@@ -104,7 +104,7 @@ fn long_edge_joiner_test_require_target(edge : LEdge) -> LPort {
 }
 
 ///|
-fn long_edge_joiner_test_require_node(port : LPort) -> LNode {
+fn _long_edge_joiner_test_require_node(port : LPort) -> LNode {
   match port.get_node() {
     Some(value) => value
     None => abort("port has no owner")

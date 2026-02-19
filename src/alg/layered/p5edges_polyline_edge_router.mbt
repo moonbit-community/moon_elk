@@ -529,7 +529,9 @@ fn polyline_edge_router_add_bend_point(
     ) &&
     !edge.is_self_loop() {
     if polyline_edge_router_port_equals(edge.get_source(), Some(curr_port)) {
-      edge.get_bend_points().add_first_vector(@core.new_kvector_copy(bend_point))
+      edge
+      .get_bend_points()
+      .add_first_vector(@core.new_kvector_copy(bend_point))
     } else {
       edge.get_bend_points().add_vector(@core.new_kvector_copy(bend_point))
     }

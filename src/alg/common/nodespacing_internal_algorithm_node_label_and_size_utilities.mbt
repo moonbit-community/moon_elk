@@ -19,7 +19,8 @@ fn nodespacing_size_constraint_equals(
   left : @core.SizeConstraint,
   right : @core.SizeConstraint,
 ) -> Bool {
-  @core.size_constraint_to_string(left) == @core.size_constraint_to_string(right)
+  @core.size_constraint_to_string(left) ==
+  @core.size_constraint_to_string(right)
 }
 
 ///|
@@ -40,7 +41,9 @@ fn nodespacing_parse_minimum_size(text : String) -> @core.KVector {
 }
 
 ///|
-pub fn nodespacing_port_border_offset_value(port : @core.ElkPortAdapter) -> Double {
+pub fn nodespacing_port_border_offset_value(
+  port : @core.ElkPortAdapter,
+) -> Double {
   if port.has_property_double(nodespacing_port_border_offset_property) {
     port.get_property_double(nodespacing_port_border_offset_property)
   } else {
@@ -49,7 +52,9 @@ pub fn nodespacing_port_border_offset_value(port : @core.ElkPortAdapter) -> Doub
 }
 
 ///|
-pub fn nodespacing_port_labels_bounds(port : @core.ElkPortAdapter) -> @core.ElkRectangle {
+pub fn nodespacing_port_labels_bounds(
+  port : @core.ElkPortAdapter,
+) -> @core.ElkRectangle {
   let labels = port.get_labels()
   if labels.is_empty() {
     return @core.new_elk_rectangle()

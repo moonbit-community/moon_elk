@@ -21,7 +21,7 @@ pub fn graph_test_shape_label(label : ElkLabel) -> GraphTestShape {
 }
 
 ///|
-struct GraphTestRectangle {
+priv struct GraphTestRectangle {
   x : Double
   y : Double
   width : Double

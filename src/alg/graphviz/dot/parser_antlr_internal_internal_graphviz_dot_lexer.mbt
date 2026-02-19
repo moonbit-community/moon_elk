@@ -148,6 +148,15 @@ fn graphviz_dot_lexer_token_name(token_type : Int) -> String {
 }
 
 ///|
+fn graphviz_dot_lexer_slice(text : String, start : Int, end_ : Int) -> String {
+  try text[start:end_] catch {
+    _ => ""
+  } noraise {
+    value => value.to_string()
+  }
+}
+
+///|
 pub fn InternalGraphvizDotLexer::lex_all(
   self : InternalGraphvizDotLexer,
 ) -> Array[GraphvizDotLexToken] {
@@ -185,7 +194,7 @@ pub fn InternalGraphvizDotLexer::lex_all(
           index += 1
         }
       }
-      let lexeme = text.substring(start~, end=index)
+      let lexeme = graphviz_dot_lexer_slice(text, start, index)
       tokens.push(
         new_graphviz_dot_lex_token(
           graphviz_dot_lexer_rule_string,
@@ -198,7 +207,7 @@ pub fn InternalGraphvizDotLexer::lex_all(
     if ch == '-' && index + 1 < text.length() {
       let next = text[index + 1].unsafe_to_char()
       if next == '>' || next == '-' {
-        let lexeme = text.substring(start=index, end=index + 2)
+        let lexeme = graphviz_dot_lexer_slice(text, index, index + 2)
         index += 2
         let token_type = match graphviz_dot_lexer_symbol_token_type(lexeme) {
           Some(value) => value
@@ -221,7 +230,7 @@ pub fn InternalGraphvizDotLexer::lex_all(
             graphviz_dot_lexer_is_id_part(text[index].unsafe_to_char()) {
         index += 1
       }
-      let lexeme = text.substring(start~, end=index)
+      let lexeme = graphviz_dot_lexer_slice(text, start, index)
       match graphviz_dot_lexer_keyword_token_type(lexeme) {
         Some(token_type) =>
           tokens.push(
@@ -257,7 +266,7 @@ pub fn InternalGraphvizDotLexer::lex_all(
           break
         }
       }
-      let lexeme = text.substring(start~, end=index)
+      let lexeme = graphviz_dot_lexer_slice(text, start, index)
       let token_type = if has_dot {
         graphviz_dot_lexer_rule_float
       } else {
@@ -272,7 +281,7 @@ pub fn InternalGraphvizDotLexer::lex_all(
       )
       continue
     }
-    let symbol_lexeme = text.substring(start=index, end=index + 1)
+    let symbol_lexeme = graphviz_dot_lexer_slice(text, index, index + 1)
     index += 1
     let token_type = match graphviz_dot_lexer_symbol_token_type(symbol_lexeme) {
       Some(value) => value

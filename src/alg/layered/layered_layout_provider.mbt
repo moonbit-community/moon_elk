@@ -10,15 +10,15 @@ pub fn new_layered_layout_provider() -> LayeredLayoutProvider {
 
 ///|
 fn init {
-  @core.recursive_graph_layout_engine_register_handler(
-    layered_algorithm_id,
-    (layout_graph, progress_monitor) => {
-      if recursive_layered_try_layout(layout_graph, progress_monitor) {
-        return
-      }
-      new_layered_layout_provider().layout(layout_graph, progress_monitor)
-    },
-  )
+  @core.recursive_graph_layout_engine_register_handler(layered_algorithm_id, (
+    layout_graph,
+    progress_monitor,
+  ) => {
+    if recursive_layered_try_layout(layout_graph, progress_monitor) {
+      return
+    }
+    new_layered_layout_provider().layout(layout_graph, progress_monitor)
+  })
 }
 
 ///|
@@ -30,7 +30,9 @@ pub fn LayeredLayoutProvider::layout(
   let graph_transformer = new_layered_elk_graph_transformer()
   let layered_graph = graph_transformer.import_graph(elk_graph)
 
-  if @graph.node_get_string_property(elk_graph, layered_options_hierarchy_handling) ==
+  if @graph.node_get_string_property(
+      elk_graph, layered_options_hierarchy_handling,
+    ) ==
     "INCLUDE_CHILDREN" {
     self.elk_layered.do_compound_layout(layered_graph, Some(progress_monitor))
   } else {

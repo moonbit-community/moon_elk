@@ -164,7 +164,9 @@ fn graph_json_text_ide_shape_in_list(
 }
 
 ///|
-fn graph_json_text_ide_find_parent_edge(section : @graph.ElkEdgeSection) -> @graph.ElkEdge? {
+fn graph_json_text_ide_find_parent_edge(
+  section : @graph.ElkEdgeSection,
+) -> @graph.ElkEdge? {
   for edge in @graph.all_edges() {
     for existing in @graph.edge_sections(edge) {
       if existing == section {

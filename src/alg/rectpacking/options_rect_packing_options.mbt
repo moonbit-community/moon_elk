@@ -30,12 +30,16 @@ pub let rectpacking_width_approximation_target_width : @graph.IProperty[Double] 
 )
 
 ///|
-pub let rectpacking_width_approximation_optimization_goal : @graph.IProperty[String] = @graph.new_property(
+pub let rectpacking_width_approximation_optimization_goal : @graph.IProperty[
+  String,
+] = @graph.new_property(
   "org.eclipse.elk.rectpacking.widthApproximation.optimizationGoal", "MAX_SCALE_DRIVEN",
 )
 
 ///|
-pub let rectpacking_width_approximation_last_place_shift : @graph.IProperty[Bool] = @graph.new_property(
+pub let rectpacking_width_approximation_last_place_shift : @graph.IProperty[
+  Bool,
+] = @graph.new_property(
   "org.eclipse.elk.rectpacking.widthApproximation.lastPlaceShift", true,
 )
 
@@ -45,7 +49,9 @@ pub let rectpacking_packing_strategy : @graph.IProperty[String] = @graph.new_pro
 )
 
 ///|
-pub let rectpacking_packing_compaction_row_height_reevaluation : @graph.IProperty[Bool] = @graph.new_property(
+pub let rectpacking_packing_compaction_row_height_reevaluation : @graph.IProperty[
+  Bool,
+] = @graph.new_property(
   "org.eclipse.elk.rectpacking.packing.compaction.rowHeightReevaluation", false,
 )
 

@@ -35,5 +35,7 @@ pub fn new_rectpacking_target_width_approximator_layout_phase() -> @core.ILayout
   RectPackingLayoutPhases,
   @graph.ElkNode,
 ] {
-  @core.new_layout_phase(rectpacking_target_width_approximator_process, _ => None)
+  @core.new_layout_phase(rectpacking_target_width_approximator_process, _ => {
+    None
+  })
 }

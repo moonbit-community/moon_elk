@@ -172,7 +172,9 @@ pub fn LGraph::has_property_l_node_array(
 ///|
 pub fn LGraph::set_property_layout_processor_array(
   self : LGraph,
-  property : @graph.IProperty[Array[@core.ILayoutProcessor[LayeredPhases, LGraph]]],
+  property : @graph.IProperty[
+    Array[@core.ILayoutProcessor[LayeredPhases, LGraph]],
+  ],
   value : Array[@core.ILayoutProcessor[LayeredPhases, LGraph]],
 ) -> Unit {
   self.layout_processor_array_properties[property.get_id()] = value.copy()
@@ -181,7 +183,9 @@ pub fn LGraph::set_property_layout_processor_array(
 ///|
 pub fn LGraph::get_property_layout_processor_array(
   self : LGraph,
-  property : @graph.IProperty[Array[@core.ILayoutProcessor[LayeredPhases, LGraph]]],
+  property : @graph.IProperty[
+    Array[@core.ILayoutProcessor[LayeredPhases, LGraph]],
+  ],
 ) -> Array[@core.ILayoutProcessor[LayeredPhases, LGraph]] {
   match self.layout_processor_array_properties.get(property.get_id()) {
     Some(value) => value.copy()
@@ -192,7 +196,9 @@ pub fn LGraph::get_property_layout_processor_array(
 ///|
 pub fn LGraph::has_property_layout_processor_array(
   self : LGraph,
-  property : @graph.IProperty[Array[@core.ILayoutProcessor[LayeredPhases, LGraph]]],
+  property : @graph.IProperty[
+    Array[@core.ILayoutProcessor[LayeredPhases, LGraph]],
+  ],
 ) -> Bool {
   self.layout_processor_array_properties.contains(property.get_id())
 }

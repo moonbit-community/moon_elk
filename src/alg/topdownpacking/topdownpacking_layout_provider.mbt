@@ -1,6 +1,9 @@
 ///|
 pub struct TopdownpackingLayoutProvider {
-  algorithm_assembler : @core.AlgorithmAssembler[TopdownPackingPhases, GridElkNode]
+  algorithm_assembler : @core.AlgorithmAssembler[
+    TopdownPackingPhases,
+    GridElkNode,
+  ]
 }
 
 ///|
@@ -69,7 +72,9 @@ pub fn TopdownpackingLayoutProvider::get_predicted_graph_size(
 ) -> @core.KVector {
   ignore(self)
   let node_arrangement_strategy = topdownpacking_node_arrangement_strategy_from_string(
-    @graph.node_get_string_property(graph, topdownpacking_node_arrangement_strategy),
+    @graph.node_get_string_property(
+      graph, topdownpacking_node_arrangement_strategy,
+    ),
   )
   let node_arranger = topdownpacking_node_arrangement_strategy_create_node_arranger(
     node_arrangement_strategy,
@@ -90,7 +95,7 @@ pub fn topdownpacking_layout_provider_as_layout_provider(
 pub fn topdownpacking_layout_provider_as_topdown_layout_provider(
   provider : TopdownpackingLayoutProvider,
 ) -> @core.ITopdownLayoutProvider {
-  @core.new_topdown_layout_provider(
-    graph => provider.get_predicted_graph_size(graph),
-  )
+  @core.new_topdown_layout_provider(graph => {
+    provider.get_predicted_graph_size(graph)
+  })
 }

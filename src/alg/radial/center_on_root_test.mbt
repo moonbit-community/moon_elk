@@ -26,7 +26,10 @@ fn radial_make_node(
 }
 
 ///|
-fn radial_assert_centered(parent : @graph.ElkNode, root : @graph.ElkNode) -> Unit {
+fn radial_assert_centered(
+  parent : @graph.ElkNode,
+  root : @graph.ElkNode,
+) -> Unit {
   radial_assert_close(
     @graph.node_width(parent) / 2.0,
     @graph.node_x(root) + @graph.node_width(root) / 2.0,

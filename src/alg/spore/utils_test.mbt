@@ -19,7 +19,7 @@ fn spore_utils_overlap_non_negative_after_move(
   let d = c2.clone().sub(c1)
   let c3 = c1.clone().add(d.scale(o))
   let r3 = @core.new_elk_rectangle_copy(r2)
-  ignore(r3.move(c3.clone().sub(c2)))
+  ignore(r3.move_by(c3.clone().sub(c2)))
   @common.compare_fuzzy_ge(@core.shortest_distance(r1, r3), 0.0)
 }
 
@@ -80,7 +80,9 @@ test "spore utils underlap and distance" {
       ),
     )
     n2.translate(n1.vertex.clone().sub(n2.vertex).scale_to_length(underlap))
-    assert_true(@common.compare_fuzzy_eq(@core.shortest_distance(n1.rect, n2.rect), 0.0))
+    assert_true(
+      @common.compare_fuzzy_eq(@core.shortest_distance(n1.rect, n2.rect), 0.0),
+    )
   }
 
   let vectors : Array[SporeUtilsDistanceCase] = [
@@ -98,11 +100,19 @@ test "spore utils underlap and distance" {
   let root = @common.new_node(r1.get_center(), r1)
   let source = spore_utils_rect(30.0, -30.0, 20.0, 20.0)
   for item in vectors {
-    let n2 = @common.new_node(source.get_center(), @core.new_elk_rectangle_copy(source))
+    let n2 = @common.new_node(
+      source.get_center(),
+      @core.new_elk_rectangle_copy(source),
+    )
     let distance = root.distance(n2, item.vector)
     if item.should_collide {
       n2.translate(item.vector.clone().scale_to_length(distance))
-      assert_true(@common.compare_fuzzy_eq(@core.shortest_distance(root.rect, n2.rect), 0.0))
+      assert_true(
+        @common.compare_fuzzy_eq(
+          @core.shortest_distance(root.rect, n2.rect),
+          0.0,
+        ),
+      )
     } else {
       assert_true(distance == @double.infinity)
     }

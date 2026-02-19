@@ -57,7 +57,9 @@ fn graph_transformer_parse_edge_label_side_selection(
 }
 
 ///|
-fn graph_transformer_mirror_port_side_x(side : @core.PortSide) -> @core.PortSide {
+fn graph_transformer_mirror_port_side_x(
+  side : @core.PortSide,
+) -> @core.PortSide {
   match side {
     @core.PortSide::East => @core.PortSide::West
     @core.PortSide::West => @core.PortSide::East
@@ -66,7 +68,9 @@ fn graph_transformer_mirror_port_side_x(side : @core.PortSide) -> @core.PortSide
 }
 
 ///|
-fn graph_transformer_mirror_port_side_y(side : @core.PortSide) -> @core.PortSide {
+fn graph_transformer_mirror_port_side_y(
+  side : @core.PortSide,
+) -> @core.PortSide {
   match side {
     @core.PortSide::North => @core.PortSide::South
     @core.PortSide::South => @core.PortSide::North
@@ -75,7 +79,9 @@ fn graph_transformer_mirror_port_side_y(side : @core.PortSide) -> @core.PortSide
 }
 
 ///|
-fn graph_transformer_transpose_port_side(side : @core.PortSide) -> @core.PortSide {
+fn graph_transformer_transpose_port_side(
+  side : @core.PortSide,
+) -> @core.PortSide {
   match side {
     @core.PortSide::North => @core.PortSide::West
     @core.PortSide::West => @core.PortSide::North
@@ -86,12 +92,18 @@ fn graph_transformer_transpose_port_side(side : @core.PortSide) -> @core.PortSid
 }
 
 ///|
-fn graph_transformer_mirror_x_vector(v : @core.KVector, offset : Double) -> Unit {
+fn graph_transformer_mirror_x_vector(
+  v : @core.KVector,
+  offset : Double,
+) -> Unit {
   v.x = offset - v.x
 }
 
 ///|
-fn graph_transformer_mirror_y_vector(v : @core.KVector, offset : Double) -> Unit {
+fn graph_transformer_mirror_y_vector(
+  v : @core.KVector,
+  offset : Double,
+) -> Unit {
   v.y = offset - v.y
 }
 
@@ -254,7 +266,9 @@ fn graph_transformer_mirror_node_label_placement_x_node(node : LNode) -> Unit {
   if !node.has_property_string_array(@core.node_labels_placement) {
     return
   }
-  let old_placement = node.get_property_string_array(@core.node_labels_placement)
+  let old_placement = node.get_property_string_array(
+    @core.node_labels_placement,
+  )
   node.set_property_string_array(
     @core.node_labels_placement,
     graph_transformer_mirror_node_label_placement_x_values(old_placement),
@@ -268,7 +282,9 @@ fn graph_transformer_mirror_node_label_placement_x_label(
   if !label.has_property_string_array(@core.node_labels_placement) {
     return
   }
-  let old_placement = label.get_property_string_array(@core.node_labels_placement)
+  let old_placement = label.get_property_string_array(
+    @core.node_labels_placement,
+  )
   label.set_property_string_array(
     @core.node_labels_placement,
     graph_transformer_mirror_node_label_placement_x_values(old_placement),
@@ -280,7 +296,9 @@ fn graph_transformer_mirror_node_label_placement_y_node(node : LNode) -> Unit {
   if !node.has_property_string_array(@core.node_labels_placement) {
     return
   }
-  let old_placement = node.get_property_string_array(@core.node_labels_placement)
+  let old_placement = node.get_property_string_array(
+    @core.node_labels_placement,
+  )
   node.set_property_string_array(
     @core.node_labels_placement,
     graph_transformer_mirror_node_label_placement_y_values(old_placement),
@@ -294,7 +312,9 @@ fn graph_transformer_mirror_node_label_placement_y_label(
   if !label.has_property_string_array(@core.node_labels_placement) {
     return
   }
-  let old_placement = label.get_property_string_array(@core.node_labels_placement)
+  let old_placement = label.get_property_string_array(
+    @core.node_labels_placement,
+  )
   label.set_property_string_array(
     @core.node_labels_placement,
     graph_transformer_mirror_node_label_placement_y_values(old_placement),
@@ -306,7 +326,9 @@ fn graph_transformer_transpose_node_label_placement_node(node : LNode) -> Unit {
   if !node.has_property_string_array(@core.node_labels_placement) {
     return
   }
-  let old_placement = node.get_property_string_array(@core.node_labels_placement)
+  let old_placement = node.get_property_string_array(
+    @core.node_labels_placement,
+  )
   node.set_property_string_array(
     @core.node_labels_placement,
     graph_transformer_transpose_node_label_placement_values(old_placement),
@@ -320,7 +342,9 @@ fn graph_transformer_transpose_node_label_placement_label(
   if !label.has_property_string_array(@core.node_labels_placement) {
     return
   }
-  let old_placement = label.get_property_string_array(@core.node_labels_placement)
+  let old_placement = label.get_property_string_array(
+    @core.node_labels_placement,
+  )
   label.set_property_string_array(
     @core.node_labels_placement,
     graph_transformer_transpose_node_label_placement_values(old_placement),

@@ -14,7 +14,7 @@ let compound_graph_preprocessor_layered_options_inside_self_loops_yo : @graph.IP
 ] = @graph.new_property("org.eclipse.elk.insideSelfLoops.yo", false)
 
 ///|
-struct CompoundGraphPreprocessorExternalPort {
+priv struct CompoundGraphPreprocessorExternalPort {
   orig_edges : Array[LEdge]
   new_edge : LEdge
   dummy_node : LNode
@@ -67,7 +67,7 @@ fn compound_graph_preprocessor_require_port_node(port : LPort) -> LNode {
 }
 
 ///|
-fn compound_graph_preprocessor_require_parent_node(graph : LGraph) -> LNode {
+fn _compound_graph_preprocessor_require_parent_node(graph : LGraph) -> LNode {
   match graph.get_parent_node() {
     Some(node) => node
     None => abort("graph has no parent node")
@@ -158,8 +158,10 @@ fn compound_graph_preprocessor_compute_inside_part(
         0.0,
         label_size.y + label_position.y - (port_size.y + port_border_offset),
       )
-    @core.PortSide::South => @cmp.maximum(0.0, -label_position.y - port_border_offset)
-    @core.PortSide::East => @cmp.maximum(0.0, -label_position.x - port_border_offset)
+    @core.PortSide::South =>
+      @cmp.maximum(0.0, -label_position.y - port_border_offset)
+    @core.PortSide::East =>
+      @cmp.maximum(0.0, -label_position.x - port_border_offset)
     @core.PortSide::West =>
       @cmp.maximum(
         0.0,
@@ -405,7 +407,8 @@ fn compound_graph_preprocessor_set_sides_of_ports_to_sides_of_dummy_nodes(
     let external_port_node = compound_graph_preprocessor_require_port_node(
       external_port,
     )
-    external_port_node.set_property_string(@core.port_constraints,
+    external_port_node.set_property_string(
+      @core.port_constraints,
       @core.port_constraints_to_string(@core.PortConstraints::FixedSide),
     )
     compound_graph_preprocessor_graph_add_property(
@@ -460,11 +463,16 @@ fn compound_graph_preprocessor_move_labels_and_remove_original_edges(
         let curr_label = labels[index]
         let mut target_dummy_edge_index = -1
 
-        let placement = curr_label.get_property_string(@core.edge_labels_placement)
-        if placement == @core.edge_label_placement_to_string(@core.EdgeLabelPlacement::Head) {
+        let placement = curr_label.get_property_string(
+          @core.edge_labels_placement,
+        )
+        if placement ==
+          @core.edge_label_placement_to_string(@core.EdgeLabelPlacement::Head) {
           target_dummy_edge_index = edge_segments.length() - 1
         } else if placement ==
-          @core.edge_label_placement_to_string(@core.EdgeLabelPlacement::Centered) {
+          @core.edge_label_placement_to_string(
+            @core.EdgeLabelPlacement::Centered,
+          ) {
           target_dummy_edge_index = compound_graph_preprocessor_get_shallowest_edge_segment(
             edge_segments,
           )
@@ -981,7 +989,9 @@ fn compound_graph_preprocessor_transform_hierarchy_edges(
               if !inside_port_labels {
                 let side = port.get_side()
                 let mut inside_part = 0.0
-                if @core.port_label_placement_is_fixed(parsed_port_label_placement) {
+                if @core.port_label_placement_is_fixed(
+                    parsed_port_label_placement,
+                  ) {
                   inside_part = compound_graph_preprocessor_compute_inside_part(
                     ext_port_label.get_position(),
                     ext_port_label.get_size(),
@@ -1116,7 +1126,9 @@ fn compound_graph_preprocessor_introduce_hierarchical_edge_segment(
       Some(existing_external_port) => {
         existing_external_port.orig_edges.push(orig_edge)
         let thickness = @cmp.maximum(
-          existing_external_port.new_edge.get_property_double(@core.edge_thickness),
+          existing_external_port.new_edge.get_property_double(
+            @core.edge_thickness,
+          ),
           orig_edge.get_property_double(@core.edge_thickness),
         )
         existing_external_port.new_edge.set_property_double(
@@ -1307,11 +1319,13 @@ fn compound_graph_preprocessor_create_external_port_dummy(
   if compound_graph_preprocessor_port_constraints_from_string(
       graph.get_property_string(@core.port_constraints),
     ).is_side_fixed() {
-    graph.set_property_string(@core.port_constraints,
+    graph.set_property_string(
+      @core.port_constraints,
       @core.port_constraints_to_string(@core.PortConstraints::FixedSide),
     )
   } else {
-    graph.set_property_string(@core.port_constraints,
+    graph.set_property_string(
+      @core.port_constraints,
       @core.port_constraints_to_string(@core.PortConstraints::Free),
     )
   }

@@ -175,7 +175,9 @@ fn dis_co_dc_direction_to_string(direction : @disco.DCDirection) -> String {
 }
 
 ///|
-fn dis_co_poly_direction_to_string(direction : @common.PolyominoDirection) -> String {
+fn dis_co_poly_direction_to_string(
+  direction : @common.PolyominoDirection,
+) -> String {
   match direction {
     North => "NORTH"
     East => "EAST"
@@ -232,7 +234,9 @@ fn dis_co_paint_rectangle_from_extension(
 }
 
 ///|
-fn dis_co_graph_renderer_first_edge_section(edge : @graph.ElkEdge) -> @graph.ElkEdgeSection? {
+fn dis_co_graph_renderer_first_edge_section(
+  edge : @graph.ElkEdge,
+) -> @graph.ElkEdgeSection? {
   let sections = @graph.edge_sections(edge)
   if sections.is_empty() {
     None
@@ -422,12 +426,14 @@ fn dis_co_paint_polygon_intersects(
 }
 
 ///|
-let dis_co_debug_node_component_graph_store : Ref[Map[@graph.ElkNode, @disco.DCGraph]] = Ref::new({},
-)
+let dis_co_debug_node_component_graph_store : Ref[
+  Map[@graph.ElkNode, @disco.DCGraph],
+] = Ref::new({})
 
 ///|
-let dis_co_debug_node_polyomino_store : Ref[Map[@graph.ElkNode, Array[@disco.DCPolyomino]]] = Ref::new({},
-)
+let dis_co_debug_node_polyomino_store : Ref[
+  Map[@graph.ElkNode, Array[@disco.DCPolyomino]],
+] = Ref::new({})
 
 ///|
 pub fn dis_co_graph_renderer_bind_component_graph(
@@ -912,7 +918,10 @@ fn dis_co_graph_renderer_render_node_children(
 
     renderer.bounds_map[key] = rect
 
-    let child_offset = @core.new_kvector_xy(rect.x.to_double(), rect.y.to_double())
+    let child_offset = @core.new_kvector_xy(
+      rect.x.to_double(),
+      rect.y.to_double(),
+    )
 
     for label in @graph.node_labels(child) {
       dis_co_graph_renderer_render_label(
@@ -949,7 +958,10 @@ fn dis_co_graph_renderer_render_component_graph(
   level_number : Int,
 ) -> Unit {
   ignore(level_number)
-  let boundaries = @core.new_kvector_xy(@graph.node_width(parent), @graph.node_height(parent))
+  let boundaries = @core.new_kvector_xy(
+    @graph.node_width(parent),
+    @graph.node_height(parent),
+  )
 
   for component in component_graph.get_components() {
     for element in component.get_elements() {

@@ -11,7 +11,9 @@ fn topdownpacking_bottom_row_equal_whitespace_eliminator_configuration(
   graph : GridElkNode,
 ) -> @core.LayoutProcessorConfiguration[TopdownPackingPhases, GridElkNode]? {
   ignore(graph)
-  Some(@core.layout_processor_configuration_create(topdownpacking_phase_descriptor))
+  Some(
+    @core.layout_processor_configuration_create(topdownpacking_phase_descriptor),
+  )
 }
 
 ///|
@@ -56,7 +58,11 @@ fn topdownpacking_bottom_row_equal_whitespace_eliminator_process(
       let mut accumulated_shift = 0.0
       for j = 0; j <= last_index; j = j + 1 {
         let node = topdownpacking_expect_node(row[j])
-        @graph.node_set_location(node, @graph.node_x(node) + accumulated_shift, @graph.node_y(node))
+        @graph.node_set_location(
+          node,
+          @graph.node_x(node) + accumulated_shift,
+          @graph.node_y(node),
+        )
         @graph.node_set_dimensions(
           node,
           @graph.node_width(node) + extra_space_per_node,

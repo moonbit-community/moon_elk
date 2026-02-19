@@ -1,5 +1,8 @@
 ///|
-fn basic_cycle_breaker_side_equals(left : @core.PortSide, right : @core.PortSide) -> Bool {
+fn basic_cycle_breaker_side_equals(
+  left : @core.PortSide,
+  right : @core.PortSide,
+) -> Bool {
   @core.port_side_to_string(left) == @core.port_side_to_string(right)
 }
 

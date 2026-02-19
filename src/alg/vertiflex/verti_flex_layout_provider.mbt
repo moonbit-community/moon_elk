@@ -1,6 +1,9 @@
 ///|
 pub struct VertiFlexLayoutProvider {
-  algorithm_assembler : @core.AlgorithmAssembler[VertiFlexLayoutPhases, @graph.ElkNode]
+  algorithm_assembler : @core.AlgorithmAssembler[
+    VertiFlexLayoutPhases,
+    @graph.ElkNode,
+  ]
   mut node_node_spacing : Double
 }
 
@@ -41,7 +44,7 @@ fn vertiflex_check_vertical_constraint_validity(
   }
   let new_min_constraint = root_height +
     @graph.node_height(root) +
-    @math.maximum(
+    @cmp.maximum(
       vertiflex_internal_node_margins(root).bottom,
       provider.node_node_spacing,
     )
@@ -142,7 +145,12 @@ pub fn VertiFlexLayoutProvider::layout(
 ) -> Unit {
   vertiflex_internal_reset()
   let algorithm = self.assemble_algorithm(graph)
-  ignore(progress_monitor.begin("@common.Tree layout", algorithm.length().to_double()))
+  ignore(
+    progress_monitor.begin(
+      "@common.Tree layout",
+      algorithm.length().to_double(),
+    ),
+  )
   self.node_node_spacing = @graph.node_get_double_property(
     graph, vertiflex_spacing_node_node,
   )

@@ -1,5 +1,7 @@
 ///|
-fn annulus_wedge_by_node_space_calculate_wedge_space(node : @graph.ElkNode) -> Double {
+fn annulus_wedge_by_node_space_calculate_wedge_space(
+  node : @graph.ElkNode,
+) -> Double {
   let successors = radial_get_successors(node)
   let height = @graph.node_height(node)
   let width = @graph.node_width(node)

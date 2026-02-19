@@ -29,7 +29,9 @@ fn dummy_self_loop_processor_is_side_west(side : @core.PortSide) -> Bool {
 }
 
 ///|
-fn dummy_self_loop_processor_is_side_north_or_south(side : @core.PortSide) -> Bool {
+fn dummy_self_loop_processor_is_side_north_or_south(
+  side : @core.PortSide,
+) -> Bool {
   match side {
     North => true
     South => true

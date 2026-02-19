@@ -93,7 +93,9 @@ fn issue447_test_configure_port(port : @graph.ElkPort) -> Unit {
 }
 
 ///|
-fn issue447_test_configure_port_sizes_and_anchors(graph : @graph.ElkNode) -> Unit {
+fn issue447_test_configure_port_sizes_and_anchors(
+  graph : @graph.ElkNode,
+) -> Unit {
   for node in node_all_descendants_including_self(graph) {
     for port in @graph.node_ports(node) {
       issue447_test_configure_port(port)
@@ -130,7 +132,9 @@ fn issue447_test_connect(
 ///|
 fn issue447_test_build_graph() -> @graph.ElkNode {
   let graph = create_graph()
-  @graph.node_set_string_property(graph, @core.algorithm, "org.eclipse.elk.layered")
+  @graph.node_set_string_property(
+    graph, @core.algorithm, "org.eclipse.elk.layered",
+  )
   @graph.node_set_string_property(graph, @core.direction, "RIGHT")
   @graph.node_set_string_property(graph, @core.edge_routing, "ORTHOGONAL")
   @graph.node_set_string_property(
@@ -150,12 +154,16 @@ fn issue447_test_build_graph() -> @graph.ElkNode {
   let left_inner = @graph.create_node(Some(left))
   @graph.node_set_identifier(left_inner, "left_inner")
   @graph.node_set_dimensions(left_inner, 60.0, 40.0)
-  @graph.node_set_string_property(left_inner, @core.port_constraints, "FIXED_SIDE")
+  @graph.node_set_string_property(
+    left_inner, @core.port_constraints, "FIXED_SIDE",
+  )
 
   let right_inner = @graph.create_node(Some(right))
   @graph.node_set_identifier(right_inner, "right_inner")
   @graph.node_set_dimensions(right_inner, 60.0, 40.0)
-  @graph.node_set_string_property(right_inner, @core.port_constraints, "FIXED_SIDE")
+  @graph.node_set_string_property(
+    right_inner, @core.port_constraints, "FIXED_SIDE",
+  )
 
   let left_outer_port = issue447_test_create_port(left, "left_outer", "EAST")
   let right_outer_port = issue447_test_create_port(right, "right_outer", "WEST")
@@ -224,7 +232,8 @@ fn issue447_test_test_edge_end_point(
 ///|
 fn issue447_test_test_edge(edge : @graph.ElkEdge) -> Unit {
   for section in @graph.edge_sections(edge) {
-    match @graph.connectable_shape_to_port(edge_section_incoming_shape(section)) {
+    match
+      @graph.connectable_shape_to_port(edge_section_incoming_shape(section)) {
       Some(port) =>
         issue447_test_test_edge_end_point(
           edge,
@@ -235,7 +244,8 @@ fn issue447_test_test_edge(edge : @graph.ElkEdge) -> Unit {
         )
       None => ()
     }
-    match @graph.connectable_shape_to_port(edge_section_outgoing_shape(section)) {
+    match
+      @graph.connectable_shape_to_port(edge_section_outgoing_shape(section)) {
       Some(port) =>
         issue447_test_test_edge_end_point(
           edge,
@@ -250,7 +260,9 @@ fn issue447_test_test_edge(edge : @graph.ElkEdge) -> Unit {
 }
 
 ///|
-fn issue447_test_assert_edges_connect_to_anchors(graph : @graph.ElkNode) -> Unit {
+fn issue447_test_assert_edges_connect_to_anchors(
+  graph : @graph.ElkNode,
+) -> Unit {
   let mut checked_edges = 0
   for node in node_all_descendants_including_self(graph) {
     for edge in @graph.node_contained_edges(node) {

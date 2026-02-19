@@ -35,6 +35,8 @@ let port_layout_option_string_value = @test.port_layout_option_string_value
 let port_side = @test.port_side
 
 ///|
-fn new_elk_progress_monitor(task_name? : String = "") -> @core.IElkProgressMonitor {
-  @core.new_elk_progress_monitor(task_name=task_name)
+fn new_elk_progress_monitor(
+  task_name? : String = "",
+) -> @core.IElkProgressMonitor {
+  @core.new_elk_progress_monitor(task_name~)
 }

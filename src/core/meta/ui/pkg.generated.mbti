@@ -1,0 +1,338 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/moon_elk/core/meta/ui"
+
+import {
+  "Milky2018/moon_elk/core/meta",
+}
+
+// Values
+pub fn core_meta_initialization_data_map(Map[String, String]) -> CoreMetaInitializationData
+
+pub fn core_meta_initialization_data_string(String) -> CoreMetaInitializationData
+
+pub let core_meta_ui_extension_factory_guicekey : String
+
+pub let core_meta_ui_language_name : String
+
+pub fn core_meta_ui_object_executable_extension(CoreMetaExecutableExtension) -> CoreMetaUiObject
+
+pub fn core_meta_ui_object_named(String) -> CoreMetaUiObject
+
+pub fn core_meta_ui_object_tag(CoreMetaUiObject) -> String
+
+pub let core_meta_ui_plugin_id : String
+
+pub let core_meta_ui_status_error : Int
+
+pub fn meta_activator_get_instance() -> MetaActivator?
+
+pub fn meta_activator_reset_for_test() -> Unit
+
+pub fn new_abstract_meta_data_ui_module(plugin_id? : String) -> AbstractMetaDataUiModule
+
+pub fn new_core_meta_assignment(String) -> CoreMetaAssignment
+
+pub fn new_core_meta_completion_proposal_acceptor() -> CoreMetaCompletionProposalAcceptor
+
+pub fn new_core_meta_configuration_element(contributor? : String?) -> CoreMetaConfigurationElement
+
+pub fn new_core_meta_content_assist_context() -> CoreMetaContentAssistContext
+
+pub fn new_core_meta_executable_extension(set_initialization_data_fn? : (CoreMetaConfigurationElement?, String?, CoreMetaInitializationData?) -> Unit) -> CoreMetaExecutableExtension
+
+pub fn new_core_meta_outline_node(String, String, children? : Array[CoreMetaOutlineNode]) -> CoreMetaOutlineNode
+
+pub fn new_core_meta_ui_bundle(symbolic_name? : String) -> CoreMetaUiBundle
+
+pub fn new_core_meta_ui_core_exception(CoreMetaUiStatus) -> CoreMetaUiCoreException
+
+pub fn new_core_meta_ui_injector() -> CoreMetaUiInjector
+
+pub fn new_core_meta_ui_lexer_binding(String, String) -> CoreMetaUiLexerBinding
+
+pub fn new_core_meta_ui_status(Int, String, String) -> CoreMetaUiStatus
+
+pub fn new_meta_activator() -> MetaActivator
+
+pub fn new_meta_data_description_label_provider() -> MetaDataDescriptionLabelProvider
+
+pub fn new_meta_data_editor() -> MetaDataEditor
+
+pub fn new_meta_data_executable_extension_factory() -> MetaDataExecutableExtensionFactory
+
+pub fn new_meta_data_label_provider() -> MetaDataLabelProvider
+
+pub fn new_meta_data_outline_tree_provider() -> MetaDataOutlineTreeProvider
+
+pub fn new_meta_data_proposal_provider() -> MetaDataProposalProvider
+
+pub fn new_meta_data_quickfix_provider() -> MetaDataQuickfixProvider
+
+pub fn new_meta_data_ui_module(plugin_id? : String) -> MetaDataUiModule
+
+// Errors
+
+// Types and methods
+pub(all) struct AbstractMetaDataUiModule {
+  plugin_id : String
+}
+pub fn AbstractMetaDataUiModule::bind_content_assist_context_factory(Self) -> String
+pub fn AbstractMetaDataUiModule::bind_document_based_dirty_resource(Self) -> String
+pub fn AbstractMetaDataUiModule::bind_find_references_handler(Self) -> String
+pub fn AbstractMetaDataUiModule::bind_global_uri_editor_opener(Self) -> String
+pub fn AbstractMetaDataUiModule::bind_i_content_assist_parser(Self) -> String
+pub fn AbstractMetaDataUiModule::bind_i_content_formatter_factory(Self) -> String
+pub fn AbstractMetaDataUiModule::bind_i_content_proposal_provider(Self) -> String
+pub fn AbstractMetaDataUiModule::bind_i_contextual_output_configuration_provider(Self) -> String
+pub fn AbstractMetaDataUiModule::bind_i_dependent_elements_calculator(Self) -> String
+pub fn AbstractMetaDataUiModule::bind_i_java_search_participation(Self) -> String
+pub fn AbstractMetaDataUiModule::bind_i_label_provider(Self) -> String
+pub fn AbstractMetaDataUiModule::bind_i_outline_tree_provider(Self) -> String
+pub fn AbstractMetaDataUiModule::bind_i_outline_tree_structure_provider(Self) -> String
+pub fn AbstractMetaDataUiModule::bind_i_partial_editing_content_assist_context_factory(Self) -> String
+pub fn AbstractMetaDataUiModule::bind_i_partial_editing_content_assist_parser(Self) -> String
+pub fn AbstractMetaDataUiModule::bind_i_proposal_conflict_helper(Self) -> String
+pub fn AbstractMetaDataUiModule::bind_i_reference_updater(Self) -> String
+pub fn AbstractMetaDataUiModule::bind_i_rename_context_factory(Self) -> String
+pub fn AbstractMetaDataUiModule::bind_i_rename_refactoring_provider(Self) -> String
+pub fn AbstractMetaDataUiModule::bind_i_rename_strategy(Self) -> String
+pub fn AbstractMetaDataUiModule::bind_i_rename_strategy_provider(Self) -> String
+pub fn AbstractMetaDataUiModule::bind_i_rename_support_factory(Self) -> String
+pub fn AbstractMetaDataUiModule::bind_i_types_proposal_provider(Self) -> String
+pub fn AbstractMetaDataUiModule::bind_i_unresolved_type_resolver(Self) -> String
+pub fn AbstractMetaDataUiModule::bind_i_viewer_creator(Self) -> String
+pub fn AbstractMetaDataUiModule::bind_i_workspace_root_to_instance(Self) -> String
+pub fn AbstractMetaDataUiModule::bind_i_xtext_builder_participant(Self) -> String
+pub fn AbstractMetaDataUiModule::bind_i_xtext_editor_callback(Self) -> String
+pub fn AbstractMetaDataUiModule::bind_issue_resolution_provider(Self) -> String
+pub fn AbstractMetaDataUiModule::bind_jdt_rename_participant_context_factory(Self) -> String
+pub fn AbstractMetaDataUiModule::bind_language_registrar(Self) -> String
+pub fn AbstractMetaDataUiModule::bind_open_generated_file_handler(Self) -> String
+pub fn AbstractMetaDataUiModule::bind_outline_node_element_opener(Self) -> String
+pub fn AbstractMetaDataUiModule::bind_prefix_matcher(Self) -> String
+pub fn AbstractMetaDataUiModule::bind_reference_query_executor(Self) -> String
+pub fn AbstractMetaDataUiModule::bind_xtext_document_provider(Self) -> String
+pub fn AbstractMetaDataUiModule::bind_xtext_editor(Self) -> String
+pub fn AbstractMetaDataUiModule::bind_xtext_template_context_type(Self) -> String
+pub fn AbstractMetaDataUiModule::bind_xtext_template_preference_page(Self) -> String
+pub fn AbstractMetaDataUiModule::configure_builder_preference_store_initializer(Self) -> String
+pub fn AbstractMetaDataUiModule::configure_compare_viewer_title(Self) -> String
+pub fn AbstractMetaDataUiModule::configure_content_assist_lexer(Self) -> CoreMetaUiLexerBinding
+pub fn AbstractMetaDataUiModule::configure_content_assist_lexer_provider(Self) -> String
+pub fn AbstractMetaDataUiModule::configure_highlighting_lexer(Self) -> CoreMetaUiLexerBinding
+pub fn AbstractMetaDataUiModule::configure_highlighting_token_def_provider(Self) -> CoreMetaUiLexerBinding
+pub fn AbstractMetaDataUiModule::configure_i_preference_store_initializer(Self) -> String
+pub fn AbstractMetaDataUiModule::configure_i_resource_descriptions_builder_scope(Self) -> String
+pub fn AbstractMetaDataUiModule::configure_i_resource_descriptions_persisted(Self) -> String
+pub fn AbstractMetaDataUiModule::configure_jvm_member_rename_strategy_provider_delegate(Self) -> String
+pub fn AbstractMetaDataUiModule::configure_language_specific_uri_editor_opener(Self) -> String
+pub fn AbstractMetaDataUiModule::configure_resource_ui_service_label_provider(Self) -> String
+pub fn AbstractMetaDataUiModule::get_plugin_id(Self) -> String
+pub fn AbstractMetaDataUiModule::provide_i_all_containers_state(Self) -> String
+pub fn AbstractMetaDataUiModule::provide_language_registry(Self) -> String
+pub fn AbstractMetaDataUiModule::provide_templates_language_configuration(Self) -> String
+
+pub(all) struct CoreMetaAssignment {
+  terminal : String
+}
+
+pub(all) struct CoreMetaCompletionProposalAcceptor {
+  proposals : Array[String]
+}
+pub fn CoreMetaCompletionProposalAcceptor::accept(Self, String) -> Unit
+pub fn CoreMetaCompletionProposalAcceptor::get_proposals(Self) -> Array[String]
+
+pub(all) struct CoreMetaConfigurationElement {
+  contributor : String?
+}
+pub fn CoreMetaConfigurationElement::get_contributor(Self) -> String?
+
+pub(all) struct CoreMetaContentAssistContext {
+  unit : Unit
+}
+
+pub(all) struct CoreMetaExecutableExtension {
+  set_initialization_data_fn : (CoreMetaConfigurationElement?, String?, CoreMetaInitializationData?) -> Unit
+}
+pub fn CoreMetaExecutableExtension::set_initialization_data(Self, CoreMetaConfigurationElement?, String?, CoreMetaInitializationData?) -> Unit
+
+pub(all) enum CoreMetaInitializationData {
+  CoreMetaInitializationDataString(String)
+  CoreMetaInitializationDataMap(Map[String, String])
+}
+
+pub(all) struct CoreMetaOutlineNode {
+  kind : String
+  label : String
+  children : Array[CoreMetaOutlineNode]
+}
+
+pub(all) struct CoreMetaUiBundle {
+  symbolic_name : String
+  classes : Map[String, Bool]
+}
+pub fn CoreMetaUiBundle::get_symbolic_name(Self) -> String
+pub fn CoreMetaUiBundle::load_class(Self, String) -> Bool
+pub fn CoreMetaUiBundle::register_class(Self, String) -> Unit
+
+pub(all) struct CoreMetaUiCoreException {
+  status : CoreMetaUiStatus
+}
+pub fn CoreMetaUiCoreException::get_status(Self) -> CoreMetaUiStatus
+
+pub(all) struct CoreMetaUiInjector {
+  providers : Map[String, () -> CoreMetaUiObject]
+}
+pub fn CoreMetaUiInjector::get_instance(Self, String) -> CoreMetaUiObject?
+pub fn CoreMetaUiInjector::provider_count(Self) -> Int
+pub fn CoreMetaUiInjector::register_provider(Self, String, () -> CoreMetaUiObject) -> Unit
+
+pub(all) struct CoreMetaUiLexerBinding {
+  binding_name : String
+  class_name : String
+}
+
+pub(all) enum CoreMetaUiObject {
+  CoreMetaUiObjectNamed(String)
+  CoreMetaUiObjectExecutableExtension(CoreMetaExecutableExtension)
+}
+
+pub(all) struct CoreMetaUiStatus {
+  severity : Int
+  symbolic_name : String
+  message : String
+}
+
+pub(all) struct MetaActivator {
+  bundle : CoreMetaUiBundle
+  injectors : Map[String, CoreMetaUiInjector]
+}
+pub fn MetaActivator::create_injector(Self, String) -> CoreMetaUiInjector
+pub fn MetaActivator::get_bundle(Self) -> CoreMetaUiBundle
+pub fn MetaActivator::get_injector(Self, String) -> CoreMetaUiInjector
+pub fn MetaActivator::get_runtime_module(Self, String) -> @meta.MetaDataRuntimeModule
+pub fn MetaActivator::get_shared_state_module(Self) -> String
+pub fn MetaActivator::get_ui_module(Self, String) -> MetaDataUiModule
+pub fn MetaActivator::injector_count(Self) -> Int
+pub fn MetaActivator::register_bundle_class(Self, String) -> Unit
+pub fn MetaActivator::register_injector_provider(Self, String, String, () -> CoreMetaUiObject) -> Unit
+pub fn MetaActivator::start(Self) -> Unit
+pub fn MetaActivator::stop(Self) -> Unit
+
+pub(all) struct MetaDataDescriptionLabelProvider {
+  unit : Unit
+}
+pub fn MetaDataDescriptionLabelProvider::get_base_class_name(Self) -> String
+
+pub(all) struct MetaDataEditor {
+  unit : Unit
+}
+pub fn MetaDataEditor::get_base_class_name(Self) -> String
+
+pub(all) struct MetaDataExecutableExtensionFactory {
+  mut clazz_name : String?
+  mut config : CoreMetaConfigurationElement?
+}
+pub fn MetaDataExecutableExtensionFactory::create(Self) -> Result[CoreMetaUiObject, CoreMetaUiCoreException]
+pub fn MetaDataExecutableExtensionFactory::set_initialization_data(Self, CoreMetaConfigurationElement?, String?, CoreMetaInitializationData?) -> Unit
+
+pub(all) struct MetaDataLabelProvider {
+  unit : Unit
+}
+pub fn MetaDataLabelProvider::text_md_algorithm(Self, @meta.CoreMetaMdAlgorithm) -> String
+pub fn MetaDataLabelProvider::text_md_category(Self, @meta.CoreMetaMdCategory) -> String
+pub fn MetaDataLabelProvider::text_md_group(Self, @meta.CoreMetaMdGroup) -> String
+pub fn MetaDataLabelProvider::text_md_option(Self, @meta.CoreMetaMdOption) -> String
+
+pub(all) struct MetaDataOutlineTreeProvider {
+  unit : Unit
+}
+pub fn MetaDataOutlineTreeProvider::create_outline(Self, @meta.CoreMetaMdModel) -> CoreMetaOutlineNode
+pub fn MetaDataOutlineTreeProvider::is_leaf_algorithm(Self, @meta.CoreMetaMdAlgorithm) -> Bool
+pub fn MetaDataOutlineTreeProvider::is_leaf_category(Self, @meta.CoreMetaMdCategory) -> Bool
+pub fn MetaDataOutlineTreeProvider::is_leaf_option(Self, @meta.CoreMetaMdOption) -> Bool
+
+pub(all) struct MetaDataProposalProvider {
+  unit : Unit
+}
+pub fn MetaDataProposalProvider::complete_md_algorithm_category(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_algorithm_deprecated(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_algorithm_description(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_algorithm_label(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_algorithm_name(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_algorithm_parameter(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_algorithm_preview_image(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_algorithm_provider(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_algorithm_rule(Self) -> Unit
+pub fn MetaDataProposalProvider::complete_md_algorithm_supported_features(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_algorithm_supported_options(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_algorithm_target_class(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_algorithm_validator(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_bundle_documentation_folder(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_bundle_id_prefix(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_bundle_label(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_bundle_member_rule(Self) -> Unit
+pub fn MetaDataProposalProvider::complete_md_bundle_members(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_bundle_rule(Self) -> Unit
+pub fn MetaDataProposalProvider::complete_md_bundle_target_class(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_category_deprecated(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_category_description(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_category_documentation(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_category_label(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_category_name(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_category_rule(Self) -> Unit
+pub fn MetaDataProposalProvider::complete_md_graph_feature_rule(Self) -> Unit
+pub fn MetaDataProposalProvider::complete_md_group_children(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_group_documentation(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_group_name(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_group_or_option_rule(Self) -> Unit
+pub fn MetaDataProposalProvider::complete_md_group_rule(Self) -> Unit
+pub fn MetaDataProposalProvider::complete_md_model_bundle(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_model_import_section(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_model_name(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_model_rule(Self) -> Unit
+pub fn MetaDataProposalProvider::complete_md_option_advanced(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_option_default_value(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_option_dependencies(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_option_dependency_rule(Self) -> Unit
+pub fn MetaDataProposalProvider::complete_md_option_dependency_target(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_option_dependency_value(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_option_deprecated(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_option_description(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_option_documentation(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_option_global(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_option_label(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_option_legacy_ids(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_option_lower_bound(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_option_name(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_option_output(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_option_programmatic(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_option_rule(Self) -> Unit
+pub fn MetaDataProposalProvider::complete_md_option_support_documentation(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_option_support_option(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_option_support_rule(Self) -> Unit
+pub fn MetaDataProposalProvider::complete_md_option_support_value(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_option_target_type_rule(Self) -> Unit
+pub fn MetaDataProposalProvider::complete_md_option_targets(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_option_type(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_md_option_upper_bound(Self, CoreMetaAssignment, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::complete_path_rule(Self) -> Unit
+pub fn MetaDataProposalProvider::complete_rule_call(Self, String, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+pub fn MetaDataProposalProvider::lookup_cross_reference(Self, String, CoreMetaContentAssistContext, CoreMetaCompletionProposalAcceptor) -> Unit
+
+pub(all) struct MetaDataQuickfixProvider {
+  unit : Unit
+}
+pub fn MetaDataQuickfixProvider::get_base_class_name(Self) -> String
+
+pub(all) struct MetaDataUiModule {
+  plugin_id : String
+  base : AbstractMetaDataUiModule
+}
+pub fn MetaDataUiModule::bind_unique_class_name_validator(Self) -> String
+pub fn MetaDataUiModule::get_base(Self) -> AbstractMetaDataUiModule
+
+// Type aliases
+
+// Traits
+

@@ -51,7 +51,9 @@ pub fn EndLabelCell::set_vertical_alignment(
 }
 
 ///|
-pub fn EndLabelCell::get_cell_rectangle(self : EndLabelCell) -> @core.ElkRectangle {
+pub fn EndLabelCell::get_cell_rectangle(
+  self : EndLabelCell,
+) -> @core.ElkRectangle {
   self.label_cell.get_cell_rectangle()
 }
 

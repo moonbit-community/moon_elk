@@ -62,7 +62,10 @@ test "BetweenLayerEdgeTwoNodeCrossingsCounter counts simple west-side crossing" 
   let right_top = between_layer_test_new_node(right_layer)
   let right_bottom = between_layer_test_new_node(right_layer)
 
-  let right_top_port = between_layer_test_add_port(right_top, @core.PortSide::West)
+  let right_top_port = between_layer_test_add_port(
+    right_top,
+    @core.PortSide::West,
+  )
   let right_bottom_port = between_layer_test_add_port(
     right_bottom,
     @core.PortSide::West,

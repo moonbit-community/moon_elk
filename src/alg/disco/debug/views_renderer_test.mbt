@@ -16,7 +16,14 @@ fn new_renderer_test_dc_graph() -> (@disco.DCGraph, Array[@disco.DCPolyomino]) {
 
   let element = @disco.new_dc_element(chain)
   let direction = @disco.dc_direction_values()[0]
-  ignore(@disco.new_dc_extension(element, direction, @core.new_kvector_xy(5.0, 0.0), 2.0))
+  ignore(
+    @disco.new_dc_extension(
+      element,
+      direction,
+      @core.new_kvector_xy(5.0, 0.0),
+      2.0,
+    ),
+  )
 
   let graph = @disco.new_dc_graph([[element]])
   let component = graph.get_components()[0]

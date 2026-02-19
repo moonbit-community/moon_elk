@@ -4,6 +4,7 @@ pub struct IComponent[N, E] {
   get_hull_fn : () -> Array[@core.ElkRectangle]
   get_external_extensions_fn : () -> Array[IExternalExtension[E]]
   get_external_extension_sides_fn : () -> Array[@core.PortSide]
+  _phantom : N?
 }
 
 ///|
@@ -27,6 +28,7 @@ pub fn[N, E] new_component(
     get_hull_fn: get_hull,
     get_external_extensions_fn: get_external_extensions,
     get_external_extension_sides_fn: get_external_extension_sides,
+    _phantom: None,
   }
 }
 

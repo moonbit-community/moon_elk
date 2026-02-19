@@ -51,13 +51,17 @@ fn recursive_graph_layout_engine_parse_bool(value : String) -> Bool {
 }
 
 ///|
-fn recursive_graph_layout_engine_has_explicit_algorithm(node : @graph.ElkNode) -> Bool {
+fn recursive_graph_layout_engine_has_explicit_algorithm(
+  node : @graph.ElkNode,
+) -> Bool {
   @graph.node_has_string_property(node, algorithm) ||
   @graph.node_layout_option_string_value(node, algorithm.get_id()) is Some(_)
 }
 
 ///|
-fn recursive_graph_layout_engine_resolved_algorithm_id(node : @graph.ElkNode) -> String {
+fn recursive_graph_layout_engine_resolved_algorithm_id(
+  node : @graph.ElkNode,
+) -> String {
   @graph.node_get_string_property(node, resolved_algorithm)
 }
 
@@ -90,9 +94,7 @@ fn recursive_graph_layout_engine_set_hierarchy_handling(
   value : String,
 ) -> Unit {
   @graph.node_set_string_property(
-    node,
-    recursive_graph_layout_engine_hierarchy_handling_property,
-    value,
+    node, recursive_graph_layout_engine_hierarchy_handling_property, value,
   )
   @graph.node_set_layout_option_string_by_id(
     node,
@@ -128,10 +130,8 @@ fn recursive_graph_layout_engine_count_nodes_recursively(
   let mut count = @graph.node_children(layout_node).length()
   for child_node in @graph.node_children(layout_node) {
     if !@graph.node_children(child_node).is_empty() {
-      count = count + recursive_graph_layout_engine_count_nodes_recursively(
-        child_node,
-        false,
-      )
+      count = count +
+        recursive_graph_layout_engine_count_nodes_recursively(child_node, false)
     }
   }
   if count_ancestors {
@@ -163,10 +163,10 @@ fn recursive_graph_layout_engine_count_nodes_with_hierarchy(
     let child_resolved = recursive_graph_layout_engine_resolved_algorithm_id(
       child_node,
     )
-    if parent_resolved == child_resolved && !@graph.node_children(child_node).is_empty() {
-      count = count + recursive_graph_layout_engine_count_nodes_with_hierarchy(
-        child_node,
-      )
+    if parent_resolved == child_resolved &&
+      !@graph.node_children(child_node).is_empty() {
+      count = count +
+        recursive_graph_layout_engine_count_nodes_with_hierarchy(child_node)
     }
   }
   count
@@ -184,7 +184,9 @@ fn recursive_graph_layout_engine_sub_monitor(
 }
 
 ///|
-fn recursive_graph_layout_engine_edge_is_self_loop(edge : @graph.ElkEdge) -> Bool {
+fn recursive_graph_layout_engine_edge_is_self_loop(
+  edge : @graph.ElkEdge,
+) -> Bool {
   let sources = @graph.edge_sources(edge)
   let targets = @graph.edge_targets(edge)
   if sources.length() != 1 || targets.length() != 1 {
@@ -199,10 +201,10 @@ fn recursive_graph_layout_engine_edge_is_self_loop(edge : @graph.ElkEdge) -> Boo
 fn recursive_graph_layout_engine_edge_inside_self_loops_yo(
   edge : @graph.ElkEdge,
 ) -> Bool {
-  match @graph.edge_layout_option_string_value(
-    edge,
-    recursive_graph_layout_engine_inside_self_loops_yo_option_id,
-  ) {
+  match
+    @graph.edge_layout_option_string_value(
+      edge, recursive_graph_layout_engine_inside_self_loops_yo_option_id,
+    ) {
     Some(value) => recursive_graph_layout_engine_parse_bool(value)
     None => false
   }
@@ -255,7 +257,9 @@ fn recursive_graph_layout_engine_post_process_inside_self_loops(
 }
 
 ///|
-fn recursive_graph_layout_engine_work_from_node_count(node_count : Int) -> Double {
+fn recursive_graph_layout_engine_work_from_node_count(
+  node_count : Int,
+) -> Double {
   if node_count > 0 {
     node_count.to_double()
   } else {
@@ -329,9 +333,8 @@ fn recursive_graph_layout_engine_layout_recursively(
       "Resolved algorithm is not set; apply a LayoutAlgorithmResolver before computing layout.",
     )
   }
-  let algorithm_data = match layout_meta_data_service_get_algorithm_data_by_suffix(
-    resolved_algorithm_id,
-  ) {
+  let algorithm_data = match
+    layout_meta_data_service_get_algorithm_data_by_suffix(resolved_algorithm_id) {
     Some(data) => data
     None => abort("Resolved algorithm is unknown.")
   }
@@ -339,7 +342,9 @@ fn recursive_graph_layout_engine_layout_recursively(
     @graph.GraphFeature::InsideSelfLoops,
   )
 
-  recursive_graph_layout_engine_evaluate_hierarchy_handling_inheritance(layout_node)
+  recursive_graph_layout_engine_evaluate_hierarchy_handling_inheritance(
+    layout_node,
+  )
 
   if !has_children && has_inside_self_loops && !supports_inside_self_loops {
     return []
@@ -360,11 +365,16 @@ fn recursive_graph_layout_engine_layout_recursively(
       let node = node_queue[queue_index]
       queue_index = queue_index + 1
 
-      recursive_graph_layout_engine_evaluate_hierarchy_handling_inheritance(node)
-      let stop_hierarchy = recursive_graph_layout_engine_hierarchy_handling(node) ==
+      recursive_graph_layout_engine_evaluate_hierarchy_handling_inheritance(
+        node,
+      )
+      let stop_hierarchy = recursive_graph_layout_engine_hierarchy_handling(
+          node,
+        ) ==
         "SEPARATE_CHILDREN"
-      let switch_algorithm = if
-        recursive_graph_layout_engine_has_explicit_algorithm(node) {
+      let switch_algorithm = if recursive_graph_layout_engine_has_explicit_algorithm(
+          node,
+        ) {
         recursive_graph_layout_engine_resolved_algorithm_id(node) !=
         resolved_algorithm_id
       } else {
@@ -373,8 +383,7 @@ fn recursive_graph_layout_engine_layout_recursively(
 
       if stop_hierarchy || switch_algorithm {
         let child_layout_self_loops = recursive_graph_layout_engine_layout_recursively(
-          node,
-          progress_monitor,
+          node, progress_monitor,
         )
         for child_self_loop in child_layout_self_loops {
           children_inside_self_loops.push(child_self_loop)
@@ -391,8 +400,7 @@ fn recursive_graph_layout_engine_layout_recursively(
   } else {
     for child in @graph.node_children(layout_node) {
       let child_layout_self_loops = recursive_graph_layout_engine_layout_recursively(
-        child,
-        progress_monitor,
+        child, progress_monitor,
       )
       for child_self_loop in child_layout_self_loops {
         children_inside_self_loops.push(child_self_loop)
@@ -441,8 +449,7 @@ pub fn RecursiveGraphLayoutEngine::layout(
   ignore(self)
 
   let node_count = recursive_graph_layout_engine_count_nodes_recursively(
-    layout_graph,
-    true,
+    layout_graph, true,
   )
   ignore(
     progress_monitor.begin(
@@ -463,8 +470,7 @@ pub fn RecursiveGraphLayoutEngine::layout(
 
   ignore(
     recursive_graph_layout_engine_layout_recursively(
-      layout_graph,
-      progress_monitor,
+      layout_graph, progress_monitor,
     ),
   )
   progress_monitor.done()

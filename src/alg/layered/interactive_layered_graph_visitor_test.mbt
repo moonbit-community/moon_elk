@@ -39,7 +39,10 @@ fn interactive_layered_graph_visitor_test_require_position(
   node : @graph.ElkNode,
 ) -> @core.KVector {
   match
-    @graph.node_layout_option_string_value(node, layered_options_position.get_id()) {
+    @graph.node_layout_option_string_value(
+      node,
+      layered_options_position.get_id(),
+    ) {
     Some(value) => {
       let parsed = @core.new_kvector()
       parsed.parse(value)
@@ -101,7 +104,9 @@ test "@core.interactive layered graph visitor sets @core.interactive strategies"
     "INTERACTIVE",
   )
   assert_eq(
-    @graph.node_get_string_property(root, layered_options_cycle_breaking_strategy),
+    @graph.node_get_string_property(
+      root, layered_options_cycle_breaking_strategy,
+    ),
     "INTERACTIVE",
   )
   assert_eq(
@@ -264,7 +269,11 @@ test "@core.interactive layered graph visitor shifts same-layer neighbors for co
     @core.algorithm.get_id(),
     layered_algorithm_id,
   )
-  @graph.node_set_layout_option_string_by_id(root, @core.direction.get_id(), "RIGHT")
+  @graph.node_set_layout_option_string_by_id(
+    root,
+    @core.direction.get_id(),
+    "RIGHT",
+  )
   @graph.node_set_layout_option_string_by_id(
     source,
     layered_options_layering_layer_id.get_id(),
@@ -316,7 +325,11 @@ test "@core.interactive layered graph visitor reads typed layer choice constrain
     @core.algorithm.get_id(),
     layered_algorithm_id,
   )
-  @graph.node_set_layout_option_string_by_id(root, @core.direction.get_id(), "RIGHT")
+  @graph.node_set_layout_option_string_by_id(
+    root,
+    @core.direction.get_id(),
+    "RIGHT",
+  )
   @graph.node_set_layout_option_string_by_id(
     source,
     layered_options_layering_layer_id.get_id(),
@@ -343,8 +356,13 @@ test "@core.interactive layered graph visitor reads typed layer choice constrain
     layered_options_layering_layer_id.get_id(),
     "1",
   )
-  assert_true(@graph.node_has_int_property(target, layered_options_layering_layer_id))
-  assert_eq(@graph.node_get_int_property(target, layered_options_layering_layer_id), 1)
+  assert_true(
+    @graph.node_has_int_property(target, layered_options_layering_layer_id),
+  )
+  assert_eq(
+    @graph.node_get_int_property(target, layered_options_layering_layer_id),
+    1,
+  )
 }
 
 ///|
@@ -369,7 +387,11 @@ test "@core.interactive layered graph visitor propagates position constraints th
     @core.algorithm.get_id(),
     layered_algorithm_id,
   )
-  @graph.node_set_layout_option_string_by_id(root, @core.direction.get_id(), "RIGHT")
+  @graph.node_set_layout_option_string_by_id(
+    root,
+    @core.direction.get_id(),
+    "RIGHT",
+  )
 
   @graph.node_set_layout_option_string_by_id(
     first,
@@ -453,7 +475,11 @@ test "@core.interactive layered graph visitor breaks relative-constraint cycles 
     @core.algorithm.get_id(),
     layered_algorithm_id,
   )
-  @graph.node_set_layout_option_string_by_id(root, @core.direction.get_id(), "RIGHT")
+  @graph.node_set_layout_option_string_by_id(
+    root,
+    @core.direction.get_id(),
+    "RIGHT",
+  )
   @graph.node_set_layout_option_string_by_id(
     first,
     layered_options_layering_layer_id.get_id(),
@@ -516,7 +542,11 @@ test "@core.interactive layered graph visitor converts both-RC nodes to PC path 
     @core.algorithm.get_id(),
     layered_algorithm_id,
   )
-  @graph.node_set_layout_option_string_by_id(root, @core.direction.get_id(), "RIGHT")
+  @graph.node_set_layout_option_string_by_id(
+    root,
+    @core.direction.get_id(),
+    "RIGHT",
+  )
 
   @graph.node_set_layout_option_string_by_id(
     constrained,
@@ -583,7 +613,11 @@ test "@core.interactive layered graph visitor places layer-choice -1 nodes befor
     @core.algorithm.get_id(),
     layered_algorithm_id,
   )
-  @graph.node_set_layout_option_string_by_id(root, @core.direction.get_id(), "RIGHT")
+  @graph.node_set_layout_option_string_by_id(
+    root,
+    @core.direction.get_id(),
+    "RIGHT",
+  )
   @graph.node_set_layout_option_string_by_id(
     first_layer_node,
     layered_options_layering_layer_choice_constraint.get_id(),
@@ -625,7 +659,11 @@ test "@core.interactive layered graph visitor assigns orthogonal pseudo position
     @core.algorithm.get_id(),
     layered_algorithm_id,
   )
-  @graph.node_set_layout_option_string_by_id(root, @core.direction.get_id(), "DOWN")
+  @graph.node_set_layout_option_string_by_id(
+    root,
+    @core.direction.get_id(),
+    "DOWN",
+  )
   @graph.node_set_layout_option_string_by_id(
     first,
     layered_options_layering_layer_id.get_id(),

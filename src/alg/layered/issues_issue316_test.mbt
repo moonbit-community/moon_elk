@@ -6,7 +6,10 @@ fn issue316_test_setup_plain_java_layout() -> Unit {
 }
 
 ///|
-fn issue316_ports_overlap(left : @graph.ElkPort, right : @graph.ElkPort) -> Bool {
+fn issue316_ports_overlap(
+  left : @graph.ElkPort,
+  right : @graph.ElkPort,
+) -> Bool {
   let left_x = port_x(left)
   let left_y = port_y(left)
   let right_x = port_x(right)
@@ -31,7 +34,10 @@ fn issue316_any_port_overlap(node : @graph.ElkNode) -> Bool {
 }
 
 ///|
-fn issue316_label_inside_node(label : @graph.ElkLabel, node : @graph.ElkNode) -> Bool {
+fn issue316_label_inside_node(
+  label : @graph.ElkLabel,
+  node : @graph.ElkNode,
+) -> Bool {
   @graph.label_x(label) >= 0.0 &&
   @graph.label_y(label) >= 0.0 &&
   @graph.label_x(label) + @graph.label_width(label) <= @graph.node_width(node) &&

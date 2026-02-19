@@ -101,7 +101,9 @@ fn splines_math_format_1_decimal(value : Double) -> String {
 }
 
 ///|
-pub fn splines_math_convert_kvector_to_string(vector : @core.KVector?) -> String {
+pub fn splines_math_convert_kvector_to_string(
+  vector : @core.KVector?,
+) -> String {
   match vector {
     Some(value) =>
       "(" +

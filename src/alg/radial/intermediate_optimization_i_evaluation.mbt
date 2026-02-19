@@ -9,6 +9,9 @@ pub fn new_i_evaluation(evaluate : (@graph.ElkNode) -> Double) -> IEvaluation {
 }
 
 ///|
-pub fn IEvaluation::evaluate(self : IEvaluation, graph : @graph.ElkNode) -> Double {
+pub fn IEvaluation::evaluate(
+  self : IEvaluation,
+  graph : @graph.ElkNode,
+) -> Double {
   (self.evaluate_fn)(graph)
 }

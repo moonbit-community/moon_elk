@@ -11,7 +11,9 @@ fn north_south_port_postprocessor_test_strategy(
 }
 
 ///|
-fn north_south_port_postprocessor_test_port_side(name : String) -> @core.PortSide {
+fn north_south_port_postprocessor_test_port_side(
+  name : String,
+) -> @core.PortSide {
   for side in @core.port_side_values() {
     if @core.port_side_to_string(side) == name {
       return side

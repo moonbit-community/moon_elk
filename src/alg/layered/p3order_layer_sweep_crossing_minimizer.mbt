@@ -11,7 +11,10 @@ fn layer_sweep_cross_min_type_to_string(
 }
 
 ///|
-fn layer_sweep_port_side_is(left : @core.PortSide, right : @core.PortSide) -> Bool {
+fn layer_sweep_port_side_is(
+  left : @core.PortSide,
+  right : @core.PortSide,
+) -> Bool {
   match (left, right) {
     (@core.PortSide::North, @core.PortSide::North) => true
     (@core.PortSide::East, @core.PortSide::East) => true
@@ -654,7 +657,9 @@ fn LayerSweepCrossingMinimizer::set_port_order_on_parent_graph(
         graph_data.parent(),
         false,
       )
-      graph_data.parent().set_property_string(@core.port_constraints, "FIXED_ORDER")
+      graph_data
+      .parent()
+      .set_property_string(@core.port_constraints, "FIXED_ORDER")
     }
     None => ()
   }

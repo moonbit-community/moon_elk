@@ -13,7 +13,9 @@ test "PlainLayoutTest hierarchical layout does not fail" {
   let parent_node = @test.graph_test_utils_create_hierarchical_graph()
   for node in @test.graph_test_utils_all_nodes(parent_node, true) {
     if !@test.node_children(node).is_empty() {
-      @test.node_set_string_property(node, @test.algorithm, "org.eclipse.elk.layered")
+      @test.node_set_string_property(
+        node, @test.algorithm, "org.eclipse.elk.layered",
+      )
     }
   }
 

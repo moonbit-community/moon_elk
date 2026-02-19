@@ -1,5 +1,5 @@
 ///|
-struct HyperedgeDummyMergerMergeState {
+priv struct HyperedgeDummyMergerMergeState {
   allow_merge : Bool
   same_source : Bool
   same_target : Bool

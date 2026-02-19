@@ -118,10 +118,6 @@ test "NodeRelativePortDistributor normalizes output ranks inside one node band" 
   distributor.calculate_port_ranks(node_order[0], PortType::Output)
 
   let ranks = distributor.get_port_ranks()
-  assert_true(
-    @double.abs(ranks[source_port_a.get_id()] - 1.0 / 3.0) < 0.000000001,
-  )
-  assert_true(
-    @double.abs(ranks[source_port_b.get_id()] - 2.0 / 3.0) < 0.000000001,
-  )
+  assert_true((ranks[source_port_a.get_id()] - 1.0 / 3.0).abs() < 0.000000001)
+  assert_true((ranks[source_port_b.get_id()] - 2.0 / 3.0).abs() < 0.000000001)
 }

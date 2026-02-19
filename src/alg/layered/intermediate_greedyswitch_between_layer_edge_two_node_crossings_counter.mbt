@@ -1,5 +1,5 @@
 ///|
-struct BetweenLayerAdjacency {
+priv struct BetweenLayerAdjacency {
   position : Int
   mut cardinality : Int
   mut current_cardinality : Int
@@ -7,8 +7,8 @@ struct BetweenLayerAdjacency {
 
 ///|
 struct BetweenLayerAdjacencyList {
-  node : LNode
-  side : @core.PortSide
+  _node : LNode
+  _side : @core.PortSide
   adjacency_list : Array[BetweenLayerAdjacency]
   mut size : Int
   mut current_size : Int
@@ -16,7 +16,10 @@ struct BetweenLayerAdjacencyList {
 }
 
 ///|
-fn between_layer_connected_edges(port : LPort, side : @core.PortSide) -> Array[LEdge] {
+fn between_layer_connected_edges(
+  port : LPort,
+  side : @core.PortSide,
+) -> Array[LEdge] {
   if lnode_port_side_equals(side, @core.PortSide::West) {
     port.get_incoming_edges()
   } else {
@@ -25,7 +28,10 @@ fn between_layer_connected_edges(port : LPort, side : @core.PortSide) -> Array[L
 }
 
 ///|
-fn between_layer_adjacent_port_of(edge : LEdge, side : @core.PortSide) -> LPort? {
+fn between_layer_adjacent_port_of(
+  edge : LEdge,
+  side : @core.PortSide,
+) -> LPort? {
   if lnode_port_side_equals(side, @core.PortSide::West) {
     edge.get_source()
   } else {
@@ -107,8 +113,8 @@ fn between_layer_collect_adjacencies(
   port_positions : Map[Int, Int],
 ) -> BetweenLayerAdjacencyList {
   let list : BetweenLayerAdjacencyList = {
-    node,
-    side,
+    _node: node,
+    _side: side,
     adjacency_list: [],
     size: 0,
     current_size: 0,
@@ -261,10 +267,16 @@ fn BetweenLayerEdgeTwoNodeCrossingsCounter::set_port_positions_for_neighbouring_
   self : BetweenLayerEdgeTwoNodeCrossingsCounter,
 ) -> Unit {
   if self.free_layer_is_not_first_layer() {
-    self.set_port_positions_for_layer(self.free_layer_index - 1, @core.PortSide::East)
+    self.set_port_positions_for_layer(
+      self.free_layer_index - 1,
+      @core.PortSide::East,
+    )
   }
   if self.free_layer_is_not_last_layer() {
-    self.set_port_positions_for_layer(self.free_layer_index + 1, @core.PortSide::West)
+    self.set_port_positions_for_layer(
+      self.free_layer_index + 1,
+      @core.PortSide::West,
+    )
   }
 }
 

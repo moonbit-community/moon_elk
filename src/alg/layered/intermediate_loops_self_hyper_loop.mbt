@@ -198,7 +198,7 @@ pub fn SelfHyperLoop::has_sl_ports_on_side(
   port_side : @core.PortSide,
 ) -> Bool {
   let side_index = self_hyper_loop_port_side_index(port_side)
-  self.sl_ports_by_side.get(side_index).is_some()
+  self.sl_ports_by_side.get(side_index) is Some(_)
 }
 
 ///|

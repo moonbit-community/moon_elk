@@ -52,7 +52,11 @@ fn switch_decider_bb_new_node(
 }
 
 ///|
-fn switch_decider_bb_new_port(node : LNode, side : @core.PortSide, id : Int) -> LPort {
+fn switch_decider_bb_new_port(
+  node : LNode,
+  side : @core.PortSide,
+  id : Int,
+) -> LPort {
   let port = new_l_port()
   port.set_node(Some(node))
   port.set_side(side)

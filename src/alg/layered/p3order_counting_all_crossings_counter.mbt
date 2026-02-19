@@ -51,7 +51,10 @@ fn all_crossings_counter_is_north_south_port(node : LNode) -> Bool {
 }
 
 ///|
-fn all_crossings_counter_port_side_is(port : LPort, side : @core.PortSide) -> Bool {
+fn all_crossings_counter_port_side_is(
+  port : LPort,
+  side : @core.PortSide,
+) -> Bool {
   match (port.get_side(), side) {
     (@core.PortSide::East, @core.PortSide::East) => true
     (@core.PortSide::West, @core.PortSide::West) => true
@@ -109,9 +112,15 @@ fn AllCrossingsCounter::count_crossings_at(
         left_layer, right_layer,
       )
       total_crossings = total_crossings +
-        counter.count_in_layer_crossings_on_side(left_layer, @core.PortSide::East)
+        counter.count_in_layer_crossings_on_side(
+          left_layer,
+          @core.PortSide::East,
+        )
       total_crossings = total_crossings +
-        counter.count_in_layer_crossings_on_side(right_layer, @core.PortSide::West)
+        counter.count_in_layer_crossings_on_side(
+          right_layer,
+          @core.PortSide::West,
+        )
     } else {
       total_crossings = counter.count_crossings_between_layers(
         left_layer, right_layer,
@@ -156,7 +165,8 @@ pub fn AllCrossingsCounter::init_at_port_level(
   if port.get_outgoing_edges().length() + port.get_incoming_edges().length() > 1 {
     if all_crossings_counter_port_side_is(port, @core.PortSide::East) {
       self.has_hyper_edges_east_of_index[l] = true
-    } else if all_crossings_counter_port_side_is(port, @core.PortSide::West) && l > 0 {
+    } else if all_crossings_counter_port_side_is(port, @core.PortSide::West) &&
+      l > 0 {
       self.has_hyper_edges_east_of_index[l - 1] = true
     }
   }

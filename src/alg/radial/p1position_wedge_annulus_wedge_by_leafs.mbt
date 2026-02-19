@@ -1,5 +1,7 @@
 ///|
-fn annulus_wedge_by_leafs_calculate_wedge_space(node : @graph.ElkNode) -> Double {
+fn annulus_wedge_by_leafs_calculate_wedge_space(
+  node : @graph.ElkNode,
+) -> Double {
   radial_get_number_of_leaves(node).to_double()
 }
 

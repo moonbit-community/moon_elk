@@ -7,7 +7,9 @@ pub struct DisCoLayoutMapping {
 }
 
 ///|
-pub fn new_dis_co_layout_mapping(layout_graph : @graph.ElkNode?) -> DisCoLayoutMapping {
+pub fn new_dis_co_layout_mapping(
+  layout_graph : @graph.ElkNode?,
+) -> DisCoLayoutMapping {
   { layout_graph, }
 }
 

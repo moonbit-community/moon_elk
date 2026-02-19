@@ -1,5 +1,8 @@
 ///|
-fn label_placer_port_side_equals(left : @core.PortSide, right : @core.PortSide) -> Bool {
+fn label_placer_port_side_equals(
+  left : @core.PortSide,
+  right : @core.PortSide,
+) -> Bool {
   match (left, right) {
     (@core.PortSide::SideUndefined, @core.PortSide::SideUndefined) => true
     (North, North) => true
@@ -318,7 +321,10 @@ fn LabelPlacer::assign_two_sides_corner_side_and_alignment(
 }
 
 ///|
-fn label_placer_has_side(sides : Array[@core.PortSide], side : @core.PortSide) -> Bool {
+fn label_placer_has_side(
+  sides : Array[@core.PortSide],
+  side : @core.PortSide,
+) -> Bool {
   for existing in sides {
     if label_placer_port_side_equals(existing, side) {
       return true

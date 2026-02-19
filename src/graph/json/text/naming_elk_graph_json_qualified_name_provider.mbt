@@ -41,7 +41,9 @@ fn graph_json_text_reverse_copy(values : Array[String]) -> Array[String] {
 }
 
 ///|
-fn graph_json_text_parent_names_for_node(node : @graph.ElkNode) -> Array[String] {
+fn graph_json_text_parent_names_for_node(
+  node : @graph.ElkNode,
+) -> Array[String] {
   let names : Array[String] = []
   let mut current = @graph.node_parent(node)
   while current is Some(node_value) {
@@ -55,7 +57,9 @@ fn graph_json_text_parent_names_for_node(node : @graph.ElkNode) -> Array[String]
 }
 
 ///|
-fn graph_json_text_parent_names_for_port(port : @graph.ElkPort) -> Array[String] {
+fn graph_json_text_parent_names_for_port(
+  port : @graph.ElkPort,
+) -> Array[String] {
   match @graph.port_parent(port) {
     Some(node) =>
       graph_json_text_append_name(
@@ -67,7 +71,9 @@ fn graph_json_text_parent_names_for_port(port : @graph.ElkPort) -> Array[String]
 }
 
 ///|
-fn graph_json_text_parent_names_for_edge(edge : @graph.ElkEdge) -> Array[String] {
+fn graph_json_text_parent_names_for_edge(
+  edge : @graph.ElkEdge,
+) -> Array[String] {
   match @graph.edge_containing_node(edge) {
     Some(node) =>
       graph_json_text_append_name(
@@ -79,7 +85,9 @@ fn graph_json_text_parent_names_for_edge(edge : @graph.ElkEdge) -> Array[String]
 }
 
 ///|
-fn graph_json_text_parent_names_for_label(label : @graph.ElkLabel) -> Array[String] {
+fn graph_json_text_parent_names_for_label(
+  label : @graph.ElkLabel,
+) -> Array[String] {
   match @graph.label_parent(label) {
     Some(NodeLabelParent(node)) =>
       graph_json_text_append_name(

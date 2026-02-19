@@ -106,7 +106,9 @@ pub fn IndividualSpacings::parse(
 }
 
 ///|
-pub fn individual_spacings_from_node(node : @graph.ElkNode) -> IndividualSpacings {
+pub fn individual_spacings_from_node(
+  node : @graph.ElkNode,
+) -> IndividualSpacings {
   let spacings = new_individual_spacings()
   for entry in @graph.node_individual_spacing_option_string_entries(node) {
     let (option_id, option_value) = entry
@@ -155,7 +157,8 @@ pub fn individual_spacings_get_individual_or_inherited(
   node : @graph.ElkNode,
   property : @graph.IProperty[Double],
 ) -> Double {
-  match @graph.node_individual_spacing_option_string_value(node, property.get_id()) {
+  match
+    @graph.node_individual_spacing_option_string_value(node, property.get_id()) {
     Some(value) =>
       match individual_spacings_parse_double(value) {
         Some(parsed) => parsed

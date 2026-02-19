@@ -92,22 +92,22 @@ let node_get_bool_property = @graph.node_get_bool_property
 let node_has_bool_property = @graph.node_has_bool_property
 
 ///|
-let node_side_to_string = @core.port_side_to_string
+let _node_side_to_string = @core.port_side_to_string
 
 ///|
-let node_set_string_set_property = @graph.node_set_string_set_property
+let _node_set_string_set_property = @graph.node_set_string_set_property
 
 ///|
 let port_parent = @graph.port_parent
 
 ///|
-let port_x = @graph.port_x
+let _port_x = @graph.port_x
 
 ///|
-let port_y = @graph.port_y
+let _port_y = @graph.port_y
 
 ///|
-let port_set_dimensions = @graph.port_set_dimensions
+let _port_set_dimensions = @graph.port_set_dimensions
 
 ///|
 let port_set_layout_option_string_by_id = @graph.port_set_layout_option_string_by_id
@@ -214,6 +214,7 @@ let node_label_placement_value_of = @core.node_label_placement_value_of
 ///|
 let omit_node_micro_layout = @core.omit_node_micro_layout
 
+///|
 fn assert_double_eq(
   actual : Double,
   expected : Double,

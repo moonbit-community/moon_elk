@@ -14,7 +14,9 @@ fn port_side_assigner_port_side_equals(
 }
 
 ///|
-fn port_side_assigner_parse_constraints(value : String) -> @core.PortConstraints {
+fn port_side_assigner_parse_constraints(
+  value : String,
+) -> @core.PortConstraints {
   match value {
     "FREE" => @core.PortConstraints::Free
     "FIXED_SIDE" => @core.PortConstraints::FixedSide
@@ -155,10 +157,14 @@ fn port_side_assigner_target_sides(
   target : PortSideAssignerTarget,
 ) -> (@core.PortSide, @core.PortSide) {
   match target {
-    PortSideAssignerTarget::NorthTarget => (@core.PortSide::North, @core.PortSide::North)
-    PortSideAssignerTarget::SouthTarget => (@core.PortSide::South, @core.PortSide::South)
-    PortSideAssignerTarget::EastTarget => (@core.PortSide::East, @core.PortSide::East)
-    PortSideAssignerTarget::WestTarget => (@core.PortSide::West, @core.PortSide::West)
+    PortSideAssignerTarget::NorthTarget =>
+      (@core.PortSide::North, @core.PortSide::North)
+    PortSideAssignerTarget::SouthTarget =>
+      (@core.PortSide::South, @core.PortSide::South)
+    PortSideAssignerTarget::EastTarget =>
+      (@core.PortSide::East, @core.PortSide::East)
+    PortSideAssignerTarget::WestTarget =>
+      (@core.PortSide::West, @core.PortSide::West)
     PortSideAssignerTarget::NorthWestCornerTarget =>
       (@core.PortSide::West, @core.PortSide::North)
     PortSideAssignerTarget::NorthEastCornerTarget =>

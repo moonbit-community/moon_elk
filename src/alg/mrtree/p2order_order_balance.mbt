@@ -4,7 +4,9 @@ fn mrtree_order_balance_layout_processor_configuration(
 ) -> @core.LayoutProcessorConfiguration[MrtreeTreeLayoutPhases, MrtreeGraph]? {
   ignore(graph)
   Some(
-    @core.layout_processor_configuration_create(mrtree_tree_layout_phase_descriptor)
+    @core.layout_processor_configuration_create(
+      mrtree_tree_layout_phase_descriptor,
+    )
     .before(MrtreeTreeLayoutPhases::P2NodeOrdering)
     .add(
       mrtree_intermediate_processor_factory(

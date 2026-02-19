@@ -1,0 +1,406 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/moon_elk/alg/graphviz/layouter"
+
+import {
+  "Milky2018/moon_elk/alg/graphviz/dot",
+  "Milky2018/moon_elk/core",
+  "Milky2018/moon_elk/graph",
+}
+
+// Values
+pub fn graphviz_cleanup_error() -> GraphvizToolCleanup
+
+pub fn graphviz_cleanup_normal() -> GraphvizToolCleanup
+
+pub fn graphviz_cleanup_stop() -> GraphvizToolCleanup
+
+pub let graphviz_core_option_edge_routing : @graph.IProperty[String]
+
+pub let graphviz_core_option_hierarchy_handling : @graph.IProperty[String]
+
+pub let graphviz_core_option_interactive : @graph.IProperty[Bool]
+
+pub let graphviz_core_option_random_seed : @graph.IProperty[Int]
+
+pub let graphviz_core_option_separate_connected_components : @graph.IProperty[Bool]
+
+pub fn graphviz_layout_provider_as_layout_provider(GraphvizLayoutProvider) -> @core.AbstractLayoutProvider
+
+pub let graphviz_layout_provider_debug_mode : @graph.IProperty[Bool]
+
+pub fn graphviz_layout_provider_get_debug_bytes_for_test(String) -> Array[Int]?
+
+pub let graphviz_layout_provider_pref_graphviz_reuse_process : String
+
+pub fn graphviz_layout_provider_reset_runtime_for_test() -> Unit
+
+pub let graphviz_layout_provider_reuse_process_default : Bool
+
+pub fn graphviz_layout_provider_set_parser_for_test((Array[Int]) -> GraphvizLayoutParseResult) -> Unit
+
+pub fn graphviz_layout_provider_set_resource_set_provider_for_test(() -> GraphvizLayoutResourceSet) -> Unit
+
+pub fn graphviz_layout_provider_set_serializer_for_test((@dot.DotGraphvizModel) -> Array[Int]) -> Unit
+
+pub fn graphviz_layout_provider_test_default_graph_bytes_for_test() -> Array[Int]
+
+pub fn graphviz_layouter_is_eclipse_running() -> Bool
+
+pub fn graphviz_layouter_plugin_get_default() -> GraphvizLayouterPlugin?
+
+pub let graphviz_layouter_plugin_id : String
+
+pub fn graphviz_layouter_plugin_reset_for_test() -> Unit
+
+pub fn graphviz_layouter_preference_initializer_initialize_default_preferences() -> Unit
+
+pub fn graphviz_layouter_preference_store_access_get_ui_save_boolean(String, Bool) -> Bool
+
+pub fn graphviz_layouter_preference_store_access_get_ui_save_int(String) -> Int
+
+pub fn graphviz_layouter_preference_store_access_get_ui_save_string(String) -> String
+
+pub fn graphviz_layouter_preference_store_access_reset_for_test() -> Unit
+
+pub fn graphviz_layouter_preference_store_access_set_ui_available_for_test(Bool) -> Unit
+
+pub fn graphviz_layouter_preference_store_get_instance() -> GraphvizLayouterPreferenceStore
+
+pub fn graphviz_layouter_preference_store_reset_for_test() -> Unit
+
+pub let graphviz_option_adapt_port_positions : @graph.IProperty[Bool]
+
+pub let graphviz_option_concentrate : @graph.IProperty[Bool]
+
+pub let graphviz_option_epsilon : @graph.IProperty[Double]
+
+pub let graphviz_option_iterations_factor : @graph.IProperty[Double]
+
+pub let graphviz_option_label_angle : @graph.IProperty[Double]
+
+pub let graphviz_option_label_distance : @graph.IProperty[Double]
+
+pub let graphviz_option_layer_spacing_factor : @graph.IProperty[Double]
+
+pub let graphviz_option_maxiter : @graph.IProperty[Int]
+
+pub let graphviz_option_neato_model : @graph.IProperty[String]
+
+pub let graphviz_option_overlap_mode : @graph.IProperty[String]
+
+pub let graphviz_preference_page_id : String
+
+pub fn graphviz_tool_current_timeout() -> Int
+
+pub fn graphviz_tool_get_dot_executable() -> String
+
+pub fn graphviz_tool_get_dot_executable_with_prompt(Bool) -> String?
+
+pub fn graphviz_tool_get_last_exec_args_for_test() -> Array[String]
+
+pub fn graphviz_tool_get_process_default_timeout() -> Int
+
+pub let graphviz_tool_pref_graphviz_executable : String
+
+pub let graphviz_tool_pref_timeout : String
+
+pub let graphviz_tool_process_min_timeout : Int
+
+pub fn graphviz_tool_reset_process_default_timeout_for_test() -> Unit
+
+pub fn graphviz_tool_reset_runtime_for_test() -> Unit
+
+pub fn graphviz_tool_set_default_locations_for_test(Array[String]) -> Unit
+
+pub fn graphviz_tool_set_environment_for_test(String?, file_separator? : String, path_separator? : String) -> Unit
+
+pub fn graphviz_tool_set_executable_probe_for_test((String) -> Bool) -> Unit
+
+pub fn graphviz_tool_set_handle_exec_path_for_test(() -> Bool) -> Unit
+
+pub fn graphviz_tool_set_process_default_timeout_for_test(Int) -> Unit
+
+pub fn graphviz_tool_set_process_factory_for_test((Array[String]) -> GraphvizProcess?) -> Unit
+
+pub fn new_eclipse_runtime_detector() -> EclipseRuntimeDetector
+
+pub fn new_forked_output_stream(Array[GraphvizOutputStream]) -> ForkedOutputStream
+
+pub fn new_forked_output_stream2(GraphvizOutputStream, GraphvizOutputStream) -> ForkedOutputStream
+
+pub fn new_forwarding_input_stream(GraphvizInputStream, GraphvizOutputStream) -> ForwardingInputStream
+
+pub fn new_graphviz_byte_array_input_stream(Array[Int]) -> GraphvizByteArrayInputStream
+
+pub fn new_graphviz_byte_array_output_stream() -> GraphvizByteArrayOutputStream
+
+pub fn new_graphviz_exception(String) -> GraphvizException
+
+pub fn new_graphviz_exception_with_cause(String, String) -> GraphvizException
+
+pub fn new_graphviz_input_stream(() -> Int, (Array[Int]) -> Int, (Array[Int], Int, Int) -> Int, (Int) -> Int, () -> Int, () -> Unit, (Int) -> Unit, () -> Unit, () -> Bool) -> GraphvizInputStream
+
+pub fn new_graphviz_layout_diagnostic(Int, String) -> GraphvizLayoutDiagnostic
+
+pub fn new_graphviz_layout_parse_result(@dot.DotGraphvizModel) -> GraphvizLayoutParseResult
+
+pub fn new_graphviz_layout_parse_result_with_errors(Array[GraphvizLayoutDiagnostic]) -> GraphvizLayoutParseResult
+
+pub fn new_graphviz_layout_provider() -> GraphvizLayoutProvider
+
+pub fn new_graphviz_layout_resource_set((@dot.DotGraphvizModel) -> Array[Int], (Array[Int]) -> GraphvizLayoutParseResult) -> GraphvizLayoutResourceSet
+
+pub fn new_graphviz_layouter_bundle(symbolic_name? : String) -> GraphvizLayouterBundle
+
+pub fn new_graphviz_layouter_plugin(bundle? : GraphvizLayouterBundle) -> GraphvizLayouterPlugin
+
+pub fn new_graphviz_layouter_preference_store() -> GraphvizLayouterPreferenceStore
+
+pub fn new_graphviz_output_stream((Int) -> Unit, (Array[Int], Int, Int) -> Unit, () -> Unit, () -> Unit) -> GraphvizOutputStream
+
+pub fn new_graphviz_preference_page() -> GraphvizPreferencePage
+
+pub fn new_graphviz_preference_store(String) -> GraphvizPreferenceStore
+
+pub fn new_graphviz_process(GraphvizOutputStream, GraphvizInputStream, GraphvizInputStream, destroy_fn? : () -> Unit, close_fn? : () -> Unit, exit_value_fn? : () -> Int?) -> GraphvizProcess
+
+pub fn new_graphviz_tool(@dot.Command) -> GraphvizTool
+
+pub fn new_layout_dot_exporter() -> LayoutDotExporter
+
+// Errors
+
+// Types and methods
+pub struct EclipseRuntimeDetector {
+  marker : Unit
+}
+pub fn EclipseRuntimeDetector::is_eclipse_running(Self) -> Bool
+
+pub struct ForkedOutputStream {
+  output_streams : Array[GraphvizOutputStream]
+}
+pub fn ForkedOutputStream::close(Self) -> Unit
+pub fn ForkedOutputStream::flush(Self) -> Unit
+pub fn ForkedOutputStream::write(Self, Int) -> Unit
+
+pub struct ForwardingInputStream {
+  input_stream : GraphvizInputStream
+  output_stream : GraphvizOutputStream
+}
+pub fn ForwardingInputStream::available(Self) -> Int
+pub fn ForwardingInputStream::close(Self) -> Unit
+pub fn ForwardingInputStream::mark(Self, Int) -> Unit
+pub fn ForwardingInputStream::mark_supported(Self) -> Bool
+pub fn ForwardingInputStream::read(Self) -> Int
+pub fn ForwardingInputStream::read_bytes(Self, Array[Int]) -> Int
+pub fn ForwardingInputStream::read_bytes_with_offset(Self, Array[Int], Int, Int) -> Int
+pub fn ForwardingInputStream::reset(Self) -> Unit
+pub fn ForwardingInputStream::skip(Self, Int) -> Int
+
+pub struct GraphvizByteArrayInputStream {
+  data : Array[Int]
+  index_ref : Ref[Int]
+  mark_ref : Ref[Int]
+  closed_ref : Ref[Bool]
+}
+pub fn GraphvizByteArrayInputStream::as_input_stream(Self) -> GraphvizInputStream
+pub fn GraphvizByteArrayInputStream::is_closed(Self) -> Bool
+
+pub struct GraphvizByteArrayOutputStream {
+  bytes_ref : Ref[Array[Int]]
+  flush_count_ref : Ref[Int]
+  closed_ref : Ref[Bool]
+}
+pub fn GraphvizByteArrayOutputStream::as_output_stream(Self) -> GraphvizOutputStream
+pub fn GraphvizByteArrayOutputStream::get_bytes(Self) -> Array[Int]
+pub fn GraphvizByteArrayOutputStream::get_flush_count(Self) -> Int
+pub fn GraphvizByteArrayOutputStream::is_closed(Self) -> Bool
+
+pub struct GraphvizException {
+  message : String
+  cause : String?
+}
+pub fn GraphvizException::get_cause(Self) -> String?
+pub fn GraphvizException::get_message(Self) -> String
+pub fn GraphvizException::to_string(Self) -> String
+
+pub struct GraphvizInputStream {
+  read_fn : () -> Int
+  read_bytes_fn : (Array[Int]) -> Int
+  read_bytes_with_offset_fn : (Array[Int], Int, Int) -> Int
+  skip_fn : (Int) -> Int
+  available_fn : () -> Int
+  close_fn : () -> Unit
+  mark_fn : (Int) -> Unit
+  reset_fn : () -> Unit
+  mark_supported_fn : () -> Bool
+}
+pub fn GraphvizInputStream::available(Self) -> Int
+pub fn GraphvizInputStream::close(Self) -> Unit
+pub fn GraphvizInputStream::mark(Self, Int) -> Unit
+pub fn GraphvizInputStream::mark_supported(Self) -> Bool
+pub fn GraphvizInputStream::read(Self) -> Int
+pub fn GraphvizInputStream::read_bytes(Self, Array[Int]) -> Int
+pub fn GraphvizInputStream::read_bytes_with_offset(Self, Array[Int], Int, Int) -> Int
+pub fn GraphvizInputStream::reset(Self) -> Unit
+pub fn GraphvizInputStream::skip(Self, Int) -> Int
+
+pub struct GraphvizLayoutDiagnostic {
+  line : Int
+  message : String
+}
+pub fn GraphvizLayoutDiagnostic::get_line(Self) -> Int
+pub fn GraphvizLayoutDiagnostic::get_message(Self) -> String
+
+pub struct GraphvizLayoutParseResult {
+  model : @dot.DotGraphvizModel?
+  errors : Array[GraphvizLayoutDiagnostic]
+}
+pub fn GraphvizLayoutParseResult::get_errors(Self) -> Array[GraphvizLayoutDiagnostic]
+pub fn GraphvizLayoutParseResult::get_model(Self) -> @dot.DotGraphvizModel?
+
+pub struct GraphvizLayoutProvider {
+  mut command : @dot.Command
+  mut graphviz_tool : GraphvizTool?
+  mut dot_resource_set_provider : @dot.DotResourceSetProvider[GraphvizLayoutResourceSet]
+  mut my_call_no : Int
+}
+pub fn GraphvizLayoutProvider::debug_file_base(Self) -> String
+pub fn GraphvizLayoutProvider::dispose(Self) -> Unit
+pub fn GraphvizLayoutProvider::initialize(Self, String?) -> Unit
+pub fn GraphvizLayoutProvider::layout(Self, Int, @core.IElkProgressMonitor) -> Unit
+pub fn GraphvizLayoutProvider::read_dot_graph(Self, @core.IElkProgressMonitor, Bool, GraphvizLayoutResourceSet) -> @dot.DotGraphvizModel
+pub fn GraphvizLayoutProvider::write_dot_graph(Self, @dot.DotGraphvizModel, @core.IElkProgressMonitor, Bool, GraphvizLayoutResourceSet) -> Unit
+
+pub struct GraphvizLayoutResourceSet {
+  serialize_fn : (@dot.DotGraphvizModel) -> Array[Int]
+  parse_fn : (Array[Int]) -> GraphvizLayoutParseResult
+}
+pub fn GraphvizLayoutResourceSet::parse(Self, Array[Int]) -> GraphvizLayoutParseResult
+pub fn GraphvizLayoutResourceSet::serialize(Self, @dot.DotGraphvizModel) -> Array[Int]
+
+pub struct GraphvizLayouterBundle {
+  symbolic_name : String
+}
+pub fn GraphvizLayouterBundle::get_symbolic_name(Self) -> String
+
+pub struct GraphvizLayouterPlugin {
+  bundle : GraphvizLayouterBundle
+}
+pub fn GraphvizLayouterPlugin::get_bundle(Self) -> GraphvizLayouterBundle
+pub fn GraphvizLayouterPlugin::start(Self, _context? : String) -> Unit
+pub fn GraphvizLayouterPlugin::stop(Self, _context? : String) -> Unit
+
+pub struct GraphvizLayouterPreferenceStore {
+  mut preference_store : GraphvizPreferenceStore?
+}
+pub fn GraphvizLayouterPreferenceStore::get_preference_store(Self) -> GraphvizPreferenceStore
+
+pub struct GraphvizOutputStream {
+  write_byte_fn : (Int) -> Unit
+  write_bytes_fn : (Array[Int], Int, Int) -> Unit
+  flush_fn : () -> Unit
+  close_fn : () -> Unit
+}
+pub fn GraphvizOutputStream::close(Self) -> Unit
+pub fn GraphvizOutputStream::flush(Self) -> Unit
+pub fn GraphvizOutputStream::write(Self, Int) -> Unit
+pub fn GraphvizOutputStream::write_bytes(Self, Array[Int], Int, Int) -> Unit
+
+pub struct GraphvizPreferenceField {
+  name : String
+  label : String
+  kind : GraphvizPreferenceFieldKind
+  validate_on_key_stroke : Bool
+  min_value : Int
+  max_value : Int
+}
+pub fn GraphvizPreferenceField::get_kind(Self) -> GraphvizPreferenceFieldKind
+pub fn GraphvizPreferenceField::get_label(Self) -> String
+pub fn GraphvizPreferenceField::get_max_value(Self) -> Int
+pub fn GraphvizPreferenceField::get_min_value(Self) -> Int
+pub fn GraphvizPreferenceField::get_name(Self) -> String
+pub fn GraphvizPreferenceField::get_validate_on_key_stroke(Self) -> Bool
+
+pub enum GraphvizPreferenceFieldKind {
+  GraphvizPreferenceFileField
+  GraphvizPreferenceIntegerField
+  GraphvizPreferenceBooleanField
+}
+
+pub struct GraphvizPreferencePage {
+  fields : Array[GraphvizPreferenceField]
+  mut preference_store : GraphvizPreferenceStore?
+}
+pub fn GraphvizPreferencePage::create_field_editors(Self) -> Unit
+pub fn GraphvizPreferencePage::get_description(Self) -> String
+pub fn GraphvizPreferencePage::get_fields(Self) -> Array[GraphvizPreferenceField]
+pub fn GraphvizPreferencePage::get_preference_store(Self) -> GraphvizPreferenceStore?
+pub fn GraphvizPreferencePage::init(Self) -> Unit
+pub fn GraphvizPreferencePage::perform_ok(Self) -> Bool
+
+pub struct GraphvizPreferenceStore {
+  symbolic_name : String
+  int_values : Map[String, Int]
+  int_defaults : Map[String, Int]
+  string_values : Map[String, String]
+  string_defaults : Map[String, String]
+  bool_values : Map[String, Bool]
+  bool_defaults : Map[String, Bool]
+}
+pub fn GraphvizPreferenceStore::get_boolean(Self, String) -> Bool
+pub fn GraphvizPreferenceStore::get_int(Self, String) -> Int
+pub fn GraphvizPreferenceStore::get_string(Self, String) -> String
+pub fn GraphvizPreferenceStore::get_symbolic_name(Self) -> String
+pub fn GraphvizPreferenceStore::set_boolean(Self, String, Bool) -> Unit
+pub fn GraphvizPreferenceStore::set_default_boolean(Self, String, Bool) -> Unit
+pub fn GraphvizPreferenceStore::set_default_int(Self, String, Int) -> Unit
+pub fn GraphvizPreferenceStore::set_default_string(Self, String, String) -> Unit
+pub fn GraphvizPreferenceStore::set_int(Self, String, Int) -> Unit
+pub fn GraphvizPreferenceStore::set_string(Self, String, String) -> Unit
+
+pub struct GraphvizProcess {
+  output_stream : GraphvizOutputStream
+  input_stream : GraphvizInputStream
+  error_stream : GraphvizInputStream
+  destroy_fn : () -> Unit
+  close_fn : () -> Unit
+  exit_value_fn : () -> Int?
+}
+pub fn GraphvizProcess::close(Self) -> Unit
+pub fn GraphvizProcess::destroy(Self) -> Unit
+pub fn GraphvizProcess::exit_value(Self) -> Int?
+pub fn GraphvizProcess::get_error_stream(Self) -> GraphvizInputStream
+pub fn GraphvizProcess::get_input_stream(Self) -> GraphvizInputStream
+pub fn GraphvizProcess::get_output_stream(Self) -> GraphvizOutputStream
+
+pub struct GraphvizTool {
+  mut process : GraphvizProcess?
+  command : @dot.Command
+  mut watchdog : GraphvizWatchdog?
+  mut graphviz_stream : GraphvizInputStream?
+}
+pub fn GraphvizTool::cleanup(Self, GraphvizToolCleanup) -> Unit
+pub fn GraphvizTool::initialize(Self, arguments? : Array[String]?) -> Unit
+pub fn GraphvizTool::input(Self) -> GraphvizOutputStream
+pub fn GraphvizTool::output(Self) -> GraphvizInputStream
+
+pub enum GraphvizToolCleanup {
+  GraphvizCleanupNormal
+  GraphvizCleanupError
+  GraphvizCleanupStop
+}
+
+pub struct GraphvizWatchdog {
+  mut running : Bool
+}
+
+pub struct LayoutDotExporter {
+  base : @dot.DotExporter
+}
+pub fn LayoutDotExporter::transform(Self, @dot.DotTransformationData[Int, @dot.DotGraphvizModel]) -> Unit
+
+// Type aliases
+
+// Traits
+

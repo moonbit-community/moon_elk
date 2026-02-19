@@ -26,7 +26,7 @@ pub fn BlockRow::add_rectangle(self : BlockRow, rect : @graph.ElkNode) -> Bool {
     (if self.nodes.is_empty() { 0.0 } else { self.node_node_spacing }),
     self.y,
   )
-  self.height = @math.maximum(self.height, @graph.node_height(rect))
+  self.height = @cmp.maximum(self.height, @graph.node_height(rect))
   self.width += @graph.node_width(rect) +
     (if self.nodes.is_empty() { 0.0 } else { self.node_node_spacing })
   self.nodes.push(rect)
@@ -61,7 +61,10 @@ pub fn BlockRow::update_row(self : BlockRow) -> Unit {
   for rect in self.nodes {
     @graph.node_set_location(rect, self.x + width, self.y)
     width += @graph.node_width(rect) + self.node_node_spacing
-    height = @math.maximum(height, @graph.node_height(rect) + self.node_node_spacing)
+    height = @cmp.maximum(
+      height,
+      @graph.node_height(rect) + self.node_node_spacing,
+    )
   }
   self.width = width - self.node_node_spacing
   self.height = height - self.node_node_spacing

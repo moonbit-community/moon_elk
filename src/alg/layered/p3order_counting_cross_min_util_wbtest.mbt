@@ -51,19 +51,27 @@ test "CrossMinUtil iterates south/west in reverse side order" {
   let (node, _north, _east, _south_a, _south_b, _west) = cross_min_node_with_sided_ports()
 
   inspect(
-    cross_min_port_ids(in_north_south_east_west_order(node, @core.PortSide::North)),
+    cross_min_port_ids(
+      in_north_south_east_west_order(node, @core.PortSide::North),
+    ),
     content="[1]",
   )
   inspect(
-    cross_min_port_ids(in_north_south_east_west_order(node, @core.PortSide::East)),
+    cross_min_port_ids(
+      in_north_south_east_west_order(node, @core.PortSide::East),
+    ),
     content="[2]",
   )
   inspect(
-    cross_min_port_ids(in_north_south_east_west_order(node, @core.PortSide::South)),
+    cross_min_port_ids(
+      in_north_south_east_west_order(node, @core.PortSide::South),
+    ),
     content="[4, 3]",
   )
   inspect(
-    cross_min_port_ids(in_north_south_east_west_order(node, @core.PortSide::West)),
+    cross_min_port_ids(
+      in_north_south_east_west_order(node, @core.PortSide::West),
+    ),
     content="[5]",
   )
   inspect(
