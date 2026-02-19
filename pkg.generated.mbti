@@ -5065,6 +5065,10 @@ pub fn new_graphviz_dot_executable_extension(set_initialization_data_fn? : (Grap
 
 pub fn new_graphviz_dot_executable_extension_factory() -> GraphvizDotExecutableExtensionFactory
 
+pub fn new_graphviz_dot_formatter(grammar_access? : GraphvizDotGrammarAccess) -> GraphvizDotFormatter
+
+pub fn new_graphviz_dot_formatter2(formatter? : GraphvizDotFormatter) -> (GraphvizDotFormatterRequest) -> String
+
 pub fn new_graphviz_dot_formatter_request() -> GraphvizDotFormatterRequest
 
 pub fn new_graphviz_dot_grammar_access() -> GraphvizDotGrammarAccess
@@ -13303,6 +13307,13 @@ pub struct GraphvizDotExecutableExtensionFactory {
 }
 pub fn GraphvizDotExecutableExtensionFactory::create(Self) -> Result[GraphvizDotObject, GraphvizDotCoreException]
 pub fn GraphvizDotExecutableExtensionFactory::set_initialization_data(Self, GraphvizDotConfigurationElement?, String?, GraphvizDotInitializationData?) -> Unit
+
+pub struct GraphvizDotFormatter {
+  grammar_access : GraphvizDotGrammarAccess
+}
+pub fn GraphvizDotFormatter::format_request(Self, GraphvizDotFormatterRequest) -> String
+pub fn GraphvizDotFormatter::format_text(Self, String) -> String
+pub fn GraphvizDotFormatter::get_grammar_access(Self) -> GraphvizDotGrammarAccess
 
 pub struct GraphvizDotFormatterRequest {
   mut max_line_width : Int

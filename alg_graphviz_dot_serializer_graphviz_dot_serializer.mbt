@@ -87,15 +87,8 @@ pub struct GraphvizDotSerializer {
 }
 
 ///|
-fn graphviz_dot_serializer_default_formatter(
-  request : GraphvizDotFormatterRequest,
-) -> String {
-  request.get_text()
-}
-
-///|
 fn graphviz_dot_serializer_default_formatter_provider() -> GraphvizDotFormatter2 {
-  graphviz_dot_serializer_default_formatter
+  new_graphviz_dot_formatter2()
 }
 
 ///|
