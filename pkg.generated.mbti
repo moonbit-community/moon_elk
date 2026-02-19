@@ -4599,6 +4599,8 @@ pub fn new_elk_graph_json_executable_extension_factory() -> ElkGraphJsonExecutab
 
 pub fn new_elk_graph_json_formatter(indent_size? : Int) -> ElkGraphJsonFormatter
 
+pub fn new_elk_graph_json_generator() -> ElkGraphJsonGenerator
+
 pub fn new_elk_graph_json_grammar_access() -> ElkGraphJsonGrammarAccess
 
 pub fn new_elk_graph_json_ide_injector(ElkGraphJsonRuntimeModule, ElkGraphJsonIdeModule) -> ElkGraphJsonIdeInjector
@@ -11156,6 +11158,11 @@ pub struct ElkGraphJsonFormatter {
   indent_size : Int
 }
 pub fn ElkGraphJsonFormatter::format(Self, Int) -> String
+
+pub struct ElkGraphJsonGenerator {
+  marker : Unit
+}
+pub fn ElkGraphJsonGenerator::do_generate(Self, String, String, String) -> Unit
 
 pub struct ElkGraphJsonGrammarAccess {
   grammar : String
@@ -18793,6 +18800,12 @@ pub type ElkGraphBoundsProvider = IBoundsProvider[Int, Int]
 pub type ElkGraphElement = Int
 
 pub type ElkGraphElementImpl = Int
+
+pub type ElkGraphJsonFileSystemAccess2 = String
+
+pub type ElkGraphJsonGeneratorContext = String
+
+pub type ElkGraphJsonResource = String
 
 pub type ElkGraphModelAdapter = Unit
 
