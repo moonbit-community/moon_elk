@@ -5171,6 +5171,8 @@ pub fn new_greedy_switch_north_south_edge_test_graph_creator() -> GreedySwitchNo
 
 pub fn new_greedy_switch_test_graph_creator() -> GreedySwitchTestGraphCreator
 
+pub fn[T] new_grid((Int, Int, T) -> Unit, (Int, Int) -> T, (Int) -> Array[T], (Int) -> Array[T], () -> Int, () -> Int, (Int, Int) -> Unit) -> Grid[T]
+
 pub fn new_grid_container_cell(Bool, Bool, Double) -> Cell
 
 pub fn new_grid_elk_node(Int) -> GridElkNode
@@ -13829,6 +13831,23 @@ pub enum GreedySwitchType {
   TwoSided
   Off
 }
+
+pub struct Grid[T] {
+  put_fn : (Int, Int, T) -> Unit
+  get_fn : (Int, Int) -> T
+  get_row_fn : (Int) -> Array[T]
+  get_column_fn : (Int) -> Array[T]
+  get_columns_fn : () -> Int
+  get_rows_fn : () -> Int
+  set_grid_size_fn : (Int, Int) -> Unit
+}
+pub fn[T] Grid::get(Self[T], Int, Int) -> T
+pub fn[T] Grid::get_column(Self[T], Int) -> Array[T]
+pub fn[T] Grid::get_columns(Self[T]) -> Int
+pub fn[T] Grid::get_row(Self[T], Int) -> Array[T]
+pub fn[T] Grid::get_rows(Self[T]) -> Int
+pub fn[T] Grid::put(Self[T], Int, Int, T) -> Unit
+pub fn[T] Grid::set_grid_size(Self[T], Int, Int) -> Unit
 
 pub struct GridElkNode {
   node : Int
