@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.core.debug.grandom.test/core_debug_grandom_generators_random_graph_generator_test.mbt

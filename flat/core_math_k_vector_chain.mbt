@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.core/core_math_k_vector_chain.mbt

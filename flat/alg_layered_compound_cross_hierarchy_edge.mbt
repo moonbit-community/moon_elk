@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.alg.layered/alg_layered_compound_cross_hierarchy_edge.mbt

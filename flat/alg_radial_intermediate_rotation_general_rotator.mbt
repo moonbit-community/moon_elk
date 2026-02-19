@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.alg.radial/alg_radial_intermediate_rotation_general_rotator.mbt

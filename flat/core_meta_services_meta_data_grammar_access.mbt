@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.core.meta/core_meta_services_meta_data_grammar_access.mbt

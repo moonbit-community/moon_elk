@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.alg.common.test/alg_common_polyomino_structures_i_three_value_grid_test.mbt

@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.core.meta.ide/core_meta_ide_contentassist_antlr_partial_meta_data_content_assist_parser.mbt

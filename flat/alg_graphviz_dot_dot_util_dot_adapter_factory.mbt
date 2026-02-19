@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.alg.graphviz.dot/alg_graphviz_dot_dot_util_dot_adapter_factory.mbt

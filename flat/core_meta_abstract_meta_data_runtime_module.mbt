@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.core.meta/core_meta_abstract_meta_data_runtime_module.mbt

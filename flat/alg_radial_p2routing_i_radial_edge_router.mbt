@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.alg.radial/alg_radial_p2routing_i_radial_edge_router.mbt

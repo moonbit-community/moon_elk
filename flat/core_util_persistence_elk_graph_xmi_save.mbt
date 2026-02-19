@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.core/core_util_persistence_elk_graph_xmi_save.mbt

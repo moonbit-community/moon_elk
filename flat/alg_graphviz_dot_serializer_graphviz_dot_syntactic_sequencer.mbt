@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.alg.graphviz.dot/alg_graphviz_dot_serializer_graphviz_dot_syntactic_sequencer.mbt

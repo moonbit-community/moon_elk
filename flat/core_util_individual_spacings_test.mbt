@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.core.test/core_util_individual_spacings_test.mbt

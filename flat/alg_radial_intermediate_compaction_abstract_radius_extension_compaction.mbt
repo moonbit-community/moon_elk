@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.alg.radial/alg_radial_intermediate_compaction_abstract_radius_extension_compaction.mbt

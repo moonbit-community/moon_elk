@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.core.service/core_service_elk_service_plugin.mbt

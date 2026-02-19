@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.graph/graph_util_graph_identifier_generator.mbt

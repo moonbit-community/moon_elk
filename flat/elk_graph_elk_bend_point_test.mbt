@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.graph.test/elk_graph_elk_bend_point_test.mbt

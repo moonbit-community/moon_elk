@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.alg.common.test/alg_common_overlaps_rectangle_strip_overlap_remover_test.mbt

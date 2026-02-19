@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.alg.common/alg_common_compaction_options_high_level_sorting_criterion.mbt

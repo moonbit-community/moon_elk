@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.core/core_testing_test_controller.mbt

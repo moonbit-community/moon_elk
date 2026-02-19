@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.alg.layered/alg_layered_intermediate_dummy_self_loop_processor.mbt

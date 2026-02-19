@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.alg.layered/alg_layered_intermediate_end_label_cell.mbt

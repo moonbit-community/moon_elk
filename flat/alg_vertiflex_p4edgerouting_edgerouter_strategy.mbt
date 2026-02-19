@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.alg.vertiflex/alg_vertiflex_p4edgerouting_edgerouter_strategy.mbt

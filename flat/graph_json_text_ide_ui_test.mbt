@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.graph.json.text.ide.test/graph_json_text_ide_ui_test.mbt

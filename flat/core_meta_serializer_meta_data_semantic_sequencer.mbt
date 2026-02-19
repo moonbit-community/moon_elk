@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.core.meta/core_meta_serializer_meta_data_semantic_sequencer.mbt

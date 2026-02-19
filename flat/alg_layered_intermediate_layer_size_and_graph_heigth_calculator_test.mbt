@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.alg.layered.test/alg_layered_intermediate_layer_size_and_graph_heigth_calculator_test.mbt

@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.shared.test/shared_test_elk_live_examples_test.mbt

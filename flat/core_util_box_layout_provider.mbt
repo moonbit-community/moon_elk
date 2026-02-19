@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.core/core_util_box_layout_provider.mbt

@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.core.debug/core_debug_actions_compress_log_folder_action.mbt

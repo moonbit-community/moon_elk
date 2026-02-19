@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.alg.radial/alg_radial_options_annulus_wedge_criteria.mbt

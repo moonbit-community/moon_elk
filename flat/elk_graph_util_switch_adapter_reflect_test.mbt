@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.graph.test/elk_graph_util_switch_adapter_reflect_test.mbt

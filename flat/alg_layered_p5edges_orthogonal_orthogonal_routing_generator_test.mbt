@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.alg.layered.test/alg_layered_p5edges_orthogonal_orthogonal_routing_generator_test.mbt

@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.core/core_unsupported_configuration_exception.mbt

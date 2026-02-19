@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.graph/graph_properties_advanced_property_value.mbt

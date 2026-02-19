@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.alg.disco.debug/alg_disco_debug_views_selective_paint_toggle_action.mbt

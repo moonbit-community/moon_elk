@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.alg.vertiflex/alg_vertiflex_edge_routing_strategy.mbt

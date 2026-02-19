@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.core.test/core_unsupported_exceptions_test.mbt

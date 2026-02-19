@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.alg.radial/alg_radial_intermediate_optimization_crossing_minimization_position.mbt

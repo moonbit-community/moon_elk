@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.alg.mrtree.test/alg_mrtree_p2order_test.mbt

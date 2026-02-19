@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.graph/graph_impl_elk_shape_impl.mbt

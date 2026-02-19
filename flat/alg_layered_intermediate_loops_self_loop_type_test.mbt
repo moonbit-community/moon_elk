@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.alg.layered.test/alg_layered_intermediate_loops_self_loop_type_test.mbt

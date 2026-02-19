@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.core/core_math_elk_padding.mbt

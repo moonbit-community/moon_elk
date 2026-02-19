@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.graph.json.text/graph_json_text_conversion_property_key_value_converter.mbt

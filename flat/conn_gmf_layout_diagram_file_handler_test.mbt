@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.conn.gmf.test/conn_gmf_layout_diagram_file_handler_test.mbt

@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.core.meta.ide/core_meta_ide_meta_data_ide_setup.mbt

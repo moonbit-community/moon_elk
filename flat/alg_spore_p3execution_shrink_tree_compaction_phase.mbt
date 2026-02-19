@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.alg.spore/alg_spore_p3execution_shrink_tree_compaction_phase.mbt

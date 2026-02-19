@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.alg.spore/alg_spore_options_spanning_tree_cost_function.mbt

@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.core.test/core_issues_457_489_test.mbt

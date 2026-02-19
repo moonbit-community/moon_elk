@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.graph/graph_impl_elk_property_to_value_map_entry_impl.mbt

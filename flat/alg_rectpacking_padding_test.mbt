@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.alg.rectpacking.test/alg_rectpacking_padding_test.mbt

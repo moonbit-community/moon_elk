@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.alg.libavoid/alg_libavoid_libavoid_server_communicator.mbt

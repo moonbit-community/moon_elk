@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.graph.text/graph_text_naming_elk_graph_qualified_name_provider.mbt

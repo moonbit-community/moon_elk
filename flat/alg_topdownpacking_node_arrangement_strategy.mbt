@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.alg.topdownpacking/alg_topdownpacking_node_arrangement_strategy.mbt

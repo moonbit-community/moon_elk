@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.core.meta.ui.test/core_meta_ui_test.mbt

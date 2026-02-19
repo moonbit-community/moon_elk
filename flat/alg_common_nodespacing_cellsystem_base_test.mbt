@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.alg.common.test/alg_common_nodespacing_cellsystem_base_test.mbt

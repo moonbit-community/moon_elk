@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.alg.mrtree.test/alg_mrtree_intermediate_root_processor_test.mbt

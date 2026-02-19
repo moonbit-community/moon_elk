@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.alg.disco/alg_disco_options_dis_co_options.mbt

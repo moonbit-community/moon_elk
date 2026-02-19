@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.alg.layered.test/alg_layered_graph_l_shape_label_test.mbt

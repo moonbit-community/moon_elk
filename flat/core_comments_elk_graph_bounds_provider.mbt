@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.core/core_comments_elk_graph_bounds_provider.mbt

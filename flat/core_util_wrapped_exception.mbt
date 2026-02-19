@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.core/core_util_wrapped_exception.mbt

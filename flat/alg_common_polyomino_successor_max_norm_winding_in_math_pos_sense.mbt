@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.alg.common/alg_common_polyomino_successor_max_norm_winding_in_math_pos_sense.mbt

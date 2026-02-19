@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.alg.topdownpacking/alg_topdownpacking_bottom_row_equal_whitespace_eliminator.mbt

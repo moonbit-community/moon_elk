@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.alg.common.test/alg_common_compaction_oned_test.mbt

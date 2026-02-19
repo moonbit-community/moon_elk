@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.core.ui/core_ui_views_validating_property_sheet_entry.mbt

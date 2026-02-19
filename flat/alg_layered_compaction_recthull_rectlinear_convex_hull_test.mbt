@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.alg.layered.test/alg_layered_compaction_recthull_rectlinear_convex_hull_test.mbt

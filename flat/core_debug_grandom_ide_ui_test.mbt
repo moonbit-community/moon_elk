@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.core.debug.grandom.ide.test/core_debug_grandom_ide_ui_test.mbt

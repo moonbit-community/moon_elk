@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.graph.test/elk_graph_impl_elk_edge_section_impl_test.mbt

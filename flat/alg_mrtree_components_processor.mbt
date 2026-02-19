@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.alg.mrtree/alg_mrtree_components_processor.mbt

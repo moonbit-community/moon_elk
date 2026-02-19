@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.alg.graphviz.dot/alg_graphviz_dot_parser_antlr_internal_internal_graphviz_dot_lexer.mbt

@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.graph.json.text.ui/graph_json_text_ui_outline_elk_graph_json_outline_tree_provider.mbt

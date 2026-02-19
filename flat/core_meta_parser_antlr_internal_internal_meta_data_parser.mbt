@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.core.meta/core_meta_parser_antlr_internal_internal_meta_data_parser.mbt

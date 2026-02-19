@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.alg.common.test/alg_common_issues_issue_475_test.mbt

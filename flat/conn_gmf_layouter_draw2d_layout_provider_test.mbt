@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.conn.gmf.test/conn_gmf_layouter_draw2d_layout_provider_test.mbt

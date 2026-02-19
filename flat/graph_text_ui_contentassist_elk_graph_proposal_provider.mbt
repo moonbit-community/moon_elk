@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.graph.text.ui/graph_text_ui_contentassist_elk_graph_proposal_provider.mbt

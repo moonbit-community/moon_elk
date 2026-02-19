@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.alg.spore/alg_spore_options_structure_extraction_strategy.mbt

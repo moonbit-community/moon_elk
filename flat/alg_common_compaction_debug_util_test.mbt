@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.alg.common.test/alg_common_compaction_debug_util_test.mbt

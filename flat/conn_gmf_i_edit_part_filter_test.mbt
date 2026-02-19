@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.conn.gmf.test/conn_gmf_i_edit_part_filter_test.mbt

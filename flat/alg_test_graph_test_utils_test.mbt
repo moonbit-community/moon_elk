@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.alg.test.test/alg_test_graph_test_utils_test.mbt

@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.core.test/core_math_test_helpers_test.mbt

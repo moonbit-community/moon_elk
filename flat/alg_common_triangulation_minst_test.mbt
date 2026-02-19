@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.alg.common.test/alg_common_triangulation_minst_test.mbt

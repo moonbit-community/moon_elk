@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.graph.text.test/graph_text_generated_parser_test.mbt

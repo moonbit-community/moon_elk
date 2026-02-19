@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.alg.force.test/alg_force_stress_majorization_test.mbt

@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.core/core_comments_comment_attacher.mbt

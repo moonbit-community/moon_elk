@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.alg.layered.test/alg_layered_intermediate_compaction_network_simplex_compaction_test.mbt

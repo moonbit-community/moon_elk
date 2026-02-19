@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.alg.graphviz.layouter.test/alg_graphviz_layouter_graphviz_tool_test.mbt

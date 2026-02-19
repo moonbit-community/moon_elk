@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.core.debug/core_debug_wizard_templates_layout_provider_template.mbt

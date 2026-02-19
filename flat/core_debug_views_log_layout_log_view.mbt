@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.core.debug/core_debug_views_log_layout_log_view.mbt

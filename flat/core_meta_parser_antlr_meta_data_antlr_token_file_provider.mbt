@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.core.meta/core_meta_parser_antlr_meta_data_antlr_token_file_provider.mbt

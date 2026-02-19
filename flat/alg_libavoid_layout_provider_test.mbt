@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.alg.libavoid.test/alg_libavoid_layout_provider_test.mbt

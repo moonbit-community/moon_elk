@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.core.debug/core_debug_actions_collapse_execution_tree_action.mbt

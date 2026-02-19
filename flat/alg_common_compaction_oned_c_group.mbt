@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.alg.common/alg_common_compaction_oned_c_group.mbt

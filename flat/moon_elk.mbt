@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk/moon_elk.mbt

@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.core/core_comments_text_prefix_filter.mbt

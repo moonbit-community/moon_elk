@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.alg.layered.test/alg_layered_p5edges_splines_nub_spline_test.mbt

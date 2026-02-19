@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.alg.test/alg_test_framework_annotations_algorithm.mbt

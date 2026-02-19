@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.core/core_data_i_layout_meta_data.mbt

@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.core.test/core_util_null_elk_progress_monitor_test.mbt

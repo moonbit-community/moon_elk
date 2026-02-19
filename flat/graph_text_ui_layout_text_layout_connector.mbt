@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.graph.text.ui/graph_text_ui_layout_text_layout_connector.mbt

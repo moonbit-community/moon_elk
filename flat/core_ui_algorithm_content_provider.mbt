@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.core.ui/core_ui_algorithm_content_provider.mbt

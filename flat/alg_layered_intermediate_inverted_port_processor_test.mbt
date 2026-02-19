@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.alg.layered.test/alg_layered_intermediate_inverted_port_processor_test.mbt

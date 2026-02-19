@@ -1,6 +1,6 @@
 # STATUS
 
-Last Updated: 2026-02-19
+Last Updated: 2026-02-18
 
 ## Repository State
 
@@ -14,7 +14,6 @@ Direct transliteration is complete for the tracked ELK Java -> MoonBit scope.
 
 ### Recent Completed Milestones (latest first)
 
-- `layout-refactor (2026-02-19)`: Restructured source files from flat root into layered `plugins/` and `test/` trees aligned with `elk-reference`, introduced `flat/` compatibility source root (`source = "flat"`), and kept full regression pass (`moon test --no-render` `1549/1549`).
 - `2d631cf`: Aligned `elk.graph.util.ElkGraphAdapterFactory` method signatures with elk-reference (`createXXXAdapter()` no-arg shape) and closed `moon_elk-tpz.78`.
 - `9576110`: Ported `elk.graph` utility stubs (`ElkGraphSwitch`, `ElkGraphAdapterFactory`, `ElkReflect`) with dedicated tests and closed `moon_elk-tpz.77`.
 - `bef3888`: Closed remaining package-level `bd` tasks (`common`, `layered.intermediate`, `layered`) and closed epic `moon_elk-tpz` after full-suite validation.

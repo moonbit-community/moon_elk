@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.graph.json.test/graph_json_edge_coords_test.mbt

@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.alg.test/alg_test_framework_config_configurator_test_configuration.mbt

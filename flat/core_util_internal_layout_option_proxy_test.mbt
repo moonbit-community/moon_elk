@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.core.test/core_util_internal_layout_option_proxy_test.mbt

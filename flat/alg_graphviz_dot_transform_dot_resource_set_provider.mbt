@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.alg.graphviz.dot/alg_graphviz_dot_transform_dot_resource_set_provider.mbt

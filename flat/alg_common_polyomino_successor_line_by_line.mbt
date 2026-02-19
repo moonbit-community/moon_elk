@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.alg.common/alg_common_polyomino_successor_line_by_line.mbt

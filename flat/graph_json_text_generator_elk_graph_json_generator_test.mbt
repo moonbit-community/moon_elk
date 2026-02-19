@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.graph.json.text.test/graph_json_text_generator_elk_graph_json_generator_test.mbt

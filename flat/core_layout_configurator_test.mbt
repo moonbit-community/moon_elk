@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.core.test/core_layout_configurator_test.mbt

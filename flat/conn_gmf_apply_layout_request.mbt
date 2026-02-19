@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.conn.gmf/conn_gmf_apply_layout_request.mbt

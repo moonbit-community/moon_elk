@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.alg.common/alg_common_naive_min_st.mbt

@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.alg.spore/alg_spore_p1structure_delaunay_triangulation_phase.mbt

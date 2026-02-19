@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.core.meta/core_meta_md_bundle_member.mbt

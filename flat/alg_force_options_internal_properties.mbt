@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.alg.force/alg_force_options_internal_properties.mbt

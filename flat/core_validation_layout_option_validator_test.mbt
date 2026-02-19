@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.core.test/core_validation_layout_option_validator_test.mbt

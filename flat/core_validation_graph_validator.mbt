@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.core/core_validation_graph_validator.mbt

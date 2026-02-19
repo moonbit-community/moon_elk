@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.core.debug/core_debug_actions_clear_execution_action.mbt

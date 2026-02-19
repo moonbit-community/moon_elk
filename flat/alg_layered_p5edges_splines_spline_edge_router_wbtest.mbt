@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.alg.layered.test/alg_layered_p5edges_splines_spline_edge_router_wbtest.mbt

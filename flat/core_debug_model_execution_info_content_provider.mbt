@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.core.debug/core_debug_model_execution_info_content_provider.mbt

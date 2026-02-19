@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.graph.text/graph_text_linking_elk_graph_linker.mbt

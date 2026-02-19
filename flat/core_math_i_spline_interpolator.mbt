@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.core/core_math_i_spline_interpolator.mbt

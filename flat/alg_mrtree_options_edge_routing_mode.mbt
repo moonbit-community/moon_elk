@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.alg.mrtree/alg_mrtree_options_edge_routing_mode.mbt

@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.graph.text.ui/graph_text_ui_elk_graph_executable_extension_factory.mbt

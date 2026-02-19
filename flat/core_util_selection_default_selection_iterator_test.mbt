@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.core.test/core_util_selection_default_selection_iterator_test.mbt

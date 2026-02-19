@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.core.meta/core_meta_jvmmodel_meta_data_jvm_model_inferrer.mbt

@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.core.ui/core_ui_value.mbt

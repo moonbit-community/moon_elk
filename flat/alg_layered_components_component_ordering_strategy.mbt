@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.alg.layered/alg_layered_components_component_ordering_strategy.mbt

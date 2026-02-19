@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.graph.test/elk_graph_identifier_generator_test.mbt

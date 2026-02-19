@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.alg.test/alg_test_plain_java_initialization.mbt

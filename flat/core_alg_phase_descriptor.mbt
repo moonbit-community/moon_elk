@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.core/core_alg_phase_descriptor.mbt

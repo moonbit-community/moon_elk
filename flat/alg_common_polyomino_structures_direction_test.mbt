@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.alg.common.test/alg_common_polyomino_structures_direction_test.mbt

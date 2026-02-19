@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.core.service/core_service_layout_mapping.mbt

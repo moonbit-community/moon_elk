@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.core.test/core_util_fixed_layout_provider_test.mbt

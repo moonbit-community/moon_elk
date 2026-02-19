@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.alg.layered.test/alg_layered_p4nodes_basic_node_placement_test.mbt

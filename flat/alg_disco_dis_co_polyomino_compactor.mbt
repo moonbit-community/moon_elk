@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.alg.disco/alg_disco_dis_co_polyomino_compactor.mbt

@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.conn.gmf/conn_gmf_layouter_gmf_meta_data_provider.mbt

@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.alg.test.test/alg_test_framework_whitebox_recorder_test.mbt

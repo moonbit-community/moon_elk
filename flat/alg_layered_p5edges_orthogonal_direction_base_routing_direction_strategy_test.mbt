@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.alg.layered.test/alg_layered_p5edges_orthogonal_direction_base_routing_direction_strategy_test.mbt

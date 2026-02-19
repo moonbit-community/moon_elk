@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.core.service/core_service_util_monitored_operation.mbt

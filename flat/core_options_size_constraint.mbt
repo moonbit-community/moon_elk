@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.core/core_options_size_constraint.mbt

@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.alg.layered/alg_layered_json_debug_util.mbt

@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.graph.test/elk_graph_elk_persistent_entry_test.mbt

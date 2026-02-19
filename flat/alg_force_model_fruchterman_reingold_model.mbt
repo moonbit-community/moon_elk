@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.alg.force/alg_force_model_fruchterman_reingold_model.mbt

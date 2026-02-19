@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.core.debug/core_debug_views_graph_graph_tree_label_provider.mbt

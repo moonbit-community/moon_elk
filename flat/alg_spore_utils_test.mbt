@@ -1,1 +1,0 @@
-../test/org.eclipse.elk.alg.spore.test/alg_spore_utils_test.mbt

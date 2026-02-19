@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.core.meta/core_meta_scoping_abstract_meta_data_scope_provider.mbt

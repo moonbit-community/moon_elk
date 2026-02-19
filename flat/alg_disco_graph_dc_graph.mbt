@@ -1,1 +1,0 @@
-../plugins/org.eclipse.elk.alg.disco/alg_disco_graph_dc_graph.mbt
