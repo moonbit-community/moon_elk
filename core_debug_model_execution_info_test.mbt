@@ -23,6 +23,31 @@ test "ExecutionInfo can be built from monitor and file metadata" {
 }
 
 ///|
+test "ExecutionInfo copies monitor debug folder when persistence is enabled" {
+  execution_info_reset_for_test()
+  let monitor = new_elk_progress_monitor()
+  ignore(monitor.with_logging(true))
+  ignore(monitor.with_log_persistence(true))
+  ignore(monitor.begin("root", 2.0))
+  let child_monitor = match monitor.sub_task(1.0) {
+    Some(child) => child
+    None => abort("expected child monitor")
+  }
+  ignore(child_monitor.begin("child", 1.0))
+  child_monitor.done()
+  monitor.done()
+
+  let info = execution_info_from_progress_monitor(monitor)
+  inspect(execution_info_get_debug_folder(info).is_empty(), content="false")
+  inspect(execution_info_get_children(info).length(), content="1")
+  let child_info = execution_info_get_children(info)[0]
+  inspect(
+    execution_info_get_debug_folder(child_info).is_empty(),
+    content="false",
+  )
+}
+
+///|
 test "ExecutionInfoModel add replace remove notifies listener" {
   execution_info_reset_for_test()
   let model = new_execution_info_model()

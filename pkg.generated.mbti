@@ -14151,9 +14151,12 @@ pub struct IElkProgressMonitor {
   mut persist_logs : Bool
   mut record_execution_time : Bool
   mut execution_time : Double
+  mut debug_folder : String
+  mut child_index : Int
 }
 pub fn IElkProgressMonitor::begin(Self, String, Double) -> Bool
 pub fn IElkProgressMonitor::done(Self) -> Unit
+pub fn IElkProgressMonitor::get_debug_folder(Self) -> String
 pub fn IElkProgressMonitor::get_execution_time(Self) -> Double
 pub fn IElkProgressMonitor::get_logged_graphs(Self) -> Array[LoggedGraph]
 pub fn IElkProgressMonitor::get_logs(Self) -> Array[String]

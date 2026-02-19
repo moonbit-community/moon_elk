@@ -5,6 +5,37 @@ pub let elk_unknown_work = -1.0
 let elk_progress_monitor_infinite_hierarchy_levels = -1
 
 ///|
+let elk_progress_monitor_root_debug_folder_name = "logs"
+
+///|
+let elk_progress_monitor_debug_folder_counter_ref : Ref[Int] = Ref::new(0)
+
+///|
+fn elk_progress_monitor_next_debug_folder_counter() -> Int {
+  let next = elk_progress_monitor_debug_folder_counter_ref.val + 1
+  elk_progress_monitor_debug_folder_counter_ref.val = next
+  next
+}
+
+///|
+fn elk_progress_monitor_safe_path_name(name : String) -> String {
+  let fallback = if name.is_empty() { "Unnamed" } else { name }
+  fallback
+  .replace_all(old=" ", new="_")
+  .replace_all(old="/", new="_")
+  .replace_all(old="\\", new="_")
+}
+
+///|
+fn elk_progress_monitor_two_digit_index(value : Int) -> String {
+  if value >= 0 && value < 10 {
+    "0" + value.to_string()
+  } else {
+    value.to_string()
+  }
+}
+
+///|
 pub struct IElkProgressMonitor {
   mut running : Bool
   mut task_name : String
@@ -23,6 +54,8 @@ pub struct IElkProgressMonitor {
   mut persist_logs : Bool
   mut record_execution_time : Bool
   mut execution_time : Double
+  mut debug_folder : String
+  mut child_index : Int
 }
 
 ///|
@@ -47,6 +80,8 @@ pub fn new_elk_progress_monitor(
     persist_logs: false,
     record_execution_time: false,
     execution_time: 0.0,
+    debug_folder: "",
+    child_index: -1,
   }
 }
 
@@ -71,6 +106,7 @@ pub fn IElkProgressMonitor::with_logging(
   self.record_logs = enabled
   self.logs.clear()
   self.logged_graphs.clear()
+  self.debug_folder = ""
   self
 }
 
@@ -80,6 +116,7 @@ pub fn IElkProgressMonitor::with_log_persistence(
   enabled : Bool,
 ) -> IElkProgressMonitor {
   self.persist_logs = enabled
+  self.debug_folder = ""
   self
 }
 
@@ -113,6 +150,7 @@ pub fn IElkProgressMonitor::begin(
     self.completed_work = 0.0
     self.current_child_work = -1.0
     self.execution_time = 0.0
+    self.debug_folder = ""
     true
   }
 }
@@ -193,6 +231,7 @@ pub fn IElkProgressMonitor::sub_task(
     None
   } else {
     let sub_monitor = new_elk_progress_monitor()
+    sub_monitor.child_index = self.children.length()
     ignore(
       sub_monitor.with_max_hierarchy_levels(
         if self.max_levels > 0 {
@@ -234,6 +273,40 @@ pub fn IElkProgressMonitor::get_parent_monitor(
   } else {
     self.parent_monitor
   }
+}
+
+///|
+pub fn IElkProgressMonitor::get_debug_folder(
+  self : IElkProgressMonitor,
+) -> String {
+  if self.null_mode || !self.record_logs || !self.persist_logs {
+    return ""
+  }
+  if !self.debug_folder.is_empty() {
+    return self.debug_folder
+  }
+
+  let safe_task_name = elk_progress_monitor_safe_path_name(self.task_name)
+  if self.parent_monitor is Some(parent_monitor) {
+    let parent_folder = parent_monitor.get_debug_folder()
+    if parent_folder.is_empty() {
+      self.debug_folder = ""
+    } else {
+      let child_index = if self.child_index < 0 { 0 } else { self.child_index }
+      self.debug_folder = parent_folder +
+        "/" +
+        elk_progress_monitor_two_digit_index(child_index) +
+        "-" +
+        safe_task_name
+    }
+  } else {
+    self.debug_folder = elk_progress_monitor_root_debug_folder_name +
+      "/" +
+      elk_progress_monitor_next_debug_folder_counter().to_string() +
+      "-" +
+      safe_task_name
+  }
+  self.debug_folder
 }
 
 ///|

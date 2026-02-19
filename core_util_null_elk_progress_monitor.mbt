@@ -18,5 +18,7 @@ pub fn new_null_elk_progress_monitor() -> IElkProgressMonitor {
     persist_logs: false,
     record_execution_time: false,
     execution_time: 0.0,
+    debug_folder: "",
+    child_index: -1,
   }
 }

@@ -15,6 +15,7 @@ test "NullElkProgressMonitor behaves as no-op monitor" {
   monitor.log_graph("g")
   inspect(monitor.get_logs().length(), content="0")
   inspect(monitor.get_logged_graphs().length(), content="0")
+  inspect(monitor.get_debug_folder(), content="")
 }
 
 ///|
@@ -25,6 +26,7 @@ test "Regular progress monitor keeps existing behavior" {
   inspect(monitor.is_running(), content="true")
   monitor.log("first")
   inspect(monitor.get_logs().length(), content="1")
+  inspect(monitor.get_debug_folder(), content="")
   monitor.done()
   inspect(monitor.is_running(), content="false")
 }

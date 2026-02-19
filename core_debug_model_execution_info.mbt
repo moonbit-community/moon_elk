@@ -74,6 +74,7 @@ fn execution_info_from_progress_monitor_internal(
   data.execution_time_measured = monitor.is_execution_time_measured()
   data.execution_time_including_children = monitor.get_execution_time()
   data.execution_time_local = data.execution_time_including_children
+  data.debug_folder = monitor.get_debug_folder()
   data.parent = parent
   data.log_messages = monitor.get_logs().copy()
   data.log_graphs = monitor.get_logged_graphs().copy()
