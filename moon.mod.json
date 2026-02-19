@@ -1,9 +1,9 @@
 {
-  "name": "username/moon_elk",
+  "name": "Milky2018/moon_elk",
   "version": "0.1.0",
   "readme": "README.mbt.md",
-  "repository": "",
+  "repository": "https://github.com/moonbit-community/moon_elk.git",
   "license": "Apache-2.0",
-  "keywords": [],
-  "description": ""
+  "keywords": ["elk", "layout"],
+  "description": "A MoonBit port of Eclipse Layout Kernel (ELK)."
 }
