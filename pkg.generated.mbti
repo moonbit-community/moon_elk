@@ -3621,6 +3621,8 @@ pub fn mrtree_edge_bend_points(Int) -> KVectorChain
 
 pub let mrtree_edge_end_texture_length : IProperty[Double]
 
+pub fn mrtree_edge_labels(Int) -> Array[Int]
+
 pub fn mrtree_edge_origin(Int) -> Int?
 
 pub let mrtree_edge_routing_mode : IProperty[String]
@@ -3629,9 +3631,15 @@ pub fn mrtree_edge_routing_mode_from_string(String) -> MrtreeEdgeRoutingMode
 
 pub fn mrtree_edge_set_origin(Int, Int?) -> Unit
 
+pub fn mrtree_edge_set_source(Int, Int) -> Unit
+
+pub fn mrtree_edge_set_target(Int, Int) -> Unit
+
 pub fn mrtree_edge_source(Int) -> Int
 
 pub fn mrtree_edge_target(Int) -> Int
+
+pub fn mrtree_edge_to_string(Int) -> String
 
 pub fn mrtree_graph_add_existing_edge(Int, Int) -> Unit
 
@@ -3777,6 +3785,16 @@ pub let mrtree_internal_xcoor : String
 
 pub let mrtree_internal_ycoor : String
 
+pub fn mrtree_label_edge(Int) -> Int
+
+pub fn mrtree_label_position(Int) -> KVector
+
+pub fn mrtree_label_size(Int) -> KVector
+
+pub fn mrtree_label_text(Int) -> String
+
+pub fn mrtree_label_to_string(Int) -> String
+
 pub fn mrtree_layout_levels(Int) -> Unit
 
 pub fn mrtree_node_add_compact_constraint(Int, Int) -> Unit
@@ -3901,6 +3919,8 @@ pub fn mrtree_node_set_ycoor(Int, Int) -> Unit
 
 pub fn mrtree_node_size(Int) -> KVector
 
+pub fn mrtree_node_to_string(Int) -> String
+
 pub fn mrtree_node_tree_level(Int) -> Int
 
 pub fn mrtree_node_xcoor(Int) -> Int
@@ -3922,6 +3942,10 @@ pub let mrtree_priority : IProperty[Double]
 pub let mrtree_search_order : IProperty[String]
 
 pub let mrtree_separate_connected_components : IProperty[Bool]
+
+pub fn mrtree_shape_position(MrtreeShape) -> KVector
+
+pub fn mrtree_shape_size(MrtreeShape) -> KVector
 
 pub let mrtree_spacing_node_node : IProperty[Double]
 
@@ -5661,6 +5685,10 @@ pub fn new_mrtree_graph_bounds_processor_layout_processor() -> ILayoutProcessor[
 
 pub fn[T] new_mrtree_igraph_importer((T) -> Int, (Int) -> Unit) -> MrtreeIGraphImporter[T]
 
+pub fn new_mrtree_label(Int, String) -> Int
+
+pub fn new_mrtree_label_shape(Int) -> MrtreeShape
+
 pub fn new_mrtree_level_coordinates_processor_layout_processor() -> ILayoutProcessor[MrtreeTreeLayoutPhases, Int]
 
 pub fn new_mrtree_level_height_processor_layout_processor() -> ILayoutProcessor[MrtreeTreeLayoutPhases, Int]
@@ -5678,6 +5706,8 @@ pub fn new_mrtree_node_orderer_layout_phase() -> ILayoutProcessor[MrtreeTreeLayo
 pub fn new_mrtree_node_placer_layout_phase() -> ILayoutProcessor[MrtreeTreeLayoutPhases, Int]
 
 pub fn new_mrtree_node_position_processor_layout_processor() -> ILayoutProcessor[MrtreeTreeLayoutPhases, Int]
+
+pub fn new_mrtree_node_shape(Int) -> MrtreeShape
 
 pub fn new_mrtree_order_balance_layout_phase() -> ILayoutProcessor[MrtreeTreeLayoutPhases, Int]
 
@@ -16705,6 +16735,11 @@ pub enum MrtreeOrderWeighting {
   CONSTRAINT
 }
 
+pub enum MrtreeShape {
+  MrtreeNodeShape(Int)
+  MrtreeLabelShape(Int)
+}
+
 pub enum MrtreeTreeLayoutPhases {
   P1Treeification
   P2NodeOrdering
@@ -18894,6 +18929,8 @@ pub type LayoutConfiguratorFilter = (Int, IProperty[Double]) -> Bool
 pub type MrtreeEdge = Int
 
 pub type MrtreeGraph = Int
+
+pub type MrtreeLabel = Int
 
 pub type MrtreeNode = Int
 

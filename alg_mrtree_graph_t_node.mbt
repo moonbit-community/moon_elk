@@ -139,6 +139,17 @@ pub fn mrtree_node_label(node : MrtreeNode) -> String {
 }
 
 ///|
+pub fn mrtree_node_to_string(node : MrtreeNode) -> String {
+  checked_mrtree_node(node)
+  let node_data = mrtree_node_store.val[node]
+  if node_data.label.is_empty() {
+    "n_" + node_data.id.to_string()
+  } else {
+    "n_" + node_data.label
+  }
+}
+
+///|
 pub fn mrtree_node_position(node : MrtreeNode) -> KVector {
   checked_mrtree_node(node)
   mrtree_node_store.val[node].position
