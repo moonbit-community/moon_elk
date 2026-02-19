@@ -1,0 +1,434 @@
+2026-02-19T05:58:32.417855Z  WARN moonbuild_rupes_recta::pkg_solve::solve:261: Duplicate alias `debug` at "/Users/zhengyu/Documents/projects/moon_elk/src/alg/disco/debug/moon.pkg". "test-import" will automatically add "import" and current package as dependency so you don't need to add it manually. If you're test-importing a dependency with the same default alias as your current package, considering give it a different alias than the current package. Violating import: `Milky2018/moon_elk/core/debug`
+2026-02-19T05:58:32.418296Z  WARN moonbuild_rupes_recta::pkg_solve::solve:261: Duplicate alias `json` at "/Users/zhengyu/Documents/projects/moon_elk/src/graph/json/moon.pkg". "test-import" will automatically add "import" and current package as dependency so you don't need to add it manually. If you're test-importing a dependency with the same default alias as your current package, considering give it a different alias than the current package. Violating import: `moonbitlang/core/json`
+2026-02-19T05:58:32.418358Z  WARN moonbuild_rupes_recta::pkg_solve::solve:261: Duplicate alias `ui` at "/Users/zhengyu/Documents/projects/moon_elk/src/graph/json/text/ui/moon.pkg". "test-import" will automatically add "import" and current package as dependency so you don't need to add it manually. If you're test-importing a dependency with the same default alias as your current package, considering give it a different alias than the current package. Violating import: `Milky2018/moon_elk/core/ui`
+2026-02-19T05:58:32.418413Z  WARN moonbuild_rupes_recta::pkg_solve::solve:261: Duplicate alias `ui` at "/Users/zhengyu/Documents/projects/moon_elk/src/graph/text/ui/moon.pkg". "test-import" will automatically add "import" and current package as dependency so you don't need to add it manually. If you're test-importing a dependency with the same default alias as your current package, considering give it a different alias than the current package. Violating import: `Milky2018/moon_elk/core/ui`
+failed: /Users/zhengyu/.moon/bin/moonc check -error-format json /Users/zhengyu/Documents/projects/moon_elk/src/core/abstract_layout_provider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/alg_algorithm_assembler.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/alg_enum_based_factory_comparator.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/alg_i_layout_phase.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/alg_i_layout_phase_factory.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/alg_i_layout_processor.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/alg_i_layout_processor_factory.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/alg_layout_processor_configuration.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/alg_phase_descriptor.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_abstract_normalized_matcher.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_aggregated_match_decider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_alignment_matcher.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_comment_attacher.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_distance_matcher.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_elk_graph_bounds_provider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_elk_graph_data_provider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_i_bounds_provider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_i_data_provider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_i_decider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_i_explicit_attachment_provider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_i_filter.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_i_matcher.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_node_reference_matcher.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_size_filter.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_text_prefix_filter.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/data_deprecated_layout_option_replacer.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/data_i_layout_meta_data.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/data_i_layout_meta_data_provider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/data_layout_algorithm_data.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/data_layout_algorithm_resolver.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/data_layout_category_data.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/data_layout_data_content_assist.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/data_layout_meta_data_service.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/data_layout_option_data.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/elk_engine.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/i_graph_layout_engine.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/i_topdown_layout_provider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/labels_i_label_manager.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/labels_label_management_options.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/layout_configurator.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/math_bezier_spline.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/math_cubic_spline_interpolator.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/math_elk_margin.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/math_elk_math.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/math_elk_padding.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/math_elk_rectangle.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/math_i_spline_interpolator.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/math_internal.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/math_k_vector.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/math_k_vector_chain.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/math_spacing.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_alignment.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_content_alignment.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_core_options.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_direction.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_edge_coords.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_edge_label_placement.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_edge_routing.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_edge_type.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_hierarchy_handling.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_i_topdown_size_approximator.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_label_side.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_node_label_placement.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_port_alignment.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_port_constraints.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_port_label_placement.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_port_side.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_shape_coords.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_size_constraint.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_size_options.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_topdown_node_types.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_topdown_size_approximator.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_topdown_size_approximator_util.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/testing_i_white_box_testable.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/testing_test_controller.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/unsupported_configuration_exception.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/unsupported_exceptions.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/unsupported_graph_exception.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_abstract_random_list_accessor.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_adapters_elk_graph_adapters.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_adapters_graph_adapters.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_algorithm_factory.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_basic_progress_monitor.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_box_layout_provider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_default_factory.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_elk_spacings.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_elk_util.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_exclusive_bounds.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_fixed_layout_provider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_i_data_object.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_i_elk_cancel_indicator.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_i_elk_progress_monitor.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_i_factory.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_i_graph_element_visitor.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_individual_spacings.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_instance_pool.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_internal_layout_option_proxy.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_logged_graph.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_maybe.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_null_elk_progress_monitor.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_pair.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_persistence_elk_graph_resource.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_persistence_elk_graph_resource_factory.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_persistence_elk_graph_xmi_helper.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_persistence_elk_graph_xmi_save.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_property_constants_delegator.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_quadruple.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_random_layout_provider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_selection_default_selection_iterator.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_selection_selection_iterator.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_triple.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_wrapped_exception.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/validation_graph_issue.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/validation_graph_validation_exception.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/validation_graph_validator.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/validation_i_validating_graph_element_visitor.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/validation_layout_option_validator.mbt -o /Users/zhengyu/Documents/projects/moon_elk/_build/wasm-gc/release/check/core/core.mi -pkg Milky2018/moon_elk/core -std-path /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/buffer/buffer.mi:buffer -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/cmp/cmp.mi:cmp -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/double/double.mi:double -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/float/float.mi:float -i /Users/zhengyu/Documents/projects/moon_elk/_build/wasm-gc/release/check/graph/graph.mi:graph -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/int/int.mi:int -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/json/json.mi:json -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/math/math.mi:math -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/prelude/prelude.mi:prelude -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/random/random.mi:random -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/strconv/strconv.mi:strconv -pkg-sources Milky2018/moon_elk/core:/Users/zhengyu/Documents/projects/moon_elk/src/core -target wasm-gc -workspace-path /Users/zhengyu/Documents/projects/moon_elk -all-pkgs /Users/zhengyu/Documents/projects/moon_elk/_build/wasm-gc/release/check/all_pkgs.json
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_abstract_normalized_matcher.mbt:4:3 ]
+   │
+ 4 │   Binary
+   │   ───┬──  
+   │      ╰──── Warning (unused_constructor): Variant 'Binary' is never constructed
+───╯
+Warning: [0005]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_aggregated_match_decider.mbt:59:35 ]
+    │
+ 59 │ pub struct AggregatedMatchDecider[T] {
+    │                                   ┬  
+    │                                   ╰── Warning (unused_type_variable): Unused generic type variable 'T'
+────╯
+Warning: [0035]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_aggregated_match_decider.mbt:98:3 ]
+    │
+ 98 │   include : Bool,
+    │   ───┬───  
+    │      ╰───── Warning (reserved_keyword): The word `include` is reserved for possible future use. Please consider using another name.
+────╯
+Warning: [0035]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_aggregated_match_decider.mbt:100:33 ]
+     │
+ 100 │   self.include_lower_boundary = include
+     │                                 ───┬───  
+     │                                    ╰───── Warning (reserved_keyword): The word `include` is reserved for possible future use. Please consider using another name.
+─────╯
+Warning: [0005]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_text_prefix_filter.mbt:12:32 ]
+    │
+ 12 │ pub struct TextPrefixFilter[C, T] {
+    │                                ┬  
+    │                                ╰── Warning (unused_type_variable): Unused generic type variable 'T'
+────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/data_layout_meta_data_service.mbt:270:5 ]
+     │
+ 270 │     mrtree_separate_connected_components.get_id(),
+     │     ──────────────────┬─────────────────  
+     │                       ╰─────────────────── The value identifier mrtree_separate_connected_components is unbound.
+─────╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/data_layout_option_data.mbt:4:3 ]
+   │
+ 4 │   IntType
+   │   ───┬───  
+   │      ╰───── Warning (unused_constructor): Variant 'IntType' is never constructed
+───╯
+Warning: [0006]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/data_layout_option_data.mbt:46:3 ]
+    │
+ 46 │   AdvancedOption
+    │   ───────┬──────  
+    │          ╰──────── Warning (unused_constructor): Variant 'AdvancedOption' is never constructed
+────╯
+Warning: [0006]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/data_layout_option_data.mbt:47:3 ]
+    │
+ 47 │   HiddenOption
+    │   ──────┬─────  
+    │         ╰─────── Warning (unused_constructor): Variant 'HiddenOption' is never constructed
+────╯
+Warning: [0035]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/math_elk_rectangle.mbt:101:22 ]
+     │
+ 101 │ pub fn ElkRectangle::move(self : ElkRectangle, offset : KVector) -> Unit {
+     │                      ──┬─  
+     │                        ╰─── Warning (reserved_keyword): The word `move` is reserved for possible future use. Please consider using another name.
+─────╯
+Warning: [0035]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/jvmmodel_meta_data_jvm_model_inferrer.mbt:50:11 ]
+    │
+ 50 │       for member in bundle.get_members() {
+    │           ───┬──  
+    │              ╰──── Warning (reserved_keyword): The word `member` is reserved for possible future use. Please consider using another name.
+────╯
+Warning: [0035]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/jvmmodel_meta_data_jvm_model_inferrer.mbt:51:50 ]
+    │
+ 51 │         let tag = core_meta_md_bundle_member_tag(member)
+    │                                                  ───┬──  
+    │                                                     ╰──── Warning (reserved_keyword): The word `member` is reserved for possible future use. Please consider using another name.
+────╯
+Warning: [0035]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/jvmmodel_meta_data_jvm_model_inferrer.mbt:52:58 ]
+    │
+ 52 │         let name = match core_meta_md_bundle_member_name(member) {
+    │                                                          ───┬──  
+    │                                                             ╰──── Warning (reserved_keyword): The word `member` is reserved for possible future use. Please consider using another name.
+────╯
+Warning: [0029]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/moon.pkg:11:3 ]
+    │
+ 11 │   "Milky2018/moon_elk/graph",
+    │   ─────────────┬────────────  
+    │                ╰────────────── Warning (unused_package): Unused package 'Milky2018/moon_elk/graph'
+────╯
+Warning: [0020]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/parser_antlr_internal_internal_meta_data_lexer.mbt:318:25 ]
+     │
+ 318 │       let lexeme = text.substring(start~, end=index)
+     │                         ────┬────  
+     │                             ╰────── Warning (deprecated): Use `str[:]` or `str[:].to_string()` instead
+─────╯
+Warning: [0020]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/parser_antlr_internal_internal_meta_data_lexer.mbt:344:25 ]
+     │
+ 344 │       let lexeme = text.substring(start~, end=index)
+     │                         ────┬────  
+     │                             ╰────── Warning (deprecated): Use `str[:]` or `str[:].to_string()` instead
+─────╯
+Warning: [0020]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/parser_antlr_internal_internal_meta_data_lexer.mbt:373:25 ]
+     │
+ 373 │       let lexeme = text.substring(start~, end=index)
+     │                         ────┬────  
+     │                             ╰────── Warning (deprecated): Use `str[:]` or `str[:].to_string()` instead
+─────╯
+Warning: [0020]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/parser_antlr_internal_internal_meta_data_lexer.mbt:384:23 ]
+     │
+ 384 │     let symbol = text.substring(start=index, end=index + 1)
+     │                       ────┬────  
+     │                           ╰────── Warning (deprecated): Use `str[:]` or `str[:].to_string()` instead
+─────╯
+Warning: [0035]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/parser_antlr_internal_internal_meta_data_parser.mbt:717:12 ]
+     │
+ 717 │       Some(member) => bundle.get_members().push(member)
+     │            ───┬──  
+     │               ╰──── Warning (reserved_keyword): The word `member` is reserved for possible future use. Please consider using another name.
+─────╯
+Warning: [0035]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/parser_antlr_internal_internal_meta_data_parser.mbt:717:49 ]
+     │
+ 717 │       Some(member) => bundle.get_members().push(member)
+     │                                                 ───┬──  
+     │                                                    ╰──── Warning (reserved_keyword): The word `member` is reserved for possible future use. Please consider using another name.
+─────╯
+Warning: [0035]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ui/outline_meta_data_outline_tree_provider.mbt:93:11 ]
+    │
+ 93 │       for member in bundle.get_members() {
+    │           ───┬──  
+    │              ╰──── Warning (reserved_keyword): The word `member` is reserved for possible future use. Please consider using another name.
+────╯
+Warning: [0035]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ui/outline_meta_data_outline_tree_provider.mbt:94:52 ]
+    │
+ 94 │         match core_meta_outline_bundle_member_node(member) {
+    │                                                    ───┬──  
+    │                                                       ╰──── Warning (reserved_keyword): The word `member` is reserved for possible future use. Please consider using another name.
+────╯
+Warning: [0035]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/validation_meta_data_validator.mbt:79:7 ]
+    │
+ 79 │   for member in members {
+    │       ───┬──  
+    │          ╰──── Warning (reserved_keyword): The word `member` is reserved for possible future use. Please consider using another name.
+────╯
+Warning: [0035]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/validation_meta_data_validator.mbt:80:11 ]
+    │
+ 80 │     match member {
+    │           ───┬──  
+    │              ╰──── Warning (reserved_keyword): The word `member` is reserved for possible future use. Please consider using another name.
+────╯
+Warning: [0035]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/validation_meta_data_validator.mbt:120:7 ]
+     │
+ 120 │   for member in bundle.get_members() {
+     │       ───┬──  
+     │          ╰──── Warning (reserved_keyword): The word `member` is reserved for possible future use. Please consider using another name.
+─────╯
+Warning: [0035]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/validation_meta_data_validator.mbt:121:11 ]
+     │
+ 121 │     match member {
+     │           ───┬──  
+     │              ╰──── Warning (reserved_keyword): The word `member` is reserved for possible future use. Please consider using another name.
+─────╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_alignment.mbt:3:3 ]
+   │
+ 3 │   Automatic
+   │   ────┬────  
+   │       ╰────── Warning (unused_constructor): Variant 'Automatic' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_alignment.mbt:4:3 ]
+   │
+ 4 │   Left
+   │   ──┬─  
+   │     ╰─── Warning (unused_constructor): Variant 'Left' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_alignment.mbt:5:3 ]
+   │
+ 5 │   Right
+   │   ──┬──  
+   │     ╰──── Warning (unused_constructor): Variant 'Right' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_alignment.mbt:6:3 ]
+   │
+ 6 │   Top
+   │   ─┬─  
+   │    ╰─── Warning (unused_constructor): Variant 'Top' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_alignment.mbt:7:3 ]
+   │
+ 7 │   Bottom
+   │   ───┬──  
+   │      ╰──── Warning (unused_constructor): Variant 'Bottom' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_alignment.mbt:8:3 ]
+   │
+ 8 │   Center
+   │   ───┬──  
+   │      ╰──── Warning (unused_constructor): Variant 'Center' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_edge_coords.mbt:3:3 ]
+   │
+ 3 │   Inherit
+   │   ───┬───  
+   │      ╰───── Warning (unused_constructor): Variant 'Inherit' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_edge_coords.mbt:4:3 ]
+   │
+ 4 │   Container
+   │   ────┬────  
+   │       ╰────── Warning (unused_constructor): Variant 'Container' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_edge_coords.mbt:5:3 ]
+   │
+ 5 │   Parent
+   │   ───┬──  
+   │      ╰──── Warning (unused_constructor): Variant 'Parent' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_edge_coords.mbt:6:3 ]
+   │
+ 6 │   Root
+   │   ──┬─  
+   │     ╰─── Warning (unused_constructor): Variant 'Root' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_edge_label_placement.mbt:3:3 ]
+   │
+ 3 │   Centered
+   │   ────┬───  
+   │       ╰───── Warning (unused_constructor): Variant 'Centered' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_edge_label_placement.mbt:4:3 ]
+   │
+ 4 │   Head
+   │   ──┬─  
+   │     ╰─── Warning (unused_constructor): Variant 'Head' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_edge_label_placement.mbt:5:3 ]
+   │
+ 5 │   Tail
+   │   ──┬─  
+   │     ╰─── Warning (unused_constructor): Variant 'Tail' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_edge_type.mbt:3:3 ]
+   │
+ 3 │   NoneType
+   │   ────┬───  
+   │       ╰───── Warning (unused_constructor): Variant 'NoneType' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_edge_type.mbt:4:3 ]
+   │
+ 4 │   Directed
+   │   ────┬───  
+   │       ╰───── Warning (unused_constructor): Variant 'Directed' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_edge_type.mbt:5:3 ]
+   │
+ 5 │   Undirected
+   │   ─────┬────  
+   │        ╰────── Warning (unused_constructor): Variant 'Undirected' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_edge_type.mbt:6:3 ]
+   │
+ 6 │   Association
+   │   ─────┬─────  
+   │        ╰─────── Warning (unused_constructor): Variant 'Association' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_edge_type.mbt:7:3 ]
+   │
+ 7 │   Generalization
+   │   ───────┬──────  
+   │          ╰──────── Warning (unused_constructor): Variant 'Generalization' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_edge_type.mbt:8:3 ]
+   │
+ 8 │   Dependency
+   │   ─────┬────  
+   │        ╰────── Warning (unused_constructor): Variant 'Dependency' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_hierarchy_handling.mbt:4:3 ]
+   │
+ 4 │   IncludeChildren
+   │   ───────┬───────  
+   │          ╰───────── Warning (unused_constructor): Variant 'IncludeChildren' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_hierarchy_handling.mbt:5:3 ]
+   │
+ 5 │   SeparateChildren
+   │   ────────┬───────  
+   │           ╰───────── Warning (unused_constructor): Variant 'SeparateChildren' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_port_alignment.mbt:3:3 ]
+   │
+ 3 │   Distributed
+   │   ─────┬─────  
+   │        ╰─────── Warning (unused_constructor): Variant 'Distributed' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_port_alignment.mbt:4:3 ]
+   │
+ 4 │   Justified
+   │   ────┬────  
+   │       ╰────── Warning (unused_constructor): Variant 'Justified' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_port_alignment.mbt:5:3 ]
+   │
+ 5 │   Begin
+   │   ──┬──  
+   │     ╰──── Warning (unused_constructor): Variant 'Begin' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_port_alignment.mbt:6:3 ]
+   │
+ 6 │   Center
+   │   ───┬──  
+   │      ╰──── Warning (unused_constructor): Variant 'Center' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_port_alignment.mbt:7:3 ]
+   │
+ 7 │   End
+   │   ─┬─  
+   │    ╰─── Warning (unused_constructor): Variant 'End' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_shape_coords.mbt:4:3 ]
+   │
+ 4 │   Parent
+   │   ───┬──  
+   │      ╰──── Warning (unused_constructor): Variant 'Parent' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_shape_coords.mbt:5:3 ]
+   │
+ 5 │   Root
+   │   ──┬─  
+   │     ╰─── Warning (unused_constructor): Variant 'Root' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_topdown_node_types.mbt:3:3 ]
+   │
+ 3 │   ParallelNode
+   │   ──────┬─────  
+   │         ╰─────── Warning (unused_constructor): Variant 'ParallelNode' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_topdown_node_types.mbt:4:3 ]
+   │
+ 4 │   HierarchicalNode
+   │   ────────┬───────  
+   │           ╰───────── Warning (unused_constructor): Variant 'HierarchicalNode' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_topdown_node_types.mbt:5:3 ]
+   │
+ 5 │   RootNode
+   │   ────┬───  
+   │       ╰───── Warning (unused_constructor): Variant 'RootNode' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/util_logged_graph.mbt:4:3 ]
+   │
+ 4 │   LGraph
+   │   ───┬──  
+   │      ╰──── Warning (unused_constructor): Variant 'LGraph' is never constructed
+───╯
+Warning: [0007]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/graph/elk_edge_section.mbt:6:3 ]
+   │
+ 6 │   edge : ElkEdge
+   │   ──┬─  
+   │     ╰─── Warning (unused_field): Field 'edge' is never read
+───╯
+Warning: [0053]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/graph/properties_property_holder_comparator.mbt:7:12 ]
+   │
+ 7 │ pub fn[T : Compare + FromJson] property_holder_comparator_with(
+   │            ───┬───  
+   │               ╰───── Warning (unused_trait_bound): This trait bound is unused.
+───╯
+Warning: [0053]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/graph/properties_property_holder_comparator.mbt:7:22 ]
+   │
+ 7 │ pub fn[T : Compare + FromJson] property_holder_comparator_with(
+   │                      ────┬───  
+   │                          ╰───── Warning (unused_trait_bound): This trait bound is unused.
+───╯
+Failed with 60 warnings, 1 errors.
+error: failed when checking project

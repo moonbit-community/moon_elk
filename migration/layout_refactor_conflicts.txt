@@ -1,0 +1,6 @@
+root_mbt_count=1467
+mapped_count=1466
+skip_delete_count=1
+unmapped_count=0
+
+collision_groups=0

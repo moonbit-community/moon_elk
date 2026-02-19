@@ -1,0 +1,2411 @@
+2026-02-19T05:34:12.364326Z  WARN moonbuild_rupes_recta::pkg_solve::solve:261: Duplicate alias `debug` at "/Users/zhengyu/Documents/projects/moon_elk/src/alg/disco/debug/moon.pkg". "test-import" will automatically add "import" and current package as dependency so you don't need to add it manually. If you're test-importing a dependency with the same default alias as your current package, considering give it a different alias than the current package. Violating import: `Milky2018/moon_elk/core/debug`
+2026-02-19T05:34:12.364726Z  WARN moonbuild_rupes_recta::pkg_solve::solve:261: Duplicate alias `json` at "/Users/zhengyu/Documents/projects/moon_elk/src/graph/json/moon.pkg". "test-import" will automatically add "import" and current package as dependency so you don't need to add it manually. If you're test-importing a dependency with the same default alias as your current package, considering give it a different alias than the current package. Violating import: `moonbitlang/core/json`
+2026-02-19T05:34:12.364790Z  WARN moonbuild_rupes_recta::pkg_solve::solve:261: Duplicate alias `ui` at "/Users/zhengyu/Documents/projects/moon_elk/src/graph/json/text/ui/moon.pkg". "test-import" will automatically add "import" and current package as dependency so you don't need to add it manually. If you're test-importing a dependency with the same default alias as your current package, considering give it a different alias than the current package. Violating import: `Milky2018/moon_elk/core/ui`
+2026-02-19T05:34:12.364851Z  WARN moonbuild_rupes_recta::pkg_solve::solve:261: Duplicate alias `ui` at "/Users/zhengyu/Documents/projects/moon_elk/src/graph/text/ui/moon.pkg". "test-import" will automatically add "import" and current package as dependency so you don't need to add it manually. If you're test-importing a dependency with the same default alias as your current package, considering give it a different alias than the current package. Violating import: `Milky2018/moon_elk/core/ui`
+failed: /Users/zhengyu/.moon/bin/moonc check -error-format json /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ide/abstract_meta_data_ide_module.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ide/contentassist_antlr_internal_internal_meta_data_lexer.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ide/contentassist_antlr_internal_internal_meta_data_parser.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ide/contentassist_antlr_meta_data_parser.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ide/contentassist_antlr_partial_meta_data_content_assist_parser.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ide/meta_data_ide_module.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ide/meta_data_ide_setup.mbt -o /Users/zhengyu/Documents/projects/moon_elk/_build/wasm-gc/release/check/core/meta/ide/ide.mi -pkg Milky2018/moon_elk/core/meta/ide -std-path /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/buffer/buffer.mi:buffer -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/cmp/cmp.mi:cmp -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/double/double.mi:double -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/float/float.mi:float -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/int/int.mi:int -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/json/json.mi:json -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/math/math.mi:math -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/prelude/prelude.mi:prelude -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/random/random.mi:random -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/strconv/strconv.mi:strconv -pkg-sources Milky2018/moon_elk/core/meta/ide:/Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ide -target wasm-gc -workspace-path /Users/zhengyu/Documents/projects/moon_elk -all-pkgs /Users/zhengyu/Documents/projects/moon_elk/_build/wasm-gc/release/check/all_pkgs.json
+failed: /Users/zhengyu/.moon/bin/moonc check -error-format json /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_algorithm_test_algorithm.mbt /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_annotations_algorithm.mbt /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_annotations_algorithms.mbt /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_annotations_all_algorithms.mbt /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_annotations_configurator.mbt /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_annotations_configurator_provider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_annotations_default_configuration.mbt /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_annotations_fail_if_not_executed.mbt /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_annotations_graph_provider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_annotations_graph_resource_provider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_annotations_only_on_root_node.mbt /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_annotations_random_generator_file.mbt /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_annotations_random_generator_options.mbt /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_annotations_test_after_processor.mbt /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_annotations_test_after_processors.mbt /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_annotations_test_before_processor.mbt /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_annotations_test_before_processors.mbt /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_configurator_test_configuration.mbt /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_method_test_configuration.mbt /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_test_configuration.mbt /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_experiment_runner.mbt /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_experiment_statement.mbt /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_experimental_object.mbt /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_graph_graph_from_file.mbt /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_graph_graph_from_method.mbt /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_graph_random_graph_from_file.mbt /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_graph_random_graph_from_method.mbt /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_graph_test_graph.mbt /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_io_absolute_resource_path.mbt /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_io_abstract_property_dependent_resource_path.mbt /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_io_abstract_resource_path.mbt /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_io_bundle_resource_path.mbt /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_io_file_extension_filter.mbt /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_io_file_name_filter.mbt /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_io_model_resource_path.mbt /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_io_results_resource_path.mbt /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_layout_test_runner.mbt /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_run_notifier.mbt /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_test_method.mbt /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_util_test_util.mbt /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_whitebox_recorder.mbt /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/plain_java_initialization.mbt -o /Users/zhengyu/Documents/projects/moon_elk/_build/wasm-gc/release/check/alg/test/test.mi -pkg Milky2018/moon_elk/alg/test -std-path /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/buffer/buffer.mi:buffer -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/cmp/cmp.mi:cmp -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/double/double.mi:double -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/float/float.mi:float -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/int/int.mi:int -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/json/json.mi:json -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/math/math.mi:math -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/prelude/prelude.mi:prelude -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/random/random.mi:random -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/strconv/strconv.mi:strconv -pkg-sources Milky2018/moon_elk/alg/test:/Users/zhengyu/Documents/projects/moon_elk/src/alg/test -target wasm-gc -workspace-path /Users/zhengyu/Documents/projects/moon_elk -all-pkgs /Users/zhengyu/Documents/projects/moon_elk/_build/wasm-gc/release/check/all_pkgs.json
+failed: /Users/zhengyu/.moon/bin/moonc check -error-format json /Users/zhengyu/Documents/projects/moon_elk/src/graph/e_map_property_holder.mbt /Users/zhengyu/Documents/projects/moon_elk/src/graph/elk_bend_point.mbt /Users/zhengyu/Documents/projects/moon_elk/src/graph/elk_connectable_shape.mbt /Users/zhengyu/Documents/projects/moon_elk/src/graph/elk_edge.mbt /Users/zhengyu/Documents/projects/moon_elk/src/graph/elk_edge_section.mbt /Users/zhengyu/Documents/projects/moon_elk/src/graph/elk_graph_element.mbt /Users/zhengyu/Documents/projects/moon_elk/src/graph/elk_graph_factory.mbt /Users/zhengyu/Documents/projects/moon_elk/src/graph/elk_graph_model.mbt /Users/zhengyu/Documents/projects/moon_elk/src/graph/elk_graph_package.mbt /Users/zhengyu/Documents/projects/moon_elk/src/graph/elk_graph_properties.mbt /Users/zhengyu/Documents/projects/moon_elk/src/graph/elk_label.mbt /Users/zhengyu/Documents/projects/moon_elk/src/graph/elk_node.mbt /Users/zhengyu/Documents/projects/moon_elk/src/graph/elk_persistent_entry.mbt /Users/zhengyu/Documents/projects/moon_elk/src/graph/elk_port.mbt /Users/zhengyu/Documents/projects/moon_elk/src/graph/elk_shape.mbt /Users/zhengyu/Documents/projects/moon_elk/src/graph/impl_e_map_property_holder_impl.mbt /Users/zhengyu/Documents/projects/moon_elk/src/graph/impl_elk_bend_point_impl.mbt /Users/zhengyu/Documents/projects/moon_elk/src/graph/impl_elk_connectable_shape_impl.mbt /Users/zhengyu/Documents/projects/moon_elk/src/graph/impl_elk_edge_impl.mbt /Users/zhengyu/Documents/projects/moon_elk/src/graph/impl_elk_edge_section_impl.mbt /Users/zhengyu/Documents/projects/moon_elk/src/graph/impl_elk_graph_element_impl.mbt /Users/zhengyu/Documents/projects/moon_elk/src/graph/impl_elk_graph_factory_impl.mbt /Users/zhengyu/Documents/projects/moon_elk/src/graph/impl_elk_graph_package_impl.mbt /Users/zhengyu/Documents/projects/moon_elk/src/graph/impl_elk_label_impl.mbt /Users/zhengyu/Documents/projects/moon_elk/src/graph/impl_elk_node_impl.mbt /Users/zhengyu/Documents/projects/moon_elk/src/graph/impl_elk_port_impl.mbt /Users/zhengyu/Documents/projects/moon_elk/src/graph/impl_elk_property_to_value_map_entry_impl.mbt /Users/zhengyu/Documents/projects/moon_elk/src/graph/impl_elk_shape_impl.mbt /Users/zhengyu/Documents/projects/moon_elk/src/graph/properties_advanced_property_value.mbt /Users/zhengyu/Documents/projects/moon_elk/src/graph/properties_experimental_property_value.mbt /Users/zhengyu/Documents/projects/moon_elk/src/graph/properties_graph_feature.mbt /Users/zhengyu/Documents/projects/moon_elk/src/graph/properties_i_property.mbt /Users/zhengyu/Documents/projects/moon_elk/src/graph/properties_i_property_holder.mbt /Users/zhengyu/Documents/projects/moon_elk/src/graph/properties_i_property_value_proxy.mbt /Users/zhengyu/Documents/projects/moon_elk/src/graph/properties_map_property_holder.mbt /Users/zhengyu/Documents/projects/moon_elk/src/graph/properties_property.mbt /Users/zhengyu/Documents/projects/moon_elk/src/graph/properties_property_holder_comparator.mbt /Users/zhengyu/Documents/projects/moon_elk/src/graph/util_elk_graph_adapter_factory.mbt /Users/zhengyu/Documents/projects/moon_elk/src/graph/util_elk_graph_switch.mbt /Users/zhengyu/Documents/projects/moon_elk/src/graph/util_elk_graph_util.mbt /Users/zhengyu/Documents/projects/moon_elk/src/graph/util_elk_reflect.mbt /Users/zhengyu/Documents/projects/moon_elk/src/graph/util_graph_identifier_generator.mbt -o /Users/zhengyu/Documents/projects/moon_elk/_build/wasm-gc/release/check/graph/graph.mi -pkg Milky2018/moon_elk/graph -std-path /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/buffer/buffer.mi:buffer -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/cmp/cmp.mi:cmp -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/double/double.mi:double -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/float/float.mi:float -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/int/int.mi:int -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/json/json.mi:json -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/math/math.mi:math -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/prelude/prelude.mi:prelude -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/random/random.mi:random -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/strconv/strconv.mi:strconv -pkg-sources Milky2018/moon_elk/graph:/Users/zhengyu/Documents/projects/moon_elk/src/graph -target wasm-gc -workspace-path /Users/zhengyu/Documents/projects/moon_elk -all-pkgs /Users/zhengyu/Documents/projects/moon_elk/_build/wasm-gc/release/check/all_pkgs.json
+failed: /Users/zhengyu/.moon/bin/moonc check -error-format json /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_direct_layout_test.mbt /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_elk_live_examples_test.mbt /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_elk_reflect_test.mbt /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_plain_layout_test.mbt -include-doctests -o /Users/zhengyu/Documents/projects/moon_elk/_build/wasm-gc/release/check/shared/shared.blackbox_test.mi -pkg Milky2018/moon_elk/shared_blackbox_test -std-path /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/buffer/buffer.mi:buffer -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/cmp/cmp.mi:cmp -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/double/double.mi:double -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/float/float.mi:float -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/int/int.mi:int -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/json/json.mi:json -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/math/math.mi:math -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/prelude/prelude.mi:prelude -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/random/random.mi:random -i /Users/zhengyu/Documents/projects/moon_elk/_build/wasm-gc/release/check/shared/shared.mi:shared -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/strconv/strconv.mi:strconv -pkg-sources Milky2018/moon_elk/shared_blackbox_test:/Users/zhengyu/Documents/projects/moon_elk/src/shared -target wasm-gc -blackbox-test -workspace-path /Users/zhengyu/Documents/projects/moon_elk -all-pkgs /Users/zhengyu/Documents/projects/moon_elk/_build/wasm-gc/release/check/all_pkgs.json
+Error: [4032]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_algorithm_test_algorithm.mbt:3:20 ]
+   │
+ 3 │   algorithm_data : LayoutAlgorithmData?
+   │                    ─────────┬─────────  
+   │                             ╰─────────── The type LayoutAlgorithmData is undefined.
+───╯
+Error: [4032]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_algorithm_test_algorithm.mbt:8:20 ]
+   │
+ 8 │   algorithm_data : LayoutAlgorithmData?,
+   │                    ─────────┬─────────  
+   │                             ╰─────────── The type LayoutAlgorithmData is undefined.
+───╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_algorithm_test_algorithm.mbt:21:6 ]
+    │
+ 21 │ ) -> LayoutAlgorithmData? {
+    │      ─────────┬─────────  
+    │               ╰─────────── The type LayoutAlgorithmData is undefined.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_algorithm_test_algorithm.mbt:27:18 ]
+    │
+ 27 │   values : Array[LayoutAlgorithmData],
+    │                  ─────────┬─────────  
+    │                           ╰─────────── The type LayoutAlgorithmData is undefined.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_algorithm_test_algorithm.mbt:28:11 ]
+    │
+ 28 │   value : LayoutAlgorithmData,
+    │           ─────────┬─────────  
+    │                    ╰─────────── The type LayoutAlgorithmData is undefined.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_algorithm_test_algorithm.mbt:47:30 ]
+    │
+ 47 │   let algorithm_data : Array[LayoutAlgorithmData] = []
+    │                              ─────────┬─────────  
+    │                                       ╰─────────── The type LayoutAlgorithmData is undefined.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_algorithm_test_algorithm.mbt:55:17 ]
+    │
+ 55 │     for data in layout_meta_data_service_algorithm_data_values() {
+    │                 ───────────────────────┬──────────────────────  
+    │                                        ╰──────────────────────── The value identifier layout_meta_data_service_algorithm_data_values is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_algorithm_test_algorithm.mbt:61:13 ]
+    │
+ 61 │       match layout_meta_data_service_get_algorithm_data(id) {
+    │             ─────────────────────┬─────────────────────  
+    │                                  ╰─────────────────────── The value identifier layout_meta_data_service_get_algorithm_data is unbound.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_algorithm_test_algorithm.mbt:75:59 ]
+    │
+ 75 │ pub fn TestAlgorithm::apply(self : TestAlgorithm, graph : ElkNode) -> Unit {
+    │                                                           ───┬───  
+    │                                                              ╰───── The type ElkNode is undefined.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_algorithm_test_algorithm.mbt:78:21 ]
+    │
+ 78 │       let visitor = new_graph_element_visitor(node => {
+    │                     ────────────┬────────────  
+    │                                 ╰────────────── The value identifier new_graph_element_visitor is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_algorithm_test_algorithm.mbt:79:9 ]
+    │
+ 79 │         node_set_string_property(node, algorithm, data.get_id())
+    │         ────────────┬───────────  
+    │                     ╰───────────── The value identifier node_set_string_property is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_algorithm_test_algorithm.mbt:79:40 ]
+    │
+ 79 │         node_set_string_property(node, algorithm, data.get_id())
+    │                                        ────┬────  
+    │                                            ╰────── The value identifier algorithm is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_algorithm_test_algorithm.mbt:81:7 ]
+    │
+ 81 │       apply_visitors(graph, [visitor])
+    │       ───────┬──────  
+    │              ╰──────── The value identifier apply_visitors is unbound.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_configurator_test_configuration.mbt:10:37 ]
+    │
+ 10 │   configurator_provider_fn : (T) -> LayoutConfigurator,
+    │                                     ─────────┬────────  
+    │                                              ╰────────── The type LayoutConfigurator is undefined.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_configurator_test_configuration.mbt:13:19 ]
+    │
+ 13 │   let cache : Ref[LayoutConfigurator?] = Ref::new(None)
+    │                   ─────────┬────────  
+    │                            ╰────────── The type LayoutConfigurator is undefined.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_configurator_test_configuration.mbt:26:5 ]
+    │
+ 26 │     apply_visitors(graph, [configurator.to_visitor()])
+    │     ───────┬──────  
+    │            ╰──────── The value identifier apply_visitors is unbound.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_configurator_test_configuration.mbt:33:37 ]
+    │
+ 33 │   providers : Array[(String, (T) -> LayoutConfigurator)],
+    │                                     ─────────┬────────  
+    │                                              ╰────────── The type LayoutConfigurator is undefined.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_method_test_configuration.mbt:10:25 ]
+    │
+ 10 │   configurator_fn : (T, ElkNode) -> Unit,
+    │                         ───┬───  
+    │                            ╰───── The type ElkNode is undefined.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_method_test_configuration.mbt:24:32 ]
+    │
+ 24 │   methods : Array[(String, (T, ElkNode) -> Unit)],
+    │                                ───┬───  
+    │                                   ╰───── The type ElkNode is undefined.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_method_test_configuration.mbt:47:11 ]
+    │
+ 47 │   graph : ElkNode,
+    │           ───┬───  
+    │              ╰───── The type ElkNode is undefined.
+────╯
+Error: [4032]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_test_configuration.mbt:7:37 ]
+   │
+ 7 │   apply_base_configuration_fn : (T, ElkNode) -> Unit
+   │                                     ───┬───  
+   │                                        ╰───── The type ElkNode is undefined.
+───╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_test_configuration.mbt:13:38 ]
+    │
+ 13 │   apply_base_configuration_fn? : (T, ElkNode) -> Unit = (_test_instance, _graph) => {
+    │                                      ───┬───  
+    │                                         ╰───── The type ElkNode is undefined.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_test_configuration.mbt:31:53 ]
+    │
+ 31 │ fn test_configuration_apply_default_node(elk_node : ElkNode) -> Unit {
+    │                                                     ───┬───  
+    │                                                        ╰───── The type ElkNode is undefined.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_test_configuration.mbt:32:6 ]
+    │
+ 32 │   if node_width(elk_node) == 0.0 && node_height(elk_node) == 0.0 {
+    │      ─────┬────  
+    │           ╰────── The value identifier node_width is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_test_configuration.mbt:32:37 ]
+    │
+ 32 │   if node_width(elk_node) == 0.0 && node_height(elk_node) == 0.0 {
+    │                                     ─────┬─────  
+    │                                          ╰─────── The value identifier node_height is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_test_configuration.mbt:33:5 ]
+    │
+ 33 │     node_set_dimensions(elk_node, 30.0, 30.0)
+    │     ─────────┬─────────  
+    │              ╰─────────── The value identifier node_set_dimensions is unbound.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_test_configuration.mbt:38:53 ]
+    │
+ 38 │ fn test_configuration_apply_default_port(elk_port : ElkPort) -> Unit {
+    │                                                     ───┬───  
+    │                                                        ╰───── The type ElkPort is undefined.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_test_configuration.mbt:39:6 ]
+    │
+ 39 │   if port_width(elk_port) == 0.0 && port_height(elk_port) == 0.0 {
+    │      ─────┬────  
+    │           ╰────── The value identifier port_width is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_test_configuration.mbt:39:37 ]
+    │
+ 39 │   if port_width(elk_port) == 0.0 && port_height(elk_port) == 0.0 {
+    │                                     ─────┬─────  
+    │                                          ╰─────── The value identifier port_height is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_test_configuration.mbt:40:5 ]
+    │
+ 40 │     port_set_dimensions(elk_port, 5.0, 5.0)
+    │     ─────────┬─────────  
+    │              ╰─────────── The value identifier port_set_dimensions is unbound.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_test_configuration.mbt:45:54 ]
+    │
+ 45 │ fn test_configuration_apply_default_edge(_elk_edge : ElkEdge) -> Unit {
+    │                                                      ───┬───  
+    │                                                         ╰───── The type ElkEdge is undefined.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_test_configuration.mbt:50:62 ]
+    │
+ 50 │ fn test_configuration_create_edge_label_if_absent(elk_edge : ElkEdge) -> Unit {
+    │                                                              ───┬───  
+    │                                                                 ╰───── The type ElkEdge is undefined.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_test_configuration.mbt:51:6 ]
+    │
+ 51 │   if edge_labels(elk_edge).is_empty() {
+    │      ─────┬─────  
+    │           ╰─────── The value identifier edge_labels is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_test_configuration.mbt:52:17 ]
+    │
+ 52 │     let label = create_label(Some(make_edge_label_parent(elk_edge)))
+    │                 ──────┬─────  
+    │                       ╰─────── The value identifier create_label is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_test_configuration.mbt:52:35 ]
+    │
+ 52 │     let label = create_label(Some(make_edge_label_parent(elk_edge)))
+    │                                   ───────────┬──────────  
+    │                                              ╰──────────── The value identifier make_edge_label_parent is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_test_configuration.mbt:53:5 ]
+    │
+ 53 │     label_set_text(label, edge_identifier(elk_edge))
+    │     ───────┬──────  
+    │            ╰──────── The value identifier label_set_text is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_test_configuration.mbt:53:27 ]
+    │
+ 53 │     label_set_text(label, edge_identifier(elk_edge))
+    │                           ───────┬───────  
+    │                                  ╰───────── The value identifier edge_identifier is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_test_configuration.mbt:62:19 ]
+    │
+ 62 │   for elk_node in node_children(graph) {
+    │                   ──────┬──────  
+    │                         ╰──────── The value identifier node_children is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_test_configuration.mbt:69:23 ]
+    │
+ 69 │       for elk_port in node_ports(elk_node) {
+    │                       ─────┬────  
+    │                            ╰────── The value identifier node_ports is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_test_configuration.mbt:74:27 ]
+    │
+ 74 │           for elk_edge in port_outgoing_edges(elk_port) {
+    │                           ─────────┬─────────  
+    │                                    ╰─────────── The value identifier port_outgoing_edges is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_test_configuration.mbt:79:27 ]
+    │
+ 79 │           for elk_edge in port_outgoing_edges(elk_port) {
+    │                           ─────────┬─────────  
+    │                                    ╰─────────── The value identifier port_outgoing_edges is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_test_configuration.mbt:86:23 ]
+    │
+ 86 │       for elk_edge in node_outgoing_edges(elk_node) {
+    │                       ─────────┬─────────  
+    │                                ╰─────────── The value identifier node_outgoing_edges is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_test_configuration.mbt:91:23 ]
+    │
+ 91 │       for elk_edge in node_outgoing_edges(elk_node) {
+    │                       ─────────┬─────────  
+    │                                ╰─────────── The value identifier node_outgoing_edges is unbound.
+────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_test_configuration.mbt:103:50 ]
+     │
+ 103 │ fn test_configuration_compute_label_size(label : ElkLabel) -> Unit {
+     │                                                  ────┬───  
+     │                                                      ╰───── The type ElkLabel is undefined.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_test_configuration.mbt:104:6 ]
+     │
+ 104 │   if label_height(label) == 0.0 && label_width(label) == 0.0 {
+     │      ──────┬─────  
+     │            ╰─────── The value identifier label_height is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_test_configuration.mbt:104:36 ]
+     │
+ 104 │   if label_height(label) == 0.0 && label_width(label) == 0.0 {
+     │                                    ─────┬─────  
+     │                                         ╰─────── The value identifier label_width is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_test_configuration.mbt:105:16 ]
+     │
+ 105 │     let text = label_text(label)
+     │                ─────┬────  
+     │                     ╰────── The value identifier label_text is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_test_configuration.mbt:108:7 ]
+     │
+ 108 │       label_set_dimensions(label, width, default_label_font_size)
+     │       ──────────┬─────────  
+     │                 ╰─────────── The value identifier label_set_dimensions is unbound.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_test_configuration.mbt:114:58 ]
+     │
+ 114 │ fn test_configuration_ensure_sensible_label_size(graph : ElkNode) -> Unit {
+     │                                                          ───┬───  
+     │                                                             ╰───── The type ElkNode is undefined.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_test_configuration.mbt:115:16 ]
+     │
+ 115 │   for label in node_labels(graph) {
+     │                ─────┬─────  
+     │                     ╰─────── The value identifier node_labels is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_test_configuration.mbt:118:15 ]
+     │
+ 118 │   for port in node_ports(graph) {
+     │               ─────┬────  
+     │                    ╰────── The value identifier node_ports is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_test_configuration.mbt:119:18 ]
+     │
+ 119 │     for label in port_labels(port) {
+     │                  ─────┬─────  
+     │                       ╰─────── The value identifier port_labels is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_test_configuration.mbt:122:17 ]
+     │
+ 122 │     for edge in port_outgoing_edges(port) {
+     │                 ─────────┬─────────  
+     │                          ╰─────────── The value identifier port_outgoing_edges is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_test_configuration.mbt:123:20 ]
+     │
+ 123 │       for label in edge_labels(edge) {
+     │                    ─────┬─────  
+     │                         ╰─────── The value identifier edge_labels is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_test_configuration.mbt:128:15 ]
+     │
+ 128 │   for edge in node_contained_edges(graph) {
+     │               ──────────┬─────────  
+     │                         ╰─────────── The value identifier node_contained_edges is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_test_configuration.mbt:129:18 ]
+     │
+ 129 │     for label in edge_labels(edge) {
+     │                  ─────┬─────  
+     │                       ╰─────── The value identifier edge_labels is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_test_configuration.mbt:133:16 ]
+     │
+ 133 │   for child in node_children(graph) {
+     │                ──────┬──────  
+     │                      ╰──────── The value identifier node_children is unbound.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_config_test_configuration.mbt:142:11 ]
+     │
+ 142 │   graph : ElkNode,
+     │           ───┬───  
+     │              ╰───── The type ElkNode is undefined.
+─────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_experiment_statement.mbt:25:20 ]
+    │
+ 25 │   mut test_graph : ElkNode?
+    │                    ───┬───  
+    │                       ╰───── The type ElkNode is undefined.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_experiment_statement.mbt:69:6 ]
+    │
+ 69 │ ) -> ElkNode {
+    │      ───┬───  
+    │         ╰───── The type ElkNode is undefined.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_experiment_statement.mbt:78:11 ]
+    │
+ 78 │   graph : ElkNode,
+    │           ───┬───  
+    │              ╰───── The type ElkNode is undefined.
+────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_experiment_statement.mbt:156:11 ]
+     │
+ 156 │   graph : ElkNode,
+     │           ───┬───  
+     │              ╰───── The type ElkNode is undefined.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_experiment_statement.mbt:198:23 ]
+     │
+ 198 │   let layout_engine = new_recursive_graph_layout_engine()
+     │                       ────────────────┬────────────────  
+     │                                       ╰────────────────── The value identifier new_recursive_graph_layout_engine is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_experiment_statement.mbt:199:31 ]
+     │
+ 199 │   layout_engine.layout(graph, new_basic_progress_monitor())
+     │                               ─────────────┬────────────  
+     │                                            ╰────────────── The value identifier new_basic_progress_monitor is unbound.
+─────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_experimental_object.mbt:38:6 ]
+    │
+ 38 │ ) -> ElkNode {
+    │      ───┬───  
+    │         ╰───── The type ElkNode is undefined.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_graph_graph_from_file.mbt:23:62 ]
+    │
+ 23 │ fn graph_from_file_parse(path : String, content : String) -> ElkNode {
+    │                                                              ───┬───  
+    │                                                                 ╰───── The type ElkNode is undefined.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_graph_graph_from_file.mbt:25:12 ]
+    │
+ 25 │     return elk_graph_json_for_graph(content).to_elk()
+    │            ────────────┬───────────  
+    │                        ╰───────────── The value identifier elk_graph_json_for_graph is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_graph_graph_from_file.mbt:27:3 ]
+    │
+ 27 │   new_elk_graph_parser().parse(content) catch {
+    │   ──────────┬─────────  
+    │             ╰─────────── The value identifier new_elk_graph_parser is unbound.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_graph_graph_from_file.mbt:64:6 ]
+    │
+ 64 │ ) -> ElkNode {
+    │      ───┬───  
+    │         ╰───── The type ElkNode is undefined.
+────╯
+Warning: [0023]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_graph_graph_from_file.mbt:27:3 ]
+    │
+ 27 │   new_elk_graph_parser().parse(content) catch {
+    │   ──────────────────┬──────────────────  
+    │                     ╰──────────────────── Warning (unused_try): The body of this try expression never raises any error.
+────╯
+Error: [4032]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_graph_graph_from_method.mbt:4:24 ]
+   │
+ 4 │   provider_fn : (T) -> ElkNode
+   │                        ───┬───  
+   │                           ╰───── The type ElkNode is undefined.
+───╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_graph_graph_from_method.mbt:10:24 ]
+    │
+ 10 │   provider_fn : (T) -> ElkNode,
+    │                        ───┬───  
+    │                           ╰───── The type ElkNode is undefined.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_graph_random_graph_from_file.mbt:23:41 ]
+    │
+ 23 │ fn random_graph_from_file_clone(graph : ElkNode) -> ElkNode {
+    │                                         ───┬───  
+    │                                            ╰───── The type ElkNode is undefined.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_graph_random_graph_from_file.mbt:23:53 ]
+    │
+ 23 │ fn random_graph_from_file_clone(graph : ElkNode) -> ElkNode {
+    │                                                     ───┬───  
+    │                                                        ╰───── The type ElkNode is undefined.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_graph_random_graph_from_file.mbt:24:20 ]
+    │
+ 24 │   let serialized = elk_graph_json_for_elk_graph(graph).to_json()
+    │                    ──────────────┬─────────────  
+    │                                  ╰─────────────── The value identifier elk_graph_json_for_elk_graph is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_graph_random_graph_from_file.mbt:25:3 ]
+    │
+ 25 │   elk_graph_json_for_graph(serialized).to_elk()
+    │   ────────────┬───────────  
+    │               ╰───────────── The value identifier elk_graph_json_for_graph is unbound.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_graph_random_graph_from_file.mbt:31:12 ]
+    │
+ 31 │ ) -> Array[ElkNode] {
+    │            ───┬───  
+    │               ╰───── The type ElkNode is undefined.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_graph_random_graph_from_file.mbt:37:20 ]
+    │
+ 37 │   let rand_graph = new_core_debug_grandom_parser().parse(content)
+    │                    ──────────────┬──────────────  
+    │                                  ╰──────────────── The value identifier new_core_debug_grandom_parser is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_graph_random_graph_from_file.mbt:38:19 ]
+    │
+ 38 │   let generator = new_core_debug_grandom_random_graph_generator(None)
+    │                   ──────────────────────┬──────────────────────  
+    │                                         ╰──────────────────────── The value identifier new_core_debug_grandom_random_graph_generator is unbound.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_graph_random_graph_from_file.mbt:39:22 ]
+    │
+ 39 │   let graphs : Array[ElkNode] = []
+    │                      ───┬───  
+    │                         ╰───── The type ElkNode is undefined.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_graph_random_graph_from_file.mbt:42:16 ]
+    │
+ 42 │       graph in core_debug_grandom_random_graph_generator_generate_from_configuration(
+    │                ──────────────────────────────────┬──────────────────────────────────  
+    │                                                  ╰──────────────────────────────────── The value identifier core_debug_grandom_random_graph_generator_generate_from_configuration is unbound.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_graph_random_graph_from_file.mbt:54:11 ]
+    │
+ 54 │   graph : ElkNode
+    │           ───┬───  
+    │              ╰───── The type ElkNode is undefined.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_graph_random_graph_from_file.mbt:60:11 ]
+    │
+ 60 │   graph : ElkNode,
+    │           ───┬───  
+    │              ╰───── The type ElkNode is undefined.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_graph_random_graph_from_file.mbt:85:6 ]
+    │
+ 85 │ ) -> ElkNode {
+    │      ───┬───  
+    │         ╰───── The type ElkNode is undefined.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_graph_random_graph_from_method.mbt:12:43 ]
+    │
+ 12 │ fn random_graph_from_method_clone(graph : ElkNode) -> ElkNode {
+    │                                           ───┬───  
+    │                                              ╰───── The type ElkNode is undefined.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_graph_random_graph_from_method.mbt:12:55 ]
+    │
+ 12 │ fn random_graph_from_method_clone(graph : ElkNode) -> ElkNode {
+    │                                                       ───┬───  
+    │                                                          ╰───── The type ElkNode is undefined.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_graph_random_graph_from_method.mbt:13:20 ]
+    │
+ 13 │   let serialized = elk_graph_json_for_elk_graph(graph).to_json()
+    │                    ──────────────┬─────────────  
+    │                                  ╰─────────────── The value identifier elk_graph_json_for_elk_graph is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_graph_random_graph_from_method.mbt:14:3 ]
+    │
+ 14 │   elk_graph_json_for_graph(serialized).to_elk()
+    │   ────────────┬───────────  
+    │               ╰───────────── The value identifier elk_graph_json_for_graph is unbound.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_graph_random_graph_from_method.mbt:20:11 ]
+    │
+ 20 │   graph : ElkNode
+    │           ───┬───  
+    │              ╰───── The type ElkNode is undefined.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_graph_random_graph_from_method.mbt:26:11 ]
+    │
+ 26 │   graph : ElkNode,
+    │           ───┬───  
+    │              ╰───── The type ElkNode is undefined.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_graph_random_graph_from_method.mbt:34:13 ]
+    │
+ 34 │   options : CoreDebugGRandomGeneratorOptions,
+    │             ────────────────┬───────────────  
+    │                             ╰───────────────── The type CoreDebugGRandomGeneratorOptions is undefined.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_graph_random_graph_from_method.mbt:36:19 ]
+    │
+ 36 │   let generator = new_core_debug_grandom_random_graph_generator(
+    │                   ──────────────────────┬──────────────────────  
+    │                                         ╰──────────────────────── The value identifier new_core_debug_grandom_random_graph_generator is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_graph_random_graph_from_method.mbt:41:5 ]
+    │
+ 41 │     core_debug_grandom_random_graph_generator_generate(generator, options),
+    │     ─────────────────────────┬────────────────────────  
+    │                              ╰────────────────────────── The value identifier core_debug_grandom_random_graph_generator_generate is unbound.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_graph_random_graph_from_method.mbt:49:6 ]
+    │
+ 49 │ ) -> ElkNode {
+    │      ───┬───  
+    │         ╰───── The type ElkNode is undefined.
+────╯
+Error: [4032]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_graph_test_graph.mbt:3:29 ]
+   │
+ 3 │   provide_graph_fn : (T) -> ElkNode
+   │                             ───┬───  
+   │                                ╰───── The type ElkNode is undefined.
+───╯
+Error: [4032]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_graph_test_graph.mbt:9:29 ]
+   │
+ 9 │   provide_graph_fn : (T) -> ElkNode,
+   │                             ───┬───  
+   │                                ╰───── The type ElkNode is undefined.
+───╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_graph_test_graph.mbt:19:6 ]
+    │
+ 19 │ ) -> ElkNode {
+    │      ───┬───  
+    │         ╰───── The type ElkNode is undefined.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_io_abstract_resource_path.mbt:60:3 ]
+    │
+ 60 │   core_debug_is_directory(path) || core_debug_is_regular_file(path)
+    │   ───────────┬───────────  
+    │              ╰───────────── The value identifier core_debug_is_directory is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_io_abstract_resource_path.mbt:60:36 ]
+    │
+ 60 │   core_debug_is_directory(path) || core_debug_is_regular_file(path)
+    │                                    ─────────────┬────────────  
+    │                                                 ╰────────────── The value identifier core_debug_is_regular_file is unbound.
+────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_io_abstract_resource_path.mbt:197:18 ]
+     │
+ 197 │   let children = core_debug_directory_children(directory)
+     │                  ──────────────┬──────────────  
+     │                                ╰──────────────── The value identifier core_debug_directory_children is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_io_abstract_resource_path.mbt:202:8 ]
+     │
+ 202 │     if core_debug_is_regular_file(child) {
+     │        ─────────────┬────────────  
+     │                     ╰────────────── The value identifier core_debug_is_regular_file is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_io_abstract_resource_path.mbt:204:15 ]
+     │
+ 204 │     } else if core_debug_is_directory(child) && root_path.is_recursive() {
+     │               ───────────┬───────────  
+     │                          ╰───────────── The value identifier core_debug_is_directory is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_io_abstract_resource_path.mbt:219:29 ]
+     │
+ 219 │   if self.is_directory() && core_debug_is_directory(file) {
+     │                             ───────────┬───────────  
+     │                                        ╰───────────── The value identifier core_debug_is_directory is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_io_abstract_resource_path.mbt:223:30 ]
+     │
+ 223 │   if !self.is_directory() && core_debug_is_regular_file(file) {
+     │                              ─────────────┬────────────  
+     │                                           ╰────────────── The value identifier core_debug_is_regular_file is unbound.
+─────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_io_file_extension_filter.mbt:44:8 ]
+    │
+ 44 │   if !(core_debug_is_regular_file(path_name) ||
+    │        ─────────────┬────────────  
+    │                     ╰────────────── The value identifier core_debug_is_regular_file is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_io_file_extension_filter.mbt:45:5 ]
+    │
+ 45 │     core_debug_is_directory(path_name)) {
+    │     ───────────┬───────────  
+    │                ╰───────────── The value identifier core_debug_is_directory is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_io_file_extension_filter.mbt:47:13 ]
+    │
+ 47 │   } else if core_debug_is_directory(path_name) {
+    │             ───────────┬───────────  
+    │                        ╰───────────── The value identifier core_debug_is_directory is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_io_file_extension_filter.mbt:50:21 ]
+    │
+ 50 │     let file_name = core_debug_path_file_name(path_name)
+    │                     ────────────┬────────────  
+    │                                 ╰────────────── The value identifier core_debug_path_file_name is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_io_file_name_filter.mbt:53:8 ]
+    │
+ 53 │   if !(core_debug_is_regular_file(path_name) ||
+    │        ─────────────┬────────────  
+    │                     ╰────────────── The value identifier core_debug_is_regular_file is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_io_file_name_filter.mbt:54:5 ]
+    │
+ 54 │     core_debug_is_directory(path_name)) {
+    │     ───────────┬───────────  
+    │                ╰───────────── The value identifier core_debug_is_directory is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_io_file_name_filter.mbt:56:13 ]
+    │
+ 56 │   } else if core_debug_is_directory(path_name) {
+    │             ───────────┬───────────  
+    │                        ╰───────────── The value identifier core_debug_is_directory is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_io_file_name_filter.mbt:59:21 ]
+    │
+ 59 │     let file_name = core_debug_path_file_name(path_name)
+    │                     ────────────┬────────────  
+    │                                 ╰────────────── The value identifier core_debug_path_file_name is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_io_results_resource_path.mbt:21:7 ]
+    │
+ 21 │   if !core_debug_is_directory(path) {
+    │       ───────────┬───────────  
+    │                  ╰───────────── The value identifier core_debug_is_directory is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_io_results_resource_path.mbt:22:5 ]
+    │
+ 22 │     core_debug_register_directory_for_test(path, [])
+    │     ───────────────────┬──────────────────  
+    │                        ╰──────────────────── The value identifier core_debug_register_directory_for_test is unbound.
+────╯
+Warning: [0013]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_io_results_resource_path.mbt:22:5 ]
+    │
+ 22 │     core_debug_register_directory_for_test(path, [])
+    │     ───────────────────┬──────────────────  
+    │                        ╰──────────────────── Warning (unresolved_type_variable): The type of this expression is (String, Array[_/0]) -> Unit, which contains unresolved type variables. The type variable is default to Unit.
+────╯
+Error: [4032]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_layout_test_runner.mbt:5:14 ]
+   │
+ 5 │     _graph : ElkNode,
+   │              ───┬───  
+   │                 ╰───── The type ElkNode is undefined.
+───╯
+Error: [4032]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_test_method.mbt:5:16 ]
+   │
+ 5 │   run_fn : (T, ElkNode) -> Unit
+   │                ───┬───  
+   │                   ╰───── The type ElkNode is undefined.
+───╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_test_method.mbt:11:16 ]
+    │
+ 11 │   run_fn : (T, ElkNode) -> Unit,
+    │                ───┬───  
+    │                   ╰───── The type ElkNode is undefined.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/framework_test_method.mbt:33:11 ]
+    │
+ 33 │   graph : ElkNode,
+    │           ───┬───  
+    │              ╰───── The type ElkNode is undefined.
+────╯
+Error: [4032]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:3:17 ]
+   │
+ 3 │   GraphTestNode(ElkNode)
+   │                 ───┬───  
+   │                    ╰───── The type ElkNode is undefined.
+───╯
+Error: [4032]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:4:17 ]
+   │
+ 4 │   GraphTestPort(ElkPort)
+   │                 ───┬───  
+   │                    ╰───── The type ElkPort is undefined.
+───╯
+Error: [4032]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:5:18 ]
+   │
+ 5 │   GraphTestLabel(ElkLabel)
+   │                  ────┬───  
+   │                      ╰───── The type ElkLabel is undefined.
+───╯
+Error: [4032]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:9:37 ]
+   │
+ 9 │ pub fn graph_test_shape_node(node : ElkNode) -> GraphTestShape {
+   │                                     ───┬───  
+   │                                        ╰───── The type ElkNode is undefined.
+───╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:14:37 ]
+    │
+ 14 │ pub fn graph_test_shape_port(port : ElkPort) -> GraphTestShape {
+    │                                     ───┬───  
+    │                                        ╰───── The type ElkPort is undefined.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:19:39 ]
+    │
+ 19 │ pub fn graph_test_shape_label(label : ElkLabel) -> GraphTestShape {
+    │                                       ────┬───  
+    │                                           ╰───── The type ElkLabel is undefined.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:43:51 ]
+    │
+ 43 │ fn graph_test_utils_absolute_node_position(node : ElkNode) -> KVector {
+    │                                                   ───┬───  
+    │                                                      ╰───── The type ElkNode is undefined.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:43:63 ]
+    │
+ 43 │ fn graph_test_utils_absolute_node_position(node : ElkNode) -> KVector {
+    │                                                               ───┬───  
+    │                                                                  ╰───── The type KVector is undefined.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:44:18 ]
+    │
+ 44 │   let absolute = new_kvector_xy(node_x(node), node_y(node))
+    │                  ───────┬──────  
+    │                         ╰──────── The value identifier new_kvector_xy is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:44:33 ]
+    │
+ 44 │   let absolute = new_kvector_xy(node_x(node), node_y(node))
+    │                                 ───┬──  
+    │                                    ╰──── The value identifier node_x is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:44:47 ]
+    │
+ 44 │   let absolute = new_kvector_xy(node_x(node), node_y(node))
+    │                                               ───┬──  
+    │                                                  ╰──── The value identifier node_y is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:45:9 ]
+    │
+ 45 │   match node_parent(node) {
+    │         ─────┬─────  
+    │              ╰─────── The value identifier node_parent is unbound.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:54:51 ]
+    │
+ 54 │ fn graph_test_utils_absolute_port_position(port : ElkPort) -> KVector {
+    │                                                   ───┬───  
+    │                                                      ╰───── The type ElkPort is undefined.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:54:63 ]
+    │
+ 54 │ fn graph_test_utils_absolute_port_position(port : ElkPort) -> KVector {
+    │                                                               ───┬───  
+    │                                                                  ╰───── The type KVector is undefined.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:55:9 ]
+    │
+ 55 │   match port_parent(port) {
+    │         ─────┬─────  
+    │              ╰─────── The value identifier port_parent is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:58:9 ]
+    │
+ 58 │         port_x(port),
+    │         ───┬──  
+    │            ╰──── The value identifier port_x is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:59:9 ]
+    │
+ 59 │         port_y(port),
+    │         ───┬──  
+    │            ╰──── The value identifier port_y is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:61:13 ]
+    │
+ 61 │     None => new_kvector_xy(port_x(port), port_y(port))
+    │             ───────┬──────  
+    │                    ╰──────── The value identifier new_kvector_xy is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:61:28 ]
+    │
+ 61 │     None => new_kvector_xy(port_x(port), port_y(port))
+    │                            ───┬──  
+    │                               ╰──── The value identifier port_x is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:61:42 ]
+    │
+ 61 │     None => new_kvector_xy(port_x(port), port_y(port))
+    │                                          ───┬──  
+    │                                             ╰──── The value identifier port_y is unbound.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:67:12 ]
+    │
+ 67 │   parent : ElkLabelParent,
+    │            ───────┬──────  
+    │                   ╰──────── The type ElkLabelParent is undefined.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:68:6 ]
+    │
+ 68 │ ) -> KVector {
+    │      ───┬───  
+    │         ╰───── The type KVector is undefined.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:73:13 ]
+    │
+ 73 │       match edge_containing_node(edge) {
+    │             ──────────┬─────────  
+    │                       ╰─────────── The value identifier edge_containing_node is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:75:17 ]
+    │
+ 75 │         None => new_kvector()
+    │                 ─────┬─────  
+    │                      ╰─────── The value identifier new_kvector is unbound.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:82:53 ]
+    │
+ 82 │ fn graph_test_utils_absolute_label_position(label : ElkLabel) -> KVector {
+    │                                                     ────┬───  
+    │                                                         ╰───── The type ElkLabel is undefined.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:82:66 ]
+    │
+ 82 │ fn graph_test_utils_absolute_label_position(label : ElkLabel) -> KVector {
+    │                                                                  ───┬───  
+    │                                                                     ╰───── The type KVector is undefined.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:83:18 ]
+    │
+ 83 │   let absolute = new_kvector_xy(label_x(label), label_y(label))
+    │                  ───────┬──────  
+    │                         ╰──────── The value identifier new_kvector_xy is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:83:33 ]
+    │
+ 83 │   let absolute = new_kvector_xy(label_x(label), label_y(label))
+    │                                 ───┬───  
+    │                                    ╰───── The value identifier label_x is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:83:49 ]
+    │
+ 83 │   let absolute = new_kvector_xy(label_x(label), label_y(label))
+    │                                                 ───┬───  
+    │                                                    ╰───── The value identifier label_y is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:84:9 ]
+    │
+ 84 │   match label_parent(label) {
+    │         ──────┬─────  
+    │               ╰─────── The value identifier label_parent is unbound.
+────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:104:16 ]
+     │
+ 104 │         width: node_width(node),
+     │                ─────┬────  
+     │                     ╰────── The value identifier node_width is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:105:17 ]
+     │
+ 105 │         height: node_height(node),
+     │                 ─────┬─────  
+     │                      ╰─────── The value identifier node_height is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:113:16 ]
+     │
+ 113 │         width: port_width(port),
+     │                ─────┬────  
+     │                     ╰────── The value identifier port_width is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:114:17 ]
+     │
+ 114 │         height: port_height(port),
+     │                 ─────┬─────  
+     │                      ╰─────── The value identifier port_height is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:122:16 ]
+     │
+ 122 │         width: label_width(label),
+     │                ─────┬─────  
+     │                     ╰─────── The value identifier label_width is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:123:17 ]
+     │
+ 123 │         height: label_height(label),
+     │                 ──────┬─────  
+     │                       ╰─────── The value identifier label_height is unbound.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:131:11 ]
+     │
+ 131 │   graph : ElkNode,
+     │           ───┬───  
+     │              ╰───── The type ElkNode is undefined.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:133:12 ]
+     │
+ 133 │ ) -> Array[ElkNode] {
+     │            ───┬───  
+     │               ╰───── The type ElkNode is undefined.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:134:21 ]
+     │
+ 134 │   let nodes : Array[ElkNode] = []
+     │                     ───┬───  
+     │                        ╰───── The type ElkNode is undefined.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:138:18 ]
+     │
+ 138 │     for child in node_children(graph) {
+     │                  ──────┬──────  
+     │                        ╰──────── The value identifier node_children is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:144:18 ]
+     │
+ 144 │     for child in node_children(nodes[index]) {
+     │                  ──────┬──────  
+     │                        ╰──────── The value identifier node_children is unbound.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:172:17 ]
+     │
+ 172 │   source_port : ElkPort,
+     │                 ───┬───  
+     │                    ╰───── The type ElkPort is undefined.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:173:17 ]
+     │
+ 173 │   target_port : ElkPort,
+     │                 ───┬───  
+     │                    ╰───── The type ElkPort is undefined.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:174:6 ]
+     │
+ 174 │ ) -> ElkEdge {
+     │      ───┬───  
+     │         ╰───── The type ElkEdge is undefined.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:175:27 ]
+     │
+ 175 │   let source_node = match port_parent(source_port) {
+     │                           ─────┬─────  
+     │                                ╰─────── The value identifier port_parent is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:179:27 ]
+     │
+ 179 │   let target_node = match port_parent(target_port) {
+     │                           ─────┬─────  
+     │                                ╰─────── The value identifier port_parent is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:184:5 ]
+     │
+ 184 │     find_lowest_common_ancestor(source_node, target_node) {
+     │     ─────────────┬─────────────  
+     │                  ╰─────────────── The value identifier find_lowest_common_ancestor is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:188:14 ]
+     │
+ 188 │   let edge = create_edge(Some(containing_node))
+     │              ─────┬─────  
+     │                   ╰─────── The value identifier create_edge is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:189:3 ]
+     │
+ 189 │   edge_add_source(edge, make_port_shape(source_port))
+     │   ───────┬───────  
+     │          ╰───────── The value identifier edge_add_source is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:189:25 ]
+     │
+ 189 │   edge_add_source(edge, make_port_shape(source_port))
+     │                         ───────┬───────  
+     │                                ╰───────── The value identifier make_port_shape is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:190:3 ]
+     │
+ 190 │   edge_add_target(edge, make_port_shape(target_port))
+     │   ───────┬───────  
+     │          ╰───────── The value identifier edge_add_target is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:190:25 ]
+     │
+ 190 │   edge_add_target(edge, make_port_shape(target_port))
+     │                         ───────┬───────  
+     │                                ╰───────── The value identifier make_port_shape is unbound.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:195:57 ]
+     │
+ 195 │ fn graph_test_utils_populate_simple_graph(parent_node : ElkNode) -> Unit {
+     │                                                         ───┬───  
+     │                                                            ╰───── The type ElkNode is undefined.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:196:21 ]
+     │
+ 196 │   let child_node1 = create_node(Some(parent_node))
+     │                     ─────┬─────  
+     │                          ╰─────── The value identifier create_node is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:197:27 ]
+     │
+ 197 │   let child_node1_label = create_label(
+     │                           ──────┬─────  
+     │                                 ╰─────── The value identifier create_label is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:198:10 ]
+     │
+ 198 │     Some(make_node_label_parent(child_node1)),
+     │          ───────────┬──────────  
+     │                     ╰──────────── The value identifier make_node_label_parent is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:200:3 ]
+     │
+ 200 │   label_set_text(child_node1_label, "node1")
+     │   ───────┬──────  
+     │          ╰──────── The value identifier label_set_text is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:202:21 ]
+     │
+ 202 │   let child_node2 = create_node(Some(parent_node))
+     │                     ─────┬─────  
+     │                          ╰─────── The value identifier create_node is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:203:27 ]
+     │
+ 203 │   let child_node2_label = create_label(
+     │                           ──────┬─────  
+     │                                 ╰─────── The value identifier create_label is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:204:10 ]
+     │
+ 204 │     Some(make_node_label_parent(child_node2)),
+     │          ───────────┬──────────  
+     │                     ╰──────────── The value identifier make_node_label_parent is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:206:3 ]
+     │
+ 206 │   label_set_text(child_node2_label, "node2")
+     │   ───────┬──────  
+     │          ╰──────── The value identifier label_set_text is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:208:15 ]
+     │
+ 208 │   let port1 = create_port(Some(child_node1))
+     │               ─────┬─────  
+     │                    ╰─────── The value identifier create_port is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:209:15 ]
+     │
+ 209 │   let port2 = create_port(Some(child_node2))
+     │               ─────┬─────  
+     │                    ╰─────── The value identifier create_port is unbound.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:214:50 ]
+     │
+ 214 │ pub fn graph_test_utils_create_simple_graph() -> ElkNode {
+     │                                                  ───┬───  
+     │                                                     ╰───── The type ElkNode is undefined.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:215:21 ]
+     │
+ 215 │   let parent_node = create_graph()
+     │                     ──────┬─────  
+     │                           ╰─────── The value identifier create_graph is unbound.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:221:54 ]
+     │
+ 221 │ pub fn graph_test_utils_create_three_node_graph() -> ElkNode {
+     │                                                      ───┬───  
+     │                                                         ╰───── The type ElkNode is undefined.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:222:22 ]
+     │
+ 222 │   let layout_graph = create_graph()
+     │                      ──────┬─────  
+     │                            ╰─────── The value identifier create_graph is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:223:15 ]
+     │
+ 223 │   let node1 = create_node(Some(layout_graph))
+     │               ─────┬─────  
+     │                    ╰─────── The value identifier create_node is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:224:15 ]
+     │
+ 224 │   let node2 = create_node(Some(layout_graph))
+     │               ─────┬─────  
+     │                    ╰─────── The value identifier create_node is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:225:15 ]
+     │
+ 225 │   let node3 = create_node(Some(layout_graph))
+     │               ─────┬─────  
+     │                    ╰─────── The value identifier create_node is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:227:10 ]
+     │
+ 227 │   ignore(create_simple_edge(node1, node3))
+     │          ─────────┬────────  
+     │                   ╰────────── The value identifier create_simple_edge is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:228:10 ]
+     │
+ 228 │   ignore(create_simple_edge(node2, node3))
+     │          ─────────┬────────  
+     │                   ╰────────── The value identifier create_simple_edge is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:230:15 ]
+     │
+ 230 │   for node in node_children(layout_graph) {
+     │               ──────┬──────  
+     │                     ╰──────── The value identifier node_children is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:231:5 ]
+     │
+ 231 │     node_set_dimensions(node, 50.0, 50.0)
+     │     ─────────┬─────────  
+     │              ╰─────────── The value identifier node_set_dimensions is unbound.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:238:56 ]
+     │
+ 238 │ pub fn graph_test_utils_create_hierarchical_graph() -> ElkNode {
+     │                                                        ───┬───  
+     │                                                           ╰───── The type ElkNode is undefined.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:239:21 ]
+     │
+ 239 │   let parent_node = create_graph()
+     │                     ──────┬─────  
+     │                           ╰─────── The value identifier create_graph is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:241:16 ]
+     │
+ 241 │   let child1 = create_node(Some(parent_node))
+     │                ─────┬─────  
+     │                     ╰─────── The value identifier create_node is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:242:22 ]
+     │
+ 242 │   let child1_label = create_label(Some(make_node_label_parent(child1)))
+     │                      ──────┬─────  
+     │                            ╰─────── The value identifier create_label is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:242:40 ]
+     │
+ 242 │   let child1_label = create_label(Some(make_node_label_parent(child1)))
+     │                                        ───────────┬──────────  
+     │                                                   ╰──────────── The value identifier make_node_label_parent is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:243:3 ]
+     │
+ 243 │   label_set_text(child1_label, "child1")
+     │   ───────┬──────  
+     │          ╰──────── The value identifier label_set_text is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:246:16 ]
+     │
+ 246 │   let child2 = create_node(Some(parent_node))
+     │                ─────┬─────  
+     │                     ╰─────── The value identifier create_node is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:247:22 ]
+     │
+ 247 │   let child2_label = create_label(Some(make_node_label_parent(child2)))
+     │                      ──────┬─────  
+     │                            ╰─────── The value identifier create_label is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:247:40 ]
+     │
+ 247 │   let child2_label = create_label(Some(make_node_label_parent(child2)))
+     │                                        ───────────┬──────────  
+     │                                                   ╰──────────── The value identifier make_node_label_parent is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:248:3 ]
+     │
+ 248 │   label_set_text(child2_label, "child2")
+     │   ───────┬──────  
+     │          ╰──────── The value identifier label_set_text is unbound.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:256:12 ]
+     │
+ 256 │   parent : ElkNode,
+     │            ───┬───  
+     │               ╰───── The type ElkNode is undefined.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:258:6 ]
+     │
+ 258 │ ) -> ElkNode {
+     │      ───┬───  
+     │         ╰───── The type ElkNode is undefined.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:262:21 ]
+     │
+ 262 │     let mut found : ElkNode? = None
+     │                     ───┬───  
+     │                        ╰───── The type ElkNode is undefined.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:263:18 ]
+     │
+ 263 │     for child in node_children(current_parent) {
+     │                  ──────┬──────  
+     │                        ╰──────── The value identifier node_children is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:264:10 ]
+     │
+ 264 │       if node_identifier(child) == identifier {
+     │          ───────┬───────  
+     │                 ╰───────── The value identifier node_identifier is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:277:11 ]
+     │
+ 277 │           node_identifier(current_parent) +
+     │           ───────┬───────  
+     │                  ╰───────── The value identifier node_identifier is unbound.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:288:41 ]
+     │
+ 288 │ pub fn graph_test_utils_get_port(node : ElkNode, port_id : String) -> ElkPort {
+     │                                         ───┬───  
+     │                                            ╰───── The type ElkNode is undefined.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:288:71 ]
+     │
+ 288 │ pub fn graph_test_utils_get_port(node : ElkNode, port_id : String) -> ElkPort {
+     │                                                                       ───┬───  
+     │                                                                          ╰───── The type ElkPort is undefined.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:289:15 ]
+     │
+ 289 │   for port in node_ports(node) {
+     │               ─────┬────  
+     │                    ╰────── The value identifier node_ports is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:290:8 ]
+     │
+ 290 │     if port_identifier(port) == port_id {
+     │        ───────┬───────  
+     │               ╰───────── The value identifier port_identifier is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:296:5 ]
+     │
+ 296 │     node_identifier(node) +
+     │     ───────┬───────  
+     │            ╰───────── The value identifier node_identifier is unbound.
+─────╯
+Warning: [0004]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/graph_test_utils.mbt:24:8 ]
+    │
+ 24 │ struct GraphTestRectangle {
+    │        ─────────┬────────  
+    │                 ╰────────── Warning (missing_priv): The type 'GraphTestRectangle' does not occur in public signature of current package, consider marking it as `priv`.
+────╯
+Error: [4021]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/plain_java_initialization.mbt:8:9 ]
+   │
+ 8 │   match layout_meta_data_service_get_algorithm_data(algorithm_id) {
+   │         ─────────────────────┬─────────────────────  
+   │                              ╰─────────────────────── The value identifier layout_meta_data_service_get_algorithm_data is unbound.
+───╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/plain_java_initialization.mbt:11:7 ]
+    │
+ 11 │       layout_meta_data_service_register_algorithm(
+    │       ─────────────────────┬─────────────────────  
+    │                            ╰─────────────────────── The value identifier layout_meta_data_service_register_algorithm is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/plain_java_initialization.mbt:12:9 ]
+    │
+ 12 │         new_layout_algorithm_data(algorithm_id),
+    │         ────────────┬────────────  
+    │                     ╰────────────── The value identifier new_layout_algorithm_data is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/plain_java_initialization.mbt:21:5 ]
+    │
+ 21 │     rectpacking_algorithm_id, spore_compaction_algorithm_id, spore_overlap_removal_algorithm_id,
+    │     ────────────┬───────────  
+    │                 ╰───────────── The value identifier rectpacking_algorithm_id is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/plain_java_initialization.mbt:21:31 ]
+    │
+ 21 │     rectpacking_algorithm_id, spore_compaction_algorithm_id, spore_overlap_removal_algorithm_id,
+    │                               ──────────────┬──────────────  
+    │                                             ╰──────────────── The value identifier spore_compaction_algorithm_id is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/plain_java_initialization.mbt:21:62 ]
+    │
+ 21 │     rectpacking_algorithm_id, spore_compaction_algorithm_id, spore_overlap_removal_algorithm_id,
+    │                                                              ─────────────────┬────────────────  
+    │                                                                               ╰────────────────── The value identifier spore_overlap_removal_algorithm_id is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/plain_java_initialization.mbt:22:5 ]
+    │
+ 22 │     vertiflex_algorithm_id,
+    │     ───────────┬──────────  
+    │                ╰──────────── The value identifier vertiflex_algorithm_id is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/plain_java_initialization.mbt:34:3 ]
+    │
+ 34 │   layout_meta_data_service_register_default_options()
+    │   ────────────────────────┬────────────────────────  
+    │                           ╰────────────────────────── The value identifier layout_meta_data_service_register_default_options is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/plain_java_initialization.mbt:35:3 ]
+    │
+ 35 │   layout_meta_data_service_register_default_algorithms()
+    │   ──────────────────────────┬─────────────────────────  
+    │                             ╰─────────────────────────── The value identifier layout_meta_data_service_register_default_algorithms is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/plain_java_initialization.mbt:36:3 ]
+    │
+ 36 │   layout_meta_data_service_register_layout_meta_data_providers(
+    │   ──────────────────────────────┬─────────────────────────────  
+    │                                 ╰─────────────────────────────── The value identifier layout_meta_data_service_register_layout_meta_data_providers is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/alg/test/plain_java_initialization.mbt:37:5 ]
+    │
+ 37 │     force_layout_meta_data_providers(),
+    │     ────────────────┬───────────────  
+    │                     ╰───────────────── The value identifier force_layout_meta_data_providers is unbound.
+────╯
+Error: [4032]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ide/contentassist_antlr_internal_internal_meta_data_lexer.mbt:3:14 ]
+   │
+ 3 │   delegate : InternalMetaDataLexer
+   │              ──────────┬──────────  
+   │                        ╰──────────── The type InternalMetaDataLexer is undefined.
+───╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ide/contentassist_antlr_internal_internal_meta_data_lexer.mbt:10:15 ]
+    │
+ 10 │   { delegate: new_internal_meta_data_lexer(input) }
+    │               ──────────────┬─────────────  
+    │                             ╰─────────────── The value identifier new_internal_meta_data_lexer is unbound.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ide/contentassist_antlr_internal_internal_meta_data_lexer.mbt:30:12 ]
+    │
+ 30 │ ) -> Array[CoreMetaLexToken] {
+    │            ────────┬───────  
+    │                    ╰───────── The type CoreMetaLexToken is undefined.
+────╯
+Error: [4032]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ide/contentassist_antlr_internal_internal_meta_data_parser.mbt:3:18 ]
+   │
+ 3 │   tokens : Array[CoreMetaLexToken]
+   │                  ────────┬───────  
+   │                          ╰───────── The type CoreMetaLexToken is undefined.
+───╯
+Error: [4032]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ide/contentassist_antlr_internal_internal_meta_data_parser.mbt:4:20 ]
+   │
+ 4 │   grammar_access : MetaDataGrammarAccess
+   │                    ──────────┬──────────  
+   │                              ╰──────────── The type MetaDataGrammarAccess is undefined.
+───╯
+Error: [4032]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ide/contentassist_antlr_internal_internal_meta_data_parser.mbt:9:18 ]
+   │
+ 9 │   tokens : Array[CoreMetaLexToken],
+   │                  ────────┬───────  
+   │                          ╰───────── The type CoreMetaLexToken is undefined.
+───╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ide/contentassist_antlr_internal_internal_meta_data_parser.mbt:10:21 ]
+    │
+ 10 │   grammar_access? : MetaDataGrammarAccess = new_meta_data_grammar_access(),
+    │                     ──────────┬──────────  
+    │                               ╰──────────── The type MetaDataGrammarAccess is undefined.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ide/contentassist_antlr_internal_internal_meta_data_parser.mbt:10:45 ]
+    │
+ 10 │   grammar_access? : MetaDataGrammarAccess = new_meta_data_grammar_access(),
+    │                                             ──────────────┬─────────────  
+    │                                                           ╰─────────────── The value identifier new_meta_data_grammar_access is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ide/contentassist_antlr_internal_internal_meta_data_parser.mbt:20:3 ]
+    │
+ 20 │   new_internal_meta_data_lexer("").get_token_names()
+    │   ──────────────┬─────────────  
+    │                 ╰─────────────── The value identifier new_internal_meta_data_lexer is unbound.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ide/contentassist_antlr_internal_internal_meta_data_parser.mbt:42:6 ]
+    │
+ 42 │ ) -> MetaDataGrammarAccess {
+    │      ──────────┬──────────  
+    │                ╰──────────── The type MetaDataGrammarAccess is undefined.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ide/contentassist_antlr_internal_internal_meta_data_parser.mbt:49:6 ]
+    │
+ 49 │ ) -> CoreMetaMdModel {
+    │      ───────┬───────  
+    │             ╰───────── The type CoreMetaMdModel is undefined.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ide/contentassist_antlr_internal_internal_meta_data_parser.mbt:50:3 ]
+    │
+ 50 │   new_internal_meta_data_parser(self.tokens, grammar_access=self.grammar_access).entry_rule_md_model()
+    │   ──────────────┬──────────────  
+    │                 ╰──────────────── The value identifier new_internal_meta_data_parser is unbound.
+────╯
+Error: [4032]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ide/contentassist_antlr_meta_data_parser.mbt:8:20 ]
+   │
+ 8 │   grammar_access : MetaDataGrammarAccess,
+   │                    ──────────┬──────────  
+   │                              ╰──────────── The type MetaDataGrammarAccess is undefined.
+───╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ide/contentassist_antlr_meta_data_parser.mbt:35:24 ]
+    │
+ 35 │   mut grammar_access : MetaDataGrammarAccess
+    │                        ──────────┬──────────  
+    │                                  ╰──────────── The type MetaDataGrammarAccess is undefined.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ide/contentassist_antlr_meta_data_parser.mbt:41:21 ]
+    │
+ 41 │   grammar_access? : MetaDataGrammarAccess = new_meta_data_grammar_access(),
+    │                     ──────────┬──────────  
+    │                               ╰──────────── The type MetaDataGrammarAccess is undefined.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ide/contentassist_antlr_meta_data_parser.mbt:41:45 ]
+    │
+ 41 │   grammar_access? : MetaDataGrammarAccess = new_meta_data_grammar_access(),
+    │                                             ──────────────┬─────────────  
+    │                                                           ╰─────────────── The value identifier new_meta_data_grammar_access is unbound.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ide/contentassist_antlr_meta_data_parser.mbt:53:18 ]
+    │
+ 53 │   tokens : Array[CoreMetaLexToken],
+    │                  ────────┬───────  
+    │                          ╰───────── The type CoreMetaLexToken is undefined.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ide/contentassist_antlr_meta_data_parser.mbt:84:6 ]
+    │
+ 84 │ ) -> MetaDataGrammarAccess {
+    │      ──────────┬──────────  
+    │                ╰──────────── The type MetaDataGrammarAccess is undefined.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ide/contentassist_antlr_meta_data_parser.mbt:91:20 ]
+    │
+ 91 │   grammar_access : MetaDataGrammarAccess,
+    │                    ──────────┬──────────  
+    │                              ╰──────────── The type MetaDataGrammarAccess is undefined.
+────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ide/contentassist_antlr_meta_data_parser.mbt:115:6 ]
+     │
+ 115 │ ) -> CoreMetaMdModel {
+     │      ───────┬───────  
+     │             ╰───────── The type CoreMetaMdModel is undefined.
+─────╯
+Error: [4032]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ide/meta_data_ide_setup.mbt:3:20 ]
+   │
+ 3 │   runtime_module : MetaDataRuntimeModule
+   │                    ──────────┬──────────  
+   │                              ╰──────────── The type MetaDataRuntimeModule is undefined.
+───╯
+Error: [4032]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ide/meta_data_ide_setup.mbt:9:20 ]
+   │
+ 9 │   runtime_module : MetaDataRuntimeModule,
+   │                    ──────────┬──────────  
+   │                              ╰──────────── The type MetaDataRuntimeModule is undefined.
+───╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ide/meta_data_ide_setup.mbt:18:6 ]
+    │
+ 18 │ ) -> MetaDataRuntimeModule {
+    │      ──────────┬──────────  
+    │                ╰──────────── The type MetaDataRuntimeModule is undefined.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ide/meta_data_ide_setup.mbt:45:5 ]
+    │
+ 45 │     new_meta_data_runtime_module(),
+    │     ──────────────┬─────────────  
+    │                   ╰─────────────── The value identifier new_meta_data_runtime_module is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ide/meta_data_ide_setup.mbt:54:10 ]
+    │
+ 54 │   ignore(meta_data_standalone_setup_do_setup())
+    │          ─────────────────┬─────────────────  
+    │                           ╰─────────────────── The value identifier meta_data_standalone_setup_do_setup is unbound.
+────╯
+Warning: [0007]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/graph/elk_edge_section.mbt:6:3 ]
+   │
+ 6 │   edge : ElkEdge
+   │   ──┬─  
+   │     ╰─── Warning (unused_field): Field 'edge' is never read
+───╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/graph/elk_node.mbt:17:36 ]
+    │
+ 17 │   kvector_properties : Map[String, KVector]
+    │                                    ───┬───  
+    │                                       ╰───── The type KVector is undefined.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/graph/elk_node.mbt:51:24 ]
+    │
+ 51 │   source : Map[String, KVector],
+    │                        ───┬───  
+    │                           ╰───── The type KVector is undefined.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/graph/elk_node.mbt:52:18 ]
+    │
+ 52 │ ) -> Map[String, KVector] {
+    │                  ───┬───  
+    │                     ╰───── The type KVector is undefined.
+────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/graph/elk_node.mbt:309:24 ]
+     │
+ 309 │   property : IProperty[KVector],
+     │                        ───┬───  
+     │                           ╰───── The type KVector is undefined.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/graph/elk_node.mbt:310:11 ]
+     │
+ 310 │   value : KVector,
+     │           ───┬───  
+     │              ╰───── The type KVector is undefined.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/graph/elk_node.mbt:334:24 ]
+     │
+ 334 │   property : IProperty[KVector],
+     │                        ───┬───  
+     │                           ╰───── The type KVector is undefined.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/graph/elk_node.mbt:335:6 ]
+     │
+ 335 │ ) -> KVector {
+     │      ───┬───  
+     │         ╰───── The type KVector is undefined.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/graph/elk_node.mbt:357:24 ]
+     │
+ 357 │   property : IProperty[KVector],
+     │                        ───┬───  
+     │                           ╰───── The type KVector is undefined.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/graph/elk_node.mbt:378:24 ]
+     │
+ 378 │   property : IProperty[KVector],
+     │                        ───┬───  
+     │                           ╰───── The type KVector is undefined.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/graph/elk_node.mbt:564:12 ]
+     │
+ 564 │   option : LayoutOptionData,
+     │            ────────┬───────  
+     │                    ╰───────── The type LayoutOptionData is undefined.
+─────╯
+Warning: [0053]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/graph/properties_property_holder_comparator.mbt:7:12 ]
+   │
+ 7 │ pub fn[T : Compare + FromJson] property_holder_comparator_with(
+   │            ───┬───  
+   │               ╰───── Warning (unused_trait_bound): This trait bound is unused.
+───╯
+Warning: [0053]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/graph/properties_property_holder_comparator.mbt:7:22 ]
+   │
+ 7 │ pub fn[T : Compare + FromJson] property_holder_comparator_with(
+   │                      ────┬───  
+   │                          ╰───── Warning (unused_trait_bound): This trait bound is unused.
+───╯
+Error: [4021]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_direct_layout_test.mbt:3:3 ]
+   │
+ 3 │   layout_meta_data_service_reset_for_test()
+   │   ───────────────────┬───────────────────  
+   │                      ╰───────────────────── The value identifier layout_meta_data_service_reset_for_test is unbound.
+───╯
+Error: [4021]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_direct_layout_test.mbt:4:3 ]
+   │
+ 4 │   plain_java_initialization_reset_for_test()
+   │   ────────────────────┬───────────────────  
+   │                       ╰───────────────────── The value identifier plain_java_initialization_reset_for_test is unbound.
+───╯
+Error: [4021]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_direct_layout_test.mbt:5:3 ]
+   │
+ 5 │   plain_java_initialization_initialize_plain_java_layout()
+   │   ───────────────────────────┬──────────────────────────  
+   │                              ╰──────────────────────────── The value identifier plain_java_initialization_initialize_plain_java_layout is unbound.
+───╯
+Error: [4032]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_direct_layout_test.mbt:9:64 ]
+   │
+ 9 │ fn shared_direct_layout_test_add_layered_options(parent_node : ElkNode) -> Unit {
+   │                                                                ───┬───  
+   │                                                                   ╰───── The type ElkNode is undefined.
+───╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_direct_layout_test.mbt:10:3 ]
+    │
+ 10 │   node_set_string_property(parent_node, algorithm, "org.eclipse.elk.layered")
+    │   ────────────┬───────────  
+    │               ╰───────────── The value identifier node_set_string_property is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_direct_layout_test.mbt:10:41 ]
+    │
+ 10 │   node_set_string_property(parent_node, algorithm, "org.eclipse.elk.layered")
+    │                                         ────┬────  
+    │                                             ╰────── The value identifier algorithm is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_direct_layout_test.mbt:11:3 ]
+    │
+ 11 │   node_set_string_property(parent_node, direction, "RIGHT")
+    │   ────────────┬───────────  
+    │               ╰───────────── The value identifier node_set_string_property is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_direct_layout_test.mbt:11:41 ]
+    │
+ 11 │   node_set_string_property(parent_node, direction, "RIGHT")
+    │                                         ────┬────  
+    │                                             ╰────── The value identifier direction is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_direct_layout_test.mbt:13:21 ]
+    │
+ 13 │   for child_node in node_children(parent_node) {
+    │                     ──────┬──────  
+    │                           ╰──────── The value identifier node_children is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_direct_layout_test.mbt:14:5 ]
+    │
+ 14 │     node_set_dimensions(child_node, 30.0, 30.0)
+    │     ─────────┬─────────  
+    │              ╰─────────── The value identifier node_set_dimensions is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_direct_layout_test.mbt:15:5 ]
+    │
+ 15 │     node_set_string_set_property(child_node, node_size_constraints, [
+    │     ──────────────┬─────────────  
+    │                   ╰─────────────── The value identifier node_set_string_set_property is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_direct_layout_test.mbt:15:46 ]
+    │
+ 15 │     node_set_string_set_property(child_node, node_size_constraints, [
+    │                                              ──────────┬──────────  
+    │                                                        ╰──────────── The value identifier node_size_constraints is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_direct_layout_test.mbt:18:5 ]
+    │
+ 18 │     node_set_string_property(child_node, port_constraints, "FIXED_POS")
+    │     ────────────┬───────────  
+    │                 ╰───────────── The value identifier node_set_string_property is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_direct_layout_test.mbt:18:42 ]
+    │
+ 18 │     node_set_string_property(child_node, port_constraints, "FIXED_POS")
+    │                                          ────────┬───────  
+    │                                                  ╰───────── The value identifier port_constraints is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_direct_layout_test.mbt:20:17 ]
+    │
+ 20 │     let ports = node_ports(child_node)
+    │                 ─────┬────  
+    │                      ╰────── The value identifier node_ports is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_direct_layout_test.mbt:23:9 ]
+    │
+ 23 │     if !node_labels(child_node).is_empty() {
+    │         ─────┬─────  
+    │              ╰─────── The value identifier node_labels is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_direct_layout_test.mbt:24:20 ]
+    │
+ 24 │       child_name = label_text(node_labels(child_node)[0])
+    │                    ─────┬────  
+    │                         ╰────── The value identifier label_text is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_direct_layout_test.mbt:24:31 ]
+    │
+ 24 │       child_name = label_text(node_labels(child_node)[0])
+    │                               ─────┬─────  
+    │                                    ╰─────── The value identifier node_labels is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_direct_layout_test.mbt:30:9 ]
+    │
+ 30 │         port_set_location(port, 30.0, y)
+    │         ────────┬────────  
+    │                 ╰────────── The value identifier port_set_location is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_direct_layout_test.mbt:31:9 ]
+    │
+ 31 │         port_set_layout_option_string_by_id(port, port_side.get_id(), "EAST")
+    │         ─────────────────┬─────────────────  
+    │                          ╰─────────────────── The value identifier port_set_layout_option_string_by_id is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_direct_layout_test.mbt:31:51 ]
+    │
+ 31 │         port_set_layout_option_string_by_id(port, port_side.get_id(), "EAST")
+    │                                                   ────┬────  
+    │                                                       ╰────── The value identifier port_side is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_direct_layout_test.mbt:33:9 ]
+    │
+ 33 │         port_set_location(port, 0.0, y)
+    │         ────────┬────────  
+    │                 ╰────────── The value identifier port_set_location is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_direct_layout_test.mbt:34:9 ]
+    │
+ 34 │         port_set_layout_option_string_by_id(port, port_side.get_id(), "WEST")
+    │         ─────────────────┬─────────────────  
+    │                          ╰─────────────────── The value identifier port_set_layout_option_string_by_id is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_direct_layout_test.mbt:34:51 ]
+    │
+ 34 │         port_set_layout_option_string_by_id(port, port_side.get_id(), "WEST")
+    │                                                   ────┬────  
+    │                                                       ╰────── The value identifier port_side is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_direct_layout_test.mbt:42:3 ]
+    │
+ 42 │   reset_graph_model_for_test()
+    │   ─────────────┬────────────  
+    │                ╰────────────── The value identifier reset_graph_model_for_test is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_direct_layout_test.mbt:45:21 ]
+    │
+ 45 │   let parent_node = graph_test_utils_create_simple_graph()
+    │                     ──────────────────┬─────────────────  
+    │                                       ╰─────────────────── The value identifier graph_test_utils_create_simple_graph is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_direct_layout_test.mbt:48:26 ]
+    │
+ 48 │   let progress_monitor = new_basic_progress_monitor()
+    │                          ─────────────┬────────────  
+    │                                       ╰────────────── The value identifier new_basic_progress_monitor is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_direct_layout_test.mbt:49:25 ]
+    │
+ 49 │   let layout_provider = new_abstract_layout_provider((layout_graph, monitor) => {
+    │                         ──────────────┬─────────────  
+    │                                       ╰─────────────── The value identifier new_abstract_layout_provider is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_direct_layout_test.mbt:50:25 ]
+    │
+ 50 │     let layout_engine = new_recursive_graph_layout_engine()
+    │                         ────────────────┬────────────────  
+    │                                         ╰────────────────── The value identifier new_recursive_graph_layout_engine is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_direct_layout_test.mbt:56:16 ]
+    │
+ 56 │   for child in node_children(parent_node) {
+    │                ──────┬──────  
+    │                      ╰──────── The value identifier node_children is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_direct_layout_test.mbt:57:17 ]
+    │
+ 57 │     assert_true(node_x(child) > 0.0)
+    │                 ───┬──  
+    │                    ╰──── The value identifier node_x is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_direct_layout_test.mbt:58:17 ]
+    │
+ 58 │     assert_true(node_y(child) > 0.0)
+    │                 ───┬──  
+    │                    ╰──── The value identifier node_y is unbound.
+────╯
+Error: [4032]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_elk_live_examples_test.mbt:9:52 ]
+   │
+ 9 │ fn shared_elk_live_examples_test_graphs() -> Array[ElkNode] {
+   │                                                    ───┬───  
+   │                                                       ╰───── The type ElkNode is undefined.
+───╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_elk_live_examples_test.mbt:11:5 ]
+    │
+ 11 │     graph_test_utils_create_simple_graph(),
+    │     ──────────────────┬─────────────────  
+    │                       ╰─────────────────── The value identifier graph_test_utils_create_simple_graph is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_elk_live_examples_test.mbt:12:5 ]
+    │
+ 12 │     graph_test_utils_create_hierarchical_graph(),
+    │     ─────────────────────┬────────────────────  
+    │                          ╰────────────────────── The value identifier graph_test_utils_create_hierarchical_graph is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_elk_live_examples_test.mbt:18:3 ]
+    │
+ 18 │   reset_graph_model_for_test()
+    │   ─────────────┬────────────  
+    │                ╰────────────── The value identifier reset_graph_model_for_test is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_elk_live_examples_test.mbt:22:5 ]
+    │
+ 22 │     node_set_string_property(graph, algorithm, "org.eclipse.elk.layered")
+    │     ────────────┬───────────  
+    │                 ╰───────────── The value identifier node_set_string_property is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_elk_live_examples_test.mbt:22:37 ]
+    │
+ 22 │     node_set_string_property(graph, algorithm, "org.eclipse.elk.layered")
+    │                                     ────┬────  
+    │                                         ╰────── The value identifier algorithm is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_elk_live_examples_test.mbt:23:25 ]
+    │
+ 23 │     let layout_engine = new_recursive_graph_layout_engine()
+    │                         ────────────────┬────────────────  
+    │                                         ╰────────────────── The value identifier new_recursive_graph_layout_engine is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_elk_live_examples_test.mbt:24:33 ]
+    │
+ 24 │     layout_engine.layout(graph, new_basic_progress_monitor())
+    │                                 ─────────────┬────────────  
+    │                                              ╰────────────── The value identifier new_basic_progress_monitor is unbound.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_elk_reflect_test.mbt:12:33 ]
+    │
+ 12 │   let double_properties : Array[IProperty[Double]] = [
+    │                                 ────────┬────────  
+    │                                         ╰────────── The type IProperty is undefined.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_elk_reflect_test.mbt:13:5 ]
+    │
+ 13 │     spacing_node_node, aspect_ratio, priority, rectpacking_width_approximation_target_width,
+    │     ────────┬────────  
+    │             ╰────────── The value identifier spacing_node_node is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_elk_reflect_test.mbt:13:24 ]
+    │
+ 13 │     spacing_node_node, aspect_ratio, priority, rectpacking_width_approximation_target_width,
+    │                        ──────┬─────  
+    │                              ╰─────── The value identifier aspect_ratio is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_elk_reflect_test.mbt:13:38 ]
+    │
+ 13 │     spacing_node_node, aspect_ratio, priority, rectpacking_width_approximation_target_width,
+    │                                      ────┬───  
+    │                                          ╰───── The value identifier priority is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_elk_reflect_test.mbt:13:48 ]
+    │
+ 13 │     spacing_node_node, aspect_ratio, priority, rectpacking_width_approximation_target_width,
+    │                                                ──────────────────────┬─────────────────────  
+    │                                                                      ╰─────────────────────── The value identifier rectpacking_width_approximation_target_width is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_elk_reflect_test.mbt:14:5 ]
+    │
+ 14 │     radial_radius,
+    │     ──────┬──────  
+    │           ╰──────── The value identifier radial_radius is unbound.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_elk_reflect_test.mbt:21:31 ]
+    │
+ 21 │   let bool_properties : Array[IProperty[Bool]] = [
+    │                               ───────┬───────  
+    │                                      ╰───────── The type IProperty is undefined.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_elk_reflect_test.mbt:22:5 ]
+    │
+ 22 │     interactive, no_layout, rectpacking_interactive, spore_compaction_orthogonal,
+    │     ─────┬─────  
+    │          ╰─────── The value identifier interactive is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_elk_reflect_test.mbt:22:18 ]
+    │
+ 22 │     interactive, no_layout, rectpacking_interactive, spore_compaction_orthogonal,
+    │                  ────┬────  
+    │                      ╰────── The value identifier no_layout is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_elk_reflect_test.mbt:22:29 ]
+    │
+ 22 │     interactive, no_layout, rectpacking_interactive, spore_compaction_orthogonal,
+    │                             ───────────┬───────────  
+    │                                        ╰───────────── The value identifier rectpacking_interactive is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_elk_reflect_test.mbt:22:54 ]
+    │
+ 22 │     interactive, no_layout, rectpacking_interactive, spore_compaction_orthogonal,
+    │                                                      ─────────────┬─────────────  
+    │                                                                   ╰─────────────── The value identifier spore_compaction_orthogonal is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_elk_reflect_test.mbt:23:5 ]
+    │
+ 23 │     vertiflex_consider_node_model_order,
+    │     ─────────────────┬─────────────────  
+    │                      ╰─────────────────── The value identifier vertiflex_consider_node_model_order is unbound.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_elk_reflect_test.mbt:30:33 ]
+    │
+ 30 │   let string_properties : Array[IProperty[String]] = [
+    │                                 ────────┬────────  
+    │                                         ╰────────── The type IProperty is undefined.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_elk_reflect_test.mbt:31:5 ]
+    │
+ 31 │     algorithm, direction, port_constraints, radial_compactor, spore_underlying_layout_algorithm,
+    │     ────┬────  
+    │         ╰────── The value identifier algorithm is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_elk_reflect_test.mbt:31:16 ]
+    │
+ 31 │     algorithm, direction, port_constraints, radial_compactor, spore_underlying_layout_algorithm,
+    │                ────┬────  
+    │                    ╰────── The value identifier direction is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_elk_reflect_test.mbt:31:27 ]
+    │
+ 31 │     algorithm, direction, port_constraints, radial_compactor, spore_underlying_layout_algorithm,
+    │                           ────────┬───────  
+    │                                   ╰───────── The value identifier port_constraints is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_elk_reflect_test.mbt:31:45 ]
+    │
+ 31 │     algorithm, direction, port_constraints, radial_compactor, spore_underlying_layout_algorithm,
+    │                                             ────────┬───────  
+    │                                                     ╰───────── The value identifier radial_compactor is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_elk_reflect_test.mbt:31:63 ]
+    │
+ 31 │     algorithm, direction, port_constraints, radial_compactor, spore_underlying_layout_algorithm,
+    │                                                               ────────────────┬────────────────  
+    │                                                                               ╰────────────────── The value identifier spore_underlying_layout_algorithm is unbound.
+────╯
+Error: [4032]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_elk_reflect_test.mbt:38:37 ]
+    │
+ 38 │   let string_set_properties : Array[IProperty[Array[String]]] = [
+    │                                     ────────────┬───────────  
+    │                                                 ╰───────────── The type IProperty is undefined.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_elk_reflect_test.mbt:39:5 ]
+    │
+ 39 │     content_alignment, node_size_constraints, node_size_options, node_labels_placement,
+    │     ────────┬────────  
+    │             ╰────────── The value identifier content_alignment is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_elk_reflect_test.mbt:39:24 ]
+    │
+ 39 │     content_alignment, node_size_constraints, node_size_options, node_labels_placement,
+    │                        ──────────┬──────────  
+    │                                  ╰──────────── The value identifier node_size_constraints is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_elk_reflect_test.mbt:39:47 ]
+    │
+ 39 │     content_alignment, node_size_constraints, node_size_options, node_labels_placement,
+    │                                               ────────┬────────  
+    │                                                       ╰────────── The value identifier node_size_options is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_elk_reflect_test.mbt:39:66 ]
+    │
+ 39 │     content_alignment, node_size_constraints, node_size_options, node_labels_placement,
+    │                                                                  ──────────┬──────────  
+    │                                                                            ╰──────────── The value identifier node_labels_placement is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_elk_reflect_test.mbt:40:5 ]
+    │
+ 40 │     port_labels_placement,
+    │     ──────────┬──────────  
+    │               ╰──────────── The value identifier port_labels_placement is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_elk_reflect_test.mbt:52:17 ]
+    │
+ 52 │   let options = layout_meta_data_service_option_data_values()
+    │                 ─────────────────────┬─────────────────────  
+    │                                      ╰─────────────────────── The value identifier layout_meta_data_service_option_data_values is unbound.
+────╯
+Error: [4015]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_elk_reflect_test.mbt:55:31 ]
+    │
+ 55 │     let sample = match option.get_type() {
+    │                               ────┬───  
+    │                                   ╰───── Type _/0 has no method get_type.
+────╯
+Error: [4015]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_elk_reflect_test.mbt:63:25 ]
+    │
+ 63 │     let parsed = option.parse_value(sample)
+    │                         ─────┬─────  
+    │                              ╰─────── Type _/0 has no method parse_value.
+────╯
+Warning: [0013]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_elk_reflect_test.mbt:55:24 ]
+    │
+ 55 │     let sample = match option.get_type() {
+    │                        ───┬──  
+    │                           ╰──── Warning (unresolved_type_variable): The type of this expression is _/0, which contains unresolved type variables. The type variable is default to Unit.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_plain_layout_test.mbt:10:3 ]
+    │
+ 10 │   reset_graph_model_for_test()
+    │   ─────────────┬────────────  
+    │                ╰────────────── The value identifier reset_graph_model_for_test is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_plain_layout_test.mbt:13:21 ]
+    │
+ 13 │   let parent_node = graph_test_utils_create_hierarchical_graph()
+    │                     ─────────────────────┬────────────────────  
+    │                                          ╰────────────────────── The value identifier graph_test_utils_create_hierarchical_graph is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_plain_layout_test.mbt:14:15 ]
+    │
+ 14 │   for node in graph_test_utils_all_nodes(parent_node, true) {
+    │               ─────────────┬────────────  
+    │                            ╰────────────── The value identifier graph_test_utils_all_nodes is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_plain_layout_test.mbt:15:9 ]
+    │
+ 15 │     if !node_children(node).is_empty() {
+    │         ──────┬──────  
+    │               ╰──────── The value identifier node_children is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_plain_layout_test.mbt:16:7 ]
+    │
+ 16 │       node_set_string_property(node, algorithm, "org.eclipse.elk.layered")
+    │       ────────────┬───────────  
+    │                   ╰───────────── The value identifier node_set_string_property is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_plain_layout_test.mbt:16:38 ]
+    │
+ 16 │       node_set_string_property(node, algorithm, "org.eclipse.elk.layered")
+    │                                      ────┬────  
+    │                                          ╰────── The value identifier algorithm is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_plain_layout_test.mbt:20:26 ]
+    │
+ 20 │   let progress_monitor = new_basic_progress_monitor()
+    │                          ─────────────┬────────────  
+    │                                       ╰────────────── The value identifier new_basic_progress_monitor is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_plain_layout_test.mbt:21:23 ]
+    │
+ 21 │   let layout_engine = new_recursive_graph_layout_engine()
+    │                       ────────────────┬────────────────  
+    │                                       ╰────────────────── The value identifier new_recursive_graph_layout_engine is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_plain_layout_test.mbt:24:15 ]
+    │
+ 24 │   for node in graph_test_utils_all_nodes(parent_node, false) {
+    │               ─────────────┬────────────  
+    │                            ╰────────────── The value identifier graph_test_utils_all_nodes is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_plain_layout_test.mbt:25:17 ]
+    │
+ 25 │     assert_true(node_x(node) >= 0.0)
+    │                 ───┬──  
+    │                    ╰──── The value identifier node_x is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/shared/test_plain_layout_test.mbt:26:17 ]
+    │
+ 26 │     assert_true(node_y(node) >= 0.0)
+    │                 ───┬──  
+    │                    ╰──── The value identifier node_y is unbound.
+────╯
+Failed with 8 warnings, 336 errors.
+error: failed when checking project

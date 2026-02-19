@@ -1,0 +1,18 @@
+import {
+  "moonbitlang/core/cmp",
+  "moonbitlang/core/buffer",
+  "moonbitlang/core/double",
+  "moonbitlang/core/float",
+  "moonbitlang/core/int",
+  "moonbitlang/core/math",
+  "moonbitlang/core/json",
+  "moonbitlang/core/random",
+  "moonbitlang/core/strconv",
+  "Milky2018/moon_elk/alg/common",
+  "Milky2018/moon_elk/core",
+  "Milky2018/moon_elk/graph",
+}
+
+import {
+  "Milky2018/moon_elk/alg/test",
+} for "test"
