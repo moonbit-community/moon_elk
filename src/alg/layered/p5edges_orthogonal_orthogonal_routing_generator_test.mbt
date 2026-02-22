@@ -47,13 +47,8 @@ fn orthogonal_routing_generator_test_contains_dependency(
 }
 
 ///|
-fn orthogonal_routing_generator_test_seeded_random() -> @random.Rand {
-  let seed = @buffer.new()
-  seed.write_int64_le(1)
-  seed.write_int64_le(0)
-  seed.write_int64_le(0)
-  seed.write_int64_le(0)
-  @random.Rand::chacha8(seed=seed.to_bytes())
+fn orthogonal_routing_generator_test_seeded_random() -> MockRandom {
+  new_greedy_switch_mock_random_seeded(1)
 }
 
 ///|

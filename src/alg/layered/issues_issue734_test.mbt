@@ -7,6 +7,33 @@ fn issue734_test_setup_plain_java_layout() -> Unit {
 
 ///|
 fn issue734_test_layout(graph : @graph.ElkNode) -> Unit {
+  for edge in @graph.node_contained_edges(graph) {
+    let source_desc = match @graph.edge_sources(edge)[0] {
+      NodeShape(node) => "node:" + @graph.node_identifier(node)
+      PortShape(port) =>
+        match @graph.port_parent(port) {
+          Some(parent) =>
+            "port:" +
+            @graph.node_identifier(parent) +
+            "." +
+            @graph.port_identifier(port)
+          None => "port:<none>"
+        }
+    }
+    let target_desc = match @graph.edge_targets(edge)[0] {
+      NodeShape(node) => "node:" + @graph.node_identifier(node)
+      PortShape(port) =>
+        match @graph.port_parent(port) {
+          Some(parent) =>
+            "port:" +
+            @graph.node_identifier(parent) +
+            "." +
+            @graph.port_identifier(port)
+          None => "port:<none>"
+        }
+    }
+    println("Issue734 debug parsed edge: \{source_desc} -> \{target_desc}")
+  }
   let resolver = new_layout_algorithm_resolver()
   apply_visitors(graph, [resolver.to_visitor()])
   let layout_engine = new_recursive_graph_layout_engine()
@@ -80,66 +107,6 @@ fn issue734_test_compute_node_coordinate_span(
 }
 
 ///|
-fn issue734_test_compute_node_origin_span(
-  nodes : Array[@graph.ElkNode],
-) -> (Double, Double) {
-  if nodes.is_empty() {
-    return (0.0, 0.0)
-  }
-
-  let mut min = @graph.node_x(nodes[0])
-  let mut max = @graph.node_x(nodes[0])
-  for node in nodes {
-    let x = @graph.node_x(node)
-    if x < min {
-      min = x
-    }
-    if x > max {
-      max = x
-    }
-  }
-  (min, max)
-}
-
-///|
-fn issue734_test_absolute_node_x(node : @graph.ElkNode) -> Double {
-  let mut x = @graph.node_x(node)
-  match @graph.node_parent(node) {
-    Some(parent) => x = x + issue734_test_absolute_node_x(parent)
-    None => ()
-  }
-  x
-}
-
-///|
-fn issue734_test_absolute_port_x(port : @graph.ElkPort) -> Double {
-  match @graph.port_parent(port) {
-    Some(parent_node) =>
-      issue734_test_absolute_node_x(parent_node) +
-      port_x(port) +
-      port_width(port) / 2.0
-    None => port_x(port) + port_width(port) / 2.0
-  }
-}
-
-///|
-fn issue734_test_shape_anchor_x(shape : @graph.ElkConnectableShape) -> Double {
-  match shape {
-    NodeShape(node) =>
-      issue734_test_absolute_node_x(node) + @graph.node_width(node) / 2.0
-    PortShape(port) => issue734_test_absolute_port_x(port)
-  }
-}
-
-///|
-fn issue734_test_absolute_edge_x(edge : @graph.ElkEdge, x : Double) -> Double {
-  match edge_containing_node(edge) {
-    Some(containing_node) => issue734_test_absolute_node_x(containing_node) + x
-    None => x
-  }
-}
-
-///|
 fn issue734_test_expand_span_x(
   x : Double,
   min : Double,
@@ -169,63 +136,32 @@ fn issue734_test_compute_edge_coordinate_span(
   let mut max = 0.0
 
   for edge in edges {
-    let mut edge_has_section_points = false
     for section in @graph.edge_sections(edge) {
-      edge_has_section_points = true
-      let visited : Map[@graph.ElkEdgeSection, Unit] = {}
-      let mut current = section
-      while true {
-        let start_x = issue734_test_absolute_edge_x(
-          edge,
-          @graph.edge_section_start_x(current),
-        )
-        let end_x = issue734_test_absolute_edge_x(
-          edge,
-          @graph.edge_section_end_x(current),
-        )
-        let (min_after_start, max_after_start, initialized_after_start) = issue734_test_expand_span_x(
-          start_x, min, max, initialized,
-        )
-        min = min_after_start
-        max = max_after_start
-        initialized = initialized_after_start
-        let (min_after_end, max_after_end, initialized_after_end) = issue734_test_expand_span_x(
-          end_x, min, max, initialized,
-        )
-        min = min_after_end
-        max = max_after_end
-        initialized = initialized_after_end
-        visited[current] = ()
-        let outgoing = @graph.edge_section_outgoing_sections(current)
-        if outgoing.is_empty() {
-          break
-        }
-        let next = outgoing[0]
-        if visited.contains(next) {
-          break
-        }
-        current = next
-      }
-    }
-    if !edge_has_section_points {
-      for source in @graph.edge_sources(edge) {
-        let source_x = issue734_test_shape_anchor_x(source)
+      let start_x = @graph.edge_section_start_x(section)
+      let (min_after_start, max_after_start, initialized_after_start) = issue734_test_expand_span_x(
+        start_x, min, max, initialized,
+      )
+      min = min_after_start
+      max = max_after_start
+      initialized = initialized_after_start
+
+      for bend_point in @graph.edge_section_bend_points(section) {
+        let bend_x = bend_point.get_x()
         let (next_min, next_max, next_initialized) = issue734_test_expand_span_x(
-          source_x, min, max, initialized,
+          bend_x, min, max, initialized,
         )
         min = next_min
         max = next_max
         initialized = next_initialized
       }
-      for target in @graph.edge_targets(edge) {
-        let target_x = issue734_test_shape_anchor_x(target)
-        let (next_min, next_max, next_initialized) = issue734_test_expand_span_x(
-          target_x, min, max, initialized,
-        )
-        min = next_min
-        max = next_max
-        initialized = next_initialized
-      }
+
+      let end_x = @graph.edge_section_end_x(section)
+      let (min_after_end, max_after_end, initialized_after_end) = issue734_test_expand_span_x(
+        end_x, min, max, initialized,
+      )
+      min = min_after_end
+      max = max_after_end
+      initialized = initialized_after_end
     }
   }
 
@@ -239,7 +175,6 @@ fn issue734_test_compute_edge_coordinate_span(
 fn issue734_test_assert_center_alignment(
   graph : @graph.ElkNode,
   context : String,
-  use_node_width_span : Bool,
 ) -> Unit {
   issue734_test_layout(graph)
   let children = @graph.node_children(graph)
@@ -247,14 +182,32 @@ fn issue734_test_assert_center_alignment(
   if children.is_empty() || edges.is_empty() {
     abort("Issue734 \{context}: expected top-level nodes and edges.")
   }
-  let (node_min, node_max) = if use_node_width_span {
-    issue734_test_compute_node_coordinate_span(children)
-  } else {
-    issue734_test_compute_node_origin_span(children)
-  }
+  let (node_min, node_max) = issue734_test_compute_node_coordinate_span(
+    children,
+  )
   let (edge_min, edge_max) = issue734_test_compute_edge_coordinate_span(edges)
   let node_span_center = (node_min + node_max) / 2.0
   let edge_span_center = (edge_min + edge_max) / 2.0
+  println(
+    "Issue734 debug \{context}: root=(\{@graph.node_x(graph)},\{@graph.node_y(graph)}), node_span=(\{node_min},\{node_max}), edge_span=(\{edge_min},\{edge_max})",
+  )
+  for child in children {
+    println(
+      "Issue734 debug node \{context}: id=\{@graph.node_identifier(child)} x=\{@graph.node_x(child)} y=\{@graph.node_y(child)} w=\{@graph.node_width(child)} h=\{@graph.node_height(child)}",
+    )
+  }
+  for edge in edges {
+    for section in @graph.edge_sections(edge) {
+      println(
+        "Issue734 debug section \{context}: start=\{@graph.edge_section_start_x(section)} end=\{@graph.edge_section_end_x(section)} bends=\{@graph.edge_section_bend_points(section).length()}",
+      )
+      for bend in @graph.edge_section_bend_points(section) {
+        println(
+          "Issue734 debug bend \{context}: x=\{bend.get_x()} y=\{bend.get_y()}",
+        )
+      }
+    }
+  }
   issue734_test_assert_close(
     edge_span_center,
     node_span_center,
@@ -270,7 +223,6 @@ test "Issue734 flat model keeps node and edge span centers aligned" {
   issue734_test_assert_center_alignment(
     issue734_test_build_flat_graph(),
     "flat",
-    true,
   )
 }
 
@@ -281,7 +233,6 @@ test "Issue734 flat complex model keeps node and edge span centers aligned" {
   issue734_test_assert_center_alignment(
     issue734_test_build_flat_more_complex_graph(),
     "flat_more_complex",
-    true,
   )
 }
 
@@ -292,6 +243,5 @@ test "Issue734 hierarchical model keeps node and edge span centers aligned" {
   issue734_test_assert_center_alignment(
     issue734_test_build_hierarchical_graph(),
     "hierarchical",
-    true,
   )
 }

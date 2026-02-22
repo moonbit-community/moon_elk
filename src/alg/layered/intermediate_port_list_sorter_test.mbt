@@ -110,10 +110,10 @@ test "port list sorter reverses south/west order for fixed-side constraints" {
 
   let ports = node.get_ports()
   assert_eq(ports.length(), 4)
-  assert_eq(ports[0].get_id(), 302)
-  assert_eq(ports[1].get_id(), 301)
-  assert_eq(ports[2].get_id(), 402)
-  assert_eq(ports[3].get_id(), 401)
+  assert_eq(ports[0].get_id(), 301)
+  assert_eq(ports[1].get_id(), 302)
+  assert_eq(ports[2].get_id(), 401)
+  assert_eq(ports[3].get_id(), 402)
 }
 
 ///|

@@ -450,6 +450,54 @@ fn graph_transformer_transpose_node_labels_padding(
 }
 
 ///|
+fn graph_transformer_mirror_x_node_labels_padding_node(node : LNode) -> Unit {
+  if !node.has_property_string(graph_transformer_node_labels_padding_property) {
+    return
+  }
+  let node_labels_padding = @core.new_spacing()
+  node_labels_padding.parse(
+    node.get_property_string(graph_transformer_node_labels_padding_property),
+  )
+  graph_transformer_mirror_x_padding(node_labels_padding)
+  node.set_property_string(
+    graph_transformer_node_labels_padding_property,
+    node_labels_padding.to_string(),
+  )
+}
+
+///|
+fn graph_transformer_mirror_y_node_labels_padding_node(node : LNode) -> Unit {
+  if !node.has_property_string(graph_transformer_node_labels_padding_property) {
+    return
+  }
+  let node_labels_padding = @core.new_spacing()
+  node_labels_padding.parse(
+    node.get_property_string(graph_transformer_node_labels_padding_property),
+  )
+  graph_transformer_mirror_y_padding(node_labels_padding)
+  node.set_property_string(
+    graph_transformer_node_labels_padding_property,
+    node_labels_padding.to_string(),
+  )
+}
+
+///|
+fn graph_transformer_transpose_node_labels_padding_node(node : LNode) -> Unit {
+  if !node.has_property_string(graph_transformer_node_labels_padding_property) {
+    return
+  }
+  let node_labels_padding = @core.new_spacing()
+  node_labels_padding.parse(
+    node.get_property_string(graph_transformer_node_labels_padding_property),
+  )
+  graph_transformer_transpose_padding(node_labels_padding)
+  node.set_property_string(
+    graph_transformer_node_labels_padding_property,
+    node_labels_padding.to_string(),
+  )
+}
+
+///|
 fn graph_transformer_transpose_edge_label_placement(
   layered_graph : LGraph,
 ) -> Unit {
@@ -577,6 +625,7 @@ fn graph_transformer_mirror_x(
     let node_padding = node.get_padding()
     graph_transformer_mirror_x_vector(node_position, offset - node_size.x)
     graph_transformer_mirror_x_padding(node_padding)
+    graph_transformer_mirror_x_node_labels_padding_node(node)
     graph_transformer_mirror_node_label_placement_x_node(node)
 
     if node.has_property_kvector(layered_options_position) {
@@ -682,6 +731,7 @@ fn graph_transformer_mirror_y(
     let node_padding = node.get_padding()
     graph_transformer_mirror_y_vector(node_position, offset - node_size.y)
     graph_transformer_mirror_y_padding(node_padding)
+    graph_transformer_mirror_y_node_labels_padding_node(node)
     graph_transformer_mirror_node_label_placement_y_node(node)
 
     if node.has_property_kvector(layered_options_position) {
@@ -767,6 +817,7 @@ fn graph_transformer_transpose(
     graph_transformer_transpose_vector(node.get_position())
     graph_transformer_transpose_vector(node.get_size())
     graph_transformer_transpose_padding(node.get_padding())
+    graph_transformer_transpose_node_labels_padding_node(node)
     graph_transformer_transpose_node_label_placement_node(node)
     graph_transformer_transpose_node_properties(node)
 
@@ -924,7 +975,7 @@ pub fn new_direction_preprocessor_layout_processor() -> @core.ILayoutProcessor[
   LayeredPhases,
   LGraph,
 ] {
-  new_graph_transformer_layout_processor(GraphTransformerMode::ToInputDirection)
+  new_graph_transformer_layout_processor(GraphTransformerMode::ToInternalLtr)
 }
 
 ///|
@@ -932,5 +983,5 @@ pub fn new_direction_postprocessor_layout_processor() -> @core.ILayoutProcessor[
   LayeredPhases,
   LGraph,
 ] {
-  new_graph_transformer_layout_processor(GraphTransformerMode::ToInternalLtr)
+  new_graph_transformer_layout_processor(GraphTransformerMode::ToInputDirection)
 }

@@ -52,38 +52,59 @@ fn graph_info_is_two_sided(cross_min_type : CrossMinType) -> Bool {
 }
 
 ///|
-fn graph_info_create_port_distributor(
-  cross_min_type : CrossMinType,
-  node_order : Array[Array[LNode]],
-  random : MockRandom,
-) -> ISweepPortDistributor {
-  if graph_info_is_two_sided(cross_min_type) {
-    return new_greedy_port_distributor().as_i_sweep_port_distributor()
-  }
-  if random.next_boolean() {
-    new_node_relative_port_distributor(node_order.length()).as_i_sweep_port_distributor()
+fn graph_info_random(graph : LGraph) -> MockRandom {
+  if graph.get_property_mock_random(internal_properties_random) is Some(random) {
+    random
   } else {
-    new_layer_total_port_distributor(node_order.length()).as_i_sweep_port_distributor()
+    let seed_value = graph.get_property_int(@core.random_seed)
+    if seed_value == 0 {
+      new_greedy_switch_mock_random_seeded(
+        @random.Rand::new().int(limit=@int.max_value),
+      )
+    } else {
+      new_greedy_switch_mock_random_seeded(seed_value)
+    }
   }
 }
 
 ///|
 fn graph_info_port_distributor_as_barycenter(
-  cross_min_type : CrossMinType,
   node_order : Array[Array[LNode]],
+  random : MockRandom,
 ) -> (ISweepPortDistributor, AbstractBarycenterPortDistributor) {
-  if graph_info_is_two_sided(cross_min_type) {
+  if random.next_boolean() {
     let node_relative = new_node_relative_port_distributor(node_order.length())
     return (
       node_relative.as_i_sweep_port_distributor(),
       node_relative.as_abstract_barycenter_port_distributor(),
     )
   }
-  let node_relative = new_node_relative_port_distributor(node_order.length())
+  let layer_total = new_layer_total_port_distributor(node_order.length())
   (
-    node_relative.as_i_sweep_port_distributor(),
-    node_relative.as_abstract_barycenter_port_distributor(),
+    layer_total.as_i_sweep_port_distributor(),
+    layer_total.as_abstract_barycenter_port_distributor(),
   )
+}
+
+///|
+fn graph_info_is_external_ports_property(property : GraphProperties) -> Bool {
+  match property {
+    GraphProperties::ExternalPorts => true
+    _ => false
+  }
+}
+
+///|
+fn graph_info_has_external_ports(graph : LGraph) -> Bool {
+  for
+    property in graph.get_property_graph_properties_array(
+      internal_properties_graph_properties,
+    ) {
+    if graph_info_is_external_ports_property(property) {
+      return true
+    }
+  }
+  false
 }
 
 ///|
@@ -198,26 +219,31 @@ pub fn new_graph_info_holder_from_graph(
   )
   holder.n_ports = 0
   holder.child_graphs_ref.clear()
-  holder.has_external_ports_ref = false
+  holder.has_external_ports_ref = graph_info_has_external_ports(graph)
 
   let all_crossings_counter = new_all_crossings_counter(current_node_order)
   holder.crossings_counter_ref = Some(all_crossings_counter)
 
-  let random = new_mock_random()
+  let random = graph_info_random(graph)
   holder.random_ref = Some(random)
 
-  let (port_distributor, barycenter_port_distributor) = graph_info_port_distributor_as_barycenter(
-    cross_min_type, current_node_order,
-  )
-  holder.port_distributor_ref = Some(
-    if graph_info_is_two_sided(cross_min_type) {
-      graph_info_create_port_distributor(
-        cross_min_type, current_node_order, random,
-      )
-    } else {
-      port_distributor
-    },
-  )
+  let (port_distributor, barycenter_port_distributor) = if graph_info_is_two_sided(
+      cross_min_type,
+    ) {
+    (new_greedy_port_distributor().as_i_sweep_port_distributor(), None)
+  } else {
+    let (selected_port_distributor, selected_barycenter_port_distributor) = graph_info_port_distributor_as_barycenter(
+      current_node_order, random,
+    )
+    (selected_port_distributor, Some(selected_barycenter_port_distributor))
+  }
+  holder.port_distributor_ref = Some(port_distributor)
+
+  let barycenter_distributor = match barycenter_port_distributor {
+    Some(value) => value
+    None =>
+      new_node_relative_port_distributor(current_node_order.length()).as_abstract_barycenter_port_distributor()
+  }
 
   let layer_sweep_type_decider = new_layer_sweep_type_decider(holder)
   let initializables = [
@@ -237,11 +263,11 @@ pub fn new_graph_info_holder_from_graph(
           layered_options_crossing_minimization_force_node_model_order,
         ) {
         new_model_order_barycenter_heuristic(
-          constraint_resolver, random, barycenter_port_distributor, current_node_order,
+          constraint_resolver, random, barycenter_distributor, current_node_order,
         ).as_i_crossing_minimization_heuristic()
       } else {
         new_barycenter_heuristic(
-          constraint_resolver, random, barycenter_port_distributor, current_node_order,
+          constraint_resolver, random, barycenter_distributor, current_node_order,
         ).as_i_crossing_minimization_heuristic()
       }
     }
@@ -464,6 +490,11 @@ pub fn GraphInfoHolder::cross_min_always_improves(
 }
 
 ///|
+pub fn GraphInfoHolder::random(self : GraphInfoHolder) -> MockRandom? {
+  self.random_ref
+}
+
+///|
 pub fn GraphInfoHolder::get_best_sweep(self : GraphInfoHolder) -> SweepCopy? {
   if self.cross_min_deterministic() {
     self.currently_best_node_and_port_order_ref
@@ -484,15 +515,7 @@ pub fn GraphInfoHolder::init_at_node_level(
   n : Int,
   node_order : Array[Array[LNode]],
 ) -> Unit {
-  ignore(l)
   let node = node_order[l][n]
-  let is_external_port = match node.get_type() {
-    NodeType::ExternalPort => true
-    _ => false
-  }
-  if is_external_port {
-    self.has_external_ports_ref = true
-  }
   match node.get_nested_graph() {
     Some(nested) => graph_info_add_unique_graph(self.child_graphs_ref, nested)
     None => ()

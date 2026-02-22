@@ -2,13 +2,12 @@
 fn recursive_graph_layout_engine_test_seeded_next_boolean(
   seed_value : Int64,
 ) -> Bool {
-  let seed = @buffer.new()
-  seed.write_int64_le(seed_value)
-  seed.write_int64_le(0)
-  seed.write_int64_le(0)
-  seed.write_int64_le(0)
-  let random = @random.Rand::chacha8(seed=seed.to_bytes())
-  random.int(limit=2) == 0
+  let multiplier = 25214903917L
+  let addend = 11L
+  let mask = 281474976710655L
+  let mut seed = (seed_value ^ multiplier) & mask
+  seed = (seed * multiplier + addend) & mask
+  ((seed >> 47) & 1L) == 1L
 }
 
 ///|
@@ -112,4 +111,18 @@ test "recursive layered context copies individual spacing overrides to LNode" {
 
   assert_true(lnode.has_property_double(@core.spacing_edge_label))
   assert_eq(get_individual_or_inherited(lnode, @core.spacing_edge_label), 42.5)
+}
+
+///|
+test "recursive layered context accepts elk.randomSeed alias" {
+  @graph.reset_graph_model_for_test()
+  let graph = @graph.create_graph()
+  @graph.node_set_layout_option_string_by_id(graph, "elk.randomSeed", "42")
+
+  let context = match recursive_layered_create_context(graph) {
+    Some(value) => value
+    None => fail("expected layered context")
+  }
+
+  assert_eq(context.layered_graph.get_property_int(@core.random_seed), 42)
 }

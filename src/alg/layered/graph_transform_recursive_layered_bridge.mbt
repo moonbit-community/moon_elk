@@ -377,28 +377,29 @@ fn ensure_edge_section_for_edge(edge : @graph.ElkEdge) -> Unit {
   if !@graph.edge_sections(edge).is_empty() {
     return
   }
-  if @graph.edge_sources(edge).length() != 1 ||
-    @graph.edge_targets(edge).length() != 1 {
+  let sources = @graph.edge_sources(edge)
+  let targets = @graph.edge_targets(edge)
+  if sources.length() != 1 || targets.length() != 1 {
     return
   }
-  let source_shape = @graph.edge_sources(edge)[0]
-  let target_shape = @graph.edge_targets(edge)[0]
+  let source_shape = sources[0]
+  let target_shape = targets[0]
+  let section = @graph.create_edge_section(edge)
+  @graph.edge_section_set_incoming_shape(section, Some(source_shape))
+  @graph.edge_section_set_outgoing_shape(section, Some(target_shape))
   match source_shape {
     NodeShape(source_node) =>
       match target_shape {
         NodeShape(target_node) => {
-          let section = @graph.create_edge_section(edge)
           let start_x = @graph.node_x(source_node) +
-            max_positive(@graph.node_width(source_node), 10.0)
+            @graph.node_width(source_node)
           let start_y = @graph.node_y(source_node) +
-            max_positive(@graph.node_height(source_node), 10.0) / 2.0
+            @graph.node_height(source_node) / 2.0
           let end_x = @graph.node_x(target_node)
           let end_y = @graph.node_y(target_node) +
-            max_positive(@graph.node_height(target_node), 10.0) / 2.0
+            @graph.node_height(target_node) / 2.0
           @graph.edge_section_set_start(section, start_x, start_y)
           @graph.edge_section_set_end(section, end_x, end_y)
-          @graph.edge_section_set_incoming_shape(section, Some(source_shape))
-          @graph.edge_section_set_outgoing_shape(section, Some(target_shape))
         }
         _ => ()
       }
@@ -425,6 +426,11 @@ let recursive_layered_transform_context_store : Ref[
 ] = Ref::new({})
 
 ///|
+let recursive_layered_transform_context_property : @graph.IProperty[Int] = @graph.new_property(
+  "org.eclipse.elk.layered.recursive.contextId", -1,
+)
+
+///|
 fn recursive_layered_transform_register_context(
   context : RecursiveLayeredContext,
   parent_node : @graph.ElkNode,
@@ -432,6 +438,9 @@ fn recursive_layered_transform_register_context(
   let context_id = recursive_layered_transform_context_next_id.val
   recursive_layered_transform_context_next_id.val = context_id + 1
   context.layered_graph.set_id(context_id)
+  context.layered_graph.set_property_int(
+    recursive_layered_transform_context_property, context_id,
+  )
   recursive_layered_transform_context_store.val[context_id] = (
     context, parent_node,
   )
@@ -454,9 +463,24 @@ pub fn recursive_layered_apply_transformed_graph(
   layered_graph : LGraph,
 ) -> Bool {
   let context_id = layered_graph.get_id()
-  match recursive_layered_transform_context_store.val.get(context_id) {
+  let use_primary_context = recursive_layered_transform_context_store.val.contains(
+    context_id,
+  )
+  let fallback_context_id = layered_graph.get_property_int(
+    recursive_layered_transform_context_property,
+  )
+  let resolved_context_id = if use_primary_context {
+    context_id
+  } else {
+    fallback_context_id
+  }
+  match recursive_layered_transform_context_store.val.get(resolved_context_id) {
     Some((context, parent_node)) => {
-      ignore(recursive_layered_transform_context_store.val.remove(context_id))
+      ignore(
+        recursive_layered_transform_context_store.val.remove(
+          resolved_context_id,
+        ),
+      )
       recursive_layered_apply_layout(context, parent_node)
       true
     }
@@ -529,6 +553,100 @@ fn recursive_layered_endpoint_lnode(
         Some(child) => (elk_to_lnode.get(child), true)
         None => (None, false)
       }
+  }
+}
+
+///|
+fn recursive_layered_descendant_nodes(
+  root_node : @graph.ElkNode,
+) -> Array[@graph.ElkNode] {
+  let nodes : Array[@graph.ElkNode] = []
+  let queue : Array[@graph.ElkNode] = []
+  for child in @graph.node_children(root_node) {
+    queue.push(child)
+  }
+  let mut index = 0
+  while index < queue.length() {
+    let current = queue[index]
+    index += 1
+    nodes.push(current)
+    for child in @graph.node_children(current) {
+      queue.push(child)
+    }
+  }
+  nodes
+}
+
+///|
+fn recursive_layered_descendant_edges(
+  root_node : @graph.ElkNode,
+) -> Array[@graph.ElkEdge] {
+  let edges : Array[@graph.ElkEdge] = []
+  let queue : Array[@graph.ElkNode] = [root_node]
+  let mut index = 0
+  while index < queue.length() {
+    let current = queue[index]
+    index += 1
+    for edge in @graph.node_contained_edges(current) {
+      edges.push(edge)
+    }
+    for child in @graph.node_children(current) {
+      queue.push(child)
+    }
+  }
+  edges
+}
+
+///|
+fn recursive_layered_port_anchor_in_edge_coordinates(
+  edge : @graph.ElkEdge,
+  port : @graph.ElkPort,
+) -> @core.KVector {
+  let absolute_anchor = recursive_layered_absolute_port_anchor(port)
+  match @graph.edge_containing_node(edge) {
+    Some(containing_node) =>
+      @core.new_kvector_xy(
+        absolute_anchor.x - recursive_layered_absolute_node_x(containing_node),
+        absolute_anchor.y - recursive_layered_absolute_node_y(containing_node),
+      )
+    None => absolute_anchor
+  }
+}
+
+///|
+fn recursive_layered_align_edge_sections_to_port_anchors(
+  root_node : @graph.ElkNode,
+) -> Unit {
+  for edge in recursive_layered_descendant_edges(root_node) {
+    let sections = @graph.edge_sections(edge)
+    if sections.is_empty() {
+      continue
+    }
+    let section = sections[0]
+    match
+      @graph.connectable_shape_to_port(
+        @graph.edge_section_incoming_shape(section),
+      ) {
+      Some(incoming_port) => {
+        let start_anchor = recursive_layered_port_anchor_in_edge_coordinates(
+          edge, incoming_port,
+        )
+        @graph.edge_section_set_start(section, start_anchor.x, start_anchor.y)
+      }
+      None => ()
+    }
+    match
+      @graph.connectable_shape_to_port(
+        @graph.edge_section_outgoing_shape(section),
+      ) {
+      Some(outgoing_port) => {
+        let end_anchor = recursive_layered_port_anchor_in_edge_coordinates(
+          edge, outgoing_port,
+        )
+        @graph.edge_section_set_end(section, end_anchor.x, end_anchor.y)
+      }
+      None => ()
+    }
   }
 }
 
@@ -615,6 +733,18 @@ fn recursive_layered_port_constraints_side_fixed(value : String) -> Bool {
 ///|
 fn recursive_layered_port_constraints_order_fixed(value : String) -> Bool {
   value == "FIXED_ORDER" || value == "FIXED_RATIO" || value == "FIXED_POS"
+}
+
+///|
+fn recursive_layered_parse_port_constraints(
+  value : String,
+) -> @core.PortConstraints {
+  for constraint in @core.port_constraints_values() {
+    if @core.port_constraints_to_string(constraint) == value {
+      return constraint
+    }
+  }
+  @core.PortConstraints::Undefined
 }
 
 ///|
@@ -1116,15 +1246,232 @@ fn recursive_layered_needs_model_order(
 fn recursive_layered_new_edge_port(
   owner : LNode,
   side : @core.PortSide,
+  layered_graph : LGraph,
+  port_type : PortType,
   fix_owner_side? : Bool = false,
 ) -> LPort {
   if fix_owner_side {
     owner.set_property_string(@core.port_constraints, "FIXED_SIDE")
   }
+  let port = create_port_for_edge(owner, None, port_type, layered_graph)
+  if !(side is @core.PortSide::SideUndefined) &&
+    owner.get_property_string(@core.port_constraints) == "FIXED_SIDE" {
+    port.set_side(side)
+  }
+  port
+}
+
+///|
+fn recursive_layered_new_descendant_endpoint_port(
+  owner : LNode,
+  endpoint_node : @graph.ElkNode,
+  layered_graph : LGraph,
+  port_type : PortType,
+) -> LPort {
+  owner.set_property_string(@core.port_constraints, "FIXED_POS")
   let port = new_l_port()
   port.set_node(Some(owner))
-  port.set_side(side)
-  ignore(port.get_size().set_xy(0.0, 0.0))
+  let point = port.get_position()
+  point.x = @graph.node_x(endpoint_node) +
+    @graph.node_width(endpoint_node) / 2.0
+  point.y = @graph.node_y(endpoint_node) +
+    @graph.node_height(endpoint_node) / 2.0
+  ignore(point.bound(0.0, 0.0, owner.get_size().x, owner.get_size().y))
+  let default_side = @core.port_side_from_direction(
+    get_direction(layered_graph),
+  )
+  port.set_side(
+    match port_type {
+      PortType::Output => default_side
+      PortType::Input => default_side.opposed()
+      PortType::Undefined => default_side
+    },
+  )
+  port
+}
+
+///|
+fn recursive_layered_absolute_node_x(node : @graph.ElkNode) -> Double {
+  match @graph.node_parent(node) {
+    Some(parent) =>
+      @graph.node_x(node) + recursive_layered_absolute_node_x(parent)
+    None => @graph.node_x(node)
+  }
+}
+
+///|
+fn recursive_layered_absolute_node_y(node : @graph.ElkNode) -> Double {
+  match @graph.node_parent(node) {
+    Some(parent) =>
+      @graph.node_y(node) + recursive_layered_absolute_node_y(parent)
+    None => @graph.node_y(node)
+  }
+}
+
+///|
+fn recursive_layered_descendant_port_anchor(
+  port : @graph.ElkPort,
+) -> @core.KVector {
+  let port_width = @graph.port_width(port)
+  let port_height = @graph.port_height(port)
+  let anchor = @core.new_kvector_xy(port_width / 2.0, port_height / 2.0)
+  let mut side = recursive_layered_port_side_from_string(
+    recursive_layered_port_side_option(port),
+  )
+  if side is @core.PortSide::SideUndefined {
+    match @graph.port_parent(port) {
+      Some(parent_node) => {
+        let port_x = @graph.port_x(port)
+        let port_y = @graph.port_y(port)
+        let node_width = @graph.node_width(parent_node)
+        let node_height = @graph.node_height(parent_node)
+        if port_x < 0.0 {
+          side = @core.PortSide::West
+        } else if port_x + port_width > node_width {
+          side = @core.PortSide::East
+        } else if port_y < 0.0 {
+          side = @core.PortSide::North
+        } else if port_y + port_height > node_height {
+          side = @core.PortSide::South
+        }
+      }
+      None => ()
+    }
+  }
+  match side {
+    @core.PortSide::East => {
+      anchor.x = port_width
+      anchor.y = port_height / 2.0
+    }
+    @core.PortSide::West => {
+      anchor.x = 0.0
+      anchor.y = port_height / 2.0
+    }
+    @core.PortSide::North => {
+      anchor.x = port_width / 2.0
+      anchor.y = 0.0
+    }
+    @core.PortSide::South => {
+      anchor.x = port_width / 2.0
+      anchor.y = port_height
+    }
+    @core.PortSide::SideUndefined => ()
+  }
+  match
+    @graph.port_layout_option_string_value(
+      port,
+      layered_options_port_anchor.get_id(),
+    ) {
+    Some(anchor_text) => {
+      let parsed_anchor = @core.new_kvector()
+      parsed_anchor.parse(anchor_text)
+      anchor.x = parsed_anchor.x
+      anchor.y = parsed_anchor.y
+    }
+    None => ()
+  }
+  anchor
+}
+
+///|
+fn recursive_layered_absolute_port_anchor(
+  port : @graph.ElkPort,
+) -> @core.KVector {
+  let anchor = recursive_layered_descendant_port_anchor(port)
+  match @graph.port_parent(port) {
+    Some(parent_node) =>
+      @core.new_kvector_xy(
+        recursive_layered_absolute_node_x(parent_node) +
+        @graph.port_x(port) +
+        anchor.x,
+        recursive_layered_absolute_node_y(parent_node) +
+        @graph.port_y(port) +
+        anchor.y,
+      )
+    None =>
+      @core.new_kvector_xy(
+        @graph.port_x(port) + anchor.x,
+        @graph.port_y(port) + anchor.y,
+      )
+  }
+}
+
+///|
+fn recursive_layered_shape_anchor_for_edge_section(
+  edge : @graph.ElkEdge,
+  shape : @graph.ElkConnectableShape,
+) -> @core.KVector? {
+  match @graph.connectable_shape_to_port(Some(shape)) {
+    Some(port) =>
+      match @graph.edge_containing_node(edge) {
+        Some(containing_node) =>
+          match @graph.port_parent(port) {
+            Some(port_parent) =>
+              if recursive_layered_is_descendant(port_parent, containing_node) {
+                let absolute_anchor = recursive_layered_absolute_port_anchor(
+                  port,
+                )
+                Some(
+                  @core.new_kvector_xy(
+                    absolute_anchor.x -
+                    recursive_layered_absolute_node_x(containing_node),
+                    absolute_anchor.y -
+                    recursive_layered_absolute_node_y(containing_node),
+                  ),
+                )
+              } else {
+                None
+              }
+            None => None
+          }
+        None => None
+      }
+    None => None
+  }
+}
+
+///|
+fn recursive_layered_new_descendant_port_endpoint_port(
+  owner : LNode,
+  owner_node : @graph.ElkNode,
+  endpoint_port : @graph.ElkPort,
+  layered_graph : LGraph,
+  port_type : PortType,
+) -> LPort {
+  owner.set_property_string(@core.port_constraints, "FIXED_POS")
+  let port = new_l_port()
+  port.set_node(Some(owner))
+  let point = port.get_position()
+  let anchor = recursive_layered_descendant_port_anchor(endpoint_port)
+  match @graph.port_parent(endpoint_port) {
+    Some(endpoint_parent) => {
+      let absolute_anchor_x = recursive_layered_absolute_node_x(endpoint_parent) +
+        @graph.port_x(endpoint_port) +
+        anchor.x
+      let absolute_anchor_y = recursive_layered_absolute_node_y(endpoint_parent) +
+        @graph.port_y(endpoint_port) +
+        anchor.y
+      point.x = absolute_anchor_x -
+        recursive_layered_absolute_node_x(owner_node)
+      point.y = absolute_anchor_y -
+        recursive_layered_absolute_node_y(owner_node)
+    }
+    None => {
+      point.x = @graph.port_x(endpoint_port) + anchor.x
+      point.y = @graph.port_y(endpoint_port) + anchor.y
+    }
+  }
+  ignore(point.bound(0.0, 0.0, owner.get_size().x, owner.get_size().y))
+  let default_side = @core.port_side_from_direction(
+    get_direction(layered_graph),
+  )
+  port.set_side(
+    match port_type {
+      PortType::Output => default_side
+      PortType::Input => default_side.opposed()
+      PortType::Undefined => default_side
+    },
+  )
   port
 }
 
@@ -1290,7 +1637,73 @@ fn recursive_layered_primary_option(
   key : String,
   fallback : String,
 ) -> String {
-  match @graph.node_layout_option_string_value(node, key) {
+  let candidates = [key]
+  let mut maybe_layered_suffix : String? = None
+  match key.strip_prefix("org.eclipse.") {
+    Some(without_org_view) => {
+      let without_org = without_org_view.to_string()
+      candidates.push(without_org)
+      match without_org.strip_prefix("elk.") {
+        Some(without_elk_view) => {
+          let without_elk = without_elk_view.to_string()
+          candidates.push(without_elk)
+          match without_elk.strip_prefix("layered.") {
+            Some(without_layered_view) =>
+              maybe_layered_suffix = Some(without_layered_view.to_string())
+            None => ()
+          }
+        }
+        None => ()
+      }
+    }
+    None => {
+      match key.strip_prefix("elk.") {
+        Some(without_elk_view) => {
+          candidates.push("org.eclipse." + key)
+          let without_elk = without_elk_view.to_string()
+          candidates.push(without_elk)
+          match without_elk.strip_prefix("layered.") {
+            Some(without_layered_view) =>
+              maybe_layered_suffix = Some(without_layered_view.to_string())
+            None => ()
+          }
+        }
+        None => ()
+      }
+      match key.strip_prefix("layered.") {
+        Some(without_layered_view) =>
+          maybe_layered_suffix = Some(without_layered_view.to_string())
+        None => ()
+      }
+    }
+  }
+  match maybe_layered_suffix {
+    Some(layered_suffix) => candidates.push(layered_suffix)
+    None => ()
+  }
+
+  let allow_ancestor_lookup = key == "org.eclipse.elk.hierarchyHandling" ||
+    key == "elk.hierarchyHandling" ||
+    key == "hierarchyHandling"
+
+  let mut matched_fallback_value : String? = None
+  for candidate in candidates {
+    let value_at_candidate = if allow_ancestor_lookup {
+      node_layout_option_value_by_candidates_with_ancestors(node, [candidate])
+    } else {
+      @graph.node_layout_option_string_value(node, candidate)
+    }
+    match value_at_candidate {
+      Some(value) =>
+        if value != fallback {
+          return value
+        } else if matched_fallback_value is None {
+          matched_fallback_value = Some(value)
+        }
+      None => ()
+    }
+  }
+  match matched_fallback_value {
     Some(value) => value
     None => fallback
   }
@@ -1310,6 +1723,17 @@ fn recursive_layered_parse_bool(value : String) -> Bool? {
 ///|
 fn recursive_layered_parse_int(value : String) -> Int? {
   let parsed : Result[Int, @strconv.StrConvError] = try? @strconv.parse_int(
+    value.trim().to_string(),
+  )
+  match parsed {
+    Ok(result) => Some(result)
+    Err(_) => None
+  }
+}
+
+///|
+fn recursive_layered_parse_double(value : String) -> Double? {
+  let parsed : Result[Double, @strconv.StrConvError] = try? @strconv.parse_double(
     value.trim().to_string(),
   )
   match parsed {
@@ -1353,6 +1777,7 @@ fn recursive_layered_create_context(
   let node_label_pairs : Map[@graph.ElkNode, Array[(LLabel, @graph.ElkLabel)]] = {}
   let lnode_to_elk : Map[Int, @graph.ElkNode] = {}
   let edge_to_ledge : Map[@graph.ElkEdge, LEdge] = {}
+  recursive_layout_node_labels(node)
   let node_padding = parse_node_padding(node)
   let label_top_reserve = recursive_layout_label_top_reserve(node)
   let graph_padding = layered_graph.get_padding()
@@ -1365,23 +1790,63 @@ fn recursive_layered_create_context(
     node_padding.top
   }
 
-  let spacing_node = @graph.node_get_double_property(
-    node, @core.spacing_node_node,
-  )
-  let spacing_edge_edge_value = @graph.node_get_double_property(
-    node, @core.spacing_edge_edge,
-  )
-  let spacing_between_layers = @graph.node_get_double_property(
-    node, layered_options_spacing_node_node_between_layers,
-  )
-  let spacing_edge_edge_between_layers = @graph.node_get_double_property(
-    node, layered_options_spacing_edge_edge_between_layers,
-  )
+  let spacing_node = match
+    recursive_layered_parse_double(
+      recursive_layered_primary_option(
+        node,
+        @core.spacing_node_node.get_id(),
+        @graph.node_get_double_property(node, @core.spacing_node_node).to_string(),
+      ),
+    ) {
+    Some(value) => value
+    None => @core.spacing_node_node.get_default()
+  }
+  let spacing_edge_edge_value = match
+    recursive_layered_parse_double(
+      recursive_layered_primary_option(
+        node,
+        @core.spacing_edge_edge.get_id(),
+        @graph.node_get_double_property(node, @core.spacing_edge_edge).to_string(),
+      ),
+    ) {
+    Some(value) => value
+    None => @core.spacing_edge_edge.get_default()
+  }
+  let spacing_between_layers = match
+    recursive_layered_parse_double(
+      recursive_layered_primary_option(
+        node,
+        layered_options_spacing_node_node_between_layers.get_id(),
+        @graph.node_get_double_property(
+          node, layered_options_spacing_node_node_between_layers,
+        ).to_string(),
+      ),
+    ) {
+    Some(value) => value
+    None => layered_options_spacing_node_node_between_layers.get_default()
+  }
+  let spacing_edge_edge_between_layers = match
+    recursive_layered_parse_double(
+      recursive_layered_primary_option(
+        node,
+        layered_options_spacing_edge_edge_between_layers.get_id(),
+        @graph.node_get_double_property(
+          node, layered_options_spacing_edge_edge_between_layers,
+        ).to_string(),
+      ),
+    ) {
+    Some(value) => value
+    None => layered_options_spacing_edge_edge_between_layers.get_default()
+  }
   let aspect_ratio_value = @graph.node_get_double_property(
     node, @core.aspect_ratio,
   )
-  let consider_model_order = @graph.node_get_string_property(
-    node, layered_options_consider_model_order_strategy,
+  let consider_model_order = recursive_layered_primary_option(
+    node,
+    "org.eclipse.elk.layered.considerModelOrder.strategy",
+    @graph.node_get_string_property(
+      node, layered_options_consider_model_order_strategy,
+    ),
   )
   let node_promotion_strategy = recursive_layered_primary_option(
     node,
@@ -1397,6 +1862,54 @@ fn recursive_layered_create_context(
       node, layered_options_crossing_minimization_strategy,
     ),
   )
+  let node_placement_strategy = recursive_layered_primary_option(
+    node,
+    "org.eclipse.elk.layered.nodePlacement.strategy",
+    @graph.node_get_string_property(
+      node, layered_options_node_placement_strategy,
+    ),
+  )
+  let greedy_switch_type = recursive_layered_primary_option(
+    node,
+    "org.eclipse.elk.layered.crossingMinimization.greedySwitch.type",
+    @graph.node_get_string_property(
+      node, layered_options_crossing_minimization_greedy_switch_type,
+    ),
+  )
+  let greedy_switch_hierarchical_type = recursive_layered_primary_option(
+    node,
+    "org.eclipse.elk.layered.crossingMinimization.greedySwitchHierarchical.type",
+    @graph.node_get_string_property(
+      node, layered_options_crossing_minimization_greedy_switch_hierarchical_type,
+    ),
+  )
+  let greedy_switch_activation_threshold = match
+    recursive_layered_parse_int(
+      recursive_layered_primary_option(
+        node,
+        "org.eclipse.elk.layered.crossingMinimization.greedySwitch.activationThreshold",
+        @graph.node_get_int_property(
+          node, layered_options_crossing_minimization_greedy_switch_activation_threshold,
+        ).to_string(),
+      ),
+    ) {
+    Some(value) => value
+    None =>
+      layered_options_crossing_minimization_greedy_switch_activation_threshold.get_default()
+  }
+  let crossing_semi_interactive = match
+    recursive_layered_parse_bool(
+      recursive_layered_primary_option(
+        node,
+        "org.eclipse.elk.layered.crossingMinimization.semiInteractive",
+        @graph.node_get_bool_property(
+          node, layered_options_crossing_minimization_semi_interactive,
+        ).to_string(),
+      ),
+    ) {
+    Some(value) => value
+    None => layered_options_crossing_minimization_semi_interactive.get_default()
+  }
   let edge_routing_value = recursive_layered_primary_option(
     node,
     "org.eclipse.elk.edgeRouting",
@@ -1421,6 +1934,67 @@ fn recursive_layered_create_context(
   let layering_strategy = recursive_layered_primary_option(
     node, "org.eclipse.elk.layered.layering.strategy", "NETWORK_SIMPLEX",
   )
+  let hierarchy_handling = recursive_layered_primary_option(
+    node,
+    "org.eclipse.elk.hierarchyHandling",
+    @graph.node_get_string_property(node, layered_options_hierarchy_handling),
+  )
+  let high_degree_nodes_treatment = match
+    recursive_layered_parse_bool(
+      recursive_layered_primary_option(
+        node,
+        "org.eclipse.elk.alg.layered.highDegreeNodes.treatment",
+        @graph.node_get_bool_property(
+          node, layered_options_high_degree_nodes_treatment,
+        ).to_string(),
+      ),
+    ) {
+    Some(value) => value
+    None => layered_options_high_degree_nodes_treatment.get_default()
+  }
+  let compaction_post_strategy = recursive_layered_primary_option(
+    node,
+    "org.eclipse.elk.layered.compaction.postCompaction.strategy",
+    @graph.node_get_string_property(
+      node, layered_options_compaction_post_compaction_strategy,
+    ),
+  )
+  let layer_unzipping_strategy = recursive_layered_primary_option(
+    node,
+    "org.eclipse.elk.layered.layerUnzipping.strategy",
+    @graph.node_get_string_property(
+      node, layered_options_layer_unzipping_strategy,
+    ),
+  )
+  let wrapping_strategy = recursive_layered_primary_option(
+    node,
+    "org.eclipse.elk.layered.wrapping.strategy",
+    @graph.node_get_string_property(node, layered_options_wrapping_strategy),
+  )
+  let generate_position_and_layer_ids = match
+    recursive_layered_parse_bool(
+      recursive_layered_primary_option(
+        node,
+        "org.eclipse.elk.layered.generatePositionAndLayerIds",
+        @graph.node_get_bool_property(
+          node, layered_options_generate_position_and_layer_ids,
+        ).to_string(),
+      ),
+    ) {
+    Some(value) => value
+    None => layered_options_generate_position_and_layer_ids.get_default()
+  }
+  let interactive_layout = match
+    recursive_layered_parse_bool(
+      recursive_layered_primary_option(
+        node,
+        "org.eclipse.elk.interactive",
+        @graph.node_get_bool_property(node, @core.interactive).to_string(),
+      ),
+    ) {
+    Some(value) => value
+    None => @core.interactive.get_default()
+  }
   let random_seed_value = match
     recursive_layered_parse_int(
       recursive_layered_primary_option(
@@ -1437,16 +2011,18 @@ fn recursive_layered_create_context(
     "org.eclipse.elk.portConstraints",
     @graph.node_get_string_property(node, @core.port_constraints),
   )
-  let feedback_edges = @graph.node_get_bool_property(
-    node, layered_options_feedback_edges,
-  )
-  let mut hierarchical_layout = false
-  for child in @graph.node_children(node) {
-    if !@graph.node_children(child).is_empty() {
-      hierarchical_layout = true
-      break
-    }
+  let feedback_edges = match
+    recursive_layered_parse_bool(
+      recursive_layered_primary_option(
+        node,
+        "org.eclipse.elk.layered.feedbackEdges",
+        @graph.node_get_bool_property(node, layered_options_feedback_edges).to_string(),
+      ),
+    ) {
+    Some(value) => value
+    None => layered_options_feedback_edges.get_default()
   }
+  let hierarchical_layout = hierarchy_handling == "INCLUDE_CHILDREN"
   let needs_model_order = recursive_layered_needs_model_order(
     cycle_breaking_strategy, layering_strategy, node_promotion_strategy, consider_model_order,
   )
@@ -1493,6 +2069,12 @@ fn recursive_layered_create_context(
   )
   layered_graph.set_property_int(@core.random_seed, random_seed_value)
   layered_graph.set_property_string(
+    layered_options_cycle_breaking_strategy, cycle_breaking_strategy,
+  )
+  layered_graph.set_property_string(
+    layered_options_layering_strategy, layering_strategy,
+  )
+  layered_graph.set_property_string(
     layered_options_consider_model_order_strategy, consider_model_order,
   )
   layered_graph.set_property_string(
@@ -1500,6 +2082,21 @@ fn recursive_layered_create_context(
   )
   layered_graph.set_property_string(
     layered_options_crossing_minimization_strategy, crossing_strategy,
+  )
+  layered_graph.set_property_string(
+    layered_options_node_placement_strategy, node_placement_strategy,
+  )
+  layered_graph.set_property_string(
+    layered_options_crossing_minimization_greedy_switch_type, greedy_switch_type,
+  )
+  layered_graph.set_property_string(
+    layered_options_crossing_minimization_greedy_switch_hierarchical_type, greedy_switch_hierarchical_type,
+  )
+  layered_graph.set_property_int(
+    layered_options_crossing_minimization_greedy_switch_activation_threshold, greedy_switch_activation_threshold,
+  )
+  layered_graph.set_property_bool(
+    layered_options_crossing_minimization_semi_interactive, crossing_semi_interactive,
   )
   layered_graph.set_property_string(
     @core.edge_routing,
@@ -1521,6 +2118,25 @@ fn recursive_layered_create_context(
   layered_graph.set_property_bool(
     layered_options_feedback_edges, feedback_edges,
   )
+  layered_graph.set_property_string(
+    layered_options_hierarchy_handling, hierarchy_handling,
+  )
+  layered_graph.set_property_bool(
+    layered_options_high_degree_nodes_treatment, high_degree_nodes_treatment,
+  )
+  layered_graph.set_property_string(
+    layered_options_compaction_post_compaction_strategy, compaction_post_strategy,
+  )
+  layered_graph.set_property_string(
+    layered_options_layer_unzipping_strategy, layer_unzipping_strategy,
+  )
+  layered_graph.set_property_string(
+    layered_options_wrapping_strategy, wrapping_strategy,
+  )
+  layered_graph.set_property_bool(
+    layered_options_generate_position_and_layer_ids, generate_position_and_layer_ids,
+  )
+  layered_graph.set_property_bool(@core.interactive, interactive_layout)
   layered_graph.set_property_string(
     layered_options_node_placement_bk_fixed_alignment, fixed_alignment_value,
   )
@@ -1545,14 +2161,18 @@ fn recursive_layered_create_context(
     )
   }
 
+  let nodes_to_import = @graph.node_children(node).copy()
+
   let mut node_model_order = 0
-  for child in @graph.node_children(node) {
+  for child in nodes_to_import {
     if @graph.node_get_bool_property(child, @core.no_layout) {
       continue
     }
     let lnode = new_l_node(graph=Some(layered_graph))
-    lnode.get_size().x = max_positive(@graph.node_width(child), 10.0)
-    lnode.get_size().y = max_positive(@graph.node_height(child), 10.0)
+    lnode.get_size().x = @graph.node_width(child)
+    lnode.get_size().y = @graph.node_height(child)
+    lnode.get_position().x = @graph.node_x(child)
+    lnode.get_position().y = @graph.node_y(child)
     let original_port_constraints = match
       node_layout_option_value_by_candidates(child, [
         @core.port_constraints.get_id(),
@@ -1627,13 +2247,28 @@ fn recursive_layered_create_context(
           recursive_layered_port_side_option(elk_port),
         ),
       )
-      if recursive_layered_is_north_south_side(lport.get_side()) {
-        recursive_layered_add_graph_property(
-          layered_graph,
-          GraphProperties::NorthSouthPorts,
-        )
+      let port_index_candidates = [
+        layered_options_port_index.get_id(),
+        "elk.port.index",
+        "port.index",
+      ]
+      for candidate in port_index_candidates {
+        match @graph.port_layout_option_string_value(elk_port, candidate) {
+          Some(raw_port_index) => {
+            let parsed_port_index : Result[Int, @strconv.StrConvError] = try? @strconv.parse_int(
+              raw_port_index.trim().to_string(),
+            )
+            if parsed_port_index is Ok(port_index) {
+              lport.set_property_int(layered_options_port_index, port_index)
+              break
+            }
+          }
+          None => ()
+        }
       }
-      match
+      lport.get_position().x = @graph.port_x(elk_port)
+      lport.get_position().y = @graph.port_y(elk_port)
+      let explicit_anchor = match
         @graph.port_layout_option_string_value(
           elk_port,
           layered_options_port_anchor.get_id(),
@@ -1641,73 +2276,20 @@ fn recursive_layered_create_context(
         Some(anchor_text) => {
           let parsed_anchor = @core.new_kvector()
           parsed_anchor.parse(anchor_text)
-          lport.get_anchor().x = parsed_anchor.x
-          lport.get_anchor().y = parsed_anchor.y
-          lport.set_explicitly_supplied_port_anchor(true)
+          Some(parsed_anchor)
         }
-        None => {
-          let side_is_defined = match lport.get_side() {
-            @core.PortSide::SideUndefined => false
-            _ => true
-          }
-          if recursive_layered_port_constraints_side_fixed(
-              resolved_port_constraints,
-            ) &&
-            side_is_defined {
-            match lport.get_side() {
-              @core.PortSide::North => {
-                lport.get_anchor().x = lport.get_size().x / 2.0
-                lport.get_anchor().y = 0.0
-              }
-              @core.PortSide::East => {
-                lport.get_anchor().x = lport.get_size().x
-                lport.get_anchor().y = lport.get_size().y / 2.0
-              }
-              @core.PortSide::South => {
-                lport.get_anchor().x = lport.get_size().x / 2.0
-                lport.get_anchor().y = lport.get_size().y
-              }
-              @core.PortSide::West => {
-                lport.get_anchor().x = 0.0
-                lport.get_anchor().y = lport.get_size().y / 2.0
-              }
-              @core.PortSide::SideUndefined => ()
-            }
-          } else {
-            lport.get_anchor().x = lport.get_size().x / 2.0
-            lport.get_anchor().y = lport.get_size().y / 2.0
-          }
-        }
+        None => None
       }
-      lport.get_position().x = @graph.port_x(elk_port)
-      lport.get_position().y = @graph.port_y(elk_port)
-      if resolved_port_constraints == "FIXED_RATIO" {
-        let mut ratio_or_position = 0.0
-        match lport.get_side() {
-          @core.PortSide::North =>
-            if @graph.node_width(child) > 0.0 {
-              ratio_or_position = lport.get_position().x /
-                @graph.node_width(child)
-            }
-          @core.PortSide::South =>
-            if @graph.node_width(child) > 0.0 {
-              ratio_or_position = lport.get_position().x /
-                @graph.node_width(child)
-            }
-          @core.PortSide::East =>
-            if @graph.node_height(child) > 0.0 {
-              ratio_or_position = lport.get_position().y /
-                @graph.node_height(child)
-            }
-          @core.PortSide::West =>
-            if @graph.node_height(child) > 0.0 {
-              ratio_or_position = lport.get_position().y /
-                @graph.node_height(child)
-            }
-          @core.PortSide::SideUndefined => ()
-        }
-        lport.set_property_double(
-          internal_properties_port_ratio_or_position, ratio_or_position,
+      initialize_port(
+        lport,
+        recursive_layered_parse_port_constraints(resolved_port_constraints),
+        get_direction(layered_graph),
+        explicit_anchor,
+      )
+      if recursive_layered_is_north_south_side(lport.get_side()) {
+        recursive_layered_add_graph_property(
+          layered_graph,
+          GraphProperties::NorthSouthPorts,
         )
       }
       if needs_model_order {
@@ -1728,8 +2310,10 @@ fn recursive_layered_create_context(
     internal_properties_max_model_order_nodes, node_model_order,
   )
 
+  let edges_to_import = @graph.node_contained_edges(node).copy()
+
   let mut edge_model_order = 0
-  for edge in @graph.node_contained_edges(node) {
+  for edge in edges_to_import {
     let source_shapes = @graph.edge_sources(edge)
     if source_shapes.is_empty() {
       return None
@@ -1757,19 +2341,49 @@ fn recursive_layered_create_context(
                       node, parent_of_port, elk_to_lnode,
                     ) {
                     (Some(source_lnode), fix_owner_side) => {
-                      let mut source_side = recursive_layered_port_side_from_string(
-                        recursive_layered_port_side_option(parent_port),
-                      )
-                      match source_side {
-                        @core.PortSide::SideUndefined =>
-                          source_side = @core.PortSide::East
-                        _ => ()
+                      if fix_owner_side {
+                        recursive_layered_add_graph_property(
+                          layered_graph,
+                          GraphProperties::ExternalPorts,
+                        )
                       }
-                      recursive_layered_new_edge_port(
-                        source_lnode,
-                        source_side,
-                        fix_owner_side=fix_owner_side || hierarchical_layout,
-                      )
+                      if fix_owner_side {
+                        match lnode_to_elk.get(source_lnode.get_handle()) {
+                          Some(source_owner_elk) =>
+                            recursive_layered_new_descendant_port_endpoint_port(
+                              source_lnode,
+                              source_owner_elk,
+                              parent_port,
+                              layered_graph,
+                              PortType::Output,
+                            )
+                          None =>
+                            recursive_layered_new_edge_port(
+                              source_lnode,
+                              @core.PortSide::East,
+                              layered_graph,
+                              PortType::Output,
+                              fix_owner_side=fix_owner_side ||
+                                hierarchical_layout,
+                            )
+                        }
+                      } else {
+                        let mut source_side = recursive_layered_port_side_from_string(
+                          recursive_layered_port_side_option(parent_port),
+                        )
+                        match source_side {
+                          @core.PortSide::SideUndefined =>
+                            source_side = @core.PortSide::East
+                          _ => ()
+                        }
+                        recursive_layered_new_edge_port(
+                          source_lnode,
+                          source_side,
+                          layered_graph,
+                          PortType::Output,
+                          fix_owner_side=fix_owner_side || hierarchical_layout,
+                        )
+                      }
                     }
                     (None, _) => return None
                   }
@@ -1780,11 +2394,26 @@ fn recursive_layered_create_context(
             match
               recursive_layered_endpoint_lnode(node, source_node, elk_to_lnode) {
               (Some(source_lnode), fix_owner_side) =>
-                recursive_layered_new_edge_port(
-                  source_lnode,
-                  @core.PortSide::East,
-                  fix_owner_side=fix_owner_side || hierarchical_layout,
-                )
+                if fix_owner_side {
+                  recursive_layered_add_graph_property(
+                    layered_graph,
+                    GraphProperties::ExternalPorts,
+                  )
+                  recursive_layered_new_descendant_endpoint_port(
+                    source_lnode,
+                    source_node,
+                    layered_graph,
+                    PortType::Output,
+                  )
+                } else {
+                  recursive_layered_new_edge_port(
+                    source_lnode,
+                    @core.PortSide::SideUndefined,
+                    layered_graph,
+                    PortType::Output,
+                    fix_owner_side=fix_owner_side || hierarchical_layout,
+                  )
+                }
               (None, _) => return None
             }
         }
@@ -1807,19 +2436,49 @@ fn recursive_layered_create_context(
                       node, parent_of_port, elk_to_lnode,
                     ) {
                     (Some(target_lnode), fix_owner_side) => {
-                      let mut target_side = recursive_layered_port_side_from_string(
-                        recursive_layered_port_side_option(parent_port),
-                      )
-                      match target_side {
-                        @core.PortSide::SideUndefined =>
-                          target_side = @core.PortSide::West
-                        _ => ()
+                      if fix_owner_side {
+                        recursive_layered_add_graph_property(
+                          layered_graph,
+                          GraphProperties::ExternalPorts,
+                        )
                       }
-                      recursive_layered_new_edge_port(
-                        target_lnode,
-                        target_side,
-                        fix_owner_side=fix_owner_side || hierarchical_layout,
-                      )
+                      if fix_owner_side {
+                        match lnode_to_elk.get(target_lnode.get_handle()) {
+                          Some(target_owner_elk) =>
+                            recursive_layered_new_descendant_port_endpoint_port(
+                              target_lnode,
+                              target_owner_elk,
+                              parent_port,
+                              layered_graph,
+                              PortType::Input,
+                            )
+                          None =>
+                            recursive_layered_new_edge_port(
+                              target_lnode,
+                              @core.PortSide::West,
+                              layered_graph,
+                              PortType::Input,
+                              fix_owner_side=fix_owner_side ||
+                                hierarchical_layout,
+                            )
+                        }
+                      } else {
+                        let mut target_side = recursive_layered_port_side_from_string(
+                          recursive_layered_port_side_option(parent_port),
+                        )
+                        match target_side {
+                          @core.PortSide::SideUndefined =>
+                            target_side = @core.PortSide::West
+                          _ => ()
+                        }
+                        recursive_layered_new_edge_port(
+                          target_lnode,
+                          target_side,
+                          layered_graph,
+                          PortType::Input,
+                          fix_owner_side=fix_owner_side || hierarchical_layout,
+                        )
+                      }
                     }
                     (None, _) => return None
                   }
@@ -1830,11 +2489,26 @@ fn recursive_layered_create_context(
             match
               recursive_layered_endpoint_lnode(node, target_node, elk_to_lnode) {
               (Some(target_lnode), fix_owner_side) =>
-                recursive_layered_new_edge_port(
-                  target_lnode,
-                  @core.PortSide::West,
-                  fix_owner_side=fix_owner_side || hierarchical_layout,
-                )
+                if fix_owner_side {
+                  recursive_layered_add_graph_property(
+                    layered_graph,
+                    GraphProperties::ExternalPorts,
+                  )
+                  recursive_layered_new_descendant_endpoint_port(
+                    target_lnode,
+                    target_node,
+                    layered_graph,
+                    PortType::Input,
+                  )
+                } else {
+                  recursive_layered_new_edge_port(
+                    target_lnode,
+                    @core.PortSide::SideUndefined,
+                    layered_graph,
+                    PortType::Input,
+                    fix_owner_side=fix_owner_side || hierarchical_layout,
+                  )
+                }
               (None, _) => return None
             }
         }
@@ -1909,9 +2583,13 @@ fn recursive_layered_apply_layout(
   let graph_offset = context.layered_graph.get_offset()
   let graph_size = context.layered_graph.get_size()
   let padding_value = context.layered_graph.get_padding()
+  let is_top_level_context = @graph.node_parent(parent_node) is None
 
   for entry in context.elk_to_lnode.to_array() {
     let (elk_node, layered_node) = entry
+    let owner_graph = layered_node.get_graph()
+    let owner_offset = owner_graph.get_offset()
+    let owner_padding = owner_graph.get_padding()
     let position = layered_node.get_position()
     let size = layered_node.get_size()
     let resolved_width = if size.x > 0.0 {
@@ -1924,10 +2602,10 @@ fn recursive_layered_apply_layout(
     } else {
       @graph.node_height(elk_node)
     }
-    let graph_x = position.x + graph_offset.x
-    let graph_y = position.y + graph_offset.y
-    let actual_x = graph_x + padding_value.left
-    let actual_y = graph_y + padding_value.top
+    let graph_x = position.x + owner_offset.x
+    let graph_y = position.y + owner_offset.y
+    let actual_x = graph_x + owner_padding.left
+    let actual_y = graph_y + owner_padding.top
     @graph.node_set_location(elk_node, actual_x, actual_y)
     @graph.node_set_dimensions(elk_node, resolved_width, resolved_height)
 
@@ -1978,12 +2656,8 @@ fn recursive_layered_apply_layout(
       Some(owner) => owner == parent_node
       None => false
     }
-    match context.lnode_to_elk.get(owner_lnode.get_handle()) {
-      Some(owner_elk) =>
-        if !is_parent_port && !@graph.node_children(owner_elk).is_empty() {
-          continue
-        }
-      None => ()
+    if is_parent_port && !is_top_level_context {
+      continue
     }
     if is_parent_port {
       let border_offset = recursive_layered_port_border_offset(elk_port)
@@ -2178,44 +2852,70 @@ fn recursive_layered_apply_layout(
     }
     let source_anchor = source_port.get_absolute_anchor()
     let target_anchor = target_port.get_absolute_anchor()
-    @graph.edge_section_set_start(
-      section,
-      source_anchor.x + graph_offset.x + padding_value.left,
-      source_anchor.y + graph_offset.y + padding_value.top,
-    )
-    @graph.edge_section_set_end(
-      section,
-      target_anchor.x + graph_offset.x + padding_value.left,
-      target_anchor.y + graph_offset.y + padding_value.top,
-    )
+    let edge_graph = match source_port.get_node() {
+      Some(node) => node.get_graph()
+      None => context.layered_graph
+    }
+    let edge_graph_offset = edge_graph.get_offset()
+    let edge_graph_padding = edge_graph.get_padding()
+    let mut section_start_x = source_anchor.x +
+      edge_graph_offset.x +
+      edge_graph_padding.left
+    let mut section_start_y = source_anchor.y +
+      edge_graph_offset.y +
+      edge_graph_padding.top
+    let mut section_end_x = target_anchor.x +
+      edge_graph_offset.x +
+      edge_graph_padding.left
+    let mut section_end_y = target_anchor.y +
+      edge_graph_offset.y +
+      edge_graph_padding.top
 
-    let source_node = match source_port.get_node() {
-      Some(value) => value
-      None => continue
+    let edge_sources = @graph.edge_sources(elk_edge)
+    if edge_sources.length() == 1 {
+      @graph.edge_section_set_incoming_shape(section, Some(edge_sources[0]))
+      match
+        recursive_layered_shape_anchor_for_edge_section(
+          elk_edge,
+          edge_sources[0],
+        ) {
+        Some(source_shape_anchor) => {
+          section_start_x = source_shape_anchor.x
+          section_start_y = source_shape_anchor.y
+        }
+        None => ()
+      }
     }
-    let target_node = match target_port.get_node() {
-      Some(value) => value
-      None => continue
+    let edge_targets = @graph.edge_targets(elk_edge)
+    if edge_targets.length() == 1 {
+      @graph.edge_section_set_outgoing_shape(section, Some(edge_targets[0]))
+      match
+        recursive_layered_shape_anchor_for_edge_section(
+          elk_edge,
+          edge_targets[0],
+        ) {
+        Some(target_shape_anchor) => {
+          section_end_x = target_shape_anchor.x
+          section_end_y = target_shape_anchor.y
+        }
+        None => ()
+      }
     }
-    match context.lnode_to_elk.get(source_node.get_handle()) {
-      Some(elk_source) =>
-        @graph.edge_section_set_incoming_shape(
-          section,
-          Some(@graph.make_node_shape(elk_source)),
-        )
-      None => ()
-    }
-    match context.lnode_to_elk.get(target_node.get_handle()) {
-      Some(elk_target) =>
-        @graph.edge_section_set_outgoing_shape(
-          section,
-          Some(@graph.make_node_shape(elk_target)),
-        )
-      None => ()
-    }
+    @graph.edge_section_set_start(section, section_start_x, section_start_y)
+    @graph.edge_section_set_end(section, section_end_x, section_end_y)
 
-    let edge_offset_x = graph_offset.x + padding_value.left
-    let edge_offset_y = graph_offset.y + padding_value.top
+    let edge_offset_x = edge_graph_offset.x + edge_graph_padding.left
+    let edge_offset_y = edge_graph_offset.y + edge_graph_padding.top
+    @graph.edge_section_clear_bend_points(section)
+    for bend_point in layered_edge.get_bend_points().to_array() {
+      @graph.edge_section_add_bend_point(
+        section,
+        @graph.new_elk_bend_point(
+          x=edge_offset_x + bend_point.x,
+          y=edge_offset_y + bend_point.y,
+        ),
+      )
+    }
     let layered_labels = layered_edge.get_labels()
     let mut layered_label_index = 0
     for elk_label in @graph.edge_labels(elk_edge) {
@@ -2240,14 +2940,8 @@ fn recursive_layered_apply_layout(
     }
   }
 
-  let mut width = rightmost + padding_value.left + padding_value.right
-  let mut height = max_bottom + padding_value.top + padding_value.bottom
-  if width < 10.0 {
-    width = 10.0
-  }
-  if height < 10.0 {
-    height = 10.0
-  }
+  let width = rightmost + padding_value.left + padding_value.right
+  let height = max_bottom + padding_value.top + padding_value.bottom
   if recursive_layered_has_graph_property(
       context.layered_graph,
       GraphProperties::ExternalPorts,
@@ -2257,210 +2951,7 @@ fn recursive_layered_apply_layout(
     )
   }
   @graph.node_set_dimensions(parent_node, width, height)
-}
-
-///|
-fn recursive_layered_try_layout(
-  node : @graph.ElkNode,
-  progress_monitor : @core.IElkProgressMonitor,
-) -> Bool {
-  recursive_layout_node_labels(node)
-  let context = match recursive_layered_create_context(node) {
-    Some(value) => value
-    None => return false
-  }
-
-  let layering_strategy = recursive_layered_primary_option(
-    node, "org.eclipse.elk.layered.layering.strategy", "NETWORK_SIMPLEX",
-  )
-  let cycle_breaking_strategy = recursive_layered_primary_option(
-    node, "org.eclipse.elk.layered.cycleBreaking.strategy", "GREEDY",
-  )
-  let crossing_strategy = recursive_layered_primary_option(
-    node,
-    "org.eclipse.elk.layered.crossingMinimization.strategy",
-    context.layered_graph.get_property_string(
-      layered_options_crossing_minimization_strategy,
-    ),
-  )
-  let node_promotion_strategy = recursive_layered_primary_option(
-    node,
-    "org.eclipse.elk.layered.nodePromotion.strategy",
-    context.layered_graph.get_property_string(
-      layered_options_layering_node_promotion_strategy,
-    ),
-  )
-  let node_placement_strategy = recursive_layered_primary_option(
-    node, "org.eclipse.elk.layered.nodePlacement.strategy", "BRANDES_KOEPF",
-  )
-  let direction_value = context.layered_graph.get_property_string(
-    @core.direction,
-  )
-  let feedback_edges = context.layered_graph.get_property_bool(
-    layered_options_feedback_edges,
-  )
-  let edge_routing_value = context.layered_graph.get_property_string(
-    @core.edge_routing,
-  )
-
-  let assembler = @core.algorithm_assembler_create(layered_phase_descriptor)
-  ignore(assembler.reset())
-  ignore(
-    assembler.set_phase(
-      LayeredPhases::P1CycleBreaking,
-      recursive_layered_cycle_breaking_factory(cycle_breaking_strategy),
-    ),
-  )
-  ignore(
-    assembler.set_phase(
-      LayeredPhases::P2Layering,
-      recursive_layered_layering_factory(layering_strategy),
-    ),
-  )
-  ignore(
-    assembler.set_phase(
-      LayeredPhases::P3NodeOrdering,
-      recursive_layered_crossing_factory(crossing_strategy),
-    ),
-  )
-  ignore(
-    assembler.set_phase(
-      LayeredPhases::P4NodePlacement,
-      recursive_layered_node_placement_factory(node_placement_strategy),
-    ),
-  )
-  ignore(
-    assembler.set_phase(
-      LayeredPhases::P5EdgeRouting,
-      edge_router_factory_factory_for(
-        recursive_layered_parse_edge_routing(edge_routing_value),
-      ),
-    ),
-  )
-  ignore(
-    assembler.add_processor_configuration(
-      @core.layout_processor_configuration_create(layered_phase_descriptor)
-      .add_before(
-        LayeredPhases::P4NodePlacement,
-        @core.new_layout_processor_factory(95024, 31, () => {
-          new_innermost_node_margin_calculator_layout_processor()
-        }),
-      )
-      .add_before(
-        LayeredPhases::P4NodePlacement,
-        @core.new_layout_processor_factory(95025, 30, () => {
-          new_label_and_node_size_processor_layout_processor()
-        }),
-      )
-      .add_before(
-        LayeredPhases::P5EdgeRouting,
-        @core.new_layout_processor_factory(95040, 40, () => {
-          new_layer_size_and_graph_height_calculator_layout_processor()
-        }),
-      )
-      .add_after(
-        LayeredPhases::P5EdgeRouting,
-        @core.new_layout_processor_factory(95053, 53, () => {
-          new_end_label_sorter_layout_processor()
-        }),
-      ),
-    ),
-  )
-  if feedback_edges {
-    ignore(
-      assembler.add_processor_configuration(
-        @core.layout_processor_configuration_create(layered_phase_descriptor).add_before(
-          LayeredPhases::P1CycleBreaking,
-          @core.new_layout_processor_factory(95030, 17, () => {
-            new_port_side_processor_layout_processor()
-          }),
-        ),
-      ),
-    )
-  } else {
-    ignore(
-      assembler.add_processor_configuration(
-        @core.layout_processor_configuration_create(layered_phase_descriptor).add_before(
-          LayeredPhases::P3NodeOrdering,
-          @core.new_layout_processor_factory(95030, 17, () => {
-            new_port_side_processor_layout_processor()
-          }),
-        ),
-      ),
-    )
-  }
-
-  if recursive_layered_requires_direction_transform(direction_value) &&
-    recursive_layered_has_graph_property(
-      context.layered_graph,
-      GraphProperties::ExternalPorts,
-    ) {
-    ignore(
-      assembler.add_processor_configuration(
-        @core.layout_processor_configuration_create(layered_phase_descriptor)
-        .add_before(
-          LayeredPhases::P1CycleBreaking,
-          @core.new_layout_processor_factory(95000, 0, () => {
-            new_direction_preprocessor_layout_processor()
-          }),
-        )
-        .add_after(
-          LayeredPhases::P5EdgeRouting,
-          @core.new_layout_processor_factory(95056, 56, () => {
-            new_direction_postprocessor_layout_processor()
-          }),
-        ),
-      ),
-    )
-  }
-
-  if node_promotion_strategy != "NONE" {
-    ignore(
-      assembler.add_processor_configuration(
-        @core.layout_processor_configuration_create(layered_phase_descriptor).add_before(
-          LayeredPhases::P3NodeOrdering,
-          @core.new_layout_processor_factory(95026, 10, () => {
-            new_node_promotion_layout_processor()
-          }),
-        ),
-      ),
-    )
-  }
-
-  if context.layered_graph.get_property_string(
-      layered_options_consider_model_order_strategy,
-    ) !=
-    "NONE" {
-    ignore(
-      assembler.add_processor_configuration(
-        @core.layout_processor_configuration_create(layered_phase_descriptor).add_before(
-          LayeredPhases::P3NodeOrdering,
-          @core.new_layout_processor_factory(95039, 20, () => {
-            new_sort_by_input_model_processor_layout_processor()
-          }),
-        ),
-      ),
-    )
-  }
-
-  let algorithm = assembler.build(context.layered_graph)
-  let algorithm_monitor = match progress_monitor.sub_task(1.0) {
-    Some(value) => value
-    None => @core.new_null_elk_progress_monitor()
-  }
-  ignore(
-    algorithm_monitor.begin("Layered layout", algorithm.length().to_double()),
-  )
-  for processor in algorithm {
-    if algorithm_monitor.is_canceled() {
-      algorithm_monitor.done()
-      return false
-    }
-    processor.process(context.layered_graph, algorithm_monitor.sub_task(1.0))
-  }
-  algorithm_monitor.done()
-  recursive_layered_apply_layout(context, node)
-  true
+  recursive_layered_align_edge_sections_to_port_anchors(parent_node)
 }
 
 ///|

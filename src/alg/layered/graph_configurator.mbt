@@ -24,14 +24,27 @@ fn graph_configurator_direction_is_undefined(direction_value : String) -> Bool {
 }
 
 ///|
-fn graph_configurator_seeded_random_next_boolean(seed_value : Int64) -> Bool {
-  let seed = @buffer.new()
-  seed.write_int64_le(seed_value)
-  seed.write_int64_le(0)
-  seed.write_int64_le(0)
-  seed.write_int64_le(0)
-  let random = @random.Rand::chacha8(seed=seed.to_bytes())
-  random.int(limit=2) == 0
+fn graph_configurator_seeded_random_next_boolean(seed_value : Int) -> Bool {
+  let multiplier = 25214903917L
+  let addend = 11L
+  let mask = 281474976710655L
+  let mut seed = (Int64::from_int(seed_value) ^ multiplier) & mask
+  seed = (seed * multiplier + addend) & mask
+  ((seed >> 47) & 1L) == 1L
+}
+
+///|
+fn graph_configurator_initialize_random(
+  lgraph : LGraph,
+) -> GreedySwitchMockRandom {
+  let seed_value = lgraph.get_property_int(@core.random_seed)
+  if seed_value == 0 {
+    new_greedy_switch_mock_random_seeded(
+      @random.Rand::new().int(limit=@int.max_value),
+    )
+  } else {
+    new_greedy_switch_mock_random_seeded(seed_value)
+  }
 }
 
 ///|
@@ -108,11 +121,14 @@ pub fn graph_configurator_default_favor_straight_edges(lgraph : LGraph) -> Unit 
 pub fn graph_configurator_initialize_random_next_boolean(
   lgraph : LGraph,
 ) -> Unit {
+  let random = graph_configurator_initialize_random(lgraph)
+  lgraph.set_property_mock_random(internal_properties_random, Some(random))
+
   let seed_value = lgraph.get_property_int(@core.random_seed)
   let next_boolean = if seed_value == 0 {
     @random.Rand::new().int(limit=2) == 0
   } else {
-    graph_configurator_seeded_random_next_boolean(seed_value.to_int64())
+    graph_configurator_seeded_random_next_boolean(seed_value)
   }
   lgraph.set_property_bool(
     internal_properties_random_next_boolean, next_boolean,

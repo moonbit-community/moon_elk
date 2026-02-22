@@ -197,7 +197,7 @@ pub fn horizontal_port_placement_size_calculator_calculate_horizontal_port_place
 
 pub fn horizontal_port_placement_size_calculator_min_size_required_to_respect_spacing(Double, Double, Double) -> Double
 
-pub fn hyper_edge_cycle_detector_detect_cycles(Array[HyperEdgeSegment], Bool, @random.Rand) -> Array[HyperEdgeSegmentDependency]
+pub fn hyper_edge_cycle_detector_detect_cycles(Array[HyperEdgeSegment], Bool, GreedySwitchMockRandom) -> Array[HyperEdgeSegmentDependency]
 
 pub fn hyper_edge_segment_dependency_create_and_add_critical(HyperEdgeSegment, HyperEdgeSegment) -> HyperEdgeSegmentDependency
 
@@ -322,6 +322,8 @@ pub let internal_properties_port_dummy : @graph.IProperty[LNode?]
 pub let internal_properties_port_ratio_or_position : @graph.IProperty[Double]
 
 pub let internal_properties_processors : @graph.IProperty[Array[@core.ILayoutProcessor[LayeredPhases, LGraph]]]
+
+pub let internal_properties_random : @graph.IProperty[GreedySwitchMockRandom?]
 
 pub let internal_properties_random_next_boolean : @graph.IProperty[Bool]
 
@@ -815,6 +817,10 @@ pub fn new_greedy_switch_in_layer_edge_test_graph_creator() -> GreedySwitchInLay
 
 pub fn new_greedy_switch_mock_random() -> GreedySwitchMockRandom
 
+pub fn new_greedy_switch_mock_random_seeded(Int) -> GreedySwitchMockRandom
+
+pub fn new_greedy_switch_mock_random_seeded_int64(Int64) -> GreedySwitchMockRandom
+
 pub fn new_greedy_switch_north_south_edge_test_graph_creator() -> GreedySwitchNorthSouthEdgeTestGraphCreator
 
 pub fn new_greedy_switch_test_graph_creator() -> GreedySwitchTestGraphCreator
@@ -1285,7 +1291,7 @@ pub fn offset_graph(LGraph, Double, Double) -> Unit
 
 pub fn offset_graphs(Array[LGraph], Double, Double) -> Unit
 
-pub fn orthogonal_routing_generator_break_non_critical_cycles(Array[HyperEdgeSegment], @random.Rand) -> Unit
+pub fn orthogonal_routing_generator_break_non_critical_cycles(Array[HyperEdgeSegment], GreedySwitchMockRandom) -> Unit
 
 pub fn orthogonal_routing_generator_count_crossings(Array[Double], Double, Double) -> Int
 
@@ -2073,6 +2079,7 @@ pub fn GraphInfoHolder::parent_graph_data(Self) -> Self
 pub fn GraphInfoHolder::parent_layer_id(Self) -> Int
 pub fn GraphInfoHolder::port_distributor(Self) -> ISweepPortDistributor
 pub fn GraphInfoHolder::port_positions(Self) -> Array[Int]
+pub fn GraphInfoHolder::random(Self) -> GreedySwitchMockRandom?
 pub fn GraphInfoHolder::set_best_node_n_port_order(Self, SweepCopy?) -> Unit
 pub fn GraphInfoHolder::set_cross_min_deterministic(Self, Bool) -> Unit
 pub fn GraphInfoHolder::set_current_node_order(Self, Array[Array[LNode]]) -> Unit
@@ -2178,16 +2185,24 @@ pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_one_layer_with_in_layer_cros
 
 #alias(MockRandom)
 pub struct GreedySwitchMockRandom {
-  mut current : Float
+  mut seed : Int64
+  mut use_mock_sequence : Bool
+  mut current : Double
   mut change_by : Double
-  mut next_boolean : Bool
+  mut next_boolean_override : Bool?
 }
+pub fn GreedySwitchMockRandom::clear_next_boolean_override(Self) -> Unit
+pub fn GreedySwitchMockRandom::int(Self, Int) -> Int
 pub fn GreedySwitchMockRandom::next_boolean(Self) -> Bool
 pub fn GreedySwitchMockRandom::next_double(Self) -> Double
 pub fn GreedySwitchMockRandom::next_float(Self) -> Float
+pub fn GreedySwitchMockRandom::next_int(Self, Int) -> Int
+pub fn GreedySwitchMockRandom::next_long(Self) -> Int64
 pub fn GreedySwitchMockRandom::set_change_by(Self, Double) -> Unit
 pub fn GreedySwitchMockRandom::set_current(Self, Float) -> Unit
 pub fn GreedySwitchMockRandom::set_next_boolean(Self, Bool) -> Unit
+pub fn GreedySwitchMockRandom::set_seed(Self, Int64) -> Unit
+pub fn GreedySwitchMockRandom::set_seed_int(Self, Int) -> Unit
 
 pub struct GreedySwitchNorthSouthEdgeTestGraphCreator {
   base : GreedySwitchTestGraphCreator
@@ -2649,6 +2664,7 @@ pub struct LGraph {
   cross_hierarchy_map_entry_array_properties : Map[String, Array[(LEdge, (LEdge, LGraph, PortType))]]
   node_array_properties : Map[String, Array[LNode]]
   layout_processor_array_properties : Map[String, Array[@core.ILayoutProcessor[LayeredPhases, LGraph]]]
+  random_properties : Map[String, GreedySwitchMockRandom]
   int_properties : Map[String, Int]
   bool_properties : Map[String, Bool]
   double_properties : Map[String, Double]
@@ -2687,6 +2703,7 @@ pub fn LGraph::get_property_i_label_manager(Self, @graph.IProperty[@core.ILabelM
 pub fn LGraph::get_property_int(Self, @graph.IProperty[Int]) -> Int
 pub fn LGraph::get_property_l_node_array(Self, @graph.IProperty[Array[LNode]]) -> Array[LNode]
 pub fn LGraph::get_property_layout_processor_array(Self, @graph.IProperty[Array[@core.ILayoutProcessor[LayeredPhases, Self]]]) -> Array[@core.ILayoutProcessor[LayeredPhases, Self]]
+pub fn LGraph::get_property_mock_random(Self, @graph.IProperty[GreedySwitchMockRandom?]) -> GreedySwitchMockRandom?
 pub fn LGraph::get_property_port_side_array(Self, @graph.IProperty[Array[@core.PortSide]]) -> Array[@core.PortSide]
 pub fn LGraph::get_property_spacings(Self, @graph.IProperty[Spacings?]) -> Spacings?
 pub fn LGraph::get_property_spline_routing_mode(Self, @graph.IProperty[SplineRoutingMode]) -> SplineRoutingMode
@@ -2701,6 +2718,7 @@ pub fn LGraph::has_property_i_label_manager(Self, @graph.IProperty[@core.ILabelM
 pub fn LGraph::has_property_int(Self, @graph.IProperty[Int]) -> Bool
 pub fn LGraph::has_property_l_node_array(Self, @graph.IProperty[Array[LNode]]) -> Bool
 pub fn LGraph::has_property_layout_processor_array(Self, @graph.IProperty[Array[@core.ILayoutProcessor[LayeredPhases, Self]]]) -> Bool
+pub fn LGraph::has_property_mock_random(Self, @graph.IProperty[GreedySwitchMockRandom?]) -> Bool
 pub fn LGraph::has_property_spacings(Self, @graph.IProperty[Spacings?]) -> Bool
 pub fn LGraph::has_property_spline_routing_mode(Self, @graph.IProperty[SplineRoutingMode]) -> Bool
 pub fn LGraph::has_property_string(Self, @graph.IProperty[String]) -> Bool
@@ -2719,6 +2737,7 @@ pub fn LGraph::set_property_i_label_manager(Self, @graph.IProperty[@core.ILabelM
 pub fn LGraph::set_property_int(Self, @graph.IProperty[Int], Int) -> Unit
 pub fn LGraph::set_property_l_node_array(Self, @graph.IProperty[Array[LNode]], Array[LNode]) -> Unit
 pub fn LGraph::set_property_layout_processor_array(Self, @graph.IProperty[Array[@core.ILayoutProcessor[LayeredPhases, Self]]], Array[@core.ILayoutProcessor[LayeredPhases, Self]]) -> Unit
+pub fn LGraph::set_property_mock_random(Self, @graph.IProperty[GreedySwitchMockRandom?], GreedySwitchMockRandom?) -> Unit
 pub fn LGraph::set_property_port_side_array(Self, @graph.IProperty[Array[@core.PortSide]], Array[@core.PortSide]) -> Unit
 pub fn LGraph::set_property_spacings(Self, @graph.IProperty[Spacings?], Spacings?) -> Unit
 pub fn LGraph::set_property_spline_routing_mode(Self, @graph.IProperty[SplineRoutingMode], SplineRoutingMode) -> Unit
@@ -3128,7 +3147,8 @@ pub struct LayerSweepCrossingMinimizer {
   cross_min_type : CrossMinType
   graph_info_holders : Array[GraphInfoHolder]
   graphs_whose_node_order_changed : Array[GraphInfoHolder]
-  random : GreedySwitchMockRandom
+  mut random : GreedySwitchMockRandom
+  mut random_seed : Int64
 }
 pub fn LayerSweepCrossingMinimizer::get_graph_data(Self) -> Array[GraphInfoHolder]
 pub fn LayerSweepCrossingMinimizer::process(Self, LGraph, progress_monitor? : @core.IElkProgressMonitor?) -> Unit
@@ -3152,6 +3172,7 @@ pub fn LayerSweepTypeDeciderNodeInfo::transfer(Self, Self) -> Unit
 pub struct LayerTotalPortDistributor {
   distributor : AbstractBarycenterPortDistributor
 }
+pub fn LayerTotalPortDistributor::as_abstract_barycenter_port_distributor(Self) -> AbstractBarycenterPortDistributor
 pub fn LayerTotalPortDistributor::as_i_sweep_port_distributor(Self) -> ISweepPortDistributor
 pub fn LayerTotalPortDistributor::as_initializable(Self) -> IInitializable
 pub fn LayerTotalPortDistributor::calculate_port_ranks(Self, Array[LNode], PortType) -> Unit

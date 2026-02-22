@@ -6,6 +6,7 @@ import json
 import os
 import re
 import shlex
+import shutil
 import subprocess
 import sys
 import textwrap
@@ -111,6 +112,11 @@ def run_moon_tests(repo_root: Path, moon_target_root: Path) -> Dict[str, MoonRes
 def run_reference_batch(ref_root: Path, ref_mvn_cmd: str) -> Tuple[int, str]:
     cmd = shlex.split(ref_mvn_cmd)
     return run_cmd(cmd, ref_root)
+
+
+def reset_reference_reports(report_dir: Path) -> None:
+    if report_dir.exists():
+        shutil.rmtree(report_dir)
 
 
 def parse_reference_reports(report_dir: Path) -> Dict[str, RefClassResult]:
@@ -276,11 +282,18 @@ def main() -> int:
     parser.add_argument(
         "--ref-mvn-cmd",
         default=(
-            "mvn -q -f pom.xml "
-            "-pl ../plugins/org.eclipse.elk.core,../plugins/org.eclipse.elk.graph,"
-            "../plugins/org.eclipse.elk.alg.layered,../plugins/org.eclipse.elk.graph.json,"
+            "mvn -f pom.xml "
+            "-pl ../plugins/org.eclipse.elk.alg.common,../plugins/org.eclipse.elk.alg.disco,"
+            "../plugins/org.eclipse.elk.alg.force,../plugins/org.eclipse.elk.alg.layered,"
+            "../plugins/org.eclipse.elk.alg.mrtree,../plugins/org.eclipse.elk.alg.radial,"
+            "../plugins/org.eclipse.elk.alg.rectpacking,../plugins/org.eclipse.elk.alg.spore,"
+            "../plugins/org.eclipse.elk.alg.vertiflex,../plugins/org.eclipse.elk.core.meta,"
+            "../plugins/org.eclipse.elk.core,../plugins/org.eclipse.elk.core.debug.grandom,"
+            "../plugins/org.eclipse.elk.graph,../plugins/org.eclipse.elk.graph.json,"
+            "../plugins/org.eclipse.elk.graph.text,../test/org.eclipse.elk.alg.test,"
             "../test/org.eclipse.elk.graph.json.test "
-            "-DskipTests=false test"
+            "-DskipTests=false -DfailIfNoTests=false "
+            "-Dtest=org.eclipse.elk.graph.json.test.* integration-test"
         ),
         help="Maven command to run ELK-reference graph/json tests.",
     )
@@ -297,6 +310,7 @@ def main() -> int:
     ref_code: Optional[int] = None
     ref_output: Optional[str] = None
     if not args.skip_ref_run:
+        reset_reference_reports(ref_report_dir)
         ref_code, ref_output = run_reference_batch(ref_root, args.ref_mvn_cmd)
 
     ref_results = parse_reference_reports(ref_report_dir)
@@ -315,6 +329,12 @@ def main() -> int:
     print(f"Report (json): {report_json}")
     print(f"Report (md): {report_md}")
 
+    if not args.skip_ref_run and ref_code != 0:
+        print("Reference run failed; see report json output_head for details.", file=sys.stderr)
+        return 3
+    if not args.skip_ref_run and len(ref_results) == 0:
+        print("Reference run produced no JUnit XML reports.", file=sys.stderr)
+        return 4
     if mismatches > 0:
         return 2
     return 0

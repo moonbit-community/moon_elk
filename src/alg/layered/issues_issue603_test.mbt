@@ -187,6 +187,21 @@ fn issue603_test_layout_with_configured_placement() -> @graph.ElkNode {
   let graph = issue603_test_build_graph()
   issue603_test_configure_node_label_placement(graph)
   issue603_test_layout(graph)
+  for compound in @graph.node_children(graph) {
+    println(
+      "Issue603 debug compound id=\{@graph.node_identifier(compound)} x=\{@graph.node_x(compound)} y=\{@graph.node_y(compound)} w=\{@graph.node_width(compound)} h=\{@graph.node_height(compound)}",
+    )
+    for label in node_labels(compound) {
+      println(
+        "Issue603 debug label text=\{@graph.label_text(label)} x=\{@graph.label_x(label)} y=\{@graph.label_y(label)} w=\{@graph.label_width(label)} h=\{@graph.label_height(label)}",
+      )
+    }
+    for child in @graph.node_children(compound) {
+      println(
+        "Issue603 debug child id=\{@graph.node_identifier(child)} x=\{@graph.node_x(child)} y=\{@graph.node_y(child)} w=\{@graph.node_width(child)} h=\{@graph.node_height(child)}",
+      )
+    }
+  }
   graph
 }
 

@@ -69,6 +69,13 @@ pub fn LayerTotalPortDistributor::get_port_ranks(
 }
 
 ///|
+pub fn LayerTotalPortDistributor::as_abstract_barycenter_port_distributor(
+  self : LayerTotalPortDistributor,
+) -> AbstractBarycenterPortDistributor {
+  self.distributor
+}
+
+///|
 pub fn LayerTotalPortDistributor::distribute_ports_while_sweeping(
   self : LayerTotalPortDistributor,
   node_order : Array[Array[LNode]],

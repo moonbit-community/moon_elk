@@ -9,6 +9,7 @@ priv struct EdgeSectionData {
   mut start_y : Double
   mut end_x : Double
   mut end_y : Double
+  bend_points : Array[ElkBendPoint]
   mut incoming_shape : ElkConnectableShape?
   mut outgoing_shape : ElkConnectableShape?
   incoming_sections : Array[ElkEdgeSection]
@@ -36,6 +37,7 @@ pub fn create_edge_section(edge : ElkEdge) -> ElkEdgeSection {
     start_y: 0.0,
     end_x: 0.0,
     end_y: 0.0,
+    bend_points: [],
     incoming_shape: None,
     outgoing_shape: None,
     incoming_sections: [],
@@ -118,6 +120,33 @@ pub fn edge_section_end_x(section : ElkEdgeSection) -> Double {
 pub fn edge_section_end_y(section : ElkEdgeSection) -> Double {
   checked_edge_section(section)
   edge_section_store.val[section].end_y
+}
+
+///|
+pub fn edge_section_bend_points(
+  section : ElkEdgeSection,
+) -> Array[ElkBendPoint] {
+  checked_edge_section(section)
+  edge_section_store.val[section].bend_points
+}
+
+///|
+pub fn edge_section_add_bend_point(
+  section : ElkEdgeSection,
+  bend_point : ElkBendPoint,
+) -> Unit {
+  checked_edge_section(section)
+  let section_data = edge_section_store.val[section]
+  section_data.bend_points.push(bend_point)
+  edge_section_store.val[section] = section_data
+}
+
+///|
+pub fn edge_section_clear_bend_points(section : ElkEdgeSection) -> Unit {
+  checked_edge_section(section)
+  let section_data = edge_section_store.val[section]
+  section_data.bend_points.clear()
+  edge_section_store.val[section] = section_data
 }
 
 ///|

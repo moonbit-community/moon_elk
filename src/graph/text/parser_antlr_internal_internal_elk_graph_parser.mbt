@@ -133,6 +133,46 @@ fn graph_text_parser_last_segment(qualified_id : String) -> String {
 }
 
 ///|
+fn graph_text_parser_has_dot(text : String) -> Bool {
+  let mut idx = 0
+  while idx < text.length() {
+    if text[idx].unsafe_to_char() == '.' {
+      return true
+    }
+    idx += 1
+  }
+  false
+}
+
+///|
+fn graph_text_parser_parent_qualified_id(qualified_id : String) -> String {
+  let mut last_dot = -1
+  let mut idx = 0
+  while idx < qualified_id.length() {
+    if qualified_id[idx].unsafe_to_char() == '.' {
+      last_dot = idx
+    }
+    idx += 1
+  }
+  if last_dot > 0 {
+    qualified_id.unsafe_substring(start=0, end=last_dot)
+  } else {
+    ""
+  }
+}
+
+///|
+fn graph_text_parser_join_qualified_id(prefix : String, id : String) -> String {
+  if prefix == "" {
+    id
+  } else if id == "" {
+    prefix
+  } else {
+    prefix + "." + id
+  }
+}
+
+///|
 fn graph_text_parser_parse_qualified_id(
   tokens : Array[ElkGraphLexToken],
   start : Int,
@@ -158,11 +198,30 @@ fn graph_text_parser_parse_qualified_id(
 ///|
 fn graph_text_parser_resolve_shape(
   id_to_shape : Map[String, @graph.ElkConnectableShape],
+  scope_qualified_id : String,
   qualified_id : String,
 ) -> @graph.ElkConnectableShape? {
-  match id_to_shape.get(qualified_id) {
-    Some(shape) => Some(shape)
-    None => id_to_shape.get(graph_text_parser_last_segment(qualified_id))
+  if graph_text_parser_has_dot(qualified_id) {
+    match id_to_shape.get(qualified_id) {
+      Some(shape) => return Some(shape)
+      None => ()
+    }
+  }
+
+  let mut scope = scope_qualified_id
+  while scope != "" {
+    let candidate = graph_text_parser_join_qualified_id(scope, qualified_id)
+    match id_to_shape.get(candidate) {
+      Some(shape) => return Some(shape)
+      None => ()
+    }
+    scope = graph_text_parser_parent_qualified_id(scope)
+  }
+
+  if graph_text_parser_has_dot(qualified_id) {
+    None
+  } else {
+    id_to_shape.get(qualified_id)
   }
 }
 
@@ -399,6 +458,7 @@ fn graph_text_parser_parse_edge_section_body(
   start : Int,
   section : @graph.ElkEdgeSection,
   id_to_shape : Map[String, @graph.ElkConnectableShape],
+  scope_qualified_id : String,
   end_lexeme : String,
 ) -> Int {
   let mut index = start
@@ -412,7 +472,10 @@ fn graph_text_parser_parse_edge_section_body(
       match graph_text_parser_parse_qualified_id(tokens, cursor) {
         Some((qualified_id, consumed)) => {
           cursor += consumed
-          match graph_text_parser_resolve_shape(id_to_shape, qualified_id) {
+          match
+            graph_text_parser_resolve_shape(
+              id_to_shape, scope_qualified_id, qualified_id,
+            ) {
             Some(shape) =>
               if is_incoming {
                 @graph.edge_section_set_incoming_shape(section, Some(shape))
@@ -478,6 +541,7 @@ fn graph_text_parser_parse_named_edge_section(
   start : Int,
   edge : @graph.ElkEdge,
   id_to_shape : Map[String, @graph.ElkConnectableShape],
+  scope_qualified_id : String,
   section_by_id : Map[String, @graph.ElkEdgeSection],
   pending_outgoing : Array[GraphTextPendingOutgoingSection],
 ) -> (@graph.ElkEdgeSection, Int)? {
@@ -518,6 +582,7 @@ fn graph_text_parser_parse_named_edge_section(
       index + 1,
       section,
       id_to_shape,
+      scope_qualified_id,
       "]",
     )
     if index < tokens.length() && tokens[index].lexeme == "]" {
@@ -533,10 +598,11 @@ fn graph_text_parser_parse_single_edge_section(
   start : Int,
   edge : @graph.ElkEdge,
   id_to_shape : Map[String, @graph.ElkConnectableShape],
+  scope_qualified_id : String,
 ) -> (@graph.ElkEdgeSection, Int) {
   let section = @graph.create_edge_section(edge)
   let mut index = graph_text_parser_parse_edge_section_body(
-    tokens, start, section, id_to_shape, "]",
+    tokens, start, section, id_to_shape, scope_qualified_id, "]",
   )
   while index < tokens.length() && tokens[index].lexeme == "|" {
     index += 1
@@ -550,6 +616,7 @@ fn graph_text_parser_parse_edge_layout(
   start : Int,
   edge : @graph.ElkEdge,
   id_to_shape : Map[String, @graph.ElkConnectableShape],
+  scope_qualified_id : String,
 ) -> Int {
   let mut index = start
   if index >= tokens.length() || tokens[index].lexeme != "layout" {
@@ -566,7 +633,7 @@ fn graph_text_parser_parse_edge_layout(
     if tokens[index].lexeme == "section" {
       match
         graph_text_parser_parse_named_edge_section(
-          tokens, index, edge, id_to_shape, section_by_id, pending_outgoing,
+          tokens, index, edge, id_to_shape, scope_qualified_id, section_by_id, pending_outgoing,
         ) {
         Some((_, consumed_index)) => {
           index = consumed_index
@@ -576,7 +643,7 @@ fn graph_text_parser_parse_edge_layout(
       }
     } else {
       let (_, consumed_index) = graph_text_parser_parse_single_edge_section(
-        tokens, index, edge, id_to_shape,
+        tokens, index, edge, id_to_shape, scope_qualified_id,
       )
       if consumed_index > index {
         index = consumed_index
@@ -696,6 +763,7 @@ fn graph_text_parser_parse_port(
   tokens : Array[ElkGraphLexToken],
   start : Int,
   parent : @graph.ElkNode,
+  parent_qualified_id : String,
   id_to_shape : Map[String, @graph.ElkConnectableShape],
 ) -> (@graph.ElkPort, Int)? {
   if start >= tokens.length() || tokens[start].lexeme != "port" {
@@ -709,11 +777,21 @@ fn graph_text_parser_parse_port(
   let port = @graph.create_port(Some(parent))
   let port_id = graph_text_parser_decode_id(tokens[index].lexeme)
   @graph.port_set_identifier(port, port_id)
+  let port_qualified_id = graph_text_parser_join_qualified_id(
+    parent_qualified_id, port_id,
+  )
   graph_text_parser_register_shape(
     id_to_shape,
     port_id,
     @graph.make_port_shape(port),
   )
+  if port_qualified_id != port_id {
+    graph_text_parser_register_shape(
+      id_to_shape,
+      port_qualified_id,
+      @graph.make_port_shape(port),
+    )
+  }
   index += 1
   if index < tokens.length() && tokens[index].lexeme == "{" {
     index += 1
@@ -763,6 +841,7 @@ fn graph_text_parser_parse_edge(
   tokens : Array[ElkGraphLexToken],
   start : Int,
   parent : @graph.ElkNode,
+  scope_qualified_id : String,
   id_to_shape : Map[String, @graph.ElkConnectableShape],
 ) -> (@graph.ElkEdge, Int)? {
   if start >= tokens.length() || tokens[start].lexeme != "edge" {
@@ -788,7 +867,8 @@ fn graph_text_parser_parse_edge(
     match graph_text_parser_parse_qualified_id(tokens, index) {
       Some((id, consumed)) => {
         read_sources = true
-        match graph_text_parser_resolve_shape(id_to_shape, id) {
+        match
+          graph_text_parser_resolve_shape(id_to_shape, scope_qualified_id, id) {
           Some(shape) => @graph.edge_add_source(edge, shape)
           None => ()
         }
@@ -806,7 +886,8 @@ fn graph_text_parser_parse_edge(
   while index < tokens.length() {
     match graph_text_parser_parse_qualified_id(tokens, index) {
       Some((id, consumed)) => {
-        match graph_text_parser_resolve_shape(id_to_shape, id) {
+        match
+          graph_text_parser_resolve_shape(id_to_shape, scope_qualified_id, id) {
           Some(shape) => @graph.edge_add_target(edge, shape)
           None => ()
         }
@@ -825,7 +906,7 @@ fn graph_text_parser_parse_edge(
     while index < tokens.length() && tokens[index].lexeme != "}" {
       if tokens[index].lexeme == "layout" {
         index = graph_text_parser_parse_edge_layout(
-          tokens, index, edge, id_to_shape,
+          tokens, index, edge, id_to_shape, scope_qualified_id,
         )
         continue
       }
@@ -866,6 +947,7 @@ fn graph_text_parser_parse_node(
   tokens : Array[ElkGraphLexToken],
   start : Int,
   parent : @graph.ElkNode,
+  parent_qualified_id : String,
   id_to_shape : Map[String, @graph.ElkConnectableShape],
 ) -> (@graph.ElkNode, Int)? {
   if start >= tokens.length() || tokens[start].lexeme != "node" {
@@ -879,11 +961,21 @@ fn graph_text_parser_parse_node(
   let node = @graph.create_node(Some(parent))
   let node_id = graph_text_parser_decode_id(tokens[index].lexeme)
   @graph.node_set_identifier(node, node_id)
+  let node_qualified_id = graph_text_parser_join_qualified_id(
+    parent_qualified_id, node_id,
+  )
   graph_text_parser_register_shape(
     id_to_shape,
     node_id,
     @graph.make_node_shape(node),
   )
+  if node_qualified_id != node_id {
+    graph_text_parser_register_shape(
+      id_to_shape,
+      node_qualified_id,
+      @graph.make_node_shape(node),
+    )
+  }
   index += 1
   if index < tokens.length() && tokens[index].lexeme == "{" {
     index += 1
@@ -912,7 +1004,10 @@ fn graph_text_parser_parse_node(
         }
       }
       if tokens[index].lexeme == "port" {
-        match graph_text_parser_parse_port(tokens, index, node, id_to_shape) {
+        match
+          graph_text_parser_parse_port(
+            tokens, index, node, node_qualified_id, id_to_shape,
+          ) {
           Some((_, next_index)) => {
             index = next_index
             continue
@@ -921,7 +1016,10 @@ fn graph_text_parser_parse_node(
         }
       }
       if tokens[index].lexeme == "node" {
-        match graph_text_parser_parse_node(tokens, index, node, id_to_shape) {
+        match
+          graph_text_parser_parse_node(
+            tokens, index, node, node_qualified_id, id_to_shape,
+          ) {
           Some((_, next_index)) => {
             index = next_index
             continue
@@ -930,7 +1028,10 @@ fn graph_text_parser_parse_node(
         }
       }
       if tokens[index].lexeme == "edge" {
-        match graph_text_parser_parse_edge(tokens, index, node, id_to_shape) {
+        match
+          graph_text_parser_parse_edge(
+            tokens, index, node, node_qualified_id, id_to_shape,
+          ) {
           Some((_, next_index)) => {
             index = next_index
             continue
@@ -968,6 +1069,7 @@ pub fn InternalElkGraphParser::rule_root_node(
 ) -> @graph.ElkNode {
   let root = @graph.create_graph()
   let id_to_shape : Map[String, @graph.ElkConnectableShape] = {}
+  let mut root_qualified_id = ""
   let mut index = 0
   if index < self.tokens.length() && self.tokens[index].lexeme == "graph" {
     index += 1
@@ -975,6 +1077,7 @@ pub fn InternalElkGraphParser::rule_root_node(
       self.tokens[index].token_type == graph_text_lexer_rule_id {
       let root_id = graph_text_parser_decode_id(self.tokens[index].lexeme)
       @graph.node_set_identifier(root, root_id)
+      root_qualified_id = root_id
       graph_text_parser_register_shape(
         id_to_shape,
         root_id,
@@ -1008,7 +1111,13 @@ pub fn InternalElkGraphParser::rule_root_node(
     }
     if self.tokens[index].lexeme == "port" {
       match
-        graph_text_parser_parse_port(self.tokens, index, root, id_to_shape) {
+        graph_text_parser_parse_port(
+          self.tokens,
+          index,
+          root,
+          root_qualified_id,
+          id_to_shape,
+        ) {
         Some((_, next_index)) => {
           index = next_index
           continue
@@ -1018,7 +1127,13 @@ pub fn InternalElkGraphParser::rule_root_node(
     }
     if self.tokens[index].lexeme == "node" {
       match
-        graph_text_parser_parse_node(self.tokens, index, root, id_to_shape) {
+        graph_text_parser_parse_node(
+          self.tokens,
+          index,
+          root,
+          root_qualified_id,
+          id_to_shape,
+        ) {
         Some((_, next_index)) => {
           index = next_index
           continue
@@ -1028,7 +1143,13 @@ pub fn InternalElkGraphParser::rule_root_node(
     }
     if self.tokens[index].lexeme == "edge" {
       match
-        graph_text_parser_parse_edge(self.tokens, index, root, id_to_shape) {
+        graph_text_parser_parse_edge(
+          self.tokens,
+          index,
+          root,
+          root_qualified_id,
+          id_to_shape,
+        ) {
         Some((_, next_index)) => {
           index = next_index
           continue
@@ -1062,7 +1183,7 @@ pub fn InternalElkGraphParser::rule_elk_node(
 ) -> @graph.ElkNode {
   let root = @graph.create_graph()
   let id_to_shape : Map[String, @graph.ElkConnectableShape] = {}
-  match graph_text_parser_parse_node(self.tokens, 0, root, id_to_shape) {
+  match graph_text_parser_parse_node(self.tokens, 0, root, "", id_to_shape) {
     Some((node, _)) => node
     None => @graph.create_node(Some(root))
   }
@@ -1106,7 +1227,7 @@ pub fn InternalElkGraphParser::rule_elk_port(
 ) -> @graph.ElkPort {
   let root = @graph.create_graph()
   let id_to_shape : Map[String, @graph.ElkConnectableShape] = {}
-  match graph_text_parser_parse_port(self.tokens, 0, root, id_to_shape) {
+  match graph_text_parser_parse_port(self.tokens, 0, root, "", id_to_shape) {
     Some((port, _)) => port
     None => @graph.create_port(Some(root))
   }
@@ -1125,7 +1246,7 @@ pub fn InternalElkGraphParser::rule_elk_edge(
 ) -> @graph.ElkEdge {
   let root = @graph.create_graph()
   let id_to_shape : Map[String, @graph.ElkConnectableShape] = {}
-  match graph_text_parser_parse_edge(self.tokens, 0, root, id_to_shape) {
+  match graph_text_parser_parse_edge(self.tokens, 0, root, "", id_to_shape) {
     Some((edge, _)) => edge
     None => @graph.create_edge(Some(root))
   }
@@ -1146,7 +1267,9 @@ pub fn InternalElkGraphParser::rule_edge_layout(
   edge : @graph.ElkEdge,
 ) -> @graph.ElkEdge {
   let id_to_shape : Map[String, @graph.ElkConnectableShape] = {}
-  ignore(graph_text_parser_parse_edge_layout(self.tokens, 0, edge, id_to_shape))
+  ignore(
+    graph_text_parser_parse_edge_layout(self.tokens, 0, edge, id_to_shape, ""),
+  )
   edge
 }
 
@@ -1169,6 +1292,7 @@ pub fn InternalElkGraphParser::rule_elk_single_edge_section(
     0,
     edge,
     id_to_shape,
+    "",
   )
   section
 }
@@ -1195,6 +1319,7 @@ pub fn InternalElkGraphParser::rule_elk_edge_section(
       0,
       edge,
       id_to_shape,
+      "",
       section_by_id,
       pending_outgoing,
     ) {

@@ -9,41 +9,28 @@ fn hyper_edge_cycle_detector_is_critical_dependency(
 }
 
 ///|
-fn hyper_edge_cycle_detector_contains_segment(
-  segments : Array[HyperEdgeSegment],
-  segment : HyperEdgeSegment,
-) -> Bool {
-  let candidate_handle = segment.get_handle()
-  for existing in segments {
-    if existing.get_handle() == candidate_handle {
-      return true
-    }
-  }
-  false
-}
-
-///|
 fn hyper_edge_cycle_detector_remove_segment(
   segments : Array[HyperEdgeSegment],
   segment : HyperEdgeSegment,
 ) -> Unit {
   let candidate_handle = segment.get_handle()
-  for i in 0..<segments.length() {
-    if segments[i].get_handle() == candidate_handle {
-      ignore(segments.remove(i))
-      return
+  let mut index = 0
+  while index < segments.length() {
+    if segments[index].get_handle() == candidate_handle {
+      ignore(segments.remove(index))
+      break
     }
+    index = index + 1
   }
 }
 
 ///|
-fn hyper_edge_cycle_detector_add_segment_if_absent(
+fn hyper_edge_cycle_detector_sorted_unprocessed(
   segments : Array[HyperEdgeSegment],
-  segment : HyperEdgeSegment,
-) -> Unit {
-  if !hyper_edge_cycle_detector_contains_segment(segments, segment) {
-    segments.push(segment)
-  }
+) -> Array[HyperEdgeSegment] {
+  let unprocessed = segments.copy()
+  unprocessed.sort_by((left, right) => left.get_mark() - right.get_mark())
+  unprocessed
 }
 
 ///|
@@ -121,7 +108,7 @@ fn hyper_edge_cycle_detector_update_neighbors(
       }
 
       if target.get_in_weight() <= 0 && target.get_out_weight() > 0 {
-        hyper_edge_cycle_detector_add_segment_if_absent(sources, target)
+        sources.push(target)
       }
     }
   }
@@ -142,7 +129,7 @@ fn hyper_edge_cycle_detector_update_neighbors(
       }
 
       if source.get_out_weight() <= 0 && source.get_in_weight() > 0 {
-        hyper_edge_cycle_detector_add_segment_if_absent(sinks, source)
+        sinks.push(source)
       }
     }
   }
@@ -154,9 +141,9 @@ fn hyper_edge_cycle_detector_compute_linear_ordering_marks(
   sources : Array[HyperEdgeSegment],
   sinks : Array[HyperEdgeSegment],
   critical_only : Bool,
-  random : @random.Rand,
+  random : MockRandom,
 ) -> Unit {
-  let unprocessed = segments.copy()
+  let unprocessed = hyper_edge_cycle_detector_sorted_unprocessed(segments)
   let max_segments = []
 
   let mark_base = segments.length()
@@ -166,9 +153,6 @@ fn hyper_edge_cycle_detector_compute_linear_ordering_marks(
   while !unprocessed.is_empty() {
     while !sinks.is_empty() {
       let sink = sinks.remove(0)
-      if !hyper_edge_cycle_detector_contains_segment(unprocessed, sink) {
-        continue
-      }
       hyper_edge_cycle_detector_remove_segment(unprocessed, sink)
       sink.set_mark(next_sink_mark)
       next_sink_mark = next_sink_mark - 1
@@ -179,9 +163,6 @@ fn hyper_edge_cycle_detector_compute_linear_ordering_marks(
 
     while !sources.is_empty() {
       let source = sources.remove(0)
-      if !hyper_edge_cycle_detector_contains_segment(unprocessed, source) {
-        continue
-      }
       hyper_edge_cycle_detector_remove_segment(unprocessed, source)
       source.set_mark(next_source_mark)
       next_source_mark = next_source_mark + 1
@@ -191,7 +172,7 @@ fn hyper_edge_cycle_detector_compute_linear_ordering_marks(
     }
 
     if !unprocessed.is_empty() {
-      let mut max_outflow = -1_000_000_000
+      let mut max_outflow = @int.min_value
       max_segments.clear()
 
       for segment in unprocessed {
@@ -214,7 +195,7 @@ fn hyper_edge_cycle_detector_compute_linear_ordering_marks(
       }
 
       if !max_segments.is_empty() {
-        let max_segment = max_segments[random.int(limit=max_segments.length())]
+        let max_segment = max_segments[random.int(max_segments.length())]
         hyper_edge_cycle_detector_remove_segment(unprocessed, max_segment)
         max_segment.set_mark(next_source_mark)
         next_source_mark = next_source_mark + 1
@@ -238,7 +219,7 @@ fn hyper_edge_cycle_detector_compute_linear_ordering_marks(
 pub fn hyper_edge_cycle_detector_detect_cycles(
   segments : Array[HyperEdgeSegment],
   critical_only : Bool,
-  random : @random.Rand,
+  random : MockRandom,
 ) -> Array[HyperEdgeSegmentDependency] {
   let result = []
 

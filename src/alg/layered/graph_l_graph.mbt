@@ -12,6 +12,7 @@ pub struct LGraph {
     String,
     Array[@core.ILayoutProcessor[LayeredPhases, LGraph]],
   ]
+  random_properties : Map[String, GreedySwitchMockRandom]
   int_properties : Map[String, Int]
   bool_properties : Map[String, Bool]
   double_properties : Map[String, Double]
@@ -43,6 +44,7 @@ pub fn new_l_graph() -> LGraph {
     cross_hierarchy_map_entry_array_properties: {},
     node_array_properties: {},
     layout_processor_array_properties: {},
+    random_properties: {},
     int_properties: {},
     bool_properties: {},
     double_properties: {},
@@ -201,6 +203,39 @@ pub fn LGraph::has_property_layout_processor_array(
   ],
 ) -> Bool {
   self.layout_processor_array_properties.contains(property.get_id())
+}
+
+///|
+pub fn LGraph::set_property_mock_random(
+  self : LGraph,
+  property : @graph.IProperty[GreedySwitchMockRandom?],
+  value : GreedySwitchMockRandom?,
+) -> Unit {
+  if value is Some(random) {
+    self.random_properties[property.get_id()] = random
+  } else {
+    ignore(self.random_properties.remove(property.get_id()))
+  }
+}
+
+///|
+pub fn LGraph::get_property_mock_random(
+  self : LGraph,
+  property : @graph.IProperty[GreedySwitchMockRandom?],
+) -> GreedySwitchMockRandom? {
+  if self.random_properties.get(property.get_id()) is Some(random) {
+    Some(random)
+  } else {
+    property.get_default()
+  }
+}
+
+///|
+pub fn LGraph::has_property_mock_random(
+  self : LGraph,
+  property : @graph.IProperty[GreedySwitchMockRandom?],
+) -> Bool {
+  self.random_properties.contains(property.get_id())
 }
 
 ///|

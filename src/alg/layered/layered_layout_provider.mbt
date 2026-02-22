@@ -13,12 +13,7 @@ fn init {
   @core.recursive_graph_layout_engine_register_handler(layered_algorithm_id, (
     layout_graph,
     progress_monitor,
-  ) => {
-    if recursive_layered_try_layout(layout_graph, progress_monitor) {
-      return
-    }
-    new_layered_layout_provider().layout(layout_graph, progress_monitor)
-  })
+  ) => new_layered_layout_provider().layout(layout_graph, progress_monitor))
 }
 
 ///|

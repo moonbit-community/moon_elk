@@ -285,6 +285,12 @@ pub let internal_properties_original_dummy_node_position : @graph.IProperty[
 ] = @graph.new_property("originalDummyNodePosition", 0.0)
 
 ///|
+pub let internal_properties_random : @graph.IProperty[GreedySwitchMockRandom?] = @graph.new_property(
+  "random",
+  None,
+)
+
+///|
 pub let internal_properties_random_next_boolean : @graph.IProperty[Bool] = @graph.new_property(
   "random.nextBoolean", true,
 )

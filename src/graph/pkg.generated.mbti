@@ -62,9 +62,15 @@ pub fn edge_layout_option_string_entries(Int) -> Array[(String, String)]
 
 pub fn edge_layout_option_string_value(Int, String) -> String?
 
+pub fn edge_section_add_bend_point(Int, ElkBendPoint) -> Unit
+
 pub fn edge_section_add_incoming_section(Int, Int) -> Unit
 
 pub fn edge_section_add_outgoing_section(Int, Int) -> Unit
+
+pub fn edge_section_bend_points(Int) -> Array[ElkBendPoint]
+
+pub fn edge_section_clear_bend_points(Int) -> Unit
 
 pub fn edge_section_end_x(Int) -> Double
 

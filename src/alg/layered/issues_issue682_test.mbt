@@ -46,9 +46,9 @@ fn issue682_test_assert_close(
   context : String,
 ) -> Unit {
   if (actual - expected).abs() > epsilon {
-    abort(
-      "\{context}: expected=\{expected}, actual=\{actual}, epsilon=\{epsilon}",
-    )
+    let message = "\{context}: expected=\{expected}, actual=\{actual}, epsilon=\{epsilon}"
+    println(message)
+    abort(message)
   }
 }
 

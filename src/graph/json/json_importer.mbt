@@ -644,6 +644,28 @@ fn importer_fill_edge_section_points(
   let end_y = json_number_in_object(end_point, "y").unwrap_or(0.0)
   @graph.edge_section_set_start(section, start_x, start_y)
   @graph.edge_section_set_end(section, end_x, end_y)
+
+  match json_array_field(json_section, "bendPoints") {
+    Some(bend_points_json) =>
+      for bend_point_json in bend_points_json {
+        match bend_point_json {
+          Object(bend_point_obj) => {
+            let bend_x = json_number_in_object(bend_point_obj, "x").unwrap_or(
+              0.0,
+            )
+            let bend_y = json_number_in_object(bend_point_obj, "y").unwrap_or(
+              0.0,
+            )
+            @graph.edge_section_add_bend_point(
+              section,
+              @graph.new_elk_bend_point(x=bend_x, y=bend_y),
+            )
+          }
+          _ => ()
+        }
+      }
+    None => ()
+  }
 }
 
 ///|
@@ -1092,6 +1114,18 @@ fn importer_transfer_edge_sections(
           edge_adjust_y(importer, edge, @graph.edge_section_end_y(section)),
         ),
       }),
+    }
+    let bend_points_json = []
+    for bend_point in @graph.edge_section_bend_points(section) {
+      bend_points_json.push(
+        Json::object({
+          "x": Json::number(edge_adjust_x(importer, edge, bend_point.get_x())),
+          "y": Json::number(edge_adjust_y(importer, edge, bend_point.get_y())),
+        }),
+      )
+    }
+    if !bend_points_json.is_empty() {
+      section_obj["bendPoints"] = Json::array(bend_points_json)
     }
     match @graph.edge_section_incoming_shape(section) {
       Some(shape) =>

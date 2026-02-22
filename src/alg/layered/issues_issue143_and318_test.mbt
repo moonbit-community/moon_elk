@@ -133,6 +133,9 @@ fn issue143_and318_test_collect_section_chain_points(
     ),
   )
   while true {
+    for bend_point in @graph.edge_section_bend_points(current) {
+      points.push(@core.new_kvector_xy(bend_point.get_x(), bend_point.get_y()))
+    }
     points.push(
       @core.new_kvector_xy(
         @graph.edge_section_end_x(current),

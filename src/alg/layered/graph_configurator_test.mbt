@@ -13,13 +13,12 @@ let graph_configurator_test_double_eq_epsilon = 0.00001
 
 ///|
 fn graph_configurator_test_seeded_next_boolean(seed_value : Int64) -> Bool {
-  let seed = @buffer.new()
-  seed.write_int64_le(seed_value)
-  seed.write_int64_le(0)
-  seed.write_int64_le(0)
-  seed.write_int64_le(0)
-  let random = @random.Rand::chacha8(seed=seed.to_bytes())
-  random.int(limit=2) == 0
+  let multiplier = 25214903917L
+  let addend = 11L
+  let mask = 281474976710655L
+  let mut seed = (seed_value ^ multiplier) & mask
+  seed = (seed * multiplier + addend) & mask
+  ((seed >> 47) & 1L) == 1L
 }
 
 ///|

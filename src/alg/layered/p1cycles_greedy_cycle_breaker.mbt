@@ -8,7 +8,7 @@ priv struct GreedyCycleBreakerState {
   sinks : Array[LNode]
   mut sink_head : Int
   layered_graph : LGraph
-  random : @random.Rand
+  random : MockRandom
 }
 
 ///|
@@ -55,10 +55,10 @@ fn greedy_cycle_breaker_array_clear(values : Array[LNode]) -> Unit {
 fn greedy_cycle_breaker_choose_node_with_max_outflow_default(
   nodes : Array[LNode],
   graph : LGraph,
-  random : @random.Rand,
+  random : MockRandom,
 ) -> LNode {
   ignore(graph)
-  let index = random.int(limit=nodes.length())
+  let index = random.int(nodes.length())
   nodes[index]
 }
 
@@ -121,7 +121,7 @@ fn greedy_cycle_breaker_update_neighbors(
 ///|
 fn greedy_cycle_breaker_collect_and_mark(
   state : GreedyCycleBreakerState,
-  choose_node_with_max_outflow : (Array[LNode], LGraph, @random.Rand) -> LNode,
+  choose_node_with_max_outflow : (Array[LNode], LGraph, MockRandom) -> LNode,
 ) -> Unit {
   let nodes = state.layered_graph.get_layerless_nodes()
   let mut unprocessed_node_count = nodes.length()
@@ -234,7 +234,7 @@ fn greedy_cycle_breaker_configuration(
 fn greedy_cycle_breaker_process_with_chooser(
   layered_graph : LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-  choose_node_with_max_outflow : (Array[LNode], LGraph, @random.Rand) -> LNode,
+  choose_node_with_max_outflow : (Array[LNode], LGraph, MockRandom) -> LNode,
 ) -> Unit {
   let monitor = match progress_monitor {
     Some(value) => value
@@ -243,6 +243,21 @@ fn greedy_cycle_breaker_process_with_chooser(
   ignore(monitor.begin("Greedy cycle removal", 1.0))
 
   let nodes = layered_graph.get_layerless_nodes()
+  let random = if layered_graph.get_property_mock_random(
+      internal_properties_random,
+    )
+    is Some(value) {
+    value
+  } else {
+    let seed_value = layered_graph.get_property_int(@core.random_seed)
+    if seed_value == 0 {
+      new_greedy_switch_mock_random_seeded(
+        @random.Rand::new().int(limit=@int.max_value),
+      )
+    } else {
+      new_greedy_switch_mock_random_seeded(seed_value)
+    }
+  }
   let state = {
     indeg: Array::make(nodes.length(), 0),
     outdeg: Array::make(nodes.length(), 0),
@@ -252,7 +267,7 @@ fn greedy_cycle_breaker_process_with_chooser(
     sinks: [],
     sink_head: 0,
     layered_graph,
-    random: @random.Rand::new(),
+    random,
   }
 
   for i = 0; i < nodes.length(); i = i + 1 {

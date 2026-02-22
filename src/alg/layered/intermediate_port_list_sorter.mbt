@@ -191,19 +191,22 @@ fn port_list_sorter_find_port_side_range(
     return (0, 0)
   }
 
+  let mut current_side = ports[0].get_side()
   let mut low_idx = 0
   let lb = port_list_sorter_port_side_rank(side)
   let hb = lb + 1
 
-  while low_idx < ports.length() &&
-        port_list_sorter_port_side_rank(ports[low_idx].get_side()) < lb {
+  while low_idx < ports.length() - 1 &&
+        port_list_sorter_port_side_rank(current_side) < lb {
     low_idx = low_idx + 1
+    current_side = ports[low_idx].get_side()
   }
 
   let mut high_idx = low_idx
-  while high_idx < ports.length() &&
-        port_list_sorter_port_side_rank(ports[high_idx].get_side()) < hb {
+  while high_idx < ports.length() - 1 &&
+        port_list_sorter_port_side_rank(current_side) < hb {
     high_idx = high_idx + 1
+    current_side = ports[low_idx].get_side()
   }
 
   (low_idx, high_idx)
@@ -215,7 +218,7 @@ fn port_list_sorter_reverse(
   low_idx : Int,
   high_idx : Int,
 ) -> Unit {
-  if high_idx <= low_idx + 1 {
+  if high_idx <= low_idx + 2 {
     return
   }
 

@@ -130,32 +130,26 @@ pub fn OrthogonalRoutingGenerator::get_critical_conflict_threshold(
 }
 
 ///|
-fn orthogonal_routing_generator_seeded_random(
-  seed_value : Int64,
-) -> @random.Rand {
-  let seed = @buffer.new()
-  seed.write_int64_le(seed_value)
-  seed.write_int64_le(0)
-  seed.write_int64_le(0)
-  seed.write_int64_le(0)
-  @random.Rand::chacha8(seed=seed.to_bytes())
-}
-
-///|
 fn orthogonal_routing_generator_graph_random(
   layered_graph : LGraph,
-) -> @random.Rand {
-  let use_one = layered_graph.get_property_bool(
-    internal_properties_random_next_boolean,
-  )
-  layered_graph.set_property_bool(
-    internal_properties_random_next_boolean,
-    !use_one,
-  )
-  if use_one {
-    orthogonal_routing_generator_seeded_random(1)
+) -> MockRandom {
+  if layered_graph.get_property_mock_random(internal_properties_random)
+    is Some(random) {
+    random
   } else {
-    orthogonal_routing_generator_seeded_random(2)
+    let seed_value = layered_graph.get_property_int(@core.random_seed)
+    let random = if seed_value == 0 {
+      new_greedy_switch_mock_random_seeded(
+        @random.Rand::new().int(limit=@int.max_value),
+      )
+    } else {
+      new_greedy_switch_mock_random_seeded(seed_value)
+    }
+    layered_graph.set_property_mock_random(
+      internal_properties_random,
+      Some(random),
+    )
+    random
   }
 }
 
@@ -187,7 +181,7 @@ fn OrthogonalRoutingGenerator::create_hyper_edge_segments(
 fn OrthogonalRoutingGenerator::break_critical_cycles(
   self : OrthogonalRoutingGenerator,
   edge_segments : Array[HyperEdgeSegment],
-  random : @random.Rand,
+  random : MockRandom,
 ) -> Unit {
   let cycle_dependencies = hyper_edge_cycle_detector_detect_cycles(
     edge_segments, true, random,
@@ -489,7 +483,7 @@ pub fn orthogonal_routing_generator_count_crossings(
 ///|
 pub fn orthogonal_routing_generator_break_non_critical_cycles(
   edge_segments : Array[HyperEdgeSegment],
-  random : @random.Rand,
+  random : MockRandom,
 ) -> Unit {
   let cycle_dependencies = hyper_edge_cycle_detector_detect_cycles(
     edge_segments, false, random,
