@@ -447,6 +447,55 @@ fn child_ids_of_graph(graph_obj : Map[String, Json]) -> Map[String, Bool] {
 }
 
 ///|
+fn optional_array_field(obj : Map[String, Json], key : String) -> Array[Json]? {
+  match obj.get(key) {
+    Some(Array(items)) => Some(items)
+    _ => None
+  }
+}
+
+///|
+fn collect_local_shape_ids_recursively(
+  graph_obj : Map[String, Json],
+  shape_ids : Map[String, Bool],
+) -> Unit {
+  if optional_array_field(graph_obj, "ports") is Some(ports) {
+    for port in ports {
+      match port {
+        Object(port_obj) =>
+          match port_obj.get("id") {
+            Some(String(id)) => shape_ids[id] = true
+            Some(Number(id_num, repr~)) => {
+              ignore(repr)
+              shape_ids[id_num.to_int().to_string()] = true
+            }
+            _ => ()
+          }
+        _ => ()
+      }
+    }
+  }
+  if optional_array_field(graph_obj, "children") is Some(children) {
+    for child in children {
+      match child {
+        Object(child_obj) => {
+          match child_obj.get("id") {
+            Some(String(id)) => shape_ids[id] = true
+            Some(Number(id_num, repr~)) => {
+              ignore(repr)
+              shape_ids[id_num.to_int().to_string()] = true
+            }
+            _ => ()
+          }
+          collect_local_shape_ids_recursively(child_obj, shape_ids)
+        }
+        _ => ()
+      }
+    }
+  }
+}
+
+///|
 fn graph_id_string(graph_obj : Map[String, Json]) -> String? {
   match graph_obj.get("id") {
     Some(String(id)) => Some(id)
@@ -463,7 +512,8 @@ fn has_hierarchical_edges_for_separate_children(
   graph_obj : Map[String, Json],
 ) -> Bool {
   let current_graph_id = graph_id_string(graph_obj)
-  let child_ids = child_ids_of_graph(graph_obj)
+  let local_shape_ids : Map[String, Bool] = {}
+  collect_local_shape_ids_recursively(graph_obj, local_shape_ids)
   let edges = get_or_init_array_field(graph_obj, "edges")
   for i = 0; i < edges.length(); i = i + 1 {
     let edge_obj = match edges[i] {
@@ -474,12 +524,14 @@ fn has_hierarchical_edges_for_separate_children(
     let sources = edge_endpoints(edge_obj, "sources")
     let targets = edge_endpoints(edge_obj, "targets")
     for endpoint in sources {
-      if current_graph_id == Some(endpoint) || !child_ids.contains(endpoint) {
+      if current_graph_id == Some(endpoint) ||
+        !local_shape_ids.contains(endpoint) {
         return true
       }
     }
     for endpoint in targets {
-      if current_graph_id == Some(endpoint) || !child_ids.contains(endpoint) {
+      if current_graph_id == Some(endpoint) ||
+        !local_shape_ids.contains(endpoint) {
         return true
       }
     }

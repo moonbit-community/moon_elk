@@ -1,0 +1,8 @@
+import {
+  "moonbitlang/core/json",
+  "Milky2018/moon_elk/core" @core,
+}
+
+options(
+  "is-main": true,
+)

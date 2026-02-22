@@ -152,3 +152,34 @@ npm install elkjs@0.11.0
   - `/Users/zhengyu/Documents/projects/moon_elk/artifacts/diff/elkjs_moon_json/elkjs_moon_json_diff_report.json`
 - Markdown report:
   - `/Users/zhengyu/Documents/projects/moon_elk/artifacts/diff/elkjs_moon_json/elkjs_moon_json_diff_report.md`
+
+## elkjs vs moon_elk/core Expanded JSON Diff
+
+Script:
+
+- `/Users/zhengyu/Documents/projects/moon_elk/scripts/diff/run_elkjs_moon_core_json_diff.sh`
+
+It runs:
+
+1. Core API path (`Milky2018/moon_elk/core`, i.e. `new_elk_engine().layout`) via:
+   - `src/diff/elkjs_core_compare_runner`
+2. elkjs (`elkjs/lib/elk.bundled.js`)
+3. Case set:
+   - Static regression cases (including issue #1 include-children case)
+   - Deterministic random cases (flat / hierarchy / ports)
+4. Normalized JSON diff and mismatch report.
+
+### Usage
+
+```bash
+/Users/zhengyu/Documents/projects/moon_elk/scripts/diff/run_elkjs_moon_core_json_diff.sh \
+  --random-case-count 120 \
+  --seed 20260222
+```
+
+### Output
+
+- JSON report:
+  - `/Users/zhengyu/Documents/projects/moon_elk/artifacts/diff/elkjs_moon_core_json/elkjs_moon_core_json_diff_report.json`
+- Markdown report:
+  - `/Users/zhengyu/Documents/projects/moon_elk/artifacts/diff/elkjs_moon_core_json/elkjs_moon_core_json_diff_report.md`
