@@ -593,7 +593,7 @@ fn apply_linear_layout(
   let spacing = option_int_by_keys(options, [
     "elk.layered.spacing.nodeNodeBetweenLayers", "org.eclipse.elk.layered.spacing.nodeNodeBetweenLayers",
     "layered.spacing.nodeNodeBetweenLayers",
-  ]).unwrap_or(20)
+  ]).unwrap_or(30)
   let direction = option_string_by_keys(options, [
     "elk.direction", "org.eclipse.elk.direction", "direction",
   ]).unwrap_or("RIGHT")
@@ -663,7 +663,167 @@ fn apply_fixed_layout(
 }
 
 ///|
-fn ensure_sections_recursively(graph_obj : Map[String, Json]) -> Unit {
+priv struct NodeBounds {
+  x : Int
+  y : Int
+  width : Int
+  height : Int
+}
+
+///|
+fn graph_id_from_object(graph_obj : Map[String, Json]) -> String? {
+  match graph_obj.get("id") {
+    Some(String(id)) => Some(id)
+    Some(Number(value, repr~)) => {
+      ignore(repr)
+      Some(value.to_int().to_string())
+    }
+    _ => None
+  }
+}
+
+///|
+fn node_bounds_collect_recursively(
+  graph_obj : Map[String, Json],
+  origin_x : Int,
+  origin_y : Int,
+  node_bounds : Map[String, NodeBounds],
+) -> Unit {
+  let width = json_int_field_default(graph_obj, "width", 0)
+  let height = json_int_field_default(graph_obj, "height", 0)
+  if graph_id_from_object(graph_obj) is Some(graph_id) {
+    node_bounds[graph_id] = { x: origin_x, y: origin_y, width, height }
+  }
+  let children = get_or_init_array_field(graph_obj, "children")
+  for i = 0; i < children.length(); i = i + 1 {
+    let child_obj = match children[i] {
+      Object(obj) => obj
+      _ => continue
+    }
+    let child_x = json_int_field_default(child_obj, "x", 0)
+    let child_y = json_int_field_default(child_obj, "y", 0)
+    node_bounds_collect_recursively(
+      child_obj,
+      origin_x + child_x,
+      origin_y + child_y,
+      node_bounds,
+    )
+  }
+}
+
+///|
+fn routed_edge_section(
+  direction : String,
+  source_bounds : NodeBounds,
+  target_bounds : NodeBounds,
+) -> Json {
+  let source_center_x = source_bounds.x + source_bounds.width / 2
+  let source_center_y = source_bounds.y + source_bounds.height / 2
+  let target_center_x = target_bounds.x + target_bounds.width / 2
+  let target_center_y = target_bounds.y + target_bounds.height / 2
+  let (start_x, start_y, end_x, end_y) = match direction {
+    "DOWN" =>
+      (
+        source_center_x,
+        source_bounds.y + source_bounds.height,
+        target_center_x,
+        target_bounds.y,
+      )
+    "UP" =>
+      (
+        source_center_x,
+        source_bounds.y,
+        target_center_x,
+        target_bounds.y + target_bounds.height,
+      )
+    "LEFT" =>
+      (
+        source_bounds.x,
+        source_center_y,
+        target_bounds.x + target_bounds.width,
+        target_center_y,
+      )
+    _ =>
+      (
+        source_bounds.x + source_bounds.width,
+        source_center_y,
+        target_bounds.x,
+        target_center_y,
+      )
+  }
+  Json::object({
+    "startPoint": Json::object({
+      "x": Json::number(start_x.to_double()),
+      "y": Json::number(start_y.to_double()),
+    }),
+    "endPoint": Json::object({
+      "x": Json::number(end_x.to_double()),
+      "y": Json::number(end_y.to_double()),
+    }),
+  })
+}
+
+///|
+fn route_edges_for_graph(
+  graph_obj : Map[String, Json],
+  options : Map[String, Json],
+) -> Unit {
+  let direction = option_string_by_keys(options, [
+    "elk.direction", "org.eclipse.elk.direction", "direction",
+  ]).unwrap_or("RIGHT")
+  let node_bounds : Map[String, NodeBounds] = {}
+  node_bounds_collect_recursively(graph_obj, 0, 0, node_bounds)
+  let edges = get_or_init_array_field(graph_obj, "edges")
+  for i = 0; i < edges.length(); i = i + 1 {
+    let edge_obj = match edges[i] {
+      Object(obj) => obj
+      _ => continue
+    }
+    normalize_edge_endpoints(edge_obj)
+    let sources = edge_endpoints(edge_obj, "sources")
+    let targets = edge_endpoints(edge_obj, "targets")
+    if !sources.is_empty() &&
+      !targets.is_empty() &&
+      node_bounds.contains(sources[0]) &&
+      node_bounds.contains(targets[0]) {
+      edge_obj["sections"] = Json::array([
+        routed_edge_section(
+          direction,
+          node_bounds[sources[0]],
+          node_bounds[targets[0]],
+        ),
+      ])
+    } else {
+      ensure_edge_has_single_section(edge_obj)
+    }
+    edges[i] = Json::object(edge_obj)
+  }
+}
+
+///|
+fn merge_graph_options(
+  inherited_options : Map[String, Json],
+  graph_obj : Map[String, Json],
+) -> Map[String, Json] {
+  let merged = copy_json_map(inherited_options)
+  if optional_object_field(graph_obj, "layoutOptions") is Some(layout_options) {
+    merge_into(merged, layout_options)
+  }
+  if optional_object_field(graph_obj, "properties") is Some(properties) {
+    merge_into(merged, properties)
+  }
+  merged
+}
+
+///|
+fn graph_hierarchy_handling(options : Map[String, Json]) -> String {
+  option_string_by_keys(options, [
+    "hierarchyHandling", "elk.hierarchyHandling", "org.eclipse.elk.hierarchyHandling",
+  ]).unwrap_or("SEPARATE_CHILDREN")
+}
+
+///|
+fn ensure_edge_sections(graph_obj : Map[String, Json]) -> Unit {
   let edges = get_or_init_array_field(graph_obj, "edges")
   for i = 0; i < edges.length(); i = i + 1 {
     let edge_obj = match edges[i] {
@@ -674,15 +834,47 @@ fn ensure_sections_recursively(graph_obj : Map[String, Json]) -> Unit {
     ensure_edge_has_single_section(edge_obj)
     edges[i] = Json::object(edge_obj)
   }
+}
+
+///|
+fn apply_layout_recursively(
+  engine : ElkEngine,
+  graph_obj : Map[String, Json],
+  options : Map[String, Json],
+) -> Unit raise {
   let children = get_or_init_array_field(graph_obj, "children")
   for i = 0; i < children.length(); i = i + 1 {
-    match children[i] {
-      Object(child_obj) => {
-        ensure_sections_recursively(child_obj)
-        children[i] = Json::object(child_obj)
-      }
-      _ => ()
+    let child_obj = match children[i] {
+      Object(obj) => obj
+      _ => continue
     }
+    let child_options = merge_graph_options(options, child_obj)
+    apply_layout_recursively(engine, child_obj, child_options)
+    children[i] = Json::object(child_obj)
+  }
+  let edges = get_or_init_array_field(graph_obj, "edges")
+  if children.is_empty() && edges.is_empty() {
+    return
+  }
+
+  let algorithm = resolve_algorithm(options)
+  if !engine.algorithms.contains(algorithm) {
+    raise invalid_graph_error(
+      "org.eclipse.elk.core.UnsupportedConfigurationException: Unknown layouter id",
+    )
+  }
+  if algorithm == "layered" && has_first_layer_cycle_conflict(graph_obj) {
+    raise invalid_graph_error(
+      "org.eclipse.elk.core.UnsupportedConfigurationException: Layer constraint conflict",
+    )
+  }
+
+  apply_layout_algorithm(graph_obj, algorithm, options)
+  if algorithm == "fixed" &&
+    graph_hierarchy_handling(options) != "INCLUDE_CHILDREN" {
+    ensure_edge_sections(graph_obj)
+  } else {
+    route_edges_for_graph(graph_obj, options)
   }
 }
 
@@ -732,30 +924,14 @@ pub fn ElkEngine::layout(
     layout_options,
     graph_obj,
   )
-  let algorithm = resolve_algorithm(options)
-  if !self.algorithms.contains(algorithm) {
-    raise invalid_graph_error(
-      "org.eclipse.elk.core.UnsupportedConfigurationException: Unknown layouter id",
-    )
-  }
-  let hierarchy_handling = option_string_by_keys(options, [
-    "hierarchyHandling", "elk.hierarchyHandling", "org.eclipse.elk.hierarchyHandling",
-  ]).unwrap_or("SEPARATE_CHILDREN")
+  let hierarchy_handling = graph_hierarchy_handling(options)
   if hierarchy_handling == "SEPARATE_CHILDREN" &&
     has_hierarchical_edges_for_separate_children(graph_obj) {
     raise invalid_graph_error(
       "org.eclipse.elk.core.UnsupportedGraphException: Hierarchical edge cannot be laid out separately",
     )
   }
-  if algorithm == "layered" && has_first_layer_cycle_conflict(graph_obj) {
-    raise invalid_graph_error(
-      "org.eclipse.elk.core.UnsupportedConfigurationException: Layer constraint conflict",
-    )
-  }
-  apply_layout_algorithm(graph_obj, algorithm, options)
-  if hierarchy_handling == "INCLUDE_CHILDREN" {
-    ensure_sections_recursively(graph_obj)
-  }
+  apply_layout_recursively(self, graph_obj, options)
   if logging || measure_execution_time {
     add_logging(graph_obj, measure_execution_time)
   }
