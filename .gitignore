@@ -6,3 +6,5 @@ target
 .moonagent/
 elk-reference/
 elkjs-reference/
+artifacts/
+elk-models/

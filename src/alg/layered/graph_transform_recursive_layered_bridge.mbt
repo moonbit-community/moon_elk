@@ -557,27 +557,6 @@ fn recursive_layered_endpoint_lnode(
 }
 
 ///|
-fn recursive_layered_descendant_nodes(
-  root_node : @graph.ElkNode,
-) -> Array[@graph.ElkNode] {
-  let nodes : Array[@graph.ElkNode] = []
-  let queue : Array[@graph.ElkNode] = []
-  for child in @graph.node_children(root_node) {
-    queue.push(child)
-  }
-  let mut index = 0
-  while index < queue.length() {
-    let current = queue[index]
-    index += 1
-    nodes.push(current)
-    for child in @graph.node_children(current) {
-      queue.push(child)
-    }
-  }
-  nodes
-}
-
-///|
 fn recursive_layered_descendant_edges(
   root_node : @graph.ElkNode,
 ) -> Array[@graph.ElkEdge] {
@@ -1476,162 +1455,6 @@ fn recursive_layered_new_descendant_port_endpoint_port(
 }
 
 ///|
-fn recursive_layered_parse_edge_routing(value : String) -> @core.EdgeRouting {
-  for routing in @core.edge_routing_values() {
-    if @core.edge_routing_to_string(routing) == value {
-      return routing
-    }
-  }
-  RoutingUndefined
-}
-
-///|
-fn recursive_layered_cycle_breaking_factory(
-  strategy : String,
-) -> @core.ILayoutProcessorFactory[LayeredPhases, LGraph] {
-  match strategy {
-    "DEPTH_FIRST" =>
-      @core.new_layout_processor_factory(21001, 0, () => {
-        new_depth_first_cycle_breaker_layout_phase()
-      })
-    "INTERACTIVE" =>
-      @core.new_layout_processor_factory(21002, 0, () => {
-        new_interactive_cycle_breaker_layout_phase()
-      })
-    "MODEL_ORDER" =>
-      @core.new_layout_processor_factory(21003, 0, () => {
-        new_model_order_cycle_breaker_layout_phase()
-      })
-    "GREEDY_MODEL_ORDER" =>
-      @core.new_layout_processor_factory(21004, 0, () => {
-        new_greedy_model_order_cycle_breaker_layout_phase()
-      })
-    "SCC_CONNECTIVITY" =>
-      @core.new_layout_processor_factory(21005, 0, () => {
-        new_sc_connectivity_cycle_breaker_layout_phase()
-      })
-    "SCC_NODE_TYPE" =>
-      @core.new_layout_processor_factory(21006, 0, () => {
-        new_scc_node_type_cycle_breaker_layout_phase()
-      })
-    "DFS_NODE_ORDER" =>
-      @core.new_layout_processor_factory(21007, 0, () => {
-        new_dfs_node_order_cycle_breaker_layout_phase()
-      })
-    "BFS_NODE_ORDER" =>
-      @core.new_layout_processor_factory(21008, 0, () => {
-        new_bfs_node_order_cycle_breaker_layout_phase()
-      })
-    _ =>
-      @core.new_layout_processor_factory(21000, 0, () => {
-        new_greedy_cycle_breaker_layout_phase()
-      })
-  }
-}
-
-///|
-fn recursive_layered_layering_factory(
-  strategy : String,
-) -> @core.ILayoutProcessorFactory[LayeredPhases, LGraph] {
-  match strategy {
-    "LONGEST_PATH" =>
-      @core.new_layout_processor_factory(22001, 1, () => {
-        new_longest_path_layerer_layout_phase()
-      })
-    "LONGEST_PATH_SOURCE" =>
-      @core.new_layout_processor_factory(22002, 1, () => {
-        new_longest_path_source_layerer_layout_phase()
-      })
-    "COFFMAN_GRAHAM" =>
-      @core.new_layout_processor_factory(22003, 1, () => {
-        new_coffman_graham_layerer_layout_phase()
-      })
-    "INTERACTIVE" =>
-      @core.new_layout_processor_factory(22004, 1, () => {
-        new_interactive_layerer_layout_phase()
-      })
-    "STRETCH_WIDTH" =>
-      @core.new_layout_processor_factory(22005, 1, () => {
-        new_stretch_width_layerer_layout_phase()
-      })
-    "MIN_WIDTH" =>
-      @core.new_layout_processor_factory(22006, 1, () => {
-        new_min_width_layerer_layout_phase()
-      })
-    "BF_MODEL_ORDER" =>
-      @core.new_layout_processor_factory(22007, 1, () => {
-        new_breadth_first_model_order_layerer_layout_phase()
-      })
-    "DF_MODEL_ORDER" =>
-      @core.new_layout_processor_factory(22008, 1, () => {
-        new_depth_first_model_order_layerer_layout_phase()
-      })
-    _ =>
-      @core.new_layout_processor_factory(22000, 1, () => {
-        new_network_simplex_layerer_layout_phase()
-      })
-  }
-}
-
-///|
-fn recursive_layered_crossing_factory(
-  strategy : String,
-) -> @core.ILayoutProcessorFactory[LayeredPhases, LGraph] {
-  match strategy {
-    "NONE" =>
-      @core.new_layout_processor_factory(24002, 2, () => {
-        new_no_crossing_minimizer_layout_phase()
-      })
-    "INTERACTIVE" =>
-      @core.new_layout_processor_factory(24003, 2, () => {
-        new_interactive_crossing_minimizer_layout_phase()
-      })
-    "MEDIAN_LAYER_SWEEP" =>
-      @core.new_layout_processor_factory(24001, 2, () => {
-        new_layer_sweep_crossing_minimizer_layout_phase(CrossMinType::Median)
-      })
-    _ =>
-      @core.new_layout_processor_factory(24000, 2, () => {
-        new_layer_sweep_crossing_minimizer_layout_phase(
-          CrossMinType::Barycenter,
-        )
-      })
-  }
-}
-
-///|
-fn recursive_layered_node_placement_factory(
-  strategy : String,
-) -> @core.ILayoutProcessorFactory[LayeredPhases, LGraph] {
-  match strategy {
-    "SIMPLE" =>
-      @core.new_layout_processor_factory(24100, 3, () => {
-        new_simple_node_placer_layout_phase()
-      })
-    "INTERACTIVE" =>
-      @core.new_layout_processor_factory(24101, 3, () => {
-        new_interactive_node_placer_layout_phase()
-      })
-    "LINEAR_SEGMENTS" =>
-      @core.new_layout_processor_factory(24102, 3, () => {
-        new_linear_segments_node_placer_layout_phase()
-      })
-    "BRANDES_KOEPF" =>
-      @core.new_layout_processor_factory(24103, 3, () => {
-        new_bk_node_placer_layout_phase()
-      })
-    "NETWORK_SIMPLEX" =>
-      @core.new_layout_processor_factory(24104, 3, () => {
-        new_network_simplex_placer_layout_phase()
-      })
-    _ =>
-      @core.new_layout_processor_factory(24103, 3, () => {
-        new_bk_node_placer_layout_phase()
-      })
-  }
-}
-
-///|
 fn recursive_layered_primary_option(
   node : @graph.ElkNode,
   key : String,
@@ -1740,15 +1563,6 @@ fn recursive_layered_parse_double(value : String) -> Double? {
     Ok(result) => Some(result)
     Err(_) => None
   }
-}
-
-///|
-fn recursive_layered_requires_direction_transform(
-  direction_value : String,
-) -> Bool {
-  direction_value == "LEFT" ||
-  direction_value == "DOWN" ||
-  direction_value == "UP"
 }
 
 ///|
