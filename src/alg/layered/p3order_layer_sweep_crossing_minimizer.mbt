@@ -926,7 +926,7 @@ fn LayerSweepCrossingMinimizer::compare_different_randomized_layouts(
   }
 
   if crossing_counter_node_influence != 0.0 ||
-    crossing_counter_node_influence != 0.0 {
+    crossing_counter_port_influence != 0.0 {
     let consider_model_order_strategy = graph_data
       .l_graph()
       .get_property_string(layered_options_consider_model_order_strategy)

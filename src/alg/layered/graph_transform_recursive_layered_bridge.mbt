@@ -415,7 +415,6 @@ priv struct RecursiveLayeredContext {
   node_label_pairs : Map[@graph.ElkNode, Array[(LLabel, @graph.ElkLabel)]]
   lnode_to_elk : Map[Int, @graph.ElkNode]
   edge_to_ledge : Map[@graph.ElkEdge, LEdge]
-  edge_to_layout_graph : Map[@graph.ElkEdge, LGraph]
 }
 
 ///|
@@ -499,134 +498,6 @@ fn recursive_layered_edge_endpoint_node(
   match edge_shapes[0] {
     NodeShape(node) => Some(node)
     PortShape(port) => @graph.port_parent(port)
-  }
-}
-
-///|
-fn recursive_layered_edge_endpoint_port(
-  edge_shapes : Array[@graph.ElkConnectableShape],
-  elk_to_lport : Map[@graph.ElkPort, LPort],
-) -> LPort? {
-  if edge_shapes.is_empty() {
-    return None
-  }
-  match edge_shapes[0] {
-    PortShape(port) => elk_to_lport.get(port)
-    _ => None
-  }
-}
-
-///|
-fn recursive_layered_direct_child_for_endpoint(
-  root_node : @graph.ElkNode,
-  endpoint_node : @graph.ElkNode,
-) -> @graph.ElkNode? {
-  if endpoint_node == root_node {
-    return None
-  }
-
-  let mut current = endpoint_node
-  while true {
-    match @graph.node_parent(current) {
-      Some(parent) =>
-        if parent == root_node {
-          return Some(current)
-        } else {
-          current = parent
-        }
-      None => return None
-    }
-  }
-  None
-}
-
-///|
-fn recursive_layered_endpoint_lnode(
-  root_node : @graph.ElkNode,
-  endpoint_node : @graph.ElkNode,
-  elk_to_lnode : Map[@graph.ElkNode, LNode],
-) -> (LNode?, Bool) {
-  match elk_to_lnode.get(endpoint_node) {
-    Some(found) => (Some(found), false)
-    None =>
-      match
-        recursive_layered_direct_child_for_endpoint(root_node, endpoint_node) {
-        Some(child) => (elk_to_lnode.get(child), true)
-        None => (None, false)
-      }
-  }
-}
-
-///|
-fn recursive_layered_descendant_edges(
-  root_node : @graph.ElkNode,
-) -> Array[@graph.ElkEdge] {
-  let edges : Array[@graph.ElkEdge] = []
-  let queue : Array[@graph.ElkNode] = [root_node]
-  let mut index = 0
-  while index < queue.length() {
-    let current = queue[index]
-    index += 1
-    for edge in @graph.node_contained_edges(current) {
-      edges.push(edge)
-    }
-    for child in @graph.node_children(current) {
-      queue.push(child)
-    }
-  }
-  edges
-}
-
-///|
-fn recursive_layered_port_anchor_in_edge_coordinates(
-  edge : @graph.ElkEdge,
-  port : @graph.ElkPort,
-) -> @core.KVector {
-  let absolute_anchor = recursive_layered_absolute_port_anchor(port)
-  match @graph.edge_containing_node(edge) {
-    Some(containing_node) =>
-      @core.new_kvector_xy(
-        absolute_anchor.x - recursive_layered_absolute_node_x(containing_node),
-        absolute_anchor.y - recursive_layered_absolute_node_y(containing_node),
-      )
-    None => absolute_anchor
-  }
-}
-
-///|
-fn recursive_layered_align_edge_sections_to_port_anchors(
-  root_node : @graph.ElkNode,
-) -> Unit {
-  for edge in recursive_layered_descendant_edges(root_node) {
-    let sections = @graph.edge_sections(edge)
-    if sections.is_empty() {
-      continue
-    }
-    let section = sections[0]
-    match
-      @graph.connectable_shape_to_port(
-        @graph.edge_section_incoming_shape(section),
-      ) {
-      Some(incoming_port) => {
-        let start_anchor = recursive_layered_port_anchor_in_edge_coordinates(
-          edge, incoming_port,
-        )
-        @graph.edge_section_set_start(section, start_anchor.x, start_anchor.y)
-      }
-      None => ()
-    }
-    match
-      @graph.connectable_shape_to_port(
-        @graph.edge_section_outgoing_shape(section),
-      ) {
-      Some(outgoing_port) => {
-        let end_anchor = recursive_layered_port_anchor_in_edge_coordinates(
-          edge, outgoing_port,
-        )
-        @graph.edge_section_set_end(section, end_anchor.x, end_anchor.y)
-      }
-      None => ()
-    }
   }
 }
 
@@ -1279,75 +1150,6 @@ fn recursive_layered_needs_model_order(
 }
 
 ///|
-fn recursive_layered_new_edge_port(
-  owner : LNode,
-  side : @core.PortSide,
-  layered_graph : LGraph,
-  port_type : PortType,
-  fix_owner_side? : Bool = false,
-) -> LPort {
-  if fix_owner_side {
-    owner.set_property_string(@core.port_constraints, "FIXED_SIDE")
-  }
-  let port = create_port_for_edge(owner, None, port_type, layered_graph)
-  if !(side is @core.PortSide::SideUndefined) &&
-    owner.get_property_string(@core.port_constraints) == "FIXED_SIDE" {
-    port.set_side(side)
-  }
-  port
-}
-
-///|
-fn recursive_layered_new_descendant_endpoint_port(
-  owner : LNode,
-  endpoint_node : @graph.ElkNode,
-  layered_graph : LGraph,
-  port_type : PortType,
-) -> LPort {
-  owner.set_property_string(@core.port_constraints, "FIXED_POS")
-  let port = new_l_port()
-  port.set_node(Some(owner))
-  let default_side = @core.port_side_from_direction(
-    get_direction(layered_graph),
-  )
-  let side = match port_type {
-    PortType::Output => default_side
-    PortType::Input => default_side.opposed()
-    PortType::Undefined => default_side
-  }
-  let point = port.get_position()
-  let endpoint_x = @graph.node_x(endpoint_node)
-  let endpoint_y = @graph.node_y(endpoint_node)
-  let endpoint_width = @graph.node_width(endpoint_node)
-  let endpoint_height = @graph.node_height(endpoint_node)
-  match side {
-    @core.PortSide::East => {
-      point.x = endpoint_x + endpoint_width
-      point.y = endpoint_y + endpoint_height / 2.0
-    }
-    @core.PortSide::West => {
-      point.x = endpoint_x
-      point.y = endpoint_y + endpoint_height / 2.0
-    }
-    @core.PortSide::North => {
-      point.x = endpoint_x + endpoint_width / 2.0
-      point.y = endpoint_y
-    }
-    @core.PortSide::South => {
-      point.x = endpoint_x + endpoint_width / 2.0
-      point.y = endpoint_y + endpoint_height
-    }
-    @core.PortSide::SideUndefined => {
-      point.x = endpoint_x + endpoint_width / 2.0
-      point.y = endpoint_y + endpoint_height / 2.0
-    }
-  }
-  ignore(point.bound(0.0, 0.0, owner.get_size().x, owner.get_size().y))
-  port.set_side(side)
-  port
-}
-
-///|
 fn recursive_layered_absolute_node_x(node : @graph.ElkNode) -> Double {
   match @graph.node_parent(node) {
     Some(parent) =>
@@ -1363,173 +1165,6 @@ fn recursive_layered_absolute_node_y(node : @graph.ElkNode) -> Double {
       @graph.node_y(node) + recursive_layered_absolute_node_y(parent)
     None => @graph.node_y(node)
   }
-}
-
-///|
-fn recursive_layered_descendant_port_anchor(
-  port : @graph.ElkPort,
-) -> @core.KVector {
-  let port_width = @graph.port_width(port)
-  let port_height = @graph.port_height(port)
-  let anchor = @core.new_kvector_xy(port_width / 2.0, port_height / 2.0)
-  let mut side = recursive_layered_port_side_from_string(
-    recursive_layered_port_side_option(port),
-  )
-  if side is @core.PortSide::SideUndefined {
-    match @graph.port_parent(port) {
-      Some(parent_node) => {
-        let port_x = @graph.port_x(port)
-        let port_y = @graph.port_y(port)
-        let node_width = @graph.node_width(parent_node)
-        let node_height = @graph.node_height(parent_node)
-        if port_x < 0.0 {
-          side = @core.PortSide::West
-        } else if port_x + port_width > node_width {
-          side = @core.PortSide::East
-        } else if port_y < 0.0 {
-          side = @core.PortSide::North
-        } else if port_y + port_height > node_height {
-          side = @core.PortSide::South
-        }
-      }
-      None => ()
-    }
-  }
-  match side {
-    @core.PortSide::East => {
-      anchor.x = port_width
-      anchor.y = port_height / 2.0
-    }
-    @core.PortSide::West => {
-      anchor.x = 0.0
-      anchor.y = port_height / 2.0
-    }
-    @core.PortSide::North => {
-      anchor.x = port_width / 2.0
-      anchor.y = 0.0
-    }
-    @core.PortSide::South => {
-      anchor.x = port_width / 2.0
-      anchor.y = port_height
-    }
-    @core.PortSide::SideUndefined => ()
-  }
-  match
-    @graph.port_layout_option_string_value(
-      port,
-      layered_options_port_anchor.get_id(),
-    ) {
-    Some(anchor_text) => {
-      let parsed_anchor = @core.new_kvector()
-      parsed_anchor.parse(anchor_text)
-      anchor.x = parsed_anchor.x
-      anchor.y = parsed_anchor.y
-    }
-    None => ()
-  }
-  anchor
-}
-
-///|
-fn recursive_layered_absolute_port_anchor(
-  port : @graph.ElkPort,
-) -> @core.KVector {
-  let anchor = recursive_layered_descendant_port_anchor(port)
-  match @graph.port_parent(port) {
-    Some(parent_node) =>
-      @core.new_kvector_xy(
-        recursive_layered_absolute_node_x(parent_node) +
-        @graph.port_x(port) +
-        anchor.x,
-        recursive_layered_absolute_node_y(parent_node) +
-        @graph.port_y(port) +
-        anchor.y,
-      )
-    None =>
-      @core.new_kvector_xy(
-        @graph.port_x(port) + anchor.x,
-        @graph.port_y(port) + anchor.y,
-      )
-  }
-}
-
-///|
-fn recursive_layered_shape_anchor_for_edge_section(
-  edge : @graph.ElkEdge,
-  shape : @graph.ElkConnectableShape,
-) -> @core.KVector? {
-  match @graph.connectable_shape_to_port(Some(shape)) {
-    Some(port) =>
-      match @graph.edge_containing_node(edge) {
-        Some(containing_node) =>
-          match @graph.port_parent(port) {
-            Some(port_parent) =>
-              if recursive_layered_is_descendant(port_parent, containing_node) {
-                let absolute_anchor = recursive_layered_absolute_port_anchor(
-                  port,
-                )
-                Some(
-                  @core.new_kvector_xy(
-                    absolute_anchor.x -
-                    recursive_layered_absolute_node_x(containing_node),
-                    absolute_anchor.y -
-                    recursive_layered_absolute_node_y(containing_node),
-                  ),
-                )
-              } else {
-                None
-              }
-            None => None
-          }
-        None => None
-      }
-    None => None
-  }
-}
-
-///|
-fn recursive_layered_new_descendant_port_endpoint_port(
-  owner : LNode,
-  owner_node : @graph.ElkNode,
-  endpoint_port : @graph.ElkPort,
-  layered_graph : LGraph,
-  port_type : PortType,
-) -> LPort {
-  owner.set_property_string(@core.port_constraints, "FIXED_POS")
-  let port = new_l_port()
-  port.set_node(Some(owner))
-  let point = port.get_position()
-  let anchor = recursive_layered_descendant_port_anchor(endpoint_port)
-  match @graph.port_parent(endpoint_port) {
-    Some(endpoint_parent) => {
-      let absolute_anchor_x = recursive_layered_absolute_node_x(endpoint_parent) +
-        @graph.port_x(endpoint_port) +
-        anchor.x
-      let absolute_anchor_y = recursive_layered_absolute_node_y(endpoint_parent) +
-        @graph.port_y(endpoint_port) +
-        anchor.y
-      point.x = absolute_anchor_x -
-        recursive_layered_absolute_node_x(owner_node)
-      point.y = absolute_anchor_y -
-        recursive_layered_absolute_node_y(owner_node)
-    }
-    None => {
-      point.x = @graph.port_x(endpoint_port) + anchor.x
-      point.y = @graph.port_y(endpoint_port) + anchor.y
-    }
-  }
-  ignore(point.bound(0.0, 0.0, owner.get_size().x, owner.get_size().y))
-  let default_side = @core.port_side_from_direction(
-    get_direction(layered_graph),
-  )
-  port.set_side(
-    match port_type {
-      PortType::Output => default_side
-      PortType::Input => default_side.opposed()
-      PortType::Undefined => default_side
-    },
-  )
-  port
 }
 
 ///|
@@ -1806,7 +1441,6 @@ fn recursive_layered_create_context(
   let node_label_pairs : Map[@graph.ElkNode, Array[(LLabel, @graph.ElkLabel)]] = {}
   let lnode_to_elk : Map[Int, @graph.ElkNode] = {}
   let edge_to_ledge : Map[@graph.ElkEdge, LEdge] = {}
-  let edge_to_layout_graph : Map[@graph.ElkEdge, LGraph] = {}
   recursive_layout_node_labels(node)
   let node_padding = parse_node_padding(node)
   let label_top_reserve = recursive_layout_label_top_reserve(node)
@@ -2658,7 +2292,6 @@ fn recursive_layered_create_context(
       }
 
       edge_to_ledge[edge] = l_edge
-      edge_to_layout_graph[edge] = parent_lgraph
     }
 
     if hierarchical_layout &&
@@ -2685,7 +2318,6 @@ fn recursive_layered_create_context(
     node_label_pairs,
     lnode_to_elk,
     edge_to_ledge,
-    edge_to_layout_graph,
   })
 }
 
