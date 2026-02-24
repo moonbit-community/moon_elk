@@ -143,6 +143,10 @@ pub fn edge_type_to_string(EdgeType) -> String
 
 pub let elk_default_portlist_sorter : ElkPortComparator
 
+pub fn elk_engine_clear_layout_delegate_for_test() -> Unit
+
+pub fn elk_engine_register_layout_delegate((Map[String, Json], Map[String, Json]) -> Unit) -> Unit
+
 pub let elk_graph_resource_default_encoding : String
 
 pub let elk_graph_xmi_data_type_iproperty : ElkGraphXmiDataType
@@ -2252,6 +2256,8 @@ pub fn WrappedException::get_message(Self) -> String?
 
 // Type aliases
 pub type DeciderHeuristicResult[T] = Array[(T, Array[(Int, Double)])]
+
+pub type ElkEngineLayoutDelegate = (Map[String, Json], Map[String, Json]) -> Unit
 
 pub type ElkGraphBoundsProvider = IBoundsProvider[Int, Int]
 

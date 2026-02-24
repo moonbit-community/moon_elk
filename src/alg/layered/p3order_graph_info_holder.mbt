@@ -13,7 +13,11 @@ fn graph_info_count_ports(node_order : Array[Array[LNode]]) -> Int {
 fn graph_info_to_node_array(graph : LGraph) -> Array[Array[LNode]] {
   let order = []
   for layer in graph.get_layers() {
-    order.push(layer.get_nodes())
+    let copied_layer = []
+    for node in layer.get_nodes() {
+      copied_layer.push(node)
+    }
+    order.push(copied_layer)
   }
   order
 }

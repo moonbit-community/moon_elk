@@ -29,12 +29,17 @@ pub fn LayeredModelOrderRowGraphPlacer::combine(
 ) -> Unit {
   if components.length() == 1 {
     let source = components[0]
-    self.base.move_graph(target, source, 0.0, 0.0)
-    target.copy_properties(source)
-    let size = source.get_size()
-    target.set_size_xy(size.x, size.y)
+    if source.get_handle() != target.get_handle() {
+      target.get_layerless_nodes().clear()
+      self.base.move_graph(target, source, 0.0, 0.0)
+      target.copy_properties(source)
+      ignore(target.get_padding().copy(source.get_padding()))
+      let size = source.get_size()
+      target.set_size_xy(size.x, size.y)
+    }
     return
   } else if components.is_empty() {
+    target.get_layerless_nodes().clear()
     target.set_size_xy(0.0, 0.0)
     return
   }
@@ -42,6 +47,7 @@ pub fn LayeredModelOrderRowGraphPlacer::combine(
   self.sort_components(components, target)
 
   let first_component = components[0]
+  target.get_layerless_nodes().clear()
   target.copy_properties(first_component)
 
   let mut max_row_width = 0.0
@@ -67,8 +73,7 @@ pub fn LayeredModelOrderRowGraphPlacer::combine(
     let compactor = new_layered_components_compactor()
     compactor.compact(components, target.get_size(), component_spacing)
     for graph in components {
-      let offset = compactor.get_offset()
-      graph.set_offset_xy(offset.x, offset.y)
+      ignore(graph.get_offset().reset().add(compactor.get_offset()))
     }
     let graph_size = compactor.get_graph_size()
     target.set_size_xy(graph_size.x, graph_size.y)
@@ -139,7 +144,9 @@ pub fn LayeredModelOrderRowGraphPlacer::place_components(
       xpos = broadest_row + component_spacing
     }
 
-    self.base.offset_graph(graph, xpos, ypos)
+    let offset = graph.get_offset()
+    self.base.offset_graph(graph, xpos + offset.x, ypos + offset.y)
+    ignore(offset.reset())
     broadest_row = layered_components_max(broadest_row, xpos + size.x)
 
     if layered_model_order_row_contains_side(sides, South) {

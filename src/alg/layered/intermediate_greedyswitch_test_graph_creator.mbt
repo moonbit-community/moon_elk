@@ -81,6 +81,16 @@ fn greedy_switch_mock_random_scramble_seed(seed : Int64) -> Int64 {
 }
 
 ///|
+fn greedy_switch_mock_random_to_signed_int32(value : Int64) -> Int {
+  let masked = value & 4294967295L
+  if masked >= 2147483648L {
+    (masked - 4294967296L).to_int()
+  } else {
+    masked.to_int()
+  }
+}
+
+///|
 fn greedy_switch_mock_random_system_seed() -> Int64 {
   let source = @random.Rand::new()
   let high = Int64::from_int(source.int(limit=@int.max_value))
@@ -202,7 +212,12 @@ pub fn GreedySwitchMockRandom::next_int(
   while true {
     bits = self.next_bits(31)
     value = bits % limit
-    if bits - value + (limit - 1) >= 0 {
+    let probe = greedy_switch_mock_random_to_signed_int32(
+      Int64::from_int(bits) -
+      Int64::from_int(value) +
+      Int64::from_int(limit - 1),
+    )
+    if probe >= 0 {
       return value
     }
   }

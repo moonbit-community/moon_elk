@@ -30,6 +30,7 @@ pub struct LEdge {
   spline_segment_array_properties : Map[String, Array[SplineSegment]]
   port_properties : Map[String, LPort]
   edge_properties : Map[String, LEdge]
+  l_graph_properties : Map[String, LGraph]
 }
 
 ///|
@@ -50,6 +51,7 @@ pub fn new_l_edge() -> LEdge {
     spline_segment_array_properties: {},
     port_properties: {},
     edge_properties: {},
+    l_graph_properties: {},
   }
 }
 
@@ -212,6 +214,12 @@ pub fn LEdge::copy_properties(self : LEdge, source : LEdge) -> Unit {
   for entry in source.edge_properties.to_array() {
     let (key, value) = entry
     self.edge_properties[key] = value
+  }
+
+  self.l_graph_properties.clear()
+  for entry in source.l_graph_properties.to_array() {
+    let (key, value) = entry
+    self.l_graph_properties[key] = value
   }
 }
 
@@ -495,6 +503,37 @@ pub fn LEdge::has_property_l_edge(
   property : @graph.IProperty[LEdge?],
 ) -> Bool {
   self.edge_properties.contains(property.get_id())
+}
+
+///|
+pub fn LEdge::set_property_l_graph(
+  self : LEdge,
+  property : @graph.IProperty[LGraph?],
+  value : LGraph?,
+) -> Unit {
+  match value {
+    Some(graph) => self.l_graph_properties[property.get_id()] = graph
+    None => ignore(self.l_graph_properties.remove(property.get_id()))
+  }
+}
+
+///|
+pub fn LEdge::get_property_l_graph(
+  self : LEdge,
+  property : @graph.IProperty[LGraph?],
+) -> LGraph? {
+  match self.l_graph_properties.get(property.get_id()) {
+    Some(value) => Some(value)
+    None => property.get_default()
+  }
+}
+
+///|
+pub fn LEdge::has_property_l_graph(
+  self : LEdge,
+  property : @graph.IProperty[LGraph?],
+) -> Bool {
+  self.l_graph_properties.contains(property.get_id())
 }
 
 ///|

@@ -27,6 +27,12 @@ pub let internal_properties_origin_l_edge : @graph.IProperty[LEdge?] = @graph.ne
 )
 
 ///|
+pub let internal_properties_coordinate_system_origin : @graph.IProperty[LGraph?] = @graph.new_property(
+  "coordinateSystemOrigin",
+  None,
+)
+
+///|
 pub let internal_properties_end_label_edge : @graph.IProperty[LEdge?] = @graph.new_property(
   "endLabelEdge",
   None,
@@ -145,6 +151,12 @@ pub let internal_properties_long_edge_target_node : @graph.IProperty[LNode?] = @
 pub let internal_properties_target_node_model_order : @graph.IProperty[
   Map[Int, Int],
 ] = @graph.new_property("targetNode.modelOrder", {})
+
+///|
+pub let internal_properties_target_offset : @graph.IProperty[@core.KVector] = @graph.new_property(
+  "targetOffset",
+  @core.new_kvector(),
+)
 
 ///|
 pub let internal_properties_hidden_nodes : @graph.IProperty[Array[LNode]] = @graph.new_property(

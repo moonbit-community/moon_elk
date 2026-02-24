@@ -32,16 +32,33 @@ fn importer_apply_option(
   value : String,
 ) -> Unit {
   ignore(importer)
-  let canonical_id = canonical_layout_option_id(option_id)
-  @graph.node_set_layout_option_string_by_id(node, canonical_id, value)
+  let option_data = @core.layout_meta_data_service_get_option_data_by_suffix(
+    option_id,
+  )
+  let canonical_id = match option_data {
+    Some(data) => data.get_id()
+    None => canonical_layout_option_id(option_id)
+  }
+  let canonical_value = match option_data {
+    Some(data) => data.parse_value(value)
+    None => value
+  }
+  @graph.node_set_layout_option_string_by_id(
+    node, canonical_id, canonical_value,
+  )
+  @graph.node_set_string_property(
+    node,
+    @graph.new_property(canonical_id, ""),
+    canonical_value,
+  )
   if is_direction_option_id(canonical_id) {
-    @graph.node_set_string_property(node, @core.direction, value)
+    @graph.node_set_string_property(node, @core.direction, canonical_value)
   }
   if is_algorithm_option_id(canonical_id) {
-    @graph.node_set_string_property(node, @core.algorithm, value)
+    @graph.node_set_string_property(node, @core.algorithm, canonical_value)
   }
   if is_no_layout_option_id(canonical_id) {
-    match parse_bool_option(value) {
+    match parse_bool_option(canonical_value) {
       Some(parsed) =>
         @graph.node_set_bool_property(node, @core.no_layout, parsed)
       None => ()
@@ -91,12 +108,22 @@ fn importer_transform_individual_spacings(
     Some(individual_spacings) =>
       individual_spacings.each((key, value) => {
         match json_value_as_string(value) {
-          Some(value_string) =>
-            @graph.node_set_individual_spacing_option_string_by_id(
-              node,
-              canonical_layout_option_id(key),
-              value_string,
+          Some(value_string) => {
+            let option_data = @core.layout_meta_data_service_get_option_data_by_suffix(
+              key,
             )
+            let canonical_id = match option_data {
+              Some(data) => data.get_id()
+              None => canonical_layout_option_id(key)
+            }
+            let canonical_value = match option_data {
+              Some(data) => data.parse_value(value_string)
+              None => value_string
+            }
+            @graph.node_set_individual_spacing_option_string_by_id(
+              node, canonical_id, canonical_value,
+            )
+          }
           None => ()
         }
       })
@@ -146,12 +173,22 @@ fn importer_transform_layout_options_port(
 ) -> Unit {
   json_options.each((key, value) => {
     match json_value_as_string(value) {
-      Some(value_string) =>
-        @graph.port_set_layout_option_string_by_id(
-          port,
-          canonical_layout_option_id(key),
-          value_string,
+      Some(value_string) => {
+        let option_data = @core.layout_meta_data_service_get_option_data_by_suffix(
+          key,
         )
+        let canonical_id = match option_data {
+          Some(data) => data.get_id()
+          None => canonical_layout_option_id(key)
+        }
+        let canonical_value = match option_data {
+          Some(data) => data.parse_value(value_string)
+          None => value_string
+        }
+        @graph.port_set_layout_option_string_by_id(
+          port, canonical_id, canonical_value,
+        )
+      }
       None => ()
     }
   })
@@ -180,12 +217,22 @@ fn importer_transform_layout_options_edge(
 ) -> Unit {
   json_options.each((key, value) => {
     match json_value_as_string(value) {
-      Some(value_string) =>
-        @graph.edge_set_layout_option_string_by_id(
-          edge,
-          canonical_layout_option_id(key),
-          value_string,
+      Some(value_string) => {
+        let option_data = @core.layout_meta_data_service_get_option_data_by_suffix(
+          key,
         )
+        let canonical_id = match option_data {
+          Some(data) => data.get_id()
+          None => canonical_layout_option_id(key)
+        }
+        let canonical_value = match option_data {
+          Some(data) => data.parse_value(value_string)
+          None => value_string
+        }
+        @graph.edge_set_layout_option_string_by_id(
+          edge, canonical_id, canonical_value,
+        )
+      }
       None => ()
     }
   })
@@ -214,12 +261,22 @@ fn importer_transform_layout_options_label(
 ) -> Unit {
   json_options.each((key, value) => {
     match json_value_as_string(value) {
-      Some(value_string) =>
-        @graph.label_set_layout_option_string_by_id(
-          label,
-          canonical_layout_option_id(key),
-          value_string,
+      Some(value_string) => {
+        let option_data = @core.layout_meta_data_service_get_option_data_by_suffix(
+          key,
         )
+        let canonical_id = match option_data {
+          Some(data) => data.get_id()
+          None => canonical_layout_option_id(key)
+        }
+        let canonical_value = match option_data {
+          Some(data) => data.parse_value(value_string)
+          None => value_string
+        }
+        @graph.label_set_layout_option_string_by_id(
+          label, canonical_id, canonical_value,
+        )
+      }
       None => ()
     }
   })

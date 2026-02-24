@@ -457,6 +457,15 @@ pub fn layout_meta_data_service_register_default_options() -> Unit {
   )
   layout_meta_data_service_register_option(
     new_layout_option_data(
+      "org.eclipse.elk.hierarchyHandling",
+      name="Hierarchy Handling",
+      group="",
+      option_type=StringType,
+      targets=[ParentsTarget, NodesTarget],
+    ),
+  )
+  layout_meta_data_service_register_option(
+    new_layout_option_data(
       interactive.get_id(),
       name="Interactive",
       group="algorithm",

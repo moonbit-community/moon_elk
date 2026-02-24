@@ -4,6 +4,11 @@ target/
 target
 .mooncakes/
 .moonagent/
+.moon_*/
+src/diff/option_probe/
+src/diff/random_copy_probe/
+src/diff/elkjs_core_compare_runner_tmp/
+scripts/diff/__pycache__/
 elk-reference/
 elkjs-reference/
 artifacts/

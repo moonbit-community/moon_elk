@@ -269,36 +269,14 @@ pub fn LPort::get_connected_ports(self : LPort) -> Array[LPort] {
 
   for edge in self.incoming_edges {
     match edge.get_source() {
-      Some(source) => {
-        let mut exists = false
-        for existing in result {
-          if lport_internal_handle(existing) == lport_internal_handle(source) {
-            exists = true
-            break
-          }
-        }
-        if !exists {
-          result.push(source)
-        }
-      }
+      Some(source) => result.push(source)
       None => ()
     }
   }
 
   for edge in self.outgoing_edges {
     match edge.get_target() {
-      Some(target) => {
-        let mut exists = false
-        for existing in result {
-          if lport_internal_handle(existing) == lport_internal_handle(target) {
-            exists = true
-            break
-          }
-        }
-        if !exists {
-          result.push(target)
-        }
-      }
+      Some(target) => result.push(target)
       None => ()
     }
   }

@@ -106,6 +106,18 @@ fn layer_sweep_hierarchical_layout(layered_graph : LGraph) -> Bool {
 }
 
 ///|
+fn layer_sweep_ordering_strategy_from_string(
+  value : String,
+) -> OrderingStrategy {
+  match value {
+    "NODES_AND_EDGES" => OrderingStrategy::NodesAndEdges
+    "PREFER_EDGES" => OrderingStrategy::PreferEdges
+    "PREFER_NODES" => OrderingStrategy::PreferNodes
+    _ => OrderingStrategy::NoneType
+  }
+}
+
+///|
 fn layer_sweep_intermediate_processing_configuration() -> @core.LayoutProcessorConfiguration[
   LayeredPhases,
   LGraph,
@@ -503,9 +515,22 @@ fn LayerSweepCrossingMinimizer::sweep_reducing_crossings(
 
   let mut free_layer = self.first_free(forward, length)
   while self.is_not_end(length, free_layer, forward) {
+    let first_try_with_initial_order = graph
+      .l_graph()
+      .get_property_bool(internal_properties_first_try_with_initial_order)
+    let second_try_with_initial_order = graph
+      .l_graph()
+      .get_property_bool(internal_properties_second_try_with_initial_order)
     improved = graph
       .cross_minimizer()
-      .minimize_crossings(nodes, free_layer, forward, first_sweep) ||
+      .minimize_crossings(
+        nodes,
+        free_layer,
+        forward,
+        first_sweep &&
+        !first_try_with_initial_order &&
+        !second_try_with_initial_order,
+      ) ||
       improved
     improved = graph
       .port_distributor()
@@ -554,25 +579,219 @@ fn LayerSweepCrossingMinimizer::count_current_number_of_crossings(
 }
 
 ///|
+fn LayerSweepCrossingMinimizer::count_model_order_node_changes(
+  self : LayerSweepCrossingMinimizer,
+  graph : LGraph,
+  layers : Array[Array[LNode]],
+  strategy : OrderingStrategy,
+  cm_group_order_strategy : GroupOrderStrategy,
+) -> Int {
+  ignore(self)
+  let mut previous_layer = -1
+  let mut wrong_model_order = 0
+  for layer in layers {
+    let reference_layer = if previous_layer == -1 {
+      layers[0]
+    } else {
+      layers[previous_layer]
+    }
+    let comparator = new_model_order_node_comparator(
+      graph,
+      reference_layer,
+      strategy,
+      LongEdgeOrderingStrategy::Equal,
+      cm_group_order_strategy,
+      false,
+    )
+    for i in 0..<layer.length() {
+      for j in (i + 1)..<layer.length() {
+        if layer[i].has_property_int(internal_properties_model_order) &&
+          layer[j].has_property_int(internal_properties_model_order) &&
+          comparator.compare(layer[i], layer[j]) > 0 {
+          wrong_model_order = wrong_model_order + 1
+        }
+      }
+    }
+    previous_layer = previous_layer + 1
+  }
+  wrong_model_order
+}
+
+///|
+fn LayerSweepCrossingMinimizer::count_model_order_port_changes(
+  self : LayerSweepCrossingMinimizer,
+  graph : LGraph,
+  layers : Array[Array[LNode]],
+  strategy : OrderingStrategy,
+) -> Int {
+  ignore(self)
+  let mut previous_layer = -1
+  let mut wrong_model_order = 0
+  for layer in layers {
+    let reference_layer = if previous_layer == -1 {
+      layers[0]
+    } else {
+      layers[previous_layer]
+    }
+    for node in layer {
+      let comparator = new_model_order_port_comparator(
+        graph,
+        reference_layer,
+        strategy,
+        sort_by_input_model_processor_long_edge_target_node_preprocessing(node),
+        node
+        .get_graph()
+        .get_property_bool(
+          layered_options_consider_model_order_port_model_order,
+        ),
+      )
+      let ports = node.get_ports()
+      for i in 0..<ports.length() {
+        for j in (i + 1)..<ports.length() {
+          if comparator.compare(ports[i], ports[j]) > 0 {
+            wrong_model_order = wrong_model_order + 1
+          }
+        }
+      }
+    }
+    previous_layer = previous_layer + 1
+  }
+  wrong_model_order
+}
+
+///|
+fn LayerSweepCrossingMinimizer::count_current_number_of_crossings_node_port_order(
+  self : LayerSweepCrossingMinimizer,
+  current_graph : GraphInfoHolder,
+) -> Double {
+  let mut total_crossings = 0.0
+  let to_count = [current_graph]
+  while !to_count.is_empty() {
+    let g_data = match to_count.pop() {
+      Some(data) => data
+      None => break
+    }
+
+    let mut model_order_influence = 0.0
+    let model_order_strategy = current_graph
+      .l_graph()
+      .get_property_string(layered_options_consider_model_order_strategy)
+    let cm_group_order_strategy = group_order_strategy_from_string(
+      current_graph
+      .l_graph()
+      .get_property_string(
+        layered_options_consider_model_order_group_model_order_cm_group_order_strategy,
+      ),
+    )
+    let crossing_counter_node_influence = current_graph
+      .l_graph()
+      .get_property_double(
+        layered_options_consider_model_order_crossing_counter_node_influence,
+      )
+    let crossing_counter_port_influence = current_graph
+      .l_graph()
+      .get_property_double(
+        layered_options_consider_model_order_crossing_counter_port_influence,
+      )
+    if model_order_strategy != "NONE" {
+      let strategy = layer_sweep_ordering_strategy_from_string(
+        model_order_strategy,
+      )
+      model_order_influence = model_order_influence +
+        crossing_counter_node_influence *
+        self
+        .count_model_order_node_changes(
+          current_graph.l_graph(),
+          g_data.current_node_order(),
+          strategy,
+          cm_group_order_strategy,
+        )
+        .to_double()
+      model_order_influence = model_order_influence +
+        crossing_counter_port_influence *
+        self
+        .count_model_order_port_changes(
+          current_graph.l_graph(),
+          g_data.current_node_order(),
+          strategy,
+        )
+        .to_double()
+    }
+
+    total_crossings = total_crossings +
+      g_data
+      .cross_counter()
+      .count_all_crossings(g_data.current_node_order())
+      .to_double() +
+      model_order_influence
+
+    for child_graph in g_data.child_graphs() {
+      match
+        layer_sweep_graph_data_at(self.graph_info_holders, child_graph.get_id()) {
+        Some(child_data) =>
+          if !child_data.dont_sweep_into() {
+            to_count.push(child_data)
+          }
+        None => ()
+      }
+    }
+  }
+  total_crossings
+}
+
+///|
 fn LayerSweepCrossingMinimizer::minimize_crossings_with_counter(
   self : LayerSweepCrossingMinimizer,
   graph_data : GraphInfoHolder,
 ) -> Int {
   let mut is_forward_sweep = self.random.next_boolean()
-  ignore(
-    graph_data
-    .cross_minimizer()
-    .set_first_layer_order(graph_data.current_node_order(), is_forward_sweep),
-  )
+  let initial_crossings = self
+    .count_current_number_of_crossings(graph_data)
+    .to_double()
+  let first_try_with_initial_order = graph_data
+    .l_graph()
+    .get_property_bool(internal_properties_first_try_with_initial_order)
+  if initial_crossings == 0.0 && first_try_with_initial_order {
+    return 0
+  }
+
+  let second_try_with_initial_order = graph_data
+    .l_graph()
+    .get_property_bool(internal_properties_second_try_with_initial_order)
+  let consider_model_order_strategy = graph_data
+    .l_graph()
+    .get_property_string(layered_options_consider_model_order_strategy)
+  if (!first_try_with_initial_order && !second_try_with_initial_order) ||
+    consider_model_order_strategy == "NONE" {
+    ignore(
+      graph_data
+      .cross_minimizer()
+      .set_first_layer_order(graph_data.current_node_order(), is_forward_sweep),
+    )
+  } else {
+    is_forward_sweep = first_try_with_initial_order
+  }
+
   ignore(self.sweep_reducing_crossings(graph_data, is_forward_sweep, true))
+  if second_try_with_initial_order {
+    graph_data
+    .l_graph()
+    .set_property_bool(internal_properties_second_try_with_initial_order, false)
+  }
+  if first_try_with_initial_order {
+    graph_data
+    .l_graph()
+    .set_property_bool(internal_properties_first_try_with_initial_order, false)
+    graph_data
+    .l_graph()
+    .set_property_bool(internal_properties_second_try_with_initial_order, true)
+  }
 
   let mut crossings_in_graph = self.count_current_number_of_crossings(
     graph_data,
   )
-  let mut old_number_of_crossings = crossings_in_graph
-
-  let mut keep_running = true
-  while keep_running {
+  let mut old_number_of_crossings = 0
+  while true {
     self.set_currently_best_node_orders()
     if crossings_in_graph == 0 {
       return 0
@@ -582,9 +801,79 @@ fn LayerSweepCrossingMinimizer::minimize_crossings_with_counter(
     old_number_of_crossings = crossings_in_graph
     ignore(self.sweep_reducing_crossings(graph_data, is_forward_sweep, false))
     crossings_in_graph = self.count_current_number_of_crossings(graph_data)
-
     if old_number_of_crossings <= crossings_in_graph {
-      keep_running = false
+      break
+    }
+  }
+  old_number_of_crossings
+}
+
+///|
+fn LayerSweepCrossingMinimizer::minimize_crossings_node_port_order_with_counter(
+  self : LayerSweepCrossingMinimizer,
+  graph_data : GraphInfoHolder,
+) -> Double {
+  let mut is_forward_sweep = self.random.next_boolean()
+  let initial_crossings = self.count_current_number_of_crossings_node_port_order(
+    graph_data,
+  )
+  let first_try_with_initial_order = graph_data
+    .l_graph()
+    .get_property_bool(internal_properties_first_try_with_initial_order)
+  if initial_crossings == 0.0 && first_try_with_initial_order {
+    return 0.0
+  }
+
+  let second_try_with_initial_order = graph_data
+    .l_graph()
+    .get_property_bool(internal_properties_second_try_with_initial_order)
+  let consider_model_order_strategy = graph_data
+    .l_graph()
+    .get_property_string(layered_options_consider_model_order_strategy)
+  if (!first_try_with_initial_order && !second_try_with_initial_order) ||
+    consider_model_order_strategy == "NONE" {
+    ignore(
+      graph_data
+      .cross_minimizer()
+      .set_first_layer_order(graph_data.current_node_order(), is_forward_sweep),
+    )
+  } else {
+    is_forward_sweep = first_try_with_initial_order
+  }
+
+  ignore(self.sweep_reducing_crossings(graph_data, is_forward_sweep, true))
+  if second_try_with_initial_order {
+    graph_data
+    .l_graph()
+    .set_property_bool(internal_properties_second_try_with_initial_order, false)
+  }
+  if first_try_with_initial_order {
+    graph_data
+    .l_graph()
+    .set_property_bool(internal_properties_first_try_with_initial_order, false)
+    graph_data
+    .l_graph()
+    .set_property_bool(internal_properties_second_try_with_initial_order, true)
+  }
+
+  let mut crossings_in_graph = self.count_current_number_of_crossings_node_port_order(
+    graph_data,
+  )
+  let mut old_number_of_crossings = 0.0
+  while true {
+    self.set_currently_best_node_orders()
+    if crossings_in_graph == 0.0 {
+      return 0.0
+    }
+
+    is_forward_sweep = !is_forward_sweep
+    old_number_of_crossings = crossings_in_graph
+    ignore(self.sweep_reducing_crossings(graph_data, is_forward_sweep, false))
+    crossings_in_graph = self.count_current_number_of_crossings_node_port_order(
+      graph_data,
+    )
+    if old_number_of_crossings <= crossings_in_graph {
+      break
     }
   }
   old_number_of_crossings
@@ -617,12 +906,18 @@ fn LayerSweepCrossingMinimizer::compare_different_randomized_layouts(
   graph_data : GraphInfoHolder,
 ) -> Unit {
   self.random.set_seed(self.random_seed)
-  if graph_data.random() is Some(random) {
-    random.set_seed(self.random_seed)
-  }
   self.graphs_whose_node_order_changed.clear()
 
-  let mut best_crossings = @int.max_value
+  let crossing_counter_node_influence = graph_data
+    .l_graph()
+    .get_property_double(
+      layered_options_consider_model_order_crossing_counter_node_influence,
+    )
+  let crossing_counter_port_influence = graph_data
+    .l_graph()
+    .get_property_double(
+      layered_options_consider_model_order_crossing_counter_port_influence,
+    )
   let mut thoroughness = graph_data
     .l_graph()
     .get_property_int(layered_options_thoroughness)
@@ -630,13 +925,49 @@ fn LayerSweepCrossingMinimizer::compare_different_randomized_layouts(
     thoroughness = 1
   }
 
-  for _ in 0..<thoroughness {
-    let crossings = self.minimize_crossings_with_counter(graph_data)
-    if crossings < best_crossings {
-      best_crossings = crossings
-      self.save_all_node_orders_of_changed_graphs()
-      if best_crossings == 0 {
-        break
+  if crossing_counter_node_influence != 0.0 ||
+    crossing_counter_node_influence != 0.0 {
+    let consider_model_order_strategy = graph_data
+      .l_graph()
+      .get_property_string(layered_options_consider_model_order_strategy)
+    if consider_model_order_strategy != "NONE" {
+      graph_data
+      .l_graph()
+      .set_property_bool(internal_properties_first_try_with_initial_order, true)
+    }
+
+    let mut best_crossings = @double.max_value
+    for _ in 0..<thoroughness {
+      let crossings = self.minimize_crossings_node_port_order_with_counter(
+        graph_data,
+      )
+      if crossings < best_crossings {
+        best_crossings = crossings
+        self.save_all_node_orders_of_changed_graphs()
+        if best_crossings == 0.0 {
+          break
+        }
+      }
+    }
+  } else {
+    let consider_model_order_strategy = graph_data
+      .l_graph()
+      .get_property_string(layered_options_consider_model_order_strategy)
+    if consider_model_order_strategy != "NONE" {
+      graph_data
+      .l_graph()
+      .set_property_bool(internal_properties_first_try_with_initial_order, true)
+    }
+
+    let mut best_crossings = @int.max_value
+    for _ in 0..<thoroughness {
+      let crossings = self.minimize_crossings_with_counter(graph_data)
+      if crossings < best_crossings {
+        best_crossings = crossings
+        self.save_all_node_orders_of_changed_graphs()
+        if best_crossings == 0 {
+          break
+        }
       }
     }
   }

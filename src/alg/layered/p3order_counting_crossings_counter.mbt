@@ -76,16 +76,18 @@ fn crossings_counter_node_cardinality(
 }
 
 ///|
-fn crossings_counter_add_port_if_missing(
-  seen_handles : Map[Int, Bool],
+fn crossings_counter_add_port_if_position_missing(
+  counter : CrossingsCounter,
   ports : Array[LPort],
   port : LPort,
 ) -> Unit {
-  let handle = lport_internal_handle(port)
-  if !seen_handles.contains(handle) {
-    seen_handles[handle] = true
-    ports.push(port)
+  let position = counter.position_of(port)
+  for existing in ports {
+    if counter.position_of(existing) == position {
+      return
+    }
   }
+  ports.push(port)
 }
 
 ///|
@@ -230,16 +232,15 @@ fn CrossingsCounter::connected_in_layer_ports_sorted_by_position(
   side : @core.PortSide,
 ) -> Array[LPort] {
   let ports = []
-  let seen_handles = {}
 
   for node in [upper_node, lower_node] {
     for port in in_north_south_east_west_order(node, side) {
       for edge in port.get_connected_edges() {
         if !edge.is_self_loop() {
-          crossings_counter_add_port_if_missing(seen_handles, ports, port)
+          crossings_counter_add_port_if_position_missing(self, ports, port)
           if self.is_in_layer(edge) {
-            crossings_counter_add_port_if_missing(
-              seen_handles,
+            crossings_counter_add_port_if_position_missing(
+              self,
               ports,
               self.other_end_of(edge, port),
             )
@@ -260,14 +261,13 @@ fn CrossingsCounter::connected_ports_sorted_by_position(
   lower_port : LPort,
 ) -> Array[LPort] {
   let ports = []
-  let seen_handles = {}
 
   for port in [upper_port, lower_port] {
-    crossings_counter_add_port_if_missing(seen_handles, ports, port)
+    crossings_counter_add_port_if_position_missing(self, ports, port)
     for edge in port.get_connected_edges() {
       if !self.is_port_self_loop(edge) {
-        crossings_counter_add_port_if_missing(
-          seen_handles,
+        crossings_counter_add_port_if_position_missing(
+          self,
           ports,
           self.other_end_of(edge, port),
         )

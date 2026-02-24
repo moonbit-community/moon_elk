@@ -975,7 +975,7 @@ pub fn new_direction_preprocessor_layout_processor() -> @core.ILayoutProcessor[
   LayeredPhases,
   LGraph,
 ] {
-  new_graph_transformer_layout_processor(GraphTransformerMode::ToInternalLtr)
+  new_graph_transformer_layout_processor(GraphTransformerMode::ToInputDirection)
 }
 
 ///|
@@ -983,5 +983,5 @@ pub fn new_direction_postprocessor_layout_processor() -> @core.ILayoutProcessor[
   LayeredPhases,
   LGraph,
 ] {
-  new_graph_transformer_layout_processor(GraphTransformerMode::ToInputDirection)
+  new_graph_transformer_layout_processor(GraphTransformerMode::ToInternalLtr)
 }

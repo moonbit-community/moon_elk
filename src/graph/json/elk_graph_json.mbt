@@ -515,6 +515,8 @@ fn canonical_layout_option_id(id : String) -> String {
     "org.eclipse.elk.json.shapeCoords"
   } else if is_edge_coords_option_id(id) {
     "org.eclipse.elk.json.edgeCoords"
+  } else if id.has_prefix("elk.") {
+    "org.eclipse.elk." + safe_slice_from(id, 4)
   } else {
     id
   }

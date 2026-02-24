@@ -34,6 +34,7 @@ pub fn LayeredComponentGroupModelOrderGraphPlacer::combine(
   target : LGraph,
 ) -> Unit {
   self.component_groups.clear()
+  target.get_layerless_nodes().clear()
 
   if components.is_empty() {
     target.set_size_xy(0.0, 0.0)
@@ -131,8 +132,7 @@ pub fn LayeredComponentGroupModelOrderGraphPlacer::combine(
     compactor.compact(components, target.get_size(), component_spacing)
 
     for graph in components {
-      let compacted_offset = compactor.get_offset()
-      graph.set_offset_xy(compacted_offset.x, compacted_offset.y)
+      ignore(graph.get_offset().reset().add(compactor.get_offset()))
     }
 
     let compacted_size = compactor.get_graph_size()

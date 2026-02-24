@@ -2,8 +2,6 @@
 package "Milky2018/moon_elk/diff/elkjs_core_compare_runner"
 
 // Values
-pub fn case_input_graph_json() -> String
-
 pub fn layout_json(String) -> String raise
 
 // Errors

@@ -1,4 +1,4 @@
 ///|
-pub fn case_input_graph_json() -> String {
-  "{\"id\":\"root\",\"layoutOptions\":{\"algorithm\":\"layered\",\"elk.direction\":\"RIGHT\"},\"children\":[{\"id\":\"n1\",\"width\":30,\"height\":30},{\"id\":\"n2\",\"width\":30,\"height\":30}],\"edges\":[{\"id\":\"e1\",\"sources\":[\"n1\"],\"targets\":[\"n2\"]}]}"
+fn case_input_graph_json() -> String {
+  "{\"id\":\"random_flat_113\",\"layoutOptions\":{\"algorithm\":\"layered\",\"elk.direction\":\"UP\",\"elk.layered.spacing.nodeNodeBetweenLayers\":\"30\",\"elk.padding\":\"[left=20, top=20, right=20, bottom=20]\"},\"children\":[{\"id\":\"n0\",\"width\":59,\"height\":65},{\"id\":\"n1\",\"width\":111,\"height\":35},{\"id\":\"n2\",\"width\":110,\"height\":63},{\"id\":\"n3\",\"width\":48,\"height\":90},{\"id\":\"n4\",\"width\":62,\"height\":63},{\"id\":\"n5\",\"width\":43,\"height\":22},{\"id\":\"n6\",\"width\":110,\"height\":35}],\"edges\":[{\"id\":\"e0\",\"sources\":[\"n0\"],\"targets\":[\"n3\"]},{\"id\":\"e1\",\"sources\":[\"n0\"],\"targets\":[\"n4\"]},{\"id\":\"e2\",\"sources\":[\"n1\"],\"targets\":[\"n2\"]},{\"id\":\"e3\",\"sources\":[\"n1\"],\"targets\":[\"n4\"]},{\"id\":\"e4\",\"sources\":[\"n1\"],\"targets\":[\"n6\"]}]}"
 }

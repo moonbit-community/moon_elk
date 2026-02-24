@@ -33,11 +33,38 @@ fn sweep_copy_port_side_is(
 }
 
 ///|
+fn sweep_copy_is_nan(value : Double) -> Bool {
+  value != value
+}
+
+///|
 fn sweep_copy_compare_doubles(left : Double, right : Double) -> Int {
-  if left < right {
+  if sweep_copy_is_nan(left) {
+    if sweep_copy_is_nan(right) {
+      0
+    } else {
+      1
+    }
+  } else if sweep_copy_is_nan(right) {
+    -1
+  } else if left < right {
     -1
   } else if left > right {
     1
+  } else if left == right {
+    if left == 0.0 {
+      let left_inverse = 1.0 / left
+      let right_inverse = 1.0 / right
+      if left_inverse < right_inverse {
+        -1
+      } else if left_inverse > right_inverse {
+        1
+      } else {
+        0
+      }
+    } else {
+      0
+    }
   } else {
     0
   }
@@ -213,6 +240,7 @@ pub fn SweepCopy::transfer_node_and_port_orders_to_graph(
 
   for node in update_port_order {
     sweep_copy_sort_ports(node.get_ports())
+    node.cache_port_sides()
   }
 }
 

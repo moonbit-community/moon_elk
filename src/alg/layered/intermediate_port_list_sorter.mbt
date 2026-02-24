@@ -303,6 +303,7 @@ fn port_list_sorter_process(
           )
         }
       }
+      node.cache_port_sides()
     }
   }
 

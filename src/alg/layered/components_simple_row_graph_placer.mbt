@@ -15,8 +15,8 @@ fn layered_components_graph_area(graph : LGraph) -> Double {
 
 ///|
 fn layered_components_graph_less(left : LGraph, right : LGraph) -> Bool {
-  let left_priority = left.get_property_int(layered_components_priority)
-  let right_priority = right.get_property_int(layered_components_priority)
+  let left_priority = left.get_id()
+  let right_priority = right.get_id()
   if left_priority != right_priority {
     return left_priority > right_priority
   }
@@ -41,12 +41,17 @@ pub fn LayeredSimpleRowGraphPlacer::combine(
 ) -> Unit {
   if components.length() == 1 {
     let source = components[0]
-    self.base.move_graph(target, source, 0.0, 0.0)
-    target.copy_properties(source)
-    let size = source.get_size()
-    target.set_size_xy(size.x, size.y)
+    if source.get_handle() != target.get_handle() {
+      target.get_layerless_nodes().clear()
+      self.base.move_graph(target, source, 0.0, 0.0)
+      target.copy_properties(source)
+      ignore(target.get_padding().copy(source.get_padding()))
+      let size = source.get_size()
+      target.set_size_xy(size.x, size.y)
+    }
     return
   } else if components.is_empty() {
+    target.get_layerless_nodes().clear()
     target.set_size_xy(0.0, 0.0)
     return
   }
@@ -54,6 +59,7 @@ pub fn LayeredSimpleRowGraphPlacer::combine(
   self.sort_components(components, target)
 
   let first_component = components[0]
+  target.get_layerless_nodes().clear()
   target.copy_properties(first_component)
 
   let mut max_row_width = 0.0
@@ -79,8 +85,7 @@ pub fn LayeredSimpleRowGraphPlacer::combine(
     let compactor = new_layered_components_compactor()
     compactor.compact(components, target.get_size(), component_spacing)
     for graph in components {
-      let offset = compactor.get_offset()
-      graph.set_offset_xy(offset.x, offset.y)
+      ignore(graph.get_offset().reset().add(compactor.get_offset()))
     }
     let graph_size = compactor.get_graph_size()
     target.set_size_xy(graph_size.x, graph_size.y)
@@ -104,6 +109,14 @@ pub fn LayeredSimpleRowGraphPlacer::sort_components(
       ComponentOrderingStrategy::NoneType,
     ) {
     return
+  }
+
+  for component in components {
+    let mut priority = 0
+    for node in component.get_layerless_nodes() {
+      priority += node.get_property_double(@core.priority).to_int()
+    }
+    component.set_id(priority)
   }
 
   let length = components.length()
@@ -139,7 +152,9 @@ pub fn LayeredSimpleRowGraphPlacer::place_components(
       highest_box = 0.0
     }
 
-    self.base.offset_graph(graph, xpos, ypos)
+    let offset = graph.get_offset()
+    self.base.offset_graph(graph, xpos + offset.x, ypos + offset.y)
+    ignore(offset.reset())
     broadest_row = layered_components_max(broadest_row, xpos + size.x)
     highest_box = layered_components_max(highest_box, size.y)
     xpos += size.x + component_spacing

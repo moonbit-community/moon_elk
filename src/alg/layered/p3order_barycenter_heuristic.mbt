@@ -276,10 +276,8 @@ fn BarycenterHeuristic::calculate_barycenter(
         }
       } else {
         let fixed_port_id = fixed_port.get_id()
-        if fixed_port_id >= 0 && fixed_port_id < self.port_ranks.length() {
-          state.summed_weight = state.summed_weight +
-            self.port_ranks[fixed_port_id]
-        }
+        state.summed_weight = state.summed_weight +
+          self.port_ranks[fixed_port_id]
         state.degree = state.degree + 1
       }
     }

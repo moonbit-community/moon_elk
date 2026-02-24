@@ -1,6 +1,17 @@
 ///|
+let layered_l_graph_next_handle : Ref[Int] = Ref::new(1)
+
+///|
+fn layered_l_graph_allocate_handle() -> Int {
+  let handle = layered_l_graph_next_handle.val
+  layered_l_graph_next_handle.val = handle + 1
+  handle
+}
+
+///|
 pub struct LGraph {
   mut id : Int
+  handle : Int
   port_side_array_properties : Map[String, Array[@core.PortSide]]
   graph_properties_array_properties : Map[String, Array[GraphProperties]]
   cross_hierarchy_map_entry_array_properties : Map[
@@ -39,6 +50,7 @@ pub struct LGraph {
 pub fn new_l_graph() -> LGraph {
   {
     id: 0,
+    handle: layered_l_graph_allocate_handle(),
     port_side_array_properties: {},
     graph_properties_array_properties: {},
     cross_hierarchy_map_entry_array_properties: {},
@@ -68,6 +80,11 @@ pub fn new_l_graph() -> LGraph {
 ///|
 pub fn LGraph::set_id(self : LGraph, id : Int) -> Unit {
   self.id = id
+}
+
+///|
+pub fn LGraph::get_handle(self : LGraph) -> Int {
+  self.handle
 }
 
 ///|
@@ -630,6 +647,12 @@ pub fn LGraph::copy_properties(self : LGraph, source : LGraph) -> Unit {
   for entry in source.layout_processor_array_properties.to_array() {
     let (key, value) = entry
     self.layout_processor_array_properties[key] = value.copy()
+  }
+
+  self.random_properties.clear()
+  for entry in source.random_properties.to_array() {
+    let (key, value) = entry
+    self.random_properties[key] = value
   }
 
   self.int_properties.clear()

@@ -243,6 +243,8 @@ pub let internal_properties_comment_conn_port : @graph.IProperty[LPort?]
 
 pub let internal_properties_compound_node : @graph.IProperty[Bool]
 
+pub let internal_properties_coordinate_system_origin : @graph.IProperty[LGraph?]
+
 pub let internal_properties_crossing_hint : @graph.IProperty[Int]
 
 pub let internal_properties_cyclic : @graph.IProperty[Bool]
@@ -346,6 +348,8 @@ pub let internal_properties_spline_route_start : @graph.IProperty[Array[SplineSe
 pub let internal_properties_spline_surviving_edge : @graph.IProperty[LEdge?]
 
 pub let internal_properties_target_node_model_order : @graph.IProperty[Map[Int, Int]]
+
+pub let internal_properties_target_offset : @graph.IProperty[@core.KVector]
 
 pub let internal_properties_tarjan_id : @graph.IProperty[Int]
 
@@ -2605,6 +2609,7 @@ pub struct LEdge {
   spline_segment_array_properties : Map[String, Array[SplineSegment]]
   port_properties : Map[String, LPort]
   edge_properties : Map[String, LEdge]
+  l_graph_properties : Map[String, LGraph]
 }
 pub fn LEdge::clear_property_kvector_chain(Self, @graph.IProperty[@core.KVectorChain]) -> Unit
 pub fn LEdge::copy_properties(Self, Self) -> Unit
@@ -2622,6 +2627,7 @@ pub fn LEdge::get_property_kvector(Self, @graph.IProperty[@core.KVector]) -> @co
 pub fn LEdge::get_property_kvector_chain(Self, @graph.IProperty[@core.KVectorChain]) -> @core.KVectorChain
 pub fn LEdge::get_property_l_edge(Self, @graph.IProperty[Self?]) -> Self?
 pub fn LEdge::get_property_l_edge_array(Self, @graph.IProperty[Array[Self]]) -> Array[Self]
+pub fn LEdge::get_property_l_graph(Self, @graph.IProperty[LGraph?]) -> LGraph?
 pub fn LEdge::get_property_l_port(Self, @graph.IProperty[LPort?]) -> LPort?
 pub fn LEdge::get_property_spline_segment_array(Self, @graph.IProperty[Array[SplineSegment]]) -> Array[SplineSegment]
 pub fn LEdge::get_source(Self) -> LPort?
@@ -2632,6 +2638,7 @@ pub fn LEdge::has_property_kvector(Self, @graph.IProperty[@core.KVector]) -> Boo
 pub fn LEdge::has_property_kvector_chain(Self, @graph.IProperty[@core.KVectorChain]) -> Bool
 pub fn LEdge::has_property_l_edge(Self, @graph.IProperty[Self?]) -> Bool
 pub fn LEdge::has_property_l_edge_array(Self, @graph.IProperty[Array[Self]]) -> Bool
+pub fn LEdge::has_property_l_graph(Self, @graph.IProperty[LGraph?]) -> Bool
 pub fn LEdge::has_property_l_port(Self, @graph.IProperty[LPort?]) -> Bool
 pub fn LEdge::has_property_spline_segment_array(Self, @graph.IProperty[Array[SplineSegment]]) -> Bool
 pub fn LEdge::is_in_layer_edge(Self) -> Bool
@@ -2645,6 +2652,7 @@ pub fn LEdge::set_property_kvector(Self, @graph.IProperty[@core.KVector], @core.
 pub fn LEdge::set_property_kvector_chain(Self, @graph.IProperty[@core.KVectorChain], @core.KVectorChain) -> Unit
 pub fn LEdge::set_property_l_edge(Self, @graph.IProperty[Self?], Self?) -> Unit
 pub fn LEdge::set_property_l_edge_array(Self, @graph.IProperty[Array[Self]], Array[Self]) -> Unit
+pub fn LEdge::set_property_l_graph(Self, @graph.IProperty[LGraph?], LGraph?) -> Unit
 pub fn LEdge::set_property_l_port(Self, @graph.IProperty[LPort?], LPort?) -> Unit
 pub fn LEdge::set_property_spline_segment_array(Self, @graph.IProperty[Array[SplineSegment]], Array[SplineSegment]) -> Unit
 pub fn LEdge::set_source(Self, LPort?) -> Unit
@@ -2659,6 +2667,7 @@ pub fn LEdgeAdapter::get_labels(Self) -> Array[LLabelAdapter]
 
 pub struct LGraph {
   mut id : Int
+  handle : Int
   port_side_array_properties : Map[String, Array[@core.PortSide]]
   graph_properties_array_properties : Map[String, Array[GraphProperties]]
   cross_hierarchy_map_entry_array_properties : Map[String, Array[(LEdge, (LEdge, LGraph, PortType))]]
@@ -2686,6 +2695,7 @@ pub struct LGraph {
 pub fn LGraph::clear_property_string(Self, @graph.IProperty[String]) -> Unit
 pub fn LGraph::copy_properties(Self, Self) -> Unit
 pub fn LGraph::get_actual_size(Self) -> @core.KVector
+pub fn LGraph::get_handle(Self) -> Int
 pub fn LGraph::get_id(Self) -> Int
 pub fn LGraph::get_layerless_nodes(Self) -> Array[LNode]
 pub fn LGraph::get_layers(Self) -> Array[Layer]
@@ -2878,9 +2888,12 @@ pub struct LNode {
   edge_properties : Map[String, LEdge]
   bp_info_properties : Map[String, BPInfo]
   self_loop_holder_properties : Map[String, SelfLoopHolder]
+  port_side_indices : Map[Int, PortSideRange]
+  mut port_sides_cached : Bool
 }
 pub fn LNode::add_port(Self, LPort) -> Unit
 pub fn LNode::border_to_content_area_coordinates(Self, Bool, Bool) -> Unit
+pub fn LNode::cache_port_sides(Self) -> Unit
 pub fn LNode::clear_property_end_label_cell_array(Self, @graph.IProperty[Array[EndLabelCell]]) -> Unit
 pub fn LNode::get_connected_edges(Self) -> Array[LEdge]
 pub fn LNode::get_designation(Self) -> String?
@@ -3711,6 +3724,8 @@ pub enum PortSideAssignerTarget {
   SouthWestCornerTarget
   SouthEastCornerTarget
 }
+
+type PortSideRange
 
 pub enum PortSortingStrategy {
   InputOrder

@@ -29,6 +29,17 @@ fn lnode_port_side_equals(
 }
 
 ///|
+fn lnode_port_side_rank(side : @core.PortSide) -> Int {
+  match side {
+    @core.PortSide::SideUndefined => 0
+    @core.PortSide::North => 1
+    @core.PortSide::East => 2
+    @core.PortSide::South => 3
+    @core.PortSide::West => 4
+  }
+}
+
+///|
 fn lnode_clone_int_int_map(source : Map[Int, Int]) -> Map[Int, Int] {
   let copied : Map[Int, Int] = {}
   for entry in source.to_array() {
@@ -72,6 +83,12 @@ pub fn node_type_values() -> Array[NodeType] {
 }
 
 ///|
+struct PortSideRange {
+  start : Int
+  end : Int
+}
+
+///|
 pub struct LNode {
   shape : LShape
   node_handle : Int
@@ -101,6 +118,8 @@ pub struct LNode {
   edge_properties : Map[String, LEdge]
   bp_info_properties : Map[String, BPInfo]
   self_loop_holder_properties : Map[String, SelfLoopHolder]
+  port_side_indices : Map[Int, PortSideRange]
+  mut port_sides_cached : Bool
 }
 
 ///|
@@ -134,6 +153,8 @@ pub fn new_l_node(graph? : LGraph? = None) -> LNode {
     edge_properties: {},
     bp_info_properties: {},
     self_loop_holder_properties: {},
+    port_side_indices: {},
+    port_sides_cached: false,
   }
 }
 
@@ -280,11 +301,80 @@ pub fn LNode::get_ports_by_side(
 }
 
 ///|
+fn lnode_slice_ports(
+  ports : Array[LPort],
+  start : Int,
+  end_exclusive : Int,
+) -> Array[LPort] {
+  let mut start_index = start
+  let mut end_index = end_exclusive
+  if start_index < 0 {
+    start_index = 0
+  }
+  if end_index > ports.length() {
+    end_index = ports.length()
+  }
+  if end_index < start_index {
+    end_index = start_index
+  }
+
+  let result = []
+  let mut i = start_index
+  while i < end_index {
+    result.push(ports[i])
+    i = i + 1
+  }
+  result
+}
+
+///|
+fn lnode_find_port_indices(node : LNode) -> Unit {
+  node.port_side_indices.clear()
+  if node.ports.is_empty() {
+    return
+  }
+
+  let mut first_index_for_current_side = 0
+  let mut current_side = @core.PortSide::North
+  let mut current_index = 0
+  while current_index < node.ports.length() {
+    let port = node.ports[current_index]
+    if !lnode_port_side_equals(port.get_side(), current_side) {
+      if first_index_for_current_side != current_index {
+        node.port_side_indices[lnode_port_side_rank(current_side)] = {
+          start: first_index_for_current_side,
+          end: current_index,
+        }
+      }
+      current_side = port.get_side()
+      first_index_for_current_side = current_index
+    }
+    current_index = current_index + 1
+  }
+  node.port_side_indices[lnode_port_side_rank(current_side)] = {
+    start: first_index_for_current_side,
+    end: current_index,
+  }
+}
+
+///|
+pub fn LNode::cache_port_sides(self : LNode) -> Unit {
+  self.port_sides_cached = true
+  lnode_find_port_indices(self)
+}
+
+///|
 pub fn LNode::get_port_side_view(
   self : LNode,
   side : @core.PortSide,
 ) -> Array[LPort] {
-  self.get_ports_by_side(side)
+  if !self.port_sides_cached {
+    lnode_find_port_indices(self)
+  }
+  match self.port_side_indices.get(lnode_port_side_rank(side)) {
+    Some(range) => lnode_slice_ports(self.ports, range.start, range.end)
+    None => []
+  }
 }
 
 ///|

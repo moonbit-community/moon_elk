@@ -190,15 +190,15 @@ fn GreedyPortDistributor::switch_ports(
 ) -> Unit {
   let counter = greedy_port_distributor_crossings_counter(self)
   counter.switch_ports(ports[top_port], ports[bottom_port])
-
-  let lower = ports[bottom_port]
-  ports[bottom_port] = ports[top_port]
-  ports[top_port] = lower
   greedy_port_distributor_swap_ports_on_node(
     node,
     ports[top_port],
     ports[bottom_port],
   )
+
+  let lower = ports[bottom_port]
+  ports[bottom_port] = ports[top_port]
+  ports[top_port] = lower
 }
 
 ///|

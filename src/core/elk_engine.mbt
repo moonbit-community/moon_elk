@@ -5,6 +5,40 @@ pub(all) struct ElkEngine {
 }
 
 ///|
+pub type ElkEngineLayoutDelegate = (Map[String, Json], Map[String, Json]) -> Unit
+
+///|
+let elk_engine_layout_delegate_ref : Ref[ElkEngineLayoutDelegate?] = Ref::new(
+  None,
+)
+
+///|
+pub fn elk_engine_register_layout_delegate(
+  delegate : ElkEngineLayoutDelegate,
+) -> Unit {
+  elk_engine_layout_delegate_ref.val = Some(delegate)
+}
+
+///|
+pub fn elk_engine_clear_layout_delegate_for_test() -> Unit {
+  elk_engine_layout_delegate_ref.val = None
+}
+
+///|
+fn elk_engine_apply_delegate_if_registered(
+  graph_obj : Map[String, Json],
+  options : Map[String, Json],
+) -> Bool {
+  match elk_engine_layout_delegate_ref.val {
+    Some(delegate) => {
+      delegate(graph_obj, options)
+      true
+    }
+    None => false
+  }
+}
+
+///|
 fn copy_json_map(source : Map[String, Json]) -> Map[String, Json] {
   source.copy()
 }
@@ -428,7 +462,7 @@ fn apply_fixed_edge_bend_points(edge_obj : Map[String, Json]) -> Unit {
 ///|
 fn child_ids_of_graph(graph_obj : Map[String, Json]) -> Map[String, Bool] {
   let child_ids : Map[String, Bool] = {}
-  let children = get_or_init_array_field(graph_obj, "children")
+  let children = optional_array_field(graph_obj, "children").unwrap_or([])
   for child in children {
     match child {
       Object(child_obj) =>
@@ -514,15 +548,16 @@ fn has_hierarchical_edges_for_separate_children(
   let current_graph_id = graph_id_string(graph_obj)
   let local_shape_ids : Map[String, Bool] = {}
   collect_local_shape_ids_recursively(graph_obj, local_shape_ids)
-  let edges = get_or_init_array_field(graph_obj, "edges")
+  let edges = optional_array_field(graph_obj, "edges").unwrap_or([])
   for i = 0; i < edges.length(); i = i + 1 {
     let edge_obj = match edges[i] {
       Object(obj) => obj
       _ => continue
     }
-    normalize_edge_endpoints(edge_obj)
-    let sources = edge_endpoints(edge_obj, "sources")
-    let targets = edge_endpoints(edge_obj, "targets")
+    let normalized_edge_obj = edge_obj.copy()
+    normalize_edge_endpoints(normalized_edge_obj)
+    let sources = edge_endpoints(normalized_edge_obj, "sources")
+    let targets = edge_endpoints(normalized_edge_obj, "targets")
     for endpoint in sources {
       if current_graph_id == Some(endpoint) ||
         !local_shape_ids.contains(endpoint) {
@@ -535,9 +570,8 @@ fn has_hierarchical_edges_for_separate_children(
         return true
       }
     }
-    edges[i] = Json::object(edge_obj)
   }
-  let children = get_or_init_array_field(graph_obj, "children")
+  let children = optional_array_field(graph_obj, "children").unwrap_or([])
   for i = 0; i < children.length(); i = i + 1 {
     match children[i] {
       Object(child_obj) =>
@@ -554,7 +588,7 @@ fn has_hierarchical_edges_for_separate_children(
 fn all_children_have_first_layer_constraint(
   graph_obj : Map[String, Json],
 ) -> Bool {
-  let children = get_or_init_array_field(graph_obj, "children")
+  let children = optional_array_field(graph_obj, "children").unwrap_or([])
   if children.is_empty() {
     return false
   }
@@ -577,13 +611,13 @@ fn all_children_have_first_layer_constraint(
 
 ///|
 fn has_first_layer_cycle_conflict(graph_obj : Map[String, Json]) -> Bool {
-  let children = get_or_init_array_field(graph_obj, "children")
+  let children = optional_array_field(graph_obj, "children").unwrap_or([])
   if children.length() < 2 ||
     !all_children_have_first_layer_constraint(graph_obj) {
     return false
   }
   let child_ids = child_ids_of_graph(graph_obj)
-  let edges = get_or_init_array_field(graph_obj, "edges")
+  let edges = optional_array_field(graph_obj, "edges").unwrap_or([])
   let mut relevant_edges = 0
   for edge in edges {
     let edge_obj = match edge {
@@ -983,7 +1017,25 @@ pub fn ElkEngine::layout(
       "org.eclipse.elk.core.UnsupportedGraphException: Hierarchical edge cannot be laid out separately",
     )
   }
-  apply_layout_recursively(self, graph_obj, options)
+  let root_algorithm = resolve_algorithm(options)
+  if !self.algorithms.contains(root_algorithm) {
+    raise invalid_graph_error(
+      "org.eclipse.elk.core.UnsupportedConfigurationException: Unknown layouter id",
+    )
+  }
+
+  let mut delegated = false
+  if root_algorithm == "layered" {
+    if has_first_layer_cycle_conflict(graph_obj) {
+      raise invalid_graph_error(
+        "org.eclipse.elk.core.UnsupportedConfigurationException: Layer constraint conflict",
+      )
+    }
+    delegated = elk_engine_apply_delegate_if_registered(graph_obj, options)
+  }
+  if !delegated {
+    apply_layout_recursively(self, graph_obj, options)
+  }
   if logging || measure_execution_time {
     add_logging(graph_obj, measure_execution_time)
   }

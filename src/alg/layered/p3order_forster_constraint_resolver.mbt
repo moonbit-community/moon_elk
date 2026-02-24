@@ -586,7 +586,8 @@ fn ForsterConstraintResolver::find_violated_constraint(
         let predecessor_barycenter = forster_group_barycenter_value(predecessor)
         let group_barycenter = forster_group_barycenter_value(group)
 
-        if predecessor_barycenter == group_barycenter {
+        if Float::from_double(predecessor_barycenter) ==
+          Float::from_double(group_barycenter) {
           if forster_group_list_index_of(groups, predecessor) >
             forster_group_list_index_of(groups, group) {
             return Some((predecessor, group))

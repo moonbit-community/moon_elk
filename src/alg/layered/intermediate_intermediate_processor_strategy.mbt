@@ -307,9 +307,76 @@ fn intermediate_processor_new_greedy_switch_layout_processor(
   cross_min_type : CrossMinType,
 ) -> @core.ILayoutProcessor[LayeredPhases, LGraph] {
   let minimizer = new_layer_sweep_crossing_minimizer(cross_min_type)
-  @core.new_layout_processor((graph, monitor) => {
-    minimizer.process(graph, progress_monitor=monitor)
-  })
+  let long_edge_splitter_factory = @core.new_layout_processor_factory(
+    23000 +
+    intermediate_processor_strategy_ordinal(
+      IntermediateProcessorStrategy::LongEdgeSplitter,
+    ),
+    intermediate_processor_strategy_ordinal(
+      IntermediateProcessorStrategy::LongEdgeSplitter,
+    ),
+    () => new_long_edge_splitter_layout_processor(),
+  )
+  let in_layer_constraint_factory = @core.new_layout_processor_factory(
+    23000 +
+    intermediate_processor_strategy_ordinal(
+      IntermediateProcessorStrategy::InLayerConstraintProcessor,
+    ),
+    intermediate_processor_strategy_ordinal(
+      IntermediateProcessorStrategy::InLayerConstraintProcessor,
+    ),
+    () => new_in_layer_constraint_processor_layout_processor(),
+  )
+  let long_edge_joiner_factory = @core.new_layout_processor_factory(
+    23000 +
+    intermediate_processor_strategy_ordinal(
+      IntermediateProcessorStrategy::LongEdgeJoiner,
+    ),
+    intermediate_processor_strategy_ordinal(
+      IntermediateProcessorStrategy::LongEdgeJoiner,
+    ),
+    () => new_long_edge_joiner_layout_processor(),
+  )
+  let port_list_sorter_factory = @core.new_layout_processor_factory(
+    23000 +
+    intermediate_processor_strategy_ordinal(
+      IntermediateProcessorStrategy::PortListSorter,
+    ),
+    intermediate_processor_strategy_ordinal(
+      IntermediateProcessorStrategy::PortListSorter,
+    ),
+    () => new_port_list_sorter_layout_processor(),
+  )
+  @core.new_hierarchy_aware_layout_phase(
+    (graph, monitor) => minimizer.process(graph, progress_monitor=monitor),
+    graph => {
+      ignore(graph)
+      let configuration = @core.layout_processor_configuration_create(
+        layered_phase_descriptor,
+      )
+      ignore(
+        configuration.add_before(
+          LayeredPhases::P3NodeOrdering,
+          long_edge_splitter_factory,
+        ),
+      )
+      ignore(
+        configuration.add_before(
+          LayeredPhases::P4NodePlacement,
+          in_layer_constraint_factory,
+        ),
+      )
+      ignore(configuration.after(LayeredPhases::P5EdgeRouting))
+      ignore(configuration.add(long_edge_joiner_factory))
+      ignore(
+        configuration.add_before(
+          LayeredPhases::P3NodeOrdering,
+          port_list_sorter_factory,
+        ),
+      )
+      Some(configuration)
+    },
+  )
 }
 
 ///|
