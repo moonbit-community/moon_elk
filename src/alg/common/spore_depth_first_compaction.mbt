@@ -18,7 +18,7 @@ fn depth_first_compaction_tree_identity_eq(
   left : Tree[Node],
   right : Tree[Node],
 ) -> Bool {
-  depth_first_compaction_node_identity_eq(left.node, right.node)
+  left.uid == right.uid
 }
 
 ///|

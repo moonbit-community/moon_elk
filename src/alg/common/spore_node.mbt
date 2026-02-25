@@ -81,7 +81,8 @@ pub fn Node::underlap(self : Node, other : Node) -> Double {
     vertical_scale
   }
   (1.0 - scale) *
-  @math.hypot(horizontal_center_distance, vertical_center_distance)
+  (horizontal_center_distance * horizontal_center_distance +
+  vertical_center_distance * vertical_center_distance).sqrt()
 }
 
 ///|
