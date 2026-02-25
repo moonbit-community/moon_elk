@@ -1,0 +1,8 @@
+import {
+  "Milky2018/moon_elk/graph/json" @graph_json,
+  "Milky2018/moon_elk/graph/text" @text,
+}
+
+options(
+  "is-main": true,
+)

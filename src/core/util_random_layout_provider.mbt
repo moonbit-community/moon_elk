@@ -10,6 +10,26 @@ let random_layout_provider_max_bends : Int = 5
 let random_layout_provider_rand_fact : Double = 0.2
 
 ///|
+let random_layout_provider_padding_option : @graph.IProperty[String] = @graph.new_property(
+  "org.eclipse.elk.padding", "[left=15, top=15, right=15, bottom=15]",
+)
+
+///|
+let random_layout_provider_spacing_node_node_option : @graph.IProperty[Double] = @graph.new_property(
+  "org.eclipse.elk.spacing.nodeNode", 15.0,
+)
+
+///|
+let random_layout_provider_random_seed_option : @graph.IProperty[Int] = @graph.new_property(
+  "org.eclipse.elk.randomSeed", 0,
+)
+
+///|
+let random_layout_provider_aspect_ratio_option : @graph.IProperty[Double] = @graph.new_property(
+  "org.eclipse.elk.aspectRatio", 1.600000023841858,
+)
+
+///|
 fn random_layout_provider_max(a : Double, b : Double) -> Double {
   if a >= b {
     a
@@ -23,24 +43,75 @@ fn random_layout_provider_parse_padding(
   layout_node : @graph.ElkNode,
 ) -> ElkPadding {
   let parsed = new_elk_padding()
-  parsed.parse(@graph.node_get_string_property(layout_node, padding))
+  if @graph.node_has_string_property(layout_node, random_layout_provider_padding_option) {
+    parsed.parse(
+      @graph.node_get_string_property(
+        layout_node, random_layout_provider_padding_option,
+      ),
+    )
+    return parsed
+  }
+  if @graph.node_layout_option_string_value(
+      layout_node,
+      random_layout_provider_padding_option.get_id(),
+    ) is Some(raw) {
+    parsed.parse(raw)
+  } else {
+    parsed.parse(random_layout_provider_padding_option.get_default())
+  }
   parsed
+}
+
+///|
+fn random_layout_provider_read_int_option(
+  node : @graph.ElkNode,
+  property : @graph.IProperty[Int],
+) -> Int {
+  if @graph.node_has_int_property(node, property) {
+    return @graph.node_get_int_property(node, property)
+  }
+  if @graph.node_layout_option_string_value(node, property.get_id()) is Some(raw) {
+    try @strconv.parse_int(raw.trim().to_string()) catch {
+      _ => property.get_default()
+    } noraise {
+      value => value
+    }
+  } else {
+    property.get_default()
+  }
+}
+
+///|
+fn random_layout_provider_read_double_option(
+  node : @graph.ElkNode,
+  property : @graph.IProperty[Double],
+) -> Double {
+  if @graph.node_has_double_property(node, property) {
+    return @graph.node_get_double_property(node, property)
+  }
+  if @graph.node_layout_option_string_value(node, property.get_id()) is Some(raw) {
+    try @strconv.parse_double(raw.trim().to_string()) catch {
+      _ => property.get_default()
+    } noraise {
+      value => value
+    }
+  } else {
+    property.get_default()
+  }
 }
 
 ///|
 fn random_layout_provider_create_random(
   parent_node : @graph.ElkNode,
-) -> @random.Rand {
-  let random_seed_value = @graph.node_get_int_property(parent_node, random_seed)
+) -> JavaRandom {
+  let random_seed_value = random_layout_provider_read_int_option(
+    parent_node,
+    random_layout_provider_random_seed_option,
+  )
   if random_seed_value != 0 {
-    let seed_buffer = @buffer.new()
-    seed_buffer.write_int64_le(random_seed_value.to_int64())
-    seed_buffer.write_int64_le(0)
-    seed_buffer.write_int64_le(0)
-    seed_buffer.write_int64_le(0)
-    @random.Rand::chacha8(seed=seed_buffer.to_bytes())
+    new_java_random_seeded_int(random_seed_value)
   } else {
-    @random.Rand::new()
+    new_java_random()
   }
 }
 
@@ -120,7 +191,7 @@ fn random_layout_provider_add_parent_x_twice(
 ///|
 fn random_layout_provider_randomize_edge(
   edge : @graph.ElkEdge,
-  random : @random.Rand,
+  random : JavaRandom,
   draw_width : Double,
   draw_height : Double,
 ) -> Unit {
@@ -209,7 +280,7 @@ fn random_layout_provider_randomize_edge(
 
   @graph.edge_section_set_end(edge_section, target_px, target_py)
 
-  let mut bends_num = random.int(limit=random_layout_provider_max_bends)
+  let mut bends_num = random.int(random_layout_provider_max_bends)
   bends_num = bends_num + 1
   let xdiff = target_px - source_px
   let ydiff = target_py - source_py
@@ -248,7 +319,7 @@ fn random_layout_provider_randomize_edge(
 ///|
 fn random_layout_provider_randomize(
   parent : @graph.ElkNode,
-  random : @random.Rand,
+  random : JavaRandom,
   aspect_ratio_value : Double,
   spacing_value : Double,
   padding_value : ElkPadding,
@@ -326,11 +397,11 @@ pub fn RandomLayoutProvider::layout(
   }
 
   let random = random_layout_provider_create_random(parent_node)
-  let aspect_ratio_value = @graph.node_get_double_property(
-    parent_node, aspect_ratio,
+  let aspect_ratio_value = random_layout_provider_read_double_option(
+    parent_node, random_layout_provider_aspect_ratio_option,
   )
-  let spacing_value = @graph.node_get_double_property(
-    parent_node, spacing_node_node,
+  let spacing_value = random_layout_provider_read_double_option(
+    parent_node, random_layout_provider_spacing_node_node_option,
   )
   let padding_value = random_layout_provider_parse_padding(parent_node)
   random_layout_provider_randomize(

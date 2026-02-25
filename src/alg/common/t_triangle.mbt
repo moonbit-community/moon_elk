@@ -10,6 +10,26 @@ fn fuzzy_compare(left : Double, right : Double, fuzziness : Double) -> Int {
 }
 
 ///|
+fn t_triangle_to_signed_int32(value : Int64) -> Int {
+  let masked = value & 4294967295L
+  if masked >= 2147483648L {
+    (masked - 4294967296L).to_int()
+  } else {
+    masked.to_int()
+  }
+}
+
+///|
+let t_triangle_uid_counter : Ref[Int] = Ref::new(0)
+
+///|
+fn next_t_triangle_uid() -> Int {
+  let uid = t_triangle_uid_counter.val
+  t_triangle_uid_counter.val = uid + 1
+  uid
+}
+
+///|
 fn calculate_circumcenter(
   a : @core.KVector,
   b : @core.KVector,
@@ -28,6 +48,7 @@ fn calculate_circumcenter(
 
 ///|
 pub struct TTriangle {
+  uid : Int
   a : @core.KVector
   b : @core.KVector
   c : @core.KVector
@@ -43,6 +64,7 @@ pub fn new_ttriangle(
   c : @core.KVector,
 ) -> TTriangle {
   {
+    uid: next_t_triangle_uid(),
     a,
     b,
     c,
@@ -76,7 +98,11 @@ pub fn TTriangle::equals(self : TTriangle, other : TTriangle) -> Bool {
 
 ///|
 pub fn TTriangle::hash_code(self : TTriangle) -> Int {
-  self.a.hash_code() + self.b.hash_code() + self.c.hash_code()
+  t_triangle_to_signed_int32(
+    Int64::from_int(self.a.hash_code()) +
+    Int64::from_int(self.b.hash_code()) +
+    Int64::from_int(self.c.hash_code()),
+  )
 }
 
 ///|
@@ -94,4 +120,14 @@ pub fn TTriangle::contains_vertex(
   vertex.equals(self.vertices[0]) ||
   vertex.equals(self.vertices[1]) ||
   vertex.equals(self.vertices[2])
+}
+
+///|
+pub impl Eq for TTriangle with equal(self : TTriangle, other : TTriangle) -> Bool {
+  self.equals(other)
+}
+
+///|
+pub impl Hash for TTriangle with hash_combine(self : TTriangle, hasher) -> Unit {
+  hasher.combine(self.hash_code())
 }

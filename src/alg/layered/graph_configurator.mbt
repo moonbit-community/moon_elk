@@ -99,7 +99,7 @@ pub fn graph_configurator_enforce_direction(lgraph : LGraph) -> Unit {
     lgraph.set_property_string(
       @core.direction,
       graph_configurator_direction_from_aspect_ratio(
-        lgraph.get_property_double(@core.aspect_ratio),
+        lgraph.get_property_double(layered_options_aspect_ratio),
       ),
     )
   }

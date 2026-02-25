@@ -13,7 +13,15 @@ pub fn new_stress_layout_provider() -> StressLayoutProvider {
 }
 
 ///|
-fn force_option_bool_from_layout_options(
+fn init {
+  @core.recursive_graph_layout_engine_register_handler(stress_algorithm_id, (
+    layout_graph,
+    progress_monitor,
+  ) => new_stress_layout_provider().layout(layout_graph, progress_monitor))
+}
+
+///|
+fn stress_option_bool_from_layout_options(
   node : @graph.ElkNode,
   option : ForceBoolOption,
 ) -> Bool {
@@ -37,13 +45,20 @@ pub fn StressLayoutProvider::layout(
   progress_monitor : @core.IElkProgressMonitor,
 ) -> Unit {
   ignore(progress_monitor.begin("ELK Stress", 1.0))
-  if !force_option_bool_from_layout_options(layout_graph, stress_interactive) {
+  if !stress_option_bool_from_layout_options(layout_graph, stress_interactive) {
     let force_provider = new_force_layout_provider()
     let force_monitor = match progress_monitor.sub_task(1.0) {
       Some(monitor) => monitor
       None => progress_monitor
     }
     force_provider.layout(layout_graph, force_monitor)
+  } else {
+    if !stress_option_bool_from_layout_options(
+        layout_graph,
+        stress_omit_node_micro_layout,
+      ) {
+      @common.node_micro_layout_for_graph(layout_graph).execute()
+    }
   }
   let importer = new_elk_graph_importer()
   let graph = importer.import_graph(layout_graph)

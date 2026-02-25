@@ -255,12 +255,66 @@ pub fn node_set_int_property(
 }
 
 ///|
+fn parse_int_property_text(value : String) -> Int? {
+  let parsed : Result[Int, @strconv.StrConvError] = try?
+    @strconv.parse_int(value.trim())
+  match parsed {
+    Ok(result) => Some(result)
+    Err(_) => None
+  }
+}
+
+///|
+fn parse_double_property_text(value : String) -> Double? {
+  let parsed : Result[Double, @strconv.StrConvError] = try?
+    @strconv.parse_double(value.trim())
+  match parsed {
+    Ok(result) => Some(result)
+    Err(_) => None
+  }
+}
+
+///|
+fn parse_bool_property_text(value : String) -> Bool? {
+  let normalized = value.trim().to_lower()
+  if normalized == "true" || normalized == "1" || normalized == "yes" {
+    Some(true)
+  } else if normalized == "false" || normalized == "0" || normalized == "no" {
+    Some(false)
+  } else {
+    None
+  }
+}
+
+///|
 pub fn node_get_int_property(node : ElkNode, property : IProperty[Int]) -> Int {
   checked_node(node)
   let data = node_store.val[node]
   match data.int_properties.get(property.get_id()) {
     Some(value) => value
-    None => property.get_default()
+    None =>
+      match data.string_properties.get(property.get_id()) {
+        Some(text) =>
+          match parse_int_property_text(text) {
+            Some(parsed) => parsed
+            None =>
+              match data.layout_option_string_values.get(property.get_id()) {
+                Some(option_text) =>
+                  parse_int_property_text(option_text).unwrap_or(
+                    property.get_default(),
+                  )
+                None => property.get_default()
+              }
+          }
+        None =>
+          match data.layout_option_string_values.get(property.get_id()) {
+            Some(option_text) =>
+              parse_int_property_text(option_text).unwrap_or(
+                property.get_default(),
+              )
+            None => property.get_default()
+          }
+      }
   }
 }
 
@@ -303,7 +357,29 @@ pub fn node_get_double_property(
   let data = node_store.val[node]
   match data.double_properties.get(property.get_id()) {
     Some(value) => value
-    None => property.get_default()
+    None =>
+      match data.string_properties.get(property.get_id()) {
+        Some(text) =>
+          match parse_double_property_text(text) {
+            Some(parsed) => parsed
+            None =>
+              match data.layout_option_string_values.get(property.get_id()) {
+                Some(option_text) =>
+                  parse_double_property_text(option_text).unwrap_or(
+                    property.get_default(),
+                  )
+                None => property.get_default()
+              }
+          }
+        None =>
+          match data.layout_option_string_values.get(property.get_id()) {
+            Some(option_text) =>
+              parse_double_property_text(option_text).unwrap_or(
+                property.get_default(),
+              )
+            None => property.get_default()
+          }
+      }
   }
 }
 
@@ -349,7 +425,29 @@ pub fn node_get_bool_property(
   let data = node_store.val[node]
   match data.bool_properties.get(property.get_id()) {
     Some(value) => value
-    None => property.get_default()
+    None =>
+      match data.string_properties.get(property.get_id()) {
+        Some(text) =>
+          match parse_bool_property_text(text) {
+            Some(parsed) => parsed
+            None =>
+              match data.layout_option_string_values.get(property.get_id()) {
+                Some(option_text) =>
+                  parse_bool_property_text(option_text).unwrap_or(
+                    property.get_default(),
+                  )
+                None => property.get_default()
+              }
+          }
+        None =>
+          match data.layout_option_string_values.get(property.get_id()) {
+            Some(option_text) =>
+              parse_bool_property_text(option_text).unwrap_or(
+                property.get_default(),
+              )
+            None => property.get_default()
+          }
+      }
   }
 }
 
@@ -395,7 +493,11 @@ pub fn node_get_string_property(
   let data = node_store.val[node]
   match data.string_properties.get(property.get_id()) {
     Some(value) => value
-    None => property.get_default()
+    None =>
+      match data.layout_option_string_values.get(property.get_id()) {
+        Some(value) => value
+        None => property.get_default()
+      }
   }
 }
 

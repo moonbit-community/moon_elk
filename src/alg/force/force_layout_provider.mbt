@@ -28,17 +28,41 @@ pub fn new_force_layout_provider() -> ForceLayoutProvider {
 }
 
 ///|
+fn init {
+  @core.recursive_graph_layout_engine_register_handler(force_algorithm_id, (
+    layout_graph,
+    progress_monitor,
+  ) => new_force_layout_provider().layout(layout_graph, progress_monitor))
+}
+
+///|
 fn force_set_options(graph : FGraph, parent : @graph.ElkNode) -> Unit {
   ignore(parent)
   let random_seed = graph.get_int_property(force_random_seed)
   let random_generator = if random_seed == 0 {
-    @random.Rand::new()
+    @core.new_java_random()
   } else {
-    let seed_buffer = @buffer.new()
-    seed_buffer.write_int64_le(random_seed.to_int64())
-    @random.Rand::chacha8(seed=seed_buffer.to_bytes())
+    @core.new_java_random_seeded_int(random_seed)
   }
   graph.set_internal_random_property(force_internal_random, random_generator)
+}
+
+///|
+fn force_option_bool_from_layout_options(
+  node : @graph.ElkNode,
+  option : ForceBoolOption,
+) -> Bool {
+  match @graph.node_layout_option_string_value(node, option.get_id()) {
+    Some(value) =>
+      if value == "true" {
+        true
+      } else if value == "false" {
+        false
+      } else {
+        option.get_default()
+      }
+    None => option.get_default()
+  }
 }
 
 ///|
@@ -70,6 +94,9 @@ pub fn ForceLayoutProvider::layout(
   progress_monitor : @core.IElkProgressMonitor,
 ) -> Unit {
   ignore(progress_monitor.begin("ELK Force", 1.0))
+  if !force_option_bool_from_layout_options(graph, force_omit_node_micro_layout) {
+    @common.node_micro_layout_for_graph(graph).execute()
+  }
   let importer = new_elk_graph_importer()
   let force_graph = importer.import_graph(graph)
   force_set_options(force_graph, graph)

@@ -18,7 +18,7 @@ pub struct FGraph {
   model_properties : Map[String, ForceModelStrategy]
   padding_properties : Map[String, @core.ElkPadding]
   node_properties : Map[String, @graph.ElkNode]
-  random_properties : Map[String, @random.Rand]
+  random_properties : Map[String, @core.JavaRandom]
   vector_properties : Map[String, @core.KVector]
   adjacency : Array[Array[Int]]
 }
@@ -206,7 +206,7 @@ pub fn FGraph::get_internal_node_property(
 pub fn FGraph::set_internal_random_property(
   self : FGraph,
   property : ForceInternalRandomProperty,
-  value : @random.Rand,
+  value : @core.JavaRandom,
 ) -> Unit {
   self.random_properties[property.get_id()] = value
 }
@@ -215,7 +215,7 @@ pub fn FGraph::set_internal_random_property(
 pub fn FGraph::get_internal_random_property(
   self : FGraph,
   property : ForceInternalRandomProperty,
-) -> @random.Rand? {
+) -> @core.JavaRandom? {
   self.random_properties.get(property.get_id())
 }
 

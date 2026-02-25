@@ -6,14 +6,14 @@ let force_zero_factor = 100.0
 
 ///|
 pub struct AbstractForceModelState {
-  mut random : @random.Rand
+  mut random : @core.JavaRandom
   mut graph : FGraph?
   mut disp_bound : Double
 }
 
 ///|
 pub fn new_abstract_force_model_state() -> AbstractForceModelState {
-  { random: @random.Rand::new(), graph: None, disp_bound: 0.0 }
+  { random: @core.new_java_random_seeded_int(1), graph: None, disp_bound: 0.0 }
 }
 
 ///|
@@ -27,7 +27,7 @@ pub fn abstract_force_model_graph(state : AbstractForceModelState) -> FGraph {
 ///|
 pub fn abstract_force_model_random(
   state : AbstractForceModelState,
-) -> @random.Rand {
+) -> @core.JavaRandom {
   state.random
 }
 
@@ -47,7 +47,7 @@ pub fn abstract_force_model_initialize(
   state.random = match
     graph.get_internal_random_property(force_internal_random) {
     Some(random_generator) => random_generator
-    None => @random.Rand::new()
+    None => @core.new_java_random_seeded_int(1)
   }
   graph.calc_adjacency()
   let node_count = graph.get_nodes().length().to_double()
@@ -150,7 +150,7 @@ fn force_particle_equals(left : FParticle, right : FParticle) -> Bool {
 
 ///|
 pub fn abstract_force_model_avoid_same_position(
-  random_generator : @random.Rand,
+  random_generator : @core.JavaRandom,
   forcee : FParticle,
   forcer : FParticle,
 ) -> Unit {
@@ -196,8 +196,10 @@ pub fn abstract_force_model_avoid_same_position(
       _ => ()
     }
     if !tried_for_bendpoints {
-      forcee_position.wiggle(random_generator, 1.0)
-      forcer_position.wiggle(random_generator, 1.0)
+      forcee_position.x = forcee_position.x + random_generator.double() - 0.5
+      forcee_position.y = forcee_position.y + random_generator.double() - 0.5
+      forcer_position.x = forcer_position.x + random_generator.double() - 0.5
+      forcer_position.y = forcer_position.y + random_generator.double() - 0.5
     }
   }
 }

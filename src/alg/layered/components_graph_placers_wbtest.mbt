@@ -13,6 +13,7 @@ fn layered_components_test_new_graph(
   )
   graph.set_property_double(@core.spacing_component_component, 10.0)
   graph.set_property_double(@core.aspect_ratio, 10.0)
+  ignore(layered_components_test_add_layerless_node(graph))
   graph
 }
 
@@ -64,17 +65,20 @@ test "LayeredSimpleRowGraphPlacer places components into one row" {
     2, 30.0, 10.0, @core.sides_none,
   )
   let third = layered_components_test_new_graph(3, 30.0, 10.0, @core.sides_none)
+  let first_node = first.get_layerless_nodes()[0]
+  let second_node = second.get_layerless_nodes()[0]
+  let third_node = third.get_layerless_nodes()[0]
 
   new_layered_simple_row_graph_placer().combine([first, second, third], target)
 
   assert_eq(target.get_size().x, 110.0)
   assert_eq(target.get_size().y, 10.0)
-  assert_eq(first.get_offset().x, 0.0)
-  assert_eq(first.get_offset().y, 0.0)
-  assert_eq(second.get_offset().x, 40.0)
-  assert_eq(second.get_offset().y, 0.0)
-  assert_eq(third.get_offset().x, 80.0)
-  assert_eq(third.get_offset().y, 0.0)
+  assert_eq(first_node.get_position().x, 0.0)
+  assert_eq(first_node.get_position().y, 0.0)
+  assert_eq(second_node.get_position().x, 40.0)
+  assert_eq(second_node.get_position().y, 0.0)
+  assert_eq(third_node.get_position().x, 80.0)
+  assert_eq(third_node.get_position().y, 0.0)
 }
 
 ///|
@@ -85,18 +89,21 @@ test "LayeredModelOrderRowGraphPlacer starts a new row for west connections" {
     2, 20.0, 10.0, @core.sides_north,
   )
   let third = layered_components_test_new_graph(3, 20.0, 10.0, @core.sides_west)
+  let first_node = first.get_layerless_nodes()[0]
+  let second_node = second.get_layerless_nodes()[0]
+  let third_node = third.get_layerless_nodes()[0]
 
   new_layered_model_order_row_graph_placer().combine(
     [first, second, third],
     target,
   )
 
-  assert_eq(first.get_offset().x, 0.0)
-  assert_eq(first.get_offset().y, 0.0)
-  assert_eq(second.get_offset().x, 30.0)
-  assert_eq(second.get_offset().y, 0.0)
-  assert_eq(third.get_offset().x, 0.0)
-  assert_eq(third.get_offset().y, 20.0)
+  assert_eq(first_node.get_position().x, 0.0)
+  assert_eq(first_node.get_position().y, 0.0)
+  assert_eq(second_node.get_position().x, 30.0)
+  assert_eq(second_node.get_position().y, 0.0)
+  assert_eq(third_node.get_position().x, 0.0)
+  assert_eq(third_node.get_position().y, 20.0)
   assert_eq(target.get_size().x, 50.0)
   assert_eq(target.get_size().y, 30.0)
 }
@@ -110,11 +117,12 @@ test "LayeredComponentGroupGraphPlacer places incompatible groups diagonally" {
   let second = layered_components_test_new_graph(
     2, 20.0, 10.0, @core.sides_north_south,
   )
+  let second_node = second.get_layerless_nodes()[0]
 
   new_layered_component_group_graph_placer().combine([first, second], target)
 
-  assert_true(second.get_offset().x > 0.0)
-  assert_true(second.get_offset().y > 0.0)
+  assert_true(second_node.get_position().x > 0.0)
+  assert_true(second_node.get_position().y > 0.0)
   assert_true(target.get_size().x > 0.0)
   assert_true(target.get_size().y > 0.0)
 }
@@ -126,6 +134,8 @@ test "LayeredComponentGroupModelOrderGraphPlacer honors horizontal model-order b
   let second = layered_components_test_new_graph(
     2, 20.0, 10.0, @core.sides_north,
   )
+  let first_node = first.get_layerless_nodes()[0]
+  let second_node = second.get_layerless_nodes()[0]
   first.set_property_direction(
     layered_components_direction,
     @core.Direction::Rightward,
@@ -136,7 +146,7 @@ test "LayeredComponentGroupModelOrderGraphPlacer honors horizontal model-order b
     target,
   )
 
-  assert_true(second.get_offset().x > first.get_offset().x)
+  assert_true(second_node.get_position().x > first_node.get_position().x)
 }
 
 ///|
@@ -159,9 +169,11 @@ test "LayeredComponentsProcessor picks model-order row placer for model-order st
   let second = layered_components_test_new_graph(
     2, 20.0, 10.0, @core.sides_west,
   )
+  let first_node = first.get_layerless_nodes()[0]
+  let second_node = second.get_layerless_nodes()[0]
   processor.combine([first, second], target)
 
-  assert_true(second.get_offset().y > first.get_offset().y)
+  assert_true(second_node.get_position().y > first_node.get_position().y)
 }
 
 ///|

@@ -21,24 +21,11 @@ fn first_node_label_text(node : @graph.ElkNode) -> String {
 ///|
 fn first_or_create_edge_section(edge : @graph.ElkEdge) -> @graph.ElkEdgeSection {
   let sections = @graph.edge_sections(edge)
-  let section = if sections.is_empty() {
+  if sections.is_empty() {
     @graph.create_edge_section(edge)
   } else {
     sections[0]
   }
-  if @graph.edge_section_incoming_shape(section) is None {
-    let sources = @graph.edge_sources(edge)
-    if sources.length() == 1 {
-      @graph.edge_section_set_incoming_shape(section, Some(sources[0]))
-    }
-  }
-  if @graph.edge_section_outgoing_shape(section) is None {
-    let targets = @graph.edge_targets(edge)
-    if targets.length() == 1 {
-      @graph.edge_section_set_outgoing_shape(section, Some(targets[0]))
-    }
-  }
-  section
 }
 
 ///|
@@ -349,7 +336,7 @@ fn force_copy_graph_properties(graph : @graph.ElkNode, fgraph : FGraph) -> Bool 
         graph,
         force_spacing_node_node.get_id(),
       ),
-      @graph.node_get_double_property(graph, @core.spacing_node_node),
+      force_spacing_node_node.get_default(),
     ),
   )
   fgraph.set_double_property(
@@ -366,7 +353,7 @@ fn force_copy_graph_properties(graph : @graph.ElkNode, fgraph : FGraph) -> Bool 
     force_aspect_ratio,
     double_option_with_default(
       @graph.node_layout_option_string_value(graph, force_aspect_ratio.get_id()),
-      @graph.node_get_double_property(graph, @core.aspect_ratio),
+      force_aspect_ratio.get_default(),
     ),
   )
   fgraph.set_double_property(
@@ -431,7 +418,7 @@ fn force_transform_nodes(
     fnode_size(new_node).y = force_max(@graph.node_height(node), 1.0)
     let priority_value = int_option_with_default(
       @graph.node_layout_option_string_value(node, force_priority.get_id()),
-      @graph.node_get_double_property(node, @core.priority).to_int(),
+      force_priority.get_default(),
     )
     fnode_set_int_property(new_node, force_priority, priority_value)
     fnode_set_bool_property(
@@ -621,63 +608,29 @@ pub fn ElkGraphImporter::apply_layout(
         let start_position = fedge_source_point(edge).clone().add(offset)
         let end_position = fedge_target_point(edge).clone().add(offset)
         let first_section = first_or_create_edge_section(origin_edge)
-        if fedge_bendpoints(edge).is_empty() {
-          @graph.edge_section_set_start(
+        @graph.edge_section_clear_bend_points(first_section)
+        @graph.edge_section_set_start(
+          first_section,
+          start_position.x,
+          start_position.y,
+        )
+        for bendpoint in fedge_bendpoints(edge) {
+          let bendpoint_position = fbendpoint_position(bendpoint)
+            .clone()
+            .add(offset)
+          @graph.edge_section_add_bend_point(
             first_section,
-            start_position.x,
-            start_position.y,
+            @graph.new_elk_bend_point(
+              x=bendpoint_position.x,
+              y=bendpoint_position.y,
+            ),
           )
-          @graph.edge_section_set_end(
-            first_section,
-            end_position.x,
-            end_position.y,
-          )
-        } else {
-          @graph.edge_section_set_start(
-            first_section,
-            start_position.x,
-            start_position.y,
-          )
-          @graph.edge_section_set_outgoing_shape(first_section, None)
-          let mut previous_section = first_section
-          for bendpoint in fedge_bendpoints(edge) {
-            let bendpoint_position = fbendpoint_position(bendpoint)
-              .clone()
-              .add(offset)
-            @graph.edge_section_set_end(
-              previous_section,
-              bendpoint_position.x,
-              bendpoint_position.y,
-            )
-            let next_section = @graph.create_edge_section(origin_edge)
-            @graph.edge_section_set_start(
-              next_section,
-              bendpoint_position.x,
-              bendpoint_position.y,
-            )
-            @graph.edge_section_set_incoming_shape(next_section, None)
-            @graph.edge_section_set_outgoing_shape(next_section, None)
-            @graph.edge_section_add_outgoing_section(
-              previous_section, next_section,
-            )
-            @graph.edge_section_add_incoming_section(
-              next_section, previous_section,
-            )
-            previous_section = next_section
-          }
-          @graph.edge_section_set_end(
-            previous_section,
-            end_position.x,
-            end_position.y,
-          )
-          let targets = @graph.edge_targets(origin_edge)
-          if targets.length() == 1 {
-            @graph.edge_section_set_outgoing_shape(
-              previous_section,
-              Some(targets[0]),
-            )
-          }
         }
+        @graph.edge_section_set_end(
+          first_section,
+          end_position.x,
+          end_position.y,
+        )
       }
       None => ()
     }

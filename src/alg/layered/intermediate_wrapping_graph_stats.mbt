@@ -288,7 +288,9 @@ pub struct GraphStats {
 ///|
 pub fn new_graph_stats(graph : LGraph) -> GraphStats {
   let direction = graph.get_property_direction(layered_components_direction)
-  let graph_aspect_ratio = graph.get_property_double(@core.aspect_ratio)
+  let graph_aspect_ratio = graph.get_property_double(
+    layered_options_aspect_ratio,
+  )
   let correction = graph.get_property_double(
     layered_options_wrapping_correction_factor,
   )

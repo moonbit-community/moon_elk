@@ -18,6 +18,14 @@ pub fn new_vertiflex_layout_provider() -> VertiFlexLayoutProvider {
 }
 
 ///|
+fn init {
+  @core.recursive_graph_layout_engine_register_handler(vertiflex_algorithm_id, (
+    layout_graph,
+    progress_monitor,
+  ) => new_vertiflex_layout_provider().layout(layout_graph, progress_monitor))
+}
+
+///|
 fn vertiflex_node_micro_layout_execute(graph : @graph.ElkNode) -> Unit {
   ignore(graph)
 }

@@ -2,6 +2,11 @@
 pub let layered_algorithm_id = "org.eclipse.elk.layered"
 
 ///|
+pub let layered_options_aspect_ratio : @graph.IProperty[Double] = @graph.new_property(
+  "org.eclipse.elk.aspectRatio", 1.6,
+)
+
+///|
 pub let layered_options_layering_layer_constraint : @graph.IProperty[String] = @graph.new_property(
   "org.eclipse.elk.layered.layering.layerConstraint", "NONE",
 )

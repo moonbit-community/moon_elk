@@ -2,12 +2,46 @@
 let elk_graph_json_core_delegate_initialized : Ref[Bool] = Ref::new(false)
 
 ///|
+fn elk_graph_json_core_delegate_register_algorithm_if_missing(
+  algorithm_id : String,
+) -> Unit {
+  match @core.layout_meta_data_service_get_algorithm_data(algorithm_id) {
+    Some(_) => ()
+    None =>
+      @core.layout_meta_data_service_register_algorithm(
+        @core.new_layout_algorithm_data(algorithm_id),
+      )
+  }
+}
+
+///|
+fn elk_graph_json_core_delegate_register_additional_algorithms() -> Unit {
+  let additional_algorithm_ids = [
+    @mrtree.mrtree_algorithm_id,
+    @force.force_algorithm_id,
+    @force.stress_algorithm_id,
+    @radial.radial_algorithm_id,
+    @rectpacking.rectpacking_algorithm_id,
+    @spore.spore_compaction_algorithm_id,
+    @spore.spore_overlap_removal_algorithm_id,
+    @vertiflex.vertiflex_algorithm_id,
+  ]
+  for algorithm_id in additional_algorithm_ids {
+    elk_graph_json_core_delegate_register_algorithm_if_missing(algorithm_id)
+  }
+}
+
+///|
 fn elk_graph_json_core_delegate_initialize_runtime() -> Unit {
   if elk_graph_json_core_delegate_initialized.val {
     return
   }
   @core.layout_meta_data_service_register_default_options()
   @core.layout_meta_data_service_register_default_algorithms()
+  @core.layout_meta_data_service_register_layout_meta_data_providers(
+    @force.force_layout_meta_data_providers(),
+  )
+  elk_graph_json_core_delegate_register_additional_algorithms()
   elk_graph_json_core_delegate_initialized.val = true
 }
 

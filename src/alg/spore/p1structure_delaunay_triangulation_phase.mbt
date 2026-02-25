@@ -7,19 +7,6 @@ fn spore_delaunay_phase_configuration(
 }
 
 ///|
-fn spore_append_tedge_unique(
-  edges : Array[@common.TEdge],
-  edge : @common.TEdge,
-) -> Unit {
-  for existing in edges {
-    if existing.equals(edge) {
-      return
-    }
-  }
-  edges.push(edge)
-}
-
-///|
 fn spore_delaunay_triangulation_phase_process(
   graph : SporeGraph,
   progress_monitor : @core.IElkProgressMonitor?,
@@ -42,11 +29,18 @@ fn spore_delaunay_triangulation_phase_process(
     debug_output_file=debug_output,
   )
   match graph.t_edges {
-    Some(existing_edges) =>
+    Some(existing_edges) => {
       for edge in triangulation {
-        spore_append_tedge_unique(existing_edges, edge)
+        ignore(existing_edges.add(edge))
       }
-    None => graph.t_edges = Some(triangulation)
+    }
+    None => {
+      let edges = @common.new_java_tedge_set()
+      for edge in triangulation {
+        ignore(edges.add(edge))
+      }
+      graph.t_edges = Some(edges)
+    }
   }
 
   monitor.done()

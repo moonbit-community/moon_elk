@@ -1,7 +1,7 @@
 ///|
 pub struct SporeGraph {
   vertices : Array[@common.Node]
-  mut t_edges : Array[@common.TEdge]?
+  mut t_edges : @common.JavaTEdgeSet?
   tree_construction_strategy : SporeTreeConstructionStrategy
   mut tree : @common.Tree[@common.Node]?
   compaction_strategy : SporeCompactionStrategy

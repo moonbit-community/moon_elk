@@ -71,7 +71,7 @@ pub fn LayeredSimpleRowGraphPlacer::combine(
   }
   max_row_width = layered_components_max(
     max_row_width,
-    total_area.sqrt() * target.get_property_double(@core.aspect_ratio),
+    total_area.sqrt() * target.get_property_double(layered_options_aspect_ratio),
   )
   let component_spacing = target.get_property_double(
     @core.spacing_component_component,

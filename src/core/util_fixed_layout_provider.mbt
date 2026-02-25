@@ -5,6 +5,11 @@ let fixed_layout_provider_position_option_id : String = "org.eclipse.elk.positio
 let fixed_layout_provider_bend_points_option_id : String = "org.eclipse.elk.bendPoints"
 
 ///|
+let fixed_layout_provider_padding_option : @graph.IProperty[String] = @graph.new_property(
+  "org.eclipse.elk.padding", "[left=15, top=15, right=15, bottom=15]",
+)
+
+///|
 pub(all) struct FixedLayoutProvider {
   initialized : Bool
 }
@@ -41,7 +46,9 @@ fn fixed_layout_provider_parse_padding(
   layout_node : @graph.ElkNode,
 ) -> ElkPadding {
   let parsed = new_elk_padding()
-  parsed.parse(@graph.node_get_string_property(layout_node, padding))
+  parsed.parse(
+    @graph.node_get_string_property(layout_node, fixed_layout_provider_padding_option),
+  )
   parsed
 }
 

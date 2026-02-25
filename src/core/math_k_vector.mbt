@@ -57,8 +57,50 @@ pub fn KVector::equals_fuzzily(
 }
 
 ///|
+fn kvector_to_signed_int32(value : Int64) -> Int {
+  let masked = value & 4294967295L
+  if masked >= 2147483648L {
+    (masked - 4294967296L).to_int()
+  } else {
+    masked.to_int()
+  }
+}
+
+///|
+fn kvector_java_double_hash(value : Double) -> Int {
+  let bits = value.reinterpret_as_int64()
+  let mixed = bits ^ (bits >> 32)
+  kvector_to_signed_int32(mixed)
+}
+
+///|
+fn kvector_reverse_bits32(value : Int) -> Int {
+  let mut x = Int64::from_int(value) & 4294967295L
+  x = ((x & 1431655765L) << 1) | ((x >> 1) & 1431655765L)
+  x = ((x & 858993459L) << 2) | ((x >> 2) & 858993459L)
+  x = ((x & 252645135L) << 4) | ((x >> 4) & 252645135L)
+  x = ((x & 16711935L) << 8) | ((x >> 8) & 16711935L)
+  x = (x << 16) | (x >> 16)
+  kvector_to_signed_int32(x)
+}
+
+///|
 pub fn KVector::hash_code(self : KVector) -> Int {
-  self.x.hash() + self.y.hash()
+  let x_hash = kvector_java_double_hash(self.x)
+  let y_hash = kvector_java_double_hash(self.y)
+  kvector_to_signed_int32(
+    Int64::from_int(x_hash) + Int64::from_int(kvector_reverse_bits32(y_hash)),
+  )
+}
+
+///|
+pub impl Eq for KVector with equal(self : KVector, other : KVector) -> Bool {
+  self.equals(other)
+}
+
+///|
+pub impl Hash for KVector with hash_combine(self : KVector, hasher) -> Unit {
+  hasher.combine(self.hash_code())
 }
 
 ///|

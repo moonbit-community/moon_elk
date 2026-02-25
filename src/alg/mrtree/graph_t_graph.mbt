@@ -142,7 +142,7 @@ pub fn mrtree_graph_copy_properties_from_elk(
     elk_graph, mrtree_spacing_node_node,
   )
   graph_data.spacing_edge_node = @graph.node_get_double_property(
-    elk_graph, @core.spacing_edge_node,
+    elk_graph, mrtree_spacing_edge_node,
   )
   graph_data.edge_end_texture_length = @graph.node_get_double_property(
     elk_graph, mrtree_edge_end_texture_length,

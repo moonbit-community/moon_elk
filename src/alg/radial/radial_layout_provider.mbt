@@ -16,6 +16,14 @@ pub fn new_radial_layout_provider() -> RadialLayoutProvider {
 }
 
 ///|
+fn init {
+  @core.recursive_graph_layout_engine_register_handler(radial_algorithm_id, (
+    layout_graph,
+    progress_monitor,
+  ) => new_radial_layout_provider().layout(layout_graph, progress_monitor))
+}
+
+///|
 fn radial_node_micro_layout_execute(layout_graph : @graph.ElkNode) -> Unit {
   ignore(layout_graph)
 }

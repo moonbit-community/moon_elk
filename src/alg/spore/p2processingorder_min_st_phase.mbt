@@ -7,34 +7,23 @@ fn spore_min_st_phase_configuration(
 }
 
 ///|
-priv struct SporeKVectorNodeEntry {
-  vector : @core.KVector
-  node : @common.Node
-}
-
-///|
 fn spore_kvector_node_find(
-  entries : Array[SporeKVectorNodeEntry],
+  entries : Map[@core.KVector, @common.Node],
   vector : @core.KVector,
 ) -> @common.Node? {
-  for entry in entries {
-    if entry.vector.equals(vector) {
-      return Some(entry.node)
-    }
-  }
-  None
+  entries.get(vector)
 }
 
 ///|
 fn spore_min_st_add_node(
-  node_map : Array[SporeKVectorNodeEntry],
+  node_map : Map[@core.KVector, @common.Node],
   target : @common.Tree[@common.Node],
   source : @common.Tree[@core.KVector],
 ) -> Unit {
   for child in source.children {
     let mapped = match spore_kvector_node_find(node_map, child.node) {
       Some(node) => node
-      None => continue
+      None => abort("Spore MinST conversion failed: missing mapped child node")
     }
     let converted = @common.new_tree(mapped)
     target.children.push(converted)
@@ -47,13 +36,13 @@ pub fn spore_min_st_convert(
   tree : @common.Tree[@core.KVector],
   graph : SporeGraph,
 ) -> Unit {
-  let node_map : Array[SporeKVectorNodeEntry] = []
+  let node_map : Map[@core.KVector, @common.Node] = {}
   for node in graph.vertices {
-    node_map.push({ vector: node.original_vertex, node })
+    node_map[node.original_vertex] = node
   }
   let root = match spore_kvector_node_find(node_map, tree.node) {
     Some(node) => @common.new_tree(node)
-    None => return
+    None => abort("Spore MinST conversion failed: missing mapped root node")
   }
   spore_min_st_add_node(node_map, root, tree)
   graph.tree = Some(root)
@@ -81,7 +70,7 @@ fn spore_min_st_phase_process(
     None => graph.vertices[0].original_vertex
   }
   let edges = match graph.t_edges {
-    Some(value) => value
+    Some(value) => value.to_array()
     None => []
   }
 

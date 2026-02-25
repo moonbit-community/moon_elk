@@ -347,7 +347,7 @@ pub fn get_direction(graph : LGraph) -> @core.Direction {
     graph.get_property_string(@core.direction),
   )
   if l_graph_util_direction_equals(direction_value, @core.Direction::Undefined) {
-    if graph.get_property_double(@core.aspect_ratio) >= 1.0 {
+    if graph.get_property_double(layered_options_aspect_ratio) >= 1.0 {
       @core.Direction::Rightward
     } else {
       @core.Direction::Downward

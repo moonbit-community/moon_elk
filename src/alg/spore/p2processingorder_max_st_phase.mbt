@@ -31,7 +31,7 @@ fn spore_max_st_phase_process(
     None => graph.vertices[0].vertex
   }
   let edges = match graph.t_edges {
-    Some(value) => value
+    Some(value) => value.to_array()
     None => []
   }
   let tree = @common.naive_minst_create_spanning_tree(

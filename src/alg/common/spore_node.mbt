@@ -1,13 +1,25 @@
 ///|
 pub struct Node {
+  uid : Int
   mut original_vertex : @core.KVector
   vertex : @core.KVector
   rect : @core.ElkRectangle
 }
 
 ///|
+let spore_node_uid_counter : Ref[Int] = Ref::new(0)
+
+///|
+fn next_spore_node_uid() -> Int {
+  let uid = spore_node_uid_counter.val
+  spore_node_uid_counter.val = uid + 1
+  uid
+}
+
+///|
 pub fn new_node(v : @core.KVector, r : @core.ElkRectangle) -> Node {
   {
+    uid: next_spore_node_uid(),
     original_vertex: v,
     vertex: v.clone(),
     rect: @core.new_elk_rectangle_copy(r),

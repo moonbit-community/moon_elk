@@ -16,6 +16,14 @@ pub fn new_rectpacking_layout_provider() -> RectPackingLayoutProvider {
 }
 
 ///|
+fn init {
+  @core.recursive_graph_layout_engine_register_handler(rectpacking_algorithm_id, (
+    layout_graph,
+    progress_monitor,
+  ) => new_rectpacking_layout_provider().layout(layout_graph, progress_monitor))
+}
+
+///|
 fn rectpacking_parse_padding(value : String) -> @core.Spacing {
   let padding_value = @core.new_elk_padding()
   padding_value.parse(value)

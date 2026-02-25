@@ -25,16 +25,6 @@ fn mrtree_initialize_incidence(graph : MrtreeGraph) -> Array[Array[MrtreeEdge]] 
 }
 
 ///|
-fn mrtree_component_add_edge_unique(
-  component : MrtreeGraph,
-  edge : MrtreeEdge,
-) -> Unit {
-  if !mrtree_graph_edges(component).contains(edge) {
-    mrtree_graph_add_existing_edge(component, edge)
-  }
-}
-
-///|
 fn mrtree_dfs(
   node : MrtreeNode,
   visited : Array[Bool],
@@ -65,7 +55,9 @@ fn mrtree_dfs(
         mrtree_dfs(target, visited, incidence, component=current_component),
       )
     }
-    mrtree_component_add_edge_unique(current_component, edge)
+    if !mrtree_graph_edges(current_component).contains(edge) {
+      mrtree_graph_add_existing_edge(current_component, edge)
+    }
   }
   Some(current_component)
 }

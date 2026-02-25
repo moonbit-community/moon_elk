@@ -60,24 +60,11 @@ fn mrtree_first_or_create_edge_section(
   edge : @graph.ElkEdge,
 ) -> @graph.ElkEdgeSection {
   let sections = @graph.edge_sections(edge)
-  let section = if sections.is_empty() {
+  if sections.is_empty() {
     @graph.create_edge_section(edge)
   } else {
     sections[0]
   }
-  if @graph.edge_section_incoming_shape(section) is None {
-    let sources = @graph.edge_sources(edge)
-    if sources.length() == 1 {
-      @graph.edge_section_set_incoming_shape(section, Some(sources[0]))
-    }
-  }
-  if @graph.edge_section_outgoing_shape(section) is None {
-    let targets = @graph.edge_targets(edge)
-    if targets.length() == 1 {
-      @graph.edge_section_set_outgoing_shape(section, Some(targets[0]))
-    }
-  }
-  section
 }
 
 ///|
@@ -92,41 +79,16 @@ fn mrtree_apply_vector_chain_to_edge(
   let first_section = mrtree_first_or_create_edge_section(edge)
   let first_point = vector_chain.get(0)
   @graph.edge_section_set_start(first_section, first_point.x, first_point.y)
-
-  if vector_chain.size() == 2 {
-    let last_point = vector_chain.get(1)
-    @graph.edge_section_set_end(first_section, last_point.x, last_point.y)
-    let targets = @graph.edge_targets(edge)
-    if targets.length() == 1 {
-      @graph.edge_section_set_outgoing_shape(first_section, Some(targets[0]))
-    }
-    return
-  }
-
-  @graph.edge_section_set_outgoing_shape(first_section, None)
-  let mut previous_section = first_section
+  @graph.edge_section_clear_bend_points(first_section)
   for i in 1..<(vector_chain.size() - 1) {
-    let middle_point = vector_chain.get(i)
-    @graph.edge_section_set_end(
-      previous_section,
-      middle_point.x,
-      middle_point.y,
+    let point = vector_chain.get(i)
+    @graph.edge_section_add_bend_point(
+      first_section,
+      @graph.new_elk_bend_point(x=point.x, y=point.y),
     )
-    let next_section = @graph.create_edge_section(edge)
-    @graph.edge_section_set_start(next_section, middle_point.x, middle_point.y)
-    @graph.edge_section_set_incoming_shape(next_section, None)
-    @graph.edge_section_set_outgoing_shape(next_section, None)
-    @graph.edge_section_add_outgoing_section(previous_section, next_section)
-    @graph.edge_section_add_incoming_section(next_section, previous_section)
-    previous_section = next_section
   }
-
   let last_point = vector_chain.get(vector_chain.size() - 1)
-  @graph.edge_section_set_end(previous_section, last_point.x, last_point.y)
-  let targets = @graph.edge_targets(edge)
-  if targets.length() == 1 {
-    @graph.edge_section_set_outgoing_shape(previous_section, Some(targets[0]))
-  }
+  @graph.edge_section_set_end(first_section, last_point.x, last_point.y)
 }
 
 ///|
@@ -234,15 +196,23 @@ pub fn MrtreeElkGraphImporter::apply_layout(
   for node in mrtree_graph_nodes(graph) {
     let position = mrtree_node_position(node)
     let size = mrtree_node_size(node)
-    min_x = if position.x < min_x { position.x } else { min_x }
-    min_y = if position.y < min_y { position.y } else { min_y }
-    max_x = if position.x + size.x > max_x {
-      position.x + size.x
+    min_x = if position.x - size.x / 2.0 < min_x {
+      position.x - size.x / 2.0
+    } else {
+      min_x
+    }
+    min_y = if position.y - size.y / 2.0 < min_y {
+      position.y - size.y / 2.0
+    } else {
+      min_y
+    }
+    max_x = if position.x + size.x / 2.0 > max_x {
+      position.x + size.x / 2.0
     } else {
       max_x
     }
-    max_y = if position.y + size.y > max_y {
-      position.y + size.y
+    max_y = if position.y + size.y / 2.0 > max_y {
+      position.y + size.y / 2.0
     } else {
       max_y
     }

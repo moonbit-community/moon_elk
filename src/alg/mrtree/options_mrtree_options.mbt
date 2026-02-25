@@ -42,16 +42,29 @@ pub let mrtree_position_constraint : @graph.IProperty[Double] = @graph.new_prope
 )
 
 ///|
-pub let mrtree_padding : @graph.IProperty[String] = @core.padding
+pub let mrtree_padding : @graph.IProperty[String] = @graph.new_property(
+  "org.eclipse.elk.padding", "[left=20, top=20, right=20, bottom=20]",
+)
 
 ///|
-pub let mrtree_spacing_node_node : @graph.IProperty[Double] = @core.spacing_node_node
+pub let mrtree_spacing_node_node : @graph.IProperty[Double] = @graph.new_property(
+  "org.eclipse.elk.spacing.nodeNode", 20.0,
+)
 
 ///|
-pub let mrtree_aspect_ratio : @graph.IProperty[Double] = @core.aspect_ratio
+pub let mrtree_spacing_edge_node : @graph.IProperty[Double] = @graph.new_property(
+  "org.eclipse.elk.spacing.edgeNode", 3.0,
+)
 
 ///|
-pub let mrtree_priority : @graph.IProperty[Double] = @core.priority
+pub let mrtree_aspect_ratio : @graph.IProperty[Double] = @graph.new_property(
+  "org.eclipse.elk.aspectRatio", 1.6,
+)
+
+///|
+pub let mrtree_priority : @graph.IProperty[Double] = @graph.new_property(
+  "org.eclipse.elk.priority", 1.0,
+)
 
 ///|
 pub let mrtree_omit_node_micro_layout : @graph.IProperty[Bool] = @core.omit_node_micro_layout

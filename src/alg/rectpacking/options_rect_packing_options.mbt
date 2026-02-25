@@ -2,13 +2,19 @@
 pub let rectpacking_algorithm_id = "org.eclipse.elk.rectpacking"
 
 ///|
-pub let rectpacking_aspect_ratio : @graph.IProperty[Double] = @core.aspect_ratio
+pub let rectpacking_aspect_ratio : @graph.IProperty[Double] = @graph.new_property(
+  "org.eclipse.elk.aspectRatio", 1.3,
+)
 
 ///|
-pub let rectpacking_padding : @graph.IProperty[String] = @core.padding
+pub let rectpacking_padding : @graph.IProperty[String] = @graph.new_property(
+  "org.eclipse.elk.padding", "[left=15, top=15, right=15, bottom=15]",
+)
 
 ///|
-pub let rectpacking_spacing_node_node : @graph.IProperty[Double] = @core.spacing_node_node
+pub let rectpacking_spacing_node_node : @graph.IProperty[Double] = @graph.new_property(
+  "org.eclipse.elk.spacing.nodeNode", 15.0,
+)
 
 ///|
 pub let rectpacking_node_size_fixed_graph_size : @graph.IProperty[Bool] = @core.node_size_fixed_graph_size

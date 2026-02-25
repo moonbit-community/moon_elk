@@ -351,7 +351,8 @@ pub fn LayeredComponentGroupGraphPlacer::place_components_in_rows(
 
   max_row_width = layered_components_max(
     max_row_width,
-    total_area.sqrt() * components[0].get_property_double(@core.aspect_ratio),
+    total_area.sqrt() *
+    components[0].get_property_double(layered_options_aspect_ratio),
   )
 
   let mut xpos = 0.0

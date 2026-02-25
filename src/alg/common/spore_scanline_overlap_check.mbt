@@ -20,18 +20,40 @@ pub fn new_scanline_overlap_check(
 }
 
 ///|
+fn spore_java_double_compare(left : Double, right : Double) -> Int {
+  if left < right {
+    return -1
+  }
+  if left > right {
+    return 1
+  }
+  let left_bits = left.reinterpret_as_int64()
+  let right_bits = right.reinterpret_as_int64()
+  if left_bits == right_bits {
+    0
+  } else if left_bits < right_bits {
+    -1
+  } else {
+    1
+  }
+}
+
+///|
 fn spore_scanline_node_compare_left(n1 : Node, n2 : Node) -> Int {
-  let cmp_x = n1.rect.x.compare(n2.rect.x)
+  let cmp_x = spore_java_double_compare(n1.rect.x, n2.rect.x)
   if cmp_x != 0 {
     return cmp_x
   }
 
-  let cmp_origin_x = n1.original_vertex.x.compare(n2.original_vertex.x)
+  let cmp_origin_x = spore_java_double_compare(
+    n1.original_vertex.x,
+    n2.original_vertex.x,
+  )
   if cmp_origin_x != 0 {
     return cmp_origin_x
   }
 
-  n1.original_vertex.y.compare(n2.original_vertex.y)
+  spore_java_double_compare(n1.original_vertex.y, n2.original_vertex.y)
 }
 
 ///|
@@ -48,7 +70,7 @@ fn spore_scanline_timestamp_comparator(
     y2 = y2 + p2.node.rect.height
   }
 
-  let cmp = y1.compare(y2)
+  let cmp = spore_java_double_compare(y1, y2)
   if cmp == 0 {
     if !p1.low && p2.low {
       return -1
@@ -61,11 +83,9 @@ fn spore_scanline_timestamp_comparator(
 
 ///|
 fn spore_scanline_overlap(n1 : Node, n2 : Node) -> Bool {
-  if n1.original_vertex.x == n2.original_vertex.x &&
-    n1.original_vertex.y == n2.original_vertex.y {
+  if n1.uid == n2.uid {
     return false
   }
-
   compare_fuzzy_lt(n1.rect.x, n2.rect.x + n2.rect.width) &&
   compare_fuzzy_lt(n2.rect.x, n1.rect.x + n1.rect.width)
 }

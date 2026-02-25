@@ -30,6 +30,21 @@ let box_layout_provider_default_min_width : Double = 20.0
 let box_layout_provider_default_min_height : Double = 20.0
 
 ///|
+let box_layout_provider_padding_option : @graph.IProperty[String] = @graph.new_property(
+  "org.eclipse.elk.padding", "[left=15, top=15, right=15, bottom=15]",
+)
+
+///|
+let box_layout_provider_spacing_node_node_option : @graph.IProperty[Double] = @graph.new_property(
+  "org.eclipse.elk.spacing.nodeNode", 15.0,
+)
+
+///|
+let box_layout_provider_aspect_ratio_option : @graph.IProperty[Double] = @graph.new_property(
+  "org.eclipse.elk.aspectRatio", 1.3,
+)
+
+///|
 fn box_layout_provider_max(a : Double, b : Double) -> Double {
   if a >= b {
     a
@@ -54,7 +69,9 @@ fn box_layout_provider_parse_padding(
   layout_node : @graph.ElkNode,
 ) -> ElkPadding {
   let parsed = new_elk_padding()
-  parsed.parse(@graph.node_get_string_property(layout_node, padding))
+  parsed.parse(
+    @graph.node_get_string_property(layout_node, box_layout_provider_padding_option),
+  )
   parsed
 }
 
@@ -592,7 +609,7 @@ fn box_layout_provider_place_boxes(
   )
 
   let configured_aspect_ratio = @graph.node_get_double_property(
-    parent_node, aspect_ratio,
+    parent_node, box_layout_provider_aspect_ratio_option,
   )
   let aspect_ratio_value = if configured_aspect_ratio <= 0.0 {
     box_layout_provider_def_aspect_ratio
@@ -1003,7 +1020,7 @@ fn box_layout_provider_place_boxes_grouping(
   )
 
   let configured_aspect_ratio = @graph.node_get_double_property(
-    parent_node, aspect_ratio,
+    parent_node, box_layout_provider_aspect_ratio_option,
   )
   let aspect_ratio_value = if configured_aspect_ratio <= 0.0 {
     box_layout_provider_def_aspect_ratio
@@ -1097,7 +1114,7 @@ pub fn BoxLayoutProvider::layout(
   ignore(progress_monitor.begin("Box layout", 2.0))
 
   let obj_spacing = @graph.node_get_double_property(
-    layout_node, spacing_node_node,
+    layout_node, box_layout_provider_spacing_node_node_option,
   )
   let padding_value = box_layout_provider_parse_padding(layout_node)
   let expand_nodes_value = @graph.node_get_bool_property(

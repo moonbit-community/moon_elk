@@ -8,14 +8,14 @@ struct SporeNodeEntry {
 ///|
 pub struct SporeElkGraphImporter {
   mut graph : SporeGraph?
-  mut node_map : Array[SporeNodeEntry]
+  mut node_map : Map[@core.KVector, SporeNodeEntry]
   mut elk_graph : @graph.ElkNode?
   mut spacing_node_node : Double
 }
 
 ///|
 pub fn new_spore_elk_graph_importer() -> SporeElkGraphImporter {
-  { graph: None, node_map: [], elk_graph: None, spacing_node_node: 0.0 }
+  { graph: None, node_map: {}, elk_graph: None, spacing_node_node: 0.0 }
 }
 
 ///|
@@ -27,26 +27,26 @@ fn spore_padding_from_graph(graph : @graph.ElkNode) -> @core.ElkPadding {
 
 ///|
 fn spore_node_entry_find(
-  entries : Array[SporeNodeEntry],
+  entries : Map[@core.KVector, SporeNodeEntry],
   vertex : @core.KVector,
 ) -> SporeNodeEntry? {
-  for entry in entries {
-    if entry.vertex.equals(vertex) {
-      return Some(entry)
-    }
-  }
-  None
+  entries.get(vertex)
 }
 
 ///|
 fn spore_node_entry_contains(
-  entries : Array[SporeNodeEntry],
+  entries : Map[@core.KVector, SporeNodeEntry],
   vertex : @core.KVector,
 ) -> Bool {
-  match spore_node_entry_find(entries, vertex) {
-    Some(_) => true
-    None => false
-  }
+  entries.contains(vertex)
+}
+
+///|
+fn spore_node_entry_put(
+  entries : Map[@core.KVector, SporeNodeEntry],
+  entry : SporeNodeEntry,
+) -> Unit {
+  entries[entry.vertex] = entry
 }
 
 ///|
@@ -94,11 +94,11 @@ fn spore_elk_graph_importer_circle_underlap(
 ) -> Double {
   let first_entry = match spore_node_entry_find(importer.node_map, edge.u) {
     Some(entry) => entry
-    None => return 0.0
+    None => abort("Spore importer: missing source node for circle underlap")
   }
   let second_entry = match spore_node_entry_find(importer.node_map, edge.v) {
     Some(entry) => entry
-    None => return 0.0
+    None => abort("Spore importer: missing target node for circle underlap")
   }
   edge.u.distance(edge.v) -
   edge.u.distance(first_entry.node.rect.get_position()) -
@@ -112,11 +112,11 @@ fn spore_elk_graph_importer_rectangle_underlap(
 ) -> Double {
   let first_entry = match spore_node_entry_find(importer.node_map, edge.u) {
     Some(entry) => entry
-    None => return 0.0
+    None => abort("Spore importer: missing source node for rectangle underlap")
   }
   let second_entry = match spore_node_entry_find(importer.node_map, edge.v) {
     Some(entry) => entry
-    None => return 0.0
+    None => abort("Spore importer: missing target node for rectangle underlap")
   }
   first_entry.node.underlap(second_entry.node)
 }
@@ -128,11 +128,11 @@ fn spore_elk_graph_importer_inverted_overlap(
 ) -> Double {
   let first_entry = match spore_node_entry_find(importer.node_map, edge.u) {
     Some(entry) => entry
-    None => return 0.0
+    None => abort("Spore importer: missing source node for inverted overlap")
   }
   let second_entry = match spore_node_entry_find(importer.node_map, edge.v) {
     Some(entry) => entry
-    None => return 0.0
+    None => abort("Spore importer: missing target node for inverted overlap")
   }
   let r1 = first_entry.node.rect
   let r2 = second_entry.node.rect
@@ -195,6 +195,9 @@ pub fn SporeElkGraphImporter::import_graph(
 ) -> SporeGraph {
   self.elk_graph = Some(input_graph)
   self.node_map.clear()
+  @common.node_dimension_calculation_calculate_node_margins(
+    @core.adapt(input_graph),
+  )
 
   let preferred_root_id = @graph.node_get_string_property(
     input_graph, spore_processing_order_preferred_root,
@@ -223,13 +226,6 @@ pub fn SporeElkGraphImporter::import_graph(
     input_graph, spore_spacing_node_node,
   )
 
-  let graph_placeholder = new_spore_graph(
-    _ => 0.0,
-    tree_construction_strategy,
-    compaction_strategy,
-  )
-  self.graph = Some(graph_placeholder)
-
   let cost_function : @common.ICostFunction = match cost_function_id {
     CENTER_DISTANCE =>
       edge => spore_elk_graph_importer_center_distance(self, edge)
@@ -255,7 +251,7 @@ pub fn SporeElkGraphImporter::import_graph(
     return graph
   }
 
-  let mut shift_index = 0
+  let random = @random.Rand::new()
   for elk_node in @graph.node_children(input_graph) {
     let half_width = @graph.node_width(elk_node) / 2.0
     let half_height = @graph.node_height(elk_node) / 2.0
@@ -264,22 +260,30 @@ pub fn SporeElkGraphImporter::import_graph(
       @graph.node_y(elk_node) + half_height,
     )
     while spore_node_entry_contains(self.node_map, vertex) {
-      shift_index += 1
-      let shift = shift_index.to_double() * 0.001
-      ignore(vertex.add(@core.new_kvector_xy(shift, -shift)))
+      ignore(
+        vertex.add(
+          @core.new_kvector_xy(
+            (random.double() - 0.5) * 0.001,
+            (random.double() - 0.5) * 0.001,
+          ),
+        ),
+      )
     }
+    let margin = @core.adapt_single_node(elk_node).get_margin()
 
     let node = @common.new_node(
       vertex,
       @core.new_elk_rectangle_xywh(
-        vertex.x - half_width - self.spacing_node_node / 2.0,
-        vertex.y - half_height - self.spacing_node_node / 2.0,
-        @graph.node_width(elk_node) + self.spacing_node_node,
-        @graph.node_height(elk_node) + self.spacing_node_node,
+        vertex.x - half_width - self.spacing_node_node / 2.0 - margin.left,
+        vertex.y - half_height - self.spacing_node_node / 2.0 - margin.top,
+        @graph.node_width(elk_node) + self.spacing_node_node +
+        margin.get_horizontal(),
+        @graph.node_height(elk_node) + self.spacing_node_node +
+        margin.get_vertical(),
       ),
     )
     graph.vertices.push(node)
-    self.node_map.push({ vertex, node, elk_node })
+    spore_node_entry_put(self.node_map, { vertex, node, elk_node })
   }
 
   match root_selection {
@@ -291,7 +295,7 @@ pub fn SporeElkGraphImporter::import_graph(
           let entry = match
             spore_node_entry_find(self.node_map, node.original_vertex) {
             Some(value) => value
-            None => continue
+            None => abort("Spore importer: missing node while selecting fixed root")
           }
           let id = @graph.node_identifier(entry.elk_node)
           if !id.is_empty() && id == preferred_root_id {
@@ -332,7 +336,7 @@ pub fn SporeElkGraphImporter::update_graph(
   self : SporeElkGraphImporter,
   graph : SporeGraph,
 ) -> Unit {
-  let updated_node_map : Array[SporeNodeEntry] = []
+  let updated_node_map : Map[@core.KVector, SporeNodeEntry] = {}
   graph.t_edges = None
   graph.tree = None
 
@@ -340,10 +344,10 @@ pub fn SporeElkGraphImporter::update_graph(
     let original_entry = match
       spore_node_entry_find(self.node_map, node.original_vertex) {
       Some(entry) => entry
-      None => continue
+      None => abort("Spore importer: missing node while updating graph")
     }
     node.set_original_vertex(node.rect.get_center())
-    updated_node_map.push({
+    spore_node_entry_put(updated_node_map, {
       vertex: node.original_vertex,
       node,
       elk_node: original_entry.elk_node,
@@ -371,7 +375,7 @@ pub fn SporeElkGraphImporter::apply_positions(
     let entry = match
       spore_node_entry_find(self.node_map, node.original_vertex) {
       Some(value) => value
-      None => continue
+      None => abort("Spore importer: missing node while applying positions")
     }
     @graph.node_set_location(entry.elk_node, node.rect.x, node.rect.y)
     min_x = @cmp.minimum(min_x, @graph.node_x(entry.elk_node))

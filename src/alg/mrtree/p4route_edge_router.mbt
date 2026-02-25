@@ -679,7 +679,7 @@ fn mrtree_edge_router_avoid_overlap_special_edges(
   edge_end_texture_padding : Double,
 ) -> Unit {
   let mut side_counts = { side_one: 0, side_two: 0 }
-  let node_gaps : Map[Int, MrtreeMultiLevelEdgeNodeNodeGap] = {}
+  let node_gaps : Map[Int64, MrtreeMultiLevelEdgeNodeNodeGap] = {}
 
   let mut max_level = 0
   for node in mrtree_graph_nodes(graph) {
@@ -702,8 +702,7 @@ fn mrtree_edge_router_avoid_overlap_special_edges(
     let level_diff = target_level - source_level
 
     if level_diff > 1 {
-      let mut current_level = source_level + 1
-      while current_level < target_level {
+      for current_level in (source_level + 1)..<target_level {
         let next_level_nodes = []
         for node in mrtree_graph_nodes(graph) {
           if mrtree_node_tree_level(node) == current_level {
@@ -862,7 +861,6 @@ fn mrtree_edge_router_avoid_overlap_special_edges(
             }
           }
         }
-        current_level += 1
       }
     } else if level_diff == 0 {
       mrtree_edge_router_middle_to_middle_edge_route(edge)

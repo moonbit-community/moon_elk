@@ -37,8 +37,9 @@ test "LPort and LEdge keep bidirectional incidence lists in sync" {
   assert_eq(target_port.get_incoming_edges().length(), 1)
 
   let connected_from_source = source_port.get_connected_ports()
-  assert_eq(connected_from_source.length(), 1)
+  assert_eq(connected_from_source.length(), 2)
   assert_eq(connected_from_source[0].get_node().unwrap().get_id(), 2)
+  assert_eq(connected_from_source[1].get_node().unwrap().get_id(), 2)
 
   match forward.get_source() {
     Some(port) => assert_eq(port.get_node().unwrap().get_id(), 1)

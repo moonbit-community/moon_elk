@@ -1,17 +1,4 @@
 ///|
-fn spore_overlap_edges_add_unique(
-  edges : Array[@common.TEdge],
-  edge : @common.TEdge,
-) -> Unit {
-  for existing in edges {
-    if existing.equals(edge) {
-      return
-    }
-  }
-  edges.push(edge)
-}
-
-///|
 pub struct SporeOverlapRemovalLayoutProvider {
   algorithm_assembler : @core.AlgorithmAssembler[SPOrEPhases, SporeGraph]
 }
@@ -23,6 +10,20 @@ pub fn new_spore_overlap_removal_layout_provider() -> SporeOverlapRemovalLayoutP
       spore_phase_descriptor,
     ),
   }
+}
+
+///|
+fn init {
+  @core.recursive_graph_layout_engine_register_handler(
+    spore_overlap_removal_algorithm_id,
+    (
+      layout_graph,
+      progress_monitor,
+    ) => new_spore_overlap_removal_layout_provider().layout(
+      layout_graph,
+      progress_monitor,
+    ),
+  )
 }
 
 ///|
@@ -70,12 +71,11 @@ pub fn SporeOverlapRemovalLayoutProvider::layout(
   }
   let svg = @common.new_svg_image(debug_output_file)
 
-  let overlap_edges : Array[@common.TEdge] = []
+  let overlap_edges = @common.new_java_tedge_set()
   let overlap_handler : @common.IOverlapHandler = (n1, n2) => {
-    spore_overlap_edges_add_unique(
-      overlap_edges,
+    ignore(overlap_edges.add(
       @common.new_tedge(n1.original_vertex, n2.original_vertex),
-    )
+    ))
   }
 
   let graph_importer = new_spore_elk_graph_as_igraph_importer()
@@ -94,7 +94,7 @@ pub fn SporeOverlapRemovalLayoutProvider::layout(
       if overlap_edges.is_empty() {
         break
       }
-      graph.t_edges = Some(overlap_edges.copy())
+      graph.t_edges = Some(overlap_edges)
     }
 
     ignore(self.algorithm_assembler.reset())
