@@ -2392,8 +2392,6 @@ fn recursive_layered_apply_layout(
   context : RecursiveLayeredContext,
   parent_node : @graph.ElkNode,
 ) -> Unit {
-  let mut rightmost = 0.0
-  let mut max_bottom = 0.0
   let graph_offset = context.layered_graph.get_offset()
   let graph_size = context.layered_graph.get_size()
   let padding_value = context.layered_graph.get_padding()
@@ -2447,13 +2445,6 @@ fn recursive_layered_apply_layout(
           }
         }
       None => ()
-    }
-
-    if graph_x + resolved_width > rightmost {
-      rightmost = graph_x + resolved_width
-    }
-    if graph_y + resolved_height > max_bottom {
-      max_bottom = graph_y + resolved_height
     }
   }
 
@@ -2754,17 +2745,52 @@ fn recursive_layered_apply_layout(
     }
   }
 
-  let width = rightmost + padding_value.left + padding_value.right
-  let height = max_bottom + padding_value.top + padding_value.bottom
-  if recursive_layered_has_graph_property(
-      context.layered_graph,
-      GraphProperties::ExternalPorts,
-    ) {
+  let actual_graph_size = context.layered_graph.get_actual_size()
+  let has_external_ports = recursive_layered_has_graph_property(
+    context.layered_graph,
+    GraphProperties::ExternalPorts,
+  )
+  if has_external_ports {
     @graph.node_set_string_property(
       parent_node, @core.port_constraints, "FIXED_POS",
     )
+    @graph.node_set_dimensions(
+      parent_node,
+      actual_graph_size.x,
+      actual_graph_size.y,
+    )
+  } else if !@graph.node_get_bool_property(
+      parent_node, @core.node_size_fixed_graph_size,
+    ) {
+    @graph.node_set_dimensions(
+      parent_node,
+      actual_graph_size.x,
+      actual_graph_size.y,
+    )
   }
-  @graph.node_set_dimensions(parent_node, width, height)
+  let mut size_constraints_include_port_labels = false
+  for
+    constraint in @graph.node_get_string_set_property(
+      parent_node, @core.node_size_constraints,
+    ) {
+    if constraint == "PORT_LABELS" {
+      size_constraints_include_port_labels = true
+      break
+    }
+  }
+  if size_constraints_include_port_labels {
+    @graph.node_set_string_set_property(
+      parent_node,
+      @core.node_size_constraints,
+      ["PORT_LABELS"],
+    )
+  } else {
+    @graph.node_set_string_set_property(
+      parent_node,
+      @core.node_size_constraints,
+      [],
+    )
+  }
   recursive_layered_align_edge_sections_to_port_anchors(parent_node)
 }
 
