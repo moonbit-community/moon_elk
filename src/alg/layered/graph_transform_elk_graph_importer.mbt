@@ -16,6 +16,11 @@ pub fn LayeredElkGraphImporter::import_graph(
   ignore(self)
   match recursive_layered_import_graph_for_transform(graph) {
     Some(layered_graph) => layered_graph
-    None => abort("layered elk graph import failed")
+    None => {
+      @core.layout_runtime_report_unsupported_graph(
+        "The source or the target of an edge could not be found.",
+      )
+      new_l_graph()
+    }
   }
 }

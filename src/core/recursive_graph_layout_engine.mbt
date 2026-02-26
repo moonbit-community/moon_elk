@@ -54,8 +54,7 @@ fn recursive_graph_layout_engine_parse_bool(value : String) -> Bool {
 fn recursive_graph_layout_engine_has_explicit_algorithm(
   node : @graph.ElkNode,
 ) -> Bool {
-  @graph.node_has_string_property(node, algorithm) ||
-  @graph.node_layout_option_string_value(node, algorithm.get_id()) is Some(_)
+  @graph.node_has_string_property(node, algorithm)
 }
 
 ///|
@@ -95,11 +94,6 @@ fn recursive_graph_layout_engine_set_hierarchy_handling(
 ) -> Unit {
   @graph.node_set_string_property(
     node, recursive_graph_layout_engine_hierarchy_handling_property, value,
-  )
-  @graph.node_set_layout_option_string_by_id(
-    node,
-    recursive_graph_layout_engine_hierarchy_handling_property.get_id(),
-    value,
   )
 }
 
@@ -273,6 +267,9 @@ fn recursive_graph_layout_engine_execute_algorithm(
   resolved_algorithm_id : String,
   progress_monitor : IElkProgressMonitor,
 ) -> Unit {
+  if layout_runtime_has_error() {
+    return
+  }
   if resolved_algorithm_id == "org.eclipse.elk.box" {
     new_box_layout_provider().layout(layout_node, progress_monitor)
     return
@@ -288,10 +285,12 @@ fn recursive_graph_layout_engine_execute_algorithm(
 
   match recursive_graph_layout_engine_get_handler(resolved_algorithm_id) {
     Some(handler) => handler(layout_node, progress_monitor)
-    None =>
-      abort(
+    None => {
+      layout_runtime_report_unsupported_configuration(
         "No recursive layout handler registered for " + resolved_algorithm_id,
       )
+      return
+    }
   }
 }
 
@@ -308,6 +307,9 @@ fn recursive_graph_layout_engine_layout_recursively(
   layout_node : @graph.ElkNode,
   progress_monitor : IElkProgressMonitor,
 ) -> Array[@graph.ElkEdge] {
+  if layout_runtime_has_error() {
+    return []
+  }
   if progress_monitor.is_canceled() {
     return []
   }
@@ -329,14 +331,20 @@ fn recursive_graph_layout_engine_layout_recursively(
     layout_node,
   )
   if resolved_algorithm_id.is_empty() {
-    abort(
+    layout_runtime_report_unsupported_configuration(
       "Resolved algorithm is not set; apply a LayoutAlgorithmResolver before computing layout.",
     )
+    return []
   }
   let algorithm_data = match
     layout_meta_data_service_get_algorithm_data_by_suffix(resolved_algorithm_id) {
     Some(data) => data
-    None => abort("Resolved algorithm is unknown.")
+    None => {
+      layout_runtime_report_unsupported_configuration(
+        "Resolved algorithm is unknown.",
+      )
+      return []
+    }
   }
   let supports_inside_self_loops = algorithm_data.supports_feature(
     @graph.GraphFeature::InsideSelfLoops,
@@ -359,7 +367,7 @@ fn recursive_graph_layout_engine_layout_recursively(
     node_count = recursive_graph_layout_engine_count_nodes_with_hierarchy(
       layout_node,
     )
-    let node_queue = @graph.node_children(layout_node)
+    let node_queue = @graph.node_children(layout_node).copy()
     let mut queue_index = 0
     while queue_index < node_queue.length() {
       let node = node_queue[queue_index]
@@ -447,6 +455,7 @@ pub fn RecursiveGraphLayoutEngine::layout(
   progress_monitor : IElkProgressMonitor,
 ) -> Unit {
   ignore(self)
+  layout_runtime_clear_error()
 
   let node_count = recursive_graph_layout_engine_count_nodes_recursively(
     layout_graph, true,
@@ -466,6 +475,10 @@ pub fn RecursiveGraphLayoutEngine::layout(
   if recursive_graph_layout_engine_resolved_algorithm_id(layout_graph).is_empty() {
     let resolver = new_layout_algorithm_resolver()
     apply_visitors(layout_graph, [resolver.to_visitor()])
+    if layout_runtime_has_error() {
+      progress_monitor.done()
+      return
+    }
   }
 
   ignore(

@@ -3,11 +3,10 @@ package "Milky2018/moon_elk/alg/force"
 
 import {
   "Milky2018/moon_elk/core",
-  "moonbitlang/core/random",
 }
 
 // Values
-pub fn abstract_force_model_avoid_same_position(@random.Rand, FParticle, FParticle) -> Unit
+pub fn abstract_force_model_avoid_same_position(@core.JavaRandom, FParticle, FParticle) -> Unit
 
 pub fn abstract_force_model_disp_bound(AbstractForceModelState) -> Double
 
@@ -19,7 +18,7 @@ pub fn abstract_force_model_iteration_done(AbstractForceModelState) -> Unit
 
 pub fn abstract_force_model_layout(AbstractForceModelState, FGraph, @core.IElkProgressMonitor, () -> Unit, (Int) -> Bool, (FParticle, FParticle) -> @core.KVector?, () -> Unit) -> Unit
 
-pub fn abstract_force_model_random(AbstractForceModelState) -> @random.Rand
+pub fn abstract_force_model_random(AbstractForceModelState) -> @core.JavaRandom
 
 pub fn eades_model_attractive(Double, Double) -> Double
 
@@ -283,7 +282,7 @@ pub let stress_omit_node_micro_layout : ForceBoolOption
 
 // Types and methods
 pub struct AbstractForceModelState {
-  mut random : @random.Rand
+  mut random : @core.JavaRandom
   mut graph : FGraph?
   mut disp_bound : Double
 }
@@ -322,7 +321,7 @@ pub struct FGraph {
   model_properties : Map[String, ForceModelStrategy]
   padding_properties : Map[String, @core.Spacing]
   node_properties : Map[String, Int]
-  random_properties : Map[String, @random.Rand]
+  random_properties : Map[String, @core.JavaRandom]
   vector_properties : Map[String, @core.KVector]
   adjacency : Array[Array[Int]]
 }
@@ -337,7 +336,7 @@ pub fn FGraph::get_double_property(Self, ForceDoubleOption) -> Double
 pub fn FGraph::get_edges(Self) -> Array[Int]
 pub fn FGraph::get_int_property(Self, ForceIntOption) -> Int
 pub fn FGraph::get_internal_node_property(Self, ForceInternalNodeProperty) -> Int?
-pub fn FGraph::get_internal_random_property(Self, ForceInternalRandomProperty) -> @random.Rand?
+pub fn FGraph::get_internal_random_property(Self, ForceInternalRandomProperty) -> @core.JavaRandom?
 pub fn FGraph::get_internal_vector_property(Self, ForceInternalVectorProperty) -> @core.KVector?
 pub fn FGraph::get_labels(Self) -> Array[Int]
 pub fn FGraph::get_model_property(Self, ForceModelOption) -> ForceModelStrategy
@@ -348,7 +347,7 @@ pub fn FGraph::get_property(Self, ForceBoolOption) -> Bool
 pub fn FGraph::set_double_property(Self, ForceDoubleOption, Double) -> Unit
 pub fn FGraph::set_int_property(Self, ForceIntOption, Int) -> Unit
 pub fn FGraph::set_internal_node_property(Self, ForceInternalNodeProperty, Int) -> Unit
-pub fn FGraph::set_internal_random_property(Self, ForceInternalRandomProperty, @random.Rand) -> Unit
+pub fn FGraph::set_internal_random_property(Self, ForceInternalRandomProperty, @core.JavaRandom) -> Unit
 pub fn FGraph::set_internal_vector_property(Self, ForceInternalVectorProperty, @core.KVector) -> Unit
 pub fn FGraph::set_model_property(Self, ForceModelOption, ForceModelStrategy) -> Unit
 pub fn FGraph::set_padding_property(Self, ForcePaddingOption, @core.Spacing) -> Unit

@@ -325,12 +325,18 @@ fn compound_graph_postprocessor_process(
       )
 
       if ch_edge.get_actual_target().get_handle() == target_port.get_handle() {
-        let target_offset = @core.new_kvector()
-        change_coord_system(
-          target_offset,
-          compound_graph_postprocessor_require_port_node(target_port).get_graph(),
-          reference_graph,
-        )
+        let target_offset = @core.new_kvector_copy(offset)
+        if compound_graph_postprocessor_require_port_node(target_port)
+          .get_graph()
+          .get_handle() !=
+          ch_edge.get_graph().get_handle() {
+          ignore(target_offset.reset())
+          change_coord_system(
+            target_offset,
+            compound_graph_postprocessor_require_port_node(target_port).get_graph(),
+            reference_graph,
+          )
+        }
         orig_edge.set_property_kvector(
           compound_graph_postprocessor_internal_properties_target_offset, target_offset,
         )

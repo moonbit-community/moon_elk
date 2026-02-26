@@ -88,6 +88,14 @@ pub fn label_set_layout_option_string_by_id(
 }
 
 ///|
+pub fn label_layout_option_string_entries(
+  label : ElkLabel,
+) -> Array[(String, String)] {
+  checked_label(label)
+  label_store.val[label].layout_option_string_values.to_array()
+}
+
+///|
 pub fn label_layout_option_string_value(
   label : ElkLabel,
   option_id : String,

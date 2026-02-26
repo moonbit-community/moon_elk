@@ -25,6 +25,16 @@ pub fn new_json_importer() -> JsonImporter {
 }
 
 ///|
+fn importer_report_json_error(message : String) -> Unit {
+  @core.layout_runtime_report_json_import(message)
+}
+
+///|
+fn importer_has_error() -> Bool {
+  @core.layout_runtime_has_error()
+}
+
+///|
 fn importer_apply_option(
   importer : JsonImporter,
   node : @graph.ElkNode,
@@ -467,6 +477,9 @@ fn importer_transform_port(
 ) -> Unit {
   let port = @graph.create_port(Some(parent))
   let port_id = required_json_id(json_port)
+  if port_id.is_empty() {
+    return
+  }
   importer.port_id_map[port_id] = port
   importer.port_json_map[port] = json_port
   importer_transform_properties_port(json_port, port)
@@ -501,6 +514,9 @@ fn importer_transform_node(
 ) -> @graph.ElkNode {
   let node = @graph.create_node(parent)
   let id = required_json_id(json_node)
+  if id.is_empty() {
+    return node
+  }
   @graph.node_set_identifier(node, id)
   match json_value_as_string(json_node.get("id").unwrap_or(Json::string(id))) {
     Some(identifier) => @graph.node_set_identifier(node, identifier)
@@ -535,6 +551,9 @@ fn importer_transform_edge(
 ) -> @graph.ElkEdge {
   let edge = @graph.create_edge(Some(parent))
   let edge_id = required_json_id(json_edge)
+  if edge_id.is_empty() {
+    return edge
+  }
   @graph.edge_set_identifier(edge, edge_id)
   importer.edge_json_map[edge] = json_edge
   importer.edge_original_parent_map[edge] = parent
@@ -568,28 +587,58 @@ fn importer_transform_edge(
       None => ()
     }
     if !@graph.edge_is_connected(edge) {
-      abort("JsonImportException")
+      importer_report_json_error(
+        "An edge must have at least one source and one target (edge id: '" +
+        edge_id +
+        "').",
+      )
+      return edge
     }
   } else {
     let source_id = match json_edge.get("source") {
       Some(source_json) =>
         match json_id_to_string(source_json) {
           Some(source) => source
-          None => abort("JsonImportException")
+          None => {
+            importer_report_json_error(
+              "Invalid source reference (edge id: '" + edge_id + "').",
+            )
+            return edge
+          }
         }
-      None => abort("JsonImportException")
+      None => {
+        importer_report_json_error(
+          "Missing source reference (edge id: '" + edge_id + "').",
+        )
+        return edge
+      }
     }
     let target_id = match json_edge.get("target") {
       Some(target_json) =>
         match json_id_to_string(target_json) {
           Some(target) => target
-          None => abort("JsonImportException")
+          None => {
+            importer_report_json_error(
+              "Invalid target reference (edge id: '" + edge_id + "').",
+            )
+            return edge
+          }
         }
-      None => abort("JsonImportException")
+      None => {
+        importer_report_json_error(
+          "Missing target reference (edge id: '" + edge_id + "').",
+        )
+        return edge
+      }
     }
     let source_node = match importer.node_id_map.get(source_id) {
       Some(node) => node
-      None => abort("JsonImportException")
+      None => {
+        importer_report_json_error(
+          "Referenced source node does not exist (edge id: '" + edge_id + "').",
+        )
+        return edge
+      }
     }
     let source_shape = match json_edge.get("sourcePort") {
       Some(port_json) =>
@@ -600,17 +649,39 @@ fn importer_transform_edge(
                 if @graph.port_parent(port) == Some(source_node) {
                   @graph.make_port_shape(port)
                 } else {
-                  abort("JsonImportException")
+                  importer_report_json_error(
+                    "Referenced source port does not belong to source node (edge id: '" +
+                    edge_id +
+                    "').",
+                  )
+                  return edge
                 }
-              None => abort("JsonImportException")
+              None => {
+                importer_report_json_error(
+                  "Referenced source port does not exist (edge id: '" +
+                  edge_id +
+                  "').",
+                )
+                return edge
+              }
             }
-          None => abort("JsonImportException")
+          None => {
+            importer_report_json_error(
+              "Invalid source port reference (edge id: '" + edge_id + "').",
+            )
+            return edge
+          }
         }
       None => @graph.make_node_shape(source_node)
     }
     let target_node = match importer.node_id_map.get(target_id) {
       Some(node) => node
-      None => abort("JsonImportException")
+      None => {
+        importer_report_json_error(
+          "Referenced target node does not exist (edge id: '" + edge_id + "').",
+        )
+        return edge
+      }
     }
     let target_shape = match json_edge.get("targetPort") {
       Some(port_json) =>
@@ -621,19 +692,42 @@ fn importer_transform_edge(
                 if @graph.port_parent(port) == Some(target_node) {
                   @graph.make_port_shape(port)
                 } else {
-                  abort("JsonImportException")
+                  importer_report_json_error(
+                    "Referenced target port does not belong to target node (edge id: '" +
+                    edge_id +
+                    "').",
+                  )
+                  return edge
                 }
-              None => abort("JsonImportException")
+              None => {
+                importer_report_json_error(
+                  "Referenced target port does not exist (edge id: '" +
+                  edge_id +
+                  "').",
+                )
+                return edge
+              }
             }
-          None => abort("JsonImportException")
+          None => {
+            importer_report_json_error(
+              "Invalid target port reference (edge id: '" + edge_id + "').",
+            )
+            return edge
+          }
         }
       None => @graph.make_node_shape(target_node)
     }
     @graph.edge_add_source(edge, source_shape)
     @graph.edge_add_target(edge, target_shape)
   }
+  if importer_has_error() {
+    return edge
+  }
   importer_transform_properties_edge(json_edge, edge)
   importer_transform_edge_sections(importer, json_edge, edge)
+  if importer_has_error() {
+    return edge
+  }
   importer_transform_labels_for_edge(importer, json_edge, edge)
   @graph.update_containment(Some(edge))
   edge
@@ -689,11 +783,17 @@ fn importer_fill_edge_section_points(
 ) -> Unit {
   let start_point = match json_object_field(json_section, "startPoint") {
     Some(value) => value
-    None => abort("JsonImportException")
+    None => {
+      importer_report_json_error("All edge sections need a start point.")
+      return
+    }
   }
   let end_point = match json_object_field(json_section, "endPoint") {
     Some(value) => value
-    None => abort("JsonImportException")
+    None => {
+      importer_report_json_error("All edge sections need an end point.")
+      return
+    }
   }
   let start_x = json_number_in_object(start_point, "x").unwrap_or(0.0)
   let start_y = json_number_in_object(start_point, "y").unwrap_or(0.0)
@@ -731,6 +831,9 @@ fn importer_transform_edge_sections(
   json_edge : Map[String, Json],
   edge : @graph.ElkEdge,
 ) -> Unit {
+  if importer_has_error() {
+    return
+  }
   let sections_json = match json_array_field(json_edge, "sections") {
     Some(sections) => sections
     None => return
@@ -745,9 +848,15 @@ fn importer_transform_edge_sections(
     }
     let section = @graph.create_edge_section(edge)
     let section_id = required_json_id(section_obj)
+    if section_id.is_empty() {
+      return
+    }
     @graph.edge_section_set_identifier(section, section_id)
     section_by_id[section_id] = section
     importer_fill_edge_section_points(section_obj, section)
+    if importer_has_error() {
+      return
+    }
     match section_obj.get("incomingShape") {
       Some(shape_json) =>
         match json_id_to_string(shape_json) {
@@ -786,7 +895,16 @@ fn importer_transform_edge_sections(
       match section_by_id.get(section_id) {
         Some(referenced) =>
           @graph.edge_section_add_incoming_section(section, referenced)
-        None => abort("JsonImportException")
+        None => {
+          importer_report_json_error(
+            "Referenced edge section does not exist: " +
+            section_id +
+            " (edge id: '" +
+            @graph.edge_identifier(edge) +
+            "').",
+          )
+          ()
+        }
       }
     }
   })
@@ -795,7 +913,16 @@ fn importer_transform_edge_sections(
       match section_by_id.get(section_id) {
         Some(referenced) =>
           @graph.edge_section_add_outgoing_section(section, referenced)
-        None => abort("JsonImportException")
+        None => {
+          importer_report_json_error(
+            "Referenced edge section does not exist: " +
+            section_id +
+            " (edge id: '" +
+            @graph.edge_identifier(edge) +
+            "').",
+          )
+          ()
+        }
       }
     }
   })
@@ -822,10 +949,21 @@ fn importer_transform_edges(
   importer : JsonImporter,
   json_node : Map[String, Json],
 ) -> Unit {
+  if importer_has_error() {
+    return
+  }
   let node_id = required_json_id(json_node)
+  if node_id.is_empty() {
+    return
+  }
   let node = match importer.node_id_map.get(node_id) {
     Some(node) => node
-    None => abort("JsonImportException")
+    None => {
+      importer_report_json_error(
+        "Referenced node does not exist (node id: '" + node_id + "').",
+      )
+      return
+    }
   }
   match json_array_field(json_node, "edges") {
     Some(edges) =>
@@ -864,6 +1002,9 @@ pub fn JsonImporter::transform(
   self.label_json_map.clear()
   self.edge_original_parent_map.clear()
   let root = importer_transform_node(self, graph, None)
+  if importer_has_error() {
+    return root
+  }
   importer_transform_edges(self, graph)
   root
 }
@@ -1240,7 +1381,12 @@ fn importer_transfer_layout_node(
 ) -> Unit {
   let json_node = match importer.node_json_map.get(node) {
     Some(json_obj) => json_obj
-    None => abort("JsonImportException")
+    None => {
+      importer_report_json_error(
+        "Missing JSON mapping for node '" + @graph.node_identifier(node) + "'.",
+      )
+      return
+    }
   }
   let output_x = match @graph.node_parent(node) {
     Some(parent) =>
@@ -1308,7 +1454,14 @@ fn importer_transfer_layout_node(
   for edge in @graph.node_contained_edges(node) {
     let json_edge = match importer.edge_json_map.get(edge) {
       Some(json_obj) => json_obj
-      None => abort("JsonImportException")
+      None => {
+        importer_report_json_error(
+          "Missing JSON mapping for edge '" +
+          @graph.edge_identifier(edge) +
+          "'.",
+        )
+        return
+      }
     }
     let edge_id = if @graph.edge_identifier(edge).is_empty() {
       required_json_id(json_edge)

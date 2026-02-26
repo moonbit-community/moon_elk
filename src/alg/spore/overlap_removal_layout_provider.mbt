@@ -16,13 +16,11 @@ pub fn new_spore_overlap_removal_layout_provider() -> SporeOverlapRemovalLayoutP
 fn init {
   @core.recursive_graph_layout_engine_register_handler(
     spore_overlap_removal_algorithm_id,
-    (
-      layout_graph,
-      progress_monitor,
-    ) => new_spore_overlap_removal_layout_provider().layout(
-      layout_graph,
-      progress_monitor,
-    ),
+    (layout_graph, progress_monitor) => {
+      new_spore_overlap_removal_layout_provider().layout(
+        layout_graph, progress_monitor,
+      )
+    },
   )
 }
 
@@ -73,9 +71,11 @@ pub fn SporeOverlapRemovalLayoutProvider::layout(
 
   let overlap_edges = @common.new_java_tedge_set()
   let overlap_handler : @common.IOverlapHandler = (n1, n2) => {
-    ignore(overlap_edges.add(
-      @common.new_tedge(n1.original_vertex, n2.original_vertex),
-    ))
+    ignore(
+      overlap_edges.add(
+        @common.new_tedge(n1.original_vertex, n2.original_vertex),
+      ),
+    )
   }
 
   let graph_importer = new_spore_elk_graph_as_igraph_importer()

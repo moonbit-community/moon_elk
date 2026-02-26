@@ -1,15 +1,9 @@
 ///|
-fn dummy_self_loop_processor_reverse_edge(edge : LEdge) -> Unit {
-  let old_source = edge.get_source()
-  let old_target = edge.get_target()
-  edge.set_source(None)
-  edge.set_target(None)
-  edge.set_source(old_target)
-  edge.set_target(old_source)
-  edge.set_property_bool(
-    internal_properties_reversed,
-    !edge.get_property_bool(internal_properties_reversed),
-  )
+fn dummy_self_loop_processor_reverse_edge(
+  edge : LEdge,
+  layered_graph : LGraph,
+) -> Unit {
+  edge.reverse(layered_graph, false)
 }
 
 ///|
@@ -155,13 +149,13 @@ fn dummy_self_loop_processor_process(
 
           if dummy_self_loop_processor_is_side_north_or_south(source_port_side) &&
             dummy_self_loop_processor_is_side_west(target_port_side) {
-            dummy_self_loop_processor_reverse_edge(edge)
+            dummy_self_loop_processor_reverse_edge(edge, layered_graph)
           } else if dummy_self_loop_processor_is_side_south(source_port_side) &&
             dummy_self_loop_processor_is_side_north(target_port_side) {
-            dummy_self_loop_processor_reverse_edge(edge)
+            dummy_self_loop_processor_reverse_edge(edge, layered_graph)
           } else if dummy_self_loop_processor_is_side_east(source_port_side) &&
             !dummy_self_loop_processor_is_side_east(target_port_side) {
-            dummy_self_loop_processor_reverse_edge(edge)
+            dummy_self_loop_processor_reverse_edge(edge, layered_graph)
           }
 
           if dummy_self_loop_processor_is_side_east(source_port_side) &&

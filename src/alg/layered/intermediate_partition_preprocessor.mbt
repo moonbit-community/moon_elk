@@ -39,23 +39,13 @@ fn partition_preprocessor_node_array_contains(
 }
 
 ///|
-fn partition_preprocessor_reverse_edge(edge : LEdge) -> Unit {
-  let old_source = edge.get_source()
-  let old_target = edge.get_target()
-  edge.set_source(None)
-  edge.set_target(None)
-  edge.set_source(old_target)
-  edge.set_target(old_source)
-  edge.set_property_bool(
-    internal_properties_reversed,
-    !edge.get_property_bool(internal_properties_reversed),
-  )
+fn partition_preprocessor_reverse_edge(edge : LEdge, graph : LGraph) -> Unit {
+  edge.reverse(graph, true)
 }
 
 ///|
 fn partition_preprocessor_reverse(edge : LEdge, graph : LGraph) -> Unit {
-  ignore(graph)
-  partition_preprocessor_reverse_edge(edge)
+  partition_preprocessor_reverse_edge(edge, graph)
   let mut priority = partition_preprocessor_partition_constraint_edge_priority
   if edge.has_property_int(layered_options_priority_direction) {
     priority += edge.get_property_int(layered_options_priority_direction)

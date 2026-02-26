@@ -276,9 +276,11 @@ pub fn SporeElkGraphImporter::import_graph(
       @core.new_elk_rectangle_xywh(
         vertex.x - half_width - self.spacing_node_node / 2.0 - margin.left,
         vertex.y - half_height - self.spacing_node_node / 2.0 - margin.top,
-        @graph.node_width(elk_node) + self.spacing_node_node +
+        @graph.node_width(elk_node) +
+        self.spacing_node_node +
         margin.get_horizontal(),
-        @graph.node_height(elk_node) + self.spacing_node_node +
+        @graph.node_height(elk_node) +
+        self.spacing_node_node +
         margin.get_vertical(),
       ),
     )
@@ -295,7 +297,8 @@ pub fn SporeElkGraphImporter::import_graph(
           let entry = match
             spore_node_entry_find(self.node_map, node.original_vertex) {
             Some(value) => value
-            None => abort("Spore importer: missing node while selecting fixed root")
+            None =>
+              abort("Spore importer: missing node while selecting fixed root")
           }
           let id = @graph.node_identifier(entry.elk_node)
           if !id.is_empty() && id == preferred_root_id {

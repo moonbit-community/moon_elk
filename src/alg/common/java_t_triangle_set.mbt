@@ -9,7 +9,10 @@ pub fn new_java_ttriangle_set() -> JavaTTriangleSet {
 }
 
 ///|
-pub fn JavaTTriangleSet::add(self : JavaTTriangleSet, triangle : TTriangle) -> Bool {
+pub fn JavaTTriangleSet::add(
+  self : JavaTTriangleSet,
+  triangle : TTriangle,
+) -> Bool {
   if self.values.contains(triangle) {
     false
   } else {

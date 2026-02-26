@@ -204,6 +204,8 @@ pub fn label_identifier(Int) -> String
 
 pub fn label_labels(Int) -> Array[Int]
 
+pub fn label_layout_option_string_entries(Int) -> Array[(String, String)]
+
 pub fn label_layout_option_string_value(Int, String) -> String?
 
 pub fn label_parent(Int) -> ElkLabelParent?
@@ -278,6 +280,8 @@ pub fn[T] new_property_value_proxy((IProperty[T]) -> T?) -> IPropertyValueProxy[
 
 pub fn node_all_descendants_including_self(Int) -> Array[Int]
 
+pub fn node_bool_property_entries(Int) -> Array[(String, Bool)]
+
 pub fn node_children(Int) -> Array[Int]
 
 pub fn node_clear_bool_property(Int, IProperty[Bool]) -> Unit
@@ -326,6 +330,10 @@ pub fn node_individual_spacing_option_string_entries(Int) -> Array[(String, Stri
 
 pub fn node_individual_spacing_option_string_value(Int, String) -> String?
 
+pub fn node_int_property_entries(Int) -> Array[(String, Int)]
+
+pub fn node_kvector_property_entries(Int) -> Array[(String, String)]
+
 pub fn node_labels(Int) -> Array[Int]
 
 pub fn node_layout_option_string_entries(Int) -> Array[(String, String)]
@@ -358,6 +366,10 @@ pub fn node_set_string_property(Int, IProperty[String], String) -> Unit
 
 pub fn node_set_string_set_property(Int, IProperty[Array[String]], Array[String]) -> Unit
 
+pub fn node_string_property_entries(Int) -> Array[(String, String)]
+
+pub fn node_string_set_property_entries(Int) -> Array[(String, Array[String])]
+
 pub fn node_width(Int) -> Double
 
 pub fn node_x(Int) -> Double
@@ -371,6 +383,8 @@ pub fn port_identifier(Int) -> String
 pub fn port_incoming_edges(Int) -> Array[Int]
 
 pub fn port_labels(Int) -> Array[Int]
+
+pub fn port_layout_option_string_entries(Int) -> Array[(String, String)]
 
 pub fn port_layout_option_string_value(Int, String) -> String?
 

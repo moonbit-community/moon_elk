@@ -91,6 +91,10 @@ fn neighborhood_information_determine_all_right_neighbors(
             Some(value) => value
             None => continue
           }
+          let target_id = target_node.get_id()
+          if target_id < 0 || target_id >= ni.node_index.length() {
+            continue
+          }
           result.push((target_node, edge))
         }
       }
@@ -131,6 +135,10 @@ fn neighborhood_information_determine_all_left_neighbors(
           let source_node = match source_port.get_node() {
             Some(value) => value
             None => continue
+          }
+          let source_id = source_node.get_id()
+          if source_id < 0 || source_id >= ni.node_index.length() {
+            continue
           }
           result.push((source_node, edge))
         }

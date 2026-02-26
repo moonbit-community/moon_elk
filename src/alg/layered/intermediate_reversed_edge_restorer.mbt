@@ -1,15 +1,9 @@
 ///|
-fn reversed_edge_restorer_reverse_edge(edge : LEdge) -> Unit {
-  let old_source = edge.get_source()
-  let old_target = edge.get_target()
-  edge.set_source(None)
-  edge.set_target(None)
-  edge.set_source(old_target)
-  edge.set_target(old_source)
-  edge.set_property_bool(
-    internal_properties_reversed,
-    !edge.get_property_bool(internal_properties_reversed),
-  )
+fn reversed_edge_restorer_reverse_edge(
+  edge : LEdge,
+  layered_graph : LGraph,
+) -> Unit {
+  edge.reverse(layered_graph, false)
 }
 
 ///|
@@ -29,7 +23,7 @@ fn reversed_edge_restorer_process(
         let outgoing_edges = port.get_outgoing_edges().copy()
         for edge in outgoing_edges {
           if edge.get_property_bool(internal_properties_reversed) {
-            reversed_edge_restorer_reverse_edge(edge)
+            reversed_edge_restorer_reverse_edge(edge, layered_graph)
           }
         }
       }

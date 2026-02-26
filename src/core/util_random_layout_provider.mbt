@@ -43,7 +43,9 @@ fn random_layout_provider_parse_padding(
   layout_node : @graph.ElkNode,
 ) -> ElkPadding {
   let parsed = new_elk_padding()
-  if @graph.node_has_string_property(layout_node, random_layout_provider_padding_option) {
+  if @graph.node_has_string_property(
+      layout_node, random_layout_provider_padding_option,
+    ) {
     parsed.parse(
       @graph.node_get_string_property(
         layout_node, random_layout_provider_padding_option,
@@ -54,7 +56,8 @@ fn random_layout_provider_parse_padding(
   if @graph.node_layout_option_string_value(
       layout_node,
       random_layout_provider_padding_option.get_id(),
-    ) is Some(raw) {
+    )
+    is Some(raw) {
     parsed.parse(raw)
   } else {
     parsed.parse(random_layout_provider_padding_option.get_default())
@@ -70,7 +73,8 @@ fn random_layout_provider_read_int_option(
   if @graph.node_has_int_property(node, property) {
     return @graph.node_get_int_property(node, property)
   }
-  if @graph.node_layout_option_string_value(node, property.get_id()) is Some(raw) {
+  if @graph.node_layout_option_string_value(node, property.get_id())
+    is Some(raw) {
     try @strconv.parse_int(raw.trim().to_string()) catch {
       _ => property.get_default()
     } noraise {
@@ -89,7 +93,8 @@ fn random_layout_provider_read_double_option(
   if @graph.node_has_double_property(node, property) {
     return @graph.node_get_double_property(node, property)
   }
-  if @graph.node_layout_option_string_value(node, property.get_id()) is Some(raw) {
+  if @graph.node_layout_option_string_value(node, property.get_id())
+    is Some(raw) {
     try @strconv.parse_double(raw.trim().to_string()) catch {
       _ => property.get_default()
     } noraise {
@@ -105,8 +110,7 @@ fn random_layout_provider_create_random(
   parent_node : @graph.ElkNode,
 ) -> JavaRandom {
   let random_seed_value = random_layout_provider_read_int_option(
-    parent_node,
-    random_layout_provider_random_seed_option,
+    parent_node, random_layout_provider_random_seed_option,
   )
   if random_seed_value != 0 {
     new_java_random_seeded_int(random_seed_value)

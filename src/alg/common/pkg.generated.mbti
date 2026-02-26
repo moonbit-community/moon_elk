@@ -4,6 +4,7 @@ package "Milky2018/moon_elk/alg/common"
 import {
   "Milky2018/moon_elk/core",
   "Milky2018/moon_elk/graph",
+  "moonbitlang/core/set",
 }
 
 // Values
@@ -131,6 +132,10 @@ pub fn new_ipolyomino_successor((PolyominoCoords, Polyomino) -> PolyominoCoords)
 
 pub fn new_irectangle_strip_overlap_removal_strategy((RectangleStripOverlapRemover) -> Double) -> IRectangleStripOverlapRemovalStrategy
 
+pub fn new_java_tedge_set() -> JavaTEdgeSet
+
+pub fn new_java_ttriangle_set() -> JavaTTriangleSet
+
 pub fn new_label_cell(Double) -> Cell
 
 pub fn new_label_cell_full(Double, NodeLabelLocation, Bool) -> Cell
@@ -237,7 +242,11 @@ pub fn node_dimension_calculation_sort_port_lists(@core.ElkGraphAdapter) -> Unit
 
 pub fn node_dimension_calculation_sort_port_lists_for_layered_graph(Int) -> Unit
 
+pub fn node_label_and_size_calculator_compute_inside_node_label_padding(Int, @core.Direction) -> @core.Spacing
+
 pub fn node_label_and_size_calculator_process_layered_graph(Int) -> Unit
+
+pub fn node_label_and_size_calculator_process_single_node(Int, Int, Bool, Bool) -> @core.KVector
 
 pub fn node_label_and_size_utilities_apply_stuff(NodeContext) -> Unit
 
@@ -586,6 +595,23 @@ pub fn IThreeValueGrid::set_blocked(Self, Int, Int) -> Unit
 pub fn IThreeValueGrid::set_empty(Self, Int, Int) -> Unit
 pub fn IThreeValueGrid::set_weakly_blocked(Self, Int, Int) -> Unit
 
+pub struct JavaTEdgeSet {
+  mut values : @set.Set[TEdge]
+}
+pub fn JavaTEdgeSet::add(Self, TEdge) -> Bool
+pub fn JavaTEdgeSet::clear(Self) -> Unit
+pub fn JavaTEdgeSet::contains(Self, TEdge) -> Bool
+pub fn JavaTEdgeSet::is_empty(Self) -> Bool
+pub fn JavaTEdgeSet::remove(Self, TEdge) -> Bool
+pub fn JavaTEdgeSet::to_array(Self) -> Array[TEdge]
+
+pub struct JavaTTriangleSet {
+  values : @set.Set[TTriangle]
+}
+pub fn JavaTTriangleSet::add(Self, TTriangle) -> Bool
+pub fn JavaTTriangleSet::remove(Self, TTriangle) -> Bool
+pub fn JavaTTriangleSet::to_array(Self) -> Array[TTriangle]
+
 pub enum LowLevelSortingCriterion {
   BySize
   BySizeAndShape
@@ -688,6 +714,7 @@ pub fn NetworkSimplex::with_iteration_limit(Self, Int) -> Self
 pub fn NetworkSimplex::with_previous_layering(Self, Array[Int]) -> Self
 
 pub struct Node {
+  uid : Int
   mut original_vertex : @core.KVector
   vertex : @core.KVector
   rect : @core.ElkRectangle
@@ -1035,8 +1062,11 @@ pub struct TEdge {
 }
 pub fn TEdge::equals(Self, Self) -> Bool
 pub fn TEdge::hash_code(Self) -> Int
+pub impl Eq for TEdge
+pub impl Hash for TEdge
 
 pub struct TTriangle {
+  uid : Int
   a : @core.KVector
   b : @core.KVector
   c : @core.KVector
@@ -1050,6 +1080,8 @@ pub fn TTriangle::equals(Self, Self) -> Bool
 pub fn TTriangle::get_circumcenter(Self) -> @core.KVector
 pub fn TTriangle::hash_code(Self) -> Int
 pub fn TTriangle::in_circumcircle(Self, @core.KVector) -> Bool
+pub impl Eq for TTriangle
+pub impl Hash for TTriangle
 
 pub enum TraversalStrategy {
   Spiral
@@ -1064,6 +1096,7 @@ pub enum TraversalStrategy {
 }
 
 pub struct Tree[T] {
+  uid : Int
   node : T
   children : Array[Tree[T]]
 }

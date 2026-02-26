@@ -1,4 +1,9 @@
 ///|
+fn init {
+  ignore(@elk_graph_json.new_json_adapter())
+}
+
+///|
 fn j_obj(entries : Array[(String, Json)]) -> Json {
   Json::object(Map::from_array(entries))
 }

@@ -13,4 +13,5 @@ import {
 
 import {
   "Milky2018/moon_elk/alg/layered",
+  "Milky2018/moon_elk/graph/json" @elk_graph_json,
 } for "test"

@@ -48,13 +48,18 @@ test "RecursiveGraphLayoutEngine resolved graph" {
 }
 
 ///|
-test "panic RecursiveGraphLayoutEngine unknown algorithm id" {
+test "RecursiveGraphLayoutEngine unknown algorithm reports runtime error" {
   @graph.reset_graph_model_for_test()
   init_layout_metadata_for_engine_test()
   let graph = new_recursive_layout_graph_fixture()
   @graph.node_set_string_property(graph.root, algorithm, "foo.Bar")
   let engine = new_recursive_graph_layout_engine()
   engine.layout(graph.root, new_basic_progress_monitor())
+  let error = layout_runtime_take_error_message()
+  assert_eq(error is Some(_), true)
+  if error is Some(message) {
+    assert_eq(message.is_empty(), false)
+  }
 }
 
 ///|

@@ -256,8 +256,9 @@ pub fn node_set_int_property(
 
 ///|
 fn parse_int_property_text(value : String) -> Int? {
-  let parsed : Result[Int, @strconv.StrConvError] = try?
-    @strconv.parse_int(value.trim())
+  let parsed : Result[Int, @strconv.StrConvError] = try? @strconv.parse_int(
+    value.trim(),
+  )
   match parsed {
     Ok(result) => Some(result)
     Err(_) => None
@@ -266,8 +267,9 @@ fn parse_int_property_text(value : String) -> Int? {
 
 ///|
 fn parse_double_property_text(value : String) -> Double? {
-  let parsed : Result[Double, @strconv.StrConvError] = try?
-    @strconv.parse_double(value.trim())
+  let parsed : Result[Double, @strconv.StrConvError] = try? @strconv.parse_double(
+    value.trim(),
+  )
   match parsed {
     Ok(result) => Some(result)
     Err(_) => None
@@ -600,9 +602,45 @@ pub fn node_clear_string_set_property(
 }
 
 ///|
+pub fn node_int_property_entries(node : ElkNode) -> Array[(String, Int)] {
+  checked_node(node)
+  node_store.val[node].int_properties.to_array()
+}
+
+///|
+pub fn node_bool_property_entries(node : ElkNode) -> Array[(String, Bool)] {
+  checked_node(node)
+  node_store.val[node].bool_properties.to_array()
+}
+
+///|
 pub fn node_double_property_entries(node : ElkNode) -> Array[(String, Double)] {
   checked_node(node)
   node_store.val[node].double_properties.to_array()
+}
+
+///|
+pub fn node_kvector_property_entries(node : ElkNode) -> Array[(String, String)] {
+  checked_node(node)
+  node_store.val[node].kvector_properties.to_array()
+}
+
+///|
+pub fn node_string_property_entries(node : ElkNode) -> Array[(String, String)] {
+  checked_node(node)
+  node_store.val[node].string_properties.to_array()
+}
+
+///|
+pub fn node_string_set_property_entries(
+  node : ElkNode,
+) -> Array[(String, Array[String])] {
+  checked_node(node)
+  let entries : Array[(String, Array[String])] = []
+  for entry in node_store.val[node].string_set_properties.to_array() {
+    entries.push((entry.0, entry.1.copy()))
+  }
+  entries
 }
 
 ///|

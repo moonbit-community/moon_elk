@@ -61,7 +61,7 @@ fn hierarchical_port_position_fix_coordinates(
     return
   }
 
-  let graph_height = layered_graph.get_size().y
+  let graph_height = layered_graph.get_actual_size().y
 
   for node in layer.get_nodes() {
     if !hierarchical_port_position_node_type_is_external_port(node.get_type()) {
@@ -85,6 +85,7 @@ fn hierarchical_port_position_fix_coordinates(
 
     let anchor = node.get_property_kvector(layered_options_port_anchor)
     node.get_position().y = final_y - anchor.y
+    node.border_to_content_area_coordinates(false, true)
   }
 }
 

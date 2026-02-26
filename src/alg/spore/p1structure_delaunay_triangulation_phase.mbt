@@ -29,11 +29,10 @@ fn spore_delaunay_triangulation_phase_process(
     debug_output_file=debug_output,
   )
   match graph.t_edges {
-    Some(existing_edges) => {
+    Some(existing_edges) =>
       for edge in triangulation {
         ignore(existing_edges.add(edge))
       }
-    }
     None => {
       let edges = @common.new_java_tedge_set()
       for edge in triangulation {

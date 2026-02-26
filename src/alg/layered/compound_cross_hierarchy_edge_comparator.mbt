@@ -3,23 +3,21 @@ fn cross_hierarchy_edge_comparator_hierarchy_level(
   nested_graph : LGraph,
   top_level_graph : LGraph,
 ) -> Int {
-  ignore(top_level_graph)
-  cross_hierarchy_edge_comparator_hierarchy_level_recur(nested_graph, 0)
-}
-
-///|
-fn cross_hierarchy_edge_comparator_hierarchy_level_recur(
-  current_graph : LGraph,
-  level : Int,
-) -> Int {
-  match current_graph.get_parent_node() {
-    Some(current_node) =>
-      cross_hierarchy_edge_comparator_hierarchy_level_recur(
-        current_node.get_graph(),
-        level + 1,
-      )
-    None => level
+  let mut current_graph = nested_graph
+  let mut level = 0
+  while true {
+    if current_graph.get_handle() == top_level_graph.get_handle() {
+      return level
+    }
+    match current_graph.get_parent_node() {
+      Some(current_node) => {
+        current_graph = current_node.get_graph()
+        level += 1
+      }
+      None => abort("IllegalArgumentException")
+    }
   }
+  abort("IllegalStateException")
 }
 
 ///|

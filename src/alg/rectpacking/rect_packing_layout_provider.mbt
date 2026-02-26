@@ -17,10 +17,12 @@ pub fn new_rectpacking_layout_provider() -> RectPackingLayoutProvider {
 
 ///|
 fn init {
-  @core.recursive_graph_layout_engine_register_handler(rectpacking_algorithm_id, (
-    layout_graph,
-    progress_monitor,
-  ) => new_rectpacking_layout_provider().layout(layout_graph, progress_monitor))
+  @core.recursive_graph_layout_engine_register_handler(
+    rectpacking_algorithm_id,
+    (layout_graph, progress_monitor) => {
+      new_rectpacking_layout_provider().layout(layout_graph, progress_monitor)
+    },
+  )
 }
 
 ///|

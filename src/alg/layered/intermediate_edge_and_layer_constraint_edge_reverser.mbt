@@ -108,17 +108,11 @@ fn edge_and_layer_constraint_edge_reverser_layer_constraint(
 }
 
 ///|
-fn edge_and_layer_constraint_edge_reverser_reverse_edge(edge : LEdge) -> Unit {
-  let old_source = edge.get_source()
-  let old_target = edge.get_target()
-  edge.set_source(None)
-  edge.set_target(None)
-  edge.set_source(old_target)
-  edge.set_target(old_source)
-  edge.set_property_bool(
-    internal_properties_reversed,
-    !edge.get_property_bool(internal_properties_reversed),
-  )
+fn edge_and_layer_constraint_edge_reverser_reverse_edge(
+  edge : LEdge,
+  layered_graph : LGraph,
+) -> Unit {
+  edge.reverse(layered_graph, true)
 }
 
 ///|
@@ -202,7 +196,6 @@ fn edge_and_layer_constraint_edge_reverser_reverse_edges(
   node_layer_constraint : LayerConstraint,
   target_port_type : PortType,
 ) -> Unit {
-  ignore(layered_graph)
   for port in node.get_ports().copy() {
     if edge_and_layer_constraint_edge_reverser_port_type_equals(
         target_port_type,
@@ -216,7 +209,9 @@ fn edge_and_layer_constraint_edge_reverser_reverse_edges(
         if edge_and_layer_constraint_edge_reverser_can_reverse_outgoing_edge(
             node_layer_constraint, edge,
           ) {
-          edge_and_layer_constraint_edge_reverser_reverse_edge(edge)
+          edge_and_layer_constraint_edge_reverser_reverse_edge(
+            edge, layered_graph,
+          )
         }
       }
     }
@@ -233,7 +228,9 @@ fn edge_and_layer_constraint_edge_reverser_reverse_edges(
         if edge_and_layer_constraint_edge_reverser_can_reverse_incoming_edge(
             node_layer_constraint, edge,
           ) {
-          edge_and_layer_constraint_edge_reverser_reverse_edge(edge)
+          edge_and_layer_constraint_edge_reverser_reverse_edge(
+            edge, layered_graph,
+          )
         }
       }
     }

@@ -441,6 +441,8 @@ pub fn layered_one_dimensional_compactor_scanline_constraints(@common.OneDimensi
 
 pub let layered_options_allow_non_flow_ports_to_switch_sides : @graph.IProperty[Bool]
 
+pub let layered_options_aspect_ratio : @graph.IProperty[Double]
+
 pub let layered_options_comment_box : @graph.IProperty[Bool]
 
 pub let layered_options_compaction_connected_components : @graph.IProperty[Bool]
@@ -2643,6 +2645,7 @@ pub fn LEdge::has_property_l_port(Self, @graph.IProperty[LPort?]) -> Bool
 pub fn LEdge::has_property_spline_segment_array(Self, @graph.IProperty[Array[SplineSegment]]) -> Bool
 pub fn LEdge::is_in_layer_edge(Self) -> Bool
 pub fn LEdge::is_self_loop(Self) -> Bool
+pub fn LEdge::reverse(Self, LGraph, Bool) -> Unit
 pub fn LEdge::set_id(Self, Int) -> Unit
 pub fn LEdge::set_origin_identifier(Self, String?) -> Unit
 pub fn LEdge::set_property_bool(Self, @graph.IProperty[Bool], Bool) -> Unit

@@ -113,7 +113,7 @@ test "CrossHierarchyEdge resolves origin port for external port dummies" {
     origin_source_node,
     compound_cross_hierarchy_test_east(),
   )
-  dummy_source_port.set_property_l_port(
+  dummy_source_node.set_property_l_port(
     internal_properties_origin_l_port,
     Some(origin_source_port),
   )
@@ -149,7 +149,7 @@ test "CrossHierarchyEdge resolves origin port for external port dummies" {
     origin_target_node,
     compound_cross_hierarchy_test_west(),
   )
-  dummy_target_port.set_property_l_port(
+  dummy_target_node.set_property_l_port(
     internal_properties_origin_l_port,
     Some(origin_target_port),
   )

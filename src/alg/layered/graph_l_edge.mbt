@@ -151,6 +151,83 @@ pub fn LEdge::is_in_layer_edge(self : LEdge) -> Bool {
 }
 
 ///|
+pub fn LEdge::reverse(
+  self : LEdge,
+  layered_graph : LGraph,
+  adapt_ports : Bool,
+) -> Unit {
+  let old_source = match self.get_source() {
+    Some(port) => port
+    None => abort("edge has no source port")
+  }
+  let old_target = match self.get_target() {
+    Some(port) => port
+    None => abort("edge has no target port")
+  }
+
+  self.set_source(None)
+  self.set_target(None)
+
+  if adapt_ports &&
+    old_target.get_property_bool(internal_properties_input_collect) {
+    let source_node = match old_target.get_node() {
+      Some(node) => node
+      None => abort("collector source port has no owner node")
+    }
+    self.set_source(
+      Some(
+        provide_collector_port(
+          layered_graph,
+          source_node,
+          PortType::Output,
+          @core.PortSide::East,
+        ),
+      ),
+    )
+  } else {
+    self.set_source(Some(old_target))
+  }
+
+  if adapt_ports &&
+    old_source.get_property_bool(internal_properties_output_collect) {
+    let target_node = match old_source.get_node() {
+      Some(node) => node
+      None => abort("collector target port has no owner node")
+    }
+    self.set_target(
+      Some(
+        provide_collector_port(
+          layered_graph,
+          target_node,
+          PortType::Input,
+          @core.PortSide::West,
+        ),
+      ),
+    )
+  } else {
+    self.set_target(Some(old_source))
+  }
+
+  for label in self.labels {
+    let label_placement = label.get_property_string(@core.edge_labels_placement)
+    if label_placement == "TAIL" {
+      label.set_property_string(@core.edge_labels_placement, "HEAD")
+    } else if label_placement == "HEAD" {
+      label.set_property_string(@core.edge_labels_placement, "TAIL")
+    }
+  }
+
+  self.set_property_bool(
+    internal_properties_reversed,
+    !self.get_property_bool(internal_properties_reversed),
+  )
+
+  let reversed_bend_points = @core.kvector_chain_reverse(self.bend_points)
+  self.bend_points.clear()
+  self.bend_points.add_all(reversed_bend_points.to_array())
+}
+
+///|
 pub fn LEdge::get_bend_points(self : LEdge) -> @core.KVectorChain {
   self.bend_points
 }

@@ -65,7 +65,10 @@ pub fn elk_graph_json_for_elk_graph(
 ///|
 fn parse_non_lenient_json(graph : String) -> Json {
   let parsed = try @core_json.parse(graph) catch {
-    _ => abort("JsonIOException")
+    _ => {
+      @core.layout_runtime_report_json_import("Failed to parse JSON input.")
+      Json::object({})
+    }
   } noraise {
     parsed => parsed
   }
@@ -390,7 +393,12 @@ fn parse_json_graph(graph : String, lenient : Bool) -> Json {
 fn ensure_json_object(value : Json) -> Map[String, Json] {
   match value {
     Object(obj) => obj
-    _ => abort("JsonImportException")
+    _ => {
+      @core.layout_runtime_report_json_import(
+        "Top-level element of the graph must be a json object.",
+      )
+      {}
+    }
   }
 }
 
@@ -430,9 +438,17 @@ fn required_json_id(json_obj : Map[String, Json]) -> String {
     Some(id_json) =>
       match json_id_to_string(id_json) {
         Some(id) => id
-        None => abort("JsonImportException")
+        None => {
+          @core.layout_runtime_report_json_import(
+            "Id must be a string or an integer.",
+          )
+          ""
+        }
       }
-    None => abort("JsonImportException")
+    None => {
+      @core.layout_runtime_report_json_import("Every element must have an id.")
+      ""
+    }
   }
 }
 
@@ -694,7 +710,10 @@ fn import_builder_graph_object(
       match builder.graph {
         Some(text) =>
           ensure_json_object(parse_json_graph(text, builder.lenient))
-        None => abort("JsonImportException")
+        None => {
+          @core.layout_runtime_report_json_import("Graph input is missing.")
+          {}
+        }
       }
   }
 }
@@ -703,6 +722,7 @@ fn import_builder_graph_object(
 pub fn ElkGraphJsonImportBuilder::to_elk(
   self : ElkGraphJsonImportBuilder,
 ) -> @graph.ElkNode {
+  @core.layout_runtime_clear_error()
   let json_graph = import_builder_graph_object(self)
   let importer = new_json_importer()
   let root = importer.transform(json_graph)

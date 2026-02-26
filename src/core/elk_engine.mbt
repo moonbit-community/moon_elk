@@ -162,18 +162,23 @@ fn normalize_algorithm(raw_algorithm : String) -> String? {
     "mrtree" | "elk.mrtree" | "org.eclipse.elk.mrtree" => Some("mrtree")
     "rectpacking" | "elk.rectpacking" | "org.eclipse.elk.rectpacking" =>
       Some("rectpacking")
-    "sporeOverlap" | "elk.sporeOverlap" | "org.eclipse.elk.sporeOverlap" |
-    "org.eclipse.elk.sporeoverlap" => Some("sporeOverlap")
-    "sporeCompaction" | "elk.sporeCompaction" | "org.eclipse.elk.sporeCompaction" |
-    "org.eclipse.elk.sporecompaction" => Some("sporeCompaction")
+    "sporeOverlap"
+    | "elk.sporeOverlap"
+    | "org.eclipse.elk.sporeOverlap"
+    | "org.eclipse.elk.sporeoverlap" => Some("sporeOverlap")
+    "sporeCompaction"
+    | "elk.sporeCompaction"
+    | "org.eclipse.elk.sporeCompaction"
+    | "org.eclipse.elk.sporecompaction" => Some("sporeCompaction")
     "fixed" | "elk.fixed" | "org.eclipse.elk.fixed" => Some("fixed")
     "box" | "elk.box" | "org.eclipse.elk.box" => Some("box")
     "random" | "elk.random" | "org.eclipse.elk.random" => Some("random")
     "vertiflex" | "elk.vertiflex" | "org.eclipse.elk.vertiflex" =>
       Some("vertiflex")
     "disco" | "elk.disco" | "org.eclipse.elk.disco" => Some("disco")
-    "topdownpacking" | "elk.topdownpacking" | "org.eclipse.elk.topdownpacking" =>
-      Some("topdownpacking")
+    "topdownpacking"
+    | "elk.topdownpacking"
+    | "org.eclipse.elk.topdownpacking" => Some("topdownpacking")
     "libavoid" | "elk.libavoid" | "org.eclipse.elk.libavoid" => Some("libavoid")
     "dot" | "elk.graphviz.dot" | "org.eclipse.elk.graphviz.dot" => Some("dot")
     "neato" | "elk.graphviz.neato" | "org.eclipse.elk.graphviz.neato" =>
@@ -239,8 +244,15 @@ fn add_logging(
 ///|
 fn is_known_unsupported_algorithm(algorithm : String) -> Bool {
   match algorithm {
-    "disco" | "topdownpacking" | "libavoid" | "dot" | "neato" | "fdp" | "sfdp" |
-    "twopi" | "circo" => true
+    "disco"
+    | "topdownpacking"
+    | "libavoid"
+    | "dot"
+    | "neato"
+    | "fdp"
+    | "sfdp"
+    | "twopi"
+    | "circo" => true
     _ => false
   }
 }
@@ -278,10 +290,14 @@ pub fn ElkEngine::layout(
       "' not found for Root Node root",
     )
   }
+  layout_runtime_clear_error()
   if !elk_engine_apply_delegate_if_registered(graph_obj, options) {
     raise invalid_graph_error(
       "org.eclipse.elk.core.UnsupportedConfigurationException: Unknown layouter id",
     )
+  }
+  if layout_runtime_take_error_message() is Some(layout_error) {
+    raise invalid_graph_error(layout_error)
   }
   if logging || measure_execution_time {
     add_logging(graph_obj, measure_execution_time)

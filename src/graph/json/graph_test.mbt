@@ -16,9 +16,14 @@ test "graph json graph must be object" {
 }
 
 ///|
-test "panic graph json graph must be object fail array" {
+test "graph json graph must be object fail array reports runtime error" {
   @graph.reset_graph_model_for_test()
   ignore(elk_graph_json_for_graph("[]").to_elk())
+  let error = @core.layout_runtime_take_error_message()
+  assert_eq(error is Some(_), true)
+  if error is Some(message) {
+    assert_eq(message.is_empty(), false)
+  }
 }
 
 ///|
@@ -60,10 +65,15 @@ test "graph json small graph" {
 }
 
 ///|
-test "panic graph json reject sloppy json if not lenient" {
+test "graph json reject sloppy json if not lenient reports runtime error" {
   @graph.reset_graph_model_for_test()
   let sloppy_json_graph = "{\n  // the root node\n  id: \"root\",\n  /* Now the graph */\n  \"children\": [ {\"id\": \"c\"}; {\"id\": \"c1\"} ],\n  'edges': [] // Endline comment\n}"
   ignore(elk_graph_json_for_graph(sloppy_json_graph).lenient(false).to_elk())
+  let error = @core.layout_runtime_take_error_message()
+  assert_eq(error is Some(_), true)
+  if error is Some(message) {
+    assert_eq(message.is_empty(), false)
+  }
 }
 
 ///|

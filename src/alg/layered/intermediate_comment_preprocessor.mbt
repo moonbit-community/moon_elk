@@ -13,17 +13,11 @@ fn comment_preprocessor_port_constraints_from_string(
 }
 
 ///|
-fn comment_preprocessor_reverse_edge(edge : LEdge) -> Unit {
-  let old_source = edge.get_source()
-  let old_target = edge.get_target()
-  edge.set_source(None)
-  edge.set_target(None)
-  edge.set_source(old_target)
-  edge.set_target(old_source)
-  edge.set_property_bool(
-    internal_properties_reversed,
-    !edge.get_property_bool(internal_properties_reversed),
-  )
+fn comment_preprocessor_reverse_edge(
+  edge : LEdge,
+  layered_graph : LGraph,
+) -> Unit {
+  edge.reverse(layered_graph, true)
 }
 
 ///|
@@ -291,7 +285,7 @@ fn comment_preprocessor_process(
       }
 
       for rev_edge in rev_edges {
-        comment_preprocessor_reverse_edge(rev_edge)
+        comment_preprocessor_reverse_edge(rev_edge, layered_graph)
       }
     }
 

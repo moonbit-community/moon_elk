@@ -52,13 +52,10 @@ pub fn StressLayoutProvider::layout(
       None => progress_monitor
     }
     force_provider.layout(layout_graph, force_monitor)
-  } else {
-    if !stress_option_bool_from_layout_options(
-        layout_graph,
-        stress_omit_node_micro_layout,
-      ) {
-      @common.node_micro_layout_for_graph(layout_graph).execute()
-    }
+  } else if !stress_option_bool_from_layout_options(
+      layout_graph, stress_omit_node_micro_layout,
+    ) {
+    @common.node_micro_layout_for_graph(layout_graph).execute()
   }
   let importer = new_elk_graph_importer()
   let graph = importer.import_graph(layout_graph)

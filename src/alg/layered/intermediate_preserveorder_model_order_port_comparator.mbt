@@ -152,6 +152,17 @@ fn model_order_port_edges_connected(port : LPort) -> Bool {
 }
 
 ///|
+fn model_order_port_require_max_model_order_nodes(graph : LGraph) -> Int {
+  let maximum = graph.get_property_int(
+    internal_properties_max_model_order_nodes,
+  )
+  if graph.get_parent_node() is Some(_) && maximum == 0 {
+    abort("missing required property: modelOrder.maximum")
+  }
+  maximum
+}
+
+///|
 pub struct ModelOrderPortComparator {
   target_node_model_order : Map[Int, Int]
   has_target_node_model_order : Bool
@@ -530,17 +541,13 @@ pub fn ModelOrderPortComparator::compare(
             target1,
             target2,
             self.graph,
-            self.graph.get_property_int(
-              internal_properties_max_model_order_nodes,
-            ),
+            model_order_port_require_max_model_order_nodes(self.graph),
           )
           let p2_mo = cm_group_model_order_calculate_model_order_or_group_model_order(
             target2,
             target1,
             self.graph,
-            self.graph.get_property_int(
-              internal_properties_max_model_order_nodes,
-            ),
+            model_order_port_require_max_model_order_nodes(self.graph),
           )
           if p1_mo > p2_mo {
             self.update_bigger_and_smaller_associations(p1, p2, reverse_order)

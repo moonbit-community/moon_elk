@@ -347,6 +347,8 @@ pub fn mrtree_shape_position(MrtreeShape) -> @core.KVector
 
 pub fn mrtree_shape_size(MrtreeShape) -> @core.KVector
 
+pub let mrtree_spacing_edge_node : @graph.IProperty[Double]
+
 pub let mrtree_spacing_node_node : @graph.IProperty[Double]
 
 pub let mrtree_tree_layout_phase_descriptor : @core.PhaseDescriptor[MrtreeTreeLayoutPhases]
@@ -387,7 +389,7 @@ pub fn mrtree_tree_util_get_root(Int) -> Int?
 
 pub fn mrtree_tree_util_get_subtree(Int) -> Array[Int]
 
-pub fn mrtree_tree_util_get_unique_long(Int, Int) -> Int
+pub fn mrtree_tree_util_get_unique_long(Int, Int) -> Int64
 
 pub fn mrtree_tree_util_is_cycle_inducing(Int, Int) -> Bool
 

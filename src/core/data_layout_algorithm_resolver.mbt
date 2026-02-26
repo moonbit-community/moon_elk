@@ -56,10 +56,16 @@ pub fn LayoutAlgorithmResolver::resolve_algorithm(
   if must_resolve(node) {
     if algorithm_id.trim().is_empty() {
       if !self.resolve_and_set_algorithm(self.default_layout_algorithm_id, node) {
-        abort("Unable to load default layout algorithm")
+        let message = "Unable to load default layout algorithm " +
+          self.default_layout_algorithm_id +
+          " for unconfigured node"
+        layout_runtime_report_unsupported_configuration(message)
+        return
       }
     } else {
-      abort("Layout algorithm not found")
+      let message = "Layout algorithm '" + algorithm_id + "' not found"
+      layout_runtime_report_unsupported_configuration(message)
+      return
     }
   }
 }

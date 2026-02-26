@@ -36,6 +36,9 @@ fn issue447_test_assert_close(
   context : String,
 ) -> Unit {
   if (actual - expected).abs() > epsilon {
+    println(
+      "Issue447 mismatch \{context}: expected=\{expected}, actual=\{actual}, epsilon=\{epsilon}",
+    )
     abort(
       "\{context}: expected=\{expected}, actual=\{actual}, epsilon=\{epsilon}",
     )

@@ -293,6 +293,24 @@ pub fn layout_meta_data_service_register_default_options() -> Unit {
   )
   layout_meta_data_service_register_option(
     new_layout_option_data(
+      "org.eclipse.elk.position",
+      name="Position",
+      group="",
+      option_type=StringType,
+      targets=[NodesTarget, PortsTarget, LabelsTarget],
+    ),
+  )
+  layout_meta_data_service_register_option(
+    new_layout_option_data(
+      "org.eclipse.elk.bendPoints",
+      name="Bend Points",
+      group="",
+      option_type=StringType,
+      targets=[EdgesTarget],
+    ),
+  )
+  layout_meta_data_service_register_option(
+    new_layout_option_data(
       alignment.get_id(),
       name="Alignment",
       group="alignment",

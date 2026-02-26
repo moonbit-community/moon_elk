@@ -82,3 +82,56 @@ test "layered layout provider sets layered @core.algorithm defaults and lays out
   assert_true(@graph.node_width(graph) > 0.0)
   assert_true(@graph.node_height(graph) > 0.0)
 }
+
+///|
+test "layered layout provider handles include_children forceNodeModelOrder on compound nodes" {
+  reset_graph_model_for_test()
+  let root = create_graph()
+  @graph.node_set_layout_option_string_by_id(
+    root,
+    layered_options_hierarchy_handling.get_id(),
+    "INCLUDE_CHILDREN",
+  )
+  let compound = @graph.create_node(Some(root))
+  @graph.node_set_identifier(compound, "compound")
+  @graph.node_set_bool_property(
+    compound, layered_options_crossing_minimization_force_node_model_order, true,
+  )
+  let left = @graph.create_node(Some(compound))
+  @graph.node_set_identifier(left, "left")
+  @graph.node_set_dimensions(left, 10.0, 10.0)
+  let right = @graph.create_node(Some(compound))
+  @graph.node_set_identifier(right, "right")
+  @graph.node_set_dimensions(right, 10.0, 10.0)
+  new_layered_layout_provider().layout(
+    root,
+    @core.new_null_elk_progress_monitor(),
+  )
+  assert_true(@graph.node_width(root) >= 0.0)
+  assert_true(@graph.node_height(root) >= 0.0)
+}
+
+///|
+test "layered layout provider allows forceNodeModelOrder on single-child compound" {
+  reset_graph_model_for_test()
+  let root = create_graph()
+  @graph.node_set_layout_option_string_by_id(
+    root,
+    layered_options_hierarchy_handling.get_id(),
+    "INCLUDE_CHILDREN",
+  )
+  let compound = @graph.create_node(Some(root))
+  @graph.node_set_identifier(compound, "compound")
+  @graph.node_set_bool_property(
+    compound, layered_options_crossing_minimization_force_node_model_order, true,
+  )
+  let only_child = @graph.create_node(Some(compound))
+  @graph.node_set_identifier(only_child, "only")
+  @graph.node_set_dimensions(only_child, 10.0, 10.0)
+  new_layered_layout_provider().layout(
+    root,
+    @core.new_null_elk_progress_monitor(),
+  )
+  assert_true(@graph.node_width(root) >= 0.0)
+  assert_true(@graph.node_height(root) >= 0.0)
+}

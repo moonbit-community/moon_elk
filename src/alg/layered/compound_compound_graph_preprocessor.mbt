@@ -601,7 +601,7 @@ fn compound_graph_preprocessor_process_inner_hierarchical_edge_segments(
           compound_graph_preprocessor_require_target_port(out_edge),
         )
 
-        if compound_graph_preprocessor_graph_contains_node(graph, target_node) {
+        if target_node.get_graph().get_handle() == graph.get_handle() {
           compound_graph_preprocessor_connect_child(
             graph,
             external_port,
@@ -649,7 +649,7 @@ fn compound_graph_preprocessor_process_inner_hierarchical_edge_segments(
           compound_graph_preprocessor_require_source_port(in_edge),
         )
 
-        if compound_graph_preprocessor_graph_contains_node(graph, source_node) {
+        if source_node.get_graph().get_handle() == graph.get_handle() {
           compound_graph_preprocessor_connect_child(
             graph,
             external_port,

@@ -17,17 +17,8 @@ fn breaking_point_processor_node_type_equals(
 }
 
 ///|
-fn breaking_point_processor_reverse_edge(edge : LEdge) -> Unit {
-  let old_source = edge.get_source()
-  let old_target = edge.get_target()
-  edge.set_source(None)
-  edge.set_target(None)
-  edge.set_source(old_target)
-  edge.set_target(old_source)
-  edge.set_property_bool(
-    internal_properties_reversed,
-    !edge.get_property_bool(internal_properties_reversed),
-  )
+fn breaking_point_processor_reverse_edge(edge : LEdge, graph : LGraph) -> Unit {
+  edge.reverse(graph, true)
 }
 
 ///|
@@ -470,7 +461,7 @@ fn breaking_point_processor_perform_wrapping(graph : LGraph) -> Unit {
       let reversed_nodes = breaking_point_processor_reverse_array(nodes_to_move)
       for node in reversed_nodes {
         for edge in node.get_incoming_edges().copy() {
-          breaking_point_processor_reverse_edge(edge)
+          breaking_point_processor_reverse_edge(edge, graph)
           graph.set_property_bool(internal_properties_cyclic, true)
 
           let dummy_edges = cutting_utils_insert_dummies(graph, edge, offset)

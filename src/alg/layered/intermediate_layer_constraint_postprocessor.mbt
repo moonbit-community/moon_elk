@@ -83,11 +83,12 @@ fn layer_constraint_postprocessor_throw_up_unless_no_incoming_edges(
     if !layer_constraint_postprocessor_node_type_is_label(
         source_node.get_type(),
       ) {
-      abort(
+      @core.layout_runtime_report_unsupported_configuration(
         "Node '" +
         node.to_string() +
         "' has its layer constraint set to FIRST, but has at least one incoming edge that  does not come from a FIRST_SEPARATE node. That must not happen.",
       )
+      return
     }
   }
 }
@@ -103,11 +104,12 @@ fn layer_constraint_postprocessor_throw_up_unless_no_outgoing_edges(
     if !layer_constraint_postprocessor_node_type_is_label(
         target_node.get_type(),
       ) {
-      abort(
+      @core.layout_runtime_report_unsupported_configuration(
         "Node '" +
         node.to_string() +
         "' has its layer constraint set to LAST, but has at least one outgoing edge that  does not go to a LAST_SEPARATE node. That must not happen.",
       )
+      return
     }
   }
 }
@@ -121,11 +123,20 @@ fn layer_constraint_postprocessor_move_first_and_last_nodes(
   last_label_layer : Layer,
 ) -> Unit {
   for layer in layered_graph.get_layers() {
+    if @core.layout_runtime_has_error() {
+      return
+    }
     let nodes = layer.get_nodes().copy()
     for node in nodes {
+      if @core.layout_runtime_has_error() {
+        return
+      }
       match layer_constraint_postprocessor_layer_constraint(node) {
         LayerConstraint::First => {
           layer_constraint_postprocessor_throw_up_unless_no_incoming_edges(node)
+          if @core.layout_runtime_has_error() {
+            return
+          }
           node.set_layer(Some(first_layer))
           layer_constraint_postprocessor_move_labels_to_label_layer(
             node, true, first_label_layer,
@@ -133,6 +144,9 @@ fn layer_constraint_postprocessor_move_first_and_last_nodes(
         }
         LayerConstraint::Last => {
           layer_constraint_postprocessor_throw_up_unless_no_outgoing_edges(node)
+          if @core.layout_runtime_has_error() {
+            return
+          }
           node.set_layer(Some(last_layer))
           layer_constraint_postprocessor_move_labels_to_label_layer(
             node, false, last_label_layer,
@@ -220,6 +234,10 @@ fn layer_constraint_postprocessor_process(
     layer_constraint_postprocessor_move_first_and_last_nodes(
       layered_graph, first_layer, last_layer, first_label_layer, last_label_layer,
     )
+    if @core.layout_runtime_has_error() {
+      monitor.done()
+      return
+    }
 
     if !first_label_layer.get_nodes().is_empty() {
       ignore(layers.insert(0, first_label_layer))
@@ -235,6 +253,10 @@ fn layer_constraint_postprocessor_process(
     layer_constraint_postprocessor_restore_hidden_nodes(
       layered_graph, first_separate_layer, last_separate_layer,
     )
+    if @core.layout_runtime_has_error() {
+      monitor.done()
+      return
+    }
 
     if !first_separate_layer.get_nodes().is_empty() {
       ignore(layers.insert(0, first_separate_layer))

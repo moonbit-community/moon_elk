@@ -39,11 +39,7 @@ fn cross_hierarchy_edge_resolve_external_port_origin(port : LPort) -> LPort {
     _ => return port
   }
 
-  let ports = node.get_ports()
-  if ports.is_empty() {
-    return port
-  }
-  match ports[0].get_property_l_port(internal_properties_origin_l_port) {
+  match node.get_property_l_port(internal_properties_origin_l_port) {
     Some(origin_port) => origin_port
     None => port
   }

@@ -79,7 +79,7 @@ test "graph json transfer layout" {
 }
 
 ///|
-test "panic graph json transfer layout fail when graph changed" {
+test "graph json transfer layout fail when graph changed reports runtime error" {
   @graph.reset_graph_model_for_test()
   let graph = transfer_sample_graph()
   let maybe_importer : @core.Maybe[JsonImporter] = @core.maybe_create()
@@ -88,6 +88,11 @@ test "panic graph json transfer layout fail when graph changed" {
     .to_elk()
   ignore(@graph.create_node(Some(root)))
   required_importer(maybe_importer).transfer_layout(root)
+  let error = @core.layout_runtime_take_error_message()
+  assert_eq(error is Some(_), true)
+  if error is Some(message) {
+    assert_eq(message.is_empty(), false)
+  }
 }
 
 ///|

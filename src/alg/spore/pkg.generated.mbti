@@ -103,7 +103,7 @@ pub enum SporeCompactionStrategy {
 
 pub struct SporeElkGraphImporter {
   mut graph : SporeGraph?
-  mut node_map : Array[SporeNodeEntry]
+  mut node_map : Map[@core.KVector, SporeNodeEntry]
   mut elk_graph : Int?
   mut spacing_node_node : Double
 }
@@ -113,7 +113,7 @@ pub fn SporeElkGraphImporter::update_graph(Self, SporeGraph) -> Unit
 
 pub struct SporeGraph {
   vertices : Array[@common.Node]
-  mut t_edges : Array[@common.TEdge]?
+  mut t_edges : @common.JavaTEdgeSet?
   tree_construction_strategy : SporeTreeConstructionStrategy
   mut tree : @common.Tree[@common.Node]?
   compaction_strategy : SporeCompactionStrategy

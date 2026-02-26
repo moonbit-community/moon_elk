@@ -341,9 +341,13 @@ fn hierarchical_port_orthogonal_set_north_south_dummy_coordinates(
     layered_graph.get_property_string(@core.port_constraints),
   )
   let graph_size = layered_graph.get_size()
-  let graph_width = graph_size.x
-  let north_y = 0.0 - layered_graph.get_offset().y
-  let south_y = graph_size.y - layered_graph.get_offset().y
+  let graph_padding = layered_graph.get_padding()
+  let graph_width = graph_size.x + graph_padding.left + graph_padding.right
+  let north_y = 0.0 - graph_padding.top - layered_graph.get_offset().y
+  let south_y = graph_size.y +
+    graph_padding.top +
+    graph_padding.bottom -
+    layered_graph.get_offset().y
 
   let northern_dummies = []
   let southern_dummies = []
@@ -362,12 +366,15 @@ fn hierarchical_port_orthogonal_set_north_south_dummy_coordinates(
         hierarchical_port_orthogonal_calculate_north_south_dummy_positions(
           dummy,
         )
-      @core.PortConstraints::FixedRatio =>
+      @core.PortConstraints::FixedRatio => {
         hierarchical_port_orthogonal_apply_north_south_dummy_ratio(
           dummy, graph_width,
         )
+        dummy.border_to_content_area_coordinates(true, false)
+      }
       @core.PortConstraints::FixedPos => {
         hierarchical_port_orthogonal_apply_north_south_dummy_position(dummy)
+        dummy.border_to_content_area_coordinates(true, false)
         if dummy.get_position().x + dummy.get_size().x / 2.0 > graph_size.x {
           graph_size.x = dummy.get_position().x + dummy.get_size().x / 2.0
         }
@@ -624,9 +631,10 @@ fn hierarchical_port_orthogonal_fix_coordinates_layer(
   constraints : @core.PortConstraints,
   graph : LGraph,
 ) -> Unit {
+  let padding = graph.get_padding()
   let offset = graph.get_offset()
-  let graph_actual_size_y = graph.get_size().y
-  let mut new_actual_graph_height = graph_actual_size_y
+  let graph_actual_size = graph.get_actual_size()
+  let mut new_actual_graph_height = graph_actual_size.y
 
   for node in layer.get_nodes() {
     if !hierarchical_port_orthogonal_node_type_is_external_port(node.get_type()) {
@@ -634,12 +642,15 @@ fn hierarchical_port_orthogonal_fix_coordinates_layer(
     }
 
     let side = node.get_property_port_side(internal_properties_ext_port_side)
+    let ext_port_size = node.get_property_kvector(
+      internal_properties_ext_port_size,
+    )
     let node_position = node.get_position()
 
     if hierarchical_port_orthogonal_side_is_east(side) {
-      node_position.x = graph.get_size().x - offset.x
+      node_position.x = graph.get_size().x + padding.right - offset.x
     } else if hierarchical_port_orthogonal_side_is_west(side) {
-      node_position.x = -offset.x
+      node_position.x = -offset.x - padding.left
     }
 
     let mut required_actual_graph_height = 0.0
@@ -652,16 +663,9 @@ fn hierarchical_port_orthogonal_fix_coordinates_layer(
         let ratio = node.get_property_double(
           internal_properties_port_ratio_or_position,
         )
-        node_position.y = graph_actual_size_y * ratio - anchor.y
-        let ext_port_size = node.get_property_kvector(
-          internal_properties_ext_port_size,
-        )
-        let ext_port_height = if ext_port_size.y > 0.0 {
-          ext_port_size.y
-        } else {
-          node.get_size().y
-        }
-        required_actual_graph_height = node_position.y + ext_port_height
+        node_position.y = graph_actual_size.y * ratio - anchor.y
+        required_actual_graph_height = node_position.y + ext_port_size.y
+        node.border_to_content_area_coordinates(false, true)
       } else if hierarchical_port_orthogonal_port_constraints_equals(
           constraints,
           @core.PortConstraints::FixedPos,
@@ -670,15 +674,8 @@ fn hierarchical_port_orthogonal_fix_coordinates_layer(
             internal_properties_port_ratio_or_position,
           ) -
           anchor.y
-        let ext_port_size = node.get_property_kvector(
-          internal_properties_ext_port_size,
-        )
-        let ext_port_height = if ext_port_size.y > 0.0 {
-          ext_port_size.y
-        } else {
-          node.get_size().y
-        }
-        required_actual_graph_height = node_position.y + ext_port_height
+        required_actual_graph_height = node_position.y + ext_port_size.y
+        node.border_to_content_area_coordinates(false, true)
       }
     }
 
@@ -687,7 +684,7 @@ fn hierarchical_port_orthogonal_fix_coordinates_layer(
     }
   }
 
-  graph.get_size().y += new_actual_graph_height - graph_actual_size_y
+  graph.get_size().y += new_actual_graph_height - graph_actual_size.y
 
   for node in layer.get_nodes() {
     if !hierarchical_port_orthogonal_node_type_is_external_port(node.get_type()) {
@@ -696,9 +693,9 @@ fn hierarchical_port_orthogonal_fix_coordinates_layer(
     let side = node.get_property_port_side(internal_properties_ext_port_side)
     let node_position = node.get_position()
     if hierarchical_port_orthogonal_side_is_north(side) {
-      node_position.y = -offset.y
+      node_position.y = -offset.y - padding.top
     } else if hierarchical_port_orthogonal_side_is_south(side) {
-      node_position.y = graph.get_size().y - offset.y
+      node_position.y = graph.get_size().y + padding.bottom - offset.y
     }
   }
 }

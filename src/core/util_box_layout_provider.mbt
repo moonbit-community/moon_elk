@@ -70,7 +70,9 @@ fn box_layout_provider_parse_padding(
 ) -> ElkPadding {
   let parsed = new_elk_padding()
   parsed.parse(
-    @graph.node_get_string_property(layout_node, box_layout_provider_padding_option),
+    @graph.node_get_string_property(
+      layout_node, box_layout_provider_padding_option,
+    ),
   )
   parsed
 }

@@ -27,6 +27,27 @@ fn plain_java_initialization_register_additional_algorithms() -> Unit {
 }
 
 ///|
+fn plain_java_initialization_enable_layered_features() -> Unit {
+  match layout_meta_data_service_get_algorithm_data("org.eclipse.elk.layered") {
+    Some(algorithm_data) =>
+      for
+        feature in [
+          @graph.GraphFeature::SelfLoops,
+          @graph.GraphFeature::InsideSelfLoops,
+          @graph.GraphFeature::MultiEdges,
+          @graph.GraphFeature::EdgeLabels,
+          @graph.GraphFeature::Ports,
+          @graph.GraphFeature::Compound,
+          @graph.GraphFeature::Clusters,
+          @graph.GraphFeature::Disconnected,
+        ] {
+        algorithm_data.add_supported_feature(feature)
+      }
+    None => ()
+  }
+}
+
+///|
 pub fn plain_java_initialization_initialize_plain_java_layout() -> Unit {
   if plain_java_initialization_initialized.val {
     return
@@ -37,6 +58,7 @@ pub fn plain_java_initialization_initialize_plain_java_layout() -> Unit {
     force_layout_meta_data_providers(),
   )
   plain_java_initialization_register_additional_algorithms()
+  plain_java_initialization_enable_layered_features()
   plain_java_initialization_initialized.val = true
 }
 

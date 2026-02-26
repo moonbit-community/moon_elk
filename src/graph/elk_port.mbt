@@ -133,6 +133,14 @@ pub fn port_set_layout_option_string_by_id(
 }
 
 ///|
+pub fn port_layout_option_string_entries(
+  port : ElkPort,
+) -> Array[(String, String)] {
+  checked_port(port)
+  port_store.val[port].layout_option_string_values.to_array()
+}
+
+///|
 pub fn port_layout_option_string_value(
   port : ElkPort,
   option_id : String,

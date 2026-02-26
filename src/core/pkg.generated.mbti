@@ -277,6 +277,18 @@ pub fn[P, G] layout_processor_configuration_create(PhaseDescriptor[P]) -> Layout
 
 pub fn[P, G] layout_processor_configuration_create_from(LayoutProcessorConfiguration[P, G]) -> LayoutProcessorConfiguration[P, G]
 
+pub fn layout_runtime_clear_error() -> Unit
+
+pub fn layout_runtime_has_error() -> Bool
+
+pub fn layout_runtime_report_json_import(String) -> Unit
+
+pub fn layout_runtime_report_unsupported_configuration(String) -> Unit
+
+pub fn layout_runtime_report_unsupported_graph(String) -> Unit
+
+pub fn layout_runtime_take_error_message() -> String?
+
 pub fn less_than(Double) -> ExclusiveUpperBound
 
 pub fn maxd(Array[Double]) -> Double
@@ -444,6 +456,12 @@ pub fn new_individual_spacings() -> IndividualSpacings
 pub fn new_individual_spacings_from(IndividualSpacings) -> IndividualSpacings
 
 pub fn[T] new_instance_pool(IFactory[T], limit? : Int) -> InstancePool[T]
+
+pub fn new_java_random() -> JavaRandom
+
+pub fn new_java_random_seeded(Int64) -> JavaRandom
+
+pub fn new_java_random_seeded_int(Int) -> JavaRandom
 
 pub fn new_kvector() -> KVector
 
@@ -1608,6 +1626,12 @@ pub fn[T] InstancePool::clear(Self[T]) -> Unit
 pub fn[T] InstancePool::fetch(Self[T]) -> T
 pub fn[T] InstancePool::release(Self[T], T) -> Unit
 
+pub struct JavaRandom {
+  mut seed : Int64
+}
+pub fn JavaRandom::double(Self) -> Double
+pub fn JavaRandom::int(Self, Int) -> Int
+
 pub(all) struct KVector {
   mut x : Double
   mut y : Double
@@ -1642,6 +1666,8 @@ pub fn KVector::to_degrees(Self) -> Double
 pub fn KVector::to_radians(Self) -> Double
 pub fn KVector::to_string(Self) -> String
 pub fn KVector::wiggle(Self, @random.Rand, Double) -> Unit
+pub impl Eq for KVector
+pub impl Hash for KVector
 
 pub(all) struct KVectorChain {
   vectors : Array[KVector]
@@ -1888,6 +1914,12 @@ pub fn[P, G] LayoutProcessorConfiguration::do_add(Self[P, G], Int, ILayoutProces
 pub fn[P, G] LayoutProcessorConfiguration::processors(Self[P, G], Int) -> Array[ILayoutProcessorFactory[P, G]]
 pub fn[P, G] LayoutProcessorConfiguration::processors_after(Self[P, G], P) -> Array[ILayoutProcessorFactory[P, G]]
 pub fn[P, G] LayoutProcessorConfiguration::processors_before(Self[P, G], P) -> Array[ILayoutProcessorFactory[P, G]]
+
+pub enum LayoutRuntimeSubError {
+  UnsupportedGraph(String)
+  UnsupportedConfiguration(String)
+  JsonImport(String)
+}
 
 pub(all) struct LoggedGraph {
   tag : String

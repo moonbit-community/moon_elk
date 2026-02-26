@@ -139,7 +139,7 @@ pub let priority : @graph.IProperty[Double] = @graph.new_property(
 ///|
 pub let node_size_options : @graph.IProperty[Array[String]] = @graph.new_property(
   "org.eclipse.elk.nodeSize.options",
-  [],
+  ["DEFAULT_MINIMUM_SIZE"],
 )
 
 ///|

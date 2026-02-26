@@ -176,8 +176,29 @@ fn BkThresholdStrategy::pick_edge(
     }
 
     has_edges = true
-
-    let other = self.get_other(edge, pp.free)
+    let source = match edge.get_source() {
+      Some(value) => value
+      None => continue
+    }
+    let target = match edge.get_target() {
+      Some(value) => value
+      None => continue
+    }
+    let source_node = match source.get_node() {
+      Some(value) => value
+      None => continue
+    }
+    let target_node = match target.get_node() {
+      Some(value) => value
+      None => continue
+    }
+    let other = if source_node.get_handle() == pp.free.get_handle() {
+      target_node
+    } else if target_node.get_handle() == pp.free.get_handle() {
+      source_node
+    } else {
+      continue
+    }
     let other_root = bal.require_root(other)
     if self.block_finished.contains(other_root.get_handle()) {
       pp.has_edges = true

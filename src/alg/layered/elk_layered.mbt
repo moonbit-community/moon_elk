@@ -878,13 +878,16 @@ fn ElkLayered::layout(
   }
 
   for processor in algorithm {
-    if monitor.is_canceled() {
+    if monitor.is_canceled() || @core.layout_runtime_has_error() {
       return
     }
 
     self.notify_processor_ready(lgraph, processor)
     processor.process(lgraph, monitor.sub_task(monitor_progress))
     self.notify_processor_finished(lgraph, processor)
+    if @core.layout_runtime_has_error() {
+      return
+    }
   }
 
   for layer in lgraph.get_layers() {
@@ -942,7 +945,7 @@ fn ElkLayered::hierarchical_layout(
       let algorithm = algorithms[i]
 
       while processor_indices[i] < algorithm.length() {
-        if monitor.is_canceled() {
+        if monitor.is_canceled() || @core.layout_runtime_has_error() {
           return
         }
 
@@ -955,6 +958,9 @@ fn ElkLayered::hierarchical_layout(
           self.notify_processor_ready(graph, processor)
           processor.process(graph, monitor.sub_task(1.0))
           self.notify_processor_finished(graph, processor)
+          if @core.layout_runtime_has_error() {
+            return
+          }
           continue
         }
 
@@ -962,6 +968,9 @@ fn ElkLayered::hierarchical_layout(
           self.notify_processor_ready(graph, processor)
           processor.process(graph, monitor.sub_task(1.0))
           self.notify_processor_finished(graph, processor)
+          if @core.layout_runtime_has_error() {
+            return
+          }
         }
 
         break
@@ -1020,7 +1029,15 @@ pub fn ElkLayered::do_layout(
         None => actual_monitor
       }
       self.layout(comp, comp_monitor)
+      if @core.layout_runtime_has_error() {
+        actual_monitor.done()
+        return
+      }
     }
+  }
+  if @core.layout_runtime_has_error() {
+    actual_monitor.done()
+    return
   }
 
   self.components_processor.combine(components, lgraph)
@@ -1040,12 +1057,20 @@ pub fn ElkLayered::do_compound_layout(
   self.notify_processor_ready(lgraph, self.compound_graph_preprocessor)
   self.compound_graph_preprocessor.process(lgraph, actual_monitor.sub_task(1.0))
   self.notify_processor_finished(lgraph, self.compound_graph_preprocessor)
+  if @core.layout_runtime_has_error() {
+    actual_monitor.done()
+    return
+  }
 
   let hierarchy_monitor = match actual_monitor.sub_task(1.0) {
     Some(sub_monitor) => sub_monitor
     None => actual_monitor
   }
   self.hierarchical_layout(lgraph, hierarchy_monitor)
+  if @core.layout_runtime_has_error() {
+    actual_monitor.done()
+    return
+  }
 
   self.notify_processor_ready(lgraph, self.compound_graph_postprocessor)
   self.compound_graph_postprocessor.process(
@@ -1053,6 +1078,10 @@ pub fn ElkLayered::do_compound_layout(
     actual_monitor.sub_task(1.0),
   )
   self.notify_processor_finished(lgraph, self.compound_graph_postprocessor)
+  if @core.layout_runtime_has_error() {
+    actual_monitor.done()
+    return
+  }
 
   actual_monitor.done()
 }

@@ -11,17 +11,8 @@ fn interactive_cycle_breaker_require_target_node(edge : LEdge) -> LNode {
 }
 
 ///|
-fn interactive_cycle_breaker_reverse_edge(edge : LEdge) -> Unit {
-  let old_source = edge.get_source()
-  let old_target = edge.get_target()
-  edge.set_source(None)
-  edge.set_target(None)
-  edge.set_source(old_target)
-  edge.set_target(old_source)
-  edge.set_property_bool(
-    internal_properties_reversed,
-    !edge.get_property_bool(internal_properties_reversed),
-  )
+fn interactive_cycle_breaker_reverse_edge(edge : LEdge, graph : LGraph) -> Unit {
+  edge.reverse(graph, true)
 }
 
 ///|
@@ -74,7 +65,7 @@ fn interactive_cycle_breaker_process(
   }
 
   for edge in rev_edges {
-    interactive_cycle_breaker_reverse_edge(edge)
+    interactive_cycle_breaker_reverse_edge(edge, layered_graph)
     layered_graph.set_property_bool(internal_properties_cyclic, true)
   }
 
@@ -86,7 +77,7 @@ fn interactive_cycle_breaker_process(
   }
 
   for edge in rev_edges {
-    interactive_cycle_breaker_reverse_edge(edge)
+    interactive_cycle_breaker_reverse_edge(edge, layered_graph)
     layered_graph.set_property_bool(internal_properties_cyclic, true)
   }
 

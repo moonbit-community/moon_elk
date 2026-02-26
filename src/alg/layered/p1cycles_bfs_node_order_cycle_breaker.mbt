@@ -10,17 +10,8 @@ priv struct BfsNodeOrderCycleBreakerState {
 }
 
 ///|
-fn bfs_node_order_reverse_edge(edge : LEdge) -> Unit {
-  let old_source = edge.get_source()
-  let old_target = edge.get_target()
-  edge.set_source(None)
-  edge.set_target(None)
-  edge.set_source(old_target)
-  edge.set_target(old_source)
-  edge.set_property_bool(
-    internal_properties_reversed,
-    !edge.get_property_bool(internal_properties_reversed),
-  )
+fn bfs_node_order_reverse_edge(edge : LEdge, graph : LGraph) -> Unit {
+  edge.reverse(graph, true)
 }
 
 ///|
@@ -243,7 +234,7 @@ fn bfs_node_order_process(
   }
 
   for edge in state.edges_to_be_reversed {
-    bfs_node_order_reverse_edge(edge)
+    bfs_node_order_reverse_edge(edge, graph)
     graph.set_property_bool(internal_properties_cyclic, true)
   }
 

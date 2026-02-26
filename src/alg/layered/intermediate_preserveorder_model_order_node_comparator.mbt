@@ -27,19 +27,13 @@ fn model_order_node_add_all_unique(
 }
 
 ///|
-fn model_order_node_associations_for(
+fn model_order_node_associations_get(
   associations : Map[Int, Array[Int]],
   node_handle : Int,
 ) -> Array[Int] {
   match associations.get(node_handle) {
     Some(values) => values
-    None => {
-      associations[node_handle] = []
-      match associations.get(node_handle) {
-        Some(values) => values
-        None => abort("association map entry initialization failed")
-      }
-    }
+    None => abort("missing association entry")
   }
 }
 
@@ -162,6 +156,17 @@ fn model_order_node_get_first_outgoing_target_port_of_node(
 }
 
 ///|
+fn model_order_node_require_max_model_order_nodes(graph : LGraph) -> Int {
+  let maximum = graph.get_property_int(
+    internal_properties_max_model_order_nodes,
+  )
+  if graph.get_parent_node() is Some(_) && maximum == 0 {
+    abort("missing required property: modelOrder.maximum")
+  }
+  maximum
+}
+
+///|
 pub struct ModelOrderNodeComparator {
   previous_layer : Array[LNode]
   graph : LGraph
@@ -238,19 +243,19 @@ fn ModelOrderNodeComparator::update_bigger_and_smaller_associations(
   let bigger_handle = lnode_internal_handle(bigger)
   let smaller_handle = lnode_internal_handle(smaller)
 
-  let bigger_node_bigger_than = model_order_node_associations_for(
+  let bigger_node_bigger_than = model_order_node_associations_get(
     self.bigger_than,
     bigger_handle,
   )
-  let smaller_node_bigger_than = model_order_node_associations_for(
+  let smaller_node_bigger_than = model_order_node_associations_get(
     self.bigger_than,
     smaller_handle,
   )
-  let bigger_node_smaller_than = model_order_node_associations_for(
+  let bigger_node_smaller_than = model_order_node_associations_get(
     self.smaller_than,
     bigger_handle,
   )
-  let smaller_node_smaller_than = model_order_node_associations_for(
+  let smaller_node_smaller_than = model_order_node_associations_get(
     self.smaller_than,
     smaller_handle,
   )
@@ -260,7 +265,7 @@ fn ModelOrderNodeComparator::update_bigger_and_smaller_associations(
 
   for very_small in smaller_node_bigger_than {
     model_order_node_add_unique(bigger_node_bigger_than, very_small)
-    let very_small_smaller_than = model_order_node_associations_for(
+    let very_small_smaller_than = model_order_node_associations_get(
       self.smaller_than,
       very_small,
     )
@@ -272,7 +277,7 @@ fn ModelOrderNodeComparator::update_bigger_and_smaller_associations(
 
   for very_big in bigger_node_smaller_than {
     model_order_node_add_unique(smaller_node_smaller_than, very_big)
-    let very_big_bigger_than = model_order_node_associations_for(
+    let very_big_bigger_than = model_order_node_associations_get(
       self.bigger_than,
       very_big,
     )
@@ -464,27 +469,49 @@ pub fn ModelOrderNodeComparator::compare(
   let n1_handle = lnode_internal_handle(n1)
   let n2_handle = lnode_internal_handle(n2)
 
-  let n1_bigger = model_order_node_associations_for(self.bigger_than, n1_handle)
-  if model_order_node_contains(n1_bigger, n2_handle) {
-    return 1
+  if self.bigger_than.get(n1_handle) is None {
+    self.bigger_than[n1_handle] = []
+  } else {
+    let n1_bigger = model_order_node_associations_get(
+      self.bigger_than,
+      n1_handle,
+    )
+    if model_order_node_contains(n1_bigger, n2_handle) {
+      return 1
+    }
   }
-  let n2_bigger = model_order_node_associations_for(self.bigger_than, n2_handle)
-  if model_order_node_contains(n2_bigger, n1_handle) {
-    return -1
+  if self.bigger_than.get(n2_handle) is None {
+    self.bigger_than[n2_handle] = []
+  } else {
+    let n2_bigger = model_order_node_associations_get(
+      self.bigger_than,
+      n2_handle,
+    )
+    if model_order_node_contains(n2_bigger, n1_handle) {
+      return -1
+    }
   }
-  let n1_smaller = model_order_node_associations_for(
-    self.smaller_than,
-    n1_handle,
-  )
-  if model_order_node_contains(n1_smaller, n2_handle) {
-    return -1
+  if self.smaller_than.get(n1_handle) is None {
+    self.smaller_than[n1_handle] = []
+  } else {
+    let n1_smaller = model_order_node_associations_get(
+      self.smaller_than,
+      n1_handle,
+    )
+    if model_order_node_contains(n1_smaller, n2_handle) {
+      return -1
+    }
   }
-  let n2_smaller = model_order_node_associations_for(
-    self.smaller_than,
-    n2_handle,
-  )
-  if model_order_node_contains(n2_smaller, n1_handle) {
-    return 1
+  if self.smaller_than.get(n2_handle) is None {
+    self.smaller_than[n2_handle] = []
+  } else {
+    let n2_bigger = model_order_node_associations_get(
+      self.bigger_than,
+      n2_handle,
+    )
+    if model_order_node_contains(n2_bigger, n1_handle) {
+      return 1
+    }
   }
 
   if model_order_node_strategy_is_prefer_edges(self.ordering_strategy) ||
@@ -589,13 +616,13 @@ pub fn ModelOrderNodeComparator::compare(
       n1,
       n2,
       self.graph,
-      self.graph.get_property_int(internal_properties_max_model_order_nodes),
+      model_order_node_require_max_model_order_nodes(self.graph),
     )
     let n2_model_order = cm_group_model_order_calculate_model_order_or_group_model_order(
       n2,
       n1,
       self.graph,
-      self.graph.get_property_int(internal_properties_max_model_order_nodes),
+      model_order_node_require_max_model_order_nodes(self.graph),
     )
     if n1_model_order > n2_model_order {
       self.update_bigger_and_smaller_associations(n1, n2)
