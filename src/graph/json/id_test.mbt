@@ -50,3 +50,12 @@ test "graph json id accepts int" {
   let graph = elk_graph_json_for_graph("{ id: 3 }").to_elk()
   assert_eq(@graph.node_identifier(graph), "3")
 }
+
+///|
+test "graph json id accepts empty string and still imports descendants" {
+  let graph = elk_graph_json_for_graph(
+    "{ id: '', children: [{ id: 'n1', width: 10, height: 10 }] }",
+  ).to_elk()
+  assert_eq(@graph.node_identifier(graph), "")
+  assert_eq(@graph.node_children(graph).length(), 1)
+}

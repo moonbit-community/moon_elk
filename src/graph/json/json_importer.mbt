@@ -477,9 +477,7 @@ fn importer_transform_port(
 ) -> Unit {
   let port = @graph.create_port(Some(parent))
   let port_id = required_json_id(json_port)
-  if port_id.is_empty() {
-    return
-  }
+  @graph.port_set_identifier(port, port_id)
   importer.port_id_map[port_id] = port
   importer.port_json_map[port] = json_port
   importer_transform_properties_port(json_port, port)
@@ -514,9 +512,6 @@ fn importer_transform_node(
 ) -> @graph.ElkNode {
   let node = @graph.create_node(parent)
   let id = required_json_id(json_node)
-  if id.is_empty() {
-    return node
-  }
   @graph.node_set_identifier(node, id)
   match json_value_as_string(json_node.get("id").unwrap_or(Json::string(id))) {
     Some(identifier) => @graph.node_set_identifier(node, identifier)
@@ -551,9 +546,6 @@ fn importer_transform_edge(
 ) -> @graph.ElkEdge {
   let edge = @graph.create_edge(Some(parent))
   let edge_id = required_json_id(json_edge)
-  if edge_id.is_empty() {
-    return edge
-  }
   @graph.edge_set_identifier(edge, edge_id)
   importer.edge_json_map[edge] = json_edge
   importer.edge_original_parent_map[edge] = parent

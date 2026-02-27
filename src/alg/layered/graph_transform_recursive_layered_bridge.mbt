@@ -1229,6 +1229,22 @@ fn recursive_layered_is_north_south_side(side : @core.PortSide) -> Bool {
 }
 
 ///|
+fn recursive_layered_is_north_south_port_for_direction(
+  side : @core.PortSide,
+  direction_value : String,
+) -> Bool {
+  if direction_value == "UP" || direction_value == "DOWN" {
+    match side {
+      @core.PortSide::East => true
+      @core.PortSide::West => true
+      _ => false
+    }
+  } else {
+    recursive_layered_is_north_south_side(side)
+  }
+}
+
+///|
 fn recursive_layered_ports_have_same_owner(left : LPort, right : LPort) -> Bool {
   match left.get_node() {
     Some(left_node) =>
@@ -2828,7 +2844,10 @@ fn recursive_layered_create_context(
         get_direction(layered_graph),
         explicit_anchor,
       )
-      if recursive_layered_is_north_south_side(lport.get_side()) {
+      if recursive_layered_is_north_south_port_for_direction(
+          lport.get_side(),
+          direction_value,
+        ) {
         recursive_layered_add_graph_property(
           layered_graph,
           GraphProperties::NorthSouthPorts,

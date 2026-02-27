@@ -126,3 +126,46 @@ test "recursive layered context accepts elk.randomSeed alias" {
 
   assert_eq(context.layered_graph.get_property_int(@core.random_seed), 42)
 }
+
+///|
+test "recursive layered context marks east-west fixed ports as north-south ports for DOWN direction" {
+  @graph.reset_graph_model_for_test()
+  let graph = @graph.create_graph()
+  @graph.node_set_string_property(graph, @core.direction, "DOWN")
+
+  let child = @graph.create_node(Some(graph))
+  @graph.node_set_dimensions(child, 120.0, 80.0)
+  @graph.node_set_layout_option_string_by_id(
+    child,
+    @core.port_constraints.get_id(),
+    "FIXED_POS",
+  )
+
+  let east = @graph.create_port(Some(child))
+  @graph.port_set_layout_option_string_by_id(
+    east,
+    @core.port_side.get_id(),
+    "EAST",
+  )
+  @graph.port_set_location(east, 0.0, 20.0)
+
+  let west = @graph.create_port(Some(child))
+  @graph.port_set_layout_option_string_by_id(
+    west,
+    @core.port_side.get_id(),
+    "WEST",
+  )
+  @graph.port_set_location(west, 0.0, 60.0)
+
+  let context = match recursive_layered_create_context(graph) {
+    Some(value) => value
+    None => fail("expected layered context")
+  }
+
+  assert_true(
+    recursive_layered_has_graph_property(
+      context.layered_graph,
+      GraphProperties::NorthSouthPorts,
+    ),
+  )
+}
