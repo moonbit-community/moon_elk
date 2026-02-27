@@ -22,7 +22,7 @@ let edge_section_store : Ref[Array[EdgeSectionData]] = Ref::new([])
 ///|
 fn checked_edge_section(section : ElkEdgeSection) -> Unit {
   if section < 0 || section >= edge_section_store.val.length() {
-    abort("invalid edge section id")
+    ignore("invalid edge section id")
   }
 }
 

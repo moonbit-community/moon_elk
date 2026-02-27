@@ -6,6 +6,27 @@ pub struct RectpackingAreaApproximation {
 }
 
 ///|
+pub suberror RectpackingWidthApproximationException {
+  RectpackingWidthApproximationException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] rectpacking_width_approximation_raise(
+  message : String,
+) -> T raise RectpackingWidthApproximationException {
+  raise RectpackingWidthApproximationException(message)
+}
+
+///|
+pub fn rectpacking_width_approximation_exception_message(
+  err : RectpackingWidthApproximationException,
+) -> String {
+  match err {
+    RectpackingWidthApproximationException(message) => message
+  }
+}
+
+///|
 pub fn new_rectpacking_area_approximation(
   aspect_ratio : Double,
   goal : RectpackingOptimizationGoal,
@@ -199,7 +220,7 @@ fn rectpacking_area_approximation_calc_values_for_opt(
   drawing : RectpackingDrawingData,
   placed_rects : Array[@graph.ElkNode],
   node_node_spacing : Double,
-) -> RectpackingDrawingData {
+) -> RectpackingDrawingData raise RectpackingWidthApproximationException {
   let mut x = 0.0
   let mut y = 0.0
   let drawing_width = drawing.drawing_width
@@ -258,7 +279,7 @@ fn rectpacking_area_approximation_calc_values_for_opt(
       width = @cmp.maximum(drawing_width, width_to_place)
       height = drawing_height + node_node_spacing + height_to_place
     }
-    _ => abort("Illegal placement option")
+    _ => rectpacking_width_approximation_raise("Illegal placement option")
   }
 
   new_rectpacking_drawing_data(
@@ -311,7 +332,7 @@ pub fn RectpackingAreaApproximation::approx_bounding_box(
   rectangles : Array[@graph.ElkNode],
   node_node_spacing : Double,
   padding : @core.Spacing,
-) -> RectpackingDrawingData {
+) -> RectpackingDrawingData raise RectpackingWidthApproximationException {
   let first_rect = rectangles[0]
   @graph.node_set_location(first_rect, 0.0, 0.0)
 

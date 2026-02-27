@@ -1,4 +1,26 @@
 ///|
+fn libavoid_server_input_or_abort(
+  server : LibavoidServer,
+) -> @layouter.GraphvizOutputStream {
+  try server.input() catch {
+    err => abort(libavoid_server_state_exception_message(err))
+  } noraise {
+    stream => stream
+  }
+}
+
+///|
+fn libavoid_server_read_output_data_or_abort(
+  server : LibavoidServer,
+) -> Map[String, String]? {
+  try server.read_output_data() catch {
+    err => abort(libavoid_server_state_exception_message(err))
+  } noraise {
+    output => output
+  }
+}
+
+///|
 test "LibavoidServerException stores message and cause" {
   let default_ex = new_libavoid_server_exception()
   inspect(default_ex.get_message(), content="")
@@ -23,12 +45,12 @@ test "LibavoidServer lifecycle supports initialize input cleanup and cancel" {
 
   server.initialize()
   inspect(server.is_running(), content="true")
-  let input = server.input()
+  let input = libavoid_server_input_or_abort(server)
   input.write(65)
   input.write(66)
   input.flush()
   inspect(server.get_input_bytes(), content="[65, 66]")
-  inspect(server.read_output_data(), content="Some({})")
+  inspect(libavoid_server_read_output_data_or_abort(server), content="Some({})")
 
   server.cleanup(libavoid_server_cleanup_normal())
   inspect(server.is_running(), content="true")

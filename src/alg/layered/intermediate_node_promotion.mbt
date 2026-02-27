@@ -1,8 +1,18 @@
 ///|
-fn node_promotion_layer_of(node : LNode) -> Layer {
+priv suberror NodePromotionException {
+  NodePromotionException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] node_promotion_raise(message : String) -> T raise NodePromotionException {
+  raise NodePromotionException(message)
+}
+
+///|
+fn node_promotion_layer_of(node : LNode) -> Layer raise NodePromotionException {
   match node.get_layer() {
     Some(layer) => layer
-    None => abort("node has no assigned layer")
+    None => node_promotion_raise("node has no assigned layer")
   }
 }
 
@@ -10,51 +20,59 @@ fn node_promotion_layer_of(node : LNode) -> Layer {
 fn node_promotion_require_bi_layer_key(
   bi_layer_map : BiLinkedHashMultiMap[Int],
   node : LNode,
-) -> Int {
+) -> Int raise NodePromotionException {
   match bi_layer_map.get_key(node.get_id()) {
     Some(layer_key) => layer_key
-    None => abort("node is not present in bi-layer map")
+    None => node_promotion_raise("node is not present in bi-layer map")
   }
 }
 
 ///|
-fn node_promotion_require_edge_source_node(edge : LEdge) -> LNode {
+fn node_promotion_require_edge_source_node(
+  edge : LEdge,
+) -> LNode raise NodePromotionException {
   let source = match edge.get_source() {
     Some(value) => value
-    None => abort("edge has no source port")
+    None => node_promotion_raise("edge has no source port")
   }
   match source.get_node() {
     Some(value) => value
-    None => abort("source port has no owner node")
+    None => node_promotion_raise("source port has no owner node")
   }
 }
 
 ///|
-fn node_promotion_require_edge_target_node(edge : LEdge) -> LNode {
+fn node_promotion_require_edge_target_node(
+  edge : LEdge,
+) -> LNode raise NodePromotionException {
   let target = match edge.get_target() {
     Some(value) => value
-    None => abort("edge has no target port")
+    None => node_promotion_raise("edge has no target port")
   }
   match target.get_node() {
     Some(value) => value
-    None => abort("target port has no owner node")
+    None => node_promotion_raise("target port has no owner node")
   }
 }
 
 ///|
-fn node_promotion_require_first_outgoing(node : LNode) -> LEdge {
+fn node_promotion_require_first_outgoing(
+  node : LNode,
+) -> LEdge raise NodePromotionException {
   let outgoing = node.get_outgoing_edges()
   if outgoing.is_empty() {
-    abort("node has no outgoing edges")
+    node_promotion_raise("node has no outgoing edges")
   }
   outgoing[0]
 }
 
 ///|
-fn node_promotion_require_first_incoming(node : LNode) -> LEdge {
+fn node_promotion_require_first_incoming(
+  node : LNode,
+) -> LEdge raise NodePromotionException {
   let incoming = node.get_incoming_edges()
   if incoming.is_empty() {
-    abort("node has no incoming edges")
+    node_promotion_raise("node has no incoming edges")
   }
   incoming[0]
 }
@@ -253,10 +271,10 @@ fn node_promotion_is_model_order_strategy(
 fn node_promotion_require_node_by_id(
   state : NodePromotionState,
   node_id : Int,
-) -> LNode {
+) -> LNode raise NodePromotionException {
   match state.nodes_by_id.get(node_id) {
     Some(node) => node
-    None => abort("node id not present in node map")
+    None => node_promotion_raise("node id not present in node map")
   }
 }
 
@@ -314,7 +332,7 @@ fn node_promotion_new_state(
 ///|
 fn node_promotion_precalculate_and_set_information(
   state : NodePromotionState,
-) -> Unit {
+) -> Unit raise NodePromotionException {
   state.node_size_affix = state.master_graph.get_property_double(
     @core.spacing_node_node,
   )
@@ -435,7 +453,7 @@ fn node_promotion_precalculate_and_set_information_model_order(
 fn node_promotion_promote_node(
   state : NodePromotionState,
   node : LNode,
-) -> NodePromotionResult {
+) -> NodePromotionResult raise NodePromotionException {
   let mut max_width_not_exceeded = true
   let mut dummy_diff = 0
   let mut node_layer_pos = state.layers[node.get_id()]
@@ -498,7 +516,7 @@ fn node_promotion_promote_node(
 fn node_promotion_promotion_magic(
   state : NodePromotionState,
   should_continue : (Int, Int) -> Bool,
-) -> Unit {
+) -> Unit raise NodePromotionException {
   let mut iteration_counter = 0
   let mut reduced_dummies = 0
 
@@ -549,7 +567,7 @@ fn node_promotion_promote_node_by_model_order(
   state : NodePromotionState,
   node : LNode,
   left_to_right : Bool,
-) -> Array[LNode] {
+) -> Array[LNode] raise NodePromotionException {
   let old_layer_id = node_promotion_require_bi_layer_key(
     state.bi_layer_map,
     node,
@@ -585,7 +603,7 @@ fn node_promotion_promote_node_by_model_order(
 fn node_promotion_model_order_node_promotion(
   state : NodePromotionState,
   left_to_right : Bool,
-) -> Unit {
+) -> Unit raise NodePromotionException {
   let mut something_changed = true
   while something_changed {
     something_changed = false
@@ -813,7 +831,7 @@ fn node_promotion_set_new_layering(state : NodePromotionState) -> Unit {
 ///|
 fn node_promotion_set_new_layering_model_order(
   state : NodePromotionState,
-) -> Unit {
+) -> Unit raise NodePromotionException {
   let layered_graph = state.master_graph
   let graph_layers = layered_graph.get_layers()
   graph_layers.clear()
@@ -860,78 +878,88 @@ fn node_promotion_process(
   }
   ignore(monitor.begin("Node promotion heuristic", 1.0))
 
-  let strategy = node_promotion_strategy_from_string(
-    layered_graph.get_property_string(
-      layered_options_layering_node_promotion_strategy,
-    ),
-  )
-  if node_promotion_strategy_is_none(strategy) {
-    monitor.done()
-    return
-  }
-
-  let state = node_promotion_new_state(layered_graph, strategy)
-  if node_promotion_is_model_order_strategy(strategy) {
-    node_promotion_precalculate_and_set_information_model_order(state)
-  } else {
-    node_promotion_precalculate_and_set_information(state)
-  }
-
-  let promote_until = layered_graph.get_property_int(
-    layered_options_layering_node_promotion_max_iterations,
-  )
-  let always_continue = (_reduced_dummies : Int, _iterations : Int) => true
-
-  match strategy {
-    NodePromotionStrategy::Nikolov =>
-      node_promotion_promotion_magic(state, always_continue)
-    NodePromotionStrategy::NikolovPixel =>
-      node_promotion_promotion_magic(state, always_continue)
-    NodePromotionStrategy::NikolovImproved => {
-      state.promotion_strategy = NodePromotionStrategy::NoBoundary
-      node_promotion_promotion_magic(state, always_continue)
-      let new_max_width = node_promotion_max_width(state.current_width)
-      if new_max_width > state.max_width {
-        state.promotion_strategy = NodePromotionStrategy::Nikolov
-        node_promotion_promotion_magic(state, always_continue)
-      }
+  try {
+    let strategy = node_promotion_strategy_from_string(
+      layered_graph.get_property_string(
+        layered_options_layering_node_promotion_strategy,
+      ),
+    )
+    if node_promotion_strategy_is_none(strategy) {
+      monitor.done()
+      return
     }
-    NodePromotionStrategy::NikolovImprovedPixel => {
-      state.promotion_strategy = NodePromotionStrategy::NoBoundary
-      node_promotion_promotion_magic(state, always_continue)
-      let new_max_width_pixel = node_promotion_max_width_pixel(
-        state.current_width_pixel,
+
+    let state = node_promotion_new_state(layered_graph, strategy)
+    if node_promotion_is_model_order_strategy(strategy) {
+      node_promotion_precalculate_and_set_information_model_order(state)
+    } else {
+      node_promotion_precalculate_and_set_information(state)
+    }
+
+    let promote_until = layered_graph.get_property_int(
+      layered_options_layering_node_promotion_max_iterations,
+    )
+    let always_continue = (_reduced_dummies : Int, _iterations : Int) => true
+
+    match strategy {
+      NodePromotionStrategy::Nikolov =>
+        node_promotion_promotion_magic(state, always_continue)
+      NodePromotionStrategy::NikolovPixel =>
+        node_promotion_promotion_magic(state, always_continue)
+      NodePromotionStrategy::NikolovImproved => {
+        state.promotion_strategy = NodePromotionStrategy::NoBoundary
+        node_promotion_promotion_magic(state, always_continue)
+        let new_max_width = node_promotion_max_width(state.current_width)
+        if new_max_width > state.max_width {
+          state.promotion_strategy = NodePromotionStrategy::Nikolov
+          node_promotion_promotion_magic(state, always_continue)
+        }
+      }
+      NodePromotionStrategy::NikolovImprovedPixel => {
+        state.promotion_strategy = NodePromotionStrategy::NoBoundary
+        node_promotion_promotion_magic(state, always_continue)
+        let new_max_width_pixel = node_promotion_max_width_pixel(
+          state.current_width_pixel,
+        )
+        if new_max_width_pixel > state.max_width_pixel {
+          state.promotion_strategy = NodePromotionStrategy::NikolovPixel
+          node_promotion_promotion_magic(state, always_continue)
+        }
+      }
+      NodePromotionStrategy::NodeCountPercentage => {
+        let promote_until_n = (state.layers.length() * promote_until + 99) / 100
+        node_promotion_promotion_magic(state, (
+          _reduced_dummies : Int,
+          iterations : Int,
+        ) => iterations < promote_until_n)
+      }
+      NodePromotionStrategy::DummyNodePercentage => {
+        let promote_until_d = (state.dummy_node_count * promote_until + 99) /
+          100
+        node_promotion_promotion_magic(state, (
+          reduced_dummies : Int,
+          _iterations : Int,
+        ) => reduced_dummies < promote_until_d)
+      }
+      NodePromotionStrategy::ModelOrderLeftToRight =>
+        node_promotion_model_order_node_promotion(state, true)
+      NodePromotionStrategy::ModelOrderRightToLeft =>
+        node_promotion_model_order_node_promotion(state, false)
+      _ => node_promotion_promotion_magic(state, always_continue)
+    }
+
+    if node_promotion_is_model_order_strategy(strategy) {
+      node_promotion_set_new_layering_model_order(state)
+    } else {
+      node_promotion_set_new_layering(state)
+    }
+  } catch {
+    NodePromotionException(message) =>
+      @core.layout_runtime_report_unsupported_configuration(
+        "java.lang.IllegalStateException: " + message,
       )
-      if new_max_width_pixel > state.max_width_pixel {
-        state.promotion_strategy = NodePromotionStrategy::NikolovPixel
-        node_promotion_promotion_magic(state, always_continue)
-      }
-    }
-    NodePromotionStrategy::NodeCountPercentage => {
-      let promote_until_n = (state.layers.length() * promote_until + 99) / 100
-      node_promotion_promotion_magic(state, (
-        _reduced_dummies : Int,
-        iterations : Int,
-      ) => iterations < promote_until_n)
-    }
-    NodePromotionStrategy::DummyNodePercentage => {
-      let promote_until_d = (state.dummy_node_count * promote_until + 99) / 100
-      node_promotion_promotion_magic(state, (
-        reduced_dummies : Int,
-        _iterations : Int,
-      ) => reduced_dummies < promote_until_d)
-    }
-    NodePromotionStrategy::ModelOrderLeftToRight =>
-      node_promotion_model_order_node_promotion(state, true)
-    NodePromotionStrategy::ModelOrderRightToLeft =>
-      node_promotion_model_order_node_promotion(state, false)
-    _ => node_promotion_promotion_magic(state, always_continue)
-  }
-
-  if node_promotion_is_model_order_strategy(strategy) {
-    node_promotion_set_new_layering_model_order(state)
-  } else {
-    node_promotion_set_new_layering(state)
+  } noraise {
+    _ => ()
   }
 
   monitor.done()

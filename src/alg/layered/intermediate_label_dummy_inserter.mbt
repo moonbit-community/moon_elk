@@ -1,4 +1,16 @@
 ///|
+priv suberror LabelDummyInserterException {
+  UnsupportedGraphException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] label_dummy_inserter_raise_unsupported_graph(
+  message : String,
+) -> T raise LabelDummyInserterException {
+  raise LabelDummyInserterException::UnsupportedGraphException(message)
+}
+
+///|
 fn label_dummy_inserter_parse_direction(value : String) -> @core.Direction {
   match value {
     "RIGHT" => @core.Direction::Rightward
@@ -10,31 +22,40 @@ fn label_dummy_inserter_parse_direction(value : String) -> @core.Direction {
 }
 
 ///|
-fn label_dummy_inserter_require_source(edge : LEdge) -> LPort {
+fn label_dummy_inserter_require_source(
+  edge : LEdge,
+) -> LPort raise LabelDummyInserterException {
   match edge.get_source() {
     Some(value) => value
-    None => abort("edge has no source")
+    None => label_dummy_inserter_raise_unsupported_graph("edge has no source")
   }
 }
 
 ///|
-fn label_dummy_inserter_require_target(edge : LEdge) -> LPort {
+fn label_dummy_inserter_require_target(
+  edge : LEdge,
+) -> LPort raise LabelDummyInserterException {
   match edge.get_target() {
     Some(value) => value
-    None => abort("edge has no target")
+    None => label_dummy_inserter_raise_unsupported_graph("edge has no target")
   }
 }
 
 ///|
-fn label_dummy_inserter_require_node(port : LPort) -> LNode {
+fn label_dummy_inserter_require_node(
+  port : LPort,
+) -> LNode raise LabelDummyInserterException {
   match port.get_node() {
     Some(value) => value
-    None => abort("port has no owner node")
+    None =>
+      label_dummy_inserter_raise_unsupported_graph("port has no owner node")
   }
 }
 
 ///|
-fn label_dummy_inserter_edge_needs_to_be_processed(edge : LEdge) -> Bool {
+fn label_dummy_inserter_edge_needs_to_be_processed(
+  edge : LEdge,
+) -> Bool raise LabelDummyInserterException {
   let source_node = label_dummy_inserter_require_node(
     label_dummy_inserter_require_source(edge),
   )
@@ -119,67 +140,77 @@ fn label_dummy_inserter_process(
     layered_graph.get_property_string(@core.direction),
   )
 
-  for node in layered_graph.get_layerless_nodes() {
-    for edge in node.get_outgoing_edges() {
-      if !label_dummy_inserter_edge_needs_to_be_processed(edge) {
-        continue
-      }
-
-      let thickness = label_dummy_inserter_retrieve_thickness(edge)
-      let represented_labels : Array[LLabel] = []
-      let dummy_node = label_dummy_inserter_create_label_dummy(
-        layered_graph, edge, thickness,
-      )
-      new_dummy_nodes.push(dummy_node)
-
-      let dummy_size = dummy_node.get_size()
-      let labels = edge.get_labels()
-      let mut label_index = 0
-      while label_index < labels.length() {
-        let label = labels[label_index]
-        if label.get_property_string(@core.edge_labels_placement) == "CENTER" {
-          if layout_direction.is_vertical() {
-            dummy_size.x = dummy_size.x +
-              label.get_size().x +
-              label_label_spacing
-            if label.get_size().y > dummy_size.y {
-              dummy_size.y = label.get_size().y
-            }
-          } else {
-            if label.get_size().x > dummy_size.x {
-              dummy_size.x = label.get_size().x
-            }
-            dummy_size.y = dummy_size.y +
-              label.get_size().y +
-              label_label_spacing
-          }
-
-          represented_labels.push(label)
-          ignore(labels.remove(label_index))
-        } else {
-          label_index = label_index + 1
+  try {
+    for node in layered_graph.get_layerless_nodes() {
+      for edge in node.get_outgoing_edges() {
+        if !label_dummy_inserter_edge_needs_to_be_processed(edge) {
+          continue
         }
-      }
 
-      if layout_direction.is_vertical() {
-        dummy_size.x = dummy_size.x - label_label_spacing
-        dummy_size.y = dummy_size.y + edge_label_spacing + thickness
-      } else {
-        dummy_size.y = dummy_size.y +
-          edge_label_spacing -
-          label_label_spacing +
-          thickness
-      }
+        let thickness = label_dummy_inserter_retrieve_thickness(edge)
+        let represented_labels : Array[LLabel] = []
+        let dummy_node = label_dummy_inserter_create_label_dummy(
+          layered_graph, edge, thickness,
+        )
+        new_dummy_nodes.push(dummy_node)
 
-      // LNode currently stores label arrays by copy, so write back after we populate it.
-      dummy_node.set_property_l_label_array(
-        internal_properties_represented_labels, represented_labels,
-      )
+        let dummy_size = dummy_node.get_size()
+        let labels = edge.get_labels()
+        let mut label_index = 0
+        while label_index < labels.length() {
+          let label = labels[label_index]
+          if label.get_property_string(@core.edge_labels_placement) == "CENTER" {
+            if layout_direction.is_vertical() {
+              dummy_size.x = dummy_size.x +
+                label.get_size().x +
+                label_label_spacing
+              if label.get_size().y > dummy_size.y {
+                dummy_size.y = label.get_size().y
+              }
+            } else {
+              if label.get_size().x > dummy_size.x {
+                dummy_size.x = label.get_size().x
+              }
+              dummy_size.y = dummy_size.y +
+                label.get_size().y +
+                label_label_spacing
+            }
+
+            represented_labels.push(label)
+            ignore(labels.remove(label_index))
+          } else {
+            label_index = label_index + 1
+          }
+        }
+
+        if layout_direction.is_vertical() {
+          dummy_size.x = dummy_size.x - label_label_spacing
+          dummy_size.y = dummy_size.y + edge_label_spacing + thickness
+        } else {
+          dummy_size.y = dummy_size.y +
+            edge_label_spacing -
+            label_label_spacing +
+            thickness
+        }
+
+        // LNode currently stores label arrays by copy, so write back after we populate it.
+        dummy_node.set_property_l_label_array(
+          internal_properties_represented_labels, represented_labels,
+        )
+      }
     }
-  }
 
-  for dummy_node in new_dummy_nodes {
-    layered_graph.get_layerless_nodes().push(dummy_node)
+    for dummy_node in new_dummy_nodes {
+      layered_graph.get_layerless_nodes().push(dummy_node)
+    }
+  } catch {
+    LabelDummyInserterException::UnsupportedGraphException(message) => {
+      @core.layout_runtime_report_unsupported_configuration(message)
+      monitor.done()
+      return
+    }
+  } noraise {
+    _ => ()
   }
 
   monitor.done()

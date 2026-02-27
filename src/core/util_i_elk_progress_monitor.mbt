@@ -11,6 +11,27 @@ let elk_progress_monitor_root_debug_folder_name = "logs"
 let elk_progress_monitor_debug_folder_counter_ref : Ref[Int] = Ref::new(0)
 
 ///|
+priv suberror ElkProgressMonitorException {
+  ElkProgressMonitorException(String)
+} derive(Show, ToJson)
+
+///|
+fn elk_progress_monitor_raise(
+  message : String,
+) -> Unit raise ElkProgressMonitorException {
+  raise ElkProgressMonitorException(message)
+}
+
+///|
+fn elk_progress_monitor_exception_message(
+  err : ElkProgressMonitorException,
+) -> String {
+  match err {
+    ElkProgressMonitorException(message) => message
+  }
+}
+
+///|
 fn elk_progress_monitor_next_debug_folder_counter() -> Int {
   let next = elk_progress_monitor_debug_folder_counter_ref.val + 1
   elk_progress_monitor_debug_folder_counter_ref.val = next
@@ -139,7 +160,15 @@ pub fn IElkProgressMonitor::begin(
     return false
   }
   if self.closed {
-    abort("The task is already done.")
+    try elk_progress_monitor_raise("The task is already done.") catch {
+      err =>
+        layout_runtime_report_unsupported_configuration(
+          elk_progress_monitor_exception_message(err),
+        )
+    } noraise {
+      _ => ()
+    }
+    return false
   }
   if self.running || !self.task_name.is_empty() {
     false
@@ -190,7 +219,15 @@ pub fn IElkProgressMonitor::done(self : IElkProgressMonitor) -> Unit {
     return
   }
   if !self.running && !self.closed {
-    abort("The task has not begun yet.")
+    try elk_progress_monitor_raise("The task has not begun yet.") catch {
+      err =>
+        layout_runtime_report_unsupported_configuration(
+          elk_progress_monitor_exception_message(err),
+        )
+    } noraise {
+      _ => ()
+    }
+    return
   }
   if !self.closed {
     if self.total_work > self.completed_work {

@@ -1,4 +1,16 @@
 ///|
+priv suberror InvertedPortProcessorException {
+  UnsupportedGraphException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] inverted_port_processor_raise_unsupported_graph(
+  message : String,
+) -> T raise InvertedPortProcessorException {
+  raise InvertedPortProcessorException::UnsupportedGraphException(message)
+}
+
+///|
 fn inverted_port_processor_port_constraints_from_string(
   value : String,
 ) -> @core.PortConstraints {
@@ -38,26 +50,35 @@ fn inverted_port_processor_move_head_labels(
 }
 
 ///|
-fn inverted_port_processor_require_source(edge : LEdge) -> LPort {
+fn inverted_port_processor_require_source(
+  edge : LEdge,
+) -> LPort raise InvertedPortProcessorException {
   match edge.get_source() {
     Some(value) => value
-    None => abort("edge has no source")
+    None =>
+      inverted_port_processor_raise_unsupported_graph("edge has no source")
   }
 }
 
 ///|
-fn inverted_port_processor_require_target(edge : LEdge) -> LPort {
+fn inverted_port_processor_require_target(
+  edge : LEdge,
+) -> LPort raise InvertedPortProcessorException {
   match edge.get_target() {
     Some(value) => value
-    None => abort("edge has no target")
+    None =>
+      inverted_port_processor_raise_unsupported_graph("edge has no target")
   }
 }
 
 ///|
-fn inverted_port_processor_require_node(port : LPort) -> LNode {
+fn inverted_port_processor_require_node(
+  port : LPort,
+) -> LNode raise InvertedPortProcessorException {
   match port.get_node() {
     Some(value) => value
-    None => abort("port has no owner node")
+    None =>
+      inverted_port_processor_raise_unsupported_graph("port has no owner node")
   }
 }
 
@@ -67,7 +88,7 @@ fn inverted_port_processor_set_long_edge_source_and_target(
   dummy_input_port : LPort,
   dummy_output_port : LPort,
   odd_port : LPort,
-) -> Unit {
+) -> Unit raise InvertedPortProcessorException {
   ignore(odd_port)
   let source_port = inverted_port_processor_require_source(
     dummy_input_port.get_incoming_edges()[0],
@@ -114,7 +135,7 @@ fn inverted_port_processor_create_east_port_side_dummies(
   eastward_port : LPort,
   edge : LEdge,
   layer_node_list : Array[LNode],
-) -> Unit {
+) -> Unit raise InvertedPortProcessorException {
   if lport_internal_handle(inverted_port_processor_require_target(edge)) !=
     lport_internal_handle(eastward_port) {
     return
@@ -165,7 +186,7 @@ fn inverted_port_processor_create_west_port_side_dummies(
   westward_port : LPort,
   edge : LEdge,
   layer_node_list : Array[LNode],
-) -> Unit {
+) -> Unit raise InvertedPortProcessorException {
   if lport_internal_handle(inverted_port_processor_require_source(edge)) !=
     lport_internal_handle(westward_port) {
     return
@@ -226,62 +247,72 @@ fn inverted_port_processor_process(
   let unassigned_nodes : Array[LNode] = []
   let mut current_layer : Layer? = None
 
-  for layer in layers {
-    match current_layer {
-      Some(previous_layer) => {
-        for node in unassigned_nodes {
-          node.set_layer(Some(previous_layer))
+  try {
+    for layer in layers {
+      match current_layer {
+        Some(previous_layer) => {
+          for node in unassigned_nodes {
+            node.set_layer(Some(previous_layer))
+          }
+          unassigned_nodes.clear()
         }
-        unassigned_nodes.clear()
+        None => ()
       }
-      None => ()
+      current_layer = Some(layer)
+
+      for node in layer.get_nodes().copy() {
+        match node.get_type() {
+          NodeType::Normal => ()
+          _ => continue
+        }
+
+        let constraints_value = if node.has_property_string(
+            @core.port_constraints,
+          ) {
+          node.get_property_string(@core.port_constraints)
+        } else {
+          @core.port_constraints.get_default()
+        }
+        let constraints = inverted_port_processor_port_constraints_from_string(
+          constraints_value,
+        )
+        if !constraints.is_side_fixed() {
+          continue
+        }
+
+        for
+          port in node.get_ports_by_type_and_side(
+            PortType::Input,
+            @core.PortSide::East,
+          ) {
+          for edge in port.get_incoming_edges().copy() {
+            inverted_port_processor_create_east_port_side_dummies(
+              layered_graph, port, edge, unassigned_nodes,
+            )
+          }
+        }
+
+        for
+          port in node.get_ports_by_type_and_side(
+            PortType::Output,
+            @core.PortSide::West,
+          ) {
+          for edge in port.get_outgoing_edges().copy() {
+            inverted_port_processor_create_west_port_side_dummies(
+              layered_graph, port, edge, unassigned_nodes,
+            )
+          }
+        }
+      }
     }
-    current_layer = Some(layer)
-
-    for node in layer.get_nodes().copy() {
-      match node.get_type() {
-        NodeType::Normal => ()
-        _ => continue
-      }
-
-      let constraints_value = if node.has_property_string(
-          @core.port_constraints,
-        ) {
-        node.get_property_string(@core.port_constraints)
-      } else {
-        @core.port_constraints.get_default()
-      }
-      let constraints = inverted_port_processor_port_constraints_from_string(
-        constraints_value,
-      )
-      if !constraints.is_side_fixed() {
-        continue
-      }
-
-      for
-        port in node.get_ports_by_type_and_side(
-          PortType::Input,
-          @core.PortSide::East,
-        ) {
-        for edge in port.get_incoming_edges().copy() {
-          inverted_port_processor_create_east_port_side_dummies(
-            layered_graph, port, edge, unassigned_nodes,
-          )
-        }
-      }
-
-      for
-        port in node.get_ports_by_type_and_side(
-          PortType::Output,
-          @core.PortSide::West,
-        ) {
-        for edge in port.get_outgoing_edges().copy() {
-          inverted_port_processor_create_west_port_side_dummies(
-            layered_graph, port, edge, unassigned_nodes,
-          )
-        }
-      }
+  } catch {
+    InvertedPortProcessorException::UnsupportedGraphException(message) => {
+      @core.layout_runtime_report_unsupported_configuration(message)
+      monitor.done()
+      return
     }
+  } noraise {
+    _ => ()
   }
 
   match current_layer {

@@ -1,4 +1,13 @@
 ///|
+fn network_simplex_test_create_edge_or_abort(builder : NEdgeBuilder) -> NEdge {
+  try builder.create() catch {
+    err => abort(err.to_string())
+  } noraise {
+    edge => edge
+  }
+}
+
+///|
 fn generate_random_graph(random : @random.Rand) -> NGraph {
   let graph = new_ngraph()
   let n = 4000
@@ -13,22 +22,24 @@ fn generate_random_graph(random : @random.Rand) -> NGraph {
       tgt = random.int(limit=n)
     }
     ignore(
-      nedge_of()
-      .delta(random.int(limit=50))
-      .weight(random.double() * 50.0)
-      .source(graph.nodes[src])
-      .target(graph.nodes[tgt])
-      .create(),
+      network_simplex_test_create_edge_or_abort(
+        nedge_of()
+        .delta(random.int(limit=50))
+        .weight(random.double() * 50.0)
+        .source(graph.nodes[src])
+        .target(graph.nodes[tgt]),
+      ),
     )
   }
   for i in 0..<(n - 1) {
     ignore(
-      nedge_of()
-      .delta(random.int(limit=50))
-      .weight(random.double() * 50.0)
-      .source(graph.nodes[i])
-      .target(graph.nodes[i + 1])
-      .create(),
+      network_simplex_test_create_edge_or_abort(
+        nedge_of()
+        .delta(random.int(limit=50))
+        .weight(random.double() * 50.0)
+        .source(graph.nodes[i])
+        .target(graph.nodes[i + 1]),
+      ),
     )
   }
   for node in graph.nodes {

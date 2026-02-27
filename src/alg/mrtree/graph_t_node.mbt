@@ -41,7 +41,9 @@ let mrtree_node_store : Ref[Array[MrtreeNodeData]] = Ref::new([])
 ///|
 fn checked_mrtree_node(node : MrtreeNode) -> Unit {
   if node < 0 || node >= mrtree_node_store.val.length() {
-    abort("invalid mrtree node id")
+    @core.layout_runtime_report_unsupported_configuration(
+      "invalid mrtree node id",
+    )
   }
 }
 

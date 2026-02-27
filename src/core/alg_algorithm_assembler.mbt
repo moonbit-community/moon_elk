@@ -1,4 +1,25 @@
 ///|
+priv suberror AlgorithmAssemblerException {
+  AlgorithmAssemblerException(String)
+} derive(Show, ToJson)
+
+///|
+fn algorithm_assembler_raise(
+  message : String,
+) -> Unit raise AlgorithmAssemblerException {
+  raise AlgorithmAssemblerException(message)
+}
+
+///|
+fn algorithm_assembler_exception_message(
+  err : AlgorithmAssemblerException,
+) -> String {
+  match err {
+    AlgorithmAssemblerException(message) => message
+  }
+}
+
+///|
 pub(all) struct AlgorithmAssembler[P, G] {
   mut enable_caching : Bool
   mut fail_on_missing_phase : Bool
@@ -25,7 +46,18 @@ pub fn[P, G] algorithm_assembler_create(
 ) -> AlgorithmAssembler[P, G] {
   let number_of_phases = phase_descriptor.size()
   if number_of_phases == 0 {
-    abort("There must be at least one phase in the phase enumeration.")
+    try
+      algorithm_assembler_raise(
+        "There must be at least one phase in the phase enumeration.",
+      )
+    catch {
+      err =>
+        layout_runtime_report_unsupported_configuration(
+          algorithm_assembler_exception_message(err),
+        )
+    } noraise {
+      _ => ()
+    }
   }
   {
     enable_caching: true,
@@ -128,9 +160,19 @@ pub fn[P, G] AlgorithmAssembler::build(
 ) -> Array[ILayoutProcessor[P, G]] {
   if self.fail_on_missing_phase &&
     self.count_configured_phases() < self.number_of_phases {
-    abort(
-      "Expected \{self.number_of_phases} phases to be configured; only found \{self.count_configured_phases()}",
-    )
+    try
+      algorithm_assembler_raise(
+        "Expected \{self.number_of_phases} phases to be configured; only found \{self.count_configured_phases()}",
+      )
+    catch {
+      err =>
+        layout_runtime_report_unsupported_configuration(
+          algorithm_assembler_exception_message(err),
+        )
+    } noraise {
+      _ => ()
+    }
+    return []
   }
   let phase_enum_constants = self.phase_descriptor.phases()
   let phase_implementations = []

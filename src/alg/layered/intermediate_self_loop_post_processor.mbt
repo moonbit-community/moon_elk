@@ -22,7 +22,12 @@ fn self_loop_post_processor_process_node(l_node : LNode) -> Unit {
   let sl_holder = match
     l_node.get_property_self_loop_holder(internal_properties_self_loop_holder) {
     Some(holder) => holder
-    None => abort("node missing SELF_LOOP_HOLDER property")
+    None => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "node missing SELF_LOOP_HOLDER property",
+      )
+      return
+    }
   }
 
   for sl_loop in sl_holder.get_sl_hyper_loops() {

@@ -409,6 +409,8 @@ pub fn dot_switch_target_statement(DotStatement) -> DotSwitchTarget
 
 pub fn dot_switch_target_subgraph(DotSubgraph) -> DotSwitchTarget
 
+pub fn graphviz_dot_activator_exception_message(GraphvizDotActivatorException) -> String
+
 pub fn graphviz_dot_activator_get_instance() -> GraphvizDotActivator?
 
 pub fn graphviz_dot_activator_reset_for_test() -> Unit
@@ -424,6 +426,8 @@ pub let graphviz_dot_default_language_name : String
 pub let graphviz_dot_default_serializer_class_name : String
 
 pub let graphviz_dot_epackage_value : String
+
+pub fn graphviz_dot_executable_extension_factory_exception_message(GraphvizDotExecutableExtensionFactoryException) -> String
 
 pub let graphviz_dot_executable_extension_factory_guicekey : String
 
@@ -487,9 +491,11 @@ pub fn graphviz_dot_standalone_setup_do_setup() -> GraphvizDotInjector
 
 pub let graphviz_dot_status_error : Int
 
+pub fn neato_model_default() -> NeatoModel
+
 pub fn neato_model_literal(NeatoModel) -> String
 
-pub fn neato_model_parse(String) -> NeatoModel
+pub fn neato_model_parse(String) -> NeatoModel raise NeatoModelException
 
 pub fn neato_model_to_string(NeatoModel) -> String
 
@@ -587,13 +593,44 @@ pub fn new_internal_graphviz_dot_lexer(String) -> InternalGraphvizDotLexer
 
 pub fn new_internal_graphviz_dot_parser(Array[GraphvizDotLexToken], grammar_access? : GraphvizDotGrammarAccess) -> InternalGraphvizDotParser
 
+pub fn overlap_mode_default() -> OverlapMode
+
 pub fn overlap_mode_literal(OverlapMode) -> String
 
-pub fn overlap_mode_parse(String) -> OverlapMode
+pub fn overlap_mode_parse(String) -> OverlapMode raise OverlapModeException
 
 pub fn overlap_mode_to_string(OverlapMode) -> String
 
 // Errors
+pub suberror DotExporterException {
+  DotExporterException(String)
+}
+pub impl Show for DotExporterException
+pub impl ToJson for DotExporterException
+
+pub suberror GraphvizDotActivatorException {
+  IllegalArgumentException(String)
+}
+pub impl Show for GraphvizDotActivatorException
+pub impl ToJson for GraphvizDotActivatorException
+
+pub suberror GraphvizDotExecutableExtensionFactoryException {
+  IllegalArgumentException(String)
+}
+pub impl Show for GraphvizDotExecutableExtensionFactoryException
+pub impl ToJson for GraphvizDotExecutableExtensionFactoryException
+
+pub(all) suberror NeatoModelException {
+  IllegalArgumentException(String)
+}
+pub impl Show for NeatoModelException
+pub impl ToJson for NeatoModelException
+
+pub(all) suberror OverlapModeException {
+  IllegalArgumentException(String)
+}
+pub impl Show for OverlapModeException
+pub impl ToJson for OverlapModeException
 
 // Types and methods
 pub struct AbstractGraphvizDotRuntimeModule {
@@ -962,11 +999,11 @@ pub struct GraphvizDotActivator {
   bundle : GraphvizDotBundle
 }
 pub fn GraphvizDotActivator::get_bundle(Self) -> GraphvizDotBundle
-pub fn GraphvizDotActivator::get_injector(Self, String) -> GraphvizDotInjector
-pub fn GraphvizDotActivator::get_runtime_module(Self, String) -> GraphvizDotRuntimeModule
+pub fn GraphvizDotActivator::get_injector(Self, String) -> GraphvizDotInjector raise GraphvizDotActivatorException
+pub fn GraphvizDotActivator::get_runtime_module(Self, String) -> GraphvizDotRuntimeModule raise GraphvizDotActivatorException
 pub fn GraphvizDotActivator::injector_count(Self) -> Int
 pub fn GraphvizDotActivator::register_bundle_class(Self, String) -> Unit
-pub fn GraphvizDotActivator::register_injector_provider(Self, String, String, () -> GraphvizDotObject) -> Unit
+pub fn GraphvizDotActivator::register_injector_provider(Self, String, String, () -> GraphvizDotObject) -> Unit raise GraphvizDotActivatorException
 pub fn GraphvizDotActivator::start(Self) -> Unit
 pub fn GraphvizDotActivator::stop(Self) -> Unit
 
@@ -1006,7 +1043,7 @@ pub struct GraphvizDotExecutableExtensionFactory {
   mut config : GraphvizDotConfigurationElement?
 }
 pub fn GraphvizDotExecutableExtensionFactory::create(Self) -> Result[GraphvizDotObject, GraphvizDotCoreException]
-pub fn GraphvizDotExecutableExtensionFactory::set_initialization_data(Self, GraphvizDotConfigurationElement?, String?, GraphvizDotInitializationData?) -> Unit
+pub fn GraphvizDotExecutableExtensionFactory::set_initialization_data(Self, GraphvizDotConfigurationElement?, String?, GraphvizDotInitializationData?) -> Unit raise GraphvizDotExecutableExtensionFactoryException
 
 pub struct GraphvizDotFormatter {
   grammar_access : GraphvizDotGrammarAccess

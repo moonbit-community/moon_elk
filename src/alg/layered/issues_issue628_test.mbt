@@ -55,7 +55,7 @@ fn issue628_test_build_graph() -> (
   let edge = create_edge(None)
   edge_add_source(edge, make_node_shape(l2_1))
   edge_add_target(edge, make_node_shape(l2_2))
-  update_containment(Some(edge))
+  layered_test_update_containment(Some(edge))
 
   (graph, l2_1, l2_2)
 }

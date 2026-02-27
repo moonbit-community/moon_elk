@@ -52,7 +52,12 @@ pub fn vertiflex_internal_reset() -> Unit {
 fn vertiflex_expect_outline(value : OutlineNode?) -> OutlineNode {
   match value {
     Some(outline) => outline
-    None => abort("VertiFlex internal outline is missing.")
+    None => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "VertiFlex internal outline is missing.",
+      )
+      new_outline_node(0.0, 0.0, None)
+    }
   }
 }
 
@@ -60,7 +65,12 @@ fn vertiflex_expect_outline(value : OutlineNode?) -> OutlineNode {
 fn vertiflex_expect_node(value : @graph.ElkNode?) -> @graph.ElkNode {
   match value {
     Some(node) => node
-    None => abort("VertiFlex internal root is missing.")
+    None => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "VertiFlex internal root is missing.",
+      )
+      @graph.create_node(None)
+    }
   }
 }
 
@@ -236,7 +246,19 @@ pub fn vertiflex_internal_child_of_edge(
 ) -> @graph.ElkNode {
   let targets = @graph.edge_targets(edge)
   if targets.is_empty() {
-    abort("VertiFlex expects every tree edge to have a target.")
+    @core.layout_runtime_report_unsupported_configuration(
+      "VertiFlex expects every tree edge to have a target.",
+    )
+    return @graph.create_node(None)
   }
-  @graph.connectable_shape_to_node(Some(targets[0]))
+  try @graph.connectable_shape_to_node(Some(targets[0])) catch {
+    _ => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "VertiFlex target shape is not attached to a node.",
+      )
+      @graph.create_node(None)
+    }
+  } noraise {
+    value => value
+  }
 }

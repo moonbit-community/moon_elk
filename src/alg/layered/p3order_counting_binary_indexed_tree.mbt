@@ -8,9 +8,6 @@ pub struct BinaryIndexedTree {
 
 ///|
 pub fn new_binary_indexed_tree(max_num : Int) -> BinaryIndexedTree {
-  if max_num < 0 {
-    abort("max_num must be non-negative")
-  }
   {
     binary_sums: Array::make(max_num + 1, 0),
     nums_per_index: Array::make(max_num, 0),
@@ -20,15 +17,7 @@ pub fn new_binary_indexed_tree(max_num : Int) -> BinaryIndexedTree {
 }
 
 ///|
-fn check_tree_index(index : Int, max_num : Int) -> Unit {
-  if index < 0 || index >= max_num {
-    abort("index out of bounds")
-  }
-}
-
-///|
 pub fn BinaryIndexedTree::add(self : BinaryIndexedTree, index : Int) -> Unit {
-  check_tree_index(index, self.max_num)
   self.current_size = self.current_size + 1
   self.nums_per_index[index] = self.nums_per_index[index] + 1
   let mut i = index + 1
@@ -40,9 +29,6 @@ pub fn BinaryIndexedTree::add(self : BinaryIndexedTree, index : Int) -> Unit {
 
 ///|
 pub fn BinaryIndexedTree::rank(self : BinaryIndexedTree, index : Int) -> Int {
-  if index < 0 || index > self.max_num {
-    abort("index out of bounds")
-  }
   let mut i = index
   let mut sum = 0
   while i > 0 {
@@ -62,7 +48,6 @@ pub fn BinaryIndexedTree::remove_all(
   self : BinaryIndexedTree,
   index : Int,
 ) -> Unit {
-  check_tree_index(index, self.max_num)
   let num_entries = self.nums_per_index[index]
   if num_entries == 0 {
     return

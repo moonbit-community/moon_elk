@@ -17,7 +17,7 @@ test "Issue562 inside self loops options do not fail layout" {
   let edge = create_edge(None)
   edge_add_source(edge, make_port_shape(source_port))
   edge_add_target(edge, make_port_shape(target_port))
-  update_containment(Some(edge))
+  layered_test_update_containment(Some(edge))
 
   @graph.node_set_bool_property(node, @core.inside_self_loops_activate, true)
   edge_set_layout_option_string_by_id(

@@ -2,6 +2,18 @@
 let north_south_port_preprocessor_use_new_approach : Bool = true
 
 ///|
+priv suberror NorthSouthPortPreprocessorException {
+  NorthSouthPortPreprocessorException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] north_south_port_preprocessor_raise(
+  message : String,
+) -> T raise NorthSouthPortPreprocessorException {
+  raise NorthSouthPortPreprocessorException(message)
+}
+
+///|
 fn north_south_port_preprocessor_parse_port_constraints(
   value : String,
 ) -> @core.PortConstraints {
@@ -101,34 +113,42 @@ fn north_south_port_preprocessor_lport_equals(
 }
 
 ///|
-fn north_south_port_preprocessor_require_source(edge : LEdge) -> LPort {
+fn north_south_port_preprocessor_require_source(
+  edge : LEdge,
+) -> LPort raise NorthSouthPortPreprocessorException {
   match edge.get_source() {
     Some(value) => value
-    None => abort("edge has no source")
+    None => north_south_port_preprocessor_raise("edge has no source")
   }
 }
 
 ///|
-fn north_south_port_preprocessor_require_target(edge : LEdge) -> LPort {
+fn north_south_port_preprocessor_require_target(
+  edge : LEdge,
+) -> LPort raise NorthSouthPortPreprocessorException {
   match edge.get_target() {
     Some(value) => value
-    None => abort("edge has no target")
+    None => north_south_port_preprocessor_raise("edge has no target")
   }
 }
 
 ///|
-fn north_south_port_preprocessor_require_node(port : LPort) -> LNode {
+fn north_south_port_preprocessor_require_node(
+  port : LPort,
+) -> LNode raise NorthSouthPortPreprocessorException {
   match port.get_node() {
     Some(value) => value
-    None => abort("port has no owner node")
+    None => north_south_port_preprocessor_raise("port has no owner node")
   }
 }
 
 ///|
-fn north_south_port_preprocessor_require_origin_port(port : LPort) -> LPort {
+fn north_south_port_preprocessor_require_origin_port(
+  port : LPort,
+) -> LPort raise NorthSouthPortPreprocessorException {
   match port.get_property_l_port(internal_properties_origin_l_port) {
     Some(value) => value
-    None => abort("dummy port has no origin port")
+    None => north_south_port_preprocessor_raise("dummy port has no origin port")
   }
 }
 
@@ -306,7 +326,7 @@ fn north_south_port_preprocessor_create_dummy_node(
   in_port : LPort?,
   out_port : LPort?,
   dummy_nodes : Array[LNode],
-) -> LNode {
+) -> LNode raise NorthSouthPortPreprocessorException {
   let dummy = new_l_node(graph=Some(layered_graph))
   dummy.set_type(NodeType::NorthSouthPort)
   dummy.set_property_string(@core.port_constraints, "FIXED_POS")
@@ -371,7 +391,7 @@ fn north_south_port_preprocessor_create_same_side_self_loop_dummy_node(
   layered_graph : LGraph,
   self_loop : LEdge,
   dummy_nodes : Array[LNode],
-) -> Unit {
+) -> Unit raise NorthSouthPortPreprocessorException {
   let dummy = new_l_node(graph=Some(layered_graph))
   dummy.set_type(NodeType::NorthSouthPort)
   dummy.set_property_string(@core.port_constraints, "FIXED_POS")
@@ -416,7 +436,7 @@ fn north_south_port_preprocessor_create_north_south_self_loop_dummy_nodes(
   north_dummy_nodes : Array[LNode],
   south_dummy_nodes : Array[LNode]?,
   port_side : @core.PortSide,
-) -> Unit {
+) -> Unit raise NorthSouthPortPreprocessorException {
   let source_port = north_south_port_preprocessor_require_source(self_loop)
   let target_port = north_south_port_preprocessor_require_target(self_loop)
 
@@ -468,7 +488,8 @@ fn north_south_port_preprocessor_create_north_south_self_loop_dummy_nodes(
   north_dummy_nodes.insert(0, north_dummy)
   match south_dummy_nodes {
     Some(value) => value.push(south_dummy)
-    None => abort("missing opposing side dummy list")
+    None =>
+      north_south_port_preprocessor_raise("missing opposing side dummy list")
   }
 
   north_dummy.set_property_int(internal_properties_crossing_hint, 1)
@@ -482,7 +503,7 @@ fn north_south_port_preprocessor_create_dummy_nodes(
   dummy_nodes : Array[LNode],
   opposing_side_dummy_nodes : Array[LNode]?,
   barycenter_associates : Array[LNode],
-) -> Unit {
+) -> Unit raise NorthSouthPortPreprocessorException {
   let in_ports : Array[LPort] = []
   let out_ports : Array[LPort] = []
   let in_out_ports : Array[LPort] = []
@@ -647,138 +668,149 @@ fn north_south_port_preprocessor_process(
   }
   ignore(monitor.begin("Odd port side processing", 1.0))
 
-  let north_dummy_nodes : Array[LNode] = []
-  let south_dummy_nodes : Array[LNode] = []
-  let ordering_strategy = north_south_port_preprocessor_parse_ordering_strategy(
-    layered_graph.get_property_string(
-      layered_options_consider_model_order_strategy,
-    ),
-  )
+  try {
+    let north_dummy_nodes : Array[LNode] = []
+    let south_dummy_nodes : Array[LNode] = []
+    let ordering_strategy = north_south_port_preprocessor_parse_ordering_strategy(
+      layered_graph.get_property_string(
+        layered_options_consider_model_order_strategy,
+      ),
+    )
 
-  for layer in layered_graph.get_layers() {
-    let mut pointer = -1
-    let node_array = layer.get_nodes().copy()
-    for node in node_array {
-      pointer = pointer + 1
+    for layer in layered_graph.get_layers() {
+      let mut pointer = -1
+      let node_array = layer.get_nodes().copy()
+      for node in node_array {
+        pointer = pointer + 1
 
-      let is_regular = node.get_type() is NodeType::Normal
-      let constraints = north_south_port_preprocessor_parse_port_constraints(
-        node.get_property_string(@core.port_constraints),
-      )
-      if !(is_regular && constraints.is_side_fixed()) {
-        continue
-      }
+        let is_regular = node.get_type() is NodeType::Normal
+        let constraints = north_south_port_preprocessor_parse_port_constraints(
+          node.get_property_string(@core.port_constraints),
+        )
+        if !(is_regular && constraints.is_side_fixed()) {
+          continue
+        }
 
-      if !constraints.is_order_fixed() &&
-        north_south_port_preprocessor_ordering_strategy_is_none(
-          ordering_strategy,
-        ) {
-        north_south_port_preprocessor_sort_port_list(node)
-      }
+        if !constraints.is_order_fixed() &&
+          north_south_port_preprocessor_ordering_strategy_is_none(
+            ordering_strategy,
+          ) {
+          north_south_port_preprocessor_sort_port_list(node)
+        }
 
-      node.set_property_l_node(
-        internal_properties_in_layer_layout_unit,
-        Some(node),
-      )
+        node.set_property_l_node(
+          internal_properties_in_layer_layout_unit,
+          Some(node),
+        )
 
-      north_dummy_nodes.clear()
-      south_dummy_nodes.clear()
-      let barycenter_associates : Array[LNode] = []
+        north_dummy_nodes.clear()
+        south_dummy_nodes.clear()
+        let barycenter_associates : Array[LNode] = []
 
-      let mut north_ports = node.get_ports_by_side(@core.PortSide::North)
-      if !north_south_port_preprocessor_ordering_strategy_is_none(
-          ordering_strategy,
-        ) {
-        north_ports = north_south_port_preprocessor_model_order_north_south_input_reversing(
+        let mut north_ports = node.get_ports_by_side(@core.PortSide::North)
+        if !north_south_port_preprocessor_ordering_strategy_is_none(
+            ordering_strategy,
+          ) {
+          north_ports = north_south_port_preprocessor_model_order_north_south_input_reversing(
+            north_ports,
+          )
+        }
+
+        north_south_port_preprocessor_create_dummy_nodes(
+          layered_graph,
           north_ports,
-        )
-      }
-
-      north_south_port_preprocessor_create_dummy_nodes(
-        layered_graph,
-        north_ports,
-        north_dummy_nodes,
-        Some(south_dummy_nodes),
-        barycenter_associates,
-      )
-
-      let insert_point = pointer
-      let mut successor = node
-      for dummy in north_dummy_nodes {
-        north_south_port_preprocessor_insert_node_at(layer, dummy, insert_point)
-        pointer = pointer + 1
-
-        dummy.set_property_l_node(
-          internal_properties_in_layer_layout_unit,
-          Some(node),
+          north_dummy_nodes,
+          Some(south_dummy_nodes),
+          barycenter_associates,
         )
 
-        let origin_port = north_south_port_preprocessor_require_origin_port(
-          dummy.get_ports()[0],
-        )
-        if !origin_port.get_property_bool(
-            layered_options_allow_non_flow_ports_to_switch_sides,
+        let insert_point = pointer
+        let mut successor = node
+        for dummy in north_dummy_nodes {
+          north_south_port_preprocessor_insert_node_at(
+            layer, dummy, insert_point,
+          )
+          pointer = pointer + 1
+
+          dummy.set_property_l_node(
+            internal_properties_in_layer_layout_unit,
+            Some(node),
+          )
+
+          let origin_port = north_south_port_preprocessor_require_origin_port(
+            dummy.get_ports()[0],
+          )
+          if !origin_port.get_property_bool(
+              layered_options_allow_non_flow_ports_to_switch_sides,
+            ) {
+            north_south_port_preprocessor_add_successor(dummy, successor)
+          }
+
+          if !north_south_port_preprocessor_use_new_approach {
+            successor = dummy
+          }
+        }
+
+        let south_ports : Array[LPort] = []
+        for port in node.get_ports_by_side(@core.PortSide::South) {
+          south_ports.insert(0, port)
+        }
+        let south_ports = if north_south_port_preprocessor_ordering_strategy_is_none(
+            ordering_strategy,
           ) {
-          north_south_port_preprocessor_add_successor(dummy, successor)
+          south_ports
+        } else {
+          north_south_port_preprocessor_model_order_north_south_input_reversing(
+            south_ports,
+          )
         }
 
-        if !north_south_port_preprocessor_use_new_approach {
-          successor = dummy
-        }
-      }
-
-      let south_ports : Array[LPort] = []
-      for port in node.get_ports_by_side(@core.PortSide::South) {
-        south_ports.insert(0, port)
-      }
-      let south_ports = if north_south_port_preprocessor_ordering_strategy_is_none(
-          ordering_strategy,
-        ) {
-        south_ports
-      } else {
-        north_south_port_preprocessor_model_order_north_south_input_reversing(
+        north_south_port_preprocessor_create_dummy_nodes(
+          layered_graph,
           south_ports,
-        )
-      }
-
-      north_south_port_preprocessor_create_dummy_nodes(
-        layered_graph,
-        south_ports,
-        south_dummy_nodes,
-        None,
-        barycenter_associates,
-      )
-
-      let mut predecessor = node
-      for dummy in south_dummy_nodes {
-        pointer = pointer + 1
-        north_south_port_preprocessor_insert_node_at(layer, dummy, pointer)
-
-        dummy.set_property_l_node(
-          internal_properties_in_layer_layout_unit,
-          Some(node),
+          south_dummy_nodes,
+          None,
+          barycenter_associates,
         )
 
-        let origin_port = north_south_port_preprocessor_require_origin_port(
-          dummy.get_ports()[0],
-        )
-        if !origin_port.get_property_bool(
-            layered_options_allow_non_flow_ports_to_switch_sides,
-          ) {
-          north_south_port_preprocessor_add_successor(predecessor, dummy)
+        let mut predecessor = node
+        for dummy in south_dummy_nodes {
+          pointer = pointer + 1
+          north_south_port_preprocessor_insert_node_at(layer, dummy, pointer)
+
+          dummy.set_property_l_node(
+            internal_properties_in_layer_layout_unit,
+            Some(node),
+          )
+
+          let origin_port = north_south_port_preprocessor_require_origin_port(
+            dummy.get_ports()[0],
+          )
+          if !origin_port.get_property_bool(
+              layered_options_allow_non_flow_ports_to_switch_sides,
+            ) {
+            north_south_port_preprocessor_add_successor(predecessor, dummy)
+          }
+
+          if !north_south_port_preprocessor_use_new_approach {
+            predecessor = dummy
+          }
         }
 
-        if !north_south_port_preprocessor_use_new_approach {
-          predecessor = dummy
+        if !barycenter_associates.is_empty() {
+          node.set_property_l_node_array(
+            internal_properties_barycenter_associates, barycenter_associates,
+          )
         }
-      }
-
-      if !barycenter_associates.is_empty() {
-        node.set_property_l_node_array(
-          internal_properties_barycenter_associates, barycenter_associates,
-        )
       }
     }
+  } catch {
+    NorthSouthPortPreprocessorException(message) =>
+      @core.layout_runtime_report_unsupported_configuration(
+        "java.lang.IllegalStateException: " + message,
+      )
+  } noraise {
+    _ => ()
   }
 
   monitor.done()

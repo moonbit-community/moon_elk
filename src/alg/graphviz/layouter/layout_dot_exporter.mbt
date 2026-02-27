@@ -153,14 +153,42 @@ fn layout_dot_exporter_edge_option_double(
 }
 
 ///|
+fn layout_dot_exporter_parse_neato_model_or_abort(
+  value : String,
+) -> @dot.NeatoModel {
+  try @dot.neato_model_parse(value) catch {
+    @dot.NeatoModelException::IllegalArgumentException(message) => {
+      @core.layout_runtime_report_unsupported_configuration(message)
+      @dot.neato_model_default()
+    }
+  } noraise {
+    model => model
+  }
+}
+
+///|
 fn layout_dot_exporter_parse_neato_model(value : String) -> @dot.NeatoModel {
   let normalized = value.trim().to_string().to_upper()
   if normalized == "CIRCUIT" ||
     normalized == "SUBSET" ||
     normalized == "SHORTPATH" {
-    @dot.neato_model_parse(normalized)
+    layout_dot_exporter_parse_neato_model_or_abort(normalized)
   } else {
-    @dot.neato_model_parse("SHORTPATH")
+    layout_dot_exporter_parse_neato_model_or_abort("SHORTPATH")
+  }
+}
+
+///|
+fn layout_dot_exporter_parse_overlap_mode_or_abort(
+  value : String,
+) -> @dot.OverlapMode {
+  try @dot.overlap_mode_parse(value) catch {
+    @dot.OverlapModeException::IllegalArgumentException(message) => {
+      @core.layout_runtime_report_unsupported_configuration(message)
+      @dot.overlap_mode_default()
+    }
+  } noraise {
+    mode => mode
   }
 }
 
@@ -173,9 +201,9 @@ fn layout_dot_exporter_parse_overlap_mode(value : String) -> @dot.OverlapMode {
     normalized == "SCALEXY" ||
     normalized == "COMPRESS" ||
     normalized == "PRISM" {
-    @dot.overlap_mode_parse(normalized)
+    layout_dot_exporter_parse_overlap_mode_or_abort(normalized)
   } else {
-    @dot.overlap_mode_parse("PRISM")
+    layout_dot_exporter_parse_overlap_mode_or_abort("PRISM")
   }
 }
 

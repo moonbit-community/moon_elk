@@ -161,6 +161,8 @@ pub fn rectpacking_whitespace_elimination_strategy_from_string(String) -> Rectpa
 
 pub fn rectpacking_whitespace_elimination_strategy_phase_factory(RectpackingWhiteSpaceEliminationStrategy) -> @core.ILayoutProcessorFactory[RectPackingLayoutPhases, Int]
 
+pub fn rectpacking_width_approximation_exception_message(RectpackingWidthApproximationException) -> String
+
 pub let rectpacking_width_approximation_last_place_shift : @graph.IProperty[Bool]
 
 pub let rectpacking_width_approximation_optimization_goal : @graph.IProperty[String]
@@ -174,6 +176,11 @@ pub fn rectpacking_width_approximation_strategy_phase_factory(RectpackingWidthAp
 pub let rectpacking_width_approximation_target_width : @graph.IProperty[Double]
 
 // Errors
+pub suberror RectpackingWidthApproximationException {
+  RectpackingWidthApproximationException(String)
+}
+pub impl Show for RectpackingWidthApproximationException
+pub impl ToJson for RectpackingWidthApproximationException
 
 // Types and methods
 pub struct Block {
@@ -281,7 +288,7 @@ pub struct RectpackingAreaApproximation {
   goal : RectpackingOptimizationGoal
   last_place_shift : Bool
 }
-pub fn RectpackingAreaApproximation::approx_bounding_box(Self, Array[Int], Double, @core.Spacing) -> RectpackingDrawingData
+pub fn RectpackingAreaApproximation::approx_bounding_box(Self, Array[Int], Double, @core.Spacing) -> RectpackingDrawingData raise RectpackingWidthApproximationException
 
 pub struct RectpackingDrawingData {
   mut scale_measure : Double

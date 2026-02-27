@@ -95,7 +95,9 @@ fn self_loop_preprocessor_hide_ports(sl_holder : SelfLoopHolder) -> Unit {
     sl_holder.set_ports_hidden(true)
 
     if l_port.get_property_l_node(internal_properties_port_dummy) is Some(_) {
-      abort("self loop preprocessor should not encounter PORT_DUMMY here")
+      @core.layout_runtime_report_unsupported_configuration(
+        "self loop preprocessor should not encounter PORT_DUMMY here",
+      )
     }
   }
 }
@@ -116,7 +118,14 @@ fn self_loop_pre_processor_process(
       continue
     }
 
-    let sl_holder = self_loop_holder_install(l_node)
+    let sl_holder = self_loop_holder_install(l_node) catch {
+      error => {
+        @core.layout_runtime_report_unsupported_configuration(
+          self_loop_holder_exception_message(error),
+        )
+        continue
+      }
+    }
     self_loop_preprocessor_hide_self_loops(sl_holder)
     self_loop_preprocessor_hide_ports(sl_holder)
   }

@@ -21,9 +21,21 @@ fn create_elk_graph() -> @graph.ElkNode {
 }
 
 ///|
+fn force_import_graph_or_abort(
+  importer : ElkGraphImporter,
+  graph : @graph.ElkNode,
+) -> FGraph {
+  try importer.import_graph(graph) catch {
+    err => abort(force_import_exception_message(err))
+  } noraise {
+    imported => imported
+  }
+}
+
+///|
 fn create_simple_graph() -> FGraph {
   let importer = new_elk_graph_importer()
-  importer.import_graph(create_elk_graph())
+  force_import_graph_or_abort(importer, create_elk_graph())
 }
 
 ///|
@@ -48,7 +60,7 @@ fn create_two_components_graph() -> FGraph {
   let g2l2 = @graph.create_label(Some(make_edge_label_parent(g2e2)))
   @graph.label_set_text(g2l2, "g2-e2")
   let importer = new_elk_graph_importer()
-  importer.import_graph(graph)
+  force_import_graph_or_abort(importer, graph)
 }
 
 ///|
@@ -129,7 +141,7 @@ test "ElkGraphImporter applyLayout resizes parent and sets child area" {
   let node = @graph.create_node(Some(graph))
   @graph.node_set_dimensions(node, 10.0, 10.0)
   let importer = new_elk_graph_importer()
-  let force_graph = importer.import_graph(graph)
+  let force_graph = force_import_graph_or_abort(importer, graph)
   importer.apply_layout(force_graph)
   assert_eq(@graph.node_width(graph), 110.0)
   assert_eq(@graph.node_height(graph), 110.0)
@@ -153,7 +165,7 @@ test "ElkGraphImporter applyLayout respects fixed graph size" {
   let node = @graph.create_node(Some(graph))
   @graph.node_set_dimensions(node, 10.0, 10.0)
   let importer = new_elk_graph_importer()
-  let force_graph = importer.import_graph(graph)
+  let force_graph = force_import_graph_or_abort(importer, graph)
   importer.apply_layout(force_graph)
   assert_eq(@graph.node_width(graph), 37.0)
   assert_eq(@graph.node_height(graph), 41.0)
@@ -265,7 +277,7 @@ test "ElkGraphImporter importGraph copies graph and element options" {
     "true",
   )
   let importer = new_elk_graph_importer()
-  let force_graph = importer.import_graph(graph)
+  let force_graph = force_import_graph_or_abort(importer, graph)
   ignore(force_graph.get_model_property(force_model))
   assert_eq(force_graph.get_int_property(force_iterations), 17)
   assert_eq(force_graph.get_int_property(force_random_seed), 42)
@@ -342,7 +354,7 @@ test "ElkGraphImporter importGraph keeps edge desired length as explicit overrid
   let label1 = @graph.create_label(Some(make_edge_label_parent(edge1)))
   let label2 = @graph.create_label(Some(make_edge_label_parent(edge2)))
   let importer = new_elk_graph_importer()
-  let force_graph = importer.import_graph(graph)
+  let force_graph = force_import_graph_or_abort(importer, graph)
   assert_eq(force_graph.get_double_property(stress_desired_edge_length), 77.0)
   let imported_edge1 = match imported_edge_by_origin(force_graph, edge1) {
     Some(edge) => edge

@@ -19,10 +19,7 @@ pub fn RadialCompaction::compact(
   self : RadialCompaction,
   graph : @graph.ElkNode,
 ) -> Unit {
-  let root = match radial_internal_root(graph) {
-    Some(value) => value
-    None => abort("radial root node is missing")
-  }
+  let root = radial_internal_root(graph).unwrap()
   self.base.set_root(root)
   self.sorter = radial_sorting_strategy_create(
     radial_graph_sorting_strategy(graph),
@@ -45,10 +42,7 @@ fn RadialCompaction::calculate_radius(
 ) -> Double {
   let x_pos = @graph.node_x(node)
   let y_pos = @graph.node_y(node)
-  let root = match self.base.root() {
-    Some(value) => value
-    None => abort("radial root node is missing")
-  }
+  let root = self.base.root().unwrap()
   let root_x = @graph.node_x(root)
   let root_y = @graph.node_y(root)
   let vector_x = x_pos - root_x

@@ -297,7 +297,7 @@ test "layer constraint preprocessor propagates FIRST and LAST to isolated opposi
 }
 
 ///|
-test "panic layer constraint preprocessor rejects incoming edges on FIRST_SEPARATE nodes" {
+test "layer constraint preprocessor rejects incoming edges on FIRST_SEPARATE nodes" {
   let graph = new_l_graph()
   let preprocessor = new_layer_constraint_preprocessor_layout_processor()
 
@@ -318,5 +318,14 @@ test "panic layer constraint preprocessor rejects incoming edges on FIRST_SEPARA
     layer_constraint_processor_test_new_edge(source_out, first_separate_in),
   )
 
+  @core.layout_runtime_clear_error()
   preprocessor.process(graph, None)
+  match @core.layout_runtime_take_error_message() {
+    Some(message) =>
+      assert_true(message.contains("UnsupportedConfigurationException"))
+    None =>
+      abort(
+        "expected org.eclipse.elk.core.UnsupportedConfigurationException message",
+      )
+  }
 }

@@ -93,6 +93,26 @@ pub fn ForceLayoutProvider::layout(
   graph : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor,
 ) -> Unit {
+  try force_layout_provider_layout_impl(self, graph, progress_monitor) catch {
+    err => {
+      @core.layout_runtime_report_unsupported_graph(
+        force_import_exception_message(err),
+      )
+      if progress_monitor.is_running() {
+        progress_monitor.done()
+      }
+    }
+  } noraise {
+    _ => ()
+  }
+}
+
+///|
+fn force_layout_provider_layout_impl(
+  provider : ForceLayoutProvider,
+  graph : @graph.ElkNode,
+  progress_monitor : @core.IElkProgressMonitor,
+) -> Unit raise ForceImportException {
   ignore(progress_monitor.begin("ELK Force", 1.0))
   if !force_option_bool_from_layout_options(graph, force_omit_node_micro_layout) {
     @common.node_micro_layout_for_graph(graph).execute()
@@ -100,11 +120,11 @@ pub fn ForceLayoutProvider::layout(
   let importer = new_elk_graph_importer()
   let force_graph = importer.import_graph(graph)
   force_set_options(force_graph, graph)
-  force_update_model(self, force_graph.get_model_property(force_model))
-  let components = self.components_processor.split(force_graph)
+  force_update_model(provider, force_graph.get_model_property(force_model))
+  let components = provider.components_processor.split(force_graph)
   let component_count = components.length()
   for component in components {
-    match self.force_model {
+    match provider.force_model {
       Some(model) => {
         let sub_monitor = match
           progress_monitor.sub_task(1.0 / component_count.to_double()) {
@@ -116,7 +136,7 @@ pub fn ForceLayoutProvider::layout(
       None => ()
     }
   }
-  let merged_graph = self.components_processor.recombine(components)
+  let merged_graph = provider.components_processor.recombine(components)
   importer.apply_layout(merged_graph)
   progress_monitor.done()
 }

@@ -106,7 +106,12 @@ fn label_side_selector_port_side_is_north_or_east(
 fn label_side_selector_require_origin_edge(label_dummy : LNode) -> LEdge {
   match label_dummy.get_property_l_edge(internal_properties_origin_l_edge) {
     Some(value) => value
-    None => abort("label dummy has no origin edge")
+    None => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "label dummy has no origin edge",
+      )
+      new_l_edge()
+    }
   }
 }
 
@@ -116,7 +121,10 @@ fn label_side_selector_require_first_incoming_edge(
 ) -> LEdge {
   let incoming = label_dummy.get_incoming_edges()
   if incoming.is_empty() {
-    abort("label dummy has no incoming edge")
+    @core.layout_runtime_report_unsupported_configuration(
+      "label dummy has no incoming edge",
+    )
+    return new_l_edge()
   }
   incoming[0]
 }
@@ -127,7 +135,10 @@ fn label_side_selector_require_first_outgoing_edge(
 ) -> LEdge {
   let outgoing = label_dummy.get_outgoing_edges()
   if outgoing.is_empty() {
-    abort("label dummy has no outgoing edge")
+    @core.layout_runtime_report_unsupported_configuration(
+      "label dummy has no outgoing edge",
+    )
+    return new_l_edge()
   }
   outgoing[0]
 }

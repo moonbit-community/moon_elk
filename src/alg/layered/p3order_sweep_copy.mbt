@@ -1,4 +1,14 @@
 ///|
+pub suberror SweepCopyException {
+  SweepCopyException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] sweep_copy_raise(message : String) -> T raise SweepCopyException {
+  raise SweepCopyException(message)
+}
+
+///|
 fn sweep_copy_port_constraints_from_string(
   value : String,
 ) -> @core.PortConstraints {
@@ -72,6 +82,23 @@ fn sweep_copy_compare_doubles(left : Double, right : Double) -> Int {
 
 ///|
 fn sweep_copy_compare_ports(left : LPort, right : LPort) -> Int {
+  try sweep_copy_compare_ports_raise(left, right) catch {
+    SweepCopyException(message) => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "org.eclipse.elk.alg.layered.p3order.SweepCopy: " + message,
+      )
+      0
+    }
+  } noraise {
+    result => result
+  }
+}
+
+///|
+fn sweep_copy_compare_ports_raise(
+  left : LPort,
+  right : LPort,
+) -> Int raise SweepCopyException {
   let side_difference = sweep_copy_port_side_ordinal(left.get_side()) -
     sweep_copy_port_side_ordinal(right.get_side())
   if side_difference != 0 {
@@ -105,7 +132,7 @@ fn sweep_copy_compare_ports(left : LPort, right : LPort) -> Int {
       sweep_copy_compare_doubles(right.get_position().x, left.get_position().x)
     @core.PortSide::West =>
       sweep_copy_compare_doubles(right.get_position().y, left.get_position().y)
-    @core.PortSide::SideUndefined => abort("Port side is undefined")
+    @core.PortSide::SideUndefined => sweep_copy_raise("Port side is undefined")
   }
 }
 
@@ -249,16 +276,33 @@ fn SweepCopy::assert_correct_port_sides(
   self : SweepCopy,
   dummy : LNode,
 ) -> LNode {
+  try self.assert_correct_port_sides_raise(dummy) catch {
+    SweepCopyException(message) => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "org.eclipse.elk.alg.layered.p3order.SweepCopy: " + message,
+      )
+      dummy
+    }
+  } noraise {
+    node => node
+  }
+}
+
+///|
+fn SweepCopy::assert_correct_port_sides_raise(
+  self : SweepCopy,
+  dummy : LNode,
+) -> LNode raise SweepCopyException {
   ignore(self)
   match dummy.get_type() {
     NodeType::NorthSouthPort => ()
-    _ => abort("dummy node must be a north-south port node")
+    _ => sweep_copy_raise("dummy node must be a north-south port node")
   }
 
   let origin = match
     dummy.get_property_l_node(internal_properties_in_layer_layout_unit) {
     Some(origin) => origin
-    None => abort("north-south dummy has no layout unit origin")
+    None => sweep_copy_raise("north-south dummy has no layout unit origin")
   }
 
   let dummy_ports = dummy.get_ports()

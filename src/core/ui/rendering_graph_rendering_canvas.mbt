@@ -2,6 +2,27 @@
 let core_ui_zoom_per_wheel_unit : Double = 1.01
 
 ///|
+priv suberror GraphRenderingCanvasException {
+  GraphRenderingCanvasException(String)
+} derive(Show, ToJson)
+
+///|
+fn graph_rendering_canvas_raise_unit(
+  message : String,
+) -> Unit raise GraphRenderingCanvasException {
+  raise GraphRenderingCanvasException(message)
+}
+
+///|
+fn graph_rendering_canvas_exception_message(
+  err : GraphRenderingCanvasException,
+) -> String {
+  match err {
+    GraphRenderingCanvasException(message) => message
+  }
+}
+
+///|
 pub(all) struct CoreUiPoint {
   x : Int
   y : Int
@@ -58,7 +79,18 @@ pub fn new_graph_rendering_canvas_with_configurator(
   configurator : GraphRenderingConfigurator,
 ) -> GraphRenderingCanvas {
   if configurator.get_display() != display {
-    abort("configurator and parent composite must use the same display.")
+    try
+      graph_rendering_canvas_raise_unit(
+        "configurator and parent composite must use the same display.",
+      )
+    catch {
+      err =>
+        @core.layout_runtime_report_unsupported_configuration(
+          graph_rendering_canvas_exception_message(err),
+        )
+    } noraise {
+      _ => ()
+    }
   }
   let graph_renderer = new_graph_renderer(configurator)
   let background_color = new_core_ui_color(display, 255, 255, 255)

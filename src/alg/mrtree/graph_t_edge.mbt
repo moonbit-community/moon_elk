@@ -16,7 +16,9 @@ let mrtree_edge_store : Ref[Array[MrtreeEdgeData]] = Ref::new([])
 ///|
 fn checked_mrtree_edge(edge : MrtreeEdge) -> Unit {
   if edge < 0 || edge >= mrtree_edge_store.val.length() {
-    abort("invalid mrtree edge id")
+    @core.layout_runtime_report_unsupported_configuration(
+      "invalid mrtree edge id",
+    )
   }
 }
 

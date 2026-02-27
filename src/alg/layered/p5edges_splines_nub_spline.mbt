@@ -5,6 +5,18 @@ pub let nub_spline_dim : Int = 3
 let nub_spline_epsilon : Double = 0.000001
 
 ///|
+pub(all) suberror NubSplineException {
+  IllegalArgumentException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] nub_spline_raise_illegal_argument(
+  message : String,
+) -> T raise NubSplineException {
+  raise NubSplineException::IllegalArgumentException(message)
+}
+
+///|
 pub struct PolarCP {
   cp : @core.KVector
   polar_coordinate : Array[Double]
@@ -41,9 +53,11 @@ fn nub_spline_create_uniform_knot_vector(
   clamped : Bool,
   dimension : Int,
   size : Int,
-) -> (Array[Double], Double, Double) {
+) -> (Array[Double], Double, Double) raise NubSplineException {
   if size < 2 * dimension {
-    abort("The knot vector must have at least two time the dimension elements.")
+    nub_spline_raise_illegal_argument(
+      "The knot vector must have at least two time the dimension elements.",
+    )
   }
 
   let knot_vector = []
@@ -108,9 +122,9 @@ fn new_nub_spline_precalculated(
   dim : Int,
   knot_vector : Array[Double],
   control_points : Array[PolarCP],
-) -> NubSpline {
+) -> NubSpline raise NubSplineException {
   if knot_vector.is_empty() {
-    abort("knot vector may not be empty")
+    nub_spline_raise_illegal_argument("knot vector may not be empty")
   }
   {
     is_clamped: clamped,
@@ -150,14 +164,16 @@ pub fn new_nub_spline(
   clamped : Bool,
   dimension : Int,
   k_vectors : Array[@core.KVector],
-) -> NubSpline {
+) -> NubSpline raise NubSplineException {
   if dimension < 1 {
-    abort("The dimension must be at least 1!")
+    nub_spline_raise_illegal_argument("The dimension must be at least 1!")
   }
 
   let control_vectors = k_vectors.copy()
   if control_vectors.is_empty() {
-    abort("At (least dimension + 1) control points are necessary!")
+    nub_spline_raise_illegal_argument(
+      "At (least dimension + 1) control points are necessary!",
+    )
   }
 
   let mut i = control_vectors.length() - 1
@@ -167,7 +183,9 @@ pub fn new_nub_spline(
   }
 
   if control_vectors.length() < dimension + 1 {
-    abort("At (least dimension + 1) control points are necessary!")
+    nub_spline_raise_illegal_argument(
+      "At (least dimension + 1) control points are necessary!",
+    )
   }
 
   let (knot_vector, min_knot, max_knot) = nub_spline_create_uniform_knot_vector(
@@ -205,14 +223,16 @@ pub fn new_nub_spline(
 }
 
 ///|
-pub fn nub_spline_generate_derived(nub_spline : NubSpline) -> NubSpline {
+pub fn nub_spline_generate_derived(
+  nub_spline : NubSpline,
+) -> NubSpline raise NubSplineException {
   let new_clamped = nub_spline.is_clamped
   let new_uniform = nub_spline.is_uniform
   let new_bezier = nub_spline.is_bezier
   let old_dim = nub_spline.dim_nubs
   let new_dim = old_dim - 1
   if new_dim < 1 {
-    abort("Cannot derive NUBS with dimension <= 1")
+    nub_spline_raise_illegal_argument("Cannot derive NUBS with dimension <= 1")
   }
 
   let old_knot_vector = nub_spline.knot_vector
@@ -229,7 +249,9 @@ pub fn nub_spline_generate_derived(nub_spline : NubSpline) -> NubSpline {
       .sub(nub_spline.control_points[i].get_cp())
     let denominator = old_knot_vector[i + old_dim] - old_knot_vector[i]
     if denominator.abs() < nub_spline_epsilon {
-      abort("Cannot derive NUBS on degenerated knot interval")
+      nub_spline_raise_illegal_argument(
+        "Cannot derive NUBS on degenerated knot interval",
+      )
     }
     new_control_points.push(numerator.scale(old_dim.to_double() / denominator))
   }
@@ -255,7 +277,9 @@ pub fn nub_spline_generate_derived(nub_spline : NubSpline) -> NubSpline {
 }
 
 ///|
-pub fn nub_spline_generate_inverted(nub_spline : NubSpline) -> NubSpline {
+pub fn nub_spline_generate_inverted(
+  nub_spline : NubSpline,
+) -> NubSpline raise NubSplineException {
   let new_knot_vector = []
   let max_vector = nub_spline.knot_vector[nub_spline.knot_vector.length() - 1]
   for vector in nub_spline.knot_vector {
@@ -298,7 +322,9 @@ pub fn NubSpline::get_dim(self : NubSpline) -> Int {
 }
 
 ///|
-pub fn NubSpline::get_outer_box(self : NubSpline) -> Rectangle {
+pub fn NubSpline::get_outer_box(
+  self : NubSpline,
+) -> Rectangle raise RectangleException {
   match self.outer_box {
     Some(rectangle) => rectangle
     None => {
@@ -517,7 +543,7 @@ pub fn nub_spline_get_first_vertical_point(
   nub_spline : NubSpline,
   accuracy : Double,
   max_recursion : Int,
-) -> @core.KVector {
+) -> @core.KVector raise NubSplineException {
   let first_derive = nub_spline_generate_derived(nub_spline)
   let mut current_accuracy = @double.infinity
   let mut current_vector = @core.new_kvector()
@@ -539,7 +565,7 @@ pub fn nub_spline_get_last_vertical_point(
   nub_spline : NubSpline,
   accuracy : Double,
   max_recursion : Int,
-) -> @core.KVector {
+) -> @core.KVector raise NubSplineException {
   let first_derive = nub_spline_generate_inverted(
     nub_spline_generate_derived(nub_spline),
   )
@@ -563,7 +589,7 @@ pub fn nub_spline_get_first_horizontal_point(
   nub_spline : NubSpline,
   accuracy : Double,
   max_recursion : Int,
-) -> @core.KVector {
+) -> @core.KVector raise NubSplineException {
   let first_derive = nub_spline_generate_derived(nub_spline)
   let mut current_accuracy = @double.infinity
   let mut current_vector = @core.new_kvector()
@@ -585,7 +611,7 @@ pub fn nub_spline_get_last_horizontal_point(
   nub_spline : NubSpline,
   accuracy : Double,
   max_recursion : Int,
-) -> @core.KVector {
+) -> @core.KVector raise NubSplineException {
   let first_derive = nub_spline_generate_inverted(
     nub_spline_generate_derived(nub_spline),
   )
@@ -613,7 +639,7 @@ fn nub_spline_mirror_on_x(
 }
 
 ///|
-pub fn nub_spline_generate_nice_curve() -> NubSpline {
+pub fn nub_spline_generate_nice_curve() -> NubSpline raise NubSplineException {
   let nice_chain = @core.new_kvector_chain()
   let vector1 = @core.new_kvector_xy(5.5, 23.0)
   let vector2 = @core.new_kvector_xy(2.5, 12.0)

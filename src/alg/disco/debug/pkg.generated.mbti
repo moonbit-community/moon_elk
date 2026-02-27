@@ -272,6 +272,11 @@ pub fn selective_paint_toggle_action_is_checked(SelectivePaintToggleAction) -> B
 pub fn selective_paint_toggle_action_run(SelectivePaintToggleAction) -> Unit
 
 // Errors
+pub suberror DisCoGraphRenderingCanvasException {
+  DisCoGraphRenderingCanvasException(String)
+}
+pub impl Show for DisCoGraphRenderingCanvasException
+pub impl ToJson for DisCoGraphRenderingCanvasException
 
 // Types and methods
 pub enum BaseGridVisibility {

@@ -7,6 +7,18 @@ fn[T] layout_test_runner_default_configuration() -> TestConfiguration[T] {
 }
 
 ///|
+pub suberror LayoutTestRunnerException {
+  LayoutTestRunnerException(String)
+} derive(Show, ToJson)
+
+///|
+fn layout_test_runner_raise_unit(
+  message : String,
+) -> Unit raise LayoutTestRunnerException {
+  raise LayoutTestRunnerException(message)
+}
+
+///|
 pub struct LayoutTestRunner[T, G] {
   create_test_instance_fn : () -> T
   test_algorithms : Array[TestAlgorithm]
@@ -26,8 +38,18 @@ pub fn[T, G] new_layout_test_runner(
   blackbox_tests : Array[BlackboxTestMethod[T]],
   whitebox_tests : Array[WhiteboxTestMethod[T, G]],
 ) -> LayoutTestRunner[T, G] {
-  if test_graphs.is_empty() {
-    abort("No test graphs specified.")
+  let effective_test_graphs = if test_graphs.is_empty() {
+    try layout_test_runner_raise_unit("No test graphs specified.") catch {
+      LayoutTestRunnerException(message) =>
+        @core.layout_runtime_report_unsupported_configuration(
+          "org.eclipse.elk.alg.test.framework.LayoutTestRunner: " + message,
+        )
+    } noraise {
+      _ => ()
+    }
+    []
+  } else {
+    test_graphs
   }
   let algorithms = if test_algorithms.is_empty() {
     [test_algorithm_identity()]
@@ -40,7 +62,7 @@ pub fn[T, G] new_layout_test_runner(
     test_configurations
   }
   let experimental_objects = experimental_object_inflate(
-    algorithms, configurations, test_graphs,
+    algorithms, configurations, effective_test_graphs,
   )
   let children : Array[ExperimentRunner[T, G]] = []
   for experimental_object in experimental_objects {
@@ -54,7 +76,7 @@ pub fn[T, G] new_layout_test_runner(
     create_test_instance_fn,
     test_algorithms: algorithms,
     test_configurations: configurations,
-    test_graphs,
+    test_graphs: effective_test_graphs,
     blackbox_tests,
     whitebox_tests,
     child_runners: children,

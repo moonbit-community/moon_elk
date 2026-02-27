@@ -7,33 +7,6 @@ fn issue734_test_setup_plain_java_layout() -> Unit {
 
 ///|
 fn issue734_test_layout(graph : @graph.ElkNode) -> Unit {
-  for edge in @graph.node_contained_edges(graph) {
-    let source_desc = match @graph.edge_sources(edge)[0] {
-      NodeShape(node) => "node:" + @graph.node_identifier(node)
-      PortShape(port) =>
-        match @graph.port_parent(port) {
-          Some(parent) =>
-            "port:" +
-            @graph.node_identifier(parent) +
-            "." +
-            @graph.port_identifier(port)
-          None => "port:<none>"
-        }
-    }
-    let target_desc = match @graph.edge_targets(edge)[0] {
-      NodeShape(node) => "node:" + @graph.node_identifier(node)
-      PortShape(port) =>
-        match @graph.port_parent(port) {
-          Some(parent) =>
-            "port:" +
-            @graph.node_identifier(parent) +
-            "." +
-            @graph.port_identifier(port)
-          None => "port:<none>"
-        }
-    }
-    println("Issue734 debug parsed edge: \{source_desc} -> \{target_desc}")
-  }
   let resolver = new_layout_algorithm_resolver()
   apply_visitors(graph, [resolver.to_visitor()])
   let layout_engine = new_recursive_graph_layout_engine()
@@ -49,7 +22,6 @@ fn issue734_test_assert_close(
 ) -> Unit {
   if (actual - expected).abs() > epsilon {
     let message = "\{context}: expected=\{expected}, actual=\{actual}, epsilon=\{epsilon}"
-    println(message)
     abort(message)
   }
 }
@@ -188,26 +160,6 @@ fn issue734_test_assert_center_alignment(
   let (edge_min, edge_max) = issue734_test_compute_edge_coordinate_span(edges)
   let node_span_center = (node_min + node_max) / 2.0
   let edge_span_center = (edge_min + edge_max) / 2.0
-  println(
-    "Issue734 debug \{context}: root=(\{@graph.node_x(graph)},\{@graph.node_y(graph)}), node_span=(\{node_min},\{node_max}), edge_span=(\{edge_min},\{edge_max})",
-  )
-  for child in children {
-    println(
-      "Issue734 debug node \{context}: id=\{@graph.node_identifier(child)} x=\{@graph.node_x(child)} y=\{@graph.node_y(child)} w=\{@graph.node_width(child)} h=\{@graph.node_height(child)}",
-    )
-  }
-  for edge in edges {
-    for section in @graph.edge_sections(edge) {
-      println(
-        "Issue734 debug section \{context}: start=\{@graph.edge_section_start_x(section)} end=\{@graph.edge_section_end_x(section)} bends=\{@graph.edge_section_bend_points(section).length()}",
-      )
-      for bend in @graph.edge_section_bend_points(section) {
-        println(
-          "Issue734 debug bend \{context}: x=\{bend.get_x()} y=\{bend.get_y()}",
-        )
-      }
-    }
-  }
   issue734_test_assert_close(
     edge_span_center,
     node_span_center,

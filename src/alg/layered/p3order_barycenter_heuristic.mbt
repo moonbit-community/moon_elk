@@ -135,15 +135,9 @@ fn BarycenterHeuristic::state_of(
   self : BarycenterHeuristic,
   node : LNode,
 ) -> BarycenterState {
-  let layer_id = match node.get_layer() {
-    Some(layer) => layer.get_id()
-    None => abort("node has no layer")
-  }
+  let layer_id = node.get_layer().unwrap().get_id()
   let node_id = node.get_id()
-  match self.barycenter_state[layer_id][node_id] {
-    Some(state) => state
-    None => abort("barycenter state is not initialized")
-  }
+  self.barycenter_state[layer_id][node_id].unwrap()
 }
 
 ///|

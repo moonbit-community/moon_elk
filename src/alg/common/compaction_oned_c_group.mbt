@@ -4,6 +4,16 @@ pub struct CGroup {
 } derive(Eq)
 
 ///|
+pub suberror CGroupException {
+  CGroupException(String)
+} derive(Show, ToJson)
+
+///|
+fn c_group_raise_unit(message : String) -> Unit raise CGroupException {
+  raise CGroupException(message)
+}
+
+///|
 pub fn CGroup::id(self : CGroup) -> Int {
   checked_cgroup(self)
   cgroup_store.val[self.handle].id
@@ -40,7 +50,17 @@ pub fn CGroup::add_cnode(self : CGroup, node : CNode) -> Unit {
   checked_cnode(node)
 
   match node.group() {
-    Some(_) => abort("CNode belongs to another CGroup.")
+    Some(_) => {
+      try c_group_raise_unit("CNode belongs to another CGroup.") catch {
+        CGroupException(message) =>
+          @core.layout_runtime_report_unsupported_configuration(
+            "org.eclipse.elk.alg.common.compaction.oned.CGroup: " + message,
+          )
+      } noraise {
+        _ => ()
+      }
+      return
+    }
     None => ()
   }
 

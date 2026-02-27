@@ -28,7 +28,12 @@ fn all_crossings_counter_crossings_counter(
 ) -> CrossingsCounter {
   match state.crossing_counter {
     Some(counter) => counter
-    None => abort("all crossings counter is not initialized")
+    None => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "all crossings counter is not initialized",
+      )
+      new_crossings_counter([])
+    }
   }
 }
 
@@ -38,7 +43,12 @@ fn all_crossings_counter_hyperedge_counter(
 ) -> HyperedgeCrossingsCounter {
   match state.hyperedge_crossings_counter {
     Some(counter) => counter
-    None => abort("all crossings counter is not initialized")
+    None => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "all crossings counter is not initialized",
+      )
+      new_hyperedge_crossings_counter([], [], [])
+    }
   }
 }
 

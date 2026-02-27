@@ -21,7 +21,12 @@ pub fn new_dis_co_graph_rendering_fill_patterns(
 fn require_color(color : DisCoDebugColor?, name : String) -> DisCoDebugColor {
   match color {
     Some(value) => value
-    None => abort("Missing color in DisCoGraphRenderingConfigurator: " + name)
+    None => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "Missing color in DisCoGraphRenderingConfigurator: " + name,
+      )
+      new_dis_co_debug_color(new_dis_co_debug_display(), 0, 0, 0)
+    }
   }
 }
 

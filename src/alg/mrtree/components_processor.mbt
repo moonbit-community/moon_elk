@@ -195,7 +195,10 @@ fn mrtree_move_graph(
 fn mrtree_process_graph_bounds(graph : MrtreeGraph) -> Unit {
   let nodes = mrtree_graph_nodes(graph)
   if nodes.is_empty() {
-    abort("Mrtree graph bounds processor requires at least one node.")
+    @core.layout_runtime_report_unsupported_configuration(
+      "Mrtree graph bounds processor requires at least one node.",
+    )
+    return
   }
   let mut min_x = @double.infinity
   let mut min_y = @double.infinity

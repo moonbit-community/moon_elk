@@ -12,6 +12,8 @@ pub fn compaction_strategy_values() -> Array[CompactionStrategy]
 
 pub fn dc_direction_values() -> Array[DCDirection]
 
+pub fn dc_element_exception_message(DCElementException) -> String
+
 pub fn dis_co_layout_provider_as_layout_provider(DisCoLayoutProvider) -> @core.AbstractLayoutProvider
 
 pub fn dis_co_polyomino_compactor_as_icompactor(DisCoPolyominoCompactor) -> ICompactor
@@ -55,6 +57,11 @@ pub fn new_icompactor((DCGraph) -> Unit) -> ICompactor
 pub fn[G] new_igraph_transformer((G) -> DCGraph, () -> Unit) -> IGraphTransformer[G]
 
 // Errors
+pub suberror DCElementException {
+  DCElementException(String)
+}
+pub impl Show for DCElementException
+pub impl ToJson for DCElementException
 
 // Types and methods
 pub enum CompactionStrategy {
@@ -100,7 +107,7 @@ pub fn DCElement::add_extension(Self, DCExtension) -> Unit
 pub fn DCElement::get_bounds(Self) -> @core.ElkRectangle
 pub fn DCElement::get_coords(Self) -> Array[Double]
 pub fn DCElement::get_extensions(Self) -> Array[DCExtension]
-pub fn DCElement::get_offset(Self) -> @core.KVector
+pub fn DCElement::get_offset(Self) -> @core.KVector raise DCElementException
 pub fn DCElement::get_parent_coords(Self) -> @core.KVector?
 pub fn DCElement::intersects(Self, @core.ElkRectangle) -> Bool
 pub fn DCElement::set_component(Self, DCComponent) -> Unit

@@ -28,36 +28,56 @@ fn spline_segment_port_side_equals(
 ///|
 fn spline_segment_pair_side(
   pair : @core.Pair[SplineSideToProcess, LEdge],
-) -> SplineSideToProcess {
+) -> SplineSideToProcess? {
   match pair.get_first() {
-    Some(side) => side
-    None => abort("missing side information in edge pair")
+    Some(side) => Some(side)
+    None => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "missing side information in edge pair",
+      )
+      None
+    }
   }
 }
 
 ///|
 fn spline_segment_pair_edge(
   pair : @core.Pair[SplineSideToProcess, LEdge],
-) -> LEdge {
+) -> LEdge? {
   match pair.get_second() {
-    Some(edge) => edge
-    None => abort("missing edge in edge pair")
+    Some(edge) => Some(edge)
+    None => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "missing edge in edge pair",
+      )
+      None
+    }
   }
 }
 
 ///|
-fn spline_segment_edge_source(edge : LEdge) -> LPort {
+fn spline_segment_edge_source(edge : LEdge) -> LPort? {
   match edge.get_source() {
-    Some(source) => source
-    None => abort("edge source is not connected")
+    Some(source) => Some(source)
+    None => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "edge source is not connected",
+      )
+      None
+    }
   }
 }
 
 ///|
-fn spline_segment_edge_target(edge : LEdge) -> LPort {
+fn spline_segment_edge_target(edge : LEdge) -> LPort? {
   match edge.get_target() {
-    Some(target) => target
-    None => abort("edge target is not connected")
+    Some(target) => Some(target)
+    None => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "edge target is not connected",
+      )
+      None
+    }
   }
 }
 
@@ -222,8 +242,14 @@ fn SplineSegment::add_edge(self : SplineSegment, edge : LEdge) -> Unit {
     return
   }
 
-  let source = spline_segment_edge_source(edge)
-  let target = spline_segment_edge_target(edge)
+  let source = match spline_segment_edge_source(edge) {
+    Some(value) => value
+    None => return
+  }
+  let target = match spline_segment_edge_target(edge) {
+    Some(value) => value
+    None => return
+  }
   let source_side = source.get_side()
   let target_side = target.get_side()
 
@@ -248,7 +274,10 @@ pub fn new_spline_segment_hyper_edge(
   source_side : SplineSideToProcess,
 ) -> SplineSegment {
   if edges.is_empty() {
-    abort("hyperedge segment requires at least one edge")
+    @core.layout_runtime_report_unsupported_configuration(
+      "hyperedge segment requires at least one edge",
+    )
+    return new_spline_segment_base(false)
   }
 
   let segment = new_spline_segment_base(false)
@@ -265,10 +294,22 @@ pub fn new_spline_segment_hyper_edge(
 
   for i in 0..<edges.length() {
     let pair = edges[i]
-    let side = spline_segment_pair_side(pair)
-    let edge = spline_segment_pair_edge(pair)
-    let source = spline_segment_edge_source(edge)
-    let target = spline_segment_edge_target(edge)
+    let side = match spline_segment_pair_side(pair) {
+      Some(value) => value
+      None => continue
+    }
+    let edge = match spline_segment_pair_edge(pair) {
+      Some(value) => value
+      None => continue
+    }
+    let source = match spline_segment_edge_source(edge) {
+      Some(value) => value
+      None => continue
+    }
+    let target = match spline_segment_edge_target(edge) {
+      Some(value) => value
+      None => continue
+    }
 
     let mut tgt_port = source
     if lport_internal_handle(source) == single_handle {
@@ -301,7 +342,10 @@ pub fn new_spline_segment_hyper_edge(
   )
 
   for pair in edges {
-    segment.add_edge(spline_segment_pair_edge(pair))
+    match spline_segment_pair_edge(pair) {
+      Some(value) => segment.add_edge(value)
+      None => ()
+    }
   }
 
   segment
@@ -315,8 +359,14 @@ pub fn new_spline_segment_single_edge(
 ) -> SplineSegment {
   let segment = new_spline_segment_base(false)
 
-  let source = spline_segment_edge_source(edge)
-  let target = spline_segment_edge_target(edge)
+  let source = match spline_segment_edge_source(edge) {
+    Some(value) => value
+    None => return segment
+  }
+  let target = match spline_segment_edge_target(edge) {
+    Some(value) => value
+    None => return segment
+  }
 
   if spline_segment_side_to_process_equals(source_side, Left) {
     spline_segment_add_port_if_absent(segment.left_ports, source)

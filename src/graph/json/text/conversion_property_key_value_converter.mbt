@@ -4,6 +4,18 @@ pub struct GraphJsonTextPropertyKeyValueConverter {
 }
 
 ///|
+pub suberror GraphJsonTextPropertyKeyValueConverterException {
+  GraphJsonTextPropertyKeyValueConverterException(String)
+} derive(Show, ToJson)
+
+///|
+fn graph_json_text_property_key_value_converter_raise_unit(
+  message : String,
+) -> Unit raise GraphJsonTextPropertyKeyValueConverterException {
+  raise GraphJsonTextPropertyKeyValueConverterException(message)
+}
+
+///|
 pub fn new_graph_json_text_property_key_value_converter() -> GraphJsonTextPropertyKeyValueConverter {
   { id_rule: "ID" }
 }
@@ -101,7 +113,22 @@ pub fn GraphJsonTextPropertyKeyValueConverter::to_string(
 ) -> String {
   ignore(self.id_rule)
   match value {
-    None => abort("IProperty value may not be null.")
+    None => {
+      try
+        graph_json_text_property_key_value_converter_raise_unit(
+          "IProperty value may not be null.",
+        )
+      catch {
+        GraphJsonTextPropertyKeyValueConverterException(message) =>
+          @core.layout_runtime_report_unsupported_configuration(
+            "org.eclipse.elk.graph.json.text.conversion.PropertyKeyValueConverter: " +
+            message,
+          )
+      } noraise {
+        _ => ()
+      }
+      ""
+    }
     Some(key) => {
       let id = graph_json_text_property_key_id(key)
       let split = graph_json_text_split_dotted_segments(id)
@@ -146,7 +173,20 @@ pub fn GraphJsonTextPropertyKeyValueConverter::to_value(
 ) -> GraphJsonTextPropertyKey {
   ignore(self.id_rule)
   if text == "" {
-    abort("Cannot convert empty string to a property identifier.")
+    try
+      graph_json_text_property_key_value_converter_raise_unit(
+        "Cannot convert empty string to a property identifier.",
+      )
+    catch {
+      GraphJsonTextPropertyKeyValueConverterException(message) =>
+        @core.layout_runtime_report_unsupported_configuration(
+          "org.eclipse.elk.graph.json.text.conversion.PropertyKeyValueConverter: " +
+          message,
+        )
+    } noraise {
+      _ => ()
+    }
+    return GraphJsonTextCustomProperty("")
   }
   let normalized = graph_json_text_property_key_unquote_if_necessary(text)
   let decoded_segments : Array[String] = []

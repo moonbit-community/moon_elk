@@ -10,6 +10,31 @@ pub struct OneDimensionalCompactor {
 }
 
 ///|
+pub(all) suberror OneDimensionalCompactorException {
+  IllegalStateException(String)
+  IllegalArgumentException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] one_dimensional_compactor_raise_illegal_state(
+  message : String,
+) -> T raise OneDimensionalCompactorException {
+  raise OneDimensionalCompactorException::IllegalStateException(message)
+}
+
+///|
+fn[T] one_dimensional_compactor_raise_illegal_argument(
+  message : String,
+) -> T raise OneDimensionalCompactorException {
+  raise OneDimensionalCompactorException::IllegalArgumentException(message)
+}
+
+///|
+fn one_dimensional_compactor_abort_message(message : String) -> Unit {
+  @core.layout_runtime_report_unsupported_configuration(message)
+}
+
+///|
 pub fn new_one_dimensional_compactor(
   c_graph : CGraph,
 ) -> OneDimensionalCompactor {
@@ -76,7 +101,14 @@ pub fn OneDimensionalCompactor::compact(
   self : OneDimensionalCompactor,
 ) -> OneDimensionalCompactor {
   if self.finished {
-    abort("The OneDimensionalCompactor instance has been finished already.")
+    one_dimensional_compactor_raise_illegal_state(
+      "The OneDimensionalCompactor instance has been finished already.",
+    ) catch {
+      OneDimensionalCompactorException::IllegalStateException(message) =>
+        one_dimensional_compactor_abort_message(message)
+      OneDimensionalCompactorException::IllegalArgumentException(message) =>
+        one_dimensional_compactor_abort_message(message)
+    }
   }
 
   if direction_eq(self.direction, Undefined) {
@@ -109,11 +141,25 @@ pub fn OneDimensionalCompactor::change_direction(
   dir : @core.Direction,
 ) -> OneDimensionalCompactor {
   if self.finished {
-    abort("The OneDimensionalCompactor instance has been finished already.")
+    one_dimensional_compactor_raise_illegal_state(
+      "The OneDimensionalCompactor instance has been finished already.",
+    ) catch {
+      OneDimensionalCompactorException::IllegalStateException(message) =>
+        one_dimensional_compactor_abort_message(message)
+      OneDimensionalCompactorException::IllegalArgumentException(message) =>
+        one_dimensional_compactor_abort_message(message)
+    }
   }
 
   if !self.c_graph.supports(dir) {
-    abort("The direction is not supported by the CGraph instance.")
+    one_dimensional_compactor_raise_illegal_argument(
+      "The direction is not supported by the CGraph instance.",
+    ) catch {
+      OneDimensionalCompactorException::IllegalStateException(message) =>
+        one_dimensional_compactor_abort_message(message)
+      OneDimensionalCompactorException::IllegalArgumentException(message) =>
+        one_dimensional_compactor_abort_message(message)
+    }
   }
 
   if direction_eq(dir, self.direction) {

@@ -24,7 +24,7 @@ fn interactive_node_placer_graph_has_external_ports(graph : LGraph) -> Bool {
 fn interactive_node_placer_place_nodes(
   layer : Layer,
   spacings : Spacings,
-) -> Unit {
+) -> Unit raise LayeredSpacingsException {
   let mut min_valid_y = @double.neg_infinity
   let mut prev_node_type = NodeType::Normal
 
@@ -73,8 +73,13 @@ fn interactive_node_placer_process(
   ignore(monitor.begin("Interactive node placement", 1.0))
 
   let spacings = new_layered_spacings(layered_graph)
-  for layer in layered_graph.get_layers() {
-    interactive_node_placer_place_nodes(layer, spacings)
+  try {
+    for layer in layered_graph.get_layers() {
+      interactive_node_placer_place_nodes(layer, spacings)
+    }
+  } catch {
+    LayeredSpacingsException(message) =>
+      @core.layout_runtime_report_unsupported_configuration(message)
   }
 
   monitor.done()

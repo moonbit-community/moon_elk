@@ -30,10 +30,10 @@ fn spacings_new_option_grid(
 ///|
 fn spacings_require_option(
   option : @graph.IProperty[Double]?,
-) -> @graph.IProperty[Double] {
+) -> @graph.IProperty[Double] raise LayeredSpacingsException {
   match option {
     Some(value) => value
-    None => abort("Unspecified spacing for node types.")
+    None => layered_spacings_raise("Unspecified spacing for node types.")
   }
 }
 
@@ -250,7 +250,7 @@ fn Spacings::get_local_spacing(
   first : LNode,
   second : LNode,
   mapping : Array[Array[@graph.IProperty[Double]?]],
-) -> Double {
+) -> Double raise LayeredSpacingsException {
   let first_type = first.get_type()
   let second_type = second.get_type()
   let layout_option = spacings_require_option(
@@ -277,7 +277,7 @@ fn Spacings::get_local_spacing_for_node_types(
   first_type : NodeType,
   second_type : NodeType,
   mapping : Array[Array[@graph.IProperty[Double]?]],
-) -> Double {
+) -> Double raise LayeredSpacingsException {
   let layout_option = spacings_require_option(
     mapping[spacings_node_type_ordinal(first_type)][spacings_node_type_ordinal(
       second_type,
@@ -291,7 +291,7 @@ pub fn Spacings::get_horizontal_spacing(
   self : Spacings,
   first : LNode,
   second : LNode,
-) -> Double {
+) -> Double raise LayeredSpacingsException {
   self.get_local_spacing(
     first,
     second,
@@ -304,7 +304,7 @@ pub fn Spacings::get_horizontal_spacing_for_node_type(
   self : Spacings,
   first_type : NodeType,
   second_type : NodeType,
-) -> Double {
+) -> Double raise LayeredSpacingsException {
   self.get_local_spacing_for_node_types(
     first_type,
     second_type,
@@ -317,7 +317,7 @@ pub fn Spacings::get_vertical_spacing(
   self : Spacings,
   first : LNode,
   second : LNode,
-) -> Double {
+) -> Double raise LayeredSpacingsException {
   self.get_local_spacing(first, second, self.node_type_spacing_options_vertical)
 }
 
@@ -326,7 +326,7 @@ pub fn Spacings::get_vertical_spacing_for_node_type(
   self : Spacings,
   first_type : NodeType,
   second_type : NodeType,
-) -> Double {
+) -> Double raise LayeredSpacingsException {
   self.get_local_spacing_for_node_types(
     first_type,
     second_type,

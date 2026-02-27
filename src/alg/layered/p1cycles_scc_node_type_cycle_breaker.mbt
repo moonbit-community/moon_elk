@@ -5,7 +5,7 @@ fn scc_node_type_find_nodes(
   rev_edges : Array[LEdge],
   offset : Int,
   big_offset : Int,
-) -> Unit {
+) -> Unit raise SCCModelOrderCycleBreakerException {
   let enforce_group_model_order = scc_model_order_cycle_breaker_enforce_group_model_order(
     graph,
   )

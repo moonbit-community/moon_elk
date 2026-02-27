@@ -15,7 +15,9 @@ let mrtree_label_store : Ref[Array[MrtreeLabelData]] = Ref::new([])
 ///|
 fn checked_mrtree_label(label : MrtreeLabel) -> Unit {
   if label < 0 || label >= mrtree_label_store.val.length() {
-    abort("invalid mrtree label id")
+    @core.layout_runtime_report_unsupported_configuration(
+      "invalid mrtree label id",
+    )
   }
 }
 

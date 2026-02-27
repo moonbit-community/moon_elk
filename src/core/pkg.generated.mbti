@@ -157,6 +157,8 @@ pub fn elk_margin_clone(Spacing) -> Spacing
 
 pub fn elk_padding_clone(Spacing) -> Spacing
 
+pub fn elk_spacings_exception_message(ElkSpacingsException) -> String
+
 pub fn elk_spacings_with_base_value(Double) -> ElkCoreSpacingsBuilder
 
 pub let elk_unknown_work : Double
@@ -798,6 +800,47 @@ pub fn translate_xy(Int, Double, Double) -> Unit
 pub fn[F, S, T] triple_of(F, S, T) -> Triple[F, S, T]
 
 // Errors
+pub suberror AggregatedMatchDeciderException {
+  AggregatedMatchDeciderException(String)
+}
+pub impl Show for AggregatedMatchDeciderException
+pub impl ToJson for AggregatedMatchDeciderException
+
+pub suberror AlignmentMatcherException {
+  AlignmentMatcherException(String)
+}
+pub impl Show for AlignmentMatcherException
+pub impl ToJson for AlignmentMatcherException
+
+pub suberror DistanceMatcherException {
+  DistanceMatcherException(String)
+}
+pub impl Show for DistanceMatcherException
+pub impl ToJson for DistanceMatcherException
+
+pub suberror ElkSpacingsException {
+  ElkSpacingsException(String)
+}
+pub impl Show for ElkSpacingsException
+pub impl ToJson for ElkSpacingsException
+
+pub suberror NodeReferenceMatcherException {
+  NodeReferenceMatcherException(String)
+}
+pub impl Show for NodeReferenceMatcherException
+pub impl ToJson for NodeReferenceMatcherException
+
+pub suberror SizeFilterException {
+  SizeFilterException(String)
+}
+pub impl Show for SizeFilterException
+pub impl ToJson for SizeFilterException
+
+pub suberror TextPrefixFilterException {
+  TextPrefixFilterException(String)
+}
+pub impl Show for TextPrefixFilterException
+pub impl ToJson for TextPrefixFilterException
 
 // Types and methods
 pub(all) struct AbstractLayoutProvider {
@@ -845,7 +888,7 @@ pub(all) struct AggregatedMatchDecider[T] {
 pub fn[T] AggregatedMatchDecider::as_decider(Self[T]) -> IDecider[T]
 pub fn[T] AggregatedMatchDecider::make_attachment_decision(Self[T], Array[(T, Array[(Int, Double)])]) -> T?
 pub fn[T] AggregatedMatchDecider::with_aggregator(Self[T], (Array[Double]) -> Double) -> Self[T]
-pub fn[T] AggregatedMatchDecider::with_lower_attachment_boundary(Self[T], Double) -> Self[T]
+pub fn[T] AggregatedMatchDecider::with_lower_attachment_boundary(Self[T], Double) -> Self[T] raise AggregatedMatchDeciderException
 pub fn[T] AggregatedMatchDecider::with_lower_boundary_included(Self[T], Bool) -> Self[T]
 
 pub(all) struct AlgorithmAssembler[P, G] {
@@ -896,7 +939,7 @@ pub(all) struct AlignmentMatcher[C, T] {
   mut normalization_function : NormalizationFunction
 }
 pub fn[C, T] AlignmentMatcher::as_matcher(Self[C, T]) -> IMatcher[C, T]
-pub fn[C, T] AlignmentMatcher::check_configuration(Self[C, T]) -> Unit
+pub fn[C, T] AlignmentMatcher::check_configuration(Self[C, T]) -> Unit raise AlignmentMatcherException
 pub fn[C, T] AlignmentMatcher::get_best_raw_value(Self[C, T]) -> Double
 pub fn[C, T] AlignmentMatcher::get_worst_raw_value(Self[C, T]) -> Double
 pub fn[C, T] AlignmentMatcher::normalize_binary(Self[C, T], Double) -> Double
@@ -905,7 +948,7 @@ pub fn[C, T] AlignmentMatcher::normalized(Self[C, T], C, T) -> Double
 pub fn[C, T] AlignmentMatcher::preprocess(Self[C, T], IDataProvider[C, T], Bool) -> Unit
 pub fn[C, T] AlignmentMatcher::raw(Self[C, T], C, T) -> Double
 pub fn[C, T] AlignmentMatcher::with_bounds_provider(Self[C, T], IBoundsProvider[C, T]) -> Self[C, T]
-pub fn[C, T] AlignmentMatcher::with_maximum_alignment_offset(Self[C, T], Double) -> Self[C, T]
+pub fn[C, T] AlignmentMatcher::with_maximum_alignment_offset(Self[C, T], Double) -> Self[C, T] raise AlignmentMatcherException
 pub fn[C, T] AlignmentMatcher::with_normalization_function(Self[C, T], NormalizationFunction) -> Self[C, T]
 
 pub(all) struct BezierCurve {
@@ -1024,7 +1067,7 @@ pub(all) struct DistanceMatcher[C, T] {
   mut normalization_function : NormalizationFunction
 }
 pub fn[C, T] DistanceMatcher::as_matcher(Self[C, T]) -> IMatcher[C, T]
-pub fn[C, T] DistanceMatcher::check_configuration(Self[C, T]) -> Unit
+pub fn[C, T] DistanceMatcher::check_configuration(Self[C, T]) -> Unit raise DistanceMatcherException
 pub fn[C, T] DistanceMatcher::get_best_raw_value(Self[C, T]) -> Double
 pub fn[C, T] DistanceMatcher::get_worst_raw_value(Self[C, T]) -> Double
 pub fn[C, T] DistanceMatcher::normalize_binary(Self[C, T], Double) -> Double
@@ -1033,7 +1076,7 @@ pub fn[C, T] DistanceMatcher::normalized(Self[C, T], C, T) -> Double
 pub fn[C, T] DistanceMatcher::preprocess(Self[C, T], IDataProvider[C, T], Bool) -> Unit
 pub fn[C, T] DistanceMatcher::raw(Self[C, T], C, T) -> Double
 pub fn[C, T] DistanceMatcher::with_bounds_provider(Self[C, T], IBoundsProvider[C, T]) -> Self[C, T]
-pub fn[C, T] DistanceMatcher::with_maximum_attachment_distance(Self[C, T], Double) -> Self[C, T]
+pub fn[C, T] DistanceMatcher::with_maximum_attachment_distance(Self[C, T], Double) -> Self[C, T] raise DistanceMatcherException
 pub fn[C, T] DistanceMatcher::with_normalization_function(Self[C, T], NormalizationFunction) -> Self[C, T]
 
 pub(all) struct EdgeAdapter[T, L] {
@@ -1080,12 +1123,12 @@ pub(all) struct ElkCoreSpacingsBuilder {
 }
 pub fn ElkCoreSpacingsBuilder::apply(Self, Int) -> Unit
 pub fn ElkCoreSpacingsBuilder::build(Self) -> (Int) -> Unit
-pub fn ElkCoreSpacingsBuilder::factor_for(Self, @graph.IProperty[Double]) -> Double
+pub fn ElkCoreSpacingsBuilder::factor_for(Self, @graph.IProperty[Double]) -> Double raise ElkSpacingsException
 pub fn ElkCoreSpacingsBuilder::factors(Self) -> Array[(@graph.IProperty[Double], Double)]
 pub fn ElkCoreSpacingsBuilder::to_visitor(Self) -> IGraphElementVisitor
-pub fn ElkCoreSpacingsBuilder::with_factor(Self, @graph.IProperty[Double], Double) -> Self
+pub fn ElkCoreSpacingsBuilder::with_factor(Self, @graph.IProperty[Double], Double) -> Self raise ElkSpacingsException
 pub fn ElkCoreSpacingsBuilder::with_overwrite(Self, Bool) -> Self
-pub fn ElkCoreSpacingsBuilder::with_value(Self, @graph.IProperty[Double], Double) -> Self
+pub fn ElkCoreSpacingsBuilder::with_value(Self, @graph.IProperty[Double], Double) -> Self raise ElkSpacingsException
 
 pub(all) struct ElkEdgeAdapter {
   element : Int
@@ -1992,7 +2035,7 @@ pub(all) struct NodeReferenceMatcher[C, T] {
   mut found_attachments : Array[(C, T)]
 }
 pub fn[C : Eq, T : Eq] NodeReferenceMatcher::as_matcher(Self[C, T]) -> IMatcher[C, T]
-pub fn[C, T] NodeReferenceMatcher::check_configuration(Self[C, T]) -> Unit
+pub fn[C, T] NodeReferenceMatcher::check_configuration(Self[C, T]) -> Unit raise NodeReferenceMatcherException
 pub fn[C, T] NodeReferenceMatcher::cleanup(Self[C, T]) -> Unit
 pub fn[C, T] NodeReferenceMatcher::get_attachments(Self[C, T]) -> Array[(C, T)]
 pub fn[C, T] NodeReferenceMatcher::go_find_matches(Self[C, T], Array[(C, String)], Array[(T, String)]) -> Unit
@@ -2159,11 +2202,11 @@ pub(all) struct SizeFilter[C, T] {
   mut max_area : Double
 }
 pub fn[C, T] SizeFilter::as_filter(Self[C, T]) -> IFilter[C, T]
-pub fn[C, T] SizeFilter::check_configuration(Self[C, T]) -> Unit
+pub fn[C, T] SizeFilter::check_configuration(Self[C, T]) -> Unit raise SizeFilterException
 pub fn[C, T] SizeFilter::eligible_for_attachment(Self[C, T], C) -> Bool
 pub fn[C, T] SizeFilter::preprocess(Self[C, T], IDataProvider[C, T], Bool) -> Unit
 pub fn[C, T] SizeFilter::with_bounds_provider(Self[C, T], IBoundsProvider[C, T]) -> Self[C, T]
-pub fn[C, T] SizeFilter::with_maximum_area(Self[C, T], Double) -> Self[C, T]
+pub fn[C, T] SizeFilter::with_maximum_area(Self[C, T], Double) -> Self[C, T] raise SizeFilterException
 
 pub(all) enum SizeOptions {
   DefaultMinimumSize
@@ -2230,9 +2273,9 @@ pub(all) struct TextPrefixFilter[C, T] {
   mut case_sensitive : Bool
   _phantom : T?
 }
-pub fn[C, T] TextPrefixFilter::add_prefix(Self[C, T], String) -> Self[C, T]
+pub fn[C, T] TextPrefixFilter::add_prefix(Self[C, T], String) -> Self[C, T] raise TextPrefixFilterException
 pub fn[C, T] TextPrefixFilter::as_filter(Self[C, T]) -> IFilter[C, T]
-pub fn[C, T] TextPrefixFilter::check_configuration(Self[C, T]) -> Unit
+pub fn[C, T] TextPrefixFilter::check_configuration(Self[C, T]) -> Unit raise TextPrefixFilterException
 pub fn[C, T] TextPrefixFilter::eligible_for_attachment(Self[C, T], C) -> Bool
 pub fn[C, T] TextPrefixFilter::preprocess(Self[C, T], IDataProvider[C, T], Bool) -> Unit
 pub fn[C, T] TextPrefixFilter::with_case_sensitive_matching(Self[C, T]) -> Self[C, T]

@@ -8,7 +8,10 @@ pub struct TwoBitGrid {
 ///|
 fn create_cells(width : Int, height : Int) -> Array[Int] {
   if width < 0 || height < 0 {
-    abort("grid dimensions must be non-negative")
+    @core.layout_runtime_report_unsupported_configuration(
+      "grid dimensions must be non-negative",
+    )
+    return []
   }
   Array::make(width * height, 0)
 }
@@ -16,7 +19,10 @@ fn create_cells(width : Int, height : Int) -> Array[Int] {
 ///|
 fn grid_cell_index(grid : TwoBitGrid, x : Int, y : Int) -> Int {
   if !grid.in_bounds(x, y) {
-    abort("requested point is out of bounds")
+    @core.layout_runtime_report_unsupported_configuration(
+      "requested point is out of bounds",
+    )
+    return 0
   }
   y * grid.x_size + x
 }

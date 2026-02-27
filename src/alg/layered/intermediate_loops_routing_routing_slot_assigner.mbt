@@ -76,7 +76,12 @@ fn routing_slot_assigner_require_segment(
 ) -> HyperEdgeSegment {
   match segments.get(loop_id) {
     Some(segment) => segment
-    None => abort("missing segment for self loop")
+    None => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "missing segment for self loop",
+      )
+      new_hyper_edge_segment(new_west_to_east_routing_strategy())
+    }
   }
 }
 
@@ -87,7 +92,12 @@ fn routing_slot_assigner_require_loop_activity(
 ) -> Array[Bool] {
   match loop_activity.get(loop_id) {
     Some(activity) => activity
-    None => abort("missing loop activity")
+    None => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "missing loop activity",
+      )
+      []
+    }
   }
 }
 

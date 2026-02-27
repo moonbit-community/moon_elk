@@ -27,26 +27,59 @@ fn layer_constraint_preprocessor_is_relevant_node(node : LNode) -> Bool {
 }
 
 ///|
-fn layer_constraint_preprocessor_require_edge_source(edge : LEdge) -> LPort {
+pub(all) suberror LayerConstraintPreprocessorException {
+  UnsupportedConfigurationException(String)
+  IllegalStateException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] layer_constraint_preprocessor_raise_unsupported_configuration(
+  message : String,
+) -> T raise LayerConstraintPreprocessorException {
+  raise LayerConstraintPreprocessorException::UnsupportedConfigurationException(
+    message,
+  )
+}
+
+///|
+fn[T] layer_constraint_preprocessor_raise_illegal_state(
+  message : String,
+) -> T raise LayerConstraintPreprocessorException {
+  raise LayerConstraintPreprocessorException::IllegalStateException(message)
+}
+
+///|
+fn layer_constraint_preprocessor_require_edge_source(
+  edge : LEdge,
+) -> LPort raise LayerConstraintPreprocessorException {
   match edge.get_source() {
     Some(value) => value
-    None => abort("edge has no source")
+    None =>
+      layer_constraint_preprocessor_raise_illegal_state("edge has no source")
   }
 }
 
 ///|
-fn layer_constraint_preprocessor_require_edge_target(edge : LEdge) -> LPort {
+fn layer_constraint_preprocessor_require_edge_target(
+  edge : LEdge,
+) -> LPort raise LayerConstraintPreprocessorException {
   match edge.get_target() {
     Some(value) => value
-    None => abort("edge has no target")
+    None =>
+      layer_constraint_preprocessor_raise_illegal_state("edge has no target")
   }
 }
 
 ///|
-fn layer_constraint_preprocessor_require_port_node(port : LPort) -> LNode {
+fn layer_constraint_preprocessor_require_port_node(
+  port : LPort,
+) -> LNode raise LayerConstraintPreprocessorException {
   match port.get_node() {
     Some(value) => value
-    None => abort("port has no owner node")
+    None =>
+      layer_constraint_preprocessor_raise_illegal_state(
+        "port has no owner node",
+      )
   }
 }
 
@@ -121,7 +154,7 @@ fn layer_constraint_preprocessor_update_opposite_node_layer_constraints(
 ///|
 fn layer_constraint_preprocessor_is_acceptable_incident_edge(
   edge : LEdge,
-) -> Bool {
+) -> Bool raise LayerConstraintPreprocessorException {
   let source_node = layer_constraint_preprocessor_require_port_node(
     layer_constraint_preprocessor_require_edge_source(edge),
   )
@@ -139,13 +172,13 @@ fn layer_constraint_preprocessor_is_acceptable_incident_edge(
 ///|
 fn layer_constraint_preprocessor_ensure_no_inacceptable_edges(
   node : LNode,
-) -> Unit {
+) -> Unit raise LayerConstraintPreprocessorException {
   let layer_constraint = layer_constraint_preprocessor_layer_constraint(node)
   match layer_constraint {
     LayerConstraint::FirstSeparate =>
       for in_edge in node.get_incoming_edges() {
         if !layer_constraint_preprocessor_is_acceptable_incident_edge(in_edge) {
-          abort(
+          layer_constraint_preprocessor_raise_unsupported_configuration(
             "Node '" +
             node.to_string() +
             "' has its layer constraint set to FIRST_SEPARATE, but has at least one incoming edge. FIRST_SEPARATE nodes must not have incoming edges.",
@@ -155,7 +188,7 @@ fn layer_constraint_preprocessor_ensure_no_inacceptable_edges(
     LayerConstraint::LastSeparate =>
       for out_edge in node.get_outgoing_edges() {
         if !layer_constraint_preprocessor_is_acceptable_incident_edge(out_edge) {
-          abort(
+          layer_constraint_preprocessor_raise_unsupported_configuration(
             "Node '" +
             node.to_string() +
             "' has its layer constraint set to LAST_SEPARATE, but has at least one outgoing edge. LAST_SEPARATE nodes must not have outgoing edges.",
@@ -167,7 +200,10 @@ fn layer_constraint_preprocessor_ensure_no_inacceptable_edges(
 }
 
 ///|
-fn layer_constraint_preprocessor_hide_edge(node : LNode, edge : LEdge) -> Unit {
+fn layer_constraint_preprocessor_hide_edge(
+  node : LNode,
+  edge : LEdge,
+) -> Unit raise LayerConstraintPreprocessorException {
   let source = layer_constraint_preprocessor_require_edge_source(edge)
   let target = layer_constraint_preprocessor_require_edge_target(edge)
   let source_node = layer_constraint_preprocessor_require_port_node(source)
@@ -192,7 +228,9 @@ fn layer_constraint_preprocessor_hide_edge(node : LNode, edge : LEdge) -> Unit {
 }
 
 ///|
-fn layer_constraint_preprocessor_hide(node : LNode) -> Unit {
+fn layer_constraint_preprocessor_hide(
+  node : LNode,
+) -> Unit raise LayerConstraintPreprocessorException {
   layer_constraint_preprocessor_ensure_no_inacceptable_edges(node)
   for edge in node.get_connected_edges() {
     layer_constraint_preprocessor_hide_edge(node, edge)
@@ -200,10 +238,10 @@ fn layer_constraint_preprocessor_hide(node : LNode) -> Unit {
 }
 
 ///|
-fn layer_constraint_preprocessor_process(
+fn layer_constraint_preprocessor_process_impl(
   layered_graph : LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise LayerConstraintPreprocessorException {
   let monitor = match progress_monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()
@@ -231,6 +269,20 @@ fn layer_constraint_preprocessor_process(
   }
 
   monitor.done()
+}
+
+///|
+fn layer_constraint_preprocessor_process(
+  layered_graph : LGraph,
+  progress_monitor : @core.IElkProgressMonitor?,
+) -> Unit {
+  layer_constraint_preprocessor_process_impl(layered_graph, progress_monitor) catch {
+    LayerConstraintPreprocessorException::UnsupportedConfigurationException(
+      message
+    ) => @core.layout_runtime_report_unsupported_configuration(message)
+    LayerConstraintPreprocessorException::IllegalStateException(message) =>
+      @core.layout_runtime_report_unsupported_configuration(message)
+  }
 }
 
 ///|

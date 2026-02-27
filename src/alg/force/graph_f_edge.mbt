@@ -17,9 +17,15 @@ priv struct FEdgeData {
 }
 
 ///|
+fn force_edge_abort(message : String) -> Int {
+  @core.layout_runtime_report_unsupported_configuration(message)
+  0
+}
+
+///|
 fn checked_fedge(edge : FEdge) -> Unit {
   if edge < 0 || edge >= fedge_store.val.length() {
-    abort("invalid force edge id")
+    ignore(force_edge_abort("invalid force edge id"))
   }
 }
 
@@ -187,11 +193,11 @@ pub fn fedge_source_point(edge : FEdge) -> @core.KVector {
   checked_fedge(edge)
   let source = match fedge_source(edge) {
     Some(source) => source
-    None => abort("edge source is missing")
+    None => force_edge_abort("edge source is missing")
   }
   let target = match fedge_target(edge) {
     Some(target) => target
-    None => abort("edge target is missing")
+    None => force_edge_abort("edge target is missing")
   }
   let vector = fnode_position(target).clone().sub(fnode_position(source))
   let source_size = fnode_size(source)
@@ -204,11 +210,11 @@ pub fn fedge_target_point(edge : FEdge) -> @core.KVector {
   checked_fedge(edge)
   let source = match fedge_source(edge) {
     Some(source) => source
-    None => abort("edge source is missing")
+    None => force_edge_abort("edge source is missing")
   }
   let target = match fedge_target(edge) {
     Some(target) => target
-    None => abort("edge target is missing")
+    None => force_edge_abort("edge target is missing")
   }
   let vector = fnode_position(source).clone().sub(fnode_position(target))
   let target_size = fnode_size(target)
@@ -238,11 +244,11 @@ pub fn fedge_distribute_bendpoints(edge : FEdge) -> Unit {
   }
   let source = match fedge_source(edge) {
     Some(source) => source
-    None => abort("edge source is missing")
+    None => force_edge_abort("edge source is missing")
   }
   let target = match fedge_target(edge) {
     Some(target) => target
-    None => abort("edge target is missing")
+    None => force_edge_abort("edge target is missing")
   }
   let source_position = fnode_position(source)
   let target_position = fnode_position(target)

@@ -19,7 +19,9 @@ priv struct FLabelData {
 ///|
 fn checked_flabel(label : FLabel) -> Unit {
   if label < 0 || label >= flabel_store.val.length() {
-    abort("invalid force label id")
+    @core.layout_runtime_report_unsupported_configuration(
+      "invalid force label id",
+    )
   }
 }
 

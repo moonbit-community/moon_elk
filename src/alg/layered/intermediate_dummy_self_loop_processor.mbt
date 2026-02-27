@@ -1,4 +1,16 @@
 ///|
+priv suberror DummySelfLoopProcessorException {
+  UnsupportedGraphException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] dummy_self_loop_processor_raise_unsupported_graph(
+  message : String,
+) -> T raise DummySelfLoopProcessorException {
+  raise DummySelfLoopProcessorException::UnsupportedGraphException(message)
+}
+
+///|
 fn dummy_self_loop_processor_reverse_edge(
   edge : LEdge,
   layered_graph : LGraph,
@@ -50,26 +62,41 @@ fn dummy_self_loop_processor_is_side_south(side : @core.PortSide) -> Bool {
 }
 
 ///|
-fn dummy_self_loop_processor_require_source(edge : LEdge) -> LPort {
+fn dummy_self_loop_processor_require_source(
+  edge : LEdge,
+) -> LPort raise DummySelfLoopProcessorException {
   match edge.get_source() {
     Some(port) => port
-    None => abort("edge has no source port")
+    None =>
+      dummy_self_loop_processor_raise_unsupported_graph(
+        "edge has no source port",
+      )
   }
 }
 
 ///|
-fn dummy_self_loop_processor_require_target(edge : LEdge) -> LPort {
+fn dummy_self_loop_processor_require_target(
+  edge : LEdge,
+) -> LPort raise DummySelfLoopProcessorException {
   match edge.get_target() {
     Some(port) => port
-    None => abort("edge has no target port")
+    None =>
+      dummy_self_loop_processor_raise_unsupported_graph(
+        "edge has no target port",
+      )
   }
 }
 
 ///|
-fn dummy_self_loop_processor_require_node(port : LPort) -> LNode {
+fn dummy_self_loop_processor_require_node(
+  port : LPort,
+) -> LNode raise DummySelfLoopProcessorException {
   match port.get_node() {
     Some(node) => node
-    None => abort("port has no owner node")
+    None =>
+      dummy_self_loop_processor_raise_unsupported_graph(
+        "port has no owner node",
+      )
   }
 }
 
@@ -128,58 +155,70 @@ fn dummy_self_loop_processor_process(
 
   let created_dummies = []
 
-  for layer in layered_graph.get_layers() {
-    created_dummies.clear()
+  try {
+    for layer in layered_graph.get_layers() {
+      created_dummies.clear()
 
-    for node in layer.get_nodes() {
-      for port in node.get_ports() {
-        let edges = port.get_outgoing_edges().copy()
+      for node in layer.get_nodes() {
+        for port in node.get_ports() {
+          let edges = port.get_outgoing_edges().copy()
 
-        for edge in edges {
-          let source_port = dummy_self_loop_processor_require_source(edge)
-          let target_port = dummy_self_loop_processor_require_target(edge)
+          for edge in edges {
+            let source_port = dummy_self_loop_processor_require_source(edge)
+            let target_port = dummy_self_loop_processor_require_target(edge)
 
-          if dummy_self_loop_processor_require_node(source_port).get_handle() !=
-            dummy_self_loop_processor_require_node(target_port).get_handle() {
-            continue
-          }
+            if dummy_self_loop_processor_require_node(source_port).get_handle() !=
+              dummy_self_loop_processor_require_node(target_port).get_handle() {
+              continue
+            }
 
-          let source_port_side = source_port.get_side()
-          let target_port_side = target_port.get_side()
+            let source_port_side = source_port.get_side()
+            let target_port_side = target_port.get_side()
 
-          if dummy_self_loop_processor_is_side_north_or_south(source_port_side) &&
-            dummy_self_loop_processor_is_side_west(target_port_side) {
-            dummy_self_loop_processor_reverse_edge(edge, layered_graph)
-          } else if dummy_self_loop_processor_is_side_south(source_port_side) &&
-            dummy_self_loop_processor_is_side_north(target_port_side) {
-            dummy_self_loop_processor_reverse_edge(edge, layered_graph)
-          } else if dummy_self_loop_processor_is_side_east(source_port_side) &&
-            !dummy_self_loop_processor_is_side_east(target_port_side) {
-            dummy_self_loop_processor_reverse_edge(edge, layered_graph)
-          }
+            if dummy_self_loop_processor_is_side_north_or_south(
+                source_port_side,
+              ) &&
+              dummy_self_loop_processor_is_side_west(target_port_side) {
+              dummy_self_loop_processor_reverse_edge(edge, layered_graph)
+            } else if dummy_self_loop_processor_is_side_south(source_port_side) &&
+              dummy_self_loop_processor_is_side_north(target_port_side) {
+              dummy_self_loop_processor_reverse_edge(edge, layered_graph)
+            } else if dummy_self_loop_processor_is_side_east(source_port_side) &&
+              !dummy_self_loop_processor_is_side_east(target_port_side) {
+              dummy_self_loop_processor_reverse_edge(edge, layered_graph)
+            }
 
-          if dummy_self_loop_processor_is_side_east(source_port_side) &&
-            dummy_self_loop_processor_is_side_west(target_port_side) {
-            created_dummies.push(
-              dummy_self_loop_processor_create_dummy(
-                layered_graph, edge, target_port, source_port,
-              ),
-            )
-          } else if dummy_self_loop_processor_is_side_west(source_port_side) &&
-            dummy_self_loop_processor_is_side_east(target_port_side) {
-            created_dummies.push(
-              dummy_self_loop_processor_create_dummy(
-                layered_graph, edge, source_port, target_port,
-              ),
-            )
+            if dummy_self_loop_processor_is_side_east(source_port_side) &&
+              dummy_self_loop_processor_is_side_west(target_port_side) {
+              created_dummies.push(
+                dummy_self_loop_processor_create_dummy(
+                  layered_graph, edge, target_port, source_port,
+                ),
+              )
+            } else if dummy_self_loop_processor_is_side_west(source_port_side) &&
+              dummy_self_loop_processor_is_side_east(target_port_side) {
+              created_dummies.push(
+                dummy_self_loop_processor_create_dummy(
+                  layered_graph, edge, source_port, target_port,
+                ),
+              )
+            }
           }
         }
       }
-    }
 
-    for dummy in created_dummies {
-      dummy.set_layer(Some(layer))
+      for dummy in created_dummies {
+        dummy.set_layer(Some(layer))
+      }
     }
+  } catch {
+    DummySelfLoopProcessorException::UnsupportedGraphException(message) => {
+      @core.layout_runtime_report_unsupported_configuration(message)
+      progress.done()
+      return
+    }
+  } noraise {
+    _ => ()
   }
 
   progress.done()

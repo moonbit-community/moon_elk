@@ -15,7 +15,7 @@ fn self_loop_port_restorer_port_constraints_from_string(
 ///|
 fn self_loop_port_restorer_compute_self_loop_types(
   sl_holder : SelfLoopHolder,
-) -> Unit {
+) -> Unit raise SelfLoopTypeException {
   for sl_loop in sl_holder.get_sl_hyper_loops() {
     sl_loop.compute_ports_per_side()
   }
@@ -44,7 +44,7 @@ fn self_loop_port_restorer_node_type_is_normal(node_type : NodeType) -> Bool {
 fn self_loop_port_restorer_process_node(
   sl_holder : SelfLoopHolder,
   monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise SelfLoopTypeException {
   let port_side_assigner = new_port_side_assigner()
   let port_restorer = new_port_restorer()
 
@@ -100,7 +100,13 @@ fn self_loop_port_restorer_process(
           internal_properties_self_loop_holder,
         ) {
         Some(sl_holder) =>
-          self_loop_port_restorer_process_node(sl_holder, Some(monitor))
+          self_loop_port_restorer_process_node(sl_holder, Some(monitor)) catch {
+            SelfLoopTypeException::IllegalArgumentException(message) => {
+              @core.layout_runtime_report_unsupported_configuration(message)
+              monitor.done()
+              return
+            }
+          }
         None => ()
       }
     }

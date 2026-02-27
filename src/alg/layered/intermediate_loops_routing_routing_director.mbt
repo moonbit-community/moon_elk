@@ -1,4 +1,23 @@
 ///|
+priv suberror RoutingDirectorException {
+  RoutingDirectorException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] routing_director_raise(
+  message : String,
+) -> T raise RoutingDirectorException {
+  raise RoutingDirectorException(message)
+}
+
+///|
+fn routing_director_exception_message(err : RoutingDirectorException) -> String {
+  match err {
+    RoutingDirectorException(message) => message
+  }
+}
+
+///|
 fn routing_director_port_side_equals(
   left : @core.PortSide,
   right : @core.PortSide,
@@ -16,30 +35,30 @@ fn routing_director_port_side_equals(
 ///|
 fn routing_director_require_leftmost_port(
   sl_loop : SelfHyperLoop,
-) -> SelfLoopPort {
+) -> SelfLoopPort raise RoutingDirectorException {
   match sl_loop.get_leftmost_port() {
     Some(port) => port
-    None => abort("self hyper loop has no leftmost port")
+    None => routing_director_raise("self hyper loop has no leftmost port")
   }
 }
 
 ///|
 fn routing_director_require_rightmost_port(
   sl_loop : SelfHyperLoop,
-) -> SelfLoopPort {
+) -> SelfLoopPort raise RoutingDirectorException {
   match sl_loop.get_rightmost_port() {
     Some(port) => port
-    None => abort("self hyper loop has no rightmost port")
+    None => routing_director_raise("self hyper loop has no rightmost port")
   }
 }
 
 ///|
 fn routing_director_require_self_loop_type(
   sl_loop : SelfHyperLoop,
-) -> SelfLoopType {
+) -> SelfLoopType raise RoutingDirectorException {
   match sl_loop.get_self_loop_type() {
     Some(self_loop_type) => self_loop_type
-    None => abort("self hyper loop type not computed")
+    None => routing_director_raise("self hyper loop type not computed")
   }
 }
 
@@ -96,7 +115,7 @@ fn RoutingDirector::sort_hyper_loop_port_lists(
 fn RoutingDirector::compute_occupied_port_sides(
   self : RoutingDirector,
   sl_loop : SelfHyperLoop,
-) -> Unit {
+) -> Unit raise RoutingDirectorException {
   ignore(self)
   let occupied_sides = sl_loop.get_occupied_port_sides()
   occupied_sides.clear()
@@ -121,7 +140,7 @@ fn RoutingDirector::assign_leftmost_rightmost_ports(
   sl_loop : SelfHyperLoop,
   leftmost_side : @core.PortSide,
   rightmost_side : @core.PortSide,
-) -> Unit {
+) -> Unit raise RoutingDirectorException {
   sl_loop.set_leftmost_port(
     Some(self.lowest_port_on_side(sl_loop, leftmost_side)),
   )
@@ -135,11 +154,11 @@ fn RoutingDirector::lowest_port_on_side(
   self : RoutingDirector,
   sl_loop : SelfHyperLoop,
   side : @core.PortSide,
-) -> SelfLoopPort {
+) -> SelfLoopPort raise RoutingDirectorException {
   ignore(self)
   let side_ports = sl_loop.get_sl_ports_by_side(side)
   if side_ports.is_empty() {
-    abort("missing side port")
+    routing_director_raise("missing side port")
   }
   let mut best = side_ports[0]
   for i in 1..<side_ports.length() {
@@ -156,11 +175,11 @@ fn RoutingDirector::highest_port_on_side(
   self : RoutingDirector,
   sl_loop : SelfHyperLoop,
   side : @core.PortSide,
-) -> SelfLoopPort {
+) -> SelfLoopPort raise RoutingDirectorException {
   ignore(self)
   let side_ports = sl_loop.get_sl_ports_by_side(side)
   if side_ports.is_empty() {
-    abort("missing side port")
+    routing_director_raise("missing side port")
   }
   let mut best = side_ports[0]
   for i in 1..<side_ports.length() {
@@ -176,7 +195,7 @@ fn RoutingDirector::highest_port_on_side(
 fn RoutingDirector::determine_one_side_loop_routes(
   self : RoutingDirector,
   sl_loop : SelfHyperLoop,
-) -> Unit {
+) -> Unit raise RoutingDirectorException {
   let side = sl_loop.get_sl_ports()[0].get_l_port().get_side()
   self.assign_leftmost_rightmost_ports(sl_loop, side, side)
 }
@@ -185,10 +204,10 @@ fn RoutingDirector::determine_one_side_loop_routes(
 fn RoutingDirector::determine_two_side_corner_loop_routes(
   self : RoutingDirector,
   sl_loop : SelfHyperLoop,
-) -> Unit {
+) -> Unit raise RoutingDirectorException {
   let sides = port_restorer_sorted_two_side_loop_port_sides(sl_loop)
   if sides.length() != 2 {
-    abort("two-side corner loop must occupy exactly two sides")
+    routing_director_raise("two-side corner loop must occupy exactly two sides")
   }
   self.assign_leftmost_rightmost_ports(sl_loop, sides[0], sides[1])
 }
@@ -197,7 +216,7 @@ fn RoutingDirector::determine_two_side_corner_loop_routes(
 fn RoutingDirector::determine_two_side_opposing_loop_routes(
   self : RoutingDirector,
   sl_loop : SelfHyperLoop,
-) -> Unit {
+) -> Unit raise RoutingDirectorException {
   let sides = []
   for
     side in [
@@ -211,7 +230,9 @@ fn RoutingDirector::determine_two_side_opposing_loop_routes(
     }
   }
   if sides.length() != 2 {
-    abort("two-side opposing loop must occupy exactly two sides")
+    routing_director_raise(
+      "two-side opposing loop must occupy exactly two sides",
+    )
   }
 
   let option_1_leftmost = self.lowest_port_on_side(sl_loop, sides[0])
@@ -243,7 +264,7 @@ fn RoutingDirector::determine_two_side_opposing_loop_routes(
 fn RoutingDirector::compute_missing_port_side(
   self : RoutingDirector,
   sl_loop : SelfHyperLoop,
-) -> @core.PortSide {
+) -> @core.PortSide raise RoutingDirectorException {
   ignore(self)
   for
     side in [
@@ -256,14 +277,14 @@ fn RoutingDirector::compute_missing_port_side(
       return side
     }
   }
-  abort("missing side not found")
+  routing_director_raise("missing side not found")
 }
 
 ///|
 fn RoutingDirector::determine_three_side_loop_routes(
   self : RoutingDirector,
   sl_loop : SelfHyperLoop,
-) -> Unit {
+) -> Unit raise RoutingDirectorException {
   let mut leftmost_side = @core.SideUndefined
   let mut rightmost_side = @core.SideUndefined
 
@@ -284,7 +305,8 @@ fn RoutingDirector::determine_three_side_loop_routes(
       leftmost_side = @core.PortSide::North
       rightmost_side = @core.PortSide::South
     }
-    @core.PortSide::SideUndefined => abort("invalid missing side")
+    @core.PortSide::SideUndefined =>
+      routing_director_raise("invalid missing side")
   }
 
   self.assign_leftmost_rightmost_ports(sl_loop, leftmost_side, rightmost_side)
@@ -294,7 +316,7 @@ fn RoutingDirector::determine_three_side_loop_routes(
 fn RoutingDirector::determine_four_side_loop_routes(
   self : RoutingDirector,
   sl_loop : SelfHyperLoop,
-) -> Unit {
+) -> Unit raise RoutingDirectorException {
   let sorted_ports = sl_loop.get_sl_ports()
   if sorted_ports.is_empty() {
     return
@@ -353,10 +375,10 @@ fn RoutingDirector::compute_penalties(
 ///|
 fn RoutingDirector::require_port_penalties(
   self : RoutingDirector,
-) -> Array[Int] {
+) -> Array[Int] raise RoutingDirectorException {
   match self.port_penalties {
     Some(penalties) => penalties
-    None => abort("port penalties not initialized")
+    None => routing_director_raise("port penalties not initialized")
   }
 }
 
@@ -366,7 +388,7 @@ fn RoutingDirector::compute_edge_penalty(
   sl_holder : SelfLoopHolder,
   leftmost_port : SelfLoopPort,
   rightmost_port : SelfLoopPort,
-) -> Int {
+) -> Int raise RoutingDirectorException {
   if self.port_penalties is None {
     self.compute_penalties(sl_holder)
   }
@@ -391,10 +413,10 @@ fn RoutingDirector::compute_edge_penalty(
 }
 
 ///|
-pub fn RoutingDirector::determine_loop_routes(
+fn RoutingDirector::determine_loop_routes_impl(
   self : RoutingDirector,
   sl_holder : SelfLoopHolder,
-) -> Unit {
+) -> Unit raise RoutingDirectorException {
   self.assign_port_ids(sl_holder.get_l_node().get_ports())
   self.sort_hyper_loop_port_lists(sl_holder)
 
@@ -411,4 +433,19 @@ pub fn RoutingDirector::determine_loop_routes(
   }
 
   self.port_penalties = None
+}
+
+///|
+pub fn RoutingDirector::determine_loop_routes(
+  self : RoutingDirector,
+  sl_holder : SelfLoopHolder,
+) -> Unit {
+  try self.determine_loop_routes_impl(sl_holder) catch {
+    err =>
+      @core.layout_runtime_report_unsupported_configuration(
+        routing_director_exception_message(err),
+      )
+  } noraise {
+    _ => ()
+  }
 }

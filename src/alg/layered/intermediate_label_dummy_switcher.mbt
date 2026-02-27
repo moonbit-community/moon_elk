@@ -4,6 +4,18 @@ pub let label_dummy_switcher_include_label : @graph.IProperty[Bool] = @graph.new
 )
 
 ///|
+priv suberror LabelDummySwitcherException {
+  LabelDummySwitcherException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] label_dummy_switcher_raise(
+  message : String,
+) -> T raise LabelDummySwitcherException {
+  raise LabelDummySwitcherException(message)
+}
+
+///|
 priv struct LabelDummySwitcherInfo {
   label_dummy : LNode
   mut placement_strategy : CenterEdgeLabelPlacementStrategy
@@ -116,51 +128,63 @@ fn label_dummy_switcher_is_vertical_layout(graph : LGraph) -> Bool {
 }
 
 ///|
-fn label_dummy_switcher_require_source(edge : LEdge) -> LPort {
+fn label_dummy_switcher_require_source(
+  edge : LEdge,
+) -> LPort raise LabelDummySwitcherException {
   match edge.get_source() {
     Some(value) => value
-    None => abort("edge has no source")
+    None => label_dummy_switcher_raise("edge has no source")
   }
 }
 
 ///|
-fn label_dummy_switcher_require_target(edge : LEdge) -> LPort {
+fn label_dummy_switcher_require_target(
+  edge : LEdge,
+) -> LPort raise LabelDummySwitcherException {
   match edge.get_target() {
     Some(value) => value
-    None => abort("edge has no target")
+    None => label_dummy_switcher_raise("edge has no target")
   }
 }
 
 ///|
-fn label_dummy_switcher_require_node(port : LPort) -> LNode {
+fn label_dummy_switcher_require_node(
+  port : LPort,
+) -> LNode raise LabelDummySwitcherException {
   match port.get_node() {
     Some(value) => value
-    None => abort("port has no owner node")
+    None => label_dummy_switcher_raise("port has no owner node")
   }
 }
 
 ///|
-fn label_dummy_switcher_require_layer(node : LNode) -> Layer {
+fn label_dummy_switcher_require_layer(
+  node : LNode,
+) -> Layer raise LabelDummySwitcherException {
   match node.get_layer() {
     Some(value) => value
-    None => abort("node has no layer")
+    None => label_dummy_switcher_raise("node has no layer")
   }
 }
 
 ///|
-fn label_dummy_switcher_require_first_incoming_edge(node : LNode) -> LEdge {
+fn label_dummy_switcher_require_first_incoming_edge(
+  node : LNode,
+) -> LEdge raise LabelDummySwitcherException {
   let incoming = node.get_incoming_edges()
   if incoming.is_empty() {
-    abort("node has no incoming edge")
+    label_dummy_switcher_raise("node has no incoming edge")
   }
   incoming[0]
 }
 
 ///|
-fn label_dummy_switcher_require_first_outgoing_edge(node : LNode) -> LEdge {
+fn label_dummy_switcher_require_first_outgoing_edge(
+  node : LNode,
+) -> LEdge raise LabelDummySwitcherException {
   let outgoing = node.get_outgoing_edges()
   if outgoing.is_empty() {
-    abort("node has no outgoing edge")
+    label_dummy_switcher_raise("node has no outgoing edge")
   }
   outgoing[0]
 }
@@ -169,13 +193,13 @@ fn label_dummy_switcher_require_first_outgoing_edge(node : LNode) -> LEdge {
 fn label_dummy_switcher_require_port_by_type(
   node : LNode,
   port_type : PortType,
-) -> LPort {
+) -> LPort raise LabelDummySwitcherException {
   let ports = node.get_ports_by_type(port_type)
   if ports.is_empty() {
     if label_dummy_switcher_port_type_is_input(port_type) {
-      abort("node has no input port")
+      label_dummy_switcher_raise("node has no input port")
     } else {
-      abort("node has no output port")
+      label_dummy_switcher_raise("node has no output port")
     }
   }
   ports[0]
@@ -239,7 +263,7 @@ fn label_dummy_switcher_assign_ids_to_layers(layered_graph : LGraph) -> Unit {
 ///|
 fn label_dummy_switcher_gather_left_long_edge_dummies(
   info : LabelDummySwitcherInfo,
-) -> Unit {
+) -> Unit raise LabelDummySwitcherException {
   let mut source = info.label_dummy
   while true {
     source = label_dummy_switcher_require_node(
@@ -258,7 +282,7 @@ fn label_dummy_switcher_gather_left_long_edge_dummies(
 ///|
 fn label_dummy_switcher_gather_right_long_edge_dummies(
   info : LabelDummySwitcherInfo,
-) -> Unit {
+) -> Unit raise LabelDummySwitcherException {
   let mut target = info.label_dummy
   while true {
     target = label_dummy_switcher_require_node(
@@ -278,7 +302,7 @@ fn label_dummy_switcher_gather_right_long_edge_dummies(
 fn label_dummy_switcher_new_info(
   label_dummy : LNode,
   default_placement_strategy : CenterEdgeLabelPlacementStrategy,
-) -> LabelDummySwitcherInfo {
+) -> LabelDummySwitcherInfo raise LabelDummySwitcherException {
   let info : LabelDummySwitcherInfo = {
     label_dummy,
     placement_strategy: default_placement_strategy,
@@ -330,7 +354,7 @@ fn label_dummy_switcher_new_info(
 fn label_dummy_switcher_gather_label_dummy_infos(
   layered_graph : LGraph,
   default_placement_strategy : CenterEdgeLabelPlacementStrategy,
-) -> Array[LabelDummySwitcherInfo] {
+) -> Array[LabelDummySwitcherInfo] raise LabelDummySwitcherException {
   let infos = []
   for layer in layered_graph.get_layers() {
     for node in layer.get_nodes() {
@@ -406,7 +430,7 @@ fn label_dummy_switcher_ith_dummy_node(
 fn label_dummy_switcher_compute_layer_width_sums(
   info : LabelDummySwitcherInfo,
   layer_widths : Array[Double],
-) -> Array[Double] {
+) -> Array[Double] raise LabelDummySwitcherException {
   let graph = info.label_dummy.get_graph()
   let edge_node_spacing = graph.get_property_double(
       layered_options_spacing_edge_node_between_layers,
@@ -464,7 +488,7 @@ fn label_dummy_switcher_find_widest_layer_target_id(
 fn label_dummy_switcher_find_center_layer_target_id(
   info : LabelDummySwitcherInfo,
   layer_widths : Array[Double],
-) -> Int {
+) -> Int raise LabelDummySwitcherException {
   let layer_width_sums = label_dummy_switcher_compute_layer_width_sums(
     info, layer_widths,
   )
@@ -490,7 +514,7 @@ fn label_dummy_switcher_find_median_layer_target_id(
 ///|
 fn label_dummy_switcher_is_part_of_reversed_edge(
   info : LabelDummySwitcherInfo,
-) -> Bool {
+) -> Bool raise LabelDummySwitcherException {
   let incoming = label_dummy_switcher_require_first_incoming_edge(
     info.label_dummy,
   )
@@ -505,7 +529,7 @@ fn label_dummy_switcher_is_part_of_reversed_edge(
 fn label_dummy_switcher_find_end_layer_target_id(
   info : LabelDummySwitcherInfo,
   head_layer : Bool,
-) -> Int {
+) -> Int raise LabelDummySwitcherException {
   let reversed = label_dummy_switcher_is_part_of_reversed_edge(info)
   if (head_layer && !reversed) || (!head_layer && reversed) {
     info.rightmost_layer_id
@@ -517,7 +541,7 @@ fn label_dummy_switcher_find_end_layer_target_id(
 ///|
 fn label_dummy_switcher_set_end_layer_node_alignment(
   info : LabelDummySwitcherInfo,
-) -> Unit {
+) -> Unit raise LabelDummySwitcherException {
   let is_head_label = label_dummy_switcher_strategy_equals(
     info.placement_strategy,
     CenterEdgeLabelPlacementStrategy::HeadLayer,
@@ -541,7 +565,7 @@ fn label_dummy_switcher_set_end_layer_node_alignment(
 fn label_dummy_switcher_swap_nodes(
   label_dummy : LNode,
   long_edge_dummy : LNode,
-) -> Unit {
+) -> Unit raise LabelDummySwitcherException {
   let layer_1 = label_dummy_switcher_require_layer(label_dummy)
   let layer_2 = label_dummy_switcher_require_layer(long_edge_dummy)
 
@@ -610,9 +634,9 @@ fn label_dummy_switcher_assign_layer(
   info : LabelDummySwitcherInfo,
   target_layer_index : Int,
   layer_widths : Array[Double],
-) -> Unit {
+) -> Unit raise LabelDummySwitcherException {
   if target_layer_index >= info.label_dummy.get_graph().get_layers().length() {
-    abort("target layer index is out of bounds")
+    label_dummy_switcher_raise("target layer index is out of bounds")
   }
 
   if target_layer_index !=
@@ -643,9 +667,9 @@ fn label_dummy_switcher_assign_layer(
 ///|
 fn label_dummy_switcher_do_update_long_edge_label_dummy_info(
   label_dummy : LNode,
-  next_element : (LNode) -> LNode,
+  next_element : (LNode) -> LNode raise LabelDummySwitcherException,
   value : Bool,
-) -> Unit {
+) -> Unit raise LabelDummySwitcherException {
   let mut long_edge_dummy = next_element(label_dummy)
   while label_dummy_switcher_node_type_is_long_edge(long_edge_dummy.get_type()) {
     long_edge_dummy.set_property_bool(
@@ -658,10 +682,10 @@ fn label_dummy_switcher_do_update_long_edge_label_dummy_info(
 ///|
 fn label_dummy_switcher_update_long_edge_source_label_dummy_info(
   info : LabelDummySwitcherInfo,
-) -> Unit {
+) -> Unit raise LabelDummySwitcherException {
   label_dummy_switcher_do_update_long_edge_label_dummy_info(
     info.label_dummy,
-    node => {
+    fn(node : LNode) -> LNode raise LabelDummySwitcherException {
       label_dummy_switcher_require_node(
         label_dummy_switcher_require_source(
           label_dummy_switcher_require_first_incoming_edge(node),
@@ -693,7 +717,7 @@ fn label_dummy_switcher_sort_infos_descending_by_width(
 fn label_dummy_switcher_assign_to_wider_layer(
   info : LabelDummySwitcherInfo,
   layer_widths : Array[Double],
-) -> Bool {
+) -> Bool raise LabelDummySwitcherException {
   let dummy_width = info.label_dummy.get_size().x
   let layers = info.label_dummy.get_graph().get_layers()
   let start_layer_index = info.leftmost_layer_id
@@ -711,7 +735,7 @@ fn label_dummy_switcher_assign_to_wider_layer(
 fn label_dummy_switcher_perform_trivial_assignments(
   infos : Array[LabelDummySwitcherInfo],
   layer_widths : Array[Double],
-) -> Array[LabelDummySwitcherInfo] {
+) -> Array[LabelDummySwitcherInfo] raise LabelDummySwitcherException {
   let remaining = []
   for info in infos {
     if info.leftmost_layer_id == info.rightmost_layer_id {
@@ -781,7 +805,7 @@ fn label_dummy_switcher_find_potentially_widest_layer(
 fn label_dummy_switcher_compute_space_efficient_assignment(
   infos : Array[LabelDummySwitcherInfo],
   layer_widths : Array[Double],
-) -> Unit {
+) -> Unit raise LabelDummySwitcherException {
   let non_trivial_labels = label_dummy_switcher_perform_trivial_assignments(
     infos, layer_widths,
   )
@@ -808,7 +832,7 @@ fn label_dummy_switcher_process_strategy(
   infos : Array[LabelDummySwitcherInfo],
   strategy : CenterEdgeLabelPlacementStrategy,
   layer_widths : Array[Double],
-) -> Unit {
+) -> Unit raise LabelDummySwitcherException {
   let strategy_infos = label_dummy_switcher_collect_infos_for_strategy(
     infos, strategy,
   )
@@ -880,44 +904,53 @@ fn label_dummy_switcher_process(
   }
   ignore(monitor.begin("Label dummy switching", 1.0))
 
-  let default_placement_strategy = label_dummy_switcher_parse_strategy(
-    layered_graph.get_property_string(
-      layered_options_edge_labels_center_label_placement_strategy,
-    ),
-  )
+  try {
+    let default_placement_strategy = label_dummy_switcher_parse_strategy(
+      layered_graph.get_property_string(
+        layered_options_edge_labels_center_label_placement_strategy,
+      ),
+    )
 
-  label_dummy_switcher_assign_ids_to_layers(layered_graph)
-  let infos = label_dummy_switcher_gather_label_dummy_infos(
-    layered_graph, default_placement_strategy,
-  )
+    label_dummy_switcher_assign_ids_to_layers(layered_graph)
+    let infos = label_dummy_switcher_gather_label_dummy_infos(
+      layered_graph, default_placement_strategy,
+    )
 
-  let layer_widths = []
-  for _ in 0..<layered_graph.get_layers().length() {
-    layer_widths.push(0.0)
-  }
-
-  let mut has_size_based_strategy = false
-  for strategy in label_dummy_switcher_strategy_values() {
-    if strategy.uses_label_size_information() &&
-      !label_dummy_switcher_collect_infos_for_strategy(infos, strategy).is_empty() {
-      has_size_based_strategy = true
-      break
+    let layer_widths = []
+    for _ in 0..<layered_graph.get_layers().length() {
+      layer_widths.push(0.0)
     }
-  }
-  if has_size_based_strategy {
-    label_dummy_switcher_calculate_layer_widths(layered_graph, layer_widths)
-  }
 
-  for strategy in label_dummy_switcher_strategy_values() {
-    if !strategy.uses_label_size_information() {
-      label_dummy_switcher_process_strategy(infos, strategy, layer_widths)
+    let mut has_size_based_strategy = false
+    for strategy in label_dummy_switcher_strategy_values() {
+      if strategy.uses_label_size_information() &&
+        !label_dummy_switcher_collect_infos_for_strategy(infos, strategy).is_empty() {
+        has_size_based_strategy = true
+        break
+      }
     }
-  }
+    if has_size_based_strategy {
+      label_dummy_switcher_calculate_layer_widths(layered_graph, layer_widths)
+    }
 
-  for strategy in label_dummy_switcher_strategy_values() {
-    if strategy.uses_label_size_information() {
-      label_dummy_switcher_process_strategy(infos, strategy, layer_widths)
+    for strategy in label_dummy_switcher_strategy_values() {
+      if !strategy.uses_label_size_information() {
+        label_dummy_switcher_process_strategy(infos, strategy, layer_widths)
+      }
     }
+
+    for strategy in label_dummy_switcher_strategy_values() {
+      if strategy.uses_label_size_information() {
+        label_dummy_switcher_process_strategy(infos, strategy, layer_widths)
+      }
+    }
+  } catch {
+    LabelDummySwitcherException(message) =>
+      @core.layout_runtime_report_unsupported_configuration(
+        "java.lang.IllegalStateException: " + message,
+      )
+  } noraise {
+    _ => ()
   }
 
   monitor.done()

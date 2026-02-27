@@ -1,4 +1,16 @@
 ///|
+priv suberror SingleEdgeGraphWrapperException {
+  SingleEdgeGraphWrapperException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] single_edge_graph_wrapper_raise(
+  message : String,
+) -> T raise SingleEdgeGraphWrapperException {
+  raise SingleEdgeGraphWrapperException(message)
+}
+
+///|
 fn single_edge_graph_wrapper_cutting_strategy_from_string(
   value : String,
 ) -> CuttingStrategy {
@@ -114,7 +126,7 @@ fn single_edge_graph_wrapper_perform_cuts(
   graph : LGraph,
   graph_stats : GraphStats,
   cuts : Array[Int],
-) -> Unit {
+) -> Unit raise SingleEdgeGraphWrapperException {
   if cuts.is_empty() {
     return
   }
@@ -146,7 +158,14 @@ fn single_edge_graph_wrapper_perform_cuts(
           for edge in incoming_edges {
             single_edge_graph_wrapper_reverse_edge(edge, graph)
             graph.set_property_bool(internal_properties_cyclic, true)
-            ignore(cutting_utils_insert_dummies(graph, edge, 1))
+            ignore(
+              try cutting_utils_insert_dummies(graph, edge, 1) catch {
+                CuttingUtilsException(message) =>
+                  single_edge_graph_wrapper_raise(message)
+              } noraise {
+                value => value
+              },
+            )
           }
         }
       }
@@ -178,50 +197,59 @@ fn single_edge_graph_wrapper_process(
   }
   ignore(monitor.begin("Path-Like Graph Wrapping", 1.0))
 
-  if graph.get_layers().is_empty() {
-    monitor.done()
-    return
-  }
-
-  let graph_stats = new_graph_stats(graph)
-
-  let sum_width = graph_stats.get_max_width() *
-    graph_stats.longest_path.to_double()
-  let current_ar = sum_width / graph_stats.get_max_width()
-  if graph_stats.dar > current_ar {
-    monitor.done()
-    return
-  }
-
-  let cutting_strategy = single_edge_graph_wrapper_cutting_strategy_from_string(
-    graph.get_property_string(layered_options_wrapping_cutting_strategy),
-  )
-  let calculator = match cutting_strategy {
-    CuttingStrategy::Manual => new_manual_cut_index_calculator()
-    CuttingStrategy::Ard => new_ard_cut_index_heuristic()
-    _ => new_msd_cut_index_heuristic()
-  }
-
-  let mut cuts = calculator.get_cut_indexes(graph, graph_stats)
-
-  if !calculator.guarantee_valid() {
-    let validify_strategy = single_edge_graph_wrapper_validify_strategy_from_string(
-      graph.get_property_string(layered_options_wrapping_validify_strategy),
-    )
-    match validify_strategy {
-      ValidifyStrategy::LookBack =>
-        cuts = single_edge_graph_wrapper_validify_indexes_looking_back(
-          graph_stats, cuts,
-        )
-      ValidifyStrategy::Greedy =>
-        cuts = single_edge_graph_wrapper_validify_indexes_greedily(
-          graph_stats, cuts,
-        )
-      _ => ()
+  try {
+    if graph.get_layers().is_empty() {
+      monitor.done()
+      return
     }
-  }
 
-  single_edge_graph_wrapper_perform_cuts(graph, graph_stats, cuts)
+    let graph_stats = new_graph_stats(graph)
+
+    let sum_width = graph_stats.get_max_width() *
+      graph_stats.longest_path.to_double()
+    let current_ar = sum_width / graph_stats.get_max_width()
+    if graph_stats.dar > current_ar {
+      monitor.done()
+      return
+    }
+
+    let cutting_strategy = single_edge_graph_wrapper_cutting_strategy_from_string(
+      graph.get_property_string(layered_options_wrapping_cutting_strategy),
+    )
+    let calculator = match cutting_strategy {
+      CuttingStrategy::Manual => new_manual_cut_index_calculator()
+      CuttingStrategy::Ard => new_ard_cut_index_heuristic()
+      _ => new_msd_cut_index_heuristic()
+    }
+
+    let mut cuts = calculator.get_cut_indexes(graph, graph_stats)
+
+    if !calculator.guarantee_valid() {
+      let validify_strategy = single_edge_graph_wrapper_validify_strategy_from_string(
+        graph.get_property_string(layered_options_wrapping_validify_strategy),
+      )
+      match validify_strategy {
+        ValidifyStrategy::LookBack =>
+          cuts = single_edge_graph_wrapper_validify_indexes_looking_back(
+            graph_stats, cuts,
+          )
+        ValidifyStrategy::Greedy =>
+          cuts = single_edge_graph_wrapper_validify_indexes_greedily(
+            graph_stats, cuts,
+          )
+        _ => ()
+      }
+    }
+
+    single_edge_graph_wrapper_perform_cuts(graph, graph_stats, cuts)
+  } catch {
+    SingleEdgeGraphWrapperException(message) =>
+      @core.layout_runtime_report_unsupported_configuration(
+        "java.lang.IllegalStateException: " + message,
+      )
+  } noraise {
+    _ => ()
+  }
 
   monitor.done()
 }

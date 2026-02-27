@@ -37,7 +37,12 @@ fn model_order_barycenter_associations_for(
       associations[node_handle] = []
       match associations.get(node_handle) {
         Some(values) => values
-        None => abort("association map entry initialization failed")
+        None => {
+          @core.layout_runtime_report_unsupported_configuration(
+            "association map entry initialization failed",
+          )
+          []
+        }
       }
     }
   }

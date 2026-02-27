@@ -2,6 +2,18 @@
 pub let core_debug_grandom_ui_status_error : Int = 4
 
 ///|
+priv suberror CoreDebugGrandomExecutableExtensionFactoryException {
+  CoreDebugGrandomExecutableExtensionFactoryException(String)
+} derive(Show, ToJson)
+
+///|
+fn core_debug_grandom_executable_extension_factory_raise_unit(
+  message : String,
+) -> Unit raise CoreDebugGrandomExecutableExtensionFactoryException {
+  raise CoreDebugGrandomExecutableExtensionFactoryException(message)
+}
+
+///|
 pub(all) struct CoreDebugGRandomUiStatus {
   severity : Int
   symbolic_name : String
@@ -75,10 +87,16 @@ pub fn CoreDebugGRandomExecutableExtensionFactory::set_initialization_data(
     None => ()
   }
   if self.clazz_name is None {
-    abort(
-      "couldn't handle passed data : " +
-      core_debug_grandom_initialization_data_to_debug_string(data),
-    )
+    try
+      core_debug_grandom_executable_extension_factory_raise_unit(
+        "couldn't handle passed data : " +
+        core_debug_grandom_initialization_data_to_debug_string(data),
+      )
+    catch {
+      err => ignore(err)
+    } noraise {
+      _ => ()
+    }
   }
   self.config = config
 }

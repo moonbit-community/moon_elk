@@ -8,6 +8,23 @@ let java_random_addend = 11L
 let java_random_mask = 281474976710655L
 
 ///|
+priv suberror JavaRandomException {
+  JavaRandomException(String)
+} derive(Show, ToJson)
+
+///|
+fn java_random_raise_unit(message : String) -> Unit raise JavaRandomException {
+  raise JavaRandomException(message)
+}
+
+///|
+fn java_random_exception_message(err : JavaRandomException) -> String {
+  match err {
+    JavaRandomException(message) => message
+  }
+}
+
+///|
 fn java_random_scramble_seed(seed : Int64) -> Int64 {
   (seed ^ java_random_multiplier) & java_random_mask
 }
@@ -72,7 +89,15 @@ pub fn JavaRandom::double(self : JavaRandom) -> Double {
 ///|
 pub fn JavaRandom::int(self : JavaRandom, limit : Int) -> Int {
   if limit <= 0 {
-    abort("limit must be positive")
+    try java_random_raise_unit("bound must be positive") catch {
+      err =>
+        layout_runtime_report_unsupported_configuration(
+          java_random_exception_message(err),
+        )
+    } noraise {
+      _ => ()
+    }
+    return 0
   }
   if (limit & -limit) == limit {
     let product = Int64::from_int(limit) * Int64::from_int(self.next_bits(31))
@@ -92,5 +117,5 @@ pub fn JavaRandom::int(self : JavaRandom, limit : Int) -> Int {
       return value
     }
   }
-  abort("unreachable")
+  0
 }

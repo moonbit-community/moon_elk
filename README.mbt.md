@@ -1,24 +1,61 @@
 # Milky2018/moon_elk
 
-MoonBit port of Eclipse Layout Kernel (ELK).
+A MoonBit port of Eclipse Layout Kernel (ELK).
 
 - Repository: https://github.com/moonbit-community/moon_elk.git
+- Current version: `0.1.6`
 - Keywords: `elk`, `layout`
 
-## Add Imports
+## Imports
 
-In your package `moon.pkg`, import the packages you need:
+In `moon.pkg`, import the packages you use:
 
 ```moonbit
 import {
+  "moonbitlang/core/json" @json,
+  "Milky2018/moon_elk/core" @elk_core,
   "Milky2018/moon_elk/graph" @elk_graph,
   "Milky2018/moon_elk/graph/json" @elk_graph_json,
 }
 ```
 
-## Quick Start
+## Layout JSON with Core Engine
 
-Build a graph and export it to ELK JSON:
+```moonbit
+pub fn layout_json(input : String) -> String raise {
+  let graph = @json.parse(input)
+  @elk_core.new_elk_engine().layout(graph~).stringify()
+}
+```
+
+### Minimal Input Example
+
+```json
+{
+  "id": "root",
+  "layoutOptions": {
+    "elk.algorithm": "layered",
+    "elk.direction": "DOWN"
+  },
+  "children": [
+    { "id": "n1", "width": 80, "height": 40 },
+    { "id": "n2", "width": 80, "height": 40 }
+  ],
+  "edges": [
+    { "id": "e1", "sources": ["n1"], "targets": ["n2"] }
+  ]
+}
+```
+
+```moonbit
+pub fn run_minimal_example() -> String raise {
+  let input =
+    "{\"id\":\"root\",\"layoutOptions\":{\"elk.algorithm\":\"layered\",\"elk.direction\":\"DOWN\"},\"children\":[{\"id\":\"n1\",\"width\":80,\"height\":40},{\"id\":\"n2\",\"width\":80,\"height\":40}],\"edges\":[{\"id\":\"e1\",\"sources\":[\"n1\"],\"targets\":[\"n2\"]}]}"
+  layout_json(input)
+}
+```
+
+## Build Graph Model and Export JSON
 
 ```moonbit
 fn build_and_export() -> String {
@@ -34,7 +71,7 @@ fn build_and_export() -> String {
 }
 ```
 
-Import ELK JSON into ELK graph model:
+## Import JSON into Graph Model
 
 ```moonbit
 fn import_graph(text : String) -> Int {
@@ -42,17 +79,32 @@ fn import_graph(text : String) -> Int {
 }
 ```
 
-## Main Packages
+## Algorithm Support (Core Engine)
 
-- `Milky2018/moon_elk/graph`: ELK graph model (nodes, ports, edges, labels, properties).
-- `Milky2018/moon_elk/graph/json`: JSON import/export for ELK graphs.
-- `Milky2018/moon_elk/core`: layout options, metadata, and core layout infrastructure.
-- `Milky2018/moon_elk/core/service`: service-style layout orchestration.
-- `Milky2018/moon_elk/alg/layered`: layered layout algorithm.
-- `Milky2018/moon_elk/alg/force`: force-directed layout algorithm.
-- `Milky2018/moon_elk/alg/radial`: radial layout algorithm.
-- `Milky2018/moon_elk/alg/mrtree`: tree layout algorithm.
-- `Milky2018/moon_elk/alg/rectpacking`: rectangle packing layout algorithm.
-- `Milky2018/moon_elk/alg/vertiflex`: y-constraint tree layout algorithm.
-- `Milky2018/moon_elk/alg/disco`: disconnected components compaction.
-- `Milky2018/moon_elk/graph/text` and `Milky2018/moon_elk/graph/json/text`: textual graph formats.
+Supported by `new_elk_engine().layout`:
+
+- `layered`
+- `force`
+- `stress`
+- `radial`
+- `mrtree`
+- `rectpacking`
+- `sporeOverlap`
+- `sporeCompaction`
+- `fixed`
+- `box`
+- `random`
+- `vertiflex`
+
+Not supported (returns algorithm-not-found style errors):
+
+- `disco`
+- `topdownpacking`
+- `libavoid`
+- Graphviz family (`dot`, `neato`, `fdp`, `sfdp`, `twopi`, `circo`)
+
+## Coordinate Semantics for Edges
+
+ELK edge `sections[*].startPoint/endPoint/bendPoints` are in the coordinate system of `edge.container` (local coordinates), not always root-absolute coordinates.
+
+When rendering, convert edge points to absolute coordinates by adding the accumulated parent offsets of `edge.container`.

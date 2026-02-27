@@ -4,6 +4,25 @@ pub struct ElkGraphImporter {
 }
 
 ///|
+pub suberror ForceImportException {
+  UnsupportedGraph(String)
+} derive(Show, ToJson)
+
+///|
+fn force_import_raise_unsupported_graph(
+  message : String,
+) -> Unit raise ForceImportException {
+  raise ForceImportException::UnsupportedGraph(message)
+}
+
+///|
+pub fn force_import_exception_message(err : ForceImportException) -> String {
+  match err {
+    ForceImportException::UnsupportedGraph(message) => message
+  }
+}
+
+///|
 pub fn new_elk_graph_importer() -> ElkGraphImporter {
   { _dummy: () }
 }
@@ -441,15 +460,37 @@ fn force_transform_edges(
   fgraph : FGraph,
   elem_map : Map[@graph.ElkNode, FNode],
   graph_edge_labels_inline : Bool,
-) -> Unit {
+) -> Unit raise ForceImportException {
   for edge in @graph.node_contained_edges(parent_node) {
     let sources = @graph.edge_sources(edge)
     let targets = @graph.edge_targets(edge)
     if sources.length() != 1 || targets.length() != 1 {
-      abort("Graph must not contain hyperedges.")
+      force_import_raise_unsupported_graph("Graph must not contain hyperedges.")
     }
-    let source_node = @graph.connectable_shape_to_node(Some(sources[0]))
-    let target_node = @graph.connectable_shape_to_node(Some(targets[0]))
+    let source_node = try
+      @graph.connectable_shape_to_node(Some(sources[0]))
+    catch {
+      _ => {
+        force_import_raise_unsupported_graph(
+          "Edge source shape must be attached to a node.",
+        )
+        @graph.create_node(None)
+      }
+    } noraise {
+      value => value
+    }
+    let target_node = try
+      @graph.connectable_shape_to_node(Some(targets[0]))
+    catch {
+      _ => {
+        force_import_raise_unsupported_graph(
+          "Edge target shape must be attached to a node.",
+        )
+        @graph.create_node(None)
+      }
+    } noraise {
+      value => value
+    }
     if source_node == target_node {
       continue
     }
@@ -542,7 +583,7 @@ fn force_transform_edges(
 pub fn ElkGraphImporter::import_graph(
   self : ElkGraphImporter,
   graph : @graph.ElkNode,
-) -> FGraph {
+) -> FGraph raise ForceImportException {
   ignore(self)
   let fgraph = new_fgraph()
   let graph_edge_labels_inline = force_copy_graph_properties(graph, fgraph)
@@ -669,7 +710,19 @@ pub fn ElkGraphImporter::apply_layout(
 pub fn elk_graph_importer_as_igraph_importer(
   importer : ElkGraphImporter,
 ) -> IGraphImporter[@graph.ElkNode] {
-  new_igraph_importer(graph => importer.import_graph(graph), force_graph => {
-    importer.apply_layout(force_graph)
-  })
+  new_igraph_importer(
+    graph => {
+      try importer.import_graph(graph) catch {
+        err => {
+          @core.layout_runtime_report_unsupported_graph(
+            force_import_exception_message(err),
+          )
+          new_fgraph()
+        }
+      } noraise {
+        imported => imported
+      }
+    },
+    force_graph => importer.apply_layout(force_graph),
+  )
 }

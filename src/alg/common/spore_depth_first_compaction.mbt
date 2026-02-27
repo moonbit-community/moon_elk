@@ -36,7 +36,12 @@ fn depth_first_compaction_fuzzy_compare(left : Double, right : Double) -> Int {
 fn depth_first_compaction_svg_get() -> SvgImage {
   match depth_first_compaction_svg.val {
     Some(svg) => svg
-    None => abort("DepthFirstCompaction is not initialized")
+    None => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "DepthFirstCompaction is not initialized",
+      )
+      new_svg_image(None)
+    }
   }
 }
 
@@ -44,7 +49,12 @@ fn depth_first_compaction_svg_get() -> SvgImage {
 fn depth_first_compaction_root_get() -> Tree[Node] {
   match depth_first_compaction_root.val {
     Some(root) => root
-    None => abort("DepthFirstCompaction root is not initialized")
+    None => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "DepthFirstCompaction root is not initialized",
+      )
+      new_tree(new_node(@core.new_kvector(), @core.new_elk_rectangle()))
+    }
   }
 }
 

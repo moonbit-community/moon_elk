@@ -45,9 +45,13 @@ fn straight_line_edge_router_route_edges(node : @graph.ElkNode) -> Unit {
     if source is PortShape(_) {
       continue
     }
-    let target = @graph.connectable_shape_to_node(
-      Some(@graph.edge_targets(edge)[0]),
-    )
+    let target = try
+      @graph.connectable_shape_to_node(Some(@graph.edge_targets(edge)[0]))
+    catch {
+      _ => continue
+    } noraise {
+      value => value
+    }
     if @graph.node_parent(node) == @graph.node_parent(target) {
       let mut source_x = @graph.node_x(node) + @graph.node_width(node) / 2.0
       let mut source_y = @graph.node_y(node) + @graph.node_height(node) / 2.0
@@ -143,7 +147,12 @@ pub fn new_radial_straight_line_edge_router_layout_phase() -> @core.ILayoutProce
       }
       let root = match radial_internal_root(graph) {
         Some(root_node) => root_node
-        None => abort("radial root node is missing")
+        None => {
+          @core.layout_runtime_report_unsupported_configuration(
+            "radial root node is missing",
+          )
+          graph
+        }
       }
       new_straight_line_edge_router().route_edges(root)
       match progress_monitor {

@@ -13,6 +13,18 @@ pub struct ElkLayeredTestExecutionState {
 }
 
 ///|
+pub suberror ElkLayeredTestExecutionException {
+  ElkLayeredTestExecutionException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] elk_layered_test_execution_raise(
+  message : String,
+) -> T raise ElkLayeredTestExecutionException {
+  raise ElkLayeredTestExecutionException(message)
+}
+
+///|
 fn elk_layered_resolve_monitor(
   monitor : @core.IElkProgressMonitor?,
 ) -> @core.IElkProgressMonitor {
@@ -707,7 +719,7 @@ fn elk_layered_collect_all_graphs_bottom_up(root : LGraph) -> Array[LGraph] {
   while !continue_searching_these_graphs.is_empty() {
     let next_graph = match continue_searching_these_graphs.pop() {
       Some(graph) => graph
-      None => abort("elk layered graph stack unexpectedly empty")
+      None => break
     }
     for node in next_graph.get_layerless_nodes() {
       if elk_layered_has_nested_graph(node) {
@@ -742,11 +754,12 @@ fn elk_layered_review_and_correct_hierarchical_processors(
       layered_options_crossing_minimization_strategy,
     )
     if child_crossing_strategy != parent_crossing_strategy {
-      abort(
+      @core.layout_runtime_report_unsupported_configuration(
         "org.eclipse.elk.core.UnsupportedGraphException: The hierarchy aware processor " +
         child_crossing_strategy +
         " in a child graph is only allowed if the root graph specifies the same hierarchical processor.",
       )
+      return
     }
   }
 
@@ -1168,9 +1181,9 @@ pub fn ElkLayered::run_layout_test_until(
 pub fn ElkLayered::run_layout_test_step(
   self : ElkLayered,
   state : ElkLayeredTestExecutionState,
-) -> Unit {
+) -> Unit raise ElkLayeredTestExecutionException {
   if self.is_layout_test_finished(state) {
-    abort("Current layout test run has finished.")
+    elk_layered_test_execution_raise("Current layout test run has finished.")
   }
   if state.graphs.is_empty() {
     return

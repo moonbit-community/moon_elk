@@ -23,7 +23,12 @@ fn spore_min_st_add_node(
   for child in source.children {
     let mapped = match spore_kvector_node_find(node_map, child.node) {
       Some(node) => node
-      None => abort("Spore MinST conversion failed: missing mapped child node")
+      None => {
+        @core.layout_runtime_report_unsupported_configuration(
+          "Spore MinST conversion failed: missing mapped child node",
+        )
+        continue
+      }
     }
     let converted = @common.new_tree(mapped)
     target.children.push(converted)
@@ -42,7 +47,12 @@ pub fn spore_min_st_convert(
   }
   let root = match spore_kvector_node_find(node_map, tree.node) {
     Some(node) => @common.new_tree(node)
-    None => abort("Spore MinST conversion failed: missing mapped root node")
+    None => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "Spore MinST conversion failed: missing mapped root node",
+      )
+      return
+    }
   }
   spore_min_st_add_node(node_map, root, tree)
   graph.tree = Some(root)

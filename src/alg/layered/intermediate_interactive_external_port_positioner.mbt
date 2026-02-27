@@ -2,6 +2,27 @@
 let interactive_external_port_positioner_arbitrary_spacing = 10.0
 
 ///|
+priv suberror InteractiveExternalPortPositionerException {
+  InteractiveExternalPortPositionerException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] interactive_external_port_positioner_raise(
+  message : String,
+) -> T raise InteractiveExternalPortPositionerException {
+  raise InteractiveExternalPortPositionerException(message)
+}
+
+///|
+fn interactive_external_port_positioner_exception_message(
+  err : InteractiveExternalPortPositionerException,
+) -> String {
+  match err {
+    InteractiveExternalPortPositionerException(message) => message
+  }
+}
+
+///|
 fn interactive_external_port_positioner_min(
   left : Double,
   right : Double,
@@ -170,10 +191,12 @@ fn interactive_external_port_positioner_find_y_by_source(
 ///|
 fn interactive_external_port_positioner_find_north_south_port_x_coordinate(
   dummy : LNode,
-) -> Double? {
+) -> Double? raise InteractiveExternalPortPositionerException {
   let ports = dummy.get_ports()
   if ports.length() != 1 {
-    abort("external port dummies must have exactly one port")
+    interactive_external_port_positioner_raise(
+      "external port dummies must have exactly one port",
+    )
   }
 
   let port = ports[0]
@@ -181,7 +204,7 @@ fn interactive_external_port_positioner_find_north_south_port_x_coordinate(
   let incoming_edges = port.get_incoming_edges()
 
   if !outgoing_edges.is_empty() && !incoming_edges.is_empty() {
-    abort(
+    interactive_external_port_positioner_raise(
       "Interactive layout does not support NORTH/SOUTH ports with incoming _and_ outgoing edges.",
     )
   }
@@ -238,10 +261,10 @@ fn interactive_external_port_positioner_find_north_south_port_x_coordinate(
 }
 
 ///|
-fn interactive_external_port_positioner_process(
+fn interactive_external_port_positioner_process_impl(
   layered_graph : LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise InteractiveExternalPortPositionerException {
   ignore(progress_monitor)
 
   let graph_properties = layered_graph.get_property_graph_properties_array(
@@ -363,10 +386,29 @@ fn interactive_external_port_positioner_process(
         }
       }
       _ =>
-        abort(
+        interactive_external_port_positioner_raise(
           "The node type is not supported by the InteractiveExternalPortPositioner",
         )
     }
+  }
+}
+
+///|
+fn interactive_external_port_positioner_process(
+  layered_graph : LGraph,
+  progress_monitor : @core.IElkProgressMonitor?,
+) -> Unit {
+  try
+    interactive_external_port_positioner_process_impl(
+      layered_graph, progress_monitor,
+    )
+  catch {
+    err =>
+      @core.layout_runtime_report_unsupported_configuration(
+        interactive_external_port_positioner_exception_message(err),
+      )
+  } noraise {
+    _ => ()
   }
 }
 

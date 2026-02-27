@@ -14,6 +14,22 @@ fn ledge_internal_handle(edge : LEdge) -> Int {
 }
 
 ///|
+pub(all) suberror LEdgeException {
+  IllegalArgumentException(String)
+  IllegalStateException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] ledge_raise_illegal_argument(message : String) -> T raise LEdgeException {
+  raise LEdgeException::IllegalArgumentException(message)
+}
+
+///|
+fn[T] ledge_raise_illegal_state(message : String) -> T raise LEdgeException {
+  raise LEdgeException::IllegalStateException(message)
+}
+
+///|
 pub struct LEdge {
   graph_element : LGraphElement
   edge_handle : Int
@@ -156,24 +172,15 @@ pub fn LEdge::reverse(
   layered_graph : LGraph,
   adapt_ports : Bool,
 ) -> Unit {
-  let old_source = match self.get_source() {
-    Some(port) => port
-    None => abort("edge has no source port")
-  }
-  let old_target = match self.get_target() {
-    Some(port) => port
-    None => abort("edge has no target port")
-  }
+  let old_source = self.get_source().unwrap()
+  let old_target = self.get_target().unwrap()
 
   self.set_source(None)
   self.set_target(None)
 
   if adapt_ports &&
     old_target.get_property_bool(internal_properties_input_collect) {
-    let source_node = match old_target.get_node() {
-      Some(node) => node
-      None => abort("collector source port has no owner node")
-    }
+    let source_node = old_target.get_node().unwrap()
     self.set_source(
       Some(
         provide_collector_port(
@@ -190,10 +197,7 @@ pub fn LEdge::reverse(
 
   if adapt_ports &&
     old_source.get_property_bool(internal_properties_output_collect) {
-    let target_node = match old_source.get_node() {
-      Some(node) => node
-      None => abort("collector target port has no owner node")
-    }
+    let target_node = old_source.get_node().unwrap()
     self.set_target(
       Some(
         provide_collector_port(
@@ -301,7 +305,10 @@ pub fn LEdge::copy_properties(self : LEdge, source : LEdge) -> Unit {
 }
 
 ///|
-pub fn LEdge::get_other_port(self : LEdge, port : LPort) -> LPort {
+pub fn LEdge::get_other_port(
+  self : LEdge,
+  port : LPort,
+) -> LPort raise LEdgeException {
   match (self.source, self.target) {
     (Some(source), Some(target)) =>
       if lport_internal_handle(port) == lport_internal_handle(source) {
@@ -309,14 +316,19 @@ pub fn LEdge::get_other_port(self : LEdge, port : LPort) -> LPort {
       } else if lport_internal_handle(port) == lport_internal_handle(target) {
         source
       } else {
-        abort("'port' must be either source or target of the edge")
+        ledge_raise_illegal_argument(
+          "'port' must be either the source port or target port of the edge.",
+        )
       }
-    _ => abort("edge is not fully connected")
+    _ => ledge_raise_illegal_state("edge is not fully connected")
   }
 }
 
 ///|
-pub fn LEdge::get_other_node(self : LEdge, node : LNode) -> LNode {
+pub fn LEdge::get_other_node(
+  self : LEdge,
+  node : LNode,
+) -> LNode raise LEdgeException {
   match (self.source, self.target) {
     (Some(source), Some(target)) =>
       match (source.get_node(), target.get_node()) {
@@ -327,11 +339,14 @@ pub fn LEdge::get_other_node(self : LEdge, node : LNode) -> LNode {
             lnode_internal_handle(target_node) {
             source_node
           } else {
-            abort("'node' must be either source or target node of the edge")
+            ledge_raise_illegal_argument(
+              "'node' must either be the source node or target node of the edge.",
+            )
           }
-        _ => abort("edge is not connected to concrete nodes")
+        _ =>
+          ledge_raise_illegal_state("edge is not connected to concrete nodes")
       }
-    _ => abort("edge is not fully connected")
+    _ => ledge_raise_illegal_state("edge is not fully connected")
   }
 }
 

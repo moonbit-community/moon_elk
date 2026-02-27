@@ -5,6 +5,18 @@ pub let core_debug_grandom_ui_language_name : String = "org.eclipse.elk.core.deb
 pub let core_debug_grandom_ui_extension_factory_guicekey : String = "guicekey"
 
 ///|
+priv suberror CoreDebugGrandomUiException {
+  CoreDebugGrandomUiException(String)
+} derive(Show, ToJson)
+
+///|
+fn core_debug_grandom_ui_raise_unit(
+  message : String,
+) -> Unit raise CoreDebugGrandomUiException {
+  raise CoreDebugGrandomUiException(message)
+}
+
+///|
 pub(all) enum CoreDebugGRandomInitializationData {
   CoreDebugGRandomInitializationDataString(String)
   CoreDebugGRandomInitializationDataMap(Map[String, String])
@@ -247,7 +259,12 @@ pub fn GrandomActivator::get_runtime_module(
   if grammar == core_debug_grandom_ui_language_name {
     return @grandom.new_core_debug_grandom_runtime_module()
   }
-  abort("unknown grammar: " + grammar)
+  try core_debug_grandom_ui_raise_unit("unknown grammar: " + grammar) catch {
+    err => ignore(err)
+  } noraise {
+    _ => ()
+  }
+  @grandom.new_core_debug_grandom_runtime_module()
 }
 
 ///|
@@ -259,7 +276,12 @@ pub fn GrandomActivator::get_ui_module(
   if grammar == core_debug_grandom_ui_language_name {
     return new_core_debug_grandom_ui_module()
   }
-  abort("unknown grammar: " + grammar)
+  try core_debug_grandom_ui_raise_unit("unknown grammar: " + grammar) catch {
+    err => ignore(err)
+  } noraise {
+    _ => ()
+  }
+  new_core_debug_grandom_ui_module()
 }
 
 ///|

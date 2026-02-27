@@ -5,7 +5,12 @@ let vertiflex_relative_x_placer_minimal_y : Double = -100.0
 fn vertiflex_outline_require(outline : OutlineNode?) -> OutlineNode {
   match outline {
     Some(value) => value
-    None => abort("VertiFlex outline unexpectedly missing.")
+    None => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "VertiFlex outline unexpectedly missing.",
+      )
+      new_outline_node(0.0, 0.0, None)
+    }
   }
 }
 

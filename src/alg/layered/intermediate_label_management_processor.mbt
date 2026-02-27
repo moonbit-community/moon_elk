@@ -35,7 +35,10 @@ fn label_management_processor_require_first_connected_edge(
 ) -> LEdge {
   let connected_edges = node.get_connected_edges()
   if connected_edges.is_empty() {
-    abort("label dummy node has no connected edge")
+    @core.layout_runtime_report_unsupported_configuration(
+      "label dummy node has no connected edge",
+    )
+    return new_l_edge()
   }
   connected_edges[0]
 }

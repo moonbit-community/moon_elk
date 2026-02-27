@@ -11,7 +11,11 @@ fn conn_gmf_draw2d_test_graph() -> (
   let target = @graph.create_node(Some(parent))
   @graph.node_set_dimensions(source, 40.0, 20.0)
   @graph.node_set_dimensions(target, 30.0, 10.0)
-  let edge = @graph.create_simple_edge(source, target)
+  let edge = try @graph.create_simple_edge(source, target) catch {
+    err => abort(err.to_string())
+  } noraise {
+    edge => edge
+  }
   (parent, source, target, edge)
 }
 

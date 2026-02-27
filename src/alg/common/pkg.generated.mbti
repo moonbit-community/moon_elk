@@ -148,7 +148,7 @@ pub fn new_ngraph() -> NGraph
 
 pub fn new_node(@core.KVector, @core.ElkRectangle) -> Node
 
-pub fn new_node_context(@core.ElkNodeAdapter) -> NodeContext
+pub fn new_node_context(@core.ElkNodeAdapter) -> NodeContext raise NodeContextException
 
 pub fn new_node_margin_calculator(@core.ElkGraphAdapter) -> NodeMarginCalculator
 
@@ -268,7 +268,7 @@ pub fn node_label_and_size_utilities_setup_minimum_client_area_size(NodeContext)
 
 pub fn node_label_and_size_utilities_setup_node_padding_for_ports_with_offset(NodeContext) -> Unit
 
-pub fn node_label_cell_creator_create_node_label_cells(NodeContext, Bool, Bool) -> Unit
+pub fn node_label_cell_creator_create_node_label_cells(NodeContext, Bool, Bool) -> Unit raise NodeLabelCellCreatorException
 
 pub fn node_label_location_from_node_label_placement(Array[@core.NodeLabelPlacement]) -> NodeLabelLocation
 
@@ -304,7 +304,7 @@ pub fn point_with_quadrant(Point, Quadrant) -> Point
 
 pub fn polyomino_direction_values() -> Array[PolyominoDirection]
 
-pub fn port_context_creator_create_port_contexts(NodeContext, Bool) -> Unit
+pub fn port_context_creator_create_port_contexts(NodeContext, Bool) -> Unit raise PortContextCreatorException
 
 pub fn port_label_placement_calculator_place_horizontal_port_labels(NodeContext) -> Unit
 
@@ -363,6 +363,54 @@ pub fn vertical_label_alignment_values() -> Array[VerticalLabelAlignment]
 pub fn vertical_port_placement_size_calculator_calculate_vertical_port_placement_size(NodeContext) -> Unit
 
 // Errors
+pub suberror CGroupException {
+  CGroupException(String)
+}
+pub impl Show for CGroupException
+pub impl ToJson for CGroupException
+
+pub(all) suberror NetworkSimplexException {
+  NetworkSimplexException(String)
+}
+pub impl Show for NetworkSimplexException
+pub impl ToJson for NetworkSimplexException
+
+pub(all) suberror NodeContextException {
+  UnsupportedConfigurationException(String)
+}
+pub impl Show for NodeContextException
+pub impl ToJson for NodeContextException
+
+pub(all) suberror NodeLabelCellCreatorException {
+  IllegalArgumentException(String)
+}
+pub impl Show for NodeLabelCellCreatorException
+pub impl ToJson for NodeLabelCellCreatorException
+
+pub(all) suberror OneDimensionalCompactorException {
+  IllegalStateException(String)
+  IllegalArgumentException(String)
+}
+pub impl Show for OneDimensionalCompactorException
+pub impl ToJson for OneDimensionalCompactorException
+
+pub(all) suberror PortContextCreatorException {
+  IllegalArgumentException(String)
+}
+pub impl Show for PortContextCreatorException
+pub impl ToJson for PortContextCreatorException
+
+pub suberror ScanlineConstraintCalculatorException {
+  ScanlineConstraintCalculatorException(String)
+}
+pub impl Show for ScanlineConstraintCalculatorException
+pub impl ToJson for ScanlineConstraintCalculatorException
+
+pub suberror ScanlineOverlapCheckException {
+  ScanlineOverlapCheckException(String)
+}
+pub impl Show for ScanlineOverlapCheckException
+pub impl ToJson for ScanlineOverlapCheckException
 
 // Types and methods
 pub struct CGraph {
@@ -624,7 +672,7 @@ pub struct NEdge {
 pub fn NEdge::get_delta(Self) -> Int
 pub fn NEdge::get_id(Self) -> Int
 pub fn NEdge::get_internal_id(Self) -> Int
-pub fn NEdge::get_other(Self, NNode) -> NNode
+pub fn NEdge::get_other(Self, NNode) -> NNode raise NetworkSimplexException
 pub fn NEdge::get_source(Self) -> NNode
 pub fn NEdge::get_target(Self) -> NNode
 pub fn NEdge::get_weight(Self) -> Double
@@ -647,7 +695,7 @@ pub struct NEdgeBuilder {
   mut source : NNode?
   mut target : NNode?
 }
-pub fn NEdgeBuilder::create(Self) -> NEdge
+pub fn NEdgeBuilder::create(Self) -> NEdge raise NetworkSimplexException
 pub fn NEdgeBuilder::delta(Self, Int) -> Self
 pub fn NEdgeBuilder::id(Self, Int) -> Self
 pub fn NEdgeBuilder::origin(Self, String) -> Self

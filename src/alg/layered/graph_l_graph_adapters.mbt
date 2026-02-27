@@ -1,4 +1,23 @@
 ///|
+pub suberror LGraphAdapterException {
+  LGraphAdapterException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] l_graph_adapters_raise(
+  message : String,
+) -> T raise LGraphAdapterException {
+  raise LGraphAdapterException(message)
+}
+
+///|
+fn l_graph_adapters_raise_unit(
+  message : String,
+) -> Unit raise LGraphAdapterException {
+  l_graph_adapters_raise(message)
+}
+
+///|
 fn l_graph_adapters_default_node_filter(_node : LNode) -> Bool {
   true
 }
@@ -148,7 +167,15 @@ pub fn LGraphAdapter::set_size(
 ///|
 pub fn LGraphAdapter::get_position(self : LGraphAdapter) -> @core.KVector {
   ignore(self)
-  abort("Not supported by LGraph")
+  try l_graph_adapters_raise_unit("Not supported by LGraph") catch {
+    LGraphAdapterException(message) =>
+      @core.layout_runtime_report_unsupported_configuration(
+        "org.eclipse.elk.alg.layered.graph.LGraphAdapter: " + message,
+      )
+  } noraise {
+    _ => ()
+  }
+  @core.new_kvector()
 }
 
 ///|
@@ -157,7 +184,14 @@ pub fn LGraphAdapter::set_position(
   _position : @core.KVector,
 ) -> Unit {
   ignore(self)
-  abort("Not supported by LGraph")
+  try l_graph_adapters_raise_unit("Not supported by LGraph") catch {
+    LGraphAdapterException(message) =>
+      @core.layout_runtime_report_unsupported_configuration(
+        "org.eclipse.elk.alg.layered.graph.LGraphAdapter: " + message,
+      )
+  } noraise {
+    _ => ()
+  }
 }
 
 ///|
@@ -1095,6 +1129,16 @@ pub fn PortComparator::compare(
         port2.get_position().y,
         port1.get_position().y,
       )
-    @core.PortSide::SideUndefined => abort("Port side is undefined")
+    @core.PortSide::SideUndefined =>
+      try l_graph_adapters_raise("Port side is undefined") catch {
+        LGraphAdapterException(message) => {
+          @core.layout_runtime_report_unsupported_configuration(
+            "org.eclipse.elk.alg.layered.graph.PortComparator: " + message,
+          )
+          0
+        }
+      } noraise {
+        value => value
+      }
   }
 }

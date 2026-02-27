@@ -78,11 +78,23 @@ fn spline_self_loop_router_modify_bend_points(
     spline_self_loop_router_relative_port_anchor(sl_edge.get_sl_target()),
   )
 
-  new_nub_spline(
-    true,
-    spline_self_loop_router_dim,
-    spline_bend_points.to_array(),
-  ).get_control_points()
+  let spline = try
+    new_nub_spline(
+      true,
+      spline_self_loop_router_dim,
+      spline_bend_points.to_array(),
+    )
+  catch {
+    NubSplineException::IllegalArgumentException(message) => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "java.lang.IllegalArgumentException: " + message,
+      )
+      return bend_points
+    }
+  } noraise {
+    value => value
+  }
+  spline.get_control_points()
 }
 
 ///|

@@ -32,7 +32,12 @@ fn long_edge_joiner_port_side_equals(
 fn _long_edge_joiner_require_source(edge : LEdge) -> LPort {
   match edge.get_source() {
     Some(value) => value
-    None => abort("edge has no source")
+    None => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "edge has no source",
+      )
+      new_l_port()
+    }
   }
 }
 
@@ -40,7 +45,12 @@ fn _long_edge_joiner_require_source(edge : LEdge) -> LPort {
 fn long_edge_joiner_require_target(edge : LEdge) -> LPort {
   match edge.get_target() {
     Some(value) => value
-    None => abort("edge has no target")
+    None => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "edge has no target",
+      )
+      new_l_port()
+    }
   }
 }
 

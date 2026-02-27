@@ -123,7 +123,14 @@ fn fixed_layout_provider_source_parent(
   if sources.is_empty() {
     None
   } else {
-    @graph.node_parent(@graph.connectable_shape_to_node(Some(sources[0])))
+    let source_node = try
+      @graph.connectable_shape_to_node(Some(sources[0]))
+    catch {
+      _ => return None
+    } noraise {
+      value => value
+    }
+    @graph.node_parent(source_node)
   }
 }
 
@@ -140,12 +147,22 @@ fn fixed_layout_provider_process_edge(
     return maxv
   }
 
-  let source_parent = @graph.node_parent(
-    @graph.connectable_shape_to_node(Some(sources[0])),
-  )
-  let target_parent = @graph.node_parent(
-    @graph.connectable_shape_to_node(Some(targets[0])),
-  )
+  let source_node = try
+    @graph.connectable_shape_to_node(Some(sources[0]))
+  catch {
+    _ => return maxv
+  } noraise {
+    value => value
+  }
+  let target_node = try
+    @graph.connectable_shape_to_node(Some(targets[0]))
+  catch {
+    _ => return maxv
+  } noraise {
+    value => value
+  }
+  let source_parent = @graph.node_parent(source_node)
+  let target_parent = @graph.node_parent(target_node)
   let same_hierarchy = source_parent == target_parent
 
   if fixed_layout_provider_parse_bend_points(

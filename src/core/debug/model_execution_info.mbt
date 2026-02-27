@@ -2,6 +2,25 @@
 pub type ExecutionInfo = Int
 
 ///|
+priv suberror ExecutionInfoException {
+  ExecutionInfoException(String)
+} derive(Show, ToJson)
+
+///|
+fn execution_info_raise_unit(
+  message : String,
+) -> Unit raise ExecutionInfoException {
+  raise ExecutionInfoException(message)
+}
+
+///|
+fn execution_info_exception_message(err : ExecutionInfoException) -> String {
+  match err {
+    ExecutionInfoException(message) => message
+  }
+}
+
+///|
 priv struct ExecutionInfoData {
   mut name : String
   creation_tick : Int
@@ -28,7 +47,14 @@ let execution_info_creation_tick_ref : Ref[Int] = Ref::new(0)
 ///|
 fn checked_execution_info(info : ExecutionInfo) -> Unit {
   if info < 0 || info >= execution_info_store_ref.val.length() {
-    abort("invalid execution info")
+    try execution_info_raise_unit("invalid execution info") catch {
+      err =>
+        @core.layout_runtime_report_unsupported_configuration(
+          execution_info_exception_message(err),
+        )
+    } noraise {
+      _ => ()
+    }
   }
 }
 

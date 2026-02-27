@@ -729,7 +729,14 @@ fn importer_transform_edge(
     return edge
   }
   importer_transform_labels_for_edge(importer, json_edge, edge)
-  @graph.update_containment(Some(edge))
+  @graph.update_containment(Some(edge)) catch {
+    _ =>
+      importer_report_json_error(
+        "Failed to determine edge containment (edge id: '" +
+        @graph.edge_identifier(edge) +
+        "').",
+      )
+  }
   edge
 }
 

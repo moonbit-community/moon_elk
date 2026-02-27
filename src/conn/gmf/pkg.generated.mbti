@@ -282,6 +282,17 @@ pub let req_apply_layout : String
 pub fn reset_conn_gmf_foundation_for_test() -> Unit
 
 // Errors
+pub suberror GmfDiagramLayoutConnectorException {
+  GmfDiagramLayoutConnectorException(String)
+}
+pub impl Show for GmfDiagramLayoutConnectorException
+pub impl ToJson for GmfDiagramLayoutConnectorException
+
+pub suberror LayoutDiagramFileHandlerException {
+  LayoutDiagramFileHandlerException(String)
+}
+pub impl Show for LayoutDiagramFileHandlerException
+pub impl ToJson for LayoutDiagramFileHandlerException
 
 // Types and methods
 pub struct ApplyLayoutRequest {
@@ -589,7 +600,7 @@ pub fn IEditPartFilter::filter(Self, Int) -> Bool
 pub struct LayoutDiagramFileHandler {
   unit : Unit
 }
-pub fn LayoutDiagramFileHandler::execute(Self, Array[GmfSelectionItem]) -> Int
+pub fn LayoutDiagramFileHandler::execute(Self, Array[GmfSelectionItem]) -> Int raise LayoutDiagramFileHandlerException
 
 pub struct LayoutEditPolicyProvider {
   unit : Unit

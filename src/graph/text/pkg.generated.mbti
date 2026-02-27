@@ -164,6 +164,23 @@ pub fn new_property_key_value_converter() -> PropertyKeyValueConverter
 pub fn new_property_value_value_converter(qualified_name_converter? : ElkGraphQualifiedNameConverter) -> PropertyValueValueConverter
 
 // Errors
+pub suberror ElkGraphQualifiedNameConverterException {
+  ElkGraphQualifiedNameConverterException(String)
+}
+pub impl Show for ElkGraphQualifiedNameConverterException
+pub impl ToJson for ElkGraphQualifiedNameConverterException
+
+pub suberror NumberValueConverterException {
+  NumberValueConverterException(String)
+}
+pub impl Show for NumberValueConverterException
+pub impl ToJson for NumberValueConverterException
+
+pub suberror PropertyKeyValueConverterException {
+  PropertyKeyValueConverterException(String)
+}
+pub impl Show for PropertyKeyValueConverterException
+pub impl ToJson for PropertyKeyValueConverterException
 
 // Types and methods
 pub struct AbstractElkGraphRuntimeModule {

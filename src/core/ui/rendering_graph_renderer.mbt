@@ -398,7 +398,11 @@ fn core_ui_graph_renderer_are_descendants_of(
   match renderer.most_recently_drawn_graph {
     Some(graph) => {
       for shape in shapes {
-        let node = @graph.connectable_shape_to_node(Some(shape))
+        let node = try @graph.connectable_shape_to_node(Some(shape)) catch {
+          _ => return false
+        } noraise {
+          value => value
+        }
         if !core_ui_graph_renderer_is_descendant_or_self(node, graph) {
           return false
         }

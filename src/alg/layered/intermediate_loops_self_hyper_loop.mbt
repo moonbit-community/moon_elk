@@ -94,14 +94,18 @@ pub fn SelfHyperLoop::set_id(self : SelfHyperLoop, id : Int) -> Unit {
 }
 
 ///|
-pub fn SelfHyperLoop::compute_ports_per_side(self : SelfHyperLoop) -> Unit {
+pub fn SelfHyperLoop::compute_ports_per_side(
+  self : SelfHyperLoop,
+) -> Unit raise SelfLoopTypeException {
   self.sl_ports_by_side.clear()
   self.occupied_port_sides.clear()
 
   for sl_port in self.sl_ports {
     let port_side = sl_port.get_l_port().get_side()
     if self_hyper_loop_port_side_index(port_side) == 0 {
-      abort("SelfHyperLoop ports must have a defined side")
+      self_loop_type_raise_illegal_argument(
+        "SelfHyperLoop ports must have a defined side",
+      )
     }
 
     let side_index = self_hyper_loop_port_side_index(port_side)

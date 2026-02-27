@@ -14,16 +14,27 @@ fn _json_adapter_format_error(msg : String) -> JsonImportException {
 }
 
 ///|
-pub fn JsonAdapter::get_id(self : JsonAdapter, o : Map[String, Json]) -> String {
+fn json_adapter_id_display(id : Json) -> String {
+  id.stringify()
+}
+
+///|
+pub fn JsonAdapter::get_id(
+  self : JsonAdapter,
+  o : Map[String, Json],
+) -> String raise JsonImportException {
   ignore(self)
   match o.get("id") {
     Some(id) => new_json_adapter().as_id(id)
-    None => abort("Every element must have an id.")
+    None => raise _json_adapter_format_error("Every element must have an id.")
   }
 }
 
 ///|
-pub fn JsonAdapter::as_id(self : JsonAdapter, id : Json) -> String {
+pub fn JsonAdapter::as_id(
+  self : JsonAdapter,
+  id : Json,
+) -> String raise JsonImportException {
   ignore(self)
   match id {
     String(value) => value
@@ -32,10 +43,19 @@ pub fn JsonAdapter::as_id(self : JsonAdapter, id : Json) -> String {
       if new_json_adapter().is_int(value) {
         value.to_int().to_string()
       } else {
-        abort("Id must be a string or an integer: '" + id.to_string() + "'.")
+        raise _json_adapter_format_error(
+          "Id must be a string or an integer: '" +
+          json_adapter_id_display(id) +
+          "'.",
+        )
       }
     }
-    _ => abort("Id must be a string or an integer: '" + id.to_string() + "'.")
+    _ =>
+      raise _json_adapter_format_error(
+        "Id must be a string or an integer: '" +
+        json_adapter_id_display(id) +
+        "'.",
+      )
   }
 }
 
@@ -63,19 +83,21 @@ pub fn JsonAdapter::to_json_object(
   o : Json,
 ) -> Map[String, Json] {
   ignore(self)
-  match o {
-    Object(value) => value
-    _ => abort("JsonAdapter: expected object")
+  let result : Map[String, Json]? = match o {
+    Object(value) => Some(value)
+    _ => None
   }
+  result.unwrap()
 }
 
 ///|
 pub fn JsonAdapter::to_json_array(self : JsonAdapter, o : Json) -> Array[Json] {
   ignore(self)
-  match o {
-    Array(value) => value
-    _ => abort("JsonAdapter: expected array")
+  let result : Array[Json]? = match o {
+    Array(value) => Some(value)
+    _ => None
   }
+  result.unwrap()
 }
 
 ///|

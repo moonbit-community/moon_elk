@@ -54,12 +54,12 @@ test "Issue700 routed edges always produce valid sections" {
   let e1 = create_edge(None)
   edge_add_source(e1, make_node_shape(n1))
   edge_add_target(e1, make_node_shape(n2))
-  update_containment(Some(e1))
+  layered_test_update_containment(Some(e1))
 
   let e2 = create_edge(None)
   edge_add_source(e2, make_node_shape(n2))
   edge_add_target(e2, make_node_shape(n3))
-  update_containment(Some(e2))
+  layered_test_update_containment(Some(e2))
 
   issue700_test_layout(graph)
   assert_true(issue700_test_edges_routed(graph))

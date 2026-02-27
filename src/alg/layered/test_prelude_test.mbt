@@ -39,9 +39,6 @@ let edge_add_source = @test.edge_add_source
 let edge_add_target = @test.edge_add_target
 
 ///|
-let update_containment = @graph.update_containment
-
-///|
 let create_port = @test.create_port
 
 ///|

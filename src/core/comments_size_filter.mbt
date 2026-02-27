@@ -1,10 +1,27 @@
 ///|
-fn[C, T] size_filter_bounds_provider_or_abort(
+pub suberror SizeFilterException {
+  SizeFilterException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] size_filter_raise(message : String) -> T raise SizeFilterException {
+  raise SizeFilterException(message)
+}
+
+///|
+fn size_filter_exception_message(err : SizeFilterException) -> String {
+  match err {
+    SizeFilterException(message) => message
+  }
+}
+
+///|
+fn[C, T] size_filter_bounds_provider_or_raise(
   filter : SizeFilter[C, T],
-) -> IBoundsProvider[C, T] {
+) -> IBoundsProvider[C, T] raise SizeFilterException {
   match filter.bounds_provider {
     Some(provider) => provider
-    None => abort("A bounds provider is required.")
+    None => size_filter_raise("A bounds provider is required.")
   }
 }
 
@@ -23,9 +40,9 @@ pub fn[C, T] new_size_filter() -> SizeFilter[C, T] {
 pub fn[C, T] SizeFilter::with_maximum_area(
   self : SizeFilter[C, T],
   area : Double,
-) -> SizeFilter[C, T] {
+) -> SizeFilter[C, T] raise SizeFilterException {
   if area < 0.0 {
-    abort("Maximum area must be >= 0.")
+    size_filter_raise("Maximum area must be >= 0.")
   }
 
   self.max_area = area
@@ -42,8 +59,10 @@ pub fn[C, T] SizeFilter::with_bounds_provider(
 }
 
 ///|
-pub fn[C, T] SizeFilter::check_configuration(self : SizeFilter[C, T]) -> Unit {
-  ignore(size_filter_bounds_provider_or_abort(self))
+pub fn[C, T] SizeFilter::check_configuration(
+  self : SizeFilter[C, T],
+) -> Unit raise SizeFilterException {
+  ignore(size_filter_bounds_provider_or_raise(self))
 }
 
 ///|
@@ -52,7 +71,26 @@ pub fn[C, T] SizeFilter::preprocess(
   _data_provider : IDataProvider[C, T],
   _include_hierarchy : Bool,
 ) -> Unit {
-  self.check_configuration()
+  try self.check_configuration() catch {
+    err =>
+      layout_runtime_report_unsupported_configuration(
+        size_filter_exception_message(err),
+      )
+  } noraise {
+    _ => ()
+  }
+}
+
+///|
+fn[C, T] size_filter_eligible_for_attachment_impl(
+  filter : SizeFilter[C, T],
+  comment : C,
+) -> Bool raise SizeFilterException {
+  let bounds_provider = size_filter_bounds_provider_or_raise(filter)
+  match bounds_provider.bounds_for_comment(comment) {
+    Some(bounds) => bounds.height * bounds.width <= filter.max_area
+    None => false
+  }
 }
 
 ///|
@@ -60,10 +98,15 @@ pub fn[C, T] SizeFilter::eligible_for_attachment(
   self : SizeFilter[C, T],
   comment : C,
 ) -> Bool {
-  let bounds_provider = size_filter_bounds_provider_or_abort(self)
-  match bounds_provider.bounds_for_comment(comment) {
-    Some(bounds) => bounds.height * bounds.width <= self.max_area
-    None => false
+  try size_filter_eligible_for_attachment_impl(self, comment) catch {
+    err => {
+      layout_runtime_report_unsupported_configuration(
+        size_filter_exception_message(err),
+      )
+      false
+    }
+  } noraise {
+    eligible => eligible
   }
 }
 

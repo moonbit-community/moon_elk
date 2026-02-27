@@ -61,10 +61,8 @@ pub fn GraphFromFile::provide_graph(
   _test : Unit,
 ) -> ElkNode {
   let path = self.resource_path.get_file()
-  match graph_from_file_contents_ref.val.get(path) {
-    Some(content) => graph_from_file_parse(path, content)
-    None => abort("Unable to load graph from " + path)
-  }
+  let content = graph_from_file_contents_ref.val.get(path).unwrap()
+  graph_from_file_parse(path, content)
 }
 
 ///|

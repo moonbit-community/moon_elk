@@ -2,6 +2,18 @@
 pub let core_meta_ui_status_error : Int = 4
 
 ///|
+priv suberror CoreMetaExecutableExtensionFactoryException {
+  CoreMetaExecutableExtensionFactoryException(String)
+} derive(Show, ToJson)
+
+///|
+fn core_meta_executable_extension_factory_raise_unit(
+  message : String,
+) -> Unit raise CoreMetaExecutableExtensionFactoryException {
+  raise CoreMetaExecutableExtensionFactoryException(message)
+}
+
+///|
 pub(all) struct CoreMetaUiStatus {
   severity : Int
   symbolic_name : String
@@ -73,10 +85,16 @@ pub fn MetaDataExecutableExtensionFactory::set_initialization_data(
     None => ()
   }
   if self.clazz_name is None {
-    abort(
-      "couldn't handle passed data : " +
-      core_meta_ui_initialization_data_to_debug_string(data),
-    )
+    try
+      core_meta_executable_extension_factory_raise_unit(
+        "couldn't handle passed data : " +
+        core_meta_ui_initialization_data_to_debug_string(data),
+      )
+    catch {
+      err => ignore(err)
+    } noraise {
+      _ => ()
+    }
   }
   self.config = config
 }

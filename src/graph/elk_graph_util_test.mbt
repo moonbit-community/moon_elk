@@ -84,11 +84,11 @@ test "ElkGraphUtil edge convenience iterables" {
   assert_eq(incident_shapes.length(), 2)
   match incident_shapes[0] {
     PortShape(port) => assert_eq(port, port1)
-    _ => abort("Expected source port shape")
+    _ => fail("Expected source port shape")
   }
   match incident_shapes[1] {
     PortShape(port) => assert_eq(port, port2)
-    _ => abort("Expected target port shape")
+    _ => fail("Expected target port shape")
   }
 }
 
@@ -119,7 +119,7 @@ test "ElkGraphUtil createLabelWithText" {
   assert_eq(label_text(label), "hello")
   match label_parent(label) {
     Some(NodeLabelParent(parent_node)) => assert_eq(parent_node, node)
-    _ => abort("Expected node label parent")
+    _ => fail("Expected node label parent")
   }
 }
 
@@ -141,15 +141,15 @@ test "ElkGraphUtil createHyperedge" {
   assert_eq(edge_targets(edge).length(), 1)
   match edge_sources(edge)[0] {
     NodeShape(node) => assert_eq(node, node1)
-    _ => abort("Expected node source")
+    _ => fail("Expected node source")
   }
   match edge_sources(edge)[1] {
     NodeShape(node) => assert_eq(node, child)
-    _ => abort("Expected node source")
+    _ => fail("Expected node source")
   }
   match edge_targets(edge)[0] {
     NodeShape(node) => assert_eq(node, node2)
-    _ => abort("Expected node target")
+    _ => fail("Expected node target")
   }
   assert_eq(edge_containing_node(edge), Some(graph))
 }
@@ -172,11 +172,11 @@ test "ElkGraphUtil createSimpleEdgeForShapes" {
   assert_eq(edge_targets(edge).length(), 1)
   match edge_sources(edge)[0] {
     PortShape(port) => assert_eq(port, port1)
-    _ => abort("Expected port source")
+    _ => fail("Expected port source")
   }
   match edge_targets(edge)[0] {
     PortShape(port) => assert_eq(port, port2)
-    _ => abort("Expected port target")
+    _ => fail("Expected port target")
   }
   assert_eq(edge_containing_node(edge), Some(graph))
 }

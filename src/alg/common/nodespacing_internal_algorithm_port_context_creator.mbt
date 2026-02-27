@@ -19,10 +19,22 @@ fn port_context_creator_create_port_context(
 }
 
 ///|
+pub(all) suberror PortContextCreatorException {
+  IllegalArgumentException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] port_context_creator_raise_illegal_argument(
+  message : String,
+) -> T raise PortContextCreatorException {
+  raise PortContextCreatorException::IllegalArgumentException(message)
+}
+
+///|
 pub fn port_context_creator_create_port_contexts(
   node_context : NodeContext,
   ignore_inside_port_labels : Bool,
-) -> Unit {
+) -> Unit raise PortContextCreatorException {
   let im_port_labels = !ignore_inside_port_labels ||
     !node_context.has_port_label_placement(Inside)
 
@@ -30,7 +42,7 @@ pub fn port_context_creator_create_port_contexts(
   for port in node_context.node.get_ports() {
     if @core.port_side_to_string(port.get_side()) ==
       @core.port_side_to_string(SideUndefined) {
-      abort(
+      port_context_creator_raise_illegal_argument(
         "Label and node size calculator can only be used with ports that have port sides assigned.",
       )
     }

@@ -1,4 +1,18 @@
 ///|
+priv suberror FinalSplineBendpointsCalculatorException {
+  IllegalArgumentException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] final_spline_raise_illegal_argument(
+  message : String,
+) -> T raise FinalSplineBendpointsCalculatorException {
+  raise FinalSplineBendpointsCalculatorException::IllegalArgumentException(
+    message,
+  )
+}
+
+///|
 let final_spline_one_half : Double = 0.5
 
 ///|
@@ -81,50 +95,32 @@ fn final_spline_parse_graph_compaction_strategy(
 
 ///|
 fn final_spline_require_edge_source(edge : LEdge) -> LPort {
-  match edge.get_source() {
-    Some(source) => source
-    None => abort("edge has no source")
-  }
+  edge.get_source().unwrap()
 }
 
 ///|
 fn final_spline_require_edge_target(edge : LEdge) -> LPort {
-  match edge.get_target() {
-    Some(target) => target
-    None => abort("edge has no target")
-  }
+  edge.get_target().unwrap()
 }
 
 ///|
 fn final_spline_require_port_node(port : LPort) -> LNode {
-  match port.get_node() {
-    Some(node) => node
-    None => abort("port has no owner node")
-  }
+  port.get_node().unwrap()
 }
 
 ///|
 fn final_spline_require_node_layer(node : LNode) -> Layer {
-  match node.get_layer() {
-    Some(layer) => layer
-    None => abort("node has no layer")
-  }
+  node.get_layer().unwrap()
 }
 
 ///|
 fn final_spline_require_segment_source_port(segment : SplineSegment) -> LPort {
-  match segment.source_port {
-    Some(source_port) => source_port
-    None => abort("spline segment source port missing")
-  }
+  segment.source_port.unwrap()
 }
 
 ///|
 fn final_spline_require_segment_target_port(segment : SplineSegment) -> LPort {
-  match segment.target_port {
-    Some(target_port) => target_port
-    None => abort("spline segment target port missing")
-  }
+  segment.target_port.unwrap()
 }
 
 ///|
@@ -132,10 +128,7 @@ fn final_spline_require_edge_information(
   segment : SplineSegment,
   edge : LEdge,
 ) -> SplineSegmentEdgeInformation {
-  match segment.get_edge_information(edge) {
-    Some(info) => info
-    None => abort("missing spline edge information")
-  }
+  segment.get_edge_information(edge).unwrap()
 }
 
 ///|
@@ -345,9 +338,6 @@ fn final_spline_calculate_control_points_sloppy(
   let edge_info = final_spline_require_edge_information(
     containing_segment, edge,
   )
-  if !(edge_info.normal_source_node || edge_info.normal_target_node) {
-    abort("sloppy routing expects a normal source or target node")
-  }
 
   let start_x_pos = containing_segment.bounding_box.x
   let end_x_pos = containing_segment.bounding_box.x +
@@ -512,7 +502,7 @@ fn final_spline_calculate_bezier_bend_points(
   edge_chain : Array[LEdge],
   surviving_edge : LEdge?,
   spline_routing_mode : SplineRoutingMode,
-) -> Unit {
+) -> Unit raise FinalSplineBendpointsCalculatorException {
   if edge_chain.is_empty() {
     return
   }
@@ -527,7 +517,7 @@ fn final_spline_calculate_bezier_bend_points(
   if !spline_edge_router_is_qualified_as_starting_node(
       final_spline_require_port_node(source_port),
     ) {
-    abort(
+    final_spline_raise_illegal_argument(
       "The target node of the edge must be a normal node or a northSouthPort.",
     )
   }
@@ -556,10 +546,7 @@ fn final_spline_calculate_bezier_bend_points(
     }
 
     if add_mid_point {
-      let previous = match last_control_point {
-        Some(value) => value
-        None => abort("missing previous control point")
-      }
+      let previous = last_control_point.unwrap()
       let halfway = previous
         .clone()
         .add(current_bend_points.get(0))
@@ -606,7 +593,10 @@ fn final_spline_calculate_bezier_bend_points(
     true,
     spline_edge_router_spline_dimension,
     all_control_points.to_array(),
-  )
+  ) catch {
+    NubSplineException::IllegalArgumentException(message) =>
+      final_spline_raise_illegal_argument(message)
+  }
   edge.get_bend_points().add_all(nub_spline.get_control_points().to_array())
 }
 
@@ -631,27 +621,33 @@ fn final_spline_segment_allows_sloppy_routing(
   let end_x_pos = segment.bounding_box.x + segment.bounding_box.width
 
   if segment.initial_segment {
-    let source_node = match segment.source_node {
-      Some(node) => node
-      None => abort("spline segment source node missing")
-    }
-    let threshold = final_spline_segment_node_distance_threshold(source_node)
-    let node_segment_distance = start_x_pos -
-      (source_node.get_position().x + source_node.get_size().x)
-    if node_segment_distance > threshold {
-      return false
+    match segment.source_node {
+      Some(source_node) => {
+        let threshold = final_spline_segment_node_distance_threshold(
+          source_node,
+        )
+        let node_segment_distance = start_x_pos -
+          (source_node.get_position().x + source_node.get_size().x)
+        if node_segment_distance > threshold {
+          return false
+        }
+      }
+      None => ()
     }
   }
 
   if segment.last_segment {
-    let target_node = match segment.target_node {
-      Some(node) => node
-      None => abort("spline segment target node missing")
-    }
-    let threshold = final_spline_segment_node_distance_threshold(target_node)
-    let node_segment_distance = target_node.get_position().x - end_x_pos
-    if node_segment_distance > threshold {
-      return false
+    match segment.target_node {
+      Some(target_node) => {
+        let threshold = final_spline_segment_node_distance_threshold(
+          target_node,
+        )
+        let node_segment_distance = target_node.get_position().x - end_x_pos
+        if node_segment_distance > threshold {
+          return false
+        }
+      }
+      None => ()
     }
   }
 
@@ -734,36 +730,45 @@ fn final_spline_bendpoints_calculator_process(
     ),
   )
 
-  final_spline_index_nodes_per_layer(graph)
+  try {
+    final_spline_index_nodes_per_layer(graph)
 
-  let start_edges = final_spline_collect_start_edges(graph)
+    let start_edges = final_spline_collect_start_edges(graph)
 
-  for edge in start_edges {
-    let spline = edge.get_property_spline_segment_array(
-      internal_properties_spline_route_start,
-    )
-    for segment in spline {
-      final_spline_calculate_control_points(
-        segment, edge_edge_spacing, edge_node_spacing, spline_routing_mode, compaction_strategy,
+    for edge in start_edges {
+      let spline = edge.get_property_spline_segment_array(
+        internal_properties_spline_route_start,
+      )
+      for segment in spline {
+        final_spline_calculate_control_points(
+          segment, edge_edge_spacing, edge_node_spacing, spline_routing_mode, compaction_strategy,
+        )
+      }
+      edge.set_property_spline_segment_array(
+        internal_properties_spline_route_start,
+        [],
       )
     }
-    edge.set_property_spline_segment_array(
-      internal_properties_spline_route_start,
-      [],
-    )
-  }
 
-  for edge in start_edges {
-    let surviving_edge = edge.get_property_l_edge(
-      internal_properties_spline_surviving_edge,
-    )
-    let edge_chain = edge.get_property_l_edge_array(
-      internal_properties_spline_edge_chain,
-    )
-    final_spline_calculate_bezier_bend_points(
-      edge_chain, surviving_edge, spline_routing_mode,
-    )
-    edge.set_property_l_edge_array(internal_properties_spline_edge_chain, [])
+    for edge in start_edges {
+      let surviving_edge = edge.get_property_l_edge(
+        internal_properties_spline_surviving_edge,
+      )
+      let edge_chain = edge.get_property_l_edge_array(
+        internal_properties_spline_edge_chain,
+      )
+      final_spline_calculate_bezier_bend_points(
+        edge_chain, surviving_edge, spline_routing_mode,
+      )
+      edge.set_property_l_edge_array(internal_properties_spline_edge_chain, [])
+    }
+  } catch {
+    FinalSplineBendpointsCalculatorException::IllegalArgumentException(message) =>
+      @core.layout_runtime_report_unsupported_configuration(
+        "java.lang.IllegalArgumentException: " + message,
+      )
+  } noraise {
+    _ => ()
   }
 }
 

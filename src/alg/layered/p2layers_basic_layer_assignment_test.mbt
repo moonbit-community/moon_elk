@@ -31,27 +31,27 @@ fn p2_basic_layer_assignment_test_build_dag() -> Array[@graph.ElkNode] {
   let e0 = create_edge(None)
   edge_add_source(e0, make_node_shape(n0))
   edge_add_target(e0, make_node_shape(n2))
-  update_containment(Some(e0))
+  layered_test_update_containment(Some(e0))
 
   let e1 = create_edge(None)
   edge_add_source(e1, make_node_shape(n1))
   edge_add_target(e1, make_node_shape(n2))
-  update_containment(Some(e1))
+  layered_test_update_containment(Some(e1))
 
   let e2 = create_edge(None)
   edge_add_source(e2, make_node_shape(n2))
   edge_add_target(e2, make_node_shape(n3))
-  update_containment(Some(e2))
+  layered_test_update_containment(Some(e2))
 
   let e3 = create_edge(None)
   edge_add_source(e3, make_node_shape(n2))
   edge_add_target(e3, make_node_shape(n4))
-  update_containment(Some(e3))
+  layered_test_update_containment(Some(e3))
 
   let e4 = create_edge(None)
   edge_add_source(e4, make_node_shape(n1))
   edge_add_target(e4, make_node_shape(n4))
-  update_containment(Some(e4))
+  layered_test_update_containment(Some(e4))
 
   [graph, n0, n1, n2, n3, n4]
 }

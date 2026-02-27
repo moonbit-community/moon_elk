@@ -59,12 +59,12 @@ fn issue680_test_graph() -> Issue680TestGraph {
   let edge1 = create_edge(None)
   edge_add_source(edge1, make_port_shape(p1))
   edge_add_target(edge1, make_port_shape(child_p1))
-  update_containment(Some(edge1))
+  layered_test_update_containment(Some(edge1))
 
   let edge2 = create_edge(None)
   edge_add_source(edge2, make_port_shape(child_p2))
   edge_add_target(edge2, make_port_shape(p2))
-  update_containment(Some(edge2))
+  layered_test_update_containment(Some(edge2))
 
   { graph, parent, child, p1, p2, child_p1, child_p2 }
 }

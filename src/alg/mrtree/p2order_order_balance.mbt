@@ -71,7 +71,10 @@ fn mrtree_order_balance_order_level(
       while current_node != None {
         let node = match current_node {
           Some(value) => value
-          None => abort("unreachable")
+          None => {
+            @core.layout_runtime_report_unsupported_configuration("unreachable")
+            break
+          }
         }
 
         let outgoing = mrtree_node_outgoing_edges(node).copy()
@@ -169,7 +172,12 @@ pub fn mrtree_order_balance_process(
                     while scan != None {
                       left_start = match scan {
                         Some(value) => value
-                        None => abort("unreachable")
+                        None => {
+                          @core.layout_runtime_report_unsupported_configuration(
+                            "unreachable",
+                          )
+                          break
+                        }
                       }
                       scan = mrtree_node_left_neighbor(left_start)
                     }

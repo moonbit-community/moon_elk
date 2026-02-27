@@ -48,10 +48,7 @@ pub fn AnnulusWedgeCompaction::compact(
   self : AnnulusWedgeCompaction,
   graph : @graph.ElkNode,
 ) -> Unit {
-  let root = match radial_internal_root(graph) {
-    Some(value) => value
-    None => abort("radial root node is missing")
-  }
+  let root = radial_internal_root(graph).unwrap()
   self.root = Some(root)
   self.base.set_root(root)
   self.sorter = radial_sorting_strategy_create(

@@ -8,7 +8,21 @@ pub enum OverlapMode {
 }
 
 ///|
-pub fn overlap_mode_parse(string : String) -> OverlapMode {
+pub(all) suberror OverlapModeException {
+  IllegalArgumentException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] overlap_mode_raise_illegal_argument(
+  message : String,
+) -> T raise OverlapModeException {
+  raise OverlapModeException::IllegalArgumentException(message)
+}
+
+///|
+pub fn overlap_mode_parse(
+  string : String,
+) -> OverlapMode raise OverlapModeException {
   let normalized_lower = string.to_lower()
   if normalized_lower == "true" {
     return OverlapNone
@@ -25,7 +39,9 @@ pub fn overlap_mode_parse(string : String) -> OverlapMode {
   } else if normalized == "COMPRESS" {
     OverlapCompress
   } else {
-    abort("invalid overlap mode")
+    overlap_mode_raise_illegal_argument(
+      "No enum constant org.eclipse.elk.alg.graphviz.dot.transform.OverlapMode.\{normalized}",
+    )
   }
 }
 
@@ -46,4 +62,9 @@ pub fn overlap_mode_literal(mode : OverlapMode) -> String {
     OverlapNone => "true"
     _ => overlap_mode_to_string(mode)
   }
+}
+
+///|
+pub fn overlap_mode_default() -> OverlapMode {
+  OverlapPrism
 }

@@ -1,10 +1,31 @@
 ///|
-fn[C, T] text_prefix_filter_comment_text_provider_or_abort(
+pub suberror TextPrefixFilterException {
+  TextPrefixFilterException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] text_prefix_filter_raise(
+  message : String,
+) -> T raise TextPrefixFilterException {
+  raise TextPrefixFilterException(message)
+}
+
+///|
+fn text_prefix_filter_exception_message(
+  err : TextPrefixFilterException,
+) -> String {
+  match err {
+    TextPrefixFilterException(message) => message
+  }
+}
+
+///|
+fn[C, T] text_prefix_filter_comment_text_provider_or_raise(
   filter : TextPrefixFilter[C, T],
-) -> (C) -> String {
+) -> ((C) -> String) raise TextPrefixFilterException {
   match filter.comment_text_provider {
     Some(provider) => provider
-    None => abort("A comment text provider is required.")
+    None => text_prefix_filter_raise("A comment text provider is required.")
   }
 }
 
@@ -57,9 +78,9 @@ pub fn[C, T] TextPrefixFilter::with_case_sensitive_matching(
 pub fn[C, T] TextPrefixFilter::add_prefix(
   self : TextPrefixFilter[C, T],
   prefix : String,
-) -> TextPrefixFilter[C, T] {
+) -> TextPrefixFilter[C, T] raise TextPrefixFilterException {
   if prefix.is_empty() {
-    abort("Prefix cannot be empty. Wouldn't make sense.")
+    text_prefix_filter_raise("Prefix cannot be empty. Wouldn't make sense.")
   }
 
   self.prefixes.push(prefix)
@@ -69,10 +90,10 @@ pub fn[C, T] TextPrefixFilter::add_prefix(
 ///|
 pub fn[C, T] TextPrefixFilter::check_configuration(
   self : TextPrefixFilter[C, T],
-) -> Unit {
-  ignore(text_prefix_filter_comment_text_provider_or_abort(self))
+) -> Unit raise TextPrefixFilterException {
+  ignore(text_prefix_filter_comment_text_provider_or_raise(self))
   if self.prefixes.is_empty() {
-    abort("At least one prefix is required.")
+    text_prefix_filter_raise("At least one prefix is required.")
   }
 }
 
@@ -82,7 +103,42 @@ pub fn[C, T] TextPrefixFilter::preprocess(
   _data_provider : IDataProvider[C, T],
   _include_hierarchy : Bool,
 ) -> Unit {
-  self.check_configuration()
+  try self.check_configuration() catch {
+    err =>
+      layout_runtime_report_unsupported_configuration(
+        text_prefix_filter_exception_message(err),
+      )
+  } noraise {
+    _ => ()
+  }
+}
+
+///|
+fn[C, T] text_prefix_filter_eligible_for_attachment_impl(
+  filter : TextPrefixFilter[C, T],
+  comment : C,
+) -> Bool raise TextPrefixFilterException {
+  let comment_text_provider = text_prefix_filter_comment_text_provider_or_raise(
+    filter,
+  )
+  let comment_text = comment_text_provider(comment)
+
+  if !comment_text.is_empty() {
+    for prefix in filter.prefixes {
+      if comment_text.length() >= prefix.length() {
+        let starts_with_prefix = if filter.case_sensitive {
+          comment_text.has_prefix(prefix)
+        } else {
+          comment_text.to_lower().has_prefix(prefix.to_lower())
+        }
+        if starts_with_prefix {
+          return !filter.reject_comment_on_prefix_match
+        }
+      }
+    }
+  }
+
+  filter.reject_comment_on_prefix_match
 }
 
 ///|
@@ -90,27 +146,16 @@ pub fn[C, T] TextPrefixFilter::eligible_for_attachment(
   self : TextPrefixFilter[C, T],
   comment : C,
 ) -> Bool {
-  let comment_text_provider = text_prefix_filter_comment_text_provider_or_abort(
-    self,
-  )
-  let comment_text = comment_text_provider(comment)
-
-  if !comment_text.is_empty() {
-    for prefix in self.prefixes {
-      if comment_text.length() >= prefix.length() {
-        let starts_with_prefix = if self.case_sensitive {
-          comment_text.has_prefix(prefix)
-        } else {
-          comment_text.to_lower().has_prefix(prefix.to_lower())
-        }
-        if starts_with_prefix {
-          return !self.reject_comment_on_prefix_match
-        }
-      }
+  try text_prefix_filter_eligible_for_attachment_impl(self, comment) catch {
+    err => {
+      layout_runtime_report_unsupported_configuration(
+        text_prefix_filter_exception_message(err),
+      )
+      self.reject_comment_on_prefix_match
     }
+  } noraise {
+    eligible => eligible
   }
-
-  self.reject_comment_on_prefix_match
 }
 
 ///|

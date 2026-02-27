@@ -184,7 +184,7 @@ fn bk_node_placer_create_balanced_layout(
   l_graph : LGraph,
   layouts : Array[BKAlignedLayout],
   node_count : Int,
-) -> BKAlignedLayout {
+) -> BKAlignedLayout raise BKAlignedLayoutException {
   if layouts.length() < 4 {
     return layouts[0]
   }
@@ -255,7 +255,7 @@ fn bk_node_placer_check_order_constraint(
   layered_graph : LGraph,
   bal : BKAlignedLayout,
   monitor : @core.IElkProgressMonitor,
-) -> Bool {
+) -> Bool raise BKAlignedLayoutException {
   let mut feasible = true
 
   for layer in layered_graph.get_layers() {
@@ -410,58 +410,65 @@ fn bk_node_placer_process(
     }
   }
 
-  let aligner = new_bk_aligner(layered_graph, ni)
-  for bal in layouts {
-    aligner.vertical_alignment(bal, marked_edges)
-    aligner.inside_block_shift(bal)
-  }
-
-  let compactor = new_bk_compactor(layered_graph, ni)
-  for bal in layouts {
-    compactor.horizontal_compaction(bal)
-  }
-
-  let mut chosen_layout : BKAlignedLayout? = None
-
-  if produce_balanced_layout {
-    let balanced = bk_node_placer_create_balanced_layout(
-      layered_graph,
-      layouts,
-      ni.node_count,
-    )
-    if bk_node_placer_check_order_constraint(layered_graph, balanced, monitor) {
-      chosen_layout = Some(balanced)
-    }
-  }
-
-  if chosen_layout is None {
+  try {
+    let aligner = new_bk_aligner(layered_graph, ni)
     for bal in layouts {
-      if bk_node_placer_check_order_constraint(layered_graph, bal, monitor) {
-        match chosen_layout {
-          Some(current) =>
-            if bal.layout_size() < current.layout_size() {
-              chosen_layout = Some(bal)
-            }
-          None => chosen_layout = Some(bal)
+      aligner.vertical_alignment(bal, marked_edges)
+      aligner.inside_block_shift(bal)
+    }
+
+    let compactor = new_bk_compactor(layered_graph, ni)
+    for bal in layouts {
+      compactor.horizontal_compaction(bal)
+    }
+
+    let mut chosen_layout : BKAlignedLayout? = None
+
+    if produce_balanced_layout {
+      let balanced = bk_node_placer_create_balanced_layout(
+        layered_graph,
+        layouts,
+        ni.node_count,
+      )
+      if bk_node_placer_check_order_constraint(layered_graph, balanced, monitor) {
+        chosen_layout = Some(balanced)
+      }
+    }
+
+    if chosen_layout is None {
+      for bal in layouts {
+        if bk_node_placer_check_order_constraint(layered_graph, bal, monitor) {
+          match chosen_layout {
+            Some(current) =>
+              if bal.layout_size() < current.layout_size() {
+                chosen_layout = Some(bal)
+              }
+            None => chosen_layout = Some(bal)
+          }
         }
       }
     }
-  }
 
-  if chosen_layout is None {
-    chosen_layout = Some(layouts[0])
-  }
-
-  let final_layout = match chosen_layout {
-    Some(value) => value
-    None => layouts[0]
-  }
-
-  for layer in layered_graph.get_layers() {
-    for node in layer.get_nodes() {
-      node.get_position().y = final_layout.require_y(node) +
-        final_layout.inner_shift[node.get_id()]
+    if chosen_layout is None {
+      chosen_layout = Some(layouts[0])
     }
+
+    let final_layout = match chosen_layout {
+      Some(value) => value
+      None => layouts[0]
+    }
+
+    for layer in layered_graph.get_layers() {
+      for node in layer.get_nodes() {
+        node.get_position().y = final_layout.require_y(node) +
+          final_layout.inner_shift[node.get_id()]
+      }
+    }
+  } catch {
+    error =>
+      @core.layout_runtime_report_unsupported_configuration(
+        bk_aligned_layout_exception_message(error),
+      )
   }
 
   for bal in layouts {

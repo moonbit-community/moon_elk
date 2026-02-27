@@ -5,6 +5,16 @@ pub let core_meta_ui_language_name : String = "org.eclipse.elk.core.meta.MetaDat
 pub let core_meta_ui_extension_factory_guicekey : String = "guicekey"
 
 ///|
+priv suberror CoreMetaUiException {
+  CoreMetaUiException(String)
+} derive(Show, ToJson)
+
+///|
+fn core_meta_ui_raise_unit(message : String) -> Unit raise CoreMetaUiException {
+  raise CoreMetaUiException(message)
+}
+
+///|
 pub(all) enum CoreMetaInitializationData {
   CoreMetaInitializationDataString(String)
   CoreMetaInitializationDataMap(Map[String, String])
@@ -233,7 +243,12 @@ pub fn MetaActivator::get_runtime_module(
   if grammar == core_meta_ui_language_name {
     return @meta.new_meta_data_runtime_module()
   }
-  abort("unknown grammar: " + grammar)
+  try core_meta_ui_raise_unit("unknown grammar: " + grammar) catch {
+    err => ignore(err)
+  } noraise {
+    _ => ()
+  }
+  @meta.new_meta_data_runtime_module()
 }
 
 ///|
@@ -245,7 +260,12 @@ pub fn MetaActivator::get_ui_module(
   if grammar == core_meta_ui_language_name {
     return new_meta_data_ui_module()
   }
-  abort("unknown grammar: " + grammar)
+  try core_meta_ui_raise_unit("unknown grammar: " + grammar) catch {
+    err => ignore(err)
+  } noraise {
+    _ => ()
+  }
+  new_meta_data_ui_module()
 }
 
 ///|

@@ -11,6 +11,18 @@ priv struct SporeTimestamp {
 }
 
 ///|
+pub suberror ScanlineOverlapCheckException {
+  ScanlineOverlapCheckException(String)
+} derive(Show, ToJson)
+
+///|
+fn spore_scanline_overlap_check_raise_unit(
+  message : String,
+) -> Unit raise ScanlineOverlapCheckException {
+  raise ScanlineOverlapCheckException(message)
+}
+
+///|
 pub fn new_scanline_overlap_check(
   overlap_handler : IOverlapHandler,
   dbg : SvgImage,
@@ -126,7 +138,19 @@ fn spore_scanline_insert(
   node : Node,
 ) -> Unit {
   if !spore_scanline_insert_sorted(intervals, node) {
-    abort("Invalid hitboxes for scanline overlap calculation.")
+    try
+      spore_scanline_overlap_check_raise_unit(
+        "Invalid hitboxes for scanline overlap calculation.",
+      )
+    catch {
+      ScanlineOverlapCheckException(message) =>
+        @core.layout_runtime_report_unsupported_configuration(
+          "org.eclipse.elk.alg.common.spore.ScanlineOverlapCheck: " + message,
+        )
+    } noraise {
+      _ => ()
+    }
+    return
   }
 
   let mut overlaps_found = false

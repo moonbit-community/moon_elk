@@ -26,7 +26,9 @@ pub struct RectangleStripOverlapRemover {
 ///|
 fn checked_rectangle_node(node : RectangleNode) -> Unit {
   if node.handle < 0 || node.handle >= rectangle_node_store.val.length() {
-    abort("Invalid RectangleNode handle")
+    @core.layout_runtime_report_unsupported_configuration(
+      "Invalid RectangleNode handle",
+    )
   }
 }
 
@@ -297,10 +299,7 @@ pub fn RectangleStripOverlapRemover::remove_overlaps(
   )
   rectangle_strip_overlap_remover_compute_overlaps(self)
 
-  let strip_size = match self.overlap_removal_strategy {
-    Some(strategy) => strategy.remove_overlaps(self)
-    None => abort("No overlap removal strategy configured")
-  }
+  let strip_size = self.overlap_removal_strategy.unwrap().remove_overlaps(self)
 
   for node in self.rectangle_nodes {
     rectangle_strip_overlap_remover_export_rectangle(self, node)

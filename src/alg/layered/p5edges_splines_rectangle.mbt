@@ -7,6 +7,16 @@ pub struct Rectangle {
 }
 
 ///|
+pub suberror RectangleException {
+  RectangleException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] rectangle_raise(message : String) -> T raise RectangleException {
+  raise RectangleException(message)
+}
+
+///|
 fn rectangle_min_double(left : Double, right : Double) -> Double {
   if left < right {
     left
@@ -30,12 +40,12 @@ pub fn new_rectangle_values(
   top : Double,
   right : Double,
   bottom : Double,
-) -> Rectangle {
+) -> Rectangle raise RectangleException {
   if top > bottom {
-    abort("Top must be smaller or equal to bottom.")
+    rectangle_raise("Top must be smaller or equal to bottom.")
   }
   if left > right {
-    abort("Left must be smaller or equal to right.")
+    rectangle_raise("Left must be smaller or equal to right.")
   }
   { top, right, bottom, left }
 }
@@ -69,9 +79,11 @@ pub fn new_rectangle_shape(shape : LShape) -> Rectangle {
 }
 
 ///|
-pub fn new_rectangle_vectors(vectors : Array[@core.KVector]) -> Rectangle {
+pub fn new_rectangle_vectors(
+  vectors : Array[@core.KVector],
+) -> Rectangle raise RectangleException {
   if vectors.is_empty() {
-    abort("The list of vectors may not be empty.")
+    rectangle_raise("The list of vectors may not be empty.")
   }
 
   let rectangle = Rectangle::{
@@ -130,9 +142,11 @@ pub fn rectangle_union(
 }
 
 ///|
-pub fn rectangle_union_collection(rectangles : Array[Rectangle]) -> Rectangle {
+pub fn rectangle_union_collection(
+  rectangles : Array[Rectangle],
+) -> Rectangle raise RectangleException {
   if rectangles.is_empty() {
-    abort("The list of vectors may not be null.")
+    rectangle_raise("The list of vectors may not be null.")
   }
 
   let rectangle = rectangles[0]
@@ -203,12 +217,12 @@ pub fn Rectangle::to_node_margins(
 ) -> @core.ElkMargin {
   let ret_val = @core.new_elk_margin()
 
-  let shape_rectangle = new_rectangle_values(
-    0.0,
-    0.0,
-    shape.get_size().x,
-    shape.get_size().y,
-  )
+  let shape_rectangle : Rectangle = {
+    top: 0.0,
+    left: 0.0,
+    right: shape.get_size().x,
+    bottom: shape.get_size().y,
+  }
   ret_val.set_top(rectangle_max_double(0.0, shape_rectangle.top - self.top))
   ret_val.set_left(rectangle_max_double(0.0, shape_rectangle.left - self.left))
   ret_val.set_bottom(

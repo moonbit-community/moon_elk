@@ -1,4 +1,25 @@
 ///|
+priv suberror TopdownSizeApproximatorException {
+  TopdownSizeApproximatorException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] topdown_size_approximator_raise(
+  message : String,
+) -> T raise TopdownSizeApproximatorException {
+  raise TopdownSizeApproximatorException(message)
+}
+
+///|
+fn topdown_size_approximator_exception_message(
+  err : TopdownSizeApproximatorException,
+) -> String {
+  match err {
+    TopdownSizeApproximatorException(message) => message
+  }
+}
+
+///|
 pub(all) enum TopdownSizeApproximator {
   CountChildren
   LookaheadLayout
@@ -52,20 +73,25 @@ fn topdown_size_approximator_parse_padding(value : String) -> ElkPadding {
 ///|
 fn topdown_size_approximator_connectable_shape_to_node(
   shape : @graph.ElkConnectableShape,
-) -> @graph.ElkNode {
+) -> @graph.ElkNode raise TopdownSizeApproximatorException {
   match shape {
     NodeShape(node) => node
-    PortShape(_) => abort("Expected node endpoint in topdown size approximator")
+    PortShape(_) =>
+      topdown_size_approximator_raise(
+        "Expected node endpoint in topdown size approximator",
+      )
   }
 }
 
 ///|
 fn topdown_size_approximator_first_target_node(
   edge : @graph.ElkEdge,
-) -> @graph.ElkNode {
+) -> @graph.ElkNode raise TopdownSizeApproximatorException {
   let targets = @graph.edge_targets(edge)
   if targets.is_empty() {
-    abort("Edge without target in topdown size approximator")
+    topdown_size_approximator_raise(
+      "Edge without target in topdown size approximator",
+    )
   }
   topdown_size_approximator_connectable_shape_to_node(targets[0])
 }
@@ -96,7 +122,7 @@ fn topdown_size_approximator_count_children(node : @graph.ElkNode) -> KVector {
 ///|
 fn topdown_size_approximator_lookahead_layout(
   original_graph : @graph.ElkNode,
-) -> KVector {
+) -> KVector raise TopdownSizeApproximatorException {
   let cloned_node = @graph.create_node(None)
   @graph.node_copy_properties(cloned_node, original_graph)
 
@@ -126,12 +152,18 @@ fn topdown_size_approximator_lookahead_layout(
     for edge in @graph.node_outgoing_edges(child) {
       let new_src = match old_to_new_node_map.get(child) {
         Some(value) => value
-        None => abort("Missing source node clone in topdown size approximator")
+        None =>
+          topdown_size_approximator_raise(
+            "Missing source node clone in topdown size approximator",
+          )
       }
       let target = topdown_size_approximator_first_target_node(edge)
       let new_tar = match old_to_new_node_map.get(target) {
         Some(value) => value
-        None => abort("Missing target node clone in topdown size approximator")
+        None =>
+          topdown_size_approximator_raise(
+            "Missing target node clone in topdown size approximator",
+          )
       }
       let new_edge = @graph.create_edge(Some(cloned_node))
       @graph.edge_add_source(new_edge, @graph.make_node_shape(new_src))
@@ -297,11 +329,11 @@ fn topdown_size_approximator_layout_next_level(
 }
 
 ///|
-pub fn TopdownSizeApproximator::get_size(
-  self : TopdownSizeApproximator,
+fn topdown_size_approximator_get_size_impl(
+  approximator : TopdownSizeApproximator,
   original_graph : @graph.ElkNode,
-) -> KVector {
-  match self {
+) -> KVector raise TopdownSizeApproximatorException {
+  match approximator {
     CountChildren => topdown_size_approximator_count_children(original_graph)
     LookaheadLayout =>
       topdown_size_approximator_lookahead_layout(original_graph)
@@ -309,5 +341,22 @@ pub fn TopdownSizeApproximator::get_size(
       topdown_size_approximator_fixed_integer_ratio_boxes(original_graph)
     LayoutNextLevel =>
       topdown_size_approximator_layout_next_level(original_graph)
+  }
+}
+
+///|
+pub fn TopdownSizeApproximator::get_size(
+  self : TopdownSizeApproximator,
+  original_graph : @graph.ElkNode,
+) -> KVector {
+  try topdown_size_approximator_get_size_impl(self, original_graph) catch {
+    err => {
+      layout_runtime_report_unsupported_configuration(
+        topdown_size_approximator_exception_message(err),
+      )
+      topdown_size_approximator_count_children(original_graph)
+    }
+  } noraise {
+    size => size
   }
 }

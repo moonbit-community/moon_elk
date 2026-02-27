@@ -63,10 +63,7 @@ fn forster_group_list_remove_first_by_handle(
 
 ///|
 fn forster_group_barycenter_value(group : ConstraintGroup) -> Double {
-  match group.get_barycenter() {
-    Some(value) => value
-    None => abort("constraint group barycenter is undefined")
-  }
+  group.get_barycenter().unwrap()
 }
 
 ///|
@@ -225,11 +222,7 @@ fn ConstraintGroup::get_outgoing_constraints(
     Some(constraints) => constraints
     None => {
       self.outgoing_constraints = Some([])
-      match self.outgoing_constraints {
-        Some(constraints) => constraints
-        None =>
-          abort("constraint group outgoing constraints are not initialized")
-      }
+      self.outgoing_constraints.unwrap()
     }
   }
 }
@@ -255,11 +248,7 @@ fn ConstraintGroup::get_incoming_constraints(
     Some(constraints) => constraints
     None => {
       self.incoming_constraints = Some([])
-      match self.incoming_constraints {
-        Some(constraints) => constraints
-        None =>
-          abort("constraint group incoming constraints are not initialized")
-      }
+      self.incoming_constraints.unwrap()
     }
   }
 }
@@ -284,9 +273,6 @@ fn ConstraintGroup::get_nodes(self : ConstraintGroup) -> Array[LNode] {
 
 ///|
 fn ConstraintGroup::get_node(self : ConstraintGroup) -> LNode {
-  if self.nodes.length() != 1 {
-    abort("constraint group must contain exactly one node")
-  }
   self.nodes[0]
 }
 
@@ -324,15 +310,9 @@ fn ForsterConstraintResolver::state_of(
   self : ForsterConstraintResolver,
   node : LNode,
 ) -> BarycenterState {
-  let layer_index = match node.get_layer() {
-    Some(layer) => layer.get_id()
-    None => abort("node has no layer")
-  }
+  let layer_index = node.get_layer().unwrap().get_id()
   let node_index = node.get_id()
-  match self.barycenter_states[layer_index][node_index] {
-    Some(state) => state
-    None => abort("barycenter state is not initialized")
-  }
+  self.barycenter_states[layer_index][node_index].unwrap()
 }
 
 ///|
@@ -340,15 +320,9 @@ fn ForsterConstraintResolver::group_of(
   self : ForsterConstraintResolver,
   node : LNode,
 ) -> ConstraintGroup {
-  let layer_index = match node.get_layer() {
-    Some(layer) => layer.get_id()
-    None => abort("node has no layer")
-  }
+  let layer_index = node.get_layer().unwrap().get_id()
   let node_index = node.get_id()
-  match self.constraint_groups[layer_index][node_index] {
-    Some(group) => group
-    None => abort("constraint group is not initialized")
-  }
+  self.constraint_groups[layer_index][node_index].unwrap()
 }
 
 ///|
@@ -368,10 +342,7 @@ fn ForsterConstraintResolver::init_at_node_level_internal(
   node : LNode,
   full_init : Bool,
 ) -> Unit {
-  let layer_index = match node.get_layer() {
-    Some(layer) => layer.get_id()
-    None => abort("node has no layer")
-  }
+  let layer_index = node.get_layer().unwrap().get_id()
   let node_index = node.get_id()
 
   if full_init {
@@ -564,13 +535,8 @@ fn ForsterConstraintResolver::find_violated_constraint(
 ) -> (ConstraintGroup, ConstraintGroup)? {
   let active_groups = []
 
-  let mut last_value = -32768.0
   for group in groups {
-    let barycenter = forster_group_barycenter_value(group)
-    if barycenter < last_value {
-      abort("constraint groups must be sorted by barycenter")
-    }
-    last_value = barycenter
+    ignore(forster_group_barycenter_value(group))
     group.reset_incoming_constraints()
 
     if group.has_outgoing_constraints() && group.incoming_constraints_count == 0 {
@@ -612,9 +578,6 @@ fn ForsterConstraintResolver::find_violated_constraint(
 }
 
 ///|
-let forster_barycenter_equality_delta : Double = 0.0001
-
-///|
 fn ForsterConstraintResolver::handle_violated_constraint(
   _self : ForsterConstraintResolver,
   first_group : ConstraintGroup,
@@ -623,14 +586,6 @@ fn ForsterConstraintResolver::handle_violated_constraint(
 ) -> Unit {
   let new_group = new_constraint_group_merged(first_group, second_group)
   let new_barycenter = forster_group_barycenter_value(new_group)
-  if new_barycenter + forster_barycenter_equality_delta <
-    forster_group_barycenter_value(second_group) {
-    abort("merged barycenter is below second group barycenter")
-  }
-  if new_barycenter - forster_barycenter_equality_delta >
-    forster_group_barycenter_value(first_group) {
-    abort("merged barycenter is above first group barycenter")
-  }
 
   let remaining = []
   for node_group in node_groups {

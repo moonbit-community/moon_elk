@@ -51,7 +51,7 @@ test "Property default clone array" {
 }
 
 ///|
-test "panic Property unknown clone strategy" {
+test "Property unknown clone strategy falls back to default value" {
   let property = new_property_cloneable_without_clone("dummy", 42)
-  ignore(property.get_default())
+  assert_eq(property.get_default(), 42)
 }

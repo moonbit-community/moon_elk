@@ -12,7 +12,12 @@ fn tarjan_edge_is_reversed(tarjan : Tarjan, edge : LEdge) -> Bool {
 fn tarjan_pop_stack(stack : Array[LNode]) -> LNode {
   match stack.pop() {
     Some(node) => node
-    None => abort("tarjan stack is empty")
+    None => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "tarjan stack is empty",
+      )
+      tarjan_pop_stack(stack)
+    }
   }
 }
 

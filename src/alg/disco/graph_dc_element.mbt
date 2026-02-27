@@ -9,6 +9,23 @@ pub struct DCElement {
 }
 
 ///|
+pub suberror DCElementException {
+  DCElementException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] dc_element_raise(message : String) -> T raise DCElementException {
+  raise DCElementException(message)
+}
+
+///|
+pub fn dc_element_exception_message(err : DCElementException) -> String {
+  match err {
+    DCElementException(message) => message
+  }
+}
+
+///|
 pub fn new_dc_element(poly_path : @core.KVectorChain) -> DCElement {
   let vertices = poly_path.to_array()
   let mut min_x = @double.infinity
@@ -34,10 +51,12 @@ pub fn new_dc_element(poly_path : @core.KVectorChain) -> DCElement {
 }
 
 ///|
-pub fn DCElement::get_offset(self : DCElement) -> @core.KVector {
+pub fn DCElement::get_offset(
+  self : DCElement,
+) -> @core.KVector raise DCElementException {
   match self.cp {
     Some(component) => component.get_offset()
-    None => abort("Offset hasn't been set, yet.")
+    None => dc_element_raise("Offset hasn't been set, yet.")
   }
 }
 

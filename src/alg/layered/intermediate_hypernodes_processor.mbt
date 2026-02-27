@@ -1,24 +1,42 @@
 ///|
-fn hypernodes_processor_require_source(edge : LEdge) -> LPort {
+priv suberror HypernodesProcessorException {
+  UnsupportedGraphException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] hypernodes_processor_raise_unsupported_graph(
+  message : String,
+) -> T raise HypernodesProcessorException {
+  raise HypernodesProcessorException::UnsupportedGraphException(message)
+}
+
+///|
+fn hypernodes_processor_require_source(
+  edge : LEdge,
+) -> LPort raise HypernodesProcessorException {
   match edge.get_source() {
     Some(value) => value
-    None => abort("edge has no source")
+    None => hypernodes_processor_raise_unsupported_graph("edge has no source")
   }
 }
 
 ///|
-fn hypernodes_processor_require_target(edge : LEdge) -> LPort {
+fn hypernodes_processor_require_target(
+  edge : LEdge,
+) -> LPort raise HypernodesProcessorException {
   match edge.get_target() {
     Some(value) => value
-    None => abort("edge has no target")
+    None => hypernodes_processor_raise_unsupported_graph("edge has no target")
   }
 }
 
 ///|
-fn hypernodes_processor_remove_first_bendpoint(edge : LEdge) -> @core.KVector {
+fn hypernodes_processor_remove_first_bendpoint(
+  edge : LEdge,
+) -> @core.KVector raise HypernodesProcessorException {
   let bend_points = edge.get_bend_points()
   if bend_points.is_empty() {
-    abort("bend points are empty")
+    hypernodes_processor_raise_unsupported_graph("bend points are empty")
   }
   let points = bend_points.to_array()
   let first = points[0]
@@ -32,10 +50,12 @@ fn hypernodes_processor_remove_first_bendpoint(edge : LEdge) -> @core.KVector {
 }
 
 ///|
-fn hypernodes_processor_remove_last_bendpoint(edge : LEdge) -> @core.KVector {
+fn hypernodes_processor_remove_last_bendpoint(
+  edge : LEdge,
+) -> @core.KVector raise HypernodesProcessorException {
   let bend_points = edge.get_bend_points()
   if bend_points.is_empty() {
-    abort("bend points are empty")
+    hypernodes_processor_raise_unsupported_graph("bend points are empty")
   }
   let points = bend_points.to_array()
   let last = points[points.length() - 1]
@@ -70,7 +90,7 @@ fn hypernodes_processor_move_hypernode(
   layered_graph : LGraph,
   hypernode : LNode,
   right : Bool,
-) -> Unit {
+) -> Unit raise HypernodesProcessorException {
   let bend_edges : Array[LEdge] = []
   let mut bendx = 2147483647.0
   let mut diffx = 2147483647.0
@@ -206,34 +226,44 @@ fn hypernodes_processor_process(
   }
   ignore(monitor.begin("Hypernodes processing", 1.0))
 
-  for layer in layered_graph.get_layers() {
-    for node in layer.get_nodes() {
-      if node.get_property_bool(layered_options_hypernode) &&
-        node.get_ports().length() <= 2 {
-        let mut top_edges = 0
-        let mut right_edges = 0
-        let mut bottom_edges = 0
-        let mut left_edges = 0
+  try {
+    for layer in layered_graph.get_layers() {
+      for node in layer.get_nodes() {
+        if node.get_property_bool(layered_options_hypernode) &&
+          node.get_ports().length() <= 2 {
+          let mut top_edges = 0
+          let mut right_edges = 0
+          let mut bottom_edges = 0
+          let mut left_edges = 0
 
-        for port in node.get_ports() {
-          match port.get_side() {
-            @core.PortSide::North => top_edges = top_edges + 1
-            @core.PortSide::East => right_edges = right_edges + 1
-            @core.PortSide::South => bottom_edges = bottom_edges + 1
-            @core.PortSide::West => left_edges = left_edges + 1
-            _ => ()
+          for port in node.get_ports() {
+            match port.get_side() {
+              @core.PortSide::North => top_edges = top_edges + 1
+              @core.PortSide::East => right_edges = right_edges + 1
+              @core.PortSide::South => bottom_edges = bottom_edges + 1
+              @core.PortSide::West => left_edges = left_edges + 1
+              _ => ()
+            }
           }
-        }
 
-        if top_edges == 0 && bottom_edges == 0 {
-          hypernodes_processor_move_hypernode(
-            layered_graph,
-            node,
-            left_edges <= right_edges,
-          )
+          if top_edges == 0 && bottom_edges == 0 {
+            hypernodes_processor_move_hypernode(
+              layered_graph,
+              node,
+              left_edges <= right_edges,
+            )
+          }
         }
       }
     }
+  } catch {
+    HypernodesProcessorException::UnsupportedGraphException(message) => {
+      @core.layout_runtime_report_unsupported_configuration(message)
+      monitor.done()
+      return
+    }
+  } noraise {
+    _ => ()
   }
 
   monitor.done()

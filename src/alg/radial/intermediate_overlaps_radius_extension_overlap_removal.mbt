@@ -24,10 +24,7 @@ pub fn RadiusExtensionOverlapRemoval::remove_overlaps(
   graph : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor?,
 ) -> Unit {
-  let root = match radial_internal_root(graph) {
-    Some(value) => value
-    None => abort("radial root node is missing")
-  }
+  let root = radial_internal_root(graph).unwrap()
   self.base.set_root(root)
   self.sorter = radial_sorting_strategy_create(
     radial_graph_sorting_strategy(graph),

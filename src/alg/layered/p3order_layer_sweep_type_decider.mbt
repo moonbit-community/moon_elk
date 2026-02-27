@@ -312,10 +312,8 @@ fn LayerSweepTypeDecider::node_info_for(
   self : LayerSweepTypeDecider,
   node : LNode,
 ) -> LayerSweepTypeDeciderNodeInfo {
-  match node.get_layer() {
-    Some(layer) => self.node_info[layer.get_id()][node.get_id()]
-    None => abort("node has no layer")
-  }
+  let layer = node.get_layer().unwrap()
+  self.node_info[layer.get_id()][node.get_id()]
 }
 
 ///|

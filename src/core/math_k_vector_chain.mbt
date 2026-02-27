@@ -1,4 +1,28 @@
 ///|
+priv suberror KVectorChainException {
+  KVectorChainException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] kvector_chain_raise(message : String) -> T raise KVectorChainException {
+  raise KVectorChainException(message)
+}
+
+///|
+fn kvector_chain_raise_unit(
+  message : String,
+) -> Unit raise KVectorChainException {
+  kvector_chain_raise(message)
+}
+
+///|
+fn kvector_chain_exception_message(err : KVectorChainException) -> String {
+  match err {
+    KVectorChainException(message) => message
+  }
+}
+
+///|
 pub(all) struct KVectorChain {
   vectors : Array[KVector]
 }
@@ -66,7 +90,15 @@ pub fn KVectorChain::to_array_from(
   begin_index : Int,
 ) -> Array[KVector] {
   if begin_index < 0 || begin_index > self.vectors.length() {
-    abort("IndexOutOfBoundsException")
+    try kvector_chain_raise_unit("IndexOutOfBoundsException") catch {
+      err =>
+        layout_runtime_report_unsupported_configuration(
+          kvector_chain_exception_message(err),
+        )
+    } noraise {
+      _ => ()
+    }
+    return []
   }
   let result = []
   let mut i = begin_index
@@ -186,7 +218,15 @@ pub fn KVectorChain::add_all_as_copies(
   chain : KVectorChain,
 ) -> Unit {
   if index < 0 || index > self.vectors.length() {
-    abort("IndexOutOfBoundsException")
+    try kvector_chain_raise_unit("IndexOutOfBoundsException") catch {
+      err =>
+        layout_runtime_report_unsupported_configuration(
+          kvector_chain_exception_message(err),
+        )
+    } noraise {
+      _ => ()
+    }
+    return
   }
   let copies = []
   for v in chain.vectors {
@@ -343,7 +383,15 @@ pub fn KVectorChain::point_on_line(
 
     // Keep Java behavior: listIterator(size - 1) starts one element before the end segment.
     if size < 3 {
-      abort("NoSuchElementException")
+      try kvector_chain_raise_unit("NoSuchElementException") catch {
+        err =>
+          layout_runtime_report_unsupported_configuration(
+            kvector_chain_exception_message(err),
+          )
+      } noraise {
+        _ => ()
+      }
+      return self.vectors[0]
     }
     let mut current_point = self.vectors[size - 2]
     let mut i = size - 3
@@ -375,7 +423,19 @@ pub fn KVectorChain::point_on_line(
   if size == 1 {
     return self.vectors[0]
   }
-  abort("Cannot determine a point on an empty vector chain.")
+  try
+    kvector_chain_raise_unit(
+      "Cannot determine a point on an empty vector chain.",
+    )
+  catch {
+    err =>
+      layout_runtime_report_unsupported_configuration(
+        kvector_chain_exception_message(err),
+      )
+  } noraise {
+    _ => ()
+  }
+  new_kvector()
 }
 
 ///|
@@ -385,7 +445,19 @@ pub fn KVectorChain::angle_on_line(
 ) -> Double {
   let size = self.vectors.length()
   if size < 2 {
-    abort("Need at least two points to determine an angle.")
+    try
+      kvector_chain_raise_unit(
+        "Need at least two points to determine an angle.",
+      )
+    catch {
+      err =>
+        layout_runtime_report_unsupported_configuration(
+          kvector_chain_exception_message(err),
+        )
+    } noraise {
+      _ => ()
+    }
+    return 0.0
   }
   let abs_distance = dist.abs()
   let mut distance_sum = 0.0
@@ -410,7 +482,15 @@ pub fn KVectorChain::angle_on_line(
 
   // Keep Java behavior: listIterator(size - 1) starts one element before the end segment.
   if size < 3 {
-    abort("NoSuchElementException")
+    try kvector_chain_raise_unit("NoSuchElementException") catch {
+      err =>
+        layout_runtime_report_unsupported_configuration(
+          kvector_chain_exception_message(err),
+        )
+    } noraise {
+      _ => ()
+    }
+    return 0.0
   }
   let mut next_point = self.vectors[size - 2]
   let mut current_point = self.vectors[size - 2]

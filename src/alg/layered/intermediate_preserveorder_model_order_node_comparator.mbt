@@ -33,7 +33,11 @@ fn model_order_node_associations_get(
 ) -> Array[Int] {
   match associations.get(node_handle) {
     Some(values) => values
-    None => abort("missing association entry")
+    None => {
+      let values = []
+      associations[node_handle] = values
+      values
+    }
   }
 }
 
@@ -41,7 +45,7 @@ fn model_order_node_associations_get(
 fn model_order_node_layer_id(node : LNode) -> Int {
   match node.get_layer() {
     Some(layer) => layer.get_id()
-    None => abort("node has no layer")
+    None => 0
   }
 }
 
@@ -71,14 +75,10 @@ fn model_order_node_strategy_is_prefer_edges(
 }
 
 ///|
-fn model_order_node_port_node(port : LPort?) -> LNode {
+fn model_order_node_port_node(port : LPort?) -> LNode? {
   match port {
-    Some(value) =>
-      match value.get_node() {
-        Some(node) => node
-        None => abort("port has no owner node")
-      }
-    None => abort("missing port")
+    Some(value) => value.get_node()
+    None => None
   }
 }
 
@@ -118,15 +118,15 @@ fn model_order_node_get_first_incoming_port_of_node(node : LNode) -> LPort? {
 ///|
 fn model_order_node_get_first_incoming_source_port_of_node(
   node : LNode,
-) -> LPort {
+) -> LPort? {
   let incoming_port = model_order_node_get_first_incoming_port_of_node(node)
   match incoming_port {
     Some(port) =>
       match port.get_incoming_edges()[0].get_source() {
-        Some(source) => source
-        None => abort("incoming edge has no source")
+        Some(source) => Some(source)
+        None => None
       }
-    None => abort("node has no incoming edges")
+    None => None
   }
 }
 
@@ -143,27 +143,21 @@ fn model_order_node_get_first_outgoing_port_of_node(node : LNode) -> LPort? {
 ///|
 fn model_order_node_get_first_outgoing_target_port_of_node(
   node : LNode,
-) -> LPort {
+) -> LPort? {
   let outgoing_port = model_order_node_get_first_outgoing_port_of_node(node)
   match outgoing_port {
     Some(port) =>
       match port.get_outgoing_edges()[0].get_target() {
-        Some(target) => target
-        None => abort("outgoing edge has no target")
+        Some(target) => Some(target)
+        None => None
       }
-    None => abort("node has no outgoing edges")
+    None => None
   }
 }
 
 ///|
 fn model_order_node_require_max_model_order_nodes(graph : LGraph) -> Int {
-  let maximum = graph.get_property_int(
-    internal_properties_max_model_order_nodes,
-  )
-  if graph.get_parent_node() is Some(_) && maximum == 0 {
-    abort("missing required property: modelOrder.maximum")
-  }
-  maximum
+  graph.get_property_int(internal_properties_max_model_order_nodes)
 }
 
 ///|
@@ -299,15 +293,26 @@ fn ModelOrderNodeComparator::handle_helper_dummy_nodes(
     let dummy_node_source_port = model_order_node_get_first_incoming_source_port_of_node(
       n1,
     )
-    let dummy_node_source_node = model_order_node_port_node(
-      Some(dummy_node_source_port),
-    )
     let dummy_node_target_port = model_order_node_get_first_outgoing_target_port_of_node(
       n1,
     )
-    let dummy_node_target_node = model_order_node_port_node(
-      Some(dummy_node_target_port),
+    let dummy_node_source_node = model_order_node_port_node(
+      dummy_node_source_port,
     )
+    let dummy_node_target_node = model_order_node_port_node(
+      dummy_node_target_port,
+    )
+    if dummy_node_source_node is None || dummy_node_target_node is None {
+      return 0
+    }
+    let dummy_node_source_node = match dummy_node_source_node {
+      Some(value) => value
+      None => return 0
+    }
+    let dummy_node_target_node = match dummy_node_target_node {
+      Some(value) => value
+      None => return 0
+    }
     let dummy_layer_id = model_order_node_layer_id(n1)
 
     if model_order_node_layer_id(dummy_node_source_node) != dummy_layer_id &&
@@ -332,15 +337,26 @@ fn ModelOrderNodeComparator::handle_helper_dummy_nodes(
     let dummy_node_source_port = model_order_node_get_first_incoming_source_port_of_node(
       n2,
     )
-    let dummy_node_source_node = model_order_node_port_node(
-      Some(dummy_node_source_port),
-    )
     let dummy_node_target_port = model_order_node_get_first_outgoing_target_port_of_node(
       n2,
     )
-    let dummy_node_target_node = model_order_node_port_node(
-      Some(dummy_node_target_port),
+    let dummy_node_source_node = model_order_node_port_node(
+      dummy_node_source_port,
     )
+    let dummy_node_target_node = model_order_node_port_node(
+      dummy_node_target_port,
+    )
+    if dummy_node_source_node is None || dummy_node_target_node is None {
+      return 0
+    }
+    let dummy_node_source_node = match dummy_node_source_node {
+      Some(value) => value
+      None => return 0
+    }
+    let dummy_node_target_node = match dummy_node_target_node {
+      Some(value) => value
+      None => return 0
+    }
     let dummy_layer_id = model_order_node_layer_id(n1)
 
     if model_order_node_layer_id(dummy_node_source_node) != dummy_layer_id &&
@@ -368,12 +384,19 @@ fn ModelOrderNodeComparator::handle_helper_dummy_nodes(
     let n1_dummy_target_port = model_order_node_get_first_outgoing_target_port_of_node(
       n1,
     )
-    let n1_dummy_source_node = model_order_node_port_node(
-      Some(n1_dummy_source_port),
-    )
-    let n1_dummy_target_node = model_order_node_port_node(
-      Some(n1_dummy_target_port),
-    )
+    let n1_dummy_source_node = model_order_node_port_node(n1_dummy_source_port)
+    let n1_dummy_target_node = model_order_node_port_node(n1_dummy_target_port)
+    if n1_dummy_source_node is None || n1_dummy_target_node is None {
+      return 0
+    }
+    let n1_dummy_source_node = match n1_dummy_source_node {
+      Some(value) => value
+      None => return 0
+    }
+    let n1_dummy_target_node = match n1_dummy_target_node {
+      Some(value) => value
+      None => return 0
+    }
     let n1_layer_id = model_order_node_layer_id(n1)
     let mut n1_source_feedback_node = false
     let mut n1_target_feedback_node = false
@@ -384,12 +407,19 @@ fn ModelOrderNodeComparator::handle_helper_dummy_nodes(
     let n2_dummy_target_port = model_order_node_get_first_outgoing_target_port_of_node(
       n2,
     )
-    let n2_dummy_source_node = model_order_node_port_node(
-      Some(n2_dummy_source_port),
-    )
-    let n2_dummy_target_node = model_order_node_port_node(
-      Some(n2_dummy_target_port),
-    )
+    let n2_dummy_source_node = model_order_node_port_node(n2_dummy_source_port)
+    let n2_dummy_target_node = model_order_node_port_node(n2_dummy_target_port)
+    if n2_dummy_source_node is None || n2_dummy_target_node is None {
+      return 0
+    }
+    let n2_dummy_source_node = match n2_dummy_source_node {
+      Some(value) => value
+      None => return 0
+    }
+    let n2_dummy_target_node = match n2_dummy_target_node {
+      Some(value) => value
+      None => return 0
+    }
     let n2_layer_id = model_order_node_layer_id(n2)
     let mut n2_source_feedback_node = false
     let mut n2_target_feedback_node = false
@@ -417,6 +447,14 @@ fn ModelOrderNodeComparator::handle_helper_dummy_nodes(
       lnode_internal_handle(n2_reference_node) {
       if self.before_ports {
         if n1_source_feedback_node && n2_source_feedback_node {
+          let n1_dummy_source_port = match n1_dummy_source_port {
+            Some(value) => value
+            None => return 0
+          }
+          let n2_dummy_source_port = match n2_dummy_source_port {
+            Some(value) => value
+            None => return 0
+          }
           let return_value = new_model_order_port_comparator_without_target_node_model_order(
             self.graph,
             self.previous_layer,
@@ -440,6 +478,14 @@ fn ModelOrderNodeComparator::handle_helper_dummy_nodes(
           return 0
         }
       } else {
+        let n1_dummy_source_port = match n1_dummy_source_port {
+          Some(value) => value
+          None => return 0
+        }
+        let n2_dummy_source_port = match n2_dummy_source_port {
+          Some(value) => value
+          None => return 0
+        }
         for port in n1_reference_node.get_ports() {
           if lport_internal_handle(n1_dummy_source_port) ==
             lport_internal_handle(port) {
@@ -528,6 +574,25 @@ pub fn ModelOrderNodeComparator::compare(
       (Some(source1), Some(source2)) => {
         let p1_node = model_order_node_port_node(Some(source1))
         let p2_node = model_order_node_port_node(Some(source2))
+        if p1_node is None || p2_node is None {
+          let n1_edge_order = self.get_model_order_from_connected_edges(n1)
+          let n2_edge_order = self.get_model_order_from_connected_edges(n2)
+          if n1_edge_order > n2_edge_order {
+            self.update_bigger_and_smaller_associations(n1, n2)
+            return 1
+          } else {
+            self.update_bigger_and_smaller_associations(n2, n1)
+            return -1
+          }
+        }
+        let p1_node = match p1_node {
+          Some(value) => value
+          None => return -1
+        }
+        let p2_node = match p2_node {
+          Some(value) => value
+          None => return -1
+        }
 
         if lnode_internal_handle(p1_node) == lnode_internal_handle(p2_node) {
           for port in p1_node.get_ports() {

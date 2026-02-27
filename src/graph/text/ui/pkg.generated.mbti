@@ -8,6 +8,8 @@ import {
 }
 
 // Values
+pub fn graph_text_activator_exception_message(GraphTextActivatorException) -> String
+
 pub fn graph_text_initialization_data_map(Map[String, String]) -> GraphTextInitializationData
 
 pub fn graph_text_initialization_data_string(String) -> GraphTextInitializationData
@@ -89,6 +91,24 @@ pub fn text_activator_get_instance() -> TextActivator?
 pub fn text_activator_reset_for_test() -> Unit
 
 // Errors
+pub(all) suberror ElkGraphTextUiActivatorException {
+  IllegalArgumentException(String)
+}
+pub impl Show for ElkGraphTextUiActivatorException
+pub impl ToJson for ElkGraphTextUiActivatorException
+
+pub suberror GraphTextActivatorException {
+  IllegalArgumentException(String)
+  RuntimeException(String)
+}
+pub impl Show for GraphTextActivatorException
+pub impl ToJson for GraphTextActivatorException
+
+pub suberror GraphTextExecutableExtensionFactoryException {
+  IllegalArgumentException(String)
+}
+pub impl Show for GraphTextExecutableExtensionFactoryException
+pub impl ToJson for GraphTextExecutableExtensionFactoryException
 
 // Types and methods
 pub struct AbstractElkGraphProposalProvider {
@@ -238,7 +258,7 @@ pub struct ElkGraphExecutableExtensionFactory {
   mut config : GraphTextConfigurationElement?
 }
 pub fn ElkGraphExecutableExtensionFactory::create(Self) -> Result[GraphTextUiObject, GraphTextUiCoreException]
-pub fn ElkGraphExecutableExtensionFactory::set_initialization_data(Self, GraphTextConfigurationElement?, String?, GraphTextInitializationData?) -> Unit
+pub fn ElkGraphExecutableExtensionFactory::set_initialization_data(Self, GraphTextConfigurationElement?, String?, GraphTextInitializationData?) -> Unit raise GraphTextExecutableExtensionFactoryException
 
 pub struct ElkGraphLabelProvider {
   name_provider : @text.ElkGraphQualifiedNameProvider
@@ -265,9 +285,9 @@ pub fn ElkGraphQuickfixProvider::supports_issue(Self, String) -> Bool
 pub struct ElkGraphTextUiActivator {
   base : TextActivator
 }
-pub fn ElkGraphTextUiActivator::create_injector(Self, String) -> GraphTextUiInjector
+pub fn ElkGraphTextUiActivator::create_injector(Self, String) -> GraphTextUiInjector raise ElkGraphTextUiActivatorException
 pub fn ElkGraphTextUiActivator::get_base(Self) -> TextActivator
-pub fn ElkGraphTextUiActivator::get_ide_module(Self, String) -> @ide.ElkGraphIdeModule
+pub fn ElkGraphTextUiActivator::get_ide_module(Self, String) -> @ide.ElkGraphIdeModule raise ElkGraphTextUiActivatorException
 pub fn ElkGraphTextUiActivator::start(Self) -> Unit
 pub fn ElkGraphTextUiActivator::stop(Self) -> Unit
 
@@ -383,15 +403,15 @@ pub struct TextActivator {
   bundle : GraphTextUiBundle
   injectors : Map[String, GraphTextUiInjector]
 }
-pub fn TextActivator::create_injector(Self, String) -> GraphTextUiInjector
+pub fn TextActivator::create_injector(Self, String) -> GraphTextUiInjector raise GraphTextActivatorException
 pub fn TextActivator::get_bundle(Self) -> GraphTextUiBundle
-pub fn TextActivator::get_injector(Self, String) -> GraphTextUiInjector
-pub fn TextActivator::get_runtime_module(Self, String) -> @text.ElkGraphRuntimeModule
+pub fn TextActivator::get_injector(Self, String) -> GraphTextUiInjector raise GraphTextActivatorException
+pub fn TextActivator::get_runtime_module(Self, String) -> @text.ElkGraphRuntimeModule raise GraphTextActivatorException
 pub fn TextActivator::get_shared_state_module(Self) -> String
-pub fn TextActivator::get_ui_module(Self, String) -> ElkGraphUiModule
+pub fn TextActivator::get_ui_module(Self, String) -> ElkGraphUiModule raise GraphTextActivatorException
 pub fn TextActivator::injector_count(Self) -> Int
 pub fn TextActivator::register_bundle_class(Self, String) -> Unit
-pub fn TextActivator::register_injector_provider(Self, String, String, () -> GraphTextUiObject) -> Unit
+pub fn TextActivator::register_injector_provider(Self, String, String, () -> GraphTextUiObject) -> Unit raise GraphTextActivatorException
 pub fn TextActivator::start(Self) -> Unit
 pub fn TextActivator::stop(Self) -> Unit
 

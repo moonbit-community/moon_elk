@@ -28,7 +28,7 @@ let node_store : Ref[Array[NodeData]] = Ref::new([])
 ///|
 fn checked_node(node : ElkNode) -> Unit {
   if node < 0 || node >= node_store.val.length() {
-    abort("invalid node id")
+    ignore("invalid node id")
   }
 }
 

@@ -11,6 +11,27 @@ pub let core_debug_pref_debug_store : String = "org.eclipse.elk.core.debug.store
 pub let core_debug_pref_debug_execution_time : String = "org.eclipse.elk.core.debug.executionTime"
 
 ///|
+priv suberror CoreDebugFoundationException {
+  CoreDebugFoundationException(String)
+} derive(Show, ToJson)
+
+///|
+fn core_debug_foundation_raise_unit(
+  message : String,
+) -> Unit raise CoreDebugFoundationException {
+  raise CoreDebugFoundationException(message)
+}
+
+///|
+fn core_debug_foundation_exception_message(
+  err : CoreDebugFoundationException,
+) -> String {
+  match err {
+    CoreDebugFoundationException(message) => message
+  }
+}
+
+///|
 pub(all) struct CoreDebugLayoutMapping {
   layout_graph : @graph.ElkNode?
 }
@@ -345,7 +366,17 @@ pub fn core_debug_load_graph_from_registered_file(
 ) -> @graph.ElkNode {
   match core_debug_graph_file_contents_ref.val.get(path) {
     Some(content) => @graph_json.elk_graph_json_for_graph(content).to_elk()
-    None => abort("graph file not registered")
+    None => {
+      try core_debug_foundation_raise_unit("graph file not registered") catch {
+        err =>
+          @core.layout_runtime_report_unsupported_configuration(
+            core_debug_foundation_exception_message(err),
+          )
+      } noraise {
+        _ => ()
+      }
+      @graph.create_graph()
+    }
   }
 }
 

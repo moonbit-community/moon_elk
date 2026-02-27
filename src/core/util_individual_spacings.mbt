@@ -2,6 +2,27 @@
 let individual_spacings_serialized_option_separator = ";,;"
 
 ///|
+priv suberror IndividualSpacingsException {
+  IndividualSpacingsException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] individual_spacings_raise(
+  message : String,
+) -> T raise IndividualSpacingsException {
+  raise IndividualSpacingsException(message)
+}
+
+///|
+fn individual_spacings_exception_message(
+  err : IndividualSpacingsException,
+) -> String {
+  match err {
+    IndividualSpacingsException(message) => message
+  }
+}
+
+///|
 pub(all) struct IndividualSpacings {
   values : Map[String, String]
 }
@@ -69,10 +90,10 @@ pub fn IndividualSpacings::to_string(self : IndividualSpacings) -> String {
 fn individual_spacings_parse_option(
   spacings : IndividualSpacings,
   option_string : String,
-) -> Unit {
+) -> Unit raise IndividualSpacingsException {
   let option = option_string.split(":").to_array()
   if option.length() < 2 {
-    abort(
+    individual_spacings_raise(
       "The given string does not match the expected format for individual spacings.",
     )
   }
@@ -81,7 +102,7 @@ fn individual_spacings_parse_option(
   let option_data = match
     layout_meta_data_service_get_option_data_by_suffix(option_suffix) {
     Some(value) => value
-    None => abort("Invalid option id: " + option_suffix)
+    None => individual_spacings_raise("Invalid option id: " + option_suffix)
   }
   spacings.values[option_data.get_id()] = option_data.parse_value(option_value)
 }
@@ -101,7 +122,16 @@ pub fn IndividualSpacings::parse(
     if option_string.is_empty() {
       continue
     }
-    individual_spacings_parse_option(self, option_string.to_string())
+    try
+      individual_spacings_parse_option(self, option_string.to_string())
+    catch {
+      err =>
+        layout_runtime_report_unsupported_configuration(
+          individual_spacings_exception_message(err),
+        )
+    } noraise {
+      _ => ()
+    }
   }
 }
 

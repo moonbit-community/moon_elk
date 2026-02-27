@@ -92,7 +92,7 @@ pub let graphviz_preference_page_id : String
 
 pub fn graphviz_tool_current_timeout() -> Int
 
-pub fn graphviz_tool_get_dot_executable() -> String
+pub fn graphviz_tool_get_dot_executable() -> String raise GraphvizException
 
 pub fn graphviz_tool_get_dot_executable_with_prompt(Bool) -> String?
 
@@ -164,11 +164,19 @@ pub fn new_graphviz_preference_store(String) -> GraphvizPreferenceStore
 
 pub fn new_graphviz_process(GraphvizOutputStream, GraphvizInputStream, GraphvizInputStream, destroy_fn? : () -> Unit, close_fn? : () -> Unit, exit_value_fn? : () -> Int?) -> GraphvizProcess
 
-pub fn new_graphviz_tool(@dot.Command) -> GraphvizTool
+pub fn new_graphviz_tool(@dot.Command) -> GraphvizTool raise GraphvizException
 
 pub fn new_layout_dot_exporter() -> LayoutDotExporter
 
 // Errors
+pub suberror GraphvizException {
+  GraphvizException(String, String?)
+}
+pub fn GraphvizException::get_cause(Self) -> String?
+pub fn GraphvizException::get_message(Self) -> String
+pub fn GraphvizException::to_string(Self) -> String
+pub impl Show for GraphvizException
+pub impl ToJson for GraphvizException
 
 // Types and methods
 pub struct EclipseRuntimeDetector {
@@ -216,14 +224,6 @@ pub fn GraphvizByteArrayOutputStream::get_bytes(Self) -> Array[Int]
 pub fn GraphvizByteArrayOutputStream::get_flush_count(Self) -> Int
 pub fn GraphvizByteArrayOutputStream::is_closed(Self) -> Bool
 
-pub struct GraphvizException {
-  message : String
-  cause : String?
-}
-pub fn GraphvizException::get_cause(Self) -> String?
-pub fn GraphvizException::get_message(Self) -> String
-pub fn GraphvizException::to_string(Self) -> String
-
 pub struct GraphvizInputStream {
   read_fn : () -> Int
   read_bytes_fn : (Array[Int]) -> Int
@@ -269,8 +269,8 @@ pub fn GraphvizLayoutProvider::debug_file_base(Self) -> String
 pub fn GraphvizLayoutProvider::dispose(Self) -> Unit
 pub fn GraphvizLayoutProvider::initialize(Self, String?) -> Unit
 pub fn GraphvizLayoutProvider::layout(Self, Int, @core.IElkProgressMonitor) -> Unit
-pub fn GraphvizLayoutProvider::read_dot_graph(Self, @core.IElkProgressMonitor, Bool, GraphvizLayoutResourceSet) -> @dot.DotGraphvizModel
-pub fn GraphvizLayoutProvider::write_dot_graph(Self, @dot.DotGraphvizModel, @core.IElkProgressMonitor, Bool, GraphvizLayoutResourceSet) -> Unit
+pub fn GraphvizLayoutProvider::read_dot_graph(Self, @core.IElkProgressMonitor, Bool, GraphvizLayoutResourceSet) -> @dot.DotGraphvizModel raise GraphvizException
+pub fn GraphvizLayoutProvider::write_dot_graph(Self, @dot.DotGraphvizModel, @core.IElkProgressMonitor, Bool, GraphvizLayoutResourceSet) -> Unit raise GraphvizException
 
 pub struct GraphvizLayoutResourceSet {
   serialize_fn : (@dot.DotGraphvizModel) -> Array[Int]
@@ -380,10 +380,10 @@ pub struct GraphvizTool {
   mut watchdog : GraphvizWatchdog?
   mut graphviz_stream : GraphvizInputStream?
 }
-pub fn GraphvizTool::cleanup(Self, GraphvizToolCleanup) -> Unit
-pub fn GraphvizTool::initialize(Self, arguments? : Array[String]?) -> Unit
-pub fn GraphvizTool::input(Self) -> GraphvizOutputStream
-pub fn GraphvizTool::output(Self) -> GraphvizInputStream
+pub fn GraphvizTool::cleanup(Self, GraphvizToolCleanup) -> Unit raise GraphvizException
+pub fn GraphvizTool::initialize(Self, arguments? : Array[String]?) -> Unit raise GraphvizException
+pub fn GraphvizTool::input(Self) -> GraphvizOutputStream raise GraphvizException
+pub fn GraphvizTool::output(Self) -> GraphvizInputStream raise GraphvizException
 
 pub enum GraphvizToolCleanup {
   GraphvizCleanupNormal

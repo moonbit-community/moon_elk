@@ -7,6 +7,18 @@ pub struct DisCoPaintEvent {
 }
 
 ///|
+pub suberror DisCoGraphRenderingCanvasException {
+  DisCoGraphRenderingCanvasException(String)
+} derive(Show, ToJson)
+
+///|
+fn dis_co_graph_rendering_canvas_raise_unit(
+  message : String,
+) -> Unit raise DisCoGraphRenderingCanvasException {
+  raise DisCoGraphRenderingCanvasException(message)
+}
+
+///|
 let _dis_co_default_paint_event : DisCoPaintEvent = {
   x: 0,
   y: 0,
@@ -48,11 +60,27 @@ pub fn new_dis_co_graph_rendering_canvas_with_configurator(
   display : DisCoDebugDisplay,
   configurator : DisCoGraphRenderingConfigurator,
 ) -> DisCoGraphRenderingCanvas {
-  if dis_co_graph_rendering_configurator_get_display(configurator) != display {
-    abort("configurator and parent composite must use the same display.")
+  let graph_renderer = if dis_co_graph_rendering_configurator_get_display(
+      configurator,
+    ) !=
+    display {
+    try
+      dis_co_graph_rendering_canvas_raise_unit(
+        "configurator and parent composite must use the same display.",
+      )
+    catch {
+      DisCoGraphRenderingCanvasException(message) =>
+        @core.layout_runtime_report_unsupported_configuration(
+          "org.eclipse.elk.alg.disco.debug.views.DisCoGraphRenderingCanvas: " +
+          message,
+        )
+    } noraise {
+      _ => ()
+    }
+    new_dis_co_graph_renderer(new_dis_co_graph_rendering_configurator(display))
+  } else {
+    new_dis_co_graph_renderer(configurator)
   }
-
-  let graph_renderer = new_dis_co_graph_renderer(configurator)
   let background_color = new_dis_co_debug_color(display, 255, 255, 255)
   {
     layout_graph: None,

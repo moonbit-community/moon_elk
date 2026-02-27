@@ -1,8 +1,11 @@
 ///|
-fn topdownpacking_expect_node(node : @graph.ElkNode?) -> @graph.ElkNode {
+fn topdownpacking_expect_node(
+  node : @graph.ElkNode?,
+) -> @graph.ElkNode raise TopdownpackingGridException {
   match node {
     Some(existing) => existing
-    None => abort("Expected node entry in topdownpacking grid.")
+    None =>
+      topdownpacking_grid_raise("Expected node entry in topdownpacking grid.")
   }
 }
 
@@ -21,6 +24,30 @@ fn topdownpacking_bottom_row_equal_whitespace_eliminator_process(
   layout_graph : GridElkNode,
   progress_monitor : @core.IElkProgressMonitor?,
 ) -> Unit {
+  try
+    topdownpacking_bottom_row_equal_whitespace_eliminator_process_impl(
+      layout_graph, progress_monitor,
+    )
+  catch {
+    err => {
+      @core.layout_runtime_report_unsupported_configuration(
+        topdownpacking_grid_exception_message(err),
+      )
+      match progress_monitor {
+        Some(monitor) => if monitor.is_running() { monitor.done() }
+        None => ()
+      }
+    }
+  } noraise {
+    _ => ()
+  }
+}
+
+///|
+fn topdownpacking_bottom_row_equal_whitespace_eliminator_process_impl(
+  layout_graph : GridElkNode,
+  progress_monitor : @core.IElkProgressMonitor?,
+) -> Unit raise TopdownpackingGridException {
   let monitor = match progress_monitor {
     Some(existing) => existing
     None => @core.new_null_elk_progress_monitor()

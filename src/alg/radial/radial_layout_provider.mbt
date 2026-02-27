@@ -7,6 +7,27 @@ pub struct RadialLayoutProvider {
 }
 
 ///|
+priv suberror RadialLayoutProviderException {
+  UnsupportedConfiguration(String)
+} derive(Show, ToJson)
+
+///|
+fn radial_layout_provider_raise_unsupported_configuration(
+  message : String,
+) -> Unit raise RadialLayoutProviderException {
+  raise RadialLayoutProviderException::UnsupportedConfiguration(message)
+}
+
+///|
+fn radial_layout_provider_exception_message(
+  err : RadialLayoutProviderException,
+) -> String {
+  match err {
+    RadialLayoutProviderException::UnsupportedConfiguration(message) => message
+  }
+}
+
+///|
 pub fn new_radial_layout_provider() -> RadialLayoutProvider {
   {
     algorithm_assembler: @core.algorithm_assembler_create(
@@ -114,7 +135,31 @@ pub fn RadialLayoutProvider::layout(
   layout_graph : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor,
 ) -> Unit {
-  let algorithm = radial_layout_provider_assemble_algorithm(self, layout_graph)
+  try
+    radial_layout_provider_layout_impl(self, layout_graph, progress_monitor)
+  catch {
+    err => {
+      @core.layout_runtime_report_unsupported_configuration(
+        radial_layout_provider_exception_message(err),
+      )
+      if progress_monitor.is_running() {
+        progress_monitor.done()
+      }
+    }
+  } noraise {
+    _ => ()
+  }
+}
+
+///|
+fn radial_layout_provider_layout_impl(
+  provider : RadialLayoutProvider,
+  layout_graph : @graph.ElkNode,
+  progress_monitor : @core.IElkProgressMonitor,
+) -> Unit raise RadialLayoutProviderException {
+  let algorithm = radial_layout_provider_assemble_algorithm(
+    provider, layout_graph,
+  )
   ignore(
     progress_monitor.begin("Radial layout", algorithm.length().to_double()),
   )
@@ -137,12 +182,15 @@ pub fn RadialLayoutProvider::layout(
       )
       for
         processor in radial_layout_provider_assemble_algorithm(
-          self, layout_graph,
+          provider, layout_graph,
         ) {
         processor.process(layout_graph, progress_monitor.sub_task(1.0))
       }
       progress_monitor.done()
     }
-    None => abort("The given graph is not a tree!")
+    None =>
+      radial_layout_provider_raise_unsupported_configuration(
+        "The given graph is not a tree!",
+      )
   }
 }

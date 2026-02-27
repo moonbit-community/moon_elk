@@ -5,6 +5,27 @@ let layered_spacings_double_eq_epsilon = 0.0001
 pub let layered_spacings_base_spacing_option : @graph.IProperty[Double] = @core.spacing_node_node
 
 ///|
+pub suberror LayeredSpacingsException {
+  LayeredSpacingsException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] layered_spacings_raise(
+  message : String,
+) -> T raise LayeredSpacingsException {
+  raise LayeredSpacingsException(message)
+}
+
+///|
+pub fn layered_spacings_exception_message(
+  err : LayeredSpacingsException,
+) -> String {
+  match err {
+    LayeredSpacingsException(message) => message
+  }
+}
+
+///|
 fn layered_spacings_dependent_spacing_options() -> Array[
   @graph.IProperty[Double],
 ] {
@@ -36,10 +57,13 @@ fn layered_spacings_set_factor(
   factors : Array[(@graph.IProperty[Double], Double)],
   option : @graph.IProperty[Double],
   factor : Double,
-) -> Unit {
+) -> Unit raise LayeredSpacingsException {
   match layered_spacings_factor_index(factors, option) {
     Some(index) => factors[index] = (option, factor)
-    None => abort("'\{option.get_id()}' is not a configurable spacing option.")
+    None =>
+      layered_spacings_raise(
+        "'\{option.get_id()}' is not a configurable spacing option.",
+      )
   }
 }
 
@@ -74,13 +98,16 @@ pub fn LayeredSpacingsBuilder::factors(
 pub fn LayeredSpacingsBuilder::factor_for(
   self : LayeredSpacingsBuilder,
   option : @graph.IProperty[Double],
-) -> Double {
+) -> Double raise LayeredSpacingsException {
   match layered_spacings_factor_index(self.factors, option) {
     Some(index) => {
       let (_, factor) = self.factors[index]
       factor
     }
-    None => abort("'\{option.get_id()}' is not a configurable spacing option.")
+    None =>
+      layered_spacings_raise(
+        "'\{option.get_id()}' is not a configurable spacing option.",
+      )
   }
 }
 
@@ -89,17 +116,19 @@ pub fn LayeredSpacingsBuilder::with_factor(
   self : LayeredSpacingsBuilder,
   spacing_option : @graph.IProperty[Double],
   factor : Double,
-) -> LayeredSpacingsBuilder {
+) -> LayeredSpacingsBuilder raise LayeredSpacingsException {
   if layered_spacings_factor_index(self.factors, spacing_option) is None {
-    abort("'\{spacing_option.get_id()}' is not a configurable spacing option.")
+    layered_spacings_raise(
+      "'\{spacing_option.get_id()}' is not a configurable spacing option.",
+    )
   }
   if factor < 0.0 {
-    abort(
+    layered_spacings_raise(
       "The factor for '\{spacing_option.get_id()}' must not be negative (\{factor}).",
     )
   }
   if spacing_option.get_id() == layered_spacings_base_spacing_option.get_id() {
-    abort(
+    layered_spacings_raise(
       "'\{spacing_option.get_id()}' is the base spacing option not allowed to use with 'with_factor'.",
     )
   }
@@ -112,17 +141,19 @@ pub fn LayeredSpacingsBuilder::with_value(
   self : LayeredSpacingsBuilder,
   spacing_option : @graph.IProperty[Double],
   value : Double,
-) -> LayeredSpacingsBuilder {
+) -> LayeredSpacingsBuilder raise LayeredSpacingsException {
   if layered_spacings_factor_index(self.factors, spacing_option) is None {
-    abort("'\{spacing_option.get_id()}' is not a configurable spacing option.")
+    layered_spacings_raise(
+      "'\{spacing_option.get_id()}' is not a configurable spacing option.",
+    )
   }
   if value < 0.0 {
-    abort(
+    layered_spacings_raise(
       "The value for '\{spacing_option.get_id()}' must not be negative (\{value}).",
     )
   }
   if spacing_option.get_id() == layered_spacings_base_spacing_option.get_id() {
-    abort(
+    layered_spacings_raise(
       "'\{spacing_option.get_id()}' is the base spacing option not allowed to use with 'with_value'.",
     )
   }

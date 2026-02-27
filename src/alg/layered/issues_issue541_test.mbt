@@ -18,12 +18,12 @@ test "Issue541 end-label sorting path does not throw" {
   let edge1 = create_edge(None)
   edge_add_source(edge1, make_node_shape(left))
   edge_add_target(edge1, make_port_shape(shared_target_port))
-  update_containment(Some(edge1))
+  layered_test_update_containment(Some(edge1))
 
   let edge2 = create_edge(None)
   edge_add_source(edge2, make_node_shape(right))
   edge_add_target(edge2, make_port_shape(shared_target_port))
-  update_containment(Some(edge2))
+  layered_test_update_containment(Some(edge2))
 
   let resolver = new_layout_algorithm_resolver()
   apply_visitors(graph, [resolver.to_visitor()])

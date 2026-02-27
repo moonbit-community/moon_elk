@@ -11,6 +11,18 @@ fn layer_sweep_cross_min_type_to_string(
 }
 
 ///|
+priv suberror LayerSweepCrossingMinimizerException {
+  IllegalStateException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] layer_sweep_crossing_minimizer_raise_illegal_state(
+  message : String,
+) -> T raise LayerSweepCrossingMinimizerException {
+  raise LayerSweepCrossingMinimizerException::IllegalStateException(message)
+}
+
+///|
 fn layer_sweep_port_side_is(
   left : @core.PortSide,
   right : @core.PortSide,
@@ -276,11 +288,14 @@ fn LayerSweepCrossingMinimizer::dummy_node_for(
 fn LayerSweepCrossingMinimizer::origin_port(
   self : LayerSweepCrossingMinimizer,
   node : LNode,
-) -> LPort {
+) -> LPort raise LayerSweepCrossingMinimizerException {
   ignore(self)
   match node.get_property_l_port(internal_properties_origin_l_port) {
     Some(origin) => origin
-    None => abort("external port dummy has no origin port")
+    None =>
+      layer_sweep_crossing_minimizer_raise_illegal_state(
+        "external port dummy has no origin port",
+      )
   }
 }
 
@@ -344,7 +359,7 @@ fn LayerSweepCrossingMinimizer::sort_port_dummies_by_port_positions(
   parent_node : LNode,
   layer_close_to_node_edge : Array[LNode],
   side : @core.PortSide,
-) -> Array[LNode] {
+) -> Array[LNode] raise LayerSweepCrossingMinimizerException {
   if layer_close_to_node_edge.is_empty() {
     return []
   }
@@ -360,7 +375,9 @@ fn LayerSweepCrossingMinimizer::sort_port_dummies_by_port_positions(
   }
 
   if sorted_dummies.length() < layer_close_to_node_edge.length() {
-    abort("did not find enough hierarchical dummy ports to sort")
+    layer_sweep_crossing_minimizer_raise_illegal_state(
+      "did not find enough hierarchical dummy ports to sort",
+    )
   }
 
   let trimmed = []
@@ -376,7 +393,7 @@ fn LayerSweepCrossingMinimizer::sort_ports_by_dummy_positions_in_last_layer(
   node_order : Array[Array[LNode]],
   parent : LNode,
   on_right_most_layer : Bool,
-) -> Unit {
+) -> Unit raise LayerSweepCrossingMinimizerException {
   if node_order.is_empty() {
     return
   }
@@ -412,7 +429,7 @@ fn LayerSweepCrossingMinimizer::sweep_in_hierarchical_node(
   is_forward_sweep : Bool,
   node : LNode,
   is_first_sweep : Bool,
-) -> Bool {
+) -> Bool raise LayerSweepCrossingMinimizerException {
   let nested_graph = match node.get_nested_graph() {
     Some(graph) => graph
     None => return false
@@ -463,7 +480,7 @@ fn LayerSweepCrossingMinimizer::sweep_in_hierarchical_nodes(
   layer : Array[LNode],
   is_forward_sweep : Bool,
   is_first_sweep : Bool,
-) -> Bool {
+) -> Bool raise LayerSweepCrossingMinimizerException {
   let mut improved = false
   for node in layer {
     if !layer_sweep_has_nested_graph(node) {
@@ -495,7 +512,7 @@ fn LayerSweepCrossingMinimizer::sweep_reducing_crossings(
   graph : GraphInfoHolder,
   forward : Bool,
   first_sweep : Bool,
-) -> Bool {
+) -> Bool raise LayerSweepCrossingMinimizerException {
   let nodes = graph.current_node_order()
   let length = nodes.length()
   if length == 0 {
@@ -743,7 +760,7 @@ fn LayerSweepCrossingMinimizer::count_current_number_of_crossings_node_port_orde
 fn LayerSweepCrossingMinimizer::minimize_crossings_with_counter(
   self : LayerSweepCrossingMinimizer,
   graph_data : GraphInfoHolder,
-) -> Int {
+) -> Int raise LayerSweepCrossingMinimizerException {
   let mut is_forward_sweep = self.random.next_boolean()
   let initial_crossings = self
     .count_current_number_of_crossings(graph_data)
@@ -812,7 +829,7 @@ fn LayerSweepCrossingMinimizer::minimize_crossings_with_counter(
 fn LayerSweepCrossingMinimizer::minimize_crossings_node_port_order_with_counter(
   self : LayerSweepCrossingMinimizer,
   graph_data : GraphInfoHolder,
-) -> Double {
+) -> Double raise LayerSweepCrossingMinimizerException {
   let mut is_forward_sweep = self.random.next_boolean()
   let initial_crossings = self.count_current_number_of_crossings_node_port_order(
     graph_data,
@@ -883,7 +900,7 @@ fn LayerSweepCrossingMinimizer::minimize_crossings_node_port_order_with_counter(
 fn LayerSweepCrossingMinimizer::minimize_crossings_no_counter(
   self : LayerSweepCrossingMinimizer,
   graph_data : GraphInfoHolder,
-) -> Unit {
+) -> Unit raise LayerSweepCrossingMinimizerException {
   let mut is_forward_sweep = self.random.next_boolean()
   let mut improved = true
   while improved {
@@ -904,7 +921,7 @@ fn LayerSweepCrossingMinimizer::minimize_crossings_no_counter(
 fn LayerSweepCrossingMinimizer::compare_different_randomized_layouts(
   self : LayerSweepCrossingMinimizer,
   graph_data : GraphInfoHolder,
-) -> Unit {
+) -> Unit raise LayerSweepCrossingMinimizerException {
   self.random.set_seed(self.random_seed)
   self.graphs_whose_node_order_changed.clear()
 
@@ -977,7 +994,7 @@ fn LayerSweepCrossingMinimizer::compare_different_randomized_layouts(
 fn LayerSweepCrossingMinimizer::set_port_order_on_parent_graph(
   self : LayerSweepCrossingMinimizer,
   graph_data : GraphInfoHolder,
-) -> Unit {
+) -> Unit raise LayerSweepCrossingMinimizerException {
   if !graph_data.has_external_ports() {
     return
   }
@@ -1006,7 +1023,7 @@ fn LayerSweepCrossingMinimizer::set_port_order_on_parent_graph(
 fn LayerSweepCrossingMinimizer::choose_minimizing_method(
   self : LayerSweepCrossingMinimizer,
   graphs_to_sweep_on : Array[GraphInfoHolder],
-) -> (GraphInfoHolder) -> Unit {
+) -> (GraphInfoHolder) -> Unit raise LayerSweepCrossingMinimizerException {
   ignore(self)
   if graphs_to_sweep_on.is_empty() {
     return _ => ()
@@ -1095,7 +1112,7 @@ fn LayerSweepCrossingMinimizer::process_internal(
   self : LayerSweepCrossingMinimizer,
   layered_graph : LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise LayerSweepCrossingMinimizerException {
   let monitor = match progress_monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()
@@ -1139,7 +1156,10 @@ pub fn LayerSweepCrossingMinimizer::process(
   layered_graph : LGraph,
   progress_monitor? : @core.IElkProgressMonitor? = None,
 ) -> Unit {
-  self.process_internal(layered_graph, progress_monitor)
+  self.process_internal(layered_graph, progress_monitor) catch {
+    LayerSweepCrossingMinimizerException::IllegalStateException(message) =>
+      @core.layout_runtime_report_unsupported_configuration(message)
+  }
 }
 
 ///|
@@ -1174,7 +1194,7 @@ pub fn new_layer_sweep_crossing_minimizer_layout_phase(
 ) -> @core.ILayoutProcessor[LayeredPhases, LGraph] {
   let minimizer = new_layer_sweep_crossing_minimizer(cross_min_type)
   @core.new_hierarchy_aware_layout_phase(
-    (graph, monitor) => minimizer.process_internal(graph, monitor),
+    (graph, monitor) => minimizer.process(graph, progress_monitor=monitor),
     layer_sweep_configuration,
   )
 }

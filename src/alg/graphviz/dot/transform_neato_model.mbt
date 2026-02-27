@@ -6,7 +6,21 @@ pub enum NeatoModel {
 }
 
 ///|
-pub fn neato_model_parse(string : String) -> NeatoModel {
+pub(all) suberror NeatoModelException {
+  IllegalArgumentException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] neato_model_raise_illegal_argument(
+  message : String,
+) -> T raise NeatoModelException {
+  raise NeatoModelException::IllegalArgumentException(message)
+}
+
+///|
+pub fn neato_model_parse(
+  string : String,
+) -> NeatoModel raise NeatoModelException {
   let normalized = string.to_upper()
   if normalized == "SHORTPATH" {
     Shortpath
@@ -15,7 +29,9 @@ pub fn neato_model_parse(string : String) -> NeatoModel {
   } else if normalized == "SUBSET" {
     Subset
   } else {
-    abort("invalid neato model")
+    neato_model_raise_illegal_argument(
+      "No enum constant org.eclipse.elk.alg.graphviz.dot.transform.NeatoModel.\{normalized}",
+    )
   }
 }
 
@@ -31,4 +47,9 @@ pub fn neato_model_to_string(model : NeatoModel) -> String {
 ///|
 pub fn neato_model_literal(model : NeatoModel) -> String {
   neato_model_to_string(model)
+}
+
+///|
+pub fn neato_model_default() -> NeatoModel {
+  Shortpath
 }

@@ -1,4 +1,16 @@
 ///|
+priv suberror LongEdgeSplitterException {
+  UnsupportedGraphException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] long_edge_splitter_raise_unsupported_graph(
+  message : String,
+) -> T raise LongEdgeSplitterException {
+  raise LongEdgeSplitterException::UnsupportedGraphException(message)
+}
+
+///|
 fn long_edge_splitter_layer_equals(left : Layer, right : Layer) -> Bool {
   layer_internal_handle(left) == layer_internal_handle(right)
 }
@@ -22,34 +34,42 @@ fn long_edge_splitter_node_type_equals(
 }
 
 ///|
-fn long_edge_splitter_require_source(edge : LEdge) -> LPort {
+fn long_edge_splitter_require_source(
+  edge : LEdge,
+) -> LPort raise LongEdgeSplitterException {
   match edge.get_source() {
     Some(value) => value
-    None => abort("edge has no source")
+    None => long_edge_splitter_raise_unsupported_graph("edge has no source")
   }
 }
 
 ///|
-fn long_edge_splitter_require_target(edge : LEdge) -> LPort {
+fn long_edge_splitter_require_target(
+  edge : LEdge,
+) -> LPort raise LongEdgeSplitterException {
   match edge.get_target() {
     Some(value) => value
-    None => abort("edge has no target")
+    None => long_edge_splitter_raise_unsupported_graph("edge has no target")
   }
 }
 
 ///|
-fn long_edge_splitter_require_node(port : LPort) -> LNode {
+fn long_edge_splitter_require_node(
+  port : LPort,
+) -> LNode raise LongEdgeSplitterException {
   match port.get_node() {
     Some(value) => value
-    None => abort("port has no owner node")
+    None => long_edge_splitter_raise_unsupported_graph("port has no owner node")
   }
 }
 
 ///|
-fn long_edge_splitter_require_layer(node : LNode) -> Layer {
+fn long_edge_splitter_require_layer(
+  node : LNode,
+) -> Layer raise LongEdgeSplitterException {
   match node.get_layer() {
     Some(value) => value
-    None => abort("node has no layer")
+    None => long_edge_splitter_raise_unsupported_graph("node has no layer")
   }
 }
 
@@ -82,7 +102,7 @@ fn long_edge_splitter_set_dummy_node_properties(
   dummy_node : LNode,
   in_edge : LEdge,
   out_edge : LEdge,
-) -> Unit {
+) -> Unit raise LongEdgeSplitterException {
   let in_edge_source_node = long_edge_splitter_require_node(
     long_edge_splitter_require_source(in_edge),
   )
@@ -188,41 +208,50 @@ fn long_edge_splitter_create_dummy_node(
 
 ///|
 pub fn long_edge_splitter_split_edge(edge : LEdge, dummy_node : LNode) -> LEdge {
-  let old_edge_target = long_edge_splitter_require_target(edge)
+  try {
+    let old_edge_target = long_edge_splitter_require_target(edge)
 
-  let mut thickness = edge.get_property_double(@core.edge_thickness)
-  if thickness < 0.0 {
-    thickness = 0.0
-    edge.set_property_double(@core.edge_thickness, thickness)
+    let mut thickness = edge.get_property_double(@core.edge_thickness)
+    if thickness < 0.0 {
+      thickness = 0.0
+      edge.set_property_double(@core.edge_thickness, thickness)
+    }
+    dummy_node.get_size().y = thickness
+    let port_pos = (thickness / 2.0).floor()
+
+    let dummy_input = new_l_port()
+    dummy_input.set_side(@core.PortSide::West)
+    dummy_input.set_node(Some(dummy_node))
+    dummy_input.get_position().y = port_pos
+
+    let dummy_output = new_l_port()
+    dummy_output.set_side(@core.PortSide::East)
+    dummy_output.set_node(Some(dummy_node))
+    dummy_output.get_position().y = port_pos
+
+    edge.set_target(Some(dummy_input))
+
+    let dummy_edge = new_l_edge()
+    dummy_edge.copy_properties(edge)
+    dummy_edge.set_property_kvector_chain(
+      layered_options_junction_points,
+      @core.new_kvector_chain(),
+    )
+    dummy_edge.set_source(Some(dummy_output))
+    dummy_edge.set_target(Some(old_edge_target))
+
+    long_edge_splitter_set_dummy_node_properties(dummy_node, edge, dummy_edge)
+    long_edge_splitter_move_head_labels(edge, dummy_edge)
+
+    dummy_edge
+  } catch {
+    LongEdgeSplitterException::UnsupportedGraphException(message) => {
+      @core.layout_runtime_report_unsupported_configuration(message)
+      edge
+    }
+  } noraise {
+    value => value
   }
-  dummy_node.get_size().y = thickness
-  let port_pos = (thickness / 2.0).floor()
-
-  let dummy_input = new_l_port()
-  dummy_input.set_side(@core.PortSide::West)
-  dummy_input.set_node(Some(dummy_node))
-  dummy_input.get_position().y = port_pos
-
-  let dummy_output = new_l_port()
-  dummy_output.set_side(@core.PortSide::East)
-  dummy_output.set_node(Some(dummy_node))
-  dummy_output.get_position().y = port_pos
-
-  edge.set_target(Some(dummy_input))
-
-  let dummy_edge = new_l_edge()
-  dummy_edge.copy_properties(edge)
-  dummy_edge.set_property_kvector_chain(
-    layered_options_junction_points,
-    @core.new_kvector_chain(),
-  )
-  dummy_edge.set_source(Some(dummy_output))
-  dummy_edge.set_target(Some(old_edge_target))
-
-  long_edge_splitter_set_dummy_node_properties(dummy_node, edge, dummy_edge)
-  long_edge_splitter_move_head_labels(edge, dummy_edge)
-
-  dummy_edge
 }
 
 ///|
@@ -242,35 +271,45 @@ fn long_edge_splitter_process(
     return
   }
 
-  let mut next_layer = layers[0]
-  let mut index = 1
+  try {
+    let mut next_layer = layers[0]
+    let mut index = 1
 
-  while index < layers.length() {
-    let layer = next_layer
-    next_layer = layers[index]
-    index = index + 1
+    while index < layers.length() {
+      let layer = next_layer
+      next_layer = layers[index]
+      index = index + 1
 
-    for node in layer.get_nodes().copy() {
-      for port in node.get_ports().copy() {
-        for edge in port.get_outgoing_edges().copy() {
-          let target_port = long_edge_splitter_require_target(edge)
-          let target_node = long_edge_splitter_require_node(target_port)
-          let target_layer = long_edge_splitter_require_layer(target_node)
+      for node in layer.get_nodes().copy() {
+        for port in node.get_ports().copy() {
+          for edge in port.get_outgoing_edges().copy() {
+            let target_port = long_edge_splitter_require_target(edge)
+            let target_node = long_edge_splitter_require_node(target_port)
+            let target_layer = long_edge_splitter_require_layer(target_node)
 
-          if !long_edge_splitter_layer_equals(target_layer, layer) &&
-            !long_edge_splitter_layer_equals(target_layer, next_layer) {
-            ignore(
-              long_edge_splitter_split_edge(
-                edge,
-                long_edge_splitter_create_dummy_node(
-                  layered_graph, next_layer, edge,
+            if !long_edge_splitter_layer_equals(target_layer, layer) &&
+              !long_edge_splitter_layer_equals(target_layer, next_layer) {
+              ignore(
+                long_edge_splitter_split_edge(
+                  edge,
+                  long_edge_splitter_create_dummy_node(
+                    layered_graph, next_layer, edge,
+                  ),
                 ),
-              ),
-            )
+              )
+            }
           }
         }
       }
     }
+  } catch {
+    LongEdgeSplitterException::UnsupportedGraphException(message) => {
+      @core.layout_runtime_report_unsupported_configuration(message)
+      monitor.done()
+      return
+    }
+  } noraise {
+    _ => ()
   }
 
   monitor.done()

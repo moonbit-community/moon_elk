@@ -18,9 +18,9 @@ pub fn[T] IProperty::get_default(self : IProperty[T]) -> T {
       Some(clone_default) =>
         match clone_default(self.default_value) {
           Some(cloned) => cloned
-          None => abort("Couldn't clone property")
+          None => self.default_value
         }
-      None => abort("Couldn't clone property")
+      None => self.default_value
     }
   } else {
     self.default_value

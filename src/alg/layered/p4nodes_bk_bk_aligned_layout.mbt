@@ -43,6 +43,39 @@ pub fn bk_hdirection_is_left(value : BKHDirection) -> Bool {
 }
 
 ///|
+pub(all) suberror BKAlignedLayoutException {
+  IllegalStateException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] bk_aligned_layout_raise_illegal_state(
+  message : String,
+) -> T raise BKAlignedLayoutException {
+  raise BKAlignedLayoutException::IllegalStateException(message)
+}
+
+///|
+pub fn bk_aligned_layout_exception_message(
+  error : BKAlignedLayoutException,
+) -> String {
+  match error {
+    BKAlignedLayoutException::IllegalStateException(message) => message
+  }
+}
+
+///|
+fn bk_aligned_layout_vertical_spacing(
+  layout : BKAlignedLayout,
+  first : LNode,
+  second : LNode,
+) -> Double raise BKAlignedLayoutException {
+  layout.spacings.get_vertical_spacing(first, second) catch {
+    LayeredSpacingsException(message) =>
+      bk_aligned_layout_raise_illegal_state(message)
+  }
+}
+
+///|
 pub struct BKAlignedLayout {
   layered_graph : LGraph
   spacings : Spacings
@@ -111,25 +144,33 @@ fn bk_aligned_layout_require_index(
   length : Int,
   index : Int,
   kind : String,
-) -> Unit {
+) -> Unit raise BKAlignedLayoutException {
   if index < 0 || index >= length {
-    abort("BKAlignedLayout: invalid \{kind} index")
+    bk_aligned_layout_raise_illegal_state(
+      "BKAlignedLayout: invalid \{kind} index",
+    )
   }
 }
 
 ///|
-pub fn BKAlignedLayout::require_vdir(self : BKAlignedLayout) -> BKVDirection {
+pub fn BKAlignedLayout::require_vdir(
+  self : BKAlignedLayout,
+) -> BKVDirection raise BKAlignedLayoutException {
   match self.vdir {
     Some(value) => value
-    None => abort("BKAlignedLayout: vdir is not set")
+    None =>
+      bk_aligned_layout_raise_illegal_state("BKAlignedLayout: vdir is not set")
   }
 }
 
 ///|
-pub fn BKAlignedLayout::require_hdir(self : BKAlignedLayout) -> BKHDirection {
+pub fn BKAlignedLayout::require_hdir(
+  self : BKAlignedLayout,
+) -> BKHDirection raise BKAlignedLayoutException {
   match self.hdir {
     Some(value) => value
-    None => abort("BKAlignedLayout: hdir is not set")
+    None =>
+      bk_aligned_layout_raise_illegal_state("BKAlignedLayout: hdir is not set")
   }
 }
 
@@ -137,7 +178,7 @@ pub fn BKAlignedLayout::require_hdir(self : BKAlignedLayout) -> BKHDirection {
 pub fn BKAlignedLayout::require_root(
   self : BKAlignedLayout,
   node : LNode,
-) -> LNode {
+) -> LNode raise BKAlignedLayoutException {
   self.require_root_by_id(node.get_id())
 }
 
@@ -145,11 +186,12 @@ pub fn BKAlignedLayout::require_root(
 pub fn BKAlignedLayout::require_root_by_id(
   self : BKAlignedLayout,
   node_id : Int,
-) -> LNode {
+) -> LNode raise BKAlignedLayoutException {
   bk_aligned_layout_require_index(self.root.length(), node_id, "root")
   match self.root[node_id] {
     Some(value) => value
-    None => abort("BKAlignedLayout: root is not set")
+    None =>
+      bk_aligned_layout_raise_illegal_state("BKAlignedLayout: root is not set")
   }
 }
 
@@ -157,7 +199,7 @@ pub fn BKAlignedLayout::require_root_by_id(
 pub fn BKAlignedLayout::require_align(
   self : BKAlignedLayout,
   node : LNode,
-) -> LNode {
+) -> LNode raise BKAlignedLayoutException {
   self.require_align_by_id(node.get_id())
 }
 
@@ -165,11 +207,12 @@ pub fn BKAlignedLayout::require_align(
 pub fn BKAlignedLayout::require_align_by_id(
   self : BKAlignedLayout,
   node_id : Int,
-) -> LNode {
+) -> LNode raise BKAlignedLayoutException {
   bk_aligned_layout_require_index(self.align.length(), node_id, "align")
   match self.align[node_id] {
     Some(value) => value
-    None => abort("BKAlignedLayout: align is not set")
+    None =>
+      bk_aligned_layout_raise_illegal_state("BKAlignedLayout: align is not set")
   }
 }
 
@@ -177,7 +220,7 @@ pub fn BKAlignedLayout::require_align_by_id(
 pub fn BKAlignedLayout::require_sink(
   self : BKAlignedLayout,
   node : LNode,
-) -> LNode {
+) -> LNode raise BKAlignedLayoutException {
   self.require_sink_by_id(node.get_id())
 }
 
@@ -185,11 +228,12 @@ pub fn BKAlignedLayout::require_sink(
 pub fn BKAlignedLayout::require_sink_by_id(
   self : BKAlignedLayout,
   node_id : Int,
-) -> LNode {
+) -> LNode raise BKAlignedLayoutException {
   bk_aligned_layout_require_index(self.sink.length(), node_id, "sink")
   match self.sink[node_id] {
     Some(value) => value
-    None => abort("BKAlignedLayout: sink is not set")
+    None =>
+      bk_aligned_layout_raise_illegal_state("BKAlignedLayout: sink is not set")
   }
 }
 
@@ -197,7 +241,7 @@ pub fn BKAlignedLayout::require_sink_by_id(
 pub fn BKAlignedLayout::require_y(
   self : BKAlignedLayout,
   node : LNode,
-) -> Double {
+) -> Double raise BKAlignedLayoutException {
   self.require_y_by_id(node.get_id())
 }
 
@@ -205,11 +249,12 @@ pub fn BKAlignedLayout::require_y(
 pub fn BKAlignedLayout::require_y_by_id(
   self : BKAlignedLayout,
   node_id : Int,
-) -> Double {
+) -> Double raise BKAlignedLayoutException {
   bk_aligned_layout_require_index(self.y.length(), node_id, "y")
   match self.y[node_id] {
     Some(value) => value
-    None => abort("BKAlignedLayout: y is not set")
+    None =>
+      bk_aligned_layout_raise_illegal_state("BKAlignedLayout: y is not set")
   }
 }
 
@@ -218,13 +263,15 @@ pub fn BKAlignedLayout::set_y_by_id(
   self : BKAlignedLayout,
   node_id : Int,
   value : Double,
-) -> Unit {
+) -> Unit raise BKAlignedLayoutException {
   bk_aligned_layout_require_index(self.y.length(), node_id, "y")
   self.y[node_id] = Some(value)
 }
 
 ///|
-pub fn BKAlignedLayout::layout_size(self : BKAlignedLayout) -> Double {
+pub fn BKAlignedLayout::layout_size(
+  self : BKAlignedLayout,
+) -> Double raise BKAlignedLayoutException {
   let mut min_value = @double.infinity
   let mut max_value = @double.neg_infinity
 
@@ -256,15 +303,9 @@ pub fn BKAlignedLayout::calculate_delta(
   self : BKAlignedLayout,
   src : LPort,
   tgt : LPort,
-) -> Double {
-  let src_node = match src.get_node() {
-    Some(value) => value
-    None => abort("BKAlignedLayout: source port has no node")
-  }
-  let tgt_node = match tgt.get_node() {
-    Some(value) => value
-    None => abort("BKAlignedLayout: target port has no node")
-  }
+) -> Double raise BKAlignedLayoutException {
+  let src_node = src.get_node().unwrap()
+  let tgt_node = tgt.get_node().unwrap()
 
   let src_id = src_node.get_id()
   let tgt_id = tgt_node.get_id()
@@ -286,7 +327,7 @@ pub fn BKAlignedLayout::shift_block(
   self : BKAlignedLayout,
   root_node : LNode,
   delta : Double,
-) -> Unit {
+) -> Unit raise BKAlignedLayoutException {
   let root_handle = root_node.get_handle()
   let mut current = root_node
 
@@ -308,7 +349,7 @@ pub fn BKAlignedLayout::check_space_above(
   block_root : LNode,
   delta : Double,
   ni : NeighborhoodInformation,
-) -> Double {
+) -> Double raise BKAlignedLayoutException {
   let mut available_space = delta
   let root_handle = block_root.get_handle()
   let mut current = block_root
@@ -320,7 +361,9 @@ pub fn BKAlignedLayout::check_space_above(
     match self.get_upper_neighbor(current, ni) {
       Some(neighbor) => {
         let max_y_neighbor = self.get_max_y(neighbor)
-        let spacing = self.spacings.get_vertical_spacing(current, neighbor)
+        let spacing = bk_aligned_layout_vertical_spacing(
+          self, current, neighbor,
+        )
         let candidate = min_y_current - (max_y_neighbor + spacing)
         if candidate < available_space {
           available_space = candidate
@@ -343,7 +386,7 @@ pub fn BKAlignedLayout::check_space_below(
   block_root : LNode,
   delta : Double,
   ni : NeighborhoodInformation,
-) -> Double {
+) -> Double raise BKAlignedLayoutException {
   let mut available_space = delta
   let root_handle = block_root.get_handle()
   let mut current = block_root
@@ -355,7 +398,9 @@ pub fn BKAlignedLayout::check_space_below(
     match self.get_lower_neighbor(current, ni) {
       Some(neighbor) => {
         let min_y_neighbor = self.get_min_y(neighbor)
-        let spacing = self.spacings.get_vertical_spacing(current, neighbor)
+        let spacing = bk_aligned_layout_vertical_spacing(
+          self, current, neighbor,
+        )
         let candidate = min_y_neighbor - (max_y_current + spacing)
         if candidate < available_space {
           available_space = candidate
@@ -376,7 +421,7 @@ pub fn BKAlignedLayout::check_space_below(
 pub fn BKAlignedLayout::get_min_y(
   self : BKAlignedLayout,
   node : LNode,
-) -> Double {
+) -> Double raise BKAlignedLayoutException {
   let root_node = self.require_root(node)
   self.require_y(root_node) +
   self.inner_shift[node.get_id()] -
@@ -387,7 +432,7 @@ pub fn BKAlignedLayout::get_min_y(
 pub fn BKAlignedLayout::get_max_y(
   self : BKAlignedLayout,
   node : LNode,
-) -> Double {
+) -> Double raise BKAlignedLayoutException {
   let root_node = self.require_root(node)
   self.require_y(root_node) +
   self.inner_shift[node.get_id()] +

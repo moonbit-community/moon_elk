@@ -1,9 +1,16 @@
 ///|
 fn radial_compact(graph : @graph.ElkNode) -> Unit {
-  let compactor = radial_compaction_strategy_create(
-    radial_graph_compaction_strategy(graph),
-  )
-  compactor.compact(graph)
+  try {
+    let compactor = radial_compaction_strategy_create(
+      radial_graph_compaction_strategy(graph),
+    )
+    compactor.compact(graph)
+  } catch {
+    RadialCompactionStrategyException::IllegalArgumentException(message) =>
+      @core.layout_runtime_report_unsupported_configuration(message)
+  } noraise {
+    _ => ()
+  }
 }
 
 ///|

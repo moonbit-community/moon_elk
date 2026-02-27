@@ -7,14 +7,34 @@ priv struct DfsNodeOrderCycleBreakerState {
 }
 
 ///|
-fn dfs_node_order_cycle_breaker_require_target_node(edge : LEdge) -> LNode {
+pub(all) suberror DfsNodeOrderCycleBreakerException {
+  UnsupportedGraphException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] dfs_node_order_cycle_breaker_raise_unsupported_graph(
+  message : String,
+) -> T raise DfsNodeOrderCycleBreakerException {
+  raise DfsNodeOrderCycleBreakerException::UnsupportedGraphException(message)
+}
+
+///|
+fn dfs_node_order_cycle_breaker_require_target_node(
+  edge : LEdge,
+) -> LNode raise DfsNodeOrderCycleBreakerException {
   let target = match edge.get_target() {
     Some(value) => value
-    None => abort("edge has no target port")
+    None =>
+      dfs_node_order_cycle_breaker_raise_unsupported_graph(
+        "edge has no target port",
+      )
   }
   match target.get_node() {
     Some(node) => node
-    None => abort("target port has no owner node")
+    None =>
+      dfs_node_order_cycle_breaker_raise_unsupported_graph(
+        "target port has no owner node",
+      )
   }
 }
 
@@ -61,7 +81,7 @@ fn dfs_node_order_cycle_breaker_target_model_order(
   edge : LEdge,
   model_order_map_size : Int,
   group_model_order : Bool,
-) -> Int {
+) -> Int raise DfsNodeOrderCycleBreakerException {
   let target = dfs_node_order_cycle_breaker_require_target_node(edge)
   if !target.has_property_int(internal_properties_model_order) {
     return @int.max_value - model_order_map_size
@@ -85,7 +105,7 @@ fn dfs_node_order_cycle_breaker_target_model_order(
 fn dfs_node_order_cycle_breaker_dfs(
   state : DfsNodeOrderCycleBreakerState,
   node : LNode,
-) -> Unit {
+) -> Unit raise DfsNodeOrderCycleBreakerException {
   let node_id = node.get_id()
   if state.visited[node_id] {
     return
@@ -186,19 +206,29 @@ fn dfs_node_order_cycle_breaker_process(
     }
   }
 
-  for source in sources {
-    dfs_node_order_cycle_breaker_dfs(state, source)
-  }
-
-  for i = 0; i < node_count; i = i + 1 {
-    if !state.visited[i] {
-      dfs_node_order_cycle_breaker_dfs(state, nodes[i])
+  try {
+    for source in sources {
+      dfs_node_order_cycle_breaker_dfs(state, source)
     }
-  }
 
-  for edge in state.edges_to_be_reversed {
-    dfs_node_order_cycle_breaker_reverse_edge(edge, graph)
-    graph.set_property_bool(internal_properties_cyclic, true)
+    for i = 0; i < node_count; i = i + 1 {
+      if !state.visited[i] {
+        dfs_node_order_cycle_breaker_dfs(state, nodes[i])
+      }
+    }
+
+    for edge in state.edges_to_be_reversed {
+      dfs_node_order_cycle_breaker_reverse_edge(edge, graph)
+      graph.set_property_bool(internal_properties_cyclic, true)
+    }
+  } catch {
+    DfsNodeOrderCycleBreakerException::UnsupportedGraphException(message) => {
+      @core.layout_runtime_report_unsupported_configuration(message)
+      monitor.done()
+      return
+    }
+  } noraise {
+    _ => ()
   }
 
   monitor.done()

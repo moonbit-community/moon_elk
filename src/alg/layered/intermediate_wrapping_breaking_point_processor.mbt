@@ -1,4 +1,16 @@
 ///|
+priv suberror BreakingPointProcessorException {
+  BreakingPointProcessorException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] breaking_point_processor_raise(
+  message : String,
+) -> T raise BreakingPointProcessorException {
+  raise BreakingPointProcessorException(message)
+}
+
+///|
 fn breaking_point_processor_node_type_equals(
   left : NodeType,
   right : NodeType,
@@ -58,34 +70,42 @@ fn breaking_point_processor_set_layer_with_index(
 }
 
 ///|
-fn breaking_point_processor_require_bp_info(node : LNode) -> BPInfo {
+fn breaking_point_processor_require_bp_info(
+  node : LNode,
+) -> BPInfo raise BreakingPointProcessorException {
   match node.get_property_bp_info(internal_properties_breaking_point_info) {
     Some(value) => value
-    None => abort("breaking-point node has no BPInfo")
+    None => breaking_point_processor_raise("breaking-point node has no BPInfo")
   }
 }
 
 ///|
-fn breaking_point_processor_require_node_layer(node : LNode) -> Layer {
+fn breaking_point_processor_require_node_layer(
+  node : LNode,
+) -> Layer raise BreakingPointProcessorException {
   match node.get_layer() {
     Some(value) => value
-    None => abort("node has no layer")
+    None => breaking_point_processor_raise("node has no layer")
   }
 }
 
 ///|
-fn breaking_point_processor_require_bp_in_layer_dummy(dummy : LNode?) -> LNode {
+fn breaking_point_processor_require_bp_in_layer_dummy(
+  dummy : LNode?,
+) -> LNode raise BreakingPointProcessorException {
   match dummy {
     Some(value) => value
-    None => abort("BPInfo in-layer dummy is missing")
+    None => breaking_point_processor_raise("BPInfo in-layer dummy is missing")
   }
 }
 
 ///|
-fn breaking_point_processor_require_bp_in_layer_edge(edge : LEdge?) -> LEdge {
+fn breaking_point_processor_require_bp_in_layer_edge(
+  edge : LEdge?,
+) -> LEdge raise BreakingPointProcessorException {
   match edge {
     Some(value) => value
-    None => abort("BPInfo in-layer edge is missing")
+    None => breaking_point_processor_raise("BPInfo in-layer edge is missing")
   }
 }
 
@@ -101,7 +121,9 @@ fn breaking_point_processor_reverse_array(nodes : Array[LNode]) -> Array[LNode] 
 }
 
 ///|
-fn breaking_point_processor_update_indexes_after(node : LNode) -> Unit {
+fn breaking_point_processor_update_indexes_after(
+  node : LNode,
+) -> Unit raise BreakingPointProcessorException {
   let layer = breaking_point_processor_require_node_layer(node)
   let layer_nodes = layer.get_nodes()
   let mut i = node.get_id() + 1
@@ -113,7 +135,24 @@ fn breaking_point_processor_update_indexes_after(node : LNode) -> Unit {
 }
 
 ///|
-fn breaking_point_processor_is_in_layer_dummy(node : LNode) -> Bool {
+fn breaking_point_processor_other_node_or_raise(
+  edge : LEdge,
+  node : LNode,
+) -> LNode raise BreakingPointProcessorException {
+  try edge.get_other_node(node) catch {
+    LEdgeException::IllegalArgumentException(message) =>
+      breaking_point_processor_raise(message)
+    LEdgeException::IllegalStateException(message) =>
+      breaking_point_processor_raise(message)
+  } noraise {
+    other => other
+  }
+}
+
+///|
+fn breaking_point_processor_is_in_layer_dummy(
+  node : LNode,
+) -> Bool raise BreakingPointProcessorException {
   if !breaking_point_processor_node_type_equals(
       node.get_type(),
       NodeType::LongEdge,
@@ -123,7 +162,7 @@ fn breaking_point_processor_is_in_layer_dummy(node : LNode) -> Bool {
 
   for edge in node.get_connected_edges() {
     if !edge.is_self_loop() {
-      let other = edge.get_other_node(node)
+      let other = breaking_point_processor_other_node_or_raise(edge, node)
       let node_layer = node.get_layer()
       let other_layer = other.get_layer()
       match (node_layer, other_layer) {
@@ -143,7 +182,7 @@ fn breaking_point_processor_is_in_layer_dummy(node : LNode) -> Bool {
 fn breaking_point_processor_next_long_edge_dummy(
   start : LNode,
   forwards : Bool,
-) -> LNode? {
+) -> LNode? raise BreakingPointProcessorException {
   let edges = if forwards {
     start.get_outgoing_edges()
   } else {
@@ -151,7 +190,7 @@ fn breaking_point_processor_next_long_edge_dummy(
   }
 
   for edge in edges {
-    let other = edge.get_other_node(start)
+    let other = breaking_point_processor_other_node_or_raise(edge, start)
     if breaking_point_processor_node_type_equals(
         other.get_type(),
         NodeType::LongEdge,
@@ -173,7 +212,7 @@ fn breaking_point_processor_is_adjacent_or_separated_by_breakingpoints(
   dummy_1 : LNode,
   dummy_2 : LNode,
   forwards : Bool,
-) -> Bool {
+) -> Bool raise BreakingPointProcessorException {
   let layer = breaking_point_processor_require_node_layer(dummy_1)
   let start = if forwards { dummy_2 } else { dummy_1 }
   let end = if forwards { dummy_1 } else { dummy_2 }
@@ -200,7 +239,7 @@ fn breaking_point_processor_drop_dummies(
   in_layer_dummy : LNode,
   forwards : Bool,
   force : Bool,
-) -> Bool {
+) -> Bool raise BreakingPointProcessorException {
   let mut pred_one = breaking_point_processor_next_long_edge_dummy(
     bp_node, forwards,
   )
@@ -213,11 +252,11 @@ fn breaking_point_processor_drop_dummies(
   while pred_one is Some(_) && pred_two is Some(_) {
     let first = match pred_one {
       Some(value) => value
-      None => abort("unreachable")
+      None => breaking_point_processor_raise("unreachable")
     }
     let second = match pred_two {
       Some(value) => value
-      None => abort("unreachable")
+      None => breaking_point_processor_raise("unreachable")
     }
 
     if force ||
@@ -286,7 +325,7 @@ fn breaking_point_processor_drop_dummies(
 ///|
 fn breaking_point_processor_improve_multi_cut_index_edges(
   graph : LGraph,
-) -> Unit {
+) -> Unit raise BreakingPointProcessorException {
   for layer in graph.get_layers() {
     for node in layer.get_nodes().copy() {
       if bp_info_is_start(node) {
@@ -299,7 +338,7 @@ fn breaking_point_processor_improve_multi_cut_index_edges(
           while next is Some(_) {
             let next_info = match next {
               Some(value) => value
-              None => abort("unreachable")
+              None => breaking_point_processor_raise("unreachable")
             }
 
             ignore(
@@ -382,7 +421,7 @@ fn breaking_point_processor_improve_multi_cut_index_edges(
 fn breaking_point_processor_improve_unnecessarily_long_edges(
   graph : LGraph,
   forwards : Bool,
-) -> Unit {
+) -> Unit raise BreakingPointProcessorException {
   let mut didsome = false
   while true {
     didsome = false
@@ -437,7 +476,9 @@ fn breaking_point_processor_improve_unnecessarily_long_edges(
 }
 
 ///|
-fn breaking_point_processor_perform_wrapping(graph : LGraph) -> Unit {
+fn breaking_point_processor_perform_wrapping(
+  graph : LGraph,
+) -> Unit raise BreakingPointProcessorException {
   let layers = graph.get_layers()
   ignore(layers.insert(0, new_layer(graph)))
   let traversed_layers = layers.copy()
@@ -464,25 +505,40 @@ fn breaking_point_processor_perform_wrapping(graph : LGraph) -> Unit {
           breaking_point_processor_reverse_edge(edge, graph)
           graph.set_property_bool(internal_properties_cyclic, true)
 
-          let dummy_edges = cutting_utils_insert_dummies(graph, edge, offset)
+          let dummy_edges = try
+            cutting_utils_insert_dummies(graph, edge, offset)
+          catch {
+            CuttingUtilsException(message) =>
+              breaking_point_processor_raise(message)
+          } noraise {
+            value => value
+          }
 
           let bp_info = breaking_point_processor_require_bp_info(node)
           let start_in_layer_edge = dummy_edges[dummy_edges.length() - 1]
-          bp_info.set_start_in_layer_dummy(
-            Some(
-              breaking_point_inserter_require_port_node(
-                breaking_point_inserter_require_edge_source(start_in_layer_edge),
-              ),
-            ),
-          )
+          let start_in_layer_dummy = try
+            breaking_point_inserter_require_port_node(
+              breaking_point_inserter_require_edge_source(start_in_layer_edge),
+            )
+          catch {
+            BreakingPointInserterException(message) =>
+              breaking_point_processor_raise(message)
+          } noraise {
+            value => value
+          }
+          bp_info.set_start_in_layer_dummy(Some(start_in_layer_dummy))
           bp_info.set_start_in_layer_edge(Some(start_in_layer_edge))
-          bp_info.set_end_in_layer_dummy(
-            Some(
-              breaking_point_inserter_require_port_node(
-                breaking_point_inserter_require_edge_target(edge),
-              ),
-            ),
-          )
+          let end_in_layer_dummy = try
+            breaking_point_inserter_require_port_node(
+              breaking_point_inserter_require_edge_target(edge),
+            )
+          catch {
+            BreakingPointInserterException(message) =>
+              breaking_point_processor_raise(message)
+          } noraise {
+            value => value
+          }
+          bp_info.set_end_in_layer_dummy(Some(end_in_layer_dummy))
           bp_info.set_end_in_layer_edge(Some(edge))
         }
       }
@@ -524,23 +580,32 @@ fn breaking_point_processor_process(
   }
   ignore(monitor.begin("Breaking Point Processor", 1.0))
 
-  breaking_point_processor_perform_wrapping(graph)
+  try {
+    breaking_point_processor_perform_wrapping(graph)
 
-  if graph.get_property_bool(
-      layered_options_wrapping_multi_edge_improve_wrapped_edges,
-    ) {
-    for layer in graph.get_layers() {
-      let mut index = 0
-      for node in layer.get_nodes() {
-        node.set_id(index)
-        index = index + 1
+    if graph.get_property_bool(
+        layered_options_wrapping_multi_edge_improve_wrapped_edges,
+      ) {
+      for layer in graph.get_layers() {
+        let mut index = 0
+        for node in layer.get_nodes() {
+          node.set_id(index)
+          index = index + 1
+        }
       }
+
+      breaking_point_processor_improve_multi_cut_index_edges(graph)
+
+      breaking_point_processor_improve_unnecessarily_long_edges(graph, true)
+      breaking_point_processor_improve_unnecessarily_long_edges(graph, false)
     }
-
-    breaking_point_processor_improve_multi_cut_index_edges(graph)
-
-    breaking_point_processor_improve_unnecessarily_long_edges(graph, true)
-    breaking_point_processor_improve_unnecessarily_long_edges(graph, false)
+  } catch {
+    BreakingPointProcessorException(message) =>
+      @core.layout_runtime_report_unsupported_configuration(
+        "java.lang.IllegalStateException: " + message,
+      )
+  } noraise {
+    _ => ()
   }
 
   monitor.done()

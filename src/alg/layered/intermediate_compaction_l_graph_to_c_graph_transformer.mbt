@@ -1,4 +1,16 @@
 ///|
+priv suberror LGraphToCGraphTransformerException {
+  LGraphToCGraphTransformerException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] lgraph_to_cgraph_transformer_raise(
+  message : String,
+) -> T raise LGraphToCGraphTransformerException {
+  raise LGraphToCGraphTransformerException(message)
+}
+
+///|
 fn lgraph_to_cgraph_transformer_node_type_equals(
   left : NodeType,
   right : NodeType,
@@ -60,46 +72,54 @@ fn lgraph_to_cgraph_transformer_edge_routing_equals(
 }
 
 ///|
-fn lgraph_to_cgraph_transformer_require_source(edge : LEdge) -> LPort {
+fn lgraph_to_cgraph_transformer_require_source(
+  edge : LEdge,
+) -> LPort raise LGraphToCGraphTransformerException {
   match edge.get_source() {
     Some(value) => value
-    None => abort("Edge has no source port.")
+    None => lgraph_to_cgraph_transformer_raise("Edge has no source port.")
   }
 }
 
 ///|
-fn lgraph_to_cgraph_transformer_require_target(edge : LEdge) -> LPort {
+fn lgraph_to_cgraph_transformer_require_target(
+  edge : LEdge,
+) -> LPort raise LGraphToCGraphTransformerException {
   match edge.get_target() {
     Some(value) => value
-    None => abort("Edge has no target port.")
+    None => lgraph_to_cgraph_transformer_raise("Edge has no target port.")
   }
 }
 
 ///|
-fn lgraph_to_cgraph_transformer_require_port_node(port : LPort) -> LNode {
+fn lgraph_to_cgraph_transformer_require_port_node(
+  port : LPort,
+) -> LNode raise LGraphToCGraphTransformerException {
   match port.get_node() {
     Some(value) => value
-    None => abort("Port has no owner node.")
+    None => lgraph_to_cgraph_transformer_raise("Port has no owner node.")
   }
 }
 
 ///|
 fn lgraph_to_cgraph_transformer_require_cgraph(
   transformer : LGraphToCGraphTransformer,
-) -> @common.CGraph {
+) -> @common.CGraph raise LGraphToCGraphTransformerException {
   match transformer.c_graph {
     Some(graph) => graph
-    None => abort("Transformer has no @common.CGraph.")
+    None =>
+      lgraph_to_cgraph_transformer_raise("Transformer has no @common.CGraph.")
   }
 }
 
 ///|
 fn lgraph_to_cgraph_transformer_require_lgraph(
   transformer : LGraphToCGraphTransformer,
-) -> LGraph {
+) -> LGraph raise LGraphToCGraphTransformerException {
   match transformer.layered_graph {
     Some(graph) => graph
-    None => abort("Transformer has no layered graph.")
+    None =>
+      lgraph_to_cgraph_transformer_raise("Transformer has no layered graph.")
   }
 }
 
@@ -174,17 +194,17 @@ fn lgraph_to_cgraph_transformer_comment_offset(
 ///|
 fn lgraph_to_cgraph_transformer_require_hitbox_pre_compaction(
   c_node : @common.CNode,
-) -> @core.ElkRectangle {
+) -> @core.ElkRectangle raise LGraphToCGraphTransformerException {
   match c_node.hitbox_pre_compaction() {
     Some(value) => value
-    None => abort("Missing pre-compaction hitbox.")
+    None => lgraph_to_cgraph_transformer_raise("Missing pre-compaction hitbox.")
   }
 }
 
 ///|
 fn lgraph_to_cgraph_transformer_collect_vertical_segments_orthogonal(
   transformer : LGraphToCGraphTransformer,
-) -> Array[VerticalSegment] {
+) -> Array[VerticalSegment] raise LGraphToCGraphTransformerException {
   let vertical_segments : Array[VerticalSegment] = []
   let layered_graph = lgraph_to_cgraph_transformer_require_lgraph(transformer)
 
@@ -361,7 +381,7 @@ fn lgraph_to_cgraph_transformer_collect_vertical_segments_orthogonal(
 ///|
 fn lgraph_to_cgraph_transformer_collect_vertical_segments_splines(
   transformer : LGraphToCGraphTransformer,
-) -> Array[VerticalSegment] {
+) -> Array[VerticalSegment] raise LGraphToCGraphTransformerException {
   let vertical_segments : Array[VerticalSegment] = []
   let layered_graph = lgraph_to_cgraph_transformer_require_lgraph(transformer)
 
@@ -412,7 +432,7 @@ fn lgraph_to_cgraph_transformer_collect_vertical_segments_splines(
 fn lgraph_to_cgraph_transformer_vertical_segment_to_cnode(
   transformer : LGraphToCGraphTransformer,
   vertical_segment : VerticalSegment,
-) -> Unit {
+) -> Unit raise LGraphToCGraphTransformerException {
   let c_graph = lgraph_to_cgraph_transformer_require_cgraph(transformer)
   let origin_key = horizontal_graph_compactor_vertical_segment_origin_key(
     vertical_segment,
@@ -467,7 +487,7 @@ fn lgraph_to_cgraph_transformer_vertical_segment_to_cnode(
 fn lgraph_to_cgraph_transformer_merge_vertical_segments(
   transformer : LGraphToCGraphTransformer,
   vertical_segments : Array[VerticalSegment],
-) -> Unit {
+) -> Unit raise LGraphToCGraphTransformerException {
   if vertical_segments.is_empty() {
     return
   }
@@ -631,7 +651,7 @@ fn lgraph_to_cgraph_transformer_apply_external_port_positions(
   transformer : LGraphToCGraphTransformer,
   top_left : @core.KVector,
   bottom_right : @core.KVector,
-) -> Unit {
+) -> Unit raise LGraphToCGraphTransformerException {
   let c_graph = lgraph_to_cgraph_transformer_require_cgraph(transformer)
   for c_node in c_graph.c_nodes {
     let l_node = match horizontal_graph_compactor_get_lnode_or_null(c_node) {
@@ -723,7 +743,9 @@ pub fn LGraphToCGraphTransformer::get_lock(
 }
 
 ///|
-fn LGraphToCGraphTransformer::init(self : LGraphToCGraphTransformer) -> Unit {
+fn LGraphToCGraphTransformer::init(
+  self : LGraphToCGraphTransformer,
+) -> Unit raise LGraphToCGraphTransformerException {
   let layered_graph = lgraph_to_cgraph_transformer_require_lgraph(self)
   let (supported_directions, _has_edges) = lgraph_to_cgraph_transformer_supports_has_edges(
     layered_graph,
@@ -740,7 +762,7 @@ fn LGraphToCGraphTransformer::init(self : LGraphToCGraphTransformer) -> Unit {
 ///|
 fn LGraphToCGraphTransformer::transform_nodes(
   self : LGraphToCGraphTransformer,
-) -> Unit {
+) -> Unit raise LGraphToCGraphTransformerException {
   let layered_graph = lgraph_to_cgraph_transformer_require_lgraph(self)
   let c_graph = lgraph_to_cgraph_transformer_require_cgraph(self)
 
@@ -814,7 +836,7 @@ fn LGraphToCGraphTransformer::transform_nodes(
 ///|
 fn LGraphToCGraphTransformer::transform_edges(
   self : LGraphToCGraphTransformer,
-) -> Unit {
+) -> Unit raise LGraphToCGraphTransformerException {
   let mut vertical_segments : Array[VerticalSegment] = []
   match self.edge_routing {
     @core.EdgeRouting::Orthogonal =>
@@ -825,7 +847,12 @@ fn LGraphToCGraphTransformer::transform_edges(
       vertical_segments = lgraph_to_cgraph_transformer_collect_vertical_segments_splines(
         self,
       )
-    _ => abort("Compaction not supported for current edge routing.")
+    _ =>
+      lgraph_to_cgraph_transformer_raise(
+        "Compaction not supported for " +
+        @core.edge_routing_to_string(self.edge_routing) +
+        " edges.",
+      )
   }
 
   lgraph_to_cgraph_transformer_merge_vertical_segments(self, vertical_segments)
@@ -857,56 +884,107 @@ pub fn LGraphToCGraphTransformer::transform(
     input_graph.get_property_string(@core.edge_routing),
   )
 
-  self.init()
-  self.transform_nodes()
-  self.transform_edges()
-
-  lgraph_to_cgraph_transformer_require_cgraph(self)
+  try {
+    self.init()
+    self.transform_nodes()
+    self.transform_edges()
+    lgraph_to_cgraph_transformer_require_cgraph(self)
+  } catch {
+    LGraphToCGraphTransformerException(message) => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "java.lang.IllegalStateException: " + message,
+      )
+      match self.c_graph {
+        Some(graph) => graph
+        None =>
+          @common.new_cgraph([
+            @core.Direction::Undefined,
+            @core.Direction::Leftward,
+            @core.Direction::Rightward,
+          ])
+      }
+    }
+  } noraise {
+    result => result
+  }
 }
 
 ///|
 pub fn LGraphToCGraphTransformer::apply_layout(
   self : LGraphToCGraphTransformer,
 ) -> Unit {
-  let c_graph = lgraph_to_cgraph_transformer_require_cgraph(self)
-  let layered_graph = lgraph_to_cgraph_transformer_require_lgraph(self)
+  try {
+    let c_graph = lgraph_to_cgraph_transformer_require_cgraph(self)
+    let layered_graph = lgraph_to_cgraph_transformer_require_lgraph(self)
 
-  for c_node in c_graph.c_nodes {
-    match horizontal_graph_compactor_get_lnode_or_null(c_node) {
-      Some(node) => {
-        let hitbox = c_node.hitbox()
-        node.get_position().x = hitbox.x + node.get_margin().left
-      }
-      None => ()
-    }
-  }
-
-  lgraph_to_cgraph_transformer_apply_comment_positions(self)
-
-  for c_node in c_graph.c_nodes {
-    match horizontal_graph_compactor_get_vertical_segment_or_null(c_node) {
-      Some(segment) => {
-        let hitbox = c_node.hitbox()
-        let original = lgraph_to_cgraph_transformer_require_hitbox_pre_compaction(
-          c_node,
-        )
-        let delta_x = hitbox.x - original.x
-        for bend in segment.affected_bends {
-          bend.x = bend.x + delta_x
+    for c_node in c_graph.c_nodes {
+      match horizontal_graph_compactor_get_lnode_or_null(c_node) {
+        Some(node) => {
+          let hitbox = c_node.hitbox()
+          node.get_position().x = hitbox.x + node.get_margin().left
         }
-        for box in segment.affected_bounding_boxes {
-          box.x = box.x + delta_x
-        }
-        ignore(segment.junction_points.offset_xy(delta_x, 0.0))
+        None => ()
       }
-      None => ()
     }
-  }
 
-  if lgraph_to_cgraph_transformer_edge_routing_equals(
-      self.edge_routing,
-      @core.EdgeRouting::Splines,
-    ) {
+    lgraph_to_cgraph_transformer_apply_comment_positions(self)
+
+    for c_node in c_graph.c_nodes {
+      match horizontal_graph_compactor_get_vertical_segment_or_null(c_node) {
+        Some(segment) => {
+          let hitbox = c_node.hitbox()
+          let original = lgraph_to_cgraph_transformer_require_hitbox_pre_compaction(
+            c_node,
+          )
+          let delta_x = hitbox.x - original.x
+          for bend in segment.affected_bends {
+            bend.x = bend.x + delta_x
+          }
+          for box in segment.affected_bounding_boxes {
+            box.x = box.x + delta_x
+          }
+          ignore(segment.junction_points.offset_xy(delta_x, 0.0))
+        }
+        None => ()
+      }
+    }
+
+    if lgraph_to_cgraph_transformer_edge_routing_equals(
+        self.edge_routing,
+        @core.EdgeRouting::Splines,
+      ) {
+      for layer in layered_graph.get_layers() {
+        for node in layer.get_nodes() {
+          let c_node = match self.nodes_map.get(node.get_handle()) {
+            Some(value) => value
+            None => continue
+          }
+          let original = lgraph_to_cgraph_transformer_require_hitbox_pre_compaction(
+            c_node,
+          )
+          let delta_x = c_node.hitbox().x - original.x
+
+          for edge in node.get_outgoing_edges() {
+            if edge.is_self_loop() {
+              ignore(edge.get_bend_points().offset_xy(delta_x, 0.0))
+            }
+            if edge.has_property_spline_segment_array(
+                internal_properties_spline_route_start,
+              ) {
+              let spline = edge.get_property_spline_segment_array(
+                internal_properties_spline_route_start,
+              )
+              if !spline.is_empty() {
+                lgraph_to_cgraph_transformer_adjust_spline_control_points(
+                  self, spline,
+                )
+              }
+            }
+          }
+        }
+      }
+    }
+
     for layer in layered_graph.get_layers() {
       for node in layer.get_nodes() {
         let c_node = match self.nodes_map.get(node.get_handle()) {
@@ -917,72 +995,53 @@ pub fn LGraphToCGraphTransformer::apply_layout(
           c_node,
         )
         let delta_x = c_node.hitbox().x - original.x
-
         for edge in node.get_outgoing_edges() {
           if edge.is_self_loop() {
-            ignore(edge.get_bend_points().offset_xy(delta_x, 0.0))
-          }
-          if edge.has_property_spline_segment_array(
-              internal_properties_spline_route_start,
-            ) {
-            let spline = edge.get_property_spline_segment_array(
-              internal_properties_spline_route_start,
-            )
-            if !spline.is_empty() {
-              lgraph_to_cgraph_transformer_adjust_spline_control_points(
-                self, spline,
-              )
+            for label in edge.get_labels() {
+              label.get_position().x = label.get_position().x + delta_x
             }
           }
         }
       }
     }
-  }
 
-  for layer in layered_graph.get_layers() {
-    for node in layer.get_nodes() {
-      let c_node = match self.nodes_map.get(node.get_handle()) {
-        Some(value) => value
-        None => continue
-      }
-      let original = lgraph_to_cgraph_transformer_require_hitbox_pre_compaction(
-        c_node,
-      )
-      let delta_x = c_node.hitbox().x - original.x
-      for edge in node.get_outgoing_edges() {
-        if edge.is_self_loop() {
-          for label in edge.get_labels() {
-            label.get_position().x = label.get_position().x + delta_x
-          }
-        }
-      }
+    let top_left = @core.new_kvector_xy(@double.infinity, @double.infinity)
+    let bottom_right = @core.new_kvector_xy(
+      -@double.infinity,
+      -@double.infinity,
+    )
+    for c_node in c_graph.c_nodes {
+      let hitbox = c_node.hitbox()
+      top_left.x = @cmp.minimum(top_left.x, hitbox.x)
+      top_left.y = @cmp.minimum(top_left.y, hitbox.y)
+      bottom_right.x = @cmp.maximum(bottom_right.x, hitbox.x + hitbox.width)
+      bottom_right.y = @cmp.maximum(bottom_right.y, hitbox.y + hitbox.height)
     }
-  }
 
-  let top_left = @core.new_kvector_xy(@double.infinity, @double.infinity)
-  let bottom_right = @core.new_kvector_xy(-@double.infinity, -@double.infinity)
-  for c_node in c_graph.c_nodes {
-    let hitbox = c_node.hitbox()
-    top_left.x = @cmp.minimum(top_left.x, hitbox.x)
-    top_left.y = @cmp.minimum(top_left.y, hitbox.y)
-    bottom_right.x = @cmp.maximum(bottom_right.x, hitbox.x + hitbox.width)
-    bottom_right.y = @cmp.maximum(bottom_right.y, hitbox.y + hitbox.height)
-  }
+    if top_left.x == @double.infinity {
+      ignore(layered_graph.get_offset().reset())
+      ignore(layered_graph.get_size().reset())
+      lgraph_to_cgraph_transformer_cleanup(self)
+      return
+    }
 
-  if top_left.x == @double.infinity {
-    ignore(layered_graph.get_offset().reset())
-    ignore(layered_graph.get_size().reset())
+    ignore(layered_graph.get_offset().reset().add(top_left.clone().negate()))
+    ignore(
+      layered_graph.get_size().reset().add(bottom_right.clone().sub(top_left)),
+    )
+
+    lgraph_to_cgraph_transformer_apply_external_port_positions(
+      self, top_left, bottom_right,
+    )
     lgraph_to_cgraph_transformer_cleanup(self)
-    return
+  } catch {
+    LGraphToCGraphTransformerException(message) => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "java.lang.IllegalStateException: " + message,
+      )
+      lgraph_to_cgraph_transformer_cleanup(self)
+    }
+  } noraise {
+    _ => ()
   }
-
-  ignore(layered_graph.get_offset().reset().add(top_left.clone().negate()))
-  ignore(
-    layered_graph.get_size().reset().add(bottom_right.clone().sub(top_left)),
-  )
-
-  lgraph_to_cgraph_transformer_apply_external_port_positions(
-    self, top_left, bottom_right,
-  )
-  lgraph_to_cgraph_transformer_cleanup(self)
 }

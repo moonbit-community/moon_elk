@@ -126,8 +126,21 @@ fn random_layout_provider_is_hierarchical(edge : @graph.ElkEdge) -> Bool {
   if sources.is_empty() || targets.is_empty() {
     false
   } else {
-    @graph.node_parent(@graph.connectable_shape_to_node(Some(sources[0]))) !=
-    @graph.node_parent(@graph.connectable_shape_to_node(Some(targets[0])))
+    let source_node = try
+      @graph.connectable_shape_to_node(Some(sources[0]))
+    catch {
+      _ => return false
+    } noraise {
+      value => value
+    }
+    let target_node = try
+      @graph.connectable_shape_to_node(Some(targets[0]))
+    catch {
+      _ => return false
+    } noraise {
+      value => value
+    }
+    @graph.node_parent(source_node) != @graph.node_parent(target_node)
   }
 }
 

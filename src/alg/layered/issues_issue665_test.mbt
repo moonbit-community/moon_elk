@@ -17,7 +17,7 @@ test "Issue665 nested graph imports and layouts without unsupported graph errors
   let edge = create_edge(None)
   edge_add_source(edge, make_node_shape(child))
   edge_add_target(edge, make_node_shape(sibling))
-  update_containment(Some(edge))
+  layered_test_update_containment(Some(edge))
 
   let resolver = new_layout_algorithm_resolver()
   apply_visitors(graph, [resolver.to_visitor()])

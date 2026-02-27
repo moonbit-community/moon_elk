@@ -49,25 +49,45 @@ let depth_first_model_order_layerer_baseline_processing_configuration : @core.La
   )
 
 ///|
+pub(all) suberror DepthFirstModelOrderLayererException {
+  UnsupportedGraphException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] depth_first_model_order_layerer_raise_unsupported_graph(
+  message : String,
+) -> T raise DepthFirstModelOrderLayererException {
+  raise DepthFirstModelOrderLayererException::UnsupportedGraphException(message)
+}
+
+///|
 fn depth_first_model_order_layerer_require_edge_source_node(
   edge : LEdge,
-) -> LNode {
+) -> LNode raise DepthFirstModelOrderLayererException {
   let source = match edge.get_source() {
     Some(value) => value
-    None => abort("edge has no source port")
+    None =>
+      depth_first_model_order_layerer_raise_unsupported_graph(
+        "edge has no source port",
+      )
   }
   match source.get_node() {
     Some(value) => value
-    None => abort("source port has no owner node")
+    None =>
+      depth_first_model_order_layerer_raise_unsupported_graph(
+        "source port has no owner node",
+      )
   }
 }
 
 ///|
-fn depth_first_model_order_layerer_model_order(node : LNode) -> Int {
+fn depth_first_model_order_layerer_model_order(
+  node : LNode,
+) -> Int raise DepthFirstModelOrderLayererException {
   if node.has_property_int(internal_properties_model_order) {
     node.get_property_int(internal_properties_model_order)
   } else {
-    abort(
+    depth_first_model_order_layerer_raise_unsupported_graph(
       "The DF model order layer assigner requires all real nodes to have a model order.",
     )
   }
@@ -76,7 +96,7 @@ fn depth_first_model_order_layerer_model_order(node : LNode) -> Int {
 ///|
 fn depth_first_model_order_layerer_sort_real_nodes(
   real_nodes : Array[LNode],
-) -> Unit {
+) -> Unit raise DepthFirstModelOrderLayererException {
   let mut i = 1
   while i < real_nodes.length() {
     let current = real_nodes[i]
@@ -99,7 +119,7 @@ fn depth_first_model_order_layerer_sort_real_nodes(
 fn depth_first_model_order_layerer_is_connected_to_current_layer(
   state : DepthFirstModelOrderLayererState,
   node : LNode,
-) -> Bool {
+) -> Bool raise DepthFirstModelOrderLayererException {
   for edge in node.get_incoming_edges() {
     let source_node = depth_first_model_order_layerer_require_edge_source_node(
       edge,
@@ -137,7 +157,9 @@ fn depth_first_model_order_layerer_is_connected_to_current_layer(
     } else if source_node.get_type() is NodeType::LabelNode {
       let incoming_edges = source_node.get_incoming_edges()
       if incoming_edges.is_empty() {
-        abort("label dummy node has no incoming edges")
+        depth_first_model_order_layerer_raise_unsupported_graph(
+          "label dummy node has no incoming edges",
+        )
       }
       depth_first_model_order_layerer_require_edge_source_node(
         incoming_edges[0],
@@ -159,7 +181,7 @@ fn depth_first_model_order_layerer_add_node_to_layer(
   state : DepthFirstModelOrderLayererState,
   layer_id : Int,
   node : LNode,
-) -> Unit {
+) -> Unit raise DepthFirstModelOrderLayererException {
   let layers = state.layered_graph.get_layers()
   if layer_id < layers.length() {
     state.current_layer = layers[layer_id]
@@ -198,7 +220,7 @@ fn depth_first_model_order_layerer_add_node_to_layer(
 fn depth_first_model_order_layerer_get_max_connected_layer(
   layer_id : Int,
   node : LNode,
-) -> Int {
+) -> Int raise DepthFirstModelOrderLayererException {
   let mut max_layer = layer_id
   for edge in node.get_incoming_edges() {
     let source_node = depth_first_model_order_layerer_require_edge_source_node(
@@ -262,114 +284,126 @@ fn depth_first_model_order_layerer_process(
       real_nodes.push(node)
     }
   }
-  depth_first_model_order_layerer_sort_real_nodes(real_nodes)
+  try {
+    depth_first_model_order_layerer_sort_real_nodes(real_nodes)
 
-  let mut first_node = true
-  let first_layer = new_layer(layered_graph)
-  layered_graph.get_layers().push(first_layer)
-  first_layer.set_id(0)
+    let mut first_node = true
+    let first_layer = new_layer(layered_graph)
+    layered_graph.get_layers().push(first_layer)
+    first_layer.set_id(0)
 
-  let state : DepthFirstModelOrderLayererState = {
-    layered_graph,
-    current_layer: first_layer,
-    current_layer_id: 0,
-    current_dummy_layer: None,
-    nodes_to_place: [],
-    max_to_place: 0,
-  }
+    let state : DepthFirstModelOrderLayererState = {
+      layered_graph,
+      current_layer: first_layer,
+      current_layer_id: 0,
+      current_dummy_layer: None,
+      nodes_to_place: [],
+      max_to_place: 0,
+    }
 
-  for node in real_nodes {
-    if first_node {
-      node.set_layer(Some(state.current_layer))
-      first_node = false
-    } else if depth_first_model_order_layerer_is_connected_to_current_layer(
-        state, node,
-      ) {
-      let mut max_layer = state.current_layer_id
-      max_layer = depth_first_model_order_layerer_get_max_connected_layer(
-        max_layer, node,
-      )
-      let desired_layer = max_layer + 2
-      let layer_diff = max_layer - state.current_layer_id
-
-      if !state.nodes_to_place.is_empty() {
-        if layer_diff > 0 {
-          for to_place in state.nodes_to_place {
-            to_place.set_id(to_place.get_id() + max_layer - state.max_to_place)
-          }
-          depth_first_model_order_layerer_place_nodes_to_place(state)
-          state.nodes_to_place.clear()
-          depth_first_model_order_layerer_add_node_to_layer(
-            state, desired_layer, node,
-          )
-        } else {
-          state.nodes_to_place.push(node)
-          node.set_id(desired_layer)
-          if desired_layer > state.max_to_place {
-            state.max_to_place = desired_layer
-          }
-          for edge in node.get_incoming_edges() {
-            let source_node = depth_first_model_order_layerer_require_edge_source_node(
-              edge,
-            )
-            if source_node.get_layer() is None &&
-              source_node.get_type() is NodeType::LabelNode {
-              state.nodes_to_place.push(source_node)
-              source_node.set_id(desired_layer - 1)
-            }
-          }
-          state.current_layer_id = desired_layer
-        }
-      } else {
-        depth_first_model_order_layerer_add_node_to_layer(
-          state, desired_layer, node,
-        )
-      }
-    } else {
-      depth_first_model_order_layerer_place_nodes_to_place(state)
-      state.nodes_to_place.clear()
-
-      if node.get_incoming_edges().is_empty() {
-        state.nodes_to_place.push(node)
-        node.set_id(0)
-        if 0 > state.max_to_place {
-          state.max_to_place = 0
-        }
-        state.current_layer = layered_graph.get_layers()[0]
-        state.current_layer_id = 0
-      } else {
-        let mut max_layer = 0
+    for node in real_nodes {
+      if first_node {
+        node.set_layer(Some(state.current_layer))
+        first_node = false
+      } else if depth_first_model_order_layerer_is_connected_to_current_layer(
+          state, node,
+        ) {
+        let mut max_layer = state.current_layer_id
         max_layer = depth_first_model_order_layerer_get_max_connected_layer(
           max_layer, node,
         )
         let desired_layer = max_layer + 2
-        depth_first_model_order_layerer_add_node_to_layer(
-          state, desired_layer, node,
-        )
+        let layer_diff = max_layer - state.current_layer_id
+
+        if !state.nodes_to_place.is_empty() {
+          if layer_diff > 0 {
+            for to_place in state.nodes_to_place {
+              to_place.set_id(
+                to_place.get_id() + max_layer - state.max_to_place,
+              )
+            }
+            depth_first_model_order_layerer_place_nodes_to_place(state)
+            state.nodes_to_place.clear()
+            depth_first_model_order_layerer_add_node_to_layer(
+              state, desired_layer, node,
+            )
+          } else {
+            state.nodes_to_place.push(node)
+            node.set_id(desired_layer)
+            if desired_layer > state.max_to_place {
+              state.max_to_place = desired_layer
+            }
+            for edge in node.get_incoming_edges() {
+              let source_node = depth_first_model_order_layerer_require_edge_source_node(
+                edge,
+              )
+              if source_node.get_layer() is None &&
+                source_node.get_type() is NodeType::LabelNode {
+                state.nodes_to_place.push(source_node)
+                source_node.set_id(desired_layer - 1)
+              }
+            }
+            state.current_layer_id = desired_layer
+          }
+        } else {
+          depth_first_model_order_layerer_add_node_to_layer(
+            state, desired_layer, node,
+          )
+        }
+      } else {
+        depth_first_model_order_layerer_place_nodes_to_place(state)
+        state.nodes_to_place.clear()
+
+        if node.get_incoming_edges().is_empty() {
+          state.nodes_to_place.push(node)
+          node.set_id(0)
+          if 0 > state.max_to_place {
+            state.max_to_place = 0
+          }
+          state.current_layer = layered_graph.get_layers()[0]
+          state.current_layer_id = 0
+        } else {
+          let mut max_layer = 0
+          max_layer = depth_first_model_order_layerer_get_max_connected_layer(
+            max_layer, node,
+          )
+          let desired_layer = max_layer + 2
+          depth_first_model_order_layerer_add_node_to_layer(
+            state, desired_layer, node,
+          )
+        }
       }
     }
-  }
 
-  if !state.nodes_to_place.is_empty() {
-    depth_first_model_order_layerer_place_nodes_to_place(state)
-  }
-
-  layered_graph.get_layerless_nodes().clear()
-
-  let layers = layered_graph.get_layers()
-  let mut i = 0
-  while i < layers.length() {
-    if layers[i].get_nodes().is_empty() {
-      ignore(layers.remove(i))
-    } else {
-      i += 1
+    if !state.nodes_to_place.is_empty() {
+      depth_first_model_order_layerer_place_nodes_to_place(state)
     }
-  }
 
-  let mut layer_id = 0
-  for layer in layers {
-    layer.set_id(layer_id)
-    layer_id += 1
+    layered_graph.get_layerless_nodes().clear()
+
+    let layers = layered_graph.get_layers()
+    let mut i = 0
+    while i < layers.length() {
+      if layers[i].get_nodes().is_empty() {
+        ignore(layers.remove(i))
+      } else {
+        i += 1
+      }
+    }
+
+    let mut layer_id = 0
+    for layer in layers {
+      layer.set_id(layer_id)
+      layer_id += 1
+    }
+  } catch {
+    DepthFirstModelOrderLayererException::UnsupportedGraphException(message) => {
+      @core.layout_runtime_report_unsupported_configuration(message)
+      monitor.done()
+      return
+    }
+  } noraise {
+    _ => ()
   }
 
   monitor.done()

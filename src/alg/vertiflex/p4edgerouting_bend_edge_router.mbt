@@ -12,7 +12,12 @@ fn vertiflex_bend_edge_router_route_edges(node : @graph.ElkNode) -> Unit {
     let spacing = @graph.node_get_double_property(
       match @graph.node_parent(target) {
         Some(parent) => parent
-        None => abort("VertiFlex target node must have a parent graph.")
+        None => {
+          @core.layout_runtime_report_unsupported_configuration(
+            "VertiFlex target node must have a parent graph.",
+          )
+          target
+        }
       },
       vertiflex_spacing_node_node,
     )

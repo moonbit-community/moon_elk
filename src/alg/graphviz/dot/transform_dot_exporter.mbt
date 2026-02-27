@@ -11,6 +11,16 @@ pub let dot_exporter_def_spacing_xlarge : Double = 60.0
 pub let dot_exporter_dpi : Float = 72.0
 
 ///|
+pub suberror DotExporterException {
+  DotExporterException(String)
+} derive(Show, ToJson)
+
+///|
+fn dot_exporter_raise_unit(message : String) -> Unit raise DotExporterException {
+  raise DotExporterException(message)
+}
+
+///|
 pub let dot_exporter_command : @graph.IProperty[Command] = @graph.new_property(
   "dotExporter.command",
   command_parse("dot"),
@@ -741,11 +751,24 @@ pub fn DotExporter::transform_edges(
     for edge in dot_exporter_all_outgoing_edges(source) {
       if @graph.edge_sources(edge).length() != 1 ||
         @graph.edge_targets(edge).length() != 1 {
-        abort("Hyperedges are not supported.")
+        try dot_exporter_raise_unit("Hyperedges are not supported.") catch {
+          DotExporterException(message) =>
+            @core.layout_runtime_report_unsupported_configuration(
+              "org.eclipse.elk.alg.graphviz.dot.transform.DotExporter: " +
+              message,
+            )
+        } noraise {
+          _ => ()
+        }
+        continue
       }
-      let target = @graph.connectable_shape_to_node(
-        Some(@graph.edge_targets(edge)[0]),
-      )
+      let target = try
+        @graph.connectable_shape_to_node(Some(@graph.edge_targets(edge)[0]))
+      catch {
+        _ => continue
+      } noraise {
+        value => value
+      }
       if @graph.node_parent(source) == @graph.node_parent(target) ||
         (hierarchy && dot_exporter_is_inside_graph(target, source_root)) {
         let edge_statement = dot_create_edge_statement()
@@ -1225,15 +1248,27 @@ pub fn DotExporter::apply_edge_layout(
       if !first_spline_points.is_empty() {
         source_point = Some(first_spline_points[0])
       } else {
-        let source_node = @graph.connectable_shape_to_node(
-          Some(@graph.edge_sources(elkedge)[0]),
-        )
-        source_point = Some(
-          @core.new_kvector_xy(
-            @graph.node_x(source_node) + @graph.node_width(source_node) / 2.0,
-            @graph.node_y(source_node) + @graph.node_height(source_node) / 2.0,
-          ),
-        )
+        let source_node_opt = try
+          @graph.connectable_shape_to_node(
+            Some(@graph.edge_sources(elkedge)[0]),
+          )
+        catch {
+          _ => None
+        } noraise {
+          value => Some(value)
+        }
+        match source_node_opt {
+          Some(source_node) =>
+            source_point = Some(
+              @core.new_kvector_xy(
+                @graph.node_x(source_node) +
+                @graph.node_width(source_node) / 2.0,
+                @graph.node_y(source_node) +
+                @graph.node_height(source_node) / 2.0,
+              ),
+            )
+          None => ()
+        }
       }
     }
     if target_point is None {
@@ -1241,15 +1276,27 @@ pub fn DotExporter::apply_edge_layout(
       if !last_spline_points.is_empty() {
         target_point = Some(last_spline_points[last_spline_points.length() - 1])
       } else {
-        let target_node = @graph.connectable_shape_to_node(
-          Some(@graph.edge_targets(elkedge)[0]),
-        )
-        target_point = Some(
-          @core.new_kvector_xy(
-            @graph.node_x(target_node) + @graph.node_width(target_node) / 2.0,
-            @graph.node_y(target_node) + @graph.node_height(target_node) / 2.0,
-          ),
-        )
+        let target_node_opt = try
+          @graph.connectable_shape_to_node(
+            Some(@graph.edge_targets(elkedge)[0]),
+          )
+        catch {
+          _ => None
+        } noraise {
+          value => Some(value)
+        }
+        match target_node_opt {
+          Some(target_node) =>
+            target_point = Some(
+              @core.new_kvector_xy(
+                @graph.node_x(target_node) +
+                @graph.node_width(target_node) / 2.0,
+                @graph.node_y(target_node) +
+                @graph.node_height(target_node) / 2.0,
+              ),
+            )
+          None => ()
+        }
       }
     }
     match (source_point, target_point) {

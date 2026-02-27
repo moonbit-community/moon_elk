@@ -1,4 +1,23 @@
 ///|
+priv suberror SpacingParseException {
+  SpacingParseException(String)
+} derive(Show, ToJson)
+
+///|
+fn spacing_parse_raise_unit(
+  message : String,
+) -> Unit raise SpacingParseException {
+  raise SpacingParseException(message)
+}
+
+///|
+fn spacing_parse_exception_message(err : SpacingParseException) -> String {
+  match err {
+    SpacingParseException(message) => message
+  }
+}
+
+///|
 pub(all) struct Spacing {
   mut top : Double
   mut bottom : Double
@@ -135,7 +154,17 @@ pub fn Spacing::parse(self : Spacing, string : String) -> Unit {
   for token in tokens {
     let key_and_value = _split_by_any_delims_drop_trailing_empty(token, "=")
     if key_and_value.length() != 2 {
-      abort("Expecting a list of key-value pairs.")
+      try
+        spacing_parse_raise_unit("Expecting a list of key-value pairs.")
+      catch {
+        err =>
+          layout_runtime_report_unsupported_configuration(
+            spacing_parse_exception_message(err),
+          )
+      } noraise {
+        _ => ()
+      }
+      return
     }
     let key = key_and_value[0].trim().to_string()
     let value = _parse_double_or_abort(

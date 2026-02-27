@@ -28,10 +28,17 @@ test "AlgorithmAssembler testDisableCaching" {
 }
 
 ///|
-test "panic AlgorithmAssembler testFailOnMissingPhase" {
+test "AlgorithmAssembler testFailOnMissingPhase reports runtime error" {
+  @core.layout_runtime_clear_error()
   let assembler = algorithm_assembler_create(test_phase_descriptor)
   ignore(assembler.set_phase(Phase1, test_phase_factory(Phase1)))
   ignore(assembler.build(None))
+  assert_eq(
+    @core.layout_runtime_take_error_message(),
+    Some(
+      "org.eclipse.elk.core.UnsupportedConfigurationException: Expected 2 phases to be configured; only found 1",
+    ),
+  )
 }
 
 ///|
@@ -59,13 +66,20 @@ test "AlgorithmAssembler testClearCache" {
 }
 
 ///|
-test "panic AlgorithmAssembler testResetWithFailOnMissingPhase" {
+test "AlgorithmAssembler testResetWithFailOnMissingPhase reports runtime error" {
+  @core.layout_runtime_clear_error()
   let assembler = algorithm_assembler_create(test_phase_descriptor)
   ignore(assembler.with_fail_on_missing_phase(true))
   ignore(assembler.set_phase(Phase1, test_phase_factory(Phase1)))
   ignore(assembler.set_phase(Phase2, test_phase_factory(Phase2)))
   ignore(assembler.reset())
   ignore(assembler.build(None))
+  assert_eq(
+    @core.layout_runtime_take_error_message(),
+    Some(
+      "org.eclipse.elk.core.UnsupportedConfigurationException: Expected 2 phases to be configured; only found 0",
+    ),
+  )
 }
 
 ///|

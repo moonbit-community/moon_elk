@@ -24,6 +24,27 @@ let elk_graph_adapters_label_side_property : @graph.IProperty[String] = @graph.n
 )
 
 ///|
+priv suberror ElkGraphAdaptersException {
+  ElkGraphAdaptersException(String)
+} derive(Show, ToJson)
+
+///|
+fn elk_graph_adapters_raise_unit(
+  message : String,
+) -> Unit raise ElkGraphAdaptersException {
+  raise ElkGraphAdaptersException(message)
+}
+
+///|
+fn elk_graph_adapters_exception_message(
+  err : ElkGraphAdaptersException,
+) -> String {
+  match err {
+    ElkGraphAdaptersException(message) => message
+  }
+}
+
+///|
 fn elk_graph_adapters_parse_int(raw : String) -> Int? {
   try @strconv.parse_int(raw.trim().to_string()) catch {
     _ => None
@@ -1154,7 +1175,13 @@ pub fn ElkPortAdapter::has_compound_connections(self : ElkPortAdapter) -> Bool {
   if @graph.port_parent(self.element) is Some(node) {
     for edge in @graph.port_outgoing_edges(self.element) {
       for target in @graph.edge_targets(edge) {
-        let target_node = @graph.connectable_shape_to_node(Some(target))
+        let target_node = try
+          @graph.connectable_shape_to_node(Some(target))
+        catch {
+          _ => continue
+        } noraise {
+          value => value
+        }
         if @graph.is_descendant(target_node, node) {
           return true
         }
@@ -1168,7 +1195,13 @@ pub fn ElkPortAdapter::has_compound_connections(self : ElkPortAdapter) -> Bool {
 
     for edge in @graph.port_incoming_edges(self.element) {
       for source in @graph.edge_sources(edge) {
-        let source_node = @graph.connectable_shape_to_node(Some(source))
+        let source_node = try
+          @graph.connectable_shape_to_node(Some(source))
+        catch {
+          _ => continue
+        } noraise {
+          value => value
+        }
         if @graph.is_descendant(source_node, node) {
           return true
         }
@@ -1443,6 +1476,16 @@ pub fn ElkPortComparator::compare(
         @graph.port_y(port2),
         @graph.port_y(port1),
       )
-    PortSide::SideUndefined => abort("Port side is undefined")
+    PortSide::SideUndefined => {
+      try elk_graph_adapters_raise_unit("Port side is undefined") catch {
+        err =>
+          layout_runtime_report_unsupported_configuration(
+            elk_graph_adapters_exception_message(err),
+          )
+      } noraise {
+        _ => ()
+      }
+      0
+    }
   }
 }

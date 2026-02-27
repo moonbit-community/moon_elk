@@ -1,4 +1,16 @@
 ///|
+pub(all) suberror NodeLabelCellCreatorException {
+  IllegalArgumentException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] node_label_cell_creator_raise_illegal_argument(
+  message : String,
+) -> T raise NodeLabelCellCreatorException {
+  raise NodeLabelCellCreatorException::IllegalArgumentException(message)
+}
+
+///|
 fn node_label_cell_creator_create_node_label_cell_containers(
   node_context : NodeContext,
   only_inside : Bool,
@@ -63,7 +75,7 @@ fn node_label_cell_creator_retrieve_node_label_cell(
   node_context : NodeContext,
   node_label_location : NodeLabelLocation,
   horizontal_layout_mode : Bool,
-) -> LabelCell {
+) -> LabelCell raise NodeLabelCellCreatorException {
   let location_key = node_context_node_label_location_key(node_label_location)
   match node_context.node_label_cells.get(location_key) {
     Some(node_label_cell) => node_label_cell
@@ -78,12 +90,17 @@ fn node_label_cell_creator_retrieve_node_label_cell(
       if node_label_location.is_inside_location() {
         let row = match node_label_location.container_row() {
           Some(value) => value
-          None => abort("inside node label location must provide container row")
+          None =>
+            node_label_cell_creator_raise_illegal_argument(
+              "inside node label location must provide container row",
+            )
         }
         let col = match node_label_location.container_column() {
           Some(value) => value
           None =>
-            abort("inside node label location must provide container column")
+            node_label_cell_creator_raise_illegal_argument(
+              "inside node label location must provide container column",
+            )
         }
         grid_container_cell_set_cell(
           node_context.inside_node_label_container,
@@ -98,7 +115,10 @@ fn node_label_cell_creator_retrieve_node_label_cell(
             node_context_port_side_key(outside_side),
           ) {
           Some(value) => value
-          None => abort("missing outside node label container")
+          None =>
+            node_label_cell_creator_raise_illegal_argument(
+              "missing outside node label container",
+            )
         }
 
         match outside_side {
@@ -107,7 +127,9 @@ fn node_label_cell_creator_retrieve_node_label_cell(
             let col = match node_label_location.container_column() {
               Some(value) => value
               None =>
-                abort("outside north/south label must provide container column")
+                node_label_cell_creator_raise_illegal_argument(
+                  "outside north/south label must provide container column",
+                )
             }
             container_cell.set_cell(col, Some(node_label_cell))
           }
@@ -116,7 +138,9 @@ fn node_label_cell_creator_retrieve_node_label_cell(
             let row = match node_label_location.container_row() {
               Some(value) => value
               None =>
-                abort("outside west/east label must provide container row")
+                node_label_cell_creator_raise_illegal_argument(
+                  "outside west/east label must provide container row",
+                )
             }
             container_cell.set_cell(row, Some(node_label_cell))
           }
@@ -135,7 +159,7 @@ fn node_label_cell_creator_handle_node_label(
   label : @core.ElkLabelAdapter,
   only_inside : Bool,
   horizontal_layout_mode : Bool,
-) -> Unit {
+) -> Unit raise NodeLabelCellCreatorException {
   let label_placement = if label.has_property_string_array(
       @core.node_labels_placement,
     ) {
@@ -165,7 +189,7 @@ pub fn node_label_cell_creator_create_node_label_cells(
   node_context : NodeContext,
   only_inside : Bool,
   horizontal_layout_mode : Bool,
-) -> Unit {
+) -> Unit raise NodeLabelCellCreatorException {
   node_label_cell_creator_create_node_label_cell_containers(
     node_context, only_inside,
   )

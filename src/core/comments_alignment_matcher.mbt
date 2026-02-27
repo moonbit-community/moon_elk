@@ -27,12 +27,33 @@ let alignment_matcher_out_bottom_right : Int = alignment_matcher_out_bottom |
   alignment_matcher_out_right
 
 ///|
-fn[C, T] alignment_matcher_bounds_provider_or_abort(
+pub suberror AlignmentMatcherException {
+  AlignmentMatcherException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] alignment_matcher_raise(
+  message : String,
+) -> T raise AlignmentMatcherException {
+  raise AlignmentMatcherException(message)
+}
+
+///|
+fn alignment_matcher_exception_message(
+  err : AlignmentMatcherException,
+) -> String {
+  match err {
+    AlignmentMatcherException(message) => message
+  }
+}
+
+///|
+fn[C, T] alignment_matcher_bounds_provider_or_raise(
   matcher : AlignmentMatcher[C, T],
-) -> IBoundsProvider[C, T] {
+) -> IBoundsProvider[C, T] raise AlignmentMatcherException {
   match matcher.bounds_provider {
     Some(provider) => provider
-    None => abort("A bounds provider is required.")
+    None => alignment_matcher_raise("A bounds provider is required.")
   }
 }
 
@@ -167,9 +188,9 @@ pub fn[C, T] new_alignment_matcher() -> AlignmentMatcher[C, T] {
 pub fn[C, T] AlignmentMatcher::with_maximum_alignment_offset(
   self : AlignmentMatcher[C, T],
   offset : Double,
-) -> AlignmentMatcher[C, T] {
+) -> AlignmentMatcher[C, T] raise AlignmentMatcherException {
   if offset <= 0.0 {
-    abort("Maximum alignment offset must be > 0.")
+    alignment_matcher_raise("Maximum alignment offset must be > 0.")
   }
 
   self.worst_raw_value = offset
@@ -212,8 +233,8 @@ pub fn[C, T] AlignmentMatcher::get_best_raw_value(
 ///|
 pub fn[C, T] AlignmentMatcher::check_configuration(
   self : AlignmentMatcher[C, T],
-) -> Unit {
-  ignore(alignment_matcher_bounds_provider_or_abort(self))
+) -> Unit raise AlignmentMatcherException {
+  ignore(alignment_matcher_bounds_provider_or_raise(self))
 }
 
 ///|
@@ -222,7 +243,38 @@ pub fn[C, T] AlignmentMatcher::preprocess(
   _data_provider : IDataProvider[C, T],
   _include_hierarchy : Bool,
 ) -> Unit {
-  self.check_configuration()
+  try self.check_configuration() catch {
+    err =>
+      layout_runtime_report_unsupported_configuration(
+        alignment_matcher_exception_message(err),
+      )
+  } noraise {
+    _ => ()
+  }
+}
+
+///|
+fn[C, T] alignment_matcher_raw_impl(
+  matcher : AlignmentMatcher[C, T],
+  comment : C,
+  target : T,
+) -> Double raise AlignmentMatcherException {
+  let bounds_provider = alignment_matcher_bounds_provider_or_raise(matcher)
+  let comment_bounds = match bounds_provider.bounds_for_comment(comment) {
+    Some(bounds) => bounds
+    None => alignment_matcher_raise("Bounds for comment are unavailable.")
+  }
+  let target_bounds = match bounds_provider.bounds_for_target(target) {
+    Some(bounds) => bounds
+    None => alignment_matcher_raise("Bounds for target are unavailable.")
+  }
+
+  let alignment = alignment_matcher_alignment(comment_bounds, target_bounds)
+  if alignment == -1.0 {
+    matcher.get_worst_raw_value()
+  } else {
+    alignment
+  }
 }
 
 ///|
@@ -231,21 +283,15 @@ pub fn[C, T] AlignmentMatcher::raw(
   comment : C,
   target : T,
 ) -> Double {
-  let bounds_provider = alignment_matcher_bounds_provider_or_abort(self)
-  let comment_bounds = match bounds_provider.bounds_for_comment(comment) {
-    Some(bounds) => bounds
-    None => abort("Bounds for comment are unavailable.")
-  }
-  let target_bounds = match bounds_provider.bounds_for_target(target) {
-    Some(bounds) => bounds
-    None => abort("Bounds for target are unavailable.")
-  }
-
-  let alignment = alignment_matcher_alignment(comment_bounds, target_bounds)
-  if alignment == -1.0 {
-    self.get_worst_raw_value()
-  } else {
-    alignment
+  try alignment_matcher_raw_impl(self, comment, target) catch {
+    err => {
+      layout_runtime_report_unsupported_configuration(
+        alignment_matcher_exception_message(err),
+      )
+      self.get_worst_raw_value()
+    }
+  } noraise {
+    value => value
   }
 }
 

@@ -12,6 +12,27 @@ pub struct StressMajorization {
 }
 
 ///|
+pub suberror StressMajorizationException {
+  StressMajorizationException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] stress_majorization_raise(
+  message : String,
+) -> T raise StressMajorizationException {
+  raise StressMajorizationException(message)
+}
+
+///|
+pub fn stress_majorization_exception_message(
+  err : StressMajorizationException,
+) -> String {
+  match err {
+    StressMajorizationException(message) => message
+  }
+}
+
+///|
 pub fn new_stress_majorization() -> StressMajorization {
   {
     graph: None,
@@ -27,7 +48,10 @@ pub fn new_stress_majorization() -> StressMajorization {
 }
 
 ///|
-fn stress_get_other(edge : FEdge, one : FNode) -> FNode {
+fn stress_get_other(
+  edge : FEdge,
+  one : FNode,
+) -> FNode raise StressMajorizationException {
   match (fedge_source(edge), fedge_target(edge)) {
     (Some(source), Some(target)) =>
       if source == one {
@@ -35,9 +59,11 @@ fn stress_get_other(edge : FEdge, one : FNode) -> FNode {
       } else if target == one {
         source
       } else {
-        abort("Node 'one' must be either source or target of edge 'edge'.")
+        stress_majorization_raise(
+          "Node 'one' must be either source or target of edge 'edge'.",
+        )
       }
-    _ => abort("Stress edge must have source and target")
+    _ => stress_majorization_raise("Stress edge must have source and target")
   }
 }
 
@@ -77,7 +103,7 @@ fn stress_initialize_matrices(stress : StressMajorization, size : Int) -> Unit {
 fn stress_dijkstra(
   stress : StressMajorization,
   source_id : Int,
-) -> Array[Double] {
+) -> Array[Double] raise StressMajorizationException {
   let graph = match stress.graph {
     Some(graph) => graph
     None => return []
@@ -138,7 +164,7 @@ fn stress_dijkstra(
 pub fn StressMajorization::initialize(
   self : StressMajorization,
   graph : FGraph,
-) -> Unit {
+) -> Unit raise StressMajorizationException {
   if graph.get_nodes().length() <= 1 {
     self.graph = Some(graph)
     return

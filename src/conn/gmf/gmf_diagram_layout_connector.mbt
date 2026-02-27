@@ -33,6 +33,18 @@ pub(all) enum GmfConnectorDiagramPart {
 } derive(Show)
 
 ///|
+pub suberror GmfDiagramLayoutConnectorException {
+  GmfDiagramLayoutConnectorException(String)
+} derive(Show, ToJson)
+
+///|
+fn gmf_diagram_layout_connector_raise_unit(
+  message : String,
+) -> Unit raise GmfDiagramLayoutConnectorException {
+  raise GmfDiagramLayoutConnectorException(message)
+}
+
+///|
 pub struct GmfLayoutMapping {
   workbench_part : GmfConnectorWorkbenchPart?
   parent_element : GmfEditPart?
@@ -558,8 +570,20 @@ fn gmf_diagram_layout_connector_process_connections(
       None => continue
     }
 
-    let source_node = @graph.connectable_shape_to_node(Some(source_shape))
-    let target_node = @graph.connectable_shape_to_node(Some(target_shape))
+    let source_node = try
+      @graph.connectable_shape_to_node(Some(source_shape))
+    catch {
+      _ => continue
+    } noraise {
+      value => value
+    }
+    let target_node = try
+      @graph.connectable_shape_to_node(Some(target_shape))
+    catch {
+      _ => continue
+    } noraise {
+      value => value
+    }
     let edge_containment = match
       @graph.find_lowest_common_ancestor(source_node, target_node) {
       Some(node) => node
@@ -752,7 +776,21 @@ pub fn GmfDiagramLayoutConnector::build_layout_graph(
       gmf_diagram_layout_connector_build_layout_graph_for_root(
         self, root_part, selected_parts, workbench_part,
       )
-    None => abort("Not supported by this layout connector")
+    None => {
+      try
+        gmf_diagram_layout_connector_raise_unit(
+          "Not supported by this layout connector",
+        )
+      catch {
+        GmfDiagramLayoutConnectorException(message) =>
+          @core.layout_runtime_report_unsupported_configuration(
+            "org.eclipse.elk.conn.gmf.GmfDiagramLayoutConnector: " + message,
+          )
+      } noraise {
+        _ => ()
+      }
+      new_gmf_layout_mapping(workbench_part, None, @graph.create_node(None))
+    }
   }
 }
 

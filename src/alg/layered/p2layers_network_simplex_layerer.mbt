@@ -2,6 +2,27 @@
 let network_simplex_layerer_iter_limit_factor = 4
 
 ///|
+priv suberror NetworkSimplexLayererException {
+  NetworkSimplexLayererException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] network_simplex_layerer_raise(
+  message : String,
+) -> T raise NetworkSimplexLayererException {
+  raise NetworkSimplexLayererException(message)
+}
+
+///|
+fn network_simplex_layerer_exception_message(
+  err : NetworkSimplexLayererException,
+) -> String {
+  match err {
+    NetworkSimplexLayererException(message) => message
+  }
+}
+
+///|
 fn network_simplex_layerer_layer_constraint_preprocessor_factory() -> @core.ILayoutProcessorFactory[
   LayeredPhases,
   LGraph,
@@ -42,31 +63,40 @@ let network_simplex_layerer_baseline_processing_configuration : @core.LayoutProc
   )
 
 ///|
-fn network_simplex_layerer_require_port_node(port : LPort) -> LNode {
+fn network_simplex_layerer_require_port_node(
+  port : LPort,
+) -> LNode raise NetworkSimplexLayererException {
   match port.get_node() {
     Some(value) => value
-    None => abort("port has no owner node")
+    None => network_simplex_layerer_raise("port has no owner node")
   }
 }
 
 ///|
-fn network_simplex_layerer_require_edge_source_port(edge : LEdge) -> LPort {
+fn network_simplex_layerer_require_edge_source_port(
+  edge : LEdge,
+) -> LPort raise NetworkSimplexLayererException {
   match edge.get_source() {
     Some(value) => value
-    None => abort("edge has no source port")
+    None => network_simplex_layerer_raise("edge has no source port")
   }
 }
 
 ///|
-fn network_simplex_layerer_require_edge_target_port(edge : LEdge) -> LPort {
+fn network_simplex_layerer_require_edge_target_port(
+  edge : LEdge,
+) -> LPort raise NetworkSimplexLayererException {
   match edge.get_target() {
     Some(value) => value
-    None => abort("edge has no target port")
+    None => network_simplex_layerer_raise("edge has no target port")
   }
 }
 
 ///|
-fn network_simplex_layerer_get_opposite(port : LPort, edge : LEdge) -> LPort {
+fn network_simplex_layerer_get_opposite(
+  port : LPort,
+  edge : LEdge,
+) -> LPort raise NetworkSimplexLayererException {
   let source = network_simplex_layerer_require_edge_source_port(edge)
   let target = network_simplex_layerer_require_edge_target_port(edge)
   if lport_internal_handle(source) == lport_internal_handle(port) {
@@ -74,7 +104,20 @@ fn network_simplex_layerer_get_opposite(port : LPort, edge : LEdge) -> LPort {
   } else if lport_internal_handle(target) == lport_internal_handle(port) {
     source
   } else {
-    abort("Input edge is not connected to the input port.")
+    network_simplex_layerer_raise(
+      "Input edge is not connected to the input port.",
+    )
+  }
+}
+
+///|
+fn network_simplex_layerer_create_edge(
+  builder : @common.NEdgeBuilder,
+) -> @common.NEdge raise NetworkSimplexLayererException {
+  try builder.create() catch {
+    err => network_simplex_layerer_raise(err.to_string())
+  } noraise {
+    edge => edge
   }
 }
 
@@ -83,7 +126,7 @@ fn network_simplex_layerer_connected_components_dfs(
   node : LNode,
   node_visited : Array[Bool],
   component_nodes : Array[LNode],
-) -> Unit {
+) -> Unit raise NetworkSimplexLayererException {
   node_visited[node.get_id()] = true
   component_nodes.push(node)
 
@@ -103,7 +146,7 @@ fn network_simplex_layerer_connected_components_dfs(
 ///|
 fn network_simplex_layerer_connected_components(
   the_nodes : Array[LNode],
-) -> Array[Array[LNode]] {
+) -> Array[Array[LNode]] raise NetworkSimplexLayererException {
   let node_visited = Array::make(the_nodes.length(), false)
   let components : Array[Array[LNode]] = []
 
@@ -141,7 +184,7 @@ priv struct NetworkSimplexLayererInitResult {
 ///|
 fn network_simplex_layerer_initialize(
   the_nodes : Array[LNode],
-) -> NetworkSimplexLayererInitResult {
+) -> NetworkSimplexLayererInitResult raise NetworkSimplexLayererException {
   let graph = @common.new_ngraph()
   let lnode_to_nnode : Map[Int, @common.NNode] = {}
   let node_map : Map[Int, LNode] = {}
@@ -170,23 +213,24 @@ fn network_simplex_layerer_initialize(
 
       let source_nnode = match lnode_to_nnode.get(source_lnode.get_handle()) {
         Some(value) => value
-        None => abort("missing transformed source node")
+        None => network_simplex_layerer_raise("missing transformed source node")
       }
       let target_nnode = match lnode_to_nnode.get(target_lnode.get_handle()) {
         Some(value) => value
-        None => abort("missing transformed target node")
+        None => network_simplex_layerer_raise("missing transformed target node")
       }
 
       let shortness = ledge.get_property_int(layered_options_priority_shortness)
       let weight = (if shortness > 1 { shortness } else { 1 }).to_double()
       ignore(
-        @common.nedge_of()
-        .origin(ledge.get_handle().to_string())
-        .weight(weight)
-        .delta(1)
-        .source(source_nnode)
-        .target(target_nnode)
-        .create(),
+        network_simplex_layerer_create_edge(
+          @common.nedge_of()
+          .origin(ledge.get_handle().to_string())
+          .weight(weight)
+          .delta(1)
+          .source(source_nnode)
+          .target(target_nnode),
+        ),
       )
     }
   }
@@ -224,15 +268,35 @@ fn network_simplex_layerer_process(
     return
   }
 
-  let connected_components = network_simplex_layerer_connected_components(
-    the_nodes,
-  )
+  let connected_components = try
+    network_simplex_layerer_connected_components(the_nodes)
+  catch {
+    err => {
+      @core.layout_runtime_report_unsupported_configuration(
+        network_simplex_layerer_exception_message(err),
+      )
+      monitor.done()
+      return
+    }
+  } noraise {
+    value => value
+  }
   let mut previous_layering_node_counts : Array[Int]? = None
 
   for conn_comp in connected_components {
     let iter_limit = thoroughness *
       conn_comp.length().to_double().sqrt().to_int()
-    let initialized = network_simplex_layerer_initialize(conn_comp)
+    let initialized = try network_simplex_layerer_initialize(conn_comp) catch {
+      err => {
+        @core.layout_runtime_report_unsupported_configuration(
+          network_simplex_layerer_exception_message(err),
+        )
+        monitor.done()
+        return
+      }
+    } noraise {
+      value => value
+    }
     let graph = initialized.graph
 
     let simplex = @common.network_simplex_for_graph(graph)
@@ -256,7 +320,13 @@ fn network_simplex_layerer_process(
 
       let lnode = match initialized.node_map.get(nnode.get_id()) {
         Some(value) => value
-        None => abort("missing original node for network simplex node")
+        None => {
+          @core.layout_runtime_report_unsupported_configuration(
+            "missing original node for network simplex node",
+          )
+          monitor.done()
+          return
+        }
       }
       lnode.set_layer(Some(layers[layer_index]))
     }

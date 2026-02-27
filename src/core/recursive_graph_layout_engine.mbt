@@ -186,8 +186,20 @@ fn recursive_graph_layout_engine_edge_is_self_loop(
   if sources.length() != 1 || targets.length() != 1 {
     return false
   }
-  let source_node = @graph.connectable_shape_to_node(Some(sources[0]))
-  let target_node = @graph.connectable_shape_to_node(Some(targets[0]))
+  let source_node = try
+    @graph.connectable_shape_to_node(Some(sources[0]))
+  catch {
+    _ => return false
+  } noraise {
+    value => value
+  }
+  let target_node = try
+    @graph.connectable_shape_to_node(Some(targets[0]))
+  catch {
+    _ => return false
+  } noraise {
+    value => value
+  }
   source_node == target_node
 }
 
@@ -230,7 +242,11 @@ fn recursive_graph_layout_engine_post_process_inside_self_loops(
     if sources.is_empty() {
       continue
     }
-    let node = @graph.connectable_shape_to_node(Some(sources[0]))
+    let node = try @graph.connectable_shape_to_node(Some(sources[0])) catch {
+      _ => continue
+    } noraise {
+      value => value
+    }
     let x_offset = @graph.node_x(node)
     let y_offset = @graph.node_y(node)
     if @graph.edge_sections(self_loop).is_empty() {

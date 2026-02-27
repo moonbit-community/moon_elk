@@ -2,7 +2,12 @@
 fn cross_hierarchy_edge_require_source_port(edge : LEdge) -> LPort {
   match edge.get_source() {
     Some(port) => port
-    None => abort("edge has no source port")
+    None => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "edge has no source port",
+      )
+      new_l_port()
+    }
   }
 }
 
@@ -10,7 +15,12 @@ fn cross_hierarchy_edge_require_source_port(edge : LEdge) -> LPort {
 fn cross_hierarchy_edge_require_target_port(edge : LEdge) -> LPort {
   match edge.get_target() {
     Some(port) => port
-    None => abort("edge has no target port")
+    None => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "edge has no target port",
+      )
+      new_l_port()
+    }
   }
 }
 
@@ -18,7 +28,12 @@ fn cross_hierarchy_edge_require_target_port(edge : LEdge) -> LPort {
 fn cross_hierarchy_edge_require_port_node(port : LPort) -> LNode {
   match port.get_node() {
     Some(node) => node
-    None => abort("port has no owner node")
+    None => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "port has no owner node",
+      )
+      new_l_node()
+    }
   }
 }
 

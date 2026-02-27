@@ -84,11 +84,21 @@ let min_width_layerer_baseline_processing_configuration : @core.LayoutProcessorC
 fn min_width_layerer_require_edge_target_node(edge : LEdge) -> LNode {
   let target = match edge.get_target() {
     Some(value) => value
-    None => abort("edge has no target port")
+    None => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "edge has no target port",
+      )
+      return new_l_node()
+    }
   }
   match target.get_node() {
     Some(value) => value
-    None => abort("target port has no owner node")
+    None => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "target port has no owner node",
+      )
+      new_l_node()
+    }
   }
 }
 
@@ -240,11 +250,7 @@ fn min_width_layerer_compute_min_width_layering(
     let mut should_go_up = false
     if current_node is None || unplaced_nodes.is_empty() {
       should_go_up = true
-    } else {
-      let node = match current_node {
-        Some(value) => value
-        None => abort("node expected")
-      }
+    } else if current_node is Some(node) {
       if width_current >= ubw_consider_size &&
         data.norm_size[node.get_id()] > out_deg.to_double() * data.dummy_size {
         should_go_up = true

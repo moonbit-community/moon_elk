@@ -23,6 +23,8 @@ pub fn ard_cut_index_heuristic_get_chunk_count(GraphStats) -> Int
 
 pub fn base_routing_direction_strategy_for_routing_direction(RoutingDirection) -> BaseRoutingDirectionStrategy
 
+pub fn bk_aligned_layout_exception_message(BKAlignedLayoutException) -> String
+
 pub fn bk_hdirection_is_left(BKHDirection) -> Bool
 
 pub fn bk_hdirection_is_right(BKHDirection) -> Bool
@@ -63,11 +65,13 @@ pub fn container_cell_min_height_of_cell(Cell?, Bool) -> Double
 
 pub fn container_cell_min_width_of_cell(Cell?, Bool) -> Double
 
-pub fn create_external_port_dummy(LPort, @core.PortConstraints, @core.PortSide, Int, @core.KVector?, @core.KVector?, @core.KVector, @core.Direction, LGraph) -> LNode
+pub fn create_external_port_dummy(LPort, @core.PortConstraints, @core.PortSide, Int, @core.KVector?, @core.KVector?, @core.KVector, @core.Direction, LGraph) -> LNode raise LGraphUtilException
 
 pub fn create_port_for_edge(LNode, @core.KVector?, PortType, LGraph) -> LPort
 
 pub let critical_dependency_weight : Int
+
+pub fn cross_hierarchy_edge_comparator_exception_message(CrossHierarchyEdgeComparatorException) -> String
 
 pub fn cross_min_type_constants() -> Array[CrossMinType]
 
@@ -77,7 +81,7 @@ pub fn crossing_minimization_strategy_to_string(CrossingMinimizationStrategy) ->
 
 pub fn crossing_minimization_strategy_values() -> Array[String]
 
-pub fn cutting_utils_insert_dummies(LGraph, LEdge, Int) -> Array[LEdge]
+pub fn cutting_utils_insert_dummies(LGraph, LEdge, Int) -> Array[LEdge] raise CuttingUtilsException
 
 pub fn cycle_breaking_strategy_to_string(CycleBreakingStrategy) -> String
 
@@ -368,6 +372,8 @@ pub fn json_debug_util_create_debug_graph(LGraph) -> String
 pub fn json_debug_util_create_debug_graph_hypernodes(LGraph, Array[HyperEdgeSegment]) -> String
 
 pub fn json_debug_util_create_debug_graph_linear_segments(LGraph, Array[LinearSegment], Array[Array[LinearSegment]]) -> String
+
+pub fn l_graph_util_exception_message(LGraphUtilException) -> String
 
 pub let label_dummy_switcher_include_label : @graph.IProperty[Bool]
 
@@ -663,9 +669,13 @@ pub fn[T] layered_scanline_execute_single(Array[T], (T, T) -> Int, (T) -> Unit) 
 
 pub let layered_spacings_base_spacing_option : @graph.IProperty[Double]
 
+pub fn layered_spacings_exception_message(LayeredSpacingsException) -> String
+
 pub fn layered_spacings_get_individual_or_default(LNode, @graph.IProperty[Double]) -> Double
 
 pub fn layered_spacings_with_base_value(Double) -> LayeredSpacingsBuilder
+
+pub fn layered_test_update_containment(Int?) -> Unit
 
 pub fn layering_strategy_to_string(LayeringStrategy) -> String
 
@@ -1051,7 +1061,7 @@ pub fn new_network_simplex_placer_layout_phase() -> @core.ILayoutProcessor[Layer
 
 pub fn new_no_crossing_minimizer_layout_phase() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
-pub fn new_node_context(LNodeAdapter) -> NodeContext
+pub fn new_node_context(LNodeAdapter) -> NodeContext raise NodeContextException
 
 pub fn new_node_margin_calculator(LGraphAdapter) -> NodeMarginCalculator
 
@@ -1067,7 +1077,7 @@ pub fn new_north_south_port_preprocessor_layout_processor() -> @core.ILayoutProc
 
 pub fn new_north_to_south_routing_strategy() -> BaseRoutingDirectionStrategy
 
-pub fn new_nub_spline(Bool, Int, Array[@core.KVector]) -> NubSpline
+pub fn new_nub_spline(Bool, Int, Array[@core.KVector]) -> NubSpline raise NubSplineException
 
 pub fn new_nub_spline_copy(NubSpline) -> NubSpline
 
@@ -1113,9 +1123,9 @@ pub fn new_rectangle_position(@core.KVector) -> Rectangle
 
 pub fn new_rectangle_shape(LShape) -> Rectangle
 
-pub fn new_rectangle_values(Double, Double, Double, Double) -> Rectangle
+pub fn new_rectangle_values(Double, Double, Double, Double) -> Rectangle raise RectangleException
 
-pub fn new_rectangle_vectors(Array[@core.KVector]) -> Rectangle
+pub fn new_rectangle_vectors(Array[@core.KVector]) -> Rectangle raise RectangleException
 
 pub fn new_reversed_edge_restorer_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
@@ -1241,7 +1251,7 @@ pub fn node_label_and_size_utilities_setup_minimum_client_area_size(NodeContext)
 
 pub fn node_label_and_size_utilities_setup_node_padding_for_ports_with_offset(NodeContext) -> Unit
 
-pub fn node_label_cell_creator_create_node_label_cells(NodeContext, Bool, Bool) -> Unit
+pub fn node_label_cell_creator_create_node_label_cells(NodeContext, Bool, Bool) -> Unit raise NodeLabelCellCreatorException
 
 pub fn node_label_location_from_node_label_placement(Array[@core.NodeLabelPlacement]) -> NodeLabelLocation
 
@@ -1267,19 +1277,19 @@ pub fn nodespacing_port_labels_bounds(LPortAdapter) -> @core.ElkRectangle
 
 pub let nub_spline_dim : Int
 
-pub fn nub_spline_generate_derived(NubSpline) -> NubSpline
+pub fn nub_spline_generate_derived(NubSpline) -> NubSpline raise NubSplineException
 
-pub fn nub_spline_generate_inverted(NubSpline) -> NubSpline
+pub fn nub_spline_generate_inverted(NubSpline) -> NubSpline raise NubSplineException
 
-pub fn nub_spline_generate_nice_curve() -> NubSpline
+pub fn nub_spline_generate_nice_curve() -> NubSpline raise NubSplineException
 
-pub fn nub_spline_get_first_horizontal_point(NubSpline, Double, Int) -> @core.KVector
+pub fn nub_spline_get_first_horizontal_point(NubSpline, Double, Int) -> @core.KVector raise NubSplineException
 
-pub fn nub_spline_get_first_vertical_point(NubSpline, Double, Int) -> @core.KVector
+pub fn nub_spline_get_first_vertical_point(NubSpline, Double, Int) -> @core.KVector raise NubSplineException
 
-pub fn nub_spline_get_last_horizontal_point(NubSpline, Double, Int) -> @core.KVector
+pub fn nub_spline_get_last_horizontal_point(NubSpline, Double, Int) -> @core.KVector raise NubSplineException
 
-pub fn nub_spline_get_last_vertical_point(NubSpline, Double, Int) -> @core.KVector
+pub fn nub_spline_get_last_vertical_point(NubSpline, Double, Int) -> @core.KVector raise NubSplineException
 
 pub fn nub_spline_get_t_from_control_point(PolarCP) -> Double
 
@@ -1317,7 +1327,7 @@ pub fn polyline_self_loop_router_cut_corners(@core.KVectorChain, Double) -> @cor
 
 pub fn polyline_self_loop_router_route_self_loops(SelfLoopHolder) -> Unit
 
-pub fn port_context_creator_create_port_contexts(NodeContext, Bool) -> Unit
+pub fn port_context_creator_create_port_contexts(NodeContext, Bool) -> Unit raise PortContextCreatorException
 
 pub fn port_label_placement_calculator_place_horizontal_port_labels(NodeContext) -> Unit
 
@@ -1339,7 +1349,7 @@ pub fn provide_collector_port(LGraph, LNode, PortType, @core.PortSide) -> LPort
 
 pub fn rectangle_union(Rectangle, Rectangle) -> Rectangle
 
-pub fn rectangle_union_collection(Array[Rectangle]) -> Rectangle
+pub fn rectangle_union_collection(Array[Rectangle]) -> Rectangle raise RectangleException
 
 pub fn recursive_layered_apply_transformed_graph(LGraph) -> Bool
 
@@ -1353,7 +1363,9 @@ pub fn routing_direction_to_string(RoutingDirection) -> String
 
 pub fn routing_direction_values() -> Array[RoutingDirection]
 
-pub fn self_loop_holder_install(LNode) -> SelfLoopHolder
+pub fn self_loop_holder_exception_message(SelfLoopHolderException) -> String
+
+pub fn self_loop_holder_install(LNode) -> SelfLoopHolder raise SelfLoopHolderException
 
 pub fn self_loop_holder_needs_self_loop_processing(LNode) -> Bool
 
@@ -1367,7 +1379,7 @@ pub fn self_loop_test_graph_creator_node(LGraph) -> LNode
 
 pub fn self_loop_test_graph_creator_ports(LNode, Int, Int, Int, Int) -> Unit
 
-pub fn self_loop_type_from_port_sides(Array[@core.PortSide]) -> SelfLoopType?
+pub fn self_loop_type_from_port_sides(Array[@core.PortSide]) -> SelfLoopType? raise SelfLoopTypeException
 
 pub fn self_loop_type_option_to_string(SelfLoopType?) -> String
 
@@ -1466,6 +1478,211 @@ pub fn vertical_port_placement_size_calculator_calculate_vertical_port_placement
 pub fn vertical_segment_origin_key(VerticalSegment) -> String
 
 // Errors
+pub(all) suberror BKAlignedLayoutException {
+  IllegalStateException(String)
+}
+pub impl Show for BKAlignedLayoutException
+pub impl ToJson for BKAlignedLayoutException
+
+pub suberror BkThresholdStrategyException {
+  BkThresholdStrategyException(String)
+}
+pub impl Show for BkThresholdStrategyException
+pub impl ToJson for BkThresholdStrategyException
+
+pub(all) suberror BreadthFirstModelOrderLayererException {
+  UnsupportedGraphException(String)
+}
+pub impl Show for BreadthFirstModelOrderLayererException
+pub impl ToJson for BreadthFirstModelOrderLayererException
+
+pub(all) suberror CoffmanGrahamLayererException {
+  UnsupportedGraphException(String)
+}
+pub impl Show for CoffmanGrahamLayererException
+pub impl ToJson for CoffmanGrahamLayererException
+
+pub(all) suberror CrossHierarchyEdgeComparatorException {
+  CrossHierarchyEdgeComparatorException(String)
+}
+pub impl Show for CrossHierarchyEdgeComparatorException
+pub impl ToJson for CrossHierarchyEdgeComparatorException
+
+type CuttingUtilsException
+pub impl Show for CuttingUtilsException
+pub impl ToJson for CuttingUtilsException
+
+pub(all) suberror DepthFirstCycleBreakerException {
+  UnsupportedGraphException(String)
+}
+pub impl Show for DepthFirstCycleBreakerException
+pub impl ToJson for DepthFirstCycleBreakerException
+
+pub(all) suberror DepthFirstModelOrderLayererException {
+  UnsupportedGraphException(String)
+}
+pub impl Show for DepthFirstModelOrderLayererException
+pub impl ToJson for DepthFirstModelOrderLayererException
+
+pub(all) suberror DfsNodeOrderCycleBreakerException {
+  UnsupportedGraphException(String)
+}
+pub impl Show for DfsNodeOrderCycleBreakerException
+pub impl ToJson for DfsNodeOrderCycleBreakerException
+
+pub suberror ElkLayeredTestExecutionException {
+  ElkLayeredTestExecutionException(String)
+}
+pub impl Show for ElkLayeredTestExecutionException
+pub impl ToJson for ElkLayeredTestExecutionException
+
+pub(all) suberror GreedyCycleBreakerException {
+  UnsupportedGraphException(String)
+}
+pub impl Show for GreedyCycleBreakerException
+pub impl ToJson for GreedyCycleBreakerException
+
+pub(all) suberror InteractiveCycleBreakerException {
+  UnsupportedGraphException(String)
+}
+pub impl Show for InteractiveCycleBreakerException
+pub impl ToJson for InteractiveCycleBreakerException
+
+pub(all) suberror InteractiveLayererException {
+  UnsupportedGraphException(String)
+}
+pub impl Show for InteractiveLayererException
+pub impl ToJson for InteractiveLayererException
+
+pub(all) suberror LEdgeException {
+  IllegalArgumentException(String)
+  IllegalStateException(String)
+}
+pub impl Show for LEdgeException
+pub impl ToJson for LEdgeException
+
+pub suberror LGraphAdapterException {
+  LGraphAdapterException(String)
+}
+pub impl Show for LGraphAdapterException
+pub impl ToJson for LGraphAdapterException
+
+pub(all) suberror LGraphUtilException {
+  IllegalStateException(String)
+}
+pub impl Show for LGraphUtilException
+pub impl ToJson for LGraphUtilException
+
+pub(all) suberror LayerConstraintPostprocessorException {
+  UnsupportedConfigurationException(String)
+  IllegalStateException(String)
+}
+pub impl Show for LayerConstraintPostprocessorException
+pub impl ToJson for LayerConstraintPostprocessorException
+
+pub(all) suberror LayerConstraintPreprocessorException {
+  UnsupportedConfigurationException(String)
+  IllegalStateException(String)
+}
+pub impl Show for LayerConstraintPreprocessorException
+pub impl ToJson for LayerConstraintPreprocessorException
+
+pub suberror LayerTotalPortDistributorException {
+  LayerTotalPortDistributorException(String)
+}
+pub impl Show for LayerTotalPortDistributorException
+pub impl ToJson for LayerTotalPortDistributorException
+
+pub suberror LayeredSpacingsException {
+  LayeredSpacingsException(String)
+}
+pub impl Show for LayeredSpacingsException
+pub impl ToJson for LayeredSpacingsException
+
+pub(all) suberror LongestPathLayererException {
+  UnsupportedGraphException(String)
+}
+pub impl Show for LongestPathLayererException
+pub impl ToJson for LongestPathLayererException
+
+pub(all) suberror LongestPathSourceLayererException {
+  UnsupportedGraphException(String)
+}
+pub impl Show for LongestPathSourceLayererException
+pub impl ToJson for LongestPathSourceLayererException
+
+pub(all) suberror ModelOrderCycleBreakerException {
+  UnsupportedGraphException(String)
+}
+pub impl Show for ModelOrderCycleBreakerException
+pub impl ToJson for ModelOrderCycleBreakerException
+
+pub suberror NetworkSimplexPlacerException {
+  NetworkSimplexPlacerException(String)
+}
+pub impl Show for NetworkSimplexPlacerException
+pub impl ToJson for NetworkSimplexPlacerException
+
+pub(all) suberror NodeContextException {
+  UnsupportedConfigurationException(String)
+}
+pub impl Show for NodeContextException
+pub impl ToJson for NodeContextException
+
+pub(all) suberror NodeLabelCellCreatorException {
+  IllegalArgumentException(String)
+}
+pub impl Show for NodeLabelCellCreatorException
+pub impl ToJson for NodeLabelCellCreatorException
+
+pub suberror NodeRelativePortDistributorException {
+  NodeRelativePortDistributorException(String)
+}
+pub impl Show for NodeRelativePortDistributorException
+pub impl ToJson for NodeRelativePortDistributorException
+
+pub(all) suberror NubSplineException {
+  IllegalArgumentException(String)
+}
+pub impl Show for NubSplineException
+pub impl ToJson for NubSplineException
+
+pub(all) suberror PortContextCreatorException {
+  IllegalArgumentException(String)
+}
+pub impl Show for PortContextCreatorException
+pub impl ToJson for PortContextCreatorException
+
+pub suberror RectangleException {
+  RectangleException(String)
+}
+pub impl Show for RectangleException
+pub impl ToJson for RectangleException
+
+pub(all) suberror SCCModelOrderCycleBreakerException {
+  UnsupportedGraphException(String)
+}
+pub impl Show for SCCModelOrderCycleBreakerException
+pub impl ToJson for SCCModelOrderCycleBreakerException
+
+pub(all) suberror SelfLoopHolderException {
+  UnsupportedConfigurationException(String)
+  IllegalStateException(String)
+}
+pub impl Show for SelfLoopHolderException
+pub impl ToJson for SelfLoopHolderException
+
+pub(all) suberror SelfLoopTypeException {
+  IllegalArgumentException(String)
+}
+pub impl Show for SelfLoopTypeException
+pub impl ToJson for SelfLoopTypeException
+
+pub suberror SweepCopyException {
+  SweepCopyException(String)
+}
+pub impl Show for SweepCopyException
+pub impl ToJson for SweepCopyException
 
 // Types and methods
 pub struct AbstractBarycenterPortDistributor {
@@ -1529,33 +1746,33 @@ pub struct BKAlignedLayout {
   su : Array[Bool]
   od : Array[Bool]
 }
-pub fn BKAlignedLayout::calculate_delta(Self, LPort, LPort) -> Double
-pub fn BKAlignedLayout::check_space_above(Self, LNode, Double, NeighborhoodInformation) -> Double
-pub fn BKAlignedLayout::check_space_below(Self, LNode, Double, NeighborhoodInformation) -> Double
+pub fn BKAlignedLayout::calculate_delta(Self, LPort, LPort) -> Double raise BKAlignedLayoutException
+pub fn BKAlignedLayout::check_space_above(Self, LNode, Double, NeighborhoodInformation) -> Double raise BKAlignedLayoutException
+pub fn BKAlignedLayout::check_space_below(Self, LNode, Double, NeighborhoodInformation) -> Double raise BKAlignedLayoutException
 pub fn BKAlignedLayout::cleanup(Self) -> Unit
-pub fn BKAlignedLayout::get_max_y(Self, LNode) -> Double
-pub fn BKAlignedLayout::get_min_y(Self, LNode) -> Double
-pub fn BKAlignedLayout::layout_size(Self) -> Double
-pub fn BKAlignedLayout::require_align(Self, LNode) -> LNode
-pub fn BKAlignedLayout::require_align_by_id(Self, Int) -> LNode
-pub fn BKAlignedLayout::require_hdir(Self) -> BKHDirection
-pub fn BKAlignedLayout::require_root(Self, LNode) -> LNode
-pub fn BKAlignedLayout::require_root_by_id(Self, Int) -> LNode
-pub fn BKAlignedLayout::require_sink(Self, LNode) -> LNode
-pub fn BKAlignedLayout::require_sink_by_id(Self, Int) -> LNode
-pub fn BKAlignedLayout::require_vdir(Self) -> BKVDirection
-pub fn BKAlignedLayout::require_y(Self, LNode) -> Double
-pub fn BKAlignedLayout::require_y_by_id(Self, Int) -> Double
-pub fn BKAlignedLayout::set_y_by_id(Self, Int, Double) -> Unit
-pub fn BKAlignedLayout::shift_block(Self, LNode, Double) -> Unit
+pub fn BKAlignedLayout::get_max_y(Self, LNode) -> Double raise BKAlignedLayoutException
+pub fn BKAlignedLayout::get_min_y(Self, LNode) -> Double raise BKAlignedLayoutException
+pub fn BKAlignedLayout::layout_size(Self) -> Double raise BKAlignedLayoutException
+pub fn BKAlignedLayout::require_align(Self, LNode) -> LNode raise BKAlignedLayoutException
+pub fn BKAlignedLayout::require_align_by_id(Self, Int) -> LNode raise BKAlignedLayoutException
+pub fn BKAlignedLayout::require_hdir(Self) -> BKHDirection raise BKAlignedLayoutException
+pub fn BKAlignedLayout::require_root(Self, LNode) -> LNode raise BKAlignedLayoutException
+pub fn BKAlignedLayout::require_root_by_id(Self, Int) -> LNode raise BKAlignedLayoutException
+pub fn BKAlignedLayout::require_sink(Self, LNode) -> LNode raise BKAlignedLayoutException
+pub fn BKAlignedLayout::require_sink_by_id(Self, Int) -> LNode raise BKAlignedLayoutException
+pub fn BKAlignedLayout::require_vdir(Self) -> BKVDirection raise BKAlignedLayoutException
+pub fn BKAlignedLayout::require_y(Self, LNode) -> Double raise BKAlignedLayoutException
+pub fn BKAlignedLayout::require_y_by_id(Self, Int) -> Double raise BKAlignedLayoutException
+pub fn BKAlignedLayout::set_y_by_id(Self, Int, Double) -> Unit raise BKAlignedLayoutException
+pub fn BKAlignedLayout::shift_block(Self, LNode, Double) -> Unit raise BKAlignedLayoutException
 pub fn BKAlignedLayout::to_string(Self) -> String
 
 pub struct BKAligner {
   layered_graph : LGraph
   ni : NeighborhoodInformation
 }
-pub fn BKAligner::inside_block_shift(Self, BKAlignedLayout) -> Unit
-pub fn BKAligner::vertical_alignment(Self, BKAlignedLayout, Map[Int, Bool]) -> Unit
+pub fn BKAligner::inside_block_shift(Self, BKAlignedLayout) -> Unit raise BKAlignedLayoutException
+pub fn BKAligner::vertical_alignment(Self, BKAlignedLayout, Map[Int, Bool]) -> Unit raise BKAlignedLayoutException
 
 pub struct BKCompactor {
   layered_graph : LGraph
@@ -1567,7 +1784,7 @@ pub struct BKCompactor {
   class_indegree : Map[Int, Int]
   class_shift : Map[Int, Double]
 }
-pub fn BKCompactor::horizontal_compaction(Self, BKAlignedLayout) -> Unit
+pub fn BKCompactor::horizontal_compaction(Self, BKAlignedLayout) -> Unit raise BKAlignedLayoutException
 
 pub enum BKHDirection {
   Right
@@ -1701,7 +1918,7 @@ pub struct BkThresholdStrategy {
 }
 pub fn BkThresholdStrategy::calculate_threshold(Self, Double, LNode, LNode) -> Double
 pub fn BkThresholdStrategy::finish_block(Self, LNode) -> Unit
-pub fn BkThresholdStrategy::get_other(Self, LEdge, LNode) -> LNode
+pub fn BkThresholdStrategy::get_other(Self, LEdge, LNode) -> LNode raise BkThresholdStrategyException
 pub fn BkThresholdStrategy::init(Self, BKAlignedLayout, NeighborhoodInformation) -> Unit
 pub fn BkThresholdStrategy::post_process(Self) -> Unit
 
@@ -1871,7 +2088,7 @@ pub fn CrossHierarchyEdge::to_string(Self) -> String
 pub struct CrossHierarchyEdgeComparator {
   graph : LGraph
 }
-pub fn CrossHierarchyEdgeComparator::compare(Self, CrossHierarchyEdge, CrossHierarchyEdge) -> Int
+pub fn CrossHierarchyEdgeComparator::compare(Self, CrossHierarchyEdge, CrossHierarchyEdge) -> Int raise CrossHierarchyEdgeComparatorException
 
 pub enum CrossMinType {
   Barycenter
@@ -1982,7 +2199,7 @@ pub fn ElkLayered::do_layout(Self, LGraph, @core.IElkProgressMonitor?) -> Unit
 pub fn ElkLayered::get_layout_test_configuration(Self, ElkLayeredTestExecutionState) -> Array[@core.ILayoutProcessor[LayeredPhases, LGraph]]
 pub fn ElkLayered::is_layout_test_finished(Self, ElkLayeredTestExecutionState) -> Bool
 pub fn ElkLayered::prepare_layout_test(Self, LGraph) -> ElkLayeredTestExecutionState
-pub fn ElkLayered::run_layout_test_step(Self, ElkLayeredTestExecutionState) -> Unit
+pub fn ElkLayered::run_layout_test_step(Self, ElkLayeredTestExecutionState) -> Unit raise ElkLayeredTestExecutionException
 pub fn ElkLayered::run_layout_test_until(Self, @core.ILayoutProcessor[LayeredPhases, LGraph], ElkLayeredTestExecutionState, inclusive? : Bool) -> Unit
 pub fn ElkLayered::set_test_controller(Self, @core.TestController[LGraph]?) -> Unit
 
@@ -2620,8 +2837,8 @@ pub fn LEdge::get_designation(Self) -> String?
 pub fn LEdge::get_handle(Self) -> Int
 pub fn LEdge::get_id(Self) -> Int
 pub fn LEdge::get_labels(Self) -> Array[LLabel]
-pub fn LEdge::get_other_node(Self, LNode) -> LNode
-pub fn LEdge::get_other_port(Self, LPort) -> LPort
+pub fn LEdge::get_other_node(Self, LNode) -> LNode raise LEdgeException
+pub fn LEdge::get_other_port(Self, LPort) -> LPort raise LEdgeException
 pub fn LEdge::get_property_bool(Self, @graph.IProperty[Bool]) -> Bool
 pub fn LEdge::get_property_double(Self, @graph.IProperty[Double]) -> Double
 pub fn LEdge::get_property_int(Self, @graph.IProperty[Int]) -> Int
@@ -3369,11 +3586,11 @@ pub struct LayeredSpacingsBuilder {
 }
 pub fn LayeredSpacingsBuilder::apply(Self, LGraph) -> Unit
 pub fn LayeredSpacingsBuilder::build(Self) -> (LGraph) -> Unit
-pub fn LayeredSpacingsBuilder::factor_for(Self, @graph.IProperty[Double]) -> Double
+pub fn LayeredSpacingsBuilder::factor_for(Self, @graph.IProperty[Double]) -> Double raise LayeredSpacingsException
 pub fn LayeredSpacingsBuilder::factors(Self) -> Array[(@graph.IProperty[Double], Double)]
-pub fn LayeredSpacingsBuilder::with_factor(Self, @graph.IProperty[Double], Double) -> Self
+pub fn LayeredSpacingsBuilder::with_factor(Self, @graph.IProperty[Double], Double) -> Self raise LayeredSpacingsException
 pub fn LayeredSpacingsBuilder::with_overwrite(Self, Bool) -> Self
-pub fn LayeredSpacingsBuilder::with_value(Self, @graph.IProperty[Double], Double) -> Self
+pub fn LayeredSpacingsBuilder::with_value(Self, @graph.IProperty[Double], Double) -> Self raise LayeredSpacingsException
 
 pub enum LayeringStrategy {
   LsNetworkSimplex
@@ -3628,7 +3845,7 @@ pub fn NubSpline::get_control_points(Self) -> @core.KVectorChain
 pub fn NubSpline::get_control_points_size(Self) -> Int
 pub fn NubSpline::get_dim(Self) -> Int
 pub fn NubSpline::get_knot_vector(Self) -> Array[Double]
-pub fn NubSpline::get_outer_box(Self) -> Rectangle
+pub fn NubSpline::get_outer_box(Self) -> Rectangle raise RectangleException
 pub fn NubSpline::get_point_on_curve(Self, Double) -> @core.KVector
 pub fn NubSpline::get_point_on_curve_with_modify(Self, Double, Bool) -> @core.KVector
 pub fn NubSpline::set_outer_box(Self, Rectangle) -> Unit
@@ -3799,7 +4016,7 @@ pub struct SelfHyperLoop {
   routing_slot : Array[Int]
 }
 pub fn SelfHyperLoop::add_self_loop_edge(Self, SelfLoopEdge) -> Unit
-pub fn SelfHyperLoop::compute_ports_per_side(Self) -> Unit
+pub fn SelfHyperLoop::compute_ports_per_side(Self) -> Unit raise SelfLoopTypeException
 pub fn SelfHyperLoop::get_id(Self) -> Int
 pub fn SelfHyperLoop::get_leftmost_port(Self) -> SelfLoopPort?
 pub fn SelfHyperLoop::get_occupied_port_sides(Self) -> Array[@core.PortSide]
@@ -3926,10 +4143,10 @@ pub struct Spacings {
   node_type_spacing_options_horizontal : Array[Array[@graph.IProperty[Double]?]]
   node_type_spacing_options_vertical : Array[Array[@graph.IProperty[Double]?]]
 }
-pub fn Spacings::get_horizontal_spacing(Self, LNode, LNode) -> Double
-pub fn Spacings::get_horizontal_spacing_for_node_type(Self, NodeType, NodeType) -> Double
-pub fn Spacings::get_vertical_spacing(Self, LNode, LNode) -> Double
-pub fn Spacings::get_vertical_spacing_for_node_type(Self, NodeType, NodeType) -> Double
+pub fn Spacings::get_horizontal_spacing(Self, LNode, LNode) -> Double raise LayeredSpacingsException
+pub fn Spacings::get_horizontal_spacing_for_node_type(Self, NodeType, NodeType) -> Double raise LayeredSpacingsException
+pub fn Spacings::get_vertical_spacing(Self, LNode, LNode) -> Double raise LayeredSpacingsException
+pub fn Spacings::get_vertical_spacing_for_node_type(Self, NodeType, NodeType) -> Double raise LayeredSpacingsException
 
 pub struct SplineDependency {
   mut source : SplineSegment?

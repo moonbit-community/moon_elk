@@ -2,26 +2,44 @@
 let partition_preprocessor_partition_constraint_edge_priority : Int = 1000
 
 ///|
-fn partition_preprocessor_require_edge_source(edge : LEdge) -> LPort {
+priv suberror PartitionPreprocessorException {
+  PartitionPreprocessorException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] partition_preprocessor_raise(
+  message : String,
+) -> T raise PartitionPreprocessorException {
+  raise PartitionPreprocessorException(message)
+}
+
+///|
+fn partition_preprocessor_require_edge_source(
+  edge : LEdge,
+) -> LPort raise PartitionPreprocessorException {
   match edge.get_source() {
     Some(value) => value
-    None => abort("edge has no source")
+    None => partition_preprocessor_raise("edge has no source")
   }
 }
 
 ///|
-fn partition_preprocessor_require_edge_target(edge : LEdge) -> LPort {
+fn partition_preprocessor_require_edge_target(
+  edge : LEdge,
+) -> LPort raise PartitionPreprocessorException {
   match edge.get_target() {
     Some(value) => value
-    None => abort("edge has no target")
+    None => partition_preprocessor_raise("edge has no target")
   }
 }
 
 ///|
-fn partition_preprocessor_require_port_node(port : LPort) -> LNode {
+fn partition_preprocessor_require_port_node(
+  port : LPort,
+) -> LNode raise PartitionPreprocessorException {
   match port.get_node() {
     Some(value) => value
-    None => abort("port has no owner node")
+    None => partition_preprocessor_raise("port has no owner node")
   }
 }
 
@@ -57,7 +75,7 @@ fn partition_preprocessor_reverse(edge : LEdge, graph : LGraph) -> Unit {
 fn partition_preprocessor_must_be_reversed(
   edge : LEdge,
   partitioned_nodes : Array[LNode],
-) -> Bool {
+) -> Bool raise PartitionPreprocessorException {
   let source_node = partition_preprocessor_require_port_node(
     partition_preprocessor_require_edge_source(edge),
   )
@@ -127,27 +145,36 @@ fn partition_preprocessor_process(
   }
   ignore(monitor.begin("Partition preprocessing", 1.0))
 
-  let partitioned_nodes = []
-  for node in graph.get_layerless_nodes() {
-    if node.has_property_int(layered_options_partitioning_partition) {
-      partitioned_nodes.push(node)
-    }
-  }
-
-  let edges_to_be_reversed = []
-  for node in graph.get_layerless_nodes() {
-    if !node.has_property_int(layered_options_partitioning_partition) {
-      continue
-    }
-    for edge in node.get_outgoing_edges() {
-      if partition_preprocessor_must_be_reversed(edge, partitioned_nodes) {
-        edges_to_be_reversed.push(edge)
+  try {
+    let partitioned_nodes = []
+    for node in graph.get_layerless_nodes() {
+      if node.has_property_int(layered_options_partitioning_partition) {
+        partitioned_nodes.push(node)
       }
     }
-  }
 
-  for edge in edges_to_be_reversed {
-    partition_preprocessor_reverse(edge, graph)
+    let edges_to_be_reversed = []
+    for node in graph.get_layerless_nodes() {
+      if !node.has_property_int(layered_options_partitioning_partition) {
+        continue
+      }
+      for edge in node.get_outgoing_edges() {
+        if partition_preprocessor_must_be_reversed(edge, partitioned_nodes) {
+          edges_to_be_reversed.push(edge)
+        }
+      }
+    }
+
+    for edge in edges_to_be_reversed {
+      partition_preprocessor_reverse(edge, graph)
+    }
+  } catch {
+    PartitionPreprocessorException(message) =>
+      @core.layout_runtime_report_unsupported_configuration(
+        "java.lang.IllegalStateException: " + message,
+      )
+  } noraise {
+    _ => ()
   }
 
   monitor.done()

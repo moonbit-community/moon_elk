@@ -298,21 +298,23 @@ pub fn reset_conn_gmf_foundation_for_test() -> Unit {
 ///|
 fn gmf_checked_figure(figure : GmfFigure) -> Unit {
   if figure < 0 || figure >= gmf_figure_store_ref.val.length() {
-    abort("invalid gmf figure")
+    @core.layout_runtime_report_unsupported_configuration("invalid gmf figure")
   }
 }
 
 ///|
 fn gmf_checked_view(view : GmfView) -> Unit {
   if view < 0 || view >= gmf_view_store_ref.val.length() {
-    abort("invalid gmf view")
+    @core.layout_runtime_report_unsupported_configuration("invalid gmf view")
   }
 }
 
 ///|
 fn gmf_checked_edit_part(edit_part : GmfEditPart) -> Unit {
   if edit_part < 0 || edit_part >= gmf_edit_part_store_ref.val.length() {
-    abort("invalid gmf edit part")
+    @core.layout_runtime_report_unsupported_configuration(
+      "invalid gmf edit part",
+    )
   }
 }
 

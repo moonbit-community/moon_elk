@@ -60,7 +60,12 @@ fn quadrant_order(quadrant : Quadrant) -> Int {
 fn point_quadrant_or_abort(point : Point) -> Quadrant {
   match point.quadrant {
     Some(quadrant) => quadrant
-    None => abort("Point quadrant is required")
+    None => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "Point quadrant is required",
+      )
+      Q1
+    }
   }
 }
 

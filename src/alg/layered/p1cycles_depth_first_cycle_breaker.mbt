@@ -1,12 +1,32 @@
 ///|
-fn depth_first_cycle_breaker_require_target_node(edge : LEdge) -> LNode {
+pub(all) suberror DepthFirstCycleBreakerException {
+  UnsupportedGraphException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] depth_first_cycle_breaker_raise_unsupported_graph(
+  message : String,
+) -> T raise DepthFirstCycleBreakerException {
+  raise DepthFirstCycleBreakerException::UnsupportedGraphException(message)
+}
+
+///|
+fn depth_first_cycle_breaker_require_target_node(
+  edge : LEdge,
+) -> LNode raise DepthFirstCycleBreakerException {
   let target = match edge.get_target() {
     Some(value) => value
-    None => abort("edge has no target port")
+    None =>
+      depth_first_cycle_breaker_raise_unsupported_graph(
+        "edge has no target port",
+      )
   }
   match target.get_node() {
     Some(node) => node
-    None => abort("target port has no owner node")
+    None =>
+      depth_first_cycle_breaker_raise_unsupported_graph(
+        "target port has no owner node",
+      )
   }
 }
 
@@ -21,7 +41,7 @@ fn depth_first_cycle_breaker_dfs(
   visited : Array[Bool],
   active : Array[Bool],
   edges_to_be_reversed : Array[LEdge],
-) -> Unit {
+) -> Unit raise DepthFirstCycleBreakerException {
   let node_id = node.get_id()
   if visited[node_id] {
     return
@@ -76,24 +96,36 @@ fn depth_first_cycle_breaker_process(
     }
   }
 
-  for source in sources {
-    depth_first_cycle_breaker_dfs(source, visited, active, edges_to_be_reversed)
-  }
-
-  for i = 0; i < node_count; i = i + 1 {
-    if !visited[i] {
+  try {
+    for source in sources {
       depth_first_cycle_breaker_dfs(
-        nodes[i],
-        visited,
-        active,
-        edges_to_be_reversed,
+        source, visited, active, edges_to_be_reversed,
       )
     }
-  }
 
-  for edge in edges_to_be_reversed {
-    depth_first_cycle_breaker_reverse_edge(edge, graph)
-    graph.set_property_bool(internal_properties_cyclic, true)
+    for i = 0; i < node_count; i = i + 1 {
+      if !visited[i] {
+        depth_first_cycle_breaker_dfs(
+          nodes[i],
+          visited,
+          active,
+          edges_to_be_reversed,
+        )
+      }
+    }
+
+    for edge in edges_to_be_reversed {
+      depth_first_cycle_breaker_reverse_edge(edge, graph)
+      graph.set_property_bool(internal_properties_cyclic, true)
+    }
+  } catch {
+    DepthFirstCycleBreakerException::UnsupportedGraphException(message) => {
+      @core.layout_runtime_report_unsupported_configuration(message)
+      monitor.done()
+      return
+    }
+  } noraise {
+    _ => ()
   }
 
   monitor.done()

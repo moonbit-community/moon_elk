@@ -4,6 +4,18 @@ pub struct ElkGraphTextUiActivator {
 }
 
 ///|
+pub(all) suberror ElkGraphTextUiActivatorException {
+  IllegalArgumentException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] graph_text_ui_activator_raise_illegal_argument(
+  message : String,
+) -> T raise ElkGraphTextUiActivatorException {
+  raise ElkGraphTextUiActivatorException::IllegalArgumentException(message)
+}
+
+///|
 pub fn new_elk_graph_text_ui_activator() -> ElkGraphTextUiActivator {
   { base: new_text_activator() }
 }
@@ -29,23 +41,31 @@ pub fn ElkGraphTextUiActivator::stop(self : ElkGraphTextUiActivator) -> Unit {
 pub fn ElkGraphTextUiActivator::get_ide_module(
   self : ElkGraphTextUiActivator,
   grammar : String,
-) -> @ide.ElkGraphIdeModule {
+) -> @ide.ElkGraphIdeModule raise ElkGraphTextUiActivatorException {
   ignore(self)
   if grammar == graph_text_ui_language_name {
     return @ide.new_elk_graph_ide_module()
   }
-  abort("unknown grammar: " + grammar)
+  graph_text_ui_activator_raise_illegal_argument(grammar)
 }
 
 ///|
 pub fn ElkGraphTextUiActivator::create_injector(
   self : ElkGraphTextUiActivator,
   language : String,
-) -> GraphTextUiInjector {
-  ignore(self.base.get_runtime_module(language))
-  ignore(self.get_ide_module(language))
-  ignore(self.base.get_shared_state_module())
-  ignore(self.base.get_ui_module(language))
+) -> GraphTextUiInjector raise ElkGraphTextUiActivatorException {
+  try {
+    ignore(self.base.get_runtime_module(language))
+    ignore(self.get_ide_module(language))
+    ignore(self.base.get_shared_state_module())
+    ignore(self.base.get_ui_module(language))
+  } catch {
+    GraphTextActivatorException::IllegalArgumentException(message) =>
+      graph_text_ui_activator_raise_illegal_argument(message)
+    GraphTextActivatorException::RuntimeException(message) =>
+      graph_text_ui_activator_raise_illegal_argument(message)
+    _ => graph_text_ui_activator_raise_illegal_argument(language)
+  }
 
   let injector = new_graph_text_ui_injector()
   injector.register_provider(

@@ -10,6 +10,27 @@ let core_debug_grandom_hypernode_property : @graph.IProperty[Bool] = @graph.new_
 )
 
 ///|
+priv suberror CoreDebugGrandomGeneratorException {
+  CoreDebugGrandomGeneratorException(String)
+} derive(Show, ToJson)
+
+///|
+fn core_debug_grandom_generator_raise_unit(
+  message : String,
+) -> Unit raise CoreDebugGrandomGeneratorException {
+  raise CoreDebugGrandomGeneratorException(message)
+}
+
+///|
+fn core_debug_grandom_generator_exception_message(
+  err : CoreDebugGrandomGeneratorException,
+) -> String {
+  match err {
+    CoreDebugGrandomGeneratorException(message) => message
+  }
+}
+
+///|
 pub(all) struct CoreDebugGRandomRandomGraphGenerator {
   mut options : CoreDebugGRandomGeneratorOptions
   mut random : @random.Rand
@@ -1497,7 +1518,11 @@ fn core_debug_grandom_generator_connect(
     core_debug_grandom_generator_add_edge_label(generator, edge)
   }
 
-  @graph.update_containment(Some(edge))
+  try ignore(@graph.update_containment(Some(edge))) catch {
+    err => abort(err.to_string())
+  } noraise {
+    _ => ()
+  }
   edge
 }
 
@@ -1737,7 +1762,11 @@ fn core_debug_grandom_generator_move_source(
     let new_node = core_debug_grandom_generator_shape_to_node(new_connect_shape)
     @graph.edge_sources(edge).push(@graph.make_node_shape(new_node))
   }
-  @graph.update_containment(Some(edge))
+  try ignore(@graph.update_containment(Some(edge))) catch {
+    err => abort(err.to_string())
+  } noraise {
+    _ => ()
+  }
 }
 
 ///|
@@ -1829,7 +1858,11 @@ fn core_debug_grandom_generator_move_target(
     let new_node = core_debug_grandom_generator_shape_to_node(new_connect_shape)
     @graph.edge_targets(edge).push(@graph.make_node_shape(new_node))
   }
-  @graph.update_containment(Some(edge))
+  try ignore(@graph.update_containment(Some(edge))) catch {
+    err => abort(err.to_string())
+  } noraise {
+    _ => ()
+  }
 }
 
 ///|
@@ -1839,12 +1872,36 @@ fn core_debug_grandom_generator_split(
 ) -> (@graph.ElkNode, @graph.ElkEdge) {
   let parent = match @graph.edge_containing_node(edge) {
     Some(node) => node
-    None => abort("split requires edge containment")
+    None => {
+      try
+        core_debug_grandom_generator_raise_unit(
+          "split requires edge containment",
+        )
+      catch {
+        err =>
+          @core.layout_runtime_report_unsupported_configuration(
+            core_debug_grandom_generator_exception_message(err),
+          )
+      } noraise {
+        _ => ()
+      }
+      @graph.create_graph()
+    }
   }
   let new_node = core_debug_grandom_generator_create_node(generator, parent)
   let targets = @graph.edge_targets(edge)
   if targets.is_empty() {
-    abort("split requires edge target")
+    try
+      core_debug_grandom_generator_raise_unit("split requires edge target")
+    catch {
+      err =>
+        @core.layout_runtime_report_unsupported_configuration(
+          core_debug_grandom_generator_exception_message(err),
+        )
+    } noraise {
+      _ => ()
+    }
+    return (new_node, edge)
   }
   let old_target = targets[0]
   let new_edge = core_debug_grandom_generator_connect(
@@ -1865,7 +1922,11 @@ fn core_debug_grandom_generator_split(
     @graph.edge_targets(edge)[0],
     @graph.make_node_shape(new_node),
   )
-  @graph.update_containment(Some(new_edge))
+  try ignore(@graph.update_containment(Some(new_edge))) catch {
+    err => abort(err.to_string())
+  } noraise {
+    _ => ()
+  }
   (new_node, new_edge)
 }
 
@@ -2256,7 +2317,21 @@ fn core_debug_grandom_generator_shape_to_node(
     PortShape(port) =>
       match @graph.port_parent(port) {
         Some(parent_node) => parent_node
-        None => abort("port parent cannot be null")
+        None => {
+          try
+            core_debug_grandom_generator_raise_unit(
+              "port parent cannot be null",
+            )
+          catch {
+            err =>
+              @core.layout_runtime_report_unsupported_configuration(
+                core_debug_grandom_generator_exception_message(err),
+              )
+          } noraise {
+            _ => ()
+          }
+          @graph.create_graph()
+        }
       }
   }
 }

@@ -30,6 +30,27 @@ let box_layout_provider_default_min_width : Double = 20.0
 let box_layout_provider_default_min_height : Double = 20.0
 
 ///|
+priv suberror BoxLayoutProviderException {
+  BoxLayoutProviderException(String)
+} derive(Show, ToJson)
+
+///|
+fn box_layout_provider_raise_unit(
+  message : String,
+) -> Unit raise BoxLayoutProviderException {
+  raise BoxLayoutProviderException(message)
+}
+
+///|
+fn box_layout_provider_exception_message(
+  err : BoxLayoutProviderException,
+) -> String {
+  match err {
+    BoxLayoutProviderException(message) => message
+  }
+}
+
+///|
 let box_layout_provider_padding_option : @graph.IProperty[String] = @graph.new_property(
   "org.eclipse.elk.padding", "[left=15, top=15, right=15, bottom=15]",
 )
@@ -828,7 +849,19 @@ fn box_layout_provider_merge_and_place_dec(
       if maybe_group.length() > 1 {
         let beat = match box_to_beat {
           Some(value) => value
-          None => abort("boxToBeat should be defined")
+          None => {
+            try
+              box_layout_provider_raise_unit("boxToBeat should be defined")
+            catch {
+              err =>
+                layout_runtime_report_unsupported_configuration(
+                  box_layout_provider_exception_message(err),
+                )
+            } noraise {
+              _ => ()
+            }
+            box
+          }
         }
         if collected_area > box_layout_provider_group_area(beat) / 2.0 ||
           queue_index >= sorted_groups.length() {

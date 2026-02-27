@@ -26,6 +26,25 @@ let network_simplex_other : Int = 0
 let network_simplex_junction : Int = 2
 
 ///|
+pub suberror NetworkSimplexPlacerException {
+  NetworkSimplexPlacerException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] network_simplex_placer_raise(
+  message : String,
+) -> T raise NetworkSimplexPlacerException {
+  raise NetworkSimplexPlacerException(message)
+}
+
+///|
+fn network_simplex_placer_raise_unit(
+  message : String,
+) -> Unit raise NetworkSimplexPlacerException {
+  network_simplex_placer_raise(message)
+}
+
+///|
 priv struct NetworkSimplexNodeRep {
   origin : LNode
   is_flexible : Bool
@@ -86,6 +105,18 @@ fn network_simplex_double_max(left : Double, right : Double) -> Double {
     left
   } else {
     right
+  }
+}
+
+///|
+fn network_simplex_create_edge(builder : @common.NEdgeBuilder) -> @common.NEdge {
+  try builder.create() catch {
+    err => {
+      @core.layout_runtime_report_unsupported_configuration(err.to_string())
+      network_simplex_create_edge(builder)
+    }
+  } noraise {
+    edge => edge
   }
 }
 
@@ -224,26 +255,17 @@ fn network_simplex_port_side_is_east_west(port_side : @core.PortSide) -> Bool {
 
 ///|
 fn network_simplex_require_port_node(port : LPort) -> LNode {
-  match port.get_node() {
-    Some(value) => value
-    None => abort("port has no owner node")
-  }
+  port.get_node().unwrap()
 }
 
 ///|
 fn network_simplex_require_edge_source_port(edge : LEdge) -> LPort {
-  match edge.get_source() {
-    Some(value) => value
-    None => abort("edge has no source port")
-  }
+  edge.get_source().unwrap()
 }
 
 ///|
 fn network_simplex_require_edge_target_port(edge : LEdge) -> LPort {
-  match edge.get_target() {
-    Some(value) => value
-    None => abort("edge has no target port")
-  }
+  edge.get_target().unwrap()
 }
 
 ///|
@@ -265,10 +287,7 @@ fn network_simplex_require_node_rep(
   state : NetworkSimplexAuxiliaryState,
   node : LNode,
 ) -> NetworkSimplexNodeRep {
-  match state.node_reps[node.get_id()] {
-    Some(rep) => rep
-    None => abort("missing network simplex node representation")
-  }
+  state.node_reps[node.get_id()].unwrap()
 }
 
 ///|
@@ -276,10 +295,7 @@ fn network_simplex_require_port_rep(
   state : NetworkSimplexAuxiliaryState,
   port : LPort,
 ) -> @common.NNode {
-  match state.port_map.get(port.get_handle()) {
-    Some(rep) => rep
-    None => abort("missing network simplex port representation")
-  }
+  state.port_map.get(port.get_handle()).unwrap()
 }
 
 ///|
@@ -287,18 +303,12 @@ fn network_simplex_require_edge_rep(
   state : NetworkSimplexAuxiliaryState,
   edge : LEdge,
 ) -> NetworkSimplexEdgeRep {
-  match state.edge_reps[edge.get_id()] {
-    Some(rep) => rep
-    None => abort("missing network simplex edge representation")
-  }
+  state.edge_reps[edge.get_id()].unwrap()
 }
 
 ///|
 fn network_simplex_require_node_layer(node : LNode) -> Layer {
-  match node.get_layer() {
-    Some(layer) => layer
-    None => abort("node has no layer")
-  }
+  node.get_layer().unwrap()
 }
 
 ///|
@@ -341,6 +351,20 @@ fn network_simplex_new_auxiliary_state(
     node_state: Array::make(node_count, network_simplex_other),
     two_paths: [],
     crossing: Array::make(edge_count, false),
+  }
+}
+
+///|
+fn network_simplex_vertical_spacing(
+  state : NetworkSimplexAuxiliaryState,
+  first : LNode,
+  second : LNode,
+) -> Double {
+  state.spacings.get_vertical_spacing(first, second) catch {
+    LayeredSpacingsException(message) => {
+      @core.layout_runtime_report_unsupported_configuration(message)
+      0.0
+    }
   }
 }
 
@@ -501,28 +525,27 @@ fn network_simplex_transform_ports(
       .create(state.n_graph)
     state.port_map[port.get_handle()] = nnode
     ignore(
-      @common.nedge_of()
-      .weight(0.0)
-      .delta(spacing.ceil().to_int())
-      .source(last_nnode)
-      .target(nnode)
-      .create(),
+      network_simplex_create_edge(
+        @common.nedge_of()
+        .weight(0.0)
+        .delta(spacing.ceil().to_int())
+        .source(last_nnode)
+        .target(nnode),
+      ),
     )
     last_nnode = nnode
     last_port = Some(port)
   }
 
-  let final_spacing = match last_port {
-    Some(previous) => port_surrounding.bottom + previous.get_size().y
-    None => abort("non-empty port list expected")
-  }
+  let final_spacing = port_surrounding.bottom + last_port.unwrap().get_size().y
   ignore(
-    @common.nedge_of()
-    .weight(0.0)
-    .delta(final_spacing.ceil().to_int())
-    .source(last_nnode)
-    .target(corners.tail)
-    .create(),
+    network_simplex_create_edge(
+      @common.nedge_of()
+      .weight(0.0)
+      .delta(final_spacing.ceil().to_int())
+      .source(last_nnode)
+      .target(corners.tail),
+    ),
   )
 }
 
@@ -550,12 +573,13 @@ fn network_simplex_transform_fixed_order_node(
   } else {
     network_simplex_node_size_weight_static
   }
-  let node_size_edge = @common.nedge_of()
+  let node_size_edge = network_simplex_create_edge(
+    @common.nedge_of()
     .weight(size_weight)
     .delta(min_height.ceil().to_int())
     .source(top)
-    .target(bottom)
-    .create()
+    .target(bottom),
+  )
   if node_flexibility == "NODE_SIZE_WHERE_SPACE_PERMITS" {
     state.flexible_where_space_permits_edges.push(node_size_edge)
   }
@@ -590,18 +614,19 @@ fn network_simplex_transform_layer(
     match last_rep {
       Some(previous) => {
         let mut spacing = previous.origin.get_margin().bottom +
-          state.spacings.get_vertical_spacing(previous.origin, node) +
+          network_simplex_vertical_spacing(state, previous.origin, node) +
           node.get_margin().top
         if !previous.is_flexible {
           spacing += previous.origin.get_size().y
         }
         ignore(
-          @common.nedge_of()
-          .delta(spacing.ceil().to_int())
-          .weight(0.0)
-          .source(previous.tail)
-          .target(node_rep.head)
-          .create(),
+          network_simplex_create_edge(
+            @common.nedge_of()
+            .delta(spacing.ceil().to_int())
+            .weight(0.0)
+            .source(previous.tail)
+            .target(node_rep.head),
+          ),
         )
       }
       None => ()
@@ -636,7 +661,17 @@ fn network_simplex_transform_edge(
 
   let offset_delta = source_offset - target_offset
   if !network_simplex_port_offset_delta_is_integral(offset_delta) {
-    abort("port positions must be integral")
+    try
+      network_simplex_placer_raise_unit("Port positions must be integral")
+    catch {
+      NetworkSimplexPlacerException(message) =>
+        @core.layout_runtime_report_unsupported_configuration(
+          "org.eclipse.elk.alg.layered.p4nodes.NetworkSimplexPlacer: " + message,
+        )
+    } noraise {
+      _ => ()
+    }
+    return
   }
   let target_delta = network_simplex_double_max(0.0, offset_delta)
     .round()
@@ -646,20 +681,22 @@ fn network_simplex_transform_edge(
     .to_int()
 
   let weight = network_simplex_get_edge_weight(edge)
-  let left = @common.nedge_of()
+  let left = network_simplex_create_edge(
+    @common.nedge_of()
     .origin(edge.get_handle().to_string())
     .weight(weight)
     .delta(source_delta)
     .source(dummy)
-    .target(network_simplex_require_port_rep(state, source_port))
-    .create()
-  let right = @common.nedge_of()
+    .target(network_simplex_require_port_rep(state, source_port)),
+  )
+  let right = network_simplex_create_edge(
+    @common.nedge_of()
     .origin(edge.get_handle().to_string())
     .weight(weight)
     .delta(target_delta)
     .source(dummy)
-    .target(network_simplex_require_port_rep(state, target_port))
-    .create()
+    .target(network_simplex_require_port_rep(state, target_port)),
+  )
   state.edge_reps[edge.get_id()] = Some({ _origin: edge, left, right })
 }
 
@@ -721,12 +758,13 @@ fn network_simplex_insert_north_south_auxiliary_edges(
         match port.get_property_l_node(internal_properties_port_dummy) {
           Some(other) =>
             ignore(
-              @common.nedge_of()
-              .delta(0)
-              .weight(network_simplex_small_edge_weight)
-              .source(network_simplex_require_node_rep(state, node).tail)
-              .target(network_simplex_require_node_rep(state, other).head)
-              .create(),
+              network_simplex_create_edge(
+                @common.nedge_of()
+                .delta(0)
+                .weight(network_simplex_small_edge_weight)
+                .source(network_simplex_require_node_rep(state, node).tail)
+                .target(network_simplex_require_node_rep(state, other).head),
+              ),
             )
           None => ()
         }
@@ -735,17 +773,50 @@ fn network_simplex_insert_north_south_auxiliary_edges(
         match port.get_property_l_node(internal_properties_port_dummy) {
           Some(other) =>
             ignore(
-              @common.nedge_of()
-              .delta(0)
-              .weight(network_simplex_small_edge_weight)
-              .source(network_simplex_require_node_rep(state, other).tail)
-              .target(network_simplex_require_node_rep(state, node).head)
-              .create(),
+              network_simplex_create_edge(
+                @common.nedge_of()
+                .delta(0)
+                .weight(network_simplex_small_edge_weight)
+                .source(network_simplex_require_node_rep(state, other).tail)
+                .target(network_simplex_require_node_rep(state, node).head),
+              ),
             )
           None => ()
         }
       }
     }
+  }
+}
+
+///|
+fn network_simplex_get_other_port_or_abort(edge : LEdge, port : LPort) -> LPort {
+  try edge.get_other_port(port) catch {
+    LEdgeException::IllegalArgumentException(message) => {
+      @core.layout_runtime_report_unsupported_configuration(message)
+      port
+    }
+    LEdgeException::IllegalStateException(message) => {
+      @core.layout_runtime_report_unsupported_configuration(message)
+      port
+    }
+  } noraise {
+    other => other
+  }
+}
+
+///|
+fn network_simplex_get_other_node_or_abort(edge : LEdge, node : LNode) -> LNode {
+  try edge.get_other_node(node) catch {
+    LEdgeException::IllegalArgumentException(message) => {
+      @core.layout_runtime_report_unsupported_configuration(message)
+      node
+    }
+    LEdgeException::IllegalStateException(message) => {
+      @core.layout_runtime_report_unsupported_configuration(message)
+      node
+    }
+  } noraise {
+    other => other
   }
 }
 
@@ -756,13 +827,6 @@ fn network_simplex_insert_in_layer_edge_auxiliary_edges(
 ) -> Unit {
   let processed_edges : Map[Int, Bool] = {}
   for layer in layered_graph.get_layers() {
-    let layer_indices : Map[Int, Int] = {}
-    let mut node_index = 0
-    for node in layer.get_nodes() {
-      layer_indices[node.get_handle()] = node_index
-      node_index += 1
-    }
-
     for node in layer.get_nodes() {
       if !network_simplex_node_type_is_normal(node.get_type()) {
         continue
@@ -788,29 +852,24 @@ fn network_simplex_insert_in_layer_edge_auxiliary_edges(
         )
         let the_port = if source_is_dummy { target_port } else { source_port }
         let dummy_node = network_simplex_require_port_node(
-          in_layer_edge.get_other_port(the_port),
+          network_simplex_get_other_port_or_abort(in_layer_edge, the_port),
         )
 
         let port_rep = network_simplex_require_port_rep(state, the_port)
         let dummy_rep = network_simplex_require_node_rep(state, dummy_node).head
         let port_node = network_simplex_require_port_node(the_port)
-        let port_index = match layer_indices.get(port_node.get_handle()) {
-          Some(value) => value
-          None => abort("missing port node index in layer")
-        }
-        let dummy_index = match layer_indices.get(dummy_node.get_handle()) {
-          Some(value) => value
-          None => abort("missing dummy node index in layer")
-        }
+        let port_index = port_node.get_index()
+        let dummy_index = dummy_node.get_index()
         let source = if port_index < dummy_index { port_rep } else { dummy_rep }
         let target = if port_index < dummy_index { dummy_rep } else { port_rep }
         ignore(
-          @common.nedge_of()
-          .delta(0)
-          .weight(network_simplex_edge_weight_base)
-          .source(source)
-          .target(target)
-          .create(),
+          network_simplex_create_edge(
+            @common.nedge_of()
+            .delta(0)
+            .weight(network_simplex_edge_weight_base)
+            .source(source)
+            .target(target),
+          ),
         )
       }
     }
@@ -841,12 +900,13 @@ fn network_simplex_insert_flexible_where_space_auxiliary_edges(
   let global_source = @common.nnode_of().create(state.n_graph)
   let global_sink = @common.nnode_of().create(state.n_graph)
   ignore(
-    @common.nedge_of()
-    .weight(network_simplex_node_size_weight_static * 2.0)
-    .delta(used_layers)
-    .source(global_source)
-    .target(global_sink)
-    .create(),
+    network_simplex_create_edge(
+      @common.nedge_of()
+      .weight(network_simplex_node_size_weight_static * 2.0)
+      .delta(used_layers)
+      .source(global_source)
+      .target(global_sink),
+    ),
   )
 
   for rep_opt in state.node_reps {
@@ -859,20 +919,22 @@ fn network_simplex_insert_flexible_where_space_auxiliary_edges(
           continue
         }
         ignore(
-          @common.nedge_of()
-          .weight(0.0)
-          .delta(rep.tail.get_layer() - min_layer)
-          .source(global_source)
-          .target(rep.tail)
-          .create(),
+          network_simplex_create_edge(
+            @common.nedge_of()
+            .weight(0.0)
+            .delta(rep.tail.get_layer() - min_layer)
+            .source(global_source)
+            .target(rep.tail),
+          ),
         )
         ignore(
-          @common.nedge_of()
-          .weight(0.0)
-          .delta(used_layers - rep.head.get_layer())
-          .source(rep.head)
-          .target(global_sink)
-          .create(),
+          network_simplex_create_edge(
+            @common.nedge_of()
+            .weight(0.0)
+            .delta(used_layers - rep.head.get_layer())
+            .source(rep.head)
+            .target(global_sink),
+          ),
         )
       }
       None => ()
@@ -1037,7 +1099,7 @@ fn network_simplex_follow_path(
   path : Array[LEdge],
   state : NetworkSimplexAuxiliaryState,
 ) -> Array[LEdge] {
-  let other = edge.get_other_node(current)
+  let other = network_simplex_get_other_node_or_abort(edge, current)
   path.push(edge)
 
   let other_state = state.node_state[other.get_id()]
@@ -1133,7 +1195,17 @@ fn network_simplex_path_contains_flexible_node(
 ///|
 fn network_simplex_order_two_path(path : Array[LEdge]) -> Array[LEdge] {
   if path.length() != 2 {
-    abort("order only allowed for two paths")
+    try
+      network_simplex_placer_raise_unit("Order only allowed for two paths.")
+    catch {
+      NetworkSimplexPlacerException(message) =>
+        @core.layout_runtime_report_unsupported_configuration(
+          "org.eclipse.elk.alg.layered.p4nodes.NetworkSimplexPlacer: " + message,
+        )
+    } noraise {
+      _ => ()
+    }
+    return path
   }
 
   let first = path[0]
@@ -1150,9 +1222,6 @@ fn network_simplex_order_two_path(path : Array[LEdge]) -> Array[LEdge] {
 fn network_simplex_two_path_center_node_is_flexible(
   path : Array[LEdge],
 ) -> Bool {
-  if path.length() != 2 {
-    abort("two path expected")
-  }
   network_simplex_node_is_flexible(
     network_simplex_require_edge_target_node(path[0]),
   )
@@ -1259,7 +1328,7 @@ fn network_simplex_improve_two_path(
   if center_index > 0 {
     let above = layer_nodes[center_index - 1]
     let above_rep = network_simplex_require_node_rep(state, above)
-    let spacing = state.spacings.get_vertical_spacing(above, center_node).ceil()
+    let spacing = network_simplex_vertical_spacing(state, above, center_node).ceil()
     above_dist = nnode.head.get_layer().to_double() -
       center_node.get_margin().top -
       (
@@ -1274,7 +1343,7 @@ fn network_simplex_improve_two_path(
   if center_index < layer_nodes.length() - 1 {
     let below = layer_nodes[center_index + 1]
     let below_rep = network_simplex_require_node_rep(state, below)
-    let spacing = state.spacings.get_vertical_spacing(below, center_node).ceil()
+    let spacing = network_simplex_vertical_spacing(state, below, center_node).ceil()
     below_dist = below_rep.head.get_layer().to_double() -
       below.get_margin().top -
       (

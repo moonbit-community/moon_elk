@@ -100,12 +100,12 @@ fn allow_non_flow_ports_test_create_graph(
   let e1 = create_edge(None)
   edge_add_source(e1, make_port_shape(n1_north))
   edge_add_target(e1, make_port_shape(n2_south))
-  update_containment(Some(e1))
+  layered_test_update_containment(Some(e1))
 
   let e2 = create_edge(None)
   edge_add_source(e2, make_port_shape(n1_south))
   edge_add_target(e2, make_port_shape(n2_north))
-  update_containment(Some(e2))
+  layered_test_update_containment(Some(e2))
 
   graph
 }

@@ -62,16 +62,37 @@ let nnode_store : Ref[Array[NNodeData]] = Ref::new([])
 let nedge_store : Ref[Array[NEdgeData]] = Ref::new([])
 
 ///|
+pub(all) suberror NetworkSimplexException {
+  NetworkSimplexException(String)
+} derive(Show, ToJson)
+
+///|
+fn new_network_simplex_exception(message : String) -> NetworkSimplexException {
+  NetworkSimplexException(message)
+}
+
+///|
+fn network_simplex_exception_message(err : NetworkSimplexException) -> String {
+  match err {
+    NetworkSimplexException(message) => message
+  }
+}
+
+///|
 fn checked_nnode(node : NNode) -> Unit {
   if node.handle < 0 || node.handle >= nnode_store.val.length() {
-    abort("invalid network simplex node id")
+    @core.layout_runtime_report_unsupported_configuration(
+      "invalid network simplex node id",
+    )
   }
 }
 
 ///|
 fn checked_nedge(edge : NEdge) -> Unit {
   if edge.handle < 0 || edge.handle >= nedge_store.val.length() {
-    abort("invalid network simplex edge id")
+    @core.layout_runtime_report_unsupported_configuration(
+      "invalid network simplex edge id",
+    )
   }
 }
 
@@ -215,17 +236,30 @@ pub fn NEdgeBuilder::target(
 }
 
 ///|
-pub fn NEdgeBuilder::create(self : NEdgeBuilder) -> NEdge {
+pub fn NEdgeBuilder::create(
+  self : NEdgeBuilder,
+) -> NEdge raise NetworkSimplexException {
   let source = match self.source {
     Some(node) => node
-    None => abort("NEdge must have a source and target NNode specified.")
+    None =>
+      raise new_network_simplex_exception(
+        "NEdge must have a source and target NNode specified.",
+      )
   }
   let target = match self.target {
     Some(node) => node
-    None => abort("NEdge must have a source and target NNode specified.")
+    None =>
+      raise new_network_simplex_exception(
+        "NEdge must have a source and target NNode specified.",
+      )
   }
   if source == target {
-    abort("Network simplex does not support self-loops")
+    raise new_network_simplex_exception(
+      "Network simplex does not support self-loops: " +
+      source.handle.to_string() +
+      " " +
+      target.handle.to_string(),
+    )
   }
   let edge : NEdge = { handle: nedge_store.val.length() }
   nedge_store.val.push({
@@ -369,19 +403,13 @@ pub fn NEdge::is_tree_edge(self : NEdge) -> Bool {
 ///|
 pub fn NEdge::get_source(self : NEdge) -> NNode {
   checked_nedge(self)
-  match nedge_store.val[self.handle].source {
-    Some(node) => node
-    None => abort("edge source is missing")
-  }
+  nedge_store.val[self.handle].source.unwrap()
 }
 
 ///|
 pub fn NEdge::get_target(self : NEdge) -> NNode {
   checked_nedge(self)
-  match nedge_store.val[self.handle].target {
-    Some(node) => node
-    None => abort("edge target is missing")
-  }
+  nedge_store.val[self.handle].target.unwrap()
 }
 
 ///|
@@ -423,7 +451,10 @@ pub fn NEdge::set_delta(self : NEdge, delta : Int) -> Unit {
 }
 
 ///|
-pub fn NEdge::get_other(self : NEdge, some : NNode) -> NNode {
+pub fn NEdge::get_other(
+  self : NEdge,
+  some : NNode,
+) -> NNode raise NetworkSimplexException {
   checked_nedge(self)
   checked_nnode(some)
   let source = self.get_source()
@@ -433,7 +464,12 @@ pub fn NEdge::get_other(self : NEdge, some : NNode) -> NNode {
   } else if some == target {
     source
   } else {
-    abort("Node not part of edge")
+    raise new_network_simplex_exception(
+      "Node " +
+      some.handle.to_string() +
+      " not part of edge " +
+      self.handle.to_string(),
+    )
   }
 }
 
@@ -452,7 +488,10 @@ pub fn NEdge::reverse(self : NEdge) -> NEdge {
 }
 
 ///|
-fn ngraph_dfs(node : NNode, mark : Array[Bool]) -> Unit {
+fn ngraph_dfs(
+  node : NNode,
+  mark : Array[Bool],
+) -> Unit raise NetworkSimplexException {
   let node_internal_id = node.get_internal_id()
   if mark[node_internal_id] {
     return
@@ -465,7 +504,9 @@ fn ngraph_dfs(node : NNode, mark : Array[Bool]) -> Unit {
 }
 
 ///|
-fn ngraph_find_con_comp_representatives(graph : NGraph) -> Array[NNode] {
+fn ngraph_find_con_comp_representatives(
+  graph : NGraph,
+) -> Array[NNode] raise NetworkSimplexException {
   let cc_rep : Array[NNode] = []
   let mark : Array[Bool] = []
   for _ in 0..<graph.nodes.length() {
@@ -484,7 +525,7 @@ fn ngraph_find_con_comp_representatives(graph : NGraph) -> Array[NNode] {
 fn ngraph_create_artificial_root_and_connect(
   graph : NGraph,
   nodes_to_connect : Array[NNode],
-) -> NNode {
+) -> NNode raise NetworkSimplexException {
   let root = nnode_of().create(graph)
   for src in nodes_to_connect {
     ignore(nedge_of().delta(0).weight(0.0).source(root).target(src).create())
@@ -493,17 +534,33 @@ fn ngraph_create_artificial_root_and_connect(
 }
 
 ///|
-pub fn NGraph::make_connected(self : NGraph) -> NNode? {
+fn ngraph_make_connected_impl(
+  graph : NGraph,
+) -> NNode? raise NetworkSimplexException {
   let mut id = 0
-  for node in self.nodes {
+  for node in graph.nodes {
     node.set_internal_id(id)
     id = id + 1
   }
-  let cc_rep = ngraph_find_con_comp_representatives(self)
+  let cc_rep = ngraph_find_con_comp_representatives(graph)
   if cc_rep.length() > 1 {
-    Some(ngraph_create_artificial_root_and_connect(self, cc_rep))
+    Some(ngraph_create_artificial_root_and_connect(graph, cc_rep))
   } else {
     None
+  }
+}
+
+///|
+pub fn NGraph::make_connected(self : NGraph) -> NNode? {
+  try ngraph_make_connected_impl(self) catch {
+    err => {
+      @core.layout_runtime_report_unsupported_configuration(
+        network_simplex_exception_message(err),
+      )
+      None
+    }
+  } noraise {
+    value => value
   }
 }
 

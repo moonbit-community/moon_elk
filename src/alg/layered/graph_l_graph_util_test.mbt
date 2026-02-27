@@ -27,6 +27,30 @@ fn l_graph_util_test_direction_undefined() -> @core.Direction {
 }
 
 ///|
+fn l_graph_util_test_create_external_port_dummy_or_abort(
+  property_holder : LPort,
+  ext_port_constraints : @core.PortConstraints,
+  port_side : @core.PortSide,
+  net_flow : Int,
+  port_node_size : @core.KVector?,
+  port_position : @core.KVector?,
+  port_size : @core.KVector,
+  layout_direction : @core.Direction,
+  layered_graph : LGraph,
+) -> LNode {
+  try
+    create_external_port_dummy(
+      property_holder, ext_port_constraints, port_side, net_flow, port_node_size,
+      port_position, port_size, layout_direction, layered_graph,
+    )
+  catch {
+    error => abort(l_graph_util_exception_message(error))
+  } noraise {
+    value => value
+  }
+}
+
+///|
 fn l_graph_util_test_port_constraints_free() -> @core.PortConstraints {
   @core.port_constraints_values()[1]
 }
@@ -648,7 +672,7 @@ test "external port dummy creation and position use Java formulas" {
   holder.set_property_double(layered_options_port_border_offset, -2.0)
   holder.set_property_int(layered_options_port_index, 5)
 
-  let dummy = create_external_port_dummy(
+  let dummy = l_graph_util_test_create_external_port_dummy_or_abort(
     holder,
     l_graph_util_test_port_constraints_fixed_order(),
     l_graph_util_test_port_side_west(),
@@ -693,7 +717,7 @@ test "external port dummy creation and position use Java formulas" {
   inspect(dummy.get_position().x, content="-11")
 
   let free_holder = new_l_port()
-  let free_dummy = create_external_port_dummy(
+  let free_dummy = l_graph_util_test_create_external_port_dummy_or_abort(
     free_holder,
     l_graph_util_test_port_constraints_free(),
     @core.port_side_values()[0],
@@ -714,7 +738,7 @@ test "external port dummy creation and position use Java formulas" {
 
   let ratio_holder = new_l_port()
   ratio_holder.set_side(l_graph_util_test_port_side_east())
-  let ratio_dummy = create_external_port_dummy(
+  let ratio_dummy = l_graph_util_test_create_external_port_dummy_or_abort(
     ratio_holder,
     l_graph_util_test_port_constraints_fixed_ratio(),
     l_graph_util_test_port_side_east(),

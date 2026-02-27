@@ -60,7 +60,12 @@ fn layered_quadrant_order(quadrant : LayeredQuadrant) -> Int {
 fn layered_point_quadrant_or_abort(point : LayeredPoint) -> LayeredQuadrant {
   match point.quadrant {
     Some(quadrant) => quadrant
-    None => abort("LayeredPoint quadrant is required")
+    None => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "LayeredPoint quadrant is required",
+      )
+      LQ1
+    }
   }
 }
 

@@ -87,13 +87,27 @@ test "ElkMath testFactl" {
 }
 
 ///|
-test "panic ElkMath testFactlLittleIllegalArgumentException" {
+test "ElkMath testFactlLittleIllegalArgumentException" {
+  @core.layout_runtime_clear_error()
   ignore(factl(-50))
+  assert_eq(
+    @core.layout_runtime_take_error_message(),
+    Some(
+      "org.eclipse.elk.core.UnsupportedConfigurationException: The input must be between 0 and 21",
+    ),
+  )
 }
 
 ///|
-test "panic ElkMath testFactlBigIllegalArgumentException" {
+test "ElkMath testFactlBigIllegalArgumentException" {
+  @core.layout_runtime_clear_error()
   ignore(factl(21))
+  assert_eq(
+    @core.layout_runtime_take_error_message(),
+    Some(
+      "org.eclipse.elk.core.UnsupportedConfigurationException: The input must be between 0 and 21",
+    ),
+  )
 }
 
 ///|
@@ -103,8 +117,15 @@ test "ElkMath testFactd" {
 }
 
 ///|
-test "panic ElkMath testFactdLittleIllegalArgumentException" {
+test "ElkMath testFactdLittleIllegalArgumentException" {
+  @core.layout_runtime_clear_error()
   ignore(factd(-1))
+  assert_eq(
+    @core.layout_runtime_take_error_message(),
+    Some(
+      "org.eclipse.elk.core.UnsupportedConfigurationException: The input must be positive",
+    ),
+  )
 }
 
 ///|
@@ -115,8 +136,15 @@ test "ElkMath testBinomiall" {
 }
 
 ///|
-test "panic ElkMath testBinomiallLittleIllegalArgumentException" {
+test "ElkMath testBinomiallLittleIllegalArgumentException" {
+  @core.layout_runtime_clear_error()
   ignore(binomiall(-1, 1))
+  assert_eq(
+    @core.layout_runtime_take_error_message(),
+    Some(
+      "org.eclipse.elk.core.UnsupportedConfigurationException: k and n must be positive",
+    ),
+  )
 }
 
 ///|
@@ -127,8 +155,15 @@ test "ElkMath testBinomiald" {
 }
 
 ///|
-test "panic ElkMath testBinomialdLittleIllegalArgumentException" {
+test "ElkMath testBinomialdLittleIllegalArgumentException" {
+  @core.layout_runtime_clear_error()
   ignore(binomiald(-1, 1))
+  assert_eq(
+    @core.layout_runtime_take_error_message(),
+    Some(
+      "org.eclipse.elk.core.UnsupportedConfigurationException: k and n must be positive",
+    ),
+  )
 }
 
 ///|

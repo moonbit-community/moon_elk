@@ -40,6 +40,14 @@ fn vertiflex_set_required_options(
 }
 
 ///|
+fn vertiflex_take_runtime_error_or_abort() -> String {
+  match @core.layout_runtime_take_error_message() {
+    Some(message) => message
+    None => abort("expected runtime error message")
+  }
+}
+
+///|
 test "Vertiflex util finds root node" {
   @graph.reset_graph_model_for_test()
   let graph = @graph.create_graph()
@@ -95,7 +103,7 @@ test "Vertiflex layout sets y levels and routes straight edges" {
 }
 
 ///|
-test "panic Vertiflex rejects invalid vertical constraints" {
+test "Vertiflex rejects invalid vertical constraints" {
   @graph.reset_graph_model_for_test()
   let graph = @graph.create_graph()
   let root = vertiflex_make_node(graph, 20.0, 10.0)
@@ -104,10 +112,18 @@ test "panic Vertiflex rejects invalid vertical constraints" {
 
   vertiflex_set_required_options(graph, 10.0, 0.0, "STRAIGHT")
   @graph.node_set_double_property(child, vertiflex_vertical_constraint, 0.0)
+  @core.layout_runtime_clear_error()
 
   new_vertiflex_layout_provider().layout(
     graph,
     @core.new_basic_progress_monitor(),
+  )
+  let message = vertiflex_take_runtime_error_or_abort()
+  assert_true(message.contains("Invalid vertical constraints. Node "))
+  assert_true(
+    message.contains(
+      "has a vertical constraint that is too low for its ancestors.",
+    ),
   )
 }
 
@@ -144,7 +160,7 @@ test "Vertiflex bend strategy sets bend heights on branching tree" {
 }
 
 ///|
-test "panic Vertiflex rejects node with multiple parents" {
+test "Vertiflex rejects node with multiple parents" {
   @graph.reset_graph_model_for_test()
   let graph = @graph.create_graph()
   let root = vertiflex_make_node(graph, 20.0, 10.0)
@@ -158,9 +174,14 @@ test "panic Vertiflex rejects node with multiple parents" {
   ignore(@graph.create_simple_edge(right, child))
 
   vertiflex_set_required_options(graph, 10.0, 0.0, "STRAIGHT")
+  @core.layout_runtime_clear_error()
 
   new_vertiflex_layout_provider().layout(
     graph,
     @core.new_basic_progress_monitor(),
+  )
+  assert_eq(
+    vertiflex_take_runtime_error_or_abort(),
+    "org.eclipse.elk.core.UnsupportedConfigurationException: The given graph is not an acyclic tree!",
   )
 }

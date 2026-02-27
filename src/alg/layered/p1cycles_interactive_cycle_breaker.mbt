@@ -1,12 +1,32 @@
 ///|
-fn interactive_cycle_breaker_require_target_node(edge : LEdge) -> LNode {
+pub(all) suberror InteractiveCycleBreakerException {
+  UnsupportedGraphException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] interactive_cycle_breaker_raise_unsupported_graph(
+  message : String,
+) -> T raise InteractiveCycleBreakerException {
+  raise InteractiveCycleBreakerException::UnsupportedGraphException(message)
+}
+
+///|
+fn interactive_cycle_breaker_require_target_node(
+  edge : LEdge,
+) -> LNode raise InteractiveCycleBreakerException {
   let target = match edge.get_target() {
     Some(value) => value
-    None => abort("edge has no target port")
+    None =>
+      interactive_cycle_breaker_raise_unsupported_graph(
+        "edge has no target port",
+      )
   }
   match target.get_node() {
     Some(node) => node
-    None => abort("target port has no owner node")
+    None =>
+      interactive_cycle_breaker_raise_unsupported_graph(
+        "target port has no owner node",
+      )
   }
 }
 
@@ -19,7 +39,7 @@ fn interactive_cycle_breaker_reverse_edge(edge : LEdge, graph : LGraph) -> Unit 
 fn interactive_cycle_breaker_find_cycles(
   node1 : LNode,
   rev_edges : Array[LEdge],
-) -> Unit {
+) -> Unit raise InteractiveCycleBreakerException {
   node1.set_id(-1)
   for port in node1.get_ports_by_type(PortType::Output) {
     for edge in port.get_outgoing_edges() {
@@ -47,41 +67,51 @@ fn interactive_cycle_breaker_process(
   }
   ignore(monitor.begin("Interactive cycle breaking", 1.0))
 
-  let rev_edges = []
-  for source in layered_graph.get_layerless_nodes() {
-    source.set_id(1)
-    let sourcex = source.get_position().x
-    for port in source.get_ports_by_type(PortType::Output) {
-      for edge in port.get_outgoing_edges() {
-        let target = interactive_cycle_breaker_require_target_node(edge)
-        if target.get_handle() != source.get_handle() {
-          let targetx = target.get_position().x
-          if targetx < sourcex {
-            rev_edges.push(edge)
+  try {
+    let rev_edges = []
+    for source in layered_graph.get_layerless_nodes() {
+      source.set_id(1)
+      let sourcex = source.get_position().x
+      for port in source.get_ports_by_type(PortType::Output) {
+        for edge in port.get_outgoing_edges() {
+          let target = interactive_cycle_breaker_require_target_node(edge)
+          if target.get_handle() != source.get_handle() {
+            let targetx = target.get_position().x
+            if targetx < sourcex {
+              rev_edges.push(edge)
+            }
           }
         }
       }
     }
-  }
 
-  for edge in rev_edges {
-    interactive_cycle_breaker_reverse_edge(edge, layered_graph)
-    layered_graph.set_property_bool(internal_properties_cyclic, true)
-  }
-
-  rev_edges.clear()
-  for node in layered_graph.get_layerless_nodes() {
-    if node.get_id() > 0 {
-      interactive_cycle_breaker_find_cycles(node, rev_edges)
+    for edge in rev_edges {
+      interactive_cycle_breaker_reverse_edge(edge, layered_graph)
+      layered_graph.set_property_bool(internal_properties_cyclic, true)
     }
-  }
 
-  for edge in rev_edges {
-    interactive_cycle_breaker_reverse_edge(edge, layered_graph)
-    layered_graph.set_property_bool(internal_properties_cyclic, true)
-  }
+    rev_edges.clear()
+    for node in layered_graph.get_layerless_nodes() {
+      if node.get_id() > 0 {
+        interactive_cycle_breaker_find_cycles(node, rev_edges)
+      }
+    }
 
-  rev_edges.clear()
+    for edge in rev_edges {
+      interactive_cycle_breaker_reverse_edge(edge, layered_graph)
+      layered_graph.set_property_bool(internal_properties_cyclic, true)
+    }
+
+    rev_edges.clear()
+  } catch {
+    InteractiveCycleBreakerException::UnsupportedGraphException(message) => {
+      @core.layout_runtime_report_unsupported_configuration(message)
+      monitor.done()
+      return
+    }
+  } noraise {
+    _ => ()
+  }
   monitor.done()
 }
 

@@ -8,6 +8,28 @@ pub(all) struct KVector {
 let default_fuzzyness = 0.05
 
 ///|
+priv suberror KVectorException {
+  KVectorException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] kvector_raise(message : String) -> T raise KVectorException {
+  raise KVectorException(message)
+}
+
+///|
+fn kvector_raise_unit(message : String) -> Unit raise KVectorException {
+  kvector_raise(message)
+}
+
+///|
+fn kvector_exception_message(err : KVectorException) -> String {
+  match err {
+    KVectorException(message) => message
+  }
+}
+
+///|
 pub fn new_kvector() -> KVector {
   { x: 0.0, y: 0.0 }
 }
@@ -232,7 +254,15 @@ pub fn KVector::to_degrees(self : KVector) -> Double {
 pub fn KVector::to_radians(self : KVector) -> Double {
   let len = self.length()
   if len <= 0.0 {
-    abort("The length of the vector must not be 0")
+    try kvector_raise_unit("The length of the vector must not be 0") catch {
+      err =>
+        layout_runtime_report_unsupported_configuration(
+          kvector_exception_message(err),
+        )
+    } noraise {
+      _ => ()
+    }
+    return 0.0
   }
   if self.x >= 0.0 && self.y >= 0.0 {
     @math.asin(self.y / len)
@@ -292,9 +322,19 @@ pub fn KVector::bound(
   highy : Double,
 ) -> KVector {
   if highx < lowx || highy < lowy {
-    abort(
-      "The highx must be bigger then lowx and the highy must be bigger then lowy",
-    )
+    try
+      kvector_raise_unit(
+        "The highx must be bigger then lowx and the highy must be bigger then lowy",
+      )
+    catch {
+      err =>
+        layout_runtime_report_unsupported_configuration(
+          kvector_exception_message(err),
+        )
+    } noraise {
+      _ => ()
+    }
+    return self
   }
   if self.x < lowx {
     self.x = lowx
@@ -325,12 +365,34 @@ pub fn KVector::parse(self : KVector, string : String) -> Unit {
     string, "([{\"' \t\r\n", ")]}\"' \t\r\n",
   )
   if start >= end {
-    abort("The given string does not contain any numbers.")
+    try
+      kvector_raise_unit("The given string does not contain any numbers.")
+    catch {
+      err =>
+        layout_runtime_report_unsupported_configuration(
+          kvector_exception_message(err),
+        )
+    } noraise {
+      _ => ()
+    }
+    return
   }
   let body = _substring_chars(string, start, end)
   let tokens = _split_by_any_delims_drop_trailing_empty(body, ",;\r\n")
   if tokens.length() != 2 {
-    abort("Exactly two numbers are expected, \{tokens.length()} were found.")
+    try
+      kvector_raise_unit(
+        "Exactly two numbers are expected, \{tokens.length()} were found.",
+      )
+    catch {
+      err =>
+        layout_runtime_report_unsupported_configuration(
+          kvector_exception_message(err),
+        )
+    } noraise {
+      _ => ()
+    }
+    return
   }
   self.x = _parse_double_or_abort(
     tokens[0],

@@ -26,6 +26,25 @@ pub fn to_port_array(ports : Array[LPort]) -> Array[LPort] {
 }
 
 ///|
+pub(all) suberror LGraphUtilException {
+  IllegalStateException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] l_graph_util_raise_illegal_state(
+  message : String,
+) -> T raise LGraphUtilException {
+  raise LGraphUtilException::IllegalStateException(message)
+}
+
+///|
+pub fn l_graph_util_exception_message(error : LGraphUtilException) -> String {
+  match error {
+    LGraphUtilException::IllegalStateException(message) => message
+  }
+}
+
+///|
 fn l_graph_util_in_layer_constraint_to_string(
   value : InLayerConstraint,
 ) -> String {
@@ -746,7 +765,7 @@ pub fn provide_collector_port(
   port_type : PortType,
   side : @core.PortSide,
 ) -> LPort {
-  let port = match port_type {
+  let maybe_port = match port_type {
     PortType::Input => {
       for inport in node.get_ports() {
         if inport.get_property_bool(internal_properties_input_collect) {
@@ -755,7 +774,7 @@ pub fn provide_collector_port(
       }
       let created = new_l_port()
       created.set_property_bool(internal_properties_input_collect, true)
-      created
+      Some(created)
     }
     PortType::Output => {
       for outport in node.get_ports() {
@@ -765,10 +784,11 @@ pub fn provide_collector_port(
       }
       let created = new_l_port()
       created.set_property_bool(internal_properties_output_collect, true)
-      created
+      Some(created)
     }
-    PortType::Undefined => abort("Port type must be INPUT or OUTPUT.")
+    PortType::Undefined => None
   }
+  let port = maybe_port.unwrap()
   port.set_node(Some(node))
   port.set_side(side)
   center_point(port.get_position(), node.get_size(), side)
@@ -886,7 +906,7 @@ pub fn create_external_port_dummy(
   port_size : @core.KVector,
   layout_direction : @core.Direction,
   layered_graph : LGraph,
-) -> LNode {
+) -> LNode raise LGraphUtilException {
   let mut final_external_port_side = port_side
 
   let dummy = new_l_node(graph=Some(layered_graph))
@@ -911,7 +931,9 @@ pub fn create_external_port_dummy(
         layout_direction,
         @core.Direction::Undefined,
       ) {
-      abort("Layout direction must not be UNDEFINED.")
+      l_graph_util_raise_illegal_state(
+        "Layout direction must not be UNDEFINED.",
+      )
     }
     if net_flow >= 0 {
       final_external_port_side = @core.port_side_from_direction(
@@ -1000,7 +1022,9 @@ pub fn create_external_port_dummy(
       }
     }
     @core.PortSide::SideUndefined =>
-      abort("Unexpected external port side UNDEFINED.")
+      l_graph_util_raise_illegal_state(
+        "Unexpected external port side UNDEFINED.",
+      )
   }
 
   ignore(dummy_port.get_position().set(anchor))
@@ -1028,7 +1052,9 @@ pub fn create_external_port_dummy(
       let current_port_position = match port_position {
         Some(position) => position
         None =>
-          abort("Expected external port position for ordered port constraints.")
+          l_graph_util_raise_illegal_state(
+            "Expected external port position for ordered port constraints.",
+          )
       }
       match final_external_port_side {
         @core.PortSide::West => {
@@ -1037,7 +1063,9 @@ pub fn create_external_port_dummy(
             let size = match port_node_size {
               Some(value) => value
               None =>
-                abort("Expected port node size for fixed ratio constraints.")
+                l_graph_util_raise_illegal_state(
+                  "Expected port node size for fixed ratio constraints.",
+                )
             }
             information_about_order /= size.y
           }
@@ -1048,7 +1076,9 @@ pub fn create_external_port_dummy(
             let size = match port_node_size {
               Some(value) => value
               None =>
-                abort("Expected port node size for fixed ratio constraints.")
+                l_graph_util_raise_illegal_state(
+                  "Expected port node size for fixed ratio constraints.",
+                )
             }
             information_about_order /= size.y
           }
@@ -1059,7 +1089,9 @@ pub fn create_external_port_dummy(
             let size = match port_node_size {
               Some(value) => value
               None =>
-                abort("Expected port node size for fixed ratio constraints.")
+                l_graph_util_raise_illegal_state(
+                  "Expected port node size for fixed ratio constraints.",
+                )
             }
             information_about_order /= size.x
           }
@@ -1070,7 +1102,9 @@ pub fn create_external_port_dummy(
             let size = match port_node_size {
               Some(value) => value
               None =>
-                abort("Expected port node size for fixed ratio constraints.")
+                l_graph_util_raise_illegal_state(
+                  "Expected port node size for fixed ratio constraints.",
+                )
             }
             information_about_order /= size.x
           }

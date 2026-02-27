@@ -20,6 +20,30 @@ fn topdownpacking_left_right_top_down_node_placer_process(
   layout_graph : GridElkNode,
   progress_monitor : @core.IElkProgressMonitor?,
 ) -> Unit {
+  try
+    topdownpacking_left_right_top_down_node_placer_process_impl(
+      layout_graph, progress_monitor,
+    )
+  catch {
+    err => {
+      @core.layout_runtime_report_unsupported_configuration(
+        topdownpacking_grid_exception_message(err),
+      )
+      match progress_monitor {
+        Some(monitor) => if monitor.is_running() { monitor.done() }
+        None => ()
+      }
+    }
+  } noraise {
+    _ => ()
+  }
+}
+
+///|
+fn topdownpacking_left_right_top_down_node_placer_process_impl(
+  layout_graph : GridElkNode,
+  progress_monitor : @core.IElkProgressMonitor?,
+) -> Unit raise TopdownpackingGridException {
   let monitor = match progress_monitor {
     Some(existing) => existing
     None => @core.new_null_elk_progress_monitor()

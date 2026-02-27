@@ -39,14 +39,32 @@ let longest_path_layerer_baseline_processing_configuration : @core.LayoutProcess
   )
 
 ///|
-fn longest_path_layerer_require_edge_target_node(edge : LEdge) -> LNode {
+pub(all) suberror LongestPathLayererException {
+  UnsupportedGraphException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] longest_path_layerer_raise_unsupported_graph(
+  message : String,
+) -> T raise LongestPathLayererException {
+  raise LongestPathLayererException::UnsupportedGraphException(message)
+}
+
+///|
+fn longest_path_layerer_require_edge_target_node(
+  edge : LEdge,
+) -> LNode raise LongestPathLayererException {
   let target = match edge.get_target() {
     Some(value) => value
-    None => abort("edge has no target port")
+    None =>
+      longest_path_layerer_raise_unsupported_graph("edge has no target port")
   }
   match target.get_node() {
     Some(value) => value
-    None => abort("target port has no owner node")
+    None =>
+      longest_path_layerer_raise_unsupported_graph(
+        "target port has no owner node",
+      )
   }
 }
 
@@ -73,7 +91,7 @@ fn longest_path_layerer_visit(
   layered_graph : LGraph,
   node_heights : Array[Int],
   node : LNode,
-) -> Int {
+) -> Int raise LongestPathLayererException {
   let height = node_heights[node.get_id()]
   if height >= 0 {
     return height
@@ -132,11 +150,20 @@ fn longest_path_layerer_process(
     index += 1
   }
 
-  for node in nodes {
-    ignore(longest_path_layerer_visit(layered_graph, node_heights, node))
+  try {
+    for node in nodes {
+      ignore(longest_path_layerer_visit(layered_graph, node_heights, node))
+    }
+    nodes.clear()
+  } catch {
+    LongestPathLayererException::UnsupportedGraphException(message) => {
+      @core.layout_runtime_report_unsupported_configuration(message)
+      monitor.done()
+      return
+    }
+  } noraise {
+    _ => ()
   }
-
-  nodes.clear()
   monitor.done()
 }
 

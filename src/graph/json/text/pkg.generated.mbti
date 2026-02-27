@@ -170,6 +170,23 @@ pub fn new_internal_elk_graph_json_lexer(String) -> InternalElkGraphJsonLexer
 pub fn new_internal_elk_graph_json_parser(Array[ElkGraphJsonLexToken], grammar_access? : ElkGraphJsonGrammarAccess) -> InternalElkGraphJsonParser
 
 // Errors
+pub suberror ElkGraphJsonQualifiedNameConverterException {
+  ElkGraphJsonQualifiedNameConverterException(String)
+}
+pub impl Show for ElkGraphJsonQualifiedNameConverterException
+pub impl ToJson for ElkGraphJsonQualifiedNameConverterException
+
+pub suberror GraphJsonTextNumberValueConverterException {
+  GraphJsonTextNumberValueConverterException(String)
+}
+pub impl Show for GraphJsonTextNumberValueConverterException
+pub impl ToJson for GraphJsonTextNumberValueConverterException
+
+pub suberror GraphJsonTextPropertyKeyValueConverterException {
+  GraphJsonTextPropertyKeyValueConverterException(String)
+}
+pub impl Show for GraphJsonTextPropertyKeyValueConverterException
+pub impl ToJson for GraphJsonTextPropertyKeyValueConverterException
 
 // Types and methods
 pub struct AbstractElkGraphJsonRuntimeModule {

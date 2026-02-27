@@ -7,7 +7,11 @@ fn edge_length_optimization_evaluate(root : @graph.ElkNode) -> Double {
       continue
     }
 
-    let target = @graph.connectable_shape_to_node(Some(targets[0]))
+    let target = try @graph.connectable_shape_to_node(Some(targets[0])) catch {
+      _ => continue
+    } noraise {
+      value => value
+    }
     let mut target_x = @graph.node_x(target) + @graph.node_width(target) / 2.0
     let mut target_y = @graph.node_y(target) + @graph.node_height(target) / 2.0
 

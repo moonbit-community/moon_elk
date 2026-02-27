@@ -1,34 +1,78 @@
 ///|
-fn shape_to_node_or_panic(connectable_shape : ElkConnectableShape) -> ElkNode {
+pub(all) suberror ElkGraphUtilException {
+  NullPointerException(String)
+  IllegalArgumentException(String)
+  IllegalStateException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] elk_graph_util_raise_null_pointer(
+  message : String,
+) -> T raise ElkGraphUtilException {
+  raise ElkGraphUtilException::NullPointerException(message)
+}
+
+///|
+fn[T] elk_graph_util_raise_illegal_argument(
+  message : String,
+) -> T raise ElkGraphUtilException {
+  raise ElkGraphUtilException::IllegalArgumentException(message)
+}
+
+///|
+fn[T] elk_graph_util_raise_illegal_state(
+  message : String,
+) -> T raise ElkGraphUtilException {
+  raise ElkGraphUtilException::IllegalStateException(message)
+}
+
+///|
+fn shape_to_node_or_raise(
+  connectable_shape : ElkConnectableShape,
+) -> ElkNode raise ElkGraphUtilException {
   match connectable_shape {
     NodeShape(node) => node
     PortShape(port) =>
       match port_parent(port) {
         Some(node) => node
-        None => abort("port parent cannot be null")
+        None => elk_graph_util_raise_illegal_state("port parent cannot be null")
       }
+  }
+}
+
+///|
+fn connectable_shape_to_node_or_raise(
+  connectable_shape : ElkConnectableShape?,
+) -> ElkNode raise ElkGraphUtilException {
+  match connectable_shape {
+    Some(shape) => shape_to_node_or_raise(shape)
+    None => elk_graph_util_raise_null_pointer("connectableShape cannot be null")
+  }
+}
+
+///|
+fn connectable_shape_to_port_or_raise(
+  connectable_shape : ElkConnectableShape?,
+) -> ElkPort? raise ElkGraphUtilException {
+  match connectable_shape {
+    Some(NodeShape(_)) => None
+    Some(PortShape(port)) => Some(port)
+    None => elk_graph_util_raise_null_pointer("connectableShape cannot be null")
   }
 }
 
 ///|
 pub fn connectable_shape_to_node(
   connectable_shape : ElkConnectableShape?,
-) -> ElkNode {
-  match connectable_shape {
-    Some(shape) => shape_to_node_or_panic(shape)
-    None => abort("connectableShape cannot be null")
-  }
+) -> ElkNode raise ElkGraphUtilException {
+  connectable_shape_to_node_or_raise(connectable_shape)
 }
 
 ///|
 pub fn connectable_shape_to_port(
   connectable_shape : ElkConnectableShape?,
-) -> ElkPort? {
-  match connectable_shape {
-    Some(NodeShape(_)) => None
-    Some(PortShape(port)) => Some(port)
-    None => abort("connectableShape cannot be null")
-  }
+) -> ElkPort? raise ElkGraphUtilException {
+  connectable_shape_to_port_or_raise(connectable_shape)
 }
 
 ///|
@@ -157,26 +201,30 @@ pub fn find_lowest_common_ancestor(
 }
 
 ///|
-pub fn find_best_edge_containment(edge : ElkEdge?) -> ElkNode? {
+fn find_best_edge_containment_or_raise(
+  edge : ElkEdge?,
+) -> ElkNode? raise ElkGraphUtilException {
   let edge = match edge {
     Some(edge) => edge
-    None => abort("edge cannot be null")
+    None => elk_graph_util_raise_null_pointer("edge cannot be null")
   }
   let sources = edge_sources(edge)
   let targets = edge_targets(edge)
   let total = sources.length() + targets.length()
   if total == 0 {
-    abort("The edge must have at least one source or target.")
+    elk_graph_util_raise_illegal_argument(
+      "The edge must have at least one source or target.",
+    )
   }
   if total == 1 {
     if sources.is_empty() {
-      return node_parent(connectable_shape_to_node(Some(targets[0])))
+      return node_parent(connectable_shape_to_node_or_raise(Some(targets[0])))
     }
-    return node_parent(connectable_shape_to_node(Some(sources[0])))
+    return node_parent(connectable_shape_to_node_or_raise(Some(sources[0])))
   }
   if sources.length() == 1 && targets.length() == 1 {
-    let source_node = connectable_shape_to_node(Some(sources[0]))
-    let target_node = connectable_shape_to_node(Some(targets[0]))
+    let source_node = connectable_shape_to_node_or_raise(Some(sources[0]))
+    let target_node = connectable_shape_to_node_or_raise(Some(targets[0]))
     if node_parent(source_node) == node_parent(target_node) {
       return node_parent(source_node)
     }
@@ -189,10 +237,10 @@ pub fn find_best_edge_containment(edge : ElkEdge?) -> ElkNode? {
   }
   let incident_shapes = all_incident_shapes(edge)
   let mut common_ancestor : ElkNode? = Some(
-    shape_to_node_or_panic(incident_shapes[0]),
+    shape_to_node_or_raise(incident_shapes[0]),
   )
   for i = 1; i < incident_shapes.length(); i = i + 1 {
-    let incident_node = shape_to_node_or_panic(incident_shapes[i])
+    let incident_node = shape_to_node_or_raise(incident_shapes[i])
     match common_ancestor {
       Some(ancestor) =>
         if incident_node != ancestor && !is_descendant(incident_node, ancestor) {
@@ -214,19 +262,36 @@ pub fn find_best_edge_containment(edge : ElkEdge?) -> ElkNode? {
 }
 
 ///|
-pub fn update_containment(edge : ElkEdge?) -> Unit {
+pub fn find_best_edge_containment(
+  edge : ElkEdge?,
+) -> ElkNode? raise ElkGraphUtilException {
+  find_best_edge_containment_or_raise(edge)
+}
+
+///|
+fn update_containment_or_raise(
+  edge : ElkEdge?,
+) -> Unit raise ElkGraphUtilException {
   let edge = match edge {
     Some(edge) => edge
-    None => abort("edge cannot be null")
+    None => elk_graph_util_raise_null_pointer("edge cannot be null")
   }
-  edge_set_containing_node(edge, find_best_edge_containment(Some(edge)))
+  edge_set_containing_node(
+    edge,
+    find_best_edge_containment_or_raise(Some(edge)),
+  )
+}
+
+///|
+pub fn update_containment(edge : ElkEdge?) -> Unit raise ElkGraphUtilException {
+  update_containment_or_raise(edge)
 }
 
 ///|
 pub fn create_simple_edge_for_shapes(
   source : ElkConnectableShape,
   target : ElkConnectableShape,
-) -> ElkEdge {
+) -> ElkEdge raise ElkGraphUtilException {
   let edge = create_edge(None)
   edge_add_source(edge, source)
   edge_add_target(edge, target)
@@ -235,7 +300,10 @@ pub fn create_simple_edge_for_shapes(
 }
 
 ///|
-pub fn create_simple_edge(source : ElkNode, target : ElkNode) -> ElkEdge {
+pub fn create_simple_edge(
+  source : ElkNode,
+  target : ElkNode,
+) -> ElkEdge raise ElkGraphUtilException {
   create_simple_edge_for_shapes(
     make_node_shape(source),
     make_node_shape(target),
@@ -246,7 +314,7 @@ pub fn create_simple_edge(source : ElkNode, target : ElkNode) -> ElkEdge {
 pub fn create_hyperedge(
   sources : Array[ElkConnectableShape],
   targets : Array[ElkConnectableShape],
-) -> ElkEdge {
+) -> ElkEdge raise ElkGraphUtilException {
   let edge = create_edge(None)
   for source in sources {
     edge_add_source(edge, source)

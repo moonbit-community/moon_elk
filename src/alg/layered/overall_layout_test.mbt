@@ -48,7 +48,7 @@ fn overall_layout_test_create_simple_graph() -> @graph.ElkNode {
   let edge = create_edge(None)
   edge_add_source(edge, make_node_shape(node1))
   edge_add_target(edge, make_node_shape(node2))
-  update_containment(Some(edge))
+  layered_test_update_containment(Some(edge))
 
   graph
 }

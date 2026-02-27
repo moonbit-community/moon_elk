@@ -27,12 +27,31 @@ let distance_matcher_out_bottom_right : Int = distance_matcher_out_bottom |
   distance_matcher_out_right
 
 ///|
-fn[C, T] distance_matcher_bounds_provider_or_abort(
+pub suberror DistanceMatcherException {
+  DistanceMatcherException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] distance_matcher_raise(
+  message : String,
+) -> T raise DistanceMatcherException {
+  raise DistanceMatcherException(message)
+}
+
+///|
+fn distance_matcher_exception_message(err : DistanceMatcherException) -> String {
+  match err {
+    DistanceMatcherException(message) => message
+  }
+}
+
+///|
+fn[C, T] distance_matcher_bounds_provider_or_raise(
   matcher : DistanceMatcher[C, T],
-) -> IBoundsProvider[C, T] {
+) -> IBoundsProvider[C, T] raise DistanceMatcherException {
   match matcher.bounds_provider {
     Some(provider) => provider
-    None => abort("A bounds provider is required.")
+    None => distance_matcher_raise("A bounds provider is required.")
   }
 }
 
@@ -184,9 +203,9 @@ pub fn[C, T] new_distance_matcher() -> DistanceMatcher[C, T] {
 pub fn[C, T] DistanceMatcher::with_maximum_attachment_distance(
   self : DistanceMatcher[C, T],
   distance : Double,
-) -> DistanceMatcher[C, T] {
+) -> DistanceMatcher[C, T] raise DistanceMatcherException {
   if distance < 0.0 {
-    abort("Maximum attachment distance must be >= 0.")
+    distance_matcher_raise("Maximum attachment distance must be >= 0.")
   }
 
   self.worst_raw_value = distance
@@ -229,8 +248,8 @@ pub fn[C, T] DistanceMatcher::get_best_raw_value(
 ///|
 pub fn[C, T] DistanceMatcher::check_configuration(
   self : DistanceMatcher[C, T],
-) -> Unit {
-  ignore(distance_matcher_bounds_provider_or_abort(self))
+) -> Unit raise DistanceMatcherException {
+  ignore(distance_matcher_bounds_provider_or_raise(self))
 }
 
 ///|
@@ -239,7 +258,38 @@ pub fn[C, T] DistanceMatcher::preprocess(
   _data_provider : IDataProvider[C, T],
   _include_hierarchy : Bool,
 ) -> Unit {
-  self.check_configuration()
+  try self.check_configuration() catch {
+    err =>
+      layout_runtime_report_unsupported_configuration(
+        distance_matcher_exception_message(err),
+      )
+  } noraise {
+    _ => ()
+  }
+}
+
+///|
+fn[C, T] distance_matcher_raw_impl(
+  matcher : DistanceMatcher[C, T],
+  comment : C,
+  target : T,
+) -> Double raise DistanceMatcherException {
+  let bounds_provider = distance_matcher_bounds_provider_or_raise(matcher)
+  let comment_bounds = match bounds_provider.bounds_for_comment(comment) {
+    Some(bounds) => bounds
+    None => distance_matcher_raise("Bounds for comment are unavailable.")
+  }
+  let target_bounds = match bounds_provider.bounds_for_target(target) {
+    Some(bounds) => bounds
+    None => distance_matcher_raise("Bounds for target are unavailable.")
+  }
+
+  let distance = distance_matcher_distance(comment_bounds, target_bounds)
+  if distance == -1.0 {
+    matcher.get_worst_raw_value()
+  } else {
+    distance
+  }
 }
 
 ///|
@@ -248,21 +298,15 @@ pub fn[C, T] DistanceMatcher::raw(
   comment : C,
   target : T,
 ) -> Double {
-  let bounds_provider = distance_matcher_bounds_provider_or_abort(self)
-  let comment_bounds = match bounds_provider.bounds_for_comment(comment) {
-    Some(bounds) => bounds
-    None => abort("Bounds for comment are unavailable.")
-  }
-  let target_bounds = match bounds_provider.bounds_for_target(target) {
-    Some(bounds) => bounds
-    None => abort("Bounds for target are unavailable.")
-  }
-
-  let distance = distance_matcher_distance(comment_bounds, target_bounds)
-  if distance == -1.0 {
-    self.get_worst_raw_value()
-  } else {
-    distance
+  try distance_matcher_raw_impl(self, comment, target) catch {
+    err => {
+      layout_runtime_report_unsupported_configuration(
+        distance_matcher_exception_message(err),
+      )
+      self.get_worst_raw_value()
+    }
+  } noraise {
+    value => value
   }
 }
 

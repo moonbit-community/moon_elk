@@ -4,6 +4,18 @@ pub struct PropertyKeyValueConverter {
 }
 
 ///|
+pub suberror PropertyKeyValueConverterException {
+  PropertyKeyValueConverterException(String)
+} derive(Show, ToJson)
+
+///|
+fn property_key_value_converter_raise_unit(
+  message : String,
+) -> Unit raise PropertyKeyValueConverterException {
+  raise PropertyKeyValueConverterException(message)
+}
+
+///|
 pub fn new_property_key_value_converter() -> PropertyKeyValueConverter {
   { id_rule: "ID" }
 }
@@ -88,7 +100,22 @@ pub fn PropertyKeyValueConverter::to_string(
 ) -> String {
   ignore(self.id_rule)
   match value {
-    None => abort("IProperty value may not be null.")
+    None => {
+      try
+        property_key_value_converter_raise_unit(
+          "IProperty value may not be null.",
+        )
+      catch {
+        PropertyKeyValueConverterException(message) =>
+          @core.layout_runtime_report_unsupported_configuration(
+            "org.eclipse.elk.graph.text.conversion.PropertyKeyValueConverter: " +
+            message,
+          )
+      } noraise {
+        _ => ()
+      }
+      ""
+    }
     Some(key) => {
       let id = graph_text_property_key_id(key)
       let split = graph_text_split_dotted_segments(id)
@@ -131,7 +158,20 @@ pub fn PropertyKeyValueConverter::to_value(
 ) -> GraphTextPropertyKey {
   ignore(self.id_rule)
   if text == "" {
-    abort("Cannot convert empty string to a property identifier.")
+    try
+      property_key_value_converter_raise_unit(
+        "Cannot convert empty string to a property identifier.",
+      )
+    catch {
+      PropertyKeyValueConverterException(message) =>
+        @core.layout_runtime_report_unsupported_configuration(
+          "org.eclipse.elk.graph.text.conversion.PropertyKeyValueConverter: " +
+          message,
+        )
+    } noraise {
+      _ => ()
+    }
+    return CustomProperty("")
   }
   let decoded_segments : Array[String] = []
   for segment in graph_text_split_dotted_segments(text) {

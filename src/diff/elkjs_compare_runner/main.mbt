@@ -4,7 +4,10 @@ fn required_importer(
 ) -> @json.JsonImporter {
   match maybe_importer.get() {
     Some(importer) => importer
-    None => abort("missing importer")
+    None => {
+      @core.layout_runtime_report_unsupported_configuration("missing importer")
+      @json.new_json_importer()
+    }
   }
 }
 
@@ -25,7 +28,12 @@ pub fn layout_json(input_graph : String) -> String {
   importer.transfer_layout(root)
   match importer.get_input_model() {
     Some(model) => Json::object(model).stringify()
-    None => abort("missing input model")
+    None => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "missing input model",
+      )
+      "{}"
+    }
   }
 }
 

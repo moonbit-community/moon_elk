@@ -19,10 +19,12 @@ fn next_to_port_should_label_be_placed_next_to_port(
   for out_edge in port_outgoing_edges(port) {
     let targets = edge_targets(out_edge)
     if !targets.is_empty() {
-      let inside_edge = is_descendant(
-        connectable_shape_to_node(Some(targets[0])),
-        parent,
-      )
+      let target_node = try connectable_shape_to_node(Some(targets[0])) catch {
+        _ => continue
+      } noraise {
+        value => value
+      }
+      let inside_edge = is_descendant(target_node, parent)
       edges_to_insides = edges_to_insides || inside_edge
       edges_to_somewhere_else = edges_to_somewhere_else || !inside_edge
     }
@@ -31,10 +33,12 @@ fn next_to_port_should_label_be_placed_next_to_port(
   for in_edge in port_incoming_edges(port) {
     let sources = edge_sources(in_edge)
     if !sources.is_empty() {
-      let inside_edge = is_descendant(
-        connectable_shape_to_node(Some(sources[0])),
-        parent,
-      )
+      let source_node = try connectable_shape_to_node(Some(sources[0])) catch {
+        _ => continue
+      } noraise {
+        value => value
+      }
+      let inside_edge = is_descendant(source_node, parent)
       edges_to_insides = edges_to_insides || inside_edge
       edges_to_somewhere_else = edges_to_somewhere_else || !inside_edge
     }

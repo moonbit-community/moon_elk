@@ -1,4 +1,16 @@
 ///|
+priv suberror BreakingPointInserterException {
+  BreakingPointInserterException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] breaking_point_inserter_raise(
+  message : String,
+) -> T raise BreakingPointInserterException {
+  raise BreakingPointInserterException(message)
+}
+
+///|
 fn breaking_point_inserter_cutting_strategy_from_string(
   value : String,
 ) -> CuttingStrategy {
@@ -21,37 +33,45 @@ fn breaking_point_inserter_validify_strategy_from_string(
 }
 
 ///|
-fn breaking_point_inserter_require_edge_source(edge : LEdge) -> LPort {
+fn breaking_point_inserter_require_edge_source(
+  edge : LEdge,
+) -> LPort raise BreakingPointInserterException {
   match edge.get_source() {
     Some(value) => value
-    None => abort("edge has no source port")
+    None => breaking_point_inserter_raise("edge has no source port")
   }
 }
 
 ///|
-fn breaking_point_inserter_require_edge_target(edge : LEdge) -> LPort {
+fn breaking_point_inserter_require_edge_target(
+  edge : LEdge,
+) -> LPort raise BreakingPointInserterException {
   match edge.get_target() {
     Some(value) => value
-    None => abort("edge has no target port")
+    None => breaking_point_inserter_raise("edge has no target port")
   }
 }
 
 ///|
-fn breaking_point_inserter_require_port_node(port : LPort) -> LNode {
+fn breaking_point_inserter_require_port_node(
+  port : LPort,
+) -> LNode raise BreakingPointInserterException {
   match port.get_node() {
     Some(value) => value
-    None => abort("port has no owner node")
+    None => breaking_point_inserter_raise("port has no owner node")
   }
 }
 
 ///|
-fn breaking_point_inserter_port_side(value : String) -> @core.PortSide {
+fn breaking_point_inserter_port_side(
+  value : String,
+) -> @core.PortSide raise BreakingPointInserterException {
   for side in @core.port_side_values() {
     if @core.port_side_to_string(side) == value {
       return side
     }
   }
-  abort("unknown port side")
+  breaking_point_inserter_raise("unknown port side")
 }
 
 ///|
@@ -226,9 +246,9 @@ fn breaking_point_inserter_cut_offset_suc(
 ///|
 fn breaking_point_inserter_cut_apply_offset(
   cut : BreakingPointInserterCut,
-) -> Unit {
+) -> Unit raise BreakingPointInserterException {
   if !cut.assigned {
-    abort("Cannot offset an unassigned cut.")
+    breaking_point_inserter_raise("Cannot offset an unassigned cut.")
   }
   let offset = cut.new_index - cut.index
   breaking_point_inserter_cut_offset(cut, offset)
@@ -240,7 +260,7 @@ fn breaking_point_inserter_cut_apply_offset(
 fn breaking_point_inserter_improve_cuts(
   graph : LGraph,
   cuts : Array[Int],
-) -> Array[Int] {
+) -> Array[Int] raise BreakingPointInserterException {
   let improved_cuts = []
 
   let ccuts = []
@@ -336,7 +356,10 @@ fn breaking_point_inserter_improve_cuts(
 }
 
 ///|
-fn breaking_point_inserter_apply_cuts(graph : LGraph, cuts : Array[Int]) -> Int {
+fn breaking_point_inserter_apply_cuts(
+  graph : LGraph,
+  cuts : Array[Int],
+) -> Int raise BreakingPointInserterException {
   if cuts.is_empty() {
     return 0
   }
@@ -367,7 +390,7 @@ fn breaking_point_inserter_apply_cuts(graph : LGraph, cuts : Array[Int]) -> Int 
       let bp_layer_2 = new_layer(graph)
       let layer_index = layer.get_index()
       if layer_index < 0 {
-        abort("layer to cut is detached from graph")
+        breaking_point_inserter_raise("layer to cut is detached from graph")
       }
       ignore(layers.insert(layer_index + 1, bp_layer_1))
       ignore(layers.insert(layer_index + 2, bp_layer_2))
@@ -477,47 +500,56 @@ fn breaking_point_inserter_process(
   }
   ignore(monitor.begin("Breaking Point Insertion", 1.0))
 
-  let graph_stats = new_graph_stats(graph)
+  try {
+    let graph_stats = new_graph_stats(graph)
 
-  let cutting_strategy = breaking_point_inserter_cutting_strategy_from_string(
-    graph.get_property_string(layered_options_wrapping_cutting_strategy),
-  )
-  let calculator = match cutting_strategy {
-    CuttingStrategy::Manual => new_manual_cut_index_calculator()
-    CuttingStrategy::Ard => new_ard_cut_index_heuristic()
-    _ => new_msd_cut_index_heuristic()
-  }
-
-  let mut cuts = calculator.get_cut_indexes(graph, graph_stats)
-
-  if graph.get_property_bool(layered_options_wrapping_multi_edge_improve_cuts) {
-    cuts = breaking_point_inserter_improve_cuts(graph, cuts)
-  }
-
-  if !calculator.guarantee_valid() &&
-    graph.has_property_string(layered_options_wrapping_validify_strategy) {
-    let validify_strategy = breaking_point_inserter_validify_strategy_from_string(
-      graph.get_property_string(layered_options_wrapping_validify_strategy),
+    let cutting_strategy = breaking_point_inserter_cutting_strategy_from_string(
+      graph.get_property_string(layered_options_wrapping_cutting_strategy),
     )
-    match validify_strategy {
-      ValidifyStrategy::LookBack =>
-        cuts = single_edge_graph_wrapper_validify_indexes_looking_back(
-          graph_stats, cuts,
-        )
-      ValidifyStrategy::Greedy =>
-        cuts = single_edge_graph_wrapper_validify_indexes_greedily(
-          graph_stats, cuts,
-        )
-      _ => ()
+    let calculator = match cutting_strategy {
+      CuttingStrategy::Manual => new_manual_cut_index_calculator()
+      CuttingStrategy::Ard => new_ard_cut_index_heuristic()
+      _ => new_msd_cut_index_heuristic()
     }
-  }
 
-  if cuts.is_empty() {
-    monitor.done()
-    return
-  }
+    let mut cuts = calculator.get_cut_indexes(graph, graph_stats)
 
-  ignore(breaking_point_inserter_apply_cuts(graph, cuts))
+    if graph.get_property_bool(layered_options_wrapping_multi_edge_improve_cuts) {
+      cuts = breaking_point_inserter_improve_cuts(graph, cuts)
+    }
+
+    if !calculator.guarantee_valid() &&
+      graph.has_property_string(layered_options_wrapping_validify_strategy) {
+      let validify_strategy = breaking_point_inserter_validify_strategy_from_string(
+        graph.get_property_string(layered_options_wrapping_validify_strategy),
+      )
+      match validify_strategy {
+        ValidifyStrategy::LookBack =>
+          cuts = single_edge_graph_wrapper_validify_indexes_looking_back(
+            graph_stats, cuts,
+          )
+        ValidifyStrategy::Greedy =>
+          cuts = single_edge_graph_wrapper_validify_indexes_greedily(
+            graph_stats, cuts,
+          )
+        _ => ()
+      }
+    }
+
+    if cuts.is_empty() {
+      monitor.done()
+      return
+    }
+
+    ignore(breaking_point_inserter_apply_cuts(graph, cuts))
+  } catch {
+    BreakingPointInserterException(message) =>
+      @core.layout_runtime_report_unsupported_configuration(
+        "java.lang.IllegalStateException: " + message,
+      )
+  } noraise {
+    _ => ()
+  }
 
   monitor.done()
 }

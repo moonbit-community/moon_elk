@@ -5,6 +5,27 @@ pub(all) enum CoreDebugGRandomFileFormat {
 }
 
 ///|
+priv suberror CoreDebugGrandomGeneratorOptionsException {
+  CoreDebugGrandomGeneratorOptionsException(String)
+} derive(Show, ToJson)
+
+///|
+fn core_debug_grandom_generator_options_raise_unit(
+  message : String,
+) -> Unit raise CoreDebugGrandomGeneratorOptionsException {
+  raise CoreDebugGrandomGeneratorOptionsException(message)
+}
+
+///|
+fn core_debug_grandom_generator_options_exception_message(
+  err : CoreDebugGrandomGeneratorOptionsException,
+) -> String {
+  match err {
+    CoreDebugGrandomGeneratorOptionsException(message) => message
+  }
+}
+
+///|
 pub fn core_debug_grandom_file_format_xtext() -> CoreDebugGRandomFileFormat {
   FileXtext
 }
@@ -198,9 +219,22 @@ pub fn CoreDebugGRandomRandVal::val(
     result = self.exact
   } else if self.use_min_max {
     if self.max < self.min {
-      abort("max must be greater than or equal to min")
+      try
+        core_debug_grandom_generator_options_raise_unit(
+          "max must be greater than or equal to min",
+        )
+      catch {
+        err =>
+          @core.layout_runtime_report_unsupported_configuration(
+            core_debug_grandom_generator_options_exception_message(err),
+          )
+      } noraise {
+        _ => ()
+      }
+      result = self.min
+    } else {
+      result = random.double() * (self.max - self.min) + self.min
     }
-    result = random.double() * (self.max - self.min) + self.min
   } else {
     result = core_debug_grandom_rand_val_box_muller(random) * self.stddv +
       self.mean

@@ -37,6 +37,20 @@ pub fn GraphJsonTextUiCoreException::get_status(
 }
 
 ///|
+pub suberror GraphJsonTextExecutableExtensionFactoryException {
+  IllegalArgumentException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] graph_json_text_executable_extension_factory_raise_illegal_argument(
+  message : String,
+) -> T raise GraphJsonTextExecutableExtensionFactoryException {
+  raise GraphJsonTextExecutableExtensionFactoryException::IllegalArgumentException(
+    message,
+  )
+}
+
+///|
 pub struct ElkGraphJsonExecutableExtensionFactory {
   mut clazz_name : String?
   mut config : GraphJsonTextConfigurationElement?
@@ -64,7 +78,7 @@ pub fn ElkGraphJsonExecutableExtensionFactory::set_initialization_data(
   config : GraphJsonTextConfigurationElement?,
   _property_name : String?,
   data : GraphJsonTextInitializationData?,
-) -> Unit {
+) -> Unit raise GraphJsonTextExecutableExtensionFactoryException {
   match data {
     Some(GraphJsonTextInitializationDataString(value)) =>
       self.clazz_name = Some(value)
@@ -75,7 +89,7 @@ pub fn ElkGraphJsonExecutableExtensionFactory::set_initialization_data(
     None => ()
   }
   if self.clazz_name is None {
-    abort(
+    graph_json_text_executable_extension_factory_raise_illegal_argument(
       "couldn't handle passed data : " +
       graph_json_text_initialization_data_to_debug_string(data),
     )
@@ -128,7 +142,22 @@ pub fn ElkGraphJsonExecutableExtensionFactory::create(
       ),
     )
   }
-  let injector = activator.get_injector(graph_json_text_ui_language_name)
+  let injector = activator.get_injector(graph_json_text_ui_language_name) catch {
+    GraphJsonTextActivatorException::IllegalArgumentException(message) =>
+      return Err(
+        graph_json_text_executable_extension_factory_error(
+          bundle.get_symbolic_name(),
+          message,
+        ),
+      )
+    GraphJsonTextActivatorException::RuntimeException(message) =>
+      return Err(
+        graph_json_text_executable_extension_factory_error(
+          bundle.get_symbolic_name(),
+          message,
+        ),
+      )
+  }
   match injector.get_instance(class_name) {
     Some(result) => {
       match result {

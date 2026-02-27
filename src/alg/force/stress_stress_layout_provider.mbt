@@ -44,6 +44,28 @@ pub fn StressLayoutProvider::layout(
   layout_graph : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor,
 ) -> Unit {
+  try
+    stress_layout_provider_layout_impl(self, layout_graph, progress_monitor)
+  catch {
+    err => {
+      @core.layout_runtime_report_unsupported_graph(
+        force_import_exception_message(err),
+      )
+      if progress_monitor.is_running() {
+        progress_monitor.done()
+      }
+    }
+  } noraise {
+    _ => ()
+  }
+}
+
+///|
+fn stress_layout_provider_layout_impl(
+  provider : StressLayoutProvider,
+  layout_graph : @graph.ElkNode,
+  progress_monitor : @core.IElkProgressMonitor,
+) -> Unit raise ForceImportException {
   ignore(progress_monitor.begin("ELK Stress", 1.0))
   if !stress_option_bool_from_layout_options(layout_graph, stress_interactive) {
     let force_provider = new_force_layout_provider()
@@ -59,18 +81,28 @@ pub fn StressLayoutProvider::layout(
   }
   let importer = new_elk_graph_importer()
   let graph = importer.import_graph(layout_graph)
-  let components = self.components_processor.split(graph)
+  let components = provider.components_processor.split(graph)
   for sub_graph in components {
     if sub_graph.get_nodes().length() <= 1 {
       continue
     }
-    self.stress_majorization.initialize(sub_graph)
-    self.stress_majorization.execute()
+    try provider.stress_majorization.initialize(sub_graph) catch {
+      err => {
+        @core.layout_runtime_report_unsupported_configuration(
+          stress_majorization_exception_message(err),
+        )
+        progress_monitor.done()
+        return
+      }
+    } noraise {
+      _ => ()
+    }
+    provider.stress_majorization.execute()
     for label in sub_graph.get_labels() {
       flabel_refresh_position(label)
     }
   }
-  let merged = self.components_processor.recombine(components)
+  let merged = provider.components_processor.recombine(components)
   importer.apply_layout(merged)
   progress_monitor.done()
 }

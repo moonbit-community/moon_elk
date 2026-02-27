@@ -10,6 +10,18 @@ pub struct LayoutDiagramFileHandler {
 }
 
 ///|
+pub suberror LayoutDiagramFileHandlerException {
+  LayoutDiagramFileHandlerException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] layout_diagram_file_handler_raise(
+  message : String,
+) -> T raise LayoutDiagramFileHandlerException {
+  raise LayoutDiagramFileHandlerException(message)
+}
+
+///|
 pub fn new_layout_diagram_file_handler() -> LayoutDiagramFileHandler {
   { unit: () }
 }
@@ -46,11 +58,16 @@ pub fn gmf_layout_diagram_file_handler_was_processed_for_test(
 }
 
 ///|
-fn gmf_layout_diagram_file_handler_layout_diagram(file_path : String) -> Unit {
+fn gmf_layout_diagram_file_handler_layout_diagram(
+  file_path : String,
+) -> Unit raise LayoutDiagramFileHandlerException {
   let diagram_edit_part = match
     gmf_layout_file_diagram_store_ref.val.get(file_path) {
     Some(diagram) => diagram
-    None => abort("The selected file does not contain a diagram.")
+    None =>
+      layout_diagram_file_handler_raise(
+        "The selected file does not contain a diagram.",
+      )
   }
   gmf_diagram_layout_engine_invoke_layout(
     Single(diagram_edit_part),
@@ -64,7 +81,7 @@ fn gmf_layout_diagram_file_handler_layout_diagram(file_path : String) -> Unit {
 pub fn LayoutDiagramFileHandler::execute(
   _self : LayoutDiagramFileHandler,
   selection : Array[GmfSelectionItem],
-) -> Int {
+) -> Int raise LayoutDiagramFileHandlerException {
   let mut processed = 0
   for item in selection {
     match item {

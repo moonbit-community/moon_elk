@@ -36,7 +36,12 @@ fn greedy_port_distributor_crossings_counter(
 ) -> CrossingsCounter {
   match distributor.crossings_counter {
     Some(counter) => counter
-    None => abort("greedy port distributor is not initialized")
+    None => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "greedy port distributor is not initialized",
+      )
+      new_crossings_counter(distributor.port_pos)
+    }
   }
 }
 
@@ -46,7 +51,12 @@ fn greedy_port_distributor_hierarchical_counter(
 ) -> BetweenLayerEdgeTwoNodeCrossingsCounter {
   match distributor.hierarchical_crossings_counter {
     Some(counter) => counter
-    None => abort("hierarchical crossing counter is not initialized")
+    None => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "hierarchical crossing counter is not initialized",
+      )
+      new_between_layer_edge_two_node_crossings_counter([], 0)
+    }
   }
 }
 

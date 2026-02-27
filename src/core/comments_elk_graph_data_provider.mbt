@@ -61,7 +61,11 @@ pub fn ElkGraphDataProvider::attach(
   target : @graph.ElkNode,
 ) -> Unit {
   ignore(self)
-  ignore(@graph.create_simple_edge(comment, target))
+  try ignore(@graph.create_simple_edge(comment, target)) catch {
+    err => abort(err.to_string())
+  } noraise {
+    _ => ()
+  }
 }
 
 ///|

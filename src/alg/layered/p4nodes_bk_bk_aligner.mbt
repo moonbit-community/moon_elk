@@ -69,7 +69,7 @@ pub fn BKAligner::vertical_alignment(
   self : BKAligner,
   bal : BKAlignedLayout,
   marked_edges : Map[Int, Bool],
-) -> Unit {
+) -> Unit raise BKAlignedLayoutException {
   for layer in self.layered_graph.get_layers() {
     for node in layer.get_nodes() {
       let node_id = node.get_id()
@@ -175,7 +175,7 @@ pub fn BKAligner::vertical_alignment(
 pub fn BKAligner::inside_block_shift(
   self : BKAligner,
   bal : BKAlignedLayout,
-) -> Unit {
+) -> Unit raise BKAlignedLayoutException {
   ignore(self)
 
   for layer in bal.layered_graph.get_layers() {
@@ -196,19 +196,10 @@ pub fn BKAligner::inside_block_shift(
           break
         }
 
-        let edge = match bk_aligner_get_edge(current, next) {
-          Some(value) => value
-          None => abort("BKAligner: missing edge between aligned nodes")
-        }
+        let edge = bk_aligner_get_edge(current, next).unwrap()
 
-        let source = match edge.get_source() {
-          Some(value) => value
-          None => abort("BKAligner: edge source missing")
-        }
-        let target = match edge.get_target() {
-          Some(value) => value
-          None => abort("BKAligner: edge target missing")
-        }
+        let source = edge.get_source().unwrap()
+        let target = edge.get_target().unwrap()
 
         let port_pos_diff = if bk_hdirection_is_left(bal.require_hdir()) {
           target.get_position().y +

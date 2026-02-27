@@ -8,6 +8,18 @@ pub enum BkThresholdStrategyKind {
 }
 
 ///|
+pub suberror BkThresholdStrategyException {
+  BkThresholdStrategyException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] bk_threshold_strategy_raise(
+  message : String,
+) -> T raise BkThresholdStrategyException {
+  raise BkThresholdStrategyException(message)
+}
+
+///|
 pub struct BkPostprocessable {
   free : LNode
   is_root : Bool
@@ -57,20 +69,125 @@ pub fn new_bk_simple_threshold_strategy() -> BkThresholdStrategy {
 ///|
 fn BkThresholdStrategy::require_bal(
   self : BkThresholdStrategy,
-) -> BKAlignedLayout {
+) -> BKAlignedLayout raise BkThresholdStrategyException {
   match self.bal {
     Some(value) => value
-    None => abort("BkThresholdStrategy: bal is not initialized")
+    None =>
+      bk_threshold_strategy_raise("BkThresholdStrategy: bal is not initialized")
   }
 }
 
 ///|
 fn BkThresholdStrategy::require_ni(
   self : BkThresholdStrategy,
-) -> NeighborhoodInformation {
+) -> NeighborhoodInformation raise BkThresholdStrategyException {
   match self.ni {
     Some(value) => value
-    None => abort("BkThresholdStrategy: ni is not initialized")
+    None =>
+      bk_threshold_strategy_raise("BkThresholdStrategy: ni is not initialized")
+  }
+}
+
+///|
+fn bk_threshold_strategy_bal_require_vdir(
+  bal : BKAlignedLayout,
+) -> BKVDirection raise BkThresholdStrategyException {
+  bal.require_vdir() catch {
+    BKAlignedLayoutException::IllegalStateException(message) =>
+      bk_threshold_strategy_raise(message)
+  }
+}
+
+///|
+fn bk_threshold_strategy_bal_require_hdir(
+  bal : BKAlignedLayout,
+) -> BKHDirection raise BkThresholdStrategyException {
+  bal.require_hdir() catch {
+    BKAlignedLayoutException::IllegalStateException(message) =>
+      bk_threshold_strategy_raise(message)
+  }
+}
+
+///|
+fn bk_threshold_strategy_bal_require_root(
+  bal : BKAlignedLayout,
+  node : LNode,
+) -> LNode raise BkThresholdStrategyException {
+  bal.require_root(node) catch {
+    BKAlignedLayoutException::IllegalStateException(message) =>
+      bk_threshold_strategy_raise(message)
+  }
+}
+
+///|
+fn bk_threshold_strategy_bal_require_align(
+  bal : BKAlignedLayout,
+  node : LNode,
+) -> LNode raise BkThresholdStrategyException {
+  bal.require_align(node) catch {
+    BKAlignedLayoutException::IllegalStateException(message) =>
+      bk_threshold_strategy_raise(message)
+  }
+}
+
+///|
+fn bk_threshold_strategy_bal_require_y(
+  bal : BKAlignedLayout,
+  node : LNode,
+) -> Double raise BkThresholdStrategyException {
+  bal.require_y(node) catch {
+    BKAlignedLayoutException::IllegalStateException(message) =>
+      bk_threshold_strategy_raise(message)
+  }
+}
+
+///|
+fn bk_threshold_strategy_bal_calculate_delta(
+  bal : BKAlignedLayout,
+  fix : LPort,
+  block : LPort,
+) -> Double raise BkThresholdStrategyException {
+  bal.calculate_delta(fix, block) catch {
+    BKAlignedLayoutException::IllegalStateException(message) =>
+      bk_threshold_strategy_raise(message)
+  }
+}
+
+///|
+fn bk_threshold_strategy_bal_check_space_above(
+  bal : BKAlignedLayout,
+  node : LNode,
+  delta : Double,
+  ni : NeighborhoodInformation,
+) -> Double raise BkThresholdStrategyException {
+  bal.check_space_above(node, delta, ni) catch {
+    BKAlignedLayoutException::IllegalStateException(message) =>
+      bk_threshold_strategy_raise(message)
+  }
+}
+
+///|
+fn bk_threshold_strategy_bal_check_space_below(
+  bal : BKAlignedLayout,
+  node : LNode,
+  delta : Double,
+  ni : NeighborhoodInformation,
+) -> Double raise BkThresholdStrategyException {
+  bal.check_space_below(node, delta, ni) catch {
+    BKAlignedLayoutException::IllegalStateException(message) =>
+      bk_threshold_strategy_raise(message)
+  }
+}
+
+///|
+fn bk_threshold_strategy_bal_shift_block(
+  bal : BKAlignedLayout,
+  node : LNode,
+  delta : Double,
+) -> Unit raise BkThresholdStrategyException {
+  bal.shift_block(node, delta) catch {
+    BKAlignedLayoutException::IllegalStateException(message) =>
+      bk_threshold_strategy_raise(message)
   }
 }
 
@@ -80,18 +197,26 @@ fn bk_threshold_strategy_same_node(left : LNode, right : LNode) -> Bool {
 }
 
 ///|
-fn bk_threshold_strategy_require_node_from_port(port : LPort) -> LNode {
+fn bk_threshold_strategy_require_node_from_port(
+  port : LPort,
+) -> LNode raise BkThresholdStrategyException {
   match port.get_node() {
     Some(value) => value
-    None => abort("BkThresholdStrategy: port has no owner node")
+    None =>
+      bk_threshold_strategy_raise("BkThresholdStrategy: port has no owner node")
   }
 }
 
 ///|
-fn bk_threshold_strategy_require_edge(pp : BkPostprocessable) -> LEdge {
+fn bk_threshold_strategy_require_edge(
+  pp : BkPostprocessable,
+) -> LEdge raise BkThresholdStrategyException {
   match pp.edge {
     Some(value) => value
-    None => abort("BkThresholdStrategy: postprocessable has no edge")
+    None =>
+      bk_threshold_strategy_raise(
+        "BkThresholdStrategy: postprocessable has no edge",
+      )
   }
 }
 
@@ -121,15 +246,17 @@ pub fn BkThresholdStrategy::get_other(
   self : BkThresholdStrategy,
   edge : LEdge,
   node : LNode,
-) -> LNode {
+) -> LNode raise BkThresholdStrategyException {
   ignore(self)
   let source = match edge.get_source() {
     Some(value) => value
-    None => abort("BkThresholdStrategy: edge has no source")
+    None =>
+      bk_threshold_strategy_raise("BkThresholdStrategy: edge has no source")
   }
   let target = match edge.get_target() {
     Some(value) => value
-    None => abort("BkThresholdStrategy: edge has no target")
+    None =>
+      bk_threshold_strategy_raise("BkThresholdStrategy: edge has no target")
   }
   let source_node = bk_threshold_strategy_require_node_from_port(source)
   let target_node = bk_threshold_strategy_require_node_from_port(target)
@@ -139,7 +266,9 @@ pub fn BkThresholdStrategy::get_other(
   } else if target_node.get_handle() == node.get_handle() {
     source_node
   } else {
-    abort("BkThresholdStrategy: node is neither source nor target of edge")
+    bk_threshold_strategy_raise(
+      "BkThresholdStrategy: node is neither source nor target of edge",
+    )
   }
 }
 
@@ -147,16 +276,16 @@ pub fn BkThresholdStrategy::get_other(
 fn BkThresholdStrategy::pick_edge(
   self : BkThresholdStrategy,
   pp : BkPostprocessable,
-) -> BkPostprocessable {
+) -> BkPostprocessable raise BkThresholdStrategyException {
   let bal = self.require_bal()
 
   let edges = if pp.is_root {
-    if bk_hdirection_is_right(bal.require_hdir()) {
+    if bk_hdirection_is_right(bk_threshold_strategy_bal_require_hdir(bal)) {
       pp.free.get_incoming_edges()
     } else {
       pp.free.get_outgoing_edges()
     }
-  } else if bk_hdirection_is_left(bal.require_hdir()) {
+  } else if bk_hdirection_is_left(bk_threshold_strategy_bal_require_hdir(bal)) {
     pp.free.get_incoming_edges()
   } else {
     pp.free.get_outgoing_edges()
@@ -164,7 +293,7 @@ fn BkThresholdStrategy::pick_edge(
 
   let mut has_edges = false
   for edge in edges {
-    let free_root = bal.require_root(pp.free)
+    let free_root = bk_threshold_strategy_bal_require_root(bal, pp.free)
     let only_dummies = bal.od[free_root.get_id()]
 
     if !only_dummies && edge.is_in_layer_edge() {
@@ -199,7 +328,7 @@ fn BkThresholdStrategy::pick_edge(
     } else {
       continue
     }
-    let other_root = bal.require_root(other)
+    let other_root = bk_threshold_strategy_bal_require_root(bal, other)
     if self.block_finished.contains(other_root.get_handle()) {
       pp.has_edges = true
       pp.edge = Some(edge)
@@ -217,10 +346,12 @@ fn BkThresholdStrategy::get_bound(
   self : BkThresholdStrategy,
   block_node : LNode,
   is_root : Bool,
-) -> Double {
+) -> Double raise BkThresholdStrategyException {
   let bal = self.require_bal()
 
-  let invalid = if bk_vdirection_is_up(bal.require_vdir()) {
+  let invalid = if bk_vdirection_is_up(
+      bk_threshold_strategy_bal_require_vdir(bal),
+    ) {
     @double.infinity
   } else {
     @double.neg_infinity
@@ -235,22 +366,20 @@ fn BkThresholdStrategy::get_bound(
   }
 
   let edge = bk_threshold_strategy_require_edge(pick)
-  let left = match edge.get_source() {
-    Some(value) => value
-    None => abort("BkThresholdStrategy: edge source missing")
-  }
-  let right = match edge.get_target() {
-    Some(value) => value
-    None => abort("BkThresholdStrategy: edge target missing")
-  }
+  let left = edge.get_source().unwrap()
+  let right = edge.get_target().unwrap()
 
   let threshold = if is_root {
-    let root_port = if bk_hdirection_is_right(bal.require_hdir()) {
+    let root_port = if bk_hdirection_is_right(
+        bk_threshold_strategy_bal_require_hdir(bal),
+      ) {
       right
     } else {
       left
     }
-    let other_port = if bk_hdirection_is_right(bal.require_hdir()) {
+    let other_port = if bk_hdirection_is_right(
+        bk_threshold_strategy_bal_require_hdir(bal),
+      ) {
       left
     } else {
       right
@@ -260,9 +389,11 @@ fn BkThresholdStrategy::get_bound(
     let other_port_node = bk_threshold_strategy_require_node_from_port(
       other_port,
     )
-    let other_root = bal.require_root(other_port_node)
+    let other_root = bk_threshold_strategy_bal_require_root(
+      bal, other_port_node,
+    )
 
-    bal.require_y(other_root) +
+    bk_threshold_strategy_bal_require_y(bal, other_root) +
     bal.inner_shift[other_port_node.get_id()] +
     other_port.get_position().y +
     other_port.get_anchor().y -
@@ -270,12 +401,16 @@ fn BkThresholdStrategy::get_bound(
     root_port.get_position().y -
     root_port.get_anchor().y
   } else {
-    let root_port = if bk_hdirection_is_left(bal.require_hdir()) {
+    let root_port = if bk_hdirection_is_left(
+        bk_threshold_strategy_bal_require_hdir(bal),
+      ) {
       right
     } else {
       left
     }
-    let other_port = if bk_hdirection_is_left(bal.require_hdir()) {
+    let other_port = if bk_hdirection_is_left(
+        bk_threshold_strategy_bal_require_hdir(bal),
+      ) {
       left
     } else {
       right
@@ -285,9 +420,11 @@ fn BkThresholdStrategy::get_bound(
     let other_port_node = bk_threshold_strategy_require_node_from_port(
       other_port,
     )
-    let other_root = bal.require_root(other_port_node)
+    let other_root = bk_threshold_strategy_bal_require_root(
+      bal, other_port_node,
+    )
 
-    bal.require_y(other_root) +
+    bk_threshold_strategy_bal_require_y(bal, other_root) +
     bal.inner_shift[other_port_node.get_id()] +
     other_port.get_position().y +
     other_port.get_anchor().y -
@@ -298,8 +435,8 @@ fn BkThresholdStrategy::get_bound(
 
   let left_node = bk_threshold_strategy_require_node_from_port(left)
   let right_node = bk_threshold_strategy_require_node_from_port(right)
-  bal.su[bal.require_root(left_node).get_id()] = true
-  bal.su[bal.require_root(right_node).get_id()] = true
+  bal.su[bk_threshold_strategy_bal_require_root(bal, left_node).get_id()] = true
+  bal.su[bk_threshold_strategy_bal_require_root(bal, right_node).get_id()] = true
 
   threshold
 }
@@ -310,12 +447,12 @@ fn BkThresholdStrategy::calculate_threshold_simple(
   old_thresh : Double,
   block_root : LNode,
   current_node : LNode,
-) -> Double {
+) -> Double raise BkThresholdStrategyException {
   let bal = self.require_bal()
 
   let is_root = bk_threshold_strategy_same_node(block_root, current_node)
   let is_last = bk_threshold_strategy_same_node(
-    bal.require_align(current_node),
+    bk_threshold_strategy_bal_require_align(bal, current_node),
     block_root,
   )
 
@@ -339,7 +476,7 @@ fn BkThresholdStrategy::calculate_threshold_simple(
 fn BkThresholdStrategy::process_postprocessable(
   self : BkThresholdStrategy,
   pp : BkPostprocessable,
-) -> Bool {
+) -> Bool raise BkThresholdStrategyException {
   let bal = self.require_bal()
   let ni = self.require_ni()
   let edge = bk_threshold_strategy_require_edge(pp)
@@ -361,18 +498,25 @@ fn BkThresholdStrategy::process_postprocessable(
     (source, target)
   }
 
-  let delta = bal.calculate_delta(fix, block)
+  let delta = bk_threshold_strategy_bal_calculate_delta(bal, fix, block)
   let block_node = bk_threshold_strategy_require_node_from_port(block)
 
   if delta > 0.0 && delta < bk_threshold {
-    let available_space = bal.check_space_above(block_node, delta, ni)
-    bal.shift_block(block_node, -available_space)
+    let available_space = bk_threshold_strategy_bal_check_space_above(
+      bal, block_node, delta, ni,
+    )
+    bk_threshold_strategy_bal_shift_block(bal, block_node, -available_space)
     return available_space > 0.0
   }
 
   if delta < 0.0 && -delta < bk_threshold {
-    let available_space = bal.check_space_below(block_node, -delta, ni)
-    bal.shift_block(block_node, available_space)
+    let available_space = bk_threshold_strategy_bal_check_space_below(
+      bal,
+      block_node,
+      -delta,
+      ni,
+    )
+    bk_threshold_strategy_bal_shift_block(bal, block_node, available_space)
     return available_space > 0.0
   }
 
@@ -380,7 +524,9 @@ fn BkThresholdStrategy::process_postprocessable(
 }
 
 ///|
-fn BkThresholdStrategy::post_process_simple(self : BkThresholdStrategy) -> Unit {
+fn BkThresholdStrategy::post_process_simple(
+  self : BkThresholdStrategy,
+) -> Unit raise BkThresholdStrategyException {
   let bal = self.require_bal()
 
   while !self.post_processables_queue.is_empty() {
@@ -392,7 +538,7 @@ fn BkThresholdStrategy::post_process_simple(self : BkThresholdStrategy) -> Unit 
     }
 
     let edge = bk_threshold_strategy_require_edge(pick)
-    let free_root = bal.require_root(pick.free)
+    let free_root = bk_threshold_strategy_bal_require_root(bal, pick.free)
     let only_dummies = bal.od[free_root.get_id()]
 
     if !only_dummies && edge.is_in_layer_edge() {
@@ -419,22 +565,44 @@ pub fn BkThresholdStrategy::calculate_threshold(
   block_root : LNode,
   current_node : LNode,
 ) -> Double {
-  match self.kind {
-    BkThresholdStrategyKind::NullThreshold =>
-      if bk_vdirection_is_up(self.require_bal().require_vdir()) {
-        @double.infinity
-      } else {
-        @double.neg_infinity
-      }
-    BkThresholdStrategyKind::SimpleThreshold =>
-      self.calculate_threshold_simple(old_thresh, block_root, current_node)
+  try {
+    match self.kind {
+      BkThresholdStrategyKind::NullThreshold =>
+        if bk_vdirection_is_up(
+            bk_threshold_strategy_bal_require_vdir(self.require_bal()),
+          ) {
+          @double.infinity
+        } else {
+          @double.neg_infinity
+        }
+      BkThresholdStrategyKind::SimpleThreshold =>
+        self.calculate_threshold_simple(old_thresh, block_root, current_node)
+    }
+  } catch {
+    BkThresholdStrategyException(message) => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "java.lang.IllegalStateException: " + message,
+      )
+      old_thresh
+    }
+  } noraise {
+    value => value
   }
 }
 
 ///|
 pub fn BkThresholdStrategy::post_process(self : BkThresholdStrategy) -> Unit {
-  match self.kind {
-    BkThresholdStrategyKind::NullThreshold => ()
-    BkThresholdStrategyKind::SimpleThreshold => self.post_process_simple()
+  try {
+    match self.kind {
+      BkThresholdStrategyKind::NullThreshold => ()
+      BkThresholdStrategyKind::SimpleThreshold => self.post_process_simple()
+    }
+  } catch {
+    BkThresholdStrategyException(message) =>
+      @core.layout_runtime_report_unsupported_configuration(
+        "java.lang.IllegalStateException: " + message,
+      )
+  } noraise {
+    _ => ()
   }
 }

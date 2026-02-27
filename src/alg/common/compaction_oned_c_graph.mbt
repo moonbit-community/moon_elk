@@ -95,14 +95,18 @@ fn direction_eq(left : @core.Direction, right : @core.Direction) -> Bool {
 ///|
 fn checked_cnode(node : CNode) -> Unit {
   if node.handle < 0 || node.handle >= cnode_store.val.length() {
-    abort("invalid compaction node")
+    @core.layout_runtime_report_unsupported_configuration(
+      "invalid compaction node",
+    )
   }
 }
 
 ///|
 fn checked_cgroup(group : CGroup) -> Unit {
   if group.handle < 0 || group.handle >= cgroup_store.val.length() {
-    abort("invalid compaction group")
+    @core.layout_runtime_report_unsupported_configuration(
+      "invalid compaction group",
+    )
   }
 }
 
@@ -243,7 +247,7 @@ pub fn CNodeBuilder::group_with(
 pub fn CNodeBuilder::create(self : CNodeBuilder, graph : CGraph) -> CNode {
   let hitbox = match self.hitbox {
     Some(rect) => rect
-    None => abort("CNode must have a hitbox.")
+    None => @core.new_elk_rectangle()
   }
 
   let node : CNode = { handle: cnode_store.val.length() }

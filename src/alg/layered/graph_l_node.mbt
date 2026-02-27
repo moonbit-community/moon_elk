@@ -14,6 +14,11 @@ fn lnode_internal_handle(node : LNode) -> Int {
 }
 
 ///|
+fn[T] l_node_abort(message : String) -> T {
+  abort(message)
+}
+
+///|
 fn lnode_port_side_equals(
   left : @core.PortSide,
   right : @core.PortSide,
@@ -237,7 +242,7 @@ pub fn LNode::get_graph(self : LNode) -> LGraph {
     None =>
       match self.layer {
         Some(layer) => layer.get_graph()
-        None => abort("LNode is not attached to a graph")
+        None => l_node_abort("LNode is not attached to a graph")
       }
   }
 }

@@ -231,10 +231,13 @@ fn graphviz_layout_provider_sub_monitor(
 ///|
 fn graphviz_layout_provider_tool_of(
   provider : GraphvizLayoutProvider,
-) -> GraphvizTool {
+) -> GraphvizTool raise GraphvizException {
   match provider.graphviz_tool {
     Some(tool) => tool
-    None => abort("The Graphviz layout provider is not initialized.")
+    None =>
+      raise new_graphviz_exception(
+        "The Graphviz layout provider is not initialized.",
+      )
   }
 }
 
@@ -291,7 +294,14 @@ pub fn GraphvizLayoutProvider::initialize(
       None => ""
     },
   )
-  self.graphviz_tool = Some(new_graphviz_tool(self.command))
+  try new_graphviz_tool(self.command) catch {
+    err => {
+      @core.layout_runtime_report_unsupported_configuration(err.to_string())
+      self.graphviz_tool = None
+    }
+  } noraise {
+    tool => self.graphviz_tool = Some(tool)
+  }
   self.dot_resource_set_provider = @dot.new_dot_resource_set_provider(() => {
     (graphviz_layout_provider_resource_set_provider_ref.val)()
   })
@@ -300,7 +310,13 @@ pub fn GraphvizLayoutProvider::initialize(
 ///|
 pub fn GraphvizLayoutProvider::dispose(self : GraphvizLayoutProvider) -> Unit {
   match self.graphviz_tool {
-    Some(tool) => tool.cleanup(graphviz_cleanup_stop())
+    Some(tool) =>
+      try tool.cleanup(graphviz_cleanup_stop()) catch {
+        err =>
+          @core.layout_runtime_report_unsupported_configuration(err.to_string())
+      } noraise {
+        _ => ()
+      }
     None => ()
   }
 }
@@ -326,7 +342,7 @@ pub fn GraphvizLayoutProvider::write_dot_graph(
   monitor : @core.IElkProgressMonitor,
   debug_mode : Bool,
   resource_set : GraphvizLayoutResourceSet,
-) -> Unit {
+) -> Unit raise GraphvizException {
   ignore(monitor.begin("Serialize model", 1.0))
   let tool = graphviz_layout_provider_tool_of(self)
   let output_stream = tool.input()
@@ -366,7 +382,7 @@ pub fn GraphvizLayoutProvider::read_dot_graph(
   monitor : @core.IElkProgressMonitor,
   debug_mode : Bool,
   resource_set : GraphvizLayoutResourceSet,
-) -> @dot.DotGraphvizModel {
+) -> @dot.DotGraphvizModel raise GraphvizException {
   ignore(monitor.begin("Parse output", 1.0))
   let tool = graphviz_layout_provider_tool_of(self)
   let input_stream = tool.output()
@@ -391,43 +407,42 @@ pub fn GraphvizLayoutProvider::read_dot_graph(
   let errors = parse_result.get_errors()
   if !errors.is_empty() {
     tool.cleanup(graphviz_cleanup_error())
-    abort(graphviz_layout_provider_render_errors(errors))
+    raise new_graphviz_exception(graphviz_layout_provider_render_errors(errors))
   }
 
+  let no_output_message = "No output from the Graphviz process. Try increasing the timeout value in the Eclipse Diagram Layout preferences."
   let graphviz_model = parse_result.get_model()
   match graphviz_model {
     Some(model) =>
       if model.get_graphs().is_empty() {
         tool.cleanup(graphviz_cleanup_error())
-        abort(
-          "No output from the Graphviz process. Try increasing the timeout value in the Eclipse Diagram Layout preferences.",
-        )
+        raise new_graphviz_exception(no_output_message)
       } else {
         monitor.done()
         model
       }
     None => {
       tool.cleanup(graphviz_cleanup_error())
-      abort(
-        "No output from the Graphviz process. Try increasing the timeout value in the Eclipse Diagram Layout preferences.",
-      )
+      raise new_graphviz_exception(no_output_message)
     }
   }
 }
 
 ///|
-pub fn GraphvizLayoutProvider::layout(
-  self : GraphvizLayoutProvider,
+fn graphviz_layout_provider_layout_impl(
+  provider : GraphvizLayoutProvider,
   parent_node : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor,
-) -> Unit {
-  if graphviz_layout_provider_command_is_invalid(self.command) {
-    abort("The Graphviz layout provider is not initialized.")
+) -> Unit raise GraphvizException {
+  if graphviz_layout_provider_command_is_invalid(provider.command) {
+    raise new_graphviz_exception(
+      "The Graphviz layout provider is not initialized.",
+    )
   }
 
   ignore(
     progress_monitor.begin(
-      "Graphviz layout (" + @dot.command_to_string(self.command) + ")",
+      "Graphviz layout (" + @dot.command_to_string(provider.command) + ")",
       2.0,
     ),
   )
@@ -441,19 +456,19 @@ pub fn GraphvizLayoutProvider::layout(
   )
   graphviz_layout_provider_serial_call_no_ref.val = graphviz_layout_provider_serial_call_no_ref.val +
     1
-  self.my_call_no = graphviz_layout_provider_serial_call_no_ref.val
+  provider.my_call_no = graphviz_layout_provider_serial_call_no_ref.val
 
-  let tool = graphviz_layout_provider_tool_of(self)
+  let tool = graphviz_layout_provider_tool_of(provider)
   tool.initialize()
 
-  let resource_set = self.dot_resource_set_provider.create_resource_set()
+  let resource_set = provider.dot_resource_set_provider.create_resource_set()
   let dot_exporter = new_layout_dot_exporter()
   let trans_data : @dot.DotTransformationData[
     @graph.ElkNode,
     @dot.DotGraphvizModel,
   ] = @dot.new_dot_transformation_data()
   trans_data.set_source_graph(parent_node)
-  trans_data.set_command_property(@dot.dot_exporter_command, self.command)
+  trans_data.set_command_property(@dot.dot_exporter_command, provider.command)
   dot_exporter.transform(trans_data)
 
   let target_graphs = trans_data.get_target_graphs()
@@ -463,14 +478,14 @@ pub fn GraphvizLayoutProvider::layout(
     return
   }
 
-  self.write_dot_graph(
+  provider.write_dot_graph(
     target_graphs[0],
     graphviz_layout_provider_sub_monitor(progress_monitor, 1.0),
     debug_mode,
     resource_set,
   )
 
-  let graphviz_output = self.read_dot_graph(
+  let graphviz_output = provider.read_dot_graph(
     graphviz_layout_provider_sub_monitor(progress_monitor, 1.0),
     debug_mode,
     resource_set,
@@ -492,6 +507,26 @@ pub fn GraphvizLayoutProvider::layout(
     },
   )
   progress_monitor.done()
+}
+
+///|
+pub fn GraphvizLayoutProvider::layout(
+  self : GraphvizLayoutProvider,
+  parent_node : @graph.ElkNode,
+  progress_monitor : @core.IElkProgressMonitor,
+) -> Unit {
+  try
+    graphviz_layout_provider_layout_impl(self, parent_node, progress_monitor)
+  catch {
+    err => {
+      @core.layout_runtime_report_unsupported_configuration(err.to_string())
+      if progress_monitor.is_running() {
+        progress_monitor.done()
+      }
+    }
+  } noraise {
+    _ => ()
+  }
 }
 
 ///|

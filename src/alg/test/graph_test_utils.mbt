@@ -174,11 +174,21 @@ fn graph_test_utils_create_port_edge(
 ) -> ElkEdge {
   let source_node = match port_parent(source_port) {
     Some(node) => node
-    None => abort("Source port has no parent node.")
+    None => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "Source port has no parent node.",
+      )
+      create_graph()
+    }
   }
   let target_node = match port_parent(target_port) {
     Some(node) => node
-    None => abort("Target port has no parent node.")
+    None => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "Target port has no parent node.",
+      )
+      create_graph()
+    }
   }
   let containing_node = match
     find_lowest_common_ancestor(source_node, target_node) {
@@ -271,14 +281,16 @@ pub fn graph_test_utils_get_child(
         result = child
         current_parent = child
       }
-      None =>
-        abort(
+      None => {
+        @core.layout_runtime_report_unsupported_configuration(
           "The node \"" +
           node_identifier(current_parent) +
           "\" has no child with identifier \"" +
           identifier +
           "\".",
         )
+        return current_parent
+      }
     }
   }
   result
@@ -291,11 +303,15 @@ pub fn graph_test_utils_get_port(node : ElkNode, port_id : String) -> ElkPort {
       return port
     }
   }
-  abort(
+  @core.layout_runtime_report_unsupported_configuration(
     "The node \"" +
     node_identifier(node) +
     "\" has no port with identifier \"" +
     port_id +
     "\".",
   )
+  match node_ports(node) {
+    [first, ..] => first
+    [] => create_port(Some(node))
+  }
 }

@@ -1,4 +1,25 @@
 ///|
+priv suberror LayoutProcessorConfigurationException {
+  LayoutProcessorConfigurationException(String)
+} derive(Show, ToJson)
+
+///|
+fn layout_processor_configuration_raise(
+  message : String,
+) -> Unit raise LayoutProcessorConfigurationException {
+  raise LayoutProcessorConfigurationException(message)
+}
+
+///|
+fn layout_processor_configuration_exception_message(
+  err : LayoutProcessorConfigurationException,
+) -> String {
+  match err {
+    LayoutProcessorConfigurationException(message) => message
+  }
+}
+
+///|
 pub(all) struct LayoutProcessorConfiguration[P, G] {
   phase_descriptor : PhaseDescriptor[P]
   list_accessor : AbstractRandomListAccessor[
@@ -65,7 +86,19 @@ pub fn[P, G] LayoutProcessorConfiguration::add(
   processor : ILayoutProcessorFactory[P, G],
 ) -> LayoutProcessorConfiguration[P, G] {
   if self.current_index < 0 {
-    abort("Did not call before(...) or after(...) before calling add(...).")
+    try
+      layout_processor_configuration_raise(
+        "Did not call before(...) or after(...) before calling add(...).",
+      )
+    catch {
+      err =>
+        layout_runtime_report_unsupported_configuration(
+          layout_processor_configuration_exception_message(err),
+        )
+    } noraise {
+      _ => ()
+    }
+    return self
   }
   self.do_add(self.current_index, processor)
   self

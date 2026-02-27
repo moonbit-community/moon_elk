@@ -5,6 +5,18 @@ priv struct ScanlineTimestamp {
 }
 
 ///|
+pub suberror ScanlineConstraintCalculatorException {
+  ScanlineConstraintCalculatorException(String)
+} derive(Show, ToJson)
+
+///|
+fn scanline_constraint_calculator_raise_unit(
+  message : String,
+) -> Unit raise ScanlineConstraintCalculatorException {
+  raise ScanlineConstraintCalculatorException(message)
+}
+
+///|
 fn scanline_center_x(node : CNode) -> Double {
   let hitbox = node.hitbox()
   hitbox.x + hitbox.width / 2.0
@@ -168,7 +180,20 @@ fn scanline_constraints_sweep(
     if point.low {
       let success = scanline_interval_insert(intervals, point.node)
       if !success {
-        abort("Invalid hitboxes for scanline constraint calculation.")
+        try
+          scanline_constraint_calculator_raise_unit(
+            "Invalid hitboxes for scanline constraint calculation.",
+          )
+        catch {
+          ScanlineConstraintCalculatorException(message) =>
+            @core.layout_runtime_report_unsupported_configuration(
+              "org.eclipse.elk.alg.common.compaction.oned.ScanlineConstraintCalculator: " +
+              message,
+            )
+        } noraise {
+          _ => ()
+        }
+        return
       }
 
       ignore(

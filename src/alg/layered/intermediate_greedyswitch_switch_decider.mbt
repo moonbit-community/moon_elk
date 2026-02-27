@@ -62,21 +62,15 @@ fn switch_decider_is_north_south_port(node : LNode) -> Bool {
 }
 
 ///|
-fn switch_decider_origin_port_of_external_dummy(node : LNode) -> LPort {
-  match node.get_property_l_port(internal_properties_origin_l_port) {
-    Some(origin_port) => origin_port
-    None => abort("external port dummy has no origin port")
-  }
+fn switch_decider_origin_port_of_external_dummy(node : LNode) -> LPort? {
+  node.get_property_l_port(internal_properties_origin_l_port)
 }
 
 ///|
 fn SwitchDecider::switch_decider_parent_cross_counter(
   self : SwitchDecider,
-) -> CrossingsCounter {
-  match self.parent_cross_counter {
-    Some(counter) => counter
-    None => abort("parent crossings counter is not initialized")
-  }
+) -> CrossingsCounter? {
+  self.parent_cross_counter
 }
 
 ///|
@@ -100,11 +94,25 @@ pub fn new_switch_decider(
   graph_data : GraphInfoHolder,
   one_sided : Bool,
 ) -> SwitchDecider {
-  if free_layer_index < 0 || free_layer_index >= graph.length() {
-    abort("Greedy SwitchDecider: free layer not in graph")
+  let effective_free_layer_index = if free_layer_index < 0 ||
+    free_layer_index >= graph.length() {
+    @core.layout_runtime_report_unsupported_configuration(
+      "Greedy SwitchDecider: free layer not in graph",
+    )
+    if graph.is_empty() {
+      0
+    } else {
+      graph.length() - 1
+    }
+  } else {
+    free_layer_index
   }
 
-  let free_layer = graph[free_layer_index]
+  let free_layer = if graph.is_empty() {
+    []
+  } else {
+    graph[effective_free_layer_index]
+  }
   let left_in_layer_counter = new_crossings_counter(port_positions)
   ignore(
     left_in_layer_counter.init_port_positions_for_in_layer_crossings(
@@ -142,7 +150,7 @@ pub fn new_switch_decider(
 
   if count_crossings_caused_by_port_switch {
     switch_decider.init_parent_crossings_counters(
-      free_layer_index,
+      effective_free_layer_index,
       graph.length(),
     )
   }
@@ -176,7 +184,15 @@ fn SwitchDecider::init_parent_crossings_counters(
   }
 
   let right_most_layer = free_layer_index == graph_length - 1
-  let counter = self.switch_decider_parent_cross_counter()
+  let counter = match self.switch_decider_parent_cross_counter() {
+    Some(value) => value
+    None => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "parent crossings counter is not initialized",
+      )
+      return
+    }
+  }
   if right_most_layer {
     counter.init_for_counting_between(middle_layer, right_layer)
   } else {
@@ -202,9 +218,35 @@ pub fn SwitchDecider::notify_of_switch(
   )
 
   if self.count_crossings_caused_by_port_switch {
-    let upper_port = switch_decider_origin_port_of_external_dummy(upper_node)
-    let lower_port = switch_decider_origin_port_of_external_dummy(lower_node)
-    let counter = self.switch_decider_parent_cross_counter()
+    let upper_port = match
+      switch_decider_origin_port_of_external_dummy(upper_node) {
+      Some(value) => value
+      None => {
+        @core.layout_runtime_report_unsupported_configuration(
+          "external port dummy has no origin port",
+        )
+        return
+      }
+    }
+    let lower_port = match
+      switch_decider_origin_port_of_external_dummy(lower_node) {
+      Some(value) => value
+      None => {
+        @core.layout_runtime_report_unsupported_configuration(
+          "external port dummy has no origin port",
+        )
+        return
+      }
+    }
+    let counter = match self.switch_decider_parent_cross_counter() {
+      Some(value) => value
+      None => {
+        @core.layout_runtime_report_unsupported_configuration(
+          "parent crossings counter is not initialized",
+        )
+        return
+      }
+    }
     counter.switch_ports(upper_port, lower_port)
   }
 }
@@ -250,9 +292,35 @@ pub fn SwitchDecider::does_switch_reduce_crossings(
     self.north_south_counter.get_lower_upper_crossings()
 
   if self.count_crossings_caused_by_port_switch {
-    let upper_port = switch_decider_origin_port_of_external_dummy(upper_node)
-    let lower_port = switch_decider_origin_port_of_external_dummy(lower_node)
-    let counter = self.switch_decider_parent_cross_counter()
+    let upper_port = match
+      switch_decider_origin_port_of_external_dummy(upper_node) {
+      Some(value) => value
+      None => {
+        @core.layout_runtime_report_unsupported_configuration(
+          "external port dummy has no origin port",
+        )
+        return false
+      }
+    }
+    let lower_port = match
+      switch_decider_origin_port_of_external_dummy(lower_node) {
+      Some(value) => value
+      None => {
+        @core.layout_runtime_report_unsupported_configuration(
+          "external port dummy has no origin port",
+        )
+        return false
+      }
+    }
+    let counter = match self.switch_decider_parent_cross_counter() {
+      Some(value) => value
+      None => {
+        @core.layout_runtime_report_unsupported_configuration(
+          "parent crossings counter is not initialized",
+        )
+        return false
+      }
+    }
     let crossing_numbers = counter.count_crossings_between_ports_in_both_orders(
       upper_port, lower_port,
     )

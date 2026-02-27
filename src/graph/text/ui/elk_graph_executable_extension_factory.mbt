@@ -37,6 +37,20 @@ pub fn GraphTextUiCoreException::get_status(
 }
 
 ///|
+pub suberror GraphTextExecutableExtensionFactoryException {
+  IllegalArgumentException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] graph_text_executable_extension_factory_raise_illegal_argument(
+  message : String,
+) -> T raise GraphTextExecutableExtensionFactoryException {
+  raise GraphTextExecutableExtensionFactoryException::IllegalArgumentException(
+    message,
+  )
+}
+
+///|
 pub struct ElkGraphExecutableExtensionFactory {
   mut clazz_name : String?
   mut config : GraphTextConfigurationElement?
@@ -64,7 +78,7 @@ pub fn ElkGraphExecutableExtensionFactory::set_initialization_data(
   config : GraphTextConfigurationElement?,
   _property_name : String?,
   data : GraphTextInitializationData?,
-) -> Unit {
+) -> Unit raise GraphTextExecutableExtensionFactoryException {
   match data {
     Some(GraphTextInitializationDataString(value)) =>
       self.clazz_name = Some(value)
@@ -73,7 +87,7 @@ pub fn ElkGraphExecutableExtensionFactory::set_initialization_data(
     None => ()
   }
   if self.clazz_name is None {
-    abort(
+    graph_text_executable_extension_factory_raise_illegal_argument(
       "couldn't handle passed data : " +
       graph_text_initialization_data_to_debug_string(data),
     )
@@ -126,7 +140,22 @@ pub fn ElkGraphExecutableExtensionFactory::create(
       ),
     )
   }
-  let injector = activator.get_injector(graph_text_ui_language_name)
+  let injector = activator.get_injector(graph_text_ui_language_name) catch {
+    GraphTextActivatorException::IllegalArgumentException(message) =>
+      return Err(
+        graph_text_executable_extension_factory_error(
+          bundle.get_symbolic_name(),
+          message,
+        ),
+      )
+    GraphTextActivatorException::RuntimeException(message) =>
+      return Err(
+        graph_text_executable_extension_factory_error(
+          bundle.get_symbolic_name(),
+          message,
+        ),
+      )
+  }
   match injector.get_instance(class_name) {
     Some(result) => {
       match result {

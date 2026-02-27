@@ -77,7 +77,11 @@ pub fn create_edge(parent : ElkNode?) -> ElkEdge {
 
 ///|
 pub fn create_simple_edge(source : ElkNode, target : ElkNode) -> ElkEdge {
-  @graph.create_simple_edge(source, target)
+  try @graph.create_simple_edge(source, target) catch {
+    err => abort(err.to_string())
+  } noraise {
+    edge => edge
+  }
 }
 
 ///|

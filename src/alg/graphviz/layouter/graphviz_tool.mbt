@@ -215,9 +215,11 @@ pub struct GraphvizTool {
 }
 
 ///|
-pub fn new_graphviz_tool(thecommand : @dot.Command) -> GraphvizTool {
+pub fn new_graphviz_tool(
+  thecommand : @dot.Command,
+) -> GraphvizTool raise GraphvizException {
   match thecommand {
-    @dot.Invalid => abort("Invalid Graphviz command.")
+    @dot.Invalid => raise new_graphviz_exception("Invalid Graphviz command.")
     _ => ()
   }
   { process: None, command: thecommand, watchdog: None, graphviz_stream: None }
@@ -338,11 +340,11 @@ pub fn graphviz_tool_get_dot_executable_with_prompt(
 }
 
 ///|
-pub fn graphviz_tool_get_dot_executable() -> String {
+pub fn graphviz_tool_get_dot_executable() -> String raise GraphvizException {
   match graphviz_tool_get_dot_executable_with_prompt(true) {
     Some(executable) => executable
     None =>
-      abort(
+      raise new_graphviz_exception(
         "The dot executable was not found in default paths. Please check your Graphviz installation.",
       )
   }
@@ -513,7 +515,7 @@ fn graphviz_tool_cleanup_is_stop(mode : GraphvizToolCleanup) -> Bool {
 pub fn GraphvizTool::initialize(
   self : GraphvizTool,
   arguments? : Array[String]? = None,
-) -> Unit {
+) -> Unit raise GraphvizException {
   if self.watchdog is None {
     self.watchdog = Some(new_graphviz_watchdog())
   }
@@ -540,29 +542,35 @@ pub fn GraphvizTool::initialize(
   match (graphviz_tool_process_factory_ref.val)(args) {
     Some(process) => self.process = Some(process)
     None =>
-      abort(
+      raise new_graphviz_exception(
         "Failed to start Graphviz process. Please check your Graphviz installation.",
       )
   }
 }
 
 ///|
-pub fn GraphvizTool::input(self : GraphvizTool) -> GraphvizOutputStream {
+pub fn GraphvizTool::input(
+  self : GraphvizTool,
+) -> GraphvizOutputStream raise GraphvizException {
   match self.process {
     Some(process) => process.get_output_stream()
-    None => abort("Graphviz tool has not been initialized.")
+    None =>
+      raise new_graphviz_exception("Graphviz tool has not been initialized.")
   }
 }
 
 ///|
-pub fn GraphvizTool::output(self : GraphvizTool) -> GraphvizInputStream {
+pub fn GraphvizTool::output(
+  self : GraphvizTool,
+) -> GraphvizInputStream raise GraphvizException {
   match self.process {
     Some(process) => {
       let wrapped = graphviz_stream_wrap(process.get_input_stream())
       self.graphviz_stream = Some(wrapped)
       wrapped
     }
-    None => abort("Graphviz tool has not been initialized.")
+    None =>
+      raise new_graphviz_exception("Graphviz tool has not been initialized.")
   }
 }
 
@@ -570,7 +578,7 @@ pub fn GraphvizTool::output(self : GraphvizTool) -> GraphvizInputStream {
 pub fn GraphvizTool::cleanup(
   self : GraphvizTool,
   cleanup_mode : GraphvizToolCleanup,
-) -> Unit {
+) -> Unit raise GraphvizException {
   let mut error_message : String? = None
   match self.process {
     Some(process) => {
@@ -608,7 +616,7 @@ pub fn GraphvizTool::cleanup(
   }
 
   match error_message {
-    Some(message) => abort("Graphviz error: " + message)
+    Some(message) => raise new_graphviz_exception("Graphviz error: " + message)
     None => {
       self.graphviz_stream = None
       match self.watchdog {

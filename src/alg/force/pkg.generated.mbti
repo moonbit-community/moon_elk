@@ -152,6 +152,8 @@ pub let force_category_id : String
 
 pub let force_edge_labels_inline : ForceBoolOption
 
+pub fn force_import_exception_message(ForceImportException) -> String
+
 pub let force_interactive : ForceBoolOption
 
 pub let force_internal_bb_low_right : ForceInternalVectorProperty
@@ -276,9 +278,22 @@ pub let stress_iteration_limit : ForceIntOption
 
 pub fn stress_layout_provider_as_layout_provider(StressLayoutProvider) -> @core.AbstractLayoutProvider
 
+pub fn stress_majorization_exception_message(StressMajorizationException) -> String
+
 pub let stress_omit_node_micro_layout : ForceBoolOption
 
 // Errors
+pub suberror ForceImportException {
+  UnsupportedGraph(String)
+}
+pub impl Show for ForceImportException
+pub impl ToJson for ForceImportException
+
+pub suberror StressMajorizationException {
+  StressMajorizationException(String)
+}
+pub impl Show for StressMajorizationException
+pub impl ToJson for StressMajorizationException
 
 // Types and methods
 pub struct AbstractForceModelState {
@@ -308,7 +323,7 @@ pub struct ElkGraphImporter {
   _dummy : Unit
 }
 pub fn ElkGraphImporter::apply_layout(Self, FGraph) -> Unit
-pub fn ElkGraphImporter::import_graph(Self, Int) -> FGraph
+pub fn ElkGraphImporter::import_graph(Self, Int) -> FGraph raise ForceImportException
 
 pub struct FGraph {
   nodes : Array[Int]
@@ -468,7 +483,7 @@ pub struct StressMajorization {
   node_by_id : Map[Int, Int]
 }
 pub fn StressMajorization::execute(Self) -> Unit
-pub fn StressMajorization::initialize(Self, FGraph) -> Unit
+pub fn StressMajorization::initialize(Self, FGraph) -> Unit raise StressMajorizationException
 
 // Type aliases
 pub type FBendpoint = Int

@@ -13,7 +13,7 @@ fn issue871_connect_nodes(
   let edge = create_edge(None)
   edge_add_source(edge, make_node_shape(source))
   edge_add_target(edge, make_node_shape(target))
-  update_containment(Some(edge))
+  layered_test_update_containment(Some(edge))
   edge
 }
 

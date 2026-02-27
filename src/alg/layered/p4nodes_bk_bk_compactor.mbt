@@ -22,6 +22,18 @@ fn bk_compactor_reverse_nodes(nodes : Array[LNode]) -> Array[LNode] {
 }
 
 ///|
+fn bk_compactor_vertical_spacing(
+  compactor : BKCompactor,
+  first : LNode,
+  second : LNode,
+) -> Double raise BKAlignedLayoutException {
+  compactor.spacings.get_vertical_spacing(first, second) catch {
+    LayeredSpacingsException(message) =>
+      bk_aligned_layout_raise_illegal_state(message)
+  }
+}
+
+///|
 pub struct BKCompactor {
   layered_graph : LGraph
   thresh_strategy : BkThresholdStrategy
@@ -99,7 +111,7 @@ fn BKCompactor::add_class_edge(
 fn BKCompactor::place_classes(
   self : BKCompactor,
   bal : BKAlignedLayout,
-) -> Unit {
+) -> Unit raise BKAlignedLayoutException {
   let queue : Array[Int] = []
   for entry in self.class_nodes.to_array() {
     let (handle, _) = entry
@@ -178,7 +190,7 @@ fn BKCompactor::place_block(
   self : BKCompactor,
   root : LNode,
   bal : BKAlignedLayout,
-) -> Unit {
+) -> Unit raise BKAlignedLayoutException {
   if bal.y[root.get_id()] is Some(_) {
     return
   }
@@ -195,10 +207,7 @@ fn BKCompactor::place_block(
 
   let root_handle = root.get_handle()
   while true {
-    let current_layer = match current_node.get_layer() {
-      Some(value) => value
-      None => abort("BKCompactor: node has no layer")
-    }
+    let current_layer = current_node.get_layer().unwrap()
     let current_index_in_layer = self.ni.node_index[current_node.get_id()]
     let current_layer_size = current_layer.get_nodes().length()
 
@@ -228,7 +237,9 @@ fn BKCompactor::place_block(
           bal.require_sink(root),
           bal.require_sink(neighbor_root),
         ) {
-        let spacing = self.spacings.get_vertical_spacing(current_node, neighbor)
+        let spacing = bk_compactor_vertical_spacing(
+          self, current_node, neighbor,
+        )
 
         if bk_vdirection_is_up(bal.require_vdir()) {
           let current_block_position = bal.require_y(root)
@@ -350,7 +361,7 @@ fn BKCompactor::place_block(
 pub fn BKCompactor::horizontal_compaction(
   self : BKCompactor,
   bal : BKAlignedLayout,
-) -> Unit {
+) -> Unit raise BKAlignedLayoutException {
   for layer in self.layered_graph.get_layers() {
     for node in layer.get_nodes() {
       let node_id = node.get_id()

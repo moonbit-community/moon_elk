@@ -36,7 +36,7 @@ fn issue515_test_connect(
   edge_set_identifier(edge, id)
   edge_add_source(edge, make_port_shape(source))
   edge_add_target(edge, make_port_shape(target))
-  update_containment(Some(edge))
+  layered_test_update_containment(Some(edge))
   edge
 }
 

@@ -53,6 +53,22 @@ fn dis_co_paint_rectangle_intersects(
 }
 
 ///|
+fn dis_co_graph_renderer_element_offset_or_zero(
+  element : @disco.DCElement,
+) -> @core.KVector {
+  try element.get_offset() catch {
+    err => {
+      @core.layout_runtime_report_unsupported_configuration(
+        @disco.dc_element_exception_message(err),
+      )
+      @core.new_kvector()
+    }
+  } noraise {
+    offset => offset
+  }
+}
+
+///|
 fn dis_co_paint_rectangle_contains_point(
   rectangle : DisCoPaintRectangle,
   x : Int,
@@ -258,8 +274,26 @@ fn dis_co_paint_rectangle_from_edge(
     return dis_co_paint_rectangle_from_shape(0.0, 0.0, 1.0, 1.0, offset, scale)
   }
 
-  let source_node = @graph.connectable_shape_to_node(Some(sources[0]))
-  let target_node = @graph.connectable_shape_to_node(Some(targets[0]))
+  let source_node = try
+    @graph.connectable_shape_to_node(Some(sources[0]))
+  catch {
+    _ =>
+      return dis_co_paint_rectangle_from_shape(
+        0.0, 0.0, 1.0, 1.0, offset, scale,
+      )
+  } noraise {
+    value => value
+  }
+  let target_node = try
+    @graph.connectable_shape_to_node(Some(targets[0]))
+  catch {
+    _ =>
+      return dis_co_paint_rectangle_from_shape(
+        0.0, 0.0, 1.0, 1.0, offset, scale,
+      )
+  } noraise {
+    value => value
+  }
 
   let mut min_x = @graph.node_x(source_node)
   let mut min_y = @graph.node_y(source_node)
@@ -315,7 +349,7 @@ fn new_dis_co_paint_polygon(
   scale : Double,
 ) -> DisCoPaintPolygon {
   let coords = element.get_coords()
-  let component_offset = element.get_offset()
+  let component_offset = dis_co_graph_renderer_element_offset_or_zero(element)
 
   let mut min_x = @int.max_value
   let mut min_y = @int.max_value
@@ -817,8 +851,20 @@ fn dis_co_graph_renderer_render_edge(
     return
   }
 
-  let source_node = @graph.connectable_shape_to_node(Some(sources[0]))
-  let target_node = @graph.connectable_shape_to_node(Some(targets[0]))
+  let source_node = try
+    @graph.connectable_shape_to_node(Some(sources[0]))
+  catch {
+    _ => return
+  } noraise {
+    value => value
+  }
+  let target_node = try
+    @graph.connectable_shape_to_node(Some(targets[0]))
+  catch {
+    _ => return
+  } noraise {
+    value => value
+  }
 
   if !@graph.is_descendant(source_node, graph) ||
     !@graph.is_descendant(target_node, graph) {
@@ -977,7 +1023,7 @@ fn dis_co_graph_renderer_render_component_graph(
       renderer.polygon_map[polygon_key] = polygon
 
       let bounds = element.get_bounds()
-      let element_offset = element.get_offset()
+      let element_offset = dis_co_graph_renderer_element_offset_or_zero(element)
       let element_bounding = @core.new_elk_rectangle()
       element_bounding.set_rect(
         bounds.x + element_offset.x,

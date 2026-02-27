@@ -22,7 +22,9 @@ priv struct FNodeData {
 ///|
 fn checked_fnode(node : FNode) -> Unit {
   if node < 0 || node >= fnode_store.val.length() {
-    abort("invalid force node id")
+    @core.layout_runtime_report_unsupported_configuration(
+      "invalid force node id",
+    )
   }
 }
 

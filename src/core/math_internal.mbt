@@ -1,4 +1,26 @@
 ///|
+priv suberror MathParseException {
+  MathParseException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] math_parse_raise(message : String) -> T raise MathParseException {
+  raise MathParseException(message)
+}
+
+///|
+fn math_parse_raise_unit(message : String) -> Unit raise MathParseException {
+  math_parse_raise(message)
+}
+
+///|
+fn math_parse_exception_message(err : MathParseException) -> String {
+  match err {
+    MathParseException(message) => message
+  }
+}
+
+///|
 fn _is_delim_char(c : Char, delims : String) -> Bool {
   delims.contains_char(c)
 }
@@ -79,10 +101,28 @@ fn _split_by_any_delims_drop_trailing_empty(
 fn _parse_double_or_abort(raw : String, message : String) -> Double {
   let text = raw.trim().to_string()
   if text.length() == 0 {
-    abort(message)
+    try math_parse_raise_unit(message) catch {
+      err =>
+        layout_runtime_report_unsupported_configuration(
+          math_parse_exception_message(err),
+        )
+    } noraise {
+      _ => ()
+    }
+    return 0.0
   }
   try @strconv.parse_double(text) catch {
-    _ => abort(message)
+    _ => {
+      try math_parse_raise_unit(message) catch {
+        err =>
+          layout_runtime_report_unsupported_configuration(
+            math_parse_exception_message(err),
+          )
+      } noraise {
+        _ => ()
+      }
+      0.0
+    }
   } noraise {
     value => value
   }

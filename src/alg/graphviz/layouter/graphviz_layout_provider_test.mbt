@@ -21,18 +21,28 @@ fn graphviz_layout_provider_test_process(
 }
 
 ///|
-test "panic GraphvizLayoutProvider rejects invalid initialization parameter" {
+test "GraphvizLayoutProvider reports invalid initialization parameter" {
+  @core.layout_runtime_clear_error()
   let provider = new_graphviz_layout_provider()
   provider.initialize(Some("not-a-command"))
+  inspect(
+    @core.layout_runtime_take_error_message(),
+    content="Some(\"org.eclipse.elk.core.UnsupportedConfigurationException: Invalid Graphviz command.\")",
+  )
 }
 
 ///|
-test "panic GraphvizLayoutProvider requires initialize before layout" {
+test "GraphvizLayoutProvider reports missing initialize before layout" {
+  @core.layout_runtime_clear_error()
   @graph.reset_graph_model_for_test()
   let provider = new_graphviz_layout_provider()
   let root = @graph.create_graph()
   ignore(@graph.create_node(Some(root)))
   provider.layout(root, @core.new_elk_progress_monitor())
+  inspect(
+    @core.layout_runtime_take_error_message(),
+    content="Some(\"org.eclipse.elk.core.UnsupportedConfigurationException: The Graphviz layout provider is not initialized.\")",
+  )
 }
 
 ///|

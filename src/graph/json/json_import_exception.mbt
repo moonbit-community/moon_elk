@@ -1,24 +1,23 @@
 ///|
-pub struct JsonImportException {
-  message : String?
-  cause : String?
-}
+pub suberror JsonImportException {
+  JsonImportException(String?, String?)
+} derive(Show, ToJson)
 
 ///|
 pub fn new_json_import_exception() -> JsonImportException {
-  { message: None, cause: None }
+  JsonImportException(None, None)
 }
 
 ///|
 pub fn new_json_import_exception_message(
   message : String,
 ) -> JsonImportException {
-  { message: Some(message), cause: None }
+  JsonImportException(Some(message), None)
 }
 
 ///|
 pub fn new_json_import_exception_cause(cause : String) -> JsonImportException {
-  { message: None, cause: Some(cause) }
+  JsonImportException(None, Some(cause))
 }
 
 ///|
@@ -26,15 +25,19 @@ pub fn new_json_import_exception_message_cause(
   message : String,
   cause : String,
 ) -> JsonImportException {
-  { message: Some(message), cause: Some(cause) }
+  JsonImportException(Some(message), Some(cause))
 }
 
 ///|
 pub fn JsonImportException::get_message(self : JsonImportException) -> String? {
-  self.message
+  match self {
+    JsonImportException(message, _) => message
+  }
 }
 
 ///|
 pub fn JsonImportException::get_cause(self : JsonImportException) -> String? {
-  self.cause
+  match self {
+    JsonImportException(_, cause) => cause
+  }
 }

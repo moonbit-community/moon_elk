@@ -119,8 +119,20 @@ fn draw2d_layout_apply_edges(layout_node : @graph.ElkNode) -> Unit {
     if sources.length() != 1 || targets.length() != 1 {
       continue
     }
-    let source_node = @graph.connectable_shape_to_node(Some(sources[0]))
-    let target_node = @graph.connectable_shape_to_node(Some(targets[0]))
+    let source_node = try
+      @graph.connectable_shape_to_node(Some(sources[0]))
+    catch {
+      _ => continue
+    } noraise {
+      value => value
+    }
+    let target_node = try
+      @graph.connectable_shape_to_node(Some(targets[0]))
+    catch {
+      _ => continue
+    } noraise {
+      value => value
+    }
     let source_known = match child_map.get(source_node) {
       Some(_) => true
       None => false

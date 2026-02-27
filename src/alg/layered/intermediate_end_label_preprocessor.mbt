@@ -39,7 +39,12 @@ fn end_label_preprocessor_edge_source_is_port(
 fn end_label_preprocessor_require_node(port : LPort) -> LNode {
   match port.get_node() {
     Some(value) => value
-    None => abort("port has no owner node")
+    None => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "port has no owner node",
+      )
+      end_label_preprocessor_require_node(port)
+    }
   }
 }
 

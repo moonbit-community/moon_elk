@@ -128,7 +128,7 @@ fn issue447_test_connect(
   edge_set_identifier(edge, id)
   edge_add_source(edge, make_port_shape(source))
   edge_add_target(edge, make_port_shape(target))
-  update_containment(Some(edge))
+  layered_test_update_containment(Some(edge))
   edge
 }
 
@@ -235,8 +235,14 @@ fn issue447_test_test_edge_end_point(
 ///|
 fn issue447_test_test_edge(edge : @graph.ElkEdge) -> Unit {
   for section in @graph.edge_sections(edge) {
-    match
-      @graph.connectable_shape_to_port(edge_section_incoming_shape(section)) {
+    let incoming_port = try
+      @graph.connectable_shape_to_port(edge_section_incoming_shape(section))
+    catch {
+      _ => None
+    } noraise {
+      value => value
+    }
+    match incoming_port {
       Some(port) =>
         issue447_test_test_edge_end_point(
           edge,
@@ -247,8 +253,14 @@ fn issue447_test_test_edge(edge : @graph.ElkEdge) -> Unit {
         )
       None => ()
     }
-    match
-      @graph.connectable_shape_to_port(edge_section_outgoing_shape(section)) {
+    let outgoing_port = try
+      @graph.connectable_shape_to_port(edge_section_outgoing_shape(section))
+    catch {
+      _ => None
+    } noraise {
+      value => value
+    }
+    match outgoing_port {
       Some(port) =>
         issue447_test_test_edge_end_point(
           edge,

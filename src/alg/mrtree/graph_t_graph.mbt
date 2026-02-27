@@ -33,7 +33,9 @@ let mrtree_graph_store : Ref[Array[MrtreeGraphData]] = Ref::new([])
 ///|
 fn checked_mrtree_graph(graph : MrtreeGraph) -> Unit {
   if graph < 0 || graph >= mrtree_graph_store.val.length() {
-    abort("invalid mrtree graph id")
+    @core.layout_runtime_report_unsupported_configuration(
+      "invalid mrtree graph id",
+    )
   }
 }
 

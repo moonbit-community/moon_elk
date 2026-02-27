@@ -10,13 +10,56 @@ fn nubs_self_loop_port_position(port : LPort) -> @core.KVector {
 }
 
 ///|
+fn nubs_self_loop_default_points() -> Array[@core.KVector] {
+  [
+    @core.new_kvector_xy(0.0, 0.0),
+    @core.new_kvector_xy(10.0, 0.0),
+    @core.new_kvector_xy(20.0, 5.0),
+    @core.new_kvector_xy(30.0, 10.0),
+    @core.new_kvector_xy(40.0, 5.0),
+    @core.new_kvector_xy(50.0, 0.0),
+    @core.new_kvector_xy(60.0, 0.0),
+  ]
+}
+
+///|
+fn nubs_self_loop_normalize_corner_points(
+  corner_bend_points : Array[@core.KVector],
+  required_size : Int,
+) -> Array[@core.KVector] {
+  let normalized = []
+  for point in corner_bend_points {
+    if normalized.length() >= required_size {
+      break
+    }
+    normalized.push(point)
+  }
+  if normalized.is_empty() {
+    normalized.push(@core.new_kvector())
+  }
+  while normalized.length() < required_size {
+    normalized.push(normalized[normalized.length() - 1].clone())
+  }
+  normalized
+}
+
+///|
 fn new_nubs_self_loop_internal(
   clamped : Bool,
   dimension : Int,
   k_vectors : Array[@core.KVector],
 ) -> NubsSelfLoop {
   {
-    nub_spline: new_nub_spline(clamped, dimension, k_vectors),
+    nub_spline: new_nub_spline(clamped, dimension, k_vectors) catch {
+      NubSplineException::IllegalArgumentException(message) => {
+        @core.layout_runtime_report_unsupported_configuration(message)
+        new_nubs_self_loop_internal(
+          true,
+          nub_spline_dim,
+          nubs_self_loop_default_points(),
+        ).nub_spline
+      }
+    },
     first_label_position: @core.new_kvector(),
   }
 }
@@ -189,12 +232,17 @@ pub fn nubs_self_loop_create_across_self_loop(
 ) -> NubsSelfLoop {
   let source_pos = nubs_self_loop_port_position(source)
   let target_pos = nubs_self_loop_port_position(target)
-  if corner_bend_points.length() != 2 {
-    abort("corner bend points size must be 2")
+  let normalized_corner_bend_points = if corner_bend_points.length() != 2 {
+    @core.layout_runtime_report_unsupported_configuration(
+      "corner bend points size must be 2",
+    )
+    nubs_self_loop_normalize_corner_points(corner_bend_points, 2)
+  } else {
+    corner_bend_points
   }
 
-  let third_cp = corner_bend_points[0]
-  let fourth_cp = corner_bend_points[1]
+  let third_cp = normalized_corner_bend_points[0]
+  let fourth_cp = normalized_corner_bend_points[1]
   let middle_cp = fourth_cp.clone().add(third_cp).scale(nubs_self_loop_half)
 
   new_nubs_self_loop_internal(true, nub_spline_dim, [
@@ -213,13 +261,18 @@ pub fn nubs_self_loop_create_three_side_self_loop(
 ) -> NubsSelfLoop {
   let source_pos = nubs_self_loop_port_position(source)
   let target_pos = nubs_self_loop_port_position(target)
-  if corner_bend_points.length() != 3 {
-    abort("corner bend points size must be 3")
+  let normalized_corner_bend_points = if corner_bend_points.length() != 3 {
+    @core.layout_runtime_report_unsupported_configuration(
+      "corner bend points size must be 3",
+    )
+    nubs_self_loop_normalize_corner_points(corner_bend_points, 3)
+  } else {
+    corner_bend_points
   }
 
-  let third_cp = corner_bend_points[0]
-  let fourth_cp = corner_bend_points[1]
-  let fifth_cp = corner_bend_points[2]
+  let third_cp = normalized_corner_bend_points[0]
+  let fourth_cp = normalized_corner_bend_points[1]
+  let fifth_cp = normalized_corner_bend_points[2]
 
   new_nubs_self_loop_internal(true, nub_spline_dim, [
     source_pos, source_bend_point, third_cp, fourth_cp, fifth_cp, target_bend_point,
@@ -237,14 +290,19 @@ pub fn nubs_self_loop_create_four_side_self_loop(
 ) -> NubsSelfLoop {
   let source_pos = nubs_self_loop_port_position(source)
   let target_pos = nubs_self_loop_port_position(target)
-  if corner_bend_points.length() != 4 {
-    abort("corner bend points size must be 4")
+  let normalized_corner_bend_points = if corner_bend_points.length() != 4 {
+    @core.layout_runtime_report_unsupported_configuration(
+      "corner bend points size must be 4",
+    )
+    nubs_self_loop_normalize_corner_points(corner_bend_points, 4)
+  } else {
+    corner_bend_points
   }
 
-  let third_cp = corner_bend_points[0]
-  let fourth_cp = corner_bend_points[1]
-  let fifth_cp = corner_bend_points[2]
-  let sixth_cp = corner_bend_points[3]
+  let third_cp = normalized_corner_bend_points[0]
+  let fourth_cp = normalized_corner_bend_points[1]
+  let fifth_cp = normalized_corner_bend_points[2]
+  let sixth_cp = normalized_corner_bend_points[3]
 
   new_nubs_self_loop_internal(true, nub_spline_dim, [
     source_pos, source_bend_point, third_cp, fourth_cp, fifth_cp, sixth_cp, target_bend_point,

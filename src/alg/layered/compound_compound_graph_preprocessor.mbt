@@ -1,4 +1,16 @@
 ///|
+priv suberror CompoundGraphPreprocessorException {
+  CompoundGraphPreprocessorException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] compound_graph_preprocessor_raise(
+  message : String,
+) -> T raise CompoundGraphPreprocessorException {
+  raise CompoundGraphPreprocessorException(message)
+}
+
+///|
 let compound_graph_preprocessor_internal_properties_cross_hierarchy_map : @graph.IProperty[
   Array[(LEdge, (LEdge, LGraph, PortType))],
 ] = @graph.new_property("crossHierarchyMap", [])
@@ -43,34 +55,42 @@ fn compound_graph_preprocessor_new_external_port(
 }
 
 ///|
-fn compound_graph_preprocessor_require_source_port(edge : LEdge) -> LPort {
+fn compound_graph_preprocessor_require_source_port(
+  edge : LEdge,
+) -> LPort raise CompoundGraphPreprocessorException {
   match edge.get_source() {
     Some(port) => port
-    None => abort("edge has no source port")
+    None => compound_graph_preprocessor_raise("edge has no source port")
   }
 }
 
 ///|
-fn compound_graph_preprocessor_require_target_port(edge : LEdge) -> LPort {
+fn compound_graph_preprocessor_require_target_port(
+  edge : LEdge,
+) -> LPort raise CompoundGraphPreprocessorException {
   match edge.get_target() {
     Some(port) => port
-    None => abort("edge has no target port")
+    None => compound_graph_preprocessor_raise("edge has no target port")
   }
 }
 
 ///|
-fn compound_graph_preprocessor_require_port_node(port : LPort) -> LNode {
+fn compound_graph_preprocessor_require_port_node(
+  port : LPort,
+) -> LNode raise CompoundGraphPreprocessorException {
   match port.get_node() {
     Some(node) => node
-    None => abort("port has no owner node")
+    None => compound_graph_preprocessor_raise("port has no owner node")
   }
 }
 
 ///|
-fn _compound_graph_preprocessor_require_parent_node(graph : LGraph) -> LNode {
+fn _compound_graph_preprocessor_require_parent_node(
+  graph : LGraph,
+) -> LNode raise CompoundGraphPreprocessorException {
   match graph.get_parent_node() {
     Some(node) => node
-    None => abort("graph has no parent node")
+    None => compound_graph_preprocessor_raise("graph has no parent node")
   }
 }
 
@@ -196,6 +216,27 @@ fn compound_graph_preprocessor_graph_has_property(
     ),
     property,
   )
+}
+
+///|
+fn compound_graph_preprocessor_create_external_port_dummy_checked(
+  property_holder : LPort,
+  ext_port_constraints : @core.PortConstraints,
+  port_side : @core.PortSide,
+  net_flow : Int,
+  port_node_size : @core.KVector?,
+  port_position : @core.KVector?,
+  port_size : @core.KVector,
+  layout_direction : @core.Direction,
+  layered_graph : LGraph,
+) -> LNode raise CompoundGraphPreprocessorException {
+  create_external_port_dummy(
+    property_holder, ext_port_constraints, port_side, net_flow, port_node_size, port_position,
+    port_size, layout_direction, layered_graph,
+  ) catch {
+    error =>
+      compound_graph_preprocessor_raise(l_graph_util_exception_message(error))
+  }
 }
 
 ///|
@@ -334,7 +375,7 @@ fn compound_graph_preprocessor_cross_hierarchy_values(
 fn compound_graph_preprocessor_sort_cross_hierarchy_edges(
   edges : Array[CrossHierarchyEdge],
   comparator : CrossHierarchyEdgeComparator,
-) -> Unit {
+) -> Unit raise CrossHierarchyEdgeComparatorException {
   if edges.length() <= 1 {
     return
   }
@@ -385,7 +426,7 @@ fn compound_graph_preprocessor_external_port_is_same_as_current(
 ///|
 fn compound_graph_preprocessor_set_sides_of_ports_to_sides_of_dummy_nodes(
   dummy_node_entries : Array[(LPort, LNode)],
-) -> Unit {
+) -> Unit raise CompoundGraphPreprocessorException {
   for entry in dummy_node_entries {
     let (external_port, dummy_node) = entry
 
@@ -443,7 +484,7 @@ fn compound_graph_preprocessor_get_shallowest_edge_segment(
 fn compound_graph_preprocessor_move_labels_and_remove_original_edges(
   graph : LGraph,
   cross_hierarchy_map : Array[(LEdge, (LEdge, LGraph, PortType))],
-) -> Unit {
+) -> Unit raise CompoundGraphPreprocessorException {
   for
     orig_edge in compound_graph_preprocessor_cross_hierarchy_key_set(
       cross_hierarchy_map,
@@ -452,10 +493,19 @@ fn compound_graph_preprocessor_move_labels_and_remove_original_edges(
       let edge_segments = compound_graph_preprocessor_cross_hierarchy_values(
         cross_hierarchy_map, orig_edge,
       )
-      compound_graph_preprocessor_sort_cross_hierarchy_edges(
-        edge_segments,
-        new_cross_hierarchy_edge_comparator(graph),
-      )
+      try
+        compound_graph_preprocessor_sort_cross_hierarchy_edges(
+          edge_segments,
+          new_cross_hierarchy_edge_comparator(graph),
+        )
+      catch {
+        err =>
+          compound_graph_preprocessor_raise(
+            cross_hierarchy_edge_comparator_exception_message(err),
+          )
+      } noraise {
+        _ => ()
+      }
 
       let labels = orig_edge.get_labels()
       let mut index = 0
@@ -546,7 +596,7 @@ fn compound_graph_preprocessor_connect_siblings(
   contained_external_ports : Array[CompoundGraphPreprocessorExternalPort],
   orig_edge : LEdge,
   cross_hierarchy_map : Array[(LEdge, (LEdge, LGraph, PortType))],
-) -> Unit {
+) -> Unit raise CompoundGraphPreprocessorException {
   let mut target_external_port : CompoundGraphPreprocessorExternalPort? = None
 
   for external_port in contained_external_ports {
@@ -563,7 +613,7 @@ fn compound_graph_preprocessor_connect_siblings(
 
   let resolved_target_external_port = match target_external_port {
     Some(value) => value
-    None => abort("target external port not found")
+    None => compound_graph_preprocessor_raise("target external port not found")
   }
 
   let dummy_edge = compound_graph_preprocessor_create_dummy_edge(
@@ -589,7 +639,7 @@ fn compound_graph_preprocessor_process_inner_hierarchical_edge_segments(
   exported_external_ports : Array[CompoundGraphPreprocessorExternalPort],
   cross_hierarchy_map : Array[(LEdge, (LEdge, LGraph, PortType))],
   dummy_node_entries : Array[(LPort, LNode)],
-) -> Unit {
+) -> Unit raise CompoundGraphPreprocessorException {
   let created_external_ports : Array[CompoundGraphPreprocessorExternalPort] = []
 
   for external_port in contained_external_ports {
@@ -711,7 +761,7 @@ fn compound_graph_preprocessor_process_outer_hierarchical_edge_segments(
   exported_external_ports : Array[CompoundGraphPreprocessorExternalPort],
   cross_hierarchy_map : Array[(LEdge, (LEdge, LGraph, PortType))],
   dummy_node_entries : Array[(LPort, LNode)],
-) -> Unit {
+) -> Unit raise CompoundGraphPreprocessorException {
   let created_external_ports : Array[CompoundGraphPreprocessorExternalPort] = []
 
   for child_node in graph.get_layerless_nodes() {
@@ -796,7 +846,7 @@ fn compound_graph_preprocessor_process_inside_self_loops(
   node : LNode,
   cross_hierarchy_map : Array[(LEdge, (LEdge, LGraph, PortType))],
   dummy_node_entries : Array[(LPort, LNode)],
-) -> Unit {
+) -> Unit raise CompoundGraphPreprocessorException {
   if !node.get_property_bool(@core.inside_self_loops_activate) {
     return
   }
@@ -823,7 +873,7 @@ fn compound_graph_preprocessor_process_inside_self_loops(
           ) {
           Some(dummy) => dummy
           None => {
-            let dummy = create_external_port_dummy(
+            let dummy = compound_graph_preprocessor_create_external_port_dummy_checked(
               source_port,
               @core.PortConstraints::Free,
               source_port.get_side(),
@@ -859,7 +909,7 @@ fn compound_graph_preprocessor_process_inside_self_loops(
           ) {
           Some(dummy) => dummy
           None => {
-            let dummy = create_external_port_dummy(
+            let dummy = compound_graph_preprocessor_create_external_port_dummy_checked(
               target_port,
               @core.PortConstraints::Free,
               target_port.get_side(),
@@ -914,7 +964,7 @@ fn compound_graph_preprocessor_transform_hierarchy_edges(
   parent_node : LNode?,
   cross_hierarchy_map : Array[(LEdge, (LEdge, LGraph, PortType))],
   dummy_node_entries : Array[(LPort, LNode)],
-) -> Array[CompoundGraphPreprocessorExternalPort] {
+) -> Array[CompoundGraphPreprocessorExternalPort] raise CompoundGraphPreprocessorException {
   let contained_external_ports : Array[CompoundGraphPreprocessorExternalPort] = []
 
   for node in graph.get_layerless_nodes() {
@@ -956,7 +1006,7 @@ fn compound_graph_preprocessor_transform_hierarchy_edges(
               ) {
               Some(dummy) => dummy
               None => {
-                let dummy = create_external_port_dummy(
+                let dummy = compound_graph_preprocessor_create_external_port_dummy_checked(
                   port,
                   port_constraints_value,
                   port.get_side(),
@@ -1044,7 +1094,7 @@ fn compound_graph_preprocessor_introduce_hierarchical_edge_segment(
   default_external_port : CompoundGraphPreprocessorExternalPort?,
   cross_hierarchy_map : Array[(LEdge, (LEdge, LGraph, PortType))],
   dummy_node_entries : Array[(LPort, LNode)],
-) -> CompoundGraphPreprocessorExternalPort {
+) -> CompoundGraphPreprocessorExternalPort raise CompoundGraphPreprocessorException {
   let merge_external_ports = graph.get_property_bool(
     layered_options_merge_hierarchy_edges,
   )
@@ -1115,7 +1165,10 @@ fn compound_graph_preprocessor_introduce_hierarchical_edge_segment(
         match
           dummy_node.get_property_l_port(internal_properties_origin_l_port) {
           Some(dummy_port) => dummy_port
-          None => abort("external port dummy has no origin port")
+          None =>
+            compound_graph_preprocessor_raise(
+              "external port dummy has no origin port",
+            )
         },
         port_type,
         parent_end_port is None,
@@ -1141,7 +1194,10 @@ fn compound_graph_preprocessor_introduce_hierarchical_edge_segment(
 
   let result = match external_port {
     Some(value) => value
-    None => abort("failed to create or reuse external port")
+    None =>
+      compound_graph_preprocessor_raise(
+        "failed to create or reuse external port",
+      )
   }
 
   compound_graph_preprocessor_cross_hierarchy_map_put(
@@ -1170,7 +1226,9 @@ fn compound_graph_preprocessor_create_dummy_edge(
 }
 
 ///|
-fn compound_graph_preprocessor_calculate_net_flow(port : LPort) -> Int {
+fn compound_graph_preprocessor_calculate_net_flow(
+  port : LPort,
+) -> Int raise CompoundGraphPreprocessorException {
   let node = compound_graph_preprocessor_require_port_node(port)
   let inside_self_loops_enabled = node.get_property_bool(
     @core.inside_self_loops_activate,
@@ -1242,7 +1300,7 @@ fn compound_graph_preprocessor_create_external_port_dummy(
   port_side : @core.PortSide,
   edge : LEdge,
   dummy_node_entries : Array[(LPort, LNode)],
-) -> LNode {
+) -> LNode raise CompoundGraphPreprocessorException {
   let outside_port = if compound_graph_preprocessor_port_type_is_input(
       port_type,
     ) {
@@ -1259,7 +1317,7 @@ fn compound_graph_preprocessor_create_external_port_dummy(
       dummy_node_entries, outside_port,
     )
     if dummy_node is None {
-      let created_dummy = create_external_port_dummy(
+      let created_dummy = compound_graph_preprocessor_create_external_port_dummy_checked(
         outside_port,
         compound_graph_preprocessor_port_constraints_from_string(
           parent_node.get_property_string(@core.port_constraints),
@@ -1282,7 +1340,7 @@ fn compound_graph_preprocessor_create_external_port_dummy(
       dummy_node = Some(created_dummy)
     }
   } else {
-    let created_dummy = create_external_port_dummy(
+    let created_dummy = compound_graph_preprocessor_create_external_port_dummy_checked(
       compound_graph_preprocessor_create_external_port_properties(graph),
       compound_graph_preprocessor_port_constraints_from_string(
         parent_node.get_property_string(@core.port_constraints),
@@ -1332,7 +1390,8 @@ fn compound_graph_preprocessor_create_external_port_dummy(
 
   match dummy_node {
     Some(node) => node
-    None => abort("failed to create external port dummy")
+    None =>
+      compound_graph_preprocessor_raise("failed to create external port dummy")
   }
 }
 
@@ -1386,24 +1445,33 @@ fn compound_graph_preprocessor_process(
   let cross_hierarchy_map : Array[(LEdge, (LEdge, LGraph, PortType))] = []
   let dummy_node_entries : Array[(LPort, LNode)] = []
 
-  ignore(
-    compound_graph_preprocessor_transform_hierarchy_edges(
-      graph,
-      None,
-      cross_hierarchy_map,
+  try {
+    ignore(
+      compound_graph_preprocessor_transform_hierarchy_edges(
+        graph,
+        None,
+        cross_hierarchy_map,
+        dummy_node_entries,
+      ),
+    )
+    compound_graph_preprocessor_move_labels_and_remove_original_edges(
+      graph, cross_hierarchy_map,
+    )
+    compound_graph_preprocessor_set_sides_of_ports_to_sides_of_dummy_nodes(
       dummy_node_entries,
-    ),
-  )
-  compound_graph_preprocessor_move_labels_and_remove_original_edges(
-    graph, cross_hierarchy_map,
-  )
-  compound_graph_preprocessor_set_sides_of_ports_to_sides_of_dummy_nodes(
-    dummy_node_entries,
-  )
+    )
 
-  graph.set_property_cross_hierarchy_map_entry_array(
-    compound_graph_preprocessor_internal_properties_cross_hierarchy_map, cross_hierarchy_map,
-  )
+    graph.set_property_cross_hierarchy_map_entry_array(
+      compound_graph_preprocessor_internal_properties_cross_hierarchy_map, cross_hierarchy_map,
+    )
+  } catch {
+    CompoundGraphPreprocessorException(message) =>
+      @core.layout_runtime_report_unsupported_configuration(
+        "java.lang.IllegalStateException: " + message,
+      )
+  } noraise {
+    _ => ()
+  }
   monitor.done()
 }
 

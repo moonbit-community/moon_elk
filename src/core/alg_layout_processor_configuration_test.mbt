@@ -44,11 +44,18 @@ test "LayoutProcessorConfiguration testAddBefore1" {
 }
 
 ///|
-test "panic LayoutProcessorConfiguration testAddBefore2" {
+test "LayoutProcessorConfiguration testAddBefore2 reports runtime error" {
+  @core.layout_runtime_clear_error()
   let config = layout_processor_configuration_create(test_phase_descriptor)
   ignore(config.before(Phase1))
   ignore(config.add_before(Phase2, test_processor_factory(Processor1)))
   ignore(config.add(test_processor_factory(Processor2)))
+  assert_eq(
+    @core.layout_runtime_take_error_message(),
+    Some(
+      "org.eclipse.elk.core.UnsupportedConfigurationException: Did not call before(...) or after(...) before calling add(...).",
+    ),
+  )
 }
 
 ///|
@@ -63,11 +70,18 @@ test "LayoutProcessorConfiguration testAddAfter1" {
 }
 
 ///|
-test "panic LayoutProcessorConfiguration testAddAfter2" {
+test "LayoutProcessorConfiguration testAddAfter2 reports runtime error" {
+  @core.layout_runtime_clear_error()
   let config = layout_processor_configuration_create(test_phase_descriptor)
   ignore(config.before(Phase1))
   ignore(config.add_after(Phase1, test_processor_factory(Processor1)))
   ignore(config.add(test_processor_factory(Processor2)))
+  assert_eq(
+    @core.layout_runtime_take_error_message(),
+    Some(
+      "org.eclipse.elk.core.UnsupportedConfigurationException: Did not call before(...) or after(...) before calling add(...).",
+    ),
+  )
 }
 
 ///|

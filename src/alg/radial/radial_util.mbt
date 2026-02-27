@@ -60,14 +60,25 @@ pub fn radial_get_successors(node : @graph.ElkNode) -> Array[@graph.ElkNode] {
     if sources.is_empty() {
       continue
     }
-    if @graph.connectable_shape_to_port(Some(sources[0])) is Some(_) {
+    let source_port = try
+      @graph.connectable_shape_to_port(Some(sources[0]))
+    catch {
+      _ => None
+    } noraise {
+      value => value
+    }
+    if source_port is Some(_) {
       continue
     }
     let targets = @graph.edge_targets(edge)
     if targets.is_empty() {
       continue
     }
-    let target = @graph.connectable_shape_to_node(Some(targets[0]))
+    let target = try @graph.connectable_shape_to_node(Some(targets[0])) catch {
+      _ => continue
+    } noraise {
+      value => value
+    }
     if !radial_contains_node(children, target) {
       successors.push(target)
     }
@@ -270,5 +281,9 @@ pub fn radial_get_tree_parent(node : @graph.ElkNode) -> @graph.ElkNode? {
   if sources.is_empty() {
     return None
   }
-  Some(@graph.connectable_shape_to_node(Some(sources[0])))
+  try Some(@graph.connectable_shape_to_node(Some(sources[0]))) catch {
+    _ => None
+  } noraise {
+    value => value
+  }
 }

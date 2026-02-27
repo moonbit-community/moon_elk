@@ -68,7 +68,12 @@ fn label_dummy_remover_edge_routing_is_polyline(
 fn label_dummy_remover_require_origin_edge(node : LNode) -> LEdge {
   match node.get_property_l_edge(internal_properties_origin_l_edge) {
     Some(value) => value
-    None => abort("label dummy has no origin edge")
+    None => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "label dummy has no origin edge",
+      )
+      new_l_edge()
+    }
   }
 }
 

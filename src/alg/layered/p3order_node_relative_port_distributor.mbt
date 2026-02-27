@@ -1,10 +1,22 @@
 ///|
-fn node_relative_calculate_port_ranks(
+pub suberror NodeRelativePortDistributorException {
+  NodeRelativePortDistributorException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] node_relative_port_distributor_raise(
+  message : String,
+) -> T raise NodeRelativePortDistributorException {
+  raise NodeRelativePortDistributorException(message)
+}
+
+///|
+fn node_relative_calculate_port_ranks_raise(
   distributor : AbstractBarycenterPortDistributor,
   node : LNode,
   rank_sum : Double,
   port_type : PortType,
-) -> Double {
+) -> Double raise NodeRelativePortDistributorException {
   let port_ranks = distributor.get_port_ranks()
   match port_type {
     PortType::Input => {
@@ -51,7 +63,32 @@ fn node_relative_calculate_port_ranks(
 
       1.0
     }
-    PortType::Undefined => abort("Port type is undefined")
+    PortType::Undefined =>
+      node_relative_port_distributor_raise("Port type is undefined")
+  }
+}
+
+///|
+fn node_relative_calculate_port_ranks(
+  distributor : AbstractBarycenterPortDistributor,
+  node : LNode,
+  rank_sum : Double,
+  port_type : PortType,
+) -> Double {
+  try
+    node_relative_calculate_port_ranks_raise(
+      distributor, node, rank_sum, port_type,
+    )
+  catch {
+    NodeRelativePortDistributorException(message) => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "org.eclipse.elk.alg.layered.p3order.NodeRelativePortDistributor: " +
+        message,
+      )
+      1.0
+    }
+  } noraise {
+    result => result
   }
 }
 

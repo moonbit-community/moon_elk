@@ -31,7 +31,7 @@ test "BasicModelOrder strategies run without layout errors" {
   let edge = create_edge(None)
   edge_add_source(edge, make_node_shape(n1))
   edge_add_target(edge, make_node_shape(n2))
-  update_containment(Some(edge))
+  layered_test_update_containment(Some(edge))
 
   p2_basic_model_order_test_layout(graph)
 

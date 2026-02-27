@@ -123,12 +123,19 @@ test "LibavoidServerCommunicator writes protocol text and applies output layout"
 }
 
 ///|
-test "panic LibavoidServerCommunicator fails if server has no output" {
+test "LibavoidServerCommunicator reports error if server has no output" {
   let (root, _, _, _) = libavoid_test_main_graph()
   let communicator = new_libavoid_server_communicator()
   let server = new_libavoid_server()
   server.set_output_data_for_test(None)
-  communicator.request_layout(root, new_elk_progress_monitor(), server)
+  @core.layout_runtime_clear_error()
+  let monitor = new_elk_progress_monitor()
+  communicator.request_layout(root, monitor, server)
+  inspect(monitor.is_running(), content="false")
+  inspect(
+    @core.layout_runtime_take_error_message(),
+    content="Some(\"org.eclipse.elk.core.UnsupportedConfigurationException: No output from the Libavoid process. Try increasing the timeout value in the preferences (KIELER / Layout / Libavoid).\")",
+  )
 }
 
 ///|

@@ -54,7 +54,10 @@ pub fn[V : Hash + Eq] BiLinkedHashMultiMap::put(
   }
   match self.key_to_values.get(key) {
     Some(current_values) => current_values.push(value)
-    None => abort("key must exist after ensure_key")
+    None =>
+      @core.layout_runtime_report_unsupported_configuration(
+        "key must exist after ensure_key",
+      )
   }
   self.value_to_key[value] = key
 }

@@ -10,6 +10,27 @@ let layout_category_data_store : Ref[Map[String, LayoutCategoryData]] = Ref::new
 )
 
 ///|
+priv suberror LayoutMetaDataServiceException {
+  LayoutMetaDataServiceException(String)
+} derive(Show, ToJson)
+
+///|
+fn layout_meta_data_service_raise_unit(
+  message : String,
+) -> Unit raise LayoutMetaDataServiceException {
+  raise LayoutMetaDataServiceException(message)
+}
+
+///|
+fn layout_meta_data_service_exception_message(
+  err : LayoutMetaDataServiceException,
+) -> String {
+  match err {
+    LayoutMetaDataServiceException(message) => message
+  }
+}
+
+///|
 pub fn layout_meta_data_service_reset_for_test() -> Unit {
   layout_algorithm_data_store.val.clear()
   layout_option_data_store.val.clear()
@@ -201,7 +222,17 @@ pub fn layout_meta_data_service_get_option_data(
 ) -> LayoutOptionData {
   match layout_option_data_store.val.get(id) {
     Some(option_data) => option_data
-    None => abort("unknown layout option")
+    None => {
+      try layout_meta_data_service_raise_unit("unknown layout option") catch {
+        err =>
+          layout_runtime_report_unsupported_configuration(
+            layout_meta_data_service_exception_message(err),
+          )
+      } noraise {
+        _ => ()
+      }
+      new_layout_option_data(id)
+    }
   }
 }
 

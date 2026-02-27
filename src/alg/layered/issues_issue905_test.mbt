@@ -27,7 +27,7 @@ test "Issue905 begin/center/head edge label coordinates are deterministic" {
   let edge = create_edge(None)
   edge_add_source(edge, make_node_shape(n1))
   edge_add_target(edge, make_node_shape(n2))
-  update_containment(Some(edge))
+  layered_test_update_containment(Some(edge))
 
   let tail = @graph.create_label(Some(make_edge_label_parent(edge)))
   label_set_layout_option_string_by_id(

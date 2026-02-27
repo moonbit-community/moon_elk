@@ -20,7 +20,12 @@ pub fn new_radial_eades_layout_phase() -> @core.ILayoutProcessor[
       }
       let root = match radial_internal_root(graph) {
         Some(value) => value
-        None => abort("radial root node is missing")
+        None => {
+          @core.layout_runtime_report_unsupported_configuration(
+            "radial root node is missing",
+          )
+          graph
+        }
       }
       let radius = @graph.node_get_double_property(graph, radial_radius)
       let sorter = radial_sorting_strategy_create(

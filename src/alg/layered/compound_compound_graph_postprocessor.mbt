@@ -14,34 +14,66 @@ let compound_graph_postprocessor_internal_properties_target_offset : @graph.IPro
 ] = @graph.new_property("targetOffset", @core.new_kvector())
 
 ///|
-fn compound_graph_postprocessor_require_source_port(edge : LEdge) -> LPort {
+priv suberror CompoundGraphPostprocessorException {
+  UnsupportedGraphException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] compound_graph_postprocessor_raise_unsupported_graph(
+  message : String,
+) -> T raise CompoundGraphPostprocessorException {
+  raise CompoundGraphPostprocessorException::UnsupportedGraphException(message)
+}
+
+///|
+fn compound_graph_postprocessor_require_source_port(
+  edge : LEdge,
+) -> LPort raise CompoundGraphPostprocessorException {
   match edge.get_source() {
     Some(port) => port
-    None => abort("edge has no source port")
+    None =>
+      compound_graph_postprocessor_raise_unsupported_graph(
+        "edge has no source port",
+      )
   }
 }
 
 ///|
-fn compound_graph_postprocessor_require_target_port(edge : LEdge) -> LPort {
+fn compound_graph_postprocessor_require_target_port(
+  edge : LEdge,
+) -> LPort raise CompoundGraphPostprocessorException {
   match edge.get_target() {
     Some(port) => port
-    None => abort("edge has no target port")
+    None =>
+      compound_graph_postprocessor_raise_unsupported_graph(
+        "edge has no target port",
+      )
   }
 }
 
 ///|
-fn compound_graph_postprocessor_require_port_node(port : LPort) -> LNode {
+fn compound_graph_postprocessor_require_port_node(
+  port : LPort,
+) -> LNode raise CompoundGraphPostprocessorException {
   match port.get_node() {
     Some(node) => node
-    None => abort("port has no owner node")
+    None =>
+      compound_graph_postprocessor_raise_unsupported_graph(
+        "port has no owner node",
+      )
   }
 }
 
 ///|
-fn compound_graph_postprocessor_require_nested_graph(node : LNode) -> LGraph {
+fn compound_graph_postprocessor_require_nested_graph(
+  node : LNode,
+) -> LGraph raise CompoundGraphPostprocessorException {
   match node.get_nested_graph() {
     Some(graph) => graph
-    None => abort("node has no nested graph")
+    None =>
+      compound_graph_postprocessor_raise_unsupported_graph(
+        "node has no nested graph",
+      )
   }
 }
 
@@ -93,7 +125,7 @@ fn compound_graph_postprocessor_get_cross_hierarchy_edges(
 fn compound_graph_postprocessor_sort_cross_hierarchy_edges(
   edges : Array[CrossHierarchyEdge],
   comparator : CrossHierarchyEdgeComparator,
-) -> Unit {
+) -> Unit raise CrossHierarchyEdgeComparatorException {
   if edges.length() <= 1 {
     return
   }
@@ -185,7 +217,7 @@ fn compound_graph_postprocessor_copy_labels_back(
   hierarchy_segment : LEdge,
   orig_edge : LEdge,
   reference_graph : LGraph,
-) -> Unit {
+) -> Unit raise CompoundGraphPostprocessorException {
   let source_graph = compound_graph_postprocessor_require_port_node(
     compound_graph_postprocessor_require_source_port(hierarchy_segment),
   ).get_graph()
@@ -237,119 +269,141 @@ fn compound_graph_postprocessor_process(
   )
   let dummy_edges : Array[LEdge] = []
 
-  for
-    orig_edge in compound_graph_postprocessor_cross_hierarchy_key_set(
-      cross_hierarchy_map,
-    ) {
-    let cross_hierarchy_edges = compound_graph_postprocessor_get_cross_hierarchy_edges(
-      cross_hierarchy_map, orig_edge,
-    )
-    if cross_hierarchy_edges.is_empty() {
-      continue
-    }
-
-    compound_graph_postprocessor_sort_cross_hierarchy_edges(
-      cross_hierarchy_edges,
-      new_cross_hierarchy_edge_comparator(graph),
-    )
-
-    let source_port = cross_hierarchy_edges[0].get_actual_source()
-    let target_port = cross_hierarchy_edges[cross_hierarchy_edges.length() - 1].get_actual_target()
-
-    let reference_node = compound_graph_postprocessor_require_port_node(
-      source_port,
-    )
-    let reference_graph = if is_descendant_l_node(
-        compound_graph_postprocessor_require_port_node(target_port),
-        reference_node,
+  try {
+    for
+      orig_edge in compound_graph_postprocessor_cross_hierarchy_key_set(
+        cross_hierarchy_map,
       ) {
-      compound_graph_postprocessor_require_nested_graph(reference_node)
-    } else {
-      reference_node.get_graph()
-    }
-
-    let junction_points = compound_graph_postprocessor_clear_junction_points(
-      orig_edge, cross_hierarchy_edges,
-    )
-    orig_edge.get_bend_points().clear()
-
-    let mut last_point : @core.KVector? = None
-    for ch_edge in cross_hierarchy_edges {
-      let offset = @core.new_kvector()
-      change_coord_system(offset, ch_edge.get_graph(), reference_graph)
-
-      let ledge = ch_edge.get_edge()
-      let bend_points = @core.new_kvector_chain()
-      bend_points.add_all_as_copies(0, ledge.get_bend_points())
-      ignore(bend_points.offset(offset))
-
-      let source_point = @core.new_kvector_copy(
-        compound_graph_postprocessor_require_source_port(ledge).get_absolute_anchor(),
+      let cross_hierarchy_edges = compound_graph_postprocessor_get_cross_hierarchy_edges(
+        cross_hierarchy_map, orig_edge,
       )
-      let target_point = @core.new_kvector_copy(
-        compound_graph_postprocessor_require_target_port(ledge).get_absolute_anchor(),
-      )
-      ignore(source_point.add(offset))
-      ignore(target_point.add(offset))
+      if cross_hierarchy_edges.is_empty() {
+        continue
+      }
 
-      match last_point {
-        Some(last) => {
-          let next_point = if bend_points.is_empty() {
-            target_point
-          } else {
-            bend_points.get(0)
-          }
-          let x_diff_enough = (last.x - next_point.x).abs() >
-            orthogonal_routing_generator_tolerance
-          let y_diff_enough = (last.y - next_point.y).abs() >
-            orthogonal_routing_generator_tolerance
-
-          if (!add_unnecessary_bendpoints && x_diff_enough && y_diff_enough) ||
-            (add_unnecessary_bendpoints && (x_diff_enough || y_diff_enough)) {
-            orig_edge.get_bend_points().add_vector(source_point)
-          }
+      try
+        compound_graph_postprocessor_sort_cross_hierarchy_edges(
+          cross_hierarchy_edges,
+          new_cross_hierarchy_edge_comparator(graph),
+        )
+      catch {
+        err => {
+          @core.layout_runtime_report_unsupported_configuration(
+            cross_hierarchy_edge_comparator_exception_message(err),
+          )
+          monitor.done()
+          return
         }
-        None => ()
+      } noraise {
+        _ => ()
       }
 
-      orig_edge.get_bend_points().add_all(bend_points.to_array())
+      let source_port = cross_hierarchy_edges[0].get_actual_source()
+      let target_port = cross_hierarchy_edges[cross_hierarchy_edges.length() - 1].get_actual_target()
 
-      if bend_points.is_empty() {
-        last_point = Some(source_point)
-      } else {
-        last_point = Some(bend_points.get(bend_points.size() - 1))
-      }
-
-      compound_graph_postprocessor_copy_junction_points(
-        ledge, junction_points, offset,
+      let reference_node = compound_graph_postprocessor_require_port_node(
+        source_port,
       )
+      let reference_graph = if is_descendant_l_node(
+          compound_graph_postprocessor_require_port_node(target_port),
+          reference_node,
+        ) {
+        compound_graph_postprocessor_require_nested_graph(reference_node)
+      } else {
+        reference_node.get_graph()
+      }
 
-      if ch_edge.get_actual_target().get_handle() == target_port.get_handle() {
-        let target_offset = @core.new_kvector_copy(offset)
-        if compound_graph_postprocessor_require_port_node(target_port)
-          .get_graph()
-          .get_handle() !=
-          ch_edge.get_graph().get_handle() {
-          ignore(target_offset.reset())
-          change_coord_system(
-            target_offset,
-            compound_graph_postprocessor_require_port_node(target_port).get_graph(),
-            reference_graph,
+      let junction_points = compound_graph_postprocessor_clear_junction_points(
+        orig_edge, cross_hierarchy_edges,
+      )
+      orig_edge.get_bend_points().clear()
+
+      let mut last_point : @core.KVector? = None
+      for ch_edge in cross_hierarchy_edges {
+        let offset = @core.new_kvector()
+        change_coord_system(offset, ch_edge.get_graph(), reference_graph)
+
+        let ledge = ch_edge.get_edge()
+        let bend_points = @core.new_kvector_chain()
+        bend_points.add_all_as_copies(0, ledge.get_bend_points())
+        ignore(bend_points.offset(offset))
+
+        let source_point = @core.new_kvector_copy(
+          compound_graph_postprocessor_require_source_port(ledge).get_absolute_anchor(),
+        )
+        let target_point = @core.new_kvector_copy(
+          compound_graph_postprocessor_require_target_port(ledge).get_absolute_anchor(),
+        )
+        ignore(source_point.add(offset))
+        ignore(target_point.add(offset))
+
+        match last_point {
+          Some(last) => {
+            let next_point = if bend_points.is_empty() {
+              target_point
+            } else {
+              bend_points.get(0)
+            }
+            let x_diff_enough = (last.x - next_point.x).abs() >
+              orthogonal_routing_generator_tolerance
+            let y_diff_enough = (last.y - next_point.y).abs() >
+              orthogonal_routing_generator_tolerance
+
+            if (!add_unnecessary_bendpoints && x_diff_enough && y_diff_enough) ||
+              (add_unnecessary_bendpoints && (x_diff_enough || y_diff_enough)) {
+              orig_edge.get_bend_points().add_vector(source_point)
+            }
+          }
+          None => ()
+        }
+
+        orig_edge.get_bend_points().add_all(bend_points.to_array())
+
+        if bend_points.is_empty() {
+          last_point = Some(source_point)
+        } else {
+          last_point = Some(bend_points.get(bend_points.size() - 1))
+        }
+
+        compound_graph_postprocessor_copy_junction_points(
+          ledge, junction_points, offset,
+        )
+
+        if ch_edge.get_actual_target().get_handle() == target_port.get_handle() {
+          let target_offset = @core.new_kvector_copy(offset)
+          if compound_graph_postprocessor_require_port_node(target_port)
+            .get_graph()
+            .get_handle() !=
+            ch_edge.get_graph().get_handle() {
+            ignore(target_offset.reset())
+            change_coord_system(
+              target_offset,
+              compound_graph_postprocessor_require_port_node(target_port).get_graph(),
+              reference_graph,
+            )
+          }
+          orig_edge.set_property_kvector(
+            compound_graph_postprocessor_internal_properties_target_offset, target_offset,
           )
         }
-        orig_edge.set_property_kvector(
-          compound_graph_postprocessor_internal_properties_target_offset, target_offset,
+
+        compound_graph_postprocessor_copy_labels_back(
+          ledge, orig_edge, reference_graph,
         )
+        dummy_edges.push(ledge)
       }
 
-      compound_graph_postprocessor_copy_labels_back(
-        ledge, orig_edge, reference_graph,
-      )
-      dummy_edges.push(ledge)
+      orig_edge.set_source(Some(source_port))
+      orig_edge.set_target(Some(target_port))
     }
-
-    orig_edge.set_source(Some(source_port))
-    orig_edge.set_target(Some(target_port))
+  } catch {
+    CompoundGraphPostprocessorException::UnsupportedGraphException(message) => {
+      @core.layout_runtime_report_unsupported_configuration(message)
+      monitor.done()
+      return
+    }
+  } noraise {
+    _ => ()
   }
 
   for dummy_edge in dummy_edges {

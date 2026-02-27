@@ -1,4 +1,16 @@
 ///|
+priv suberror LinearSegmentsNodePlacerException {
+  LinearSegmentsNodePlacerException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] linear_segments_raise(
+  message : String,
+) -> T raise LinearSegmentsNodePlacerException {
+  raise LinearSegmentsNodePlacerException(message)
+}
+
+///|
 let linear_segments_input_prio : @graph.IProperty[Int] = @graph.new_property(
   "linearSegments.inputPrio", 0,
 )
@@ -71,10 +83,23 @@ fn new_linear_segments_state() -> LinearSegmentsState {
 }
 
 ///|
-fn linear_segments_require_spacings(state : LinearSegmentsState) -> Spacings {
+fn linear_segments_require_spacings(
+  state : LinearSegmentsState,
+) -> Spacings raise LinearSegmentsNodePlacerException {
   match state.spacings {
     Some(value) => value
-    None => abort("LinearSegmentsNodePlacer: spacings not set")
+    None => linear_segments_raise("LinearSegmentsNodePlacer: spacings not set")
+  }
+}
+
+///|
+fn linear_segments_vertical_spacing(
+  spacings : Spacings,
+  first : LNode,
+  second : LNode,
+) -> Double raise LinearSegmentsNodePlacerException {
+  spacings.get_vertical_spacing(first, second) catch {
+    LayeredSpacingsException(message) => linear_segments_raise(message)
   }
 }
 
@@ -140,18 +165,22 @@ fn linear_segments_same_layer(left : LNode, right : LNode) -> Bool {
 }
 
 ///|
-fn linear_segments_require_node_layer(node : LNode) -> Layer {
+fn linear_segments_require_node_layer(
+  node : LNode,
+) -> Layer raise LinearSegmentsNodePlacerException {
   match node.get_layer() {
     Some(value) => value
-    None => abort("LinearSegmentsNodePlacer: node has no layer")
+    None => linear_segments_raise("LinearSegmentsNodePlacer: node has no layer")
   }
 }
 
 ///|
-fn linear_segments_require_port_node(port : LPort) -> LNode {
+fn linear_segments_require_port_node(
+  port : LPort,
+) -> LNode raise LinearSegmentsNodePlacerException {
   match port.get_node() {
     Some(value) => value
-    None => abort("LinearSegmentsNodePlacer: port has no node")
+    None => linear_segments_raise("LinearSegmentsNodePlacer: port has no node")
   }
 }
 
@@ -184,11 +213,11 @@ fn linear_segments_split_segment(
   segment_id : Int,
   split_node : LNode,
   new_id : Int,
-) -> LinearSegment {
+) -> LinearSegment raise LinearSegmentsNodePlacerException {
   let segment = segment_list[segment_id]
   let split_index = linear_segments_node_index_in_segment(segment, split_node)
   if split_index < 0 {
-    abort("LinearSegmentsNodePlacer: split node not in segment")
+    linear_segments_raise("LinearSegmentsNodePlacer: split node not in segment")
   }
 
   let new_segment = new_linear_segment(new_id)
@@ -208,7 +237,7 @@ fn linear_segments_fill_segment(
   node : LNode,
   segment_id : Int,
   segment_list : Array[LinearSegment],
-) -> Bool {
+) -> Bool raise LinearSegmentsNodePlacerException {
   let node_type = node.get_type()
 
   if node.get_id() >= 0 {
@@ -260,7 +289,7 @@ fn linear_segments_create_dependency_graph_edges(
   segment_list : Array[LinearSegment],
   outgoing_list : Array[Array[Int]],
   incoming_count_list : Array[Int],
-) -> Unit {
+) -> Unit raise LinearSegmentsNodePlacerException {
   let mut next_linear_segment_id = segment_list.length()
   let mut layer_index = 0
 
@@ -368,7 +397,7 @@ fn linear_segments_sort_linear_segments(
   layered_graph : LGraph,
   monitor : @core.IElkProgressMonitor,
   state : LinearSegmentsState,
-) -> Array[LinearSegment] {
+) -> Array[LinearSegment] raise LinearSegmentsNodePlacerException {
   let segment_list : Array[LinearSegment] = []
 
   for layer in layered_graph.get_layers() {
@@ -463,7 +492,10 @@ fn linear_segments_sort_linear_segments(
   for item in reordered_opt {
     match item {
       Some(segment) => reordered.push(segment)
-      None => abort("LinearSegmentsNodePlacer: incomplete topological ordering")
+      None =>
+        linear_segments_raise(
+          "LinearSegmentsNodePlacer: incomplete topological ordering",
+        )
     }
   }
 
@@ -475,7 +507,7 @@ fn linear_segments_sort_linear_segments(
 fn linear_segments_create_unbalanced_placement(
   layered_graph : LGraph,
   state : LinearSegmentsState,
-) -> Unit {
+) -> Unit raise LinearSegmentsNodePlacerException {
   let layer_count = layered_graph.get_layers().length()
   let node_count : Array[Int] = Array::make(layer_count, 0)
   let recent_node : Array[LNode?] = Array::make(layer_count, None)
@@ -493,8 +525,10 @@ fn linear_segments_create_unbalanced_placement(
       if node_count[layer_index] > 0 {
         match recent_node[layer_index] {
           Some(previous) =>
-            spacing = linear_segments_require_spacings(state).get_vertical_spacing(
-              previous, node,
+            spacing = linear_segments_vertical_spacing(
+              linear_segments_require_spacings(state),
+              previous,
+              node,
             )
           None => ()
         }
@@ -525,7 +559,7 @@ fn linear_segments_calc_deflection(
   outgoing : Bool,
   deflection_dampening : Double,
   state : LinearSegmentsState,
-) -> Unit {
+) -> Unit raise LinearSegmentsNodePlacerException {
   let segment = state.linear_segments[segment_id]
   let mut segment_deflection = 0.0
   let mut node_weight_sum = 0
@@ -659,7 +693,7 @@ fn linear_segments_region_id(
 fn linear_segments_merge_regions(
   layered_graph : LGraph,
   state : LinearSegmentsState,
-) -> Bool {
+) -> Bool raise LinearSegmentsNodePlacerException {
   let mut changed = false
   let node_spacing = layered_graph.get_property_double(@core.spacing_node_node)
   let threshold = linear_segments_overlap_detect * node_spacing
@@ -675,7 +709,7 @@ fn linear_segments_merge_regions(
       let region2_id = linear_segments_region_id(state, node2.get_id())
 
       if region1_id != region2_id {
-        let spacing = spacings.get_vertical_spacing(node1, node2)
+        let spacing = linear_segments_vertical_spacing(spacings, node1, node2)
 
         let node1_extent = node1.get_position().y +
           node1.get_size().y +
@@ -690,7 +724,9 @@ fn linear_segments_merge_regions(
           let weight_sum = state.linear_segments[region1_id].weight +
             state.linear_segments[region2_id].weight
           if weight_sum <= 0 {
-            abort("LinearSegmentsNodePlacer: invalid merge weight")
+            linear_segments_raise(
+              "LinearSegmentsNodePlacer: invalid merge weight",
+            )
           }
 
           let new_deflection = (
@@ -725,7 +761,7 @@ fn linear_segments_merge_regions(
 fn linear_segments_balance_placement(
   layered_graph : LGraph,
   state : LinearSegmentsState,
-) -> Unit {
+) -> Unit raise LinearSegmentsNodePlacerException {
   let deflection_dampening = layered_graph.get_property_double(
     linear_segments_option_deflection_dampening,
   )
@@ -799,7 +835,9 @@ fn linear_segments_balance_placement(
 }
 
 ///|
-fn linear_segments_post_process(state : LinearSegmentsState) -> Unit {
+fn linear_segments_post_process(
+  state : LinearSegmentsState,
+) -> Unit raise LinearSegmentsNodePlacerException {
   let spacings = linear_segments_require_spacings(state)
 
   for segment in state.linear_segments {
@@ -810,12 +848,14 @@ fn linear_segments_post_process(state : LinearSegmentsState) -> Unit {
       let layer = linear_segments_require_node_layer(node)
       let index = linear_segments_find_node_index(layer, node)
       if index < 0 {
-        abort("LinearSegmentsNodePlacer: node missing from layer")
+        linear_segments_raise(
+          "LinearSegmentsNodePlacer: node missing from layer",
+        )
       }
 
       let room_above = if index > 0 {
         let neighbor = layer.get_nodes()[index - 1]
-        let spacing = spacings.get_vertical_spacing(node, neighbor)
+        let spacing = linear_segments_vertical_spacing(spacings, node, neighbor)
         node.get_position().y -
         node.get_margin().top -
         (
@@ -833,7 +873,7 @@ fn linear_segments_post_process(state : LinearSegmentsState) -> Unit {
 
       let room_below = if index < layer.get_nodes().length() - 1 {
         let neighbor = layer.get_nodes()[index + 1]
-        let spacing = spacings.get_vertical_spacing(node, neighbor)
+        let spacing = linear_segments_vertical_spacing(spacings, node, neighbor)
         neighbor.get_position().y -
         neighbor.get_margin().top -
         (
@@ -929,10 +969,19 @@ fn linear_segments_node_placer_process(
   let state = new_linear_segments_state()
   state.spacings = Some(new_layered_spacings(layered_graph))
 
-  ignore(linear_segments_sort_linear_segments(layered_graph, monitor, state))
-  linear_segments_create_unbalanced_placement(layered_graph, state)
-  linear_segments_balance_placement(layered_graph, state)
-  linear_segments_post_process(state)
+  try {
+    ignore(linear_segments_sort_linear_segments(layered_graph, monitor, state))
+    linear_segments_create_unbalanced_placement(layered_graph, state)
+    linear_segments_balance_placement(layered_graph, state)
+    linear_segments_post_process(state)
+  } catch {
+    LinearSegmentsNodePlacerException(message) =>
+      @core.layout_runtime_report_unsupported_configuration(
+        "java.lang.IllegalStateException: " + message,
+      )
+  } noraise {
+    _ => ()
+  }
 
   state.linear_segments = []
   state.spacings = None

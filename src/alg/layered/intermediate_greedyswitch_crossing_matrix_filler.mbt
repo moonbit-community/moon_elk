@@ -51,11 +51,25 @@ pub fn new_crossing_matrix_filler(
   free_layer_index : Int,
   direction : CrossingCountSide,
 ) -> CrossingMatrixFiller {
-  if free_layer_index < 0 || free_layer_index >= graph.length() {
-    abort("crossing matrix filler free layer index is out of range")
+  let effective_free_layer_index = if free_layer_index < 0 ||
+    free_layer_index >= graph.length() {
+    @core.layout_runtime_report_unsupported_configuration(
+      "crossing matrix filler free layer index is out of range",
+    )
+    if graph.is_empty() {
+      0
+    } else {
+      graph.length() - 1
+    }
+  } else {
+    free_layer_index
   }
 
-  let free_layer = graph[free_layer_index]
+  let free_layer = if graph.is_empty() {
+    []
+  } else {
+    graph[effective_free_layer_index]
+  }
   let layer_size = free_layer.length()
   {
     direction,
@@ -63,7 +77,7 @@ pub fn new_crossing_matrix_filler(
     is_crossing_matrix_filled: crossing_matrix_new_bool_matrix(layer_size),
     crossing_matrix: crossing_matrix_new_int_matrix(layer_size),
     in_between_layer_crossing_counter: new_between_layer_edge_two_node_crossings_counter(
-      graph, free_layer_index,
+      graph, effective_free_layer_index,
     ),
   }
 }

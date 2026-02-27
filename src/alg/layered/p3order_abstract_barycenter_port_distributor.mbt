@@ -47,10 +47,7 @@ fn abstract_barycenter_same_layer(left : LNode, right : LNode) -> Bool {
 
 ///|
 fn abstract_barycenter_node_layer_id(node : LNode) -> Int {
-  match node.get_layer() {
-    Some(layer) => layer.get_id()
-    None => abort("node has no layer")
-  }
+  node.get_layer().unwrap().get_id()
 }
 
 ///|
@@ -216,10 +213,7 @@ fn AbstractBarycenterPortDistributor::iterate_ports_and_collect_in_layer_ports(
   self.min_barycenter = 0.0
   self.max_barycenter = 0.0
 
-  let layer = match node.get_layer() {
-    Some(layer) => layer
-    None => abort("node has no layer")
-  }
+  let layer = node.get_layer().unwrap()
   let absurdly_large_float = (2 * layer.get_nodes().length() + 1).to_double()
 
   for port in ports {
@@ -300,10 +294,7 @@ fn AbstractBarycenterPortDistributor::calculate_in_layer_ports_barycenter_values
   node : LNode,
 ) -> Unit {
   let node_index_in_layer = self.position_of(node) + 1
-  let layer_size = match node.get_layer() {
-    Some(layer) => layer.get_nodes().length() + 1
-    None => abort("node has no layer")
-  }
+  let layer_size = node.get_layer().unwrap().get_nodes().length() + 1
 
   for in_layer_port in self.in_layer_ports {
     let mut sum = 0

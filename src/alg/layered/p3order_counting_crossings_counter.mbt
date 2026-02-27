@@ -19,18 +19,12 @@ pub fn new_crossings_counter(port_positions : Array[Int]) -> CrossingsCounter {
 
 ///|
 fn crossings_counter_pop_end(ends : Array[Int]) -> Int {
-  match ends.pop() {
-    Some(value) => value
-    None => abort("crossings counter end stack is empty")
-  }
+  ends.pop().unwrap()
 }
 
 ///|
 fn crossings_counter_tree(counter : CrossingsCounter) -> BinaryIndexedTree {
-  match counter.index_tree {
-    Some(tree) => tree
-    None => abort("crossings counter is not initialized")
-  }
+  counter.index_tree.unwrap()
 }
 
 ///|
@@ -357,14 +351,14 @@ fn CrossingsCounter::count_north_south_crossings_on_ports(
     match port.get_node() {
       Some(node) =>
         match node.get_type() {
-          NodeType::Normal =>
-            match port.get_property_l_node(internal_properties_port_dummy) {
-              Some(dummy) =>
-                for p in dummy.get_ports() {
-                  targets_and_degrees.push({ target: p, degree: p.get_degree() })
-                }
-              None => abort("missing port dummy for north/south counting")
+          NodeType::Normal => {
+            let dummy = port
+              .get_property_l_node(internal_properties_port_dummy)
+              .unwrap()
+            for p in dummy.get_ports() {
+              targets_and_degrees.push({ target: p, degree: p.get_degree() })
             }
+          }
           NodeType::LongEdge => {
             let mut other_port : LPort? = None
             for p in node.get_ports() {
@@ -565,10 +559,7 @@ fn CrossingsCounter::empty_stack(
   let mut index = start_index
 
   while !stack.is_empty() {
-    let dummy = match stack.pop() {
-      Some(node) => node
-      None => abort("north/south stack is empty")
-    }
+    let dummy = stack.pop().unwrap()
     let dummy_ports = dummy.get_port_side_view(side)
     if !dummy_ports.is_empty() {
       let p = dummy_ports[0]
@@ -692,14 +683,12 @@ fn CrossingsCounter::other_end_of(
   edge : LEdge,
   from_port : LPort,
 ) -> LPort {
-  match (edge.get_source(), edge.get_target()) {
-    (Some(source), Some(target)) =>
-      if lport_internal_handle(from_port) == lport_internal_handle(source) {
-        target
-      } else {
-        source
-      }
-    _ => abort("edge is not fully connected")
+  let source = edge.get_source().unwrap()
+  let target = edge.get_target().unwrap()
+  if lport_internal_handle(from_port) == lport_internal_handle(source) {
+    target
+  } else {
+    source
   }
 }
 

@@ -16,10 +16,7 @@ pub fn AbstractRadiusExtensionCompaction::contract_layer(
   layer_nodes : Array[@graph.ElkNode],
   is_contracting : Bool,
 ) -> Unit {
-  let root = match self.root {
-    Some(r) => r
-    None => abort("radial root node is missing")
-  }
+  let root = self.root.unwrap()
   for node in layer_nodes {
     let mut x_pos = @graph.node_x(node) + @graph.node_width(node) / 2.0
     let mut y_pos = @graph.node_y(node) + @graph.node_height(node) / 2.0
@@ -51,10 +48,7 @@ pub fn AbstractRadiusExtensionCompaction::move_node(
   node : @graph.ElkNode,
   distance : Double,
 ) -> Unit {
-  let root = match self.root {
-    Some(r) => r
-    None => abort("radial root node is missing")
-  }
+  let root = self.root.unwrap()
   let root_x = @graph.node_x(root) + @graph.node_width(root) / 2.0
   let root_y = @graph.node_y(root) + @graph.node_height(root) / 2.0
   let node_x_value = @graph.node_x(node) + @graph.node_width(node) / 2.0

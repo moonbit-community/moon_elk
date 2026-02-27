@@ -232,7 +232,10 @@ fn edge_aware_scanline_sweep(
       if point.low {
         let success = edge_aware_scanline_interval_insert(intervals, point.node)
         if !success {
-          abort("Invalid hitboxes for scanline constraint calculation.")
+          @core.layout_runtime_report_unsupported_configuration(
+            "Invalid hitboxes for scanline constraint calculation.",
+          )
+          return
         }
 
         ignore(
@@ -534,7 +537,10 @@ fn edge_aware_scanline_calculate_constraints(
       edge_aware_scanline_calculate_for_orthogonal(calculation, compactor)
     @core.EdgeRouting::Splines =>
       edge_aware_scanline_calculate_for_spline(calculation, compactor)
-    _ => abort("Unsupported edge routing for edge-aware scanline constraints.")
+    _ =>
+      @core.layout_runtime_report_unsupported_configuration(
+        "Unsupported edge routing for edge-aware scanline constraints.",
+      )
   }
 }
 

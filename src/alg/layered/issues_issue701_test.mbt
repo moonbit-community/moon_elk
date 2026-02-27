@@ -150,7 +150,7 @@ fn issue701_test_connect(
   let edge = create_edge(None)
   edge_add_source(edge, make_port_shape(source))
   edge_add_target(edge, make_port_shape(target))
-  update_containment(Some(edge))
+  layered_test_update_containment(Some(edge))
 }
 
 ///|

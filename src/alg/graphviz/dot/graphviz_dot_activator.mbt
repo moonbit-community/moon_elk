@@ -5,6 +5,27 @@ pub let graphviz_dot_language_name : String = "org.eclipse.elk.alg.graphviz.dot.
 pub let graphviz_dot_plugin_id : String = "org.eclipse.elk.alg.graphviz.dot"
 
 ///|
+pub suberror GraphvizDotActivatorException {
+  IllegalArgumentException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] graphviz_dot_activator_raise_illegal_argument(
+  message : String,
+) -> T raise GraphvizDotActivatorException {
+  raise GraphvizDotActivatorException::IllegalArgumentException(message)
+}
+
+///|
+pub fn graphviz_dot_activator_exception_message(
+  err : GraphvizDotActivatorException,
+) -> String {
+  match err {
+    IllegalArgumentException(message) => message
+  }
+}
+
+///|
 pub enum GraphvizDotInitializationData {
   GraphvizDotInitializationDataString(String)
   GraphvizDotInitializationDataMap(Map[String, String])
@@ -308,12 +329,12 @@ pub fn GraphvizDotActivator::injector_count(self : GraphvizDotActivator) -> Int 
 pub fn GraphvizDotActivator::get_runtime_module(
   self : GraphvizDotActivator,
   grammar : String,
-) -> GraphvizDotRuntimeModule {
+) -> GraphvizDotRuntimeModule raise GraphvizDotActivatorException {
   ignore(self)
   if graphviz_dot_language_name == grammar {
     new_graphviz_dot_runtime_module()
   } else {
-    abort(grammar)
+    graphviz_dot_activator_raise_illegal_argument(grammar)
   }
 }
 
@@ -321,7 +342,7 @@ pub fn GraphvizDotActivator::get_runtime_module(
 pub fn GraphvizDotActivator::get_injector(
   self : GraphvizDotActivator,
   language_name : String,
-) -> GraphvizDotInjector {
+) -> GraphvizDotInjector raise GraphvizDotActivatorException {
   match self.injectors.get(language_name) {
     Some(injector) => injector
     None => {
@@ -342,7 +363,7 @@ pub fn GraphvizDotActivator::register_injector_provider(
   language_name : String,
   class_name : String,
   provider : () -> GraphvizDotObject,
-) -> Unit {
+) -> Unit raise GraphvizDotActivatorException {
   let injector = self.get_injector(language_name)
   injector.register_provider(class_name, provider)
   self.bundle.register_class(class_name)

@@ -2,6 +2,29 @@
 pub let graphviz_dot_executable_extension_factory_guicekey : String = "guicekey"
 
 ///|
+pub suberror GraphvizDotExecutableExtensionFactoryException {
+  IllegalArgumentException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] graphviz_dot_executable_extension_factory_raise_illegal_argument(
+  message : String,
+) -> T raise GraphvizDotExecutableExtensionFactoryException {
+  raise GraphvizDotExecutableExtensionFactoryException::IllegalArgumentException(
+    message,
+  )
+}
+
+///|
+pub fn graphviz_dot_executable_extension_factory_exception_message(
+  err : GraphvizDotExecutableExtensionFactoryException,
+) -> String {
+  match err {
+    IllegalArgumentException(message) => message
+  }
+}
+
+///|
 pub struct GraphvizDotExecutableExtensionFactory {
   mut clazz_name : String?
   mut config : GraphvizDotConfigurationElement?
@@ -29,7 +52,7 @@ pub fn GraphvizDotExecutableExtensionFactory::set_initialization_data(
   config : GraphvizDotConfigurationElement?,
   _property_name : String?,
   data : GraphvizDotInitializationData?,
-) -> Unit {
+) -> Unit raise GraphvizDotExecutableExtensionFactoryException {
   match data {
     Some(GraphvizDotInitializationDataString(value)) =>
       self.clazz_name = Some(value)
@@ -40,7 +63,7 @@ pub fn GraphvizDotExecutableExtensionFactory::set_initialization_data(
     None => ()
   }
   if self.clazz_name is None {
-    abort(
+    graphviz_dot_executable_extension_factory_raise_illegal_argument(
       "couldn't handle passed data : " +
       graphviz_dot_initialization_data_to_debug_string(data),
     )
@@ -93,7 +116,15 @@ pub fn GraphvizDotExecutableExtensionFactory::create(
       ),
     )
   }
-  let injector = activator.get_injector(graphviz_dot_language_name)
+  let injector = activator.get_injector(graphviz_dot_language_name) catch {
+    GraphvizDotActivatorException::IllegalArgumentException(message) =>
+      return Err(
+        graphviz_dot_executable_extension_factory_error(
+          bundle.get_symbolic_name(),
+          message,
+        ),
+      )
+  }
   match injector.get_instance(class_name) {
     Some(result) => {
       match result {

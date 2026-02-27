@@ -8,6 +8,28 @@ pub struct VertiFlexLayoutProvider {
 }
 
 ///|
+priv suberror VertiFlexLayoutProviderException {
+  UnsupportedConfiguration(String)
+} derive(Show, ToJson)
+
+///|
+fn vertiflex_raise_unsupported_configuration(
+  message : String,
+) -> Unit raise VertiFlexLayoutProviderException {
+  raise VertiFlexLayoutProviderException::UnsupportedConfiguration(message)
+}
+
+///|
+fn vertiflex_exception_message(
+  err : VertiFlexLayoutProviderException,
+) -> String {
+  match err {
+    VertiFlexLayoutProviderException::UnsupportedConfiguration(message) =>
+      message
+  }
+}
+
+///|
 pub fn new_vertiflex_layout_provider() -> VertiFlexLayoutProvider {
   {
     algorithm_assembler: @core.algorithm_assembler_create(
@@ -42,7 +64,7 @@ fn vertiflex_check_vertical_constraint_validity(
   provider : VertiFlexLayoutProvider,
   root : @graph.ElkNode,
   current_min_constraint : Double,
-) -> Unit {
+) -> Unit raise VertiFlexLayoutProviderException {
   let root_height = if @graph.node_has_double_property(
       root, vertiflex_vertical_constraint,
     ) {
@@ -62,7 +84,7 @@ fn vertiflex_check_vertical_constraint_validity(
       new_min_constraint >
       @graph.node_get_double_property(child, vertiflex_vertical_constraint) +
       vertiflex_internal_node_margins(child).top {
-      abort(
+      vertiflex_raise_unsupported_configuration(
         "Invalid vertical constraints. Node \{@graph.node_identifier(child)} has a vertical constraint that is too low for its ancestors.",
       )
     }
@@ -151,15 +173,37 @@ pub fn VertiFlexLayoutProvider::layout(
   graph : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor,
 ) -> Unit {
+  try
+    vertiflex_layout_provider_layout_impl(self, graph, progress_monitor)
+  catch {
+    err => {
+      @core.layout_runtime_report_unsupported_configuration(
+        vertiflex_exception_message(err),
+      )
+      if progress_monitor.is_running() {
+        progress_monitor.done()
+      }
+    }
+  } noraise {
+    _ => ()
+  }
+}
+
+///|
+fn vertiflex_layout_provider_layout_impl(
+  provider : VertiFlexLayoutProvider,
+  graph : @graph.ElkNode,
+  progress_monitor : @core.IElkProgressMonitor,
+) -> Unit raise VertiFlexLayoutProviderException {
   vertiflex_internal_reset()
-  let algorithm = self.assemble_algorithm(graph)
+  let algorithm = provider.assemble_algorithm(graph)
   ignore(
     progress_monitor.begin(
       "@common.Tree layout",
       algorithm.length().to_double(),
     ),
   )
-  self.node_node_spacing = @graph.node_get_double_property(
+  provider.node_node_spacing = @graph.node_get_double_property(
     graph, vertiflex_spacing_node_node,
   )
 
@@ -169,18 +213,23 @@ pub fn VertiFlexLayoutProvider::layout(
 
   match vertiflex_find_root(graph) {
     Some(root) => vertiflex_internal_set_root_node(graph, root)
-    None => abort("The given graph is not a tree!")
+    None =>
+      vertiflex_raise_unsupported_configuration(
+        "The given graph is not a tree!",
+      )
   }
 
   for child in @graph.node_children(graph) {
     if @graph.node_incoming_edges(child).length() > 1 {
-      abort("The given graph is not an acyclic tree!")
+      vertiflex_raise_unsupported_configuration(
+        "The given graph is not an acyclic tree!",
+      )
     }
     @graph.node_set_location(child, 0.0, 0.0)
   }
 
   vertiflex_check_vertical_constraint_validity(
-    self,
+    provider,
     vertiflex_internal_root_node(graph),
     0.0,
   )

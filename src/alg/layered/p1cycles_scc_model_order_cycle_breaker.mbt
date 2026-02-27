@@ -1,24 +1,52 @@
 ///|
-fn scc_model_order_cycle_breaker_require_source_node(edge : LEdge) -> LNode {
+pub(all) suberror SCCModelOrderCycleBreakerException {
+  UnsupportedGraphException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] scc_model_order_cycle_breaker_raise_unsupported_graph(
+  message : String,
+) -> T raise SCCModelOrderCycleBreakerException {
+  raise SCCModelOrderCycleBreakerException::UnsupportedGraphException(message)
+}
+
+///|
+fn scc_model_order_cycle_breaker_require_source_node(
+  edge : LEdge,
+) -> LNode raise SCCModelOrderCycleBreakerException {
   let source = match edge.get_source() {
     Some(value) => value
-    None => abort("edge has no source port")
+    None =>
+      scc_model_order_cycle_breaker_raise_unsupported_graph(
+        "edge has no source port",
+      )
   }
   match source.get_node() {
     Some(node) => node
-    None => abort("source port has no owner node")
+    None =>
+      scc_model_order_cycle_breaker_raise_unsupported_graph(
+        "source port has no owner node",
+      )
   }
 }
 
 ///|
-fn scc_model_order_cycle_breaker_require_target_node(edge : LEdge) -> LNode {
+fn scc_model_order_cycle_breaker_require_target_node(
+  edge : LEdge,
+) -> LNode raise SCCModelOrderCycleBreakerException {
   let target = match edge.get_target() {
     Some(value) => value
-    None => abort("edge has no target port")
+    None =>
+      scc_model_order_cycle_breaker_raise_unsupported_graph(
+        "edge has no target port",
+      )
   }
   match target.get_node() {
     Some(node) => node
-    None => abort("target port has no owner node")
+    None =>
+      scc_model_order_cycle_breaker_raise_unsupported_graph(
+        "target port has no owner node",
+      )
   }
 }
 
@@ -94,7 +122,7 @@ fn scc_model_order_cycle_breaker_find_nodes(
   rev_edges : Array[LEdge],
   offset : Int,
   big_offset : Int,
-) -> Unit {
+) -> Unit raise SCCModelOrderCycleBreakerException {
   let enforce_group_model_order = scc_model_order_cycle_breaker_enforce_group_model_order(
     graph,
   )
@@ -135,7 +163,7 @@ fn scc_model_order_cycle_breaker_find_nodes(
 fn scc_model_order_cycle_breaker_process_with_finder(
   layered_graph : LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-  find_nodes : (LGraph, Array[Array[LNode]], Array[LEdge], Int, Int) -> Unit,
+  find_nodes : (LGraph, Array[Array[LNode]], Array[LEdge], Int, Int) -> Unit raise SCCModelOrderCycleBreakerException,
 ) -> Unit {
   let monitor = match progress_monitor {
     Some(value) => value
@@ -155,24 +183,34 @@ fn scc_model_order_cycle_breaker_process_with_finder(
       internal_properties_cb_num_model_order_groups,
     )
 
-  while true {
-    let tarjan = new_tarjan(rev_edges)
-    tarjan.reset_tarjan(layered_graph)
-    tarjan.tarjan(layered_graph)
+  try {
+    while true {
+      let tarjan = new_tarjan(rev_edges)
+      tarjan.reset_tarjan(layered_graph)
+      tarjan.tarjan(layered_graph)
 
-    let strongly_connected_components = tarjan.get_strongly_connected_components()
-    if strongly_connected_components.length() == 0 {
-      break
-    }
+      let strongly_connected_components = tarjan.get_strongly_connected_components()
+      if strongly_connected_components.length() == 0 {
+        break
+      }
 
-    find_nodes(
-      layered_graph, strongly_connected_components, rev_edges, offset, big_offset,
-    )
-    for edge in rev_edges {
-      scc_model_order_cycle_breaker_reverse_edge(edge, layered_graph)
-      layered_graph.set_property_bool(internal_properties_cyclic, true)
+      find_nodes(
+        layered_graph, strongly_connected_components, rev_edges, offset, big_offset,
+      )
+      for edge in rev_edges {
+        scc_model_order_cycle_breaker_reverse_edge(edge, layered_graph)
+        layered_graph.set_property_bool(internal_properties_cyclic, true)
+      }
+      rev_edges.clear()
     }
-    rev_edges.clear()
+  } catch {
+    SCCModelOrderCycleBreakerException::UnsupportedGraphException(message) => {
+      @core.layout_runtime_report_unsupported_configuration(message)
+      monitor.done()
+      return
+    }
+  } noraise {
+    _ => ()
   }
 
   monitor.done()

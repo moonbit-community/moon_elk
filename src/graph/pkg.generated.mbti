@@ -20,9 +20,9 @@ pub fn all_incoming_edges(Int) -> Array[Int]
 
 pub fn all_outgoing_edges(Int) -> Array[Int]
 
-pub fn connectable_shape_to_node(ElkConnectableShape?) -> Int
+pub fn connectable_shape_to_node(ElkConnectableShape?) -> Int raise ElkGraphUtilException
 
-pub fn connectable_shape_to_port(ElkConnectableShape?) -> Int?
+pub fn connectable_shape_to_port(ElkConnectableShape?) -> Int? raise ElkGraphUtilException
 
 pub fn create_edge(Int?) -> Int
 
@@ -30,7 +30,7 @@ pub fn create_edge_section(Int) -> Int
 
 pub fn create_graph() -> Int
 
-pub fn create_hyperedge(Array[ElkConnectableShape], Array[ElkConnectableShape]) -> Int
+pub fn create_hyperedge(Array[ElkConnectableShape], Array[ElkConnectableShape]) -> Int raise ElkGraphUtilException
 
 pub fn create_label(ElkLabelParent?) -> Int
 
@@ -40,9 +40,9 @@ pub fn create_node(Int?) -> Int
 
 pub fn create_port(Int?) -> Int
 
-pub fn create_simple_edge(Int, Int) -> Int
+pub fn create_simple_edge(Int, Int) -> Int raise ElkGraphUtilException
 
-pub fn create_simple_edge_for_shapes(ElkConnectableShape, ElkConnectableShape) -> Int
+pub fn create_simple_edge_for_shapes(ElkConnectableShape, ElkConnectableShape) -> Int raise ElkGraphUtilException
 
 pub fn edge_add_source(Int, ElkConnectableShape) -> Unit
 
@@ -188,7 +188,7 @@ pub fn elk_switch_target_elk_shape(Int) -> ElkGraphSwitchTarget
 
 pub fn elk_switch_target_i_property_holder(MapPropertyHolder) -> ElkGraphSwitchTarget
 
-pub fn find_best_edge_containment(Int?) -> Int?
+pub fn find_best_edge_containment(Int?) -> Int? raise ElkGraphUtilException
 
 pub fn find_lowest_common_ancestor(Int, Int) -> Int?
 
@@ -412,9 +412,16 @@ pub fn[T] property_holder_comparator_with(IProperty[T]) -> PropertyHolderCompara
 
 pub fn reset_graph_model_for_test() -> Unit
 
-pub fn update_containment(Int?) -> Unit
+pub fn update_containment(Int?) -> Unit raise ElkGraphUtilException
 
 // Errors
+pub(all) suberror ElkGraphUtilException {
+  NullPointerException(String)
+  IllegalArgumentException(String)
+  IllegalStateException(String)
+}
+pub impl Show for ElkGraphUtilException
+pub impl ToJson for ElkGraphUtilException
 
 // Types and methods
 #alias(ElkBendPointImpl)

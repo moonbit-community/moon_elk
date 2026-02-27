@@ -4,7 +4,12 @@ fn GreedySwitchHeuristic::greedy_switch_heuristic_switch_decider(
 ) -> SwitchDecider {
   match self.switch_decider {
     Some(decider) => decider
-    None => abort("greedy switch heuristic is not initialized")
+    None => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "greedy switch heuristic is not initialized",
+      )
+      self.greedy_switch_heuristic_switch_decider()
+    }
   }
 }
 

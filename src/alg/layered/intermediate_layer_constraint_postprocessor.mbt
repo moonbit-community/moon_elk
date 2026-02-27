@@ -18,26 +18,59 @@ fn layer_constraint_postprocessor_layer_constraint(
 }
 
 ///|
-fn layer_constraint_postprocessor_require_edge_source(edge : LEdge) -> LPort {
+pub(all) suberror LayerConstraintPostprocessorException {
+  UnsupportedConfigurationException(String)
+  IllegalStateException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] layer_constraint_postprocessor_raise_unsupported_configuration(
+  message : String,
+) -> T raise LayerConstraintPostprocessorException {
+  raise LayerConstraintPostprocessorException::UnsupportedConfigurationException(
+    message,
+  )
+}
+
+///|
+fn[T] layer_constraint_postprocessor_raise_illegal_state(
+  message : String,
+) -> T raise LayerConstraintPostprocessorException {
+  raise LayerConstraintPostprocessorException::IllegalStateException(message)
+}
+
+///|
+fn layer_constraint_postprocessor_require_edge_source(
+  edge : LEdge,
+) -> LPort raise LayerConstraintPostprocessorException {
   match edge.get_source() {
     Some(value) => value
-    None => abort("edge has no source")
+    None =>
+      layer_constraint_postprocessor_raise_illegal_state("edge has no source")
   }
 }
 
 ///|
-fn layer_constraint_postprocessor_require_edge_target(edge : LEdge) -> LPort {
+fn layer_constraint_postprocessor_require_edge_target(
+  edge : LEdge,
+) -> LPort raise LayerConstraintPostprocessorException {
   match edge.get_target() {
     Some(value) => value
-    None => abort("edge has no target")
+    None =>
+      layer_constraint_postprocessor_raise_illegal_state("edge has no target")
   }
 }
 
 ///|
-fn layer_constraint_postprocessor_require_port_node(port : LPort) -> LNode {
+fn layer_constraint_postprocessor_require_port_node(
+  port : LPort,
+) -> LNode raise LayerConstraintPostprocessorException {
   match port.get_node() {
     Some(value) => value
-    None => abort("port has no owner node")
+    None =>
+      layer_constraint_postprocessor_raise_illegal_state(
+        "port has no owner node",
+      )
   }
 }
 
@@ -46,7 +79,7 @@ fn layer_constraint_postprocessor_move_labels_to_label_layer(
   node : LNode,
   incoming : Bool,
   label_layer : Layer,
-) -> Unit {
+) -> Unit raise LayerConstraintPostprocessorException {
   let edges = if incoming {
     node.get_incoming_edges()
   } else {
@@ -75,7 +108,7 @@ fn layer_constraint_postprocessor_move_labels_to_label_layer(
 ///|
 fn layer_constraint_postprocessor_throw_up_unless_no_incoming_edges(
   node : LNode,
-) -> Unit {
+) -> Unit raise LayerConstraintPostprocessorException {
   for incoming in node.get_incoming_edges() {
     let source_node = layer_constraint_postprocessor_require_port_node(
       layer_constraint_postprocessor_require_edge_source(incoming),
@@ -83,12 +116,11 @@ fn layer_constraint_postprocessor_throw_up_unless_no_incoming_edges(
     if !layer_constraint_postprocessor_node_type_is_label(
         source_node.get_type(),
       ) {
-      @core.layout_runtime_report_unsupported_configuration(
+      layer_constraint_postprocessor_raise_unsupported_configuration(
         "Node '" +
         node.to_string() +
         "' has its layer constraint set to FIRST, but has at least one incoming edge that  does not come from a FIRST_SEPARATE node. That must not happen.",
       )
-      return
     }
   }
 }
@@ -96,7 +128,7 @@ fn layer_constraint_postprocessor_throw_up_unless_no_incoming_edges(
 ///|
 fn layer_constraint_postprocessor_throw_up_unless_no_outgoing_edges(
   node : LNode,
-) -> Unit {
+) -> Unit raise LayerConstraintPostprocessorException {
   for outgoing in node.get_outgoing_edges() {
     let target_node = layer_constraint_postprocessor_require_port_node(
       layer_constraint_postprocessor_require_edge_target(outgoing),
@@ -104,12 +136,11 @@ fn layer_constraint_postprocessor_throw_up_unless_no_outgoing_edges(
     if !layer_constraint_postprocessor_node_type_is_label(
         target_node.get_type(),
       ) {
-      @core.layout_runtime_report_unsupported_configuration(
+      layer_constraint_postprocessor_raise_unsupported_configuration(
         "Node '" +
         node.to_string() +
         "' has its layer constraint set to LAST, but has at least one outgoing edge that  does not go to a LAST_SEPARATE node. That must not happen.",
       )
-      return
     }
   }
 }
@@ -121,22 +152,13 @@ fn layer_constraint_postprocessor_move_first_and_last_nodes(
   last_layer : Layer,
   first_label_layer : Layer,
   last_label_layer : Layer,
-) -> Unit {
+) -> Unit raise LayerConstraintPostprocessorException {
   for layer in layered_graph.get_layers() {
-    if @core.layout_runtime_has_error() {
-      return
-    }
     let nodes = layer.get_nodes().copy()
     for node in nodes {
-      if @core.layout_runtime_has_error() {
-        return
-      }
       match layer_constraint_postprocessor_layer_constraint(node) {
         LayerConstraint::First => {
           layer_constraint_postprocessor_throw_up_unless_no_incoming_edges(node)
-          if @core.layout_runtime_has_error() {
-            return
-          }
           node.set_layer(Some(first_layer))
           layer_constraint_postprocessor_move_labels_to_label_layer(
             node, true, first_label_layer,
@@ -144,9 +166,6 @@ fn layer_constraint_postprocessor_move_first_and_last_nodes(
         }
         LayerConstraint::Last => {
           layer_constraint_postprocessor_throw_up_unless_no_outgoing_edges(node)
-          if @core.layout_runtime_has_error() {
-            return
-          }
           node.set_layer(Some(last_layer))
           layer_constraint_postprocessor_move_labels_to_label_layer(
             node, false, last_label_layer,
@@ -173,7 +192,7 @@ fn layer_constraint_postprocessor_restore_hidden_nodes(
   layered_graph : LGraph,
   first_separate_layer : Layer,
   last_separate_layer : Layer,
-) -> Unit {
+) -> Unit raise LayerConstraintPostprocessorException {
   for
     hidden_node in layered_graph.get_property_l_node_array(
       internal_properties_hidden_nodes,
@@ -183,7 +202,10 @@ fn layer_constraint_postprocessor_restore_hidden_nodes(
         hidden_node.set_layer(Some(first_separate_layer))
       LayerConstraint::LastSeparate =>
         hidden_node.set_layer(Some(last_separate_layer))
-      _ => abort("Only *_SEPARATE nodes should be hidden.")
+      _ =>
+        layer_constraint_postprocessor_raise_illegal_state(
+          "Only *_SEPARATE nodes should be hidden.",
+        )
     }
 
     for hidden_edge in hidden_node.get_connected_edges() {
@@ -202,7 +224,10 @@ fn layer_constraint_postprocessor_restore_hidden_nodes(
           internal_properties_original_opposite_port,
         ) {
         Some(value) => value
-        None => abort("hidden edge missing ORIGINAL_OPPOSITE_PORT")
+        None =>
+          layer_constraint_postprocessor_raise_illegal_state(
+            "hidden edge missing ORIGINAL_OPPOSITE_PORT",
+          )
       }
       if is_outgoing {
         hidden_edge.set_target(Some(original_opposite_port))
@@ -214,10 +239,10 @@ fn layer_constraint_postprocessor_restore_hidden_nodes(
 }
 
 ///|
-fn layer_constraint_postprocessor_process(
+fn layer_constraint_postprocessor_process_impl(
   layered_graph : LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise LayerConstraintPostprocessorException {
   let monitor = match progress_monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()
@@ -234,10 +259,6 @@ fn layer_constraint_postprocessor_process(
     layer_constraint_postprocessor_move_first_and_last_nodes(
       layered_graph, first_layer, last_layer, first_label_layer, last_label_layer,
     )
-    if @core.layout_runtime_has_error() {
-      monitor.done()
-      return
-    }
 
     if !first_label_layer.get_nodes().is_empty() {
       ignore(layers.insert(0, first_label_layer))
@@ -253,10 +274,6 @@ fn layer_constraint_postprocessor_process(
     layer_constraint_postprocessor_restore_hidden_nodes(
       layered_graph, first_separate_layer, last_separate_layer,
     )
-    if @core.layout_runtime_has_error() {
-      monitor.done()
-      return
-    }
 
     if !first_separate_layer.get_nodes().is_empty() {
       ignore(layers.insert(0, first_separate_layer))
@@ -267,6 +284,20 @@ fn layer_constraint_postprocessor_process(
   }
 
   monitor.done()
+}
+
+///|
+fn layer_constraint_postprocessor_process(
+  layered_graph : LGraph,
+  progress_monitor : @core.IElkProgressMonitor?,
+) -> Unit {
+  layer_constraint_postprocessor_process_impl(layered_graph, progress_monitor) catch {
+    LayerConstraintPostprocessorException::UnsupportedConfigurationException(
+      message
+    ) => @core.layout_runtime_report_unsupported_configuration(message)
+    LayerConstraintPostprocessorException::IllegalStateException(message) =>
+      @core.layout_runtime_report_unsupported_configuration(message)
+  }
 }
 
 ///|

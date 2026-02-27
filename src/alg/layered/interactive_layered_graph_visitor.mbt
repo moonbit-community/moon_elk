@@ -347,11 +347,7 @@ fn interactive_layered_graph_visitor_require_elk_node(
   nodes : Array[@graph.ElkNode],
   id : String,
 ) -> @graph.ElkNode {
-  match interactive_layered_graph_visitor_get_elk_node(nodes, id) {
-    Some(node) => node
-    None =>
-      abort("@core.interactive layered graph visitor cannot resolve node id")
-  }
+  interactive_layered_graph_visitor_get_elk_node(nodes, id).unwrap()
 }
 
 ///|
@@ -423,9 +419,6 @@ fn interactive_layered_graph_visitor_get_chain_by_layer_nodes(
   layer_nodes : Array[@graph.ElkNode],
 ) -> Array[@graph.ElkNode] {
   let pos = interactive_layered_graph_visitor_index_of_node(layer_nodes, node)
-  if pos < 0 {
-    abort("@core.interactive layered graph visitor node not found in layer")
-  }
   let chain_nodes = [node]
 
   let mut i = pos - 1
@@ -511,14 +504,9 @@ fn interactive_layered_graph_visitor_sort_rc_nodes(
     while i < nodes_with_rc.length() {
       let current = nodes_with_rc[i]
       if interactive_layered_graph_visitor_has_in_layer_pred_constraint(current) {
-        let target_name = match
-          interactive_layered_graph_visitor_string_option_value(
-            current, layered_options_crossing_minimization_in_layer_pred_of,
-          ) {
-          Some(value) => value
-          None =>
-            abort("@core.interactive layered graph visitor missing pred target")
-        }
+        let target_name = interactive_layered_graph_visitor_string_option_value(
+          current, layered_options_crossing_minimization_in_layer_pred_of,
+        ).unwrap()
         let target = interactive_layered_graph_visitor_require_elk_node(
           all_nodes, target_name,
         )
@@ -531,14 +519,9 @@ fn interactive_layered_graph_visitor_sort_rc_nodes(
           continue
         }
       } else {
-        let target_name = match
-          interactive_layered_graph_visitor_string_option_value(
-            current, layered_options_crossing_minimization_in_layer_succ_of,
-          ) {
-          Some(value) => value
-          None =>
-            abort("@core.interactive layered graph visitor missing succ target")
-        }
+        let target_name = interactive_layered_graph_visitor_string_option_value(
+          current, layered_options_crossing_minimization_in_layer_succ_of,
+        ).unwrap()
         let target = interactive_layered_graph_visitor_require_elk_node(
           all_nodes, target_name,
         )
@@ -650,14 +633,9 @@ fn interactive_layered_graph_visitor_handle_nodes_with_pc_and_rc(
     )
 
     if interactive_layered_graph_visitor_has_in_layer_pred_constraint(node) {
-      let target_name = match
-        interactive_layered_graph_visitor_string_option_value(
-          node, layered_options_crossing_minimization_in_layer_pred_of,
-        ) {
-        Some(result) => result
-        None =>
-          abort("@core.interactive layered graph visitor missing pred target")
-      }
+      let target_name = interactive_layered_graph_visitor_string_option_value(
+        node, layered_options_crossing_minimization_in_layer_pred_of,
+      ).unwrap()
       targets.push(
         interactive_layered_graph_visitor_require_elk_node(
           all_nodes, target_name,
@@ -670,14 +648,9 @@ fn interactive_layered_graph_visitor_handle_nodes_with_pc_and_rc(
     }
 
     if interactive_layered_graph_visitor_has_in_layer_succ_constraint(node) {
-      let target_name = match
-        interactive_layered_graph_visitor_string_option_value(
-          node, layered_options_crossing_minimization_in_layer_succ_of,
-        ) {
-        Some(result) => result
-        None =>
-          abort("@core.interactive layered graph visitor missing succ target")
-      }
+      let target_name = interactive_layered_graph_visitor_string_option_value(
+        node, layered_options_crossing_minimization_in_layer_succ_of,
+      ).unwrap()
       targets.push(
         interactive_layered_graph_visitor_require_elk_node(
           all_nodes, target_name,
@@ -1007,27 +980,17 @@ fn interactive_layered_graph_visitor_update_lists_for_layer_assignment(
     nodes_with_layer_constraint.push(node)
     let targets = []
     if interactive_layered_graph_visitor_has_in_layer_pred_constraint(node) {
-      let target_name = match
-        interactive_layered_graph_visitor_string_option_value(
-          node, layered_options_crossing_minimization_in_layer_pred_of,
-        ) {
-        Some(value) => value
-        None =>
-          abort("@core.interactive layered graph visitor missing pred target")
-      }
+      let target_name = interactive_layered_graph_visitor_string_option_value(
+        node, layered_options_crossing_minimization_in_layer_pred_of,
+      ).unwrap()
       targets.push(
         interactive_layered_graph_visitor_require_elk_node(nodes, target_name),
       )
     }
     if interactive_layered_graph_visitor_has_in_layer_succ_constraint(node) {
-      let target_name = match
-        interactive_layered_graph_visitor_string_option_value(
-          node, layered_options_crossing_minimization_in_layer_succ_of,
-        ) {
-        Some(value) => value
-        None =>
-          abort("@core.interactive layered graph visitor missing succ target")
-      }
+      let target_name = interactive_layered_graph_visitor_string_option_value(
+        node, layered_options_crossing_minimization_in_layer_succ_of,
+      ).unwrap()
       targets.push(
         interactive_layered_graph_visitor_require_elk_node(nodes, target_name),
       )
@@ -1201,14 +1164,9 @@ fn interactive_layered_graph_visitor_set_coordinates_orthogonal_to_layout_direct
   let mut n = 0
   while n < nodes_with_both_rc.length() {
     let node = nodes_with_both_rc[n]
-    let target_name = match
-      interactive_layered_graph_visitor_string_option_value(
-        node, layered_options_crossing_minimization_in_layer_pred_of,
-      ) {
-      Some(value) => value
-      None =>
-        abort("@core.interactive layered graph visitor missing pred target")
-    }
+    let target_name = interactive_layered_graph_visitor_string_option_value(
+      node, layered_options_crossing_minimization_in_layer_pred_of,
+    ).unwrap()
     let target = interactive_layered_graph_visitor_require_elk_node(
       all_nodes, target_name,
     )
@@ -1266,23 +1224,17 @@ fn interactive_layered_graph_visitor_set_coordinates_orthogonal_to_layout_direct
     let targets : Array[@graph.ElkNode?] = [None, None]
     if interactive_layered_graph_visitor_has_in_layer_pred_constraint(node) {
       let property = layered_options_crossing_minimization_in_layer_pred_of
-      let target_name = match
-        interactive_layered_graph_visitor_string_option_value(node, property) {
-        Some(value) => value
-        None =>
-          abort("@core.interactive layered graph visitor missing pred target")
-      }
+      let target_name = interactive_layered_graph_visitor_string_option_value(
+        node, property,
+      ).unwrap()
       targets[0] = interactive_layered_graph_visitor_get_elk_node(
         all_nodes, target_name,
       )
     } else {
       let property = layered_options_crossing_minimization_in_layer_succ_of
-      let target_name = match
-        interactive_layered_graph_visitor_string_option_value(node, property) {
-        Some(value) => value
-        None =>
-          abort("@core.interactive layered graph visitor missing succ target")
-      }
+      let target_name = interactive_layered_graph_visitor_string_option_value(
+        node, property,
+      ).unwrap()
       targets[1] = interactive_layered_graph_visitor_get_elk_node(
         all_nodes, target_name,
       )

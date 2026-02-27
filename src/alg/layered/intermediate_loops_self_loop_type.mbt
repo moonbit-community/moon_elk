@@ -8,6 +8,18 @@ pub enum SelfLoopType {
 }
 
 ///|
+pub(all) suberror SelfLoopTypeException {
+  IllegalArgumentException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] self_loop_type_raise_illegal_argument(
+  message : String,
+) -> T raise SelfLoopTypeException {
+  raise SelfLoopTypeException::IllegalArgumentException(message)
+}
+
+///|
 fn self_loop_port_side_eq(
   left : @core.PortSide,
   right : @core.PortSide,
@@ -51,10 +63,12 @@ fn self_loop_unique_port_sides(
 ///|
 pub fn self_loop_type_from_port_sides(
   port_sides : Array[@core.PortSide],
-) -> SelfLoopType? {
+) -> SelfLoopType? raise SelfLoopTypeException {
   for side in port_sides {
     if self_loop_port_side_eq(side, @core.PortSide::SideUndefined) {
-      abort("Port sides must not contain UNDEFINED")
+      self_loop_type_raise_illegal_argument(
+        "Port sides must not contain UNDEFINED",
+      )
     }
   }
 

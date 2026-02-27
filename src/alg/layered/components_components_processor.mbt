@@ -68,7 +68,12 @@ fn layered_components_add_port_side(
 fn layered_components_require_port_node(port : LPort) -> LNode {
   match port.get_node() {
     Some(value) => value
-    None => abort("Port without owning node in components DFS.")
+    None => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "Port without owning node in components DFS.",
+      )
+      layered_components_require_port_node(port)
+    }
   }
 }
 

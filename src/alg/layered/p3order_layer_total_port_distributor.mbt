@@ -1,10 +1,22 @@
 ///|
-fn layer_total_calculate_port_ranks(
+pub suberror LayerTotalPortDistributorException {
+  LayerTotalPortDistributorException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] layer_total_port_distributor_raise(
+  message : String,
+) -> T raise LayerTotalPortDistributorException {
+  raise LayerTotalPortDistributorException(message)
+}
+
+///|
+fn layer_total_calculate_port_ranks_raise(
   distributor : AbstractBarycenterPortDistributor,
   node : LNode,
   rank_sum : Double,
   port_type : PortType,
-) -> Double {
+) -> Double raise LayerTotalPortDistributorException {
   let port_ranks = distributor.get_port_ranks()
   match port_type {
     PortType::Input => {
@@ -41,7 +53,32 @@ fn layer_total_calculate_port_ranks(
       }
       pos.to_double()
     }
-    PortType::Undefined => abort("Port type is undefined")
+    PortType::Undefined =>
+      layer_total_port_distributor_raise("Port type is undefined")
+  }
+}
+
+///|
+fn layer_total_calculate_port_ranks(
+  distributor : AbstractBarycenterPortDistributor,
+  node : LNode,
+  rank_sum : Double,
+  port_type : PortType,
+) -> Double {
+  try
+    layer_total_calculate_port_ranks_raise(
+      distributor, node, rank_sum, port_type,
+    )
+  catch {
+    LayerTotalPortDistributorException(message) => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "org.eclipse.elk.alg.layered.p3order.LayerTotalPortDistributor: " +
+        message,
+      )
+      0.0
+    }
+  } noraise {
+    result => result
   }
 }
 

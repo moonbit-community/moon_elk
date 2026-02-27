@@ -61,6 +61,27 @@ pub fn libavoid_server_reset_runtime_for_test() -> Unit {
 }
 
 ///|
+pub suberror LibavoidServerStateException {
+  LibavoidServerStateException(String)
+} derive(Show, ToJson)
+
+///|
+fn libavoid_server_raise_illegal_state(
+  message : String,
+) -> Unit raise LibavoidServerStateException {
+  raise LibavoidServerStateException(message)
+}
+
+///|
+pub fn libavoid_server_state_exception_message(
+  err : LibavoidServerStateException,
+) -> String {
+  match err {
+    LibavoidServerStateException(message) => message
+  }
+}
+
+///|
 pub fn LibavoidServer::initialize(self : LibavoidServer) -> Unit {
   self.running = true
   self.canceled = false
@@ -82,9 +103,11 @@ pub fn LibavoidServer::get_process_timeout(self : LibavoidServer) -> Int {
 ///|
 pub fn LibavoidServer::input(
   self : LibavoidServer,
-) -> @layouter.GraphvizOutputStream {
+) -> @layouter.GraphvizOutputStream raise LibavoidServerStateException {
   if !self.running {
-    abort("Libavoid server has not been initialized.")
+    libavoid_server_raise_illegal_state(
+      "Libavoid server has not been initialized.",
+    )
   }
   self.input_sink.as_output_stream()
 }
@@ -92,9 +115,11 @@ pub fn LibavoidServer::input(
 ///|
 pub fn LibavoidServer::read_output_data(
   self : LibavoidServer,
-) -> Map[String, String]? {
+) -> Map[String, String]? raise LibavoidServerStateException {
   if !self.running {
-    abort("Libavoid server has not been initialized.")
+    libavoid_server_raise_illegal_state(
+      "Libavoid server has not been initialized.",
+    )
   }
   self.output_data
 }

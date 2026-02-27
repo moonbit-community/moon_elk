@@ -1,8 +1,29 @@
 ///|
+pub(all) suberror CrossHierarchyEdgeComparatorException {
+  CrossHierarchyEdgeComparatorException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] cross_hierarchy_edge_comparator_raise(
+  message : String,
+) -> T raise CrossHierarchyEdgeComparatorException {
+  raise CrossHierarchyEdgeComparatorException(message)
+}
+
+///|
+pub fn cross_hierarchy_edge_comparator_exception_message(
+  err : CrossHierarchyEdgeComparatorException,
+) -> String {
+  match err {
+    CrossHierarchyEdgeComparatorException(message) => message
+  }
+}
+
+///|
 fn cross_hierarchy_edge_comparator_hierarchy_level(
   nested_graph : LGraph,
   top_level_graph : LGraph,
-) -> Int {
+) -> Int raise CrossHierarchyEdgeComparatorException {
   let mut current_graph = nested_graph
   let mut level = 0
   while true {
@@ -14,10 +35,10 @@ fn cross_hierarchy_edge_comparator_hierarchy_level(
         current_graph = current_node.get_graph()
         level += 1
       }
-      None => abort("IllegalArgumentException")
+      None => cross_hierarchy_edge_comparator_raise("IllegalArgumentException")
     }
   }
-  abort("IllegalStateException")
+  cross_hierarchy_edge_comparator_raise("IllegalStateException")
 }
 
 ///|
@@ -53,7 +74,7 @@ pub fn CrossHierarchyEdgeComparator::compare(
   self : CrossHierarchyEdgeComparator,
   edge1 : CrossHierarchyEdge,
   edge2 : CrossHierarchyEdge,
-) -> Int {
+) -> Int raise CrossHierarchyEdgeComparatorException {
   if cross_hierarchy_edge_comparator_is_output(edge1.get_type()) &&
     cross_hierarchy_edge_comparator_is_input(edge2.get_type()) {
     return -1

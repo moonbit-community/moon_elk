@@ -1,31 +1,52 @@
 ///|
-fn[C, T] node_reference_matcher_comment_text_provider_or_abort(
+pub suberror NodeReferenceMatcherException {
+  NodeReferenceMatcherException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] node_reference_matcher_raise(
+  message : String,
+) -> T raise NodeReferenceMatcherException {
+  raise NodeReferenceMatcherException(message)
+}
+
+///|
+fn node_reference_matcher_exception_message(
+  err : NodeReferenceMatcherException,
+) -> String {
+  match err {
+    NodeReferenceMatcherException(message) => message
+  }
+}
+
+///|
+fn[C, T] node_reference_matcher_comment_text_provider_or_raise(
   matcher : NodeReferenceMatcher[C, T],
-) -> (C) -> String {
+) -> ((C) -> String) raise NodeReferenceMatcherException {
   match matcher.comment_text_provider {
     Some(provider) => provider
-    None => abort("A comment text function is required.")
+    None => node_reference_matcher_raise("A comment text function is required.")
   }
 }
 
 ///|
-fn[C, T] node_reference_matcher_target_name_provider_or_abort(
+fn[C, T] node_reference_matcher_target_name_provider_or_raise(
   matcher : NodeReferenceMatcher[C, T],
-) -> (T) -> String {
+) -> ((T) -> String) raise NodeReferenceMatcherException {
   match matcher.target_name_provider {
     Some(provider) => provider
-    None => abort("A node name function is required.")
+    None => node_reference_matcher_raise("A node name function is required.")
   }
 }
 
 ///|
-fn[C, T] node_reference_matcher_bounds_provider_or_abort(
+fn[C, T] node_reference_matcher_bounds_provider_or_raise(
   matcher : NodeReferenceMatcher[C, T],
-) -> IBoundsProvider[C, T] {
+) -> IBoundsProvider[C, T] raise NodeReferenceMatcherException {
   match matcher.bounds_provider {
     Some(provider) => provider
     None =>
-      abort(
+      node_reference_matcher_raise(
         "A bounds provider must be installed if a maximum attachment distance is set.",
       )
   }
@@ -260,27 +281,27 @@ pub fn[C, T] NodeReferenceMatcher::with_bounds_provider(
 ///|
 pub fn[C, T] NodeReferenceMatcher::check_configuration(
   self : NodeReferenceMatcher[C, T],
-) -> Unit {
-  ignore(node_reference_matcher_comment_text_provider_or_abort(self))
-  ignore(node_reference_matcher_target_name_provider_or_abort(self))
+) -> Unit raise NodeReferenceMatcherException {
+  ignore(node_reference_matcher_comment_text_provider_or_raise(self))
+  ignore(node_reference_matcher_target_name_provider_or_raise(self))
   if self.max_distance >= 0.0 {
-    ignore(node_reference_matcher_bounds_provider_or_abort(self))
+    ignore(node_reference_matcher_bounds_provider_or_raise(self))
   }
 }
 
 ///|
-pub fn[C, T] NodeReferenceMatcher::preprocess(
-  self : NodeReferenceMatcher[C, T],
+fn[C, T] node_reference_matcher_preprocess_impl(
+  matcher : NodeReferenceMatcher[C, T],
   data_provider : IDataProvider[C, T],
   include_hierarchy : Bool,
-) -> Unit {
-  self.check_configuration()
+) -> Unit raise NodeReferenceMatcherException {
+  matcher.check_configuration()
 
-  let comment_text_provider = node_reference_matcher_comment_text_provider_or_abort(
-    self,
+  let comment_text_provider = node_reference_matcher_comment_text_provider_or_raise(
+    matcher,
   )
-  let target_name_provider = node_reference_matcher_target_name_provider_or_abort(
-    self,
+  let target_name_provider = node_reference_matcher_target_name_provider_or_raise(
+    matcher,
   )
 
   let comment_texts = []
@@ -299,11 +320,91 @@ pub fn[C, T] NodeReferenceMatcher::preprocess(
     }
   }
 
-  self.go_find_matches(comment_texts, target_names)
+  matcher.go_find_matches(comment_texts, target_names)
 
   if include_hierarchy {
     for sub_provider in data_provider.provide_sub_hierarchies() {
-      self.preprocess(sub_provider, true)
+      node_reference_matcher_preprocess_impl(matcher, sub_provider, true)
+    }
+  }
+}
+
+///|
+pub fn[C, T] NodeReferenceMatcher::preprocess(
+  self : NodeReferenceMatcher[C, T],
+  data_provider : IDataProvider[C, T],
+  include_hierarchy : Bool,
+) -> Unit {
+  try
+    node_reference_matcher_preprocess_impl(
+      self, data_provider, include_hierarchy,
+    )
+  catch {
+    err =>
+      layout_runtime_report_unsupported_configuration(
+        node_reference_matcher_exception_message(err),
+      )
+  } noraise {
+    _ => ()
+  }
+}
+
+///|
+fn[C, T] node_reference_matcher_go_find_matches_impl(
+  matcher : NodeReferenceMatcher[C, T],
+  comment_texts : Array[(C, String)],
+  target_names : Array[(T, String)],
+) -> Unit raise NodeReferenceMatcherException {
+  for comment_text_pair in comment_texts {
+    let (comment, comment_text) = comment_text_pair
+    let mut found_target : T? = None
+
+    for target_name_pair in target_names {
+      let (target, target_name) = target_name_pair
+      let matched = if matcher.fuzzy {
+        node_reference_matcher_fuzzy_match(comment_text, target_name)
+      } else {
+        node_reference_matcher_strict_match(comment_text, target_name)
+      }
+
+      if matched {
+        if found_target is None {
+          found_target = Some(target)
+        } else {
+          found_target = None
+          break
+        }
+      }
+    }
+
+    match found_target {
+      Some(target) =>
+        if matcher.max_distance < 0.0 {
+          matcher.found_attachments.push((comment, target))
+        } else {
+          let bounds_provider = node_reference_matcher_bounds_provider_or_raise(
+            matcher,
+          )
+          let comment_bounds = match
+            bounds_provider.bounds_for_comment(comment) {
+            Some(bounds) => bounds
+            None =>
+              node_reference_matcher_raise(
+                "Bounds for comment are unavailable.",
+              )
+          }
+          let target_bounds = match bounds_provider.bounds_for_target(target) {
+            Some(bounds) => bounds
+            None =>
+              node_reference_matcher_raise("Bounds for target are unavailable.")
+          }
+
+          if distance_matcher_distance(comment_bounds, target_bounds) <=
+            matcher.max_distance {
+            matcher.found_attachments.push((comment, target))
+          }
+        }
+      None => ()
     }
   }
 }
@@ -346,53 +447,17 @@ pub fn[C, T] NodeReferenceMatcher::go_find_matches(
   comment_texts : Array[(C, String)],
   target_names : Array[(T, String)],
 ) -> Unit {
-  for comment_text_pair in comment_texts {
-    let (comment, comment_text) = comment_text_pair
-    let mut found_target : T? = None
-
-    for target_name_pair in target_names {
-      let (target, target_name) = target_name_pair
-      let matched = if self.fuzzy {
-        node_reference_matcher_fuzzy_match(comment_text, target_name)
-      } else {
-        node_reference_matcher_strict_match(comment_text, target_name)
-      }
-
-      if matched {
-        if found_target is None {
-          found_target = Some(target)
-        } else {
-          found_target = None
-          break
-        }
-      }
-    }
-
-    match found_target {
-      Some(target) =>
-        if self.max_distance < 0.0 {
-          self.found_attachments.push((comment, target))
-        } else {
-          let bounds_provider = node_reference_matcher_bounds_provider_or_abort(
-            self,
-          )
-          let comment_bounds = match
-            bounds_provider.bounds_for_comment(comment) {
-            Some(bounds) => bounds
-            None => abort("Bounds for comment are unavailable.")
-          }
-          let target_bounds = match bounds_provider.bounds_for_target(target) {
-            Some(bounds) => bounds
-            None => abort("Bounds for target are unavailable.")
-          }
-
-          if distance_matcher_distance(comment_bounds, target_bounds) <=
-            self.max_distance {
-            self.found_attachments.push((comment, target))
-          }
-        }
-      None => ()
-    }
+  try
+    node_reference_matcher_go_find_matches_impl(
+      self, comment_texts, target_names,
+    )
+  catch {
+    err =>
+      layout_runtime_report_unsupported_configuration(
+        node_reference_matcher_exception_message(err),
+      )
+  } noraise {
+    _ => ()
   }
 }
 

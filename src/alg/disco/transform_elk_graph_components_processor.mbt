@@ -2,18 +2,42 @@
 fn disco_edge_source_node(edge : @graph.ElkEdge) -> @graph.ElkNode {
   let sources = @graph.edge_sources(edge)
   if sources.is_empty() {
-    abort("edge source is missing")
+    @core.layout_runtime_report_unsupported_configuration(
+      "edge source is missing",
+    )
+    return @graph.create_node(None)
   }
-  @graph.connectable_shape_to_node(Some(sources[0]))
+  try @graph.connectable_shape_to_node(Some(sources[0])) catch {
+    _ => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "edge source shape is not attached to a node",
+      )
+      @graph.create_node(None)
+    }
+  } noraise {
+    value => value
+  }
 }
 
 ///|
 fn disco_edge_target_node(edge : @graph.ElkEdge) -> @graph.ElkNode {
   let targets = @graph.edge_targets(edge)
   if targets.is_empty() {
-    abort("edge target is missing")
+    @core.layout_runtime_report_unsupported_configuration(
+      "edge target is missing",
+    )
+    return @graph.create_node(None)
   }
-  @graph.connectable_shape_to_node(Some(targets[0]))
+  try @graph.connectable_shape_to_node(Some(targets[0])) catch {
+    _ => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "edge target shape is not attached to a node",
+      )
+      @graph.create_node(None)
+    }
+  } noraise {
+    value => value
+  }
 }
 
 ///|
@@ -22,7 +46,11 @@ fn disco_edge_source_port(edge : @graph.ElkEdge) -> @graph.ElkPort? {
   if sources.is_empty() {
     None
   } else {
-    @graph.connectable_shape_to_port(Some(sources[0]))
+    try @graph.connectable_shape_to_port(Some(sources[0])) catch {
+      _ => None
+    } noraise {
+      value => value
+    }
   }
 }
 
@@ -32,7 +60,11 @@ fn disco_edge_target_port(edge : @graph.ElkEdge) -> @graph.ElkPort? {
   if targets.is_empty() {
     None
   } else {
-    @graph.connectable_shape_to_port(Some(targets[0]))
+    try @graph.connectable_shape_to_port(Some(targets[0])) catch {
+      _ => None
+    } noraise {
+      value => value
+    }
   }
 }
 

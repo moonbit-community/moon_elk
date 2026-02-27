@@ -1,4 +1,18 @@
 ///|
+priv suberror EdgeAndLayerConstraintEdgeReverserException {
+  UnsupportedGraphException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] edge_and_layer_constraint_edge_reverser_raise_unsupported_graph(
+  message : String,
+) -> T raise EdgeAndLayerConstraintEdgeReverserException {
+  raise EdgeAndLayerConstraintEdgeReverserException::UnsupportedGraphException(
+    message,
+  )
+}
+
+///|
 fn edge_and_layer_constraint_edge_reverser_layer_constraint_equals(
   left : LayerConstraint,
   right : LayerConstraint,
@@ -75,26 +89,41 @@ fn edge_and_layer_constraint_edge_reverser_port_constraints_from_string(
 }
 
 ///|
-fn edge_and_layer_constraint_edge_reverser_edge_source(edge : LEdge) -> LPort {
+fn edge_and_layer_constraint_edge_reverser_edge_source(
+  edge : LEdge,
+) -> LPort raise EdgeAndLayerConstraintEdgeReverserException {
   match edge.get_source() {
     Some(value) => value
-    None => abort("edge has no source")
+    None =>
+      edge_and_layer_constraint_edge_reverser_raise_unsupported_graph(
+        "edge has no source",
+      )
   }
 }
 
 ///|
-fn edge_and_layer_constraint_edge_reverser_edge_target(edge : LEdge) -> LPort {
+fn edge_and_layer_constraint_edge_reverser_edge_target(
+  edge : LEdge,
+) -> LPort raise EdgeAndLayerConstraintEdgeReverserException {
   match edge.get_target() {
     Some(value) => value
-    None => abort("edge has no target")
+    None =>
+      edge_and_layer_constraint_edge_reverser_raise_unsupported_graph(
+        "edge has no target",
+      )
   }
 }
 
 ///|
-fn edge_and_layer_constraint_edge_reverser_port_node(port : LPort) -> LNode {
+fn edge_and_layer_constraint_edge_reverser_port_node(
+  port : LPort,
+) -> LNode raise EdgeAndLayerConstraintEdgeReverserException {
   match port.get_node() {
     Some(value) => value
-    None => abort("port has no owner node")
+    None =>
+      edge_and_layer_constraint_edge_reverser_raise_unsupported_graph(
+        "port has no owner node",
+      )
   }
 }
 
@@ -119,7 +148,7 @@ fn edge_and_layer_constraint_edge_reverser_reverse_edge(
 fn edge_and_layer_constraint_edge_reverser_can_reverse_outgoing_edge(
   source_node_layer_constraint : LayerConstraint,
   edge : LEdge,
-) -> Bool {
+) -> Bool raise EdgeAndLayerConstraintEdgeReverserException {
   if edge.get_property_bool(internal_properties_reversed) {
     return false
   }
@@ -156,7 +185,7 @@ fn edge_and_layer_constraint_edge_reverser_can_reverse_outgoing_edge(
 fn edge_and_layer_constraint_edge_reverser_can_reverse_incoming_edge(
   target_node_layer_constraint : LayerConstraint,
   edge : LEdge,
-) -> Bool {
+) -> Bool raise EdgeAndLayerConstraintEdgeReverserException {
   if edge.get_property_bool(internal_properties_reversed) {
     return false
   }
@@ -195,7 +224,7 @@ fn edge_and_layer_constraint_edge_reverser_reverse_edges(
   node : LNode,
   node_layer_constraint : LayerConstraint,
   target_port_type : PortType,
-) -> Unit {
+) -> Unit raise EdgeAndLayerConstraintEdgeReverserException {
   for port in node.get_ports().copy() {
     if edge_and_layer_constraint_edge_reverser_port_type_equals(
         target_port_type,
@@ -240,7 +269,7 @@ fn edge_and_layer_constraint_edge_reverser_reverse_edges(
 ///|
 fn edge_and_layer_constraint_edge_reverser_handle_outer_nodes(
   layered_graph : LGraph,
-) -> Array[LNode] {
+) -> Array[LNode] raise EdgeAndLayerConstraintEdgeReverserException {
   let remaining_nodes = []
   for node in layered_graph.get_layerless_nodes() {
     let layer_constraint = edge_and_layer_constraint_edge_reverser_layer_constraint(
@@ -281,7 +310,7 @@ fn edge_and_layer_constraint_edge_reverser_handle_outer_nodes(
 fn edge_and_layer_constraint_edge_reverser_handle_inner_nodes(
   layered_graph : LGraph,
   remaining_nodes : Array[LNode],
-) -> Unit {
+) -> Unit raise EdgeAndLayerConstraintEdgeReverserException {
   for node in remaining_nodes {
     let layer_constraint = edge_and_layer_constraint_edge_reverser_layer_constraint(
       node,
@@ -410,12 +439,24 @@ fn edge_and_layer_constraint_edge_reverser_process(
   }
   ignore(monitor.begin("Edge and layer constraint edge reversal", 1.0))
 
-  let remaining_nodes = edge_and_layer_constraint_edge_reverser_handle_outer_nodes(
-    layered_graph,
-  )
-  edge_and_layer_constraint_edge_reverser_handle_inner_nodes(
-    layered_graph, remaining_nodes,
-  )
+  try {
+    let remaining_nodes = edge_and_layer_constraint_edge_reverser_handle_outer_nodes(
+      layered_graph,
+    )
+    edge_and_layer_constraint_edge_reverser_handle_inner_nodes(
+      layered_graph, remaining_nodes,
+    )
+  } catch {
+    EdgeAndLayerConstraintEdgeReverserException::UnsupportedGraphException(
+      message
+    ) => {
+      @core.layout_runtime_report_unsupported_configuration(message)
+      monitor.done()
+      return
+    }
+  } noraise {
+    _ => ()
+  }
 
   monitor.done()
 }

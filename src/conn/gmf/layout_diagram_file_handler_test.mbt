@@ -1,4 +1,16 @@
 ///|
+fn layout_diagram_file_handler_test_expect_ok(
+  action : () -> Int raise LayoutDiagramFileHandlerException,
+) -> Int {
+  try action() catch {
+    LayoutDiagramFileHandlerException(message) =>
+      abort("unexpected LayoutDiagramFileHandlerException: \{message}")
+  } noraise {
+    value => value
+  }
+}
+
+///|
 test "LayoutDiagramFileHandler executes layout for selected diagram files" {
   reset_conn_gmf_foundation_for_test()
   gmf_layout_diagram_file_handler_reset_for_test()
@@ -9,11 +21,13 @@ test "LayoutDiagramFileHandler executes layout for selected diagram files" {
   gmf_register_layout_diagram_file_for_test("b.notation", diagram_b)
 
   let handler = new_layout_diagram_file_handler()
-  let processed = handler.execute([
-    OtherSelectionItem,
-    DiagramFile("a.notation"),
-    DiagramFile("b.notation"),
-  ])
+  let processed = layout_diagram_file_handler_test_expect_ok(() => {
+    handler.execute([
+      OtherSelectionItem,
+      DiagramFile("a.notation"),
+      DiagramFile("b.notation"),
+    ])
+  })
 
   inspect(processed, content="2")
   inspect(

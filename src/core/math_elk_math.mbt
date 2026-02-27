@@ -2,9 +2,26 @@
 let _fact_table_size = 21
 
 ///|
-pub fn factl(x : Int) -> Int64 {
+priv suberror ElkMathException {
+  ElkMathException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] elk_math_raise(message : String) -> T raise ElkMathException {
+  raise ElkMathException(message)
+}
+
+///|
+fn elk_math_exception_message(err : ElkMathException) -> String {
+  match err {
+    ElkMathException(message) => message
+  }
+}
+
+///|
+fn factl_impl(x : Int) -> Int64 raise ElkMathException {
   if x < 0 || x >= _fact_table_size {
-    abort("The input must be between 0 and \{_fact_table_size}")
+    elk_math_raise("The input must be between 0 and \{_fact_table_size}")
   }
   let mut result = Int64::from_int(1)
   let mut i = 2
@@ -16,24 +33,52 @@ pub fn factl(x : Int) -> Int64 {
 }
 
 ///|
-pub fn factd(x : Int) -> Double {
+pub fn factl(x : Int) -> Int64 {
+  try factl_impl(x) catch {
+    err => {
+      layout_runtime_report_unsupported_configuration(
+        elk_math_exception_message(err),
+      )
+      Int64::from_int(0)
+    }
+  } noraise {
+    value => value
+  }
+}
+
+///|
+fn factd_impl(x : Int) -> Double raise ElkMathException {
   if x < 0 {
-    abort("The input must be positive")
+    elk_math_raise("The input must be positive")
   }
   if x < _fact_table_size {
-    return factl(x).to_double()
+    return factl_impl(x).to_double()
   }
   (2.0 * @math.PI * x.to_double()).sqrt() *
   (powf(x.to_double(), x) / powd(@math.exp(1.0), x))
 }
 
 ///|
-pub fn binomiall(n : Int, k : Int) -> Int64 {
+pub fn factd(x : Int) -> Double {
+  try factd_impl(x) catch {
+    err => {
+      layout_runtime_report_unsupported_configuration(
+        elk_math_exception_message(err),
+      )
+      0.0
+    }
+  } noraise {
+    value => value
+  }
+}
+
+///|
+fn binomiall_impl(n : Int, k : Int) -> Int64 raise ElkMathException {
   if n < 0 || k < 0 {
-    abort("k and n must be positive")
+    elk_math_raise("k and n must be positive")
   }
   if k > n {
-    abort("k must be smaller than n")
+    elk_math_raise("k must be smaller than n")
   }
   if k == 0 || k == n {
     return Int64::from_int(1)
@@ -42,18 +87,32 @@ pub fn binomiall(n : Int, k : Int) -> Int64 {
     return Int64::from_int(0)
   }
   if n < _fact_table_size {
-    return factl(n) / (factl(k) * factl(n - k))
+    return factl_impl(n) / (factl_impl(k) * factl_impl(n - k))
   }
-  binomiall(n - 1, k - 1) + binomiall(n - 1, k)
+  binomiall_impl(n - 1, k - 1) + binomiall_impl(n - 1, k)
 }
 
 ///|
-pub fn binomiald(n : Int, k : Int) -> Double {
+pub fn binomiall(n : Int, k : Int) -> Int64 {
+  try binomiall_impl(n, k) catch {
+    err => {
+      layout_runtime_report_unsupported_configuration(
+        elk_math_exception_message(err),
+      )
+      Int64::from_int(0)
+    }
+  } noraise {
+    value => value
+  }
+}
+
+///|
+fn binomiald_impl(n : Int, k : Int) -> Double raise ElkMathException {
   if n < 0 || k < 0 {
-    abort("k and n must be positive")
+    elk_math_raise("k and n must be positive")
   }
   if k > n {
-    abort("k must be smaller than n")
+    elk_math_raise("k must be smaller than n")
   }
   if k == 0 || k == n {
     return 1.0
@@ -61,7 +120,21 @@ pub fn binomiald(n : Int, k : Int) -> Double {
   if n == 0 {
     return 0.0
   }
-  factd(n) / (factd(k) * factd(n - k))
+  factd_impl(n) / (factd_impl(k) * factd_impl(n - k))
+}
+
+///|
+pub fn binomiald(n : Int, k : Int) -> Double {
+  try binomiald_impl(n, k) catch {
+    err => {
+      layout_runtime_report_unsupported_configuration(
+        elk_math_exception_message(err),
+      )
+      0.0
+    }
+  } noraise {
+    value => value
+  }
 }
 
 ///|
@@ -156,9 +229,6 @@ pub fn get_point_on_bezier_segment(
 ///|
 pub fn approximate_bezier_spline(control_points : KVectorChain) -> KVectorChain {
   let ctrl_pt_count = control_points.size()
-  if ctrl_pt_count == 0 {
-    abort("NoSuchElementException")
-  }
   let spline = new_kvector_chain()
   let mut index = 0
   let mut current_point = control_points.get(index)

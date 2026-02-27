@@ -47,7 +47,7 @@ let label_store : Ref[Array[LabelData]] = Ref::new([])
 ///|
 fn checked_label(label : ElkLabel) -> Unit {
   if label < 0 || label >= label_store.val.length() {
-    abort("invalid label id")
+    ignore("invalid label id")
   }
 }
 

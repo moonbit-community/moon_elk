@@ -8,7 +8,11 @@ fn create_spacing_test_graph() -> @graph.ElkNode {
   @graph.node_set_dimensions(node1, 30.0, 30.0)
   let node2 = @graph.create_node(Some(graph))
   @graph.node_set_dimensions(node2, 30.0, 30.0)
-  ignore(@graph.create_simple_edge(node1, node2))
+  try ignore(@graph.create_simple_edge(node1, node2)) catch {
+    err => abort(err.to_string())
+  } noraise {
+    _ => ()
+  }
   graph
 }
 

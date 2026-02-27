@@ -1,24 +1,40 @@
 ///|
-fn cutting_utils_require_edge_source(edge : LEdge) -> LPort {
+suberror CuttingUtilsException {
+  CuttingUtilsException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] cutting_utils_raise(message : String) -> T raise CuttingUtilsException {
+  raise CuttingUtilsException(message)
+}
+
+///|
+fn cutting_utils_require_edge_source(
+  edge : LEdge,
+) -> LPort raise CuttingUtilsException {
   match edge.get_source() {
     Some(value) => value
-    None => abort("edge has no source port")
+    None => cutting_utils_raise("edge has no source port")
   }
 }
 
 ///|
-fn cutting_utils_require_edge_target(edge : LEdge) -> LPort {
+fn cutting_utils_require_edge_target(
+  edge : LEdge,
+) -> LPort raise CuttingUtilsException {
   match edge.get_target() {
     Some(value) => value
-    None => abort("edge has no target port")
+    None => cutting_utils_raise("edge has no target port")
   }
 }
 
 ///|
-fn cutting_utils_require_port_node(port : LPort) -> LNode {
+fn cutting_utils_require_port_node(
+  port : LPort,
+) -> LNode raise CuttingUtilsException {
   match port.get_node() {
     Some(value) => value
-    None => abort("port has no owner node")
+    None => cutting_utils_raise("port has no owner node")
   }
 }
 
@@ -38,13 +54,15 @@ fn cutting_utils_node_type_equals(left : NodeType, right : NodeType) -> Bool {
 }
 
 ///|
-fn cutting_utils_port_side_from_string(value : String) -> @core.PortSide {
+fn cutting_utils_port_side_from_string(
+  value : String,
+) -> @core.PortSide raise CuttingUtilsException {
   for side in @core.port_side_values() {
     if @core.port_side_to_string(side) == value {
       return side
     }
   }
-  abort("unknown port side")
+  cutting_utils_raise("unknown port side")
 }
 
 ///|
@@ -88,7 +106,7 @@ fn cutting_utils_set_dummy_properties(
   dummy : LNode,
   in_edge : LEdge,
   out_edge : LEdge,
-) -> Unit {
+) -> Unit raise CuttingUtilsException {
   let in_edge_source_node = cutting_utils_require_port_node(
     cutting_utils_require_edge_source(in_edge),
   )
@@ -126,7 +144,7 @@ pub fn cutting_utils_insert_dummies(
   layered_graph : LGraph,
   original_edge : LEdge,
   offset_first_in_layer_dummy : Int,
-) -> Array[LEdge] {
+) -> Array[LEdge] raise CuttingUtilsException {
   let edge_node_spacing = layered_graph.get_property_double(
     @core.spacing_edge_node,
   )
@@ -144,11 +162,11 @@ pub fn cutting_utils_insert_dummies(
 
   let source_layer = match source_node.get_layer() {
     Some(value) => value
-    None => abort("source node has no layer")
+    None => cutting_utils_raise("source node has no layer")
   }
   let target_layer = match target_node.get_layer() {
     Some(value) => value
-    None => abort("target node has no layer")
+    None => cutting_utils_raise("target node has no layer")
   }
   let source_index = source_layer.get_index()
   let target_index = target_layer.get_index()

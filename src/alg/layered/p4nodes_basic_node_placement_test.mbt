@@ -29,22 +29,22 @@ fn p4_basic_node_placement_test_build_diamond_graph() -> Array[@graph.ElkNode] {
   let e1 = create_edge(None)
   edge_add_source(e1, make_node_shape(source))
   edge_add_target(e1, make_node_shape(mid_a))
-  update_containment(Some(e1))
+  layered_test_update_containment(Some(e1))
 
   let e2 = create_edge(None)
   edge_add_source(e2, make_node_shape(source))
   edge_add_target(e2, make_node_shape(mid_b))
-  update_containment(Some(e2))
+  layered_test_update_containment(Some(e2))
 
   let e3 = create_edge(None)
   edge_add_source(e3, make_node_shape(mid_a))
   edge_add_target(e3, make_node_shape(target))
-  update_containment(Some(e3))
+  layered_test_update_containment(Some(e3))
 
   let e4 = create_edge(None)
   edge_add_source(e4, make_node_shape(mid_b))
   edge_add_target(e4, make_node_shape(target))
-  update_containment(Some(e4))
+  layered_test_update_containment(Some(e4))
 
   [graph, source, mid_a, mid_b, target]
 }

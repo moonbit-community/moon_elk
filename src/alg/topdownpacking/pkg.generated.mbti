@@ -23,6 +23,8 @@ pub fn new_topdownpacking_left_right_top_down_node_placer_node_arranger() -> INo
 
 pub let topdownpacking_algorithm_id : String
 
+pub fn topdownpacking_grid_exception_message(TopdownpackingGridException) -> String
+
 pub let topdownpacking_hierarchical_node_aspect_ratio : @graph.IProperty[Double]
 
 pub let topdownpacking_hierarchical_node_width : @graph.IProperty[Double]
@@ -54,6 +56,11 @@ pub fn topdownpacking_whitespace_elimination_strategy_from_string(String) -> Whi
 pub fn topdownpacking_whitespace_elimination_strategy_phase_factory(WhitespaceEliminationStrategy) -> @core.ILayoutProcessorFactory[TopdownPackingPhases, GridElkNode]
 
 // Errors
+pub suberror TopdownpackingGridException {
+  TopdownpackingGridException(String)
+}
+pub impl Show for TopdownpackingGridException
+pub impl ToJson for TopdownpackingGridException
 
 // Types and methods
 pub struct Grid[T] {
@@ -79,22 +86,22 @@ pub struct GridElkNode {
   mut rows : Int
   mut cols : Int
 }
-pub fn GridElkNode::get(Self, Int, Int) -> Int?
+pub fn GridElkNode::get(Self, Int, Int) -> Int? raise TopdownpackingGridException
 pub fn GridElkNode::get_bool_property(Self, @graph.IProperty[Bool]) -> Bool
 pub fn GridElkNode::get_children(Self) -> Array[Int]
-pub fn GridElkNode::get_column(Self, Int) -> Array[Int?]
+pub fn GridElkNode::get_column(Self, Int) -> Array[Int?] raise TopdownpackingGridException
 pub fn GridElkNode::get_columns(Self) -> Int
 pub fn GridElkNode::get_double_property(Self, @graph.IProperty[Double]) -> Double
 pub fn GridElkNode::get_height(Self) -> Double
 pub fn GridElkNode::get_identifier(Self) -> String
 pub fn GridElkNode::get_node(Self) -> Int
-pub fn GridElkNode::get_row(Self, Int) -> Array[Int?]
+pub fn GridElkNode::get_row(Self, Int) -> Array[Int?] raise TopdownpackingGridException
 pub fn GridElkNode::get_rows(Self) -> Int
 pub fn GridElkNode::get_string_property(Self, @graph.IProperty[String]) -> String
 pub fn GridElkNode::get_width(Self) -> Double
 pub fn GridElkNode::get_x(Self) -> Double
 pub fn GridElkNode::get_y(Self) -> Double
-pub fn GridElkNode::put(Self, Int, Int, Int) -> Unit
+pub fn GridElkNode::put(Self, Int, Int, Int) -> Unit raise TopdownpackingGridException
 pub fn GridElkNode::set_dimensions(Self, Double, Double) -> Unit
 pub fn GridElkNode::set_grid_size(Self, Int, Int) -> Unit
 pub fn GridElkNode::set_height(Self, Double) -> Unit

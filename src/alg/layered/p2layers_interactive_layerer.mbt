@@ -26,22 +26,42 @@ fn interactive_layerer_layer_constraint_postprocessor_factory() -> @core.ILayout
 }
 
 ///|
-fn interactive_layerer_require_edge_target_node(edge : LEdge) -> LNode {
+pub(all) suberror InteractiveLayererException {
+  UnsupportedGraphException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] interactive_layerer_raise_unsupported_graph(
+  message : String,
+) -> T raise InteractiveLayererException {
+  raise InteractiveLayererException::UnsupportedGraphException(message)
+}
+
+///|
+fn interactive_layerer_require_edge_target_node(
+  edge : LEdge,
+) -> LNode raise InteractiveLayererException {
   let target = match edge.get_target() {
     Some(value) => value
-    None => abort("edge has no target port")
+    None =>
+      interactive_layerer_raise_unsupported_graph("edge has no target port")
   }
   match target.get_node() {
     Some(value) => value
-    None => abort("target port has no owner node")
+    None =>
+      interactive_layerer_raise_unsupported_graph(
+        "target port has no owner node",
+      )
   }
 }
 
 ///|
-fn interactive_layerer_require_node_layer(node : LNode) -> Layer {
+fn interactive_layerer_require_node_layer(
+  node : LNode,
+) -> Layer raise InteractiveLayererException {
   match node.get_layer() {
     Some(value) => value
-    None => abort("node has no layer")
+    None => interactive_layerer_raise_unsupported_graph("node has no layer")
   }
 }
 
@@ -122,7 +142,7 @@ fn interactive_layerer_insert_node_into_spans(
 fn interactive_layerer_check_node(
   node1 : LNode,
   graph : LGraph,
-) -> Array[LNode] {
+) -> Array[LNode] raise InteractiveLayererException {
   node1.set_id(1)
   let layer1 = interactive_layerer_require_node_layer(node1)
   let shift_nodes = []
@@ -195,48 +215,58 @@ fn interactive_layerer_process(
   }
   ignore(monitor.begin("Interactive node layering", 1.0))
 
-  let current_spans = []
-  for node in layered_graph.get_layerless_nodes() {
-    interactive_layerer_insert_node_into_spans(current_spans, node)
-  }
-
-  let layers = layered_graph.get_layers()
-  let mut next_index = 0
-  for span in current_spans {
-    let layer = new_layer(layered_graph)
-    layer.set_id(next_index)
-    next_index += 1
-    layers.push(layer)
-    for node in span.nodes {
-      node.set_layer(Some(layer))
-      node.set_id(0)
+  try {
+    let current_spans = []
+    for node in layered_graph.get_layerless_nodes() {
+      interactive_layerer_insert_node_into_spans(current_spans, node)
     }
-  }
 
-  for node in layered_graph.get_layerless_nodes() {
-    if node.get_id() == 0 {
-      let shifted_nodes = interactive_layerer_check_node(node, layered_graph)
-      while !shifted_nodes.is_empty() {
-        let node_to_check = shifted_nodes[0]
-        ignore(shifted_nodes.remove(0))
-        interactive_layerer_push_unique_nodes(
-          shifted_nodes,
-          interactive_layerer_check_node(node_to_check, layered_graph),
-        )
+    let layers = layered_graph.get_layers()
+    let mut next_index = 0
+    for span in current_spans {
+      let layer = new_layer(layered_graph)
+      layer.set_id(next_index)
+      next_index += 1
+      layers.push(layer)
+      for node in span.nodes {
+        node.set_layer(Some(layer))
+        node.set_id(0)
       }
     }
-  }
 
-  let mut i = 0
-  while i < layers.length() {
-    if layers[i].get_nodes().is_empty() {
-      ignore(layers.remove(i))
-    } else {
-      i += 1
+    for node in layered_graph.get_layerless_nodes() {
+      if node.get_id() == 0 {
+        let shifted_nodes = interactive_layerer_check_node(node, layered_graph)
+        while !shifted_nodes.is_empty() {
+          let node_to_check = shifted_nodes[0]
+          ignore(shifted_nodes.remove(0))
+          interactive_layerer_push_unique_nodes(
+            shifted_nodes,
+            interactive_layerer_check_node(node_to_check, layered_graph),
+          )
+        }
+      }
     }
-  }
 
-  layered_graph.get_layerless_nodes().clear()
+    let mut i = 0
+    while i < layers.length() {
+      if layers[i].get_nodes().is_empty() {
+        ignore(layers.remove(i))
+      } else {
+        i += 1
+      }
+    }
+
+    layered_graph.get_layerless_nodes().clear()
+  } catch {
+    InteractiveLayererException::UnsupportedGraphException(message) => {
+      @core.layout_runtime_report_unsupported_configuration(message)
+      monitor.done()
+      return
+    }
+  } noraise {
+    _ => ()
+  }
   monitor.done()
 }
 

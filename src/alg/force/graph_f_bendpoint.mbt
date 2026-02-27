@@ -15,7 +15,9 @@ let fbendpoint_store : Ref[Array[FBendpointData]] = Ref::new([])
 ///|
 fn checked_fbendpoint(bendpoint : FBendpoint) -> Unit {
   if bendpoint < 0 || bendpoint >= fbendpoint_store.val.length() {
-    abort("invalid force bendpoint id")
+    @core.layout_runtime_report_unsupported_configuration(
+      "invalid force bendpoint id",
+    )
   }
 }
 

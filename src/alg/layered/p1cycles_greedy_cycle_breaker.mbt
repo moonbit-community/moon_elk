@@ -12,14 +12,32 @@ priv struct GreedyCycleBreakerState {
 }
 
 ///|
-fn greedy_cycle_breaker_require_target_node(edge : LEdge) -> LNode {
+pub(all) suberror GreedyCycleBreakerException {
+  UnsupportedGraphException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] greedy_cycle_breaker_raise_unsupported_graph(
+  message : String,
+) -> T raise GreedyCycleBreakerException {
+  raise GreedyCycleBreakerException::UnsupportedGraphException(message)
+}
+
+///|
+fn greedy_cycle_breaker_require_target_node(
+  edge : LEdge,
+) -> LNode raise GreedyCycleBreakerException {
   let target = match edge.get_target() {
     Some(value) => value
-    None => abort("edge has no target port")
+    None =>
+      greedy_cycle_breaker_raise_unsupported_graph("edge has no target port")
   }
   match target.get_node() {
     Some(node) => node
-    None => abort("target port has no owner node")
+    None =>
+      greedy_cycle_breaker_raise_unsupported_graph(
+        "target port has no owner node",
+      )
   }
 }
 
@@ -158,7 +176,10 @@ fn greedy_cycle_breaker_collect_and_mark(
       }
 
       if max_nodes.is_empty() {
-        abort("no node with maximal outflow found")
+        @core.layout_runtime_report_unsupported_configuration(
+          "no node with maximal outflow found",
+        )
+        break
       }
       let max_node = choose_node_with_max_outflow(
         max_nodes,
@@ -188,7 +209,7 @@ fn greedy_cycle_breaker_shift_sink_ranks(
 ///|
 fn greedy_cycle_breaker_reverse_edges_pointing_left(
   state : GreedyCycleBreakerState,
-) -> Unit {
+) -> Unit raise GreedyCycleBreakerException {
   for node in state.layered_graph.get_layerless_nodes() {
     let node_id = node.get_id()
     for port in node.get_ports() {
@@ -308,9 +329,19 @@ fn greedy_cycle_breaker_process_with_chooser(
     }
   }
 
-  greedy_cycle_breaker_collect_and_mark(state, choose_node_with_max_outflow)
-  greedy_cycle_breaker_shift_sink_ranks(state)
-  greedy_cycle_breaker_reverse_edges_pointing_left(state)
+  try {
+    greedy_cycle_breaker_collect_and_mark(state, choose_node_with_max_outflow)
+    greedy_cycle_breaker_shift_sink_ranks(state)
+    greedy_cycle_breaker_reverse_edges_pointing_left(state)
+  } catch {
+    GreedyCycleBreakerException::UnsupportedGraphException(message) => {
+      @core.layout_runtime_report_unsupported_configuration(message)
+      monitor.done()
+      return
+    }
+  } noraise {
+    _ => ()
+  }
 
   monitor.done()
 }

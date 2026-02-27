@@ -45,6 +45,20 @@ fn disco_transform_parse_double_or_default(
 }
 
 ///|
+fn disco_transform_element_offset_or_zero(element : DCElement) -> @core.KVector {
+  try element.get_offset() catch {
+    DCElementException(message) => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "org.eclipse.elk.alg.disco.graph.DCElement: " + message,
+      )
+      @core.new_kvector()
+    }
+  } noraise {
+    offset => offset
+  }
+}
+
+///|
 fn disco_transform_edge_thickness(edge : @graph.ElkEdge) -> Double {
   match
     @graph.edge_layout_option_string_value(edge, disco_edge_thickness.get_id()) {
@@ -57,18 +71,42 @@ fn disco_transform_edge_thickness(edge : @graph.ElkEdge) -> Double {
 fn disco_transform_source_node(edge : @graph.ElkEdge) -> @graph.ElkNode {
   let sources = @graph.edge_sources(edge)
   if sources.is_empty() {
-    abort("edge source is missing")
+    @core.layout_runtime_report_unsupported_configuration(
+      "edge source is missing",
+    )
+    return @graph.create_node(None)
   }
-  @graph.connectable_shape_to_node(Some(sources[0]))
+  try @graph.connectable_shape_to_node(Some(sources[0])) catch {
+    _ => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "edge source shape is not attached to a node",
+      )
+      @graph.create_node(None)
+    }
+  } noraise {
+    value => value
+  }
 }
 
 ///|
 fn disco_transform_target_node(edge : @graph.ElkEdge) -> @graph.ElkNode {
   let targets = @graph.edge_targets(edge)
   if targets.is_empty() {
-    abort("edge target is missing")
+    @core.layout_runtime_report_unsupported_configuration(
+      "edge target is missing",
+    )
+    return @graph.create_node(None)
   }
-  @graph.connectable_shape_to_node(Some(targets[0]))
+  try @graph.connectable_shape_to_node(Some(targets[0])) catch {
+    _ => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "edge target shape is not attached to a node",
+      )
+      @graph.create_node(None)
+    }
+  } noraise {
+    value => value
+  }
 }
 
 ///|
@@ -77,7 +115,11 @@ fn disco_transform_source_port(edge : @graph.ElkEdge) -> @graph.ElkPort? {
   if sources.is_empty() {
     None
   } else {
-    @graph.connectable_shape_to_port(Some(sources[0]))
+    try @graph.connectable_shape_to_port(Some(sources[0])) catch {
+      _ => None
+    } noraise {
+      value => value
+    }
   }
 }
 
@@ -87,7 +129,11 @@ fn disco_transform_target_port(edge : @graph.ElkEdge) -> @graph.ElkPort? {
   if targets.is_empty() {
     None
   } else {
-    @graph.connectable_shape_to_port(Some(targets[0]))
+    try @graph.connectable_shape_to_port(Some(targets[0])) catch {
+      _ => None
+    } noraise {
+      value => value
+    }
   }
 }
 
@@ -746,7 +792,7 @@ pub fn ElkGraphTransformer::apply_layout(self : ElkGraphTransformer) -> Unit {
   }
 
   self.node_mapping.each((node, poly) => {
-    let offset = poly.get_offset()
+    let offset = disco_transform_element_offset_or_zero(poly)
     @graph.node_set_location(
       node,
       @graph.node_x(node) + offset.x,
@@ -754,7 +800,7 @@ pub fn ElkGraphTransformer::apply_layout(self : ElkGraphTransformer) -> Unit {
     )
   })
   self.label_mapping.each((label, poly) => {
-    let offset = poly.get_offset()
+    let offset = disco_transform_element_offset_or_zero(poly)
     @graph.label_set_location(
       label,
       @graph.label_x(label) + offset.x,
@@ -762,7 +808,10 @@ pub fn ElkGraphTransformer::apply_layout(self : ElkGraphTransformer) -> Unit {
     )
   })
   self.edge_mapping.each((edge, poly) => {
-    disco_transform_offset_edge(edge, poly.get_offset())
+    disco_transform_offset_edge(
+      edge,
+      disco_transform_element_offset_or_zero(poly),
+    )
   })
 
   let adjusted_ports : Map[@graph.ElkPort, Unit] = {}

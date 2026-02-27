@@ -49,7 +49,12 @@ fn orthogonal_self_loop_router_require_hyper_loop(
 ) -> SelfHyperLoop {
   match sl_edge.get_sl_hyper_loop() {
     Some(sl_loop) => sl_loop
-    None => abort("self-loop edge has no hyper loop")
+    None => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "self-loop edge has no hyper loop",
+      )
+      new_self_hyper_loop(new_self_loop_holder(new_l_node()))
+    }
   }
 }
 

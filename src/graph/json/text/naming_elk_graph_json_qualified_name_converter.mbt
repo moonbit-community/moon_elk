@@ -7,6 +7,18 @@ pub struct ElkGraphJsonQualifiedNameConverter {
 }
 
 ///|
+pub suberror ElkGraphJsonQualifiedNameConverterException {
+  ElkGraphJsonQualifiedNameConverterException(String)
+} derive(Show, ToJson)
+
+///|
+fn elk_graph_json_qualified_name_converter_raise_unit(
+  message : String,
+) -> Unit raise ElkGraphJsonQualifiedNameConverterException {
+  raise ElkGraphJsonQualifiedNameConverterException(message)
+}
+
+///|
 pub fn new_elk_graph_json_qualified_name_converter() -> ElkGraphJsonQualifiedNameConverter {
   { id_rule: "ID" }
 }
@@ -88,7 +100,20 @@ pub fn ElkGraphJsonQualifiedNameConverter::to_qualified_name(
 ) -> Array[String] {
   ignore(self.id_rule)
   if qualified_name_as_text == "" {
-    abort("Qualified name cannot be empty")
+    try
+      elk_graph_json_qualified_name_converter_raise_unit(
+        "Qualified name cannot be empty",
+      )
+    catch {
+      ElkGraphJsonQualifiedNameConverterException(message) =>
+        @core.layout_runtime_report_unsupported_configuration(
+          "org.eclipse.elk.graph.json.text.naming.ElkGraphJsonQualifiedNameConverter: " +
+          message,
+        )
+    } noraise {
+      _ => ()
+    }
+    return []
   }
   let parts : Array[String] = []
   let mut current = ""
@@ -114,7 +139,20 @@ pub fn ElkGraphJsonQualifiedNameConverter::to_string(
 ) -> String {
   ignore(self.id_rule)
   if name.length() == 0 {
-    abort("Qualified name cannot be empty")
+    try
+      elk_graph_json_qualified_name_converter_raise_unit(
+        "Qualified name cannot be empty",
+      )
+    catch {
+      ElkGraphJsonQualifiedNameConverterException(message) =>
+        @core.layout_runtime_report_unsupported_configuration(
+          "org.eclipse.elk.graph.json.text.naming.ElkGraphJsonQualifiedNameConverter: " +
+          message,
+        )
+    } noraise {
+      _ => ()
+    }
+    return ""
   }
   let parts : Array[String] = []
   for segment in name {

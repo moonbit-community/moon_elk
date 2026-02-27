@@ -113,10 +113,7 @@ fn graph_info_has_external_ports(graph : LGraph) -> Bool {
 
 ///|
 fn graph_info_parent_layer_id(parent : LNode) -> Int {
-  match parent.get_layer() {
-    Some(layer) => layer.get_id()
-    None => abort("parent node is not assigned to a layer")
-  }
+  parent.get_layer().unwrap().get_id()
 }
 
 ///|
@@ -373,38 +370,26 @@ pub fn GraphInfoHolder::set_port_positions(
 pub fn GraphInfoHolder::cross_counter(
   self : GraphInfoHolder,
 ) -> AllCrossingsCounter {
-  match self.crossings_counter_ref {
-    Some(counter) => counter
-    None => abort("graph info holder crossing counter is not initialized")
-  }
+  self.crossings_counter_ref.unwrap()
 }
 
 ///|
 pub fn GraphInfoHolder::cross_minimizer(
   self : GraphInfoHolder,
 ) -> ICrossingMinimizationHeuristic {
-  match self.cross_minimizer_ref {
-    Some(cross_minimizer) => cross_minimizer
-    None => abort("graph info holder crossing minimizer is not initialized")
-  }
+  self.cross_minimizer_ref.unwrap()
 }
 
 ///|
 pub fn GraphInfoHolder::port_distributor(
   self : GraphInfoHolder,
 ) -> ISweepPortDistributor {
-  match self.port_distributor_ref {
-    Some(port_distributor) => port_distributor
-    None => abort("graph info holder port distributor is not initialized")
-  }
+  self.port_distributor_ref.unwrap()
 }
 
 ///|
 pub fn GraphInfoHolder::parent(self : GraphInfoHolder) -> LNode {
-  match self.parent_ref {
-    Some(parent) => parent
-    None => abort("graph info holder has no parent node")
-  }
+  self.parent_ref.unwrap()
 }
 
 ///|
@@ -437,10 +422,7 @@ pub fn GraphInfoHolder::has_external_ports(self : GraphInfoHolder) -> Bool {
 pub fn GraphInfoHolder::parent_graph_data(
   self : GraphInfoHolder,
 ) -> GraphInfoHolder {
-  match self.parent_graph_data_ref {
-    Some(parent_graph_data) => parent_graph_data
-    None => abort("graph info holder has no parent graph data")
-  }
+  self.parent_graph_data_ref.unwrap()
 }
 
 ///|
@@ -453,10 +435,7 @@ pub fn GraphInfoHolder::set_parent_graph_data(
 
 ///|
 pub fn GraphInfoHolder::l_graph(self : GraphInfoHolder) -> LGraph {
-  match self.l_graph_ref {
-    Some(graph) => graph
-    None => abort("graph info holder has no graph")
-  }
+  self.l_graph_ref.unwrap()
 }
 
 ///|

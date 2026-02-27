@@ -7,6 +7,27 @@ pub struct GridElkNode {
 }
 
 ///|
+pub suberror TopdownpackingGridException {
+  TopdownpackingGridException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] topdownpacking_grid_raise(
+  message : String,
+) -> T raise TopdownpackingGridException {
+  raise TopdownpackingGridException(message)
+}
+
+///|
+pub fn topdownpacking_grid_exception_message(
+  err : TopdownpackingGridException,
+) -> String {
+  match err {
+    TopdownpackingGridException(message) => message
+  }
+}
+
+///|
 pub fn new_grid_elk_node(elk_node : @graph.ElkNode) -> GridElkNode {
   { node: elk_node, grid: [], rows: 0, cols: 0 }
 }
@@ -17,9 +38,9 @@ pub fn GridElkNode::put(
   col : Int,
   row : Int,
   item : @graph.ElkNode,
-) -> Unit {
+) -> Unit raise TopdownpackingGridException {
   if col >= self.cols || row >= self.rows {
-    abort(
+    topdownpacking_grid_raise(
       "The grid has a size of (\{self.cols} x \{self.rows}). The requested index of (\{col} x \{row}) is out of bounds.",
     )
   }
@@ -31,9 +52,9 @@ pub fn GridElkNode::get(
   self : GridElkNode,
   col : Int,
   row : Int,
-) -> @graph.ElkNode? {
+) -> @graph.ElkNode? raise TopdownpackingGridException {
   if col >= self.cols || row >= self.rows {
-    abort(
+    topdownpacking_grid_raise(
       "The grid has a size of (\{self.cols} x \{self.rows}). The requested index of (\{col} x \{row}) is out of bounds.",
     )
   }
@@ -44,9 +65,9 @@ pub fn GridElkNode::get(
 pub fn GridElkNode::get_row(
   self : GridElkNode,
   row : Int,
-) -> Array[@graph.ElkNode?] {
+) -> Array[@graph.ElkNode?] raise TopdownpackingGridException {
   if row >= self.rows {
-    abort(
+    topdownpacking_grid_raise(
       "The grid has a size of (\{self.cols} x \{self.rows}). The requested row \{row}) is out of bounds.",
     )
   }
@@ -57,9 +78,9 @@ pub fn GridElkNode::get_row(
 pub fn GridElkNode::get_column(
   self : GridElkNode,
   col : Int,
-) -> Array[@graph.ElkNode?] {
+) -> Array[@graph.ElkNode?] raise TopdownpackingGridException {
   if col >= self.cols {
-    abort(
+    topdownpacking_grid_raise(
       "The grid has a size of (\{self.cols} x \{self.rows}). The requested column \{col}) is out of bounds.",
     )
   }

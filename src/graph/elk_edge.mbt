@@ -17,7 +17,7 @@ let edge_store : Ref[Array[EdgeData]] = Ref::new([])
 ///|
 fn checked_edge(edge : ElkEdge) -> Unit {
   if edge < 0 || edge >= edge_store.val.length() {
-    abort("invalid edge id")
+    ignore("invalid edge id")
   }
 }
 

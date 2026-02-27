@@ -31,6 +31,13 @@ pub fn new_json_import_exception_message_cause(String, String) -> JsonImportExce
 pub fn new_json_importer() -> JsonImporter
 
 // Errors
+pub suberror JsonImportException {
+  JsonImportException(String?, String?)
+}
+pub fn JsonImportException::get_cause(Self) -> String?
+pub fn JsonImportException::get_message(Self) -> String?
+pub impl Show for JsonImportException
+pub impl ToJson for JsonImportException
 
 // Types and methods
 pub struct ElkGraphJsonExportBuilder {
@@ -68,8 +75,8 @@ pub fn JsonAdapter::add_json_obj_bool(Self, Map[String, Json], String, Bool) -> 
 pub fn JsonAdapter::add_json_obj_json(Self, Map[String, Json], String, Json) -> Unit
 pub fn JsonAdapter::add_json_obj_number(Self, Map[String, Json], String, Double) -> Unit
 pub fn JsonAdapter::add_json_obj_string(Self, Map[String, Json], String, String) -> Unit
-pub fn JsonAdapter::as_id(Self, Json) -> String
-pub fn JsonAdapter::get_id(Self, Map[String, Json]) -> String
+pub fn JsonAdapter::as_id(Self, Json) -> String raise JsonImportException
+pub fn JsonAdapter::get_id(Self, Map[String, Json]) -> String raise JsonImportException
 pub fn JsonAdapter::get_id_safe(Self, Map[String, Json]) -> String?
 pub fn JsonAdapter::get_json_arr(Self, Array[Json], Int) -> Json?
 pub fn JsonAdapter::get_json_obj(Self, Map[String, Json], String) -> Json?
@@ -91,13 +98,6 @@ pub fn JsonAdapter::to_json_array(Self, Json) -> Array[Json]
 pub fn JsonAdapter::to_json_number(Self, Double) -> Json
 pub fn JsonAdapter::to_json_object(Self, Json) -> Map[String, Json]
 pub fn JsonAdapter::to_json_string(Self, String) -> Json
-
-pub struct JsonImportException {
-  message : String?
-  cause : String?
-}
-pub fn JsonImportException::get_cause(Self) -> String?
-pub fn JsonImportException::get_message(Self) -> String?
 
 pub struct JsonImporter {
   mut input_model : Map[String, Json]?

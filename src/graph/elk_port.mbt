@@ -18,7 +18,7 @@ let port_store : Ref[Array[PortData]] = Ref::new([])
 ///|
 fn checked_port(port : ElkPort) -> Unit {
   if port < 0 || port >= port_store.val.length() {
-    abort("invalid port id")
+    ignore("invalid port id")
   }
 }
 

@@ -75,7 +75,7 @@ pub let radial_center_on_root : @graph.IProperty[Bool]
 
 pub let radial_compaction_step_size : @graph.IProperty[Double]
 
-pub fn radial_compaction_strategy_create(RadialCompactionStrategy) -> IRadialCompactor
+pub fn radial_compaction_strategy_create(RadialCompactionStrategy) -> IRadialCompactor raise RadialCompactionStrategyException
 
 pub fn radial_compaction_strategy_from_string(String) -> RadialCompactionStrategy
 
@@ -182,6 +182,11 @@ pub fn radial_translation_strategy_from_string(String) -> RadialTranslationStrat
 pub let radial_wedge_criteria : @graph.IProperty[String]
 
 // Errors
+pub(all) suberror RadialCompactionStrategyException {
+  IllegalArgumentException(String)
+}
+pub impl Show for RadialCompactionStrategyException
+pub impl ToJson for RadialCompactionStrategyException
 
 // Types and methods
 pub struct AbstractRadiusExtensionCompaction {

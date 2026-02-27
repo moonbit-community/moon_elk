@@ -8,6 +8,18 @@ pub let all_files_recursive_suffix : String = "/**/"
 pub type ResourcePathFilter = (String) -> Bool
 
 ///|
+pub suberror AbstractResourcePathException {
+  AbstractResourcePathException(String)
+} derive(Show, ToJson)
+
+///|
+fn abstract_resource_path_raise_unit(
+  message : String,
+) -> Unit raise AbstractResourcePathException {
+  raise AbstractResourcePathException(message)
+}
+
+///|
 let resource_path_system_properties_ref : Ref[Map[String, String]] = Ref::new({})
 
 ///|
@@ -89,12 +101,26 @@ pub fn AbstractResourcePath::initialize(
   base : String?,
   relative : String,
 ) -> Unit {
-  if relative.is_empty() {
-    abort("Relative path cannot be null.")
-  }
   let normalized_base = match base {
     Some(value) => resource_path_normalize_slashes(value)
     None => ""
+  }
+  if relative.is_empty() {
+    try
+      abstract_resource_path_raise_unit("Relative path cannot be null.")
+    catch {
+      AbstractResourcePathException(message) =>
+        @core.layout_runtime_report_unsupported_configuration(
+          "org.eclipse.elk.alg.test.framework.io.AbstractResourcePath: " +
+          message,
+        )
+    } noraise {
+      _ => ()
+    }
+    self.is_directory = false
+    self.is_recursive = false
+    self.file = resource_path_trim_trailing_slash(normalized_base)
+    return
   }
   let normalized_relative = resource_path_normalize_slashes(relative)
   let base_prefix = if normalized_base.is_empty() {

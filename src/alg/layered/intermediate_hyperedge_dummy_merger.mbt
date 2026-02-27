@@ -25,7 +25,8 @@ fn hyperedge_dummy_merger_port_side(name : String) -> @core.PortSide {
       return side
     }
   }
-  abort("unknown port side")
+  @core.layout_runtime_report_unsupported_configuration("unknown port side")
+  @core.PortSide::SideUndefined
 }
 
 ///|
@@ -37,7 +38,10 @@ fn hyperedge_dummy_merger_require_port_on_side(
     hyperedge_dummy_merger_port_side(side_name),
   )
   if ports.is_empty() {
-    abort("missing required port side")
+    @core.layout_runtime_report_unsupported_configuration(
+      "missing required port side",
+    )
+    return new_l_port()
   }
   ports[0]
 }

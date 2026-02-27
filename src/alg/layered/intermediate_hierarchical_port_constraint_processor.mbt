@@ -1,4 +1,18 @@
 ///|
+priv suberror HierarchicalPortConstraintProcessorException {
+  UnsupportedGraphException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] hierarchical_port_constraint_raise_unsupported_graph(
+  message : String,
+) -> T raise HierarchicalPortConstraintProcessorException {
+  raise HierarchicalPortConstraintProcessorException::UnsupportedGraphException(
+    message,
+  )
+}
+
+///|
 let hierarchical_port_constraint_dummy_input_port : Int = 0
 
 ///|
@@ -49,26 +63,37 @@ fn hierarchical_port_constraint_port_side_is_north_or_south(
 }
 
 ///|
-fn hierarchical_port_constraint_require_source(edge : LEdge) -> LPort {
+fn hierarchical_port_constraint_require_source(
+  edge : LEdge,
+) -> LPort raise HierarchicalPortConstraintProcessorException {
   match edge.get_source() {
     Some(value) => value
-    None => abort("edge has no source")
+    None =>
+      hierarchical_port_constraint_raise_unsupported_graph("edge has no source")
   }
 }
 
 ///|
-fn hierarchical_port_constraint_require_target(edge : LEdge) -> LPort {
+fn hierarchical_port_constraint_require_target(
+  edge : LEdge,
+) -> LPort raise HierarchicalPortConstraintProcessorException {
   match edge.get_target() {
     Some(value) => value
-    None => abort("edge has no target")
+    None =>
+      hierarchical_port_constraint_raise_unsupported_graph("edge has no target")
   }
 }
 
 ///|
-fn hierarchical_port_constraint_require_node(port : LPort) -> LNode {
+fn hierarchical_port_constraint_require_node(
+  port : LPort,
+) -> LNode raise HierarchicalPortConstraintProcessorException {
   match port.get_node() {
     Some(value) => value
-    None => abort("port has no owner node")
+    None =>
+      hierarchical_port_constraint_raise_unsupported_graph(
+        "port has no owner node",
+      )
   }
 }
 
@@ -256,7 +281,7 @@ fn hierarchical_port_constraint_add_dummy_to_layer(
 ///|
 fn hierarchical_port_constraint_process_north_south(
   layered_graph : LGraph,
-) -> Unit {
+) -> Unit raise HierarchicalPortConstraintProcessorException {
   let constraints = hierarchical_port_constraint_parse_port_constraints(
     layered_graph.get_property_string(@core.port_constraints),
   )
@@ -378,8 +403,20 @@ fn hierarchical_port_constraint_process(
   }
   ignore(monitor.begin("Hierarchical port constraint processing", 1.0))
 
-  hierarchical_port_constraint_process_east_west(layered_graph)
-  hierarchical_port_constraint_process_north_south(layered_graph)
+  try {
+    hierarchical_port_constraint_process_east_west(layered_graph)
+    hierarchical_port_constraint_process_north_south(layered_graph)
+  } catch {
+    HierarchicalPortConstraintProcessorException::UnsupportedGraphException(
+      message
+    ) => {
+      @core.layout_runtime_report_unsupported_configuration(message)
+      monitor.done()
+      return
+    }
+  } noraise {
+    _ => ()
+  }
 
   monitor.done()
 }

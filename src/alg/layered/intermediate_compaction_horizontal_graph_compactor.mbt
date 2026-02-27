@@ -102,7 +102,12 @@ fn horizontal_graph_compactor_require_group(
 ) -> @common.CGroup {
   match node.group() {
     Some(group) => group
-    None => abort("Compaction node has no group.")
+    None => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "Compaction node has no group.",
+      )
+      horizontal_graph_compactor_require_group(node)
+    }
   }
 }
 
@@ -237,7 +242,12 @@ fn horizontal_graph_compactor_spacings_handler(
         None => NodeType::LongEdge
       }
 
-      spacings.get_horizontal_spacing_for_node_type(node_type1, node_type2)
+      spacings.get_horizontal_spacing_for_node_type(node_type1, node_type2) catch {
+        LayeredSpacingsException(message) => {
+          @core.layout_runtime_report_unsupported_configuration(message)
+          0.0
+        }
+      }
     },
     (c_node1, c_node2) => {
       if horizontal_graph_compactor_is_vertical_segments_of_same_edge(
@@ -258,7 +268,12 @@ fn horizontal_graph_compactor_spacings_handler(
         None => NodeType::LongEdge
       }
 
-      spacings.get_vertical_spacing_for_node_type(node_type1, node_type2)
+      spacings.get_vertical_spacing_for_node_type(node_type1, node_type2) catch {
+        LayeredSpacingsException(message) => {
+          @core.layout_runtime_report_unsupported_configuration(message)
+          0.0
+        }
+      }
     },
   )
 }

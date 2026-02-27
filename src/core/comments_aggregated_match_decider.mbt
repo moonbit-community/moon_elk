@@ -1,4 +1,25 @@
 ///|
+pub suberror AggregatedMatchDeciderException {
+  AggregatedMatchDeciderException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] aggregated_match_decider_raise(
+  message : String,
+) -> T raise AggregatedMatchDeciderException {
+  raise AggregatedMatchDeciderException(message)
+}
+
+///|
+fn aggregated_match_decider_exception_message(
+  err : AggregatedMatchDeciderException,
+) -> String {
+  match err {
+    AggregatedMatchDeciderException(message) => message
+  }
+}
+
+///|
 fn aggregated_match_decider_heuristic_values(
   matcher_results : Array[(Int, Double)],
 ) -> Array[Double] {
@@ -11,9 +32,11 @@ fn aggregated_match_decider_heuristic_values(
 }
 
 ///|
-pub fn aggregated_match_decider_max(values : Array[Double]) -> Double {
+fn aggregated_match_decider_max_impl(
+  values : Array[Double],
+) -> Double raise AggregatedMatchDeciderException {
   if values.is_empty() {
-    abort("Cannot aggregate an empty value list.")
+    aggregated_match_decider_raise("Cannot aggregate an empty value list.")
   }
   let mut result = values[0]
   for i = 1; i < values.length(); i = i + 1 {
@@ -25,9 +48,25 @@ pub fn aggregated_match_decider_max(values : Array[Double]) -> Double {
 }
 
 ///|
-pub fn aggregated_match_decider_min(values : Array[Double]) -> Double {
+pub fn aggregated_match_decider_max(values : Array[Double]) -> Double {
+  try aggregated_match_decider_max_impl(values) catch {
+    err => {
+      layout_runtime_report_unsupported_configuration(
+        aggregated_match_decider_exception_message(err),
+      )
+      0.0
+    }
+  } noraise {
+    value => value
+  }
+}
+
+///|
+fn aggregated_match_decider_min_impl(
+  values : Array[Double],
+) -> Double raise AggregatedMatchDeciderException {
   if values.is_empty() {
-    abort("Cannot aggregate an empty value list.")
+    aggregated_match_decider_raise("Cannot aggregate an empty value list.")
   }
   let mut result = values[0]
   for i = 1; i < values.length(); i = i + 1 {
@@ -36,6 +75,20 @@ pub fn aggregated_match_decider_min(values : Array[Double]) -> Double {
     }
   }
   result
+}
+
+///|
+pub fn aggregated_match_decider_min(values : Array[Double]) -> Double {
+  try aggregated_match_decider_min_impl(values) catch {
+    err => {
+      layout_runtime_report_unsupported_configuration(
+        aggregated_match_decider_exception_message(err),
+      )
+      0.0
+    }
+  } noraise {
+    value => value
+  }
 }
 
 ///|
@@ -86,9 +139,9 @@ pub fn[T] AggregatedMatchDecider::with_aggregator(
 pub fn[T] AggregatedMatchDecider::with_lower_attachment_boundary(
   self : AggregatedMatchDecider[T],
   lower : Double,
-) -> AggregatedMatchDecider[T] {
+) -> AggregatedMatchDecider[T] raise AggregatedMatchDeciderException {
   if lower < 0.0 {
-    abort("Lower boundary must be >= 0.")
+    aggregated_match_decider_raise("Lower boundary must be >= 0.")
   }
   self.lower_boundary = lower
   self
@@ -104,20 +157,20 @@ pub fn[T] AggregatedMatchDecider::with_lower_boundary_included(
 }
 
 ///|
-pub fn[T] AggregatedMatchDecider::make_attachment_decision(
-  self : AggregatedMatchDecider[T],
+fn[T] aggregated_match_decider_make_attachment_decision_impl(
+  decider : AggregatedMatchDecider[T],
   normalized_heuristics : DeciderHeuristicResult[T],
-) -> T? {
+) -> T? raise AggregatedMatchDeciderException {
   let mut max_aggregate = -1.0
   let mut max_target : T? = None
 
   for normalized_heuristic in normalized_heuristics {
     let (target, matcher_results) = normalized_heuristic
-    let aggregate = (self.aggregator)(
+    let aggregate = (decider.aggregator)(
       aggregated_match_decider_heuristic_values(matcher_results),
     )
     if aggregate < 0.0 {
-      abort("The aggregator provided a value < 0.")
+      aggregated_match_decider_raise("The aggregator provided a value < 0.")
     }
 
     if max_target is None || aggregate > max_aggregate {
@@ -128,18 +181,39 @@ pub fn[T] AggregatedMatchDecider::make_attachment_decision(
 
   match max_target {
     Some(target) =>
-      if self.include_lower_boundary {
-        if max_aggregate >= self.lower_boundary {
+      if decider.include_lower_boundary {
+        if max_aggregate >= decider.lower_boundary {
           Some(target)
         } else {
           None
         }
-      } else if max_aggregate > self.lower_boundary {
+      } else if max_aggregate > decider.lower_boundary {
         Some(target)
       } else {
         None
       }
     None => None
+  }
+}
+
+///|
+pub fn[T] AggregatedMatchDecider::make_attachment_decision(
+  self : AggregatedMatchDecider[T],
+  normalized_heuristics : DeciderHeuristicResult[T],
+) -> T? {
+  try
+    aggregated_match_decider_make_attachment_decision_impl(
+      self, normalized_heuristics,
+    )
+  catch {
+    err => {
+      layout_runtime_report_unsupported_configuration(
+        aggregated_match_decider_exception_message(err),
+      )
+      None
+    }
+  } noraise {
+    value => value
   }
 }
 

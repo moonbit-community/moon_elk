@@ -1,4 +1,23 @@
 ///|
+priv suberror LabelPlacerException {
+  IllegalStateException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] label_placer_raise_illegal_state(
+  message : String,
+) -> T raise LabelPlacerException {
+  raise LabelPlacerException::IllegalStateException(message)
+}
+
+///|
+fn label_placer_exception_message(error : LabelPlacerException) -> String {
+  match error {
+    LabelPlacerException::IllegalStateException(message) => message
+  }
+}
+
+///|
 fn label_placer_port_side_equals(
   left : @core.PortSide,
   right : @core.PortSide,
@@ -42,36 +61,42 @@ fn label_placer_ordering_equals(
 }
 
 ///|
-fn label_placer_require_labels(sl_loop : SelfHyperLoop) -> SelfHyperLoopLabels {
+fn label_placer_require_labels(
+  sl_loop : SelfHyperLoop,
+) -> SelfHyperLoopLabels raise LabelPlacerException {
   match sl_loop.get_sl_labels() {
     Some(labels) => labels
-    None => abort("self loop has no labels")
+    None => label_placer_raise_illegal_state("self loop has no labels")
   }
 }
 
 ///|
-fn label_placer_require_leftmost(sl_loop : SelfHyperLoop) -> SelfLoopPort {
+fn label_placer_require_leftmost(
+  sl_loop : SelfHyperLoop,
+) -> SelfLoopPort raise LabelPlacerException {
   match sl_loop.get_leftmost_port() {
     Some(port) => port
-    None => abort("self loop has no leftmost port")
+    None => label_placer_raise_illegal_state("self loop has no leftmost port")
   }
 }
 
 ///|
-fn label_placer_require_rightmost(sl_loop : SelfHyperLoop) -> SelfLoopPort {
+fn label_placer_require_rightmost(
+  sl_loop : SelfHyperLoop,
+) -> SelfLoopPort raise LabelPlacerException {
   match sl_loop.get_rightmost_port() {
     Some(port) => port
-    None => abort("self loop has no rightmost port")
+    None => label_placer_raise_illegal_state("self loop has no rightmost port")
   }
 }
 
 ///|
 fn label_placer_require_alignment_reference(
   sl_labels : SelfHyperLoopLabels,
-) -> SelfLoopPort {
+) -> SelfLoopPort raise LabelPlacerException {
   match sl_labels.get_alignment_reference_sl_port() {
     Some(port) => port
-    None => abort("missing alignment reference port")
+    None => label_placer_raise_illegal_state("missing alignment reference port")
   }
 }
 
@@ -81,7 +106,7 @@ fn label_placer_side_and_alignment(
   side : @core.PortSide,
   alignment : SelfHyperLoopLabelAlignment,
   alignment_reference : SelfLoopPort?,
-) -> Unit {
+) -> Unit raise LabelPlacerException {
   let sl_labels = label_placer_require_labels(sl_loop)
   sl_labels.set_side(side)
   sl_labels.set_alignment(alignment)
@@ -89,14 +114,18 @@ fn label_placer_side_and_alignment(
 }
 
 ///|
-fn label_placer_clear_inline_property(sl_loop : SelfHyperLoop) -> Unit {
+fn label_placer_clear_inline_property(
+  sl_loop : SelfHyperLoop,
+) -> Unit raise LabelPlacerException {
   for label in label_placer_require_labels(sl_loop).get_l_labels() {
     label.set_property_bool(@core.edge_labels_inline, false)
   }
 }
 
 ///|
-fn label_placer_has_inline_labels(sl_loop : SelfHyperLoop) -> Bool {
+fn label_placer_has_inline_labels(
+  sl_loop : SelfHyperLoop,
+) -> Bool raise LabelPlacerException {
   for label in label_placer_require_labels(sl_loop).get_l_labels() {
     if label.get_property_bool(@core.edge_labels_inline) {
       return true
@@ -119,7 +148,7 @@ pub fn new_label_placer() -> LabelPlacer {
 fn label_placer_sort_loops_by_leftmost_id(
   sl_loops : Array[SelfHyperLoop],
   ascending : Bool,
-) -> Unit {
+) -> Unit raise LabelPlacerException {
   let mut i = 1
   while i < sl_loops.length() {
     let mut j = i
@@ -152,7 +181,7 @@ fn LabelPlacer::assign_one_sided_simple_side_and_alignment(
   self : LabelPlacer,
   sl_loop : SelfHyperLoop,
   loop_side : @core.PortSide,
-) -> Unit {
+) -> Unit raise LabelPlacerException {
   ignore(self)
   label_placer_clear_inline_property(sl_loop)
   match loop_side {
@@ -196,7 +225,8 @@ fn LabelPlacer::assign_one_sided_simple_side_and_alignment(
         SelfHyperLoopLabelAlignment::Center,
         None,
       )
-    @core.PortSide::SideUndefined => abort("one-sided loop side undefined")
+    @core.PortSide::SideUndefined =>
+      label_placer_raise_illegal_state("one-sided loop side undefined")
   }
 }
 
@@ -205,7 +235,7 @@ fn LabelPlacer::assign_one_sided_sequenced_side_and_alignment(
   self : LabelPlacer,
   sl_loops : Array[SelfHyperLoop],
   port_side : @core.PortSide,
-) -> Unit {
+) -> Unit raise LabelPlacerException {
   ignore(self)
   if sl_loops.is_empty() {
     return
@@ -278,7 +308,7 @@ fn LabelPlacer::assign_one_sided_sequenced_side_and_alignment(
 fn LabelPlacer::assign_two_sides_corner_side_and_alignment(
   self : LabelPlacer,
   sl_loop : SelfHyperLoop,
-) -> Unit {
+) -> Unit raise LabelPlacerException {
   ignore(self)
   let leftmost_port_side = label_placer_require_leftmost(sl_loop)
     .get_l_port()
@@ -337,7 +367,7 @@ fn label_placer_has_side(
 fn LabelPlacer::assign_two_sides_opposing_and_three_sides_side_and_alignment(
   self : LabelPlacer,
   sl_loop : SelfHyperLoop,
-) -> Unit {
+) -> Unit raise LabelPlacerException {
   ignore(self)
   let occupied_sides = sl_loop.get_occupied_port_sides()
   let has_inline_labels = label_placer_has_inline_labels(sl_loop)
@@ -395,7 +425,7 @@ fn LabelPlacer::assign_two_sides_opposing_and_three_sides_side_and_alignment(
 fn LabelPlacer::assign_four_sides_side_and_alignment(
   self : LabelPlacer,
   sl_loop : SelfHyperLoop,
-) -> Unit {
+) -> Unit raise LabelPlacerException {
   ignore(self)
   let leftmost_port_side = label_placer_require_leftmost(sl_loop)
     .get_l_port()
@@ -428,7 +458,7 @@ fn LabelPlacer::assign_four_sides_side_and_alignment(
 fn LabelPlacer::assign_side_and_alignment(
   self : LabelPlacer,
   sl_holder : SelfLoopHolder,
-) -> Unit {
+) -> Unit raise LabelPlacerException {
   let ordering_strategy = label_placer_parse_ordering(
     sl_holder
     .get_l_node()
@@ -493,7 +523,7 @@ fn LabelPlacer::manage_labels(
   self : LabelPlacer,
   sl_loop : SelfHyperLoop,
   label_manager : @core.ILabelManager,
-) -> Unit {
+) -> Unit raise LabelPlacerException {
   ignore(self)
   let sl_labels = label_placer_require_labels(sl_loop)
   let l_node = sl_loop.get_sl_holder().get_l_node()
@@ -532,7 +562,7 @@ fn LabelPlacer::manage_labels(
 fn LabelPlacer::compute_coordinates(
   self : LabelPlacer,
   sl_loop : SelfHyperLoop,
-) -> Unit {
+) -> Unit raise LabelPlacerException {
   ignore(self)
   let sl_labels = label_placer_require_labels(sl_loop)
   let size = sl_labels.get_size()
@@ -569,13 +599,20 @@ pub fn LabelPlacer::place_labels(
   monitor : @core.IElkProgressMonitor?,
 ) -> Unit {
   ignore(monitor)
-  self.assign_side_and_alignment(sl_holder)
-  for sl_loop in sl_holder.get_sl_hyper_loops() {
-    if sl_loop.get_sl_labels() is Some(_) {
-      if label_manager is Some(manager) {
-        self.manage_labels(sl_loop, manager)
+  try {
+    self.assign_side_and_alignment(sl_holder)
+    for sl_loop in sl_holder.get_sl_hyper_loops() {
+      if sl_loop.get_sl_labels() is Some(_) {
+        if label_manager is Some(manager) {
+          self.manage_labels(sl_loop, manager)
+        }
+        self.compute_coordinates(sl_loop)
       }
-      self.compute_coordinates(sl_loop)
     }
+  } catch {
+    error =>
+      @core.layout_runtime_report_unsupported_configuration(
+        label_placer_exception_message(error),
+      )
   }
 }

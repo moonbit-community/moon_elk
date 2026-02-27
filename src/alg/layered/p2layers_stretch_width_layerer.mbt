@@ -21,6 +21,27 @@ priv struct StretchWidthLayererState {
 }
 
 ///|
+priv suberror StretchWidthLayererException {
+  IllegalStateException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] stretch_width_layerer_raise_illegal_state(
+  message : String,
+) -> T raise StretchWidthLayererException {
+  raise StretchWidthLayererException::IllegalStateException(message)
+}
+
+///|
+fn stretch_width_layerer_exception_message(
+  error : StretchWidthLayererException,
+) -> String {
+  match error {
+    StretchWidthLayererException::IllegalStateException(message) => message
+  }
+}
+
+///|
 fn stretch_width_layerer_layer_constraint_preprocessor_factory() -> @core.ILayoutProcessorFactory[
   LayeredPhases,
   LGraph,
@@ -87,26 +108,32 @@ fn stretch_width_layerer_new_state(
 }
 
 ///|
-fn stretch_width_layerer_require_edge_source_node(edge : LEdge) -> LNode {
+fn stretch_width_layerer_require_edge_source_node(
+  edge : LEdge,
+) -> LNode raise StretchWidthLayererException {
   let source = match edge.get_source() {
     Some(value) => value
-    None => abort("edge has no source port")
+    None => stretch_width_layerer_raise_illegal_state("edge has no source port")
   }
   match source.get_node() {
     Some(value) => value
-    None => abort("source port has no owner node")
+    None =>
+      stretch_width_layerer_raise_illegal_state("source port has no owner node")
   }
 }
 
 ///|
-fn stretch_width_layerer_require_edge_target_node(edge : LEdge) -> LNode {
+fn stretch_width_layerer_require_edge_target_node(
+  edge : LEdge,
+) -> LNode raise StretchWidthLayererException {
   let target = match edge.get_target() {
     Some(value) => value
-    None => abort("edge has no target port")
+    None => stretch_width_layerer_raise_illegal_state("edge has no target port")
   }
   match target.get_node() {
     Some(value) => value
-    None => abort("target port has no owner node")
+    None =>
+      stretch_width_layerer_raise_illegal_state("target port has no owner node")
   }
 }
 
@@ -129,7 +156,9 @@ fn stretch_width_layerer_sort_descending_by_node_id(
 }
 
 ///|
-fn stretch_width_layerer_get_rank(node : LNode) -> Int {
+fn stretch_width_layerer_get_rank(
+  node : LNode,
+) -> Int raise StretchWidthLayererException {
   let mut max_rank = node.get_outgoing_edges().length()
   for pre_edge in node.get_incoming_edges() {
     let pre = stretch_width_layerer_require_edge_source_node(pre_edge)
@@ -144,7 +173,7 @@ fn stretch_width_layerer_get_rank(node : LNode) -> Int {
 ///|
 fn stretch_width_layerer_compute_sorted_nodes(
   state : StretchWidthLayererState,
-) -> Unit {
+) -> Unit raise StretchWidthLayererException {
   let unsorted_nodes = state.current_graph.get_layerless_nodes()
   state.sorted_layerless_nodes = unsorted_nodes.copy()
   for node in unsorted_nodes {
@@ -156,7 +185,7 @@ fn stretch_width_layerer_compute_sorted_nodes(
 ///|
 fn stretch_width_layerer_compute_successors(
   state : StretchWidthLayererState,
-) -> Unit {
+) -> Unit raise StretchWidthLayererException {
   let successors = []
   let mut i = 0
   for node in state.sorted_layerless_nodes {
@@ -228,10 +257,11 @@ fn stretch_width_layerer_get_average_out_degree(
 ///|
 fn stretch_width_layerer_condition_go_up(
   state : StretchWidthLayererState,
-) -> Bool {
+) -> Bool raise StretchWidthLayererException {
   let selected = match state.selected_node {
     Some(value) => value
-    None => abort("selected node is required")
+    None =>
+      stretch_width_layerer_raise_illegal_state("selected node is required")
   }
   let selected_id = selected.get_id()
   let a = state.width_current -
@@ -260,7 +290,7 @@ fn stretch_width_layerer_select_node(
 fn stretch_width_layerer_update_out_going(
   state : StretchWidthLayererState,
   current_layer : Layer,
-) -> Unit {
+) -> Unit raise StretchWidthLayererException {
   for node in current_layer.get_nodes() {
     for edge in node.get_incoming_edges() {
       let pos = stretch_width_layerer_require_edge_source_node(edge).get_id()
@@ -323,85 +353,97 @@ fn stretch_width_layerer_process(
     return
   }
 
-  let state = stretch_width_layerer_new_state(layered_graph)
-  state.dummy_size = layered_graph.get_property_double(@core.spacing_edge_edge)
+  try {
+    let state = stretch_width_layerer_new_state(layered_graph)
+    state.dummy_size = layered_graph.get_property_double(
+      @core.spacing_edge_edge,
+    )
 
-  stretch_width_layerer_compute_sorted_nodes(state)
-  stretch_width_layerer_compute_successors(state)
-  stretch_width_layerer_compute_degrees(state)
-  stretch_width_layerer_min_max_node_size(state)
-  stretch_width_layerer_compute_normalized_size(state)
+    stretch_width_layerer_compute_sorted_nodes(state)
+    stretch_width_layerer_compute_successors(state)
+    stretch_width_layerer_compute_degrees(state)
+    stretch_width_layerer_min_max_node_size(state)
+    stretch_width_layerer_compute_normalized_size(state)
 
-  if state.minimum_node_size < 1.0 {
-    state.minimum_node_size = 1.0
-  }
-  if state.maximum_node_size < 1.0 {
-    state.maximum_node_size = 1.0
-  }
-
-  state.dummy_size /= state.minimum_node_size
-  state.max_width = state.maximum_node_size / state.minimum_node_size
-  state.upper_layer_influence = stretch_width_layerer_get_average_out_degree(
-    state,
-  )
-
-  let mut current_layer = new_layer(state.current_graph)
-  state.current_graph.get_layers().push(current_layer)
-
-  state.temp_layerless_nodes = state.sorted_layerless_nodes.copy()
-  state.remaining_out_going = state.out_degree.copy()
-
-  while !state.temp_layerless_nodes.is_empty() {
-    state.selected_node = stretch_width_layerer_select_node(state)
-    let should_advance_layer = match state.selected_node {
-      Some(_) =>
-        stretch_width_layerer_condition_go_up(state) &&
-        state.already_placed_nodes.length() > 0
-      None => true
+    if state.minimum_node_size < 1.0 {
+      state.minimum_node_size = 1.0
+    }
+    if state.maximum_node_size < 1.0 {
+      state.maximum_node_size = 1.0
     }
 
-    if should_advance_layer {
-      stretch_width_layerer_update_out_going(state, current_layer)
-      current_layer = new_layer(state.current_graph)
-      state.current_graph.get_layers().push(current_layer)
-      for entry in state.already_placed_nodes.to_array() {
-        state.already_placed_in_other_layers[entry.0] = true
+    state.dummy_size /= state.minimum_node_size
+    state.max_width = state.maximum_node_size / state.minimum_node_size
+    state.upper_layer_influence = stretch_width_layerer_get_average_out_degree(
+      state,
+    )
+
+    let mut current_layer = new_layer(state.current_graph)
+    state.current_graph.get_layers().push(current_layer)
+
+    state.temp_layerless_nodes = state.sorted_layerless_nodes.copy()
+    state.remaining_out_going = state.out_degree.copy()
+
+    while !state.temp_layerless_nodes.is_empty() {
+      state.selected_node = stretch_width_layerer_select_node(state)
+      let should_advance_layer = match state.selected_node {
+        Some(_) =>
+          stretch_width_layerer_condition_go_up(state) &&
+          state.already_placed_nodes.length() > 0
+        None => true
       }
-      state.already_placed_nodes = {}
-      state.width_current = state.width_up
-      state.width_up = 0.0
-    } else {
-      let selected = match state.selected_node {
-        Some(value) => value
-        None => abort("selected node should not be null")
-      }
-      if stretch_width_layerer_condition_go_up(state) {
-        state.current_graph.get_layers().clear()
+
+      if should_advance_layer {
+        stretch_width_layerer_update_out_going(state, current_layer)
         current_layer = new_layer(state.current_graph)
         state.current_graph.get_layers().push(current_layer)
-        state.width_current = 0.0
-        state.width_up = 0.0
+        for entry in state.already_placed_nodes.to_array() {
+          state.already_placed_in_other_layers[entry.0] = true
+        }
         state.already_placed_nodes = {}
-        state.already_placed_in_other_layers = {}
-        state.max_width += 1.0
-        state.temp_layerless_nodes = state.sorted_layerless_nodes.copy()
-        state.remaining_out_going = state.out_degree.copy()
+        state.width_current = state.width_up
+        state.width_up = 0.0
       } else {
-        selected.set_layer(Some(current_layer))
-        stretch_width_layerer_remove_temp_node(state, selected)
-        state.already_placed_nodes[selected.get_handle()] = true
-        let selected_id = selected.get_id()
-        state.width_current = state.width_current -
-          state.out_degree[selected_id].to_double() * state.dummy_size +
-          state.norm_size[selected_id]
-        state.width_up += state.in_degree[selected_id].to_double() *
-          state.dummy_size
+        let selected = match state.selected_node {
+          Some(value) => value
+          None =>
+            stretch_width_layerer_raise_illegal_state(
+              "selected node should not be null",
+            )
+        }
+        if stretch_width_layerer_condition_go_up(state) {
+          state.current_graph.get_layers().clear()
+          current_layer = new_layer(state.current_graph)
+          state.current_graph.get_layers().push(current_layer)
+          state.width_current = 0.0
+          state.width_up = 0.0
+          state.already_placed_nodes = {}
+          state.already_placed_in_other_layers = {}
+          state.max_width += 1.0
+          state.temp_layerless_nodes = state.sorted_layerless_nodes.copy()
+          state.remaining_out_going = state.out_degree.copy()
+        } else {
+          selected.set_layer(Some(current_layer))
+          stretch_width_layerer_remove_temp_node(state, selected)
+          state.already_placed_nodes[selected.get_handle()] = true
+          let selected_id = selected.get_id()
+          state.width_current = state.width_current -
+            state.out_degree[selected_id].to_double() * state.dummy_size +
+            state.norm_size[selected_id]
+          state.width_up += state.in_degree[selected_id].to_double() *
+            state.dummy_size
+        }
       }
     }
-  }
 
-  layered_graph.get_layerless_nodes().clear()
-  stretch_width_layerer_reverse_layers(layered_graph.get_layers())
+    layered_graph.get_layerless_nodes().clear()
+    stretch_width_layerer_reverse_layers(layered_graph.get_layers())
+  } catch {
+    error =>
+      @core.layout_runtime_report_unsupported_configuration(
+        stretch_width_layerer_exception_message(error),
+      )
+  }
   monitor.done()
 }
 

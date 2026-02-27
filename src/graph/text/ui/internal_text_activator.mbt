@@ -2,6 +2,36 @@
 pub let graph_text_ui_language_name : String = "org.eclipse.elk.graph.text.ElkGraph"
 
 ///|
+pub suberror GraphTextActivatorException {
+  IllegalArgumentException(String)
+  RuntimeException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] graph_text_activator_raise_illegal_argument(
+  message : String,
+) -> T raise GraphTextActivatorException {
+  raise GraphTextActivatorException::IllegalArgumentException(message)
+}
+
+///|
+fn[T] graph_text_activator_raise_runtime(
+  message : String,
+) -> T raise GraphTextActivatorException {
+  raise GraphTextActivatorException::RuntimeException(message)
+}
+
+///|
+pub fn graph_text_activator_exception_message(
+  err : GraphTextActivatorException,
+) -> String {
+  match err {
+    IllegalArgumentException(message) => message
+    RuntimeException(message) => message
+  }
+}
+
+///|
 pub let graph_text_ui_extension_factory_guicekey : String = "guicekey"
 
 ///|
@@ -228,24 +258,24 @@ pub fn TextActivator::injector_count(self : TextActivator) -> Int {
 pub fn TextActivator::get_runtime_module(
   self : TextActivator,
   grammar : String,
-) -> @text.ElkGraphRuntimeModule {
+) -> @text.ElkGraphRuntimeModule raise GraphTextActivatorException {
   ignore(self)
   if grammar == graph_text_ui_language_name {
     return @text.new_elk_graph_runtime_module()
   }
-  abort("unknown grammar: " + grammar)
+  graph_text_activator_raise_illegal_argument(grammar)
 }
 
 ///|
 pub fn TextActivator::get_ui_module(
   self : TextActivator,
   grammar : String,
-) -> ElkGraphUiModule {
+) -> ElkGraphUiModule raise GraphTextActivatorException {
   ignore(self)
   if grammar == graph_text_ui_language_name {
     return new_elk_graph_ui_module()
   }
-  abort("unknown grammar: " + grammar)
+  graph_text_activator_raise_illegal_argument(grammar)
 }
 
 ///|
@@ -272,7 +302,7 @@ fn graph_text_ui_create_default_injector() -> GraphTextUiInjector {
 pub fn TextActivator::create_injector(
   self : TextActivator,
   language : String,
-) -> GraphTextUiInjector {
+) -> GraphTextUiInjector raise GraphTextActivatorException {
   ignore(self.get_runtime_module(language))
   ignore(self.get_shared_state_module())
   ignore(self.get_ui_module(language))
@@ -283,11 +313,16 @@ pub fn TextActivator::create_injector(
 pub fn TextActivator::get_injector(
   self : TextActivator,
   language : String,
-) -> GraphTextUiInjector {
+) -> GraphTextUiInjector raise GraphTextActivatorException {
   match self.injectors.get(language) {
     Some(injector) => injector
     None => {
-      let injector = self.create_injector(language)
+      let injector = self.create_injector(language) catch {
+        _ =>
+          graph_text_activator_raise_runtime(
+            "Failed to create injector for " + language,
+          )
+      }
       self.injectors[language] = injector
       injector
     }
@@ -300,7 +335,7 @@ pub fn TextActivator::register_injector_provider(
   language_name : String,
   class_name : String,
   provider : () -> GraphTextUiObject,
-) -> Unit {
+) -> Unit raise GraphTextActivatorException {
   let injector = self.get_injector(language_name)
   injector.register_provider(class_name, provider)
   self.injectors[language_name] = injector

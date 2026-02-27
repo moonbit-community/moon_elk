@@ -8,6 +8,8 @@ import {
 }
 
 // Values
+pub fn graph_json_text_activator_exception_message(GraphJsonTextActivatorException) -> String
+
 pub fn graph_json_text_activator_get_instance() -> GraphJsonTextActivator?
 
 pub fn graph_json_text_activator_reset_for_test() -> Unit
@@ -89,6 +91,24 @@ pub fn new_graph_json_text_ui_lexer_binding(String, String) -> GraphJsonTextUiLe
 pub fn new_graph_json_text_ui_status(Int, String, String) -> GraphJsonTextUiStatus
 
 // Errors
+pub(all) suberror ElkGraphJsonTextUiActivatorException {
+  IllegalArgumentException(String)
+}
+pub impl Show for ElkGraphJsonTextUiActivatorException
+pub impl ToJson for ElkGraphJsonTextUiActivatorException
+
+pub suberror GraphJsonTextActivatorException {
+  IllegalArgumentException(String)
+  RuntimeException(String)
+}
+pub impl Show for GraphJsonTextActivatorException
+pub impl ToJson for GraphJsonTextActivatorException
+
+pub suberror GraphJsonTextExecutableExtensionFactoryException {
+  IllegalArgumentException(String)
+}
+pub impl Show for GraphJsonTextExecutableExtensionFactoryException
+pub impl ToJson for GraphJsonTextExecutableExtensionFactoryException
 
 // Types and methods
 pub struct AbstractElkGraphJsonProposalProvider {
@@ -222,14 +242,14 @@ pub struct ElkGraphJsonExecutableExtensionFactory {
   mut config : GraphJsonTextConfigurationElement?
 }
 pub fn ElkGraphJsonExecutableExtensionFactory::create(Self) -> Result[GraphJsonTextUiObject, GraphJsonTextUiCoreException]
-pub fn ElkGraphJsonExecutableExtensionFactory::set_initialization_data(Self, GraphJsonTextConfigurationElement?, String?, GraphJsonTextInitializationData?) -> Unit
+pub fn ElkGraphJsonExecutableExtensionFactory::set_initialization_data(Self, GraphJsonTextConfigurationElement?, String?, GraphJsonTextInitializationData?) -> Unit raise GraphJsonTextExecutableExtensionFactoryException
 
 pub struct ElkGraphJsonJsonTextUiActivator {
   base : GraphJsonTextActivator
 }
-pub fn ElkGraphJsonJsonTextUiActivator::create_injector(Self, String) -> GraphJsonTextUiInjector
+pub fn ElkGraphJsonJsonTextUiActivator::create_injector(Self, String) -> GraphJsonTextUiInjector raise ElkGraphJsonTextUiActivatorException
 pub fn ElkGraphJsonJsonTextUiActivator::get_base(Self) -> GraphJsonTextActivator
-pub fn ElkGraphJsonJsonTextUiActivator::get_ide_module(Self, String) -> @ide.ElkGraphJsonIdeModule
+pub fn ElkGraphJsonJsonTextUiActivator::get_ide_module(Self, String) -> @ide.ElkGraphJsonIdeModule raise ElkGraphJsonTextUiActivatorException
 pub fn ElkGraphJsonJsonTextUiActivator::start(Self) -> Unit
 pub fn ElkGraphJsonJsonTextUiActivator::stop(Self) -> Unit
 
@@ -285,15 +305,15 @@ pub struct GraphJsonTextActivator {
   bundle : GraphJsonTextUiBundle
   injectors : Map[String, GraphJsonTextUiInjector]
 }
-pub fn GraphJsonTextActivator::create_injector(Self, String) -> GraphJsonTextUiInjector
+pub fn GraphJsonTextActivator::create_injector(Self, String) -> GraphJsonTextUiInjector raise GraphJsonTextActivatorException
 pub fn GraphJsonTextActivator::get_bundle(Self) -> GraphJsonTextUiBundle
-pub fn GraphJsonTextActivator::get_injector(Self, String) -> GraphJsonTextUiInjector
-pub fn GraphJsonTextActivator::get_runtime_module(Self, String) -> @text.ElkGraphJsonRuntimeModule
+pub fn GraphJsonTextActivator::get_injector(Self, String) -> GraphJsonTextUiInjector raise GraphJsonTextActivatorException
+pub fn GraphJsonTextActivator::get_runtime_module(Self, String) -> @text.ElkGraphJsonRuntimeModule raise GraphJsonTextActivatorException
 pub fn GraphJsonTextActivator::get_shared_state_module(Self) -> String
-pub fn GraphJsonTextActivator::get_ui_module(Self, String) -> ElkGraphJsonUiModule
+pub fn GraphJsonTextActivator::get_ui_module(Self, String) -> ElkGraphJsonUiModule raise GraphJsonTextActivatorException
 pub fn GraphJsonTextActivator::injector_count(Self) -> Int
 pub fn GraphJsonTextActivator::register_bundle_class(Self, String) -> Unit
-pub fn GraphJsonTextActivator::register_injector_provider(Self, String, String, () -> GraphJsonTextUiObject) -> Unit
+pub fn GraphJsonTextActivator::register_injector_provider(Self, String, String, () -> GraphJsonTextUiObject) -> Unit raise GraphJsonTextActivatorException
 pub fn GraphJsonTextActivator::start(Self) -> Unit
 pub fn GraphJsonTextActivator::stop(Self) -> Unit
 

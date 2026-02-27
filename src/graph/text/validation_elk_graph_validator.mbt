@@ -477,7 +477,11 @@ pub fn ElkGraphValidator::check_edge_container(
     return []
   }
   let issues : Array[GraphTextValidationIssue] = []
-  let best_container = @graph.find_best_edge_containment(Some(edge))
+  let best_container = try @graph.find_best_edge_containment(Some(edge)) catch {
+    err => abort(err.to_string())
+  } noraise {
+    best => best
+  }
   match best_container {
     Some(best) =>
       if @graph.edge_containing_node(edge) != Some(best) {

@@ -83,7 +83,10 @@ fn graph_stats_determine_width(
 ) -> Double {
   let layers = graph_stats.graph.get_layers()
   if layers.is_empty() {
-    abort("GraphStats.determineWidth() requires at least one layer")
+    @core.layout_runtime_report_unsupported_configuration(
+      "GraphStats.determineWidth() requires at least one layer",
+    )
+    return 0.0
   }
 
   let mut value = graph_stats_determine_layer_width(graph_stats, layers[0])
@@ -103,7 +106,10 @@ fn graph_stats_determine_height(
 ) -> Double {
   let layers = graph_stats.graph.get_layers()
   if layers.is_empty() {
-    abort("GraphStats.determineHeight() requires at least one layer")
+    @core.layout_runtime_report_unsupported_configuration(
+      "GraphStats.determineHeight() requires at least one layer",
+    )
+    return 0.0
   }
 
   let mut value = graph_stats_determine_layer_height(graph_stats, layers[0])
@@ -167,7 +173,12 @@ fn graph_stats_require_widths(graph_stats : GraphStats) -> Array[Double] {
       graph_stats_init_widths_and_heights(graph_stats)
       match graph_stats.widths {
         Some(values) => values
-        None => abort("widths should be initialized")
+        None => {
+          @core.layout_runtime_report_unsupported_configuration(
+            "widths should be initialized",
+          )
+          []
+        }
       }
     }
   }
@@ -181,7 +192,12 @@ fn graph_stats_require_heights(graph_stats : GraphStats) -> Array[Double] {
       graph_stats_init_widths_and_heights(graph_stats)
       match graph_stats.heights {
         Some(values) => values
-        None => abort("heights should be initialized")
+        None => {
+          @core.layout_runtime_report_unsupported_configuration(
+            "heights should be initialized",
+          )
+          []
+        }
       }
     }
   }

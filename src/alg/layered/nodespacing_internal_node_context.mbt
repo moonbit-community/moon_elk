@@ -225,6 +225,18 @@ pub fn node_context_compare_port_sides(
 }
 
 ///|
+pub(all) suberror NodeContextException {
+  UnsupportedConfigurationException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] node_context_raise_unsupported_configuration(
+  message : String,
+) -> T raise NodeContextException {
+  raise NodeContextException::UnsupportedConfigurationException(message)
+}
+
+///|
 pub struct NodeContext {
   node : LNodeAdapter
   node_size : @core.KVector
@@ -254,7 +266,9 @@ pub struct NodeContext {
 }
 
 ///|
-pub fn new_node_context(node : LNodeAdapter) -> NodeContext {
+pub fn new_node_context(
+  node : LNodeAdapter,
+) -> NodeContext raise NodeContextException {
   let node_size = node.get_size().clone()
 
   let topdown_layout = node.get_property_bool(
@@ -276,7 +290,9 @@ pub fn new_node_context(node : LNodeAdapter) -> NodeContext {
     node.get_property_string_array(node_context_port_labels_placement_property),
   )
   if !@core.port_label_placement_is_valid(port_labels_placement) {
-    abort("Invalid port label placement.")
+    node_context_raise_unsupported_configuration(
+      "Invalid port label placement: \{node.get_property_string_array(node_context_port_labels_placement_property)}",
+    )
   }
   let port_labels_treat_as_group = node.get_property_bool(
     @core.port_labels_treat_as_group,
@@ -285,7 +301,9 @@ pub fn new_node_context(node : LNodeAdapter) -> NodeContext {
     node.get_property_string_array(node_context_node_labels_placement_property),
   )
   if !@core.node_label_placement_is_valid(node_label_placement) {
-    abort("Invalid node label placement.")
+    node_context_raise_unsupported_configuration(
+      "Invalid node label placement: \{node.get_property_string_array(node_context_node_labels_placement_property)}",
+    )
   }
 
   let node_labels_padding = node_context_parse_padding(

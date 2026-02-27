@@ -36,13 +36,25 @@ fn layered_spacing_test_pair(
 }
 
 ///|
+fn[T] layered_spacing_expect_ok(
+  action : () -> T raise LayeredSpacingsException,
+) -> T {
+  try action() catch {
+    LayeredSpacingsException(message) =>
+      abort("unexpected LayeredSpacings exception: \{message}")
+  } noraise {
+    value => value
+  }
+}
+
+///|
 test "LayeredSpacingsBuilder default factors use layered defaults" {
   let builder = layered_spacings_with_base_value(33.0)
   for option in layered_spacing_options_to_test() {
     let expected = option.get_default() /
       layered_spacings_base_spacing_option.get_default()
     assert_double_eq(
-      builder.factor_for(option),
+      layered_spacing_expect_ok(() => builder.factor_for(option)),
       expected,
       layered_spacing_test_double_eq_epsilon,
     )
@@ -54,8 +66,11 @@ test "LayeredSpacingsBuilder apply respects overwrite flag" {
   let graph = new_l_graph()
   graph.set_property_double(@core.spacing_edge_node, 99.0)
 
-  layered_spacings_with_base_value(35.0)
-  .with_value(@core.spacing_edge_node, 24.0)
+  layered_spacing_expect_ok(() => {
+    layered_spacings_with_base_value(35.0).with_value(
+      @core.spacing_edge_node, 24.0,
+    )
+  })
   .with_overwrite(false)
   .apply(graph)
 
@@ -70,8 +85,11 @@ test "LayeredSpacingsBuilder apply respects overwrite flag" {
     layered_spacing_test_double_eq_epsilon,
   )
 
-  layered_spacings_with_base_value(35.0)
-  .with_value(@core.spacing_edge_node, 24.0)
+  layered_spacing_expect_ok(() => {
+    layered_spacings_with_base_value(35.0).with_value(
+      @core.spacing_edge_node, 24.0,
+    )
+  })
   .with_overwrite(true)
   .apply(graph)
 
@@ -136,9 +154,14 @@ test "Spacings maps external-port label spacing horizontal and vertical options"
 }
 
 ///|
-test "panic Spacings unspecified node-type combination panics" {
+test "Spacings unspecified node-type combination raises" {
   let types = node_type_values()
   let graph = new_l_graph()
   let spacings = new_layered_spacings(graph)
-  ignore(spacings.get_horizontal_spacing_for_node_type(types[6], types[6]))
+  try {
+    ignore(spacings.get_horizontal_spacing_for_node_type(types[6], types[6]))
+    abort("expected LayeredSpacingsException")
+  } catch {
+    LayeredSpacingsException(_) => ()
+  }
 }

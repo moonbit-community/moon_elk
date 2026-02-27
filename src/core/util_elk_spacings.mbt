@@ -9,6 +9,23 @@ pub(all) struct ElkCoreSpacingsBuilder {
 }
 
 ///|
+pub suberror ElkSpacingsException {
+  ElkSpacingsException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] elk_spacings_raise(message : String) -> T raise ElkSpacingsException {
+  raise ElkSpacingsException(message)
+}
+
+///|
+pub fn elk_spacings_exception_message(err : ElkSpacingsException) -> String {
+  match err {
+    ElkSpacingsException(message) => message
+  }
+}
+
+///|
 fn elk_core_dependent_spacing_options() -> Array[@graph.IProperty[Double]] {
   [
     spacing_component_component, spacing_edge_edge, spacing_edge_label, spacing_edge_node,
@@ -48,10 +65,13 @@ fn set_factor(
   factors : Array[(@graph.IProperty[Double], Double)],
   option : @graph.IProperty[Double],
   factor : Double,
-) -> Unit {
+) -> Unit raise ElkSpacingsException {
   match factor_index(factors, option) {
     Some(index) => factors[index] = (option, factor)
-    None => abort("'\{option.get_id()}' is not a configurable spacing option.")
+    None =>
+      elk_spacings_raise(
+        "'\{option.get_id()}' is not a configurable spacing option.",
+      )
   }
 }
 
@@ -66,13 +86,16 @@ pub fn ElkCoreSpacingsBuilder::factors(
 pub fn ElkCoreSpacingsBuilder::factor_for(
   self : ElkCoreSpacingsBuilder,
   option : @graph.IProperty[Double],
-) -> Double {
+) -> Double raise ElkSpacingsException {
   match factor_index(self.factors, option) {
     Some(index) => {
       let (_, factor) = self.factors[index]
       factor
     }
-    None => abort("'\{option.get_id()}' is not a configurable spacing option.")
+    None =>
+      elk_spacings_raise(
+        "'\{option.get_id()}' is not a configurable spacing option.",
+      )
   }
 }
 
@@ -81,17 +104,19 @@ pub fn ElkCoreSpacingsBuilder::with_factor(
   self : ElkCoreSpacingsBuilder,
   spacing_option : @graph.IProperty[Double],
   factor : Double,
-) -> ElkCoreSpacingsBuilder {
+) -> ElkCoreSpacingsBuilder raise ElkSpacingsException {
   if factor_index(self.factors, spacing_option) is None {
-    abort("'\{spacing_option.get_id()}' is not a configurable spacing option.")
+    elk_spacings_raise(
+      "'\{spacing_option.get_id()}' is not a configurable spacing option.",
+    )
   }
   if factor < 0.0 {
-    abort(
+    elk_spacings_raise(
       "The factor for '\{spacing_option.get_id()}' must not be negative (\{factor}).",
     )
   }
   if spacing_option.get_id() == spacing_node_node.get_id() {
-    abort(
+    elk_spacings_raise(
       "'\{spacing_option.get_id()}' is the base spacing option not allowed to use with 'with_factor'.",
     )
   }
@@ -104,17 +129,19 @@ pub fn ElkCoreSpacingsBuilder::with_value(
   self : ElkCoreSpacingsBuilder,
   spacing_option : @graph.IProperty[Double],
   value : Double,
-) -> ElkCoreSpacingsBuilder {
+) -> ElkCoreSpacingsBuilder raise ElkSpacingsException {
   if factor_index(self.factors, spacing_option) is None {
-    abort("'\{spacing_option.get_id()}' is not a configurable spacing option.")
+    elk_spacings_raise(
+      "'\{spacing_option.get_id()}' is not a configurable spacing option.",
+    )
   }
   if value < 0.0 {
-    abort(
+    elk_spacings_raise(
       "The value for '\{spacing_option.get_id()}' must not be negative (\{value}).",
     )
   }
   if spacing_option.get_id() == spacing_node_node.get_id() {
-    abort(
+    elk_spacings_raise(
       "'\{spacing_option.get_id()}' is the base spacing option not allowed to use with 'with_value'.",
     )
   }

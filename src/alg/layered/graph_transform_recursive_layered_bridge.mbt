@@ -1005,10 +1005,16 @@ fn _recursive_layered_align_edge_sections_to_port_anchors(
       continue
     }
     let section = sections[0]
-    match
+    let incoming_port = try
       @graph.connectable_shape_to_port(
         @graph.edge_section_incoming_shape(section),
-      ) {
+      )
+    catch {
+      _ => None
+    } noraise {
+      value => value
+    }
+    match incoming_port {
       Some(incoming_port) => {
         let start_anchor = recursive_layered_port_anchor_in_edge_coordinates(
           edge, incoming_port,
@@ -1017,10 +1023,16 @@ fn _recursive_layered_align_edge_sections_to_port_anchors(
       }
       None => ()
     }
-    match
+    let outgoing_port = try
       @graph.connectable_shape_to_port(
         @graph.edge_section_outgoing_shape(section),
-      ) {
+      )
+    catch {
+      _ => None
+    } noraise {
+      value => value
+    }
+    match outgoing_port {
       Some(outgoing_port) => {
         let end_anchor = recursive_layered_port_anchor_in_edge_coordinates(
           edge, outgoing_port,
@@ -1299,8 +1311,16 @@ fn recursive_layered_find_coordinate_system_origin(
   if sources.is_empty() || targets.is_empty() {
     return None
   }
-  let source = @graph.connectable_shape_to_node(Some(sources[0]))
-  let target = @graph.connectable_shape_to_node(Some(targets[0]))
+  let source = try @graph.connectable_shape_to_node(Some(sources[0])) catch {
+    _ => return None
+  } noraise {
+    value => value
+  }
+  let target = try @graph.connectable_shape_to_node(Some(targets[0])) catch {
+    _ => return None
+  } noraise {
+    value => value
+  }
 
   if @graph.node_parent(source) == @graph.node_parent(target) {
     return None
@@ -1847,7 +1867,12 @@ fn _recursive_layered_shape_anchor_for_edge_section(
   edge : @graph.ElkEdge,
   shape : @graph.ElkConnectableShape,
 ) -> @core.KVector? {
-  match @graph.connectable_shape_to_port(Some(shape)) {
+  let shape_port = try @graph.connectable_shape_to_port(Some(shape)) catch {
+    _ => None
+  } noraise {
+    value => value
+  }
+  match shape_port {
     Some(port) =>
       match @graph.edge_containing_node(edge) {
         Some(containing_node) =>

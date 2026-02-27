@@ -43,6 +43,27 @@ pub struct LibavoidServerCommunicator {
 }
 
 ///|
+pub suberror LibavoidCommunicatorException {
+  LibavoidCommunicatorException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] libavoid_communicator_raise(
+  message : String,
+) -> T raise LibavoidCommunicatorException {
+  raise LibavoidCommunicatorException(message)
+}
+
+///|
+fn libavoid_communicator_exception_message(
+  err : LibavoidCommunicatorException,
+) -> String {
+  match err {
+    LibavoidCommunicatorException(message) => message
+  }
+}
+
+///|
 pub fn new_libavoid_server_communicator() -> LibavoidServerCommunicator {
   {
     node_id_map: {},
@@ -103,6 +124,28 @@ fn LibavoidServerCommunicator::render_text(
 }
 
 ///|
+fn libavoid_communicator_shape_to_node(
+  shape : @graph.ElkConnectableShape,
+) -> @graph.ElkNode? {
+  try @graph.connectable_shape_to_node(Some(shape)) catch {
+    _ => None
+  } noraise {
+    value => Some(value)
+  }
+}
+
+///|
+fn libavoid_communicator_shape_to_port(
+  shape : @graph.ElkConnectableShape,
+) -> @graph.ElkPort? {
+  try @graph.connectable_shape_to_port(Some(shape)) catch {
+    _ => None
+  } noraise {
+    value => value
+  }
+}
+
+///|
 fn libavoid_communicator_process_timeout_of(
   layout_node : @graph.ElkNode,
 ) -> Int {
@@ -130,6 +173,31 @@ pub fn LibavoidServerCommunicator::request_layout(
   progress_monitor : @core.IElkProgressMonitor,
   lv_server : LibavoidServer,
 ) -> Unit {
+  try self.request_layout_impl(layout_node, progress_monitor, lv_server) catch {
+    err => {
+      @core.layout_runtime_report_unsupported_configuration(
+        libavoid_communicator_exception_message(err),
+      )
+      if lv_server.is_running() {
+        lv_server.cleanup(libavoid_server_cleanup_error())
+      }
+      if progress_monitor.is_running() {
+        progress_monitor.done()
+      }
+      self.reset()
+    }
+  } noraise {
+    _ => ()
+  }
+}
+
+///|
+fn LibavoidServerCommunicator::request_layout_impl(
+  self : LibavoidServerCommunicator,
+  layout_node : @graph.ElkNode,
+  progress_monitor : @core.IElkProgressMonitor,
+  lv_server : LibavoidServer,
+) -> Unit raise LibavoidCommunicatorException {
   self.reset()
   ignore(
     progress_monitor.begin("Libavoid Layout", libavoid_communicator_layout_work),
@@ -143,7 +211,12 @@ pub fn LibavoidServerCommunicator::request_layout(
   lv_server.set_process_timeout(
     libavoid_communicator_process_timeout_of(layout_node),
   )
-  let output_stream = lv_server.input()
+  let output_stream = try lv_server.input() catch {
+    err =>
+      libavoid_communicator_raise(libavoid_server_state_exception_message(err))
+  } noraise {
+    stream => stream
+  }
   self.write_text_graph(layout_node, output_stream)
   output_stream.flush()
 
@@ -256,7 +329,7 @@ fn LibavoidServerCommunicator::apply_layout(
   parent_node : @graph.ElkNode,
   layout_information : Map[String, @core.KVectorChain],
   progress_monitor : @core.IElkProgressMonitor,
-) -> Unit {
+) -> Unit raise LibavoidCommunicatorException {
   ignore(
     progress_monitor.begin("Apply layout", libavoid_communicator_subtask_work),
   )
@@ -265,17 +338,22 @@ fn LibavoidServerCommunicator::apply_layout(
 
   layout_information.each((key, points) => {
     if points.size() < 2 {
-      abort("An edge retrieved from Libavoid has less than 2 points.")
+      libavoid_communicator_raise(
+        "An edge retrieved from Libavoid has less than 2 points.",
+      )
     }
 
     let edge_id = match libavoid_communicator_edge_id_from_key(key) {
       Some(value) => value
-      None => abort("Failed to determine edge id from Libavoid output.")
+      None =>
+        libavoid_communicator_raise(
+          "Failed to determine edge id from Libavoid output.",
+        )
     }
     let edge = match self.edge_id_map.get(edge_id) {
       Some(value) => value
       None =>
-        abort(
+        libavoid_communicator_raise(
           "A problem within the edge mapping occured. Could not determine edge for id \{edge_id}.",
         )
     }
@@ -349,10 +427,15 @@ fn LibavoidServerCommunicator::read_layout_information(
   self : LibavoidServerCommunicator,
   libavoid_server : LibavoidServer,
   progress_monitor : @core.IElkProgressMonitor,
-) -> Map[String, @core.KVectorChain] {
+) -> Map[String, @core.KVectorChain] raise LibavoidCommunicatorException {
   ignore(self)
   ignore(progress_monitor.begin("Read output from Libavoid", 1.0))
-  let output_data = libavoid_server.read_output_data()
+  let output_data = try libavoid_server.read_output_data() catch {
+    err =>
+      libavoid_communicator_raise(libavoid_server_state_exception_message(err))
+  } noraise {
+    output => output
+  }
   let layout_information : Map[String, @core.KVectorChain] = {}
   match output_data {
     Some(data) =>
@@ -361,7 +444,7 @@ fn LibavoidServerCommunicator::read_layout_information(
       })
     None => {
       libavoid_server.cleanup(libavoid_server_cleanup_error())
-      abort(
+      libavoid_communicator_raise(
         "No output from the Libavoid process. Try increasing the timeout value in the preferences (KIELER / Layout / Libavoid).",
       )
     }
@@ -638,8 +721,14 @@ fn LibavoidServerCommunicator::transform_hierarchical_port_edge_if_relevant(
   if sources.is_empty() || targets.is_empty() {
     return
   }
-  let src_node = @graph.connectable_shape_to_node(Some(sources[0]))
-  let tgt_node = @graph.connectable_shape_to_node(Some(targets[0]))
+  let src_node = match libavoid_communicator_shape_to_node(sources[0]) {
+    Some(node) => node
+    None => return
+  }
+  let tgt_node = match libavoid_communicator_shape_to_node(targets[0]) {
+    Some(node) => node
+    None => return
+  }
   if libavoid_communicator_node_parent_is(src_node, root) ||
     libavoid_communicator_node_parent_is(tgt_node, root) {
     self.transform_edge_if_new(edge)
@@ -658,8 +747,14 @@ fn LibavoidServerCommunicator::is_hierarchical_edge(
   if sources.is_empty() || targets.is_empty() {
     return false
   }
-  let src_node = @graph.connectable_shape_to_node(Some(sources[0]))
-  let tgt_node = @graph.connectable_shape_to_node(Some(targets[0]))
+  let src_node = match libavoid_communicator_shape_to_node(sources[0]) {
+    Some(node) => node
+    None => return false
+  }
+  let tgt_node = match libavoid_communicator_shape_to_node(targets[0]) {
+    Some(node) => node
+    None => return false
+  }
   !(libavoid_communicator_node_parent_is(src_node, root) &&
   libavoid_communicator_node_parent_is(tgt_node, root))
 }
@@ -675,8 +770,14 @@ fn LibavoidServerCommunicator::is_cluster_edge(
   if sources.is_empty() || targets.is_empty() {
     return false
   }
-  let src_node = @graph.connectable_shape_to_node(Some(sources[0]))
-  let tgt_node = @graph.connectable_shape_to_node(Some(targets[0]))
+  let src_node = match libavoid_communicator_shape_to_node(sources[0]) {
+    Some(node) => node
+    None => return false
+  }
+  let tgt_node = match libavoid_communicator_shape_to_node(targets[0]) {
+    Some(node) => node
+    None => return false
+  }
 
   let src_parent_is_cluster = match @graph.node_parent(src_node) {
     Some(parent) =>
@@ -975,10 +1076,16 @@ fn LibavoidServerCommunicator::transform_edge(
 
   let source_shape = sources[0]
   let target_shape = targets[0]
-  let src_node = @graph.connectable_shape_to_node(Some(source_shape))
-  let tgt_node = @graph.connectable_shape_to_node(Some(target_shape))
-  let src_port = @graph.connectable_shape_to_port(Some(source_shape))
-  let tgt_port = @graph.connectable_shape_to_port(Some(target_shape))
+  let src_node = match libavoid_communicator_shape_to_node(source_shape) {
+    Some(node) => node
+    None => return
+  }
+  let tgt_node = match libavoid_communicator_shape_to_node(target_shape) {
+    Some(node) => node
+    None => return
+  }
+  let src_port = libavoid_communicator_shape_to_port(source_shape)
+  let tgt_port = libavoid_communicator_shape_to_port(target_shape)
 
   let mut src_id = self.node_inverse_map.get(src_node)
   let mut tgt_id = self.node_inverse_map.get(tgt_node)

@@ -2,7 +2,12 @@
 fn test_graph_creator_pop_graph(graphs : Array[LGraph]) -> LGraph {
   match graphs.pop() {
     Some(graph) => graph
-    None => abort("test graph stack is empty")
+    None => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "test graph stack is empty",
+      )
+      new_l_graph()
+    }
   }
 }
 
@@ -199,7 +204,10 @@ pub fn GreedySwitchMockRandom::next_int(
   limit : Int,
 ) -> Int {
   if limit <= 0 {
-    abort("limit must be positive")
+    @core.layout_runtime_report_unsupported_configuration(
+      "limit must be positive",
+    )
+    return 0
   }
 
   if (limit & -limit) == limit {
@@ -221,7 +229,8 @@ pub fn GreedySwitchMockRandom::next_int(
       return value
     }
   }
-  abort("unreachable")
+  @core.layout_runtime_report_unsupported_configuration("unreachable")
+  0
 }
 
 ///|

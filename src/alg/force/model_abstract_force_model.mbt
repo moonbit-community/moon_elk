@@ -20,7 +20,12 @@ pub fn new_abstract_force_model_state() -> AbstractForceModelState {
 pub fn abstract_force_model_graph(state : AbstractForceModelState) -> FGraph {
   match state.graph {
     Some(graph) => graph
-    None => abort("force model graph is not initialized")
+    None => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "force model graph is not initialized",
+      )
+      new_fgraph()
+    }
   }
 }
 

@@ -5,7 +5,8 @@ fn partition_midprocessor_port_side(name : String) -> @core.PortSide {
       return side
     }
   }
-  abort("unknown port side")
+  @core.layout_runtime_report_unsupported_configuration("unknown port side")
+  @core.PortSide::SideUndefined
 }
 
 ///|
@@ -90,11 +91,21 @@ fn partition_midprocessor_process(
     let second_id = sorted_partition_ids[index + 1]
     let first_partition = match partition_to_nodes.get(first_id) {
       Some(nodes) => nodes
-      None => abort("first partition missing")
+      None => {
+        @core.layout_runtime_report_unsupported_configuration(
+          "first partition missing",
+        )
+        []
+      }
     }
     let second_partition = match partition_to_nodes.get(second_id) {
       Some(nodes) => nodes
-      None => abort("second partition missing")
+      None => {
+        @core.layout_runtime_report_unsupported_configuration(
+          "second partition missing",
+        )
+        []
+      }
     }
     partition_midprocessor_connect_nodes(first_partition, second_partition)
     index += 1

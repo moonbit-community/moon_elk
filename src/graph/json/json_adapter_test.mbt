@@ -23,13 +23,25 @@ fn json_adapter_expect_string(value : Json) -> String {
 }
 
 ///|
+fn json_adapter_get_id_or_abort(
+  adapter : JsonAdapter,
+  obj : Map[String, Json],
+) -> String {
+  try adapter.get_id(obj) catch {
+    err => abort(err.get_message().unwrap_or("json import error"))
+  } noraise {
+    id => id
+  }
+}
+
+///|
 test "json adapter get id and options" {
   let adapter = new_json_adapter()
   let obj : Map[String, Json] = {
     "id": Json::string("node1"),
     "value": Json::number(7.0),
   }
-  assert_eq(adapter.get_id(obj), "node1")
+  assert_eq(json_adapter_get_id_or_abort(adapter, obj), "node1")
   assert_eq(adapter.get_id_safe(obj), Some("node1"))
   assert_eq(adapter.opt_double(obj, "value"), Some(7.0))
   assert_eq(adapter.opt_string(obj, "value"), Some("7"))
@@ -39,7 +51,7 @@ test "json adapter get id and options" {
 test "json adapter accepts numeric int id" {
   let adapter = new_json_adapter()
   let obj : Map[String, Json] = { "id": Json::number(42.0) }
-  assert_eq(adapter.get_id(obj), "42")
+  assert_eq(json_adapter_get_id_or_abort(adapter, obj), "42")
 }
 
 ///|
@@ -70,15 +82,31 @@ test "json adapter object and array editing" {
 }
 
 ///|
-test "panic json adapter rejects non integer id" {
+test "json adapter rejects non integer id with JsonImportException" {
   let adapter = new_json_adapter()
   let obj : Map[String, Json] = { "id": Json::number(3.14) }
-  ignore(adapter.get_id(obj))
+  try adapter.get_id(obj) catch {
+    err =>
+      inspect(
+        err.get_message(),
+        content="Some(\"Id must be a string or an integer: '3.14'.\")",
+      )
+  } noraise {
+    _ => abort("expected JsonImportException")
+  }
 }
 
 ///|
-test "panic json adapter requires id" {
+test "json adapter requires id with JsonImportException" {
   let adapter = new_json_adapter()
   let obj : Map[String, Json] = {}
-  ignore(adapter.get_id(obj))
+  try adapter.get_id(obj) catch {
+    err =>
+      inspect(
+        err.get_message(),
+        content="Some(\"Every element must have an id.\")",
+      )
+  } noraise {
+    _ => abort("expected JsonImportException")
+  }
 }

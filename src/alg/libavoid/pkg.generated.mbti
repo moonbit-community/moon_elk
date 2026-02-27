@@ -82,6 +82,8 @@ pub fn libavoid_server_reset_runtime_for_test() -> Unit
 
 pub fn libavoid_server_set_default_output_data_for_test(Map[String, String]?) -> Unit
 
+pub fn libavoid_server_state_exception_message(LibavoidServerStateException) -> String
+
 pub fn new_libavoid_bundle(symbolic_name? : String) -> LibavoidBundle
 
 pub fn new_libavoid_layout_provider() -> LibavoidLayoutProvider
@@ -101,6 +103,17 @@ pub fn new_libavoid_server_exception_with_message(String) -> LibavoidServerExcep
 pub fn new_libavoid_server_pool() -> LibavoidServerPool
 
 // Errors
+pub suberror LibavoidCommunicatorException {
+  LibavoidCommunicatorException(String)
+}
+pub impl Show for LibavoidCommunicatorException
+pub impl ToJson for LibavoidCommunicatorException
+
+pub suberror LibavoidServerStateException {
+  LibavoidServerStateException(String)
+}
+pub impl Show for LibavoidServerStateException
+pub impl ToJson for LibavoidServerStateException
 
 // Types and methods
 pub struct LibavoidBundle {
@@ -136,10 +149,10 @@ pub fn LibavoidServer::cleanup(Self, LibavoidServerCleanup) -> Unit
 pub fn LibavoidServer::get_input_bytes(Self) -> Array[Int]
 pub fn LibavoidServer::get_process_timeout(Self) -> Int
 pub fn LibavoidServer::initialize(Self) -> Unit
-pub fn LibavoidServer::input(Self) -> @layouter.GraphvizOutputStream
+pub fn LibavoidServer::input(Self) -> @layouter.GraphvizOutputStream raise LibavoidServerStateException
 pub fn LibavoidServer::is_canceled(Self) -> Bool
 pub fn LibavoidServer::is_running(Self) -> Bool
-pub fn LibavoidServer::read_output_data(Self) -> Map[String, String]?
+pub fn LibavoidServer::read_output_data(Self) -> Map[String, String]? raise LibavoidServerStateException
 pub fn LibavoidServer::set_output_data_for_test(Self, Map[String, String]?) -> Unit
 pub fn LibavoidServer::set_process_timeout(Self, Int) -> Unit
 

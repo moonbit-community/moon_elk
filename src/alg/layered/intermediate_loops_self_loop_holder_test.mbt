@@ -40,6 +40,13 @@ fn self_loop_holder_test_same_edge_handle_set(
 }
 
 ///|
+fn self_loop_holder_test_install_or_abort(l_node : LNode) -> SelfLoopHolder {
+  self_loop_holder_install(l_node) catch {
+    error => abort(self_loop_holder_exception_message(error))
+  }
+}
+
+///|
 test "self loop holder does not process non-self-loop graph" {
   let l_graph = self_loop_test_graph_creator_basic_graph_without_self_loops()
   for l_node in l_graph.get_layerless_nodes() {
@@ -48,10 +55,17 @@ test "self loop holder does not process non-self-loop graph" {
 }
 
 ///|
-test "panic self loop holder install requires self loops" {
+test "self loop holder install rejects nodes without self loops" {
   let l_graph = self_loop_test_graph_creator_basic_graph_without_self_loops()
   let l_node = l_graph.get_layerless_nodes()[0]
-  ignore(self_loop_holder_install(l_node))
+  try {
+    ignore(self_loop_holder_install(l_node))
+    abort("expected UnsupportedConfigurationException")
+  } catch {
+    SelfLoopHolderException::UnsupportedConfigurationException(_) => ()
+    SelfLoopHolderException::IllegalStateException(message) =>
+      abort("unexpected IllegalStateException: \{message}")
+  }
 }
 
 ///|
@@ -61,7 +75,7 @@ test "self loop holder initializes basic self loop model" {
 
   assert_true(self_loop_holder_needs_self_loop_processing(l_node))
 
-  let sl_holder = self_loop_holder_install(l_node)
+  let sl_holder = self_loop_holder_test_install_or_abort(l_node)
   assert_true(
     l_node.has_property_self_loop_holder(internal_properties_self_loop_holder),
   )
@@ -111,7 +125,7 @@ test "self loop holder groups disconnected self loops into separate hyper loops"
     second_loops.push(l_edge)
   }
 
-  let sl_holder = self_loop_holder_install(l_node)
+  let sl_holder = self_loop_holder_test_install_or_abort(l_node)
   assert_eq(sl_holder.get_sl_hyper_loops().length(), 2)
 
   let first_hyper_edges = self_loop_holder_test_hyper_loop_edge_handle_set(

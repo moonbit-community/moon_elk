@@ -17,7 +17,7 @@ test "Issue444 self-loop graph does not throw during layout" {
   let edge = create_edge(None)
   edge_add_source(edge, make_port_shape(source_port))
   edge_add_target(edge, make_port_shape(target_port))
-  update_containment(Some(edge))
+  layered_test_update_containment(Some(edge))
 
   let resolver = new_layout_algorithm_resolver()
   apply_visitors(graph, [resolver.to_visitor()])

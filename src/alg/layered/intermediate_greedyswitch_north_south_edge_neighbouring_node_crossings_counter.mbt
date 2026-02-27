@@ -23,12 +23,20 @@ fn north_south_same_node(left : LNode?, right : LNode?) -> Bool {
 ///|
 fn north_south_origin_port_of(node : LNode) -> LPort {
   if node.get_ports().is_empty() {
-    abort("north south dummy node has no ports")
+    @core.layout_runtime_report_unsupported_configuration(
+      "north south dummy node has no ports",
+    )
+    return new_l_port()
   }
   match
     node.get_ports()[0].get_property_l_port(internal_properties_origin_l_port) {
     Some(origin) => origin
-    None => abort("north south dummy node has no origin port")
+    None => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "north south dummy node has no origin port",
+      )
+      new_l_port()
+    }
   }
 }
 
@@ -259,10 +267,7 @@ fn NorthSouthEdgeNeighbouringNodeCrossingsCounter::origin_port_position_of(
 ) -> Int {
   let origin = north_south_origin_port_of(node)
   let key = lport_internal_handle(origin)
-  match self.port_positions.get(key) {
-    Some(position) => position
-    None => abort("origin port position was not initialized")
-  }
+  self.port_positions.get(key).unwrap()
 }
 
 ///|

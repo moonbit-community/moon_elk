@@ -2,6 +2,25 @@
 let next_layout_execution_listener_id_ref : Ref[Int] = Ref::new(0)
 
 ///|
+priv suberror TestControllerException {
+  TestControllerException(String)
+} derive(Show, ToJson)
+
+///|
+fn test_controller_raise_unit(
+  message : String,
+) -> Unit raise TestControllerException {
+  raise TestControllerException(message)
+}
+
+///|
+fn test_controller_exception_message(err : TestControllerException) -> String {
+  match err {
+    TestControllerException(message) => message
+  }
+}
+
+///|
 fn next_layout_execution_listener_id() -> Int {
   let id = next_layout_execution_listener_id_ref.val
   next_layout_execution_listener_id_ref.val = id + 1
@@ -94,9 +113,19 @@ pub fn[G] TestController::install(
   layout_provider : IWhiteBoxTestable[G],
 ) -> Unit {
   if self.current_layout_provider is Some(_) {
-    abort(
-      "Test controller may be installed on only one layout provider at a time",
-    )
+    try
+      test_controller_raise_unit(
+        "Test controller may be installed on only one layout provider at a time",
+      )
+    catch {
+      err =>
+        layout_runtime_report_unsupported_configuration(
+          test_controller_exception_message(err),
+        )
+    } noraise {
+      _ => ()
+    }
+    return
   }
   self.current_layout_provider = Some(layout_provider)
   layout_provider.set_test_controller(Some(self))

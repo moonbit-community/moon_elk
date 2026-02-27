@@ -39,16 +39,36 @@ let breadth_first_model_order_layerer_baseline_processing_configuration : @core.
   )
 
 ///|
+pub(all) suberror BreadthFirstModelOrderLayererException {
+  UnsupportedGraphException(String)
+} derive(Show, ToJson)
+
+///|
+fn[T] breadth_first_model_order_layerer_raise_unsupported_graph(
+  message : String,
+) -> T raise BreadthFirstModelOrderLayererException {
+  raise BreadthFirstModelOrderLayererException::UnsupportedGraphException(
+    message,
+  )
+}
+
+///|
 fn breadth_first_model_order_layerer_require_edge_source_node(
   edge : LEdge,
-) -> LNode {
+) -> LNode raise BreadthFirstModelOrderLayererException {
   let source = match edge.get_source() {
     Some(value) => value
-    None => abort("edge has no source port")
+    None =>
+      breadth_first_model_order_layerer_raise_unsupported_graph(
+        "edge has no source port",
+      )
   }
   match source.get_node() {
     Some(value) => value
-    None => abort("source port has no owner node")
+    None =>
+      breadth_first_model_order_layerer_raise_unsupported_graph(
+        "source port has no owner node",
+      )
   }
 }
 
@@ -67,10 +87,12 @@ fn breadth_first_model_order_layerer_layer_equals(
 fn breadth_first_model_order_layerer_label_connects_to_current_layer(
   label_dummy : LNode,
   current_layer : Layer,
-) -> Bool {
+) -> Bool raise BreadthFirstModelOrderLayererException {
   let incoming_edges = label_dummy.get_incoming_edges()
   if incoming_edges.is_empty() {
-    abort("label dummy node has no incoming edges")
+    breadth_first_model_order_layerer_raise_unsupported_graph(
+      "label dummy node has no incoming edges",
+    )
   }
   let source = breadth_first_model_order_layerer_require_edge_source_node(
     incoming_edges[0],
@@ -85,7 +107,7 @@ fn breadth_first_model_order_layerer_label_connects_to_current_layer(
 fn breadth_first_model_order_layerer_incoming_edge_connects_to_current_layer(
   edge : LEdge,
   current_layer : Layer,
-) -> Bool {
+) -> Bool raise BreadthFirstModelOrderLayererException {
   let source_node = breadth_first_model_order_layerer_require_edge_source_node(
     edge,
   )
@@ -104,11 +126,13 @@ fn breadth_first_model_order_layerer_incoming_edge_connects_to_current_layer(
 }
 
 ///|
-fn breadth_first_model_order_layerer_model_order(node : LNode) -> Int {
+fn breadth_first_model_order_layerer_model_order(
+  node : LNode,
+) -> Int raise BreadthFirstModelOrderLayererException {
   if node.has_property_int(internal_properties_model_order) {
     node.get_property_int(internal_properties_model_order)
   } else {
-    abort(
+    breadth_first_model_order_layerer_raise_unsupported_graph(
       "The BF model order layer assigner requires all real nodes to have a model order.",
     )
   }
@@ -117,7 +141,7 @@ fn breadth_first_model_order_layerer_model_order(node : LNode) -> Int {
 ///|
 fn breadth_first_model_order_layerer_sort_real_nodes(
   real_nodes : Array[LNode],
-) -> Unit {
+) -> Unit raise BreadthFirstModelOrderLayererException {
   let mut i = 1
   while i < real_nodes.length() {
     let current = real_nodes[i]
@@ -175,62 +199,72 @@ fn breadth_first_model_order_layerer_process(
       real_nodes.push(node)
     }
   }
-  breadth_first_model_order_layerer_sort_real_nodes(real_nodes)
+  try {
+    breadth_first_model_order_layerer_sort_real_nodes(real_nodes)
 
-  let mut first_node = true
-  let mut current_layer = new_layer(layered_graph)
-  let mut current_dummy_layer : Layer? = None
-  layered_graph.get_layers().push(current_layer)
+    let mut first_node = true
+    let mut current_layer = new_layer(layered_graph)
+    let mut current_dummy_layer : Layer? = None
+    layered_graph.get_layers().push(current_layer)
 
-  for node in real_nodes {
-    if first_node {
-      node.set_layer(Some(current_layer))
-      first_node = false
-    } else {
-      for edge in node.get_incoming_edges() {
-        if breadth_first_model_order_layerer_incoming_edge_connects_to_current_layer(
-            edge, current_layer,
-          ) {
-          let new_dummy_layer = new_layer(layered_graph)
-          layered_graph.get_layers().push(new_dummy_layer)
-          current_dummy_layer = Some(new_dummy_layer)
+    for node in real_nodes {
+      if first_node {
+        node.set_layer(Some(current_layer))
+        first_node = false
+      } else {
+        for edge in node.get_incoming_edges() {
+          if breadth_first_model_order_layerer_incoming_edge_connects_to_current_layer(
+              edge, current_layer,
+            ) {
+            let new_dummy_layer = new_layer(layered_graph)
+            layered_graph.get_layers().push(new_dummy_layer)
+            current_dummy_layer = Some(new_dummy_layer)
 
-          let new_current_layer = new_layer(layered_graph)
-          layered_graph.get_layers().push(new_current_layer)
-          current_layer = new_current_layer
+            let new_current_layer = new_layer(layered_graph)
+            layered_graph.get_layers().push(new_current_layer)
+            current_layer = new_current_layer
+          }
         }
-      }
 
-      for edge in node.get_incoming_edges() {
-        let source_node = breadth_first_model_order_layerer_require_edge_source_node(
-          edge,
-        )
-        if source_node.get_type() is NodeType::LabelNode &&
-          source_node.get_layer() is None {
-          source_node.set_layer(current_dummy_layer)
+        for edge in node.get_incoming_edges() {
+          let source_node = breadth_first_model_order_layerer_require_edge_source_node(
+            edge,
+          )
+          if source_node.get_type() is NodeType::LabelNode &&
+            source_node.get_layer() is None {
+            source_node.set_layer(current_dummy_layer)
+          }
         }
+
+        node.set_layer(Some(current_layer))
       }
-
-      node.set_layer(Some(current_layer))
     }
-  }
 
-  layered_graph.get_layerless_nodes().clear()
+    layered_graph.get_layerless_nodes().clear()
 
-  let to_delete = []
-  for layer in layered_graph.get_layers() {
-    if layer.get_nodes().is_empty() {
-      to_delete.push(layer)
+    let to_delete = []
+    for layer in layered_graph.get_layers() {
+      if layer.get_nodes().is_empty() {
+        to_delete.push(layer)
+      }
     }
-  }
-  for layer in to_delete {
-    breadth_first_model_order_layerer_remove_layer(layered_graph, layer)
-  }
+    for layer in to_delete {
+      breadth_first_model_order_layerer_remove_layer(layered_graph, layer)
+    }
 
-  let mut layer_id = 0
-  for layer in layered_graph.get_layers() {
-    layer.set_id(layer_id)
-    layer_id += 1
+    let mut layer_id = 0
+    for layer in layered_graph.get_layers() {
+      layer.set_id(layer_id)
+      layer_id += 1
+    }
+  } catch {
+    BreadthFirstModelOrderLayererException::UnsupportedGraphException(message) => {
+      @core.layout_runtime_report_unsupported_configuration(message)
+      monitor.done()
+      return
+    }
+  } noraise {
+    _ => ()
   }
 
   monitor.done()
