@@ -1,0 +1,224 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/moon_elk/alg/disco"
+
+import {
+  "Milky2018/moon_elk/alg/common",
+  "Milky2018/moon_elk/core",
+  "Milky2018/moon_elk/graph",
+}
+
+// Values
+pub fn compaction_strategy_values() -> Array[CompactionStrategy]
+
+pub fn dc_direction_values() -> Array[DCDirection]
+
+pub fn dc_element_exception_message(DCElementException) -> String
+
+pub fn dis_co_layout_provider_as_layout_provider(DisCoLayoutProvider) -> @core.AbstractLayoutProvider
+
+pub fn dis_co_polyomino_compactor_as_icompactor(DisCoPolyominoCompactor) -> ICompactor
+
+pub let disco_aspect_ratio : @graph.IProperty[Double]
+
+pub let disco_component_compaction_strategy : @graph.IProperty[String]
+
+pub let disco_component_layout_algorithm : @graph.IProperty[String]
+
+pub let disco_edge_thickness : @graph.IProperty[Double]
+
+pub let disco_padding : @graph.IProperty[String]
+
+pub let disco_polyomino_fill : @graph.IProperty[Bool]
+
+pub let disco_spacing_component_component : @graph.IProperty[Double]
+
+pub fn elk_graph_components_processor_split(Int) -> Array[Array[Int]]
+
+pub fn elk_graph_transformer_as_igraph_transformer(ElkGraphTransformer) -> IGraphTransformer[Int]
+
+pub fn new_dc_component() -> DCComponent
+
+pub fn new_dc_element(@core.KVectorChain) -> DCElement
+
+pub fn new_dc_extension(DCElement, DCDirection, @core.KVector, Double) -> DCExtension
+
+pub fn new_dc_graph(Array[Array[DCElement]], inset? : Double) -> DCGraph
+
+pub fn new_dc_polyomino(DCComponent, Double, Double) -> DCPolyomino
+
+pub fn new_dis_co_layout_provider() -> DisCoLayoutProvider
+
+pub fn new_dis_co_polyomino_compactor() -> DisCoPolyominoCompactor
+
+pub fn new_elk_graph_transformer(component_spacing? : Double) -> ElkGraphTransformer
+
+pub fn new_icompactor((DCGraph) -> Unit) -> ICompactor
+
+pub fn[G] new_igraph_transformer((G) -> DCGraph, () -> Unit) -> IGraphTransformer[G]
+
+// Errors
+pub suberror DCElementException {
+  DCElementException(String)
+}
+pub impl Show for DCElementException
+pub impl ToJson for DCElementException
+
+// Types and methods
+pub enum CompactionStrategy {
+  Polyomino
+}
+
+pub struct DCComponent {
+  mut offset : @core.KVector
+  shapes : Array[DCElement]
+  mut changed : Bool
+  mut bounds : @core.KVector
+  mut min_corner_of_bounding_rectangle : @core.KVector
+  mut id : Int
+}
+pub fn DCComponent::add_element(Self, DCElement) -> Unit
+pub fn DCComponent::add_elements(Self, Array[DCElement]) -> Unit
+pub fn DCComponent::get_dimensions_of_bounding_rectangle(Self) -> @core.KVector
+pub fn DCComponent::get_elements(Self) -> Array[DCElement]
+pub fn DCComponent::get_id(Self) -> Int
+pub fn DCComponent::get_min_corner(Self) -> @core.KVector
+pub fn DCComponent::get_offset(Self) -> @core.KVector
+pub fn DCComponent::intersects(Self, @core.ElkRectangle) -> Bool
+pub fn DCComponent::set_id(Self, Int) -> Unit
+pub fn DCComponent::set_offset(Self, @core.KVector) -> Unit
+
+pub enum DCDirection {
+  DCNorth
+  DCEast
+  DCSouth
+  DCWest
+}
+pub fn DCDirection::is_horizontal(Self) -> Bool
+
+pub struct DCElement {
+  shape : @core.KVectorChain
+  bounds : @core.ElkRectangle
+  mut cp : DCComponent?
+  mut coords : Array[Double]?
+  mut parent_coords : @core.KVector?
+  extensions : Array[DCExtension]
+}
+pub fn DCElement::add_extension(Self, DCExtension) -> Unit
+pub fn DCElement::get_bounds(Self) -> @core.ElkRectangle
+pub fn DCElement::get_coords(Self) -> Array[Double]
+pub fn DCElement::get_extensions(Self) -> Array[DCExtension]
+pub fn DCElement::get_offset(Self) -> @core.KVector raise DCElementException
+pub fn DCElement::get_parent_coords(Self) -> @core.KVector?
+pub fn DCElement::intersects(Self, @core.ElkRectangle) -> Bool
+pub fn DCElement::set_component(Self, DCComponent) -> Unit
+pub fn DCElement::set_parent_coords(Self, @core.KVector) -> Unit
+
+pub struct DCExtension {
+  parent : DCElement
+  direction : DCDirection
+  offset : @core.KVector
+  width : Double
+}
+pub fn DCExtension::get_direction(Self) -> DCDirection
+pub fn DCExtension::get_offset(Self) -> @core.KVector
+pub fn DCExtension::get_parent(Self) -> DCElement
+pub fn DCExtension::get_width(Self) -> Double
+
+pub struct DCGraph {
+  components : Array[DCComponent]
+  mut dimensions : @core.KVector
+  inset : Double
+  mut polyomino_fill : Bool
+  mut aspect_ratio : Double?
+  mut padding : @core.Spacing
+  mut debug_disco_polys : Array[DCPolyomino]?
+}
+pub fn DCGraph::get_aspect_ratio(Self) -> Double?
+pub fn DCGraph::get_components(Self) -> Array[DCComponent]
+pub fn DCGraph::get_debug_disco_polys(Self) -> Array[DCPolyomino]?
+pub fn DCGraph::get_dimensions(Self) -> @core.KVector
+pub fn DCGraph::get_inset(Self) -> Double
+pub fn DCGraph::get_padding(Self) -> @core.Spacing
+pub fn DCGraph::get_polyomino_fill(Self) -> Bool
+pub fn DCGraph::set_aspect_ratio(Self, Double?) -> Unit
+pub fn DCGraph::set_debug_disco_polys(Self, Array[DCPolyomino]) -> Unit
+pub fn DCGraph::set_dimensions(Self, @core.KVector) -> Unit
+pub fn DCGraph::set_padding(Self, @core.Spacing) -> Unit
+pub fn DCGraph::set_polyomino_fill(Self, Bool) -> Unit
+
+pub struct DCPolyomino {
+  polyomino : @common.Polyomino
+  representee : DCComponent
+  p_width : Int
+  p_height : Int
+  cell_size_x : Double
+  cell_size_y : Double
+}
+pub fn DCPolyomino::as_polyomino(Self) -> @common.Polyomino
+pub fn DCPolyomino::get_cell_size_x(Self) -> Double
+pub fn DCPolyomino::get_cell_size_y(Self) -> Double
+pub fn DCPolyomino::get_center_x(Self) -> Int
+pub fn DCPolyomino::get_center_y(Self) -> Int
+pub fn DCPolyomino::get_id(Self) -> Int
+pub fn DCPolyomino::get_min_corner_on_canvas(Self) -> @core.KVector
+pub fn DCPolyomino::get_offset(Self) -> @core.KVector
+pub fn DCPolyomino::get_polyomino_extensions(Self) -> Array[@common.UniqueTriple[@common.PolyominoDirection, Int, Int]]
+pub fn DCPolyomino::get_representee(Self) -> DCComponent
+pub fn DCPolyomino::get_x(Self) -> Int
+pub fn DCPolyomino::get_y(Self) -> Int
+pub fn DCPolyomino::height(Self) -> Int
+pub fn DCPolyomino::is_blocked(Self, Int, Int) -> Bool
+pub fn DCPolyomino::is_weakly_blocked(Self, Int, Int) -> Bool
+pub fn DCPolyomino::set_id(Self, Int) -> Unit
+pub fn DCPolyomino::set_x(Self, Int) -> Unit
+pub fn DCPolyomino::set_y(Self, Int) -> Unit
+pub fn DCPolyomino::width(Self) -> Int
+
+pub struct DisCoLayoutProvider {
+  mut result : DCGraph?
+  mut component_spacing : Double
+}
+pub fn DisCoLayoutProvider::layout(Self, Int, @core.IElkProgressMonitor) -> Unit
+
+pub struct DisCoPolyominoCompactor {
+  mut grid_cell_size_x : Double
+  mut grid_cell_size_y : Double
+  upper_bound : Double
+  mut cmp_graph : DCGraph?
+  polys : Array[DCPolyomino]
+  mut grid : @common.PlanarGrid?
+  mut aspect_ratio : Double
+  mut fill : Bool
+}
+pub fn DisCoPolyominoCompactor::compact(Self, DCGraph) -> Unit
+
+pub struct ElkGraphTransformer {
+  mut parent : Int?
+  node_mapping : Map[Int, DCElement]
+  label_mapping : Map[Int, DCElement]
+  port_mapping : Map[Int, DCElement]
+  edge_mapping : Map[Int, DCElement]
+  incoming_extensions_mapping : Map[Int, DCExtension]
+  outgoing_extensions_mapping : Map[Int, DCExtension]
+  mut transformed_graph : DCGraph?
+  component_spacing : Double
+}
+pub fn ElkGraphTransformer::apply_layout(Self) -> Unit
+pub fn ElkGraphTransformer::import_graph(Self, Int) -> DCGraph
+
+pub struct ICompactor {
+  compact_fn : (DCGraph) -> Unit
+}
+pub fn ICompactor::compact(Self, DCGraph) -> Unit
+
+pub struct IGraphTransformer[G] {
+  import_graph_fn : (G) -> DCGraph
+  apply_layout_fn : () -> Unit
+}
+pub fn[G] IGraphTransformer::apply_layout(Self[G]) -> Unit
+pub fn[G] IGraphTransformer::import_graph(Self[G], G) -> DCGraph
+
+// Type aliases
+
+// Traits
+

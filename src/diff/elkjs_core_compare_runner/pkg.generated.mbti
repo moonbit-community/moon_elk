@@ -1,0 +1,14 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/moon_elk/diff/elkjs_core_compare_runner"
+
+// Values
+pub fn layout_json(String) -> String raise
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits
+

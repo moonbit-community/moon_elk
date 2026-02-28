@@ -1,0 +1,1216 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/moon_elk/alg/graphviz/dot"
+
+import {
+  "Milky2018/moon_elk/core",
+  "Milky2018/moon_elk/graph",
+}
+
+// Values
+pub let alg_graphviz_dot_dot_attribute_classifier_id : Int
+
+pub let alg_graphviz_dot_dot_attribute_feature_count : Int
+
+pub let alg_graphviz_dot_dot_attribute_name_feature_id : Int
+
+pub let alg_graphviz_dot_dot_attribute_statement_attributes_feature_id : Int
+
+pub let alg_graphviz_dot_dot_attribute_statement_classifier_id : Int
+
+pub let alg_graphviz_dot_dot_attribute_statement_feature_count : Int
+
+pub let alg_graphviz_dot_dot_attribute_statement_type_feature_id : Int
+
+pub let alg_graphviz_dot_dot_attribute_type_classifier_id : Int
+
+pub let alg_graphviz_dot_dot_attribute_value_feature_id : Int
+
+pub let alg_graphviz_dot_dot_edge_operator_classifier_id : Int
+
+pub let alg_graphviz_dot_dot_edge_statement_attributes_feature_id : Int
+
+pub let alg_graphviz_dot_dot_edge_statement_classifier_id : Int
+
+pub let alg_graphviz_dot_dot_edge_statement_edge_targets_feature_id : Int
+
+pub let alg_graphviz_dot_dot_edge_statement_feature_count : Int
+
+pub let alg_graphviz_dot_dot_edge_statement_source_node_feature_id : Int
+
+pub let alg_graphviz_dot_dot_edge_target_classifier_id : Int
+
+pub let alg_graphviz_dot_dot_edge_target_feature_count : Int
+
+pub let alg_graphviz_dot_dot_edge_target_operator_feature_id : Int
+
+pub let alg_graphviz_dot_dot_edge_target_target_subgraph_feature_id : Int
+
+pub let alg_graphviz_dot_dot_edge_target_targetnode_feature_id : Int
+
+pub let alg_graphviz_dot_dot_ename : String
+
+pub let alg_graphviz_dot_dot_ens_prefix : String
+
+pub let alg_graphviz_dot_dot_ens_uri : String
+
+pub let alg_graphviz_dot_dot_graph_classifier_id : Int
+
+pub let alg_graphviz_dot_dot_graph_feature_count : Int
+
+pub let alg_graphviz_dot_dot_graph_name_feature_id : Int
+
+pub let alg_graphviz_dot_dot_graph_statements_feature_id : Int
+
+pub let alg_graphviz_dot_dot_graph_strict_feature_id : Int
+
+pub let alg_graphviz_dot_dot_graph_type_classifier_id : Int
+
+pub let alg_graphviz_dot_dot_graph_type_feature_id : Int
+
+pub let alg_graphviz_dot_dot_graphviz_model_classifier_id : Int
+
+pub let alg_graphviz_dot_dot_graphviz_model_feature_count : Int
+
+pub let alg_graphviz_dot_dot_graphviz_model_graphs_feature_id : Int
+
+pub let alg_graphviz_dot_dot_node_classifier_id : Int
+
+pub let alg_graphviz_dot_dot_node_feature_count : Int
+
+pub let alg_graphviz_dot_dot_node_name_feature_id : Int
+
+pub let alg_graphviz_dot_dot_node_port_feature_id : Int
+
+pub let alg_graphviz_dot_dot_node_statement_attributes_feature_id : Int
+
+pub let alg_graphviz_dot_dot_node_statement_classifier_id : Int
+
+pub let alg_graphviz_dot_dot_node_statement_feature_count : Int
+
+pub let alg_graphviz_dot_dot_node_statement_node_feature_id : Int
+
+pub let alg_graphviz_dot_dot_port_classifier_id : Int
+
+pub let alg_graphviz_dot_dot_port_compass_pt_feature_id : Int
+
+pub let alg_graphviz_dot_dot_port_feature_count : Int
+
+pub let alg_graphviz_dot_dot_port_name_feature_id : Int
+
+pub let alg_graphviz_dot_dot_statement_classifier_id : Int
+
+pub let alg_graphviz_dot_dot_statement_feature_count : Int
+
+pub let alg_graphviz_dot_dot_subgraph_classifier_id : Int
+
+pub let alg_graphviz_dot_dot_subgraph_feature_count : Int
+
+pub let alg_graphviz_dot_dot_subgraph_name_feature_id : Int
+
+pub let alg_graphviz_dot_dot_subgraph_statements_feature_id : Int
+
+pub fn command_parse(String) -> Command
+
+pub fn command_to_string(Command) -> String
+
+pub let dot_attr_boundingbox : String
+
+pub let dot_attr_comment : String
+
+pub let dot_attr_compound : String
+
+pub let dot_attr_concentrate : String
+
+pub let dot_attr_crossmin_limit : String
+
+pub let dot_attr_damping : String
+
+pub let dot_attr_edgedir : String
+
+pub let dot_attr_edgelen : String
+
+pub let dot_attr_epsilon : String
+
+pub let dot_attr_fixedsize : String
+
+pub let dot_attr_fontname : String
+
+pub let dot_attr_fontsize : String
+
+pub let dot_attr_headlabel : String
+
+pub let dot_attr_headlp : String
+
+pub let dot_attr_height : String
+
+pub let dot_attr_label : String
+
+pub let dot_attr_labelangle : String
+
+pub let dot_attr_labeldistance : String
+
+pub let dot_attr_labelpos : String
+
+pub let dot_attr_layout : String
+
+pub let dot_attr_lhead : String
+
+pub let dot_attr_ltail : String
+
+pub let dot_attr_margin : String
+
+pub let dot_attr_maxiter : String
+
+pub let dot_attr_mindist : String
+
+pub let dot_attr_neato_model : String
+
+pub let dot_attr_nodesep : String
+
+pub let dot_attr_overlap : String
+
+pub let dot_attr_pack : String
+
+pub let dot_attr_pad : String
+
+pub let dot_attr_pos : String
+
+pub let dot_attr_rankdir : String
+
+pub let dot_attr_ranksep : String
+
+pub let dot_attr_ratio : String
+
+pub let dot_attr_sep : String
+
+pub let dot_attr_shape : String
+
+pub let dot_attr_simplex_limit : String
+
+pub let dot_attr_splines : String
+
+pub let dot_attr_spring_constant : String
+
+pub let dot_attr_start : String
+
+pub let dot_attr_style : String
+
+pub let dot_attr_taillabel : String
+
+pub let dot_attr_taillp : String
+
+pub let dot_attr_weight : String
+
+pub let dot_attr_width : String
+
+pub fn dot_attribute_type_edge() -> DotAttributeType
+
+pub fn dot_attribute_type_from_int(Int) -> DotAttributeType?
+
+pub fn dot_attribute_type_from_name(String) -> DotAttributeType?
+
+pub fn dot_attribute_type_from_string(String) -> DotAttributeType?
+
+pub fn dot_attribute_type_graph() -> DotAttributeType
+
+pub fn dot_attribute_type_literal(DotAttributeType) -> String
+
+pub fn dot_attribute_type_name(DotAttributeType) -> String
+
+pub fn dot_attribute_type_node() -> DotAttributeType
+
+pub fn dot_attribute_type_to_string(DotAttributeType) -> String
+
+pub fn dot_attribute_type_value(DotAttributeType) -> Int
+
+pub fn dot_create_attribute() -> DotAttribute
+
+pub fn dot_create_attribute_statement() -> DotAttributeStatement
+
+pub fn dot_create_edge_statement() -> DotEdgeStatement
+
+pub fn dot_create_edge_target() -> DotEdgeTarget
+
+pub fn dot_create_graph() -> DotGraph
+
+pub fn dot_create_graphviz_model() -> DotGraphvizModel
+
+pub fn dot_create_node() -> DotNode
+
+pub fn dot_create_node_statement() -> DotNodeStatement
+
+pub fn dot_create_port() -> DotPort
+
+pub fn dot_create_statement() -> DotStatement
+
+pub fn dot_create_subgraph() -> DotSubgraph
+
+pub fn dot_edge_operator_directed() -> DotEdgeOperator
+
+pub fn dot_edge_operator_from_int(Int) -> DotEdgeOperator?
+
+pub fn dot_edge_operator_from_name(String) -> DotEdgeOperator?
+
+pub fn dot_edge_operator_from_string(String) -> DotEdgeOperator?
+
+pub fn dot_edge_operator_literal(DotEdgeOperator) -> String
+
+pub fn dot_edge_operator_name(DotEdgeOperator) -> String
+
+pub fn dot_edge_operator_to_string(DotEdgeOperator) -> String
+
+pub fn dot_edge_operator_undirected() -> DotEdgeOperator
+
+pub fn dot_edge_operator_value(DotEdgeOperator) -> Int
+
+pub let dot_exporter_adapt_port_positions : @graph.IProperty[Bool]
+
+pub let dot_exporter_cluster_dummy : @graph.IProperty[String]
+
+pub let dot_exporter_command : @graph.IProperty[Command]
+
+pub fn dot_exporter_create_attribute(String, String) -> DotAttribute
+
+pub fn dot_exporter_create_attribute_double(String, Double) -> DotAttribute
+
+pub fn dot_exporter_create_attribute_float(String, Float) -> DotAttribute
+
+pub fn dot_exporter_create_attribute_int(String, Int) -> DotAttribute
+
+pub fn dot_exporter_create_attribute_map(Array[DotAttribute]) -> Map[String, String]
+
+pub fn dot_exporter_create_string(String) -> String
+
+pub let dot_exporter_def_spacing_large : Double
+
+pub let dot_exporter_def_spacing_small : Double
+
+pub let dot_exporter_def_spacing_xlarge : Double
+
+pub let dot_exporter_dpi : Float
+
+pub fn dot_exporter_get_edge_id(Int, DotTransformationData[Int, DotGraphvizModel]) -> String
+
+pub fn dot_exporter_get_node_id(Int, DotExporterNodeType, DotTransformationData[Int, DotGraphvizModel]) -> String
+
+pub let dot_exporter_graph_elems : @graph.IProperty[Map[String, DotGraphElement]]
+
+pub let dot_exporter_hierarchy : @graph.IProperty[Bool]
+
+pub fn dot_exporter_is_inside_graph(Int, Int) -> Bool
+
+pub let dot_exporter_next_edge_id : @graph.IProperty[Int]
+
+pub let dot_exporter_next_node_id : @graph.IProperty[Int]
+
+pub fn dot_exporter_node_type_cluster() -> DotExporterNodeType
+
+pub fn dot_exporter_node_type_dummy() -> DotExporterNodeType
+
+pub fn dot_exporter_node_type_node() -> DotExporterNodeType
+
+pub let dot_exporter_option_edge_labels_placement : String
+
+pub let dot_exporter_option_edge_routing : String
+
+pub let dot_exporter_option_font_name : String
+
+pub let dot_exporter_option_font_size : String
+
+pub fn dot_exporter_parse_spline_points(String, Array[@core.KVectorChain], @core.KVector) -> @core.Pair[@core.KVector, @core.KVector]
+
+pub fn dot_exporter_set_edge_labels(Int, Array[DotAttribute], Bool) -> Unit
+
+pub fn dot_exporter_set_general_edge_attributes(Array[DotStatement]) -> Array[DotAttribute]
+
+pub fn dot_exporter_set_general_node_attributes(Array[DotStatement]) -> Array[DotAttribute]
+
+pub let dot_exporter_transform_edge_layout : @graph.IProperty[Bool]
+
+pub let dot_exporter_transform_node_labels : @graph.IProperty[Bool]
+
+pub let dot_exporter_transform_node_layout : @graph.IProperty[Bool]
+
+pub let dot_exporter_use_edge_ids : @graph.IProperty[Bool]
+
+pub let dot_exporter_use_splines : @graph.IProperty[Bool]
+
+pub fn dot_factory_impl_init() -> DotFactory
+
+pub let dot_factory_instance : DotFactory
+
+pub fn dot_graph_element_as_edge(DotGraphElement) -> Int?
+
+pub fn dot_graph_element_as_node(DotGraphElement) -> Int?
+
+pub fn dot_graph_element_edge(Int) -> DotGraphElement
+
+pub fn dot_graph_element_label(Int) -> DotGraphElement
+
+pub fn dot_graph_element_node(Int) -> DotGraphElement
+
+pub fn dot_graph_element_port(Int) -> DotGraphElement
+
+pub fn dot_graph_type_digraph() -> DotGraphType
+
+pub fn dot_graph_type_from_int(Int) -> DotGraphType?
+
+pub fn dot_graph_type_from_name(String) -> DotGraphType?
+
+pub fn dot_graph_type_from_string(String) -> DotGraphType?
+
+pub fn dot_graph_type_graph() -> DotGraphType
+
+pub fn dot_graph_type_literal(DotGraphType) -> String
+
+pub fn dot_graph_type_name(DotGraphType) -> String
+
+pub fn dot_graph_type_to_string(DotGraphType) -> String
+
+pub fn dot_graph_type_value(DotGraphType) -> Int
+
+pub fn dot_package_id() -> String
+
+pub fn dot_package_impl_init() -> String
+
+pub let dot_package_instance : String
+
+pub fn dot_statement_attribute(DotAttribute) -> DotStatement
+
+pub fn dot_statement_attribute_statement(DotAttributeStatement) -> DotStatement
+
+pub fn dot_statement_base() -> DotStatement
+
+pub fn dot_statement_edge_statement(DotEdgeStatement) -> DotStatement
+
+pub fn dot_statement_node_statement(DotNodeStatement) -> DotStatement
+
+pub fn dot_statement_subgraph(DotSubgraph) -> DotStatement
+
+pub fn dot_switch_target_attribute(DotAttribute) -> DotSwitchTarget
+
+pub fn dot_switch_target_attribute_statement(DotAttributeStatement) -> DotSwitchTarget
+
+pub fn dot_switch_target_edge_statement(DotEdgeStatement) -> DotSwitchTarget
+
+pub fn dot_switch_target_edge_target(DotEdgeTarget) -> DotSwitchTarget
+
+pub fn dot_switch_target_graph(DotGraph) -> DotSwitchTarget
+
+pub fn dot_switch_target_graphviz_model(DotGraphvizModel) -> DotSwitchTarget
+
+pub fn dot_switch_target_node(DotNode) -> DotSwitchTarget
+
+pub fn dot_switch_target_node_statement(DotNodeStatement) -> DotSwitchTarget
+
+pub fn dot_switch_target_port(DotPort) -> DotSwitchTarget
+
+pub fn dot_switch_target_statement(DotStatement) -> DotSwitchTarget
+
+pub fn dot_switch_target_subgraph(DotSubgraph) -> DotSwitchTarget
+
+pub fn graphviz_dot_activator_exception_message(GraphvizDotActivatorException) -> String
+
+pub fn graphviz_dot_activator_get_instance() -> GraphvizDotActivator?
+
+pub fn graphviz_dot_activator_reset_for_test() -> Unit
+
+pub let graphviz_dot_antlr_token_file_content : String
+
+pub let graphviz_dot_antlr_token_file_path : String
+
+pub let graphviz_dot_default_file_extension : String
+
+pub let graphviz_dot_default_language_name : String
+
+pub let graphviz_dot_default_serializer_class_name : String
+
+pub let graphviz_dot_epackage_value : String
+
+pub fn graphviz_dot_executable_extension_factory_exception_message(GraphvizDotExecutableExtensionFactoryException) -> String
+
+pub let graphviz_dot_executable_extension_factory_guicekey : String
+
+pub let graphviz_dot_file_extension : String
+
+pub let graphviz_dot_grammar_name : String
+
+pub fn graphviz_dot_initialization_data_map(Map[String, String]) -> GraphvizDotInitializationData
+
+pub fn graphviz_dot_initialization_data_string(String) -> GraphvizDotInitializationData
+
+pub let graphviz_dot_language_name : String
+
+pub let graphviz_dot_lexer_rule_any_other : Int
+
+pub let graphviz_dot_lexer_rule_float : Int
+
+pub let graphviz_dot_lexer_rule_id : Int
+
+pub let graphviz_dot_lexer_rule_int : Int
+
+pub let graphviz_dot_lexer_rule_ml_comment : Int
+
+pub let graphviz_dot_lexer_rule_prec_line : Int
+
+pub let graphviz_dot_lexer_rule_sl_comment : Int
+
+pub let graphviz_dot_lexer_rule_string : Int
+
+pub let graphviz_dot_lexer_rule_ws : Int
+
+pub let graphviz_dot_lexer_token_names : Array[String]
+
+pub let graphviz_dot_ns_uri : String
+
+pub fn graphviz_dot_object_executable_extension(GraphvizDotExecutableExtension) -> GraphvizDotObject
+
+pub fn graphviz_dot_object_serializer(GraphvizDotSerializer) -> GraphvizDotObject
+
+pub fn graphviz_dot_object_tag(GraphvizDotObject) -> String
+
+pub let graphviz_dot_plugin_id : String
+
+pub fn graphviz_dot_registered_epackage(String) -> String?
+
+pub fn graphviz_dot_registered_resource_factory(String) -> String?
+
+pub fn graphviz_dot_registered_resource_service_provider(String) -> String?
+
+pub fn graphviz_dot_reset_registries_for_test() -> Unit
+
+pub let graphviz_dot_resource_factory_value : String
+
+pub let graphviz_dot_resource_service_provider_value : String
+
+pub let graphviz_dot_serializer_class_name : String
+
+pub let graphviz_dot_serializer_max_line_length : Int
+
+pub fn graphviz_dot_standalone_setup_do_setup() -> GraphvizDotInjector
+
+pub let graphviz_dot_status_error : Int
+
+pub fn neato_model_default() -> NeatoModel
+
+pub fn neato_model_literal(NeatoModel) -> String
+
+pub fn neato_model_parse(String) -> NeatoModel raise NeatoModelException
+
+pub fn neato_model_to_string(NeatoModel) -> String
+
+pub fn new_abstract_graphviz_dot_runtime_module(properties? : Map[String, String]) -> AbstractGraphvizDotRuntimeModule
+
+pub fn new_abstract_graphviz_dot_semantic_sequencer(grammar_access? : GraphvizDotGrammarAccess) -> AbstractGraphvizDotSemanticSequencer
+
+pub fn new_abstract_graphviz_dot_syntactic_sequencer(grammar_access? : GraphvizDotGrammarAccess) -> AbstractGraphvizDotSyntacticSequencer
+
+pub fn new_dot_adapter_factory() -> DotAdapterFactory
+
+pub fn new_dot_attribute_impl() -> DotAttribute
+
+pub fn new_dot_attribute_statement_impl() -> DotAttributeStatement
+
+pub fn new_dot_edge_statement_impl() -> DotEdgeStatement
+
+pub fn new_dot_edge_target_impl() -> DotEdgeTarget
+
+pub fn new_dot_exporter() -> DotExporter
+
+pub fn new_dot_factory() -> DotFactory
+
+pub fn new_dot_factory_impl() -> DotFactory
+
+pub fn new_dot_graph_impl() -> DotGraph
+
+pub fn new_dot_graphviz_model_impl() -> DotGraphvizModel
+
+pub fn new_dot_importer() -> DotImporter
+
+pub fn new_dot_node_impl() -> DotNode
+
+pub fn new_dot_node_statement_impl() -> DotNodeStatement
+
+pub fn new_dot_package_impl() -> String
+
+pub fn new_dot_port_impl() -> DotPort
+
+pub fn[R] new_dot_resource_set_provider(() -> R) -> DotResourceSetProvider[R]
+
+pub fn new_dot_statement_impl() -> DotStatement
+
+pub fn new_dot_subgraph_impl() -> DotSubgraph
+
+pub fn[T] new_dot_switch(case_graphviz_model? : (DotGraphvizModel) -> T?, case_graph? : (DotGraph) -> T?, case_statement? : (DotStatement) -> T?, case_attribute? : (DotAttribute) -> T?, case_node_statement? : (DotNodeStatement) -> T?, case_node? : (DotNode) -> T?, case_edge_statement? : (DotEdgeStatement) -> T?, case_edge_target? : (DotEdgeTarget) -> T?, case_attribute_statement? : (DotAttributeStatement) -> T?, case_subgraph? : (DotSubgraph) -> T?, case_port? : (DotPort) -> T?, default_case? : () -> T?) -> DotSwitch[T]
+
+pub fn[S, T] new_dot_transformation_data() -> DotTransformationData[S, T]
+
+pub fn new_graphviz_dot_activator() -> GraphvizDotActivator
+
+pub fn new_graphviz_dot_antlr_token_file_provider() -> GraphvizDotAntlrTokenFileProvider
+
+pub fn new_graphviz_dot_bundle(symbolic_name? : String) -> GraphvizDotBundle
+
+pub fn new_graphviz_dot_configuration_element(contributor? : String?) -> GraphvizDotConfigurationElement
+
+pub fn new_graphviz_dot_core_exception(GraphvizDotStatus) -> GraphvizDotCoreException
+
+pub fn new_graphviz_dot_executable_extension(set_initialization_data_fn? : (GraphvizDotConfigurationElement?, String?, GraphvizDotInitializationData?) -> Unit) -> GraphvizDotExecutableExtension
+
+pub fn new_graphviz_dot_executable_extension_factory() -> GraphvizDotExecutableExtensionFactory
+
+pub fn new_graphviz_dot_formatter(grammar_access? : GraphvizDotGrammarAccess) -> GraphvizDotFormatter
+
+pub fn new_graphviz_dot_formatter2(formatter? : GraphvizDotFormatter) -> (GraphvizDotFormatterRequest) -> String
+
+pub fn new_graphviz_dot_formatter_request() -> GraphvizDotFormatterRequest
+
+pub fn new_graphviz_dot_grammar_access() -> GraphvizDotGrammarAccess
+
+pub fn new_graphviz_dot_injector() -> GraphvizDotInjector
+
+pub fn new_graphviz_dot_lex_token(Int, String, String) -> GraphvizDotLexToken
+
+pub fn new_graphviz_dot_parser(grammar_access? : GraphvizDotGrammarAccess) -> GraphvizDotParser
+
+pub fn new_graphviz_dot_runtime_module(serializer_provider? : () -> GraphvizDotSerializer) -> GraphvizDotRuntimeModule
+
+pub fn new_graphviz_dot_save_options(formatting? : Bool) -> GraphvizDotSaveOptions
+
+pub fn new_graphviz_dot_semantic_sequencer() -> GraphvizDotSemanticSequencer
+
+pub fn new_graphviz_dot_serializer(formatter2_provider? : () -> (GraphvizDotFormatterRequest) -> String, formatter_request_provider? : () -> GraphvizDotFormatterRequest) -> GraphvizDotSerializer
+
+pub fn new_graphviz_dot_standalone_setup() -> GraphvizDotStandaloneSetup
+
+pub fn new_graphviz_dot_standalone_setup_generated() -> GraphvizDotStandaloneSetupGenerated
+
+pub fn new_graphviz_dot_status(Int, String, String) -> GraphvizDotStatus
+
+pub fn new_graphviz_dot_syntactic_sequencer() -> GraphvizDotSyntacticSequencer
+
+pub fn new_internal_graphviz_dot_lexer(String) -> InternalGraphvizDotLexer
+
+pub fn new_internal_graphviz_dot_parser(Array[GraphvizDotLexToken], grammar_access? : GraphvizDotGrammarAccess) -> InternalGraphvizDotParser
+
+pub fn overlap_mode_default() -> OverlapMode
+
+pub fn overlap_mode_literal(OverlapMode) -> String
+
+pub fn overlap_mode_parse(String) -> OverlapMode raise OverlapModeException
+
+pub fn overlap_mode_to_string(OverlapMode) -> String
+
+// Errors
+pub suberror DotExporterException {
+  DotExporterException(String)
+}
+pub impl Show for DotExporterException
+pub impl ToJson for DotExporterException
+
+pub suberror GraphvizDotActivatorException {
+  IllegalArgumentException(String)
+}
+pub impl Show for GraphvizDotActivatorException
+pub impl ToJson for GraphvizDotActivatorException
+
+pub suberror GraphvizDotExecutableExtensionFactoryException {
+  IllegalArgumentException(String)
+}
+pub impl Show for GraphvizDotExecutableExtensionFactoryException
+pub impl ToJson for GraphvizDotExecutableExtensionFactoryException
+
+pub(all) suberror NeatoModelException {
+  IllegalArgumentException(String)
+}
+pub impl Show for NeatoModelException
+pub impl ToJson for NeatoModelException
+
+pub(all) suberror OverlapModeException {
+  IllegalArgumentException(String)
+}
+pub impl Show for OverlapModeException
+pub impl ToJson for OverlapModeException
+
+// Types and methods
+pub struct AbstractGraphvizDotRuntimeModule {
+  mut properties : Map[String, String]
+}
+pub fn AbstractGraphvizDotRuntimeModule::bind_class_loader_to_instance(Self) -> String
+pub fn AbstractGraphvizDotRuntimeModule::bind_iantlr_token_file_provider(Self) -> String
+pub fn AbstractGraphvizDotRuntimeModule::bind_iformatter2(Self) -> String
+pub fn AbstractGraphvizDotRuntimeModule::bind_igrammar_access(Self) -> String
+pub fn AbstractGraphvizDotRuntimeModule::bind_iparser(Self) -> String
+pub fn AbstractGraphvizDotRuntimeModule::bind_isemantic_sequencer(Self) -> String
+pub fn AbstractGraphvizDotRuntimeModule::bind_iserializer(Self) -> String
+pub fn AbstractGraphvizDotRuntimeModule::bind_isyntactic_sequencer(Self) -> String
+pub fn AbstractGraphvizDotRuntimeModule::bind_itoken_def_provider(Self) -> String
+pub fn AbstractGraphvizDotRuntimeModule::bind_itoken_to_string_converter(Self) -> String
+pub fn AbstractGraphvizDotRuntimeModule::bind_lexer(Self) -> String
+pub fn AbstractGraphvizDotRuntimeModule::configure(Self, Map[String, String]) -> Unit
+pub fn AbstractGraphvizDotRuntimeModule::configure_file_extensions(Self) -> String
+pub fn AbstractGraphvizDotRuntimeModule::configure_formatter_preferences(Self) -> String
+pub fn AbstractGraphvizDotRuntimeModule::configure_language_name(Self) -> String
+pub fn AbstractGraphvizDotRuntimeModule::configure_runtime_lexer(Self) -> String
+pub fn AbstractGraphvizDotRuntimeModule::provide_internal_graphviz_dot_lexer(Self) -> String
+
+pub struct AbstractGraphvizDotSemanticSequencer {
+  grammar_access : GraphvizDotGrammarAccess
+  marker : Unit
+}
+pub fn AbstractGraphvizDotSemanticSequencer::get_grammar_access(Self) -> GraphvizDotGrammarAccess
+pub fn[T] AbstractGraphvizDotSemanticSequencer::sequence(Self, String, T) -> T
+pub fn[T] AbstractGraphvizDotSemanticSequencer::sequence_attribute(Self, String, T) -> T
+pub fn[T] AbstractGraphvizDotSemanticSequencer::sequence_attribute_statement(Self, String, T) -> T
+pub fn[T] AbstractGraphvizDotSemanticSequencer::sequence_edge_statement(Self, String, T) -> T
+pub fn[T] AbstractGraphvizDotSemanticSequencer::sequence_edge_target(Self, String, T) -> T
+pub fn[T] AbstractGraphvizDotSemanticSequencer::sequence_graph(Self, String, T) -> T
+pub fn[T] AbstractGraphvizDotSemanticSequencer::sequence_graphviz_model(Self, String, T) -> T
+pub fn[T] AbstractGraphvizDotSemanticSequencer::sequence_list_attribute(Self, String, T) -> T
+pub fn[T] AbstractGraphvizDotSemanticSequencer::sequence_node(Self, String, T) -> T
+pub fn[T] AbstractGraphvizDotSemanticSequencer::sequence_node_statement(Self, String, T) -> T
+pub fn[T] AbstractGraphvizDotSemanticSequencer::sequence_port(Self, String, T) -> T
+pub fn[T] AbstractGraphvizDotSemanticSequencer::sequence_subgraph(Self, String, T) -> T
+
+pub struct AbstractGraphvizDotSyntacticSequencer {
+  grammar_access : GraphvizDotGrammarAccess
+  match_attribute_statement_comma_keyword_2_1_0_q : String
+  match_edge_statement_comma_keyword_2_1_1_0_q : String
+  match_edge_statement___left_square_bracket_keyword_2_0_right_square_bracket_keyword_2_2__q : String
+  match_node_statement_comma_keyword_1_1_1_0_q : String
+  match_node_statement___left_square_bracket_keyword_1_0_right_square_bracket_keyword_1_2__q : String
+  match_statement_semicolon_keyword_1_q : String
+  match_subgraph_subgraph_keyword_1_0_q : String
+}
+pub fn[A, B, C] AbstractGraphvizDotSyntacticSequencer::emit_attribute_statement_comma_keyword_2_1_0_q(Self, A, B, Array[C]) -> String
+pub fn[A, B, C] AbstractGraphvizDotSyntacticSequencer::emit_edge_statement___left_square_bracket_keyword_2_0_right_square_bracket_keyword_2_2__q(Self, A, B, Array[C]) -> String
+pub fn[A, B, C] AbstractGraphvizDotSyntacticSequencer::emit_edge_statement_comma_keyword_2_1_1_0_q(Self, A, B, Array[C]) -> String
+pub fn[A, B, C] AbstractGraphvizDotSyntacticSequencer::emit_node_statement___left_square_bracket_keyword_1_0_right_square_bracket_keyword_1_2__q(Self, A, B, Array[C]) -> String
+pub fn[A, B, C] AbstractGraphvizDotSyntacticSequencer::emit_node_statement_comma_keyword_1_1_1_0_q(Self, A, B, Array[C]) -> String
+pub fn[A, B, C] AbstractGraphvizDotSyntacticSequencer::emit_statement_semicolon_keyword_1_q(Self, A, B, Array[C]) -> String
+pub fn[A, B, C] AbstractGraphvizDotSyntacticSequencer::emit_subgraph_subgraph_keyword_1_0_q(Self, A, B, Array[C]) -> String
+pub fn AbstractGraphvizDotSyntacticSequencer::emit_unassigned_tokens(Self, String, Array[String]) -> Array[String]
+pub fn AbstractGraphvizDotSyntacticSequencer::get_grammar_access(Self) -> GraphvizDotGrammarAccess
+pub fn AbstractGraphvizDotSyntacticSequencer::get_unassigned_rule_call_token(Self, String, String, String) -> String
+
+pub enum Command {
+  Invalid
+  Dot
+  Neato
+  Twopi
+  Fdp
+  Circo
+}
+
+pub struct DotAdapterFactory {
+  model_package : String
+}
+pub fn DotAdapterFactory::create_adapter(Self, DotSwitchTarget) -> Unit?
+pub fn DotAdapterFactory::create_attribute_adapter(Self) -> Unit?
+pub fn DotAdapterFactory::create_attribute_statement_adapter(Self) -> Unit?
+pub fn DotAdapterFactory::create_e_object_adapter(Self) -> Unit?
+pub fn DotAdapterFactory::create_edge_statement_adapter(Self) -> Unit?
+pub fn DotAdapterFactory::create_edge_target_adapter(Self) -> Unit?
+pub fn DotAdapterFactory::create_graph_adapter(Self) -> Unit?
+pub fn DotAdapterFactory::create_graphviz_model_adapter(Self) -> Unit?
+pub fn DotAdapterFactory::create_node_adapter(Self) -> Unit?
+pub fn DotAdapterFactory::create_node_statement_adapter(Self) -> Unit?
+pub fn DotAdapterFactory::create_port_adapter(Self) -> Unit?
+pub fn DotAdapterFactory::create_statement_adapter(Self) -> Unit?
+pub fn DotAdapterFactory::create_subgraph_adapter(Self) -> Unit?
+pub fn DotAdapterFactory::is_factory_for_type(Self, String) -> Bool
+
+#alias(DotAttributeImpl)
+pub struct DotAttribute {
+  mut name : String?
+  mut value : String?
+}
+pub fn DotAttribute::get_name(Self) -> String?
+pub fn DotAttribute::get_value(Self) -> String?
+pub fn DotAttribute::set_name(Self, String?) -> Unit
+pub fn DotAttribute::set_value(Self, String?) -> Unit
+
+#alias(DotAttributeStatementImpl)
+pub struct DotAttributeStatement {
+  mut type_ : DotAttributeType
+  attributes : Array[DotAttribute]
+}
+pub fn DotAttributeStatement::get_attributes(Self) -> Array[DotAttribute]
+pub fn DotAttributeStatement::get_type(Self) -> DotAttributeType
+pub fn DotAttributeStatement::set_type(Self, DotAttributeType?) -> Unit
+
+pub enum DotAttributeType {
+  DotAttributeTypeGraph
+  DotAttributeTypeNode
+  DotAttributeTypeEdge
+}
+
+pub enum DotEdgeOperator {
+  DotEdgeOperatorDirected
+  DotEdgeOperatorUndirected
+}
+
+#alias(DotEdgeStatementImpl)
+pub struct DotEdgeStatement {
+  mut source_node : DotNode?
+  edge_targets : Array[DotEdgeTarget]
+  attributes : Array[DotAttribute]
+}
+pub fn DotEdgeStatement::get_attributes(Self) -> Array[DotAttribute]
+pub fn DotEdgeStatement::get_edge_targets(Self) -> Array[DotEdgeTarget]
+pub fn DotEdgeStatement::get_source_node(Self) -> DotNode?
+pub fn DotEdgeStatement::set_source_node(Self, DotNode?) -> Unit
+
+#alias(DotEdgeTargetImpl)
+pub struct DotEdgeTarget {
+  mut operator : DotEdgeOperator
+  mut target_subgraph : DotSubgraph?
+  mut targetnode : DotNode?
+}
+pub fn DotEdgeTarget::get_operator(Self) -> DotEdgeOperator
+pub fn DotEdgeTarget::get_target_subgraph(Self) -> DotSubgraph?
+pub fn DotEdgeTarget::get_targetnode(Self) -> DotNode?
+pub fn DotEdgeTarget::set_operator(Self, DotEdgeOperator?) -> Unit
+pub fn DotEdgeTarget::set_target_subgraph(Self, DotSubgraph?) -> Unit
+pub fn DotEdgeTarget::set_targetnode(Self, DotNode?) -> Unit
+
+pub struct DotExporter {
+  _dummy : Unit
+}
+pub fn DotExporter::apply_edge_label_pos(Self, Int, String, @core.EdgeLabelPlacement, @core.KVector) -> Unit
+pub fn DotExporter::apply_edge_layout(Self, DotEdgeStatement, @core.KVector, DotTransformationData[Int, DotGraphvizModel]) -> Unit
+pub fn DotExporter::apply_layout(Self, Int, Array[DotStatement], @core.KVector, @core.Spacing, DotTransformationData[Int, DotGraphvizModel]) -> Unit
+pub fn DotExporter::apply_node_layout(Self, DotNodeStatement, @core.KVector, @core.Spacing, DotTransformationData[Int, DotGraphvizModel]) -> Unit
+pub fn DotExporter::is_inside_graph(Self, Int, Int) -> Bool
+pub fn DotExporter::set_edge_labels(Self, Int, Array[DotAttribute], Bool) -> Unit
+pub fn DotExporter::set_general_edge_attributes(Self, Array[DotStatement]) -> Array[DotAttribute]
+pub fn DotExporter::set_general_node_attributes(Self, Array[DotStatement]) -> Array[DotAttribute]
+pub fn DotExporter::set_graph_attributes(Self, Array[DotStatement], Int, DotTransformationData[Int, DotGraphvizModel]) -> Unit
+pub fn DotExporter::transfer_layout(Self, DotTransformationData[Int, DotGraphvizModel]) -> Unit
+pub fn DotExporter::transform(Self, DotTransformationData[Int, DotGraphvizModel]) -> Unit
+pub fn DotExporter::transform_edges(Self, Int, Array[DotStatement], DotTransformationData[Int, DotGraphvizModel]) -> Unit
+pub fn DotExporter::transform_nodes(Self, Int, Array[DotStatement], @core.KVector, DotTransformationData[Int, DotGraphvizModel]) -> Unit
+
+pub enum DotExporterNodeType {
+  DotExporterNodeTypeNode
+  DotExporterNodeTypeCluster
+  DotExporterNodeTypeDummy
+}
+
+#alias(DotFactoryImpl)
+pub struct DotFactory {
+  create_graphviz_model_fn : () -> DotGraphvizModel
+  create_graph_fn : () -> DotGraph
+  create_statement_fn : () -> DotStatement
+  create_attribute_fn : () -> DotAttribute
+  create_node_statement_fn : () -> DotNodeStatement
+  create_node_fn : () -> DotNode
+  create_edge_statement_fn : () -> DotEdgeStatement
+  create_edge_target_fn : () -> DotEdgeTarget
+  create_attribute_statement_fn : () -> DotAttributeStatement
+  create_subgraph_fn : () -> DotSubgraph
+  create_port_fn : () -> DotPort
+  get_dot_package_fn : () -> String
+}
+pub fn DotFactory::create_attribute(Self) -> DotAttribute
+pub fn DotFactory::create_attribute_statement(Self) -> DotAttributeStatement
+pub fn DotFactory::create_edge_statement(Self) -> DotEdgeStatement
+pub fn DotFactory::create_edge_target(Self) -> DotEdgeTarget
+pub fn DotFactory::create_graph(Self) -> DotGraph
+pub fn DotFactory::create_graphviz_model(Self) -> DotGraphvizModel
+pub fn DotFactory::create_node(Self) -> DotNode
+pub fn DotFactory::create_node_statement(Self) -> DotNodeStatement
+pub fn DotFactory::create_port(Self) -> DotPort
+pub fn DotFactory::create_statement(Self) -> DotStatement
+pub fn DotFactory::create_subgraph(Self) -> DotSubgraph
+pub fn DotFactory::get_dot_package(Self) -> String
+
+#alias(DotGraphImpl)
+pub struct DotGraph {
+  mut strict : Bool
+  mut type_ : DotGraphType
+  mut name : String?
+  statements : Array[DotStatement]
+}
+pub fn DotGraph::get_name(Self) -> String?
+pub fn DotGraph::get_statements(Self) -> Array[DotStatement]
+pub fn DotGraph::get_type(Self) -> DotGraphType
+pub fn DotGraph::is_strict(Self) -> Bool
+pub fn DotGraph::set_name(Self, String?) -> Unit
+pub fn DotGraph::set_strict(Self, Bool) -> Unit
+pub fn DotGraph::set_type(Self, DotGraphType?) -> Unit
+
+pub enum DotGraphElement {
+  DotGraphElementNode(Int)
+  DotGraphElementEdge(Int)
+  DotGraphElementPort(Int)
+  DotGraphElementLabel(Int)
+}
+
+pub enum DotGraphType {
+  DotGraphTypeGraph
+  DotGraphTypeDigraph
+}
+
+#alias(DotGraphvizModelImpl)
+pub struct DotGraphvizModel {
+  graphs : Array[DotGraph]
+}
+pub fn DotGraphvizModel::get_graphs(Self) -> Array[DotGraph]
+
+pub struct DotImporter {
+  mut node_id_map : Map[String, Int]
+  mut port_id_map : Map[String, Int]
+  node_statement_map : Map[Int, DotStatement]
+  edge_statement_map : Map[Int, DotEdgeStatement]
+  edge_statement_attached : Map[Int, Bool]
+  root_graph_map : Map[Int, DotGraph]
+}
+pub fn DotImporter::apply_layout_edge(Self, Int, @core.KVector, DotGraph) -> Unit
+pub fn DotImporter::apply_layout_node(Self, Int, @core.KVector, DotGraph) -> Unit
+pub fn DotImporter::transfer_layout(Self, DotTransformationData[DotGraphvizModel, Int]) -> Unit
+pub fn DotImporter::transform(Self, DotTransformationData[DotGraphvizModel, Int]) -> Unit
+pub fn DotImporter::transform_edge_statement(Self, DotEdgeStatement, Int, DotTransformationData[DotGraphvizModel, Int], DotImporterPropertyHolder) -> Unit
+pub fn DotImporter::transform_node_identifier(Self, String?, Int) -> Int
+pub fn DotImporter::transform_node_statement(Self, DotNodeStatement, Int, DotTransformationData[DotGraphvizModel, Int], DotImporterPropertyHolder) -> Unit
+pub fn DotImporter::transform_port_identifier(Self, String?, Int) -> Int
+pub fn DotImporter::transform_statements(Self, Array[DotStatement], Int, DotTransformationData[DotGraphvizModel, Int], DotImporterPropertyHolder, DotImporterPropertyHolder) -> Unit
+
+pub struct DotImporterPropertyHolder {
+  layout_options : Map[String, String]
+  mut def_width : Double?
+  mut def_height : Double?
+}
+
+#alias(DotNodeImpl)
+pub struct DotNode {
+  mut name : String?
+  mut port : DotPort?
+}
+pub fn DotNode::get_name(Self) -> String?
+pub fn DotNode::get_port(Self) -> DotPort?
+pub fn DotNode::set_name(Self, String?) -> Unit
+pub fn DotNode::set_port(Self, DotPort?) -> Unit
+
+#alias(DotNodeStatementImpl)
+pub struct DotNodeStatement {
+  mut node : DotNode?
+  attributes : Array[DotAttribute]
+}
+pub fn DotNodeStatement::get_attributes(Self) -> Array[DotAttribute]
+pub fn DotNodeStatement::get_node(Self) -> DotNode?
+pub fn DotNodeStatement::set_node(Self, DotNode?) -> Unit
+
+#alias(DotPortImpl)
+pub struct DotPort {
+  mut name : String?
+  mut compass_pt : String?
+}
+pub fn DotPort::get_compass_pt(Self) -> String?
+pub fn DotPort::get_name(Self) -> String?
+pub fn DotPort::set_compass_pt(Self, String?) -> Unit
+pub fn DotPort::set_name(Self, String?) -> Unit
+
+pub struct DotResourceSetProvider[R] {
+  resource_set_provider : () -> R
+}
+pub fn[R] DotResourceSetProvider::create_resource_set(Self[R]) -> R
+
+#alias(DotStatementImpl)
+pub enum DotStatement {
+  DotStatementBase
+  DotStatementAttribute(DotAttribute)
+  DotStatementNodeStatement(DotNodeStatement)
+  DotStatementEdgeStatement(DotEdgeStatement)
+  DotStatementAttributeStatement(DotAttributeStatement)
+  DotStatementSubgraph(DotSubgraph)
+}
+
+#alias(DotSubgraphImpl)
+pub struct DotSubgraph {
+  mut name : String?
+  statements : Array[DotStatement]
+}
+pub fn DotSubgraph::get_name(Self) -> String?
+pub fn DotSubgraph::get_statements(Self) -> Array[DotStatement]
+pub fn DotSubgraph::set_name(Self, String?) -> Unit
+
+pub struct DotSwitch[T] {
+  model_package : String
+  case_graphviz_model_fn : (DotGraphvizModel) -> T?
+  case_graph_fn : (DotGraph) -> T?
+  case_statement_fn : (DotStatement) -> T?
+  case_attribute_fn : (DotAttribute) -> T?
+  case_node_statement_fn : (DotNodeStatement) -> T?
+  case_node_fn : (DotNode) -> T?
+  case_edge_statement_fn : (DotEdgeStatement) -> T?
+  case_edge_target_fn : (DotEdgeTarget) -> T?
+  case_attribute_statement_fn : (DotAttributeStatement) -> T?
+  case_subgraph_fn : (DotSubgraph) -> T?
+  case_port_fn : (DotPort) -> T?
+  default_case_fn : () -> T?
+}
+pub fn[T] DotSwitch::do_switch(Self[T], DotSwitchTarget) -> T?
+pub fn[T] DotSwitch::is_switch_for(Self[T], String) -> Bool
+
+pub enum DotSwitchTarget {
+  DotGraphvizModelTarget(DotGraphvizModel)
+  DotGraphTarget(DotGraph)
+  DotStatementTarget(DotStatement)
+  DotAttributeTarget(DotAttribute)
+  DotNodeStatementTarget(DotNodeStatement)
+  DotNodeTarget(DotNode)
+  DotEdgeStatementTarget(DotEdgeStatement)
+  DotEdgeTargetTarget(DotEdgeTarget)
+  DotAttributeStatementTarget(DotAttributeStatement)
+  DotSubgraphTarget(DotSubgraph)
+  DotPortTarget(DotPort)
+}
+
+#alias(IDotTransformationData)
+pub struct DotTransformationData[S, T] {
+  mut source_graph : S?
+  target_graphs : Array[T]
+  log_messages : Array[String]
+  bool_properties : Map[String, Bool]
+  int_properties : Map[String, Int]
+  string_properties : Map[String, String]
+  command_properties : Map[String, Command]
+  graph_elem_map_properties : Map[String, Map[String, DotGraphElement]]
+}
+pub fn[S, T] DotTransformationData::get_bool_property(Self[S, T], @graph.IProperty[Bool]) -> Bool
+pub fn[S, T] DotTransformationData::get_command_property(Self[S, T], @graph.IProperty[Command]) -> Command
+pub fn[S, T] DotTransformationData::get_graph_elem_map_property(Self[S, T], @graph.IProperty[Map[String, DotGraphElement]]) -> Map[String, DotGraphElement]
+pub fn[S, T] DotTransformationData::get_int_property(Self[S, T], @graph.IProperty[Int]) -> Int
+pub fn[S, T] DotTransformationData::get_messages(Self[S, T]) -> Array[String]
+pub fn[S, T] DotTransformationData::get_source_graph(Self[S, T]) -> S?
+pub fn[S, T] DotTransformationData::get_string_property(Self[S, T], @graph.IProperty[String]) -> String
+pub fn[S, T] DotTransformationData::get_target_graphs(Self[S, T]) -> Array[T]
+pub fn[S, T] DotTransformationData::log(Self[S, T], String) -> Unit
+pub fn[S, T] DotTransformationData::set_bool_property(Self[S, T], @graph.IProperty[Bool], Bool) -> Unit
+pub fn[S, T] DotTransformationData::set_command_property(Self[S, T], @graph.IProperty[Command], Command) -> Unit
+pub fn[S, T] DotTransformationData::set_graph_elem_map_property(Self[S, T], @graph.IProperty[Map[String, DotGraphElement]], Map[String, DotGraphElement]) -> Unit
+pub fn[S, T] DotTransformationData::set_int_property(Self[S, T], @graph.IProperty[Int], Int) -> Unit
+pub fn[S, T] DotTransformationData::set_source_graph(Self[S, T], S) -> Unit
+pub fn[S, T] DotTransformationData::set_string_property(Self[S, T], @graph.IProperty[String], String) -> Unit
+
+pub struct GraphvizDotActivator {
+  injectors : Map[String, GraphvizDotInjector]
+  bundle : GraphvizDotBundle
+}
+pub fn GraphvizDotActivator::get_bundle(Self) -> GraphvizDotBundle
+pub fn GraphvizDotActivator::get_injector(Self, String) -> GraphvizDotInjector raise GraphvizDotActivatorException
+pub fn GraphvizDotActivator::get_runtime_module(Self, String) -> GraphvizDotRuntimeModule raise GraphvizDotActivatorException
+pub fn GraphvizDotActivator::injector_count(Self) -> Int
+pub fn GraphvizDotActivator::register_bundle_class(Self, String) -> Unit
+pub fn GraphvizDotActivator::register_injector_provider(Self, String, String, () -> GraphvizDotObject) -> Unit raise GraphvizDotActivatorException
+pub fn GraphvizDotActivator::start(Self) -> Unit
+pub fn GraphvizDotActivator::stop(Self) -> Unit
+
+pub struct GraphvizDotAntlrTokenFileProvider {
+  marker : Unit
+}
+pub fn GraphvizDotAntlrTokenFileProvider::get_antlr_token_file(Self) -> String
+pub fn GraphvizDotAntlrTokenFileProvider::get_antlr_token_file_path(Self) -> String
+
+pub struct GraphvizDotBundle {
+  symbolic_name : String
+  class_registry : Map[String, Bool]
+}
+pub fn GraphvizDotBundle::class_count(Self) -> Int
+pub fn GraphvizDotBundle::get_symbolic_name(Self) -> String
+pub fn GraphvizDotBundle::load_class(Self, String) -> Bool
+pub fn GraphvizDotBundle::register_class(Self, String) -> Unit
+
+pub struct GraphvizDotConfigurationElement {
+  mut contributor : String?
+}
+pub fn GraphvizDotConfigurationElement::get_contributor(Self) -> String?
+pub fn GraphvizDotConfigurationElement::set_contributor(Self, String?) -> Unit
+
+pub struct GraphvizDotCoreException {
+  status : GraphvizDotStatus
+}
+pub fn GraphvizDotCoreException::get_status(Self) -> GraphvizDotStatus
+
+pub struct GraphvizDotExecutableExtension {
+  set_initialization_data_fn : (GraphvizDotConfigurationElement?, String?, GraphvizDotInitializationData?) -> Unit
+}
+pub fn GraphvizDotExecutableExtension::set_initialization_data(Self, GraphvizDotConfigurationElement?, String?, GraphvizDotInitializationData?) -> Unit
+
+pub struct GraphvizDotExecutableExtensionFactory {
+  mut clazz_name : String?
+  mut config : GraphvizDotConfigurationElement?
+}
+pub fn GraphvizDotExecutableExtensionFactory::create(Self) -> Result[GraphvizDotObject, GraphvizDotCoreException]
+pub fn GraphvizDotExecutableExtensionFactory::set_initialization_data(Self, GraphvizDotConfigurationElement?, String?, GraphvizDotInitializationData?) -> Unit raise GraphvizDotExecutableExtensionFactoryException
+
+pub struct GraphvizDotFormatter {
+  grammar_access : GraphvizDotGrammarAccess
+}
+pub fn GraphvizDotFormatter::format_request(Self, GraphvizDotFormatterRequest) -> String
+pub fn GraphvizDotFormatter::format_text(Self, String) -> String
+pub fn GraphvizDotFormatter::get_grammar_access(Self) -> GraphvizDotGrammarAccess
+
+pub struct GraphvizDotFormatterRequest {
+  mut max_line_width : Int
+  mut format_undefined_hidden_regions_only : Bool
+  mut text : String
+}
+pub fn GraphvizDotFormatterRequest::get_max_line_width(Self) -> Int
+pub fn GraphvizDotFormatterRequest::get_text(Self) -> String
+pub fn GraphvizDotFormatterRequest::is_format_undefined_hidden_regions_only(Self) -> Bool
+pub fn GraphvizDotFormatterRequest::set_format_undefined_hidden_regions_only(Self, Bool) -> Unit
+pub fn GraphvizDotFormatterRequest::set_max_line_width(Self, Int) -> Unit
+pub fn GraphvizDotFormatterRequest::set_text(Self, String) -> Unit
+
+pub struct GraphvizDotGrammarAccess {
+  grammar : String
+  rules : Map[String, String]
+}
+pub fn GraphvizDotGrammarAccess::get_attribute_statement_rule(Self) -> String
+pub fn GraphvizDotGrammarAccess::get_edge_statement_rule(Self) -> String
+pub fn GraphvizDotGrammarAccess::get_grammar(Self) -> String
+pub fn GraphvizDotGrammarAccess::get_graph_rule(Self) -> String
+pub fn GraphvizDotGrammarAccess::get_graphviz_model_rule(Self) -> String
+pub fn GraphvizDotGrammarAccess::get_node_statement_rule(Self) -> String
+pub fn GraphvizDotGrammarAccess::get_rule(Self, String) -> String?
+pub fn GraphvizDotGrammarAccess::get_rule_names(Self) -> Array[String]
+pub fn GraphvizDotGrammarAccess::get_statement_rule(Self) -> String
+pub fn GraphvizDotGrammarAccess::get_subgraph_rule(Self) -> String
+
+pub enum GraphvizDotInitializationData {
+  GraphvizDotInitializationDataString(String)
+  GraphvizDotInitializationDataMap(Map[String, String])
+}
+
+pub struct GraphvizDotInjector {
+  providers : Map[String, () -> GraphvizDotObject]
+}
+pub fn GraphvizDotInjector::get_instance(Self, String) -> GraphvizDotObject?
+pub fn GraphvizDotInjector::provider_class_names(Self) -> Array[String]
+pub fn GraphvizDotInjector::provider_count(Self) -> Int
+pub fn GraphvizDotInjector::register_provider(Self, String, () -> GraphvizDotObject) -> Unit
+
+pub struct GraphvizDotLexToken {
+  token_type : Int
+  token_name : String
+  lexeme : String
+}
+
+pub enum GraphvizDotObject {
+  GraphvizDotObjectSerializer(GraphvizDotSerializer)
+  GraphvizDotObjectExecutableExtension(GraphvizDotExecutableExtension)
+}
+
+pub struct GraphvizDotParser {
+  mut grammar_access : GraphvizDotGrammarAccess
+  mut initial_hidden_tokens : Array[String]
+}
+pub fn GraphvizDotParser::create_parser(Self, Array[GraphvizDotLexToken]) -> InternalGraphvizDotParser
+pub fn GraphvizDotParser::get_default_rule_name(Self) -> String
+pub fn GraphvizDotParser::get_grammar_access(Self) -> GraphvizDotGrammarAccess
+pub fn GraphvizDotParser::get_initial_hidden_tokens(Self) -> Array[String]
+pub fn GraphvizDotParser::parse(Self, String) -> DotGraphvizModel
+pub fn GraphvizDotParser::set_grammar_access(Self, GraphvizDotGrammarAccess) -> Unit
+pub fn GraphvizDotParser::set_initial_hidden_tokens(Self, Array[String]) -> Unit
+
+pub struct GraphvizDotRuntimeModule {
+  serializer_provider : () -> GraphvizDotSerializer
+  injector_providers : Map[String, () -> GraphvizDotObject]
+}
+pub fn GraphvizDotRuntimeModule::bind_iserializer(Self) -> String
+pub fn GraphvizDotRuntimeModule::create_injector(Self) -> GraphvizDotInjector
+pub fn GraphvizDotRuntimeModule::register_injector_provider(Self, String, () -> GraphvizDotObject) -> Unit
+
+pub struct GraphvizDotSaveOptions {
+  formatting : Bool
+}
+pub fn GraphvizDotSaveOptions::is_formatting(Self) -> Bool
+
+pub struct GraphvizDotSemanticSequencer {
+  base : AbstractGraphvizDotSemanticSequencer
+}
+pub fn[T] GraphvizDotSemanticSequencer::sequence(Self, T) -> T
+
+pub struct GraphvizDotSerializer {
+  formatter2_provider : () -> (GraphvizDotFormatterRequest) -> String
+  formatter_request_provider : () -> GraphvizDotFormatterRequest
+}
+pub fn GraphvizDotSerializer::serialize(Self, String, GraphvizDotSaveOptions) -> String
+
+pub struct GraphvizDotStandaloneSetup {
+  marker : Unit
+}
+pub fn GraphvizDotStandaloneSetup::create_injector_and_do_emf_registration(Self) -> GraphvizDotInjector
+
+pub struct GraphvizDotStandaloneSetupGenerated {
+  marker : Unit
+}
+pub fn GraphvizDotStandaloneSetupGenerated::create_injector(Self) -> GraphvizDotInjector
+pub fn GraphvizDotStandaloneSetupGenerated::create_injector_and_do_emf_registration(Self) -> GraphvizDotInjector
+pub fn GraphvizDotStandaloneSetupGenerated::register(Self, GraphvizDotInjector) -> Unit
+
+pub struct GraphvizDotStatus {
+  severity : Int
+  symbolic_name : String
+  message : String
+}
+pub fn GraphvizDotStatus::get_message(Self) -> String
+pub fn GraphvizDotStatus::get_severity(Self) -> Int
+pub fn GraphvizDotStatus::get_symbolic_name(Self) -> String
+
+pub struct GraphvizDotSyntacticSequencer {
+  base : AbstractGraphvizDotSyntacticSequencer
+}
+pub fn[A, B, C] GraphvizDotSyntacticSequencer::emit_attribute_statement_comma_keyword_2_1_0_q(Self, A, B, Array[C]) -> String
+pub fn[A, B, C] GraphvizDotSyntacticSequencer::emit_edge_statement___left_square_bracket_keyword_2_0_right_square_bracket_keyword_2_2__q(Self, A, B, Array[C]) -> String
+pub fn[A, B, C] GraphvizDotSyntacticSequencer::emit_edge_statement_comma_keyword_2_1_1_0_q(Self, A, B, Array[C]) -> String
+pub fn[A, B, C] GraphvizDotSyntacticSequencer::emit_node_statement___left_square_bracket_keyword_1_0_right_square_bracket_keyword_1_2__q(Self, A, B, Array[C]) -> String
+pub fn[A, B, C] GraphvizDotSyntacticSequencer::emit_node_statement_comma_keyword_1_1_1_0_q(Self, A, B, Array[C]) -> String
+pub fn[A, B, C] GraphvizDotSyntacticSequencer::emit_statement_semicolon_keyword_1_q(Self, A, B, Array[C]) -> String
+pub fn[A, B, C] GraphvizDotSyntacticSequencer::emit_subgraph_subgraph_keyword_1_0_q(Self, A, B, Array[C]) -> String
+
+pub struct InternalGraphvizDotLexer {
+  input : String
+}
+pub fn InternalGraphvizDotLexer::get_grammar_file_name(Self) -> String
+pub fn InternalGraphvizDotLexer::get_token_names(Self) -> Array[String]
+pub fn InternalGraphvizDotLexer::lex_all(Self) -> Array[GraphvizDotLexToken]
+
+pub struct InternalGraphvizDotParser {
+  tokens : Array[GraphvizDotLexToken]
+  grammar_access : GraphvizDotGrammarAccess
+}
+pub fn InternalGraphvizDotParser::entry_rule_graphviz_model(Self) -> DotGraphvizModel
+pub fn InternalGraphvizDotParser::get_first_rule_name(Self) -> String
+pub fn InternalGraphvizDotParser::get_grammar_access(Self) -> GraphvizDotGrammarAccess
+pub fn InternalGraphvizDotParser::get_grammar_file_name(Self) -> String
+pub fn InternalGraphvizDotParser::get_token_names(Self) -> Array[String]
+pub fn InternalGraphvizDotParser::rule_graphviz_model(Self) -> DotGraphvizModel
+
+pub enum NeatoModel {
+  Shortpath
+  Circuit
+  Subset
+}
+
+pub enum OverlapMode {
+  OverlapNone
+  OverlapScale
+  OverlapScalexy
+  OverlapPrism
+  OverlapCompress
+}
+
+// Type aliases
+pub type DotModelAdapter = Unit
+
+pub type DotPackage = String
+
+pub type DotPackageImpl = String
+
+pub type GraphvizDotFormatter2 = (GraphvizDotFormatterRequest) -> String
+
+// Traits
+

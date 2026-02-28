@@ -1,0 +1,36 @@
+src_pkg	plugin_bundles	test_bundles
+alg/common	org.eclipse.elk.alg.common	org.eclipse.elk.alg.common.test
+alg/disco	org.eclipse.elk.alg.disco	org.eclipse.elk.alg.disco.test
+alg/disco/debug	org.eclipse.elk.alg.disco.debug	org.eclipse.elk.alg.disco.debug.test
+alg/force	org.eclipse.elk.alg.force	org.eclipse.elk.alg.force.test
+alg/graphviz/dot	org.eclipse.elk.alg.graphviz.dot	org.eclipse.elk.alg.graphviz.dot.test
+alg/graphviz/layouter	org.eclipse.elk.alg.graphviz.layouter	org.eclipse.elk.alg.graphviz.layouter.test
+alg/layered	org.eclipse.elk.alg.layered	org.eclipse.elk.alg.layered.test
+alg/libavoid	org.eclipse.elk.alg.libavoid	org.eclipse.elk.alg.libavoid.test
+alg/mrtree	org.eclipse.elk.alg.mrtree	org.eclipse.elk.alg.mrtree.test
+alg/radial	org.eclipse.elk.alg.radial	org.eclipse.elk.alg.radial.test
+alg/rectpacking	org.eclipse.elk.alg.rectpacking	org.eclipse.elk.alg.rectpacking.test
+alg/spore	org.eclipse.elk.alg.spore	org.eclipse.elk.alg.spore.test
+alg/test	org.eclipse.elk.alg.test	org.eclipse.elk.alg.test.test
+alg/topdownpacking	org.eclipse.elk.alg.topdownpacking	org.eclipse.elk.alg.topdownpacking.test
+alg/vertiflex	org.eclipse.elk.alg.vertiflex	org.eclipse.elk.alg.vertiflex.test
+conn/gmf	org.eclipse.elk.conn.gmf	org.eclipse.elk.conn.gmf.test
+core	org.eclipse.elk.core	org.eclipse.elk.core.test
+core/debug	org.eclipse.elk.core.debug	org.eclipse.elk.core.debug.test
+core/debug/grandom	org.eclipse.elk.core.debug.grandom	org.eclipse.elk.core.debug.grandom.test
+core/debug/grandom/ide	org.eclipse.elk.core.debug.grandom.ide	org.eclipse.elk.core.debug.grandom.ide.test
+core/debug/grandom/ui	org.eclipse.elk.core.debug.grandom.ui	
+core/meta	org.eclipse.elk.core.meta	org.eclipse.elk.core.meta.test
+core/meta/ide	org.eclipse.elk.core.meta.ide	
+core/meta/ui	org.eclipse.elk.core.meta.ui	org.eclipse.elk.core.meta.ui.test
+core/service	org.eclipse.elk.core.service	org.eclipse.elk.core.service.test
+core/ui	org.eclipse.elk.core.ui	org.eclipse.elk.core.ui.test
+graph	org.eclipse.elk.graph	org.eclipse.elk.graph.test
+graph/json	org.eclipse.elk.graph.json	org.eclipse.elk.graph.json.test
+graph/json/text	org.eclipse.elk.graph.json.text	org.eclipse.elk.graph.json.text.test
+graph/json/text/ide	org.eclipse.elk.graph.json.text.ide	org.eclipse.elk.graph.json.text.ide.test
+graph/json/text/ui	org.eclipse.elk.graph.json.text.ui	
+graph/text	org.eclipse.elk.graph.text	org.eclipse.elk.graph.text.test
+graph/text/ide	org.eclipse.elk.graph.text.ide	org.eclipse.elk.graph.text.ide.test
+graph/text/ui	org.eclipse.elk.graph.text.ui	
+shared		org.eclipse.elk.shared.test

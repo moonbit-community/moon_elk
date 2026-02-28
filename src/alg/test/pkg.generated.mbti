@@ -1,0 +1,789 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/moon_elk/alg/test"
+
+import {
+  "Milky2018/moon_elk/core",
+  "Milky2018/moon_elk/core/debug/grandom",
+  "Milky2018/moon_elk/core/debug/grandom/ide",
+  "Milky2018/moon_elk/graph",
+  "Milky2018/moon_elk/graph/json",
+  "Milky2018/moon_elk/graph/text",
+  "moonbitlang/core/random",
+}
+
+// Values
+pub let algorithm : @graph.IProperty[String]
+
+pub let all_files_recursive_suffix : String
+
+pub let all_files_suffix : String
+
+pub fn apply_visitors(Int, Array[@core.IGraphElementVisitor]) -> Unit
+
+pub fn base_path_for_property(String) -> String raise AbstractPropertyDependentResourcePathException
+
+pub let bundle_resource_path_property : String
+
+pub let class_node_element : String
+
+pub fn compare_fuzzy_ge(Double, Double) -> Bool
+
+pub fn[T] configurator_test_configuration_from_providers(Array[(String, (T) -> @core.LayoutConfigurator)], default_configuration? : DefaultConfiguration?) -> Array[ConfiguratorTestConfiguration[T]]
+
+pub fn core_debug_directory_children(String) -> Array[String]
+
+pub fn core_debug_grandom_random_graph_generator_generate(@grandom.CoreDebugGRandomRandomGraphGenerator, @grandom.CoreDebugGRandomGeneratorOptions) -> Int
+
+pub fn core_debug_grandom_random_graph_generator_generate_from_configuration(@grandom.CoreDebugGRandomRandomGraphGenerator, @grandom.CoreDebugGRandomConfiguration) -> Array[Int]
+
+pub fn core_debug_is_directory(String) -> Bool
+
+pub fn core_debug_is_regular_file(String) -> Bool
+
+pub fn core_debug_path_file_name(String) -> String
+
+pub fn core_debug_register_directory_for_test(String, Array[String]) -> Unit
+
+pub fn core_debug_register_regular_file_for_test(String) -> Unit
+
+pub fn core_debug_reset_foundation_for_test() -> Unit
+
+pub fn create_edge(Int?) -> Int
+
+pub fn create_graph() -> Int
+
+pub fn create_label(@graph.ElkLabelParent?) -> Int
+
+pub fn create_node(Int?) -> Int
+
+pub fn create_port(Int?) -> Int
+
+pub fn create_simple_edge(Int, Int) -> Int
+
+pub fn edge_add_source(Int, @graph.ElkConnectableShape) -> Unit
+
+pub fn edge_add_target(Int, @graph.ElkConnectableShape) -> Unit
+
+pub fn edge_containing_node(Int) -> Int?
+
+pub fn edge_identifier(Int) -> String
+
+pub fn edge_labels(Int) -> Array[Int]
+
+pub fn edge_set_identifier(Int, String) -> Unit
+
+pub fn edge_set_layout_option_string_by_id(Int, String, String) -> Unit
+
+pub fn elk_graph_json_for_elk_graph(Int) -> @json.ElkGraphJsonExportBuilder
+
+pub fn elk_graph_json_for_graph(String) -> @json.ElkGraphJsonImportBuilder
+
+pub fn ensure_results_path_exists() -> Unit
+
+pub fn[T] experimental_object_inflate(Array[TestAlgorithm], Array[TestConfiguration[T]], Array[TestGraph[T]]) -> Array[ExperimentalObject[T]]
+
+pub fn find_lowest_common_ancestor(Int, Int) -> Int?
+
+pub fn force_layout_meta_data_providers() -> Array[@core.ILayoutMetaDataProvider]
+
+pub fn graph_from_file_filter() -> FileExtensionFilter
+
+pub fn graph_from_file_from_resource_paths(Array[AbstractResourcePath]) -> Array[GraphFromFile]
+
+pub fn graph_from_file_register_content_for_test(String, String) -> Unit
+
+pub fn graph_from_file_reset_content_for_test() -> Unit
+
+pub fn graph_test_shape_label(Int) -> GraphTestShape
+
+pub fn graph_test_shape_node(Int) -> GraphTestShape
+
+pub fn graph_test_shape_port(Int) -> GraphTestShape
+
+pub fn graph_test_utils_all_nodes(Int, Bool) -> Array[Int]
+
+pub fn graph_test_utils_create_hierarchical_graph() -> Int
+
+pub fn graph_test_utils_create_simple_graph() -> Int
+
+pub fn graph_test_utils_create_three_node_graph() -> Int
+
+pub fn graph_test_utils_get_child(Int, Array[String]) -> Int
+
+pub fn graph_test_utils_get_port(Int, String) -> Int
+
+pub fn graph_test_utils_have_overlaps(Array[GraphTestShape]) -> Bool
+
+pub fn label_height(Int) -> Double
+
+pub fn label_parent(Int) -> @graph.ElkLabelParent?
+
+pub fn label_set_dimensions(Int, Double, Double) -> Unit
+
+pub fn label_set_text(Int, String) -> Unit
+
+pub fn label_text(Int) -> String
+
+pub fn label_width(Int) -> Double
+
+pub fn label_x(Int) -> Double
+
+pub fn label_y(Int) -> Double
+
+pub fn layout_meta_data_service_algorithm_data_values() -> Array[@core.LayoutAlgorithmData]
+
+pub fn layout_meta_data_service_get_algorithm_data(String) -> @core.LayoutAlgorithmData?
+
+pub fn layout_meta_data_service_register_algorithm(@core.LayoutAlgorithmData) -> Unit
+
+pub fn layout_meta_data_service_register_default_algorithms() -> Unit
+
+pub fn layout_meta_data_service_register_default_options() -> Unit
+
+pub fn layout_meta_data_service_register_layout_meta_data_providers(Array[@core.ILayoutMetaDataProvider]) -> Unit
+
+pub fn layout_meta_data_service_reset_for_test() -> Unit
+
+pub fn make_edge_label_parent(Int) -> @graph.ElkLabelParent
+
+pub fn make_node_label_parent(Int) -> @graph.ElkLabelParent
+
+pub fn make_port_shape(Int) -> @graph.ElkConnectableShape
+
+pub fn[T] method_test_configuration_from_methods(Array[(String, (T, Int) -> Unit)], default_configuration? : DefaultConfiguration?) -> Array[MethodTestConfiguration[T]]
+
+pub let model_resource_path_property : String
+
+pub fn new_absolute_resource_path(String) -> AbstractResourcePath
+
+pub fn new_abstract_resource_path(String?, String) -> AbstractResourcePath
+
+pub fn new_algorithm(String) -> Algorithm
+
+pub fn new_algorithms(Array[Algorithm]) -> Algorithms
+
+pub fn new_all_algorithms() -> AllAlgorithms
+
+pub fn new_basic_progress_monitor() -> @core.IElkProgressMonitor
+
+pub fn[T] new_blackbox_test_method(String, (T, Int) -> Unit, ignored? : Bool) -> BlackboxTestMethod[T]
+
+pub fn new_bundle_resource_path(String, String) -> AbstractResourcePath
+
+pub fn new_configurator() -> Configurator
+
+pub fn new_configurator_provider() -> ConfiguratorProvider
+
+pub fn[T] new_configurator_test_configuration(String, (T) -> @core.LayoutConfigurator, default_configuration? : DefaultConfiguration?) -> ConfiguratorTestConfiguration[T]
+
+pub fn new_core_debug_grandom_generator_options() -> @grandom.CoreDebugGRandomGeneratorOptions
+
+pub fn new_core_debug_grandom_parser() -> @ide.CoreDebugGRandomParser
+
+pub fn new_core_debug_grandom_random_graph_generator(@random.Rand?) -> @grandom.CoreDebugGRandomRandomGraphGenerator
+
+pub fn new_default_configuration(edges? : Bool, nodes? : Bool, ports? : Bool, edge_labels? : Bool) -> DefaultConfiguration
+
+pub fn new_elk_graph_parser() -> @text.ElkGraphParser
+
+pub fn[T, G] new_experiment_runner(() -> T, ExperimentalObject[T], Array[BlackboxTestMethod[T]], Array[WhiteboxTestMethod[T, G]]) -> ExperimentRunner[T, G]
+
+pub fn[T, G] new_experiment_statement(ExperimentRunner[T, G], RunNotifier) -> ExperimentStatement[T, G]
+
+pub fn[T] new_experimental_object(TestAlgorithm, TestConfiguration[T], TestGraph[T]) -> ExperimentalObject[T]
+
+pub fn new_fail_if_not_executed() -> FailIfNotExecuted
+
+pub fn new_file_extension_filter(String) -> FileExtensionFilter
+
+pub fn new_file_extension_filter_with_extensions(Array[String]) -> FileExtensionFilter
+
+pub fn new_file_name_filter(String) -> FileNameFilter
+
+pub fn new_file_name_filter_with_expressions(Array[String]) -> FileNameFilter
+
+pub fn new_graph_element_visitor((Int) -> Unit) -> @core.IGraphElementVisitor
+
+pub fn new_graph_from_file(AbstractResourcePath) -> GraphFromFile
+
+pub fn[T] new_graph_from_method(String, (T) -> Int) -> GraphFromMethod[T]
+
+pub fn new_graph_provider() -> GraphProvider
+
+pub fn new_graph_resource_provider() -> GraphResourceProvider
+
+pub fn new_kvector() -> @core.KVector
+
+pub fn new_kvector_xy(Double, Double) -> @core.KVector
+
+pub fn new_layout_algorithm_data(String) -> @core.LayoutAlgorithmData
+
+pub fn new_layout_configurator() -> @core.LayoutConfigurator
+
+pub fn[T, G] new_layout_test_runner(() -> T, Array[TestAlgorithm], Array[TestConfiguration[T]], Array[TestGraph[T]], Array[BlackboxTestMethod[T]], Array[WhiteboxTestMethod[T, G]]) -> LayoutTestRunner[T, G]
+
+pub fn[T] new_method_test_configuration(String, (T, Int) -> Unit, default_configuration? : DefaultConfiguration?) -> MethodTestConfiguration[T]
+
+pub fn new_model_resource_path(String) -> AbstractResourcePath
+
+pub fn new_only_on_root_node() -> OnlyOnRootNode
+
+pub fn[T] new_property(String, T) -> @graph.IProperty[T]
+
+pub fn new_random_generator_file() -> RandomGeneratorFile
+
+pub fn new_random_generator_options() -> RandomGeneratorOptions
+
+pub fn new_random_graph_from_file(AbstractResourcePath, Int) -> RandomGraphFromFile
+
+pub fn new_random_graph_from_method(String, Int) -> RandomGraphFromMethod
+
+pub fn new_recursive_graph_layout_engine() -> @core.RecursiveGraphLayoutEngine
+
+pub fn new_results_resource_path(String) -> AbstractResourcePath
+
+pub fn new_run_failure(String, String) -> RunFailure
+
+pub fn new_run_notifier() -> RunNotifier
+
+pub fn new_test_after_processor(String) -> TestAfterProcessor
+
+pub fn new_test_after_processors(Array[TestAfterProcessor]) -> TestAfterProcessors
+
+pub fn new_test_algorithm(@core.LayoutAlgorithmData?) -> TestAlgorithm
+
+pub fn new_test_before_processor(String) -> TestBeforeProcessor
+
+pub fn new_test_before_processors(Array[TestBeforeProcessor]) -> TestBeforeProcessors
+
+pub fn new_test_class_constructor_signature(Bool, Int) -> TestClassConstructorSignature
+
+pub fn[T] new_test_configuration(default_configuration? : DefaultConfiguration?, apply_base_configuration_fn? : (T, Int) -> Unit) -> TestConfiguration[T]
+
+pub fn[T] new_test_graph((T) -> Int, String) -> TestGraph[T]
+
+pub fn new_test_method_signature(String, Bool, String, Array[String], annotations? : Array[String]) -> TestMethodSignature
+
+pub fn new_whitebox_recorder() -> WhiteboxRecorder
+
+pub fn[T, G] new_whitebox_test_method(String, (T, G) -> Unit, ignored? : Bool, fail_if_not_executed? : Bool, only_on_root_node? : Bool, before_processor_ids? : Array[String], after_processor_ids? : Array[String]) -> WhiteboxTestMethod[T, G]
+
+pub let no_layout : @graph.IProperty[Bool]
+
+pub fn node_children(Int) -> Array[Int]
+
+pub fn node_contained_edges(Int) -> Array[Int]
+
+pub fn node_get_bool_property(Int, @graph.IProperty[Bool]) -> Bool
+
+pub fn node_get_double_property(Int, @graph.IProperty[Double]) -> Double
+
+pub fn node_get_string_property(Int, @graph.IProperty[String]) -> String
+
+pub fn node_has_string_property(Int, @graph.IProperty[String]) -> Bool
+
+pub fn node_height(Int) -> Double
+
+pub fn node_identifier(Int) -> String
+
+pub fn node_labels(Int) -> Array[Int]
+
+pub fn node_outgoing_edges(Int) -> Array[Int]
+
+pub fn node_parent(Int) -> Int?
+
+pub fn node_ports(Int) -> Array[Int]
+
+pub fn node_set_bool_property(Int, @graph.IProperty[Bool], Bool) -> Unit
+
+pub fn node_set_dimensions(Int, Double, Double) -> Unit
+
+pub fn node_set_double_property(Int, @graph.IProperty[Double], Double) -> Unit
+
+pub fn node_set_location(Int, Double, Double) -> Unit
+
+pub fn node_set_string_property(Int, @graph.IProperty[String], String) -> Unit
+
+pub fn node_width(Int) -> Double
+
+pub fn node_x(Int) -> Double
+
+pub fn node_y(Int) -> Double
+
+pub fn plain_java_initialization_initialize_plain_java_layout() -> Unit
+
+pub fn plain_java_initialization_reset_for_test() -> Unit
+
+pub fn port_height(Int) -> Double
+
+pub fn port_identifier(Int) -> String
+
+pub fn port_incoming_edges(Int) -> Array[Int]
+
+pub fn port_labels(Int) -> Array[Int]
+
+pub fn port_layout_option_string_value(Int, String) -> String?
+
+pub fn port_outgoing_edges(Int) -> Array[Int]
+
+pub fn port_parent(Int) -> Int?
+
+pub fn port_set_dimensions(Int, Double, Double) -> Unit
+
+pub fn port_set_layout_option_string_by_id(Int, String, String) -> Unit
+
+pub let port_side : @graph.IProperty[String]
+
+pub fn port_width(Int) -> Double
+
+pub fn port_x(Int) -> Double
+
+pub fn port_y(Int) -> Double
+
+pub fn random_graph_from_file_filter() -> FileExtensionFilter
+
+pub fn random_graph_from_file_from_resource_paths(Array[AbstractResourcePath]) -> Array[RandomGraphFromFile]
+
+pub fn random_graph_from_file_register_content_for_test(String, String) -> Unit
+
+pub fn random_graph_from_file_reset_content_for_test() -> Unit
+
+pub fn random_graph_from_method_from_options(String, @grandom.CoreDebugGRandomGeneratorOptions) -> RandomGraphFromMethod
+
+pub let rectpacking_algorithm_id : String
+
+pub fn reset_experiment_runner_ids_for_test() -> Unit
+
+pub fn reset_graph_model_for_test() -> Unit
+
+pub fn resource_path_clear_properties_for_test() -> Unit
+
+pub fn resource_path_property_value(String) -> String?
+
+pub fn resource_path_set_property_for_test(String, String) -> Unit
+
+pub let results_resource_path_property : String
+
+pub let spacing_node_node : @graph.IProperty[Double]
+
+pub let spore_compaction_algorithm_id : String
+
+pub let spore_overlap_removal_algorithm_id : String
+
+pub fn test_algorithm_from_annotations(Array[Algorithm], Bool, Array[String]) -> Array[TestAlgorithm]
+
+pub fn test_algorithm_identity() -> TestAlgorithm
+
+pub fn test_method_signature_name(TestMethodSignature) -> String
+
+pub fn[T] test_util_create_test_class_instance(() -> T) -> T
+
+pub fn test_util_ensure_not_annotated_with(TestMethodSignature, Array[String], Array[String]) -> Bool
+
+pub fn test_util_ensure_parameters(TestMethodSignature, Array[String], Array[String]) -> Bool
+
+pub fn test_util_ensure_public(TestMethodSignature, Array[String]) -> Bool
+
+pub fn test_util_ensure_returns_type(TestMethodSignature, Array[String], String) -> Bool
+
+pub fn test_util_ensure_single_public_no_parameter_constructor(Array[TestClassConstructorSignature], Array[String]) -> Bool
+
+pub let vertiflex_algorithm_id : String
+
+// Errors
+pub(all) suberror AbstractPropertyDependentResourcePathException {
+  IllegalStateException(String)
+}
+pub impl Show for AbstractPropertyDependentResourcePathException
+pub impl ToJson for AbstractPropertyDependentResourcePathException
+
+pub suberror AbstractResourcePathException {
+  AbstractResourcePathException(String)
+}
+pub impl Show for AbstractResourcePathException
+pub impl ToJson for AbstractResourcePathException
+
+pub suberror BundleResourcePathException {
+  BundleResourcePathException(String)
+}
+pub impl Show for BundleResourcePathException
+pub impl ToJson for BundleResourcePathException
+
+pub suberror LayoutTestRunnerException {
+  LayoutTestRunnerException(String)
+}
+pub impl Show for LayoutTestRunnerException
+pub impl ToJson for LayoutTestRunnerException
+
+pub suberror ModelResourcePathException {
+  ModelResourcePathException(String)
+}
+pub impl Show for ModelResourcePathException
+pub impl ToJson for ModelResourcePathException
+
+pub suberror ResultsResourcePathException {
+  ResultsResourcePathException(String)
+}
+pub impl Show for ResultsResourcePathException
+pub impl ToJson for ResultsResourcePathException
+
+// Types and methods
+#alias(AbsoluteResourcePath)
+#alias(AbstractPropertyDependentResourcePath)
+#alias(BundleResourcePath)
+#alias(ModelResourcePath)
+#alias(ResultsResourcePath)
+pub struct AbstractResourcePath {
+  mut file : String
+  mut is_directory : Bool
+  mut is_recursive : Bool
+  mut filter : ((String) -> Bool)?
+}
+pub fn AbstractResourcePath::get_file(Self) -> String
+pub fn AbstractResourcePath::get_filter(Self) -> ((String) -> Bool)?
+pub fn AbstractResourcePath::initialize(Self, String?, String) -> Unit
+pub fn AbstractResourcePath::is_directory(Self) -> Bool
+pub fn AbstractResourcePath::is_recursive(Self) -> Bool
+pub fn AbstractResourcePath::list_resources(Self) -> Array[Self]
+pub fn AbstractResourcePath::set_filter(Self, ((String) -> Bool)?) -> Unit
+pub fn AbstractResourcePath::to_string(Self) -> String
+pub fn AbstractResourcePath::with_filter(Self, ((String) -> Bool)?) -> Self
+
+pub struct Algorithm {
+  value : String
+}
+pub fn Algorithm::get_value(Self) -> String
+
+pub struct Algorithms {
+  value : Array[Algorithm]
+}
+pub fn Algorithms::get_value(Self) -> Array[Algorithm]
+
+pub struct AllAlgorithms {
+  marker : Int
+}
+
+pub struct BlackboxTestMethod[T] {
+  method_name : String
+  ignored : Bool
+  run_fn : (T, Int) -> Unit
+}
+pub fn[T] BlackboxTestMethod::get_method_name(Self[T]) -> String
+pub fn[T] BlackboxTestMethod::invoke(Self[T], T, Int) -> Unit
+pub fn[T] BlackboxTestMethod::is_ignored(Self[T]) -> Bool
+
+pub struct Configurator {
+  marker : Int
+}
+
+pub struct ConfiguratorProvider {
+  marker : Int
+}
+
+pub struct ConfiguratorTestConfiguration[T] {
+  base : TestConfiguration[T]
+  configurator_method_name : String
+}
+pub fn[T] ConfiguratorTestConfiguration::apply(Self[T], T, Int) -> Unit
+pub fn[T] ConfiguratorTestConfiguration::as_test_configuration(Self[T]) -> TestConfiguration[T]
+pub fn[T] ConfiguratorTestConfiguration::to_string(Self[T]) -> String
+
+pub struct DefaultConfiguration {
+  edges : Bool
+  nodes : Bool
+  ports : Bool
+  edge_labels : Bool
+}
+pub fn DefaultConfiguration::edge_labels_enabled(Self) -> Bool
+pub fn DefaultConfiguration::edges_enabled(Self) -> Bool
+pub fn DefaultConfiguration::nodes_enabled(Self) -> Bool
+pub fn DefaultConfiguration::ports_enabled(Self) -> Bool
+
+pub struct ExperimentRunner[T, G] {
+  runner_id : Int
+  create_test_instance_fn : () -> T
+  experimental_object : ExperimentalObject[T]
+  blackbox_tests : Array[BlackboxTestMethod[T]]
+  whitebox_tests : Array[WhiteboxTestMethod[T, G]]
+  whitebox_before_tests : Map[String, Array[WhiteboxTestMethod[T, G]]]
+  whitebox_after_tests : Map[String, Array[WhiteboxTestMethod[T, G]]]
+  test_descriptions : Map[String, String]
+}
+pub fn[T, G] ExperimentRunner::create_test_instance(Self[T, G]) -> T
+pub fn[T, G] ExperimentRunner::describe_blackbox_test(Self[T, G], BlackboxTestMethod[T]) -> String
+pub fn[T, G] ExperimentRunner::describe_method_name(Self[T, G], String) -> String
+pub fn[T, G] ExperimentRunner::describe_whitebox_test(Self[T, G], WhiteboxTestMethod[T, G]) -> String
+pub fn[T, G] ExperimentRunner::get_blackbox_tests(Self[T, G]) -> Array[BlackboxTestMethod[T]]
+pub fn[T, G] ExperimentRunner::get_experimental_object(Self[T, G]) -> ExperimentalObject[T]
+pub fn[T, G] ExperimentRunner::get_name(Self[T, G]) -> String
+pub fn[T, G] ExperimentRunner::get_runner_id(Self[T, G]) -> Int
+pub fn[T, G] ExperimentRunner::get_whitebox_after_tests(Self[T, G], String) -> Array[WhiteboxTestMethod[T, G]]
+pub fn[T, G] ExperimentRunner::get_whitebox_before_tests(Self[T, G], String) -> Array[WhiteboxTestMethod[T, G]]
+pub fn[T, G] ExperimentRunner::get_whitebox_tests(Self[T, G]) -> Array[WhiteboxTestMethod[T, G]]
+pub fn[T, G] ExperimentRunner::is_blackbox_ignored(Self[T, G], BlackboxTestMethod[T]) -> Bool
+pub fn[T, G] ExperimentRunner::is_whitebox_ignored(Self[T, G], WhiteboxTestMethod[T, G]) -> Bool
+
+pub struct ExperimentStatement[T, G] {
+  experiment_runner : ExperimentRunner[T, G]
+  notifier : RunNotifier
+  whitebox_recorder : WhiteboxRecorder
+  mut whitebox_events : Array[WhiteboxLayoutEvent[G]]
+  mut test_graph : Int?
+}
+pub fn[T, G] ExperimentStatement::add_layout_processor_finished_event(Self[T, G], String, G, Bool) -> Unit
+pub fn[T, G] ExperimentStatement::add_layout_processor_ready_event(Self[T, G], String, G, Bool) -> Unit
+pub fn[T, G] ExperimentStatement::evaluate(Self[T, G]) -> Unit
+pub fn[T, G] ExperimentStatement::get_notifier(Self[T, G]) -> RunNotifier
+pub fn[T, G] ExperimentStatement::get_whitebox_recorder(Self[T, G]) -> WhiteboxRecorder
+
+pub struct ExperimentalObject[T] {
+  layout_algorithm : TestAlgorithm
+  configuration : TestConfiguration[T]
+  graph : TestGraph[T]
+}
+pub fn[T] ExperimentalObject::get_configuration(Self[T]) -> TestConfiguration[T]
+pub fn[T] ExperimentalObject::get_graph(Self[T]) -> TestGraph[T]
+pub fn[T] ExperimentalObject::get_layout_algorithm(Self[T]) -> TestAlgorithm
+pub fn[T] ExperimentalObject::realize(Self[T], T) -> Int
+pub fn[T] ExperimentalObject::to_string(Self[T]) -> String
+
+pub struct FailIfNotExecuted {
+  marker : Int
+}
+
+pub struct FileExtensionFilter {
+  extensions : Array[String]
+}
+pub fn FileExtensionFilter::accept(Self, String) -> Bool
+pub fn FileExtensionFilter::to_filter(Self) -> (String) -> Bool
+
+pub struct FileNameFilter {
+  expressions : Array[String]
+}
+pub fn FileNameFilter::accept(Self, String) -> Bool
+pub fn FileNameFilter::to_filter(Self) -> (String) -> Bool
+
+pub struct GraphFromFile {
+  resource_path : AbstractResourcePath
+}
+pub fn GraphFromFile::provide_graph(Self, Unit) -> Int
+pub fn GraphFromFile::to_string(Self) -> String
+pub fn GraphFromFile::to_test_graph(Self) -> TestGraph[Unit]
+
+pub struct GraphFromMethod[T] {
+  method_name : String
+  provider_fn : (T) -> Int
+}
+pub fn[T] GraphFromMethod::provide_graph(Self[T], T) -> Int
+pub fn[T] GraphFromMethod::to_string(Self[T]) -> String
+pub fn[T] GraphFromMethod::to_test_graph(Self[T]) -> TestGraph[T]
+
+pub struct GraphProvider {
+  marker : Int
+}
+
+pub struct GraphResourceProvider {
+  marker : Int
+}
+
+pub enum GraphTestShape {
+  GraphTestNode(Int)
+  GraphTestPort(Int)
+  GraphTestLabel(Int)
+}
+
+pub struct LayoutTestRunner[T, G] {
+  create_test_instance_fn : () -> T
+  test_algorithms : Array[TestAlgorithm]
+  test_configurations : Array[TestConfiguration[T]]
+  test_graphs : Array[TestGraph[T]]
+  blackbox_tests : Array[BlackboxTestMethod[T]]
+  whitebox_tests : Array[WhiteboxTestMethod[T, G]]
+  child_runners : Array[ExperimentRunner[T, G]]
+}
+pub fn[T, G] LayoutTestRunner::get_blackbox_tests(Self[T, G]) -> Array[BlackboxTestMethod[T]]
+pub fn[T, G] LayoutTestRunner::get_children(Self[T, G]) -> Array[ExperimentRunner[T, G]]
+pub fn[T, G] LayoutTestRunner::get_test_algorithms(Self[T, G]) -> Array[TestAlgorithm]
+pub fn[T, G] LayoutTestRunner::get_test_configurations(Self[T, G]) -> Array[TestConfiguration[T]]
+pub fn[T, G] LayoutTestRunner::get_test_graphs(Self[T, G]) -> Array[TestGraph[T]]
+pub fn[T, G] LayoutTestRunner::get_whitebox_tests(Self[T, G]) -> Array[WhiteboxTestMethod[T, G]]
+pub fn[T, G] LayoutTestRunner::run(Self[T, G], RunNotifier) -> Unit
+pub fn[T, G] LayoutTestRunner::run_child(Self[T, G], ExperimentRunner[T, G], RunNotifier) -> Unit
+
+pub struct MethodTestConfiguration[T] {
+  base : TestConfiguration[T]
+  configurator_method_name : String
+}
+pub fn[T] MethodTestConfiguration::apply(Self[T], T, Int) -> Unit
+pub fn[T] MethodTestConfiguration::as_test_configuration(Self[T]) -> TestConfiguration[T]
+pub fn[T] MethodTestConfiguration::to_string(Self[T]) -> String
+
+pub struct OnlyOnRootNode {
+  marker : Int
+}
+
+pub struct RandomGeneratorFile {
+  marker : Int
+}
+
+pub struct RandomGeneratorOptions {
+  marker : Int
+}
+
+pub struct RandomGraphFromFile {
+  resource_path : AbstractResourcePath
+  graph : Int
+}
+pub fn RandomGraphFromFile::provide_graph(Self, Unit) -> Int
+pub fn RandomGraphFromFile::to_string(Self) -> String
+pub fn RandomGraphFromFile::to_test_graph(Self) -> TestGraph[Unit]
+
+pub struct RandomGraphFromMethod {
+  configurator_method_name : String
+  graph : Int
+}
+pub fn RandomGraphFromMethod::provide_graph(Self, Unit) -> Int
+pub fn RandomGraphFromMethod::to_string(Self) -> String
+pub fn RandomGraphFromMethod::to_test_graph(Self) -> TestGraph[Unit]
+
+pub struct RunFailure {
+  description : String
+  message : String
+}
+pub fn RunFailure::get_description(Self) -> String
+pub fn RunFailure::get_message(Self) -> String
+
+pub struct RunNotifier {
+  started : Array[String]
+  finished : Array[String]
+  ignored : Array[String]
+  failures : Array[RunFailure]
+}
+pub fn RunNotifier::finished_tests(Self) -> Array[String]
+pub fn RunNotifier::fire_test_assumption_failed(Self, RunFailure) -> Unit
+pub fn RunNotifier::fire_test_failure(Self, RunFailure) -> Unit
+pub fn RunNotifier::fire_test_finished(Self, String) -> Unit
+pub fn RunNotifier::fire_test_ignored(Self, String) -> Unit
+pub fn RunNotifier::fire_test_run_finished(Self) -> Unit
+pub fn RunNotifier::fire_test_run_started(Self, String) -> Unit
+pub fn RunNotifier::fire_test_started(Self, String) -> Unit
+pub fn RunNotifier::ignored_tests(Self) -> Array[String]
+pub fn RunNotifier::started_tests(Self) -> Array[String]
+pub fn RunNotifier::test_failures(Self) -> Array[RunFailure]
+
+pub struct TestAfterProcessor {
+  processor_id : String
+}
+pub fn TestAfterProcessor::get_processor_id(Self) -> String
+
+pub struct TestAfterProcessors {
+  value : Array[TestAfterProcessor]
+}
+pub fn TestAfterProcessors::get_value(Self) -> Array[TestAfterProcessor]
+
+pub struct TestAlgorithm {
+  algorithm_data : @core.LayoutAlgorithmData?
+}
+pub fn TestAlgorithm::apply(Self, Int) -> Unit
+pub fn TestAlgorithm::get_algorithm_data(Self) -> @core.LayoutAlgorithmData?
+pub fn TestAlgorithm::to_string(Self) -> String
+
+pub struct TestBeforeProcessor {
+  processor_id : String
+}
+pub fn TestBeforeProcessor::get_processor_id(Self) -> String
+
+pub struct TestBeforeProcessors {
+  value : Array[TestBeforeProcessor]
+}
+pub fn TestBeforeProcessors::get_value(Self) -> Array[TestBeforeProcessor]
+
+pub struct TestClassConstructorSignature {
+  is_public : Bool
+  parameter_count : Int
+}
+
+pub struct TestConfiguration[T] {
+  use_default_node_config : Bool
+  use_default_port_config : Bool
+  use_default_edge_config : Bool
+  add_random_edge_labels : Bool
+  apply_base_configuration_fn : (T, Int) -> Unit
+}
+pub fn[T] TestConfiguration::apply(Self[T], T, Int) -> Unit
+pub fn[T] TestConfiguration::to_string(Self[T]) -> String
+
+pub struct TestGraph[T] {
+  provide_graph_fn : (T) -> Int
+  description : String
+}
+pub fn[T] TestGraph::provide_graph(Self[T], T) -> Int
+pub fn[T] TestGraph::to_string(Self[T]) -> String
+
+pub struct TestMethodSignature {
+  name : String
+  is_public : Bool
+  return_type : String
+  parameter_types : Array[String]
+  annotations : Array[String]
+}
+
+type WhiteboxLayoutEvent[G]
+
+pub struct WhiteboxRecorder {
+  executed_whitebox_tests : Array[String]
+  whitebox_test_failures : Map[String, Array[RunFailure]]
+  mut currently_running_test : String?
+}
+pub fn WhiteboxRecorder::fire_test_assumption_failed(Self, RunFailure) -> Unit
+pub fn WhiteboxRecorder::fire_test_failure(Self, RunFailure) -> Unit
+pub fn WhiteboxRecorder::fire_test_finished(Self, String) -> Unit
+pub fn WhiteboxRecorder::fire_test_ignored(Self, String) -> Unit
+pub fn WhiteboxRecorder::fire_test_run_finished(Self) -> Unit
+pub fn WhiteboxRecorder::fire_test_run_started(Self, String) -> Unit
+pub fn WhiteboxRecorder::fire_test_started(Self, String) -> Unit
+pub fn WhiteboxRecorder::get_failures(Self, String) -> Array[RunFailure]
+pub fn WhiteboxRecorder::was_executed(Self, String) -> Bool
+
+pub struct WhiteboxTestMethod[T, G] {
+  method_name : String
+  ignored : Bool
+  fail_if_not_executed : Bool
+  only_on_root_node : Bool
+  before_processor_ids : Array[String]
+  after_processor_ids : Array[String]
+  run_fn : (T, G) -> Unit
+}
+pub fn[T, G] WhiteboxTestMethod::get_after_processor_ids(Self[T, G]) -> Array[String]
+pub fn[T, G] WhiteboxTestMethod::get_before_processor_ids(Self[T, G]) -> Array[String]
+pub fn[T, G] WhiteboxTestMethod::get_fail_if_not_executed(Self[T, G]) -> Bool
+pub fn[T, G] WhiteboxTestMethod::get_method_name(Self[T, G]) -> String
+pub fn[T, G] WhiteboxTestMethod::get_only_on_root_node(Self[T, G]) -> Bool
+pub fn[T, G] WhiteboxTestMethod::invoke(Self[T, G], T, G) -> Unit
+pub fn[T, G] WhiteboxTestMethod::is_ignored(Self[T, G]) -> Bool
+
+// Type aliases
+pub using @grandom {type CoreDebugGRandomGeneratorOptions}
+
+pub type ElkEdge = Int
+
+pub type ElkLabel = Int
+
+pub using @graph {type ElkLabelParent}
+
+pub type ElkNode = Int
+
+pub type ElkPort = Int
+
+pub using @graph {type IProperty}
+
+pub using @core {type KVector}
+
+pub using @core {type LayoutAlgorithmData}
+
+pub using @core {type LayoutConfigurator}
+
+pub type ResourcePathFilter = (String) -> Bool
+
+// Traits
+

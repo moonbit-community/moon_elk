@@ -1,60 +1,36 @@
 # STATUS
 
-Last Updated: 2026-02-18
+Last Updated: 2026-02-19
 
 ## Repository State
 
-- Branch: `main`
-- Sync state: `main` is up to date with `origin/main`
-- Working tree status at update time: clean
+- Branch: `milky/layout-refactor-src-one-shot`
+- Module source root: `src`
+- Working tree status at update time: clean after verification
 
-## ELK 1:1 Porting Progress
+## ELK 1:1 Porting + Layout Refactor Status
 
-Direct transliteration is complete for the tracked ELK Java -> MoonBit scope.
+The one-shot `src/` hierarchy migration is complete for the planned scope:
 
-### Recent Completed Milestones (latest first)
+- Flat root `.mbt` sources migrated into layered `src/**` package directories
+- Root package implementation removed (`moon_elk.mbt`)
+- Root `moon.pkg` removed
+- CLI removed (`cmd/main/*`)
+- Package manifests regenerated as `src/**/moon.pkg`
+- Migration artifacts recorded under `migration/` (mapping, conflicts, check logs)
 
-- `2d631cf`: Aligned `elk.graph.util.ElkGraphAdapterFactory` method signatures with elk-reference (`createXXXAdapter()` no-arg shape) and closed `moon_elk-tpz.78`.
-- `9576110`: Ported `elk.graph` utility stubs (`ElkGraphSwitch`, `ElkGraphAdapterFactory`, `ElkReflect`) with dedicated tests and closed `moon_elk-tpz.77`.
-- `bef3888`: Closed remaining package-level `bd` tasks (`common`, `layered.intermediate`, `layered`) and closed epic `moon_elk-tpz` after full-suite validation.
-- `4d427d1`: Aligned `mrtree` `Untreeifyer` semantics with elk-reference (`Untreeify` monitor stage + non-deduplicating removable-edge reinsertion), added regression test.
-- `e09c53b`: Closed layered test migration tasks after full test pass.
-- `89190ab`: Aligned `mrtree` `RootProcessor` zero-root behavior with Java (`DUMMY_ROOT` path) and removed MoonBit-only pre-reset logic.
-- `4b327c2`: Ported layered ElkGraph transform bridge (`ElkGraphImporter`, `ElkGraphLayoutTransferrer`, `ElkGraphTransformer`) with dedicated tests.
+The porting policy remains:
+
+- Keep behavior aligned to `./elk-reference`
+- Prefer direct transliteration over local invention
 
 ## Verification Snapshot
 
-Validated during recent porting work:
+Validated in this migration pass:
 
-- `moon test --no-render` (`1539/1539` passed)
-- `moon test -p username/moon_elk -f elk_graph_util_switch_adapter_reflect_test.mbt --no-render` (`3/3`)
-- `moon test -p username/moon_elk -f elk_graph_properties_property_holder_test.mbt --no-render` (`4/4`)
-- `moon test -p username/moon_elk -f elk_graph_factory_package_test.mbt --no-render` (`2/2`)
-- `moon test -p username/moon_elk -f alg_mrtree_intermediate_untreeifyer_test.mbt --no-render` (`1/1`)
-- `moon test -p username/moon_elk -f alg_mrtree_p1treeify_test.mbt --no-render` (`3/3`)
-- `moon test -p username/moon_elk -f alg_mrtree_p2order_test.mbt --no-render` (`2/2`)
-- `moon test -p username/moon_elk -f alg_mrtree_p3place_test.mbt --no-render` (`1/1`)
-- `moon test -p username/moon_elk -f alg_mrtree_p4route_test.mbt --no-render` (`1/1`)
-- `moon test -p username/moon_elk -f alg_layered_interactive_layered_graph_visitor_test.mbt --no-render` (`10/10`)
-- `moon test -p username/moon_elk -f alg_radial_center_on_root_test.mbt --no-render` (`2/2`)
-- `moon info && moon fmt` (pass; existing repository warnings remain)
-
-## bd Tracking Snapshot
-
-- Open / in-progress issues:
-  - none
-- Closed in this completion pass:
-  - `moon_elk-tpz.78` (`elk.graph.util` adapter factory signature alignment)
-  - `moon_elk-tpz.77` (`elk.graph.util` switch/adapter/reflect stubs)
-  - `moon_elk-tpz.59` (`mrtree`)
-  - `moon_elk-tpz.58` (`radial`)
-  - `moon_elk-tpz.7.24` (`InteractiveLayeredGraphVisitor` slice 2)
-  - `moon_elk-tpz.1` (`common`)
-  - `moon_elk-tpz.7.3` (`layered.intermediate`)
-  - `moon_elk-tpz.7` (`layered`)
-  - `moon_elk-tpz` (epic)
+- `moon check --target-dir /tmp/moon_elk_check_after_commit` (0 errors, warnings only)
+- `moon test --no-render --target-dir /tmp/moon_elk_test_after_commit` (`1547/1547` passed)
 
 ## Next Focus
 
-- Keep regression suite green for parity-preserving fixes.
-- For any future behavior change, validate against `./elk-reference` first and add focused regression tests.
+- Keep full-suite regression (`moon test --no-render`) green while continuing strict elk-reference parity fixes.

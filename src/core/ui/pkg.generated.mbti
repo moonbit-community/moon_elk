@@ -1,0 +1,649 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/moon_elk/core/ui"
+
+import {
+  "Milky2018/moon_elk/core",
+  "Milky2018/moon_elk/core/service",
+}
+
+// Values
+pub fn core_ui_color_dispose(CoreUiColor) -> Unit
+
+pub fn core_ui_color_is_disposed(CoreUiColor) -> Bool
+
+pub let core_ui_disco_layout_alg_id : String
+
+pub fn core_ui_elk_ui_util_get_option_data(@core.LayoutAlgorithmData, String) -> @core.LayoutOptionData?
+
+pub fn core_ui_elk_ui_util_get_option_data_from_providers(Array[@core.LayoutAlgorithmData], String) -> @core.LayoutOptionData?
+
+pub fn core_ui_elk_ui_util_model_change_labels_for_domain(Int) -> Array[String]
+
+pub fn core_ui_elk_ui_util_reset_for_test() -> Unit
+
+pub fn core_ui_elk_ui_util_run_model_change(() -> Unit, editing_domain? : Int?, label? : String) -> Unit
+
+pub fn core_ui_font_dispose(CoreUiFont) -> Unit
+
+pub fn core_ui_font_is_disposed(CoreUiFont) -> Bool
+
+pub fn core_ui_layout_meta_data_get_description(CoreUiLayoutMetaData) -> String
+
+pub fn core_ui_layout_meta_data_get_id(CoreUiLayoutMetaData) -> String
+
+pub fn core_ui_layout_meta_data_get_name(CoreUiLayoutMetaData) -> String
+
+pub fn core_ui_layout_preference_page_get_launched_paths_for_test() -> Array[String]
+
+pub fn core_ui_layout_preference_page_mark_path_exists_for_test(String, Bool) -> Unit
+
+pub fn core_ui_layout_preference_page_reset_for_test() -> Unit
+
+pub fn core_ui_layout_preference_page_set_debug_folder_for_test(String) -> Unit
+
+pub let core_ui_layout_property_descriptor_disco_layout_alg_id : String
+
+pub fn core_ui_layout_property_source_get_layout_hint(String) -> String?
+
+pub let core_ui_layout_view_id : String
+
+pub fn core_ui_layout_view_part_reset_for_test() -> Unit
+
+pub let core_ui_layout_view_pref_advanced : String
+
+pub let core_ui_layout_view_pref_categories : String
+
+pub let core_ui_messages_bundle_name : String
+
+pub fn core_ui_messages_get_string(String) -> String
+
+pub let core_ui_min_font_height : Int
+
+pub let core_ui_param_layout_scope : String
+
+pub let core_ui_pref_animation : String
+
+pub let core_ui_pref_progress : String
+
+pub let core_ui_pref_zoom : String
+
+pub fn core_ui_preference_initializer_initialize_default_preferences() -> Unit
+
+pub let core_ui_property_sheet_entry_filter_expert : String
+
+pub let core_ui_swt_normal : Int
+
+pub let core_ui_val_diagram : String
+
+pub let core_ui_val_selection : String
+
+pub fn core_ui_value_as_bool(CoreUiValue) -> Bool?
+
+pub fn core_ui_value_as_int(CoreUiValue) -> Int?
+
+pub fn core_ui_value_as_string(CoreUiValue) -> String?
+
+pub fn core_ui_value_as_strings(CoreUiValue) -> Array[String]?
+
+pub fn core_ui_value_to_string(CoreUiValue) -> String
+
+pub let elk_ui_img_choice : String
+
+pub let elk_ui_img_double : String
+
+pub let elk_ui_img_false : String
+
+pub let elk_ui_img_int : String
+
+pub let elk_ui_img_text : String
+
+pub let elk_ui_img_true : String
+
+pub fn elk_ui_plugin_get_image_descriptor(String) -> CoreUiImageDescriptor
+
+pub fn elk_ui_plugin_get_instance() -> ElkUiPlugin
+
+pub let elk_ui_plugin_id : String
+
+pub fn elk_ui_plugin_reset_for_test() -> Unit
+
+pub fn layout_view_part_find_view() -> LayoutViewPart?
+
+pub fn layout_view_part_open() -> LayoutViewPart
+
+pub fn new_active_editor_supported_tester() -> ActiveEditorSupportedTester
+
+pub fn new_algorithm_cell_editor(String) -> AlgorithmCellEditor
+
+pub fn new_algorithm_content_provider() -> AlgorithmContentProvider
+
+pub fn new_algorithm_selection_dialog(String) -> AlgorithmSelectionDialog
+
+pub fn new_core_ui_algorithm_selection_listener((CoreUiLayoutMetaData) -> Unit) -> CoreUiAlgorithmSelectionListener
+
+pub fn new_core_ui_color(CoreUiDisplay, Int, Int, Int) -> CoreUiColor
+
+pub fn new_core_ui_display() -> CoreUiDisplay
+
+pub fn new_core_ui_execution_event(parameters? : Map[String, String], selection? : CoreUiLayoutSelection, active_editor? : Int?) -> CoreUiExecutionEvent
+
+pub fn new_core_ui_font(CoreUiDisplay, String, Int, Int) -> CoreUiFont
+
+pub fn new_core_ui_graphics() -> CoreUiGraphics
+
+pub fn new_core_ui_image_registry() -> CoreUiImageRegistry
+
+pub fn new_core_ui_paint_event(Int, Int, Int, Int, CoreUiGraphics) -> CoreUiPaintEvent
+
+pub fn new_core_ui_paint_rectangle(Int, Int, Int, Int) -> CoreUiPaintRectangle
+
+pub fn new_core_ui_preference_store() -> CoreUiPreferenceStore
+
+pub fn new_core_ui_property_editor(CoreUiPropertyEditorKind, validator? : (CoreUiValue) -> String?) -> CoreUiPropertyEditor
+
+pub fn new_core_ui_show_layout_view_event(can_open? : Bool) -> CoreUiShowLayoutViewEvent
+
+pub fn new_elk_ui_plugin() -> ElkUiPlugin
+
+pub fn new_graph_renderer(GraphRenderingConfigurator) -> GraphRenderer
+
+pub fn new_graph_rendering_canvas(CoreUiDisplay) -> GraphRenderingCanvas
+
+pub fn new_graph_rendering_canvas_with_configurator(CoreUiDisplay, GraphRenderingConfigurator) -> GraphRenderingCanvas
+
+pub fn new_graph_rendering_configurator(CoreUiDisplay) -> GraphRenderingConfigurator
+
+pub fn new_layout_graph_dialog(Int, String?, GraphRenderingConfigurator) -> LayoutGraphDialog
+
+pub fn new_layout_handler(invoke_layout_fn? : (CoreUiLayoutInvocation) -> Unit) -> LayoutHandler
+
+pub fn new_layout_option_label_provider(@core.LayoutOptionData) -> LayoutOptionLabelProvider
+
+pub fn new_layout_preference_page() -> LayoutPreferencePage
+
+pub fn new_layout_property_descriptor(LayoutPropertySource, @core.LayoutOptionData, Array[@core.LayoutOptionTarget]?) -> LayoutPropertyDescriptor
+
+pub fn new_layout_property_source(@service.ILayoutConfigurationStore, @service.LayoutConfigurationManager) -> LayoutPropertySource
+
+pub fn new_layout_property_source_provider(configuration_store_provider? : @service.LayoutConfigurationStoreProvider?, config_manager? : @service.LayoutConfigurationManager, layout_option_validator_provider? : () -> @core.LayoutOptionValidator) -> LayoutPropertySourceProvider
+
+pub fn new_layout_view_part() -> LayoutViewPart
+
+pub fn new_multiple_options_cell_editor(Array[String], Bool) -> MultipleOptionsCellEditor
+
+pub fn new_show_layout_view_handler() -> ShowLayoutViewHandler
+
+pub fn new_validating_property_sheet_entry() -> ValidatingPropertySheetEntry
+
+// Errors
+
+// Types and methods
+pub(all) struct ActiveEditorSupportedTester {
+  _dummy : Int
+}
+pub fn ActiveEditorSupportedTester::is_supported(Self, Int?) -> Bool
+
+pub(all) struct AlgorithmCellEditor {
+  label_provider : LayoutOptionLabelProvider
+  mut value : String
+  mut apply_count : Int
+  mut cancel_count : Int
+  mut next_dialog_result : String?
+}
+pub fn AlgorithmCellEditor::fire_apply_editor_value(Self) -> Unit
+pub fn AlgorithmCellEditor::get_counts_for_test(Self) -> (Int, Int)
+pub fn AlgorithmCellEditor::get_value(Self) -> String
+pub fn AlgorithmCellEditor::on_double_click(Self) -> Unit
+pub fn AlgorithmCellEditor::open_dialog_box(Self) -> String?
+pub fn AlgorithmCellEditor::set_next_dialog_result_for_test(Self, String?) -> Unit
+pub fn AlgorithmCellEditor::set_value(Self, String) -> Unit
+pub fn AlgorithmCellEditor::update_contents(Self) -> String
+
+pub(all) struct AlgorithmContentProvider {
+  filter_map : Map[String, Bool]
+  mut filter_value : String
+  mut best_filter_match : CoreUiLayoutMetaData?
+}
+pub fn AlgorithmContentProvider::apply_filter(Self, CoreUiLayoutMetaData) -> Bool
+pub fn AlgorithmContentProvider::dispose(Self) -> Unit
+pub fn AlgorithmContentProvider::get_best_filter_match(Self) -> CoreUiLayoutMetaData?
+pub fn AlgorithmContentProvider::get_children(Self, CoreUiLayoutMetaData) -> Array[CoreUiLayoutMetaData]
+pub fn AlgorithmContentProvider::get_elements(Self) -> Array[CoreUiLayoutMetaData]
+pub fn AlgorithmContentProvider::get_parent(Self, CoreUiLayoutMetaData) -> CoreUiLayoutMetaData?
+pub fn AlgorithmContentProvider::has_children(Self, CoreUiLayoutMetaData) -> Bool
+pub fn AlgorithmContentProvider::input_changed(Self, _old_input? : String?, _new_input? : String?) -> Unit
+pub fn AlgorithmContentProvider::update_filter(Self, String?) -> Unit
+
+pub(all) struct AlgorithmSelectionDialog {
+  mut layouter_hint : String
+  mut display_name : String
+  mut description : String
+  mut image : CoreUiImageDescriptor?
+  content_provider : AlgorithmContentProvider
+  image_cache : Map[String, CoreUiImageDescriptor]
+  mut selection_listeners : Array[CoreUiAlgorithmSelectionListener]
+  mut selected_data : CoreUiLayoutMetaData?
+  mut ok_enabled : Bool
+  mut filter_text : String
+  mut shell_text : String
+}
+pub fn AlgorithmSelectionDialog::add_algorithm_selection_listener(Self, CoreUiAlgorithmSelectionListener) -> Unit
+pub fn AlgorithmSelectionDialog::close(Self) -> Bool
+pub fn AlgorithmSelectionDialog::configure_shell(Self) -> Unit
+pub fn AlgorithmSelectionDialog::create_dialog_area(Self) -> Unit
+pub fn AlgorithmSelectionDialog::get_description(Self) -> String
+pub fn AlgorithmSelectionDialog::get_display_name(Self) -> String
+pub fn AlgorithmSelectionDialog::get_filter_text(Self) -> String
+pub fn AlgorithmSelectionDialog::get_image(Self) -> CoreUiImageDescriptor?
+pub fn AlgorithmSelectionDialog::get_selected_hint(Self) -> String
+pub fn AlgorithmSelectionDialog::get_shell_text(Self) -> String
+pub fn AlgorithmSelectionDialog::is_ok_enabled(Self) -> Bool
+pub fn AlgorithmSelectionDialog::remove_algorithm_selection_listener(Self, CoreUiAlgorithmSelectionListener) -> Unit
+pub fn AlgorithmSelectionDialog::select(Self, CoreUiLayoutMetaData) -> Unit
+pub fn AlgorithmSelectionDialog::update_filter_text(Self, String) -> Unit
+pub fn AlgorithmSelectionDialog::update_value(Self, CoreUiLayoutMetaData) -> Unit
+
+pub(all) struct CoreUiAlgorithmSelectionListener {
+  id : Int
+  on_selection_fn : (CoreUiLayoutMetaData) -> Unit
+}
+
+pub(all) struct CoreUiColor {
+  display : CoreUiDisplay
+  r : Int
+  g : Int
+  b : Int
+  mut disposed : Bool
+}
+
+pub(all) struct CoreUiDisplay {
+  id : Int
+}
+pub impl Eq for CoreUiDisplay
+
+pub(all) struct CoreUiExecutionEvent {
+  parameters : Map[String, String]
+  selection : CoreUiLayoutSelection
+  active_editor : Int?
+}
+pub fn CoreUiExecutionEvent::get_parameter(Self, String) -> String?
+
+pub(all) struct CoreUiFont {
+  display : CoreUiDisplay
+  name : String
+  size : Int
+  style : Int
+  mut disposed : Bool
+}
+
+pub(all) struct CoreUiGraphics {
+  operations : Array[String]
+  mut alpha : Int
+  mut font : CoreUiFont?
+}
+pub fn CoreUiGraphics::font_height(Self) -> Int
+pub fn CoreUiGraphics::set_alpha(Self, Int) -> Unit
+pub fn CoreUiGraphics::set_font(Self, CoreUiFont?) -> Unit
+
+pub(all) struct CoreUiImageDescriptor {
+  plugin_id : String
+  path : String
+}
+pub fn CoreUiImageDescriptor::to_string(Self) -> String
+
+pub(all) struct CoreUiImageRegistry {
+  images : Map[String, CoreUiImageDescriptor]
+}
+pub fn CoreUiImageRegistry::get(Self, String) -> CoreUiImageDescriptor?
+pub fn CoreUiImageRegistry::put(Self, String, CoreUiImageDescriptor) -> Unit
+pub fn CoreUiImageRegistry::size(Self) -> Int
+
+pub(all) struct CoreUiLayoutInvocation {
+  editor : Int?
+  diagram_part : Int?
+  selection : CoreUiLayoutSelection
+  animation : Bool
+  progress_dialog : Bool
+  zoom_to_fit : Bool
+}
+
+pub(all) enum CoreUiLayoutMetaData {
+  CoreUiLayoutAlgorithmMeta(@core.LayoutAlgorithmData)
+  CoreUiLayoutCategoryMeta(@core.LayoutCategoryData)
+}
+
+pub(all) enum CoreUiLayoutSelection {
+  CoreUiLayoutSelectionNone
+  CoreUiLayoutSelectionSingle(Int)
+  CoreUiLayoutSelectionMultiple(Array[Int])
+}
+
+pub(all) struct CoreUiPaintEvent {
+  x : Int
+  y : Int
+  width : Int
+  height : Int
+  graphics : CoreUiGraphics
+}
+
+pub(all) struct CoreUiPaintRectangle {
+  x : Int
+  y : Int
+  width : Int
+  height : Int
+  mut painted : Bool
+}
+
+pub(all) struct CoreUiPoint {
+  x : Int
+  y : Int
+}
+
+pub(all) struct CoreUiPreferenceStore {
+  bool_values : Map[String, Bool]
+  bool_defaults : Map[String, Bool]
+  string_values : Map[String, String]
+  string_defaults : Map[String, String]
+}
+pub fn CoreUiPreferenceStore::clear(Self) -> Unit
+pub fn CoreUiPreferenceStore::get_boolean(Self, String) -> Bool
+pub fn CoreUiPreferenceStore::get_default_boolean(Self, String) -> Bool
+pub fn CoreUiPreferenceStore::get_string(Self, String) -> String
+pub fn CoreUiPreferenceStore::set_boolean(Self, String, Bool) -> Unit
+pub fn CoreUiPreferenceStore::set_default_boolean(Self, String, Bool) -> Unit
+pub fn CoreUiPreferenceStore::set_default_string(Self, String, String) -> Unit
+pub fn CoreUiPreferenceStore::set_string(Self, String, String) -> Unit
+
+pub(all) struct CoreUiPropertyEditor {
+  kind : CoreUiPropertyEditorKind
+  validator : (CoreUiValue) -> String?
+}
+pub fn CoreUiPropertyEditor::validate(Self, CoreUiValue) -> String?
+
+pub(all) enum CoreUiPropertyEditorKind {
+  CoreUiPropertyEditorText
+  CoreUiPropertyEditorAlgorithm(String)
+  CoreUiPropertyEditorCombo(Array[String])
+  CoreUiPropertyEditorMultiple(Array[String], Bool)
+}
+
+pub(all) struct CoreUiShowLayoutViewEvent {
+  can_open : Bool
+}
+
+pub(all) enum CoreUiValue {
+  CoreUiStringValue(String)
+  CoreUiIntValue(Int)
+  CoreUiDoubleValue(Double)
+  CoreUiBoolValue(Bool)
+  CoreUiStringsValue(Array[String])
+  CoreUiNoValue
+}
+
+pub(all) struct ElkUiPlugin {
+  mut started : Bool
+  image_registry : CoreUiImageRegistry
+  preference_store : CoreUiPreferenceStore
+}
+pub fn ElkUiPlugin::get_image_registry(Self) -> CoreUiImageRegistry
+pub fn ElkUiPlugin::get_preference_store(Self) -> CoreUiPreferenceStore
+pub fn ElkUiPlugin::is_started(Self) -> Bool
+pub fn ElkUiPlugin::start(Self, _context? : String) -> Unit
+pub fn ElkUiPlugin::stop(Self, _context? : String) -> Unit
+
+pub(all) struct GraphRenderer {
+  bounds_map : Map[String, CoreUiPaintRectangle]
+  configurator : GraphRenderingConfigurator
+  mut scale : Double
+  mut base_offset : @core.KVector
+  mut most_recently_drawn_graph : Int?
+}
+pub fn GraphRenderer::calculate_base_offset_from_top_level_graph(Self, Int) -> Unit
+pub fn GraphRenderer::dispose(Self) -> Unit
+pub fn GraphRenderer::flush_cache(Self) -> Unit
+pub fn GraphRenderer::get_base_offset(Self) -> @core.KVector
+pub fn GraphRenderer::get_scale(Self) -> Double
+pub fn GraphRenderer::make_arrow_for_test(Self, @core.KVector, @core.KVector) -> Array[Int]?
+pub fn GraphRenderer::mark_dirty(Self, CoreUiPaintRectangle?) -> Unit
+pub fn GraphRenderer::render(Self, Int, CoreUiGraphics, CoreUiPaintRectangle) -> Unit
+pub fn GraphRenderer::set_base_offset(Self, @core.KVector?) -> Unit
+pub fn GraphRenderer::set_scale(Self, Double) -> Unit
+
+pub(all) struct GraphRenderingCanvas {
+  mut layout_graph : Int?
+  graph_renderer : GraphRenderer
+  background_color : CoreUiColor
+  display : CoreUiDisplay
+  mut redraw_count : Int
+  mut width : Int
+  mut height : Int
+  mut mouse_interaction_enabled : Bool
+  mut is_dragging : Bool
+  mut last_x : Int
+  mut last_y : Int
+}
+pub fn GraphRenderingCanvas::calculate_required_canvas_size_and_base_offset(Self, Int?) -> @core.KVector
+pub fn GraphRenderingCanvas::compute_size(Self, Int, Int, _changed? : Bool) -> CoreUiPoint
+pub fn GraphRenderingCanvas::dispose(Self) -> Unit
+pub fn GraphRenderingCanvas::get_display(Self) -> CoreUiDisplay
+pub fn GraphRenderingCanvas::get_layout_graph(Self) -> Int?
+pub fn GraphRenderingCanvas::get_redraw_count(Self) -> Int
+pub fn GraphRenderingCanvas::get_renderer(Self) -> GraphRenderer
+pub fn GraphRenderingCanvas::get_size_for_test(Self) -> (Int, Int)
+pub fn GraphRenderingCanvas::handle_mouse_wheel(Self, Int, Int, Int) -> Unit
+pub fn GraphRenderingCanvas::mouse_down(Self, Int, Int) -> Unit
+pub fn GraphRenderingCanvas::mouse_move(Self, Int, Int) -> Unit
+pub fn GraphRenderingCanvas::mouse_up(Self, Int, Int) -> Unit
+pub fn GraphRenderingCanvas::paint_control(Self, CoreUiPaintEvent) -> Unit
+pub fn GraphRenderingCanvas::pan(Self, @core.KVector) -> Unit
+pub fn GraphRenderingCanvas::redraw(Self) -> Unit
+pub fn GraphRenderingCanvas::set_layout_graph(Self, Int?) -> Unit
+pub fn GraphRenderingCanvas::setup_mouse_interaction(Self) -> Unit
+pub fn GraphRenderingCanvas::zoom(Self, Double, @core.KVector) -> Unit
+
+pub(all) struct GraphRenderingConfigurator {
+  mut node_border_color : CoreUiColor?
+  mut node_fill_color : CoreUiColor?
+  mut node_label_font : CoreUiFont?
+  mut node_font_size : Int
+  mut port_border_color : CoreUiColor?
+  mut port_fill_color : CoreUiColor?
+  mut port_label_font : CoreUiFont?
+  mut port_font_size : Int
+  mut edge_color : CoreUiColor?
+  mut edge_label_font : CoreUiFont?
+  mut edge_font_size : Int
+  mut label_border_color : CoreUiColor?
+  mut label_fill_color : CoreUiColor?
+  mut label_text_color : CoreUiColor?
+  mut out_of_bounds_color : CoreUiColor?
+  mut root_node_color : CoreUiColor?
+  display : CoreUiDisplay
+}
+pub fn GraphRenderingConfigurator::dispose(Self) -> Unit
+pub fn GraphRenderingConfigurator::get_display(Self) -> CoreUiDisplay
+pub fn GraphRenderingConfigurator::get_edge_color(Self) -> CoreUiColor?
+pub fn GraphRenderingConfigurator::get_edge_label_font(Self) -> CoreUiFont?
+pub fn GraphRenderingConfigurator::get_label_border_color(Self) -> CoreUiColor?
+pub fn GraphRenderingConfigurator::get_label_fill_color(Self) -> CoreUiColor?
+pub fn GraphRenderingConfigurator::get_label_text_color(Self) -> CoreUiColor?
+pub fn GraphRenderingConfigurator::get_node_border_color(Self) -> CoreUiColor?
+pub fn GraphRenderingConfigurator::get_node_fill_color(Self) -> CoreUiColor?
+pub fn GraphRenderingConfigurator::get_node_label_font(Self) -> CoreUiFont?
+pub fn GraphRenderingConfigurator::get_out_of_bounds_color(Self) -> CoreUiColor?
+pub fn GraphRenderingConfigurator::get_port_border_color(Self) -> CoreUiColor?
+pub fn GraphRenderingConfigurator::get_port_fill_color(Self) -> CoreUiColor?
+pub fn GraphRenderingConfigurator::get_port_label_font(Self) -> CoreUiFont?
+pub fn GraphRenderingConfigurator::get_root_node_color(Self) -> CoreUiColor?
+pub fn GraphRenderingConfigurator::initialize(Self) -> Unit
+pub fn GraphRenderingConfigurator::set_scale(Self, Double) -> Unit
+
+pub(all) struct LayoutGraphDialog {
+  graph : Int
+  resource_file_name : String?
+  configurator : GraphRenderingConfigurator
+  mut graph_canvas : GraphRenderingCanvas?
+  mut shell_text : String
+}
+pub fn LayoutGraphDialog::configure_shell(Self) -> Unit
+pub fn LayoutGraphDialog::create_contents(Self, CoreUiDisplay) -> GraphRenderingCanvas
+pub fn LayoutGraphDialog::get_graph_canvas(Self) -> GraphRenderingCanvas?
+pub fn LayoutGraphDialog::get_shell_text(Self) -> String
+pub fn LayoutGraphDialog::is_resizable(Self) -> Bool
+
+pub(all) struct LayoutHandler {
+  invoke_layout_fn : (CoreUiLayoutInvocation) -> Unit
+  mut last_invocation : CoreUiLayoutInvocation?
+}
+pub fn LayoutHandler::execute(Self, CoreUiExecutionEvent) -> Unit
+pub fn LayoutHandler::get_last_invocation(Self) -> CoreUiLayoutInvocation?
+
+pub(all) struct LayoutOptionLabelProvider {
+  option_data : @core.LayoutOptionData
+}
+pub fn LayoutOptionLabelProvider::get_image(Self, CoreUiValue) -> CoreUiImageDescriptor?
+pub fn LayoutOptionLabelProvider::get_text(Self, CoreUiValue) -> String
+
+pub(all) struct LayoutPreferencePage {
+  mut preference_store : CoreUiPreferenceStore?
+  mut animation : Bool
+  mut zoom : Bool
+  mut progress : Bool
+  mut enable_logging : Bool
+  mut store_logs : Bool
+  mut exec_time : Bool
+}
+pub fn LayoutPreferencePage::create_contents(Self) -> Unit
+pub fn LayoutPreferencePage::get_preference_store(Self) -> CoreUiPreferenceStore?
+pub fn LayoutPreferencePage::get_values(Self) -> (Bool, Bool, Bool, Bool, Bool, Bool)
+pub fn LayoutPreferencePage::init(Self) -> Unit
+pub fn LayoutPreferencePage::open_log_folder(Self) -> Unit
+pub fn LayoutPreferencePage::perform_defaults(Self) -> Unit
+pub fn LayoutPreferencePage::perform_ok(Self) -> Bool
+pub fn LayoutPreferencePage::set_animation(Self, Bool) -> Unit
+pub fn LayoutPreferencePage::set_enable_logging(Self, Bool) -> Unit
+pub fn LayoutPreferencePage::set_exec_time(Self, Bool) -> Unit
+pub fn LayoutPreferencePage::set_progress(Self, Bool) -> Unit
+pub fn LayoutPreferencePage::set_store_logs(Self, Bool) -> Unit
+pub fn LayoutPreferencePage::set_zoom(Self, Bool) -> Unit
+
+pub(all) struct LayoutPropertyDescriptor {
+  source : LayoutPropertySource
+  option_data : @core.LayoutOptionData
+  element_targets : Array[@core.LayoutOptionTarget]?
+  mut label_provider : LayoutOptionLabelProvider?
+}
+pub fn LayoutPropertyDescriptor::create_property_editor(Self) -> CoreUiPropertyEditor?
+pub fn LayoutPropertyDescriptor::get_category(Self) -> String?
+pub fn LayoutPropertyDescriptor::get_description(Self) -> String
+pub fn LayoutPropertyDescriptor::get_display_name(Self) -> String
+pub fn LayoutPropertyDescriptor::get_filter_flags(Self) -> Array[String]?
+pub fn LayoutPropertyDescriptor::get_id(Self) -> String
+pub fn LayoutPropertyDescriptor::get_label_provider(Self) -> LayoutOptionLabelProvider
+pub fn LayoutPropertyDescriptor::get_long_description(Self) -> String
+pub fn LayoutPropertyDescriptor::get_option_data(Self) -> @core.LayoutOptionData
+pub fn LayoutPropertyDescriptor::is_compatible_with(Self, Self) -> Bool
+
+pub(all) struct LayoutPropertySource {
+  layout_config : @service.ILayoutConfigurationStore
+  mut property_descriptors : Array[LayoutPropertyDescriptor]?
+  dependency_options : Map[String, Unit]
+  config_manager : @service.LayoutConfigurationManager
+  mut layout_option_validator : @core.LayoutOptionValidator?
+}
+pub fn LayoutPropertySource::get_editable_value(Self) -> CoreUiValue
+pub fn LayoutPropertySource::get_layout_config(Self) -> @service.ILayoutConfigurationStore
+pub fn LayoutPropertySource::get_property_descriptors(Self) -> Array[LayoutPropertyDescriptor]
+pub fn LayoutPropertySource::get_property_value(Self, String) -> CoreUiValue
+pub fn LayoutPropertySource::is_property_set(Self, String) -> Bool
+pub fn LayoutPropertySource::reset_property_value(Self, String) -> Unit
+pub fn LayoutPropertySource::set_property_value(Self, String, CoreUiValue) -> Unit
+pub fn LayoutPropertySource::set_validator(Self, @core.LayoutOptionValidator) -> Unit
+pub fn LayoutPropertySource::translate_from_ui(Self, CoreUiValue, @core.LayoutOptionData) -> String
+pub fn LayoutPropertySource::translate_to_ui(Self, String?, @core.LayoutOptionData) -> CoreUiValue
+pub fn LayoutPropertySource::validate_property_value(Self, @core.LayoutOptionData, String) -> Array[@core.GraphIssue]?
+
+pub(all) struct LayoutPropertySourceProvider {
+  mut configuration_store_provider : @service.LayoutConfigurationStoreProvider?
+  config_manager : @service.LayoutConfigurationManager
+  layout_option_validator_provider : () -> @core.LayoutOptionValidator
+  mut workbench_part : Int?
+  config_stores : Array[@service.ILayoutConfigurationStore]
+}
+pub fn LayoutPropertySourceProvider::create_property_source(Self, @service.ILayoutConfigurationStore) -> LayoutPropertySource
+pub fn LayoutPropertySourceProvider::get_configuration_manager(Self) -> @service.LayoutConfigurationManager
+pub fn LayoutPropertySourceProvider::get_configuration_stores(Self) -> Array[@service.ILayoutConfigurationStore]
+pub fn LayoutPropertySourceProvider::get_property_source(Self, Int?) -> LayoutPropertySource?
+pub fn LayoutPropertySourceProvider::get_workbench_part(Self) -> Int?
+pub fn LayoutPropertySourceProvider::set_configuration_store_provider(Self, @service.LayoutConfigurationStoreProvider?) -> Unit
+pub fn LayoutPropertySourceProvider::set_workbench_part(Self, Int?) -> Unit
+
+pub(all) struct LayoutViewPart {
+  mut current_prop_source_provider : LayoutPropertySourceProvider?
+  mut categories_checked : Bool
+  mut advanced_checked : Bool
+  mut refresh_count : Int
+  mut selection_entries : Array[ValidatingPropertySheetEntry]
+  mut focused : Bool
+}
+pub fn LayoutViewPart::create_part_control(Self) -> Unit
+pub fn LayoutViewPart::dispose(Self) -> Unit
+pub fn LayoutViewPart::get_property_source_provider(Self) -> LayoutPropertySourceProvider?
+pub fn LayoutViewPart::get_refresh_count(Self) -> Int
+pub fn LayoutViewPart::get_selection(Self) -> Array[ValidatingPropertySheetEntry]
+pub fn LayoutViewPart::get_toolbar_state(Self) -> (Bool, Bool)
+pub fn LayoutViewPart::is_focused(Self) -> Bool
+pub fn LayoutViewPart::refresh(Self) -> Unit
+pub fn LayoutViewPart::set_advanced_checked(Self, Bool) -> Unit
+pub fn LayoutViewPart::set_categories_checked(Self, Bool) -> Unit
+pub fn LayoutViewPart::set_focus(Self) -> Unit
+pub fn LayoutViewPart::set_property_source_provider(Self, LayoutPropertySourceProvider?) -> Unit
+pub fn LayoutViewPart::set_selection(Self, Array[ValidatingPropertySheetEntry]) -> Unit
+
+pub(all) struct MultipleOptionsCellEditor {
+  items : Array[String]
+  decorated_item_values : Bool
+  mut value : Array[String]
+  mut next_dialog_result : Array[String]?
+  mut apply_count : Int
+  mut cancel_count : Int
+}
+pub fn MultipleOptionsCellEditor::get_counts_for_test(Self) -> (Int, Int)
+pub fn MultipleOptionsCellEditor::get_value(Self) -> Array[String]
+pub fn MultipleOptionsCellEditor::on_double_click(Self) -> Unit
+pub fn MultipleOptionsCellEditor::open_dialog_box(Self) -> Array[String]?
+pub fn MultipleOptionsCellEditor::set_next_dialog_result_for_test(Self, Array[String]?) -> Unit
+pub fn MultipleOptionsCellEditor::set_value(Self, Array[String]) -> Unit
+pub fn MultipleOptionsCellEditor::update_contents(Self) -> String
+
+pub(all) struct ShowLayoutViewHandler {
+  mut last_error : String?
+}
+pub fn ShowLayoutViewHandler::execute(Self, CoreUiShowLayoutViewEvent) -> Unit
+pub fn ShowLayoutViewHandler::get_last_error(Self) -> String?
+
+pub(all) struct ValidatingPropertySheetEntry {
+  mut parent : ValidatingPropertySheetEntry?
+  mut source : LayoutPropertySource?
+  mut descriptor : LayoutPropertyDescriptor?
+  mut values : Array[CoreUiValue]
+  mut image : CoreUiImageDescriptor?
+  mut description : String
+}
+pub fn ValidatingPropertySheetEntry::create_child_entry(Self) -> Self
+pub fn ValidatingPropertySheetEntry::get_description(Self) -> String
+pub fn ValidatingPropertySheetEntry::get_image(Self) -> CoreUiImageDescriptor?
+pub fn ValidatingPropertySheetEntry::get_parent(Self) -> Self?
+pub fn ValidatingPropertySheetEntry::get_source(Self) -> LayoutPropertySource?
+pub fn ValidatingPropertySheetEntry::set_description(Self, String) -> Unit
+pub fn ValidatingPropertySheetEntry::set_descriptor(Self, LayoutPropertyDescriptor?) -> Unit
+pub fn ValidatingPropertySheetEntry::set_image(Self, CoreUiImageDescriptor?) -> Unit
+pub fn ValidatingPropertySheetEntry::set_parent(Self, Self?) -> Unit
+pub fn ValidatingPropertySheetEntry::set_source(Self, LayoutPropertySource?) -> Unit
+pub fn ValidatingPropertySheetEntry::set_values(Self, Array[CoreUiValue]) -> Unit
+pub fn ValidatingPropertySheetEntry::validate(Self) -> Array[@core.GraphIssue]
+
+// Type aliases
+
+// Traits
+

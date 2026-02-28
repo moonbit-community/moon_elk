@@ -1,0 +1,359 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/moon_elk/alg/rectpacking"
+
+import {
+  "Milky2018/moon_elk/core",
+  "Milky2018/moon_elk/graph",
+}
+
+// Values
+pub fn new_interactive_rectpacking_graph_visitor() -> InteractiveRectPackingGraphVisitor
+
+pub fn new_rectpacking_area_approximation(Double, RectpackingOptimizationGoal, Bool) -> RectpackingAreaApproximation
+
+pub fn new_rectpacking_block(Double, Double, RectRow, Double) -> Block
+
+pub fn new_rectpacking_block_row(Double, Double, Double) -> BlockRow
+
+pub fn new_rectpacking_block_stack(Double, Double, Double) -> BlockStack
+
+pub fn new_rectpacking_compactor_layout_phase() -> @core.ILayoutProcessor[RectPackingLayoutPhases, Int]
+
+pub fn new_rectpacking_drawing_data(Double, Double, Double, RectpackingDrawingDataDescriptor, next_x_coordinate? : Double, next_y_coordinate? : Double) -> RectpackingDrawingData
+
+pub fn new_rectpacking_equal_whitespace_eliminator_layout_phase() -> @core.ILayoutProcessor[RectPackingLayoutPhases, Int]
+
+pub fn new_rectpacking_greedy_width_approximator_layout_phase() -> @core.ILayoutProcessor[RectPackingLayoutPhases, Int]
+
+pub fn new_rectpacking_interactive_node_reorderer_layout_processor() -> @core.ILayoutProcessor[RectPackingLayoutPhases, Int]
+
+pub fn new_rectpacking_layout_provider() -> RectPackingLayoutProvider
+
+pub fn new_rectpacking_min_size_post_processor_layout_processor() -> @core.ILayoutProcessor[RectPackingLayoutPhases, Int]
+
+pub fn new_rectpacking_min_size_pre_processor_layout_processor() -> @core.ILayoutProcessor[RectPackingLayoutPhases, Int]
+
+pub fn new_rectpacking_no_placement_layout_phase() -> @core.ILayoutProcessor[RectPackingLayoutPhases, Int]
+
+pub fn new_rectpacking_node_size_reorderer_layout_processor() -> @core.ILayoutProcessor[RectPackingLayoutPhases, Int]
+
+pub fn new_rectpacking_rect_row(Double, Double) -> RectRow
+
+pub fn new_rectpacking_row_filling_and_compaction(Double, Double) -> RectpackingRowFillingAndCompaction
+
+pub fn new_rectpacking_simple_placement_layout_phase() -> @core.ILayoutProcessor[RectPackingLayoutPhases, Int]
+
+pub fn new_rectpacking_target_width_approximator_layout_phase() -> @core.ILayoutProcessor[RectPackingLayoutPhases, Int]
+
+pub fn new_rectpacking_to_aspectratio_node_expander_layout_phase() -> @core.ILayoutProcessor[RectPackingLayoutPhases, Int]
+
+pub let rectpacking_algorithm_id : String
+
+pub fn rectpacking_area_filter(Array[RectpackingDrawingData], Double, @core.Spacing) -> Array[RectpackingDrawingData]
+
+pub let rectpacking_aspect_ratio : @graph.IProperty[Double]
+
+pub fn rectpacking_aspect_ratio_filter(Array[RectpackingDrawingData], Double, @core.Spacing) -> Array[RectpackingDrawingData]
+
+pub fn rectpacking_calculate_dimensions_rectangles(Array[Int]) -> @core.KVector
+
+pub fn rectpacking_calculate_dimensions_rows(Array[RectRow], Double) -> @core.KVector
+
+pub fn rectpacking_calculations_area_lpb(Int, Int, RectpackingDrawingData) -> Double
+
+pub fn rectpacking_calculations_area_lpr(Int, Int, RectpackingDrawingData) -> Double
+
+pub fn rectpacking_calculations_height_lpr_or_lpb(Double, Double, Double) -> Double
+
+pub fn rectpacking_calculations_width_lpr_or_lpb(Double, Double, Double) -> Double
+
+pub fn rectpacking_calculations_x_for_lpb(Double, Array[Int], Int, Double) -> Double
+
+pub fn rectpacking_calculations_y_for_lpr(Double, Array[Int], Int, Double) -> Double
+
+pub fn rectpacking_compaction_compact(Int, Array[RectRow], Double, Double, Bool) -> (Bool, Bool)
+
+pub fn rectpacking_compute_scale_measure(Double, Double, Double) -> Double
+
+pub let rectpacking_current_position : @graph.IProperty[Double]
+
+pub let rectpacking_desired_position : @graph.IProperty[Double]
+
+pub let rectpacking_in_new_row : @graph.IProperty[Bool]
+
+pub fn rectpacking_initial_placement_is_similar_height(Block, Int, Double) -> Bool
+
+pub fn rectpacking_initial_placement_place(Array[Int], Double, Double) -> Array[RectRow]
+
+pub fn rectpacking_initial_placement_place_rect_in_block(RectRow, Block, Int, Double, Double) -> Bool
+
+pub let rectpacking_interactive : @graph.IProperty[Bool]
+
+pub fn rectpacking_intermediate_processor_factory(RectpackingIntermediateProcessorStrategy) -> @core.ILayoutProcessorFactory[RectPackingLayoutPhases, Int]
+
+pub let rectpacking_internal_additional_height : @graph.IProperty[Double]
+
+pub fn rectpacking_internal_clear_rows(Int) -> Unit
+
+pub let rectpacking_internal_drawing_height : @graph.IProperty[Double]
+
+pub let rectpacking_internal_drawing_width : @graph.IProperty[Double]
+
+pub fn rectpacking_internal_get_rows(Int) -> Array[RectRow]?
+
+pub fn rectpacking_internal_has_rows(Int) -> Bool
+
+pub let rectpacking_internal_max_row_decrease : @graph.IProperty[Double]
+
+pub let rectpacking_internal_max_row_increase : @graph.IProperty[Double]
+
+pub let rectpacking_internal_min_height : @graph.IProperty[Double]
+
+pub let rectpacking_internal_min_row_decrease : @graph.IProperty[Double]
+
+pub let rectpacking_internal_min_row_increase : @graph.IProperty[Double]
+
+pub let rectpacking_internal_min_width : @graph.IProperty[Double]
+
+pub fn rectpacking_internal_set_rows(Int, Array[RectRow]) -> Unit
+
+pub let rectpacking_internal_target_width : @graph.IProperty[Double]
+
+pub fn rectpacking_layout_provider_as_layout_provider(RectPackingLayoutProvider) -> @core.AbstractLayoutProvider
+
+pub fn rectpacking_node_size_compare(Int, Int) -> Int
+
+pub let rectpacking_node_size_fixed_graph_size : @graph.IProperty[Bool]
+
+pub let rectpacking_omit_node_micro_layout : @graph.IProperty[Bool]
+
+pub fn rectpacking_optimization_goal_from_string(String) -> RectpackingOptimizationGoal
+
+pub let rectpacking_order_by_size : @graph.IProperty[Bool]
+
+pub let rectpacking_packing_compaction_iterations : @graph.IProperty[Double]
+
+pub let rectpacking_packing_compaction_row_height_reevaluation : @graph.IProperty[Bool]
+
+pub let rectpacking_packing_strategy : @graph.IProperty[String]
+
+pub fn rectpacking_packing_strategy_from_string(String) -> RectpackingPackingStrategy
+
+pub fn rectpacking_packing_strategy_phase_factory(RectpackingPackingStrategy) -> @core.ILayoutProcessorFactory[RectPackingLayoutPhases, Int]
+
+pub let rectpacking_padding : @graph.IProperty[String]
+
+pub let rectpacking_phase_descriptor : @core.PhaseDescriptor[RectPackingLayoutPhases]
+
+pub fn rectpacking_rectangle_expansion_expand(Array[RectRow], Double, Double, Double) -> Unit
+
+pub fn rectpacking_reset_coordinates(Array[Int]) -> Unit
+
+pub fn rectpacking_scale_measure_filter(Array[RectpackingDrawingData], Double, @core.Spacing) -> Array[RectpackingDrawingData]
+
+pub let rectpacking_spacing_node_node : @graph.IProperty[Double]
+
+pub let rectpacking_trybox : @graph.IProperty[Bool]
+
+pub let rectpacking_white_space_elimination_strategy : @graph.IProperty[String]
+
+pub fn rectpacking_whitespace_elimination_strategy_from_string(String) -> RectpackingWhiteSpaceEliminationStrategy
+
+pub fn rectpacking_whitespace_elimination_strategy_phase_factory(RectpackingWhiteSpaceEliminationStrategy) -> @core.ILayoutProcessorFactory[RectPackingLayoutPhases, Int]
+
+pub fn rectpacking_width_approximation_exception_message(RectpackingWidthApproximationException) -> String
+
+pub let rectpacking_width_approximation_last_place_shift : @graph.IProperty[Bool]
+
+pub let rectpacking_width_approximation_optimization_goal : @graph.IProperty[String]
+
+pub let rectpacking_width_approximation_strategy : @graph.IProperty[String]
+
+pub fn rectpacking_width_approximation_strategy_from_string(String) -> RectpackingWidthApproximationStrategy
+
+pub fn rectpacking_width_approximation_strategy_phase_factory(RectpackingWidthApproximationStrategy) -> @core.ILayoutProcessorFactory[RectPackingLayoutPhases, Int]
+
+pub let rectpacking_width_approximation_target_width : @graph.IProperty[Double]
+
+// Errors
+pub suberror RectpackingWidthApproximationException {
+  RectpackingWidthApproximationException(String)
+}
+pub impl Show for RectpackingWidthApproximationException
+pub impl ToJson for RectpackingWidthApproximationException
+
+// Types and methods
+pub struct Block {
+  id : Int
+  mut smallest_rect_width : Double
+  mut min_width : Double
+  mut width : Double
+  mut min_height : Double
+  mut smallest_rect_height : Double
+  mut average_height : Double
+  mut max_height : Double
+  mut height : Double
+  children : Array[Int]
+  mut rows : Array[BlockRow]
+  mut x : Double
+  mut y : Double
+  mut parent_row : RectRow
+  mut stack : BlockStack?
+  node_node_spacing : Double
+  mut fixed : Bool
+  mut position_fixed : Bool
+}
+pub fn Block::add_child(Self, Int) -> Unit
+pub fn Block::add_child_in_new_row(Self, Int) -> Unit
+pub fn Block::expand(Self, Double, Double) -> Unit
+pub fn Block::get_height_for_target_width(Self, Double) -> Double
+pub fn Block::get_width_for_target_height(Self, Double) -> Double
+pub fn Block::last_row(Self) -> BlockRow
+pub fn Block::last_row_new_x(Self) -> Double
+pub fn Block::last_row_y(Self) -> Double
+pub fn Block::place_rects_in(Self, Double, Double) -> Bool
+pub fn Block::place_rects_in_width(Self, Double) -> Bool
+pub fn Block::remove_child(Self, Int) -> Unit
+pub fn Block::reset_block(Self) -> Unit
+pub fn Block::set_location(Self, Double, Double) -> Unit
+
+pub struct BlockRow {
+  mut x : Double
+  mut y : Double
+  mut width : Double
+  mut height : Double
+  node_node_spacing : Double
+  nodes : Array[Int]
+}
+pub fn BlockRow::add_rectangle(Self, Int) -> Bool
+pub fn BlockRow::expand(Self, Double, Double, Int) -> Unit
+pub fn BlockRow::remove_rectangle(Self, Int, Bool) -> Unit
+pub fn BlockRow::update_row(Self) -> Unit
+
+pub struct BlockStack {
+  blocks : Array[Block]
+  mut x : Double
+  mut y : Double
+  mut width : Double
+  mut height : Double
+  node_node_spacing : Double
+}
+pub fn BlockStack::add_block(Self, Block) -> Unit
+pub fn BlockStack::expand(Self, Double, Double) -> Unit
+pub fn BlockStack::get_width_for_fixed_height(Self, Double) -> Double
+pub fn BlockStack::place_rects_in(Self, Double) -> Unit
+pub fn BlockStack::set_location(Self, Double, Double) -> Unit
+pub fn BlockStack::update_dimension(Self) -> Unit
+
+pub struct InteractiveRectPackingGraphVisitor {
+  visitor : @core.IGraphElementVisitor
+}
+pub fn InteractiveRectPackingGraphVisitor::set_interactive_options(Self, Int) -> Unit
+pub fn InteractiveRectPackingGraphVisitor::visit(Self, Int) -> Unit
+
+pub enum RectPackingLayoutPhases {
+  P1_WIDTH_APPROXIMATION
+  P2_PACKING
+  P3_WHITESPACE_ELIMINATION
+}
+
+pub struct RectPackingLayoutProvider {
+  algorithm_assembler : @core.AlgorithmAssembler[RectPackingLayoutPhases, Int]
+}
+pub fn RectPackingLayoutProvider::assemble_algorithm(Self, Int) -> Array[@core.ILayoutProcessor[RectPackingLayoutPhases, Int]]
+pub fn RectPackingLayoutProvider::layout(Self, Int, @core.IElkProgressMonitor) -> Unit
+
+pub struct RectRow {
+  mut height : Double
+  mut width : Double
+  mut y : Double
+  node_node_spacing : Double
+  children : Array[Block]
+  mut stacks : Array[BlockStack]
+  potential_additional_width_to_get_last_block : Double
+}
+pub fn RectRow::add_block(Self, Block) -> Unit
+pub fn RectRow::calculate_block_stacks(Self) -> Unit
+pub fn RectRow::expand(Self, Double, Double) -> Unit
+pub fn RectRow::first_block(Self) -> Block
+pub fn RectRow::last_block(Self) -> Block
+pub fn RectRow::notify_about_node_change(Self) -> Unit
+pub fn RectRow::number_of_assigned_blocks(Self) -> Int
+pub fn RectRow::remove_block(Self, Block) -> Unit
+pub fn RectRow::reset_stacks(Self) -> Unit
+pub fn RectRow::set_y(Self, Double) -> Unit
+
+pub struct RectpackingAreaApproximation {
+  aspect_ratio : Double
+  goal : RectpackingOptimizationGoal
+  last_place_shift : Bool
+}
+pub fn RectpackingAreaApproximation::approx_bounding_box(Self, Array[Int], Double, @core.Spacing) -> RectpackingDrawingData raise RectpackingWidthApproximationException
+
+pub struct RectpackingDrawingData {
+  mut scale_measure : Double
+  mut drawing_width : Double
+  mut drawing_height : Double
+  mut area : Double
+  mut aspect_ratio : Double
+  desired_aspect_ratio : Double
+  mut placement_option : RectpackingDrawingDataDescriptor
+  next_x_coordinate : Double
+  next_y_coordinate : Double
+}
+pub fn RectpackingDrawingData::set_drawing_height(Self, Double) -> Unit
+pub fn RectpackingDrawingData::set_drawing_width(Self, Double) -> Unit
+
+pub enum RectpackingDrawingDataDescriptor {
+  CANDIDATE_POSITION_LAST_PLACED_RIGHT
+  CANDIDATE_POSITION_LAST_PLACED_BELOW
+  CANDIDATE_POSITION_WHOLE_DRAWING_RIGHT
+  CANDIDATE_POSITION_WHOLE_DRAWING_BELOW
+  WHOLE_DRAWING
+}
+
+pub enum RectpackingIntermediateProcessorStrategy {
+  NODE_SIZE_REORDERER
+  INTERACTIVE_NODE_REORDERER
+  MIN_SIZE_PRE_PROCESSOR
+  MIN_SIZE_POST_PROCESSOR
+}
+
+pub enum RectpackingOptimizationGoal {
+  ASPECT_RATIO_DRIVEN
+  MAX_SCALE_DRIVEN
+  AREA_DRIVEN
+}
+
+pub enum RectpackingPackingStrategy {
+  COMPACTION
+  SIMPLE
+  NONE
+}
+
+pub struct RectpackingRowFillingAndCompaction {
+  aspect_ratio : Double
+  node_node_spacing : Double
+  mut potential_row_width_decrease_min : Double
+  mut potential_row_width_decrease_max : Double
+  mut potential_row_width_increase_min : Double
+  mut potential_row_width_increase_max : Double
+}
+pub fn RectpackingRowFillingAndCompaction::start(Self, Array[Int], @core.IElkProgressMonitor?, Int, @core.Spacing) -> RectpackingDrawingData
+
+pub enum RectpackingWhiteSpaceEliminationStrategy {
+  EQUAL_BETWEEN_STRUCTURES
+  TO_ASPECT_RATIO
+  NONE
+}
+
+pub enum RectpackingWidthApproximationStrategy {
+  GREEDY
+  TARGET_WIDTH
+}
+
+// Type aliases
+pub type RectpackingBestCandidateFilter = (Array[RectpackingDrawingData], Double, @core.Spacing) -> Array[RectpackingDrawingData]
+
+// Traits
+

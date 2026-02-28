@@ -1,0 +1,22 @@
+import {
+  "moonbitlang/core/cmp",
+  "moonbitlang/core/buffer",
+  "moonbitlang/core/double",
+  "moonbitlang/core/float",
+  "moonbitlang/core/int",
+  "moonbitlang/core/math",
+  "moonbitlang/core/json",
+  "moonbitlang/core/random",
+  "moonbitlang/core/strconv",
+}
+
+import {
+  "Milky2018/moon_elk/core",
+  "Milky2018/moon_elk/graph",
+  "Milky2018/moon_elk/alg/layered",
+  "Milky2018/moon_elk/alg/radial",
+  "Milky2018/moon_elk/alg/rectpacking",
+  "Milky2018/moon_elk/alg/spore",
+  "Milky2018/moon_elk/alg/test",
+  "Milky2018/moon_elk/alg/vertiflex",
+} for "test"

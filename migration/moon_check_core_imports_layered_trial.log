@@ -1,0 +1,11 @@
+2026-02-19T05:54:41.697959Z  WARN moonbuild_rupes_recta::pkg_solve::solve:261: Duplicate alias `debug` at "/Users/zhengyu/Documents/projects/moon_elk/src/alg/disco/debug/moon.pkg". "test-import" will automatically add "import" and current package as dependency so you don't need to add it manually. If you're test-importing a dependency with the same default alias as your current package, considering give it a different alias than the current package. Violating import: `Milky2018/moon_elk/core/debug`
+2026-02-19T05:54:41.698392Z  WARN moonbuild_rupes_recta::pkg_solve::solve:261: Duplicate alias `json` at "/Users/zhengyu/Documents/projects/moon_elk/src/graph/json/moon.pkg". "test-import" will automatically add "import" and current package as dependency so you don't need to add it manually. If you're test-importing a dependency with the same default alias as your current package, considering give it a different alias than the current package. Violating import: `moonbitlang/core/json`
+2026-02-19T05:54:41.698455Z  WARN moonbuild_rupes_recta::pkg_solve::solve:261: Duplicate alias `ui` at "/Users/zhengyu/Documents/projects/moon_elk/src/graph/json/text/ui/moon.pkg". "test-import" will automatically add "import" and current package as dependency so you don't need to add it manually. If you're test-importing a dependency with the same default alias as your current package, considering give it a different alias than the current package. Violating import: `Milky2018/moon_elk/core/ui`
+2026-02-19T05:54:41.698507Z  WARN moonbuild_rupes_recta::pkg_solve::solve:261: Duplicate alias `ui` at "/Users/zhengyu/Documents/projects/moon_elk/src/graph/text/ui/moon.pkg". "test-import" will automatically add "import" and current package as dependency so you don't need to add it manually. If you're test-importing a dependency with the same default alias as your current package, considering give it a different alias than the current package. Violating import: `Milky2018/moon_elk/core/ui`
+error: Failed to calculate build plan
+
+Caused by:
+    0: Failed to solve package relationship
+    1: Multiple errors occurred during package solving:
+       Error 1: Import loop detected: Milky2018/moon_elk/alg/common -> Milky2018/moon_elk/core -> Milky2018/moon_elk/alg/layered -> Milky2018/moon_elk/alg/common
+       

@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+
+jobs:
+  quality:
+    name: ${{ matrix.name }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: ubuntu-amd64
+            os: ubuntu-latest
+          - name: macos-arm64
+            os: macos-14
+          - name: windows-amd64
+            os: windows-latest
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup MoonBit
+        uses: ./.github/actions/setup-moonbit
+
+      - name: Show Moon Version
+        shell: bash
+        run: moon version --all
+
+      - name: Sync Dependencies
+        shell: bash
+        run: moon update
+
+      - name: Check (deny warnings)
+        shell: bash
+        run: moon check --deny-warn
+
+      - name: Format Check
+        shell: bash
+        run: moon fmt --check
+
+      - name: Info Check
+        shell: bash
+        run: |
+          if moon info --help | grep -q -- '--check'; then
+            moon info --check
+          else
+            moon info --quiet
+            if git status --porcelain | grep -E '\.mbti$' >/dev/null; then
+              echo "moon info would update .mbti files. Run 'moon info' locally and commit changes."
+              git --no-pager diff -- '*.mbti'
+              exit 1
+            fi
+          fi
+
+      - name: Test
+        shell: bash
+        run: moon test

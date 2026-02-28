@@ -4,5 +4,15 @@ target/
 target
 .mooncakes/
 .moonagent/
+.beads/
+.moon_*/
+src/diff/option_probe/
+src/diff/random_copy_probe/
+src/diff/elkjs_core_compare_runner_tmp/
+src/diff/default_probe/
+src/diff/layered_import_probe/
+scripts/diff/__pycache__/
 elk-reference/
 elkjs-reference/
+artifacts/
+elk-models/

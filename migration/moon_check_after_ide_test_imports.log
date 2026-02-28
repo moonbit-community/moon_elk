@@ -1,0 +1,5 @@
+error: Failed to calculate build plan
+
+Caused by:
+    0: Failed when discovering packages
+    1: Unable to read `moon.pkg.json` for module 'Milky2018/moon_elk@0.1.0 (local /Users/zhengyu/Documents/projects/moon_elk)' package 'core/debug/grandom/ide' at path '/Users/zhengyu/Documents/projects/moon_elk/src/core/debug/grandom/ide', error: Parsing error: UnexpectedToken(LIDENT((Pos { line: 18, column: 7 }..Pos { line: 18, column: 11 }, "test")))

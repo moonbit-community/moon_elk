@@ -1,0 +1,563 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/moon_elk/graph/json/text"
+
+import {
+  "Milky2018/moon_elk/core",
+  "Milky2018/moon_elk/graph",
+}
+
+// Values
+pub fn elk_graph_json_json_text_util_get_algorithm(GraphJsonTextElement) -> @core.LayoutAlgorithmData?
+
+pub let elk_graph_json_qualified_name_converter_delimiter : Char
+
+pub fn elk_graph_json_standalone_setup_do_setup() -> GraphJsonTextInjector
+
+pub let graph_json_text_antlr_token_file_content : String
+
+pub let graph_json_text_antlr_token_file_path : String
+
+pub let graph_json_text_default_file_extension : String
+
+pub let graph_json_text_default_language_name : String
+
+pub let graph_json_text_default_serializer_class_name : String
+
+pub fn graph_json_text_element_identifier(GraphJsonTextElement) -> String?
+
+pub let graph_json_text_feature_edge_section_identifier : String
+
+pub let graph_json_text_feature_edge_section_incoming_shape : String
+
+pub let graph_json_text_feature_edge_section_outgoing_shape : String
+
+pub let graph_json_text_feature_graph_identifier : String
+
+pub let graph_json_text_feature_property_key : String
+
+pub let graph_json_text_feature_property_value : String
+
+pub let graph_json_text_file_extension : String
+
+pub let graph_json_text_grammar_name : String
+
+pub let graph_json_text_issue_code_prefix : String
+
+pub let graph_json_text_issue_error : Int
+
+pub let graph_json_text_issue_warning : Int
+
+pub fn graph_json_text_label_owner_to_parent(GraphJsonTextLabelOwner) -> @graph.ElkLabelParent
+
+pub let graph_json_text_lexer_rule_any_other : Int
+
+pub let graph_json_text_lexer_rule_float : Int
+
+pub let graph_json_text_lexer_rule_id : Int
+
+pub let graph_json_text_lexer_rule_int : Int
+
+pub let graph_json_text_lexer_rule_ml_comment : Int
+
+pub let graph_json_text_lexer_rule_signed_int : Int
+
+pub let graph_json_text_lexer_rule_sl_comment : Int
+
+pub let graph_json_text_lexer_rule_string : Int
+
+pub let graph_json_text_lexer_rule_ws : Int
+
+pub let graph_json_text_lexer_token_names : Array[String]
+
+pub let graph_json_text_opposite_ref_incoming_edges : String
+
+pub let graph_json_text_opposite_ref_incoming_sections : String
+
+pub let graph_json_text_opposite_ref_outgoing_edges : String
+
+pub let graph_json_text_option_not_applicable : String
+
+pub fn graph_json_text_property_key_group(GraphJsonTextPropertyKey) -> String
+
+pub fn graph_json_text_property_key_id(GraphJsonTextPropertyKey) -> String
+
+pub fn graph_json_text_property_key_to_layout_option(GraphJsonTextPropertyKey) -> @core.LayoutOptionData?
+
+pub fn graph_json_text_property_value_to_string(GraphJsonTextPropertyValue) -> String
+
+pub let graph_json_text_reference_elk_edge_section_outgoing_sections : String
+
+pub fn graph_json_text_registered_resource_factory(String) -> String?
+
+pub fn graph_json_text_registered_resource_service_provider(String) -> String?
+
+pub fn graph_json_text_reset_registries_for_test() -> Unit
+
+pub let graph_json_text_resource_factory_value : String
+
+pub let graph_json_text_resource_service_provider_value : String
+
+pub fn graph_json_text_shape_set_location(GraphJsonTextShape, Double, Double) -> Unit
+
+pub fn graph_json_text_shape_set_size(GraphJsonTextShape, Double, Double) -> Unit
+
+pub fn new_abstract_elk_graph_json_runtime_module(properties? : Map[String, String]) -> AbstractElkGraphJsonRuntimeModule
+
+pub fn new_abstract_elk_graph_json_scope_provider() -> AbstractElkGraphJsonScopeProvider
+
+pub fn new_abstract_elk_graph_json_semantic_sequencer(grammar_access? : ElkGraphJsonGrammarAccess) -> AbstractElkGraphJsonSemanticSequencer
+
+pub fn new_abstract_elk_graph_json_syntactic_sequencer(grammar_access? : ElkGraphJsonGrammarAccess) -> AbstractElkGraphJsonSyntacticSequencer
+
+pub fn new_abstract_elk_graph_json_validator() -> AbstractElkGraphJsonValidator
+
+pub fn new_elk_graph_json_antlr_token_file_provider() -> ElkGraphJsonAntlrTokenFileProvider
+
+pub fn new_elk_graph_json_configurable_issue_codes_provider() -> ElkGraphJsonConfigurableIssueCodesProvider
+
+pub fn new_elk_graph_json_formatter(indent_size? : Int) -> ElkGraphJsonFormatter
+
+pub fn new_elk_graph_json_generator() -> ElkGraphJsonGenerator
+
+pub fn new_elk_graph_json_grammar_access() -> ElkGraphJsonGrammarAccess
+
+pub fn new_elk_graph_json_json_text_util() -> ElkGraphJsonJsonTextUtil
+
+pub fn new_elk_graph_json_lex_token(Int, String, String) -> ElkGraphJsonLexToken
+
+pub fn new_elk_graph_json_linker() -> ElkGraphJsonLinker
+
+pub fn new_elk_graph_json_parser(grammar_access? : ElkGraphJsonGrammarAccess) -> ElkGraphJsonParser
+
+pub fn new_elk_graph_json_qualified_name_converter() -> ElkGraphJsonQualifiedNameConverter
+
+pub fn new_elk_graph_json_qualified_name_provider() -> ElkGraphJsonQualifiedNameProvider
+
+pub fn new_elk_graph_json_runtime_module(base? : AbstractElkGraphJsonRuntimeModule) -> ElkGraphJsonRuntimeModule
+
+pub fn new_elk_graph_json_scope_provider(base? : AbstractElkGraphJsonScopeProvider) -> ElkGraphJsonScopeProvider
+
+pub fn new_elk_graph_json_semantic_sequencer(base? : AbstractElkGraphJsonSemanticSequencer, value_converter? : GraphJsonTextPropertyValueValueConverter) -> ElkGraphJsonSemanticSequencer
+
+pub fn new_elk_graph_json_standalone_setup() -> ElkGraphJsonStandaloneSetup
+
+pub fn new_elk_graph_json_standalone_setup_generated() -> ElkGraphJsonStandaloneSetupGenerated
+
+pub fn new_elk_graph_json_syntactic_sequencer(base? : AbstractElkGraphJsonSyntacticSequencer) -> ElkGraphJsonSyntacticSequencer
+
+pub fn new_elk_graph_json_transient_value_service() -> ElkGraphJsonTransientValueService
+
+pub fn new_elk_graph_json_validator(base? : AbstractElkGraphJsonValidator, layout_option_validator? : @core.LayoutOptionValidator, value_converter? : GraphJsonTextPropertyValueValueConverter) -> ElkGraphJsonValidator
+
+pub fn new_elk_graph_json_value_converter_service(number_value_converter? : GraphJsonTextNumberValueConverter, property_key_value_converter? : GraphJsonTextPropertyKeyValueConverter, property_value_value_converter? : GraphJsonTextPropertyValueValueConverter) -> ElkGraphJsonValueConverterService
+
+pub fn new_graph_json_text_injector() -> GraphJsonTextInjector
+
+pub fn new_graph_json_text_number_value_converter() -> GraphJsonTextNumberValueConverter
+
+pub fn new_graph_json_text_pending_outgoing_section(Int, String) -> GraphJsonTextPendingOutgoingSection
+
+pub fn new_graph_json_text_property_assignment(GraphJsonTextPropertyKey, GraphJsonTextPropertyValue) -> GraphJsonTextPropertyAssignment
+
+pub fn new_graph_json_text_property_key_value_converter() -> GraphJsonTextPropertyKeyValueConverter
+
+pub fn new_graph_json_text_property_value_value_converter(qualified_name_converter? : ElkGraphJsonQualifiedNameConverter) -> GraphJsonTextPropertyValueValueConverter
+
+pub fn new_graph_json_text_validation_issue(String, String, Int, code? : String?) -> GraphJsonTextValidationIssue
+
+pub fn new_internal_elk_graph_json_lexer(String) -> InternalElkGraphJsonLexer
+
+pub fn new_internal_elk_graph_json_parser(Array[ElkGraphJsonLexToken], grammar_access? : ElkGraphJsonGrammarAccess) -> InternalElkGraphJsonParser
+
+// Errors
+pub suberror ElkGraphJsonQualifiedNameConverterException {
+  ElkGraphJsonQualifiedNameConverterException(String)
+}
+pub impl Show for ElkGraphJsonQualifiedNameConverterException
+pub impl ToJson for ElkGraphJsonQualifiedNameConverterException
+
+pub suberror GraphJsonTextNumberValueConverterException {
+  GraphJsonTextNumberValueConverterException(String)
+}
+pub impl Show for GraphJsonTextNumberValueConverterException
+pub impl ToJson for GraphJsonTextNumberValueConverterException
+
+pub suberror GraphJsonTextPropertyKeyValueConverterException {
+  GraphJsonTextPropertyKeyValueConverterException(String)
+}
+pub impl Show for GraphJsonTextPropertyKeyValueConverterException
+pub impl ToJson for GraphJsonTextPropertyKeyValueConverterException
+
+// Types and methods
+pub struct AbstractElkGraphJsonRuntimeModule {
+  mut properties : Map[String, String]
+}
+pub fn AbstractElkGraphJsonRuntimeModule::bind_class_loader_to_instance(Self) -> String
+pub fn AbstractElkGraphJsonRuntimeModule::bind_elk_graph_json_validator(Self) -> String
+pub fn AbstractElkGraphJsonRuntimeModule::bind_i_all_containers_state_provider(Self) -> String
+pub fn AbstractElkGraphJsonRuntimeModule::bind_i_container_manager(Self) -> String
+pub fn AbstractElkGraphJsonRuntimeModule::bind_i_global_scope_provider(Self) -> String
+pub fn AbstractElkGraphJsonRuntimeModule::bind_i_qualified_name_provider(Self) -> String
+pub fn AbstractElkGraphJsonRuntimeModule::bind_i_scope_provider(Self) -> String
+pub fn AbstractElkGraphJsonRuntimeModule::bind_iantlr_token_file_provider(Self) -> String
+pub fn AbstractElkGraphJsonRuntimeModule::bind_iformatter2(Self) -> String
+pub fn AbstractElkGraphJsonRuntimeModule::bind_igrammar_access(Self) -> String
+pub fn AbstractElkGraphJsonRuntimeModule::bind_iparser(Self) -> String
+pub fn AbstractElkGraphJsonRuntimeModule::bind_isemantic_sequencer(Self) -> String
+pub fn AbstractElkGraphJsonRuntimeModule::bind_iserializer(Self) -> String
+pub fn AbstractElkGraphJsonRuntimeModule::bind_isyntactic_sequencer(Self) -> String
+pub fn AbstractElkGraphJsonRuntimeModule::bind_itoken_def_provider(Self) -> String
+pub fn AbstractElkGraphJsonRuntimeModule::bind_itoken_to_string_converter(Self) -> String
+pub fn AbstractElkGraphJsonRuntimeModule::bind_iunordered_group_helper(Self) -> String
+pub fn AbstractElkGraphJsonRuntimeModule::bind_lexer(Self) -> String
+pub fn AbstractElkGraphJsonRuntimeModule::configure(Self, Map[String, String]) -> Unit
+pub fn AbstractElkGraphJsonRuntimeModule::configure_file_extensions(Self) -> String
+pub fn AbstractElkGraphJsonRuntimeModule::configure_formatter_preferences(Self) -> String
+pub fn AbstractElkGraphJsonRuntimeModule::configure_i_resource_descriptions(Self) -> String
+pub fn AbstractElkGraphJsonRuntimeModule::configure_i_resource_descriptions_persisted(Self) -> String
+pub fn AbstractElkGraphJsonRuntimeModule::configure_i_scope_provider_delegate(Self) -> String
+pub fn AbstractElkGraphJsonRuntimeModule::configure_ignore_case_linking(Self) -> Bool
+pub fn AbstractElkGraphJsonRuntimeModule::configure_language_name(Self) -> String
+pub fn AbstractElkGraphJsonRuntimeModule::configure_runtime_lexer(Self) -> String
+pub fn AbstractElkGraphJsonRuntimeModule::provide_internal_elk_graph_json_lexer(Self) -> String
+
+pub struct AbstractElkGraphJsonScopeProvider {
+  marker : Unit
+}
+pub fn AbstractElkGraphJsonScopeProvider::get_scope(Self, Int, String) -> Array[String]
+
+pub struct AbstractElkGraphJsonSemanticSequencer {
+  grammar_access : ElkGraphJsonGrammarAccess
+}
+pub fn AbstractElkGraphJsonSemanticSequencer::get_grammar_access(Self) -> ElkGraphJsonGrammarAccess
+pub fn[T] AbstractElkGraphJsonSemanticSequencer::sequence(Self, String, T) -> T
+pub fn[T] AbstractElkGraphJsonSemanticSequencer::sequence_edge_layout_elk_edge(Self, String, T) -> T
+pub fn[T] AbstractElkGraphJsonSemanticSequencer::sequence_elk_bend_point(Self, String, T) -> T
+pub fn[T] AbstractElkGraphJsonSemanticSequencer::sequence_elk_edge_section(Self, String, T) -> T
+pub fn[T] AbstractElkGraphJsonSemanticSequencer::sequence_elk_label_shape_layout(Self, String, T) -> T
+pub fn[T] AbstractElkGraphJsonSemanticSequencer::sequence_elk_node_shape_layout(Self, String, T) -> T
+pub fn[T] AbstractElkGraphJsonSemanticSequencer::sequence_elk_port_shape_layout(Self, String, T) -> T
+pub fn[T] AbstractElkGraphJsonSemanticSequencer::sequence_elk_single_edge_section(Self, String, T) -> T
+pub fn[T] AbstractElkGraphJsonSemanticSequencer::sequence_property(Self, String, T) -> T
+pub fn[T] AbstractElkGraphJsonSemanticSequencer::sequence_root_node_shape_layout(Self, String, T) -> T
+
+pub struct AbstractElkGraphJsonSyntacticSequencer {
+  grammar_access : ElkGraphJsonGrammarAccess
+  match_json_object___left_curly_bracket_keyword_0_right_curly_bracket_keyword_3__q : String
+}
+pub fn[A, B, C] AbstractElkGraphJsonSyntacticSequencer::emit_json_object___left_curly_bracket_keyword_0_right_curly_bracket_keyword_3__q(Self, A, B, Array[C]) -> String
+pub fn AbstractElkGraphJsonSyntacticSequencer::emit_unassigned_tokens(Self, String, Array[String]) -> Array[String]
+pub fn AbstractElkGraphJsonSyntacticSequencer::get_grammar_access(Self) -> ElkGraphJsonGrammarAccess
+pub fn AbstractElkGraphJsonSyntacticSequencer::get_unassigned_rule_call_token(Self, String, String, String) -> String
+
+pub struct AbstractElkGraphJsonValidator {
+  epackages : Array[String]
+}
+pub fn AbstractElkGraphJsonValidator::get_epackages(Self) -> Array[String]
+
+pub struct ElkGraphJsonAntlrTokenFileProvider {
+  marker : Unit
+}
+pub fn ElkGraphJsonAntlrTokenFileProvider::get_antlr_token_file(Self) -> String
+pub fn ElkGraphJsonAntlrTokenFileProvider::get_antlr_token_file_path(Self) -> String
+
+pub struct ElkGraphJsonConfigurableIssueCodesProvider {
+  marker : Unit
+}
+pub fn ElkGraphJsonConfigurableIssueCodesProvider::deprecated_model_part(Self) -> String
+pub fn ElkGraphJsonConfigurableIssueCodesProvider::issue_code_prefix(Self) -> String
+
+pub struct ElkGraphJsonFormatter {
+  indent_size : Int
+}
+pub fn ElkGraphJsonFormatter::format(Self, Int) -> String
+
+pub struct ElkGraphJsonGenerator {
+  marker : Unit
+}
+pub fn ElkGraphJsonGenerator::do_generate(Self, String, String, String) -> Unit
+
+pub struct ElkGraphJsonGrammarAccess {
+  grammar : String
+  rules : Map[String, String]
+}
+pub fn ElkGraphJsonGrammarAccess::get_boolean_value_rule(Self) -> String
+pub fn ElkGraphJsonGrammarAccess::get_edge_layout_rule(Self) -> String
+pub fn ElkGraphJsonGrammarAccess::get_elk_bend_point_rule(Self) -> String
+pub fn ElkGraphJsonGrammarAccess::get_elk_edge_rule(Self) -> String
+pub fn ElkGraphJsonGrammarAccess::get_elk_edge_section_rule(Self) -> String
+pub fn ElkGraphJsonGrammarAccess::get_elk_label_rule(Self) -> String
+pub fn ElkGraphJsonGrammarAccess::get_elk_node_rule(Self) -> String
+pub fn ElkGraphJsonGrammarAccess::get_elk_port_rule(Self) -> String
+pub fn ElkGraphJsonGrammarAccess::get_elk_single_edge_section_rule(Self) -> String
+pub fn ElkGraphJsonGrammarAccess::get_grammar(Self) -> String
+pub fn ElkGraphJsonGrammarAccess::get_id_rule(Self) -> String
+pub fn ElkGraphJsonGrammarAccess::get_json_object_rule(Self) -> String
+pub fn ElkGraphJsonGrammarAccess::get_number_rule(Self) -> String
+pub fn ElkGraphJsonGrammarAccess::get_number_value_rule(Self) -> String
+pub fn ElkGraphJsonGrammarAccess::get_property_key_rule(Self) -> String
+pub fn ElkGraphJsonGrammarAccess::get_property_rule(Self) -> String
+pub fn ElkGraphJsonGrammarAccess::get_qualified_id_rule(Self) -> String
+pub fn ElkGraphJsonGrammarAccess::get_qualified_id_value_rule(Self) -> String
+pub fn ElkGraphJsonGrammarAccess::get_root_node_rule(Self) -> String
+pub fn ElkGraphJsonGrammarAccess::get_rule(Self, String) -> String?
+pub fn ElkGraphJsonGrammarAccess::get_rule_names(Self) -> Array[String]
+pub fn ElkGraphJsonGrammarAccess::get_shape_layout_rule(Self) -> String
+pub fn ElkGraphJsonGrammarAccess::get_string_value_rule(Self) -> String
+
+pub struct ElkGraphJsonJsonTextUtil {
+  marker : Unit
+}
+
+pub struct ElkGraphJsonLexToken {
+  token_type : Int
+  token_name : String
+  lexeme : String
+}
+
+pub struct ElkGraphJsonLinker {
+  opposite_refs : Map[String, Unit]
+}
+pub fn ElkGraphJsonLinker::clear_reference(Self, String, String) -> Bool
+
+pub struct ElkGraphJsonParser {
+  mut grammar_access : ElkGraphJsonGrammarAccess
+  mut initial_hidden_tokens : Array[String]
+}
+pub fn ElkGraphJsonParser::create_parser(Self, Array[ElkGraphJsonLexToken]) -> InternalElkGraphJsonParser
+pub fn ElkGraphJsonParser::get_default_rule_name(Self) -> String
+pub fn ElkGraphJsonParser::get_grammar_access(Self) -> ElkGraphJsonGrammarAccess
+pub fn ElkGraphJsonParser::get_initial_hidden_tokens(Self) -> Array[String]
+pub fn ElkGraphJsonParser::parse(Self, String) -> Int
+pub fn ElkGraphJsonParser::set_grammar_access(Self, ElkGraphJsonGrammarAccess) -> Unit
+pub fn ElkGraphJsonParser::set_initial_hidden_tokens(Self, Array[String]) -> Unit
+
+pub struct ElkGraphJsonQualifiedNameConverter {
+  mut id_rule : String
+}
+pub fn ElkGraphJsonQualifiedNameConverter::initialize(Self, ElkGraphJsonGrammarAccess) -> Unit
+pub fn ElkGraphJsonQualifiedNameConverter::to_qualified_name(Self, String) -> Array[String]
+pub fn ElkGraphJsonQualifiedNameConverter::to_string(Self, Array[String]) -> String
+
+pub struct ElkGraphJsonQualifiedNameProvider {
+  marker : Unit
+}
+pub fn ElkGraphJsonQualifiedNameProvider::qualified_name(Self, GraphJsonTextElement) -> Array[String]
+pub fn ElkGraphJsonQualifiedNameProvider::qualified_name_for_edge_section(Self, Int) -> Array[String]
+
+pub struct ElkGraphJsonRuntimeModule {
+  base : AbstractElkGraphJsonRuntimeModule
+}
+pub fn ElkGraphJsonRuntimeModule::bind_i_qualified_name_converter(Self) -> String
+pub fn ElkGraphJsonRuntimeModule::bind_i_qualified_name_provider(Self) -> String
+pub fn ElkGraphJsonRuntimeModule::bind_i_transient_value_service2(Self) -> String
+pub fn ElkGraphJsonRuntimeModule::bind_i_value_converter_service(Self) -> String
+pub fn ElkGraphJsonRuntimeModule::bind_ilinker(Self) -> String
+pub fn ElkGraphJsonRuntimeModule::configure(Self, Map[String, String]) -> Unit
+pub fn ElkGraphJsonRuntimeModule::create_injector(Self) -> GraphJsonTextInjector
+pub fn ElkGraphJsonRuntimeModule::get_base(Self) -> AbstractElkGraphJsonRuntimeModule
+
+pub struct ElkGraphJsonScopeProvider {
+  base : AbstractElkGraphJsonScopeProvider
+}
+pub fn ElkGraphJsonScopeProvider::get_scope(Self, Int, String) -> Array[String]
+
+pub struct ElkGraphJsonSemanticSequencer {
+  base : AbstractElkGraphJsonSemanticSequencer
+  value_converter : GraphJsonTextPropertyValueValueConverter
+}
+pub fn[T] ElkGraphJsonSemanticSequencer::sequence(Self, String, T) -> T
+pub fn ElkGraphJsonSemanticSequencer::sequence_property(Self, String, GraphJsonTextPropertyAssignment) -> GraphJsonTextPropertyAssignment
+
+pub struct ElkGraphJsonStandaloneSetup {
+  marker : Unit
+}
+pub fn ElkGraphJsonStandaloneSetup::create_injector_and_do_emf_registration(Self) -> GraphJsonTextInjector
+
+pub struct ElkGraphJsonStandaloneSetupGenerated {
+  marker : Unit
+}
+pub fn ElkGraphJsonStandaloneSetupGenerated::create_injector(Self) -> GraphJsonTextInjector
+pub fn ElkGraphJsonStandaloneSetupGenerated::create_injector_and_do_emf_registration(Self) -> GraphJsonTextInjector
+pub fn ElkGraphJsonStandaloneSetupGenerated::register(Self, GraphJsonTextInjector) -> Unit
+
+pub struct ElkGraphJsonSyntacticSequencer {
+  base : AbstractElkGraphJsonSyntacticSequencer
+}
+pub fn[A, B, C] ElkGraphJsonSyntacticSequencer::emit_json_object___left_curly_bracket_keyword_0_right_curly_bracket_keyword_3__q(Self, A, B, Array[C]) -> String
+
+pub struct ElkGraphJsonTransientValueService {
+  marker : Unit
+}
+pub fn ElkGraphJsonTransientValueService::is_list_transient(Self, String, String) -> GraphJsonTextListTransient
+
+pub struct ElkGraphJsonValidator {
+  base : AbstractElkGraphJsonValidator
+  layout_option_validator : @core.LayoutOptionValidator
+  value_converter : GraphJsonTextPropertyValueValueConverter
+}
+pub fn ElkGraphJsonValidator::check_edge_container(Self, Int) -> Array[GraphJsonTextValidationIssue]
+pub fn ElkGraphJsonValidator::check_edge_section(Self, Int) -> Array[GraphJsonTextValidationIssue]
+pub fn ElkGraphJsonValidator::check_property_key(Self, GraphJsonTextPropertyAssignment) -> Array[GraphJsonTextValidationIssue]
+pub fn ElkGraphJsonValidator::check_property_value(Self, GraphJsonTextPropertyAssignment, GraphJsonTextElement) -> Array[GraphJsonTextValidationIssue]
+pub fn ElkGraphJsonValidator::check_unique_names_for_node(Self, Int) -> Array[GraphJsonTextValidationIssue]
+pub fn ElkGraphJsonValidator::check_unique_properties(Self, Array[GraphJsonTextPropertyAssignment]) -> Array[GraphJsonTextValidationIssue]
+pub fn ElkGraphJsonValidator::check_unique_section_names(Self, Int) -> Array[GraphJsonTextValidationIssue]
+pub fn ElkGraphJsonValidator::get_epackages(Self) -> Array[String]
+pub fn ElkGraphJsonValidator::is_enabled(Self) -> Bool
+
+pub struct ElkGraphJsonValueConverterService {
+  number_value_converter : GraphJsonTextNumberValueConverter
+  property_key_value_converter : GraphJsonTextPropertyKeyValueConverter
+  property_value_value_converter : GraphJsonTextPropertyValueValueConverter
+}
+pub fn ElkGraphJsonValueConverterService::boolean_value(Self) -> GraphJsonTextPropertyValueValueConverter
+pub fn ElkGraphJsonValueConverterService::number(Self) -> GraphJsonTextNumberValueConverter
+pub fn ElkGraphJsonValueConverterService::number_value(Self) -> GraphJsonTextPropertyValueValueConverter
+pub fn ElkGraphJsonValueConverterService::property_key(Self) -> GraphJsonTextPropertyKeyValueConverter
+pub fn ElkGraphJsonValueConverterService::qualified_id_value(Self) -> GraphJsonTextPropertyValueValueConverter
+pub fn ElkGraphJsonValueConverterService::string_value(Self) -> GraphJsonTextPropertyValueValueConverter
+
+pub(all) enum GraphJsonTextElement {
+  GraphJsonTextNode(Int)
+  GraphJsonTextPort(Int)
+  GraphJsonTextEdge(Int)
+  GraphJsonTextLabel(Int)
+}
+
+pub struct GraphJsonTextInjector {
+  providers : Map[String, () -> String]
+}
+pub fn GraphJsonTextInjector::get_instance(Self, String) -> String?
+pub fn GraphJsonTextInjector::register_provider(Self, String, () -> String) -> Unit
+
+pub(all) enum GraphJsonTextLabelOwner {
+  GraphJsonTextLabelOnNode(Int)
+  GraphJsonTextLabelOnPort(Int)
+  GraphJsonTextLabelOnEdge(Int)
+  GraphJsonTextLabelOnLabel(Int)
+}
+
+pub(all) enum GraphJsonTextListTransient {
+  GraphJsonTextListTransientYes
+  GraphJsonTextListTransientNo
+}
+pub impl Show for GraphJsonTextListTransient
+
+pub struct GraphJsonTextNumberValueConverter {
+  marker : Unit
+}
+pub fn GraphJsonTextNumberValueConverter::to_string(Self, Double?) -> String
+pub fn GraphJsonTextNumberValueConverter::to_value(Self, String) -> Double
+
+pub struct GraphJsonTextPendingOutgoingSection {
+  source : Int
+  target_id : String
+}
+
+pub struct GraphJsonTextPropertyAssignment {
+  key : GraphJsonTextPropertyKey
+  value : GraphJsonTextPropertyValue
+}
+
+pub(all) enum GraphJsonTextPropertyKey {
+  GraphJsonTextLayoutOption(@core.LayoutOptionData)
+  GraphJsonTextCustomProperty(String)
+}
+
+pub struct GraphJsonTextPropertyKeyValueConverter {
+  mut id_rule : String
+}
+pub fn GraphJsonTextPropertyKeyValueConverter::initialize(Self, ElkGraphJsonGrammarAccess) -> Unit
+pub fn GraphJsonTextPropertyKeyValueConverter::to_string(Self, GraphJsonTextPropertyKey?) -> String
+pub fn GraphJsonTextPropertyKeyValueConverter::to_value(Self, String) -> GraphJsonTextPropertyKey
+
+pub(all) enum GraphJsonTextPropertyValue {
+  GraphJsonTextNullValue
+  GraphJsonTextStringValue(String)
+  GraphJsonTextNumberValue(Double)
+  GraphJsonTextBooleanValue(Bool)
+  GraphJsonTextProxyValue(String)
+}
+pub impl Show for GraphJsonTextPropertyValue
+
+pub struct GraphJsonTextPropertyValueValueConverter {
+  qualified_name_converter : ElkGraphJsonQualifiedNameConverter
+}
+pub fn GraphJsonTextPropertyValueValueConverter::to_string(Self, GraphJsonTextPropertyValue) -> String
+pub fn GraphJsonTextPropertyValueValueConverter::to_value(Self, String, property_key? : GraphJsonTextPropertyKey?) -> GraphJsonTextPropertyValue
+
+pub(all) enum GraphJsonTextShape {
+  GraphJsonTextShapeNode(Int)
+  GraphJsonTextShapePort(Int)
+  GraphJsonTextShapeLabel(Int)
+}
+
+pub struct GraphJsonTextValidationIssue {
+  message : String
+  feature : String
+  severity : Int
+  code : String?
+}
+
+pub struct InternalElkGraphJsonLexer {
+  input : String
+}
+pub fn InternalElkGraphJsonLexer::get_grammar_file_name(Self) -> String
+pub fn InternalElkGraphJsonLexer::get_token_names(Self) -> Array[String]
+pub fn InternalElkGraphJsonLexer::lex_all(Self) -> Array[ElkGraphJsonLexToken]
+
+pub struct InternalElkGraphJsonParser {
+  tokens : Array[ElkGraphJsonLexToken]
+  grammar_access : ElkGraphJsonGrammarAccess
+}
+pub fn InternalElkGraphJsonParser::entry_rule_boolean_value(Self) -> GraphJsonTextPropertyValue
+pub fn InternalElkGraphJsonParser::entry_rule_elk_bend_point(Self) -> (Double, Double)
+pub fn InternalElkGraphJsonParser::entry_rule_elk_edge(Self) -> Int
+pub fn InternalElkGraphJsonParser::entry_rule_elk_edge_section(Self) -> Int
+pub fn InternalElkGraphJsonParser::entry_rule_elk_label(Self) -> Int
+pub fn InternalElkGraphJsonParser::entry_rule_elk_node(Self) -> Int
+pub fn InternalElkGraphJsonParser::entry_rule_elk_port(Self) -> Int
+pub fn InternalElkGraphJsonParser::entry_rule_elk_single_edge_section(Self) -> Int
+pub fn InternalElkGraphJsonParser::entry_rule_number(Self) -> Double
+pub fn InternalElkGraphJsonParser::entry_rule_number_value(Self) -> GraphJsonTextPropertyValue
+pub fn InternalElkGraphJsonParser::entry_rule_property(Self) -> GraphJsonTextPropertyAssignment
+pub fn InternalElkGraphJsonParser::entry_rule_property_key(Self) -> GraphJsonTextPropertyKey
+pub fn InternalElkGraphJsonParser::entry_rule_qualified_id(Self) -> String
+pub fn InternalElkGraphJsonParser::entry_rule_qualified_id_value(Self) -> GraphJsonTextPropertyValue
+pub fn InternalElkGraphJsonParser::entry_rule_root_node(Self) -> Int
+pub fn InternalElkGraphJsonParser::entry_rule_string_value(Self) -> GraphJsonTextPropertyValue
+pub fn InternalElkGraphJsonParser::get_first_rule_name(Self) -> String
+pub fn InternalElkGraphJsonParser::get_grammar_access(Self) -> ElkGraphJsonGrammarAccess
+pub fn InternalElkGraphJsonParser::get_grammar_file_name(Self) -> String
+pub fn InternalElkGraphJsonParser::get_token_names(Self) -> Array[String]
+pub fn InternalElkGraphJsonParser::rule_boolean_value(Self) -> GraphJsonTextPropertyValue
+pub fn InternalElkGraphJsonParser::rule_edge_layout(Self, Int) -> Int
+pub fn InternalElkGraphJsonParser::rule_elk_bend_point(Self) -> (Double, Double)
+pub fn InternalElkGraphJsonParser::rule_elk_edge(Self) -> Int
+pub fn InternalElkGraphJsonParser::rule_elk_edge_section(Self) -> Int
+pub fn InternalElkGraphJsonParser::rule_elk_label(Self) -> Int
+pub fn InternalElkGraphJsonParser::rule_elk_node(Self) -> Int
+pub fn InternalElkGraphJsonParser::rule_elk_port(Self) -> Int
+pub fn InternalElkGraphJsonParser::rule_elk_single_edge_section(Self) -> Int
+pub fn InternalElkGraphJsonParser::rule_number(Self) -> Double
+pub fn InternalElkGraphJsonParser::rule_number_value(Self) -> GraphJsonTextPropertyValue
+pub fn InternalElkGraphJsonParser::rule_property(Self) -> GraphJsonTextPropertyAssignment
+pub fn InternalElkGraphJsonParser::rule_property_key(Self) -> GraphJsonTextPropertyKey
+pub fn InternalElkGraphJsonParser::rule_qualified_id(Self) -> String
+pub fn InternalElkGraphJsonParser::rule_qualified_id_value(Self) -> GraphJsonTextPropertyValue
+pub fn InternalElkGraphJsonParser::rule_root_node(Self) -> Int
+pub fn InternalElkGraphJsonParser::rule_shape_layout(Self, GraphJsonTextShape) -> GraphJsonTextShape
+pub fn InternalElkGraphJsonParser::rule_string_value(Self) -> GraphJsonTextPropertyValue
+
+// Type aliases
+pub type ElkGraphJsonFileSystemAccess2 = String
+
+pub type ElkGraphJsonGeneratorContext = String
+
+pub type ElkGraphJsonResource = String
+
+pub type GraphJsonTextIssueSeverity = Int
+
+// Traits
+

@@ -1,0 +1,485 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/moon_elk/core/debug/grandom"
+
+import {
+  "Milky2018/moon_elk/core",
+  "Milky2018/moon_elk/graph",
+  "moonbitlang/core/random",
+}
+
+// Values
+pub let core_debug_grandom_blind_text_character_min_length : Int
+
+pub let core_debug_grandom_blind_text_character_range : Int
+
+pub fn core_debug_grandom_blind_text_generate() -> String
+
+pub fn core_debug_grandom_blind_text_generate_with_random(@random.Rand) -> String
+
+pub fn core_debug_grandom_configuration_parser_parse(CoreDebugGRandomConfiguration, @random.Rand) -> CoreDebugGRandomGeneratorOptions
+
+pub fn core_debug_grandom_constraint_free() -> CoreDebugGRandomConstraintType
+
+pub fn core_debug_grandom_constraint_position() -> CoreDebugGRandomConstraintType
+
+pub let core_debug_grandom_create_node_labels : @graph.IProperty[Bool]
+
+pub let core_debug_grandom_create_port_labels : @graph.IProperty[Bool]
+
+pub let core_debug_grandom_cross_hier : @graph.IProperty[CoreDebugGRandomRandVal]
+
+pub let core_debug_grandom_cross_hierarchy_edges : @graph.IProperty[Bool]
+
+pub let core_debug_grandom_cycles : @graph.IProperty[Bool]
+
+pub let core_debug_grandom_density : @graph.IProperty[CoreDebugGRandomRandVal]
+
+pub fn core_debug_grandom_do_setup() -> CoreDebugGRandomRuntimeModule
+
+pub fn core_debug_grandom_double_quantity_exact(Double) -> CoreDebugGRandomDoubleQuantity
+
+pub fn core_debug_grandom_double_quantity_exists(CoreDebugGRandomDoubleQuantity?) -> Bool
+
+pub fn core_debug_grandom_double_quantity_gaussian(Double, Double) -> CoreDebugGRandomDoubleQuantity
+
+pub fn core_debug_grandom_double_quantity_min_max(Double, Double) -> CoreDebugGRandomDoubleQuantity
+
+pub let core_debug_grandom_edge_determination : @graph.IProperty[CoreDebugGRandomEdgeDetermination]
+
+pub fn core_debug_grandom_edge_determination_absolute() -> CoreDebugGRandomEdgeDetermination
+
+pub fn core_debug_grandom_edge_determination_density() -> CoreDebugGRandomEdgeDetermination
+
+pub fn core_debug_grandom_edge_determination_equals(CoreDebugGRandomEdgeDetermination, CoreDebugGRandomEdgeDetermination) -> Bool
+
+pub fn core_debug_grandom_edge_determination_outgoing() -> CoreDebugGRandomEdgeDetermination
+
+pub fn core_debug_grandom_edge_determination_relative() -> CoreDebugGRandomEdgeDetermination
+
+pub let core_debug_grandom_edge_labels : @graph.IProperty[Bool]
+
+pub let core_debug_grandom_edges_absolute : @graph.IProperty[CoreDebugGRandomRandVal]
+
+pub fn core_debug_grandom_edges_exists(CoreDebugGRandomEdges?) -> Bool
+
+pub let core_debug_grandom_enable_hierarchy : @graph.IProperty[Bool]
+
+pub let core_debug_grandom_enable_ports : @graph.IProperty[Bool]
+
+pub let core_debug_grandom_exact_relative_hier : @graph.IProperty[CoreDebugGRandomRandVal?]
+
+pub let core_debug_grandom_file_format : @graph.IProperty[CoreDebugGRandomFileFormat]
+
+pub fn core_debug_grandom_file_format_xtext() -> CoreDebugGRandomFileFormat
+
+pub let core_debug_grandom_file_name : @graph.IProperty[String]
+
+pub fn core_debug_grandom_flow_incoming() -> CoreDebugGRandomFlowType
+
+pub fn core_debug_grandom_form_bipartite() -> CoreDebugGRandomForm
+
+pub fn core_debug_grandom_form_custom() -> CoreDebugGRandomForm
+
+pub fn core_debug_grandom_form_trees() -> CoreDebugGRandomForm
+
+pub fn core_debug_grandom_format_elkg() -> CoreDebugGRandomFormats
+
+pub fn core_debug_grandom_format_elkt() -> CoreDebugGRandomFormats
+
+pub let core_debug_grandom_graph_type : @graph.IProperty[CoreDebugGRandomGraphType]
+
+pub fn core_debug_grandom_graph_type_acyclic_no_transitive_edges() -> CoreDebugGRandomGraphType
+
+pub fn core_debug_grandom_graph_type_biconnected() -> CoreDebugGRandomGraphType
+
+pub fn core_debug_grandom_graph_type_bipartite() -> CoreDebugGRandomGraphType
+
+pub fn core_debug_grandom_graph_type_custom() -> CoreDebugGRandomGraphType
+
+pub fn core_debug_grandom_graph_type_equals(CoreDebugGRandomGraphType, CoreDebugGRandomGraphType) -> Bool
+
+pub fn core_debug_grandom_graph_type_tree() -> CoreDebugGRandomGraphType
+
+pub fn core_debug_grandom_graph_type_triconnected() -> CoreDebugGRandomGraphType
+
+pub let core_debug_grandom_hierarchy_chance : @graph.IProperty[Double]
+
+pub fn core_debug_grandom_hierarchy_exists(CoreDebugGRandomHierarchy?) -> Bool
+
+pub let core_debug_grandom_hierarchy_nodes_factor : @graph.IProperty[Double]
+
+pub let core_debug_grandom_hypernode_chance : @graph.IProperty[Double]
+
+pub let core_debug_grandom_incoming_east_side : @graph.IProperty[Int]
+
+pub let core_debug_grandom_incoming_north_side : @graph.IProperty[Int]
+
+pub let core_debug_grandom_incoming_south_side : @graph.IProperty[Int]
+
+pub let core_debug_grandom_incoming_west_side : @graph.IProperty[Int]
+
+pub let core_debug_grandom_isolated_nodes : @graph.IProperty[Bool]
+
+pub let core_debug_grandom_max_degree : @graph.IProperty[Int]
+
+pub let core_debug_grandom_max_hierarchy_level : @graph.IProperty[CoreDebugGRandomRandVal]
+
+pub let core_debug_grandom_max_width : @graph.IProperty[Int]
+
+pub let core_debug_grandom_multi_edges : @graph.IProperty[Bool]
+
+pub let core_debug_grandom_node_height : @graph.IProperty[CoreDebugGRandomRandVal]
+
+pub let core_debug_grandom_node_width : @graph.IProperty[CoreDebugGRandomRandVal]
+
+pub fn core_debug_grandom_nodes_exists(CoreDebugGRandomNodes?) -> Bool
+
+pub let core_debug_grandom_number_hierarchical_nodes : @graph.IProperty[CoreDebugGRandomRandVal]
+
+pub let core_debug_grandom_number_of_graphs : @graph.IProperty[Int]
+
+pub let core_debug_grandom_number_of_nodes : @graph.IProperty[CoreDebugGRandomRandVal]
+
+pub fn core_debug_grandom_options_restrictions(CoreDebugGRandomConfiguration) -> Array[CoreDebugGRandomValidationError]
+
+pub let core_debug_grandom_outgoing_east_side : @graph.IProperty[Int]
+
+pub let core_debug_grandom_outgoing_edges : @graph.IProperty[CoreDebugGRandomRandVal]
+
+pub let core_debug_grandom_outgoing_north_side : @graph.IProperty[Int]
+
+pub let core_debug_grandom_outgoing_south_side : @graph.IProperty[Int]
+
+pub let core_debug_grandom_outgoing_west_side : @graph.IProperty[Int]
+
+pub let core_debug_grandom_partition_frac : @graph.IProperty[CoreDebugGRandomRandVal]
+
+pub let core_debug_grandom_planar : @graph.IProperty[Bool]
+
+pub let core_debug_grandom_port_constraints : @graph.IProperty[@core.PortConstraints]
+
+pub let core_debug_grandom_port_height : @graph.IProperty[CoreDebugGRandomRandVal]
+
+pub let core_debug_grandom_port_separation : Double
+
+pub let core_debug_grandom_port_width : @graph.IProperty[CoreDebugGRandomRandVal]
+
+pub fn core_debug_grandom_ports_exists(CoreDebugGRandomPorts?) -> Bool
+
+pub fn core_debug_grandom_rand_val_all_nil() -> CoreDebugGRandomRandVal
+
+pub fn core_debug_grandom_rand_val_exact(Double) -> CoreDebugGRandomRandVal
+
+pub fn core_debug_grandom_rand_val_gaussian(Double, Double) -> CoreDebugGRandomRandVal
+
+pub fn core_debug_grandom_rand_val_min_max(Double, Double) -> CoreDebugGRandomRandVal
+
+pub fn core_debug_grandom_random_graph_generator_generate(CoreDebugGRandomRandomGraphGenerator, CoreDebugGRandomGeneratorOptions) -> Int
+
+pub fn core_debug_grandom_random_graph_generator_generate_from_configuration(CoreDebugGRandomRandomGraphGenerator, CoreDebugGRandomConfiguration) -> Array[Int]
+
+pub let core_debug_grandom_randomization_seed : @graph.IProperty[Int]
+
+pub let core_debug_grandom_relative_edges : @graph.IProperty[CoreDebugGRandomRandVal]
+
+pub let core_debug_grandom_self_loops : @graph.IProperty[Bool]
+
+pub let core_debug_grandom_set_node_size : @graph.IProperty[Bool]
+
+pub let core_debug_grandom_set_port_size : @graph.IProperty[Bool]
+
+pub fn core_debug_grandom_side_east() -> CoreDebugGRandomSide
+
+pub fn core_debug_grandom_size_exists(CoreDebugGRandomSize?) -> Bool
+
+pub let core_debug_grandom_small_hierarchy : @graph.IProperty[Bool]
+
+pub let core_debug_grandom_time_based_randomization : @graph.IProperty[Bool]
+
+pub let core_debug_grandom_use_existing_ports_chance : @graph.IProperty[CoreDebugGRandomRandVal]
+
+pub let core_debug_grandom_validation_configuration_md : String
+
+pub let core_debug_grandom_validation_configuration_mw : String
+
+pub let core_debug_grandom_validation_configuration_pf : String
+
+pub fn new_core_debug_grandom_configuration() -> CoreDebugGRandomConfiguration
+
+pub fn new_core_debug_grandom_double_quantity() -> CoreDebugGRandomDoubleQuantity
+
+pub fn new_core_debug_grandom_edges() -> CoreDebugGRandomEdges
+
+pub fn new_core_debug_grandom_flow(CoreDebugGRandomFlowType, CoreDebugGRandomSide, amount? : CoreDebugGRandomDoubleQuantity?) -> CoreDebugGRandomFlow
+
+pub fn new_core_debug_grandom_generator_options() -> CoreDebugGRandomGeneratorOptions
+
+pub fn new_core_debug_grandom_hierarchy() -> CoreDebugGRandomHierarchy
+
+pub fn new_core_debug_grandom_nodes() -> CoreDebugGRandomNodes
+
+pub fn new_core_debug_grandom_ports() -> CoreDebugGRandomPorts
+
+pub fn new_core_debug_grandom_rand_graph(configs? : Array[CoreDebugGRandomConfiguration]) -> CoreDebugGRandomRandGraph
+
+pub fn new_core_debug_grandom_random_graph_generator(@random.Rand?) -> CoreDebugGRandomRandomGraphGenerator
+
+pub fn new_core_debug_grandom_runtime_module() -> CoreDebugGRandomRuntimeModule
+
+pub fn new_core_debug_grandom_scope_provider() -> CoreDebugGRandomScopeProvider
+
+pub fn new_core_debug_grandom_size() -> CoreDebugGRandomSize
+
+pub fn new_core_debug_grandom_standalone_setup() -> CoreDebugGRandomStandaloneSetup
+
+pub fn new_core_debug_grandom_validation_error(String, String) -> CoreDebugGRandomValidationError
+
+// Errors
+
+// Types and methods
+pub(all) struct CoreDebugGRandomConfiguration {
+  samples : Int
+  form : CoreDebugGRandomForm
+  nodes : CoreDebugGRandomNodes?
+  edges : CoreDebugGRandomEdges?
+  m_w : Bool
+  max_width : Int?
+  m_d : Bool
+  max_degree : Int?
+  p_f : Bool
+  fraction : CoreDebugGRandomDoubleQuantity?
+  hierarchy : CoreDebugGRandomHierarchy?
+  seed : Int?
+  format : CoreDebugGRandomFormats?
+  filename : String?
+}
+pub fn CoreDebugGRandomConfiguration::set_edges(Self, CoreDebugGRandomEdges?) -> Self
+pub fn CoreDebugGRandomConfiguration::set_filename(Self, String?) -> Self
+pub fn CoreDebugGRandomConfiguration::set_form(Self, CoreDebugGRandomForm) -> Self
+pub fn CoreDebugGRandomConfiguration::set_format(Self, CoreDebugGRandomFormats?) -> Self
+pub fn CoreDebugGRandomConfiguration::set_fraction(Self, CoreDebugGRandomDoubleQuantity?) -> Self
+pub fn CoreDebugGRandomConfiguration::set_hierarchy(Self, CoreDebugGRandomHierarchy?) -> Self
+pub fn CoreDebugGRandomConfiguration::set_nodes(Self, CoreDebugGRandomNodes?) -> Self
+pub fn CoreDebugGRandomConfiguration::set_samples(Self, Int) -> Self
+pub fn CoreDebugGRandomConfiguration::set_seed(Self, Int?) -> Self
+pub fn CoreDebugGRandomConfiguration::set_tree_limits(Self, Int?, Int?) -> Self
+
+pub(all) enum CoreDebugGRandomConstraintType {
+  ConstraintFree
+  ConstraintSide
+  ConstraintPosition
+  ConstraintOrder
+  ConstraintRatio
+}
+
+pub(all) struct CoreDebugGRandomDoubleQuantity {
+  quant : Double?
+  min : Double?
+  min_max : Bool
+  max : Double?
+  mean : Double?
+  gaussian : Bool
+  stddv : Double?
+}
+
+pub(all) enum CoreDebugGRandomEdgeDetermination {
+  EdgeAbsolute
+  EdgeOutgoing
+  EdgeRelative
+  EdgeDensity
+}
+
+pub(all) struct CoreDebugGRandomEdges {
+  density : Bool
+  total : Bool
+  relative : Bool
+  outbound : Bool
+  n_edges : CoreDebugGRandomDoubleQuantity?
+  labels : Bool
+  self_loops : Bool
+}
+pub fn CoreDebugGRandomEdges::set_labels(Self, Bool) -> Self
+pub fn CoreDebugGRandomEdges::set_n_edges(Self, CoreDebugGRandomDoubleQuantity?) -> Self
+pub fn CoreDebugGRandomEdges::set_self_loops(Self, Bool) -> Self
+pub fn CoreDebugGRandomEdges::set_total(Self, Bool) -> Self
+
+pub(all) enum CoreDebugGRandomFileFormat {
+  FileXmi
+  FileXtext
+}
+
+pub(all) struct CoreDebugGRandomFlow {
+  flow_type : CoreDebugGRandomFlowType
+  side : CoreDebugGRandomSide
+  amount : CoreDebugGRandomDoubleQuantity?
+}
+
+pub(all) enum CoreDebugGRandomFlowType {
+  FlowIncoming
+  FlowOutgoing
+}
+
+pub(all) enum CoreDebugGRandomForm {
+  FormTrees
+  FormCustom
+  FormBipartite
+  FormBiconnected
+  FormTriconnected
+  FormAcyclic
+}
+
+pub(all) enum CoreDebugGRandomFormats {
+  FormatElkt
+  FormatElkg
+}
+
+pub(all) struct CoreDebugGRandomGeneratorOptions {
+  bool_values : Map[String, Bool]
+  int_values : Map[String, Int]
+  double_values : Map[String, Double]
+  string_values : Map[String, String]
+  rand_values : Map[String, CoreDebugGRandomRandVal]
+  rand_opt_values : Map[String, CoreDebugGRandomRandVal?]
+  port_constraint_values : Map[String, @core.PortConstraints]
+  file_format_values : Map[String, CoreDebugGRandomFileFormat]
+  graph_type_values : Map[String, CoreDebugGRandomGraphType]
+  edge_determination_values : Map[String, CoreDebugGRandomEdgeDetermination]
+}
+pub fn CoreDebugGRandomGeneratorOptions::get_bool_property(Self, @graph.IProperty[Bool]) -> Bool
+pub fn CoreDebugGRandomGeneratorOptions::get_double_property(Self, @graph.IProperty[Double]) -> Double
+pub fn CoreDebugGRandomGeneratorOptions::get_edge_determination_property(Self, @graph.IProperty[CoreDebugGRandomEdgeDetermination]) -> CoreDebugGRandomEdgeDetermination
+pub fn CoreDebugGRandomGeneratorOptions::get_file_format_property(Self, @graph.IProperty[CoreDebugGRandomFileFormat]) -> CoreDebugGRandomFileFormat
+pub fn CoreDebugGRandomGeneratorOptions::get_graph_type_property(Self, @graph.IProperty[CoreDebugGRandomGraphType]) -> CoreDebugGRandomGraphType
+pub fn CoreDebugGRandomGeneratorOptions::get_int_property(Self, @graph.IProperty[Int]) -> Int
+pub fn CoreDebugGRandomGeneratorOptions::get_optional_rand_property(Self, @graph.IProperty[CoreDebugGRandomRandVal?]) -> CoreDebugGRandomRandVal?
+pub fn CoreDebugGRandomGeneratorOptions::get_port_constraints_property(Self, @graph.IProperty[@core.PortConstraints]) -> @core.PortConstraints
+pub fn CoreDebugGRandomGeneratorOptions::get_rand_property(Self, @graph.IProperty[CoreDebugGRandomRandVal]) -> CoreDebugGRandomRandVal
+pub fn CoreDebugGRandomGeneratorOptions::get_string_property(Self, @graph.IProperty[String]) -> String
+pub fn CoreDebugGRandomGeneratorOptions::set_bool_property(Self, @graph.IProperty[Bool], Bool) -> Unit
+pub fn CoreDebugGRandomGeneratorOptions::set_double_property(Self, @graph.IProperty[Double], Double) -> Unit
+pub fn CoreDebugGRandomGeneratorOptions::set_edge_determination_property(Self, @graph.IProperty[CoreDebugGRandomEdgeDetermination], CoreDebugGRandomEdgeDetermination) -> Unit
+pub fn CoreDebugGRandomGeneratorOptions::set_file_format_property(Self, @graph.IProperty[CoreDebugGRandomFileFormat], CoreDebugGRandomFileFormat) -> Unit
+pub fn CoreDebugGRandomGeneratorOptions::set_graph_type_property(Self, @graph.IProperty[CoreDebugGRandomGraphType], CoreDebugGRandomGraphType) -> Unit
+pub fn CoreDebugGRandomGeneratorOptions::set_int_property(Self, @graph.IProperty[Int], Int) -> Unit
+pub fn CoreDebugGRandomGeneratorOptions::set_optional_rand_property(Self, @graph.IProperty[CoreDebugGRandomRandVal?], CoreDebugGRandomRandVal?) -> Unit
+pub fn CoreDebugGRandomGeneratorOptions::set_port_constraints_property(Self, @graph.IProperty[@core.PortConstraints], @core.PortConstraints) -> Unit
+pub fn CoreDebugGRandomGeneratorOptions::set_quantities(Self, CoreDebugGRandomDoubleQuantity?, @graph.IProperty[CoreDebugGRandomRandVal]) -> Unit
+pub fn CoreDebugGRandomGeneratorOptions::set_rand_property(Self, @graph.IProperty[CoreDebugGRandomRandVal], CoreDebugGRandomRandVal) -> Unit
+pub fn CoreDebugGRandomGeneratorOptions::set_string_property(Self, @graph.IProperty[String], String) -> Unit
+
+pub(all) enum CoreDebugGRandomGraphType {
+  GraphCustom
+  GraphTree
+  GraphBiconnected
+  GraphTriconnected
+  GraphAcyclicNoTransitiveEdges
+  GraphBipartite
+}
+
+pub(all) struct CoreDebugGRandomHierarchy {
+  levels : CoreDebugGRandomDoubleQuantity?
+  edges : CoreDebugGRandomDoubleQuantity?
+  num_hierarch_nodes : CoreDebugGRandomDoubleQuantity?
+  cross_hierarch_rel : CoreDebugGRandomDoubleQuantity?
+}
+pub fn CoreDebugGRandomHierarchy::set_cross_hierarch_rel(Self, CoreDebugGRandomDoubleQuantity?) -> Self
+pub fn CoreDebugGRandomHierarchy::set_edges(Self, CoreDebugGRandomDoubleQuantity?) -> Self
+pub fn CoreDebugGRandomHierarchy::set_levels(Self, CoreDebugGRandomDoubleQuantity?) -> Self
+pub fn CoreDebugGRandomHierarchy::set_num_hierarch_nodes(Self, CoreDebugGRandomDoubleQuantity?) -> Self
+
+pub(all) struct CoreDebugGRandomNodes {
+  n_nodes : CoreDebugGRandomDoubleQuantity?
+  ports : CoreDebugGRandomPorts?
+  labels : Bool
+  size : CoreDebugGRandomSize?
+  remove_isolated : Bool
+}
+pub fn CoreDebugGRandomNodes::set_labels(Self, Bool) -> Self
+pub fn CoreDebugGRandomNodes::set_n_nodes(Self, CoreDebugGRandomDoubleQuantity?) -> Self
+pub fn CoreDebugGRandomNodes::set_ports(Self, CoreDebugGRandomPorts?) -> Self
+pub fn CoreDebugGRandomNodes::set_remove_isolated(Self, Bool) -> Self
+pub fn CoreDebugGRandomNodes::set_size(Self, CoreDebugGRandomSize?) -> Self
+
+pub(all) struct CoreDebugGRandomPorts {
+  labels : Bool
+  re_use : CoreDebugGRandomDoubleQuantity?
+  size : CoreDebugGRandomSize?
+  constraint : CoreDebugGRandomConstraintType?
+  flow : Array[CoreDebugGRandomFlow]
+}
+pub fn CoreDebugGRandomPorts::set_constraint(Self, CoreDebugGRandomConstraintType?) -> Self
+pub fn CoreDebugGRandomPorts::set_flow(Self, Array[CoreDebugGRandomFlow]) -> Self
+pub fn CoreDebugGRandomPorts::set_labels(Self, Bool) -> Self
+pub fn CoreDebugGRandomPorts::set_re_use(Self, CoreDebugGRandomDoubleQuantity?) -> Self
+pub fn CoreDebugGRandomPorts::set_size(Self, CoreDebugGRandomSize?) -> Self
+
+pub(all) struct CoreDebugGRandomRandGraph {
+  configs : Array[CoreDebugGRandomConfiguration]
+}
+pub fn CoreDebugGRandomRandGraph::add_config(Self, CoreDebugGRandomConfiguration) -> Self
+
+pub(all) struct CoreDebugGRandomRandVal {
+  mut min : Double
+  mut max : Double
+  mut mean : Double
+  mut stddv : Double
+  exact : Double
+  use_min_max : Bool
+  use_exact : Bool
+}
+pub fn CoreDebugGRandomRandVal::default_int(Self) -> Int
+pub fn CoreDebugGRandomRandVal::default_val(Self) -> Double
+pub fn CoreDebugGRandomRandVal::float_val(Self, @random.Rand) -> Double
+pub fn CoreDebugGRandomRandVal::int_val(Self, @random.Rand) -> Int
+pub fn CoreDebugGRandomRandVal::max(Self) -> Double
+pub fn CoreDebugGRandomRandVal::min(Self) -> Double
+pub fn CoreDebugGRandomRandVal::set_max(Self, Int) -> Unit
+pub fn CoreDebugGRandomRandVal::set_mean(Self, Double) -> Unit
+pub fn CoreDebugGRandomRandVal::set_min(Self, Int) -> Unit
+pub fn CoreDebugGRandomRandVal::set_stddv(Self, Double) -> Unit
+pub fn CoreDebugGRandomRandVal::val(Self, @random.Rand) -> Double
+
+pub(all) struct CoreDebugGRandomRandomGraphGenerator {
+  mut options : CoreDebugGRandomGeneratorOptions
+  mut random : @random.Rand
+  mut node_label_counter : Int
+  mut port_label_counter : Int
+  mut max_hierarchy_level : Int
+}
+
+pub(all) struct CoreDebugGRandomRuntimeModule {
+  unit : Unit
+}
+
+pub(all) struct CoreDebugGRandomScopeProvider {
+  unit : Unit
+}
+
+pub(all) enum CoreDebugGRandomSide {
+  SideNorth
+  SideEast
+  SideSouth
+  SideWest
+}
+
+pub(all) struct CoreDebugGRandomSize {
+  height : CoreDebugGRandomDoubleQuantity?
+  width : CoreDebugGRandomDoubleQuantity?
+}
+pub fn CoreDebugGRandomSize::set_height(Self, CoreDebugGRandomDoubleQuantity?) -> Self
+pub fn CoreDebugGRandomSize::set_width(Self, CoreDebugGRandomDoubleQuantity?) -> Self
+
+pub(all) struct CoreDebugGRandomStandaloneSetup {
+  unit : Unit
+}
+pub fn CoreDebugGRandomStandaloneSetup::create_injector_and_do_emf_registration(Self) -> CoreDebugGRandomRuntimeModule
+
+pub(all) struct CoreDebugGRandomValidationError {
+  message : String
+  feature : String
+}
+
+// Type aliases
+
+// Traits
+

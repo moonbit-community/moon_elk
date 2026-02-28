@@ -1,0 +1,2259 @@
+2026-02-19T05:42:31.016477Z  WARN moonbuild_rupes_recta::pkg_solve::solve:261: Duplicate alias `debug` at "/Users/zhengyu/Documents/projects/moon_elk/src/alg/disco/debug/moon.pkg". "test-import" will automatically add "import" and current package as dependency so you don't need to add it manually. If you're test-importing a dependency with the same default alias as your current package, considering give it a different alias than the current package. Violating import: `Milky2018/moon_elk/core/debug`
+2026-02-19T05:42:31.016847Z  WARN moonbuild_rupes_recta::pkg_solve::solve:261: Duplicate alias `json` at "/Users/zhengyu/Documents/projects/moon_elk/src/graph/json/moon.pkg". "test-import" will automatically add "import" and current package as dependency so you don't need to add it manually. If you're test-importing a dependency with the same default alias as your current package, considering give it a different alias than the current package. Violating import: `moonbitlang/core/json`
+2026-02-19T05:42:31.016911Z  WARN moonbuild_rupes_recta::pkg_solve::solve:261: Duplicate alias `ui` at "/Users/zhengyu/Documents/projects/moon_elk/src/graph/json/text/ui/moon.pkg". "test-import" will automatically add "import" and current package as dependency so you don't need to add it manually. If you're test-importing a dependency with the same default alias as your current package, considering give it a different alias than the current package. Violating import: `Milky2018/moon_elk/core/ui`
+2026-02-19T05:42:31.016967Z  WARN moonbuild_rupes_recta::pkg_solve::solve:261: Duplicate alias `ui` at "/Users/zhengyu/Documents/projects/moon_elk/src/graph/text/ui/moon.pkg". "test-import" will automatically add "import" and current package as dependency so you don't need to add it manually. If you're test-importing a dependency with the same default alias as your current package, considering give it a different alias than the current package. Violating import: `Milky2018/moon_elk/core/ui`
+failed: /Users/zhengyu/.moon/bin/moonc check -error-format json /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ui/abstract_meta_data_ui_module.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ui/contentassist_meta_data_proposal_provider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ui/editor_meta_data_editor.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ui/internal_meta_activator.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ui/labeling_meta_data_description_label_provider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ui/labeling_meta_data_label_provider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ui/meta_data_executable_extension_factory.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ui/meta_data_ui_module.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ui/outline_meta_data_outline_tree_provider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ui/quickfix_meta_data_quickfix_provider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ui/test.mbt -o /Users/zhengyu/Documents/projects/moon_elk/_build/wasm-gc/release/check/core/meta/ui/ui.mi -pkg Milky2018/moon_elk/core/meta/ui -std-path /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/buffer/buffer.mi:buffer -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/cmp/cmp.mi:cmp -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/double/double.mi:double -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/float/float.mi:float -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/int/int.mi:int -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/json/json.mi:json -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/math/math.mi:math -i /Users/zhengyu/Documents/projects/moon_elk/_build/wasm-gc/release/check/core/meta/meta.mi:meta -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/prelude/prelude.mi:prelude -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/random/random.mi:random -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/strconv/strconv.mi:strconv -pkg-sources Milky2018/moon_elk/core/meta/ui:/Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ui -target wasm-gc -workspace-path /Users/zhengyu/Documents/projects/moon_elk -all-pkgs /Users/zhengyu/Documents/projects/moon_elk/_build/wasm-gc/release/check/all_pkgs.json
+failed: /Users/zhengyu/.moon/bin/moonc check -error-format json /Users/zhengyu/Documents/projects/moon_elk/src/core/abstract_layout_provider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/alg_algorithm_assembler.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/alg_enum_based_factory_comparator.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/alg_i_layout_phase.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/alg_i_layout_phase_factory.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/alg_i_layout_processor.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/alg_i_layout_processor_factory.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/alg_layout_processor_configuration.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/alg_phase_descriptor.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_abstract_normalized_matcher.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_aggregated_match_decider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_alignment_matcher.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_comment_attacher.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_distance_matcher.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_elk_graph_bounds_provider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_elk_graph_data_provider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_i_bounds_provider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_i_data_provider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_i_decider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_i_explicit_attachment_provider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_i_filter.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_i_matcher.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_node_reference_matcher.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_size_filter.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_text_prefix_filter.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/data_deprecated_layout_option_replacer.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/data_i_layout_meta_data.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/data_i_layout_meta_data_provider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/data_layout_algorithm_data.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/data_layout_algorithm_resolver.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/data_layout_category_data.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/data_layout_data_content_assist.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/data_layout_meta_data_service.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/data_layout_option_data.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/elk_engine.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/i_graph_layout_engine.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/i_topdown_layout_provider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/labels_i_label_manager.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/labels_label_management_options.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/layout_configurator.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/math_bezier_spline.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/math_cubic_spline_interpolator.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/math_elk_margin.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/math_elk_math.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/math_elk_padding.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/math_elk_rectangle.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/math_i_spline_interpolator.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/math_internal.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/math_k_vector.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/math_k_vector_chain.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/math_spacing.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_alignment.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_content_alignment.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_core_options.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_direction.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_edge_coords.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_edge_label_placement.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_edge_routing.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_edge_type.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_hierarchy_handling.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_i_topdown_size_approximator.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_label_side.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_node_label_placement.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_port_alignment.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_port_constraints.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_port_label_placement.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_port_side.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_shape_coords.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_size_constraint.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_size_options.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_topdown_node_types.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_topdown_size_approximator.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_topdown_size_approximator_util.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/testing_i_white_box_testable.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/testing_test_controller.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/unsupported_configuration_exception.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/unsupported_exceptions.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/unsupported_graph_exception.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_abstract_random_list_accessor.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_adapters_elk_graph_adapters.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_adapters_graph_adapters.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_algorithm_factory.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_basic_progress_monitor.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_box_layout_provider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_default_factory.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_elk_spacings.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_elk_util.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_exclusive_bounds.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_fixed_layout_provider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_i_data_object.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_i_elk_cancel_indicator.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_i_elk_progress_monitor.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_i_factory.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_i_graph_element_visitor.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_individual_spacings.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_instance_pool.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_internal_layout_option_proxy.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_logged_graph.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_maybe.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_null_elk_progress_monitor.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_pair.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_persistence_elk_graph_resource.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_persistence_elk_graph_resource_factory.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_persistence_elk_graph_xmi_helper.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_persistence_elk_graph_xmi_save.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_property_constants_delegator.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_quadruple.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_random_layout_provider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_selection_default_selection_iterator.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_selection_selection_iterator.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_triple.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_wrapped_exception.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/validation_graph_issue.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/validation_graph_validation_exception.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/validation_graph_validator.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/validation_i_validating_graph_element_visitor.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/validation_layout_option_validator.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine_wbtest.mbt -o /Users/zhengyu/Documents/projects/moon_elk/_build/wasm-gc/release/check/core/core.whitebox_test.mi -pkg Milky2018/moon_elk/core -std-path /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/buffer/buffer.mi:buffer -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/cmp/cmp.mi:cmp -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/double/double.mi:double -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/float/float.mi:float -i /Users/zhengyu/Documents/projects/moon_elk/_build/wasm-gc/release/check/graph/graph.mi:graph -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/int/int.mi:int -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/json/json.mi:json -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/math/math.mi:math -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/prelude/prelude.mi:prelude -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/random/random.mi:random -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/strconv/strconv.mi:strconv -pkg-sources Milky2018/moon_elk/core:/Users/zhengyu/Documents/projects/moon_elk/src/core -target wasm-gc -whitebox-test -workspace-path /Users/zhengyu/Documents/projects/moon_elk -all-pkgs /Users/zhengyu/Documents/projects/moon_elk/_build/wasm-gc/release/check/all_pkgs.json
+failed: /Users/zhengyu/.moon/bin/moonc check -error-format json /Users/zhengyu/Documents/projects/moon_elk/src/core/abstract_layout_provider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/alg_algorithm_assembler.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/alg_enum_based_factory_comparator.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/alg_i_layout_phase.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/alg_i_layout_phase_factory.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/alg_i_layout_processor.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/alg_i_layout_processor_factory.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/alg_layout_processor_configuration.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/alg_phase_descriptor.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_abstract_normalized_matcher.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_aggregated_match_decider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_alignment_matcher.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_comment_attacher.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_distance_matcher.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_elk_graph_bounds_provider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_elk_graph_data_provider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_i_bounds_provider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_i_data_provider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_i_decider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_i_explicit_attachment_provider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_i_filter.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_i_matcher.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_node_reference_matcher.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_size_filter.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_text_prefix_filter.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/data_deprecated_layout_option_replacer.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/data_i_layout_meta_data.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/data_i_layout_meta_data_provider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/data_layout_algorithm_data.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/data_layout_algorithm_resolver.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/data_layout_category_data.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/data_layout_data_content_assist.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/data_layout_meta_data_service.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/data_layout_option_data.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/elk_engine.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/i_graph_layout_engine.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/i_topdown_layout_provider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/labels_i_label_manager.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/labels_label_management_options.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/layout_configurator.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/math_bezier_spline.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/math_cubic_spline_interpolator.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/math_elk_margin.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/math_elk_math.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/math_elk_padding.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/math_elk_rectangle.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/math_i_spline_interpolator.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/math_internal.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/math_k_vector.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/math_k_vector_chain.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/math_spacing.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_alignment.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_content_alignment.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_core_options.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_direction.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_edge_coords.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_edge_label_placement.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_edge_routing.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_edge_type.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_hierarchy_handling.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_i_topdown_size_approximator.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_label_side.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_node_label_placement.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_port_alignment.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_port_constraints.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_port_label_placement.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_port_side.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_shape_coords.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_size_constraint.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_size_options.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_topdown_node_types.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_topdown_size_approximator.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/options_topdown_size_approximator_util.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/testing_i_white_box_testable.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/testing_test_controller.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/unsupported_configuration_exception.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/unsupported_exceptions.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/unsupported_graph_exception.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_abstract_random_list_accessor.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_adapters_elk_graph_adapters.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_adapters_graph_adapters.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_algorithm_factory.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_basic_progress_monitor.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_box_layout_provider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_default_factory.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_elk_spacings.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_elk_util.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_exclusive_bounds.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_fixed_layout_provider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_i_data_object.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_i_elk_cancel_indicator.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_i_elk_progress_monitor.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_i_factory.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_i_graph_element_visitor.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_individual_spacings.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_instance_pool.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_internal_layout_option_proxy.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_logged_graph.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_maybe.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_null_elk_progress_monitor.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_pair.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_persistence_elk_graph_resource.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_persistence_elk_graph_resource_factory.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_persistence_elk_graph_xmi_helper.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_persistence_elk_graph_xmi_save.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_property_constants_delegator.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_quadruple.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_random_layout_provider.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_selection_default_selection_iterator.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_selection_selection_iterator.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_triple.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/util_wrapped_exception.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/validation_graph_issue.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/validation_graph_validation_exception.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/validation_graph_validator.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/validation_i_validating_graph_element_visitor.mbt /Users/zhengyu/Documents/projects/moon_elk/src/core/validation_layout_option_validator.mbt -o /Users/zhengyu/Documents/projects/moon_elk/_build/wasm-gc/release/check/core/core.mi -pkg Milky2018/moon_elk/core -std-path /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/buffer/buffer.mi:buffer -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/cmp/cmp.mi:cmp -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/double/double.mi:double -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/float/float.mi:float -i /Users/zhengyu/Documents/projects/moon_elk/_build/wasm-gc/release/check/graph/graph.mi:graph -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/int/int.mi:int -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/json/json.mi:json -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/math/math.mi:math -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/prelude/prelude.mi:prelude -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/random/random.mi:random -i /Users/zhengyu/.moon/lib/core/_build/wasm-gc/release/bundle/strconv/strconv.mi:strconv -pkg-sources Milky2018/moon_elk/core:/Users/zhengyu/Documents/projects/moon_elk/src/core -target wasm-gc -workspace-path /Users/zhengyu/Documents/projects/moon_elk -all-pkgs /Users/zhengyu/Documents/projects/moon_elk/_build/wasm-gc/release/check/all_pkgs.json
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_abstract_normalized_matcher.mbt:4:3 ]
+   │
+ 4 │   Binary
+   │   ───┬──  
+   │      ╰──── Warning (unused_constructor): Variant 'Binary' is never constructed
+───╯
+Warning: [0005]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_aggregated_match_decider.mbt:59:35 ]
+    │
+ 59 │ pub struct AggregatedMatchDecider[T] {
+    │                                   ┬  
+    │                                   ╰── Warning (unused_type_variable): Unused generic type variable 'T'
+────╯
+Warning: [0035]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_aggregated_match_decider.mbt:98:3 ]
+    │
+ 98 │   include : Bool,
+    │   ───┬───  
+    │      ╰───── Warning (reserved_keyword): The word `include` is reserved for possible future use. Please consider using another name.
+────╯
+Warning: [0035]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_aggregated_match_decider.mbt:100:33 ]
+     │
+ 100 │   self.include_lower_boundary = include
+     │                                 ───┬───  
+     │                                    ╰───── Warning (reserved_keyword): The word `include` is reserved for possible future use. Please consider using another name.
+─────╯
+Warning: [0005]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/comments_text_prefix_filter.mbt:12:32 ]
+    │
+ 12 │ pub struct TextPrefixFilter[C, T] {
+    │                                ┬  
+    │                                ╰── Warning (unused_type_variable): Unused generic type variable 'T'
+────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/data_layout_meta_data_service.mbt:270:5 ]
+     │
+ 270 │     mrtree_separate_connected_components.get_id(),
+     │     ──────────────────┬─────────────────  
+     │                       ╰─────────────────── The value identifier mrtree_separate_connected_components is unbound.
+─────╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/data_layout_option_data.mbt:4:3 ]
+   │
+ 4 │   IntType
+   │   ───┬───  
+   │      ╰───── Warning (unused_constructor): Variant 'IntType' is never constructed
+───╯
+Warning: [0006]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/data_layout_option_data.mbt:46:3 ]
+    │
+ 46 │   AdvancedOption
+    │   ───────┬──────  
+    │          ╰──────── Warning (unused_constructor): Variant 'AdvancedOption' is never constructed
+────╯
+Warning: [0006]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/data_layout_option_data.mbt:47:3 ]
+    │
+ 47 │   HiddenOption
+    │   ──────┬─────  
+    │         ╰─────── Warning (unused_constructor): Variant 'HiddenOption' is never constructed
+────╯
+Warning: [0035]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/math_elk_rectangle.mbt:101:22 ]
+     │
+ 101 │ pub fn ElkRectangle::move(self : ElkRectangle, offset : KVector) -> Unit {
+     │                      ──┬─  
+     │                        ╰─── Warning (reserved_keyword): The word `move` is reserved for possible future use. Please consider using another name.
+─────╯
+Warning: [0035]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/jvmmodel_meta_data_jvm_model_inferrer.mbt:50:11 ]
+    │
+ 50 │       for member in bundle.get_members() {
+    │           ───┬──  
+    │              ╰──── Warning (reserved_keyword): The word `member` is reserved for possible future use. Please consider using another name.
+────╯
+Warning: [0035]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/jvmmodel_meta_data_jvm_model_inferrer.mbt:51:50 ]
+    │
+ 51 │         let tag = core_meta_md_bundle_member_tag(member)
+    │                                                  ───┬──  
+    │                                                     ╰──── Warning (reserved_keyword): The word `member` is reserved for possible future use. Please consider using another name.
+────╯
+Warning: [0035]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/jvmmodel_meta_data_jvm_model_inferrer.mbt:52:58 ]
+    │
+ 52 │         let name = match core_meta_md_bundle_member_name(member) {
+    │                                                          ───┬──  
+    │                                                             ╰──── Warning (reserved_keyword): The word `member` is reserved for possible future use. Please consider using another name.
+────╯
+Warning: [0029]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/moon.pkg:11:3 ]
+    │
+ 11 │   "Milky2018/moon_elk/graph",
+    │   ─────────────┬────────────  
+    │                ╰────────────── Warning (unused_package): Unused package 'Milky2018/moon_elk/graph'
+────╯
+Warning: [0020]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/parser_antlr_internal_internal_meta_data_lexer.mbt:318:25 ]
+     │
+ 318 │       let lexeme = text.substring(start~, end=index)
+     │                         ────┬────  
+     │                             ╰────── Warning (deprecated): Use `str[:]` or `str[:].to_string()` instead
+─────╯
+Warning: [0020]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/parser_antlr_internal_internal_meta_data_lexer.mbt:344:25 ]
+     │
+ 344 │       let lexeme = text.substring(start~, end=index)
+     │                         ────┬────  
+     │                             ╰────── Warning (deprecated): Use `str[:]` or `str[:].to_string()` instead
+─────╯
+Warning: [0020]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/parser_antlr_internal_internal_meta_data_lexer.mbt:373:25 ]
+     │
+ 373 │       let lexeme = text.substring(start~, end=index)
+     │                         ────┬────  
+     │                             ╰────── Warning (deprecated): Use `str[:]` or `str[:].to_string()` instead
+─────╯
+Warning: [0020]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/parser_antlr_internal_internal_meta_data_lexer.mbt:384:23 ]
+     │
+ 384 │     let symbol = text.substring(start=index, end=index + 1)
+     │                       ────┬────  
+     │                           ╰────── Warning (deprecated): Use `str[:]` or `str[:].to_string()` instead
+─────╯
+Warning: [0035]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/parser_antlr_internal_internal_meta_data_parser.mbt:717:12 ]
+     │
+ 717 │       Some(member) => bundle.get_members().push(member)
+     │            ───┬──  
+     │               ╰──── Warning (reserved_keyword): The word `member` is reserved for possible future use. Please consider using another name.
+─────╯
+Warning: [0035]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/parser_antlr_internal_internal_meta_data_parser.mbt:717:49 ]
+     │
+ 717 │       Some(member) => bundle.get_members().push(member)
+     │                                                 ───┬──  
+     │                                                    ╰──── Warning (reserved_keyword): The word `member` is reserved for possible future use. Please consider using another name.
+─────╯
+Warning: [0035]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ui/outline_meta_data_outline_tree_provider.mbt:93:11 ]
+    │
+ 93 │       for member in bundle.get_members() {
+    │           ───┬──  
+    │              ╰──── Warning (reserved_keyword): The word `member` is reserved for possible future use. Please consider using another name.
+────╯
+Warning: [0035]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ui/outline_meta_data_outline_tree_provider.mbt:94:52 ]
+    │
+ 94 │         match core_meta_outline_bundle_member_node(member) {
+    │                                                    ───┬──  
+    │                                                       ╰──── Warning (reserved_keyword): The word `member` is reserved for possible future use. Please consider using another name.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ui/test.mbt:20:25 ]
+    │
+ 20 │   let abstract_module = new_abstract_core_meta_ide_module()
+    │                         ────────────────┬────────────────  
+    │                                         ╰────────────────── The value identifier new_abstract_core_meta_ide_module is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ui/test.mbt:34:15 ]
+    │
+ 34 │   let setup = new_core_meta_ide_setup()
+    │               ───────────┬───────────  
+    │                          ╰───────────── The value identifier new_core_meta_ide_setup is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ui/test.mbt:48:16 ]
+    │
+ 48 │   let parser = new_core_meta_ide_parser()
+    │                ────────────┬───────────  
+    │                            ╰───────────── The value identifier new_core_meta_ide_parser is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/ui/test.mbt:69:17 ]
+    │
+ 69 │   let partial = new_partial_core_meta_content_assist_parser()
+    │                 ─────────────────────┬─────────────────────  
+    │                                      ╰─────────────────────── The value identifier new_partial_core_meta_content_assist_parser is unbound.
+────╯
+Warning: [0035]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/validation_meta_data_validator.mbt:79:7 ]
+    │
+ 79 │   for member in members {
+    │       ───┬──  
+    │          ╰──── Warning (reserved_keyword): The word `member` is reserved for possible future use. Please consider using another name.
+────╯
+Warning: [0035]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/validation_meta_data_validator.mbt:80:11 ]
+    │
+ 80 │     match member {
+    │           ───┬──  
+    │              ╰──── Warning (reserved_keyword): The word `member` is reserved for possible future use. Please consider using another name.
+────╯
+Warning: [0035]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/validation_meta_data_validator.mbt:120:7 ]
+     │
+ 120 │   for member in bundle.get_members() {
+     │       ───┬──  
+     │          ╰──── Warning (reserved_keyword): The word `member` is reserved for possible future use. Please consider using another name.
+─────╯
+Warning: [0035]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/meta/validation_meta_data_validator.mbt:121:11 ]
+     │
+ 121 │     match member {
+     │           ───┬──  
+     │              ╰──── Warning (reserved_keyword): The word `member` is reserved for possible future use. Please consider using another name.
+─────╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_alignment.mbt:3:3 ]
+   │
+ 3 │   Automatic
+   │   ────┬────  
+   │       ╰────── Warning (unused_constructor): Variant 'Automatic' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_alignment.mbt:4:3 ]
+   │
+ 4 │   Left
+   │   ──┬─  
+   │     ╰─── Warning (unused_constructor): Variant 'Left' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_alignment.mbt:5:3 ]
+   │
+ 5 │   Right
+   │   ──┬──  
+   │     ╰──── Warning (unused_constructor): Variant 'Right' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_alignment.mbt:6:3 ]
+   │
+ 6 │   Top
+   │   ─┬─  
+   │    ╰─── Warning (unused_constructor): Variant 'Top' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_alignment.mbt:7:3 ]
+   │
+ 7 │   Bottom
+   │   ───┬──  
+   │      ╰──── Warning (unused_constructor): Variant 'Bottom' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_alignment.mbt:8:3 ]
+   │
+ 8 │   Center
+   │   ───┬──  
+   │      ╰──── Warning (unused_constructor): Variant 'Center' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_edge_coords.mbt:3:3 ]
+   │
+ 3 │   Inherit
+   │   ───┬───  
+   │      ╰───── Warning (unused_constructor): Variant 'Inherit' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_edge_coords.mbt:4:3 ]
+   │
+ 4 │   Container
+   │   ────┬────  
+   │       ╰────── Warning (unused_constructor): Variant 'Container' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_edge_coords.mbt:5:3 ]
+   │
+ 5 │   Parent
+   │   ───┬──  
+   │      ╰──── Warning (unused_constructor): Variant 'Parent' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_edge_coords.mbt:6:3 ]
+   │
+ 6 │   Root
+   │   ──┬─  
+   │     ╰─── Warning (unused_constructor): Variant 'Root' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_edge_label_placement.mbt:3:3 ]
+   │
+ 3 │   Centered
+   │   ────┬───  
+   │       ╰───── Warning (unused_constructor): Variant 'Centered' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_edge_label_placement.mbt:4:3 ]
+   │
+ 4 │   Head
+   │   ──┬─  
+   │     ╰─── Warning (unused_constructor): Variant 'Head' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_edge_label_placement.mbt:5:3 ]
+   │
+ 5 │   Tail
+   │   ──┬─  
+   │     ╰─── Warning (unused_constructor): Variant 'Tail' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_edge_type.mbt:3:3 ]
+   │
+ 3 │   NoneType
+   │   ────┬───  
+   │       ╰───── Warning (unused_constructor): Variant 'NoneType' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_edge_type.mbt:4:3 ]
+   │
+ 4 │   Directed
+   │   ────┬───  
+   │       ╰───── Warning (unused_constructor): Variant 'Directed' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_edge_type.mbt:5:3 ]
+   │
+ 5 │   Undirected
+   │   ─────┬────  
+   │        ╰────── Warning (unused_constructor): Variant 'Undirected' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_edge_type.mbt:6:3 ]
+   │
+ 6 │   Association
+   │   ─────┬─────  
+   │        ╰─────── Warning (unused_constructor): Variant 'Association' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_edge_type.mbt:7:3 ]
+   │
+ 7 │   Generalization
+   │   ───────┬──────  
+   │          ╰──────── Warning (unused_constructor): Variant 'Generalization' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_edge_type.mbt:8:3 ]
+   │
+ 8 │   Dependency
+   │   ─────┬────  
+   │        ╰────── Warning (unused_constructor): Variant 'Dependency' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_hierarchy_handling.mbt:4:3 ]
+   │
+ 4 │   IncludeChildren
+   │   ───────┬───────  
+   │          ╰───────── Warning (unused_constructor): Variant 'IncludeChildren' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_hierarchy_handling.mbt:5:3 ]
+   │
+ 5 │   SeparateChildren
+   │   ────────┬───────  
+   │           ╰───────── Warning (unused_constructor): Variant 'SeparateChildren' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_port_alignment.mbt:3:3 ]
+   │
+ 3 │   Distributed
+   │   ─────┬─────  
+   │        ╰─────── Warning (unused_constructor): Variant 'Distributed' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_port_alignment.mbt:4:3 ]
+   │
+ 4 │   Justified
+   │   ────┬────  
+   │       ╰────── Warning (unused_constructor): Variant 'Justified' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_port_alignment.mbt:5:3 ]
+   │
+ 5 │   Begin
+   │   ──┬──  
+   │     ╰──── Warning (unused_constructor): Variant 'Begin' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_port_alignment.mbt:6:3 ]
+   │
+ 6 │   Center
+   │   ───┬──  
+   │      ╰──── Warning (unused_constructor): Variant 'Center' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_port_alignment.mbt:7:3 ]
+   │
+ 7 │   End
+   │   ─┬─  
+   │    ╰─── Warning (unused_constructor): Variant 'End' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_shape_coords.mbt:4:3 ]
+   │
+ 4 │   Parent
+   │   ───┬──  
+   │      ╰──── Warning (unused_constructor): Variant 'Parent' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_shape_coords.mbt:5:3 ]
+   │
+ 5 │   Root
+   │   ──┬─  
+   │     ╰─── Warning (unused_constructor): Variant 'Root' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_topdown_node_types.mbt:3:3 ]
+   │
+ 3 │   ParallelNode
+   │   ──────┬─────  
+   │         ╰─────── Warning (unused_constructor): Variant 'ParallelNode' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_topdown_node_types.mbt:4:3 ]
+   │
+ 4 │   HierarchicalNode
+   │   ────────┬───────  
+   │           ╰───────── Warning (unused_constructor): Variant 'HierarchicalNode' is never constructed
+───╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_topdown_node_types.mbt:5:3 ]
+   │
+ 5 │   RootNode
+   │   ────┬───  
+   │       ╰───── Warning (unused_constructor): Variant 'RootNode' is never constructed
+───╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_topdown_size_approximator.mbt:76:18 ]
+    │
+ 76 │   if resolved == layered_algorithm_id {
+    │                  ──────────┬─────────  
+    │                            ╰─────────── The value identifier layered_algorithm_id is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_topdown_size_approximator.mbt:77:5 ]
+    │
+ 77 │     new_layered_layout_provider().layout(layout_graph, progress_monitor)
+    │     ─────────────┬─────────────  
+    │                  ╰─────────────── The value identifier new_layered_layout_provider is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_topdown_size_approximator.mbt:80:18 ]
+    │
+ 80 │   if resolved == mrtree_algorithm_id {
+    │                  ─────────┬─────────  
+    │                           ╰─────────── The value identifier mrtree_algorithm_id is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_topdown_size_approximator.mbt:81:5 ]
+    │
+ 81 │     new_mrtree_tree_layout_provider().layout(layout_graph, progress_monitor)
+    │     ───────────────┬───────────────  
+    │                    ╰───────────────── The value identifier new_mrtree_tree_layout_provider is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_topdown_size_approximator.mbt:84:18 ]
+    │
+ 84 │   if resolved == topdownpacking_algorithm_id {
+    │                  ─────────────┬─────────────  
+    │                               ╰─────────────── The value identifier topdownpacking_algorithm_id is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_topdown_size_approximator.mbt:85:5 ]
+    │
+ 85 │     new_topdownpacking_layout_provider().layout(layout_graph, progress_monitor)
+    │     ─────────────────┬────────────────  
+    │                      ╰────────────────── The value identifier new_topdownpacking_layout_provider is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_topdown_size_approximator.mbt:88:18 ]
+    │
+ 88 │   if resolved == force_algorithm_id {
+    │                  ─────────┬────────  
+    │                           ╰────────── The value identifier force_algorithm_id is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_topdown_size_approximator.mbt:89:5 ]
+    │
+ 89 │     new_force_layout_provider().layout(layout_graph, progress_monitor)
+    │     ────────────┬────────────  
+    │                 ╰────────────── The value identifier new_force_layout_provider is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_topdown_size_approximator.mbt:92:18 ]
+    │
+ 92 │   if resolved == stress_algorithm_id {
+    │                  ─────────┬─────────  
+    │                           ╰─────────── The value identifier stress_algorithm_id is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_topdown_size_approximator.mbt:93:5 ]
+    │
+ 93 │     new_stress_layout_provider().layout(layout_graph, progress_monitor)
+    │     ─────────────┬────────────  
+    │                  ╰────────────── The value identifier new_stress_layout_provider is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_topdown_size_approximator.mbt:96:18 ]
+    │
+ 96 │   if resolved == rectpacking_algorithm_id {
+    │                  ────────────┬───────────  
+    │                              ╰───────────── The value identifier rectpacking_algorithm_id is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_topdown_size_approximator.mbt:97:5 ]
+    │
+ 97 │     new_rectpacking_layout_provider().layout(layout_graph, progress_monitor)
+    │     ───────────────┬───────────────  
+    │                    ╰───────────────── The value identifier new_rectpacking_layout_provider is unbound.
+────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_topdown_size_approximator.mbt:100:18 ]
+     │
+ 100 │   if resolved == radial_algorithm_id {
+     │                  ─────────┬─────────  
+     │                           ╰─────────── The value identifier radial_algorithm_id is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_topdown_size_approximator.mbt:101:5 ]
+     │
+ 101 │     new_radial_layout_provider().layout(layout_graph, progress_monitor)
+     │     ─────────────┬────────────  
+     │                  ╰────────────── The value identifier new_radial_layout_provider is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_topdown_size_approximator.mbt:104:18 ]
+     │
+ 104 │   if resolved == vertiflex_algorithm_id {
+     │                  ───────────┬──────────  
+     │                             ╰──────────── The value identifier vertiflex_algorithm_id is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_topdown_size_approximator.mbt:105:5 ]
+     │
+ 105 │     new_vertiflex_layout_provider().layout(layout_graph, progress_monitor)
+     │     ──────────────┬──────────────  
+     │                   ╰──────────────── The value identifier new_vertiflex_layout_provider is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_topdown_size_approximator.mbt:108:18 ]
+     │
+ 108 │   if resolved == spore_compaction_algorithm_id {
+     │                  ──────────────┬──────────────  
+     │                                ╰──────────────── The value identifier spore_compaction_algorithm_id is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_topdown_size_approximator.mbt:109:5 ]
+     │
+ 109 │     new_spore_shrink_tree_layout_provider().layout(
+     │     ──────────────────┬──────────────────  
+     │                       ╰──────────────────── The value identifier new_spore_shrink_tree_layout_provider is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_topdown_size_approximator.mbt:114:18 ]
+     │
+ 114 │   if resolved == spore_overlap_removal_algorithm_id {
+     │                  ─────────────────┬────────────────  
+     │                                   ╰────────────────── The value identifier spore_overlap_removal_algorithm_id is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_topdown_size_approximator.mbt:115:5 ]
+     │
+ 115 │     new_spore_overlap_removal_layout_provider().layout(
+     │     ────────────────────┬────────────────────  
+     │                         ╰────────────────────── The value identifier new_spore_overlap_removal_layout_provider is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/options_topdown_size_approximator.mbt:121:5 ]
+     │
+ 121 │     new_dis_co_layout_provider().layout(layout_graph, progress_monitor)
+     │     ─────────────┬────────────  
+     │                  ╰────────────── The value identifier new_dis_co_layout_provider is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:157:77 ]
+     │
+ 157 │     spacing_label_port_vertical, spacing_node_self_loop, spacing_port_port, layered_options_spacing_edge_edge_between_layers,
+     │                                                                             ────────────────────────┬───────────────────────  
+     │                                                                                                     ╰───────────────────────── The value identifier layered_options_spacing_edge_edge_between_layers is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:158:5 ]
+     │
+ 158 │     layered_options_spacing_edge_node_between_layers, layered_options_spacing_node_node_between_layers,
+     │     ────────────────────────┬───────────────────────  
+     │                             ╰───────────────────────── The value identifier layered_options_spacing_edge_node_between_layers is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:158:55 ]
+     │
+ 158 │     layered_options_spacing_edge_node_between_layers, layered_options_spacing_node_node_between_layers,
+     │                                                       ────────────────────────┬───────────────────────  
+     │                                                                               ╰───────────────────────── The value identifier layered_options_spacing_node_node_between_layers is unbound.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:165:17 ]
+     │
+ 165 │   target_node : LNode,
+     │                 ──┬──  
+     │                   ╰──── The type LNode is undefined.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:191:17 ]
+     │
+ 191 │   target_node : LNode,
+     │                 ──┬──  
+     │                   ╰──── The type LNode is undefined.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:307:7 ]
+     │
+ 307 │       label_x(label)
+     │       ───┬───  
+     │          ╰───── The value identifier label_x is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:317:18 ]
+     │
+ 317 │     let bottom = label_y(label) + @graph.label_height(label)
+     │                  ───┬───  
+     │                     ╰───── The value identifier label_y is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:327:7 ]
+     │
+ 327 │   if !edge_sections(edge).is_empty() {
+     │       ──────┬──────  
+     │             ╰──────── The value identifier edge_sections is unbound.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:360:19 ]
+     │
+ 360 │   layered_graph : LGraph
+     │                   ───┬──  
+     │                      ╰──── The type LGraph is undefined.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:361:38 ]
+     │
+ 361 │   elk_to_lnode : Map[@graph.ElkNode, LNode]
+     │                                      ──┬──  
+     │                                        ╰──── The type LNode is undefined.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:362:38 ]
+     │
+ 362 │   elk_to_lport : Map[@graph.ElkPort, LPort]
+     │                                      ──┬──  
+     │                                        ╰──── The type LPort is undefined.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:364:39 ]
+     │
+ 364 │   edge_to_ledge : Map[@graph.ElkEdge, LEdge]
+     │                                       ──┬──  
+     │                                         ╰──── The type LEdge is undefined.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:379:6 ]
+     │
+ 379 │ ) -> LGraph {
+     │      ───┬──  
+     │         ╰──── The type LGraph is undefined.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:392:6 ]
+     │
+ 392 │ ) -> LGraph? {
+     │      ───┬──  
+     │         ╰──── The type LGraph is undefined.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:402:19 ]
+     │
+ 402 │   layered_graph : LGraph,
+     │                   ───┬──  
+     │                      ╰──── The type LGraph is undefined.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:431:38 ]
+     │
+ 431 │   elk_to_lport : Map[@graph.ElkPort, LPort],
+     │                                      ──┬──  
+     │                                        ╰──── The type LPort is undefined.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:432:6 ]
+     │
+ 432 │ ) -> LPort? {
+     │      ──┬──  
+     │        ╰──── The type LPort is undefined.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:470:38 ]
+     │
+ 470 │   elk_to_lnode : Map[@graph.ElkNode, LNode],
+     │                                      ──┬──  
+     │                                        ╰──── The type LNode is undefined.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:471:7 ]
+     │
+ 471 │ ) -> (LNode?, Bool) {
+     │       ──┬──  
+     │         ╰──── The type LNode is undefined.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:509:5 ]
+     │
+ 509 │     layered_options_allow_non_flow_ports_to_switch_sides.get_id(),
+     │     ──────────────────────────┬─────────────────────────  
+     │                               ╰─────────────────────────── The value identifier layered_options_allow_non_flow_ports_to_switch_sides is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:523:3 ]
+     │
+ 523 │   layered_options_allow_non_flow_ports_to_switch_sides.get_default()
+     │   ──────────────────────────┬─────────────────────────  
+     │                             ╰─────────────────────────── The value identifier layered_options_allow_non_flow_ports_to_switch_sides is unbound.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:591:10 ]
+     │
+ 591 │   left : GraphProperties,
+     │          ───────┬───────  
+     │                 ╰───────── The type GraphProperties is undefined.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:592:11 ]
+     │
+ 592 │   right : GraphProperties,
+     │           ───────┬───────  
+     │                  ╰───────── The type GraphProperties is undefined.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:611:19 ]
+     │
+ 611 │   layered_graph : LGraph,
+     │                   ───┬──  
+     │                      ╰──── The type LGraph is undefined.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:612:14 ]
+     │
+ 612 │   property : GraphProperties,
+     │              ───────┬───────  
+     │                     ╰───────── The type GraphProperties is undefined.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:615:5 ]
+     │
+ 615 │     internal_properties_graph_properties,
+     │     ──────────────────┬─────────────────  
+     │                       ╰─────────────────── The value identifier internal_properties_graph_properties is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:624:5 ]
+     │
+ 624 │     internal_properties_graph_properties, properties,
+     │     ──────────────────┬─────────────────  
+     │                       ╰─────────────────── The value identifier internal_properties_graph_properties is unbound.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:630:19 ]
+     │
+ 630 │   layered_graph : LGraph,
+     │                   ───┬──  
+     │                      ╰──── The type LGraph is undefined.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:631:14 ]
+     │
+ 631 │   expected : GraphProperties,
+     │              ───────┬───────  
+     │                     ╰───────── The type GraphProperties is undefined.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:635:7 ]
+     │
+ 635 │       internal_properties_graph_properties,
+     │       ──────────────────┬─────────────────  
+     │                         ╰─────────────────── The value identifier internal_properties_graph_properties is unbound.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:654:51 ]
+     │
+ 654 │ fn recursive_layered_ports_have_same_owner(left : LPort, right : LPort) -> Bool {
+     │                                                   ──┬──  
+     │                                                     ╰──── The type LPort is undefined.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:654:66 ]
+     │
+ 654 │ fn recursive_layered_ports_have_same_owner(left : LPort, right : LPort) -> Bool {
+     │                                                                  ──┬──  
+     │                                                                    ╰──── The type LPort is undefined.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:815:19 ]
+     │
+ 815 │   layered_graph : LGraph,
+     │                   ───┬──  
+     │                      ╰──── The type LGraph is undefined.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:816:38 ]
+     │
+ 816 │   elk_to_lport : Map[@graph.ElkPort, LPort],
+     │                                      ──┬──  
+     │                                        ╰──── The type LPort is undefined.
+─────╯
+Error: [4032]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:817:6 ]
+     │
+ 817 │ ) -> LPort {
+     │      ──┬──  
+     │        ╰──── The type LPort is undefined.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:848:19 ]
+     │
+ 848 │       let dummy = new_l_node(graph=Some(layered_graph))
+     │                   ─────┬────  
+     │                        ╰────── The value identifier new_l_node is unbound.
+─────╯
+Error: [4024]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:849:22 ]
+     │
+ 849 │       dummy.set_type(NodeType::ExternalPort)
+     │                      ────┬───  
+     │                          ╰───── The type/trait NodeType is not found.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:852:9 ]
+     │
+ 852 │         internal_properties_ext_port_side, final_external_side,
+     │         ────────────────┬────────────────  
+     │                         ╰────────────────── The value identifier internal_properties_ext_port_side is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:859:9 ]
+     │
+ 859 │         internal_properties_ext_port_size,
+     │         ────────────────┬────────────────  
+     │                         ╰────────────────── The value identifier internal_properties_ext_port_size is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:866:9 ]
+     │
+ 866 │         layered_options_port_border_offset, border_offset,
+     │         ─────────────────┬────────────────  
+     │                          ╰────────────────── The value identifier layered_options_port_border_offset is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:869:19 ]
+     │
+ 869 │       let lport = new_l_port()
+     │                   ─────┬────  
+     │                        ╰────── The value identifier new_l_port is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:881:11 ]
+     │
+ 881 │           layered_options_port_anchor.get_id(),
+     │           ─────────────┬─────────────  
+     │                        ╰─────────────── The value identifier layered_options_port_anchor is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:896:13 ]
+     │
+ 896 │             layered_options_layering_layer_constraint, "FIRST_SEPARATE",
+     │             ────────────────────┬────────────────────  
+     │                                 ╰────────────────────── The value identifier layered_options_layering_layer_constraint is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:910:13 ]
+     │
+ 910 │             layered_options_layering_layer_constraint, "LAST_SEPARATE",
+     │             ────────────────────┬────────────────────  
+     │                                 ╰────────────────────── The value identifier layered_options_layering_layer_constraint is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:921:13 ]
+     │
+ 921 │             internal_properties_in_layer_constraint, "TOP",
+     │             ───────────────────┬───────────────────  
+     │                                ╰───────────────────── The value identifier internal_properties_in_layer_constraint is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:935:13 ]
+     │
+ 935 │             internal_properties_in_layer_constraint, "BOTTOM",
+     │             ───────────────────┬───────────────────  
+     │                                ╰───────────────────── The value identifier internal_properties_in_layer_constraint is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:952:9 ]
+     │
+ 952 │         layered_options_port_anchor,
+     │         ─────────────┬─────────────  
+     │                      ╰─────────────── The value identifier layered_options_port_anchor is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:987:11 ]
+     │
+ 987 │           internal_properties_port_ratio_or_position, ratio_or_position,
+     │           ─────────────────────┬────────────────────  
+     │                                ╰────────────────────── The value identifier internal_properties_port_ratio_or_position is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:991:33 ]
+     │
+ 991 │       dummy.set_property_l_port(internal_properties_origin_l_port, Some(lport))
+     │                                 ────────────────┬────────────────  
+     │                                                 ╰────────────────── The value identifier internal_properties_origin_l_port is unbound.
+─────╯
+Error: [4024]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:995:9 ]
+     │
+ 995 │         GraphProperties::ExternalPorts,
+     │         ───────┬───────  
+     │                ╰───────── The type/trait GraphProperties is not found.
+─────╯
+Error: [4024]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1000:11 ]
+      │
+ 1000 │           GraphProperties::NorthSouthPorts,
+      │           ───────┬───────  
+      │                  ╰───────── The type/trait GraphProperties is not found.
+──────╯
+Error: [4032]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1048:11 ]
+      │
+ 1048 │   owner : LNode,
+      │           ──┬──  
+      │             ╰──── The type LNode is undefined.
+──────╯
+Error: [4032]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1051:6 ]
+      │
+ 1051 │ ) -> LPort {
+      │      ──┬──  
+      │        ╰──── The type LPort is undefined.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1055:14 ]
+      │
+ 1055 │   let port = new_l_port()
+      │              ─────┬────  
+      │                   ╰────── The value identifier new_l_port is unbound.
+──────╯
+Error: [4032]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1075:30 ]
+      │
+ 1075 │ ) -> ILayoutProcessorFactory[LayeredPhases, LGraph] {
+      │                              ──────┬──────  
+      │                                    ╰──────── The type LayeredPhases is undefined.
+──────╯
+Error: [4032]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1075:45 ]
+      │
+ 1075 │ ) -> ILayoutProcessorFactory[LayeredPhases, LGraph] {
+      │                                             ───┬──  
+      │                                                ╰──── The type LGraph is undefined.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1079:9 ]
+      │
+ 1079 │         new_depth_first_cycle_breaker_layout_phase()
+      │         ─────────────────────┬────────────────────  
+      │                              ╰────────────────────── The value identifier new_depth_first_cycle_breaker_layout_phase is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1083:9 ]
+      │
+ 1083 │         new_interactive_cycle_breaker_layout_phase()
+      │         ─────────────────────┬────────────────────  
+      │                              ╰────────────────────── The value identifier new_interactive_cycle_breaker_layout_phase is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1087:9 ]
+      │
+ 1087 │         new_model_order_cycle_breaker_layout_phase()
+      │         ─────────────────────┬────────────────────  
+      │                              ╰────────────────────── The value identifier new_model_order_cycle_breaker_layout_phase is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1091:9 ]
+      │
+ 1091 │         new_greedy_model_order_cycle_breaker_layout_phase()
+      │         ────────────────────────┬────────────────────────  
+      │                                 ╰────────────────────────── The value identifier new_greedy_model_order_cycle_breaker_layout_phase is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1095:9 ]
+      │
+ 1095 │         new_sc_connectivity_cycle_breaker_layout_phase()
+      │         ───────────────────────┬──────────────────────  
+      │                                ╰──────────────────────── The value identifier new_sc_connectivity_cycle_breaker_layout_phase is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1099:9 ]
+      │
+ 1099 │         new_scc_node_type_cycle_breaker_layout_phase()
+      │         ──────────────────────┬─────────────────────  
+      │                               ╰─────────────────────── The value identifier new_scc_node_type_cycle_breaker_layout_phase is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1103:9 ]
+      │
+ 1103 │         new_dfs_node_order_cycle_breaker_layout_phase()
+      │         ──────────────────────┬──────────────────────  
+      │                               ╰──────────────────────── The value identifier new_dfs_node_order_cycle_breaker_layout_phase is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1107:9 ]
+      │
+ 1107 │         new_bfs_node_order_cycle_breaker_layout_phase()
+      │         ──────────────────────┬──────────────────────  
+      │                               ╰──────────────────────── The value identifier new_bfs_node_order_cycle_breaker_layout_phase is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1111:9 ]
+      │
+ 1111 │         new_greedy_cycle_breaker_layout_phase()
+      │         ──────────────────┬──────────────────  
+      │                           ╰──────────────────── The value identifier new_greedy_cycle_breaker_layout_phase is unbound.
+──────╯
+Error: [4032]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1119:30 ]
+      │
+ 1119 │ ) -> ILayoutProcessorFactory[LayeredPhases, LGraph] {
+      │                              ──────┬──────  
+      │                                    ╰──────── The type LayeredPhases is undefined.
+──────╯
+Error: [4032]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1119:45 ]
+      │
+ 1119 │ ) -> ILayoutProcessorFactory[LayeredPhases, LGraph] {
+      │                                             ───┬──  
+      │                                                ╰──── The type LGraph is undefined.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1123:9 ]
+      │
+ 1123 │         new_longest_path_layerer_layout_phase()
+      │         ──────────────────┬──────────────────  
+      │                           ╰──────────────────── The value identifier new_longest_path_layerer_layout_phase is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1127:9 ]
+      │
+ 1127 │         new_longest_path_source_layerer_layout_phase()
+      │         ──────────────────────┬─────────────────────  
+      │                               ╰─────────────────────── The value identifier new_longest_path_source_layerer_layout_phase is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1131:9 ]
+      │
+ 1131 │         new_coffman_graham_layerer_layout_phase()
+      │         ───────────────────┬───────────────────  
+      │                            ╰───────────────────── The value identifier new_coffman_graham_layerer_layout_phase is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1135:9 ]
+      │
+ 1135 │         new_interactive_layerer_layout_phase()
+      │         ──────────────────┬─────────────────  
+      │                           ╰─────────────────── The value identifier new_interactive_layerer_layout_phase is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1139:9 ]
+      │
+ 1139 │         new_stretch_width_layerer_layout_phase()
+      │         ───────────────────┬──────────────────  
+      │                            ╰──────────────────── The value identifier new_stretch_width_layerer_layout_phase is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1143:9 ]
+      │
+ 1143 │         new_min_width_layerer_layout_phase()
+      │         ─────────────────┬────────────────  
+      │                          ╰────────────────── The value identifier new_min_width_layerer_layout_phase is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1147:9 ]
+      │
+ 1147 │         new_breadth_first_model_order_layerer_layout_phase()
+      │         ─────────────────────────┬────────────────────────  
+      │                                  ╰────────────────────────── The value identifier new_breadth_first_model_order_layerer_layout_phase is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1151:9 ]
+      │
+ 1151 │         new_depth_first_model_order_layerer_layout_phase()
+      │         ────────────────────────┬───────────────────────  
+      │                                 ╰───────────────────────── The value identifier new_depth_first_model_order_layerer_layout_phase is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1155:9 ]
+      │
+ 1155 │         new_network_simplex_layerer_layout_phase()
+      │         ────────────────────┬───────────────────  
+      │                             ╰───────────────────── The value identifier new_network_simplex_layerer_layout_phase is unbound.
+──────╯
+Error: [4032]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1163:30 ]
+      │
+ 1163 │ ) -> ILayoutProcessorFactory[LayeredPhases, LGraph] {
+      │                              ──────┬──────  
+      │                                    ╰──────── The type LayeredPhases is undefined.
+──────╯
+Error: [4032]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1163:45 ]
+      │
+ 1163 │ ) -> ILayoutProcessorFactory[LayeredPhases, LGraph] {
+      │                                             ───┬──  
+      │                                                ╰──── The type LGraph is undefined.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1167:9 ]
+      │
+ 1167 │         new_no_crossing_minimizer_layout_phase()
+      │         ───────────────────┬──────────────────  
+      │                            ╰──────────────────── The value identifier new_no_crossing_minimizer_layout_phase is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1171:9 ]
+      │
+ 1171 │         new_interactive_crossing_minimizer_layout_phase()
+      │         ───────────────────────┬───────────────────────  
+      │                                ╰───────────────────────── The value identifier new_interactive_crossing_minimizer_layout_phase is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1175:9 ]
+      │
+ 1175 │         new_layer_sweep_crossing_minimizer_layout_phase(CrossMinType::Median)
+      │         ───────────────────────┬───────────────────────  
+      │                                ╰───────────────────────── The value identifier new_layer_sweep_crossing_minimizer_layout_phase is unbound.
+──────╯
+Error: [4024]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1175:57 ]
+      │
+ 1175 │         new_layer_sweep_crossing_minimizer_layout_phase(CrossMinType::Median)
+      │                                                         ──────┬─────  
+      │                                                               ╰─────── The type/trait CrossMinType is not found.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1179:9 ]
+      │
+ 1179 │         new_layer_sweep_crossing_minimizer_layout_phase(
+      │         ───────────────────────┬───────────────────────  
+      │                                ╰───────────────────────── The value identifier new_layer_sweep_crossing_minimizer_layout_phase is unbound.
+──────╯
+Error: [4024]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1180:11 ]
+      │
+ 1180 │           CrossMinType::Barycenter,
+      │           ──────┬─────  
+      │                 ╰─────── The type/trait CrossMinType is not found.
+──────╯
+Error: [4032]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1189:30 ]
+      │
+ 1189 │ ) -> ILayoutProcessorFactory[LayeredPhases, LGraph] {
+      │                              ──────┬──────  
+      │                                    ╰──────── The type LayeredPhases is undefined.
+──────╯
+Error: [4032]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1189:45 ]
+      │
+ 1189 │ ) -> ILayoutProcessorFactory[LayeredPhases, LGraph] {
+      │                                             ───┬──  
+      │                                                ╰──── The type LGraph is undefined.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1193:9 ]
+      │
+ 1193 │         new_simple_node_placer_layout_phase()
+      │         ─────────────────┬─────────────────  
+      │                          ╰─────────────────── The value identifier new_simple_node_placer_layout_phase is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1197:9 ]
+      │
+ 1197 │         new_interactive_node_placer_layout_phase()
+      │         ────────────────────┬───────────────────  
+      │                             ╰───────────────────── The value identifier new_interactive_node_placer_layout_phase is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1201:9 ]
+      │
+ 1201 │         new_linear_segments_node_placer_layout_phase()
+      │         ──────────────────────┬─────────────────────  
+      │                               ╰─────────────────────── The value identifier new_linear_segments_node_placer_layout_phase is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1205:9 ]
+      │
+ 1205 │         new_bk_node_placer_layout_phase()
+      │         ───────────────┬───────────────  
+      │                        ╰───────────────── The value identifier new_bk_node_placer_layout_phase is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1209:9 ]
+      │
+ 1209 │         new_network_simplex_placer_layout_phase()
+      │         ───────────────────┬───────────────────  
+      │                            ╰───────────────────── The value identifier new_network_simplex_placer_layout_phase is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1213:9 ]
+      │
+ 1213 │         new_bk_node_placer_layout_phase()
+      │         ───────────────┬───────────────  
+      │                        ╰───────────────── The value identifier new_bk_node_placer_layout_phase is unbound.
+──────╯
+Error: [4032]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1262:58 ]
+      │
+ 1262 │ fn recursive_layered_normalize_port_constraints(lgraph : LGraph) -> Unit {
+      │                                                          ───┬──  
+      │                                                             ╰──── The type LGraph is undefined.
+──────╯
+Error: [4015]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1264:13 ]
+      │
+ 1264 │     if node.get_property_string(port_constraints) == "UNDEFINED" {
+      │             ─────────┬─────────  
+      │                      ╰─────────── Type _/0 has no method get_property_string.
+──────╯
+Error: [4015]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1265:12 ]
+      │
+ 1265 │       node.set_property_string(port_constraints, "FREE")
+      │            ─────────┬─────────  
+      │                     ╰─────────── Type _/0 has no method set_property_string.
+──────╯
+Error: [4015]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1269:23 ]
+      │
+ 1269 │     for node in layer.get_nodes() {
+      │                       ────┬────  
+      │                           ╰────── Type _/0 has no method get_nodes.
+──────╯
+Error: [4015]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1270:15 ]
+      │
+ 1270 │       if node.get_property_string(port_constraints) == "UNDEFINED" {
+      │               ─────────┬─────────  
+      │                        ╰─────────── Type _/0 has no method get_property_string.
+──────╯
+Error: [4015]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1271:14 ]
+      │
+ 1271 │         node.set_property_string(port_constraints, "FREE")
+      │              ─────────┬─────────  
+      │                       ╰─────────── Type _/0 has no method set_property_string.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1279:23 ]
+      │
+ 1279 │   let layered_graph = new_l_graph()
+      │                       ─────┬─────  
+      │                            ╰─────── The value identifier new_l_graph is unbound.
+──────╯
+Error: [4032]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1280:42 ]
+      │
+ 1280 │   let elk_to_lnode : Map[@graph.ElkNode, LNode] = {}
+      │                                          ──┬──  
+      │                                            ╰──── The type LNode is undefined.
+──────╯
+Error: [4032]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1281:42 ]
+      │
+ 1281 │   let elk_to_lport : Map[@graph.ElkPort, LPort] = {}
+      │                                          ──┬──  
+      │                                            ╰──── The type LPort is undefined.
+──────╯
+Error: [4032]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1283:43 ]
+      │
+ 1283 │   let edge_to_ledge : Map[@graph.ElkEdge, LEdge] = {}
+      │                                           ──┬──  
+      │                                             ╰──── The type LEdge is undefined.
+──────╯
+Error: [4014]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1288:25 ]
+      │
+ 1288 │   graph_padding.right = node_padding.right
+      │                         ─────────┬────────  
+      │                                  ╰────────── Expr Type Mismatch
+        has type : Double
+        wanted   : Array[Int]
+──────╯
+Error: [4014]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1289:26 ]
+      │
+ 1289 │   graph_padding.bottom = node_padding.bottom
+      │                          ─────────┬─────────  
+      │                                   ╰─────────── Expr Type Mismatch
+        has type : Double
+        wanted   : Array[Int]
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1301:11 ]
+      │
+ 1301 │     node, layered_options_spacing_node_node_between_layers,
+      │           ────────────────────────┬───────────────────────  
+      │                                   ╰───────────────────────── The value identifier layered_options_spacing_node_node_between_layers is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1304:11 ]
+      │
+ 1304 │     node, layered_options_spacing_edge_edge_between_layers,
+      │           ────────────────────────┬───────────────────────  
+      │                                   ╰───────────────────────── The value identifier layered_options_spacing_edge_edge_between_layers is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1308:11 ]
+      │
+ 1308 │     node, layered_options_consider_model_order_strategy,
+      │           ──────────────────────┬──────────────────────  
+      │                                 ╰──────────────────────── The value identifier layered_options_consider_model_order_strategy is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1314:13 ]
+      │
+ 1314 │       node, layered_options_layering_node_promotion_strategy,
+      │             ────────────────────────┬───────────────────────  
+      │                                     ╰───────────────────────── The value identifier layered_options_layering_node_promotion_strategy is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1321:13 ]
+      │
+ 1321 │       node, layered_options_crossing_minimization_strategy,
+      │             ───────────────────────┬──────────────────────  
+      │                                    ╰──────────────────────── The value identifier layered_options_crossing_minimization_strategy is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1337:5 ]
+      │
+ 1337 │     layered_options_node_placement_bk_fixed_alignment.get_default(),
+      │     ────────────────────────┬────────────────────────  
+      │                             ╰────────────────────────── The value identifier layered_options_node_placement_bk_fixed_alignment is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1365:11 ]
+      │
+ 1365 │     node, layered_options_feedback_edges,
+      │           ───────────────┬──────────────  
+      │                          ╰──────────────── The value identifier layered_options_feedback_edges is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1395:5 ]
+      │
+ 1395 │     layered_options_spacing_node_node_between_layers,
+      │     ────────────────────────┬───────────────────────  
+      │                             ╰───────────────────────── The value identifier layered_options_spacing_node_node_between_layers is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1399:7 ]
+      │
+ 1399 │       layered_options_spacing_node_node_between_layers.get_default()
+      │       ────────────────────────┬───────────────────────  
+      │                               ╰───────────────────────── The value identifier layered_options_spacing_node_node_between_layers is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1403:5 ]
+      │
+ 1403 │     layered_options_spacing_edge_edge_between_layers,
+      │     ────────────────────────┬───────────────────────  
+      │                             ╰───────────────────────── The value identifier layered_options_spacing_edge_edge_between_layers is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1407:7 ]
+      │
+ 1407 │       layered_options_spacing_edge_edge_between_layers.get_default()
+      │       ────────────────────────┬───────────────────────  
+      │                               ╰───────────────────────── The value identifier layered_options_spacing_edge_edge_between_layers is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1420:5 ]
+      │
+ 1420 │     layered_options_consider_model_order_strategy, consider_model_order,
+      │     ──────────────────────┬──────────────────────  
+      │                           ╰──────────────────────── The value identifier layered_options_consider_model_order_strategy is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1423:5 ]
+      │
+ 1423 │     layered_options_layering_node_promotion_strategy, node_promotion_strategy,
+      │     ────────────────────────┬───────────────────────  
+      │                             ╰───────────────────────── The value identifier layered_options_layering_node_promotion_strategy is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1426:5 ]
+      │
+ 1426 │     layered_options_crossing_minimization_strategy, crossing_strategy,
+      │     ───────────────────────┬──────────────────────  
+      │                            ╰──────────────────────── The value identifier layered_options_crossing_minimization_strategy is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1446:5 ]
+      │
+ 1446 │     layered_options_feedback_edges, feedback_edges,
+      │     ───────────────┬──────────────  
+      │                    ╰──────────────── The value identifier layered_options_feedback_edges is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1449:5 ]
+      │
+ 1449 │     layered_options_node_placement_bk_fixed_alignment, fixed_alignment_value,
+      │     ────────────────────────┬────────────────────────  
+      │                             ╰────────────────────────── The value identifier layered_options_node_placement_bk_fixed_alignment is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1454:9 ]
+      │
+ 1454 │         layered_options_node_placement_favor_straight_edges, value,
+      │         ─────────────────────────┬─────────────────────────  
+      │                                  ╰─────────────────────────── The value identifier layered_options_node_placement_favor_straight_edges is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1459:5 ]
+      │
+ 1459 │     internal_properties_graph_properties,
+      │     ──────────────────┬─────────────────  
+      │                       ╰─────────────────── The value identifier internal_properties_graph_properties is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1463:5 ]
+      │
+ 1463 │     internal_properties_cb_num_model_order_groups, 0,
+      │     ──────────────────────┬──────────────────────  
+      │                           ╰──────────────────────── The value identifier internal_properties_cb_num_model_order_groups is unbound.
+──────╯
+Error: [4024]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1468:7 ]
+      │
+ 1468 │       GraphProperties::NonFreePorts,
+      │       ───────┬───────  
+      │              ╰───────── The type/trait GraphProperties is not found.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1477:17 ]
+      │
+ 1477 │     let lnode = new_l_node(graph=Some(layered_graph))
+      │                 ─────┬────  
+      │                      ╰────── The value identifier new_l_node is unbound.
+──────╯
+Error: [4024]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1500:9 ]
+      │
+ 1500 │         GraphProperties::NonFreePorts,
+      │         ───────┬───────  
+      │                ╰───────── The type/trait GraphProperties is not found.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1504:30 ]
+      │
+ 1504 │       lnode.set_property_int(internal_properties_model_order, node_model_order)
+      │                              ───────────────┬───────────────  
+      │                                             ╰───────────────── The value identifier internal_properties_model_order is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1514:20 ]
+      │
+ 1514 │       let llabel = new_l_label_text(text)
+      │                    ────────┬───────  
+      │                            ╰───────── The value identifier new_l_label_text is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1517:33 ]
+      │
+ 1517 │       llabel.get_position().x = label_x(elk_label)
+      │                                 ───┬───  
+      │                                    ╰───── The value identifier label_x is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1518:33 ]
+      │
+ 1518 │       llabel.get_position().y = label_y(elk_label)
+      │                                 ───┬───  
+      │                                    ╰───── The value identifier label_y is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1524:19 ]
+      │
+ 1524 │       let lport = new_l_port()
+      │                   ─────┬────  
+      │                        ╰────── The value identifier new_l_port is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1530:9 ]
+      │
+ 1530 │         nodespacing_port_border_offset_property, port_border_offset,
+      │         ───────────────────┬───────────────────  
+      │                            ╰───────────────────── The value identifier nodespacing_port_border_offset_property is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1533:9 ]
+      │
+ 1533 │         layered_options_port_border_offset, port_border_offset,
+      │         ─────────────────┬────────────────  
+      │                          ╰────────────────── The value identifier layered_options_port_border_offset is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1536:9 ]
+      │
+ 1536 │         internal_properties_inside_connections,
+      │         ───────────────────┬──────────────────  
+      │                            ╰──────────────────── The value identifier internal_properties_inside_connections is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1545:9 ]
+      │
+ 1545 │         layered_options_allow_non_flow_ports_to_switch_sides, allow_non_flow_switch,
+      │         ──────────────────────────┬─────────────────────────  
+      │                                   ╰─────────────────────────── The value identifier layered_options_allow_non_flow_ports_to_switch_sides is unbound.
+──────╯
+Error: [4024]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1555:11 ]
+      │
+ 1555 │           GraphProperties::NorthSouthPorts,
+      │           ───────┬───────  
+      │                  ╰───────── The type/trait GraphProperties is not found.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1561:11 ]
+      │
+ 1561 │           layered_options_port_anchor.get_id(),
+      │           ─────────────┬─────────────  
+      │                        ╰─────────────── The value identifier layered_options_port_anchor is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1628:11 ]
+      │
+ 1628 │           internal_properties_port_ratio_or_position, ratio_or_position,
+      │           ─────────────────────┬────────────────────  
+      │                                ╰────────────────────── The value identifier internal_properties_port_ratio_or_position is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1633:11 ]
+      │
+ 1633 │           internal_properties_model_order, port_model_order,
+      │           ───────────────┬───────────────  
+      │                          ╰───────────────── The value identifier internal_properties_model_order is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1645:5 ]
+      │
+ 1645 │     internal_properties_max_model_order_nodes, node_model_order,
+      │     ────────────────────┬────────────────────  
+      │                         ╰────────────────────── The value identifier internal_properties_max_model_order_nodes is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1758:18 ]
+      │
+ 1758 │     let l_edge = new_l_edge()
+      │                  ─────┬────  
+      │                       ╰────── The value identifier new_l_edge is unbound.
+──────╯
+Error: [4024]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1764:9 ]
+      │
+ 1764 │         GraphProperties::SelfLoops,
+      │         ───────┬───────  
+      │                ╰───────── The type/trait GraphProperties is not found.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1768:31 ]
+      │
+ 1768 │       l_edge.set_property_int(internal_properties_model_order, edge_model_order)
+      │                               ───────────────┬───────────────  
+      │                                              ╰───────────────── The value identifier internal_properties_model_order is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1778:20 ]
+      │
+ 1778 │       let llabel = new_l_label_text(text)
+      │                    ────────┬───────  
+      │                            ╰───────── The value identifier new_l_label_text is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1781:33 ]
+      │
+ 1781 │       llabel.get_position().x = label_x(elk_label)
+      │                                 ───┬───  
+      │                                    ╰───── The value identifier label_x is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1782:33 ]
+      │
+ 1782 │       llabel.get_position().y = label_y(elk_label)
+      │                                 ───┬───  
+      │                                    ╰───── The value identifier label_y is unbound.
+──────╯
+Error: [4024]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1788:11 ]
+      │
+ 1788 │           GraphProperties::CenterLabels,
+      │           ───────┬───────  
+      │                  ╰───────── The type/trait GraphProperties is not found.
+──────╯
+Error: [4024]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1793:11 ]
+      │
+ 1793 │           GraphProperties::EndLabels,
+      │           ───────┬───────  
+      │                  ╰───────── The type/trait GraphProperties is not found.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1801:3 ]
+      │
+ 1801 │   graph_configurator_configure_graph_properties(layered_graph)
+      │   ──────────────────────┬──────────────────────  
+      │                         ╰──────────────────────── The value identifier graph_configurator_configure_graph_properties is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1876:9 ]
+      │
+ 1876 │         internal_properties_ext_port_side,
+      │         ────────────────┬────────────────  
+      │                         ╰────────────────── The value identifier internal_properties_ext_port_side is unbound.
+──────╯
+Error: [4014]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1906:13 ]
+      │
+ 1906 │             padding_value.right +
+      │             ─────────┬─────────  
+      │                      ╰─────────── Expr Type Mismatch
+        has type : Array[Int]
+        wanted   : Double
+──────╯
+Error: [4014]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1913:13 ]
+      │
+ 1913 │             padding_value.right +
+      │             ─────────┬─────────  
+      │                      ╰─────────── Expr Type Mismatch
+        has type : Array[Int]
+        wanted   : Double
+──────╯
+Error: [4014]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1924:13 ]
+      │
+ 1924 │             padding_value.bottom +
+      │             ──────────┬─────────  
+      │                       ╰─────────── Expr Type Mismatch
+        has type : Array[Int]
+        wanted   : Double
+──────╯
+Error: [4014]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1927:13 ]
+      │
+ 1927 │             padding_value.bottom +
+      │             ──────────┬─────────  
+      │                       ╰─────────── Expr Type Mismatch
+        has type : Array[Int]
+        wanted   : Double
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1956:13 ]
+      │
+ 1956 │             internal_properties_ext_port_side,
+      │             ────────────────┬────────────────  
+      │                             ╰────────────────── The value identifier internal_properties_ext_port_side is unbound.
+──────╯
+Error: [4014]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1985:17 ]
+      │
+ 1985 │                 padding_value.right +
+      │                 ─────────┬─────────  
+      │                          ╰─────────── Expr Type Mismatch
+        has type : Array[Int]
+        wanted   : Double
+──────╯
+Error: [4014]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1992:17 ]
+      │
+ 1992 │                 padding_value.right +
+      │                 ─────────┬─────────  
+      │                          ╰─────────── Expr Type Mismatch
+        has type : Array[Int]
+        wanted   : Double
+──────╯
+Error: [4014]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2003:17 ]
+      │
+ 2003 │                 padding_value.bottom +
+      │                 ──────────┬─────────  
+      │                           ╰─────────── Expr Type Mismatch
+        has type : Array[Int]
+        wanted   : Double
+──────╯
+Error: [4014]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2006:17 ]
+      │
+ 2006 │                 padding_value.bottom +
+      │                 ──────────┬─────────  
+      │                           ╰─────────── Expr Type Mismatch
+        has type : Array[Int]
+        wanted   : Double
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2050:8 ]
+      │
+ 2050 │     if edge_sections(elk_edge).is_empty() {
+      │        ──────┬──────  
+      │              ╰──────── The value identifier edge_sections is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2053:19 ]
+      │
+ 2053 │     let section = edge_sections(elk_edge)[0]
+      │                   ──────┬──────  
+      │                         ╰──────── The value identifier edge_sections is unbound.
+──────╯
+Error: [4014]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2126:52 ]
+      │
+ 2126 │   let mut width = rightmost + padding_value.left + padding_value.right
+      │                                                    ─────────┬─────────  
+      │                                                             ╰─────────── Expr Type Mismatch
+        has type : Array[Int]
+        wanted   : Double
+──────╯
+Error: [4014]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2127:53 ]
+      │
+ 2127 │   let mut height = max_bottom + padding_value.top + padding_value.bottom
+      │                                                     ──────────┬─────────  
+      │                                                               ╰─────────── Expr Type Mismatch
+        has type : Array[Int]
+        wanted   : Double
+──────╯
+Error: [4024]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2136:7 ]
+      │
+ 2136 │       GraphProperties::ExternalPorts,
+      │       ───────┬───────  
+      │              ╰───────── The type/trait GraphProperties is not found.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2163:7 ]
+      │
+ 2163 │       layered_options_crossing_minimization_strategy,
+      │       ───────────────────────┬──────────────────────  
+      │                              ╰──────────────────────── The value identifier layered_options_crossing_minimization_strategy is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2170:7 ]
+      │
+ 2170 │       layered_options_layering_node_promotion_strategy,
+      │       ────────────────────────┬───────────────────────  
+      │                               ╰───────────────────────── The value identifier layered_options_layering_node_promotion_strategy is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2178:5 ]
+      │
+ 2178 │     layered_options_feedback_edges,
+      │     ───────────────┬──────────────  
+      │                    ╰──────────────── The value identifier layered_options_feedback_edges is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2184:46 ]
+      │
+ 2184 │   let assembler = algorithm_assembler_create(layered_phase_descriptor)
+      │                                              ────────────┬───────────  
+      │                                                          ╰───────────── The value identifier layered_phase_descriptor is unbound.
+──────╯
+Error: [4024]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2188:7 ]
+      │
+ 2188 │       LayeredPhases::P1CycleBreaking,
+      │       ──────┬──────  
+      │             ╰──────── The type/trait LayeredPhases is not found.
+──────╯
+Error: [4024]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2194:7 ]
+      │
+ 2194 │       LayeredPhases::P2Layering,
+      │       ──────┬──────  
+      │             ╰──────── The type/trait LayeredPhases is not found.
+──────╯
+Error: [4024]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2200:7 ]
+      │
+ 2200 │       LayeredPhases::P3NodeOrdering,
+      │       ──────┬──────  
+      │             ╰──────── The type/trait LayeredPhases is not found.
+──────╯
+Error: [4024]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2206:7 ]
+      │
+ 2206 │       LayeredPhases::P4NodePlacement,
+      │       ──────┬──────  
+      │             ╰──────── The type/trait LayeredPhases is not found.
+──────╯
+Error: [4024]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2212:7 ]
+      │
+ 2212 │       LayeredPhases::P5EdgeRouting,
+      │       ──────┬──────  
+      │             ╰──────── The type/trait LayeredPhases is not found.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2213:7 ]
+      │
+ 2213 │       edge_router_factory_factory_for(
+      │       ───────────────┬───────────────  
+      │                      ╰───────────────── The value identifier edge_router_factory_factory_for is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2220:45 ]
+      │
+ 2220 │       layout_processor_configuration_create(layered_phase_descriptor)
+      │                                             ────────────┬───────────  
+      │                                                         ╰───────────── The value identifier layered_phase_descriptor is unbound.
+──────╯
+Error: [4024]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2222:9 ]
+      │
+ 2222 │         LayeredPhases::P4NodePlacement,
+      │         ──────┬──────  
+      │               ╰──────── The type/trait LayeredPhases is not found.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2224:11 ]
+      │
+ 2224 │           new_innermost_node_margin_calculator_layout_processor()
+      │           ──────────────────────────┬──────────────────────────  
+      │                                     ╰──────────────────────────── The value identifier new_innermost_node_margin_calculator_layout_processor is unbound.
+──────╯
+Error: [4024]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2228:9 ]
+      │
+ 2228 │         LayeredPhases::P4NodePlacement,
+      │         ──────┬──────  
+      │               ╰──────── The type/trait LayeredPhases is not found.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2230:11 ]
+      │
+ 2230 │           new_label_and_node_size_processor_layout_processor()
+      │           ─────────────────────────┬────────────────────────  
+      │                                    ╰────────────────────────── The value identifier new_label_and_node_size_processor_layout_processor is unbound.
+──────╯
+Error: [4024]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2234:9 ]
+      │
+ 2234 │         LayeredPhases::P5EdgeRouting,
+      │         ──────┬──────  
+      │               ╰──────── The type/trait LayeredPhases is not found.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2236:11 ]
+      │
+ 2236 │           new_layer_size_and_graph_height_calculator_layout_processor()
+      │           ─────────────────────────────┬─────────────────────────────  
+      │                                        ╰─────────────────────────────── The value identifier new_layer_size_and_graph_height_calculator_layout_processor is unbound.
+──────╯
+Error: [4024]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2240:9 ]
+      │
+ 2240 │         LayeredPhases::P5EdgeRouting,
+      │         ──────┬──────  
+      │               ╰──────── The type/trait LayeredPhases is not found.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2242:11 ]
+      │
+ 2242 │           new_end_label_sorter_layout_processor()
+      │           ──────────────────┬──────────────────  
+      │                             ╰──────────────────── The value identifier new_end_label_sorter_layout_processor is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2250:47 ]
+      │
+ 2250 │         layout_processor_configuration_create(layered_phase_descriptor).add_before(
+      │                                               ────────────┬───────────  
+      │                                                           ╰───────────── The value identifier layered_phase_descriptor is unbound.
+──────╯
+Error: [4024]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2251:11 ]
+      │
+ 2251 │           LayeredPhases::P1CycleBreaking,
+      │           ──────┬──────  
+      │                 ╰──────── The type/trait LayeredPhases is not found.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2253:13 ]
+      │
+ 2253 │             new_port_side_processor_layout_processor()
+      │             ────────────────────┬───────────────────  
+      │                                 ╰───────────────────── The value identifier new_port_side_processor_layout_processor is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2261:47 ]
+      │
+ 2261 │         layout_processor_configuration_create(layered_phase_descriptor).add_before(
+      │                                               ────────────┬───────────  
+      │                                                           ╰───────────── The value identifier layered_phase_descriptor is unbound.
+──────╯
+Error: [4024]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2262:11 ]
+      │
+ 2262 │           LayeredPhases::P3NodeOrdering,
+      │           ──────┬──────  
+      │                 ╰──────── The type/trait LayeredPhases is not found.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2264:13 ]
+      │
+ 2264 │             new_port_side_processor_layout_processor()
+      │             ────────────────────┬───────────────────  
+      │                                 ╰───────────────────── The value identifier new_port_side_processor_layout_processor is unbound.
+──────╯
+Error: [4024]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2274:7 ]
+      │
+ 2274 │       GraphProperties::ExternalPorts,
+      │       ───────┬───────  
+      │              ╰───────── The type/trait GraphProperties is not found.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2278:47 ]
+      │
+ 2278 │         layout_processor_configuration_create(layered_phase_descriptor)
+      │                                               ────────────┬───────────  
+      │                                                           ╰───────────── The value identifier layered_phase_descriptor is unbound.
+──────╯
+Error: [4024]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2280:11 ]
+      │
+ 2280 │           LayeredPhases::P1CycleBreaking,
+      │           ──────┬──────  
+      │                 ╰──────── The type/trait LayeredPhases is not found.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2282:13 ]
+      │
+ 2282 │             new_direction_preprocessor_layout_processor()
+      │             ─────────────────────┬─────────────────────  
+      │                                  ╰─────────────────────── The value identifier new_direction_preprocessor_layout_processor is unbound.
+──────╯
+Error: [4024]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2286:11 ]
+      │
+ 2286 │           LayeredPhases::P5EdgeRouting,
+      │           ──────┬──────  
+      │                 ╰──────── The type/trait LayeredPhases is not found.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2288:13 ]
+      │
+ 2288 │             new_direction_postprocessor_layout_processor()
+      │             ──────────────────────┬─────────────────────  
+      │                                   ╰─────────────────────── The value identifier new_direction_postprocessor_layout_processor is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2298:47 ]
+      │
+ 2298 │         layout_processor_configuration_create(layered_phase_descriptor).add_before(
+      │                                               ────────────┬───────────  
+      │                                                           ╰───────────── The value identifier layered_phase_descriptor is unbound.
+──────╯
+Error: [4024]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2299:11 ]
+      │
+ 2299 │           LayeredPhases::P3NodeOrdering,
+      │           ──────┬──────  
+      │                 ╰──────── The type/trait LayeredPhases is not found.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2301:13 ]
+      │
+ 2301 │             new_node_promotion_layout_processor()
+      │             ─────────────────┬─────────────────  
+      │                              ╰─────────────────── The value identifier new_node_promotion_layout_processor is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2309:7 ]
+      │
+ 2309 │       layered_options_consider_model_order_strategy,
+      │       ──────────────────────┬──────────────────────  
+      │                             ╰──────────────────────── The value identifier layered_options_consider_model_order_strategy is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2314:47 ]
+      │
+ 2314 │         layout_processor_configuration_create(layered_phase_descriptor).add_before(
+      │                                               ────────────┬───────────  
+      │                                                           ╰───────────── The value identifier layered_phase_descriptor is unbound.
+──────╯
+Error: [4024]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2315:11 ]
+      │
+ 2315 │           LayeredPhases::P3NodeOrdering,
+      │           ──────┬──────  
+      │                 ╰──────── The type/trait LayeredPhases is not found.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2317:13 ]
+      │
+ 2317 │             new_sort_by_input_model_processor_layout_processor()
+      │             ─────────────────────────┬────────────────────────  
+      │                                      ╰────────────────────────── The value identifier new_sort_by_input_model_processor_layout_processor is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2367:18 ]
+      │
+ 2367 │   if resolved == mrtree_algorithm_id {
+      │                  ─────────┬─────────  
+      │                           ╰─────────── The value identifier mrtree_algorithm_id is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:2368:20 ]
+      │
+ 2368 │     let provider = new_mrtree_tree_layout_provider()
+      │                    ───────────────┬───────────────  
+      │                                   ╰───────────────── The value identifier new_mrtree_tree_layout_provider is unbound.
+──────╯
+Warning: [0013]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1264:8 ]
+      │
+ 1264 │     if node.get_property_string(port_constraints) == "UNDEFINED" {
+      │        ──┬─  
+      │          ╰─── Warning (unresolved_type_variable): The type of this expression is _/0, which contains unresolved type variables. The type variable is default to Unit.
+──────╯
+Warning: [0013]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1269:17 ]
+      │
+ 1269 │     for node in layer.get_nodes() {
+      │                 ──┬──  
+      │                   ╰──── Warning (unresolved_type_variable): The type of this expression is _/0, which contains unresolved type variables. The type variable is default to Unit.
+──────╯
+Warning: [0013]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1270:10 ]
+      │
+ 1270 │       if node.get_property_string(port_constraints) == "UNDEFINED" {
+      │          ──┬─  
+      │            ╰─── Warning (unresolved_type_variable): The type of this expression is _/0, which contains unresolved type variables. The type variable is default to Unit.
+──────╯
+Warning: [0013]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine.mbt:1458:17 ]
+      │
+ 1458 │   layered_graph.set_property_graph_properties_array(
+      │                 ─────────────────┬─────────────────  
+      │                                  ╰─────────────────── Warning (unresolved_type_variable): The type of this expression is (Unit, Array[_/0]) -> Unit, which contains unresolved type variables. The type variable is default to Unit.
+──────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine_wbtest.mbt:41:7 ]
+    │
+ 41 │       layered_options_node_placement_favor_straight_edges,
+    │       ─────────────────────────┬─────────────────────────  
+    │                                ╰─────────────────────────── The value identifier layered_options_node_placement_favor_straight_edges is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine_wbtest.mbt:46:7 ]
+    │
+ 46 │       internal_properties_random_next_boolean,
+    │       ───────────────────┬───────────────────  
+    │                          ╰───────────────────── The value identifier internal_properties_random_next_boolean is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine_wbtest.mbt:57:7 ]
+    │
+ 57 │       internal_properties_original_port_constraints,
+    │       ──────────────────────┬──────────────────────  
+    │                             ╰──────────────────────── The value identifier internal_properties_original_port_constraints is unbound.
+────╯
+Error: [4021]
+    ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine_wbtest.mbt:69:7 ]
+    │
+ 69 │       internal_properties_original_port_constraints,
+    │       ──────────────────────┬──────────────────────  
+    │                             ╰──────────────────────── The value identifier internal_properties_original_port_constraints is unbound.
+────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/recursive_graph_layout_engine_wbtest.mbt:100:13 ]
+     │
+ 100 │   assert_eq(get_individual_or_inherited(lnode, spacing_edge_label), 42.5)
+     │             ─────────────┬─────────────  
+     │                          ╰─────────────── The value identifier get_individual_or_inherited is unbound.
+─────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/util_adapters_elk_graph_adapters.mbt:1182:18 ]
+      │
+ 1182 │   new_kvector_xy(label_x(self.element), label_y(self.element))
+      │                  ───┬───  
+      │                     ╰───── The value identifier label_x is unbound.
+──────╯
+Error: [4021]
+      ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/util_adapters_elk_graph_adapters.mbt:1182:41 ]
+      │
+ 1182 │   new_kvector_xy(label_x(self.element), label_y(self.element))
+      │                                         ───┬───  
+      │                                            ╰───── The value identifier label_y is unbound.
+──────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/util_elk_util.mbt:123:7 ]
+     │
+ 123 │       label_x(label),
+     │       ───┬───  
+     │          ╰───── The value identifier label_x is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/util_elk_util.mbt:124:7 ]
+     │
+ 124 │       label_y(label),
+     │       ───┬───  
+     │          ╰───── The value identifier label_y is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/util_elk_util.mbt:156:9 ]
+     │
+ 156 │         label_x(label),
+     │         ───┬───  
+     │            ╰───── The value identifier label_x is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/util_elk_util.mbt:157:9 ]
+     │
+ 157 │         label_y(label),
+     │         ───┬───  
+     │            ╰───── The value identifier label_y is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/util_elk_util.mbt:168:20 ]
+     │
+ 168 │     for section in edge_sections(edge) {
+     │                    ──────┬──────  
+     │                          ╰──────── The value identifier edge_sections is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/util_fixed_layout_provider.mbt:141:22 ]
+     │
+ 141 │       let sections = edge_sections(edge)
+     │                      ──────┬──────  
+     │                            ╰──────── The value identifier edge_sections is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/util_fixed_layout_provider.mbt:149:21 ]
+     │
+ 149 │       let section = edge_sections(edge)[0]
+     │                     ──────┬──────  
+     │                           ╰──────── The value identifier edge_sections is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/util_fixed_layout_provider.mbt:158:25 ]
+     │
+ 158 │     for edge_section in edge_sections(edge) {
+     │                         ──────┬──────  
+     │                               ╰──────── The value identifier edge_sections is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/util_fixed_layout_provider.mbt:190:9 ]
+     │
+ 190 │         label_x(label) + @graph.label_width(label),
+     │         ───┬───  
+     │            ╰───── The value identifier label_x is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/util_fixed_layout_provider.mbt:194:9 ]
+     │
+ 194 │         label_y(label) + @graph.label_height(label),
+     │         ───┬───  
+     │            ╰───── The value identifier label_y is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/util_fixed_layout_provider.mbt:255:31 ]
+     │
+ 255 │         @graph.node_x(node) + label_x(label) + @graph.label_width(label),
+     │                               ───┬───  
+     │                                  ╰───── The value identifier label_x is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/util_fixed_layout_provider.mbt:256:31 ]
+     │
+ 256 │         @graph.node_y(node) + label_y(label) + @graph.label_height(label),
+     │                               ───┬───  
+     │                                  ╰───── The value identifier label_y is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/util_fixed_layout_provider.mbt:291:19 ]
+     │
+ 291 │           portx + label_x(label) + @graph.label_width(label),
+     │                   ───┬───  
+     │                      ╰───── The value identifier label_x is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/util_fixed_layout_provider.mbt:292:19 ]
+     │
+ 292 │           porty + label_y(label) + @graph.label_height(label),
+     │                   ───┬───  
+     │                      ╰───── The value identifier label_y is unbound.
+─────╯
+Warning: [0006]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/util_logged_graph.mbt:4:3 ]
+   │
+ 4 │   LGraph
+   │   ───┬──  
+   │      ╰──── Warning (unused_constructor): Variant 'LGraph' is never constructed
+───╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/util_property_constants_delegator.mbt:119:42 ]
+     │
+ 119 │   self.get_property_with(node, property, node_get_kvector_property)
+     │                                          ────────────┬────────────  
+     │                                                      ╰────────────── The value identifier node_get_kvector_property is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/util_random_layout_provider.mbt:147:18 ]
+     │
+ 147 │   let sections = edge_sections(edge)
+     │                  ──────┬──────  
+     │                        ╰──────── The value identifier edge_sections is unbound.
+─────╯
+Error: [4021]
+     ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/core/util_random_layout_provider.mbt:156:22 ]
+     │
+ 156 │   let edge_section = edge_sections(edge)[0]
+     │                      ──────┬──────  
+     │                            ╰──────── The value identifier edge_sections is unbound.
+─────╯
+Warning: [0007]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/graph/elk_edge_section.mbt:6:3 ]
+   │
+ 6 │   edge : ElkEdge
+   │   ──┬─  
+   │     ╰─── Warning (unused_field): Field 'edge' is never read
+───╯
+Warning: [0053]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/graph/properties_property_holder_comparator.mbt:7:12 ]
+   │
+ 7 │ pub fn[T : Compare + FromJson] property_holder_comparator_with(
+   │            ───┬───  
+   │               ╰───── Warning (unused_trait_bound): This trait bound is unused.
+───╯
+Warning: [0053]
+   ╭─[ /Users/zhengyu/Documents/projects/moon_elk/src/graph/properties_property_holder_comparator.mbt:7:22 ]
+   │
+ 7 │ pub fn[T : Compare + FromJson] property_holder_comparator_with(
+   │                      ────┬───  
+   │                          ╰───── Warning (unused_trait_bound): This trait bound is unused.
+───╯
+Failed with 65 warnings, 254 errors.
+error: failed when checking project

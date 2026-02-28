@@ -1,0 +1,164 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/moon_elk/graph/text/ide"
+
+import {
+  "Milky2018/moon_elk/graph",
+  "Milky2018/moon_elk/graph/text",
+}
+
+// Values
+pub let graph_text_disco_layout_alg_id : String
+
+pub let graph_text_ide_content_assist_lexer_binding : String
+
+pub let graph_text_ide_language_name : String
+
+pub fn new_abstract_elk_graph_ide_module() -> AbstractElkGraphIdeModule
+
+pub fn new_elk_graph_ide_injector(@text.ElkGraphRuntimeModule, ElkGraphIdeModule) -> ElkGraphIdeInjector
+
+pub fn new_elk_graph_ide_module() -> ElkGraphIdeModule
+
+pub fn new_elk_graph_ide_name_mappings(@text.ElkGraphGrammarAccess) -> ElkGraphIdeNameMappings
+
+pub fn new_elk_graph_ide_parser(grammar_access? : @text.ElkGraphGrammarAccess) -> ElkGraphIdeParser
+
+pub fn new_elk_graph_ide_proposal_provider(grammar? : @text.ElkGraphGrammarAccess) -> ElkGraphIdeProposalProvider
+
+pub fn new_elk_graph_ide_setup() -> ElkGraphIdeSetup
+
+pub fn new_graph_text_ide_completion_proposal_acceptor() -> GraphTextIdeCompletionProposalAcceptor
+
+pub fn new_graph_text_ide_content_assist_context(prefix? : String, current_model? : @text.GraphTextElement?, current_property_key? : @text.GraphTextPropertyKey?, current_edge_section? : Int?, conflict_on_a? : Bool) -> GraphTextIdeContentAssistContext
+
+pub fn new_graph_text_ide_content_assist_entry(String, String, String, label? : String?, description? : String?, documentation? : String?, source? : String?) -> GraphTextIdeContentAssistEntry
+
+pub fn new_graph_text_ide_content_assist_lexer_binding(String, String) -> GraphTextIdeContentAssistLexerBinding
+
+pub fn new_internal_elk_graph_ide_lexer(String) -> InternalElkGraphIdeLexer
+
+pub fn new_internal_elk_graph_ide_parser(Array[@text.ElkGraphLexToken], grammar_access? : @text.ElkGraphGrammarAccess) -> InternalElkGraphIdeParser
+
+pub fn new_partial_elk_graph_content_assist_parser() -> PartialElkGraphContentAssistParser
+
+// Errors
+
+// Types and methods
+pub struct AbstractElkGraphIdeModule {
+  unit : Unit
+}
+pub fn AbstractElkGraphIdeModule::bind_i_content_assist_parser(Self) -> String
+pub fn AbstractElkGraphIdeModule::bind_i_prefix_matcher(Self) -> String
+pub fn AbstractElkGraphIdeModule::bind_i_proposal_conflict_helper(Self) -> String
+pub fn AbstractElkGraphIdeModule::configure_content_assist_lexer(Self) -> GraphTextIdeContentAssistLexerBinding
+
+pub struct ElkGraphIdeInjector {
+  runtime_module : @text.ElkGraphRuntimeModule
+  ide_module : ElkGraphIdeModule
+}
+pub fn ElkGraphIdeInjector::get_ide_module(Self) -> ElkGraphIdeModule
+pub fn ElkGraphIdeInjector::get_runtime_module(Self) -> @text.ElkGraphRuntimeModule
+
+pub struct ElkGraphIdeModule {
+  base : AbstractElkGraphIdeModule
+}
+pub fn ElkGraphIdeModule::bind_ide_content_proposal_provider(Self) -> String
+pub fn ElkGraphIdeModule::get_base(Self) -> AbstractElkGraphIdeModule
+
+pub struct ElkGraphIdeNameMappings {
+  mappings : Map[String, String]
+}
+pub fn ElkGraphIdeNameMappings::get_rule_name(Self, String) -> String?
+
+pub struct ElkGraphIdeParser {
+  mut name_mappings : ElkGraphIdeNameMappings
+  mut grammar_access : @text.ElkGraphGrammarAccess
+  mut initial_hidden_tokens : Array[String]
+}
+pub fn ElkGraphIdeParser::create_parser(Self, Array[@text.ElkGraphLexToken]) -> InternalElkGraphIdeParser
+pub fn ElkGraphIdeParser::get_grammar_access(Self) -> @text.ElkGraphGrammarAccess
+pub fn ElkGraphIdeParser::get_initial_hidden_tokens(Self) -> Array[String]
+pub fn ElkGraphIdeParser::get_name_mappings(Self) -> ElkGraphIdeNameMappings
+pub fn ElkGraphIdeParser::get_rule_name(Self, String) -> String?
+pub fn ElkGraphIdeParser::parse(Self, String) -> Int
+pub fn ElkGraphIdeParser::set_grammar_access(Self, @text.ElkGraphGrammarAccess) -> Unit
+pub fn ElkGraphIdeParser::set_initial_hidden_tokens(Self, Array[String]) -> Unit
+pub fn ElkGraphIdeParser::set_name_mappings(Self, ElkGraphIdeNameMappings) -> Unit
+
+pub struct ElkGraphIdeProposalProvider {
+  grammar : @text.ElkGraphGrammarAccess
+}
+pub fn ElkGraphIdeProposalProvider::complete_property_key(Self, GraphTextIdeContentAssistContext, GraphTextIdeCompletionProposalAcceptor) -> Unit
+pub fn ElkGraphIdeProposalProvider::complete_property_value(Self, GraphTextIdeContentAssistContext, GraphTextIdeCompletionProposalAcceptor) -> Unit
+pub fn ElkGraphIdeProposalProvider::complete_rule_call(Self, String, GraphTextIdeContentAssistContext, GraphTextIdeCompletionProposalAcceptor) -> Unit
+pub fn ElkGraphIdeProposalProvider::create_assignment_proposals(Self, String, String, GraphTextIdeContentAssistContext, GraphTextIdeCompletionProposalAcceptor) -> Unit
+pub fn ElkGraphIdeProposalProvider::create_keyword_proposals(Self, String, GraphTextIdeContentAssistContext, GraphTextIdeCompletionProposalAcceptor) -> Unit
+pub fn ElkGraphIdeProposalProvider::filter_cross_reference_candidates(Self, String, GraphTextIdeContentAssistContext, Array[@graph.ElkConnectableShape]) -> Array[@graph.ElkConnectableShape]
+pub fn ElkGraphIdeProposalProvider::filter_keyword(Self, String, GraphTextIdeContentAssistContext) -> Bool
+pub fn ElkGraphIdeProposalProvider::lookup_cross_reference(Self, String, GraphTextIdeContentAssistContext, GraphTextIdeCompletionProposalAcceptor) -> Unit
+pub fn ElkGraphIdeProposalProvider::propose_algorithms(Self, GraphTextIdeContentAssistContext, GraphTextIdeCompletionProposalAcceptor) -> Unit
+
+pub struct ElkGraphIdeSetup {
+  unit : Unit
+}
+pub fn ElkGraphIdeSetup::create_injector(Self) -> ElkGraphIdeInjector
+pub fn ElkGraphIdeSetup::create_injector_and_do_emf_registration(Self) -> ElkGraphIdeInjector
+
+pub struct GraphTextIdeCompletionProposalAcceptor {
+  entries : Array[GraphTextIdeContentAssistEntry]
+}
+pub fn GraphTextIdeCompletionProposalAcceptor::accept(Self, GraphTextIdeContentAssistEntry) -> Unit
+pub fn GraphTextIdeCompletionProposalAcceptor::get_entries(Self) -> Array[GraphTextIdeContentAssistEntry]
+pub fn GraphTextIdeCompletionProposalAcceptor::get_proposals(Self) -> Array[String]
+
+pub struct GraphTextIdeContentAssistContext {
+  prefix : String
+  current_model : @text.GraphTextElement?
+  current_property_key : @text.GraphTextPropertyKey?
+  current_edge_section : Int?
+  conflict_on_a : Bool
+}
+
+pub struct GraphTextIdeContentAssistEntry {
+  proposal : String
+  prefix : String
+  kind : String
+  label : String?
+  description : String?
+  documentation : String?
+  source : String?
+}
+
+pub struct GraphTextIdeContentAssistLexerBinding {
+  binding_name : String
+  lexer_class_name : String
+}
+
+pub struct InternalElkGraphIdeLexer {
+  delegate : @text.InternalElkGraphLexer
+}
+pub fn InternalElkGraphIdeLexer::get_grammar_file_name(Self) -> String
+pub fn InternalElkGraphIdeLexer::get_token_names(Self) -> Array[String]
+pub fn InternalElkGraphIdeLexer::lex_all(Self) -> Array[@text.ElkGraphLexToken]
+
+pub struct InternalElkGraphIdeParser {
+  tokens : Array[@text.ElkGraphLexToken]
+  grammar_access : @text.ElkGraphGrammarAccess
+}
+pub fn InternalElkGraphIdeParser::entry_rule_root_node(Self) -> Int
+pub fn InternalElkGraphIdeParser::get_first_rule_name(Self) -> String
+pub fn InternalElkGraphIdeParser::get_follow_elements(Self) -> Array[String]
+pub fn InternalElkGraphIdeParser::get_grammar_access(Self) -> @text.ElkGraphGrammarAccess
+pub fn InternalElkGraphIdeParser::get_grammar_file_name(Self) -> String
+pub fn InternalElkGraphIdeParser::get_token_names(Self) -> Array[String]
+
+pub struct PartialElkGraphContentAssistParser {
+  mut rule : String?
+}
+pub fn PartialElkGraphContentAssistParser::get_follow_elements(Self, ElkGraphIdeParser) -> Array[String]
+pub fn PartialElkGraphContentAssistParser::initialize_for(Self, String?) -> Unit
+
+// Type aliases
+
+// Traits
+

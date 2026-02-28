@@ -1,6 +1,7 @@
 {
   "name": "Milky2018/moon_elk",
-  "version": "0.1.0",
+  "version": "0.1.8",
+  "source": "src",
   "readme": "README.mbt.md",
   "repository": "https://github.com/moonbit-community/moon_elk.git",
   "license": "Apache-2.0",
