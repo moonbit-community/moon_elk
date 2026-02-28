@@ -291,7 +291,7 @@ def main() -> int:
 
     if not elkjs_module_path.exists():
         print(f"elkjs module not found: {elkjs_module_path}")
-        print("Install with: npm --prefix /tmp/moon_elk_elkjs_runner install elkjs@0.11.0")
+        print("Install with: npm --prefix /tmp/moon_elk_elkjs_runner install elkjs@0.8.2")
         return 5
 
     rows: List[Dict[str, Any]] = []

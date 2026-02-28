@@ -4,6 +4,7 @@ target/
 target
 .mooncakes/
 .moonagent/
+.beads/
 .moon_*/
 src/diff/option_probe/
 src/diff/random_copy_probe/

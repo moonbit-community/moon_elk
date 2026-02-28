@@ -31,17 +31,6 @@ Validated in this migration pass:
 - `moon check --target-dir /tmp/moon_elk_check_after_commit` (0 errors, warnings only)
 - `moon test --no-render --target-dir /tmp/moon_elk_test_after_commit` (`1547/1547` passed)
 
-## bd Tracking Snapshot
-
-Active epic: `moon_elk-z3p` (`layout-refactor-src-one-shot`)
-
-- `moon_elk-z3p.1`: Task B (bulk move and rename)
-- `moon_elk-z3p.2`: Task A (mapping and conflict report)
-- `moon_elk-z3p.3`: Task E (verify docs and ship)
-- `moon_elk-z3p.4`: Task C (package manifests and deps)
-- `moon_elk-z3p.5`: Task D (remove root package and CLI)
-
 ## Next Focus
 
-- Close remaining `moon_elk-z3p.*` tasks and epic after final sync/push.
 - Keep full-suite regression (`moon test --no-render`) green while continuing strict elk-reference parity fixes.

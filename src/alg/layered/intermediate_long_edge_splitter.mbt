@@ -233,10 +233,9 @@ pub fn long_edge_splitter_split_edge(edge : LEdge, dummy_node : LNode) -> LEdge 
 
     let dummy_edge = new_l_edge()
     dummy_edge.copy_properties(edge)
-    dummy_edge.set_property_kvector_chain(
-      layered_options_junction_points,
-      @core.new_kvector_chain(),
-    )
+    if dummy_edge.has_property_kvector_chain(layered_options_junction_points) {
+      dummy_edge.clear_property_kvector_chain(layered_options_junction_points)
+    }
     dummy_edge.set_source(Some(dummy_output))
     dummy_edge.set_target(Some(old_edge_target))
 

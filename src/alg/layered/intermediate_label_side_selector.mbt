@@ -165,18 +165,16 @@ fn label_side_selector_apply_label_side_to_node(
   if !label_side_selector_label_side_is_below(effective_side) {
     let origin_edge = label_side_selector_require_origin_edge(label_dummy)
     let thickness = origin_edge.get_property_double(@core.edge_thickness)
+    let edge_label_spacing = label_dummy
+      .get_graph()
+      .get_property_double(@core.spacing_edge_label)
 
     let mut port_pos = 0.0
     if label_side_selector_label_side_is_above(effective_side) {
       port_pos = label_dummy.get_size().y - (thickness / 2.0).ceil()
     } else {
-      port_pos = (label_dummy.get_size().y -
-        label_dummy.get_graph().get_property_double(@core.spacing_edge_label) -
-        thickness).ceil() /
-        2.0
-      label_dummy.get_size().y = label_dummy.get_size().y -
-        label_dummy.get_graph().get_property_double(@core.spacing_edge_label)
-      label_dummy.get_size().y = label_dummy.get_size().y - thickness
+      label_dummy.get_size().y = label_dummy.get_size().y - edge_label_spacing
+      port_pos = (label_dummy.get_size().y - thickness.ceil()) / 2.0
     }
 
     for port in label_dummy.get_ports() {

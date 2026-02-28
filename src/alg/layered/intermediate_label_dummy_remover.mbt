@@ -191,12 +191,7 @@ fn label_dummy_remover_process(
 
       let label_space = @core.new_kvector_xy(
         node.get_size().x,
-        node.get_size().y +
-        (if node.is_inline_edge_label() {
-          0.0
-        } else {
-          -thickness - edge_label_spacing
-        }),
+        node.get_size().y - thickness - edge_label_spacing,
       )
 
       let represented_labels = node.get_property_l_label_array(

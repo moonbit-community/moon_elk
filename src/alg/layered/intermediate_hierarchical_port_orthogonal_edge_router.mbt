@@ -92,7 +92,23 @@ fn hierarchical_port_orthogonal_side_is_east_or_west(
 }
 
 ///|
-fn hierarchical_port_orthogonal_restore_dummy(dummy : LNode) -> Unit {
+fn hierarchical_port_orthogonal_string_array_contains(
+  values : Array[String],
+  target : String,
+) -> Bool {
+  for value in values {
+    if value == target {
+      return true
+    }
+  }
+  false
+}
+
+///|
+fn hierarchical_port_orthogonal_restore_dummy(
+  dummy : LNode,
+  layered_graph : LGraph,
+) -> Unit {
   let side = dummy.get_property_port_side(internal_properties_ext_port_side)
   let ports = dummy.get_ports()
   if ports.is_empty() {
@@ -104,6 +120,53 @@ fn hierarchical_port_orthogonal_restore_dummy(dummy : LNode) -> Unit {
   } else if hierarchical_port_orthogonal_side_is_south(side) {
     dummy_port.set_side(@core.PortSide::North)
   }
+
+  let size_constraints = layered_graph.get_property_string_array(
+    @core.node_size_constraints,
+  )
+  if !hierarchical_port_orthogonal_string_array_contains(
+      size_constraints, "PORT_LABELS",
+    ) {
+    return
+  }
+
+  let port_label_spacing_horizontal = dummy.get_property_double(
+    @core.spacing_label_port_horizontal,
+  )
+  let port_label_spacing_vertical = dummy.get_property_double(
+    @core.spacing_label_port_vertical,
+  )
+  let label_label_spacing = dummy.get_property_double(@core.spacing_label_label)
+  let port_label_placement = layered_graph.get_property_string_array(
+    @core.port_labels_placement,
+  )
+
+  if hierarchical_port_orthogonal_string_array_contains(
+      port_label_placement, "INSIDE",
+    ) {
+    let mut current_y = port_label_spacing_vertical
+    let x_center_relative_to_port = dummy.get_size().x / 2.0 -
+      dummy_port.get_position().x
+    for label in dummy_port.get_labels() {
+      label.get_position().y = current_y
+      label.get_position().x = x_center_relative_to_port -
+        label.get_size().x / 2.0
+      current_y = current_y + label.get_size().y + label_label_spacing
+    }
+  } else if hierarchical_port_orthogonal_string_array_contains(
+      port_label_placement, "OUTSIDE",
+    ) {
+    for label in dummy_port.get_labels() {
+      label.get_position().x = port_label_spacing_horizontal +
+        dummy.get_size().x -
+        dummy_port.get_position().x
+    }
+  }
+
+  let margin_calculator = node_dimension_calculation_get_node_margin_calculator(
+    adapt_l_graph(layered_graph),
+  )
+  margin_calculator.process_node(adapt_l_node(dummy, false))
 }
 
 ///|
@@ -141,7 +204,7 @@ fn hierarchical_port_orthogonal_restore_north_south_dummies(
   }
 
   for dummy in replaced {
-    hierarchical_port_orthogonal_restore_dummy(dummy)
+    hierarchical_port_orthogonal_restore_dummy(dummy, layered_graph)
     restored_dummies.push(dummy)
   }
 

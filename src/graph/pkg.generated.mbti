@@ -44,9 +44,13 @@ pub fn create_simple_edge(Int, Int) -> Int raise ElkGraphUtilException
 
 pub fn create_simple_edge_for_shapes(ElkConnectableShape, ElkConnectableShape) -> Int raise ElkGraphUtilException
 
+pub fn edge_add_junction_point(Int, ElkBendPoint) -> Unit
+
 pub fn edge_add_source(Int, ElkConnectableShape) -> Unit
 
 pub fn edge_add_target(Int, ElkConnectableShape) -> Unit
+
+pub fn edge_clear_junction_points(Int) -> Unit
 
 pub fn edge_containing_node(Int) -> Int?
 
@@ -55,6 +59,8 @@ pub fn edge_copy_properties(Int, Int) -> Unit
 pub fn edge_identifier(Int) -> String
 
 pub fn edge_is_connected(Int) -> Bool
+
+pub fn edge_junction_points(Int) -> Array[ElkBendPoint]
 
 pub fn edge_labels(Int) -> Array[Int]
 
@@ -105,6 +111,8 @@ pub fn edge_sections(Int) -> Array[Int]
 pub fn edge_set_containing_node(Int, Int?) -> Unit
 
 pub fn edge_set_identifier(Int, String) -> Unit
+
+pub fn edge_set_junction_points(Int, Array[ElkBendPoint]) -> Unit
 
 pub fn edge_set_layout_option_string_by_id(Int, String, String) -> Unit
 

@@ -952,7 +952,7 @@ fn importer_transform_edges(
     return
   }
   let node_id = required_json_id(json_node)
-  if node_id.is_empty() {
+  if importer_has_error() {
     return
   }
   let node = match importer.node_id_map.get(node_id) {
@@ -1285,13 +1285,22 @@ fn importer_transfer_edge_sections(
   if @graph.edge_sections(edge).is_empty() {
     return
   }
-  let sections_json = []
+  let section_id_map : Map[@graph.ElkEdgeSection, String] = {}
   for i = 0; i < @graph.edge_sections(edge).length(); i = i + 1 {
     let section = @graph.edge_sections(edge)[i]
     let section_id = if @graph.edge_section_identifier(section).is_empty() {
       edge_id + "_s" + i.to_string()
     } else {
       @graph.edge_section_identifier(section)
+    }
+    section_id_map[section] = section_id
+  }
+  let sections_json = []
+  for i = 0; i < @graph.edge_sections(edge).length(); i = i + 1 {
+    let section = @graph.edge_sections(edge)[i]
+    let section_id = match section_id_map.get(section) {
+      Some(id) => id
+      None => edge_id + "_s" + i.to_string()
     }
     let section_obj : Map[String, Json] = {
       "id": Json::string(section_id),
@@ -1343,10 +1352,9 @@ fn importer_transfer_edge_sections(
     if !@graph.edge_section_incoming_sections(section).is_empty() {
       let incoming_refs = []
       for referenced in @graph.edge_section_incoming_sections(section) {
-        if !@graph.edge_section_identifier(referenced).is_empty() {
-          incoming_refs.push(
-            Json::string(@graph.edge_section_identifier(referenced)),
-          )
+        match section_id_map.get(referenced) {
+          Some(referenced_id) => incoming_refs.push(Json::string(referenced_id))
+          None => ()
         }
       }
       if !incoming_refs.is_empty() {
@@ -1356,10 +1364,9 @@ fn importer_transfer_edge_sections(
     if !@graph.edge_section_outgoing_sections(section).is_empty() {
       let outgoing_refs = []
       for referenced in @graph.edge_section_outgoing_sections(section) {
-        if !@graph.edge_section_identifier(referenced).is_empty() {
-          outgoing_refs.push(
-            Json::string(@graph.edge_section_identifier(referenced)),
-          )
+        match section_id_map.get(referenced) {
+          Some(referenced_id) => outgoing_refs.push(Json::string(referenced_id))
+          None => ()
         }
       }
       if !outgoing_refs.is_empty() {
@@ -1370,6 +1377,30 @@ fn importer_transfer_edge_sections(
   }
   if !sections_json.is_empty() {
     json_edge["sections"] = Json::array(sections_json)
+  }
+}
+
+///|
+fn importer_transfer_edge_junction_points(
+  importer : JsonImporter,
+  json_edge : Map[String, Json],
+  edge : @graph.ElkEdge,
+) -> Unit {
+  let junction_points = @graph.edge_junction_points(edge)
+  if junction_points.is_empty() {
+    return
+  }
+  let json_junction_points = []
+  for point in junction_points {
+    json_junction_points.push(
+      Json::object({
+        "x": Json::number(edge_adjust_x(importer, edge, point.get_x())),
+        "y": Json::number(edge_adjust_y(importer, edge, point.get_y())),
+      }),
+    )
+  }
+  if !json_junction_points.is_empty() {
+    json_edge["junctionPoints"] = Json::array(json_junction_points)
   }
 }
 
@@ -1468,6 +1499,7 @@ fn importer_transfer_layout_node(
       @graph.edge_identifier(edge)
     }
     importer_transfer_edge_sections(importer, json_edge, edge, edge_id)
+    importer_transfer_edge_junction_points(importer, json_edge, edge)
     let edge_mode = match importer.edge_original_parent_map.get(edge) {
       Some(original_parent) => node_edge_coords_mode(original_parent)
       None => EdgeContainer
@@ -1475,11 +1507,9 @@ fn importer_transfer_layout_node(
     if edge_mode is EdgeContainer {
       match @graph.edge_containing_node(edge) {
         Some(container) =>
-          if !@graph.node_identifier(container).is_empty() {
-            json_edge["container"] = Json::string(
-              @graph.node_identifier(container),
-            )
-          }
+          json_edge["container"] = Json::string(
+            @graph.node_identifier(container),
+          )
         None => ()
       }
     }

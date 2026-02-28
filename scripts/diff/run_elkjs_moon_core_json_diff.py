@@ -67,6 +67,18 @@ ALGORITHM_ALIASES: Dict[str, str] = {
     "sporecompaction": "sporeCompaction",
 }
 
+LAYERED_DIRECTIONS: List[str] = ["RIGHT", "DOWN", "LEFT", "UP"]
+LAYERED_PORT_SIDES: List[str] = ["EAST", "WEST", "NORTH", "SOUTH"]
+LAYERED_PORT_CONSTRAINTS: List[str] = ["FIXED_POS", "FIXED_ORDER", "FIXED_SIDE", "FREE"]
+LAYERED_EDGE_ROUTINGS: List[str] = ["ORTHOGONAL", "POLYLINE"]
+
+REMOVED_LAYOUT_OPTION_KEYS: Set[str] = {
+    "elk.layered.considerModelOrder.strategy",
+    "org.eclipse.elk.layered.considerModelOrder.strategy",
+    "elk.layered.crossingMinimization.forceNodeModelOrder",
+    "org.eclipse.elk.layered.crossingMinimization.forceNodeModelOrder",
+}
+
 
 def run_cmd(
     cmd: List[str],
@@ -146,6 +158,58 @@ def ensure_algorithm_layout_option(graph: Dict[str, Any], algorithm: str) -> Non
         options = {}
         graph["layoutOptions"] = options
     options["algorithm"] = algorithm
+
+
+def strip_removed_layout_options(graph: Dict[str, Any]) -> None:
+    options = graph.get("layoutOptions")
+    if isinstance(options, dict):
+        for key in REMOVED_LAYOUT_OPTION_KEYS:
+            options.pop(key, None)
+    children = graph.get("children")
+    if isinstance(children, list):
+        for child in children:
+            if isinstance(child, dict):
+                strip_removed_layout_options(child)
+    ports = graph.get("ports")
+    if isinstance(ports, list):
+        for port in ports:
+            if isinstance(port, dict):
+                port_options = port.get("layoutOptions")
+                if isinstance(port_options, dict):
+                    for key in REMOVED_LAYOUT_OPTION_KEYS:
+                        port_options.pop(key, None)
+                labels = port.get("labels")
+                if isinstance(labels, list):
+                    for label in labels:
+                        if isinstance(label, dict):
+                            label_options = label.get("layoutOptions")
+                            if isinstance(label_options, dict):
+                                for key in REMOVED_LAYOUT_OPTION_KEYS:
+                                    label_options.pop(key, None)
+    labels = graph.get("labels")
+    if isinstance(labels, list):
+        for label in labels:
+            if isinstance(label, dict):
+                label_options = label.get("layoutOptions")
+                if isinstance(label_options, dict):
+                    for key in REMOVED_LAYOUT_OPTION_KEYS:
+                        label_options.pop(key, None)
+    edges = graph.get("edges")
+    if isinstance(edges, list):
+        for edge in edges:
+            if isinstance(edge, dict):
+                edge_options = edge.get("layoutOptions")
+                if isinstance(edge_options, dict):
+                    for key in REMOVED_LAYOUT_OPTION_KEYS:
+                        edge_options.pop(key, None)
+                edge_labels = edge.get("labels")
+                if isinstance(edge_labels, list):
+                    for label in edge_labels:
+                        if isinstance(label, dict):
+                            label_options = label.get("layoutOptions")
+                            if isinstance(label_options, dict):
+                                for key in REMOVED_LAYOUT_OPTION_KEYS:
+                                    label_options.pop(key, None)
 
 
 def write_moon_json_case_input(case_input_path: Path, input_graph: Dict[str, Any]) -> None:
@@ -235,7 +299,9 @@ def classify_error(err: Optional[str]) -> str:
 
 
 def normalize_json(value: Any, parent_key: Optional[str] = None) -> Any:
-    if isinstance(value, float):
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, (int, float)):
         return round(value, 6)
     if isinstance(value, list):
         normalized = [normalize_json(v, parent_key=parent_key) for v in value]
@@ -259,6 +325,15 @@ def normalize_json(value: Any, parent_key: Optional[str] = None) -> Any:
 
 
 def first_diff_path(left: Any, right: Any, path: str = "$") -> Optional[str]:
+    if (
+        isinstance(left, (int, float))
+        and not isinstance(left, bool)
+        and isinstance(right, (int, float))
+        and not isinstance(right, bool)
+    ):
+        if round(float(left), 6) != round(float(right), 6):
+            return path
+        return None
     if type(left) != type(right):
         return path
     if isinstance(left, dict):
@@ -554,6 +629,181 @@ def random_case_for_algorithm(case_name: str, algorithm: str, rng: random.Random
     return graph
 
 
+def layered_rich_random_case(case_name: str, rng: random.Random) -> Dict[str, Any]:
+    direction = rng.choice(LAYERED_DIRECTIONS)
+    graph: Dict[str, Any] = {
+        "id": case_name,
+        "layoutOptions": {
+            "elk.direction": direction,
+            "elk.hierarchyHandling": rng.choice(["INCLUDE_CHILDREN", "SEPARATE_CHILDREN"]),
+            "elk.layered.directionCongruency": rng.choice(["READING_DIRECTION", "ROTATION"]),
+            "elk.edgeRouting": rng.choice(LAYERED_EDGE_ROUTINGS),
+            "elk.layered.spacing.nodeNodeBetweenLayers": str(rng.choice([20, 30, 40, 50, 70])),
+            "elk.spacing.edgeNode": str(rng.choice([20, 30, 40, 50])),
+        },
+        "children": [],
+        "edges": [],
+    }
+
+    node_count = rng.randint(3, 7)
+    endpoint_ids: List[str] = []
+
+    for i in range(node_count):
+        node_id = f"n{i}"
+        width = rng.randint(60, 220)
+        height = rng.randint(50, 180)
+        constraint = rng.choice(LAYERED_PORT_CONSTRAINTS)
+        node: Dict[str, Any] = {
+            "id": node_id,
+            "width": width,
+            "height": height,
+            "layoutOptions": {"elk.portConstraints": constraint},
+            "ports": [],
+        }
+
+        port_count = rng.randint(1, 3)
+        for port_index in range(port_count):
+            port_id = f"{node_id}.p{port_index}"
+            py = int((port_index + 1) * height / (port_count + 1))
+            port = {
+                "id": port_id,
+                "y": py,
+                "layoutOptions": {"elk.port.side": rng.choice(LAYERED_PORT_SIDES)},
+            }
+            node["ports"].append(port)
+            endpoint_ids.append(port_id)
+
+        graph["children"].append(node)
+
+    if len(endpoint_ids) < 2:
+        endpoint_ids = ["n0.p0", "n1.p0"]
+
+    edge_count = rng.randint(max(2, node_count - 1), node_count * 2)
+    seen_pairs: Set[Tuple[str, str]] = set()
+    for edge_index in range(edge_count):
+        source = rng.choice(endpoint_ids)
+        target = rng.choice(endpoint_ids)
+        tries = 0
+        while (source == target or (source, target) in seen_pairs) and tries < 6:
+            source = rng.choice(endpoint_ids)
+            target = rng.choice(endpoint_ids)
+            tries += 1
+        seen_pairs.add((source, target))
+        graph["edges"].append(
+            {
+                "id": f"e{edge_index}",
+                "sources": [source],
+                "targets": [target],
+            }
+        )
+
+    return graph
+
+
+def build_curated_parity_cases() -> List[Dict[str, Any]]:
+    return [
+        {
+            "name": "curated_layered_empty_root_id",
+            "category": "curated",
+            "algorithm": "layered",
+            "source": "curated:layered_empty_root_id",
+            "input_graph": {
+                "id": "",
+                "children": [
+                    {"id": "n1", "width": 60, "height": 30},
+                    {"id": "n2", "width": 60, "height": 30},
+                ],
+                "edges": [{"id": "e0", "sources": ["n1"], "targets": ["n2"]}],
+            },
+        },
+        {
+            "name": "curated_layered_down_fixedpos_eastwest_ports",
+            "category": "curated",
+            "algorithm": "layered",
+            "source": "curated:layered_down_fixedpos_eastwest_ports",
+            "input_graph": {
+                "id": "diagram",
+                "layoutOptions": {
+                    "elk.algorithm": "layered",
+                    "elk.direction": "DOWN",
+                    "elk.hierarchyHandling": "INCLUDE_CHILDREN",
+                    "elk.layered.nodePlacement.bk.fixedAlignment": "BALANCED",
+                    "elk.layered.cycleBreaking.strategy": "GREEDY_MODEL_ORDER",
+                    "elk.layered.thoroughness": 8,
+                    "elk.layered.spacing.edgeEdgeBetweenLayers": 50,
+                    "elk.spacing.edgeNode": 40,
+                    "elk.nodeSize.constraints": "MINIMUM_SIZE",
+                    "elk.contentAlignment": "H_CENTER V_CENTER",
+                    "spacing.nodeNodeBetweenLayers": 70,
+                    "spacing.edgeNodeBetweenLayers": 40,
+                    "elk.spacing.nodeSelfLoop": 50,
+                },
+                "children": [
+                    {
+                        "id": "users",
+                        "width": 304,
+                        "height": 180,
+                        "layoutOptions": {"elk.portConstraints": "FIXED_POS"},
+                        "ports": [
+                            {
+                                "id": "users.id.src",
+                                "y": 54,
+                                "layoutOptions": {"elk.port.side": "EAST"},
+                            },
+                            {
+                                "id": "users.id.dst",
+                                "y": 54,
+                                "layoutOptions": {"elk.port.side": "WEST"},
+                            },
+                        ],
+                    },
+                    {
+                        "id": "posts",
+                        "width": 280,
+                        "height": 216,
+                        "layoutOptions": {"elk.portConstraints": "FIXED_POS"},
+                        "ports": [
+                            {
+                                "id": "posts.id.src",
+                                "y": 54,
+                                "layoutOptions": {"elk.port.side": "EAST"},
+                            },
+                            {
+                                "id": "posts.user_id.dst",
+                                "y": 90,
+                                "layoutOptions": {"elk.port.side": "WEST"},
+                            },
+                        ],
+                    },
+                    {
+                        "id": "comments",
+                        "width": 187,
+                        "height": 180,
+                        "layoutOptions": {"elk.portConstraints": "FIXED_POS"},
+                        "ports": [
+                            {
+                                "id": "comments.post_id.dst",
+                                "y": 90,
+                                "layoutOptions": {"elk.port.side": "WEST"},
+                            },
+                            {
+                                "id": "comments.user_id.dst",
+                                "y": 126,
+                                "layoutOptions": {"elk.port.side": "WEST"},
+                            },
+                        ],
+                    },
+                ],
+                "edges": [
+                    {"id": "e:0", "sources": ["users.id.src"], "targets": ["posts.user_id.dst"]},
+                    {"id": "e:1", "sources": ["posts.id.src"], "targets": ["comments.post_id.dst"]},
+                    {"id": "e:2", "sources": ["users.id.src"], "targets": ["comments.user_id.dst"]},
+                ],
+            },
+        },
+    ]
+
+
 def build_static_cases(include_algorithms: Iterable[str]) -> List[Dict[str, Any]]:
     out: List[Dict[str, Any]] = []
     for algorithm in include_algorithms:
@@ -573,21 +823,27 @@ def build_random_cases(
     include_algorithms: Iterable[str],
     random_case_count: int,
     seed: int,
+    layered_rich_ratio: float,
 ) -> List[Dict[str, Any]]:
     out: List[Dict[str, Any]] = []
     rng = random.Random(seed)
+    normalized_layered_ratio = max(0.0, min(1.0, layered_rich_ratio))
     if random_case_count <= 0:
         return out
     for algorithm in include_algorithms:
         for i in range(random_case_count):
             case_name = f"random_{algorithm}_{i:03d}"
+            if algorithm == "layered" and rng.random() < normalized_layered_ratio:
+                input_graph = layered_rich_random_case(case_name, rng)
+            else:
+                input_graph = random_case_for_algorithm(case_name, algorithm, rng)
             out.append(
                 {
                     "name": case_name,
                     "category": "random",
                     "algorithm": algorithm,
                     "source": "random",
-                    "input_graph": random_case_for_algorithm(case_name, algorithm, rng),
+                    "input_graph": input_graph,
                 }
             )
     return out
@@ -981,6 +1237,18 @@ def main() -> int:
         default=0,
         help="Limit total case count per algorithm after merge (0 means unlimited).",
     )
+    parser.add_argument(
+        "--layered-rich-ratio",
+        type=float,
+        default=0.8,
+        help="For random layered cases, probability of using rich port/constraint/hierarchy generator (0..1).",
+    )
+    parser.add_argument(
+        "--include-curated-parity-cases",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="Include built-in curated parity regression cases (default: enabled).",
+    )
     args = parser.parse_args()
 
     repo_root = Path(args.repo_root).resolve()
@@ -993,7 +1261,7 @@ def main() -> int:
 
     if not elkjs_module_path.exists():
         print(f"elkjs module not found: {elkjs_module_path}")
-        print("Install with: npm --prefix /tmp/moon_elk_elkjs_runner install elkjs@0.11.0")
+        print("Install with: npm --prefix /tmp/moon_elk_elkjs_runner install elkjs@0.8.2")
         return 5
 
     include_algorithms = parse_include_algorithms(args.include_algorithms)
@@ -1018,7 +1286,16 @@ def main() -> int:
         original_elkt_case_input = elkt_case_input_path.read_text(encoding="utf-8")
 
         cases.extend(build_static_cases(include_algorithms))
-        cases.extend(build_random_cases(include_algorithms, args.random_case_count, args.seed))
+        cases.extend(
+            build_random_cases(
+                include_algorithms,
+                args.random_case_count,
+                args.seed,
+                args.layered_rich_ratio,
+            )
+        )
+        if args.include_curated_parity_cases:
+            cases.extend(build_curated_parity_cases())
 
         if args.case_manifest is not None:
             manifest_path = Path(args.case_manifest)
@@ -1056,6 +1333,7 @@ def main() -> int:
             source = str(case["source"])
 
             input_graph = deep_copy_json(case["input_graph"])
+            strip_removed_layout_options(input_graph)
             ensure_algorithm_layout_option(input_graph, algorithm)
 
             elkjs_ok, elkjs_graph, elkjs_error = run_elkjs_case(input_graph, elkjs_module_path)

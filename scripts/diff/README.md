@@ -137,7 +137,14 @@ Install elkjs once in a temp folder:
 mkdir -p /tmp/moon_elk_elkjs_runner
 cd /tmp/moon_elk_elkjs_runner
 npm init -y
-npm install elkjs@0.11.0
+npm install elkjs@0.8.2
+```
+
+Use ELK reference checkout `v0.8.1` (closest matching ELK line for elkjs `0.8.2`):
+
+```bash
+cd /Users/zhengyu/Documents/projects/moon_elk/elk-reference
+git checkout v0.8.1
 ```
 
 ### Usage

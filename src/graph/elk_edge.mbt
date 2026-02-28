@@ -8,6 +8,7 @@ priv struct EdgeData {
   targets : Array[ElkConnectableShape]
   identifier : String
   sections : Array[ElkEdgeSection]
+  junction_points : Array[ElkBendPoint]
   layout_option_string_values : Map[String, String]
 }
 
@@ -33,6 +34,7 @@ pub fn create_edge(containing_node : ElkNode?) -> ElkEdge {
     targets: [],
     identifier: "",
     sections: [],
+    junction_points: [],
     layout_option_string_values: {},
   })
   if containing_node is Some(node_id) {
@@ -106,6 +108,7 @@ pub fn edge_copy_properties(target : ElkEdge, source : ElkEdge) -> Unit {
     targets: target_data.targets,
     identifier: target_data.identifier,
     sections: target_data.sections,
+    junction_points: source_data.junction_points.copy(),
     layout_option_string_values: clone_string_string_map(
       source_data.layout_option_string_values,
     ),
@@ -168,6 +171,7 @@ pub fn edge_set_containing_node(
     targets: data.targets,
     identifier: data.identifier,
     sections: data.sections,
+    junction_points: data.junction_points,
     layout_option_string_values: data.layout_option_string_values,
   }
 }
@@ -182,6 +186,7 @@ pub fn edge_set_identifier(edge : ElkEdge, identifier : String) -> Unit {
     targets: data.targets,
     identifier,
     sections: data.sections,
+    junction_points: data.junction_points,
     layout_option_string_values: data.layout_option_string_values,
   }
 }
@@ -190,4 +195,44 @@ pub fn edge_set_identifier(edge : ElkEdge, identifier : String) -> Unit {
 pub fn edge_identifier(edge : ElkEdge) -> String {
   checked_edge(edge)
   edge_store.val[edge].identifier
+}
+
+///|
+pub fn edge_junction_points(edge : ElkEdge) -> Array[ElkBendPoint] {
+  checked_edge(edge)
+  edge_store.val[edge].junction_points
+}
+
+///|
+pub fn edge_set_junction_points(
+  edge : ElkEdge,
+  junction_points : Array[ElkBendPoint],
+) -> Unit {
+  checked_edge(edge)
+  let data = edge_store.val[edge]
+  edge_store.val[edge] = {
+    containing_node: data.containing_node,
+    sources: data.sources,
+    targets: data.targets,
+    identifier: data.identifier,
+    sections: data.sections,
+    junction_points,
+    layout_option_string_values: data.layout_option_string_values,
+  }
+}
+
+///|
+pub fn edge_add_junction_point(edge : ElkEdge, point : ElkBendPoint) -> Unit {
+  checked_edge(edge)
+  let data = edge_store.val[edge]
+  data.junction_points.push(point)
+  edge_store.val[edge] = data
+}
+
+///|
+pub fn edge_clear_junction_points(edge : ElkEdge) -> Unit {
+  checked_edge(edge)
+  let data = edge_store.val[edge]
+  data.junction_points.clear()
+  edge_store.val[edge] = data
 }

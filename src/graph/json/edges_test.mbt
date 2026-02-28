@@ -120,3 +120,29 @@ test "graph json edge containment" {
   let root = elk_graph_json_for_json_graph(graph).to_elk()
   assert_eq(@graph.node_contained_edges(root).length(), 1)
 }
+
+///|
+test "graph json root edge imports when root id is empty string" {
+  @graph.reset_graph_model_for_test()
+  let graph = gj_obj([
+    ("id", gj_str("")),
+    (
+      "children",
+      gj_arr([gj_obj([("id", gj_str("n1"))]), gj_obj([("id", gj_str("n2"))])]),
+    ),
+    (
+      "edges",
+      gj_arr([
+        gj_obj([
+          ("id", gj_str("e0")),
+          ("sources", gj_arr([gj_str("n1")])),
+          ("targets", gj_arr([gj_str("n2")])),
+        ]),
+      ]),
+    ),
+  ])
+  let root = elk_graph_json_for_json_graph(graph).to_elk()
+  assert_eq(@graph.node_identifier(root), "")
+  assert_eq(@graph.node_children(root).length(), 2)
+  assert_eq(@graph.node_contained_edges(root).length(), 1)
+}

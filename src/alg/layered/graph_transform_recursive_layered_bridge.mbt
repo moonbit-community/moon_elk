@@ -106,6 +106,20 @@ fn node_individual_spacing_value_by_candidates(
 }
 
 ///|
+fn node_string_property_value_by_candidates(
+  node : @graph.ElkNode,
+  candidates : Array[String],
+) -> String? {
+  for candidate in candidates {
+    let property : @graph.IProperty[String] = @graph.new_property(candidate, "")
+    if @graph.node_has_string_property(node, property) {
+      return Some(@graph.node_get_string_property(node, property))
+    }
+  }
+  None
+}
+
+///|
 fn node_layout_option_value_by_candidates_with_ancestors(
   node : @graph.ElkNode,
   candidates : Array[String],
@@ -128,18 +142,16 @@ fn node_string_property_value_by_candidates_with_ancestors(
   node : @graph.ElkNode,
   candidates : Array[String],
 ) -> String? {
-  for candidate in candidates {
-    let property : @graph.IProperty[String] = @graph.new_property(candidate, "")
-    if @graph.node_has_string_property(node, property) {
-      return Some(@graph.node_get_string_property(node, property))
-    }
-  }
-  match @graph.node_parent(node) {
-    Some(parent) =>
-      node_string_property_value_by_candidates_with_ancestors(
-        parent, candidates,
-      )
-    None => None
+  match node_string_property_value_by_candidates(node, candidates) {
+    Some(value) => Some(value)
+    None =>
+      match @graph.node_parent(node) {
+        Some(parent) =>
+          node_string_property_value_by_candidates_with_ancestors(
+            parent, candidates,
+          )
+        None => None
+      }
   }
 }
 
@@ -2016,12 +2028,9 @@ fn recursive_layered_primary_option(
   let mut matched_fallback_value : String? = None
   for candidate in candidates {
     let value_at_candidate = match
-      node_layout_option_value_by_candidates_with_ancestors(node, [candidate]) {
+      node_layout_option_value_by_candidates(node, [candidate]) {
       Some(value) => Some(value)
-      None =>
-        node_string_property_value_by_candidates_with_ancestors(node, [
-          candidate,
-        ])
+      None => node_string_property_value_by_candidates(node, [candidate])
     }
     match value_at_candidate {
       Some(value) =>
@@ -2036,6 +2045,25 @@ fn recursive_layered_primary_option(
   match matched_fallback_value {
     Some(value) => value
     None => fallback
+  }
+}
+
+///|
+fn recursive_layered_direction_option(node : @graph.ElkNode) -> String {
+  let keys = [
+    @core.direction.get_id(),
+    "org.eclipse.elk.direction",
+    "elk.direction",
+    "direction",
+  ]
+  match node_layout_option_value_by_candidates_with_ancestors(node, keys) {
+    Some(value) => value
+    None =>
+      match
+        node_string_property_value_by_candidates_with_ancestors(node, keys) {
+        Some(value) => value
+        None => @graph.node_get_string_property(node, @core.direction)
+      }
   }
 }
 
@@ -2137,14 +2165,7 @@ fn recursive_layered_node_algorithm_option(node : @graph.ElkNode) -> String? {
   ]
   match node_layout_option_value_by_candidates(node, candidates) {
     Some(value) => Some(value)
-    None =>
-      match
-        node_string_property_value_by_candidates_with_ancestors(
-          node, candidates,
-        ) {
-        Some(value) => Some(value)
-        None => None
-      }
+    None => node_string_property_value_by_candidates(node, candidates)
   }
 }
 
@@ -2365,11 +2386,7 @@ fn recursive_layered_create_context(
     "org.eclipse.elk.edgeRouting",
     @graph.node_get_string_property(node, @core.edge_routing),
   )
-  let direction_value = recursive_layered_primary_option(
-    node,
-    "org.eclipse.elk.direction",
-    @graph.node_get_string_property(node, @core.direction),
-  )
+  let direction_value = recursive_layered_direction_option(node)
   let fixed_alignment_value = recursive_layered_primary_option(
     node,
     "org.eclipse.elk.layered.nodePlacement.bk.fixedAlignment",
@@ -3185,7 +3202,7 @@ fn recursive_layered_apply_layout(
   let padding_value = context.layered_graph.get_padding()
   let offset = @core.new_kvector_copy(graph_offset)
   ignore(offset.add_xy(padding_value.left, padding_value.top))
-  let is_top_level_context = @graph.node_parent(parent_node) is None
+  let is_top_level_context = context.layered_graph.get_parent_node() is None
 
   for entry in context.elk_to_lnode.to_array() {
     let (elk_node, layered_node) = entry
@@ -3468,6 +3485,20 @@ fn recursive_layered_apply_layout(
     )
     let edge_offset = @core.new_kvector_copy(offset_for_edge)
     ignore(edge_offset.add(hierarchical_offset))
+    @graph.edge_clear_junction_points(elk_edge)
+    if layered_edge.has_property_kvector_chain(layered_options_junction_points) {
+      let junction_points = layered_edge.get_property_kvector_chain(
+        layered_options_junction_points,
+      )
+      for junction_point in junction_points.to_array() {
+        let transformed = @core.new_kvector_copy(junction_point)
+        ignore(transformed.add(edge_offset))
+        @graph.edge_add_junction_point(
+          elk_edge,
+          @graph.new_elk_bend_point(x=transformed.x, y=transformed.y),
+        )
+      }
+    }
 
     let source_point = if is_descendant_l_node(target_node, source_node) {
       let point = @core.new_kvector_copy(source_port.get_position())
@@ -3548,28 +3579,30 @@ fn recursive_layered_apply_layout(
     }
   }
 
-  let actual_graph_size = context.layered_graph.get_actual_size()
-  let has_external_ports = recursive_layered_has_graph_property(
-    context.layered_graph,
-    GraphProperties::ExternalPorts,
-  )
-  if has_external_ports {
-    @graph.node_set_string_property(
-      parent_node, @core.port_constraints, "FIXED_POS",
+  if is_top_level_context {
+    let actual_graph_size = context.layered_graph.get_actual_size()
+    let has_external_ports = recursive_layered_has_graph_property(
+      context.layered_graph,
+      GraphProperties::ExternalPorts,
     )
-    @graph.node_set_dimensions(
-      parent_node,
-      actual_graph_size.x,
-      actual_graph_size.y,
-    )
-  } else if !@graph.node_get_bool_property(
-      parent_node, @core.node_size_fixed_graph_size,
-    ) {
-    @graph.node_set_dimensions(
-      parent_node,
-      actual_graph_size.x,
-      actual_graph_size.y,
-    )
+    if has_external_ports {
+      @graph.node_set_string_property(
+        parent_node, @core.port_constraints, "FIXED_POS",
+      )
+      @graph.node_set_dimensions(
+        parent_node,
+        actual_graph_size.x,
+        actual_graph_size.y,
+      )
+    } else if !@graph.node_get_bool_property(
+        parent_node, @core.node_size_fixed_graph_size,
+      ) {
+      @graph.node_set_dimensions(
+        parent_node,
+        actual_graph_size.x,
+        actual_graph_size.y,
+      )
+    }
   }
   let mut size_constraints_include_port_labels = false
   for

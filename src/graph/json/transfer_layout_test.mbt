@@ -57,6 +57,17 @@ fn transfer_json_arr(json : Json) -> Array[Json] {
 }
 
 ///|
+fn transfer_json_num(json : Json) -> Double {
+  match json {
+    Number(value, repr~) => {
+      ignore(repr)
+      value
+    }
+    _ => abort("expected number")
+  }
+}
+
+///|
 fn transfer_positive_coordinate(obj : Map[String, Json], key : String) -> Bool {
   match obj.get(key) {
     Some(Number(value, repr~)) => {
@@ -76,6 +87,29 @@ test "graph json transfer layout" {
     .remember_importer(maybe_importer)
     .to_elk()
   required_importer(maybe_importer).transfer_layout(root)
+}
+
+///|
+test "graph json transfer layout includes junction points" {
+  @graph.reset_graph_model_for_test()
+  let graph = transfer_sample_graph()
+  let maybe_importer : @core.Maybe[JsonImporter] = @core.maybe_create()
+  let root = elk_graph_json_for_json_graph(graph)
+    .remember_importer(maybe_importer)
+    .to_elk()
+  let edge = @graph.node_contained_edges(root)[0]
+  @graph.edge_set_junction_points(edge, [
+    @graph.new_elk_bend_point(x=11.0, y=22.0),
+  ])
+  required_importer(maybe_importer).transfer_layout(root)
+  let graph_obj = transfer_json_obj(graph)
+  let edges = transfer_json_arr(graph_obj["edges"])
+  let edge_obj = transfer_json_obj(edges[0])
+  assert_eq(edge_obj.contains("junctionPoints"), true)
+  let json_junction_points = transfer_json_arr(edge_obj["junctionPoints"])
+  let point_obj = transfer_json_obj(json_junction_points[0])
+  assert_eq(transfer_json_num(point_obj["x"]), 11.0)
+  assert_eq(transfer_json_num(point_obj["y"]), 22.0)
 }
 
 ///|
