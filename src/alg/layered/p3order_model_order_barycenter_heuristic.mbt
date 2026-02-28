@@ -49,20 +49,6 @@ fn model_order_barycenter_associations_for(
 }
 
 ///|
-fn model_order_barycenter_is_constrained_to_separate_layer(
-  node : LNode,
-) -> Bool {
-  if !node.has_property_string(layered_options_layering_layer_constraint) {
-    return false
-  }
-  layer_constraint_is_first_or_last_separate(
-    layer_constraint_from_string(
-      node.get_property_string(layered_options_layering_layer_constraint),
-    ),
-  )
-}
-
-///|
 fn model_order_barycenter_compare_int(left : Int, right : Int) -> Int {
   if left < right {
     -1
@@ -237,12 +223,6 @@ fn ModelOrderBarycenterHeuristic::compare_nodes(
   first : LNode,
   second : LNode,
 ) -> Int {
-  if model_order_barycenter_is_constrained_to_separate_layer(first) ||
-    model_order_barycenter_is_constrained_to_separate_layer(second) {
-    return 0
-  }
-
-  let l_graph = first.get_graph()
   let transitive_comparison = self.compare_based_on_transitive_dependencies(
     first, second,
   )
@@ -252,39 +232,10 @@ fn ModelOrderBarycenterHeuristic::compare_nodes(
 
   if first.has_property_int(internal_properties_model_order) &&
     second.has_property_int(internal_properties_model_order) {
-    let mut value = model_order_barycenter_compare_int(
-      cm_group_model_order_calculate_model_order_or_group_model_order(
-        first,
-        second,
-        l_graph,
-        l_graph.get_property_int(internal_properties_max_model_order_nodes),
-      ),
-      cm_group_model_order_calculate_model_order_or_group_model_order(
-        second,
-        first,
-        l_graph,
-        l_graph.get_property_int(internal_properties_max_model_order_nodes),
-      ),
+    let value = model_order_barycenter_compare_int(
+      first.get_property_int(internal_properties_model_order),
+      second.get_property_int(internal_properties_model_order),
     )
-
-    if group_order_strategy_equals(
-        group_order_strategy_from_string(
-          l_graph.get_property_string(
-            layered_options_consider_model_order_group_model_order_cm_group_order_strategy,
-          ),
-        ),
-        GroupOrderStrategy::OnlyWithinGroup,
-      ) {
-      if first.get_property_int(
-          layered_options_consider_model_order_group_model_order_crossing_minimization_id,
-        ) !=
-        second.get_property_int(
-          layered_options_consider_model_order_group_model_order_crossing_minimization_id,
-        ) {
-        value = 0
-      }
-    }
-
     if value < 0 {
       self.update_bigger_and_smaller_associations(first, second)
       return value

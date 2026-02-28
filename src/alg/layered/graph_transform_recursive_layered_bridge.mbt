@@ -735,6 +735,9 @@ fn recursive_layered_prepare_model_order_assignments(
   let node_assignments : Map[@graph.ElkNode, Int] = {}
   let edge_assignments : Map[@graph.ElkEdge, Int] = {}
   let cb_group_model_orders : Array[Int] = []
+  let node_order_enabled = recursive_layered_needs_model_order_based_on_parent_node(
+    root_node,
+  )
 
   let node_queue = @graph.node_children(root_node).copy()
   let mut node_queue_index = 0
@@ -743,15 +746,8 @@ fn recursive_layered_prepare_model_order_assignments(
     let current = node_queue[node_queue_index]
     node_queue_index += 1
 
-    let parent = match @graph.node_parent(current) {
-      Some(value) => value
-      None => root_node
-    }
-    let needs_model_order = recursive_layered_needs_model_order_based_on_parent_node(
-        parent,
-      ) &&
-      !recursive_layered_node_consider_model_order_no_model_order(current)
-    if needs_model_order {
+    if node_order_enabled &&
+      !recursive_layered_node_consider_model_order_no_model_order(current) {
       node_assignments[current] = node_index
       node_index += 1
       match
@@ -2759,13 +2755,10 @@ fn recursive_layered_create_context(
         GraphProperties::NonFreePorts,
       )
     }
-    let has_node_model_order = match
-      recursive_layered_model_order_node_assignments.val.get(child) {
-      Some(model_order) => {
+    match recursive_layered_model_order_node_assignments.val.get(child) {
+      Some(model_order) =>
         lnode.set_property_int(internal_properties_model_order, model_order)
-        true
-      }
-      None => false
+      None => ()
     }
     recursive_layered_copy_nodespacing_options(node, child, lnode)
 
@@ -2791,7 +2784,6 @@ fn recursive_layered_create_context(
     recursive_layered_global_elk_to_lnode.val[child] = lnode
     lnode_to_elk[lnode.get_handle()] = child
 
-    let mut port_model_order = 0
     for elk_port in @graph.node_ports(child) {
       let lport = new_l_port()
       lport.set_node(Some(lnode))
@@ -2869,12 +2861,6 @@ fn recursive_layered_create_context(
           layered_graph,
           GraphProperties::NorthSouthPorts,
         )
-      }
-      if has_node_model_order {
-        lport.set_property_int(
-          internal_properties_model_order, port_model_order,
-        )
-        port_model_order += 1
       }
       elk_to_lport[elk_port] = lport
       recursive_layered_global_elk_to_lport.val[elk_port] = lport

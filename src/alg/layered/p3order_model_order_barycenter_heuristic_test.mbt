@@ -84,7 +84,7 @@ test "ModelOrderBarycenterHeuristic preserves model order when forced" {
 }
 
 ///|
-test "ModelOrderBarycenterHeuristic only-within-group allows barycenter swap across groups" {
+test "ModelOrderBarycenterHeuristic keeps model order across groups when forced" {
   let creator = new_test_graph_creator()
   let random = new_mock_random()
   let graph = creator.get_graph()
@@ -113,7 +113,7 @@ test "ModelOrderBarycenterHeuristic only-within-group allows barycenter swap acr
   let (heuristic, _) = model_order_barycenter_test_build_heuristic(
     node_order, random,
   )
-  let expected = creator.switch_order_in_array(0, 1, free_layer)
+  let expected = free_layer.copy()
   heuristic.minimize_crossings_layer(free_layer, false, false, true)
 
   assert_eq(
@@ -123,7 +123,7 @@ test "ModelOrderBarycenterHeuristic only-within-group allows barycenter swap acr
 }
 
 ///|
-test "ModelOrderBarycenterHeuristic keeps separate-layer constrained node position" {
+test "ModelOrderBarycenterHeuristic ignores separate-layer constraint when forced" {
   let creator = new_test_graph_creator()
   let random = new_mock_random()
   let graph = creator.get_graph()
@@ -152,7 +152,7 @@ test "ModelOrderBarycenterHeuristic keeps separate-layer constrained node positi
   let (heuristic, _) = model_order_barycenter_test_build_heuristic(
     node_order, random,
   )
-  let expected = free_layer.copy()
+  let expected = creator.switch_order_in_array(0, 1, free_layer)
   heuristic.minimize_crossings_layer(free_layer, false, false, true)
 
   assert_eq(
