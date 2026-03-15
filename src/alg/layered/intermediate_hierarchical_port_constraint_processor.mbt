@@ -214,6 +214,14 @@ fn hierarchical_port_constraint_is_north_south_dummy(node : LNode) -> Bool {
 }
 
 ///|
+fn hierarchical_port_constraint_dummy_origin_key(node : LNode) -> Int {
+  match node.get_property_l_port(internal_properties_origin_l_port) {
+    Some(origin_port) => origin_port.get_handle()
+    None => node.get_handle()
+  }
+}
+
+///|
 fn hierarchical_port_constraint_create_dummy(
   layered_graph : LGraph,
   original_dummy : LNode,
@@ -322,7 +330,7 @@ fn hierarchical_port_constraint_process_north_south(
           continue
         }
 
-        let key = source_node.get_handle()
+        let key = hierarchical_port_constraint_dummy_origin_key(source_node)
         let prev_dummy = match prev_map.get(key) {
           Some(value) => value
           None => {
@@ -349,7 +357,7 @@ fn hierarchical_port_constraint_process_north_south(
           continue
         }
 
-        let key = target_node.get_handle()
+        let key = hierarchical_port_constraint_dummy_origin_key(target_node)
         let next_dummy = match next_map.get(key) {
           Some(value) => value
           None => {
