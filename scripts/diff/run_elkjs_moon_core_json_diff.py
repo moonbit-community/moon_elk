@@ -1249,6 +1249,15 @@ def main() -> int:
         default=True,
         help="Include built-in curated parity regression cases (default: enabled).",
     )
+    parser.add_argument(
+        "--strip-removed-layout-options",
+        action=argparse.BooleanOptionalAction,
+        default=False,
+        help=(
+            "Strip known removed layered options before comparison. "
+            "Disabled by default to preserve strict input parity."
+        ),
+    )
     args = parser.parse_args()
 
     repo_root = Path(args.repo_root).resolve()
@@ -1333,7 +1342,8 @@ def main() -> int:
             source = str(case["source"])
 
             input_graph = deep_copy_json(case["input_graph"])
-            strip_removed_layout_options(input_graph)
+            if args.strip_removed_layout_options:
+                strip_removed_layout_options(input_graph)
             ensure_algorithm_layout_option(input_graph, algorithm)
 
             elkjs_ok, elkjs_graph, elkjs_error = run_elkjs_case(input_graph, elkjs_module_path)
