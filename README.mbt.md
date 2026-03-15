@@ -3,7 +3,7 @@
 A MoonBit port of Eclipse Layout Kernel (ELK).
 
 - Repository: https://github.com/moonbit-community/moon_elk.git
-- Current version: `0.1.6`
+- Current version: `0.1.11`
 - Keywords: `elk`, `layout`
 
 ## Imports
