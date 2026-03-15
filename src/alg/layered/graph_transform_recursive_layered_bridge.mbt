@@ -844,7 +844,7 @@ pub fn recursive_layered_import_graph_for_transform(
   recursive_layered_model_order_max_nodes.val = 0
   recursive_layered_model_order_cb_group_count.val = 0
   recursive_layered_prepare_model_order_assignments(parent_node)
-  match recursive_layered_create_context(parent_node) {
+  match recursive_layered_create_context(parent_node, None) {
     Some(context) => {
       context.layered_graph.set_property_int(
         internal_properties_max_model_order_nodes,
@@ -2192,6 +2192,7 @@ fn recursive_layered_node_hierarchy_include_children(
 ///|
 fn recursive_layered_create_context(
   node : @graph.ElkNode,
+  inherited_direction : String?,
 ) -> RecursiveLayeredContext? {
   let layered_graph = new_l_graph()
   let elk_to_lnode : Map[@graph.ElkNode, LNode] = {}
@@ -2382,7 +2383,10 @@ fn recursive_layered_create_context(
     "org.eclipse.elk.edgeRouting",
     @graph.node_get_string_property(node, @core.edge_routing),
   )
-  let direction_value = recursive_layered_direction_option(node)
+  let mut direction_value = match inherited_direction {
+    Some(value) => value
+    None => recursive_layered_direction_option(node)
+  }
   let fixed_alignment_value = recursive_layered_primary_option(
     node,
     "org.eclipse.elk.layered.nodePlacement.bk.fixedAlignment",
@@ -2646,6 +2650,8 @@ fn recursive_layered_create_context(
     },
   )
   layered_graph.set_property_string(@core.direction, direction_value)
+  direction_value = @core.direction_to_string(get_direction(layered_graph))
+  layered_graph.set_property_string(@core.direction, direction_value)
   layered_graph.set_property_string(
     @core.port_constraints,
     if graph_port_constraints == "UNDEFINED" {
@@ -2870,7 +2876,11 @@ fn recursive_layered_create_context(
     if has_children &&
       recursive_layered_node_uses_layered(child) &&
       recursive_layered_node_hierarchy_include_children(child) {
-      match recursive_layered_create_context(child) {
+      match
+        recursive_layered_create_context(
+          child,
+          Some(layered_graph.get_property_string(@core.direction)),
+        ) {
         Some(nested_context) => {
           let nested_graph = recursive_layered_transform_register_context(
             nested_context, child,

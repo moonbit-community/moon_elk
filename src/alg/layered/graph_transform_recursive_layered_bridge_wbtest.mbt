@@ -36,7 +36,7 @@ test "recursive layered context applies graph configurator properties" {
     undefined_node, @core.port_constraints, "UNDEFINED",
   )
 
-  let context = match recursive_layered_create_context(graph) {
+  let context = match recursive_layered_create_context(graph, None) {
     Some(value) => value
     None => fail("expected layered context")
   }
@@ -100,7 +100,7 @@ test "recursive layered context copies individual spacing overrides to LNode" {
     "42.5",
   )
 
-  let context = match recursive_layered_create_context(graph) {
+  let context = match recursive_layered_create_context(graph, None) {
     Some(value) => value
     None => fail("expected layered context")
   }
@@ -119,7 +119,7 @@ test "recursive layered context accepts elk.randomSeed alias" {
   let graph = @graph.create_graph()
   @graph.node_set_layout_option_string_by_id(graph, "elk.randomSeed", "42")
 
-  let context = match recursive_layered_create_context(graph) {
+  let context = match recursive_layered_create_context(graph, None) {
     Some(value) => value
     None => fail("expected layered context")
   }
@@ -157,7 +157,7 @@ test "recursive layered context marks east-west fixed ports as north-south ports
   )
   @graph.port_set_location(west, 0.0, 60.0)
 
-  let context = match recursive_layered_create_context(graph) {
+  let context = match recursive_layered_create_context(graph, None) {
     Some(value) => value
     None => fail("expected layered context")
   }
