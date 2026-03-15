@@ -3218,7 +3218,7 @@ fn recursive_layered_create_context(
               target_lnode,
               target_point,
               PortType::Input,
-              edge_parent_lgraph,
+              target_lnode.get_graph(),
             )
           }
         }
