@@ -109,23 +109,21 @@ pub fn abstract_force_model_layout(
   initialize_hook()
   let mut iteration_count = 0
   while more_iterations(iteration_count) && !monitor.is_canceled() {
-    abstract_force_model_iteration_done(state)
-    iteration_done_hook()
     let particles = graph.get_particles()
-    for forcee in particles {
+    for forcee in graph.get_nodes() {
       for forcer in particles {
-        if force_particle_equals(forcer, forcee) {
+        if force_particle_equals(forcer, Node(forcee)) {
           continue
         }
-        match calc_displacement(forcer, forcee) {
+        match calc_displacement(forcer, Node(forcee)) {
           Some(displacement) =>
-            ignore(fparticle_displacement(forcee).add(displacement))
+            ignore(fnode_displacement(forcee).add(displacement))
           None => ()
         }
       }
     }
-    for particle in particles {
-      let displacement = fparticle_displacement(particle)
+    for node in graph.get_nodes() {
+      let displacement = fnode_displacement(node)
       ignore(
         displacement.bound(
           -state.disp_bound,
@@ -134,9 +132,11 @@ pub fn abstract_force_model_layout(
           state.disp_bound,
         ),
       )
-      ignore(fparticle_position(particle).add(displacement))
+      ignore(fnode_position(node).add(displacement))
       ignore(displacement.reset())
     }
+    abstract_force_model_iteration_done(state)
+    iteration_done_hook()
     iteration_count += 1
   }
   monitor.done()

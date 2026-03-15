@@ -82,20 +82,12 @@ fn char_at(source : String, index : Int) -> Char {
 
 ///|
 fn safe_slice(source : String, start : Int, end_ : Int) -> String {
-  try source[start:end_] catch {
-    _ => ""
-  } noraise {
-    value => value.to_string()
-  }
+  source[start:end_].to_string()
 }
 
 ///|
 fn safe_slice_from(source : String, start : Int) -> String {
-  try source[start:] catch {
-    _ => ""
-  } noraise {
-    value => value.to_string()
-  }
+  source[start:].to_string()
 }
 
 ///|

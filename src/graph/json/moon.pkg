@@ -11,10 +11,10 @@ import {
   "Milky2018/moon_elk/graph",
   "Milky2018/moon_elk/core",
   "Milky2018/moon_elk/alg/layered" @layered,
+  "Milky2018/moon_elk/alg/disco" @disco,
   "Milky2018/moon_elk/alg/mrtree" @mrtree,
   "Milky2018/moon_elk/alg/force" @force,
   "Milky2018/moon_elk/alg/radial" @radial,
   "Milky2018/moon_elk/alg/rectpacking" @rectpacking,
   "Milky2018/moon_elk/alg/spore" @spore,
-  "Milky2018/moon_elk/alg/vertiflex" @vertiflex,
 }

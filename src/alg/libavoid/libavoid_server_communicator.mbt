@@ -475,17 +475,9 @@ fn LibavoidServerCommunicator::write_text_graph(
 ///|
 fn libavoid_communicator_option_id(id : String) -> String {
   if id.has_prefix("org.eclipse.elk.alg.libavoid.") {
-    try id["org.eclipse.elk.alg.libavoid.".length():] catch {
-      _ => id
-    } noraise {
-      value => value.to_string()
-    }
+    id["org.eclipse.elk.alg.libavoid.".length():].to_string()
   } else if id.has_prefix("org.eclipse.elk.") {
-    try id["org.eclipse.elk.".length():] catch {
-      _ => id
-    } noraise {
-      value => value.to_string()
-    }
+    id["org.eclipse.elk.".length():].to_string()
   } else {
     id
   }

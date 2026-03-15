@@ -10,6 +10,14 @@ pub fn new_dis_co_layout_provider() -> DisCoLayoutProvider {
 }
 
 ///|
+fn init {
+  @core.recursive_graph_layout_engine_register_handler(disco_algorithm_id, (
+    layout_graph,
+    progress_monitor,
+  ) => new_dis_co_layout_provider().layout(layout_graph, progress_monitor))
+}
+
+///|
 fn dis_co_compaction_strategy(
   layout_graph : @graph.ElkNode,
 ) -> CompactionStrategy {

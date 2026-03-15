@@ -17,9 +17,9 @@ fn elk_graph_json_core_delegate_register_algorithm_if_missing(
 ///|
 fn elk_graph_json_core_delegate_register_additional_algorithms() -> Unit {
   let additional_algorithm_ids = [
-    @mrtree.mrtree_algorithm_id, @force.force_algorithm_id, @force.stress_algorithm_id,
-    @radial.radial_algorithm_id, @rectpacking.rectpacking_algorithm_id, @spore.spore_compaction_algorithm_id,
-    @spore.spore_overlap_removal_algorithm_id, @vertiflex.vertiflex_algorithm_id,
+    @disco.disco_algorithm_id, @mrtree.mrtree_algorithm_id, @force.force_algorithm_id,
+    @force.stress_algorithm_id, @radial.radial_algorithm_id, @rectpacking.rectpacking_algorithm_id,
+    @spore.spore_compaction_algorithm_id, @spore.spore_overlap_removal_algorithm_id,
   ]
   for algorithm_id in additional_algorithm_ids {
     elk_graph_json_core_delegate_register_algorithm_if_missing(algorithm_id)

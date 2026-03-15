@@ -21,11 +21,11 @@ SUPPORTED_ALGORITHMS: List[str] = [
     "fixed",
     "box",
     "random",
-    "vertiflex",
+    "disco",
 ]
 
 UNSUPPORTED_ALGORITHMS: List[str] = [
-    "disco",
+    "vertiflex",
     "topdownpacking",
     "libavoid",
     "dot",

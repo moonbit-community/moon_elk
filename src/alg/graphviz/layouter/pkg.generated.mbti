@@ -5,6 +5,7 @@ import {
   "Milky2018/moon_elk/alg/graphviz/dot",
   "Milky2018/moon_elk/core",
   "Milky2018/moon_elk/graph",
+  "moonbitlang/core/ref",
 }
 
 // Values
@@ -207,17 +208,17 @@ pub fn ForwardingInputStream::skip(Self, Int) -> Int
 
 pub struct GraphvizByteArrayInputStream {
   data : Array[Int]
-  index_ref : Ref[Int]
-  mark_ref : Ref[Int]
-  closed_ref : Ref[Bool]
+  index_ref : @ref.Ref[Int]
+  mark_ref : @ref.Ref[Int]
+  closed_ref : @ref.Ref[Bool]
 }
 pub fn GraphvizByteArrayInputStream::as_input_stream(Self) -> GraphvizInputStream
 pub fn GraphvizByteArrayInputStream::is_closed(Self) -> Bool
 
 pub struct GraphvizByteArrayOutputStream {
-  bytes_ref : Ref[Array[Int]]
-  flush_count_ref : Ref[Int]
-  closed_ref : Ref[Bool]
+  bytes_ref : @ref.Ref[Array[Int]]
+  flush_count_ref : @ref.Ref[Int]
+  closed_ref : @ref.Ref[Bool]
 }
 pub fn GraphvizByteArrayOutputStream::as_output_stream(Self) -> GraphvizOutputStream
 pub fn GraphvizByteArrayOutputStream::get_bytes(Self) -> Array[Int]

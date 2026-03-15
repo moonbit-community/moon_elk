@@ -41,7 +41,7 @@ test "@core.interactive mrtree graph visitor ignores non mrtree @core.algorithm"
   assert_false(@graph.node_get_bool_property(root, @core.interactive))
   assert_eq(
     @graph.node_get_string_property(root, mrtree_weighting),
-    "MODEL_ORDER",
+    "DESCENDANTS",
   )
 }
 
@@ -56,6 +56,6 @@ test "@core.interactive mrtree graph visitor ignores missing @core.algorithm" {
   assert_false(@graph.node_get_bool_property(root, @core.interactive))
   assert_eq(
     @graph.node_get_string_property(root, mrtree_weighting),
-    "MODEL_ORDER",
+    "DESCENDANTS",
   )
 }

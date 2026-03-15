@@ -166,24 +166,11 @@ fn disco_transform_first_or_create_edge_section(
   edge : @graph.ElkEdge,
 ) -> @graph.ElkEdgeSection {
   let sections = @graph.edge_sections(edge)
-  let section = if sections.is_empty() {
+  if sections.is_empty() {
     @graph.create_edge_section(edge)
   } else {
     sections[0]
   }
-  if @graph.edge_section_incoming_shape(section) is None {
-    let sources = @graph.edge_sources(edge)
-    if sources.length() == 1 {
-      @graph.edge_section_set_incoming_shape(section, Some(sources[0]))
-    }
-  }
-  if @graph.edge_section_outgoing_shape(section) is None {
-    let targets = @graph.edge_targets(edge)
-    if targets.length() == 1 {
-      @graph.edge_section_set_outgoing_shape(section, Some(targets[0]))
-    }
-  }
-  section
 }
 
 ///|

@@ -77,20 +77,12 @@ fn dot_importer_is_number_char(c : Char) -> Bool {
 
 ///|
 fn dot_importer_slice(text : String, start : Int, end_ : Int) -> String {
-  try text[start:end_] catch {
-    _ => ""
-  } noraise {
-    value => value.to_string()
-  }
+  text[start:end_].to_string()
 }
 
 ///|
 fn dot_importer_slice_from(text : String, start : Int) -> String {
-  try text[start:] catch {
-    _ => ""
-  } noraise {
-    value => value.to_string()
-  }
+  text[start:].to_string()
 }
 
 ///|

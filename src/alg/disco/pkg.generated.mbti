@@ -18,6 +18,8 @@ pub fn dis_co_layout_provider_as_layout_provider(DisCoLayoutProvider) -> @core.A
 
 pub fn dis_co_polyomino_compactor_as_icompactor(DisCoPolyominoCompactor) -> ICompactor
 
+pub let disco_algorithm_id : String
+
 pub let disco_aspect_ratio : @graph.IProperty[Double]
 
 pub let disco_component_compaction_strategy : @graph.IProperty[String]

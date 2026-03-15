@@ -6,7 +6,7 @@ let fixed_layout_provider_bend_points_option_id : String = "org.eclipse.elk.bend
 
 ///|
 let fixed_layout_provider_padding_option : @graph.IProperty[String] = @graph.new_property(
-  "org.eclipse.elk.padding", "[left=12, top=12, right=12, bottom=12]",
+  "org.eclipse.elk.padding", "[left=15, top=15, right=15, bottom=15]",
 )
 
 ///|
@@ -73,6 +73,29 @@ fn fixed_layout_provider_parse_bend_points(text : String?) -> KVectorChain? {
     Some(parsed)
   } else {
     None
+  }
+}
+
+///|
+fn fixed_layout_provider_apply_vector_chain(
+  chain : KVectorChain,
+  section : @graph.ElkEdgeSection,
+) -> Unit {
+  let size = chain.size()
+  if size < 2 {
+    return
+  }
+  let start = chain.get(0)
+  let end = chain.get(size - 1)
+  @graph.edge_section_set_start(section, start.x, start.y)
+  @graph.edge_section_set_end(section, end.x, end.y)
+  @graph.edge_section_clear_bend_points(section)
+  for index in 1..<(size - 1) {
+    let bend = chain.get(index)
+    @graph.edge_section_add_bend_point(
+      section,
+      @graph.new_elk_bend_point(x=bend.x, y=bend.y),
+    )
   }
 }
 
@@ -181,31 +204,16 @@ fn fixed_layout_provider_process_edge(
         sections.push(kept_section)
       }
       let section = @graph.edge_sections(edge)[0]
-      let start = bend_points.get(0)
-      let end = bend_points.get(bend_points.size() - 1)
-      @graph.edge_section_set_start(section, start.x, start.y)
-      @graph.edge_section_set_end(section, end.x, end.y)
+      fixed_layout_provider_apply_vector_chain(bend_points, section)
     }
   }
 
   if same_hierarchy {
     for edge_section in @graph.edge_sections(edge) {
-      maxv.x = fixed_layout_provider_max(
-        maxv.x,
-        @graph.edge_section_start_x(edge_section),
-      )
-      maxv.y = fixed_layout_provider_max(
-        maxv.y,
-        @graph.edge_section_start_y(edge_section),
-      )
-      maxv.x = fixed_layout_provider_max(
-        maxv.x,
-        @graph.edge_section_end_x(edge_section),
-      )
-      maxv.y = fixed_layout_provider_max(
-        maxv.y,
-        @graph.edge_section_end_y(edge_section),
-      )
+      for bend_point in @graph.edge_section_bend_points(edge_section) {
+        maxv.x = fixed_layout_provider_max(maxv.x, bend_point.get_x())
+        maxv.y = fixed_layout_provider_max(maxv.y, bend_point.get_y())
+      }
     }
   }
 

@@ -80,7 +80,7 @@ fn mrtree_apply_vector_chain_to_edge(
   let first_point = vector_chain.get(0)
   @graph.edge_section_set_start(first_section, first_point.x, first_point.y)
   @graph.edge_section_clear_bend_points(first_section)
-  for i in 1..<(vector_chain.size() - 1) {
+  for i in 0..<vector_chain.size() {
     let point = vector_chain.get(i)
     @graph.edge_section_add_bend_point(
       first_section,
@@ -171,12 +171,58 @@ pub fn MrtreeElkGraphImporter::import_graph(
 }
 
 ///|
-fn mrtree_apply_edges(graph : MrtreeGraph) -> Unit {
+fn mrtree_apply_edges(graph : MrtreeGraph, offset : @core.KVector) -> Unit {
   for edge in mrtree_graph_edges(graph) {
     if mrtree_edge_origin(edge) is Some(elk_edge) {
-      mrtree_apply_vector_chain_to_edge(mrtree_edge_bend_points(edge), elk_edge)
+      let source_node = mrtree_edge_source(edge)
+      let target_node = mrtree_edge_target(edge)
+      let bend_points = mrtree_edge_bend_points(edge)
+      let source_point = mrtree_node_position(source_node).clone()
+      let target_point = mrtree_node_position(target_node).clone()
+      bend_points.add_first_vector(source_point)
+      bend_points.add_last_vector(target_point)
+      if bend_points.size() >= 2 {
+        mrtree_to_node_border(
+          source_point,
+          bend_points.get(1),
+          mrtree_node_size(source_node),
+        )
+        mrtree_to_node_border(
+          target_point,
+          bend_points.get(bend_points.size() - 2),
+          mrtree_node_size(target_node),
+        )
+      }
+      let translated = @core.new_kvector_chain()
+      for i in 0..<bend_points.size() {
+        translated.add_vector(bend_points.get(i).clone().add(offset))
+      }
+      mrtree_apply_vector_chain_to_edge(translated, elk_edge)
     }
   }
+}
+
+///|
+fn mrtree_to_node_border(
+  center : @core.KVector,
+  next : @core.KVector,
+  size : @core.KVector,
+) -> Unit {
+  let wh = size.x / 2.0
+  let hh = size.y / 2.0
+  let absx = (next.x - center.x).abs()
+  let absy = (next.y - center.y).abs()
+  let mut xscale = 1.0
+  let mut yscale = 1.0
+  if absx > wh {
+    xscale = wh / absx
+  }
+  if absy > hh {
+    yscale = hh / absy
+  }
+  let scale = @cmp.minimum(xscale, yscale)
+  center.x = center.x + scale * (next.x - center.x)
+  center.y = center.y + scale * (next.y - center.y)
 }
 
 ///|
@@ -216,31 +262,33 @@ pub fn MrtreeElkGraphImporter::apply_layout(
     } else {
       max_y
     }
+  }
+
+  let padding_value = mrtree_graph_padding(graph)
+  let offset = @core.new_kvector_xy(
+    padding_value.get_left() - min_x,
+    padding_value.get_top() - min_y,
+  )
+
+  for node in mrtree_graph_nodes(graph) {
     match mrtree_node_origin(node) {
-      Some(elk_node) =>
-        @graph.node_set_location(elk_node, position.x, position.y)
+      Some(elk_node) => {
+        let node_position = mrtree_node_position(node).clone().add(offset)
+        @graph.node_set_location(
+          elk_node,
+          node_position.x - @graph.node_width(elk_node) / 2.0,
+          node_position.y - @graph.node_height(elk_node) / 2.0,
+        )
+      }
       None => ()
     }
   }
 
-  mrtree_apply_edges(graph)
+  mrtree_apply_edges(graph, offset)
 
-  let padding_value = mrtree_graph_padding(graph)
   let width = max_x - min_x + padding_value.get_horizontal()
   let height = max_y - min_y + padding_value.get_vertical()
-  if !@graph.node_get_bool_property(elk_graph, @core.node_size_fixed_graph_size) {
-    @graph.node_set_dimensions(elk_graph, width, height)
-  }
-  @graph.node_set_double_property(
-    elk_graph,
-    @core.child_area_width,
-    width - padding_value.get_horizontal(),
-  )
-  @graph.node_set_double_property(
-    elk_graph,
-    @core.child_area_height,
-    height - padding_value.get_vertical(),
-  )
+  @graph.node_set_dimensions(elk_graph, width, height)
 }
 
 ///|

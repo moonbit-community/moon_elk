@@ -244,7 +244,7 @@ fn add_logging(
 ///|
 fn is_known_unsupported_algorithm(algorithm : String) -> Bool {
   match algorithm {
-    "disco"
+    "vertiflex"
     | "topdownpacking"
     | "libavoid"
     | "dot"

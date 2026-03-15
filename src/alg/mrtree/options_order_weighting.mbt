@@ -7,6 +7,11 @@ pub enum MrtreeOrderWeighting {
 }
 
 ///|
+let _mrtree_order_weighting_reserved : Array[MrtreeOrderWeighting] = [
+  MrtreeOrderWeighting::MODEL_ORDER,
+]
+
+///|
 pub fn mrtree_order_weighting_from_string(
   value : String,
 ) -> MrtreeOrderWeighting {
@@ -17,6 +22,6 @@ pub fn mrtree_order_weighting_from_string(
   } else if value == "CONSTRAINT" {
     MrtreeOrderWeighting::CONSTRAINT
   } else {
-    MrtreeOrderWeighting::MODEL_ORDER
+    MrtreeOrderWeighting::DESCENDANTS
   }
 }

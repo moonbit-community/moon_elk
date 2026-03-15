@@ -18,7 +18,7 @@ pub let mrtree_edge_routing_mode : @graph.IProperty[String] = @graph.new_propert
 
 ///|
 pub let mrtree_weighting : @graph.IProperty[String] = @graph.new_property(
-  "org.eclipse.elk.mrtree.weighting", "MODEL_ORDER",
+  "org.eclipse.elk.mrtree.weighting", "DESCENDANTS",
 )
 
 ///|

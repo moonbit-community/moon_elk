@@ -91,11 +91,7 @@ fn graphviz_tool_add_default_location(location : String) -> Unit {
   if normalized.has_prefix("\"") &&
     normalized.has_suffix("\"") &&
     normalized.length() >= 2 {
-    normalized = try normalized[1:normalized.length() - 1] catch {
-      _ => normalized
-    } noraise {
-      value => value.to_string()
-    }
+    normalized = normalized[1:normalized.length() - 1].to_string()
   }
   if !normalized.has_suffix(graphviz_tool_file_separator_ref.val) {
     normalized = normalized + graphviz_tool_file_separator_ref.val

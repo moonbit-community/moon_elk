@@ -9,11 +9,7 @@ fn mrtree_fan_format_right(value : Int, len : Int) -> String {
 
 ///|
 fn mrtree_fan_safe_slice(text : String, start : Int, end_ : Int) -> String {
-  try text[start:end_] catch {
-    _ => ""
-  } noraise {
-    value => value.to_string()
-  }
+  text[start:end_].to_string()
 }
 
 ///|

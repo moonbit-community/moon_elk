@@ -1,4 +1,9 @@
 ///|
+
+///|
+pub let disco_algorithm_id : String = "org.eclipse.elk.disco"
+
+///|
 pub let disco_spacing_component_component : @graph.IProperty[Double] = @core.spacing_component_component
 
 ///|

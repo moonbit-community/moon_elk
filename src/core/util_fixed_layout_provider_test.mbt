@@ -47,8 +47,8 @@ test "fixed layout provider applies fixed positions and minimum size" {
   inspect(@graph.port_y(port), content="4")
   inspect(@graph.label_x(port_label), content="5")
   inspect(@graph.label_y(port_label), content="6")
-  inspect(@graph.node_width(graph), content="84")
-  inspect(@graph.node_height(graph), content="79")
+  inspect(@graph.node_width(graph), content="90")
+  inspect(@graph.node_height(graph), content="85")
 }
 
 ///|

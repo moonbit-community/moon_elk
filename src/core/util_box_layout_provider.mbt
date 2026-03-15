@@ -514,9 +514,6 @@ fn box_layout_provider_place_boxes_sorted(
   let mean = total_area / sorted_boxes.length().to_double()
   let stddev = box_layout_provider_area_std_dev(sorted_boxes, mean)
   total_area = total_area + sorted_boxes.length().to_double() * stddev
-  total_area = total_area +
-    total_area.sqrt() * (padding_value.bottom + padding_value.top)
-  total_area = total_area + total_area.sqrt() * padding_value.right
 
   max_row_width = box_layout_provider_max(
       max_row_width,

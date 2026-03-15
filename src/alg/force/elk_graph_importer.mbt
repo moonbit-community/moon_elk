@@ -96,11 +96,7 @@ fn parse_double_layout_value(value : String) -> Double? {
         normalized.has_suffix("F") ||
         normalized.has_suffix("d") ||
         normalized.has_suffix("D") {
-        let without_suffix = try normalized[:normalized.length() - 1] catch {
-          _ => ""
-        } noraise {
-          value => value.to_string()
-        }
+        let without_suffix = normalized[:normalized.length() - 1].to_string()
         if without_suffix.is_empty() {
           return None
         }
@@ -617,14 +613,6 @@ pub fn ElkGraphImporter::apply_layout(
     max_x = force_max(max_x, position.x + size.x / 2.0)
     max_y = force_max(max_y, position.y + size.y / 2.0)
   }
-  for bendpoint in force_graph.get_bendpoints() {
-    let position = fbendpoint_position(bendpoint)
-    let size = fbendpoint_size(bendpoint)
-    min_x = force_min(min_x, position.x - size.x / 2.0)
-    min_y = force_min(min_y, position.y - size.y / 2.0)
-    max_x = force_max(max_x, position.x + size.x / 2.0)
-    max_y = force_max(max_y, position.y + size.y / 2.0)
-  }
   let padding = force_graph.get_padding_property(force_padding)
   let offset = @core.new_kvector_xy(
     padding.get_left() - min_x,
@@ -649,24 +637,11 @@ pub fn ElkGraphImporter::apply_layout(
         let start_position = fedge_source_point(edge).clone().add(offset)
         let end_position = fedge_target_point(edge).clone().add(offset)
         let first_section = first_or_create_edge_section(origin_edge)
-        @graph.edge_section_clear_bend_points(first_section)
         @graph.edge_section_set_start(
           first_section,
           start_position.x,
           start_position.y,
         )
-        for bendpoint in fedge_bendpoints(edge) {
-          let bendpoint_position = fbendpoint_position(bendpoint)
-            .clone()
-            .add(offset)
-          @graph.edge_section_add_bend_point(
-            first_section,
-            @graph.new_elk_bend_point(
-              x=bendpoint_position.x,
-              y=bendpoint_position.y,
-            ),
-          )
-        }
         @graph.edge_section_set_end(
           first_section,
           end_position.x,

@@ -264,11 +264,7 @@ fn core_meta_lexer_push_symbol_token(
 
 ///|
 fn core_meta_lexer_slice(text : String, start : Int, end_ : Int) -> String {
-  try text[start:end_] catch {
-    _ => ""
-  } noraise {
-    value => value.to_string()
-  }
+  text[start:end_].to_string()
 }
 
 ///|

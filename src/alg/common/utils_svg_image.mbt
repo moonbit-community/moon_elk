@@ -1,12 +1,6 @@
 ///|
 fn string_starts_with_null_prefix(value : String) -> Bool {
-  value.length() >= 4 &&
-  (try value[0:4] catch {
-    _ => ""
-  } noraise {
-    prefix => prefix.to_string()
-  }) ==
-  "null"
+  value.length() >= 4 && value[0:4].to_string() == "null"
 }
 
 ///|

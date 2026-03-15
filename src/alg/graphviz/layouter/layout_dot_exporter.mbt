@@ -20,11 +20,7 @@ fn layout_dot_exporter_parse_double(text : String?) -> Double? {
         normalized.has_suffix("F") ||
         normalized.has_suffix("d") ||
         normalized.has_suffix("D") {
-        let without_suffix = try normalized[:normalized.length() - 1] catch {
-          _ => ""
-        } noraise {
-          value => value.to_string()
-        }
+        let without_suffix = normalized[:normalized.length() - 1].to_string()
         if without_suffix.is_empty() {
           None
         } else {
@@ -294,11 +290,7 @@ fn layout_dot_exporter_has_end_labels(edge : @graph.ElkEdge) -> Bool {
 ///|
 fn layout_dot_exporter_unquote(text : String) -> String {
   if text.length() >= 2 && text.has_prefix("\"") && text.has_suffix("\"") {
-    try text[1:text.length() - 1] catch {
-      _ => text
-    } noraise {
-      value => value.to_string()
-    }
+    text[1:text.length() - 1].to_string()
   } else {
     text
   }
