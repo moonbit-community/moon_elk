@@ -331,13 +331,8 @@ fn LayerSweepCrossingMinimizer::save_all_node_orders_of_changed_graphs(
   self : LayerSweepCrossingMinimizer,
 ) -> Unit {
   for graph in self.graphs_whose_node_order_changed {
-    match graph.currently_best_node_and_port_order() {
-      Some(best) =>
-        graph.set_best_node_n_port_order(Some(new_sweep_copy_from(best)))
-      None =>
-        graph.set_best_node_n_port_order(
-          Some(new_sweep_copy(graph.current_node_order())),
-        )
+    if graph.currently_best_node_and_port_order() is Some(best) {
+      graph.set_best_node_n_port_order(Some(new_sweep_copy_from(best)))
     }
   }
 }
@@ -747,7 +742,8 @@ fn LayerSweepCrossingMinimizer::count_current_number_of_crossings_node_port_orde
         layer_sweep_graph_data_at(self.graph_info_holders, child_graph.get_id()) {
         Some(child_data) =>
           if !child_data.dont_sweep_into() {
-            to_count.push(child_data)
+            total_crossings = total_crossings +
+              self.count_current_number_of_crossings(child_data).to_double()
           }
         None => ()
       }
@@ -762,16 +758,9 @@ fn LayerSweepCrossingMinimizer::minimize_crossings_with_counter(
   graph_data : GraphInfoHolder,
 ) -> Int raise LayerSweepCrossingMinimizerException {
   let mut is_forward_sweep = self.random.next_boolean()
-  let initial_crossings = self
-    .count_current_number_of_crossings(graph_data)
-    .to_double()
   let first_try_with_initial_order = graph_data
     .l_graph()
     .get_property_bool(internal_properties_first_try_with_initial_order)
-  if initial_crossings == 0.0 && first_try_with_initial_order {
-    return 0
-  }
-
   let second_try_with_initial_order = graph_data
     .l_graph()
     .get_property_bool(internal_properties_second_try_with_initial_order)
@@ -831,16 +820,9 @@ fn LayerSweepCrossingMinimizer::minimize_crossings_node_port_order_with_counter(
   graph_data : GraphInfoHolder,
 ) -> Double raise LayerSweepCrossingMinimizerException {
   let mut is_forward_sweep = self.random.next_boolean()
-  let initial_crossings = self.count_current_number_of_crossings_node_port_order(
-    graph_data,
-  )
   let first_try_with_initial_order = graph_data
     .l_graph()
     .get_property_bool(internal_properties_first_try_with_initial_order)
-  if initial_crossings == 0.0 && first_try_with_initial_order {
-    return 0.0
-  }
-
   let second_try_with_initial_order = graph_data
     .l_graph()
     .get_property_bool(internal_properties_second_try_with_initial_order)

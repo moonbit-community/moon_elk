@@ -243,15 +243,6 @@ fn sort_by_input_model_processor_process(
     }
     let previous_layer = graph.get_layers()[previous_layer_index]
 
-    let comparator_before_ports = new_model_order_node_comparator_from_layer(
-      graph, previous_layer, ordering_strategy, long_edge_strategy, group_order_strategy,
-      true,
-    )
-    sort_by_input_model_processor_insertion_sort(
-      layer.get_nodes(),
-      comparator_before_ports,
-    )
-
     for node in layer.get_nodes() {
       let constraints_value = if node.has_property_string(
           @core.port_constraints,
@@ -289,14 +280,11 @@ fn sort_by_input_model_processor_process(
       }
     }
 
-    let comparator_after_ports = new_model_order_node_comparator_from_layer(
+    let comparator = new_model_order_node_comparator_from_layer(
       graph, previous_layer, ordering_strategy, long_edge_strategy, group_order_strategy,
       false,
     )
-    sort_by_input_model_processor_insertion_sort(
-      layer.get_nodes(),
-      comparator_after_ports,
-    )
+    sort_by_input_model_processor_insertion_sort(layer.get_nodes(), comparator)
 
     if monitor.is_logging_enabled() {
       monitor.log("Layer " + layer_index.to_string() + ": " + layer.to_string())
