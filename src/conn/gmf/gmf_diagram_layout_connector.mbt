@@ -23,19 +23,19 @@ pub(all) enum GmfConnectorWorkbenchPart {
   DiagramEditorWorkbenchPart(GmfEditPart)
   AdaptableWorkbenchPart(GmfEditPart)
   OtherWorkbenchPart
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub(all) enum GmfConnectorDiagramPart {
   DirectEditPart(GmfEditPart)
   Selection(Array[GmfEditPart])
   NoDiagramPart
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub suberror GmfDiagramLayoutConnectorException {
   GmfDiagramLayoutConnectorException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn gmf_diagram_layout_connector_raise_unit(

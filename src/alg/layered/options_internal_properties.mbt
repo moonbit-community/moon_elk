@@ -210,7 +210,8 @@ pub let internal_properties_ext_port_replaced_dummies : @graph.IProperty[
 
 ///|
 pub let internal_properties_tarjan_lowlink : @graph.IProperty[Int] = @graph.new_property(
-  "tarjan.lowlink", @int.max_value,
+  "tarjan.lowlink",
+  @int.MAX_VALUE,
 )
 
 ///|

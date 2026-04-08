@@ -2,7 +2,7 @@
 pub(all) enum GmfSelectionItem {
   DiagramFile(String)
   OtherSelectionItem
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub struct LayoutDiagramFileHandler {
@@ -12,7 +12,7 @@ pub struct LayoutDiagramFileHandler {
 ///|
 pub suberror LayoutDiagramFileHandlerException {
   LayoutDiagramFileHandlerException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] layout_diagram_file_handler_raise(

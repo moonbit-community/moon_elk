@@ -4,7 +4,7 @@ type HighDegreeEdgeSelector = (LNode) -> Array[LEdge]
 ///|
 priv suberror HighDegreeNodeLayeringProcessorException {
   HighDegreeNodeLayeringProcessorException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] high_degree_node_layering_processor_raise(
@@ -274,7 +274,7 @@ fn high_degree_node_layering_processor_process(
       layered_options_high_degree_nodes_tree_height,
     )
     if tree_height_threshold == 0 {
-      tree_height_threshold = @int.max_value
+      tree_height_threshold = @int.MAX_VALUE
     }
 
     let layers = layered_graph.get_layers()

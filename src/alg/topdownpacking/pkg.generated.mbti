@@ -4,6 +4,7 @@ package "Milky2018/moon_elk/alg/topdownpacking"
 import {
   "Milky2018/moon_elk/core",
   "Milky2018/moon_elk/graph",
+  "moonbitlang/core/debug",
 }
 
 // Values
@@ -58,9 +59,7 @@ pub fn topdownpacking_whitespace_elimination_strategy_phase_factory(WhitespaceEl
 // Errors
 pub suberror TopdownpackingGridException {
   TopdownpackingGridException(String)
-}
-pub impl Show for TopdownpackingGridException
-pub impl ToJson for TopdownpackingGridException
+} derive(ToJson, @debug.Debug)
 
 // Types and methods
 pub struct Grid[T] {

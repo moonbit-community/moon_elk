@@ -10,7 +10,7 @@ pub enum BkThresholdStrategyKind {
 ///|
 pub suberror BkThresholdStrategyException {
   BkThresholdStrategyException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] bk_threshold_strategy_raise(

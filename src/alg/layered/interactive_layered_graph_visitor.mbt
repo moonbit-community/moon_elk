@@ -11,7 +11,7 @@ pub struct InteractiveLayeredGraphVisitor {
 
 ///|
 fn interactive_layered_graph_visitor_parse_int(value : String) -> Int? {
-  let parsed : Result[Int, @strconv.StrConvError] = try? @strconv.parse_int(
+  let parsed : Result[Int, Error] = try? @string.parse_int(
     value.trim().to_string(),
   )
   match parsed {

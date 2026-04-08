@@ -21,7 +21,7 @@ fn layer_constraint_postprocessor_layer_constraint(
 pub(all) suberror LayerConstraintPostprocessorException {
   UnsupportedConfigurationException(String)
   IllegalStateException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] layer_constraint_postprocessor_raise_unsupported_configuration(

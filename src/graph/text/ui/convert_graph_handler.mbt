@@ -2,7 +2,7 @@
 pub(all) enum GraphTextSelectionItem {
   GraphTextSelectionFile(String, String)
   GraphTextSelectionOther
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub struct GraphTextProject {

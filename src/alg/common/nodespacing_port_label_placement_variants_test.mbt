@@ -39,7 +39,7 @@ fn port_label_variants_set_port_index(port : ElkPort, index : Int) -> Unit {
 ///|
 fn port_label_variants_get_port_index(port : ElkPort) -> Int {
   match port_layout_option_string_value(port, layered_port_index_option_id) {
-    Some(raw) => @strconv.parse_int(raw) catch { _ => 0 }
+    Some(raw) => @string.parse_int(raw) catch { _ => 0 }
     None => 0
   }
 }

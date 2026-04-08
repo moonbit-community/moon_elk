@@ -1,7 +1,7 @@
 ///|
 priv suberror BreakingPointInserterException {
   BreakingPointInserterException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] breaking_point_inserter_raise(
@@ -296,7 +296,7 @@ fn breaking_point_inserter_improve_cuts(
         None =>
           match l_cut {
             Some(l_value) => (idx - l_value.index).abs() + 1
-            None => @int.max_value / 2
+            None => @int.MAX_VALUE / 2
           }
       }
       let l_dist = match l_cut {

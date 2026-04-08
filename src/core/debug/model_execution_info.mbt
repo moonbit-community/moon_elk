@@ -4,7 +4,7 @@ pub type ExecutionInfo = Int
 ///|
 priv suberror ExecutionInfoException {
   ExecutionInfoException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn execution_info_raise_unit(

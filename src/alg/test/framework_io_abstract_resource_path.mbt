@@ -10,7 +10,7 @@ pub type ResourcePathFilter = (String) -> Bool
 ///|
 pub suberror AbstractResourcePathException {
   AbstractResourcePathException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn abstract_resource_path_raise_unit(

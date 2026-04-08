@@ -41,7 +41,7 @@ let breadth_first_model_order_layerer_baseline_processing_configuration : @core.
 ///|
 pub(all) suberror BreadthFirstModelOrderLayererException {
   UnsupportedGraphException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] breadth_first_model_order_layerer_raise_unsupported_graph(

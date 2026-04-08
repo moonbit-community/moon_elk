@@ -7,7 +7,7 @@ pub type BundleResourcePath = AbstractPropertyDependentResourcePath
 ///|
 pub suberror BundleResourcePathException {
   BundleResourcePathException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn bundle_resource_path_raise_unit(

@@ -40,7 +40,7 @@ fn graph_configurator_initialize_random(
   let seed_value = lgraph.get_property_int(@core.random_seed)
   if seed_value == 0 {
     new_greedy_switch_mock_random_seeded(
-      @random.Rand::new().int(limit=@int.max_value),
+      @random.Rand::new().int(limit=@int.MAX_VALUE),
     )
   } else {
     new_greedy_switch_mock_random_seeded(seed_value)

@@ -4,6 +4,7 @@ package "Milky2018/moon_elk/alg/rectpacking"
 import {
   "Milky2018/moon_elk/core",
   "Milky2018/moon_elk/graph",
+  "moonbitlang/core/debug",
 }
 
 // Values
@@ -178,9 +179,7 @@ pub let rectpacking_width_approximation_target_width : @graph.IProperty[Double]
 // Errors
 pub suberror RectpackingWidthApproximationException {
   RectpackingWidthApproximationException(String)
-}
-pub impl Show for RectpackingWidthApproximationException
-pub impl ToJson for RectpackingWidthApproximationException
+} derive(ToJson, @debug.Debug)
 
 // Types and methods
 pub struct Block {

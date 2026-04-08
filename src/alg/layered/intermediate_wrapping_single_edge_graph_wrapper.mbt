@@ -1,7 +1,7 @@
 ///|
 priv suberror SingleEdgeGraphWrapperException {
   SingleEdgeGraphWrapperException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] single_edge_graph_wrapper_raise(
@@ -105,7 +105,7 @@ pub fn single_edge_graph_wrapper_validify_indexes_looking_back(
     return []
   }
 
-  let valid_cuts = [@int.min_value]
+  let valid_cuts = [@int.MIN_VALUE]
   for i in 1..<graph_stats.longest_path {
     if graph_stats.is_cut_allowed(i) {
       valid_cuts.push(i)
@@ -114,7 +114,7 @@ pub fn single_edge_graph_wrapper_validify_indexes_looking_back(
   if valid_cuts.length() == 1 {
     return []
   }
-  valid_cuts.push(@int.max_value)
+  valid_cuts.push(@int.MAX_VALUE)
 
   single_edge_graph_wrapper_validify_indexes_looking_back_internal(
     desired_cuts, valid_cuts,

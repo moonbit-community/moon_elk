@@ -10,7 +10,7 @@ fn layout_dot_exporter_parse_double(text : String?) -> Double? {
   if normalized.is_empty() {
     return None
   }
-  let parsed_double : Result[Double, @strconv.StrConvError] = try? @strconv.parse_double(
+  let parsed_double : Result[Double, Error] = try? @string.parse_double(
     normalized,
   )
   match parsed_double {
@@ -24,7 +24,7 @@ fn layout_dot_exporter_parse_double(text : String?) -> Double? {
         if without_suffix.is_empty() {
           None
         } else {
-          let parsed_without_suffix : Result[Double, @strconv.StrConvError] = try? @strconv.parse_double(
+          let parsed_without_suffix : Result[Double, Error] = try? @string.parse_double(
             without_suffix,
           )
           match parsed_without_suffix {
@@ -47,9 +47,7 @@ fn layout_dot_exporter_parse_int(text : String?) -> Int? {
   if normalized.is_empty() {
     return None
   }
-  let parsed_int : Result[Int, @strconv.StrConvError] = try? @strconv.parse_int(
-    normalized,
-  )
+  let parsed_int : Result[Int, Error] = try? @string.parse_int(normalized)
   match parsed_int {
     Ok(value) => Some(value)
     Err(_) =>

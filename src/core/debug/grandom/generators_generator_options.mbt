@@ -7,7 +7,7 @@ pub(all) enum CoreDebugGRandomFileFormat {
 ///|
 priv suberror CoreDebugGrandomGeneratorOptionsException {
   CoreDebugGrandomGeneratorOptionsException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn core_debug_grandom_generator_options_raise_unit(

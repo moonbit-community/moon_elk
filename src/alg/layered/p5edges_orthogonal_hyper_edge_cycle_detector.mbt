@@ -172,7 +172,7 @@ fn hyper_edge_cycle_detector_compute_linear_ordering_marks(
     }
 
     if !unprocessed.is_empty() {
-      let mut max_outflow = @int.min_value
+      let mut max_outflow = @int.MIN_VALUE
       max_segments.clear()
 
       for segment in unprocessed {

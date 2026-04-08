@@ -12,7 +12,7 @@ let layout_category_data_store : Ref[Map[String, LayoutCategoryData]] = Ref::new
 ///|
 priv suberror LayoutMetaDataServiceException {
   LayoutMetaDataServiceException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn layout_meta_data_service_raise_unit(

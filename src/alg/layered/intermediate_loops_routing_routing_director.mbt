@@ -1,7 +1,7 @@
 ///|
 priv suberror RoutingDirectorException {
   RoutingDirectorException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] routing_director_raise(

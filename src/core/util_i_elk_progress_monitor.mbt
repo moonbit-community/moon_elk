@@ -13,7 +13,7 @@ let elk_progress_monitor_debug_folder_counter_ref : Ref[Int] = Ref::new(0)
 ///|
 priv suberror ElkProgressMonitorException {
   ElkProgressMonitorException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn elk_progress_monitor_raise(

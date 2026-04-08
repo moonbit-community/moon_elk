@@ -11,7 +11,7 @@ pub struct DCElement {
 ///|
 pub suberror DCElementException {
   DCElementException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] dc_element_raise(message : String) -> T raise DCElementException {

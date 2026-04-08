@@ -10,7 +10,7 @@ let java_random_mask = 281474976710655L
 ///|
 priv suberror JavaRandomException {
   JavaRandomException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn java_random_raise_unit(message : String) -> Unit raise JavaRandomException {
@@ -42,8 +42,8 @@ fn java_random_to_signed_int32(value : Int64) -> Int {
 ///|
 fn java_random_system_seed() -> Int64 {
   let source = @random.Rand::new()
-  let high = Int64::from_int(source.int(limit=@int.max_value))
-  let low = Int64::from_int(source.int(limit=@int.max_value))
+  let high = Int64::from_int(source.int(limit=@int.MAX_VALUE))
+  let low = Int64::from_int(source.int(limit=@int.MAX_VALUE))
   (high << 31) ^ low
 }
 

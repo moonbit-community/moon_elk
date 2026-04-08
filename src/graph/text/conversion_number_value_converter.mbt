@@ -6,7 +6,7 @@ pub struct NumberValueConverter {
 ///|
 pub suberror NumberValueConverterException {
   NumberValueConverterException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn number_value_converter_raise_unit(
@@ -72,9 +72,7 @@ pub fn NumberValueConverter::to_value(
     }
     return 0.0
   }
-  let parsed : Result[Double, @strconv.StrConvError] = try? @strconv.parse_double(
-    text,
-  )
+  let parsed : Result[Double, Error] = try? @string.parse_double(text)
   match parsed {
     Ok(value) => value
     Err(_) => {

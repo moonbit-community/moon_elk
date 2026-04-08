@@ -4,6 +4,7 @@ package "Milky2018/moon_elk/conn/gmf"
 import {
   "Milky2018/moon_elk/core",
   "Milky2018/moon_elk/graph",
+  "moonbitlang/core/debug",
 }
 
 // Values
@@ -284,15 +285,11 @@ pub fn reset_conn_gmf_foundation_for_test() -> Unit
 // Errors
 pub suberror GmfDiagramLayoutConnectorException {
   GmfDiagramLayoutConnectorException(String)
-}
-pub impl Show for GmfDiagramLayoutConnectorException
-pub impl ToJson for GmfDiagramLayoutConnectorException
+} derive(ToJson, @debug.Debug)
 
 pub suberror LayoutDiagramFileHandlerException {
   LayoutDiagramFileHandlerException(String)
-}
-pub impl Show for LayoutDiagramFileHandlerException
-pub impl ToJson for LayoutDiagramFileHandlerException
+} derive(ToJson, @debug.Debug)
 
 // Types and methods
 pub struct ApplyLayoutRequest {
@@ -336,8 +333,7 @@ pub(all) enum GmfConnectorDiagramPart {
   DirectEditPart(Int)
   Selection(Array[Int])
   NoDiagramPart
-}
-pub impl Show for GmfConnectorDiagramPart
+} derive(@debug.Debug)
 
 pub struct GmfConnectorLayoutSettings {
   animate : Bool
@@ -351,8 +347,7 @@ pub(all) enum GmfConnectorWorkbenchPart {
   DiagramEditorWorkbenchPart(Int)
   AdaptableWorkbenchPart(Int)
   OtherWorkbenchPart
-}
-pub impl Show for GmfConnectorWorkbenchPart
+} derive(@debug.Debug)
 
 pub struct GmfDiagramLayoutConnector {
   edit_part_filter : IEditPartFilter
@@ -369,15 +364,12 @@ pub enum GmfDiagramPart {
   NoPart
   Single(Int)
   Multiple(Array[Int])
-}
-pub impl Show for GmfDiagramPart
+} derive(@debug.Debug)
 
 pub struct GmfDimension {
   width : Int
   height : Int
-}
-pub impl Eq for GmfDimension
-pub impl Show for GmfDimension
+} derive(Eq, @debug.Debug)
 
 pub struct GmfEdgeLayoutData {
   edge_view : Int
@@ -400,9 +392,7 @@ pub(all) enum GmfEditPartKind {
   ConnectionEditPart
   LabelEditPart
   NoteEditPart
-}
-pub impl Eq for GmfEditPartKind
-pub impl Show for GmfEditPartKind
+} derive(Eq, @debug.Debug)
 
 pub(all) enum GmfFigureKind {
   Generic
@@ -412,9 +402,7 @@ pub(all) enum GmfFigureKind {
   BorderedNodeFigure
   BorderItemContainer
   ConnectionFigure
-}
-pub impl Eq for GmfFigureKind
-pub impl Show for GmfFigureKind
+} derive(Eq, @debug.Debug)
 
 pub struct GmfInjector {
   bindings : Map[String, String]
@@ -426,9 +414,7 @@ pub struct GmfInsets {
   right : Int
   bottom : Int
   left : Int
-}
-pub impl Eq for GmfInsets
-pub impl Show for GmfInsets
+} derive(Eq, @debug.Debug)
 
 pub struct GmfLayoutCommand {
   label : String
@@ -471,16 +457,14 @@ pub struct GmfLayoutElementEdge {
   source_terminal : String?
   target_terminal : String?
   junction_points : String?
-}
-pub impl Show for GmfLayoutElementEdge
+} derive(@debug.Debug)
 
 pub struct GmfLayoutElementShape {
   x : Double
   y : Double
   width : Double
   height : Double
-}
-pub impl Show for GmfLayoutElementShape
+} derive(@debug.Debug)
 
 pub struct GmfLayoutHint {
   graphical_edit_part : Int?
@@ -491,8 +475,7 @@ pub struct GmfLayoutInvocation {
   diagram_part : GmfDiagramPart
   progress_dialog : Bool
   zoom_to_fit : Bool
-}
-pub impl Show for GmfLayoutInvocation
+} derive(@debug.Debug)
 
 pub struct GmfLayoutMapping {
   workbench_part : GmfConnectorWorkbenchPart?
@@ -524,8 +507,7 @@ pub enum GmfLayoutOptionTarget {
   Parents
   Edges
   Labels
-}
-pub impl Eq for GmfLayoutOptionTarget
+} derive(Eq, @debug.Debug)
 pub impl Show for GmfLayoutOptionTarget
 
 pub struct GmfLayoutSetup {
@@ -540,27 +522,22 @@ pub(all) enum GmfLayoutSetupObject {
   AdaptableWithDiagramEditor
   Collection(Array[GmfLayoutSetupObject])
   Other
-}
-pub impl Show for GmfLayoutSetupObject
+} derive(@debug.Debug)
 
 pub(all) enum GmfOperation {
   LayoutNodeOperation
   CreateEditPoliciesOperation
   Other(String)
-}
-pub impl Eq for GmfOperation
-pub impl Show for GmfOperation
+} derive(Eq, @debug.Debug)
 
 pub struct GmfPoint {
   x : Int
   y : Int
-}
-pub impl Eq for GmfPoint
-pub impl Show for GmfPoint
+} derive(Eq, @debug.Debug)
 
 pub struct GmfPointList {
   points : Array[GmfPoint]
-}
+} derive(@debug.Debug)
 pub fn GmfPointList::add_point(Self, GmfPoint) -> Unit
 pub fn GmfPointList::copy(Self) -> Self
 pub fn GmfPointList::get_first_point(Self) -> GmfPoint
@@ -569,22 +546,18 @@ pub fn GmfPointList::get_point(Self, Int) -> GmfPoint
 pub fn GmfPointList::remove_point(Self, Int) -> Unit
 pub fn GmfPointList::reverse(Self) -> Unit
 pub fn GmfPointList::size(Self) -> Int
-pub impl Show for GmfPointList
 
 pub struct GmfRectangle {
   x : Int
   y : Int
   width : Int
   height : Int
-}
-pub impl Eq for GmfRectangle
-pub impl Show for GmfRectangle
+} derive(Eq, @debug.Debug)
 
 pub(all) enum GmfSelectionItem {
   DiagramFile(String)
   OtherSelectionItem
-}
-pub impl Show for GmfSelectionItem
+} derive(@debug.Debug)
 
 pub struct GmfShapeLayoutData {
   view : Int

@@ -216,7 +216,7 @@ fn recursive_layered_copy_individual_spacing_options(
         property.get_id(),
       ) {
       Some(raw_value) => {
-        let parsed : Result[Double, @strconv.StrConvError] = try? @strconv.parse_double(
+        let parsed : Result[Double, Error] = try? @string.parse_double(
           raw_value.trim().to_string(),
         )
         match parsed {
@@ -376,14 +376,14 @@ fn recursive_layered_copy_elk_node_properties(
         )
       }
 
-      let parsed_int : Result[Int, @strconv.StrConvError] = try? @strconv.parse_int(
+      let parsed_int : Result[Int, Error] = try? @string.parse_int(
         entry.1.trim().to_string(),
       )
       if parsed_int is Ok(value) {
         target_node.set_property_int(@graph.new_property(option_id, 0), value)
       }
 
-      let parsed_double : Result[Double, @strconv.StrConvError] = try? @strconv.parse_double(
+      let parsed_double : Result[Double, Error] = try? @string.parse_double(
         entry.1.trim().to_string(),
       )
       if parsed_double is Ok(value) {
@@ -400,7 +400,7 @@ fn recursive_layered_copy_elk_node_properties(
         @graph.new_property(option_id, ""),
         entry.1,
       )
-      let parsed : Result[Double, @strconv.StrConvError] = try? @strconv.parse_double(
+      let parsed : Result[Double, Error] = try? @string.parse_double(
         entry.1.trim().to_string(),
       )
       if parsed is Ok(value) {
@@ -428,14 +428,14 @@ fn recursive_layered_copy_elk_port_layout_options(
         )
       }
 
-      let parsed_int : Result[Int, @strconv.StrConvError] = try? @strconv.parse_int(
+      let parsed_int : Result[Int, Error] = try? @string.parse_int(
         entry.1.trim().to_string(),
       )
       if parsed_int is Ok(value) {
         target_port.set_property_int(@graph.new_property(option_id, 0), value)
       }
 
-      let parsed_double : Result[Double, @strconv.StrConvError] = try? @strconv.parse_double(
+      let parsed_double : Result[Double, Error] = try? @string.parse_double(
         entry.1.trim().to_string(),
       )
       if parsed_double is Ok(value) {
@@ -463,14 +463,14 @@ fn recursive_layered_copy_elk_edge_layout_options(
         )
       }
 
-      let parsed_int : Result[Int, @strconv.StrConvError] = try? @strconv.parse_int(
+      let parsed_int : Result[Int, Error] = try? @string.parse_int(
         entry.1.trim().to_string(),
       )
       if parsed_int is Ok(value) {
         target_edge.set_property_int(@graph.new_property(option_id, 0), value)
       }
 
-      let parsed_double : Result[Double, @strconv.StrConvError] = try? @strconv.parse_double(
+      let parsed_double : Result[Double, Error] = try? @string.parse_double(
         entry.1.trim().to_string(),
       )
       if parsed_double is Ok(value) {
@@ -1184,7 +1184,7 @@ fn recursive_layered_port_border_offset(port : @graph.ElkPort) -> Double {
   for candidate in candidates {
     match @graph.port_layout_option_string_value(port, candidate) {
       Some(raw_value) => {
-        let parsed : Result[Double, @strconv.StrConvError] = try? @strconv.parse_double(
+        let parsed : Result[Double, Error] = try? @string.parse_double(
           raw_value,
         )
         match parsed {
@@ -2154,7 +2154,7 @@ fn recursive_layered_parse_bool(value : String) -> Bool? {
 
 ///|
 fn recursive_layered_parse_int(value : String) -> Int? {
-  let parsed : Result[Int, @strconv.StrConvError] = try? @strconv.parse_int(
+  let parsed : Result[Int, Error] = try? @string.parse_int(
     value.trim().to_string(),
   )
   match parsed {
@@ -2165,7 +2165,7 @@ fn recursive_layered_parse_int(value : String) -> Int? {
 
 ///|
 fn recursive_layered_parse_double(value : String) -> Double? {
-  let parsed : Result[Double, @strconv.StrConvError] = try? @strconv.parse_double(
+  let parsed : Result[Double, Error] = try? @string.parse_double(
     value.trim().to_string(),
   )
   match parsed {
@@ -2931,7 +2931,7 @@ fn recursive_layered_create_context(
       for candidate in port_index_candidates {
         match @graph.port_layout_option_string_value(elk_port, candidate) {
           Some(raw_port_index) => {
-            let parsed_port_index : Result[Int, @strconv.StrConvError] = try? @strconv.parse_int(
+            let parsed_port_index : Result[Int, Error] = try? @string.parse_int(
               raw_port_index.trim().to_string(),
             )
             if parsed_port_index is Ok(port_index) {

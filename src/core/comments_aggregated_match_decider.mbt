@@ -1,7 +1,7 @@
 ///|
 pub suberror AggregatedMatchDeciderException {
   AggregatedMatchDeciderException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] aggregated_match_decider_raise(

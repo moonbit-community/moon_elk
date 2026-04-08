@@ -1,7 +1,7 @@
 ///|
 priv suberror LabelDummyInserterException {
   UnsupportedGraphException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] label_dummy_inserter_raise_unsupported_graph(

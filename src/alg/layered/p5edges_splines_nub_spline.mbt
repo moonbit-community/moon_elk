@@ -7,7 +7,7 @@ let nub_spline_epsilon : Double = 0.000001
 ///|
 pub(all) suberror NubSplineException {
   IllegalArgumentException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] nub_spline_raise_illegal_argument(

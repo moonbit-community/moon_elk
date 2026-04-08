@@ -7,7 +7,7 @@ let network_simplex_compaction_edge_weight : Double = 100.0
 ///|
 priv suberror NetworkSimplexCompactionException {
   NetworkSimplexCompactionException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] network_simplex_compaction_raise(

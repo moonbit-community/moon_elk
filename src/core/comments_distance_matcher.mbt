@@ -29,7 +29,7 @@ let distance_matcher_out_bottom_right : Int = distance_matcher_out_bottom |
 ///|
 pub suberror DistanceMatcherException {
   DistanceMatcherException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] distance_matcher_raise(

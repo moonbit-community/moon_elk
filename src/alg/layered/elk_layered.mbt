@@ -15,7 +15,7 @@ pub struct ElkLayeredTestExecutionState {
 ///|
 pub suberror ElkLayeredTestExecutionException {
   ElkLayeredTestExecutionException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] elk_layered_test_execution_raise(

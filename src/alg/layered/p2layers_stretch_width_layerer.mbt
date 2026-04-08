@@ -23,7 +23,7 @@ priv struct StretchWidthLayererState {
 ///|
 priv suberror StretchWidthLayererException {
   IllegalStateException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] stretch_width_layerer_raise_illegal_state(

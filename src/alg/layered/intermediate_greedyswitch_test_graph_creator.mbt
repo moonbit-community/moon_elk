@@ -98,8 +98,8 @@ fn greedy_switch_mock_random_to_signed_int32(value : Int64) -> Int {
 ///|
 fn greedy_switch_mock_random_system_seed() -> Int64 {
   let source = @random.Rand::new()
-  let high = Int64::from_int(source.int(limit=@int.max_value))
-  let low = Int64::from_int(source.int(limit=@int.max_value))
+  let high = Int64::from_int(source.int(limit=@int.MAX_VALUE))
+  let low = Int64::from_int(source.int(limit=@int.MAX_VALUE))
   (high << 31) ^ low
 }
 

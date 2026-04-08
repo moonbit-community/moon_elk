@@ -1,7 +1,7 @@
 ///|
 priv suberror FinalSplineBendpointsCalculatorException {
   IllegalArgumentException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] final_spline_raise_illegal_argument(

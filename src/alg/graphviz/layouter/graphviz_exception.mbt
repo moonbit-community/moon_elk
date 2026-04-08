@@ -1,7 +1,7 @@
 ///|
 pub suberror GraphvizException {
   GraphvizException(String, String?)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 pub fn new_graphviz_exception(message : String) -> GraphvizException {

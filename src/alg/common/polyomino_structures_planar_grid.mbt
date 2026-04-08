@@ -289,10 +289,10 @@ pub fn PlanarGrid::get_filled_bounds(
 ) -> @core.Quadruple[Int, Int, Int, Int] {
   let grid_width = self.width()
   let grid_height = self.height()
-  let mut min_x = @int.max_value
-  let mut max_x = -@int.max_value
-  let mut min_y = @int.max_value
-  let mut max_y = -@int.max_value
+  let mut min_x = @int.MAX_VALUE
+  let mut max_x = -@int.MAX_VALUE
+  let mut min_y = @int.MAX_VALUE
+  let mut max_y = -@int.MAX_VALUE
 
   for xi = 0; xi < grid_width; xi = xi + 1 {
     for yi = 0; yi < grid_height; yi = yi + 1 {

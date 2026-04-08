@@ -2,7 +2,7 @@
 pub struct PolyominoCoords {
   x : Int
   y : Int
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 pub fn new_polyomino_coords(x : Int, y : Int) -> PolyominoCoords {

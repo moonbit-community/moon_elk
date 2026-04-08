@@ -1,7 +1,7 @@
 ///|
 priv suberror MathParseException {
   MathParseException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] math_parse_raise(message : String) -> T raise MathParseException {
@@ -111,7 +111,7 @@ fn _parse_double_or_abort(raw : String, message : String) -> Double {
     }
     return 0.0
   }
-  try @strconv.parse_double(text) catch {
+  try @string.parse_double(text) catch {
     _ => {
       try math_parse_raise_unit(message) catch {
         err =>

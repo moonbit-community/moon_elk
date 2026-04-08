@@ -11,7 +11,7 @@ let graphviz_preference_page_description : String = "Controls how the Eclipse La
 let graphviz_preference_page_graphviz_bundle_name : String = "Graphviz"
 
 ///|
-let graphviz_preference_page_timeout_max_value : Int = @int.max_value
+let graphviz_preference_page_timeout_max_value : Int = @int.MAX_VALUE
 
 ///|
 pub enum GraphvizPreferenceFieldKind {

@@ -51,7 +51,7 @@ let depth_first_model_order_layerer_baseline_processing_configuration : @core.La
 ///|
 pub(all) suberror DepthFirstModelOrderLayererException {
   UnsupportedGraphException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] depth_first_model_order_layerer_raise_unsupported_graph(

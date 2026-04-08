@@ -5,7 +5,7 @@ fn greedy_model_order_cycle_breaker_choose_node_with_max_outflow(
   random : MockRandom,
 ) -> LNode {
   let mut return_node : LNode? = None
-  let mut minimum_model_order = @int.max_value
+  let mut minimum_model_order = @int.MAX_VALUE
   let offset = if graph.get_layerless_nodes().length() >
     graph.get_property_int(internal_properties_max_model_order_nodes) {
     graph.get_layerless_nodes().length()

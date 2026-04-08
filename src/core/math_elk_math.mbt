@@ -4,7 +4,7 @@ let _fact_table_size = 21
 ///|
 priv suberror ElkMathException {
   ElkMathException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] elk_math_raise(message : String) -> T raise ElkMathException {
@@ -552,7 +552,7 @@ fn bezier(
 
 ///|
 pub fn maxi(values : Array[Int]) -> Int {
-  let mut max = @int.min_value
+  let mut max = @int.MIN_VALUE
   for value in values {
     if value > max {
       max = value
@@ -563,7 +563,7 @@ pub fn maxi(values : Array[Int]) -> Int {
 
 ///|
 pub fn mini(values : Array[Int]) -> Int {
-  let mut min = @int.max_value
+  let mut min = @int.MAX_VALUE
   for value in values {
     if value < min {
       min = value
@@ -583,7 +583,7 @@ pub fn averagei(values : Array[Int]) -> Int {
 
 ///|
 pub fn maxl(values : Array[Int64]) -> Int64 {
-  let mut max = Int64::from_int(@int.min_value)
+  let mut max = Int64::from_int(@int.MIN_VALUE)
   for value in values {
     if value > max {
       max = value
@@ -594,7 +594,7 @@ pub fn maxl(values : Array[Int64]) -> Int64 {
 
 ///|
 pub fn minl(values : Array[Int64]) -> Int64 {
-  let mut min = Int64::from_int(@int.max_value)
+  let mut min = Int64::from_int(@int.MAX_VALUE)
   for value in values {
     if value < min {
       min = value

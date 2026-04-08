@@ -3,7 +3,12 @@ pub(all) suberror ElkGraphUtilException {
   NullPointerException(String)
   IllegalArgumentException(String)
   IllegalStateException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
+
+///|
+pub impl Show for ElkGraphUtilException with output(self, logger) {
+  logger.write_string(to_repr(self).to_string())
+}
 
 ///|
 fn[T] elk_graph_util_raise_null_pointer(

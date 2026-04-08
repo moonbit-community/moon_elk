@@ -4,6 +4,7 @@ package "Milky2018/moon_elk/alg/common"
 import {
   "Milky2018/moon_elk/core",
   "Milky2018/moon_elk/graph",
+  "moonbitlang/core/debug",
   "moonbitlang/core/set",
 }
 
@@ -365,52 +366,37 @@ pub fn vertical_port_placement_size_calculator_calculate_vertical_port_placement
 // Errors
 pub suberror CGroupException {
   CGroupException(String)
-}
-pub impl Show for CGroupException
-pub impl ToJson for CGroupException
+} derive(ToJson, @debug.Debug)
 
 pub(all) suberror NetworkSimplexException {
   NetworkSimplexException(String)
-}
+} derive(ToJson, @debug.Debug)
 pub impl Show for NetworkSimplexException
-pub impl ToJson for NetworkSimplexException
 
 pub(all) suberror NodeContextException {
   UnsupportedConfigurationException(String)
-}
-pub impl Show for NodeContextException
-pub impl ToJson for NodeContextException
+} derive(ToJson, @debug.Debug)
 
 pub(all) suberror NodeLabelCellCreatorException {
   IllegalArgumentException(String)
-}
-pub impl Show for NodeLabelCellCreatorException
-pub impl ToJson for NodeLabelCellCreatorException
+} derive(ToJson, @debug.Debug)
 
 pub(all) suberror OneDimensionalCompactorException {
   IllegalStateException(String)
   IllegalArgumentException(String)
-}
-pub impl Show for OneDimensionalCompactorException
-pub impl ToJson for OneDimensionalCompactorException
+} derive(ToJson, @debug.Debug)
 
 pub(all) suberror PortContextCreatorException {
   IllegalArgumentException(String)
-}
-pub impl Show for PortContextCreatorException
-pub impl ToJson for PortContextCreatorException
+} derive(ToJson, @debug.Debug)
 
 pub suberror ScanlineConstraintCalculatorException {
   ScanlineConstraintCalculatorException(String)
-}
-pub impl Show for ScanlineConstraintCalculatorException
-pub impl ToJson for ScanlineConstraintCalculatorException
+} derive(ToJson, @debug.Debug)
 
 pub suberror ScanlineOverlapCheckException {
   ScanlineOverlapCheckException(String)
-}
-pub impl Show for ScanlineOverlapCheckException
-pub impl ToJson for ScanlineOverlapCheckException
+} derive(ToJson, @debug.Debug)
 
 // Types and methods
 pub struct CGraph {
@@ -428,7 +414,7 @@ pub fn CGraph::supports(Self, @core.Direction) -> Bool
 
 pub struct CGroup {
   handle : Int
-}
+} derive(Eq)
 pub fn CGroup::add_cnode(Self, CNode) -> Unit
 pub fn CGroup::add_delta(Self, Double) -> Unit
 pub fn CGroup::add_delta_normalized(Self, Double) -> Unit
@@ -451,7 +437,6 @@ pub fn CGroup::set_out_degree_real(Self, Int) -> Unit
 pub fn CGroup::set_reference(Self, CNode?) -> Unit
 pub fn CGroup::set_start_pos(Self, Double) -> Unit
 pub fn CGroup::start_pos(Self) -> Double
-pub impl Eq for CGroup
 
 pub struct CGroupBuilder {
   nodes : Array[CNode]
@@ -465,7 +450,7 @@ pub fn CGroupBuilder::reference(Self, CNode) -> Self
 
 pub struct CNode {
   handle : Int
-}
+} derive(Eq)
 pub fn CNode::add_constraint(Self, Self) -> Unit
 pub fn CNode::c_group_offset(Self) -> @core.KVector
 pub fn CNode::clear_constraints(Self) -> Unit
@@ -490,7 +475,6 @@ pub fn CNode::set_to_string_delegate(Self, ((Self) -> String)?) -> Unit
 pub fn CNode::start_pos(Self) -> Double
 pub fn CNode::to_string(Self) -> String
 pub fn CNode::to_string_delegate(Self) -> ((Self) -> String)?
-pub impl Eq for CNode
 
 pub struct CNodeBuilder {
   mut id : Int
@@ -668,7 +652,7 @@ pub enum LowLevelSortingCriterion {
 #alias(NetworkSimplexNEdge)
 pub struct NEdge {
   handle : Int
-}
+} derive(Eq)
 pub fn NEdge::get_delta(Self) -> Int
 pub fn NEdge::get_id(Self) -> Int
 pub fn NEdge::get_internal_id(Self) -> Int
@@ -684,7 +668,6 @@ pub fn NEdge::set_source(Self, NNode) -> Unit
 pub fn NEdge::set_target(Self, NNode) -> Unit
 pub fn NEdge::set_tree_edge(Self, Bool) -> Unit
 pub fn NEdge::set_weight(Self, Double) -> Unit
-pub impl Eq for NEdge
 
 #alias(NetworkSimplexNEdgeBuilder)
 pub struct NEdgeBuilder {
@@ -713,7 +696,7 @@ pub fn NGraph::write_debug_graph(Self, String) -> Unit
 #alias(NetworkSimplexNNode)
 pub struct NNode {
   handle : Int
-}
+} derive(Eq)
 pub fn NNode::add_unknown_cutvalue(Self, NEdge) -> Unit
 pub fn NNode::clear_unknown_cutvalues(Self) -> Unit
 pub fn NNode::get_connected_edges(Self) -> Array[NEdge]
@@ -728,7 +711,6 @@ pub fn NNode::set_internal_id(Self, Int) -> Unit
 pub fn NNode::set_layer(Self, Int) -> Unit
 pub fn NNode::set_tree_node(Self, Bool) -> Unit
 pub fn NNode::unknown_cutvalues(Self) -> Array[NEdge]
-pub impl Eq for NNode
 
 #alias(NetworkSimplexNNodeBuilder)
 pub struct NNodeBuilder {
@@ -959,9 +941,7 @@ pub fn PolyominoCompactor::pack_polyominoes(Self, Polyominoes) -> Unit
 pub struct PolyominoCoords {
   x : Int
   y : Int
-}
-pub impl Eq for PolyominoCoords
-pub impl Show for PolyominoCoords
+} derive(Eq, @debug.Debug)
 
 pub enum PolyominoDirection {
   North
@@ -1020,13 +1000,12 @@ pub fn Quadruplet::set_direction(Self, Bool, @core.Direction) -> Unit
 
 pub struct RectangleNode {
   handle : Int
-}
+} derive(Eq)
 pub fn RectangleNode::add_overlapping_node(Self, Self) -> Unit
 pub fn RectangleNode::clear_overlapping_nodes(Self) -> Unit
 pub fn RectangleNode::get_overlapping_nodes(Self) -> Array[Self]
 pub fn RectangleNode::get_rectangle(Self) -> @core.ElkRectangle
 pub fn RectangleNode::set_rectangle_y(Self, Double) -> Unit
-pub impl Eq for RectangleNode
 
 pub struct RectangleStripOverlapRemover {
   overlap_removal_direction : @core.Direction

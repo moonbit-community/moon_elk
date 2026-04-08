@@ -7,7 +7,7 @@ pub let spline_edge_router_spline_dimension : Int = 3
 ///|
 priv suberror SplineEdgeRouterException {
   SplineEdgeRouterException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] spline_edge_router_raise(
@@ -925,7 +925,7 @@ fn spline_edge_router_break_cycles(
       spline_edge_router_update_neighbors(source, sources, sinks)
     }
 
-    let mut max_outflow = @int.min_value
+    let mut max_outflow = @int.MIN_VALUE
     for edge in unprocessed {
       let outflow = edge.outweight - edge.inweight
       if outflow >= max_outflow {

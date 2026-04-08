@@ -9,7 +9,7 @@ fn[T] layout_test_runner_default_configuration() -> TestConfiguration[T] {
 ///|
 pub suberror LayoutTestRunnerException {
   LayoutTestRunnerException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn layout_test_runner_raise_unit(

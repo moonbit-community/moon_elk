@@ -438,8 +438,8 @@ fn RoutingSlotAssigner::shift_towards_node_on_side(
   }
   routing_slot_assigner_sort_loops_by_side_slot(sl_loops, side)
 
-  let mut min_l_port_index = @int.max_value
-  let mut max_l_port_index = @int.min_value
+  let mut min_l_port_index = @int.MAX_VALUE
+  let mut max_l_port_index = @int.MIN_VALUE
   for l_port in sl_holder.get_l_node().get_ports() {
     if routing_slot_assigner_port_side_equals(l_port.get_side(), side) {
       min_l_port_index = Int::min(min_l_port_index, l_port.get_id())
@@ -447,7 +447,7 @@ fn RoutingSlotAssigner::shift_towards_node_on_side(
     }
   }
 
-  if min_l_port_index == @int.max_value {
+  if min_l_port_index == @int.MAX_VALUE {
     for i in 0..<sl_loops.length() {
       sl_loops[i].set_routing_slot(side, i)
     }

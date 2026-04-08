@@ -1,7 +1,7 @@
 ///|
 priv suberror LinearSegmentsNodePlacerException {
   LinearSegmentsNodePlacerException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] linear_segments_raise(
@@ -403,8 +403,8 @@ fn linear_segments_sort_linear_segments(
   for layer in layered_graph.get_layers() {
     for node in layer.get_nodes() {
       node.set_id(-1)
-      let mut in_prio = @int.min_value
-      let mut out_prio = @int.min_value
+      let mut in_prio = @int.MIN_VALUE
+      let mut out_prio = @int.MIN_VALUE
       for port in node.get_ports() {
         for edge in port.get_incoming_edges() {
           let prio = edge.get_property_int(
@@ -570,12 +570,12 @@ fn linear_segments_calc_deflection(
     let input_prio = if incoming {
       node.get_property_int(linear_segments_input_prio)
     } else {
-      @int.min_value
+      @int.MIN_VALUE
     }
     let output_prio = if outgoing {
       node.get_property_int(linear_segments_output_prio)
     } else {
-      @int.min_value
+      @int.MIN_VALUE
     }
     let min_prio = if input_prio > output_prio {
       input_prio
@@ -774,7 +774,7 @@ fn linear_segments_balance_placement(
 
   let mut ready = false
   let mut mode = LinearSegmentsMode::ForwPendulum
-  let mut last_total_deflection = @int.max_value.to_double()
+  let mut last_total_deflection = @int.MAX_VALUE.to_double()
 
   while !(ready && final_iters <= 0) {
     let incoming = !linear_segments_mode_is_backw(mode)
@@ -815,7 +815,7 @@ fn linear_segments_balance_placement(
           -pendulum_iters > thoroughness
         ) {
         mode = LinearSegmentsMode::Rubber
-        last_total_deflection = @int.max_value.to_double()
+        last_total_deflection = @int.MAX_VALUE.to_double()
       } else if linear_segments_mode_is_forw(mode) {
         mode = LinearSegmentsMode::BackwPendulum
         last_total_deflection = total_deflection
@@ -841,8 +841,8 @@ fn linear_segments_post_process(
   let spacings = linear_segments_require_spacings(state)
 
   for segment in state.linear_segments {
-    let mut min_room_above = @int.max_value.to_double()
-    let mut min_room_below = @int.max_value.to_double()
+    let mut min_room_above = @int.MAX_VALUE.to_double()
+    let mut min_room_below = @int.MAX_VALUE.to_double()
 
     for node in segment.nodes {
       let layer = linear_segments_require_node_layer(node)
@@ -890,7 +890,7 @@ fn linear_segments_post_process(
       }
     }
 
-    let mut min_displacement = @int.max_value.to_double()
+    let mut min_displacement = @int.MAX_VALUE.to_double()
     let mut found_place = false
 
     let first_node = segment.nodes[0]

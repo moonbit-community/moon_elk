@@ -10,7 +10,7 @@ pub enum SelfLoopType {
 ///|
 pub(all) suberror SelfLoopTypeException {
   IllegalArgumentException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] self_loop_type_raise_illegal_argument(

@@ -5,6 +5,7 @@ import {
   "Milky2018/moon_elk/alg/common",
   "Milky2018/moon_elk/core",
   "Milky2018/moon_elk/graph",
+  "moonbitlang/core/debug",
   "moonbitlang/core/random",
 }
 
@@ -1480,209 +1481,141 @@ pub fn vertical_segment_origin_key(VerticalSegment) -> String
 // Errors
 pub(all) suberror BKAlignedLayoutException {
   IllegalStateException(String)
-}
-pub impl Show for BKAlignedLayoutException
-pub impl ToJson for BKAlignedLayoutException
+} derive(ToJson, @debug.Debug)
 
 pub suberror BkThresholdStrategyException {
   BkThresholdStrategyException(String)
-}
-pub impl Show for BkThresholdStrategyException
-pub impl ToJson for BkThresholdStrategyException
+} derive(ToJson, @debug.Debug)
 
 pub(all) suberror BreadthFirstModelOrderLayererException {
   UnsupportedGraphException(String)
-}
-pub impl Show for BreadthFirstModelOrderLayererException
-pub impl ToJson for BreadthFirstModelOrderLayererException
+} derive(ToJson, @debug.Debug)
 
 pub(all) suberror CoffmanGrahamLayererException {
   UnsupportedGraphException(String)
-}
-pub impl Show for CoffmanGrahamLayererException
-pub impl ToJson for CoffmanGrahamLayererException
+} derive(ToJson, @debug.Debug)
 
 pub(all) suberror CrossHierarchyEdgeComparatorException {
   CrossHierarchyEdgeComparatorException(String)
-}
-pub impl Show for CrossHierarchyEdgeComparatorException
-pub impl ToJson for CrossHierarchyEdgeComparatorException
+} derive(ToJson, @debug.Debug)
 
-type CuttingUtilsException
-pub impl Show for CuttingUtilsException
-pub impl ToJson for CuttingUtilsException
+type CuttingUtilsException derive(ToJson, @debug.Debug)
 
 pub(all) suberror DepthFirstCycleBreakerException {
   UnsupportedGraphException(String)
-}
-pub impl Show for DepthFirstCycleBreakerException
-pub impl ToJson for DepthFirstCycleBreakerException
+} derive(ToJson, @debug.Debug)
 
 pub(all) suberror DepthFirstModelOrderLayererException {
   UnsupportedGraphException(String)
-}
-pub impl Show for DepthFirstModelOrderLayererException
-pub impl ToJson for DepthFirstModelOrderLayererException
+} derive(ToJson, @debug.Debug)
 
 pub(all) suberror DfsNodeOrderCycleBreakerException {
   UnsupportedGraphException(String)
-}
-pub impl Show for DfsNodeOrderCycleBreakerException
-pub impl ToJson for DfsNodeOrderCycleBreakerException
+} derive(ToJson, @debug.Debug)
 
 pub suberror ElkLayeredTestExecutionException {
   ElkLayeredTestExecutionException(String)
-}
-pub impl Show for ElkLayeredTestExecutionException
-pub impl ToJson for ElkLayeredTestExecutionException
+} derive(ToJson, @debug.Debug)
 
 pub(all) suberror GreedyCycleBreakerException {
   UnsupportedGraphException(String)
-}
-pub impl Show for GreedyCycleBreakerException
-pub impl ToJson for GreedyCycleBreakerException
+} derive(ToJson, @debug.Debug)
 
 pub(all) suberror InteractiveCycleBreakerException {
   UnsupportedGraphException(String)
-}
-pub impl Show for InteractiveCycleBreakerException
-pub impl ToJson for InteractiveCycleBreakerException
+} derive(ToJson, @debug.Debug)
 
 pub(all) suberror InteractiveLayererException {
   UnsupportedGraphException(String)
-}
-pub impl Show for InteractiveLayererException
-pub impl ToJson for InteractiveLayererException
+} derive(ToJson, @debug.Debug)
 
 pub(all) suberror LEdgeException {
   IllegalArgumentException(String)
   IllegalStateException(String)
-}
-pub impl Show for LEdgeException
-pub impl ToJson for LEdgeException
+} derive(ToJson, @debug.Debug)
 
 pub suberror LGraphAdapterException {
   LGraphAdapterException(String)
-}
-pub impl Show for LGraphAdapterException
-pub impl ToJson for LGraphAdapterException
+} derive(ToJson, @debug.Debug)
 
 pub(all) suberror LGraphUtilException {
   IllegalStateException(String)
-}
-pub impl Show for LGraphUtilException
-pub impl ToJson for LGraphUtilException
+} derive(ToJson, @debug.Debug)
 
 pub(all) suberror LayerConstraintPostprocessorException {
   UnsupportedConfigurationException(String)
   IllegalStateException(String)
-}
-pub impl Show for LayerConstraintPostprocessorException
-pub impl ToJson for LayerConstraintPostprocessorException
+} derive(ToJson, @debug.Debug)
 
 pub(all) suberror LayerConstraintPreprocessorException {
   UnsupportedConfigurationException(String)
   IllegalStateException(String)
-}
-pub impl Show for LayerConstraintPreprocessorException
-pub impl ToJson for LayerConstraintPreprocessorException
+} derive(ToJson, @debug.Debug)
 
 pub suberror LayerTotalPortDistributorException {
   LayerTotalPortDistributorException(String)
-}
-pub impl Show for LayerTotalPortDistributorException
-pub impl ToJson for LayerTotalPortDistributorException
+} derive(ToJson, @debug.Debug)
 
 pub suberror LayeredSpacingsException {
   LayeredSpacingsException(String)
-}
-pub impl Show for LayeredSpacingsException
-pub impl ToJson for LayeredSpacingsException
+} derive(ToJson, @debug.Debug)
 
 pub(all) suberror LongestPathLayererException {
   UnsupportedGraphException(String)
-}
-pub impl Show for LongestPathLayererException
-pub impl ToJson for LongestPathLayererException
+} derive(ToJson, @debug.Debug)
 
 pub(all) suberror LongestPathSourceLayererException {
   UnsupportedGraphException(String)
-}
-pub impl Show for LongestPathSourceLayererException
-pub impl ToJson for LongestPathSourceLayererException
+} derive(ToJson, @debug.Debug)
 
 pub(all) suberror ModelOrderCycleBreakerException {
   UnsupportedGraphException(String)
-}
-pub impl Show for ModelOrderCycleBreakerException
-pub impl ToJson for ModelOrderCycleBreakerException
+} derive(ToJson, @debug.Debug)
 
 pub suberror NetworkSimplexPlacerException {
   NetworkSimplexPlacerException(String)
-}
-pub impl Show for NetworkSimplexPlacerException
-pub impl ToJson for NetworkSimplexPlacerException
+} derive(ToJson, @debug.Debug)
 
 pub(all) suberror NodeContextException {
   UnsupportedConfigurationException(String)
-}
-pub impl Show for NodeContextException
-pub impl ToJson for NodeContextException
+} derive(ToJson, @debug.Debug)
 
 pub(all) suberror NodeLabelCellCreatorException {
   IllegalArgumentException(String)
-}
-pub impl Show for NodeLabelCellCreatorException
-pub impl ToJson for NodeLabelCellCreatorException
+} derive(ToJson, @debug.Debug)
 
 pub suberror NodeRelativePortDistributorException {
   NodeRelativePortDistributorException(String)
-}
-pub impl Show for NodeRelativePortDistributorException
-pub impl ToJson for NodeRelativePortDistributorException
+} derive(ToJson, @debug.Debug)
 
 pub(all) suberror NubSplineException {
   IllegalArgumentException(String)
-}
-pub impl Show for NubSplineException
-pub impl ToJson for NubSplineException
+} derive(ToJson, @debug.Debug)
 
 pub(all) suberror PortContextCreatorException {
   IllegalArgumentException(String)
-}
-pub impl Show for PortContextCreatorException
-pub impl ToJson for PortContextCreatorException
+} derive(ToJson, @debug.Debug)
 
 pub suberror RectangleException {
   RectangleException(String)
-}
-pub impl Show for RectangleException
-pub impl ToJson for RectangleException
+} derive(ToJson, @debug.Debug)
 
 pub(all) suberror SCCModelOrderCycleBreakerException {
   UnsupportedGraphException(String)
-}
-pub impl Show for SCCModelOrderCycleBreakerException
-pub impl ToJson for SCCModelOrderCycleBreakerException
+} derive(ToJson, @debug.Debug)
 
 pub(all) suberror SelfLoopHolderException {
   UnsupportedConfigurationException(String)
   IllegalStateException(String)
-}
-pub impl Show for SelfLoopHolderException
-pub impl ToJson for SelfLoopHolderException
+} derive(ToJson, @debug.Debug)
 
 pub(all) suberror SelfLoopTypeException {
   IllegalArgumentException(String)
-}
-pub impl Show for SelfLoopTypeException
-pub impl ToJson for SelfLoopTypeException
+} derive(ToJson, @debug.Debug)
 
 pub suberror SweepCopyException {
   SweepCopyException(String)
-}
-pub impl Show for SweepCopyException
-pub impl ToJson for SweepCopyException
+} derive(ToJson, @debug.Debug)
 
 // Types and methods
 pub struct AbstractBarycenterPortDistributor {

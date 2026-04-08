@@ -17,8 +17,8 @@ fn sc_connectivity_find_nodes(
 
     let mut min_node : LNode? = None
     let mut max_node : LNode? = None
-    let mut model_order_min = @int.max_value
-    let mut model_order_max = -@int.max_value
+    let mut model_order_min = @int.MAX_VALUE
+    let mut model_order_max = -@int.MAX_VALUE
     let calculator = new_group_model_order_calculator()
 
     for node in strongly_connected_component {

@@ -3,6 +3,7 @@ package "Milky2018/moon_elk/core"
 
 import {
   "Milky2018/moon_elk/graph",
+  "moonbitlang/core/debug",
   "moonbitlang/core/random",
 }
 
@@ -802,45 +803,31 @@ pub fn[F, S, T] triple_of(F, S, T) -> Triple[F, S, T]
 // Errors
 pub suberror AggregatedMatchDeciderException {
   AggregatedMatchDeciderException(String)
-}
-pub impl Show for AggregatedMatchDeciderException
-pub impl ToJson for AggregatedMatchDeciderException
+} derive(ToJson, @debug.Debug)
 
 pub suberror AlignmentMatcherException {
   AlignmentMatcherException(String)
-}
-pub impl Show for AlignmentMatcherException
-pub impl ToJson for AlignmentMatcherException
+} derive(ToJson, @debug.Debug)
 
 pub suberror DistanceMatcherException {
   DistanceMatcherException(String)
-}
-pub impl Show for DistanceMatcherException
-pub impl ToJson for DistanceMatcherException
+} derive(ToJson, @debug.Debug)
 
 pub suberror ElkSpacingsException {
   ElkSpacingsException(String)
-}
-pub impl Show for ElkSpacingsException
-pub impl ToJson for ElkSpacingsException
+} derive(ToJson, @debug.Debug)
 
 pub suberror NodeReferenceMatcherException {
   NodeReferenceMatcherException(String)
-}
-pub impl Show for NodeReferenceMatcherException
-pub impl ToJson for NodeReferenceMatcherException
+} derive(ToJson, @debug.Debug)
 
 pub suberror SizeFilterException {
   SizeFilterException(String)
-}
-pub impl Show for SizeFilterException
-pub impl ToJson for SizeFilterException
+} derive(ToJson, @debug.Debug)
 
 pub suberror TextPrefixFilterException {
   TextPrefixFilterException(String)
-}
-pub impl Show for TextPrefixFilterException
-pub impl ToJson for TextPrefixFilterException
+} derive(ToJson, @debug.Debug)
 
 // Types and methods
 pub(all) struct AbstractLayoutProvider {

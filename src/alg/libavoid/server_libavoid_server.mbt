@@ -63,7 +63,7 @@ pub fn libavoid_server_reset_runtime_for_test() -> Unit {
 ///|
 pub suberror LibavoidServerStateException {
   LibavoidServerStateException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn libavoid_server_raise_illegal_state(

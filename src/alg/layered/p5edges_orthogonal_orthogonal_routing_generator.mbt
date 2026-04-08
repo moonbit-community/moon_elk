@@ -140,7 +140,7 @@ fn orthogonal_routing_generator_graph_random(
     let seed_value = layered_graph.get_property_int(@core.random_seed)
     let random = if seed_value == 0 {
       new_greedy_switch_mock_random_seeded(
-        @random.Rand::new().int(limit=@int.max_value),
+        @random.Rand::new().int(limit=@int.MAX_VALUE),
       )
     } else {
       new_greedy_switch_mock_random_seeded(seed_value)

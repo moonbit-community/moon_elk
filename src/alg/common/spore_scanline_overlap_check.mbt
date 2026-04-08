@@ -13,7 +13,7 @@ priv struct SporeTimestamp {
 ///|
 pub suberror ScanlineOverlapCheckException {
   ScanlineOverlapCheckException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn spore_scanline_overlap_check_raise_unit(

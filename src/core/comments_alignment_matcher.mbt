@@ -29,7 +29,7 @@ let alignment_matcher_out_bottom_right : Int = alignment_matcher_out_bottom |
 ///|
 pub suberror AlignmentMatcherException {
   AlignmentMatcherException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] alignment_matcher_raise(

@@ -7,7 +7,7 @@ pub let layered_spacings_base_spacing_option : @graph.IProperty[Double] = @core.
 ///|
 pub suberror LayeredSpacingsException {
   LayeredSpacingsException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] layered_spacings_raise(

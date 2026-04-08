@@ -378,7 +378,7 @@ fn min_width_layerer_process(
   min_width_layerer_sort_nodes_by_desc_out_degree(not_inserted, data.out_degree)
 
   let mut min_width = @double.infinity
-  let mut min_num_of_layers = @int.max_value
+  let mut min_num_of_layers = @int.MAX_VALUE
   let mut candidate_layering : Array[Array[LNode]]? = None
 
   let mut ubw_start = upper_bound_on_width

@@ -11,7 +11,7 @@ pub(all) struct ElkCoreSpacingsBuilder {
 ///|
 pub suberror ElkSpacingsException {
   ElkSpacingsException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] elk_spacings_raise(message : String) -> T raise ElkSpacingsException {

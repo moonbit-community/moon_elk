@@ -7,7 +7,7 @@ pub let core_debug_grandom_ui_extension_factory_guicekey : String = "guicekey"
 ///|
 priv suberror CoreDebugGrandomUiException {
   CoreDebugGrandomUiException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn core_debug_grandom_ui_raise_unit(

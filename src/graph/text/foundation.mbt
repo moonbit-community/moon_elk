@@ -37,7 +37,12 @@ pub(all) enum GraphTextPropertyValue {
   NumberValue(Double)
   BooleanValue(Bool)
   ProxyValue(String)
-} derive(Show)
+} derive(Debug)
+
+///|
+pub impl Show for GraphTextPropertyValue with output(self, logger) {
+  logger.write_string(to_repr(self).to_string())
+}
 
 ///|
 pub fn graph_text_property_value_to_string(
@@ -102,7 +107,12 @@ pub fn new_graph_text_validation_issue(
 pub(all) enum GraphTextListTransient {
   ListTransientYes
   ListTransientNo
-} derive(Show)
+} derive(Debug)
+
+///|
+pub impl Show for GraphTextListTransient with output(self, logger) {
+  logger.write_string(to_repr(self).to_string())
+}
 
 ///|
 pub(all) enum GraphTextElement {

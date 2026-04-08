@@ -8,6 +8,7 @@ import {
   "moonbitlang/core/json",
   "moonbitlang/core/random",
   "moonbitlang/core/strconv",
+  "moonbitlang/core/string",
   "Milky2018/moon_elk/core",
   "Milky2018/moon_elk/graph",
   "Milky2018/moon_elk/graph/json" @graph_json,

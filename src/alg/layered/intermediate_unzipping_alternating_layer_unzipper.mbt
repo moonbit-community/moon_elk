@@ -67,7 +67,7 @@ fn alternating_layer_unzipper_set_layer_with_index(
 
 ///|
 fn alternating_layer_unzipper_get_layer_split_property(layer : Layer) -> Int {
-  let mut layer_split = @int.max_value
+  let mut layer_split = @int.MAX_VALUE
   let mut property_unset = true
 
   for node in layer.get_nodes() {

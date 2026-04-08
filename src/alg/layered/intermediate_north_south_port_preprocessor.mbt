@@ -4,7 +4,7 @@ let north_south_port_preprocessor_use_new_approach : Bool = true
 ///|
 priv suberror NorthSouthPortPreprocessorException {
   NorthSouthPortPreprocessorException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] north_south_port_preprocessor_raise(

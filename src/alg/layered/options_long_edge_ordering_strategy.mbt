@@ -10,8 +10,8 @@ pub fn LongEdgeOrderingStrategy::return_value(
   self : LongEdgeOrderingStrategy,
 ) -> Int {
   match self {
-    DummyNodeOver => @int.max_value
-    DummyNodeUnder => @int.min_value
+    DummyNodeOver => @int.MAX_VALUE
+    DummyNodeUnder => @int.MIN_VALUE
     Equal => 0
   }
 }

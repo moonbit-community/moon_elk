@@ -1,7 +1,7 @@
 ///|
 pub(all) suberror InteractiveCycleBreakerException {
   UnsupportedGraphException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] interactive_cycle_breaker_raise_unsupported_graph(

@@ -154,10 +154,7 @@ pub fn LayoutPropertyDescriptor::create_property_editor(
         new_core_ui_property_editor(CoreUiPropertyEditorText, validator=value => {
           match value {
             CoreUiStringValue(text) =>
-              match
-                (
-                  try? @strconv.parse_int(text) :
-                  Result[Int, @strconv.StrConvError]) {
+              match (try? @string.parse_int(text) : Result[Int, Error]) {
                 Ok(parsed) =>
                   match
                     self.source.validate_property_value(
@@ -183,10 +180,7 @@ pub fn LayoutPropertyDescriptor::create_property_editor(
         new_core_ui_property_editor(CoreUiPropertyEditorText, validator=value => {
           match value {
             CoreUiStringValue(text) =>
-              match
-                (
-                  try? @strconv.parse_double(text) :
-                  Result[Double, @strconv.StrConvError]) {
+              match (try? @string.parse_double(text) : Result[Double, Error]) {
                 Ok(parsed) =>
                   match
                     self.source.validate_property_value(

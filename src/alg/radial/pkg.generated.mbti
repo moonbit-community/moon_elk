@@ -4,6 +4,7 @@ package "Milky2018/moon_elk/alg/radial"
 import {
   "Milky2018/moon_elk/core",
   "Milky2018/moon_elk/graph",
+  "moonbitlang/core/debug",
 }
 
 // Values
@@ -184,9 +185,7 @@ pub let radial_wedge_criteria : @graph.IProperty[String]
 // Errors
 pub(all) suberror RadialCompactionStrategyException {
   IllegalArgumentException(String)
-}
-pub impl Show for RadialCompactionStrategyException
-pub impl ToJson for RadialCompactionStrategyException
+} derive(ToJson, @debug.Debug)
 
 // Types and methods
 pub struct AbstractRadiusExtensionCompaction {

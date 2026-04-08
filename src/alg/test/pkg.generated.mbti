@@ -8,6 +8,7 @@ import {
   "Milky2018/moon_elk/graph",
   "Milky2018/moon_elk/graph/json",
   "Milky2018/moon_elk/graph/text",
+  "moonbitlang/core/debug",
   "moonbitlang/core/random",
 }
 
@@ -393,39 +394,27 @@ pub let vertiflex_algorithm_id : String
 // Errors
 pub(all) suberror AbstractPropertyDependentResourcePathException {
   IllegalStateException(String)
-}
-pub impl Show for AbstractPropertyDependentResourcePathException
-pub impl ToJson for AbstractPropertyDependentResourcePathException
+} derive(ToJson, @debug.Debug)
 
 pub suberror AbstractResourcePathException {
   AbstractResourcePathException(String)
-}
-pub impl Show for AbstractResourcePathException
-pub impl ToJson for AbstractResourcePathException
+} derive(ToJson, @debug.Debug)
 
 pub suberror BundleResourcePathException {
   BundleResourcePathException(String)
-}
-pub impl Show for BundleResourcePathException
-pub impl ToJson for BundleResourcePathException
+} derive(ToJson, @debug.Debug)
 
 pub suberror LayoutTestRunnerException {
   LayoutTestRunnerException(String)
-}
-pub impl Show for LayoutTestRunnerException
-pub impl ToJson for LayoutTestRunnerException
+} derive(ToJson, @debug.Debug)
 
 pub suberror ModelResourcePathException {
   ModelResourcePathException(String)
-}
-pub impl Show for ModelResourcePathException
-pub impl ToJson for ModelResourcePathException
+} derive(ToJson, @debug.Debug)
 
 pub suberror ResultsResourcePathException {
   ResultsResourcePathException(String)
-}
-pub impl Show for ResultsResourcePathException
-pub impl ToJson for ResultsResourcePathException
+} derive(ToJson, @debug.Debug)
 
 // Types and methods
 #alias(AbsoluteResourcePath)

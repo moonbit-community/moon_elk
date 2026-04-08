@@ -4,7 +4,7 @@ pub type AbstractPropertyDependentResourcePath = AbstractResourcePath
 ///|
 pub(all) suberror AbstractPropertyDependentResourcePathException {
   IllegalStateException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] abstract_property_dependent_resource_path_raise_illegal_state(

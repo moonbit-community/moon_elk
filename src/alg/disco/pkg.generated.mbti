@@ -5,6 +5,7 @@ import {
   "Milky2018/moon_elk/alg/common",
   "Milky2018/moon_elk/core",
   "Milky2018/moon_elk/graph",
+  "moonbitlang/core/debug",
 }
 
 // Values
@@ -61,9 +62,7 @@ pub fn[G] new_igraph_transformer((G) -> DCGraph, () -> Unit) -> IGraphTransforme
 // Errors
 pub suberror DCElementException {
   DCElementException(String)
-}
-pub impl Show for DCElementException
-pub impl ToJson for DCElementException
+} derive(ToJson, @debug.Debug)
 
 // Types and methods
 pub enum CompactionStrategy {

@@ -10,7 +10,7 @@ pub enum OverlapMode {
 ///|
 pub(all) suberror OverlapModeException {
   IllegalArgumentException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] overlap_mode_raise_illegal_argument(

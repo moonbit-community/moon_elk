@@ -32,7 +32,7 @@ let box_layout_provider_default_min_height : Double = 20.0
 ///|
 priv suberror BoxLayoutProviderException {
   BoxLayoutProviderException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn box_layout_provider_raise_unit(

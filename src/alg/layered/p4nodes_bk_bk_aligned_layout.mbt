@@ -45,7 +45,7 @@ pub fn bk_hdirection_is_left(value : BKHDirection) -> Bool {
 ///|
 pub(all) suberror BKAlignedLayoutException {
   IllegalStateException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] bk_aligned_layout_raise_illegal_state(

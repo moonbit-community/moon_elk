@@ -1,7 +1,7 @@
 ///|
 priv suberror BreakingPointProcessorException {
   BreakingPointProcessorException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] breaking_point_processor_raise(

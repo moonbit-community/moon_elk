@@ -3,6 +3,7 @@ package "Milky2018/moon_elk/core/debug/grandom/ui"
 
 import {
   "Milky2018/moon_elk/core/debug/grandom",
+  "moonbitlang/core/debug",
 }
 
 // Values
@@ -204,8 +205,7 @@ pub(all) struct CoreDebugGRandomQuickfixProvider {
 pub(all) enum CoreDebugGRandomSelectionItem {
   CoreDebugGRandomSelectionFile(String)
   CoreDebugGRandomSelectionOther
-}
-pub impl Show for CoreDebugGRandomSelectionItem
+} derive(@debug.Debug)
 
 pub(all) struct CoreDebugGRandomUiBundle {
   symbolic_name : String

@@ -6,7 +6,7 @@ pub struct GraphJsonTextNumberValueConverter {
 ///|
 pub suberror GraphJsonTextNumberValueConverterException {
   GraphJsonTextNumberValueConverterException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn graph_json_text_number_value_converter_raise_unit(
@@ -74,9 +74,7 @@ pub fn GraphJsonTextNumberValueConverter::to_value(
     }
     return 0.0
   }
-  let parsed : Result[Double, @strconv.StrConvError] = try? @strconv.parse_double(
-    text,
-  )
+  let parsed : Result[Double, Error] = try? @string.parse_double(text)
   match parsed {
     Ok(value) => value
     Err(_) => {

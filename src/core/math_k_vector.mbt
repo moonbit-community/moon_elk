@@ -10,7 +10,7 @@ let default_fuzzyness = 0.05
 ///|
 priv suberror KVectorException {
   KVectorException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] kvector_raise(message : String) -> T raise KVectorException {

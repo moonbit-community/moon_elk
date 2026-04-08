@@ -13,7 +13,7 @@ pub let dot_exporter_dpi : Float = 72.0
 ///|
 pub suberror DotExporterException {
   DotExporterException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn dot_exporter_raise_unit(message : String) -> Unit raise DotExporterException {
@@ -229,9 +229,7 @@ fn dot_exporter_parse_int_token(text : String?) -> Int? {
   if normalized.is_empty() {
     return None
   }
-  let parsed_int : Result[Int, @strconv.StrConvError] = try? @strconv.parse_int(
-    normalized,
-  )
+  let parsed_int : Result[Int, Error] = try? @string.parse_int(normalized)
   match parsed_int {
     Ok(value) => Some(value)
     Err(_) =>
@@ -1464,9 +1462,7 @@ fn dot_exporter_parse_double_token(text : String) -> Double? {
   if normalized.is_empty() {
     return None
   }
-  let parsed : Result[Double, @strconv.StrConvError] = try? @strconv.parse_double(
-    normalized,
-  )
+  let parsed : Result[Double, Error] = try? @string.parse_double(normalized)
   match parsed {
     Ok(value) => Some(value)
     Err(_) => None

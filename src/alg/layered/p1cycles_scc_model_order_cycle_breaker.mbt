@@ -1,7 +1,7 @@
 ///|
 pub(all) suberror SCCModelOrderCycleBreakerException {
   UnsupportedGraphException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] scc_model_order_cycle_breaker_raise_unsupported_graph(
@@ -129,7 +129,7 @@ fn scc_model_order_cycle_breaker_find_nodes(
 
   for strongly_connected_component in strongly_connected_components {
     let mut max_node : LNode? = None
-    let mut max_model_order = -@int.max_value
+    let mut max_model_order = -@int.MAX_VALUE
     let calculator = new_group_model_order_calculator()
 
     for node in strongly_connected_component {

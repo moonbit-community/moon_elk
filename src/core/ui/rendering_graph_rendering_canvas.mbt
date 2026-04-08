@@ -4,7 +4,7 @@ let core_ui_zoom_per_wheel_unit : Double = 1.01
 ///|
 priv suberror GraphRenderingCanvasException {
   GraphRenderingCanvasException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn graph_rendering_canvas_raise_unit(

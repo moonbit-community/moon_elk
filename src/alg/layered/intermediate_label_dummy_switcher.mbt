@@ -6,7 +6,7 @@ pub let label_dummy_switcher_include_label : @graph.IProperty[Bool] = @graph.new
 ///|
 priv suberror LabelDummySwitcherException {
   LabelDummySwitcherException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] label_dummy_switcher_raise(

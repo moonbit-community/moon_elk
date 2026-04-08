@@ -6,7 +6,7 @@ pub struct ElkGraphImporter {
 ///|
 pub suberror ForceImportException {
   UnsupportedGraph(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn force_import_raise_unsupported_graph(
@@ -67,9 +67,7 @@ fn parse_int_layout_value(value : String) -> Int? {
   if normalized.is_empty() {
     return None
   }
-  let parsed_int : Result[Int, @strconv.StrConvError] = try? @strconv.parse_int(
-    normalized,
-  )
+  let parsed_int : Result[Int, Error] = try? @string.parse_int(normalized)
   match parsed_int {
     Ok(parsed) => Some(parsed)
     Err(_) =>
@@ -86,7 +84,7 @@ fn parse_double_layout_value(value : String) -> Double? {
   if normalized.is_empty() {
     return None
   }
-  let parsed_double : Result[Double, @strconv.StrConvError] = try? @strconv.parse_double(
+  let parsed_double : Result[Double, Error] = try? @string.parse_double(
     normalized,
   )
   match parsed_double {
@@ -100,7 +98,7 @@ fn parse_double_layout_value(value : String) -> Double? {
         if without_suffix.is_empty() {
           return None
         }
-        let parsed_without_suffix : Result[Double, @strconv.StrConvError] = try? @strconv.parse_double(
+        let parsed_without_suffix : Result[Double, Error] = try? @string.parse_double(
           without_suffix,
         )
         match parsed_without_suffix {

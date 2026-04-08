@@ -8,7 +8,7 @@ pub struct RectpackingAreaApproximation {
 ///|
 pub suberror RectpackingWidthApproximationException {
   RectpackingWidthApproximationException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] rectpacking_width_approximation_raise(

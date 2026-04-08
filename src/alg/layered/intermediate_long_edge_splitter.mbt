@@ -1,7 +1,7 @@
 ///|
 priv suberror LongEdgeSplitterException {
   UnsupportedGraphException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] long_edge_splitter_raise_unsupported_graph(

@@ -320,16 +320,14 @@ pub fn LayoutOptionData::parse_value(
         None => value
       }
     IntType => {
-      let parsed : Result[Int, @strconv.StrConvError] = try? @strconv.parse_int(
-        value.trim(),
-      )
+      let parsed : Result[Int, Error] = try? @string.parse_int(value.trim())
       match parsed {
         Ok(parsed) => parsed.to_string()
         Err(_) => value
       }
     }
     DoubleType => {
-      let parsed : Result[Double, @strconv.StrConvError] = try? @strconv.parse_double(
+      let parsed : Result[Double, Error] = try? @string.parse_double(
         value.trim(),
       )
       match parsed {

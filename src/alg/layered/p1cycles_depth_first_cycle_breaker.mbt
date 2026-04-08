@@ -1,7 +1,7 @@
 ///|
 pub(all) suberror DepthFirstCycleBreakerException {
   UnsupportedGraphException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] depth_first_cycle_breaker_raise_unsupported_graph(

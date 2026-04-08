@@ -6,7 +6,7 @@ pub struct PropertyKeyValueConverter {
 ///|
 pub suberror PropertyKeyValueConverterException {
   PropertyKeyValueConverterException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn property_key_value_converter_raise_unit(

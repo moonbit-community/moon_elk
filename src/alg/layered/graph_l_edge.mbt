@@ -17,7 +17,7 @@ fn ledge_internal_handle(edge : LEdge) -> Int {
 pub(all) suberror LEdgeException {
   IllegalArgumentException(String)
   IllegalStateException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] ledge_raise_illegal_argument(message : String) -> T raise LEdgeException {

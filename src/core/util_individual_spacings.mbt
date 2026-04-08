@@ -4,7 +4,7 @@ let individual_spacings_serialized_option_separator = ";,;"
 ///|
 priv suberror IndividualSpacingsException {
   IndividualSpacingsException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] individual_spacings_raise(
@@ -162,9 +162,7 @@ pub fn individual_spacings_apply_to_node(
 
 ///|
 fn individual_spacings_parse_double(value : String) -> Double? {
-  let parsed : Result[Double, @strconv.StrConvError] = try? @strconv.parse_double(
-    value.trim(),
-  )
+  let parsed : Result[Double, Error] = try? @string.parse_double(value.trim())
   match parsed {
     Ok(parsed) => Some(parsed)
     Err(_) => None

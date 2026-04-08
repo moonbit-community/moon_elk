@@ -9,7 +9,7 @@ pub struct Rectangle {
 ///|
 pub suberror RectangleException {
   RectangleException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] rectangle_raise(message : String) -> T raise RectangleException {

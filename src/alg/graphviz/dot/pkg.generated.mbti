@@ -4,6 +4,7 @@ package "Milky2018/moon_elk/alg/graphviz/dot"
 import {
   "Milky2018/moon_elk/core",
   "Milky2018/moon_elk/graph",
+  "moonbitlang/core/debug",
 }
 
 // Values
@@ -604,33 +605,23 @@ pub fn overlap_mode_to_string(OverlapMode) -> String
 // Errors
 pub suberror DotExporterException {
   DotExporterException(String)
-}
-pub impl Show for DotExporterException
-pub impl ToJson for DotExporterException
+} derive(ToJson, @debug.Debug)
 
 pub suberror GraphvizDotActivatorException {
   IllegalArgumentException(String)
-}
-pub impl Show for GraphvizDotActivatorException
-pub impl ToJson for GraphvizDotActivatorException
+} derive(ToJson, @debug.Debug)
 
 pub suberror GraphvizDotExecutableExtensionFactoryException {
   IllegalArgumentException(String)
-}
-pub impl Show for GraphvizDotExecutableExtensionFactoryException
-pub impl ToJson for GraphvizDotExecutableExtensionFactoryException
+} derive(ToJson, @debug.Debug)
 
 pub(all) suberror NeatoModelException {
   IllegalArgumentException(String)
-}
-pub impl Show for NeatoModelException
-pub impl ToJson for NeatoModelException
+} derive(ToJson, @debug.Debug)
 
 pub(all) suberror OverlapModeException {
   IllegalArgumentException(String)
-}
-pub impl Show for OverlapModeException
-pub impl ToJson for OverlapModeException
+} derive(ToJson, @debug.Debug)
 
 // Types and methods
 pub struct AbstractGraphvizDotRuntimeModule {

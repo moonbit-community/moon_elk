@@ -5,6 +5,7 @@ import {
   "Milky2018/moon_elk/core",
   "Milky2018/moon_elk/graph/json/text",
   "Milky2018/moon_elk/graph/json/text/ide",
+  "moonbitlang/core/debug",
 }
 
 // Values
@@ -93,22 +94,16 @@ pub fn new_graph_json_text_ui_status(Int, String, String) -> GraphJsonTextUiStat
 // Errors
 pub(all) suberror ElkGraphJsonTextUiActivatorException {
   IllegalArgumentException(String)
-}
-pub impl Show for ElkGraphJsonTextUiActivatorException
-pub impl ToJson for ElkGraphJsonTextUiActivatorException
+} derive(ToJson, @debug.Debug)
 
 pub suberror GraphJsonTextActivatorException {
   IllegalArgumentException(String)
   RuntimeException(String)
-}
-pub impl Show for GraphJsonTextActivatorException
-pub impl ToJson for GraphJsonTextActivatorException
+} derive(ToJson, @debug.Debug)
 
 pub suberror GraphJsonTextExecutableExtensionFactoryException {
   IllegalArgumentException(String)
-}
-pub impl Show for GraphJsonTextExecutableExtensionFactoryException
-pub impl ToJson for GraphJsonTextExecutableExtensionFactoryException
+} derive(ToJson, @debug.Debug)
 
 // Types and methods
 pub struct AbstractElkGraphJsonProposalProvider {
@@ -370,8 +365,7 @@ pub fn GraphJsonTextProject::write_file(Self, String, String) -> Unit
 pub(all) enum GraphJsonTextSelectionItem {
   GraphJsonTextSelectionFile(String, String)
   GraphJsonTextSelectionOther
-}
-pub impl Show for GraphJsonTextSelectionItem
+} derive(@debug.Debug)
 
 pub struct GraphJsonTextUiBundle {
   symbolic_name : String

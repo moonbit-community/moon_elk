@@ -4,6 +4,7 @@ package "Milky2018/moon_elk/graph/text"
 import {
   "Milky2018/moon_elk/core",
   "Milky2018/moon_elk/graph",
+  "moonbitlang/core/debug",
 }
 
 // Values
@@ -166,21 +167,15 @@ pub fn new_property_value_value_converter(qualified_name_converter? : ElkGraphQu
 // Errors
 pub suberror ElkGraphQualifiedNameConverterException {
   ElkGraphQualifiedNameConverterException(String)
-}
-pub impl Show for ElkGraphQualifiedNameConverterException
-pub impl ToJson for ElkGraphQualifiedNameConverterException
+} derive(ToJson, @debug.Debug)
 
 pub suberror NumberValueConverterException {
   NumberValueConverterException(String)
-}
-pub impl Show for NumberValueConverterException
-pub impl ToJson for NumberValueConverterException
+} derive(ToJson, @debug.Debug)
 
 pub suberror PropertyKeyValueConverterException {
   PropertyKeyValueConverterException(String)
-}
-pub impl Show for PropertyKeyValueConverterException
-pub impl ToJson for PropertyKeyValueConverterException
+} derive(ToJson, @debug.Debug)
 
 // Types and methods
 pub struct AbstractElkGraphRuntimeModule {
@@ -422,7 +417,7 @@ pub(all) enum GraphTextLabelOwner {
 pub(all) enum GraphTextListTransient {
   ListTransientYes
   ListTransientNo
-}
+} derive(@debug.Debug)
 pub impl Show for GraphTextListTransient
 
 pub struct GraphTextPendingOutgoingSection {
@@ -446,7 +441,7 @@ pub(all) enum GraphTextPropertyValue {
   NumberValue(Double)
   BooleanValue(Bool)
   ProxyValue(String)
-}
+} derive(@debug.Debug)
 pub impl Show for GraphTextPropertyValue
 
 pub(all) enum GraphTextShape {

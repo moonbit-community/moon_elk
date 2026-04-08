@@ -258,8 +258,7 @@ pub(all) struct CoreUiColor {
 
 pub(all) struct CoreUiDisplay {
   id : Int
-}
-pub impl Eq for CoreUiDisplay
+} derive(Eq)
 
 pub(all) struct CoreUiExecutionEvent {
   parameters : Map[String, String]

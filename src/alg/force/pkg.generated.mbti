@@ -3,6 +3,7 @@ package "Milky2018/moon_elk/alg/force"
 
 import {
   "Milky2018/moon_elk/core",
+  "moonbitlang/core/debug",
 }
 
 // Values
@@ -285,15 +286,11 @@ pub let stress_omit_node_micro_layout : ForceBoolOption
 // Errors
 pub suberror ForceImportException {
   UnsupportedGraph(String)
-}
-pub impl Show for ForceImportException
-pub impl ToJson for ForceImportException
+} derive(ToJson, @debug.Debug)
 
 pub suberror StressMajorizationException {
   StressMajorizationException(String)
-}
-pub impl Show for StressMajorizationException
-pub impl ToJson for StressMajorizationException
+} derive(ToJson, @debug.Debug)
 
 // Types and methods
 pub struct AbstractForceModelState {

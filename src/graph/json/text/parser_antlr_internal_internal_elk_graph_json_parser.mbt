@@ -92,9 +92,7 @@ fn graph_json_text_parser_strip_quotes(text : String) -> String {
 
 ///|
 fn graph_json_text_parser_parse_double(text : String) -> Double? {
-  let parsed : Result[Double, @strconv.StrConvError] = try? @strconv.parse_double(
-    text,
-  )
+  let parsed : Result[Double, Error] = try? @string.parse_double(text)
   match parsed {
     Ok(value) => Some(value)
     Err(_) => None

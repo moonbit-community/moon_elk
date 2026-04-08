@@ -4,7 +4,7 @@ pub let graphviz_dot_executable_extension_factory_guicekey : String = "guicekey"
 ///|
 pub suberror GraphvizDotExecutableExtensionFactoryException {
   IllegalArgumentException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] graphviz_dot_executable_extension_factory_raise_illegal_argument(

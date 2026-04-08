@@ -198,7 +198,8 @@ pub let layered_options_layering_strategy : @graph.IProperty[String] = @graph.ne
 pub let layered_options_layering_coffman_graham_layer_bound : @graph.IProperty[
   Int,
 ] = @graph.new_property(
-  "org.eclipse.elk.layered.layering.coffmanGraham.layerBound", @int.max_value,
+  "org.eclipse.elk.layered.layering.coffmanGraham.layerBound",
+  @int.MAX_VALUE,
 )
 
 ///|
@@ -623,9 +624,7 @@ pub fn layered_options_parse_int_list(value : String) -> Array[Int] {
     if token.is_empty() {
       continue
     }
-    let parsed : Result[Int, @strconv.StrConvError] = try? @strconv.parse_int(
-      token,
-    )
+    let parsed : Result[Int, Error] = try? @string.parse_int(token)
     match parsed {
       Ok(v) => result.push(v)
       Err(_) => ()

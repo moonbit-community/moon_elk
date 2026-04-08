@@ -4,7 +4,7 @@ pub(all) enum LayoutSetupObject {
   DiagramPartObject(ServiceDiagramElement)
   SelectionObject(Array[ServiceDiagramElement])
   OtherObject
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub(all) struct ILayoutSetup {

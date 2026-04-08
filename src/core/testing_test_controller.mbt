@@ -4,7 +4,7 @@ let next_layout_execution_listener_id_ref : Ref[Int] = Ref::new(0)
 ///|
 priv suberror TestControllerException {
   TestControllerException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn test_controller_raise_unit(

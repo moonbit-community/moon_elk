@@ -351,10 +351,10 @@ fn new_dis_co_paint_polygon(
   let coords = element.get_coords()
   let component_offset = dis_co_graph_renderer_element_offset_or_zero(element)
 
-  let mut min_x = @int.max_value
-  let mut min_y = @int.max_value
-  let mut max_x = -@int.max_value
-  let mut max_y = -@int.max_value
+  let mut min_x = @int.MAX_VALUE
+  let mut min_y = @int.MAX_VALUE
+  let mut max_x = -@int.MAX_VALUE
+  let mut max_y = -@int.MAX_VALUE
 
   let len = coords.length()
   let rounded : Array[Int] = []

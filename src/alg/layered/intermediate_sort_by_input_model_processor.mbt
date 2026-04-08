@@ -91,7 +91,7 @@ pub fn sort_by_input_model_processor_long_edge_target_node_preprocessing(
     match target_node {
       Some(target) => {
         let target_handle = target.get_handle()
-        let mut previous_order = @int.max_value
+        let mut previous_order = @int.MAX_VALUE
         match target_node_model_order.get(target_handle) {
           Some(value) => previous_order = value
           None => ()

@@ -3,6 +3,7 @@ package "Milky2018/moon_elk/graph/json"
 
 import {
   "Milky2018/moon_elk/core",
+  "moonbitlang/core/debug",
 }
 
 // Values
@@ -33,11 +34,9 @@ pub fn new_json_importer() -> JsonImporter
 // Errors
 pub suberror JsonImportException {
   JsonImportException(String?, String?)
-}
+} derive(ToJson, @debug.Debug)
 pub fn JsonImportException::get_cause(Self) -> String?
 pub fn JsonImportException::get_message(Self) -> String?
-pub impl Show for JsonImportException
-pub impl ToJson for JsonImportException
 
 // Types and methods
 pub struct ElkGraphJsonExportBuilder {

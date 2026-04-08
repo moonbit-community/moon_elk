@@ -13,7 +13,7 @@ pub let core_debug_pref_debug_execution_time : String = "org.eclipse.elk.core.de
 ///|
 priv suberror CoreDebugFoundationException {
   CoreDebugFoundationException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn core_debug_foundation_raise_unit(

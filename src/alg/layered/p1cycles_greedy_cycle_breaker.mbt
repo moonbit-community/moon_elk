@@ -14,7 +14,7 @@ priv struct GreedyCycleBreakerState {
 ///|
 pub(all) suberror GreedyCycleBreakerException {
   UnsupportedGraphException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] greedy_cycle_breaker_raise_unsupported_graph(
@@ -158,7 +158,7 @@ fn greedy_cycle_breaker_collect_and_mark(
     }
 
     if unprocessed_node_count > 0 {
-      let mut max_outflow = -@int.max_value
+      let mut max_outflow = -@int.MAX_VALUE
       greedy_cycle_breaker_array_clear(max_nodes)
 
       for node in nodes {
@@ -264,7 +264,7 @@ fn greedy_cycle_breaker_process_with_chooser(
     let seed_value = layered_graph.get_property_int(@core.random_seed)
     if seed_value == 0 {
       new_greedy_switch_mock_random_seeded(
-        @random.Rand::new().int(limit=@int.max_value),
+        @random.Rand::new().int(limit=@int.MAX_VALUE),
       )
     } else {
       new_greedy_switch_mock_random_seeded(seed_value)

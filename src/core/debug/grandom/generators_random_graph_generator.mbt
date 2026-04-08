@@ -12,7 +12,7 @@ let core_debug_grandom_hypernode_property : @graph.IProperty[Bool] = @graph.new_
 ///|
 priv suberror CoreDebugGrandomGeneratorException {
   CoreDebugGrandomGeneratorException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn core_debug_grandom_generator_raise_unit(

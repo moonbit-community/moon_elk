@@ -42,7 +42,12 @@ pub(all) enum GraphJsonTextPropertyValue {
   GraphJsonTextNumberValue(Double)
   GraphJsonTextBooleanValue(Bool)
   GraphJsonTextProxyValue(String)
-} derive(Show)
+} derive(Debug)
+
+///|
+pub impl Show for GraphJsonTextPropertyValue with output(self, logger) {
+  logger.write_string(to_repr(self).to_string())
+}
 
 ///|
 pub fn graph_json_text_property_value_to_string(
@@ -107,7 +112,12 @@ pub fn new_graph_json_text_validation_issue(
 pub(all) enum GraphJsonTextListTransient {
   GraphJsonTextListTransientYes
   GraphJsonTextListTransientNo
-} derive(Show)
+} derive(Debug)
+
+///|
+pub impl Show for GraphJsonTextListTransient with output(self, logger) {
+  logger.write_string(to_repr(self).to_string())
+}
 
 ///|
 pub(all) enum GraphJsonTextElement {

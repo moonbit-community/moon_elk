@@ -13,7 +13,12 @@ pub(all) enum LayoutMappingStatus {
   WarningStatus(String)
   ErrorStatus(String)
   CanceledStatus
-} derive(Eq, Show)
+} derive(Eq, Debug)
+
+///|
+pub impl Show for LayoutMappingStatus with output(self, logger) {
+  logger.write_string(to_repr(self).to_string())
+}
 
 ///|
 pub(all) struct LayoutMapping {

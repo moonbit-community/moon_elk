@@ -59,9 +59,7 @@ fn core_debug_grandom_ide_parser_parse_int(
   if token.token_type != core_debug_grandom_ide_rule_int {
     return None
   }
-  let parsed : Result[Int, @strconv.StrConvError] = try? @strconv.parse_int(
-    token.lexeme,
-  )
+  let parsed : Result[Int, Error] = try? @string.parse_int(token.lexeme)
   match parsed {
     Ok(value) => Some(value)
     Err(_) => None
@@ -82,9 +80,7 @@ fn core_debug_grandom_ide_parser_parse_double_at(
       tokens[start + 1].lexeme == "." &&
       tokens[start + 2].token_type == core_debug_grandom_ide_rule_int {
       let joined = first.lexeme + "." + tokens[start + 2].lexeme
-      let parsed : Result[Double, @strconv.StrConvError] = try? @strconv.parse_double(
-        joined,
-      )
+      let parsed : Result[Double, Error] = try? @string.parse_double(joined)
       match parsed {
         Ok(value) => return Some((value, 3))
         Err(_) => ()
@@ -97,7 +93,7 @@ fn core_debug_grandom_ide_parser_parse_double_at(
     }
   } else if first.token_type == core_debug_grandom_ide_rule_string ||
     first.token_type == core_debug_grandom_ide_rule_id {
-    let parsed : Result[Double, @strconv.StrConvError] = try? @strconv.parse_double(
+    let parsed : Result[Double, Error] = try? @string.parse_double(
       core_debug_grandom_ide_parser_strip_quotes(first.lexeme),
     )
     match parsed {

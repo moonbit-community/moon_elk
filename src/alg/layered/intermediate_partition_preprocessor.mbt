@@ -4,7 +4,7 @@ let partition_preprocessor_partition_constraint_edge_priority : Int = 1000
 ///|
 priv suberror PartitionPreprocessorException {
   PartitionPreprocessorException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] partition_preprocessor_raise(

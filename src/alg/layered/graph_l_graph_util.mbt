@@ -28,7 +28,7 @@ pub fn to_port_array(ports : Array[LPort]) -> Array[LPort] {
 ///|
 pub(all) suberror LGraphUtilException {
   IllegalStateException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] l_graph_util_raise_illegal_state(
@@ -508,7 +508,7 @@ pub fn compute_graph_properties(layered_graph : LGraph) -> Unit {
 
 ///|
 pub fn get_minimal_model_order(graph : LGraph) -> Int {
-  let mut order = @int.max_value
+  let mut order = @int.MAX_VALUE
   for node in graph.get_layerless_nodes() {
     if node.has_property_int(internal_properties_model_order) {
       order = @cmp.minimum(

@@ -10,8 +10,8 @@ pub fn topdown_size_approximator_util_get_size_category_multiplier(
   )
 
   if @graph.node_parent(original_graph) is Some(parent) {
-    let mut size_min_found = @int.max_value
-    let mut size_max_found = @int.min_value
+    let mut size_min_found = @int.MAX_VALUE
+    let mut size_max_found = @int.MIN_VALUE
 
     for child in @graph.node_children(parent) {
       let size = topdown_size_approximator_util_get_graph_size(child)

@@ -65,12 +65,12 @@ fn bfs_node_order_target_model_order(
     Some(port) =>
       match port.get_node() {
         Some(node) => node
-        None => return @int.max_value - model_order_map_size
+        None => return @int.MAX_VALUE - model_order_map_size
       }
-    None => return @int.max_value - model_order_map_size
+    None => return @int.MAX_VALUE - model_order_map_size
   }
   if !target.has_property_int(internal_properties_model_order) {
-    return @int.max_value - model_order_map_size
+    return @int.MAX_VALUE - model_order_map_size
   }
 
   if group_model_order {

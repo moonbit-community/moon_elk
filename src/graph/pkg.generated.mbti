@@ -2,6 +2,7 @@
 package "Milky2018/moon_elk/graph"
 
 import {
+  "moonbitlang/core/debug",
   "moonbitlang/core/json",
 }
 
@@ -427,9 +428,8 @@ pub(all) suberror ElkGraphUtilException {
   NullPointerException(String)
   IllegalArgumentException(String)
   IllegalStateException(String)
-}
+} derive(ToJson, @debug.Debug)
 pub impl Show for ElkGraphUtilException
-pub impl ToJson for ElkGraphUtilException
 
 // Types and methods
 #alias(ElkBendPointImpl)

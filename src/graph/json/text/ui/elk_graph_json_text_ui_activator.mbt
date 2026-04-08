@@ -6,7 +6,7 @@ pub struct ElkGraphJsonJsonTextUiActivator {
 ///|
 pub(all) suberror ElkGraphJsonTextUiActivatorException {
   IllegalArgumentException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] graph_json_text_ui_activator_raise_illegal_argument(

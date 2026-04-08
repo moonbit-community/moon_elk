@@ -4,6 +4,7 @@ package "Milky2018/moon_elk/graph/json/text"
 import {
   "Milky2018/moon_elk/core",
   "Milky2018/moon_elk/graph",
+  "moonbitlang/core/debug",
 }
 
 // Values
@@ -172,21 +173,15 @@ pub fn new_internal_elk_graph_json_parser(Array[ElkGraphJsonLexToken], grammar_a
 // Errors
 pub suberror ElkGraphJsonQualifiedNameConverterException {
   ElkGraphJsonQualifiedNameConverterException(String)
-}
-pub impl Show for ElkGraphJsonQualifiedNameConverterException
-pub impl ToJson for ElkGraphJsonQualifiedNameConverterException
+} derive(ToJson, @debug.Debug)
 
 pub suberror GraphJsonTextNumberValueConverterException {
   GraphJsonTextNumberValueConverterException(String)
-}
-pub impl Show for GraphJsonTextNumberValueConverterException
-pub impl ToJson for GraphJsonTextNumberValueConverterException
+} derive(ToJson, @debug.Debug)
 
 pub suberror GraphJsonTextPropertyKeyValueConverterException {
   GraphJsonTextPropertyKeyValueConverterException(String)
-}
-pub impl Show for GraphJsonTextPropertyKeyValueConverterException
-pub impl ToJson for GraphJsonTextPropertyKeyValueConverterException
+} derive(ToJson, @debug.Debug)
 
 // Types and methods
 pub struct AbstractElkGraphJsonRuntimeModule {
@@ -441,7 +436,7 @@ pub(all) enum GraphJsonTextLabelOwner {
 pub(all) enum GraphJsonTextListTransient {
   GraphJsonTextListTransientYes
   GraphJsonTextListTransientNo
-}
+} derive(@debug.Debug)
 pub impl Show for GraphJsonTextListTransient
 
 pub struct GraphJsonTextNumberValueConverter {
@@ -478,7 +473,7 @@ pub(all) enum GraphJsonTextPropertyValue {
   GraphJsonTextNumberValue(Double)
   GraphJsonTextBooleanValue(Bool)
   GraphJsonTextProxyValue(String)
-}
+} derive(@debug.Debug)
 pub impl Show for GraphJsonTextPropertyValue
 
 pub struct GraphJsonTextPropertyValueValueConverter {

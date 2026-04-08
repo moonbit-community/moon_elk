@@ -41,7 +41,7 @@ let longest_path_source_layerer_baseline_processing_configuration : @core.Layout
 ///|
 pub(all) suberror LongestPathSourceLayererException {
   UnsupportedGraphException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] longest_path_source_layerer_raise_unsupported_graph(

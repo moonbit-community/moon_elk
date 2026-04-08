@@ -7,7 +7,7 @@ pub type ResultsResourcePath = AbstractPropertyDependentResourcePath
 ///|
 pub suberror ResultsResourcePathException {
   ResultsResourcePathException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn results_resource_path_raise_unit(

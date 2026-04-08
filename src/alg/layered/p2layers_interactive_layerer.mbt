@@ -28,7 +28,7 @@ fn interactive_layerer_layer_constraint_postprocessor_factory() -> @core.ILayout
 ///|
 pub(all) suberror InteractiveLayererException {
   UnsupportedGraphException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] interactive_layerer_raise_unsupported_graph(

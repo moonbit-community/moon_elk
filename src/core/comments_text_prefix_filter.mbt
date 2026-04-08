@@ -1,7 +1,7 @@
 ///|
 pub suberror TextPrefixFilterException {
   TextPrefixFilterException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] text_prefix_filter_raise(

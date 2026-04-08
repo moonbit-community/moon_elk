@@ -26,7 +26,7 @@ let elk_graph_adapters_label_side_property : @graph.IProperty[String] = @graph.n
 ///|
 priv suberror ElkGraphAdaptersException {
   ElkGraphAdaptersException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn elk_graph_adapters_raise_unit(
@@ -46,7 +46,7 @@ fn elk_graph_adapters_exception_message(
 
 ///|
 fn elk_graph_adapters_parse_int(raw : String) -> Int? {
-  try @strconv.parse_int(raw.trim().to_string()) catch {
+  try @string.parse_int(raw.trim().to_string()) catch {
     _ => None
   } noraise {
     value => Some(value)
@@ -55,7 +55,7 @@ fn elk_graph_adapters_parse_int(raw : String) -> Int? {
 
 ///|
 fn elk_graph_adapters_parse_double(raw : String) -> Double? {
-  try @strconv.parse_double(raw.trim().to_string()) catch {
+  try @string.parse_double(raw.trim().to_string()) catch {
     _ => None
   } noraise {
     value => Some(value)

@@ -4,7 +4,7 @@ pub let core_meta_ui_status_error : Int = 4
 ///|
 priv suberror CoreMetaExecutableExtensionFactoryException {
   CoreMetaExecutableExtensionFactoryException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn core_meta_executable_extension_factory_raise_unit(

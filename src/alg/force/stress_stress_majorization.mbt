@@ -14,7 +14,7 @@ pub struct StressMajorization {
 ///|
 pub suberror StressMajorizationException {
   StressMajorizationException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] stress_majorization_raise(

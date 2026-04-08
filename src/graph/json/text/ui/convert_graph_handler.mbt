@@ -2,7 +2,7 @@
 pub(all) enum GraphJsonTextSelectionItem {
   GraphJsonTextSelectionFile(String, String)
   GraphJsonTextSelectionOther
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub let graph_json_text_target_ext_elkj : String = "elkj"

@@ -41,7 +41,7 @@ let coffman_graham_layerer_baseline_processing_configuration : @core.LayoutProce
 ///|
 pub(all) suberror CoffmanGrahamLayererException {
   UnsupportedGraphException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] coffman_graham_layerer_raise_unsupported_graph(

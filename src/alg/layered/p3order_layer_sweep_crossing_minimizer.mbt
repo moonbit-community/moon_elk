@@ -13,7 +13,7 @@ fn layer_sweep_cross_min_type_to_string(
 ///|
 priv suberror LayerSweepCrossingMinimizerException {
   IllegalStateException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] layer_sweep_crossing_minimizer_raise_illegal_state(
@@ -958,7 +958,7 @@ fn LayerSweepCrossingMinimizer::compare_different_randomized_layouts(
       .set_property_bool(internal_properties_first_try_with_initial_order, true)
     }
 
-    let mut best_crossings = @int.max_value
+    let mut best_crossings = @int.MAX_VALUE
     for _ in 0..<thoroughness {
       let crossings = self.minimize_crossings_with_counter(graph_data)
       if crossings < best_crossings {
@@ -1035,7 +1035,7 @@ fn LayerSweepCrossingMinimizer::initialize(
     let seed_value = root_graph.get_property_int(@core.random_seed)
     self.random = if seed_value == 0 {
       new_greedy_switch_mock_random_seeded(
-        @random.Rand::new().int(limit=@int.max_value),
+        @random.Rand::new().int(limit=@int.MAX_VALUE),
       )
     } else {
       new_greedy_switch_mock_random_seeded(seed_value)

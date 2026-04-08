@@ -8,7 +8,7 @@ pub enum RadialCompactionStrategy {
 ///|
 pub(all) suberror RadialCompactionStrategyException {
   IllegalArgumentException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] radial_compaction_strategy_raise_illegal_argument(

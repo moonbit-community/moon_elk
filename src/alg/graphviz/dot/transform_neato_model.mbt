@@ -8,7 +8,7 @@ pub enum NeatoModel {
 ///|
 pub(all) suberror NeatoModelException {
   IllegalArgumentException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] neato_model_raise_illegal_argument(

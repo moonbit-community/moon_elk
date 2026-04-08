@@ -1,7 +1,7 @@
 ///|
 priv suberror NorthSouthPortPostprocessorException {
   UnsupportedGraphException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] north_south_port_postprocessor_raise_unsupported_graph(

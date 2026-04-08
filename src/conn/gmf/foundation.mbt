@@ -7,7 +7,7 @@ pub(all) enum GmfFigureKind {
   BorderedNodeFigure
   BorderItemContainer
   ConnectionFigure
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 pub(all) enum GmfEditPartKind {
@@ -23,26 +23,26 @@ pub(all) enum GmfEditPartKind {
   ConnectionEditPart
   LabelEditPart
   NoteEditPart
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 pub(all) enum GmfOperation {
   LayoutNodeOperation
   CreateEditPoliciesOperation
   Other(String)
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 pub struct GmfPoint {
   x : Int
   y : Int
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 pub struct GmfDimension {
   width : Int
   height : Int
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 pub struct GmfInsets {
@@ -50,7 +50,7 @@ pub struct GmfInsets {
   right : Int
   bottom : Int
   left : Int
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 pub struct GmfRectangle {
@@ -58,12 +58,12 @@ pub struct GmfRectangle {
   y : Int
   width : Int
   height : Int
-} derive(Eq, Show)
+} derive(Eq, Debug)
 
 ///|
 pub struct GmfPointList {
   points : Array[GmfPoint]
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub fn new_gmf_point(x : Int, y : Int) -> GmfPoint {
@@ -233,7 +233,7 @@ pub struct GmfLayoutElementShape {
   y : Double
   width : Double
   height : Double
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub struct GmfLayoutElementEdge {
@@ -241,7 +241,7 @@ pub struct GmfLayoutElementEdge {
   source_terminal : String?
   target_terminal : String?
   junction_points : String?
-} derive(Show)
+} derive(Debug)
 
 ///|
 let gmf_layout_element_shape_store_ref : Ref[Map[Int, GmfLayoutElementShape]] = Ref::new({},
@@ -1014,14 +1014,14 @@ pub enum GmfDiagramPart {
   NoPart
   Single(GmfEditPart)
   Multiple(Array[GmfEditPart])
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub struct GmfLayoutInvocation {
   diagram_part : GmfDiagramPart
   progress_dialog : Bool
   zoom_to_fit : Bool
-} derive(Show)
+} derive(Debug)
 
 ///|
 let gmf_last_layout_invocation_ref : Ref[GmfLayoutInvocation?] = Ref::new(None)

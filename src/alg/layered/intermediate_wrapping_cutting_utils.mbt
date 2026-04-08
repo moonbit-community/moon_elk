@@ -1,7 +1,7 @@
 ///|
 suberror CuttingUtilsException {
   CuttingUtilsException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] cutting_utils_raise(message : String) -> T raise CuttingUtilsException {

@@ -78,7 +78,7 @@ test "ElkMath testPathIntersects" {
 test "ElkMath testFactl" {
   assert_eq(factl(0), Int64::from_int(1))
   assert_eq(factl(1), Int64::from_int(1))
-  let expected_20 = try @strconv.parse_int64("2432902008176640000") catch {
+  let expected_20 = try @string.parse_int64("2432902008176640000") catch {
     _ => abort("failed to parse int64 literal")
   } noraise {
     value => value

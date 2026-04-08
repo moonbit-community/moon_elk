@@ -64,7 +64,12 @@ let nedge_store : Ref[Array[NEdgeData]] = Ref::new([])
 ///|
 pub(all) suberror NetworkSimplexException {
   NetworkSimplexException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
+
+///|
+pub impl Show for NetworkSimplexException with output(self, logger) {
+  logger.write_string(to_repr(self).to_string())
+}
 
 ///|
 fn new_network_simplex_exception(message : String) -> NetworkSimplexException {

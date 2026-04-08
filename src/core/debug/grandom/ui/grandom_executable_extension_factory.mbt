@@ -4,7 +4,7 @@ pub let core_debug_grandom_ui_status_error : Int = 4
 ///|
 priv suberror CoreDebugGrandomExecutableExtensionFactoryException {
   CoreDebugGrandomExecutableExtensionFactoryException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn core_debug_grandom_executable_extension_factory_raise_unit(

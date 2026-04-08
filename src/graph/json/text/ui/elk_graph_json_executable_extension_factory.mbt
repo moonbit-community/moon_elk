@@ -39,7 +39,7 @@ pub fn GraphJsonTextUiCoreException::get_status(
 ///|
 pub suberror GraphJsonTextExecutableExtensionFactoryException {
   IllegalArgumentException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] graph_json_text_executable_extension_factory_raise_illegal_argument(

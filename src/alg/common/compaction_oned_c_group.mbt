@@ -6,7 +6,7 @@ pub struct CGroup {
 ///|
 pub suberror CGroupException {
   CGroupException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn c_group_raise_unit(message : String) -> Unit raise CGroupException {

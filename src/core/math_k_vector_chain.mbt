@@ -1,7 +1,7 @@
 ///|
 priv suberror KVectorChainException {
   KVectorChainException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] kvector_chain_raise(message : String) -> T raise KVectorChainException {

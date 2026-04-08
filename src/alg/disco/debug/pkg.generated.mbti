@@ -274,9 +274,7 @@ pub fn selective_paint_toggle_action_run(SelectivePaintToggleAction) -> Unit
 // Errors
 pub suberror DisCoGraphRenderingCanvasException {
   DisCoGraphRenderingCanvasException(String)
-}
-pub impl Show for DisCoGraphRenderingCanvasException
-pub impl ToJson for DisCoGraphRenderingCanvasException
+} derive(ToJson, @moonbitlang/core/debug.Debug)
 
 // Types and methods
 pub enum BaseGridVisibility {
@@ -302,8 +300,7 @@ pub struct DisCoDebugColor {
 
 pub struct DisCoDebugDisplay {
   id : Int
-}
-pub impl Eq for DisCoDebugDisplay
+} derive(Eq)
 
 pub struct DisCoDebugFont {
   display : DisCoDebugDisplay

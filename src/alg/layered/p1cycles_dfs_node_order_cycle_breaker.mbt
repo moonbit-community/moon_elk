@@ -9,7 +9,7 @@ priv struct DfsNodeOrderCycleBreakerState {
 ///|
 pub(all) suberror DfsNodeOrderCycleBreakerException {
   UnsupportedGraphException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] dfs_node_order_cycle_breaker_raise_unsupported_graph(
@@ -84,7 +84,7 @@ fn dfs_node_order_cycle_breaker_target_model_order(
 ) -> Int raise DfsNodeOrderCycleBreakerException {
   let target = dfs_node_order_cycle_breaker_require_target_node(edge)
   if !target.has_property_int(internal_properties_model_order) {
-    return @int.max_value - model_order_map_size
+    return @int.MAX_VALUE - model_order_map_size
   }
 
   if group_model_order {

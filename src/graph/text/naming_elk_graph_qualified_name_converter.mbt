@@ -9,7 +9,7 @@ pub struct ElkGraphQualifiedNameConverter {
 ///|
 pub suberror ElkGraphQualifiedNameConverterException {
   ElkGraphQualifiedNameConverterException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn elk_graph_qualified_name_converter_raise_unit(

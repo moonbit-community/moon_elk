@@ -45,7 +45,7 @@ pub struct LibavoidServerCommunicator {
 ///|
 pub suberror LibavoidCommunicatorException {
   LibavoidCommunicatorException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] libavoid_communicator_raise(
@@ -157,9 +157,7 @@ fn libavoid_communicator_process_timeout_of(
     Some(value) => value
     None => libavoid_option_process_timeout.get_default().to_string()
   }
-  let parsed : Result[Int, @strconv.StrConvError] = try? @strconv.parse_int(
-    timeout_text,
-  )
+  let parsed : Result[Int, Error] = try? @string.parse_int(timeout_text)
   match parsed {
     Ok(value) => value
     Err(_) => libavoid_option_process_timeout.get_default()
@@ -276,9 +274,7 @@ fn libavoid_communicator_edge_id_from_key(key : String) -> Int? {
   if tokens.length() < 2 {
     return None
   }
-  let parsed : Result[Int, @strconv.StrConvError] = try? @strconv.parse_int(
-    tokens[1],
-  )
+  let parsed : Result[Int, Error] = try? @string.parse_int(tokens[1])
   match parsed {
     Ok(value) => Some(value)
     Err(_) => None
@@ -287,9 +283,7 @@ fn libavoid_communicator_edge_id_from_key(key : String) -> Int? {
 
 ///|
 fn libavoid_communicator_parse_double_or_zero(value : String) -> Double {
-  let parsed : Result[Double, @strconv.StrConvError] = try? @strconv.parse_double(
-    value,
-  )
+  let parsed : Result[Double, Error] = try? @string.parse_double(value)
   match parsed {
     Ok(number) => number
     Err(_) => 0.0

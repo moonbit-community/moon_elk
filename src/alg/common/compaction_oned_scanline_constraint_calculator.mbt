@@ -7,7 +7,7 @@ priv struct ScanlineTimestamp {
 ///|
 pub suberror ScanlineConstraintCalculatorException {
   ScanlineConstraintCalculatorException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn scanline_constraint_calculator_raise_unit(

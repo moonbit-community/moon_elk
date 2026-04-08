@@ -8,7 +8,7 @@ let self_loop_holder_visited : Int = 1
 pub(all) suberror SelfLoopHolderException {
   UnsupportedConfigurationException(String)
   IllegalStateException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 pub fn self_loop_holder_exception_message(

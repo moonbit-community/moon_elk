@@ -7,7 +7,7 @@ pub let core_meta_ui_extension_factory_guicekey : String = "guicekey"
 ///|
 priv suberror CoreMetaUiException {
   CoreMetaUiException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn core_meta_ui_raise_unit(message : String) -> Unit raise CoreMetaUiException {

@@ -7,7 +7,7 @@ pub let graphviz_dot_plugin_id : String = "org.eclipse.elk.alg.graphviz.dot"
 ///|
 pub suberror GraphvizDotActivatorException {
   IllegalArgumentException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] graphviz_dot_activator_raise_illegal_argument(

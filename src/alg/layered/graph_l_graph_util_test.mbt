@@ -432,7 +432,7 @@ test "compute_graph_properties follows LGraphUtil reference rules" {
 test "get_minimal_model_order returns max_value or minimum assigned order" {
   let empty_graph = new_l_graph()
   inspect(
-    get_minimal_model_order(empty_graph) == @int.max_value,
+    get_minimal_model_order(empty_graph) == @int.MAX_VALUE,
     content="true",
   )
 

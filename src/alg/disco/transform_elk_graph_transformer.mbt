@@ -37,7 +37,7 @@ fn disco_transform_parse_double_or_default(
   if trimmed.is_empty() {
     return default_value
   }
-  try @strconv.parse_double(trimmed) catch {
+  try @string.parse_double(trimmed) catch {
     _ => default_value
   } noraise {
     value => value

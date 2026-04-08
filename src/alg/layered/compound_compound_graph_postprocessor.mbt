@@ -16,7 +16,7 @@ let compound_graph_postprocessor_internal_properties_target_offset : @graph.IPro
 ///|
 priv suberror CompoundGraphPostprocessorException {
   UnsupportedGraphException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] compound_graph_postprocessor_raise_unsupported_graph(

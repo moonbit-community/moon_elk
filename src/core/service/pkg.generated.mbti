@@ -3,6 +3,7 @@ package "Milky2018/moon_elk/core/service"
 
 import {
   "Milky2018/moon_elk/core",
+  "moonbitlang/core/debug",
 }
 
 // Values
@@ -257,8 +258,7 @@ pub(all) enum LayoutMappingStatus {
   WarningStatus(String)
   ErrorStatus(String)
   CanceledStatus
-}
-pub impl Eq for LayoutMappingStatus
+} derive(Eq, @debug.Debug)
 pub impl Show for LayoutMappingStatus
 
 type LayoutSetupEntry
@@ -268,8 +268,7 @@ pub(all) enum LayoutSetupObject {
   DiagramPartObject(Int)
   SelectionObject(Array[Int])
   OtherObject
-}
-pub impl Show for LayoutSetupObject
+} derive(@debug.Debug)
 
 pub(all) struct MonitoredOperation {
   mut timestamp : Int
@@ -292,8 +291,7 @@ pub(all) enum MonitoredOperationStatus {
   OperationWarning
   OperationError
   OperationCanceled
-}
-pub impl Eq for MonitoredOperationStatus
+} derive(Eq, @debug.Debug)
 pub impl Show for MonitoredOperationStatus
 
 pub(all) struct ProgressMonitorAdapter {

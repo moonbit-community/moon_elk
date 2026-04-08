@@ -4,7 +4,12 @@ pub(all) enum MonitoredOperationStatus {
   OperationWarning
   OperationError
   OperationCanceled
-} derive(Eq, Show)
+} derive(Eq, Debug)
+
+///|
+pub impl Show for MonitoredOperationStatus with output(self, logger) {
+  logger.write_string(to_repr(self).to_string())
+}
 
 ///|
 pub fn monitored_operation_status_ok() -> MonitoredOperationStatus {

@@ -5,7 +5,7 @@ pub(all) enum GmfLayoutSetupObject {
   AdaptableWithDiagramEditor
   Collection(Array[GmfLayoutSetupObject])
   Other
-} derive(Show)
+} derive(Debug)
 
 ///|
 pub struct GmfInjector {

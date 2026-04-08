@@ -28,7 +28,7 @@ let network_simplex_junction : Int = 2
 ///|
 pub suberror NetworkSimplexPlacerException {
   NetworkSimplexPlacerException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] network_simplex_placer_raise(

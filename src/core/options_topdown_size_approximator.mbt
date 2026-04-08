@@ -1,7 +1,7 @@
 ///|
 priv suberror TopdownSizeApproximatorException {
   TopdownSizeApproximatorException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] topdown_size_approximator_raise(

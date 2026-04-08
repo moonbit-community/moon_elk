@@ -256,9 +256,7 @@ pub fn node_set_int_property(
 
 ///|
 fn parse_int_property_text(value : String) -> Int? {
-  let parsed : Result[Int, @strconv.StrConvError] = try? @strconv.parse_int(
-    value.trim(),
-  )
+  let parsed : Result[Int, Error] = try? @string.parse_int(value.trim())
   match parsed {
     Ok(result) => Some(result)
     Err(_) => None
@@ -267,9 +265,7 @@ fn parse_int_property_text(value : String) -> Int? {
 
 ///|
 fn parse_double_property_text(value : String) -> Double? {
-  let parsed : Result[Double, @strconv.StrConvError] = try? @strconv.parse_double(
-    value.trim(),
-  )
+  let parsed : Result[Double, Error] = try? @string.parse_double(value.trim())
   match parsed {
     Ok(result) => Some(result)
     Err(_) => None

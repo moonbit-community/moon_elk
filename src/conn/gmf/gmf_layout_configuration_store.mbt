@@ -11,7 +11,12 @@ pub enum GmfLayoutOptionTarget {
   Parents
   Edges
   Labels
-} derive(Eq, Show)
+} derive(Eq, Debug)
+
+///|
+pub impl Show for GmfLayoutOptionTarget with output(self, logger) {
+  logger.write_string(to_repr(self).to_string())
+}
 
 ///|
 pub struct GmfLayoutConfigurationStoreProvider {

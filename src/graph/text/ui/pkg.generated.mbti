@@ -5,6 +5,7 @@ import {
   "Milky2018/moon_elk/core",
   "Milky2018/moon_elk/graph/text",
   "Milky2018/moon_elk/graph/text/ide",
+  "moonbitlang/core/debug",
 }
 
 // Values
@@ -93,22 +94,16 @@ pub fn text_activator_reset_for_test() -> Unit
 // Errors
 pub(all) suberror ElkGraphTextUiActivatorException {
   IllegalArgumentException(String)
-}
-pub impl Show for ElkGraphTextUiActivatorException
-pub impl ToJson for ElkGraphTextUiActivatorException
+} derive(ToJson, @debug.Debug)
 
 pub suberror GraphTextActivatorException {
   IllegalArgumentException(String)
   RuntimeException(String)
-}
-pub impl Show for GraphTextActivatorException
-pub impl ToJson for GraphTextActivatorException
+} derive(ToJson, @debug.Debug)
 
 pub suberror GraphTextExecutableExtensionFactoryException {
   IllegalArgumentException(String)
-}
-pub impl Show for GraphTextExecutableExtensionFactoryException
-pub impl ToJson for GraphTextExecutableExtensionFactoryException
+} derive(ToJson, @debug.Debug)
 
 // Types and methods
 pub struct AbstractElkGraphProposalProvider {
@@ -346,8 +341,7 @@ pub fn GraphTextProject::write_file(Self, String, String) -> Unit
 pub(all) enum GraphTextSelectionItem {
   GraphTextSelectionFile(String, String)
   GraphTextSelectionOther
-}
-pub impl Show for GraphTextSelectionItem
+} derive(@debug.Debug)
 
 pub struct GraphTextUiBundle {
   symbolic_name : String

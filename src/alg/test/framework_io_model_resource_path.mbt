@@ -7,7 +7,7 @@ pub type ModelResourcePath = AbstractPropertyDependentResourcePath
 ///|
 pub suberror ModelResourcePathException {
   ModelResourcePathException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn model_resource_path_raise_unit(

@@ -1,7 +1,7 @@
 ///|
 pub suberror SweepCopyException {
   SweepCopyException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] sweep_copy_raise(message : String) -> T raise SweepCopyException {

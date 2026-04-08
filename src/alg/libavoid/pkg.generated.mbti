@@ -5,6 +5,7 @@ import {
   "Milky2018/moon_elk/alg/graphviz/layouter",
   "Milky2018/moon_elk/core",
   "Milky2018/moon_elk/graph",
+  "moonbitlang/core/debug",
 }
 
 // Values
@@ -105,15 +106,11 @@ pub fn new_libavoid_server_pool() -> LibavoidServerPool
 // Errors
 pub suberror LibavoidCommunicatorException {
   LibavoidCommunicatorException(String)
-}
-pub impl Show for LibavoidCommunicatorException
-pub impl ToJson for LibavoidCommunicatorException
+} derive(ToJson, @debug.Debug)
 
 pub suberror LibavoidServerStateException {
   LibavoidServerStateException(String)
-}
-pub impl Show for LibavoidServerStateException
-pub impl ToJson for LibavoidServerStateException
+} derive(ToJson, @debug.Debug)
 
 // Types and methods
 pub struct LibavoidBundle {

@@ -13,7 +13,7 @@ pub struct OneDimensionalCompactor {
 pub(all) suberror OneDimensionalCompactorException {
   IllegalStateException(String)
   IllegalArgumentException(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn[T] one_dimensional_compactor_raise_illegal_state(

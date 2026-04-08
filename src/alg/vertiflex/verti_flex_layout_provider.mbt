@@ -10,7 +10,7 @@ pub struct VertiFlexLayoutProvider {
 ///|
 priv suberror VertiFlexLayoutProviderException {
   UnsupportedConfiguration(String)
-} derive(Show, ToJson)
+} derive(Debug, ToJson)
 
 ///|
 fn vertiflex_raise_unsupported_configuration(
