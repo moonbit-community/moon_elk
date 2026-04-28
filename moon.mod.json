@@ -4,7 +4,7 @@
   "source": "src",
   "readme": "README.mbt.md",
   "repository": "https://github.com/moonbit-community/moon_elk.git",
-  "license": "Apache-2.0",
+  "license": "EPL-2.0",
   "keywords": ["elk", "layout"],
   "description": "A MoonBit port of Eclipse Layout Kernel (ELK)."
 }
