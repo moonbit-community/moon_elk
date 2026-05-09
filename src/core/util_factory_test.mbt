@@ -1,6 +1,6 @@
 ///|
 test "DefaultFactory creates values and exposes IFactory adapter" {
-  let created = Ref::new(0)
+  let created = Ref(0)
   let default_factory = new_default_factory(() => {
     created.val = created.val + 1
     created.val
@@ -22,8 +22,8 @@ test "DefaultFactory creates values and exposes IFactory adapter" {
 
 ///|
 test "AlgorithmFactory forwards initialize parameter and dispose" {
-  let initialized = Ref::new("")
-  let disposed = Ref::new(false)
+  let initialized = Ref("")
+  let disposed = Ref(false)
 
   let algorithm_factory = new_algorithm_factory(
     () => {
@@ -51,7 +51,7 @@ test "AlgorithmFactory forwards initialize parameter and dispose" {
 
 ///|
 test "AlgorithmFactory defaults to None parameter" {
-  let initialized_with_none = Ref::new(false)
+  let initialized_with_none = Ref(false)
   let algorithm_factory = new_algorithm_factory(() => {
     new_abstract_layout_provider((_, _) => (), initialize_fn=parameter => {
       if parameter is None {

@@ -2,7 +2,7 @@
 pub type FEdge = Int
 
 ///|
-let fedge_store : Ref[Array[FEdgeData]] = Ref::new([])
+let fedge_store : Ref[Array[FEdgeData]] = Ref([])
 
 ///|
 priv struct FEdgeData {

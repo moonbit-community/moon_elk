@@ -1,12 +1,12 @@
 ///|
-let core_ui_layout_preference_page_debug_folder_ref : Ref[String] = Ref::new("")
+let core_ui_layout_preference_page_debug_folder_ref : Ref[String] = Ref("")
 
 ///|
-let core_ui_layout_preference_page_existing_paths_ref : Ref[Map[String, Bool]] = Ref::new({},
+let core_ui_layout_preference_page_existing_paths_ref : Ref[Map[String, Bool]] = Ref({},
 )
 
 ///|
-let core_ui_layout_preference_page_launched_paths_ref : Ref[Array[String]] = Ref::new([],
+let core_ui_layout_preference_page_launched_paths_ref : Ref[Array[String]] = Ref([],
 )
 
 ///|

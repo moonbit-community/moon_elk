@@ -10,7 +10,7 @@ priv struct FBendpointData {
 }
 
 ///|
-let fbendpoint_store : Ref[Array[FBendpointData]] = Ref::new([])
+let fbendpoint_store : Ref[Array[FBendpointData]] = Ref([])
 
 ///|
 fn checked_fbendpoint(bendpoint : FBendpoint) -> Unit {

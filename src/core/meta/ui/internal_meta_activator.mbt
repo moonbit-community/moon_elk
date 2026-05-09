@@ -188,7 +188,7 @@ pub(all) struct MetaActivator {
 }
 
 ///|
-let core_meta_activator_instance_ref : Ref[MetaActivator?] = Ref::new(None)
+let core_meta_activator_instance_ref : Ref[MetaActivator?] = Ref(None)
 
 ///|
 pub fn new_meta_activator() -> MetaActivator {

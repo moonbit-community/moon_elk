@@ -33,7 +33,7 @@ fn vertical_segment_represented_edges_to_string(
 }
 
 ///|
-let vertical_segment_next_id_ref : Ref[Int] = Ref::new(0)
+let vertical_segment_next_id_ref : Ref[Int] = Ref(0)
 
 ///|
 fn vertical_segment_next_id() -> Int {

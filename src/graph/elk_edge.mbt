@@ -13,7 +13,7 @@ priv struct EdgeData {
 }
 
 ///|
-let edge_store : Ref[Array[EdgeData]] = Ref::new([])
+let edge_store : Ref[Array[EdgeData]] = Ref([])
 
 ///|
 fn checked_edge(edge : ElkEdge) -> Unit {

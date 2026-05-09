@@ -42,7 +42,7 @@ priv struct LabelData {
 }
 
 ///|
-let label_store : Ref[Array[LabelData]] = Ref::new([])
+let label_store : Ref[Array[LabelData]] = Ref([])
 
 ///|
 fn checked_label(label : ElkLabel) -> Unit {

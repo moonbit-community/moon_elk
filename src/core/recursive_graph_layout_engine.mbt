@@ -4,7 +4,7 @@ pub type RecursiveGraphLayoutHandler = (@graph.ElkNode, IElkProgressMonitor) -> 
 ///|
 let recursive_graph_layout_engine_handlers : Ref[
   Map[String, RecursiveGraphLayoutHandler],
-] = Ref::new({})
+] = Ref({})
 
 ///|
 let recursive_graph_layout_engine_hierarchy_handling_property : @graph.IProperty[

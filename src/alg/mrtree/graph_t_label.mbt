@@ -10,7 +10,7 @@ priv struct MrtreeLabelData {
 }
 
 ///|
-let mrtree_label_store : Ref[Array[MrtreeLabelData]] = Ref::new([])
+let mrtree_label_store : Ref[Array[MrtreeLabelData]] = Ref([])
 
 ///|
 fn checked_mrtree_label(label : MrtreeLabel) -> Unit {

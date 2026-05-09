@@ -51,7 +51,7 @@ test "ExecutionInfo copies monitor debug folder when persistence is enabled" {
 test "ExecutionInfoModel add replace remove notifies listener" {
   execution_info_reset_for_test()
   let model = new_execution_info_model()
-  let count = Ref::new(0)
+  let count = Ref(0)
   let listener = new_execution_info_model_listener(() => {
     count.val = count.val + 1
   })

@@ -23,7 +23,7 @@ priv struct NodeData {
 }
 
 ///|
-let node_store : Ref[Array[NodeData]] = Ref::new([])
+let node_store : Ref[Array[NodeData]] = Ref([])
 
 ///|
 fn checked_node(node : ElkNode) -> Unit {

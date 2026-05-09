@@ -1,5 +1,5 @@
 ///|
-let mrtree_compaction_levels : Ref[Array[@core.KVector]] = Ref::new([])
+let mrtree_compaction_levels : Ref[Array[@core.KVector]] = Ref([])
 
 ///|
 fn mrtree_compaction_projection(

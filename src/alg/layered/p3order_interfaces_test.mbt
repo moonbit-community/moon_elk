@@ -61,10 +61,10 @@ test "IInitializable traverses layers, nodes, ports, and edges in order" {
 
 ///|
 test "ICrossingMinimizationHeuristic delegates behavior and init hooks" {
-  let first_layer_order_calls : Ref[Int] = Ref::new(0)
-  let minimized_free_layer_index : Ref[Int] = Ref::new(-1)
-  let forward_sweep_seen : Ref[Bool] = Ref::new(false)
-  let first_sweep_seen : Ref[Bool] = Ref::new(false)
+  let first_layer_order_calls : Ref[Int] = Ref(0)
+  let minimized_free_layer_index : Ref[Int] = Ref(-1)
+  let forward_sweep_seen : Ref[Bool] = Ref(false)
+  let first_sweep_seen : Ref[Bool] = Ref(false)
   let init_events = []
 
   let heuristic = new_i_crossing_minimization_heuristic(

@@ -81,8 +81,8 @@ test "GraphvizDotRuntimeModule binds GraphvizDotSerializer" {
 
 ///|
 test "GraphvizDotSerializer configures formatter request" {
-  let max_width_ref : Ref[Int] = Ref::new(-1)
-  let undefined_only_ref : Ref[Bool] = Ref::new(false)
+  let max_width_ref : Ref[Int] = Ref(-1)
+  let undefined_only_ref : Ref[Bool] = Ref(false)
   let formatter_provider : () -> GraphvizDotFormatter2 = () => {
     graphviz_dot_runtime_test_formatter(max_width_ref, undefined_only_ref)
   }
@@ -210,7 +210,7 @@ test "GraphvizDotExecutableExtensionFactory resolves and initializes class" {
   graphviz_dot_activator_reset_for_test()
   let activator = new_graphviz_dot_activator()
   let extension_class_name = "example.GraphvizExtension"
-  let contributor_ref : Ref[String] = Ref::new("none")
+  let contributor_ref : Ref[String] = Ref("none")
 
   activator.register_bundle_class(extension_class_name)
   activator.register_injector_provider(

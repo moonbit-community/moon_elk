@@ -52,13 +52,13 @@ test "GraphvizLayoutProvider returns early for empty parent" {
   graphviz_tool_set_default_locations_for_test(["/usr/bin/"])
   graphviz_tool_set_executable_probe_for_test(path => path == "/usr/bin/dot")
 
-  let process_count : Ref[Int] = Ref::new(0)
+  let process_count : Ref[Int] = Ref(0)
   graphviz_tool_set_process_factory_for_test(_args => {
     process_count.val = process_count.val + 1
     Some(
       graphviz_layout_provider_test_process(
         graphviz_layout_provider_test_default_graph_bytes_for_test(),
-        Ref::new(0),
+        Ref(0),
       ),
     )
   })
@@ -81,9 +81,9 @@ test "GraphvizLayoutProvider runs pipeline and records debug streams" {
   graphviz_tool_set_default_locations_for_test(["/usr/bin/"])
   graphviz_tool_set_executable_probe_for_test(path => path == "/usr/bin/dot")
 
-  let destroyed_ref : Ref[Int] = Ref::new(0)
-  let parse_input_ref : Ref[Array[Int]] = Ref::new([])
-  let serialized_ref : Ref[Array[Int]] = Ref::new([])
+  let destroyed_ref : Ref[Int] = Ref(0)
+  let parse_input_ref : Ref[Array[Int]] = Ref([])
+  let serialized_ref : Ref[Array[Int]] = Ref([])
   let parser_model = graphviz_layout_provider_test_model()
 
   graphviz_tool_set_process_factory_for_test(_args => {
@@ -136,7 +136,7 @@ test "GraphvizLayoutProvider honors reuse-process preference and dispose stops t
 
   graphviz_tool_set_default_locations_for_test(["/usr/bin/"])
   graphviz_tool_set_executable_probe_for_test(path => path == "/usr/bin/dot")
-  let destroyed_ref : Ref[Int] = Ref::new(0)
+  let destroyed_ref : Ref[Int] = Ref(0)
   graphviz_tool_set_process_factory_for_test(_args => {
     Some(
       graphviz_layout_provider_test_process(

@@ -117,7 +117,7 @@ fn spore_grow_tree_phase_process(
     @common.new_svg_image(None)
   }
 
-  let overlaps_existed : Ref[Bool] = Ref::new(false)
+  let overlaps_existed : Ref[Bool] = Ref(false)
   spore_grow_tree_grow_at(root, root, svg, overlaps_existed)
   graph.overlaps_existed = overlaps_existed.val
   monitor.done()

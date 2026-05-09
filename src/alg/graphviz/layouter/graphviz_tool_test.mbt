@@ -51,7 +51,7 @@ test "GraphvizTool resolves executable from defaults and preferences" {
   graphviz_layouter_preference_store_access_reset_for_test()
   graphviz_layouter_plugin_reset_for_test()
 
-  let available : Ref[Map[String, Bool]] = Ref::new({})
+  let available : Ref[Map[String, Bool]] = Ref({})
   graphviz_tool_set_executable_probe_for_test(path => {
     match available.val.get(path) {
       Some(value) => value
@@ -95,8 +95,8 @@ test "GraphvizTool initialize assembles command line and graph stream" {
   graphviz_tool_set_default_locations_for_test(["/usr/bin/"])
   graphviz_tool_set_executable_probe_for_test(path => path == "/usr/bin/dot")
 
-  let destroyed_ref : Ref[Int] = Ref::new(0)
-  let closed_ref : Ref[Int] = Ref::new(0)
+  let destroyed_ref : Ref[Int] = Ref(0)
+  let closed_ref : Ref[Int] = Ref(0)
   graphviz_tool_set_process_factory_for_test(_args => {
     Some(
       graphviz_tool_test_fake_process(
@@ -136,8 +136,8 @@ test "panic GraphvizTool cleanup error raises GraphvizException message" {
   graphviz_tool_set_default_locations_for_test(["/usr/bin/"])
   graphviz_tool_set_executable_probe_for_test(path => path == "/usr/bin/dot")
 
-  let destroyed_ref : Ref[Int] = Ref::new(0)
-  let closed_ref : Ref[Int] = Ref::new(0)
+  let destroyed_ref : Ref[Int] = Ref(0)
+  let closed_ref : Ref[Int] = Ref(0)
   graphviz_tool_set_process_factory_for_test(_args => {
     Some(
       graphviz_tool_test_fake_process(

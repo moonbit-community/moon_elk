@@ -134,7 +134,7 @@ test "AlgorithmContentProvider and selection dialog filtering" {
     content="org.eclipse.elk.category.layered",
   )
 
-  let selected_count : Ref[Int] = Ref::new(0)
+  let selected_count : Ref[Int] = Ref(0)
   let dialog = new_algorithm_selection_dialog(algorithm_data.get_id())
   dialog.add_algorithm_selection_listener(
     new_core_ui_algorithm_selection_listener(_ => {
@@ -207,7 +207,7 @@ test "LayoutOptionLabelProvider and handler use expected UI semantics" {
   pref_store.set_default_boolean(core_ui_pref_zoom, false)
   pref_store.set_default_boolean(core_ui_pref_progress, true)
 
-  let captured : Ref[String] = Ref::new("")
+  let captured : Ref[String] = Ref("")
   let handler = new_layout_handler(invoke_layout_fn=invocation => {
     captured.val = "\{invocation.editor}|\{invocation.diagram_part}|\{invocation.animation}|\{invocation.progress_dialog}|\{invocation.zoom_to_fit}"
   })

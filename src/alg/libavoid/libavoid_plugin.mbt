@@ -24,7 +24,7 @@ pub struct LibavoidPlugin {
 }
 
 ///|
-let libavoid_plugin_ref : Ref[LibavoidPlugin?] = Ref::new(None)
+let libavoid_plugin_ref : Ref[LibavoidPlugin?] = Ref(None)
 
 ///|
 pub fn new_libavoid_plugin(

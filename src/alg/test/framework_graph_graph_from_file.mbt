@@ -1,5 +1,5 @@
 ///|
-let graph_from_file_contents_ref : Ref[Map[String, String]] = Ref::new({})
+let graph_from_file_contents_ref : Ref[Map[String, String]] = Ref({})
 
 ///|
 pub fn graph_from_file_register_content_for_test(

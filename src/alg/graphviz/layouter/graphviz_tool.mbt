@@ -27,7 +27,7 @@ pub let graphviz_tool_pref_graphviz_executable : String = "graphviz.executable"
 pub let graphviz_tool_pref_timeout : String = "graphviz.timeout"
 
 ///|
-let graphviz_tool_process_def_timeout_ref : Ref[Int] = Ref::new(20000)
+let graphviz_tool_process_def_timeout_ref : Ref[Int] = Ref(20000)
 
 ///|
 pub let graphviz_tool_process_min_timeout : Int = 200
@@ -50,25 +50,25 @@ let graphviz_tool_arg_invertyaxis : String = "-y"
 let graphviz_tool_max_error_output : Int = 512
 
 ///|
-let graphviz_tool_default_locs_ref : Ref[Array[String]] = Ref::new([])
+let graphviz_tool_default_locs_ref : Ref[Array[String]] = Ref([])
 
 ///|
-let graphviz_tool_file_separator_ref : Ref[String] = Ref::new("/")
+let graphviz_tool_file_separator_ref : Ref[String] = Ref("/")
 
 ///|
-let graphviz_tool_path_separator_ref : Ref[String] = Ref::new(":")
+let graphviz_tool_path_separator_ref : Ref[String] = Ref(":")
 
 ///|
-let graphviz_tool_env_path_ref : Ref[String?] = Ref::new(None)
+let graphviz_tool_env_path_ref : Ref[String?] = Ref(None)
 
 ///|
-let graphviz_tool_exec_probe_ref : Ref[(String) -> Bool] = Ref::new(_ => false)
+let graphviz_tool_exec_probe_ref : Ref[(String) -> Bool] = Ref(_ => false)
 
 ///|
-let graphviz_tool_handle_exec_path_ref : Ref[() -> Bool] = Ref::new(() => false)
+let graphviz_tool_handle_exec_path_ref : Ref[() -> Bool] = Ref(() => false)
 
 ///|
-let graphviz_tool_last_exec_args_ref : Ref[Array[String]] = Ref::new([])
+let graphviz_tool_last_exec_args_ref : Ref[Array[String]] = Ref([])
 
 ///|
 fn graphviz_tool_default_process_factory(
@@ -78,7 +78,7 @@ fn graphviz_tool_default_process_factory(
 }
 
 ///|
-let graphviz_tool_process_factory_ref : Ref[(Array[String]) -> GraphvizProcess?] = Ref::new(
+let graphviz_tool_process_factory_ref : Ref[(Array[String]) -> GraphvizProcess?] = Ref(
   graphviz_tool_default_process_factory,
 )
 

@@ -77,11 +77,7 @@ pub struct GraphvizByteArrayOutputStream {
 
 ///|
 pub fn new_graphviz_byte_array_output_stream() -> GraphvizByteArrayOutputStream {
-  {
-    bytes_ref: Ref::new([]),
-    flush_count_ref: Ref::new(0),
-    closed_ref: Ref::new(false),
-  }
+  { bytes_ref: Ref([]), flush_count_ref: Ref(0), closed_ref: Ref(false) }
 }
 
 ///|

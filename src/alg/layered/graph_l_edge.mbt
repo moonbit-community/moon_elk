@@ -1,5 +1,5 @@
 ///|
-let ledge_next_handle_ref : Ref[Int] = Ref::new(0)
+let ledge_next_handle_ref : Ref[Int] = Ref(0)
 
 ///|
 fn ledge_next_handle() -> Int {

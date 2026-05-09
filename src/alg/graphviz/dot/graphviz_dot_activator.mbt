@@ -275,9 +275,7 @@ pub struct GraphvizDotActivator {
 }
 
 ///|
-let graphviz_dot_activator_instance_ref : Ref[GraphvizDotActivator?] = Ref::new(
-  None,
-)
+let graphviz_dot_activator_instance_ref : Ref[GraphvizDotActivator?] = Ref(None)
 
 ///|
 pub fn new_graphviz_dot_activator() -> GraphvizDotActivator {

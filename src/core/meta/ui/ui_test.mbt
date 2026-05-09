@@ -113,7 +113,7 @@ test "MetaData executable extension factory resolves provider and initializes ex
   meta_activator_reset_for_test()
   let activator = new_meta_activator()
   let class_name = "example.MetaDataExtension"
-  let contributor_ref : Ref[String] = Ref::new("none")
+  let contributor_ref : Ref[String] = Ref("none")
 
   activator.register_bundle_class(class_name)
   activator.register_injector_provider(core_meta_ui_language_name, class_name, () => {

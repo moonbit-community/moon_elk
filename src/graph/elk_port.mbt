@@ -13,7 +13,7 @@ priv struct PortData {
 }
 
 ///|
-let port_store : Ref[Array[PortData]] = Ref::new([])
+let port_store : Ref[Array[PortData]] = Ref([])
 
 ///|
 fn checked_port(port : ElkPort) -> Unit {

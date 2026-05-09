@@ -18,7 +18,7 @@ pub(all) struct LayoutViewPart {
 }
 
 ///|
-let core_ui_layout_view_instance_ref : Ref[LayoutViewPart?] = Ref::new(None)
+let core_ui_layout_view_instance_ref : Ref[LayoutViewPart?] = Ref(None)
 
 ///|
 pub fn new_layout_view_part() -> LayoutViewPart {

@@ -4,12 +4,10 @@ pub struct LibavoidServerPool {
 }
 
 ///|
-let libavoid_server_pool_instance_ref : Ref[LibavoidServerPool?] = Ref::new(
-  None,
-)
+let libavoid_server_pool_instance_ref : Ref[LibavoidServerPool?] = Ref(None)
 
 ///|
-let libavoid_server_pool_factory_ref : Ref[() -> LibavoidServer] = Ref::new(() => {
+let libavoid_server_pool_factory_ref : Ref[() -> LibavoidServer] = Ref(() => {
   new_libavoid_server()
 })
 

@@ -1,11 +1,11 @@
 ///|
-let depth_first_compaction_root : Ref[Tree[Node]?] = Ref::new(None)
+let depth_first_compaction_root : Ref[Tree[Node]?] = Ref(None)
 
 ///|
-let depth_first_compaction_orthogonal_compaction : Ref[Bool] = Ref::new(false)
+let depth_first_compaction_orthogonal_compaction : Ref[Bool] = Ref(false)
 
 ///|
-let depth_first_compaction_svg : Ref[SvgImage?] = Ref::new(None)
+let depth_first_compaction_svg : Ref[SvgImage?] = Ref(None)
 
 ///|
 fn depth_first_compaction_node_identity_eq(left : Node, right : Node) -> Bool {

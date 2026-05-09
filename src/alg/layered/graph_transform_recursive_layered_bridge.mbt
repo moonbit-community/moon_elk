@@ -585,39 +585,39 @@ priv struct RecursiveLayeredContext {
 }
 
 ///|
-let recursive_layered_transform_context_next_id : Ref[Int] = Ref::new(1)
+let recursive_layered_transform_context_next_id : Ref[Int] = Ref(1)
 
 ///|
 let recursive_layered_model_order_node_assignments : Ref[
   Map[@graph.ElkNode, Int],
-] = Ref::new({})
+] = Ref({})
 
 ///|
 let recursive_layered_model_order_edge_assignments : Ref[
   Map[@graph.ElkEdge, Int],
-] = Ref::new({})
+] = Ref({})
 
 ///|
-let recursive_layered_model_order_max_nodes : Ref[Int] = Ref::new(0)
+let recursive_layered_model_order_max_nodes : Ref[Int] = Ref(0)
 
 ///|
-let recursive_layered_model_order_cb_group_count : Ref[Int] = Ref::new(0)
+let recursive_layered_model_order_cb_group_count : Ref[Int] = Ref(0)
 
 ///|
 let recursive_layered_transform_context_store : Ref[
   Map[Int, (RecursiveLayeredContext, @graph.ElkNode)],
-] = Ref::new({})
+] = Ref({})
 
 ///|
-let recursive_layered_global_elk_to_lnode : Ref[Map[@graph.ElkNode, LNode]] = Ref::new({},
+let recursive_layered_global_elk_to_lnode : Ref[Map[@graph.ElkNode, LNode]] = Ref({},
 )
 
 ///|
-let recursive_layered_global_elk_to_lport : Ref[Map[@graph.ElkPort, LPort]] = Ref::new({},
+let recursive_layered_global_elk_to_lport : Ref[Map[@graph.ElkPort, LPort]] = Ref({},
 )
 
 ///|
-let recursive_layered_global_ledge_to_elk_edge : Ref[Map[Int, @graph.ElkEdge]] = Ref::new({},
+let recursive_layered_global_ledge_to_elk_edge : Ref[Map[Int, @graph.ElkEdge]] = Ref({},
 )
 
 ///|

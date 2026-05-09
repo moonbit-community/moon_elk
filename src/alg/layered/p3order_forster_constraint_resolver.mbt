@@ -1,5 +1,5 @@
 ///|
-let forster_constraint_group_next_handle_ref : Ref[Int] = Ref::new(0)
+let forster_constraint_group_next_handle_ref : Ref[Int] = Ref(0)
 
 ///|
 fn forster_constraint_group_next_handle() -> Int {

@@ -8,9 +8,7 @@ pub(all) struct ElkEngine {
 pub type ElkEngineLayoutDelegate = (Map[String, Json], Map[String, Json]) -> Unit
 
 ///|
-let elk_engine_layout_delegate_ref : Ref[ElkEngineLayoutDelegate?] = Ref::new(
-  None,
-)
+let elk_engine_layout_delegate_ref : Ref[ElkEngineLayoutDelegate?] = Ref(None)
 
 ///|
 pub fn elk_engine_register_layout_delegate(

@@ -1,5 +1,5 @@
 ///|
-let layout_listener_next_id_ref : Ref[Int] = Ref::new(0)
+let layout_listener_next_id_ref : Ref[Int] = Ref(0)
 
 ///|
 fn next_layout_listener_id() -> Int {

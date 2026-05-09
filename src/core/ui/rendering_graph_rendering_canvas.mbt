@@ -188,10 +188,10 @@ pub fn GraphRenderingCanvas::calculate_required_canvas_size_and_base_offset(
 ) -> @core.KVector {
   match graph {
     Some(layout_graph) => {
-      let min_x : Ref[Double] = Ref::new(@float.max_value.to_double())
-      let max_x : Ref[Double] = Ref::new(-@float.max_value.to_double())
-      let min_y : Ref[Double] = Ref::new(@float.max_value.to_double())
-      let max_y : Ref[Double] = Ref::new(-@float.max_value.to_double())
+      let min_x : Ref[Double] = Ref(@float.max_value.to_double())
+      let max_x : Ref[Double] = Ref(-@float.max_value.to_double())
+      let min_y : Ref[Double] = Ref(@float.max_value.to_double())
+      let max_y : Ref[Double] = Ref(-@float.max_value.to_double())
 
       for node in @graph.node_children(layout_graph) {
         min_x.val = @cmp.minimum(min_x.val, @graph.node_x(node))

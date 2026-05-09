@@ -7,7 +7,7 @@ pub struct Node {
 }
 
 ///|
-let spore_node_uid_counter : Ref[Int] = Ref::new(0)
+let spore_node_uid_counter : Ref[Int] = Ref(0)
 
 ///|
 fn next_spore_node_uid() -> Int {

@@ -1,5 +1,5 @@
 ///|
-let next_experiment_runner_id_ref : Ref[Int] = Ref::new(0)
+let next_experiment_runner_id_ref : Ref[Int] = Ref(0)
 
 ///|
 fn next_experiment_runner_id() -> Int {

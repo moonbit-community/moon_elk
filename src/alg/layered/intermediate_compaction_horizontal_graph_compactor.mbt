@@ -391,13 +391,13 @@ pub fn new_horizontal_graph_compactor_layout_processor() -> @core.ILayoutProcess
 }
 
 ///|
-let horizontal_graph_compactor_lnode_origin_lookup : Ref[Map[String, LNode]] = Ref::new({},
+let horizontal_graph_compactor_lnode_origin_lookup : Ref[Map[String, LNode]] = Ref({},
 )
 
 ///|
 let horizontal_graph_compactor_vertical_segment_origin_lookup : Ref[
   Map[String, VerticalSegment],
-] = Ref::new({})
+] = Ref({})
 
 ///|
 pub let horizontal_graph_compactor_network_simplex_compaction : @common.ICompactionAlgorithm = network_simplex_compaction

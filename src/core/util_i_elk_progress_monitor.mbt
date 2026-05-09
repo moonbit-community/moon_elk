@@ -8,7 +8,7 @@ let elk_progress_monitor_infinite_hierarchy_levels = -1
 let elk_progress_monitor_root_debug_folder_name = "logs"
 
 ///|
-let elk_progress_monitor_debug_folder_counter_ref : Ref[Int] = Ref::new(0)
+let elk_progress_monitor_debug_folder_counter_ref : Ref[Int] = Ref(0)
 
 ///|
 priv suberror ElkProgressMonitorException {

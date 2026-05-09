@@ -26,7 +26,7 @@ pub struct GraphvizLayouterPlugin {
 }
 
 ///|
-let graphviz_layouter_plugin_ref : Ref[GraphvizLayouterPlugin?] = Ref::new(None)
+let graphviz_layouter_plugin_ref : Ref[GraphvizLayouterPlugin?] = Ref(None)
 
 ///|
 pub fn new_graphviz_layouter_plugin(

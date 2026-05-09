@@ -462,12 +462,12 @@ fn dis_co_paint_polygon_intersects(
 ///|
 let dis_co_debug_node_component_graph_store : Ref[
   Map[@graph.ElkNode, @disco.DCGraph],
-] = Ref::new({})
+] = Ref({})
 
 ///|
 let dis_co_debug_node_polyomino_store : Ref[
   Map[@graph.ElkNode, Array[@disco.DCPolyomino]],
-] = Ref::new({})
+] = Ref({})
 
 ///|
 pub fn dis_co_graph_renderer_bind_component_graph(

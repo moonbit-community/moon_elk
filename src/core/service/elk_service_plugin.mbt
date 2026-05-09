@@ -10,7 +10,7 @@ pub(all) struct ElkServicePlugin {
 }
 
 ///|
-let elk_service_plugin_ref : Ref[ElkServicePlugin?] = Ref::new(None)
+let elk_service_plugin_ref : Ref[ElkServicePlugin?] = Ref(None)
 
 ///|
 fn new_elk_service_plugin() -> ElkServicePlugin {
