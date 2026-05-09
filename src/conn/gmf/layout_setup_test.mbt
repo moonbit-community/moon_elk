@@ -4,21 +4,21 @@ test "GmfLayoutSetup supports diagram editor and graphical edit parts" {
   let setup = new_gmf_layout_setup()
   let edit_part = new_gmf_edit_part(ShapeNodeEditPart)
 
-  debug_inspect(setup.supports(DiagramEditor), content="true")
-  debug_inspect(setup.supports(GraphicalEditPart(edit_part)), content="true")
-  debug_inspect(setup.supports(AdaptableWithDiagramEditor), content="true")
-  debug_inspect(setup.supports(Other), content="false")
+  inspect(setup.supports(DiagramEditor), content="true")
+  inspect(setup.supports(GraphicalEditPart(edit_part)), content="true")
+  inspect(setup.supports(AdaptableWithDiagramEditor), content="true")
+  inspect(setup.supports(Other), content="false")
 }
 
 ///|
 test "GmfLayoutSetup supports collection when any graphical edit part exists" {
   let setup = new_gmf_layout_setup()
   let edit_part = new_gmf_edit_part(ShapeNodeEditPart)
-  debug_inspect(
+  inspect(
     setup.supports(Collection([Other, GraphicalEditPart(edit_part)])),
     content="true",
   )
-  debug_inspect(setup.supports(Collection([Other, Other])), content="false")
+  inspect(setup.supports(Collection([Other, Other])), content="false")
 }
 
 ///|

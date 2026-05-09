@@ -76,8 +76,8 @@ test "Vertiflex layout sets y levels and routes straight edges" {
   vertiflex_assert_close(@graph.node_y(left), 20.0, 0.0001)
   vertiflex_assert_close(@graph.node_y(right), 20.0, 0.0001)
 
-  debug_inspect(@graph.edge_sections(e1).length(), content="1")
-  debug_inspect(@graph.edge_sections(e2).length(), content="1")
+  inspect(@graph.edge_sections(e1).length(), content="1")
+  inspect(@graph.edge_sections(e2).length(), content="1")
   let s1 = @graph.edge_sections(e1)[0]
   let s2 = @graph.edge_sections(e2)[0]
   vertiflex_assert_close(
@@ -149,8 +149,8 @@ test "Vertiflex bend strategy sets bend heights on branching tree" {
     @core.new_basic_progress_monitor(),
   )
 
-  debug_inspect(@graph.edge_sections(e1).length(), content="1")
-  debug_inspect(@graph.edge_sections(e2).length(), content="1")
+  inspect(@graph.edge_sections(e1).length(), content="1")
+  inspect(@graph.edge_sections(e2).length(), content="1")
   if vertiflex_internal_edge_bend_height(left) <= 0.0 {
     abort("expected bend height for left subtree")
   }

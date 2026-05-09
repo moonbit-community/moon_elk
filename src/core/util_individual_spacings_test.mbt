@@ -8,7 +8,7 @@ test "individual_spacings parse and serialize" {
     spacings.get_option(spacing_node_node.get_id()),
     content="Some(\"12\")",
   )
-  debug_inspect(
+  inspect(
     spacings.to_string().contains("org.eclipse.elk.spacing.nodeNode:12"),
     content="true",
   )
@@ -57,7 +57,7 @@ test "individual_spacings_get_individual_or_inherited prefers node override" {
     spacing_node_node.get_id(),
     "17.5",
   )
-  debug_inspect(
+  inspect(
     individual_spacings_get_individual_or_inherited(child, spacing_node_node),
     content="17.5",
   )
@@ -69,7 +69,7 @@ test "individual_spacings_get_individual_or_inherited falls back to parent" {
   let root = @graph.create_graph()
   let child = @graph.create_node(Some(root))
   @graph.node_set_double_property(root, spacing_node_node, 3.0)
-  debug_inspect(
+  inspect(
     individual_spacings_get_individual_or_inherited(child, spacing_node_node),
     content="3",
   )

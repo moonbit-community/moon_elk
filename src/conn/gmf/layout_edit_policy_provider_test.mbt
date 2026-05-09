@@ -21,6 +21,6 @@ test "LayoutEditPolicyProvider installs layout policy on diagram edit parts" {
 ///|
 test "LayoutEditPolicyProvider provides only create-edit-policies operation" {
   let provider = new_layout_edit_policy_provider()
-  debug_inspect(provider.provides(CreateEditPoliciesOperation), content="true")
-  debug_inspect(provider.provides(LayoutNodeOperation), content="false")
+  inspect(provider.provides(CreateEditPoliciesOperation), content="true")
+  inspect(provider.provides(LayoutNodeOperation), content="false")
 }

@@ -1,8 +1,8 @@
 ///|
 test "GmfLayoutEditPolicy understands apply-layout requests" {
   let policy = new_gmf_layout_edit_policy()
-  debug_inspect(policy.understands_request(req_apply_layout), content="true")
-  debug_inspect(policy.understands_request("other"), content="false")
+  inspect(policy.understands_request(req_apply_layout), content="true")
+  inspect(policy.understands_request("other"), content="false")
 }
 
 ///|
@@ -27,10 +27,10 @@ test "GmfLayoutEditPolicy get_command applies scaled shape bounds" {
     None => abort("expected command")
   }
 
-  debug_inspect(gmf_view_location_x(shape_view), content="10")
-  debug_inspect(gmf_view_location_y(shape_view), content="12")
-  debug_inspect(gmf_view_width(shape_view), content="14")
-  debug_inspect(gmf_view_height(shape_view), content="16")
+  inspect(gmf_view_location_x(shape_view), content="10")
+  inspect(gmf_view_location_y(shape_view), content="12")
+  inspect(gmf_view_width(shape_view), content="14")
+  inspect(gmf_view_height(shape_view), content="16")
 }
 
 ///|
@@ -71,7 +71,7 @@ test "GmfLayoutEditPolicy trims bend points for connection attachments" {
     None => abort("expected command")
   }
 
-  debug_inspect(gmf_view_bendpoints(edge_view).size(), content="2")
+  inspect(gmf_view_bendpoints(edge_view).size(), content="2")
   debug_inspect(gmf_view_source_terminal(edge_view), content="Some(\"source\")")
   debug_inspect(gmf_view_target_terminal(edge_view), content="Some(\"target\")")
   debug_inspect(

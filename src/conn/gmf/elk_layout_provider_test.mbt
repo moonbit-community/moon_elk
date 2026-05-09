@@ -24,7 +24,7 @@ test "ElkLayoutProvider can_layout_nodes checks children when selection is empty
   let provider = new_elk_layout_provider()
   let (parent, _shape, _border, _image) = conn_gmf_elk_layout_provider_test_parent_with_children()
   let hint = new_gmf_layout_hint(graphical_edit_part=Some(parent))
-  debug_inspect(provider.can_layout_nodes([], false, hint), content="true")
+  inspect(provider.can_layout_nodes([], false, hint), content="true")
 }
 
 ///|
@@ -33,11 +33,11 @@ test "ElkLayoutProvider can_layout_nodes checks selected nodes via notation id" 
   let provider = new_elk_layout_provider()
   let (parent, _shape, _border, _image) = conn_gmf_elk_layout_provider_test_parent_with_children()
   let hint = new_gmf_layout_hint(graphical_edit_part=Some(parent))
-  debug_inspect(
+  inspect(
     provider.can_layout_nodes([new_gmf_layout_node("shape")], false, hint),
     content="true",
   )
-  debug_inspect(
+  inspect(
     provider.can_layout_nodes([new_gmf_layout_node("missing")], false, hint),
     content="false",
   )
@@ -80,6 +80,6 @@ test "ElkLayoutProvider layout_layout_nodes invokes diagram layout engine with p
 ///|
 test "ElkLayoutProvider provides only layout-node operations" {
   let provider = new_elk_layout_provider()
-  debug_inspect(provider.provides(LayoutNodeOperation), content="true")
-  debug_inspect(provider.provides(CreateEditPoliciesOperation), content="false")
+  inspect(provider.provides(LayoutNodeOperation), content="true")
+  inspect(provider.provides(CreateEditPoliciesOperation), content="false")
 }

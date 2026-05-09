@@ -25,5 +25,5 @@ test "WrappedException preserves payload" {
     "cannot instantiate", "illegal access",
   )
   debug_inspect(wrapped.get_message(), content="Some(\"cannot instantiate\")")
-  debug_inspect(wrapped.get_cause(), content="illegal access")
+  inspect(wrapped.get_cause(), content="illegal access")
 }

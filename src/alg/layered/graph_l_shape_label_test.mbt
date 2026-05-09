@@ -18,23 +18,23 @@ test "LShape position and size are mutable vectors" {
   ignore(position.set_xy(10.0, 20.0))
   ignore(size.set_xy(30.0, 40.0))
 
-  debug_inspect(shape.get_position().x, content="10")
-  debug_inspect(shape.get_position().y, content="20")
-  debug_inspect(shape.get_size().x, content="30")
-  debug_inspect(shape.get_size().y, content="40")
+  inspect(shape.get_position().x, content="10")
+  inspect(shape.get_position().y, content="20")
+  inspect(shape.get_size().x, content="30")
+  inspect(shape.get_size().y, content="40")
 }
 
 ///|
 test "LLabel designation and to_string follow Java behavior" {
   let empty = new_l_label()
   debug_inspect(empty.get_designation(), content="None")
-  debug_inspect(empty.to_string(), content="label")
+  inspect(empty.to_string(), content="label")
 
   empty.set_origin_identifier(Some("origin"))
   debug_inspect(empty.get_designation(), content="Some(\"origin\")")
-  debug_inspect(empty.to_string(), content="l_origin")
+  inspect(empty.to_string(), content="l_origin")
 
   let text_label = new_l_label_text("txt")
   debug_inspect(text_label.get_designation(), content="Some(\"txt\")")
-  debug_inspect(text_label.to_string(), content="l_txt")
+  inspect(text_label.to_string(), content="l_txt")
 }

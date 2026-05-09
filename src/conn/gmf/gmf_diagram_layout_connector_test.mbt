@@ -28,10 +28,7 @@ test "GmfDiagramLayoutConnector hierarchy utilities follow parent chain rules" {
     gmf_diagram_layout_connector_get_diagram_edit_part(left),
     content="Some(\{diagram})",
   )
-  debug_inspect(
-    gmf_diagram_layout_connector_is_parent(diagram, left),
-    content="true",
-  )
+  inspect(gmf_diagram_layout_connector_is_parent(diagram, left), content="true")
   debug_inspect(
     gmf_diagram_layout_connector_common_parent(left, right),
     content="Some(\{diagram})",
@@ -64,8 +61,8 @@ test "GmfDiagramLayoutConnector build_layout_graph keeps selection offset" {
   )
 
   debug_inspect(mapping.diagram_edit_part, content="Some(\{diagram})")
-  debug_inspect(mapping.graph_element_count() > 0, content="true")
-  debug_inspect(mapping.coordinate_offset is Some(_), content="true")
+  inspect(mapping.graph_element_count() > 0, content="true")
+  inspect(mapping.coordinate_offset is Some(_), content="true")
 }
 
 ///|
@@ -109,8 +106,8 @@ test "GmfDiagramLayoutConnector apply_layout transfers and executes command" {
     ),
   )
 
-  debug_inspect(mapping.animation_time > 0, content="true")
-  debug_inspect(stack.execution_count(), content="1")
-  debug_inspect(gmf_view_location_x(shape_view), content="180")
-  debug_inspect(gmf_view_location_y(shape_view), content="210")
+  inspect(mapping.animation_time > 0, content="true")
+  inspect(stack.execution_count(), content="1")
+  inspect(gmf_view_location_x(shape_view), content="180")
+  inspect(gmf_view_location_y(shape_view), content="210")
 }

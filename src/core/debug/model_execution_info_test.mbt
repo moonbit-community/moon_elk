@@ -10,16 +10,16 @@ test "ExecutionInfo can be built from monitor and file metadata" {
     monitor, "/tmp/demo.elkt", true,
   )
 
-  debug_inspect(execution_info_get_name(info), content="Layout Task")
-  debug_inspect(execution_info_is_loaded_from_file(info), content="true")
+  inspect(execution_info_get_name(info), content="Layout Task")
+  inspect(execution_info_is_loaded_from_file(info), content="true")
   debug_inspect(
     execution_info_get_file_name(info),
     content="Some(\"/tmp/demo.elkt\")",
   )
-  debug_inspect(execution_info_is_laid_out_after_load(info), content="true")
-  debug_inspect(execution_info_has_log_messages(info), content="true")
-  debug_inspect(execution_info_has_logged_graphs(info), content="true")
-  debug_inspect(execution_info_get_children(info).length(), content="0")
+  inspect(execution_info_is_laid_out_after_load(info), content="true")
+  inspect(execution_info_has_log_messages(info), content="true")
+  inspect(execution_info_has_logged_graphs(info), content="true")
+  inspect(execution_info_get_children(info).length(), content="0")
 }
 
 ///|
@@ -38,13 +38,10 @@ test "ExecutionInfo copies monitor debug folder when persistence is enabled" {
   monitor.done()
 
   let info = execution_info_from_progress_monitor(monitor)
-  debug_inspect(
-    execution_info_get_debug_folder(info).is_empty(),
-    content="false",
-  )
-  debug_inspect(execution_info_get_children(info).length(), content="1")
+  inspect(execution_info_get_debug_folder(info).is_empty(), content="false")
+  inspect(execution_info_get_children(info).length(), content="1")
   let child_info = execution_info_get_children(info)[0]
-  debug_inspect(
+  inspect(
     execution_info_get_debug_folder(child_info).is_empty(),
     content="false",
   )
@@ -72,7 +69,7 @@ test "ExecutionInfoModel add replace remove notifies listener" {
   model.remove_execution_infos([info_b])
   model.remove_all_execution_infos()
 
-  debug_inspect(count.val, content="4")
+  inspect(count.val, content="4")
 }
 
 ///|
@@ -90,8 +87,8 @@ test "ExecutionInfoContentProvider filters elements and children" {
   provider.set_filter(Some(info => execution_info_has_log_messages(info)))
 
   let filtered = provider.get_elements(Some([info_a, info_b]))
-  debug_inspect(filtered.length(), content="1")
-  debug_inspect(filtered[0], content="\{info_a}")
-  debug_inspect(provider.has_children(Some(info_a)), content="false")
+  inspect(filtered.length(), content="1")
+  inspect(filtered[0], content="\{info_a}")
+  inspect(provider.has_children(Some(info_a)), content="false")
   debug_inspect(provider.get_parent(Some(info_a)), content="None")
 }

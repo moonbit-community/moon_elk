@@ -69,8 +69,8 @@ test "GraphvizLayoutProvider returns early for empty parent" {
   let monitor = @core.new_elk_progress_monitor()
   provider.layout(root, monitor)
 
-  debug_inspect(process_count.val, content="0")
-  debug_inspect(monitor.is_running(), content="false")
+  inspect(process_count.val, content="0")
+  inspect(monitor.is_running(), content="false")
 }
 
 ///|
@@ -111,18 +111,18 @@ test "GraphvizLayoutProvider runs pipeline and records debug streams" {
   @graph.node_set_bool_property(root, graphviz_layout_provider_debug_mode, true)
   provider.layout(root, @core.new_elk_progress_monitor())
 
-  debug_inspect(serialized_ref.val, content="[100, 111, 116]")
+  inspect(serialized_ref.val, content="[100, 111, 116]")
   debug_inspect(
     graphviz_layout_provider_get_debug_bytes_for_test("debug001-in.dot"),
     content="Some([100, 111, 116, 10])",
   )
-  debug_inspect(parse_input_ref.val.length() > 0, content="true")
-  debug_inspect(
+  inspect(parse_input_ref.val.length() > 0, content="true")
+  inspect(
     graphviz_layout_provider_get_debug_bytes_for_test("debug001-out.dot")
     is Some(_),
     content="true",
   )
-  debug_inspect(destroyed_ref.val, content="1")
+  inspect(destroyed_ref.val, content="1")
 }
 
 ///|
@@ -160,9 +160,9 @@ test "GraphvizLayoutProvider honors reuse-process preference and dispose stops t
   let root = @graph.create_graph()
   ignore(@graph.create_node(Some(root)))
   provider.layout(root, @core.new_elk_progress_monitor())
-  debug_inspect(destroyed_ref.val, content="0")
+  inspect(destroyed_ref.val, content="0")
 
   provider.dispose()
-  debug_inspect(destroyed_ref.val, content="1")
+  inspect(destroyed_ref.val, content="1")
   plugin.stop()
 }

@@ -75,7 +75,7 @@ test "ForsterConstraintResolver enforces in-layer successor constraints" {
   let nodes = [n1, n0]
   resolver.process_constraints(nodes)
 
-  debug_inspect(forster_test_node_ids(nodes), content="[0, 1]")
+  inspect(forster_test_node_ids(nodes), content="[0, 1]")
   debug_inspect(
     forster_test_state_of(resolver, n0).barycenter,
     content="Some(0.5)",
@@ -116,5 +116,5 @@ test "ForsterConstraintResolver keeps layout units non-overlapping" {
   let nodes = [a, b, a_dummy, b_dummy]
   resolver.process_constraints(nodes)
 
-  debug_inspect(forster_test_node_ids(nodes), content="[0, 2, 1, 3]")
+  inspect(forster_test_node_ids(nodes), content="[0, 2, 1, 3]")
 }

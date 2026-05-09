@@ -2,7 +2,7 @@
 test "layout_option_proxy set_proxy_value stores proxy by key" {
   let holder : Map[String, LayoutOptionProxy] = {}
   layout_option_proxy_set_proxy_value(holder, "org.eclipse.elk.test.opt", "42")
-  debug_inspect(
+  inspect(
     match holder.get("org.eclipse.elk.test.opt") {
       Some(proxy) => proxy.to_string()
       None => ""
@@ -46,7 +46,7 @@ test "layout_option_proxy equals and hash_code are value based" {
   let first = new_layout_option_proxy("sample")
   let second = new_layout_option_proxy("sample")
   let different = new_layout_option_proxy("other")
-  debug_inspect(first.equals(second), content="true")
-  debug_inspect(first.equals(different), content="false")
-  debug_inspect(first.hash_code() == second.hash_code(), content="true")
+  inspect(first.equals(second), content="true")
+  inspect(first.equals(different), content="false")
+  inspect(first.hash_code() == second.hash_code(), content="true")
 }

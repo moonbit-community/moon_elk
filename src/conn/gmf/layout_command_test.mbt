@@ -29,10 +29,10 @@ test "GmfLayoutCommand applies shape and edge layout updates" {
   )
   command.execute()
 
-  debug_inspect(gmf_view_location_x(node_view), content="100")
-  debug_inspect(gmf_view_location_y(node_view), content="200")
-  debug_inspect(gmf_view_width(node_view), content="300")
-  debug_inspect(gmf_view_height(node_view), content="400")
+  inspect(gmf_view_location_x(node_view), content="100")
+  inspect(gmf_view_location_y(node_view), content="200")
+  inspect(gmf_view_width(node_view), content="300")
+  inspect(gmf_view_height(node_view), content="400")
   debug_inspect(
     gmf_view_source_terminal(edge_view),
     content="Some(\"0.1,0.2\")",
@@ -45,7 +45,7 @@ test "GmfLayoutCommand applies shape and edge layout updates" {
     gmf_view_get_style(edge_view, junction_points_style_name),
     content="Some(\"(5,6)\")",
   )
-  debug_inspect(command.get_affected_files(), content="[\"diagram.notation\"]")
+  inspect(command.get_affected_files(), content="[\"diagram.notation\"]")
 }
 
 ///|
@@ -62,6 +62,6 @@ test "GmfLayoutCommand removes junction style and enforces oblique routing" {
     gmf_view_get_style(edge_view, junction_points_style_name),
     content="None",
   )
-  debug_inspect(gmf_view_is_routing_manual(edge_view), content="true")
-  debug_inspect(gmf_view_is_smoothness_none(edge_view), content="true")
+  inspect(gmf_view_is_routing_manual(edge_view), content="true")
+  inspect(gmf_view_is_smoothness_none(edge_view), content="true")
 }
