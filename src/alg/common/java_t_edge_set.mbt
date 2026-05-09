@@ -5,7 +5,7 @@ pub struct JavaTEdgeSet {
 
 ///|
 pub fn new_java_tedge_set() -> JavaTEdgeSet {
-  { values: @set.Set::new() }
+  { values: @set.Set([]) }
 }
 
 ///|
@@ -35,7 +35,7 @@ pub fn JavaTEdgeSet::remove(self : JavaTEdgeSet, edge : TEdge) -> Bool {
 
 ///|
 pub fn JavaTEdgeSet::clear(self : JavaTEdgeSet) -> Unit {
-  self.values = @set.Set::new()
+  self.values = @set.Set([])
 }
 
 ///|
