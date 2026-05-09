@@ -29,16 +29,16 @@ test "LayoutDiagramFileHandler executes layout for selected diagram files" {
     ])
   })
 
-  inspect(processed, content="2")
-  inspect(
+  debug_inspect(processed, content="2")
+  debug_inspect(
     gmf_layout_diagram_file_handler_was_processed_for_test("a.notation"),
     content="true",
   )
-  inspect(
+  debug_inspect(
     gmf_layout_diagram_file_handler_was_processed_for_test("b.notation"),
     content="true",
   )
-  inspect(
+  debug_inspect(
     gmf_last_layout_invocation_single_part(),
     content="Some(\{diagram_b})",
   )

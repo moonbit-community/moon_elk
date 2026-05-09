@@ -54,7 +54,7 @@ test "Vertiflex util finds root node" {
   let root = vertiflex_make_node(graph, 20.0, 10.0)
   let child = vertiflex_make_node(graph, 10.0, 10.0)
   ignore(@graph.create_simple_edge(root, child))
-  inspect(vertiflex_find_root(graph), content="Some(\{root})")
+  debug_inspect(vertiflex_find_root(graph), content="Some(\{root})")
 }
 
 ///|
@@ -76,8 +76,8 @@ test "Vertiflex layout sets y levels and routes straight edges" {
   vertiflex_assert_close(@graph.node_y(left), 20.0, 0.0001)
   vertiflex_assert_close(@graph.node_y(right), 20.0, 0.0001)
 
-  inspect(@graph.edge_sections(e1).length(), content="1")
-  inspect(@graph.edge_sections(e2).length(), content="1")
+  debug_inspect(@graph.edge_sections(e1).length(), content="1")
+  debug_inspect(@graph.edge_sections(e2).length(), content="1")
   let s1 = @graph.edge_sections(e1)[0]
   let s2 = @graph.edge_sections(e2)[0]
   vertiflex_assert_close(
@@ -149,8 +149,8 @@ test "Vertiflex bend strategy sets bend heights on branching tree" {
     @core.new_basic_progress_monitor(),
   )
 
-  inspect(@graph.edge_sections(e1).length(), content="1")
-  inspect(@graph.edge_sections(e2).length(), content="1")
+  debug_inspect(@graph.edge_sections(e1).length(), content="1")
+  debug_inspect(@graph.edge_sections(e2).length(), content="1")
   if vertiflex_internal_edge_bend_height(left) <= 0.0 {
     abort("expected bend height for left subtree")
   }
@@ -180,7 +180,7 @@ test "Vertiflex rejects node with multiple parents" {
     graph,
     @core.new_basic_progress_monitor(),
   )
-  assert_eq(
+  @core_debug.assert_eq(
     vertiflex_take_runtime_error_or_abort(),
     "org.eclipse.elk.core.UnsupportedConfigurationException: The given graph is not an acyclic tree!",
   )

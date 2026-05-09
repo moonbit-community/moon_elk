@@ -18,3 +18,7 @@ import {
   "Milky2018/moon_elk/alg/rectpacking" @rectpacking,
   "Milky2018/moon_elk/alg/spore" @spore,
 }
+
+import {
+  "moonbitlang/core/debug" @core_debug,
+} for "test"

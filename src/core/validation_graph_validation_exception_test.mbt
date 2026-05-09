@@ -7,9 +7,9 @@ test "GraphValidationException carries message and issues" {
     "graph invalid",
     [issue],
   )
-  inspect(exception.get_message(), content="Some(\"graph invalid\")")
+  debug_inspect(exception.get_message(), content="Some(\"graph invalid\")")
   let issues = exception.get_issues()
-  inspect(
+  debug_inspect(
     match issues {
       Some(list) => list.length()
       None => 0
@@ -26,5 +26,5 @@ test "IValidatingGraphElementVisitor exposes collected issues" {
     [new_graph_issue_node(root, "warn", issue_warning)]
   })
   visitor.visit(root)
-  inspect(visitor.get_issues().length(), content="1")
+  debug_inspect(visitor.get_issues().length(), content="1")
 }

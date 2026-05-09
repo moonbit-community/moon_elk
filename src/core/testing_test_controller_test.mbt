@@ -14,9 +14,9 @@ test "TestController targets algorithm id and installs on whitebox provider" {
   let data = new_layout_algorithm_data("org.eclipse.elk.test")
   assert_true(controller.targets(data))
   controller.install(provider)
-  assert_eq(installed_target.val, Some("org.eclipse.elk.test"))
+  @core_debug.assert_eq(installed_target.val, Some("org.eclipse.elk.test"))
   controller.uninstall()
-  assert_eq(installed_target.val, None)
+  @core_debug.assert_eq(installed_target.val, None)
 }
 
 ///|
@@ -38,8 +38,8 @@ test "TestController notifies listeners and keeps Java remove bug semantics" {
     _monitor,
   ) => ())
   controller.notify_processor_ready(7, processor)
-  assert_eq(ready_count.val, 1)
+  @core_debug.assert_eq(ready_count.val, 1)
   controller.remove_layout_execution_listener(listener)
   controller.notify_processor_ready(8, processor)
-  assert_eq(ready_count.val, 3)
+  @core_debug.assert_eq(ready_count.val, 3)
 }

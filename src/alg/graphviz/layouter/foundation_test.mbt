@@ -1,33 +1,33 @@
 ///|
 test "GraphvizException keeps message and optional cause" {
   let without_cause = new_graphviz_exception("failed")
-  inspect(without_cause.get_message(), content="failed")
-  inspect(without_cause.get_cause(), content="None")
-  inspect(without_cause.to_string(), content="failed")
+  debug_inspect(without_cause.get_message(), content="failed")
+  debug_inspect(without_cause.get_cause(), content="None")
+  debug_inspect(without_cause.to_string(), content="failed")
 
   let with_cause = new_graphviz_exception_with_cause("failed", "io")
-  inspect(with_cause.get_cause(), content="Some(\"io\")")
-  inspect(with_cause.to_string(), content="failed: io")
+  debug_inspect(with_cause.get_cause(), content="Some(\"io\")")
+  debug_inspect(with_cause.to_string(), content="failed: io")
 }
 
 ///|
 test "GraphvizLayouterPlugin controls shared instance and runtime detection" {
   graphviz_layouter_plugin_reset_for_test()
-  inspect(graphviz_layouter_is_eclipse_running(), content="false")
+  debug_inspect(graphviz_layouter_is_eclipse_running(), content="false")
 
   let plugin = new_graphviz_layouter_plugin()
   plugin.start()
-  inspect(
+  debug_inspect(
     match graphviz_layouter_plugin_get_default() {
       Some(value) => value.get_bundle().get_symbolic_name()
       None => "none"
     },
     content="org.eclipse.elk.alg.graphviz.layouter",
   )
-  inspect(graphviz_layouter_is_eclipse_running(), content="true")
+  debug_inspect(graphviz_layouter_is_eclipse_running(), content="true")
 
   plugin.stop()
-  inspect(graphviz_layouter_is_eclipse_running(), content="false")
+  debug_inspect(graphviz_layouter_is_eclipse_running(), content="false")
 }
 
 ///|
@@ -36,7 +36,7 @@ test "GraphvizLayouterPreferenceStore stores defaults and values" {
   graphviz_layouter_plugin_reset_for_test()
 
   let store = graphviz_layouter_preference_store_get_instance().get_preference_store()
-  inspect(
+  debug_inspect(
     store.get_symbolic_name(),
     content="org.eclipse.elk.alg.graphviz.layouter",
   )
@@ -44,16 +44,16 @@ test "GraphvizLayouterPreferenceStore stores defaults and values" {
   store.set_default_int("timeout", 20000)
   store.set_default_string("dot", "/usr/bin/dot")
   store.set_default_boolean("reuse", true)
-  inspect(store.get_int("timeout"), content="20000")
-  inspect(store.get_string("dot"), content="/usr/bin/dot")
-  inspect(store.get_boolean("reuse"), content="true")
+  debug_inspect(store.get_int("timeout"), content="20000")
+  debug_inspect(store.get_string("dot"), content="/usr/bin/dot")
+  debug_inspect(store.get_boolean("reuse"), content="true")
 
   store.set_int("timeout", 1000)
   store.set_string("dot", "/tmp/dot")
   store.set_boolean("reuse", false)
-  inspect(store.get_int("timeout"), content="1000")
-  inspect(store.get_string("dot"), content="/tmp/dot")
-  inspect(store.get_boolean("reuse"), content="false")
+  debug_inspect(store.get_int("timeout"), content="1000")
+  debug_inspect(store.get_string("dot"), content="/tmp/dot")
+  debug_inspect(store.get_boolean("reuse"), content="false")
 }
 
 ///|
@@ -65,15 +65,15 @@ test "GraphvizLayouterPreferenceStoreAccess supports ui available fallback" {
   store.set_default_string("dot", "/usr/bin/dot")
   store.set_default_boolean("reuse", true)
 
-  inspect(
+  debug_inspect(
     graphviz_layouter_preference_store_access_get_ui_save_int("timeout"),
     content="20000",
   )
-  inspect(
+  debug_inspect(
     graphviz_layouter_preference_store_access_get_ui_save_string("dot"),
     content="/usr/bin/dot",
   )
-  inspect(
+  debug_inspect(
     graphviz_layouter_preference_store_access_get_ui_save_boolean(
       "reuse", false,
     ),
@@ -81,15 +81,15 @@ test "GraphvizLayouterPreferenceStoreAccess supports ui available fallback" {
   )
 
   graphviz_layouter_preference_store_access_set_ui_available_for_test(false)
-  inspect(
+  debug_inspect(
     graphviz_layouter_preference_store_access_get_ui_save_int("timeout"),
     content="0",
   )
-  inspect(
+  debug_inspect(
     graphviz_layouter_preference_store_access_get_ui_save_string("dot"),
     content="",
   )
-  inspect(
+  debug_inspect(
     graphviz_layouter_preference_store_access_get_ui_save_boolean("reuse", true),
     content="true",
   )
@@ -108,12 +108,12 @@ test "ForkedOutputStream writes flushes and closes all streams" {
   forked.flush()
   forked.close()
 
-  inspect(sink0.get_bytes(), content="[65, 66]")
-  inspect(sink1.get_bytes(), content="[65, 66]")
-  inspect(sink0.get_flush_count(), content="1")
-  inspect(sink1.get_flush_count(), content="1")
-  inspect(sink0.is_closed(), content="true")
-  inspect(sink1.is_closed(), content="true")
+  debug_inspect(sink0.get_bytes(), content="[65, 66]")
+  debug_inspect(sink1.get_bytes(), content="[65, 66]")
+  debug_inspect(sink0.get_flush_count(), content="1")
+  debug_inspect(sink1.get_flush_count(), content="1")
+  debug_inspect(sink0.is_closed(), content="true")
+  debug_inspect(sink1.is_closed(), content="true")
 }
 
 ///|
@@ -125,20 +125,23 @@ test "ForwardingInputStream forwards read bytes but does not close output stream
     sink.as_output_stream(),
   )
 
-  inspect(forwarding.read(), content="1")
+  debug_inspect(forwarding.read(), content="1")
   let read_buffer = [0, 0, 0]
-  inspect(forwarding.read_bytes(read_buffer), content="3")
-  inspect(read_buffer, content="[2, 3, 4]")
+  debug_inspect(forwarding.read_bytes(read_buffer), content="3")
+  debug_inspect(read_buffer, content="[2, 3, 4]")
   let offset_buffer = [9, 9, 9, 9]
-  inspect(forwarding.read_bytes_with_offset(offset_buffer, 1, 2), content="1")
-  inspect(offset_buffer, content="[9, 5, 9, 9]")
-  inspect(forwarding.available(), content="0")
-  inspect(forwarding.skip(10), content="0")
+  debug_inspect(
+    forwarding.read_bytes_with_offset(offset_buffer, 1, 2),
+    content="1",
+  )
+  debug_inspect(offset_buffer, content="[9, 5, 9, 9]")
+  debug_inspect(forwarding.available(), content="0")
+  debug_inspect(forwarding.skip(10), content="0")
   forwarding.close()
 
-  inspect(source.is_closed(), content="true")
-  inspect(sink.is_closed(), content="false")
-  inspect(sink.get_bytes(), content="[1, 2, 3, 4, 5]")
+  debug_inspect(source.is_closed(), content="true")
+  debug_inspect(sink.is_closed(), content="false")
+  debug_inspect(sink.get_bytes(), content="[1, 2, 3, 4, 5]")
 }
 
 ///|
@@ -150,12 +153,12 @@ test "ForwardingInputStream forwards mark and reset behavior" {
     sink.as_output_stream(),
   )
 
-  inspect(forwarding.mark_supported(), content="true")
-  inspect(forwarding.read(), content="10")
+  debug_inspect(forwarding.mark_supported(), content="true")
+  debug_inspect(forwarding.read(), content="10")
   forwarding.mark(16)
-  inspect(forwarding.read(), content="11")
+  debug_inspect(forwarding.read(), content="11")
   forwarding.reset()
-  inspect(forwarding.read(), content="11")
-  inspect(forwarding.read(), content="12")
-  inspect(sink.get_bytes(), content="[10, 11, 11, 12]")
+  debug_inspect(forwarding.read(), content="11")
+  debug_inspect(forwarding.read(), content="12")
+  debug_inspect(sink.get_bytes(), content="[10, 11, 11, 12]")
 }

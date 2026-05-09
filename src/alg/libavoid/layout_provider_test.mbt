@@ -89,37 +89,40 @@ test "LibavoidServerCommunicator writes protocol text and applies output layout"
   communicator.request_layout(root, new_elk_progress_monitor(), server)
 
   let input_bytes = server.get_input_bytes()
-  inspect(
+  debug_inspect(
     libavoid_test_bytes_contains(input_bytes, "OPTION edgeRouting ORTHOGONAL\n"),
     content="true",
   )
-  inspect(
+  debug_inspect(
     libavoid_test_bytes_contains(input_bytes, "OPTION direction RIGHT\n"),
     content="true",
   )
-  inspect(
+  debug_inspect(
     libavoid_test_bytes_contains(
       input_bytes, "OPTION enableHyperedgesFromCommonSource true\n",
     ),
     content="true",
   )
-  inspect(
+  debug_inspect(
     libavoid_test_bytes_contains(input_bytes, "PENALTY segmentPenalty 12"),
     content="true",
   )
-  inspect(libavoid_test_bytes_contains(input_bytes, "GRAPH\n"), content="true")
-  inspect(
+  debug_inspect(
+    libavoid_test_bytes_contains(input_bytes, "GRAPH\n"),
+    content="true",
+  )
+  debug_inspect(
     libavoid_test_bytes_contains(input_bytes, "[CHUNK]\n"),
     content="true",
   )
 
   let section = @graph.edge_sections(edge)[0]
-  inspect(@graph.edge_section_start_x(section), content="11")
-  inspect(@graph.edge_section_start_y(section), content="12")
-  inspect(@graph.edge_section_end_x(section), content="31")
-  inspect(@graph.edge_section_end_y(section), content="32")
-  inspect(@graph.node_width(root), content="82")
-  inspect(@graph.node_height(root), content="44")
+  debug_inspect(@graph.edge_section_start_x(section), content="11")
+  debug_inspect(@graph.edge_section_start_y(section), content="12")
+  debug_inspect(@graph.edge_section_end_x(section), content="31")
+  debug_inspect(@graph.edge_section_end_y(section), content="32")
+  debug_inspect(@graph.node_width(root), content="82")
+  debug_inspect(@graph.node_height(root), content="44")
 }
 
 ///|
@@ -131,8 +134,8 @@ test "LibavoidServerCommunicator reports error if server has no output" {
   @core.layout_runtime_clear_error()
   let monitor = new_elk_progress_monitor()
   communicator.request_layout(root, monitor, server)
-  inspect(monitor.is_running(), content="false")
-  inspect(
+  debug_inspect(monitor.is_running(), content="false")
+  debug_inspect(
     @core.layout_runtime_take_error_message(),
     content="Some(\"org.eclipse.elk.core.UnsupportedConfigurationException: No output from the Libavoid process. Try increasing the timeout value in the preferences (KIELER / Layout / Libavoid).\")",
   )
@@ -181,17 +184,17 @@ test "LibavoidLayoutProvider prepares ports routes and releases server" {
   let monitor = new_elk_progress_monitor()
   provider.layout(root, monitor)
 
-  inspect(
+  debug_inspect(
     port_layout_option_string_value(src_port, port_side.get_id()),
     content="Some(\"EAST\")",
   )
-  inspect(
+  debug_inspect(
     port_layout_option_string_value(tgt_port, port_side.get_id()),
     content="Some(\"WEST\")",
   )
-  inspect(@graph.edge_sections(edge).length(), content="1")
-  inspect(libavoid_server_pool_instance().size(), content="1")
-  inspect(monitor.is_running(), content="false")
+  debug_inspect(@graph.edge_sections(edge).length(), content="1")
+  debug_inspect(libavoid_server_pool_instance().size(), content="1")
+  debug_inspect(monitor.is_running(), content="false")
 }
 
 ///|
@@ -202,7 +205,7 @@ test "LibavoidLayoutProvider cancel layouting cancels mapped server" {
   let server = new_libavoid_server()
   server.initialize()
   provider.register_server_for_test(root, server)
-  inspect(provider.cancel_layouting(root), content="true")
-  inspect(server.is_canceled(), content="true")
-  inspect(provider.cancel_layouting(root), content="false")
+  debug_inspect(provider.cancel_layouting(root), content="true")
+  debug_inspect(server.is_canceled(), content="true")
+  debug_inspect(provider.cancel_layouting(root), content="false")
 }

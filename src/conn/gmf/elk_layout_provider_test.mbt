@@ -24,7 +24,7 @@ test "ElkLayoutProvider can_layout_nodes checks children when selection is empty
   let provider = new_elk_layout_provider()
   let (parent, _shape, _border, _image) = conn_gmf_elk_layout_provider_test_parent_with_children()
   let hint = new_gmf_layout_hint(graphical_edit_part=Some(parent))
-  inspect(provider.can_layout_nodes([], false, hint), content="true")
+  debug_inspect(provider.can_layout_nodes([], false, hint), content="true")
 }
 
 ///|
@@ -33,11 +33,11 @@ test "ElkLayoutProvider can_layout_nodes checks selected nodes via notation id" 
   let provider = new_elk_layout_provider()
   let (parent, _shape, _border, _image) = conn_gmf_elk_layout_provider_test_parent_with_children()
   let hint = new_gmf_layout_hint(graphical_edit_part=Some(parent))
-  inspect(
+  debug_inspect(
     provider.can_layout_nodes([new_gmf_layout_node("shape")], false, hint),
     content="true",
   )
-  inspect(
+  debug_inspect(
     provider.can_layout_nodes([new_gmf_layout_node("missing")], false, hint),
     content="false",
   )
@@ -58,9 +58,12 @@ test "ElkLayoutProvider layout_layout_nodes invokes diagram layout engine with p
 
   let run_all = provider.layout_layout_nodes([], false, hint)
   run_all()
-  inspect(gmf_last_layout_invocation_single_part(), content="Some(0)")
-  inspect(gmf_last_layout_invocation_progress_dialog(), content="Some(true)")
-  inspect(gmf_last_layout_invocation_zoom_to_fit(), content="Some(true)")
+  debug_inspect(gmf_last_layout_invocation_single_part(), content="Some(0)")
+  debug_inspect(
+    gmf_last_layout_invocation_progress_dialog(),
+    content="Some(true)",
+  )
+  debug_inspect(gmf_last_layout_invocation_zoom_to_fit(), content="Some(true)")
 
   let run_selected = provider.layout_layout_nodes(
     [new_gmf_layout_node("shape")],
@@ -68,12 +71,15 @@ test "ElkLayoutProvider layout_layout_nodes invokes diagram layout engine with p
     hint,
   )
   run_selected()
-  inspect(gmf_last_layout_invocation_multiple_parts(), content="Some([1])")
+  debug_inspect(
+    gmf_last_layout_invocation_multiple_parts(),
+    content="Some([1])",
+  )
 }
 
 ///|
 test "ElkLayoutProvider provides only layout-node operations" {
   let provider = new_elk_layout_provider()
-  inspect(provider.provides(LayoutNodeOperation), content="true")
-  inspect(provider.provides(CreateEditPoliciesOperation), content="false")
+  debug_inspect(provider.provides(LayoutNodeOperation), content="true")
+  debug_inspect(provider.provides(CreateEditPoliciesOperation), content="false")
 }

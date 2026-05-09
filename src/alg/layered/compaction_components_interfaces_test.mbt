@@ -45,14 +45,20 @@ test "IExternalExtension default placeholder is none and accessors delegate" {
     () => compaction_direction_at(1),
   )
 
-  assert_eq(ext.get_representative(), "edge-1")
-  assert_eq(
+  @core_debug.assert_eq(ext.get_representative(), "edge-1")
+  @core_debug.assert_eq(
     compaction_rect_to_tuple(ext.get_representor()),
     (1.0, 2.0, 3.0, 4.0),
   )
-  assert_eq(compaction_rect_to_tuple(ext.get_parent()), (5.0, 6.0, 7.0, 8.0))
-  assert_eq(@core.direction_to_string(ext.get_direction()), "RIGHT")
-  assert_eq(compaction_rect_opt_to_tuple(ext.get_placeholder()), None)
+  @core_debug.assert_eq(
+    compaction_rect_to_tuple(ext.get_parent()),
+    (5.0, 6.0, 7.0, 8.0),
+  )
+  @core_debug.assert_eq(@core.direction_to_string(ext.get_direction()), "RIGHT")
+  @core_debug.assert_eq(
+    compaction_rect_opt_to_tuple(ext.get_placeholder()),
+    None,
+  )
 }
 
 ///|
@@ -75,19 +81,19 @@ test "IComponent and IConnectedComponents mirror configured providers" {
     () => true,
   )
 
-  assert_eq(components.is_contains_external_extensions(), true)
-  assert_eq(components.get_components().length(), 1)
-  assert_eq(
+  @core_debug.assert_eq(components.is_contains_external_extensions(), true)
+  @core_debug.assert_eq(components.get_components().length(), 1)
+  @core_debug.assert_eq(
     compaction_rect_to_tuple(components.get_components()[0].get_hull()[0]),
     (0.0, 1.0, 2.0, 3.0),
   )
-  assert_eq(
+  @core_debug.assert_eq(
     port_sides_to_strings(
       components.get_components()[0].get_external_extension_sides(),
     ),
     ["NORTH", "EAST"],
   )
-  assert_eq(
+  @core_debug.assert_eq(
     compaction_rect_opt_to_tuple(
       components.get_components()[0].get_external_extensions()[0].get_placeholder(),
     ),
