@@ -82,6 +82,10 @@ pub fn new_barycenter_state(node : LNode) -> BarycenterState {
 
 ///|
 pub fn BarycenterState::to_string(self : BarycenterState) -> String {
+  let barycenter = match self.barycenter {
+    Some(value) => "Some(\{value})"
+    None => "None"
+  }
   "BarycenterState[node=" +
   self.node.to_string() +
   ", summedWeight=" +
@@ -89,7 +93,7 @@ pub fn BarycenterState::to_string(self : BarycenterState) -> String {
   ", degree=" +
   self.degree.to_string() +
   ", barycenter=" +
-  self.barycenter.to_string() +
+  barycenter +
   ", visited=" +
   self.visited.to_string() +
   "]"
