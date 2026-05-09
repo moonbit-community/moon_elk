@@ -12,7 +12,7 @@ pub struct InteractiveLayeredGraphVisitor {
 ///|
 fn interactive_layered_graph_visitor_parse_int(value : String) -> Int? {
   let parsed : Result[Int, Error] = try? @string.parse_int(
-    value.trim().to_string(),
+    value.trim().to_owned(),
   )
   match parsed {
     Ok(result) => Some(result)
@@ -27,7 +27,7 @@ fn interactive_layered_graph_visitor_string_option_value(
 ) -> String? {
   match @graph.node_layout_option_string_value(node, option.get_id()) {
     Some(value) => {
-      let normalized = value.trim().to_string()
+      let normalized = value.trim().to_owned()
       if normalized.is_empty() {
         None
       } else {
@@ -38,7 +38,7 @@ fn interactive_layered_graph_visitor_string_option_value(
       if @graph.node_has_string_property(node, option) {
         let value = @graph.node_get_string_property(node, option)
           .trim()
-          .to_string()
+          .to_owned()
         if value.is_empty() {
           None
         } else {
@@ -82,7 +82,7 @@ fn interactive_layered_graph_visitor_has_int_option(
 ) -> Bool {
   match @graph.node_layout_option_string_value(node, option.get_id()) {
     Some(value) =>
-      !value.trim().to_string().is_empty() ||
+      !value.trim().to_owned().is_empty() ||
       @graph.node_has_int_property(node, option)
     None => @graph.node_has_int_property(node, option)
   }

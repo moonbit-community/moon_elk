@@ -33,7 +33,7 @@ fn disco_transform_parse_double_or_default(
   text : String,
   default_value : Double,
 ) -> Double {
-  let trimmed = text.trim().to_string()
+  let trimmed = text.trim().to_owned()
   if trimmed.is_empty() {
     return default_value
   }

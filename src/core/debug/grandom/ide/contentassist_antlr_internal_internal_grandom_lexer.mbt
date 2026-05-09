@@ -223,7 +223,7 @@ fn core_debug_grandom_ide_lexer_slice(
   start : Int,
   end_ : Int,
 ) -> String {
-  text[start:end_].to_string()
+  text[start:end_].to_owned()
 }
 
 ///|

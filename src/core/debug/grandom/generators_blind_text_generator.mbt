@@ -30,5 +30,5 @@ pub fn core_debug_grandom_blind_text_generate_with_random(
   core_debug_grandom_blind_text_lorem_ipsum
   .unsafe_substring(start=offset, end=offset + num_of_characters)
   .trim()
-  .to_string()
+  .to_owned()
 }

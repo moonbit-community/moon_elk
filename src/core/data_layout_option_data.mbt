@@ -302,7 +302,7 @@ fn split_enumset_values(value : String) -> Array[String] {
   for part in normalized.split(" ") {
     let trimmed = part.trim()
     if !trimmed.is_empty() {
-      result.push(trimmed.to_string())
+      result.push(trimmed.to_owned())
     }
   }
   result

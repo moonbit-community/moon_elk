@@ -75,7 +75,7 @@ fn random_layout_provider_read_int_option(
   }
   if @graph.node_layout_option_string_value(node, property.get_id())
     is Some(raw) {
-    try @string.parse_int(raw.trim().to_string()) catch {
+    try @string.parse_int(raw.trim().to_owned()) catch {
       _ => property.get_default()
     } noraise {
       value => value
@@ -95,7 +95,7 @@ fn random_layout_provider_read_double_option(
   }
   if @graph.node_layout_option_string_value(node, property.get_id())
     is Some(raw) {
-    try @string.parse_double(raw.trim().to_string()) catch {
+    try @string.parse_double(raw.trim().to_owned()) catch {
       _ => property.get_default()
     } noraise {
       value => value

@@ -613,14 +613,14 @@ pub fn layered_options_parse_int_list(value : String) -> Array[Int] {
     .replace_all(old="[", new="")
     .replace_all(old="]", new="")
     .trim()
-    .to_string()
+    .to_owned()
   if normalized.is_empty() {
     return []
   }
 
   let result = []
   for token_view in normalized.split(",") {
-    let token = token_view.to_string().trim().to_string()
+    let token = token_view.to_owned().trim().to_owned()
     if token.is_empty() {
       continue
     }

@@ -162,7 +162,7 @@ fn placement_tokens(value : String) -> Array[String] {
     .replace_all(old="]", new="")
   let tokens = []
   for token_view in normalized.split(",") {
-    let token = token_view.trim().to_string()
+    let token = token_view.trim().to_owned()
     if !token.is_empty() {
       tokens.push(token)
     }
@@ -178,7 +178,7 @@ fn option_value_tokens(value : String) -> Array[String] {
     .replace_all(old=",", new=" ")
   let tokens = []
   for token_view in normalized.split(" ") {
-    let token = token_view.trim().to_string()
+    let token = token_view.trim().to_owned()
     if !token.is_empty() && !tokens.contains(token) {
       tokens.push(token)
     }
@@ -217,7 +217,7 @@ fn recursive_layered_copy_individual_spacing_options(
       ) {
       Some(raw_value) => {
         let parsed : Result[Double, Error] = try? @string.parse_double(
-          raw_value.trim().to_string(),
+          raw_value.trim().to_owned(),
         )
         match parsed {
           Ok(value) => target_node.set_property_double(property, value)
@@ -377,14 +377,14 @@ fn recursive_layered_copy_elk_node_properties(
       }
 
       let parsed_int : Result[Int, Error] = try? @string.parse_int(
-        entry.1.trim().to_string(),
+        entry.1.trim().to_owned(),
       )
       if parsed_int is Ok(value) {
         target_node.set_property_int(@graph.new_property(option_id, 0), value)
       }
 
       let parsed_double : Result[Double, Error] = try? @string.parse_double(
-        entry.1.trim().to_string(),
+        entry.1.trim().to_owned(),
       )
       if parsed_double is Ok(value) {
         target_node.set_property_double(
@@ -401,7 +401,7 @@ fn recursive_layered_copy_elk_node_properties(
         entry.1,
       )
       let parsed : Result[Double, Error] = try? @string.parse_double(
-        entry.1.trim().to_string(),
+        entry.1.trim().to_owned(),
       )
       if parsed is Ok(value) {
         target_node.set_property_double(
@@ -429,14 +429,14 @@ fn recursive_layered_copy_elk_port_layout_options(
       }
 
       let parsed_int : Result[Int, Error] = try? @string.parse_int(
-        entry.1.trim().to_string(),
+        entry.1.trim().to_owned(),
       )
       if parsed_int is Ok(value) {
         target_port.set_property_int(@graph.new_property(option_id, 0), value)
       }
 
       let parsed_double : Result[Double, Error] = try? @string.parse_double(
-        entry.1.trim().to_string(),
+        entry.1.trim().to_owned(),
       )
       if parsed_double is Ok(value) {
         target_port.set_property_double(
@@ -464,14 +464,14 @@ fn recursive_layered_copy_elk_edge_layout_options(
       }
 
       let parsed_int : Result[Int, Error] = try? @string.parse_int(
-        entry.1.trim().to_string(),
+        entry.1.trim().to_owned(),
       )
       if parsed_int is Ok(value) {
         target_edge.set_property_int(@graph.new_property(option_id, 0), value)
       }
 
       let parsed_double : Result[Double, Error] = try? @string.parse_double(
-        entry.1.trim().to_string(),
+        entry.1.trim().to_owned(),
       )
       if parsed_double is Ok(value) {
         target_edge.set_property_double(
@@ -520,13 +520,13 @@ fn recursive_layered_option_key_aliases(option_id : String) -> Array[String] {
   match option_id.strip_prefix("elk.") {
     Some(without_elk_view) => {
       aliases.push("org.eclipse." + option_id)
-      aliases.push(without_elk_view.to_string())
+      aliases.push(without_elk_view.to_owned())
     }
     None =>
       match option_id.strip_prefix("org.eclipse.elk.") {
         Some(without_full_view) => {
-          aliases.push("elk." + without_full_view.to_string())
-          aliases.push(without_full_view.to_string())
+          aliases.push("elk." + without_full_view.to_owned())
+          aliases.push(without_full_view.to_owned())
         }
         None => ()
       }
@@ -2058,15 +2058,15 @@ fn recursive_layered_primary_option(
   let mut maybe_layered_suffix : String? = None
   match key.strip_prefix("org.eclipse.") {
     Some(without_org_view) => {
-      let without_org = without_org_view.to_string()
+      let without_org = without_org_view.to_owned()
       candidates.push(without_org)
       match without_org.strip_prefix("elk.") {
         Some(without_elk_view) => {
-          let without_elk = without_elk_view.to_string()
+          let without_elk = without_elk_view.to_owned()
           candidates.push(without_elk)
           match without_elk.strip_prefix("layered.") {
             Some(without_layered_view) =>
-              maybe_layered_suffix = Some(without_layered_view.to_string())
+              maybe_layered_suffix = Some(without_layered_view.to_owned())
             None => ()
           }
         }
@@ -2077,11 +2077,11 @@ fn recursive_layered_primary_option(
       match key.strip_prefix("elk.") {
         Some(without_elk_view) => {
           candidates.push("org.eclipse." + key)
-          let without_elk = without_elk_view.to_string()
+          let without_elk = without_elk_view.to_owned()
           candidates.push(without_elk)
           match without_elk.strip_prefix("layered.") {
             Some(without_layered_view) =>
-              maybe_layered_suffix = Some(without_layered_view.to_string())
+              maybe_layered_suffix = Some(without_layered_view.to_owned())
             None => ()
           }
         }
@@ -2089,7 +2089,7 @@ fn recursive_layered_primary_option(
       }
       match key.strip_prefix("layered.") {
         Some(without_layered_view) =>
-          maybe_layered_suffix = Some(without_layered_view.to_string())
+          maybe_layered_suffix = Some(without_layered_view.to_owned())
         None => ()
       }
     }
@@ -2155,7 +2155,7 @@ fn recursive_layered_parse_bool(value : String) -> Bool? {
 ///|
 fn recursive_layered_parse_int(value : String) -> Int? {
   let parsed : Result[Int, Error] = try? @string.parse_int(
-    value.trim().to_string(),
+    value.trim().to_owned(),
   )
   match parsed {
     Ok(result) => Some(result)
@@ -2166,7 +2166,7 @@ fn recursive_layered_parse_int(value : String) -> Int? {
 ///|
 fn recursive_layered_parse_double(value : String) -> Double? {
   let parsed : Result[Double, Error] = try? @string.parse_double(
-    value.trim().to_string(),
+    value.trim().to_owned(),
   )
   match parsed {
     Ok(result) => Some(result)
@@ -2932,7 +2932,7 @@ fn recursive_layered_create_context(
         match @graph.port_layout_option_string_value(elk_port, candidate) {
           Some(raw_port_index) => {
             let parsed_port_index : Result[Int, Error] = try? @string.parse_int(
-              raw_port_index.trim().to_string(),
+              raw_port_index.trim().to_owned(),
             )
             if parsed_port_index is Ok(port_index) {
               lport.set_property_int(layered_options_port_index, port_index)

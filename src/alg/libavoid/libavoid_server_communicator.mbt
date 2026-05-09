@@ -266,7 +266,7 @@ fn libavoid_communicator_first_or_create_edge_section(
 fn libavoid_communicator_edge_id_from_key(key : String) -> Int? {
   let tokens : Array[String] = []
   for token in key.split(" ") {
-    let value = token.trim().to_string()
+    let value = token.trim().to_owned()
     if !value.is_empty() {
       tokens.push(value)
     }
@@ -294,7 +294,7 @@ fn libavoid_communicator_parse_double_or_zero(value : String) -> Double {
 fn libavoid_communicator_parse_point_list(value : String) -> @core.KVectorChain {
   let tokens : Array[String] = []
   for token in value.split(" ") {
-    let normalized = token.trim().to_string()
+    let normalized = token.trim().to_owned()
     if !normalized.is_empty() {
       tokens.push(normalized)
     }
@@ -469,9 +469,9 @@ fn LibavoidServerCommunicator::write_text_graph(
 ///|
 fn libavoid_communicator_option_id(id : String) -> String {
   if id.has_prefix("org.eclipse.elk.alg.libavoid.") {
-    id["org.eclipse.elk.alg.libavoid.".length():].to_string()
+    id["org.eclipse.elk.alg.libavoid.".length():].to_owned()
   } else if id.has_prefix("org.eclipse.elk.") {
-    id["org.eclipse.elk.".length():].to_string()
+    id["org.eclipse.elk.".length():].to_owned()
   } else {
     id
   }

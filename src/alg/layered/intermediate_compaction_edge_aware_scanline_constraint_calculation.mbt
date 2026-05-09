@@ -18,7 +18,7 @@ priv struct EdgeAwareScanlineCalculation {
 
 ///|
 fn edge_aware_scanline_parse_edge_routing(value : String) -> @core.EdgeRouting {
-  let normalized = value.trim().to_string().to_upper()
+  let normalized = value.trim().to_owned().to_upper()
   match normalized {
     "POLYLINE" => @core.EdgeRouting::Polyline
     "SPLINES" => @core.EdgeRouting::Splines

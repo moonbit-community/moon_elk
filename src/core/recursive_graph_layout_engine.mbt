@@ -46,7 +46,7 @@ pub fn new_recursive_graph_layout_engine() -> RecursiveGraphLayoutEngine {
 
 ///|
 fn recursive_graph_layout_engine_parse_bool(value : String) -> Bool {
-  let normalized = value.trim().to_string().to_lower()
+  let normalized = value.trim().to_owned().to_lower()
   normalized == "true" || normalized == "1"
 }
 

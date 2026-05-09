@@ -32,7 +32,7 @@ fn graphviz_dot_formatter_normalize_spaces(text : String) -> String {
       last_space = false
     }
   }
-  result.trim().to_string()
+  result.trim().to_owned()
 }
 
 ///|

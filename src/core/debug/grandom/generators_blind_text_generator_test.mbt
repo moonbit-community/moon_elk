@@ -20,7 +20,7 @@ test "grandom blind text generated length and trim" {
     core_debug_grandom_blind_text_character_min_length +
     core_debug_grandom_blind_text_character_range,
   )
-  assert_eq(text, text.trim().to_string())
+  assert_eq(text, text.trim().to_owned())
 }
 
 ///|

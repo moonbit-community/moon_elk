@@ -149,7 +149,7 @@ pub fn GmfLayoutConfigurationStore::get_affected_options(
       for entry in gmf_view_style_entries(view) {
         if entry.0.has_prefix(gmf_layout_configuration_prefix) {
           match entry.0.strip_prefix(gmf_layout_configuration_prefix) {
-            Some(option_id) => options_map[option_id.to_string()] = true
+            Some(option_id) => options_map[option_id.to_owned()] = true
             None => ()
           }
         }

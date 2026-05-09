@@ -139,7 +139,7 @@ fn node_reference_matcher_strict_match(
 fn node_reference_matcher_fuzzy_segments(
   target_name : String,
 ) -> Array[Array[Char]] {
-  let trimmed_target_name = target_name.trim().to_string()
+  let trimmed_target_name = target_name.trim().to_owned()
   let trimmed_chars = trimmed_target_name.to_array()
   let segments = []
   let mut current_segment = []

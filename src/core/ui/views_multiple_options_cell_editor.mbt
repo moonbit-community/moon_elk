@@ -65,7 +65,7 @@ fn multiple_options_strip_decorator(
     for part in text.split(" ") {
       let trimmed = part.trim()
       if !trimmed.is_empty() {
-        return trimmed.to_string()
+        return trimmed.to_owned()
       }
     }
     text

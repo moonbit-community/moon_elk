@@ -84,14 +84,14 @@ let graphviz_tool_process_factory_ref : Ref[(Array[String]) -> GraphvizProcess?]
 
 ///|
 fn graphviz_tool_add_default_location(location : String) -> Unit {
-  let mut normalized = location.trim().to_string()
+  let mut normalized = location.trim().to_owned()
   if normalized.is_empty() {
     return
   }
   if normalized.has_prefix("\"") &&
     normalized.has_suffix("\"") &&
     normalized.length() >= 2 {
-    normalized = normalized[1:normalized.length() - 1].to_string()
+    normalized = normalized[1:normalized.length() - 1].to_owned()
   }
   if !normalized.has_suffix(graphviz_tool_file_separator_ref.val) {
     normalized = normalized + graphviz_tool_file_separator_ref.val
@@ -106,7 +106,7 @@ fn graphviz_tool_rebuild_default_locations() -> Unit {
   match graphviz_tool_env_path_ref.val {
     Some(env_path) =>
       for token in env_path.split(graphviz_tool_path_separator_ref.val) {
-        graphviz_tool_add_default_location(token.to_string())
+        graphviz_tool_add_default_location(token.to_owned())
       }
     None => ()
   }
