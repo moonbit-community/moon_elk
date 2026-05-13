@@ -92,7 +92,9 @@ test "semi @core.interactive processor reports expected task name" {
   processor.process(new_l_graph(), Some(monitor))
   debug_inspect(
     monitor.get_task_name(),
-    content="Semi-Interactive Crossing Minimization Processor",
+    content=(
+      #|"Semi-Interactive Crossing Minimization Processor"
+    ),
   )
 }
 

@@ -69,11 +69,15 @@ test "core.ui messages and plugin registry behavior" {
 
   debug_inspect(
     core_ui_messages_get_string("elk.ui.58"),
-    content="Select Layout Algorithm or Type",
+    content=(
+      #|"Select Layout Algorithm or Type"
+    ),
   )
   debug_inspect(
     core_ui_messages_get_string("elk.ui.missing"),
-    content="!elk.ui.missing!",
+    content=(
+      #|"!elk.ui.missing!"
+    ),
   )
 
   let plugin = elk_ui_plugin_get_instance()
@@ -85,7 +89,9 @@ test "core.ui messages and plugin registry behavior" {
       Some(descriptor) => descriptor.to_string()
       None => ""
     },
-    content="org.eclipse.elk.core.ui:icons/obj16/prop_text.gif",
+    content=(
+      #|"org.eclipse.elk.core.ui:icons/obj16/prop_text.gif"
+    ),
   )
 }
 
@@ -131,7 +137,9 @@ test "AlgorithmContentProvider and selection dialog filtering" {
       Some(data) => core_ui_layout_meta_data_get_id(data)
       None => ""
     },
-    content="org.eclipse.elk.category.layered",
+    content=(
+      #|"org.eclipse.elk.category.layered"
+    ),
   )
 
   let selected_count : Ref[Int] = Ref(0)
@@ -145,22 +153,33 @@ test "AlgorithmContentProvider and selection dialog filtering" {
   dialog.create_dialog_area()
   debug_inspect(
     dialog.get_shell_text(),
-    content="Select Layout Algorithm or Type",
+    content=(
+      #|"Select Layout Algorithm or Type"
+    ),
   )
-  debug_inspect(dialog.get_selected_hint(), content="org.eclipse.elk.layered")
+  debug_inspect(
+    dialog.get_selected_hint(),
+    content=(
+      #|"org.eclipse.elk.layered"
+    ),
+  )
   debug_inspect(dialog.is_ok_enabled(), content="true")
   debug_inspect(
     match dialog.get_image() {
       Some(image) => image.to_string()
       None => ""
     },
-    content="bundle.layered:scaled:preview/layered.png",
+    content=(
+      #|"bundle.layered:scaled:preview/layered.png"
+    ),
   )
 
   dialog.update_filter_text("family")
   debug_inspect(
     dialog.get_selected_hint(),
-    content="org.eclipse.elk.category.layered",
+    content=(
+      #|"org.eclipse.elk.category.layered"
+    ),
   )
   debug_inspect(dialog.is_ok_enabled(), content="false")
   debug_inspect(selected_count.val >= 2, content="true")
@@ -180,7 +199,9 @@ test "LayoutOptionLabelProvider and handler use expected UI semantics" {
   let algorithm_provider = new_layout_option_label_provider(algorithm_option)
   debug_inspect(
     algorithm_provider.get_text(CoreUiStringValue(algorithm_data.get_id())),
-    content="Layered (ELK)",
+    content=(
+      #|"Layered (ELK)"
+    ),
   )
 
   let bool_option = @core.new_layout_option_data(
@@ -194,7 +215,9 @@ test "LayoutOptionLabelProvider and handler use expected UI semantics" {
       Some(descriptor) => descriptor.path
       None => ""
     },
-    content="icons/obj16/prop_false.gif",
+    content=(
+      #|"icons/obj16/prop_false.gif"
+    ),
   )
 
   let enum_like = @core.new_layout_option_data(
@@ -203,7 +226,12 @@ test "LayoutOptionLabelProvider and handler use expected UI semantics" {
     choices=["A", "B"],
   )
   let enum_provider = new_layout_option_label_provider(enum_like)
-  debug_inspect(enum_provider.get_text(CoreUiIntValue(1)), content="B")
+  debug_inspect(
+    enum_provider.get_text(CoreUiIntValue(1)),
+    content=(
+      #|"B"
+    ),
+  )
 
   let pref_store = elk_ui_plugin_get_instance().get_preference_store()
   pref_store.set_default_boolean(core_ui_pref_animation, true)
@@ -231,7 +259,12 @@ test "LayoutOptionLabelProvider and handler use expected UI semantics" {
       active_editor=Some(7),
     ),
   )
-  debug_inspect(captured.val, content="Some(7)|Some(99)|true|true|false")
+  debug_inspect(
+    captured.val,
+    content=(
+      #|"Some(7)|Some(99)|true|true|false"
+    ),
+  )
 }
 
 ///|
@@ -384,7 +417,12 @@ test "ElkUiUtil and property source stack perform translations and validation" {
     None => abort("missing descriptor")
   }
   debug_inspect(descriptor.get_category(), content="Some(\"Subgraph Options\")")
-  debug_inspect(descriptor.get_description(), content="Threshold.")
+  debug_inspect(
+    descriptor.get_description(),
+    content=(
+      #|"Threshold."
+    ),
+  )
   debug_inspect(descriptor.get_filter_flags(), content="None")
   let editor = match descriptor.create_property_editor() {
     Some(value) => value
@@ -482,7 +520,9 @@ test "Validating property sheet entry builds overlay image and error description
 
   debug_inspect(
     entry.get_description(),
-    content="Error: The assigned value 0.5 of the option 'Numeric' is less than the lower bound 1.0.",
+    content=(
+      #|"Error: The assigned value 0.5 of the option 'Numeric' is less than the lower bound 1.0."
+    ),
   )
   debug_inspect(
     match entry.get_image() {
@@ -580,7 +620,12 @@ test "Layout view handler, cell editors, and rendering stack integrate" {
   let config3 = new_graph_rendering_configurator(display)
   let dialog = new_layout_graph_dialog(graph, Some("demo.elkg"), config3)
   dialog.configure_shell()
-  debug_inspect(dialog.get_shell_text(), content="demo.elkg")
+  debug_inspect(
+    dialog.get_shell_text(),
+    content=(
+      #|"demo.elkg"
+    ),
+  )
   ignore(dialog.create_contents(display))
   debug_inspect(dialog.get_graph_canvas() is Some(_), content="true")
 }

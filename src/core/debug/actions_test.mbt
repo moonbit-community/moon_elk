@@ -31,7 +31,9 @@ test "ElkDebugPlugin listens to layout done events" {
   debug_inspect(plugin.get_model().get_execution_infos().length(), content="1")
   debug_inspect(
     execution_info_get_name(plugin.get_model().get_execution_infos()[0]),
-    content="layout-one",
+    content=(
+      #|"layout-one"
+    ),
   )
 
   elk_debug_plugin_stop(plugin)
@@ -59,7 +61,9 @@ test "Clear actions remove selected and all executions" {
   debug_inspect(plugin.get_model().get_execution_infos().length(), content="1")
   debug_inspect(
     execution_info_get_name(plugin.get_model().get_execution_infos()[0]),
-    content="B",
+    content=(
+      #|"B"
+    ),
   )
 
   let clear_all = new_clear_executions_action()
@@ -179,7 +183,12 @@ test "CompressLogFolderAction mirrors zip extension completion and records zip e
 
   let outputs = core_debug_get_zip_outputs_for_test()
   debug_inspect(outputs.length(), content="1")
-  debug_inspect(outputs[0].file_name, content="archive.zip")
+  debug_inspect(
+    outputs[0].file_name,
+    content=(
+      #|"archive.zip"
+    ),
+  )
   debug_inspect(
     outputs[0].entries,
     content="[\"/\", \"/run1/\", \"/run1/root.log\", \"/run1/sub/\", \"/run1/sub/inner.log\"]",

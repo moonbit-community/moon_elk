@@ -47,34 +47,69 @@ fn port_label_placement_at(index : Int) -> PortLabelPlacement {
 
 ///|
 test "Direction helpers" {
-  debug_inspect(direction_to_string(direction_at(0)), content="UNDEFINED")
-  debug_inspect(direction_to_string(direction_at(1)), content="RIGHT")
-  debug_inspect(direction_to_string(direction_at(2)), content="LEFT")
-  debug_inspect(direction_to_string(direction_at(3)), content="DOWN")
-  debug_inspect(direction_to_string(direction_at(4)), content="UP")
+  debug_inspect(
+    direction_to_string(direction_at(0)),
+    content=(
+      #|"UNDEFINED"
+    ),
+  )
+  debug_inspect(
+    direction_to_string(direction_at(1)),
+    content=(
+      #|"RIGHT"
+    ),
+  )
+  debug_inspect(
+    direction_to_string(direction_at(2)),
+    content=(
+      #|"LEFT"
+    ),
+  )
+  debug_inspect(
+    direction_to_string(direction_at(3)),
+    content=(
+      #|"DOWN"
+    ),
+  )
+  debug_inspect(
+    direction_to_string(direction_at(4)),
+    content=(
+      #|"UP"
+    ),
+  )
   debug_inspect(Direction::is_horizontal(direction_at(0)), content="false")
   debug_inspect(Direction::is_horizontal(direction_at(1)), content="true")
   debug_inspect(Direction::is_vertical(direction_at(4)), content="true")
   debug_inspect(Direction::is_vertical(direction_at(2)), content="false")
   debug_inspect(
     direction_to_string(Direction::opposite(direction_at(2))),
-    content="RIGHT",
+    content=(
+      #|"RIGHT"
+    ),
   )
   debug_inspect(
     direction_to_string(Direction::opposite(direction_at(1))),
-    content="LEFT",
+    content=(
+      #|"LEFT"
+    ),
   )
   debug_inspect(
     direction_to_string(Direction::opposite(direction_at(4))),
-    content="DOWN",
+    content=(
+      #|"DOWN"
+    ),
   )
   debug_inspect(
     direction_to_string(Direction::opposite(direction_at(3))),
-    content="UP",
+    content=(
+      #|"UP"
+    ),
   )
   debug_inspect(
     direction_to_string(Direction::opposite(direction_at(0))),
-    content="UNDEFINED",
+    content=(
+      #|"UNDEFINED"
+    ),
   )
 }
 
@@ -82,11 +117,15 @@ test "Direction helpers" {
 test "PortConstraints helpers" {
   debug_inspect(
     port_constraints_to_string(port_constraints_at(0)),
-    content="UNDEFINED",
+    content=(
+      #|"UNDEFINED"
+    ),
   )
   debug_inspect(
     port_constraints_to_string(port_constraints_at(5)),
-    content="FIXED_POS",
+    content=(
+      #|"FIXED_POS"
+    ),
   )
   debug_inspect(
     PortConstraints::is_pos_fixed(port_constraints_at(5)),
@@ -136,22 +175,53 @@ test "PortConstraints helpers" {
 
 ///|
 test "PortSide helpers" {
-  debug_inspect(port_side_to_string(port_side_at(0)), content="UNDEFINED")
-  debug_inspect(port_side_to_string(port_side_at(1)), content="NORTH")
-  debug_inspect(port_side_to_string(port_side_at(2)), content="EAST")
-  debug_inspect(port_side_to_string(port_side_at(3)), content="SOUTH")
-  debug_inspect(port_side_to_string(port_side_at(4)), content="WEST")
+  debug_inspect(
+    port_side_to_string(port_side_at(0)),
+    content=(
+      #|"UNDEFINED"
+    ),
+  )
+  debug_inspect(
+    port_side_to_string(port_side_at(1)),
+    content=(
+      #|"NORTH"
+    ),
+  )
+  debug_inspect(
+    port_side_to_string(port_side_at(2)),
+    content=(
+      #|"EAST"
+    ),
+  )
+  debug_inspect(
+    port_side_to_string(port_side_at(3)),
+    content=(
+      #|"SOUTH"
+    ),
+  )
+  debug_inspect(
+    port_side_to_string(port_side_at(4)),
+    content=(
+      #|"WEST"
+    ),
+  )
   debug_inspect(
     port_side_to_string(PortSide::right(port_side_at(1))),
-    content="EAST",
+    content=(
+      #|"EAST"
+    ),
   )
   debug_inspect(
     port_side_to_string(PortSide::left(port_side_at(1))),
-    content="WEST",
+    content=(
+      #|"WEST"
+    ),
   )
   debug_inspect(
     port_side_to_string(PortSide::opposed(port_side_at(1))),
-    content="SOUTH",
+    content=(
+      #|"SOUTH"
+    ),
   )
   debug_inspect(
     PortSide::are_adjacent(port_side_at(1), port_side_at(2)),
@@ -167,23 +237,33 @@ test "PortSide helpers" {
   )
   debug_inspect(
     port_side_to_string(port_side_from_direction(direction_at(4))),
-    content="NORTH",
+    content=(
+      #|"NORTH"
+    ),
   )
   debug_inspect(
     port_side_to_string(port_side_from_direction(direction_at(1))),
-    content="EAST",
+    content=(
+      #|"EAST"
+    ),
   )
   debug_inspect(
     port_side_to_string(port_side_from_direction(direction_at(3))),
-    content="SOUTH",
+    content=(
+      #|"SOUTH"
+    ),
   )
   debug_inspect(
     port_side_to_string(port_side_from_direction(direction_at(2))),
-    content="WEST",
+    content=(
+      #|"WEST"
+    ),
   )
   debug_inspect(
     port_side_to_string(port_side_from_direction(direction_at(0))),
-    content="UNDEFINED",
+    content=(
+      #|"UNDEFINED"
+    ),
   )
   debug_inspect(port_side_is_vertical(port_side_at(1)), content="true")
   debug_inspect(port_side_is_vertical(port_side_at(4)), content="false")
@@ -285,22 +365,32 @@ test "Size constraint and options helpers" {
   let size_options = size_options_values()
   debug_inspect(
     size_options_to_string(size_options[0]),
-    content="DEFAULT_MINIMUM_SIZE",
+    content=(
+      #|"DEFAULT_MINIMUM_SIZE"
+    ),
   )
   debug_inspect(
     size_options_to_string(size_options[1]),
-    content="MINIMUM_SIZE_ACCOUNTS_FOR_PADDING",
+    content=(
+      #|"MINIMUM_SIZE_ACCOUNTS_FOR_PADDING"
+    ),
   )
   debug_inspect(
     size_options_to_string(size_options[6]),
-    content="SPACE_EFFICIENT_PORT_LABELS",
+    content=(
+      #|"SPACE_EFFICIENT_PORT_LABELS"
+    ),
   )
   debug_inspect(
     size_options_to_string(size_options_value_of(0)),
-    content="DEFAULT_MINIMUM_SIZE",
+    content=(
+      #|"DEFAULT_MINIMUM_SIZE"
+    ),
   )
   debug_inspect(
     size_options_to_string(size_options_value_of(8)),
-    content="ASYMMETRICAL",
+    content=(
+      #|"ASYMMETRICAL"
+    ),
   )
 }

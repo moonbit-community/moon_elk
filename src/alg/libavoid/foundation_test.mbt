@@ -23,16 +23,36 @@ fn libavoid_server_read_output_data_or_abort(
 ///|
 test "LibavoidServerException stores message and cause" {
   let default_ex = new_libavoid_server_exception()
-  debug_inspect(default_ex.get_message(), content="")
+  debug_inspect(
+    default_ex.get_message(),
+    content=(
+      #|""
+    ),
+  )
   debug_inspect(default_ex.get_cause(), content="None")
 
   let with_message = new_libavoid_server_exception_with_message("failed")
-  debug_inspect(with_message.get_message(), content="failed")
-  debug_inspect(with_message.to_string(), content="failed")
+  debug_inspect(
+    with_message.get_message(),
+    content=(
+      #|"failed"
+    ),
+  )
+  debug_inspect(
+    with_message.to_string(),
+    content=(
+      #|"failed"
+    ),
+  )
 
   let with_cause = new_libavoid_server_exception_with_cause("failed", "io")
   debug_inspect(with_cause.get_cause(), content="Some(\"io\")")
-  debug_inspect(with_cause.to_string(), content="failed: io")
+  debug_inspect(
+    with_cause.to_string(),
+    content=(
+      #|"failed: io"
+    ),
+  )
 }
 
 ///|
@@ -92,7 +112,9 @@ test "LibavoidServerPool fetch release dispose and plugin stop interaction" {
       Some(value) => value.get_bundle().get_symbolic_name()
       None => ""
     },
-    content="org.adaptagrams.cola.libavoid",
+    content=(
+      #|"org.adaptagrams.cola.libavoid"
+    ),
   )
   plugin.stop()
   debug_inspect(libavoid_plugin_get_default() is None, content="true")

@@ -41,7 +41,9 @@ test "ConfigState constants mirror Java defaults" {
   )
   debug_inspect(
     base_grid_visibility_to_string(config_state_how_to_paint_grid(config)),
-    content="SIMPLE",
+    content=(
+      #|"SIMPLE"
+    ),
   )
   debug_inspect(config_state_mark_the_center(config), content="false")
   debug_inspect(config_state_draw_poly_lines_black(config), content="false")

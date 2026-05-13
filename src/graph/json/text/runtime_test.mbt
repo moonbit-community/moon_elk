@@ -20,15 +20,21 @@ test "ElkGraphJsonRuntimeModule exposes custom binding overrides" {
   let runtime_module = new_elk_graph_json_runtime_module()
   debug_inspect(
     runtime_module.bind_i_value_converter_service(),
-    content="org.eclipse.elk.graph.json.text.conversion.ElkGraphJsonValueConverterService",
+    content=(
+      #|"org.eclipse.elk.graph.json.text.conversion.ElkGraphJsonValueConverterService"
+    ),
   )
   debug_inspect(
     runtime_module.bind_i_qualified_name_provider(),
-    content="org.eclipse.elk.graph.json.text.naming.ElkGraphJsonQualifiedNameProvider",
+    content=(
+      #|"org.eclipse.elk.graph.json.text.naming.ElkGraphJsonQualifiedNameProvider"
+    ),
   )
   debug_inspect(
     runtime_module.bind_i_transient_value_service2(),
-    content="org.eclipse.elk.graph.json.text.serializer.ElkGraphJsonTransientValueService",
+    content=(
+      #|"org.eclipse.elk.graph.json.text.serializer.ElkGraphJsonTransientValueService"
+    ),
   )
 }
 
@@ -43,7 +49,9 @@ test "ElkGraphJsonStandaloneSetup registers extension maps" {
         graph_json_text_file_extension,
       ),
     ),
-    content="org.eclipse.xtext.resource.IResourceFactory",
+    content=(
+      #|"org.eclipse.xtext.resource.IResourceFactory"
+    ),
   )
   debug_inspect(
     graph_json_text_runtime_string_or_none(
@@ -51,7 +59,9 @@ test "ElkGraphJsonStandaloneSetup registers extension maps" {
         graph_json_text_file_extension,
       ),
     ),
-    content="org.eclipse.xtext.resource.IResourceServiceProvider",
+    content=(
+      #|"org.eclipse.xtext.resource.IResourceServiceProvider"
+    ),
   )
 }
 
@@ -74,7 +84,12 @@ test "ElkGraphJson value converters parse numbers keys and values" {
   @core.layout_meta_data_service_register_default_algorithms()
 
   let number_converter = new_graph_json_text_number_value_converter()
-  debug_inspect(number_converter.to_string(Some(12.0)), content="12")
+  debug_inspect(
+    number_converter.to_string(Some(12.0)),
+    content=(
+      #|"12"
+    ),
+  )
   debug_inspect(number_converter.to_value("-4.5"), content="-4.5")
 
   let key_converter = new_graph_json_text_property_key_value_converter()
@@ -82,9 +97,16 @@ test "ElkGraphJson value converters parse numbers keys and values" {
   let key = key_converter.to_value("\"algorithm\"")
   debug_inspect(
     graph_json_text_property_key_id(key),
-    content="org.eclipse.elk.algorithm",
+    content=(
+      #|"org.eclipse.elk.algorithm"
+    ),
   )
-  debug_inspect(key_converter.to_string(Some(key)), content="algorithm")
+  debug_inspect(
+    key_converter.to_string(Some(key)),
+    content=(
+      #|"algorithm"
+    ),
+  )
 
   let value_converter = new_graph_json_text_property_value_value_converter()
   let no_layout_option = @core.layout_meta_data_service_get_option_data(
@@ -101,7 +123,9 @@ test "ElkGraphJson value converters parse numbers keys and values" {
     value_converter.to_string(
       GraphJsonTextProxyValue("org.eclipse.elk.layered"),
     ),
-    content="\"org.eclipse.elk.layered\"",
+    content=(
+      #|"\"org.eclipse.elk.layered\""
+    ),
   )
   debug_inspect(
     value_converter.to_value("\"hello world\""),
@@ -149,7 +173,9 @@ test "ElkGraphJson syntactic and semantic sequencers keep generated defaults" {
   )
   debug_inspect(
     graph_json_text_property_value_to_string(result.value),
-    content="org.eclipse.elk.layered",
+    content=(
+      #|"org.eclipse.elk.layered"
+    ),
   )
 }
 
@@ -171,15 +197,21 @@ test "ElkGraphJson validator and issue-code provider expose generated defaults" 
   let validator = new_elk_graph_json_validator()
   debug_inspect(
     graph_json_text_runtime_bool_to_string(validator.is_enabled()),
-    content="true",
+    content=(
+      #|"true"
+    ),
   )
   let provider = new_elk_graph_json_configurable_issue_codes_provider()
   debug_inspect(
     provider.issue_code_prefix(),
-    content="org.eclipse.elk.graph.json.text.",
+    content=(
+      #|"org.eclipse.elk.graph.json.text."
+    ),
   )
   debug_inspect(
     provider.deprecated_model_part(),
-    content="org.eclipse.elk.graph.json.text.deprecatedModelPart",
+    content=(
+      #|"org.eclipse.elk.graph.json.text.deprecatedModelPart"
+    ),
   )
 }

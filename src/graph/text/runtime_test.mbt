@@ -24,23 +24,33 @@ test "ElkGraphRuntimeModule exposes custom binding overrides" {
   let runtime_module = new_elk_graph_runtime_module()
   debug_inspect(
     runtime_module.bind_i_value_converter_service(),
-    content="org.eclipse.elk.graph.text.conversion.ElkGraphValueConverterService",
+    content=(
+      #|"org.eclipse.elk.graph.text.conversion.ElkGraphValueConverterService"
+    ),
   )
   debug_inspect(
     runtime_module.bind_i_qualified_name_provider(),
-    content="org.eclipse.elk.graph.text.naming.ElkGraphQualifiedNameProvider",
+    content=(
+      #|"org.eclipse.elk.graph.text.naming.ElkGraphQualifiedNameProvider"
+    ),
   )
   debug_inspect(
     runtime_module.bind_i_qualified_name_converter(),
-    content="org.eclipse.elk.graph.text.naming.ElkGraphQualifiedNameConverter",
+    content=(
+      #|"org.eclipse.elk.graph.text.naming.ElkGraphQualifiedNameConverter"
+    ),
   )
   debug_inspect(
     runtime_module.bind_i_transient_value_service2(),
-    content="org.eclipse.elk.graph.text.serializer.ElkGraphTransientValueService",
+    content=(
+      #|"org.eclipse.elk.graph.text.serializer.ElkGraphTransientValueService"
+    ),
   )
   debug_inspect(
     runtime_module.bind_ilinker(),
-    content="org.eclipse.elk.graph.text.linking.ElkGraphLinker",
+    content=(
+      #|"org.eclipse.elk.graph.text.linking.ElkGraphLinker"
+    ),
   )
 }
 
@@ -53,13 +63,17 @@ test "ElkGraphStandaloneSetup registers extension maps" {
     graph_text_runtime_string_or_none(
       graph_text_registered_resource_factory(graph_text_file_extension),
     ),
-    content="org.eclipse.xtext.resource.IResourceFactory",
+    content=(
+      #|"org.eclipse.xtext.resource.IResourceFactory"
+    ),
   )
   debug_inspect(
     graph_text_runtime_string_or_none(
       graph_text_registered_resource_service_provider(graph_text_file_extension),
     ),
-    content="org.eclipse.xtext.resource.IResourceServiceProvider",
+    content=(
+      #|"org.eclipse.xtext.resource.IResourceServiceProvider"
+    ),
   )
 }
 
@@ -71,7 +85,12 @@ test "ElkGraphQualifiedNameConverter converts dotted names" {
     converter.to_qualified_name("org.eclipse.elk"),
     content="[\"org\", \"eclipse\", \"elk\"]",
   )
-  debug_inspect(converter.to_string(["org", "graph"]), content="org.^graph")
+  debug_inspect(
+    converter.to_string(["org", "graph"]),
+    content=(
+      #|"org.^graph"
+    ),
+  )
 }
 
 ///|
@@ -98,7 +117,12 @@ test "ElkGraph value converters parse numbers keys and values" {
   @core.layout_meta_data_service_register_default_algorithms()
 
   let number_converter = new_number_value_converter()
-  debug_inspect(number_converter.to_string(Some(12.0)), content="12")
+  debug_inspect(
+    number_converter.to_string(Some(12.0)),
+    content=(
+      #|"12"
+    ),
+  )
   debug_inspect(number_converter.to_value("-4.5"), content="-4.5")
 
   let key_converter = new_property_key_value_converter()
@@ -106,9 +130,16 @@ test "ElkGraph value converters parse numbers keys and values" {
   let key = key_converter.to_value("algorithm")
   debug_inspect(
     graph_text_property_key_id(key),
-    content="org.eclipse.elk.algorithm",
+    content=(
+      #|"org.eclipse.elk.algorithm"
+    ),
   )
-  debug_inspect(key_converter.to_string(Some(key)), content="algorithm")
+  debug_inspect(
+    key_converter.to_string(Some(key)),
+    content=(
+      #|"algorithm"
+    ),
+  )
 
   let value_converter = new_property_value_value_converter()
   let no_layout_option = @core.layout_meta_data_service_get_option_data(
@@ -123,7 +154,9 @@ test "ElkGraph value converters parse numbers keys and values" {
   )
   debug_inspect(
     value_converter.to_string(ProxyValue("org.eclipse.elk.layered")),
-    content="org.eclipse.elk.layered",
+    content=(
+      #|"org.eclipse.elk.layered"
+    ),
   )
   debug_inspect(
     value_converter.to_value("\"hello world\""),
@@ -174,7 +207,9 @@ test "ElkGraph syntactic and semantic sequencers keep generated defaults" {
   )
   debug_inspect(
     graph_text_property_value_to_string(result.value),
-    content="org.eclipse.elk.layered",
+    content=(
+      #|"org.eclipse.elk.layered"
+    ),
   )
 }
 
@@ -231,7 +266,9 @@ test "ElkGraphTextUtil resolves algorithm for nested elements" {
         None => None
       },
     ),
-    content="org.eclipse.elk.layered",
+    content=(
+      #|"org.eclipse.elk.layered"
+    ),
   )
 }
 

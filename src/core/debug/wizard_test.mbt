@@ -9,14 +9,24 @@ fn expect_some_string(value : String?) -> String {
 ///|
 test "AlgorithmProjectCreationPage tracks completion and algorithm name" {
   let page = new_algorithm_project_creation_page("sample")
-  debug_inspect(page.get_algorithm_name(), content="sample")
+  debug_inspect(
+    page.get_algorithm_name(),
+    content=(
+      #|"sample"
+    ),
+  )
   debug_inspect(page.is_page_complete(), content="true")
 
   page.set_algorithm_name("")
   debug_inspect(page.is_page_complete(), content="false")
 
   page.set_algorithm_name("myAlgorithm")
-  debug_inspect(page.get_algorithm_name(), content="myAlgorithm")
+  debug_inspect(
+    page.get_algorithm_name(),
+    content=(
+      #|"myAlgorithm"
+    ),
+  )
 }
 
 ///|
@@ -53,7 +63,14 @@ test "AlgorithmPluginContentWizard generates project files and nature" {
   debug_inspect(wizard.perform_finish(), content="true")
   debug_inspect(
     wizard.get_dependencies(),
-    content="[\"org.eclipse.elk.core\", \"org.eclipse.elk.graph\", \"org.eclipse.elk.alg.common\", \"com.google.guava\"]",
+    content=(
+      #|[
+      #|  "org.eclipse.elk.core",
+      #|  "org.eclipse.elk.graph",
+      #|  "org.eclipse.elk.alg.common",
+      #|  "com.google.guava",
+      #|]
+    ),
   )
 
   let project = new_core_debug_wizard_project("org.example.demo", natures=["n0"])
@@ -73,7 +90,9 @@ test "AlgorithmPluginContentWizard generates project files and nature" {
   debug_inspect(project.get_file(service_path) is Some(_), content="true")
   debug_inspect(
     expect_some_string(project.get_file(service_path)),
-    content="org.example.demo.DemoMetadataProvider",
+    content=(
+      #|"org.example.demo.DemoMetadataProvider"
+    ),
   )
   debug_inspect(
     project.has_nature("org.eclipse.xtext.ui.shared.xtextNature"),

@@ -53,7 +53,9 @@ test "in-layer constraint processor reports expected task name" {
   processor.process(new_l_graph(), Some(monitor))
   debug_inspect(
     monitor.get_task_name(),
-    content="Layer constraint edge reversal",
+    content=(
+      #|"Layer constraint edge reversal"
+    ),
   )
 }
 
@@ -93,6 +95,8 @@ test "in-layer constraint processor strategy creates in-layer processor" {
   processor.process(new_l_graph(), Some(monitor))
   debug_inspect(
     monitor.get_task_name(),
-    content="Layer constraint edge reversal",
+    content=(
+      #|"Layer constraint edge reversal"
+    ),
   )
 }

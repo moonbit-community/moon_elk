@@ -37,7 +37,12 @@ test "LayoutLogView joins selected execution logs like Java view" {
   let view = new_layout_log_view()
   view.set_selected_execution_infos([info_a, info_b])
 
-  debug_inspect(view.get_log_text(), content="log:a\n\n")
+  debug_inspect(
+    view.get_log_text(),
+    content=(
+      #|"log:a\n\n"
+    ),
+  )
   elk_debug_plugin_stop(plugin)
 }
 
@@ -82,9 +87,24 @@ test "ExecutionTimeLabelProvider formats total and local times" {
     execution_time_display_name(),
   )
 
-  debug_inspect(total_provider.get_text(info), content="1234.560")
-  debug_inspect(local_provider.get_text(info), content="")
-  debug_inspect(name_provider.get_text(info), content="timed (1)")
+  debug_inspect(
+    total_provider.get_text(info),
+    content=(
+      #|"1234.560"
+    ),
+  )
+  debug_inspect(
+    local_provider.get_text(info),
+    content=(
+      #|""
+    ),
+  )
+  debug_inspect(
+    name_provider.get_text(info),
+    content=(
+      #|"timed (1)"
+    ),
+  )
 }
 
 ///|
@@ -201,7 +221,9 @@ test "ImageExportAction completes png extension and records exports" {
     core_debug_plugin_get_string_preference(
       "imageExportAction.lastImageFile", "",
     ),
-    content="render.png",
+    content=(
+      #|"render.png"
+    ),
   )
 
   elk_debug_plugin_stop(plugin)

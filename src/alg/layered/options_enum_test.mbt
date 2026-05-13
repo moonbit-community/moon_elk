@@ -2,7 +2,16 @@
 test "edge label side transpose is bidirectional" {
   debug_inspect(
     edge_label_side_selection_transpose_values(),
-    content="[\"ALWAYS_DOWN\", \"ALWAYS_UP\", \"DIRECTION_DOWN\", \"DIRECTION_UP\", \"SMART_DOWN\", \"SMART_UP\"]",
+    content=(
+      #|[
+      #|  "ALWAYS_DOWN",
+      #|  "ALWAYS_UP",
+      #|  "DIRECTION_DOWN",
+      #|  "DIRECTION_UP",
+      #|  "SMART_DOWN",
+      #|  "SMART_UP",
+      #|]
+    ),
   )
 }
 
@@ -30,15 +39,47 @@ test "additional layered strategy enums keep upstream constant names" {
   )
   debug_inspect(
     cycle_breaking_strategy_values(),
-    content="[\"GREEDY\", \"DEPTH_FIRST\", \"INTERACTIVE\", \"MODEL_ORDER\", \"GREEDY_MODEL_ORDER\", \"SCC_CONNECTIVITY\", \"SCC_NODE_TYPE\", \"DFS_NODE_ORDER\", \"BFS_NODE_ORDER\"]",
+    content=(
+      #|[
+      #|  "GREEDY",
+      #|  "DEPTH_FIRST",
+      #|  "INTERACTIVE",
+      #|  "MODEL_ORDER",
+      #|  "GREEDY_MODEL_ORDER",
+      #|  "SCC_CONNECTIVITY",
+      #|  "SCC_NODE_TYPE",
+      #|  "DFS_NODE_ORDER",
+      #|  "BFS_NODE_ORDER",
+      #|]
+    ),
   )
   debug_inspect(
     layering_strategy_values(),
-    content="[\"NETWORK_SIMPLEX\", \"LONGEST_PATH\", \"LONGEST_PATH_SOURCE\", \"COFFMAN_GRAHAM\", \"INTERACTIVE\", \"STRETCH_WIDTH\", \"MIN_WIDTH\", \"BF_MODEL_ORDER\", \"DF_MODEL_ORDER\"]",
+    content=(
+      #|[
+      #|  "NETWORK_SIMPLEX",
+      #|  "LONGEST_PATH",
+      #|  "LONGEST_PATH_SOURCE",
+      #|  "COFFMAN_GRAHAM",
+      #|  "INTERACTIVE",
+      #|  "STRETCH_WIDTH",
+      #|  "MIN_WIDTH",
+      #|  "BF_MODEL_ORDER",
+      #|  "DF_MODEL_ORDER",
+      #|]
+    ),
   )
   debug_inspect(
     node_placement_strategy_values(),
-    content="[\"SIMPLE\", \"INTERACTIVE\", \"LINEAR_SEGMENTS\", \"BRANDES_KOEPF\", \"NETWORK_SIMPLEX\"]",
+    content=(
+      #|[
+      #|  "SIMPLE",
+      #|  "INTERACTIVE",
+      #|  "LINEAR_SEGMENTS",
+      #|  "BRANDES_KOEPF",
+      #|  "NETWORK_SIMPLEX",
+      #|]
+    ),
   )
   debug_inspect(
     interactive_reference_point_values(),
@@ -50,10 +91,44 @@ test "additional layered strategy enums keep upstream constant names" {
 test "node flexibility behavior matches upstream branch logic" {
   debug_inspect(
     node_flexibility_flags(),
-    content="[false, false, false, true, false, false, true, true, false, true, true, true]",
+    content=(
+      #|[
+      #|  false,
+      #|  false,
+      #|  false,
+      #|  true,
+      #|  false,
+      #|  false,
+      #|  true,
+      #|  true,
+      #|  false,
+      #|  true,
+      #|  true,
+      #|  true,
+      #|]
+    ),
   )
   debug_inspect(
     node_flexibility_is_at_least_values(),
-    content="[false, false, false, true, false, true, true, true, false, true, true, true, true, true, true, true]",
+    content=(
+      #|[
+      #|  false,
+      #|  false,
+      #|  false,
+      #|  true,
+      #|  false,
+      #|  true,
+      #|  true,
+      #|  true,
+      #|  false,
+      #|  true,
+      #|  true,
+      #|  true,
+      #|  true,
+      #|  true,
+      #|  true,
+      #|  true,
+      #|]
+    ),
   )
 }

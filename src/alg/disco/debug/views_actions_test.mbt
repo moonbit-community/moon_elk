@@ -66,7 +66,9 @@ test "DropdownIntRangeAction updates label, state and upper bound" {
   dropdown_int_range_action_apply_num(action, 2)
   debug_inspect(
     dropdown_int_range_action_get_text(action),
-    content="Show levels 2",
+    content=(
+      #|"Show levels 2"
+    ),
   )
   debug_inspect(config_state_get_lower_lvl(config), content="2")
   debug_inspect(config_state_get_upper_lvl(config), content="2")
@@ -120,7 +122,9 @@ test "DisCoImageExportAction stores selected normalized output path" {
   dis_co_image_export_action_run(action)
   debug_inspect(
     dis_co_image_export_action_get_last_file_name(),
-    content="render.png",
+    content=(
+      #|"render.png"
+    ),
   )
   debug_inspect(
     dis_co_image_export_action_get_exported_files(),

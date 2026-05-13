@@ -65,7 +65,9 @@ test "GraphvizDotRuntimeModule binds GraphvizDotSerializer" {
   let runtime_module = new_graphviz_dot_runtime_module()
   debug_inspect(
     runtime_module.bind_iserializer(),
-    content="org.eclipse.elk.alg.graphviz.dot.serializer.GraphvizDotSerializer",
+    content=(
+      #|"org.eclipse.elk.alg.graphviz.dot.serializer.GraphvizDotSerializer"
+    ),
   )
 
   let injector = runtime_module.create_injector()
@@ -75,7 +77,9 @@ test "GraphvizDotRuntimeModule binds GraphvizDotSerializer" {
       Some(value) => graphviz_dot_object_tag(value)
       None => "missing"
     },
-    content="serializer",
+    content=(
+      #|"serializer"
+    ),
   )
 }
 
@@ -95,7 +99,9 @@ test "GraphvizDotSerializer configures formatter request" {
       "digraph { a -> b; }",
       new_graphviz_dot_save_options(formatting=true),
     ),
-    content="digraph { a -> b; }|formatted",
+    content=(
+      #|"digraph { a -> b; }|formatted"
+    ),
   )
   debug_inspect(max_width_ref.val, content="255")
   debug_inspect(undefined_only_ref.val, content="false")
@@ -113,13 +119,17 @@ test "GraphvizDotStandaloneSetup registers package and extension" {
     graphviz_dot_runtime_test_string_or_none(
       graphviz_dot_registered_epackage(graphviz_dot_ns_uri),
     ),
-    content="org.eclipse.elk.alg.graphviz.dot.dot.DotPackage",
+    content=(
+      #|"org.eclipse.elk.alg.graphviz.dot.dot.DotPackage"
+    ),
   )
   debug_inspect(
     graphviz_dot_runtime_test_string_or_none(
       graphviz_dot_registered_resource_factory(graphviz_dot_file_extension),
     ),
-    content="org.eclipse.xtext.resource.IResourceFactory",
+    content=(
+      #|"org.eclipse.xtext.resource.IResourceFactory"
+    ),
   )
   debug_inspect(
     graphviz_dot_runtime_test_string_or_none(
@@ -127,7 +137,9 @@ test "GraphvizDotStandaloneSetup registers package and extension" {
         graphviz_dot_file_extension,
       ),
     ),
-    content="org.eclipse.xtext.resource.IResourceServiceProvider",
+    content=(
+      #|"org.eclipse.xtext.resource.IResourceServiceProvider"
+    ),
   )
 }
 
@@ -136,11 +148,15 @@ test "GraphvizDotSyntacticSequencer emits fixed optional keywords" {
   let sequencer = new_graphviz_dot_syntactic_sequencer()
   debug_inspect(
     sequencer.emit_attribute_statement_comma_keyword_2_1_0_q("", "", [0]),
-    content=",",
+    content=(
+      #|","
+    ),
   )
   debug_inspect(
     sequencer.emit_edge_statement_comma_keyword_2_1_1_0_q("", "", [0]),
-    content=",",
+    content=(
+      #|","
+    ),
   )
   debug_inspect(
     sequencer.emit_edge_statement___left_square_bracket_keyword_2_0_right_square_bracket_keyword_2_2__q(
@@ -148,11 +164,15 @@ test "GraphvizDotSyntacticSequencer emits fixed optional keywords" {
       "",
       [0],
     ),
-    content="[]",
+    content=(
+      #|"[]"
+    ),
   )
   debug_inspect(
     sequencer.emit_node_statement_comma_keyword_1_1_1_0_q("", "", [0]),
-    content=",",
+    content=(
+      #|","
+    ),
   )
   debug_inspect(
     sequencer.emit_node_statement___left_square_bracket_keyword_1_0_right_square_bracket_keyword_1_2__q(
@@ -160,15 +180,21 @@ test "GraphvizDotSyntacticSequencer emits fixed optional keywords" {
       "",
       [0],
     ),
-    content="[]",
+    content=(
+      #|"[]"
+    ),
   )
   debug_inspect(
     sequencer.emit_statement_semicolon_keyword_1_q("", "", [0]),
-    content=";",
+    content=(
+      #|";"
+    ),
   )
   debug_inspect(
     sequencer.emit_subgraph_subgraph_keyword_1_0_q("", "", [0]),
-    content="subgraph",
+    content=(
+      #|"subgraph"
+    ),
   )
 }
 
@@ -177,7 +203,9 @@ test "AbstractGraphvizDotSyntacticSequencer keeps ambiguous syntax defaults" {
   let sequencer = new_abstract_graphviz_dot_syntactic_sequencer()
   debug_inspect(
     sequencer.get_unassigned_rule_call_token("", "", ""),
-    content="",
+    content=(
+      #|""
+    ),
   )
   debug_inspect(
     sequencer.emit_unassigned_tokens("", [
@@ -194,18 +222,27 @@ test "AbstractGraphvizDotSemanticSequencer keeps sequence passthrough" {
   let sequencer = new_abstract_graphviz_dot_semantic_sequencer()
   debug_inspect(
     sequencer.sequence_graphviz_model("context", "graphviz-model"),
-    content="graphviz-model",
+    content=(
+      #|"graphviz-model"
+    ),
   )
   debug_inspect(
     sequencer.sequence_attribute("context", "attribute"),
-    content="attribute",
+    content=(
+      #|"attribute"
+    ),
   )
 }
 
 ///|
 test "GraphvizDotSemanticSequencer delegates semantic object unchanged" {
   let sequencer = new_graphviz_dot_semantic_sequencer()
-  debug_inspect(sequencer.sequence("statement"), content="statement")
+  debug_inspect(
+    sequencer.sequence("statement"),
+    content=(
+      #|"statement"
+    ),
+  )
 }
 
 ///|
@@ -256,9 +293,16 @@ test "GraphvizDotExecutableExtensionFactory resolves and initializes class" {
       Ok(value) => graphviz_dot_object_tag(value)
       Err(_error) => "error"
     },
-    content="executable_extension",
+    content=(
+      #|"executable_extension"
+    ),
   )
-  debug_inspect(contributor_ref.val, content="factory-test")
+  debug_inspect(
+    contributor_ref.val,
+    content=(
+      #|"factory-test"
+    ),
+  )
 
   activator.stop()
 }

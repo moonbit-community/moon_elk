@@ -1,13 +1,28 @@
 ///|
 test "GraphvizException keeps message and optional cause" {
   let without_cause = new_graphviz_exception("failed")
-  debug_inspect(without_cause.get_message(), content="failed")
+  debug_inspect(
+    without_cause.get_message(),
+    content=(
+      #|"failed"
+    ),
+  )
   debug_inspect(without_cause.get_cause(), content="None")
-  debug_inspect(without_cause.to_string(), content="failed")
+  debug_inspect(
+    without_cause.to_string(),
+    content=(
+      #|"failed"
+    ),
+  )
 
   let with_cause = new_graphviz_exception_with_cause("failed", "io")
   debug_inspect(with_cause.get_cause(), content="Some(\"io\")")
-  debug_inspect(with_cause.to_string(), content="failed: io")
+  debug_inspect(
+    with_cause.to_string(),
+    content=(
+      #|"failed: io"
+    ),
+  )
 }
 
 ///|
@@ -22,7 +37,9 @@ test "GraphvizLayouterPlugin controls shared instance and runtime detection" {
       Some(value) => value.get_bundle().get_symbolic_name()
       None => "none"
     },
-    content="org.eclipse.elk.alg.graphviz.layouter",
+    content=(
+      #|"org.eclipse.elk.alg.graphviz.layouter"
+    ),
   )
   debug_inspect(graphviz_layouter_is_eclipse_running(), content="true")
 
@@ -38,21 +55,33 @@ test "GraphvizLayouterPreferenceStore stores defaults and values" {
   let store = graphviz_layouter_preference_store_get_instance().get_preference_store()
   debug_inspect(
     store.get_symbolic_name(),
-    content="org.eclipse.elk.alg.graphviz.layouter",
+    content=(
+      #|"org.eclipse.elk.alg.graphviz.layouter"
+    ),
   )
 
   store.set_default_int("timeout", 20000)
   store.set_default_string("dot", "/usr/bin/dot")
   store.set_default_boolean("reuse", true)
   debug_inspect(store.get_int("timeout"), content="20000")
-  debug_inspect(store.get_string("dot"), content="/usr/bin/dot")
+  debug_inspect(
+    store.get_string("dot"),
+    content=(
+      #|"/usr/bin/dot"
+    ),
+  )
   debug_inspect(store.get_boolean("reuse"), content="true")
 
   store.set_int("timeout", 1000)
   store.set_string("dot", "/tmp/dot")
   store.set_boolean("reuse", false)
   debug_inspect(store.get_int("timeout"), content="1000")
-  debug_inspect(store.get_string("dot"), content="/tmp/dot")
+  debug_inspect(
+    store.get_string("dot"),
+    content=(
+      #|"/tmp/dot"
+    ),
+  )
   debug_inspect(store.get_boolean("reuse"), content="false")
 }
 
@@ -71,7 +100,9 @@ test "GraphvizLayouterPreferenceStoreAccess supports ui available fallback" {
   )
   debug_inspect(
     graphviz_layouter_preference_store_access_get_ui_save_string("dot"),
-    content="/usr/bin/dot",
+    content=(
+      #|"/usr/bin/dot"
+    ),
   )
   debug_inspect(
     graphviz_layouter_preference_store_access_get_ui_save_boolean(
@@ -87,7 +118,9 @@ test "GraphvizLayouterPreferenceStoreAccess supports ui available fallback" {
   )
   debug_inspect(
     graphviz_layouter_preference_store_access_get_ui_save_string("dot"),
-    content="",
+    content=(
+      #|""
+    ),
   )
   debug_inspect(
     graphviz_layouter_preference_store_access_get_ui_save_boolean("reuse", true),

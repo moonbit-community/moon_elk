@@ -67,10 +67,17 @@ test "Property-dependent resource paths resolve from test properties" {
   )
   debug_inspect(
     bundle_path.get_file(),
-    content="/workspace/test/org.eclipse.elk.alg.test/src",
+    content=(
+      #|"/workspace/test/org.eclipse.elk.alg.test/src"
+    ),
   )
   let model_path = new_model_resource_path("my.elkg")
-  debug_inspect(model_path.get_file(), content="/models/my.elkg")
+  debug_inspect(
+    model_path.get_file(),
+    content=(
+      #|"/models/my.elkg"
+    ),
+  )
   ignore(new_results_resource_path("run/report.txt"))
   ensure_results_path_exists()
   debug_inspect(core_debug_is_directory("/results"), content="true")
