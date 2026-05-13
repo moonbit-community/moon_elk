@@ -97,8 +97,8 @@ fn individual_spacings_parse_option(
       "The given string does not match the expected format for individual spacings.",
     )
   }
-  let option_suffix = option[0].trim().to_string()
-  let option_value = option[1].to_string()
+  let option_suffix = option[0].trim().to_owned()
+  let option_value = option[1].to_owned()
   let option_data = match
     layout_meta_data_service_get_option_data_by_suffix(option_suffix) {
     Some(value) => value
@@ -122,9 +122,7 @@ pub fn IndividualSpacings::parse(
     if option_string.is_empty() {
       continue
     }
-    try
-      individual_spacings_parse_option(self, option_string.to_string())
-    catch {
+    try individual_spacings_parse_option(self, option_string.to_owned()) catch {
       err =>
         layout_runtime_report_unsupported_configuration(
           individual_spacings_exception_message(err),

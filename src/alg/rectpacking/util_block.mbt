@@ -1,5 +1,5 @@
 ///|
-let rectpacking_next_block_id_ref : Ref[Int] = Ref::new(0)
+let rectpacking_next_block_id_ref : Ref[Int] = Ref(0)
 
 ///|
 fn rectpacking_next_block_id() -> Int {

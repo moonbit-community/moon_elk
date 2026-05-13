@@ -8,11 +8,11 @@ test "LayoutEditPolicyProvider installs layout policy on diagram edit parts" {
   provider.create_edit_policies(diagram)
   provider.create_edit_policies(shape)
 
-  inspect(
+  debug_inspect(
     gmf_edit_part_get_installed_edit_policy(diagram, apply_layout_role),
     content="Some(\"GmfLayoutEditPolicy\")",
   )
-  inspect(
+  debug_inspect(
     gmf_edit_part_get_installed_edit_policy(shape, apply_layout_role),
     content="None",
   )

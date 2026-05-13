@@ -215,7 +215,7 @@ pub struct GraphJsonTextActivator {
 }
 
 ///|
-let graph_json_text_activator_instance_ref : Ref[GraphJsonTextActivator?] = Ref::new(
+let graph_json_text_activator_instance_ref : Ref[GraphJsonTextActivator?] = Ref(
   None,
 )
 

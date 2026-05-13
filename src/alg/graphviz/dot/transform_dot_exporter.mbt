@@ -208,7 +208,7 @@ fn dot_exporter_parse_edge_label_placement(
   value : String?,
 ) -> @core.EdgeLabelPlacement {
   let normalized = match value {
-    Some(v) => v.trim().to_string().to_upper()
+    Some(v) => v.trim().to_owned().to_upper()
     None => ""
   }
   if normalized == "HEAD" || normalized.has_suffix(".HEAD") {
@@ -223,7 +223,7 @@ fn dot_exporter_parse_edge_label_placement(
 ///|
 fn dot_exporter_parse_int_token(text : String?) -> Int? {
   let normalized = match text {
-    Some(v) => v.trim().to_string()
+    Some(v) => v.trim().to_owned()
     None => ""
   }
   if normalized.is_empty() {
@@ -942,12 +942,12 @@ fn dot_exporter_is_number_char(c : Char) -> Bool {
 
 ///|
 fn dot_exporter_slice(text : String, start : Int, end_ : Int) -> String {
-  text[start:end_].to_string()
+  text[start:end_].to_owned()
 }
 
 ///|
 fn dot_exporter_slice_from(text : String, start : Int) -> String {
-  text[start:].to_string()
+  text[start:].to_owned()
 }
 
 ///|
@@ -1417,7 +1417,7 @@ fn dot_exporter_split_on_quote_and_semicolon(text : String) -> Array[String] {
       if token_start < index {
         let token = dot_exporter_slice(text, token_start, index)
           .trim()
-          .to_string()
+          .to_owned()
         if !token.is_empty() {
           tokens.push(token)
         }
@@ -1427,7 +1427,7 @@ fn dot_exporter_split_on_quote_and_semicolon(text : String) -> Array[String] {
     index += 1
   }
   if token_start < text.length() {
-    let token = dot_exporter_slice_from(text, token_start).trim().to_string()
+    let token = dot_exporter_slice_from(text, token_start).trim().to_owned()
     if !token.is_empty() {
       tokens.push(token)
     }
@@ -1458,7 +1458,7 @@ fn dot_exporter_split_on_whitespace(text : String) -> Array[String] {
 
 ///|
 fn dot_exporter_parse_double_token(text : String) -> Double? {
-  let normalized = text.trim().to_string()
+  let normalized = text.trim().to_owned()
   if normalized.is_empty() {
     return None
   }
@@ -1471,7 +1471,7 @@ fn dot_exporter_parse_double_token(text : String) -> Double? {
 
 ///|
 fn dot_exporter_parse_point_token(token : String) -> @core.KVector? {
-  let mut normalized = token.trim().to_string()
+  let mut normalized = token.trim().to_owned()
   if normalized.length() >= 2 &&
     normalized.has_prefix("\"") &&
     normalized.has_suffix("\"") {
@@ -1486,8 +1486,8 @@ fn dot_exporter_parse_point_token(token : String) -> @core.KVector? {
   }
   match
     (
-      dot_exporter_parse_double_token(parts[0].to_string()),
-      dot_exporter_parse_double_token(parts[1].to_string()),
+      dot_exporter_parse_double_token(parts[0].to_owned()),
+      dot_exporter_parse_double_token(parts[1].to_owned()),
     ) {
     (Some(x), Some(y)) => Some(@core.new_kvector_xy(x, y))
     _ => None

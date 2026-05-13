@@ -20,7 +20,7 @@ fn t_triangle_to_signed_int32(value : Int64) -> Int {
 }
 
 ///|
-let t_triangle_uid_counter : Ref[Int] = Ref::new(0)
+let t_triangle_uid_counter : Ref[Int] = Ref(0)
 
 ///|
 fn next_t_triangle_uid() -> Int {

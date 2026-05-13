@@ -268,7 +268,7 @@ pub fn LayoutPropertyDescriptor::get_description(
   let description = self.option_data.get_description()
   let parts = Array::from_iter(description.split("."))
   if parts.length() > 1 && !parts[0].is_empty() {
-    parts[0].to_string() + "."
+    parts[0].to_owned() + "."
   } else {
     description
   }

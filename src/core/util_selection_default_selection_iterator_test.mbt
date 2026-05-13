@@ -75,7 +75,7 @@ test "DefaultSelectionIterator follows edge direction without ports" {
   let result = selection_graph_elements_to_strings(
     selection_iterator_collect(iterator, 32),
   )
-  assert_eq(result, ["E:\{edge1}", "E:\{edge2}"])
+  @core_debug.assert_eq(result, ["E:\{edge1}", "E:\{edge2}"])
 }
 
 ///|
@@ -99,7 +99,7 @@ test "DefaultSelectionIterator optionally includes ports" {
   let result = selection_graph_elements_to_strings(
     selection_iterator_collect(iterator, 32),
   )
-  assert_eq(result, [
+  @core_debug.assert_eq(result, [
     "P:\{port1}",
     "E:\{edge1}",
     "P:\{port2}",
@@ -126,7 +126,7 @@ test "DefaultSelectionIterator can traverse against edge direction" {
   let result = selection_graph_elements_to_strings(
     selection_iterator_collect(iterator, 32),
   )
-  assert_eq(result, ["E:\{edge1}"])
+  @core_debug.assert_eq(result, ["E:\{edge1}"])
 }
 
 ///|
@@ -141,7 +141,7 @@ test "DefaultSelectionIterator ignores non-port edge endpoints" {
   let result = selection_graph_elements_to_strings(
     selection_iterator_collect(iterator, 32),
   )
-  assert_eq(result, [])
+  @core_debug.assert_eq(result, [])
 }
 
 ///|
@@ -165,11 +165,11 @@ test "DefaultSelectionIterator supports shared visited sets" {
   let forward_result = selection_graph_elements_to_strings(
     selection_iterator_collect(forward, 32),
   )
-  assert_eq(forward_result, ["E:\{edge1}", "E:\{edge0}"])
+  @core_debug.assert_eq(forward_result, ["E:\{edge1}", "E:\{edge0}"])
 
   let backward_result = selection_graph_elements_to_strings(
     selection_iterator_collect(backward, 32),
   )
-  assert_eq(backward_result, [])
+  @core_debug.assert_eq(backward_result, [])
   assert_false(backward.has_next())
 }

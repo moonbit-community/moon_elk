@@ -27,12 +27,12 @@ test "GmfLayoutSetup create_injector overrides connector bindings" {
   let defaults = new_gmf_injector(bindings={ "A": "B" })
   let injector = setup.create_injector(defaults)
 
-  inspect(injector.binding_of("A"), content="Some(\"B\")")
-  inspect(
+  debug_inspect(injector.binding_of("A"), content="Some(\"B\")")
+  debug_inspect(
     injector.binding_of("IDiagramLayoutConnector"),
     content="Some(\"GmfDiagramLayoutConnector\")",
   )
-  inspect(
+  debug_inspect(
     injector.binding_of("ILayoutConfigurationStore.Provider"),
     content="Some(\"GmfLayoutConfigurationStore.Provider\")",
   )

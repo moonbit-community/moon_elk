@@ -25,7 +25,7 @@ test "GraphvizLayoutProvider reports invalid initialization parameter" {
   @core.layout_runtime_clear_error()
   let provider = new_graphviz_layout_provider()
   provider.initialize(Some("not-a-command"))
-  inspect(
+  debug_inspect(
     @core.layout_runtime_take_error_message(),
     content="Some(\"org.eclipse.elk.core.UnsupportedConfigurationException: Invalid Graphviz command.\")",
   )
@@ -39,7 +39,7 @@ test "GraphvizLayoutProvider reports missing initialize before layout" {
   let root = @graph.create_graph()
   ignore(@graph.create_node(Some(root)))
   provider.layout(root, @core.new_elk_progress_monitor())
-  inspect(
+  debug_inspect(
     @core.layout_runtime_take_error_message(),
     content="Some(\"org.eclipse.elk.core.UnsupportedConfigurationException: The Graphviz layout provider is not initialized.\")",
   )
@@ -52,13 +52,13 @@ test "GraphvizLayoutProvider returns early for empty parent" {
   graphviz_tool_set_default_locations_for_test(["/usr/bin/"])
   graphviz_tool_set_executable_probe_for_test(path => path == "/usr/bin/dot")
 
-  let process_count : Ref[Int] = Ref::new(0)
+  let process_count : Ref[Int] = Ref(0)
   graphviz_tool_set_process_factory_for_test(_args => {
     process_count.val = process_count.val + 1
     Some(
       graphviz_layout_provider_test_process(
         graphviz_layout_provider_test_default_graph_bytes_for_test(),
-        Ref::new(0),
+        Ref(0),
       ),
     )
   })
@@ -69,8 +69,8 @@ test "GraphvizLayoutProvider returns early for empty parent" {
   let monitor = @core.new_elk_progress_monitor()
   provider.layout(root, monitor)
 
-  inspect(process_count.val, content="0")
-  inspect(monitor.is_running(), content="false")
+  debug_inspect(process_count.val, content="0")
+  debug_inspect(monitor.is_running(), content="false")
 }
 
 ///|
@@ -81,9 +81,9 @@ test "GraphvizLayoutProvider runs pipeline and records debug streams" {
   graphviz_tool_set_default_locations_for_test(["/usr/bin/"])
   graphviz_tool_set_executable_probe_for_test(path => path == "/usr/bin/dot")
 
-  let destroyed_ref : Ref[Int] = Ref::new(0)
-  let parse_input_ref : Ref[Array[Int]] = Ref::new([])
-  let serialized_ref : Ref[Array[Int]] = Ref::new([])
+  let destroyed_ref : Ref[Int] = Ref(0)
+  let parse_input_ref : Ref[Array[Int]] = Ref([])
+  let serialized_ref : Ref[Array[Int]] = Ref([])
   let parser_model = graphviz_layout_provider_test_model()
 
   graphviz_tool_set_process_factory_for_test(_args => {
@@ -111,18 +111,18 @@ test "GraphvizLayoutProvider runs pipeline and records debug streams" {
   @graph.node_set_bool_property(root, graphviz_layout_provider_debug_mode, true)
   provider.layout(root, @core.new_elk_progress_monitor())
 
-  inspect(serialized_ref.val, content="[100, 111, 116]")
-  inspect(
+  debug_inspect(serialized_ref.val, content="[100, 111, 116]")
+  debug_inspect(
     graphviz_layout_provider_get_debug_bytes_for_test("debug001-in.dot"),
     content="Some([100, 111, 116, 10])",
   )
-  inspect(parse_input_ref.val.length() > 0, content="true")
-  inspect(
+  debug_inspect(parse_input_ref.val.length() > 0, content="true")
+  debug_inspect(
     graphviz_layout_provider_get_debug_bytes_for_test("debug001-out.dot")
     is Some(_),
     content="true",
   )
-  inspect(destroyed_ref.val, content="1")
+  debug_inspect(destroyed_ref.val, content="1")
 }
 
 ///|
@@ -136,7 +136,7 @@ test "GraphvizLayoutProvider honors reuse-process preference and dispose stops t
 
   graphviz_tool_set_default_locations_for_test(["/usr/bin/"])
   graphviz_tool_set_executable_probe_for_test(path => path == "/usr/bin/dot")
-  let destroyed_ref : Ref[Int] = Ref::new(0)
+  let destroyed_ref : Ref[Int] = Ref(0)
   graphviz_tool_set_process_factory_for_test(_args => {
     Some(
       graphviz_layout_provider_test_process(
@@ -160,9 +160,9 @@ test "GraphvizLayoutProvider honors reuse-process preference and dispose stops t
   let root = @graph.create_graph()
   ignore(@graph.create_node(Some(root)))
   provider.layout(root, @core.new_elk_progress_monitor())
-  inspect(destroyed_ref.val, content="0")
+  debug_inspect(destroyed_ref.val, content="0")
 
   provider.dispose()
-  inspect(destroyed_ref.val, content="1")
+  debug_inspect(destroyed_ref.val, content="1")
   plugin.stop()
 }

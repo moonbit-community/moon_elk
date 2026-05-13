@@ -90,9 +90,11 @@ test "semi @core.interactive processor reports expected task name" {
   let processor = new_semi_interactive_cross_min_processor_layout_processor()
   let monitor = new_elk_progress_monitor()
   processor.process(new_l_graph(), Some(monitor))
-  inspect(
+  debug_inspect(
     monitor.get_task_name(),
-    content="Semi-Interactive Crossing Minimization Processor",
+    content=(
+      #|"Semi-Interactive Crossing Minimization Processor"
+    ),
   )
 }
 
@@ -140,9 +142,12 @@ test "semi @core.interactive processor sorts positioned normal nodes by y and ad
   let processor = new_semi_interactive_cross_min_processor_layout_processor()
   processor.process(graph, None)
 
-  inspect(semi_interactive_test_successor_ids(normal_low), content="[1]")
-  inspect(semi_interactive_test_successor_ids(normal_high), content="[]")
-  inspect(semi_interactive_test_successor_ids(normal_no_position), content="[]")
+  debug_inspect(semi_interactive_test_successor_ids(normal_low), content="[1]")
+  debug_inspect(semi_interactive_test_successor_ids(normal_high), content="[]")
+  debug_inspect(
+    semi_interactive_test_successor_ids(normal_no_position),
+    content="[]",
+  )
   assert_true(
     graph.get_property_bool(
       internal_properties_in_layer_successor_constraints_between_non_dummies,

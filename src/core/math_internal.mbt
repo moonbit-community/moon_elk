@@ -99,7 +99,7 @@ fn _split_by_any_delims_drop_trailing_empty(
 
 ///|
 fn _parse_double_or_abort(raw : String, message : String) -> Double {
-  let text = raw.trim().to_string()
+  let text = raw.trim().to_owned()
   if text.length() == 0 {
     try math_parse_raise_unit(message) catch {
       err =>

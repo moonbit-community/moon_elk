@@ -248,8 +248,11 @@ test "ElkEngine option precedence and spacing" {
   let children = json_arr(json_obj_field(laid_out, "children"))
   let n1 = children[0]
   let n2 = children[1]
-  assert_eq(json_int_field(n1, "y"), json_int_field(n2, "y"))
-  assert_eq((json_int_field(n2, "x") - json_int_field(n1, "x")).abs(), 21)
+  @core_debug.assert_eq(json_int_field(n1, "y"), json_int_field(n2, "y"))
+  @core_debug.assert_eq(
+    (json_int_field(n2, "x") - json_int_field(n1, "x")).abs(),
+    21,
+  )
 }
 
 ///|
@@ -261,12 +264,15 @@ test "ElkEngine concrete graph options are not overridden" {
   })
   let graph_obj = json_obj(laid_out)
   let graph_layout_options = json_obj(json_obj_field(laid_out, "layoutOptions"))
-  assert_eq(graph_layout_options.get("elk.direction"), Some(j_str("RIGHT")))
+  @core_debug.assert_eq(
+    graph_layout_options.get("elk.direction"),
+    Some(j_str("RIGHT")),
+  )
   let children = json_arr(graph_obj["children"])
   let n1 = children[0]
   let n2 = children[1]
   assert_true((json_int_field(n2, "x") - json_int_field(n1, "x")).abs() > 0)
-  assert_eq(json_int_field(n1, "y"), json_int_field(n2, "y"))
+  @core_debug.assert_eq(json_int_field(n1, "y"), json_int_field(n2, "y"))
 }
 
 ///|
@@ -288,10 +294,10 @@ test "ElkEngine parses ElkPadding" {
   let laid_out = elk.layout(graph~)
   let children = json_arr(json_obj_field(laid_out, "children"))
   let n1 = children[0]
-  assert_eq(json_int_field(n1, "x"), 2)
-  assert_eq(json_int_field(n1, "y"), 3)
-  assert_eq(json_int_field(laid_out, "width"), 15)
-  assert_eq(json_int_field(laid_out, "height"), 15)
+  @core_debug.assert_eq(json_int_field(n1, "x"), 2)
+  @core_debug.assert_eq(json_int_field(n1, "y"), 3)
+  @core_debug.assert_eq(json_int_field(laid_out, "width"), 15)
+  @core_debug.assert_eq(json_int_field(laid_out, "height"), 15)
 }
 
 ///|
@@ -315,8 +321,8 @@ test "ElkEngine parses KVector for fixed algorithm" {
     "algorithm": j_str("fixed"),
   })
   let n1 = json_arr(json_obj_field(laid_out, "children"))[0]
-  assert_eq(json_int_field(n1, "x"), 23)
-  assert_eq(json_int_field(n1, "y"), 43)
+  @core_debug.assert_eq(json_int_field(n1, "x"), 23)
+  @core_debug.assert_eq(json_int_field(n1, "y"), 43)
 }
 
 ///|
@@ -351,10 +357,10 @@ test "ElkEngine parses KVectorChain for fixed edges" {
   let section0 = sections[0]
   let start = json_obj_field(section0, "startPoint")
   let end = json_obj_field(section0, "endPoint")
-  assert_eq(json_int_field(start, "x"), 1)
-  assert_eq(json_int_field(start, "y"), 2)
-  assert_eq(json_int_field(end, "x"), 3)
-  assert_eq(json_int_field(end, "y"), 4)
+  @core_debug.assert_eq(json_int_field(start, "x"), 1)
+  @core_debug.assert_eq(json_int_field(start, "y"), 2)
+  @core_debug.assert_eq(json_int_field(end, "x"), 3)
+  @core_debug.assert_eq(json_int_field(end, "y"), 4)
 }
 
 ///|
@@ -386,7 +392,10 @@ test "ElkEngine default global layout options" {
   let children = json_arr(json_obj_field(laid_out, "children"))
   let n1 = children[0]
   let n2 = children[1]
-  assert_eq((json_int_field(n2, "x") - json_int_field(n1, "x")).abs(), 43)
+  @core_debug.assert_eq(
+    (json_int_field(n2, "x") - json_int_field(n1, "x")).abs(),
+    43,
+  )
 }
 
 ///|
@@ -401,7 +410,7 @@ test "ElkEngine logging behavior" {
   let log_obj = json_obj(json_obj_field(with_logging, "logging"))
   ignore(json_obj_field(with_logging, "logging"))
   ignore(log_obj["children"])
-  assert_eq(log_obj.get("executionTime"), None)
+  @core_debug.assert_eq(log_obj.get("executionTime"), None)
   let with_timing = elk.layout(
     graph~,
     layout_options={ "algorithm": j_str("layered") },
@@ -415,7 +424,7 @@ test "ElkEngine logging behavior" {
     measure_execution_time=false,
   )
   let without_obj = json_obj(without_logging)
-  assert_eq(without_obj.get("logging"), None)
+  @core_debug.assert_eq(without_obj.get("logging"), None)
 }
 
 ///|
@@ -425,7 +434,7 @@ test "ElkEngine clears previous logging" {
   ignore(elk.layout(graph~, logging=true))
   assert_true(json_obj(graph).get("logging") is Some(_))
   ignore(elk.layout(graph~))
-  assert_eq(json_obj(graph).get("logging"), None)
+  @core_debug.assert_eq(json_obj(graph).get("logging"), None)
 }
 
 ///|
@@ -469,10 +478,10 @@ test "ElkEngine SPOrE algorithms" {
     "elk.padding": j_str("[left=2, top=2, right=2, bottom=2]"),
   })
   let compaction_children = json_arr(json_obj_field(compaction, "children"))
-  assert_eq(json_int_field(compaction_children[0], "x"), 2)
-  assert_eq(json_int_field(compaction_children[0], "y"), 2)
-  assert_eq(json_int_field(compaction_children[1], "x"), 26)
-  assert_eq(json_int_field(compaction_children[1], "y"), 26)
+  @core_debug.assert_eq(json_int_field(compaction_children[0], "x"), 2)
+  @core_debug.assert_eq(json_int_field(compaction_children[0], "y"), 2)
+  @core_debug.assert_eq(json_int_field(compaction_children[1], "x"), 26)
+  @core_debug.assert_eq(json_int_field(compaction_children[1], "y"), 26)
   let overlap_graph = j_obj([
     ("id", j_str("root")),
     (
@@ -511,10 +520,10 @@ test "ElkEngine SPOrE algorithms" {
     "elk.padding": j_str("[left=3, top=3, right=3, bottom=3]"),
   })
   let overlap_children = json_arr(json_obj_field(overlap, "children"))
-  assert_eq(json_int_field(overlap_children[0], "x"), 3)
-  assert_eq(json_int_field(overlap_children[0], "y"), 3)
-  assert_eq(json_int_field(overlap_children[1], "x"), 26)
-  assert_eq(json_int_field(overlap_children[1], "y"), 26)
+  @core_debug.assert_eq(json_int_field(overlap_children[0], "x"), 3)
+  @core_debug.assert_eq(json_int_field(overlap_children[0], "y"), 3)
+  @core_debug.assert_eq(json_int_field(overlap_children[1], "x"), 26)
+  @core_debug.assert_eq(json_int_field(overlap_children[1], "y"), 26)
   assert_true(
     (try? elk.layout(graph=overlap_graph, layout_options={
       "algorithm": j_str("elk.rectpacking"),
@@ -700,7 +709,7 @@ test "ElkEngine hierarchical layout behavior (bug #8)" {
   let child_a = json_arr(json_obj_field(included, "children"))[0]
   let child_a_edges = json_arr(json_obj_field(child_a, "edges"))
   let edge_sections = json_arr(json_obj_field(child_a_edges[0], "sections"))
-  assert_eq(edge_sections.length(), 1)
+  @core_debug.assert_eq(edge_sections.length(), 1)
   ignore(json_obj_field(edge_sections[0], "startPoint"))
   ignore(json_obj_field(edge_sections[0], "endPoint"))
   let included_primitive = elk.layout(graph=make_bug8_graph(true), layout_options={
@@ -713,7 +722,7 @@ test "ElkEngine hierarchical layout behavior (bug #8)" {
   let primitive_sections = json_arr(
     json_obj_field(primitive_edges[0], "sections"),
   )
-  assert_eq(primitive_sections.length(), 1)
+  @core_debug.assert_eq(primitive_sections.length(), 1)
 }
 
 ///|

@@ -53,10 +53,10 @@ pub struct CGroupBuilder {
 }
 
 ///|
-let cnode_store : Ref[Array[CNodeData]] = Ref::new([])
+let cnode_store : Ref[Array[CNodeData]] = Ref([])
 
 ///|
-let cgroup_store : Ref[Array[CGroupData]] = Ref::new([])
+let cgroup_store : Ref[Array[CGroupData]] = Ref([])
 
 ///|
 fn[T : Eq] array_add_unique(array : Array[T], value : T) -> Bool {

@@ -35,13 +35,16 @@ test "LayeredRectilinearConvexHull cross" {
     new_layered_point(0.0, 2.0),
   ]
   let hull = layered_rectilinear_convex_hull_of(points)
-  assert_eq(layered_point_xy(hull.get_hull()), layered_point_xy(points))
+  @core_debug.assert_eq(
+    layered_point_xy(hull.get_hull()),
+    layered_point_xy(points),
+  )
   let expected_rectangles = [
     @core.new_elk_rectangle_xywh(0.0, 1.0, 1.0, 1.0),
     @core.new_elk_rectangle_xywh(1.0, 0.0, 1.0, 3.0),
     @core.new_elk_rectangle_xywh(2.0, 1.0, 1.0, 1.0),
   ]
-  assert_eq(
+  @core_debug.assert_eq(
     layered_rect_xywh(hull.split_into_rectangles()),
     layered_rect_xywh(expected_rectangles),
   )
@@ -72,7 +75,10 @@ test "LayeredRectilinearConvexHull little robot" {
     new_layered_point(0.0, 2.0),
   ]
   let hull = layered_rectilinear_convex_hull_of(points)
-  assert_eq(layered_point_xy(hull.get_hull()), layered_point_xy(points))
+  @core_debug.assert_eq(
+    layered_point_xy(hull.get_hull()),
+    layered_point_xy(points),
+  )
   let expected_rectangles = [
     @core.new_elk_rectangle_xywh(0.0, 2.0, 1.0, 0.0),
     @core.new_elk_rectangle_xywh(1.0, 1.0, 1.0, 2.0),
@@ -80,7 +86,7 @@ test "LayeredRectilinearConvexHull little robot" {
     @core.new_elk_rectangle_xywh(2.0, 1.0, 1.0, 2.0),
     @core.new_elk_rectangle_xywh(3.0, 2.0, 1.0, 0.0),
   ]
-  assert_eq(
+  @core_debug.assert_eq(
     layered_rect_xywh(hull.split_into_rectangles()),
     layered_rect_xywh(expected_rectangles),
   )

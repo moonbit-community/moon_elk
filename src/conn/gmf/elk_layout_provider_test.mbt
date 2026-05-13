@@ -58,9 +58,12 @@ test "ElkLayoutProvider layout_layout_nodes invokes diagram layout engine with p
 
   let run_all = provider.layout_layout_nodes([], false, hint)
   run_all()
-  inspect(gmf_last_layout_invocation_single_part(), content="Some(0)")
-  inspect(gmf_last_layout_invocation_progress_dialog(), content="Some(true)")
-  inspect(gmf_last_layout_invocation_zoom_to_fit(), content="Some(true)")
+  debug_inspect(gmf_last_layout_invocation_single_part(), content="Some(0)")
+  debug_inspect(
+    gmf_last_layout_invocation_progress_dialog(),
+    content="Some(true)",
+  )
+  debug_inspect(gmf_last_layout_invocation_zoom_to_fit(), content="Some(true)")
 
   let run_selected = provider.layout_layout_nodes(
     [new_gmf_layout_node("shape")],
@@ -68,7 +71,10 @@ test "ElkLayoutProvider layout_layout_nodes invokes diagram layout engine with p
     hint,
   )
   run_selected()
-  inspect(gmf_last_layout_invocation_multiple_parts(), content="Some([1])")
+  debug_inspect(
+    gmf_last_layout_invocation_multiple_parts(),
+    content="Some([1])",
+  )
 }
 
 ///|

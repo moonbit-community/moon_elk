@@ -47,7 +47,7 @@ fn lgraph_to_cgraph_transformer_port_side_equals(
 fn lgraph_to_cgraph_transformer_parse_edge_routing(
   value : String,
 ) -> @core.EdgeRouting {
-  let normalized = value.trim().to_string().to_upper()
+  let normalized = value.trim().to_owned().to_upper()
   match normalized {
     "POLYLINE" => @core.EdgeRouting::Polyline
     "SPLINES" => @core.EdgeRouting::Splines

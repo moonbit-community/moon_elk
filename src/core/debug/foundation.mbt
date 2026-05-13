@@ -58,10 +58,10 @@ pub(all) struct CoreDebugLayoutListener {
 }
 
 ///|
-let core_debug_layout_listener_id_ref : Ref[Int] = Ref::new(0)
+let core_debug_layout_listener_id_ref : Ref[Int] = Ref(0)
 
 ///|
-let core_debug_layout_listeners_ref : Ref[Array[CoreDebugLayoutListener]] = Ref::new([],
+let core_debug_layout_listeners_ref : Ref[Array[CoreDebugLayoutListener]] = Ref([],
 )
 
 ///|
@@ -119,12 +119,10 @@ pub fn core_debug_layout_connectors_fire_layout_done(
 }
 
 ///|
-let core_debug_service_boolean_preferences_ref : Ref[Map[String, Bool]] = Ref::new({},
-)
+let core_debug_service_boolean_preferences_ref : Ref[Map[String, Bool]] = Ref({})
 
 ///|
-let core_debug_plugin_string_preferences_ref : Ref[Map[String, String]] = Ref::new({},
-)
+let core_debug_plugin_string_preferences_ref : Ref[Map[String, String]] = Ref({})
 
 ///|
 pub fn core_debug_service_get_boolean_preference(
@@ -175,13 +173,13 @@ fn core_debug_dialog_key(section : String, key : String) -> String {
 }
 
 ///|
-let core_debug_dialog_bool_ref : Ref[Map[String, Bool]] = Ref::new({})
+let core_debug_dialog_bool_ref : Ref[Map[String, Bool]] = Ref({})
 
 ///|
-let core_debug_dialog_int_ref : Ref[Map[String, Int]] = Ref::new({})
+let core_debug_dialog_int_ref : Ref[Map[String, Int]] = Ref({})
 
 ///|
-let core_debug_dialog_string_ref : Ref[Map[String, String]] = Ref::new({})
+let core_debug_dialog_string_ref : Ref[Map[String, String]] = Ref({})
 
 ///|
 pub fn core_debug_dialog_settings_section(
@@ -242,14 +240,13 @@ pub fn CoreDebugDialogSettingsSection::get_string(
 }
 
 ///|
-let core_debug_directory_children_ref : Ref[Map[String, Array[String]]] = Ref::new({},
-)
+let core_debug_directory_children_ref : Ref[Map[String, Array[String]]] = Ref({})
 
 ///|
-let core_debug_regular_files_ref : Ref[Map[String, Bool]] = Ref::new({})
+let core_debug_regular_files_ref : Ref[Map[String, Bool]] = Ref({})
 
 ///|
-let core_debug_launched_programs_ref : Ref[Array[String]] = Ref::new([])
+let core_debug_launched_programs_ref : Ref[Array[String]] = Ref([])
 
 ///|
 fn core_debug_path_trim_trailing_slash(path : String) -> String {
@@ -325,7 +322,7 @@ pub(all) struct CoreDebugZipOutput {
 }
 
 ///|
-let core_debug_zip_outputs_ref : Ref[Array[CoreDebugZipOutput]] = Ref::new([])
+let core_debug_zip_outputs_ref : Ref[Array[CoreDebugZipOutput]] = Ref([])
 
 ///|
 pub fn core_debug_record_zip_output(
@@ -341,7 +338,7 @@ pub fn core_debug_get_zip_outputs_for_test() -> Array[CoreDebugZipOutput] {
 }
 
 ///|
-let core_debug_graph_file_contents_ref : Ref[Map[String, String]] = Ref::new({})
+let core_debug_graph_file_contents_ref : Ref[Map[String, String]] = Ref({})
 
 ///|
 pub fn core_debug_register_graph_file_for_test(

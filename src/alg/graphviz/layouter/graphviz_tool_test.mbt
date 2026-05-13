@@ -51,7 +51,7 @@ test "GraphvizTool resolves executable from defaults and preferences" {
   graphviz_layouter_preference_store_access_reset_for_test()
   graphviz_layouter_plugin_reset_for_test()
 
-  let available : Ref[Map[String, Bool]] = Ref::new({})
+  let available : Ref[Map[String, Bool]] = Ref({})
   graphviz_tool_set_executable_probe_for_test(path => {
     match available.val.get(path) {
       Some(value) => value
@@ -60,7 +60,7 @@ test "GraphvizTool resolves executable from defaults and preferences" {
   })
   graphviz_tool_set_default_locations_for_test(["/opt/bin/"])
   available.val["/opt/bin/dot"] = true
-  inspect(
+  debug_inspect(
     graphviz_tool_get_dot_executable_with_prompt(false),
     content="Some(\"/opt/bin/dot\")",
   )
@@ -70,7 +70,7 @@ test "GraphvizTool resolves executable from defaults and preferences" {
   let store = graphviz_layouter_preference_store_get_instance().get_preference_store()
   store.set_string(graphviz_tool_pref_graphviz_executable, "/pref/dot")
   available.val["/pref/dot"] = true
-  inspect(
+  debug_inspect(
     graphviz_tool_get_dot_executable_with_prompt(false),
     content="Some(\"/pref/dot\")",
   )
@@ -82,7 +82,7 @@ test "GraphvizTool resolves executable from defaults and preferences" {
     true
   })
   available.val["/prompt/dot"] = true
-  inspect(
+  debug_inspect(
     graphviz_tool_get_dot_executable_with_prompt(true),
     content="Some(\"/prompt/dot\")",
   )
@@ -95,8 +95,8 @@ test "GraphvizTool initialize assembles command line and graph stream" {
   graphviz_tool_set_default_locations_for_test(["/usr/bin/"])
   graphviz_tool_set_executable_probe_for_test(path => path == "/usr/bin/dot")
 
-  let destroyed_ref : Ref[Int] = Ref::new(0)
-  let closed_ref : Ref[Int] = Ref::new(0)
+  let destroyed_ref : Ref[Int] = Ref(0)
+  let closed_ref : Ref[Int] = Ref(0)
   graphviz_tool_set_process_factory_for_test(_args => {
     Some(
       graphviz_tool_test_fake_process(
@@ -110,7 +110,7 @@ test "GraphvizTool initialize assembles command line and graph stream" {
 
   let tool = new_graphviz_tool(@dot.command_parse("dot"))
   tool.initialize(arguments=Some(["-Tdot"]))
-  inspect(
+  debug_inspect(
     graphviz_tool_get_last_exec_args_for_test(),
     content="[\"/usr/bin/dot\", \"-q\", \"-y\", \"-Kdot\", \"-Tdot\"]",
   )
@@ -122,12 +122,12 @@ test "GraphvizTool initialize assembles command line and graph stream" {
     stream_bytes.push(next)
     next = output.read()
   }
-  inspect(stream_bytes, content="[123, 97, 98, 125]")
-  inspect(output.read(), content="-1")
+  debug_inspect(stream_bytes, content="[123, 97, 98, 125]")
+  debug_inspect(output.read(), content="-1")
 
   tool.cleanup(graphviz_cleanup_stop())
-  inspect(destroyed_ref.val, content="1")
-  inspect(closed_ref.val, content="1")
+  debug_inspect(destroyed_ref.val, content="1")
+  debug_inspect(closed_ref.val, content="1")
 }
 
 ///|
@@ -136,8 +136,8 @@ test "panic GraphvizTool cleanup error raises GraphvizException message" {
   graphviz_tool_set_default_locations_for_test(["/usr/bin/"])
   graphviz_tool_set_executable_probe_for_test(path => path == "/usr/bin/dot")
 
-  let destroyed_ref : Ref[Int] = Ref::new(0)
-  let closed_ref : Ref[Int] = Ref::new(0)
+  let destroyed_ref : Ref[Int] = Ref(0)
+  let closed_ref : Ref[Int] = Ref(0)
   graphviz_tool_set_process_factory_for_test(_args => {
     Some(
       graphviz_tool_test_fake_process(

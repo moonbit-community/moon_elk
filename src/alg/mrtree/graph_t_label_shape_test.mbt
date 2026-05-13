@@ -9,9 +9,9 @@ test "Mrtree TLabel attaches to edge and formats text" {
   let empty_label = new_mrtree_label(edge, "")
   let named_label = new_mrtree_label(edge, "name")
 
-  assert_eq(mrtree_edge_labels(edge), [empty_label, named_label])
-  assert_eq(mrtree_label_to_string(empty_label), "l[n_src->n_tgt]")
-  assert_eq(mrtree_label_to_string(named_label), "l_name")
+  @core_debug.assert_eq(mrtree_edge_labels(edge), [empty_label, named_label])
+  @core_debug.assert_eq(mrtree_label_to_string(empty_label), "l[n_src->n_tgt]")
+  @core_debug.assert_eq(mrtree_label_to_string(named_label), "l_name")
 }
 
 ///|
@@ -24,12 +24,12 @@ test "Mrtree edge set source and target updates node edge lists" {
   let edge = new_mrtree_edge(n1, n2)
 
   mrtree_edge_set_source(edge, n3)
-  assert_eq(mrtree_node_outgoing_edges(n1).contains(edge), false)
-  assert_eq(mrtree_node_outgoing_edges(n3).contains(edge), true)
+  @core_debug.assert_eq(mrtree_node_outgoing_edges(n1).contains(edge), false)
+  @core_debug.assert_eq(mrtree_node_outgoing_edges(n3).contains(edge), true)
 
   mrtree_edge_set_target(edge, n1)
-  assert_eq(mrtree_node_incoming_edges(n2).contains(edge), false)
-  assert_eq(mrtree_node_incoming_edges(n1).contains(edge), true)
+  @core_debug.assert_eq(mrtree_node_incoming_edges(n2).contains(edge), false)
+  @core_debug.assert_eq(mrtree_node_incoming_edges(n1).contains(edge), true)
 }
 
 ///|
@@ -52,14 +52,14 @@ test "Mrtree shape helpers read node and label geometry" {
   ignore(label_size.set_xy(70.0, 80.0))
 
   let node_shape = new_mrtree_node_shape(source)
-  assert_eq(mrtree_shape_position(node_shape).x, 10.0)
-  assert_eq(mrtree_shape_position(node_shape).y, 20.0)
-  assert_eq(mrtree_shape_size(node_shape).x, 30.0)
-  assert_eq(mrtree_shape_size(node_shape).y, 40.0)
+  @core_debug.assert_eq(mrtree_shape_position(node_shape).x, 10.0)
+  @core_debug.assert_eq(mrtree_shape_position(node_shape).y, 20.0)
+  @core_debug.assert_eq(mrtree_shape_size(node_shape).x, 30.0)
+  @core_debug.assert_eq(mrtree_shape_size(node_shape).y, 40.0)
 
   let label_shape = new_mrtree_label_shape(label)
-  assert_eq(mrtree_shape_position(label_shape).x, 50.0)
-  assert_eq(mrtree_shape_position(label_shape).y, 60.0)
-  assert_eq(mrtree_shape_size(label_shape).x, 70.0)
-  assert_eq(mrtree_shape_size(label_shape).y, 80.0)
+  @core_debug.assert_eq(mrtree_shape_position(label_shape).x, 50.0)
+  @core_debug.assert_eq(mrtree_shape_position(label_shape).y, 60.0)
+  @core_debug.assert_eq(mrtree_shape_size(label_shape).x, 70.0)
+  @core_debug.assert_eq(mrtree_shape_size(label_shape).y, 80.0)
 }

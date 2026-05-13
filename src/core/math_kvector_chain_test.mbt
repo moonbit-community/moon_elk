@@ -12,12 +12,12 @@ test "KVectorChain testParse" {
   kv.parse("{(5,50),(10,50),(30,)}")
   assert_true(v0.equals(kv.get(0)))
   assert_true(v1.equals(kv.get(1)))
-  assert_eq(kv.size(), 2)
+  @core_debug.assert_eq(kv.size(), 2)
   kv.clear()
   kv.parse("{(5; 50 ], [10 , 50 ),(30,,,)}")
   assert_true(v0.equals(kv.get(0)))
   assert_true(v1.equals(kv.get(1)))
-  assert_eq(kv.size(), 2)
+  @core_debug.assert_eq(kv.size(), 2)
 }
 
 ///|
@@ -25,7 +25,7 @@ test "KVectorChain testParseIllegalArgumentException" {
   @core.layout_runtime_clear_error()
   let kv = new_kvector_chain()
   kv.parse("{(5,a),(10,50),(30,50)}")
-  assert_eq(
+  @core_debug.assert_eq(
     @core.layout_runtime_take_error_message(),
     Some(
       "org.eclipse.elk.core.UnsupportedConfigurationException: The given string does not match the expected format for vectors.",

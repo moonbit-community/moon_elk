@@ -116,8 +116,8 @@ test "Tarjan detects a two-node strongly connected component" {
   assert_eq(sccs[0].length(), 2)
 
   let node_map = tarjan.get_node_to_scc_id()
-  assert_eq(node_map.get(source.get_handle()), Some(0))
-  assert_eq(node_map.get(target.get_handle()), Some(0))
+  debug_inspect(node_map.get(source.get_handle()), content="Some(0)")
+  debug_inspect(node_map.get(target.get_handle()), content="Some(0)")
 }
 
 ///|

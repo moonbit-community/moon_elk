@@ -41,17 +41,17 @@ test "json adapter get id and options" {
     "id": Json::string("node1"),
     "value": Json::number(7.0),
   }
-  assert_eq(json_adapter_get_id_or_abort(adapter, obj), "node1")
-  assert_eq(adapter.get_id_safe(obj), Some("node1"))
-  assert_eq(adapter.opt_double(obj, "value"), Some(7.0))
-  assert_eq(adapter.opt_string(obj, "value"), Some("7"))
+  @core_debug.assert_eq(json_adapter_get_id_or_abort(adapter, obj), "node1")
+  @core_debug.assert_eq(adapter.get_id_safe(obj), Some("node1"))
+  @core_debug.assert_eq(adapter.opt_double(obj, "value"), Some(7.0))
+  @core_debug.assert_eq(adapter.opt_string(obj, "value"), Some("7"))
 }
 
 ///|
 test "json adapter accepts numeric int id" {
   let adapter = new_json_adapter()
   let obj : Map[String, Json] = { "id": Json::number(42.0) }
-  assert_eq(json_adapter_get_id_or_abort(adapter, obj), "42")
+  @core_debug.assert_eq(json_adapter_get_id_or_abort(adapter, obj), "42")
 }
 
 ///|
@@ -72,13 +72,13 @@ test "json adapter object and array editing" {
     Some(value) => json_adapter_expect_array(value)
     None => abort("expected values")
   }
-  assert_eq(values.length(), 2)
-  assert_eq(json_adapter_expect_string(values[0]), "a")
-  assert_eq(adapter.opt_string_at(values, 1), Some("2"))
+  @core_debug.assert_eq(values.length(), 2)
+  @core_debug.assert_eq(json_adapter_expect_string(values[0]), "a")
+  @core_debug.assert_eq(adapter.opt_string_at(values, 1), Some("2"))
 
   adapter.remove_json_obj(obj, "ok")
-  assert_eq(adapter.has_json_obj(obj, "ok"), false)
-  assert_eq(adapter.has_json_obj(obj, "name"), true)
+  @core_debug.assert_eq(adapter.has_json_obj(obj, "ok"), false)
+  @core_debug.assert_eq(adapter.has_json_obj(obj, "name"), true)
 }
 
 ///|
@@ -87,7 +87,7 @@ test "json adapter rejects non integer id with JsonImportException" {
   let obj : Map[String, Json] = { "id": Json::number(3.14) }
   try adapter.get_id(obj) catch {
     err =>
-      inspect(
+      debug_inspect(
         err.get_message(),
         content="Some(\"Id must be a string or an integer: '3.14'.\")",
       )
@@ -102,7 +102,7 @@ test "json adapter requires id with JsonImportException" {
   let obj : Map[String, Json] = {}
   try adapter.get_id(obj) catch {
     err =>
-      inspect(
+      debug_inspect(
         err.get_message(),
         content="Some(\"Every element must have an id.\")",
       )

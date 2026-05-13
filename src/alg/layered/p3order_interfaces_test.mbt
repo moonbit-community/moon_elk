@@ -53,18 +53,34 @@ test "IInitializable traverses layers, nodes, ports, and edges in order" {
 
   i_initializable_init([initializable], order)
 
-  inspect(
+  debug_inspect(
     events,
-    content="[\"L0\", \"N0,0\", \"P0,0,0\", \"E0,0,0,0,100\", \"N0,1\", \"P0,1,0\", \"E0,1,0,0,101\", \"L1\", \"N1,0\", \"P1,0,0\", \"E1,0,0,0,100\", \"E1,0,0,1,101\", \"DONE\"]",
+    content=(
+      #|[
+      #|  "L0",
+      #|  "N0,0",
+      #|  "P0,0,0",
+      #|  "E0,0,0,0,100",
+      #|  "N0,1",
+      #|  "P0,1,0",
+      #|  "E0,1,0,0,101",
+      #|  "L1",
+      #|  "N1,0",
+      #|  "P1,0,0",
+      #|  "E1,0,0,0,100",
+      #|  "E1,0,0,1,101",
+      #|  "DONE",
+      #|]
+    ),
   )
 }
 
 ///|
 test "ICrossingMinimizationHeuristic delegates behavior and init hooks" {
-  let first_layer_order_calls : Ref[Int] = Ref::new(0)
-  let minimized_free_layer_index : Ref[Int] = Ref::new(-1)
-  let forward_sweep_seen : Ref[Bool] = Ref::new(false)
-  let first_sweep_seen : Ref[Bool] = Ref::new(false)
+  let first_layer_order_calls : Ref[Int] = Ref(0)
+  let minimized_free_layer_index : Ref[Int] = Ref(-1)
+  let forward_sweep_seen : Ref[Bool] = Ref(false)
+  let first_sweep_seen : Ref[Bool] = Ref(false)
   let init_events = []
 
   let heuristic = new_i_crossing_minimization_heuristic(
@@ -84,18 +100,21 @@ test "ICrossingMinimizationHeuristic delegates behavior and init hooks" {
     init_after_traversal=() => init_events.push("DONE"),
   )
 
-  assert_eq(heuristic.always_improves(), true)
+  @core_debug.assert_eq(heuristic.always_improves(), true)
 
   let order = [[new_l_node()], [new_l_node()]]
-  assert_eq(heuristic.set_first_layer_order(order, true), true)
-  assert_eq(first_layer_order_calls.val, 1)
+  @core_debug.assert_eq(heuristic.set_first_layer_order(order, true), true)
+  @core_debug.assert_eq(first_layer_order_calls.val, 1)
 
-  assert_eq(heuristic.minimize_crossings(order, 1, true, false), true)
-  assert_eq(minimized_free_layer_index.val, 1)
-  assert_eq(forward_sweep_seen.val, true)
-  assert_eq(first_sweep_seen.val, false)
-  assert_eq(heuristic.is_deterministic(), false)
+  @core_debug.assert_eq(
+    heuristic.minimize_crossings(order, 1, true, false),
+    true,
+  )
+  @core_debug.assert_eq(minimized_free_layer_index.val, 1)
+  @core_debug.assert_eq(forward_sweep_seen.val, true)
+  @core_debug.assert_eq(first_sweep_seen.val, false)
+  @core_debug.assert_eq(heuristic.is_deterministic(), false)
 
   i_crossing_minimization_heuristic_init([heuristic], order)
-  inspect(init_events, content="[\"L0\", \"L1\", \"DONE\"]")
+  debug_inspect(init_events, content="[\"L0\", \"L1\", \"DONE\"]")
 }

@@ -208,7 +208,7 @@ pub struct TextActivator {
 }
 
 ///|
-let graph_text_activator_instance_ref : Ref[TextActivator?] = Ref::new(None)
+let graph_text_activator_instance_ref : Ref[TextActivator?] = Ref(None)
 
 ///|
 pub fn new_text_activator() -> TextActivator {

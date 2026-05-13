@@ -26,7 +26,7 @@ test "vertical segment constructor keeps geometry and matching junction points" 
     edge,
   )
 
-  assert_eq(
+  @core_debug.assert_eq(
     (
       segment.hitbox.x,
       segment.hitbox.y,
@@ -35,11 +35,11 @@ test "vertical segment constructor keeps geometry and matching junction points" 
     ),
     (5.0, 1.0, 0.0, 6.0),
   )
-  assert_eq(segment.represented_l_edges.length(), 1)
-  assert_eq(segment.affected_bends.length(), 2)
-  assert_eq(segment.junction_points.size(), 2)
-  assert_eq(segment.junction_points.get(0).y, 2.0)
-  assert_eq(segment.junction_points.get(1).y, 6.0)
+  @core_debug.assert_eq(segment.represented_l_edges.length(), 1)
+  @core_debug.assert_eq(segment.affected_bends.length(), 2)
+  @core_debug.assert_eq(segment.junction_points.size(), 2)
+  @core_debug.assert_eq(segment.junction_points.get(0).y, 2.0)
+  @core_debug.assert_eq(segment.junction_points.get(1).y, 6.0)
 }
 
 ///|
@@ -81,7 +81,7 @@ test "vertical segment join_with merges fields and expands hitbox" {
 
   let merged = segment1.join_with(segment2)
 
-  assert_eq(
+  @core_debug.assert_eq(
     (
       merged.hitbox.x,
       merged.hitbox.y,
@@ -90,13 +90,13 @@ test "vertical segment join_with merges fields and expands hitbox" {
     ),
     (5.0, 0.0, 2.0, 7.0),
   )
-  assert_eq(merged.represented_l_edges.length(), 2)
-  assert_eq(merged.affected_bends.length(), 4)
-  assert_eq(merged.constraints.length(), 1)
-  assert_eq(merged.joined.length(), 2)
+  @core_debug.assert_eq(merged.represented_l_edges.length(), 2)
+  @core_debug.assert_eq(merged.affected_bends.length(), 4)
+  @core_debug.assert_eq(merged.constraints.length(), 1)
+  @core_debug.assert_eq(merged.joined.length(), 2)
   assert_true(merged.ignore_spacing.left)
   assert_true(merged.ignore_spacing.right)
-  assert_eq(vertical_segment_test_port_id(merged.get_a_port()), 77)
+  @core_debug.assert_eq(vertical_segment_test_port_id(merged.get_a_port()), 77)
 }
 
 ///|
@@ -133,8 +133,8 @@ test "vertical segment intersects and compare_to follow upstream rules" {
 
   assert_true(a.intersects(b))
   assert_false(a.intersects(c))
-  assert_eq(a.compare_to(c), -1)
-  assert_eq(c.compare_to(a), 1)
-  assert_eq(a.compare_to(d), 1)
+  @core_debug.assert_eq(a.compare_to(c), -1)
+  @core_debug.assert_eq(c.compare_to(a), 1)
+  @core_debug.assert_eq(a.compare_to(d), 1)
   assert_true(a.to_string().has_prefix("VerticalSegment "))
 }

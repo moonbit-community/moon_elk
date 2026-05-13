@@ -1,38 +1,33 @@
 ///|
-let vertiflex_left_outline_store : Ref[Map[@graph.ElkNode, OutlineNode]] = Ref::new({},
+let vertiflex_left_outline_store : Ref[Map[@graph.ElkNode, OutlineNode]] = Ref({})
+
+///|
+let vertiflex_right_outline_store : Ref[Map[@graph.ElkNode, OutlineNode]] = Ref({},
 )
 
 ///|
-let vertiflex_right_outline_store : Ref[Map[@graph.ElkNode, OutlineNode]] = Ref::new({},
-)
+let vertiflex_outline_max_depth_store : Ref[Map[@graph.ElkNode, Double]] = Ref({})
 
 ///|
-let vertiflex_outline_max_depth_store : Ref[Map[@graph.ElkNode, Double]] = Ref::new({},
-)
+let vertiflex_min_x_store : Ref[Map[@graph.ElkNode, Double]] = Ref({})
 
 ///|
-let vertiflex_min_x_store : Ref[Map[@graph.ElkNode, Double]] = Ref::new({})
+let vertiflex_max_x_store : Ref[Map[@graph.ElkNode, Double]] = Ref({})
 
 ///|
-let vertiflex_max_x_store : Ref[Map[@graph.ElkNode, Double]] = Ref::new({})
+let vertiflex_min_y_store : Ref[Map[@graph.ElkNode, Double]] = Ref({})
 
 ///|
-let vertiflex_min_y_store : Ref[Map[@graph.ElkNode, Double]] = Ref::new({})
+let vertiflex_max_y_store : Ref[Map[@graph.ElkNode, Double]] = Ref({})
 
 ///|
-let vertiflex_max_y_store : Ref[Map[@graph.ElkNode, Double]] = Ref::new({})
+let vertiflex_root_node_store : Ref[Map[@graph.ElkNode, @graph.ElkNode]] = Ref({})
 
 ///|
-let vertiflex_root_node_store : Ref[Map[@graph.ElkNode, @graph.ElkNode]] = Ref::new({},
-)
+let vertiflex_edge_bend_height_store : Ref[Map[@graph.ElkNode, Double]] = Ref({})
 
 ///|
-let vertiflex_edge_bend_height_store : Ref[Map[@graph.ElkNode, Double]] = Ref::new({},
-)
-
-///|
-let vertiflex_node_model_order_store : Ref[Map[@graph.ElkNode, Int]] = Ref::new({},
-)
+let vertiflex_node_model_order_store : Ref[Map[@graph.ElkNode, Int]] = Ref({})
 
 ///|
 pub fn vertiflex_internal_reset() -> Unit {

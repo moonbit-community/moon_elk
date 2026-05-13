@@ -2,7 +2,7 @@
 pub type FLabel = Int
 
 ///|
-let flabel_store : Ref[Array[FLabelData]] = Ref::new([])
+let flabel_store : Ref[Array[FLabelData]] = Ref([])
 
 ///|
 priv struct FLabelData {

@@ -10,3 +10,7 @@ import {
   "moonbitlang/core/strconv",
   "moonbitlang/core/string",
 }
+
+import {
+  "moonbitlang/core/debug" @core_debug,
+} for "test"

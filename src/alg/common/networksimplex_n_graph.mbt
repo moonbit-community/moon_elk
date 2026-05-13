@@ -56,10 +56,10 @@ pub struct NEdgeBuilder {
 }
 
 ///|
-let nnode_store : Ref[Array[NNodeData]] = Ref::new([])
+let nnode_store : Ref[Array[NNodeData]] = Ref([])
 
 ///|
-let nedge_store : Ref[Array[NEdgeData]] = Ref::new([])
+let nedge_store : Ref[Array[NEdgeData]] = Ref([])
 
 ///|
 pub(all) suberror NetworkSimplexException {

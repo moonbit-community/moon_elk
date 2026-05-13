@@ -41,10 +41,10 @@ test "Mrtree NodeOrderer FAN weighting follows fan/leaf strategy" {
 
   mrtree_run_p2_processors(graph)
 
-  inspect(mrtree_node_position_in_level(a), content="0")
-  inspect(mrtree_node_position_in_level(b), content="2")
-  inspect(mrtree_node_position_in_level(c), content="1")
-  inspect(
+  debug_inspect(mrtree_node_position_in_level(a), content="0")
+  debug_inspect(mrtree_node_position_in_level(b), content="2")
+  debug_inspect(mrtree_node_position_in_level(c), content="1")
+  debug_inspect(
     [
       mrtree_node_id(mrtree_edge_target(mrtree_node_outgoing_edges(root)[0])),
       mrtree_node_id(mrtree_edge_target(mrtree_node_outgoing_edges(root)[1])),
@@ -75,10 +75,10 @@ test "Mrtree NodeOrderer CONSTRAINT weighting enforces position constraints" {
 
   mrtree_run_p2_processors(graph)
 
-  inspect(mrtree_node_position_in_level(n1), content="0")
-  inspect(mrtree_node_position_in_level(n2), content="1")
-  inspect(mrtree_node_position_in_level(n0), content="2")
-  inspect(
+  debug_inspect(mrtree_node_position_in_level(n1), content="0")
+  debug_inspect(mrtree_node_position_in_level(n2), content="1")
+  debug_inspect(mrtree_node_position_in_level(n0), content="2")
+  debug_inspect(
     [
       mrtree_node_id(mrtree_edge_target(mrtree_node_outgoing_edges(root)[0])),
       mrtree_node_id(mrtree_edge_target(mrtree_node_outgoing_edges(root)[1])),

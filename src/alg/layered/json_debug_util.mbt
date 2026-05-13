@@ -202,7 +202,7 @@ pub fn json_debug_util_create_debug_graph(lgraph : LGraph) -> String {
 
   let node_entries : Array[String] = []
   let edge_entries : Array[String] = []
-  let edge_counter : Ref[Int] = Ref::new(0)
+  let edge_counter : Ref[Int] = Ref(0)
 
   json_debug_util_append_layer_nodes(
     node_entries,

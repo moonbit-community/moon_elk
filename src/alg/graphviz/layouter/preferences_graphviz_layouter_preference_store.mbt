@@ -138,7 +138,7 @@ pub struct GraphvizLayouterPreferenceStore {
 ///|
 let graphviz_layouter_preference_store_ref : Ref[
   GraphvizLayouterPreferenceStore?,
-] = Ref::new(None)
+] = Ref(None)
 
 ///|
 pub fn new_graphviz_layouter_preference_store() -> GraphvizLayouterPreferenceStore {

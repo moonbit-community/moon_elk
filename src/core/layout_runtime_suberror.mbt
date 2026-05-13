@@ -6,7 +6,7 @@ pub enum LayoutRuntimeSubError {
 }
 
 ///|
-let layout_runtime_suberror_ref : Ref[LayoutRuntimeSubError?] = Ref::new(None)
+let layout_runtime_suberror_ref : Ref[LayoutRuntimeSubError?] = Ref(None)
 
 ///|
 fn layout_runtime_set_error_once(error : LayoutRuntimeSubError) -> Unit {

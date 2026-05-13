@@ -40,7 +40,7 @@ test "GreedyPortDistributor distribute_ports_given_cross_on_western_side_remove_
   let improved = port_dist.distribute_ports_while_sweeping(node_order, 1, true)
 
   assert_true(improved)
-  assert_eq(
+  @core_debug.assert_eq(
     greedy_port_test_port_handles(right_node.get_ports()),
     greedy_port_test_port_handles(expected_port_order),
   )
@@ -67,7 +67,7 @@ test "GreedyPortDistributor distribute_ports_given_no_ports_on_right_side_nothin
   let port_dist = greedy_port_test_set_up_distributor(node_order)
   ignore(port_dist.distribute_ports_while_sweeping(node_order, 1, false))
 
-  assert_eq(
+  @core_debug.assert_eq(
     greedy_port_test_port_handles(middle_node.get_ports()),
     greedy_port_test_port_handles(expected_port_order),
   )
@@ -94,7 +94,7 @@ test "GreedyPortDistributor distribute_ports_given_multiple_crossings_on_western
   let port_dist = greedy_port_test_set_up_distributor(node_order)
   ignore(port_dist.distribute_ports_while_sweeping(node_order, 1, true))
 
-  assert_eq(
+  @core_debug.assert_eq(
     greedy_port_test_port_handles(right_node.get_ports()),
     greedy_port_test_port_handles(expected_port_order),
   )
@@ -121,7 +121,7 @@ test "GreedyPortDistributor distribute_ports_given_crossings_on_eastern_side_rem
   let port_dist = greedy_port_test_set_up_distributor(node_order)
   ignore(port_dist.distribute_ports_while_sweeping(node_order, 0, false))
 
-  assert_eq(
+  @core_debug.assert_eq(
     greedy_port_test_port_handles(left_nodes[0].get_ports()),
     greedy_port_test_port_handles(expected_port_order),
   )
@@ -149,7 +149,7 @@ test "GreedyPortDistributor distribute_ports_fixed_port_order_no_change" {
   let port_dist = greedy_port_test_set_up_distributor(node_order)
   ignore(port_dist.distribute_ports_while_sweeping(node_order, 0, false))
 
-  assert_eq(
+  @core_debug.assert_eq(
     greedy_port_test_port_handles(left_nodes[0].get_ports()),
     greedy_port_test_port_handles(expected_port_order),
   )
@@ -200,7 +200,7 @@ test "GreedyPortDistributor given_double_cross_between_compound_and_non_compound
   let port_dist = greedy_port_test_set_up_distributor(node_order)
   ignore(port_dist.distribute_ports_while_sweeping(node_order, 0, false))
 
-  assert_eq(
+  @core_debug.assert_eq(
     greedy_port_test_port_handles(left_outer_node.get_ports()),
     greedy_port_test_port_handles(expected_port_order),
   )
@@ -249,7 +249,7 @@ test "GreedyPortDistributor given_single_cross_between_compound_and_non_compound
   let port_dist = greedy_port_test_set_up_distributor(node_order)
   ignore(port_dist.distribute_ports_while_sweeping(node_order, 0, false))
 
-  assert_eq(
+  @core_debug.assert_eq(
     greedy_port_test_port_handles(left_outer_node.get_ports()),
     greedy_port_test_port_handles(expected_port_order),
   )
@@ -303,7 +303,7 @@ test "GreedyPortDistributor given_more_hierarchical_nodes_does_not_switch_ports"
   let port_dist = greedy_port_test_set_up_distributor(node_order)
   ignore(port_dist.distribute_ports_while_sweeping(node_order, 0, false))
 
-  assert_eq(
+  @core_debug.assert_eq(
     greedy_port_test_port_handles(left_outer_node.get_ports()),
     greedy_port_test_port_handles(expected_port_order),
   )
@@ -352,7 +352,7 @@ test "GreedyPortDistributor given_more_hierarchical_nodes2_does_not_switch_ports
   let port_dist = greedy_port_test_set_up_distributor(node_order)
   ignore(port_dist.distribute_ports_while_sweeping(node_order, 0, false))
 
-  assert_eq(
+  @core_debug.assert_eq(
     greedy_port_test_port_handles(left_outer_node.get_ports()),
     greedy_port_test_port_handles(expected_port_order),
   )
@@ -379,7 +379,7 @@ test "GreedyPortDistributor distribute_ports_while_sweeping_given_two_hierarchic
   let port_dist = greedy_port_test_set_up_distributor(node_order)
   ignore(port_dist.distribute_ports_while_sweeping(node_order, 0, false))
 
-  assert_eq(
+  @core_debug.assert_eq(
     greedy_port_test_port_handles(left_outer_node.get_ports()),
     greedy_port_test_port_handles(expected_port_order),
   )

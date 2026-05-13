@@ -72,9 +72,9 @@ test "GmfLayoutEditPolicy trims bend points for connection attachments" {
   }
 
   inspect(gmf_view_bendpoints(edge_view).size(), content="2")
-  inspect(gmf_view_source_terminal(edge_view), content="Some(\"source\")")
-  inspect(gmf_view_target_terminal(edge_view), content="Some(\"target\")")
-  inspect(
+  debug_inspect(gmf_view_source_terminal(edge_view), content="Some(\"source\")")
+  debug_inspect(gmf_view_target_terminal(edge_view), content="Some(\"target\")")
+  debug_inspect(
     gmf_view_get_style(edge_view, junction_points_style_name),
     content="Some(\"(1,2)\")",
   )

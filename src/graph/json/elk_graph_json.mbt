@@ -82,12 +82,12 @@ fn char_at(source : String, index : Int) -> Char {
 
 ///|
 fn safe_slice(source : String, start : Int, end_ : Int) -> String {
-  source[start:end_].to_string()
+  source[start:end_].to_owned()
 }
 
 ///|
 fn safe_slice_from(source : String, start : Int) -> String {
-  source[start:].to_string()
+  source[start:].to_owned()
 }
 
 ///|
@@ -503,7 +503,7 @@ fn is_edge_coords_option_id(id : String) -> Bool {
 
 ///|
 fn parse_bool_option(text : String) -> Bool? {
-  let normalized = text.trim().to_string()
+  let normalized = text.trim().to_owned()
   match normalized {
     "true" | "TRUE" | "True" => Some(true)
     "false" | "FALSE" | "False" => Some(false)
@@ -569,7 +569,7 @@ fn is_known_layout_option_id(id : String) -> Bool {
 
 ///|
 fn parse_shape_coords_mode(text : String) -> JsonShapeCoordsMode {
-  let normalized = text.trim().to_string()
+  let normalized = text.trim().to_owned()
   match normalized {
     "ROOT" | "root" => ShapeRoot
     "PARENT" | "parent" => ShapeParent
@@ -580,7 +580,7 @@ fn parse_shape_coords_mode(text : String) -> JsonShapeCoordsMode {
 
 ///|
 fn parse_edge_coords_mode(text : String) -> JsonEdgeCoordsMode {
-  let normalized = text.trim().to_string()
+  let normalized = text.trim().to_owned()
   match normalized {
     "ROOT" | "root" => EdgeRoot
     "PARENT" | "parent" => EdgeParent

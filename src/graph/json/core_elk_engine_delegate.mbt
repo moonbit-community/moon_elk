@@ -1,5 +1,5 @@
 ///|
-let elk_graph_json_core_delegate_initialized : Ref[Bool] = Ref::new(false)
+let elk_graph_json_core_delegate_initialized : Ref[Bool] = Ref(false)
 
 ///|
 fn elk_graph_json_core_delegate_register_algorithm_if_missing(

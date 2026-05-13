@@ -286,23 +286,31 @@ pub fn new_node_context(
   let parsed_port_constraints = node_context_parse_port_constraints(
     node.get_property_string(@core.port_constraints),
   )
-  let port_labels_placement = node_context_parse_port_label_placement(
-    node.get_property_string_array(node_context_port_labels_placement_property),
+  let port_label_placement_values = node.get_property_string_array(
+    node_context_port_labels_placement_property,
   )
+  let port_labels_placement = node_context_parse_port_label_placement(
+    port_label_placement_values,
+  )
+  let port_label_placement_text = port_label_placement_values.join(", ")
   if !@core.port_label_placement_is_valid(port_labels_placement) {
     node_context_raise_unsupported_configuration(
-      "Invalid port label placement: \{node.get_property_string_array(node_context_port_labels_placement_property)}",
+      "Invalid port label placement: [\{port_label_placement_text}]",
     )
   }
   let port_labels_treat_as_group = node.get_property_bool(
     @core.port_labels_treat_as_group,
   )
-  let node_label_placement = node_context_parse_node_label_placement(
-    node.get_property_string_array(node_context_node_labels_placement_property),
+  let node_label_placement_values = node.get_property_string_array(
+    node_context_node_labels_placement_property,
   )
+  let node_label_placement = node_context_parse_node_label_placement(
+    node_label_placement_values,
+  )
+  let node_label_placement_text = node_label_placement_values.join(", ")
   if !@core.node_label_placement_is_valid(node_label_placement) {
     node_context_raise_unsupported_configuration(
-      "Invalid node label placement: \{node.get_property_string_array(node_context_node_labels_placement_property)}",
+      "Invalid node label placement: [\{node_label_placement_text}]",
     )
   }
 

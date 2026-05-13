@@ -82,7 +82,7 @@ fn final_spline_graph_compaction_strategy_equals(
 fn final_spline_parse_graph_compaction_strategy(
   value : String,
 ) -> GraphCompactionStrategy {
-  let normalized = value.trim().to_string().to_upper()
+  let normalized = value.trim().to_owned().to_upper()
   match normalized {
     "LEFT" => Left
     "RIGHT" => Right

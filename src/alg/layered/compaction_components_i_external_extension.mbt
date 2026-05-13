@@ -9,7 +9,7 @@ pub struct IExternalExtension[E] {
 }
 
 ///|
-let external_extension_next_instance_id : Ref[Int] = Ref::new(0)
+let external_extension_next_instance_id : Ref[Int] = Ref(0)
 
 ///|
 fn new_external_extension_instance_id() -> Int {

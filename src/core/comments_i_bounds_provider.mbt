@@ -77,8 +77,8 @@ pub fn[C, T] IBoundsProvider::cleanup(self : IBoundsProvider[C, T]) -> Unit {
 pub fn[C : Eq, T : Eq] IBoundsProvider::cached(
   self : IBoundsProvider[C, T],
 ) -> IBoundsProvider[C, T] {
-  let comment_bounds_cache_ref : Ref[Array[(C, ElkRectangle?)]] = Ref::new([])
-  let target_bounds_cache_ref : Ref[Array[(T, ElkRectangle?)]] = Ref::new([])
+  let comment_bounds_cache_ref : Ref[Array[(C, ElkRectangle?)]] = Ref([])
+  let target_bounds_cache_ref : Ref[Array[(T, ElkRectangle?)]] = Ref([])
 
   new_bounds_provider(
     comment => {

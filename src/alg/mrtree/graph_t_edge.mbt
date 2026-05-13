@@ -11,7 +11,7 @@ priv struct MrtreeEdgeData {
 }
 
 ///|
-let mrtree_edge_store : Ref[Array[MrtreeEdgeData]] = Ref::new([])
+let mrtree_edge_store : Ref[Array[MrtreeEdgeData]] = Ref([])
 
 ///|
 fn checked_mrtree_edge(edge : MrtreeEdge) -> Unit {

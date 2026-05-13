@@ -1,5 +1,5 @@
 ///|
-let lnode_next_handle_ref : Ref[Int] = Ref::new(0)
+let lnode_next_handle_ref : Ref[Int] = Ref(0)
 
 ///|
 fn lnode_next_handle() -> Int {

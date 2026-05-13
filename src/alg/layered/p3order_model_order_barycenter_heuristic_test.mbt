@@ -77,7 +77,7 @@ test "ModelOrderBarycenterHeuristic preserves model order when forced" {
   let expected = free_layer.copy()
   heuristic.minimize_crossings_layer(free_layer, false, false, true)
 
-  assert_eq(
+  @core_debug.assert_eq(
     model_order_barycenter_test_node_ids(free_layer),
     model_order_barycenter_test_node_ids(expected),
   )
@@ -116,7 +116,7 @@ test "ModelOrderBarycenterHeuristic keeps model order across groups when forced"
   let expected = free_layer.copy()
   heuristic.minimize_crossings_layer(free_layer, false, false, true)
 
-  assert_eq(
+  @core_debug.assert_eq(
     model_order_barycenter_test_node_ids(free_layer),
     model_order_barycenter_test_node_ids(expected),
   )
@@ -155,7 +155,7 @@ test "ModelOrderBarycenterHeuristic ignores separate-layer constraint when force
   let expected = creator.switch_order_in_array(0, 1, free_layer)
   heuristic.minimize_crossings_layer(free_layer, false, false, true)
 
-  assert_eq(
+  @core_debug.assert_eq(
     model_order_barycenter_test_node_ids(free_layer),
     model_order_barycenter_test_node_ids(expected),
   )

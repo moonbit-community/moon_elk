@@ -1,7 +1,7 @@
 ///|
 let edge_router_factory_cache : Ref[
   Map[String, @core.ILayoutProcessorFactory[LayeredPhases, LGraph]],
-] = Ref::new({})
+] = Ref({})
 
 ///|
 fn edge_router_factory_strategy_ordinal(strategy : @core.EdgeRouting) -> Int {

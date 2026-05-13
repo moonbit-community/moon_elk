@@ -170,7 +170,7 @@ fn AlgorithmPluginContentWizard::create_base_package(
 ) -> Unit {
   let mut path = "src/"
   for part in self.id.split(".") {
-    let as_string = part.to_string()
+    let as_string = part.to_owned()
     project.add_folder(path + as_string)
     path = path + as_string + "/"
   }
@@ -241,7 +241,7 @@ pub fn AlgorithmPluginContentWizard::perform_finish_with_project(
   project : CoreDebugWizardProject,
 ) -> Bool {
   let candidate_name = match self.page {
-    Some(page) => page.get_algorithm_name().trim().to_string()
+    Some(page) => page.get_algorithm_name().trim().to_owned()
     None => ""
   }
   if !candidate_name.is_empty() {

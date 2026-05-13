@@ -39,10 +39,10 @@ priv struct ExecutionInfoData {
 }
 
 ///|
-let execution_info_store_ref : Ref[Array[ExecutionInfoData]] = Ref::new([])
+let execution_info_store_ref : Ref[Array[ExecutionInfoData]] = Ref([])
 
 ///|
-let execution_info_creation_tick_ref : Ref[Int] = Ref::new(0)
+let execution_info_creation_tick_ref : Ref[Int] = Ref(0)
 
 ///|
 fn checked_execution_info(info : ExecutionInfo) -> Unit {

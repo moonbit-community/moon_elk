@@ -1,5 +1,5 @@
 ///|
-let core_ui_model_change_log_ref : Ref[Map[Int, Array[String]]] = Ref::new({})
+let core_ui_model_change_log_ref : Ref[Map[Int, Array[String]]] = Ref({})
 
 ///|
 pub fn core_ui_elk_ui_util_reset_for_test() -> Unit {

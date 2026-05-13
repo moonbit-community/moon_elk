@@ -20,7 +20,7 @@ fn abstract_resource_path_raise_unit(
 }
 
 ///|
-let resource_path_system_properties_ref : Ref[Map[String, String]] = Ref::new({})
+let resource_path_system_properties_ref : Ref[Map[String, String]] = Ref({})
 
 ///|
 pub fn resource_path_set_property_for_test(

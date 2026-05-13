@@ -1,13 +1,11 @@
 ///|
-let layout_algorithm_data_store : Ref[Map[String, LayoutAlgorithmData]] = Ref::new({},
-)
+let layout_algorithm_data_store : Ref[Map[String, LayoutAlgorithmData]] = Ref({})
 
 ///|
-let layout_option_data_store : Ref[Map[String, LayoutOptionData]] = Ref::new({})
+let layout_option_data_store : Ref[Map[String, LayoutOptionData]] = Ref({})
 
 ///|
-let layout_category_data_store : Ref[Map[String, LayoutCategoryData]] = Ref::new({},
-)
+let layout_category_data_store : Ref[Map[String, LayoutCategoryData]] = Ref({})
 
 ///|
 priv suberror LayoutMetaDataServiceException {

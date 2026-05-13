@@ -168,7 +168,7 @@ pub(all) struct ElkUiPlugin {
 }
 
 ///|
-let elk_ui_plugin_ref : Ref[ElkUiPlugin?] = Ref::new(None)
+let elk_ui_plugin_ref : Ref[ElkUiPlugin?] = Ref(None)
 
 ///|
 pub fn new_elk_ui_plugin() -> ElkUiPlugin {

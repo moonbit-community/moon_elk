@@ -13,3 +13,7 @@ import {
   "Milky2018/moon_elk/alg/disco",
   "Milky2018/moon_elk/alg/common",
 }
+
+import {
+  "moonbitlang/core/debug" @core_debug,
+} for "test"

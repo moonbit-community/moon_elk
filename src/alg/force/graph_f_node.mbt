@@ -2,7 +2,7 @@
 pub type FNode = Int
 
 ///|
-let fnode_store : Ref[Array[FNodeData]] = Ref::new([])
+let fnode_store : Ref[Array[FNodeData]] = Ref([])
 
 ///|
 priv struct FNodeData {

@@ -27,11 +27,10 @@ pub fn new_layout_diagram_file_handler() -> LayoutDiagramFileHandler {
 }
 
 ///|
-let gmf_layout_file_diagram_store_ref : Ref[Map[String, GmfEditPart]] = Ref::new({},
-)
+let gmf_layout_file_diagram_store_ref : Ref[Map[String, GmfEditPart]] = Ref({})
 
 ///|
-let gmf_layout_file_processed_store_ref : Ref[Map[String, Bool]] = Ref::new({})
+let gmf_layout_file_processed_store_ref : Ref[Map[String, Bool]] = Ref({})
 
 ///|
 pub fn gmf_register_layout_diagram_file_for_test(

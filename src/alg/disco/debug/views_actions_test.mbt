@@ -15,22 +15,37 @@ test "SelectivePaintToggleAction toggles renderer visibility" {
   )
   let renderer = dis_co_graph_rendering_canvas_get_renderer(canvas)
 
-  inspect(selective_paint_toggle_action_is_checked(action), content="true")
+  debug_inspect(
+    selective_paint_toggle_action_is_checked(action),
+    content="true",
+  )
   selective_paint_toggle_action_run(action)
-  inspect(selective_paint_toggle_action_is_checked(action), content="false")
-  inspect(
+  debug_inspect(
+    selective_paint_toggle_action_is_checked(action),
+    content="false",
+  )
+  debug_inspect(
     dis_co_graph_renderer_is_visible(renderer, "elkgraph"),
     content="false",
   )
-  inspect(dis_co_graph_rendering_canvas_get_redraw_count(canvas), content="1")
+  debug_inspect(
+    dis_co_graph_rendering_canvas_get_redraw_count(canvas),
+    content="1",
+  )
 
   selective_paint_toggle_action_run(action)
-  inspect(selective_paint_toggle_action_is_checked(action), content="true")
-  inspect(
+  debug_inspect(
+    selective_paint_toggle_action_is_checked(action),
+    content="true",
+  )
+  debug_inspect(
     dis_co_graph_renderer_is_visible(renderer, "elkgraph"),
     content="true",
   )
-  inspect(dis_co_graph_rendering_canvas_get_redraw_count(canvas), content="2")
+  debug_inspect(
+    dis_co_graph_rendering_canvas_get_redraw_count(canvas),
+    content="2",
+  )
 }
 
 ///|
@@ -49,34 +64,45 @@ test "DropdownIntRangeAction updates label, state and upper bound" {
   )
 
   dropdown_int_range_action_apply_num(action, 2)
-  inspect(dropdown_int_range_action_get_text(action), content="Show levels 2")
-  inspect(config_state_get_lower_lvl(config), content="2")
-  inspect(config_state_get_upper_lvl(config), content="2")
-  inspect(dis_co_graph_rendering_canvas_get_redraw_count(canvas), content="1")
+  debug_inspect(
+    dropdown_int_range_action_get_text(action),
+    content=(
+      #|"Show levels 2"
+    ),
+  )
+  debug_inspect(config_state_get_lower_lvl(config), content="2")
+  debug_inspect(config_state_get_upper_lvl(config), content="2")
+  debug_inspect(
+    dis_co_graph_rendering_canvas_get_redraw_count(canvas),
+    content="1",
+  )
 
   config_state_set_depth(config, 5)
-  inspect(dropdown_int_range_action_get_menu(action), content="[0, 1, 2, 3, 4]")
+  debug_inspect(
+    dropdown_int_range_action_get_menu(action),
+    content="[0, 1, 2, 3, 4]",
+  )
 }
 
 ///|
 test "DisCoImageExportAction checkFileName mirrors Java rules" {
-  inspect(
+  debug_inspect(
     dis_co_image_export_action_check_file_name(Some("graph.png")),
     content="Some(\"graph.png\")",
   )
-  inspect(
+  debug_inspect(
     dis_co_image_export_action_check_file_name(Some("graph.pn")),
     content="Some(\"graph.png\")",
   )
-  inspect(
+  debug_inspect(
     dis_co_image_export_action_check_file_name(Some("graph.p")),
     content="Some(\"graph.png\")",
   )
-  inspect(
+  debug_inspect(
     dis_co_image_export_action_check_file_name(Some("graph.")),
     content="Some(\"graph.png\")",
   )
-  inspect(
+  debug_inspect(
     dis_co_image_export_action_check_file_name(Some("graph")),
     content="Some(\"graph.png\")",
   )
@@ -94,8 +120,13 @@ test "DisCoImageExportAction stores selected normalized output path" {
   let action = new_dis_co_image_export_action(view)
   dis_co_image_export_action_set_selected_file_name(action, Some("render.p"))
   dis_co_image_export_action_run(action)
-  inspect(dis_co_image_export_action_get_last_file_name(), content="render.png")
-  inspect(
+  debug_inspect(
+    dis_co_image_export_action_get_last_file_name(),
+    content=(
+      #|"render.png"
+    ),
+  )
+  debug_inspect(
     dis_co_image_export_action_get_exported_files(),
     content="[\"render.png\"]",
   )
@@ -119,8 +150,14 @@ test "DisCoDebugPlugin listens for layout done notifications" {
   )
 
   let graph_on_canvas = dis_co_graph_rendering_canvas_get_layout_graph(canvas)
-  inspect(@graph.node_width(expect_some_node(graph_on_canvas)), content="33")
-  inspect(@graph.node_height(expect_some_node(graph_on_canvas)), content="44")
+  debug_inspect(
+    @graph.node_width(expect_some_node(graph_on_canvas)),
+    content="33",
+  )
+  debug_inspect(
+    @graph.node_height(expect_some_node(graph_on_canvas)),
+    content="44",
+  )
 
   dis_co_debug_plugin_stop(plugin)
 }

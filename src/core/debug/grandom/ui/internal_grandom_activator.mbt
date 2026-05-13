@@ -200,7 +200,7 @@ pub(all) struct GrandomActivator {
 }
 
 ///|
-let core_debug_grandom_activator_instance_ref : Ref[GrandomActivator?] = Ref::new(
+let core_debug_grandom_activator_instance_ref : Ref[GrandomActivator?] = Ref(
   None,
 )
 

@@ -4,7 +4,7 @@ test "individual_spacings parse and serialize" {
   layout_meta_data_service_register_default_options()
   let spacings = new_individual_spacings()
   spacings.parse("spacing.nodeNode:12")
-  inspect(
+  debug_inspect(
     spacings.get_option(spacing_node_node.get_id()),
     content="Some(\"12\")",
   )
@@ -19,7 +19,7 @@ test "individual_spacings copy constructor preserves entries" {
   let source = new_individual_spacings()
   source.set_option(spacing_node_node.get_id(), "7.5")
   let copied = new_individual_spacings_from(source)
-  inspect(
+  debug_inspect(
     copied.get_option(spacing_node_node.get_id()),
     content="Some(\"7.5\")",
   )
@@ -37,7 +37,7 @@ test "individual_spacings move between node and object" {
   let spacings = individual_spacings_from_node(source)
   let target = @graph.create_graph()
   individual_spacings_apply_to_node(spacings, target)
-  inspect(
+  debug_inspect(
     @graph.node_individual_spacing_option_string_value(
       target,
       spacing_node_node.get_id(),

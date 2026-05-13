@@ -69,7 +69,7 @@ test "DisCoGraphRenderer renders and fills debug caches" {
     new_dis_co_paint_rectangle(0, 0, 500, 500),
   )
 
-  assert_eq(
+  @core_debug.assert_eq(
     expect_some_int_in_renderer_test(
       config_state_get_max_depth(dis_co_graph_renderer_get_state(renderer)),
     ),
@@ -115,7 +115,10 @@ test "DisCoGraphRenderer markDirty resets painted cache entries" {
   dis_co_graph_renderer_render(renderer, root, area)
   assert_true(dis_co_graph_renderer_debug_painted_bounds_count(renderer) > 0)
   dis_co_graph_renderer_mark_dirty(renderer, area)
-  assert_eq(dis_co_graph_renderer_debug_painted_bounds_count(renderer), 0)
+  @core_debug.assert_eq(
+    dis_co_graph_renderer_debug_painted_bounds_count(renderer),
+    0,
+  )
 }
 
 ///|
@@ -145,7 +148,7 @@ test "DisCoGraphRenderer polygon dirty check uses polygon geometry" {
     renderer,
     new_dis_co_paint_rectangle(4, 4, 1, 1),
   )
-  assert_eq(
+  @core_debug.assert_eq(
     dis_co_graph_renderer_debug_painted_polygon_count(renderer),
     painted_before,
   )
@@ -154,7 +157,10 @@ test "DisCoGraphRenderer polygon dirty check uses polygon geometry" {
     renderer,
     new_dis_co_paint_rectangle(1, 1, 1, 1),
   )
-  assert_eq(dis_co_graph_renderer_debug_painted_polygon_count(renderer), 0)
+  @core_debug.assert_eq(
+    dis_co_graph_renderer_debug_painted_polygon_count(renderer),
+    0,
+  )
 }
 
 ///|
@@ -162,7 +168,7 @@ test "DisCoGraphRenderer makeArrow parity for degenerate and normal cases" {
   let renderer = new_dis_co_graph_renderer(
     new_dis_co_graph_rendering_configurator(new_dis_co_debug_display()),
   )
-  inspect(
+  debug_inspect(
     dis_co_graph_renderer_debug_make_arrow(
       renderer,
       @core.new_kvector_xy(1.0, 1.0),
@@ -177,7 +183,7 @@ test "DisCoGraphRenderer makeArrow parity for degenerate and normal cases" {
   )
   assert_true(arrow is Some(_))
   match arrow {
-    Some(points) => assert_eq(points.length(), 6)
+    Some(points) => @core_debug.assert_eq(points.length(), 6)
     None => abort("Expected arrow points")
   }
 }

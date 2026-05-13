@@ -1,5 +1,5 @@
 ///|
-let layered_l_graph_next_handle : Ref[Int] = Ref::new(1)
+let layered_l_graph_next_handle : Ref[Int] = Ref(1)
 
 ///|
 fn layered_l_graph_allocate_handle() -> Int {

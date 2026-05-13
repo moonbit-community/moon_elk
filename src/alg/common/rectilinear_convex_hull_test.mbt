@@ -35,13 +35,13 @@ test "RectilinearConvexHull cross" {
     new_point(0.0, 2.0),
   ]
   let hull = rectilinear_convex_hull_of(points)
-  assert_eq(point_xy(hull.get_hull()), point_xy(points))
+  @core_debug.assert_eq(point_xy(hull.get_hull()), point_xy(points))
   let expected_rectangles = [
     new_elk_rectangle_xywh(0.0, 1.0, 1.0, 1.0),
     new_elk_rectangle_xywh(1.0, 0.0, 1.0, 3.0),
     new_elk_rectangle_xywh(2.0, 1.0, 1.0, 1.0),
   ]
-  assert_eq(
+  @core_debug.assert_eq(
     rect_xywh(hull.split_into_rectangles()),
     rect_xywh(expected_rectangles),
   )
@@ -72,7 +72,7 @@ test "RectilinearConvexHull little robot" {
     new_point(0.0, 2.0),
   ]
   let hull = rectilinear_convex_hull_of(points)
-  assert_eq(point_xy(hull.get_hull()), point_xy(points))
+  @core_debug.assert_eq(point_xy(hull.get_hull()), point_xy(points))
   let expected_rectangles = [
     new_elk_rectangle_xywh(0.0, 2.0, 1.0, 0.0),
     new_elk_rectangle_xywh(1.0, 1.0, 1.0, 2.0),
@@ -80,7 +80,7 @@ test "RectilinearConvexHull little robot" {
     new_elk_rectangle_xywh(2.0, 1.0, 1.0, 2.0),
     new_elk_rectangle_xywh(3.0, 2.0, 1.0, 0.0),
   ]
-  assert_eq(
+  @core_debug.assert_eq(
     rect_xywh(hull.split_into_rectangles()),
     rect_xywh(expected_rectangles),
   )

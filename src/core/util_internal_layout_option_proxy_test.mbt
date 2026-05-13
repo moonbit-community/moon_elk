@@ -20,8 +20,8 @@ test "layout_option_proxy resolve_value resolves by property metadata" {
     "",
   )
   let proxy = new_layout_option_proxy("1")
-  inspect(proxy.resolve_value(Some(property)), content="Some(\"true\")")
-  inspect(proxy.resolve_value(None), content="None")
+  debug_inspect(proxy.resolve_value(Some(property)), content="Some(\"true\")")
+  debug_inspect(proxy.resolve_value(None), content="None")
 }
 
 ///|
@@ -34,11 +34,11 @@ test "layout_option_proxy resolve_value_with_option mirrors parse_value" {
     None => abort("expected default option metadata for content alignment")
   }
   let proxy = new_layout_option_proxy("A, B  C")
-  inspect(
+  debug_inspect(
     proxy.resolve_value_with_option(Some(option_data)),
     content="Some(\"A B C\")",
   )
-  inspect(proxy.resolve_value_with_option(None), content="None")
+  debug_inspect(proxy.resolve_value_with_option(None), content="None")
 }
 
 ///|

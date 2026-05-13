@@ -115,7 +115,7 @@ test "GRandom executable extension factory resolves provider and initializes ext
   @ui.grandom_activator_reset_for_test()
   let activator = @ui.new_grandom_activator()
   let class_name = "example.GRandomExtension"
-  let contributor_ref : Ref[String] = Ref::new("none")
+  let contributor_ref : Ref[String] = Ref("none")
 
   activator.register_bundle_class(class_name)
   activator.register_injector_provider(

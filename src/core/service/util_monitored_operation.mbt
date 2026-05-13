@@ -17,7 +17,7 @@ pub fn monitored_operation_status_ok() -> MonitoredOperationStatus {
 }
 
 ///|
-let monitored_operation_timestamp_ref : Ref[Int] = Ref::new(0)
+let monitored_operation_timestamp_ref : Ref[Int] = Ref(0)
 
 ///|
 fn next_monitored_operation_timestamp() -> Int {

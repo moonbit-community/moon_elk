@@ -5,7 +5,7 @@ pub(all) struct CoreUiAlgorithmSelectionListener {
 }
 
 ///|
-let core_ui_algorithm_selection_listener_id_ref : Ref[Int] = Ref::new(1)
+let core_ui_algorithm_selection_listener_id_ref : Ref[Int] = Ref(1)
 
 ///|
 pub fn new_core_ui_algorithm_selection_listener(

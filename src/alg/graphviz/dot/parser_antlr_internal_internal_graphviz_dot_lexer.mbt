@@ -149,7 +149,7 @@ fn graphviz_dot_lexer_token_name(token_type : Int) -> String {
 
 ///|
 fn graphviz_dot_lexer_slice(text : String, start : Int, end_ : Int) -> String {
-  text[start:end_].to_string()
+  text[start:end_].to_owned()
 }
 
 ///|

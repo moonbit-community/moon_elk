@@ -15,8 +15,8 @@ test "ApplyLayoutRequest stores mapping bounds and scale" {
 
   let elements = request.get_elements()
   inspect(elements.length(), content="1")
-  inspect(elements[0].get_first(), content="Some(42)")
-  inspect(elements[0].get_second(), content="Some(0)")
+  debug_inspect(elements[0].get_first(), content="Some(42)")
+  debug_inspect(elements[0].get_second(), content="Some(0)")
   inspect(request.get_x_bound(), content="100.5")
   inspect(request.get_y_bound(), content="200.25")
   inspect(request.get_scale(), content="0.75")

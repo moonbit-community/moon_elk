@@ -192,7 +192,7 @@ test "ElkGraph executable extension factory resolves provider and initializes ex
   @ui.text_activator_reset_for_test()
   let activator = @ui.new_text_activator()
   let class_name = "example.ElkGraphExtension"
-  let contributor_ref : Ref[String] = Ref::new("none")
+  let contributor_ref : Ref[String] = Ref("none")
 
   activator.register_bundle_class(class_name)
   activator.register_injector_provider(

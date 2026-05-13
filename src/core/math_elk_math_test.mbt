@@ -76,21 +76,21 @@ test "ElkMath testPathIntersects" {
 
 ///|
 test "ElkMath testFactl" {
-  assert_eq(factl(0), Int64::from_int(1))
-  assert_eq(factl(1), Int64::from_int(1))
+  @core_debug.assert_eq(factl(0), Int64::from_int(1))
+  @core_debug.assert_eq(factl(1), Int64::from_int(1))
   let expected_20 = try @string.parse_int64("2432902008176640000") catch {
     _ => abort("failed to parse int64 literal")
   } noraise {
     value => value
   }
-  assert_eq(factl(20), expected_20)
+  @core_debug.assert_eq(factl(20), expected_20)
 }
 
 ///|
 test "ElkMath testFactlLittleIllegalArgumentException" {
   @core.layout_runtime_clear_error()
   ignore(factl(-50))
-  assert_eq(
+  @core_debug.assert_eq(
     @core.layout_runtime_take_error_message(),
     Some(
       "org.eclipse.elk.core.UnsupportedConfigurationException: The input must be between 0 and 21",
@@ -102,7 +102,7 @@ test "ElkMath testFactlLittleIllegalArgumentException" {
 test "ElkMath testFactlBigIllegalArgumentException" {
   @core.layout_runtime_clear_error()
   ignore(factl(21))
-  assert_eq(
+  @core_debug.assert_eq(
     @core.layout_runtime_take_error_message(),
     Some(
       "org.eclipse.elk.core.UnsupportedConfigurationException: The input must be between 0 and 21",
@@ -120,7 +120,7 @@ test "ElkMath testFactd" {
 test "ElkMath testFactdLittleIllegalArgumentException" {
   @core.layout_runtime_clear_error()
   ignore(factd(-1))
-  assert_eq(
+  @core_debug.assert_eq(
     @core.layout_runtime_take_error_message(),
     Some(
       "org.eclipse.elk.core.UnsupportedConfigurationException: The input must be positive",
@@ -130,16 +130,16 @@ test "ElkMath testFactdLittleIllegalArgumentException" {
 
 ///|
 test "ElkMath testBinomiall" {
-  assert_eq(binomiall(2, 0), Int64::from_int(1))
-  assert_eq(binomiall(20, 20), Int64::from_int(1))
-  assert_eq(binomiall(2, 1), Int64::from_int(2))
+  @core_debug.assert_eq(binomiall(2, 0), Int64::from_int(1))
+  @core_debug.assert_eq(binomiall(20, 20), Int64::from_int(1))
+  @core_debug.assert_eq(binomiall(2, 1), Int64::from_int(2))
 }
 
 ///|
 test "ElkMath testBinomiallLittleIllegalArgumentException" {
   @core.layout_runtime_clear_error()
   ignore(binomiall(-1, 1))
-  assert_eq(
+  @core_debug.assert_eq(
     @core.layout_runtime_take_error_message(),
     Some(
       "org.eclipse.elk.core.UnsupportedConfigurationException: k and n must be positive",
@@ -158,7 +158,7 @@ test "ElkMath testBinomiald" {
 test "ElkMath testBinomialdLittleIllegalArgumentException" {
   @core.layout_runtime_clear_error()
   ignore(binomiald(-1, 1))
-  assert_eq(
+  @core_debug.assert_eq(
     @core.layout_runtime_take_error_message(),
     Some(
       "org.eclipse.elk.core.UnsupportedConfigurationException: k and n must be positive",
@@ -248,16 +248,16 @@ test "ElkMath testDistanceFromSpline" {
 
 ///|
 test "ElkMath testMax" {
-  assert_eq(maxi([1, 7, 5, 6]), 7)
+  @core_debug.assert_eq(maxi([1, 7, 5, 6]), 7)
   assert_double_eq(maxf([1.0, 7.0, 5.0, 6.0]), 7.0, 0.0)
   assert_double_eq(maxd([1.0, 7.0, 5.0, 6.0]), 7.0, 0.0)
 }
 
 ///|
 test "ElkMath testMin" {
-  assert_eq(mini([1, 7, 5, 6]), 1)
-  assert_eq(mini([8, 1, 9, 0]), 0)
-  assert_eq(mini([8, 8, 8, 8]), 8)
+  @core_debug.assert_eq(mini([1, 7, 5, 6]), 1)
+  @core_debug.assert_eq(mini([8, 1, 9, 0]), 0)
+  @core_debug.assert_eq(mini([8, 8, 8, 8]), 8)
   assert_double_eq(minf([1.0, 7.0, 5.0, 6.0]), 1.0, 0.0)
   assert_double_eq(minf([8.0, 1.0, 9.0, 0.0]), 0.0, 0.0)
   assert_double_eq(minf([8.0, 8.0, 8.0, 8.0]), 8.0, 0.0)
@@ -268,7 +268,7 @@ test "ElkMath testMin" {
 
 ///|
 test "ElkMath testAverage" {
-  assert_eq(
+  @core_debug.assert_eq(
     averagel([
       Int64::from_int(5),
       Int64::from_int(8),
@@ -277,7 +277,7 @@ test "ElkMath testAverage" {
     ]),
     Int64::from_int(4),
   )
-  assert_eq(
+  @core_debug.assert_eq(
     averagel([
       Int64::from_int(5),
       Int64::from_int(0),

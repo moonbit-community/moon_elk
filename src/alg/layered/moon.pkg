@@ -15,5 +15,6 @@ import {
 }
 
 import {
+  "moonbitlang/core/debug" @core_debug,
   "Milky2018/moon_elk/alg/test",
 } for "test"

@@ -77,12 +77,12 @@ fn dot_importer_is_number_char(c : Char) -> Bool {
 
 ///|
 fn dot_importer_slice(text : String, start : Int, end_ : Int) -> String {
-  text[start:end_].to_string()
+  text[start:end_].to_owned()
 }
 
 ///|
 fn dot_importer_slice_from(text : String, start : Int) -> String {
-  text[start:].to_string()
+  text[start:].to_owned()
 }
 
 ///|
@@ -167,7 +167,7 @@ fn dot_importer_trim_value(attribute : DotAttribute) -> String {
     None => "true"
   }
   if value.length() >= 2 && value.has_prefix("\"") && value.has_suffix("\"") {
-    dot_importer_slice(value, 1, value.length() - 1).trim().to_string()
+    dot_importer_slice(value, 1, value.length() - 1).trim().to_owned()
   } else {
     value
   }
