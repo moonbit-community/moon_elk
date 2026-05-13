@@ -51,7 +51,10 @@ test "in-layer constraint processor reports expected task name" {
   let processor = new_in_layer_constraint_processor_layout_processor()
   let monitor = new_elk_progress_monitor()
   processor.process(new_l_graph(), Some(monitor))
-  inspect(monitor.get_task_name(), content="Layer constraint edge reversal")
+  debug_inspect(
+    monitor.get_task_name(),
+    content="Layer constraint edge reversal",
+  )
 }
 
 ///|
@@ -70,11 +73,11 @@ test "in-layer constraint processor enforces top none bottom ordering per layer"
   let processor = new_in_layer_constraint_processor_layout_processor()
   processor.process(graph, None)
 
-  inspect(
+  debug_inspect(
     in_layer_constraint_processor_test_constraints(layer),
     content="[\"TOP\", \"TOP\", \"NONE\", \"NONE\", \"BOTTOM\", \"BOTTOM\"]",
   )
-  inspect(
+  debug_inspect(
     in_layer_constraint_processor_test_ids(layer),
     content="[1, 3, 0, 4, 2, 5]",
   )
@@ -88,5 +91,8 @@ test "in-layer constraint processor strategy creates in-layer processor" {
   let processor = factory.create()
   let monitor = new_elk_progress_monitor()
   processor.process(new_l_graph(), Some(monitor))
-  inspect(monitor.get_task_name(), content="Layer constraint edge reversal")
+  debug_inspect(
+    monitor.get_task_name(),
+    content="Layer constraint edge reversal",
+  )
 }

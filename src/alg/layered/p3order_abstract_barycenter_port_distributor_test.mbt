@@ -71,7 +71,7 @@ test "AbstractBarycenterPortDistributor distributePortsOnSide_GivenCrossOnWester
   let expected_port_order = creator.copy_ports_in_index_order(right_node, [1, 0])
   abstract_port_test_distribute_ports_in_complete_graph(graph)
 
-  assert_eq(
+  @core_debug.assert_eq(
     abstract_port_test_port_handles(right_node.get_ports()),
     abstract_port_test_port_handles(expected_port_order),
   )
@@ -96,7 +96,7 @@ test "AbstractBarycenterPortDistributor distributePortsOfGraph_GivenCrossOnBothS
   ])
   abstract_port_test_distribute_ports_in_complete_graph(graph)
 
-  assert_eq(
+  @core_debug.assert_eq(
     abstract_port_test_port_handles(middle_node.get_ports()),
     abstract_port_test_port_handles(expected_port_order),
   )
@@ -115,7 +115,7 @@ test "AbstractBarycenterPortDistributor distributePortsOfGraph_GivenCrossOnEaste
   let expected_port_order = creator.copy_ports_in_index_order(left_node, [1, 0])
   abstract_port_test_distribute_ports_in_complete_graph(graph)
 
-  assert_eq(
+  @core_debug.assert_eq(
     abstract_port_test_port_handles(left_node.get_ports()),
     abstract_port_test_port_handles(expected_port_order),
   )
@@ -142,7 +142,7 @@ test "AbstractBarycenterPortDistributor distributePortsOfGraph_GivenInLayerEdgeP
   let expected_port_order = creator.copy_ports_in_index_order(nodes[2], [1, 0])
   abstract_port_test_distribute_ports_in_complete_graph(graph)
 
-  assert_eq(
+  @core_debug.assert_eq(
     abstract_port_test_port_handles(nodes[2].get_ports()),
     abstract_port_test_port_handles(expected_port_order),
   )
@@ -176,7 +176,7 @@ test "AbstractBarycenterPortDistributor distributePortsOfGraph_GivenNorthSouthPo
   ])
   abstract_port_test_distribute_ports_in_complete_graph(graph)
 
-  assert_eq(
+  @core_debug.assert_eq(
     abstract_port_test_port_handles(left_nodes[2].get_ports()),
     abstract_port_test_port_handles(expected_port_order),
   )
@@ -199,7 +199,7 @@ test "AbstractBarycenterPortDistributor distributePortsWhileSweeping_givenSimple
   i_initializable_init([port_dist.as_initializable()], node_order)
   ignore(port_dist.distribute_ports_while_sweeping(node_order, 1, true))
 
-  assert_eq(
+  @core_debug.assert_eq(
     abstract_port_test_port_handles(right_node.get_ports()),
     abstract_port_test_port_handles(expected_port_order),
   )

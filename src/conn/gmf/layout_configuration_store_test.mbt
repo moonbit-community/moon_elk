@@ -48,7 +48,7 @@ test "GmfLayoutConfigurationStore computes affected options from styles and defa
     conn_gmf_layout_configuration_store_test_filter(),
   )
   let affected = store.get_affected_options()
-  inspect(affected.length(), content="3")
+  debug_inspect(affected.length(), content="3")
 }
 
 ///|
@@ -62,35 +62,35 @@ test "GmfLayoutConfigurationStore maps edit-part kinds to option targets" {
   let label = new_gmf_edit_part(LabelEditPart)
   let diagram = new_gmf_edit_part(DiagramEditPart)
 
-  inspect(
+  debug_inspect(
     new_gmf_layout_configuration_store(
       border,
       conn_gmf_layout_configuration_store_test_filter(),
     ).get_option_targets(),
     content="[Ports]",
   )
-  inspect(
+  debug_inspect(
     new_gmf_layout_configuration_store(
       node,
       conn_gmf_layout_configuration_store_test_filter(),
     ).get_option_targets(),
     content="[Nodes, Parents]",
   )
-  inspect(
+  debug_inspect(
     new_gmf_layout_configuration_store(
       edge,
       conn_gmf_layout_configuration_store_test_filter(),
     ).get_option_targets(),
     content="[Edges]",
   )
-  inspect(
+  debug_inspect(
     new_gmf_layout_configuration_store(
       label,
       conn_gmf_layout_configuration_store_test_filter(),
     ).get_option_targets(),
     content="[Labels]",
   )
-  inspect(
+  debug_inspect(
     new_gmf_layout_configuration_store(
       diagram,
       conn_gmf_layout_configuration_store_test_filter(),
@@ -118,14 +118,14 @@ test "GmfLayoutConfigurationStore parent resolution follows edge and label conta
     label,
     conn_gmf_layout_configuration_store_test_filter(),
   )
-  inspect(
+  debug_inspect(
     match edge_store.get_parent() {
       Some(parent_store) => parent_store.get_editing_domain()
       None => -1
     },
     content="0",
   )
-  inspect(
+  debug_inspect(
     match label_store.get_parent() {
       Some(parent_store) => parent_store.get_editing_domain()
       None => -1

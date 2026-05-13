@@ -44,8 +44,24 @@ fn PolarCP::get_cp(self : PolarCP) -> @core.KVector {
 }
 
 ///|
+fn nub_spline_double_array_to_string(values : Array[Double]) -> String {
+  let parts = []
+  for value in values {
+    parts.push(value.to_string())
+  }
+  "[" + parts.join(", ") + "]"
+}
+
+///|
+fn nub_spline_string_array_to_string(values : Array[String]) -> String {
+  "[" + values.join(", ") + "]"
+}
+
+///|
 fn PolarCP::to_string(self : PolarCP) -> String {
-  self.cp.to_string() + "@" + self.polar_coordinate.to_string()
+  self.cp.to_string() +
+  "@" +
+  nub_spline_double_array_to_string(self.polar_coordinate)
 }
 
 ///|
@@ -685,7 +701,7 @@ pub fn NubSpline::to_string(self : NubSpline) -> String {
   for control_point in self.control_points {
     pieces.push(control_point.to_string())
   }
-  pieces.to_string()
+  nub_spline_string_array_to_string(pieces)
 }
 
 ///|

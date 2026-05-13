@@ -36,7 +36,7 @@ test "NoCrossingMinimizer process leaves node order untouched" {
 
   let after = creator.get_current_order(graph)
   let after_ids = no_crossing_test_node_ids(after[1])
-  assert_eq(after_ids, before_ids)
+  @core_debug.assert_eq(after_ids, before_ids)
 }
 
 ///|
@@ -52,19 +52,19 @@ test "NoCrossingMinimizer configuration matches upstream processor slots" {
   let p4_node_placement = phase_constants[3]
   let p5_edge_routing = phase_constants[4]
 
-  assert_eq(
+  @core_debug.assert_eq(
     no_crossing_test_factory_ids(
       configuration.processors_before(p3_node_ordering),
     ),
     [23016, 23019],
   )
-  assert_eq(
+  @core_debug.assert_eq(
     no_crossing_test_factory_ids(
       configuration.processors_before(p4_node_placement),
     ),
     [23028],
   )
-  assert_eq(
+  @core_debug.assert_eq(
     no_crossing_test_factory_ids(
       configuration.processors_after(p5_edge_routing),
     ),

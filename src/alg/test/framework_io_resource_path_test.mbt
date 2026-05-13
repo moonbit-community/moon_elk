@@ -33,9 +33,9 @@ test "AbstractResourcePath lists directory files with extension filter" {
   let filter = new_file_extension_filter(".elkg")
   let path = new_absolute_resource_path("/repo/**")
   path.set_filter(Some(filter.to_filter()))
-  inspect(path.is_directory(), content="true")
-  inspect(path.is_recursive(), content="false")
-  inspect(
+  debug_inspect(path.is_directory(), content="true")
+  debug_inspect(path.is_recursive(), content="false")
+  debug_inspect(
     absolute_path_strings(path.list_resources()),
     content="[\"/repo/a.elkg\"]",
   )
@@ -48,9 +48,9 @@ test "AbstractResourcePath recursive directory scan works with file name filter"
   let filter = new_file_name_filter(".*\\.elkg")
   let path = new_absolute_resource_path("/repo/**/")
   path.set_filter(Some(filter.to_filter()))
-  inspect(path.is_directory(), content="true")
-  inspect(path.is_recursive(), content="true")
-  inspect(
+  debug_inspect(path.is_directory(), content="true")
+  debug_inspect(path.is_recursive(), content="true")
+  debug_inspect(
     absolute_path_strings(path.list_resources()),
     content="[\"/repo/a.elkg\", \"/repo/sub/c.elkg\"]",
   )
@@ -65,13 +65,13 @@ test "Property-dependent resource paths resolve from test properties" {
   let bundle_path = new_bundle_resource_path(
     "org.eclipse.elk.alg.test", "src/**",
   )
-  inspect(
+  debug_inspect(
     bundle_path.get_file(),
     content="/workspace/test/org.eclipse.elk.alg.test/src",
   )
   let model_path = new_model_resource_path("my.elkg")
-  inspect(model_path.get_file(), content="/models/my.elkg")
+  debug_inspect(model_path.get_file(), content="/models/my.elkg")
   ignore(new_results_resource_path("run/report.txt"))
   ensure_results_path_exists()
-  inspect(core_debug_is_directory("/results"), content="true")
+  debug_inspect(core_debug_is_directory("/results"), content="true")
 }

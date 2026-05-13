@@ -1,6 +1,6 @@
 ///|
 test "LayeredPhases keep upstream constant names and order" {
-  inspect(
+  debug_inspect(
     layered_phase_values(),
     content="[\"P1_CYCLE_BREAKING\", \"P2_LAYERING\", \"P3_NODE_ORDERING\", \"P4_NODE_PLACEMENT\", \"P5_EDGE_ROUTING\"]",
   )
@@ -27,10 +27,10 @@ test "LayeredIGraphTransformer delegates import and apply" {
   )
 
   match transformer.import_graph("supported") {
-    Some(graph) => assert_eq(graph.get_id(), 17)
+    Some(graph) => @core_debug.assert_eq(graph.get_id(), 17)
     None => fail("expected graph to be imported")
   }
-  assert_eq(seen_input.val, "supported")
+  @core_debug.assert_eq(seen_input.val, "supported")
 
   match transformer.import_graph("unsupported") {
     Some(_) => fail("unsupported graph must return None")
@@ -38,10 +38,10 @@ test "LayeredIGraphTransformer delegates import and apply" {
   }
 
   transformer.apply_layout(imported_graph)
-  assert_eq(seen_applied_id.val, 17)
+  @core_debug.assert_eq(seen_applied_id.val, 17)
 }
 
 ///|
 test "Layered hierarchy-aware marker is constructible" {
-  inspect(new_layered_hierarchy_aware_layout_processor(), content="()")
+  debug_inspect(new_layered_hierarchy_aware_layout_processor(), content="()")
 }

@@ -161,13 +161,16 @@ test "DepthFirstCycleBreaker removes directed 3-cycle" {
   ignore(basic_cycle_breaker_connect(n2, n3))
   ignore(basic_cycle_breaker_connect(n3, n1))
 
-  assert_eq(basic_cycle_breaker_has_cycle(graph), true)
+  @core_debug.assert_eq(basic_cycle_breaker_has_cycle(graph), true)
 
   let phase = new_depth_first_cycle_breaker_layout_phase()
   phase.process(graph, None)
 
-  assert_eq(basic_cycle_breaker_has_cycle(graph), false)
-  assert_eq(graph.get_property_bool(internal_properties_cyclic), true)
+  @core_debug.assert_eq(basic_cycle_breaker_has_cycle(graph), false)
+  @core_debug.assert_eq(
+    graph.get_property_bool(internal_properties_cyclic),
+    true,
+  )
 }
 
 ///|
@@ -180,7 +183,7 @@ test "DepthFirstCycleBreaker adds reversed-edge-restorer slot after P5" {
   }
   let phase_constants = layered_phase_constants()
   let p5_edge_routing = phase_constants[4]
-  assert_eq(
+  @core_debug.assert_eq(
     basic_cycle_breaker_factory_ids(
       configuration.processors_after(p5_edge_routing),
     ),
@@ -197,7 +200,7 @@ test "InteractiveCycleBreaker reverses right-to-left edge by node x position" {
   ignore(right.get_position().set_xy(100.0, right.get_position().y))
   ignore(basic_cycle_breaker_connect(right, left))
 
-  assert_eq(
+  @core_debug.assert_eq(
     match basic_cycle_breaker_find_edge(right, left) {
       Some(_) => true
       None => false
@@ -208,7 +211,7 @@ test "InteractiveCycleBreaker reverses right-to-left edge by node x position" {
   let phase = new_interactive_cycle_breaker_layout_phase()
   phase.process(graph, None)
 
-  assert_eq(
+  @core_debug.assert_eq(
     match basic_cycle_breaker_find_edge(right, left) {
       Some(_) => true
       None => false
@@ -219,8 +222,14 @@ test "InteractiveCycleBreaker reverses right-to-left edge by node x position" {
     Some(value) => value
     None => abort("edge should be reversed")
   }
-  assert_eq(reversed_edge.get_property_bool(internal_properties_reversed), true)
-  assert_eq(graph.get_property_bool(internal_properties_cyclic), true)
+  @core_debug.assert_eq(
+    reversed_edge.get_property_bool(internal_properties_reversed),
+    true,
+  )
+  @core_debug.assert_eq(
+    graph.get_property_bool(internal_properties_cyclic),
+    true,
+  )
 }
 
 ///|
@@ -236,13 +245,16 @@ test "InteractiveCycleBreaker fallback DFS removes cycle when x is tied" {
   ignore(basic_cycle_breaker_connect(n2, n3))
   ignore(basic_cycle_breaker_connect(n3, n1))
 
-  assert_eq(basic_cycle_breaker_has_cycle(graph), true)
+  @core_debug.assert_eq(basic_cycle_breaker_has_cycle(graph), true)
 
   let phase = new_interactive_cycle_breaker_layout_phase()
   phase.process(graph, None)
 
-  assert_eq(basic_cycle_breaker_has_cycle(graph), false)
-  assert_eq(graph.get_property_bool(internal_properties_cyclic), true)
+  @core_debug.assert_eq(basic_cycle_breaker_has_cycle(graph), false)
+  @core_debug.assert_eq(
+    graph.get_property_bool(internal_properties_cyclic),
+    true,
+  )
 }
 
 ///|
@@ -256,13 +268,13 @@ test "InteractiveCycleBreaker config adds pre-P1 and post-P5 processors" {
   let phase_constants = layered_phase_constants()
   let p1_cycle_breaking = phase_constants[0]
   let p5_edge_routing = phase_constants[4]
-  assert_eq(
+  @core_debug.assert_eq(
     basic_cycle_breaker_factory_ids(
       configuration.processors_before(p1_cycle_breaking),
     ),
     [23003],
   )
-  assert_eq(
+  @core_debug.assert_eq(
     basic_cycle_breaker_factory_ids(
       configuration.processors_after(p5_edge_routing),
     ),
@@ -283,13 +295,16 @@ test "BFSNodeOrderCycleBreaker removes directed 3-cycle" {
   ignore(basic_cycle_breaker_connect(n2, n3))
   ignore(basic_cycle_breaker_connect(n3, n1))
 
-  assert_eq(basic_cycle_breaker_has_cycle(graph), true)
+  @core_debug.assert_eq(basic_cycle_breaker_has_cycle(graph), true)
 
   let phase = new_bfs_node_order_cycle_breaker_layout_phase()
   phase.process(graph, None)
 
-  assert_eq(basic_cycle_breaker_has_cycle(graph), false)
-  assert_eq(graph.get_property_bool(internal_properties_cyclic), true)
+  @core_debug.assert_eq(basic_cycle_breaker_has_cycle(graph), false)
+  @core_debug.assert_eq(
+    graph.get_property_bool(internal_properties_cyclic),
+    true,
+  )
 }
 
 ///|
@@ -302,7 +317,7 @@ test "BFSNodeOrderCycleBreaker adds reversed-edge-restorer slot after P5" {
   }
   let phase_constants = layered_phase_constants()
   let p5_edge_routing = phase_constants[4]
-  assert_eq(
+  @core_debug.assert_eq(
     basic_cycle_breaker_factory_ids(
       configuration.processors_after(p5_edge_routing),
     ),
@@ -323,13 +338,16 @@ test "DFSNodeOrderCycleBreaker removes directed 3-cycle" {
   ignore(basic_cycle_breaker_connect(n2, n3))
   ignore(basic_cycle_breaker_connect(n3, n1))
 
-  assert_eq(basic_cycle_breaker_has_cycle(graph), true)
+  @core_debug.assert_eq(basic_cycle_breaker_has_cycle(graph), true)
 
   let phase = new_dfs_node_order_cycle_breaker_layout_phase()
   phase.process(graph, None)
 
-  assert_eq(basic_cycle_breaker_has_cycle(graph), false)
-  assert_eq(graph.get_property_bool(internal_properties_cyclic), true)
+  @core_debug.assert_eq(basic_cycle_breaker_has_cycle(graph), false)
+  @core_debug.assert_eq(
+    graph.get_property_bool(internal_properties_cyclic),
+    true,
+  )
 }
 
 ///|
@@ -342,7 +360,7 @@ test "DFSNodeOrderCycleBreaker adds reversed-edge-restorer slot after P5" {
   }
   let phase_constants = layered_phase_constants()
   let p5_edge_routing = phase_constants[4]
-  assert_eq(
+  @core_debug.assert_eq(
     basic_cycle_breaker_factory_ids(
       configuration.processors_after(p5_edge_routing),
     ),
@@ -363,13 +381,16 @@ test "ModelOrderCycleBreaker removes backward edge by model order" {
   ignore(basic_cycle_breaker_connect(n2, n3))
   ignore(basic_cycle_breaker_connect(n3, n1))
 
-  assert_eq(basic_cycle_breaker_has_cycle(graph), true)
+  @core_debug.assert_eq(basic_cycle_breaker_has_cycle(graph), true)
 
   let phase = new_model_order_cycle_breaker_layout_phase()
   phase.process(graph, None)
 
-  assert_eq(basic_cycle_breaker_has_cycle(graph), false)
-  assert_eq(graph.get_property_bool(internal_properties_cyclic), true)
+  @core_debug.assert_eq(basic_cycle_breaker_has_cycle(graph), false)
+  @core_debug.assert_eq(
+    graph.get_property_bool(internal_properties_cyclic),
+    true,
+  )
 }
 
 ///|
@@ -382,7 +403,7 @@ test "ModelOrderCycleBreaker adds reversed-edge-restorer slot after P5" {
   }
   let phase_constants = layered_phase_constants()
   let p5_edge_routing = phase_constants[4]
-  assert_eq(
+  @core_debug.assert_eq(
     basic_cycle_breaker_factory_ids(
       configuration.processors_after(p5_edge_routing),
     ),
@@ -400,13 +421,16 @@ test "GreedyCycleBreaker removes directed 3-cycle" {
   ignore(basic_cycle_breaker_connect(n2, n3))
   ignore(basic_cycle_breaker_connect(n3, n1))
 
-  assert_eq(basic_cycle_breaker_has_cycle(graph), true)
+  @core_debug.assert_eq(basic_cycle_breaker_has_cycle(graph), true)
 
   let phase = new_greedy_cycle_breaker_layout_phase()
   phase.process(graph, None)
 
-  assert_eq(basic_cycle_breaker_has_cycle(graph), false)
-  assert_eq(graph.get_property_bool(internal_properties_cyclic), true)
+  @core_debug.assert_eq(basic_cycle_breaker_has_cycle(graph), false)
+  @core_debug.assert_eq(
+    graph.get_property_bool(internal_properties_cyclic),
+    true,
+  )
 }
 
 ///|
@@ -419,7 +443,7 @@ test "GreedyCycleBreaker adds reversed-edge-restorer slot after P5" {
   }
   let phase_constants = layered_phase_constants()
   let p5_edge_routing = phase_constants[4]
-  assert_eq(
+  @core_debug.assert_eq(
     basic_cycle_breaker_factory_ids(
       configuration.processors_after(p5_edge_routing),
     ),
@@ -440,13 +464,16 @@ test "GreedyModelOrderCycleBreaker removes directed 3-cycle" {
   ignore(basic_cycle_breaker_connect(n2, n3))
   ignore(basic_cycle_breaker_connect(n3, n1))
 
-  assert_eq(basic_cycle_breaker_has_cycle(graph), true)
+  @core_debug.assert_eq(basic_cycle_breaker_has_cycle(graph), true)
 
   let phase = new_greedy_model_order_cycle_breaker_layout_phase()
   phase.process(graph, None)
 
-  assert_eq(basic_cycle_breaker_has_cycle(graph), false)
-  assert_eq(graph.get_property_bool(internal_properties_cyclic), true)
+  @core_debug.assert_eq(basic_cycle_breaker_has_cycle(graph), false)
+  @core_debug.assert_eq(
+    graph.get_property_bool(internal_properties_cyclic),
+    true,
+  )
 }
 
 ///|
@@ -459,7 +486,7 @@ test "GreedyModelOrderCycleBreaker adds reversed-edge-restorer slot after P5" {
   }
   let phase_constants = layered_phase_constants()
   let p5_edge_routing = phase_constants[4]
-  assert_eq(
+  @core_debug.assert_eq(
     basic_cycle_breaker_factory_ids(
       configuration.processors_after(p5_edge_routing),
     ),
@@ -480,13 +507,16 @@ test "SCCModelOrderCycleBreaker removes directed 3-cycle" {
   ignore(basic_cycle_breaker_connect(n2, n3))
   ignore(basic_cycle_breaker_connect(n3, n1))
 
-  assert_eq(basic_cycle_breaker_has_cycle(graph), true)
+  @core_debug.assert_eq(basic_cycle_breaker_has_cycle(graph), true)
 
   let phase = new_scc_model_order_cycle_breaker_layout_phase()
   phase.process(graph, None)
 
-  assert_eq(basic_cycle_breaker_has_cycle(graph), false)
-  assert_eq(graph.get_property_bool(internal_properties_cyclic), true)
+  @core_debug.assert_eq(basic_cycle_breaker_has_cycle(graph), false)
+  @core_debug.assert_eq(
+    graph.get_property_bool(internal_properties_cyclic),
+    true,
+  )
 }
 
 ///|
@@ -499,7 +529,7 @@ test "SCCModelOrderCycleBreaker adds reversed-edge-restorer slot after P5" {
   }
   let phase_constants = layered_phase_constants()
   let p5_edge_routing = phase_constants[4]
-  assert_eq(
+  @core_debug.assert_eq(
     basic_cycle_breaker_factory_ids(
       configuration.processors_after(p5_edge_routing),
     ),
@@ -520,13 +550,16 @@ test "SCConnectivityCycleBreaker removes directed 3-cycle" {
   ignore(basic_cycle_breaker_connect(n2, n3))
   ignore(basic_cycle_breaker_connect(n3, n1))
 
-  assert_eq(basic_cycle_breaker_has_cycle(graph), true)
+  @core_debug.assert_eq(basic_cycle_breaker_has_cycle(graph), true)
 
   let phase = new_sc_connectivity_cycle_breaker_layout_phase()
   phase.process(graph, None)
 
-  assert_eq(basic_cycle_breaker_has_cycle(graph), false)
-  assert_eq(graph.get_property_bool(internal_properties_cyclic), true)
+  @core_debug.assert_eq(basic_cycle_breaker_has_cycle(graph), false)
+  @core_debug.assert_eq(
+    graph.get_property_bool(internal_properties_cyclic),
+    true,
+  )
 }
 
 ///|
@@ -539,7 +572,7 @@ test "SCConnectivityCycleBreaker adds reversed-edge-restorer slot after P5" {
   }
   let phase_constants = layered_phase_constants()
   let p5_edge_routing = phase_constants[4]
-  assert_eq(
+  @core_debug.assert_eq(
     basic_cycle_breaker_factory_ids(
       configuration.processors_after(p5_edge_routing),
     ),
@@ -577,7 +610,7 @@ test "SCCNodeTypeCycleBreaker honors preferred source node id" {
   ignore(basic_cycle_breaker_connect(n2, n3))
   ignore(basic_cycle_breaker_connect(n3, n1))
 
-  assert_eq(
+  @core_debug.assert_eq(
     match basic_cycle_breaker_find_edge(n3, n1) {
       Some(_) => true
       None => false
@@ -588,8 +621,8 @@ test "SCCNodeTypeCycleBreaker honors preferred source node id" {
   let phase = new_scc_node_type_cycle_breaker_layout_phase()
   phase.process(graph, None)
 
-  assert_eq(basic_cycle_breaker_has_cycle(graph), false)
-  assert_eq(
+  @core_debug.assert_eq(basic_cycle_breaker_has_cycle(graph), false)
+  @core_debug.assert_eq(
     match basic_cycle_breaker_find_edge(n3, n1) {
       Some(_) => true
       None => false
@@ -600,8 +633,14 @@ test "SCCNodeTypeCycleBreaker honors preferred source node id" {
     Some(value) => value
     None => abort("preferred-source incoming edge should be reversed")
   }
-  assert_eq(reversed_edge.get_property_bool(internal_properties_reversed), true)
-  assert_eq(graph.get_property_bool(internal_properties_cyclic), true)
+  @core_debug.assert_eq(
+    reversed_edge.get_property_bool(internal_properties_reversed),
+    true,
+  )
+  @core_debug.assert_eq(
+    graph.get_property_bool(internal_properties_cyclic),
+    true,
+  )
 }
 
 ///|
@@ -614,7 +653,7 @@ test "SCCNodeTypeCycleBreaker adds reversed-edge-restorer slot after P5" {
   }
   let phase_constants = layered_phase_constants()
   let p5_edge_routing = phase_constants[4]
-  assert_eq(
+  @core_debug.assert_eq(
     basic_cycle_breaker_factory_ids(
       configuration.processors_after(p5_edge_routing),
     ),

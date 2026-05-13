@@ -118,7 +118,7 @@ test "LayerSweep two-sided leaves crossing in first-level compound node" {
   let expected_same_order = creator.copy_of_nodes_in_layer(1)
   layer_sweep_two_sided_run(creator)
 
-  assert_eq(
+  @core_debug.assert_eq(
     layer_sweep_two_sided_node_handles(root.get_layers()[1].get_nodes()),
     layer_sweep_two_sided_node_handles(expected_same_order),
   )
@@ -153,11 +153,11 @@ test "LayerSweep two-sided removes crossing when corrected on forward sweep" {
   creator.get_random().set_next_boolean(false)
   layer_sweep_two_sided_run(creator)
 
-  assert_eq(
+  @core_debug.assert_eq(
     layer_sweep_two_sided_port_handles(left_inner_node.get_ports()),
     layer_sweep_two_sided_port_handles(expected_left_port_order),
   )
-  assert_eq(
+  @core_debug.assert_eq(
     layer_sweep_two_sided_node_handles(right_inner_layer.get_nodes()),
     layer_sweep_two_sided_node_handles(expected_right_order),
   )
@@ -194,7 +194,7 @@ test "LayerSweep two-sided removes crossing in single hierarchical node" {
 
   layer_sweep_two_sided_run(creator)
 
-  assert_eq(
+  @core_debug.assert_eq(
     layer_sweep_two_sided_node_handles(inner_graph.get_layers()[0].get_nodes()),
     layer_sweep_two_sided_node_handles(expected_left_order),
   )
@@ -231,7 +231,7 @@ test "LayerSweep two-sided keeps dummy order when no improvement exists" {
   creator.get_random().set_next_boolean(false)
   layer_sweep_two_sided_run(creator)
 
-  assert_eq(
+  @core_debug.assert_eq(
     layer_sweep_two_sided_node_handles(inner_graph.get_layers()[1].get_nodes()),
     layer_sweep_two_sided_node_handles(expected_dummy_order),
   )
@@ -267,7 +267,7 @@ test "LayerSweep two-sided prevents outside crossing from last-layer swap" {
   let expected_dummy_order = inner_graph.get_layers()[1].get_nodes().copy()
   layer_sweep_two_sided_run(creator)
 
-  assert_eq(
+  @core_debug.assert_eq(
     layer_sweep_two_sided_node_handles(inner_graph.get_layers()[1].get_nodes()),
     layer_sweep_two_sided_node_handles(expected_dummy_order),
   )
@@ -304,7 +304,7 @@ test "LayerSweep two-sided prevents outside crossing from first-layer swap" {
   creator.get_random().set_next_boolean(false)
   layer_sweep_two_sided_run(creator)
 
-  assert_eq(
+  @core_debug.assert_eq(
     layer_sweep_two_sided_node_handles(inner_graph.get_layers()[0].get_nodes()),
     layer_sweep_two_sided_node_handles(expected_dummy_order),
   )

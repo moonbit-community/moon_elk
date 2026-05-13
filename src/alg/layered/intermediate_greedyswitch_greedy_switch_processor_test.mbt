@@ -24,6 +24,17 @@ fn greedy_switch_processor_test_node_handles(
 }
 
 ///|
+fn greedy_switch_processor_test_handles_to_string(
+  handles : Array[Int],
+) -> String {
+  let parts = []
+  for handle in handles {
+    parts.push(handle.to_string())
+  }
+  "[" + parts.join(", ") + "]"
+}
+
+///|
 fn greedy_switch_processor_test_assert_layer_order(
   actual : Array[LNode],
   expected : Array[LNode],
@@ -33,9 +44,9 @@ fn greedy_switch_processor_test_assert_layer_order(
   if actual_handles != expected_handles {
     abort(
       "unexpected layer order actual=" +
-      actual_handles.to_string() +
+      greedy_switch_processor_test_handles_to_string(actual_handles) +
       " expected=" +
-      expected_handles.to_string(),
+      greedy_switch_processor_test_handles_to_string(expected_handles),
     )
   }
 }

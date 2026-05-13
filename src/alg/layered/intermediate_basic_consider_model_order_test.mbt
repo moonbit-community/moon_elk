@@ -126,7 +126,7 @@ fn basic_consider_model_order_run_case(
 
 ///|
 test "BasicConsiderModelOrder nodesAndEdgesConfigurator" {
-  assert_eq(
+  @core_debug.assert_eq(
     basic_consider_model_order_run_case("NODES_AND_EDGES", false, false),
     [0, 1],
   )
@@ -134,7 +134,7 @@ test "BasicConsiderModelOrder nodesAndEdgesConfigurator" {
 
 ///|
 test "BasicConsiderModelOrder nodesAndEdgesWeightedConfigurator" {
-  assert_eq(
+  @core_debug.assert_eq(
     basic_consider_model_order_run_case("NODES_AND_EDGES", true, false),
     [0, 1],
   )
@@ -142,42 +142,47 @@ test "BasicConsiderModelOrder nodesAndEdgesWeightedConfigurator" {
 
 ///|
 test "BasicConsiderModelOrder preferEdgesConfigurator" {
-  assert_eq(basic_consider_model_order_run_case("PREFER_EDGES", false, false), [
-    0, 1,
-  ])
+  @core_debug.assert_eq(
+    basic_consider_model_order_run_case("PREFER_EDGES", false, false),
+    [0, 1],
+  )
 }
 
 ///|
 test "BasicConsiderModelOrder preferEdgesWeightedConfigurator" {
-  assert_eq(basic_consider_model_order_run_case("PREFER_EDGES", true, false), [
-    0, 1,
-  ])
+  @core_debug.assert_eq(
+    basic_consider_model_order_run_case("PREFER_EDGES", true, false),
+    [0, 1],
+  )
 }
 
 ///|
 test "BasicConsiderModelOrder preferNodesConfigurator" {
-  assert_eq(basic_consider_model_order_run_case("PREFER_NODES", false, false), [
-    0, 1,
-  ])
+  @core_debug.assert_eq(
+    basic_consider_model_order_run_case("PREFER_NODES", false, false),
+    [0, 1],
+  )
 }
 
 ///|
 test "BasicConsiderModelOrder preferNodesWeightedConfigurator" {
-  assert_eq(basic_consider_model_order_run_case("PREFER_NODES", true, false), [
-    0, 1,
-  ])
+  @core_debug.assert_eq(
+    basic_consider_model_order_run_case("PREFER_NODES", true, false),
+    [0, 1],
+  )
 }
 
 ///|
 test "BasicConsiderModelOrder portModelOrderPreferEdges" {
-  assert_eq(basic_consider_model_order_run_case("PREFER_EDGES", false, true), [
-    0, 1,
-  ])
+  @core_debug.assert_eq(
+    basic_consider_model_order_run_case("PREFER_EDGES", false, true),
+    [0, 1],
+  )
 }
 
 ///|
 test "BasicConsiderModelOrder portModelOrderNodesAndEdges" {
-  assert_eq(
+  @core_debug.assert_eq(
     basic_consider_model_order_run_case("NODES_AND_EDGES", false, true),
     [0, 1],
   )
@@ -185,7 +190,8 @@ test "BasicConsiderModelOrder portModelOrderNodesAndEdges" {
 
 ///|
 test "BasicConsiderModelOrder portModelOrderPreferNodes" {
-  assert_eq(basic_consider_model_order_run_case("PREFER_NODES", false, true), [
-    0, 1,
-  ])
+  @core_debug.assert_eq(
+    basic_consider_model_order_run_case("PREFER_NODES", false, true),
+    [0, 1],
+  )
 }

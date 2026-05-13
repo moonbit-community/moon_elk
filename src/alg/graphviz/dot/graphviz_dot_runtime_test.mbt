@@ -35,8 +35,8 @@ test "GraphvizDotActivator caches injector and manages lifecycle" {
   activator.start()
   ignore(activator.get_injector(graphviz_dot_language_name))
   ignore(activator.get_injector(graphviz_dot_language_name))
-  inspect(activator.injector_count(), content="1")
-  inspect(
+  debug_inspect(activator.injector_count(), content="1")
+  debug_inspect(
     match graphviz_dot_activator_get_instance() {
       Some(_) => true
       None => false
@@ -45,7 +45,7 @@ test "GraphvizDotActivator caches injector and manages lifecycle" {
   )
 
   activator.stop()
-  inspect(
+  debug_inspect(
     match graphviz_dot_activator_get_instance() {
       Some(_) => true
       None => false
@@ -63,14 +63,14 @@ test "panic GraphvizDotActivator rejects unknown grammar" {
 ///|
 test "GraphvizDotRuntimeModule binds GraphvizDotSerializer" {
   let runtime_module = new_graphviz_dot_runtime_module()
-  inspect(
+  debug_inspect(
     runtime_module.bind_iserializer(),
     content="org.eclipse.elk.alg.graphviz.dot.serializer.GraphvizDotSerializer",
   )
 
   let injector = runtime_module.create_injector()
   let injected = injector.get_instance(graphviz_dot_serializer_class_name)
-  inspect(
+  debug_inspect(
     match injected {
       Some(value) => graphviz_dot_object_tag(value)
       None => "missing"
@@ -90,18 +90,18 @@ test "GraphvizDotSerializer configures formatter request" {
     formatter2_provider=formatter_provider,
   )
 
-  inspect(
+  debug_inspect(
     serializer.serialize(
       "digraph { a -> b; }",
       new_graphviz_dot_save_options(formatting=true),
     ),
     content="digraph { a -> b; }|formatted",
   )
-  inspect(max_width_ref.val, content="255")
-  inspect(undefined_only_ref.val, content="false")
+  debug_inspect(max_width_ref.val, content="255")
+  debug_inspect(undefined_only_ref.val, content="false")
 
   ignore(serializer.serialize("graph {}", new_graphviz_dot_save_options()))
-  inspect(undefined_only_ref.val, content="true")
+  debug_inspect(undefined_only_ref.val, content="true")
 }
 
 ///|
@@ -109,19 +109,19 @@ test "GraphvizDotStandaloneSetup registers package and extension" {
   graphviz_dot_reset_registries_for_test()
   ignore(graphviz_dot_standalone_setup_do_setup())
 
-  inspect(
+  debug_inspect(
     graphviz_dot_runtime_test_string_or_none(
       graphviz_dot_registered_epackage(graphviz_dot_ns_uri),
     ),
     content="org.eclipse.elk.alg.graphviz.dot.dot.DotPackage",
   )
-  inspect(
+  debug_inspect(
     graphviz_dot_runtime_test_string_or_none(
       graphviz_dot_registered_resource_factory(graphviz_dot_file_extension),
     ),
     content="org.eclipse.xtext.resource.IResourceFactory",
   )
-  inspect(
+  debug_inspect(
     graphviz_dot_runtime_test_string_or_none(
       graphviz_dot_registered_resource_service_provider(
         graphviz_dot_file_extension,
@@ -134,15 +134,15 @@ test "GraphvizDotStandaloneSetup registers package and extension" {
 ///|
 test "GraphvizDotSyntacticSequencer emits fixed optional keywords" {
   let sequencer = new_graphviz_dot_syntactic_sequencer()
-  inspect(
+  debug_inspect(
     sequencer.emit_attribute_statement_comma_keyword_2_1_0_q("", "", [0]),
     content=",",
   )
-  inspect(
+  debug_inspect(
     sequencer.emit_edge_statement_comma_keyword_2_1_1_0_q("", "", [0]),
     content=",",
   )
-  inspect(
+  debug_inspect(
     sequencer.emit_edge_statement___left_square_bracket_keyword_2_0_right_square_bracket_keyword_2_2__q(
       "",
       "",
@@ -150,11 +150,11 @@ test "GraphvizDotSyntacticSequencer emits fixed optional keywords" {
     ),
     content="[]",
   )
-  inspect(
+  debug_inspect(
     sequencer.emit_node_statement_comma_keyword_1_1_1_0_q("", "", [0]),
     content=",",
   )
-  inspect(
+  debug_inspect(
     sequencer.emit_node_statement___left_square_bracket_keyword_1_0_right_square_bracket_keyword_1_2__q(
       "",
       "",
@@ -162,11 +162,11 @@ test "GraphvizDotSyntacticSequencer emits fixed optional keywords" {
     ),
     content="[]",
   )
-  inspect(
+  debug_inspect(
     sequencer.emit_statement_semicolon_keyword_1_q("", "", [0]),
     content=";",
   )
-  inspect(
+  debug_inspect(
     sequencer.emit_subgraph_subgraph_keyword_1_0_q("", "", [0]),
     content="subgraph",
   )
@@ -175,8 +175,11 @@ test "GraphvizDotSyntacticSequencer emits fixed optional keywords" {
 ///|
 test "AbstractGraphvizDotSyntacticSequencer keeps ambiguous syntax defaults" {
   let sequencer = new_abstract_graphviz_dot_syntactic_sequencer()
-  inspect(sequencer.get_unassigned_rule_call_token("", "", ""), content="")
-  inspect(
+  debug_inspect(
+    sequencer.get_unassigned_rule_call_token("", "", ""),
+    content="",
+  )
+  debug_inspect(
     sequencer.emit_unassigned_tokens("", [
       "AttributeStatement_CommaKeyword_2_1_0_q", "EdgeStatement___LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q",
       "NodeStatement___LeftSquareBracketKeyword_1_0_RightSquareBracketKeyword_1_2__q",
@@ -189,11 +192,11 @@ test "AbstractGraphvizDotSyntacticSequencer keeps ambiguous syntax defaults" {
 ///|
 test "AbstractGraphvizDotSemanticSequencer keeps sequence passthrough" {
   let sequencer = new_abstract_graphviz_dot_semantic_sequencer()
-  inspect(
+  debug_inspect(
     sequencer.sequence_graphviz_model("context", "graphviz-model"),
     content="graphviz-model",
   )
-  inspect(
+  debug_inspect(
     sequencer.sequence_attribute("context", "attribute"),
     content="attribute",
   )
@@ -202,7 +205,7 @@ test "AbstractGraphvizDotSemanticSequencer keeps sequence passthrough" {
 ///|
 test "GraphvizDotSemanticSequencer delegates semantic object unchanged" {
   let sequencer = new_graphviz_dot_semantic_sequencer()
-  inspect(sequencer.sequence("statement"), content="statement")
+  debug_inspect(sequencer.sequence("statement"), content="statement")
 }
 
 ///|
@@ -248,14 +251,14 @@ test "GraphvizDotExecutableExtensionFactory resolves and initializes class" {
     ),
   )
   let result = factory.create()
-  inspect(
+  debug_inspect(
     match result {
       Ok(value) => graphviz_dot_object_tag(value)
       Err(_error) => "error"
     },
     content="executable_extension",
   )
-  inspect(contributor_ref.val, content="factory-test")
+  debug_inspect(contributor_ref.val, content="factory-test")
 
   activator.stop()
 }

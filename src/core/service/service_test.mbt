@@ -81,7 +81,7 @@ test "LayoutConnectorsService selects setup by priority" {
   service.register_setup(low_setup, priority=1)
   service.register_setup(high_setup, priority=10)
 
-  inspect(service.registered_priorities_for_test(), content="[10, 1]")
+  debug_inspect(service.registered_priorities_for_test(), content="[10, 1]")
   debug_inspect(
     match service.get_injector(Some(1), Some(2)) {
       Some(injector) => injector.binding_of("setupTag")
@@ -113,7 +113,7 @@ test "DiagramLayoutEngine invoke flow calls connector build layout and apply" {
   service.register_setup(setup, priority=1)
 
   let mapping = diagram_layout_engine_invoke_layout(Some(7), Some(9))
-  inspect(events, content="[\"build\", \"layout\", \"apply\"]")
+  debug_inspect(events, content="[\"build\", \"layout\", \"apply\"]")
   debug_inspect(
     match mapping {
       Some(actual_mapping) => actual_mapping.get_status()
@@ -146,7 +146,7 @@ test "Layout listeners receive about-to-start and done callbacks" {
   )
 
   ignore(diagram_layout_engine_invoke_layout(Some(11), Some(12)))
-  inspect(listener_events, content="[\"about\", \"done\"]")
+  debug_inspect(listener_events, content="[\"about\", \"done\"]")
 }
 
 ///|
@@ -162,7 +162,7 @@ test "LayoutMapping stores graph-to-diagram and diagram-to-graph associations" {
 
   debug_inspect(mapping.get_diagram_element(root), content="Some(1000)")
   debug_inspect(mapping.get_graph_element(1001), content="Some(\{child})")
-  inspect(mapping.graph_map_size(), content="2")
+  debug_inspect(mapping.graph_map_size(), content="2")
   debug_inspect(mapping.get_parent_element(), content="Some(99)")
   debug_inspect(mapping.get_workbench_part(), content="Some(42)")
 }
@@ -222,9 +222,9 @@ test "MonitoredOperation supports basic run and cancellation" {
     pre_uiexec_fn=() => run_events.push("pre"),
     post_uiexec_fn=() => run_events.push("post"),
   )
-  inspect(operation.run_monitored(), content="OperationOk")
-  inspect(run_events, content="[\"pre\", \"execute\", \"post\"]")
-  inspect(operation.get_timestamp() > 0, content="true")
+  debug_inspect(operation.run_monitored(), content="OperationOk")
+  debug_inspect(run_events, content="[\"pre\", \"execute\", \"post\"]")
+  debug_inspect(operation.get_timestamp() > 0, content="true")
 
   let cancel_events : Array[String] = []
   let canceled_operation = new_monitored_operation(
@@ -236,6 +236,9 @@ test "MonitoredOperation supports basic run and cancellation" {
     post_uiexec_fn=() => cancel_events.push("post"),
   )
   canceled_operation.cancel()
-  inspect(canceled_operation.run_unmonitored(), content="OperationCanceled")
-  inspect(cancel_events, content="[\"pre\"]")
+  debug_inspect(
+    canceled_operation.run_unmonitored(),
+    content="OperationCanceled",
+  )
+  debug_inspect(cancel_events, content="[\"pre\"]")
 }

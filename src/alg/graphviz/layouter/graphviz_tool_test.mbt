@@ -110,7 +110,7 @@ test "GraphvizTool initialize assembles command line and graph stream" {
 
   let tool = new_graphviz_tool(@dot.command_parse("dot"))
   tool.initialize(arguments=Some(["-Tdot"]))
-  inspect(
+  debug_inspect(
     graphviz_tool_get_last_exec_args_for_test(),
     content="[\"/usr/bin/dot\", \"-q\", \"-y\", \"-Kdot\", \"-Tdot\"]",
   )
@@ -122,12 +122,12 @@ test "GraphvizTool initialize assembles command line and graph stream" {
     stream_bytes.push(next)
     next = output.read()
   }
-  inspect(stream_bytes, content="[123, 97, 98, 125]")
-  inspect(output.read(), content="-1")
+  debug_inspect(stream_bytes, content="[123, 97, 98, 125]")
+  debug_inspect(output.read(), content="-1")
 
   tool.cleanup(graphviz_cleanup_stop())
-  inspect(destroyed_ref.val, content="1")
-  inspect(closed_ref.val, content="1")
+  debug_inspect(destroyed_ref.val, content="1")
+  debug_inspect(closed_ref.val, content="1")
 }
 
 ///|

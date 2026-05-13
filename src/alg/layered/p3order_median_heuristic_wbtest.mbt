@@ -70,7 +70,7 @@ test "MedianHeuristic assigns contiguous first-layer ranks" {
   for node in order[0] {
     assert_true(node.has_property_double(internal_properties_weight))
   }
-  inspect(median_test_weight_ranks(order[0]), content="[1, 2, 3]")
+  debug_inspect(median_test_weight_ranks(order[0]), content="[1, 2, 3]")
 }
 
 ///|
@@ -102,7 +102,7 @@ test "MedianHeuristic orders layer by propagated medians" {
 
   assert_eq(heuristic.minimize_crossings(order, 1, true, false), false)
 
-  inspect(median_test_node_ids(order[1]), content="[1, 0]")
+  debug_inspect(median_test_node_ids(order[1]), content="[1, 0]")
   assert_eq(order[1][0].get_property_double(internal_properties_weight), 1.0)
   assert_eq(order[1][1].get_property_double(internal_properties_weight), 3.0)
 }

@@ -88,7 +88,7 @@ test "BarycenterHeuristic removes crossing in simple cross" {
 
   barycenter_test_minimize_crossings(cross_min, nodes[1], false, false, true)
 
-  assert_eq(
+  @core_debug.assert_eq(
     barycenter_test_node_ids(nodes[1]),
     barycenter_test_node_ids(expected_order),
   )
@@ -130,14 +130,14 @@ test "BarycenterHeuristic mock randomize first layer" {
   let expected_switched_order = creator.switch_order_in_array(0, 1, nodes[0])
 
   barycenter_test_minimize_crossings(cross_min, nodes[0], false, true, true)
-  assert_eq(
+  @core_debug.assert_eq(
     barycenter_test_node_ids(nodes[0]),
     barycenter_test_node_ids(expected_order),
   )
 
   random.set_change_by(-0.01)
   barycenter_test_minimize_crossings(cross_min, nodes[0], false, true, true)
-  assert_eq(
+  @core_debug.assert_eq(
     barycenter_test_node_ids(nodes[0]),
     barycenter_test_node_ids(expected_switched_order),
   )
@@ -183,13 +183,13 @@ test "BarycenterHeuristic fills unknown barycenters" {
 
   port_dist.calculate_port_ranks(nodes[1], barycenter_test_port_type_output())
   barycenter_test_minimize_crossings(cross_min, nodes[1], false, false, true)
-  assert_eq(
+  @core_debug.assert_eq(
     barycenter_test_node_ids(nodes[1]),
     barycenter_test_node_ids(expected_order_second_layer),
   )
 
   barycenter_test_minimize_crossings(cross_min, nodes[2], false, false, true)
-  assert_eq(
+  @core_debug.assert_eq(
     barycenter_test_node_ids(nodes[2]),
     barycenter_test_node_ids(expected_switched_order),
   )
@@ -234,7 +234,7 @@ test "BarycenterHeuristic fixed port order removes crossing independent of rando
 
   let expected_order = creator.switch_order_in_array(0, 1, nodes[1])
   barycenter_test_minimize_crossings(cross_min, nodes[1], false, false, true)
-  assert_eq(
+  @core_debug.assert_eq(
     barycenter_test_node_ids(nodes[1]),
     barycenter_test_node_ids(expected_order),
   )
@@ -242,7 +242,7 @@ test "BarycenterHeuristic fixed port order removes crossing independent of rando
   random.set_change_by(-0.1)
   random.set_next_boolean(false)
   barycenter_test_minimize_crossings(cross_min, nodes[1], false, false, true)
-  assert_eq(
+  @core_debug.assert_eq(
     barycenter_test_node_ids(nodes[1]),
     barycenter_test_node_ids(expected_order),
   )
@@ -284,7 +284,7 @@ test "BarycenterHeuristic fixed port order removes crossing backwards" {
   let expected_order = creator.switch_order_in_array(0, 1, nodes[0])
   barycenter_test_minimize_crossings(cross_min, nodes[0], false, false, false)
 
-  assert_eq(
+  @core_debug.assert_eq(
     barycenter_test_node_ids(nodes[0]),
     barycenter_test_node_ids(expected_order),
   )
@@ -331,7 +331,7 @@ test "BarycenterHeuristic handles in-layer edges" {
   let expected_order = creator.get_list_copy_in_index_order(nodes[1], [2, 0, 1])
   barycenter_test_minimize_crossings(cross_min, nodes[1], false, false, true)
 
-  assert_eq(
+  @core_debug.assert_eq(
     barycenter_test_node_ids(nodes[1]),
     barycenter_test_node_ids(expected_order),
   )
@@ -391,7 +391,7 @@ test "BarycenterHeuristic handles north south edges" {
   random.set_change_by(-0.01)
   barycenter_test_minimize_crossings(cross_min, nodes[1], false, false, true)
 
-  assert_eq(
+  @core_debug.assert_eq(
     barycenter_test_node_ids(nodes[1]),
     barycenter_test_node_ids(expected_order),
   )

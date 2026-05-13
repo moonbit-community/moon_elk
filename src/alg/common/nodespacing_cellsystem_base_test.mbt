@@ -8,7 +8,7 @@ fn cellsystem_rect_tuple(
 ///|
 test "Cell defaults and contribution flags" {
   let cell = new_cell()
-  assert_eq(
+  @core_debug.assert_eq(
     cellsystem_rect_tuple(cell.get_cell_rectangle()),
     (0.0, 0.0, 0.0, 0.0),
   )
@@ -19,7 +19,10 @@ test "Cell defaults and contribution flags" {
   cell.set_contributes_to_minimum_height(true)
   assert_true(cell.is_contributing_to_minimum_width())
   assert_true(cell.is_contributing_to_minimum_height())
-  assert_eq((cell.get_minimum_width(), cell.get_minimum_height()), (0.0, 0.0))
+  @core_debug.assert_eq(
+    (cell.get_minimum_width(), cell.get_minimum_height()),
+    (0.0, 0.0),
+  )
 }
 
 ///|
@@ -27,46 +30,79 @@ test "AtomicCell minimum size follows content and padding semantics" {
   let cell = new_atomic_cell()
 
   cell.set_minimum_content_area_size(new_kvector_xy(10.0, 6.0), false)
-  assert_eq((cell.get_minimum_width(), cell.get_minimum_height()), (10.0, 6.0))
+  @core_debug.assert_eq(
+    (cell.get_minimum_width(), cell.get_minimum_height()),
+    (10.0, 6.0),
+  )
 
   cell.set_padding(new_elk_padding_values(1.0, 2.0, 3.0, 4.0))
-  assert_eq((cell.get_minimum_width(), cell.get_minimum_height()), (16.0, 10.0))
+  @core_debug.assert_eq(
+    (cell.get_minimum_width(), cell.get_minimum_height()),
+    (16.0, 10.0),
+  )
 
   cell.set_minimum_content_area_size(new_kvector_xy(20.0, 20.0), true)
-  assert_eq((cell.get_minimum_width(), cell.get_minimum_height()), (20.0, 20.0))
+  @core_debug.assert_eq(
+    (cell.get_minimum_width(), cell.get_minimum_height()),
+    (20.0, 20.0),
+  )
 }
 
 ///|
 test "ContainerCell utility methods follow upstream guard rules" {
-  assert_eq(container_cell_min_width_of_cell(None, true), 0.0)
-  assert_eq(container_cell_min_height_of_cell(None, true), 0.0)
+  @core_debug.assert_eq(container_cell_min_width_of_cell(None, true), 0.0)
+  @core_debug.assert_eq(container_cell_min_height_of_cell(None, true), 0.0)
 
   let atomic_cell = new_atomic_cell()
   atomic_cell.set_minimum_content_area_size(new_kvector_xy(5.0, 7.0), false)
   atomic_cell.set_contributes_to_minimum_width(true)
   atomic_cell.set_contributes_to_minimum_height(true)
-  assert_eq(container_cell_min_width_of_cell(Some(atomic_cell), true), 5.0)
-  assert_eq(container_cell_min_height_of_cell(Some(atomic_cell), true), 7.0)
+  @core_debug.assert_eq(
+    container_cell_min_width_of_cell(Some(atomic_cell), true),
+    5.0,
+  )
+  @core_debug.assert_eq(
+    container_cell_min_height_of_cell(Some(atomic_cell), true),
+    7.0,
+  )
 
   atomic_cell.set_contributes_to_minimum_width(false)
   atomic_cell.set_contributes_to_minimum_height(false)
-  assert_eq(container_cell_min_width_of_cell(Some(atomic_cell), true), 0.0)
-  assert_eq(container_cell_min_height_of_cell(Some(atomic_cell), true), 0.0)
-  assert_eq(container_cell_min_width_of_cell(Some(atomic_cell), false), 5.0)
-  assert_eq(container_cell_min_height_of_cell(Some(atomic_cell), false), 7.0)
+  @core_debug.assert_eq(
+    container_cell_min_width_of_cell(Some(atomic_cell), true),
+    0.0,
+  )
+  @core_debug.assert_eq(
+    container_cell_min_height_of_cell(Some(atomic_cell), true),
+    0.0,
+  )
+  @core_debug.assert_eq(
+    container_cell_min_width_of_cell(Some(atomic_cell), false),
+    5.0,
+  )
+  @core_debug.assert_eq(
+    container_cell_min_height_of_cell(Some(atomic_cell), false),
+    7.0,
+  )
 
   let zero_atomic = new_atomic_cell()
   zero_atomic.set_contributes_to_minimum_width(true)
   zero_atomic.set_contributes_to_minimum_height(true)
-  assert_eq(container_cell_min_width_of_cell(Some(zero_atomic), true), 0.0)
-  assert_eq(container_cell_min_height_of_cell(Some(zero_atomic), true), 0.0)
+  @core_debug.assert_eq(
+    container_cell_min_width_of_cell(Some(zero_atomic), true),
+    0.0,
+  )
+  @core_debug.assert_eq(
+    container_cell_min_height_of_cell(Some(zero_atomic), true),
+    0.0,
+  )
 
   let container = new_container_cell()
   let target = new_cell()
   target.set_cell_rectangle(new_elk_rectangle_xywh(0.0, 0.0, 1.0, 1.0))
   container.apply_horizontal_layout(Some(target), 3.0, 8.0)
   container.apply_vertical_layout(Some(target), 4.0, 9.0)
-  assert_eq(
+  @core_debug.assert_eq(
     cellsystem_rect_tuple(target.get_cell_rectangle()),
     (3.0, 4.0, 8.0, 9.0),
   )
@@ -95,7 +131,7 @@ test "StripContainerCell computes size and child layout" {
   strip.set_cell(Center, Some(center))
   strip.set_cell(End, Some(right))
 
-  assert_eq(
+  @core_debug.assert_eq(
     (strip.get_minimum_width(), strip.get_minimum_height()),
     (15.0, 4.0),
   )
@@ -105,15 +141,15 @@ test "StripContainerCell computes size and child layout" {
   strip.layout_children_horizontally()
   strip.layout_children_vertically()
 
-  assert_eq(
+  @core_debug.assert_eq(
     cellsystem_rect_tuple(left.get_cell_rectangle()),
     (0.0, 0.0, 5.0, 10.0),
   )
-  assert_eq(
+  @core_debug.assert_eq(
     cellsystem_rect_tuple(center.get_cell_rectangle()),
     (6.0, 0.0, 8.0, 10.0),
   )
-  assert_eq(
+  @core_debug.assert_eq(
     cellsystem_rect_tuple(right.get_cell_rectangle()),
     (15.0, 0.0, 5.0, 10.0),
   )
@@ -147,18 +183,21 @@ test "GridContainerCell computes tabular size and center rectangle" {
   bottom_right.set_contributes_to_minimum_height(true)
   grid_container_cell_set_cell(grid, End, End, Some(bottom_right))
 
-  assert_eq((grid.get_minimum_width(), grid.get_minimum_height()), (13.0, 11.0))
+  @core_debug.assert_eq(
+    (grid.get_minimum_width(), grid.get_minimum_height()),
+    (13.0, 11.0),
+  )
 
   grid.set_cell_rectangle(new_elk_rectangle_xywh(0.0, 0.0, 20.0, 18.0))
 
   grid.layout_children_horizontally()
   grid.layout_children_vertically()
 
-  assert_eq(
+  @core_debug.assert_eq(
     cellsystem_rect_tuple(center_center.get_cell_rectangle()),
     (3.0, 3.0, 11.0, 10.0),
   )
-  assert_eq(
+  @core_debug.assert_eq(
     cellsystem_rect_tuple(grid_container_cell_get_center_cell_rectangle(grid)),
     (0.0, 0.0, 9.0, 10.0),
   )
@@ -180,10 +219,13 @@ test "LabelCell lays out labels in horizontal mode" {
   cell.set_padding(new_elk_padding_values(3.0, 2.0, 1.0, 1.0))
   cell.set_cell_rectangle(new_elk_rectangle_xywh(10.0, 20.0, 12.0, 9.0))
 
-  assert_eq((cell.get_minimum_width(), cell.get_minimum_height()), (7.0, 9.0))
+  @core_debug.assert_eq(
+    (cell.get_minimum_width(), cell.get_minimum_height()),
+    (7.0, 9.0),
+  )
 
   cell.apply_label_layout()
 
-  assert_eq((label_x(label_a), label_y(label_a)), (16.0, 24.0))
-  assert_eq((label_x(label_b), label_y(label_b)), (18.0, 27.0))
+  @core_debug.assert_eq((label_x(label_a), label_y(label_a)), (16.0, 24.0))
+  @core_debug.assert_eq((label_x(label_b), label_y(label_b)), (18.0, 27.0))
 }

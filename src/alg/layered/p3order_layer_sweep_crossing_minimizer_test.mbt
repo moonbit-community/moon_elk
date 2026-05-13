@@ -226,7 +226,7 @@ test "LayerSweep removes simple crossing in two-layer graph" {
 
     layer_sweep_test_run(creator, cross_min_type)
 
-    assert_eq(
+    @core_debug.assert_eq(
       layer_sweep_test_node_handles(graph.get_layers()[1].get_nodes()),
       layer_sweep_test_node_handles(expected_right_order),
     )
@@ -260,7 +260,7 @@ test "LayerSweep removes crossing inside single hierarchical node" {
 
     layer_sweep_test_run(creator, cross_min_type)
 
-    assert_eq(
+    @core_debug.assert_eq(
       layer_sweep_test_node_handles(inner_graph.get_layers()[1].get_nodes()),
       layer_sweep_test_node_handles(expected_right_order),
     )
@@ -298,11 +298,11 @@ test "LayerSweep forward sweep can fix compound inner order and port order" {
     creator.get_random().set_next_boolean(false)
     layer_sweep_test_run(creator, cross_min_type)
 
-    assert_eq(
+    @core_debug.assert_eq(
       layer_sweep_test_port_handles(left_inner_node.get_ports()),
       layer_sweep_test_port_handles(expected_left_port_order),
     )
-    assert_eq(
+    @core_debug.assert_eq(
       layer_sweep_test_node_handles(right_inner_layer.get_nodes()),
       layer_sweep_test_node_handles(expected_right_order),
     )
@@ -354,11 +354,11 @@ test "LayerSweep backward sweep resolves simple hierarchical cross" {
     creator.get_random().set_next_boolean(false)
     layer_sweep_test_run(creator, cross_min_type)
 
-    assert_eq(
+    @core_debug.assert_eq(
       layer_sweep_test_port_handles(left_outer_node.get_ports()),
       layer_sweep_test_port_handles(expected_left_port_order),
     )
-    assert_eq(
+    @core_debug.assert_eq(
       layer_sweep_test_node_handles(
         left_inner_graph.get_layers()[0].get_nodes(),
       ),
@@ -405,7 +405,7 @@ test "LayerSweep keeps backward-sweep candidate when it improves middle layer" {
         middle_layer,
       ),
     )
-    assert_eq(
+    @core_debug.assert_eq(
       layer_sweep_test_port_handles(middle_nodes[2].get_ports()),
       layer_sweep_test_port_handles(expected_bottom_middle_port_order),
     )
@@ -448,7 +448,7 @@ test "LayerSweep ignores removable fixed-order port crossings in score" {
         middle_layer,
       ),
     )
-    assert_eq(
+    @core_debug.assert_eq(
       layer_sweep_test_port_handles(middle_nodes[2].get_ports()),
       layer_sweep_test_port_handles(expected_bottom_middle_port_order),
     )
@@ -490,13 +490,13 @@ test "LayerSweep updates in-layer port order after beneficial switch" {
     layer_sweep_test_run(creator, cross_min_type)
 
     if index == 0 {
-      assert_eq(
+      @core_debug.assert_eq(
         layer_sweep_test_node_handles(
           creator.get_graph().get_layers()[1].get_nodes(),
         ),
         layer_sweep_test_node_handles(expected_middle_node_order),
       )
-      assert_eq(
+      @core_debug.assert_eq(
         layer_sweep_test_port_handles(middle_nodes[0].get_ports()),
         layer_sweep_test_port_handles(expected_middle_top_node_ports),
       )
@@ -539,7 +539,7 @@ test "LayerSweep resolves crossing when one nested side has no external dummies"
 
     layer_sweep_test_run(creator, cross_min_type)
 
-    assert_eq(
+    @core_debug.assert_eq(
       layer_sweep_test_port_handles(right_outer_node.get_ports()),
       layer_sweep_test_port_handles(expected_port_order_right),
     )
@@ -578,7 +578,7 @@ test "LayerSweep resolves crossing between compound and non-compound node" {
 
     layer_sweep_test_run(creator, cross_min_type)
 
-    assert_eq(
+    @core_debug.assert_eq(
       layer_sweep_test_node_handles(root.get_layers()[1].get_nodes()),
       layer_sweep_test_node_handles(expected_order_right),
     )
@@ -609,7 +609,7 @@ test "LayerSweep takes forward result when backward sweep worsens" {
 
     layer_sweep_test_run(creator, cross_min_type)
 
-    assert_eq(
+    @core_debug.assert_eq(
       layer_sweep_test_node_handles(creator.copy_of_nodes_in_layer(1)),
       layer_sweep_test_node_handles(expected_middle_order),
     )
@@ -666,17 +666,17 @@ test "LayerSweep resolves simple hierarchical cross with sweepiness enabled" {
     )
     layer_sweep_test_run(creator, cross_min_type)
 
-    assert_eq(
+    @core_debug.assert_eq(
       layer_sweep_test_node_handles(
         right_inner_graph.get_layers()[0].get_nodes(),
       ),
       layer_sweep_test_node_handles(expected_external_dummy_order_right),
     )
-    assert_eq(
+    @core_debug.assert_eq(
       layer_sweep_test_port_handles(right_outer_node.get_ports()),
       layer_sweep_test_port_handles(expected_port_order_right),
     )
-    assert_eq(
+    @core_debug.assert_eq(
       layer_sweep_test_node_handles(
         right_inner_graph.get_layers()[1].get_nodes(),
       ),
@@ -742,7 +742,7 @@ test "LayerSweep resolves crossing in first-level compound node" {
     )
     layer_sweep_test_run(creator, cross_min_type)
 
-    assert_eq(
+    @core_debug.assert_eq(
       layer_sweep_test_node_handles(root.get_layers()[1].get_nodes()),
       layer_sweep_test_node_handles(expected_order_right),
     )
@@ -770,7 +770,7 @@ test "LayerSweep improves non-nested graph on backward sweep" {
     creator.get_random().set_next_boolean(false)
     layer_sweep_test_run(creator, cross_min_type)
 
-    assert_eq(
+    @core_debug.assert_eq(
       layer_sweep_test_node_handles(creator.copy_of_nodes_in_layer(0)),
       layer_sweep_test_node_handles(expected_order_layer_one),
     )
@@ -796,11 +796,11 @@ test "LayerSweep does not randomly reorder first layer on backward sweep" {
 
     layer_sweep_test_run(creator, cross_min_type)
 
-    assert_eq(
+    @core_debug.assert_eq(
       layer_sweep_test_node_handles(creator.copy_of_nodes_in_layer(1)),
       layer_sweep_test_node_handles(expected_order_layer_two),
     )
-    assert_eq(
+    @core_debug.assert_eq(
       layer_sweep_test_node_handles(creator.copy_of_nodes_in_layer(0)),
       layer_sweep_test_node_handles(expected_order_layer_one),
     )
@@ -867,17 +867,17 @@ test "LayerSweep sorts wrongly seeded external dummies and resolves crossing" {
 
     layer_sweep_test_run(creator, cross_min_type)
 
-    assert_eq(
+    @core_debug.assert_eq(
       layer_sweep_test_node_handles(
         right_inner_graph.get_layers()[0].get_nodes(),
       ),
       layer_sweep_test_node_handles(right_inner_dummy_nodes),
     )
-    assert_eq(
+    @core_debug.assert_eq(
       layer_sweep_test_port_handles(right_outer_node.get_ports()),
       layer_sweep_test_port_handles(expected_order_of_ports_right),
     )
-    assert_eq(
+    @core_debug.assert_eq(
       layer_sweep_test_node_handles(
         right_inner_graph.get_layers()[1].get_nodes(),
       ),
@@ -919,7 +919,7 @@ test "LayerSweep resolves crossing between normal and hierarchical edge" {
     let expected_order = creator.copy_of_switch_order_of_nodes_in_layer(0, 1, 1)
     layer_sweep_test_run(creator, cross_min_type)
 
-    assert_eq(
+    @core_debug.assert_eq(
       layer_sweep_test_node_handles(
         creator.get_graph().get_layers()[1].get_nodes(),
       ),
@@ -962,7 +962,7 @@ test "LayerSweep resolves crossing with unconnected extra hierarchical port" {
     let expected_order = creator.copy_of_switch_order_of_nodes_in_layer(0, 1, 1)
     layer_sweep_test_run(creator, cross_min_type)
 
-    assert_eq(
+    @core_debug.assert_eq(
       layer_sweep_test_node_handles(
         creator.get_graph().get_layers()[1].get_nodes(),
       ),
@@ -1006,7 +1006,7 @@ test "LayerSweep keeps order under hyperedge counter fixed-port case" {
     creator.get_random().set_next_boolean(false)
     layer_sweep_test_run(creator, cross_min_type)
 
-    assert_eq(
+    @core_debug.assert_eq(
       layer_sweep_test_node_handles(
         creator.get_graph().get_layers()[1].get_nodes(),
       ),
@@ -1058,7 +1058,7 @@ test "LayerSweep non-recursive fixed-order to hierarchical graph removes crossin
     )
     layer_sweep_test_run(creator, cross_min_type)
 
-    assert_eq(
+    @core_debug.assert_eq(
       layer_sweep_test_port_handles(
         root.get_layers()[1].get_nodes()[0].get_ports(),
       ),
@@ -1142,7 +1142,7 @@ test "LayerSweep transports switched port order through hierarchy west-east" {
 
     layer_sweep_test_run(creator, cross_min_type)
 
-    assert_eq(
+    @core_debug.assert_eq(
       layer_sweep_test_port_handles(
         root.get_layers()[1].get_nodes()[0].get_ports(),
       ),
@@ -1234,7 +1234,7 @@ test "LayerSweep transports switched port order through hierarchy east-west" {
   creator.get_random().set_next_boolean(false)
   layer_sweep_test_run(creator, cross_min_type)
 
-  assert_eq(
+  @core_debug.assert_eq(
     layer_sweep_test_port_handles(
       root.get_layers()[1].get_nodes()[0].get_ports(),
     ),
@@ -1311,7 +1311,7 @@ test "LayerSweep recursive backward-sweep candidate still corrects inner port or
           middle_layer,
         ),
       )
-      assert_eq(
+      @core_debug.assert_eq(
         layer_sweep_test_port_handles(middle_nodes[2].get_ports()),
         layer_sweep_test_port_handles(expected_port_order_bottom_middle_node),
       )
@@ -1390,11 +1390,11 @@ test "LayerSweep recursive first-level cross sorts parent ports accordingly" {
     layer_sweep_test_run(creator, cross_min_type)
 
     if index == 0 {
-      assert_eq(
+      @core_debug.assert_eq(
         layer_sweep_test_port_handles(left_outer_node.get_ports()),
         layer_sweep_test_port_handles(expected_port_order_left),
       )
-      assert_eq(
+      @core_debug.assert_eq(
         layer_sweep_test_node_handles(root.get_layers()[1].get_nodes()),
         layer_sweep_test_node_handles(expected_order_right),
       )
@@ -1471,17 +1471,17 @@ test "LayerSweep handles hierarchical cross with north-south edge" {
 
     layer_sweep_test_run(creator, cross_min_type)
 
-    assert_eq(
+    @core_debug.assert_eq(
       layer_sweep_test_node_handles(
         right_inner_graph.get_layers()[0].get_nodes(),
       ),
       layer_sweep_test_node_handles(expected_external_dummy_order_right),
     )
-    assert_eq(
+    @core_debug.assert_eq(
       layer_sweep_test_port_handles(right_outer_node.get_ports()),
       layer_sweep_test_port_handles(expected_order_of_ports_right),
     )
-    assert_eq(
+    @core_debug.assert_eq(
       layer_sweep_test_node_handles(
         right_inner_graph.get_layers()[1].get_nodes(),
       ),
@@ -1558,13 +1558,13 @@ test "LayerSweep all-recursive first-level cross removes crossing" {
     layer_sweep_test_run(creator, cross_min_type)
 
     if index == 0 {
-      assert_eq(
+      @core_debug.assert_eq(
         layer_sweep_test_node_handles(
           left_inner_graph.get_layers()[1].get_nodes(),
         ),
         layer_sweep_test_node_handles(expected_inner_order_right),
       )
-      assert_eq(
+      @core_debug.assert_eq(
         layer_sweep_test_node_handles(root.get_layers()[1].get_nodes()),
         layer_sweep_test_node_handles(expected_order_right),
       )
@@ -1606,7 +1606,7 @@ test "LayerSweep handles in-layer crossings in left-most layer" {
 
     layer_sweep_test_run(creator, cross_min_type)
 
-    assert_eq(
+    @core_debug.assert_eq(
       layer_sweep_test_node_handles(actual_order),
       layer_sweep_test_node_handles(expected_order),
     )
@@ -1678,15 +1678,15 @@ test "LayerSweep handles in-layer cross-hierarchy crossings in left-most layer" 
     )
     layer_sweep_test_run(creator, cross_min_type)
 
-    assert_eq(
+    @core_debug.assert_eq(
       layer_sweep_test_node_handles(actual_node_order),
       layer_sweep_test_node_handles(expected_node_order),
     )
-    assert_eq(
+    @core_debug.assert_eq(
       layer_sweep_test_port_handles(actual_port_order),
       layer_sweep_test_port_handles(expected_port_order),
     )
-    assert_eq(
+    @core_debug.assert_eq(
       layer_sweep_test_node_handles(actual_inner_node_order),
       layer_sweep_test_node_handles(expected_inner_node_order),
     )
@@ -1863,8 +1863,14 @@ test "LayerSweep marks hierarchical transfer graphs for hierarchical sweep" {
       None => abort("right outer node has no nested graph")
     }
     let graph_data = cross_min.get_graph_data()
-    assert_eq(graph_data[left_nested_graph.get_id()].dont_sweep_into(), false)
-    assert_eq(graph_data[right_nested_graph.get_id()].dont_sweep_into(), false)
+    @core_debug.assert_eq(
+      graph_data[left_nested_graph.get_id()].dont_sweep_into(),
+      false,
+    )
+    @core_debug.assert_eq(
+      graph_data[right_nested_graph.get_id()].dont_sweep_into(),
+      false,
+    )
   }
 }
 
@@ -2060,7 +2066,10 @@ test "LayerSweep avoids cross-hierarchy when random paths dominate (EW)" {
     )
     let graph_data = cross_min.get_graph_data()
     if index == 0 {
-      assert_eq(graph_data[nested_graph.get_id()].dont_sweep_into(), true)
+      @core_debug.assert_eq(
+        graph_data[nested_graph.get_id()].dont_sweep_into(),
+        true,
+      )
     }
   }
 }
@@ -2154,7 +2163,10 @@ test "LayerSweep avoids cross-hierarchy when random paths dominate (with NS)" {
     )
     let graph_data = cross_min.get_graph_data()
     if index == 0 {
-      assert_eq(graph_data[nested_graph.get_id()].dont_sweep_into(), true)
+      @core_debug.assert_eq(
+        graph_data[nested_graph.get_id()].dont_sweep_into(),
+        true,
+      )
     }
   }
 }

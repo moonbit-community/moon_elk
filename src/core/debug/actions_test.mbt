@@ -28,8 +28,8 @@ test "ElkDebugPlugin listens to layout done events" {
   let monitor = @core.new_elk_progress_monitor(task_name="layout-one")
   core_debug_layout_connectors_fire_layout_done(mapping, monitor)
 
-  inspect(plugin.get_model().get_execution_infos().length(), content="1")
-  inspect(
+  debug_inspect(plugin.get_model().get_execution_infos().length(), content="1")
+  debug_inspect(
     execution_info_get_name(plugin.get_model().get_execution_infos()[0]),
     content="layout-one",
   )
@@ -54,19 +54,19 @@ test "Clear actions remove selected and all executions" {
 
   let clear_selected = new_clear_execution_action(view)
   clear_selected.update_enablement()
-  inspect(clear_selected.is_enabled(), content="true")
+  debug_inspect(clear_selected.is_enabled(), content="true")
   clear_selected.run()
-  inspect(plugin.get_model().get_execution_infos().length(), content="1")
-  inspect(
+  debug_inspect(plugin.get_model().get_execution_infos().length(), content="1")
+  debug_inspect(
     execution_info_get_name(plugin.get_model().get_execution_infos()[0]),
     content="B",
   )
 
   let clear_all = new_clear_executions_action()
   clear_all.update_enablement()
-  inspect(clear_all.is_enabled(), content="true")
+  debug_inspect(clear_all.is_enabled(), content="true")
   clear_all.run()
-  inspect(plugin.get_model().get_execution_infos().length(), content="0")
+  debug_inspect(plugin.get_model().get_execution_infos().length(), content="0")
 
   elk_debug_plugin_stop(plugin)
 }
@@ -93,22 +93,22 @@ test "Filter collapse expand and preference actions update view state" {
   filter_action.set_checked(true)
   filter_action.run()
 
-  inspect(view.is_filter_tree_enabled(), content="true")
-  inspect(view.get_visible_root_infos_for_test(), content="[0]")
+  debug_inspect(view.is_filter_tree_enabled(), content="true")
+  debug_inspect(view.get_visible_root_infos_for_test(), content="[0]")
 
   let collapse = new_collapse_execution_tree_action(view)
   collapse.run()
-  inspect(view.is_tree_expanded(), content="false")
+  debug_inspect(view.is_tree_expanded(), content="false")
 
   let expand = new_expand_execution_tree_action(view)
   expand.run()
-  inspect(view.is_tree_expanded(), content="true")
+  debug_inspect(view.is_tree_expanded(), content="true")
 
   let pref_action = new_preference_action(core_debug_pref_debug_logging)
-  inspect(pref_action.is_checked(), content="false")
+  debug_inspect(pref_action.is_checked(), content="false")
   pref_action.run()
-  inspect(pref_action.is_checked(), content="true")
-  inspect(
+  debug_inspect(pref_action.is_checked(), content="true")
+  debug_inspect(
     core_debug_service_get_boolean_preference(
       core_debug_pref_debug_logging, false,
     ),
@@ -136,16 +136,16 @@ test "RevealLogFolderAction enables and launches only for a single directory-bac
   let reveal = new_reveal_log_folder_action(view)
 
   reveal.update_enablement()
-  inspect(reveal.is_enabled(), content="true")
+  debug_inspect(reveal.is_enabled(), content="true")
   reveal.run()
-  inspect(
+  debug_inspect(
     core_debug_get_launched_programs_for_test(),
     content="[\"/logs/run1\"]",
   )
 
   view.set_selected_execution_infos([])
   reveal.update_enablement()
-  inspect(reveal.is_enabled(), content="false")
+  debug_inspect(reveal.is_enabled(), content="false")
 
   elk_debug_plugin_stop(plugin)
 }
@@ -173,14 +173,14 @@ test "CompressLogFolderAction mirrors zip extension completion and records zip e
 
   let compress = new_compress_log_folder_action(view)
   compress.update_enablement()
-  inspect(compress.is_enabled(), content="true")
+  debug_inspect(compress.is_enabled(), content="true")
   compress.set_selected_output_file_name(Some("archive.zi"))
   compress.run()
 
   let outputs = core_debug_get_zip_outputs_for_test()
-  inspect(outputs.length(), content="1")
-  inspect(outputs[0].file_name, content="archive.zip")
-  inspect(
+  debug_inspect(outputs.length(), content="1")
+  debug_inspect(outputs[0].file_name, content="archive.zip")
+  debug_inspect(
     outputs[0].entries,
     content="[\"/\", \"/run1/\", \"/run1/root.log\", \"/run1/sub/\", \"/run1/sub/inner.log\"]",
   )
