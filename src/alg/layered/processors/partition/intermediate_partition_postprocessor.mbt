@@ -1,6 +1,6 @@
 ///|
 fn partition_postprocessor_process(
-  graph : LGraph,
+  graph : @layered.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
 ) -> Unit {
   let monitor = match progress_monitor {
@@ -15,7 +15,7 @@ fn partition_postprocessor_process(
       let mut index = 0
       while index < ports.length() {
         let port = ports[index]
-        if port.get_property_bool(internal_properties_partition_dummy) {
+        if port.get_property_bool(@layered.internal_properties_partition_dummy) {
           port.set_node(None)
         } else {
           index += 1
@@ -29,8 +29,8 @@ fn partition_postprocessor_process(
 
 ///|
 pub fn new_partition_postprocessor_layout_processor() -> @core.ILayoutProcessor[
-  LayeredPhases,
-  LGraph,
+  @layered.LayeredPhases,
+  @layered.LGraph,
 ] {
   @core.new_layout_processor(partition_postprocessor_process)
 }

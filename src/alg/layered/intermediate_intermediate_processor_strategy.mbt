@@ -321,18 +321,19 @@ fn intermediate_processor_create(
       new_edge_and_layer_constraint_edge_reverser_layout_processor()
     InteractiveExternalPortPositioner =>
       new_interactive_external_port_positioner_layout_processor()
-    PartitionPreprocessor => new_partition_preprocessor_layout_processor()
+    PartitionPreprocessor => layered_registered_intermediate_processor(strategy)
     LabelDummyInserter => new_label_dummy_inserter_layout_processor()
     SelfLoopPreprocessor => new_self_loop_pre_processor_layout_processor()
     LayerConstraintPreprocessor =>
       new_layer_constraint_preprocessor_layout_processor()
-    PartitionMidprocessor => new_partition_midprocessor_layout_processor()
+    PartitionMidprocessor => layered_registered_intermediate_processor(strategy)
     HighDegreeNodeLayerProcessor =>
       new_high_degree_node_layering_processor_layout_processor()
     NodePromotion => new_node_promotion_layout_processor()
     LayerConstraintPostprocessor =>
       new_layer_constraint_postprocessor_layout_processor()
-    PartitionPostprocessor => new_partition_postprocessor_layout_processor()
+    PartitionPostprocessor =>
+      layered_registered_intermediate_processor(strategy)
     HierarchicalPortConstraintProcessor =>
       new_hierarchical_port_constraint_processor_layout_processor()
     SemiInteractiveCrossMinProcessor =>

@@ -1,0 +1,24 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/moon_elk/alg/layered/processors/partition"
+
+import {
+  "Milky2018/moon_elk/alg/layered",
+  "Milky2018/moon_elk/core",
+}
+
+// Values
+pub fn new_partition_midprocessor_layout_processor() -> @core.ILayoutProcessor[@layered.LayeredPhases, @layered.LGraph]
+
+pub fn new_partition_postprocessor_layout_processor() -> @core.ILayoutProcessor[@layered.LayeredPhases, @layered.LGraph]
+
+pub fn new_partition_preprocessor_layout_processor() -> @core.ILayoutProcessor[@layered.LayeredPhases, @layered.LGraph]
+
+pub let partition_processors_linked : Bool
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits

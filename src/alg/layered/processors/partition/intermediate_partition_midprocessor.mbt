@@ -26,23 +26,27 @@ fn partition_midprocessor_sort_partition_ids(ids : Array[Int]) -> Unit {
 
 ///|
 fn partition_midprocessor_connect_nodes(
-  first_partition : Array[LNode],
-  second_partition : Array[LNode],
+  first_partition : Array[@layered.LNode],
+  second_partition : Array[@layered.LNode],
 ) -> Unit {
   for node in first_partition {
-    let source_port = new_l_port()
+    let source_port = @layered.new_l_port()
     source_port.set_node(Some(node))
     source_port.set_side(partition_midprocessor_port_side("EAST"))
-    source_port.set_property_bool(internal_properties_partition_dummy, true)
+    source_port.set_property_bool(
+      @layered.internal_properties_partition_dummy, true,
+    )
 
     for other_node in second_partition {
-      let target_port = new_l_port()
+      let target_port = @layered.new_l_port()
       target_port.set_node(Some(other_node))
       target_port.set_side(partition_midprocessor_port_side("WEST"))
-      target_port.set_property_bool(internal_properties_partition_dummy, true)
+      target_port.set_property_bool(
+        @layered.internal_properties_partition_dummy, true,
+      )
 
-      let edge = new_l_edge()
-      edge.set_property_bool(internal_properties_partition_dummy, true)
+      let edge = @layered.new_l_edge()
+      edge.set_property_bool(@layered.internal_properties_partition_dummy, true)
       edge.set_source(Some(source_port))
       edge.set_target(Some(target_port))
     }
@@ -51,7 +55,7 @@ fn partition_midprocessor_connect_nodes(
 
 ///|
 fn partition_midprocessor_process(
-  graph : LGraph,
+  graph : @layered.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
 ) -> Unit {
   let monitor = match progress_monitor {
@@ -60,7 +64,7 @@ fn partition_midprocessor_process(
   }
   ignore(monitor.begin("Partition midprocessing", 1.0))
 
-  let partition_to_nodes : Map[Int, Array[LNode]] = Map([])
+  let partition_to_nodes : Map[Int, Array[@layered.LNode]] = Map([])
   for node in graph.get_layerless_nodes() {
     if !node.has_property_int(@options.layered_options_partitioning_partition) {
       continue
@@ -116,8 +120,8 @@ fn partition_midprocessor_process(
 
 ///|
 pub fn new_partition_midprocessor_layout_processor() -> @core.ILayoutProcessor[
-  LayeredPhases,
-  LGraph,
+  @layered.LayeredPhases,
+  @layered.LGraph,
 ] {
   @core.new_layout_processor(partition_midprocessor_process)
 }

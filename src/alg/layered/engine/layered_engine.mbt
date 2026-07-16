@@ -7,4 +7,5 @@
 pub let layered_engine_linked : Bool = @cycle.cycle_phase_linked &&
   @layering.layering_phase_linked &&
   @placement.placement_phase_linked &&
-  @comments.comment_processors_linked
+  @comments.comment_processors_linked &&
+  @partition.partition_processors_linked

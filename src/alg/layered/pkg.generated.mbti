@@ -745,12 +745,6 @@ pub fn new_orthogonal_routing_generator(RoutingDirection, Double, String?) -> Or
 
 pub fn new_orthogonal_self_loop_router() -> AbstractSelfLoopRouter
 
-pub fn new_partition_midprocessor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
-
-pub fn new_partition_postprocessor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
-
-pub fn new_partition_preprocessor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
-
 pub fn new_polyline_edge_router_layout_phase() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_polyline_self_loop_router() -> AbstractSelfLoopRouter

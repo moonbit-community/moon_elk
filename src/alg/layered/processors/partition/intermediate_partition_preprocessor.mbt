@@ -15,8 +15,8 @@ fn[T] partition_preprocessor_raise(
 
 ///|
 fn partition_preprocessor_require_edge_source(
-  edge : LEdge,
-) -> LPort raise PartitionPreprocessorException {
+  edge : @layered.LEdge,
+) -> @layered.LPort raise PartitionPreprocessorException {
   match edge.get_source() {
     Some(value) => value
     None => partition_preprocessor_raise("edge has no source")
@@ -25,8 +25,8 @@ fn partition_preprocessor_require_edge_source(
 
 ///|
 fn partition_preprocessor_require_edge_target(
-  edge : LEdge,
-) -> LPort raise PartitionPreprocessorException {
+  edge : @layered.LEdge,
+) -> @layered.LPort raise PartitionPreprocessorException {
   match edge.get_target() {
     Some(value) => value
     None => partition_preprocessor_raise("edge has no target")
@@ -35,8 +35,8 @@ fn partition_preprocessor_require_edge_target(
 
 ///|
 fn partition_preprocessor_require_port_node(
-  port : LPort,
-) -> LNode raise PartitionPreprocessorException {
+  port : @layered.LPort,
+) -> @layered.LNode raise PartitionPreprocessorException {
   match port.get_node() {
     Some(value) => value
     None => partition_preprocessor_raise("port has no owner node")
@@ -45,8 +45,8 @@ fn partition_preprocessor_require_port_node(
 
 ///|
 fn partition_preprocessor_node_array_contains(
-  nodes : Array[LNode],
-  node : LNode,
+  nodes : Array[@layered.LNode],
+  node : @layered.LNode,
 ) -> Bool {
   for candidate in nodes {
     if candidate.get_handle() == node.get_handle() {
@@ -57,12 +57,18 @@ fn partition_preprocessor_node_array_contains(
 }
 
 ///|
-fn partition_preprocessor_reverse_edge(edge : LEdge, graph : LGraph) -> Unit {
+fn partition_preprocessor_reverse_edge(
+  edge : @layered.LEdge,
+  graph : @layered.LGraph,
+) -> Unit {
   edge.reverse(graph, true)
 }
 
 ///|
-fn partition_preprocessor_reverse(edge : LEdge, graph : LGraph) -> Unit {
+fn partition_preprocessor_reverse(
+  edge : @layered.LEdge,
+  graph : @layered.LGraph,
+) -> Unit {
   partition_preprocessor_reverse_edge(edge, graph)
   let mut priority = partition_preprocessor_partition_constraint_edge_priority
   if edge.has_property_int(@options.layered_options_priority_direction) {
@@ -75,8 +81,8 @@ fn partition_preprocessor_reverse(edge : LEdge, graph : LGraph) -> Unit {
 
 ///|
 fn partition_preprocessor_must_be_reversed(
-  edge : LEdge,
-  partitioned_nodes : Array[LNode],
+  edge : @layered.LEdge,
+  partitioned_nodes : Array[@layered.LNode],
 ) -> Bool raise PartitionPreprocessorException {
   let source_node = partition_preprocessor_require_port_node(
     partition_preprocessor_require_edge_source(edge),
@@ -140,7 +146,7 @@ fn partition_preprocessor_must_be_reversed(
 
 ///|
 fn partition_preprocessor_process(
-  graph : LGraph,
+  graph : @layered.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
 ) -> Unit {
   let monitor = match progress_monitor {
@@ -186,8 +192,8 @@ fn partition_preprocessor_process(
 
 ///|
 pub fn new_partition_preprocessor_layout_processor() -> @core.ILayoutProcessor[
-  LayeredPhases,
-  LGraph,
+  @layered.LayeredPhases,
+  @layered.LGraph,
 ] {
   @core.new_layout_processor(partition_preprocessor_process)
 }
