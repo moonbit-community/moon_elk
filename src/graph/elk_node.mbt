@@ -27,9 +27,38 @@ let node_store : Ref[Array[NodeData]] = Ref([])
 
 ///|
 fn checked_node(node : ElkNode) -> Unit {
-  if node < 0 || node >= node_store.val.length() {
-    ignore("invalid node id")
+  if node < 0 ||
+    node >= node_store.val.length() ||
+    node_arena_store.val[node] < 0 {
+    abort("invalid or disposed node id")
   }
+}
+
+///|
+let disposed_node_data : NodeData = {
+  parent: None,
+  children: [],
+  ports: [],
+  contained_edges: [],
+  identifier: "",
+  x: 0.0,
+  y: 0.0,
+  width: 0.0,
+  height: 0.0,
+  int_properties: Map([]),
+  double_properties: Map([]),
+  kvector_properties: Map([]),
+  bool_properties: Map([]),
+  string_properties: Map([]),
+  string_set_properties: Map([]),
+  layout_option_string_values: Map([]),
+  individual_spacing_option_string_values: Map([]),
+}
+
+///|
+fn dispose_node_slot(node : ElkNode) -> Unit {
+  node_store.val[node] = disposed_node_data
+  node_arena_store.val[node] = -1
 }
 
 ///|
@@ -71,7 +100,7 @@ fn clone_string_string_array_map(
 
 ///|
 pub fn create_graph() -> ElkNode {
-  create_node(None)
+  new_graph_arena().create_graph()
 }
 
 ///|
@@ -112,7 +141,7 @@ fn remove_contained_edge(parent_id : ElkNode, edge_id : ElkEdge) -> Unit {
 }
 
 ///|
-pub fn create_node(parent : ElkNode?) -> ElkNode {
+fn create_node_in_arena(parent : ElkNode?, arena_id : Int) -> ElkNode {
   let id = node_store.val.length()
   node_store.val.push({
     parent,
@@ -133,11 +162,23 @@ pub fn create_node(parent : ElkNode?) -> ElkNode {
     layout_option_string_values: Map([]),
     individual_spacing_option_string_values: Map([]),
   })
+  graph_arena_register_node(arena_id, id)
   if parent is Some(parent_id) {
     checked_node(parent_id)
     append_child(parent_id, id)
   }
   id
+}
+
+///|
+pub fn create_node(parent : ElkNode?) -> ElkNode {
+  match parent {
+    Some(parent_id) => {
+      checked_node(parent_id)
+      create_node_in_arena(Some(parent_id), node_arena_store.val[parent_id])
+    }
+    None => new_graph_arena().create_graph()
+  }
 }
 
 ///|

@@ -46,13 +46,52 @@ let label_store : Ref[Array[LabelData]] = Ref([])
 
 ///|
 fn checked_label(label : ElkLabel) -> Unit {
-  if label < 0 || label >= label_store.val.length() {
-    ignore("invalid label id")
+  if label < 0 ||
+    label >= label_store.val.length() ||
+    label_arena_store.val[label] < 0 {
+    abort("invalid or disposed label id")
   }
 }
 
 ///|
+let disposed_label_data : LabelData = {
+  parent: None,
+  identifier: "",
+  text: "",
+  x: 0.0,
+  y: 0.0,
+  width: 0.0,
+  height: 0.0,
+  layout_option_string_values: Map([]),
+}
+
+///|
+fn dispose_label_slot(label : ElkLabel) -> Unit {
+  label_store.val[label] = disposed_label_data
+  label_arena_store.val[label] = -1
+}
+
+///|
 pub fn create_label(parent : ElkLabelParent?) -> ElkLabel {
+  let arena_id = match parent {
+    Some(NodeLabelParent(node)) => {
+      checked_node(node)
+      node_arena_store.val[node]
+    }
+    Some(PortLabelParent(port)) => {
+      checked_port(port)
+      port_arena_store.val[port]
+    }
+    Some(EdgeLabelParent(edge)) => {
+      checked_edge(edge)
+      edge_arena_store.val[edge]
+    }
+    Some(LabelLabelParent(label)) => {
+      checked_label(label)
+      label_arena_store.val[label]
+    }
+    None => new_graph_arena().id
+  }
   if parent is Some(label_parent) {
     match label_parent {
       NodeLabelParent(node) => checked_node(node)
@@ -72,6 +111,7 @@ pub fn create_label(parent : ElkLabelParent?) -> ElkLabel {
     height: 0.0,
     layout_option_string_values: Map([]),
   })
+  graph_arena_register_label(arena_id, id)
   id
 }
 

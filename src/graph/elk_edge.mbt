@@ -17,15 +17,38 @@ let edge_store : Ref[Array[EdgeData]] = Ref([])
 
 ///|
 fn checked_edge(edge : ElkEdge) -> Unit {
-  if edge < 0 || edge >= edge_store.val.length() {
-    ignore("invalid edge id")
+  if edge < 0 ||
+    edge >= edge_store.val.length() ||
+    edge_arena_store.val[edge] < 0 {
+    abort("invalid or disposed edge id")
   }
 }
 
 ///|
+let disposed_edge_data : EdgeData = {
+  containing_node: None,
+  sources: [],
+  targets: [],
+  identifier: "",
+  sections: [],
+  junction_points: [],
+  layout_option_string_values: Map([]),
+}
+
+///|
+fn dispose_edge_slot(edge : ElkEdge) -> Unit {
+  edge_store.val[edge] = disposed_edge_data
+  edge_arena_store.val[edge] = -1
+}
+
+///|
 pub fn create_edge(containing_node : ElkNode?) -> ElkEdge {
-  if containing_node is Some(node_id) {
-    checked_node(node_id)
+  let arena_id = match containing_node {
+    Some(node_id) => {
+      checked_node(node_id)
+      node_arena_store.val[node_id]
+    }
+    None => new_graph_arena().id
   }
   let id = edge_store.val.length()
   edge_store.val.push({
@@ -37,6 +60,7 @@ pub fn create_edge(containing_node : ElkNode?) -> ElkEdge {
     junction_points: [],
     layout_option_string_values: Map([]),
   })
+  graph_arena_register_edge(arena_id, id)
   if containing_node is Some(node_id) {
     append_contained_edge(node_id, id)
   }
@@ -50,6 +74,7 @@ pub fn edge_add_source(edge : ElkEdge, source : ElkConnectableShape) -> Unit {
     NodeShape(node) => checked_node(node)
     PortShape(port) => checked_port(port)
   }
+  graph_arena_adopt_standalone_edge(edge, graph_arena_for_shape(source))
   let data = edge_store.val[edge]
   data.sources.push(source)
   edge_store.val[edge] = data
@@ -62,6 +87,7 @@ pub fn edge_add_target(edge : ElkEdge, target : ElkConnectableShape) -> Unit {
     NodeShape(node) => checked_node(node)
     PortShape(port) => checked_port(port)
   }
+  graph_arena_adopt_standalone_edge(edge, graph_arena_for_shape(target))
   let data = edge_store.val[edge]
   data.targets.push(target)
   edge_store.val[edge] = data
@@ -131,7 +157,9 @@ pub fn edge_targets(edge : ElkEdge) -> Array[ElkConnectableShape] {
 pub fn all_edges() -> Array[ElkEdge] {
   let edges = []
   for edge = 0; edge < edge_store.val.length(); edge = edge + 1 {
-    edges.push(edge)
+    if edge_arena_store.val[edge] >= 0 {
+      edges.push(edge)
+    }
   }
   edges
 }
@@ -157,6 +185,7 @@ pub fn edge_set_containing_node(
   checked_edge(edge)
   if containing_node is Some(node_id) {
     checked_node(node_id)
+    graph_arena_move_edge(edge, node_arena_store.val[node_id])
   }
   let data = edge_store.val[edge]
   if data.containing_node is Some(old_parent) {

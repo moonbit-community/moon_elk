@@ -45,6 +45,8 @@ pub fn create_simple_edge(Int, Int) -> Int raise ElkGraphUtilException
 
 pub fn create_simple_edge_for_shapes(ElkConnectableShape, ElkConnectableShape) -> Int raise ElkGraphUtilException
 
+pub fn dispose_graph(Int) -> Unit
+
 pub fn edge_add_junction_point(Int, ElkBendPoint) -> Unit
 
 pub fn edge_add_source(Int, ElkConnectableShape) -> Unit
@@ -276,6 +278,8 @@ pub fn new_elk_persistent_entry(key? : String, value? : String?) -> ElkPersisten
 pub fn new_elk_port_impl(parent? : Int?) -> Int
 
 pub fn[T] new_elk_property_to_value_map_entry_impl(key? : IProperty[T]?, value? : T?) -> ElkPropertyToValueMapEntryImpl[T]
+
+pub fn new_graph_arena() -> GraphArena
 
 pub fn new_map_property_holder() -> MapPropertyHolder
 
@@ -544,6 +548,12 @@ pub fn[T] ElkPropertyToValueMapEntryImpl::get_typed_key(Self[T]) -> IProperty[T]
 pub fn[T] ElkPropertyToValueMapEntryImpl::get_typed_value(Self[T]) -> T?
 pub fn[T] ElkPropertyToValueMapEntryImpl::set_typed_key(Self[T], IProperty[T]?) -> Unit
 pub fn[T] ElkPropertyToValueMapEntryImpl::set_typed_value(Self[T], T?) -> Unit
+
+pub struct GraphArena {
+  id : Int
+}
+pub fn GraphArena::create_graph(Self) -> Int
+pub fn GraphArena::dispose(Self) -> Unit
 
 pub(all) enum GraphFeature {
   SelfLoops

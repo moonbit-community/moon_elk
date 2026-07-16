@@ -82,6 +82,37 @@ fn elk_graph_json_core_delegate_required_importer(
 }
 
 ///|
+fn elk_graph_json_core_delegate_layout_imported_graph(
+  root : @graph.ElkNode,
+  maybe_importer : @core.Maybe[JsonImporter],
+) -> Map[String, Json]? {
+  if @core.layout_runtime_has_error() {
+    return None
+  }
+
+  let recursive_engine = @core.new_recursive_graph_layout_engine()
+  recursive_engine.layout(root, @core.new_null_elk_progress_monitor())
+  if @core.layout_runtime_has_error() {
+    return None
+  }
+
+  let importer = match
+    elk_graph_json_core_delegate_required_importer(maybe_importer) {
+    Some(importer) => importer
+    None => return None
+  }
+  importer.transfer_layout(root)
+  if @core.layout_runtime_has_error() {
+    return None
+  }
+
+  match importer.get_input_model() {
+    Some(model) => Some(model.copy())
+    None => None
+  }
+}
+
+///|
 fn elk_graph_json_core_layout_delegate(
   graph_obj : Map[String, Json],
   options : Map[String, Json],
@@ -94,30 +125,18 @@ fn elk_graph_json_core_layout_delegate(
   let root = elk_graph_json_for_json_graph(Json::object(graph_obj))
     .remember_importer(maybe_importer)
     .to_elk()
-  if @core.layout_runtime_has_error() {
-    return
-  }
-
-  let recursive_engine = @core.new_recursive_graph_layout_engine()
-  recursive_engine.layout(root, @core.new_null_elk_progress_monitor())
-  if @core.layout_runtime_has_error() {
-    return
-  }
-
-  let importer = match
-    elk_graph_json_core_delegate_required_importer(maybe_importer) {
-    Some(importer) => importer
-    None => return
-  }
-  importer.transfer_layout(root)
-  if @core.layout_runtime_has_error() {
-    return
-  }
-
-  if importer.get_input_model() is Some(model) {
-    let updated_model = model.copy()
-    graph_obj.clear()
-    updated_model.each((key, value) => graph_obj[key] = value)
+  let updated_model = elk_graph_json_core_delegate_layout_imported_graph(
+    root, maybe_importer,
+  )
+  // The JSON API returns copied layout data, so its imported graph has no owner
+  // after this call. Dispose it on every reported-error path as well as success.
+  @graph.dispose_graph(root)
+  match updated_model {
+    Some(model) => {
+      graph_obj.clear()
+      model.each((key, value) => graph_obj[key] = value)
+    }
+    None => ()
   }
 }
 

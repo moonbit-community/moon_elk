@@ -21,9 +21,32 @@ let edge_section_store : Ref[Array[EdgeSectionData]] = Ref([])
 
 ///|
 fn checked_edge_section(section : ElkEdgeSection) -> Unit {
-  if section < 0 || section >= edge_section_store.val.length() {
-    ignore("invalid edge section id")
+  if section < 0 ||
+    section >= edge_section_store.val.length() ||
+    edge_section_arena_store.val[section] < 0 {
+    abort("invalid or disposed edge section id")
   }
+}
+
+///|
+let disposed_edge_section_data : EdgeSectionData = {
+  _edge: -1,
+  identifier: "",
+  start_x: 0.0,
+  start_y: 0.0,
+  end_x: 0.0,
+  end_y: 0.0,
+  bend_points: [],
+  incoming_shape: None,
+  outgoing_shape: None,
+  incoming_sections: [],
+  outgoing_sections: [],
+}
+
+///|
+fn dispose_edge_section_slot(section : ElkEdgeSection) -> Unit {
+  edge_section_store.val[section] = disposed_edge_section_data
+  edge_section_arena_store.val[section] = -1
 }
 
 ///|
@@ -43,6 +66,7 @@ pub fn create_edge_section(edge : ElkEdge) -> ElkEdgeSection {
     incoming_sections: [],
     outgoing_sections: [],
   })
+  graph_arena_register_edge_section(edge_arena_store.val[edge], id)
   let edge_data = edge_store.val[edge]
   edge_data.sections.push(id)
   edge_store.val[edge] = edge_data

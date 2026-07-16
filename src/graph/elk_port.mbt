@@ -17,13 +17,39 @@ let port_store : Ref[Array[PortData]] = Ref([])
 
 ///|
 fn checked_port(port : ElkPort) -> Unit {
-  if port < 0 || port >= port_store.val.length() {
-    ignore("invalid port id")
+  if port < 0 ||
+    port >= port_store.val.length() ||
+    port_arena_store.val[port] < 0 {
+    abort("invalid or disposed port id")
   }
 }
 
 ///|
+let disposed_port_data : PortData = {
+  parent: None,
+  identifier: "",
+  x: 0.0,
+  y: 0.0,
+  width: 0.0,
+  height: 0.0,
+  layout_option_string_values: Map([]),
+}
+
+///|
+fn dispose_port_slot(port : ElkPort) -> Unit {
+  port_store.val[port] = disposed_port_data
+  port_arena_store.val[port] = -1
+}
+
+///|
 pub fn create_port(parent : ElkNode?) -> ElkPort {
+  let arena_id = match parent {
+    Some(parent_id) => {
+      checked_node(parent_id)
+      node_arena_store.val[parent_id]
+    }
+    None => new_graph_arena().id
+  }
   let id = port_store.val.length()
   port_store.val.push({
     parent,
@@ -34,8 +60,8 @@ pub fn create_port(parent : ElkNode?) -> ElkPort {
     height: 0.0,
     layout_option_string_values: Map([]),
   })
+  graph_arena_register_port(arena_id, id)
   if parent is Some(parent_id) {
-    checked_node(parent_id)
     append_port(parent_id, id)
   }
   id
