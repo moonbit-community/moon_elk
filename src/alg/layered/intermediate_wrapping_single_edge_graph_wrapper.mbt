@@ -15,9 +15,9 @@ fn single_edge_graph_wrapper_cutting_strategy_from_string(
   value : String,
 ) -> CuttingStrategy {
   match value {
-    "MANUAL" => CuttingStrategy::Manual
-    "ARD" => CuttingStrategy::Ard
-    _ => CuttingStrategy::Msd
+    "MANUAL" => Manual
+    "ARD" => Ard
+    _ => Msd
   }
 }
 
@@ -26,9 +26,9 @@ fn single_edge_graph_wrapper_validify_strategy_from_string(
   value : String,
 ) -> ValidifyStrategy {
   match value {
-    "LOOK_BACK" => ValidifyStrategy::LookBack
-    "GREEDY" => ValidifyStrategy::Greedy
-    _ => ValidifyStrategy::No
+    "LOOK_BACK" => LookBack
+    "GREEDY" => Greedy
+    _ => No
   }
 }
 
@@ -217,8 +217,8 @@ fn single_edge_graph_wrapper_process(
       graph.get_property_string(layered_options_wrapping_cutting_strategy),
     )
     let calculator = match cutting_strategy {
-      CuttingStrategy::Manual => new_manual_cut_index_calculator()
-      CuttingStrategy::Ard => new_ard_cut_index_heuristic()
+      Manual => new_manual_cut_index_calculator()
+      Ard => new_ard_cut_index_heuristic()
       _ => new_msd_cut_index_heuristic()
     }
 
@@ -229,11 +229,11 @@ fn single_edge_graph_wrapper_process(
         graph.get_property_string(layered_options_wrapping_validify_strategy),
       )
       match validify_strategy {
-        ValidifyStrategy::LookBack =>
+        LookBack =>
           cuts = single_edge_graph_wrapper_validify_indexes_looking_back(
             graph_stats, cuts,
           )
-        ValidifyStrategy::Greedy =>
+        Greedy =>
           cuts = single_edge_graph_wrapper_validify_indexes_greedily(
             graph_stats, cuts,
           )

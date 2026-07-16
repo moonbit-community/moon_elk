@@ -18,7 +18,7 @@ fn _greedy_port_test_connect_to_target_port(
   source : LNode,
   target_port : LPort,
 ) -> LPort {
-  let source_port = greedy_port_test_add_port(source, @core.PortSide::East)
+  let source_port = greedy_port_test_add_port(source, East)
   let edge = new_l_edge()
   edge.set_source(Some(source_port))
   edge.set_target(Some(target_port))
@@ -55,16 +55,10 @@ fn greedy_port_test_build_simple_crossing() -> (
   let right_top = greedy_port_test_new_node(right_layer)
   let right_bottom = greedy_port_test_new_node(right_layer)
 
-  let left_top_port = greedy_port_test_add_port(left, @core.PortSide::East)
-  let left_bottom_port = greedy_port_test_add_port(left, @core.PortSide::East)
-  let right_top_port = greedy_port_test_add_port(
-    right_top,
-    @core.PortSide::West,
-  )
-  let right_bottom_port = greedy_port_test_add_port(
-    right_bottom,
-    @core.PortSide::West,
-  )
+  let left_top_port = greedy_port_test_add_port(left, East)
+  let left_bottom_port = greedy_port_test_add_port(left, East)
+  let right_top_port = greedy_port_test_add_port(right_top, West)
+  let right_bottom_port = greedy_port_test_add_port(right_bottom, West)
 
   let edge_top = new_l_edge()
   edge_top.set_source(Some(left_top_port))

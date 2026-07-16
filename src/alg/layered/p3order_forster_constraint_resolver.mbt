@@ -11,7 +11,7 @@ fn forster_constraint_group_next_handle() -> Int {
 ///|
 fn forster_node_is_normal(node : LNode) -> Bool {
   match node.get_type() {
-    NodeType::Normal => true
+    Normal => true
     _ => false
   }
 }

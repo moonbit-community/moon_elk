@@ -20,12 +20,7 @@ fn mrtree_tree_layout_phase_ordinal(phase : MrtreeTreeLayoutPhases) -> Int {
 pub let mrtree_tree_layout_phase_descriptor : @core.PhaseDescriptor[
   MrtreeTreeLayoutPhases,
 ] = @core.new_phase_descriptor(
-  [
-    MrtreeTreeLayoutPhases::P1Treeification,
-    MrtreeTreeLayoutPhases::P2NodeOrdering,
-    MrtreeTreeLayoutPhases::P3NodePlacement,
-    MrtreeTreeLayoutPhases::P4EdgeRouting,
-  ],
+  [P1Treeification, P2NodeOrdering, P3NodePlacement, P4EdgeRouting],
   mrtree_tree_layout_phase_ordinal,
 )
 

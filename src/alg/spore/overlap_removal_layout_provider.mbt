@@ -100,15 +100,15 @@ pub fn SporeOverlapRemovalLayoutProvider::layout(
     ignore(self.algorithm_assembler.reset())
     ignore(
       self.algorithm_assembler.set_phase(
-        SPOrEPhases::P1_STRUCTURE,
+        P1_STRUCTURE,
         spore_structure_extraction_strategy_phase_factory(
-          SporeStructureExtractionStrategy::DELAUNAY_TRIANGULATION,
+          DELAUNAY_TRIANGULATION,
         ),
       ),
     )
     ignore(
       self.algorithm_assembler.set_phase(
-        SPOrEPhases::P2_PROCESSING_ORDER,
+        P2_PROCESSING_ORDER,
         spore_tree_construction_strategy_phase_factory(
           graph.tree_construction_strategy,
         ),
@@ -116,10 +116,8 @@ pub fn SporeOverlapRemovalLayoutProvider::layout(
     )
     ignore(
       self.algorithm_assembler.set_phase(
-        SPOrEPhases::P3_EXECUTION,
-        spore_overlap_removal_strategy_phase_factory(
-          SporeOverlapRemovalStrategy::GROW_TREE,
-        ),
+        P3_EXECUTION,
+        spore_overlap_removal_strategy_phase_factory(GROW_TREE),
       ),
     )
     let algorithm = self.algorithm_assembler.build(graph)

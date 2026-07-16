@@ -3,13 +3,13 @@ fn port_side_processor_port_constraints_from_string(
   value : String,
 ) -> @core.PortConstraints {
   match value {
-    "UNDEFINED" => @core.PortConstraints::Undefined
-    "FREE" => @core.PortConstraints::Free
-    "FIXED_SIDE" => @core.PortConstraints::FixedSide
-    "FIXED_ORDER" => @core.PortConstraints::FixedOrder
-    "FIXED_RATIO" => @core.PortConstraints::FixedRatio
-    "FIXED_POS" => @core.PortConstraints::FixedPos
-    _ => @core.PortConstraints::Undefined
+    "UNDEFINED" => Undefined
+    "FREE" => Free
+    "FIXED_SIDE" => FixedSide
+    "FIXED_ORDER" => FixedOrder
+    "FIXED_RATIO" => FixedRatio
+    "FIXED_POS" => FixedPos
+    _ => Undefined
   }
 }
 
@@ -27,7 +27,7 @@ fn port_side_processor_process_node(node : LNode) -> Unit {
   if constraints.is_side_fixed() {
     for port in node.get_ports() {
       match port.get_side() {
-        @core.PortSide::SideUndefined => port_side_processor_set_port_side(port)
+        SideUndefined => port_side_processor_set_port_side(port)
         _ => ()
       }
     }
@@ -50,9 +50,9 @@ pub fn port_side_processor_set_port_side(port : LPort) -> Unit {
     }
     None =>
       if port.get_net_flow() < 0 {
-        port.set_side(@core.PortSide::East)
+        port.set_side(East)
       } else {
-        port.set_side(@core.PortSide::West)
+        port.set_side(West)
       }
   }
 }

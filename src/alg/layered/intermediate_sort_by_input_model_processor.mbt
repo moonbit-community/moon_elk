@@ -3,10 +3,10 @@ fn sort_by_input_model_processor_ordering_strategy_from_string(
   value : String,
 ) -> OrderingStrategy {
   match value {
-    "NODES_AND_EDGES" => OrderingStrategy::NodesAndEdges
-    "PREFER_EDGES" => OrderingStrategy::PreferEdges
-    "PREFER_NODES" => OrderingStrategy::PreferNodes
-    _ => OrderingStrategy::NoneType
+    "NODES_AND_EDGES" => NodesAndEdges
+    "PREFER_EDGES" => PreferEdges
+    "PREFER_NODES" => PreferNodes
+    _ => NoneType
   }
 }
 
@@ -15,9 +15,9 @@ fn sort_by_input_model_processor_long_edge_ordering_strategy_from_string(
   value : String,
 ) -> LongEdgeOrderingStrategy {
   match value {
-    "DUMMY_NODE_UNDER" => LongEdgeOrderingStrategy::DummyNodeUnder
-    "EQUAL" => LongEdgeOrderingStrategy::Equal
-    _ => LongEdgeOrderingStrategy::DummyNodeOver
+    "DUMMY_NODE_UNDER" => DummyNodeUnder
+    "EQUAL" => Equal
+    _ => DummyNodeOver
   }
 }
 
@@ -26,13 +26,13 @@ fn sort_by_input_model_processor_port_constraints_from_string(
   value : String,
 ) -> @core.PortConstraints {
   match value {
-    "UNDEFINED" => @core.PortConstraints::Undefined
-    "FREE" => @core.PortConstraints::Free
-    "FIXED_SIDE" => @core.PortConstraints::FixedSide
-    "FIXED_ORDER" => @core.PortConstraints::FixedOrder
-    "FIXED_RATIO" => @core.PortConstraints::FixedRatio
-    "FIXED_POS" => @core.PortConstraints::FixedPos
-    _ => @core.PortConstraints::Undefined
+    "UNDEFINED" => Undefined
+    "FREE" => Free
+    "FIXED_SIDE" => FixedSide
+    "FIXED_ORDER" => FixedOrder
+    "FIXED_RATIO" => FixedRatio
+    "FIXED_POS" => FixedPos
+    _ => Undefined
   }
 }
 
@@ -41,7 +41,7 @@ fn sort_by_input_model_processor_node_type_is_normal(
   node_type : NodeType,
 ) -> Bool {
   match node_type {
-    NodeType::Normal => true
+    Normal => true
     _ => false
   }
 }
@@ -51,8 +51,8 @@ fn sort_by_input_model_processor_constraints_skip_port_sort(
   constraints : @core.PortConstraints,
 ) -> Bool {
   match constraints {
-    @core.PortConstraints::FixedOrder => true
-    @core.PortConstraints::FixedPos => true
+    FixedOrder => true
+    FixedPos => true
     _ => false
   }
 }

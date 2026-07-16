@@ -6,7 +6,7 @@ fn _bk_node_placer_same_node(left : LNode, right : LNode) -> Bool {
 ///|
 fn bk_node_placer_node_type_is_long_edge(node_type : NodeType) -> Bool {
   match node_type {
-    NodeType::LongEdge => true
+    LongEdge => true
     _ => false
   }
 }
@@ -14,7 +14,7 @@ fn bk_node_placer_node_type_is_long_edge(node_type : NodeType) -> Bool {
 ///|
 fn bk_node_placer_fixed_alignment_is_none(value : FixedAlignment) -> Bool {
   match value {
-    FixedAlignment::NoneType => true
+    NoneType => true
     _ => false
   }
 }
@@ -22,7 +22,7 @@ fn bk_node_placer_fixed_alignment_is_none(value : FixedAlignment) -> Bool {
 ///|
 fn bk_node_placer_fixed_alignment_is_balanced(value : FixedAlignment) -> Bool {
   match value {
-    FixedAlignment::Balanced => true
+    Balanced => true
     _ => false
   }
 }
@@ -39,12 +39,12 @@ fn _bk_node_placer_reverse_layers(layers : Array[Layer]) -> Array[Layer] {
 ///|
 fn bk_node_placer_parse_fixed_alignment(value : String) -> FixedAlignment {
   match value {
-    "LEFTDOWN" => FixedAlignment::LeftDown
-    "LEFTUP" => FixedAlignment::LeftUp
-    "RIGHTDOWN" => FixedAlignment::RightDown
-    "RIGHTUP" => FixedAlignment::RightUp
-    "BALANCED" => FixedAlignment::Balanced
-    _ => FixedAlignment::NoneType
+    "LEFTDOWN" => LeftDown
+    "LEFTUP" => LeftUp
+    "RIGHTDOWN" => RightDown
+    "RIGHTUP" => RightUp
+    "BALANCED" => Balanced
+    _ => NoneType
   }
 }
 
@@ -338,40 +338,40 @@ fn bk_node_placer_process(
 
   let layouts : Array[BKAlignedLayout] = []
   match fixed_alignment {
-    FixedAlignment::LeftDown =>
+    LeftDown =>
       layouts.push(
         new_bk_aligned_layout(
           layered_graph,
           ni.node_count,
-          Some(BKVDirection::Down),
-          Some(BKHDirection::Left),
+          Some(Down),
+          Some(Left),
         ),
       )
-    FixedAlignment::LeftUp =>
+    LeftUp =>
       layouts.push(
         new_bk_aligned_layout(
           layered_graph,
           ni.node_count,
-          Some(BKVDirection::Up),
-          Some(BKHDirection::Left),
+          Some(Up),
+          Some(Left),
         ),
       )
-    FixedAlignment::RightDown =>
+    RightDown =>
       layouts.push(
         new_bk_aligned_layout(
           layered_graph,
           ni.node_count,
-          Some(BKVDirection::Down),
-          Some(BKHDirection::Right),
+          Some(Down),
+          Some(Right),
         ),
       )
-    FixedAlignment::RightUp =>
+    RightUp =>
       layouts.push(
         new_bk_aligned_layout(
           layered_graph,
           ni.node_count,
-          Some(BKVDirection::Up),
-          Some(BKHDirection::Right),
+          Some(Up),
+          Some(Right),
         ),
       )
     _ => {
@@ -379,32 +379,32 @@ fn bk_node_placer_process(
         new_bk_aligned_layout(
           layered_graph,
           ni.node_count,
-          Some(BKVDirection::Down),
-          Some(BKHDirection::Right),
+          Some(Down),
+          Some(Right),
         ),
       )
       layouts.push(
         new_bk_aligned_layout(
           layered_graph,
           ni.node_count,
-          Some(BKVDirection::Up),
-          Some(BKHDirection::Right),
+          Some(Up),
+          Some(Right),
         ),
       )
       layouts.push(
         new_bk_aligned_layout(
           layered_graph,
           ni.node_count,
-          Some(BKVDirection::Down),
-          Some(BKHDirection::Left),
+          Some(Down),
+          Some(Left),
         ),
       )
       layouts.push(
         new_bk_aligned_layout(
           layered_graph,
           ni.node_count,
-          Some(BKVDirection::Up),
-          Some(BKHDirection::Left),
+          Some(Up),
+          Some(Left),
         ),
       )
     }
@@ -489,12 +489,12 @@ fn bk_node_placer_configuration(
       internal_properties_graph_properties,
     ) {
     match property {
-      GraphProperties::ExternalPorts =>
+      ExternalPorts =>
         return Some(
           @core.layout_processor_configuration_create(layered_phase_descriptor).add_before(
-            LayeredPhases::P5EdgeRouting,
+            P5EdgeRouting,
             layered_intermediate_processor_factory(
-              IntermediateProcessorStrategy::HierarchicalPortPositionProcessor,
+              HierarchicalPortPositionProcessor,
             ),
           ),
         )

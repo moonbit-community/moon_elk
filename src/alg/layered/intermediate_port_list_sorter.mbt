@@ -3,13 +3,13 @@ fn port_list_sorter_port_constraints_from_string(
   value : String,
 ) -> @core.PortConstraints {
   match value {
-    "UNDEFINED" => @core.PortConstraints::Undefined
-    "FREE" => @core.PortConstraints::Free
-    "FIXED_SIDE" => @core.PortConstraints::FixedSide
-    "FIXED_ORDER" => @core.PortConstraints::FixedOrder
-    "FIXED_RATIO" => @core.PortConstraints::FixedRatio
-    "FIXED_POS" => @core.PortConstraints::FixedPos
-    _ => @core.PortConstraints::Undefined
+    "UNDEFINED" => Undefined
+    "FREE" => Free
+    "FIXED_SIDE" => FixedSide
+    "FIXED_ORDER" => FixedOrder
+    "FIXED_RATIO" => FixedRatio
+    "FIXED_POS" => FixedPos
+    _ => Undefined
   }
 }
 
@@ -18,19 +18,19 @@ fn port_list_sorter_port_sorting_strategy_from_string(
   value : String,
 ) -> PortSortingStrategy {
   match value {
-    "PORT_DEGREE" => PortSortingStrategy::PortDegree
-    _ => PortSortingStrategy::InputOrder
+    "PORT_DEGREE" => PortDegree
+    _ => InputOrder
   }
 }
 
 ///|
 fn port_list_sorter_port_side_rank(side : @core.PortSide) -> Int {
   match side {
-    @core.PortSide::SideUndefined => 0
-    @core.PortSide::North => 1
-    @core.PortSide::East => 2
-    @core.PortSide::South => 3
-    @core.PortSide::West => 4
+    SideUndefined => 0
+    North => 1
+    East => 2
+    South => 3
+    West => 4
   }
 }
 
@@ -40,11 +40,11 @@ fn _port_list_sorter_port_side_equals(
   right : @core.PortSide,
 ) -> Bool {
   match (left, right) {
-    (@core.PortSide::North, @core.PortSide::North) => true
-    (@core.PortSide::East, @core.PortSide::East) => true
-    (@core.PortSide::South, @core.PortSide::South) => true
-    (@core.PortSide::West, @core.PortSide::West) => true
-    (@core.PortSide::SideUndefined, @core.PortSide::SideUndefined) => true
+    (North, North) => true
+    (East, East) => true
+    (South, South) => true
+    (West, West) => true
+    (SideUndefined, SideUndefined) => true
     _ => false
   }
 }
@@ -96,10 +96,10 @@ fn port_list_sorter_compare_port_degree_east_west(
   }
 
   match p1.get_side() {
-    @core.PortSide::East =>
+    East =>
       port_list_sorter_real_degree(p2, false) -
       port_list_sorter_real_degree(p1, false)
-    @core.PortSide::West =>
+    West =>
       port_list_sorter_real_degree(p1, true) -
       port_list_sorter_real_degree(p2, true)
     _ => 0
@@ -143,15 +143,15 @@ fn port_list_sorter_compare_fixed_order_and_fixed_pos(
   }
 
   match p1.get_side() {
-    @core.PortSide::North =>
+    North =>
       port_list_sorter_compare_double(p1.get_position().x, p2.get_position().x)
-    @core.PortSide::East =>
+    East =>
       port_list_sorter_compare_double(p1.get_position().y, p2.get_position().y)
-    @core.PortSide::South =>
+    South =>
       port_list_sorter_compare_double(p2.get_position().x, p1.get_position().x)
-    @core.PortSide::West =>
+    West =>
       port_list_sorter_compare_double(p2.get_position().y, p1.get_position().y)
-    @core.PortSide::SideUndefined => 0
+    SideUndefined => 0
   }
 }
 
@@ -240,14 +240,11 @@ fn port_list_sorter_reverse_west_and_south_side(ports : Array[LPort]) -> Unit {
 
   let (south_low, south_high) = port_list_sorter_find_port_side_range(
     ports,
-    @core.PortSide::South,
+    South,
   )
   port_list_sorter_reverse(ports, south_low, south_high)
 
-  let (west_low, west_high) = port_list_sorter_find_port_side_range(
-    ports,
-    @core.PortSide::West,
-  )
+  let (west_low, west_high) = port_list_sorter_find_port_side_range(ports, West)
   port_list_sorter_reverse(ports, west_low, west_high)
 }
 

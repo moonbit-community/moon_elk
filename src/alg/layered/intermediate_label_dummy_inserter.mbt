@@ -7,17 +7,17 @@ priv suberror LabelDummyInserterException {
 fn[T] label_dummy_inserter_raise_unsupported_graph(
   message : String,
 ) -> T raise LabelDummyInserterException {
-  raise LabelDummyInserterException::UnsupportedGraphException(message)
+  raise UnsupportedGraphException(message)
 }
 
 ///|
 fn label_dummy_inserter_parse_direction(value : String) -> @core.Direction {
   match value {
-    "RIGHT" => @core.Direction::Rightward
-    "LEFT" => @core.Direction::Leftward
-    "DOWN" => @core.Direction::Downward
-    "UP" => @core.Direction::Upward
-    _ => @core.Direction::Undefined
+    "RIGHT" => Rightward
+    "LEFT" => Leftward
+    "DOWN" => Downward
+    "UP" => Upward
+    _ => Undefined
   }
 }
 
@@ -91,7 +91,7 @@ fn label_dummy_inserter_create_label_dummy(
   thickness : Double,
 ) -> LNode {
   let dummy_node = new_l_node(graph=Some(layered_graph))
-  dummy_node.set_type(NodeType::LabelNode)
+  dummy_node.set_type(LabelNode)
   dummy_node.set_property_l_edge(internal_properties_origin_l_edge, Some(edge))
   dummy_node.set_property_l_label_array(
     internal_properties_represented_labels,
@@ -204,7 +204,7 @@ fn label_dummy_inserter_process(
       layered_graph.get_layerless_nodes().push(dummy_node)
     }
   } catch {
-    LabelDummyInserterException::UnsupportedGraphException(message) => {
+    UnsupportedGraphException(message) => {
       @core.layout_runtime_report_unsupported_configuration(message)
       monitor.done()
       return

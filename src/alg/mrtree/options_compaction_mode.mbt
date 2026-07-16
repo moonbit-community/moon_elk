@@ -10,10 +10,10 @@ pub fn mrtree_compaction_mode_from_string(
   value : String,
 ) -> MrtreeCompactionMode {
   if value == "NONE" {
-    MrtreeCompactionMode::NONE
+    NONE
   } else if value == "LEVEL_PRESERVING" {
-    MrtreeCompactionMode::LEVEL_PRESERVING
+    LEVEL_PRESERVING
   } else {
-    MrtreeCompactionMode::AGGRESSIVE
+    AGGRESSIVE
   }
 }

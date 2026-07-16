@@ -7,7 +7,7 @@ pub(all) suberror DepthFirstCycleBreakerException {
 fn[T] depth_first_cycle_breaker_raise_unsupported_graph(
   message : String,
 ) -> T raise DepthFirstCycleBreakerException {
-  raise DepthFirstCycleBreakerException::UnsupportedGraphException(message)
+  raise UnsupportedGraphException(message)
 }
 
 ///|
@@ -119,7 +119,7 @@ fn depth_first_cycle_breaker_process(
       graph.set_property_bool(internal_properties_cyclic, true)
     }
   } catch {
-    DepthFirstCycleBreakerException::UnsupportedGraphException(message) => {
+    UnsupportedGraphException(message) => {
       @core.layout_runtime_report_unsupported_configuration(message)
       monitor.done()
       return
@@ -138,10 +138,8 @@ fn depth_first_cycle_breaker_configuration(
   ignore(graph)
   Some(
     @core.layout_processor_configuration_create(layered_phase_descriptor).add_after(
-      LayeredPhases::P5EdgeRouting,
-      layered_intermediate_processor_factory(
-        IntermediateProcessorStrategy::ReversedEdgeRestorer,
-      ),
+      P5EdgeRouting,
+      layered_intermediate_processor_factory(ReversedEdgeRestorer),
     ),
   )
 }

@@ -9,9 +9,9 @@ pub fn spore_tree_construction_strategy_from_string(
   value : String,
 ) -> SporeTreeConstructionStrategy {
   if value == "MAXIMUM_SPANNING_TREE" {
-    SporeTreeConstructionStrategy::MAXIMUM_SPANNING_TREE
+    MAXIMUM_SPANNING_TREE
   } else {
-    SporeTreeConstructionStrategy::MINIMUM_SPANNING_TREE
+    MINIMUM_SPANNING_TREE
   }
 }
 

@@ -70,22 +70,22 @@ pub fn LayoutOptionLabelProvider::get_image(
 ) -> CoreUiImageDescriptor? {
   let registry = elk_ui_plugin_get_instance().get_image_registry()
   match self.option_data.get_type() {
-    @core.ObjectType => registry.get(elk_ui_img_text)
-    @core.StringType =>
+    ObjectType => registry.get(elk_ui_img_text)
+    StringType =>
       if self.option_data.get_choices().is_empty() {
         registry.get(elk_ui_img_text)
       } else {
         registry.get(elk_ui_img_choice)
       }
-    @core.BoolType =>
+    BoolType =>
       if layout_option_label_provider_is_true(element) {
         registry.get(elk_ui_img_true)
       } else {
         registry.get(elk_ui_img_false)
       }
-    @core.EnumSetType => registry.get(elk_ui_img_choice)
-    @core.IntType => registry.get(elk_ui_img_int)
-    @core.DoubleType => registry.get(elk_ui_img_double)
+    EnumSetType => registry.get(elk_ui_img_choice)
+    IntType => registry.get(elk_ui_img_int)
+    DoubleType => registry.get(elk_ui_img_double)
   }
 }
 
@@ -95,7 +95,7 @@ pub fn LayoutOptionLabelProvider::get_text(
   element : CoreUiValue,
 ) -> String {
   match self.option_data.get_type() {
-    @core.StringType =>
+    StringType =>
       if layout_option_label_provider_is_algorithm_option(self.option_data) {
         match core_ui_value_as_string(element) {
           Some(algorithm_id) =>
@@ -118,12 +118,12 @@ pub fn LayoutOptionLabelProvider::get_text(
       } else {
         core_ui_value_to_string(element)
       }
-    @core.BoolType =>
+    BoolType =>
       match core_ui_value_as_bool(element) {
         Some(flag) => if flag { "true" } else { "false" }
         None => core_ui_value_to_string(element)
       }
-    @core.EnumSetType =>
+    EnumSetType =>
       match element {
         CoreUiStringValue(text) => text
         CoreUiStringsValue(values) =>

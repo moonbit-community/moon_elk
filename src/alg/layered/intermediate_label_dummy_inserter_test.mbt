@@ -23,7 +23,7 @@ fn label_dummy_inserter_test_port_side(name : String) -> @core.PortSide {
 ///|
 fn label_dummy_inserter_test_node_type_is_label(node_type : NodeType) -> Bool {
   match node_type {
-    NodeType::LabelNode => true
+    LabelNode => true
     _ => false
   }
 }

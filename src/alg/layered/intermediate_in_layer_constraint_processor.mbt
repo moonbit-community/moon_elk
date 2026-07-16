@@ -3,18 +3,18 @@ fn in_layer_constraint_processor_parse_constraint(
   value : String,
 ) -> InLayerConstraint {
   if value == "TOP" {
-    return InLayerConstraint::Top
+    return Top
   }
   if value == "BOTTOM" {
-    return InLayerConstraint::Bottom
+    return Bottom
   }
-  InLayerConstraint::NoneType
+  NoneType
 }
 
 ///|
 fn in_layer_constraint_processor_is_top(constraint : InLayerConstraint) -> Bool {
   match constraint {
-    InLayerConstraint::Top => true
+    Top => true
     _ => false
   }
 }
@@ -24,7 +24,7 @@ fn in_layer_constraint_processor_is_bottom(
   constraint : InLayerConstraint,
 ) -> Bool {
   match constraint {
-    InLayerConstraint::Bottom => true
+    Bottom => true
     _ => false
   }
 }

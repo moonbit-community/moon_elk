@@ -7,5 +7,5 @@ pub enum PortType {
 
 ///|
 pub fn port_type_values() -> Array[PortType] {
-  [PortType::Undefined, PortType::Input, PortType::Output]
+  [Undefined, Input, Output]
 }

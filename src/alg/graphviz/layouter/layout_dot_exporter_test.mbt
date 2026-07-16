@@ -13,7 +13,7 @@ fn layout_dot_exporter_test_find_attribute_map(
 ) -> Map[String, String] {
   for statement in statements {
     match statement {
-      @dot.DotStatementAttributeStatement(attribute_statement) =>
+      DotStatementAttributeStatement(attribute_statement) =>
         if @dot.dot_attribute_type_value(attribute_statement.get_type()) ==
           @dot.dot_attribute_type_value(attribute_type) {
           return @dot.dot_exporter_create_attribute_map(
@@ -32,11 +32,11 @@ fn layout_dot_exporter_test_find_first_edge_attribute_map(
 ) -> Map[String, String] {
   for statement in statements {
     match statement {
-      @dot.DotStatementEdgeStatement(edge_statement) =>
+      DotStatementEdgeStatement(edge_statement) =>
         return @dot.dot_exporter_create_attribute_map(
           edge_statement.get_attributes(),
         )
-      @dot.DotStatementSubgraph(subgraph) => {
+      DotStatementSubgraph(subgraph) => {
         let nested = layout_dot_exporter_test_find_first_edge_attribute_map(
           subgraph.get_statements(),
         )

@@ -7,9 +7,7 @@ priv suberror RectPackingEqualWhitespaceEliminatorException {
 fn rectpacking_raise_unsupported_configuration(
   message : String,
 ) -> Unit raise RectPackingEqualWhitespaceEliminatorException {
-  raise RectPackingEqualWhitespaceEliminatorException::UnsupportedConfiguration(
-    message,
-  )
+  raise UnsupportedConfiguration(message)
 }
 
 ///|
@@ -17,9 +15,7 @@ fn rectpacking_equal_whitespace_eliminator_exception_message(
   err : RectPackingEqualWhitespaceEliminatorException,
 ) -> String {
   match err {
-    RectPackingEqualWhitespaceEliminatorException::UnsupportedConfiguration(
-      message
-    ) => message
+    UnsupportedConfiguration(message) => message
   }
 }
 

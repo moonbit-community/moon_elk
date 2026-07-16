@@ -165,7 +165,7 @@ fn layout_dot_exporter_parse_neato_model_or_abort(
   value : String,
 ) -> @dot.NeatoModel {
   try @dot.neato_model_parse(value) catch {
-    @dot.NeatoModelException::IllegalArgumentException(message) => {
+    IllegalArgumentException(message) => {
       @core.layout_runtime_report_unsupported_configuration(message)
       @dot.neato_model_default()
     }
@@ -191,7 +191,7 @@ fn layout_dot_exporter_parse_overlap_mode_or_abort(
   value : String,
 ) -> @dot.OverlapMode {
   try @dot.overlap_mode_parse(value) catch {
-    @dot.OverlapModeException::IllegalArgumentException(message) => {
+    IllegalArgumentException(message) => {
       @core.layout_runtime_report_unsupported_configuration(message)
       @dot.overlap_mode_default()
     }
@@ -224,11 +224,11 @@ fn layout_dot_exporter_parse_edge_label_placement(
     None => ""
   }
   if normalized == "HEAD" || normalized.has_suffix(".HEAD") {
-    @core.Head
+    Head
   } else if normalized == "TAIL" || normalized.has_suffix(".TAIL") {
-    @core.Tail
+    Tail
   } else {
-    @core.Centered
+    Centered
   }
 }
 
@@ -237,8 +237,8 @@ fn layout_dot_exporter_is_end_label_placement(
   placement : @core.EdgeLabelPlacement,
 ) -> Bool {
   match placement {
-    @core.Head => true
-    @core.Tail => true
+    Head => true
+    Tail => true
     _ => false
   }
 }
@@ -246,7 +246,7 @@ fn layout_dot_exporter_is_end_label_placement(
 ///|
 fn layout_dot_exporter_is_shortpath(model : @dot.NeatoModel) -> Bool {
   match model {
-    @dot.Shortpath => true
+    Shortpath => true
     _ => false
   }
 }
@@ -254,7 +254,7 @@ fn layout_dot_exporter_is_shortpath(model : @dot.NeatoModel) -> Bool {
 ///|
 fn layout_dot_exporter_is_command_dot(command : @dot.Command) -> Bool {
   match command {
-    @dot.Dot => true
+    Dot => true
     _ => false
   }
 }
@@ -262,7 +262,7 @@ fn layout_dot_exporter_is_command_dot(command : @dot.Command) -> Bool {
 ///|
 fn layout_dot_exporter_is_command_twopi(command : @dot.Command) -> Bool {
   match command {
-    @dot.Twopi => true
+    Twopi => true
     _ => false
   }
 }
@@ -270,8 +270,8 @@ fn layout_dot_exporter_is_command_twopi(command : @dot.Command) -> Bool {
 ///|
 fn layout_dot_exporter_is_command_neato_or_fdp(command : @dot.Command) -> Bool {
   match command {
-    @dot.Neato => true
-    @dot.Fdp => true
+    Neato => true
+    Fdp => true
     _ => false
   }
 }
@@ -279,7 +279,7 @@ fn layout_dot_exporter_is_command_neato_or_fdp(command : @dot.Command) -> Bool {
 ///|
 fn layout_dot_exporter_is_overlap_none(mode : @dot.OverlapMode) -> Bool {
   match mode {
-    @dot.OverlapNone => true
+    OverlapNone => true
     _ => false
   }
 }
@@ -360,15 +360,14 @@ fn layout_dot_exporter_append_graph_attributes(
   )
   if spacing < 0.0 {
     match command {
-      @dot.Circo | @dot.Fdp | @dot.Neato =>
-        spacing = @dot.dot_exporter_def_spacing_large
-      @dot.Twopi => spacing = @dot.dot_exporter_def_spacing_xlarge
+      Circo | Fdp | Neato => spacing = @dot.dot_exporter_def_spacing_large
+      Twopi => spacing = @dot.dot_exporter_def_spacing_xlarge
       _ => spacing = @dot.dot_exporter_def_spacing_small
     }
   }
 
   match command {
-    @dot.Dot => {
+    Dot => {
       graph_attrs.push(
         @dot.dot_exporter_create_attribute_double(
           @dot.dot_attr_nodesep,
@@ -431,21 +430,21 @@ fn layout_dot_exporter_append_graph_attributes(
         )
       }
     }
-    @dot.Twopi =>
+    Twopi =>
       graph_attrs.push(
         @dot.dot_exporter_create_attribute_double(
           @dot.dot_attr_ranksep,
           spacing / @dot.dot_exporter_dpi.to_double(),
         ),
       )
-    @dot.Circo =>
+    Circo =>
       graph_attrs.push(
         @dot.dot_exporter_create_attribute_double(
           @dot.dot_attr_mindist,
           spacing / @dot.dot_exporter_dpi.to_double(),
         ),
       )
-    @dot.Neato => {
+    Neato => {
       edge_attrs.push(
         @dot.dot_exporter_create_attribute_double(
           @dot.dot_attr_edgelen,
@@ -492,14 +491,14 @@ fn layout_dot_exporter_append_graph_attributes(
         )
       }
     }
-    @dot.Fdp =>
+    Fdp =>
       graph_attrs.push(
         @dot.dot_exporter_create_attribute_double(
           @dot.dot_attr_spring_constant,
           spacing / @dot.dot_exporter_dpi.to_double(),
         ),
       )
-    @dot.Invalid => ()
+    Invalid => ()
   }
 
   if layout_dot_exporter_is_command_neato_or_fdp(command) {
@@ -588,7 +587,7 @@ fn layout_dot_exporter_apply_graph_attributes_recursive(
   )
   for statement in statements.copy() {
     match statement {
-      @dot.DotStatementSubgraph(subgraph) =>
+      DotStatementSubgraph(subgraph) =>
         match subgraph.get_name() {
           Some(name) =>
             match graph_elems.get(name) {
@@ -666,11 +665,11 @@ fn layout_dot_exporter_apply_edge_labels_recursive(
 ) -> Unit {
   for statement in statements {
     match statement {
-      @dot.DotStatementEdgeStatement(edge_statement) =>
+      DotStatementEdgeStatement(edge_statement) =>
         layout_dot_exporter_set_edge_labels_for_statement(
           edge_statement, trans_data,
         )
-      @dot.DotStatementSubgraph(subgraph) =>
+      DotStatementSubgraph(subgraph) =>
         layout_dot_exporter_apply_edge_labels_recursive(
           subgraph.get_statements(),
           trans_data,

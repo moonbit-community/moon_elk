@@ -21,7 +21,7 @@ fn graph_json_text_ui_shape_name(
   match shape {
     NodeShape(node) => {
       let text = graph_json_text_ui_join_qualified_name(
-        provider.qualified_name(@text.GraphJsonTextNode(node)),
+        provider.qualified_name(GraphJsonTextNode(node)),
       )
       if text.is_empty() {
         "?"
@@ -31,7 +31,7 @@ fn graph_json_text_ui_shape_name(
     }
     PortShape(port) => {
       let text = graph_json_text_ui_join_qualified_name(
-        provider.qualified_name(@text.GraphJsonTextPort(port)),
+        provider.qualified_name(GraphJsonTextPort(port)),
       )
       if text.is_empty() {
         "?"
@@ -82,7 +82,7 @@ pub fn ElkGraphJsonLabelProvider::text_elk_node(
   node : @graph.ElkNode,
 ) -> String {
   let text = graph_json_text_ui_join_qualified_name(
-    self.name_provider.qualified_name(@text.GraphJsonTextNode(node)),
+    self.name_provider.qualified_name(GraphJsonTextNode(node)),
   )
   if text.is_empty() {
     "<unnamed>"

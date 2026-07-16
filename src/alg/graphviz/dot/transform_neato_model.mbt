@@ -14,7 +14,7 @@ pub(all) suberror NeatoModelException {
 fn[T] neato_model_raise_illegal_argument(
   message : String,
 ) -> T raise NeatoModelException {
-  raise NeatoModelException::IllegalArgumentException(message)
+  raise IllegalArgumentException(message)
 }
 
 ///|

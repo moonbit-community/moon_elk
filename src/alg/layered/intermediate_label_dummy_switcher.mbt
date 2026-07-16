@@ -30,12 +30,12 @@ fn label_dummy_switcher_strategy_values() -> Array[
   CenterEdgeLabelPlacementStrategy,
 ] {
   [
-    CenterEdgeLabelPlacementStrategy::MedianLayer,
-    CenterEdgeLabelPlacementStrategy::TailLayer,
-    CenterEdgeLabelPlacementStrategy::HeadLayer,
-    CenterEdgeLabelPlacementStrategy::SpaceEfficientLayer,
-    CenterEdgeLabelPlacementStrategy::WidestLayer,
-    CenterEdgeLabelPlacementStrategy::CenterLayer,
+    MedianLayer,
+    TailLayer,
+    HeadLayer,
+    SpaceEfficientLayer,
+    WidestLayer,
+    CenterLayer,
   ]
 }
 
@@ -44,13 +44,12 @@ fn label_dummy_switcher_parse_strategy(
   value : String,
 ) -> CenterEdgeLabelPlacementStrategy {
   match value {
-    "TAIL_LAYER" => CenterEdgeLabelPlacementStrategy::TailLayer
-    "HEAD_LAYER" => CenterEdgeLabelPlacementStrategy::HeadLayer
-    "SPACE_EFFICIENT_LAYER" =>
-      CenterEdgeLabelPlacementStrategy::SpaceEfficientLayer
-    "WIDEST_LAYER" => CenterEdgeLabelPlacementStrategy::WidestLayer
-    "CENTER_LAYER" => CenterEdgeLabelPlacementStrategy::CenterLayer
-    _ => CenterEdgeLabelPlacementStrategy::MedianLayer
+    "TAIL_LAYER" => TailLayer
+    "HEAD_LAYER" => HeadLayer
+    "SPACE_EFFICIENT_LAYER" => SpaceEfficientLayer
+    "WIDEST_LAYER" => WidestLayer
+    "CENTER_LAYER" => CenterLayer
+    _ => MedianLayer
   }
 }
 
@@ -60,30 +59,12 @@ fn label_dummy_switcher_strategy_equals(
   right : CenterEdgeLabelPlacementStrategy,
 ) -> Bool {
   match (left, right) {
-    (
-      CenterEdgeLabelPlacementStrategy::MedianLayer,
-      CenterEdgeLabelPlacementStrategy::MedianLayer,
-    ) => true
-    (
-      CenterEdgeLabelPlacementStrategy::TailLayer,
-      CenterEdgeLabelPlacementStrategy::TailLayer,
-    ) => true
-    (
-      CenterEdgeLabelPlacementStrategy::HeadLayer,
-      CenterEdgeLabelPlacementStrategy::HeadLayer,
-    ) => true
-    (
-      CenterEdgeLabelPlacementStrategy::SpaceEfficientLayer,
-      CenterEdgeLabelPlacementStrategy::SpaceEfficientLayer,
-    ) => true
-    (
-      CenterEdgeLabelPlacementStrategy::WidestLayer,
-      CenterEdgeLabelPlacementStrategy::WidestLayer,
-    ) => true
-    (
-      CenterEdgeLabelPlacementStrategy::CenterLayer,
-      CenterEdgeLabelPlacementStrategy::CenterLayer,
-    ) => true
+    (MedianLayer, MedianLayer) => true
+    (TailLayer, TailLayer) => true
+    (HeadLayer, HeadLayer) => true
+    (SpaceEfficientLayer, SpaceEfficientLayer) => true
+    (WidestLayer, WidestLayer) => true
+    (CenterLayer, CenterLayer) => true
     _ => false
   }
 }
@@ -91,7 +72,7 @@ fn label_dummy_switcher_strategy_equals(
 ///|
 fn label_dummy_switcher_node_type_is_label(node_type : NodeType) -> Bool {
   match node_type {
-    NodeType::LabelNode => true
+    LabelNode => true
     _ => false
   }
 }
@@ -99,7 +80,7 @@ fn label_dummy_switcher_node_type_is_label(node_type : NodeType) -> Bool {
 ///|
 fn label_dummy_switcher_node_type_is_long_edge(node_type : NodeType) -> Bool {
   match node_type {
-    NodeType::LongEdge => true
+    LongEdge => true
     _ => false
   }
 }
@@ -107,7 +88,7 @@ fn label_dummy_switcher_node_type_is_long_edge(node_type : NodeType) -> Bool {
 ///|
 fn label_dummy_switcher_port_type_is_input(port_type : PortType) -> Bool {
   match port_type {
-    PortType::Input => true
+    Input => true
     _ => false
   }
 }
@@ -381,7 +362,7 @@ fn label_dummy_switcher_calculate_layer_widths(
     let mut max_width = 0.0
     for node in layer.get_nodes() {
       match node.get_type() {
-        NodeType::Normal =>
+        Normal =>
           max_width = label_dummy_switcher_max_double(
             max_width,
             node.get_size().x,
@@ -544,7 +525,7 @@ fn label_dummy_switcher_set_end_layer_node_alignment(
 ) -> Unit raise LabelDummySwitcherException {
   let is_head_label = label_dummy_switcher_strategy_equals(
     info.placement_strategy,
-    CenterEdgeLabelPlacementStrategy::HeadLayer,
+    HeadLayer,
   )
   let reversed = label_dummy_switcher_is_part_of_reversed_edge(info)
 
@@ -580,19 +561,19 @@ fn label_dummy_switcher_swap_nodes(
 
   let input_port_1 = label_dummy_switcher_require_port_by_type(
     label_dummy,
-    PortType::Input,
+    Input,
   )
   let output_port_1 = label_dummy_switcher_require_port_by_type(
     label_dummy,
-    PortType::Output,
+    Output,
   )
   let input_port_2 = label_dummy_switcher_require_port_by_type(
     long_edge_dummy,
-    PortType::Input,
+    Input,
   )
   let output_port_2 = label_dummy_switcher_require_port_by_type(
     long_edge_dummy,
-    PortType::Output,
+    Output,
   )
 
   let incoming_edges_1 = label_dummy_switcher_copy_edges(
@@ -840,10 +821,7 @@ fn label_dummy_switcher_process_strategy(
     return
   }
 
-  if label_dummy_switcher_strategy_equals(
-      strategy,
-      CenterEdgeLabelPlacementStrategy::SpaceEfficientLayer,
-    ) {
+  if label_dummy_switcher_strategy_equals(strategy, SpaceEfficientLayer) {
     label_dummy_switcher_compute_space_efficient_assignment(
       strategy_infos, layer_widths,
     )
@@ -852,25 +830,25 @@ fn label_dummy_switcher_process_strategy(
 
   for info in strategy_infos {
     match info.placement_strategy {
-      CenterEdgeLabelPlacementStrategy::CenterLayer =>
+      CenterLayer =>
         label_dummy_switcher_assign_layer(
           info,
           label_dummy_switcher_find_center_layer_target_id(info, layer_widths),
           layer_widths,
         )
-      CenterEdgeLabelPlacementStrategy::MedianLayer =>
+      MedianLayer =>
         label_dummy_switcher_assign_layer(
           info,
           label_dummy_switcher_find_median_layer_target_id(info),
           layer_widths,
         )
-      CenterEdgeLabelPlacementStrategy::WidestLayer =>
+      WidestLayer =>
         label_dummy_switcher_assign_layer(
           info,
           label_dummy_switcher_find_widest_layer_target_id(info, layer_widths),
           layer_widths,
         )
-      CenterEdgeLabelPlacementStrategy::HeadLayer => {
+      HeadLayer => {
         label_dummy_switcher_set_end_layer_node_alignment(info)
         label_dummy_switcher_assign_layer(
           info,
@@ -878,7 +856,7 @@ fn label_dummy_switcher_process_strategy(
           layer_widths,
         )
       }
-      CenterEdgeLabelPlacementStrategy::TailLayer => {
+      TailLayer => {
         label_dummy_switcher_set_end_layer_node_alignment(info)
         label_dummy_switcher_assign_layer(
           info,
@@ -886,7 +864,7 @@ fn label_dummy_switcher_process_strategy(
           layer_widths,
         )
       }
-      CenterEdgeLabelPlacementStrategy::SpaceEfficientLayer => ()
+      SpaceEfficientLayer => ()
     }
 
     label_dummy_switcher_update_long_edge_source_label_dummy_info(info)

@@ -67,7 +67,7 @@ fn new_linear_segment(id : Int) -> LinearSegment {
     deflection: 0.0,
     weight: 0,
     ref_segment_id: -1,
-    _node_type: NodeType::Normal,
+    _node_type: Normal,
   }
 }
 
@@ -110,7 +110,7 @@ fn linear_segments_graph_has_external_ports(graph : LGraph) -> Bool {
       internal_properties_graph_properties,
     ) {
     match property {
-      GraphProperties::ExternalPorts => return true
+      ExternalPorts => return true
       _ => ()
     }
   }
@@ -120,7 +120,7 @@ fn linear_segments_graph_has_external_ports(graph : LGraph) -> Bool {
 ///|
 fn linear_segments_mode_is_forw(mode : LinearSegmentsMode) -> Bool {
   match mode {
-    LinearSegmentsMode::ForwPendulum => true
+    ForwPendulum => true
     _ => false
   }
 }
@@ -128,7 +128,7 @@ fn linear_segments_mode_is_forw(mode : LinearSegmentsMode) -> Bool {
 ///|
 fn linear_segments_mode_is_backw(mode : LinearSegmentsMode) -> Bool {
   match mode {
-    LinearSegmentsMode::BackwPendulum => true
+    BackwPendulum => true
     _ => false
   }
 }
@@ -136,8 +136,8 @@ fn linear_segments_mode_is_backw(mode : LinearSegmentsMode) -> Bool {
 ///|
 fn linear_segments_node_type_is_dummy(node_type : NodeType) -> Bool {
   match node_type {
-    NodeType::LongEdge => true
-    NodeType::NorthSouthPort => true
+    LongEdge => true
+    NorthSouthPort => true
     _ => false
   }
 }
@@ -814,13 +814,13 @@ fn linear_segments_balance_placement(
           total_deflection < last_total_deflection ||
           -pendulum_iters > thoroughness
         ) {
-        mode = LinearSegmentsMode::Rubber
+        mode = Rubber
         last_total_deflection = @int.MAX_VALUE.to_double()
       } else if linear_segments_mode_is_forw(mode) {
-        mode = LinearSegmentsMode::BackwPendulum
+        mode = BackwPendulum
         last_total_deflection = total_deflection
       } else {
-        mode = LinearSegmentsMode::ForwPendulum
+        mode = ForwPendulum
         last_total_deflection = total_deflection
       }
     } else {
@@ -997,9 +997,9 @@ pub fn new_linear_segments_node_placer_layout_phase() -> @core.ILayoutProcessor[
     if linear_segments_graph_has_external_ports(graph) {
       return Some(
         @core.layout_processor_configuration_create(layered_phase_descriptor).add_before(
-          LayeredPhases::P5EdgeRouting,
+          P5EdgeRouting,
           layered_intermediate_processor_factory(
-            IntermediateProcessorStrategy::HierarchicalPortPositionProcessor,
+            HierarchicalPortPositionProcessor,
           ),
         ),
       )

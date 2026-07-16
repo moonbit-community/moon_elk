@@ -58,7 +58,7 @@ pub let internal_properties_represented_labels : @graph.IProperty[Array[LLabel]]
 ///|
 pub let internal_properties_label_side : @graph.IProperty[@core.LabelSide] = @graph.new_property(
   "labelSide",
-  @core.LabelSide::Unknown,
+  Unknown,
 )
 
 ///|
@@ -183,7 +183,7 @@ pub let internal_properties_ext_port_connections : @graph.IProperty[
 ///|
 pub let internal_properties_ext_port_side : @graph.IProperty[@core.PortSide] = @graph.new_property(
   "externalPortSide",
-  @core.PortSide::SideUndefined,
+  SideUndefined,
 )
 
 ///|

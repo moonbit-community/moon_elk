@@ -4,7 +4,7 @@ fn port_side_assigner_port_side_equals(
   right : @core.PortSide,
 ) -> Bool {
   match (left, right) {
-    (@core.PortSide::SideUndefined, @core.PortSide::SideUndefined) => true
+    (SideUndefined, SideUndefined) => true
     (North, North) => true
     (East, East) => true
     (South, South) => true
@@ -18,12 +18,12 @@ fn port_side_assigner_parse_constraints(
   value : String,
 ) -> @core.PortConstraints {
   match value {
-    "FREE" => @core.PortConstraints::Free
-    "FIXED_SIDE" => @core.PortConstraints::FixedSide
-    "FIXED_ORDER" => @core.PortConstraints::FixedOrder
-    "FIXED_RATIO" => @core.PortConstraints::FixedRatio
-    "FIXED_POS" => @core.PortConstraints::FixedPos
-    _ => @core.PortConstraints::Undefined
+    "FREE" => Free
+    "FIXED_SIDE" => FixedSide
+    "FIXED_ORDER" => FixedOrder
+    "FIXED_RATIO" => FixedRatio
+    "FIXED_POS" => FixedPos
+    _ => Undefined
   }
 }
 
@@ -32,10 +32,10 @@ fn port_side_assigner_parse_distribution(
   value : String,
 ) -> SelfLoopDistributionStrategy {
   match value {
-    "NORTH" => SelfLoopDistributionStrategy::North
-    "NORTH_SOUTH" => SelfLoopDistributionStrategy::NorthSouth
-    "EQUALLY" => SelfLoopDistributionStrategy::Equally
-    _ => SelfLoopDistributionStrategy::North
+    "NORTH" => North
+    "NORTH_SOUTH" => NorthSouth
+    "EQUALLY" => Equally
+    _ => North
   }
 }
 
@@ -108,7 +108,7 @@ fn PortSideAssigner::assign_to_north_side(
   ignore(self)
   for sl_loop in sl_holder.get_sl_hyper_loops() {
     for sl_port in port_side_assigner_hidden_ports(sl_loop) {
-      sl_port.get_l_port().set_side(@core.PortSide::North)
+      sl_port.get_l_port().set_side(North)
     }
   }
 }
@@ -124,13 +124,13 @@ fn PortSideAssigner::assign_to_north_or_south_side(
 
   for sl_loop in sl_holder.get_sl_hyper_loops() {
     let sl_hidden_ports = port_side_assigner_hidden_ports(sl_loop)
-    let mut new_port_side : @core.PortSide = @core.PortSide::North
+    let mut new_port_side : @core.PortSide = North
 
     if north_ports <= south_ports {
-      new_port_side = @core.PortSide::North
+      new_port_side = North
       north_ports += sl_hidden_ports.length()
     } else {
-      new_port_side = @core.PortSide::South
+      new_port_side = South
       south_ports += sl_hidden_ports.length()
     }
 
@@ -157,22 +157,14 @@ fn port_side_assigner_target_sides(
   target : PortSideAssignerTarget,
 ) -> (@core.PortSide, @core.PortSide) {
   match target {
-    PortSideAssignerTarget::NorthTarget =>
-      (@core.PortSide::North, @core.PortSide::North)
-    PortSideAssignerTarget::SouthTarget =>
-      (@core.PortSide::South, @core.PortSide::South)
-    PortSideAssignerTarget::EastTarget =>
-      (@core.PortSide::East, @core.PortSide::East)
-    PortSideAssignerTarget::WestTarget =>
-      (@core.PortSide::West, @core.PortSide::West)
-    PortSideAssignerTarget::NorthWestCornerTarget =>
-      (@core.PortSide::West, @core.PortSide::North)
-    PortSideAssignerTarget::NorthEastCornerTarget =>
-      (@core.PortSide::North, @core.PortSide::East)
-    PortSideAssignerTarget::SouthWestCornerTarget =>
-      (@core.PortSide::South, @core.PortSide::West)
-    PortSideAssignerTarget::SouthEastCornerTarget =>
-      (@core.PortSide::East, @core.PortSide::South)
+    NorthTarget => (North, North)
+    SouthTarget => (South, South)
+    EastTarget => (East, East)
+    WestTarget => (West, West)
+    NorthWestCornerTarget => (West, North)
+    NorthEastCornerTarget => (North, East)
+    SouthWestCornerTarget => (South, West)
+    SouthEastCornerTarget => (East, South)
   }
 }
 
@@ -260,9 +252,8 @@ pub fn PortSideAssigner::assign_port_sides(
   )
 
   match distribution {
-    SelfLoopDistributionStrategy::North => self.assign_to_north_side(sl_holder)
-    SelfLoopDistributionStrategy::NorthSouth =>
-      self.assign_to_north_or_south_side(sl_holder)
-    SelfLoopDistributionStrategy::Equally => self.assign_to_all_sides(sl_holder)
+    North => self.assign_to_north_side(sl_holder)
+    NorthSouth => self.assign_to_north_or_south_side(sl_holder)
+    Equally => self.assign_to_all_sides(sl_holder)
   }
 }

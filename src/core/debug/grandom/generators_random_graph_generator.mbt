@@ -1448,11 +1448,11 @@ fn core_debug_grandom_generator_create_port(
     let side = if p < north_prob {
       @core.PortSide::North
     } else if p < north_prob + east_prob {
-      @core.PortSide::East
+      East
     } else if p < north_prob + east_prob + south_prob {
-      @core.PortSide::South
+      South
     } else {
-      @core.PortSide::West
+      West
     }
     @graph.port_set_layout_option_string_by_id(
       port,
@@ -2179,7 +2179,7 @@ fn core_debug_grandom_generator_distribute_ports(
       East => east_count = east_count + 1
       South => south_count = south_count + 1
       West => west_count = west_count + 1
-      @core.PortSide::SideUndefined => ()
+      SideUndefined => ()
     }
   }
 
@@ -2274,7 +2274,7 @@ fn core_debug_grandom_generator_distribute_ports(
           west_pos - @graph.port_height(port) / 2.0,
         )
       }
-      @core.PortSide::SideUndefined => ()
+      SideUndefined => ()
     }
   }
 }
@@ -2357,9 +2357,9 @@ fn core_debug_grandom_generator_port_side_or_undefined(
           return value
         }
       }
-      @core.PortSide::SideUndefined
+      SideUndefined
     }
-    None => @core.PortSide::SideUndefined
+    None => SideUndefined
   }
 }
 

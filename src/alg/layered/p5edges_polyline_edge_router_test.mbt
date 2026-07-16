@@ -3,14 +3,14 @@ fn polyline_edge_router_test_node_type(name : String) -> NodeType {
   let types = node_type_values()
   for t in types {
     match t {
-      NodeType::Normal => if name == "NORMAL" { return t }
-      NodeType::LongEdge => if name == "LONG_EDGE" { return t }
-      NodeType::ExternalPort => if name == "EXTERNAL_PORT" { return t }
-      NodeType::NorthSouthPort => if name == "NORTH_SOUTH_PORT" { return t }
-      NodeType::LabelNode => if name == "LABEL" { return t }
-      NodeType::BreakingPoint => if name == "BREAKING_POINT" { return t }
-      NodeType::Placeholder => if name == "PLACEHOLDER" { return t }
-      NodeType::NonshiftingPlaceholder =>
+      Normal => if name == "NORMAL" { return t }
+      LongEdge => if name == "LONG_EDGE" { return t }
+      ExternalPort => if name == "EXTERNAL_PORT" { return t }
+      NorthSouthPort => if name == "NORTH_SOUTH_PORT" { return t }
+      LabelNode => if name == "LABEL" { return t }
+      BreakingPoint => if name == "BREAKING_POINT" { return t }
+      Placeholder => if name == "PLACEHOLDER" { return t }
+      NonshiftingPlaceholder =>
         if name == "NONSHIFTING_PLACEHOLDER" {
           return t
         }

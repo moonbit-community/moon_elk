@@ -80,33 +80,33 @@ fn elk_graph_adapters_parse_bool(raw : String) -> Bool? {
 ///|
 fn elk_graph_adapters_parse_port_constraints(raw : String) -> PortConstraints {
   match raw {
-    "FREE" => PortConstraints::Free
-    "FIXED_SIDE" => PortConstraints::FixedSide
-    "FIXED_ORDER" => PortConstraints::FixedOrder
-    "FIXED_RATIO" => PortConstraints::FixedRatio
-    "FIXED_POS" => PortConstraints::FixedPos
-    _ => PortConstraints::Undefined
+    "FREE" => Free
+    "FIXED_SIDE" => FixedSide
+    "FIXED_ORDER" => FixedOrder
+    "FIXED_RATIO" => FixedRatio
+    "FIXED_POS" => FixedPos
+    _ => Undefined
   }
 }
 
 ///|
 fn elk_graph_adapters_parse_port_side(raw : String) -> PortSide {
   match raw {
-    "NORTH" => PortSide::North
-    "EAST" => PortSide::East
-    "SOUTH" => PortSide::South
-    "WEST" => PortSide::West
-    _ => PortSide::SideUndefined
+    "NORTH" => North
+    "EAST" => East
+    "SOUTH" => South
+    "WEST" => West
+    _ => SideUndefined
   }
 }
 
 ///|
 fn elk_graph_adapters_parse_label_side(raw : String) -> LabelSide {
   match raw {
-    "ABOVE" => LabelSide::Above
-    "BELOW" => LabelSide::Below
-    "INLINE" => LabelSide::Inline
-    _ => LabelSide::Unknown
+    "ABOVE" => Above
+    "BELOW" => Below
+    "INLINE" => Inline
+    _ => Unknown
   }
 }
 
@@ -124,11 +124,11 @@ fn elk_graph_adapters_compare_double(left : Double, right : Double) -> Int {
 ///|
 fn elk_graph_adapters_port_side_rank(side : PortSide) -> Int {
   match side {
-    PortSide::SideUndefined => 0
-    PortSide::North => 1
-    PortSide::East => 2
-    PortSide::South => 3
-    PortSide::West => 4
+    SideUndefined => 0
+    North => 1
+    East => 2
+    South => 3
+    West => 4
   }
 }
 
@@ -1373,7 +1373,7 @@ pub fn ElkLabelAdapter::get_side(self : ElkLabelAdapter) -> LabelSide {
       elk_graph_adapters_label_side_property.get_id(),
     ) {
     Some(raw) => elk_graph_adapters_parse_label_side(raw)
-    None => LabelSide::Unknown
+    None => Unknown
   }
 }
 
@@ -1456,27 +1456,27 @@ pub fn ElkPortComparator::compare(
   }
 
   match elk_graph_adapters_port_side(port1) {
-    PortSide::North =>
+    North =>
       elk_graph_adapters_compare_double(
         @graph.port_x(port1),
         @graph.port_x(port2),
       )
-    PortSide::East =>
+    East =>
       elk_graph_adapters_compare_double(
         @graph.port_y(port1),
         @graph.port_y(port2),
       )
-    PortSide::South =>
+    South =>
       elk_graph_adapters_compare_double(
         @graph.port_x(port2),
         @graph.port_x(port1),
       )
-    PortSide::West =>
+    West =>
       elk_graph_adapters_compare_double(
         @graph.port_y(port2),
         @graph.port_y(port1),
       )
-    PortSide::SideUndefined => {
+    SideUndefined => {
       try elk_graph_adapters_raise_unit("Port side is undefined") catch {
         err =>
           layout_runtime_report_unsupported_configuration(

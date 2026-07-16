@@ -33,13 +33,13 @@ fn plain_java_initialization_enable_layered_features() -> Unit {
       for
         feature in [
           @graph.GraphFeature::SelfLoops,
-          @graph.GraphFeature::InsideSelfLoops,
-          @graph.GraphFeature::MultiEdges,
-          @graph.GraphFeature::EdgeLabels,
-          @graph.GraphFeature::Ports,
-          @graph.GraphFeature::Compound,
-          @graph.GraphFeature::Clusters,
-          @graph.GraphFeature::Disconnected,
+          InsideSelfLoops,
+          MultiEdges,
+          EdgeLabels,
+          Ports,
+          Compound,
+          Clusters,
+          Disconnected,
         ] {
         algorithm_data.add_supported_feature(feature)
       }

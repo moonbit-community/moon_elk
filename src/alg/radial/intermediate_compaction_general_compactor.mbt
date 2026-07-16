@@ -6,7 +6,7 @@ fn radial_compact(graph : @graph.ElkNode) -> Unit {
     )
     compactor.compact(graph)
   } catch {
-    RadialCompactionStrategyException::IllegalArgumentException(message) =>
+    IllegalArgumentException(message) =>
       @core.layout_runtime_report_unsupported_configuration(message)
   } noraise {
     _ => ()

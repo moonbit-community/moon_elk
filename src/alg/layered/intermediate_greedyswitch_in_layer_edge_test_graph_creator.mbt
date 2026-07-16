@@ -27,11 +27,7 @@ pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_graph_with_cr
   self.base.set_port_order_fixed(right_nodes[0])
 
   self.base.east_west_edge_from_to_nodes(left_node, right_nodes[0])
-  self.base.add_in_layer_edge_nodes(
-    right_nodes[0],
-    right_nodes[1],
-    @core.PortSide::West,
-  )
+  self.base.add_in_layer_edge_nodes(right_nodes[0], right_nodes[1], West)
   self.base.east_west_edge_from_to_nodes(left_node, right_nodes[0])
   self.base.east_west_edge_from_to_nodes(left_node, right_nodes[0])
   self.get_graph()
@@ -46,11 +42,7 @@ pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_with_fixed_po
   let right_nodes = self.base.add_nodes_to_layer(3, layer[1])
   self.base.set_fixed_order_constraint(right_nodes[0])
   self.base.east_west_edge_from_to_nodes(left_node, right_nodes[0])
-  self.base.add_in_layer_edge_nodes(
-    right_nodes[0],
-    right_nodes[2],
-    @core.PortSide::West,
-  )
+  self.base.add_in_layer_edge_nodes(right_nodes[0], right_nodes[2], West)
   self.base.east_west_edge_from_to_nodes(left_node, right_nodes[1])
   self.get_graph()
 }
@@ -64,11 +56,7 @@ pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_crossings_but
   let right_nodes = self.base.add_nodes_to_layer(2, layer[1])
 
   self.base.east_west_edge_from_to_nodes(left_nodes[0], right_nodes[0])
-  self.base.add_in_layer_edge_nodes(
-    right_nodes[0],
-    right_nodes[1],
-    @core.PortSide::West,
-  )
+  self.base.add_in_layer_edge_nodes(right_nodes[0], right_nodes[1], West)
   self.base.east_west_edge_from_to_nodes(left_nodes[1], right_nodes[1])
   self.get_graph()
 }
@@ -82,16 +70,8 @@ pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_crossings_no_
   let right_nodes = self.base.add_nodes_to_layer(3, layer[1])
 
   self.base.east_west_edge_from_to_nodes(left_nodes[1], right_nodes[1])
-  self.base.add_in_layer_edge_nodes(
-    right_nodes[0],
-    right_nodes[2],
-    @core.PortSide::West,
-  )
-  self.base.add_in_layer_edge_nodes(
-    right_nodes[0],
-    right_nodes[2],
-    @core.PortSide::West,
-  )
+  self.base.add_in_layer_edge_nodes(right_nodes[0], right_nodes[2], West)
+  self.base.add_in_layer_edge_nodes(right_nodes[0], right_nodes[2], West)
   self.base.east_west_edge_from_to_nodes(left_nodes[1], right_nodes[2])
   self.get_graph()
 }
@@ -105,21 +85,9 @@ pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_crossings_no_
   let right_nodes = self.base.add_nodes_to_layer(4, layer[1])
 
   self.base.east_west_edge_from_to_nodes(left_nodes[0], right_nodes[1])
-  self.base.add_in_layer_edge_nodes(
-    right_nodes[0],
-    right_nodes[1],
-    @core.PortSide::West,
-  )
-  self.base.add_in_layer_edge_nodes(
-    right_nodes[1],
-    right_nodes[3],
-    @core.PortSide::West,
-  )
-  self.base.add_in_layer_edge_nodes(
-    right_nodes[1],
-    right_nodes[3],
-    @core.PortSide::West,
-  )
+  self.base.add_in_layer_edge_nodes(right_nodes[0], right_nodes[1], West)
+  self.base.add_in_layer_edge_nodes(right_nodes[1], right_nodes[3], West)
+  self.base.add_in_layer_edge_nodes(right_nodes[1], right_nodes[3], West)
   self.base.east_west_edge_from_to_nodes(left_nodes[1], right_nodes[2])
   self.get_graph()
 }
@@ -133,16 +101,8 @@ pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_crossings_on_both_s
   let middle_nodes = self.base.add_nodes_to_layer(3, layers[1])
   let right_node = self.base.add_node_to_layer(layers[2])
 
-  self.base.add_in_layer_edge_nodes(
-    middle_nodes[0],
-    middle_nodes[2],
-    @core.PortSide::East,
-  )
-  self.base.add_in_layer_edge_nodes(
-    middle_nodes[0],
-    middle_nodes[2],
-    @core.PortSide::West,
-  )
+  self.base.add_in_layer_edge_nodes(middle_nodes[0], middle_nodes[2], East)
+  self.base.add_in_layer_edge_nodes(middle_nodes[0], middle_nodes[2], West)
   self.base.east_west_edge_from_to_nodes(middle_nodes[1], right_node)
   self.base.east_west_edge_from_to_nodes(left_node, middle_nodes[1])
   self.get_graph()
@@ -158,16 +118,8 @@ pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_fixed_port_or
 
   self.base.set_fixed_order_constraint(right_nodes[1])
   self.base.east_west_edge_from_to_nodes(left_node, right_nodes[1])
-  self.base.add_in_layer_edge_nodes(
-    right_nodes[0],
-    right_nodes[1],
-    @core.PortSide::West,
-  )
-  self.base.add_in_layer_edge_nodes(
-    right_nodes[1],
-    right_nodes[2],
-    @core.PortSide::West,
-  )
+  self.base.add_in_layer_edge_nodes(right_nodes[0], right_nodes[1], West)
+  self.base.add_in_layer_edge_nodes(right_nodes[1], right_nodes[2], West)
   self.get_graph()
 }
 
@@ -180,8 +132,8 @@ pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_fixed_port_or
     self.base.make_layer(self.base.get_graph()),
   )
   self.base.set_fixed_order_constraint(nodes[1])
-  self.base.add_in_layer_edge_nodes(nodes[0], nodes[1], @core.PortSide::West)
-  self.base.add_in_layer_edge_nodes(nodes[1], nodes[2], @core.PortSide::West)
+  self.base.add_in_layer_edge_nodes(nodes[0], nodes[1], West)
+  self.base.add_in_layer_edge_nodes(nodes[1], nodes[2], West)
   self.get_graph()
 }
 
@@ -194,8 +146,8 @@ pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_fixed_port_order_two_in_laye
     self.base.make_layer(self.base.get_graph()),
   )
   self.base.set_fixed_order_constraint(nodes[0])
-  self.base.add_in_layer_edge_nodes(nodes[0], nodes[2], @core.PortSide::West)
-  self.base.add_in_layer_edge_nodes(nodes[0], nodes[1], @core.PortSide::West)
+  self.base.add_in_layer_edge_nodes(nodes[0], nodes[2], West)
+  self.base.add_in_layer_edge_nodes(nodes[0], nodes[1], West)
   self.get_graph()
 }
 
@@ -208,16 +160,8 @@ pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_downward_grap
   let right_nodes = self.base.add_nodes_to_layer(3, layers[1])
 
   self.base.east_west_edge_from_to_nodes(left_node, right_nodes[1])
-  self.base.add_in_layer_edge_nodes(
-    right_nodes[0],
-    right_nodes[1],
-    @core.PortSide::West,
-  )
-  self.base.add_in_layer_edge_nodes(
-    right_nodes[1],
-    right_nodes[2],
-    @core.PortSide::West,
-  )
+  self.base.add_in_layer_edge_nodes(right_nodes[0], right_nodes[1], West)
+  self.base.add_in_layer_edge_nodes(right_nodes[1], right_nodes[2], West)
   self.get_graph()
 }
 
@@ -230,21 +174,11 @@ pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_multiple_edge
   let layer_one = self.base.make_layer(self.base.get_graph())
   let right_nodes = self.base.add_nodes_to_layer(4, layer_one)
 
-  self.base.add_in_layer_edge_nodes(
-    right_nodes[1],
-    right_nodes[3],
-    @core.PortSide::West,
-  )
+  self.base.add_in_layer_edge_nodes(right_nodes[1], right_nodes[3], West)
 
-  let left_port = self.base.add_port_on_side(left_node, @core.PortSide::East)
-  let right_top_port = self.base.add_port_on_side(
-    right_nodes[0],
-    @core.PortSide::West,
-  )
-  let right_middle_port = self.base.add_port_on_side(
-    right_nodes[2],
-    @core.PortSide::West,
-  )
+  let left_port = self.base.add_port_on_side(left_node, East)
+  let right_top_port = self.base.add_port_on_side(right_nodes[0], West)
+  let right_middle_port = self.base.add_port_on_side(right_nodes[2], West)
   self.base.add_edge_between_ports(left_port, right_middle_port)
   self.base.add_edge_between_ports(right_top_port, right_middle_port)
   self.get_graph()
@@ -256,8 +190,8 @@ pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_one_layer_with_in_layer_cros
 ) -> LGraph {
   let layer = self.base.make_layer(self.base.get_graph())
   let nodes = self.base.add_nodes_to_layer(4, layer)
-  self.base.add_in_layer_edge_nodes(nodes[0], nodes[2], @core.PortSide::West)
-  self.base.add_in_layer_edge_nodes(nodes[1], nodes[3], @core.PortSide::West)
+  self.base.add_in_layer_edge_nodes(nodes[0], nodes[2], West)
+  self.base.add_in_layer_edge_nodes(nodes[1], nodes[3], West)
   self.get_graph()
 }
 
@@ -267,7 +201,7 @@ pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_one_layer_no_crossi
 ) -> LGraph {
   let layer = self.base.make_layer(self.base.get_graph())
   let nodes = self.base.add_nodes_to_layer(4, layer)
-  self.base.add_in_layer_edge_nodes(nodes[0], nodes[3], @core.PortSide::West)
-  self.base.add_in_layer_edge_nodes(nodes[1], nodes[2], @core.PortSide::West)
+  self.base.add_in_layer_edge_nodes(nodes[0], nodes[3], West)
+  self.base.add_in_layer_edge_nodes(nodes[1], nodes[2], West)
   self.get_graph()
 }

@@ -3,10 +3,10 @@ fn layer_sweep_cross_min_type_to_string(
   cross_min_type : CrossMinType,
 ) -> String {
   match cross_min_type {
-    CrossMinType::Barycenter => "BARYCENTER"
-    CrossMinType::OneSidedGreedySwitch => "ONE_SIDED_GREEDY_SWITCH"
-    CrossMinType::TwoSidedGreedySwitch => "TWO_SIDED_GREEDY_SWITCH"
-    CrossMinType::Median => "MEDIAN"
+    Barycenter => "BARYCENTER"
+    OneSidedGreedySwitch => "ONE_SIDED_GREEDY_SWITCH"
+    TwoSidedGreedySwitch => "TWO_SIDED_GREEDY_SWITCH"
+    Median => "MEDIAN"
   }
 }
 
@@ -19,7 +19,7 @@ priv suberror LayerSweepCrossingMinimizerException {
 fn[T] layer_sweep_crossing_minimizer_raise_illegal_state(
   message : String,
 ) -> T raise LayerSweepCrossingMinimizerException {
-  raise LayerSweepCrossingMinimizerException::IllegalStateException(message)
+  raise IllegalStateException(message)
 }
 
 ///|
@@ -28,11 +28,11 @@ fn layer_sweep_port_side_is(
   right : @core.PortSide,
 ) -> Bool {
   match (left, right) {
-    (@core.PortSide::North, @core.PortSide::North) => true
-    (@core.PortSide::East, @core.PortSide::East) => true
-    (@core.PortSide::South, @core.PortSide::South) => true
-    (@core.PortSide::West, @core.PortSide::West) => true
-    (@core.PortSide::SideUndefined, @core.PortSide::SideUndefined) => true
+    (North, North) => true
+    (East, East) => true
+    (South, South) => true
+    (West, West) => true
+    (SideUndefined, SideUndefined) => true
     _ => false
   }
 }
@@ -40,7 +40,7 @@ fn layer_sweep_port_side_is(
 ///|
 fn layer_sweep_is_external_port_dummy(node : LNode) -> Bool {
   match node.get_type() {
-    NodeType::ExternalPort => true
+    ExternalPort => true
     _ => false
   }
 }
@@ -122,10 +122,10 @@ fn layer_sweep_ordering_strategy_from_string(
   value : String,
 ) -> OrderingStrategy {
   match value {
-    "NODES_AND_EDGES" => OrderingStrategy::NodesAndEdges
-    "PREFER_EDGES" => OrderingStrategy::PreferEdges
-    "PREFER_NODES" => OrderingStrategy::PreferNodes
-    _ => OrderingStrategy::NoneType
+    "NODES_AND_EDGES" => NodesAndEdges
+    "PREFER_EDGES" => PreferEdges
+    "PREFER_NODES" => PreferNodes
+    _ => NoneType
   }
 }
 
@@ -136,23 +136,15 @@ fn layer_sweep_intermediate_processing_configuration() -> @core.LayoutProcessorC
 ] {
   @core.layout_processor_configuration_create(layered_phase_descriptor)
   .add_before(
-    LayeredPhases::P3NodeOrdering,
-    layered_intermediate_processor_factory(
-      IntermediateProcessorStrategy::LongEdgeSplitter,
-    ),
+    P3NodeOrdering,
+    layered_intermediate_processor_factory(LongEdgeSplitter),
   )
   .add_before(
-    LayeredPhases::P4NodePlacement,
-    layered_intermediate_processor_factory(
-      IntermediateProcessorStrategy::InLayerConstraintProcessor,
-    ),
+    P4NodePlacement,
+    layered_intermediate_processor_factory(InLayerConstraintProcessor),
   )
-  .after(LayeredPhases::P5EdgeRouting)
-  .add(
-    layered_intermediate_processor_factory(
-      IntermediateProcessorStrategy::LongEdgeJoiner,
-    ),
-  )
+  .after(P5EdgeRouting)
+  .add(layered_intermediate_processor_factory(LongEdgeJoiner))
 }
 
 ///|
@@ -260,9 +252,9 @@ fn LayerSweepCrossingMinimizer::side_opposed_sweep_direction(
 ) -> @core.PortSide {
   ignore(self)
   if is_forward_sweep {
-    @core.PortSide::West
+    West
   } else {
-    @core.PortSide::East
+    East
   }
 }
 
@@ -307,9 +299,9 @@ fn LayerSweepCrossingMinimizer::is_on_end_of_sweep_side(
 ) -> Bool {
   ignore(self)
   if is_forward_sweep {
-    layer_sweep_port_side_is(port.get_side(), @core.PortSide::East)
+    layer_sweep_port_side_is(port.get_side(), East)
   } else {
-    layer_sweep_port_side_is(port.get_side(), @core.PortSide::West)
+    layer_sweep_port_side_is(port.get_side(), West)
   }
 }
 
@@ -611,7 +603,7 @@ fn LayerSweepCrossingMinimizer::count_model_order_node_changes(
       graph,
       reference_layer,
       strategy,
-      LongEdgeOrderingStrategy::Equal,
+      Equal,
       cm_group_order_strategy,
       false,
     )
@@ -1139,7 +1131,7 @@ pub fn LayerSweepCrossingMinimizer::process(
   progress_monitor? : @core.IElkProgressMonitor? = None,
 ) -> Unit {
   self.process_internal(layered_graph, progress_monitor) catch {
-    LayerSweepCrossingMinimizerException::IllegalStateException(message) =>
+    IllegalStateException(message) =>
       @core.layout_runtime_report_unsupported_configuration(message)
   }
 }
@@ -1161,10 +1153,8 @@ fn layer_sweep_configuration(
   )
   ignore(
     configuration.add_before(
-      LayeredPhases::P3NodeOrdering,
-      layered_intermediate_processor_factory(
-        IntermediateProcessorStrategy::PortListSorter,
-      ),
+      P3NodeOrdering,
+      layered_intermediate_processor_factory(PortListSorter),
     ),
   )
   Some(configuration)

@@ -21,15 +21,13 @@ pub fn SporeShrinkTree::shrink(
   ignore(self.algorithm_assembler.reset())
   ignore(
     self.algorithm_assembler.set_phase(
-      SPOrEPhases::P1_STRUCTURE,
-      spore_structure_extraction_strategy_phase_factory(
-        SporeStructureExtractionStrategy::DELAUNAY_TRIANGULATION,
-      ),
+      P1_STRUCTURE,
+      spore_structure_extraction_strategy_phase_factory(DELAUNAY_TRIANGULATION),
     ),
   )
   ignore(
     self.algorithm_assembler.set_phase(
-      SPOrEPhases::P2_PROCESSING_ORDER,
+      P2_PROCESSING_ORDER,
       spore_tree_construction_strategy_phase_factory(
         graph.tree_construction_strategy,
       ),
@@ -37,7 +35,7 @@ pub fn SporeShrinkTree::shrink(
   )
   ignore(
     self.algorithm_assembler.set_phase(
-      SPOrEPhases::P3_EXECUTION,
+      P3_EXECUTION,
       spore_compaction_strategy_phase_factory(graph.compaction_strategy),
     ),
   )

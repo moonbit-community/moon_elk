@@ -10,7 +10,7 @@ fn orthogonal_self_loop_router_port_side_equals(
   right : @core.PortSide,
 ) -> Bool {
   match (left, right) {
-    (@core.PortSide::SideUndefined, @core.PortSide::SideUndefined) => true
+    (SideUndefined, SideUndefined) => true
     (North, North) => true
     (East, East) => true
     (South, South) => true
@@ -22,7 +22,7 @@ fn orthogonal_self_loop_router_port_side_equals(
 ///|
 fn orthogonal_self_loop_router_side_index(side : @core.PortSide) -> Int {
   match side {
-    @core.PortSide::SideUndefined => 0
+    SideUndefined => 0
     North => 1
     East => 2
     South => 3
@@ -72,29 +72,29 @@ fn orthogonal_self_loop_router_compute_edge_routing_direction(
       source_port_side, target_port_side,
     ) {
     if source_l_port.get_id() < target_l_port.get_id() {
-      EdgeRoutingDirection::Clockwise
+      Clockwise
     } else {
-      EdgeRoutingDirection::CounterClockwise
+      CounterClockwise
     }
   } else if orthogonal_self_loop_router_port_side_equals(
       source_port_side.right(),
       target_port_side,
     ) {
-    EdgeRoutingDirection::Clockwise
+    Clockwise
   } else if orthogonal_self_loop_router_port_side_equals(
       source_port_side.left(),
       target_port_side,
     ) {
-    EdgeRoutingDirection::CounterClockwise
+    CounterClockwise
   } else {
     let sl_loop = orthogonal_self_loop_router_require_hyper_loop(sl_edge)
     if orthogonal_self_loop_router_occupied_contains(
         sl_loop.get_occupied_port_sides(),
         source_port_side.right(),
       ) {
-      EdgeRoutingDirection::Clockwise
+      Clockwise
     } else {
-      EdgeRoutingDirection::CounterClockwise
+      CounterClockwise
     }
   }
 }
@@ -174,7 +174,7 @@ fn orthogonal_self_loop_router_compute_baseline_position(
     East => l_node.get_size().x + l_margins.right + node_self_loop_distance
     South => l_node.get_size().y + l_margins.bottom + node_self_loop_distance
     West => -l_margins.left - node_self_loop_distance
-    @core.PortSide::SideUndefined => 0.0
+    SideUndefined => 0.0
   }
 }
 
@@ -291,7 +291,7 @@ fn orthogonal_self_loop_router_get_base_vector(
     South => @core.new_kvector_xy(0.0, position)
     East => @core.new_kvector_xy(position, 0.0)
     West => @core.new_kvector_xy(position, 0.0)
-    @core.PortSide::SideUndefined => @core.new_kvector()
+    SideUndefined => @core.new_kvector()
   }
 }
 
@@ -306,7 +306,7 @@ fn orthogonal_self_loop_router_adjust_vector_for_label_side(
     South => port_side_component.y += label_size.y / 2.0
     West => port_side_component.x -= label_size.x / 2.0
     East => port_side_component.x += label_size.x / 2.0
-    @core.PortSide::SideUndefined => ()
+    SideUndefined => ()
   }
 }
 
@@ -332,7 +332,7 @@ fn orthogonal_self_loop_router_add_outer_bend_point(
     South => result.x += anchor.x
     East => result.y += anchor.y
     West => result.y += anchor.y
-    @core.PortSide::SideUndefined => ()
+    SideUndefined => ()
   }
 
   bend_points.add_last_vector(result)
@@ -374,8 +374,8 @@ fn orthogonal_self_loop_router_add_corner_bend_points(
           target_port.get_side(),
         ) {
     let next_port_side = match routing_direction {
-      EdgeRoutingDirection::Clockwise => curr_port_side.right()
-      EdgeRoutingDirection::CounterClockwise => curr_port_side.left()
+      Clockwise => curr_port_side.right()
+      CounterClockwise => curr_port_side.left()
     }
 
     let curr_component = orthogonal_self_loop_router_get_base_vector(
@@ -390,10 +390,7 @@ fn orthogonal_self_loop_router_add_corner_bend_points(
     )
 
     if inline &&
-      !orthogonal_self_loop_router_port_side_equals(
-        label_side,
-        @core.PortSide::SideUndefined,
-      ) {
+      !orthogonal_self_loop_router_port_side_equals(label_side, SideUndefined) {
       if orthogonal_self_loop_router_port_side_equals(
           curr_port_side, label_side,
         ) {
@@ -468,7 +465,7 @@ fn orthogonal_self_loop_router_place_labels(
       label_position += edge_label_distance
       sl_labels.get_position().x = label_position
     }
-    @core.PortSide::SideUndefined => ()
+    SideUndefined => ()
   }
 }
 

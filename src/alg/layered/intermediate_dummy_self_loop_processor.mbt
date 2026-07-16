@@ -7,7 +7,7 @@ priv suberror DummySelfLoopProcessorException {
 fn[T] dummy_self_loop_processor_raise_unsupported_graph(
   message : String,
 ) -> T raise DummySelfLoopProcessorException {
-  raise DummySelfLoopProcessorException::UnsupportedGraphException(message)
+  raise UnsupportedGraphException(message)
 }
 
 ///|
@@ -108,7 +108,7 @@ fn dummy_self_loop_processor_create_dummy(
   target_port : LPort,
 ) -> LNode {
   let dummy_node = new_l_node(graph=Some(layered_graph))
-  dummy_node.set_type(NodeType::LongEdge)
+  dummy_node.set_type(LongEdge)
   dummy_node.set_property_l_edge(internal_properties_origin_l_edge, Some(edge))
   dummy_node.set_property_string(@core.port_constraints, "FIXED_POS")
   dummy_node.set_property_l_port(
@@ -212,7 +212,7 @@ fn dummy_self_loop_processor_process(
       }
     }
   } catch {
-    DummySelfLoopProcessorException::UnsupportedGraphException(message) => {
+    UnsupportedGraphException(message) => {
       @core.layout_runtime_report_unsupported_configuration(message)
       progress.done()
       return

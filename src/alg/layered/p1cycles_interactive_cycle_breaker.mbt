@@ -7,7 +7,7 @@ pub(all) suberror InteractiveCycleBreakerException {
 fn[T] interactive_cycle_breaker_raise_unsupported_graph(
   message : String,
 ) -> T raise InteractiveCycleBreakerException {
-  raise InteractiveCycleBreakerException::UnsupportedGraphException(message)
+  raise UnsupportedGraphException(message)
 }
 
 ///|
@@ -41,7 +41,7 @@ fn interactive_cycle_breaker_find_cycles(
   rev_edges : Array[LEdge],
 ) -> Unit raise InteractiveCycleBreakerException {
   node1.set_id(-1)
-  for port in node1.get_ports_by_type(PortType::Output) {
+  for port in node1.get_ports_by_type(Output) {
     for edge in port.get_outgoing_edges() {
       let node2 = interactive_cycle_breaker_require_target_node(edge)
       if node1.get_handle() != node2.get_handle() {
@@ -72,7 +72,7 @@ fn interactive_cycle_breaker_process(
     for source in layered_graph.get_layerless_nodes() {
       source.set_id(1)
       let sourcex = source.get_position().x
-      for port in source.get_ports_by_type(PortType::Output) {
+      for port in source.get_ports_by_type(Output) {
         for edge in port.get_outgoing_edges() {
           let target = interactive_cycle_breaker_require_target_node(edge)
           if target.get_handle() != source.get_handle() {
@@ -104,7 +104,7 @@ fn interactive_cycle_breaker_process(
 
     rev_edges.clear()
   } catch {
-    InteractiveCycleBreakerException::UnsupportedGraphException(message) => {
+    UnsupportedGraphException(message) => {
       @core.layout_runtime_report_unsupported_configuration(message)
       monitor.done()
       return
@@ -123,16 +123,12 @@ fn interactive_cycle_breaker_configuration(
   Some(
     @core.layout_processor_configuration_create(layered_phase_descriptor)
     .add_before(
-      LayeredPhases::P1CycleBreaking,
-      layered_intermediate_processor_factory(
-        IntermediateProcessorStrategy::InteractiveExternalPortPositioner,
-      ),
+      P1CycleBreaking,
+      layered_intermediate_processor_factory(InteractiveExternalPortPositioner),
     )
     .add_after(
-      LayeredPhases::P5EdgeRouting,
-      layered_intermediate_processor_factory(
-        IntermediateProcessorStrategy::ReversedEdgeRestorer,
-      ),
+      P5EdgeRouting,
+      layered_intermediate_processor_factory(ReversedEdgeRestorer),
     ),
   )
 }

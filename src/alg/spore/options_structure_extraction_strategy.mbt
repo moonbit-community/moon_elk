@@ -8,9 +8,9 @@ pub fn spore_structure_extraction_strategy_from_string(
   value : String,
 ) -> SporeStructureExtractionStrategy {
   if value == "DELAUNAY_TRIANGULATION" {
-    SporeStructureExtractionStrategy::DELAUNAY_TRIANGULATION
+    DELAUNAY_TRIANGULATION
   } else {
-    SporeStructureExtractionStrategy::DELAUNAY_TRIANGULATION
+    DELAUNAY_TRIANGULATION
   }
 }
 

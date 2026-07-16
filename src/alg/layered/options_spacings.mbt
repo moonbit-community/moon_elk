@@ -1,14 +1,14 @@
 ///|
 fn spacings_node_type_ordinal(node_type : NodeType) -> Int {
   match node_type {
-    NodeType::Normal => 0
-    NodeType::LongEdge => 1
-    NodeType::ExternalPort => 2
-    NodeType::NorthSouthPort => 3
-    NodeType::LabelNode => 4
-    NodeType::BreakingPoint => 5
-    NodeType::Placeholder => 6
-    NodeType::NonshiftingPlaceholder => 7
+    Normal => 0
+    LongEdge => 1
+    ExternalPort => 2
+    NorthSouthPort => 3
+    LabelNode => 4
+    BreakingPoint => 5
+    Placeholder => 6
+    NonshiftingPlaceholder => 7
   }
 }
 
@@ -138,107 +138,97 @@ fn Spacings::set_pair_spacing(
 ///|
 fn Spacings::precalculate_node_type_spacings(self : Spacings) -> Unit {
   self.set_same_type_spacing(
-    NodeType::Normal,
+    Normal,
     @core.spacing_node_node,
     layered_options_spacing_node_node_between_layers,
   )
   self.set_pair_spacing(
-    NodeType::Normal,
-    NodeType::LongEdge,
+    Normal,
+    LongEdge,
     @core.spacing_edge_node,
     layered_options_spacing_edge_node_between_layers,
   )
   self.set_pair_spacing_vertical(
-    NodeType::Normal,
-    NodeType::NorthSouthPort,
+    Normal,
+    NorthSouthPort,
     @core.spacing_edge_node,
   )
-  self.set_pair_spacing_vertical(
-    NodeType::Normal,
-    NodeType::ExternalPort,
-    @core.spacing_edge_node,
-  )
+  self.set_pair_spacing_vertical(Normal, ExternalPort, @core.spacing_edge_node)
   self.set_pair_spacing(
-    NodeType::Normal,
-    NodeType::LabelNode,
+    Normal,
+    LabelNode,
     @core.spacing_node_node,
     layered_options_spacing_node_node_between_layers,
   )
 
   self.set_same_type_spacing(
-    NodeType::LongEdge,
+    LongEdge,
     @core.spacing_edge_edge,
     layered_options_spacing_edge_edge_between_layers,
   )
   self.set_pair_spacing_vertical(
-    NodeType::LongEdge,
-    NodeType::NorthSouthPort,
+    LongEdge,
+    NorthSouthPort,
     @core.spacing_edge_edge,
   )
   self.set_pair_spacing_vertical(
-    NodeType::LongEdge,
-    NodeType::ExternalPort,
+    LongEdge,
+    ExternalPort,
     @core.spacing_edge_edge,
   )
   self.set_pair_spacing(
-    NodeType::LongEdge,
-    NodeType::LabelNode,
+    LongEdge,
+    LabelNode,
     @core.spacing_edge_node,
     layered_options_spacing_edge_node_between_layers,
   )
 
-  self.set_same_type_spacing_vertical(
-    NodeType::NorthSouthPort,
+  self.set_same_type_spacing_vertical(NorthSouthPort, @core.spacing_edge_edge)
+  self.set_pair_spacing_vertical(
+    NorthSouthPort,
+    ExternalPort,
     @core.spacing_edge_edge,
   )
   self.set_pair_spacing_vertical(
-    NodeType::NorthSouthPort,
-    NodeType::ExternalPort,
-    @core.spacing_edge_edge,
-  )
-  self.set_pair_spacing_vertical(
-    NodeType::NorthSouthPort,
-    NodeType::LabelNode,
+    NorthSouthPort,
+    LabelNode,
     @core.spacing_label_node,
   )
 
-  self.set_same_type_spacing_vertical(
-    NodeType::ExternalPort,
-    @core.spacing_port_port,
-  )
+  self.set_same_type_spacing_vertical(ExternalPort, @core.spacing_port_port)
   self.set_pair_spacing(
-    NodeType::ExternalPort,
-    NodeType::LabelNode,
+    ExternalPort,
+    LabelNode,
     @core.spacing_label_port_vertical,
     @core.spacing_label_port_horizontal,
   )
 
   self.set_same_type_spacing(
-    NodeType::LabelNode,
+    LabelNode,
     @core.spacing_edge_edge,
     @core.spacing_edge_edge,
   )
 
   self.set_same_type_spacing(
-    NodeType::BreakingPoint,
+    BreakingPoint,
     @core.spacing_edge_edge,
     layered_options_spacing_edge_edge_between_layers,
   )
   self.set_pair_spacing(
-    NodeType::BreakingPoint,
-    NodeType::Normal,
+    BreakingPoint,
+    Normal,
     @core.spacing_edge_node,
     layered_options_spacing_edge_node_between_layers,
   )
   self.set_pair_spacing(
-    NodeType::BreakingPoint,
-    NodeType::LabelNode,
+    BreakingPoint,
+    LabelNode,
     @core.spacing_edge_node,
     layered_options_spacing_edge_node_between_layers,
   )
   self.set_pair_spacing(
-    NodeType::BreakingPoint,
-    NodeType::LongEdge,
+    BreakingPoint,
+    LongEdge,
     @core.spacing_edge_node,
     layered_options_spacing_edge_node_between_layers,
   )

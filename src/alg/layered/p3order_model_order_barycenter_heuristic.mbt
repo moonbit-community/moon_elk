@@ -360,7 +360,7 @@ pub fn ModelOrderBarycenterHeuristic::minimize_crossings(
     true
   } else {
     match first_node_in_layer.get_type() {
-      NodeType::ExternalPort => true
+      ExternalPort => true
       _ => false
     }
   }

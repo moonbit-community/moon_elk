@@ -20,14 +20,14 @@ fn horizontal_graph_compactor_node_type_equals(
   right : NodeType,
 ) -> Bool {
   match (left, right) {
-    (NodeType::Normal, NodeType::Normal) => true
-    (NodeType::LongEdge, NodeType::LongEdge) => true
-    (NodeType::ExternalPort, NodeType::ExternalPort) => true
-    (NodeType::NorthSouthPort, NodeType::NorthSouthPort) => true
-    (NodeType::LabelNode, NodeType::LabelNode) => true
-    (NodeType::BreakingPoint, NodeType::BreakingPoint) => true
-    (NodeType::Placeholder, NodeType::Placeholder) => true
-    (NodeType::NonshiftingPlaceholder, NodeType::NonshiftingPlaceholder) => true
+    (Normal, Normal) => true
+    (LongEdge, LongEdge) => true
+    (ExternalPort, ExternalPort) => true
+    (NorthSouthPort, NorthSouthPort) => true
+    (LabelNode, LabelNode) => true
+    (BreakingPoint, BreakingPoint) => true
+    (Placeholder, Placeholder) => true
+    (NonshiftingPlaceholder, NonshiftingPlaceholder) => true
     _ => false
   }
 }
@@ -38,11 +38,11 @@ fn horizontal_graph_compactor_port_side_is(
   expected : @core.PortSide,
 ) -> Bool {
   match (side, expected) {
-    (@core.PortSide::SideUndefined, @core.PortSide::SideUndefined) => true
-    (@core.PortSide::North, @core.PortSide::North) => true
-    (@core.PortSide::East, @core.PortSide::East) => true
-    (@core.PortSide::South, @core.PortSide::South) => true
-    (@core.PortSide::West, @core.PortSide::West) => true
+    (SideUndefined, SideUndefined) => true
+    (North, North) => true
+    (East, East) => true
+    (South, South) => true
+    (West, West) => true
     _ => false
   }
 }
@@ -53,14 +53,12 @@ fn horizontal_graph_compactor_parse_graph_compaction_strategy(
 ) -> GraphCompactionStrategy {
   let normalized = value.trim().to_owned().to_upper()
   match normalized {
-    "LEFT" => GraphCompactionStrategy::Left
-    "RIGHT" => GraphCompactionStrategy::Right
-    "LEFT_RIGHT_CONSTRAINT_LOCKING" =>
-      GraphCompactionStrategy::LeftRightConstraintLocking
-    "LEFT_RIGHT_CONNECTION_LOCKING" =>
-      GraphCompactionStrategy::LeftRightConnectionLocking
-    "EDGE_LENGTH" => GraphCompactionStrategy::EdgeLength
-    _ => GraphCompactionStrategy::NoneType
+    "LEFT" => Left
+    "RIGHT" => Right
+    "LEFT_RIGHT_CONSTRAINT_LOCKING" => LeftRightConstraintLocking
+    "LEFT_RIGHT_CONNECTION_LOCKING" => LeftRightConnectionLocking
+    "EDGE_LENGTH" => EdgeLength
+    _ => NoneType
   }
 }
 
@@ -216,7 +214,7 @@ fn horizontal_graph_compactor_spacings_handler(
         Some(value) =>
           if horizontal_graph_compactor_node_type_equals(
               value.get_type(),
-              NodeType::ExternalPort,
+              ExternalPort,
             ) {
             return 0.0
           }
@@ -226,7 +224,7 @@ fn horizontal_graph_compactor_spacings_handler(
         Some(value) =>
           if horizontal_graph_compactor_node_type_equals(
               value.get_type(),
-              NodeType::ExternalPort,
+              ExternalPort,
             ) {
             return 0.0
           }
@@ -235,11 +233,11 @@ fn horizontal_graph_compactor_spacings_handler(
 
       let node_type1 = match node1 {
         Some(value) => value.get_type()
-        None => NodeType::LongEdge
+        None => LongEdge
       }
       let node_type2 = match node2 {
         Some(value) => value.get_type()
-        None => NodeType::LongEdge
+        None => LongEdge
       }
 
       spacings.get_horizontal_spacing_for_node_type(node_type1, node_type2) catch {
@@ -261,11 +259,11 @@ fn horizontal_graph_compactor_spacings_handler(
 
       let node_type1 = match node1 {
         Some(value) => value.get_type()
-        None => NodeType::LongEdge
+        None => LongEdge
       }
       let node_type2 = match node2 {
         Some(value) => value.get_type()
-        None => NodeType::LongEdge
+        None => LongEdge
       }
 
       spacings.get_vertical_spacing_for_node_type(node_type1, node_type2) catch {
@@ -290,7 +288,7 @@ fn horizontal_graph_compactor_process(
   )
   if horizontal_graph_compactor_graph_compaction_strategy_equals(
       strategy,
-      GraphCompactionStrategy::NoneType,
+      NoneType,
     ) {
     return
   }
@@ -330,14 +328,13 @@ fn horizontal_graph_compactor_process(
   }
 
   match strategy {
-    GraphCompactionStrategy::Left => ignore(odc.compact())
-    GraphCompactionStrategy::Right =>
-      ignore(odc.change_direction(@core.Direction::Rightward).compact())
-    GraphCompactionStrategy::LeftRightConstraintLocking =>
+    Left => ignore(odc.compact())
+    Right => ignore(odc.change_direction(Rightward).compact())
+    LeftRightConstraintLocking =>
       ignore(
         odc
         .compact()
-        .change_direction(@core.Direction::Rightward)
+        .change_direction(Rightward)
         .set_lock_function(
           Some((node, _dir) => {
             horizontal_graph_compactor_require_group(node).out_degree_real() ==
@@ -346,11 +343,11 @@ fn horizontal_graph_compactor_process(
         )
         .compact(),
       )
-    GraphCompactionStrategy::LeftRightConnectionLocking =>
+    LeftRightConnectionLocking =>
       ignore(
         odc
         .compact()
-        .change_direction(@core.Direction::Rightward)
+        .change_direction(Rightward)
         .set_lock_function(
           Some((node, dir) => {
             match transformer.get_lock(node) {
@@ -361,7 +358,7 @@ fn horizontal_graph_compactor_process(
         )
         .compact(),
       )
-    GraphCompactionStrategy::EdgeLength => {
+    EdgeLength => {
       ignore(
         odc.set_compaction_algorithm(
           horizontal_graph_compactor_network_simplex_compaction,
@@ -369,7 +366,7 @@ fn horizontal_graph_compactor_process(
       )
       ignore(odc.compact())
     }
-    GraphCompactionStrategy::NoneType => ()
+    NoneType => ()
   }
 
   ignore(odc.finish())

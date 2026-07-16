@@ -65,64 +65,64 @@ fn intermediate_processor_strategy_ordinal(
   strategy : IntermediateProcessorStrategy,
 ) -> Int {
   match strategy {
-    IntermediateProcessorStrategy::DirectionPreprocessor => 0
-    IntermediateProcessorStrategy::CommentPreprocessor => 1
-    IntermediateProcessorStrategy::EdgeAndLayerConstraintEdgeReverser => 2
-    IntermediateProcessorStrategy::InteractiveExternalPortPositioner => 3
-    IntermediateProcessorStrategy::PartitionPreprocessor => 4
-    IntermediateProcessorStrategy::LabelDummyInserter => 5
-    IntermediateProcessorStrategy::SelfLoopPreprocessor => 6
-    IntermediateProcessorStrategy::LayerConstraintPreprocessor => 7
-    IntermediateProcessorStrategy::PartitionMidprocessor => 8
-    IntermediateProcessorStrategy::HighDegreeNodeLayerProcessor => 9
-    IntermediateProcessorStrategy::NodePromotion => 10
-    IntermediateProcessorStrategy::LayerConstraintPostprocessor => 11
-    IntermediateProcessorStrategy::PartitionPostprocessor => 12
-    IntermediateProcessorStrategy::HierarchicalPortConstraintProcessor => 13
-    IntermediateProcessorStrategy::SemiInteractiveCrossMinProcessor => 14
-    IntermediateProcessorStrategy::BreakingPointInserter => 15
-    IntermediateProcessorStrategy::LongEdgeSplitter => 16
-    IntermediateProcessorStrategy::PortSideProcessor => 17
-    IntermediateProcessorStrategy::InvertedPortProcessor => 18
-    IntermediateProcessorStrategy::PortListSorter => 19
-    IntermediateProcessorStrategy::SortByInputOrderOfModel => 20
-    IntermediateProcessorStrategy::NorthSouthPortPreprocessor => 21
-    IntermediateProcessorStrategy::BreakingPointProcessor => 22
-    IntermediateProcessorStrategy::OneSidedGreedySwitch => 23
-    IntermediateProcessorStrategy::TwoSidedGreedySwitch => 24
-    IntermediateProcessorStrategy::SelfLoopPortRestorer => 25
-    IntermediateProcessorStrategy::AlternatingLayerUnzipper => 26
-    IntermediateProcessorStrategy::SingleEdgeGraphWrapper => 27
-    IntermediateProcessorStrategy::InLayerConstraintProcessor => 28
-    IntermediateProcessorStrategy::EndNodePortLabelManagementProcessor => 29
-    IntermediateProcessorStrategy::LabelAndNodeSizeProcessor => 30
-    IntermediateProcessorStrategy::InnermostNodeMarginCalculator => 31
-    IntermediateProcessorStrategy::SelfLoopRouter => 32
-    IntermediateProcessorStrategy::CommentNodeMarginCalculator => 33
-    IntermediateProcessorStrategy::EndLabelPreprocessor => 34
-    IntermediateProcessorStrategy::LabelDummySwitcher => 35
-    IntermediateProcessorStrategy::CenterLabelManagementProcessor => 36
-    IntermediateProcessorStrategy::LabelSideSelector => 37
-    IntermediateProcessorStrategy::HyperedgeDummyMerger => 38
-    IntermediateProcessorStrategy::HierarchicalPortDummySizeProcessor => 39
-    IntermediateProcessorStrategy::LayerSizeAndGraphHeightCalculator => 40
-    IntermediateProcessorStrategy::HierarchicalPortPositionProcessor => 41
-    IntermediateProcessorStrategy::ConstraintsPostprocessor => 42
-    IntermediateProcessorStrategy::CommentPostprocessor => 43
-    IntermediateProcessorStrategy::HypernodeProcessor => 44
-    IntermediateProcessorStrategy::HierarchicalPortOrthogonalEdgeRouter => 45
-    IntermediateProcessorStrategy::LongEdgeJoiner => 46
-    IntermediateProcessorStrategy::SelfLoopPostprocessor => 47
-    IntermediateProcessorStrategy::BreakingPointRemover => 48
-    IntermediateProcessorStrategy::NorthSouthPortPostprocessor => 49
-    IntermediateProcessorStrategy::HorizontalCompactor => 50
-    IntermediateProcessorStrategy::LabelDummyRemover => 51
-    IntermediateProcessorStrategy::FinalSplineBendpointsCalculator => 52
-    IntermediateProcessorStrategy::EndLabelSorter => 53
-    IntermediateProcessorStrategy::ReversedEdgeRestorer => 54
-    IntermediateProcessorStrategy::EndLabelPostprocessor => 55
-    IntermediateProcessorStrategy::HierarchicalNodeResizer => 56
-    IntermediateProcessorStrategy::DirectionPostprocessor => 57
+    DirectionPreprocessor => 0
+    CommentPreprocessor => 1
+    EdgeAndLayerConstraintEdgeReverser => 2
+    InteractiveExternalPortPositioner => 3
+    PartitionPreprocessor => 4
+    LabelDummyInserter => 5
+    SelfLoopPreprocessor => 6
+    LayerConstraintPreprocessor => 7
+    PartitionMidprocessor => 8
+    HighDegreeNodeLayerProcessor => 9
+    NodePromotion => 10
+    LayerConstraintPostprocessor => 11
+    PartitionPostprocessor => 12
+    HierarchicalPortConstraintProcessor => 13
+    SemiInteractiveCrossMinProcessor => 14
+    BreakingPointInserter => 15
+    LongEdgeSplitter => 16
+    PortSideProcessor => 17
+    InvertedPortProcessor => 18
+    PortListSorter => 19
+    SortByInputOrderOfModel => 20
+    NorthSouthPortPreprocessor => 21
+    BreakingPointProcessor => 22
+    OneSidedGreedySwitch => 23
+    TwoSidedGreedySwitch => 24
+    SelfLoopPortRestorer => 25
+    AlternatingLayerUnzipper => 26
+    SingleEdgeGraphWrapper => 27
+    InLayerConstraintProcessor => 28
+    EndNodePortLabelManagementProcessor => 29
+    LabelAndNodeSizeProcessor => 30
+    InnermostNodeMarginCalculator => 31
+    SelfLoopRouter => 32
+    CommentNodeMarginCalculator => 33
+    EndLabelPreprocessor => 34
+    LabelDummySwitcher => 35
+    CenterLabelManagementProcessor => 36
+    LabelSideSelector => 37
+    HyperedgeDummyMerger => 38
+    HierarchicalPortDummySizeProcessor => 39
+    LayerSizeAndGraphHeightCalculator => 40
+    HierarchicalPortPositionProcessor => 41
+    ConstraintsPostprocessor => 42
+    CommentPostprocessor => 43
+    HypernodeProcessor => 44
+    HierarchicalPortOrthogonalEdgeRouter => 45
+    LongEdgeJoiner => 46
+    SelfLoopPostprocessor => 47
+    BreakingPointRemover => 48
+    NorthSouthPortPostprocessor => 49
+    HorizontalCompactor => 50
+    LabelDummyRemover => 51
+    FinalSplineBendpointsCalculator => 52
+    EndLabelSorter => 53
+    ReversedEdgeRestorer => 54
+    EndLabelPostprocessor => 55
+    HierarchicalNodeResizer => 56
+    DirectionPostprocessor => 57
   }
 }
 
@@ -197,108 +197,70 @@ pub fn intermediate_processor_strategy_to_string(
   strategy : IntermediateProcessorStrategy,
 ) -> String {
   match strategy {
-    IntermediateProcessorStrategy::DirectionPreprocessor =>
-      "DIRECTION_PREPROCESSOR"
-    IntermediateProcessorStrategy::CommentPreprocessor => "COMMENT_PREPROCESSOR"
-    IntermediateProcessorStrategy::EdgeAndLayerConstraintEdgeReverser =>
+    DirectionPreprocessor => "DIRECTION_PREPROCESSOR"
+    CommentPreprocessor => "COMMENT_PREPROCESSOR"
+    EdgeAndLayerConstraintEdgeReverser =>
       "EDGE_AND_LAYER_CONSTRAINT_EDGE_REVERSER"
-    IntermediateProcessorStrategy::InteractiveExternalPortPositioner =>
-      "INTERACTIVE_EXTERNAL_PORT_POSITIONER"
-    IntermediateProcessorStrategy::PartitionPreprocessor =>
-      "PARTITION_PREPROCESSOR"
-    IntermediateProcessorStrategy::LabelDummyInserter => "LABEL_DUMMY_INSERTER"
-    IntermediateProcessorStrategy::SelfLoopPreprocessor =>
-      "SELF_LOOP_PREPROCESSOR"
-    IntermediateProcessorStrategy::LayerConstraintPreprocessor =>
-      "LAYER_CONSTRAINT_PREPROCESSOR"
-    IntermediateProcessorStrategy::PartitionMidprocessor =>
-      "PARTITION_MIDPROCESSOR"
-    IntermediateProcessorStrategy::HighDegreeNodeLayerProcessor =>
-      "HIGH_DEGREE_NODE_LAYER_PROCESSOR"
-    IntermediateProcessorStrategy::NodePromotion => "NODE_PROMOTION"
-    IntermediateProcessorStrategy::LayerConstraintPostprocessor =>
-      "LAYER_CONSTRAINT_POSTPROCESSOR"
-    IntermediateProcessorStrategy::PartitionPostprocessor =>
-      "PARTITION_POSTPROCESSOR"
-    IntermediateProcessorStrategy::HierarchicalPortConstraintProcessor =>
+    InteractiveExternalPortPositioner => "INTERACTIVE_EXTERNAL_PORT_POSITIONER"
+    PartitionPreprocessor => "PARTITION_PREPROCESSOR"
+    LabelDummyInserter => "LABEL_DUMMY_INSERTER"
+    SelfLoopPreprocessor => "SELF_LOOP_PREPROCESSOR"
+    LayerConstraintPreprocessor => "LAYER_CONSTRAINT_PREPROCESSOR"
+    PartitionMidprocessor => "PARTITION_MIDPROCESSOR"
+    HighDegreeNodeLayerProcessor => "HIGH_DEGREE_NODE_LAYER_PROCESSOR"
+    NodePromotion => "NODE_PROMOTION"
+    LayerConstraintPostprocessor => "LAYER_CONSTRAINT_POSTPROCESSOR"
+    PartitionPostprocessor => "PARTITION_POSTPROCESSOR"
+    HierarchicalPortConstraintProcessor =>
       "HIERARCHICAL_PORT_CONSTRAINT_PROCESSOR"
-    IntermediateProcessorStrategy::SemiInteractiveCrossMinProcessor =>
-      "SEMI_INTERACTIVE_CROSSMIN_PROCESSOR"
-    IntermediateProcessorStrategy::BreakingPointInserter =>
-      "BREAKING_POINT_INSERTER"
-    IntermediateProcessorStrategy::LongEdgeSplitter => "LONG_EDGE_SPLITTER"
-    IntermediateProcessorStrategy::PortSideProcessor => "PORT_SIDE_PROCESSOR"
-    IntermediateProcessorStrategy::InvertedPortProcessor =>
-      "INVERTED_PORT_PROCESSOR"
-    IntermediateProcessorStrategy::PortListSorter => "PORT_LIST_SORTER"
-    IntermediateProcessorStrategy::SortByInputOrderOfModel =>
-      "SORT_BY_INPUT_ORDER_OF_MODEL"
-    IntermediateProcessorStrategy::NorthSouthPortPreprocessor =>
-      "NORTH_SOUTH_PORT_PREPROCESSOR"
-    IntermediateProcessorStrategy::BreakingPointProcessor =>
-      "BREAKING_POINT_PROCESSOR"
-    IntermediateProcessorStrategy::OneSidedGreedySwitch =>
-      "ONE_SIDED_GREEDY_SWITCH"
-    IntermediateProcessorStrategy::TwoSidedGreedySwitch =>
-      "TWO_SIDED_GREEDY_SWITCH"
-    IntermediateProcessorStrategy::SelfLoopPortRestorer =>
-      "SELF_LOOP_PORT_RESTORER"
-    IntermediateProcessorStrategy::AlternatingLayerUnzipper =>
-      "ALTERNATING_LAYER_UNZIPPER"
-    IntermediateProcessorStrategy::SingleEdgeGraphWrapper =>
-      "SINGLE_EDGE_GRAPH_WRAPPER"
-    IntermediateProcessorStrategy::InLayerConstraintProcessor =>
-      "IN_LAYER_CONSTRAINT_PROCESSOR"
-    IntermediateProcessorStrategy::EndNodePortLabelManagementProcessor =>
+    SemiInteractiveCrossMinProcessor => "SEMI_INTERACTIVE_CROSSMIN_PROCESSOR"
+    BreakingPointInserter => "BREAKING_POINT_INSERTER"
+    LongEdgeSplitter => "LONG_EDGE_SPLITTER"
+    PortSideProcessor => "PORT_SIDE_PROCESSOR"
+    InvertedPortProcessor => "INVERTED_PORT_PROCESSOR"
+    PortListSorter => "PORT_LIST_SORTER"
+    SortByInputOrderOfModel => "SORT_BY_INPUT_ORDER_OF_MODEL"
+    NorthSouthPortPreprocessor => "NORTH_SOUTH_PORT_PREPROCESSOR"
+    BreakingPointProcessor => "BREAKING_POINT_PROCESSOR"
+    OneSidedGreedySwitch => "ONE_SIDED_GREEDY_SWITCH"
+    TwoSidedGreedySwitch => "TWO_SIDED_GREEDY_SWITCH"
+    SelfLoopPortRestorer => "SELF_LOOP_PORT_RESTORER"
+    AlternatingLayerUnzipper => "ALTERNATING_LAYER_UNZIPPER"
+    SingleEdgeGraphWrapper => "SINGLE_EDGE_GRAPH_WRAPPER"
+    InLayerConstraintProcessor => "IN_LAYER_CONSTRAINT_PROCESSOR"
+    EndNodePortLabelManagementProcessor =>
       "END_NODE_PORT_LABEL_MANAGEMENT_PROCESSOR"
-    IntermediateProcessorStrategy::LabelAndNodeSizeProcessor =>
-      "LABEL_AND_NODE_SIZE_PROCESSOR"
-    IntermediateProcessorStrategy::InnermostNodeMarginCalculator =>
-      "INNERMOST_NODE_MARGIN_CALCULATOR"
-    IntermediateProcessorStrategy::SelfLoopRouter => "SELF_LOOP_ROUTER"
-    IntermediateProcessorStrategy::CommentNodeMarginCalculator =>
-      "COMMENT_NODE_MARGIN_CALCULATOR"
-    IntermediateProcessorStrategy::EndLabelPreprocessor =>
-      "END_LABEL_PREPROCESSOR"
-    IntermediateProcessorStrategy::LabelDummySwitcher => "LABEL_DUMMY_SWITCHER"
-    IntermediateProcessorStrategy::CenterLabelManagementProcessor =>
-      "CENTER_LABEL_MANAGEMENT_PROCESSOR"
-    IntermediateProcessorStrategy::LabelSideSelector => "LABEL_SIDE_SELECTOR"
-    IntermediateProcessorStrategy::HyperedgeDummyMerger =>
-      "HYPEREDGE_DUMMY_MERGER"
-    IntermediateProcessorStrategy::HierarchicalPortDummySizeProcessor =>
+    LabelAndNodeSizeProcessor => "LABEL_AND_NODE_SIZE_PROCESSOR"
+    InnermostNodeMarginCalculator => "INNERMOST_NODE_MARGIN_CALCULATOR"
+    SelfLoopRouter => "SELF_LOOP_ROUTER"
+    CommentNodeMarginCalculator => "COMMENT_NODE_MARGIN_CALCULATOR"
+    EndLabelPreprocessor => "END_LABEL_PREPROCESSOR"
+    LabelDummySwitcher => "LABEL_DUMMY_SWITCHER"
+    CenterLabelManagementProcessor => "CENTER_LABEL_MANAGEMENT_PROCESSOR"
+    LabelSideSelector => "LABEL_SIDE_SELECTOR"
+    HyperedgeDummyMerger => "HYPEREDGE_DUMMY_MERGER"
+    HierarchicalPortDummySizeProcessor =>
       "HIERARCHICAL_PORT_DUMMY_SIZE_PROCESSOR"
-    IntermediateProcessorStrategy::LayerSizeAndGraphHeightCalculator =>
+    LayerSizeAndGraphHeightCalculator =>
       "LAYER_SIZE_AND_GRAPH_HEIGHT_CALCULATOR"
-    IntermediateProcessorStrategy::HierarchicalPortPositionProcessor =>
-      "HIERARCHICAL_PORT_POSITION_PROCESSOR"
-    IntermediateProcessorStrategy::ConstraintsPostprocessor =>
-      "CONSTRAINTS_POSTPROCESSOR"
-    IntermediateProcessorStrategy::CommentPostprocessor =>
-      "COMMENT_POSTPROCESSOR"
-    IntermediateProcessorStrategy::HypernodeProcessor => "HYPERNODE_PROCESSOR"
-    IntermediateProcessorStrategy::HierarchicalPortOrthogonalEdgeRouter =>
+    HierarchicalPortPositionProcessor => "HIERARCHICAL_PORT_POSITION_PROCESSOR"
+    ConstraintsPostprocessor => "CONSTRAINTS_POSTPROCESSOR"
+    CommentPostprocessor => "COMMENT_POSTPROCESSOR"
+    HypernodeProcessor => "HYPERNODE_PROCESSOR"
+    HierarchicalPortOrthogonalEdgeRouter =>
       "HIERARCHICAL_PORT_ORTHOGONAL_EDGE_ROUTER"
-    IntermediateProcessorStrategy::LongEdgeJoiner => "LONG_EDGE_JOINER"
-    IntermediateProcessorStrategy::SelfLoopPostprocessor =>
-      "SELF_LOOP_POSTPROCESSOR"
-    IntermediateProcessorStrategy::BreakingPointRemover =>
-      "BREAKING_POINT_REMOVER"
-    IntermediateProcessorStrategy::NorthSouthPortPostprocessor =>
-      "NORTH_SOUTH_PORT_POSTPROCESSOR"
-    IntermediateProcessorStrategy::HorizontalCompactor => "HORIZONTAL_COMPACTOR"
-    IntermediateProcessorStrategy::LabelDummyRemover => "LABEL_DUMMY_REMOVER"
-    IntermediateProcessorStrategy::FinalSplineBendpointsCalculator =>
-      "FINAL_SPLINE_BENDPOINTS_CALCULATOR"
-    IntermediateProcessorStrategy::EndLabelSorter => "END_LABEL_SORTER"
-    IntermediateProcessorStrategy::ReversedEdgeRestorer =>
-      "REVERSED_EDGE_RESTORER"
-    IntermediateProcessorStrategy::EndLabelPostprocessor =>
-      "END_LABEL_POSTPROCESSOR"
-    IntermediateProcessorStrategy::HierarchicalNodeResizer =>
-      "HIERARCHICAL_NODE_RESIZER"
-    IntermediateProcessorStrategy::DirectionPostprocessor =>
-      "DIRECTION_POSTPROCESSOR"
+    LongEdgeJoiner => "LONG_EDGE_JOINER"
+    SelfLoopPostprocessor => "SELF_LOOP_POSTPROCESSOR"
+    BreakingPointRemover => "BREAKING_POINT_REMOVER"
+    NorthSouthPortPostprocessor => "NORTH_SOUTH_PORT_POSTPROCESSOR"
+    HorizontalCompactor => "HORIZONTAL_COMPACTOR"
+    LabelDummyRemover => "LABEL_DUMMY_REMOVER"
+    FinalSplineBendpointsCalculator => "FINAL_SPLINE_BENDPOINTS_CALCULATOR"
+    EndLabelSorter => "END_LABEL_SORTER"
+    ReversedEdgeRestorer => "REVERSED_EDGE_RESTORER"
+    EndLabelPostprocessor => "END_LABEL_POSTPROCESSOR"
+    HierarchicalNodeResizer => "HIERARCHICAL_NODE_RESIZER"
+    DirectionPostprocessor => "DIRECTION_POSTPROCESSOR"
   }
 }
 
@@ -308,43 +270,23 @@ fn intermediate_processor_new_greedy_switch_layout_processor(
 ) -> @core.ILayoutProcessor[LayeredPhases, LGraph] {
   let minimizer = new_layer_sweep_crossing_minimizer(cross_min_type)
   let long_edge_splitter_factory = @core.new_layout_processor_factory(
-    23000 +
-    intermediate_processor_strategy_ordinal(
-      IntermediateProcessorStrategy::LongEdgeSplitter,
-    ),
-    intermediate_processor_strategy_ordinal(
-      IntermediateProcessorStrategy::LongEdgeSplitter,
-    ),
+    23000 + intermediate_processor_strategy_ordinal(LongEdgeSplitter),
+    intermediate_processor_strategy_ordinal(LongEdgeSplitter),
     () => new_long_edge_splitter_layout_processor(),
   )
   let in_layer_constraint_factory = @core.new_layout_processor_factory(
-    23000 +
-    intermediate_processor_strategy_ordinal(
-      IntermediateProcessorStrategy::InLayerConstraintProcessor,
-    ),
-    intermediate_processor_strategy_ordinal(
-      IntermediateProcessorStrategy::InLayerConstraintProcessor,
-    ),
+    23000 + intermediate_processor_strategy_ordinal(InLayerConstraintProcessor),
+    intermediate_processor_strategy_ordinal(InLayerConstraintProcessor),
     () => new_in_layer_constraint_processor_layout_processor(),
   )
   let long_edge_joiner_factory = @core.new_layout_processor_factory(
-    23000 +
-    intermediate_processor_strategy_ordinal(
-      IntermediateProcessorStrategy::LongEdgeJoiner,
-    ),
-    intermediate_processor_strategy_ordinal(
-      IntermediateProcessorStrategy::LongEdgeJoiner,
-    ),
+    23000 + intermediate_processor_strategy_ordinal(LongEdgeJoiner),
+    intermediate_processor_strategy_ordinal(LongEdgeJoiner),
     () => new_long_edge_joiner_layout_processor(),
   )
   let port_list_sorter_factory = @core.new_layout_processor_factory(
-    23000 +
-    intermediate_processor_strategy_ordinal(
-      IntermediateProcessorStrategy::PortListSorter,
-    ),
-    intermediate_processor_strategy_ordinal(
-      IntermediateProcessorStrategy::PortListSorter,
-    ),
+    23000 + intermediate_processor_strategy_ordinal(PortListSorter),
+    intermediate_processor_strategy_ordinal(PortListSorter),
     () => new_port_list_sorter_layout_processor(),
   )
   @core.new_hierarchy_aware_layout_phase(
@@ -355,25 +297,14 @@ fn intermediate_processor_new_greedy_switch_layout_processor(
         layered_phase_descriptor,
       )
       ignore(
-        configuration.add_before(
-          LayeredPhases::P3NodeOrdering,
-          long_edge_splitter_factory,
-        ),
+        configuration.add_before(P3NodeOrdering, long_edge_splitter_factory),
       )
       ignore(
-        configuration.add_before(
-          LayeredPhases::P4NodePlacement,
-          in_layer_constraint_factory,
-        ),
+        configuration.add_before(P4NodePlacement, in_layer_constraint_factory),
       )
-      ignore(configuration.after(LayeredPhases::P5EdgeRouting))
+      ignore(configuration.after(P5EdgeRouting))
       ignore(configuration.add(long_edge_joiner_factory))
-      ignore(
-        configuration.add_before(
-          LayeredPhases::P3NodeOrdering,
-          port_list_sorter_factory,
-        ),
-      )
+      ignore(configuration.add_before(P3NodeOrdering, port_list_sorter_factory))
       Some(configuration)
     },
   )
@@ -384,126 +315,93 @@ fn intermediate_processor_create(
   strategy : IntermediateProcessorStrategy,
 ) -> @core.ILayoutProcessor[LayeredPhases, LGraph] {
   match strategy {
-    IntermediateProcessorStrategy::DirectionPreprocessor =>
-      new_direction_preprocessor_layout_processor()
-    IntermediateProcessorStrategy::CommentPreprocessor =>
-      new_comment_preprocessor_layout_processor()
-    IntermediateProcessorStrategy::EdgeAndLayerConstraintEdgeReverser =>
+    DirectionPreprocessor => new_direction_preprocessor_layout_processor()
+    CommentPreprocessor => new_comment_preprocessor_layout_processor()
+    EdgeAndLayerConstraintEdgeReverser =>
       new_edge_and_layer_constraint_edge_reverser_layout_processor()
-    IntermediateProcessorStrategy::InteractiveExternalPortPositioner =>
+    InteractiveExternalPortPositioner =>
       new_interactive_external_port_positioner_layout_processor()
-    IntermediateProcessorStrategy::PartitionPreprocessor =>
-      new_partition_preprocessor_layout_processor()
-    IntermediateProcessorStrategy::LabelDummyInserter =>
-      new_label_dummy_inserter_layout_processor()
-    IntermediateProcessorStrategy::SelfLoopPreprocessor =>
-      new_self_loop_pre_processor_layout_processor()
-    IntermediateProcessorStrategy::LayerConstraintPreprocessor =>
+    PartitionPreprocessor => new_partition_preprocessor_layout_processor()
+    LabelDummyInserter => new_label_dummy_inserter_layout_processor()
+    SelfLoopPreprocessor => new_self_loop_pre_processor_layout_processor()
+    LayerConstraintPreprocessor =>
       new_layer_constraint_preprocessor_layout_processor()
-    IntermediateProcessorStrategy::PartitionMidprocessor =>
-      new_partition_midprocessor_layout_processor()
-    IntermediateProcessorStrategy::HighDegreeNodeLayerProcessor =>
+    PartitionMidprocessor => new_partition_midprocessor_layout_processor()
+    HighDegreeNodeLayerProcessor =>
       new_high_degree_node_layering_processor_layout_processor()
-    IntermediateProcessorStrategy::NodePromotion =>
-      new_node_promotion_layout_processor()
-    IntermediateProcessorStrategy::LayerConstraintPostprocessor =>
+    NodePromotion => new_node_promotion_layout_processor()
+    LayerConstraintPostprocessor =>
       new_layer_constraint_postprocessor_layout_processor()
-    IntermediateProcessorStrategy::PartitionPostprocessor =>
-      new_partition_postprocessor_layout_processor()
-    IntermediateProcessorStrategy::HierarchicalPortConstraintProcessor =>
+    PartitionPostprocessor => new_partition_postprocessor_layout_processor()
+    HierarchicalPortConstraintProcessor =>
       new_hierarchical_port_constraint_processor_layout_processor()
-    IntermediateProcessorStrategy::SemiInteractiveCrossMinProcessor =>
+    SemiInteractiveCrossMinProcessor =>
       new_semi_interactive_cross_min_processor_layout_processor()
-    IntermediateProcessorStrategy::BreakingPointInserter =>
-      new_breaking_point_inserter_layout_processor()
-    IntermediateProcessorStrategy::LongEdgeSplitter =>
-      new_long_edge_splitter_layout_processor()
-    IntermediateProcessorStrategy::PortSideProcessor =>
-      new_port_side_processor_layout_processor()
-    IntermediateProcessorStrategy::InvertedPortProcessor =>
-      new_inverted_port_processor_layout_processor()
-    IntermediateProcessorStrategy::PortListSorter =>
-      new_port_list_sorter_layout_processor()
-    IntermediateProcessorStrategy::SortByInputOrderOfModel =>
+    BreakingPointInserter => new_breaking_point_inserter_layout_processor()
+    LongEdgeSplitter => new_long_edge_splitter_layout_processor()
+    PortSideProcessor => new_port_side_processor_layout_processor()
+    InvertedPortProcessor => new_inverted_port_processor_layout_processor()
+    PortListSorter => new_port_list_sorter_layout_processor()
+    SortByInputOrderOfModel =>
       new_sort_by_input_model_processor_layout_processor()
-    IntermediateProcessorStrategy::NorthSouthPortPreprocessor =>
+    NorthSouthPortPreprocessor =>
       new_north_south_port_preprocessor_layout_processor()
-    IntermediateProcessorStrategy::BreakingPointProcessor =>
-      new_breaking_point_processor_layout_processor()
-    IntermediateProcessorStrategy::OneSidedGreedySwitch =>
+    BreakingPointProcessor => new_breaking_point_processor_layout_processor()
+    OneSidedGreedySwitch =>
       intermediate_processor_new_greedy_switch_layout_processor(
-        CrossMinType::OneSidedGreedySwitch,
+        OneSidedGreedySwitch,
       )
-    IntermediateProcessorStrategy::TwoSidedGreedySwitch =>
+    TwoSidedGreedySwitch =>
       intermediate_processor_new_greedy_switch_layout_processor(
-        CrossMinType::TwoSidedGreedySwitch,
+        TwoSidedGreedySwitch,
       )
-    IntermediateProcessorStrategy::SelfLoopPortRestorer =>
-      new_self_loop_port_restorer_layout_processor()
-    IntermediateProcessorStrategy::AlternatingLayerUnzipper =>
+    SelfLoopPortRestorer => new_self_loop_port_restorer_layout_processor()
+    AlternatingLayerUnzipper =>
       new_alternating_layer_unzipper_layout_processor()
-    IntermediateProcessorStrategy::SingleEdgeGraphWrapper =>
-      new_single_edge_graph_wrapper_layout_processor()
-    IntermediateProcessorStrategy::InLayerConstraintProcessor =>
+    SingleEdgeGraphWrapper => new_single_edge_graph_wrapper_layout_processor()
+    InLayerConstraintProcessor =>
       new_in_layer_constraint_processor_layout_processor()
-    IntermediateProcessorStrategy::EndNodePortLabelManagementProcessor =>
+    EndNodePortLabelManagementProcessor =>
       new_label_management_processor_layout_processor(false)
-    IntermediateProcessorStrategy::LabelAndNodeSizeProcessor =>
+    LabelAndNodeSizeProcessor =>
       new_label_and_node_size_processor_layout_processor()
-    IntermediateProcessorStrategy::InnermostNodeMarginCalculator =>
+    InnermostNodeMarginCalculator =>
       new_innermost_node_margin_calculator_layout_processor()
-    IntermediateProcessorStrategy::SelfLoopRouter =>
-      new_self_loop_router_layout_processor()
-    IntermediateProcessorStrategy::CommentNodeMarginCalculator =>
+    SelfLoopRouter => new_self_loop_router_layout_processor()
+    CommentNodeMarginCalculator =>
       new_comment_node_margin_calculator_layout_processor()
-    IntermediateProcessorStrategy::EndLabelPreprocessor =>
-      new_end_label_preprocessor_layout_processor()
-    IntermediateProcessorStrategy::LabelDummySwitcher =>
-      new_label_dummy_switcher_layout_processor()
-    IntermediateProcessorStrategy::CenterLabelManagementProcessor =>
+    EndLabelPreprocessor => new_end_label_preprocessor_layout_processor()
+    LabelDummySwitcher => new_label_dummy_switcher_layout_processor()
+    CenterLabelManagementProcessor =>
       new_label_management_processor_layout_processor(true)
-    IntermediateProcessorStrategy::LabelSideSelector =>
-      new_label_side_selector_layout_processor()
-    IntermediateProcessorStrategy::HyperedgeDummyMerger =>
-      new_hyperedge_dummy_merger_layout_processor()
-    IntermediateProcessorStrategy::HierarchicalPortDummySizeProcessor =>
+    LabelSideSelector => new_label_side_selector_layout_processor()
+    HyperedgeDummyMerger => new_hyperedge_dummy_merger_layout_processor()
+    HierarchicalPortDummySizeProcessor =>
       new_hierarchical_port_dummy_size_processor_layout_processor()
-    IntermediateProcessorStrategy::LayerSizeAndGraphHeightCalculator =>
+    LayerSizeAndGraphHeightCalculator =>
       new_layer_size_and_graph_height_calculator_layout_processor()
-    IntermediateProcessorStrategy::HierarchicalPortPositionProcessor =>
+    HierarchicalPortPositionProcessor =>
       new_hierarchical_port_position_processor_layout_processor()
-    IntermediateProcessorStrategy::ConstraintsPostprocessor =>
-      new_constraints_postprocessor_layout_processor()
-    IntermediateProcessorStrategy::CommentPostprocessor =>
-      new_comment_postprocessor_layout_processor()
-    IntermediateProcessorStrategy::HypernodeProcessor =>
-      new_hypernodes_processor_layout_processor()
-    IntermediateProcessorStrategy::HierarchicalPortOrthogonalEdgeRouter =>
+    ConstraintsPostprocessor => new_constraints_postprocessor_layout_processor()
+    CommentPostprocessor => new_comment_postprocessor_layout_processor()
+    HypernodeProcessor => new_hypernodes_processor_layout_processor()
+    HierarchicalPortOrthogonalEdgeRouter =>
       new_hierarchical_port_orthogonal_edge_router_layout_processor()
-    IntermediateProcessorStrategy::LongEdgeJoiner =>
-      new_long_edge_joiner_layout_processor()
-    IntermediateProcessorStrategy::SelfLoopPostprocessor =>
-      new_self_loop_post_processor_layout_processor()
-    IntermediateProcessorStrategy::BreakingPointRemover =>
-      new_breaking_point_remover_layout_processor()
-    IntermediateProcessorStrategy::NorthSouthPortPostprocessor =>
+    LongEdgeJoiner => new_long_edge_joiner_layout_processor()
+    SelfLoopPostprocessor => new_self_loop_post_processor_layout_processor()
+    BreakingPointRemover => new_breaking_point_remover_layout_processor()
+    NorthSouthPortPostprocessor =>
       new_north_south_port_postprocessor_layout_processor()
-    IntermediateProcessorStrategy::HorizontalCompactor =>
-      new_horizontal_graph_compactor_layout_processor()
-    IntermediateProcessorStrategy::LabelDummyRemover =>
-      new_label_dummy_remover_layout_processor()
-    IntermediateProcessorStrategy::FinalSplineBendpointsCalculator =>
+    HorizontalCompactor => new_horizontal_graph_compactor_layout_processor()
+    LabelDummyRemover => new_label_dummy_remover_layout_processor()
+    FinalSplineBendpointsCalculator =>
       new_final_spline_bendpoints_calculator_layout_processor()
-    IntermediateProcessorStrategy::EndLabelSorter =>
-      new_end_label_sorter_layout_processor()
-    IntermediateProcessorStrategy::ReversedEdgeRestorer =>
-      new_reversed_edge_restorer_layout_processor()
-    IntermediateProcessorStrategy::EndLabelPostprocessor =>
-      new_end_label_postprocessor_layout_processor()
-    IntermediateProcessorStrategy::HierarchicalNodeResizer =>
+    EndLabelSorter => new_end_label_sorter_layout_processor()
+    ReversedEdgeRestorer => new_reversed_edge_restorer_layout_processor()
+    EndLabelPostprocessor => new_end_label_postprocessor_layout_processor()
+    HierarchicalNodeResizer =>
       new_hierarchical_node_resizing_processor_layout_processor()
-    IntermediateProcessorStrategy::DirectionPostprocessor =>
-      new_direction_postprocessor_layout_processor()
+    DirectionPostprocessor => new_direction_postprocessor_layout_processor()
   }
 }
 

@@ -17,7 +17,7 @@ fn port_placement_calculator_modified_port_placement_size(
   old_port_alignment : @core.PortAlignment,
   current_port_placement_size : Double,
 ) -> Double {
-  if node_context_port_alignment_equals(old_port_alignment, @core.Distributed) {
+  if node_context_port_alignment_equals(old_port_alignment, Distributed) {
     current_port_placement_size - 2.0 * node_context.port_port_spacing
   } else {
     current_port_placement_size
@@ -128,8 +128,8 @@ fn port_placement_calculator_horizontal_free_ports(
   let mut space_between_ports = node_context.port_port_spacing
 
   if (
-      node_context_port_alignment_equals(port_alignment, @core.Distributed) ||
-      node_context_port_alignment_equals(port_alignment, @core.Justified)
+      node_context_port_alignment_equals(port_alignment, Distributed) ||
+      node_context_port_alignment_equals(port_alignment, Justified)
     ) &&
     port_contexts.length() == 1 {
     calculated_port_placement_width = port_placement_calculator_modified_port_placement_size(
@@ -140,7 +140,7 @@ fn port_placement_calculator_horizontal_free_ports(
 
   if available_space < calculated_port_placement_width &&
     !node_context.has_size_option(PortsOverhang) {
-    if node_context_port_alignment_equals(port_alignment, @core.Distributed) {
+    if node_context_port_alignment_equals(port_alignment, Distributed) {
       space_between_ports += (available_space - calculated_port_placement_width) /
         (port_contexts.length() + 1).to_double()
       current_x_pos += space_between_ports
@@ -162,7 +162,7 @@ fn port_placement_calculator_horizontal_free_ports(
         current_x_pos += (available_space - calculated_port_placement_width) /
           2.0
       End => current_x_pos += available_space - calculated_port_placement_width
-      @core.Distributed => {
+      Distributed => {
         let additional_space_between_ports = (
             available_space - calculated_port_placement_width
           ) /
@@ -170,7 +170,7 @@ fn port_placement_calculator_horizontal_free_ports(
         space_between_ports += @cmp.maximum(0.0, additional_space_between_ports)
         current_x_pos += space_between_ports
       }
-      @core.Justified => {
+      Justified => {
         let additional_space_between_ports = (
             available_space - calculated_port_placement_width
           ) /
@@ -287,8 +287,8 @@ fn port_placement_calculator_vertical_free_ports(
   let node_width = node_context.node_size.x
 
   if (
-      node_context_port_alignment_equals(port_alignment, @core.Distributed) ||
-      node_context_port_alignment_equals(port_alignment, @core.Justified)
+      node_context_port_alignment_equals(port_alignment, Distributed) ||
+      node_context_port_alignment_equals(port_alignment, Justified)
     ) &&
     port_contexts.length() == 1 {
     calculated_port_placement_height = port_placement_calculator_modified_port_placement_size(
@@ -299,7 +299,7 @@ fn port_placement_calculator_vertical_free_ports(
 
   if available_space < calculated_port_placement_height &&
     !node_context.has_size_option(PortsOverhang) {
-    if node_context_port_alignment_equals(port_alignment, @core.Distributed) {
+    if node_context_port_alignment_equals(port_alignment, Distributed) {
       space_between_ports += (
           available_space - calculated_port_placement_height
         ) /
@@ -325,7 +325,7 @@ fn port_placement_calculator_vertical_free_ports(
         current_y_pos += (available_space - calculated_port_placement_height) /
           2.0
       End => current_y_pos += available_space - calculated_port_placement_height
-      @core.Distributed => {
+      Distributed => {
         let additional_space_between_ports = (
             available_space - calculated_port_placement_height
           ) /
@@ -333,7 +333,7 @@ fn port_placement_calculator_vertical_free_ports(
         space_between_ports += @cmp.maximum(0.0, additional_space_between_ports)
         current_y_pos += space_between_ports
       }
-      @core.Justified => {
+      Justified => {
         let additional_space_between_ports = (
             available_space - calculated_port_placement_height
           ) /

@@ -12,7 +12,7 @@ pub(all) suberror ElkGraphJsonTextUiActivatorException {
 fn[T] graph_json_text_ui_activator_raise_illegal_argument(
   message : String,
 ) -> T raise ElkGraphJsonTextUiActivatorException {
-  raise ElkGraphJsonTextUiActivatorException::IllegalArgumentException(message)
+  raise IllegalArgumentException(message)
 }
 
 ///|

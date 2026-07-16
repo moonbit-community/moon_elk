@@ -103,7 +103,7 @@ test "ElkGraph ide proposal provider exposes property and crossref behavior" {
     "Property.KeyAssignment_0",
     "RULE_ID",
     new_graph_text_ide_content_assist_context(
-      current_model=Some(@text.GraphNode(root)),
+      current_model=Some(GraphNode(root)),
     ),
     key_acceptor,
   )
@@ -265,7 +265,7 @@ test "ElkGraph ui providers expose generated behavior" {
     "Property.KeyAssignment_0",
     @ui.new_graph_text_assignment("RULE_ID"),
     @ui.new_graph_text_ui_content_assist_context(
-      current_model=Some(@text.GraphNode(root)),
+      current_model=Some(GraphNode(root)),
     ),
     proposal_acceptor,
   )
@@ -374,8 +374,8 @@ test "ElkGraph layout connector setup and convert handler work" {
   let handler = @ui.new_convert_graph_handler(project~)
   let processed = handler.execute(
     [
-      @ui.GraphTextSelectionOther,
-      @ui.GraphTextSelectionFile(
+      GraphTextSelectionOther,
+      GraphTextSelectionFile(
         "demo.elkg", "graph root layout [size: 30, 20] node child { layout [size: 10, 5] }",
       ),
     ],

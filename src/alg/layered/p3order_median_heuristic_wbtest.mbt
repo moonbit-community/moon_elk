@@ -20,12 +20,12 @@ fn median_test_new_node(layer : Layer, id : Int) -> LNode {
 fn median_test_connect(source : LNode, target : LNode) -> Unit {
   let source_port = new_l_port()
   source_port.set_node(Some(source))
-  source_port.set_side(@core.PortSide::East)
+  source_port.set_side(East)
   source_port.set_id(source.get_ports().length())
 
   let target_port = new_l_port()
   target_port.set_node(Some(target))
-  target_port.set_side(@core.PortSide::West)
+  target_port.set_side(West)
   target_port.set_id(target.get_ports().length())
 
   let edge = new_l_edge()

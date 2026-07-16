@@ -80,9 +80,9 @@ fn barycenter_change_index(direction : Bool) -> Int {
 ///|
 fn barycenter_port_type_for(direction : Bool) -> PortType {
   if direction {
-    PortType::Output
+    Output
   } else {
-    PortType::Input
+    Input
   }
 }
 
@@ -369,7 +369,7 @@ pub fn BarycenterHeuristic::minimize_crossings(
     true
   } else {
     match first_node_in_layer.get_type() {
-      NodeType::ExternalPort => true
+      ExternalPort => true
       _ => false
     }
   }

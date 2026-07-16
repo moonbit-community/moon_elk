@@ -120,7 +120,7 @@ fn node_promotion_compare_model_order_asc(left : LNode, right : LNode) -> Int {
 ///|
 fn node_promotion_node_type_is_label_node(node_type : NodeType) -> Bool {
   match node_type {
-    NodeType::LabelNode => true
+    LabelNode => true
     _ => false
   }
 }
@@ -128,7 +128,7 @@ fn node_promotion_node_type_is_label_node(node_type : NodeType) -> Bool {
 ///|
 fn node_promotion_node_type_is_normal(node_type : NodeType) -> Bool {
   match node_type {
-    NodeType::Normal => true
+    Normal => true
     _ => false
   }
 }
@@ -200,23 +200,23 @@ fn node_promotion_degree_array(size : Int) -> Array[Array[Int]] {
 ///|
 fn node_promotion_strategy_from_string(value : String) -> NodePromotionStrategy {
   match value {
-    "NIKOLOV" => NodePromotionStrategy::Nikolov
-    "NIKOLOV_PIXEL" => NodePromotionStrategy::NikolovPixel
-    "NIKOLOV_IMPROVED" => NodePromotionStrategy::NikolovImproved
-    "NIKOLOV_IMPROVED_PIXEL" => NodePromotionStrategy::NikolovImprovedPixel
-    "DUMMYNODE_PERCENTAGE" => NodePromotionStrategy::DummyNodePercentage
-    "NODECOUNT_PERCENTAGE" => NodePromotionStrategy::NodeCountPercentage
-    "NO_BOUNDARY" => NodePromotionStrategy::NoBoundary
-    "MODEL_ORDER_LEFT_TO_RIGHT" => NodePromotionStrategy::ModelOrderLeftToRight
-    "MODEL_ORDER_RIGHT_TO_LEFT" => NodePromotionStrategy::ModelOrderRightToLeft
-    _ => NodePromotionStrategy::NoneType
+    "NIKOLOV" => Nikolov
+    "NIKOLOV_PIXEL" => NikolovPixel
+    "NIKOLOV_IMPROVED" => NikolovImproved
+    "NIKOLOV_IMPROVED_PIXEL" => NikolovImprovedPixel
+    "DUMMYNODE_PERCENTAGE" => DummyNodePercentage
+    "NODECOUNT_PERCENTAGE" => NodeCountPercentage
+    "NO_BOUNDARY" => NoBoundary
+    "MODEL_ORDER_LEFT_TO_RIGHT" => ModelOrderLeftToRight
+    "MODEL_ORDER_RIGHT_TO_LEFT" => ModelOrderRightToLeft
+    _ => NoneType
   }
 }
 
 ///|
 fn node_promotion_strategy_is_none(strategy : NodePromotionStrategy) -> Bool {
   match strategy {
-    NodePromotionStrategy::NoneType => true
+    NoneType => true
     _ => false
   }
 }
@@ -224,7 +224,7 @@ fn node_promotion_strategy_is_none(strategy : NodePromotionStrategy) -> Bool {
 ///|
 fn node_promotion_strategy_is_nikolov(strategy : NodePromotionStrategy) -> Bool {
   match strategy {
-    NodePromotionStrategy::Nikolov => true
+    Nikolov => true
     _ => false
   }
 }
@@ -234,7 +234,7 @@ fn node_promotion_strategy_is_nikolov_pixel(
   strategy : NodePromotionStrategy,
 ) -> Bool {
   match strategy {
-    NodePromotionStrategy::NikolovPixel => true
+    NikolovPixel => true
     _ => false
   }
 }
@@ -244,7 +244,7 @@ fn node_promotion_strategy_is_model_order_left_to_right(
   strategy : NodePromotionStrategy,
 ) -> Bool {
   match strategy {
-    NodePromotionStrategy::ModelOrderLeftToRight => true
+    ModelOrderLeftToRight => true
     _ => false
   }
 }
@@ -254,7 +254,7 @@ fn node_promotion_strategy_is_model_order_right_to_left(
   strategy : NodePromotionStrategy,
 ) -> Bool {
   match strategy {
-    NodePromotionStrategy::ModelOrderRightToLeft => true
+    ModelOrderRightToLeft => true
     _ => false
   }
 }
@@ -902,38 +902,36 @@ fn node_promotion_process(
     let always_continue = (_reduced_dummies : Int, _iterations : Int) => true
 
     match strategy {
-      NodePromotionStrategy::Nikolov =>
-        node_promotion_promotion_magic(state, always_continue)
-      NodePromotionStrategy::NikolovPixel =>
-        node_promotion_promotion_magic(state, always_continue)
-      NodePromotionStrategy::NikolovImproved => {
-        state.promotion_strategy = NodePromotionStrategy::NoBoundary
+      Nikolov => node_promotion_promotion_magic(state, always_continue)
+      NikolovPixel => node_promotion_promotion_magic(state, always_continue)
+      NikolovImproved => {
+        state.promotion_strategy = NoBoundary
         node_promotion_promotion_magic(state, always_continue)
         let new_max_width = node_promotion_max_width(state.current_width)
         if new_max_width > state.max_width {
-          state.promotion_strategy = NodePromotionStrategy::Nikolov
+          state.promotion_strategy = Nikolov
           node_promotion_promotion_magic(state, always_continue)
         }
       }
-      NodePromotionStrategy::NikolovImprovedPixel => {
-        state.promotion_strategy = NodePromotionStrategy::NoBoundary
+      NikolovImprovedPixel => {
+        state.promotion_strategy = NoBoundary
         node_promotion_promotion_magic(state, always_continue)
         let new_max_width_pixel = node_promotion_max_width_pixel(
           state.current_width_pixel,
         )
         if new_max_width_pixel > state.max_width_pixel {
-          state.promotion_strategy = NodePromotionStrategy::NikolovPixel
+          state.promotion_strategy = NikolovPixel
           node_promotion_promotion_magic(state, always_continue)
         }
       }
-      NodePromotionStrategy::NodeCountPercentage => {
+      NodeCountPercentage => {
         let promote_until_n = (state.layers.length() * promote_until + 99) / 100
         node_promotion_promotion_magic(state, (
           _reduced_dummies : Int,
           iterations : Int,
         ) => iterations < promote_until_n)
       }
-      NodePromotionStrategy::DummyNodePercentage => {
+      DummyNodePercentage => {
         let promote_until_d = (state.dummy_node_count * promote_until + 99) /
           100
         node_promotion_promotion_magic(state, (
@@ -941,9 +939,9 @@ fn node_promotion_process(
           _iterations : Int,
         ) => reduced_dummies < promote_until_d)
       }
-      NodePromotionStrategy::ModelOrderLeftToRight =>
+      ModelOrderLeftToRight =>
         node_promotion_model_order_node_promotion(state, true)
-      NodePromotionStrategy::ModelOrderRightToLeft =>
+      ModelOrderRightToLeft =>
         node_promotion_model_order_node_promotion(state, false)
       _ => node_promotion_promotion_magic(state, always_continue)
     }

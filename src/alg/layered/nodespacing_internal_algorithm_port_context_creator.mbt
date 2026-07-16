@@ -27,7 +27,7 @@ pub(all) suberror PortContextCreatorException {
 fn[T] port_context_creator_raise_illegal_argument(
   message : String,
 ) -> T raise PortContextCreatorException {
-  raise PortContextCreatorException::IllegalArgumentException(message)
+  raise IllegalArgumentException(message)
 }
 
 ///|

@@ -10,9 +10,7 @@ pub(all) suberror AbstractPropertyDependentResourcePathException {
 fn[T] abstract_property_dependent_resource_path_raise_illegal_state(
   message : String,
 ) -> T raise AbstractPropertyDependentResourcePathException {
-  raise AbstractPropertyDependentResourcePathException::IllegalStateException(
-    message,
-  )
+  raise IllegalStateException(message)
 }
 
 ///|

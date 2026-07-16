@@ -6,7 +6,7 @@ fn partition_midprocessor_port_side(name : String) -> @core.PortSide {
     }
   }
   @core.layout_runtime_report_unsupported_configuration("unknown port side")
-  @core.PortSide::SideUndefined
+  SideUndefined
 }
 
 ///|

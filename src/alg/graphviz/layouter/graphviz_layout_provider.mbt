@@ -266,7 +266,7 @@ fn graphviz_layout_provider_read_all(
 ///|
 fn graphviz_layout_provider_command_is_invalid(command : @dot.Command) -> Bool {
   match command {
-    @dot.Invalid => true
+    Invalid => true
     _ => false
   }
 }

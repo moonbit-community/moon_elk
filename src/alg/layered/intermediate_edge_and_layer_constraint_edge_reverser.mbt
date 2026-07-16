@@ -7,9 +7,7 @@ priv suberror EdgeAndLayerConstraintEdgeReverserException {
 fn[T] edge_and_layer_constraint_edge_reverser_raise_unsupported_graph(
   message : String,
 ) -> T raise EdgeAndLayerConstraintEdgeReverserException {
-  raise EdgeAndLayerConstraintEdgeReverserException::UnsupportedGraphException(
-    message,
-  )
+  raise UnsupportedGraphException(message)
 }
 
 ///|
@@ -18,11 +16,11 @@ fn edge_and_layer_constraint_edge_reverser_layer_constraint_equals(
   right : LayerConstraint,
 ) -> Bool {
   match (left, right) {
-    (LayerConstraint::NoneType, LayerConstraint::NoneType) => true
-    (LayerConstraint::First, LayerConstraint::First) => true
-    (LayerConstraint::FirstSeparate, LayerConstraint::FirstSeparate) => true
-    (LayerConstraint::Last, LayerConstraint::Last) => true
-    (LayerConstraint::LastSeparate, LayerConstraint::LastSeparate) => true
+    (NoneType, NoneType) => true
+    (First, First) => true
+    (FirstSeparate, FirstSeparate) => true
+    (Last, Last) => true
+    (LastSeparate, LastSeparate) => true
     _ => false
   }
 }
@@ -33,11 +31,11 @@ fn edge_and_layer_constraint_edge_reverser_port_side_equals(
   right : @core.PortSide,
 ) -> Bool {
   match (left, right) {
-    (@core.PortSide::North, @core.PortSide::North) => true
-    (@core.PortSide::East, @core.PortSide::East) => true
-    (@core.PortSide::South, @core.PortSide::South) => true
-    (@core.PortSide::West, @core.PortSide::West) => true
-    (@core.PortSide::SideUndefined, @core.PortSide::SideUndefined) => true
+    (North, North) => true
+    (East, East) => true
+    (South, South) => true
+    (West, West) => true
+    (SideUndefined, SideUndefined) => true
     _ => false
   }
 }
@@ -48,9 +46,9 @@ fn edge_and_layer_constraint_edge_reverser_port_type_equals(
   right : PortType,
 ) -> Bool {
   match (left, right) {
-    (PortType::Undefined, PortType::Undefined) => true
-    (PortType::Input, PortType::Input) => true
-    (PortType::Output, PortType::Output) => true
+    (Undefined, Undefined) => true
+    (Input, Input) => true
+    (Output, Output) => true
     _ => false
   }
 }
@@ -61,14 +59,14 @@ fn edge_and_layer_constraint_edge_reverser_node_type_equals(
   right : NodeType,
 ) -> Bool {
   match (left, right) {
-    (NodeType::Normal, NodeType::Normal) => true
-    (NodeType::LongEdge, NodeType::LongEdge) => true
-    (NodeType::ExternalPort, NodeType::ExternalPort) => true
-    (NodeType::NorthSouthPort, NodeType::NorthSouthPort) => true
-    (NodeType::LabelNode, NodeType::LabelNode) => true
-    (NodeType::BreakingPoint, NodeType::BreakingPoint) => true
-    (NodeType::Placeholder, NodeType::Placeholder) => true
-    (NodeType::NonshiftingPlaceholder, NodeType::NonshiftingPlaceholder) => true
+    (Normal, Normal) => true
+    (LongEdge, LongEdge) => true
+    (ExternalPort, ExternalPort) => true
+    (NorthSouthPort, NorthSouthPort) => true
+    (LabelNode, LabelNode) => true
+    (BreakingPoint, BreakingPoint) => true
+    (Placeholder, Placeholder) => true
+    (NonshiftingPlaceholder, NonshiftingPlaceholder) => true
     _ => false
   }
 }
@@ -78,13 +76,13 @@ fn edge_and_layer_constraint_edge_reverser_port_constraints_from_string(
   value : String,
 ) -> @core.PortConstraints {
   match value {
-    "UNDEFINED" => @core.PortConstraints::Undefined
-    "FREE" => @core.PortConstraints::Free
-    "FIXED_SIDE" => @core.PortConstraints::FixedSide
-    "FIXED_ORDER" => @core.PortConstraints::FixedOrder
-    "FIXED_RATIO" => @core.PortConstraints::FixedRatio
-    "FIXED_POS" => @core.PortConstraints::FixedPos
-    _ => @core.PortConstraints::Undefined
+    "UNDEFINED" => Undefined
+    "FREE" => Free
+    "FIXED_SIDE" => FixedSide
+    "FIXED_ORDER" => FixedOrder
+    "FIXED_RATIO" => FixedRatio
+    "FIXED_POS" => FixedPos
+    _ => Undefined
   }
 }
 
@@ -159,11 +157,11 @@ fn edge_and_layer_constraint_edge_reverser_can_reverse_outgoing_edge(
 
   if edge_and_layer_constraint_edge_reverser_layer_constraint_equals(
       source_node_layer_constraint,
-      LayerConstraint::Last,
+      Last,
     ) &&
     edge_and_layer_constraint_edge_reverser_node_type_equals(
       target_node.get_type(),
-      NodeType::LabelNode,
+      LabelNode,
     ) {
     return false
   }
@@ -173,7 +171,7 @@ fn edge_and_layer_constraint_edge_reverser_can_reverse_outgoing_edge(
   )
   if edge_and_layer_constraint_edge_reverser_layer_constraint_equals(
       target_layer_constraint,
-      LayerConstraint::LastSeparate,
+      LastSeparate,
     ) {
     return false
   }
@@ -196,11 +194,11 @@ fn edge_and_layer_constraint_edge_reverser_can_reverse_incoming_edge(
 
   if edge_and_layer_constraint_edge_reverser_layer_constraint_equals(
       target_node_layer_constraint,
-      LayerConstraint::First,
+      First,
     ) &&
     edge_and_layer_constraint_edge_reverser_node_type_equals(
       source_node.get_type(),
-      NodeType::LabelNode,
+      LabelNode,
     ) {
     return false
   }
@@ -210,7 +208,7 @@ fn edge_and_layer_constraint_edge_reverser_can_reverse_incoming_edge(
   )
   if edge_and_layer_constraint_edge_reverser_layer_constraint_equals(
       source_layer_constraint,
-      LayerConstraint::FirstSeparate,
+      FirstSeparate,
     ) {
     return false
   }
@@ -228,11 +226,11 @@ fn edge_and_layer_constraint_edge_reverser_reverse_edges(
   for port in node.get_ports().copy() {
     if edge_and_layer_constraint_edge_reverser_port_type_equals(
         target_port_type,
-        PortType::Input,
+        Input,
       ) ||
       edge_and_layer_constraint_edge_reverser_port_type_equals(
         target_port_type,
-        PortType::Undefined,
+        Undefined,
       ) {
       for edge in port.get_outgoing_edges().copy() {
         if edge_and_layer_constraint_edge_reverser_can_reverse_outgoing_edge(
@@ -247,11 +245,11 @@ fn edge_and_layer_constraint_edge_reverser_reverse_edges(
 
     if edge_and_layer_constraint_edge_reverser_port_type_equals(
         target_port_type,
-        PortType::Output,
+        Output,
       ) ||
       edge_and_layer_constraint_edge_reverser_port_type_equals(
         target_port_type,
-        PortType::Undefined,
+        Undefined,
       ) {
       for edge in port.get_incoming_edges().copy() {
         if edge_and_layer_constraint_edge_reverser_can_reverse_incoming_edge(
@@ -276,10 +274,10 @@ fn edge_and_layer_constraint_edge_reverser_handle_outer_nodes(
       node,
     )
     let edge_constraint = match layer_constraint {
-      LayerConstraint::First => Some(EdgeConstraint::OutgoingOnly)
-      LayerConstraint::FirstSeparate => Some(EdgeConstraint::OutgoingOnly)
-      LayerConstraint::Last => Some(EdgeConstraint::IncomingOnly)
-      LayerConstraint::LastSeparate => Some(EdgeConstraint::IncomingOnly)
+      First => Some(EdgeConstraint::OutgoingOnly)
+      FirstSeparate => Some(OutgoingOnly)
+      Last => Some(IncomingOnly)
+      LastSeparate => Some(IncomingOnly)
       _ => None
     }
 
@@ -290,14 +288,14 @@ fn edge_and_layer_constraint_edge_reverser_handle_outer_nodes(
             layered_graph,
             node,
             layer_constraint,
-            PortType::Input,
+            Input,
           )
         } else {
           edge_and_layer_constraint_edge_reverser_reverse_edges(
             layered_graph,
             node,
             layer_constraint,
-            PortType::Output,
+            Output,
           )
         }
       None => remaining_nodes.push(node)
@@ -316,10 +314,10 @@ fn edge_and_layer_constraint_edge_reverser_handle_inner_nodes(
       node,
     )
     let edge_constraint = match layer_constraint {
-      LayerConstraint::First => Some(EdgeConstraint::OutgoingOnly)
-      LayerConstraint::FirstSeparate => Some(EdgeConstraint::OutgoingOnly)
-      LayerConstraint::Last => Some(EdgeConstraint::IncomingOnly)
-      LayerConstraint::LastSeparate => Some(EdgeConstraint::IncomingOnly)
+      First => Some(EdgeConstraint::OutgoingOnly)
+      FirstSeparate => Some(OutgoingOnly)
+      Last => Some(IncomingOnly)
+      LastSeparate => Some(IncomingOnly)
       _ => None
     }
 
@@ -330,14 +328,14 @@ fn edge_and_layer_constraint_edge_reverser_handle_inner_nodes(
             layered_graph,
             node,
             layer_constraint,
-            PortType::Input,
+            Input,
           )
         } else {
           edge_and_layer_constraint_edge_reverser_reverse_edges(
             layered_graph,
             node,
             layer_constraint,
-            PortType::Output,
+            Output,
           )
         }
       None => {
@@ -356,12 +354,12 @@ fn edge_and_layer_constraint_edge_reverser_handle_inner_nodes(
           for port in node.get_ports() {
             let east_reversed = edge_and_layer_constraint_edge_reverser_port_side_equals(
                 port.get_side(),
-                @core.PortSide::East,
+                East,
               ) &&
               port.get_net_flow() > 0
             let west_reversed = edge_and_layer_constraint_edge_reverser_port_side_equals(
                 port.get_side(),
-                @core.PortSide::West,
+                West,
               ) &&
               port.get_net_flow() < 0
             if !(east_reversed || west_reversed) {
@@ -377,11 +375,11 @@ fn edge_and_layer_constraint_edge_reverser_handle_inner_nodes(
               )
               if edge_and_layer_constraint_edge_reverser_layer_constraint_equals(
                   target_layer_constraint,
-                  LayerConstraint::Last,
+                  Last,
                 ) ||
                 edge_and_layer_constraint_edge_reverser_layer_constraint_equals(
                   target_layer_constraint,
-                  LayerConstraint::LastSeparate,
+                  LastSeparate,
                 ) {
                 all_ports_reversed = false
                 break
@@ -399,11 +397,11 @@ fn edge_and_layer_constraint_edge_reverser_handle_inner_nodes(
               )
               if edge_and_layer_constraint_edge_reverser_layer_constraint_equals(
                   source_layer_constraint,
-                  LayerConstraint::First,
+                  First,
                 ) ||
                 edge_and_layer_constraint_edge_reverser_layer_constraint_equals(
                   source_layer_constraint,
-                  LayerConstraint::FirstSeparate,
+                  FirstSeparate,
                 ) {
                 all_ports_reversed = false
                 break
@@ -419,7 +417,7 @@ fn edge_and_layer_constraint_edge_reverser_handle_inner_nodes(
               layered_graph,
               node,
               layer_constraint,
-              PortType::Undefined,
+              Undefined,
             )
           }
         }
@@ -447,9 +445,7 @@ fn edge_and_layer_constraint_edge_reverser_process(
       layered_graph, remaining_nodes,
     )
   } catch {
-    EdgeAndLayerConstraintEdgeReverserException::UnsupportedGraphException(
-      message
-    ) => {
+    UnsupportedGraphException(message) => {
       @core.layout_runtime_report_unsupported_configuration(message)
       monitor.done()
       return

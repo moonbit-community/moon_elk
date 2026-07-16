@@ -42,10 +42,10 @@ pub fn LayeredQuadruplet::set_for_direction(
   direction : @core.Direction,
 ) -> Unit {
   match direction {
-    @core.Direction::Leftward => self.left = value
-    @core.Direction::Rightward => self.right = value
-    @core.Direction::Upward => self.up = value
-    @core.Direction::Downward => self.down = value
+    Leftward => self.left = value
+    Rightward => self.right = value
+    Upward => self.up = value
+    Downward => self.down = value
     Undefined => ()
   }
 }
@@ -56,10 +56,10 @@ pub fn LayeredQuadruplet::get(
   direction : @core.Direction,
 ) -> Bool {
   match direction {
-    @core.Direction::Leftward => self.left
-    @core.Direction::Rightward => self.right
-    @core.Direction::Upward => self.up
-    @core.Direction::Downward => self.down
+    Leftward => self.left
+    Rightward => self.right
+    Upward => self.up
+    Downward => self.down
     Undefined => false
   }
 }

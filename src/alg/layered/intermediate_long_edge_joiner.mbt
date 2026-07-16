@@ -1,14 +1,14 @@
 ///|
 fn long_edge_joiner_node_type_equals(left : NodeType, right : NodeType) -> Bool {
   match (left, right) {
-    (NodeType::Normal, NodeType::Normal) => true
-    (NodeType::LongEdge, NodeType::LongEdge) => true
-    (NodeType::ExternalPort, NodeType::ExternalPort) => true
-    (NodeType::NorthSouthPort, NodeType::NorthSouthPort) => true
-    (NodeType::LabelNode, NodeType::LabelNode) => true
-    (NodeType::BreakingPoint, NodeType::BreakingPoint) => true
-    (NodeType::Placeholder, NodeType::Placeholder) => true
-    (NodeType::NonshiftingPlaceholder, NodeType::NonshiftingPlaceholder) => true
+    (Normal, Normal) => true
+    (LongEdge, LongEdge) => true
+    (ExternalPort, ExternalPort) => true
+    (NorthSouthPort, NorthSouthPort) => true
+    (LabelNode, LabelNode) => true
+    (BreakingPoint, BreakingPoint) => true
+    (Placeholder, Placeholder) => true
+    (NonshiftingPlaceholder, NonshiftingPlaceholder) => true
     _ => false
   }
 }
@@ -19,11 +19,11 @@ fn long_edge_joiner_port_side_equals(
   right : @core.PortSide,
 ) -> Bool {
   match (left, right) {
-    (@core.PortSide::North, @core.PortSide::North) => true
-    (@core.PortSide::East, @core.PortSide::East) => true
-    (@core.PortSide::South, @core.PortSide::South) => true
-    (@core.PortSide::West, @core.PortSide::West) => true
-    (@core.PortSide::SideUndefined, @core.PortSide::SideUndefined) => true
+    (North, North) => true
+    (East, East) => true
+    (South, South) => true
+    (West, West) => true
+    (SideUndefined, SideUndefined) => true
     _ => false
   }
 }
@@ -107,14 +107,8 @@ pub fn long_edge_joiner_join_at(
   long_edge_dummy : LNode,
   add_unnecessary_bendpoints : Bool,
 ) -> Unit {
-  let west_ports = long_edge_joiner_port_side_ports(
-    long_edge_dummy,
-    @core.PortSide::West,
-  )
-  let east_ports = long_edge_joiner_port_side_ports(
-    long_edge_dummy,
-    @core.PortSide::East,
-  )
+  let west_ports = long_edge_joiner_port_side_ports(long_edge_dummy, West)
+  let east_ports = long_edge_joiner_port_side_ports(long_edge_dummy, East)
   if west_ports.is_empty() || east_ports.is_empty() {
     return
   }
@@ -203,7 +197,7 @@ fn long_edge_joiner_process(
     let mut index = 0
     while index < layer_nodes.length() {
       let node = layer_nodes[index]
-      if long_edge_joiner_node_type_equals(node.get_type(), NodeType::LongEdge) {
+      if long_edge_joiner_node_type_equals(node.get_type(), LongEdge) {
         long_edge_joiner_join_at(node, add_unnecessary_bendpoints)
         ignore(layer_nodes.remove(index))
       } else {

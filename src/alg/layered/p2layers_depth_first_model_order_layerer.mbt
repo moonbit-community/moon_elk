@@ -34,17 +34,15 @@ let depth_first_model_order_layerer_baseline_processing_configuration : @core.La
   LGraph,
 ] = @core.layout_processor_configuration_create(layered_phase_descriptor)
   .add_before(
-    LayeredPhases::P1CycleBreaking,
-    layered_intermediate_processor_factory(
-      IntermediateProcessorStrategy::EdgeAndLayerConstraintEdgeReverser,
-    ),
+    P1CycleBreaking,
+    layered_intermediate_processor_factory(EdgeAndLayerConstraintEdgeReverser),
   )
   .add_before(
-    LayeredPhases::P2Layering,
+    P2Layering,
     depth_first_model_order_layerer_layer_constraint_preprocessor_factory(),
   )
   .add_before(
-    LayeredPhases::P3NodeOrdering,
+    P3NodeOrdering,
     depth_first_model_order_layerer_layer_constraint_postprocessor_factory(),
   )
 
@@ -57,7 +55,7 @@ pub(all) suberror DepthFirstModelOrderLayererException {
 fn[T] depth_first_model_order_layerer_raise_unsupported_graph(
   message : String,
 ) -> T raise DepthFirstModelOrderLayererException {
-  raise DepthFirstModelOrderLayererException::UnsupportedGraphException(message)
+  raise UnsupportedGraphException(message)
 }
 
 ///|
@@ -125,7 +123,7 @@ fn depth_first_model_order_layerer_is_connected_to_current_layer(
       edge,
     )
     let directly_connected = if state.nodes_to_place.is_empty() {
-      if source_node.get_type() is NodeType::Normal {
+      if source_node.get_type() is Normal {
         match source_node.get_layer() {
           Some(layer) => layer.get_id() == state.current_layer_id
           None => false
@@ -134,7 +132,7 @@ fn depth_first_model_order_layerer_is_connected_to_current_layer(
         false
       }
     } else {
-      source_node.get_type() is NodeType::Normal &&
+      source_node.get_type() is Normal &&
       source_node.get_id() == state.current_layer_id
     }
 
@@ -145,7 +143,7 @@ fn depth_first_model_order_layerer_is_connected_to_current_layer(
         let connected_layer_via_dummy = depth_first_model_order_layerer_require_edge_source_node(
           source_node.get_incoming_edges()[0],
         ).get_layer()
-        if source_node.get_type() is NodeType::LabelNode {
+        if source_node.get_type() is LabelNode {
           match connected_layer_via_dummy {
             Some(layer) => layer.get_id() == state.current_layer_id
             None => false
@@ -154,7 +152,7 @@ fn depth_first_model_order_layerer_is_connected_to_current_layer(
           false
         }
       }
-    } else if source_node.get_type() is NodeType::LabelNode {
+    } else if source_node.get_type() is LabelNode {
       let incoming_edges = source_node.get_incoming_edges()
       if incoming_edges.is_empty() {
         depth_first_model_order_layerer_raise_unsupported_graph(
@@ -209,8 +207,7 @@ fn depth_first_model_order_layerer_add_node_to_layer(
     let source_node = depth_first_model_order_layerer_require_edge_source_node(
       edge,
     )
-    if source_node.get_layer() is None &&
-      source_node.get_type() is NodeType::LabelNode {
+    if source_node.get_layer() is None && source_node.get_type() is LabelNode {
       source_node.set_layer(state.current_dummy_layer)
     }
   }
@@ -280,7 +277,7 @@ fn depth_first_model_order_layerer_process(
 
   let real_nodes = []
   for node in layered_graph.get_layerless_nodes() {
-    if node.get_type() is NodeType::Normal {
+    if node.get_type() is Normal {
       real_nodes.push(node)
     }
   }
@@ -338,7 +335,7 @@ fn depth_first_model_order_layerer_process(
                 edge,
               )
               if source_node.get_layer() is None &&
-                source_node.get_type() is NodeType::LabelNode {
+                source_node.get_type() is LabelNode {
                 state.nodes_to_place.push(source_node)
                 source_node.set_id(desired_layer - 1)
               }
@@ -397,7 +394,7 @@ fn depth_first_model_order_layerer_process(
       layer_id += 1
     }
   } catch {
-    DepthFirstModelOrderLayererException::UnsupportedGraphException(message) => {
+    UnsupportedGraphException(message) => {
       @core.layout_runtime_report_unsupported_configuration(message)
       monitor.done()
       return

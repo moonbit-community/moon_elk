@@ -7,7 +7,7 @@ priv suberror HypernodesProcessorException {
 fn[T] hypernodes_processor_raise_unsupported_graph(
   message : String,
 ) -> T raise HypernodesProcessorException {
-  raise HypernodesProcessorException::UnsupportedGraphException(message)
+  raise UnsupportedGraphException(message)
 }
 
 ///|
@@ -154,12 +154,12 @@ fn hypernodes_processor_move_hypernode(
     diffy > hypernode.get_size().y / 2.0 {
     let north_port = new_l_port()
     north_port.set_node(Some(hypernode))
-    north_port.set_side(@core.PortSide::North)
+    north_port.set_side(North)
     north_port.get_position().x = hypernode.get_size().x / 2.0
 
     let south_port = new_l_port()
     south_port.set_node(Some(hypernode))
-    south_port.set_side(@core.PortSide::South)
+    south_port.set_side(South)
     south_port.get_position().x = hypernode.get_size().x / 2.0
     south_port.get_position().y = hypernode.get_size().y
 
@@ -238,10 +238,10 @@ fn hypernodes_processor_process(
 
           for port in node.get_ports() {
             match port.get_side() {
-              @core.PortSide::North => top_edges = top_edges + 1
-              @core.PortSide::East => right_edges = right_edges + 1
-              @core.PortSide::South => bottom_edges = bottom_edges + 1
-              @core.PortSide::West => left_edges = left_edges + 1
+              North => top_edges = top_edges + 1
+              East => right_edges = right_edges + 1
+              South => bottom_edges = bottom_edges + 1
+              West => left_edges = left_edges + 1
               _ => ()
             }
           }
@@ -257,7 +257,7 @@ fn hypernodes_processor_process(
       }
     }
   } catch {
-    HypernodesProcessorException::UnsupportedGraphException(message) => {
+    UnsupportedGraphException(message) => {
       @core.layout_runtime_report_unsupported_configuration(message)
       monitor.done()
       return

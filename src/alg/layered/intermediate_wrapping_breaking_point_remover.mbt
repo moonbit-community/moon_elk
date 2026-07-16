@@ -3,10 +3,10 @@ fn breaking_point_remover_parse_edge_routing(
   value : String,
 ) -> @core.EdgeRouting {
   match value {
-    "POLYLINE" => @core.EdgeRouting::Polyline
-    "SPLINES" => @core.EdgeRouting::Splines
-    "ORTHOGONAL" => @core.EdgeRouting::Orthogonal
-    _ => @core.EdgeRouting::RoutingUndefined
+    "POLYLINE" => Polyline
+    "SPLINES" => Splines
+    "ORTHOGONAL" => Orthogonal
+    _ => RoutingUndefined
   }
 }
 
@@ -15,7 +15,7 @@ fn breaking_point_remover_node_type_is_breaking_point(
   node_type : NodeType,
 ) -> Bool {
   match node_type {
-    NodeType::BreakingPoint => true
+    BreakingPoint => true
     _ => false
   }
 }
@@ -143,7 +143,7 @@ fn breaking_point_remover_remove(
   let new_bends = @core.new_kvector_chain()
 
   match edge_routing_value {
-    @core.EdgeRouting::Splines => {
+    Splines => {
       let spline_segments_one = bp_info.node_start_edge.get_property_spline_segment_array(
         internal_properties_spline_route_start,
       )
@@ -212,7 +212,7 @@ fn breaking_point_remover_remove(
         [],
       )
     }
-    @core.EdgeRouting::Polyline => {
+    Polyline => {
       new_bends.add_all(bp_info.node_start_edge.get_bend_points().to_array())
       new_bends.add_vector(@core.new_kvector_copy(bp_info.start.get_position()))
       new_bends.add_all(

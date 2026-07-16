@@ -19,13 +19,13 @@ fn layer_total_calculate_port_ranks_raise(
 ) -> Double raise LayerTotalPortDistributorException {
   let port_ranks = distributor.get_port_ranks()
   match port_type {
-    PortType::Input => {
+    Input => {
       let mut input_count = 0
       let mut north_input_count = 0
       for port in node.get_ports() {
         if !port.get_incoming_edges().is_empty() {
           input_count = input_count + 1
-          if lnode_port_side_equals(port.get_side(), @core.PortSide::North) {
+          if lnode_port_side_equals(port.get_side(), North) {
             north_input_count = north_input_count + 1
           }
         }
@@ -33,8 +33,8 @@ fn layer_total_calculate_port_ranks_raise(
 
       let mut north_pos = rank_sum + north_input_count.to_double()
       let mut rest_pos = rank_sum + input_count.to_double()
-      for port in node.get_ports_by_type(PortType::Input) {
-        if lnode_port_side_equals(port.get_side(), @core.PortSide::North) {
+      for port in node.get_ports_by_type(Input) {
+        if lnode_port_side_equals(port.get_side(), North) {
           port_ranks[port.get_id()] = north_pos
           north_pos = north_pos - 1.0
         } else {
@@ -45,16 +45,15 @@ fn layer_total_calculate_port_ranks_raise(
 
       input_count.to_double()
     }
-    PortType::Output => {
+    Output => {
       let mut pos = 0
-      for port in node.get_ports_by_type(PortType::Output) {
+      for port in node.get_ports_by_type(Output) {
         pos = pos + 1
         port_ranks[port.get_id()] = rank_sum + pos.to_double()
       }
       pos.to_double()
     }
-    PortType::Undefined =>
-      layer_total_port_distributor_raise("Port type is undefined")
+    Undefined => layer_total_port_distributor_raise("Port type is undefined")
   }
 }
 

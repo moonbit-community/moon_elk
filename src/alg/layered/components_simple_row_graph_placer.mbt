@@ -104,10 +104,7 @@ pub fn LayeredSimpleRowGraphPlacer::sort_components(
   let ordering = target.get_property_component_ordering_strategy(
     layered_options_consider_model_order_components,
   )
-  if !component_ordering_strategy_equals(
-      ordering,
-      ComponentOrderingStrategy::NoneType,
-    ) {
+  if !component_ordering_strategy_equals(ordering, NoneType) {
     return
   }
 

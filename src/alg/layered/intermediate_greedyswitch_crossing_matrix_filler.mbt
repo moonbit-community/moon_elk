@@ -19,7 +19,7 @@ fn crossing_matrix_new_int_matrix(size : Int) -> Array[Array[Int]] {
 ///|
 fn crossing_matrix_is_one_sided(switch_type : GreedySwitchType) -> Bool {
   match switch_type {
-    GreedySwitchType::OneSided => true
+    OneSided => true
     _ => false
   }
 }
@@ -32,7 +32,7 @@ pub enum CrossingCountSide {
 
 ///|
 pub fn crossing_count_side_values() -> Array[CrossingCountSide] {
-  [CrossingCountSide::West, CrossingCountSide::East]
+  [West, East]
 }
 
 ///|
@@ -106,11 +106,11 @@ fn CrossingMatrixFiller::fill_crossing_matrix(
 ) -> Unit {
   if self.one_sided {
     match self.direction {
-      CrossingCountSide::East =>
+      East =>
         self.in_between_layer_crossing_counter.count_eastern_edge_crossings(
           upper_node, lower_node,
         )
-      CrossingCountSide::West =>
+      West =>
         self.in_between_layer_crossing_counter.count_western_edge_crossings(
           upper_node, lower_node,
         )

@@ -12,7 +12,7 @@ pub fn cm_group_model_order_calculate_model_order_or_group_model_order(
   )
   let enforce_group_model_order = group_order_strategy_equals(
     group_order_strategy,
-    GroupOrderStrategy::Enforced,
+    Enforced,
   )
   let enforced_orders = layered_options_parse_int_list(
     parent.get_property_string(
@@ -53,7 +53,7 @@ pub fn cm_group_model_order_calculate_model_order_or_group_model_order_port(
   )
   let enforce_group_model_order = group_order_strategy_equals(
     group_order_strategy,
-    GroupOrderStrategy::Enforced,
+    Enforced,
   )
   let enforced_orders = layered_options_parse_int_list(
     parent.get_property_string(
@@ -94,7 +94,7 @@ pub fn cm_group_model_order_calculate_model_order_or_group_model_order_edge(
   )
   let enforce_group_model_order = group_order_strategy_equals(
     group_order_strategy,
-    GroupOrderStrategy::Enforced,
+    Enforced,
   )
   let enforced_orders = layered_options_parse_int_list(
     parent.get_property_string(

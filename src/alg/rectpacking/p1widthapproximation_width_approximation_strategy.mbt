@@ -9,9 +9,9 @@ pub fn rectpacking_width_approximation_strategy_from_string(
   value : String,
 ) -> RectpackingWidthApproximationStrategy {
   if value == "TARGET_WIDTH" {
-    RectpackingWidthApproximationStrategy::TARGET_WIDTH
+    TARGET_WIDTH
   } else {
-    RectpackingWidthApproximationStrategy::GREEDY
+    GREEDY
   }
 }
 

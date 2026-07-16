@@ -1,21 +1,21 @@
 ///|
 fn label_dummy_remover_parse_direction(value : String) -> @core.Direction {
   match value {
-    "RIGHT" => @core.Direction::Rightward
-    "LEFT" => @core.Direction::Leftward
-    "DOWN" => @core.Direction::Downward
-    "UP" => @core.Direction::Upward
-    _ => @core.Direction::Undefined
+    "RIGHT" => Rightward
+    "LEFT" => Leftward
+    "DOWN" => Downward
+    "UP" => Upward
+    _ => Undefined
   }
 }
 
 ///|
 fn label_dummy_remover_parse_edge_routing(value : String) -> @core.EdgeRouting {
   match value {
-    "POLYLINE" => @core.EdgeRouting::Polyline
-    "SPLINES" => @core.EdgeRouting::Splines
-    "ORTHOGONAL" => @core.EdgeRouting::Orthogonal
-    _ => @core.EdgeRouting::RoutingUndefined
+    "POLYLINE" => Polyline
+    "SPLINES" => Splines
+    "ORTHOGONAL" => Orthogonal
+    _ => RoutingUndefined
   }
 }
 
@@ -24,8 +24,8 @@ fn label_dummy_remover_direction_is_vertical(
   direction : @core.Direction,
 ) -> Bool {
   match direction {
-    @core.Direction::Upward => true
-    @core.Direction::Downward => true
+    Upward => true
+    Downward => true
     _ => false
   }
 }
@@ -33,7 +33,7 @@ fn label_dummy_remover_direction_is_vertical(
 ///|
 fn label_dummy_remover_direction_is_up(direction : @core.Direction) -> Bool {
   match direction {
-    @core.Direction::Upward => true
+    Upward => true
     _ => false
   }
 }
@@ -41,7 +41,7 @@ fn label_dummy_remover_direction_is_up(direction : @core.Direction) -> Bool {
 ///|
 fn label_dummy_remover_node_type_is_label(node_type : NodeType) -> Bool {
   match node_type {
-    NodeType::LabelNode => true
+    LabelNode => true
     _ => false
   }
 }
@@ -49,7 +49,7 @@ fn label_dummy_remover_node_type_is_label(node_type : NodeType) -> Bool {
 ///|
 fn label_dummy_remover_label_side_is_below(side : @core.LabelSide) -> Bool {
   match side {
-    @core.LabelSide::Below => true
+    Below => true
     _ => false
   }
 }
@@ -59,7 +59,7 @@ fn label_dummy_remover_edge_routing_is_polyline(
   edge_routing_value : String,
 ) -> Bool {
   match label_dummy_remover_parse_edge_routing(edge_routing_value) {
-    @core.EdgeRouting::Polyline => true
+    Polyline => true
     _ => false
   }
 }

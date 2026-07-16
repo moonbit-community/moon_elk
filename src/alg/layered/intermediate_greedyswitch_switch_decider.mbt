@@ -32,7 +32,7 @@ fn switch_decider_same_layout_unit(left : LNode?, right : LNode?) -> Bool {
 ///|
 fn switch_decider_is_external_port(node : LNode) -> Bool {
   match node.get_type() {
-    NodeType::ExternalPort => true
+    ExternalPort => true
     _ => false
   }
 }
@@ -40,7 +40,7 @@ fn switch_decider_is_external_port(node : LNode) -> Bool {
 ///|
 fn switch_decider_is_long_edge(node : LNode) -> Bool {
   match node.get_type() {
-    NodeType::LongEdge => true
+    LongEdge => true
     _ => false
   }
 }
@@ -48,7 +48,7 @@ fn switch_decider_is_long_edge(node : LNode) -> Bool {
 ///|
 fn switch_decider_is_normal(node : LNode) -> Bool {
   match node.get_type() {
-    NodeType::Normal => true
+    Normal => true
     _ => false
   }
 }
@@ -56,7 +56,7 @@ fn switch_decider_is_normal(node : LNode) -> Bool {
 ///|
 fn switch_decider_is_north_south_port(node : LNode) -> Bool {
   match node.get_type() {
-    NodeType::NorthSouthPort => true
+    NorthSouthPort => true
     _ => false
   }
 }
@@ -117,7 +117,7 @@ pub fn new_switch_decider(
   ignore(
     left_in_layer_counter.init_port_positions_for_in_layer_crossings(
       free_layer,
-      @core.PortSide::West,
+      West,
     ),
   )
 
@@ -125,7 +125,7 @@ pub fn new_switch_decider(
   ignore(
     right_in_layer_counter.init_port_positions_for_in_layer_crossings(
       free_layer,
-      @core.PortSide::East,
+      East,
     ),
   )
 
@@ -206,16 +206,8 @@ pub fn SwitchDecider::notify_of_switch(
   upper_node : LNode,
   lower_node : LNode,
 ) -> Unit {
-  self.left_in_layer_counter.switch_nodes(
-    upper_node,
-    lower_node,
-    @core.PortSide::West,
-  )
-  self.right_in_layer_counter.switch_nodes(
-    upper_node,
-    lower_node,
-    @core.PortSide::East,
-  )
+  self.left_in_layer_counter.switch_nodes(upper_node, lower_node, West)
+  self.right_in_layer_counter.switch_nodes(upper_node, lower_node, East)
 
   if self.count_crossings_caused_by_port_switch {
     let upper_port = match
@@ -267,12 +259,12 @@ pub fn SwitchDecider::does_switch_reduce_crossings(
   let left_in_layer = self.left_in_layer_counter.count_in_layer_crossings_between_nodes_in_both_orders(
     upper_node,
     lower_node,
-    @core.PortSide::West,
+    West,
   )
   let right_in_layer = self.right_in_layer_counter.count_in_layer_crossings_between_nodes_in_both_orders(
     upper_node,
     lower_node,
-    @core.PortSide::East,
+    East,
   )
 
   self.north_south_counter.count_crossings(upper_node, lower_node)
@@ -387,18 +379,12 @@ fn SwitchDecider::have_layout_unit_constraints(
     ) ||
     self.part_of_multi_node_layout_unit(lower_node, lower_layout_unit)
 
-  let upper_node_has_northern_edges = self.has_edges_on_side(
-    upper_node,
-    @core.PortSide::North,
-  )
-  let lower_node_has_southern_edges = self.has_edges_on_side(
-    lower_node,
-    @core.PortSide::South,
-  )
+  let upper_node_has_northern_edges = self.has_edges_on_side(upper_node, North)
+  let lower_node_has_southern_edges = self.has_edges_on_side(lower_node, South)
 
   nodes_have_layout_units = nodes_have_layout_units ||
-    self.has_edges_on_side(upper_node, @core.PortSide::South) ||
-    self.has_edges_on_side(lower_node, @core.PortSide::North)
+    self.has_edges_on_side(upper_node, South) ||
+    self.has_edges_on_side(lower_node, North)
 
   let has_layout_unit_constraint = (
       nodes_have_layout_units && are_in_different_layout_units

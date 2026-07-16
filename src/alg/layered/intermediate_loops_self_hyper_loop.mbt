@@ -16,7 +16,7 @@ pub struct SelfHyperLoop {
 ///|
 fn self_hyper_loop_port_side_index(side : @core.PortSide) -> Int {
   match side {
-    @core.PortSide::SideUndefined => 0
+    SideUndefined => 0
     North => 1
     East => 2
     South => 3

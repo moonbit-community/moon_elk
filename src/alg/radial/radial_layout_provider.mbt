@@ -15,7 +15,7 @@ priv suberror RadialLayoutProviderException {
 fn radial_layout_provider_raise_unsupported_configuration(
   message : String,
 ) -> Unit raise RadialLayoutProviderException {
-  raise RadialLayoutProviderException::UnsupportedConfiguration(message)
+  raise UnsupportedConfiguration(message)
 }
 
 ///|
@@ -23,7 +23,7 @@ fn radial_layout_provider_exception_message(
   err : RadialLayoutProviderException,
 ) -> String {
   match err {
-    RadialLayoutProviderException::UnsupportedConfiguration(message) => message
+    UnsupportedConfiguration(message) => message
   }
 }
 
@@ -57,14 +57,14 @@ fn radial_layout_provider_assemble_algorithm(
   ignore(provider.algorithm_assembler.reset())
   ignore(
     provider.algorithm_assembler.set_phase(
-      RadialLayoutPhases::P1_NODE_PLACEMENT,
-      radial_layout_phase_factory(RadialLayoutPhases::P1_NODE_PLACEMENT),
+      P1_NODE_PLACEMENT,
+      radial_layout_phase_factory(P1_NODE_PLACEMENT),
     ),
   )
   ignore(
     provider.algorithm_assembler.set_phase(
-      RadialLayoutPhases::P2_EDGE_ROUTING,
-      radial_layout_phase_factory(RadialLayoutPhases::P2_EDGE_ROUTING),
+      P2_EDGE_ROUTING,
+      radial_layout_phase_factory(P2_EDGE_ROUTING),
     ),
   )
 
@@ -73,42 +73,34 @@ fn radial_layout_provider_assemble_algorithm(
   )
   ignore(
     configuration.add_before(
-      RadialLayoutPhases::P2_EDGE_ROUTING,
-      radial_intermediate_processor_factory(
-        RadialIntermediateProcessorStrategy::OVERLAP_REMOVAL,
-      ),
+      P2_EDGE_ROUTING,
+      radial_intermediate_processor_factory(OVERLAP_REMOVAL),
     ),
   )
   let has_compaction = match radial_graph_compaction_strategy(layout_graph) {
-    RadialCompactionStrategy::NONE => false
+    NONE => false
     _ => true
   }
   if has_compaction {
     ignore(
       configuration.add_before(
-        RadialLayoutPhases::P2_EDGE_ROUTING,
-        radial_intermediate_processor_factory(
-          RadialIntermediateProcessorStrategy::COMPACTION,
-        ),
+        P2_EDGE_ROUTING,
+        radial_intermediate_processor_factory(COMPACTION),
       ),
     )
   }
   if @graph.node_get_bool_property(layout_graph, radial_rotate) {
     ignore(
       configuration.add_before(
-        RadialLayoutPhases::P2_EDGE_ROUTING,
-        radial_intermediate_processor_factory(
-          RadialIntermediateProcessorStrategy::ROTATION,
-        ),
+        P2_EDGE_ROUTING,
+        radial_intermediate_processor_factory(ROTATION),
       ),
     )
   }
   ignore(
     configuration.add_before(
-      RadialLayoutPhases::P2_EDGE_ROUTING,
-      radial_intermediate_processor_factory(
-        RadialIntermediateProcessorStrategy::GRAPH_SIZE_CALCULATION,
-      ),
+      P2_EDGE_ROUTING,
+      radial_intermediate_processor_factory(GRAPH_SIZE_CALCULATION),
     ),
   )
   if @graph.node_get_bool_property(
@@ -116,10 +108,8 @@ fn radial_layout_provider_assemble_algorithm(
     ) {
     ignore(
       configuration.add_after(
-        RadialLayoutPhases::P2_EDGE_ROUTING,
-        radial_intermediate_processor_factory(
-          RadialIntermediateProcessorStrategy::OUTGOING_EDGE_ANGLES,
-        ),
+        P2_EDGE_ROUTING,
+        radial_intermediate_processor_factory(OUTGOING_EDGE_ANGLES),
       ),
     )
   }

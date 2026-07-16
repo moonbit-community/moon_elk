@@ -2,7 +2,7 @@
 fn option_targets_contain_parent(option_data : @core.LayoutOptionData) -> Bool {
   for target in option_data.get_targets() {
     match target {
-      @core.ParentsTarget => return true
+      ParentsTarget => return true
       _ => ()
     }
   }
@@ -13,7 +13,7 @@ fn option_targets_contain_parent(option_data : @core.LayoutOptionData) -> Bool {
 fn option_targets_contain_edge(option_data : @core.LayoutOptionData) -> Bool {
   for target in option_data.get_targets() {
     match target {
-      @core.EdgesTarget => return true
+      EdgesTarget => return true
       _ => ()
     }
   }

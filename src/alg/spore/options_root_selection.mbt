@@ -7,8 +7,8 @@ pub enum SporeRootSelection {
 ///|
 pub fn spore_root_selection_from_string(value : String) -> SporeRootSelection {
   if value == "FIXED" {
-    SporeRootSelection::FIXED
+    FIXED
   } else {
-    SporeRootSelection::CENTER_NODE
+    CENTER_NODE
   }
 }

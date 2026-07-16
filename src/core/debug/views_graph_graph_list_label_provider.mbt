@@ -34,7 +34,7 @@ pub fn GraphListLabelProvider::get_image(
   graph : @core.LoggedGraph,
 ) -> String {
   match graph.graph_type {
-    @core.ElkGraph => self.elk_image
-    @core.LGraph => self.json_image
+    ElkGraph => self.elk_image
+    LGraph => self.json_image
   }
 }

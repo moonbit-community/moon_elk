@@ -23,8 +23,8 @@ fn hyper_edge_segment_splitter_test_contains_dependency(
   let target_handle = target.get_handle()
   for dependency in source.get_outgoing_segment_dependencies() {
     let type_matches = match dependency.get_type() {
-      DependencyType::Critical => critical
-      DependencyType::Regular => !critical
+      Critical => critical
+      Regular => !critical
     }
     if !type_matches {
       continue

@@ -15,7 +15,7 @@ pub(all) suberror DfsNodeOrderCycleBreakerException {
 fn[T] dfs_node_order_cycle_breaker_raise_unsupported_graph(
   message : String,
 ) -> T raise DfsNodeOrderCycleBreakerException {
-  raise DfsNodeOrderCycleBreakerException::UnsupportedGraphException(message)
+  raise UnsupportedGraphException(message)
 }
 
 ///|
@@ -71,7 +71,7 @@ fn dfs_node_order_cycle_breaker_group_model_order(
         layered_options_consider_model_order_group_model_order_cb_group_order_strategy,
       ),
     ),
-    GroupOrderStrategy::Enforced,
+    Enforced,
   )
 }
 
@@ -169,10 +169,8 @@ fn dfs_node_order_cycle_breaker_configuration(
   ignore(graph)
   Some(
     @core.layout_processor_configuration_create(layered_phase_descriptor).add_after(
-      LayeredPhases::P5EdgeRouting,
-      layered_intermediate_processor_factory(
-        IntermediateProcessorStrategy::ReversedEdgeRestorer,
-      ),
+      P5EdgeRouting,
+      layered_intermediate_processor_factory(ReversedEdgeRestorer),
     ),
   )
 }
@@ -222,7 +220,7 @@ fn dfs_node_order_cycle_breaker_process(
       graph.set_property_bool(internal_properties_cyclic, true)
     }
   } catch {
-    DfsNodeOrderCycleBreakerException::UnsupportedGraphException(message) => {
+    UnsupportedGraphException(message) => {
       @core.layout_runtime_report_unsupported_configuration(message)
       monitor.done()
       return

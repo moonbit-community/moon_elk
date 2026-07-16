@@ -7,7 +7,7 @@ pub(all) suberror ModelOrderCycleBreakerException {
 fn[T] model_order_cycle_breaker_raise_unsupported_graph(
   message : String,
 ) -> T raise ModelOrderCycleBreakerException {
-  raise ModelOrderCycleBreakerException::UnsupportedGraphException(message)
+  raise UnsupportedGraphException(message)
 }
 
 ///|
@@ -42,10 +42,8 @@ fn model_order_cycle_breaker_configuration(
   ignore(graph)
   Some(
     @core.layout_processor_configuration_create(layered_phase_descriptor).add_after(
-      LayeredPhases::P5EdgeRouting,
-      layered_intermediate_processor_factory(
-        IntermediateProcessorStrategy::ReversedEdgeRestorer,
-      ),
+      P5EdgeRouting,
+      layered_intermediate_processor_factory(ReversedEdgeRestorer),
     ),
   )
 }
@@ -79,7 +77,7 @@ fn model_order_cycle_breaker_process(
           layered_options_consider_model_order_group_model_order_cb_group_order_strategy,
         ),
       ),
-      GroupOrderStrategy::Enforced,
+      Enforced,
     )
 
     for source in layered_graph.get_layerless_nodes() {
@@ -92,7 +90,7 @@ fn model_order_cycle_breaker_process(
         calculator.compute_constraint_model_order(source, offset)
       }
 
-      for port in source.get_ports_by_type(PortType::Output) {
+      for port in source.get_ports_by_type(Output) {
         for edge in port.get_outgoing_edges() {
           let target = model_order_cycle_breaker_require_target_node(edge)
           let model_order_target = if enforce_group_model_order {
@@ -115,7 +113,7 @@ fn model_order_cycle_breaker_process(
     }
     rev_edges.clear()
   } catch {
-    ModelOrderCycleBreakerException::UnsupportedGraphException(message) => {
+    UnsupportedGraphException(message) => {
       @core.layout_runtime_report_unsupported_configuration(message)
       monitor.done()
       return

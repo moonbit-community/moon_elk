@@ -686,7 +686,7 @@ test "external port dummy creation and position use Java formulas" {
 
   inspect(
     match dummy.get_type() {
-      NodeType::ExternalPort => true
+      ExternalPort => true
       _ => false
     },
     content="true",

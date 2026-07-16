@@ -3,12 +3,12 @@ fn comment_preprocessor_port_constraints_from_string(
   value : String,
 ) -> @core.PortConstraints {
   match value {
-    "FREE" => @core.PortConstraints::Free
-    "FIXED_SIDE" => @core.PortConstraints::FixedSide
-    "FIXED_ORDER" => @core.PortConstraints::FixedOrder
-    "FIXED_RATIO" => @core.PortConstraints::FixedRatio
-    "FIXED_POS" => @core.PortConstraints::FixedPos
-    _ => @core.PortConstraints::Undefined
+    "FREE" => Free
+    "FIXED_SIDE" => FixedSide
+    "FIXED_ORDER" => FixedOrder
+    "FIXED_RATIO" => FixedRatio
+    "FIXED_POS" => FixedPos
+    _ => Undefined
   }
 }
 
@@ -74,11 +74,11 @@ fn comment_preprocessor_process_box(
           Some(port2_node) =>
             if !port2_node.get_property_bool(layered_options_comment_box) {
               match port1.get_side() {
-                @core.PortSide::North => {
+                North => {
                   has_north = true
                   break_loop = true
                 }
-                @core.PortSide::South => {
+                South => {
                   has_south = true
                   break_loop = true
                 }

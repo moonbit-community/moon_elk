@@ -94,14 +94,14 @@ fn json_debug_util_node_label(
     Some(designation) => designation
     None =>
       match node.get_type() {
-        NodeType::Normal => "NORMAL"
-        NodeType::LongEdge => "LONG_EDGE"
-        NodeType::ExternalPort => "EXTERNAL_PORT"
-        NodeType::NorthSouthPort => "NORTH_SOUTH_PORT"
-        NodeType::LabelNode => "LABEL"
-        NodeType::BreakingPoint => "BREAKING_POINT"
-        NodeType::Placeholder => "PLACEHOLDER"
-        NodeType::NonshiftingPlaceholder => "NONSHIFTING_PLACEHOLDER"
+        Normal => "NORMAL"
+        LongEdge => "LONG_EDGE"
+        ExternalPort => "EXTERNAL_PORT"
+        NorthSouthPort => "NORTH_SOUTH_PORT"
+        LabelNode => "LABEL"
+        BreakingPoint => "BREAKING_POINT"
+        Placeholder => "PLACEHOLDER"
+        NonshiftingPlaceholder => "NONSHIFTING_PLACEHOLDER"
       }
   }
   label += " (" + layer_number.to_string() + "," + node_number.to_string() + ")"

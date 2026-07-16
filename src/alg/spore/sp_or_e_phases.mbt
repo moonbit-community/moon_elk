@@ -16,10 +16,6 @@ fn spore_phase_ordinal(phase : SPOrEPhases) -> Int {
 
 ///|
 pub let spore_phase_descriptor : @core.PhaseDescriptor[SPOrEPhases] = @core.new_phase_descriptor(
-  [
-    SPOrEPhases::P1_STRUCTURE,
-    SPOrEPhases::P2_PROCESSING_ORDER,
-    SPOrEPhases::P3_EXECUTION,
-  ],
+  [P1_STRUCTURE, P2_PROCESSING_ORDER, P3_EXECUTION],
   spore_phase_ordinal,
 )

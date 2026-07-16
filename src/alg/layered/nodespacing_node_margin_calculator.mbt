@@ -22,7 +22,7 @@ fn node_margin_calculator_process_edge_head_tail_labels(
   for edge in outgoing_edges {
     for label in edge.get_labels() {
       if label.get_property_string(@core.edge_labels_placement) ==
-        @core.edge_label_placement_to_string(@core.EdgeLabelPlacement::Tail) {
+        @core.edge_label_placement_to_string(Tail) {
         node_margin_calculator_compute_label_box(
           label_box, label, false, node, port, port_label_space, label_spacing,
         )
@@ -34,7 +34,7 @@ fn node_margin_calculator_process_edge_head_tail_labels(
   for edge in incoming_edges {
     for label in edge.get_labels() {
       if label.get_property_string(@core.edge_labels_placement) ==
-        @core.edge_label_placement_to_string(@core.EdgeLabelPlacement::Head) {
+        @core.edge_label_placement_to_string(Head) {
         node_margin_calculator_compute_label_box(
           label_box, label, true, node, port, port_label_space, label_spacing,
         )
@@ -75,29 +75,29 @@ fn node_margin_calculator_compute_label_box(
     }
     let port_size = port_value.get_size()
     match port_value.get_side() {
-      @core.PortSide::SideUndefined =>
+      SideUndefined =>
         label_box.x += port_size.x +
           label_spacing +
           required_port_label_space.x +
           label_spacing
-      @core.PortSide::East =>
+      East =>
         label_box.x += port_size.x +
           label_spacing +
           required_port_label_space.x +
           label_spacing
-      @core.PortSide::West =>
+      West =>
         label_box.x -= label_spacing +
           required_port_label_space.x +
           label_spacing +
           label_size.x
-      @core.PortSide::North => {
+      North => {
         label_box.x += port_size.x + label_spacing
         label_box.y -= label_spacing +
           required_port_label_space.y +
           label_spacing +
           label_size.y
       }
-      @core.PortSide::South => {
+      South => {
         label_box.x += port_size.x + label_spacing
         label_box.y += port_size.y +
           label_spacing +
@@ -179,11 +179,7 @@ fn node_margin_calculator_process_node(
 
       if node
         .get_property_string_array(@core.port_labels_placement)
-        .contains(
-          @core.port_label_placement_to_string(
-            @core.PortLabelPlacement::Outside,
-          ),
-        ) {
+        .contains(@core.port_label_placement_to_string(Outside)) {
         for label in port.get_labels() {
           let label_size = label.get_size()
           required_port_label_space.x += label_size.x + label_spacing

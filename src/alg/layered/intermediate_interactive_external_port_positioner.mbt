@@ -52,14 +52,14 @@ fn interactive_external_port_positioner_node_type_equals(
   right : NodeType,
 ) -> Bool {
   match (left, right) {
-    (NodeType::Normal, NodeType::Normal) => true
-    (NodeType::LongEdge, NodeType::LongEdge) => true
-    (NodeType::ExternalPort, NodeType::ExternalPort) => true
-    (NodeType::NorthSouthPort, NodeType::NorthSouthPort) => true
-    (NodeType::LabelNode, NodeType::LabelNode) => true
-    (NodeType::BreakingPoint, NodeType::BreakingPoint) => true
-    (NodeType::Placeholder, NodeType::Placeholder) => true
-    (NodeType::NonshiftingPlaceholder, NodeType::NonshiftingPlaceholder) => true
+    (Normal, Normal) => true
+    (LongEdge, LongEdge) => true
+    (ExternalPort, ExternalPort) => true
+    (NorthSouthPort, NorthSouthPort) => true
+    (LabelNode, LabelNode) => true
+    (BreakingPoint, BreakingPoint) => true
+    (Placeholder, Placeholder) => true
+    (NonshiftingPlaceholder, NonshiftingPlaceholder) => true
     _ => false
   }
 }
@@ -69,7 +69,7 @@ fn interactive_external_port_positioner_layer_constraint_is_first_separate(
   constraint : LayerConstraint,
 ) -> Bool {
   match constraint {
-    LayerConstraint::FirstSeparate => true
+    FirstSeparate => true
     _ => false
   }
 }
@@ -79,7 +79,7 @@ fn interactive_external_port_positioner_layer_constraint_is_last_separate(
   constraint : LayerConstraint,
 ) -> Bool {
   match constraint {
-    LayerConstraint::LastSeparate => true
+    LastSeparate => true
     _ => false
   }
 }
@@ -89,7 +89,7 @@ fn interactive_external_port_positioner_in_layer_constraint_is_top(
   constraint : InLayerConstraint,
 ) -> Bool {
   match constraint {
-    InLayerConstraint::Top => true
+    Top => true
     _ => false
   }
 }
@@ -99,7 +99,7 @@ fn interactive_external_port_positioner_in_layer_constraint_is_bottom(
   constraint : InLayerConstraint,
 ) -> Bool {
   match constraint {
-    InLayerConstraint::Bottom => true
+    Bottom => true
     _ => false
   }
 }
@@ -144,12 +144,12 @@ fn interactive_external_port_positioner_parse_in_layer_constraint(
   value : String,
 ) -> InLayerConstraint {
   if value == "TOP" {
-    return InLayerConstraint::Top
+    return Top
   }
   if value == "BOTTOM" {
-    return InLayerConstraint::Bottom
+    return Bottom
   }
-  InLayerConstraint::NoneType
+  NoneType
 }
 
 ///|
@@ -272,7 +272,7 @@ fn interactive_external_port_positioner_process_impl(
   )
   if !interactive_external_port_positioner_graph_properties_contain(
       graph_properties,
-      GraphProperties::ExternalPorts,
+      ExternalPorts,
     ) {
     return
   }
@@ -285,7 +285,7 @@ fn interactive_external_port_positioner_process_impl(
   for node in layered_graph.get_layerless_nodes() {
     if interactive_external_port_positioner_node_type_equals(
         node.get_type(),
-        NodeType::Normal,
+        Normal,
       ) {
       let margin = node.get_margin()
       min_x = interactive_external_port_positioner_min(
@@ -310,13 +310,13 @@ fn interactive_external_port_positioner_process_impl(
   for node in layered_graph.get_layerless_nodes() {
     if interactive_external_port_positioner_node_type_equals(
         node.get_type(),
-        NodeType::Normal,
+        Normal,
       ) {
       continue
     }
 
     match node.get_type() {
-      NodeType::ExternalPort => {
+      ExternalPort => {
         let layer_constraint = layer_constraint_from_string(
           node.get_property_string(layered_options_layering_layer_constraint),
         )

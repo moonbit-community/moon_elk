@@ -1,15 +1,15 @@
 ///|
 test "Mrtree CompactionMode parsing follows upstream names" {
   match mrtree_compaction_mode_from_string("NONE") {
-    MrtreeCompactionMode::NONE => ()
+    NONE => ()
     _ => fail("Expected NONE")
   }
   match mrtree_compaction_mode_from_string("LEVEL_PRESERVING") {
-    MrtreeCompactionMode::LEVEL_PRESERVING => ()
+    LEVEL_PRESERVING => ()
     _ => fail("Expected LEVEL_PRESERVING")
   }
   match mrtree_compaction_mode_from_string("AGGRESSIVE") {
-    MrtreeCompactionMode::AGGRESSIVE => ()
+    AGGRESSIVE => ()
     _ => fail("Expected AGGRESSIVE")
   }
 }

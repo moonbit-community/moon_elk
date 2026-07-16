@@ -117,8 +117,8 @@ fn compound_graph_preprocessor_port_side_is_east_or_west(
   side : @core.PortSide,
 ) -> Bool {
   match side {
-    @core.PortSide::East => true
-    @core.PortSide::West => true
+    East => true
+    West => true
     _ => false
   }
 }
@@ -132,7 +132,7 @@ fn compound_graph_preprocessor_port_constraints_from_string(
       return constraints
     }
   }
-  @core.PortConstraints::Undefined
+  Undefined
 }
 
 ///|
@@ -173,21 +173,19 @@ fn compound_graph_preprocessor_compute_inside_part(
   port_side : @core.PortSide,
 ) -> Double {
   match port_side {
-    @core.PortSide::North =>
+    North =>
       @cmp.maximum(
         0.0,
         label_size.y + label_position.y - (port_size.y + port_border_offset),
       )
-    @core.PortSide::South =>
-      @cmp.maximum(0.0, -label_position.y - port_border_offset)
-    @core.PortSide::East =>
-      @cmp.maximum(0.0, -label_position.x - port_border_offset)
-    @core.PortSide::West =>
+    South => @cmp.maximum(0.0, -label_position.y - port_border_offset)
+    East => @cmp.maximum(0.0, -label_position.x - port_border_offset)
+    West =>
       @cmp.maximum(
         0.0,
         label_size.x + label_position.x - (port_size.x + port_border_offset),
       )
-    @core.PortSide::SideUndefined => 0.0
+    SideUndefined => 0.0
   }
 }
 
@@ -450,11 +448,11 @@ fn compound_graph_preprocessor_set_sides_of_ports_to_sides_of_dummy_nodes(
     )
     external_port_node.set_property_string(
       @core.port_constraints,
-      @core.port_constraints_to_string(@core.PortConstraints::FixedSide),
+      @core.port_constraints_to_string(FixedSide),
     )
     compound_graph_preprocessor_graph_add_property(
       external_port_node.get_graph(),
-      GraphProperties::NonFreePorts,
+      NonFreePorts,
     )
   }
 }
@@ -516,18 +514,13 @@ fn compound_graph_preprocessor_move_labels_and_remove_original_edges(
         let placement = curr_label.get_property_string(
           @core.edge_labels_placement,
         )
-        if placement ==
-          @core.edge_label_placement_to_string(@core.EdgeLabelPlacement::Head) {
+        if placement == @core.edge_label_placement_to_string(Head) {
           target_dummy_edge_index = edge_segments.length() - 1
-        } else if placement ==
-          @core.edge_label_placement_to_string(
-            @core.EdgeLabelPlacement::Centered,
-          ) {
+        } else if placement == @core.edge_label_placement_to_string(Centered) {
           target_dummy_edge_index = compound_graph_preprocessor_get_shallowest_edge_segment(
             edge_segments,
           )
-        } else if placement ==
-          @core.edge_label_placement_to_string(@core.EdgeLabelPlacement::Tail) {
+        } else if placement == @core.edge_label_placement_to_string(Tail) {
           target_dummy_edge_index = 0
         }
 
@@ -542,11 +535,11 @@ fn compound_graph_preprocessor_move_labels_and_remove_original_edges(
           ).get_graph()
           compound_graph_preprocessor_graph_add_property(
             target_graph,
-            GraphProperties::EndLabels,
+            EndLabels,
           )
           compound_graph_preprocessor_graph_add_property(
             target_graph,
-            GraphProperties::CenterLabels,
+            CenterLabels,
           )
 
           ignore(labels.remove(index))
@@ -671,7 +664,7 @@ fn compound_graph_preprocessor_process_inner_hierarchical_edge_segments(
               parent,
               out_edge,
               external_port.dummy_port,
-              PortType::Output,
+              Output,
               current_external_port,
               cross_hierarchy_map,
               dummy_node_entries,
@@ -717,7 +710,7 @@ fn compound_graph_preprocessor_process_inner_hierarchical_edge_segments(
               parent,
               in_edge,
               external_port.dummy_port,
-              PortType::Input,
+              Input,
               current_external_port,
               cross_hierarchy_map,
               dummy_node_entries,
@@ -777,7 +770,7 @@ fn compound_graph_preprocessor_process_outer_hierarchical_edge_segments(
             parent_node,
             out_edge,
             compound_graph_preprocessor_require_source_port(out_edge),
-            PortType::Output,
+            Output,
             current_external_output_port,
             cross_hierarchy_map,
             dummy_node_entries,
@@ -806,7 +799,7 @@ fn compound_graph_preprocessor_process_outer_hierarchical_edge_segments(
             parent_node,
             in_edge,
             compound_graph_preprocessor_require_target_port(in_edge),
-            PortType::Input,
+            Input,
             current_external_input_port,
             cross_hierarchy_map,
             dummy_node_entries,
@@ -875,7 +868,7 @@ fn compound_graph_preprocessor_process_inside_self_loops(
           None => {
             let dummy = compound_graph_preprocessor_create_external_port_dummy_checked(
               source_port,
-              @core.PortConstraints::Free,
+              Free,
               source_port.get_side(),
               -1,
               None,
@@ -911,7 +904,7 @@ fn compound_graph_preprocessor_process_inside_self_loops(
           None => {
             let dummy = compound_graph_preprocessor_create_external_port_dummy_checked(
               target_port,
-              @core.PortConstraints::Free,
+              Free,
               target_port.get_side(),
               1,
               None,
@@ -947,11 +940,11 @@ fn compound_graph_preprocessor_process_inside_self_loops(
           out_edge,
           dummy_edge,
           nested_graph,
-          PortType::Output,
+          Output,
         )
         compound_graph_preprocessor_graph_add_property(
           nested_graph,
-          GraphProperties::ExternalPorts,
+          ExternalPorts,
         )
       }
     }
@@ -986,7 +979,7 @@ fn compound_graph_preprocessor_transform_hierarchy_edges(
 
         if compound_graph_preprocessor_graph_has_property(
             nested_graph,
-            GraphProperties::ExternalPorts,
+            ExternalPorts,
           ) {
           let port_constraints_value = compound_graph_preprocessor_port_constraints_from_string(
             node.get_property_string(@core.port_constraints),
@@ -996,7 +989,7 @@ fn compound_graph_preprocessor_transform_hierarchy_edges(
           )
           let inside_port_labels = compound_graph_preprocessor_contains_port_label_placement(
             parsed_port_label_placement,
-            @core.PortLabelPlacement::Inside,
+            Inside,
           )
 
           for port in node.get_ports() {
@@ -1052,7 +1045,7 @@ fn compound_graph_preprocessor_transform_hierarchy_edges(
                 }
 
                 if @core.port_constraints_to_string(port_constraints_value) ==
-                  @core.port_constraints_to_string(@core.PortConstraints::Free) ||
+                  @core.port_constraints_to_string(Free) ||
                   compound_graph_preprocessor_port_side_is_east_or_west(side) {
                   dummy_port_label.get_size().x = inside_part
                 } else {
@@ -1134,9 +1127,9 @@ fn compound_graph_preprocessor_introduce_hierarchical_edge_segment(
           external_port_side = if compound_graph_preprocessor_port_type_is_input(
               port_type,
             ) {
-            @core.PortSide::West
+            West
           } else {
-            @core.PortSide::East
+            East
           }
         }
     }
@@ -1370,21 +1363,18 @@ fn compound_graph_preprocessor_create_external_port_dummy(
     dummy_node = Some(created_dummy)
   }
 
-  compound_graph_preprocessor_graph_add_property(
-    graph,
-    GraphProperties::ExternalPorts,
-  )
+  compound_graph_preprocessor_graph_add_property(graph, ExternalPorts)
   if compound_graph_preprocessor_port_constraints_from_string(
       graph.get_property_string(@core.port_constraints),
     ).is_side_fixed() {
     graph.set_property_string(
       @core.port_constraints,
-      @core.port_constraints_to_string(@core.PortConstraints::FixedSide),
+      @core.port_constraints_to_string(FixedSide),
     )
   } else {
     graph.set_property_string(
       @core.port_constraints,
-      @core.port_constraints_to_string(@core.PortConstraints::Free),
+      @core.port_constraints_to_string(Free),
     )
   }
 

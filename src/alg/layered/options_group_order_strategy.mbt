@@ -17,19 +17,19 @@ pub fn group_order_strategy_to_string(value : GroupOrderStrategy) -> String {
 ///|
 pub fn group_order_strategy_from_string(value : String) -> GroupOrderStrategy {
   match value {
-    "ONLY_WITHIN_GROUP" => GroupOrderStrategy::OnlyWithinGroup
-    "MODEL_ORDER" => GroupOrderStrategy::ModelOrder
-    "ENFORCED" => GroupOrderStrategy::Enforced
-    _ => GroupOrderStrategy::OnlyWithinGroup
+    "ONLY_WITHIN_GROUP" => OnlyWithinGroup
+    "MODEL_ORDER" => ModelOrder
+    "ENFORCED" => Enforced
+    _ => OnlyWithinGroup
   }
 }
 
 ///|
 pub fn group_order_strategy_values() -> Array[String] {
   [
-    group_order_strategy_to_string(GroupOrderStrategy::OnlyWithinGroup),
-    group_order_strategy_to_string(GroupOrderStrategy::ModelOrder),
-    group_order_strategy_to_string(GroupOrderStrategy::Enforced),
+    group_order_strategy_to_string(OnlyWithinGroup),
+    group_order_strategy_to_string(ModelOrder),
+    group_order_strategy_to_string(Enforced),
   ]
 }
 
@@ -39,10 +39,9 @@ pub fn group_order_strategy_equals(
   right : GroupOrderStrategy,
 ) -> Bool {
   match (left, right) {
-    (GroupOrderStrategy::OnlyWithinGroup, GroupOrderStrategy::OnlyWithinGroup) =>
-      true
-    (GroupOrderStrategy::ModelOrder, GroupOrderStrategy::ModelOrder) => true
-    (GroupOrderStrategy::Enforced, GroupOrderStrategy::Enforced) => true
+    (OnlyWithinGroup, OnlyWithinGroup) => true
+    (ModelOrder, ModelOrder) => true
+    (Enforced, Enforced) => true
     _ => false
   }
 }

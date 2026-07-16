@@ -20,13 +20,7 @@ fn layered_phase_ordinal(phase : LayeredPhases) -> Int {
 
 ///|
 pub fn layered_phase_constants() -> Array[LayeredPhases] {
-  [
-    LayeredPhases::P1CycleBreaking,
-    LayeredPhases::P2Layering,
-    LayeredPhases::P3NodeOrdering,
-    LayeredPhases::P4NodePlacement,
-    LayeredPhases::P5EdgeRouting,
-  ]
+  [P1CycleBreaking, P2Layering, P3NodeOrdering, P4NodePlacement, P5EdgeRouting]
 }
 
 ///|

@@ -19,9 +19,7 @@ fn bundle_resource_path_raise_unit(
 ///|
 fn bundle_resource_path_bundle_id_to_path(bundle_id : String) -> String {
   let mut path = base_path_for_property(bundle_resource_path_property) catch {
-    AbstractPropertyDependentResourcePathException::IllegalStateException(
-      message
-    ) => {
+    IllegalStateException(message) => {
       @core.layout_runtime_report_unsupported_configuration(message)
       "."
     }

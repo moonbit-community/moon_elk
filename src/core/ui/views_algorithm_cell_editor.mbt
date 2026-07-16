@@ -18,7 +18,7 @@ pub fn new_algorithm_cell_editor(
       @core.new_layout_option_data(
         layout_option_id,
         name="Algorithm",
-        option_type=@core.StringType,
+        option_type=StringType,
       )
   }
   {

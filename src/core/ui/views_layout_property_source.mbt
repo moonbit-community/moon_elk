@@ -80,7 +80,7 @@ fn layout_property_source_is_hidden(
   visibility : @core.LayoutOptionVisibility,
 ) -> Bool {
   match visibility {
-    @core.HiddenOption => true
+    HiddenOption => true
     _ => false
   }
 }
@@ -173,15 +173,15 @@ pub fn LayoutPropertySource::translate_to_ui(
     None => return CoreUiStringValue("")
   }
   match option_data.get_type() {
-    @core.IntType => CoreUiStringValue(option_value)
-    @core.DoubleType => CoreUiStringValue(option_value)
-    @core.BoolType =>
+    IntType => CoreUiStringValue(option_value)
+    DoubleType => CoreUiStringValue(option_value)
+    BoolType =>
       if layout_property_source_parse_bool(option_value) {
         CoreUiIntValue(1)
       } else {
         CoreUiIntValue(0)
       }
-    @core.StringType => {
+    StringType => {
       if !option_data.get_choices().is_empty() {
         let choices = option_data.get_choices()
         for index = 0; index < choices.length(); index = index + 1 {
@@ -192,9 +192,9 @@ pub fn LayoutPropertySource::translate_to_ui(
       }
       CoreUiStringValue(option_value)
     }
-    @core.EnumSetType =>
+    EnumSetType =>
       CoreUiStringsValue(layout_property_source_split_values(option_value))
-    @core.ObjectType => CoreUiStringValue(option_value)
+    ObjectType => CoreUiStringValue(option_value)
   }
 }
 
@@ -221,7 +221,7 @@ pub fn LayoutPropertySource::translate_from_ui(
 ) -> String {
   ignore(self)
   match option_data.get_type() {
-    @core.StringType =>
+    StringType =>
       if !option_data.get_choices().is_empty() {
         match value {
           CoreUiIntValue(index) =>
@@ -235,13 +235,13 @@ pub fn LayoutPropertySource::translate_from_ui(
       } else {
         core_ui_value_to_string(value)
       }
-    @core.BoolType =>
+    BoolType =>
       match value {
         CoreUiIntValue(number) => if number == 1 { "true" } else { "false" }
         CoreUiBoolValue(flag) => if flag { "true" } else { "false" }
         _ => option_data.parse_value(core_ui_value_to_string(value))
       }
-    @core.EnumSetType =>
+    EnumSetType =>
       match value {
         CoreUiStringsValue(values) => option_data.parse_value(values.join(" "))
         CoreUiStringValue(text) => option_data.parse_value(text)

@@ -19,14 +19,14 @@ pub(all) suberror OneDimensionalCompactorException {
 fn[T] one_dimensional_compactor_raise_illegal_state(
   message : String,
 ) -> T raise OneDimensionalCompactorException {
-  raise OneDimensionalCompactorException::IllegalStateException(message)
+  raise IllegalStateException(message)
 }
 
 ///|
 fn[T] one_dimensional_compactor_raise_illegal_argument(
   message : String,
 ) -> T raise OneDimensionalCompactorException {
-  raise OneDimensionalCompactorException::IllegalArgumentException(message)
+  raise IllegalArgumentException(message)
 }
 
 ///|
@@ -104,9 +104,9 @@ pub fn OneDimensionalCompactor::compact(
     one_dimensional_compactor_raise_illegal_state(
       "The OneDimensionalCompactor instance has been finished already.",
     ) catch {
-      OneDimensionalCompactorException::IllegalStateException(message) =>
+      IllegalStateException(message) =>
         one_dimensional_compactor_abort_message(message)
-      OneDimensionalCompactorException::IllegalArgumentException(message) =>
+      IllegalArgumentException(message) =>
         one_dimensional_compactor_abort_message(message)
     }
   }
@@ -144,9 +144,9 @@ pub fn OneDimensionalCompactor::change_direction(
     one_dimensional_compactor_raise_illegal_state(
       "The OneDimensionalCompactor instance has been finished already.",
     ) catch {
-      OneDimensionalCompactorException::IllegalStateException(message) =>
+      IllegalStateException(message) =>
         one_dimensional_compactor_abort_message(message)
-      OneDimensionalCompactorException::IllegalArgumentException(message) =>
+      IllegalArgumentException(message) =>
         one_dimensional_compactor_abort_message(message)
     }
   }
@@ -155,9 +155,9 @@ pub fn OneDimensionalCompactor::change_direction(
     one_dimensional_compactor_raise_illegal_argument(
       "The direction is not supported by the CGraph instance.",
     ) catch {
-      OneDimensionalCompactorException::IllegalStateException(message) =>
+      IllegalStateException(message) =>
         one_dimensional_compactor_abort_message(message)
-      OneDimensionalCompactorException::IllegalArgumentException(message) =>
+      IllegalArgumentException(message) =>
         one_dimensional_compactor_abort_message(message)
     }
   }

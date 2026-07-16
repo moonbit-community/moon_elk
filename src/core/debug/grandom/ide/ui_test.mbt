@@ -3,8 +3,8 @@ fn core_debug_grandom_test_format_tag(
   value : @grandom.CoreDebugGRandomFormats?,
 ) -> String {
   match value {
-    Some(@grandom.FormatElkg) => "elkg"
-    Some(@grandom.FormatElkt) => "elkt"
+    Some(FormatElkg) => "elkg"
+    Some(FormatElkt) => "elkt"
     None => "none"
   }
 }
@@ -198,8 +198,8 @@ test "GRandom graph maker generates file names with collision handling" {
 test "GRandom handler executes selection and writes graphs" {
   let handler = @ui.new_core_debug_grandom_handler()
   let processed = handler.execute([
-    @ui.CoreDebugGRandomSelectionOther,
-    @ui.CoreDebugGRandomSelectionFile(
+    CoreDebugGRandomSelectionOther,
+    CoreDebugGRandomSelectionFile(
       "generate { graphs nodes = 4 edges = 3 filename = \"sample\" }",
     ),
   ])

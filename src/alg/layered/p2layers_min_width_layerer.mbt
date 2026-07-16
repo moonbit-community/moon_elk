@@ -66,17 +66,15 @@ let min_width_layerer_baseline_processing_configuration : @core.LayoutProcessorC
   LGraph,
 ] = @core.layout_processor_configuration_create(layered_phase_descriptor)
   .add_before(
-    LayeredPhases::P1CycleBreaking,
-    layered_intermediate_processor_factory(
-      IntermediateProcessorStrategy::EdgeAndLayerConstraintEdgeReverser,
-    ),
+    P1CycleBreaking,
+    layered_intermediate_processor_factory(EdgeAndLayerConstraintEdgeReverser),
   )
   .add_before(
-    LayeredPhases::P2Layering,
+    P2Layering,
     min_width_layerer_layer_constraint_preprocessor_factory(),
   )
   .add_before(
-    LayeredPhases::P3NodeOrdering,
+    P3NodeOrdering,
     min_width_layerer_layer_constraint_postprocessor_factory(),
   )
 
@@ -333,7 +331,7 @@ fn min_width_layerer_process(
 
   let mut minimum_node_size = @double.infinity
   for node in not_inserted {
-    if node.get_type() is NodeType::Normal {
+    if node.get_type() is Normal {
       let size = node.get_size().y
       if size < minimum_node_size {
         minimum_node_size = size

@@ -43,7 +43,7 @@ fn polyline_edge_router_port_side_equals(
   right : @core.PortSide,
 ) -> Bool {
   match (left, right) {
-    (@core.PortSide::SideUndefined, @core.PortSide::SideUndefined) => true
+    (SideUndefined, SideUndefined) => true
     (North, North) => true
     (East, East) => true
     (South, South) => true
@@ -67,7 +67,7 @@ fn polyline_edge_router_node_type_is_north_south_port(
   node_type : NodeType,
 ) -> Bool {
   match node_type {
-    NodeType::NorthSouthPort => true
+    NorthSouthPort => true
     _ => false
   }
 }
@@ -75,7 +75,7 @@ fn polyline_edge_router_node_type_is_north_south_port(
 ///|
 fn polyline_edge_router_node_type_is_long_edge(node_type : NodeType) -> Bool {
   match node_type {
-    NodeType::LongEdge => true
+    LongEdge => true
     _ => false
   }
 }
@@ -85,11 +85,11 @@ fn polyline_edge_router_node_type_requires_processing(
   node_type : NodeType,
 ) -> Bool {
   match node_type {
-    NodeType::Normal => true
-    NodeType::LabelNode => true
-    NodeType::LongEdge => true
-    NodeType::NorthSouthPort => true
-    NodeType::BreakingPoint => true
+    Normal => true
+    LabelNode => true
+    LongEdge => true
+    NorthSouthPort => true
+    BreakingPoint => true
     _ => false
   }
 }
@@ -99,7 +99,7 @@ fn polyline_edge_router_node_type_is_external_port(
   node_type : NodeType,
 ) -> Bool {
   match node_type {
-    NodeType::ExternalPort => true
+    ExternalPort => true
     _ => false
   }
 }
@@ -222,10 +222,8 @@ let polyline_edge_router_baseline_processor_configuration : @core.LayoutProcesso
   LayeredPhases,
   LGraph,
 ] = @core.layout_processor_configuration_create(layered_phase_descriptor).add_before(
-  LayeredPhases::P3NodeOrdering,
-  layered_intermediate_processor_factory(
-    IntermediateProcessorStrategy::InvertedPortProcessor,
-  ),
+  P3NodeOrdering,
+  layered_intermediate_processor_factory(InvertedPortProcessor),
 )
 
 ///|
@@ -234,16 +232,12 @@ let polyline_edge_router_north_south_port_processing_additions : @core.LayoutPro
   LGraph,
 ] = @core.layout_processor_configuration_create(layered_phase_descriptor)
   .add_before(
-    LayeredPhases::P3NodeOrdering,
-    layered_intermediate_processor_factory(
-      IntermediateProcessorStrategy::NorthSouthPortPreprocessor,
-    ),
+    P3NodeOrdering,
+    layered_intermediate_processor_factory(NorthSouthPortPreprocessor),
   )
   .add_after(
-    LayeredPhases::P5EdgeRouting,
-    layered_intermediate_processor_factory(
-      IntermediateProcessorStrategy::NorthSouthPortPostprocessor,
-    ),
+    P5EdgeRouting,
+    layered_intermediate_processor_factory(NorthSouthPortPostprocessor),
   )
 
 ///|
@@ -252,28 +246,16 @@ let polyline_edge_router_self_loop_processing_additions : @core.LayoutProcessorC
   LGraph,
 ] = @core.layout_processor_configuration_create(layered_phase_descriptor)
   .add_before(
-    LayeredPhases::P1CycleBreaking,
-    layered_intermediate_processor_factory(
-      IntermediateProcessorStrategy::SelfLoopPreprocessor,
-    ),
+    P1CycleBreaking,
+    layered_intermediate_processor_factory(SelfLoopPreprocessor),
   )
   .add_after(
-    LayeredPhases::P5EdgeRouting,
-    layered_intermediate_processor_factory(
-      IntermediateProcessorStrategy::SelfLoopPostprocessor,
-    ),
+    P5EdgeRouting,
+    layered_intermediate_processor_factory(SelfLoopPostprocessor),
   )
-  .before(LayeredPhases::P4NodePlacement)
-  .add(
-    layered_intermediate_processor_factory(
-      IntermediateProcessorStrategy::SelfLoopPortRestorer,
-    ),
-  )
-  .add(
-    layered_intermediate_processor_factory(
-      IntermediateProcessorStrategy::SelfLoopRouter,
-    ),
-  )
+  .before(P4NodePlacement)
+  .add(layered_intermediate_processor_factory(SelfLoopPortRestorer))
+  .add(layered_intermediate_processor_factory(SelfLoopRouter))
 
 ///|
 let polyline_edge_router_center_edge_label_processing_additions : @core.LayoutProcessorConfiguration[
@@ -281,28 +263,20 @@ let polyline_edge_router_center_edge_label_processing_additions : @core.LayoutPr
   LGraph,
 ] = @core.layout_processor_configuration_create(layered_phase_descriptor)
   .add_before(
-    LayeredPhases::P2Layering,
-    layered_intermediate_processor_factory(
-      IntermediateProcessorStrategy::LabelDummyInserter,
-    ),
+    P2Layering,
+    layered_intermediate_processor_factory(LabelDummyInserter),
   )
   .add_before(
-    LayeredPhases::P4NodePlacement,
-    layered_intermediate_processor_factory(
-      IntermediateProcessorStrategy::LabelDummySwitcher,
-    ),
+    P4NodePlacement,
+    layered_intermediate_processor_factory(LabelDummySwitcher),
   )
   .add_before(
-    LayeredPhases::P4NodePlacement,
-    layered_intermediate_processor_factory(
-      IntermediateProcessorStrategy::LabelSideSelector,
-    ),
+    P4NodePlacement,
+    layered_intermediate_processor_factory(LabelSideSelector),
   )
   .add_after(
-    LayeredPhases::P5EdgeRouting,
-    layered_intermediate_processor_factory(
-      IntermediateProcessorStrategy::LabelDummyRemover,
-    ),
+    P5EdgeRouting,
+    layered_intermediate_processor_factory(LabelDummyRemover),
   )
 
 ///|
@@ -311,22 +285,16 @@ let polyline_edge_router_end_edge_label_processing_additions : @core.LayoutProce
   LGraph,
 ] = @core.layout_processor_configuration_create(layered_phase_descriptor)
   .add_before(
-    LayeredPhases::P4NodePlacement,
-    layered_intermediate_processor_factory(
-      IntermediateProcessorStrategy::LabelSideSelector,
-    ),
+    P4NodePlacement,
+    layered_intermediate_processor_factory(LabelSideSelector),
   )
   .add_before(
-    LayeredPhases::P4NodePlacement,
-    layered_intermediate_processor_factory(
-      IntermediateProcessorStrategy::EndLabelPreprocessor,
-    ),
+    P4NodePlacement,
+    layered_intermediate_processor_factory(EndLabelPreprocessor),
   )
   .add_after(
-    LayeredPhases::P5EdgeRouting,
-    layered_intermediate_processor_factory(
-      IntermediateProcessorStrategy::EndLabelPostprocessor,
-    ),
+    P5EdgeRouting,
+    layered_intermediate_processor_factory(EndLabelPostprocessor),
   )
 
 ///|

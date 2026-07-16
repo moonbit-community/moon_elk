@@ -20,7 +20,7 @@ fn between_layer_connected_edges(
   port : LPort,
   side : @core.PortSide,
 ) -> Array[LEdge] {
-  if lnode_port_side_equals(side, @core.PortSide::West) {
+  if lnode_port_side_equals(side, West) {
     port.get_incoming_edges()
   } else {
     port.get_outgoing_edges()
@@ -32,7 +32,7 @@ fn between_layer_adjacent_port_of(
   edge : LEdge,
   side : @core.PortSide,
 ) -> LPort? {
-  if lnode_port_side_equals(side, @core.PortSide::West) {
+  if lnode_port_side_equals(side, West) {
     edge.get_source()
   } else {
     edge.get_target()
@@ -267,16 +267,10 @@ fn BetweenLayerEdgeTwoNodeCrossingsCounter::set_port_positions_for_neighbouring_
   self : BetweenLayerEdgeTwoNodeCrossingsCounter,
 ) -> Unit {
   if self.free_layer_is_not_first_layer() {
-    self.set_port_positions_for_layer(
-      self.free_layer_index - 1,
-      @core.PortSide::East,
-    )
+    self.set_port_positions_for_layer(self.free_layer_index - 1, East)
   }
   if self.free_layer_is_not_last_layer() {
-    self.set_port_positions_for_layer(
-      self.free_layer_index + 1,
-      @core.PortSide::West,
-    )
+    self.set_port_positions_for_layer(self.free_layer_index + 1, West)
   }
 }
 
@@ -371,12 +365,12 @@ fn BetweenLayerEdgeTwoNodeCrossingsCounter::add_eastern_crossings(
 ) -> Unit {
   let upper_adjacencies = self.get_adjacency_for(
     upper_node,
-    @core.PortSide::East,
+    East,
     self.eastern_adjacencies,
   )
   let lower_adjacencies = self.get_adjacency_for(
     lower_node,
-    @core.PortSide::East,
+    East,
     self.eastern_adjacencies,
   )
   if upper_adjacencies.size() == 0 || lower_adjacencies.size() == 0 {
@@ -395,12 +389,12 @@ fn BetweenLayerEdgeTwoNodeCrossingsCounter::add_western_crossings(
 ) -> Unit {
   let upper_adjacencies = self.get_adjacency_for(
     upper_node,
-    @core.PortSide::West,
+    West,
     self.western_adjacencies,
   )
   let lower_adjacencies = self.get_adjacency_for(
     lower_node,
-    @core.PortSide::West,
+    West,
     self.western_adjacencies,
   )
   if upper_adjacencies.size() == 0 || lower_adjacencies.size() == 0 {

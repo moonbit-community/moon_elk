@@ -41,26 +41,19 @@ fn rectpacking_descriptor_equal(
   b : RectpackingDrawingDataDescriptor,
 ) -> Bool {
   match (a, b) {
+    (CANDIDATE_POSITION_LAST_PLACED_RIGHT, CANDIDATE_POSITION_LAST_PLACED_RIGHT) =>
+      true
+    (CANDIDATE_POSITION_LAST_PLACED_BELOW, CANDIDATE_POSITION_LAST_PLACED_BELOW) =>
+      true
     (
-      RectpackingDrawingDataDescriptor::CANDIDATE_POSITION_LAST_PLACED_RIGHT,
-      RectpackingDrawingDataDescriptor::CANDIDATE_POSITION_LAST_PLACED_RIGHT,
+      CANDIDATE_POSITION_WHOLE_DRAWING_RIGHT,
+      CANDIDATE_POSITION_WHOLE_DRAWING_RIGHT,
     ) => true
     (
-      RectpackingDrawingDataDescriptor::CANDIDATE_POSITION_LAST_PLACED_BELOW,
-      RectpackingDrawingDataDescriptor::CANDIDATE_POSITION_LAST_PLACED_BELOW,
+      CANDIDATE_POSITION_WHOLE_DRAWING_BELOW,
+      CANDIDATE_POSITION_WHOLE_DRAWING_BELOW,
     ) => true
-    (
-      RectpackingDrawingDataDescriptor::CANDIDATE_POSITION_WHOLE_DRAWING_RIGHT,
-      RectpackingDrawingDataDescriptor::CANDIDATE_POSITION_WHOLE_DRAWING_RIGHT,
-    ) => true
-    (
-      RectpackingDrawingDataDescriptor::CANDIDATE_POSITION_WHOLE_DRAWING_BELOW,
-      RectpackingDrawingDataDescriptor::CANDIDATE_POSITION_WHOLE_DRAWING_BELOW,
-    ) => true
-    (
-      RectpackingDrawingDataDescriptor::WHOLE_DRAWING,
-      RectpackingDrawingDataDescriptor::WHOLE_DRAWING,
-    ) => true
+    (WHOLE_DRAWING, WHOLE_DRAWING) => true
     _ => false
   }
 }
@@ -70,15 +63,15 @@ fn rectpacking_area_approximation_filters(
   goal : RectpackingOptimizationGoal,
 ) -> Array[RectpackingBestCandidateFilter] {
   match goal {
-    RectpackingOptimizationGoal::MAX_SCALE_DRIVEN =>
+    MAX_SCALE_DRIVEN =>
       [
         rectpacking_scale_measure_filter, rectpacking_area_filter, rectpacking_aspect_ratio_filter,
       ]
-    RectpackingOptimizationGoal::ASPECT_RATIO_DRIVEN =>
+    ASPECT_RATIO_DRIVEN =>
       [
         rectpacking_aspect_ratio_filter, rectpacking_area_filter, rectpacking_scale_measure_filter,
       ]
-    RectpackingOptimizationGoal::AREA_DRIVEN =>
+    AREA_DRIVEN =>
       [
         rectpacking_area_filter, rectpacking_scale_measure_filter, rectpacking_aspect_ratio_filter,
       ]
@@ -97,59 +90,59 @@ fn rectpacking_area_approximation_check_special_cases(
 
   let first_opt_lpb_or_cdb = rectpacking_descriptor_equal(
       first_opt,
-      RectpackingDrawingDataDescriptor::CANDIDATE_POSITION_LAST_PLACED_BELOW,
+      CANDIDATE_POSITION_LAST_PLACED_BELOW,
     ) ||
     rectpacking_descriptor_equal(
       first_opt,
-      RectpackingDrawingDataDescriptor::CANDIDATE_POSITION_WHOLE_DRAWING_BELOW,
+      CANDIDATE_POSITION_WHOLE_DRAWING_BELOW,
     )
   let second_opt_lpb_or_cdb = rectpacking_descriptor_equal(
       second_opt,
-      RectpackingDrawingDataDescriptor::CANDIDATE_POSITION_LAST_PLACED_BELOW,
+      CANDIDATE_POSITION_LAST_PLACED_BELOW,
     ) ||
     rectpacking_descriptor_equal(
       second_opt,
-      RectpackingDrawingDataDescriptor::CANDIDATE_POSITION_WHOLE_DRAWING_BELOW,
+      CANDIDATE_POSITION_WHOLE_DRAWING_BELOW,
     )
 
   let first_opt_lpr_or_cdr = rectpacking_descriptor_equal(
       first_opt,
-      RectpackingDrawingDataDescriptor::CANDIDATE_POSITION_LAST_PLACED_RIGHT,
+      CANDIDATE_POSITION_LAST_PLACED_RIGHT,
     ) ||
     rectpacking_descriptor_equal(
       first_opt,
-      RectpackingDrawingDataDescriptor::CANDIDATE_POSITION_WHOLE_DRAWING_RIGHT,
+      CANDIDATE_POSITION_WHOLE_DRAWING_RIGHT,
     )
   let second_opt_lpr_or_cdr = rectpacking_descriptor_equal(
       second_opt,
-      RectpackingDrawingDataDescriptor::CANDIDATE_POSITION_LAST_PLACED_RIGHT,
+      CANDIDATE_POSITION_LAST_PLACED_RIGHT,
     ) ||
     rectpacking_descriptor_equal(
       second_opt,
-      RectpackingDrawingDataDescriptor::CANDIDATE_POSITION_WHOLE_DRAWING_RIGHT,
+      CANDIDATE_POSITION_WHOLE_DRAWING_RIGHT,
     )
 
   let first_opt_lpr_or_lpb = rectpacking_descriptor_equal(
       first_opt,
-      RectpackingDrawingDataDescriptor::CANDIDATE_POSITION_LAST_PLACED_RIGHT,
+      CANDIDATE_POSITION_LAST_PLACED_RIGHT,
     ) ||
     rectpacking_descriptor_equal(
       first_opt,
-      RectpackingDrawingDataDescriptor::CANDIDATE_POSITION_LAST_PLACED_BELOW,
+      CANDIDATE_POSITION_LAST_PLACED_BELOW,
     )
   let second_opt_lpr_or_lpb = rectpacking_descriptor_equal(
       second_opt,
-      RectpackingDrawingDataDescriptor::CANDIDATE_POSITION_LAST_PLACED_RIGHT,
+      CANDIDATE_POSITION_LAST_PLACED_RIGHT,
     ) ||
     rectpacking_descriptor_equal(
       second_opt,
-      RectpackingDrawingDataDescriptor::CANDIDATE_POSITION_LAST_PLACED_BELOW,
+      CANDIDATE_POSITION_LAST_PLACED_BELOW,
     )
 
   if first_opt_lpb_or_cdb && second_opt_lpb_or_cdb {
     if rectpacking_descriptor_equal(
         drawing1.placement_option,
-        RectpackingDrawingDataDescriptor::CANDIDATE_POSITION_WHOLE_DRAWING_BELOW,
+        CANDIDATE_POSITION_WHOLE_DRAWING_BELOW,
       ) {
       return drawing1
     } else {
@@ -158,7 +151,7 @@ fn rectpacking_area_approximation_check_special_cases(
   } else if first_opt_lpr_or_cdr && second_opt_lpr_or_cdr {
     if rectpacking_descriptor_equal(
         drawing1.placement_option,
-        RectpackingDrawingDataDescriptor::CANDIDATE_POSITION_WHOLE_DRAWING_RIGHT,
+        CANDIDATE_POSITION_WHOLE_DRAWING_RIGHT,
       ) {
       return drawing1
     } else {
@@ -167,7 +160,7 @@ fn rectpacking_area_approximation_check_special_cases(
   } else if first_opt_lpr_or_lpb && second_opt_lpr_or_lpb {
     let lpr_opt = if rectpacking_descriptor_equal(
         first_opt,
-        RectpackingDrawingDataDescriptor::CANDIDATE_POSITION_LAST_PLACED_RIGHT,
+        CANDIDATE_POSITION_LAST_PLACED_RIGHT,
       ) {
       drawing1
     } else {
@@ -175,7 +168,7 @@ fn rectpacking_area_approximation_check_special_cases(
     }
     let lpb_opt = if rectpacking_descriptor_equal(
         first_opt,
-        RectpackingDrawingDataDescriptor::CANDIDATE_POSITION_LAST_PLACED_RIGHT,
+        CANDIDATE_POSITION_LAST_PLACED_RIGHT,
       ) {
       drawing2
     } else {
@@ -192,7 +185,7 @@ fn rectpacking_area_approximation_check_special_cases(
     if area_lpr <= area_lpb {
       if rectpacking_descriptor_equal(
           drawing1.placement_option,
-          RectpackingDrawingDataDescriptor::CANDIDATE_POSITION_LAST_PLACED_RIGHT,
+          CANDIDATE_POSITION_LAST_PLACED_RIGHT,
         ) {
         return drawing1
       } else {
@@ -200,7 +193,7 @@ fn rectpacking_area_approximation_check_special_cases(
       }
     } else if rectpacking_descriptor_equal(
         drawing1.placement_option,
-        RectpackingDrawingDataDescriptor::CANDIDATE_POSITION_LAST_PLACED_BELOW,
+        CANDIDATE_POSITION_LAST_PLACED_BELOW,
       ) {
       return drawing1
     } else {
@@ -231,7 +224,7 @@ fn rectpacking_area_approximation_calc_values_for_opt(
   let mut width = 0.0
   let mut height = 0.0
   match option {
-    RectpackingDrawingDataDescriptor::CANDIDATE_POSITION_LAST_PLACED_RIGHT => {
+    CANDIDATE_POSITION_LAST_PLACED_RIGHT => {
       x = @graph.node_x(last_placed) +
         @graph.node_width(last_placed) +
         node_node_spacing
@@ -249,7 +242,7 @@ fn rectpacking_area_approximation_calc_values_for_opt(
         drawing_height, y, height_to_place,
       )
     }
-    RectpackingDrawingDataDescriptor::CANDIDATE_POSITION_LAST_PLACED_BELOW => {
+    CANDIDATE_POSITION_LAST_PLACED_BELOW => {
       y = @graph.node_y(last_placed) +
         @graph.node_height(last_placed) +
         node_node_spacing
@@ -267,13 +260,13 @@ fn rectpacking_area_approximation_calc_values_for_opt(
         drawing_height, y, height_to_place,
       )
     }
-    RectpackingDrawingDataDescriptor::CANDIDATE_POSITION_WHOLE_DRAWING_RIGHT => {
+    CANDIDATE_POSITION_WHOLE_DRAWING_RIGHT => {
       x = drawing_width + node_node_spacing
       y = 0.0
       width = drawing_width + node_node_spacing + width_to_place
       height = @cmp.maximum(drawing_height, height_to_place)
     }
-    RectpackingDrawingDataDescriptor::CANDIDATE_POSITION_WHOLE_DRAWING_BELOW => {
+    CANDIDATE_POSITION_WHOLE_DRAWING_BELOW => {
       x = 0.0
       y = drawing_height + node_node_spacing
       width = @cmp.maximum(drawing_width, width_to_place)
@@ -342,7 +335,7 @@ pub fn RectpackingAreaApproximation::approx_bounding_box(
     self.aspect_ratio,
     @graph.node_width(first_rect),
     @graph.node_height(first_rect),
-    RectpackingDrawingDataDescriptor::WHOLE_DRAWING,
+    WHOLE_DRAWING,
   )
 
   let mut rectangle_idx = 1
@@ -351,7 +344,7 @@ pub fn RectpackingAreaApproximation::approx_bounding_box(
 
     let opt1 = rectpacking_area_approximation_calc_values_for_opt(
       self,
-      RectpackingDrawingDataDescriptor::CANDIDATE_POSITION_LAST_PLACED_RIGHT,
+      CANDIDATE_POSITION_LAST_PLACED_RIGHT,
       to_place,
       last_placed,
       current_values,
@@ -360,7 +353,7 @@ pub fn RectpackingAreaApproximation::approx_bounding_box(
     )
     let opt2 = rectpacking_area_approximation_calc_values_for_opt(
       self,
-      RectpackingDrawingDataDescriptor::CANDIDATE_POSITION_LAST_PLACED_BELOW,
+      CANDIDATE_POSITION_LAST_PLACED_BELOW,
       to_place,
       last_placed,
       current_values,
@@ -369,7 +362,7 @@ pub fn RectpackingAreaApproximation::approx_bounding_box(
     )
     let opt3 = rectpacking_area_approximation_calc_values_for_opt(
       self,
-      RectpackingDrawingDataDescriptor::CANDIDATE_POSITION_WHOLE_DRAWING_RIGHT,
+      CANDIDATE_POSITION_WHOLE_DRAWING_RIGHT,
       to_place,
       last_placed,
       current_values,
@@ -378,7 +371,7 @@ pub fn RectpackingAreaApproximation::approx_bounding_box(
     )
     let opt4 = rectpacking_area_approximation_calc_values_for_opt(
       self,
-      RectpackingDrawingDataDescriptor::CANDIDATE_POSITION_WHOLE_DRAWING_BELOW,
+      CANDIDATE_POSITION_WHOLE_DRAWING_BELOW,
       to_place,
       last_placed,
       current_values,
@@ -395,7 +388,7 @@ pub fn RectpackingAreaApproximation::approx_bounding_box(
       best_opt.next_x_coordinate,
       best_opt.next_y_coordinate,
     )
-    best_opt.placement_option = RectpackingDrawingDataDescriptor::WHOLE_DRAWING
+    best_opt.placement_option = WHOLE_DRAWING
     current_values = best_opt
     last_placed = to_place
     placed_rects.push(to_place)

@@ -298,7 +298,7 @@ fn horizontal_port_placement_size_calculator_calculate_horizontal_node_size_requ
   )
   if node_context_port_alignment_equals(
       node_context.get_port_alignment(port_side),
-      @core.Distributed,
+      Distributed,
     ) {
     width += 2.0 * node_context.port_port_spacing
   }

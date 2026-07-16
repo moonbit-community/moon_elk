@@ -42,15 +42,15 @@ fn graph_info_cross_min_type_to_switch_type(
   cross_min_type : CrossMinType,
 ) -> GreedySwitchType {
   match cross_min_type {
-    CrossMinType::TwoSidedGreedySwitch => GreedySwitchType::TwoSided
-    _ => GreedySwitchType::OneSided
+    TwoSidedGreedySwitch => TwoSided
+    _ => OneSided
   }
 }
 
 ///|
 fn graph_info_is_two_sided(cross_min_type : CrossMinType) -> Bool {
   match cross_min_type {
-    CrossMinType::TwoSidedGreedySwitch => true
+    TwoSidedGreedySwitch => true
     _ => false
   }
 }
@@ -93,7 +93,7 @@ fn graph_info_port_distributor_as_barycenter(
 ///|
 fn graph_info_is_external_ports_property(property : GraphProperties) -> Bool {
   match property {
-    GraphProperties::ExternalPorts => true
+    ExternalPorts => true
     _ => false
   }
 }
@@ -126,12 +126,7 @@ pub enum CrossMinType {
 
 ///|
 pub fn cross_min_type_constants() -> Array[CrossMinType] {
-  [
-    CrossMinType::Barycenter,
-    CrossMinType::OneSidedGreedySwitch,
-    CrossMinType::TwoSidedGreedySwitch,
-    CrossMinType::Median,
-  ]
+  [Barycenter, OneSidedGreedySwitch, TwoSidedGreedySwitch, Median]
 }
 
 ///|
@@ -255,7 +250,7 @@ pub fn new_graph_info_holder_from_graph(
   ]
 
   let cross_minimizer = match cross_min_type {
-    CrossMinType::Barycenter => {
+    Barycenter => {
       let constraint_resolver = new_forster_constraint_resolver(
         current_node_order,
       )
@@ -272,14 +267,14 @@ pub fn new_graph_info_holder_from_graph(
         ).as_i_crossing_minimization_heuristic()
       }
     }
-    CrossMinType::Median =>
+    Median =>
       new_median_heuristic(@random.Rand::new()).as_i_crossing_minimization_heuristic()
-    CrossMinType::OneSidedGreedySwitch =>
+    OneSidedGreedySwitch =>
       new_greedy_switch_heuristic(
         graph_info_cross_min_type_to_switch_type(cross_min_type),
         holder,
       ).as_i_crossing_minimization_heuristic()
-    CrossMinType::TwoSidedGreedySwitch =>
+    TwoSidedGreedySwitch =>
       new_greedy_switch_heuristic(
         graph_info_cross_min_type_to_switch_type(cross_min_type),
         holder,

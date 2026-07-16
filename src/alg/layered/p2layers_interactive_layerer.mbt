@@ -34,7 +34,7 @@ pub(all) suberror InteractiveLayererException {
 fn[T] interactive_layerer_raise_unsupported_graph(
   message : String,
 ) -> T raise InteractiveLayererException {
-  raise InteractiveLayererException::UnsupportedGraphException(message)
+  raise UnsupportedGraphException(message)
 }
 
 ///|
@@ -146,7 +146,7 @@ fn interactive_layerer_check_node(
   node1.set_id(1)
   let layer1 = interactive_layerer_require_node_layer(node1)
   let shift_nodes = []
-  for port in node1.get_ports_by_type(PortType::Output) {
+  for port in node1.get_ports_by_type(Output) {
     for edge in port.get_outgoing_edges() {
       let node2 = interactive_layerer_require_edge_target_node(edge)
       if lnode_internal_handle(node1) != lnode_internal_handle(node2) {
@@ -188,17 +188,15 @@ fn interactive_layerer_configuration(
   Some(
     @core.layout_processor_configuration_create(layered_phase_descriptor)
     .add_before(
-      LayeredPhases::P1CycleBreaking,
-      layered_intermediate_processor_factory(
-        IntermediateProcessorStrategy::InteractiveExternalPortPositioner,
-      ),
+      P1CycleBreaking,
+      layered_intermediate_processor_factory(InteractiveExternalPortPositioner),
     )
     .add_before(
-      LayeredPhases::P2Layering,
+      P2Layering,
       interactive_layerer_layer_constraint_preprocessor_factory(),
     )
     .add_before(
-      LayeredPhases::P3NodeOrdering,
+      P3NodeOrdering,
       interactive_layerer_layer_constraint_postprocessor_factory(),
     ),
   )
@@ -259,7 +257,7 @@ fn interactive_layerer_process(
 
     layered_graph.get_layerless_nodes().clear()
   } catch {
-    InteractiveLayererException::UnsupportedGraphException(message) => {
+    UnsupportedGraphException(message) => {
       @core.layout_runtime_report_unsupported_configuration(message)
       monitor.done()
       return

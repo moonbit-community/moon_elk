@@ -14,21 +14,21 @@ pub impl Show for ElkGraphUtilException with fn output(self, logger) {
 fn[T] elk_graph_util_raise_null_pointer(
   message : String,
 ) -> T raise ElkGraphUtilException {
-  raise ElkGraphUtilException::NullPointerException(message)
+  raise NullPointerException(message)
 }
 
 ///|
 fn[T] elk_graph_util_raise_illegal_argument(
   message : String,
 ) -> T raise ElkGraphUtilException {
-  raise ElkGraphUtilException::IllegalArgumentException(message)
+  raise IllegalArgumentException(message)
 }
 
 ///|
 fn[T] elk_graph_util_raise_illegal_state(
   message : String,
 ) -> T raise ElkGraphUtilException {
-  raise ElkGraphUtilException::IllegalStateException(message)
+  raise IllegalStateException(message)
 }
 
 ///|

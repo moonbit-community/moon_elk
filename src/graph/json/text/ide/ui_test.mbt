@@ -84,7 +84,7 @@ test "ElkGraphJson ide proposal provider exposes property and key behavior" {
     "Property.KeyAssignment_0",
     "RULE_ID",
     new_graph_json_text_ide_content_assist_context(
-      current_model=Some(@text.GraphJsonTextNode(root)),
+      current_model=Some(GraphJsonTextNode(root)),
     ),
     key_acceptor,
   )
@@ -189,7 +189,7 @@ test "ElkGraphJson ui providers expose generated behavior" {
     "Property.KeyAssignment_0",
     @ui.new_graph_json_text_assignment("RULE_ID"),
     @ui.new_graph_json_text_ui_content_assist_context(
-      current_model=Some(@text.GraphJsonTextNode(root)),
+      current_model=Some(GraphJsonTextNode(root)),
     ),
     proposal_acceptor,
   )
@@ -239,8 +239,8 @@ test "ElkGraphJson convert handler works" {
   let handler = @ui.new_graph_json_text_convert_graph_handler(project~)
   let processed = handler.execute(
     [
-      @ui.GraphJsonTextSelectionOther,
-      @ui.GraphJsonTextSelectionFile(
+      GraphJsonTextSelectionOther,
+      GraphJsonTextSelectionFile(
         "demo.elkg", "{\"id\":\"root\",\"children\":[{\"id\":\"child\"}]}",
       ),
     ],

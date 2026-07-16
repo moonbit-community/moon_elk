@@ -22,7 +22,7 @@ priv suberror CompoundGraphPostprocessorException {
 fn[T] compound_graph_postprocessor_raise_unsupported_graph(
   message : String,
 ) -> T raise CompoundGraphPostprocessorException {
-  raise CompoundGraphPostprocessorException::UnsupportedGraphException(message)
+  raise UnsupportedGraphException(message)
 }
 
 ///|
@@ -397,7 +397,7 @@ fn compound_graph_postprocessor_process(
       orig_edge.set_target(Some(target_port))
     }
   } catch {
-    CompoundGraphPostprocessorException::UnsupportedGraphException(message) => {
+    UnsupportedGraphException(message) => {
       @core.layout_runtime_report_unsupported_configuration(message)
       monitor.done()
       return

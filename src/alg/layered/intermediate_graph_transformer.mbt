@@ -7,8 +7,8 @@ pub enum GraphTransformerMode {
 ///|
 fn graph_transformer_mode_to_string(mode : GraphTransformerMode) -> String {
   match mode {
-    GraphTransformerMode::ToInternalLtr => "TO_INTERNAL_LTR"
-    GraphTransformerMode::ToInputDirection => "TO_INPUT_DIRECTION"
+    ToInternalLtr => "TO_INTERNAL_LTR"
+    ToInputDirection => "TO_INPUT_DIRECTION"
   }
 }
 
@@ -27,9 +27,9 @@ fn graph_transformer_parse_direction_congruency(
   value : String,
 ) -> DirectionCongruency {
   if value == "READING_DIRECTION" {
-    DirectionCongruency::ReadingDirection
+    ReadingDirection
   } else {
-    DirectionCongruency::Rotation
+    Rotation
   }
 }
 
@@ -47,12 +47,12 @@ fn graph_transformer_parse_edge_label_side_selection(
   value : String,
 ) -> EdgeLabelSideSelection {
   match value {
-    "ALWAYS_UP" => EdgeLabelSideSelection::AlwaysUp
-    "ALWAYS_DOWN" => EdgeLabelSideSelection::AlwaysDown
-    "DIRECTION_UP" => EdgeLabelSideSelection::DirectionUp
-    "DIRECTION_DOWN" => EdgeLabelSideSelection::DirectionDown
-    "SMART_UP" => EdgeLabelSideSelection::SmartUp
-    _ => EdgeLabelSideSelection::SmartDown
+    "ALWAYS_UP" => AlwaysUp
+    "ALWAYS_DOWN" => AlwaysDown
+    "DIRECTION_UP" => DirectionUp
+    "DIRECTION_DOWN" => DirectionDown
+    "SMART_UP" => SmartUp
+    _ => SmartDown
   }
 }
 
@@ -61,8 +61,8 @@ fn graph_transformer_mirror_port_side_x(
   side : @core.PortSide,
 ) -> @core.PortSide {
   match side {
-    @core.PortSide::East => @core.PortSide::West
-    @core.PortSide::West => @core.PortSide::East
+    East => West
+    West => East
     _ => side
   }
 }
@@ -72,8 +72,8 @@ fn graph_transformer_mirror_port_side_y(
   side : @core.PortSide,
 ) -> @core.PortSide {
   match side {
-    @core.PortSide::North => @core.PortSide::South
-    @core.PortSide::South => @core.PortSide::North
+    North => South
+    South => North
     _ => side
   }
 }
@@ -83,11 +83,11 @@ fn graph_transformer_transpose_port_side(
   side : @core.PortSide,
 ) -> @core.PortSide {
   match side {
-    @core.PortSide::North => @core.PortSide::West
-    @core.PortSide::West => @core.PortSide::North
-    @core.PortSide::South => @core.PortSide::East
-    @core.PortSide::East => @core.PortSide::South
-    @core.PortSide::SideUndefined => @core.PortSide::SideUndefined
+    North => West
+    West => North
+    South => East
+    East => South
+    SideUndefined => SideUndefined
   }
 }
 
@@ -677,7 +677,7 @@ fn graph_transformer_mirror_x(
     }
 
     match node.get_type() {
-      NodeType::ExternalPort => {
+      ExternalPort => {
         node.set_property_port_side(
           internal_properties_ext_port_side,
           graph_transformer_mirror_port_side_x(
@@ -783,7 +783,7 @@ fn graph_transformer_mirror_y(
     }
 
     match node.get_type() {
-      NodeType::ExternalPort => {
+      ExternalPort => {
         node.set_property_port_side(
           internal_properties_ext_port_side,
           graph_transformer_mirror_port_side_y(
@@ -853,7 +853,7 @@ fn graph_transformer_transpose(
     }
 
     match node.get_type() {
-      NodeType::ExternalPort => {
+      ExternalPort => {
         node.set_property_port_side(
           internal_properties_ext_port_side,
           graph_transformer_transpose_port_side(
@@ -908,13 +908,13 @@ fn graph_transformer_process_mode(
     graph_transformer_get_direction_congruency_value(layered_graph),
   )
 
-  if congruency is DirectionCongruency::ReadingDirection {
+  if congruency is ReadingDirection {
     if direction_value == "LEFT" {
       graph_transformer_mirror_x(layered_graph, nodes)
     } else if direction_value == "DOWN" {
       graph_transformer_transpose(layered_graph, nodes)
     } else if direction_value == "UP" {
-      if mode is GraphTransformerMode::ToInternalLtr {
+      if mode is ToInternalLtr {
         graph_transformer_transpose(layered_graph, nodes)
         graph_transformer_mirror_y(layered_graph, nodes)
       } else {
@@ -922,7 +922,7 @@ fn graph_transformer_process_mode(
         graph_transformer_transpose(layered_graph, nodes)
       }
     }
-  } else if mode is GraphTransformerMode::ToInternalLtr {
+  } else if mode is ToInternalLtr {
     if direction_value == "LEFT" {
       graph_transformer_mirror_x(layered_graph, nodes)
       graph_transformer_mirror_y(layered_graph, nodes)
@@ -975,7 +975,7 @@ pub fn new_direction_preprocessor_layout_processor() -> @core.ILayoutProcessor[
   LayeredPhases,
   LGraph,
 ] {
-  new_graph_transformer_layout_processor(GraphTransformerMode::ToInputDirection)
+  new_graph_transformer_layout_processor(ToInputDirection)
 }
 
 ///|
@@ -983,5 +983,5 @@ pub fn new_direction_postprocessor_layout_processor() -> @core.ILayoutProcessor[
   LayeredPhases,
   LGraph,
 ] {
-  new_graph_transformer_layout_processor(GraphTransformerMode::ToInternalLtr)
+  new_graph_transformer_layout_processor(ToInternalLtr)
 }

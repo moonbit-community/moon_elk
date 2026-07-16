@@ -13,7 +13,7 @@ pub(all) suberror NubSplineException {
 fn[T] nub_spline_raise_illegal_argument(
   message : String,
 ) -> T raise NubSplineException {
-  raise NubSplineException::IllegalArgumentException(message)
+  raise IllegalArgumentException(message)
 }
 
 ///|

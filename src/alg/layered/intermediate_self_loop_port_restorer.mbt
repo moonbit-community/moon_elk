@@ -3,12 +3,12 @@ fn self_loop_port_restorer_port_constraints_from_string(
   name : String,
 ) -> @core.PortConstraints {
   match name {
-    "FREE" => @core.PortConstraints::Free
-    "FIXED_SIDE" => @core.PortConstraints::FixedSide
-    "FIXED_ORDER" => @core.PortConstraints::FixedOrder
-    "FIXED_RATIO" => @core.PortConstraints::FixedRatio
-    "FIXED_POS" => @core.PortConstraints::FixedPos
-    _ => @core.PortConstraints::Undefined
+    "FREE" => Free
+    "FIXED_SIDE" => FixedSide
+    "FIXED_ORDER" => FixedOrder
+    "FIXED_RATIO" => FixedRatio
+    "FIXED_POS" => FixedPos
+    _ => Undefined
   }
 }
 
@@ -26,8 +26,8 @@ fn self_loop_port_restorer_port_constraints_is_free_or_undefined(
   constraints : @core.PortConstraints,
 ) -> Bool {
   match constraints {
-    @core.PortConstraints::Undefined => true
-    @core.PortConstraints::Free => true
+    Undefined => true
+    Free => true
     _ => false
   }
 }
@@ -35,7 +35,7 @@ fn self_loop_port_restorer_port_constraints_is_free_or_undefined(
 ///|
 fn self_loop_port_restorer_node_type_is_normal(node_type : NodeType) -> Bool {
   match node_type {
-    NodeType::Normal => true
+    Normal => true
     _ => false
   }
 }
@@ -101,7 +101,7 @@ fn self_loop_port_restorer_process(
         ) {
         Some(sl_holder) =>
           self_loop_port_restorer_process_node(sl_holder, Some(monitor)) catch {
-            SelfLoopTypeException::IllegalArgumentException(message) => {
+            IllegalArgumentException(message) => {
               @core.layout_runtime_report_unsupported_configuration(message)
               monitor.done()
               return

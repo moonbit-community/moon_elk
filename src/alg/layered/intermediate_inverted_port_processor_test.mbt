@@ -57,7 +57,7 @@ fn inverted_port_processor_test_port_side(name : String) -> @core.PortSide {
 ///|
 fn inverted_port_processor_test_is_long_edge(node : LNode) -> Bool {
   match node.get_type() {
-    NodeType::LongEdge => true
+    LongEdge => true
     _ => false
   }
 }

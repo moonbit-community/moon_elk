@@ -16,7 +16,7 @@ fn radial_layout_phase_ordinal(phase : RadialLayoutPhases) -> Int {
 pub let radial_layout_phase_descriptor : @core.PhaseDescriptor[
   RadialLayoutPhases,
 ] = @core.new_phase_descriptor(
-  [RadialLayoutPhases::P1_NODE_PLACEMENT, RadialLayoutPhases::P2_EDGE_ROUTING],
+  [P1_NODE_PLACEMENT, P2_EDGE_ROUTING],
   radial_layout_phase_ordinal,
 )
 

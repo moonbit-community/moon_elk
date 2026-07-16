@@ -62,8 +62,8 @@ test "self loop holder install rejects nodes without self loops" {
     ignore(self_loop_holder_install(l_node))
     abort("expected UnsupportedConfigurationException")
   } catch {
-    SelfLoopHolderException::UnsupportedConfigurationException(_) => ()
-    SelfLoopHolderException::IllegalStateException(message) =>
+    UnsupportedConfigurationException(_) => ()
+    IllegalStateException(message) =>
       abort("unexpected IllegalStateException: \{message}")
   }
 }

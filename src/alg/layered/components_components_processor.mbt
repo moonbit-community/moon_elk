@@ -6,7 +6,7 @@ pub let layered_components_separate_connected_components : @graph.IProperty[
 ///|
 pub let layered_components_direction : @graph.IProperty[@core.Direction] = @graph.new_property(
   "org.eclipse.elk.direction",
-  @core.Direction::Undefined,
+  Undefined,
 )
 
 ///|
@@ -19,12 +19,12 @@ fn layered_components_port_constraints_from_string(
   value : String,
 ) -> @core.PortConstraints {
   match value {
-    "FREE" => @core.PortConstraints::Free
-    "FIXED_SIDE" => @core.PortConstraints::FixedSide
-    "FIXED_ORDER" => @core.PortConstraints::FixedOrder
-    "FIXED_RATIO" => @core.PortConstraints::FixedRatio
-    "FIXED_POS" => @core.PortConstraints::FixedPos
-    _ => @core.PortConstraints::Undefined
+    "FREE" => Free
+    "FIXED_SIDE" => FixedSide
+    "FIXED_ORDER" => FixedOrder
+    "FIXED_RATIO" => FixedRatio
+    "FIXED_POS" => FixedPos
+    _ => Undefined
   }
 }
 
@@ -34,7 +34,7 @@ fn layered_components_graph_has_external_ports(graph : LGraph) -> Bool {
     property in graph.get_property_graph_properties_array(
       internal_properties_graph_properties,
     ) {
-    if property is GraphProperties::ExternalPorts {
+    if property is ExternalPorts {
       return true
     }
   }
@@ -110,7 +110,7 @@ fn layered_components_dfs(
 
   component_nodes.push(node)
 
-  if node.get_type() is NodeType::ExternalPort {
+  if node.get_type() is ExternalPort {
     layered_components_add_port_side(
       ext_port_sides,
       node.get_property_port_side(internal_properties_ext_port_side),
@@ -155,7 +155,7 @@ pub fn new_layered_components_processor() -> LayeredComponentsProcessor {
     component_group_model_order_graph_placer: new_layered_component_group_model_order_graph_placer(),
     model_order_row_graph_placer: new_layered_model_order_row_graph_placer(),
     simple_row_graph_placer: new_layered_simple_row_graph_placer(),
-    graph_placer_kind: LayeredGraphPlacerKind::SimpleRow,
+    graph_placer_kind: SimpleRow,
   }
 }
 
@@ -164,7 +164,7 @@ pub fn LayeredComponentsProcessor::split(
   self : LayeredComponentsProcessor,
   graph : LGraph,
 ) -> Array[LGraph] {
-  self.graph_placer_kind = LayeredGraphPlacerKind::SimpleRow
+  self.graph_placer_kind = SimpleRow
 
   let separate = graph.get_property_bool(
     layered_components_separate_connected_components,
@@ -209,11 +209,9 @@ pub fn LayeredComponentsProcessor::split(
 
     if ext_ports {
       match component_ordering {
-        ComponentOrderingStrategy::GroupModelOrder =>
-          self.graph_placer_kind = LayeredGraphPlacerKind::ComponentGroupModelOrder
-        ComponentOrderingStrategy::ModelOrder =>
-          self.graph_placer_kind = LayeredGraphPlacerKind::ModelOrderRow
-        _ => self.graph_placer_kind = LayeredGraphPlacerKind::ComponentGroup
+        GroupModelOrder => self.graph_placer_kind = ComponentGroupModelOrder
+        ModelOrder => self.graph_placer_kind = ModelOrderRow
+        _ => self.graph_placer_kind = ComponentGroup
       }
     }
 
@@ -222,10 +220,7 @@ pub fn LayeredComponentsProcessor::split(
     [graph]
   }
 
-  if !component_ordering_strategy_equals(
-      component_ordering,
-      ComponentOrderingStrategy::NoneType,
-    ) {
+  if !component_ordering_strategy_equals(component_ordering, NoneType) {
     layered_components_sort_by_model_order(result)
   }
 
@@ -239,13 +234,12 @@ pub fn LayeredComponentsProcessor::combine(
   target : LGraph,
 ) -> Unit {
   match self.graph_placer_kind {
-    LayeredGraphPlacerKind::SimpleRow =>
-      self.simple_row_graph_placer.combine(components, target)
-    LayeredGraphPlacerKind::ComponentGroup =>
+    SimpleRow => self.simple_row_graph_placer.combine(components, target)
+    ComponentGroup =>
       self.component_group_graph_placer.combine(components, target)
-    LayeredGraphPlacerKind::ComponentGroupModelOrder =>
+    ComponentGroupModelOrder =>
       self.component_group_model_order_graph_placer.combine(components, target)
-    LayeredGraphPlacerKind::ModelOrderRow =>
+    ModelOrderRow =>
       self.model_order_row_graph_placer.combine(components, target)
   }
 }

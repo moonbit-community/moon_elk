@@ -128,7 +128,7 @@ pub fn BKAligner::vertical_alignment(
 
             let root_node = bal.require_root(node)
             let node_is_long_edge = match node.get_type() {
-              NodeType::LongEdge => true
+              LongEdge => true
               _ => false
             }
             bal.od[root_node.get_id()] = bal.od[root_node.get_id()] &&
@@ -157,7 +157,7 @@ pub fn BKAligner::vertical_alignment(
 
             let root_node = bal.require_root(node)
             let node_is_long_edge = match node.get_type() {
-              NodeType::LongEdge => true
+              LongEdge => true
               _ => false
             }
             bal.od[root_node.get_id()] = bal.od[root_node.get_id()] &&

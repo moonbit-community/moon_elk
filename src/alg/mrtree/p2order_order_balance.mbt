@@ -7,22 +7,10 @@ fn mrtree_order_balance_layout_processor_configuration(
     @core.layout_processor_configuration_create(
       mrtree_tree_layout_phase_descriptor,
     )
-    .before(MrtreeTreeLayoutPhases::P2NodeOrdering)
-    .add(
-      mrtree_intermediate_processor_factory(
-        MrtreeIntermediateProcessorStrategy::RootProc,
-      ),
-    )
-    .add(
-      mrtree_intermediate_processor_factory(
-        MrtreeIntermediateProcessorStrategy::FanProc,
-      ),
-    )
-    .add(
-      mrtree_intermediate_processor_factory(
-        MrtreeIntermediateProcessorStrategy::NeighborsProc,
-      ),
-    ),
+    .before(P2NodeOrdering)
+    .add(mrtree_intermediate_processor_factory(RootProc))
+    .add(mrtree_intermediate_processor_factory(FanProc))
+    .add(mrtree_intermediate_processor_factory(NeighborsProc)),
   )
 }
 
@@ -33,7 +21,7 @@ fn mrtree_order_balance_target_value(
 ) -> Int {
   let target = mrtree_edge_target(edge)
   match weighting {
-    MrtreeOrderWeighting::FAN => mrtree_node_fan(target)
+    FAN => mrtree_node_fan(target)
     _ => mrtree_node_descendants(target)
   }
 }
@@ -140,8 +128,8 @@ pub fn mrtree_order_balance_process(
   ignore(monitor.begin("Processor arrange node", 1.0))
 
   let weighting = match mrtree_graph_weighting(graph) {
-    MrtreeOrderWeighting::FAN => MrtreeOrderWeighting::FAN
-    _ => MrtreeOrderWeighting::DESCENDANTS
+    FAN => MrtreeOrderWeighting::FAN
+    _ => DESCENDANTS
   }
 
   let mut root = None

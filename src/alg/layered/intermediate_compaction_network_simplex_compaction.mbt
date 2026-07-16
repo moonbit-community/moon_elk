@@ -133,7 +133,7 @@ fn network_simplex_compaction_create_edge(
   builder : @common.NEdgeBuilder,
 ) -> @common.NEdge raise NetworkSimplexCompactionException {
   try builder.create() catch {
-    @common.NetworkSimplexException(message) =>
+    NetworkSimplexException(message) =>
       network_simplex_compaction_raise(message)
   } noraise {
     edge => edge
@@ -323,10 +323,7 @@ fn network_simplex_compaction_add_edge_constraints(
         ),
       )
 
-      if horizontal_graph_compactor_port_side_is(
-          src_port.get_side(),
-          @core.PortSide::West,
-        ) &&
+      if horizontal_graph_compactor_port_side_is(src_port.get_side(), West) &&
         horizontal_graph_compactor_port_is_output(src_port) {
         for mapped in network_simplex_compaction_edge_map_get(ledge_map, l_edge) {
           if mapped.hitbox().x < c_node.hitbox().x {
@@ -354,10 +351,7 @@ fn network_simplex_compaction_add_edge_constraints(
         }
       }
 
-      if horizontal_graph_compactor_port_side_is(
-          tgt_port.get_side(),
-          @core.PortSide::East,
-        ) &&
+      if horizontal_graph_compactor_port_side_is(tgt_port.get_side(), East) &&
         horizontal_graph_compactor_port_is_input(tgt_port) {
         for mapped in network_simplex_compaction_edge_map_get(ledge_map, l_edge) {
           if mapped.hitbox().x > c_node.hitbox().x {

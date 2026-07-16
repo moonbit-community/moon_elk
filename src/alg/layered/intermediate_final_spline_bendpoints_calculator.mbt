@@ -7,9 +7,7 @@ priv suberror FinalSplineBendpointsCalculatorException {
 fn[T] final_spline_raise_illegal_argument(
   message : String,
 ) -> T raise FinalSplineBendpointsCalculatorException {
-  raise FinalSplineBendpointsCalculatorException::IllegalArgumentException(
-    message,
-  )
+  raise IllegalArgumentException(message)
 }
 
 ///|
@@ -31,7 +29,7 @@ fn final_spline_port_side_equals(
     (East, East) => true
     (South, South) => true
     (West, West) => true
-    (@core.SideUndefined, @core.SideUndefined) => true
+    (SideUndefined, SideUndefined) => true
     _ => false
   }
 }
@@ -580,10 +578,7 @@ fn final_spline_calculate_bezier_bend_points(
   }
   all_control_points.add_last_vector(target_port.get_absolute_anchor())
 
-  if final_spline_spline_routing_mode_equals(
-      spline_routing_mode,
-      SplineRoutingMode::Conservative,
-    ) {
+  if final_spline_spline_routing_mode_equals(spline_routing_mode, Conservative) {
     final_spline_insert_straightening_control_points(
       all_control_points, source_port, target_port,
     )
@@ -594,7 +589,7 @@ fn final_spline_calculate_bezier_bend_points(
     spline_edge_router_spline_dimension,
     all_control_points.to_array(),
   ) catch {
-    NubSplineException::IllegalArgumentException(message) =>
+    IllegalArgumentException(message) =>
       final_spline_raise_illegal_argument(message)
   }
   edge.get_bend_points().add_all(nub_spline.get_control_points().to_array())
@@ -612,7 +607,7 @@ fn final_spline_segment_allows_sloppy_routing(
 ) -> Bool {
   if final_spline_graph_compaction_strategy_equals(
       compaction_strategy,
-      GraphCompactionStrategy::NoneType,
+      NoneType,
     ) {
     return true
   }
@@ -683,7 +678,7 @@ fn final_spline_calculate_control_points(
 
     let sloppy = final_spline_spline_routing_mode_equals(
         spline_routing_mode,
-        SplineRoutingMode::Sloppy,
+        Sloppy,
       ) &&
       (edge_info.normal_source_node || edge_info.normal_target_node) &&
       final_spline_segment_allows_sloppy_routing(segment, compaction_strategy) &&
@@ -763,7 +758,7 @@ fn final_spline_bendpoints_calculator_process(
       edge.set_property_l_edge_array(internal_properties_spline_edge_chain, [])
     }
   } catch {
-    FinalSplineBendpointsCalculatorException::IllegalArgumentException(message) =>
+    IllegalArgumentException(message) =>
       @core.layout_runtime_report_unsupported_configuration(
         "java.lang.IllegalArgumentException: " + message,
       )

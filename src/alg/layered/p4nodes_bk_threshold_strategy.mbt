@@ -45,7 +45,7 @@ pub struct BkThresholdStrategy {
 ///|
 pub fn new_bk_null_threshold_strategy() -> BkThresholdStrategy {
   {
-    kind: BkThresholdStrategyKind::NullThreshold,
+    kind: NullThreshold,
     bal: None,
     ni: None,
     block_finished: Map([]),
@@ -57,7 +57,7 @@ pub fn new_bk_null_threshold_strategy() -> BkThresholdStrategy {
 ///|
 pub fn new_bk_simple_threshold_strategy() -> BkThresholdStrategy {
   {
-    kind: BkThresholdStrategyKind::SimpleThreshold,
+    kind: SimpleThreshold,
     bal: None,
     ni: None,
     block_finished: Map([]),
@@ -93,8 +93,7 @@ fn bk_threshold_strategy_bal_require_vdir(
   bal : BKAlignedLayout,
 ) -> BKVDirection raise BkThresholdStrategyException {
   bal.require_vdir() catch {
-    BKAlignedLayoutException::IllegalStateException(message) =>
-      bk_threshold_strategy_raise(message)
+    IllegalStateException(message) => bk_threshold_strategy_raise(message)
   }
 }
 
@@ -103,8 +102,7 @@ fn bk_threshold_strategy_bal_require_hdir(
   bal : BKAlignedLayout,
 ) -> BKHDirection raise BkThresholdStrategyException {
   bal.require_hdir() catch {
-    BKAlignedLayoutException::IllegalStateException(message) =>
-      bk_threshold_strategy_raise(message)
+    IllegalStateException(message) => bk_threshold_strategy_raise(message)
   }
 }
 
@@ -114,8 +112,7 @@ fn bk_threshold_strategy_bal_require_root(
   node : LNode,
 ) -> LNode raise BkThresholdStrategyException {
   bal.require_root(node) catch {
-    BKAlignedLayoutException::IllegalStateException(message) =>
-      bk_threshold_strategy_raise(message)
+    IllegalStateException(message) => bk_threshold_strategy_raise(message)
   }
 }
 
@@ -125,8 +122,7 @@ fn bk_threshold_strategy_bal_require_align(
   node : LNode,
 ) -> LNode raise BkThresholdStrategyException {
   bal.require_align(node) catch {
-    BKAlignedLayoutException::IllegalStateException(message) =>
-      bk_threshold_strategy_raise(message)
+    IllegalStateException(message) => bk_threshold_strategy_raise(message)
   }
 }
 
@@ -136,8 +132,7 @@ fn bk_threshold_strategy_bal_require_y(
   node : LNode,
 ) -> Double raise BkThresholdStrategyException {
   bal.require_y(node) catch {
-    BKAlignedLayoutException::IllegalStateException(message) =>
-      bk_threshold_strategy_raise(message)
+    IllegalStateException(message) => bk_threshold_strategy_raise(message)
   }
 }
 
@@ -148,8 +143,7 @@ fn bk_threshold_strategy_bal_calculate_delta(
   block : LPort,
 ) -> Double raise BkThresholdStrategyException {
   bal.calculate_delta(fix, block) catch {
-    BKAlignedLayoutException::IllegalStateException(message) =>
-      bk_threshold_strategy_raise(message)
+    IllegalStateException(message) => bk_threshold_strategy_raise(message)
   }
 }
 
@@ -161,8 +155,7 @@ fn bk_threshold_strategy_bal_check_space_above(
   ni : NeighborhoodInformation,
 ) -> Double raise BkThresholdStrategyException {
   bal.check_space_above(node, delta, ni) catch {
-    BKAlignedLayoutException::IllegalStateException(message) =>
-      bk_threshold_strategy_raise(message)
+    IllegalStateException(message) => bk_threshold_strategy_raise(message)
   }
 }
 
@@ -174,8 +167,7 @@ fn bk_threshold_strategy_bal_check_space_below(
   ni : NeighborhoodInformation,
 ) -> Double raise BkThresholdStrategyException {
   bal.check_space_below(node, delta, ni) catch {
-    BKAlignedLayoutException::IllegalStateException(message) =>
-      bk_threshold_strategy_raise(message)
+    IllegalStateException(message) => bk_threshold_strategy_raise(message)
   }
 }
 
@@ -186,8 +178,7 @@ fn bk_threshold_strategy_bal_shift_block(
   delta : Double,
 ) -> Unit raise BkThresholdStrategyException {
   bal.shift_block(node, delta) catch {
-    BKAlignedLayoutException::IllegalStateException(message) =>
-      bk_threshold_strategy_raise(message)
+    IllegalStateException(message) => bk_threshold_strategy_raise(message)
   }
 }
 
@@ -567,7 +558,7 @@ pub fn BkThresholdStrategy::calculate_threshold(
 ) -> Double {
   try {
     match self.kind {
-      BkThresholdStrategyKind::NullThreshold =>
+      NullThreshold =>
         if bk_vdirection_is_up(
             bk_threshold_strategy_bal_require_vdir(self.require_bal()),
           ) {
@@ -575,7 +566,7 @@ pub fn BkThresholdStrategy::calculate_threshold(
         } else {
           @double.neg_infinity
         }
-      BkThresholdStrategyKind::SimpleThreshold =>
+      SimpleThreshold =>
         self.calculate_threshold_simple(old_thresh, block_root, current_node)
     }
   } catch {
@@ -594,8 +585,8 @@ pub fn BkThresholdStrategy::calculate_threshold(
 pub fn BkThresholdStrategy::post_process(self : BkThresholdStrategy) -> Unit {
   try {
     match self.kind {
-      BkThresholdStrategyKind::NullThreshold => ()
-      BkThresholdStrategyKind::SimpleThreshold => self.post_process_simple()
+      NullThreshold => ()
+      SimpleThreshold => self.post_process_simple()
     }
   } catch {
     BkThresholdStrategyException(message) =>

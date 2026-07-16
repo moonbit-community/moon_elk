@@ -163,9 +163,6 @@ test "recursive layered context marks east-west fixed ports as north-south ports
   }
 
   assert_true(
-    recursive_layered_has_graph_property(
-      context.layered_graph,
-      GraphProperties::NorthSouthPorts,
-    ),
+    recursive_layered_has_graph_property(context.layered_graph, NorthSouthPorts),
   )
 }

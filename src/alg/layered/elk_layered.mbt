@@ -121,9 +121,9 @@ fn elk_layered_greedy_switch_strategy(
   greedy_switch_type : String,
 ) -> IntermediateProcessorStrategy {
   if greedy_switch_type == "ONE_SIDED" {
-    IntermediateProcessorStrategy::OneSidedGreedySwitch
+    OneSidedGreedySwitch
   } else {
-    IntermediateProcessorStrategy::TwoSidedGreedySwitch
+    TwoSidedGreedySwitch
   }
 }
 
@@ -230,13 +230,11 @@ fn elk_layered_crossing_factory(
       })
     "MEDIAN_LAYER_SWEEP" =>
       @core.new_layout_processor_factory(24001, 2, () => {
-        new_layer_sweep_crossing_minimizer_layout_phase(CrossMinType::Median)
+        new_layer_sweep_crossing_minimizer_layout_phase(Median)
       })
     _ =>
       @core.new_layout_processor_factory(24000, 2, () => {
-        new_layer_sweep_crossing_minimizer_layout_phase(
-          CrossMinType::Barycenter,
-        )
+        new_layer_sweep_crossing_minimizer_layout_phase(Barycenter)
       })
   }
 }
@@ -377,31 +375,31 @@ fn elk_layered_collect_algorithm_for_graph(
   ignore(assembler.reset())
   ignore(
     assembler.set_phase(
-      LayeredPhases::P1CycleBreaking,
+      P1CycleBreaking,
       elk_layered_cycle_breaking_factory(cycle_breaking_strategy),
     ),
   )
   ignore(
     assembler.set_phase(
-      LayeredPhases::P2Layering,
+      P2Layering,
       elk_layered_layering_factory(layering_strategy),
     ),
   )
   ignore(
     assembler.set_phase(
-      LayeredPhases::P3NodeOrdering,
+      P3NodeOrdering,
       elk_layered_crossing_factory(crossing_strategy),
     ),
   )
   ignore(
     assembler.set_phase(
-      LayeredPhases::P4NodePlacement,
+      P4NodePlacement,
       elk_layered_node_placement_factory(node_placement_strategy),
     ),
   )
   ignore(
     assembler.set_phase(
-      LayeredPhases::P5EdgeRouting,
+      P5EdgeRouting,
       edge_router_factory_factory_for(
         elk_layered_parse_edge_routing(edge_routing_value),
       ),
@@ -411,28 +409,22 @@ fn elk_layered_collect_algorithm_for_graph(
     assembler.add_processor_configuration(
       @core.layout_processor_configuration_create(layered_phase_descriptor)
       .add_before(
-        LayeredPhases::P4NodePlacement,
-        layered_intermediate_processor_factory(
-          IntermediateProcessorStrategy::InnermostNodeMarginCalculator,
-        ),
+        P4NodePlacement,
+        layered_intermediate_processor_factory(InnermostNodeMarginCalculator),
       )
       .add_before(
-        LayeredPhases::P4NodePlacement,
-        layered_intermediate_processor_factory(
-          IntermediateProcessorStrategy::LabelAndNodeSizeProcessor,
-        ),
+        P4NodePlacement,
+        layered_intermediate_processor_factory(LabelAndNodeSizeProcessor),
       )
       .add_before(
-        LayeredPhases::P5EdgeRouting,
+        P5EdgeRouting,
         layered_intermediate_processor_factory(
-          IntermediateProcessorStrategy::LayerSizeAndGraphHeightCalculator,
+          LayerSizeAndGraphHeightCalculator,
         ),
       )
       .add_after(
-        LayeredPhases::P5EdgeRouting,
-        layered_intermediate_processor_factory(
-          IntermediateProcessorStrategy::EndLabelSorter,
-        ),
+        P5EdgeRouting,
+        layered_intermediate_processor_factory(EndLabelSorter),
       ),
     ),
   )
@@ -440,10 +432,8 @@ fn elk_layered_collect_algorithm_for_graph(
     ignore(
       assembler.add_processor_configuration(
         @core.layout_processor_configuration_create(layered_phase_descriptor).add_after(
-          LayeredPhases::P5EdgeRouting,
-          layered_intermediate_processor_factory(
-            IntermediateProcessorStrategy::HierarchicalNodeResizer,
-          ),
+          P5EdgeRouting,
+          layered_intermediate_processor_factory(HierarchicalNodeResizer),
         ),
       ),
     )
@@ -452,10 +442,8 @@ fn elk_layered_collect_algorithm_for_graph(
     ignore(
       assembler.add_processor_configuration(
         @core.layout_processor_configuration_create(layered_phase_descriptor).add_before(
-          LayeredPhases::P1CycleBreaking,
-          layered_intermediate_processor_factory(
-            IntermediateProcessorStrategy::PortSideProcessor,
-          ),
+          P1CycleBreaking,
+          layered_intermediate_processor_factory(PortSideProcessor),
         ),
       ),
     )
@@ -463,10 +451,8 @@ fn elk_layered_collect_algorithm_for_graph(
     ignore(
       assembler.add_processor_configuration(
         @core.layout_processor_configuration_create(layered_phase_descriptor).add_before(
-          LayeredPhases::P3NodeOrdering,
-          layered_intermediate_processor_factory(
-            IntermediateProcessorStrategy::PortSideProcessor,
-          ),
+          P3NodeOrdering,
+          layered_intermediate_processor_factory(PortSideProcessor),
         ),
       ),
     )
@@ -477,15 +463,13 @@ fn elk_layered_collect_algorithm_for_graph(
       assembler.add_processor_configuration(
         @core.layout_processor_configuration_create(layered_phase_descriptor)
         .add_before(
-          LayeredPhases::P4NodePlacement,
-          layered_intermediate_processor_factory(
-            IntermediateProcessorStrategy::CenterLabelManagementProcessor,
-          ),
+          P4NodePlacement,
+          layered_intermediate_processor_factory(CenterLabelManagementProcessor),
         )
         .add_before(
-          LayeredPhases::P4NodePlacement,
+          P4NodePlacement,
           layered_intermediate_processor_factory(
-            IntermediateProcessorStrategy::EndNodePortLabelManagementProcessor,
+            EndNodePortLabelManagementProcessor,
           ),
         ),
       ),
@@ -496,10 +480,8 @@ fn elk_layered_collect_algorithm_for_graph(
     ignore(
       assembler.add_processor_configuration(
         @core.layout_processor_configuration_create(layered_phase_descriptor).add_after(
-          LayeredPhases::P5EdgeRouting,
-          layered_intermediate_processor_factory(
-            IntermediateProcessorStrategy::ConstraintsPostprocessor,
-          ),
+          P5EdgeRouting,
+          layered_intermediate_processor_factory(ConstraintsPostprocessor),
         ),
       ),
     )
@@ -510,42 +492,32 @@ fn elk_layered_collect_algorithm_for_graph(
       assembler.add_processor_configuration(
         @core.layout_processor_configuration_create(layered_phase_descriptor)
         .add_before(
-          LayeredPhases::P1CycleBreaking,
-          layered_intermediate_processor_factory(
-            IntermediateProcessorStrategy::DirectionPreprocessor,
-          ),
+          P1CycleBreaking,
+          layered_intermediate_processor_factory(DirectionPreprocessor),
         )
         .add_after(
-          LayeredPhases::P5EdgeRouting,
-          layered_intermediate_processor_factory(
-            IntermediateProcessorStrategy::DirectionPostprocessor,
-          ),
+          P5EdgeRouting,
+          layered_intermediate_processor_factory(DirectionPostprocessor),
         ),
       ),
     )
   }
 
-  if elk_layered_has_graph_property(lgraph, GraphProperties::Comments) {
+  if elk_layered_has_graph_property(lgraph, Comments) {
     ignore(
       assembler.add_processor_configuration(
         @core.layout_processor_configuration_create(layered_phase_descriptor)
         .add_before(
-          LayeredPhases::P1CycleBreaking,
-          layered_intermediate_processor_factory(
-            IntermediateProcessorStrategy::CommentPreprocessor,
-          ),
+          P1CycleBreaking,
+          layered_intermediate_processor_factory(CommentPreprocessor),
         )
         .add_before(
-          LayeredPhases::P4NodePlacement,
-          layered_intermediate_processor_factory(
-            IntermediateProcessorStrategy::CommentNodeMarginCalculator,
-          ),
+          P4NodePlacement,
+          layered_intermediate_processor_factory(CommentNodeMarginCalculator),
         )
         .add_after(
-          LayeredPhases::P5EdgeRouting,
-          layered_intermediate_processor_factory(
-            IntermediateProcessorStrategy::CommentPostprocessor,
-          ),
+          P5EdgeRouting,
+          layered_intermediate_processor_factory(CommentPostprocessor),
         ),
       ),
     )
@@ -555,36 +527,28 @@ fn elk_layered_collect_algorithm_for_graph(
     ignore(
       assembler.add_processor_configuration(
         @core.layout_processor_configuration_create(layered_phase_descriptor).add_before(
-          LayeredPhases::P3NodeOrdering,
-          layered_intermediate_processor_factory(
-            IntermediateProcessorStrategy::NodePromotion,
-          ),
+          P3NodeOrdering,
+          layered_intermediate_processor_factory(NodePromotion),
         ),
       ),
     )
   }
 
-  if elk_layered_has_graph_property(lgraph, GraphProperties::Partitions) {
+  if elk_layered_has_graph_property(lgraph, Partitions) {
     ignore(
       assembler.add_processor_configuration(
         @core.layout_processor_configuration_create(layered_phase_descriptor)
         .add_before(
-          LayeredPhases::P1CycleBreaking,
-          layered_intermediate_processor_factory(
-            IntermediateProcessorStrategy::PartitionPreprocessor,
-          ),
+          P1CycleBreaking,
+          layered_intermediate_processor_factory(PartitionPreprocessor),
         )
         .add_before(
-          LayeredPhases::P2Layering,
-          layered_intermediate_processor_factory(
-            IntermediateProcessorStrategy::PartitionMidprocessor,
-          ),
+          P2Layering,
+          layered_intermediate_processor_factory(PartitionMidprocessor),
         )
         .add_before(
-          LayeredPhases::P3NodeOrdering,
-          layered_intermediate_processor_factory(
-            IntermediateProcessorStrategy::PartitionPostprocessor,
-          ),
+          P3NodeOrdering,
+          layered_intermediate_processor_factory(PartitionPostprocessor),
         ),
       ),
     )
@@ -594,10 +558,8 @@ fn elk_layered_collect_algorithm_for_graph(
     ignore(
       assembler.add_processor_configuration(
         @core.layout_processor_configuration_create(layered_phase_descriptor).add_after(
-          LayeredPhases::P5EdgeRouting,
-          layered_intermediate_processor_factory(
-            IntermediateProcessorStrategy::HorizontalCompactor,
-          ),
+          P5EdgeRouting,
+          layered_intermediate_processor_factory(HorizontalCompactor),
         ),
       ),
     )
@@ -607,10 +569,8 @@ fn elk_layered_collect_algorithm_for_graph(
     ignore(
       assembler.add_processor_configuration(
         @core.layout_processor_configuration_create(layered_phase_descriptor).add_before(
-          LayeredPhases::P3NodeOrdering,
-          layered_intermediate_processor_factory(
-            IntermediateProcessorStrategy::HighDegreeNodeLayerProcessor,
-          ),
+          P3NodeOrdering,
+          layered_intermediate_processor_factory(HighDegreeNodeLayerProcessor),
         ),
       ),
     )
@@ -620,9 +580,9 @@ fn elk_layered_collect_algorithm_for_graph(
     ignore(
       assembler.add_processor_configuration(
         @core.layout_processor_configuration_create(layered_phase_descriptor).add_before(
-          LayeredPhases::P3NodeOrdering,
+          P3NodeOrdering,
           layered_intermediate_processor_factory(
-            IntermediateProcessorStrategy::SemiInteractiveCrossMinProcessor,
+            SemiInteractiveCrossMinProcessor,
           ),
         ),
       ),
@@ -633,7 +593,7 @@ fn elk_layered_collect_algorithm_for_graph(
     ignore(
       assembler.add_processor_configuration(
         @core.layout_processor_configuration_create(layered_phase_descriptor).add_before(
-          LayeredPhases::P4NodePlacement,
+          P4NodePlacement,
           layered_intermediate_processor_factory(
             elk_layered_greedy_switch_strategy(greedy_switch_type),
           ),
@@ -646,10 +606,8 @@ fn elk_layered_collect_algorithm_for_graph(
     ignore(
       assembler.add_processor_configuration(
         @core.layout_processor_configuration_create(layered_phase_descriptor).add_before(
-          LayeredPhases::P4NodePlacement,
-          layered_intermediate_processor_factory(
-            IntermediateProcessorStrategy::AlternatingLayerUnzipper,
-          ),
+          P4NodePlacement,
+          layered_intermediate_processor_factory(AlternatingLayerUnzipper),
         ),
       ),
     )
@@ -660,10 +618,8 @@ fn elk_layered_collect_algorithm_for_graph(
       ignore(
         assembler.add_processor_configuration(
           @core.layout_processor_configuration_create(layered_phase_descriptor).add_before(
-            LayeredPhases::P4NodePlacement,
-            layered_intermediate_processor_factory(
-              IntermediateProcessorStrategy::SingleEdgeGraphWrapper,
-            ),
+            P4NodePlacement,
+            layered_intermediate_processor_factory(SingleEdgeGraphWrapper),
           ),
         ),
       )
@@ -672,22 +628,16 @@ fn elk_layered_collect_algorithm_for_graph(
         assembler.add_processor_configuration(
           @core.layout_processor_configuration_create(layered_phase_descriptor)
           .add_before(
-            LayeredPhases::P3NodeOrdering,
-            layered_intermediate_processor_factory(
-              IntermediateProcessorStrategy::BreakingPointInserter,
-            ),
+            P3NodeOrdering,
+            layered_intermediate_processor_factory(BreakingPointInserter),
           )
           .add_before(
-            LayeredPhases::P4NodePlacement,
-            layered_intermediate_processor_factory(
-              IntermediateProcessorStrategy::BreakingPointProcessor,
-            ),
+            P4NodePlacement,
+            layered_intermediate_processor_factory(BreakingPointProcessor),
           )
           .add_after(
-            LayeredPhases::P5EdgeRouting,
-            layered_intermediate_processor_factory(
-              IntermediateProcessorStrategy::BreakingPointRemover,
-            ),
+            P5EdgeRouting,
+            layered_intermediate_processor_factory(BreakingPointRemover),
           ),
         ),
       )
@@ -699,10 +649,8 @@ fn elk_layered_collect_algorithm_for_graph(
     ignore(
       assembler.add_processor_configuration(
         @core.layout_processor_configuration_create(layered_phase_descriptor).add_before(
-          LayeredPhases::P3NodeOrdering,
-          layered_intermediate_processor_factory(
-            IntermediateProcessorStrategy::SortByInputOrderOfModel,
-          ),
+          P3NodeOrdering,
+          layered_intermediate_processor_factory(SortByInputOrderOfModel),
         ),
       ),
     )

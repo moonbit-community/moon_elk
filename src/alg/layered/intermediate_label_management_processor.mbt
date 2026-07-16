@@ -3,18 +3,18 @@ fn label_management_processor_parse_direction(
   value : String,
 ) -> @core.Direction {
   match value {
-    "RIGHT" => @core.Direction::Rightward
-    "LEFT" => @core.Direction::Leftward
-    "DOWN" => @core.Direction::Downward
-    "UP" => @core.Direction::Upward
-    _ => @core.Direction::Undefined
+    "RIGHT" => Rightward
+    "LEFT" => Leftward
+    "DOWN" => Downward
+    "UP" => Upward
+    _ => Undefined
   }
 }
 
 ///|
 fn label_management_processor_node_type_is_normal(node_type : NodeType) -> Bool {
   match node_type {
-    NodeType::Normal => true
+    Normal => true
     _ => false
   }
 }
@@ -24,7 +24,7 @@ fn label_management_processor_node_type_is_label_node(
   node_type : NodeType,
 ) -> Bool {
   match node_type {
-    NodeType::LabelNode => true
+    LabelNode => true
     _ => false
   }
 }

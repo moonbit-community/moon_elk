@@ -16,9 +16,6 @@ fn topdownpacking_phase_ordinal(phase : TopdownPackingPhases) -> Int {
 pub let topdownpacking_phase_descriptor : @core.PhaseDescriptor[
   TopdownPackingPhases,
 ] = @core.new_phase_descriptor(
-  [
-    TopdownPackingPhases::P1_NODE_ARRANGEMENT,
-    TopdownPackingPhases::P2_WHITESPACE_ELIMINATION,
-  ],
+  [P1_NODE_ARRANGEMENT, P2_WHITESPACE_ELIMINATION],
   topdownpacking_phase_ordinal,
 )

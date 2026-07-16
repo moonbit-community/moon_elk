@@ -66,14 +66,14 @@ pub fn new_simple_node_placer_layout_phase() -> @core.ILayoutProcessor[
         internal_properties_graph_properties,
       ) {
       match property {
-        GraphProperties::ExternalPorts =>
+        ExternalPorts =>
           return Some(
             @core.layout_processor_configuration_create(
               layered_phase_descriptor,
             ).add_before(
-              LayeredPhases::P5EdgeRouting,
+              P5EdgeRouting,
               layered_intermediate_processor_factory(
-                IntermediateProcessorStrategy::HierarchicalPortPositionProcessor,
+                HierarchicalPortPositionProcessor,
               ),
             ),
           )

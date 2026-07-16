@@ -29,7 +29,7 @@ priv suberror StretchWidthLayererException {
 fn[T] stretch_width_layerer_raise_illegal_state(
   message : String,
 ) -> T raise StretchWidthLayererException {
-  raise StretchWidthLayererException::IllegalStateException(message)
+  raise IllegalStateException(message)
 }
 
 ///|
@@ -37,7 +37,7 @@ fn stretch_width_layerer_exception_message(
   error : StretchWidthLayererException,
 ) -> String {
   match error {
-    StretchWidthLayererException::IllegalStateException(message) => message
+    IllegalStateException(message) => message
   }
 }
 
@@ -67,17 +67,15 @@ let stretch_width_layerer_baseline_processing_configuration : @core.LayoutProces
   LGraph,
 ] = @core.layout_processor_configuration_create(layered_phase_descriptor)
   .add_before(
-    LayeredPhases::P1CycleBreaking,
-    layered_intermediate_processor_factory(
-      IntermediateProcessorStrategy::EdgeAndLayerConstraintEdgeReverser,
-    ),
+    P1CycleBreaking,
+    layered_intermediate_processor_factory(EdgeAndLayerConstraintEdgeReverser),
   )
   .add_before(
-    LayeredPhases::P2Layering,
+    P2Layering,
     stretch_width_layerer_layer_constraint_preprocessor_factory(),
   )
   .add_before(
-    LayeredPhases::P3NodeOrdering,
+    P3NodeOrdering,
     stretch_width_layerer_layer_constraint_postprocessor_factory(),
   )
 
@@ -220,7 +218,7 @@ fn stretch_width_layerer_min_max_node_size(
   state : StretchWidthLayererState,
 ) -> Unit {
   for node in state.sorted_layerless_nodes {
-    if node.get_type() is NodeType::Normal {
+    if node.get_type() is Normal {
       let size = node.get_size().y
       if size < state.minimum_node_size {
         state.minimum_node_size = size

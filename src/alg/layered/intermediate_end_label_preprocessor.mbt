@@ -4,11 +4,11 @@ let end_label_preprocessor_no_incident_edge_thickness = -1.0
 ///|
 fn end_label_preprocessor_parse_direction(value : String) -> @core.Direction {
   match value {
-    "RIGHT" => @core.Direction::Rightward
-    "LEFT" => @core.Direction::Leftward
-    "DOWN" => @core.Direction::Downward
-    "UP" => @core.Direction::Upward
-    _ => @core.Direction::Undefined
+    "RIGHT" => Rightward
+    "LEFT" => Leftward
+    "DOWN" => Downward
+    "UP" => Upward
+    _ => Undefined
   }
 }
 
@@ -184,7 +184,7 @@ fn end_label_preprocessor_place_labels_for_port(
   ignore(port_anchor.add(port.get_anchor()))
 
   match port.get_side() {
-    @core.PortSide::North => {
+    North => {
       label_cell.set_vertical_alignment(
         @common.vertical_label_alignment_bottom(),
       )
@@ -193,7 +193,7 @@ fn end_label_preprocessor_place_labels_for_port(
         label_cell_rect.height
 
       match label_cell.get_label_side() {
-        @core.LabelSide::Above => {
+        Above => {
           label_cell.set_horizontal_alignment(
             @common.horizontal_label_alignment_right(),
           )
@@ -212,14 +212,14 @@ fn end_label_preprocessor_place_labels_for_port(
         }
       }
     }
-    @core.PortSide::East => {
+    East => {
       label_cell.set_horizontal_alignment(
         @common.horizontal_label_alignment_left(),
       )
       label_cell_rect.x = node_size.x + node_margin.right + edge_label_spacing
 
       match label_cell.get_label_side() {
-        @core.LabelSide::Above => {
+        Above => {
           label_cell.set_vertical_alignment(
             @common.vertical_label_alignment_bottom(),
           )
@@ -238,12 +238,12 @@ fn end_label_preprocessor_place_labels_for_port(
         }
       }
     }
-    @core.PortSide::South => {
+    South => {
       label_cell.set_vertical_alignment(@common.vertical_label_alignment_top())
       label_cell_rect.y = node_size.y + node_margin.bottom + edge_label_spacing
 
       match label_cell.get_label_side() {
-        @core.LabelSide::Above => {
+        Above => {
           label_cell.set_horizontal_alignment(
             @common.horizontal_label_alignment_right(),
           )
@@ -262,7 +262,7 @@ fn end_label_preprocessor_place_labels_for_port(
         }
       }
     }
-    @core.PortSide::West => {
+    West => {
       label_cell.set_horizontal_alignment(
         @common.horizontal_label_alignment_right(),
       )
@@ -271,7 +271,7 @@ fn end_label_preprocessor_place_labels_for_port(
         label_cell_rect.width
 
       match label_cell.get_label_side() {
-        @core.LabelSide::Above => {
+        Above => {
           label_cell.set_vertical_alignment(
             @common.vertical_label_alignment_bottom(),
           )
@@ -299,11 +299,11 @@ fn end_label_preprocessor_port_side_to_overlap_removal_direction(
   port_side : @core.PortSide,
 ) -> @core.Direction {
   match port_side {
-    @core.PortSide::North => @core.Direction::Upward
-    @core.PortSide::South => @core.Direction::Downward
-    @core.PortSide::East => @core.Direction::Rightward
-    @core.PortSide::West => @core.Direction::Leftward
-    _ => @core.Direction::Undefined
+    North => Upward
+    South => Downward
+    East => Rightward
+    West => Leftward
+    _ => Undefined
   }
 }
 
@@ -317,11 +317,10 @@ fn end_label_preprocessor_calculate_overlap_start_coordinate(
   let node_margin = node.get_margin()
 
   match port_side {
-    @core.PortSide::North => -node_margin.top - edge_label_spacing
-    @core.PortSide::South =>
-      node_size.y + node_margin.bottom + edge_label_spacing
-    @core.PortSide::East => node_size.x + node_margin.right + edge_label_spacing
-    @core.PortSide::West => -node_margin.left - edge_label_spacing
+    North => -node_margin.top - edge_label_spacing
+    South => node_size.y + node_margin.bottom + edge_label_spacing
+    East => node_size.x + node_margin.right + edge_label_spacing
+    West => -node_margin.left - edge_label_spacing
     _ => 0.0
   }
 }
@@ -391,14 +390,14 @@ fn end_label_preprocessor_place_labels(
     end_label_preprocessor_remove_label_overlaps(
       node,
       port_label_cells,
-      @core.PortSide::East,
+      East,
       2.0 * label_label_spacing,
       edge_label_spacing,
     )
     end_label_preprocessor_remove_label_overlaps(
       node,
       port_label_cells,
-      @core.PortSide::West,
+      West,
       2.0 * label_label_spacing,
       edge_label_spacing,
     )
@@ -406,14 +405,14 @@ fn end_label_preprocessor_place_labels(
     end_label_preprocessor_remove_label_overlaps(
       node,
       port_label_cells,
-      @core.PortSide::North,
+      North,
       2.0 * label_label_spacing,
       edge_label_spacing,
     )
     end_label_preprocessor_remove_label_overlaps(
       node,
       port_label_cells,
-      @core.PortSide::South,
+      South,
       2.0 * label_label_spacing,
       edge_label_spacing,
     )

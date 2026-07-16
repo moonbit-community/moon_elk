@@ -75,11 +75,11 @@ pub fn radial_sorting_strategy_from_string(
   value : String,
 ) -> RadialSortingStrategy {
   if value == "POLAR_COORDINATE" {
-    RadialSortingStrategy::POLAR_COORDINATE
+    POLAR_COORDINATE
   } else if value == "ID" {
-    RadialSortingStrategy::ID
+    ID
   } else {
-    RadialSortingStrategy::NONE
+    NONE
   }
 }
 
@@ -88,9 +88,9 @@ pub fn radial_annulus_wedge_criteria_from_string(
   value : String,
 ) -> RadialAnnulusWedgeCriteria {
   if value == "LEAF_NUMBER" {
-    RadialAnnulusWedgeCriteria::LEAF_NUMBER
+    LEAF_NUMBER
   } else {
-    RadialAnnulusWedgeCriteria::NODE_SIZE
+    NODE_SIZE
   }
 }
 
@@ -99,13 +99,13 @@ pub fn radial_translation_strategy_from_string(
   value : String,
 ) -> RadialTranslationStrategy {
   if value == "EDGE_LENGTH" {
-    RadialTranslationStrategy::EDGE_LENGTH
+    EDGE_LENGTH
   } else if value == "EDGE_LENGTH_BY_POSITION" {
-    RadialTranslationStrategy::EDGE_LENGTH_BY_POSITION
+    EDGE_LENGTH_BY_POSITION
   } else if value == "CROSSING_MINIMIZATION_BY_POSITION" {
-    RadialTranslationStrategy::CROSSING_MINIMIZATION_BY_POSITION
+    CROSSING_MINIMIZATION_BY_POSITION
   } else {
-    RadialTranslationStrategy::NONE
+    NONE
   }
 }
 
@@ -114,11 +114,11 @@ pub fn radial_compaction_strategy_from_string(
   value : String,
 ) -> RadialCompactionStrategy {
   if value == "RADIAL_COMPACTION" {
-    RadialCompactionStrategy::RADIAL_COMPACTION
+    RADIAL_COMPACTION
   } else if value == "WEDGE_COMPACTION" {
-    RadialCompactionStrategy::WEDGE_COMPACTION
+    WEDGE_COMPACTION
   } else {
-    RadialCompactionStrategy::NONE
+    NONE
   }
 }
 
@@ -127,7 +127,7 @@ pub fn radial_overlap_removal_strategy_from_string(
   value : String,
 ) -> RadialOverlapRemovalStrategy {
   ignore(value)
-  RadialOverlapRemovalStrategy::EXTENT_RADII
+  EXTENT_RADII
 }
 
 ///|

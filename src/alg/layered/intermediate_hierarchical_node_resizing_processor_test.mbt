@@ -47,14 +47,14 @@ fn hierarchical_node_resizing_test_graph_property(
 fn hierarchical_node_resizing_test_node_type(name : String) -> NodeType {
   for value in node_type_values() {
     match value {
-      NodeType::Normal => if name == "NORMAL" { return value }
-      NodeType::LongEdge => if name == "LONG_EDGE" { return value }
-      NodeType::ExternalPort => if name == "EXTERNAL_PORT" { return value }
-      NodeType::NorthSouthPort => if name == "NORTH_SOUTH_PORT" { return value }
-      NodeType::LabelNode => if name == "LABEL_NODE" { return value }
-      NodeType::BreakingPoint => if name == "BREAKING_POINT" { return value }
-      NodeType::Placeholder => if name == "PLACEHOLDER" { return value }
-      NodeType::NonshiftingPlaceholder =>
+      Normal => if name == "NORMAL" { return value }
+      LongEdge => if name == "LONG_EDGE" { return value }
+      ExternalPort => if name == "EXTERNAL_PORT" { return value }
+      NorthSouthPort => if name == "NORTH_SOUTH_PORT" { return value }
+      LabelNode => if name == "LABEL_NODE" { return value }
+      BreakingPoint => if name == "BREAKING_POINT" { return value }
+      Placeholder => if name == "PLACEHOLDER" { return value }
+      NonshiftingPlaceholder =>
         if name == "NONSHIFTING_PLACEHOLDER" {
           return value
         }

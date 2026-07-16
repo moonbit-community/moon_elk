@@ -6,5 +6,5 @@ pub enum MrtreeGraphProperty {
 ///|
 pub fn mrtree_graph_property_from_string(value : String) -> MrtreeGraphProperty {
   ignore(value)
-  MrtreeGraphProperty::SELF_LOOPS
+  SELF_LOOPS
 }

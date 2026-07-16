@@ -19,20 +19,14 @@ fn label_management_test_manager() -> @core.ILabelManager {
 fn label_management_test_node_type(name : String) -> NodeType {
   for node_type in node_type_values() {
     match node_type {
-      NodeType::Normal => if name == "NORMAL" { return node_type }
-      NodeType::LongEdge => if name == "LONG_EDGE" { return node_type }
-      NodeType::ExternalPort => if name == "EXTERNAL_PORT" { return node_type }
-      NodeType::NorthSouthPort =>
-        if name == "NORTH_SOUTH_PORT" {
-          return node_type
-        }
-      NodeType::LabelNode => if name == "LABEL_NODE" { return node_type }
-      NodeType::BreakingPoint =>
-        if name == "BREAKING_POINT" {
-          return node_type
-        }
-      NodeType::Placeholder => if name == "PLACEHOLDER" { return node_type }
-      NodeType::NonshiftingPlaceholder =>
+      Normal => if name == "NORMAL" { return node_type }
+      LongEdge => if name == "LONG_EDGE" { return node_type }
+      ExternalPort => if name == "EXTERNAL_PORT" { return node_type }
+      NorthSouthPort => if name == "NORTH_SOUTH_PORT" { return node_type }
+      LabelNode => if name == "LABEL_NODE" { return node_type }
+      BreakingPoint => if name == "BREAKING_POINT" { return node_type }
+      Placeholder => if name == "PLACEHOLDER" { return node_type }
+      NonshiftingPlaceholder =>
         if name == "NONSHIFTING_PLACEHOLDER" {
           return node_type
         }

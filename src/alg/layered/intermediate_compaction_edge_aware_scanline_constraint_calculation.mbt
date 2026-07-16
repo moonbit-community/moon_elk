@@ -20,10 +20,10 @@ priv struct EdgeAwareScanlineCalculation {
 fn edge_aware_scanline_parse_edge_routing(value : String) -> @core.EdgeRouting {
   let normalized = value.trim().to_owned().to_upper()
   match normalized {
-    "POLYLINE" => @core.EdgeRouting::Polyline
-    "SPLINES" => @core.EdgeRouting::Splines
-    "ORTHOGONAL" => @core.EdgeRouting::Orthogonal
-    _ => @core.EdgeRouting::RoutingUndefined
+    "POLYLINE" => Polyline
+    "SPLINES" => Splines
+    "ORTHOGONAL" => Orthogonal
+    _ => RoutingUndefined
   }
 }
 
@@ -396,7 +396,7 @@ fn edge_aware_scanline_min_spacing(
       Some(l_node) =>
         if horizontal_graph_compactor_node_type_equals(
             l_node.get_type(),
-            NodeType::ExternalPort,
+            ExternalPort,
           ) {
           @double.infinity
         } else {
@@ -533,10 +533,9 @@ fn edge_aware_scanline_calculate_constraints(
   compactor : @common.OneDimensionalCompactor,
 ) -> Unit {
   match calculation.edge_routing {
-    @core.EdgeRouting::Orthogonal =>
+    Orthogonal =>
       edge_aware_scanline_calculate_for_orthogonal(calculation, compactor)
-    @core.EdgeRouting::Splines =>
-      edge_aware_scanline_calculate_for_spline(calculation, compactor)
+    Splines => edge_aware_scanline_calculate_for_spline(calculation, compactor)
     _ =>
       @core.layout_runtime_report_unsupported_configuration(
         "Unsupported edge routing for edge-aware scanline constraints.",

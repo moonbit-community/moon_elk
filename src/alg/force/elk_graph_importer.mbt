@@ -12,13 +12,13 @@ pub suberror ForceImportException {
 fn force_import_raise_unsupported_graph(
   message : String,
 ) -> Unit raise ForceImportException {
-  raise ForceImportException::UnsupportedGraph(message)
+  raise UnsupportedGraph(message)
 }
 
 ///|
 pub fn force_import_exception_message(err : ForceImportException) -> String {
   match err {
-    ForceImportException::UnsupportedGraph(message) => message
+    UnsupportedGraph(message) => message
   }
 }
 

@@ -161,18 +161,18 @@ fn interactive_layered_graph_visitor_parse_direction(
   value : String,
 ) -> @core.Direction {
   if value == "RIGHT" {
-    return @core.Direction::Rightward
+    return Rightward
   }
   if value == "LEFT" {
-    return @core.Direction::Leftward
+    return Leftward
   }
   if value == "DOWN" {
-    return @core.Direction::Downward
+    return Downward
   }
   if value == "UP" {
-    return @core.Direction::Upward
+    return Upward
   }
-  @core.Direction::Undefined
+  Undefined
 }
 
 ///|
@@ -306,21 +306,21 @@ fn interactive_layered_graph_visitor_sort_nodes_by_coordinate(
   while i < nodes.length() {
     let current = nodes[i]
     let current_coordinate = match direction {
-      @core.Direction::Undefined => @graph.node_y(current)
-      @core.Direction::Rightward => @graph.node_y(current)
-      @core.Direction::Leftward => @graph.node_y(current)
-      @core.Direction::Downward => @graph.node_x(current)
-      @core.Direction::Upward => @graph.node_x(current)
+      Undefined => @graph.node_y(current)
+      Rightward => @graph.node_y(current)
+      Leftward => @graph.node_y(current)
+      Downward => @graph.node_x(current)
+      Upward => @graph.node_x(current)
     }
     let mut j = i
     while j > 0 {
       let previous = nodes[j - 1]
       let previous_coordinate = match direction {
-        @core.Direction::Undefined => @graph.node_y(previous)
-        @core.Direction::Rightward => @graph.node_y(previous)
-        @core.Direction::Leftward => @graph.node_y(previous)
-        @core.Direction::Downward => @graph.node_x(previous)
-        @core.Direction::Upward => @graph.node_x(previous)
+        Undefined => @graph.node_y(previous)
+        Rightward => @graph.node_y(previous)
+        Leftward => @graph.node_y(previous)
+        Downward => @graph.node_x(previous)
+        Upward => @graph.node_x(previous)
       }
       if (previous_coordinate - current_coordinate).to_int() <= 0 {
         break
@@ -1084,7 +1084,7 @@ fn interactive_layered_graph_visitor_set_coordinate_in_layout_direction(
   for nodes_of_layer in layers {
     for node in nodes_of_layer {
       match direction {
-        @core.Direction::Undefined => {
+        Undefined => {
           interactive_layered_graph_visitor_set_node_x(node, position)
           if position + @graph.node_width(node) / 2.0 >= next_position {
             next_position = @graph.node_x(node) +
@@ -1092,7 +1092,7 @@ fn interactive_layered_graph_visitor_set_coordinate_in_layout_direction(
               spacing
           }
         }
-        @core.Direction::Rightward => {
+        Rightward => {
           interactive_layered_graph_visitor_set_node_x(node, position)
           if position + @graph.node_width(node) / 2.0 >= next_position {
             next_position = @graph.node_x(node) +
@@ -1100,13 +1100,13 @@ fn interactive_layered_graph_visitor_set_coordinate_in_layout_direction(
               spacing
           }
         }
-        @core.Direction::Leftward => {
+        Leftward => {
           interactive_layered_graph_visitor_set_node_x(node, position)
           if @graph.node_x(node) <= next_position {
             next_position = @graph.node_x(node) - spacing
           }
         }
-        @core.Direction::Downward => {
+        Downward => {
           interactive_layered_graph_visitor_set_node_y(node, position)
           if position + @graph.node_height(node) >= next_position {
             next_position = @graph.node_y(node) +
@@ -1114,7 +1114,7 @@ fn interactive_layered_graph_visitor_set_coordinate_in_layout_direction(
               spacing
           }
         }
-        @core.Direction::Upward => {
+        Upward => {
           interactive_layered_graph_visitor_set_node_y(node, position)
           if @graph.node_y(node) <= next_position {
             next_position = @graph.node_y(node) - spacing
@@ -1304,7 +1304,7 @@ fn interactive_layered_graph_visitor_set_coordinates_orthogonal_to_layout_direct
   }
 
   match direction {
-    @core.Direction::Undefined => {
+    Undefined => {
       let mut y_position = @graph.node_y(nodes_without_constraint[0])
       for node in nodes_without_constraint {
         interactive_layered_graph_visitor_set_kvector_option(
@@ -1315,7 +1315,7 @@ fn interactive_layered_graph_visitor_set_coordinates_orthogonal_to_layout_direct
         y_position = y_position + @graph.node_height(node) + spacing
       }
     }
-    @core.Direction::Rightward => {
+    Rightward => {
       let mut y_position = @graph.node_y(nodes_without_constraint[0])
       for node in nodes_without_constraint {
         interactive_layered_graph_visitor_set_kvector_option(
@@ -1326,7 +1326,7 @@ fn interactive_layered_graph_visitor_set_coordinates_orthogonal_to_layout_direct
         y_position = y_position + @graph.node_height(node) + spacing
       }
     }
-    @core.Direction::Leftward => {
+    Leftward => {
       let mut y_position = @graph.node_y(nodes_without_constraint[0])
       for node in nodes_without_constraint {
         interactive_layered_graph_visitor_set_kvector_option(
@@ -1337,7 +1337,7 @@ fn interactive_layered_graph_visitor_set_coordinates_orthogonal_to_layout_direct
         y_position = y_position + @graph.node_height(node) + spacing
       }
     }
-    @core.Direction::Downward => {
+    Downward => {
       let mut x_position = @graph.node_x(nodes_without_constraint[0]) +
         2.0 * layer_id.to_double() * spacing
       for node in nodes_without_constraint {
@@ -1349,7 +1349,7 @@ fn interactive_layered_graph_visitor_set_coordinates_orthogonal_to_layout_direct
         x_position = x_position + @graph.node_width(node) + spacing
       }
     }
-    @core.Direction::Upward => {
+    Upward => {
       let mut x_position = @graph.node_x(nodes_without_constraint[0]) +
         2.0 * layer_id.to_double() * spacing
       for node in nodes_without_constraint {
@@ -1433,12 +1433,12 @@ fn interactive_layered_graph_visitor_set_interactive_strategies(
   interactive_layered_graph_visitor_set_string_option(
     parent,
     layered_options_layering_strategy,
-    layering_strategy_to_string(LayeringStrategy::LsInteractive),
+    layering_strategy_to_string(LsInteractive),
   )
   interactive_layered_graph_visitor_set_string_option(
     parent,
     layered_options_cycle_breaking_strategy,
-    cycle_breaking_strategy_to_string(CycleBreakingStrategy::CbsInteractive),
+    cycle_breaking_strategy_to_string(CbsInteractive),
   )
   interactive_layered_graph_visitor_set_string_option(
     parent, layered_options_consider_model_order_strategy, "NONE",
@@ -1449,9 +1449,7 @@ fn interactive_layered_graph_visitor_set_interactive_strategies(
   interactive_layered_graph_visitor_set_string_option(
     parent,
     layered_options_crossing_minimization_strategy,
-    crossing_minimization_strategy_to_string(
-      CrossingMinimizationStrategy::CmsLayerSweep,
-    ),
+    crossing_minimization_strategy_to_string(CmsLayerSweep),
   )
 }
 

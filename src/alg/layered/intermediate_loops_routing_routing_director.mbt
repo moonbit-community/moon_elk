@@ -23,7 +23,7 @@ fn routing_director_port_side_equals(
   right : @core.PortSide,
 ) -> Bool {
   match (left, right) {
-    (@core.SideUndefined, @core.SideUndefined) => true
+    (SideUndefined, SideUndefined) => true
     (North, North) => true
     (East, East) => true
     (South, South) => true
@@ -218,13 +218,7 @@ fn RoutingDirector::determine_two_side_opposing_loop_routes(
   sl_loop : SelfHyperLoop,
 ) -> Unit raise RoutingDirectorException {
   let sides = []
-  for
-    side in [
-      @core.PortSide::North,
-      @core.PortSide::East,
-      @core.PortSide::South,
-      @core.PortSide::West,
-    ] {
+  for side in [@core.PortSide::North, East, South, West] {
     if sl_loop.has_sl_ports_on_side(side) {
       sides.push(side)
     }
@@ -266,13 +260,7 @@ fn RoutingDirector::compute_missing_port_side(
   sl_loop : SelfHyperLoop,
 ) -> @core.PortSide raise RoutingDirectorException {
   ignore(self)
-  for
-    side in [
-      @core.PortSide::North,
-      @core.PortSide::East,
-      @core.PortSide::South,
-      @core.PortSide::West,
-    ] {
+  for side in [@core.PortSide::North, East, South, West] {
     if !sl_loop.has_sl_ports_on_side(side) {
       return side
     }
@@ -289,24 +277,23 @@ fn RoutingDirector::determine_three_side_loop_routes(
   let mut rightmost_side = @core.SideUndefined
 
   match self.compute_missing_port_side(sl_loop) {
-    @core.PortSide::North => {
-      leftmost_side = @core.PortSide::East
-      rightmost_side = @core.PortSide::West
+    North => {
+      leftmost_side = East
+      rightmost_side = West
     }
-    @core.PortSide::East => {
-      leftmost_side = @core.PortSide::South
-      rightmost_side = @core.PortSide::North
+    East => {
+      leftmost_side = South
+      rightmost_side = North
     }
-    @core.PortSide::South => {
-      leftmost_side = @core.PortSide::West
-      rightmost_side = @core.PortSide::East
+    South => {
+      leftmost_side = West
+      rightmost_side = East
     }
-    @core.PortSide::West => {
-      leftmost_side = @core.PortSide::North
-      rightmost_side = @core.PortSide::South
+    West => {
+      leftmost_side = North
+      rightmost_side = South
     }
-    @core.PortSide::SideUndefined =>
-      routing_director_raise("invalid missing side")
+    SideUndefined => routing_director_raise("invalid missing side")
   }
 
   self.assign_leftmost_rightmost_ports(sl_loop, leftmost_side, rightmost_side)

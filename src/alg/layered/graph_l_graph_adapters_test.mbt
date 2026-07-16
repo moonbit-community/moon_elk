@@ -68,14 +68,14 @@ fn l_graph_adapters_test_port_constraints_fixed_order() -> @core.PortConstraints
 ///|
 fn l_graph_adapters_test_node_type_name(node_type : NodeType) -> String {
   match node_type {
-    NodeType::Normal => "NORMAL"
-    NodeType::LongEdge => "LONG_EDGE"
-    NodeType::ExternalPort => "EXTERNAL_PORT"
-    NodeType::NorthSouthPort => "NORTH_SOUTH_PORT"
-    NodeType::LabelNode => "LABEL"
-    NodeType::BreakingPoint => "BREAKING_POINT"
-    NodeType::Placeholder => "PLACEHOLDER"
-    NodeType::NonshiftingPlaceholder => "NONSHIFTING_PLACEHOLDER"
+    Normal => "NORMAL"
+    LongEdge => "LONG_EDGE"
+    ExternalPort => "EXTERNAL_PORT"
+    NorthSouthPort => "NORTH_SOUTH_PORT"
+    LabelNode => "LABEL"
+    BreakingPoint => "BREAKING_POINT"
+    Placeholder => "PLACEHOLDER"
+    NonshiftingPlaceholder => "NONSHIFTING_PLACEHOLDER"
   }
 }
 

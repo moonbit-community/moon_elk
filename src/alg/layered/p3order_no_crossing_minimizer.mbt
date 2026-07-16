@@ -19,23 +19,15 @@ fn no_crossing_minimizer_intermediate_processing_configuration() -> @core.Layout
 ] {
   @core.layout_processor_configuration_create(layered_phase_descriptor)
   .add_before(
-    LayeredPhases::P3NodeOrdering,
-    layered_intermediate_processor_factory(
-      IntermediateProcessorStrategy::LongEdgeSplitter,
-    ),
+    P3NodeOrdering,
+    layered_intermediate_processor_factory(LongEdgeSplitter),
   )
   .add_before(
-    LayeredPhases::P4NodePlacement,
-    layered_intermediate_processor_factory(
-      IntermediateProcessorStrategy::InLayerConstraintProcessor,
-    ),
+    P4NodePlacement,
+    layered_intermediate_processor_factory(InLayerConstraintProcessor),
   )
-  .after(LayeredPhases::P5EdgeRouting)
-  .add(
-    layered_intermediate_processor_factory(
-      IntermediateProcessorStrategy::LongEdgeJoiner,
-    ),
-  )
+  .after(P5EdgeRouting)
+  .add(layered_intermediate_processor_factory(LongEdgeJoiner))
 }
 
 ///|
@@ -54,10 +46,8 @@ fn no_crossing_minimizer_configuration(
   )
   ignore(
     configuration.add_before(
-      LayeredPhases::P3NodeOrdering,
-      layered_intermediate_processor_factory(
-        IntermediateProcessorStrategy::PortListSorter,
-      ),
+      P3NodeOrdering,
+      layered_intermediate_processor_factory(PortListSorter),
     ),
   )
   Some(configuration)

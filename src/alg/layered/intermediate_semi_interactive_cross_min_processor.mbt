@@ -3,7 +3,7 @@ fn semi_interactive_cross_min_processor_node_type_is_normal(
   node : LNode,
 ) -> Bool {
   match node.get_type() {
-    NodeType::Normal => true
+    Normal => true
     _ => false
   }
 }

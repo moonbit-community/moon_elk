@@ -126,12 +126,7 @@ pub fn hyper_edge_segment_dependency_create_and_add_regular(
   target : HyperEdgeSegment,
   weight : Int,
 ) -> HyperEdgeSegmentDependency {
-  new_hyper_edge_segment_dependency(
-    DependencyType::Regular,
-    Some(source),
-    Some(target),
-    weight,
-  )
+  new_hyper_edge_segment_dependency(Regular, Some(source), Some(target), weight)
 }
 
 ///|
@@ -140,7 +135,7 @@ pub fn hyper_edge_segment_dependency_create_and_add_critical(
   target : HyperEdgeSegment,
 ) -> HyperEdgeSegmentDependency {
   new_hyper_edge_segment_dependency(
-    DependencyType::Critical,
+    Critical,
     Some(source),
     Some(target),
     critical_dependency_weight,

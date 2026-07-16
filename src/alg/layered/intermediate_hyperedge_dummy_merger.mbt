@@ -8,7 +8,7 @@ priv struct HyperedgeDummyMergerMergeState {
 ///|
 fn hyperedge_dummy_merger_node_type_is_long_edge(node_type : NodeType) -> Bool {
   match node_type {
-    NodeType::LongEdge => true
+    LongEdge => true
     _ => false
   }
 }
@@ -26,7 +26,7 @@ fn hyperedge_dummy_merger_port_side(name : String) -> @core.PortSide {
     }
   }
   @core.layout_runtime_report_unsupported_configuration("unknown port side")
-  @core.PortSide::SideUndefined
+  SideUndefined
 }
 
 ///|

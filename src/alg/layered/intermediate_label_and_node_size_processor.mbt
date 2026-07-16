@@ -1,7 +1,7 @@
 ///|
 fn label_and_node_size_node_type_is_external_port(node_type : NodeType) -> Bool {
   match node_type {
-    NodeType::ExternalPort => true
+    ExternalPort => true
     _ => false
   }
 }
@@ -120,20 +120,20 @@ fn label_and_node_size_place_external_port_dummy_labels(
 
   if label_and_node_size_contains_port_label_placement(
       graph_port_label_placement,
-      @core.PortLabelPlacement::Inside,
+      Inside,
     ) {
     match dummy.get_property_port_side(internal_properties_ext_port_side) {
-      @core.PortSide::North => {
+      North => {
         port_label_box.x = (dummy_size.x - port_label_box.width) / 2.0 -
           dummy_port_pos.x
         port_label_box.y = label_port_spacing_vertical
       }
-      @core.PortSide::South => {
+      South => {
         port_label_box.x = (dummy_size.x - port_label_box.width) / 2.0 -
           dummy_port_pos.x
         port_label_box.y = -label_port_spacing_vertical - port_label_box.height
       }
-      @core.PortSide::East => {
+      East => {
         if label_and_node_size_label_next_to_port(
             dummy_port, true, place_next_to_port_if_possible,
           ) {
@@ -151,7 +151,7 @@ fn label_and_node_size_place_external_port_dummy_labels(
         }
         port_label_box.x = -label_port_spacing_horizontal - port_label_box.width
       }
-      @core.PortSide::West => {
+      West => {
         if label_and_node_size_label_next_to_port(
             dummy_port, true, place_next_to_port_if_possible,
           ) {
@@ -173,14 +173,14 @@ fn label_and_node_size_place_external_port_dummy_labels(
     }
   } else if label_and_node_size_contains_port_label_placement(
       graph_port_label_placement,
-      @core.PortLabelPlacement::Outside,
+      Outside,
     ) {
     match dummy.get_property_port_side(internal_properties_ext_port_side) {
-      @core.PortSide::North =>
+      North =>
         port_label_box.x = dummy_port_pos.x + label_port_spacing_horizontal
-      @core.PortSide::South =>
+      South =>
         port_label_box.x = dummy_port_pos.x + label_port_spacing_horizontal
-      @core.PortSide::East =>
+      East =>
         if label_and_node_size_label_next_to_port(
             dummy_port, false, place_next_to_port_if_possible,
           ) {
@@ -194,7 +194,7 @@ fn label_and_node_size_place_external_port_dummy_labels(
         } else {
           port_label_box.y = dummy_port_pos.y + label_port_spacing_vertical
         }
-      @core.PortSide::West =>
+      West =>
         if label_and_node_size_label_next_to_port(
             dummy_port, false, place_next_to_port_if_possible,
           ) {
@@ -246,7 +246,7 @@ fn label_and_node_size_processor_process(
     )
     let place_next_to_port_if_possible = label_and_node_size_contains_port_label_placement(
       port_label_placement,
-      @core.PortLabelPlacement::NextToPortIfPossible,
+      NextToPortIfPossible,
     )
     let treat_as_group = layered_graph.get_property_bool(
       @core.port_labels_treat_as_group,

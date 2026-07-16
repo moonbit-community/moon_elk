@@ -11,14 +11,14 @@ pub suberror GraphTextActivatorException {
 fn[T] graph_text_activator_raise_illegal_argument(
   message : String,
 ) -> T raise GraphTextActivatorException {
-  raise GraphTextActivatorException::IllegalArgumentException(message)
+  raise IllegalArgumentException(message)
 }
 
 ///|
 fn[T] graph_text_activator_raise_runtime(
   message : String,
 ) -> T raise GraphTextActivatorException {
-  raise GraphTextActivatorException::RuntimeException(message)
+  raise RuntimeException(message)
 }
 
 ///|

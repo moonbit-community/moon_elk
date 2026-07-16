@@ -41,20 +41,14 @@ fn north_south_port_preprocessor_test_require_dummy(
 fn north_south_port_preprocessor_test_node_type(name : String) -> NodeType {
   for node_type in node_type_values() {
     match node_type {
-      NodeType::Normal => if name == "NORMAL" { return node_type }
-      NodeType::LongEdge => if name == "LONG_EDGE" { return node_type }
-      NodeType::ExternalPort => if name == "EXTERNAL_PORT" { return node_type }
-      NodeType::NorthSouthPort =>
-        if name == "NORTH_SOUTH_PORT" {
-          return node_type
-        }
-      NodeType::LabelNode => if name == "LABEL_NODE" { return node_type }
-      NodeType::BreakingPoint =>
-        if name == "BREAKING_POINT" {
-          return node_type
-        }
-      NodeType::Placeholder => if name == "PLACEHOLDER" { return node_type }
-      NodeType::NonshiftingPlaceholder =>
+      Normal => if name == "NORMAL" { return node_type }
+      LongEdge => if name == "LONG_EDGE" { return node_type }
+      ExternalPort => if name == "EXTERNAL_PORT" { return node_type }
+      NorthSouthPort => if name == "NORTH_SOUTH_PORT" { return node_type }
+      LabelNode => if name == "LABEL_NODE" { return node_type }
+      BreakingPoint => if name == "BREAKING_POINT" { return node_type }
+      Placeholder => if name == "PLACEHOLDER" { return node_type }
+      NonshiftingPlaceholder =>
         if name == "NONSHIFTING_PLACEHOLDER" {
           return node_type
         }
@@ -151,7 +145,7 @@ test "north south port preprocessor isolates north and south ports for fixed-sid
   let mut south_dummy : LNode? = None
   for candidate in layer.get_nodes() {
     match candidate.get_type() {
-      NodeType::NorthSouthPort =>
+      NorthSouthPort =>
         if !candidate.get_incoming_edges().is_empty() &&
           candidate.get_outgoing_edges().is_empty() {
           north_dummy = Some(candidate)
@@ -321,7 +315,7 @@ test "north south port preprocessor skips successor constraints when port may sw
   let mut south_dummy : LNode? = None
   for candidate in layer.get_nodes() {
     match candidate.get_type() {
-      NodeType::NorthSouthPort =>
+      NorthSouthPort =>
         if !candidate.get_incoming_edges().is_empty() &&
           candidate.get_outgoing_edges().is_empty() {
           north_dummy = Some(candidate)

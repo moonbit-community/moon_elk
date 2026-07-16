@@ -136,10 +136,9 @@ fn self_hyper_loop_labels_apply_horizontal_layout(
     let label_size = l_label.get_size()
 
     match (labels.alignment, labels.side) {
-      (Some(SelfHyperLoopLabelAlignment::Left), _) => label_pos.x = x
+      (Some(Left), _) => label_pos.x = x
       (_, Some(East)) => label_pos.x = x
-      (Some(SelfHyperLoopLabelAlignment::Right), _) =>
-        label_pos.x = x + labels.size.x - label_size.x
+      (Some(Right), _) => label_pos.x = x + labels.size.x - label_size.x
       (_, Some(West)) => label_pos.x = x + labels.size.x - label_size.x
       _ => label_pos.x = x + (labels.size.x - label_size.x) / 2.0
     }
@@ -206,7 +205,7 @@ pub fn SelfHyperLoopLabels::get_side(
 ) -> @core.PortSide {
   match self.side {
     Some(side) => side
-    None => @core.PortSide::SideUndefined
+    None => SideUndefined
   }
 }
 

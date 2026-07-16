@@ -215,7 +215,7 @@ pub fn new_graphviz_tool(
   thecommand : @dot.Command,
 ) -> GraphvizTool raise GraphvizException {
   match thecommand {
-    @dot.Invalid => raise new_graphviz_exception("Invalid Graphviz command.")
+    Invalid => raise new_graphviz_exception("Invalid Graphviz command.")
     _ => ()
   }
   { process: None, command: thecommand, watchdog: None, graphviz_stream: None }

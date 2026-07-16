@@ -3,14 +3,14 @@ fn greedy_switch_processor_test_is_one_sided(
   greedy_type : GreedySwitchType,
 ) -> Bool {
   match greedy_type {
-    GreedySwitchType::OneSided => true
+    OneSided => true
     _ => false
   }
 }
 
 ///|
 fn greedy_switch_processor_test_types() -> Array[GreedySwitchType] {
-  [GreedySwitchType::OneSided, GreedySwitchType::TwoSided]
+  [OneSided, TwoSided]
 }
 
 ///|
@@ -438,33 +438,24 @@ test "GreedySwitchProcessor self_loops" {
     let top_right = creator.add_node_to_layer(right_layer)
     let bottom_right = creator.add_node_to_layer(right_layer)
 
-    let top_left_port = creator.add_port_on_side(top_left, @core.PortSide::East)
-    let bottom_left_port = creator.add_port_on_side(
-      bottom_left,
-      @core.PortSide::East,
-    )
+    let top_left_port = creator.add_port_on_side(top_left, East)
+    let bottom_left_port = creator.add_port_on_side(bottom_left, East)
     creator.set_up_ids()
 
     let self_loop_cross_graph = creator.get_graph()
     for layer in self_loop_cross_graph.get_layers() {
       for node in layer.get_nodes() {
-        creator.self_loop_on(node, @core.PortSide::East)
-        creator.self_loop_on(node, @core.PortSide::East)
-        creator.self_loop_on(node, @core.PortSide::East)
-        creator.self_loop_on(node, @core.PortSide::West)
-        creator.self_loop_on(node, @core.PortSide::West)
-        creator.self_loop_on(node, @core.PortSide::West)
+        creator.self_loop_on(node, East)
+        creator.self_loop_on(node, East)
+        creator.self_loop_on(node, East)
+        creator.self_loop_on(node, West)
+        creator.self_loop_on(node, West)
+        creator.self_loop_on(node, West)
       }
     }
 
-    let top_right_port = creator.add_port_on_side(
-      top_right,
-      @core.PortSide::West,
-    )
-    let bottom_right_port = creator.add_port_on_side(
-      bottom_right,
-      @core.PortSide::West,
-    )
+    let top_right_port = creator.add_port_on_side(top_right, West)
+    let bottom_right_port = creator.add_port_on_side(bottom_right, West)
 
     creator.add_edge_between_ports(top_left_port, bottom_right_port)
     creator.add_edge_between_ports(bottom_left_port, top_right_port)
@@ -611,18 +602,9 @@ test "GreedySwitchProcessor switch_more_than_once" {
       4,
       creator.make_layer(creator.get_graph()),
     )
-    let left_top_port = creator.add_port_on_side(
-      left_nodes[0],
-      @core.PortSide::East,
-    )
-    let left_lower_port = creator.add_port_on_side(
-      left_nodes[1],
-      @core.PortSide::East,
-    )
-    let right_top_port = creator.add_port_on_side(
-      right_nodes[0],
-      @core.PortSide::West,
-    )
+    let left_top_port = creator.add_port_on_side(left_nodes[0], East)
+    let left_lower_port = creator.add_port_on_side(left_nodes[1], East)
+    let right_top_port = creator.add_port_on_side(right_nodes[0], West)
 
     creator.add_edge_between_ports(left_lower_port, right_top_port)
     creator.east_west_edge_from_to_port_node(left_lower_port, right_nodes[2])

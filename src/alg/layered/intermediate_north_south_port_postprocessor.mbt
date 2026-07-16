@@ -7,7 +7,7 @@ priv suberror NorthSouthPortPostprocessorException {
 fn[T] north_south_port_postprocessor_raise_unsupported_graph(
   message : String,
 ) -> T raise NorthSouthPortPostprocessorException {
-  raise NorthSouthPortPostprocessorException::UnsupportedGraphException(message)
+  raise UnsupportedGraphException(message)
 }
 
 ///|
@@ -19,7 +19,7 @@ fn north_south_port_postprocessor_parse_edge_routing(
       return routing
     }
   }
-  @core.EdgeRouting::RoutingUndefined
+  RoutingUndefined
 }
 
 ///|
@@ -27,7 +27,7 @@ fn north_south_port_postprocessor_edge_routing_is_splines(
   routing : @core.EdgeRouting,
 ) -> Bool {
   match routing {
-    @core.EdgeRouting::Splines => true
+    Splines => true
     _ => false
   }
 }
@@ -37,7 +37,7 @@ fn north_south_port_postprocessor_node_type_is_north_south_port(
   node_type : NodeType,
 ) -> Bool {
   match node_type {
-    NodeType::NorthSouthPort => true
+    NorthSouthPort => true
     _ => false
   }
 }
@@ -155,8 +155,8 @@ fn north_south_port_postprocessor_process_self_loop(
 ) -> Unit raise NorthSouthPortPostprocessorException {
   let self_loop = north_south_port_postprocessor_require_origin_edge(dummy)
 
-  let input_ports = dummy.get_ports_by_side(@core.PortSide::West)
-  let output_ports = dummy.get_ports_by_side(@core.PortSide::East)
+  let input_ports = dummy.get_ports_by_side(West)
+  let output_ports = dummy.get_ports_by_side(East)
   if input_ports.is_empty() || output_ports.is_empty() {
     north_south_port_postprocessor_raise_unsupported_graph(
       "self-loop dummy must have west and east ports",
@@ -307,7 +307,7 @@ fn north_south_port_postprocessor_process(
       }
     }
   } catch {
-    NorthSouthPortPostprocessorException::UnsupportedGraphException(message) => {
+    UnsupportedGraphException(message) => {
       @core.layout_runtime_report_unsupported_configuration(message)
       monitor.done()
       return

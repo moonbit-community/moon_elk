@@ -43,7 +43,7 @@ fn interactive_crossing_minimizer_get_pos(
 ) -> Double {
   ignore(horiz_pos)
   match node.get_type() {
-    NodeType::NorthSouthPort => {
+    NorthSouthPort => {
       let ports = node.get_ports()
       if ports.is_empty() {
         return node.get_position().y
@@ -58,9 +58,8 @@ fn interactive_crossing_minimizer_get_pos(
         None => return node.get_position().y
       }
       match origin_port.get_side() {
-        @core.PortSide::North => origin_node.get_position().y
-        @core.PortSide::South =>
-          origin_node.get_position().y + origin_node.get_size().y
+        North => origin_node.get_position().y
+        South => origin_node.get_position().y + origin_node.get_size().y
         _ => node.get_position().y
       }
     }
@@ -118,23 +117,15 @@ fn interactive_crossing_minimizer_intermediate_configuration() -> @core.LayoutPr
 ] {
   @core.layout_processor_configuration_create(layered_phase_descriptor)
   .add_before(
-    LayeredPhases::P3NodeOrdering,
-    layered_intermediate_processor_factory(
-      IntermediateProcessorStrategy::LongEdgeSplitter,
-    ),
+    P3NodeOrdering,
+    layered_intermediate_processor_factory(LongEdgeSplitter),
   )
   .add_before(
-    LayeredPhases::P4NodePlacement,
-    layered_intermediate_processor_factory(
-      IntermediateProcessorStrategy::InLayerConstraintProcessor,
-    ),
+    P4NodePlacement,
+    layered_intermediate_processor_factory(InLayerConstraintProcessor),
   )
-  .after(LayeredPhases::P5EdgeRouting)
-  .add(
-    layered_intermediate_processor_factory(
-      IntermediateProcessorStrategy::LongEdgeJoiner,
-    ),
-  )
+  .after(P5EdgeRouting)
+  .add(layered_intermediate_processor_factory(LongEdgeJoiner))
 }
 
 ///|
@@ -153,10 +144,8 @@ fn interactive_crossing_minimizer_configuration(
   )
   ignore(
     configuration.add_before(
-      LayeredPhases::P3NodeOrdering,
-      layered_intermediate_processor_factory(
-        IntermediateProcessorStrategy::PortListSorter,
-      ),
+      P3NodeOrdering,
+      layered_intermediate_processor_factory(PortListSorter),
     ),
   )
   Some(configuration)
@@ -210,7 +199,7 @@ fn interactive_crossing_minimizer_process(
       let position = interactive_crossing_minimizer_get_pos(node, horiz_pos)
       node_pos[node.get_id()] = position
       match node.get_type() {
-        NodeType::LongEdge =>
+        LongEdge =>
           node.set_property_double(
             internal_properties_original_dummy_node_position, position,
           )

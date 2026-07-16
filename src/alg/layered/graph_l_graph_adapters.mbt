@@ -27,24 +27,24 @@ fn l_graph_adapters_port_constraints_from_string(
   value : String,
 ) -> @core.PortConstraints {
   match value {
-    "UNDEFINED" => @core.PortConstraints::Undefined
-    "FREE" => @core.PortConstraints::Free
-    "FIXED_SIDE" => @core.PortConstraints::FixedSide
-    "FIXED_ORDER" => @core.PortConstraints::FixedOrder
-    "FIXED_RATIO" => @core.PortConstraints::FixedRatio
-    "FIXED_POS" => @core.PortConstraints::FixedPos
-    _ => @core.PortConstraints::Undefined
+    "UNDEFINED" => Undefined
+    "FREE" => Free
+    "FIXED_SIDE" => FixedSide
+    "FIXED_ORDER" => FixedOrder
+    "FIXED_RATIO" => FixedRatio
+    "FIXED_POS" => FixedPos
+    _ => Undefined
   }
 }
 
 ///|
 fn l_graph_adapters_port_side_rank(side : @core.PortSide) -> Int {
   match side {
-    @core.PortSide::SideUndefined => 0
-    @core.PortSide::North => 1
-    @core.PortSide::East => 2
-    @core.PortSide::South => 3
-    @core.PortSide::West => 4
+    SideUndefined => 0
+    North => 1
+    East => 2
+    South => 3
+    West => 4
   }
 }
 
@@ -62,7 +62,7 @@ fn l_graph_adapters_compare_double(left : Double, right : Double) -> Int {
 ///|
 fn l_graph_adapters_node_type_is_north_south_port(node_type : NodeType) -> Bool {
   match node_type {
-    NodeType::NorthSouthPort => true
+    NorthSouthPort => true
     _ => false
   }
 }
@@ -1109,27 +1109,27 @@ pub fn PortComparator::compare(
   }
 
   match port1.get_side() {
-    @core.PortSide::North =>
+    North =>
       l_graph_adapters_compare_double(
         port1.get_position().x,
         port2.get_position().x,
       )
-    @core.PortSide::East =>
+    East =>
       l_graph_adapters_compare_double(
         port1.get_position().y,
         port2.get_position().y,
       )
-    @core.PortSide::South =>
+    South =>
       l_graph_adapters_compare_double(
         port2.get_position().x,
         port1.get_position().x,
       )
-    @core.PortSide::West =>
+    West =>
       l_graph_adapters_compare_double(
         port2.get_position().y,
         port1.get_position().y,
       )
-    @core.PortSide::SideUndefined =>
+    SideUndefined =>
       try l_graph_adapters_raise("Port side is undefined") catch {
         LGraphAdapterException(message) => {
           @core.layout_runtime_report_unsupported_configuration(

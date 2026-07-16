@@ -136,9 +136,9 @@ fn GreedyPortDistributor::initialize(
       counter.init_port_positions_for_in_layer_crossings(
         node_order[current_index],
         if is_forward_sweep {
-          @core.PortSide::West
+          West
         } else {
-          @core.PortSide::East
+          East
         },
       ),
     )
@@ -218,8 +218,8 @@ fn GreedyPortDistributor::distribute_ports_on_node(
   side : @core.PortSide,
   use_hierarchical_crosscounter : Bool,
 ) -> Bool {
-  let ports = if lnode_port_side_equals(side, @core.PortSide::South) ||
-    lnode_port_side_equals(side, @core.PortSide::West) {
+  let ports = if lnode_port_side_equals(side, South) ||
+    lnode_port_side_equals(side, West) {
     greedy_port_distributor_reverse_ports(node.get_port_side_view(side))
   } else {
     node.get_port_side_view(side)
@@ -254,11 +254,7 @@ fn GreedyPortDistributor::distribute_ports_in_layer(
   current_index : Int,
   is_forward_sweep : Bool,
 ) -> Bool {
-  let side = if is_forward_sweep {
-    @core.PortSide::West
-  } else {
-    @core.PortSide::East
-  }
+  let side = if is_forward_sweep { @core.PortSide::West } else { East }
   let mut improved = false
 
   for node in node_order[current_index] {

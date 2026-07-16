@@ -24,17 +24,15 @@ let breadth_first_model_order_layerer_baseline_processing_configuration : @core.
   LGraph,
 ] = @core.layout_processor_configuration_create(layered_phase_descriptor)
   .add_before(
-    LayeredPhases::P1CycleBreaking,
-    layered_intermediate_processor_factory(
-      IntermediateProcessorStrategy::EdgeAndLayerConstraintEdgeReverser,
-    ),
+    P1CycleBreaking,
+    layered_intermediate_processor_factory(EdgeAndLayerConstraintEdgeReverser),
   )
   .add_before(
-    LayeredPhases::P2Layering,
+    P2Layering,
     breadth_first_model_order_layerer_layer_constraint_preprocessor_factory(),
   )
   .add_before(
-    LayeredPhases::P3NodeOrdering,
+    P3NodeOrdering,
     breadth_first_model_order_layerer_layer_constraint_postprocessor_factory(),
   )
 
@@ -47,9 +45,7 @@ pub(all) suberror BreadthFirstModelOrderLayererException {
 fn[T] breadth_first_model_order_layerer_raise_unsupported_graph(
   message : String,
 ) -> T raise BreadthFirstModelOrderLayererException {
-  raise BreadthFirstModelOrderLayererException::UnsupportedGraphException(
-    message,
-  )
+  raise UnsupportedGraphException(message)
 }
 
 ///|
@@ -111,13 +107,13 @@ fn breadth_first_model_order_layerer_incoming_edge_connects_to_current_layer(
   let source_node = breadth_first_model_order_layerer_require_edge_source_node(
     edge,
   )
-  if source_node.get_type() is NodeType::Normal {
+  if source_node.get_type() is Normal {
     return breadth_first_model_order_layerer_layer_equals(
       source_node.get_layer(),
       current_layer,
     )
   }
-  if source_node.get_type() is NodeType::LabelNode {
+  if source_node.get_type() is LabelNode {
     return breadth_first_model_order_layerer_label_connects_to_current_layer(
       source_node, current_layer,
     )
@@ -195,7 +191,7 @@ fn breadth_first_model_order_layerer_process(
 
   let real_nodes = []
   for node in layered_graph.get_layerless_nodes() {
-    if node.get_type() is NodeType::Normal {
+    if node.get_type() is Normal {
       real_nodes.push(node)
     }
   }
@@ -230,7 +226,7 @@ fn breadth_first_model_order_layerer_process(
           let source_node = breadth_first_model_order_layerer_require_edge_source_node(
             edge,
           )
-          if source_node.get_type() is NodeType::LabelNode &&
+          if source_node.get_type() is LabelNode &&
             source_node.get_layer() is None {
             source_node.set_layer(current_dummy_layer)
           }
@@ -258,7 +254,7 @@ fn breadth_first_model_order_layerer_process(
       layer_id += 1
     }
   } catch {
-    BreadthFirstModelOrderLayererException::UnsupportedGraphException(message) => {
+    UnsupportedGraphException(message) => {
       @core.layout_runtime_report_unsupported_configuration(message)
       monitor.done()
       return

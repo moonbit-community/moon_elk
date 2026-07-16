@@ -50,7 +50,7 @@ fn graph_stats_determine_layer_height(
           match source_port.get_node() {
             Some(source_node) =>
               match source_node.get_type() {
-                NodeType::NorthSouthPort =>
+                NorthSouthPort =>
                   match
                     source_node.get_property_l_node(
                       internal_properties_origin_l_node,
@@ -311,9 +311,9 @@ pub fn new_graph_stats(graph : LGraph) -> GraphStats {
     layered_options_wrapping_correction_factor,
   )
   let dar = match direction {
-    @core.Direction::Leftward => graph_aspect_ratio * correction
-    @core.Direction::Rightward => graph_aspect_ratio * correction
-    @core.Direction::Undefined => graph_aspect_ratio * correction
+    Leftward => graph_aspect_ratio * correction
+    Rightward => graph_aspect_ratio * correction
+    Undefined => graph_aspect_ratio * correction
     _ => 1.0 / (graph_aspect_ratio * correction)
   }
 

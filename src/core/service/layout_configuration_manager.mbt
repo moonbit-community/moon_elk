@@ -136,8 +136,8 @@ pub fn LayoutConfigurationManager::is_full_hierarchy_layout(
       if value == "INCLUDE_CHILDREN" {
         match self.get_algorithm(config) {
           Some(algo_data) =>
-            algo_data.supports_feature(@graph.GraphFeature::Compound) ||
-            algo_data.supports_feature(@graph.GraphFeature::Clusters)
+            algo_data.supports_feature(Compound) ||
+            algo_data.supports_feature(Clusters)
           None => false
         }
       } else {

@@ -206,7 +206,7 @@ pub fn Rectangle::get_from_port_side(
     East => self.right
     South => self.bottom
     West => self.left
-    @core.PortSide::SideUndefined => 0.0
+    SideUndefined => 0.0
   }
 }
 

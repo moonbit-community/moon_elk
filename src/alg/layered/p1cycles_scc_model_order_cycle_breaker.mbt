@@ -7,7 +7,7 @@ pub(all) suberror SCCModelOrderCycleBreakerException {
 fn[T] scc_model_order_cycle_breaker_raise_unsupported_graph(
   message : String,
 ) -> T raise SCCModelOrderCycleBreakerException {
-  raise SCCModelOrderCycleBreakerException::UnsupportedGraphException(message)
+  raise UnsupportedGraphException(message)
 }
 
 ///|
@@ -65,10 +65,8 @@ fn scc_model_order_cycle_breaker_configuration(
   ignore(graph)
   Some(
     @core.layout_processor_configuration_create(layered_phase_descriptor).add_after(
-      LayeredPhases::P5EdgeRouting,
-      layered_intermediate_processor_factory(
-        IntermediateProcessorStrategy::ReversedEdgeRestorer,
-      ),
+      P5EdgeRouting,
+      layered_intermediate_processor_factory(ReversedEdgeRestorer),
     ),
   )
 }
@@ -96,7 +94,7 @@ fn scc_model_order_cycle_breaker_enforce_group_model_order(
         layered_options_consider_model_order_group_model_order_cb_group_order_strategy,
       ),
     ),
-    GroupOrderStrategy::Enforced,
+    Enforced,
   )
 }
 
@@ -204,7 +202,7 @@ fn scc_model_order_cycle_breaker_process_with_finder(
       rev_edges.clear()
     }
   } catch {
-    SCCModelOrderCycleBreakerException::UnsupportedGraphException(message) => {
+    UnsupportedGraphException(message) => {
       @core.layout_runtime_report_unsupported_configuration(message)
       monitor.done()
       return

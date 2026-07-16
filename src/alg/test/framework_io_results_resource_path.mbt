@@ -37,9 +37,7 @@ pub fn new_results_resource_path(relative_path : String) -> ResultsResourcePath 
   new_abstract_resource_path(
     Some(
       base_path_for_property(results_resource_path_property) catch {
-        AbstractPropertyDependentResourcePathException::IllegalStateException(
-          message
-        ) => {
+        IllegalStateException(message) => {
           @core.layout_runtime_report_unsupported_configuration(message)
           "."
         }
@@ -52,9 +50,7 @@ pub fn new_results_resource_path(relative_path : String) -> ResultsResourcePath 
 ///|
 pub fn ensure_results_path_exists() -> Unit {
   let path = base_path_for_property(results_resource_path_property) catch {
-    AbstractPropertyDependentResourcePathException::IllegalStateException(
-      message
-    ) => {
+    IllegalStateException(message) => {
       @core.layout_runtime_report_unsupported_configuration(message)
       "."
     }

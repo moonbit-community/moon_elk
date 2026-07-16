@@ -90,7 +90,7 @@ fn switch_decider_bb_cross_types() -> Array[GreedySwitchType] {
 ///|
 fn switch_decider_bb_is_one_sided(switch_type : GreedySwitchType) -> Bool {
   match switch_type {
-    GreedySwitchType::OneSided => true
+    OneSided => true
     _ => false
   }
 }

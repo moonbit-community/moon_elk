@@ -45,9 +45,7 @@ pub suberror GraphJsonTextExecutableExtensionFactoryException {
 fn[T] graph_json_text_executable_extension_factory_raise_illegal_argument(
   message : String,
 ) -> T raise GraphJsonTextExecutableExtensionFactoryException {
-  raise GraphJsonTextExecutableExtensionFactoryException::IllegalArgumentException(
-    message,
-  )
+  raise IllegalArgumentException(message)
 }
 
 ///|
@@ -143,14 +141,14 @@ pub fn ElkGraphJsonExecutableExtensionFactory::create(
     )
   }
   let injector = activator.get_injector(graph_json_text_ui_language_name) catch {
-    GraphJsonTextActivatorException::IllegalArgumentException(message) =>
+    IllegalArgumentException(message) =>
       return Err(
         graph_json_text_executable_extension_factory_error(
           bundle.get_symbolic_name(),
           message,
         ),
       )
-    GraphJsonTextActivatorException::RuntimeException(message) =>
+    RuntimeException(message) =>
       return Err(
         graph_json_text_executable_extension_factory_error(
           bundle.get_symbolic_name(),

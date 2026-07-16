@@ -29,14 +29,14 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_upward_crossi
   )
 
   self.base.add_north_south_edge(
-    @core.PortSide::North,
+    North,
     left_nodes[2],
     left_nodes[1],
     right_nodes[1],
     false,
   )
   self.base.add_north_south_edge(
-    @core.PortSide::North,
+    North,
     left_nodes[2],
     left_nodes[0],
     right_nodes[0],
@@ -61,21 +61,21 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_upward_multip
   )
 
   self.base.add_north_south_edge(
-    @core.PortSide::North,
+    North,
     left_nodes[3],
     left_nodes[2],
     right_nodes[2],
     false,
   )
   self.base.add_north_south_edge(
-    @core.PortSide::North,
+    North,
     left_nodes[3],
     left_nodes[1],
     right_nodes[1],
     false,
   )
   self.base.add_north_south_edge(
-    @core.PortSide::North,
+    North,
     left_nodes[3],
     left_nodes[0],
     right_nodes[0],
@@ -105,14 +105,14 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_three_layer_north_south_c
   self.base.set_fixed_order_constraint(right_node)
 
   self.base.add_north_south_edge(
-    @core.PortSide::South,
+    South,
     middle_nodes[0],
     middle_nodes[2],
     right_node,
     false,
   )
   self.base.add_north_south_edge(
-    @core.PortSide::South,
+    South,
     middle_nodes[0],
     middle_nodes[1],
     right_node,
@@ -154,18 +154,15 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_three_layer_north_south_c
 
   let left_bottom_node_right_port = self.base.add_port_on_side(
     middle_nodes[2],
-    @core.PortSide::East,
+    East,
   )
-  let right_node_bottom_port = self.base.add_port_on_side(
-    right_nodes[1],
-    @core.PortSide::West,
-  )
+  let right_node_bottom_port = self.base.add_port_on_side(right_nodes[1], West)
   self.base.add_edge_between_ports(
     left_bottom_node_right_port, right_node_bottom_port,
   )
   let left_top_node_right_port = self.base.add_port_on_side(
     middle_nodes[0],
-    @core.PortSide::South,
+    South,
   )
   left_bottom_node_right_port.set_property_l_port(
     internal_properties_origin_l_port,
@@ -174,18 +171,15 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_three_layer_north_south_c
 
   let left_middle_node_right_port = self.base.add_port_on_side(
     middle_nodes[1],
-    @core.PortSide::East,
+    East,
   )
-  let right_node_top_port = self.base.add_port_on_side(
-    right_nodes[0],
-    @core.PortSide::West,
-  )
+  let right_node_top_port = self.base.add_port_on_side(right_nodes[0], West)
   self.base.add_edge_between_ports(
     left_middle_node_right_port, right_node_top_port,
   )
   let left_top_node_left_port = self.base.add_port_on_side(
     middle_nodes[0],
-    @core.PortSide::South,
+    South,
   )
   left_middle_node_right_port.set_property_l_port(
     internal_properties_origin_l_port,
@@ -216,7 +210,7 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_southern_north_south_dumm
   self.base.set_as_long_edge_dummy(middle_nodes[1])
 
   self.base.add_north_south_edge(
-    @core.PortSide::South,
+    South,
     middle_nodes[0],
     middle_nodes[2],
     right_nodes[1],
@@ -246,14 +240,14 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_southern_north_south_dumm
   self.base.set_as_long_edge_dummy(middle_nodes[1])
 
   self.base.add_north_south_edge(
-    @core.PortSide::South,
+    South,
     middle_nodes[0],
     middle_nodes[2],
     right_nodes[1],
     true,
   )
   self.base.add_north_south_edge(
-    @core.PortSide::South,
+    South,
     middle_nodes[0],
     middle_nodes[3],
     right_nodes[2],
@@ -291,14 +285,14 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_southern_two_dummy_edge_a
   self.base.set_fixed_order_constraint(middle_nodes[0])
 
   self.base.add_north_south_edge(
-    @core.PortSide::South,
+    South,
     middle_nodes[0],
     middle_nodes[4],
     right_nodes[3],
     true,
   )
   self.base.add_north_south_edge(
-    @core.PortSide::South,
+    South,
     middle_nodes[0],
     middle_nodes[2],
     right_nodes[1],
@@ -329,7 +323,7 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_northern_north_south_dumm
   self.base.set_as_long_edge_dummy(middle_nodes[1])
 
   self.base.add_north_south_edge(
-    @core.PortSide::North,
+    North,
     middle_nodes[2],
     middle_nodes[0],
     right_nodes[0],
@@ -356,10 +350,10 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_south_port_on_normal_node
 
   self.base.east_west_edge_from_to_nodes(left_node, middle_nodes[0])
   self.base.east_west_edge_from_to_nodes(middle_nodes[0], right_nodes[0])
-  middle_nodes[0].set_type(NodeType::LongEdge)
+  middle_nodes[0].set_type(LongEdge)
 
   self.base.add_north_south_edge(
-    @core.PortSide::South,
+    South,
     middle_nodes[1],
     middle_nodes[2],
     right_nodes[1],
@@ -387,10 +381,10 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_port_ond_normal_nod
 
   self.base.east_west_edge_from_to_nodes(left_node, middle_nodes[2])
   self.base.east_west_edge_from_to_nodes(middle_nodes[2], right_nodes[1])
-  middle_nodes[2].set_type(NodeType::LongEdge)
+  middle_nodes[2].set_type(LongEdge)
 
   self.base.add_north_south_edge(
-    @core.PortSide::North,
+    North,
     middle_nodes[1],
     middle_nodes[0],
     right_nodes[0],
@@ -421,8 +415,8 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_long_edge_dummy_and_norma
   self.base.east_west_edge_from_to_nodes(middle_nodes[1], right_node)
   self.base.set_as_long_edge_dummy(middle_nodes[1])
 
-  ignore(self.base.add_port_on_side(middle_nodes[0], @core.PortSide::South))
-  ignore(self.base.add_port_on_side(middle_nodes[0], @core.PortSide::South))
+  ignore(self.base.add_port_on_side(middle_nodes[0], South))
+  ignore(self.base.add_port_on_side(middle_nodes[0], South))
   self.get_graph()
 }
 
@@ -443,10 +437,10 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_long_edge_dummy_and_norma
 
   self.base.east_west_edge_from_to_nodes(left_node, middle_nodes[0])
   self.base.east_west_edge_from_to_nodes(middle_nodes[0], right_node)
-  middle_nodes[0].set_type(NodeType::LongEdge)
+  middle_nodes[0].set_type(LongEdge)
 
-  ignore(self.base.add_port_on_side(middle_nodes[1], @core.PortSide::North))
-  ignore(self.base.add_port_on_side(middle_nodes[1], @core.PortSide::North))
+  ignore(self.base.add_port_on_side(middle_nodes[1], North))
+  ignore(self.base.add_port_on_side(middle_nodes[1], North))
   self.get_graph()
 }
 
@@ -476,28 +470,28 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_multiple_north_south_and_
   self.base.set_as_long_edge_dummy(middle_nodes[4])
 
   self.base.add_north_south_edge(
-    @core.PortSide::North,
+    North,
     middle_nodes[3],
     middle_nodes[0],
     right_nodes[0],
     false,
   )
   self.base.add_north_south_edge(
-    @core.PortSide::North,
+    North,
     middle_nodes[3],
     middle_nodes[1],
     right_nodes[1],
     false,
   )
   self.base.add_north_south_edge(
-    @core.PortSide::South,
+    South,
     middle_nodes[3],
     middle_nodes[5],
     right_nodes[4],
     false,
   )
   self.base.add_north_south_edge(
-    @core.PortSide::South,
+    South,
     middle_nodes[3],
     middle_nodes[6],
     right_nodes[5],
@@ -520,14 +514,14 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_downward_cros
   )
 
   self.base.add_north_south_edge(
-    @core.PortSide::South,
+    South,
     left_nodes[0],
     left_nodes[2],
     right_nodes[1],
     false,
   )
   self.base.add_north_south_edge(
-    @core.PortSide::South,
+    South,
     left_nodes[0],
     left_nodes[1],
     right_nodes[0],
@@ -552,21 +546,21 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_downward_mult
   )
 
   self.base.add_north_south_edge(
-    @core.PortSide::South,
+    South,
     left_nodes[0],
     left_nodes[3],
     right_nodes[2],
     false,
   )
   self.base.add_north_south_edge(
-    @core.PortSide::South,
+    South,
     left_nodes[0],
     left_nodes[2],
     right_nodes[1],
     false,
   )
   self.base.add_north_south_edge(
-    @core.PortSide::South,
+    South,
     left_nodes[0],
     left_nodes[1],
     right_nodes[0],
@@ -595,14 +589,14 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_southern_north_south_grap
   self.base.set_fixed_order_constraint(middle_nodes[0])
 
   self.base.add_north_south_edge(
-    @core.PortSide::South,
+    South,
     middle_nodes[0],
     middle_nodes[1],
     right_node,
     false,
   )
   self.base.add_north_south_edge(
-    @core.PortSide::South,
+    South,
     middle_nodes[0],
     middle_nodes[2],
     left_node,
@@ -629,14 +623,14 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_northern_north_south_grap
   self.base.set_fixed_order_constraint(middle_nodes[2])
 
   self.base.add_north_south_edge(
-    @core.PortSide::North,
+    North,
     middle_nodes[2],
     middle_nodes[0],
     left_node,
     true,
   )
   self.base.add_north_south_edge(
-    @core.PortSide::North,
+    North,
     middle_nodes[2],
     middle_nodes[1],
     right_node,
@@ -664,14 +658,14 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_northern_north_south_grap
   self.base.set_fixed_order_constraint(middle_nodes[2])
 
   self.base.add_north_south_edge(
-    @core.PortSide::North,
+    North,
     middle_nodes[2],
     middle_nodes[1],
     left_node,
     true,
   )
   self.base.add_north_south_edge(
-    @core.PortSide::North,
+    North,
     middle_nodes[2],
     middle_nodes[0],
     right_node,
@@ -699,14 +693,14 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_edges_from_ea
   self.base.set_fixed_order_constraint(middle_nodes[0])
 
   self.base.add_north_south_edge(
-    @core.PortSide::South,
+    South,
     middle_nodes[0],
     middle_nodes[1],
     left_node,
     true,
   )
   self.base.add_north_south_edge(
-    @core.PortSide::South,
+    South,
     middle_nodes[0],
     middle_nodes[2],
     right_node,
@@ -732,14 +726,14 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_southern_north_south_edge
   self.base.set_fixed_order_constraint(middle_nodes[0])
 
   self.base.add_north_south_edge(
-    @core.PortSide::South,
+    South,
     middle_nodes[0],
     middle_nodes[1],
     right_nodes[0],
     false,
   )
   self.base.add_north_south_edge(
-    @core.PortSide::South,
+    South,
     middle_nodes[0],
     middle_nodes[2],
     right_nodes[1],
@@ -765,14 +759,14 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_southern_two_
   self.base.set_fixed_order_constraint(middle_nodes[0])
 
   self.base.add_north_south_edge(
-    @core.PortSide::South,
+    South,
     middle_nodes[0],
     middle_nodes[1],
     left_nodes[0],
     true,
   )
   self.base.add_north_south_edge(
-    @core.PortSide::South,
+    South,
     middle_nodes[0],
     middle_nodes[2],
     left_nodes[1],
@@ -798,21 +792,21 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_southern_thre
   self.base.set_fixed_order_constraint(middle_nodes[0])
 
   self.base.add_north_south_edge(
-    @core.PortSide::South,
+    South,
     middle_nodes[0],
     middle_nodes[1],
     left_nodes[0],
     true,
   )
   self.base.add_north_south_edge(
-    @core.PortSide::South,
+    South,
     middle_nodes[0],
     middle_nodes[2],
     left_nodes[1],
     true,
   )
   self.base.add_north_south_edge(
-    @core.PortSide::South,
+    South,
     middle_nodes[0],
     middle_nodes[3],
     left_nodes[2],
@@ -838,14 +832,14 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_northern_west
   self.base.set_fixed_order_constraint(middle_nodes[2])
 
   self.base.add_north_south_edge(
-    @core.PortSide::North,
+    North,
     middle_nodes[2],
     middle_nodes[1],
     left_nodes[1],
     true,
   )
   self.base.add_north_south_edge(
-    @core.PortSide::North,
+    North,
     middle_nodes[2],
     middle_nodes[0],
     left_nodes[0],
@@ -873,14 +867,14 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_northern_east
   self.base.set_fixed_order_constraint(middle_nodes[2])
 
   self.base.add_north_south_edge(
-    @core.PortSide::North,
+    North,
     middle_nodes[2],
     middle_nodes[1],
     right_node,
     false,
   )
   self.base.add_north_south_edge(
-    @core.PortSide::North,
+    North,
     middle_nodes[2],
     middle_nodes[0],
     left_node,
@@ -909,21 +903,21 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_all_sides_mul
   self.base.set_fixed_order_constraint(middle_nodes[3])
 
   self.base.add_north_south_edge(
-    @core.PortSide::North,
+    North,
     middle_nodes[3],
     middle_nodes[1],
     right_nodes[1],
     false,
   )
   self.base.add_north_south_edge(
-    @core.PortSide::North,
+    North,
     middle_nodes[3],
     middle_nodes[2],
     left_node,
     true,
   )
   self.base.add_north_south_edge(
-    @core.PortSide::North,
+    North,
     middle_nodes[3],
     middle_nodes[0],
     right_nodes[0],
@@ -931,21 +925,21 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_all_sides_mul
   )
 
   self.base.add_north_south_edge(
-    @core.PortSide::South,
+    South,
     middle_nodes[3],
     middle_nodes[6],
     right_nodes[4],
     false,
   )
   self.base.add_north_south_edge(
-    @core.PortSide::South,
+    South,
     middle_nodes[3],
     middle_nodes[4],
     right_nodes[2],
     false,
   )
   self.base.add_north_south_edge(
-    @core.PortSide::South,
+    South,
     middle_nodes[3],
     middle_nodes[5],
     right_nodes[3],
@@ -973,14 +967,14 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_southern_west
   self.base.set_fixed_order_constraint(middle_nodes[0])
 
   self.base.add_north_south_edge(
-    @core.PortSide::South,
+    South,
     middle_nodes[0],
     middle_nodes[2],
     left_node,
     true,
   )
   self.base.add_north_south_edge(
-    @core.PortSide::South,
+    South,
     middle_nodes[0],
     middle_nodes[1],
     right_node,
@@ -1007,14 +1001,14 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_graph_where_layout_unit_p
   self.base.set_fixed_order_constraint(left_nodes[3])
 
   self.base.add_north_south_edge(
-    @core.PortSide::South,
+    South,
     left_nodes[0],
     left_nodes[1],
     right_nodes[1],
     false,
   )
   self.base.add_north_south_edge(
-    @core.PortSide::North,
+    North,
     left_nodes[3],
     left_nodes[2],
     right_nodes[0],
@@ -1037,7 +1031,7 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_graph_layout_unit_prevent
   )
 
   self.base.add_north_south_edge(
-    @core.PortSide::North,
+    North,
     left_nodes[1],
     left_nodes[0],
     right_nodes[0],
@@ -1065,7 +1059,7 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_graph_layout_unit_prevent
   self.base.east_west_edge_from_to_nodes(left_nodes[0], right_nodes[1])
   self.base.east_west_edge_from_to_nodes(left_nodes[1], right_nodes[0])
   self.base.add_north_south_edge(
-    @core.PortSide::South,
+    South,
     left_nodes[1],
     left_nodes[2],
     right_nodes[2],
@@ -1097,7 +1091,7 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_graph_layout_unit_does_no
   self.base.east_west_edge_from_to_nodes(middle_nodes[1], right_nodes[0])
   self.base.east_west_edge_from_to_nodes(middle_nodes[1], right_nodes[0])
   self.base.add_north_south_edge(
-    @core.PortSide::South,
+    South,
     middle_nodes[1],
     middle_nodes[2],
     right_nodes[2],

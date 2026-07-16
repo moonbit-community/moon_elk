@@ -20,7 +20,7 @@ pub(all) suberror GreedyCycleBreakerException {
 fn[T] greedy_cycle_breaker_raise_unsupported_graph(
   message : String,
 ) -> T raise GreedyCycleBreakerException {
-  raise GreedyCycleBreakerException::UnsupportedGraphException(message)
+  raise UnsupportedGraphException(message)
 }
 
 ///|
@@ -234,10 +234,8 @@ fn greedy_cycle_breaker_configuration(
   ignore(graph)
   Some(
     @core.layout_processor_configuration_create(layered_phase_descriptor).add_after(
-      LayeredPhases::P5EdgeRouting,
-      layered_intermediate_processor_factory(
-        IntermediateProcessorStrategy::ReversedEdgeRestorer,
-      ),
+      P5EdgeRouting,
+      layered_intermediate_processor_factory(ReversedEdgeRestorer),
     ),
   )
 }
@@ -334,7 +332,7 @@ fn greedy_cycle_breaker_process_with_chooser(
     greedy_cycle_breaker_shift_sink_ranks(state)
     greedy_cycle_breaker_reverse_edges_pointing_left(state)
   } catch {
-    GreedyCycleBreakerException::UnsupportedGraphException(message) => {
+    UnsupportedGraphException(message) => {
       @core.layout_runtime_report_unsupported_configuration(message)
       monitor.done()
       return

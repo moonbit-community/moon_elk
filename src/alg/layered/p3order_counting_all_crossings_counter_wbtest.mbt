@@ -36,13 +36,13 @@ test "AllCrossingsCounter counts one crossing" {
   let bottom_right = all_crossings_test_new_node(right_layer, 1)
 
   let top_left_port = all_crossings_test_new_port(top_left, 0)
-  top_left_port.set_side(@core.PortSide::East)
+  top_left_port.set_side(East)
   let bottom_left_port = all_crossings_test_new_port(bottom_left, 1)
-  bottom_left_port.set_side(@core.PortSide::East)
+  bottom_left_port.set_side(East)
   let top_right_port = all_crossings_test_new_port(top_right, 2)
-  top_right_port.set_side(@core.PortSide::West)
+  top_right_port.set_side(West)
   let bottom_right_port = all_crossings_test_new_port(bottom_right, 3)
-  bottom_right_port.set_side(@core.PortSide::West)
+  bottom_right_port.set_side(West)
 
   ignore(all_crossings_test_connect(top_left_port, bottom_right_port))
   ignore(all_crossings_test_connect(bottom_left_port, top_right_port))

@@ -50,39 +50,15 @@ fn switch_decider_test_cross_graph() -> (Array[Array[LNode]], LNode, LNode) {
   graph.get_layers().push(left_layer)
   graph.get_layers().push(right_layer)
 
-  let left_upper = switch_decider_test_new_node(left_layer, 0, NodeType::Normal)
-  let left_lower = switch_decider_test_new_node(left_layer, 1, NodeType::Normal)
-  let right_upper = switch_decider_test_new_node(
-    right_layer,
-    0,
-    NodeType::Normal,
-  )
-  let right_lower = switch_decider_test_new_node(
-    right_layer,
-    1,
-    NodeType::Normal,
-  )
+  let left_upper = switch_decider_test_new_node(left_layer, 0, Normal)
+  let left_lower = switch_decider_test_new_node(left_layer, 1, Normal)
+  let right_upper = switch_decider_test_new_node(right_layer, 0, Normal)
+  let right_lower = switch_decider_test_new_node(right_layer, 1, Normal)
 
-  let left_upper_port = switch_decider_test_new_port(
-    left_upper,
-    @core.PortSide::East,
-    0,
-  )
-  let left_lower_port = switch_decider_test_new_port(
-    left_lower,
-    @core.PortSide::East,
-    1,
-  )
-  let right_upper_port = switch_decider_test_new_port(
-    right_upper,
-    @core.PortSide::West,
-    2,
-  )
-  let right_lower_port = switch_decider_test_new_port(
-    right_lower,
-    @core.PortSide::West,
-    3,
-  )
+  let left_upper_port = switch_decider_test_new_port(left_upper, East, 0)
+  let left_lower_port = switch_decider_test_new_port(left_lower, East, 1)
+  let right_upper_port = switch_decider_test_new_port(right_upper, West, 2)
+  let right_lower_port = switch_decider_test_new_port(right_lower, West, 3)
 
   switch_decider_test_connect(left_upper_port, right_lower_port)
   switch_decider_test_connect(left_lower_port, right_upper_port)
@@ -98,12 +74,7 @@ fn switch_decider_test_cross_graph() -> (Array[Array[LNode]], LNode, LNode) {
 test "SwitchDecider reports switch reduces crossings on crossed layer" {
   let (node_order, right_upper, right_lower) = switch_decider_test_cross_graph()
   ignore((right_upper, right_lower))
-  let filler = new_crossing_matrix_filler(
-    GreedySwitchType::OneSided,
-    node_order,
-    1,
-    CrossingCountSide::West,
-  )
+  let filler = new_crossing_matrix_filler(OneSided, node_order, 1, West)
   let graph_data = new_graph_info_holder(node_order)
   let decider = new_switch_decider(
     1,
@@ -124,12 +95,7 @@ test "SwitchDecider successor constraint prevents switching" {
     internal_properties_in_layer_successor_constraints,
     [right_lower],
   )
-  let filler = new_crossing_matrix_filler(
-    GreedySwitchType::OneSided,
-    node_order,
-    1,
-    CrossingCountSide::West,
-  )
+  let filler = new_crossing_matrix_filler(OneSided, node_order, 1, West)
   let graph_data = new_graph_info_holder(node_order)
   let decider = new_switch_decider(
     1,
@@ -149,20 +115,11 @@ test "SwitchDecider blocks normal and north-south dummy swaps" {
   let layer = new_layer(graph)
   graph.get_layers().push(layer)
 
-  let normal = switch_decider_test_new_node(layer, 0, NodeType::Normal)
-  let ns_dummy = switch_decider_test_new_node(
-    layer,
-    1,
-    NodeType::NorthSouthPort,
-  )
+  let normal = switch_decider_test_new_node(layer, 0, Normal)
+  let ns_dummy = switch_decider_test_new_node(layer, 1, NorthSouthPort)
 
   let node_order = [[normal, ns_dummy]]
-  let filler = new_crossing_matrix_filler(
-    GreedySwitchType::OneSided,
-    node_order,
-    0,
-    CrossingCountSide::West,
-  )
+  let filler = new_crossing_matrix_filler(OneSided, node_order, 0, West)
   let graph_data = new_graph_info_holder(node_order)
   let decider = new_switch_decider(
     0,

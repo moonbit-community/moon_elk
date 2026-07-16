@@ -19,13 +19,13 @@ fn node_relative_calculate_port_ranks_raise(
 ) -> Double raise NodeRelativePortDistributorException {
   let port_ranks = distributor.get_port_ranks()
   match port_type {
-    PortType::Input => {
+    Input => {
       let mut input_count = 0
       let mut north_input_count = 0
       for port in node.get_ports() {
         if !port.get_incoming_edges().is_empty() {
           input_count = input_count + 1
-          if lnode_port_side_equals(port.get_side(), @core.PortSide::North) {
+          if lnode_port_side_equals(port.get_side(), North) {
             north_input_count = north_input_count + 1
           }
         }
@@ -34,8 +34,8 @@ fn node_relative_calculate_port_ranks_raise(
       let incr = 1.0 / (input_count + 1).to_double()
       let mut north_pos = rank_sum + north_input_count.to_double() * incr
       let mut rest_pos = rank_sum + 1.0 - incr
-      for port in node.get_ports_by_type(PortType::Input) {
-        if lnode_port_side_equals(port.get_side(), @core.PortSide::North) {
+      for port in node.get_ports_by_type(Input) {
+        if lnode_port_side_equals(port.get_side(), North) {
           port_ranks[port.get_id()] = north_pos
           north_pos = north_pos - incr
         } else {
@@ -46,7 +46,7 @@ fn node_relative_calculate_port_ranks_raise(
 
       1.0
     }
-    PortType::Output => {
+    Output => {
       let mut output_count = 0
       for port in node.get_ports() {
         if !port.get_outgoing_edges().is_empty() {
@@ -56,15 +56,14 @@ fn node_relative_calculate_port_ranks_raise(
 
       let incr = 1.0 / (output_count + 1).to_double()
       let mut pos = rank_sum + incr
-      for port in node.get_ports_by_type(PortType::Output) {
+      for port in node.get_ports_by_type(Output) {
         port_ranks[port.get_id()] = pos
         pos += incr
       }
 
       1.0
     }
-    PortType::Undefined =>
-      node_relative_port_distributor_raise("Port type is undefined")
+    Undefined => node_relative_port_distributor_raise("Port type is undefined")
   }
 }
 

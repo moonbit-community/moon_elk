@@ -7,7 +7,7 @@ fn hierarchical_port_position_parse_port_constraints(
       return constraints
     }
   }
-  @core.PortConstraints::Undefined
+  Undefined
 }
 
 ///|
@@ -16,14 +16,12 @@ fn hierarchical_port_position_port_constraints_equals(
   right : @core.PortConstraints,
 ) -> Bool {
   match (left, right) {
-    (@core.PortConstraints::Undefined, @core.PortConstraints::Undefined) => true
-    (@core.PortConstraints::Free, @core.PortConstraints::Free) => true
-    (@core.PortConstraints::FixedSide, @core.PortConstraints::FixedSide) => true
-    (@core.PortConstraints::FixedOrder, @core.PortConstraints::FixedOrder) =>
-      true
-    (@core.PortConstraints::FixedRatio, @core.PortConstraints::FixedRatio) =>
-      true
-    (@core.PortConstraints::FixedPos, @core.PortConstraints::FixedPos) => true
+    (Undefined, Undefined) => true
+    (Free, Free) => true
+    (FixedSide, FixedSide) => true
+    (FixedOrder, FixedOrder) => true
+    (FixedRatio, FixedRatio) => true
+    (FixedPos, FixedPos) => true
     _ => false
   }
 }
@@ -33,7 +31,7 @@ fn hierarchical_port_position_node_type_is_external_port(
   node_type : NodeType,
 ) -> Bool {
   match node_type {
-    NodeType::ExternalPort => true
+    ExternalPort => true
     _ => false
   }
 }
@@ -43,8 +41,8 @@ fn hierarchical_port_position_side_is_east_or_west(
   side : @core.PortSide,
 ) -> Bool {
   match side {
-    @core.PortSide::East => true
-    @core.PortSide::West => true
+    East => true
+    West => true
     _ => false
   }
 }
@@ -78,7 +76,7 @@ fn hierarchical_port_position_fix_coordinates(
     )
     if hierarchical_port_position_port_constraints_equals(
         port_constraints,
-        @core.PortConstraints::FixedRatio,
+        FixedRatio,
       ) {
       final_y = final_y * graph_height
     }

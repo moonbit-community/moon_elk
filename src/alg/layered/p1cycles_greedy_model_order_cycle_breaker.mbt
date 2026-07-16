@@ -21,7 +21,7 @@ fn greedy_model_order_cycle_breaker_choose_node_with_max_outflow(
         layered_options_consider_model_order_group_model_order_cb_group_order_strategy,
       ),
     ),
-    GroupOrderStrategy::Enforced,
+    Enforced,
   )
 
   for node in nodes {

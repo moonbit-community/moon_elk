@@ -10,10 +10,10 @@ pub fn mrtree_edge_routing_mode_from_string(
   value : String,
 ) -> MrtreeEdgeRoutingMode {
   if value == "NONE" {
-    MrtreeEdgeRoutingMode::NONE
+    NONE
   } else if value == "MIDDLE_TO_MIDDLE" {
-    MrtreeEdgeRoutingMode::MIDDLE_TO_MIDDLE
+    MIDDLE_TO_MIDDLE
   } else {
-    MrtreeEdgeRoutingMode::AVOID_OVERLAP
+    AVOID_OVERLAP
   }
 }

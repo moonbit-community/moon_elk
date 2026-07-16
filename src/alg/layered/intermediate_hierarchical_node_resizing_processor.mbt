@@ -90,7 +90,7 @@ fn hierarchical_node_resizing_processor_resize_node(
           if !fixed_ports {
             port.get_position().y = port.get_position().y * height_ratio
           }
-        @core.PortSide::SideUndefined => ()
+        SideUndefined => ()
       }
     }
   }
@@ -186,7 +186,7 @@ fn hierarchical_node_resizing_processor_get_external_port_position(
         port_offset +
         graph_offset.x)
     }
-    @core.PortSide::SideUndefined => ()
+    SideUndefined => ()
   }
 
   port_position

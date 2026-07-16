@@ -15,9 +15,8 @@ pub fn self_loop_holder_exception_message(
   error : SelfLoopHolderException,
 ) -> String {
   match error {
-    SelfLoopHolderException::UnsupportedConfigurationException(message) =>
-      message
-    SelfLoopHolderException::IllegalStateException(message) => message
+    UnsupportedConfigurationException(message) => message
+    IllegalStateException(message) => message
   }
 }
 
@@ -25,14 +24,14 @@ pub fn self_loop_holder_exception_message(
 fn[T] self_loop_holder_raise_unsupported_configuration(
   message : String,
 ) -> T raise SelfLoopHolderException {
-  raise SelfLoopHolderException::UnsupportedConfigurationException(message)
+  raise UnsupportedConfigurationException(message)
 }
 
 ///|
 fn[T] self_loop_holder_raise_illegal_state(
   message : String,
 ) -> T raise SelfLoopHolderException {
-  raise SelfLoopHolderException::IllegalStateException(message)
+  raise IllegalStateException(message)
 }
 
 ///|
@@ -60,7 +59,7 @@ pub fn new_self_loop_holder(l_node : LNode) -> SelfLoopHolder {
 ///|
 pub fn self_loop_holder_needs_self_loop_processing(l_node : LNode) -> Bool {
   match l_node.get_type() {
-    NodeType::Normal => ()
+    Normal => ()
     _ => return false
   }
 

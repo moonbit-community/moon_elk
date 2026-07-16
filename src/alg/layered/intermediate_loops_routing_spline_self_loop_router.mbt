@@ -42,8 +42,8 @@ fn spline_self_loop_router_add_spline_control_points(
 
     first_bp = second_bp
     curr_port_side = match routing_direction {
-      EdgeRoutingDirection::Clockwise => curr_port_side.right()
-      EdgeRoutingDirection::CounterClockwise => curr_port_side.left()
+      Clockwise => curr_port_side.right()
+      CounterClockwise => curr_port_side.left()
     }
   }
 
@@ -85,7 +85,7 @@ fn spline_self_loop_router_modify_bend_points(
       spline_bend_points.to_array(),
     )
   catch {
-    NubSplineException::IllegalArgumentException(message) => {
+    IllegalArgumentException(message) => {
       @core.layout_runtime_report_unsupported_configuration(
         "java.lang.IllegalArgumentException: " + message,
       )

@@ -19,6 +19,6 @@ pub fn in_north_south_east_west_order(
     North => node.get_port_side_view(side)
     South => cross_min_reverse_ports(node.get_port_side_view(side))
     West => cross_min_reverse_ports(node.get_port_side_view(side))
-    @core.PortSide::SideUndefined => []
+    SideUndefined => []
   }
 }

@@ -8,9 +8,9 @@ pub fn spore_compaction_strategy_from_string(
   value : String,
 ) -> SporeCompactionStrategy {
   if value == "DEPTH_FIRST" {
-    SporeCompactionStrategy::DEPTH_FIRST
+    DEPTH_FIRST
   } else {
-    SporeCompactionStrategy::DEPTH_FIRST
+    DEPTH_FIRST
   }
 }
 

@@ -34,9 +34,7 @@ pub fn new_model_resource_path(file_path : String) -> ModelResourcePath {
   new_abstract_resource_path(
     Some(
       base_path_for_property(model_resource_path_property) catch {
-        AbstractPropertyDependentResourcePathException::IllegalStateException(
-          message
-        ) => {
+        IllegalStateException(message) => {
           @core.layout_runtime_report_unsupported_configuration(message)
           "."
         }

@@ -101,26 +101,26 @@ fn mrtree_update_modules(
   ignore(algorithm_assembler.reset())
   ignore(
     algorithm_assembler.set_phase(
-      MrtreeTreeLayoutPhases::P1Treeification,
-      mrtree_tree_layout_phase_factory(MrtreeTreeLayoutPhases::P1Treeification),
+      P1Treeification,
+      mrtree_tree_layout_phase_factory(P1Treeification),
     ),
   )
   ignore(
     algorithm_assembler.set_phase(
-      MrtreeTreeLayoutPhases::P2NodeOrdering,
-      mrtree_tree_layout_phase_factory(MrtreeTreeLayoutPhases::P2NodeOrdering),
+      P2NodeOrdering,
+      mrtree_tree_layout_phase_factory(P2NodeOrdering),
     ),
   )
   ignore(
     algorithm_assembler.set_phase(
-      MrtreeTreeLayoutPhases::P3NodePlacement,
-      mrtree_tree_layout_phase_factory(MrtreeTreeLayoutPhases::P3NodePlacement),
+      P3NodePlacement,
+      mrtree_tree_layout_phase_factory(P3NodePlacement),
     ),
   )
   ignore(
     algorithm_assembler.set_phase(
-      MrtreeTreeLayoutPhases::P4EdgeRouting,
-      mrtree_tree_layout_phase_factory(MrtreeTreeLayoutPhases::P4EdgeRouting),
+      P4EdgeRouting,
+      mrtree_tree_layout_phase_factory(P4EdgeRouting),
     ),
   )
   algorithm_assembler.build(graph)

@@ -4,7 +4,7 @@ fn port_restorer_port_side_equals(
   right : @core.PortSide,
 ) -> Bool {
   match (left, right) {
-    (@core.SideUndefined, @core.SideUndefined) => true
+    (SideUndefined, SideUndefined) => true
     (North, North) => true
     (East, East) => true
     (South, South) => true
@@ -16,10 +16,10 @@ fn port_restorer_port_side_equals(
 ///|
 fn port_restorer_parse_ordering(value : String) -> SelfLoopOrderingStrategy {
   match value {
-    "STACKED" => SelfLoopOrderingStrategy::Stacked
-    "REVERSE_STACKED" => SelfLoopOrderingStrategy::ReverseStacked
-    "SEQUENCED" => SelfLoopOrderingStrategy::Sequenced
-    _ => SelfLoopOrderingStrategy::Stacked
+    "STACKED" => Stacked
+    "REVERSE_STACKED" => ReverseStacked
+    "SEQUENCED" => Sequenced
+    _ => Stacked
   }
 }
 
@@ -29,14 +29,9 @@ fn port_restorer_ordering_equals(
   right : SelfLoopOrderingStrategy,
 ) -> Bool {
   match (left, right) {
-    (SelfLoopOrderingStrategy::Stacked, SelfLoopOrderingStrategy::Stacked) =>
-      true
-    (
-      SelfLoopOrderingStrategy::ReverseStacked,
-      SelfLoopOrderingStrategy::ReverseStacked,
-    ) => true
-    (SelfLoopOrderingStrategy::Sequenced, SelfLoopOrderingStrategy::Sequenced) =>
-      true
+    (Stacked, Stacked) => true
+    (ReverseStacked, ReverseStacked) => true
+    (Sequenced, Sequenced) => true
     _ => false
   }
 }
@@ -62,9 +57,9 @@ pub enum PortSideArea {
 ///|
 fn port_restorer_port_side_area_to_string(area : PortSideArea) -> String {
   match area {
-    PortSideArea::Start => "START"
-    PortSideArea::Middle => "MIDDLE"
-    PortSideArea::End => "END"
+    Start => "START"
+    Middle => "MIDDLE"
+    End => "END"
   }
 }
 
@@ -202,7 +197,7 @@ pub fn new_port_restorer() -> PortRestorer {
 fn PortRestorer::init_target_areas(self : PortRestorer) -> Unit {
   self.target_areas.clear()
   for side in @core.port_side_values() {
-    for area in [PortSideArea::Start, PortSideArea::Middle, PortSideArea::End] {
+    for area in [PortSideArea::Start, Middle, End] {
       ignore(port_restorer_target_area_ensure(self.target_areas, side, area))
     }
   }
@@ -296,11 +291,11 @@ fn PortRestorer::add_to_target_area_ports(
   let target = port_restorer_target_area_get(self.target_areas, port_side, area)
 
   match add_mode {
-    AddMode::Prepend =>
+    Prepend =>
       for sl_port in hidden_ports {
         ignore(target.insert(0, sl_port))
       }
-    AddMode::Append => {
+    Append => {
       let mut index = hidden_ports.length() - 1
       while index >= 0 {
         target.push(hidden_ports[index])
@@ -319,10 +314,7 @@ fn PortRestorer::process_one_side_loops(
     self.sl_loops_by_type,
     OneSide,
   )
-  if port_restorer_ordering_equals(
-      ordering,
-      SelfLoopOrderingStrategy::ReverseStacked,
-    ) {
+  if port_restorer_ordering_equals(ordering, ReverseStacked) {
     loops = port_restorer_reverse_hyper_loops(loops)
   }
 
@@ -332,20 +324,15 @@ fn PortRestorer::process_one_side_loops(
     port_restorer_sort_ports_by_net_flow(sorted_ports)
 
     match ordering {
-      SelfLoopOrderingStrategy::Sequenced =>
-        self.add_to_target_area_ports(
-          sorted_ports,
-          side,
-          PortSideArea::Middle,
-          AddMode::Append,
-        )
-      SelfLoopOrderingStrategy::ReverseStacked => {
+      Sequenced =>
+        self.add_to_target_area_ports(sorted_ports, side, Middle, Append)
+      ReverseStacked => {
         let split_index = self.compute_port_list_split_index(sorted_ports)
         self.add_to_target_area_ports(
           port_restorer_subarray(sorted_ports, 0, split_index),
           side,
-          PortSideArea::Middle,
-          AddMode::Prepend,
+          Middle,
+          Prepend,
         )
         self.add_to_target_area_ports(
           port_restorer_subarray(
@@ -354,17 +341,17 @@ fn PortRestorer::process_one_side_loops(
             sorted_ports.length(),
           ),
           side,
-          PortSideArea::Middle,
-          AddMode::Append,
+          Middle,
+          Append,
         )
       }
-      SelfLoopOrderingStrategy::Stacked => {
+      Stacked => {
         let split_index = self.compute_port_list_split_index(sorted_ports)
         self.add_to_target_area_ports(
           port_restorer_subarray(sorted_ports, 0, split_index),
           side,
-          PortSideArea::Middle,
-          AddMode::Prepend,
+          Middle,
+          Prepend,
         )
         self.add_to_target_area_ports(
           port_restorer_subarray(
@@ -373,8 +360,8 @@ fn PortRestorer::process_one_side_loops(
             sorted_ports.length(),
           ),
           side,
-          PortSideArea::Middle,
-          AddMode::Append,
+          Middle,
+          Append,
         )
       }
     }
@@ -384,7 +371,7 @@ fn PortRestorer::process_one_side_loops(
 ///|
 fn port_restorer_port_side_order(side : @core.PortSide) -> Int {
   match side {
-    @core.SideUndefined => 0
+    SideUndefined => 0
     North => 1
     East => 2
     South => 3
@@ -407,13 +394,7 @@ pub fn port_restorer_sorted_two_side_loop_port_sides(
   sl_loop : SelfHyperLoop,
 ) -> Array[@core.PortSide] {
   let sides = []
-  for
-    side in [
-      @core.PortSide::North,
-      @core.PortSide::East,
-      @core.PortSide::South,
-      @core.PortSide::West,
-    ] {
+  for side in [@core.PortSide::North, East, South, West] {
     if sl_loop.has_sl_ports_on_side(side) {
       sides.push(side)
     }
@@ -422,8 +403,8 @@ pub fn port_restorer_sorted_two_side_loop_port_sides(
   port_restorer_sort_sides(sides)
 
   if sides.length() == 2 &&
-    port_restorer_port_side_equals(sides[0], @core.PortSide::North) &&
-    port_restorer_port_side_equals(sides[1], @core.PortSide::West) {
+    port_restorer_port_side_equals(sides[0], North) &&
+    port_restorer_port_side_equals(sides[1], West) {
     port_restorer_side_pair_swap(sides)
   }
 
@@ -439,18 +420,8 @@ fn PortRestorer::process_two_side_corner_loops(self : PortRestorer) -> Unit {
     ) {
     let sides = port_restorer_sorted_two_side_loop_port_sides(sl_loop)
     if sides.length() == 2 {
-      self.add_to_target_area_loop(
-        sl_loop,
-        sides[0],
-        PortSideArea::End,
-        AddMode::Prepend,
-      )
-      self.add_to_target_area_loop(
-        sl_loop,
-        sides[1],
-        PortSideArea::Start,
-        AddMode::Append,
-      )
+      self.add_to_target_area_loop(sl_loop, sides[0], End, Prepend)
+      self.add_to_target_area_loop(sl_loop, sides[1], Start, Append)
     }
   }
 }
@@ -464,18 +435,8 @@ fn PortRestorer::process_two_side_opposing_loops(self : PortRestorer) -> Unit {
     ) {
     let sides = port_restorer_sorted_two_side_loop_port_sides(sl_loop)
     if sides.length() == 2 {
-      self.add_to_target_area_loop(
-        sl_loop,
-        sides[0],
-        PortSideArea::End,
-        AddMode::Prepend,
-      )
-      self.add_to_target_area_loop(
-        sl_loop,
-        sides[1],
-        PortSideArea::Start,
-        AddMode::Append,
-      )
+      self.add_to_target_area_loop(sl_loop, sides[0], End, Prepend)
+      self.add_to_target_area_loop(sl_loop, sides[1], Start, Append)
     }
   }
 }
@@ -494,14 +455,14 @@ fn PortRestorer::determine_loop_constellation(
   sl_loop : SelfHyperLoop,
 ) -> Array[@core.PortSide] {
   ignore(self)
-  if !port_restorer_loop_has_side(sl_loop, @core.PortSide::North) {
-    [@core.PortSide::East, @core.PortSide::South, @core.PortSide::West]
-  } else if !port_restorer_loop_has_side(sl_loop, @core.PortSide::East) {
-    [@core.PortSide::South, @core.PortSide::West, @core.PortSide::North]
-  } else if !port_restorer_loop_has_side(sl_loop, @core.PortSide::South) {
-    [@core.PortSide::West, @core.PortSide::North, @core.PortSide::East]
-  } else if !port_restorer_loop_has_side(sl_loop, @core.PortSide::West) {
-    [@core.PortSide::North, @core.PortSide::East, @core.PortSide::South]
+  if !port_restorer_loop_has_side(sl_loop, North) {
+    [East, South, West]
+  } else if !port_restorer_loop_has_side(sl_loop, East) {
+    [South, West, North]
+  } else if !port_restorer_loop_has_side(sl_loop, South) {
+    [West, North, East]
+  } else if !port_restorer_loop_has_side(sl_loop, West) {
+    [North, East, South]
   } else {
     []
   }
@@ -516,24 +477,9 @@ fn PortRestorer::process_three_side_loops(self : PortRestorer) -> Unit {
     ) {
     let sides = self.determine_loop_constellation(sl_loop)
     if sides.length() == 3 {
-      self.add_to_target_area_loop(
-        sl_loop,
-        sides[0],
-        PortSideArea::End,
-        AddMode::Prepend,
-      )
-      self.add_to_target_area_loop(
-        sl_loop,
-        sides[1],
-        PortSideArea::Middle,
-        AddMode::Append,
-      )
-      self.add_to_target_area_loop(
-        sl_loop,
-        sides[2],
-        PortSideArea::Start,
-        AddMode::Append,
-      )
+      self.add_to_target_area_loop(sl_loop, sides[0], End, Prepend)
+      self.add_to_target_area_loop(sl_loop, sides[1], Middle, Append)
+      self.add_to_target_area_loop(sl_loop, sides[2], Start, Append)
     }
   }
 }
@@ -545,20 +491,9 @@ fn PortRestorer::process_four_side_loops(self : PortRestorer) -> Unit {
       self.sl_loops_by_type,
       FourSides,
     ) {
-    for
-      side in [
-        @core.PortSide::North,
-        @core.PortSide::East,
-        @core.PortSide::South,
-        @core.PortSide::West,
-      ] {
+    for side in [@core.PortSide::North, East, South, West] {
       if sl_loop.has_sl_ports_on_side(side) {
-        self.add_to_target_area_loop(
-          sl_loop,
-          side,
-          PortSideArea::Middle,
-          AddMode::Append,
-        )
+        self.add_to_target_area_loop(sl_loop, side, Middle, Append)
       }
     }
   }
@@ -683,7 +618,7 @@ fn PortRestorer::restore_ports_internal(
   new_port_list.clear()
 
   self.add_all(
-    port_restorer_target_area_get(self.target_areas, North, PortSideArea::Start),
+    port_restorer_target_area_get(self.target_areas, North, Start),
     l_node,
   )
   next_old_port_index = self.add_all_that(
@@ -696,11 +631,7 @@ fn PortRestorer::restore_ports_internal(
     new_port_list,
   )
   self.add_all(
-    port_restorer_target_area_get(
-      self.target_areas,
-      North,
-      PortSideArea::Middle,
-    ),
+    port_restorer_target_area_get(self.target_areas, North, Middle),
     l_node,
   )
   next_old_port_index = self.add_all_that(
@@ -710,16 +641,16 @@ fn PortRestorer::restore_ports_internal(
     new_port_list,
   )
   self.add_all(
-    port_restorer_target_area_get(self.target_areas, North, PortSideArea::End),
+    port_restorer_target_area_get(self.target_areas, North, End),
     l_node,
   )
 
   self.add_all(
-    port_restorer_target_area_get(self.target_areas, East, PortSideArea::Start),
+    port_restorer_target_area_get(self.target_areas, East, Start),
     l_node,
   )
   self.add_all(
-    port_restorer_target_area_get(self.target_areas, East, PortSideArea::Middle),
+    port_restorer_target_area_get(self.target_areas, East, Middle),
     l_node,
   )
   next_old_port_index = self.add_all_that(
@@ -729,12 +660,12 @@ fn PortRestorer::restore_ports_internal(
     new_port_list,
   )
   self.add_all(
-    port_restorer_target_area_get(self.target_areas, East, PortSideArea::End),
+    port_restorer_target_area_get(self.target_areas, East, End),
     l_node,
   )
 
   self.add_all(
-    port_restorer_target_area_get(self.target_areas, South, PortSideArea::Start),
+    port_restorer_target_area_get(self.target_areas, South, Start),
     l_node,
   )
   next_old_port_index = self.add_all_that(
@@ -747,11 +678,7 @@ fn PortRestorer::restore_ports_internal(
     new_port_list,
   )
   self.add_all(
-    port_restorer_target_area_get(
-      self.target_areas,
-      South,
-      PortSideArea::Middle,
-    ),
+    port_restorer_target_area_get(self.target_areas, South, Middle),
     l_node,
   )
   next_old_port_index = self.add_all_that(
@@ -761,12 +688,12 @@ fn PortRestorer::restore_ports_internal(
     new_port_list,
   )
   self.add_all(
-    port_restorer_target_area_get(self.target_areas, South, PortSideArea::End),
+    port_restorer_target_area_get(self.target_areas, South, End),
     l_node,
   )
 
   self.add_all(
-    port_restorer_target_area_get(self.target_areas, West, PortSideArea::Start),
+    port_restorer_target_area_get(self.target_areas, West, Start),
     l_node,
   )
   next_old_port_index = self.add_all_that(
@@ -776,11 +703,11 @@ fn PortRestorer::restore_ports_internal(
     new_port_list,
   )
   self.add_all(
-    port_restorer_target_area_get(self.target_areas, West, PortSideArea::Middle),
+    port_restorer_target_area_get(self.target_areas, West, Middle),
     l_node,
   )
   self.add_all(
-    port_restorer_target_area_get(self.target_areas, West, PortSideArea::End),
+    port_restorer_target_area_get(self.target_areas, West, End),
     l_node,
   )
 }
@@ -809,7 +736,7 @@ pub fn PortRestorer::restore_ports(
   self.restore_ports_internal(sl_holder)
 
   for side in @core.port_side_values() {
-    for area in [PortSideArea::Start, PortSideArea::Middle, PortSideArea::End] {
+    for area in [PortSideArea::Start, Middle, End] {
       for
         sl_port in port_restorer_target_area_get(self.target_areas, side, area) {
         sl_port.set_hidden(false)

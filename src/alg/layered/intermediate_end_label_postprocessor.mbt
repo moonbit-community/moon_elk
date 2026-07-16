@@ -3,8 +3,8 @@ fn end_label_postprocessor_node_type_supports_end_labels(
   node_type : NodeType,
 ) -> Bool {
   match node_type {
-    NodeType::Normal => true
-    NodeType::ExternalPort => true
+    Normal => true
+    ExternalPort => true
     _ => false
   }
 }

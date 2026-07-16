@@ -33,13 +33,13 @@ test "North south crossing counter returns zero when no north south ports exist"
   let layer = new_layer(graph)
   graph.get_layers().push(layer)
 
-  let n0 = ns_counter_test_new_node(layer, 0, NodeType::Normal)
-  let n1 = ns_counter_test_new_node(layer, 1, NodeType::Normal)
+  let n0 = ns_counter_test_new_node(layer, 0, Normal)
+  let n1 = ns_counter_test_new_node(layer, 1, Normal)
 
   let p0 = ns_counter_test_new_port(n0, 0)
-  p0.set_side(@core.PortSide::East)
+  p0.set_side(East)
   let p1 = ns_counter_test_new_port(n1, 1)
-  p1.set_side(@core.PortSide::East)
+  p1.set_side(East)
   ignore(ns_counter_test_connect(p0, p1))
 
   let counter = new_crossings_counter(Array::make(2, 0))
@@ -52,17 +52,17 @@ test "North south crossing counter handles one dummy edge without crossings" {
   let layer = new_layer(graph)
   graph.get_layers().push(layer)
 
-  let normal = ns_counter_test_new_node(layer, 0, NodeType::Normal)
-  let dummy = ns_counter_test_new_node(layer, 1, NodeType::NorthSouthPort)
+  let normal = ns_counter_test_new_node(layer, 0, Normal)
+  let dummy = ns_counter_test_new_node(layer, 1, NorthSouthPort)
 
   let normal_north = ns_counter_test_new_port(normal, 0)
-  normal_north.set_side(@core.PortSide::North)
+  normal_north.set_side(North)
   normal_north.set_property_l_node(internal_properties_port_dummy, Some(dummy))
 
   let dummy_west = ns_counter_test_new_port(dummy, 1)
-  dummy_west.set_side(@core.PortSide::West)
+  dummy_west.set_side(West)
   let dummy_east = ns_counter_test_new_port(dummy, 2)
-  dummy_east.set_side(@core.PortSide::East)
+  dummy_east.set_side(East)
   dummy_west.set_property_l_port(
     internal_properties_origin_l_port,
     Some(normal_north),

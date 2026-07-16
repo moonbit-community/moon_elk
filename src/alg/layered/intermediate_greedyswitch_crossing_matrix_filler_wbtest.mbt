@@ -39,37 +39,16 @@ test "CrossingMatrixFiller one-sided west returns crossing entry" {
   let right_upper = crossing_matrix_test_new_node(right_layer, 0)
   let right_lower = crossing_matrix_test_new_node(right_layer, 1)
 
-  let left_upper_port = crossing_matrix_test_new_port(
-    left_upper,
-    @core.PortSide::East,
-    0,
-  )
-  let left_lower_port = crossing_matrix_test_new_port(
-    left_lower,
-    @core.PortSide::East,
-    1,
-  )
-  let right_upper_port = crossing_matrix_test_new_port(
-    right_upper,
-    @core.PortSide::West,
-    2,
-  )
-  let right_lower_port = crossing_matrix_test_new_port(
-    right_lower,
-    @core.PortSide::West,
-    3,
-  )
+  let left_upper_port = crossing_matrix_test_new_port(left_upper, East, 0)
+  let left_lower_port = crossing_matrix_test_new_port(left_lower, East, 1)
+  let right_upper_port = crossing_matrix_test_new_port(right_upper, West, 2)
+  let right_lower_port = crossing_matrix_test_new_port(right_lower, West, 3)
 
   crossing_matrix_test_connect(left_upper_port, right_lower_port)
   crossing_matrix_test_connect(left_lower_port, right_upper_port)
 
   let node_order = [[left_upper, left_lower], [right_upper, right_lower]]
-  let filler = new_crossing_matrix_filler(
-    GreedySwitchType::OneSided,
-    node_order,
-    1,
-    CrossingCountSide::West,
-  )
+  let filler = new_crossing_matrix_filler(OneSided, node_order, 1, West)
 
   assert_eq(filler.get_crossing_matrix_entry(right_upper, right_lower), 1)
   assert_eq(filler.get_crossing_matrix_entry(right_lower, right_upper), 0)
@@ -88,37 +67,16 @@ test "CrossingMatrixFiller two-sided writes symmetric entries" {
   let right_upper = crossing_matrix_test_new_node(right_layer, 0)
   let right_lower = crossing_matrix_test_new_node(right_layer, 1)
 
-  let left_upper_port = crossing_matrix_test_new_port(
-    left_upper,
-    @core.PortSide::East,
-    0,
-  )
-  let left_lower_port = crossing_matrix_test_new_port(
-    left_lower,
-    @core.PortSide::East,
-    1,
-  )
-  let right_upper_port = crossing_matrix_test_new_port(
-    right_upper,
-    @core.PortSide::West,
-    2,
-  )
-  let right_lower_port = crossing_matrix_test_new_port(
-    right_lower,
-    @core.PortSide::West,
-    3,
-  )
+  let left_upper_port = crossing_matrix_test_new_port(left_upper, East, 0)
+  let left_lower_port = crossing_matrix_test_new_port(left_lower, East, 1)
+  let right_upper_port = crossing_matrix_test_new_port(right_upper, West, 2)
+  let right_lower_port = crossing_matrix_test_new_port(right_lower, West, 3)
 
   crossing_matrix_test_connect(left_upper_port, right_lower_port)
   crossing_matrix_test_connect(left_lower_port, right_upper_port)
 
   let node_order = [[left_upper, left_lower], [right_upper, right_lower]]
-  let filler = new_crossing_matrix_filler(
-    GreedySwitchType::TwoSided,
-    node_order,
-    1,
-    CrossingCountSide::West,
-  )
+  let filler = new_crossing_matrix_filler(TwoSided, node_order, 1, West)
 
   assert_eq(filler.get_crossing_matrix_entry(right_upper, right_lower), 1)
   assert_eq(filler.get_crossing_matrix_entry(right_lower, right_upper), 0)

@@ -161,7 +161,7 @@ pub fn splines_math_port_side_to_direction(side : @core.PortSide) -> Double {
     East => 0.0
     South => splines_math_half_pi
     West => @math.PI
-    @core.PortSide::SideUndefined => 0.0
+    SideUndefined => 0.0
   }
 }
 
@@ -178,7 +178,7 @@ pub fn splines_math_dist_port_to_node_edge(
     East => -port_pos.x + node_size.x
     South => -port_pos.y + node_size.y
     West => -port_pos.x
-    @core.PortSide::SideUndefined => 0.0
+    SideUndefined => 0.0
   }
 }
 
@@ -223,6 +223,6 @@ pub fn splines_math_get_margin_on_port_side(
     East => node.get_margin().right
     South => node.get_margin().bottom
     West => node.get_margin().left
-    @core.PortSide::SideUndefined => 0.0
+    SideUndefined => 0.0
   }
 }

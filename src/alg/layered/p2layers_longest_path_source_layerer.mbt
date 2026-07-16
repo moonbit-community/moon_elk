@@ -24,17 +24,15 @@ let longest_path_source_layerer_baseline_processing_configuration : @core.Layout
   LGraph,
 ] = @core.layout_processor_configuration_create(layered_phase_descriptor)
   .add_before(
-    LayeredPhases::P1CycleBreaking,
-    layered_intermediate_processor_factory(
-      IntermediateProcessorStrategy::EdgeAndLayerConstraintEdgeReverser,
-    ),
+    P1CycleBreaking,
+    layered_intermediate_processor_factory(EdgeAndLayerConstraintEdgeReverser),
   )
   .add_before(
-    LayeredPhases::P2Layering,
+    P2Layering,
     longest_path_source_layerer_layer_constraint_preprocessor_factory(),
   )
   .add_before(
-    LayeredPhases::P3NodeOrdering,
+    P3NodeOrdering,
     longest_path_source_layerer_layer_constraint_postprocessor_factory(),
   )
 
@@ -47,7 +45,7 @@ pub(all) suberror LongestPathSourceLayererException {
 fn[T] longest_path_source_layerer_raise_unsupported_graph(
   message : String,
 ) -> T raise LongestPathSourceLayererException {
-  raise LongestPathSourceLayererException::UnsupportedGraphException(message)
+  raise UnsupportedGraphException(message)
 }
 
 ///|
@@ -164,7 +162,7 @@ fn longest_path_source_layerer_process(
     }
     nodes.clear()
   } catch {
-    LongestPathSourceLayererException::UnsupportedGraphException(message) => {
+    UnsupportedGraphException(message) => {
       @core.layout_runtime_report_unsupported_configuration(message)
       monitor.done()
       return

@@ -1,11 +1,11 @@
 ///|
 fn north_south_is_side(port : LPort, side : @core.PortSide) -> Bool {
   match (port.get_side(), side) {
-    (@core.PortSide::North, @core.PortSide::North) => true
-    (@core.PortSide::East, @core.PortSide::East) => true
-    (@core.PortSide::South, @core.PortSide::South) => true
-    (@core.PortSide::West, @core.PortSide::West) => true
-    (@core.PortSide::SideUndefined, @core.PortSide::SideUndefined) => true
+    (North, North) => true
+    (East, East) => true
+    (South, South) => true
+    (West, West) => true
+    (SideUndefined, SideUndefined) => true
     _ => false
   }
 }
@@ -72,8 +72,8 @@ fn NorthSouthEdgeNeighbouringNodeCrossingsCounter::initialize_port_positions(
   self : NorthSouthEdgeNeighbouringNodeCrossingsCounter,
 ) -> Unit {
   for node in self.layer {
-    self.set_port_ids_on(node, @core.PortSide::South)
-    self.set_port_ids_on(node, @core.PortSide::North)
+    self.set_port_ids_on(node, South)
+    self.set_port_ids_on(node, North)
   }
 }
 
@@ -132,36 +132,28 @@ fn NorthSouthEdgeNeighbouringNodeCrossingsCounter::count_crossings_of_two_north_
 ) -> Unit {
   if self.origin_port_position_of(further_from_normal_node) >
     self.origin_port_position_of(closer_to_normal_node) {
-    let closer_east_ports = closer_to_normal_node.get_port_side_view(
-      @core.PortSide::East,
-    )
+    let closer_east_ports = closer_to_normal_node.get_port_side_view(East)
     self.upper_lower_crossings = if closer_east_ports.is_empty() {
       0
     } else {
       closer_east_ports[0].get_degree()
     }
 
-    let further_west_ports = further_from_normal_node.get_port_side_view(
-      @core.PortSide::West,
-    )
+    let further_west_ports = further_from_normal_node.get_port_side_view(West)
     self.lower_upper_crossings = if further_west_ports.is_empty() {
       0
     } else {
       further_west_ports[0].get_degree()
     }
   } else {
-    let closer_west_ports = closer_to_normal_node.get_port_side_view(
-      @core.PortSide::West,
-    )
+    let closer_west_ports = closer_to_normal_node.get_port_side_view(West)
     self.upper_lower_crossings = if closer_west_ports.is_empty() {
       0
     } else {
       closer_west_ports[0].get_degree()
     }
 
-    let further_east_ports = further_from_normal_node.get_port_side_view(
-      @core.PortSide::East,
-    )
+    let further_east_ports = further_from_normal_node.get_port_side_view(East)
     self.lower_upper_crossings = if further_east_ports.is_empty() {
       0
     } else {
@@ -201,21 +193,21 @@ fn NorthSouthEdgeNeighbouringNodeCrossingsCounter::process_if_normal_node_with_n
   if self.is_normal(upper_node) && self.is_long_edge_dummy(lower_node) {
     self.upper_lower_crossings = self.number_of_north_south_edges(
       upper_node,
-      @core.PortSide::South,
+      South,
     )
     self.lower_upper_crossings = self.number_of_north_south_edges(
       upper_node,
-      @core.PortSide::North,
+      North,
     )
   }
   if self.is_normal(lower_node) && self.is_long_edge_dummy(upper_node) {
     self.upper_lower_crossings = self.number_of_north_south_edges(
       lower_node,
-      @core.PortSide::North,
+      North,
     )
     self.lower_upper_crossings = self.number_of_north_south_edges(
       lower_node,
-      @core.PortSide::South,
+      South,
     )
   }
 }
@@ -276,7 +268,7 @@ fn NorthSouthEdgeNeighbouringNodeCrossingsCounter::is_north_of_normal_node(
   node : LNode,
 ) -> Bool {
   ignore(self)
-  north_south_is_side(north_south_origin_port_of(node), @core.PortSide::North)
+  north_south_is_side(north_south_origin_port_of(node), North)
 }
 
 ///|
@@ -286,7 +278,7 @@ fn NorthSouthEdgeNeighbouringNodeCrossingsCounter::is_long_edge_dummy(
 ) -> Bool {
   ignore(self)
   match node.get_type() {
-    NodeType::LongEdge => true
+    LongEdge => true
     _ => false
   }
 }
@@ -298,7 +290,7 @@ fn NorthSouthEdgeNeighbouringNodeCrossingsCounter::is_north_south(
 ) -> Bool {
   ignore(self)
   match node.get_type() {
-    NodeType::NorthSouthPort => true
+    NorthSouthPort => true
     _ => false
   }
 }
@@ -310,7 +302,7 @@ fn NorthSouthEdgeNeighbouringNodeCrossingsCounter::is_normal(
 ) -> Bool {
   ignore(self)
   match node.get_type() {
-    NodeType::Normal => true
+    Normal => true
     _ => false
   }
 }

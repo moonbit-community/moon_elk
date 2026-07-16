@@ -16,7 +16,7 @@ pub(all) suberror SelfLoopTypeException {
 fn[T] self_loop_type_raise_illegal_argument(
   message : String,
 ) -> T raise SelfLoopTypeException {
-  raise SelfLoopTypeException::IllegalArgumentException(message)
+  raise IllegalArgumentException(message)
 }
 
 ///|
@@ -25,7 +25,7 @@ fn self_loop_port_side_eq(
   right : @core.PortSide,
 ) -> Bool {
   match (left, right) {
-    (@core.PortSide::SideUndefined, @core.PortSide::SideUndefined) => true
+    (SideUndefined, SideUndefined) => true
     (North, North) => true
     (East, East) => true
     (South, South) => true
@@ -65,7 +65,7 @@ pub fn self_loop_type_from_port_sides(
   port_sides : Array[@core.PortSide],
 ) -> SelfLoopType? raise SelfLoopTypeException {
   for side in port_sides {
-    if self_loop_port_side_eq(side, @core.PortSide::SideUndefined) {
+    if self_loop_port_side_eq(side, SideUndefined) {
       self_loop_type_raise_illegal_argument(
         "Port sides must not contain UNDEFINED",
       )

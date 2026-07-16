@@ -20,7 +20,7 @@ fn spline_segment_port_side_equals(
     (East, East) => true
     (South, South) => true
     (West, West) => true
-    (@core.PortSide::SideUndefined, @core.PortSide::SideUndefined) => true
+    (SideUndefined, SideUndefined) => true
     _ => false
   }
 }

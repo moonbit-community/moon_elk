@@ -20,13 +20,13 @@ pub fn GroupModelOrderCalculator::compute_constraint_model_order(
     layer_constraint_from_string(
       node.get_property_string(layered_options_layering_layer_constraint),
     ) {
-    LayerConstraint::FirstSeparate => {
+    FirstSeparate => {
       model_order = 2 * -offset + self.first_separate_nodes
       self.first_separate_nodes += 1
     }
-    LayerConstraint::First => model_order = -offset
-    LayerConstraint::Last => model_order = offset
-    LayerConstraint::LastSeparate => {
+    First => model_order = -offset
+    Last => model_order = offset
+    LastSeparate => {
       model_order = 2 * offset + self.last_separate_nodes
       self.last_separate_nodes += 1
     }
@@ -51,13 +51,13 @@ pub fn GroupModelOrderCalculator::compute_constraint_group_model_order(
     layer_constraint_from_string(
       node.get_property_string(layered_options_layering_layer_constraint),
     ) {
-    LayerConstraint::FirstSeparate => {
+    FirstSeparate => {
       model_order = 2 * -offset + self.first_separate_nodes
       self.first_separate_nodes += 1
     }
-    LayerConstraint::First => model_order = -offset
-    LayerConstraint::Last => model_order = offset
-    LayerConstraint::LastSeparate => {
+    First => model_order = -offset
+    Last => model_order = offset
+    LastSeparate => {
       model_order = 2 * offset + self.last_separate_nodes
       self.last_separate_nodes += 1
     }

@@ -3,7 +3,7 @@ fn layer_constraint_postprocessor_node_type_is_label(
   node_type : NodeType,
 ) -> Bool {
   match node_type {
-    NodeType::LabelNode => true
+    LabelNode => true
     _ => false
   }
 }
@@ -27,16 +27,14 @@ pub(all) suberror LayerConstraintPostprocessorException {
 fn[T] layer_constraint_postprocessor_raise_unsupported_configuration(
   message : String,
 ) -> T raise LayerConstraintPostprocessorException {
-  raise LayerConstraintPostprocessorException::UnsupportedConfigurationException(
-    message,
-  )
+  raise UnsupportedConfigurationException(message)
 }
 
 ///|
 fn[T] layer_constraint_postprocessor_raise_illegal_state(
   message : String,
 ) -> T raise LayerConstraintPostprocessorException {
-  raise LayerConstraintPostprocessorException::IllegalStateException(message)
+  raise IllegalStateException(message)
 }
 
 ///|
@@ -157,14 +155,14 @@ fn layer_constraint_postprocessor_move_first_and_last_nodes(
     let nodes = layer.get_nodes().copy()
     for node in nodes {
       match layer_constraint_postprocessor_layer_constraint(node) {
-        LayerConstraint::First => {
+        First => {
           layer_constraint_postprocessor_throw_up_unless_no_incoming_edges(node)
           node.set_layer(Some(first_layer))
           layer_constraint_postprocessor_move_labels_to_label_layer(
             node, true, first_label_layer,
           )
         }
-        LayerConstraint::Last => {
+        Last => {
           layer_constraint_postprocessor_throw_up_unless_no_outgoing_edges(node)
           node.set_layer(Some(last_layer))
           layer_constraint_postprocessor_move_labels_to_label_layer(
@@ -198,10 +196,8 @@ fn layer_constraint_postprocessor_restore_hidden_nodes(
       internal_properties_hidden_nodes,
     ) {
     match layer_constraint_postprocessor_layer_constraint(hidden_node) {
-      LayerConstraint::FirstSeparate =>
-        hidden_node.set_layer(Some(first_separate_layer))
-      LayerConstraint::LastSeparate =>
-        hidden_node.set_layer(Some(last_separate_layer))
+      FirstSeparate => hidden_node.set_layer(Some(first_separate_layer))
+      LastSeparate => hidden_node.set_layer(Some(last_separate_layer))
       _ =>
         layer_constraint_postprocessor_raise_illegal_state(
           "Only *_SEPARATE nodes should be hidden.",
@@ -292,10 +288,9 @@ fn layer_constraint_postprocessor_process(
   progress_monitor : @core.IElkProgressMonitor?,
 ) -> Unit {
   layer_constraint_postprocessor_process_impl(layered_graph, progress_monitor) catch {
-    LayerConstraintPostprocessorException::UnsupportedConfigurationException(
-      message
-    ) => @core.layout_runtime_report_unsupported_configuration(message)
-    LayerConstraintPostprocessorException::IllegalStateException(message) =>
+    UnsupportedConfigurationException(message) =>
+      @core.layout_runtime_report_unsupported_configuration(message)
+    IllegalStateException(message) =>
       @core.layout_runtime_report_unsupported_configuration(message)
   }
 }

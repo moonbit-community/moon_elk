@@ -1164,11 +1164,11 @@ fn _recursive_layered_align_edge_sections_to_port_anchors(
 ///|
 fn recursive_layered_port_side_from_string(value : String) -> @core.PortSide {
   match value {
-    "NORTH" => @core.PortSide::North
-    "EAST" => @core.PortSide::East
-    "SOUTH" => @core.PortSide::South
-    "WEST" => @core.PortSide::West
-    _ => @core.PortSide::SideUndefined
+    "NORTH" => North
+    "EAST" => East
+    "SOUTH" => South
+    "WEST" => West
+    _ => SideUndefined
   }
 }
 
@@ -1259,7 +1259,7 @@ fn recursive_layered_parse_port_constraints(
       return constraint
     }
   }
-  @core.PortConstraints::Undefined
+  Undefined
 }
 
 ///|
@@ -1267,21 +1267,21 @@ fn recursive_layered_direction_to_port_side(
   direction_value : String,
 ) -> @core.PortSide {
   match direction_value {
-    "LEFT" => @core.PortSide::West
-    "DOWN" => @core.PortSide::South
-    "UP" => @core.PortSide::North
-    _ => @core.PortSide::East
+    "LEFT" => West
+    "DOWN" => South
+    "UP" => North
+    _ => East
   }
 }
 
 ///|
 fn recursive_layered_opposed_port_side(side : @core.PortSide) -> @core.PortSide {
   match side {
-    @core.PortSide::North => @core.PortSide::South
-    @core.PortSide::East => @core.PortSide::West
-    @core.PortSide::South => @core.PortSide::North
-    @core.PortSide::West => @core.PortSide::East
-    _ => @core.PortSide::SideUndefined
+    North => South
+    East => West
+    South => North
+    West => East
+    _ => SideUndefined
   }
 }
 
@@ -1343,8 +1343,8 @@ fn recursive_layered_has_graph_property(
 ///|
 fn recursive_layered_is_north_south_side(side : @core.PortSide) -> Bool {
   match side {
-    @core.PortSide::North => true
-    @core.PortSide::South => true
+    North => true
+    South => true
     _ => false
   }
 }
@@ -1356,8 +1356,8 @@ fn recursive_layered_is_north_south_port_for_direction(
 ) -> Bool {
   if direction_value == "UP" || direction_value == "DOWN" {
     match side {
-      @core.PortSide::East => true
-      @core.PortSide::West => true
+      East => true
+      West => true
       _ => false
     }
   } else {
@@ -1635,7 +1635,7 @@ fn recursive_layered_parent_port_lport(
       }
 
       let dummy = new_l_node(graph=Some(layered_graph))
-      dummy.set_type(NodeType::ExternalPort)
+      dummy.set_type(ExternalPort)
       dummy.set_property_string(@core.port_constraints, "FIXED_POS")
       dummy.set_property_port_side(
         internal_properties_ext_port_side, final_external_side,
@@ -1680,7 +1680,7 @@ fn recursive_layered_parent_port_lport(
       }
 
       match final_external_side {
-        @core.PortSide::West => {
+        West => {
           dummy.set_property_string(
             layered_options_layering_layer_constraint, "FIRST_SEPARATE",
           )
@@ -1691,13 +1691,13 @@ fn recursive_layered_parent_port_lport(
           if border_offset < 0.0 {
             dummy.get_size().x = -border_offset
           }
-          lport.set_side(@core.PortSide::East)
+          lport.set_side(East)
           if !explicit_anchor {
             anchor.x = port_size.x
           }
           anchor.x = anchor.x - port_size.x
         }
-        @core.PortSide::East => {
+        East => {
           dummy.set_property_string(
             layered_options_layering_layer_constraint, "LAST_SEPARATE",
           )
@@ -1708,12 +1708,12 @@ fn recursive_layered_parent_port_lport(
           if border_offset < 0.0 {
             dummy.get_size().x = -border_offset
           }
-          lport.set_side(@core.PortSide::West)
+          lport.set_side(West)
           if !explicit_anchor {
             anchor.x = 0.0
           }
         }
-        @core.PortSide::North => {
+        North => {
           dummy.set_property_string(
             internal_properties_in_layer_constraint, "TOP",
           )
@@ -1721,13 +1721,13 @@ fn recursive_layered_parent_port_lport(
           if border_offset < 0.0 {
             dummy.get_size().y = -border_offset
           }
-          lport.set_side(@core.PortSide::South)
+          lport.set_side(South)
           if !explicit_anchor {
             anchor.y = port_size.y
           }
           anchor.y = anchor.y - port_size.y
         }
-        @core.PortSide::South => {
+        South => {
           dummy.set_property_string(
             internal_properties_in_layer_constraint, "BOTTOM",
           )
@@ -1735,13 +1735,13 @@ fn recursive_layered_parent_port_lport(
           if border_offset < 0.0 {
             dummy.get_size().y = -border_offset
           }
-          lport.set_side(@core.PortSide::North)
+          lport.set_side(North)
           if !explicit_anchor {
             anchor.y = 0.0
           }
         }
-        @core.PortSide::SideUndefined => {
-          lport.set_side(@core.PortSide::West)
+        SideUndefined => {
+          lport.set_side(West)
           anchor.x = 0.0
         }
       }
@@ -1755,37 +1755,35 @@ fn recursive_layered_parent_port_lport(
       if recursive_layered_port_constraints_order_fixed(port_constraints_value) {
         let mut ratio_or_position = 0.0
         match final_external_side {
-          @core.PortSide::West => ratio_or_position = @graph.port_y(parent_port)
-          @core.PortSide::East => ratio_or_position = @graph.port_y(parent_port)
-          @core.PortSide::North =>
-            ratio_or_position = @graph.port_x(parent_port)
-          @core.PortSide::South =>
-            ratio_or_position = @graph.port_x(parent_port)
-          @core.PortSide::SideUndefined => ()
+          West => ratio_or_position = @graph.port_y(parent_port)
+          East => ratio_or_position = @graph.port_y(parent_port)
+          North => ratio_or_position = @graph.port_x(parent_port)
+          South => ratio_or_position = @graph.port_x(parent_port)
+          SideUndefined => ()
         }
         if port_constraints_value == "FIXED_RATIO" {
           match final_external_side {
-            @core.PortSide::West =>
+            West =>
               if @graph.node_height(parent_node) > 0.0 {
                 ratio_or_position = ratio_or_position /
                   @graph.node_height(parent_node)
               }
-            @core.PortSide::East =>
+            East =>
               if @graph.node_height(parent_node) > 0.0 {
                 ratio_or_position = ratio_or_position /
                   @graph.node_height(parent_node)
               }
-            @core.PortSide::North =>
+            North =>
               if @graph.node_width(parent_node) > 0.0 {
                 ratio_or_position = ratio_or_position /
                   @graph.node_width(parent_node)
               }
-            @core.PortSide::South =>
+            South =>
               if @graph.node_width(parent_node) > 0.0 {
                 ratio_or_position = ratio_or_position /
                   @graph.node_width(parent_node)
               }
-            @core.PortSide::SideUndefined => ()
+            SideUndefined => ()
           }
         }
         dummy.set_property_double(
@@ -1795,15 +1793,9 @@ fn recursive_layered_parent_port_lport(
 
       dummy.set_property_l_port(internal_properties_origin_l_port, Some(lport))
       layered_graph.get_layerless_nodes().push(dummy)
-      recursive_layered_add_graph_property(
-        layered_graph,
-        GraphProperties::ExternalPorts,
-      )
+      recursive_layered_add_graph_property(layered_graph, ExternalPorts)
       if recursive_layered_is_north_south_side(final_external_side) {
-        recursive_layered_add_graph_property(
-          layered_graph,
-          GraphProperties::NorthSouthPorts,
-        )
+        recursive_layered_add_graph_property(layered_graph, NorthSouthPorts)
       }
       elk_to_lport[parent_port] = lport
       recursive_layered_global_elk_to_lport.val[parent_port] = lport
@@ -1861,7 +1853,7 @@ fn _recursive_layered_new_edge_port(
     owner.set_property_string(@core.port_constraints, "FIXED_SIDE")
   }
   let port = create_port_for_edge(owner, None, port_type, layered_graph)
-  if !(side is @core.PortSide::SideUndefined) &&
+  if !(side is SideUndefined) &&
     owner.get_property_string(@core.port_constraints) == "FIXED_SIDE" {
     port.set_side(side)
   }
@@ -1889,9 +1881,9 @@ fn _recursive_layered_new_descendant_endpoint_port(
   )
   port.set_side(
     match port_type {
-      PortType::Output => default_side
-      PortType::Input => default_side.opposed()
-      PortType::Undefined => default_side
+      Output => default_side
+      Input => default_side.opposed()
+      Undefined => default_side
     },
   )
   port
@@ -1925,7 +1917,7 @@ fn recursive_layered_descendant_port_anchor(
   let mut side = recursive_layered_port_side_from_string(
     recursive_layered_port_side_option(port),
   )
-  if side is @core.PortSide::SideUndefined {
+  if side is SideUndefined {
     match @graph.port_parent(port) {
       Some(parent_node) => {
         let port_x = @graph.port_x(port)
@@ -1933,36 +1925,36 @@ fn recursive_layered_descendant_port_anchor(
         let node_width = @graph.node_width(parent_node)
         let node_height = @graph.node_height(parent_node)
         if port_x < 0.0 {
-          side = @core.PortSide::West
+          side = West
         } else if port_x + port_width > node_width {
-          side = @core.PortSide::East
+          side = East
         } else if port_y < 0.0 {
-          side = @core.PortSide::North
+          side = North
         } else if port_y + port_height > node_height {
-          side = @core.PortSide::South
+          side = South
         }
       }
       None => ()
     }
   }
   match side {
-    @core.PortSide::East => {
+    East => {
       anchor.x = port_width
       anchor.y = port_height / 2.0
     }
-    @core.PortSide::West => {
+    West => {
       anchor.x = 0.0
       anchor.y = port_height / 2.0
     }
-    @core.PortSide::North => {
+    North => {
       anchor.x = port_width / 2.0
       anchor.y = 0.0
     }
-    @core.PortSide::South => {
+    South => {
       anchor.x = port_width / 2.0
       anchor.y = port_height
     }
-    @core.PortSide::SideUndefined => ()
+    SideUndefined => ()
   }
   match
     @graph.port_layout_option_string_value(
@@ -2079,9 +2071,9 @@ fn _recursive_layered_new_descendant_port_endpoint_port(
   )
   port.set_side(
     match port_type {
-      PortType::Output => default_side
-      PortType::Input => default_side.opposed()
-      PortType::Undefined => default_side
+      Output => default_side
+      Input => default_side.opposed()
+      Undefined => default_side
     },
   )
   port
@@ -2354,7 +2346,7 @@ fn recursive_layered_create_context(
   let node_padding = parse_node_padding(node)
   let node_label_padding = @common.node_label_and_size_calculator_compute_inside_node_label_padding(
     node,
-    @core.Direction::Rightward,
+    Rightward,
   )
   let graph_padding = layered_graph.get_padding()
   ignore(graph_padding.add(node_padding))
@@ -2871,10 +2863,7 @@ fn recursive_layered_create_context(
     internal_properties_cb_num_model_order_groups, 0,
   )
   if graph_port_constraints != "UNDEFINED" && graph_port_constraints != "FREE" {
-    recursive_layered_add_graph_property(
-      layered_graph,
-      GraphProperties::NonFreePorts,
-    )
+    recursive_layered_add_graph_property(layered_graph, NonFreePorts)
   }
 
   let nodes_to_import = @graph.node_children(node).copy()
@@ -2907,10 +2896,7 @@ fn recursive_layered_create_context(
     lnode.set_property_string(@core.port_constraints, original_port_constraints)
     if original_port_constraints != "UNDEFINED" &&
       original_port_constraints != "FREE" {
-      recursive_layered_add_graph_property(
-        layered_graph,
-        GraphProperties::NonFreePorts,
-      )
+      recursive_layered_add_graph_property(layered_graph, NonFreePorts)
     }
     match recursive_layered_model_order_node_assignments.val.get(child) {
       Some(model_order) =>
@@ -3018,10 +3004,7 @@ fn recursive_layered_create_context(
           lport.get_side(),
           direction_value,
         ) {
-        recursive_layered_add_graph_property(
-          layered_graph,
-          GraphProperties::NorthSouthPorts,
-        )
+        recursive_layered_add_graph_property(layered_graph, NorthSouthPorts)
       }
       elk_to_lport[elk_port] = lport
       recursive_layered_global_elk_to_lport.val[elk_port] = lport
@@ -3201,7 +3184,7 @@ fn recursive_layered_create_context(
                     ),
                   )
                   if recursive_layered_is_descendant(target_node, source_node) {
-                    source_port_type = PortType::Input
+                    source_port_type = Input
                     match source_point {
                       Some(point) => {
                         point.x = point.x + source_lnode.get_position().x
@@ -3269,7 +3252,7 @@ fn recursive_layered_create_context(
             create_port_for_edge(
               target_lnode,
               target_point,
-              PortType::Input,
+              Input,
               target_lnode.get_graph(),
             )
           }
@@ -3287,19 +3270,13 @@ fn recursive_layered_create_context(
     l_edge.set_source(Some(source_port))
     l_edge.set_target(Some(target_port))
     if recursive_layered_ports_have_same_owner(source_port, target_port) {
-      recursive_layered_add_graph_property(
-        edge_parent_lgraph,
-        GraphProperties::SelfLoops,
-      )
+      recursive_layered_add_graph_property(edge_parent_lgraph, SelfLoops)
     }
     if source_port.get_incoming_edges().length() > 1 ||
       source_port.get_outgoing_edges().length() > 1 ||
       target_port.get_incoming_edges().length() > 1 ||
       target_port.get_outgoing_edges().length() > 1 {
-      recursive_layered_add_graph_property(
-        edge_parent_lgraph,
-        GraphProperties::Hyperedges,
-      )
+      recursive_layered_add_graph_property(edge_parent_lgraph, Hyperedges)
     }
     l_edge.set_property_l_graph(
       internal_properties_coordinate_system_origin,
@@ -3329,15 +3306,9 @@ fn recursive_layered_create_context(
         llabel.set_property_bool(@core.edge_labels_inline, inline)
       }
       if recursive_layered_is_center_label_placement(placement) {
-        recursive_layered_add_graph_property(
-          edge_parent_lgraph,
-          GraphProperties::CenterLabels,
-        )
+        recursive_layered_add_graph_property(edge_parent_lgraph, CenterLabels)
       } else {
-        recursive_layered_add_graph_property(
-          edge_parent_lgraph,
-          GraphProperties::EndLabels,
-        )
+        recursive_layered_add_graph_property(edge_parent_lgraph, EndLabels)
       }
       l_edge.get_labels().push(llabel)
     }
@@ -3470,7 +3441,7 @@ fn recursive_layered_apply_layout(
         internal_properties_ext_port_side,
       )
       match ext_side {
-        @core.PortSide::SideUndefined =>
+        SideUndefined =>
           ext_side = recursive_layered_port_side_from_string(
             recursive_layered_port_side_option(elk_port),
           )
@@ -3484,7 +3455,7 @@ fn recursive_layered_apply_layout(
       resolved_port_y = owner_position.y + owner_size.y / 2.0
 
       match ext_side {
-        @core.PortSide::North => {
+        North => {
           resolved_port_x = resolved_port_x +
             padding_value.left +
             graph_offset.x -
@@ -3494,7 +3465,7 @@ fn recursive_layered_apply_layout(
             border_offset +
             graph_offset.y)
         }
-        @core.PortSide::East => {
+        East => {
           resolved_port_x = graph_size.x +
             padding_value.left +
             padding_value.right +
@@ -3508,7 +3479,7 @@ fn recursive_layered_apply_layout(
             border_offset -
             graph_offset.x
         }
-        @core.PortSide::South => {
+        South => {
           resolved_port_x = resolved_port_x +
             padding_value.left +
             graph_offset.x -
@@ -3522,7 +3493,7 @@ fn recursive_layered_apply_layout(
             border_offset -
             graph_offset.y
         }
-        @core.PortSide::West => {
+        West => {
           resolved_port_x = -port_width_value - border_offset
           resolved_port_y = resolved_port_y +
             padding_value.top +
@@ -3532,7 +3503,7 @@ fn recursive_layered_apply_layout(
             border_offset +
             graph_offset.x)
         }
-        @core.PortSide::SideUndefined => {
+        SideUndefined => {
           resolved_port_x = resolved_port_x + graph_offset.x
           resolved_port_y = resolved_port_y + graph_offset.y
         }
@@ -3550,7 +3521,7 @@ fn recursive_layered_apply_layout(
             internal_properties_ext_port_side,
           )
           match ext_side {
-            @core.PortSide::SideUndefined =>
+            SideUndefined =>
               ext_side = recursive_layered_port_side_from_string(
                 recursive_layered_port_side_option(elk_port),
               )
@@ -3563,7 +3534,7 @@ fn recursive_layered_apply_layout(
           resolved_port_y = owner_position.y + owner_size.y / 2.0
 
           match ext_side {
-            @core.PortSide::North => {
+            North => {
               resolved_port_x = resolved_port_x +
                 padding_value.left +
                 graph_offset.x -
@@ -3573,7 +3544,7 @@ fn recursive_layered_apply_layout(
                 border_offset +
                 graph_offset.y)
             }
-            @core.PortSide::East => {
+            East => {
               resolved_port_x = graph_size.x +
                 padding_value.left +
                 padding_value.right +
@@ -3587,7 +3558,7 @@ fn recursive_layered_apply_layout(
                 border_offset -
                 graph_offset.x
             }
-            @core.PortSide::South => {
+            South => {
               resolved_port_x = resolved_port_x +
                 padding_value.left +
                 graph_offset.x -
@@ -3601,7 +3572,7 @@ fn recursive_layered_apply_layout(
                 border_offset -
                 graph_offset.y
             }
-            @core.PortSide::West => {
+            West => {
               resolved_port_x = -port_width_value - border_offset
               resolved_port_y = resolved_port_y +
                 padding_value.top +
@@ -3611,7 +3582,7 @@ fn recursive_layered_apply_layout(
                 border_offset +
                 graph_offset.x)
             }
-            @core.PortSide::SideUndefined => {
+            SideUndefined => {
               resolved_port_x = owner_position.x +
                 resolved_port_x +
                 graph_offset.x
@@ -3828,7 +3799,7 @@ fn recursive_layered_apply_layout(
     let actual_graph_size = context.layered_graph.get_actual_size()
     let has_external_ports = recursive_layered_has_graph_property(
       context.layered_graph,
-      GraphProperties::ExternalPorts,
+      ExternalPorts,
     )
     if has_external_ports {
       @graph.node_set_string_property(

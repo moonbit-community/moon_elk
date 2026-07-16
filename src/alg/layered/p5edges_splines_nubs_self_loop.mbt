@@ -51,7 +51,7 @@ fn new_nubs_self_loop_internal(
 ) -> NubsSelfLoop {
   {
     nub_spline: new_nub_spline(clamped, dimension, k_vectors) catch {
-      NubSplineException::IllegalArgumentException(message) => {
+      IllegalArgumentException(message) => {
         @core.layout_runtime_report_unsupported_configuration(message)
         new_nubs_self_loop_internal(
           true,
@@ -197,7 +197,7 @@ pub fn nubs_self_loop_create_corner_self_loop(
     South =>
       corner_y = 2.0 * (source_pos.y + source_height) -
         nubs_self_loop_half * (first_cp.y + third_cp.y)
-    @core.PortSide::SideUndefined => ()
+    SideUndefined => ()
   }
 
   match target.get_side() {
@@ -213,7 +213,7 @@ pub fn nubs_self_loop_create_corner_self_loop(
     South =>
       corner_y = 2.0 * (target_pos.y + target_height) -
         nubs_self_loop_half * (third_cp.y + first_cp.y)
-    @core.PortSide::SideUndefined => ()
+    SideUndefined => ()
   }
 
   let second_cp = @core.new_kvector_xy(corner_x, corner_y)

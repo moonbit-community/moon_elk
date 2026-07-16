@@ -7,7 +7,7 @@ fn hierarchical_port_orthogonal_parse_port_constraints(
       return constraints
     }
   }
-  @core.PortConstraints::Undefined
+  Undefined
 }
 
 ///|
@@ -16,14 +16,12 @@ fn hierarchical_port_orthogonal_port_constraints_equals(
   right : @core.PortConstraints,
 ) -> Bool {
   match (left, right) {
-    (@core.PortConstraints::Undefined, @core.PortConstraints::Undefined) => true
-    (@core.PortConstraints::Free, @core.PortConstraints::Free) => true
-    (@core.PortConstraints::FixedSide, @core.PortConstraints::FixedSide) => true
-    (@core.PortConstraints::FixedOrder, @core.PortConstraints::FixedOrder) =>
-      true
-    (@core.PortConstraints::FixedRatio, @core.PortConstraints::FixedRatio) =>
-      true
-    (@core.PortConstraints::FixedPos, @core.PortConstraints::FixedPos) => true
+    (Undefined, Undefined) => true
+    (Free, Free) => true
+    (FixedSide, FixedSide) => true
+    (FixedOrder, FixedOrder) => true
+    (FixedRatio, FixedRatio) => true
+    (FixedPos, FixedPos) => true
     _ => false
   }
 }
@@ -46,7 +44,7 @@ fn hierarchical_port_orthogonal_node_type_is_external_port(
   node_type : NodeType,
 ) -> Bool {
   match node_type {
-    NodeType::ExternalPort => true
+    ExternalPort => true
     _ => false
   }
 }
@@ -54,7 +52,7 @@ fn hierarchical_port_orthogonal_node_type_is_external_port(
 ///|
 fn hierarchical_port_orthogonal_side_is_north(side : @core.PortSide) -> Bool {
   match side {
-    @core.PortSide::North => true
+    North => true
     _ => false
   }
 }
@@ -62,7 +60,7 @@ fn hierarchical_port_orthogonal_side_is_north(side : @core.PortSide) -> Bool {
 ///|
 fn hierarchical_port_orthogonal_side_is_south(side : @core.PortSide) -> Bool {
   match side {
-    @core.PortSide::South => true
+    South => true
     _ => false
   }
 }
@@ -70,7 +68,7 @@ fn hierarchical_port_orthogonal_side_is_south(side : @core.PortSide) -> Bool {
 ///|
 fn hierarchical_port_orthogonal_side_is_east(side : @core.PortSide) -> Bool {
   match side {
-    @core.PortSide::East => true
+    East => true
     _ => false
   }
 }
@@ -78,7 +76,7 @@ fn hierarchical_port_orthogonal_side_is_east(side : @core.PortSide) -> Bool {
 ///|
 fn hierarchical_port_orthogonal_side_is_west(side : @core.PortSide) -> Bool {
   match side {
-    @core.PortSide::West => true
+    West => true
     _ => false
   }
 }
@@ -116,9 +114,9 @@ fn hierarchical_port_orthogonal_restore_dummy(
   }
   let dummy_port = ports[0]
   if hierarchical_port_orthogonal_side_is_north(side) {
-    dummy_port.set_side(@core.PortSide::South)
+    dummy_port.set_side(South)
   } else if hierarchical_port_orthogonal_side_is_south(side) {
-    dummy_port.set_side(@core.PortSide::North)
+    dummy_port.set_side(North)
   }
 
   let size_constraints = layered_graph.get_property_string_array(
@@ -417,32 +415,32 @@ fn hierarchical_port_orthogonal_set_north_south_dummy_coordinates(
 
   for dummy in north_south_dummies {
     match constraints {
-      @core.PortConstraints::Free =>
+      Free =>
         hierarchical_port_orthogonal_calculate_north_south_dummy_positions(
           dummy,
         )
-      @core.PortConstraints::FixedSide =>
+      FixedSide =>
         hierarchical_port_orthogonal_calculate_north_south_dummy_positions(
           dummy,
         )
-      @core.PortConstraints::FixedOrder =>
+      FixedOrder =>
         hierarchical_port_orthogonal_calculate_north_south_dummy_positions(
           dummy,
         )
-      @core.PortConstraints::FixedRatio => {
+      FixedRatio => {
         hierarchical_port_orthogonal_apply_north_south_dummy_ratio(
           dummy, graph_width,
         )
         dummy.border_to_content_area_coordinates(true, false)
       }
-      @core.PortConstraints::FixedPos => {
+      FixedPos => {
         hierarchical_port_orthogonal_apply_north_south_dummy_position(dummy)
         dummy.border_to_content_area_coordinates(true, false)
         if dummy.get_position().x + dummy.get_size().x / 2.0 > graph_size.x {
           graph_size.x = dummy.get_position().x + dummy.get_size().x / 2.0
         }
       }
-      @core.PortConstraints::Undefined =>
+      Undefined =>
         hierarchical_port_orthogonal_calculate_north_south_dummy_positions(
           dummy,
         )
@@ -459,7 +457,7 @@ fn hierarchical_port_orthogonal_set_north_south_dummy_coordinates(
   }
 
   match constraints {
-    @core.PortConstraints::Free => {
+    Free => {
       hierarchical_port_orthogonal_ensure_unique_positions(
         northern_dummies, layered_graph,
       )
@@ -467,7 +465,7 @@ fn hierarchical_port_orthogonal_set_north_south_dummy_coordinates(
         southern_dummies, layered_graph,
       )
     }
-    @core.PortConstraints::FixedSide => {
+    FixedSide => {
       hierarchical_port_orthogonal_ensure_unique_positions(
         northern_dummies, layered_graph,
       )
@@ -475,7 +473,7 @@ fn hierarchical_port_orthogonal_set_north_south_dummy_coordinates(
         southern_dummies, layered_graph,
       )
     }
-    @core.PortConstraints::FixedOrder => {
+    FixedOrder => {
       hierarchical_port_orthogonal_restore_proper_order(
         northern_dummies, layered_graph,
       )
@@ -546,7 +544,7 @@ fn hierarchical_port_orthogonal_route_edges(
 
   if !northern_source_layer.is_empty() {
     let routing_generator = new_orthogonal_routing_generator(
-      RoutingDirection::SouthToNorth,
+      SouthToNorth,
       edge_spacing,
       Some("extnorth"),
     )
@@ -568,7 +566,7 @@ fn hierarchical_port_orthogonal_route_edges(
 
   if !southern_source_layer.is_empty() {
     let routing_generator = new_orthogonal_routing_generator(
-      RoutingDirection::NorthToSouth,
+      NorthToSouth,
       edge_spacing,
       Some("extsouth"),
     )
@@ -613,8 +611,8 @@ fn hierarchical_port_orthogonal_remove_temporary_north_south_dummies(
 
       for port in node.get_ports() {
         match port.get_side() {
-          @core.PortSide::West => node_in_port = Some(port)
-          @core.PortSide::East => node_out_port = Some(port)
+          West => node_in_port = Some(port)
+          East => node_out_port = Some(port)
           _ => node_origin_port = Some(port)
         }
       }
@@ -721,7 +719,7 @@ fn hierarchical_port_orthogonal_fix_coordinates_layer(
       let anchor = node.get_property_kvector(layered_options_port_anchor)
       if hierarchical_port_orthogonal_port_constraints_equals(
           constraints,
-          @core.PortConstraints::FixedRatio,
+          FixedRatio,
         ) {
         let ratio = node.get_property_double(
           internal_properties_port_ratio_or_position,
@@ -731,7 +729,7 @@ fn hierarchical_port_orthogonal_fix_coordinates_layer(
         node.border_to_content_area_coordinates(false, true)
       } else if hierarchical_port_orthogonal_port_constraints_equals(
           constraints,
-          @core.PortConstraints::FixedPos,
+          FixedPos,
         ) {
         node_position.y = node.get_property_double(
             internal_properties_port_ratio_or_position,

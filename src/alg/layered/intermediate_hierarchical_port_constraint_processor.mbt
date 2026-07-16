@@ -7,9 +7,7 @@ priv suberror HierarchicalPortConstraintProcessorException {
 fn[T] hierarchical_port_constraint_raise_unsupported_graph(
   message : String,
 ) -> T raise HierarchicalPortConstraintProcessorException {
-  raise HierarchicalPortConstraintProcessorException::UnsupportedGraphException(
-    message,
-  )
+  raise UnsupportedGraphException(message)
 }
 
 ///|
@@ -27,7 +25,7 @@ fn hierarchical_port_constraint_parse_port_constraints(
       return constraints
     }
   }
-  @core.PortConstraints::Undefined
+  Undefined
 }
 
 ///|
@@ -35,7 +33,7 @@ fn hierarchical_port_constraint_node_type_is_external_port(
   node_type : NodeType,
 ) -> Bool {
   match node_type {
-    NodeType::ExternalPort => true
+    ExternalPort => true
     _ => false
   }
 }
@@ -45,8 +43,8 @@ fn hierarchical_port_constraint_port_side_is_west_or_east(
   side : @core.PortSide,
 ) -> Bool {
   match side {
-    @core.PortSide::West => true
-    @core.PortSide::East => true
+    West => true
+    East => true
     _ => false
   }
 }
@@ -56,8 +54,8 @@ fn hierarchical_port_constraint_port_side_is_north_or_south(
   side : @core.PortSide,
 ) -> Bool {
   match side {
-    @core.PortSide::North => true
-    @core.PortSide::South => true
+    North => true
+    South => true
     _ => false
   }
 }
@@ -233,7 +231,7 @@ fn hierarchical_port_constraint_create_dummy(
   )
   new_dummy.set_property_string(@core.port_constraints, "FIXED_POS")
   new_dummy.set_property_string(@core.alignment, "CENTER")
-  new_dummy.set_type(NodeType::ExternalPort)
+  new_dummy.set_type(ExternalPort)
 
   new_dummy.set_property_port_side(
     internal_properties_ext_port_side,
@@ -252,11 +250,11 @@ fn hierarchical_port_constraint_create_dummy(
 
   let input_port = new_l_port()
   input_port.set_node(Some(new_dummy))
-  input_port.set_side(@core.PortSide::West)
+  input_port.set_side(West)
 
   let output_port = new_l_port()
   output_port.set_node(Some(new_dummy))
-  output_port.set_side(@core.PortSide::East)
+  output_port.set_side(East)
 
   new_dummy
 }
@@ -415,9 +413,7 @@ fn hierarchical_port_constraint_process(
     hierarchical_port_constraint_process_east_west(layered_graph)
     hierarchical_port_constraint_process_north_south(layered_graph)
   } catch {
-    HierarchicalPortConstraintProcessorException::UnsupportedGraphException(
-      message
-    ) => {
+    UnsupportedGraphException(message) => {
       @core.layout_runtime_report_unsupported_configuration(message)
       monitor.done()
       return

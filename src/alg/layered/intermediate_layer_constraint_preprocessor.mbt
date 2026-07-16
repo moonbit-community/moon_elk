@@ -3,7 +3,7 @@ fn layer_constraint_preprocessor_node_type_is_external_port(
   node_type : NodeType,
 ) -> Bool {
   match node_type {
-    NodeType::ExternalPort => true
+    ExternalPort => true
     _ => false
   }
 }
@@ -20,8 +20,8 @@ fn layer_constraint_preprocessor_layer_constraint(
 ///|
 fn layer_constraint_preprocessor_is_relevant_node(node : LNode) -> Bool {
   match layer_constraint_preprocessor_layer_constraint(node) {
-    LayerConstraint::FirstSeparate => true
-    LayerConstraint::LastSeparate => true
+    FirstSeparate => true
+    LastSeparate => true
     _ => false
   }
 }
@@ -36,16 +36,14 @@ pub(all) suberror LayerConstraintPreprocessorException {
 fn[T] layer_constraint_preprocessor_raise_unsupported_configuration(
   message : String,
 ) -> T raise LayerConstraintPreprocessorException {
-  raise LayerConstraintPreprocessorException::UnsupportedConfigurationException(
-    message,
-  )
+  raise UnsupportedConfigurationException(message)
 }
 
 ///|
 fn[T] layer_constraint_preprocessor_raise_illegal_state(
   message : String,
 ) -> T raise LayerConstraintPreprocessorException {
-  raise LayerConstraintPreprocessorException::IllegalStateException(message)
+  raise IllegalStateException(message)
 }
 
 ///|
@@ -91,17 +89,17 @@ fn layer_constraint_preprocessor_hidden_connections_combine(
   match current {
     "NONE" =>
       match layer_constraint {
-        LayerConstraint::FirstSeparate => "FIRST_SEPARATE"
+        FirstSeparate => "FIRST_SEPARATE"
         _ => "LAST_SEPARATE"
       }
     "FIRST_SEPARATE" =>
       match layer_constraint {
-        LayerConstraint::FirstSeparate => "FIRST_SEPARATE"
+        FirstSeparate => "FIRST_SEPARATE"
         _ => "BOTH"
       }
     "LAST_SEPARATE" =>
       match layer_constraint {
-        LayerConstraint::FirstSeparate => "BOTH"
+        FirstSeparate => "BOTH"
         _ => "LAST_SEPARATE"
       }
     _ => "BOTH"
@@ -141,12 +139,12 @@ fn layer_constraint_preprocessor_update_opposite_node_layer_constraints(
   if connections == "FIRST_SEPARATE" {
     opposite_node.set_property_string(
       layered_options_layering_layer_constraint,
-      layer_constraint_to_string(LayerConstraint::First),
+      layer_constraint_to_string(First),
     )
   } else if connections == "LAST_SEPARATE" {
     opposite_node.set_property_string(
       layered_options_layering_layer_constraint,
-      layer_constraint_to_string(LayerConstraint::Last),
+      layer_constraint_to_string(Last),
     )
   }
 }
@@ -175,7 +173,7 @@ fn layer_constraint_preprocessor_ensure_no_inacceptable_edges(
 ) -> Unit raise LayerConstraintPreprocessorException {
   let layer_constraint = layer_constraint_preprocessor_layer_constraint(node)
   match layer_constraint {
-    LayerConstraint::FirstSeparate =>
+    FirstSeparate =>
       for in_edge in node.get_incoming_edges() {
         if !layer_constraint_preprocessor_is_acceptable_incident_edge(in_edge) {
           layer_constraint_preprocessor_raise_unsupported_configuration(
@@ -185,7 +183,7 @@ fn layer_constraint_preprocessor_ensure_no_inacceptable_edges(
           )
         }
       }
-    LayerConstraint::LastSeparate =>
+    LastSeparate =>
       for out_edge in node.get_outgoing_edges() {
         if !layer_constraint_preprocessor_is_acceptable_incident_edge(out_edge) {
           layer_constraint_preprocessor_raise_unsupported_configuration(
@@ -277,10 +275,9 @@ fn layer_constraint_preprocessor_process(
   progress_monitor : @core.IElkProgressMonitor?,
 ) -> Unit {
   layer_constraint_preprocessor_process_impl(layered_graph, progress_monitor) catch {
-    LayerConstraintPreprocessorException::UnsupportedConfigurationException(
-      message
-    ) => @core.layout_runtime_report_unsupported_configuration(message)
-    LayerConstraintPreprocessorException::IllegalStateException(message) =>
+    UnsupportedConfigurationException(message) =>
+      @core.layout_runtime_report_unsupported_configuration(message)
+    IllegalStateException(message) =>
       @core.layout_runtime_report_unsupported_configuration(message)
   }
 }

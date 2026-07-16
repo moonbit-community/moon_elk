@@ -20,27 +20,27 @@ fn cross_min_node_with_sided_ports() -> (
 
   let north = new_l_port()
   north.set_id(1)
-  north.set_side(@core.PortSide::North)
+  north.set_side(North)
   north.set_node(Some(node))
 
   let east = new_l_port()
   east.set_id(2)
-  east.set_side(@core.PortSide::East)
+  east.set_side(East)
   east.set_node(Some(node))
 
   let south_a = new_l_port()
   south_a.set_id(3)
-  south_a.set_side(@core.PortSide::South)
+  south_a.set_side(South)
   south_a.set_node(Some(node))
 
   let south_b = new_l_port()
   south_b.set_id(4)
-  south_b.set_side(@core.PortSide::South)
+  south_b.set_side(South)
   south_b.set_node(Some(node))
 
   let west = new_l_port()
   west.set_id(5)
-  west.set_side(@core.PortSide::West)
+  west.set_side(West)
   west.set_node(Some(node))
 
   (node, north, east, south_a, south_b, west)
@@ -51,33 +51,23 @@ test "CrossMinUtil iterates south/west in reverse side order" {
   let (node, _north, _east, _south_a, _south_b, _west) = cross_min_node_with_sided_ports()
 
   debug_inspect(
-    cross_min_port_ids(
-      in_north_south_east_west_order(node, @core.PortSide::North),
-    ),
+    cross_min_port_ids(in_north_south_east_west_order(node, North)),
     content="[1]",
   )
   debug_inspect(
-    cross_min_port_ids(
-      in_north_south_east_west_order(node, @core.PortSide::East),
-    ),
+    cross_min_port_ids(in_north_south_east_west_order(node, East)),
     content="[2]",
   )
   debug_inspect(
-    cross_min_port_ids(
-      in_north_south_east_west_order(node, @core.PortSide::South),
-    ),
+    cross_min_port_ids(in_north_south_east_west_order(node, South)),
     content="[4, 3]",
   )
   debug_inspect(
-    cross_min_port_ids(
-      in_north_south_east_west_order(node, @core.PortSide::West),
-    ),
+    cross_min_port_ids(in_north_south_east_west_order(node, West)),
     content="[5]",
   )
   debug_inspect(
-    cross_min_port_ids(
-      in_north_south_east_west_order(node, @core.PortSide::SideUndefined),
-    ),
+    cross_min_port_ids(in_north_south_east_west_order(node, SideUndefined)),
     content="[]",
   )
 }
@@ -89,12 +79,12 @@ test "LNode exposes side and type filtered ports and edge views" {
   let source_helper = new_l_node()
   let source_port = new_l_port()
   source_port.set_node(Some(source_helper))
-  source_port.set_side(@core.PortSide::West)
+  source_port.set_side(West)
 
   let target_helper = new_l_node()
   let target_port = new_l_port()
   target_port.set_node(Some(target_helper))
-  target_port.set_side(@core.PortSide::East)
+  target_port.set_side(East)
 
   let incoming = new_l_edge()
   incoming.set_source(Some(source_port))
@@ -105,35 +95,31 @@ test "LNode exposes side and type filtered ports and edge views" {
   outgoing.set_target(Some(target_port))
 
   debug_inspect(
-    cross_min_port_ids(node.get_ports_by_side(@core.PortSide::South)),
+    cross_min_port_ids(node.get_ports_by_side(South)),
     content="[3, 4]",
   )
   debug_inspect(
-    cross_min_port_ids(node.get_port_side_view(@core.PortSide::East)),
+    cross_min_port_ids(node.get_port_side_view(East)),
     content="[2]",
   )
   debug_inspect(
-    cross_min_port_ids(node.get_ports_by_type(PortType::Input)),
+    cross_min_port_ids(node.get_ports_by_type(Input)),
     content="[3]",
   )
   debug_inspect(
-    cross_min_port_ids(node.get_ports_by_type(PortType::Output)),
+    cross_min_port_ids(node.get_ports_by_type(Output)),
     content="[2]",
   )
   debug_inspect(
-    cross_min_port_ids(
-      node.get_ports_by_type_and_side(PortType::Input, @core.PortSide::South),
-    ),
+    cross_min_port_ids(node.get_ports_by_type_and_side(Input, South)),
     content="[3]",
   )
   debug_inspect(
-    cross_min_port_ids(
-      node.get_ports_by_type_and_side(PortType::Output, @core.PortSide::East),
-    ),
+    cross_min_port_ids(node.get_ports_by_type_and_side(Output, East)),
     content="[2]",
   )
   debug_inspect(
-    cross_min_port_ids(node.get_ports_by_type(PortType::Undefined)),
+    cross_min_port_ids(node.get_ports_by_type(Undefined)),
     content="[]",
   )
   assert_eq(node.get_incoming_edges().length(), 1)

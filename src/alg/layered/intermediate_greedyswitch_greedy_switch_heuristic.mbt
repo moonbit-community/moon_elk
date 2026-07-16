@@ -18,7 +18,7 @@ fn greedy_switch_heuristic_is_one_sided(
   greedy_switch_type : GreedySwitchType,
 ) -> Bool {
   match greedy_switch_type {
-    GreedySwitchType::OneSided => true
+    OneSided => true
     _ => false
   }
 }
@@ -80,11 +80,7 @@ fn GreedySwitchHeuristic::set_up(
   forward_sweep : Bool,
 ) -> Unit {
   self.current_node_order = order
-  let side = if forward_sweep {
-    CrossingCountSide::West
-  } else {
-    CrossingCountSide::East
-  }
+  let side = if forward_sweep { CrossingCountSide::West } else { East }
   self.switch_decider = Some(
     self.get_new_switch_decider(free_layer_index, side),
   )

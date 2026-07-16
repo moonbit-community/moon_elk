@@ -20,7 +20,7 @@ fn model_order_port_side_equals(
     (East, East) => true
     (South, South) => true
     (West, West) => true
-    (@core.SideUndefined, @core.SideUndefined) => true
+    (SideUndefined, SideUndefined) => true
     _ => false
   }
 }
@@ -32,21 +32,21 @@ fn model_order_port_side_ordinal(side : @core.PortSide) -> Int {
     East => 1
     South => 2
     West => 3
-    @core.SideUndefined => 4
+    SideUndefined => 4
   }
 }
 
 ///|
 fn model_order_port_node_type_equals(left : NodeType, right : NodeType) -> Bool {
   match (left, right) {
-    (NodeType::Normal, NodeType::Normal) => true
-    (NodeType::LongEdge, NodeType::LongEdge) => true
-    (NodeType::ExternalPort, NodeType::ExternalPort) => true
-    (NodeType::NorthSouthPort, NodeType::NorthSouthPort) => true
-    (NodeType::LabelNode, NodeType::LabelNode) => true
-    (NodeType::BreakingPoint, NodeType::BreakingPoint) => true
-    (NodeType::Placeholder, NodeType::Placeholder) => true
-    (NodeType::NonshiftingPlaceholder, NodeType::NonshiftingPlaceholder) => true
+    (Normal, Normal) => true
+    (LongEdge, LongEdge) => true
+    (ExternalPort, ExternalPort) => true
+    (NorthSouthPort, NorthSouthPort) => true
+    (LabelNode, LabelNode) => true
+    (BreakingPoint, BreakingPoint) => true
+    (Placeholder, Placeholder) => true
+    (NonshiftingPlaceholder, NonshiftingPlaceholder) => true
     _ => false
   }
 }
@@ -56,7 +56,7 @@ fn model_order_port_strategy_is_prefer_nodes(
   strategy : OrderingStrategy,
 ) -> Bool {
   match strategy {
-    OrderingStrategy::PreferNodes => true
+    PreferNodes => true
     _ => false
   }
 }
@@ -455,12 +455,12 @@ pub fn ModelOrderPortComparator::compare(
       if p1_source_port.get_node() is Some(p1_source_port_node) &&
         model_order_port_node_type_equals(
           p1_source_port_node.get_type(),
-          NodeType::LongEdge,
+          LongEdge,
         ) &&
         p2_source_port.get_node() is Some(p2_source_port_node) &&
         model_order_port_node_type_equals(
           p2_source_port_node.get_type(),
-          NodeType::LongEdge,
+          LongEdge,
         ) {
         let p1_source_node = model_order_port_require_node(Some(p1_source_port))
         let p2_source_node = model_order_port_require_node(Some(p2_source_port))

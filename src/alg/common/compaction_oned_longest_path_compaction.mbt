@@ -7,7 +7,7 @@ priv suberror LongestPathCompactionException {
 fn[T] longest_path_compaction_raise_unsupported_graph(
   message : String,
 ) -> T raise LongestPathCompactionException {
-  raise LongestPathCompactionException::UnsupportedGraphException(message)
+  raise UnsupportedGraphException(message)
 }
 
 ///|
@@ -126,7 +126,7 @@ pub fn longest_path_compaction(compactor : OneDimensionalCompactor) -> Unit {
       cnode.set_hitbox(hitbox)
     }
   } catch {
-    LongestPathCompactionException::UnsupportedGraphException(message) =>
+    UnsupportedGraphException(message) =>
       @core.layout_runtime_report_unsupported_configuration(message)
   } noraise {
     _ => ()

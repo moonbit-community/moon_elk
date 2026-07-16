@@ -2,20 +2,14 @@
 fn breaking_point_processor_test_node_type(name : String) -> NodeType {
   for node_type in node_type_values() {
     match node_type {
-      NodeType::Normal => if name == "NORMAL" { return node_type }
-      NodeType::LongEdge => if name == "LONG_EDGE" { return node_type }
-      NodeType::ExternalPort => if name == "EXTERNAL_PORT" { return node_type }
-      NodeType::NorthSouthPort =>
-        if name == "NORTH_SOUTH_PORT" {
-          return node_type
-        }
-      NodeType::LabelNode => if name == "LABEL_NODE" { return node_type }
-      NodeType::BreakingPoint =>
-        if name == "BREAKING_POINT" {
-          return node_type
-        }
-      NodeType::Placeholder => if name == "PLACEHOLDER" { return node_type }
-      NodeType::NonshiftingPlaceholder =>
+      Normal => if name == "NORMAL" { return node_type }
+      LongEdge => if name == "LONG_EDGE" { return node_type }
+      ExternalPort => if name == "EXTERNAL_PORT" { return node_type }
+      NorthSouthPort => if name == "NORTH_SOUTH_PORT" { return node_type }
+      LabelNode => if name == "LABEL_NODE" { return node_type }
+      BreakingPoint => if name == "BREAKING_POINT" { return node_type }
+      Placeholder => if name == "PLACEHOLDER" { return node_type }
+      NonshiftingPlaceholder =>
         if name == "NONSHIFTING_PLACEHOLDER" {
           return node_type
         }
@@ -40,14 +34,14 @@ fn breaking_point_processor_test_node_type_equals(
   right : NodeType,
 ) -> Bool {
   match (left, right) {
-    (NodeType::Normal, NodeType::Normal) => true
-    (NodeType::LongEdge, NodeType::LongEdge) => true
-    (NodeType::ExternalPort, NodeType::ExternalPort) => true
-    (NodeType::NorthSouthPort, NodeType::NorthSouthPort) => true
-    (NodeType::LabelNode, NodeType::LabelNode) => true
-    (NodeType::BreakingPoint, NodeType::BreakingPoint) => true
-    (NodeType::Placeholder, NodeType::Placeholder) => true
-    (NodeType::NonshiftingPlaceholder, NodeType::NonshiftingPlaceholder) => true
+    (Normal, Normal) => true
+    (LongEdge, LongEdge) => true
+    (ExternalPort, ExternalPort) => true
+    (NorthSouthPort, NorthSouthPort) => true
+    (LabelNode, LabelNode) => true
+    (BreakingPoint, BreakingPoint) => true
+    (Placeholder, Placeholder) => true
+    (NonshiftingPlaceholder, NonshiftingPlaceholder) => true
     _ => false
   }
 }

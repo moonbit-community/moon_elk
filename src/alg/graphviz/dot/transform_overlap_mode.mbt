@@ -16,7 +16,7 @@ pub(all) suberror OverlapModeException {
 fn[T] overlap_mode_raise_illegal_argument(
   message : String,
 ) -> T raise OverlapModeException {
-  raise OverlapModeException::IllegalArgumentException(message)
+  raise IllegalArgumentException(message)
 }
 
 ///|

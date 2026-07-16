@@ -5,7 +5,7 @@ fn component_group_side_bit(side : @core.PortSide) -> Int {
     East => 2
     South => 4
     West => 8
-    @core.PortSide::SideUndefined => 0
+    SideUndefined => 0
   }
 }
 
@@ -25,13 +25,13 @@ fn component_group_key_to_sides(key : Int) -> Array[@core.PortSide] {
     result.push(@core.PortSide::North)
   }
   if (key & 2) != 0 {
-    result.push(@core.PortSide::East)
+    result.push(East)
   }
   if (key & 4) != 0 {
-    result.push(@core.PortSide::South)
+    result.push(South)
   }
   if (key & 8) != 0 {
-    result.push(@core.PortSide::West)
+    result.push(West)
   }
   result
 }

@@ -11,11 +11,11 @@ fn port_distributor_test_connect(
   target : LNode,
 ) -> (LPort, LPort) {
   let source_port = new_l_port()
-  source_port.set_side(@core.PortSide::East)
+  source_port.set_side(East)
   source_port.set_node(Some(source))
 
   let target_port = new_l_port()
-  target_port.set_side(@core.PortSide::West)
+  target_port.set_side(West)
   target_port.set_node(Some(target))
 
   let edge = new_l_edge()
@@ -90,7 +90,7 @@ test "LayerTotalPortDistributor assigns consecutive output ranks" {
   let node_order = [[source], [target_a, target_b]]
   let distributor = new_layer_total_port_distributor(node_order.length())
   i_initializable_init([distributor.as_initializable()], node_order)
-  distributor.calculate_port_ranks(node_order[0], PortType::Output)
+  distributor.calculate_port_ranks(node_order[0], Output)
 
   let ranks = distributor.get_port_ranks()
   assert_eq(ranks[source_port_a.get_id()], 1.0)
@@ -115,7 +115,7 @@ test "NodeRelativePortDistributor normalizes output ranks inside one node band" 
   let node_order = [[source], [target_a, target_b]]
   let distributor = new_node_relative_port_distributor(node_order.length())
   i_initializable_init([distributor.as_initializable()], node_order)
-  distributor.calculate_port_ranks(node_order[0], PortType::Output)
+  distributor.calculate_port_ranks(node_order[0], Output)
 
   let ranks = distributor.get_port_ranks()
   assert_true((ranks[source_port_a.get_id()] - 1.0 / 3.0).abs() < 0.000000001)

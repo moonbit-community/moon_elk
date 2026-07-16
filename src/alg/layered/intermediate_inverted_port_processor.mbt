@@ -7,7 +7,7 @@ priv suberror InvertedPortProcessorException {
 fn[T] inverted_port_processor_raise_unsupported_graph(
   message : String,
 ) -> T raise InvertedPortProcessorException {
-  raise InvertedPortProcessorException::UnsupportedGraphException(message)
+  raise UnsupportedGraphException(message)
 }
 
 ///|
@@ -15,13 +15,13 @@ fn inverted_port_processor_port_constraints_from_string(
   value : String,
 ) -> @core.PortConstraints {
   match value {
-    "UNDEFINED" => @core.PortConstraints::Undefined
-    "FREE" => @core.PortConstraints::Free
-    "FIXED_SIDE" => @core.PortConstraints::FixedSide
-    "FIXED_ORDER" => @core.PortConstraints::FixedOrder
-    "FIXED_RATIO" => @core.PortConstraints::FixedRatio
-    "FIXED_POS" => @core.PortConstraints::FixedPos
-    _ => @core.PortConstraints::Undefined
+    "UNDEFINED" => Undefined
+    "FREE" => Free
+    "FIXED_SIDE" => FixedSide
+    "FIXED_ORDER" => FixedOrder
+    "FIXED_RATIO" => FixedRatio
+    "FIXED_POS" => FixedPos
+    _ => Undefined
   }
 }
 
@@ -103,7 +103,7 @@ fn inverted_port_processor_set_long_edge_source_and_target(
   let target_node_type = target_node.get_type()
 
   match source_node_type {
-    NodeType::LongEdge =>
+    LongEdge =>
       long_edge_dummy.set_property_l_port(
         internal_properties_long_edge_source,
         source_node.get_property_l_port(internal_properties_long_edge_source),
@@ -116,7 +116,7 @@ fn inverted_port_processor_set_long_edge_source_and_target(
   }
 
   match target_node_type {
-    NodeType::LongEdge =>
+    LongEdge =>
       long_edge_dummy.set_property_l_port(
         internal_properties_long_edge_target,
         target_node.get_property_l_port(internal_properties_long_edge_target),
@@ -151,17 +151,17 @@ fn inverted_port_processor_create_east_port_side_dummies(
   }
 
   let dummy = new_l_node(graph=Some(layered_graph))
-  dummy.set_type(NodeType::LongEdge)
+  dummy.set_type(LongEdge)
   dummy.set_property_string(@core.port_constraints, "FIXED_POS")
   layer_node_list.push(dummy)
 
   let dummy_input = new_l_port()
   dummy_input.set_node(Some(dummy))
-  dummy_input.set_side(@core.PortSide::West)
+  dummy_input.set_side(West)
 
   let dummy_output = new_l_port()
   dummy_output.set_node(Some(dummy))
-  dummy_output.set_side(@core.PortSide::East)
+  dummy_output.set_side(East)
 
   edge.set_target(Some(dummy_input))
 
@@ -202,17 +202,17 @@ fn inverted_port_processor_create_west_port_side_dummies(
   }
 
   let dummy = new_l_node(graph=Some(layered_graph))
-  dummy.set_type(NodeType::LongEdge)
+  dummy.set_type(LongEdge)
   dummy.set_property_string(@core.port_constraints, "FIXED_POS")
   layer_node_list.push(dummy)
 
   let dummy_input = new_l_port()
   dummy_input.set_node(Some(dummy))
-  dummy_input.set_side(@core.PortSide::West)
+  dummy_input.set_side(West)
 
   let dummy_output = new_l_port()
   dummy_output.set_node(Some(dummy))
-  dummy_output.set_side(@core.PortSide::East)
+  dummy_output.set_side(East)
 
   let original_target = inverted_port_processor_require_target(edge)
   edge.set_target(Some(dummy_input))
@@ -262,7 +262,7 @@ fn inverted_port_processor_process(
 
       for node in layer.get_nodes().copy() {
         match node.get_type() {
-          NodeType::Normal => ()
+          Normal => ()
           _ => continue
         }
 
@@ -280,11 +280,7 @@ fn inverted_port_processor_process(
           continue
         }
 
-        for
-          port in node.get_ports_by_type_and_side(
-            PortType::Input,
-            @core.PortSide::East,
-          ) {
+        for port in node.get_ports_by_type_and_side(Input, East) {
           for edge in port.get_incoming_edges().copy() {
             inverted_port_processor_create_east_port_side_dummies(
               layered_graph, port, edge, unassigned_nodes,
@@ -292,11 +288,7 @@ fn inverted_port_processor_process(
           }
         }
 
-        for
-          port in node.get_ports_by_type_and_side(
-            PortType::Output,
-            @core.PortSide::West,
-          ) {
+        for port in node.get_ports_by_type_and_side(Output, West) {
           for edge in port.get_outgoing_edges().copy() {
             inverted_port_processor_create_west_port_side_dummies(
               layered_graph, port, edge, unassigned_nodes,
@@ -306,7 +298,7 @@ fn inverted_port_processor_process(
       }
     }
   } catch {
-    InvertedPortProcessorException::UnsupportedGraphException(message) => {
+    UnsupportedGraphException(message) => {
       @core.layout_runtime_report_unsupported_configuration(message)
       monitor.done()
       return

@@ -7,7 +7,7 @@ priv suberror LongEdgeSplitterException {
 fn[T] long_edge_splitter_raise_unsupported_graph(
   message : String,
 ) -> T raise LongEdgeSplitterException {
-  raise LongEdgeSplitterException::UnsupportedGraphException(message)
+  raise UnsupportedGraphException(message)
 }
 
 ///|
@@ -21,14 +21,14 @@ fn long_edge_splitter_node_type_equals(
   right : NodeType,
 ) -> Bool {
   match (left, right) {
-    (NodeType::Normal, NodeType::Normal) => true
-    (NodeType::LongEdge, NodeType::LongEdge) => true
-    (NodeType::ExternalPort, NodeType::ExternalPort) => true
-    (NodeType::NorthSouthPort, NodeType::NorthSouthPort) => true
-    (NodeType::LabelNode, NodeType::LabelNode) => true
-    (NodeType::BreakingPoint, NodeType::BreakingPoint) => true
-    (NodeType::Placeholder, NodeType::Placeholder) => true
-    (NodeType::NonshiftingPlaceholder, NodeType::NonshiftingPlaceholder) => true
+    (Normal, Normal) => true
+    (LongEdge, LongEdge) => true
+    (ExternalPort, ExternalPort) => true
+    (NorthSouthPort, NorthSouthPort) => true
+    (LabelNode, LabelNode) => true
+    (BreakingPoint, BreakingPoint) => true
+    (Placeholder, Placeholder) => true
+    (NonshiftingPlaceholder, NonshiftingPlaceholder) => true
     _ => false
   }
 }
@@ -112,7 +112,7 @@ fn long_edge_splitter_set_dummy_node_properties(
 
   if long_edge_splitter_node_type_equals(
       in_edge_source_node.get_type(),
-      NodeType::LongEdge,
+      LongEdge,
     ) {
     dummy_node.set_property_l_port(
       internal_properties_long_edge_source,
@@ -137,7 +137,7 @@ fn long_edge_splitter_set_dummy_node_properties(
 
   if long_edge_splitter_node_type_equals(
       in_edge_source_node.get_type(),
-      NodeType::LabelNode,
+      LabelNode,
     ) {
     dummy_node.set_property_l_port(
       internal_properties_long_edge_source,
@@ -159,7 +159,7 @@ fn long_edge_splitter_set_dummy_node_properties(
 
   if long_edge_splitter_node_type_equals(
       out_edge_target_node.get_type(),
-      NodeType::LabelNode,
+      LabelNode,
     ) {
     dummy_node.set_property_l_port(
       internal_properties_long_edge_source,
@@ -196,7 +196,7 @@ fn long_edge_splitter_create_dummy_node(
   edge_to_split : LEdge,
 ) -> LNode {
   let dummy_node = new_l_node(graph=Some(layered_graph))
-  dummy_node.set_type(NodeType::LongEdge)
+  dummy_node.set_type(LongEdge)
   dummy_node.set_property_l_edge(
     internal_properties_origin_l_edge,
     Some(edge_to_split),
@@ -220,12 +220,12 @@ pub fn long_edge_splitter_split_edge(edge : LEdge, dummy_node : LNode) -> LEdge 
     let port_pos = (thickness / 2.0).floor()
 
     let dummy_input = new_l_port()
-    dummy_input.set_side(@core.PortSide::West)
+    dummy_input.set_side(West)
     dummy_input.set_node(Some(dummy_node))
     dummy_input.get_position().y = port_pos
 
     let dummy_output = new_l_port()
-    dummy_output.set_side(@core.PortSide::East)
+    dummy_output.set_side(East)
     dummy_output.set_node(Some(dummy_node))
     dummy_output.get_position().y = port_pos
 
@@ -244,7 +244,7 @@ pub fn long_edge_splitter_split_edge(edge : LEdge, dummy_node : LNode) -> LEdge 
 
     dummy_edge
   } catch {
-    LongEdgeSplitterException::UnsupportedGraphException(message) => {
+    UnsupportedGraphException(message) => {
       @core.layout_runtime_report_unsupported_configuration(message)
       edge
     }
@@ -302,7 +302,7 @@ fn long_edge_splitter_process(
       }
     }
   } catch {
-    LongEdgeSplitterException::UnsupportedGraphException(message) => {
+    UnsupportedGraphException(message) => {
       @core.layout_runtime_report_unsupported_configuration(message)
       monitor.done()
       return

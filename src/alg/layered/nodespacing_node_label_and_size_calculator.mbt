@@ -85,7 +85,7 @@ pub fn node_label_and_size_calculator_process_layered_graph(
   let layers = layered_graph.get_layers()
   if layers.is_empty() {
     for node in layered_graph.get_layerless_nodes() {
-      if node.get_type() is NodeType::Normal {
+      if node.get_type() is Normal {
         ignore(
           node_label_and_size_calculator_process_node(
             layered_graph,
@@ -98,7 +98,7 @@ pub fn node_label_and_size_calculator_process_layered_graph(
     }
   } else {
     let adapter = adapt_l_graph_with_options(layered_graph, true, true, node => {
-      node.get_type() is NodeType::Normal
+      node.get_type() is Normal
     })
     for node in adapter.get_nodes() {
       ignore(

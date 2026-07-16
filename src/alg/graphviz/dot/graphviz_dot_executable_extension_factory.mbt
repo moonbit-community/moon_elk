@@ -10,9 +10,7 @@ pub suberror GraphvizDotExecutableExtensionFactoryException {
 fn[T] graphviz_dot_executable_extension_factory_raise_illegal_argument(
   message : String,
 ) -> T raise GraphvizDotExecutableExtensionFactoryException {
-  raise GraphvizDotExecutableExtensionFactoryException::IllegalArgumentException(
-    message,
-  )
+  raise IllegalArgumentException(message)
 }
 
 ///|
@@ -117,7 +115,7 @@ pub fn GraphvizDotExecutableExtensionFactory::create(
     )
   }
   let injector = activator.get_injector(graphviz_dot_language_name) catch {
-    GraphvizDotActivatorException::IllegalArgumentException(message) =>
+    IllegalArgumentException(message) =>
       return Err(
         graphviz_dot_executable_extension_factory_error(
           bundle.get_symbolic_name(),

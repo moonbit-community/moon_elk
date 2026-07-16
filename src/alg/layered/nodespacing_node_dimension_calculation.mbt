@@ -1,6 +1,6 @@
 ///|
 fn node_dimension_calculation_is_normal_node(node : LNode) -> Bool {
-  node.get_type() is NodeType::Normal
+  node.get_type() is Normal
 }
 
 ///|

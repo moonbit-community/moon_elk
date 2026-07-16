@@ -18,7 +18,7 @@ fn between_layer_test_connect_to_target_port(
   source : LNode,
   target_port : LPort,
 ) -> LPort {
-  let source_port = between_layer_test_add_port(source, @core.PortSide::East)
+  let source_port = between_layer_test_add_port(source, East)
   let edge = new_l_edge()
   edge.set_source(Some(source_port))
   edge.set_target(Some(target_port))
@@ -62,14 +62,8 @@ test "BetweenLayerEdgeTwoNodeCrossingsCounter counts simple west-side crossing" 
   let right_top = between_layer_test_new_node(right_layer)
   let right_bottom = between_layer_test_new_node(right_layer)
 
-  let right_top_port = between_layer_test_add_port(
-    right_top,
-    @core.PortSide::West,
-  )
-  let right_bottom_port = between_layer_test_add_port(
-    right_bottom,
-    @core.PortSide::West,
-  )
+  let right_top_port = between_layer_test_add_port(right_top, West)
+  let right_bottom_port = between_layer_test_add_port(right_bottom, West)
 
   ignore(between_layer_test_connect_to_target_port(left_top, right_bottom_port))
   ignore(between_layer_test_connect_to_target_port(left_bottom, right_top_port))
@@ -97,7 +91,7 @@ test "BetweenLayerEdgeTwoNodeCrossingsCounter treats shared target port as no cr
   let left_top = between_layer_test_new_node(left_layer)
   let left_bottom = between_layer_test_new_node(left_layer)
   let right = between_layer_test_new_node(right_layer)
-  let right_port = between_layer_test_add_port(right, @core.PortSide::West)
+  let right_port = between_layer_test_add_port(right, West)
 
   ignore(between_layer_test_connect_to_target_port(left_top, right_port))
   ignore(between_layer_test_connect_to_target_port(left_top, right_port))

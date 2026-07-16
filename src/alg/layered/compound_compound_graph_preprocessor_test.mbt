@@ -244,7 +244,7 @@ test "compound graph preprocessor transforms inside self loop to external port d
   let mut has_external_port_dummy = false
   for node in mapped_graph.get_layerless_nodes() {
     match node.get_type() {
-      NodeType::ExternalPort => {
+      ExternalPort => {
         has_external_port_dummy = true
         break
       }

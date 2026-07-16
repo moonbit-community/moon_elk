@@ -13,7 +13,7 @@ pub enum BKHDirection {
 ///|
 pub fn bk_vdirection_is_down(value : BKVDirection) -> Bool {
   match value {
-    BKVDirection::Down => true
+    Down => true
     _ => false
   }
 }
@@ -21,7 +21,7 @@ pub fn bk_vdirection_is_down(value : BKVDirection) -> Bool {
 ///|
 pub fn bk_vdirection_is_up(value : BKVDirection) -> Bool {
   match value {
-    BKVDirection::Up => true
+    Up => true
     _ => false
   }
 }
@@ -29,7 +29,7 @@ pub fn bk_vdirection_is_up(value : BKVDirection) -> Bool {
 ///|
 pub fn bk_hdirection_is_right(value : BKHDirection) -> Bool {
   match value {
-    BKHDirection::Right => true
+    Right => true
     _ => false
   }
 }
@@ -37,7 +37,7 @@ pub fn bk_hdirection_is_right(value : BKHDirection) -> Bool {
 ///|
 pub fn bk_hdirection_is_left(value : BKHDirection) -> Bool {
   match value {
-    BKHDirection::Left => true
+    Left => true
     _ => false
   }
 }
@@ -51,7 +51,7 @@ pub(all) suberror BKAlignedLayoutException {
 fn[T] bk_aligned_layout_raise_illegal_state(
   message : String,
 ) -> T raise BKAlignedLayoutException {
-  raise BKAlignedLayoutException::IllegalStateException(message)
+  raise IllegalStateException(message)
 }
 
 ///|
@@ -59,7 +59,7 @@ pub fn bk_aligned_layout_exception_message(
   error : BKAlignedLayoutException,
 ) -> String {
   match error {
-    BKAlignedLayoutException::IllegalStateException(message) => message
+    IllegalStateException(message) => message
   }
 }
 
@@ -491,14 +491,14 @@ pub fn BKAlignedLayout::to_string(self : BKAlignedLayout) -> String {
   let mut result = ""
 
   match self.hdir {
-    Some(BKHDirection::Right) => result = result + "RIGHT"
-    Some(BKHDirection::Left) => result = result + "LEFT"
+    Some(Right) => result = result + "RIGHT"
+    Some(Left) => result = result + "LEFT"
     None => ()
   }
 
   match self.vdir {
-    Some(BKVDirection::Down) => result = result + "DOWN"
-    Some(BKVDirection::Up) => result = result + "UP"
+    Some(Down) => result = result + "DOWN"
+    Some(Up) => result = result + "UP"
     None => result = result + "BALANCED"
   }
 

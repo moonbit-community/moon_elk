@@ -16,11 +16,7 @@ pub enum MrtreeIntermediateProcessorStrategy {
 ///|
 let _mrtree_intermediate_processor_strategy_reserved : Array[
   MrtreeIntermediateProcessorStrategy,
-] = [
-  MrtreeIntermediateProcessorStrategy::CompactionProc,
-  MrtreeIntermediateProcessorStrategy::LevelCoords,
-  MrtreeIntermediateProcessorStrategy::GraphBoundsProc,
-]
+] = [CompactionProc, LevelCoords, GraphBoundsProc]
 
 ///|
 fn mrtree_intermediate_strategy_ordinal(

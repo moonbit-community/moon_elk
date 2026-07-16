@@ -45,9 +45,7 @@ pub suberror GraphTextExecutableExtensionFactoryException {
 fn[T] graph_text_executable_extension_factory_raise_illegal_argument(
   message : String,
 ) -> T raise GraphTextExecutableExtensionFactoryException {
-  raise GraphTextExecutableExtensionFactoryException::IllegalArgumentException(
-    message,
-  )
+  raise IllegalArgumentException(message)
 }
 
 ///|
@@ -141,14 +139,14 @@ pub fn ElkGraphExecutableExtensionFactory::create(
     )
   }
   let injector = activator.get_injector(graph_text_ui_language_name) catch {
-    GraphTextActivatorException::IllegalArgumentException(message) =>
+    IllegalArgumentException(message) =>
       return Err(
         graph_text_executable_extension_factory_error(
           bundle.get_symbolic_name(),
           message,
         ),
       )
-    GraphTextActivatorException::RuntimeException(message) =>
+    RuntimeException(message) =>
       return Err(
         graph_text_executable_extension_factory_error(
           bundle.get_symbolic_name(),

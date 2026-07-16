@@ -1,10 +1,10 @@
 ///|
 fn self_loop_router_parse_edge_routing(value : String) -> @core.EdgeRouting {
   match value {
-    "POLYLINE" => @core.EdgeRouting::Polyline
-    "SPLINES" => @core.EdgeRouting::Splines
-    "ORTHOGONAL" => @core.EdgeRouting::Orthogonal
-    _ => @core.EdgeRouting::RoutingUndefined
+    "POLYLINE" => Polyline
+    "SPLINES" => Splines
+    "ORTHOGONAL" => Orthogonal
+    _ => RoutingUndefined
   }
 }
 
@@ -14,8 +14,8 @@ fn self_loop_router_router_for_graph(graph : LGraph) -> AbstractSelfLoopRouter {
     self_loop_router_parse_edge_routing(
       graph.get_property_string(@core.edge_routing),
     ) {
-    @core.EdgeRouting::Polyline => new_polyline_self_loop_router()
-    @core.EdgeRouting::Splines => new_spline_self_loop_router()
+    Polyline => new_polyline_self_loop_router()
+    Splines => new_spline_self_loop_router()
     _ => new_orthogonal_self_loop_router()
   }
 }
@@ -23,7 +23,7 @@ fn self_loop_router_router_for_graph(graph : LGraph) -> AbstractSelfLoopRouter {
 ///|
 fn self_loop_router_node_type_is_normal(node_type : NodeType) -> Bool {
   match node_type {
-    NodeType::Normal => true
+    Normal => true
     _ => false
   }
 }

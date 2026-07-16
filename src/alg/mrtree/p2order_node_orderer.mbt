@@ -7,22 +7,10 @@ fn mrtree_node_orderer_layout_processor_configuration(
     @core.layout_processor_configuration_create(
       mrtree_tree_layout_phase_descriptor,
     )
-    .before(MrtreeTreeLayoutPhases::P2NodeOrdering)
-    .add(
-      mrtree_intermediate_processor_factory(
-        MrtreeIntermediateProcessorStrategy::RootProc,
-      ),
-    )
-    .add(
-      mrtree_intermediate_processor_factory(
-        MrtreeIntermediateProcessorStrategy::FanProc,
-      ),
-    )
-    .add(
-      mrtree_intermediate_processor_factory(
-        MrtreeIntermediateProcessorStrategy::LevelProc,
-      ),
-    ),
+    .before(P2NodeOrdering)
+    .add(mrtree_intermediate_processor_factory(RootProc))
+    .add(mrtree_intermediate_processor_factory(FanProc))
+    .add(mrtree_intermediate_processor_factory(LevelProc)),
   )
 }
 
@@ -32,7 +20,7 @@ fn mrtree_node_orderer_property_value(
   weighting : MrtreeOrderWeighting,
 ) -> Int {
   match weighting {
-    MrtreeOrderWeighting::DESCENDANTS => mrtree_node_descendants(node)
+    DESCENDANTS => mrtree_node_descendants(node)
     _ => mrtree_node_fan(node)
   }
 }
@@ -344,7 +332,7 @@ fn mrtree_node_orderer_process(
   match root {
     Some(root_node) =>
       match weighting {
-        MrtreeOrderWeighting::FAN =>
+        FAN =>
           mrtree_node_orderer_order_level_fan_descendants(
             [root_node],
             weighting,
@@ -353,7 +341,7 @@ fn mrtree_node_orderer_process(
               None => None
             },
           )
-        MrtreeOrderWeighting::DESCENDANTS =>
+        DESCENDANTS =>
           mrtree_node_orderer_order_level_fan_descendants(
             [root_node],
             weighting,
@@ -362,7 +350,7 @@ fn mrtree_node_orderer_process(
               None => None
             },
           )
-        MrtreeOrderWeighting::CONSTRAINT =>
+        CONSTRAINT =>
           mrtree_node_orderer_order_level_constraint(
             [root_node],
             match progress_monitor {
@@ -370,7 +358,7 @@ fn mrtree_node_orderer_process(
               None => None
             },
           )
-        MrtreeOrderWeighting::MODEL_ORDER => ()
+        MODEL_ORDER => ()
       }
     None => ()
   }

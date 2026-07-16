@@ -10,11 +10,11 @@ pub fn rectpacking_packing_strategy_from_string(
   value : String,
 ) -> RectpackingPackingStrategy {
   if value == "SIMPLE" {
-    RectpackingPackingStrategy::SIMPLE
+    SIMPLE
   } else if value == "NONE" {
-    RectpackingPackingStrategy::NONE
+    NONE
   } else {
-    RectpackingPackingStrategy::COMPACTION
+    COMPACTION
   }
 }
 

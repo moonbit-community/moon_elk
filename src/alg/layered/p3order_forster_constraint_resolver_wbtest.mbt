@@ -59,8 +59,8 @@ test "ForsterConstraintResolver enforces in-layer successor constraints" {
   let layer = new_layer(graph)
   graph.get_layers().push(layer)
 
-  let n0 = forster_test_new_node(layer, 0, NodeType::Normal)
-  let n1 = forster_test_new_node(layer, 1, NodeType::Normal)
+  let n0 = forster_test_new_node(layer, 0, Normal)
+  let n1 = forster_test_new_node(layer, 1, Normal)
   n0.set_property_l_node_array(
     internal_properties_in_layer_successor_constraints,
     [n1],
@@ -89,10 +89,10 @@ test "ForsterConstraintResolver keeps layout units non-overlapping" {
   let layer = new_layer(graph)
   graph.get_layers().push(layer)
 
-  let a = forster_test_new_node(layer, 0, NodeType::Normal)
-  let b = forster_test_new_node(layer, 1, NodeType::Normal)
-  let a_dummy = forster_test_new_node(layer, 2, NodeType::NorthSouthPort)
-  let b_dummy = forster_test_new_node(layer, 3, NodeType::NorthSouthPort)
+  let a = forster_test_new_node(layer, 0, Normal)
+  let b = forster_test_new_node(layer, 1, Normal)
+  let a_dummy = forster_test_new_node(layer, 2, NorthSouthPort)
+  let b_dummy = forster_test_new_node(layer, 3, NorthSouthPort)
 
   a.set_property_l_node(internal_properties_in_layer_layout_unit, Some(a))
   a_dummy.set_property_l_node(internal_properties_in_layer_layout_unit, Some(a))

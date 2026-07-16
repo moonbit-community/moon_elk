@@ -18,13 +18,13 @@ fn north_south_port_preprocessor_parse_port_constraints(
   value : String,
 ) -> @core.PortConstraints {
   match value {
-    "UNDEFINED" => @core.PortConstraints::Undefined
-    "FREE" => @core.PortConstraints::Free
-    "FIXED_SIDE" => @core.PortConstraints::FixedSide
-    "FIXED_ORDER" => @core.PortConstraints::FixedOrder
-    "FIXED_RATIO" => @core.PortConstraints::FixedRatio
-    "FIXED_POS" => @core.PortConstraints::FixedPos
-    _ => @core.PortConstraints::Undefined
+    "UNDEFINED" => Undefined
+    "FREE" => Free
+    "FIXED_SIDE" => FixedSide
+    "FIXED_ORDER" => FixedOrder
+    "FIXED_RATIO" => FixedRatio
+    "FIXED_POS" => FixedPos
+    _ => Undefined
   }
 }
 
@@ -33,10 +33,10 @@ fn north_south_port_preprocessor_parse_ordering_strategy(
   value : String,
 ) -> OrderingStrategy {
   match value {
-    "NODES_AND_EDGES" => OrderingStrategy::NodesAndEdges
-    "PREFER_EDGES" => OrderingStrategy::PreferEdges
-    "PREFER_NODES" => OrderingStrategy::PreferNodes
-    _ => OrderingStrategy::NoneType
+    "NODES_AND_EDGES" => NodesAndEdges
+    "PREFER_EDGES" => PreferEdges
+    "PREFER_NODES" => PreferNodes
+    _ => NoneType
   }
 }
 
@@ -45,7 +45,7 @@ fn north_south_port_preprocessor_ordering_strategy_is_none(
   strategy : OrderingStrategy,
 ) -> Bool {
   match strategy {
-    OrderingStrategy::NoneType => true
+    NoneType => true
     _ => false
   }
 }
@@ -55,7 +55,7 @@ fn north_south_port_preprocessor_port_side_is_north(
   side : @core.PortSide,
 ) -> Bool {
   match side {
-    @core.PortSide::North => true
+    North => true
     _ => false
   }
 }
@@ -65,7 +65,7 @@ fn north_south_port_preprocessor_port_side_is_south(
   side : @core.PortSide,
 ) -> Bool {
   match side {
-    @core.PortSide::South => true
+    South => true
     _ => false
   }
 }
@@ -76,11 +76,11 @@ fn north_south_port_preprocessor_port_side_equals(
   right : @core.PortSide,
 ) -> Bool {
   match (left, right) {
-    (@core.PortSide::North, @core.PortSide::North) => true
-    (@core.PortSide::East, @core.PortSide::East) => true
-    (@core.PortSide::South, @core.PortSide::South) => true
-    (@core.PortSide::West, @core.PortSide::West) => true
-    (@core.PortSide::SideUndefined, @core.PortSide::SideUndefined) => true
+    (North, North) => true
+    (East, East) => true
+    (South, South) => true
+    (West, West) => true
+    (SideUndefined, SideUndefined) => true
     _ => false
   }
 }
@@ -88,11 +88,11 @@ fn north_south_port_preprocessor_port_side_equals(
 ///|
 fn north_south_port_preprocessor_port_side_rank(side : @core.PortSide) -> Int {
   match side {
-    @core.PortSide::SideUndefined => 0
-    @core.PortSide::North => 1
-    @core.PortSide::East => 2
-    @core.PortSide::South => 3
-    @core.PortSide::West => 4
+    SideUndefined => 0
+    North => 1
+    East => 2
+    South => 3
+    West => 4
   }
 }
 
@@ -232,9 +232,9 @@ fn north_south_port_preprocessor_sort_port_list(node : LNode) -> Unit {
 
   for port in ports {
     match port.get_side() {
-      @core.PortSide::East => port.set_id(-1)
-      @core.PortSide::West => port.set_id(-1)
-      @core.PortSide::North | @core.PortSide::South => {
+      East => port.set_id(-1)
+      West => port.set_id(-1)
+      North | South => {
         let incoming = port.get_incoming_edges().length()
         let outgoing = port.get_outgoing_edges().length()
         if incoming > 0 && outgoing > 0 {
@@ -251,7 +251,7 @@ fn north_south_port_preprocessor_sort_port_list(node : LNode) -> Unit {
           in_ports = in_ports + 1
         }
       }
-      @core.PortSide::SideUndefined => ()
+      SideUndefined => ()
     }
   }
 
@@ -328,7 +328,7 @@ fn north_south_port_preprocessor_create_dummy_node(
   dummy_nodes : Array[LNode],
 ) -> LNode raise NorthSouthPortPreprocessorException {
   let dummy = new_l_node(graph=Some(layered_graph))
-  dummy.set_type(NodeType::NorthSouthPort)
+  dummy.set_type(NorthSouthPort)
   dummy.set_property_string(@core.port_constraints, "FIXED_POS")
 
   let mut crossing_hint = 0
@@ -344,7 +344,7 @@ fn north_south_port_preprocessor_create_dummy_node(
         internal_properties_origin_l_node,
         Some(north_south_port_preprocessor_require_node(value)),
       )
-      dummy_input_port.set_side(@core.PortSide::West)
+      dummy_input_port.set_side(West)
       dummy_input_port.set_node(Some(dummy))
 
       for edge in value.get_incoming_edges().copy() {
@@ -368,7 +368,7 @@ fn north_south_port_preprocessor_create_dummy_node(
         internal_properties_origin_l_port,
         Some(value),
       )
-      dummy_output_port.set_side(@core.PortSide::East)
+      dummy_output_port.set_side(East)
       dummy_output_port.set_node(Some(dummy))
 
       for edge in value.get_outgoing_edges().copy() {
@@ -393,7 +393,7 @@ fn north_south_port_preprocessor_create_same_side_self_loop_dummy_node(
   dummy_nodes : Array[LNode],
 ) -> Unit raise NorthSouthPortPreprocessorException {
   let dummy = new_l_node(graph=Some(layered_graph))
-  dummy.set_type(NodeType::NorthSouthPort)
+  dummy.set_type(NorthSouthPort)
   dummy.set_property_string(@core.port_constraints, "FIXED_POS")
   dummy.set_property_l_edge(internal_properties_origin_l_edge, Some(self_loop))
 
@@ -402,7 +402,7 @@ fn north_south_port_preprocessor_create_same_side_self_loop_dummy_node(
     internal_properties_origin_l_port,
     Some(north_south_port_preprocessor_require_target(self_loop)),
   )
-  dummy_input_port.set_side(@core.PortSide::West)
+  dummy_input_port.set_side(West)
   dummy_input_port.set_node(Some(dummy))
 
   let dummy_output_port = new_l_port()
@@ -410,7 +410,7 @@ fn north_south_port_preprocessor_create_same_side_self_loop_dummy_node(
     internal_properties_origin_l_port,
     Some(north_south_port_preprocessor_require_source(self_loop)),
   )
-  dummy_output_port.set_side(@core.PortSide::East)
+  dummy_output_port.set_side(East)
   dummy_output_port.set_node(Some(dummy))
 
   north_south_port_preprocessor_require_source(self_loop).set_property_l_node(
@@ -441,7 +441,7 @@ fn north_south_port_preprocessor_create_north_south_self_loop_dummy_nodes(
   let target_port = north_south_port_preprocessor_require_target(self_loop)
 
   let north_dummy = new_l_node(graph=Some(layered_graph))
-  north_dummy.set_type(NodeType::NorthSouthPort)
+  north_dummy.set_type(NorthSouthPort)
   north_dummy.set_property_string(@core.port_constraints, "FIXED_POS")
   north_dummy.set_property_l_node(
     internal_properties_origin_l_node,
@@ -462,7 +462,7 @@ fn north_south_port_preprocessor_create_north_south_self_loop_dummy_nodes(
   )
 
   let south_dummy = new_l_node(graph=Some(layered_graph))
-  south_dummy.set_type(NodeType::NorthSouthPort)
+  south_dummy.set_type(NorthSouthPort)
   south_dummy.set_property_string(@core.port_constraints, "FIXED_POS")
   south_dummy.set_property_l_node(
     internal_properties_origin_l_node,
@@ -554,7 +554,7 @@ fn north_south_port_preprocessor_create_dummy_nodes(
       edge,
       dummy_nodes,
       opposing_side_dummy_nodes,
-      @core.PortSide::East,
+      East,
     )
   }
 
@@ -683,7 +683,7 @@ fn north_south_port_preprocessor_process(
       for node in node_array {
         pointer = pointer + 1
 
-        let is_regular = node.get_type() is NodeType::Normal
+        let is_regular = node.get_type() is Normal
         let constraints = north_south_port_preprocessor_parse_port_constraints(
           node.get_property_string(@core.port_constraints),
         )
@@ -707,7 +707,7 @@ fn north_south_port_preprocessor_process(
         south_dummy_nodes.clear()
         let barycenter_associates : Array[LNode] = []
 
-        let mut north_ports = node.get_ports_by_side(@core.PortSide::North)
+        let mut north_ports = node.get_ports_by_side(North)
         if !north_south_port_preprocessor_ordering_strategy_is_none(
             ordering_strategy,
           ) {
@@ -752,7 +752,7 @@ fn north_south_port_preprocessor_process(
         }
 
         let south_ports : Array[LPort] = []
-        for port in node.get_ports_by_side(@core.PortSide::South) {
+        for port in node.get_ports_by_side(South) {
           south_ports.insert(0, port)
         }
         let south_ports = if north_south_port_preprocessor_ordering_strategy_is_none(

@@ -314,8 +314,8 @@ fn recursive_graph_layout_engine_execute_algorithm(
 fn recursive_graph_layout_engine_supports_hierarchy(
   algorithm_data : LayoutAlgorithmData,
 ) -> Bool {
-  algorithm_data.supports_feature(@graph.GraphFeature::Compound) ||
-  algorithm_data.supports_feature(@graph.GraphFeature::Clusters)
+  algorithm_data.supports_feature(Compound) ||
+  algorithm_data.supports_feature(Clusters)
 }
 
 ///|
@@ -363,7 +363,7 @@ fn recursive_graph_layout_engine_layout_recursively(
     }
   }
   let supports_inside_self_loops = algorithm_data.supports_feature(
-    @graph.GraphFeature::InsideSelfLoops,
+    InsideSelfLoops,
   )
 
   recursive_graph_layout_engine_evaluate_hierarchy_handling_inheritance(

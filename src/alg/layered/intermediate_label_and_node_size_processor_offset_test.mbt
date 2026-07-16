@@ -12,20 +12,14 @@ fn label_and_node_size_offset_test_port_side(name : String) -> @core.PortSide {
 fn label_and_node_size_offset_test_node_type(name : String) -> NodeType {
   for node_type in node_type_values() {
     match node_type {
-      NodeType::Normal => if name == "NORMAL" { return node_type }
-      NodeType::LongEdge => if name == "LONG_EDGE" { return node_type }
-      NodeType::ExternalPort => if name == "EXTERNAL_PORT" { return node_type }
-      NodeType::NorthSouthPort =>
-        if name == "NORTH_SOUTH_PORT" {
-          return node_type
-        }
-      NodeType::LabelNode => if name == "LABEL_NODE" { return node_type }
-      NodeType::BreakingPoint =>
-        if name == "BREAKING_POINT" {
-          return node_type
-        }
-      NodeType::Placeholder => if name == "PLACEHOLDER" { return node_type }
-      NodeType::NonshiftingPlaceholder =>
+      Normal => if name == "NORMAL" { return node_type }
+      LongEdge => if name == "LONG_EDGE" { return node_type }
+      ExternalPort => if name == "EXTERNAL_PORT" { return node_type }
+      NorthSouthPort => if name == "NORTH_SOUTH_PORT" { return node_type }
+      LabelNode => if name == "LABEL_NODE" { return node_type }
+      BreakingPoint => if name == "BREAKING_POINT" { return node_type }
+      Placeholder => if name == "PLACEHOLDER" { return node_type }
+      NonshiftingPlaceholder =>
         if name == "NONSHIFTING_PLACEHOLDER" {
           return node_type
         }
@@ -153,14 +147,11 @@ test "label and node size processor places ports on node border with zero offset
   for node in graph.get_layerless_nodes() {
     for port in node.get_ports() {
       match port.get_side() {
-        @core.PortSide::North =>
+        North =>
           assert_double_eq(port.get_position().y, -port.get_size().y, 0.0)
-        @core.PortSide::South =>
-          assert_double_eq(port.get_position().y, node.get_size().y, 0.0)
-        @core.PortSide::East =>
-          assert_double_eq(port.get_position().x, node.get_size().x, 0.0)
-        @core.PortSide::West =>
-          assert_double_eq(port.get_position().x, -port.get_size().x, 0.0)
+        South => assert_double_eq(port.get_position().y, node.get_size().y, 0.0)
+        East => assert_double_eq(port.get_position().x, node.get_size().x, 0.0)
+        West => assert_double_eq(port.get_position().x, -port.get_size().x, 0.0)
         _ => abort("unexpected port side")
       }
     }

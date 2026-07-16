@@ -16,14 +16,14 @@ fn breaking_point_processor_node_type_equals(
   right : NodeType,
 ) -> Bool {
   match (left, right) {
-    (NodeType::Normal, NodeType::Normal) => true
-    (NodeType::LongEdge, NodeType::LongEdge) => true
-    (NodeType::ExternalPort, NodeType::ExternalPort) => true
-    (NodeType::NorthSouthPort, NodeType::NorthSouthPort) => true
-    (NodeType::LabelNode, NodeType::LabelNode) => true
-    (NodeType::BreakingPoint, NodeType::BreakingPoint) => true
-    (NodeType::Placeholder, NodeType::Placeholder) => true
-    (NodeType::NonshiftingPlaceholder, NodeType::NonshiftingPlaceholder) => true
+    (Normal, Normal) => true
+    (LongEdge, LongEdge) => true
+    (ExternalPort, ExternalPort) => true
+    (NorthSouthPort, NorthSouthPort) => true
+    (LabelNode, LabelNode) => true
+    (BreakingPoint, BreakingPoint) => true
+    (Placeholder, Placeholder) => true
+    (NonshiftingPlaceholder, NonshiftingPlaceholder) => true
     _ => false
   }
 }
@@ -140,10 +140,8 @@ fn breaking_point_processor_other_node_or_raise(
   node : LNode,
 ) -> LNode raise BreakingPointProcessorException {
   try edge.get_other_node(node) catch {
-    LEdgeException::IllegalArgumentException(message) =>
-      breaking_point_processor_raise(message)
-    LEdgeException::IllegalStateException(message) =>
-      breaking_point_processor_raise(message)
+    IllegalArgumentException(message) => breaking_point_processor_raise(message)
+    IllegalStateException(message) => breaking_point_processor_raise(message)
   } noraise {
     other => other
   }
@@ -153,10 +151,7 @@ fn breaking_point_processor_other_node_or_raise(
 fn breaking_point_processor_is_in_layer_dummy(
   node : LNode,
 ) -> Bool raise BreakingPointProcessorException {
-  if !breaking_point_processor_node_type_equals(
-      node.get_type(),
-      NodeType::LongEdge,
-    ) {
+  if !breaking_point_processor_node_type_equals(node.get_type(), LongEdge) {
     return false
   }
 
@@ -191,10 +186,7 @@ fn breaking_point_processor_next_long_edge_dummy(
 
   for edge in edges {
     let other = breaking_point_processor_other_node_or_raise(edge, start)
-    if breaking_point_processor_node_type_equals(
-        other.get_type(),
-        NodeType::LongEdge,
-      ) {
+    if breaking_point_processor_node_type_equals(other.get_type(), LongEdge) {
       match (other.get_layer(), start.get_layer()) {
         (Some(other_layer), Some(start_layer)) =>
           if other_layer.get_index() != start_layer.get_index() {
@@ -222,7 +214,7 @@ fn breaking_point_processor_is_adjacent_or_separated_by_breakingpoints(
     let node = layer.get_nodes()[i]
     if !breaking_point_processor_node_type_equals(
         node.get_type(),
-        NodeType::BreakingPoint,
+        BreakingPoint,
       ) &&
       !breaking_point_processor_is_in_layer_dummy(node) {
       return false
@@ -547,7 +539,7 @@ fn breaking_point_processor_perform_wrapping(
       let a_node = nodes_to_move[0]
       if breaking_point_processor_node_type_equals(
           a_node.get_type(),
-          NodeType::BreakingPoint,
+          BreakingPoint,
         ) {
         reverse = true
         idx = -1

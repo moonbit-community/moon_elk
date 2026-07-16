@@ -16,7 +16,7 @@ priv suberror VertiFlexLayoutProviderException {
 fn vertiflex_raise_unsupported_configuration(
   message : String,
 ) -> Unit raise VertiFlexLayoutProviderException {
-  raise VertiFlexLayoutProviderException::UnsupportedConfiguration(message)
+  raise UnsupportedConfiguration(message)
 }
 
 ///|
@@ -24,8 +24,7 @@ fn vertiflex_exception_message(
   err : VertiFlexLayoutProviderException,
 ) -> String {
   match err {
-    VertiFlexLayoutProviderException::UnsupportedConfiguration(message) =>
-      message
+    UnsupportedConfiguration(message) => message
   }
 }
 
@@ -129,26 +128,20 @@ pub fn VertiFlexLayoutProvider::assemble_algorithm(
   ignore(self.algorithm_assembler.reset())
   ignore(
     self.algorithm_assembler.set_phase(
-      VertiFlexLayoutPhases::P1_NODE_Y_PLACEMENT,
-      vertiflex_node_y_placer_phase_factory(
-        NodeYPlacerStrategy::SIMPLE_Y_PLACING,
-      ),
+      P1_NODE_Y_PLACEMENT,
+      vertiflex_node_y_placer_phase_factory(SIMPLE_Y_PLACING),
     ),
   )
   ignore(
     self.algorithm_assembler.set_phase(
-      VertiFlexLayoutPhases::P2_NODE_RELATIVE_PLACEMENT,
-      vertiflex_relative_x_placer_phase_factory(
-        RelativeXPlacerStrategy::SIMPLE_X_PLACING,
-      ),
+      P2_NODE_RELATIVE_PLACEMENT,
+      vertiflex_relative_x_placer_phase_factory(SIMPLE_X_PLACING),
     ),
   )
   ignore(
     self.algorithm_assembler.set_phase(
-      VertiFlexLayoutPhases::P3_NODE_ABSOLUTE_PLACEMENT,
-      vertiflex_absolute_x_placer_phase_factory(
-        AbsoluteXPlacerStrategy::ABSOLUTE_XPLACING,
-      ),
+      P3_NODE_ABSOLUTE_PLACEMENT,
+      vertiflex_absolute_x_placer_phase_factory(ABSOLUTE_XPLACING),
     ),
   )
   let router_strategy = match
@@ -156,11 +149,11 @@ pub fn VertiFlexLayoutProvider::assemble_algorithm(
       @graph.node_get_string_property(graph, vertiflex_layout_strategy),
     ) {
     BEND => EdgerouterStrategy::BEND_ROUTING
-    STRAIGHT => EdgerouterStrategy::DIRECT_ROUTING
+    STRAIGHT => DIRECT_ROUTING
   }
   ignore(
     self.algorithm_assembler.set_phase(
-      VertiFlexLayoutPhases::P4_EDGE_ROUTING,
+      P4_EDGE_ROUTING,
       vertiflex_edgerouter_phase_factory(router_strategy),
     ),
   )

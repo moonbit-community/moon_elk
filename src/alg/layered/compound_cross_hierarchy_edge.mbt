@@ -50,7 +50,7 @@ fn cross_hierarchy_edge_port_type_to_string(port_type : PortType) -> String {
 fn cross_hierarchy_edge_resolve_external_port_origin(port : LPort) -> LPort {
   let node = cross_hierarchy_edge_require_port_node(port)
   match node.get_type() {
-    NodeType::ExternalPort => ()
+    ExternalPort => ()
     _ => return port
   }
 

@@ -3,13 +3,13 @@ fn layer_sweep_type_decider_port_constraints_from_string(
   value : String,
 ) -> @core.PortConstraints {
   match value {
-    "UNDEFINED" => @core.PortConstraints::Undefined
-    "FREE" => @core.PortConstraints::Free
-    "FIXED_SIDE" => @core.PortConstraints::FixedSide
-    "FIXED_ORDER" => @core.PortConstraints::FixedOrder
-    "FIXED_RATIO" => @core.PortConstraints::FixedRatio
-    "FIXED_POS" => @core.PortConstraints::FixedPos
-    _ => @core.PortConstraints::Undefined
+    "UNDEFINED" => Undefined
+    "FREE" => Free
+    "FIXED_SIDE" => FixedSide
+    "FIXED_ORDER" => FixedOrder
+    "FIXED_RATIO" => FixedRatio
+    "FIXED_POS" => FixedPos
+    _ => Undefined
   }
 }
 
@@ -19,11 +19,11 @@ fn layer_sweep_type_decider_is_side(
   side : @core.PortSide,
 ) -> Bool {
   match (port.get_side(), side) {
-    (@core.PortSide::North, @core.PortSide::North) => true
-    (@core.PortSide::East, @core.PortSide::East) => true
-    (@core.PortSide::South, @core.PortSide::South) => true
-    (@core.PortSide::West, @core.PortSide::West) => true
-    (@core.PortSide::SideUndefined, @core.PortSide::SideUndefined) => true
+    (North, North) => true
+    (East, East) => true
+    (South, South) => true
+    (West, West) => true
+    (SideUndefined, SideUndefined) => true
     _ => false
   }
 }
@@ -119,7 +119,7 @@ pub fn LayerSweepTypeDecider::use_bottom_up(
         self.transfer_info_to_target(current_node, edge)
       }
 
-      for port in node.get_port_side_view(@core.PortSide::North) {
+      for port in node.get_port_side_view(North) {
         match port.get_property_l_node(internal_properties_port_dummy) {
           Some(ns_dummy) => {
             paths_to_random = paths_to_random + current_node.random_influence
@@ -130,7 +130,7 @@ pub fn LayerSweepTypeDecider::use_bottom_up(
           None => ()
         }
       }
-      for port in node.get_port_side_view(@core.PortSide::South) {
+      for port in node.get_port_side_view(South) {
         match port.get_property_l_node(internal_properties_port_dummy) {
           Some(ns_dummy) => {
             paths_to_random = paths_to_random + current_node.random_influence
@@ -216,8 +216,8 @@ fn LayerSweepTypeDecider::fewer_than_two_in_out_edges(
     return false
   }
   let parent = self.graph_data.parent()
-  parent.get_port_side_view(@core.PortSide::East).length() < 2 &&
-  parent.get_port_side_view(@core.PortSide::West).length() < 2
+  parent.get_port_side_view(East).length() < 2 &&
+  parent.get_port_side_view(West).length() < 2
 }
 
 ///|
@@ -240,7 +240,7 @@ fn LayerSweepTypeDecider::has_no_eastern_ports(
   node : LNode,
 ) -> Bool {
   ignore(self)
-  let east_ports = node.get_port_side_view(@core.PortSide::East)
+  let east_ports = node.get_port_side_view(East)
   if east_ports.is_empty() {
     return true
   }
@@ -258,7 +258,7 @@ fn LayerSweepTypeDecider::has_no_western_ports(
   node : LNode,
 ) -> Bool {
   ignore(self)
-  let west_ports = node.get_port_side_view(@core.PortSide::West)
+  let west_ports = node.get_port_side_view(West)
   if west_ports.is_empty() {
     return true
   }
@@ -277,7 +277,7 @@ fn LayerSweepTypeDecider::is_external_port_dummy(
 ) -> Bool {
   ignore(self)
   match node.get_type() {
-    NodeType::ExternalPort => true
+    ExternalPort => true
     _ => false
   }
 }
@@ -289,7 +289,7 @@ fn LayerSweepTypeDecider::is_north_south_dummy(
 ) -> Bool {
   ignore(self)
   match node.get_type() {
-    NodeType::NorthSouthPort => true
+    NorthSouthPort => true
     _ => false
   }
 }
@@ -301,8 +301,7 @@ fn LayerSweepTypeDecider::is_eastern_dummy(
 ) -> Bool {
   ignore(self)
   match node.get_property_l_port(internal_properties_origin_l_port) {
-    Some(origin_port) =>
-      layer_sweep_type_decider_is_side(origin_port, @core.PortSide::East)
+    Some(origin_port) => layer_sweep_type_decider_is_side(origin_port, East)
     None => false
   }
 }

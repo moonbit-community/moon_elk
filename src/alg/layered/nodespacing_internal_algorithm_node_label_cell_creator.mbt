@@ -7,7 +7,7 @@ pub(all) suberror NodeLabelCellCreatorException {
 fn[T] node_label_cell_creator_raise_illegal_argument(
   message : String,
 ) -> T raise NodeLabelCellCreatorException {
-  raise NodeLabelCellCreatorException::IllegalArgumentException(message)
+  raise IllegalArgumentException(message)
 }
 
 ///|

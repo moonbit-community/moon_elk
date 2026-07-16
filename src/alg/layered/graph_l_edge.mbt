@@ -21,12 +21,12 @@ pub(all) suberror LEdgeException {
 
 ///|
 fn[T] ledge_raise_illegal_argument(message : String) -> T raise LEdgeException {
-  raise LEdgeException::IllegalArgumentException(message)
+  raise IllegalArgumentException(message)
 }
 
 ///|
 fn[T] ledge_raise_illegal_state(message : String) -> T raise LEdgeException {
-  raise LEdgeException::IllegalStateException(message)
+  raise IllegalStateException(message)
 }
 
 ///|
@@ -182,14 +182,7 @@ pub fn LEdge::reverse(
     old_target.get_property_bool(internal_properties_input_collect) {
     let source_node = old_target.get_node().unwrap()
     self.set_source(
-      Some(
-        provide_collector_port(
-          layered_graph,
-          source_node,
-          PortType::Output,
-          @core.PortSide::East,
-        ),
-      ),
+      Some(provide_collector_port(layered_graph, source_node, Output, East)),
     )
   } else {
     self.set_source(Some(old_target))
@@ -199,14 +192,7 @@ pub fn LEdge::reverse(
     old_source.get_property_bool(internal_properties_output_collect) {
     let target_node = old_source.get_node().unwrap()
     self.set_target(
-      Some(
-        provide_collector_port(
-          layered_graph,
-          target_node,
-          PortType::Input,
-          @core.PortSide::West,
-        ),
-      ),
+      Some(provide_collector_port(layered_graph, target_node, Input, West)),
     )
   } else {
     self.set_target(Some(old_source))

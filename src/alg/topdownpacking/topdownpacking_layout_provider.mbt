@@ -27,7 +27,7 @@ pub fn TopdownpackingLayoutProvider::assemble_algorithm(
   )
   ignore(
     self.algorithm_assembler.set_phase(
-      TopdownPackingPhases::P1_NODE_ARRANGEMENT,
+      P1_NODE_ARRANGEMENT,
       topdownpacking_node_arrangement_strategy_phase_factory(
         node_arrangement_strategy,
       ),
@@ -39,7 +39,7 @@ pub fn TopdownpackingLayoutProvider::assemble_algorithm(
   )
   ignore(
     self.algorithm_assembler.set_phase(
-      TopdownPackingPhases::P2_WHITESPACE_ELIMINATION,
+      P2_WHITESPACE_ELIMINATION,
       topdownpacking_whitespace_elimination_strategy_phase_factory(
         whitespace_elimination_strategy,
       ),

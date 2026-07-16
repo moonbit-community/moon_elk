@@ -181,7 +181,7 @@ pub let layered_options_consider_model_order_components : @graph.IProperty[
   ComponentOrderingStrategy,
 ] = @graph.new_property(
   "org.eclipse.elk.layered.considerModelOrder.components",
-  ComponentOrderingStrategy::NoneType,
+  NoneType,
 )
 
 ///|
@@ -436,7 +436,7 @@ pub let layered_options_edge_routing_splines_mode : @graph.IProperty[
   SplineRoutingMode,
 ] = @graph.new_property(
   "org.eclipse.elk.layered.edgeRouting.splines.mode",
-  SplineRoutingMode::Sloppy,
+  Sloppy,
 )
 
 ///|

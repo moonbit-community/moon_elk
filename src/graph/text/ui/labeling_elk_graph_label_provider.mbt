@@ -21,7 +21,7 @@ fn graph_text_ui_shape_name(
   match shape {
     NodeShape(node) => {
       let text = graph_text_ui_join_qualified_name(
-        provider.qualified_name(@text.GraphNode(node)),
+        provider.qualified_name(GraphNode(node)),
       )
       if text.is_empty() {
         "?"
@@ -31,7 +31,7 @@ fn graph_text_ui_shape_name(
     }
     PortShape(port) => {
       let text = graph_text_ui_join_qualified_name(
-        provider.qualified_name(@text.GraphPort(port)),
+        provider.qualified_name(GraphPort(port)),
       )
       if text.is_empty() {
         "?"

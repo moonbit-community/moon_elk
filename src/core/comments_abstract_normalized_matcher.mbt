@@ -20,7 +20,7 @@ pub fn[C, T] new_abstract_normalized_matcher(
     raw_fn,
     worst_raw_value: 0.0,
     best_raw_value: 1.0,
-    normalization_function: NormalizationFunction::Linear,
+    normalization_function: Linear,
   }
 }
 
@@ -75,8 +75,8 @@ pub fn[C, T] AbstractNormalizedMatcher::normalized(
 ) -> Double {
   let raw_value = self.raw(comment, target)
   match self.normalization_function {
-    NormalizationFunction::Linear => self.normalize_linear(raw_value)
-    NormalizationFunction::Binary => self.normalize_binary(raw_value)
+    Linear => self.normalize_linear(raw_value)
+    Binary => self.normalize_binary(raw_value)
   }
 }
 

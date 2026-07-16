@@ -180,6 +180,6 @@ pub fn RectpackingRowFillingAndCompaction::start(
     self.aspect_ratio,
     total_width,
     size.y + additional_height,
-    RectpackingDrawingDataDescriptor::WHOLE_DRAWING,
+    WHOLE_DRAWING,
   )
 }

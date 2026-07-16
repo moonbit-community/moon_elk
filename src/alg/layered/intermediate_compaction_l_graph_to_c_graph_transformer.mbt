@@ -16,14 +16,14 @@ fn lgraph_to_cgraph_transformer_node_type_equals(
   right : NodeType,
 ) -> Bool {
   match (left, right) {
-    (NodeType::Normal, NodeType::Normal) => true
-    (NodeType::LongEdge, NodeType::LongEdge) => true
-    (NodeType::ExternalPort, NodeType::ExternalPort) => true
-    (NodeType::NorthSouthPort, NodeType::NorthSouthPort) => true
-    (NodeType::LabelNode, NodeType::LabelNode) => true
-    (NodeType::BreakingPoint, NodeType::BreakingPoint) => true
-    (NodeType::Placeholder, NodeType::Placeholder) => true
-    (NodeType::NonshiftingPlaceholder, NodeType::NonshiftingPlaceholder) => true
+    (Normal, Normal) => true
+    (LongEdge, LongEdge) => true
+    (ExternalPort, ExternalPort) => true
+    (NorthSouthPort, NorthSouthPort) => true
+    (LabelNode, LabelNode) => true
+    (BreakingPoint, BreakingPoint) => true
+    (Placeholder, Placeholder) => true
+    (NonshiftingPlaceholder, NonshiftingPlaceholder) => true
     _ => false
   }
 }
@@ -34,11 +34,11 @@ fn lgraph_to_cgraph_transformer_port_side_equals(
   right : @core.PortSide,
 ) -> Bool {
   match (left, right) {
-    (@core.PortSide::SideUndefined, @core.PortSide::SideUndefined) => true
-    (@core.PortSide::North, @core.PortSide::North) => true
-    (@core.PortSide::East, @core.PortSide::East) => true
-    (@core.PortSide::South, @core.PortSide::South) => true
-    (@core.PortSide::West, @core.PortSide::West) => true
+    (SideUndefined, SideUndefined) => true
+    (North, North) => true
+    (East, East) => true
+    (South, South) => true
+    (West, West) => true
     _ => false
   }
 }
@@ -49,10 +49,10 @@ fn lgraph_to_cgraph_transformer_parse_edge_routing(
 ) -> @core.EdgeRouting {
   let normalized = value.trim().to_owned().to_upper()
   match normalized {
-    "POLYLINE" => @core.EdgeRouting::Polyline
-    "SPLINES" => @core.EdgeRouting::Splines
-    "ORTHOGONAL" => @core.EdgeRouting::Orthogonal
-    _ => @core.EdgeRouting::RoutingUndefined
+    "POLYLINE" => Polyline
+    "SPLINES" => Splines
+    "ORTHOGONAL" => Orthogonal
+    _ => RoutingUndefined
   }
 }
 
@@ -62,11 +62,10 @@ fn lgraph_to_cgraph_transformer_edge_routing_equals(
   right : @core.EdgeRouting,
 ) -> Bool {
   match (left, right) {
-    (@core.EdgeRouting::RoutingUndefined, @core.EdgeRouting::RoutingUndefined) =>
-      true
-    (@core.EdgeRouting::Polyline, @core.EdgeRouting::Polyline) => true
-    (@core.EdgeRouting::Orthogonal, @core.EdgeRouting::Orthogonal) => true
-    (@core.EdgeRouting::Splines, @core.EdgeRouting::Splines) => true
+    (RoutingUndefined, RoutingUndefined) => true
+    (Polyline, Polyline) => true
+    (Orthogonal, Orthogonal) => true
+    (Splines, Splines) => true
     _ => false
   }
 }
@@ -171,14 +170,10 @@ fn lgraph_to_cgraph_transformer_supports_has_edges(
     }
   }
 
-  let supported = [
-    @core.Direction::Undefined,
-    @core.Direction::Leftward,
-    @core.Direction::Rightward,
-  ]
+  let supported = [@core.Direction::Undefined, Leftward, Rightward]
   if !has_edges {
-    supported.push(@core.Direction::Upward)
-    supported.push(@core.Direction::Downward)
+    supported.push(Upward)
+    supported.push(Downward)
   }
   (supported, has_edges)
 }
@@ -230,7 +225,7 @@ fn lgraph_to_cgraph_transformer_collect_vertical_segments_orthogonal(
 
         if lgraph_to_cgraph_transformer_port_side_equals(
             source_port.get_side(),
-            @core.PortSide::North,
+            North,
           ) {
           let vs = new_vertical_segment(
             bend1,
@@ -238,13 +233,13 @@ fn lgraph_to_cgraph_transformer_collect_vertical_segments_orthogonal(
             Some(c_node),
             edge,
           )
-          vs.ignore_spacing.set_direction(true, @core.Direction::Downward)
+          vs.ignore_spacing.set_direction(true, Downward)
           vs.set_a_port(Some(source_port))
           vertical_segments.push(vs)
         }
         if lgraph_to_cgraph_transformer_port_side_equals(
             source_port.get_side(),
-            @core.PortSide::South,
+            South,
           ) {
           let vs = new_vertical_segment(
             bend1,
@@ -252,7 +247,7 @@ fn lgraph_to_cgraph_transformer_collect_vertical_segments_orthogonal(
             Some(c_node),
             edge,
           )
-          vs.ignore_spacing.set_direction(true, @core.Direction::Upward)
+          vs.ignore_spacing.set_direction(true, Upward)
           vs.set_a_port(Some(source_port))
           vertical_segments.push(vs)
         }
@@ -268,24 +263,12 @@ fn lgraph_to_cgraph_transformer_collect_vertical_segments_orthogonal(
             if first {
               first = false
               if bend2.y < c_hitbox.y {
-                current.ignore_spacing.set_direction(
-                  true,
-                  @core.Direction::Downward,
-                )
+                current.ignore_spacing.set_direction(true, Downward)
               } else if bend2.y > c_hitbox.y + c_hitbox.height {
-                current.ignore_spacing.set_direction(
-                  true,
-                  @core.Direction::Upward,
-                )
+                current.ignore_spacing.set_direction(true, Upward)
               } else {
-                current.ignore_spacing.set_direction(
-                  true,
-                  @core.Direction::Upward,
-                )
-                current.ignore_spacing.set_direction(
-                  true,
-                  @core.Direction::Downward,
-                )
+                current.ignore_spacing.set_direction(true, Upward)
+                current.ignore_spacing.set_direction(true, Downward)
               }
             }
           }
@@ -306,24 +289,12 @@ fn lgraph_to_cgraph_transformer_collect_vertical_segments_orthogonal(
               Some(target_c_node) => {
                 let target_hitbox = target_c_node.hitbox()
                 if bend1.y < target_hitbox.y {
-                  segment.ignore_spacing.set_direction(
-                    true,
-                    @core.Direction::Downward,
-                  )
+                  segment.ignore_spacing.set_direction(true, Downward)
                 } else if bend1.y > target_hitbox.y + target_hitbox.height {
-                  segment.ignore_spacing.set_direction(
-                    true,
-                    @core.Direction::Upward,
-                  )
+                  segment.ignore_spacing.set_direction(true, Upward)
                 } else {
-                  segment.ignore_spacing.set_direction(
-                    true,
-                    @core.Direction::Upward,
-                  )
-                  segment.ignore_spacing.set_direction(
-                    true,
-                    @core.Direction::Downward,
-                  )
+                  segment.ignore_spacing.set_direction(true, Upward)
+                  segment.ignore_spacing.set_direction(true, Downward)
                 }
               }
               None => ()
@@ -345,7 +316,7 @@ fn lgraph_to_cgraph_transformer_collect_vertical_segments_orthogonal(
 
         if lgraph_to_cgraph_transformer_port_side_equals(
             target_port.get_side(),
-            @core.PortSide::North,
+            North,
           ) {
           let vs = new_vertical_segment(
             bend1,
@@ -353,13 +324,13 @@ fn lgraph_to_cgraph_transformer_collect_vertical_segments_orthogonal(
             Some(c_node),
             edge,
           )
-          vs.ignore_spacing.set_direction(true, @core.Direction::Downward)
+          vs.ignore_spacing.set_direction(true, Downward)
           vs.set_a_port(Some(target_port))
           vertical_segments.push(vs)
         }
         if lgraph_to_cgraph_transformer_port_side_equals(
             target_port.get_side(),
-            @core.PortSide::South,
+            South,
           ) {
           let vs = new_vertical_segment(
             bend1,
@@ -367,7 +338,7 @@ fn lgraph_to_cgraph_transformer_collect_vertical_segments_orthogonal(
             Some(c_node),
             edge,
           )
-          vs.ignore_spacing.set_direction(true, @core.Direction::Upward)
+          vs.ignore_spacing.set_direction(true, Upward)
           vs.set_a_port(Some(target_port))
           vertical_segments.push(vs)
         }
@@ -467,11 +438,11 @@ fn lgraph_to_cgraph_transformer_vertical_segment_to_cnode(
   let difference = incoming_ports.to_array().length() -
     outgoing_ports.to_array().length()
   if difference < 0 {
-    lock.set_direction(true, @core.Direction::Leftward)
-    lock.set_direction(false, @core.Direction::Rightward)
+    lock.set_direction(true, Leftward)
+    lock.set_direction(false, Rightward)
   } else if difference > 0 {
-    lock.set_direction(false, @core.Direction::Leftward)
-    lock.set_direction(true, @core.Direction::Rightward)
+    lock.set_direction(false, Leftward)
+    lock.set_direction(true, Rightward)
   }
 
   for other in vertical_segment.joined {
@@ -660,20 +631,20 @@ fn lgraph_to_cgraph_transformer_apply_external_port_positions(
     }
     if !lgraph_to_cgraph_transformer_node_type_equals(
         l_node.get_type(),
-        NodeType::ExternalPort,
+        ExternalPort,
       ) {
       continue
     }
     match l_node.get_property_port_side(internal_properties_ext_port_side) {
-      @core.PortSide::West => l_node.get_position().x = top_left.x
-      @core.PortSide::East =>
+      West => l_node.get_position().x = top_left.x
+      East =>
         l_node.get_position().x = bottom_right.x -
           (l_node.get_size().x + l_node.get_margin().right)
-      @core.PortSide::North => l_node.get_position().y = top_left.y
-      @core.PortSide::South =>
+      North => l_node.get_position().y = top_left.y
+      South =>
         l_node.get_position().y = bottom_right.y -
           (l_node.get_size().y + l_node.get_margin().bottom)
-      @core.PortSide::SideUndefined => ()
+      SideUndefined => ()
     }
   }
 }
@@ -716,7 +687,7 @@ pub fn new_lgraph_to_cgraph_transformer() -> LGraphToCGraphTransformer {
   {
     c_graph: None,
     layered_graph: None,
-    edge_routing: @core.EdgeRouting::RoutingUndefined,
+    edge_routing: RoutingUndefined,
     comment_offsets: [],
     nodes_map: Map([]),
     vertical_segments_map: Map([]),
@@ -815,14 +786,14 @@ fn LGraphToCGraphTransformer::transform_nodes(
       let difference = node.get_incoming_edges().length() -
         node.get_outgoing_edges().length()
       if difference < 0 {
-        node_lock.set_direction(true, @core.Direction::Leftward)
+        node_lock.set_direction(true, Leftward)
       } else if difference > 0 {
-        node_lock.set_direction(true, @core.Direction::Rightward)
+        node_lock.set_direction(true, Rightward)
       }
 
       if lgraph_to_cgraph_transformer_node_type_equals(
           node.get_type(),
-          NodeType::ExternalPort,
+          ExternalPort,
         ) {
         node_lock.set(false, false, false, false)
       }
@@ -839,11 +810,11 @@ fn LGraphToCGraphTransformer::transform_edges(
 ) -> Unit raise LGraphToCGraphTransformerException {
   let mut vertical_segments : Array[VerticalSegment] = []
   match self.edge_routing {
-    @core.EdgeRouting::Orthogonal =>
+    Orthogonal =>
       vertical_segments = lgraph_to_cgraph_transformer_collect_vertical_segments_orthogonal(
         self,
       )
-    @core.EdgeRouting::Splines =>
+    Splines =>
       vertical_segments = lgraph_to_cgraph_transformer_collect_vertical_segments_splines(
         self,
       )
@@ -896,12 +867,7 @@ pub fn LGraphToCGraphTransformer::transform(
       )
       match self.c_graph {
         Some(graph) => graph
-        None =>
-          @common.new_cgraph([
-            @core.Direction::Undefined,
-            @core.Direction::Leftward,
-            @core.Direction::Rightward,
-          ])
+        None => @common.new_cgraph([Undefined, Leftward, Rightward])
       }
     }
   } noraise {
@@ -951,7 +917,7 @@ pub fn LGraphToCGraphTransformer::apply_layout(
 
     if lgraph_to_cgraph_transformer_edge_routing_equals(
         self.edge_routing,
-        @core.EdgeRouting::Splines,
+        Splines,
       ) {
       for layer in layered_graph.get_layers() {
         for node in layer.get_nodes() {

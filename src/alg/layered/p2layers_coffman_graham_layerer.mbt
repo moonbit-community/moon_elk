@@ -24,17 +24,15 @@ let coffman_graham_layerer_baseline_processing_configuration : @core.LayoutProce
   LGraph,
 ] = @core.layout_processor_configuration_create(layered_phase_descriptor)
   .add_before(
-    LayeredPhases::P1CycleBreaking,
-    layered_intermediate_processor_factory(
-      IntermediateProcessorStrategy::EdgeAndLayerConstraintEdgeReverser,
-    ),
+    P1CycleBreaking,
+    layered_intermediate_processor_factory(EdgeAndLayerConstraintEdgeReverser),
   )
   .add_before(
-    LayeredPhases::P2Layering,
+    P2Layering,
     coffman_graham_layerer_layer_constraint_preprocessor_factory(),
   )
   .add_before(
-    LayeredPhases::P3NodeOrdering,
+    P3NodeOrdering,
     coffman_graham_layerer_layer_constraint_postprocessor_factory(),
   )
 
@@ -47,7 +45,7 @@ pub(all) suberror CoffmanGrahamLayererException {
 fn[T] coffman_graham_layerer_raise_unsupported_graph(
   message : String,
 ) -> T raise CoffmanGrahamLayererException {
-  raise CoffmanGrahamLayererException::UnsupportedGraphException(message)
+  raise UnsupportedGraphException(message)
 }
 
 ///|
@@ -367,7 +365,7 @@ fn coffman_graham_layerer_process(
 
     layered_graph.get_layerless_nodes().clear()
   } catch {
-    CoffmanGrahamLayererException::UnsupportedGraphException(message) => {
+    UnsupportedGraphException(message) => {
       @core.layout_runtime_report_unsupported_configuration(message)
       monitor.done()
       return

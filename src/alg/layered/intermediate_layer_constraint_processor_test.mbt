@@ -73,12 +73,11 @@ fn layer_constraint_processor_test_collect_layer_positions(
   for layer_index in 0..<graph.get_layers().length() {
     for node in graph.get_layers()[layer_index].get_nodes() {
       match layer_constraint_processor_test_constraint(node) {
-        LayerConstraint::FirstSeparate =>
-          first_separate_layers.push(layer_index)
-        LayerConstraint::First => first_layers.push(layer_index)
-        LayerConstraint::Last => last_layers.push(layer_index)
-        LayerConstraint::LastSeparate => last_separate_layers.push(layer_index)
-        LayerConstraint::NoneType => none_layers.push(layer_index)
+        FirstSeparate => first_separate_layers.push(layer_index)
+        First => first_layers.push(layer_index)
+        Last => last_layers.push(layer_index)
+        LastSeparate => last_separate_layers.push(layer_index)
+        NoneType => none_layers.push(layer_index)
       }
     }
   }

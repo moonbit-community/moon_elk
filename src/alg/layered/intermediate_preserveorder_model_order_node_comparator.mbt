@@ -52,14 +52,14 @@ fn model_order_node_layer_id(node : LNode) -> Int {
 ///|
 fn model_order_node_type_equals(left : NodeType, right : NodeType) -> Bool {
   match (left, right) {
-    (NodeType::Normal, NodeType::Normal) => true
-    (NodeType::LongEdge, NodeType::LongEdge) => true
-    (NodeType::ExternalPort, NodeType::ExternalPort) => true
-    (NodeType::NorthSouthPort, NodeType::NorthSouthPort) => true
-    (NodeType::LabelNode, NodeType::LabelNode) => true
-    (NodeType::BreakingPoint, NodeType::BreakingPoint) => true
-    (NodeType::Placeholder, NodeType::Placeholder) => true
-    (NodeType::NonshiftingPlaceholder, NodeType::NonshiftingPlaceholder) => true
+    (Normal, Normal) => true
+    (LongEdge, LongEdge) => true
+    (ExternalPort, ExternalPort) => true
+    (NorthSouthPort, NorthSouthPort) => true
+    (LabelNode, LabelNode) => true
+    (BreakingPoint, BreakingPoint) => true
+    (Placeholder, Placeholder) => true
+    (NonshiftingPlaceholder, NonshiftingPlaceholder) => true
     _ => false
   }
 }
@@ -69,7 +69,7 @@ fn model_order_node_strategy_is_prefer_edges(
   strategy : OrderingStrategy,
 ) -> Bool {
   match strategy {
-    OrderingStrategy::PreferEdges => true
+    PreferEdges => true
     _ => false
   }
 }
@@ -288,8 +288,8 @@ fn ModelOrderNodeComparator::handle_helper_dummy_nodes(
   n1 : LNode,
   n2 : LNode,
 ) -> Int {
-  if model_order_node_type_equals(n1.get_type(), NodeType::LongEdge) &&
-    model_order_node_type_equals(n2.get_type(), NodeType::Normal) {
+  if model_order_node_type_equals(n1.get_type(), LongEdge) &&
+    model_order_node_type_equals(n2.get_type(), Normal) {
     let dummy_node_source_port = model_order_node_get_first_incoming_source_port_of_node(
       n1,
     )
@@ -332,8 +332,8 @@ fn ModelOrderNodeComparator::handle_helper_dummy_nodes(
       }
       return self.compare(dummy_node_source_node, n2)
     }
-  } else if model_order_node_type_equals(n1.get_type(), NodeType::Normal) &&
-    model_order_node_type_equals(n2.get_type(), NodeType::LongEdge) {
+  } else if model_order_node_type_equals(n1.get_type(), Normal) &&
+    model_order_node_type_equals(n2.get_type(), LongEdge) {
     let dummy_node_source_port = model_order_node_get_first_incoming_source_port_of_node(
       n2,
     )
@@ -376,8 +376,8 @@ fn ModelOrderNodeComparator::handle_helper_dummy_nodes(
       }
       return self.compare(n1, dummy_node_source_node)
     }
-  } else if model_order_node_type_equals(n1.get_type(), NodeType::LongEdge) &&
-    model_order_node_type_equals(n2.get_type(), NodeType::LongEdge) {
+  } else if model_order_node_type_equals(n1.get_type(), LongEdge) &&
+    model_order_node_type_equals(n2.get_type(), LongEdge) {
     let n1_dummy_source_port = model_order_node_get_first_incoming_source_port_of_node(
       n1,
     )

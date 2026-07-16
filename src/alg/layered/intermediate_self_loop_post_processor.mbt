@@ -1,7 +1,7 @@
 ///|
 fn self_loop_post_processor_is_normal(l_node : LNode) -> Bool {
   match l_node.get_type() {
-    NodeType::Normal => true
+    Normal => true
     _ => false
   }
 }

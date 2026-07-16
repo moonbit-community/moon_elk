@@ -13,24 +13,24 @@ fn sweep_copy_port_constraints_from_string(
   value : String,
 ) -> @core.PortConstraints {
   match value {
-    "UNDEFINED" => @core.PortConstraints::Undefined
-    "FREE" => @core.PortConstraints::Free
-    "FIXED_SIDE" => @core.PortConstraints::FixedSide
-    "FIXED_ORDER" => @core.PortConstraints::FixedOrder
-    "FIXED_RATIO" => @core.PortConstraints::FixedRatio
-    "FIXED_POS" => @core.PortConstraints::FixedPos
-    _ => @core.PortConstraints::Undefined
+    "UNDEFINED" => Undefined
+    "FREE" => Free
+    "FIXED_SIDE" => FixedSide
+    "FIXED_ORDER" => FixedOrder
+    "FIXED_RATIO" => FixedRatio
+    "FIXED_POS" => FixedPos
+    _ => Undefined
   }
 }
 
 ///|
 fn sweep_copy_port_side_ordinal(side : @core.PortSide) -> Int {
   match side {
-    @core.PortSide::SideUndefined => 0
-    @core.PortSide::North => 1
-    @core.PortSide::East => 2
-    @core.PortSide::South => 3
-    @core.PortSide::West => 4
+    SideUndefined => 0
+    North => 1
+    East => 2
+    South => 3
+    West => 4
   }
 }
 
@@ -124,15 +124,15 @@ fn sweep_copy_compare_ports_raise(
   }
 
   match left.get_side() {
-    @core.PortSide::North =>
+    North =>
       sweep_copy_compare_doubles(left.get_position().x, right.get_position().x)
-    @core.PortSide::East =>
+    East =>
       sweep_copy_compare_doubles(left.get_position().y, right.get_position().y)
-    @core.PortSide::South =>
+    South =>
       sweep_copy_compare_doubles(right.get_position().x, left.get_position().x)
-    @core.PortSide::West =>
+    West =>
       sweep_copy_compare_doubles(right.get_position().y, left.get_position().y)
-    @core.PortSide::SideUndefined => sweep_copy_raise("Port side is undefined")
+    SideUndefined => sweep_copy_raise("Port side is undefined")
   }
 }
 
@@ -234,7 +234,7 @@ pub fn SweepCopy::transfer_node_and_port_orders_to_graph(
       let node = self.node_order[i][j]
       node.set_id(j)
       match node.get_type() {
-        NodeType::NorthSouthPort => north_south_port_dummies.push(node)
+        NorthSouthPort => north_south_port_dummies.push(node)
         _ => ()
       }
 
@@ -295,7 +295,7 @@ fn SweepCopy::assert_correct_port_sides_raise(
 ) -> LNode raise SweepCopyException {
   ignore(self)
   match dummy.get_type() {
-    NodeType::NorthSouthPort => ()
+    NorthSouthPort => ()
     _ => sweep_copy_raise("dummy node must be a north-south port node")
   }
 
@@ -324,17 +324,17 @@ fn SweepCopy::assert_correct_port_sides_raise(
       continue
     }
 
-    if sweep_copy_port_side_is(port.get_side(), @core.PortSide::North) &&
+    if sweep_copy_port_side_is(port.get_side(), North) &&
       dummy.get_id() > origin.get_id() {
-      port.set_side(@core.PortSide::South)
+      port.set_side(South)
       if port.is_explicitly_supplied_port_anchor() {
         let port_height = port.get_size().y
         let anchor_y = port.get_anchor().y
         port.get_anchor().y = port_height - anchor_y
       }
-    } else if sweep_copy_port_side_is(port.get_side(), @core.PortSide::South) &&
+    } else if sweep_copy_port_side_is(port.get_side(), South) &&
       origin.get_id() > dummy.get_id() {
-      port.set_side(@core.PortSide::North)
+      port.set_side(North)
       if port.is_explicitly_supplied_port_anchor() {
         let port_height = port.get_size().y
         let anchor_y = port.get_anchor().y

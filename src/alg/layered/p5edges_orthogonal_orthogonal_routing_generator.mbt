@@ -164,7 +164,7 @@ fn OrthogonalRoutingGenerator::create_hyper_edge_segments(
   match nodes {
     Some(layer_nodes) =>
       for node in layer_nodes {
-        for port in node.get_ports_by_type_and_side(PortType::Output, port_side) {
+        for port in node.get_ports_by_type_and_side(Output, port_side) {
           if port_to_hyper_edge_segment_map.contains(port.get_handle()) {
             continue
           }

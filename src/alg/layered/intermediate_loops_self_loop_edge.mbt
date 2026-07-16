@@ -92,8 +92,8 @@ pub fn SelfLoopEdge::get_label_side(self : SelfLoopEdge) -> @core.PortSide {
     Some(sl_hyper_loop) =>
       match sl_hyper_loop.get_sl_labels() {
         Some(sl_labels) => sl_labels.get_side()
-        None => @core.PortSide::SideUndefined
+        None => SideUndefined
       }
-    None => @core.PortSide::SideUndefined
+    None => SideUndefined
   }
 }

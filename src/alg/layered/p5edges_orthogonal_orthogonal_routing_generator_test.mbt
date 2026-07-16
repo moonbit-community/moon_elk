@@ -20,8 +20,8 @@ fn orthogonal_routing_generator_test_is_type(
   critical : Bool,
 ) -> Bool {
   match dependency.get_type() {
-    DependencyType::Critical => critical
-    DependencyType::Regular => !critical
+    Critical => critical
+    Regular => !critical
   }
 }
 

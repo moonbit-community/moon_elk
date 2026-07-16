@@ -28,7 +28,7 @@ fn lnode_port_side_equals(
     (East, East) => true
     (South, South) => true
     (West, West) => true
-    (@core.SideUndefined, @core.SideUndefined) => true
+    (SideUndefined, SideUndefined) => true
     _ => false
   }
 }
@@ -36,11 +36,11 @@ fn lnode_port_side_equals(
 ///|
 fn lnode_port_side_rank(side : @core.PortSide) -> Int {
   match side {
-    @core.PortSide::SideUndefined => 0
-    @core.PortSide::North => 1
-    @core.PortSide::East => 2
-    @core.PortSide::South => 3
-    @core.PortSide::West => 4
+    SideUndefined => 0
+    North => 1
+    East => 2
+    South => 3
+    West => 4
   }
 }
 
@@ -56,7 +56,7 @@ fn lnode_clone_int_int_map(source : Map[Int, Int]) -> Map[Int, Int] {
 ///|
 fn lnode_node_type_is_label_node(node_type : NodeType) -> Bool {
   match node_type {
-    NodeType::LabelNode => true
+    LabelNode => true
     _ => false
   }
 }
@@ -76,14 +76,14 @@ pub enum NodeType {
 ///|
 pub fn node_type_values() -> Array[NodeType] {
   [
-    NodeType::Normal,
-    NodeType::LongEdge,
-    NodeType::ExternalPort,
-    NodeType::NorthSouthPort,
-    NodeType::LabelNode,
-    NodeType::BreakingPoint,
-    NodeType::Placeholder,
-    NodeType::NonshiftingPlaceholder,
+    Normal,
+    LongEdge,
+    ExternalPort,
+    NorthSouthPort,
+    LabelNode,
+    BreakingPoint,
+    Placeholder,
+    NonshiftingPlaceholder,
   ]
 }
 
@@ -134,7 +134,7 @@ pub fn new_l_node(graph? : LGraph? = None) -> LNode {
     node_handle: lnode_next_handle(),
     graph,
     layer: None,
-    node_type: NodeType::Normal,
+    node_type: Normal,
     ports: [],
     labels: [],
     nested_graph: None,

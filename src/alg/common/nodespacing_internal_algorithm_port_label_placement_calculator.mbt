@@ -106,14 +106,8 @@ fn port_label_placement_calculator_simple_inside_port_label_placement(
         port_label_cell_rect.y = port_size.y +
           port_border_offset +
           label_border_offset
-        ignore(
-          port_label_cell.set_horizontal_alignment(
-            HorizontalLabelAlignment::Center,
-          ),
-        )
-        ignore(
-          port_label_cell.set_vertical_alignment(VerticalLabelAlignment::Top),
-        )
+        ignore(port_label_cell.set_horizontal_alignment(Center))
+        ignore(port_label_cell.set_vertical_alignment(Top))
       }
       South => {
         port_label_cell_rect.x = if port_context.labels_next_to_port {
@@ -124,14 +118,8 @@ fn port_label_placement_calculator_simple_inside_port_label_placement(
         port_label_cell_rect.y = -port_border_offset -
           label_border_offset -
           port_label_cell_rect.height
-        ignore(
-          port_label_cell.set_horizontal_alignment(
-            HorizontalLabelAlignment::Center,
-          ),
-        )
-        ignore(
-          port_label_cell.set_vertical_alignment(VerticalLabelAlignment::Bottom),
-        )
+        ignore(port_label_cell.set_horizontal_alignment(Center))
+        ignore(port_label_cell.set_vertical_alignment(Bottom))
       }
       East => {
         port_label_cell_rect.x = -port_border_offset -
@@ -147,14 +135,8 @@ fn port_label_placement_calculator_simple_inside_port_label_placement(
         } else {
           port_label_cell_rect.y = port_size.y + port_label_spacing_vertical
         }
-        ignore(
-          port_label_cell.set_horizontal_alignment(
-            HorizontalLabelAlignment::Right,
-          ),
-        )
-        ignore(
-          port_label_cell.set_vertical_alignment(VerticalLabelAlignment::Center),
-        )
+        ignore(port_label_cell.set_horizontal_alignment(Right))
+        ignore(port_label_cell.set_vertical_alignment(Center))
       }
       West => {
         port_label_cell_rect.x = port_size.x +
@@ -170,14 +152,8 @@ fn port_label_placement_calculator_simple_inside_port_label_placement(
         } else {
           port_label_cell_rect.y = port_size.y + port_label_spacing_vertical
         }
-        ignore(
-          port_label_cell.set_horizontal_alignment(
-            HorizontalLabelAlignment::Left,
-          ),
-        )
-        ignore(
-          port_label_cell.set_vertical_alignment(VerticalLabelAlignment::Center),
-        )
+        ignore(port_label_cell.set_horizontal_alignment(Left))
+        ignore(port_label_cell.set_vertical_alignment(Center))
       }
       SideUndefined => ()
     }
@@ -238,12 +214,12 @@ fn port_label_placement_calculator_constrained_inside_port_label_placement(
   let overlap_removal_direction = if port_side is North {
     @core.Downward
   } else {
-    @core.Upward
+    Upward
   }
   let vertical_label_alignment = if port_side is North {
     VerticalLabelAlignment::Top
   } else {
-    VerticalLabelAlignment::Bottom
+    Bottom
   }
 
   let inside_port_label_container = match
@@ -300,9 +276,7 @@ fn port_label_placement_calculator_constrained_inside_port_label_placement(
     port_label_cell_rect.width = port_label_cell.get_minimum_width()
     port_label_cell_rect.height = port_label_cell.get_minimum_height()
     ignore(port_label_cell.set_vertical_alignment(vertical_label_alignment))
-    ignore(
-      port_label_cell.set_horizontal_alignment(HorizontalLabelAlignment::Right),
-    )
+    ignore(port_label_cell.set_horizontal_alignment(Right))
 
     port_label_placement_calculator_center_port_label(
       port_label_cell_rect, port_position, port_size, left_border, right_border,
@@ -378,65 +352,37 @@ fn port_label_placement_calculator_simple_outside_port_label_placement(
         if port_context.labels_next_to_port {
           port_label_cell_rect.x = (port_size.x - port_label_cell_rect.width) /
             2.0
-          ignore(
-            port_label_cell.set_horizontal_alignment(
-              HorizontalLabelAlignment::Center,
-            ),
-          )
+          ignore(port_label_cell.set_horizontal_alignment(Center))
         } else if place_first_port_differently || always_above {
           port_label_cell_rect.x = -port_label_cell_rect.width -
             node_context.port_label_spacing_horizontal
-          ignore(
-            port_label_cell.set_horizontal_alignment(
-              HorizontalLabelAlignment::Right,
-            ),
-          )
+          ignore(port_label_cell.set_horizontal_alignment(Right))
         } else {
           port_label_cell_rect.x = port_size.x +
             node_context.port_label_spacing_horizontal
-          ignore(
-            port_label_cell.set_horizontal_alignment(
-              HorizontalLabelAlignment::Left,
-            ),
-          )
+          ignore(port_label_cell.set_horizontal_alignment(Left))
         }
         port_label_cell_rect.y = -port_label_cell_rect.height -
           node_context.port_label_spacing_vertical
-        ignore(
-          port_label_cell.set_vertical_alignment(VerticalLabelAlignment::Bottom),
-        )
+        ignore(port_label_cell.set_vertical_alignment(Bottom))
       }
       South => {
         if port_context.labels_next_to_port {
           port_label_cell_rect.x = (port_size.x - port_label_cell_rect.width) /
             2.0
-          ignore(
-            port_label_cell.set_horizontal_alignment(
-              HorizontalLabelAlignment::Center,
-            ),
-          )
+          ignore(port_label_cell.set_horizontal_alignment(Center))
         } else if place_first_port_differently || always_above {
           port_label_cell_rect.x = -port_label_cell_rect.width -
             node_context.port_label_spacing_horizontal
-          ignore(
-            port_label_cell.set_horizontal_alignment(
-              HorizontalLabelAlignment::Right,
-            ),
-          )
+          ignore(port_label_cell.set_horizontal_alignment(Right))
         } else {
           port_label_cell_rect.x = port_size.x +
             node_context.port_label_spacing_horizontal
-          ignore(
-            port_label_cell.set_horizontal_alignment(
-              HorizontalLabelAlignment::Left,
-            ),
-          )
+          ignore(port_label_cell.set_horizontal_alignment(Left))
         }
         port_label_cell_rect.y = port_size.y +
           node_context.port_label_spacing_vertical
-        ignore(
-          port_label_cell.set_vertical_alignment(VerticalLabelAlignment::Top),
-        )
+        ignore(port_label_cell.set_vertical_alignment(Top))
       }
       East => {
         if port_context.labels_next_to_port {
@@ -446,33 +392,19 @@ fn port_label_placement_calculator_simple_outside_port_label_placement(
             @graph.label_height(port_label_cell.get_labels()[0])
           }
           port_label_cell_rect.y = (port_size.y - single_label_height) / 2.0
-          ignore(
-            port_label_cell.set_vertical_alignment(
-              VerticalLabelAlignment::Center,
-            ),
-          )
+          ignore(port_label_cell.set_vertical_alignment(Center))
         } else if place_first_port_differently || always_above {
           port_label_cell_rect.y = -port_label_cell_rect.height -
             node_context.port_label_spacing_vertical
-          ignore(
-            port_label_cell.set_vertical_alignment(
-              VerticalLabelAlignment::Bottom,
-            ),
-          )
+          ignore(port_label_cell.set_vertical_alignment(Bottom))
         } else {
           port_label_cell_rect.y = port_size.y +
             node_context.port_label_spacing_vertical
-          ignore(
-            port_label_cell.set_vertical_alignment(VerticalLabelAlignment::Top),
-          )
+          ignore(port_label_cell.set_vertical_alignment(Top))
         }
         port_label_cell_rect.x = port_size.x +
           node_context.port_label_spacing_horizontal
-        ignore(
-          port_label_cell.set_horizontal_alignment(
-            HorizontalLabelAlignment::Left,
-          ),
-        )
+        ignore(port_label_cell.set_horizontal_alignment(Left))
       }
       West => {
         if port_context.labels_next_to_port {
@@ -482,33 +414,19 @@ fn port_label_placement_calculator_simple_outside_port_label_placement(
             @graph.label_height(port_label_cell.get_labels()[0])
           }
           port_label_cell_rect.y = (port_size.y - single_label_height) / 2.0
-          ignore(
-            port_label_cell.set_vertical_alignment(
-              VerticalLabelAlignment::Center,
-            ),
-          )
+          ignore(port_label_cell.set_vertical_alignment(Center))
         } else if place_first_port_differently || always_above {
           port_label_cell_rect.y = -port_label_cell_rect.height -
             node_context.port_label_spacing_vertical
-          ignore(
-            port_label_cell.set_vertical_alignment(
-              VerticalLabelAlignment::Bottom,
-            ),
-          )
+          ignore(port_label_cell.set_vertical_alignment(Bottom))
         } else {
           port_label_cell_rect.y = port_size.y +
             node_context.port_label_spacing_vertical
-          ignore(
-            port_label_cell.set_vertical_alignment(VerticalLabelAlignment::Top),
-          )
+          ignore(port_label_cell.set_vertical_alignment(Top))
         }
         port_label_cell_rect.x = -port_label_cell_rect.width -
           node_context.port_label_spacing_horizontal
-        ignore(
-          port_label_cell.set_horizontal_alignment(
-            HorizontalLabelAlignment::Right,
-          ),
-        )
+        ignore(port_label_cell.set_horizontal_alignment(Right))
       }
       SideUndefined => ()
     }
@@ -538,12 +456,12 @@ fn port_label_placement_calculator_constrained_outside_port_label_placement(
   let overlap_removal_direction = if port_side is North {
     @core.Upward
   } else {
-    @core.Downward
+    Downward
   }
   let vertical_label_alignment = if port_side is North {
     VerticalLabelAlignment::Bottom
   } else {
-    VerticalLabelAlignment::Top
+    Top
   }
 
   let overlap_remover = create_rectangle_strip_overlap_remover_for_direction(
@@ -584,9 +502,7 @@ fn port_label_placement_calculator_constrained_outside_port_label_placement(
         node_context.port_label_spacing_horizontal
     }
     ignore(port_label_cell.set_vertical_alignment(vertical_label_alignment))
-    ignore(
-      port_label_cell.set_horizontal_alignment(HorizontalLabelAlignment::Right),
-    )
+    ignore(port_label_cell.set_horizontal_alignment(Right))
 
     ignore(overlap_remover.add_rectangle(port_label_cell_rect))
     start_coordinate = if port_side is North {

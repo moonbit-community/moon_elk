@@ -7,34 +7,14 @@ fn mrtree_node_placer_layout_processor_configuration(
     @core.layout_processor_configuration_create(
       mrtree_tree_layout_phase_descriptor,
     )
-    .before(MrtreeTreeLayoutPhases::P2NodeOrdering)
-    .add(
-      mrtree_intermediate_processor_factory(
-        MrtreeIntermediateProcessorStrategy::RootProc,
-      ),
-    )
-    .before(MrtreeTreeLayoutPhases::P3NodePlacement)
-    .add(
-      mrtree_intermediate_processor_factory(
-        MrtreeIntermediateProcessorStrategy::LevelHeight,
-      ),
-    )
-    .add(
-      mrtree_intermediate_processor_factory(
-        MrtreeIntermediateProcessorStrategy::NeighborsProc,
-      ),
-    )
-    .before(MrtreeTreeLayoutPhases::P4EdgeRouting)
-    .add(
-      mrtree_intermediate_processor_factory(
-        MrtreeIntermediateProcessorStrategy::DirectionProc,
-      ),
-    )
-    .add(
-      mrtree_intermediate_processor_factory(
-        MrtreeIntermediateProcessorStrategy::NodePositionProc,
-      ),
-    ),
+    .before(P2NodeOrdering)
+    .add(mrtree_intermediate_processor_factory(RootProc))
+    .before(P3NodePlacement)
+    .add(mrtree_intermediate_processor_factory(LevelHeight))
+    .add(mrtree_intermediate_processor_factory(NeighborsProc))
+    .before(P4EdgeRouting)
+    .add(mrtree_intermediate_processor_factory(DirectionProc))
+    .add(mrtree_intermediate_processor_factory(NodePositionProc)),
   )
 }
 

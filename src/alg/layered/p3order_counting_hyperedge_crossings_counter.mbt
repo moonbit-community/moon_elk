@@ -184,11 +184,11 @@ fn hyperedge_counter_port_side_equals(
   right : @core.PortSide,
 ) -> Bool {
   match (left, right) {
-    (@core.PortSide::North, @core.PortSide::North) => true
-    (@core.PortSide::East, @core.PortSide::East) => true
-    (@core.PortSide::South, @core.PortSide::South) => true
-    (@core.PortSide::West, @core.PortSide::West) => true
-    (@core.PortSide::SideUndefined, @core.PortSide::SideUndefined) => true
+    (North, North) => true
+    (East, East) => true
+    (South, South) => true
+    (West, West) => true
+    (SideUndefined, SideUndefined) => true
     _ => false
   }
 }
@@ -223,10 +223,7 @@ pub fn HyperedgeCrossingsCounter::count_crossings(
   for node in right_layer {
     let mut north_input_ports = 0
     for port in node.get_ports() {
-      if hyperedge_counter_port_side_equals(
-          port.get_side(),
-          @core.PortSide::North,
-        ) {
+      if hyperedge_counter_port_side_equals(port.get_side(), North) {
         for edge in port.get_incoming_edges() {
           if hyperedge_counter_crosses_layer_from_right(node, edge) {
             north_input_ports = north_input_ports + 1
@@ -252,10 +249,7 @@ pub fn HyperedgeCrossingsCounter::count_crossings(
       }
 
       if port_edges > 0 {
-        if hyperedge_counter_port_side_equals(
-            port.get_side(),
-            @core.PortSide::North,
-          ) {
+        if hyperedge_counter_port_side_equals(port.get_side(), North) {
           self.port_pos[port.get_id()] = target_count
           target_count = target_count + 1
         } else {

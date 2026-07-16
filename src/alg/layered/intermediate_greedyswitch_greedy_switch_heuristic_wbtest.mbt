@@ -43,45 +43,37 @@ fn greedy_switch_heuristic_test_cross_graph() -> (
   graph.get_layers().push(left_layer)
   graph.get_layers().push(right_layer)
 
-  let left_upper = greedy_switch_heuristic_test_new_node(
-    left_layer,
-    0,
-    NodeType::Normal,
-  )
-  let left_lower = greedy_switch_heuristic_test_new_node(
-    left_layer,
-    1,
-    NodeType::Normal,
-  )
+  let left_upper = greedy_switch_heuristic_test_new_node(left_layer, 0, Normal)
+  let left_lower = greedy_switch_heuristic_test_new_node(left_layer, 1, Normal)
   let right_upper = greedy_switch_heuristic_test_new_node(
     right_layer,
     0,
-    NodeType::Normal,
+    Normal,
   )
   let right_lower = greedy_switch_heuristic_test_new_node(
     right_layer,
     1,
-    NodeType::Normal,
+    Normal,
   )
 
   let left_upper_port = greedy_switch_heuristic_test_new_port(
     left_upper,
-    @core.PortSide::East,
+    East,
     0,
   )
   let left_lower_port = greedy_switch_heuristic_test_new_port(
     left_lower,
-    @core.PortSide::East,
+    East,
     1,
   )
   let right_upper_port = greedy_switch_heuristic_test_new_port(
     right_upper,
-    @core.PortSide::West,
+    West,
     2,
   )
   let right_lower_port = greedy_switch_heuristic_test_new_port(
     right_lower,
-    @core.PortSide::West,
+    West,
     3,
   )
 
@@ -99,10 +91,7 @@ fn greedy_switch_heuristic_test_cross_graph() -> (
 test "GreedySwitchHeuristic one-sided switches free layer to reduce crossings" {
   let (node_order, right_upper, right_lower) = greedy_switch_heuristic_test_cross_graph()
   let graph_data = new_graph_info_holder(node_order)
-  let heuristic = new_greedy_switch_heuristic(
-    GreedySwitchType::OneSided,
-    graph_data,
-  )
+  let heuristic = new_greedy_switch_heuristic(OneSided, graph_data)
   i_initializable_init([heuristic.as_initializable()], node_order)
 
   let improved = heuristic.minimize_crossings(node_order, 1, true, false)
@@ -115,14 +104,8 @@ test "GreedySwitchHeuristic one-sided switches free layer to reduce crossings" {
 ///|
 test "GreedySwitchHeuristic always_improves matches greedy type" {
   let graph_data = new_graph_info_holder([])
-  let one_sided = new_greedy_switch_heuristic(
-    GreedySwitchType::OneSided,
-    graph_data,
-  )
-  let two_sided = new_greedy_switch_heuristic(
-    GreedySwitchType::TwoSided,
-    graph_data,
-  )
+  let one_sided = new_greedy_switch_heuristic(OneSided, graph_data)
+  let two_sided = new_greedy_switch_heuristic(TwoSided, graph_data)
 
   assert_false(one_sided.always_improves())
   assert_true(two_sided.always_improves())

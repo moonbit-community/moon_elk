@@ -349,8 +349,7 @@ fn mrtree_compaction_processor_process(
           }
       }
 
-      if mrtree_graph_edge_routing_mode(graph)
-        is MrtreeEdgeRoutingMode::AVOID_OVERLAP {
+      if mrtree_graph_edge_routing_mode(graph) is AVOID_OVERLAP {
         let mut level_index : Int? = None
         for i in 0..<mrtree_compaction_levels.val.length() {
           let level = mrtree_compaction_levels.val[i]

@@ -10,14 +10,14 @@ fn alternating_layer_unzipper_node_type_equals(
   right : NodeType,
 ) -> Bool {
   match (left, right) {
-    (NodeType::Normal, NodeType::Normal) => true
-    (NodeType::LongEdge, NodeType::LongEdge) => true
-    (NodeType::ExternalPort, NodeType::ExternalPort) => true
-    (NodeType::NorthSouthPort, NodeType::NorthSouthPort) => true
-    (NodeType::LabelNode, NodeType::LabelNode) => true
-    (NodeType::BreakingPoint, NodeType::BreakingPoint) => true
-    (NodeType::Placeholder, NodeType::Placeholder) => true
-    (NodeType::NonshiftingPlaceholder, NodeType::NonshiftingPlaceholder) => true
+    (Normal, Normal) => true
+    (LongEdge, LongEdge) => true
+    (ExternalPort, ExternalPort) => true
+    (NorthSouthPort, NorthSouthPort) => true
+    (LabelNode, LabelNode) => true
+    (BreakingPoint, BreakingPoint) => true
+    (Placeholder, Placeholder) => true
+    (NonshiftingPlaceholder, NonshiftingPlaceholder) => true
     _ => false
   }
 }
@@ -131,7 +131,7 @@ fn alternating_layer_unzipper_create_dummy_node(
   edge_to_split : LEdge,
 ) -> LNode {
   let dummy_node = new_l_node(graph=Some(graph))
-  dummy_node.set_type(NodeType::LongEdge)
+  dummy_node.set_type(LongEdge)
   dummy_node.set_property_l_edge(
     internal_properties_origin_l_edge,
     Some(edge_to_split),
@@ -192,7 +192,7 @@ fn alternating_layer_unzipper_shift_node(
     let mut layer_index = 0
     while layer_index < target_layer {
       let dummy_node = new_l_node(graph=Some(graph))
-      dummy_node.set_type(NodeType::Placeholder)
+      dummy_node.set_type(Placeholder)
 
       if node_index + edge_count > sub_layers[layer_index].get_nodes().length() {
         dummy_node.set_layer(Some(sub_layers[layer_index]))
@@ -232,7 +232,7 @@ fn alternating_layer_unzipper_shift_node(
     while layer_index <= target_layer {
       if extra_edge {
         let placeholder = new_l_node(graph=Some(graph))
-        placeholder.set_type(NodeType::NonshiftingPlaceholder)
+        placeholder.set_type(NonshiftingPlaceholder)
         if node_index + 1 > sub_layers[layer_index].get_nodes().length() {
           placeholder.set_layer(Some(sub_layers[layer_index]))
         } else {
@@ -344,7 +344,7 @@ fn alternating_layer_unzipper_process(
         let node = sub_layers[0].get_nodes()[node_index]
         if !alternating_layer_unzipper_node_type_equals(
             node.get_type(),
-            NodeType::NonshiftingPlaceholder,
+            NonshiftingPlaceholder,
           ) {
           node_index += alternating_layer_unzipper_shift_node(
             graph,
@@ -358,10 +358,7 @@ fn alternating_layer_unzipper_process(
         }
 
         if reset_on_long_edges &&
-          alternating_layer_unzipper_node_type_equals(
-            node.get_type(),
-            NodeType::LongEdge,
-          ) {
+          alternating_layer_unzipper_node_type_equals(node.get_type(), LongEdge) {
           target_sub_layer = -1
         }
 
@@ -387,13 +384,10 @@ fn alternating_layer_unzipper_process(
     let mut i = 0
     while i < nodes.length() {
       let node_type = nodes[i].get_type()
-      if alternating_layer_unzipper_node_type_equals(
-          node_type,
-          NodeType::Placeholder,
-        ) ||
+      if alternating_layer_unzipper_node_type_equals(node_type, Placeholder) ||
         alternating_layer_unzipper_node_type_equals(
           node_type,
-          NodeType::NonshiftingPlaceholder,
+          NonshiftingPlaceholder,
         ) {
         ignore(nodes.remove(i))
       } else {

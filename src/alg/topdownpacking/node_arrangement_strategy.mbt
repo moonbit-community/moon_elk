@@ -8,9 +8,9 @@ pub fn topdownpacking_node_arrangement_strategy_from_string(
   value : String,
 ) -> NodeArrangementStrategy {
   if value == "LEFT_RIGHT_TOP_DOWN_NODE_PLACER" {
-    NodeArrangementStrategy::LEFT_RIGHT_TOP_DOWN_NODE_PLACER
+    LEFT_RIGHT_TOP_DOWN_NODE_PLACER
   } else {
-    NodeArrangementStrategy::LEFT_RIGHT_TOP_DOWN_NODE_PLACER
+    LEFT_RIGHT_TOP_DOWN_NODE_PLACER
   }
 }
 

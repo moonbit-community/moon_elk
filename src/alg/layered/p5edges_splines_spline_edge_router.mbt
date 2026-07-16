@@ -78,8 +78,8 @@ pub fn spline_edge_router_is_straight(
 ///|
 pub fn spline_edge_router_is_normal_node(node : LNode) -> Bool {
   match node.get_type() {
-    NodeType::Normal => true
-    NodeType::BreakingPoint => true
+    Normal => true
+    BreakingPoint => true
     _ => false
   }
 }
@@ -87,10 +87,10 @@ pub fn spline_edge_router_is_normal_node(node : LNode) -> Bool {
 ///|
 pub fn spline_edge_router_is_qualified_as_starting_node(node : LNode) -> Bool {
   match node.get_type() {
-    NodeType::Normal => true
-    NodeType::NorthSouthPort => true
-    NodeType::ExternalPort => true
-    NodeType::BreakingPoint => true
+    Normal => true
+    NorthSouthPort => true
+    ExternalPort => true
+    BreakingPoint => true
     _ => false
   }
 }
@@ -138,7 +138,7 @@ fn spline_edge_router_port_side_equals(
     (East, East) => true
     (South, South) => true
     (West, West) => true
-    (@core.PortSide::SideUndefined, @core.PortSide::SideUndefined) => true
+    (SideUndefined, SideUndefined) => true
     _ => false
   }
 }
@@ -146,12 +146,12 @@ fn spline_edge_router_port_side_equals(
 ///|
 fn spline_edge_router_is_external_west_or_east_port(node : LNode) -> Bool {
   match node.get_type() {
-    NodeType::ExternalPort => {
+    ExternalPort => {
       let ext_port_side = node.get_property_port_side(
         internal_properties_ext_port_side,
       )
-      spline_edge_router_port_side_equals(ext_port_side, @core.PortSide::West) ||
-      spline_edge_router_port_side_equals(ext_port_side, @core.PortSide::East)
+      spline_edge_router_port_side_equals(ext_port_side, West) ||
+      spline_edge_router_port_side_equals(ext_port_side, East)
     }
     _ => false
   }
@@ -494,7 +494,7 @@ fn spline_edge_router_clear_then_fill_mappings(
   match left_layer {
     Some(layer) =>
       for node in layer.get_nodes() {
-        for source_port in node.get_ports_by_side(@core.PortSide::East) {
+        for source_port in node.get_ports_by_side(East) {
           spline_edge_router_port_set_add(left_ports_layer, source_port)
 
           for edge in source_port.get_outgoing_edges() {
@@ -540,7 +540,7 @@ fn spline_edge_router_clear_then_fill_mappings(
           }
         }
 
-        for source_port in node.get_ports_by_side(@core.PortSide::West) {
+        for source_port in node.get_ports_by_side(West) {
           spline_edge_router_port_set_add(right_ports_layer, source_port)
 
           for edge in source_port.get_outgoing_edges() {
@@ -648,7 +648,7 @@ fn spline_edge_router_create_spline_segments_for_hyper_edges(
         ) {
         SplineSideToProcess::Left
       } else {
-        SplineSideToProcess::Right
+        Right
       }
 
       if other_position < single_port_position {
@@ -1105,16 +1105,12 @@ fn spline_edge_router_configuration(
   ignore(
     configuration
     .add_after(
-      LayeredPhases::P5EdgeRouting,
-      layered_intermediate_processor_factory(
-        IntermediateProcessorStrategy::FinalSplineBendpointsCalculator,
-      ),
+      P5EdgeRouting,
+      layered_intermediate_processor_factory(FinalSplineBendpointsCalculator),
     )
     .add_before(
-      LayeredPhases::P3NodeOrdering,
-      layered_intermediate_processor_factory(
-        IntermediateProcessorStrategy::InvertedPortProcessor,
-      ),
+      P3NodeOrdering,
+      layered_intermediate_processor_factory(InvertedPortProcessor),
     ),
   )
 
@@ -1126,28 +1122,16 @@ fn spline_edge_router_configuration(
     ignore(
       configuration
       .add_before(
-        LayeredPhases::P1CycleBreaking,
-        layered_intermediate_processor_factory(
-          IntermediateProcessorStrategy::SelfLoopPreprocessor,
-        ),
+        P1CycleBreaking,
+        layered_intermediate_processor_factory(SelfLoopPreprocessor),
       )
       .add_after(
-        LayeredPhases::P5EdgeRouting,
-        layered_intermediate_processor_factory(
-          IntermediateProcessorStrategy::SelfLoopPostprocessor,
-        ),
+        P5EdgeRouting,
+        layered_intermediate_processor_factory(SelfLoopPostprocessor),
       )
-      .before(LayeredPhases::P4NodePlacement)
-      .add(
-        layered_intermediate_processor_factory(
-          IntermediateProcessorStrategy::SelfLoopPortRestorer,
-        ),
-      )
-      .add(
-        layered_intermediate_processor_factory(
-          IntermediateProcessorStrategy::SelfLoopRouter,
-        ),
-      ),
+      .before(P4NodePlacement)
+      .add(layered_intermediate_processor_factory(SelfLoopPortRestorer))
+      .add(layered_intermediate_processor_factory(SelfLoopRouter)),
     )
   }
 
@@ -1155,28 +1139,20 @@ fn spline_edge_router_configuration(
     ignore(
       configuration
       .add_before(
-        LayeredPhases::P2Layering,
-        layered_intermediate_processor_factory(
-          IntermediateProcessorStrategy::LabelDummyInserter,
-        ),
+        P2Layering,
+        layered_intermediate_processor_factory(LabelDummyInserter),
       )
       .add_before(
-        LayeredPhases::P4NodePlacement,
-        layered_intermediate_processor_factory(
-          IntermediateProcessorStrategy::LabelDummySwitcher,
-        ),
+        P4NodePlacement,
+        layered_intermediate_processor_factory(LabelDummySwitcher),
       )
       .add_before(
-        LayeredPhases::P4NodePlacement,
-        layered_intermediate_processor_factory(
-          IntermediateProcessorStrategy::LabelSideSelector,
-        ),
+        P4NodePlacement,
+        layered_intermediate_processor_factory(LabelSideSelector),
       )
       .add_after(
-        LayeredPhases::P5EdgeRouting,
-        layered_intermediate_processor_factory(
-          IntermediateProcessorStrategy::LabelDummyRemover,
-        ),
+        P5EdgeRouting,
+        layered_intermediate_processor_factory(LabelDummyRemover),
       ),
     )
   }
@@ -1188,16 +1164,12 @@ fn spline_edge_router_configuration(
     ignore(
       configuration
       .add_before(
-        LayeredPhases::P3NodeOrdering,
-        layered_intermediate_processor_factory(
-          IntermediateProcessorStrategy::NorthSouthPortPreprocessor,
-        ),
+        P3NodeOrdering,
+        layered_intermediate_processor_factory(NorthSouthPortPreprocessor),
       )
       .add_before(
-        LayeredPhases::P5EdgeRouting,
-        layered_intermediate_processor_factory(
-          IntermediateProcessorStrategy::NorthSouthPortPostprocessor,
-        ),
+        P5EdgeRouting,
+        layered_intermediate_processor_factory(NorthSouthPortPostprocessor),
       ),
     )
   }
@@ -1206,22 +1178,16 @@ fn spline_edge_router_configuration(
     ignore(
       configuration
       .add_before(
-        LayeredPhases::P4NodePlacement,
-        layered_intermediate_processor_factory(
-          IntermediateProcessorStrategy::LabelSideSelector,
-        ),
+        P4NodePlacement,
+        layered_intermediate_processor_factory(LabelSideSelector),
       )
       .add_before(
-        LayeredPhases::P4NodePlacement,
-        layered_intermediate_processor_factory(
-          IntermediateProcessorStrategy::EndLabelPreprocessor,
-        ),
+        P4NodePlacement,
+        layered_intermediate_processor_factory(EndLabelPreprocessor),
       )
       .add_after(
-        LayeredPhases::P5EdgeRouting,
-        layered_intermediate_processor_factory(
-          IntermediateProcessorStrategy::EndLabelPostprocessor,
-        ),
+        P5EdgeRouting,
+        layered_intermediate_processor_factory(EndLabelPostprocessor),
       ),
     )
   }
@@ -1261,7 +1227,7 @@ fn spline_edge_router_process(
       layered_options_edge_routing_splines_mode,
     )
     let sloppy_routing = match mode {
-      SplineRoutingMode::Sloppy => true
+      Sloppy => true
       _ => false
     }
     let sloppy_layer_spacing_factor = layered_graph.get_property_double(

@@ -56,29 +56,23 @@ fn rectpacking_get_phase_independent_layout_processor_configuration(
 
   ignore(
     configuration.add_before(
-      RectPackingLayoutPhases::P1_WIDTH_APPROXIMATION,
-      rectpacking_intermediate_processor_factory(
-        RectpackingIntermediateProcessorStrategy::MIN_SIZE_PRE_PROCESSOR,
-      ),
+      P1_WIDTH_APPROXIMATION,
+      rectpacking_intermediate_processor_factory(MIN_SIZE_PRE_PROCESSOR),
     ),
   )
 
   ignore(
     configuration.add_before(
-      RectPackingLayoutPhases::P2_PACKING,
-      rectpacking_intermediate_processor_factory(
-        RectpackingIntermediateProcessorStrategy::MIN_SIZE_POST_PROCESSOR,
-      ),
+      P2_PACKING,
+      rectpacking_intermediate_processor_factory(MIN_SIZE_POST_PROCESSOR),
     ),
   )
 
   if @graph.node_get_bool_property(layout_graph, rectpacking_order_by_size) {
     ignore(
       configuration.add_before(
-        RectPackingLayoutPhases::P1_WIDTH_APPROXIMATION,
-        rectpacking_intermediate_processor_factory(
-          RectpackingIntermediateProcessorStrategy::NODE_SIZE_REORDERER,
-        ),
+        P1_WIDTH_APPROXIMATION,
+        rectpacking_intermediate_processor_factory(NODE_SIZE_REORDERER),
       ),
     )
   }
@@ -86,10 +80,8 @@ fn rectpacking_get_phase_independent_layout_processor_configuration(
   if @graph.node_get_bool_property(layout_graph, rectpacking_interactive) {
     ignore(
       configuration.add_before(
-        RectPackingLayoutPhases::P1_WIDTH_APPROXIMATION,
-        rectpacking_intermediate_processor_factory(
-          RectpackingIntermediateProcessorStrategy::INTERACTIVE_NODE_REORDERER,
-        ),
+        P1_WIDTH_APPROXIMATION,
+        rectpacking_intermediate_processor_factory(INTERACTIVE_NODE_REORDERER),
       ),
     )
   }
@@ -106,7 +98,7 @@ pub fn RectPackingLayoutProvider::assemble_algorithm(
 
   ignore(
     self.algorithm_assembler.set_phase(
-      RectPackingLayoutPhases::P1_WIDTH_APPROXIMATION,
+      P1_WIDTH_APPROXIMATION,
       rectpacking_width_approximation_strategy_phase_factory(
         rectpacking_width_approximation_strategy_from_string(
           @graph.node_get_string_property(
@@ -119,7 +111,7 @@ pub fn RectPackingLayoutProvider::assemble_algorithm(
 
   ignore(
     self.algorithm_assembler.set_phase(
-      RectPackingLayoutPhases::P2_PACKING,
+      P2_PACKING,
       rectpacking_packing_strategy_phase_factory(
         rectpacking_packing_strategy_from_string(
           @graph.node_get_string_property(
@@ -132,7 +124,7 @@ pub fn RectPackingLayoutProvider::assemble_algorithm(
 
   ignore(
     self.algorithm_assembler.set_phase(
-      RectPackingLayoutPhases::P3_WHITESPACE_ELIMINATION,
+      P3_WHITESPACE_ELIMINATION,
       rectpacking_whitespace_elimination_strategy_phase_factory(
         rectpacking_whitespace_elimination_strategy_from_string(
           @graph.node_get_string_property(

@@ -15,9 +15,9 @@ fn breaking_point_inserter_cutting_strategy_from_string(
   value : String,
 ) -> CuttingStrategy {
   match value {
-    "MANUAL" => CuttingStrategy::Manual
-    "ARD" => CuttingStrategy::Ard
-    _ => CuttingStrategy::Msd
+    "MANUAL" => Manual
+    "ARD" => Ard
+    _ => Msd
   }
 }
 
@@ -26,9 +26,9 @@ fn breaking_point_inserter_validify_strategy_from_string(
   value : String,
 ) -> ValidifyStrategy {
   match value {
-    "LOOK_BACK" => ValidifyStrategy::LookBack
-    "GREEDY" => ValidifyStrategy::Greedy
-    _ => ValidifyStrategy::No
+    "LOOK_BACK" => LookBack
+    "GREEDY" => Greedy
+    _ => No
   }
 }
 
@@ -79,7 +79,7 @@ fn breaking_point_inserter_node_type_is_breaking_point(
   node_type : NodeType,
 ) -> Bool {
   match node_type {
-    NodeType::BreakingPoint => true
+    BreakingPoint => true
     _ => false
   }
 }
@@ -407,7 +407,7 @@ fn breaking_point_inserter_apply_cuts(
           @core.port_constraints, "FIXED_SIDE",
         )
         bp_start_marker.set_layer(Some(bp_layer_1))
-        bp_start_marker.set_type(NodeType::BreakingPoint)
+        bp_start_marker.set_type(BreakingPoint)
         let in_port_bp_1 = new_l_port()
         in_port_bp_1.set_node(Some(bp_start_marker))
         in_port_bp_1.set_side(breaking_point_inserter_port_side("WEST"))
@@ -418,7 +418,7 @@ fn breaking_point_inserter_apply_cuts(
         let bp_end_marker = new_l_node(graph=Some(graph))
         bp_end_marker.set_property_string(@core.port_constraints, "FIXED_SIDE")
         bp_end_marker.set_layer(Some(bp_layer_2))
-        bp_end_marker.set_type(NodeType::BreakingPoint)
+        bp_end_marker.set_type(BreakingPoint)
         let in_port_bp_2 = new_l_port()
         in_port_bp_2.set_node(Some(bp_end_marker))
         in_port_bp_2.set_side(breaking_point_inserter_port_side("WEST"))
@@ -507,8 +507,8 @@ fn breaking_point_inserter_process(
       graph.get_property_string(layered_options_wrapping_cutting_strategy),
     )
     let calculator = match cutting_strategy {
-      CuttingStrategy::Manual => new_manual_cut_index_calculator()
-      CuttingStrategy::Ard => new_ard_cut_index_heuristic()
+      Manual => new_manual_cut_index_calculator()
+      Ard => new_ard_cut_index_heuristic()
       _ => new_msd_cut_index_heuristic()
     }
 
@@ -524,11 +524,11 @@ fn breaking_point_inserter_process(
         graph.get_property_string(layered_options_wrapping_validify_strategy),
       )
       match validify_strategy {
-        ValidifyStrategy::LookBack =>
+        LookBack =>
           cuts = single_edge_graph_wrapper_validify_indexes_looking_back(
             graph_stats, cuts,
           )
-        ValidifyStrategy::Greedy =>
+        Greedy =>
           cuts = single_edge_graph_wrapper_validify_indexes_greedily(
             graph_stats, cuts,
           )

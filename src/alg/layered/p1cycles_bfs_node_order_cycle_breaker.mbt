@@ -50,7 +50,7 @@ fn bfs_node_order_state_group_model_order(
         layered_options_consider_model_order_group_model_order_cb_group_order_strategy,
       ),
     ),
-    GroupOrderStrategy::Enforced,
+    Enforced,
   )
 }
 
@@ -170,10 +170,8 @@ fn bfs_node_order_configuration(
   ignore(graph)
   Some(
     @core.layout_processor_configuration_create(layered_phase_descriptor).add_after(
-      LayeredPhases::P5EdgeRouting,
-      layered_intermediate_processor_factory(
-        IntermediateProcessorStrategy::ReversedEdgeRestorer,
-      ),
+      P5EdgeRouting,
+      layered_intermediate_processor_factory(ReversedEdgeRestorer),
     ),
   )
 }

@@ -25,10 +25,10 @@ fn core_ui_test_make_setup(
   @service.new_layout_setup(
     obj => {
       match obj {
-        @service.WorkbenchPartObject(value) => value == workbench_id
-        @service.DiagramPartObject(_) => true
-        @service.SelectionObject(_) => false
-        @service.OtherObject => false
+        WorkbenchPartObject(value) => value == workbench_id
+        DiagramPartObject(_) => true
+        SelectionObject(_) => false
+        OtherObject => false
       }
     },
     default_module => {
@@ -297,7 +297,7 @@ test "ElkUiUtil and property source stack perform translations and validation" {
     "opt.flag",
     name="Flag",
     option_type=BoolType,
-    targets=[@core.NodesTarget],
+    targets=[NodesTarget],
   )
   let threshold_option = @core.new_layout_option_data(
     "opt.threshold",
@@ -305,7 +305,7 @@ test "ElkUiUtil and property source stack perform translations and validation" {
     description="Threshold. Long description.",
     option_type=DoubleType,
     lower_bound=Some(1.0),
-    targets=[@core.ParentsTarget],
+    targets=[ParentsTarget],
   )
   threshold_option.add_dependency("opt.flag", expected_value=Some("true"))
   let mode_option = @core.new_layout_option_data(
@@ -313,7 +313,7 @@ test "ElkUiUtil and property source stack perform translations and validation" {
     name="Mode",
     option_type=StringType,
     choices=["A", "B"],
-    targets=[@core.NodesTarget],
+    targets=[NodesTarget],
     visibility=AdvancedOption,
   )
   mode_option.mark_advanced_choice("B")
@@ -322,7 +322,7 @@ test "ElkUiUtil and property source stack perform translations and validation" {
       @core.algorithm.get_id(),
       name="Algorithm",
       option_type=StringType,
-      targets=[@core.ParentsTarget],
+      targets=[ParentsTarget],
     ),
   )
   @core.layout_meta_data_service_register_option(flag_option)
@@ -353,7 +353,7 @@ test "ElkUiUtil and property source stack perform translations and validation" {
   options["opt.mode"] = "B"
   let config = @service.new_simple_layout_configuration_store(
     options~,
-    option_targets=[@core.ParentsTarget, @core.NodesTarget],
+    option_targets=[ParentsTarget, NodesTarget],
     editing_domain=Some(42),
   )
   let manager = @service.new_layout_configuration_manager()
@@ -429,14 +429,14 @@ test "Validating property sheet entry builds overlay image and error description
     name="Numeric",
     option_type=DoubleType,
     lower_bound=Some(1.0),
-    targets=[@core.NodesTarget],
+    targets=[NodesTarget],
   )
   @core.layout_meta_data_service_register_option(
     @core.new_layout_option_data(
       @core.algorithm.get_id(),
       name="Algorithm",
       option_type=StringType,
-      targets=[@core.ParentsTarget],
+      targets=[ParentsTarget],
     ),
   )
   @core.layout_meta_data_service_register_option(numeric)
@@ -448,7 +448,7 @@ test "Validating property sheet entry builds overlay image and error description
   numeric_options["opt.numeric"] = "2.0"
   let config = @service.new_simple_layout_configuration_store(
     options=numeric_options,
-    option_targets=[@core.NodesTarget],
+    option_targets=[NodesTarget],
   )
   let source = new_layout_property_source(
     config,
@@ -458,7 +458,7 @@ test "Validating property sheet entry builds overlay image and error description
   let descriptor = new_layout_property_descriptor(
     source,
     numeric,
-    Some([@core.NodesTarget]),
+    Some([NodesTarget]),
   )
 
   let entry = new_validating_property_sheet_entry()
@@ -490,7 +490,7 @@ test "Layout view handler, cell editors, and rendering stack integrate" {
       @core.algorithm.get_id(),
       name="Algorithm",
       option_type=StringType,
-      targets=[@core.ParentsTarget],
+      targets=[ParentsTarget],
     ),
   )
 

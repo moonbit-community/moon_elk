@@ -213,7 +213,7 @@ fn network_simplex_node_requires_more_height_for_flexible_ports(
     }
   }
 
-  let west_ports = node.get_port_side_view(@core.PortSide::West)
+  let west_ports = node.get_port_side_view(West)
   let required_west_height = additional_port_spacing.top +
     additional_port_spacing.bottom +
     (west_ports.length() - 1).to_double() * port_spacing
@@ -221,7 +221,7 @@ fn network_simplex_node_requires_more_height_for_flexible_ports(
     return true
   }
 
-  let east_ports = node.get_port_side_view(@core.PortSide::East)
+  let east_ports = node.get_port_side_view(East)
   let required_east_height = additional_port_spacing.top +
     additional_port_spacing.bottom +
     (east_ports.length() - 1).to_double() * port_spacing
@@ -231,7 +231,7 @@ fn network_simplex_node_requires_more_height_for_flexible_ports(
 ///|
 fn network_simplex_node_type_is_normal(node_type : NodeType) -> Bool {
   match node_type {
-    NodeType::Normal => true
+    Normal => true
     _ => false
   }
 }
@@ -239,7 +239,7 @@ fn network_simplex_node_type_is_normal(node_type : NodeType) -> Bool {
 ///|
 fn network_simplex_node_type_is_long_edge(node_type : NodeType) -> Bool {
   match node_type {
-    NodeType::LongEdge => true
+    LongEdge => true
     _ => false
   }
 }
@@ -247,8 +247,8 @@ fn network_simplex_node_type_is_long_edge(node_type : NodeType) -> Bool {
 ///|
 fn network_simplex_port_side_is_east_west(port_side : @core.PortSide) -> Bool {
   match port_side {
-    @core.PortSide::East => true
-    @core.PortSide::West => true
+    East => true
+    West => true
     _ => false
   }
 }
@@ -585,15 +585,11 @@ fn network_simplex_transform_fixed_order_node(
   }
 
   network_simplex_transform_ports(
-    network_simplex_reverse_ports(node.get_port_side_view(@core.PortSide::West)),
+    network_simplex_reverse_ports(node.get_port_side_view(West)),
     corners,
     state,
   )
-  network_simplex_transform_ports(
-    node.get_port_side_view(@core.PortSide::East),
-    corners,
-    state,
-  )
+  network_simplex_transform_ports(node.get_port_side_view(East), corners, state)
   corners
 }
 
@@ -754,7 +750,7 @@ fn network_simplex_insert_north_south_auxiliary_edges(
 ) -> Unit {
   for layer in layered_graph.get_layers() {
     for node in layer.get_nodes() {
-      for port in node.get_port_side_view(@core.PortSide::South) {
+      for port in node.get_port_side_view(South) {
         match port.get_property_l_node(internal_properties_port_dummy) {
           Some(other) =>
             ignore(
@@ -769,7 +765,7 @@ fn network_simplex_insert_north_south_auxiliary_edges(
           None => ()
         }
       }
-      for port in node.get_port_side_view(@core.PortSide::North) {
+      for port in node.get_port_side_view(North) {
         match port.get_property_l_node(internal_properties_port_dummy) {
           Some(other) =>
             ignore(
@@ -791,11 +787,11 @@ fn network_simplex_insert_north_south_auxiliary_edges(
 ///|
 fn network_simplex_get_other_port_or_abort(edge : LEdge, port : LPort) -> LPort {
   try edge.get_other_port(port) catch {
-    LEdgeException::IllegalArgumentException(message) => {
+    IllegalArgumentException(message) => {
       @core.layout_runtime_report_unsupported_configuration(message)
       port
     }
-    LEdgeException::IllegalStateException(message) => {
+    IllegalStateException(message) => {
       @core.layout_runtime_report_unsupported_configuration(message)
       port
     }
@@ -807,11 +803,11 @@ fn network_simplex_get_other_port_or_abort(edge : LEdge, port : LPort) -> LPort 
 ///|
 fn network_simplex_get_other_node_or_abort(edge : LEdge, node : LNode) -> LNode {
   try edge.get_other_node(node) catch {
-    LEdgeException::IllegalArgumentException(message) => {
+    IllegalArgumentException(message) => {
       @core.layout_runtime_report_unsupported_configuration(message)
       node
     }
-    LEdgeException::IllegalStateException(message) => {
+    IllegalStateException(message) => {
       @core.layout_runtime_report_unsupported_configuration(message)
       node
     }
@@ -1023,7 +1019,7 @@ fn network_simplex_mark_crossing_edges(
 ) -> Unit {
   let open_edges : Array[LEdge] = []
   for node in left.get_nodes() {
-    for port in node.get_port_side_view(@core.PortSide::East) {
+    for port in node.get_port_side_view(East) {
       for edge in port.get_outgoing_edges() {
         if edge.is_in_layer_edge() || edge.is_self_loop() {
           continue
@@ -1042,7 +1038,7 @@ fn network_simplex_mark_crossing_edges(
   while right_index > 0 {
     right_index -= 1
     let node = right_nodes[right_index]
-    for port in node.get_port_side_view(@core.PortSide::West) {
+    for port in node.get_port_side_view(West) {
       for edge in port.get_incoming_edges() {
         if edge.is_in_layer_edge() || edge.is_self_loop() {
           continue
@@ -1272,15 +1268,9 @@ fn network_simplex_prefer_straight_edges(
       let edge = path[i]
       let rep = network_simplex_require_edge_rep(state, edge)
       let mut weight = if i == 0 || i == path.length() - 1 {
-        network_simplex_node_type_edge_weight(
-          NodeType::Normal,
-          NodeType::LongEdge,
-        )
+        network_simplex_node_type_edge_weight(Normal, LongEdge)
       } else {
-        network_simplex_node_type_edge_weight(
-          NodeType::LongEdge,
-          NodeType::LongEdge,
-        )
+        network_simplex_node_type_edge_weight(LongEdge, LongEdge)
       }
       weight *= network_simplex_long_edge_vs_path_factor
       rep.left.set_weight(
@@ -1494,7 +1484,7 @@ fn network_simplex_apply_positions(
         if network_simplex_node_flexibility_is_flexible_size_where_space_permits(
             node_flexibility,
           ) {
-          for south_port in node.get_port_side_view(@core.PortSide::South) {
+          for south_port in node.get_port_side_view(South) {
             south_port.get_position().y += size_delta
           }
         }
@@ -1582,14 +1572,14 @@ pub fn new_network_simplex_placer_layout_phase() -> @core.ILayoutProcessor[
         internal_properties_graph_properties,
       ) {
       match property {
-        GraphProperties::ExternalPorts =>
+        ExternalPorts =>
           return Some(
             @core.layout_processor_configuration_create(
               layered_phase_descriptor,
             ).add_before(
-              LayeredPhases::P5EdgeRouting,
+              P5EdgeRouting,
               layered_intermediate_processor_factory(
-                IntermediateProcessorStrategy::HierarchicalPortPositionProcessor,
+                HierarchicalPortPositionProcessor,
               ),
             ),
           )

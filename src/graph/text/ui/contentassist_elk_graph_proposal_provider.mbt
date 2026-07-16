@@ -136,10 +136,10 @@ pub fn ElkGraphUiProposalProvider::get_layout_option_image(
 ) -> String {
   ignore(self)
   let key = match option.get_type() {
-    @core.BoolType => if value == "false" { "prop_false" } else { "prop_true" }
-    @core.IntType => "prop_int"
-    @core.DoubleType => "prop_double"
-    @core.EnumSetType => "prop_choice"
+    BoolType => if value == "false" { "prop_false" } else { "prop_true" }
+    IntType => "prop_int"
+    DoubleType => "prop_double"
+    EnumSetType => "prop_choice"
     _ => "prop_text"
   }
   key + ".gif"

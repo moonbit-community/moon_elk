@@ -7,7 +7,7 @@ fn greedy_switch_processor_test_cross_types() -> Array[CrossMinType] {
 ///|
 fn greedy_switch_processor_test_is_one_sided(cross_type : CrossMinType) -> Bool {
   match cross_type {
-    CrossMinType::OneSidedGreedySwitch => true
+    OneSidedGreedySwitch => true
     _ => false
   }
 }

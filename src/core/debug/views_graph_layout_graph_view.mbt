@@ -134,7 +134,7 @@ pub fn LayoutGraphView::show_logged_graph(
   graph_info : @core.LoggedGraph,
 ) -> Unit {
   match graph_info.graph_type {
-    @core.ElkGraph =>
+    ElkGraph =>
       if self.visual_graph is None {
         self.show_graph_on_canvas(Some(@graph.create_graph()))
       } else {

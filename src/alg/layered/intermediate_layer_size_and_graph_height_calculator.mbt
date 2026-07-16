@@ -3,7 +3,7 @@ fn layer_size_and_graph_height_calculator_is_external_port(
   node : LNode,
 ) -> Bool {
   match node.get_type() {
-    NodeType::ExternalPort => true
+    ExternalPort => true
     _ => false
   }
 }

@@ -11,14 +11,14 @@ pub suberror GraphJsonTextActivatorException {
 fn[T] graph_json_text_activator_raise_illegal_argument(
   message : String,
 ) -> T raise GraphJsonTextActivatorException {
-  raise GraphJsonTextActivatorException::IllegalArgumentException(message)
+  raise IllegalArgumentException(message)
 }
 
 ///|
 fn[T] graph_json_text_activator_raise_runtime(
   message : String,
 ) -> T raise GraphJsonTextActivatorException {
-  raise GraphJsonTextActivatorException::RuntimeException(message)
+  raise RuntimeException(message)
 }
 
 ///|

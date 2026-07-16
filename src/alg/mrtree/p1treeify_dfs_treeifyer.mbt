@@ -7,10 +7,8 @@ fn mrtree_dfs_treeifyer_configuration(
     @core.layout_processor_configuration_create(
       mrtree_tree_layout_phase_descriptor,
     ).add_after(
-      MrtreeTreeLayoutPhases::P3NodePlacement,
-      mrtree_intermediate_processor_factory(
-        MrtreeIntermediateProcessorStrategy::DetreeifyingProc,
-      ),
+      P3NodePlacement,
+      mrtree_intermediate_processor_factory(DetreeifyingProc),
     ),
   )
 }
@@ -88,10 +86,8 @@ fn mrtree_dfs_treeifyer_collect_edges(
     let node_id = mrtree_node_id(node)
     if visited[node_id] == 0 {
       match treeifying_order {
-        MrtreeTreeifyingOrder::DFS =>
-          mrtree_dfs_treeifyer_dfs(node, visited, eliminated)
-        MrtreeTreeifyingOrder::BFS =>
-          mrtree_dfs_treeifyer_bfs(node, visited, eliminated)
+        DFS => mrtree_dfs_treeifyer_dfs(node, visited, eliminated)
+        BFS => mrtree_dfs_treeifyer_bfs(node, visited, eliminated)
       }
       visited[node_id] = 2
     }

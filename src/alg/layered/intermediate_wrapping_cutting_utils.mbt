@@ -41,14 +41,14 @@ fn cutting_utils_require_port_node(
 ///|
 fn cutting_utils_node_type_equals(left : NodeType, right : NodeType) -> Bool {
   match (left, right) {
-    (NodeType::Normal, NodeType::Normal) => true
-    (NodeType::LongEdge, NodeType::LongEdge) => true
-    (NodeType::ExternalPort, NodeType::ExternalPort) => true
-    (NodeType::NorthSouthPort, NodeType::NorthSouthPort) => true
-    (NodeType::LabelNode, NodeType::LabelNode) => true
-    (NodeType::BreakingPoint, NodeType::BreakingPoint) => true
-    (NodeType::Placeholder, NodeType::Placeholder) => true
-    (NodeType::NonshiftingPlaceholder, NodeType::NonshiftingPlaceholder) => true
+    (Normal, Normal) => true
+    (LongEdge, LongEdge) => true
+    (ExternalPort, ExternalPort) => true
+    (NorthSouthPort, NorthSouthPort) => true
+    (LabelNode, LabelNode) => true
+    (BreakingPoint, BreakingPoint) => true
+    (Placeholder, Placeholder) => true
+    (NonshiftingPlaceholder, NonshiftingPlaceholder) => true
     _ => false
   }
 }
@@ -111,10 +111,7 @@ fn cutting_utils_set_dummy_properties(
     cutting_utils_require_edge_source(in_edge),
   )
 
-  if cutting_utils_node_type_equals(
-      in_edge_source_node.get_type(),
-      NodeType::LongEdge,
-    ) {
+  if cutting_utils_node_type_equals(in_edge_source_node.get_type(), LongEdge) {
     dummy.set_property_l_port(
       internal_properties_long_edge_source,
       in_edge_source_node.get_property_l_port(
@@ -176,7 +173,7 @@ pub fn cutting_utils_insert_dummies(
   let mut i = source_index
   while i <= target_index {
     let dummy_node = new_l_node(graph=Some(layered_graph))
-    dummy_node.set_type(NodeType::LongEdge)
+    dummy_node.set_type(LongEdge)
     dummy_node.set_property_l_edge(
       internal_properties_origin_l_edge,
       Some(edge),

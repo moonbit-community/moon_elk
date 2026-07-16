@@ -39,7 +39,7 @@ pub fn new_l_port() -> LPort {
     shape: new_l_shape(),
     port_handle: lport_next_handle(),
     owner: None,
-    side: @core.PortSide::SideUndefined,
+    side: SideUndefined,
     anchor: @core.new_kvector(),
     explicitly_supplied_port_anchor: false,
     margin: new_l_margin(),
@@ -135,7 +135,7 @@ pub fn LPort::set_side(self : LPort, side : @core.PortSide) -> Unit {
       self.anchor.x = 0.0
       self.anchor.y = self.get_size().y / 2.0
     }
-    @core.PortSide::SideUndefined => ()
+    SideUndefined => ()
   }
 }
 

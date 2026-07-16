@@ -351,7 +351,7 @@ fn CrossingsCounter::count_north_south_crossings_on_ports(
     match port.get_node() {
       Some(node) =>
         match node.get_type() {
-          NodeType::Normal => {
+          Normal => {
             let dummy = port
               .get_property_l_node(internal_properties_port_dummy)
               .unwrap()
@@ -359,7 +359,7 @@ fn CrossingsCounter::count_north_south_crossings_on_ports(
               targets_and_degrees.push({ target: p, degree: p.get_degree() })
             }
           }
-          NodeType::LongEdge => {
+          LongEdge => {
             let mut other_port : LPort? = None
             for p in node.get_ports() {
               if lport_internal_handle(p) != lport_internal_handle(port) {
@@ -373,7 +373,7 @@ fn CrossingsCounter::count_north_south_crossings_on_ports(
               None => ()
             }
           }
-          NodeType::NorthSouthPort =>
+          NorthSouthPort =>
             match port.get_property_l_port(internal_properties_origin_l_port) {
               Some(dummy_port) =>
                 targets_and_degrees.push({
@@ -451,20 +451,8 @@ fn CrossingsCounter::init_port_positions_counter_clockwise(
   right_layer_nodes : Array[LNode],
 ) -> Array[LPort] {
   let ports = []
-  self.init_positions(
-    left_layer_nodes,
-    ports,
-    @core.PortSide::East,
-    true,
-    false,
-  )
-  self.init_positions(
-    right_layer_nodes,
-    ports,
-    @core.PortSide::West,
-    false,
-    false,
-  )
+  self.init_positions(left_layer_nodes, ports, East, true, false)
+  self.init_positions(right_layer_nodes, ports, West, false, false)
   ports
 }
 
@@ -481,7 +469,7 @@ fn CrossingsCounter::init_positions_for_north_south_counting(
 
   for current in nodes {
     if self.is_layout_unit_changed(last_layout_unit, current) {
-      index = self.empty_stack(stack, ports, @core.PortSide::East, index)
+      index = self.empty_stack(stack, ports, East, index)
     }
 
     if current.has_property_l_node(internal_properties_in_layer_layout_unit) {
@@ -491,31 +479,23 @@ fn CrossingsCounter::init_positions_for_north_south_counting(
     }
 
     match current.get_type() {
-      NodeType::Normal => {
-        for
-          p in self.get_north_south_ports_with_incident_edges(
-            current,
-            @core.PortSide::North,
-          ) {
+      Normal => {
+        for p in self.get_north_south_ports_with_incident_edges(current, North) {
           self.port_positions[p.get_id()] = index
           index = index + 1
           ports.push(p)
         }
 
-        index = self.empty_stack(stack, ports, @core.PortSide::East, index)
+        index = self.empty_stack(stack, ports, East, index)
 
-        for
-          p in self.get_north_south_ports_with_incident_edges(
-            current,
-            @core.PortSide::South,
-          ) {
+        for p in self.get_north_south_ports_with_incident_edges(current, South) {
           self.port_positions[p.get_id()] = index
           index = index + 1
           ports.push(p)
         }
       }
-      NodeType::NorthSouthPort => {
-        let indexing_ports = current.get_port_side_view(@core.PortSide::West)
+      NorthSouthPort => {
+        let indexing_ports = current.get_port_side_view(West)
         if !indexing_ports.is_empty() {
           let p = indexing_ports[0]
           self.port_positions[p.get_id()] = index
@@ -523,19 +503,19 @@ fn CrossingsCounter::init_positions_for_north_south_counting(
           ports.push(p)
         }
 
-        let stack_ports = current.get_port_side_view(@core.PortSide::East)
+        let stack_ports = current.get_port_side_view(East)
         if !stack_ports.is_empty() {
           stack.push(current)
         }
       }
-      NodeType::LongEdge => {
-        for p in current.get_port_side_view(@core.PortSide::West) {
+      LongEdge => {
+        for p in current.get_port_side_view(West) {
           self.port_positions[p.get_id()] = index
           index = index + 1
           ports.push(p)
         }
 
-        for _ in current.get_port_side_view(@core.PortSide::East) {
+        for _ in current.get_port_side_view(East) {
           stack.push(current)
         }
       }
@@ -543,7 +523,7 @@ fn CrossingsCounter::init_positions_for_north_south_counting(
     }
   }
 
-  ignore(self.empty_stack(stack, ports, @core.PortSide::East, index))
+  ignore(self.empty_stack(stack, ports, East, index))
 
   ports
 }
@@ -581,7 +561,7 @@ fn CrossingsCounter::get_ports(
 ) -> Array[LPort] {
   let ports = node.get_port_side_view(side)
   match side {
-    @core.PortSide::East =>
+    East =>
       if top_down {
         ports
       } else {

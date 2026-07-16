@@ -21,10 +21,10 @@ pub let vertiflex_layout_phase_descriptor : @core.PhaseDescriptor[
   VertiFlexLayoutPhases,
 ] = @core.new_phase_descriptor(
   [
-    VertiFlexLayoutPhases::P1_NODE_Y_PLACEMENT,
-    VertiFlexLayoutPhases::P2_NODE_RELATIVE_PLACEMENT,
-    VertiFlexLayoutPhases::P3_NODE_ABSOLUTE_PLACEMENT,
-    VertiFlexLayoutPhases::P4_EDGE_ROUTING,
+    P1_NODE_Y_PLACEMENT,
+    P2_NODE_RELATIVE_PLACEMENT,
+    P3_NODE_ABSOLUTE_PLACEMENT,
+    P4_EDGE_ROUTING,
   ],
   vertiflex_layout_phase_ordinal,
 )

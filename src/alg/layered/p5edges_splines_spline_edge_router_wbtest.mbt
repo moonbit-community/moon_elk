@@ -40,8 +40,8 @@ fn spline_edge_router_wb_new_segment(
   source_side : SplineSideToProcess,
   target_side : SplineSideToProcess,
 ) -> SplineSegment {
-  let source = spline_edge_router_wb_new_port(source_y, @core.PortSide::West)
-  let target = spline_edge_router_wb_new_port(target_y, @core.PortSide::East)
+  let source = spline_edge_router_wb_new_port(source_y, West)
+  let target = spline_edge_router_wb_new_port(target_y, East)
   let edge = spline_edge_router_wb_new_edge(source, target)
   new_spline_segment_single_edge(edge, source_side, target_side)
 }
@@ -133,10 +133,10 @@ test "spline edge router compute sloppy spacing uses max vertical span" {
   ignore(target_node.get_position().set_xy(0.0, 10.0))
 
   let source_port = new_l_port()
-  source_port.set_side(@core.PortSide::East)
+  source_port.set_side(East)
   source_port.set_node(Some(source_node))
   let target_port = new_l_port()
-  target_port.set_side(@core.PortSide::West)
+  target_port.set_side(West)
   target_port.set_node(Some(target_node))
 
   let edge = new_l_edge()
@@ -151,10 +151,10 @@ test "spline edge router compute sloppy spacing uses max vertical span" {
 
 ///|
 test "spline edge router edge chain and spline path follow successor map" {
-  let source_1 = spline_edge_router_wb_new_port(0.0, @core.PortSide::West)
-  let target_1 = spline_edge_router_wb_new_port(5.0, @core.PortSide::East)
-  let source_2 = spline_edge_router_wb_new_port(5.0, @core.PortSide::West)
-  let target_2 = spline_edge_router_wb_new_port(8.0, @core.PortSide::East)
+  let source_1 = spline_edge_router_wb_new_port(0.0, West)
+  let target_1 = spline_edge_router_wb_new_port(5.0, East)
+  let source_2 = spline_edge_router_wb_new_port(5.0, West)
+  let target_2 = spline_edge_router_wb_new_port(8.0, East)
   let edge_1 = spline_edge_router_wb_new_edge(source_1, target_1)
   let edge_2 = spline_edge_router_wb_new_edge(source_2, target_2)
 
@@ -184,16 +184,16 @@ test "spline edge router edge chain and spline path follow successor map" {
 
 ///|
 test "spline edge router find and add successor maps through dummy target node" {
-  let source_port = spline_edge_router_wb_new_port(0.0, @core.PortSide::East)
+  let source_port = spline_edge_router_wb_new_port(0.0, East)
   let dummy_node = new_l_node()
-  dummy_node.set_type(NodeType::LongEdge)
+  dummy_node.set_type(LongEdge)
   let dummy_in = new_l_port()
-  dummy_in.set_side(@core.PortSide::West)
+  dummy_in.set_side(West)
   dummy_in.set_node(Some(dummy_node))
   let dummy_out = new_l_port()
-  dummy_out.set_side(@core.PortSide::East)
+  dummy_out.set_side(East)
   dummy_out.set_node(Some(dummy_node))
-  let next_target = spline_edge_router_wb_new_port(10.0, @core.PortSide::West)
+  let next_target = spline_edge_router_wb_new_port(10.0, West)
 
   let first = spline_edge_router_wb_new_edge(source_port, dummy_in)
   let second = spline_edge_router_wb_new_edge(dummy_out, next_target)
@@ -215,11 +215,11 @@ test "spline edge router create hyper edge segments groups upward edges" {
   let source_node = new_l_node()
   ignore(source_node.get_position().set_xy(0.0, 10.0))
   let source_port = new_l_port()
-  source_port.set_side(@core.PortSide::West)
+  source_port.set_side(West)
   source_port.set_node(Some(source_node))
 
-  let target_a = spline_edge_router_wb_new_port(1.0, @core.PortSide::West)
-  let target_b = spline_edge_router_wb_new_port(2.0, @core.PortSide::West)
+  let target_a = spline_edge_router_wb_new_port(1.0, West)
+  let target_b = spline_edge_router_wb_new_port(2.0, West)
   let edge_a = spline_edge_router_wb_new_edge(source_port, target_a)
   let edge_b = spline_edge_router_wb_new_edge(source_port, target_b)
 
@@ -255,16 +255,16 @@ test "spline edge router create segments and ranking assigns topological ranks" 
   let edge_to_segment_map : Map[Int, SplineSegment] = Map([])
 
   let edge_a = spline_edge_router_wb_new_edge(
-    spline_edge_router_wb_new_port(0.0, @core.PortSide::West),
-    spline_edge_router_wb_new_port(10.0, @core.PortSide::East),
+    spline_edge_router_wb_new_port(0.0, West),
+    spline_edge_router_wb_new_port(10.0, East),
   )
   let edge_b = spline_edge_router_wb_new_edge(
-    spline_edge_router_wb_new_port(1.0, @core.PortSide::West),
-    spline_edge_router_wb_new_port(11.0, @core.PortSide::East),
+    spline_edge_router_wb_new_port(1.0, West),
+    spline_edge_router_wb_new_port(11.0, East),
   )
   let edge_c = spline_edge_router_wb_new_edge(
-    spline_edge_router_wb_new_port(12.0, @core.PortSide::West),
-    spline_edge_router_wb_new_port(2.0, @core.PortSide::East),
+    spline_edge_router_wb_new_port(12.0, West),
+    spline_edge_router_wb_new_port(2.0, East),
   )
 
   for edge in [edge_a, edge_b, edge_c] {
@@ -308,17 +308,17 @@ test "spline edge router clear then fill mappings collects layer-local sets" {
   right_node.set_layer(Some(right_layer))
 
   let left_port = new_l_port()
-  left_port.set_side(@core.PortSide::East)
+  left_port.set_side(East)
   left_port.set_node(Some(left_node))
   let right_port = new_l_port()
-  right_port.set_side(@core.PortSide::West)
+  right_port.set_side(West)
   right_port.set_node(Some(right_node))
   let edge = new_l_edge()
   edge.set_source(Some(left_port))
   edge.set_target(Some(right_port))
 
   let loop_port = new_l_port()
-  loop_port.set_side(@core.PortSide::North)
+  loop_port.set_side(North)
   loop_port.set_node(Some(right_node))
   let self_loop = new_l_edge()
   self_loop.set_source(Some(loop_port))

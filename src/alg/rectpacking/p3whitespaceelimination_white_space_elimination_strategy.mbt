@@ -33,11 +33,11 @@ pub fn rectpacking_whitespace_elimination_strategy_from_string(
   value : String,
 ) -> RectpackingWhiteSpaceEliminationStrategy {
   if value == "EQUAL_BETWEEN_STRUCTURES" {
-    RectpackingWhiteSpaceEliminationStrategy::EQUAL_BETWEEN_STRUCTURES
+    EQUAL_BETWEEN_STRUCTURES
   } else if value == "TO_ASPECT_RATIO" {
-    RectpackingWhiteSpaceEliminationStrategy::TO_ASPECT_RATIO
+    TO_ASPECT_RATIO
   } else {
-    RectpackingWhiteSpaceEliminationStrategy::NONE
+    NONE
   }
 }
 

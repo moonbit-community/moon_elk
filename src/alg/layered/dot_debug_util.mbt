@@ -6,11 +6,11 @@ fn dot_debug_util_escape(value : String) -> String {
 ///|
 fn dot_debug_util_node_type_color(node_type : NodeType) -> String {
   match node_type {
-    NodeType::ExternalPort => "#cc99cc"
-    NodeType::LongEdge => "#eaed00"
-    NodeType::NorthSouthPort => "#0034de"
-    NodeType::LabelNode => "#75c3c3"
-    NodeType::BreakingPoint => "#eeeeff"
+    ExternalPort => "#cc99cc"
+    LongEdge => "#eaed00"
+    NorthSouthPort => "#0034de"
+    LabelNode => "#75c3c3"
+    BreakingPoint => "#eeeeff"
     _ => "#eeeeee"
   }
 }
@@ -27,13 +27,13 @@ fn dot_debug_util_node_label(
     Some(designation) => label = designation + " "
     None =>
       match node.get_type() {
-        NodeType::Normal => ()
+        Normal => ()
         _ => label = "n_" + node.get_id().to_string() + " "
       }
   }
 
   match node.get_type() {
-    NodeType::NorthSouthPort =>
+    NorthSouthPort =>
       match node.get_property_l_node(internal_properties_origin_l_node) {
         Some(origin_node) => label += "(" + origin_node.to_string() + ")"
         None => ()
@@ -63,7 +63,7 @@ fn dot_debug_util_write_layer(
     )
 
     let node_options = match node.get_type() {
-      NodeType::Normal => "label=\"" + label + "\",shape=box"
+      Normal => "label=\"" + label + "\",shape=box"
       _ =>
         "label=\"" +
         label +

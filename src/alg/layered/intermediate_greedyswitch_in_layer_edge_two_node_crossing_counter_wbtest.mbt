@@ -47,26 +47,10 @@ test "In-layer two-node crossing counter ignores between-layer edges" {
   let right_upper = in_layer_counter_test_new_node(right_layer, 0)
   let right_lower = in_layer_counter_test_new_node(right_layer, 1)
 
-  let left_upper_port = in_layer_counter_test_new_port(
-    left_upper,
-    @core.PortSide::East,
-    0,
-  )
-  let left_lower_port = in_layer_counter_test_new_port(
-    left_lower,
-    @core.PortSide::East,
-    1,
-  )
-  let right_upper_port = in_layer_counter_test_new_port(
-    right_upper,
-    @core.PortSide::West,
-    2,
-  )
-  let right_lower_port = in_layer_counter_test_new_port(
-    right_lower,
-    @core.PortSide::West,
-    3,
-  )
+  let left_upper_port = in_layer_counter_test_new_port(left_upper, East, 0)
+  let left_lower_port = in_layer_counter_test_new_port(left_lower, East, 1)
+  let right_upper_port = in_layer_counter_test_new_port(right_upper, West, 2)
+  let right_lower_port = in_layer_counter_test_new_port(right_lower, West, 3)
 
   in_layer_counter_test_connect(left_upper_port, right_lower_port)
   in_layer_counter_test_connect(left_lower_port, right_upper_port)
@@ -76,25 +60,25 @@ test "In-layer two-node crossing counter ignores between-layer edges" {
   ignore(
     left_counter.init_port_positions_for_in_layer_crossings(
       [left_upper, left_lower],
-      @core.PortSide::West,
+      West,
     ),
   )
   ignore(
     right_counter.init_port_positions_for_in_layer_crossings(
       [left_upper, left_lower],
-      @core.PortSide::East,
+      East,
     ),
   )
 
   let left_crossings = left_counter.count_in_layer_crossings_between_nodes_in_both_orders(
     left_upper,
     left_lower,
-    @core.PortSide::West,
+    West,
   )
   let right_crossings = right_counter.count_in_layer_crossings_between_nodes_in_both_orders(
     left_upper,
     left_lower,
-    @core.PortSide::East,
+    East,
   )
 
   let upper_lower = in_layer_counter_test_pair_value(left_crossings.get_first()) +
@@ -119,10 +103,10 @@ test "In-layer two-node crossing counter detects crossing and updates after swit
   let n2 = in_layer_counter_test_new_node(layer, 2)
   let n3 = in_layer_counter_test_new_node(layer, 3)
 
-  let p0 = in_layer_counter_test_new_port(n0, @core.PortSide::East, 0)
-  let p1 = in_layer_counter_test_new_port(n1, @core.PortSide::East, 1)
-  let p2 = in_layer_counter_test_new_port(n2, @core.PortSide::East, 2)
-  let p3 = in_layer_counter_test_new_port(n3, @core.PortSide::East, 3)
+  let p0 = in_layer_counter_test_new_port(n0, East, 0)
+  let p1 = in_layer_counter_test_new_port(n1, East, 1)
+  let p2 = in_layer_counter_test_new_port(n2, East, 2)
+  let p3 = in_layer_counter_test_new_port(n3, East, 3)
 
   in_layer_counter_test_connect(p0, p2)
   in_layer_counter_test_connect(p1, p3)
@@ -131,33 +115,27 @@ test "In-layer two-node crossing counter detects crossing and updates after swit
   let right_counter = new_crossings_counter(Array::make(4, 0))
   let layer_nodes = [n0, n1, n2, n3]
   ignore(
-    left_counter.init_port_positions_for_in_layer_crossings(
-      layer_nodes,
-      @core.PortSide::West,
-    ),
+    left_counter.init_port_positions_for_in_layer_crossings(layer_nodes, West),
   )
   ignore(
-    right_counter.init_port_positions_for_in_layer_crossings(
-      layer_nodes,
-      @core.PortSide::East,
-    ),
+    right_counter.init_port_positions_for_in_layer_crossings(layer_nodes, East),
   )
 
   let before = right_counter.count_in_layer_crossings_between_nodes_in_both_orders(
     n0,
     n1,
-    @core.PortSide::East,
+    East,
   )
   assert_eq(in_layer_counter_test_pair_value(before.get_first()), 1)
   assert_eq(in_layer_counter_test_pair_value(before.get_second()), 0)
 
-  left_counter.switch_nodes(n0, n1, @core.PortSide::West)
-  right_counter.switch_nodes(n0, n1, @core.PortSide::East)
+  left_counter.switch_nodes(n0, n1, West)
+  right_counter.switch_nodes(n0, n1, East)
 
   let after = right_counter.count_in_layer_crossings_between_nodes_in_both_orders(
     n1,
     n0,
-    @core.PortSide::East,
+    East,
   )
   assert_eq(in_layer_counter_test_pair_value(after.get_first()), 0)
   assert_eq(in_layer_counter_test_pair_value(after.get_second()), 1)

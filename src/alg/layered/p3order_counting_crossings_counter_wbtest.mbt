@@ -36,13 +36,13 @@ test "CrossingsCounter counts one crossing between two layers" {
   let bottom_right = crossings_test_new_node(right_layer, 1)
 
   let top_left_port = crossings_test_new_port(top_left, 0)
-  top_left_port.set_side(@core.PortSide::East)
+  top_left_port.set_side(East)
   let bottom_left_port = crossings_test_new_port(bottom_left, 1)
-  bottom_left_port.set_side(@core.PortSide::East)
+  bottom_left_port.set_side(East)
   let top_right_port = crossings_test_new_port(top_right, 2)
-  top_right_port.set_side(@core.PortSide::West)
+  top_right_port.set_side(West)
   let bottom_right_port = crossings_test_new_port(bottom_right, 3)
-  bottom_right_port.set_side(@core.PortSide::West)
+  bottom_right_port.set_side(West)
 
   ignore(crossings_test_connect(top_left_port, bottom_right_port))
   ignore(crossings_test_connect(bottom_left_port, top_right_port))
@@ -68,13 +68,13 @@ test "CrossingsCounter counts in-layer crossings on one side" {
   let n3 = crossings_test_new_node(layer, 3)
 
   let p0 = crossings_test_new_port(n0, 0)
-  p0.set_side(@core.PortSide::East)
+  p0.set_side(East)
   let p1 = crossings_test_new_port(n1, 1)
-  p1.set_side(@core.PortSide::East)
+  p1.set_side(East)
   let p2 = crossings_test_new_port(n2, 2)
-  p2.set_side(@core.PortSide::East)
+  p2.set_side(East)
   let p3 = crossings_test_new_port(n3, 3)
-  p3.set_side(@core.PortSide::East)
+  p3.set_side(East)
 
   ignore(crossings_test_connect(p0, p2))
   ignore(crossings_test_connect(p1, p3))
@@ -82,7 +82,7 @@ test "CrossingsCounter counts in-layer crossings on one side" {
   let counter = new_crossings_counter(Array::make(4, 0))
   let crossings = counter.count_in_layer_crossings_on_side(
     [n0, n1, n2, n3],
-    @core.PortSide::East,
+    East,
   )
 
   assert_eq(crossings, 1)

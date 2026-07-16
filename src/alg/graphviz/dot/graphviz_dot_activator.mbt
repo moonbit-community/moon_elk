@@ -13,7 +13,7 @@ pub suberror GraphvizDotActivatorException {
 fn[T] graphviz_dot_activator_raise_illegal_argument(
   message : String,
 ) -> T raise GraphvizDotActivatorException {
-  raise GraphvizDotActivatorException::IllegalArgumentException(message)
+  raise IllegalArgumentException(message)
 }
 
 ///|

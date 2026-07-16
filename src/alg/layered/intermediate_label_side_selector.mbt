@@ -1,19 +1,19 @@
 ///|
 fn label_side_selector_parse_mode(value : String) -> EdgeLabelSideSelection {
   match value {
-    "ALWAYS_UP" => EdgeLabelSideSelection::AlwaysUp
-    "ALWAYS_DOWN" => EdgeLabelSideSelection::AlwaysDown
-    "DIRECTION_UP" => EdgeLabelSideSelection::DirectionUp
-    "DIRECTION_DOWN" => EdgeLabelSideSelection::DirectionDown
-    "SMART_UP" => EdgeLabelSideSelection::SmartUp
-    _ => EdgeLabelSideSelection::SmartDown
+    "ALWAYS_UP" => AlwaysUp
+    "ALWAYS_DOWN" => AlwaysDown
+    "DIRECTION_UP" => DirectionUp
+    "DIRECTION_DOWN" => DirectionDown
+    "SMART_UP" => SmartUp
+    _ => SmartDown
   }
 }
 
 ///|
 fn label_side_selector_node_type_is_label(node_type : NodeType) -> Bool {
   match node_type {
-    NodeType::LabelNode => true
+    LabelNode => true
     _ => false
   }
 }
@@ -21,7 +21,7 @@ fn label_side_selector_node_type_is_label(node_type : NodeType) -> Bool {
 ///|
 fn label_side_selector_node_type_is_long_edge(node_type : NodeType) -> Bool {
   match node_type {
-    NodeType::LongEdge => true
+    LongEdge => true
     _ => false
   }
 }
@@ -29,7 +29,7 @@ fn label_side_selector_node_type_is_long_edge(node_type : NodeType) -> Bool {
 ///|
 fn label_side_selector_node_type_is_normal(node_type : NodeType) -> Bool {
   match node_type {
-    NodeType::Normal => true
+    Normal => true
     _ => false
   }
 }
@@ -37,7 +37,7 @@ fn label_side_selector_node_type_is_normal(node_type : NodeType) -> Bool {
 ///|
 fn label_side_selector_label_side_is_below(side : @core.LabelSide) -> Bool {
   match side {
-    @core.LabelSide::Below => true
+    Below => true
     _ => false
   }
 }
@@ -45,7 +45,7 @@ fn label_side_selector_label_side_is_below(side : @core.LabelSide) -> Bool {
 ///|
 fn label_side_selector_label_side_is_above(side : @core.LabelSide) -> Bool {
   match side {
-    @core.LabelSide::Above => true
+    Above => true
     _ => false
   }
 }
@@ -80,12 +80,11 @@ fn label_side_selector_port_side_option_equals(
   right : @core.PortSide?,
 ) -> Bool {
   match (left, right) {
-    (Some(@core.PortSide::SideUndefined), Some(@core.PortSide::SideUndefined)) =>
-      true
-    (Some(@core.PortSide::North), Some(@core.PortSide::North)) => true
-    (Some(@core.PortSide::East), Some(@core.PortSide::East)) => true
-    (Some(@core.PortSide::South), Some(@core.PortSide::South)) => true
-    (Some(@core.PortSide::West), Some(@core.PortSide::West)) => true
+    (Some(SideUndefined), Some(SideUndefined)) => true
+    (Some(North), Some(North)) => true
+    (Some(East), Some(East)) => true
+    (Some(South), Some(South)) => true
+    (Some(West), Some(West)) => true
     (None, None) => true
     _ => false
   }
@@ -96,8 +95,8 @@ fn label_side_selector_port_side_is_north_or_east(
   side : @core.PortSide,
 ) -> Bool {
   match side {
-    @core.PortSide::North => true
-    @core.PortSide::East => true
+    North => true
+    East => true
     _ => false
   }
 }
@@ -243,14 +242,8 @@ fn label_side_selector_apply_label_sides_to_label_dummy_run(
   }
 
   if label_dummy_run.length() == 2 {
-    label_side_selector_apply_label_side_to_node(
-      label_dummy_run[0],
-      @core.LabelSide::Above,
-    )
-    label_side_selector_apply_label_side_to_node(
-      label_dummy_run[1],
-      @core.LabelSide::Below,
-    )
+    label_side_selector_apply_label_side_to_node(label_dummy_run[0], Above)
+    label_side_selector_apply_label_side_to_node(label_dummy_run[1], Below)
   } else {
     for dummy_node in label_dummy_run {
       label_side_selector_apply_label_side_to_node(dummy_node, default_side)
@@ -319,10 +312,7 @@ fn label_side_selector_smart_for_consecutive_dummy_node_run(
     (!bottom_group || dummy_nodes.length() > 1) &&
     label_dummy_count == 1 &&
     label_side_selector_node_type_is_label(dummy_nodes[0].get_type()) {
-    label_side_selector_apply_label_side_to_node(
-      dummy_nodes[0],
-      @core.LabelSide::Above,
-    )
+    label_side_selector_apply_label_side_to_node(dummy_nodes[0], Above)
   } else if bottom_group &&
     (!top_group || dummy_nodes.length() > 1) &&
     label_dummy_count == 1 &&
@@ -331,17 +321,11 @@ fn label_side_selector_smart_for_consecutive_dummy_node_run(
     ) {
     label_side_selector_apply_label_side_to_node(
       dummy_nodes[dummy_nodes.length() - 1],
-      @core.LabelSide::Below,
+      Below,
     )
   } else if dummy_nodes.length() == 2 {
-    label_side_selector_apply_label_side_to_node(
-      dummy_nodes[0],
-      @core.LabelSide::Above,
-    )
-    label_side_selector_apply_label_side_to_node(
-      dummy_nodes[1],
-      @core.LabelSide::Below,
-    )
+    label_side_selector_apply_label_side_to_node(dummy_nodes[0], Above)
+    label_side_selector_apply_label_side_to_node(dummy_nodes[1], Below)
   } else {
     label_side_selector_apply_for_dummy_node_run_with_simple_loops(
       dummy_nodes, label_dummy_count, default_side,
@@ -438,20 +422,20 @@ fn label_side_selector_smart_for_regular_node_port_end_labels(
     if label_side_selector_port_side_is_north_or_east(port_side) {
       label_side_selector_apply_label_side_to_label_list(
         end_label_queue[0],
-        @core.LabelSide::Above,
+        Above,
       )
       label_side_selector_apply_label_side_to_label_list(
         end_label_queue[1],
-        @core.LabelSide::Below,
+        Below,
       )
     } else {
       label_side_selector_apply_label_side_to_label_list(
         end_label_queue[0],
-        @core.LabelSide::Below,
+        Below,
       )
       label_side_selector_apply_label_side_to_label_list(
         end_label_queue[1],
-        @core.LabelSide::Above,
+        Above,
       )
     }
   } else {
@@ -621,24 +605,13 @@ fn label_side_selector_process(
   )
 
   match mode {
-    EdgeLabelSideSelection::AlwaysUp =>
-      label_side_selector_same_side(layered_graph, @core.LabelSide::Above)
-    EdgeLabelSideSelection::AlwaysDown =>
-      label_side_selector_same_side(layered_graph, @core.LabelSide::Below)
-    EdgeLabelSideSelection::DirectionUp =>
-      label_side_selector_based_on_direction(
-        layered_graph,
-        @core.LabelSide::Above,
-      )
-    EdgeLabelSideSelection::DirectionDown =>
-      label_side_selector_based_on_direction(
-        layered_graph,
-        @core.LabelSide::Below,
-      )
-    EdgeLabelSideSelection::SmartUp =>
-      label_side_selector_smart(layered_graph, @core.LabelSide::Above)
-    EdgeLabelSideSelection::SmartDown =>
-      label_side_selector_smart(layered_graph, @core.LabelSide::Below)
+    AlwaysUp => label_side_selector_same_side(layered_graph, Above)
+    AlwaysDown => label_side_selector_same_side(layered_graph, Below)
+    DirectionUp => label_side_selector_based_on_direction(layered_graph, Above)
+    DirectionDown =>
+      label_side_selector_based_on_direction(layered_graph, Below)
+    SmartUp => label_side_selector_smart(layered_graph, Above)
+    SmartDown => label_side_selector_smart(layered_graph, Below)
   }
 
   monitor.done()

@@ -138,12 +138,12 @@ fn node_context_parse_port_constraints(value : String) -> @core.PortConstraints 
 
 ///|
 fn node_context_parse_port_alignment(value : String) -> @core.PortAlignment {
-  for alignment in [@core.Distributed, @core.Justified, Begin, Center, End] {
+  for alignment in [@core.Distributed, Justified, Begin, Center, End] {
     if @core.port_alignment_to_string(alignment) == value {
       return alignment
     }
   }
-  @core.Distributed
+  Distributed
 }
 
 ///|
@@ -233,7 +233,7 @@ pub(all) suberror NodeContextException {
 fn[T] node_context_raise_unsupported_configuration(
   message : String,
 ) -> T raise NodeContextException {
-  raise NodeContextException::UnsupportedConfigurationException(message)
+  raise UnsupportedConfigurationException(message)
 }
 
 ///|
@@ -459,13 +459,7 @@ pub fn node_context_get_all_port_contexts(
   node_context : NodeContext,
 ) -> Array[PortContext] {
   let contexts : Array[PortContext] = []
-  for
-    side in [
-      @core.PortSide::North,
-      @core.PortSide::East,
-      @core.PortSide::South,
-      @core.PortSide::West,
-    ] {
+  for side in [@core.PortSide::North, East, South, West] {
     for port_context in node_context_get_port_contexts(node_context, side) {
       contexts.push(port_context)
     }

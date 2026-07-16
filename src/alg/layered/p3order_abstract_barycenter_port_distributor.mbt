@@ -3,13 +3,13 @@ fn abstract_barycenter_port_constraints_from_string(
   value : String,
 ) -> @core.PortConstraints {
   match value {
-    "UNDEFINED" => @core.PortConstraints::Undefined
-    "FREE" => @core.PortConstraints::Free
-    "FIXED_SIDE" => @core.PortConstraints::FixedSide
-    "FIXED_ORDER" => @core.PortConstraints::FixedOrder
-    "FIXED_RATIO" => @core.PortConstraints::FixedRatio
-    "FIXED_POS" => @core.PortConstraints::FixedPos
-    _ => @core.PortConstraints::Undefined
+    "UNDEFINED" => Undefined
+    "FREE" => Free
+    "FIXED_SIDE" => FixedSide
+    "FIXED_ORDER" => FixedOrder
+    "FIXED_RATIO" => FixedRatio
+    "FIXED_POS" => FixedPos
+    _ => Undefined
   }
 }
 
@@ -28,11 +28,11 @@ fn abstract_barycenter_is_order_fixed(node : LNode) -> Bool {
 ///|
 fn abstract_barycenter_side_ordinal(side : @core.PortSide) -> Int {
   match side {
-    @core.PortSide::SideUndefined => 0
-    @core.PortSide::North => 1
-    @core.PortSide::East => 2
-    @core.PortSide::South => 3
-    @core.PortSide::West => 4
+    SideUndefined => 0
+    North => 1
+    East => 2
+    South => 3
+    West => 4
   }
 }
 
@@ -109,11 +109,7 @@ pub fn AbstractBarycenterPortDistributor::distribute_ports_while_sweeping(
 ) -> Bool {
   self.update_node_positions(node_order, current_index)
   let free_layer = node_order[current_index]
-  let side = if is_forward_sweep {
-    @core.PortSide::West
-  } else {
-    @core.PortSide::East
-  }
+  let side = if is_forward_sweep { @core.PortSide::West } else { East }
 
   if self.is_not_first_layer(
       node_order.length(),
@@ -179,14 +175,8 @@ fn AbstractBarycenterPortDistributor::distribute_ports(
 ) -> Unit {
   if !abstract_barycenter_is_order_fixed(node) {
     self.distribute_ports_for_iterable(node, node.get_ports_by_side(side))
-    self.distribute_ports_for_iterable(
-      node,
-      node.get_ports_by_side(@core.PortSide::South),
-    )
-    self.distribute_ports_for_iterable(
-      node,
-      node.get_ports_by_side(@core.PortSide::North),
-    )
+    self.distribute_ports_for_iterable(node, node.get_ports_by_side(South))
+    self.distribute_ports_for_iterable(node, node.get_ports_by_side(North))
     self.sort_ports(node)
   }
 }
@@ -218,8 +208,8 @@ fn AbstractBarycenterPortDistributor::iterate_ports_and_collect_in_layer_ports(
 
   for port in ports {
     let north_south_port = match port.get_side() {
-      @core.PortSide::North => true
-      @core.PortSide::South => true
+      North => true
+      South => true
       _ => false
     }
     let mut sum = 0.0
@@ -318,7 +308,7 @@ fn AbstractBarycenterPortDistributor::calculate_in_layer_ports_barycenter_values
     let layer_size_double = layer_size.to_double()
 
     match in_layer_port.get_side() {
-      @core.PortSide::East =>
+      East =>
         if barycenter < node_index_double {
           self.port_barycenter[in_layer_port.get_id()] = self.min_barycenter -
             barycenter
@@ -326,7 +316,7 @@ fn AbstractBarycenterPortDistributor::calculate_in_layer_ports_barycenter_values
           self.port_barycenter[in_layer_port.get_id()] = self.max_barycenter +
             (layer_size_double - barycenter)
         }
-      @core.PortSide::West =>
+      West =>
         if barycenter < node_index_double {
           self.port_barycenter[in_layer_port.get_id()] = self.max_barycenter +
             barycenter
@@ -365,7 +355,7 @@ fn AbstractBarycenterPortDistributor::deal_with_north_south_ports(
   }
 
   if input && input != output {
-    if lnode_port_side_equals(port.get_side(), @core.PortSide::North) {
+    if lnode_port_side_equals(port.get_side(), North) {
       -self.position_of(port_dummy).to_double()
     } else {
       absurdly_large_float - self.position_of(port_dummy).to_double()
@@ -373,7 +363,7 @@ fn AbstractBarycenterPortDistributor::deal_with_north_south_ports(
   } else if output && input != output {
     self.position_of(port_dummy).to_double() + 1.0
   } else if input && output {
-    if lnode_port_side_equals(port.get_side(), @core.PortSide::North) {
+    if lnode_port_side_equals(port.get_side(), North) {
       0.0
     } else {
       absurdly_large_float / 2.0
@@ -440,9 +430,9 @@ fn AbstractBarycenterPortDistributor::port_type_for(
 ) -> PortType {
   ignore(self)
   if is_forward_sweep {
-    PortType::Output
+    Output
   } else {
-    PortType::Input
+    Input
   }
 }
 
