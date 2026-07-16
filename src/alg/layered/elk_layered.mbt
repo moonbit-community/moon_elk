@@ -9,6 +9,7 @@ pub struct ElkLayered {
 ///|
 pub struct ElkLayeredTestExecutionState {
   graphs : Array[LGraph]
+  plan : LayeredLayoutPlan
   mut step : Int
 }
 
@@ -822,6 +823,7 @@ fn elk_layered_resize_graph_no_really_i_mean_it(
 fn ElkLayered::layout(
   self : ElkLayered,
   lgraph : LGraph,
+  plan : LayeredLayoutPlan,
   monitor : @core.IElkProgressMonitor,
 ) -> Unit {
   let monitor_was_already_running = monitor.is_running()
@@ -829,9 +831,7 @@ fn ElkLayered::layout(
     ignore(monitor.begin("Component Layout", 1.0))
   }
 
-  let algorithm = lgraph.get_property_layout_processor_array(
-    internal_properties_processors,
-  )
+  let algorithm = plan.get_processors()
   let monitor_progress = if algorithm.is_empty() {
     1.0
   } else {
@@ -883,10 +883,7 @@ fn ElkLayered::hierarchical_layout(
   let mut total_work = 0
 
   for graph in graphs {
-    graph_configurator_prepare_graph_for_layout(graph)
-    let algorithm = graph.get_property_layout_processor_array(
-      internal_properties_processors,
-    )
+    let algorithm = graph_configurator_prepare_graph_for_layout(graph).get_processors()
     total_work = total_work + algorithm.length()
     algorithms.push(algorithm)
     processor_indices.push(0)
@@ -974,11 +971,11 @@ pub fn ElkLayered::do_layout(
   let actual_monitor = elk_layered_resolve_monitor(monitor)
   ignore(actual_monitor.begin("Layered layout", 1.0))
 
-  graph_configurator_prepare_graph_for_layout(lgraph)
+  let plan = graph_configurator_prepare_graph_for_layout(lgraph)
 
   let components = self.components_processor.split(lgraph)
   if components.length() == 1 {
-    self.layout(components[0], actual_monitor)
+    self.layout(components[0], plan, actual_monitor)
   } else {
     let comp_work = 1.0 / components.length().to_double()
     for comp in components {
@@ -989,7 +986,7 @@ pub fn ElkLayered::do_layout(
         Some(sub_monitor) => sub_monitor
         None => actual_monitor
       }
-      self.layout(comp, comp_monitor)
+      self.layout(comp, plan, comp_monitor)
       if @core.layout_runtime_has_error() {
         actual_monitor.done()
         return
@@ -1066,9 +1063,9 @@ pub fn ElkLayered::prepare_layout_test(
   self : ElkLayered,
   lgraph : LGraph,
 ) -> ElkLayeredTestExecutionState {
-  graph_configurator_prepare_graph_for_layout(lgraph)
+  let plan = graph_configurator_prepare_graph_for_layout(lgraph)
   let graphs = self.components_processor.split(lgraph)
-  { graphs, step: 0 }
+  { graphs, plan, step: 0 }
 }
 
 ///|
@@ -1080,9 +1077,7 @@ pub fn ElkLayered::is_layout_test_finished(
   if state.graphs.is_empty() {
     return true
   }
-  let algorithm = state.graphs[0].get_property_layout_processor_array(
-    internal_properties_processors,
-  )
+  let algorithm = state.plan.get_processors()
   state.step >= algorithm.length()
 }
 
@@ -1096,9 +1091,7 @@ pub fn ElkLayered::run_layout_test_until(
   if state.graphs.is_empty() {
     return
   }
-  let algorithm = state.graphs[0].get_property_layout_processor_array(
-    internal_properties_processors,
-  )
+  let algorithm = state.plan.get_processors()
   let mut phase_exists = false
   let mut phase_index = state.step
 
@@ -1137,9 +1130,7 @@ pub fn ElkLayered::run_layout_test_step(
     return
   }
 
-  let algorithm = state.graphs[0].get_property_layout_processor_array(
-    internal_properties_processors,
-  )
+  let algorithm = state.plan.get_processors()
   self.layout_test(state.graphs, algorithm[state.step])
   state.step += 1
 }
@@ -1153,9 +1144,7 @@ pub fn ElkLayered::get_layout_test_configuration(
   if state.graphs.is_empty() {
     return []
   }
-  state.graphs[0].get_property_layout_processor_array(
-    internal_properties_processors,
-  )
+  state.plan.get_processors()
 }
 
 ///|

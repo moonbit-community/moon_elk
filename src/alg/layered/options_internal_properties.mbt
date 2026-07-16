@@ -309,11 +309,6 @@ pub let internal_properties_random_next_boolean : @graph.IProperty[Bool] = @grap
 )
 
 ///|
-pub let internal_properties_processors : @graph.IProperty[
-  Array[@core.ILayoutProcessor[LayeredPhases, LGraph]],
-] = @graph.new_property("processors", [])
-
-///|
 pub let internal_properties_spacings : @graph.IProperty[Spacings?] = @graph.new_property(
   "spacings",
   None,

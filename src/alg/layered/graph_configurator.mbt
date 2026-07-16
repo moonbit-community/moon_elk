@@ -149,12 +149,11 @@ pub fn graph_configurator_configure_graph_properties(lgraph : LGraph) -> Unit {
 }
 
 ///|
-pub fn graph_configurator_prepare_graph_for_layout(lgraph : LGraph) -> Unit {
+pub fn graph_configurator_prepare_graph_for_layout(
+  lgraph : LGraph,
+) -> LayeredLayoutPlan {
   graph_configurator_configure_graph_properties(lgraph)
-  lgraph.set_property_layout_processor_array(
-    internal_properties_processors,
-    elk_layered_collect_algorithm_for_graph(lgraph),
-  )
+  new_layered_layout_plan(elk_layered_collect_algorithm_for_graph(lgraph))
 }
 
 ///|

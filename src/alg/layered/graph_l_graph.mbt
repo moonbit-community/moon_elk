@@ -19,10 +19,6 @@ pub struct LGraph {
     Array[(LEdge, (LEdge, LGraph, PortType))],
   ]
   node_array_properties : Map[String, Array[LNode]]
-  layout_processor_array_properties : Map[
-    String,
-    Array[@core.ILayoutProcessor[LayeredPhases, LGraph]],
-  ]
   random_properties : Map[String, GreedySwitchMockRandom]
   int_properties : Map[String, Int]
   bool_properties : Map[String, Bool]
@@ -55,7 +51,6 @@ pub fn new_l_graph() -> LGraph {
     graph_properties_array_properties: Map([]),
     cross_hierarchy_map_entry_array_properties: Map([]),
     node_array_properties: Map([]),
-    layout_processor_array_properties: Map([]),
     random_properties: Map([]),
     int_properties: Map([]),
     bool_properties: Map([]),
@@ -186,40 +181,6 @@ pub fn LGraph::has_property_l_node_array(
   property : @graph.IProperty[Array[LNode]],
 ) -> Bool {
   self.node_array_properties.contains(property.get_id())
-}
-
-///|
-pub fn LGraph::set_property_layout_processor_array(
-  self : LGraph,
-  property : @graph.IProperty[
-    Array[@core.ILayoutProcessor[LayeredPhases, LGraph]],
-  ],
-  value : Array[@core.ILayoutProcessor[LayeredPhases, LGraph]],
-) -> Unit {
-  self.layout_processor_array_properties[property.get_id()] = value.copy()
-}
-
-///|
-pub fn LGraph::get_property_layout_processor_array(
-  self : LGraph,
-  property : @graph.IProperty[
-    Array[@core.ILayoutProcessor[LayeredPhases, LGraph]],
-  ],
-) -> Array[@core.ILayoutProcessor[LayeredPhases, LGraph]] {
-  match self.layout_processor_array_properties.get(property.get_id()) {
-    Some(value) => value.copy()
-    None => property.get_default().copy()
-  }
-}
-
-///|
-pub fn LGraph::has_property_layout_processor_array(
-  self : LGraph,
-  property : @graph.IProperty[
-    Array[@core.ILayoutProcessor[LayeredPhases, LGraph]],
-  ],
-) -> Bool {
-  self.layout_processor_array_properties.contains(property.get_id())
 }
 
 ///|
@@ -641,12 +602,6 @@ pub fn LGraph::copy_properties(self : LGraph, source : LGraph) -> Unit {
   for entry in source.node_array_properties.to_array() {
     let (key, value) = entry
     self.node_array_properties[key] = value.copy()
-  }
-
-  self.layout_processor_array_properties.clear()
-  for entry in source.layout_processor_array_properties.to_array() {
-    let (key, value) = entry
-    self.layout_processor_array_properties[key] = value.copy()
   }
 
   self.random_properties.clear()

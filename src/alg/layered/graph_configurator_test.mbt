@@ -280,19 +280,12 @@ test "graph configurator configures graph properties in one call" {
 }
 
 ///|
-test "graph configurator prepares graph for layout and stores processors" {
+test "graph configurator prepares graph and returns its execution plan" {
   let graph = graph_configurator_test_graph(0)
 
-  graph_configurator_prepare_graph_for_layout(graph)
+  let plan = graph_configurator_prepare_graph_for_layout(graph)
 
-  assert_true(
-    graph.has_property_layout_processor_array(internal_properties_processors),
-  )
-  assert_false(
-    graph
-    .get_property_layout_processor_array(internal_properties_processors)
-    .is_empty(),
-  )
+  assert_false(plan.get_processors().is_empty())
 }
 
 ///|
