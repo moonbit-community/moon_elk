@@ -534,3 +534,11 @@ pub fn GraphInfoHolder::as_initializable(
     init_after_traversal=() => self.init_after_traversal(),
   )
 }
+
+///|
+fn GraphInfoHolder::dispose(self : GraphInfoHolder) -> Unit {
+  // The crossing-minimizer interface stores closures that capture its heuristic,
+  // while the heuristic points back to this holder. Clear both sides explicitly
+  // because the native reference-counted runtime cannot collect that cycle.
+  self.cross_minimizer_ref = None
+}

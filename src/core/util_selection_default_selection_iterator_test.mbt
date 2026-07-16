@@ -5,8 +5,8 @@ fn create_port_to_port_edge(
   target_port : @graph.ElkPort,
 ) -> @graph.ElkEdge {
   let edge = @graph.create_edge(Some(container))
-  @graph.edge_sources(edge).push(@graph.make_port_shape(source_port))
-  @graph.edge_targets(edge).push(@graph.make_port_shape(target_port))
+  @graph.edge_add_source(edge, @graph.make_port_shape(source_port))
+  @graph.edge_add_target(edge, @graph.make_port_shape(target_port))
   edge
 }
 
@@ -17,8 +17,8 @@ fn create_node_to_node_edge(
   target_node : @graph.ElkNode,
 ) -> @graph.ElkEdge {
   let edge = @graph.create_edge(Some(container))
-  @graph.edge_sources(edge).push(@graph.make_node_shape(source_node))
-  @graph.edge_targets(edge).push(@graph.make_node_shape(target_node))
+  @graph.edge_add_source(edge, @graph.make_node_shape(source_node))
+  @graph.edge_add_target(edge, @graph.make_node_shape(target_node))
   edge
 }
 

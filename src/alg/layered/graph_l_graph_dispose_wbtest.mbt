@@ -1,0 +1,31 @@
+///|
+test "disposing a layered graph breaks its ownership cycles" {
+  let graph = new_l_graph()
+  let node = new_l_node(graph=Some(graph))
+  graph.get_layerless_nodes().push(node)
+  let port = new_l_port()
+  port.set_node(Some(node))
+  let edge = new_l_edge()
+  edge.set_source(Some(port))
+  edge.set_target(Some(port))
+  let label = new_l_label_text("label")
+  edge.get_labels().push(label)
+  label.l_edge_properties["edge"] = edge
+  let nested_graph = new_l_graph()
+  nested_graph.set_parent_node(Some(node))
+  node.set_nested_graph(Some(nested_graph))
+  dispose_layered_graph(graph)
+
+  assert_true(graph.get_layerless_nodes().is_empty())
+  assert_true(graph.get_layers().is_empty())
+  assert_true(graph.get_parent_node() is None)
+  assert_true(node.get_ports().is_empty())
+  assert_true(node.get_nested_graph() is None)
+  assert_true(port.get_node() is None)
+  assert_true(port.get_incoming_edges().is_empty())
+  assert_true(port.get_outgoing_edges().is_empty())
+  assert_true(edge.get_source() is None)
+  assert_true(edge.get_target() is None)
+  assert_true(edge.get_labels().is_empty())
+  assert_true(label.l_edge_properties.is_empty())
+}

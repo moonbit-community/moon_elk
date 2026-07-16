@@ -38,6 +38,8 @@ pub fn LayeredLayoutProvider::layout(
 
   if !progress_monitor.is_canceled() {
     graph_transformer.apply_layout(layered_graph)
+  } else {
+    dispose_layered_graph(layered_graph)
   }
 }
 

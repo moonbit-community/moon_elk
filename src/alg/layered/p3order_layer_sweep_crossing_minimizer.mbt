@@ -176,6 +176,24 @@ pub fn new_layer_sweep_crossing_minimizer(
 }
 
 ///|
+fn LayerSweepCrossingMinimizer::release_graph_info_holders(
+  self : LayerSweepCrossingMinimizer,
+) -> Unit {
+  for graph_info in self.graph_info_holders {
+    graph_info.dispose()
+  }
+}
+
+///|
+fn LayerSweepCrossingMinimizer::clear_graph_info_holders(
+  self : LayerSweepCrossingMinimizer,
+) -> Unit {
+  self.release_graph_info_holders()
+  self.graph_info_holders.clear()
+  self.graphs_whose_node_order_changed.clear()
+}
+
+///|
 fn LayerSweepCrossingMinimizer::first_index(
   self : LayerSweepCrossingMinimizer,
   is_forward_sweep : Bool,
@@ -1023,8 +1041,7 @@ fn LayerSweepCrossingMinimizer::initialize(
   self : LayerSweepCrossingMinimizer,
   root_graph : LGraph,
 ) -> Array[GraphInfoHolder] {
-  self.graph_info_holders.clear()
-  self.graphs_whose_node_order_changed.clear()
+  self.clear_graph_info_holders()
 
   if root_graph.get_property_mock_random(internal_properties_random)
     is Some(random) {
@@ -1110,6 +1127,7 @@ fn LayerSweepCrossingMinimizer::process_internal(
       layer_sweep_single_node_graph(layered_graph) &&
       !layer_sweep_hierarchical_layout(layered_graph)
     ) {
+    self.clear_graph_info_holders()
     monitor.done()
     return
   }
@@ -1127,6 +1145,7 @@ fn LayerSweepCrossingMinimizer::process_internal(
   }
 
   self.transfer_node_and_port_orders_to_graph()
+  self.release_graph_info_holders()
   monitor.done()
 }
 
@@ -1137,8 +1156,10 @@ pub fn LayerSweepCrossingMinimizer::process(
   progress_monitor? : @core.IElkProgressMonitor? = None,
 ) -> Unit {
   self.process_internal(layered_graph, progress_monitor) catch {
-    IllegalStateException(message) =>
+    IllegalStateException(message) => {
+      self.release_graph_info_holders()
       @core.layout_runtime_report_unsupported_configuration(message)
+    }
   }
 }
 

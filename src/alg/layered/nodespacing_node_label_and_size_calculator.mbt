@@ -9,8 +9,10 @@ fn node_label_and_size_calculator_process_node(
   ignore_inside_port_labels : Bool,
 ) -> @core.KVector {
   let fallback_size = node.get_size().clone()
+  let mut context_to_cleanup : NodeContext? = None
   try {
     let node_context = new_node_context(node)
+    context_to_cleanup = Some(node_context)
     port_context_creator_create_port_contexts(
       node_context, ignore_inside_port_labels,
     )
@@ -54,7 +56,9 @@ fn node_label_and_size_calculator_process_node(
     node_size_calculator_set_node_height(node_context)
 
     if !apply_stuff {
-      return node_context.node_size
+      let result = node_context.node_size
+      node_context.cleanup()
+      return result
     }
 
     node_label_and_size_utilities_offset_southern_ports_by_node_size(
@@ -67,9 +71,15 @@ fn node_label_and_size_calculator_process_node(
     node_label_and_size_utilities_set_node_padding(node_context)
     node_label_and_size_utilities_apply_stuff(node_context)
 
-    node_context.node_size
+    let result = node_context.node_size
+    node_context.cleanup()
+    result
   } catch {
     err => {
+      match context_to_cleanup {
+        Some(node_context) => node_context.cleanup()
+        None => ()
+      }
       @core.layout_runtime_report_unsupported_configuration(err.to_string())
       fallback_size
     }
@@ -107,5 +117,6 @@ pub fn node_label_and_size_calculator_process_layered_graph(
         ),
       )
     }
+    adapter.cleanup()
   }
 }

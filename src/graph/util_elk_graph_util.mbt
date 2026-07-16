@@ -161,7 +161,12 @@ pub fn all_incident_sections(section : ElkEdgeSection) -> Array[ElkEdgeSection] 
 ///|
 pub fn is_descendant(child : ElkNode, ancestor : ElkNode) -> Bool {
   let mut current = child
+  let visited : Map[ElkNode, Unit] = Map([])
   while node_parent(current) is Some(parent) {
+    if visited.contains(current) {
+      return false
+    }
+    visited[current] = ()
     if parent == ancestor {
       return true
     }
@@ -173,8 +178,13 @@ pub fn is_descendant(child : ElkNode, ancestor : ElkNode) -> Bool {
 ///|
 fn node_ancestors(node : ElkNode) -> Array[ElkNode] {
   let ancestors = []
+  let visited : Map[ElkNode, Unit] = Map([])
   let mut current : ElkNode? = Some(node)
   while current is Some(value) {
+    if visited.contains(value) {
+      break
+    }
+    visited[value] = ()
     ancestors.push(value)
     current = node_parent(value)
   }

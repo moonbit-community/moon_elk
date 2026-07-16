@@ -15,4 +15,5 @@ pub fn LayeredElkGraphLayoutTransferrer::apply_layout(
 ) -> Unit {
   ignore(self)
   ignore(recursive_layered_apply_transformed_graph(layered_graph))
+  dispose_layered_graph(layered_graph)
 }

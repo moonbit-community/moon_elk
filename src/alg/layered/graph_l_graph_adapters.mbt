@@ -329,6 +329,13 @@ pub fn LGraphAdapter::get_nodes(self : LGraphAdapter) -> Array[LNodeAdapter] {
 }
 
 ///|
+fn LGraphAdapter::cleanup(self : LGraphAdapter) -> Unit {
+  // Cached node adapters point back to this graph adapter. Explicitly discard
+  // the cache after a calculation to avoid an adapter ownership cycle.
+  self.node_adapters = None
+}
+
+///|
 pub fn LGraphAdapter::get_volatile_id(self : LGraphAdapter) -> Int {
   self.element.get_id()
 }

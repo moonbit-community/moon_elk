@@ -265,6 +265,8 @@ pub fn new_elk_graph_adapter_factory() -> ElkGraphAdapterFactory
 
 pub fn new_elk_graph_factory_impl() -> ElkGraphFactory
 
+pub fn new_elk_graph_factory_impl_in_arena(GraphArena) -> ElkGraphFactory
+
 pub fn new_elk_graph_package_impl() -> String
 
 pub fn[T] new_elk_graph_switch(case_i_property_holder? : (MapPropertyHolder) -> T?, case_e_map_property_holder? : (MapPropertyHolder) -> T?, case_elk_graph_element? : (Int) -> T?, case_elk_shape? : (Int) -> T?, case_elk_label? : (Int) -> T?, case_elk_connectable_shape? : (ElkConnectableShape) -> T?, case_elk_node? : (Int) -> T?, case_elk_port? : (Int) -> T?, case_elk_edge? : (Int) -> T?, case_elk_bend_point? : (ElkBendPoint) -> T?, case_elk_edge_section? : (Int) -> T?, case_elk_property_to_value_map_entry? : (Json) -> T?, default_case? : () -> T?) -> ElkGraphSwitch[T]
@@ -552,7 +554,11 @@ pub fn[T] ElkPropertyToValueMapEntryImpl::set_typed_value(Self[T], T?) -> Unit
 pub struct GraphArena {
   id : Int
 }
+pub fn GraphArena::create_edge(Self) -> Int
 pub fn GraphArena::create_graph(Self) -> Int
+pub fn GraphArena::create_label(Self) -> Int
+pub fn GraphArena::create_node(Self) -> Int
+pub fn GraphArena::create_port(Self) -> Int
 pub fn GraphArena::dispose(Self) -> Unit
 
 pub(all) enum GraphFeature {

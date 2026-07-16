@@ -377,6 +377,13 @@ pub fn NodeContext::apply_node_size(self : NodeContext) -> Unit {
 }
 
 ///|
+fn NodeContext::cleanup(self : NodeContext) -> Unit {
+  // Port contexts point back to their parent node context. Drop the owning
+  // arrays explicitly so the native reference-counted runtime can reclaim both.
+  self.port_contexts.clear()
+}
+
+///|
 fn node_context_port_contexts_of_side(
   node_context : NodeContext,
   port_side : @core.PortSide,

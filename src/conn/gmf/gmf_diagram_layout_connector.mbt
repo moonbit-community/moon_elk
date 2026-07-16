@@ -493,7 +493,7 @@ fn gmf_diagram_layout_connector_process_edge_labels(
     }
     let text = gmf_figure_text(label_figure)
     if text.is_empty() {
-      let label = @graph.create_label(None)
+      let label = @graph.create_label(Some(@graph.make_edge_label_parent(edge)))
       mapping.label_map[label] = child
       continue
     }

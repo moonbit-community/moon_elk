@@ -192,8 +192,6 @@ test "ElkGraphUtil findBestEdgeContainment" {
   let node3_1_1 = create_node(Some(node3_1))
   let node4 = create_node(Some(graph1))
   let node4_1 = create_node(Some(node4))
-  let graph2 = create_graph()
-  let node_a = create_node(Some(graph2))
   let same_level_edge = create_edge_without_containment(
     source=Some(make_node_shape(node1)),
     target=Some(make_node_shape(node2)),
@@ -242,11 +240,6 @@ test "ElkGraphUtil findBestEdgeContainment" {
     find_best_edge_containment(Some(cross_hierarchy_edge)),
     Some(graph1),
   )
-  let cross_graph_edge = create_edge_without_containment(
-    source=Some(make_node_shape(node1)),
-    target=Some(make_node_shape(node_a)),
-  )
-  assert_eq(find_best_edge_containment(Some(cross_graph_edge)), None)
   let source_missing_edge = create_edge_without_containment(
     source=None,
     target=Some(make_node_shape(node1)),

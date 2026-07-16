@@ -1745,7 +1745,7 @@ fn core_debug_grandom_generator_move_source(
         if !core_debug_grandom_generator_is_hypernode(new_node) {
           match new_port_opt {
             Some(new_port) =>
-              @graph.edge_sources(edge).push(@graph.make_port_shape(new_port))
+              @graph.edge_add_source(edge, @graph.make_port_shape(new_port))
             None => ()
           }
         }
@@ -1760,7 +1760,7 @@ fn core_debug_grandom_generator_move_source(
       ),
     )
     let new_node = core_debug_grandom_generator_shape_to_node(new_connect_shape)
-    @graph.edge_sources(edge).push(@graph.make_node_shape(new_node))
+    @graph.edge_add_source(edge, @graph.make_node_shape(new_node))
   }
   try ignore(@graph.update_containment(Some(edge))) catch {
     err => abort(err.to_string())
@@ -1841,7 +1841,7 @@ fn core_debug_grandom_generator_move_target(
         if !core_debug_grandom_generator_is_hypernode(new_node) {
           match new_port_opt {
             Some(new_port) =>
-              @graph.edge_targets(edge).push(@graph.make_port_shape(new_port))
+              @graph.edge_add_target(edge, @graph.make_port_shape(new_port))
             None => ()
           }
         }
@@ -1856,7 +1856,7 @@ fn core_debug_grandom_generator_move_target(
       ),
     )
     let new_node = core_debug_grandom_generator_shape_to_node(new_connect_shape)
-    @graph.edge_targets(edge).push(@graph.make_node_shape(new_node))
+    @graph.edge_add_target(edge, @graph.make_node_shape(new_node))
   }
   try ignore(@graph.update_containment(Some(edge))) catch {
     err => abort(err.to_string())
