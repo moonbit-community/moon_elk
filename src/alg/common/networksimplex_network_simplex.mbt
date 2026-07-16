@@ -234,26 +234,52 @@ fn ns_layering_topological_numbering(
 }
 
 ///|
+/// Uses explicit traversal frames instead of recursive calls. Tight trees can
+/// contain thousands of nodes, while the legacy Wasm backend runs on a
+/// JavaScript host with a comparatively small call stack.
 fn ns_tight_tree_dfs(
   network_simplex : NetworkSimplex,
   node : NNode,
 ) -> Int raise NetworkSimplexException {
   let mut node_count = 1
   node.set_tree_node(true)
-  for edge in node.get_connected_edges() {
+  let node_stack = [node]
+  let edge_stack = [node.get_connected_edges()]
+  let index_stack = [0]
+  while !node_stack.is_empty() {
+    let last = node_stack.length() - 1
+    let edges = edge_stack[last]
+    let edge_index = index_stack[last]
+    if edge_index >= edges.length() {
+      ignore(node_stack.pop())
+      ignore(edge_stack.pop())
+      ignore(index_stack.pop())
+      continue
+    }
+    index_stack[last] = edge_index + 1
+    let edge = edges[edge_index]
     let edge_internal_id = edge.get_internal_id()
-    if !network_simplex.edge_visited[edge_internal_id] {
-      network_simplex.edge_visited[edge_internal_id] = true
-      let opposite = edge.get_other(node)
-      if edge.is_tree_edge() {
-        node_count = node_count + ns_tight_tree_dfs(network_simplex, opposite)
-      } else if !opposite.is_tree_node() &&
-        edge.get_delta() ==
-        edge.get_target().get_layer() - edge.get_source().get_layer() {
-        edge.set_tree_edge(true)
-        ns_add_tree_edge_unique(network_simplex, edge)
-        node_count = node_count + ns_tight_tree_dfs(network_simplex, opposite)
-      }
+    if network_simplex.edge_visited[edge_internal_id] {
+      continue
+    }
+    network_simplex.edge_visited[edge_internal_id] = true
+    let opposite = edge.get_other(node_stack[last])
+    if edge.is_tree_edge() {
+      opposite.set_tree_node(true)
+      node_count = node_count + 1
+      node_stack.push(opposite)
+      edge_stack.push(opposite.get_connected_edges())
+      index_stack.push(0)
+    } else if !opposite.is_tree_node() &&
+      edge.get_delta() ==
+      edge.get_target().get_layer() - edge.get_source().get_layer() {
+      edge.set_tree_edge(true)
+      ns_add_tree_edge_unique(network_simplex, edge)
+      opposite.set_tree_node(true)
+      node_count = node_count + 1
+      node_stack.push(opposite)
+      edge_stack.push(opposite.get_connected_edges())
+      index_stack.push(0)
     }
   }
   node_count
@@ -278,29 +304,57 @@ fn ns_minimal_slack(network_simplex : NetworkSimplex) -> NEdge? {
 }
 
 ///|
+/// Each frame retains its next edge and lowest descendant postorder ID. This
+/// preserves recursive postorder semantics without consuming the host call
+/// stack on deep spanning trees.
 fn ns_postorder_traversal(
   network_simplex : NetworkSimplex,
   node : NNode,
 ) -> Int raise NetworkSimplexException {
-  let mut lowest = ns_int_max_value
-  for edge in node.get_connected_edges() {
-    let edge_internal_id = edge.get_internal_id()
-    if edge.is_tree_edge() && !network_simplex.edge_visited[edge_internal_id] {
-      network_simplex.edge_visited[edge_internal_id] = true
-      lowest = ns_int_min(
-        lowest,
-        ns_postorder_traversal(network_simplex, edge.get_other(node)),
-      )
+  let node_stack = [node]
+  let edge_stack = [node.get_connected_edges()]
+  let index_stack = [0]
+  let lowest_stack = [ns_int_max_value]
+  let mut root_lowest = ns_int_max_value
+  while !node_stack.is_empty() {
+    let last = node_stack.length() - 1
+    let edges = edge_stack[last]
+    let edge_index = index_stack[last]
+    if edge_index < edges.length() {
+      index_stack[last] = edge_index + 1
+      let edge = edges[edge_index]
+      let edge_internal_id = edge.get_internal_id()
+      if edge.is_tree_edge() && !network_simplex.edge_visited[edge_internal_id] {
+        network_simplex.edge_visited[edge_internal_id] = true
+        let child = edge.get_other(node_stack[last])
+        node_stack.push(child)
+        edge_stack.push(child.get_connected_edges())
+        index_stack.push(0)
+        lowest_stack.push(ns_int_max_value)
+      }
+      continue
+    }
+    let current_node = node_stack[last]
+    let node_internal_id = current_node.get_internal_id()
+    let current_lowest = ns_int_min(
+      lowest_stack[last],
+      network_simplex.post_order,
+    )
+    network_simplex.po_id[node_internal_id] = network_simplex.post_order
+    network_simplex.lowest_po_id[node_internal_id] = current_lowest
+    network_simplex.post_order = network_simplex.post_order + 1
+    ignore(node_stack.pop())
+    ignore(edge_stack.pop())
+    ignore(index_stack.pop())
+    ignore(lowest_stack.pop())
+    if lowest_stack.is_empty() {
+      root_lowest = current_lowest
+    } else {
+      let parent = lowest_stack.length() - 1
+      lowest_stack[parent] = ns_int_min(lowest_stack[parent], current_lowest)
     }
   }
-  let node_internal_id = node.get_internal_id()
-  network_simplex.po_id[node_internal_id] = network_simplex.post_order
-  network_simplex.lowest_po_id[node_internal_id] = ns_int_min(
-    lowest,
-    network_simplex.post_order,
-  )
-  network_simplex.post_order = network_simplex.post_order + 1
-  network_simplex.lowest_po_id[node_internal_id]
+  root_lowest
 }
 
 ///|

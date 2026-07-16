@@ -31,6 +31,9 @@ fn generate_random_graph(random : @random.Rand) -> NGraph {
       ),
     )
   }
+  // Keep a long deterministic path in every graph. It guards the explicit
+  // NetworkSimplex traversal stacks against regressions to recursion, which
+  // overflows the legacy Wasm host call stack at this depth.
   for i in 0..<(n - 1) {
     ignore(
       network_simplex_test_create_edge_or_abort(
