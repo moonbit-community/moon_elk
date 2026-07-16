@@ -1,5 +1,5 @@
 ///|
-pub enum GroupOrderStrategy {
+pub(all) enum GroupOrderStrategy {
   OnlyWithinGroup
   ModelOrder
   Enforced

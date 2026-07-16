@@ -1,9 +1,9 @@
 ///|
 priv struct DfsNodeOrderCycleBreakerState {
-  graph : LGraph
+  graph : @layered.LGraph
   visited : Array[Bool]
   active : Array[Bool]
-  edges_to_be_reversed : Array[LEdge]
+  edges_to_be_reversed : Array[@layered.LEdge]
 }
 
 ///|
@@ -20,8 +20,8 @@ fn[T] dfs_node_order_cycle_breaker_raise_unsupported_graph(
 
 ///|
 fn dfs_node_order_cycle_breaker_require_target_node(
-  edge : LEdge,
-) -> LNode raise DfsNodeOrderCycleBreakerException {
+  edge : @layered.LEdge,
+) -> @layered.LNode raise DfsNodeOrderCycleBreakerException {
   let target = match edge.get_target() {
     Some(value) => value
     None =>
@@ -40,8 +40,8 @@ fn dfs_node_order_cycle_breaker_require_target_node(
 
 ///|
 fn dfs_node_order_cycle_breaker_reverse_edge(
-  edge : LEdge,
-  graph : LGraph,
+  edge : @layered.LEdge,
+  graph : @layered.LGraph,
 ) -> Unit {
   edge.reverse(graph, true)
 }
@@ -65,8 +65,8 @@ fn dfs_node_order_cycle_breaker_model_order_sort(values : Array[Int]) -> Unit {
 fn dfs_node_order_cycle_breaker_group_model_order(
   state : DfsNodeOrderCycleBreakerState,
 ) -> Bool {
-  group_order_strategy_equals(
-    group_order_strategy_from_string(
+  @layered.group_order_strategy_equals(
+    @layered.group_order_strategy_from_string(
       state.graph.get_property_string(
         @options.layered_options_consider_model_order_group_model_order_cb_group_order_strategy,
       ),
@@ -78,33 +78,33 @@ fn dfs_node_order_cycle_breaker_group_model_order(
 ///|
 fn dfs_node_order_cycle_breaker_target_model_order(
   state : DfsNodeOrderCycleBreakerState,
-  edge : LEdge,
+  edge : @layered.LEdge,
   model_order_map_size : Int,
   group_model_order : Bool,
 ) -> Int raise DfsNodeOrderCycleBreakerException {
   let target = dfs_node_order_cycle_breaker_require_target_node(edge)
-  if !target.has_property_int(internal_properties_model_order) {
+  if !target.has_property_int(@layered.internal_properties_model_order) {
     return @int.MAX_VALUE - model_order_map_size
   }
 
   if group_model_order {
     let max_model_order_group_size = state.graph.get_property_int(
-      internal_properties_max_model_order_nodes,
+      @layered.internal_properties_max_model_order_nodes,
     )
     max_model_order_group_size *
     target.get_property_int(
       @options.layered_options_consider_model_order_group_model_order_cycle_breaking_id,
     ) +
-    target.get_property_int(internal_properties_model_order)
+    target.get_property_int(@layered.internal_properties_model_order)
   } else {
-    target.get_property_int(internal_properties_model_order)
+    target.get_property_int(@layered.internal_properties_model_order)
   }
 }
 
 ///|
 fn dfs_node_order_cycle_breaker_dfs(
   state : DfsNodeOrderCycleBreakerState,
-  node : LNode,
+  node : @layered.LNode,
 ) -> Unit raise DfsNodeOrderCycleBreakerException {
   let node_id = node.get_id()
   if state.visited[node_id] {
@@ -114,7 +114,7 @@ fn dfs_node_order_cycle_breaker_dfs(
   state.visited[node_id] = true
   state.active[node_id] = true
 
-  let model_order_map : Map[Int, Array[LEdge]] = Map([])
+  let model_order_map : Map[Int, Array[@layered.LEdge]] = Map([])
   let group_model_order = dfs_node_order_cycle_breaker_group_model_order(state)
 
   for edge in node.get_outgoing_edges() {
@@ -164,20 +164,22 @@ fn dfs_node_order_cycle_breaker_dfs(
 
 ///|
 fn dfs_node_order_cycle_breaker_configuration(
-  graph : LGraph,
-) -> @core.LayoutProcessorConfiguration[LayeredPhases, LGraph]? {
+  graph : @layered.LGraph,
+) -> @core.LayoutProcessorConfiguration[@layered.LayeredPhases, @layered.LGraph]? {
   ignore(graph)
   Some(
-    @core.layout_processor_configuration_create(layered_phase_descriptor).add_after(
+    @core.layout_processor_configuration_create(
+      @layered.layered_phase_descriptor,
+    ).add_after(
       P5EdgeRouting,
-      layered_intermediate_processor_factory(ReversedEdgeRestorer),
+      @layered.layered_intermediate_processor_factory(ReversedEdgeRestorer),
     ),
   )
 }
 
 ///|
 fn dfs_node_order_cycle_breaker_process(
-  graph : LGraph,
+  graph : @layered.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
 ) -> Unit {
   let monitor = match progress_monitor {
@@ -217,7 +219,7 @@ fn dfs_node_order_cycle_breaker_process(
 
     for edge in state.edges_to_be_reversed {
       dfs_node_order_cycle_breaker_reverse_edge(edge, graph)
-      graph.set_property_bool(internal_properties_cyclic, true)
+      graph.set_property_bool(@layered.internal_properties_cyclic, true)
     }
   } catch {
     UnsupportedGraphException(message) => {
@@ -234,8 +236,8 @@ fn dfs_node_order_cycle_breaker_process(
 
 ///|
 pub fn new_dfs_node_order_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[
-  LayeredPhases,
-  LGraph,
+  @layered.LayeredPhases,
+  @layered.LGraph,
 ] {
   @core.new_layout_phase(
     dfs_node_order_cycle_breaker_process, dfs_node_order_cycle_breaker_configuration,

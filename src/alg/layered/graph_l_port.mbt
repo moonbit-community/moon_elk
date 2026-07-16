@@ -9,7 +9,7 @@ fn lport_next_handle() -> Int {
 }
 
 ///|
-fn lport_internal_handle(port : LPort) -> Int {
+pub fn lport_internal_handle(port : LPort) -> Int {
   port.port_handle
 }
 

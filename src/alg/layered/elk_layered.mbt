@@ -132,44 +132,7 @@ fn elk_layered_greedy_switch_strategy(
 fn elk_layered_cycle_breaking_factory(
   strategy : String,
 ) -> @core.ILayoutProcessorFactory[LayeredPhases, LGraph] {
-  match strategy {
-    "DEPTH_FIRST" =>
-      @core.new_layout_processor_factory(21001, 0, () => {
-        new_depth_first_cycle_breaker_layout_phase()
-      })
-    "INTERACTIVE" =>
-      @core.new_layout_processor_factory(21002, 0, () => {
-        new_interactive_cycle_breaker_layout_phase()
-      })
-    "MODEL_ORDER" =>
-      @core.new_layout_processor_factory(21003, 0, () => {
-        new_model_order_cycle_breaker_layout_phase()
-      })
-    "GREEDY_MODEL_ORDER" =>
-      @core.new_layout_processor_factory(21004, 0, () => {
-        new_greedy_model_order_cycle_breaker_layout_phase()
-      })
-    "SCC_CONNECTIVITY" =>
-      @core.new_layout_processor_factory(21005, 0, () => {
-        new_sc_connectivity_cycle_breaker_layout_phase()
-      })
-    "SCC_NODE_TYPE" =>
-      @core.new_layout_processor_factory(21006, 0, () => {
-        new_scc_node_type_cycle_breaker_layout_phase()
-      })
-    "DFS_NODE_ORDER" =>
-      @core.new_layout_processor_factory(21007, 0, () => {
-        new_dfs_node_order_cycle_breaker_layout_phase()
-      })
-    "BFS_NODE_ORDER" =>
-      @core.new_layout_processor_factory(21008, 0, () => {
-        new_bfs_node_order_cycle_breaker_layout_phase()
-      })
-    _ =>
-      @core.new_layout_processor_factory(21000, 0, () => {
-        new_greedy_cycle_breaker_layout_phase()
-      })
-  }
+  layered_cycle_breaking_phase_factory(strategy)
 }
 
 ///|

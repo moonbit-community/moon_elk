@@ -9,7 +9,7 @@ fn lnode_next_handle() -> Int {
 }
 
 ///|
-fn lnode_internal_handle(node : LNode) -> Int {
+pub fn lnode_internal_handle(node : LNode) -> Int {
   node.node_handle
 }
 

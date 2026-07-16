@@ -1,5 +1,5 @@
 ///|
-pub enum IntermediateProcessorStrategy {
+pub(all) enum IntermediateProcessorStrategy {
   DirectionPreprocessor
   CommentPreprocessor
   EdgeAndLayerConstraintEdgeReverser

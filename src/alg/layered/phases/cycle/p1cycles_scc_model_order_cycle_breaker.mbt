@@ -12,8 +12,8 @@ fn[T] scc_model_order_cycle_breaker_raise_unsupported_graph(
 
 ///|
 fn scc_model_order_cycle_breaker_require_source_node(
-  edge : LEdge,
-) -> LNode raise SCCModelOrderCycleBreakerException {
+  edge : @layered.LEdge,
+) -> @layered.LNode raise SCCModelOrderCycleBreakerException {
   let source = match edge.get_source() {
     Some(value) => value
     None =>
@@ -32,8 +32,8 @@ fn scc_model_order_cycle_breaker_require_source_node(
 
 ///|
 fn scc_model_order_cycle_breaker_require_target_node(
-  edge : LEdge,
-) -> LNode raise SCCModelOrderCycleBreakerException {
+  edge : @layered.LEdge,
+) -> @layered.LNode raise SCCModelOrderCycleBreakerException {
   let target = match edge.get_target() {
     Some(value) => value
     None =>
@@ -52,32 +52,35 @@ fn scc_model_order_cycle_breaker_require_target_node(
 
 ///|
 fn scc_model_order_cycle_breaker_reverse_edge(
-  edge : LEdge,
-  graph : LGraph,
+  edge : @layered.LEdge,
+  graph : @layered.LGraph,
 ) -> Unit {
   edge.reverse(graph, false)
 }
 
 ///|
 fn scc_model_order_cycle_breaker_configuration(
-  graph : LGraph,
-) -> @core.LayoutProcessorConfiguration[LayeredPhases, LGraph]? {
+  graph : @layered.LGraph,
+) -> @core.LayoutProcessorConfiguration[@layered.LayeredPhases, @layered.LGraph]? {
   ignore(graph)
   Some(
-    @core.layout_processor_configuration_create(layered_phase_descriptor).add_after(
+    @core.layout_processor_configuration_create(
+      @layered.layered_phase_descriptor,
+    ).add_after(
       P5EdgeRouting,
-      layered_intermediate_processor_factory(ReversedEdgeRestorer),
+      @layered.layered_intermediate_processor_factory(ReversedEdgeRestorer),
     ),
   )
 }
 
 ///|
 fn scc_model_order_cycle_breaker_scc_contains_node(
-  strongly_connected_component : Array[LNode],
-  node : LNode,
+  strongly_connected_component : Array[@layered.LNode],
+  node : @layered.LNode,
 ) -> Bool {
   for component_node in strongly_connected_component {
-    if lnode_internal_handle(component_node) == lnode_internal_handle(node) {
+    if @layered.lnode_internal_handle(component_node) ==
+      @layered.lnode_internal_handle(node) {
       return true
     }
   }
@@ -86,10 +89,10 @@ fn scc_model_order_cycle_breaker_scc_contains_node(
 
 ///|
 fn scc_model_order_cycle_breaker_enforce_group_model_order(
-  graph : LGraph,
+  graph : @layered.LGraph,
 ) -> Bool {
-  group_order_strategy_equals(
-    group_order_strategy_from_string(
+  @layered.group_order_strategy_equals(
+    @layered.group_order_strategy_from_string(
       graph.get_property_string(
         @options.layered_options_consider_model_order_group_model_order_cb_group_order_strategy,
       ),
@@ -101,7 +104,7 @@ fn scc_model_order_cycle_breaker_enforce_group_model_order(
 ///|
 fn scc_model_order_cycle_breaker_compute_model_order(
   calculator : GroupModelOrderCalculator,
-  node : LNode,
+  node : @layered.LNode,
   enforce_group_model_order : Bool,
   offset : Int,
   big_offset : Int,
@@ -115,9 +118,9 @@ fn scc_model_order_cycle_breaker_compute_model_order(
 
 ///|
 fn scc_model_order_cycle_breaker_find_nodes(
-  graph : LGraph,
-  strongly_connected_components : Array[Array[LNode]],
-  rev_edges : Array[LEdge],
+  graph : @layered.LGraph,
+  strongly_connected_components : Array[Array[@layered.LNode]],
+  rev_edges : Array[@layered.LEdge],
   offset : Int,
   big_offset : Int,
 ) -> Unit raise SCCModelOrderCycleBreakerException {
@@ -126,7 +129,7 @@ fn scc_model_order_cycle_breaker_find_nodes(
   )
 
   for strongly_connected_component in strongly_connected_components {
-    let mut max_node : LNode? = None
+    let mut max_node : @layered.LNode? = None
     let mut max_model_order = -@int.MAX_VALUE
     let calculator = new_group_model_order_calculator()
 
@@ -159,9 +162,15 @@ fn scc_model_order_cycle_breaker_find_nodes(
 
 ///|
 fn scc_model_order_cycle_breaker_process_with_finder(
-  layered_graph : LGraph,
+  layered_graph : @layered.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-  find_nodes : (LGraph, Array[Array[LNode]], Array[LEdge], Int, Int) -> Unit raise SCCModelOrderCycleBreakerException,
+  find_nodes : (
+    @layered.LGraph,
+    Array[Array[@layered.LNode]],
+    Array[@layered.LEdge],
+    Int,
+    Int,
+  ) -> Unit raise SCCModelOrderCycleBreakerException,
 ) -> Unit {
   let monitor = match progress_monitor {
     Some(value) => value
@@ -171,19 +180,23 @@ fn scc_model_order_cycle_breaker_process_with_finder(
 
   let rev_edges = []
   let offset = if layered_graph.get_layerless_nodes().length() >
-    layered_graph.get_property_int(internal_properties_max_model_order_nodes) {
+    layered_graph.get_property_int(
+      @layered.internal_properties_max_model_order_nodes,
+    ) {
     layered_graph.get_layerless_nodes().length()
   } else {
-    layered_graph.get_property_int(internal_properties_max_model_order_nodes)
+    layered_graph.get_property_int(
+      @layered.internal_properties_max_model_order_nodes,
+    )
   }
   let big_offset = offset *
     layered_graph.get_property_int(
-      internal_properties_cb_num_model_order_groups,
+      @layered.internal_properties_cb_num_model_order_groups,
     )
 
   try {
     while true {
-      let tarjan = new_tarjan(rev_edges)
+      let tarjan = @layered.new_tarjan(rev_edges)
       tarjan.reset_tarjan(layered_graph)
       tarjan.tarjan(layered_graph)
 
@@ -197,7 +210,9 @@ fn scc_model_order_cycle_breaker_process_with_finder(
       )
       for edge in rev_edges {
         scc_model_order_cycle_breaker_reverse_edge(edge, layered_graph)
-        layered_graph.set_property_bool(internal_properties_cyclic, true)
+        layered_graph.set_property_bool(
+          @layered.internal_properties_cyclic, true,
+        )
       }
       rev_edges.clear()
     }
@@ -216,7 +231,7 @@ fn scc_model_order_cycle_breaker_process_with_finder(
 
 ///|
 fn scc_model_order_cycle_breaker_process(
-  layered_graph : LGraph,
+  layered_graph : @layered.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
 ) -> Unit {
   scc_model_order_cycle_breaker_process_with_finder(
@@ -226,8 +241,8 @@ fn scc_model_order_cycle_breaker_process(
 
 ///|
 pub fn new_scc_model_order_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[
-  LayeredPhases,
-  LGraph,
+  @layered.LayeredPhases,
+  @layered.LGraph,
 ] {
   @core.new_layout_phase(
     scc_model_order_cycle_breaker_process, scc_model_order_cycle_breaker_configuration,

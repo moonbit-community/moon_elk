@@ -1,5 +1,5 @@
 ///|
-pub enum LayerConstraint {
+pub(all) enum LayerConstraint {
   NoneType
   First
   FirstSeparate

@@ -1,5 +1,5 @@
 ///|
-pub enum PortType {
+pub(all) enum PortType {
   Undefined
   Input
   Output

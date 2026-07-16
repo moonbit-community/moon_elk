@@ -1,5 +1,5 @@
 ///|
-pub enum LayeredPhases {
+pub(all) enum LayeredPhases {
   P1CycleBreaking
   P2Layering
   P3NodeOrdering

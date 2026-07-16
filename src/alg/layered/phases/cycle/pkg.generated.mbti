@@ -1,0 +1,71 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/moon_elk/alg/layered/phases/cycle"
+
+import {
+  "Milky2018/moon_elk/alg/layered",
+  "Milky2018/moon_elk/core",
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub let cycle_phase_linked : Bool
+
+pub fn new_bfs_node_order_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[@layered.LayeredPhases, @layered.LGraph]
+
+pub fn new_depth_first_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[@layered.LayeredPhases, @layered.LGraph]
+
+pub fn new_dfs_node_order_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[@layered.LayeredPhases, @layered.LGraph]
+
+pub fn new_greedy_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[@layered.LayeredPhases, @layered.LGraph]
+
+pub fn new_greedy_model_order_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[@layered.LayeredPhases, @layered.LGraph]
+
+pub fn new_group_model_order_calculator() -> GroupModelOrderCalculator
+
+pub fn new_interactive_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[@layered.LayeredPhases, @layered.LGraph]
+
+pub fn new_model_order_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[@layered.LayeredPhases, @layered.LGraph]
+
+pub fn new_sc_connectivity_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[@layered.LayeredPhases, @layered.LGraph]
+
+pub fn new_scc_model_order_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[@layered.LayeredPhases, @layered.LGraph]
+
+pub fn new_scc_node_type_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[@layered.LayeredPhases, @layered.LGraph]
+
+// Errors
+pub(all) suberror DepthFirstCycleBreakerException {
+  UnsupportedGraphException(String)
+} derive(ToJson, @debug.Debug)
+
+pub(all) suberror DfsNodeOrderCycleBreakerException {
+  UnsupportedGraphException(String)
+} derive(ToJson, @debug.Debug)
+
+pub(all) suberror GreedyCycleBreakerException {
+  UnsupportedGraphException(String)
+} derive(ToJson, @debug.Debug)
+
+pub(all) suberror InteractiveCycleBreakerException {
+  UnsupportedGraphException(String)
+} derive(ToJson, @debug.Debug)
+
+pub(all) suberror ModelOrderCycleBreakerException {
+  UnsupportedGraphException(String)
+} derive(ToJson, @debug.Debug)
+
+pub(all) suberror SCCModelOrderCycleBreakerException {
+  UnsupportedGraphException(String)
+} derive(ToJson, @debug.Debug)
+
+// Types and methods
+pub struct GroupModelOrderCalculator {
+  mut first_separate_nodes : Int
+  mut last_separate_nodes : Int
+}
+pub fn GroupModelOrderCalculator::compute_constraint_group_model_order(Self, @layered.LNode, Int, Int) -> Int
+pub fn GroupModelOrderCalculator::compute_constraint_model_order(Self, @layered.LNode, Int) -> Int
+pub fn GroupModelOrderCalculator::reset_internal_counters(Self) -> Unit
+
+// Type aliases
+
+// Traits

@@ -12,8 +12,8 @@ fn[T] depth_first_cycle_breaker_raise_unsupported_graph(
 
 ///|
 fn depth_first_cycle_breaker_require_target_node(
-  edge : LEdge,
-) -> LNode raise DepthFirstCycleBreakerException {
+  edge : @layered.LEdge,
+) -> @layered.LNode raise DepthFirstCycleBreakerException {
   let target = match edge.get_target() {
     Some(value) => value
     None =>
@@ -31,16 +31,19 @@ fn depth_first_cycle_breaker_require_target_node(
 }
 
 ///|
-fn depth_first_cycle_breaker_reverse_edge(edge : LEdge, graph : LGraph) -> Unit {
+fn depth_first_cycle_breaker_reverse_edge(
+  edge : @layered.LEdge,
+  graph : @layered.LGraph,
+) -> Unit {
   edge.reverse(graph, true)
 }
 
 ///|
 fn depth_first_cycle_breaker_dfs(
-  node : LNode,
+  node : @layered.LNode,
   visited : Array[Bool],
   active : Array[Bool],
-  edges_to_be_reversed : Array[LEdge],
+  edges_to_be_reversed : Array[@layered.LEdge],
 ) -> Unit raise DepthFirstCycleBreakerException {
   let node_id = node.get_id()
   if visited[node_id] {
@@ -72,7 +75,7 @@ fn depth_first_cycle_breaker_dfs(
 
 ///|
 fn depth_first_cycle_breaker_process(
-  graph : LGraph,
+  graph : @layered.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
 ) -> Unit {
   let monitor = match progress_monitor {
@@ -116,7 +119,7 @@ fn depth_first_cycle_breaker_process(
 
     for edge in edges_to_be_reversed {
       depth_first_cycle_breaker_reverse_edge(edge, graph)
-      graph.set_property_bool(internal_properties_cyclic, true)
+      graph.set_property_bool(@layered.internal_properties_cyclic, true)
     }
   } catch {
     UnsupportedGraphException(message) => {
@@ -133,21 +136,23 @@ fn depth_first_cycle_breaker_process(
 
 ///|
 fn depth_first_cycle_breaker_configuration(
-  graph : LGraph,
-) -> @core.LayoutProcessorConfiguration[LayeredPhases, LGraph]? {
+  graph : @layered.LGraph,
+) -> @core.LayoutProcessorConfiguration[@layered.LayeredPhases, @layered.LGraph]? {
   ignore(graph)
   Some(
-    @core.layout_processor_configuration_create(layered_phase_descriptor).add_after(
+    @core.layout_processor_configuration_create(
+      @layered.layered_phase_descriptor,
+    ).add_after(
       P5EdgeRouting,
-      layered_intermediate_processor_factory(ReversedEdgeRestorer),
+      @layered.layered_intermediate_processor_factory(ReversedEdgeRestorer),
     ),
   )
 }
 
 ///|
 pub fn new_depth_first_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[
-  LayeredPhases,
-  LGraph,
+  @layered.LayeredPhases,
+  @layered.LGraph,
 ] {
   @core.new_layout_phase(
     depth_first_cycle_breaker_process, depth_first_cycle_breaker_configuration,

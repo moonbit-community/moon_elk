@@ -3,12 +3,12 @@ fn gmoc_new_node(
   constraint : String,
   model_order : Int,
   group_id : Int,
-) -> LNode {
-  let node = new_l_node()
+) -> @layered.LNode {
+  let node = @layered.new_l_node()
   node.set_property_string(
     @options.layered_options_layering_layer_constraint, constraint,
   )
-  node.set_property_int(internal_properties_model_order, model_order)
+  node.set_property_int(@layered.internal_properties_model_order, model_order)
   node.set_property_int(
     @options.layered_options_consider_model_order_group_model_order_cycle_breaking_id,
     group_id,
@@ -17,8 +17,8 @@ fn gmoc_new_node(
 }
 
 ///|
-fn gmoc_new_node_without_model_order(constraint : String) -> LNode {
-  let node = new_l_node()
+fn gmoc_new_node_without_model_order(constraint : String) -> @layered.LNode {
+  let node = @layered.new_l_node()
   node.set_property_string(
     @options.layered_options_layering_layer_constraint, constraint,
   )
@@ -27,27 +27,27 @@ fn gmoc_new_node_without_model_order(constraint : String) -> LNode {
 
 ///|
 fn gmoc_constraint_none() -> String {
-  layer_constraint_values()[0]
+  @layered.layer_constraint_values()[0]
 }
 
 ///|
 fn gmoc_constraint_first() -> String {
-  layer_constraint_values()[1]
+  @layered.layer_constraint_values()[1]
 }
 
 ///|
 fn gmoc_constraint_first_separate() -> String {
-  layer_constraint_values()[2]
+  @layered.layer_constraint_values()[2]
 }
 
 ///|
 fn gmoc_constraint_last() -> String {
-  layer_constraint_values()[3]
+  @layered.layer_constraint_values()[3]
 }
 
 ///|
 fn gmoc_constraint_last_separate() -> String {
-  layer_constraint_values()[4]
+  @layered.layer_constraint_values()[4]
 }
 
 ///|

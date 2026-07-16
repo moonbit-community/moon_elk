@@ -3,14 +3,17 @@ priv struct BfsNodeOrderCycleBreakerState {
   sources : Map[Int, Bool]
   sinks : Map[Int, Bool]
   visited : Array[Bool]
-  bfs_queue : Array[LNode]
+  bfs_queue : Array[@layered.LNode]
   mut bfs_head : Int
-  edges_to_be_reversed : Array[LEdge]
-  graph : LGraph
+  edges_to_be_reversed : Array[@layered.LEdge]
+  graph : @layered.LGraph
 }
 
 ///|
-fn bfs_node_order_reverse_edge(edge : LEdge, graph : LGraph) -> Unit {
+fn bfs_node_order_reverse_edge(
+  edge : @layered.LEdge,
+  graph : @layered.LGraph,
+) -> Unit {
   edge.reverse(graph, true)
 }
 
@@ -32,7 +35,7 @@ fn bfs_node_order_model_order_sort(values : Array[Int]) -> Unit {
 ///|
 fn bfs_node_order_node_set_contains(
   node_set : Map[Int, Bool],
-  node : LNode,
+  node : @layered.LNode,
 ) -> Bool {
   match node_set.get(node.get_handle()) {
     Some(value) => value
@@ -44,8 +47,8 @@ fn bfs_node_order_node_set_contains(
 fn bfs_node_order_state_group_model_order(
   state : BfsNodeOrderCycleBreakerState,
 ) -> Bool {
-  group_order_strategy_equals(
-    group_order_strategy_from_string(
+  @layered.group_order_strategy_equals(
+    @layered.group_order_strategy_from_string(
       state.graph.get_property_string(
         @options.layered_options_consider_model_order_group_model_order_cb_group_order_strategy,
       ),
@@ -57,7 +60,7 @@ fn bfs_node_order_state_group_model_order(
 ///|
 fn bfs_node_order_target_model_order(
   state : BfsNodeOrderCycleBreakerState,
-  edge : LEdge,
+  edge : @layered.LEdge,
   model_order_map_size : Int,
   group_model_order : Bool,
 ) -> Int {
@@ -69,28 +72,28 @@ fn bfs_node_order_target_model_order(
       }
     None => return @int.MAX_VALUE - model_order_map_size
   }
-  if !target.has_property_int(internal_properties_model_order) {
+  if !target.has_property_int(@layered.internal_properties_model_order) {
     return @int.MAX_VALUE - model_order_map_size
   }
 
   if group_model_order {
     let max_model_order_group_size = state.graph.get_property_int(
-      internal_properties_max_model_order_nodes,
+      @layered.internal_properties_max_model_order_nodes,
     )
     max_model_order_group_size *
     target.get_property_int(
       @options.layered_options_consider_model_order_group_model_order_cycle_breaking_id,
     ) +
-    target.get_property_int(internal_properties_model_order)
+    target.get_property_int(@layered.internal_properties_model_order)
   } else {
-    target.get_property_int(internal_properties_model_order)
+    target.get_property_int(@layered.internal_properties_model_order)
   }
 }
 
 ///|
 fn bfs_node_order_visit_node(
   state : BfsNodeOrderCycleBreakerState,
-  node : LNode,
+  node : @layered.LNode,
 ) -> Unit {
   let node_id = node.get_id()
   if state.visited[node_id] {
@@ -98,7 +101,7 @@ fn bfs_node_order_visit_node(
   }
   state.visited[node_id] = true
 
-  let model_order_map : Map[Int, Array[LEdge]] = Map([])
+  let model_order_map : Map[Int, Array[@layered.LEdge]] = Map([])
   let group_model_order = bfs_node_order_state_group_model_order(state)
 
   for edge in node.get_outgoing_edges() {
@@ -165,20 +168,22 @@ fn bfs_node_order_loop(state : BfsNodeOrderCycleBreakerState) -> Unit {
 
 ///|
 fn bfs_node_order_configuration(
-  graph : LGraph,
-) -> @core.LayoutProcessorConfiguration[LayeredPhases, LGraph]? {
+  graph : @layered.LGraph,
+) -> @core.LayoutProcessorConfiguration[@layered.LayeredPhases, @layered.LGraph]? {
   ignore(graph)
   Some(
-    @core.layout_processor_configuration_create(layered_phase_descriptor).add_after(
+    @core.layout_processor_configuration_create(
+      @layered.layered_phase_descriptor,
+    ).add_after(
       P5EdgeRouting,
-      layered_intermediate_processor_factory(ReversedEdgeRestorer),
+      @layered.layered_intermediate_processor_factory(ReversedEdgeRestorer),
     ),
   )
 }
 
 ///|
 fn bfs_node_order_process(
-  graph : LGraph,
+  graph : @layered.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
 ) -> Unit {
   let monitor = match progress_monitor {
@@ -233,7 +238,7 @@ fn bfs_node_order_process(
 
   for edge in state.edges_to_be_reversed {
     bfs_node_order_reverse_edge(edge, graph)
-    graph.set_property_bool(internal_properties_cyclic, true)
+    graph.set_property_bool(@layered.internal_properties_cyclic, true)
   }
 
   monitor.done()
@@ -241,8 +246,8 @@ fn bfs_node_order_process(
 
 ///|
 pub fn new_bfs_node_order_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[
-  LayeredPhases,
-  LGraph,
+  @layered.LayeredPhases,
+  @layered.LGraph,
 ] {
   @core.new_layout_phase(bfs_node_order_process, bfs_node_order_configuration)
 }

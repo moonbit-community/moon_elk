@@ -421,11 +421,15 @@ pub fn layering_strategy_to_string(LayeringStrategy) -> String
 
 pub fn layering_strategy_values() -> Array[String]
 
+pub fn lnode_internal_handle(LNode) -> Int
+
 pub fn long_edge_joiner_join_at(LNode, Bool) -> Unit
 
 pub fn long_edge_ordering_strategy_return_values() -> Array[Int]
 
 pub fn long_edge_splitter_split_edge(LEdge, LNode) -> LEdge
+
+pub fn lport_internal_handle(LPort) -> Int
 
 pub fn model_order_barycenter_heuristic_insertion_sort(Array[LNode], (LNode, LNode) -> Int, ModelOrderBarycenterHeuristic) -> Unit
 
@@ -452,8 +456,6 @@ pub fn new_barycenter_state(LNode) -> BarycenterState
 pub fn new_base_routing_direction_strategy(RoutingDirectionStrategyType) -> BaseRoutingDirectionStrategy
 
 pub fn new_between_layer_edge_two_node_crossings_counter(Array[Array[LNode]], Int) -> BetweenLayerEdgeTwoNodeCrossingsCounter
-
-pub fn new_bfs_node_order_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn[V : Hash + Eq] new_bi_linked_hash_multi_map() -> BiLinkedHashMultiMap[V]
 
@@ -513,11 +515,7 @@ pub fn new_crossing_matrix_filler(GreedySwitchType, Array[Array[LNode]], Int, Cr
 
 pub fn new_crossings_counter(Array[Int]) -> CrossingsCounter
 
-pub fn new_depth_first_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
-
 pub fn new_depth_first_model_order_layerer_layout_phase() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
-
-pub fn new_dfs_node_order_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_direction_postprocessor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
@@ -553,10 +551,6 @@ pub fn new_graph_stats(LGraph) -> GraphStats
 
 pub fn new_graph_transformer_layout_processor(GraphTransformerMode) -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
-pub fn new_greedy_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
-
-pub fn new_greedy_model_order_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
-
 pub fn new_greedy_port_distributor() -> GreedyPortDistributor
 
 pub fn new_greedy_switch_heuristic(GreedySwitchType, GraphInfoHolder) -> GreedySwitchHeuristic
@@ -574,8 +568,6 @@ pub fn new_greedy_switch_north_south_edge_test_graph_creator() -> GreedySwitchNo
 pub fn new_greedy_switch_test_graph_creator() -> GreedySwitchTestGraphCreator
 
 pub fn new_grid_container_cell(Bool, Bool, Double) -> Cell
-
-pub fn new_group_model_order_calculator() -> GroupModelOrderCalculator
 
 pub fn new_hierarchical_node_resizing_processor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
@@ -614,8 +606,6 @@ pub fn new_in_layer_constraint_processor_layout_processor() -> @core.ILayoutProc
 pub fn new_innermost_node_margin_calculator_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_interactive_crossing_minimizer_layout_phase() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
-
-pub fn new_interactive_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_interactive_external_port_positioner_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
@@ -755,8 +745,6 @@ pub fn new_model_order_component_group() -> ModelOrderComponentGroup
 
 pub fn new_model_order_component_group_with_component(LGraph) -> ModelOrderComponentGroup
 
-pub fn new_model_order_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
-
 pub fn new_model_order_node_comparator(LGraph, Array[LNode], OrderingStrategy, LongEdgeOrderingStrategy, GroupOrderStrategy, Bool) -> ModelOrderNodeComparator
 
 pub fn new_model_order_node_comparator_from_layer(LGraph, Layer, OrderingStrategy, LongEdgeOrderingStrategy, GroupOrderStrategy, Bool) -> ModelOrderNodeComparator
@@ -844,12 +832,6 @@ pub fn new_reversed_edge_restorer_layout_processor() -> @core.ILayoutProcessor[L
 pub fn new_routing_director() -> RoutingDirector
 
 pub fn new_routing_slot_assigner() -> RoutingSlotAssigner
-
-pub fn new_sc_connectivity_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
-
-pub fn new_scc_model_order_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
-
-pub fn new_scc_node_type_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_self_hyper_loop(SelfLoopHolder) -> SelfHyperLoop
 
@@ -1067,6 +1049,8 @@ pub fn recursive_layered_apply_transformed_graph(LGraph) -> Bool
 
 pub fn recursive_layered_import_graph_for_transform(Int) -> LGraph?
 
+pub fn register_layered_cycle_breaking_phase(String, @core.ILayoutProcessorFactory[LayeredPhases, LGraph]) -> Unit
+
 pub fn resize_node(LNode, @core.KVector, Bool, Bool) -> Unit
 
 pub fn routing_direction_to_string(RoutingDirection) -> String
@@ -1206,28 +1190,12 @@ pub(all) suberror CrossHierarchyEdgeComparatorException {
 
 type CuttingUtilsException derive(ToJson, @debug.Debug)
 
-pub(all) suberror DepthFirstCycleBreakerException {
-  UnsupportedGraphException(String)
-} derive(ToJson, @debug.Debug)
-
 pub(all) suberror DepthFirstModelOrderLayererException {
-  UnsupportedGraphException(String)
-} derive(ToJson, @debug.Debug)
-
-pub(all) suberror DfsNodeOrderCycleBreakerException {
   UnsupportedGraphException(String)
 } derive(ToJson, @debug.Debug)
 
 pub suberror ElkLayeredTestExecutionException {
   ElkLayeredTestExecutionException(String)
-} derive(ToJson, @debug.Debug)
-
-pub(all) suberror GreedyCycleBreakerException {
-  UnsupportedGraphException(String)
-} derive(ToJson, @debug.Debug)
-
-pub(all) suberror InteractiveCycleBreakerException {
-  UnsupportedGraphException(String)
 } derive(ToJson, @debug.Debug)
 
 pub(all) suberror InteractiveLayererException {
@@ -1273,10 +1241,6 @@ pub(all) suberror LongestPathSourceLayererException {
   UnsupportedGraphException(String)
 } derive(ToJson, @debug.Debug)
 
-pub(all) suberror ModelOrderCycleBreakerException {
-  UnsupportedGraphException(String)
-} derive(ToJson, @debug.Debug)
-
 pub suberror NetworkSimplexPlacerException {
   NetworkSimplexPlacerException(String)
 } derive(ToJson, @debug.Debug)
@@ -1303,10 +1267,6 @@ pub(all) suberror PortContextCreatorException {
 
 pub suberror RectangleException {
   RectangleException(String)
-} derive(ToJson, @debug.Debug)
-
-pub(all) suberror SCCModelOrderCycleBreakerException {
-  UnsupportedGraphException(String)
 } derive(ToJson, @debug.Debug)
 
 pub(all) suberror SelfLoopHolderException {
@@ -2148,15 +2108,7 @@ pub enum GreedySwitchType {
   Off
 }
 
-pub struct GroupModelOrderCalculator {
-  mut first_separate_nodes : Int
-  mut last_separate_nodes : Int
-}
-pub fn GroupModelOrderCalculator::compute_constraint_group_model_order(Self, LNode, Int, Int) -> Int
-pub fn GroupModelOrderCalculator::compute_constraint_model_order(Self, LNode, Int) -> Int
-pub fn GroupModelOrderCalculator::reset_internal_counters(Self) -> Unit
-
-pub enum GroupOrderStrategy {
+pub(all) enum GroupOrderStrategy {
   OnlyWithinGroup
   ModelOrder
   Enforced
@@ -2323,7 +2275,7 @@ pub enum InteractiveReferencePoint {
   TopLeft
 }
 
-pub enum IntermediateProcessorStrategy {
+pub(all) enum IntermediateProcessorStrategy {
   DirectionPreprocessor
   CommentPreprocessor
   EdgeAndLayerConstraintEdgeReverser
@@ -2936,7 +2888,7 @@ pub fn Layer::get_size(Self) -> @core.KVector
 pub fn Layer::set_id(Self, Int) -> Unit
 pub fn Layer::to_string(Self) -> String
 
-pub enum LayerConstraint {
+pub(all) enum LayerConstraint {
   NoneType
   First
   FirstSeparate
@@ -3081,7 +3033,7 @@ pub fn LayeredModelOrderRowGraphPlacer::combine(Self, Array[LGraph], LGraph) -> 
 pub fn LayeredModelOrderRowGraphPlacer::place_components(Self, Array[LGraph], LGraph, Double, Double) -> Unit
 pub fn LayeredModelOrderRowGraphPlacer::sort_components(Self, Array[LGraph], LGraph) -> Unit
 
-pub enum LayeredPhases {
+pub(all) enum LayeredPhases {
   P1CycleBreaking
   P2Layering
   P3NodeOrdering
@@ -3457,7 +3409,7 @@ pub enum PortSortingStrategy {
   PortDegree
 }
 
-pub enum PortType {
+pub(all) enum PortType {
   Undefined
   Input
   Output
