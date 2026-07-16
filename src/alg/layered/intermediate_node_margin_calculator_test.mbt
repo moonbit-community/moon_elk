@@ -24,8 +24,10 @@ test "comment node margin calculator reports expected task name" {
 ///|
 test "comment node margin calculator expands margins for top and bottom comments" {
   let graph = new_l_graph()
-  graph.set_property_double(layered_options_spacing_comment_comment, 5.0)
-  graph.set_property_double(layered_options_spacing_comment_node, 7.0)
+  graph.set_property_double(
+    @options.layered_options_spacing_comment_comment, 5.0,
+  )
+  graph.set_property_double(@options.layered_options_spacing_comment_node, 7.0)
 
   let layer = new_layer(graph)
   graph.get_layers().push(layer)
@@ -56,8 +58,10 @@ test "comment node margin calculator expands margins for top and bottom comments
 ///|
 test "comment node margin calculator keeps margins unchanged without comments" {
   let graph = new_l_graph()
-  graph.set_property_double(layered_options_spacing_comment_comment, 5.0)
-  graph.set_property_double(layered_options_spacing_comment_node, 7.0)
+  graph.set_property_double(
+    @options.layered_options_spacing_comment_comment, 5.0,
+  )
+  graph.set_property_double(@options.layered_options_spacing_comment_node, 7.0)
 
   let layer = new_layer(graph)
   graph.get_layers().push(layer)
@@ -77,8 +81,10 @@ test "comment node margin calculator keeps margins unchanged without comments" {
 ///|
 test "comment node margin calculator treats empty comment list as present property" {
   let graph = new_l_graph()
-  graph.set_property_double(layered_options_spacing_comment_comment, 5.0)
-  graph.set_property_double(layered_options_spacing_comment_node, 7.0)
+  graph.set_property_double(
+    @options.layered_options_spacing_comment_comment, 5.0,
+  )
+  graph.set_property_double(@options.layered_options_spacing_comment_node, 7.0)
 
   let layer = new_layer(graph)
   graph.get_layers().push(layer)

@@ -739,7 +739,7 @@ fn LGraphToCGraphTransformer::transform_nodes(
 
   for layer in layered_graph.get_layers() {
     for node in layer.get_nodes() {
-      if node.get_property_bool(layered_options_comment_box) {
+      if node.get_property_bool(@options.layered_options_comment_box) {
         let connected_edges = node.get_connected_edges()
         if !connected_edges.is_empty() {
           let edge = connected_edges[0]

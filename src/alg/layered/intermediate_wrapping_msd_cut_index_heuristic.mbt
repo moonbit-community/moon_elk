@@ -21,7 +21,7 @@ fn msd_cut_index_heuristic_get_cut_indexes(
 
   let cut_cnt = ard_cut_index_heuristic_get_chunk_count(graph_stats) - 1
   let freedom = graph.get_property_int(
-    layered_options_wrapping_cutting_msd_freedom,
+    @options.layered_options_wrapping_cutting_msd_freedom,
   )
 
   let mut best_max_scale = -@double.infinity

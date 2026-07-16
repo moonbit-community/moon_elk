@@ -318,7 +318,9 @@ fn interactive_external_port_positioner_process_impl(
     match node.get_type() {
       ExternalPort => {
         let layer_constraint = layer_constraint_from_string(
-          node.get_property_string(layered_options_layering_layer_constraint),
+          node.get_property_string(
+            @options.layered_options_layering_layer_constraint,
+          ),
         )
 
         if interactive_external_port_positioner_layer_constraint_is_first_separate(

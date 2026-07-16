@@ -19,9 +19,9 @@ fn final_spline_test_port_side(name : String) -> @core.PortSide {
 }
 
 ///|
-fn final_spline_test_spline_mode(name : String) -> SplineRoutingMode {
-  for mode in spline_routing_mode_values() {
-    if spline_routing_mode_to_string(mode) == name {
+fn final_spline_test_spline_mode(name : String) -> @options.SplineRoutingMode {
+  for mode in @options.spline_routing_mode_values() {
+    if @options.spline_routing_mode_to_string(mode) == name {
       return mode
     }
   }
@@ -105,17 +105,17 @@ fn final_spline_test_build_graph() -> (LGraph, LEdge) {
   edge.set_property_l_edge_array(internal_properties_spline_edge_chain, [edge])
 
   graph.set_property_double(
-    layered_options_spacing_edge_edge_between_layers, 10.0,
+    @options.layered_options_spacing_edge_edge_between_layers, 10.0,
   )
   graph.set_property_double(
-    layered_options_spacing_edge_node_between_layers, 10.0,
+    @options.layered_options_spacing_edge_node_between_layers, 10.0,
   )
   graph.set_property_spline_routing_mode(
-    layered_options_edge_routing_splines_mode,
+    @options.layered_options_edge_routing_splines_mode,
     final_spline_test_spline_mode("CONSERVATIVE"),
   )
   graph.set_property_string(
-    layered_options_compaction_post_compaction_strategy, "NONE",
+    @options.layered_options_compaction_post_compaction_strategy, "NONE",
   )
 
   (graph, edge)

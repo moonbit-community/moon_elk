@@ -576,7 +576,7 @@ fn breaking_point_processor_process(
     breaking_point_processor_perform_wrapping(graph)
 
     if graph.get_property_bool(
-        layered_options_wrapping_multi_edge_improve_wrapped_edges,
+        @options.layered_options_wrapping_multi_edge_improve_wrapped_edges,
       ) {
       for layer in graph.get_layers() {
         let mut index = 0

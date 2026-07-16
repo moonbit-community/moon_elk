@@ -6,7 +6,7 @@ fn comment_preprocessor_test_new_node(
 ) -> LNode {
   let node = new_l_node(graph=Some(graph))
   node.set_id(id)
-  node.set_property_bool(layered_options_comment_box, comment_box)
+  node.set_property_bool(@options.layered_options_comment_box, comment_box)
   graph.get_layerless_nodes().push(node)
   node
 }

@@ -120,7 +120,7 @@ pub fn LayeredComponentGroupModelOrderGraphPlacer::combine(
   )
 
   if first_component.get_property_bool(
-      layered_options_compaction_connected_components,
+      @options.layered_options_compaction_connected_components,
     ) &&
     first_component.get_property_string(@core.edge_routing) == "ORTHOGONAL" {
     for graph in components {

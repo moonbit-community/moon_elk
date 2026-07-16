@@ -13,7 +13,7 @@ fn layer_constraint_postprocessor_layer_constraint(
   node : LNode,
 ) -> LayerConstraint {
   layer_constraint_from_string(
-    node.get_property_string(layered_options_layering_layer_constraint),
+    node.get_property_string(@options.layered_options_layering_layer_constraint),
   )
 }
 

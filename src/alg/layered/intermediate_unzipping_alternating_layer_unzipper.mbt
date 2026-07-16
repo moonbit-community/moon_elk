@@ -71,10 +71,12 @@ fn alternating_layer_unzipper_get_layer_split_property(layer : Layer) -> Int {
   let mut property_unset = true
 
   for node in layer.get_nodes() {
-    if node.has_property_int(layered_options_layer_unzipping_layer_split) {
+    if node.has_property_int(
+        @options.layered_options_layer_unzipping_layer_split,
+      ) {
       property_unset = false
       let node_value = node.get_property_int(
-        layered_options_layer_unzipping_layer_split,
+        @options.layered_options_layer_unzipping_layer_split,
       )
       if layer_split > node_value {
         layer_split = node_value
@@ -83,7 +85,7 @@ fn alternating_layer_unzipper_get_layer_split_property(layer : Layer) -> Int {
   }
 
   if property_unset {
-    layer_split = layered_options_layer_unzipping_layer_split.get_default()
+    layer_split = @options.layered_options_layer_unzipping_layer_split.get_default()
   }
 
   layer_split
@@ -95,10 +97,10 @@ fn alternating_layer_unzipper_get_reset_on_long_edges_property(
 ) -> Bool {
   for node in layer.get_nodes() {
     if node.has_property_bool(
-        layered_options_layer_unzipping_reset_on_long_edges,
+        @options.layered_options_layer_unzipping_reset_on_long_edges,
       ) {
       if !node.get_property_bool(
-          layered_options_layer_unzipping_reset_on_long_edges,
+          @options.layered_options_layer_unzipping_reset_on_long_edges,
         ) {
         return false
       }
@@ -113,10 +115,10 @@ fn alternating_layer_unzipper_get_minimize_edge_length_property(
 ) -> Bool {
   for node in layer.get_nodes() {
     if node.has_property_bool(
-        layered_options_layer_unzipping_minimize_edge_length,
+        @options.layered_options_layer_unzipping_minimize_edge_length,
       ) {
       if node.get_property_bool(
-          layered_options_layer_unzipping_minimize_edge_length,
+          @options.layered_options_layer_unzipping_minimize_edge_length,
         ) {
         return true
       }
@@ -300,15 +302,15 @@ fn alternating_layer_unzipper_process(
       max_width += alternating_layer_unzipper_max_double(
         2.0 *
         graph.get_property_double(
-          layered_options_spacing_edge_node_between_layers,
+          @options.layered_options_spacing_edge_node_between_layers,
         ),
         alternating_layer_unzipper_max_double(
           current_layer.get_nodes().length().to_double() *
           graph.get_property_double(
-            layered_options_spacing_edge_edge_between_layers,
+            @options.layered_options_spacing_edge_edge_between_layers,
           ),
           graph.get_property_double(
-            layered_options_spacing_node_node_between_layers,
+            @options.layered_options_spacing_node_node_between_layers,
           ),
         ),
       )

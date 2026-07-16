@@ -129,7 +129,8 @@ test "LayerSweepTypeDecider north_south_ports_change_decision" {
   graph.set_id(0)
   nested_graph.set_id(1)
   layer_sweep_type_decider_test_set_on_all_graphs(
-    graph, layered_options_crossing_minimization_hierarchical_sweepiness, 0.1,
+    graph, @options.layered_options_crossing_minimization_hierarchical_sweepiness,
+    0.1,
   )
 
   let root_data = layer_sweep_type_decider_test_make_graph_info(graph)
@@ -194,7 +195,8 @@ test "LayerSweepTypeDecider all_hierarchical_but_minus_one_still_returns_bottom_
   graph.set_id(0)
   inner_graph.set_id(1)
   layer_sweep_type_decider_test_set_on_all_graphs(
-    graph, layered_options_crossing_minimization_hierarchical_sweepiness, -1.0,
+    graph, @options.layered_options_crossing_minimization_hierarchical_sweepiness,
+    -1.0,
   )
 
   let root_data = layer_sweep_type_decider_test_make_graph_info(graph)
@@ -244,7 +246,8 @@ test "LayerSweepTypeDecider port_with_no_edges_does_not_count" {
   graph.set_id(0)
   inner_graph.set_id(1)
   layer_sweep_type_decider_test_set_on_all_graphs(
-    graph, layered_options_crossing_minimization_hierarchical_sweepiness, -0.1,
+    graph, @options.layered_options_crossing_minimization_hierarchical_sweepiness,
+    -0.1,
   )
 
   let root_data = layer_sweep_type_decider_test_make_graph_info(graph)

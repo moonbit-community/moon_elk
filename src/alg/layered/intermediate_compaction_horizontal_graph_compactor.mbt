@@ -283,7 +283,7 @@ fn horizontal_graph_compactor_process(
 ) -> Unit {
   let strategy = horizontal_graph_compactor_parse_graph_compaction_strategy(
     layered_graph.get_property_string(
-      layered_options_compaction_post_compaction_strategy,
+      @options.layered_options_compaction_post_compaction_strategy,
     ),
   )
   if horizontal_graph_compactor_graph_compaction_strategy_equals(
@@ -310,7 +310,7 @@ fn horizontal_graph_compactor_process(
 
   let constraint_mode = horizontal_graph_compactor_parse_post_compaction_constraints(
     layered_graph.get_property_string(
-      layered_options_compaction_post_compaction_constraints,
+      @options.layered_options_compaction_post_compaction_constraints,
     ),
   )
   if constraint_mode == "SCANLINE" {

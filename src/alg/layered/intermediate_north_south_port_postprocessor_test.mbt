@@ -152,10 +152,10 @@ test "north south port postprocessor reconnects non-spline dummy and adds bend/j
   assert_eq(in_edge.get_bend_points().get(0).x, bend_x)
   assert_eq(in_edge.get_bend_points().get(0).y, bend_y)
   assert_true(
-    in_edge.has_property_kvector_chain(layered_options_junction_points),
+    in_edge.has_property_kvector_chain(@options.layered_options_junction_points),
   )
   let in_junctions = in_edge.get_property_kvector_chain(
-    layered_options_junction_points,
+    @options.layered_options_junction_points,
   )
   assert_eq(in_junctions.size(), 1)
   assert_eq(in_junctions.get(0).x, bend_x)
@@ -169,10 +169,12 @@ test "north south port postprocessor reconnects non-spline dummy and adds bend/j
   assert_eq(out_edge.get_bend_points().get(0).x, bend_x)
   assert_eq(out_edge.get_bend_points().get(0).y, bend_y)
   assert_true(
-    out_edge.has_property_kvector_chain(layered_options_junction_points),
+    out_edge.has_property_kvector_chain(
+      @options.layered_options_junction_points,
+    ),
   )
   let out_junctions = out_edge.get_property_kvector_chain(
-    layered_options_junction_points,
+    @options.layered_options_junction_points,
   )
   assert_eq(out_junctions.size(), 1)
   assert_eq(out_junctions.get(0).x, bend_x)

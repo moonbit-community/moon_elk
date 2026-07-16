@@ -1,5 +1,5 @@
 ///|
-pub enum SplineRoutingMode {
+pub(all) enum SplineRoutingMode {
   Conservative
   ConservativeSoft
   Sloppy

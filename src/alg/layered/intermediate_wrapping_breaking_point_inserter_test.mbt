@@ -109,12 +109,18 @@ test "breaking point inserter manual cut inserts breaking point dummies and keep
   let (graph, _layers, nodes, edges) = breaking_point_inserter_test_new_path_graph(
     4,
   )
-  graph.set_property_string(layered_options_wrapping_cutting_strategy, "MANUAL")
-  graph.set_property_string(layered_options_wrapping_cutting_cuts, "[2]")
-  graph.set_property_bool(
-    layered_options_wrapping_multi_edge_improve_cuts, false,
+  graph.set_property_string(
+    @options.layered_options_wrapping_cutting_strategy, "MANUAL",
   )
-  graph.set_property_string(layered_options_wrapping_validify_strategy, "NO")
+  graph.set_property_string(
+    @options.layered_options_wrapping_cutting_cuts, "[2]",
+  )
+  graph.set_property_bool(
+    @options.layered_options_wrapping_multi_edge_improve_cuts, false,
+  )
+  graph.set_property_string(
+    @options.layered_options_wrapping_validify_strategy, "NO",
+  )
 
   let processor = new_breaking_point_inserter_layout_processor()
   processor.process(graph, None)
@@ -206,12 +212,18 @@ test "breaking point inserter links multi-cut chains through prev and next info 
   ignore(middle)
   ignore(breaking_point_inserter_test_connect(source, target))
 
-  graph.set_property_string(layered_options_wrapping_cutting_strategy, "MANUAL")
-  graph.set_property_string(layered_options_wrapping_cutting_cuts, "[1, 2]")
-  graph.set_property_bool(
-    layered_options_wrapping_multi_edge_improve_cuts, false,
+  graph.set_property_string(
+    @options.layered_options_wrapping_cutting_strategy, "MANUAL",
   )
-  graph.set_property_string(layered_options_wrapping_validify_strategy, "NO")
+  graph.set_property_string(
+    @options.layered_options_wrapping_cutting_cuts, "[1, 2]",
+  )
+  graph.set_property_bool(
+    @options.layered_options_wrapping_multi_edge_improve_cuts, false,
+  )
+  graph.set_property_string(
+    @options.layered_options_wrapping_validify_strategy, "NO",
+  )
 
   let processor = new_breaking_point_inserter_layout_processor()
   processor.process(graph, None)

@@ -99,7 +99,7 @@ fn greedy_cycle_breaker_update_neighbors(
       }
 
       let mut priority = edge.get_property_int(
-        layered_options_priority_direction,
+        @options.layered_options_priority_direction,
       )
       if priority < 0 {
         priority = 0
@@ -297,7 +297,9 @@ fn greedy_cycle_breaker_process_with_chooser(
         if lnode_internal_handle(source_node) == lnode_internal_handle(node) {
           continue
         }
-        let priority = edge.get_property_int(layered_options_priority_direction)
+        let priority = edge.get_property_int(
+          @options.layered_options_priority_direction,
+        )
         state.indeg[i] = state.indeg[i] +
           greedy_cycle_breaker_node_priority_contribution(priority)
       }
@@ -314,7 +316,9 @@ fn greedy_cycle_breaker_process_with_chooser(
         if lnode_internal_handle(target_node) == lnode_internal_handle(node) {
           continue
         }
-        let priority = edge.get_property_int(layered_options_priority_direction)
+        let priority = edge.get_property_int(
+          @options.layered_options_priority_direction,
+        )
         state.outdeg[i] = state.outdeg[i] +
           greedy_cycle_breaker_node_priority_contribution(priority)
       }

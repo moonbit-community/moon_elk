@@ -673,7 +673,7 @@ fn north_south_port_preprocessor_process(
     let south_dummy_nodes : Array[LNode] = []
     let ordering_strategy = north_south_port_preprocessor_parse_ordering_strategy(
       layered_graph.get_property_string(
-        layered_options_consider_model_order_strategy,
+        @options.layered_options_consider_model_order_strategy,
       ),
     )
 
@@ -741,7 +741,7 @@ fn north_south_port_preprocessor_process(
             dummy.get_ports()[0],
           )
           if !origin_port.get_property_bool(
-              layered_options_allow_non_flow_ports_to_switch_sides,
+              @options.layered_options_allow_non_flow_ports_to_switch_sides,
             ) {
             north_south_port_preprocessor_add_successor(dummy, successor)
           }
@@ -787,7 +787,7 @@ fn north_south_port_preprocessor_process(
             dummy.get_ports()[0],
           )
           if !origin_port.get_property_bool(
-              layered_options_allow_non_flow_ports_to_switch_sides,
+              @options.layered_options_allow_non_flow_ports_to_switch_sides,
             ) {
             north_south_port_preprocessor_add_successor(predecessor, dummy)
           }

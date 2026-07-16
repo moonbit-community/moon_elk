@@ -82,14 +82,16 @@ fn single_edge_wrapper_test_new_path_graph(
     single_edge_wrapper_test_direction("RIGHT"),
   )
   graph.set_property_double(@core.aspect_ratio, 1.0)
-  graph.set_property_double(layered_options_wrapping_correction_factor, 1.0)
   graph.set_property_double(
-    layered_options_spacing_node_node_between_layers, 0.0,
+    @options.layered_options_wrapping_correction_factor, 1.0,
+  )
+  graph.set_property_double(
+    @options.layered_options_spacing_node_node_between_layers, 0.0,
   )
   graph.set_property_double(@core.spacing_node_node, 0.0)
   graph.set_property_double(@core.spacing_edge_node, 0.0)
   graph.set_property_double(
-    layered_options_wrapping_additional_edge_spacing, 0.0,
+    @options.layered_options_wrapping_additional_edge_spacing, 0.0,
   )
 
   let layers = []
@@ -165,9 +167,15 @@ test "single edge graph wrapper look-back validify chooses closest prior valid c
 ///|
 test "single edge graph wrapper manual cuts move nodes and insert long-edge dummies" {
   let (graph, _layers, _nodes) = single_edge_wrapper_test_new_path_graph(4)
-  graph.set_property_string(layered_options_wrapping_cutting_strategy, "MANUAL")
-  graph.set_property_string(layered_options_wrapping_cutting_cuts, "[2]")
-  graph.set_property_string(layered_options_wrapping_validify_strategy, "NO")
+  graph.set_property_string(
+    @options.layered_options_wrapping_cutting_strategy, "MANUAL",
+  )
+  graph.set_property_string(
+    @options.layered_options_wrapping_cutting_cuts, "[2]",
+  )
+  graph.set_property_string(
+    @options.layered_options_wrapping_validify_strategy, "NO",
+  )
 
   let processor = new_single_edge_graph_wrapper_layout_processor()
   processor.process(graph, None)

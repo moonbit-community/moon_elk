@@ -408,7 +408,7 @@ fn linear_segments_sort_linear_segments(
       for port in node.get_ports() {
         for edge in port.get_incoming_edges() {
           let prio = edge.get_property_int(
-            layered_options_priority_straightness,
+            @options.layered_options_priority_straightness,
           )
           if prio > in_prio {
             in_prio = prio
@@ -416,7 +416,7 @@ fn linear_segments_sort_linear_segments(
         }
         for edge in port.get_outgoing_edges() {
           let prio = edge.get_property_int(
-            layered_options_priority_straightness,
+            @options.layered_options_priority_straightness,
           )
           if prio > out_prio {
             out_prio = prio
@@ -608,7 +608,7 @@ fn linear_segments_calc_deflection(
               other_output_prio
             }
             let prio = edge.get_property_int(
-              layered_options_priority_straightness,
+              @options.layered_options_priority_straightness,
             )
             if prio >= min_prio && prio >= other_prio {
               node_deflection = node_deflection +
@@ -642,7 +642,7 @@ fn linear_segments_calc_deflection(
               other_output_prio
             }
             let prio = edge.get_property_int(
-              layered_options_priority_straightness,
+              @options.layered_options_priority_straightness,
             )
             if prio >= min_prio && prio >= other_prio {
               node_deflection = node_deflection +
@@ -766,7 +766,7 @@ fn linear_segments_balance_placement(
     linear_segments_option_deflection_dampening,
   )
   let thoroughness = layered_graph.get_property_int(
-    layered_options_thoroughness,
+    @options.layered_options_thoroughness,
   )
   let mut pendulum_iters = linear_segments_pendulum_iters
   let mut final_iters = linear_segments_final_iters

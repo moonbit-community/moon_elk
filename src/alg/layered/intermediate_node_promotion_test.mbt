@@ -47,7 +47,7 @@ fn node_promotion_test_run_with_options(
 
   let graph = node_promotion_test_new_chain_graph()
   @graph.node_set_string_property(
-    graph, layered_options_layering_node_promotion_strategy, strategy,
+    graph, @options.layered_options_layering_node_promotion_strategy, strategy,
   )
 
   match cycle_breaking_strategy {
@@ -67,7 +67,7 @@ fn node_promotion_test_run_with_options(
   match ordering_strategy {
     Some(value) =>
       @graph.node_set_string_property(
-        graph, layered_options_consider_model_order_strategy, value,
+        graph, @options.layered_options_consider_model_order_strategy, value,
       )
     None => ()
   }

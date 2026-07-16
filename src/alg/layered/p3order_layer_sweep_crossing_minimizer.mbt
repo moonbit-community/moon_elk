@@ -102,7 +102,7 @@ fn layer_sweep_single_node_graph(layered_graph : LGraph) -> Bool {
 ///|
 fn layer_sweep_hierarchical_layout(layered_graph : LGraph) -> Bool {
   let handling = layered_graph.get_property_string(
-    layered_options_hierarchy_handling,
+    @options.layered_options_hierarchy_handling,
   )
   if handling == "INCLUDE_CHILDREN" {
     return true
@@ -646,7 +646,7 @@ fn LayerSweepCrossingMinimizer::count_model_order_port_changes(
         node
         .get_graph()
         .get_property_bool(
-          layered_options_consider_model_order_port_model_order,
+          @options.layered_options_consider_model_order_port_model_order,
         ),
       )
       let ports = node.get_ports()
@@ -679,23 +679,25 @@ fn LayerSweepCrossingMinimizer::count_current_number_of_crossings_node_port_orde
     let mut model_order_influence = 0.0
     let model_order_strategy = current_graph
       .l_graph()
-      .get_property_string(layered_options_consider_model_order_strategy)
+      .get_property_string(
+        @options.layered_options_consider_model_order_strategy,
+      )
     let cm_group_order_strategy = group_order_strategy_from_string(
       current_graph
       .l_graph()
       .get_property_string(
-        layered_options_consider_model_order_group_model_order_cm_group_order_strategy,
+        @options.layered_options_consider_model_order_group_model_order_cm_group_order_strategy,
       ),
     )
     let crossing_counter_node_influence = current_graph
       .l_graph()
       .get_property_double(
-        layered_options_consider_model_order_crossing_counter_node_influence,
+        @options.layered_options_consider_model_order_crossing_counter_node_influence,
       )
     let crossing_counter_port_influence = current_graph
       .l_graph()
       .get_property_double(
-        layered_options_consider_model_order_crossing_counter_port_influence,
+        @options.layered_options_consider_model_order_crossing_counter_port_influence,
       )
     if model_order_strategy != "NONE" {
       let strategy = layer_sweep_ordering_strategy_from_string(
@@ -758,7 +760,7 @@ fn LayerSweepCrossingMinimizer::minimize_crossings_with_counter(
     .get_property_bool(internal_properties_second_try_with_initial_order)
   let consider_model_order_strategy = graph_data
     .l_graph()
-    .get_property_string(layered_options_consider_model_order_strategy)
+    .get_property_string(@options.layered_options_consider_model_order_strategy)
   if (!first_try_with_initial_order && !second_try_with_initial_order) ||
     consider_model_order_strategy == "NONE" {
     ignore(
@@ -820,7 +822,7 @@ fn LayerSweepCrossingMinimizer::minimize_crossings_node_port_order_with_counter(
     .get_property_bool(internal_properties_second_try_with_initial_order)
   let consider_model_order_strategy = graph_data
     .l_graph()
-    .get_property_string(layered_options_consider_model_order_strategy)
+    .get_property_string(@options.layered_options_consider_model_order_strategy)
   if (!first_try_with_initial_order && !second_try_with_initial_order) ||
     consider_model_order_strategy == "NONE" {
     ignore(
@@ -902,16 +904,16 @@ fn LayerSweepCrossingMinimizer::compare_different_randomized_layouts(
   let crossing_counter_node_influence = graph_data
     .l_graph()
     .get_property_double(
-      layered_options_consider_model_order_crossing_counter_node_influence,
+      @options.layered_options_consider_model_order_crossing_counter_node_influence,
     )
   let crossing_counter_port_influence = graph_data
     .l_graph()
     .get_property_double(
-      layered_options_consider_model_order_crossing_counter_port_influence,
+      @options.layered_options_consider_model_order_crossing_counter_port_influence,
     )
   let mut thoroughness = graph_data
     .l_graph()
-    .get_property_int(layered_options_thoroughness)
+    .get_property_int(@options.layered_options_thoroughness)
   if thoroughness < 1 {
     thoroughness = 1
   }
@@ -920,7 +922,9 @@ fn LayerSweepCrossingMinimizer::compare_different_randomized_layouts(
     crossing_counter_port_influence != 0.0 {
     let consider_model_order_strategy = graph_data
       .l_graph()
-      .get_property_string(layered_options_consider_model_order_strategy)
+      .get_property_string(
+        @options.layered_options_consider_model_order_strategy,
+      )
     if consider_model_order_strategy != "NONE" {
       graph_data
       .l_graph()
@@ -943,7 +947,9 @@ fn LayerSweepCrossingMinimizer::compare_different_randomized_layouts(
   } else {
     let consider_model_order_strategy = graph_data
       .l_graph()
-      .get_property_string(layered_options_consider_model_order_strategy)
+      .get_property_string(
+        @options.layered_options_consider_model_order_strategy,
+      )
     if consider_model_order_strategy != "NONE" {
       graph_data
       .l_graph()

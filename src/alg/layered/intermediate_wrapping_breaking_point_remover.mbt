@@ -239,13 +239,13 @@ fn breaking_point_remover_remove(
   bp_info.original_edge.set_source(bp_info.node_start_edge.get_source())
 
   let has_junctions_one = bp_info.node_start_edge.has_property_kvector_chain(
-    layered_options_junction_points,
+    @options.layered_options_junction_points,
   )
   let has_junctions_two = bp_info.start_end_edge.has_property_kvector_chain(
-    layered_options_junction_points,
+    @options.layered_options_junction_points,
   )
   let has_junctions_three = bp_info.original_edge.has_property_kvector_chain(
-    layered_options_junction_points,
+    @options.layered_options_junction_points,
   )
 
   if has_junctions_one || has_junctions_two || has_junctions_three {
@@ -253,26 +253,26 @@ fn breaking_point_remover_remove(
     if has_junctions_three {
       new_junctions.add_all(
         bp_info.original_edge
-        .get_property_kvector_chain(layered_options_junction_points)
+        .get_property_kvector_chain(@options.layered_options_junction_points)
         .to_array(),
       )
     }
     if has_junctions_two {
       new_junctions.add_all(
         bp_info.start_end_edge
-        .get_property_kvector_chain(layered_options_junction_points)
+        .get_property_kvector_chain(@options.layered_options_junction_points)
         .to_array(),
       )
     }
     if has_junctions_one {
       new_junctions.add_all(
         bp_info.node_start_edge
-        .get_property_kvector_chain(layered_options_junction_points)
+        .get_property_kvector_chain(@options.layered_options_junction_points)
         .to_array(),
       )
     }
     bp_info.original_edge.set_property_kvector_chain(
-      layered_options_junction_points, new_junctions,
+      @options.layered_options_junction_points, new_junctions,
     )
   }
 

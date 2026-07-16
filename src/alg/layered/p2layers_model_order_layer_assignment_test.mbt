@@ -61,7 +61,7 @@ fn p2_model_order_layer_assignment_test_configure(
     parent, "org.eclipse.elk.direction", "RIGHT",
   )
   @graph.node_set_string_property(
-    parent, layered_options_consider_model_order_strategy, "PREFER_EDGES",
+    parent, @options.layered_options_consider_model_order_strategy, "PREFER_EDGES",
   )
   @graph.node_set_layout_option_string_by_id(
     parent, "org.eclipse.elk.layered.layering.strategy", layering_strategy,
@@ -79,7 +79,7 @@ fn p2_model_order_layer_assignment_test_configure(
   )
   @graph.node_set_double_property(parent, @core.spacing_node_node, 10.0)
   @graph.node_set_double_property(
-    parent, layered_options_spacing_node_node_between_layers, 20.0,
+    parent, @options.layered_options_spacing_node_node_between_layers, 20.0,
   )
 }
 

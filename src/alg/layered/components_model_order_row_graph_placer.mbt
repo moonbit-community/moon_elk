@@ -59,7 +59,8 @@ pub fn LayeredModelOrderRowGraphPlacer::combine(
   }
   max_row_width = layered_components_max(
     max_row_width,
-    total_area.sqrt() * target.get_property_double(layered_options_aspect_ratio),
+    total_area.sqrt() *
+    target.get_property_double(@options.layered_options_aspect_ratio),
   )
   let component_spacing = target.get_property_double(
     @core.spacing_component_component,
@@ -68,7 +69,7 @@ pub fn LayeredModelOrderRowGraphPlacer::combine(
   self.place_components(components, target, max_row_width, component_spacing)
 
   if first_component.get_property_bool(
-      layered_options_compaction_connected_components,
+      @options.layered_options_compaction_connected_components,
     ) {
     let compactor = new_layered_components_compactor()
     compactor.compact(components, target.get_size(), component_spacing)

@@ -121,7 +121,7 @@ fn breaking_point_remover_test_build_single_breaking_point_graph(
   )
   node_start_edge.get_bend_points().add_all([@core.new_kvector_xy(1.0, 1.0)])
   node_start_edge.set_property_kvector_chain(
-    layered_options_junction_points,
+    @options.layered_options_junction_points,
     breaking_point_remover_test_make_chain([(101.0, 101.0)]),
   )
 
@@ -130,14 +130,14 @@ fn breaking_point_remover_test_build_single_breaking_point_graph(
   .get_bend_points()
   .add_all([@core.new_kvector_xy(2.0, 2.0), @core.new_kvector_xy(3.0, 3.0)])
   start_end_edge.set_property_kvector_chain(
-    layered_options_junction_points,
+    @options.layered_options_junction_points,
     breaking_point_remover_test_make_chain([(102.0, 102.0)]),
   )
 
   let original_edge = breaking_point_remover_test_connect(end_east, target_west)
   original_edge.get_bend_points().add_all([@core.new_kvector_xy(4.0, 4.0)])
   original_edge.set_property_kvector_chain(
-    layered_options_junction_points,
+    @options.layered_options_junction_points,
     breaking_point_remover_test_make_chain([(103.0, 103.0)]),
   )
 
@@ -207,7 +207,7 @@ test "breaking point remover polyline appends marker positions and restores orig
   assert_true(start_end_edge.get_target() is None)
 
   let joined_junctions = original_edge
-    .get_property_kvector_chain(layered_options_junction_points)
+    .get_property_kvector_chain(@options.layered_options_junction_points)
     .to_array()
   assert_eq(joined_junctions.length(), 3)
   assert_eq(joined_junctions[0].x, 103.0)

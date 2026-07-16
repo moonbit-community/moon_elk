@@ -98,7 +98,7 @@ test "label dummy switcher median placement swaps label dummy into middle layer"
   let graph = new_l_graph()
   graph.set_property_string(@core.direction, "RIGHT")
   graph.set_property_string(
-    layered_options_edge_labels_center_label_placement_strategy, "MEDIAN_LAYER",
+    @options.layered_options_edge_labels_center_label_placement_strategy, "MEDIAN_LAYER",
   )
 
   let layer0 = new_layer(graph)
@@ -214,7 +214,7 @@ test "label dummy switcher head-layer override moves dummy to edge head and sets
   let graph = new_l_graph()
   graph.set_property_string(@core.direction, "RIGHT")
   graph.set_property_string(
-    layered_options_edge_labels_center_label_placement_strategy, "MEDIAN_LAYER",
+    @options.layered_options_edge_labels_center_label_placement_strategy, "MEDIAN_LAYER",
   )
 
   let layer0 = new_layer(graph)
@@ -294,7 +294,7 @@ test "label dummy switcher head-layer override moves dummy to edge head and sets
 
   let represented_label = new_l_label_text("head")
   represented_label.set_property_string(
-    layered_options_edge_labels_center_label_placement_strategy, "HEAD_LAYER",
+    @options.layered_options_edge_labels_center_label_placement_strategy, "HEAD_LAYER",
   )
   label_dummy.set_property_l_label_array(
     internal_properties_represented_labels,

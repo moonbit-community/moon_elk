@@ -36,7 +36,7 @@ fn hierarchical_port_dummy_size_processor_process(
   ignore(monitor.begin("Hierarchical port dummy size processing", 1.0))
 
   let edge_spacing = graph.get_property_double(
-    layered_options_spacing_edge_edge_between_layers,
+    @options.layered_options_spacing_edge_edge_between_layers,
   )
   let delta = edge_spacing * 2.0
   let northern_dummies = []

@@ -16,7 +16,7 @@ test "vertical segment constructor keeps geometry and matching junction points" 
   junction_points.add_last_vector(@core.new_kvector_xy(4.0, 3.0))
   junction_points.add_last_vector(@core.new_kvector_xy(5.0, 6.0))
   edge.set_property_kvector_chain(
-    layered_options_junction_points, junction_points,
+    @options.layered_options_junction_points, junction_points,
   )
 
   let segment = new_vertical_segment(

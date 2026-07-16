@@ -1,5 +1,5 @@
 ///|
-pub enum ComponentOrderingStrategy {
+pub(all) enum ComponentOrderingStrategy {
   NoneType
   InsidePortSideGroups
   GroupModelOrder

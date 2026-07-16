@@ -112,7 +112,8 @@ test "LayerSweep two-sided leaves crossing in first-level compound node" {
   )
 
   layer_sweep_two_sided_set_on_all_graphs(
-    root, layered_options_crossing_minimization_hierarchical_sweepiness, -1.0,
+    root, @options.layered_options_crossing_minimization_hierarchical_sweepiness,
+    -1.0,
   )
 
   let expected_same_order = creator.copy_of_nodes_in_layer(1)

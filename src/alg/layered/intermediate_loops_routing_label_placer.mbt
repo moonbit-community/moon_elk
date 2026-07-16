@@ -415,7 +415,9 @@ fn LabelPlacer::assign_side_and_alignment(
   let ordering_strategy = label_placer_parse_ordering(
     sl_holder
     .get_l_node()
-    .get_property_string(layered_options_edge_routing_self_loop_ordering),
+    .get_property_string(
+      @options.layered_options_edge_routing_self_loop_ordering,
+    ),
   )
   let northern_one_sided = []
   let southern_one_sided = []

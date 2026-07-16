@@ -41,7 +41,7 @@ fn interactive_layered_graph_visitor_test_require_position(
   match
     @graph.node_layout_option_string_value(
       node,
-      layered_options_position.get_id(),
+      @options.layered_options_position.get_id(),
     ) {
     Some(value) => {
       let parsed = @core.new_kvector()
@@ -69,26 +69,27 @@ test "@core.interactive layered graph visitor sets @core.interactive strategies"
   @graph.node_set_layout_option_string_by_id(
     root,
     @core.algorithm.get_id(),
-    layered_algorithm_id,
+    @options.layered_algorithm_id,
   )
   @graph.node_set_layout_option_string_by_id(
     root,
-    layered_options_layering_strategy.get_id(),
+    @options.layered_options_layering_strategy.get_id(),
     "LONGEST_PATH",
   )
   @graph.node_set_layout_option_string_by_id(
     root,
-    layered_options_cycle_breaking_strategy.get_id(),
+    @options.layered_options_cycle_breaking_strategy.get_id(),
     "GREEDY",
   )
   @graph.node_set_string_property(
-    root, layered_options_consider_model_order_strategy, "NODES_AND_EDGES",
+    root, @options.layered_options_consider_model_order_strategy, "NODES_AND_EDGES",
   )
   @graph.node_set_bool_property(
-    root, layered_options_crossing_minimization_force_node_model_order, true,
+    root, @options.layered_options_crossing_minimization_force_node_model_order,
+    true,
   )
   @graph.node_set_string_property(
-    root, layered_options_crossing_minimization_strategy, "INTERACTIVE",
+    root, @options.layered_options_crossing_minimization_strategy, "INTERACTIVE",
   )
 
   let visitor = new_interactive_layered_graph_visitor()
@@ -96,44 +97,46 @@ test "@core.interactive layered graph visitor sets @core.interactive strategies"
 
   assert_true(
     @graph.node_get_bool_property(
-      root, layered_options_crossing_minimization_semi_interactive,
+      root, @options.layered_options_crossing_minimization_semi_interactive,
     ),
   )
   assert_eq(
-    @graph.node_get_string_property(root, layered_options_layering_strategy),
-    "INTERACTIVE",
-  )
-  assert_eq(
     @graph.node_get_string_property(
-      root, layered_options_cycle_breaking_strategy,
+      root, @options.layered_options_layering_strategy,
     ),
     "INTERACTIVE",
   )
   assert_eq(
     @graph.node_get_string_property(
-      root, layered_options_consider_model_order_strategy,
+      root, @options.layered_options_cycle_breaking_strategy,
+    ),
+    "INTERACTIVE",
+  )
+  assert_eq(
+    @graph.node_get_string_property(
+      root, @options.layered_options_consider_model_order_strategy,
     ),
     "NONE",
   )
   assert_false(
     @graph.node_get_bool_property(
-      root, layered_options_crossing_minimization_force_node_model_order,
+      root, @options.layered_options_crossing_minimization_force_node_model_order,
     ),
   )
   assert_eq(
     @graph.node_get_string_property(
-      root, layered_options_crossing_minimization_strategy,
+      root, @options.layered_options_crossing_minimization_strategy,
     ),
     "LAYER_SWEEP",
   )
   interactive_layered_graph_visitor_test_expect_layout_option(
     root,
-    layered_options_layering_strategy.get_id(),
+    @options.layered_options_layering_strategy.get_id(),
     "INTERACTIVE",
   )
   interactive_layered_graph_visitor_test_expect_layout_option(
     root,
-    layered_options_cycle_breaking_strategy.get_id(),
+    @options.layered_options_cycle_breaking_strategy.get_id(),
     "INTERACTIVE",
   )
 }
@@ -151,22 +154,23 @@ test "@core.interactive layered graph visitor ignores non-layered roots" {
   )
   @graph.node_set_layout_option_string_by_id(
     root,
-    layered_options_layering_strategy.get_id(),
+    @options.layered_options_layering_strategy.get_id(),
     "LONGEST_PATH",
   )
   @graph.node_set_layout_option_string_by_id(
     root,
-    layered_options_cycle_breaking_strategy.get_id(),
+    @options.layered_options_cycle_breaking_strategy.get_id(),
     "MODEL_ORDER",
   )
   @graph.node_set_string_property(
-    root, layered_options_consider_model_order_strategy, "NODES_AND_EDGES",
+    root, @options.layered_options_consider_model_order_strategy, "NODES_AND_EDGES",
   )
   @graph.node_set_bool_property(
-    root, layered_options_crossing_minimization_force_node_model_order, true,
+    root, @options.layered_options_crossing_minimization_force_node_model_order,
+    true,
   )
   @graph.node_set_string_property(
-    root, layered_options_crossing_minimization_strategy, "INTERACTIVE",
+    root, @options.layered_options_crossing_minimization_strategy, "INTERACTIVE",
   )
 
   let visitor = new_interactive_layered_graph_visitor()
@@ -174,34 +178,34 @@ test "@core.interactive layered graph visitor ignores non-layered roots" {
 
   assert_false(
     @graph.node_get_bool_property(
-      root, layered_options_crossing_minimization_semi_interactive,
+      root, @options.layered_options_crossing_minimization_semi_interactive,
     ),
   )
   assert_eq(
     @graph.node_get_string_property(
-      root, layered_options_consider_model_order_strategy,
+      root, @options.layered_options_consider_model_order_strategy,
     ),
     "NODES_AND_EDGES",
   )
   assert_true(
     @graph.node_get_bool_property(
-      root, layered_options_crossing_minimization_force_node_model_order,
+      root, @options.layered_options_crossing_minimization_force_node_model_order,
     ),
   )
   assert_eq(
     @graph.node_get_string_property(
-      root, layered_options_crossing_minimization_strategy,
+      root, @options.layered_options_crossing_minimization_strategy,
     ),
     "INTERACTIVE",
   )
   interactive_layered_graph_visitor_test_expect_layout_option(
     root,
-    layered_options_layering_strategy.get_id(),
+    @options.layered_options_layering_strategy.get_id(),
     "LONGEST_PATH",
   )
   interactive_layered_graph_visitor_test_expect_layout_option(
     root,
-    layered_options_cycle_breaking_strategy.get_id(),
+    @options.layered_options_cycle_breaking_strategy.get_id(),
     "MODEL_ORDER",
   )
 }
@@ -216,14 +220,14 @@ test "@core.interactive layered graph visitor translates layer constraints to la
   @graph.node_set_layout_option_string_by_id(
     root,
     @core.algorithm.get_id(),
-    layered_algorithm_id,
+    @options.layered_algorithm_id,
   )
   @graph.node_set_string_property(
-    first_node, layered_options_layering_layer_constraint, "FIRST",
+    first_node, @options.layered_options_layering_layer_constraint, "FIRST",
   )
   @graph.node_set_layout_option_string_by_id(
     last_node,
-    layered_options_layering_layer_constraint.get_id(),
+    @options.layered_options_layering_layer_constraint.get_id(),
     "LAST",
   )
 
@@ -232,23 +236,23 @@ test "@core.interactive layered graph visitor translates layer constraints to la
 
   assert_eq(
     @graph.node_get_string_property(
-      first_node, layered_options_layering_layer_constraint,
+      first_node, @options.layered_options_layering_layer_constraint,
     ),
     "NONE",
   )
   interactive_layered_graph_visitor_test_expect_layout_option(
     first_node,
-    layered_options_layering_layer_choice_constraint.get_id(),
+    @options.layered_options_layering_layer_choice_constraint.get_id(),
     "0",
   )
   interactive_layered_graph_visitor_test_expect_layout_option(
     last_node,
-    layered_options_layering_layer_constraint.get_id(),
+    @options.layered_options_layering_layer_constraint.get_id(),
     "NONE",
   )
   interactive_layered_graph_visitor_test_expect_layout_option(
     last_node,
-    layered_options_layering_layer_choice_constraint.get_id(),
+    @options.layered_options_layering_layer_choice_constraint.get_id(),
     interactive_layered_graph_visitor_last_layer_index.to_string(),
   )
 }
@@ -267,7 +271,7 @@ test "@core.interactive layered graph visitor shifts same-layer neighbors for co
   @graph.node_set_layout_option_string_by_id(
     root,
     @core.algorithm.get_id(),
-    layered_algorithm_id,
+    @options.layered_algorithm_id,
   )
   @graph.node_set_layout_option_string_by_id(
     root,
@@ -276,17 +280,17 @@ test "@core.interactive layered graph visitor shifts same-layer neighbors for co
   )
   @graph.node_set_layout_option_string_by_id(
     source,
-    layered_options_layering_layer_id.get_id(),
+    @options.layered_options_layering_layer_id.get_id(),
     "0",
   )
   @graph.node_set_layout_option_string_by_id(
     target,
-    layered_options_layering_layer_id.get_id(),
+    @options.layered_options_layering_layer_id.get_id(),
     "0",
   )
   @graph.node_set_layout_option_string_by_id(
     source,
-    layered_options_layering_layer_choice_constraint.get_id(),
+    @options.layered_options_layering_layer_choice_constraint.get_id(),
     "0",
   )
 
@@ -299,12 +303,12 @@ test "@core.interactive layered graph visitor shifts same-layer neighbors for co
 
   interactive_layered_graph_visitor_test_expect_layout_option(
     source,
-    layered_options_layering_layer_id.get_id(),
+    @options.layered_options_layering_layer_id.get_id(),
     "0",
   )
   interactive_layered_graph_visitor_test_expect_layout_option(
     target,
-    layered_options_layering_layer_id.get_id(),
+    @options.layered_options_layering_layer_id.get_id(),
     "1",
   )
 }
@@ -323,7 +327,7 @@ test "@core.interactive layered graph visitor reads typed layer choice constrain
   @graph.node_set_layout_option_string_by_id(
     root,
     @core.algorithm.get_id(),
-    layered_algorithm_id,
+    @options.layered_algorithm_id,
   )
   @graph.node_set_layout_option_string_by_id(
     root,
@@ -332,16 +336,16 @@ test "@core.interactive layered graph visitor reads typed layer choice constrain
   )
   @graph.node_set_layout_option_string_by_id(
     source,
-    layered_options_layering_layer_id.get_id(),
+    @options.layered_options_layering_layer_id.get_id(),
     "0",
   )
   @graph.node_set_layout_option_string_by_id(
     target,
-    layered_options_layering_layer_id.get_id(),
+    @options.layered_options_layering_layer_id.get_id(),
     "0",
   )
   @graph.node_set_int_property(
-    source, layered_options_layering_layer_choice_constraint, 0,
+    source, @options.layered_options_layering_layer_choice_constraint, 0,
   )
 
   let edge = create_edge(Some(root))
@@ -353,14 +357,18 @@ test "@core.interactive layered graph visitor reads typed layer choice constrain
 
   interactive_layered_graph_visitor_test_expect_layout_option(
     target,
-    layered_options_layering_layer_id.get_id(),
+    @options.layered_options_layering_layer_id.get_id(),
     "1",
   )
   assert_true(
-    @graph.node_has_int_property(target, layered_options_layering_layer_id),
+    @graph.node_has_int_property(
+      target, @options.layered_options_layering_layer_id,
+    ),
   )
   assert_eq(
-    @graph.node_get_int_property(target, layered_options_layering_layer_id),
+    @graph.node_get_int_property(
+      target, @options.layered_options_layering_layer_id,
+    ),
     1,
   )
 }
@@ -385,7 +393,7 @@ test "@core.interactive layered graph visitor propagates position constraints th
   @graph.node_set_layout_option_string_by_id(
     root,
     @core.algorithm.get_id(),
-    layered_algorithm_id,
+    @options.layered_algorithm_id,
   )
   @graph.node_set_layout_option_string_by_id(
     root,
@@ -395,28 +403,28 @@ test "@core.interactive layered graph visitor propagates position constraints th
 
   @graph.node_set_layout_option_string_by_id(
     first,
-    layered_options_layering_layer_id.get_id(),
+    @options.layered_options_layering_layer_id.get_id(),
     "0",
   )
   @graph.node_set_layout_option_string_by_id(
     second,
-    layered_options_layering_layer_id.get_id(),
+    @options.layered_options_layering_layer_id.get_id(),
     "0",
   )
   @graph.node_set_layout_option_string_by_id(
     plain,
-    layered_options_layering_layer_id.get_id(),
+    @options.layered_options_layering_layer_id.get_id(),
     "0",
   )
 
   @graph.node_set_layout_option_string_by_id(
     first,
-    layered_options_crossing_minimization_position_choice_constraint.get_id(),
+    @options.layered_options_crossing_minimization_position_choice_constraint.get_id(),
     "0",
   )
   @graph.node_set_layout_option_string_by_id(
     first,
-    layered_options_crossing_minimization_in_layer_pred_of.get_id(),
+    @options.layered_options_crossing_minimization_in_layer_pred_of.get_id(),
     @graph.node_identifier(second),
   )
 
@@ -425,32 +433,32 @@ test "@core.interactive layered graph visitor propagates position constraints th
 
   interactive_layered_graph_visitor_test_expect_layout_option(
     second,
-    layered_options_crossing_minimization_position_choice_constraint.get_id(),
+    @options.layered_options_crossing_minimization_position_choice_constraint.get_id(),
     "1",
   )
   interactive_layered_graph_visitor_test_expect_layout_option(
     first,
-    layered_options_crossing_minimization_in_layer_pred_of.get_id(),
+    @options.layered_options_crossing_minimization_in_layer_pred_of.get_id(),
     "",
   )
 
   interactive_layered_graph_visitor_test_expect_non_empty_layout_option(
     first,
-    layered_options_position.get_id(),
+    @options.layered_options_position.get_id(),
   )
   assert_true(
     interactive_layered_graph_visitor_test_expect_typed_position(first),
   )
   interactive_layered_graph_visitor_test_expect_non_empty_layout_option(
     second,
-    layered_options_position.get_id(),
+    @options.layered_options_position.get_id(),
   )
   assert_true(
     interactive_layered_graph_visitor_test_expect_typed_position(second),
   )
   interactive_layered_graph_visitor_test_expect_non_empty_layout_option(
     plain,
-    layered_options_position.get_id(),
+    @options.layered_options_position.get_id(),
   )
   assert_true(
     interactive_layered_graph_visitor_test_expect_typed_position(plain),
@@ -473,7 +481,7 @@ test "@core.interactive layered graph visitor breaks relative-constraint cycles 
   @graph.node_set_layout_option_string_by_id(
     root,
     @core.algorithm.get_id(),
-    layered_algorithm_id,
+    @options.layered_algorithm_id,
   )
   @graph.node_set_layout_option_string_by_id(
     root,
@@ -482,23 +490,23 @@ test "@core.interactive layered graph visitor breaks relative-constraint cycles 
   )
   @graph.node_set_layout_option_string_by_id(
     first,
-    layered_options_layering_layer_id.get_id(),
+    @options.layered_options_layering_layer_id.get_id(),
     "0",
   )
   @graph.node_set_layout_option_string_by_id(
     second,
-    layered_options_layering_layer_id.get_id(),
+    @options.layered_options_layering_layer_id.get_id(),
     "0",
   )
 
   @graph.node_set_layout_option_string_by_id(
     first,
-    layered_options_crossing_minimization_in_layer_pred_of.get_id(),
+    @options.layered_options_crossing_minimization_in_layer_pred_of.get_id(),
     @graph.node_identifier(second),
   )
   @graph.node_set_layout_option_string_by_id(
     second,
-    layered_options_crossing_minimization_in_layer_pred_of.get_id(),
+    @options.layered_options_crossing_minimization_in_layer_pred_of.get_id(),
     @graph.node_identifier(first),
   )
 
@@ -507,16 +515,16 @@ test "@core.interactive layered graph visitor breaks relative-constraint cycles 
 
   interactive_layered_graph_visitor_test_expect_layout_option(
     first,
-    layered_options_crossing_minimization_in_layer_pred_of.get_id(),
+    @options.layered_options_crossing_minimization_in_layer_pred_of.get_id(),
     "",
   )
   interactive_layered_graph_visitor_test_expect_non_empty_layout_option(
     first,
-    layered_options_position.get_id(),
+    @options.layered_options_position.get_id(),
   )
   interactive_layered_graph_visitor_test_expect_non_empty_layout_option(
     second,
-    layered_options_position.get_id(),
+    @options.layered_options_position.get_id(),
   )
 }
 
@@ -540,7 +548,7 @@ test "@core.interactive layered graph visitor converts both-RC nodes to PC path 
   @graph.node_set_layout_option_string_by_id(
     root,
     @core.algorithm.get_id(),
-    layered_algorithm_id,
+    @options.layered_algorithm_id,
   )
   @graph.node_set_layout_option_string_by_id(
     root,
@@ -550,33 +558,33 @@ test "@core.interactive layered graph visitor converts both-RC nodes to PC path 
 
   @graph.node_set_layout_option_string_by_id(
     constrained,
-    layered_options_layering_layer_id.get_id(),
+    @options.layered_options_layering_layer_id.get_id(),
     "0",
   )
   @graph.node_set_layout_option_string_by_id(
     predecessor,
-    layered_options_layering_layer_id.get_id(),
+    @options.layered_options_layering_layer_id.get_id(),
     "0",
   )
   @graph.node_set_layout_option_string_by_id(
     successor,
-    layered_options_layering_layer_id.get_id(),
+    @options.layered_options_layering_layer_id.get_id(),
     "0",
   )
 
   @graph.node_set_layout_option_string_by_id(
     predecessor,
-    layered_options_crossing_minimization_position_choice_constraint.get_id(),
+    @options.layered_options_crossing_minimization_position_choice_constraint.get_id(),
     "2",
   )
   @graph.node_set_layout_option_string_by_id(
     constrained,
-    layered_options_crossing_minimization_in_layer_pred_of.get_id(),
+    @options.layered_options_crossing_minimization_in_layer_pred_of.get_id(),
     @graph.node_identifier(predecessor),
   )
   @graph.node_set_layout_option_string_by_id(
     constrained,
-    layered_options_crossing_minimization_in_layer_succ_of.get_id(),
+    @options.layered_options_crossing_minimization_in_layer_succ_of.get_id(),
     @graph.node_identifier(successor),
   )
 
@@ -585,12 +593,12 @@ test "@core.interactive layered graph visitor converts both-RC nodes to PC path 
 
   interactive_layered_graph_visitor_test_expect_layout_option(
     constrained,
-    layered_options_crossing_minimization_position_choice_constraint.get_id(),
+    @options.layered_options_crossing_minimization_position_choice_constraint.get_id(),
     "1",
   )
   interactive_layered_graph_visitor_test_expect_layout_option(
     constrained,
-    layered_options_crossing_minimization_in_layer_pred_of.get_id(),
+    @options.layered_options_crossing_minimization_in_layer_pred_of.get_id(),
     "",
   )
 }
@@ -611,7 +619,7 @@ test "@core.interactive layered graph visitor places layer-choice -1 nodes befor
   @graph.node_set_layout_option_string_by_id(
     root,
     @core.algorithm.get_id(),
-    layered_algorithm_id,
+    @options.layered_algorithm_id,
   )
   @graph.node_set_layout_option_string_by_id(
     root,
@@ -620,12 +628,12 @@ test "@core.interactive layered graph visitor places layer-choice -1 nodes befor
   )
   @graph.node_set_layout_option_string_by_id(
     first_layer_node,
-    layered_options_layering_layer_choice_constraint.get_id(),
+    @options.layered_options_layering_layer_choice_constraint.get_id(),
     "-1",
   )
   @graph.node_set_layout_option_string_by_id(
     unconstrained_node,
-    layered_options_layering_layer_id.get_id(),
+    @options.layered_options_layering_layer_id.get_id(),
     "0",
   )
 
@@ -657,7 +665,7 @@ test "@core.interactive layered graph visitor assigns orthogonal pseudo position
   @graph.node_set_layout_option_string_by_id(
     root,
     @core.algorithm.get_id(),
-    layered_algorithm_id,
+    @options.layered_algorithm_id,
   )
   @graph.node_set_layout_option_string_by_id(
     root,
@@ -666,12 +674,12 @@ test "@core.interactive layered graph visitor assigns orthogonal pseudo position
   )
   @graph.node_set_layout_option_string_by_id(
     first,
-    layered_options_layering_layer_id.get_id(),
+    @options.layered_options_layering_layer_id.get_id(),
     "0",
   )
   @graph.node_set_layout_option_string_by_id(
     second,
-    layered_options_layering_layer_id.get_id(),
+    @options.layered_options_layering_layer_id.get_id(),
     "0",
   )
 

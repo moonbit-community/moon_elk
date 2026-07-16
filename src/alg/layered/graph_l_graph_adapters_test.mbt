@@ -214,31 +214,41 @@ test "l node adapter sorts fixed-order ports with default comparator" {
     node,
     l_graph_adapters_test_port_side_east(),
   )
-  port2.set_property_int(layered_options_port_index, 2)
+  port2.set_property_int(@options.layered_options_port_index, 2)
 
   let port1 = l_graph_adapters_test_add_port(
     node,
     l_graph_adapters_test_port_side_east(),
   )
-  port1.set_property_int(layered_options_port_index, 1)
+  port1.set_property_int(@options.layered_options_port_index, 1)
 
   let adapter = adapt_l_node(node, false)
   adapter.sort_port_list()
 
   let sorted_ports = node.get_ports()
   assert_eq(sorted_ports.length(), 2)
-  assert_eq(sorted_ports[0].get_property_int(layered_options_port_index), 1)
-  assert_eq(sorted_ports[1].get_property_int(layered_options_port_index), 2)
+  assert_eq(
+    sorted_ports[0].get_property_int(@options.layered_options_port_index),
+    1,
+  )
+  assert_eq(
+    sorted_ports[1].get_property_int(@options.layered_options_port_index),
+    2,
+  )
 }
 
 ///|
 test "l graph adapters delegate property accessors to wrapped elements" {
   let (graph, layer) = l_graph_adapters_test_new_graph_with_layer()
-  graph.set_property_bool(layered_options_feedback_edges, true)
+  graph.set_property_bool(@options.layered_options_feedback_edges, true)
   graph.set_property_string(@core.direction, "LEFT")
   let graph_adapter = adapt_l_graph(graph)
-  assert_true(graph_adapter.has_property_bool(layered_options_feedback_edges))
-  assert_true(graph_adapter.get_property_bool(layered_options_feedback_edges))
+  assert_true(
+    graph_adapter.has_property_bool(@options.layered_options_feedback_edges),
+  )
+  assert_true(
+    graph_adapter.get_property_bool(@options.layered_options_feedback_edges),
+  )
   assert_eq(graph_adapter.get_property_string(@core.direction), "LEFT")
 
   let node = l_graph_adapters_test_new_layer_node(
@@ -246,21 +256,31 @@ test "l graph adapters delegate property accessors to wrapped elements" {
     layer,
     l_graph_adapters_test_node_type_normal(),
   )
-  node.set_property_int(layered_options_layering_layer_id, 7)
+  node.set_property_int(@options.layered_options_layering_layer_id, 7)
   node.set_property_bool(internal_properties_compound_node, true)
   let node_adapter = adapt_l_node(node, false)
-  assert_true(node_adapter.has_property_int(layered_options_layering_layer_id))
-  assert_eq(node_adapter.get_property_int(layered_options_layering_layer_id), 7)
+  assert_true(
+    node_adapter.has_property_int(@options.layered_options_layering_layer_id),
+  )
+  assert_eq(
+    node_adapter.get_property_int(@options.layered_options_layering_layer_id),
+    7,
+  )
   assert_true(node_adapter.get_property_bool(internal_properties_compound_node))
 
   let port = l_graph_adapters_test_add_port(
     node,
     l_graph_adapters_test_port_side_east(),
   )
-  port.set_property_int(layered_options_port_index, 11)
+  port.set_property_int(@options.layered_options_port_index, 11)
   let port_adapter = new_l_port_adapter(port, false)
-  assert_true(port_adapter.has_property_int(layered_options_port_index))
-  assert_eq(port_adapter.get_property_int(layered_options_port_index), 11)
+  assert_true(
+    port_adapter.has_property_int(@options.layered_options_port_index),
+  )
+  assert_eq(
+    port_adapter.get_property_int(@options.layered_options_port_index),
+    11,
+  )
 
   let label = new_l_label_text("hello")
   label.set_property_string(@core.edge_labels_placement, "HEAD")

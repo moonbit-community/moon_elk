@@ -14,13 +14,15 @@ fn semi_interactive_cross_min_processor_insert_sorted(
   node : LNode,
 ) -> Unit {
   let mut insert_index = nodes.length()
-  let node_position = node.get_property_kvector(layered_options_position)
+  let node_position = node.get_property_kvector(
+    @options.layered_options_position,
+  )
   let node_y = node_position.y
 
   for i in 0..<nodes.length() {
     let current = nodes[i]
     let current_position = current.get_property_kvector(
-      layered_options_position,
+      @options.layered_options_position,
     )
     if node_y < current_position.y {
       insert_index = i
@@ -40,7 +42,7 @@ fn semi_interactive_cross_min_processor_collect_sorted_positioned_normals(
     if !semi_interactive_cross_min_processor_node_type_is_normal(node) {
       continue
     }
-    if !node.has_property_kvector(layered_options_position) {
+    if !node.has_property_kvector(@options.layered_options_position) {
       continue
     }
     semi_interactive_cross_min_processor_insert_sorted(result, node)

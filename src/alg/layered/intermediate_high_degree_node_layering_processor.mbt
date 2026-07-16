@@ -268,10 +268,10 @@ fn high_degree_node_layering_processor_process(
 
   try {
     let degree_threshold = layered_graph.get_property_int(
-      layered_options_high_degree_nodes_threshold,
+      @options.layered_options_high_degree_nodes_threshold,
     )
     let mut tree_height_threshold = layered_graph.get_property_int(
-      layered_options_high_degree_nodes_tree_height,
+      @options.layered_options_high_degree_nodes_tree_height,
     )
     if tree_height_threshold == 0 {
       tree_height_threshold = @int.MAX_VALUE

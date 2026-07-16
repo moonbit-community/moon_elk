@@ -68,7 +68,7 @@ fn dfs_node_order_cycle_breaker_group_model_order(
   group_order_strategy_equals(
     group_order_strategy_from_string(
       state.graph.get_property_string(
-        layered_options_consider_model_order_group_model_order_cb_group_order_strategy,
+        @options.layered_options_consider_model_order_group_model_order_cb_group_order_strategy,
       ),
     ),
     Enforced,
@@ -93,7 +93,7 @@ fn dfs_node_order_cycle_breaker_target_model_order(
     )
     max_model_order_group_size *
     target.get_property_int(
-      layered_options_consider_model_order_group_model_order_cycle_breaking_id,
+      @options.layered_options_consider_model_order_group_model_order_cycle_breaking_id,
     ) +
     target.get_property_int(internal_properties_model_order)
   } else {

@@ -36,7 +36,7 @@ fn comment_postprocessor_process_node(
   let margin = node.get_margin()
 
   let comment_comment_spacing = layered_spacings_get_individual_or_default(
-    node, layered_options_spacing_comment_comment,
+    node, @options.layered_options_spacing_comment_comment,
   )
 
   match top_boxes {

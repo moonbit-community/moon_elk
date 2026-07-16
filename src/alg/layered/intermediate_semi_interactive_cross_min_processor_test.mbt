@@ -61,7 +61,8 @@ fn semi_interactive_test_new_layered_node(
   node.set_type(node_type)
   node.set_layer(Some(layer))
   match position {
-    Some(value) => node.set_property_kvector(layered_options_position, value)
+    Some(value) =>
+      node.set_property_kvector(@options.layered_options_position, value)
     None => ()
   }
   node

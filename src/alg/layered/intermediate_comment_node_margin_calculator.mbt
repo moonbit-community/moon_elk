@@ -31,10 +31,10 @@ fn comment_node_margin_calculator_process_comments(node : LNode) -> Unit {
   }
 
   let comment_comment_spacing = layered_spacings_get_individual_or_default(
-    node, layered_options_spacing_comment_comment,
+    node, @options.layered_options_spacing_comment_comment,
   )
   let comment_node_spacing = layered_spacings_get_individual_or_default(
-    node, layered_options_spacing_comment_node,
+    node, @options.layered_options_spacing_comment_node,
   )
 
   let mut top_width = 0.0

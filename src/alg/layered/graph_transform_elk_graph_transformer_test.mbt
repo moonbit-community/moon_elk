@@ -89,13 +89,14 @@ test "layered layout provider handles include_children forceNodeModelOrder on co
   let root = create_graph()
   @graph.node_set_layout_option_string_by_id(
     root,
-    layered_options_hierarchy_handling.get_id(),
+    @options.layered_options_hierarchy_handling.get_id(),
     "INCLUDE_CHILDREN",
   )
   let compound = @graph.create_node(Some(root))
   @graph.node_set_identifier(compound, "compound")
   @graph.node_set_bool_property(
-    compound, layered_options_crossing_minimization_force_node_model_order, true,
+    compound, @options.layered_options_crossing_minimization_force_node_model_order,
+    true,
   )
   let left = @graph.create_node(Some(compound))
   @graph.node_set_identifier(left, "left")
@@ -117,13 +118,14 @@ test "layered layout provider allows forceNodeModelOrder on single-child compoun
   let root = create_graph()
   @graph.node_set_layout_option_string_by_id(
     root,
-    layered_options_hierarchy_handling.get_id(),
+    @options.layered_options_hierarchy_handling.get_id(),
     "INCLUDE_CHILDREN",
   )
   let compound = @graph.create_node(Some(root))
   @graph.node_set_identifier(compound, "compound")
   @graph.node_set_bool_property(
-    compound, layered_options_crossing_minimization_force_node_model_order, true,
+    compound, @options.layered_options_crossing_minimization_force_node_model_order,
+    true,
   )
   let only_child = @graph.create_node(Some(compound))
   @graph.node_set_identifier(only_child, "only")

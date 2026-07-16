@@ -5,11 +5,11 @@ fn cm_group_model_order_test_graph(
 ) -> LGraph {
   let graph = new_l_graph()
   graph.set_property_string(
-    layered_options_consider_model_order_group_model_order_cm_group_order_strategy,
+    @options.layered_options_consider_model_order_group_model_order_cm_group_order_strategy,
     strategy,
   )
   graph.set_property_string(
-    layered_options_consider_model_order_group_model_order_cm_enforced_group_orders,
+    @options.layered_options_consider_model_order_group_model_order_cm_enforced_group_orders,
     enforced_orders,
   )
   graph
@@ -19,7 +19,7 @@ fn cm_group_model_order_test_graph(
 fn cm_group_model_order_test_node(model_order : Int?, group_id : Int) -> LNode {
   let node = new_l_node()
   node.set_property_int(
-    layered_options_consider_model_order_group_model_order_crossing_minimization_id,
+    @options.layered_options_consider_model_order_group_model_order_crossing_minimization_id,
     group_id,
   )
   match model_order {
@@ -33,7 +33,7 @@ fn cm_group_model_order_test_node(model_order : Int?, group_id : Int) -> LNode {
 fn cm_group_model_order_test_port(model_order : Int?, group_id : Int) -> LPort {
   let port = new_l_port()
   port.set_property_int(
-    layered_options_consider_model_order_group_model_order_crossing_minimization_id,
+    @options.layered_options_consider_model_order_group_model_order_crossing_minimization_id,
     group_id,
   )
   match model_order {
@@ -47,7 +47,7 @@ fn cm_group_model_order_test_port(model_order : Int?, group_id : Int) -> LPort {
 fn cm_group_model_order_test_edge(model_order : Int?, group_id : Int) -> LEdge {
   let edge = new_l_edge()
   edge.set_property_int(
-    layered_options_consider_model_order_group_model_order_crossing_minimization_id,
+    @options.layered_options_consider_model_order_group_model_order_crossing_minimization_id,
     group_id,
   )
   match model_order {

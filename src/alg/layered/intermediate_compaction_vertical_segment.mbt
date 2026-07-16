@@ -75,9 +75,9 @@ pub fn new_vertical_segment(
   hitbox.height = (bend1.y - bend2.y).abs()
 
   let junction_points = @core.new_kvector_chain()
-  if l_edge.has_property_kvector_chain(layered_options_junction_points) {
+  if l_edge.has_property_kvector_chain(@options.layered_options_junction_points) {
     let in_junction_points = l_edge.get_property_kvector_chain(
-      layered_options_junction_points,
+      @options.layered_options_junction_points,
     )
     for junction_point in in_junction_points.to_array() {
       if @common.compare_fuzzy_eq(junction_point.x, bend1.x) {

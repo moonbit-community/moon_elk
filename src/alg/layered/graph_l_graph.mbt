@@ -30,10 +30,10 @@ pub struct LGraph {
   elk_margin_properties : Map[String, @core.ElkMargin]
   component_ordering_strategy_properties : Map[
     String,
-    ComponentOrderingStrategy,
+    @options.ComponentOrderingStrategy,
   ]
   direction_properties : Map[String, @core.Direction]
-  spline_routing_mode_properties : Map[String, SplineRoutingMode]
+  spline_routing_mode_properties : Map[String, @options.SplineRoutingMode]
   size : @core.KVector
   padding : LPadding
   offset : @core.KVector
@@ -458,8 +458,8 @@ pub fn LGraph::has_property_elk_margin(
 ///|
 pub fn LGraph::set_property_component_ordering_strategy(
   self : LGraph,
-  property : @graph.IProperty[ComponentOrderingStrategy],
-  value : ComponentOrderingStrategy,
+  property : @graph.IProperty[@options.ComponentOrderingStrategy],
+  value : @options.ComponentOrderingStrategy,
 ) -> Unit {
   self.component_ordering_strategy_properties[property.get_id()] = value
 }
@@ -467,8 +467,8 @@ pub fn LGraph::set_property_component_ordering_strategy(
 ///|
 pub fn LGraph::get_property_component_ordering_strategy(
   self : LGraph,
-  property : @graph.IProperty[ComponentOrderingStrategy],
-) -> ComponentOrderingStrategy {
+  property : @graph.IProperty[@options.ComponentOrderingStrategy],
+) -> @options.ComponentOrderingStrategy {
   match self.component_ordering_strategy_properties.get(property.get_id()) {
     Some(value) => value
     None => property.get_default()
@@ -498,8 +498,8 @@ pub fn LGraph::get_property_direction(
 ///|
 pub fn LGraph::set_property_spline_routing_mode(
   self : LGraph,
-  property : @graph.IProperty[SplineRoutingMode],
-  value : SplineRoutingMode,
+  property : @graph.IProperty[@options.SplineRoutingMode],
+  value : @options.SplineRoutingMode,
 ) -> Unit {
   self.spline_routing_mode_properties[property.get_id()] = value
 }
@@ -507,8 +507,8 @@ pub fn LGraph::set_property_spline_routing_mode(
 ///|
 pub fn LGraph::get_property_spline_routing_mode(
   self : LGraph,
-  property : @graph.IProperty[SplineRoutingMode],
-) -> SplineRoutingMode {
+  property : @graph.IProperty[@options.SplineRoutingMode],
+) -> @options.SplineRoutingMode {
   match self.spline_routing_mode_properties.get(property.get_id()) {
     Some(value) => value
     None => property.get_default()
@@ -518,7 +518,7 @@ pub fn LGraph::get_property_spline_routing_mode(
 ///|
 pub fn LGraph::has_property_spline_routing_mode(
   self : LGraph,
-  property : @graph.IProperty[SplineRoutingMode],
+  property : @graph.IProperty[@options.SplineRoutingMode],
 ) -> Bool {
   self.spline_routing_mode_properties.contains(property.get_id())
 }

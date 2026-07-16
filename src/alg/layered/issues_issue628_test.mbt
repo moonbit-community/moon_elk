@@ -42,7 +42,7 @@ fn issue628_test_build_graph() -> (
   @graph.node_set_string_property(l1, @core.direction, "RIGHT")
   @graph.node_set_double_property(l1, @core.spacing_node_node, 10.0)
   @graph.node_set_double_property(
-    l1, layered_options_spacing_node_node_between_layers, 10.0,
+    l1, @options.layered_options_spacing_node_node_between_layers, 10.0,
   )
 
   let l2_1 = @graph.create_node(Some(l1))
@@ -71,13 +71,13 @@ fn issue628_test_layout_with_configurator(
   let (graph, l2_1, l2_2) = issue628_test_build_graph()
   if configure_hierarchical_greedy_switch {
     @graph.node_set_string_property(
-      graph, layered_options_crossing_minimization_greedy_switch_hierarchical_type,
+      graph, @options.layered_options_crossing_minimization_greedy_switch_hierarchical_type,
       "TWO_SIDED",
     )
   }
   if configure_greedy_switch {
     @graph.node_set_string_property(
-      graph, layered_options_crossing_minimization_greedy_switch_type, "TWO_SIDED",
+      graph, @options.layered_options_crossing_minimization_greedy_switch_type, "TWO_SIDED",
     )
   }
 

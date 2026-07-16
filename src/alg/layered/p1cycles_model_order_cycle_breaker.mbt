@@ -74,7 +74,7 @@ fn model_order_cycle_breaker_process(
     let enforce_group_model_order = group_order_strategy_equals(
       group_order_strategy_from_string(
         layered_graph.get_property_string(
-          layered_options_consider_model_order_group_model_order_cb_group_order_strategy,
+          @options.layered_options_consider_model_order_group_model_order_cb_group_order_strategy,
         ),
       ),
       Enforced,

@@ -70,7 +70,7 @@ test "hierarchical port dummy size processor reports expected task name" {
 test "hierarchical port dummy size processor assigns north/south widths and east-port x positions" {
   let (graph, layer) = hierarchical_port_dummy_size_test_new_graph_with_layer()
   graph.set_property_double(
-    layered_options_spacing_edge_edge_between_layers, 4.0,
+    @options.layered_options_spacing_edge_edge_between_layers, 4.0,
   )
 
   let (north0, north0_east) = hierarchical_port_dummy_size_test_new_external_port_dummy(

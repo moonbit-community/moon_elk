@@ -88,10 +88,11 @@ fn elk_layered_test_graph_with_greedy_switch_off() -> LGraph {
   let node = new_l_node(graph=Some(graph))
   graph.get_layerless_nodes().push(node)
   graph.set_property_string(
-    layered_options_crossing_minimization_greedy_switch_type, "OFF",
+    @options.layered_options_crossing_minimization_greedy_switch_type, "OFF",
   )
   graph.set_property_string(
-    layered_options_crossing_minimization_greedy_switch_hierarchical_type, "OFF",
+    @options.layered_options_crossing_minimization_greedy_switch_hierarchical_type,
+    "OFF",
   )
   graph
 }
@@ -171,7 +172,7 @@ test "elk layered adds wrapping processors for multi-edge wrapping strategy" {
   let baseline = elk_layered_test_graph_with_greedy_switch_off()
   let multi_edge_wrapping = elk_layered_test_graph_with_greedy_switch_off()
   multi_edge_wrapping.set_property_string(
-    layered_options_wrapping_strategy, "MULTI_EDGE",
+    @options.layered_options_wrapping_strategy, "MULTI_EDGE",
   )
 
   let baseline_algorithm_length = elk_layered_test_algorithm_length(baseline)
@@ -199,7 +200,7 @@ test "elk layered adds constraints postprocessor when generate-position-and-laye
   let baseline = elk_layered_test_graph_with_greedy_switch_off()
   let generate_ids_graph = elk_layered_test_graph_with_greedy_switch_off()
   generate_ids_graph.set_property_bool(
-    layered_options_generate_position_and_layer_ids, true,
+    @options.layered_options_generate_position_and_layer_ids, true,
   )
 
   let baseline_algorithm_length = elk_layered_test_algorithm_length(baseline)
@@ -230,7 +231,7 @@ test "elk layered adds hierarchical node resizer for include-children hierarchy"
   let baseline = elk_layered_test_graph_with_greedy_switch_off()
   let hierarchical = elk_layered_test_graph_with_greedy_switch_off()
   hierarchical.set_property_string(
-    layered_options_hierarchy_handling, "INCLUDE_CHILDREN",
+    @options.layered_options_hierarchy_handling, "INCLUDE_CHILDREN",
   )
 
   let baseline_algorithm_length = elk_layered_test_algorithm_length(baseline)

@@ -33,8 +33,8 @@ fn layered_spacings_dependent_spacing_options() -> Array[
     @core.spacing_component_component, @core.spacing_edge_edge, @core.spacing_edge_label,
     @core.spacing_edge_node, @core.spacing_label_label, @core.spacing_label_node,
     @core.spacing_label_port_horizontal, @core.spacing_label_port_vertical, @core.spacing_node_self_loop,
-    @core.spacing_port_port, layered_options_spacing_edge_edge_between_layers, layered_options_spacing_edge_node_between_layers,
-    layered_options_spacing_node_node_between_layers,
+    @core.spacing_port_port, @options.layered_options_spacing_edge_edge_between_layers,
+    @options.layered_options_spacing_edge_node_between_layers, @options.layered_options_spacing_node_node_between_layers,
   ]
 }
 

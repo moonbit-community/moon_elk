@@ -32,9 +32,9 @@ fn manual_cut_index_calculator_get_cut_indexes(
   graph_stats : GraphStats,
 ) -> Array[Int] {
   ignore(graph_stats)
-  if graph.has_property_string(layered_options_wrapping_cutting_cuts) {
-    layered_options_parse_int_list(
-      graph.get_property_string(layered_options_wrapping_cutting_cuts),
+  if graph.has_property_string(@options.layered_options_wrapping_cutting_cuts) {
+    @options.layered_options_parse_int_list(
+      graph.get_property_string(@options.layered_options_wrapping_cutting_cuts),
     )
   } else {
     []

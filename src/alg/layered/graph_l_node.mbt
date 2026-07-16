@@ -482,7 +482,7 @@ pub fn LNode::border_to_content_area_coordinates(
 pub fn LNode::get_interactive_reference_point(self : LNode) -> @core.KVector {
   let interactive_reference_point = self
     .get_graph()
-    .get_property_string(layered_options_interactive_reference_point)
+    .get_property_string(@options.layered_options_interactive_reference_point)
 
   if interactive_reference_point ==
     interactive_reference_point_to_string(TopLeft) {

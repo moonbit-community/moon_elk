@@ -131,7 +131,7 @@ fn breaking_point_inserter_compute_score(
 ) -> Double {
   ignore(index)
   let distance_penalty = graph.get_property_double(
-    layered_options_wrapping_multi_edge_distance_penalty,
+    @options.layered_options_wrapping_multi_edge_distance_penalty,
   )
   spans.to_double() + @math.pow(dist.to_double(), distance_penalty)
 }
@@ -504,7 +504,9 @@ fn breaking_point_inserter_process(
     let graph_stats = new_graph_stats(graph)
 
     let cutting_strategy = breaking_point_inserter_cutting_strategy_from_string(
-      graph.get_property_string(layered_options_wrapping_cutting_strategy),
+      graph.get_property_string(
+        @options.layered_options_wrapping_cutting_strategy,
+      ),
     )
     let calculator = match cutting_strategy {
       Manual => new_manual_cut_index_calculator()
@@ -514,14 +516,20 @@ fn breaking_point_inserter_process(
 
     let mut cuts = calculator.get_cut_indexes(graph, graph_stats)
 
-    if graph.get_property_bool(layered_options_wrapping_multi_edge_improve_cuts) {
+    if graph.get_property_bool(
+        @options.layered_options_wrapping_multi_edge_improve_cuts,
+      ) {
       cuts = breaking_point_inserter_improve_cuts(graph, cuts)
     }
 
     if !calculator.guarantee_valid() &&
-      graph.has_property_string(layered_options_wrapping_validify_strategy) {
+      graph.has_property_string(
+        @options.layered_options_wrapping_validify_strategy,
+      ) {
       let validify_strategy = breaking_point_inserter_validify_strategy_from_string(
-        graph.get_property_string(layered_options_wrapping_validify_strategy),
+        graph.get_property_string(
+          @options.layered_options_wrapping_validify_strategy,
+        ),
       )
       match validify_strategy {
         LookBack =>

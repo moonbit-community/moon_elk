@@ -337,7 +337,7 @@ fn node_promotion_precalculate_and_set_information(
     @core.spacing_node_node,
   )
   state.dummy_size = state.master_graph.get_property_double(
-    layered_options_spacing_edge_node_between_layers,
+    @options.layered_options_spacing_edge_node_between_layers,
   )
 
   state.max_height = state.master_graph.get_layers().length()
@@ -881,7 +881,7 @@ fn node_promotion_process(
   try {
     let strategy = node_promotion_strategy_from_string(
       layered_graph.get_property_string(
-        layered_options_layering_node_promotion_strategy,
+        @options.layered_options_layering_node_promotion_strategy,
       ),
     )
     if node_promotion_strategy_is_none(strategy) {
@@ -897,7 +897,7 @@ fn node_promotion_process(
     }
 
     let promote_until = layered_graph.get_property_int(
-      layered_options_layering_node_promotion_max_iterations,
+      @options.layered_options_layering_node_promotion_max_iterations,
     )
     let always_continue = (_reduced_dummies : Int, _iterations : Int) => true
 

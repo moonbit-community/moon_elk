@@ -49,13 +49,13 @@ fn final_spline_port_side_in_array(
 
 ///|
 fn final_spline_spline_routing_mode_equals(
-  left : SplineRoutingMode,
-  right : SplineRoutingMode,
+  left : @options.SplineRoutingMode,
+  right : @options.SplineRoutingMode,
 ) -> Bool {
   match (left, right) {
-    (Conservative, Conservative) => true
-    (ConservativeSoft, ConservativeSoft) => true
-    (Sloppy, Sloppy) => true
+    (@options.Conservative, @options.Conservative) => true
+    (@options.ConservativeSoft, @options.ConservativeSoft) => true
+    (@options.Sloppy, @options.Sloppy) => true
     _ => false
   }
 }
@@ -499,7 +499,7 @@ fn final_spline_insert_straightening_control_points(
 fn final_spline_calculate_bezier_bend_points(
   edge_chain : Array[LEdge],
   surviving_edge : LEdge?,
-  spline_routing_mode : SplineRoutingMode,
+  spline_routing_mode : @options.SplineRoutingMode,
 ) -> Unit raise FinalSplineBendpointsCalculatorException {
   if edge_chain.is_empty() {
     return
@@ -578,7 +578,10 @@ fn final_spline_calculate_bezier_bend_points(
   }
   all_control_points.add_last_vector(target_port.get_absolute_anchor())
 
-  if final_spline_spline_routing_mode_equals(spline_routing_mode, Conservative) {
+  if final_spline_spline_routing_mode_equals(
+      spline_routing_mode,
+      @options.Conservative,
+    ) {
     final_spline_insert_straightening_control_points(
       all_control_points, source_port, target_port,
     )
@@ -654,7 +657,7 @@ fn final_spline_calculate_control_points(
   segment : SplineSegment,
   edge_edge_spacing : Double,
   edge_node_spacing : Double,
-  spline_routing_mode : SplineRoutingMode,
+  spline_routing_mode : @options.SplineRoutingMode,
   compaction_strategy : GraphCompactionStrategy,
 ) -> Unit {
   if segment.handled {
@@ -678,7 +681,7 @@ fn final_spline_calculate_control_points(
 
     let sloppy = final_spline_spline_routing_mode_equals(
         spline_routing_mode,
-        Sloppy,
+        @options.Sloppy,
       ) &&
       (edge_info.normal_source_node || edge_info.normal_target_node) &&
       final_spline_segment_allows_sloppy_routing(segment, compaction_strategy) &&
@@ -711,17 +714,17 @@ fn final_spline_bendpoints_calculator_process(
   ignore(progress_monitor)
 
   let edge_edge_spacing = graph.get_property_double(
-    layered_options_spacing_edge_edge_between_layers,
+    @options.layered_options_spacing_edge_edge_between_layers,
   )
   let edge_node_spacing = graph.get_property_double(
-    layered_options_spacing_edge_node_between_layers,
+    @options.layered_options_spacing_edge_node_between_layers,
   )
   let spline_routing_mode = graph.get_property_spline_routing_mode(
-    layered_options_edge_routing_splines_mode,
+    @options.layered_options_edge_routing_splines_mode,
   )
   let compaction_strategy = final_spline_parse_graph_compaction_strategy(
     graph.get_property_string(
-      layered_options_compaction_post_compaction_strategy,
+      @options.layered_options_compaction_post_compaction_strategy,
     ),
   )
 

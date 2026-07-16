@@ -130,7 +130,7 @@ fn edge_and_layer_constraint_edge_reverser_layer_constraint(
   node : LNode,
 ) -> LayerConstraint {
   layer_constraint_from_string(
-    node.get_property_string(layered_options_layering_layer_constraint),
+    node.get_property_string(@options.layered_options_layering_layer_constraint),
   )
 }
 

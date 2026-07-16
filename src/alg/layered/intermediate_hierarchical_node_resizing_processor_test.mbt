@@ -150,7 +150,7 @@ test "hierarchical node resizing processor transfers nested graph layout to pare
     internal_properties_ext_port_side,
     hierarchical_node_resizing_test_port_side("EAST"),
   )
-  dummy.set_property_double(layered_options_port_border_offset, 2.0)
+  dummy.set_property_double(@options.layered_options_port_border_offset, 2.0)
   ignore(dummy.get_position().set_xy(20.0, 10.0))
   ignore(dummy.get_size().set_xy(4.0, 4.0))
 

@@ -62,12 +62,12 @@ fn partition_midprocessor_process(
 
   let partition_to_nodes : Map[Int, Array[LNode]] = Map([])
   for node in graph.get_layerless_nodes() {
-    if !node.has_property_int(layered_options_partitioning_partition) {
+    if !node.has_property_int(@options.layered_options_partitioning_partition) {
       continue
     }
 
     let partition = node.get_property_int(
-      layered_options_partitioning_partition,
+      @options.layered_options_partitioning_partition,
     )
     match partition_to_nodes.get(partition) {
       Some(nodes) => nodes.push(node)

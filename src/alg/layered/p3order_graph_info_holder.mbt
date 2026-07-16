@@ -256,7 +256,7 @@ pub fn new_graph_info_holder_from_graph(
       )
       initializables.push(constraint_resolver.as_initializable())
       if graph.get_property_bool(
-          layered_options_crossing_minimization_force_node_model_order,
+          @options.layered_options_crossing_minimization_force_node_model_order,
         ) {
         new_model_order_barycenter_heuristic(
           constraint_resolver, random, barycenter_distributor, current_node_order,

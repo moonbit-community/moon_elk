@@ -24,7 +24,7 @@ fn layer_size_and_graph_height_calculator_process(
   let mut found_nodes = false
 
   let additional_port_spacing = layered_graph.get_property_elk_margin(
-    layered_options_spacing_ports_surrounding,
+    @options.layered_options_spacing_ports_surrounding,
   )
 
   for layer in layered_graph.get_layers() {

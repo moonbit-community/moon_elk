@@ -509,12 +509,16 @@ fn polyline_edge_router_add_bend_point(
         created_junction_points, bend_point,
       ) {
       let junction_points = if edge.has_property_kvector_chain(
-          layered_options_junction_points,
+          @options.layered_options_junction_points,
         ) {
-        edge.get_property_kvector_chain(layered_options_junction_points)
+        edge.get_property_kvector_chain(
+          @options.layered_options_junction_points,
+        )
       } else {
         let chain = @core.new_kvector_chain()
-        edge.set_property_kvector_chain(layered_options_junction_points, chain)
+        edge.set_property_kvector_chain(
+          @options.layered_options_junction_points, chain,
+        )
         chain
       }
 
@@ -549,13 +553,13 @@ fn polyline_edge_router_process(
   ignore(actual_monitor.begin("Polyline edge routing", 1.0))
 
   let sloped_edge_zone_width = layered_graph.get_property_double(
-    layered_options_edge_routing_polyline_sloped_edge_zone_width,
+    @options.layered_options_edge_routing_polyline_sloped_edge_zone_width,
   )
   let node_spacing = layered_graph.get_property_double(
-    layered_options_spacing_node_node_between_layers,
+    @options.layered_options_spacing_node_node_between_layers,
   )
   let edge_spacing = layered_graph.get_property_double(
-    layered_options_spacing_edge_edge_between_layers,
+    @options.layered_options_spacing_edge_edge_between_layers,
   )
   let edge_space_fac = if edge_spacing / node_spacing < 1.0 {
     edge_spacing / node_spacing

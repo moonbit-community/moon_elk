@@ -81,7 +81,9 @@ test "compound graph postprocessor reports expected task name" {
 ///|
 test "compound graph postprocessor restores cross-hierarchy edges and copies geometry" {
   let graph = new_l_graph()
-  graph.set_property_bool(layered_options_unnecessary_bendpoints, false)
+  graph.set_property_bool(
+    @options.layered_options_unnecessary_bendpoints, false,
+  )
 
   let source_node = compound_graph_postprocessor_test_add_node(graph, 0.0, 0.0)
   let middle_node = compound_graph_postprocessor_test_add_node(graph, 20.0, 0.0)
@@ -116,7 +118,7 @@ test "compound graph postprocessor restores cross-hierarchy edges and copies geo
   let existing_junction_points = @core.new_kvector_chain()
   existing_junction_points.add_xy(99.0, 99.0)
   orig_edge.set_property_kvector_chain(
-    layered_options_junction_points, existing_junction_points,
+    @options.layered_options_junction_points, existing_junction_points,
   )
 
   let first_segment = compound_graph_postprocessor_test_add_edge(
@@ -126,7 +128,7 @@ test "compound graph postprocessor restores cross-hierarchy edges and copies geo
   let first_segment_junction_points = @core.new_kvector_chain()
   first_segment_junction_points.add_xy(16.0, 6.0)
   first_segment.set_property_kvector_chain(
-    layered_options_junction_points, first_segment_junction_points,
+    @options.layered_options_junction_points, first_segment_junction_points,
   )
 
   let second_segment = compound_graph_postprocessor_test_add_edge(
@@ -185,10 +187,12 @@ test "compound graph postprocessor restores cross-hierarchy edges and copies geo
   assert_true((bend_points.get(2).y - 8.0).abs() < 0.0001)
 
   assert_true(
-    orig_edge.has_property_kvector_chain(layered_options_junction_points),
+    orig_edge.has_property_kvector_chain(
+      @options.layered_options_junction_points,
+    ),
   )
   let copied_junction_points = orig_edge.get_property_kvector_chain(
-    layered_options_junction_points,
+    @options.layered_options_junction_points,
   )
   assert_eq(copied_junction_points.size(), 1)
   assert_true((copied_junction_points.get(0).x - 16.0).abs() < 0.0001)
@@ -237,7 +241,7 @@ test "compound graph postprocessor removes original junction points if segments 
   let old_junction_points = @core.new_kvector_chain()
   old_junction_points.add_xy(1.0, 1.0)
   orig_edge.set_property_kvector_chain(
-    layered_options_junction_points, old_junction_points,
+    @options.layered_options_junction_points, old_junction_points,
   )
 
   let segment = compound_graph_postprocessor_test_add_edge(
@@ -257,6 +261,8 @@ test "compound graph postprocessor removes original junction points if segments 
   processor.process(graph, None)
 
   assert_true(
-    !orig_edge.has_property_kvector_chain(layered_options_junction_points),
+    !orig_edge.has_property_kvector_chain(
+      @options.layered_options_junction_points,
+    ),
   )
 }

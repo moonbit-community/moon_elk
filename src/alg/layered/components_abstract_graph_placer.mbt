@@ -18,10 +18,14 @@ fn layered_abstract_graph_placer_offset_graph_contents(
     for port in node.get_ports() {
       for edge in port.get_outgoing_edges() {
         ignore(edge.get_bend_points().offset(graph_offset))
-        if edge.has_property_kvector_chain(layered_options_junction_points) {
+        if edge.has_property_kvector_chain(
+            @options.layered_options_junction_points,
+          ) {
           ignore(
             edge
-            .get_property_kvector_chain(layered_options_junction_points)
+            .get_property_kvector_chain(
+              @options.layered_options_junction_points,
+            )
             .offset(graph_offset),
           )
         }

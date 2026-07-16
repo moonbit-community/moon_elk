@@ -348,7 +348,7 @@ pub fn GreedySwitchTestGraphCreator::set_up_graph(
     self.random.next_boolean(),
   )
   graph.set_property_string(
-    layered_options_hierarchy_handling, "INCLUDE_CHILDREN",
+    @options.layered_options_hierarchy_handling, "INCLUDE_CHILDREN",
   )
   graph
 }

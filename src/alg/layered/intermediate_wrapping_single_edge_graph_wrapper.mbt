@@ -214,7 +214,9 @@ fn single_edge_graph_wrapper_process(
     }
 
     let cutting_strategy = single_edge_graph_wrapper_cutting_strategy_from_string(
-      graph.get_property_string(layered_options_wrapping_cutting_strategy),
+      graph.get_property_string(
+        @options.layered_options_wrapping_cutting_strategy,
+      ),
     )
     let calculator = match cutting_strategy {
       Manual => new_manual_cut_index_calculator()
@@ -226,7 +228,9 @@ fn single_edge_graph_wrapper_process(
 
     if !calculator.guarantee_valid() {
       let validify_strategy = single_edge_graph_wrapper_validify_strategy_from_string(
-        graph.get_property_string(layered_options_wrapping_validify_strategy),
+        graph.get_property_string(
+          @options.layered_options_wrapping_validify_strategy,
+        ),
       )
       match validify_strategy {
         LookBack =>

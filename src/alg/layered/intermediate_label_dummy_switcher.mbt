@@ -317,11 +317,11 @@ fn label_dummy_switcher_new_info(
       internal_properties_represented_labels,
     ) {
     if label.has_property_string(
-        layered_options_edge_labels_center_label_placement_strategy,
+        @options.layered_options_edge_labels_center_label_placement_strategy,
       ) {
       info.placement_strategy = label_dummy_switcher_parse_strategy(
         label.get_property_string(
-          layered_options_edge_labels_center_label_placement_strategy,
+          @options.layered_options_edge_labels_center_label_placement_strategy,
         ),
       )
       break
@@ -414,11 +414,11 @@ fn label_dummy_switcher_compute_layer_width_sums(
 ) -> Array[Double] raise LabelDummySwitcherException {
   let graph = info.label_dummy.get_graph()
   let edge_node_spacing = graph.get_property_double(
-      layered_options_spacing_edge_node_between_layers,
+      @options.layered_options_spacing_edge_node_between_layers,
     ) *
     2.0
   let node_node_spacing = graph.get_property_double(
-    layered_options_spacing_node_node_between_layers,
+    @options.layered_options_spacing_node_node_between_layers,
   )
   let min_space_between_layers = label_dummy_switcher_max_double(
     edge_node_spacing, node_node_spacing,
@@ -885,7 +885,7 @@ fn label_dummy_switcher_process(
   try {
     let default_placement_strategy = label_dummy_switcher_parse_strategy(
       layered_graph.get_property_string(
-        layered_options_edge_labels_center_label_placement_strategy,
+        @options.layered_options_edge_labels_center_label_placement_strategy,
       ),
     )
 

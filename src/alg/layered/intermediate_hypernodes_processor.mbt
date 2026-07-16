@@ -178,9 +178,11 @@ fn hypernodes_processor_move_hypernode(
           edge.set_source(Some(north_port))
         }
 
-        if edge.has_property_kvector_chain(layered_options_junction_points) {
+        if edge.has_property_kvector_chain(
+            @options.layered_options_junction_points,
+          ) {
           let junction_points = edge.get_property_kvector_chain(
-            layered_options_junction_points,
+            @options.layered_options_junction_points,
           )
           hypernodes_processor_remove_junction_point(
             junction_points, removed_point,
@@ -200,9 +202,11 @@ fn hypernodes_processor_move_hypernode(
           edge.set_target(Some(north_port))
         }
 
-        if edge.has_property_kvector_chain(layered_options_junction_points) {
+        if edge.has_property_kvector_chain(
+            @options.layered_options_junction_points,
+          ) {
           let junction_points = edge.get_property_kvector_chain(
-            layered_options_junction_points,
+            @options.layered_options_junction_points,
           )
           hypernodes_processor_remove_junction_point(
             junction_points, removed_point,
@@ -229,7 +233,7 @@ fn hypernodes_processor_process(
   try {
     for layer in layered_graph.get_layers() {
       for node in layer.get_nodes() {
-        if node.get_property_bool(layered_options_hypernode) &&
+        if node.get_property_bool(@options.layered_options_hypernode) &&
           node.get_ports().length() <= 2 {
           let mut top_edges = 0
           let mut right_edges = 0

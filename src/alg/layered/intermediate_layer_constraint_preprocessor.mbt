@@ -13,7 +13,7 @@ fn layer_constraint_preprocessor_layer_constraint(
   node : LNode,
 ) -> LayerConstraint {
   layer_constraint_from_string(
-    node.get_property_string(layered_options_layering_layer_constraint),
+    node.get_property_string(@options.layered_options_layering_layer_constraint),
   )
 }
 
@@ -117,7 +117,7 @@ fn layer_constraint_preprocessor_update_opposite_node_layer_constraints(
   opposite_node : LNode,
 ) -> Unit {
   if opposite_node.has_property_string(
-      layered_options_layering_layer_constraint,
+      @options.layered_options_layering_layer_constraint,
     ) {
     return
   }
@@ -138,12 +138,12 @@ fn layer_constraint_preprocessor_update_opposite_node_layer_constraints(
 
   if connections == "FIRST_SEPARATE" {
     opposite_node.set_property_string(
-      layered_options_layering_layer_constraint,
+      @options.layered_options_layering_layer_constraint,
       layer_constraint_to_string(First),
     )
   } else if connections == "LAST_SEPARATE" {
     opposite_node.set_property_string(
-      layered_options_layering_layer_constraint,
+      @options.layered_options_layering_layer_constraint,
       layer_constraint_to_string(Last),
     )
   }

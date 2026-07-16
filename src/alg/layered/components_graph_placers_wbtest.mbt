@@ -56,8 +56,8 @@ test "LayeredComponentsProcessor does not split when external ports require fixe
 test "LayeredSimpleRowGraphPlacer places components into one row" {
   let target = new_l_graph()
   target.set_property_component_ordering_strategy(
-    layered_options_consider_model_order_components,
-    ModelOrder,
+    @options.layered_options_consider_model_order_components,
+    @options.ModelOrder,
   )
 
   let first = layered_components_test_new_graph(1, 30.0, 10.0, @core.sides_none)
@@ -154,8 +154,8 @@ test "LayeredComponentsProcessor picks model-order row placer for model-order st
     [ExternalPorts],
   )
   config.set_property_component_ordering_strategy(
-    layered_options_consider_model_order_components,
-    ModelOrder,
+    @options.layered_options_consider_model_order_components,
+    @options.ModelOrder,
   )
 
   let processor = new_layered_components_processor()

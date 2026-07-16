@@ -72,7 +72,9 @@ fn comment_preprocessor_process_box(
       for port2 in port1.get_connected_ports() {
         match port2.get_node() {
           Some(port2_node) =>
-            if !port2_node.get_property_bool(layered_options_comment_box) {
+            if !port2_node.get_property_bool(
+                @options.layered_options_comment_box,
+              ) {
               match port1.get_side() {
                 North => {
                   has_north = true
@@ -220,7 +222,7 @@ fn comment_preprocessor_process(
   let mut node_index = 0
   while node_index < layerless_nodes.length() {
     let node = layerless_nodes[node_index]
-    if node.get_property_bool(layered_options_comment_box) {
+    if node.get_property_bool(@options.layered_options_comment_box) {
       comment_box_count = comment_box_count + 1
 
       let mut edge_count = 0
@@ -245,7 +247,9 @@ fn comment_preprocessor_process(
             match opposite.get_node() {
               Some(real_node) =>
                 if opposite.get_degree() == 1 &&
-                  !real_node.get_property_bool(layered_options_comment_box) {
+                  !real_node.get_property_bool(
+                    @options.layered_options_comment_box,
+                  ) {
                   comment_preprocessor_process_box(
                     node, single_edge, opposite, real_node,
                   )

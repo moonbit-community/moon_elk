@@ -199,8 +199,8 @@ fn recursive_layered_individual_spacing_options() -> Array[
     @core.spacing_node_node, @core.spacing_component_component, @core.spacing_edge_edge,
     @core.spacing_edge_label, @core.spacing_edge_node, @core.spacing_label_label,
     @core.spacing_label_node, @core.spacing_label_port_horizontal, @core.spacing_label_port_vertical,
-    @core.spacing_node_self_loop, @core.spacing_port_port, layered_options_spacing_edge_edge_between_layers,
-    layered_options_spacing_edge_node_between_layers, layered_options_spacing_node_node_between_layers,
+    @core.spacing_node_self_loop, @core.spacing_port_port, @options.layered_options_spacing_edge_edge_between_layers,
+    @options.layered_options_spacing_edge_node_between_layers, @options.layered_options_spacing_node_node_between_layers,
   ]
 }
 
@@ -685,7 +685,7 @@ fn recursive_layered_node_cb_group_model_order_cycle_breaking_id(
   node : @graph.ElkNode,
 ) -> Int? {
   let keys = [
-    layered_options_consider_model_order_group_model_order_cycle_breaking_id.get_id(),
+    @options.layered_options_consider_model_order_group_model_order_cycle_breaking_id.get_id(),
     "elk.layered.considerModelOrder.groupModelOrder.cycleBreakingId",
     "layered.considerModelOrder.groupModelOrder.cycleBreakingId",
     "considerModelOrder.groupModelOrder.cycleBreakingId",
@@ -706,58 +706,58 @@ fn recursive_layered_needs_model_order_based_on_parent_node(
 ) -> Bool {
   let cycle_breaking_strategy = recursive_layered_primary_option(
     parent_node,
-    layered_options_cycle_breaking_strategy.get_id(),
+    @options.layered_options_cycle_breaking_strategy.get_id(),
     @graph.node_get_string_property(
-      parent_node, layered_options_cycle_breaking_strategy,
+      parent_node, @options.layered_options_cycle_breaking_strategy,
     ),
   )
   let layering_strategy = recursive_layered_primary_option(
     parent_node,
-    layered_options_layering_strategy.get_id(),
+    @options.layered_options_layering_strategy.get_id(),
     @graph.node_get_string_property(
-      parent_node, layered_options_layering_strategy,
+      parent_node, @options.layered_options_layering_strategy,
     ),
   )
   let node_promotion_strategy = recursive_layered_primary_option(
     parent_node,
-    layered_options_layering_node_promotion_strategy.get_id(),
+    @options.layered_options_layering_node_promotion_strategy.get_id(),
     @graph.node_get_string_property(
-      parent_node, layered_options_layering_node_promotion_strategy,
+      parent_node, @options.layered_options_layering_node_promotion_strategy,
     ),
   )
   let consider_model_order_strategy = recursive_layered_primary_option(
     parent_node,
-    layered_options_consider_model_order_strategy.get_id(),
+    @options.layered_options_consider_model_order_strategy.get_id(),
     @graph.node_get_string_property(
-      parent_node, layered_options_consider_model_order_strategy,
+      parent_node, @options.layered_options_consider_model_order_strategy,
     ),
   )
   let force_node_model_order = match
     recursive_layered_parse_bool(
       recursive_layered_primary_option(
         parent_node,
-        layered_options_crossing_minimization_force_node_model_order.get_id(),
+        @options.layered_options_crossing_minimization_force_node_model_order.get_id(),
         @graph.node_get_bool_property(
-          parent_node, layered_options_crossing_minimization_force_node_model_order,
+          parent_node, @options.layered_options_crossing_minimization_force_node_model_order,
         ).to_string(),
       ),
     ) {
     Some(value) => value
     None =>
-      layered_options_crossing_minimization_force_node_model_order.get_default()
+      @options.layered_options_crossing_minimization_force_node_model_order.get_default()
   }
   let consider_model_order_components = recursive_layered_primary_option(
     parent_node,
-    layered_options_consider_model_order_components.get_id(),
+    @options.layered_options_consider_model_order_components.get_id(),
     "NONE",
   )
   let crossing_counter_node_influence = match
     recursive_layered_parse_double(
       recursive_layered_primary_option(
         parent_node,
-        layered_options_consider_model_order_crossing_counter_node_influence.get_id(),
+        @options.layered_options_consider_model_order_crossing_counter_node_influence.get_id(),
         @graph.node_get_double_property(
-          parent_node, layered_options_consider_model_order_crossing_counter_node_influence,
+          parent_node, @options.layered_options_consider_model_order_crossing_counter_node_influence,
         ).to_string(),
       ),
     ) {
@@ -768,9 +768,9 @@ fn recursive_layered_needs_model_order_based_on_parent_node(
     recursive_layered_parse_double(
       recursive_layered_primary_option(
         parent_node,
-        layered_options_consider_model_order_crossing_counter_port_influence.get_id(),
+        @options.layered_options_consider_model_order_crossing_counter_port_influence.get_id(),
         @graph.node_get_double_property(
-          parent_node, layered_options_consider_model_order_crossing_counter_port_influence,
+          parent_node, @options.layered_options_consider_model_order_crossing_counter_port_influence,
         ).to_string(),
       ),
     ) {
@@ -1189,7 +1189,7 @@ fn recursive_layered_port_allow_non_flow_switch_sides(
   port : @graph.ElkPort,
 ) -> Bool {
   let candidates = [
-    layered_options_allow_non_flow_ports_to_switch_sides.get_id(),
+    @options.layered_options_allow_non_flow_ports_to_switch_sides.get_id(),
     "elk.layered.allowNonFlowPortsToSwitchSides",
     "layered.allowNonFlowPortsToSwitchSides",
   ]
@@ -1203,7 +1203,7 @@ fn recursive_layered_port_allow_non_flow_switch_sides(
       None => ()
     }
   }
-  layered_options_allow_non_flow_ports_to_switch_sides.get_default()
+  @options.layered_options_allow_non_flow_ports_to_switch_sides.get_default()
 }
 
 ///|
@@ -1652,7 +1652,7 @@ fn recursive_layered_parent_port_lport(
         recursive_layered_ext_port_border_offset_property, border_offset,
       )
       dummy.set_property_double(
-        layered_options_port_border_offset, border_offset,
+        @options.layered_options_port_border_offset, border_offset,
       )
 
       let lport = new_l_port()
@@ -1667,7 +1667,7 @@ fn recursive_layered_parent_port_lport(
       match
         @graph.port_layout_option_string_value(
           parent_port,
-          layered_options_port_anchor.get_id(),
+          @options.layered_options_port_anchor.get_id(),
         ) {
         Some(anchor_text) => {
           let parsed_anchor = @core.new_kvector()
@@ -1682,7 +1682,7 @@ fn recursive_layered_parent_port_lport(
       match final_external_side {
         West => {
           dummy.set_property_string(
-            layered_options_layering_layer_constraint, "FIRST_SEPARATE",
+            @options.layered_options_layering_layer_constraint, "FIRST_SEPARATE",
           )
           dummy.set_property_string(
             internal_properties_edge_constraint, "OUTGOING_ONLY",
@@ -1699,7 +1699,7 @@ fn recursive_layered_parent_port_lport(
         }
         East => {
           dummy.set_property_string(
-            layered_options_layering_layer_constraint, "LAST_SEPARATE",
+            @options.layered_options_layering_layer_constraint, "LAST_SEPARATE",
           )
           dummy.set_property_string(
             internal_properties_edge_constraint, "INCOMING_ONLY",
@@ -1748,7 +1748,7 @@ fn recursive_layered_parent_port_lport(
       lport.get_position().x = anchor.x
       lport.get_position().y = anchor.y
       dummy.set_property_kvector(
-        layered_options_port_anchor,
+        @options.layered_options_port_anchor,
         @core.new_kvector_copy(anchor),
       )
 
@@ -1959,7 +1959,7 @@ fn recursive_layered_descendant_port_anchor(
   match
     @graph.port_layout_option_string_value(
       port,
-      layered_options_port_anchor.get_id(),
+      @options.layered_options_port_anchor.get_id(),
     ) {
     Some(anchor_text) => {
       let parsed_anchor = @core.new_kvector()
@@ -2313,7 +2313,7 @@ fn recursive_layered_node_uses_layered(node : @graph.ElkNode) -> Bool {
     Some(value) =>
       value == "layered" ||
       value == "elk.layered" ||
-      value == layered_algorithm_id ||
+      value == @options.layered_algorithm_id ||
       value.has_suffix(".layered")
     None => true
   }
@@ -2326,7 +2326,9 @@ fn recursive_layered_node_hierarchy_include_children(
   recursive_layered_primary_option(
     node,
     "org.eclipse.elk.hierarchyHandling",
-    @graph.node_get_string_property(node, layered_options_hierarchy_handling),
+    @graph.node_get_string_property(
+      node, @options.layered_options_hierarchy_handling,
+    ),
   ) ==
   "INCLUDE_CHILDREN"
 }
@@ -2400,84 +2402,87 @@ fn recursive_layered_create_context(
     recursive_layered_parse_double(
       recursive_layered_primary_option(
         node,
-        layered_options_spacing_node_node_between_layers.get_id(),
+        @options.layered_options_spacing_node_node_between_layers.get_id(),
         @graph.node_get_double_property(
-          node, layered_options_spacing_node_node_between_layers,
+          node, @options.layered_options_spacing_node_node_between_layers,
         ).to_string(),
       ),
     ) {
     Some(value) => value
-    None => layered_options_spacing_node_node_between_layers.get_default()
+    None =>
+      @options.layered_options_spacing_node_node_between_layers.get_default()
   }
   let spacing_edge_node_between_layers = match
     recursive_layered_parse_double(
       recursive_layered_primary_option(
         node,
-        layered_options_spacing_edge_node_between_layers.get_id(),
+        @options.layered_options_spacing_edge_node_between_layers.get_id(),
         @graph.node_get_double_property(
-          node, layered_options_spacing_edge_node_between_layers,
+          node, @options.layered_options_spacing_edge_node_between_layers,
         ).to_string(),
       ),
     ) {
     Some(value) => value
-    None => layered_options_spacing_edge_node_between_layers.get_default()
+    None =>
+      @options.layered_options_spacing_edge_node_between_layers.get_default()
   }
   let spacing_edge_edge_between_layers = match
     recursive_layered_parse_double(
       recursive_layered_primary_option(
         node,
-        layered_options_spacing_edge_edge_between_layers.get_id(),
+        @options.layered_options_spacing_edge_edge_between_layers.get_id(),
         @graph.node_get_double_property(
-          node, layered_options_spacing_edge_edge_between_layers,
+          node, @options.layered_options_spacing_edge_edge_between_layers,
         ).to_string(),
       ),
     ) {
     Some(value) => value
-    None => layered_options_spacing_edge_edge_between_layers.get_default()
+    None =>
+      @options.layered_options_spacing_edge_edge_between_layers.get_default()
   }
   let aspect_ratio_value = @graph.node_get_double_property(
-    node, layered_options_aspect_ratio,
+    node, @options.layered_options_aspect_ratio,
   )
   let consider_model_order = recursive_layered_primary_option(
     node,
     "org.eclipse.elk.layered.considerModelOrder.strategy",
     @graph.node_get_string_property(
-      node, layered_options_consider_model_order_strategy,
+      node, @options.layered_options_consider_model_order_strategy,
     ),
   )
   let node_promotion_strategy = recursive_layered_primary_option(
     node,
     "org.eclipse.elk.layered.nodePromotion.strategy",
     @graph.node_get_string_property(
-      node, layered_options_layering_node_promotion_strategy,
+      node, @options.layered_options_layering_node_promotion_strategy,
     ),
   )
   let crossing_strategy = recursive_layered_primary_option(
     node,
     "org.eclipse.elk.layered.crossingMinimization.strategy",
     @graph.node_get_string_property(
-      node, layered_options_crossing_minimization_strategy,
+      node, @options.layered_options_crossing_minimization_strategy,
     ),
   )
   let node_placement_strategy = recursive_layered_primary_option(
     node,
     "org.eclipse.elk.layered.nodePlacement.strategy",
     @graph.node_get_string_property(
-      node, layered_options_node_placement_strategy,
+      node, @options.layered_options_node_placement_strategy,
     ),
   )
   let greedy_switch_type = recursive_layered_primary_option(
     node,
     "org.eclipse.elk.layered.crossingMinimization.greedySwitch.type",
     @graph.node_get_string_property(
-      node, layered_options_crossing_minimization_greedy_switch_type,
+      node, @options.layered_options_crossing_minimization_greedy_switch_type,
     ),
   )
   let greedy_switch_hierarchical_type = recursive_layered_primary_option(
     node,
     "org.eclipse.elk.layered.crossingMinimization.greedySwitchHierarchical.type",
     @graph.node_get_string_property(
-      node, layered_options_crossing_minimization_greedy_switch_hierarchical_type,
+      node, @options.layered_options_crossing_minimization_greedy_switch_hierarchical_type,
     ),
   )
   let greedy_switch_activation_threshold = match
@@ -2486,13 +2491,13 @@ fn recursive_layered_create_context(
         node,
         "org.eclipse.elk.layered.crossingMinimization.greedySwitch.activationThreshold",
         @graph.node_get_int_property(
-          node, layered_options_crossing_minimization_greedy_switch_activation_threshold,
+          node, @options.layered_options_crossing_minimization_greedy_switch_activation_threshold,
         ).to_string(),
       ),
     ) {
     Some(value) => value
     None =>
-      layered_options_crossing_minimization_greedy_switch_activation_threshold.get_default()
+      @options.layered_options_crossing_minimization_greedy_switch_activation_threshold.get_default()
   }
   let crossing_semi_interactive = match
     recursive_layered_parse_bool(
@@ -2500,12 +2505,13 @@ fn recursive_layered_create_context(
         node,
         "org.eclipse.elk.layered.crossingMinimization.semiInteractive",
         @graph.node_get_bool_property(
-          node, layered_options_crossing_minimization_semi_interactive,
+          node, @options.layered_options_crossing_minimization_semi_interactive,
         ).to_string(),
       ),
     ) {
     Some(value) => value
-    None => layered_options_crossing_minimization_semi_interactive.get_default()
+    None =>
+      @options.layered_options_crossing_minimization_semi_interactive.get_default()
   }
   let crossing_force_node_model_order = match
     recursive_layered_parse_bool(
@@ -2513,13 +2519,13 @@ fn recursive_layered_create_context(
         node,
         "org.eclipse.elk.layered.crossingMinimization.forceNodeModelOrder",
         @graph.node_get_bool_property(
-          node, layered_options_crossing_minimization_force_node_model_order,
+          node, @options.layered_options_crossing_minimization_force_node_model_order,
         ).to_string(),
       ),
     ) {
     Some(value) => value
     None =>
-      layered_options_crossing_minimization_force_node_model_order.get_default()
+      @options.layered_options_crossing_minimization_force_node_model_order.get_default()
   }
   let edge_routing_value = recursive_layered_primary_option(
     node,
@@ -2533,7 +2539,7 @@ fn recursive_layered_create_context(
   let fixed_alignment_value = recursive_layered_primary_option(
     node,
     "org.eclipse.elk.layered.nodePlacement.bk.fixedAlignment",
-    layered_options_node_placement_bk_fixed_alignment.get_default(),
+    @options.layered_options_node_placement_bk_fixed_alignment.get_default(),
   )
   let favor_straight_edges_value = recursive_layered_primary_option(
     node, "org.eclipse.elk.layered.nodePlacement.favorStraightEdges", "",
@@ -2545,23 +2551,27 @@ fn recursive_layered_create_context(
     recursive_layered_parse_bool(
       recursive_layered_primary_option(
         node,
-        layered_options_merge_edges.get_id(),
-        @graph.node_get_bool_property(node, layered_options_merge_edges).to_string(),
+        @options.layered_options_merge_edges.get_id(),
+        @graph.node_get_bool_property(
+          node, @options.layered_options_merge_edges,
+        ).to_string(),
       ),
     ) {
     Some(value) => value
-    None => layered_options_merge_edges.get_default()
+    None => @options.layered_options_merge_edges.get_default()
   }
   let thoroughness_value = match
     recursive_layered_parse_int(
       recursive_layered_primary_option(
         node,
-        layered_options_thoroughness.get_id(),
-        @graph.node_get_int_property(node, layered_options_thoroughness).to_string(),
+        @options.layered_options_thoroughness.get_id(),
+        @graph.node_get_int_property(
+          node, @options.layered_options_thoroughness,
+        ).to_string(),
       ),
     ) {
     Some(value) => value
-    None => layered_options_thoroughness.get_default()
+    None => @options.layered_options_thoroughness.get_default()
   }
   let layering_strategy = recursive_layered_primary_option(
     node, "org.eclipse.elk.layered.layering.strategy", "NETWORK_SIMPLEX",
@@ -2569,7 +2579,9 @@ fn recursive_layered_create_context(
   let hierarchy_handling = recursive_layered_primary_option(
     node,
     "org.eclipse.elk.hierarchyHandling",
-    @graph.node_get_string_property(node, layered_options_hierarchy_handling),
+    @graph.node_get_string_property(
+      node, @options.layered_options_hierarchy_handling,
+    ),
   )
   let high_degree_nodes_treatment = match
     recursive_layered_parse_bool(
@@ -2577,31 +2589,33 @@ fn recursive_layered_create_context(
         node,
         "org.eclipse.elk.alg.layered.highDegreeNodes.treatment",
         @graph.node_get_bool_property(
-          node, layered_options_high_degree_nodes_treatment,
+          node, @options.layered_options_high_degree_nodes_treatment,
         ).to_string(),
       ),
     ) {
     Some(value) => value
-    None => layered_options_high_degree_nodes_treatment.get_default()
+    None => @options.layered_options_high_degree_nodes_treatment.get_default()
   }
   let compaction_post_strategy = recursive_layered_primary_option(
     node,
     "org.eclipse.elk.layered.compaction.postCompaction.strategy",
     @graph.node_get_string_property(
-      node, layered_options_compaction_post_compaction_strategy,
+      node, @options.layered_options_compaction_post_compaction_strategy,
     ),
   )
   let layer_unzipping_strategy = recursive_layered_primary_option(
     node,
     "org.eclipse.elk.layered.layerUnzipping.strategy",
     @graph.node_get_string_property(
-      node, layered_options_layer_unzipping_strategy,
+      node, @options.layered_options_layer_unzipping_strategy,
     ),
   )
   let wrapping_strategy = recursive_layered_primary_option(
     node,
     "org.eclipse.elk.layered.wrapping.strategy",
-    @graph.node_get_string_property(node, layered_options_wrapping_strategy),
+    @graph.node_get_string_property(
+      node, @options.layered_options_wrapping_strategy,
+    ),
   )
   let generate_position_and_layer_ids = match
     recursive_layered_parse_bool(
@@ -2609,12 +2623,13 @@ fn recursive_layered_create_context(
         node,
         "org.eclipse.elk.layered.generatePositionAndLayerIds",
         @graph.node_get_bool_property(
-          node, layered_options_generate_position_and_layer_ids,
+          node, @options.layered_options_generate_position_and_layer_ids,
         ).to_string(),
       ),
     ) {
     Some(value) => value
-    None => layered_options_generate_position_and_layer_ids.get_default()
+    None =>
+      @options.layered_options_generate_position_and_layer_ids.get_default()
   }
   let interactive_layout = match
     recursive_layered_parse_bool(
@@ -2670,11 +2685,13 @@ fn recursive_layered_create_context(
       recursive_layered_primary_option(
         node,
         "org.eclipse.elk.layered.feedbackEdges",
-        @graph.node_get_bool_property(node, layered_options_feedback_edges).to_string(),
+        @graph.node_get_bool_property(
+          node, @options.layered_options_feedback_edges,
+        ).to_string(),
       ),
     ) {
     Some(value) => value
-    None => layered_options_feedback_edges.get_default()
+    None => @options.layered_options_feedback_edges.get_default()
   }
 
   layered_graph.set_property_double(
@@ -2710,79 +2727,83 @@ fn recursive_layered_create_context(
     },
   )
   layered_graph.set_property_double(
-    layered_options_spacing_node_node_between_layers,
+    @options.layered_options_spacing_node_node_between_layers,
     if spacing_between_layers > 0.0 {
       spacing_between_layers
     } else {
-      layered_options_spacing_node_node_between_layers.get_default()
+      @options.layered_options_spacing_node_node_between_layers.get_default()
     },
   )
   layered_graph.set_property_double(
-    layered_options_spacing_edge_node_between_layers,
+    @options.layered_options_spacing_edge_node_between_layers,
     if spacing_edge_node_between_layers > 0.0 {
       spacing_edge_node_between_layers
     } else {
-      layered_options_spacing_edge_node_between_layers.get_default()
+      @options.layered_options_spacing_edge_node_between_layers.get_default()
     },
   )
   layered_graph.set_property_double(
-    layered_options_spacing_edge_edge_between_layers,
+    @options.layered_options_spacing_edge_edge_between_layers,
     if spacing_edge_edge_between_layers > 0.0 {
       spacing_edge_edge_between_layers
     } else {
-      layered_options_spacing_edge_edge_between_layers.get_default()
+      @options.layered_options_spacing_edge_edge_between_layers.get_default()
     },
   )
   layered_graph.set_property_double(
-    layered_options_aspect_ratio,
+    @options.layered_options_aspect_ratio,
     if aspect_ratio_value > 0.0 {
       aspect_ratio_value
     } else {
-      layered_options_aspect_ratio.get_default()
+      @options.layered_options_aspect_ratio.get_default()
     },
   )
   layered_graph.set_property_int(@core.random_seed, random_seed_value)
   layered_graph.set_property_string(
-    layered_options_cycle_breaking_strategy, cycle_breaking_strategy,
+    @options.layered_options_cycle_breaking_strategy, cycle_breaking_strategy,
   )
-  layered_graph.set_property_bool(layered_options_merge_edges, merge_edges)
+  layered_graph.set_property_bool(
+    @options.layered_options_merge_edges, merge_edges,
+  )
   layered_graph.set_property_int(
-    layered_options_thoroughness,
+    @options.layered_options_thoroughness,
     if thoroughness_value > 0 {
       thoroughness_value
     } else {
-      layered_options_thoroughness.get_default()
+      @options.layered_options_thoroughness.get_default()
     },
   )
   layered_graph.set_property_string(
-    layered_options_layering_strategy, layering_strategy,
+    @options.layered_options_layering_strategy, layering_strategy,
   )
   layered_graph.set_property_string(
-    layered_options_consider_model_order_strategy, consider_model_order,
+    @options.layered_options_consider_model_order_strategy, consider_model_order,
   )
   layered_graph.set_property_string(
-    layered_options_layering_node_promotion_strategy, node_promotion_strategy,
+    @options.layered_options_layering_node_promotion_strategy, node_promotion_strategy,
   )
   layered_graph.set_property_string(
-    layered_options_crossing_minimization_strategy, crossing_strategy,
+    @options.layered_options_crossing_minimization_strategy, crossing_strategy,
   )
   layered_graph.set_property_string(
-    layered_options_node_placement_strategy, node_placement_strategy,
+    @options.layered_options_node_placement_strategy, node_placement_strategy,
   )
   layered_graph.set_property_string(
-    layered_options_crossing_minimization_greedy_switch_type, greedy_switch_type,
+    @options.layered_options_crossing_minimization_greedy_switch_type, greedy_switch_type,
   )
   layered_graph.set_property_string(
-    layered_options_crossing_minimization_greedy_switch_hierarchical_type, greedy_switch_hierarchical_type,
+    @options.layered_options_crossing_minimization_greedy_switch_hierarchical_type,
+    greedy_switch_hierarchical_type,
   )
   layered_graph.set_property_int(
-    layered_options_crossing_minimization_greedy_switch_activation_threshold, greedy_switch_activation_threshold,
+    @options.layered_options_crossing_minimization_greedy_switch_activation_threshold,
+    greedy_switch_activation_threshold,
   )
   layered_graph.set_property_bool(
-    layered_options_crossing_minimization_semi_interactive, crossing_semi_interactive,
+    @options.layered_options_crossing_minimization_semi_interactive, crossing_semi_interactive,
   )
   layered_graph.set_property_bool(
-    layered_options_crossing_minimization_force_node_model_order, crossing_force_node_model_order,
+    @options.layered_options_crossing_minimization_force_node_model_order, crossing_force_node_model_order,
   )
   layered_graph.set_property_string(
     @core.edge_routing,
@@ -2804,29 +2825,29 @@ fn recursive_layered_create_context(
     },
   )
   layered_graph.set_property_bool(
-    layered_options_feedback_edges, feedback_edges,
+    @options.layered_options_feedback_edges, feedback_edges,
   )
   layered_graph.set_property_string(
-    layered_options_hierarchy_handling, hierarchy_handling,
+    @options.layered_options_hierarchy_handling, hierarchy_handling,
   )
   layered_graph.set_property_bool(
-    layered_options_high_degree_nodes_treatment, high_degree_nodes_treatment,
+    @options.layered_options_high_degree_nodes_treatment, high_degree_nodes_treatment,
   )
   layered_graph.set_property_string(
-    layered_options_compaction_post_compaction_strategy, compaction_post_strategy,
+    @options.layered_options_compaction_post_compaction_strategy, compaction_post_strategy,
   )
   layered_graph.set_property_string(
-    layered_options_layer_unzipping_strategy, layer_unzipping_strategy,
+    @options.layered_options_layer_unzipping_strategy, layer_unzipping_strategy,
   )
   layered_graph.set_property_string(
-    layered_options_wrapping_strategy, wrapping_strategy,
+    @options.layered_options_wrapping_strategy, wrapping_strategy,
   )
   layered_graph.set_property_bool(
-    layered_options_generate_position_and_layer_ids, generate_position_and_layer_ids,
+    @options.layered_options_generate_position_and_layer_ids, generate_position_and_layer_ids,
   )
   layered_graph.set_property_bool(@core.interactive, interactive_layout)
   layered_graph.set_property_string(
-    layered_options_node_placement_bk_fixed_alignment, fixed_alignment_value,
+    @options.layered_options_node_placement_bk_fixed_alignment, fixed_alignment_value,
   )
   let content_alignment_tokens = option_value_tokens(content_alignment_value)
   if !content_alignment_tokens.is_empty() {
@@ -2851,7 +2872,7 @@ fn recursive_layered_create_context(
   match recursive_layered_parse_bool(favor_straight_edges_value) {
     Some(value) =>
       layered_graph.set_property_bool(
-        layered_options_node_placement_favor_straight_edges, value,
+        @options.layered_options_node_placement_favor_straight_edges, value,
       )
     None => ()
   }
@@ -2938,7 +2959,7 @@ fn recursive_layered_create_context(
         @common.nodespacing_port_border_offset_property, port_border_offset,
       )
       lport.set_property_double(
-        layered_options_port_border_offset, port_border_offset,
+        @options.layered_options_port_border_offset, port_border_offset,
       )
       lport.set_property_bool(
         internal_properties_inside_connections,
@@ -2950,7 +2971,7 @@ fn recursive_layered_create_context(
         recursive_layered_port_allow_non_flow_switch_sides(elk_port)
       }
       lport.set_property_bool(
-        layered_options_allow_non_flow_ports_to_switch_sides, allow_non_flow_switch,
+        @options.layered_options_allow_non_flow_ports_to_switch_sides, allow_non_flow_switch,
       )
       lport.set_side(
         recursive_layered_port_side_from_string(
@@ -2958,7 +2979,7 @@ fn recursive_layered_create_context(
         ),
       )
       let port_index_candidates = [
-        layered_options_port_index.get_id(),
+        @options.layered_options_port_index.get_id(),
         "elk.port.index",
         "port.index",
       ]
@@ -2973,7 +2994,9 @@ fn recursive_layered_create_context(
               value => Ok(value)
             }
             if parsed_port_index is Ok(port_index) {
-              lport.set_property_int(layered_options_port_index, port_index)
+              lport.set_property_int(
+                @options.layered_options_port_index, port_index,
+              )
               break
             }
           }
@@ -2985,7 +3008,7 @@ fn recursive_layered_create_context(
       let explicit_anchor = match
         @graph.port_layout_option_string_value(
           elk_port,
-          layered_options_port_anchor.get_id(),
+          @options.layered_options_port_anchor.get_id(),
         ) {
         Some(anchor_text) => {
           let parsed_anchor = @core.new_kvector()
@@ -3702,9 +3725,11 @@ fn recursive_layered_apply_layout(
     let edge_offset = @core.new_kvector_copy(offset_for_edge)
     ignore(edge_offset.add(hierarchical_offset))
     @graph.edge_clear_junction_points(elk_edge)
-    if layered_edge.has_property_kvector_chain(layered_options_junction_points) {
+    if layered_edge.has_property_kvector_chain(
+        @options.layered_options_junction_points,
+      ) {
       let junction_points = layered_edge.get_property_kvector_chain(
-        layered_options_junction_points,
+        @options.layered_options_junction_points,
       )
       for junction_point in junction_points.to_array() {
         let transformed = @core.new_kvector_copy(junction_point)

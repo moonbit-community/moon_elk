@@ -66,15 +66,15 @@ test "port list sorter sorts fixed-order ports by side and index" {
   node.set_property_string(@core.port_constraints, "FIXED_ORDER")
 
   let east_2 = port_list_sorter_test_new_port(node, "EAST", 102)
-  east_2.set_property_int(layered_options_port_index, 2)
+  east_2.set_property_int(@options.layered_options_port_index, 2)
   let north_0 = port_list_sorter_test_new_port(node, "NORTH", 100)
-  north_0.set_property_int(layered_options_port_index, 0)
+  north_0.set_property_int(@options.layered_options_port_index, 0)
   let south_0 = port_list_sorter_test_new_port(node, "SOUTH", 103)
-  south_0.set_property_int(layered_options_port_index, 0)
+  south_0.set_property_int(@options.layered_options_port_index, 0)
   let east_1 = port_list_sorter_test_new_port(node, "EAST", 101)
-  east_1.set_property_int(layered_options_port_index, 1)
+  east_1.set_property_int(@options.layered_options_port_index, 1)
   let west_0 = port_list_sorter_test_new_port(node, "WEST", 104)
-  west_0.set_property_int(layered_options_port_index, 0)
+  west_0.set_property_int(@options.layered_options_port_index, 0)
 
   let processor = new_port_list_sorter_layout_processor()
   processor.process(graph, None)
@@ -87,8 +87,8 @@ test "port list sorter sorts fixed-order ports by side and index" {
   assert_eq(@core.port_side_to_string(ports[3].get_side()), "SOUTH")
   assert_eq(@core.port_side_to_string(ports[4].get_side()), "WEST")
 
-  assert_eq(ports[1].get_property_int(layered_options_port_index), 1)
-  assert_eq(ports[2].get_property_int(layered_options_port_index), 2)
+  assert_eq(ports[1].get_property_int(@options.layered_options_port_index), 1)
+  assert_eq(ports[2].get_property_int(@options.layered_options_port_index), 2)
 }
 
 ///|
@@ -120,7 +120,7 @@ test "port list sorter reverses south/west order for fixed-side constraints" {
 test "port list sorter uses port-degree strategy on east and west sides" {
   let graph = new_l_graph()
   graph.set_property_string(
-    layered_options_port_sorting_strategy, "PORT_DEGREE",
+    @options.layered_options_port_sorting_strategy, "PORT_DEGREE",
   )
   let layer = new_layer(graph)
   graph.get_layers().push(layer)

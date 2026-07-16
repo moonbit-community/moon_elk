@@ -90,7 +90,7 @@ fn issue447_test_configure_port(port : @graph.ElkPort) -> Unit {
   )
   port_set_layout_option_string_by_id(
     port,
-    layered_options_port_anchor.get_id(),
+    @options.layered_options_port_anchor.get_id(),
     "(\{issue447_test_port_anchor()},\{issue447_test_port_anchor()})",
   )
 }
@@ -141,7 +141,7 @@ fn issue447_test_build_graph() -> @graph.ElkNode {
   @graph.node_set_string_property(graph, @core.direction, "RIGHT")
   @graph.node_set_string_property(graph, @core.edge_routing, "ORTHOGONAL")
   @graph.node_set_string_property(
-    graph, layered_options_hierarchy_handling, "INCLUDE_CHILDREN",
+    graph, @options.layered_options_hierarchy_handling, "INCLUDE_CHILDREN",
   )
 
   let left = @graph.create_node(Some(graph))

@@ -174,13 +174,13 @@ test "sort by input model processor preprocessing caches minimum target model or
 test "sort by input model processor sorts layers nodes and ports by model order" {
   let graph = new_l_graph()
   graph.set_property_string(
-    layered_options_consider_model_order_strategy, "NODES_AND_EDGES",
+    @options.layered_options_consider_model_order_strategy, "NODES_AND_EDGES",
   )
   graph.set_property_string(
-    layered_options_consider_model_order_long_edge_strategy, "DUMMY_NODE_OVER",
+    @options.layered_options_consider_model_order_long_edge_strategy, "DUMMY_NODE_OVER",
   )
   graph.set_property_string(
-    layered_options_consider_model_order_group_model_order_cm_group_order_strategy,
+    @options.layered_options_consider_model_order_group_model_order_cm_group_order_strategy,
     "ONLY_WITHIN_GROUP",
   )
 

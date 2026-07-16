@@ -45,13 +45,13 @@ fn concrete_sort_by_input_model_connect(
 ///|
 fn concrete_sort_by_input_model_configure_graph(graph : LGraph) -> Unit {
   graph.set_property_string(
-    layered_options_consider_model_order_strategy, "PREFER_EDGES",
+    @options.layered_options_consider_model_order_strategy, "PREFER_EDGES",
   )
   graph.set_property_string(
-    layered_options_consider_model_order_long_edge_strategy, "DUMMY_NODE_OVER",
+    @options.layered_options_consider_model_order_long_edge_strategy, "DUMMY_NODE_OVER",
   )
   graph.set_property_string(
-    layered_options_consider_model_order_group_model_order_cm_group_order_strategy,
+    @options.layered_options_consider_model_order_group_model_order_cm_group_order_strategy,
     "ONLY_WITHIN_GROUP",
   )
 }
@@ -62,7 +62,7 @@ fn concrete_sort_by_input_model_run(
   port_model_order : Bool,
 ) -> Unit {
   graph.set_property_bool(
-    layered_options_consider_model_order_port_model_order, port_model_order,
+    @options.layered_options_consider_model_order_port_model_order, port_model_order,
   )
   let processor = new_sort_by_input_model_processor_layout_processor()
   processor.process(graph, None)

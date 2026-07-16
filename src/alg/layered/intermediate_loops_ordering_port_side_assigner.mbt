@@ -247,7 +247,7 @@ pub fn PortSideAssigner::assign_port_sides(
 
   let distribution = port_side_assigner_parse_distribution(
     l_node.get_property_string(
-      layered_options_edge_routing_self_loop_distribution,
+      @options.layered_options_edge_routing_self_loop_distribution,
     ),
   )
 

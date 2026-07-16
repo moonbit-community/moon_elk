@@ -111,7 +111,7 @@ fn long_edge_joiner_test_build_chain(
 ) -> (LGraph, LNode, LEdge, LEdge, LPort) {
   let graph = new_l_graph()
   graph.set_property_bool(
-    layered_options_unnecessary_bendpoints, add_unnecessary_bendpoints,
+    @options.layered_options_unnecessary_bendpoints, add_unnecessary_bendpoints,
   )
 
   let layer0 = new_layer(graph)
@@ -199,7 +199,7 @@ test "long edge joiner join_at merges bend points labels and junction points" {
   let dropped_junctions = @core.new_kvector_chain()
   dropped_junctions.add_xy(4.0, 4.0)
   dropped_edge.set_property_kvector_chain(
-    layered_options_junction_points, dropped_junctions,
+    @options.layered_options_junction_points, dropped_junctions,
   )
 
   long_edge_joiner_join_at(dummy, true)
@@ -210,10 +210,12 @@ test "long edge joiner join_at merges bend points labels and junction points" {
   assert_eq(surviving_edge.get_labels()[1].get_text(), "dropped")
 
   assert_true(
-    surviving_edge.has_property_kvector_chain(layered_options_junction_points),
+    surviving_edge.has_property_kvector_chain(
+      @options.layered_options_junction_points,
+    ),
   )
   let surviving_junctions = surviving_edge.get_property_kvector_chain(
-    layered_options_junction_points,
+    @options.layered_options_junction_points,
   )
   assert_eq(surviving_junctions.size(), 1)
   assert_eq(surviving_junctions.get(0).x, 4.0)

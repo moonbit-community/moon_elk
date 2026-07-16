@@ -261,7 +261,7 @@ fn hierarchical_port_orthogonal_calculate_north_south_dummy_positions(
     }
   }
 
-  let anchor = dummy.get_property_kvector(layered_options_port_anchor)
+  let anchor = dummy.get_property_kvector(@options.layered_options_port_anchor)
   let offset = anchor.x
   dummy.get_position().x = pos_sum / dummy_port.get_degree().to_double() -
     offset
@@ -272,7 +272,7 @@ fn hierarchical_port_orthogonal_apply_north_south_dummy_ratio(
   dummy : LNode,
   width : Double,
 ) -> Unit {
-  let anchor = dummy.get_property_kvector(layered_options_port_anchor)
+  let anchor = dummy.get_property_kvector(@options.layered_options_port_anchor)
   dummy.get_position().x = width *
     dummy.get_property_double(internal_properties_port_ratio_or_position) -
     anchor.x
@@ -282,7 +282,7 @@ fn hierarchical_port_orthogonal_apply_north_south_dummy_ratio(
 fn hierarchical_port_orthogonal_apply_north_south_dummy_position(
   dummy : LNode,
 ) -> Unit {
-  let anchor = dummy.get_property_kvector(layered_options_port_anchor)
+  let anchor = dummy.get_property_kvector(@options.layered_options_port_anchor)
   dummy.get_position().x = dummy.get_property_double(
       internal_properties_port_ratio_or_position,
     ) -
@@ -716,7 +716,9 @@ fn hierarchical_port_orthogonal_fix_coordinates_layer(
 
     let mut required_actual_graph_height = 0.0
     if hierarchical_port_orthogonal_side_is_east_or_west(side) {
-      let anchor = node.get_property_kvector(layered_options_port_anchor)
+      let anchor = node.get_property_kvector(
+        @options.layered_options_port_anchor,
+      )
       if hierarchical_port_orthogonal_port_constraints_equals(
           constraints,
           FixedRatio,

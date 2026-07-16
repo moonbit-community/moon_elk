@@ -1089,7 +1089,7 @@ fn compound_graph_preprocessor_introduce_hierarchical_edge_segment(
   dummy_node_entries : Array[(LPort, LNode)],
 ) -> CompoundGraphPreprocessorExternalPort raise CompoundGraphPreprocessorException {
   let merge_external_ports = graph.get_property_bool(
-    layered_options_merge_hierarchy_edges,
+    @options.layered_options_merge_hierarchy_edges,
   )
 
   let mut parent_end_port : LPort? = None
@@ -1212,8 +1212,12 @@ fn compound_graph_preprocessor_create_dummy_edge(
   ignore(graph)
   let dummy_edge = new_l_edge()
   dummy_edge.copy_properties(orig_edge)
-  if dummy_edge.has_property_kvector_chain(layered_options_junction_points) {
-    dummy_edge.clear_property_kvector_chain(layered_options_junction_points)
+  if dummy_edge.has_property_kvector_chain(
+      @options.layered_options_junction_points,
+    ) {
+    dummy_edge.clear_property_kvector_chain(
+      @options.layered_options_junction_points,
+    )
   }
   dummy_edge
 }
@@ -1391,7 +1395,7 @@ fn compound_graph_preprocessor_create_external_port_properties(
 ) -> LPort {
   let property_holder = new_l_port()
   property_holder.set_property_double(
-    layered_options_port_border_offset,
+    @options.layered_options_port_border_offset,
     graph.get_property_double(@core.spacing_edge_edge) / 2.0,
   )
   property_holder
@@ -1415,8 +1419,8 @@ fn compound_graph_preprocessor_create_port_for_dummy(
   }
 
   port.set_property_double(
-    layered_options_port_border_offset,
-    dummy_node.get_property_double(layered_options_port_border_offset),
+    @options.layered_options_port_border_offset,
+    dummy_node.get_property_double(@options.layered_options_port_border_offset),
   )
   port
 }

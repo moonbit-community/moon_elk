@@ -594,7 +594,7 @@ fn label_side_selector_process(
 
   let mode = label_side_selector_parse_mode(
     layered_graph.get_property_string(
-      layered_options_edge_labels_side_selection,
+      @options.layered_options_edge_labels_side_selection,
     ),
   )
   ignore(

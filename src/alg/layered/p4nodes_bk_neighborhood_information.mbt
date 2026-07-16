@@ -76,7 +76,7 @@ fn neighborhood_information_determine_all_right_neighbors(
         }
 
         let edge_priority = edge.get_property_int(
-          layered_options_priority_straightness,
+          @options.layered_options_priority_straightness,
         )
         if edge_priority > max_priority {
           max_priority = edge_priority
@@ -121,7 +121,7 @@ fn neighborhood_information_determine_all_left_neighbors(
         }
 
         let edge_priority = edge.get_property_int(
-          layered_options_priority_straightness,
+          @options.layered_options_priority_straightness,
         )
         if edge_priority > max_priority {
           max_priority = edge_priority

@@ -293,7 +293,7 @@ fn orthogonal_edge_router_configuration(
       graph_properties,
       NonFreePorts,
     ) ||
-    graph.get_property_bool(layered_options_feedback_edges) {
+    graph.get_property_bool(@options.layered_options_feedback_edges) {
     ignore(
       configuration.add_all(
         orthogonal_edge_router_inverted_port_processing_additions,
@@ -382,13 +382,13 @@ fn orthogonal_edge_router_process(
   ignore(actual_monitor.begin("Orthogonal edge routing", 1.0))
 
   let node_node_spacing = layered_graph.get_property_double(
-    layered_options_spacing_node_node_between_layers,
+    @options.layered_options_spacing_node_node_between_layers,
   )
   let edge_edge_spacing = layered_graph.get_property_double(
-    layered_options_spacing_edge_edge_between_layers,
+    @options.layered_options_spacing_edge_edge_between_layers,
   )
   let edge_node_spacing = layered_graph.get_property_double(
-    layered_options_spacing_edge_node_between_layers,
+    @options.layered_options_spacing_edge_node_between_layers,
   )
 
   let routing_generator = new_orthogonal_routing_generator(

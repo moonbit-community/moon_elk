@@ -64,7 +64,7 @@ pub fn LayeredComponentGroupGraphPlacer::combine(
   target.set_size_xy(offset.x - component_spacing, offset.y - component_spacing)
 
   if first_component.get_property_bool(
-      layered_options_compaction_connected_components,
+      @options.layered_options_compaction_connected_components,
     ) &&
     first_component.get_property_string(@core.edge_routing) == "ORTHOGONAL" {
     for graph in components {
@@ -352,7 +352,7 @@ pub fn LayeredComponentGroupGraphPlacer::place_components_in_rows(
   max_row_width = layered_components_max(
     max_row_width,
     total_area.sqrt() *
-    components[0].get_property_double(layered_options_aspect_ratio),
+    components[0].get_property_double(@options.layered_options_aspect_ratio),
   )
 
   let mut xpos = 0.0

@@ -81,7 +81,7 @@ fn hierarchical_port_position_fix_coordinates(
       final_y = final_y * graph_height
     }
 
-    let anchor = node.get_property_kvector(layered_options_port_anchor)
+    let anchor = node.get_property_kvector(@options.layered_options_port_anchor)
     node.get_position().y = final_y - anchor.y
     node.border_to_content_area_coordinates(false, true)
   }

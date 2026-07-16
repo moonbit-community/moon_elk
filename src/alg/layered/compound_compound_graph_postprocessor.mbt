@@ -146,10 +146,12 @@ fn compound_graph_postprocessor_has_junction_points(
   ch_edge : CrossHierarchyEdge,
 ) -> Bool {
   let edge = ch_edge.get_edge()
-  if !edge.has_property_kvector_chain(layered_options_junction_points) {
+  if !edge.has_property_kvector_chain(@options.layered_options_junction_points) {
     return false
   }
-  let jps = edge.get_property_kvector_chain(layered_options_junction_points)
+  let jps = edge.get_property_kvector_chain(
+    @options.layered_options_junction_points,
+  )
   !jps.is_empty()
 }
 
@@ -167,9 +169,11 @@ fn compound_graph_postprocessor_clear_junction_points(
   }
 
   if has_junction_points {
-    if orig_edge.has_property_kvector_chain(layered_options_junction_points) {
+    if orig_edge.has_property_kvector_chain(
+        @options.layered_options_junction_points,
+      ) {
       let junction_points = orig_edge.get_property_kvector_chain(
-        layered_options_junction_points,
+        @options.layered_options_junction_points,
       )
       junction_points.clear()
       return Some(junction_points)
@@ -177,13 +181,17 @@ fn compound_graph_postprocessor_clear_junction_points(
 
     let junction_points = @core.new_kvector_chain()
     orig_edge.set_property_kvector_chain(
-      layered_options_junction_points, junction_points,
+      @options.layered_options_junction_points, junction_points,
     )
     return Some(junction_points)
   }
 
-  if orig_edge.has_property_kvector_chain(layered_options_junction_points) {
-    orig_edge.clear_property_kvector_chain(layered_options_junction_points)
+  if orig_edge.has_property_kvector_chain(
+      @options.layered_options_junction_points,
+    ) {
+    orig_edge.clear_property_kvector_chain(
+      @options.layered_options_junction_points,
+    )
   }
   None
 }
@@ -194,14 +202,16 @@ fn compound_graph_postprocessor_copy_junction_points(
   target : @core.KVectorChain?,
   offset : @core.KVector,
 ) -> Unit {
-  if !source.has_property_kvector_chain(layered_options_junction_points) {
+  if !source.has_property_kvector_chain(
+      @options.layered_options_junction_points,
+    ) {
     return
   }
 
   match target {
     Some(target_chain) => {
       let ledge_jps = source.get_property_kvector_chain(
-        layered_options_junction_points,
+        @options.layered_options_junction_points,
       )
       let jp_copies = @core.new_kvector_chain()
       jp_copies.add_all_as_copies(0, ledge_jps)
@@ -262,7 +272,7 @@ fn compound_graph_postprocessor_process(
   ignore(monitor.begin("Compound graph postprocessor", 1.0))
 
   let add_unnecessary_bendpoints = graph.get_property_bool(
-    layered_options_unnecessary_bendpoints,
+    @options.layered_options_unnecessary_bendpoints,
   )
   let cross_hierarchy_map = graph.get_property_cross_hierarchy_map_entry_array(
     compound_graph_postprocessor_internal_properties_cross_hierarchy_map,

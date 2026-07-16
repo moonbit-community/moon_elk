@@ -211,26 +211,30 @@ fn sort_by_input_model_processor_process(
   ignore(
     monitor.begin(
       "Sort By Input Model " +
-      graph.get_property_string(layered_options_consider_model_order_strategy),
+      graph.get_property_string(
+        @options.layered_options_consider_model_order_strategy,
+      ),
       1.0,
     ),
   )
 
   let ordering_strategy = sort_by_input_model_processor_ordering_strategy_from_string(
-    graph.get_property_string(layered_options_consider_model_order_strategy),
+    graph.get_property_string(
+      @options.layered_options_consider_model_order_strategy,
+    ),
   )
   let long_edge_strategy = sort_by_input_model_processor_long_edge_ordering_strategy_from_string(
     graph.get_property_string(
-      layered_options_consider_model_order_long_edge_strategy,
+      @options.layered_options_consider_model_order_long_edge_strategy,
     ),
   )
   let group_order_strategy = group_order_strategy_from_string(
     graph.get_property_string(
-      layered_options_consider_model_order_group_model_order_cm_group_order_strategy,
+      @options.layered_options_consider_model_order_group_model_order_cm_group_order_strategy,
     ),
   )
   let port_model_order = graph.get_property_bool(
-    layered_options_consider_model_order_port_model_order,
+    @options.layered_options_consider_model_order_port_model_order,
   )
 
   let mut layer_index = 0

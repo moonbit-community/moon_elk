@@ -164,10 +164,14 @@ pub fn offset_graph(graph : LGraph, offsetx : Double, offsety : Double) -> Unit 
       for edge in port.get_outgoing_edges() {
         ignore(edge.get_bend_points().offset(graph_offset))
 
-        if edge.has_property_kvector_chain(layered_options_junction_points) {
+        if edge.has_property_kvector_chain(
+            @options.layered_options_junction_points,
+          ) {
           ignore(
             edge
-            .get_property_kvector_chain(layered_options_junction_points)
+            .get_property_kvector_chain(
+              @options.layered_options_junction_points,
+            )
             .offset(graph_offset),
           )
         }
@@ -358,7 +362,7 @@ pub fn get_direction(graph : LGraph) -> @core.Direction {
     graph.get_property_string(@core.direction),
   )
   if l_graph_util_direction_equals(direction_value, Undefined) {
-    if graph.get_property_double(layered_options_aspect_ratio) >= 1.0 {
+    if graph.get_property_double(@options.layered_options_aspect_ratio) >= 1.0 {
       Rightward
     } else {
       Downward
@@ -379,9 +383,9 @@ pub fn compute_graph_properties(layered_graph : LGraph) -> Unit {
 
   let graph_direction = get_direction(layered_graph)
   for node in layered_graph.get_layerless_nodes() {
-    if node.get_property_bool(layered_options_comment_box) {
+    if node.get_property_bool(@options.layered_options_comment_box) {
       l_graph_util_add_graph_property(props, Comments)
-    } else if node.get_property_bool(layered_options_hypernode) {
+    } else if node.get_property_bool(@options.layered_options_hypernode) {
       l_graph_util_add_graph_property(props, Hypernodes)
       l_graph_util_add_graph_property(props, Hyperedges)
     } else {
@@ -490,10 +494,12 @@ pub fn create_port_for_edge(
   layered_graph : LGraph,
 ) -> LPort {
   let direction = get_direction(layered_graph)
-  let merge_ports = layered_graph.get_property_bool(layered_options_merge_edges)
+  let merge_ports = layered_graph.get_property_bool(
+    @options.layered_options_merge_edges,
+  )
   let node_port_constraints = node.get_property_string(@core.port_constraints)
 
-  if (merge_ports || node.get_property_bool(layered_options_hypernode)) &&
+  if (merge_ports || node.get_property_bool(@options.layered_options_hypernode)) &&
     !l_graph_util_port_constraints_string_is_side_fixed(node_port_constraints) {
     let default_side = @core.port_side_from_direction(direction)
     let collector_side = match port_type {
@@ -739,11 +745,11 @@ pub fn initialize_port(
     port.set_side(port_side)
 
     let position = port.get_position()
-    if !port.has_property_double(layered_options_port_border_offset) &&
+    if !port.has_property_double(@options.layered_options_port_border_offset) &&
       l_graph_util_port_side_is_defined(port_side) &&
       (position.x != 0.0 || position.y != 0.0) {
       port.set_property_double(
-        layered_options_port_border_offset,
+        @options.layered_options_port_border_offset,
         calc_port_offset(port, port_side),
       )
     }
@@ -846,10 +852,10 @@ pub fn create_external_port_dummy(
     @core.port_constraints_to_string(FixedPos),
   )
   let port_border_offset = property_holder.get_property_double(
-    layered_options_port_border_offset,
+    @options.layered_options_port_border_offset,
   )
   dummy.set_property_double(
-    layered_options_port_border_offset, port_border_offset,
+    @options.layered_options_port_border_offset, port_border_offset,
   )
 
   let dummy_port = new_l_port()
@@ -883,7 +889,7 @@ pub fn create_external_port_dummy(
   match final_external_port_side {
     West => {
       dummy.set_property_string(
-        layered_options_layering_layer_constraint,
+        @options.layered_options_layering_layer_constraint,
         layer_constraint_to_string(FirstSeparate),
       )
       dummy.set_property_string(
@@ -902,7 +908,7 @@ pub fn create_external_port_dummy(
     }
     East => {
       dummy.set_property_string(
-        layered_options_layering_layer_constraint,
+        @options.layered_options_layering_layer_constraint,
         layer_constraint_to_string(LastSeparate),
       )
       dummy.set_property_string(
@@ -954,15 +960,15 @@ pub fn create_external_port_dummy(
   }
 
   ignore(dummy_port.get_position().set(anchor))
-  dummy.set_property_kvector(layered_options_port_anchor, anchor)
+  dummy.set_property_kvector(@options.layered_options_port_anchor, anchor)
 
   if ext_port_constraints.is_order_fixed() {
     let mut information_about_order = 0.0
 
     if l_graph_util_port_constraints_equals(ext_port_constraints, FixedOrder) &&
-      property_holder.has_property_int(layered_options_port_index) {
+      property_holder.has_property_int(@options.layered_options_port_index) {
       let port_index = property_holder
-        .get_property_int(layered_options_port_index)
+        .get_property_int(@options.layered_options_port_index)
         .to_double()
       match final_external_port_side {
         North => information_about_order = port_index
@@ -1058,7 +1064,7 @@ pub fn get_external_port_position(
   port_position.x += port_dummy.get_size().x / 2.0
   port_position.y += port_dummy.get_size().y / 2.0
   let port_offset = port_dummy.get_property_double(
-    layered_options_port_border_offset,
+    @options.layered_options_port_border_offset,
   )
 
   let graph_size = graph.get_size()

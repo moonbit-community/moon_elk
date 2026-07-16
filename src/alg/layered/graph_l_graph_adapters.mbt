@@ -1099,10 +1099,12 @@ pub fn PortComparator::compare(
     return ordinal_difference
   }
 
-  if port1.has_property_int(layered_options_port_index) &&
-    port2.has_property_int(layered_options_port_index) {
-    let index_difference = port1.get_property_int(layered_options_port_index) -
-      port2.get_property_int(layered_options_port_index)
+  if port1.has_property_int(@options.layered_options_port_index) &&
+    port2.has_property_int(@options.layered_options_port_index) {
+    let index_difference = port1.get_property_int(
+        @options.layered_options_port_index,
+      ) -
+      port2.get_property_int(@options.layered_options_port_index)
     if index_difference != 0 {
       return index_difference
     }

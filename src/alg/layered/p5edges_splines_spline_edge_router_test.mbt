@@ -42,9 +42,9 @@ fn spline_edge_router_test_port_side(name : String) -> @core.PortSide {
 ///|
 fn spline_edge_router_test_spline_routing_mode(
   name : String,
-) -> SplineRoutingMode {
-  for mode in spline_routing_mode_values() {
-    if spline_routing_mode_to_string(mode) == name {
+) -> @options.SplineRoutingMode {
+  for mode in @options.spline_routing_mode_values() {
+    if @options.spline_routing_mode_to_string(mode) == name {
       return mode
     }
   }
@@ -79,24 +79,24 @@ fn spline_edge_router_test_contains_factory(
 
 ///|
 fn spline_edge_router_test_build_two_layer_graph(
-  mode : SplineRoutingMode,
+  mode : @options.SplineRoutingMode,
   sloppy_factor : Double,
 ) -> (LGraph, LNode, LNode, LEdge) {
   let graph = new_l_graph()
   graph.set_property_double(
-    layered_options_spacing_edge_node_between_layers, 10.0,
+    @options.layered_options_spacing_edge_node_between_layers, 10.0,
   )
   graph.set_property_double(
-    layered_options_spacing_edge_edge_between_layers, 10.0,
+    @options.layered_options_spacing_edge_edge_between_layers, 10.0,
   )
   graph.set_property_double(
-    layered_options_spacing_node_node_between_layers, 20.0,
+    @options.layered_options_spacing_node_node_between_layers, 20.0,
   )
   graph.set_property_spline_routing_mode(
-    layered_options_edge_routing_splines_mode, mode,
+    @options.layered_options_edge_routing_splines_mode, mode,
   )
   graph.set_property_double(
-    layered_options_edge_routing_splines_sloppy_layer_spacing_factor, sloppy_factor,
+    @options.layered_options_edge_routing_splines_sloppy_layer_spacing_factor, sloppy_factor,
   )
 
   let left_layer = new_layer(graph)

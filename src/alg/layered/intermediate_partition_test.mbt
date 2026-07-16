@@ -13,7 +13,9 @@ fn partition_test_new_node(graph : LGraph, partition : Int?) -> LNode {
   let node = new_l_node(graph=Some(graph))
   match partition {
     Some(value) =>
-      node.set_property_int(layered_options_partitioning_partition, value)
+      node.set_property_int(
+        @options.layered_options_partitioning_partition, value,
+      )
     None => ()
   }
   graph.get_layerless_nodes().push(node)
@@ -110,7 +112,7 @@ test "partition preprocessor reverses higher-to-lower direct partition edge and 
   let target_in = partition_test_new_port(target, "WEST")
 
   let edge = partition_test_new_edge(source_out, target_in)
-  edge.set_property_int(layered_options_priority_direction, 7)
+  edge.set_property_int(@options.layered_options_priority_direction, 7)
 
   preprocessor.process(graph, None)
 
@@ -123,7 +125,10 @@ test "partition preprocessor reverses higher-to-lower direct partition edge and 
     source_out.get_handle(),
   )
   assert_true(edge.get_property_bool(internal_properties_reversed))
-  assert_eq(edge.get_property_int(layered_options_priority_direction), 1007)
+  assert_eq(
+    edge.get_property_int(@options.layered_options_priority_direction),
+    1007,
+  )
 }
 
 ///|
@@ -208,10 +213,10 @@ test "partition midprocessor inserts partition dummy edges between consecutive p
     let source_node = partition_test_require_node(source_port)
     let target_node = partition_test_require_node(target_port)
     let source_partition = source_node.get_property_int(
-      layered_options_partitioning_partition,
+      @options.layered_options_partitioning_partition,
     )
     let target_partition = target_node.get_property_int(
-      layered_options_partitioning_partition,
+      @options.layered_options_partitioning_partition,
     )
     assert_true(
       (source_partition == 0 && target_partition == 2) ||

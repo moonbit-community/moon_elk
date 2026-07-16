@@ -180,7 +180,7 @@ fn interactive_layered_graph_visitor_has_in_layer_pred_constraint(
   node : @graph.ElkNode,
 ) -> Bool {
   interactive_layered_graph_visitor_string_option_value(
-    node, layered_options_crossing_minimization_in_layer_pred_of,
+    node, @options.layered_options_crossing_minimization_in_layer_pred_of,
   )
   is Some(_)
 }
@@ -190,7 +190,7 @@ fn interactive_layered_graph_visitor_has_in_layer_succ_constraint(
   node : @graph.ElkNode,
 ) -> Bool {
   interactive_layered_graph_visitor_string_option_value(
-    node, layered_options_crossing_minimization_in_layer_succ_of,
+    node, @options.layered_options_crossing_minimization_in_layer_succ_of,
   )
   is Some(_)
 }
@@ -208,7 +208,7 @@ fn interactive_layered_graph_visitor_has_layer_choice_constraint(
   node : @graph.ElkNode,
 ) -> Bool {
   interactive_layered_graph_visitor_has_int_option(
-    node, layered_options_layering_layer_choice_constraint,
+    node, @options.layered_options_layering_layer_choice_constraint,
   )
 }
 
@@ -217,7 +217,7 @@ fn interactive_layered_graph_visitor_has_position_choice_constraint(
   node : @graph.ElkNode,
 ) -> Bool {
   interactive_layered_graph_visitor_has_int_option(
-    node, layered_options_crossing_minimization_position_choice_constraint,
+    node, @options.layered_options_crossing_minimization_position_choice_constraint,
   )
 }
 
@@ -293,7 +293,7 @@ fn interactive_layered_graph_visitor_sort_nodes_by_layer_id(
   nodes : Array[@graph.ElkNode],
 ) -> Unit {
   interactive_layered_graph_visitor_sort_nodes_by_int_option(
-    nodes, layered_options_layering_layer_id,
+    nodes, @options.layered_options_layering_layer_id,
   )
 }
 
@@ -466,10 +466,10 @@ fn interactive_layered_graph_visitor_get_chain_by_all_nodes(
   let chain = [node]
 
   let mut succ_name = interactive_layered_graph_visitor_string_option_value(
-    node, layered_options_crossing_minimization_in_layer_pred_of,
+    node, @options.layered_options_crossing_minimization_in_layer_pred_of,
   )
   let mut pred_name = interactive_layered_graph_visitor_string_option_value(
-    node, layered_options_crossing_minimization_in_layer_succ_of,
+    node, @options.layered_options_crossing_minimization_in_layer_succ_of,
   )
 
   while succ_name is Some(name) {
@@ -478,7 +478,7 @@ fn interactive_layered_graph_visitor_get_chain_by_all_nodes(
     )
     chain.push(succ_node)
     succ_name = interactive_layered_graph_visitor_string_option_value(
-      succ_node, layered_options_crossing_minimization_in_layer_pred_of,
+      succ_node, @options.layered_options_crossing_minimization_in_layer_pred_of,
     )
   }
 
@@ -488,7 +488,7 @@ fn interactive_layered_graph_visitor_get_chain_by_all_nodes(
     )
     chain.push(pred_node)
     pred_name = interactive_layered_graph_visitor_string_option_value(
-      pred_node, layered_options_crossing_minimization_in_layer_pred_of,
+      pred_node, @options.layered_options_crossing_minimization_in_layer_pred_of,
     )
   }
 
@@ -509,7 +509,7 @@ fn interactive_layered_graph_visitor_sort_rc_nodes(
       let current = nodes_with_rc[i]
       if interactive_layered_graph_visitor_has_in_layer_pred_constraint(current) {
         let target_name = interactive_layered_graph_visitor_string_option_value(
-          current, layered_options_crossing_minimization_in_layer_pred_of,
+          current, @options.layered_options_crossing_minimization_in_layer_pred_of,
         ).unwrap()
         let target = interactive_layered_graph_visitor_require_elk_node(
           all_nodes, target_name,
@@ -524,7 +524,7 @@ fn interactive_layered_graph_visitor_sort_rc_nodes(
         }
       } else {
         let target_name = interactive_layered_graph_visitor_string_option_value(
-          current, layered_options_crossing_minimization_in_layer_succ_of,
+          current, @options.layered_options_crossing_minimization_in_layer_succ_of,
         ).unwrap()
         let target = interactive_layered_graph_visitor_require_elk_node(
           all_nodes, target_name,
@@ -545,11 +545,11 @@ fn interactive_layered_graph_visitor_sort_rc_nodes(
       let current = nodes_with_rc[0]
       if interactive_layered_graph_visitor_has_in_layer_pred_constraint(current) {
         interactive_layered_graph_visitor_clear_string_option(
-          current, layered_options_crossing_minimization_in_layer_pred_of,
+          current, @options.layered_options_crossing_minimization_in_layer_pred_of,
         )
       } else {
         interactive_layered_graph_visitor_clear_string_option(
-          current, layered_options_crossing_minimization_in_layer_succ_of,
+          current, @options.layered_options_crossing_minimization_in_layer_succ_of,
         )
       }
       ignore(nodes_with_rc.remove(0))
@@ -566,7 +566,7 @@ fn interactive_layered_graph_visitor_sort_nodes_in_layer(
   direction : @core.Direction,
 ) -> Unit {
   interactive_layered_graph_visitor_sort_nodes_by_int_option(
-    nodes_with_position_constraint, layered_options_crossing_minimization_position_choice_constraint,
+    nodes_with_position_constraint, @options.layered_options_crossing_minimization_position_choice_constraint,
   )
   interactive_layered_graph_visitor_sort_nodes_by_coordinate(nodes, direction)
 }
@@ -633,12 +633,12 @@ fn interactive_layered_graph_visitor_handle_nodes_with_pc_and_rc(
     let targets = []
     let vals = []
     let value = interactive_layered_graph_visitor_int_option_value(
-      node, layered_options_crossing_minimization_position_choice_constraint,
+      node, @options.layered_options_crossing_minimization_position_choice_constraint,
     )
 
     if interactive_layered_graph_visitor_has_in_layer_pred_constraint(node) {
       let target_name = interactive_layered_graph_visitor_string_option_value(
-        node, layered_options_crossing_minimization_in_layer_pred_of,
+        node, @options.layered_options_crossing_minimization_in_layer_pred_of,
       ).unwrap()
       targets.push(
         interactive_layered_graph_visitor_require_elk_node(
@@ -647,13 +647,13 @@ fn interactive_layered_graph_visitor_handle_nodes_with_pc_and_rc(
       )
       vals.push(value + 1)
       interactive_layered_graph_visitor_clear_string_option(
-        node, layered_options_crossing_minimization_in_layer_pred_of,
+        node, @options.layered_options_crossing_minimization_in_layer_pred_of,
       )
     }
 
     if interactive_layered_graph_visitor_has_in_layer_succ_constraint(node) {
       let target_name = interactive_layered_graph_visitor_string_option_value(
-        node, layered_options_crossing_minimization_in_layer_succ_of,
+        node, @options.layered_options_crossing_minimization_in_layer_succ_of,
       ).unwrap()
       targets.push(
         interactive_layered_graph_visitor_require_elk_node(
@@ -662,7 +662,7 @@ fn interactive_layered_graph_visitor_handle_nodes_with_pc_and_rc(
       )
       vals.push(value - 1)
       interactive_layered_graph_visitor_clear_string_option(
-        node, layered_options_crossing_minimization_in_layer_succ_of,
+        node, @options.layered_options_crossing_minimization_in_layer_succ_of,
       )
     }
 
@@ -673,7 +673,7 @@ fn interactive_layered_graph_visitor_handle_nodes_with_pc_and_rc(
         ) {
         interactive_layered_graph_visitor_set_int_option(
           target,
-          layered_options_crossing_minimization_position_choice_constraint,
+          @options.layered_options_crossing_minimization_position_choice_constraint,
           vals[t],
         )
         if !interactive_layered_graph_visitor_contains_node(
@@ -743,7 +743,7 @@ fn interactive_layered_graph_visitor_shift_other_nodes(
         )
         interactive_layered_graph_visitor_set_int_option(
           node,
-          layered_options_layering_layer_id,
+          @options.layered_options_layering_layer_id,
           layer + 1,
         )
         if layer + 1 < layer_nodes.length() {
@@ -775,13 +775,13 @@ fn interactive_layered_graph_visitor_assign_layers_to_nodes_with_property(
   layering : Array[Array[@graph.ElkNode]],
 ) -> Int {
   interactive_layered_graph_visitor_sort_nodes_by_int_option(
-    nodes_with_layer_constraint, layered_options_layering_layer_choice_constraint,
+    nodes_with_layer_constraint, @options.layered_options_layering_layer_choice_constraint,
   )
 
   let mut diff = 0
   for node in nodes_with_layer_constraint {
     let current_layer = interactive_layered_graph_visitor_int_option_value(
-        node, layered_options_layering_layer_choice_constraint,
+        node, @options.layered_options_layering_layer_choice_constraint,
       ) -
       diff
     if current_layer < layering.length() && current_layer >= 0 {
@@ -814,10 +814,10 @@ fn interactive_layered_graph_visitor_assign_layers_to_nodes_with_rc(
     let mut succ_node : @graph.ElkNode? = None
     let mut pred_node : @graph.ElkNode? = None
     let succ_name = interactive_layered_graph_visitor_string_option_value(
-      node, layered_options_crossing_minimization_in_layer_pred_of,
+      node, @options.layered_options_crossing_minimization_in_layer_pred_of,
     )
     let pred_name = interactive_layered_graph_visitor_string_option_value(
-      node, layered_options_crossing_minimization_in_layer_succ_of,
+      node, @options.layered_options_crossing_minimization_in_layer_succ_of,
     )
 
     if succ_name is Some(name) {
@@ -839,32 +839,32 @@ fn interactive_layered_graph_visitor_assign_layers_to_nodes_with_rc(
           succ,
         ) {
         interactive_layered_graph_visitor_int_option_value(
-          succ, layered_options_layering_layer_choice_constraint,
+          succ, @options.layered_options_layering_layer_choice_constraint,
         )
       } else {
         interactive_layered_graph_visitor_int_option_value(
-          succ, layered_options_layering_layer_id,
+          succ, @options.layered_options_layering_layer_id,
         )
       }
       let pred_val = if interactive_layered_graph_visitor_has_layer_choice_constraint(
           pred,
         ) {
         interactive_layered_graph_visitor_int_option_value(
-          pred, layered_options_layering_layer_choice_constraint,
+          pred, @options.layered_options_layering_layer_choice_constraint,
         )
       } else {
         interactive_layered_graph_visitor_int_option_value(
-          pred, layered_options_layering_layer_id,
+          pred, @options.layered_options_layering_layer_id,
         )
       }
       let value = if succ_val > pred_val { succ_val } else { pred_val }
       for chain_node in chain {
         let old_value = interactive_layered_graph_visitor_int_option_value(
-          chain_node, layered_options_layering_layer_id,
+          chain_node, @options.layered_options_layering_layer_id,
         )
         if old_value != value {
           interactive_layered_graph_visitor_set_int_option(
-            chain_node, layered_options_layering_layer_id, value,
+            chain_node, @options.layered_options_layering_layer_id, value,
           )
           interactive_layered_graph_visitor_shift_other_nodes(
             chain_node, value, layering, true,
@@ -888,11 +888,11 @@ fn interactive_layered_graph_visitor_assign_layers_to_nodes_with_rc(
             succ,
           ) {
           interactive_layered_graph_visitor_int_option_value(
-            succ, layered_options_layering_layer_choice_constraint,
+            succ, @options.layered_options_layering_layer_choice_constraint,
           )
         } else {
           interactive_layered_graph_visitor_int_option_value(
-            succ, layered_options_layering_layer_id,
+            succ, @options.layered_options_layering_layer_id,
           )
         }
       }
@@ -903,11 +903,11 @@ fn interactive_layered_graph_visitor_assign_layers_to_nodes_with_rc(
             pred,
           ) {
           interactive_layered_graph_visitor_int_option_value(
-            pred, layered_options_layering_layer_choice_constraint,
+            pred, @options.layered_options_layering_layer_choice_constraint,
           )
         } else {
           interactive_layered_graph_visitor_int_option_value(
-            pred, layered_options_layering_layer_id,
+            pred, @options.layered_options_layering_layer_id,
           )
         }
       }
@@ -915,7 +915,7 @@ fn interactive_layered_graph_visitor_assign_layers_to_nodes_with_rc(
       let value = if succ_val > pred_val { succ_val } else { pred_val }
       interactive_layered_graph_visitor_set_int_option(
         node,
-        layered_options_layering_layer_id,
+        @options.layered_options_layering_layer_id,
         value - diff,
       )
       interactive_layered_graph_visitor_shift_other_nodes(
@@ -947,7 +947,7 @@ fn interactive_layered_graph_visitor_initial_layers(
   let mut current_layer = -1
   for node in nodes {
     let layer = interactive_layered_graph_visitor_int_option_value(
-      node, layered_options_layering_layer_id,
+      node, @options.layered_options_layering_layer_id,
     )
     if layer > current_layer {
       if !nodes_of_layer.is_empty() {
@@ -959,7 +959,7 @@ fn interactive_layered_graph_visitor_initial_layers(
     }
     if !interactive_layered_graph_visitor_has_layer_choice_constraint(node) {
       interactive_layered_graph_visitor_set_int_option(
-        node, layered_options_layering_layer_id, layer_id,
+        node, @options.layered_options_layering_layer_id, layer_id,
       )
       nodes_of_layer.push(node)
     }
@@ -985,7 +985,7 @@ fn interactive_layered_graph_visitor_update_lists_for_layer_assignment(
     let targets = []
     if interactive_layered_graph_visitor_has_in_layer_pred_constraint(node) {
       let target_name = interactive_layered_graph_visitor_string_option_value(
-        node, layered_options_crossing_minimization_in_layer_pred_of,
+        node, @options.layered_options_crossing_minimization_in_layer_pred_of,
       ).unwrap()
       targets.push(
         interactive_layered_graph_visitor_require_elk_node(nodes, target_name),
@@ -993,7 +993,7 @@ fn interactive_layered_graph_visitor_update_lists_for_layer_assignment(
     }
     if interactive_layered_graph_visitor_has_in_layer_succ_constraint(node) {
       let target_name = interactive_layered_graph_visitor_string_option_value(
-        node, layered_options_crossing_minimization_in_layer_succ_of,
+        node, @options.layered_options_crossing_minimization_in_layer_succ_of,
       ).unwrap()
       targets.push(
         interactive_layered_graph_visitor_require_elk_node(nodes, target_name),
@@ -1003,10 +1003,10 @@ fn interactive_layered_graph_visitor_update_lists_for_layer_assignment(
     for target in targets {
       if !interactive_layered_graph_visitor_has_layer_choice_constraint(target) {
         let value = interactive_layered_graph_visitor_int_option_value(
-          node, layered_options_layering_layer_choice_constraint,
+          node, @options.layered_options_layering_layer_choice_constraint,
         )
         interactive_layered_graph_visitor_set_int_option(
-          target, layered_options_layering_layer_choice_constraint, value,
+          target, @options.layered_options_layering_layer_choice_constraint, value,
         )
         if !interactive_layered_graph_visitor_contains_node(
             nodes_with_rc, target,
@@ -1162,35 +1162,35 @@ fn interactive_layered_graph_visitor_set_coordinates_orthogonal_to_layout_direct
   }
 
   interactive_layered_graph_visitor_sort_nodes_by_int_option(
-    nodes_with_pc, layered_options_crossing_minimization_position_id,
+    nodes_with_pc, @options.layered_options_crossing_minimization_position_id,
   )
 
   let mut n = 0
   while n < nodes_with_both_rc.length() {
     let node = nodes_with_both_rc[n]
     let target_name = interactive_layered_graph_visitor_string_option_value(
-      node, layered_options_crossing_minimization_in_layer_pred_of,
+      node, @options.layered_options_crossing_minimization_in_layer_pred_of,
     ).unwrap()
     let target = interactive_layered_graph_visitor_require_elk_node(
       all_nodes, target_name,
     )
     interactive_layered_graph_visitor_clear_string_option(
-      node, layered_options_crossing_minimization_in_layer_pred_of,
+      node, @options.layered_options_crossing_minimization_in_layer_pred_of,
     )
     if interactive_layered_graph_visitor_has_position_choice_constraint(target) {
       let target_pos_constraint = interactive_layered_graph_visitor_int_option_value(
-        target, layered_options_crossing_minimization_position_choice_constraint,
+        target, @options.layered_options_crossing_minimization_position_choice_constraint,
       )
       interactive_layered_graph_visitor_set_int_option(
         node,
-        layered_options_crossing_minimization_position_choice_constraint,
+        @options.layered_options_crossing_minimization_position_choice_constraint,
         target_pos_constraint - 1,
       )
       nodes_with_pc_and_rc.push(node)
     } else {
       interactive_layered_graph_visitor_set_string_option(
         target,
-        layered_options_crossing_minimization_in_layer_succ_of,
+        @options.layered_options_crossing_minimization_in_layer_succ_of,
         @graph.node_identifier(node),
       )
       nodes_with_one_rc.push(node)
@@ -1227,7 +1227,7 @@ fn interactive_layered_graph_visitor_set_coordinates_orthogonal_to_layout_direct
   for node in sorted_nodes_with_one_rc {
     let targets : Array[@graph.ElkNode?] = [None, None]
     if interactive_layered_graph_visitor_has_in_layer_pred_constraint(node) {
-      let property = layered_options_crossing_minimization_in_layer_pred_of
+      let property = @options.layered_options_crossing_minimization_in_layer_pred_of
       let target_name = interactive_layered_graph_visitor_string_option_value(
         node, property,
       ).unwrap()
@@ -1235,7 +1235,7 @@ fn interactive_layered_graph_visitor_set_coordinates_orthogonal_to_layout_direct
         all_nodes, target_name,
       )
     } else {
-      let property = layered_options_crossing_minimization_in_layer_succ_of
+      let property = @options.layered_options_crossing_minimization_in_layer_succ_of
       let target_name = interactive_layered_graph_visitor_string_option_value(
         node, property,
       ).unwrap()
@@ -1262,16 +1262,16 @@ fn interactive_layered_graph_visitor_set_coordinates_orthogonal_to_layout_direct
           ignore(nodes_without_constraint.insert(index, node))
         } else {
           let value = interactive_layered_graph_visitor_int_option_value(
-            target, layered_options_crossing_minimization_position_choice_constraint,
+            target, @options.layered_options_crossing_minimization_position_choice_constraint,
           )
           let result = if t == 0 { value - 1 } else { value + 1 }
           let node_property = if t == 0 {
-            layered_options_crossing_minimization_in_layer_pred_of
+            @options.layered_options_crossing_minimization_in_layer_pred_of
           } else {
-            layered_options_crossing_minimization_in_layer_succ_of
+            @options.layered_options_crossing_minimization_in_layer_succ_of
           }
           interactive_layered_graph_visitor_set_int_option(
-            node, layered_options_crossing_minimization_position_choice_constraint,
+            node, @options.layered_options_crossing_minimization_position_choice_constraint,
             result,
           )
           interactive_layered_graph_visitor_clear_string_option(
@@ -1284,12 +1284,12 @@ fn interactive_layered_graph_visitor_set_coordinates_orthogonal_to_layout_direct
   }
 
   interactive_layered_graph_visitor_sort_nodes_by_int_option(
-    nodes_with_pc, layered_options_crossing_minimization_position_choice_constraint,
+    nodes_with_pc, @options.layered_options_crossing_minimization_position_choice_constraint,
   )
 
   for node in nodes_with_pc {
     let position = interactive_layered_graph_visitor_int_option_value(
-      node, layered_options_crossing_minimization_position_choice_constraint,
+      node, @options.layered_options_crossing_minimization_position_choice_constraint,
     )
     if position < nodes_without_constraint.length() {
       if position > 0 {
@@ -1309,7 +1309,7 @@ fn interactive_layered_graph_visitor_set_coordinates_orthogonal_to_layout_direct
       for node in nodes_without_constraint {
         interactive_layered_graph_visitor_set_kvector_option(
           node,
-          layered_options_position,
+          @options.layered_options_position,
           @core.new_kvector_xy(@graph.node_x(node), y_position),
         )
         y_position = y_position + @graph.node_height(node) + spacing
@@ -1320,7 +1320,7 @@ fn interactive_layered_graph_visitor_set_coordinates_orthogonal_to_layout_direct
       for node in nodes_without_constraint {
         interactive_layered_graph_visitor_set_kvector_option(
           node,
-          layered_options_position,
+          @options.layered_options_position,
           @core.new_kvector_xy(@graph.node_x(node), y_position),
         )
         y_position = y_position + @graph.node_height(node) + spacing
@@ -1331,7 +1331,7 @@ fn interactive_layered_graph_visitor_set_coordinates_orthogonal_to_layout_direct
       for node in nodes_without_constraint {
         interactive_layered_graph_visitor_set_kvector_option(
           node,
-          layered_options_position,
+          @options.layered_options_position,
           @core.new_kvector_xy(@graph.node_x(node), y_position),
         )
         y_position = y_position + @graph.node_height(node) + spacing
@@ -1343,7 +1343,7 @@ fn interactive_layered_graph_visitor_set_coordinates_orthogonal_to_layout_direct
       for node in nodes_without_constraint {
         interactive_layered_graph_visitor_set_kvector_option(
           node,
-          layered_options_position,
+          @options.layered_options_position,
           @core.new_kvector_xy(x_position, @graph.node_y(node)),
         )
         x_position = x_position + @graph.node_width(node) + spacing
@@ -1355,7 +1355,7 @@ fn interactive_layered_graph_visitor_set_coordinates_orthogonal_to_layout_direct
       for node in nodes_without_constraint {
         interactive_layered_graph_visitor_set_kvector_option(
           node,
-          layered_options_position,
+          @options.layered_options_position,
           @core.new_kvector_xy(x_position, @graph.node_y(node)),
         )
         x_position = x_position + @graph.node_width(node) + spacing
@@ -1399,22 +1399,22 @@ fn interactive_layered_graph_visitor_translate_layer_constraint(
 ) -> Unit {
   match
     interactive_layered_graph_visitor_string_option_value(
-      node, layered_options_layering_layer_constraint,
+      node, @options.layered_options_layering_layer_constraint,
     ) {
     Some(constraint) => {
       interactive_layered_graph_visitor_set_string_option(
-        node, layered_options_layering_layer_constraint, "NONE",
+        node, @options.layered_options_layering_layer_constraint, "NONE",
       )
       if constraint == "FIRST" {
         if !interactive_layered_graph_visitor_has_layer_choice_constraint(node) {
           interactive_layered_graph_visitor_set_int_option(
-            node, layered_options_layering_layer_choice_constraint, 0,
+            node, @options.layered_options_layering_layer_choice_constraint, 0,
           )
         }
       } else if constraint == "LAST" {
         if !interactive_layered_graph_visitor_has_layer_choice_constraint(node) {
           interactive_layered_graph_visitor_set_int_option(
-            node, layered_options_layering_layer_choice_constraint, interactive_layered_graph_visitor_last_layer_index,
+            node, @options.layered_options_layering_layer_choice_constraint, interactive_layered_graph_visitor_last_layer_index,
           )
         }
       }
@@ -1428,27 +1428,28 @@ fn interactive_layered_graph_visitor_set_interactive_strategies(
   parent : @graph.ElkNode,
 ) -> Unit {
   interactive_layered_graph_visitor_set_bool_option(
-    parent, layered_options_crossing_minimization_semi_interactive, true,
+    parent, @options.layered_options_crossing_minimization_semi_interactive, true,
   )
   interactive_layered_graph_visitor_set_string_option(
     parent,
-    layered_options_layering_strategy,
+    @options.layered_options_layering_strategy,
     layering_strategy_to_string(LsInteractive),
   )
   interactive_layered_graph_visitor_set_string_option(
     parent,
-    layered_options_cycle_breaking_strategy,
+    @options.layered_options_cycle_breaking_strategy,
     cycle_breaking_strategy_to_string(CbsInteractive),
   )
   interactive_layered_graph_visitor_set_string_option(
-    parent, layered_options_consider_model_order_strategy, "NONE",
+    parent, @options.layered_options_consider_model_order_strategy, "NONE",
   )
   interactive_layered_graph_visitor_set_bool_option(
-    parent, layered_options_crossing_minimization_force_node_model_order, false,
+    parent, @options.layered_options_crossing_minimization_force_node_model_order,
+    false,
   )
   interactive_layered_graph_visitor_set_string_option(
     parent,
-    layered_options_crossing_minimization_strategy,
+    @options.layered_options_crossing_minimization_strategy,
     crossing_minimization_strategy_to_string(CmsLayerSweep),
   )
 }
@@ -1466,7 +1467,7 @@ pub fn interactive_layered_graph_visitor_set_interactive_options_and_pseudo_posi
     None => @graph.node_get_string_property(root, @core.algorithm)
   }
   if configured_algorithm.is_empty() ||
-    layered_algorithm_id.has_suffix(configured_algorithm) {
+    @options.layered_algorithm_id.has_suffix(configured_algorithm) {
     for node in @graph.node_children(root) {
       interactive_layered_graph_visitor_translate_layer_constraint(node)
       interactive_layered_graph_visitor_set_coordinates(root)

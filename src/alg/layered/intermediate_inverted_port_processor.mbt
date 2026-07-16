@@ -168,7 +168,7 @@ fn inverted_port_processor_create_east_port_side_dummies(
   let dummy_edge = new_l_edge()
   dummy_edge.copy_properties(edge)
   dummy_edge.set_property_kvector_chain(
-    layered_options_junction_points,
+    @options.layered_options_junction_points,
     @core.new_kvector_chain(),
   )
   dummy_edge.set_source(Some(dummy_output))
@@ -220,7 +220,7 @@ fn inverted_port_processor_create_west_port_side_dummies(
   let dummy_edge = new_l_edge()
   dummy_edge.copy_properties(edge)
   dummy_edge.set_property_kvector_chain(
-    layered_options_junction_points,
+    @options.layered_options_junction_points,
     @core.new_kvector_chain(),
   )
   dummy_edge.set_source(Some(dummy_output))

@@ -146,7 +146,7 @@ pub fn cutting_utils_insert_dummies(
     @core.spacing_edge_node,
   )
   let additional_spacing = layered_graph.get_property_double(
-    layered_options_wrapping_additional_edge_spacing,
+    @options.layered_options_wrapping_additional_edge_spacing,
   )
   let dummy_edge_node_spacing = edge_node_spacing + additional_spacing
 
@@ -217,7 +217,7 @@ pub fn cutting_utils_insert_dummies(
     let dummy_edge = new_l_edge()
     dummy_edge.copy_properties(edge)
     dummy_edge.set_property_kvector_chain(
-      layered_options_junction_points,
+      @options.layered_options_junction_points,
       @core.new_kvector_chain(),
     )
     dummy_edge.set_source(Some(dummy_output))

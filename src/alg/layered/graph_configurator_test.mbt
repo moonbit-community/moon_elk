@@ -26,16 +26,16 @@ fn graph_configurator_test_set_non_hierarchical_defaults(
   graph : LGraph,
 ) -> Unit {
   graph.set_property_string(
-    layered_options_hierarchy_handling, "SEPARATE_CHILDREN",
+    @options.layered_options_hierarchy_handling, "SEPARATE_CHILDREN",
   )
   graph.set_property_string(
-    layered_options_crossing_minimization_greedy_switch_type, "TWO_SIDED",
+    @options.layered_options_crossing_minimization_greedy_switch_type, "TWO_SIDED",
   )
   graph.set_property_bool(
-    layered_options_crossing_minimization_semi_interactive, false,
+    @options.layered_options_crossing_minimization_semi_interactive, false,
   )
   graph.set_property_string(
-    layered_options_crossing_minimization_strategy, "LAYER_SWEEP",
+    @options.layered_options_crossing_minimization_strategy, "LAYER_SWEEP",
   )
 }
 
@@ -44,7 +44,8 @@ test "graph configurator activates greedy switch with non-hierarchical defaults"
   let graph = graph_configurator_test_graph(2)
   graph_configurator_test_set_non_hierarchical_defaults(graph)
   graph.set_property_int(
-    layered_options_crossing_minimization_greedy_switch_activation_threshold, 40,
+    @options.layered_options_crossing_minimization_greedy_switch_activation_threshold,
+    40,
   )
 
   assert_true(graph_configurator_activate_greedy_switch_for(graph))
@@ -55,7 +56,8 @@ test "graph configurator deactivates greedy switch when threshold does not excee
   let graph = graph_configurator_test_graph(2)
   graph_configurator_test_set_non_hierarchical_defaults(graph)
   graph.set_property_int(
-    layered_options_crossing_minimization_greedy_switch_activation_threshold, 2,
+    @options.layered_options_crossing_minimization_greedy_switch_activation_threshold,
+    2,
   )
 
   assert_false(graph_configurator_activate_greedy_switch_for(graph))
@@ -66,7 +68,8 @@ test "graph configurator activation threshold zero forces activation" {
   let graph = graph_configurator_test_graph(10)
   graph_configurator_test_set_non_hierarchical_defaults(graph)
   graph.set_property_int(
-    layered_options_crossing_minimization_greedy_switch_activation_threshold, 0,
+    @options.layered_options_crossing_minimization_greedy_switch_activation_threshold,
+    0,
   )
 
   assert_true(graph_configurator_activate_greedy_switch_for(graph))
@@ -77,10 +80,11 @@ test "graph configurator deactivates greedy switch for semi-@core.interactive cr
   let graph = graph_configurator_test_graph(2)
   graph_configurator_test_set_non_hierarchical_defaults(graph)
   graph.set_property_bool(
-    layered_options_crossing_minimization_semi_interactive, true,
+    @options.layered_options_crossing_minimization_semi_interactive, true,
   )
   graph.set_property_int(
-    layered_options_crossing_minimization_greedy_switch_activation_threshold, 40,
+    @options.layered_options_crossing_minimization_greedy_switch_activation_threshold,
+    40,
   )
 
   assert_false(graph_configurator_activate_greedy_switch_for(graph))
@@ -91,10 +95,11 @@ test "graph configurator deactivates greedy switch for @core.interactive strateg
   let graph = graph_configurator_test_graph(2)
   graph_configurator_test_set_non_hierarchical_defaults(graph)
   graph.set_property_string(
-    layered_options_crossing_minimization_strategy, "INTERACTIVE",
+    @options.layered_options_crossing_minimization_strategy, "INTERACTIVE",
   )
   graph.set_property_int(
-    layered_options_crossing_minimization_greedy_switch_activation_threshold, 40,
+    @options.layered_options_crossing_minimization_greedy_switch_activation_threshold,
+    40,
   )
 
   assert_false(graph_configurator_activate_greedy_switch_for(graph))
@@ -104,19 +109,21 @@ test "graph configurator deactivates greedy switch for @core.interactive strateg
 test "graph configurator uses hierarchical greedy-switch option only on root graph" {
   let root_graph = graph_configurator_test_graph(2)
   root_graph.set_property_string(
-    layered_options_hierarchy_handling, "INCLUDE_CHILDREN",
+    @options.layered_options_hierarchy_handling, "INCLUDE_CHILDREN",
   )
   root_graph.set_property_string(
-    layered_options_crossing_minimization_greedy_switch_hierarchical_type, "ONE_SIDED",
+    @options.layered_options_crossing_minimization_greedy_switch_hierarchical_type,
+    "ONE_SIDED",
   )
   assert_true(graph_configurator_activate_greedy_switch_for(root_graph))
 
   let nested_graph = graph_configurator_test_graph(2)
   nested_graph.set_property_string(
-    layered_options_hierarchy_handling, "INCLUDE_CHILDREN",
+    @options.layered_options_hierarchy_handling, "INCLUDE_CHILDREN",
   )
   nested_graph.set_property_string(
-    layered_options_crossing_minimization_greedy_switch_hierarchical_type, "ONE_SIDED",
+    @options.layered_options_crossing_minimization_greedy_switch_hierarchical_type,
+    "ONE_SIDED",
   )
   nested_graph.set_parent_node(Some(new_l_node()))
   assert_false(graph_configurator_activate_greedy_switch_for(nested_graph))
@@ -126,10 +133,11 @@ test "graph configurator uses hierarchical greedy-switch option only on root gra
 test "graph configurator deactivates hierarchical greedy switch when type is off" {
   let graph = graph_configurator_test_graph(2)
   graph.set_property_string(
-    layered_options_hierarchy_handling, "INCLUDE_CHILDREN",
+    @options.layered_options_hierarchy_handling, "INCLUDE_CHILDREN",
   )
   graph.set_property_string(
-    layered_options_crossing_minimization_greedy_switch_hierarchical_type, "OFF",
+    @options.layered_options_crossing_minimization_greedy_switch_hierarchical_type,
+    "OFF",
   )
 
   assert_false(graph_configurator_activate_greedy_switch_for(graph))
@@ -185,7 +193,7 @@ test "graph configurator defaults favor-straight-edges from edge routing" {
   graph_configurator_default_favor_straight_edges(orthogonal_graph)
   assert_true(
     orthogonal_graph.get_property_bool(
-      layered_options_node_placement_favor_straight_edges,
+      @options.layered_options_node_placement_favor_straight_edges,
     ),
   )
 
@@ -194,7 +202,7 @@ test "graph configurator defaults favor-straight-edges from edge routing" {
   graph_configurator_default_favor_straight_edges(polyline_graph)
   assert_false(
     polyline_graph.get_property_bool(
-      layered_options_node_placement_favor_straight_edges,
+      @options.layered_options_node_placement_favor_straight_edges,
     ),
   )
 }
@@ -204,24 +212,24 @@ test "graph configurator preserves explicit favor-straight-edges value" {
   let explicit_true = graph_configurator_test_graph(0)
   explicit_true.set_property_string(@core.edge_routing, "POLYLINE")
   explicit_true.set_property_bool(
-    layered_options_node_placement_favor_straight_edges, true,
+    @options.layered_options_node_placement_favor_straight_edges, true,
   )
   graph_configurator_default_favor_straight_edges(explicit_true)
   assert_true(
     explicit_true.get_property_bool(
-      layered_options_node_placement_favor_straight_edges,
+      @options.layered_options_node_placement_favor_straight_edges,
     ),
   )
 
   let explicit_false = graph_configurator_test_graph(0)
   explicit_false.set_property_string(@core.edge_routing, "ORTHOGONAL")
   explicit_false.set_property_bool(
-    layered_options_node_placement_favor_straight_edges, false,
+    @options.layered_options_node_placement_favor_straight_edges, false,
   )
   graph_configurator_default_favor_straight_edges(explicit_false)
   assert_false(
     explicit_false.get_property_bool(
-      layered_options_node_placement_favor_straight_edges,
+      @options.layered_options_node_placement_favor_straight_edges,
     ),
   )
 }
@@ -261,7 +269,9 @@ test "graph configurator configures graph properties in one call" {
   )
   assert_eq(graph.get_property_string(@core.direction), "DOWN")
   assert_true(
-    graph.get_property_bool(layered_options_node_placement_favor_straight_edges),
+    graph.get_property_bool(
+      @options.layered_options_node_placement_favor_straight_edges,
+    ),
   )
   assert_eq(
     layerless_node.get_property_string(

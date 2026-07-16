@@ -90,27 +90,44 @@ test "constraints postprocessor assigns layer and position ids to normal nodes" 
   let processor = new_constraints_postprocessor_layout_processor()
   processor.process(graph, None)
 
-  assert_eq(layer1_a.get_property_int(layered_options_layering_layer_id), 0)
   assert_eq(
-    layer1_a.get_property_int(layered_options_crossing_minimization_position_id),
+    layer1_a.get_property_int(@options.layered_options_layering_layer_id),
     0,
   )
-  assert_eq(layer2_a.get_property_int(layered_options_layering_layer_id), 1)
   assert_eq(
-    layer2_a.get_property_int(layered_options_crossing_minimization_position_id),
+    layer1_a.get_property_int(
+      @options.layered_options_crossing_minimization_position_id,
+    ),
     0,
   )
-  assert_eq(layer2_b.get_property_int(layered_options_layering_layer_id), 1)
   assert_eq(
-    layer2_b.get_property_int(layered_options_crossing_minimization_position_id),
+    layer2_a.get_property_int(@options.layered_options_layering_layer_id),
+    1,
+  )
+  assert_eq(
+    layer2_a.get_property_int(
+      @options.layered_options_crossing_minimization_position_id,
+    ),
+    0,
+  )
+  assert_eq(
+    layer2_b.get_property_int(@options.layered_options_layering_layer_id),
+    1,
+  )
+  assert_eq(
+    layer2_b.get_property_int(
+      @options.layered_options_crossing_minimization_position_id,
+    ),
     1,
   )
 
-  assert_false(layer0_label.has_property_int(layered_options_layering_layer_id))
   assert_false(
-    layer1_external.has_property_int(layered_options_layering_layer_id),
+    layer0_label.has_property_int(@options.layered_options_layering_layer_id),
   )
   assert_false(
-    layer3_external.has_property_int(layered_options_layering_layer_id),
+    layer1_external.has_property_int(@options.layered_options_layering_layer_id),
+  )
+  assert_false(
+    layer3_external.has_property_int(@options.layered_options_layering_layer_id),
   )
 }

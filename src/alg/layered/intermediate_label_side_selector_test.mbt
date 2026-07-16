@@ -52,7 +52,7 @@ fn label_side_selector_test_node_type_is_label(node_type : NodeType) -> Bool {
 test "label side selector reports expected task name" {
   let graph = new_l_graph()
   graph.set_property_string(
-    layered_options_edge_labels_side_selection, "ALWAYS_UP",
+    @options.layered_options_edge_labels_side_selection, "ALWAYS_UP",
   )
   let processor = new_label_side_selector_layout_processor()
   let monitor = new_elk_progress_monitor()
@@ -64,7 +64,7 @@ test "label side selector reports expected task name" {
 test "label side selector always up places edge labels and label dummies above" {
   let graph = new_l_graph()
   graph.set_property_string(
-    layered_options_edge_labels_side_selection, "ALWAYS_UP",
+    @options.layered_options_edge_labels_side_selection, "ALWAYS_UP",
   )
 
   let layer0 = new_layer(graph)
@@ -138,7 +138,7 @@ test "label side selector always up places edge labels and label dummies above" 
 test "label side selector @core.direction up mirrors reversed edges" {
   let graph = new_l_graph()
   graph.set_property_string(
-    layered_options_edge_labels_side_selection, "DIRECTION_UP",
+    @options.layered_options_edge_labels_side_selection, "DIRECTION_UP",
   )
 
   let layer0 = new_layer(graph)
@@ -197,7 +197,7 @@ test "label side selector @core.direction up mirrors reversed edges" {
 test "label side selector smart mode handles top label dummy and east end labels" {
   let graph = new_l_graph()
   graph.set_property_string(
-    layered_options_edge_labels_side_selection, "SMART_DOWN",
+    @options.layered_options_edge_labels_side_selection, "SMART_DOWN",
   )
 
   let layer0 = new_layer(graph)
@@ -308,7 +308,7 @@ test "label side selector strategy creates concrete processor" {
   let processor = factory.create()
   let graph = new_l_graph()
   graph.set_property_string(
-    layered_options_edge_labels_side_selection, "ALWAYS_DOWN",
+    @options.layered_options_edge_labels_side_selection, "ALWAYS_DOWN",
   )
   let monitor = new_elk_progress_monitor()
   processor.process(graph, Some(monitor))

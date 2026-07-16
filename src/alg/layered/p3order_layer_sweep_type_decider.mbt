@@ -75,7 +75,7 @@ pub fn LayerSweepTypeDecider::use_bottom_up(
   let boundary = self.graph_data
     .l_graph()
     .get_property_double(
-      layered_options_crossing_minimization_hierarchical_sweepiness,
+      @options.layered_options_crossing_minimization_hierarchical_sweepiness,
     )
   if self.bottom_up_forced(boundary) ||
     self.root_node() ||

@@ -97,7 +97,7 @@ test "LNode @core.interactive reference point follows configured mode" {
   assert_eq(center_ref.y, 27.0)
 
   graph.set_property_string(
-    layered_options_interactive_reference_point,
+    @options.layered_options_interactive_reference_point,
     interactive_reference_point_to_string(TopLeft),
   )
   let top_left_ref = node.get_interactive_reference_point()

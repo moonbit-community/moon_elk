@@ -6,11 +6,12 @@ fn gmoc_new_node(
 ) -> LNode {
   let node = new_l_node()
   node.set_property_string(
-    layered_options_layering_layer_constraint, constraint,
+    @options.layered_options_layering_layer_constraint, constraint,
   )
   node.set_property_int(internal_properties_model_order, model_order)
   node.set_property_int(
-    layered_options_consider_model_order_group_model_order_cycle_breaking_id, group_id,
+    @options.layered_options_consider_model_order_group_model_order_cycle_breaking_id,
+    group_id,
   )
   node
 }
@@ -19,7 +20,7 @@ fn gmoc_new_node(
 fn gmoc_new_node_without_model_order(constraint : String) -> LNode {
   let node = new_l_node()
   node.set_property_string(
-    layered_options_layering_layer_constraint, constraint,
+    @options.layered_options_layering_layer_constraint, constraint,
   )
   node
 }

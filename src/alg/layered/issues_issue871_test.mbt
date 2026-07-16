@@ -42,13 +42,13 @@ fn issue871_configure_parent(
     parent, "org.eclipse.elk.layered.cycleBreaking.strategy", "MODEL_ORDER",
   )
   @graph.node_set_string_property(
-    parent, layered_options_consider_model_order_strategy, "PREFER_EDGES",
+    parent, @options.layered_options_consider_model_order_strategy, "PREFER_EDGES",
   )
   @graph.node_set_string_property(
-    parent, layered_options_crossing_minimization_strategy, "NONE",
+    parent, @options.layered_options_crossing_minimization_strategy, "NONE",
   )
   @graph.node_set_string_property(
-    parent, layered_options_crossing_minimization_greedy_switch_type, "OFF",
+    parent, @options.layered_options_crossing_minimization_greedy_switch_type, "OFF",
   )
   @graph.node_set_string_property(
     parent,
@@ -57,10 +57,10 @@ fn issue871_configure_parent(
   )
   @graph.node_set_double_property(parent, @core.spacing_node_node, 10.0)
   @graph.node_set_double_property(
-    parent, layered_options_spacing_node_node_between_layers, 20.0,
+    parent, @options.layered_options_spacing_node_node_between_layers, 20.0,
   )
   @graph.node_set_bool_property(
-    parent, layered_options_feedback_edges, feedback_edges,
+    parent, @options.layered_options_feedback_edges, feedback_edges,
   )
 }
 

@@ -256,7 +256,7 @@ fn coffman_graham_layerer_process(
 
   try {
     let layer_bound = layered_graph.get_property_int(
-      layered_options_layering_coffman_graham_layer_bound,
+      @options.layered_options_layering_coffman_graham_layer_bound,
     )
 
     let mut index = 0

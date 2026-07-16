@@ -1,6 +1,6 @@
 ///|
 fn graph_configurator_is_hierarchical_layout(lgraph : LGraph) -> Bool {
-  lgraph.get_property_string(layered_options_hierarchy_handling) ==
+  lgraph.get_property_string(@options.layered_options_hierarchy_handling) ==
   "INCLUDE_CHILDREN"
 }
 
@@ -56,24 +56,24 @@ pub fn graph_configurator_activate_greedy_switch_for(lgraph : LGraph) -> Bool {
     }
     return is_root_graph &&
       lgraph.get_property_string(
-        layered_options_crossing_minimization_greedy_switch_hierarchical_type,
+        @options.layered_options_crossing_minimization_greedy_switch_hierarchical_type,
       ) !=
       "OFF"
   }
 
   let greedy_switch_type = lgraph.get_property_string(
-    layered_options_crossing_minimization_greedy_switch_type,
+    @options.layered_options_crossing_minimization_greedy_switch_type,
   )
   let crossing_min_strategy = lgraph.get_property_string(
-    layered_options_crossing_minimization_strategy,
+    @options.layered_options_crossing_minimization_strategy,
   )
   let interactive_cross_min = lgraph.get_property_bool(
-      layered_options_crossing_minimization_semi_interactive,
+      @options.layered_options_crossing_minimization_semi_interactive,
     ) ||
     crossing_min_strategy ==
     crossing_minimization_strategy_to_string(CmsInteractive)
   let activation_threshold = lgraph.get_property_int(
-    layered_options_crossing_minimization_greedy_switch_activation_threshold,
+    @options.layered_options_crossing_minimization_greedy_switch_activation_threshold,
   )
   let graph_size = lgraph.get_layerless_nodes().length()
 
@@ -99,7 +99,7 @@ pub fn graph_configurator_enforce_direction(lgraph : LGraph) -> Unit {
     lgraph.set_property_string(
       @core.direction,
       graph_configurator_direction_from_aspect_ratio(
-        lgraph.get_property_double(layered_options_aspect_ratio),
+        lgraph.get_property_double(@options.layered_options_aspect_ratio),
       ),
     )
   }
@@ -108,10 +108,10 @@ pub fn graph_configurator_enforce_direction(lgraph : LGraph) -> Unit {
 ///|
 pub fn graph_configurator_default_favor_straight_edges(lgraph : LGraph) -> Unit {
   if !lgraph.has_property_bool(
-      layered_options_node_placement_favor_straight_edges,
+      @options.layered_options_node_placement_favor_straight_edges,
     ) {
     lgraph.set_property_bool(
-      layered_options_node_placement_favor_straight_edges,
+      @options.layered_options_node_placement_favor_straight_edges,
       lgraph.get_property_string(@core.edge_routing) == "ORTHOGONAL",
     )
   }

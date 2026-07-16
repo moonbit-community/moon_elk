@@ -262,11 +262,11 @@ fn graph_stats_init_cut_allowed(graph_stats : GraphStats) -> Unit {
   cuts_allowed[0] = false
 
   if graph_stats.graph.has_property_string(
-      layered_options_wrapping_validify_forbidden_indices,
+      @options.layered_options_wrapping_validify_forbidden_indices,
     ) {
-    let forbidden = layered_options_parse_int_list(
+    let forbidden = @options.layered_options_parse_int_list(
       graph_stats.graph.get_property_string(
-        layered_options_wrapping_validify_forbidden_indices,
+        @options.layered_options_wrapping_validify_forbidden_indices,
       ),
     )
     for f in forbidden {
@@ -305,10 +305,10 @@ pub struct GraphStats {
 pub fn new_graph_stats(graph : LGraph) -> GraphStats {
   let direction = graph.get_property_direction(layered_components_direction)
   let graph_aspect_ratio = graph.get_property_double(
-    layered_options_aspect_ratio,
+    @options.layered_options_aspect_ratio,
   )
   let correction = graph.get_property_double(
-    layered_options_wrapping_correction_factor,
+    @options.layered_options_wrapping_correction_factor,
   )
   let dar = match direction {
     Leftward => graph_aspect_ratio * correction
@@ -320,7 +320,7 @@ pub fn new_graph_stats(graph : LGraph) -> GraphStats {
   {
     graph,
     spacing: graph.get_property_double(
-      layered_options_spacing_node_node_between_layers,
+      @options.layered_options_spacing_node_node_between_layers,
     ),
     in_layer_spacing: graph.get_property_double(@core.spacing_node_node),
     dar,

@@ -175,7 +175,7 @@ pub fn LayeredComponentsProcessor::split(
   )
   let compatible_port_constraints = !ext_port_constraints.is_order_fixed()
   let component_ordering = graph.get_property_component_ordering_strategy(
-    layered_options_consider_model_order_components,
+    @options.layered_options_consider_model_order_components,
   )
 
   let result : Array[LGraph] = if separate &&
@@ -209,8 +209,9 @@ pub fn LayeredComponentsProcessor::split(
 
     if ext_ports {
       match component_ordering {
-        GroupModelOrder => self.graph_placer_kind = ComponentGroupModelOrder
-        ModelOrder => self.graph_placer_kind = ModelOrderRow
+        @options.GroupModelOrder =>
+          self.graph_placer_kind = ComponentGroupModelOrder
+        @options.ModelOrder => self.graph_placer_kind = ModelOrderRow
         _ => self.graph_placer_kind = ComponentGroup
       }
     }
@@ -220,7 +221,10 @@ pub fn LayeredComponentsProcessor::split(
     [graph]
   }
 
-  if !component_ordering_strategy_equals(component_ordering, NoneType) {
+  if !@options.component_ordering_strategy_equals(
+      component_ordering,
+      @options.NoneType,
+    ) {
     layered_components_sort_by_model_order(result)
   }
 

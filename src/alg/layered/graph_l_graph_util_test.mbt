@@ -168,7 +168,7 @@ test "offset_graph moves nodes, bend points, junctions, and edge labels" {
   let junction_points = @core.new_kvector_chain()
   junction_points.add_xy(7.0, 8.0)
   edge.set_property_kvector_chain(
-    layered_options_junction_points, junction_points,
+    @options.layered_options_junction_points, junction_points,
   )
   let label = new_l_label()
   ignore(label.get_position().set_xy(9.0, 10.0))
@@ -183,11 +183,15 @@ test "offset_graph moves nodes, bend points, junctions, and edge labels" {
   inspect(edge.get_bend_points().get(0).x, content="15")
   inspect(edge.get_bend_points().get(0).y, content="26")
   inspect(
-    edge.get_property_kvector_chain(layered_options_junction_points).get(0).x,
+    edge
+    .get_property_kvector_chain(@options.layered_options_junction_points)
+    .get(0).x,
     content="17",
   )
   inspect(
-    edge.get_property_kvector_chain(layered_options_junction_points).get(0).y,
+    edge
+    .get_property_kvector_chain(@options.layered_options_junction_points)
+    .get(0).y,
     content="28",
   )
   inspect(label.get_position().x, content="19")
@@ -342,11 +346,11 @@ test "compute_graph_properties follows LGraphUtil reference rules" {
   )
 
   let comment_node = new_l_node(graph=Some(graph))
-  comment_node.set_property_bool(layered_options_comment_box, true)
+  comment_node.set_property_bool(@options.layered_options_comment_box, true)
   graph.get_layerless_nodes().push(comment_node)
 
   let hyper_node = new_l_node(graph=Some(graph))
-  hyper_node.set_property_bool(layered_options_hypernode, true)
+  hyper_node.set_property_bool(@options.layered_options_hypernode, true)
   graph.get_layerless_nodes().push(hyper_node)
 
   let external_node = new_l_node(graph=Some(graph))
@@ -517,7 +521,7 @@ test "initialize_port sets side, offset, ratio, and explicit anchor like Java" {
 
   inspect(@core.port_side_to_string(side_port.get_side()), content="EAST")
   inspect(
-    side_port.get_property_double(layered_options_port_border_offset),
+    side_port.get_property_double(@options.layered_options_port_border_offset),
     content="1",
   )
   inspect(side_port.get_anchor().x, content="2")
@@ -620,7 +624,7 @@ test "create_port_for_edge mirrors collector and side inference behavior" {
 
   let merge_node = new_l_node(graph=Some(graph))
   ignore(merge_node.get_size().set_xy(20.0, 20.0))
-  graph.set_property_bool(layered_options_merge_edges, true)
+  graph.set_property_bool(@options.layered_options_merge_edges, true)
 
   let collector_a = create_port_for_edge(
     merge_node,
@@ -637,7 +641,7 @@ test "create_port_for_edge mirrors collector and side inference behavior" {
   inspect(collector_a.get_handle() == collector_b.get_handle(), content="true")
   inspect(@core.port_side_to_string(collector_a.get_side()), content="EAST")
 
-  graph.set_property_bool(layered_options_merge_edges, false)
+  graph.set_property_bool(@options.layered_options_merge_edges, false)
   let inferred_node = new_l_node(graph=Some(graph))
   ignore(inferred_node.get_size().set_xy(10.0, 10.0))
   ignore(inferred_node.get_position().set_xy(5.0, 7.0))
@@ -669,8 +673,8 @@ test "external port dummy creation and position use Java formulas" {
 
   let holder = new_l_port()
   holder.set_side(l_graph_util_test_port_side_west())
-  holder.set_property_double(layered_options_port_border_offset, -2.0)
-  holder.set_property_int(layered_options_port_index, 5)
+  holder.set_property_double(@options.layered_options_port_border_offset, -2.0)
+  holder.set_property_int(@options.layered_options_port_index, 5)
 
   let dummy = l_graph_util_test_create_external_port_dummy_or_abort(
     holder,

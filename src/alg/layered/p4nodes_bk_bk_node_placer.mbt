@@ -51,10 +51,10 @@ fn bk_node_placer_parse_fixed_alignment(value : String) -> FixedAlignment {
 ///|
 fn bk_node_placer_favor_straight_edges(layered_graph : LGraph) -> Bool {
   if layered_graph.has_property_bool(
-      layered_options_node_placement_favor_straight_edges,
+      @options.layered_options_node_placement_favor_straight_edges,
     ) {
     return layered_graph.get_property_bool(
-      layered_options_node_placement_favor_straight_edges,
+      @options.layered_options_node_placement_favor_straight_edges,
     )
   }
 
@@ -323,7 +323,7 @@ fn bk_node_placer_process(
 
   let fixed_alignment = bk_node_placer_parse_fixed_alignment(
     layered_graph.get_property_string(
-      layered_options_node_placement_bk_fixed_alignment,
+      @options.layered_options_node_placement_bk_fixed_alignment,
     ),
   )
   let favor_straight_edges = bk_node_placer_favor_straight_edges(layered_graph)

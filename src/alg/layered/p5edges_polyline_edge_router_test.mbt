@@ -74,13 +74,13 @@ fn polyline_edge_router_test_build_two_layer_graph() -> (
 ) {
   let graph = new_l_graph()
   graph.set_property_double(
-    layered_options_spacing_edge_edge_between_layers, 10.0,
+    @options.layered_options_spacing_edge_edge_between_layers, 10.0,
   )
   graph.set_property_double(
-    layered_options_spacing_node_node_between_layers, 20.0,
+    @options.layered_options_spacing_node_node_between_layers, 20.0,
   )
   graph.set_property_double(
-    layered_options_edge_routing_polyline_sloped_edge_zone_width, 2.0,
+    @options.layered_options_edge_routing_polyline_sloped_edge_zone_width, 2.0,
   )
 
   let left_layer = new_layer(graph)

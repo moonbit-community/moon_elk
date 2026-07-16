@@ -133,10 +133,10 @@ fn port_list_sorter_compare_fixed_order_and_fixed_pos(
   }
 
   if constraints is FixedOrder &&
-    p1.has_property_int(layered_options_port_index) &&
-    p2.has_property_int(layered_options_port_index) {
-    let index_diff = p1.get_property_int(layered_options_port_index) -
-      p2.get_property_int(layered_options_port_index)
+    p1.has_property_int(@options.layered_options_port_index) &&
+    p2.has_property_int(@options.layered_options_port_index) {
+    let index_diff = p1.get_property_int(@options.layered_options_port_index) -
+      p2.get_property_int(@options.layered_options_port_index)
     if index_diff != 0 {
       return index_diff
     }
@@ -260,11 +260,13 @@ fn port_list_sorter_process(
   ignore(monitor.begin("Port order processing", 1.0))
 
   let strategy_value = if layered_graph.has_property_string(
-      layered_options_port_sorting_strategy,
+      @options.layered_options_port_sorting_strategy,
     ) {
-    layered_graph.get_property_string(layered_options_port_sorting_strategy)
+    layered_graph.get_property_string(
+      @options.layered_options_port_sorting_strategy,
+    )
   } else {
-    layered_options_port_sorting_strategy.get_default()
+    @options.layered_options_port_sorting_strategy.get_default()
   }
   let sorting_strategy = port_list_sorter_port_sorting_strategy_from_string(
     strategy_value,

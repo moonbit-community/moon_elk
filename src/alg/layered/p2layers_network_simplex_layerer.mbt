@@ -218,7 +218,9 @@ fn network_simplex_layerer_initialize(
         None => network_simplex_layerer_raise("missing transformed target node")
       }
 
-      let shortness = ledge.get_property_int(layered_options_priority_shortness)
+      let shortness = ledge.get_property_int(
+        @options.layered_options_priority_shortness,
+      )
       let weight = (if shortness > 1 { shortness } else { 1 }).to_double()
       ignore(
         network_simplex_layerer_create_edge(
@@ -256,7 +258,7 @@ fn network_simplex_layerer_process(
   ignore(monitor.begin("Network simplex layering", 1.0))
 
   let thoroughness = the_layered_graph.get_property_int(
-      layered_options_thoroughness,
+      @options.layered_options_thoroughness,
     ) *
     network_simplex_layerer_iter_limit_factor
 

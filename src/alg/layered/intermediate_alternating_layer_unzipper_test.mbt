@@ -167,7 +167,9 @@ test "alternating layer unzipper splits one layer in A-B-A order" {
   ignore(alternating_layer_unzipper_test_new_edge(mid_b, target))
   ignore(alternating_layer_unzipper_test_new_edge(mid_c, target))
 
-  mid_a.set_property_int(layered_options_layer_unzipping_layer_split, 2)
+  mid_a.set_property_int(
+    @options.layered_options_layer_unzipping_layer_split, 2,
+  )
 
   let processor = new_alternating_layer_unzipper_layout_processor()
   processor.process(graph, None)
@@ -237,7 +239,9 @@ test "alternating layer unzipper splits one layer in A-B-C-A order" {
   ignore(alternating_layer_unzipper_test_new_edge(mid_c, target))
   ignore(alternating_layer_unzipper_test_new_edge(mid_d, target))
 
-  mid_a.set_property_int(layered_options_layer_unzipping_layer_split, 3)
+  mid_a.set_property_int(
+    @options.layered_options_layer_unzipping_layer_split, 3,
+  )
 
   let processor = new_alternating_layer_unzipper_layout_processor()
   processor.process(graph, None)
@@ -290,7 +294,9 @@ test "alternating layer unzipper handles dangling outgoing split layers" {
   ignore(alternating_layer_unzipper_test_new_edge(node1, node4))
   ignore(alternating_layer_unzipper_test_new_edge(node1, node5))
 
-  node2.set_property_int(layered_options_layer_unzipping_layer_split, 2)
+  node2.set_property_int(
+    @options.layered_options_layer_unzipping_layer_split, 2,
+  )
 
   let processor = new_alternating_layer_unzipper_layout_processor()
   processor.process(graph, None)
@@ -367,7 +373,9 @@ test "alternating layer unzipper handles dangling incoming split layers" {
   ignore(alternating_layer_unzipper_test_new_edge(node4, node_final))
   ignore(alternating_layer_unzipper_test_new_edge(node5, node_final))
 
-  node2.set_property_int(layered_options_layer_unzipping_layer_split, 2)
+  node2.set_property_int(
+    @options.layered_options_layer_unzipping_layer_split, 2,
+  )
 
   let processor = new_alternating_layer_unzipper_layout_processor()
   processor.process(graph, None)
@@ -460,8 +468,12 @@ test "alternating layer unzipper splits multiple consecutive layers" {
   ignore(alternating_layer_unzipper_test_new_edge(node4, node22))
   ignore(alternating_layer_unzipper_test_new_edge(node4, node23))
 
-  node1.set_property_int(layered_options_layer_unzipping_layer_split, 2)
-  node21.set_property_int(layered_options_layer_unzipping_layer_split, 2)
+  node1.set_property_int(
+    @options.layered_options_layer_unzipping_layer_split, 2,
+  )
+  node21.set_property_int(
+    @options.layered_options_layer_unzipping_layer_split, 2,
+  )
 
   let processor = new_alternating_layer_unzipper_layout_processor()
   processor.process(graph, None)
@@ -559,7 +571,9 @@ test "alternating layer unzipper handles multiple incoming edges on a split laye
   ignore(alternating_layer_unzipper_test_new_edge(mid_b, target))
   ignore(alternating_layer_unzipper_test_new_edge(mid_c, target))
 
-  mid_a.set_property_int(layered_options_layer_unzipping_layer_split, 2)
+  mid_a.set_property_int(
+    @options.layered_options_layer_unzipping_layer_split, 2,
+  )
 
   let processor = new_alternating_layer_unzipper_layout_processor()
   processor.process(graph, None)
@@ -621,7 +635,9 @@ test "alternating layer unzipper handles multiple outgoing edges on a split laye
   ignore(alternating_layer_unzipper_test_new_edge(mid_c, target))
   ignore(alternating_layer_unzipper_test_new_edge(mid_c, target))
 
-  mid_a.set_property_int(layered_options_layer_unzipping_layer_split, 2)
+  mid_a.set_property_int(
+    @options.layered_options_layer_unzipping_layer_split, 2,
+  )
 
   let processor = new_alternating_layer_unzipper_layout_processor()
   processor.process(graph, None)
@@ -687,8 +703,12 @@ test "alternating layer unzipper handles mixed dangling incoming nodes" {
   ignore(alternating_layer_unzipper_test_new_edge(node3, node6))
   ignore(alternating_layer_unzipper_test_new_edge(node4, node7))
 
-  node2.set_property_int(layered_options_layer_unzipping_layer_split, 2)
-  node5.set_property_int(layered_options_layer_unzipping_layer_split, 2)
+  node2.set_property_int(
+    @options.layered_options_layer_unzipping_layer_split, 2,
+  )
+  node5.set_property_int(
+    @options.layered_options_layer_unzipping_layer_split, 2,
+  )
 
   let processor = new_alternating_layer_unzipper_layout_processor()
   processor.process(graph, None)
@@ -781,8 +801,12 @@ test "alternating layer unzipper handles mixed dangling outgoing nodes" {
   ignore(alternating_layer_unzipper_test_new_edge(node3, node6))
   ignore(alternating_layer_unzipper_test_new_edge(node4, node7))
 
-  node2.set_property_int(layered_options_layer_unzipping_layer_split, 2)
-  node5.set_property_int(layered_options_layer_unzipping_layer_split, 2)
+  node2.set_property_int(
+    @options.layered_options_layer_unzipping_layer_split, 2,
+  )
+  node5.set_property_int(
+    @options.layered_options_layer_unzipping_layer_split, 2,
+  )
 
   let processor = new_alternating_layer_unzipper_layout_processor()
   processor.process(graph, None)
@@ -874,8 +898,12 @@ test "alternating layer unzipper supports mixed two-way and three-way layer spli
   ignore(alternating_layer_unzipper_test_new_edge(node4, node22))
   ignore(alternating_layer_unzipper_test_new_edge(node4, node23))
 
-  node1.set_property_int(layered_options_layer_unzipping_layer_split, 3)
-  node21.set_property_int(layered_options_layer_unzipping_layer_split, 2)
+  node1.set_property_int(
+    @options.layered_options_layer_unzipping_layer_split, 3,
+  )
+  node21.set_property_int(
+    @options.layered_options_layer_unzipping_layer_split, 2,
+  )
 
   let processor = new_alternating_layer_unzipper_layout_processor()
   processor.process(graph, None)
@@ -943,8 +971,10 @@ test "alternating layer unzipper resets alternation at long-edge nodes when enab
     alternating_layer_unzipper_test_node_type("NORMAL"),
   )
 
-  a.set_property_int(layered_options_layer_unzipping_layer_split, 3)
-  a.set_property_bool(layered_options_layer_unzipping_reset_on_long_edges, true)
+  a.set_property_int(@options.layered_options_layer_unzipping_layer_split, 3)
+  a.set_property_bool(
+    @options.layered_options_layer_unzipping_reset_on_long_edges, true,
+  )
 
   let processor = new_alternating_layer_unzipper_layout_processor()
   processor.process(graph, None)
@@ -992,9 +1022,9 @@ test "alternating layer unzipper keeps pure round-robin when reset_on_long_edges
     alternating_layer_unzipper_test_node_type("NORMAL"),
   )
 
-  a.set_property_int(layered_options_layer_unzipping_layer_split, 3)
+  a.set_property_int(@options.layered_options_layer_unzipping_layer_split, 3)
   a.set_property_bool(
-    layered_options_layer_unzipping_reset_on_long_edges, false,
+    @options.layered_options_layer_unzipping_reset_on_long_edges, false,
   )
 
   let processor = new_alternating_layer_unzipper_layout_processor()

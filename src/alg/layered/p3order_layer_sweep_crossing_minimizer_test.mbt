@@ -662,7 +662,8 @@ test "LayerSweep resolves simple hierarchical cross with sweepiness enabled" {
     )
 
     layer_sweep_test_set_on_all_graphs(
-      root, layered_options_crossing_minimization_hierarchical_sweepiness, 0.1,
+      root, @options.layered_options_crossing_minimization_hierarchical_sweepiness,
+      0.1,
     )
     layer_sweep_test_run(creator, cross_min_type)
 
@@ -1054,7 +1055,8 @@ test "LayerSweep non-recursive fixed-order to hierarchical graph removes crossin
     )
 
     layer_sweep_test_set_on_all_graphs(
-      root, layered_options_crossing_minimization_hierarchical_sweepiness, 1.0,
+      root, @options.layered_options_crossing_minimization_hierarchical_sweepiness,
+      1.0,
     )
     layer_sweep_test_run(creator, cross_min_type)
 
@@ -1544,7 +1546,7 @@ test "LayerSweep all-recursive first-level cross removes crossing" {
       left_inner_nodes_right[0],
     )
     root.set_property_double(
-      layered_options_crossing_minimization_hierarchical_sweepiness, -1.0,
+      @options.layered_options_crossing_minimization_hierarchical_sweepiness, -1.0,
     )
 
     let expected_order_right = creator.copy_of_switch_order_of_nodes_in_layer(
@@ -1674,7 +1676,7 @@ test "LayerSweep handles in-layer cross-hierarchy crossings in left-most layer" 
     )
 
     root.set_property_double(
-      layered_options_crossing_minimization_hierarchical_sweepiness, 1.0,
+      @options.layered_options_crossing_minimization_hierarchical_sweepiness, 1.0,
     )
     layer_sweep_test_run(creator, cross_min_type)
 
@@ -1724,7 +1726,7 @@ test "LayerSweep marks needsHierarchical for simple hierarchical cross" {
     )
 
     root.set_property_double(
-      layered_options_crossing_minimization_hierarchical_sweepiness, 0.1,
+      @options.layered_options_crossing_minimization_hierarchical_sweepiness, 0.1,
     )
 
     let cross_min = layer_sweep_test_run_and_get_cross_min(
@@ -1851,7 +1853,8 @@ test "LayerSweep marks hierarchical transfer graphs for hierarchical sweep" {
       creator, cross_min_type,
     )
     layer_sweep_test_set_on_all_graphs(
-      root, layered_options_crossing_minimization_hierarchical_sweepiness, -1.0,
+      root, @options.layered_options_crossing_minimization_hierarchical_sweepiness,
+      -1.0,
     )
 
     let left_nested_graph = match left_outer_node.get_nested_graph() {
@@ -1952,7 +1955,8 @@ test "LayerSweep keeps single hierarch-edge cross as no cross-hierarchy case" {
     )
     creator.east_west_edge_from_to_node_port(left_node, right_outer_ports[1])
     layer_sweep_test_set_on_all_graphs(
-      root, layered_options_crossing_minimization_hierarchical_sweepiness, 0.1,
+      root, @options.layered_options_crossing_minimization_hierarchical_sweepiness,
+      0.1,
     )
     ignore(
       layer_sweep_test_make_nested_two_node_graph_with_western_ports(
@@ -2052,7 +2056,7 @@ test "LayerSweep avoids cross-hierarchy when random paths dominate (EW)" {
     creator.east_west_edge_from_to_nodes(right_inner_nodes[1], right_dummies[0])
 
     layer_sweep_test_set_on_all_graphs(
-      nested_graph, layered_options_crossing_minimization_hierarchical_sweepiness,
+      nested_graph, @options.layered_options_crossing_minimization_hierarchical_sweepiness,
       0.0,
     )
     let cross_min = layer_sweep_test_run_and_get_cross_min(

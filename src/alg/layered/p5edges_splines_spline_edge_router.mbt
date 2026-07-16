@@ -1214,24 +1214,24 @@ fn spline_edge_router_process(
 
   try {
     let node_node_spacing = layered_graph.get_property_double(
-      layered_options_spacing_node_node_between_layers,
+      @options.layered_options_spacing_node_node_between_layers,
     )
     let edge_node_spacing = layered_graph.get_property_double(
-      layered_options_spacing_edge_node_between_layers,
+      @options.layered_options_spacing_edge_node_between_layers,
     )
     let edge_edge_spacing = layered_graph.get_property_double(
-      layered_options_spacing_edge_edge_between_layers,
+      @options.layered_options_spacing_edge_edge_between_layers,
     )
 
     let mode = layered_graph.get_property_spline_routing_mode(
-      layered_options_edge_routing_splines_mode,
+      @options.layered_options_edge_routing_splines_mode,
     )
     let sloppy_routing = match mode {
       Sloppy => true
       _ => false
     }
     let sloppy_layer_spacing_factor = layered_graph.get_property_double(
-      layered_options_edge_routing_splines_sloppy_layer_spacing_factor,
+      @options.layered_options_edge_routing_splines_sloppy_layer_spacing_factor,
     )
 
     let edges_remaining_layer : Array[LEdge] = []

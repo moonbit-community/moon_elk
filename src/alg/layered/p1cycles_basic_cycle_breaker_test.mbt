@@ -557,20 +557,23 @@ test "SCCNodeTypeCycleBreaker honors preferred source node id" {
   n2.set_property_int(internal_properties_model_order, 1)
   n3.set_property_int(internal_properties_model_order, 2)
   n1.set_property_int(
-    layered_options_consider_model_order_group_model_order_cycle_breaking_id, 42,
+    @options.layered_options_consider_model_order_group_model_order_cycle_breaking_id,
+    42,
   )
   n2.set_property_int(
-    layered_options_consider_model_order_group_model_order_cycle_breaking_id, 7,
+    @options.layered_options_consider_model_order_group_model_order_cycle_breaking_id,
+    7,
   )
   n3.set_property_int(
-    layered_options_consider_model_order_group_model_order_cycle_breaking_id, 9,
+    @options.layered_options_consider_model_order_group_model_order_cycle_breaking_id,
+    9,
   )
   graph.set_property_int(
-    layered_options_consider_model_order_group_model_order_cb_preferred_source_id,
+    @options.layered_options_consider_model_order_group_model_order_cb_preferred_source_id,
     42,
   )
   graph.set_property_int(
-    layered_options_consider_model_order_group_model_order_cb_preferred_target_id,
+    @options.layered_options_consider_model_order_group_model_order_cb_preferred_target_id,
     -1,
   )
   ignore(basic_cycle_breaker_connect(n1, n2))

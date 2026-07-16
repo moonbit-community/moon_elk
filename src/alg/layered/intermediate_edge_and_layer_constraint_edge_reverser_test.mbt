@@ -22,7 +22,7 @@ fn edge_and_layer_constraint_edge_reverser_test_new_node(
 ) -> LNode {
   let node = new_l_node(graph=Some(graph))
   node.set_property_string(
-    layered_options_layering_layer_constraint, layer_constraint,
+    @options.layered_options_layering_layer_constraint, layer_constraint,
   )
   graph.get_layerless_nodes().push(node)
   node
@@ -85,7 +85,7 @@ fn edge_and_layer_constraint_edge_reverser_test_constraint(
   node : LNode,
 ) -> LayerConstraint {
   layer_constraint_from_string(
-    node.get_property_string(layered_options_layering_layer_constraint),
+    node.get_property_string(@options.layered_options_layering_layer_constraint),
   )
 }
 

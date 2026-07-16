@@ -48,7 +48,7 @@ test "recursive layered context applies graph configurator properties" {
   assert_eq(context.layered_graph.get_property_string(@core.direction), "DOWN")
   assert_true(
     context.layered_graph.get_property_bool(
-      layered_options_node_placement_favor_straight_edges,
+      @options.layered_options_node_placement_favor_straight_edges,
     ),
   )
   assert_eq(

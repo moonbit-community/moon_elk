@@ -148,7 +148,7 @@ test "@core.interactive external port positioner strategy applies west/east posi
     0.0,
   )
   west_dummy.set_property_string(
-    layered_options_layering_layer_constraint, "FIRST_SEPARATE",
+    @options.layered_options_layering_layer_constraint, "FIRST_SEPARATE",
   )
 
   let east_dummy = interactive_external_port_positioner_test_new_node(
@@ -164,7 +164,7 @@ test "@core.interactive external port positioner strategy applies west/east posi
     0.0,
   )
   east_dummy.set_property_string(
-    layered_options_layering_layer_constraint, "LAST_SEPARATE",
+    @options.layered_options_layering_layer_constraint, "LAST_SEPARATE",
   )
 
   let west_port = interactive_external_port_positioner_test_new_port(

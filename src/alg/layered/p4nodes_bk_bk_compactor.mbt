@@ -51,7 +51,7 @@ pub fn new_bk_compactor(
   ni : NeighborhoodInformation,
 ) -> BKCompactor {
   let edge_straightening = layered_graph.get_property_string(
-    layered_options_node_placement_bk_edge_straightening,
+    @options.layered_options_node_placement_bk_edge_straightening,
   )
 
   let thresh_strategy = if edge_straightening == "IMPROVE_STRAIGHTNESS" {

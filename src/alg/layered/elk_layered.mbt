@@ -318,40 +318,42 @@ fn elk_layered_collect_algorithm_for_graph(
   lgraph : LGraph,
 ) -> Array[@core.ILayoutProcessor[LayeredPhases, LGraph]] {
   let layering_strategy = lgraph.get_property_string(
-    layered_options_layering_strategy,
+    @options.layered_options_layering_strategy,
   )
   let cycle_breaking_strategy = lgraph.get_property_string(
-    layered_options_cycle_breaking_strategy,
+    @options.layered_options_cycle_breaking_strategy,
   )
   let crossing_strategy = lgraph.get_property_string(
-    layered_options_crossing_minimization_strategy,
+    @options.layered_options_crossing_minimization_strategy,
   )
   let node_promotion_strategy = lgraph.get_property_string(
-    layered_options_layering_node_promotion_strategy,
+    @options.layered_options_layering_node_promotion_strategy,
   )
   let compaction_post_strategy = lgraph.get_property_string(
-    layered_options_compaction_post_compaction_strategy,
+    @options.layered_options_compaction_post_compaction_strategy,
   )
   let high_degree_nodes_treatment = lgraph.get_property_bool(
-    layered_options_high_degree_nodes_treatment,
+    @options.layered_options_high_degree_nodes_treatment,
   )
   let semi_interactive_cross_minimization = lgraph.get_property_bool(
-    layered_options_crossing_minimization_semi_interactive,
+    @options.layered_options_crossing_minimization_semi_interactive,
   )
   let layer_unzipping_strategy = lgraph.get_property_string(
-    layered_options_layer_unzipping_strategy,
+    @options.layered_options_layer_unzipping_strategy,
   )
   let wrapping_strategy = lgraph.get_property_string(
-    layered_options_wrapping_strategy,
+    @options.layered_options_wrapping_strategy,
   )
   let node_placement_strategy = lgraph.get_property_string(
-    layered_options_node_placement_strategy,
+    @options.layered_options_node_placement_strategy,
   )
   let direction_value = lgraph.get_property_string(@core.direction)
-  let feedback_edges = lgraph.get_property_bool(layered_options_feedback_edges)
+  let feedback_edges = lgraph.get_property_bool(
+    @options.layered_options_feedback_edges,
+  )
   let edge_routing_value = lgraph.get_property_string(@core.edge_routing)
   let hierarchy_handling = lgraph.get_property_string(
-    layered_options_hierarchy_handling,
+    @options.layered_options_hierarchy_handling,
   )
   let hierarchical_layout = hierarchy_handling == "INCLUDE_CHILDREN"
   let has_label_manager = lgraph.get_property_i_label_manager(
@@ -360,15 +362,15 @@ fn elk_layered_collect_algorithm_for_graph(
     is Some(_)
   let interactive_layout = lgraph.get_property_bool(@core.interactive)
   let generate_position_and_layer_ids = lgraph.get_property_bool(
-    layered_options_generate_position_and_layer_ids,
+    @options.layered_options_generate_position_and_layer_ids,
   )
   let greedy_switch_type = if hierarchical_layout {
     lgraph.get_property_string(
-      layered_options_crossing_minimization_greedy_switch_hierarchical_type,
+      @options.layered_options_crossing_minimization_greedy_switch_hierarchical_type,
     )
   } else {
     lgraph.get_property_string(
-      layered_options_crossing_minimization_greedy_switch_type,
+      @options.layered_options_crossing_minimization_greedy_switch_type,
     )
   }
 
@@ -645,7 +647,9 @@ fn elk_layered_collect_algorithm_for_graph(
     _ => ()
   }
 
-  if lgraph.get_property_string(layered_options_consider_model_order_strategy) !=
+  if lgraph.get_property_string(
+      @options.layered_options_consider_model_order_strategy,
+    ) !=
     "NONE" {
     ignore(
       assembler.add_processor_configuration(
@@ -696,11 +700,11 @@ fn elk_layered_review_and_correct_hierarchical_processors(
   graphs : Array[LGraph],
 ) -> Unit {
   let parent_crossing_strategy = root.get_property_string(
-    layered_options_crossing_minimization_strategy,
+    @options.layered_options_crossing_minimization_strategy,
   )
   for child in graphs {
     let child_crossing_strategy = child.get_property_string(
-      layered_options_crossing_minimization_strategy,
+      @options.layered_options_crossing_minimization_strategy,
     )
     if child_crossing_strategy != parent_crossing_strategy {
       @core.layout_runtime_report_unsupported_configuration(
@@ -713,11 +717,12 @@ fn elk_layered_review_and_correct_hierarchical_processors(
   }
 
   let root_greedy_switch_hierarchical_type = root.get_property_string(
-    layered_options_crossing_minimization_greedy_switch_hierarchical_type,
+    @options.layered_options_crossing_minimization_greedy_switch_hierarchical_type,
   )
   for graph in graphs {
     graph.set_property_string(
-      layered_options_crossing_minimization_greedy_switch_hierarchical_type, root_greedy_switch_hierarchical_type,
+      @options.layered_options_crossing_minimization_greedy_switch_hierarchical_type,
+      root_greedy_switch_hierarchical_type,
     )
   }
 }

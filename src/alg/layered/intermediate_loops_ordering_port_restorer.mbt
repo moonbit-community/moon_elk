@@ -725,7 +725,9 @@ pub fn PortRestorer::restore_ports(
   let ordering = port_restorer_parse_ordering(
     sl_holder
     .get_l_node()
-    .get_property_string(layered_options_edge_routing_self_loop_ordering),
+    .get_property_string(
+      @options.layered_options_edge_routing_self_loop_ordering,
+    ),
   )
   self.process_one_side_loops(ordering)
   self.process_two_side_corner_loops()

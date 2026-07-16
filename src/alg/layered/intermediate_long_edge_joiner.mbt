@@ -150,21 +150,23 @@ pub fn long_edge_joiner_join_at(
       surviving_labels.push(label)
     }
 
-    if dropped_edge.has_property_kvector_chain(layered_options_junction_points) {
+    if dropped_edge.has_property_kvector_chain(
+        @options.layered_options_junction_points,
+      ) {
       let dropped_junction_points = dropped_edge.get_property_kvector_chain(
-        layered_options_junction_points,
+        @options.layered_options_junction_points,
       )
       if !surviving_edge.has_property_kvector_chain(
-          layered_options_junction_points,
+          @options.layered_options_junction_points,
         ) {
         surviving_edge.set_property_kvector_chain(
-          layered_options_junction_points,
+          @options.layered_options_junction_points,
           @core.new_kvector_chain(),
         )
       }
 
       let surviving_junction_points = surviving_edge.get_property_kvector_chain(
-        layered_options_junction_points,
+        @options.layered_options_junction_points,
       )
       for junction_point in dropped_junction_points.to_array() {
         surviving_junction_points.add_vector(
@@ -189,7 +191,7 @@ fn long_edge_joiner_process(
   ignore(monitor.begin("Edge joining", 1.0))
 
   let add_unnecessary_bendpoints = layered_graph.get_property_bool(
-    layered_options_unnecessary_bendpoints,
+    @options.layered_options_unnecessary_bendpoints,
   )
 
   for layer in layered_graph.get_layers() {

@@ -38,10 +38,10 @@ fn constraints_postprocessor_process(
         ) {
         node_layer = true
         current_node.set_property_int(
-          layered_options_layering_layer_id, layer_index,
+          @options.layered_options_layering_layer_id, layer_index,
         )
         current_node.set_property_int(
-          layered_options_crossing_minimization_position_id, pos_index,
+          @options.layered_options_crossing_minimization_position_id, pos_index,
         )
         pos_index = pos_index + 1
       }

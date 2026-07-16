@@ -89,8 +89,12 @@ test "high degree processor moves short trees to inserted layers around high deg
   ignore(high_degree_test_connect(s, h))
   ignore(high_degree_test_connect(h, t))
 
-  graph.set_property_int(layered_options_high_degree_nodes_threshold, 3)
-  graph.set_property_int(layered_options_high_degree_nodes_tree_height, 5)
+  graph.set_property_int(
+    @options.layered_options_high_degree_nodes_threshold, 3,
+  )
+  graph.set_property_int(
+    @options.layered_options_high_degree_nodes_tree_height, 5,
+  )
 
   let processor = new_high_degree_node_layering_processor_layout_processor()
   processor.process(graph, None)

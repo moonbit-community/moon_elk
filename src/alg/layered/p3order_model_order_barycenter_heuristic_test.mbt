@@ -59,16 +59,16 @@ test "ModelOrderBarycenterHeuristic preserves model order when forced" {
   free_layer[0].set_property_int(internal_properties_model_order, 0)
   free_layer[1].set_property_int(internal_properties_model_order, 1)
   free_layer[0].set_property_int(
-    layered_options_consider_model_order_group_model_order_crossing_minimization_id,
+    @options.layered_options_consider_model_order_group_model_order_crossing_minimization_id,
     0,
   )
   free_layer[1].set_property_int(
-    layered_options_consider_model_order_group_model_order_crossing_minimization_id,
+    @options.layered_options_consider_model_order_group_model_order_crossing_minimization_id,
     0,
   )
   graph.set_property_int(internal_properties_max_model_order_nodes, 16)
   graph.set_property_bool(
-    layered_options_crossing_minimization_force_node_model_order, true,
+    @options.layered_options_crossing_minimization_force_node_model_order, true,
   )
 
   let (heuristic, _) = model_order_barycenter_test_build_heuristic(
@@ -94,19 +94,19 @@ test "ModelOrderBarycenterHeuristic keeps model order across groups when forced"
   free_layer[0].set_property_int(internal_properties_model_order, 0)
   free_layer[1].set_property_int(internal_properties_model_order, 1)
   free_layer[0].set_property_int(
-    layered_options_consider_model_order_group_model_order_crossing_minimization_id,
+    @options.layered_options_consider_model_order_group_model_order_crossing_minimization_id,
     1,
   )
   free_layer[1].set_property_int(
-    layered_options_consider_model_order_group_model_order_crossing_minimization_id,
+    @options.layered_options_consider_model_order_group_model_order_crossing_minimization_id,
     2,
   )
   graph.set_property_int(internal_properties_max_model_order_nodes, 16)
   graph.set_property_bool(
-    layered_options_crossing_minimization_force_node_model_order, true,
+    @options.layered_options_crossing_minimization_force_node_model_order, true,
   )
   graph.set_property_string(
-    layered_options_consider_model_order_group_model_order_cm_group_order_strategy,
+    @options.layered_options_consider_model_order_group_model_order_cm_group_order_strategy,
     "ONLY_WITHIN_GROUP",
   )
 
@@ -133,20 +133,20 @@ test "ModelOrderBarycenterHeuristic ignores separate-layer constraint when force
   free_layer[0].set_property_int(internal_properties_model_order, 1)
   free_layer[1].set_property_int(internal_properties_model_order, 0)
   free_layer[0].set_property_int(
-    layered_options_consider_model_order_group_model_order_crossing_minimization_id,
+    @options.layered_options_consider_model_order_group_model_order_crossing_minimization_id,
     0,
   )
   free_layer[1].set_property_int(
-    layered_options_consider_model_order_group_model_order_crossing_minimization_id,
+    @options.layered_options_consider_model_order_group_model_order_crossing_minimization_id,
     0,
   )
   free_layer[0].set_property_string(
-    layered_options_layering_layer_constraint, "FIRST_SEPARATE",
+    @options.layered_options_layering_layer_constraint, "FIRST_SEPARATE",
   )
 
   graph.set_property_int(internal_properties_max_model_order_nodes, 16)
   graph.set_property_bool(
-    layered_options_crossing_minimization_force_node_model_order, true,
+    @options.layered_options_crossing_minimization_force_node_model_order, true,
   )
 
   let (heuristic, _) = model_order_barycenter_test_build_heuristic(

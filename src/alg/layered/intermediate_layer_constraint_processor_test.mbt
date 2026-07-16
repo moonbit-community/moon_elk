@@ -1,7 +1,7 @@
 ///|
 fn layer_constraint_processor_test_constraint(node : LNode) -> LayerConstraint {
   layer_constraint_from_string(
-    node.get_property_string(layered_options_layering_layer_constraint),
+    node.get_property_string(@options.layered_options_layering_layer_constraint),
   )
 }
 
@@ -13,7 +13,7 @@ fn layer_constraint_processor_test_new_node(
   let node = new_l_node(graph=Some(graph))
   if constraint != "NONE" {
     node.set_property_string(
-      layered_options_layering_layer_constraint, constraint,
+      @options.layered_options_layering_layer_constraint, constraint,
     )
   }
   graph.get_layerless_nodes().push(node)

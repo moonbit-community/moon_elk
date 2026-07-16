@@ -132,7 +132,7 @@ fn hierarchical_node_resizing_processor_get_external_port_position(
   port_position.x = port_position.x + port_dummy.get_size().x / 2.0
   port_position.y = port_position.y + port_dummy.get_size().y / 2.0
   let port_offset = port_dummy.get_property_double(
-    layered_options_port_border_offset,
+    @options.layered_options_port_border_offset,
   )
 
   let graph_size = graph.get_size()

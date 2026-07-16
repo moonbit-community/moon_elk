@@ -18,7 +18,9 @@ pub fn GroupModelOrderCalculator::compute_constraint_model_order(
   let mut model_order = 0
   match
     layer_constraint_from_string(
-      node.get_property_string(layered_options_layering_layer_constraint),
+      node.get_property_string(
+        @options.layered_options_layering_layer_constraint,
+      ),
     ) {
     FirstSeparate => {
       model_order = 2 * -offset + self.first_separate_nodes
@@ -49,7 +51,9 @@ pub fn GroupModelOrderCalculator::compute_constraint_group_model_order(
   let mut model_order = 0
   match
     layer_constraint_from_string(
-      node.get_property_string(layered_options_layering_layer_constraint),
+      node.get_property_string(
+        @options.layered_options_layering_layer_constraint,
+      ),
     ) {
     FirstSeparate => {
       model_order = 2 * -offset + self.first_separate_nodes
@@ -66,7 +70,7 @@ pub fn GroupModelOrderCalculator::compute_constraint_group_model_order(
 
   if node.has_property_int(internal_properties_model_order) {
     model_order += node.get_property_int(
-        layered_options_consider_model_order_group_model_order_cycle_breaking_id,
+        @options.layered_options_consider_model_order_group_model_order_cycle_breaking_id,
       ) *
       small_offset +
       node.get_property_int(internal_properties_model_order)

@@ -52,16 +52,16 @@ fn scc_node_type_find_nodes(
     match (min_node, max_node) {
       (Some(minimum), Some(maximum)) => {
         let min_cycle_breaking_id = minimum.get_property_int(
-          layered_options_consider_model_order_group_model_order_cycle_breaking_id,
+          @options.layered_options_consider_model_order_group_model_order_cycle_breaking_id,
         )
         let max_cycle_breaking_id = maximum.get_property_int(
-          layered_options_consider_model_order_group_model_order_cycle_breaking_id,
+          @options.layered_options_consider_model_order_group_model_order_cycle_breaking_id,
         )
         let preferred_source_id = graph.get_property_int(
-          layered_options_consider_model_order_group_model_order_cb_preferred_source_id,
+          @options.layered_options_consider_model_order_group_model_order_cb_preferred_source_id,
         )
         let preferred_target_id = graph.get_property_int(
-          layered_options_consider_model_order_group_model_order_cb_preferred_target_id,
+          @options.layered_options_consider_model_order_group_model_order_cb_preferred_target_id,
         )
 
         if min_cycle_breaking_id == preferred_source_id {

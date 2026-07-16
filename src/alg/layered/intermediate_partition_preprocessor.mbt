@@ -65,10 +65,12 @@ fn partition_preprocessor_reverse_edge(edge : LEdge, graph : LGraph) -> Unit {
 fn partition_preprocessor_reverse(edge : LEdge, graph : LGraph) -> Unit {
   partition_preprocessor_reverse_edge(edge, graph)
   let mut priority = partition_preprocessor_partition_constraint_edge_priority
-  if edge.has_property_int(layered_options_priority_direction) {
-    priority += edge.get_property_int(layered_options_priority_direction)
+  if edge.has_property_int(@options.layered_options_priority_direction) {
+    priority += edge.get_property_int(
+      @options.layered_options_priority_direction,
+    )
   }
-  edge.set_property_int(layered_options_priority_direction, priority)
+  edge.set_property_int(@options.layered_options_priority_direction, priority)
 }
 
 ///|
@@ -83,22 +85,24 @@ fn partition_preprocessor_must_be_reversed(
     partition_preprocessor_require_edge_target(edge),
   )
 
-  if target_node.has_property_int(layered_options_partitioning_partition) {
+  if target_node.has_property_int(
+      @options.layered_options_partitioning_partition,
+    ) {
     let source_partition = source_node.get_property_int(
-      layered_options_partitioning_partition,
+      @options.layered_options_partitioning_partition,
     )
     let target_partition = target_node.get_property_int(
-      layered_options_partitioning_partition,
+      @options.layered_options_partitioning_partition,
     )
     return source_partition > target_partition
   }
 
   let source_partition = source_node.get_property_int(
-    layered_options_partitioning_partition,
+    @options.layered_options_partitioning_partition,
   )
   let partitioned_nodes_with_lower_partition = []
   for node in partitioned_nodes {
-    if node.get_property_int(layered_options_partitioning_partition) <
+    if node.get_property_int(@options.layered_options_partitioning_partition) <
       source_partition {
       partitioned_nodes_with_lower_partition.push(node)
     }
@@ -148,14 +152,14 @@ fn partition_preprocessor_process(
   try {
     let partitioned_nodes = []
     for node in graph.get_layerless_nodes() {
-      if node.has_property_int(layered_options_partitioning_partition) {
+      if node.has_property_int(@options.layered_options_partitioning_partition) {
         partitioned_nodes.push(node)
       }
     }
 
     let edges_to_be_reversed = []
     for node in graph.get_layerless_nodes() {
-      if !node.has_property_int(layered_options_partitioning_partition) {
+      if !node.has_property_int(@options.layered_options_partitioning_partition) {
         continue
       }
       for edge in node.get_outgoing_edges() {

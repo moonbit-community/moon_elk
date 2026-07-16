@@ -94,7 +94,7 @@ test "north south port preprocessor reports expected task name" {
 test "north south port preprocessor isolates north and south ports for fixed-side nodes" {
   let graph = new_l_graph()
   graph.set_property_string(
-    layered_options_consider_model_order_strategy, "NONE",
+    @options.layered_options_consider_model_order_strategy, "NONE",
   )
 
   let layer = new_layer(graph)
@@ -261,7 +261,7 @@ test "north south port preprocessor isolates north and south ports for fixed-sid
 test "north south port preprocessor skips successor constraints when port may switch sides" {
   let graph = new_l_graph()
   graph.set_property_string(
-    layered_options_consider_model_order_strategy, "NONE",
+    @options.layered_options_consider_model_order_strategy, "NONE",
   )
 
   let layer = new_layer(graph)
@@ -282,14 +282,14 @@ test "north south port preprocessor skips successor constraints when port may sw
   let north_port = new_l_port()
   north_port.set_side(north_south_port_preprocessor_test_port_side("NORTH"))
   north_port.set_property_bool(
-    layered_options_allow_non_flow_ports_to_switch_sides, true,
+    @options.layered_options_allow_non_flow_ports_to_switch_sides, true,
   )
   north_port.set_node(Some(node))
 
   let south_port = new_l_port()
   south_port.set_side(north_south_port_preprocessor_test_port_side("SOUTH"))
   south_port.set_property_bool(
-    layered_options_allow_non_flow_ports_to_switch_sides, true,
+    @options.layered_options_allow_non_flow_ports_to_switch_sides, true,
   )
   south_port.set_node(Some(node))
 

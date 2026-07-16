@@ -564,7 +564,7 @@ pub fn ModelOrderNodeComparator::compare(
     !n1.has_property_int(internal_properties_model_order) ||
     !n2.has_property_int(internal_properties_model_order) {
     let feedback_edges = self.graph.get_property_bool(
-      layered_options_feedback_edges,
+      @options.layered_options_feedback_edges,
     )
     let p1_source_port = if feedback_edges {
       model_order_node_first_source_port_connected_to_previous_layer(n1)

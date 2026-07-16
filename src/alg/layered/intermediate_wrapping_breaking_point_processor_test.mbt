@@ -87,14 +87,20 @@ fn breaking_point_processor_test_new_graph() -> LGraph {
     ignore(breaking_point_processor_test_connect(nodes[i], nodes[i + 1]))
   }
 
-  graph.set_property_string(layered_options_wrapping_cutting_strategy, "MANUAL")
-  graph.set_property_string(layered_options_wrapping_cutting_cuts, "[2]")
-  graph.set_property_bool(
-    layered_options_wrapping_multi_edge_improve_cuts, false,
+  graph.set_property_string(
+    @options.layered_options_wrapping_cutting_strategy, "MANUAL",
   )
-  graph.set_property_string(layered_options_wrapping_validify_strategy, "NO")
+  graph.set_property_string(
+    @options.layered_options_wrapping_cutting_cuts, "[2]",
+  )
   graph.set_property_bool(
-    layered_options_wrapping_multi_edge_improve_wrapped_edges, false,
+    @options.layered_options_wrapping_multi_edge_improve_cuts, false,
+  )
+  graph.set_property_string(
+    @options.layered_options_wrapping_validify_strategy, "NO",
+  )
+  graph.set_property_bool(
+    @options.layered_options_wrapping_multi_edge_improve_wrapped_edges, false,
   )
 
   let inserter = new_breaking_point_inserter_layout_processor()

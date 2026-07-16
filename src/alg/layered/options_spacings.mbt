@@ -140,13 +140,13 @@ fn Spacings::precalculate_node_type_spacings(self : Spacings) -> Unit {
   self.set_same_type_spacing(
     Normal,
     @core.spacing_node_node,
-    layered_options_spacing_node_node_between_layers,
+    @options.layered_options_spacing_node_node_between_layers,
   )
   self.set_pair_spacing(
     Normal,
     LongEdge,
     @core.spacing_edge_node,
-    layered_options_spacing_edge_node_between_layers,
+    @options.layered_options_spacing_edge_node_between_layers,
   )
   self.set_pair_spacing_vertical(
     Normal,
@@ -158,13 +158,13 @@ fn Spacings::precalculate_node_type_spacings(self : Spacings) -> Unit {
     Normal,
     LabelNode,
     @core.spacing_node_node,
-    layered_options_spacing_node_node_between_layers,
+    @options.layered_options_spacing_node_node_between_layers,
   )
 
   self.set_same_type_spacing(
     LongEdge,
     @core.spacing_edge_edge,
-    layered_options_spacing_edge_edge_between_layers,
+    @options.layered_options_spacing_edge_edge_between_layers,
   )
   self.set_pair_spacing_vertical(
     LongEdge,
@@ -180,7 +180,7 @@ fn Spacings::precalculate_node_type_spacings(self : Spacings) -> Unit {
     LongEdge,
     LabelNode,
     @core.spacing_edge_node,
-    layered_options_spacing_edge_node_between_layers,
+    @options.layered_options_spacing_edge_node_between_layers,
   )
 
   self.set_same_type_spacing_vertical(NorthSouthPort, @core.spacing_edge_edge)
@@ -212,25 +212,25 @@ fn Spacings::precalculate_node_type_spacings(self : Spacings) -> Unit {
   self.set_same_type_spacing(
     BreakingPoint,
     @core.spacing_edge_edge,
-    layered_options_spacing_edge_edge_between_layers,
+    @options.layered_options_spacing_edge_edge_between_layers,
   )
   self.set_pair_spacing(
     BreakingPoint,
     Normal,
     @core.spacing_edge_node,
-    layered_options_spacing_edge_node_between_layers,
+    @options.layered_options_spacing_edge_node_between_layers,
   )
   self.set_pair_spacing(
     BreakingPoint,
     LabelNode,
     @core.spacing_edge_node,
-    layered_options_spacing_edge_node_between_layers,
+    @options.layered_options_spacing_edge_node_between_layers,
   )
   self.set_pair_spacing(
     BreakingPoint,
     LongEdge,
     @core.spacing_edge_node,
-    layered_options_spacing_edge_node_between_layers,
+    @options.layered_options_spacing_edge_node_between_layers,
   )
 }
 

@@ -63,7 +63,7 @@ test "layer size and graph height calculator computes layer width height and gra
 test "layer size and graph height calculator includes additional spacing for external ports" {
   let (graph, layer) = layer_size_and_graph_height_test_new_graph_with_layer()
   graph.set_property_elk_margin(
-    layered_options_spacing_ports_surrounding,
+    @options.layered_options_spacing_ports_surrounding,
     @core.new_elk_margin_values(4.0, 0.0, 6.0, 0.0),
   )
 

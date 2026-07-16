@@ -101,9 +101,11 @@ fn wrapping_cut_test_new_uniform_graph_stats(
     wrapping_cut_test_direction("RIGHT"),
   )
   graph.set_property_double(@core.aspect_ratio, 1.0)
-  graph.set_property_double(layered_options_wrapping_correction_factor, 1.0)
   graph.set_property_double(
-    layered_options_spacing_node_node_between_layers, 0.0,
+    @options.layered_options_wrapping_correction_factor, 1.0,
+  )
+  graph.set_property_double(
+    @options.layered_options_spacing_node_node_between_layers, 0.0,
   )
   graph.set_property_double(@core.spacing_node_node, 0.0)
 
@@ -124,9 +126,11 @@ test "graph stats computes approximation widths heights and chunk values" {
     wrapping_cut_test_direction("RIGHT"),
   )
   graph.set_property_double(@core.aspect_ratio, 2.0)
-  graph.set_property_double(layered_options_wrapping_correction_factor, 1.5)
   graph.set_property_double(
-    layered_options_spacing_node_node_between_layers, 2.0,
+    @options.layered_options_wrapping_correction_factor, 1.5,
+  )
+  graph.set_property_double(
+    @options.layered_options_spacing_node_node_between_layers, 2.0,
   )
   graph.set_property_double(@core.spacing_node_node, 3.0)
 
@@ -165,7 +169,9 @@ test "graph stats adjusts desired aspect ratio for vertical @core.direction" {
     wrapping_cut_test_direction("DOWN"),
   )
   graph.set_property_double(@core.aspect_ratio, 4.0)
-  graph.set_property_double(layered_options_wrapping_correction_factor, 2.0)
+  graph.set_property_double(
+    @options.layered_options_wrapping_correction_factor, 2.0,
+  )
 
   ignore(
     wrapping_cut_test_new_node(graph, layers[0], 10.0, 10.0, 0.0, 0.0, 0.0, 0.0),
@@ -240,7 +246,7 @@ test "graph stats detects allowed and forbidden cut indices from topology" {
 test "graph stats with forbidden index option keeps all cuts false as upstream" {
   let (graph, layers) = wrapping_cut_test_new_graph_with_layers(3)
   graph.set_property_string(
-    layered_options_wrapping_validify_forbidden_indices, "[2]",
+    @options.layered_options_wrapping_validify_forbidden_indices, "[2]",
   )
 
   let source = wrapping_cut_test_new_node(
@@ -334,7 +340,9 @@ test "manual cut calculator reads manually configured cuts and defaults to empty
   ignore(
     wrapping_cut_test_new_node(graph, layers[0], 1.0, 1.0, 0.0, 0.0, 0.0, 0.0),
   )
-  graph.set_property_string(layered_options_wrapping_cutting_cuts, "[1, 3, 5]")
+  graph.set_property_string(
+    @options.layered_options_wrapping_cutting_cuts, "[1, 3, 5]",
+  )
 
   let calculator = new_manual_cut_index_calculator()
   let graph_stats = new_graph_stats(graph)
@@ -366,7 +374,9 @@ test "ard cut index heuristic computes chunk count and equidistant cuts" {
 ///|
 test "msd cut index heuristic optimizes cuts around the center" {
   let (graph, graph_stats) = wrapping_cut_test_new_uniform_graph_stats(4)
-  graph.set_property_int(layered_options_wrapping_cutting_msd_freedom, 0)
+  graph.set_property_int(
+    @options.layered_options_wrapping_cutting_msd_freedom, 0,
+  )
 
   let calculator = new_msd_cut_index_heuristic()
   let cuts = calculator.get_cut_indexes(graph, graph_stats)

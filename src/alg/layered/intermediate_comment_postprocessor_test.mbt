@@ -56,7 +56,9 @@ test "comment postprocessor reports expected task name" {
 ///|
 test "comment postprocessor repositions comments and reconnects detached edges" {
   let graph = new_l_graph()
-  graph.set_property_double(layered_options_spacing_comment_comment, 5.0)
+  graph.set_property_double(
+    @options.layered_options_spacing_comment_comment, 5.0,
+  )
 
   let layer = new_layer(graph)
   graph.get_layers().push(layer)

@@ -95,14 +95,14 @@ fn north_south_port_postprocessor_add_junction_point(
   x : Double,
   y : Double,
 ) -> Unit {
-  if !edge.has_property_kvector_chain(layered_options_junction_points) {
+  if !edge.has_property_kvector_chain(@options.layered_options_junction_points) {
     edge.set_property_kvector_chain(
-      layered_options_junction_points,
+      @options.layered_options_junction_points,
       @core.new_kvector_chain(),
     )
   }
   let junction_points = edge.get_property_kvector_chain(
-    layered_options_junction_points,
+    @options.layered_options_junction_points,
   )
   junction_points.add_last_xy(x, y)
 }

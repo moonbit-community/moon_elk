@@ -391,10 +391,10 @@ fn graph_transformer_transpose_node_properties(node : LNode) -> Unit {
     node.set_property_string(@core.alignment, "RIGHT")
   }
 
-  if node.has_property_kvector(layered_options_position) {
-    let position = node.get_property_kvector(layered_options_position)
+  if node.has_property_kvector(@options.layered_options_position) {
+    let position = node.get_property_kvector(@options.layered_options_position)
     graph_transformer_transpose_vector(position)
-    node.set_property_kvector(layered_options_position, position)
+    node.set_property_kvector(@options.layered_options_position, position)
   }
 }
 
@@ -503,11 +503,11 @@ fn graph_transformer_transpose_edge_label_placement(
 ) -> Unit {
   let old_side = graph_transformer_parse_edge_label_side_selection(
     layered_graph.get_property_string(
-      layered_options_edge_labels_side_selection,
+      @options.layered_options_edge_labels_side_selection,
     ),
   )
   layered_graph.set_property_string(
-    layered_options_edge_labels_side_selection,
+    @options.layered_options_edge_labels_side_selection,
     edge_label_side_selection_to_string(
       EdgeLabelSideSelection::transpose(old_side),
     ),
@@ -516,29 +516,33 @@ fn graph_transformer_transpose_edge_label_placement(
 
 ///|
 fn graph_transformer_reverse_port_index(port : LPort) -> Unit {
-  if !port.has_property_int(layered_options_port_index) {
+  if !port.has_property_int(@options.layered_options_port_index) {
     return
   }
-  let index = port.get_property_int(layered_options_port_index)
-  port.set_property_int(layered_options_port_index, -index)
+  let index = port.get_property_int(@options.layered_options_port_index)
+  port.set_property_int(@options.layered_options_port_index, -index)
 }
 
 ///|
 fn graph_transformer_mirror_layer_constraint_x(node : LNode) -> Unit {
   let current = node.get_property_string(
-    layered_options_layering_layer_constraint,
+    @options.layered_options_layering_layer_constraint,
   )
   if current == "FIRST" {
-    node.set_property_string(layered_options_layering_layer_constraint, "LAST")
+    node.set_property_string(
+      @options.layered_options_layering_layer_constraint, "LAST",
+    )
   } else if current == "FIRST_SEPARATE" {
     node.set_property_string(
-      layered_options_layering_layer_constraint, "LAST_SEPARATE",
+      @options.layered_options_layering_layer_constraint, "LAST_SEPARATE",
     )
   } else if current == "LAST" {
-    node.set_property_string(layered_options_layering_layer_constraint, "FIRST")
+    node.set_property_string(
+      @options.layered_options_layering_layer_constraint, "FIRST",
+    )
   } else if current == "LAST_SEPARATE" {
     node.set_property_string(
-      layered_options_layering_layer_constraint, "FIRST_SEPARATE",
+      @options.layered_options_layering_layer_constraint, "FIRST_SEPARATE",
     )
   }
 }
@@ -558,25 +562,29 @@ fn graph_transformer_mirror_in_layer_constraint_y(node : LNode) -> Unit {
 ///|
 fn graph_transformer_transpose_layer_constraint(node : LNode) -> Unit {
   let layer_constraint = node.get_property_string(
-    layered_options_layering_layer_constraint,
+    @options.layered_options_layering_layer_constraint,
   )
   let in_layer_constraint = node.get_property_string(
     internal_properties_in_layer_constraint,
   )
   if layer_constraint == "FIRST_SEPARATE" {
-    node.set_property_string(layered_options_layering_layer_constraint, "NONE")
+    node.set_property_string(
+      @options.layered_options_layering_layer_constraint, "NONE",
+    )
     node.set_property_string(internal_properties_in_layer_constraint, "TOP")
   } else if layer_constraint == "LAST_SEPARATE" {
-    node.set_property_string(layered_options_layering_layer_constraint, "NONE")
+    node.set_property_string(
+      @options.layered_options_layering_layer_constraint, "NONE",
+    )
     node.set_property_string(internal_properties_in_layer_constraint, "BOTTOM")
   } else if in_layer_constraint == "TOP" {
     node.set_property_string(
-      layered_options_layering_layer_constraint, "FIRST_SEPARATE",
+      @options.layered_options_layering_layer_constraint, "FIRST_SEPARATE",
     )
     node.set_property_string(internal_properties_in_layer_constraint, "NONE")
   } else if in_layer_constraint == "BOTTOM" {
     node.set_property_string(
-      layered_options_layering_layer_constraint, "LAST_SEPARATE",
+      @options.layered_options_layering_layer_constraint, "LAST_SEPARATE",
     )
     node.set_property_string(internal_properties_in_layer_constraint, "NONE")
   }
@@ -628,10 +636,12 @@ fn graph_transformer_mirror_x(
     graph_transformer_mirror_x_node_labels_padding_node(node)
     graph_transformer_mirror_node_label_placement_x_node(node)
 
-    if node.has_property_kvector(layered_options_position) {
-      let position = node.get_property_kvector(layered_options_position)
+    if node.has_property_kvector(@options.layered_options_position) {
+      let position = node.get_property_kvector(
+        @options.layered_options_position,
+      )
       graph_transformer_mirror_x_vector(position, offset - node_size.x)
-      node.set_property_kvector(layered_options_position, position)
+      node.set_property_kvector(@options.layered_options_position, position)
     }
 
     graph_transformer_mirror_alignment_x(node)
@@ -652,9 +662,11 @@ fn graph_transformer_mirror_x(
         for bend_point in edge.get_bend_points().to_array() {
           graph_transformer_mirror_x_vector(bend_point, offset)
         }
-        if edge.has_property_kvector_chain(layered_options_junction_points) {
+        if edge.has_property_kvector_chain(
+            @options.layered_options_junction_points,
+          ) {
           let junction_points = edge.get_property_kvector_chain(
-            layered_options_junction_points,
+            @options.layered_options_junction_points,
           )
           for point in junction_points.to_array() {
             graph_transformer_mirror_x_vector(point, offset)
@@ -734,10 +746,12 @@ fn graph_transformer_mirror_y(
     graph_transformer_mirror_y_node_labels_padding_node(node)
     graph_transformer_mirror_node_label_placement_y_node(node)
 
-    if node.has_property_kvector(layered_options_position) {
-      let position = node.get_property_kvector(layered_options_position)
+    if node.has_property_kvector(@options.layered_options_position) {
+      let position = node.get_property_kvector(
+        @options.layered_options_position,
+      )
       graph_transformer_mirror_y_vector(position, offset - node_size.y)
-      node.set_property_kvector(layered_options_position, position)
+      node.set_property_kvector(@options.layered_options_position, position)
     }
 
     graph_transformer_mirror_alignment_y(node)
@@ -758,9 +772,11 @@ fn graph_transformer_mirror_y(
         for bend_point in edge.get_bend_points().to_array() {
           graph_transformer_mirror_y_vector(bend_point, offset)
         }
-        if edge.has_property_kvector_chain(layered_options_junction_points) {
+        if edge.has_property_kvector_chain(
+            @options.layered_options_junction_points,
+          ) {
           let junction_points = edge.get_property_kvector_chain(
-            layered_options_junction_points,
+            @options.layered_options_junction_points,
           )
           for point in junction_points.to_array() {
             graph_transformer_mirror_y_vector(point, offset)
@@ -832,9 +848,11 @@ fn graph_transformer_transpose(
         for bend_point in edge.get_bend_points().to_array() {
           graph_transformer_transpose_vector(bend_point)
         }
-        if edge.has_property_kvector_chain(layered_options_junction_points) {
+        if edge.has_property_kvector_chain(
+            @options.layered_options_junction_points,
+          ) {
           let junction_points = edge.get_property_kvector_chain(
-            layered_options_junction_points,
+            @options.layered_options_junction_points,
           )
           for point in junction_points.to_array() {
             graph_transformer_transpose_vector(point)

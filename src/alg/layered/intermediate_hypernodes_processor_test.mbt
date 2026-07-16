@@ -48,7 +48,7 @@ test "hypernodes processor moves right hypernode to first join-point x and rerou
 
   let hypernode = new_l_node(graph=Some(graph))
   hypernode.set_layer(Some(layer0))
-  hypernode.set_property_bool(layered_options_hypernode, true)
+  hypernode.set_property_bool(@options.layered_options_hypernode, true)
   ignore(hypernode.get_size().set_xy(20.0, 20.0))
   ignore(hypernode.get_position().set_xy(10.0, 0.0))
 
@@ -80,7 +80,7 @@ test "hypernodes processor moves right hypernode to first join-point x and rerou
   edge_1_junctions.add_last_xy(120.0, 10.0)
   edge_1_junctions.add_last_xy(160.0, 50.0)
   edge_1.set_property_kvector_chain(
-    layered_options_junction_points, edge_1_junctions,
+    @options.layered_options_junction_points, edge_1_junctions,
   )
 
   let edge_2 = new_l_edge()
@@ -122,7 +122,7 @@ test "hypernodes processor moves right hypernode to first join-point x and rerou
   assert_eq(edge_2.get_bend_points().get(0).x, 140.0)
 
   let edge_1_junction_points = edge_1.get_property_kvector_chain(
-    layered_options_junction_points,
+    @options.layered_options_junction_points,
   )
   assert_eq(edge_1_junction_points.size(), 1)
   assert_eq(edge_1_junction_points.get(0).x, 160.0)
@@ -152,7 +152,7 @@ test "hypernodes processor keeps left-directed case unchanged (upstream parity)"
 
   let hypernode = new_l_node(graph=Some(graph))
   hypernode.set_layer(Some(layer1))
-  hypernode.set_property_bool(layered_options_hypernode, true)
+  hypernode.set_property_bool(@options.layered_options_hypernode, true)
   ignore(hypernode.get_size().set_xy(20.0, 20.0))
   ignore(hypernode.get_position().set_xy(70.0, 0.0))
 

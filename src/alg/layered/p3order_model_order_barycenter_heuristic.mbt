@@ -287,7 +287,7 @@ pub fn ModelOrderBarycenterHeuristic::minimize_crossings_layer(
     let force_model_order = layer[0]
       .get_graph()
       .get_property_bool(
-        layered_options_crossing_minimization_force_node_model_order,
+        @options.layered_options_crossing_minimization_force_node_model_order,
       )
     if force_model_order {
       model_order_barycenter_heuristic_insertion_sort(
