@@ -2,26 +2,26 @@
 priv struct InteractiveLayererLayerSpan {
   mut start : Double
   mut end : Double
-  nodes : Array[LNode]
+  nodes : Array[@layered.LNode]
 }
 
 ///|
 fn interactive_layerer_layer_constraint_preprocessor_factory() -> @core.ILayoutProcessorFactory[
-  LayeredPhases,
-  LGraph,
+  @layered.LayeredPhases,
+  @layered.LGraph,
 ] {
   @core.new_layout_processor_factory(23007, 7, () => {
-    new_layer_constraint_preprocessor_layout_processor()
+    @layered.new_layer_constraint_preprocessor_layout_processor()
   })
 }
 
 ///|
 fn interactive_layerer_layer_constraint_postprocessor_factory() -> @core.ILayoutProcessorFactory[
-  LayeredPhases,
-  LGraph,
+  @layered.LayeredPhases,
+  @layered.LGraph,
 ] {
   @core.new_layout_processor_factory(23011, 11, () => {
-    new_layer_constraint_postprocessor_layout_processor()
+    @layered.new_layer_constraint_postprocessor_layout_processor()
   })
 }
 
@@ -39,8 +39,8 @@ fn[T] interactive_layerer_raise_unsupported_graph(
 
 ///|
 fn interactive_layerer_require_edge_target_node(
-  edge : LEdge,
-) -> LNode raise InteractiveLayererException {
+  edge : @layered.LEdge,
+) -> @layered.LNode raise InteractiveLayererException {
   let target = match edge.get_target() {
     Some(value) => value
     None =>
@@ -57,8 +57,8 @@ fn interactive_layerer_require_edge_target_node(
 
 ///|
 fn interactive_layerer_require_node_layer(
-  node : LNode,
-) -> Layer raise InteractiveLayererException {
+  node : @layered.LNode,
+) -> @layered.Layer raise InteractiveLayererException {
   match node.get_layer() {
     Some(value) => value
     None => interactive_layerer_raise_unsupported_graph("node has no layer")
@@ -67,13 +67,14 @@ fn interactive_layerer_require_node_layer(
 
 ///|
 fn interactive_layerer_push_unique_nodes(
-  target : Array[LNode],
-  nodes : Array[LNode],
+  target : Array[@layered.LNode],
+  nodes : Array[@layered.LNode],
 ) -> Unit {
   for node in nodes {
     let mut exists = false
     for existing in target {
-      if lnode_internal_handle(existing) == lnode_internal_handle(node) {
+      if @layered.lnode_internal_handle(existing) ==
+        @layered.lnode_internal_handle(node) {
         exists = true
         break
       }
@@ -87,7 +88,7 @@ fn interactive_layerer_push_unique_nodes(
 ///|
 fn interactive_layerer_insert_node_into_spans(
   current_spans : Array[InteractiveLayererLayerSpan],
-  node : LNode,
+  node : @layered.LNode,
 ) -> Unit {
   let minx = node.get_position().x
   let mut maxx = minx + node.get_size().x
@@ -140,21 +141,22 @@ fn interactive_layerer_insert_node_into_spans(
 
 ///|
 fn interactive_layerer_check_node(
-  node1 : LNode,
-  graph : LGraph,
-) -> Array[LNode] raise InteractiveLayererException {
+  node1 : @layered.LNode,
+  graph : @layered.LGraph,
+) -> Array[@layered.LNode] raise InteractiveLayererException {
   node1.set_id(1)
   let layer1 = interactive_layerer_require_node_layer(node1)
   let shift_nodes = []
   for port in node1.get_ports_by_type(Output) {
     for edge in port.get_outgoing_edges() {
       let node2 = interactive_layerer_require_edge_target_node(edge)
-      if lnode_internal_handle(node1) != lnode_internal_handle(node2) {
+      if @layered.lnode_internal_handle(node1) !=
+        @layered.lnode_internal_handle(node2) {
         let layer2 = interactive_layerer_require_node_layer(node2)
         if layer2.get_id() <= layer1.get_id() {
           let new_index = layer1.get_id() + 1
           if new_index == graph.get_layers().length() {
-            let new_layer = new_layer(graph)
+            let new_layer = @layered.new_layer(graph)
             new_layer.set_id(new_index)
             graph.get_layers().push(new_layer)
             node2.set_layer(Some(new_layer))
@@ -165,7 +167,8 @@ fn interactive_layerer_check_node(
 
           let mut exists = false
           for shifted in shift_nodes {
-            if lnode_internal_handle(shifted) == lnode_internal_handle(node2) {
+            if @layered.lnode_internal_handle(shifted) ==
+              @layered.lnode_internal_handle(node2) {
               exists = true
               break
             }
@@ -182,17 +185,21 @@ fn interactive_layerer_check_node(
 
 ///|
 fn interactive_layerer_configuration(
-  graph : LGraph,
-) -> @core.LayoutProcessorConfiguration[LayeredPhases, LGraph]? {
+  graph : @layered.LGraph,
+) -> @core.LayoutProcessorConfiguration[@layered.LayeredPhases, @layered.LGraph]? {
   ignore(graph)
   Some(
-    @core.layout_processor_configuration_create(layered_phase_descriptor)
-    .add_before(
-      P1CycleBreaking,
-      layered_intermediate_processor_factory(InteractiveExternalPortPositioner),
+    @core.layout_processor_configuration_create(
+      @layered.layered_phase_descriptor,
     )
     .add_before(
-      P2Layering,
+      @layered.P1CycleBreaking,
+      @layered.layered_intermediate_processor_factory(
+        InteractiveExternalPortPositioner,
+      ),
+    )
+    .add_before(
+      @layered.P2Layering,
       interactive_layerer_layer_constraint_preprocessor_factory(),
     )
     .add_before(
@@ -204,7 +211,7 @@ fn interactive_layerer_configuration(
 
 ///|
 fn interactive_layerer_process(
-  layered_graph : LGraph,
+  layered_graph : @layered.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
 ) -> Unit {
   let monitor = match progress_monitor {
@@ -222,7 +229,7 @@ fn interactive_layerer_process(
     let layers = layered_graph.get_layers()
     let mut next_index = 0
     for span in current_spans {
-      let layer = new_layer(layered_graph)
+      let layer = @layered.new_layer(layered_graph)
       layer.set_id(next_index)
       next_index += 1
       layers.push(layer)
@@ -270,8 +277,8 @@ fn interactive_layerer_process(
 
 ///|
 pub fn new_interactive_layerer_layout_phase() -> @core.ILayoutProcessor[
-  LayeredPhases,
-  LGraph,
+  @layered.LayeredPhases,
+  @layered.LGraph,
 ] {
   @core.new_layout_phase(
     interactive_layerer_process, interactive_layerer_configuration,

@@ -1,15 +1,15 @@
 ///|
 fn p2_model_order_layer_assignment_test_setup_plain_java_layout() -> Unit {
-  layout_meta_data_service_reset_for_test()
-  plain_java_initialization_reset_for_test()
-  plain_java_initialization_initialize_plain_java_layout()
+  @core.layout_meta_data_service_reset_for_test()
+  @test.plain_java_initialization_reset_for_test()
+  @test.plain_java_initialization_initialize_plain_java_layout()
 }
 
 ///|
 fn p2_model_order_layer_assignment_test_layout(graph : @graph.ElkNode) -> Unit {
-  let resolver = new_layout_algorithm_resolver()
-  apply_visitors(graph, [resolver.to_visitor()])
-  let layout_engine = new_recursive_graph_layout_engine()
+  let resolver = @core.new_layout_algorithm_resolver()
+  @core.apply_visitors(graph, [resolver.to_visitor()])
+  let layout_engine = @core.new_recursive_graph_layout_engine()
   layout_engine.layout(graph, @core.new_null_elk_progress_monitor())
 }
 
@@ -18,7 +18,7 @@ fn p2_model_order_layer_assignment_test_add_node_label(
   node : @graph.ElkNode,
   text : String,
 ) -> Unit {
-  let label = @graph.create_label(Some(make_node_label_parent(node)))
+  let label = @graph.create_label(Some(@graph.make_node_label_parent(node)))
   @graph.label_set_text(label, text)
 }
 
@@ -38,10 +38,10 @@ fn p2_model_order_layer_assignment_test_connect(
   source : @graph.ElkNode,
   target : @graph.ElkNode,
 ) -> Unit {
-  let edge = create_edge(None)
-  edge_add_source(edge, make_node_shape(source))
-  edge_add_target(edge, make_node_shape(target))
-  layered_test_update_containment(Some(edge))
+  let edge = @graph.create_edge(None)
+  @graph.edge_add_source(edge, @graph.make_node_shape(source))
+  @graph.edge_add_target(edge, @graph.make_node_shape(target))
+  @layered.layered_test_update_containment(Some(edge))
 }
 
 ///|
@@ -72,7 +72,7 @@ fn p2_model_order_layer_assignment_test_configure(
   @graph.node_set_string_property(
     parent,
     @core.padding,
-    new_elk_padding_any(0.0).to_string(),
+    @core.new_elk_padding_any(0.0).to_string(),
   )
   @graph.node_set_layout_option_string_by_id(
     parent, "org.eclipse.elk.padding", "[left=0,top=0,right=0,bottom=0]",
@@ -97,10 +97,10 @@ fn p2_model_order_layer_assignment_test_assert_close(
 
 ///|
 test "ModelOrderLayerAssignment forward promotion disregards edge length" {
-  reset_graph_model_for_test()
+  @graph.reset_graph_model_for_test()
   p2_model_order_layer_assignment_test_setup_plain_java_layout()
 
-  let parent = create_graph()
+  let parent = @graph.create_graph()
   let n1 = p2_model_order_layer_assignment_test_add_node(parent, "n1")
   let n2 = p2_model_order_layer_assignment_test_add_node(parent, "n2")
   let n3 = p2_model_order_layer_assignment_test_add_node(parent, "n3")
@@ -174,10 +174,10 @@ test "ModelOrderLayerAssignment forward promotion disregards edge length" {
 
 ///|
 test "ModelOrderLayerAssignment backward promotion disregards edge length" {
-  reset_graph_model_for_test()
+  @graph.reset_graph_model_for_test()
   p2_model_order_layer_assignment_test_setup_plain_java_layout()
 
-  let parent = create_graph()
+  let parent = @graph.create_graph()
   let n1 = p2_model_order_layer_assignment_test_add_node(parent, "n1")
   let n2 = p2_model_order_layer_assignment_test_add_node(parent, "n2")
   let n3 = p2_model_order_layer_assignment_test_add_node(parent, "n3")
@@ -251,10 +251,10 @@ test "ModelOrderLayerAssignment backward promotion disregards edge length" {
 
 ///|
 test "ModelOrderLayerAssignment forward promotion more nodes" {
-  reset_graph_model_for_test()
+  @graph.reset_graph_model_for_test()
   p2_model_order_layer_assignment_test_setup_plain_java_layout()
 
-  let parent = create_graph()
+  let parent = @graph.create_graph()
   let n1 = p2_model_order_layer_assignment_test_add_node(parent, "n1")
   let n2 = p2_model_order_layer_assignment_test_add_node(parent, "n2")
   let n3 = p2_model_order_layer_assignment_test_add_node(parent, "n3")
@@ -341,10 +341,10 @@ test "ModelOrderLayerAssignment forward promotion more nodes" {
 
 ///|
 test "ModelOrderLayerAssignment backward promotion more nodes" {
-  reset_graph_model_for_test()
+  @graph.reset_graph_model_for_test()
   p2_model_order_layer_assignment_test_setup_plain_java_layout()
 
-  let parent = create_graph()
+  let parent = @graph.create_graph()
   let n1 = p2_model_order_layer_assignment_test_add_node(parent, "n1")
   let n2 = p2_model_order_layer_assignment_test_add_node(parent, "n2")
   let n3 = p2_model_order_layer_assignment_test_add_node(parent, "n3")
@@ -431,10 +431,10 @@ test "ModelOrderLayerAssignment backward promotion more nodes" {
 
 ///|
 test "ModelOrderLayerAssignment forward promotion no end node" {
-  reset_graph_model_for_test()
+  @graph.reset_graph_model_for_test()
   p2_model_order_layer_assignment_test_setup_plain_java_layout()
 
-  let parent = create_graph()
+  let parent = @graph.create_graph()
   let n1 = p2_model_order_layer_assignment_test_add_node(parent, "n1")
   let n2 = p2_model_order_layer_assignment_test_add_node(parent, "n2")
   let n3 = p2_model_order_layer_assignment_test_add_node(parent, "n3")
@@ -495,10 +495,10 @@ test "ModelOrderLayerAssignment forward promotion no end node" {
 
 ///|
 test "ModelOrderLayerAssignment backward promotion no end node" {
-  reset_graph_model_for_test()
+  @graph.reset_graph_model_for_test()
   p2_model_order_layer_assignment_test_setup_plain_java_layout()
 
-  let parent = create_graph()
+  let parent = @graph.create_graph()
   let n1 = p2_model_order_layer_assignment_test_add_node(parent, "n1")
   let n2 = p2_model_order_layer_assignment_test_add_node(parent, "n2")
   let n3 = p2_model_order_layer_assignment_test_add_node(parent, "n3")
@@ -559,10 +559,10 @@ test "ModelOrderLayerAssignment backward promotion no end node" {
 
 ///|
 test "ModelOrderLayerAssignment backward promotion no end node 2" {
-  reset_graph_model_for_test()
+  @graph.reset_graph_model_for_test()
   p2_model_order_layer_assignment_test_setup_plain_java_layout()
 
-  let parent = create_graph()
+  let parent = @graph.create_graph()
   let n1 = p2_model_order_layer_assignment_test_add_node(parent, "n1")
   let n2 = p2_model_order_layer_assignment_test_add_node(parent, "n2")
   let n3 = p2_model_order_layer_assignment_test_add_node(parent, "n3")

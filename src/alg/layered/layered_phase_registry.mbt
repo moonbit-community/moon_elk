@@ -5,6 +5,12 @@ let layered_cycle_breaking_factories : Map[
 ] = Map([])
 
 ///|
+let layered_layering_factories : Map[
+  String,
+  @core.ILayoutProcessorFactory[LayeredPhases, LGraph],
+] = Map([])
+
+///|
 /// Registers a cycle-breaking phase at the composition seam.
 ///
 /// Concrete phase packages depend on the shared layered model and register
@@ -16,6 +22,14 @@ pub fn register_layered_cycle_breaking_phase(
   factory : @core.ILayoutProcessorFactory[LayeredPhases, LGraph],
 ) -> Unit {
   layered_cycle_breaking_factories[strategy] = factory
+}
+
+///|
+pub fn register_layered_layering_phase(
+  strategy : String,
+  factory : @core.ILayoutProcessorFactory[LayeredPhases, LGraph],
+) -> Unit {
+  layered_layering_factories[strategy] = factory
 }
 
 ///|
@@ -40,6 +54,27 @@ fn layered_cycle_breaking_phase_factory(
       match layered_cycle_breaking_factories.get("GREEDY") {
         Some(factory) => factory
         None => layered_missing_cycle_breaking_factory(strategy)
+      }
+  }
+}
+
+///|
+fn layered_layering_phase_factory(
+  strategy : String,
+) -> @core.ILayoutProcessorFactory[LayeredPhases, LGraph] {
+  match layered_layering_factories.get(strategy) {
+    Some(factory) => factory
+    None =>
+      match layered_layering_factories.get("NETWORK_SIMPLEX") {
+        Some(factory) => factory
+        None => {
+          @core.layout_runtime_report_unsupported_configuration(
+            "Layered layering phase is not linked for strategy " + strategy,
+          )
+          @core.new_layout_processor_factory(22000, 1, () => {
+            @core.new_layout_processor((_, _) => ())
+          })
+        }
       }
   }
 }

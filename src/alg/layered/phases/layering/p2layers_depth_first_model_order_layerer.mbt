@@ -1,44 +1,48 @@
 ///|
 priv struct DepthFirstModelOrderLayererState {
-  layered_graph : LGraph
-  mut current_layer : Layer
+  layered_graph : @layered.LGraph
+  mut current_layer : @layered.Layer
   mut current_layer_id : Int
-  mut current_dummy_layer : Layer?
-  nodes_to_place : Array[LNode]
+  mut current_dummy_layer : @layered.Layer?
+  nodes_to_place : Array[@layered.LNode]
   mut max_to_place : Int
 }
 
 ///|
 fn depth_first_model_order_layerer_layer_constraint_preprocessor_factory() -> @core.ILayoutProcessorFactory[
-  LayeredPhases,
-  LGraph,
+  @layered.LayeredPhases,
+  @layered.LGraph,
 ] {
   @core.new_layout_processor_factory(23007, 7, () => {
-    new_layer_constraint_preprocessor_layout_processor()
+    @layered.new_layer_constraint_preprocessor_layout_processor()
   })
 }
 
 ///|
 fn depth_first_model_order_layerer_layer_constraint_postprocessor_factory() -> @core.ILayoutProcessorFactory[
-  LayeredPhases,
-  LGraph,
+  @layered.LayeredPhases,
+  @layered.LGraph,
 ] {
   @core.new_layout_processor_factory(23011, 11, () => {
-    new_layer_constraint_postprocessor_layout_processor()
+    @layered.new_layer_constraint_postprocessor_layout_processor()
   })
 }
 
 ///|
 let depth_first_model_order_layerer_baseline_processing_configuration : @core.LayoutProcessorConfiguration[
-  LayeredPhases,
-  LGraph,
-] = @core.layout_processor_configuration_create(layered_phase_descriptor)
-  .add_before(
-    P1CycleBreaking,
-    layered_intermediate_processor_factory(EdgeAndLayerConstraintEdgeReverser),
+  @layered.LayeredPhases,
+  @layered.LGraph,
+] = @core.layout_processor_configuration_create(
+    @layered.layered_phase_descriptor,
   )
   .add_before(
-    P2Layering,
+    @layered.P1CycleBreaking,
+    @layered.layered_intermediate_processor_factory(
+      EdgeAndLayerConstraintEdgeReverser,
+    ),
+  )
+  .add_before(
+    @layered.P2Layering,
     depth_first_model_order_layerer_layer_constraint_preprocessor_factory(),
   )
   .add_before(
@@ -60,8 +64,8 @@ fn[T] depth_first_model_order_layerer_raise_unsupported_graph(
 
 ///|
 fn depth_first_model_order_layerer_require_edge_source_node(
-  edge : LEdge,
-) -> LNode raise DepthFirstModelOrderLayererException {
+  edge : @layered.LEdge,
+) -> @layered.LNode raise DepthFirstModelOrderLayererException {
   let source = match edge.get_source() {
     Some(value) => value
     None =>
@@ -80,10 +84,10 @@ fn depth_first_model_order_layerer_require_edge_source_node(
 
 ///|
 fn depth_first_model_order_layerer_model_order(
-  node : LNode,
+  node : @layered.LNode,
 ) -> Int raise DepthFirstModelOrderLayererException {
-  if node.has_property_int(internal_properties_model_order) {
-    node.get_property_int(internal_properties_model_order)
+  if node.has_property_int(@layered.internal_properties_model_order) {
+    node.get_property_int(@layered.internal_properties_model_order)
   } else {
     depth_first_model_order_layerer_raise_unsupported_graph(
       "The DF model order layer assigner requires all real nodes to have a model order.",
@@ -93,7 +97,7 @@ fn depth_first_model_order_layerer_model_order(
 
 ///|
 fn depth_first_model_order_layerer_sort_real_nodes(
-  real_nodes : Array[LNode],
+  real_nodes : Array[@layered.LNode],
 ) -> Unit raise DepthFirstModelOrderLayererException {
   let mut i = 1
   while i < real_nodes.length() {
@@ -116,7 +120,7 @@ fn depth_first_model_order_layerer_sort_real_nodes(
 ///|
 fn depth_first_model_order_layerer_is_connected_to_current_layer(
   state : DepthFirstModelOrderLayererState,
-  node : LNode,
+  node : @layered.LNode,
 ) -> Bool raise DepthFirstModelOrderLayererException {
   for edge in node.get_incoming_edges() {
     let source_node = depth_first_model_order_layerer_require_edge_source_node(
@@ -178,7 +182,7 @@ fn depth_first_model_order_layerer_is_connected_to_current_layer(
 fn depth_first_model_order_layerer_add_node_to_layer(
   state : DepthFirstModelOrderLayererState,
   layer_id : Int,
-  node : LNode,
+  node : @layered.LNode,
 ) -> Unit raise DepthFirstModelOrderLayererException {
   let layers = state.layered_graph.get_layers()
   if layer_id < layers.length() {
@@ -190,12 +194,12 @@ fn depth_first_model_order_layerer_add_node_to_layer(
     }
     state.current_layer_id = layer_id
   } else {
-    let new_dummy_layer = new_layer(state.layered_graph)
+    let new_dummy_layer = @layered.new_layer(state.layered_graph)
     new_dummy_layer.set_id(layer_id - 1)
     layers.push(new_dummy_layer)
     state.current_dummy_layer = Some(new_dummy_layer)
 
-    let new_current_layer = new_layer(state.layered_graph)
+    let new_current_layer = @layered.new_layer(state.layered_graph)
     new_current_layer.set_id(layer_id)
     layers.push(new_current_layer)
     state.current_layer = new_current_layer
@@ -216,7 +220,7 @@ fn depth_first_model_order_layerer_add_node_to_layer(
 ///|
 fn depth_first_model_order_layerer_get_max_connected_layer(
   layer_id : Int,
-  node : LNode,
+  node : @layered.LNode,
 ) -> Int raise DepthFirstModelOrderLayererException {
   let mut max_layer = layer_id
   for edge in node.get_incoming_edges() {
@@ -242,11 +246,11 @@ fn depth_first_model_order_layerer_place_nodes_to_place(
   for node_to_place in state.nodes_to_place {
     let layers = state.layered_graph.get_layers()
     if node_to_place.get_id() >= layers.length() {
-      let dummy_layer = new_layer(state.layered_graph)
+      let dummy_layer = @layered.new_layer(state.layered_graph)
       dummy_layer.set_id(node_to_place.get_id() - 1)
       layers.push(dummy_layer)
 
-      let new_layer_value = new_layer(state.layered_graph)
+      let new_layer_value = @layered.new_layer(state.layered_graph)
       new_layer_value.set_id(node_to_place.get_id())
       layers.push(new_layer_value)
     }
@@ -258,15 +262,15 @@ fn depth_first_model_order_layerer_place_nodes_to_place(
 
 ///|
 fn depth_first_model_order_layerer_configuration(
-  graph : LGraph,
-) -> @core.LayoutProcessorConfiguration[LayeredPhases, LGraph]? {
+  graph : @layered.LGraph,
+) -> @core.LayoutProcessorConfiguration[@layered.LayeredPhases, @layered.LGraph]? {
   ignore(graph)
   Some(depth_first_model_order_layerer_baseline_processing_configuration)
 }
 
 ///|
 fn depth_first_model_order_layerer_process(
-  layered_graph : LGraph,
+  layered_graph : @layered.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
 ) -> Unit {
   let monitor = match progress_monitor {
@@ -285,7 +289,7 @@ fn depth_first_model_order_layerer_process(
     depth_first_model_order_layerer_sort_real_nodes(real_nodes)
 
     let mut first_node = true
-    let first_layer = new_layer(layered_graph)
+    let first_layer = @layered.new_layer(layered_graph)
     layered_graph.get_layers().push(first_layer)
     first_layer.set_id(0)
 
@@ -408,8 +412,8 @@ fn depth_first_model_order_layerer_process(
 
 ///|
 pub fn new_depth_first_model_order_layerer_layout_phase() -> @core.ILayoutProcessor[
-  LayeredPhases,
-  LGraph,
+  @layered.LayeredPhases,
+  @layered.LGraph,
 ] {
   @core.new_layout_phase(
     depth_first_model_order_layerer_process, depth_first_model_order_layerer_configuration,

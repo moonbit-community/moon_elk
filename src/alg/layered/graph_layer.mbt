@@ -9,7 +9,7 @@ fn layer_next_handle() -> Int {
 }
 
 ///|
-fn layer_internal_handle(layer : Layer) -> Int {
+pub fn layer_internal_handle(layer : Layer) -> Int {
   layer.layer_handle
 }
 

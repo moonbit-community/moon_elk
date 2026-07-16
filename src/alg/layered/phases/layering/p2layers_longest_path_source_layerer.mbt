@@ -1,34 +1,38 @@
 ///|
 fn longest_path_source_layerer_layer_constraint_preprocessor_factory() -> @core.ILayoutProcessorFactory[
-  LayeredPhases,
-  LGraph,
+  @layered.LayeredPhases,
+  @layered.LGraph,
 ] {
   @core.new_layout_processor_factory(23007, 7, () => {
-    new_layer_constraint_preprocessor_layout_processor()
+    @layered.new_layer_constraint_preprocessor_layout_processor()
   })
 }
 
 ///|
 fn longest_path_source_layerer_layer_constraint_postprocessor_factory() -> @core.ILayoutProcessorFactory[
-  LayeredPhases,
-  LGraph,
+  @layered.LayeredPhases,
+  @layered.LGraph,
 ] {
   @core.new_layout_processor_factory(23011, 11, () => {
-    new_layer_constraint_postprocessor_layout_processor()
+    @layered.new_layer_constraint_postprocessor_layout_processor()
   })
 }
 
 ///|
 let longest_path_source_layerer_baseline_processing_configuration : @core.LayoutProcessorConfiguration[
-  LayeredPhases,
-  LGraph,
-] = @core.layout_processor_configuration_create(layered_phase_descriptor)
-  .add_before(
-    P1CycleBreaking,
-    layered_intermediate_processor_factory(EdgeAndLayerConstraintEdgeReverser),
+  @layered.LayeredPhases,
+  @layered.LGraph,
+] = @core.layout_processor_configuration_create(
+    @layered.layered_phase_descriptor,
   )
   .add_before(
-    P2Layering,
+    @layered.P1CycleBreaking,
+    @layered.layered_intermediate_processor_factory(
+      EdgeAndLayerConstraintEdgeReverser,
+    ),
+  )
+  .add_before(
+    @layered.P2Layering,
     longest_path_source_layerer_layer_constraint_preprocessor_factory(),
   )
   .add_before(
@@ -50,8 +54,8 @@ fn[T] longest_path_source_layerer_raise_unsupported_graph(
 
 ///|
 fn longest_path_source_layerer_require_edge_source_node(
-  edge : LEdge,
-) -> LNode raise LongestPathSourceLayererException {
+  edge : @layered.LEdge,
+) -> @layered.LNode raise LongestPathSourceLayererException {
   let source = match edge.get_source() {
     Some(value) => value
     None =>
@@ -70,15 +74,15 @@ fn longest_path_source_layerer_require_edge_source_node(
 
 ///|
 fn longest_path_source_layerer_put_node(
-  layered_graph : LGraph,
+  layered_graph : @layered.LGraph,
   node_heights : Array[Int],
-  node : LNode,
+  node : @layered.LNode,
   height : Int,
 ) -> Unit {
   let layers = layered_graph.get_layers()
   let mut layer_count = layers.length()
   while layer_count < height {
-    layers.push(new_layer(layered_graph))
+    layers.push(@layered.new_layer(layered_graph))
     layer_count += 1
   }
 
@@ -88,9 +92,9 @@ fn longest_path_source_layerer_put_node(
 
 ///|
 fn longest_path_source_layerer_visit(
-  layered_graph : LGraph,
+  layered_graph : @layered.LGraph,
   node_heights : Array[Int],
-  node : LNode,
+  node : @layered.LNode,
 ) -> Int raise LongestPathSourceLayererException {
   let height = node_heights[node.get_id()]
   if height >= 0 {
@@ -103,7 +107,8 @@ fn longest_path_source_layerer_visit(
       let source_node = longest_path_source_layerer_require_edge_source_node(
         edge,
       )
-      if lnode_internal_handle(node) != lnode_internal_handle(source_node) {
+      if @layered.lnode_internal_handle(node) !=
+        @layered.lnode_internal_handle(source_node) {
         let source_height = longest_path_source_layerer_visit(
           layered_graph, node_heights, source_node,
         )
@@ -123,8 +128,8 @@ fn longest_path_source_layerer_visit(
 
 ///|
 fn longest_path_source_layerer_configuration(
-  graph : LGraph,
-) -> @core.LayoutProcessorConfiguration[LayeredPhases, LGraph]? {
+  graph : @layered.LGraph,
+) -> @core.LayoutProcessorConfiguration[@layered.LayeredPhases, @layered.LGraph]? {
   ignore(graph)
   Some(
     @core.layout_processor_configuration_create_from(
@@ -135,7 +140,7 @@ fn longest_path_source_layerer_configuration(
 
 ///|
 fn longest_path_source_layerer_process(
-  layered_graph : LGraph,
+  layered_graph : @layered.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
 ) -> Unit {
   let monitor = match progress_monitor {
@@ -175,8 +180,8 @@ fn longest_path_source_layerer_process(
 
 ///|
 pub fn new_longest_path_source_layerer_layout_phase() -> @core.ILayoutProcessor[
-  LayeredPhases,
-  LGraph,
+  @layered.LayeredPhases,
+  @layered.LGraph,
 ] {
   @core.new_layout_phase(
     longest_path_source_layerer_process, longest_path_source_layerer_configuration,

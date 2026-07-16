@@ -3,17 +3,17 @@ priv struct StretchWidthLayererState {
   mut width_current : Double
   mut width_up : Double
   mut max_width : Double
-  current_graph : LGraph
+  current_graph : @layered.LGraph
   mut upper_layer_influence : Double
-  mut sorted_layerless_nodes : Array[LNode]
+  mut sorted_layerless_nodes : Array[@layered.LNode]
   mut already_placed_nodes : Map[Int, Bool]
   mut already_placed_in_other_layers : Map[Int, Bool]
-  mut temp_layerless_nodes : Array[LNode]
+  mut temp_layerless_nodes : Array[@layered.LNode]
   mut _successors : Array[Map[Int, Bool]]
   mut out_degree : Array[Int]
   mut remaining_out_going : Array[Int]
   mut in_degree : Array[Int]
-  mut selected_node : LNode?
+  mut selected_node : @layered.LNode?
   mut minimum_node_size : Double
   mut maximum_node_size : Double
   mut norm_size : Array[Double]
@@ -43,35 +43,39 @@ fn stretch_width_layerer_exception_message(
 
 ///|
 fn stretch_width_layerer_layer_constraint_preprocessor_factory() -> @core.ILayoutProcessorFactory[
-  LayeredPhases,
-  LGraph,
+  @layered.LayeredPhases,
+  @layered.LGraph,
 ] {
   @core.new_layout_processor_factory(23007, 7, () => {
-    new_layer_constraint_preprocessor_layout_processor()
+    @layered.new_layer_constraint_preprocessor_layout_processor()
   })
 }
 
 ///|
 fn stretch_width_layerer_layer_constraint_postprocessor_factory() -> @core.ILayoutProcessorFactory[
-  LayeredPhases,
-  LGraph,
+  @layered.LayeredPhases,
+  @layered.LGraph,
 ] {
   @core.new_layout_processor_factory(23011, 11, () => {
-    new_layer_constraint_postprocessor_layout_processor()
+    @layered.new_layer_constraint_postprocessor_layout_processor()
   })
 }
 
 ///|
 let stretch_width_layerer_baseline_processing_configuration : @core.LayoutProcessorConfiguration[
-  LayeredPhases,
-  LGraph,
-] = @core.layout_processor_configuration_create(layered_phase_descriptor)
-  .add_before(
-    P1CycleBreaking,
-    layered_intermediate_processor_factory(EdgeAndLayerConstraintEdgeReverser),
+  @layered.LayeredPhases,
+  @layered.LGraph,
+] = @core.layout_processor_configuration_create(
+    @layered.layered_phase_descriptor,
   )
   .add_before(
-    P2Layering,
+    @layered.P1CycleBreaking,
+    @layered.layered_intermediate_processor_factory(
+      EdgeAndLayerConstraintEdgeReverser,
+    ),
+  )
+  .add_before(
+    @layered.P2Layering,
     stretch_width_layerer_layer_constraint_preprocessor_factory(),
   )
   .add_before(
@@ -81,7 +85,7 @@ let stretch_width_layerer_baseline_processing_configuration : @core.LayoutProces
 
 ///|
 fn stretch_width_layerer_new_state(
-  layered_graph : LGraph,
+  layered_graph : @layered.LGraph,
 ) -> StretchWidthLayererState {
   {
     width_current: 0.0,
@@ -107,8 +111,8 @@ fn stretch_width_layerer_new_state(
 
 ///|
 fn stretch_width_layerer_require_edge_source_node(
-  edge : LEdge,
-) -> LNode raise StretchWidthLayererException {
+  edge : @layered.LEdge,
+) -> @layered.LNode raise StretchWidthLayererException {
   let source = match edge.get_source() {
     Some(value) => value
     None => stretch_width_layerer_raise_illegal_state("edge has no source port")
@@ -122,8 +126,8 @@ fn stretch_width_layerer_require_edge_source_node(
 
 ///|
 fn stretch_width_layerer_require_edge_target_node(
-  edge : LEdge,
-) -> LNode raise StretchWidthLayererException {
+  edge : @layered.LEdge,
+) -> @layered.LNode raise StretchWidthLayererException {
   let target = match edge.get_target() {
     Some(value) => value
     None => stretch_width_layerer_raise_illegal_state("edge has no target port")
@@ -137,7 +141,7 @@ fn stretch_width_layerer_require_edge_target_node(
 
 ///|
 fn stretch_width_layerer_sort_descending_by_node_id(
-  nodes : Array[LNode],
+  nodes : Array[@layered.LNode],
 ) -> Unit {
   let mut i = 1
   while i < nodes.length() {
@@ -155,7 +159,7 @@ fn stretch_width_layerer_sort_descending_by_node_id(
 
 ///|
 fn stretch_width_layerer_get_rank(
-  node : LNode,
+  node : @layered.LNode,
 ) -> Int raise StretchWidthLayererException {
   let mut max_rank = node.get_outgoing_edges().length()
   for pre_edge in node.get_incoming_edges() {
@@ -275,7 +279,7 @@ fn stretch_width_layerer_condition_go_up(
 ///|
 fn stretch_width_layerer_select_node(
   state : StretchWidthLayererState,
-) -> LNode? {
+) -> @layered.LNode? {
   for node in state.temp_layerless_nodes {
     if state.remaining_out_going[node.get_id()] <= 0 {
       return Some(node)
@@ -287,7 +291,7 @@ fn stretch_width_layerer_select_node(
 ///|
 fn stretch_width_layerer_update_out_going(
   state : StretchWidthLayererState,
-  current_layer : Layer,
+  current_layer : @layered.Layer,
 ) -> Unit raise StretchWidthLayererException {
   for node in current_layer.get_nodes() {
     for edge in node.get_incoming_edges() {
@@ -300,7 +304,7 @@ fn stretch_width_layerer_update_out_going(
 ///|
 fn stretch_width_layerer_remove_temp_node(
   state : StretchWidthLayererState,
-  selected : LNode,
+  selected : @layered.LNode,
 ) -> Unit {
   let handle = selected.get_handle()
   let mut i = 0
@@ -314,7 +318,7 @@ fn stretch_width_layerer_remove_temp_node(
 }
 
 ///|
-fn stretch_width_layerer_reverse_layers(layers : Array[Layer]) -> Unit {
+fn stretch_width_layerer_reverse_layers(layers : Array[@layered.Layer]) -> Unit {
   let mut left = 0
   let mut right = layers.length() - 1
   while left < right {
@@ -329,15 +333,15 @@ fn stretch_width_layerer_reverse_layers(layers : Array[Layer]) -> Unit {
 
 ///|
 fn stretch_width_layerer_configuration(
-  graph : LGraph,
-) -> @core.LayoutProcessorConfiguration[LayeredPhases, LGraph]? {
+  graph : @layered.LGraph,
+) -> @core.LayoutProcessorConfiguration[@layered.LayeredPhases, @layered.LGraph]? {
   ignore(graph)
   Some(stretch_width_layerer_baseline_processing_configuration)
 }
 
 ///|
 fn stretch_width_layerer_process(
-  layered_graph : LGraph,
+  layered_graph : @layered.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
 ) -> Unit {
   let monitor = match progress_monitor {
@@ -376,7 +380,7 @@ fn stretch_width_layerer_process(
       state,
     )
 
-    let mut current_layer = new_layer(state.current_graph)
+    let mut current_layer = @layered.new_layer(state.current_graph)
     state.current_graph.get_layers().push(current_layer)
 
     state.temp_layerless_nodes = state.sorted_layerless_nodes.copy()
@@ -393,7 +397,7 @@ fn stretch_width_layerer_process(
 
       if should_advance_layer {
         stretch_width_layerer_update_out_going(state, current_layer)
-        current_layer = new_layer(state.current_graph)
+        current_layer = @layered.new_layer(state.current_graph)
         state.current_graph.get_layers().push(current_layer)
         for entry in state.already_placed_nodes.to_array() {
           state.already_placed_in_other_layers[entry.0] = true
@@ -411,7 +415,7 @@ fn stretch_width_layerer_process(
         }
         if stretch_width_layerer_condition_go_up(state) {
           state.current_graph.get_layers().clear()
-          current_layer = new_layer(state.current_graph)
+          current_layer = @layered.new_layer(state.current_graph)
           state.current_graph.get_layers().push(current_layer)
           state.width_current = 0.0
           state.width_up = 0.0
@@ -447,8 +451,8 @@ fn stretch_width_layerer_process(
 
 ///|
 pub fn new_stretch_width_layerer_layout_phase() -> @core.ILayoutProcessor[
-  LayeredPhases,
-  LGraph,
+  @layered.LayeredPhases,
+  @layered.LGraph,
 ] {
   @core.new_layout_phase(
     stretch_width_layerer_process, stretch_width_layerer_configuration,

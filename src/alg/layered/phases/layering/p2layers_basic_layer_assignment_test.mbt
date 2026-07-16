@@ -1,21 +1,21 @@
 ///|
 fn p2_basic_layer_assignment_test_setup_plain_java_layout() -> Unit {
-  layout_meta_data_service_reset_for_test()
-  plain_java_initialization_reset_for_test()
-  plain_java_initialization_initialize_plain_java_layout()
+  @core.layout_meta_data_service_reset_for_test()
+  @test.plain_java_initialization_reset_for_test()
+  @test.plain_java_initialization_initialize_plain_java_layout()
 }
 
 ///|
 fn p2_basic_layer_assignment_test_layout(graph : @graph.ElkNode) -> Unit {
-  let resolver = new_layout_algorithm_resolver()
-  apply_visitors(graph, [resolver.to_visitor()])
-  let layout_engine = new_recursive_graph_layout_engine()
+  let resolver = @core.new_layout_algorithm_resolver()
+  @core.apply_visitors(graph, [resolver.to_visitor()])
+  let layout_engine = @core.new_recursive_graph_layout_engine()
   layout_engine.layout(graph, @core.new_null_elk_progress_monitor())
 }
 
 ///|
 fn p2_basic_layer_assignment_test_build_dag() -> Array[@graph.ElkNode] {
-  let graph = create_graph()
+  let graph = @graph.create_graph()
   let n0 = @graph.create_node(Some(graph))
   let n1 = @graph.create_node(Some(graph))
   let n2 = @graph.create_node(Some(graph))
@@ -28,30 +28,30 @@ fn p2_basic_layer_assignment_test_build_dag() -> Array[@graph.ElkNode] {
   @graph.node_set_dimensions(n3, 16.0, 10.0)
   @graph.node_set_dimensions(n4, 16.0, 10.0)
 
-  let e0 = create_edge(None)
-  edge_add_source(e0, make_node_shape(n0))
-  edge_add_target(e0, make_node_shape(n2))
-  layered_test_update_containment(Some(e0))
+  let e0 = @graph.create_edge(None)
+  @graph.edge_add_source(e0, @graph.make_node_shape(n0))
+  @graph.edge_add_target(e0, @graph.make_node_shape(n2))
+  @layered.layered_test_update_containment(Some(e0))
 
-  let e1 = create_edge(None)
-  edge_add_source(e1, make_node_shape(n1))
-  edge_add_target(e1, make_node_shape(n2))
-  layered_test_update_containment(Some(e1))
+  let e1 = @graph.create_edge(None)
+  @graph.edge_add_source(e1, @graph.make_node_shape(n1))
+  @graph.edge_add_target(e1, @graph.make_node_shape(n2))
+  @layered.layered_test_update_containment(Some(e1))
 
-  let e2 = create_edge(None)
-  edge_add_source(e2, make_node_shape(n2))
-  edge_add_target(e2, make_node_shape(n3))
-  layered_test_update_containment(Some(e2))
+  let e2 = @graph.create_edge(None)
+  @graph.edge_add_source(e2, @graph.make_node_shape(n2))
+  @graph.edge_add_target(e2, @graph.make_node_shape(n3))
+  @layered.layered_test_update_containment(Some(e2))
 
-  let e3 = create_edge(None)
-  edge_add_source(e3, make_node_shape(n2))
-  edge_add_target(e3, make_node_shape(n4))
-  layered_test_update_containment(Some(e3))
+  let e3 = @graph.create_edge(None)
+  @graph.edge_add_source(e3, @graph.make_node_shape(n2))
+  @graph.edge_add_target(e3, @graph.make_node_shape(n4))
+  @layered.layered_test_update_containment(Some(e3))
 
-  let e4 = create_edge(None)
-  edge_add_source(e4, make_node_shape(n1))
-  edge_add_target(e4, make_node_shape(n4))
-  layered_test_update_containment(Some(e4))
+  let e4 = @graph.create_edge(None)
+  @graph.edge_add_source(e4, @graph.make_node_shape(n1))
+  @graph.edge_add_target(e4, @graph.make_node_shape(n4))
+  @layered.layered_test_update_containment(Some(e4))
 
   [graph, n0, n1, n2, n3, n4]
 }
@@ -86,7 +86,7 @@ fn p2_basic_layer_assignment_test_set_interactive_positions(
 fn p2_basic_layer_assignment_test_layout_ok_for_strategy(
   strategy : String,
 ) -> Bool {
-  reset_graph_model_for_test()
+  @graph.reset_graph_model_for_test()
   p2_basic_layer_assignment_test_setup_plain_java_layout()
 
   let nodes = p2_basic_layer_assignment_test_build_dag()
@@ -101,7 +101,7 @@ fn p2_basic_layer_assignment_test_layout_ok_for_strategy(
   p2_basic_layer_assignment_test_layout(graph)
 
   let algorithm_resolved = @graph.node_get_string_property(
-      graph, resolved_algorithm,
+      graph, @core.resolved_algorithm,
     ) ==
     "org.eclipse.elk.layered"
   let edges_point_forward = p2_basic_layer_assignment_test_has_forward_x_for_all_edges(

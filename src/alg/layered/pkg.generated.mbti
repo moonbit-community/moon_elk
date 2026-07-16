@@ -385,6 +385,8 @@ pub fn layer_constraint_to_string(LayerConstraint) -> String
 
 pub fn layer_constraint_values() -> Array[String]
 
+pub fn layer_internal_handle(Layer) -> Int
+
 pub let layered_algorithm_id : String
 
 pub let layered_components_direction : @graph.IProperty[@core.Direction]
@@ -477,8 +479,6 @@ pub fn new_bk_simple_threshold_strategy() -> BkThresholdStrategy
 
 pub fn new_bp_info(LNode, LNode, LEdge, LEdge, LEdge) -> BPInfo
 
-pub fn new_breadth_first_model_order_layerer_layout_phase() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
-
 pub fn new_breaking_point_inserter_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_breaking_point_processor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
@@ -486,8 +486,6 @@ pub fn new_breaking_point_processor_layout_processor() -> @core.ILayoutProcessor
 pub fn new_breaking_point_remover_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_cell() -> Cell
-
-pub fn new_coffman_graham_layerer_layout_phase() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_comment_node_margin_calculator_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
@@ -514,8 +512,6 @@ pub fn new_cross_hierarchy_edge_comparator(LGraph) -> CrossHierarchyEdgeComparat
 pub fn new_crossing_matrix_filler(GreedySwitchType, Array[Array[LNode]], Int, CrossingCountSide) -> CrossingMatrixFiller
 
 pub fn new_crossings_counter(Array[Int]) -> CrossingsCounter
-
-pub fn new_depth_first_model_order_layerer_layout_phase() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_direction_postprocessor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
@@ -612,8 +608,6 @@ pub fn new_interactive_external_port_positioner_layout_processor() -> @core.ILay
 pub fn new_interactive_layered_graph_element_visitor() -> @core.IGraphElementVisitor
 
 pub fn new_interactive_layered_graph_visitor() -> InteractiveLayeredGraphVisitor
-
-pub fn new_interactive_layerer_layout_phase() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_interactive_node_placer_layout_phase() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
@@ -727,15 +721,9 @@ pub fn new_long_edge_joiner_layout_processor() -> @core.ILayoutProcessor[Layered
 
 pub fn new_long_edge_splitter_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
-pub fn new_longest_path_layerer_layout_phase() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
-
-pub fn new_longest_path_source_layerer_layout_phase() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
-
 pub fn new_manual_cut_index_calculator() -> ICutIndexCalculator
 
 pub fn new_median_heuristic(@random.Rand) -> MedianHeuristic
-
-pub fn new_min_width_layerer_layout_phase() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_mock_random() -> GreedySwitchMockRandom
 
@@ -756,8 +744,6 @@ pub fn new_model_order_port_comparator_from_layer(LGraph, Layer, OrderingStrateg
 pub fn new_model_order_port_comparator_without_target_node_model_order(LGraph, Array[LNode], OrderingStrategy, Bool) -> ModelOrderPortComparator
 
 pub fn new_msd_cut_index_heuristic() -> ICutIndexCalculator
-
-pub fn new_network_simplex_layerer_layout_phase() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_network_simplex_placer_layout_phase() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
@@ -870,8 +856,6 @@ pub fn new_spline_segment_hyper_edge(LPort, Array[@core.Pair[SplineSideToProcess
 pub fn new_spline_segment_single_edge(LEdge, SplineSideToProcess, SplineSideToProcess) -> SplineSegment
 
 pub fn new_spline_self_loop_router() -> AbstractSelfLoopRouter
-
-pub fn new_stretch_width_layerer_layout_phase() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_strip_container_cell(Strip, Bool, Double) -> Cell
 
@@ -1051,6 +1035,8 @@ pub fn recursive_layered_import_graph_for_transform(Int) -> LGraph?
 
 pub fn register_layered_cycle_breaking_phase(String, @core.ILayoutProcessorFactory[LayeredPhases, LGraph]) -> Unit
 
+pub fn register_layered_layering_phase(String, @core.ILayoutProcessorFactory[LayeredPhases, LGraph]) -> Unit
+
 pub fn resize_node(LNode, @core.KVector, Bool, Bool) -> Unit
 
 pub fn routing_direction_to_string(RoutingDirection) -> String
@@ -1176,30 +1162,14 @@ pub suberror BkThresholdStrategyException {
   BkThresholdStrategyException(String)
 } derive(ToJson, @debug.Debug)
 
-pub(all) suberror BreadthFirstModelOrderLayererException {
-  UnsupportedGraphException(String)
-} derive(ToJson, @debug.Debug)
-
-pub(all) suberror CoffmanGrahamLayererException {
-  UnsupportedGraphException(String)
-} derive(ToJson, @debug.Debug)
-
 pub(all) suberror CrossHierarchyEdgeComparatorException {
   CrossHierarchyEdgeComparatorException(String)
 } derive(ToJson, @debug.Debug)
 
 type CuttingUtilsException derive(ToJson, @debug.Debug)
 
-pub(all) suberror DepthFirstModelOrderLayererException {
-  UnsupportedGraphException(String)
-} derive(ToJson, @debug.Debug)
-
 pub suberror ElkLayeredTestExecutionException {
   ElkLayeredTestExecutionException(String)
-} derive(ToJson, @debug.Debug)
-
-pub(all) suberror InteractiveLayererException {
-  UnsupportedGraphException(String)
 } derive(ToJson, @debug.Debug)
 
 pub(all) suberror LEdgeException {
@@ -1231,14 +1201,6 @@ pub suberror LayerTotalPortDistributorException {
 
 pub suberror LayeredSpacingsException {
   LayeredSpacingsException(String)
-} derive(ToJson, @debug.Debug)
-
-pub(all) suberror LongestPathLayererException {
-  UnsupportedGraphException(String)
-} derive(ToJson, @debug.Debug)
-
-pub(all) suberror LongestPathSourceLayererException {
-  UnsupportedGraphException(String)
 } derive(ToJson, @debug.Debug)
 
 pub suberror NetworkSimplexPlacerException {

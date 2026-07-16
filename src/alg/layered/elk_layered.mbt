@@ -139,44 +139,7 @@ fn elk_layered_cycle_breaking_factory(
 fn elk_layered_layering_factory(
   strategy : String,
 ) -> @core.ILayoutProcessorFactory[LayeredPhases, LGraph] {
-  match strategy {
-    "LONGEST_PATH" =>
-      @core.new_layout_processor_factory(22001, 1, () => {
-        new_longest_path_layerer_layout_phase()
-      })
-    "LONGEST_PATH_SOURCE" =>
-      @core.new_layout_processor_factory(22002, 1, () => {
-        new_longest_path_source_layerer_layout_phase()
-      })
-    "COFFMAN_GRAHAM" =>
-      @core.new_layout_processor_factory(22003, 1, () => {
-        new_coffman_graham_layerer_layout_phase()
-      })
-    "INTERACTIVE" =>
-      @core.new_layout_processor_factory(22004, 1, () => {
-        new_interactive_layerer_layout_phase()
-      })
-    "STRETCH_WIDTH" =>
-      @core.new_layout_processor_factory(22005, 1, () => {
-        new_stretch_width_layerer_layout_phase()
-      })
-    "MIN_WIDTH" =>
-      @core.new_layout_processor_factory(22006, 1, () => {
-        new_min_width_layerer_layout_phase()
-      })
-    "BF_MODEL_ORDER" =>
-      @core.new_layout_processor_factory(22007, 1, () => {
-        new_breadth_first_model_order_layerer_layout_phase()
-      })
-    "DF_MODEL_ORDER" =>
-      @core.new_layout_processor_factory(22008, 1, () => {
-        new_depth_first_model_order_layerer_layout_phase()
-      })
-    _ =>
-      @core.new_layout_processor_factory(22000, 1, () => {
-        new_network_simplex_layerer_layout_phase()
-      })
-  }
+  layered_layering_phase_factory(strategy)
 }
 
 ///|

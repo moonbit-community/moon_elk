@@ -1,34 +1,38 @@
 ///|
 fn coffman_graham_layerer_layer_constraint_preprocessor_factory() -> @core.ILayoutProcessorFactory[
-  LayeredPhases,
-  LGraph,
+  @layered.LayeredPhases,
+  @layered.LGraph,
 ] {
   @core.new_layout_processor_factory(23007, 7, () => {
-    new_layer_constraint_preprocessor_layout_processor()
+    @layered.new_layer_constraint_preprocessor_layout_processor()
   })
 }
 
 ///|
 fn coffman_graham_layerer_layer_constraint_postprocessor_factory() -> @core.ILayoutProcessorFactory[
-  LayeredPhases,
-  LGraph,
+  @layered.LayeredPhases,
+  @layered.LGraph,
 ] {
   @core.new_layout_processor_factory(23011, 11, () => {
-    new_layer_constraint_postprocessor_layout_processor()
+    @layered.new_layer_constraint_postprocessor_layout_processor()
   })
 }
 
 ///|
 let coffman_graham_layerer_baseline_processing_configuration : @core.LayoutProcessorConfiguration[
-  LayeredPhases,
-  LGraph,
-] = @core.layout_processor_configuration_create(layered_phase_descriptor)
-  .add_before(
-    P1CycleBreaking,
-    layered_intermediate_processor_factory(EdgeAndLayerConstraintEdgeReverser),
+  @layered.LayeredPhases,
+  @layered.LGraph,
+] = @core.layout_processor_configuration_create(
+    @layered.layered_phase_descriptor,
   )
   .add_before(
-    P2Layering,
+    @layered.P1CycleBreaking,
+    @layered.layered_intermediate_processor_factory(
+      EdgeAndLayerConstraintEdgeReverser,
+    ),
+  )
+  .add_before(
+    @layered.P2Layering,
     coffman_graham_layerer_layer_constraint_preprocessor_factory(),
   )
   .add_before(
@@ -50,8 +54,8 @@ fn[T] coffman_graham_layerer_raise_unsupported_graph(
 
 ///|
 fn coffman_graham_layerer_require_edge_source_node(
-  edge : LEdge,
-) -> LNode raise CoffmanGrahamLayererException {
+  edge : @layered.LEdge,
+) -> @layered.LNode raise CoffmanGrahamLayererException {
   let source = match edge.get_source() {
     Some(value) => value
     None =>
@@ -68,8 +72,8 @@ fn coffman_graham_layerer_require_edge_source_node(
 
 ///|
 fn coffman_graham_layerer_require_edge_target_node(
-  edge : LEdge,
-) -> LNode raise CoffmanGrahamLayererException {
+  edge : @layered.LEdge,
+) -> @layered.LNode raise CoffmanGrahamLayererException {
   let target = match edge.get_target() {
     Some(value) => value
     None =>
@@ -87,8 +91,8 @@ fn coffman_graham_layerer_require_edge_target_node(
 ///|
 fn coffman_graham_layerer_compare_nodes_in_topo(
   in_topo : Array[Array[Int]],
-  u : LNode,
-  v : LNode,
+  u : @layered.LNode,
+  v : @layered.LNode,
 ) -> Int {
   let in_list_u = in_topo[u.get_id()]
   let in_list_v = in_topo[v.get_id()]
@@ -122,9 +126,9 @@ fn coffman_graham_layerer_compare_nodes_in_topo(
 
 ///|
 fn coffman_graham_layerer_insert_source(
-  sources : Array[LNode],
+  sources : Array[@layered.LNode],
   in_topo : Array[Array[Int]],
-  node : LNode,
+  node : @layered.LNode,
 ) -> Unit {
   let mut insert_index = 0
   while insert_index < sources.length() &&
@@ -141,9 +145,9 @@ fn coffman_graham_layerer_insert_source(
 
 ///|
 fn coffman_graham_layerer_insert_sink(
-  sinks : Array[LNode],
+  sinks : Array[@layered.LNode],
   topo_ord : Array[Int],
-  node : LNode,
+  node : @layered.LNode,
 ) -> Unit {
   let node_topo = topo_ord[node.get_id()]
   let mut insert_index = 0
@@ -155,17 +159,22 @@ fn coffman_graham_layerer_insert_sink(
 }
 
 ///|
-fn coffman_graham_layerer_layer_equals(left : Layer?, right : Layer) -> Bool {
+fn coffman_graham_layerer_layer_equals(
+  left : @layered.Layer?,
+  right : @layered.Layer,
+) -> Bool {
   match left {
-    Some(value) => layer_internal_handle(value) == layer_internal_handle(right)
+    Some(value) =>
+      @layered.layer_internal_handle(value) ==
+      @layered.layer_internal_handle(right)
     None => false
   }
 }
 
 ///|
 fn coffman_graham_layerer_can_add(
-  node : LNode,
-  layer : Layer,
+  node : @layered.LNode,
+  layer : @layered.Layer,
 ) -> Bool raise CoffmanGrahamLayererException {
   for edge in node.get_outgoing_edges() {
     let target = coffman_graham_layerer_require_edge_target_node(edge)
@@ -178,18 +187,18 @@ fn coffman_graham_layerer_can_add(
 
 ///|
 fn coffman_graham_layerer_create_layer(
-  graph : LGraph,
-  layers : Array[Layer],
-) -> Layer {
-  let a_layer = new_layer(graph)
+  graph : @layered.LGraph,
+  layers : Array[@layered.Layer],
+) -> @layered.Layer {
+  let a_layer = @layered.new_layer(graph)
   layers.push(a_layer)
   a_layer
 }
 
 ///|
 fn coffman_graham_layerer_dfs(
-  start : LNode,
-  node : LNode,
+  start : @layered.LNode,
+  node : @layered.LNode,
   node_mark : Array[Bool],
   edge_mark : Array[Bool],
 ) -> Unit raise CoffmanGrahamLayererException {
@@ -201,7 +210,8 @@ fn coffman_graham_layerer_dfs(
     let w = coffman_graham_layerer_require_edge_target_node(out)
     for transitive in w.get_incoming_edges() {
       let source = coffman_graham_layerer_require_edge_source_node(transitive)
-      if lnode_internal_handle(source) == lnode_internal_handle(start) {
+      if @layered.lnode_internal_handle(source) ==
+        @layered.lnode_internal_handle(start) {
         edge_mark[transitive.get_id()] = true
       }
     }
@@ -213,7 +223,7 @@ fn coffman_graham_layerer_dfs(
 
 ///|
 fn coffman_graham_layerer_transitive_reduction(
-  graph : LGraph,
+  graph : @layered.LGraph,
   node_mark : Array[Bool],
   edge_mark : Array[Bool],
 ) -> Unit raise CoffmanGrahamLayererException {
@@ -232,15 +242,15 @@ fn coffman_graham_layerer_transitive_reduction(
 
 ///|
 fn coffman_graham_layerer_configuration(
-  graph : LGraph,
-) -> @core.LayoutProcessorConfiguration[LayeredPhases, LGraph]? {
+  graph : @layered.LGraph,
+) -> @core.LayoutProcessorConfiguration[@layered.LayeredPhases, @layered.LGraph]? {
   ignore(graph)
   Some(coffman_graham_layerer_baseline_processing_configuration)
 }
 
 ///|
 fn coffman_graham_layerer_process(
-  layered_graph : LGraph,
+  layered_graph : @layered.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
 ) -> Unit {
   let monitor = match progress_monitor {
@@ -378,8 +388,8 @@ fn coffman_graham_layerer_process(
 
 ///|
 pub fn new_coffman_graham_layerer_layout_phase() -> @core.ILayoutProcessor[
-  LayeredPhases,
-  LGraph,
+  @layered.LayeredPhases,
+  @layered.LGraph,
 ] {
   @core.new_layout_phase(
     coffman_graham_layerer_process, coffman_graham_layerer_configuration,
