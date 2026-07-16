@@ -54,8 +54,6 @@ pub fn cm_group_model_order_calculate_model_order_or_group_model_order_port(LPor
 
 pub fn component_ordering_strategy_equals(ComponentOrderingStrategy, ComponentOrderingStrategy) -> Bool
 
-pub fn[N, E] components_to_cgraph_spacing_handler(ComponentsToCGraphTransformer[N, E]) -> @common.ISpacingsHandler
-
 pub fn compute_graph_properties(LGraph) -> Unit
 
 pub fn container_area_to_string(ContainerArea) -> String
@@ -215,8 +213,6 @@ pub fn i_initializable_init(Array[IInitializable], Array[Array[LNode]]) -> Unit
 pub fn i_sweep_port_distributor_init(Array[ISweepPortDistributor], Array[Array[LNode]]) -> Unit
 
 pub fn in_north_south_east_west_order(LNode, @core.PortSide) -> Array[LPort]
-
-pub fn[N, E] init_one_dimensional_components_compaction(IConnectedComponents[N, E], Double) -> OneDimensionalComponentsCompaction[N, E]
 
 pub fn initialize_port(LPort, @core.PortConstraints, @core.Direction, @core.KVector?) -> Unit
 
@@ -392,57 +388,17 @@ pub fn layer_constraint_values() -> Array[String]
 
 pub let layered_algorithm_id : String
 
-pub fn layered_cgroup_of() -> @common.CGroupBuilder
-
-pub fn layered_cnode_apply_position(@common.CNode) -> Unit
-
-pub fn layered_cnode_get_position(@common.CNode) -> Double
-
-pub fn layered_cnode_of() -> @common.CNodeBuilder
-
-pub fn layered_compactor_apply_locking_strategy(@common.OneDimensionalCompactor) -> @common.OneDimensionalCompactor
-
-pub fn layered_compactor_apply_locking_strategy_with_direction(@common.OneDimensionalCompactor, @core.Direction) -> @common.OneDimensionalCompactor
-
-pub fn layered_compactor_set_locking_strategy(@common.OneDimensionalCompactor, (@common.CNode, @core.Direction) -> Bool) -> @common.OneDimensionalCompactor
-
-pub fn layered_compare_fuzzy_eq(Double, Double) -> Bool
-
-pub fn layered_compare_fuzzy_ge(Double, Double) -> Bool
-
-pub fn layered_compare_fuzzy_gt(Double, Double) -> Bool
-
-pub fn layered_compare_fuzzy_le(Double, Double) -> Bool
-
-pub fn layered_compare_fuzzy_lt(Double, Double) -> Bool
-
-pub let layered_compare_fuzzy_tolerance : Double
-
 pub let layered_components_direction : @graph.IProperty[@core.Direction]
 
 pub let layered_components_priority : @graph.IProperty[Int]
 
 pub let layered_components_separate_connected_components : @graph.IProperty[Bool]
 
-pub fn layered_default_spacing_handler() -> @common.ISpacingsHandler
-
 pub fn layered_elk_graph_transformer_get_origin_identifier(LGraphElement) -> String?
 
 pub fn layered_intermediate_processor_factory(IntermediateProcessorStrategy) -> @core.ILayoutProcessorFactory[LayeredPhases, LGraph]
 
-pub fn layered_is_both_left_or_both_right(LayeredQuadrant, LayeredQuadrant) -> Bool
-
-pub fn layered_is_one_left_one_right(LayeredQuadrant, LayeredQuadrant) -> Bool
-
 pub fn layered_layout_provider_as_layout_provider(LayeredLayoutProvider) -> @core.AbstractLayoutProvider
-
-pub fn layered_longest_path_compaction(@common.OneDimensionalCompactor) -> Unit
-
-pub fn layered_one_dimensional_compactor_longest_path_compaction(@common.OneDimensionalCompactor) -> Unit
-
-pub fn layered_one_dimensional_compactor_quadratic_constraints(@common.OneDimensionalCompactor) -> Unit
-
-pub fn layered_one_dimensional_compactor_scanline_constraints(@common.OneDimensionalCompactor) -> Unit
 
 pub let layered_options_allow_non_flow_ports_to_switch_sides : @graph.IProperty[Bool]
 
@@ -650,22 +606,6 @@ pub fn layered_phase_values() -> Array[String]
 
 pub fn layered_phases_to_string(LayeredPhases) -> String
 
-pub fn layered_point_from_kvector(@core.KVector) -> LayeredPoint
-
-pub fn layered_point_with_quadrant(LayeredPoint, LayeredQuadrant) -> LayeredPoint
-
-pub fn layered_quadrant_eq(LayeredQuadrant, LayeredQuadrant) -> Bool
-
-pub fn layered_quadratic_constraint_calculation(@common.OneDimensionalCompactor) -> Unit
-
-pub fn layered_rectilinear_convex_hull_of(Array[LayeredPoint]) -> LayeredRectilinearConvexHull
-
-pub fn layered_scanline_constraint_calculation(@common.OneDimensionalCompactor) -> Unit
-
-pub fn[T] layered_scanline_execute(Array[T], (T, T) -> Int, Array[(T) -> Unit]) -> Unit
-
-pub fn[T] layered_scanline_execute_single(Array[T], (T, T) -> Int, (T) -> Unit) -> Unit
-
 pub let layered_spacings_base_spacing_option : @graph.IProperty[Double]
 
 pub fn layered_spacings_exception_message(LayeredSpacingsException) -> String
@@ -752,19 +692,13 @@ pub fn new_comment_postprocessor_layout_processor() -> @core.ILayoutProcessor[La
 
 pub fn new_comment_preprocessor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
-pub fn[N, E] new_component(() -> Array[@core.ElkRectangle], () -> Array[IExternalExtension[E]], () -> Array[@core.PortSide]) -> IComponent[N, E]
-
 pub fn new_component_group() -> ComponentGroup
 
 pub fn new_component_group_with_component(LGraph) -> ComponentGroup
 
-pub fn[N, E] new_components_to_cgraph_transformer(Double) -> ComponentsToCGraphTransformer[N, E]
-
 pub fn new_compound_graph_postprocessor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_compound_graph_preprocessor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
-
-pub fn[N, E] new_connected_components(() -> Array[IComponent[N, E]], () -> Bool) -> IConnectedComponents[N, E]
 
 pub fn new_constraints_postprocessor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
@@ -805,8 +739,6 @@ pub fn new_end_label_postprocessor_layout_processor() -> @core.ILayoutProcessor[
 pub fn new_end_label_preprocessor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_end_label_sorter_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
-
-pub fn[E] new_external_extension(() -> E, () -> @core.ElkRectangle, () -> @core.ElkRectangle, () -> @core.Direction, get_placeholder? : () -> @core.ElkRectangle?) -> IExternalExtension[E]
 
 pub fn new_final_spline_bendpoints_calculator_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
@@ -970,10 +902,6 @@ pub fn new_layer_total_port_distributor(Int) -> LayerTotalPortDistributor
 
 pub fn new_layered_abstract_graph_placer() -> LayeredAbstractGraphPlacer
 
-pub fn new_layered_c_graph(Array[@core.Direction]) -> @common.CGraph
-
-pub fn[T] new_layered_c_graph_transformer((T) -> @common.CGraph, () -> Unit) -> LayeredICGraphTransformer[T]
-
 pub fn new_layered_component_group_graph_placer() -> LayeredComponentGroupGraphPlacer
 
 pub fn new_layered_component_group_model_order_graph_placer() -> LayeredComponentGroupModelOrderGraphPlacer
@@ -996,23 +924,9 @@ pub fn new_layered_layout_provider() -> LayeredLayoutProvider
 
 pub fn new_layered_model_order_row_graph_placer() -> LayeredModelOrderRowGraphPlacer
 
-pub fn new_layered_one_dimensional_compactor(@common.CGraph) -> @common.OneDimensionalCompactor
-
-pub fn new_layered_point(Double, Double) -> LayeredPoint
-
-pub fn new_layered_point_in_quadrant(Double, Double, LayeredQuadrant) -> LayeredPoint
-
-pub fn new_layered_quadruplet() -> LayeredQuadruplet
-
-pub fn new_layered_quadruplet_with_values(Bool, Bool, Bool, Bool) -> LayeredQuadruplet
-
-pub fn new_layered_rectilinear_convex_hull() -> LayeredRectilinearConvexHull
-
 pub fn new_layered_simple_row_graph_placer() -> LayeredSimpleRowGraphPlacer
 
 pub fn new_layered_spacings(LGraph) -> Spacings
-
-pub fn new_layered_spacings_handler((@common.CNode, @common.CNode) -> Double, (@common.CNode, @common.CNode) -> Double) -> @common.ISpacingsHandler
 
 pub fn new_lgraph_to_cgraph_transformer() -> LGraphToCGraphTransformer
 
@@ -1085,8 +999,6 @@ pub fn new_nubs_self_loop(Int, Array[@core.KVector]) -> NubsSelfLoop
 pub fn new_nubs_self_loop_copy(NubsSelfLoop) -> NubsSelfLoop
 
 pub fn new_nubs_self_loop_with_clamped(Bool, Int, Array[@core.KVector]) -> NubsSelfLoop
-
-pub fn[N, E] new_one_dimensional_components_compaction(IConnectedComponents[N, E], Double) -> OneDimensionalComponentsCompaction[N, E]
 
 pub fn new_orthogonal_edge_router_layout_phase() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
@@ -1353,8 +1265,6 @@ pub fn rectangle_union_collection(Array[Rectangle]) -> Rectangle raise Rectangle
 pub fn recursive_layered_apply_transformed_graph(LGraph) -> Bool
 
 pub fn recursive_layered_import_graph_for_transform(Int) -> LGraph?
-
-pub fn reset_layered_compaction_oned_model_for_test() -> Unit
 
 pub fn resize_node(LNode, @core.KVector, Bool, Bool) -> Unit
 
@@ -1963,34 +1873,6 @@ pub enum ComponentOrderingStrategy {
   ModelOrder
 }
 
-type ComponentsCompactionComponentOffset
-
-type ComponentsCompactionExternalExtensionEntry[E]
-
-type ComponentsCompactionNodeInfo
-
-type ComponentsCompactionPlaceholderEntry
-
-pub struct ComponentsToCGraphTransformer[N, E] {
-  mut c_graph : @common.CGraph
-  spacing : Double
-  component_offsets : Array[ComponentsCompactionComponentOffset]
-  external_extensions : Array[ComponentsCompactionExternalExtensionEntry[E]]
-  external_placeholders : Array[ComponentsCompactionPlaceholderEntry]
-  node_infos : Array[ComponentsCompactionNodeInfo]
-  mut global_offset : @core.KVector
-  mut graph_size : @core.KVector
-  _phantom : N?
-}
-pub fn[N, E] ComponentsToCGraphTransformer::apply_layout(Self[N, E]) -> Unit
-pub fn[N, E] ComponentsToCGraphTransformer::get_external_extensions(Self[N, E]) -> Array[(IExternalExtension[E], (@common.CGroup, @common.CNode))]
-pub fn[N, E] ComponentsToCGraphTransformer::get_external_placeholders(Self[N, E]) -> Array[(@core.Direction, (@common.CGroup, @common.CNode))]
-pub fn[N, E] ComponentsToCGraphTransformer::get_global_offset(Self[N, E]) -> @core.KVector
-pub fn[N, E] ComponentsToCGraphTransformer::get_graph_size(Self[N, E]) -> @core.KVector
-pub fn[N, E] ComponentsToCGraphTransformer::get_offset(Self[N, E], IComponent[N, E]) -> @core.KVector
-pub fn[N, E] ComponentsToCGraphTransformer::is_locked(Self[N, E], @common.CNode, @core.Direction) -> Bool
-pub fn[N, E] ComponentsToCGraphTransformer::transform(Self[N, E], IConnectedComponents[N, E]) -> @common.CGraph
-
 pub enum ConstraintCalculationStrategy {
   Quadratic
   Scanline
@@ -2585,24 +2467,6 @@ pub struct HyperedgeCrossingsCounter {
 }
 pub fn HyperedgeCrossingsCounter::count_crossings(Self, Array[LNode], Array[LNode]) -> Int
 
-pub struct IComponent[N, E] {
-  _instance_id : Int
-  get_hull_fn : () -> Array[@core.ElkRectangle]
-  get_external_extensions_fn : () -> Array[IExternalExtension[E]]
-  get_external_extension_sides_fn : () -> Array[@core.PortSide]
-  _phantom : N?
-}
-pub fn[N, E] IComponent::get_external_extension_sides(Self[N, E]) -> Array[@core.PortSide]
-pub fn[N, E] IComponent::get_external_extensions(Self[N, E]) -> Array[IExternalExtension[E]]
-pub fn[N, E] IComponent::get_hull(Self[N, E]) -> Array[@core.ElkRectangle]
-
-pub struct IConnectedComponents[N, E] {
-  get_components_fn : () -> Array[IComponent[N, E]]
-  is_contains_external_extensions_fn : () -> Bool
-}
-pub fn[N, E] IConnectedComponents::get_components(Self[N, E]) -> Array[IComponent[N, E]]
-pub fn[N, E] IConnectedComponents::is_contains_external_extensions(Self[N, E]) -> Bool
-
 pub struct ICrossingMinimizationHeuristic {
   initializable : IInitializable
   always_improves_fn : () -> Bool
@@ -2627,20 +2491,6 @@ pub struct ICutIndexCalculator {
 }
 pub fn ICutIndexCalculator::get_cut_indexes(Self, LGraph, GraphStats) -> Array[Int]
 pub fn ICutIndexCalculator::guarantee_valid(Self) -> Bool
-
-pub struct IExternalExtension[E] {
-  _instance_id : Int
-  get_representative_fn : () -> E
-  get_representor_fn : () -> @core.ElkRectangle
-  get_placeholder_fn : () -> @core.ElkRectangle?
-  get_parent_fn : () -> @core.ElkRectangle
-  get_direction_fn : () -> @core.Direction
-}
-pub fn[E] IExternalExtension::get_direction(Self[E]) -> @core.Direction
-pub fn[E] IExternalExtension::get_parent(Self[E]) -> @core.ElkRectangle
-pub fn[E] IExternalExtension::get_placeholder(Self[E]) -> @core.ElkRectangle?
-pub fn[E] IExternalExtension::get_representative(Self[E]) -> E
-pub fn[E] IExternalExtension::get_representor(Self[E]) -> @core.ElkRectangle
 
 pub struct IInitializable {
   init_at_layer_level_fn : (Int, Array[Array[LNode]]) -> Unit
@@ -3414,22 +3264,6 @@ pub fn LayeredElkGraphTransformer::import_graph(Self, Int) -> LGraph
 
 type LayeredGraphPlacerKind
 
-pub struct LayeredHullRectangleEventState {
-  rects : Array[@core.ElkRectangle]
-  mut min_y : LayeredPoint?
-  mut max_y : LayeredPoint?
-  mut last_x : Double
-  mut queued : @core.ElkRectangle?
-  mut queued_point : LayeredPoint?
-}
-
-pub struct LayeredICGraphTransformer[T] {
-  transform_fn : (T) -> @common.CGraph
-  apply_layout_fn : () -> Unit
-}
-pub fn[T] LayeredICGraphTransformer::apply_layout(Self[T]) -> Unit
-pub fn[T] LayeredICGraphTransformer::transform(Self[T], T) -> @common.CGraph
-
 pub struct LayeredIGraphTransformer[T] {
   import_graph_fn : (T) -> LGraph?
   apply_layout_fn : (LGraph) -> Unit
@@ -3464,46 +3298,6 @@ pub enum LayeredPhases {
   P4NodePlacement
   P5EdgeRouting
 }
-
-pub struct LayeredPoint {
-  x : Double
-  y : Double
-  quadrant : LayeredQuadrant?
-  mut convex : Bool
-}
-
-pub enum LayeredQuadrant {
-  LQ1
-  LQ4
-  LQ2
-  LQ3
-}
-pub fn LayeredQuadrant::is_left(Self) -> Bool
-pub fn LayeredQuadrant::is_upper(Self) -> Bool
-
-pub struct LayeredQuadruplet {
-  mut left : Bool
-  mut right : Bool
-  mut up : Bool
-  mut down : Bool
-}
-pub fn LayeredQuadruplet::get(Self, @core.Direction) -> Bool
-pub fn LayeredQuadruplet::set_for_direction(Self, Bool, @core.Direction) -> Unit
-pub fn LayeredQuadruplet::set_values(Self, Bool, Bool, Bool, Bool) -> Unit
-
-pub struct LayeredRectilinearConvexHull {
-  hull : Array[LayeredPoint]
-  mut x_max1 : LayeredPoint?
-  mut x_max2 : LayeredPoint?
-  mut x_min1 : LayeredPoint?
-  mut x_min2 : LayeredPoint?
-  mut y_max1 : LayeredPoint?
-  mut y_max2 : LayeredPoint?
-  mut y_min1 : LayeredPoint?
-  mut y_min2 : LayeredPoint?
-}
-pub fn LayeredRectilinearConvexHull::get_hull(Self) -> Array[LayeredPoint]
-pub fn LayeredRectilinearConvexHull::split_into_rectangles(Self) -> Array[@core.ElkRectangle]
 
 pub struct LayeredSimpleRowGraphPlacer {
   base : LayeredAbstractGraphPlacer
@@ -3793,18 +3587,6 @@ pub fn NubsSelfLoop::get_control_points(Self) -> @core.KVectorChain
 pub fn NubsSelfLoop::get_dim(Self) -> Int
 pub fn NubsSelfLoop::get_first_label_position(Self) -> @core.KVector
 pub fn NubsSelfLoop::set_first_label_position(Self, @core.KVector) -> Unit
-
-pub struct OneDimensionalComponentsCompaction[N, E] {
-  compaction_graph : @common.CGraph
-  transformer : ComponentsToCGraphTransformer[N, E]
-  vertical_external_extensions : Array[(@common.CGroup, @common.CNode)]
-  horizontal_external_extensions : Array[(@common.CGroup, @common.CNode)]
-  mut top_left : @core.KVector
-  mut bottom_right : @core.KVector
-}
-pub fn[N, E] OneDimensionalComponentsCompaction::compact(Self[N, E], @core.IElkProgressMonitor) -> Unit
-pub fn[N, E] OneDimensionalComponentsCompaction::get_graph_size(Self[N, E]) -> @core.KVector
-pub fn[N, E] OneDimensionalComponentsCompaction::get_offset(Self[N, E], IComponent[N, E]) -> @core.KVector
 
 pub enum OrderingStrategy {
   NoneType
@@ -4221,29 +4003,7 @@ pub using @core {type Spacing as LMargin}
 
 pub using @core {type Spacing as LPadding}
 
-pub using @common {type CGraph as LayeredCGraph}
-
-pub using @common {type CGroup as LayeredCGroup}
-
-pub using @common {type CGroupBuilder as LayeredCGroupBuilder}
-
-pub using @common {type CNode as LayeredCNode}
-
-pub using @common {type CNodeBuilder as LayeredCNodeBuilder}
-
-pub type LayeredICompactionAlgorithm = (@common.OneDimensionalCompactor) -> Unit
-
-pub type LayeredIConstraintCalculationAlgorithm = (@common.OneDimensionalCompactor) -> Unit
-
 pub type LayeredIHierarchyAwareLayoutProcessor = Unit
-
-pub type LayeredILockFunction = (@common.CNode, @core.Direction) -> Bool
-
-pub using @common {type ISpacingsHandler as LayeredISpacingsHandler}
-
-pub using @common {type OneDimensionalCompactor as LayeredOneDimensionalCompactor}
-
-pub type LayeredScanlineEventHandler[T] = (T) -> Unit
 
 // Traits
 
