@@ -199,8 +199,8 @@ pub fn new_model_order_port_comparator_from_layer(
     previous_layer: previous_layer.get_nodes().copy(),
     graph,
     strategy,
-    bigger_than: {},
-    smaller_than: {},
+    bigger_than: Map([]),
+    smaller_than: Map([]),
   }
 }
 
@@ -219,8 +219,8 @@ pub fn new_model_order_port_comparator(
     previous_layer,
     graph,
     strategy,
-    bigger_than: {},
-    smaller_than: {},
+    bigger_than: Map([]),
+    smaller_than: Map([]),
   }
 }
 
@@ -232,14 +232,14 @@ pub fn new_model_order_port_comparator_without_target_node_model_order(
   port_model_order : Bool,
 ) -> ModelOrderPortComparator {
   {
-    target_node_model_order: {},
+    target_node_model_order: Map([]),
     has_target_node_model_order: false,
     port_model_order,
     previous_layer,
     graph,
     strategy,
-    bigger_than: {},
-    smaller_than: {},
+    bigger_than: Map([]),
+    smaller_than: Map([]),
   }
 }
 
@@ -719,6 +719,6 @@ pub fn ModelOrderPortComparator::compare(
 pub fn ModelOrderPortComparator::clear_transitive_ordering(
   self : ModelOrderPortComparator,
 ) -> Unit {
-  self.bigger_than = {}
-  self.smaller_than = {}
+  self.bigger_than = Map([])
+  self.smaller_than = Map([])
 }

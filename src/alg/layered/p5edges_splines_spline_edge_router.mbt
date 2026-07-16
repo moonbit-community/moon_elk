@@ -1276,8 +1276,8 @@ fn spline_edge_router_process(
 
     let start_edges : Array[LEdge] = []
     let all_spline_segments : Array[SplineSegment] = []
-    let edge_to_segment_map : Map[Int, SplineSegment] = {}
-    let successing_edge : Map[Int, LEdge] = {}
+    let edge_to_segment_map : Map[Int, SplineSegment] = Map([])
+    let successing_edge : Map[Int, LEdge] = Map([])
 
     let layers = layered_graph.get_layers()
     let first_layer = layers[0]

@@ -124,7 +124,7 @@ fn issue143_and318_test_collect_section_chain_points(
   section : @graph.ElkEdgeSection,
 ) -> Array[@core.KVector] {
   let points : Array[@core.KVector] = []
-  let visited : Map[@graph.ElkEdgeSection, Unit] = {}
+  let visited : Map[@graph.ElkEdgeSection, Unit] = Map([])
   let mut current = section
   points.push(
     @core.new_kvector_xy(

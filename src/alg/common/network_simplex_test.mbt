@@ -58,7 +58,7 @@ fn generate_random_graph(random : @random.Rand) -> NGraph {
 
 ///|
 test "NetworkSimplex deltas" {
-  let seed_buffer = @buffer.new()
+  let seed_buffer = Buffer()
   seed_buffer.write_int64_le(1)
   seed_buffer.write_int64_le(0)
   seed_buffer.write_int64_le(0)

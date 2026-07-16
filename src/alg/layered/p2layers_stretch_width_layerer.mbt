@@ -92,8 +92,8 @@ fn stretch_width_layerer_new_state(
     current_graph: layered_graph,
     upper_layer_influence: 0.0,
     sorted_layerless_nodes: [],
-    already_placed_nodes: {},
-    already_placed_in_other_layers: {},
+    already_placed_nodes: Map([]),
+    already_placed_in_other_layers: Map([]),
     temp_layerless_nodes: [],
     _successors: [],
     out_degree: [],
@@ -190,7 +190,7 @@ fn stretch_width_layerer_compute_successors(
   let mut i = 0
   for node in state.sorted_layerless_nodes {
     node.set_id(i)
-    let curr_succ : Map[Int, Bool] = {}
+    let curr_succ : Map[Int, Bool] = Map([])
     for edge in node.get_outgoing_edges() {
       let target = stretch_width_layerer_require_edge_target_node(edge)
       curr_succ[target.get_handle()] = true
@@ -400,7 +400,7 @@ fn stretch_width_layerer_process(
         for entry in state.already_placed_nodes.to_array() {
           state.already_placed_in_other_layers[entry.0] = true
         }
-        state.already_placed_nodes = {}
+        state.already_placed_nodes = Map([])
         state.width_current = state.width_up
         state.width_up = 0.0
       } else {
@@ -417,8 +417,8 @@ fn stretch_width_layerer_process(
           state.current_graph.get_layers().push(current_layer)
           state.width_current = 0.0
           state.width_up = 0.0
-          state.already_placed_nodes = {}
-          state.already_placed_in_other_layers = {}
+          state.already_placed_nodes = Map([])
+          state.already_placed_in_other_layers = Map([])
           state.max_width += 1.0
           state.temp_layerless_nodes = state.sorted_layerless_nodes.copy()
           state.remaining_out_going = state.out_degree.copy()

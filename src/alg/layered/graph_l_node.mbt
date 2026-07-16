@@ -1,5 +1,5 @@
 ///|
-let lnode_next_handle_ref : Ref[Int] = Ref::new(0)
+let lnode_next_handle_ref : Ref[Int] = Ref(0)
 
 ///|
 fn lnode_next_handle() -> Int {
@@ -46,7 +46,7 @@ fn lnode_port_side_rank(side : @core.PortSide) -> Int {
 
 ///|
 fn lnode_clone_int_int_map(source : Map[Int, Int]) -> Map[Int, Int] {
-  let copied : Map[Int, Int] = {}
+  let copied : Map[Int, Int] = Map([])
   for entry in source.to_array() {
     copied[entry.0] = entry.1
   }
@@ -140,25 +140,25 @@ pub fn new_l_node(graph? : LGraph? = None) -> LNode {
     nested_graph: None,
     margin: new_l_margin(),
     padding: new_l_padding(),
-    int_properties: {},
-    bool_properties: {},
-    double_properties: {},
-    kvector_properties: {},
-    elk_margin_properties: {},
-    string_properties: {},
-    string_array_properties: {},
-    port_side_properties: {},
-    label_side_properties: {},
-    node_properties: {},
-    node_array_properties: {},
-    label_array_properties: {},
-    end_label_cell_array_properties: {},
-    int_int_map_properties: {},
-    port_properties: {},
-    edge_properties: {},
-    bp_info_properties: {},
-    self_loop_holder_properties: {},
-    port_side_indices: {},
+    int_properties: Map([]),
+    bool_properties: Map([]),
+    double_properties: Map([]),
+    kvector_properties: Map([]),
+    elk_margin_properties: Map([]),
+    string_properties: Map([]),
+    string_array_properties: Map([]),
+    port_side_properties: Map([]),
+    label_side_properties: Map([]),
+    node_properties: Map([]),
+    node_array_properties: Map([]),
+    label_array_properties: Map([]),
+    end_label_cell_array_properties: Map([]),
+    int_int_map_properties: Map([]),
+    port_properties: Map([]),
+    edge_properties: Map([]),
+    bp_info_properties: Map([]),
+    self_loop_holder_properties: Map([]),
+    port_side_indices: Map([]),
     port_sides_cached: false,
   }
 }

@@ -98,7 +98,7 @@ fn bfs_node_order_visit_node(
   }
   state.visited[node_id] = true
 
-  let model_order_map : Map[Int, Array[LEdge]] = {}
+  let model_order_map : Map[Int, Array[LEdge]] = Map([])
   let group_model_order = bfs_node_order_state_group_model_order(state)
 
   for edge in node.get_outgoing_edges() {
@@ -191,8 +191,8 @@ fn bfs_node_order_process(
 
   let nodes = graph.get_layerless_nodes()
   let state = {
-    sources: {},
-    sinks: {},
+    sources: Map([]),
+    sinks: Map([]),
     visited: Array::make(nodes.length(), false),
     bfs_queue: [],
     bfs_head: 0,

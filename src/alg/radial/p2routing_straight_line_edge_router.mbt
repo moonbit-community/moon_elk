@@ -17,7 +17,7 @@ fn radial_first_edge_section(
 ///|
 fn radial_all_outgoing_edges(node : @graph.ElkNode) -> Array[@graph.ElkEdge] {
   let outgoing = []
-  let seen : Map[@graph.ElkEdge, Bool] = {}
+  let seen : Map[@graph.ElkEdge, Bool] = Map([])
 
   for edge in @graph.node_outgoing_edges(node) {
     if !seen.contains(edge) {

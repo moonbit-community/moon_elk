@@ -154,7 +154,13 @@ pub fn LayoutPropertyDescriptor::create_property_editor(
         new_core_ui_property_editor(CoreUiPropertyEditorText, validator=value => {
           match value {
             CoreUiStringValue(text) =>
-              match (try? @string.parse_int(text) : Result[Int, Error]) {
+              match
+                (
+                  try @string.parse_int(text) catch {
+                    error => Err(error)
+                  } noraise {
+                    value => Ok(value)
+                  } : Result[Int, Error]) {
                 Ok(parsed) =>
                   match
                     self.source.validate_property_value(
@@ -180,7 +186,13 @@ pub fn LayoutPropertyDescriptor::create_property_editor(
         new_core_ui_property_editor(CoreUiPropertyEditorText, validator=value => {
           match value {
             CoreUiStringValue(text) =>
-              match (try? @string.parse_double(text) : Result[Double, Error]) {
+              match
+                (
+                  try @string.parse_double(text) catch {
+                    error => Err(error)
+                  } noraise {
+                    value => Ok(value)
+                  } : Result[Double, Error]) {
                 Ok(parsed) =>
                   match
                     self.source.validate_property_value(
@@ -268,7 +280,7 @@ pub fn LayoutPropertyDescriptor::get_description(
   let description = self.option_data.get_description()
   let parts = Array::from_iter(description.split("."))
   if parts.length() > 1 && !parts[0].is_empty() {
-    parts[0].to_string() + "."
+    parts[0].to_owned() + "."
   } else {
     description
   }

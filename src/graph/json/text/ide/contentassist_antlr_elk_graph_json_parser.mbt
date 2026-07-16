@@ -8,7 +8,7 @@ pub fn new_elk_graph_json_ide_name_mappings(
   grammar_access : @text.ElkGraphJsonGrammarAccess,
 ) -> ElkGraphJsonIdeNameMappings {
   ignore(grammar_access)
-  let mappings : Map[String, String] = {}
+  let mappings : Map[String, String] = Map([])
   mappings["RootNode.Alternatives_4"] = "rule__RootNode__Alternatives_4"
   mappings["ElkNode.Alternatives_2_3"] = "rule__ElkNode__Alternatives_2_3"
   mappings["EdgeLayout.Alternatives_2"] = "rule__EdgeLayout__Alternatives_2"

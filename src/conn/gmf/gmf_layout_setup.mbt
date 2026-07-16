@@ -13,7 +13,9 @@ pub struct GmfInjector {
 }
 
 ///|
-pub fn new_gmf_injector(bindings? : Map[String, String] = {}) -> GmfInjector {
+pub fn new_gmf_injector(
+  bindings? : Map[String, String] = Map([]),
+) -> GmfInjector {
   { bindings, }
 }
 

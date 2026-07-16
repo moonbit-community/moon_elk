@@ -52,7 +52,7 @@ fn draw2d_layout_is_vertical(layout_node : @graph.ElkNode) -> Bool {
 fn draw2d_layout_collect_edges(
   layout_node : @graph.ElkNode,
 ) -> Array[@graph.ElkEdge] {
-  let edge_map : Map[Int, Bool] = {}
+  let edge_map : Map[Int, Bool] = Map([])
   for child in @graph.node_children(layout_node) {
     for edge in @graph.node_outgoing_edges(child) {
       if @graph.edge_targets(edge).length() == 1 &&
@@ -109,7 +109,7 @@ fn draw2d_layout_apply_nodes(
 ///|
 fn draw2d_layout_apply_edges(layout_node : @graph.ElkNode) -> Unit {
   let children = @graph.node_children(layout_node)
-  let child_map : Map[Int, Bool] = {}
+  let child_map : Map[Int, Bool] = Map([])
   for child in children {
     child_map[child] = true
   }

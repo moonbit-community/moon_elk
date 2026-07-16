@@ -300,7 +300,7 @@ fn hierarchical_port_constraint_process_north_south(
   let layers = layered_graph.get_layers()
   let layer_count = layers.length()
 
-  let ext_port_to_dummy_map : Array[Map[Int, LNode]] = [{}, {}]
+  let ext_port_to_dummy_map : Array[Map[Int, LNode]] = [Map([]), Map([])]
   let new_dummy_nodes : Array[Array[LNode]] = [[], []]
   let original_dummies : Array[LNode] = []
 
@@ -309,7 +309,7 @@ fn hierarchical_port_constraint_process_north_south(
     let current_layer = layers[curr_layer_idx]
 
     let prev_map = ext_port_to_dummy_map[curr_layer_idx]
-    let next_map : Map[Int, LNode] = {}
+    let next_map : Map[Int, LNode] = Map([])
     ext_port_to_dummy_map.push(next_map)
 
     let prev_new_nodes = new_dummy_nodes[curr_layer_idx]

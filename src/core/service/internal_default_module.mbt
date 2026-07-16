@@ -9,7 +9,7 @@ pub(all) struct CoreServiceInjector {
 
 ///|
 pub fn new_core_service_injector(
-  bindings? : Map[String, String] = {},
+  bindings? : Map[String, String] = Map([]),
   diagram_layout_connector? : IDiagramLayoutConnector? = None,
   layout_configuration_store_provider? : LayoutConfigurationStoreProvider? = None,
   layout_configuration_manager? : LayoutConfigurationManager? = None,

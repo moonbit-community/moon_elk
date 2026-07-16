@@ -14,7 +14,7 @@ pub enum GmfLayoutOptionTarget {
 } derive(Eq, Debug)
 
 ///|
-pub impl Show for GmfLayoutOptionTarget with output(self, logger) {
+pub impl Show for GmfLayoutOptionTarget with fn output(self, logger) {
   logger.write_string(to_repr(self).to_string())
 }
 
@@ -88,7 +88,7 @@ fn gmf_layout_configuration_store_get_default_options(
   store : GmfLayoutConfigurationStore,
 ) -> Map[String, String]? {
   if gmf_edit_part_kind(store.edit_part) == NoteEditPart {
-    let defaults : Map[String, String] = {}
+    let defaults : Map[String, String] = Map([])
     defaults[gmf_core_option_comment_box_id] = "true"
     Some(defaults)
   } else {
@@ -143,13 +143,13 @@ pub fn GmfLayoutConfigurationStore::set_option_value(
 pub fn GmfLayoutConfigurationStore::get_affected_options(
   self : GmfLayoutConfigurationStore,
 ) -> Array[String] {
-  let options_map : Map[String, Bool] = {}
+  let options_map : Map[String, Bool] = Map([])
   match gmf_edit_part_notation_view(self.edit_part) {
     Some(view) =>
       for entry in gmf_view_style_entries(view) {
         if entry.0.has_prefix(gmf_layout_configuration_prefix) {
           match entry.0.strip_prefix(gmf_layout_configuration_prefix) {
-            Some(option_id) => options_map[option_id.to_string()] = true
+            Some(option_id) => options_map[option_id.to_owned()] = true
             None => ()
           }
         }

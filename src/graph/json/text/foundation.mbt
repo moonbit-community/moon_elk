@@ -45,7 +45,7 @@ pub(all) enum GraphJsonTextPropertyValue {
 } derive(Debug)
 
 ///|
-pub impl Show for GraphJsonTextPropertyValue with output(self, logger) {
+pub impl Show for GraphJsonTextPropertyValue with fn output(self, logger) {
   logger.write_string(to_repr(self).to_string())
 }
 
@@ -115,7 +115,7 @@ pub(all) enum GraphJsonTextListTransient {
 } derive(Debug)
 
 ///|
-pub impl Show for GraphJsonTextListTransient with output(self, logger) {
+pub impl Show for GraphJsonTextListTransient with fn output(self, logger) {
   logger.write_string(to_repr(self).to_string())
 }
 

@@ -734,7 +734,7 @@ pub fn InternalMetaDataParser::rule_md_model(
   self : InternalMetaDataParser,
 ) -> CoreMetaMdModel {
   let model = core_meta_create_md_model()
-  let index_ref : Ref[Int] = Ref::new(0)
+  let index_ref : Ref[Int] = Ref(0)
 
   if core_meta_parser_consume_if_lexeme(self.tokens, index_ref, "package") {
     model.set_name(

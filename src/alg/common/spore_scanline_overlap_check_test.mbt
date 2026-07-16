@@ -11,7 +11,7 @@ test "spore scanline overlap check detects expected overlap pairs" {
   let n2 = spore_scanline_node(150.0, 0.0, 20.0, 20.0)
   let n3 = spore_scanline_node(150.0, 70.0, 20.0, 20.0)
 
-  let overlap_count : Ref[Int] = Ref::new(0)
+  let overlap_count : Ref[Int] = Ref(0)
   let handler : IOverlapHandler = (_, _) => {
     overlap_count.val = overlap_count.val + 1
   }
@@ -26,7 +26,7 @@ test "spore scanline overlap check ignores touching rectangles" {
   let n0 = spore_scanline_node(0.0, 0.0, 20.0, 20.0)
   let n1 = spore_scanline_node(20.0, 5.0, 20.0, 20.0)
 
-  let overlap_count : Ref[Int] = Ref::new(0)
+  let overlap_count : Ref[Int] = Ref(0)
   let handler : IOverlapHandler = (_, _) => {
     overlap_count.val = overlap_count.val + 1
   }

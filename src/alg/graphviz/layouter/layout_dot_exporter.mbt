@@ -4,15 +4,19 @@ let layout_dot_exporter_nslimit_base : Float = 100.0
 ///|
 fn layout_dot_exporter_parse_double(text : String?) -> Double? {
   let normalized = match text {
-    Some(value) => value.trim().to_string()
+    Some(value) => value.trim().to_owned()
     None => ""
   }
   if normalized.is_empty() {
     return None
   }
-  let parsed_double : Result[Double, Error] = try? @string.parse_double(
-    normalized,
-  )
+  let parsed_double : Result[Double, Error] = try
+    @string.parse_double(normalized)
+  catch {
+    error => Err(error)
+  } noraise {
+    value => Ok(value)
+  }
   match parsed_double {
     Ok(value) => Some(value)
     Err(_) =>
@@ -20,13 +24,17 @@ fn layout_dot_exporter_parse_double(text : String?) -> Double? {
         normalized.has_suffix("F") ||
         normalized.has_suffix("d") ||
         normalized.has_suffix("D") {
-        let without_suffix = normalized[:normalized.length() - 1].to_string()
+        let without_suffix = normalized[:normalized.length() - 1].to_owned()
         if without_suffix.is_empty() {
           None
         } else {
-          let parsed_without_suffix : Result[Double, Error] = try? @string.parse_double(
-            without_suffix,
-          )
+          let parsed_without_suffix : Result[Double, Error] = try
+            @string.parse_double(without_suffix)
+          catch {
+            error => Err(error)
+          } noraise {
+            value => Ok(value)
+          }
           match parsed_without_suffix {
             Ok(value) => Some(value)
             Err(_) => None
@@ -41,13 +49,19 @@ fn layout_dot_exporter_parse_double(text : String?) -> Double? {
 ///|
 fn layout_dot_exporter_parse_int(text : String?) -> Int? {
   let normalized = match text {
-    Some(value) => value.trim().to_string()
+    Some(value) => value.trim().to_owned()
     None => ""
   }
   if normalized.is_empty() {
     return None
   }
-  let parsed_int : Result[Int, Error] = try? @string.parse_int(normalized)
+  let parsed_int : Result[Int, Error] = try
+    @string.parse_int(normalized)
+  catch {
+    error => Err(error)
+  } noraise {
+    value => Ok(value)
+  }
   match parsed_int {
     Ok(value) => Some(value)
     Err(_) =>
@@ -61,7 +75,7 @@ fn layout_dot_exporter_parse_int(text : String?) -> Int? {
 ///|
 fn layout_dot_exporter_parse_bool(text : String?) -> Bool? {
   let normalized = match text {
-    Some(value) => value.trim().to_string().to_lower()
+    Some(value) => value.trim().to_owned().to_lower()
     None => ""
   }
   if normalized.is_empty() {
@@ -162,7 +176,7 @@ fn layout_dot_exporter_parse_neato_model_or_abort(
 
 ///|
 fn layout_dot_exporter_parse_neato_model(value : String) -> @dot.NeatoModel {
-  let normalized = value.trim().to_string().to_upper()
+  let normalized = value.trim().to_owned().to_upper()
   if normalized == "CIRCUIT" ||
     normalized == "SUBSET" ||
     normalized == "SHORTPATH" {
@@ -188,7 +202,7 @@ fn layout_dot_exporter_parse_overlap_mode_or_abort(
 
 ///|
 fn layout_dot_exporter_parse_overlap_mode(value : String) -> @dot.OverlapMode {
-  let normalized = value.trim().to_string().to_upper()
+  let normalized = value.trim().to_owned().to_upper()
   if normalized == "NONE" ||
     normalized == "TRUE" ||
     normalized == "SCALE" ||
@@ -206,7 +220,7 @@ fn layout_dot_exporter_parse_edge_label_placement(
   value : String?,
 ) -> @core.EdgeLabelPlacement {
   let normalized = match value {
-    Some(v) => v.trim().to_string().to_upper()
+    Some(v) => v.trim().to_owned().to_upper()
     None => ""
   }
   if normalized == "HEAD" || normalized.has_suffix(".HEAD") {
@@ -288,7 +302,7 @@ fn layout_dot_exporter_has_end_labels(edge : @graph.ElkEdge) -> Bool {
 ///|
 fn layout_dot_exporter_unquote(text : String) -> String {
   if text.length() >= 2 && text.has_prefix("\"") && text.has_suffix("\"") {
-    text[1:text.length() - 1].to_string()
+    text[1:text.length() - 1].to_owned()
   } else {
     text
   }

@@ -24,7 +24,7 @@ pub(all) struct LayoutConnectorsService {
 }
 
 ///|
-let layout_connectors_service_instance_ref : Ref[LayoutConnectorsService?] = Ref::new(
+let layout_connectors_service_instance_ref : Ref[LayoutConnectorsService?] = Ref(
   None,
 )
 

@@ -10,7 +10,7 @@ fn graphviz_dot_runtime_test_string_or_none(value : String?) -> String {
 fn graphviz_dot_runtime_test_data_map(
   class_name : String,
 ) -> Map[String, String] {
-  let data : Map[String, String] = {}
+  let data : Map[String, String] = Map([])
   data[graphviz_dot_executable_extension_factory_guicekey] = class_name
   data
 }
@@ -81,8 +81,8 @@ test "GraphvizDotRuntimeModule binds GraphvizDotSerializer" {
 
 ///|
 test "GraphvizDotSerializer configures formatter request" {
-  let max_width_ref : Ref[Int] = Ref::new(-1)
-  let undefined_only_ref : Ref[Bool] = Ref::new(false)
+  let max_width_ref : Ref[Int] = Ref(-1)
+  let undefined_only_ref : Ref[Bool] = Ref(false)
   let formatter_provider : () -> GraphvizDotFormatter2 = () => {
     graphviz_dot_runtime_test_formatter(max_width_ref, undefined_only_ref)
   }
@@ -176,7 +176,7 @@ test "GraphvizDotSyntacticSequencer emits fixed optional keywords" {
 test "AbstractGraphvizDotSyntacticSequencer keeps ambiguous syntax defaults" {
   let sequencer = new_abstract_graphviz_dot_syntactic_sequencer()
   inspect(sequencer.get_unassigned_rule_call_token("", "", ""), content="")
-  inspect(
+  debug_inspect(
     sequencer.emit_unassigned_tokens("", [
       "AttributeStatement_CommaKeyword_2_1_0_q", "EdgeStatement___LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q",
       "NodeStatement___LeftSquareBracketKeyword_1_0_RightSquareBracketKeyword_1_2__q",
@@ -210,7 +210,7 @@ test "GraphvizDotExecutableExtensionFactory resolves and initializes class" {
   graphviz_dot_activator_reset_for_test()
   let activator = new_graphviz_dot_activator()
   let extension_class_name = "example.GraphvizExtension"
-  let contributor_ref : Ref[String] = Ref::new("none")
+  let contributor_ref : Ref[String] = Ref("none")
 
   activator.register_bundle_class(extension_class_name)
   activator.register_injector_provider(

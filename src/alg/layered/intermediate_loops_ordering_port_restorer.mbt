@@ -195,7 +195,7 @@ pub struct PortRestorer {
 
 ///|
 pub fn new_port_restorer() -> PortRestorer {
-  { sl_loops_by_type: {}, target_areas: {} }
+  { sl_loops_by_type: Map([]), target_areas: Map([]) }
 }
 
 ///|
@@ -213,7 +213,7 @@ fn PortRestorer::gather_self_loops_by_type(
   _self : PortRestorer,
   sl_holder : SelfLoopHolder,
 ) -> Map[Int, Array[SelfHyperLoop]] {
-  let loops : Map[Int, Array[SelfHyperLoop]] = {}
+  let loops : Map[Int, Array[SelfHyperLoop]] = Map([])
   for sl_loop in sl_holder.get_sl_hyper_loops() {
     match sl_loop.get_self_loop_type() {
       Some(self_loop_type) => {

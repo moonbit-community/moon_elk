@@ -162,7 +162,7 @@ test "DisCoGraphRenderer makeArrow parity for degenerate and normal cases" {
   let renderer = new_dis_co_graph_renderer(
     new_dis_co_graph_rendering_configurator(new_dis_co_debug_display()),
   )
-  inspect(
+  debug_inspect(
     dis_co_graph_renderer_debug_make_arrow(
       renderer,
       @core.new_kvector_xy(1.0, 1.0),

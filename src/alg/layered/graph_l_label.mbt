@@ -19,11 +19,11 @@ pub fn new_l_label_text(thetext : String) -> LLabel {
   {
     shape: new_l_shape(),
     text: thetext,
-    bool_properties: {},
-    string_properties: {},
-    string_array_properties: {},
-    label_side_properties: {},
-    l_edge_properties: {},
+    bool_properties: Map([]),
+    string_properties: Map([]),
+    string_array_properties: Map([]),
+    label_side_properties: Map([]),
+    l_edge_properties: Map([]),
   }
 }
 

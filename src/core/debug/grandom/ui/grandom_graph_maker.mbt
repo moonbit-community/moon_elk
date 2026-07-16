@@ -5,7 +5,7 @@ pub(all) struct CoreDebugGRandomProject {
 
 ///|
 pub fn new_core_debug_grandom_project() -> CoreDebugGRandomProject {
-  { files: {} }
+  { files: Map([]) }
 }
 
 ///|

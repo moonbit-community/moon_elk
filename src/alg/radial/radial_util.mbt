@@ -36,7 +36,7 @@ pub fn radial_sort_nodes(
 
 ///|
 fn radial_node_set(nodes : Array[@graph.ElkNode]) -> Map[@graph.ElkNode, Bool] {
-  let set = {}
+  let set = Map([])
   for node in nodes {
     set[node] = true
   }
@@ -88,7 +88,7 @@ pub fn radial_get_successors(node : @graph.ElkNode) -> Array[@graph.ElkNode] {
 
 ///|
 pub fn radial_get_successor_set(node : @graph.ElkNode) -> Array[@graph.ElkNode] {
-  let unique = {}
+  let unique = Map([])
   let successors = []
   for successor in radial_get_successors(node) {
     if !unique.contains(successor) {
@@ -203,7 +203,7 @@ pub fn radial_get_next_level_nodes(
 pub fn radial_get_next_level_node_set(
   nodes : Array[@graph.ElkNode],
 ) -> Array[@graph.ElkNode] {
-  let unique = {}
+  let unique = Map([])
   let successors = []
   for node in nodes {
     for next_level in radial_get_successor_set(node) {

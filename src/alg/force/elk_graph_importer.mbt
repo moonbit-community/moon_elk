@@ -49,7 +49,7 @@ fn first_or_create_edge_section(edge : @graph.ElkEdge) -> @graph.ElkEdgeSection 
 
 ///|
 fn parse_bool_layout_value(value : String) -> Bool? {
-  let normalized = value.trim().to_string().to_lower()
+  let normalized = value.trim().to_owned().to_lower()
   if normalized.is_empty() {
     None
   } else if normalized == "true" || normalized == "1" {
@@ -63,11 +63,17 @@ fn parse_bool_layout_value(value : String) -> Bool? {
 
 ///|
 fn parse_int_layout_value(value : String) -> Int? {
-  let normalized = value.trim().to_string()
+  let normalized = value.trim().to_owned()
   if normalized.is_empty() {
     return None
   }
-  let parsed_int : Result[Int, Error] = try? @string.parse_int(normalized)
+  let parsed_int : Result[Int, Error] = try
+    @string.parse_int(normalized)
+  catch {
+    error => Err(error)
+  } noraise {
+    value => Ok(value)
+  }
   match parsed_int {
     Ok(parsed) => Some(parsed)
     Err(_) =>
@@ -80,13 +86,17 @@ fn parse_int_layout_value(value : String) -> Int? {
 
 ///|
 fn parse_double_layout_value(value : String) -> Double? {
-  let normalized = value.trim().to_string()
+  let normalized = value.trim().to_owned()
   if normalized.is_empty() {
     return None
   }
-  let parsed_double : Result[Double, Error] = try? @string.parse_double(
-    normalized,
-  )
+  let parsed_double : Result[Double, Error] = try
+    @string.parse_double(normalized)
+  catch {
+    error => Err(error)
+  } noraise {
+    value => Ok(value)
+  }
   match parsed_double {
     Ok(parsed) => Some(parsed)
     Err(_) =>
@@ -94,13 +104,17 @@ fn parse_double_layout_value(value : String) -> Double? {
         normalized.has_suffix("F") ||
         normalized.has_suffix("d") ||
         normalized.has_suffix("D") {
-        let without_suffix = normalized[:normalized.length() - 1].to_string()
+        let without_suffix = normalized[:normalized.length() - 1].to_owned()
         if without_suffix.is_empty() {
           return None
         }
-        let parsed_without_suffix : Result[Double, Error] = try? @string.parse_double(
-          without_suffix,
-        )
+        let parsed_without_suffix : Result[Double, Error] = try
+          @string.parse_double(without_suffix)
+        catch {
+          error => Err(error)
+        } noraise {
+          value => Ok(value)
+        }
         match parsed_without_suffix {
           Ok(parsed) => Some(parsed)
           Err(_) => None
@@ -113,7 +127,7 @@ fn parse_double_layout_value(value : String) -> Double? {
 
 ///|
 fn parse_padding_layout_value(value : String) -> @core.ElkPadding? {
-  let normalized = value.trim().to_string()
+  let normalized = value.trim().to_owned()
   if normalized.is_empty() {
     return None
   }
@@ -121,7 +135,7 @@ fn parse_padding_layout_value(value : String) -> @core.ElkPadding? {
     Some(single_value) => return Some(@core.new_elk_padding_any(single_value))
     None => ()
   }
-  let body = normalized.trim(chars="([{\"' )]} \t\r\n").to_string()
+  let body = normalized.trim(chars="([{\"' )]} \t\r\n").to_owned()
   if body.is_empty() {
     return None
   }
@@ -132,7 +146,7 @@ fn parse_padding_layout_value(value : String) -> @core.ElkPadding? {
   let mut matched = false
   let tokens = body.replace_all(old=";", new=",")
   for token_view in tokens.split(",") {
-    let token = token_view.trim().to_string()
+    let token = token_view.trim().to_owned()
     if token.is_empty() {
       continue
     }
@@ -140,8 +154,8 @@ fn parse_padding_layout_value(value : String) -> @core.ElkPadding? {
     if token_parts.length() != 2 {
       return None
     }
-    let key = token_parts[0].trim().to_string().to_lower()
-    let value_part = token_parts[1].trim().to_string()
+    let key = token_parts[0].trim().to_owned().to_lower()
+    let value_part = token_parts[1].trim().to_owned()
     let parsed_value = match parse_double_layout_value(value_part) {
       Some(parsed) => parsed
       None => return None
@@ -185,7 +199,7 @@ fn parse_padding_layout_value(value : String) -> @core.ElkPadding? {
 
 ///|
 fn parse_force_model_layout_value(value : String) -> ForceModelStrategy? {
-  let normalized = value.trim().to_string().to_upper()
+  let normalized = value.trim().to_owned().to_upper()
   if normalized.is_empty() {
     None
   } else if normalized == "EADES" || normalized.has_suffix(".EADES") {
@@ -200,7 +214,7 @@ fn parse_force_model_layout_value(value : String) -> ForceModelStrategy? {
 
 ///|
 fn parse_stress_dimension_layout_value(value : String) -> Int? {
-  let normalized = value.trim().to_string().to_upper()
+  let normalized = value.trim().to_owned().to_upper()
   if normalized.is_empty() {
     return None
   }
@@ -582,7 +596,7 @@ pub fn ElkGraphImporter::import_graph(
   let fgraph = new_fgraph()
   let graph_edge_labels_inline = force_copy_graph_properties(graph, fgraph)
   fgraph.set_internal_node_property(force_internal_origin, graph)
-  let elem_map : Map[@graph.ElkNode, FNode] = {}
+  let elem_map : Map[@graph.ElkNode, FNode] = Map([])
   force_transform_nodes(graph, fgraph, elem_map)
   force_transform_edges(graph, fgraph, elem_map, graph_edge_labels_inline)
   fgraph

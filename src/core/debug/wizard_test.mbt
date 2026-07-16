@@ -45,9 +45,16 @@ test "AlgorithmPluginContentWizard generates project files and nature" {
   let wizard = new_algorithm_plugin_content_wizard("org.example.demo", "demo")
   wizard.add_pages()
   inspect(wizard.perform_finish(), content="true")
-  inspect(
+  debug_inspect(
     wizard.get_dependencies(),
-    content="[\"org.eclipse.elk.core\", \"org.eclipse.elk.graph\", \"org.eclipse.elk.alg.common\", \"com.google.guava\"]",
+    content=(
+      #|[
+      #|  "org.eclipse.elk.core",
+      #|  "org.eclipse.elk.graph",
+      #|  "org.eclipse.elk.alg.common",
+      #|  "com.google.guava",
+      #|]
+    ),
   )
 
   let project = new_core_debug_wizard_project("org.example.demo", natures=["n0"])

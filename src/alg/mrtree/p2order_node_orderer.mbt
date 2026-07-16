@@ -118,7 +118,7 @@ fn mrtree_node_orderer_order_level_fan_descendants(
     None => ()
   }
 
-  let pos_ref : Ref[Int] = Ref::new(0)
+  let pos_ref : Ref[Int] = Ref(0)
   let sorted_level = current_level.copy()
   mrtree_node_orderer_sort_nodes_desc(sorted_level, weighting)
 

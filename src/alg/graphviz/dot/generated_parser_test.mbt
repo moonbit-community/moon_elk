@@ -55,7 +55,7 @@ test "AbstractGraphvizDotRuntimeModule exposes generated bindings" {
     runtime_module.configure_formatter_preferences(),
     content="org.eclipse.xtext.formatting2.FormatterPreferenceValuesProvider",
   )
-  let properties : Map[String, String] = {}
+  let properties : Map[String, String] = Map([])
   properties["fileExtensions"] = "dot"
   runtime_module.configure(properties)
   inspect(runtime_module.configure_file_extensions(), content="dot")

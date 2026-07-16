@@ -34,7 +34,7 @@ fn mrtree_level_processor_process(
     }
   }
 
-  let global_level_map : Map[Int, Int] = {}
+  let global_level_map : Map[Int, Int] = Map([])
   mrtree_level_set_level(roots, 0, global_level_map)
 
   for node in mrtree_graph_nodes(graph) {

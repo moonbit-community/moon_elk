@@ -137,9 +137,9 @@ fn self_loop_preprocessor_test_new_graph(
   let result : SelfLoopPreprocessorTestGraph = {
     test_graph,
     self_loop_node,
-    regular_ports: {},
-    only_self_loop_ports: {},
-    unconnected_ports: {},
+    regular_ports: Map([]),
+    only_self_loop_ports: Map([]),
+    unconnected_ports: Map([]),
   }
   self_loop_preprocessor_test_add_ports(result)
   self_loop_preprocessor_test_add_edges(result)

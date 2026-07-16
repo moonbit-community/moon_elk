@@ -112,7 +112,7 @@ fn core_debug_grandom_random_from_configuration(
 ) -> @random.Rand {
   match configuration.seed {
     Some(seed) => {
-      let seed_buffer = @buffer.new()
+      let seed_buffer = Buffer()
       seed_buffer.write_int64_le(seed.to_int64())
       seed_buffer.write_int64_le(0)
       seed_buffer.write_int64_le(0)
@@ -169,7 +169,7 @@ fn core_debug_grandom_generator_connect_atomic_nodes_on_different_levels(
       generator, core_debug_grandom_exact_relative_hier,
     )
     is Some(relative_hier) {
-    let seen_edges : Map[Int, Bool] = {}
+    let seen_edges : Map[Int, Bool] = Map([])
     for level in atomic_nodes {
       for node in level {
         for edge in @graph.node_incoming_edges(node) {

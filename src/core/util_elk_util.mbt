@@ -112,10 +112,10 @@ fn update_bounds(
 
 ///|
 pub fn compute_child_area_dimensions(node : @graph.ElkNode) -> Unit {
-  let min_x : Ref[Double] = Ref::new(@double.infinity)
-  let min_y : Ref[Double] = Ref::new(@double.infinity)
-  let max_x : Ref[Double] = Ref::new(0.0)
-  let max_y : Ref[Double] = Ref::new(0.0)
+  let min_x : Ref[Double] = Ref(@double.infinity)
+  let min_y : Ref[Double] = Ref(@double.infinity)
+  let max_x : Ref[Double] = Ref(0.0)
+  let max_y : Ref[Double] = Ref(0.0)
 
   for label in @graph.node_labels(node) {
     update_bounds(

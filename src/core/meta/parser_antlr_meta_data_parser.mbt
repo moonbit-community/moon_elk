@@ -8,7 +8,7 @@ pub fn new_core_meta_name_mappings(
   grammar_access : MetaDataGrammarAccess,
 ) -> CoreMetaNameMappings {
   ignore(grammar_access)
-  let mappings : Map[String, String] = {}
+  let mappings : Map[String, String] = Map([])
   mappings["MdModel.Group"] = "rule__MdModel__Group__0"
   mappings["MdBundle.Group"] = "rule__MdBundle__Group__0"
   mappings["MdOption.Group"] = "rule__MdOption__Group__0"

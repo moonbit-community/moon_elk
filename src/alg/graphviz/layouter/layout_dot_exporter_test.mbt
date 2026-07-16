@@ -23,7 +23,7 @@ fn layout_dot_exporter_test_find_attribute_map(
       _ => ()
     }
   }
-  {}
+  Map([])
 }
 
 ///|
@@ -47,7 +47,7 @@ fn layout_dot_exporter_test_find_first_edge_attribute_map(
       _ => ()
     }
   }
-  {}
+  Map([])
 }
 
 ///|

@@ -38,8 +38,8 @@ pub fn new_layout_algorithm_data(
     preview_image_path,
     defining_bundle_id,
     instance_pool_clear_fn,
-    supported_features: {},
-    known_options: {},
+    supported_features: Map([]),
+    known_options: Map([]),
   }
 }
 

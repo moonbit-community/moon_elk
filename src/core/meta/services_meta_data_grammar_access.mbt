@@ -9,7 +9,7 @@ pub(all) struct MetaDataGrammarAccess {
 
 ///|
 pub fn new_meta_data_grammar_access() -> MetaDataGrammarAccess {
-  let rules : Map[String, String] = {}
+  let rules : Map[String, String] = Map([])
   rules["MdModel"] = "('package' name=QualifiedName importSection=XImportSection? bundle=MdBundle)?"
   rules["MdBundle"] = "{MdBundle} ('bundle' '{' (('label' label=STRING)? & ('metadataClass' targetClass=QualifiedName)? & ('documentationFolder' documentationFolder=Path)? & ('idPrefix' idPrefix=QualifiedName)?) '}')? members+=MdBundleMember*"
   rules["MdBundleMember"] = "MdGroupOrOption | MdAlgorithm | MdCategory"

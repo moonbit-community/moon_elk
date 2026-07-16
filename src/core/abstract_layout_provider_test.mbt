@@ -1,8 +1,8 @@
 ///|
 test "AbstractLayoutProvider forwards lifecycle and layout calls" {
-  let initialized = Ref::new("")
-  let disposed = Ref::new(false)
-  let laid_out_node = Ref::new(-1)
+  let initialized = Ref("")
+  let disposed = Ref(false)
+  let laid_out_node = Ref(-1)
   let provider = new_abstract_layout_provider(
     (node, monitor) => {
       ignore(monitor)
@@ -28,7 +28,7 @@ test "AbstractLayoutProvider forwards lifecycle and layout calls" {
 
 ///|
 test "IGraphLayoutEngine adapter forwards layout call" {
-  let touched = Ref::new(false)
+  let touched = Ref(false)
   let engine = new_graph_layout_engine((node, monitor) => {
     ignore(node)
     ignore(monitor)

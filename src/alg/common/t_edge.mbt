@@ -33,11 +33,11 @@ pub fn TEdge::hash_code(self : TEdge) -> Int {
 }
 
 ///|
-pub impl Eq for TEdge with equal(self : TEdge, other : TEdge) -> Bool {
+pub impl Eq for TEdge with fn equal(self : TEdge, other : TEdge) -> Bool {
   self.equals(other)
 }
 
 ///|
-pub impl Hash for TEdge with hash_combine(self : TEdge, hasher) -> Unit {
+pub impl Hash for TEdge with fn hash_combine(self : TEdge, hasher) -> Unit {
   hasher.combine(self.hash_code())
 }

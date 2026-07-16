@@ -112,10 +112,10 @@ pub fn MetaDataValidator::check_duplicate_member_id(
 ) -> Array[CoreMetaValidationIssue] {
   ignore(self)
   let issues : Array[CoreMetaValidationIssue] = []
-  let algorithm_ids : Map[String, Int] = {}
-  let category_ids : Map[String, Int] = {}
-  let option_ids : Map[String, Int] = {}
-  let group_ids : Map[String, Int] = {}
+  let algorithm_ids : Map[String, Int] = Map([])
+  let category_ids : Map[String, Int] = Map([])
+  let option_ids : Map[String, Int] = Map([])
+  let group_ids : Map[String, Int] = Map([])
 
   for bundle_member in bundle.get_members() {
     match bundle_member {

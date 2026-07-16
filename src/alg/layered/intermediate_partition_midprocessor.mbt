@@ -60,7 +60,7 @@ fn partition_midprocessor_process(
   }
   ignore(monitor.begin("Partition midprocessing", 1.0))
 
-  let partition_to_nodes : Map[Int, Array[LNode]] = {}
+  let partition_to_nodes : Map[Int, Array[LNode]] = Map([])
   for node in graph.get_layerless_nodes() {
     if !node.has_property_int(layered_options_partitioning_partition) {
       continue

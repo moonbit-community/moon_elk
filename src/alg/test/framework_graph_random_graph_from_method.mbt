@@ -1,6 +1,6 @@
 ///|
 fn random_graph_from_method_seeded_random() -> @random.Rand {
-  let seed_buffer = @buffer.new()
+  let seed_buffer = Buffer()
   seed_buffer.write_int64_le(1337)
   seed_buffer.write_int64_le(0)
   seed_buffer.write_int64_le(0)

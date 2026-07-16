@@ -25,14 +25,14 @@ pub struct DotImporterPropertyHolder {
 
 ///|
 fn new_dot_importer_property_holder() -> DotImporterPropertyHolder {
-  { layout_options: {}, def_width: None, def_height: None }
+  { layout_options: Map([]), def_width: None, def_height: None }
 }
 
 ///|
 fn dot_importer_property_holder_copy(
   source : DotImporterPropertyHolder,
 ) -> DotImporterPropertyHolder {
-  let copied_layout_options : Map[String, String] = {}
+  let copied_layout_options : Map[String, String] = Map([])
   for entry in source.layout_options.to_array() {
     copied_layout_options[entry.0] = entry.1
   }
@@ -56,12 +56,12 @@ pub struct DotImporter {
 ///|
 pub fn new_dot_importer() -> DotImporter {
   {
-    node_id_map: {},
-    port_id_map: {},
-    node_statement_map: {},
-    edge_statement_map: {},
-    edge_statement_attached: {},
-    root_graph_map: {},
+    node_id_map: Map([]),
+    port_id_map: Map([]),
+    node_statement_map: Map([]),
+    edge_statement_map: Map([]),
+    edge_statement_attached: Map([]),
+    root_graph_map: Map([]),
   }
 }
 
@@ -77,12 +77,12 @@ fn dot_importer_is_number_char(c : Char) -> Bool {
 
 ///|
 fn dot_importer_slice(text : String, start : Int, end_ : Int) -> String {
-  text[start:end_].to_string()
+  text[start:end_].to_owned()
 }
 
 ///|
 fn dot_importer_slice_from(text : String, start : Int) -> String {
-  text[start:].to_string()
+  text[start:].to_owned()
 }
 
 ///|
@@ -167,7 +167,7 @@ fn dot_importer_trim_value(attribute : DotAttribute) -> String {
     None => "true"
   }
   if value.length() >= 2 && value.has_prefix("\"") && value.has_suffix("\"") {
-    dot_importer_slice(value, 1, value.length() - 1).trim().to_string()
+    dot_importer_slice(value, 1, value.length() - 1).trim().to_owned()
   } else {
     value
   }
@@ -964,8 +964,8 @@ pub fn DotImporter::transform(
   }
   for graph in source_model.get_graphs() {
     let parent = @graph.create_graph()
-    self.node_id_map = {}
-    self.port_id_map = {}
+    self.node_id_map = Map([])
+    self.port_id_map = Map([])
     self.transform_statements(
       graph.get_statements(),
       parent,

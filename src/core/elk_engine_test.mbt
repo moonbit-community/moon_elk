@@ -218,23 +218,72 @@ fn make_linear_graph(node_count : Int) -> Json {
 ///|
 test "ElkEngine parameters: missing graph" {
   let elk = new_elk_engine()
-  let result = try? elk.layout()
+  let result = try elk.layout() catch {
+    error => Err(error)
+  } noraise {
+    value => Ok(value)
+  }
   assert_true(result is Err(_))
 }
 
 ///|
 test "ElkEngine id validation" {
   let elk = new_elk_engine()
-  assert_true((try? elk.layout(graph=j_obj([("id", j_str("x"))]))) is Ok(_))
-  assert_true((try? elk.layout(graph=j_obj([("id", j_num(2))]))) is Ok(_))
-  assert_true((try? elk.layout(graph=j_obj([]))) is Err(_))
   assert_true(
-    (try? elk.layout(graph=j_obj([("id", Json::number(1.2))]))) is Err(_),
+    (try elk.layout(graph=j_obj([("id", j_str("x"))])) catch {
+      error => Err(error)
+    } noraise {
+      value => Ok(value)
+    })
+    is Ok(_),
   )
-  assert_true((try? elk.layout(graph=j_obj([("id", j_arr([]))]))) is Err(_))
-  assert_true((try? elk.layout(graph=j_obj([("id", j_obj([]))]))) is Err(_))
   assert_true(
-    (try? elk.layout(graph=j_obj([("id", Json::boolean(true))]))) is Err(_),
+    (try elk.layout(graph=j_obj([("id", j_num(2))])) catch {
+      error => Err(error)
+    } noraise {
+      value => Ok(value)
+    })
+    is Ok(_),
+  )
+  assert_true(
+    (try elk.layout(graph=j_obj([])) catch {
+      error => Err(error)
+    } noraise {
+      value => Ok(value)
+    })
+    is Err(_),
+  )
+  assert_true(
+    (try elk.layout(graph=j_obj([("id", Json::number(1.2))])) catch {
+      error => Err(error)
+    } noraise {
+      value => Ok(value)
+    })
+    is Err(_),
+  )
+  assert_true(
+    (try elk.layout(graph=j_obj([("id", j_arr([]))])) catch {
+      error => Err(error)
+    } noraise {
+      value => Ok(value)
+    })
+    is Err(_),
+  )
+  assert_true(
+    (try elk.layout(graph=j_obj([("id", j_obj([]))])) catch {
+      error => Err(error)
+    } noraise {
+      value => Ok(value)
+    })
+    is Err(_),
+  )
+  assert_true(
+    (try elk.layout(graph=j_obj([("id", Json::boolean(true))])) catch {
+      error => Err(error)
+    } noraise {
+      value => Ok(value)
+    })
+    is Err(_),
   )
 }
 
@@ -370,7 +419,11 @@ test "ElkEngine invalid layouter id raises unsupported configuration" {
     ),
     ("layoutOptions", j_obj([("algorithm", j_str("foo.bar.baz"))])),
   ])
-  let result = try? elk.layout(graph~)
+  let result = try elk.layout(graph~) catch {
+    error => Err(error)
+  } noraise {
+    value => Ok(value)
+  }
   match result {
     Ok(_) => assert_true(false)
     Err(err) => assert_true(contains_unsupported_configuration(err))
@@ -516,9 +569,15 @@ test "ElkEngine SPOrE algorithms" {
   assert_eq(json_int_field(overlap_children[1], "x"), 26)
   assert_eq(json_int_field(overlap_children[1], "y"), 26)
   assert_true(
-    (try? elk.layout(graph=overlap_graph, layout_options={
-      "algorithm": j_str("elk.rectpacking"),
-    }))
+    (try
+      elk.layout(graph=overlap_graph, layout_options={
+        "algorithm": j_str("elk.rectpacking"),
+      })
+    catch {
+      error => Err(error)
+    } noraise {
+      value => Ok(value)
+    })
     is Ok(_),
   )
 }
@@ -564,7 +623,14 @@ test "ElkEngine bug regressions that should fulfill" {
       ]),
     ),
   ])
-  assert_true((try? elk.layout(graph=bug63_graph)) is Ok(_))
+  assert_true(
+    (try elk.layout(graph=bug63_graph) catch {
+      error => Err(error)
+    } noraise {
+      value => Ok(value)
+    })
+    is Ok(_),
+  )
   let klay23_graph = j_obj([
     ("id", j_str("root")),
     (
@@ -611,7 +677,14 @@ test "ElkEngine bug regressions that should fulfill" {
       ]),
     ),
   ])
-  assert_true((try? elk.layout(graph=klay23_graph)) is Ok(_))
+  assert_true(
+    (try elk.layout(graph=klay23_graph) catch {
+      error => Err(error)
+    } noraise {
+      value => Ok(value)
+    })
+    is Ok(_),
+  )
 }
 
 ///|
@@ -663,14 +736,28 @@ test "ElkEngine bug #7 style graph should succeed" {
       ]),
     ),
   ])
-  assert_true((try? elk.layout(graph~)) is Ok(_))
+  assert_true(
+    (try elk.layout(graph~) catch {
+      error => Err(error)
+    } noraise {
+      value => Ok(value)
+    })
+    is Ok(_),
+  )
 }
 
 ///|
 test "ElkEngine large graph should finish (ChangeAwareArrayList)" {
   let elk = new_elk_engine()
   let graph = make_linear_graph(120)
-  assert_true((try? elk.layout(graph~)) is Ok(_))
+  assert_true(
+    (try elk.layout(graph~) catch {
+      error => Err(error)
+    } noraise {
+      value => Ok(value)
+    })
+    is Ok(_),
+  )
 }
 
 ///|
@@ -681,15 +768,28 @@ test "ElkEngine construction and terminate worker no-op" {
   let algorithms = elk.known_layout_algorithms()
   assert_true(algorithms.contains("layered"))
   elk.terminate_worker()
-  assert_true((try? elk.layout(graph=make_linear_graph(3))) is Ok(_))
+  assert_true(
+    (try elk.layout(graph=make_linear_graph(3)) catch {
+      error => Err(error)
+    } noraise {
+      value => Ok(value)
+    })
+    is Ok(_),
+  )
 }
 
 ///|
 test "ElkEngine hierarchical layout behavior (bug #8)" {
   let elk = new_elk_engine()
-  let separate_result = try? elk.layout(graph=make_bug8_graph(false), layout_options={
-    "hierarchyHandling": j_str("SEPARATE_CHILDREN"),
-  })
+  let separate_result = try
+    elk.layout(graph=make_bug8_graph(false), layout_options={
+      "hierarchyHandling": j_str("SEPARATE_CHILDREN"),
+    })
+  catch {
+    error => Err(error)
+  } noraise {
+    value => Ok(value)
+  }
   match separate_result {
     Ok(_) => assert_true(false)
     Err(err) => assert_true(contains_unsupported_graph(err))
@@ -719,7 +819,11 @@ test "ElkEngine hierarchical layout behavior (bug #8)" {
 ///|
 test "ElkEngine unsupported configuration raise" {
   let elk = new_elk_engine()
-  let result = try? elk.layout(graph=make_cycle_first_graph())
+  let result = try elk.layout(graph=make_cycle_first_graph()) catch {
+    error => Err(error)
+  } noraise {
+    value => Ok(value)
+  }
   match result {
     Ok(_) => assert_true(false)
     Err(err) => assert_true(contains_unsupported_configuration(err))

@@ -24,14 +24,14 @@ fn libavoid_server_read_output_data_or_abort(
 test "LibavoidServerException stores message and cause" {
   let default_ex = new_libavoid_server_exception()
   inspect(default_ex.get_message(), content="")
-  inspect(default_ex.get_cause(), content="None")
+  debug_inspect(default_ex.get_cause(), content="None")
 
   let with_message = new_libavoid_server_exception_with_message("failed")
   inspect(with_message.get_message(), content="failed")
   inspect(with_message.to_string(), content="failed")
 
   let with_cause = new_libavoid_server_exception_with_cause("failed", "io")
-  inspect(with_cause.get_cause(), content="Some(\"io\")")
+  debug_inspect(with_cause.get_cause(), content="Some(\"io\")")
   inspect(with_cause.to_string(), content="failed: io")
 }
 
@@ -49,8 +49,11 @@ test "LibavoidServer lifecycle supports initialize input cleanup and cancel" {
   input.write(65)
   input.write(66)
   input.flush()
-  inspect(server.get_input_bytes(), content="[65, 66]")
-  inspect(libavoid_server_read_output_data_or_abort(server), content="Some({})")
+  debug_inspect(server.get_input_bytes(), content="[65, 66]")
+  debug_inspect(
+    libavoid_server_read_output_data_or_abort(server),
+    content="Some({})",
+  )
 
   server.cleanup(libavoid_server_cleanup_normal())
   inspect(server.is_running(), content="true")

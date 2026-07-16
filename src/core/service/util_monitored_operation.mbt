@@ -7,7 +7,7 @@ pub(all) enum MonitoredOperationStatus {
 } derive(Eq, Debug)
 
 ///|
-pub impl Show for MonitoredOperationStatus with output(self, logger) {
+pub impl Show for MonitoredOperationStatus with fn output(self, logger) {
   logger.write_string(to_repr(self).to_string())
 }
 
@@ -17,7 +17,7 @@ pub fn monitored_operation_status_ok() -> MonitoredOperationStatus {
 }
 
 ///|
-let monitored_operation_timestamp_ref : Ref[Int] = Ref::new(0)
+let monitored_operation_timestamp_ref : Ref[Int] = Ref(0)
 
 ///|
 fn next_monitored_operation_timestamp() -> Int {

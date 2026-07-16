@@ -54,7 +54,7 @@ pub fn LayoutConfigurationManager::get_supported_options(
   self : LayoutConfigurationManager,
   config : ILayoutConfigurationStore,
 ) -> Array[@core.LayoutOptionData] {
-  let option_data : Map[String, @core.LayoutOptionData] = {}
+  let option_data : Map[String, @core.LayoutOptionData] = Map([])
   match self.get_algorithm(config) {
     Some(algo_data) =>
       for candidate in @core.layout_meta_data_service_option_data_values() {
@@ -175,7 +175,7 @@ pub fn LayoutConfigurationManager::clear_option_values(
 fn layout_configuration_manager_collect_nodes(
   root : @graph.ElkNode,
 ) -> Map[Int, Bool] {
-  let nodes : Map[Int, Bool] = {}
+  let nodes : Map[Int, Bool] = Map([])
   for node in @graph.node_all_descendants_including_self(root) {
     nodes[node] = true
   }

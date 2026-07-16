@@ -219,13 +219,13 @@ priv struct GmfEditPartData {
 }
 
 ///|
-let gmf_figure_store_ref : Ref[Array[GmfFigureData]] = Ref::new([])
+let gmf_figure_store_ref : Ref[Array[GmfFigureData]] = Ref([])
 
 ///|
-let gmf_view_store_ref : Ref[Array[GmfViewData]] = Ref::new([])
+let gmf_view_store_ref : Ref[Array[GmfViewData]] = Ref([])
 
 ///|
-let gmf_edit_part_store_ref : Ref[Array[GmfEditPartData]] = Ref::new([])
+let gmf_edit_part_store_ref : Ref[Array[GmfEditPartData]] = Ref([])
 
 ///|
 pub struct GmfLayoutElementShape {
@@ -244,11 +244,13 @@ pub struct GmfLayoutElementEdge {
 } derive(Debug)
 
 ///|
-let gmf_layout_element_shape_store_ref : Ref[Map[Int, GmfLayoutElementShape]] = Ref::new({},
+let gmf_layout_element_shape_store_ref : Ref[Map[Int, GmfLayoutElementShape]] = Ref(
+  Map([]),
 )
 
 ///|
-let gmf_layout_element_edge_store_ref : Ref[Map[Int, GmfLayoutElementEdge]] = Ref::new({},
+let gmf_layout_element_edge_store_ref : Ref[Map[Int, GmfLayoutElementEdge]] = Ref(
+  Map([]),
 )
 
 ///|
@@ -621,7 +623,7 @@ pub fn new_gmf_view(
     location_y,
     width,
     height,
-    styles: {},
+    styles: Map([]),
     bendpoints: new_gmf_point_list(),
     source_terminal: None,
     target_terminal: None,
@@ -781,7 +783,7 @@ pub fn new_gmf_edit_part(
     source: None,
     target: None,
     target_connections: [],
-    installed_policies: {},
+    installed_policies: Map([]),
     key_point: 0,
   })
   edit_part_id
@@ -1024,7 +1026,7 @@ pub struct GmfLayoutInvocation {
 } derive(Debug)
 
 ///|
-let gmf_last_layout_invocation_ref : Ref[GmfLayoutInvocation?] = Ref::new(None)
+let gmf_last_layout_invocation_ref : Ref[GmfLayoutInvocation?] = Ref(None)
 
 ///|
 pub fn gmf_diagram_layout_engine_invoke_layout(
@@ -1085,7 +1087,7 @@ pub fn gmf_last_layout_invocation_multiple_parts() -> Array[GmfEditPart]? {
 }
 
 ///|
-let gmf_preference_store_ref : Ref[Map[String, Bool]] = Ref::new({})
+let gmf_preference_store_ref : Ref[Map[String, Bool]] = Ref(Map([]))
 
 ///|
 fn gmf_preference_key(qualifier : String, key : String) -> String {

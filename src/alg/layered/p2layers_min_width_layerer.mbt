@@ -119,7 +119,7 @@ fn min_width_layerer_precalc_successors(
 ) -> Array[Map[Int, Bool]] {
   let successors = []
   for node in nodes {
-    let out_nodes : Map[Int, Bool] = {}
+    let out_nodes : Map[Int, Bool] = Map([])
     for edge in node.get_outgoing_edges() {
       if edge.is_self_loop() {
         continue
@@ -210,8 +210,8 @@ fn min_width_layerer_compute_min_width_layering(
   let mut in_deg = 0
   let mut out_deg = 0
 
-  let mut already_placed_in_current_layer : Map[Int, Bool] = {}
-  let already_placed_in_other_layers : Map[Int, Bool] = {}
+  let mut already_placed_in_current_layer : Map[Int, Bool] = Map([])
+  let already_placed_in_other_layers : Map[Int, Bool] = Map([])
 
   let mut current_layer : Array[LNode] = []
 
@@ -265,7 +265,7 @@ fn min_width_layerer_compute_min_width_layering(
       for entry in already_placed_in_current_layer.to_array() {
         already_placed_in_other_layers[entry.0] = true
       }
-      already_placed_in_current_layer = {}
+      already_placed_in_current_layer = Map([])
 
       current_spanning_edges -= going_out_from_this_layer
       let candidate_width = current_spanning_edges * data.dummy_size +

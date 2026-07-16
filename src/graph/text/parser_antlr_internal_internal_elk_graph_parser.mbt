@@ -81,7 +81,11 @@ fn graph_text_parser_strip_quotes(text : String) -> String {
 
 ///|
 fn graph_text_parser_parse_double(text : String) -> Double? {
-  let parsed : Result[Double, Error] = try? @string.parse_double(text)
+  let parsed : Result[Double, Error] = try @string.parse_double(text) catch {
+    error => Err(error)
+  } noraise {
+    value => Ok(value)
+  }
   match parsed {
     Ok(value) => Some(value)
     Err(_) => None
@@ -625,7 +629,7 @@ fn graph_text_parser_parse_edge_layout(
     return start
   }
   index += 1
-  let section_by_id : Map[String, @graph.ElkEdgeSection] = {}
+  let section_by_id : Map[String, @graph.ElkEdgeSection] = Map([])
   let pending_outgoing : Array[GraphTextPendingOutgoingSection] = []
   while index < tokens.length() && tokens[index].lexeme != "]" {
     if tokens[index].lexeme == "section" {
@@ -1066,7 +1070,7 @@ pub fn InternalElkGraphParser::rule_root_node(
   self : InternalElkGraphParser,
 ) -> @graph.ElkNode {
   let root = @graph.create_graph()
-  let id_to_shape : Map[String, @graph.ElkConnectableShape] = {}
+  let id_to_shape : Map[String, @graph.ElkConnectableShape] = Map([])
   let mut root_qualified_id = ""
   let mut index = 0
   if index < self.tokens.length() && self.tokens[index].lexeme == "graph" {
@@ -1180,7 +1184,7 @@ pub fn InternalElkGraphParser::rule_elk_node(
   self : InternalElkGraphParser,
 ) -> @graph.ElkNode {
   let root = @graph.create_graph()
-  let id_to_shape : Map[String, @graph.ElkConnectableShape] = {}
+  let id_to_shape : Map[String, @graph.ElkConnectableShape] = Map([])
   match graph_text_parser_parse_node(self.tokens, 0, root, "", id_to_shape) {
     Some((node, _)) => node
     None => @graph.create_node(Some(root))
@@ -1199,7 +1203,7 @@ pub fn InternalElkGraphParser::rule_elk_label(
   self : InternalElkGraphParser,
 ) -> @graph.ElkLabel {
   let root = @graph.create_graph()
-  let id_to_shape : Map[String, @graph.ElkConnectableShape] = {}
+  let id_to_shape : Map[String, @graph.ElkConnectableShape] = Map([])
   match
     graph_text_parser_parse_label(
       self.tokens,
@@ -1224,7 +1228,7 @@ pub fn InternalElkGraphParser::rule_elk_port(
   self : InternalElkGraphParser,
 ) -> @graph.ElkPort {
   let root = @graph.create_graph()
-  let id_to_shape : Map[String, @graph.ElkConnectableShape] = {}
+  let id_to_shape : Map[String, @graph.ElkConnectableShape] = Map([])
   match graph_text_parser_parse_port(self.tokens, 0, root, "", id_to_shape) {
     Some((port, _)) => port
     None => @graph.create_port(Some(root))
@@ -1243,7 +1247,7 @@ pub fn InternalElkGraphParser::rule_elk_edge(
   self : InternalElkGraphParser,
 ) -> @graph.ElkEdge {
   let root = @graph.create_graph()
-  let id_to_shape : Map[String, @graph.ElkConnectableShape] = {}
+  let id_to_shape : Map[String, @graph.ElkConnectableShape] = Map([])
   match graph_text_parser_parse_edge(self.tokens, 0, root, "", id_to_shape) {
     Some((edge, _)) => edge
     None => @graph.create_edge(Some(root))
@@ -1264,7 +1268,7 @@ pub fn InternalElkGraphParser::rule_edge_layout(
   self : InternalElkGraphParser,
   edge : @graph.ElkEdge,
 ) -> @graph.ElkEdge {
-  let id_to_shape : Map[String, @graph.ElkConnectableShape] = {}
+  let id_to_shape : Map[String, @graph.ElkConnectableShape] = Map([])
   ignore(
     graph_text_parser_parse_edge_layout(self.tokens, 0, edge, id_to_shape, ""),
   )
@@ -1284,7 +1288,7 @@ pub fn InternalElkGraphParser::rule_elk_single_edge_section(
 ) -> @graph.ElkEdgeSection {
   let root = @graph.create_graph()
   let edge = @graph.create_edge(Some(root))
-  let id_to_shape : Map[String, @graph.ElkConnectableShape] = {}
+  let id_to_shape : Map[String, @graph.ElkConnectableShape] = Map([])
   let (section, _) = graph_text_parser_parse_single_edge_section(
     self.tokens,
     0,
@@ -1308,8 +1312,8 @@ pub fn InternalElkGraphParser::rule_elk_edge_section(
 ) -> @graph.ElkEdgeSection {
   let root = @graph.create_graph()
   let edge = @graph.create_edge(Some(root))
-  let id_to_shape : Map[String, @graph.ElkConnectableShape] = {}
-  let section_by_id : Map[String, @graph.ElkEdgeSection] = {}
+  let id_to_shape : Map[String, @graph.ElkConnectableShape] = Map([])
+  let section_by_id : Map[String, @graph.ElkEdgeSection] = Map([])
   let pending_outgoing : Array[GraphTextPendingOutgoingSection] = []
   match
     graph_text_parser_parse_named_edge_section(

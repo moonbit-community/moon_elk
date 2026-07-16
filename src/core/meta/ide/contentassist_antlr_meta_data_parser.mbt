@@ -8,7 +8,7 @@ pub fn new_core_meta_ide_name_mappings(
   grammar_access : @meta.MetaDataGrammarAccess,
 ) -> CoreMetaIdeNameMappings {
   ignore(grammar_access)
-  let mappings : Map[String, String] = {}
+  let mappings : Map[String, String] = Map([])
   mappings["MdBundleMember.Alternatives"] = "rule__MdBundleMember__Alternatives"
   mappings["MdGroupOrOption.Alternatives"] = "rule__MdGroupOrOption__Alternatives"
   mappings["MdOption.Alternatives_1"] = "rule__MdOption__Alternatives_1"

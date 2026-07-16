@@ -44,7 +44,7 @@ test "AbstractMetaDataRuntimeModule exposes generated bindings" {
     content="org.eclipse.elk.core.meta.parser.antlr.internal.InternalMetaDataLexer",
   )
 
-  let properties : Map[String, String] = {}
+  let properties : Map[String, String] = Map([])
   properties["fileExtensions"] = "my-melk"
   runtime_module.configure(properties)
   inspect(runtime_module.configure_file_extensions(), content="my-melk")

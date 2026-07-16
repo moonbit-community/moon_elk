@@ -42,7 +42,7 @@ priv struct LabelData {
 }
 
 ///|
-let label_store : Ref[Array[LabelData]] = Ref::new([])
+let label_store : Ref[Array[LabelData]] = Ref([])
 
 ///|
 fn checked_label(label : ElkLabel) -> Unit {
@@ -70,7 +70,7 @@ pub fn create_label(parent : ElkLabelParent?) -> ElkLabel {
     y: 0.0,
     width: 0.0,
     height: 0.0,
-    layout_option_string_values: {},
+    layout_option_string_values: Map([]),
   })
   id
 }

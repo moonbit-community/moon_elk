@@ -49,7 +49,7 @@ fn _substring_chars(text : String, start : Int, end : Int) -> String {
     return ""
   }
   let chars = text.to_array()
-  let builder = @buffer.new()
+  let builder = StringBuilder()
   let mut i = start
   while i < end {
     builder.write_char(chars[i])
@@ -64,7 +64,7 @@ fn _split_by_any_delims_keep_empty(
   delims : String,
 ) -> Array[String] {
   let tokens = []
-  let current = @buffer.new()
+  let current = StringBuilder()
   for ch in text {
     if _is_delim_char(ch, delims) {
       tokens.push(current.to_string())
@@ -99,7 +99,7 @@ fn _split_by_any_delims_drop_trailing_empty(
 
 ///|
 fn _parse_double_or_abort(raw : String, message : String) -> Double {
-  let text = raw.trim().to_string()
+  let text = raw.trim().to_owned()
   if text.length() == 0 {
     try math_parse_raise_unit(message) catch {
       err =>

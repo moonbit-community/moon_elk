@@ -123,7 +123,7 @@ pub fn splines_math_convert_kvector_array_to_string(
     return splines_math_null_string
   }
 
-  let buffer = @buffer.new()
+  let buffer = StringBuilder()
   for i in 0..<vectors.length() {
     buffer.write_string(
       splines_math_convert_kvector_to_string(Some(vectors[i])),

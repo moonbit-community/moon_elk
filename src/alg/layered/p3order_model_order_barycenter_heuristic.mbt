@@ -77,8 +77,8 @@ pub fn new_model_order_barycenter_heuristic(
     base: new_barycenter_heuristic(
       constraint_resolver, random, port_distributor, graph,
     ),
-    bigger_than: {},
-    smaller_than: {},
+    bigger_than: Map([]),
+    smaller_than: Map([]),
   }
 }
 
@@ -86,8 +86,8 @@ pub fn new_model_order_barycenter_heuristic(
 pub fn ModelOrderBarycenterHeuristic::clear_transitive_ordering(
   self : ModelOrderBarycenterHeuristic,
 ) -> Unit {
-  self.bigger_than = {}
-  self.smaller_than = {}
+  self.bigger_than = Map([])
+  self.smaller_than = Map([])
 }
 
 ///|

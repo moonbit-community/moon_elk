@@ -186,8 +186,8 @@ pub fn new_model_order_node_comparator_from_layer(
     graph,
     ordering_strategy,
     group_order_strategy,
-    bigger_than: {},
-    smaller_than: {},
+    bigger_than: Map([]),
+    smaller_than: Map([]),
     long_edge_node_order: long_edge_ordering_strategy,
     before_ports,
   }
@@ -207,8 +207,8 @@ pub fn new_model_order_node_comparator(
     graph,
     ordering_strategy,
     group_order_strategy,
-    bigger_than: {},
-    smaller_than: {},
+    bigger_than: Map([]),
+    smaller_than: Map([]),
     long_edge_node_order: long_edge_ordering_strategy,
     before_ports,
   }
@@ -713,6 +713,6 @@ pub fn ModelOrderNodeComparator::compare(
 pub fn ModelOrderNodeComparator::clear_transitive_ordering(
   self : ModelOrderNodeComparator,
 ) -> Unit {
-  self.bigger_than = {}
-  self.smaller_than = {}
+  self.bigger_than = Map([])
+  self.smaller_than = Map([])
 }

@@ -9,7 +9,7 @@ pub struct GraphvizDotGrammarAccess {
 
 ///|
 pub fn new_graphviz_dot_grammar_access() -> GraphvizDotGrammarAccess {
-  let rules : Map[String, String] = {}
+  let rules : Map[String, String] = Map([])
   rules["GraphvizModel"] = "graphs+=Graph*"
   rules["Graph"] = "strict? type=GraphType name=DotID? '{' statements+=Statement* '}'"
   rules["Statement"] = "(NodeStatement|EdgeStatement|AttributeStatement|Attribute|Subgraph) ';'?"

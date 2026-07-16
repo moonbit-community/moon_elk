@@ -135,7 +135,7 @@ test "DotExporter node and edge id generation" {
 
   let data : DotTransformationData[@graph.ElkNode, DotGraphvizModel] = new_dot_transformation_data()
   let map_property = dot_exporter_graph_elems
-  data.set_graph_elem_map_property(map_property, {})
+  data.set_graph_elem_map_property(map_property, Map([]))
 
   let node_id = dot_exporter_get_node_id(
     n0,

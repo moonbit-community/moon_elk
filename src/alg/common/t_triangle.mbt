@@ -20,7 +20,7 @@ fn t_triangle_to_signed_int32(value : Int64) -> Int {
 }
 
 ///|
-let t_triangle_uid_counter : Ref[Int] = Ref::new(0)
+let t_triangle_uid_counter : Ref[Int] = Ref(0)
 
 ///|
 fn next_t_triangle_uid() -> Int {
@@ -123,11 +123,11 @@ pub fn TTriangle::contains_vertex(
 }
 
 ///|
-pub impl Eq for TTriangle with equal(self : TTriangle, other : TTriangle) -> Bool {
+pub impl Eq for TTriangle with fn equal(self : TTriangle, other : TTriangle) -> Bool {
   self.equals(other)
 }
 
 ///|
-pub impl Hash for TTriangle with hash_combine(self : TTriangle, hasher) -> Unit {
+pub impl Hash for TTriangle with fn hash_combine(self : TTriangle, hasher) -> Unit {
   hasher.combine(self.hash_code())
 }

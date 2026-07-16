@@ -13,7 +13,7 @@ priv struct EdgeData {
 }
 
 ///|
-let edge_store : Ref[Array[EdgeData]] = Ref::new([])
+let edge_store : Ref[Array[EdgeData]] = Ref([])
 
 ///|
 fn checked_edge(edge : ElkEdge) -> Unit {
@@ -35,7 +35,7 @@ pub fn create_edge(containing_node : ElkNode?) -> ElkEdge {
     identifier: "",
     sections: [],
     junction_points: [],
-    layout_option_string_values: {},
+    layout_option_string_values: Map([]),
   })
   if containing_node is Some(node_id) {
     append_contained_edge(node_id, id)

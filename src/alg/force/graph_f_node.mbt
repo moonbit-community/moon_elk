@@ -2,7 +2,7 @@
 pub type FNode = Int
 
 ///|
-let fnode_store : Ref[Array[FNodeData]] = Ref::new([])
+let fnode_store : Ref[Array[FNodeData]] = Ref([])
 
 ///|
 priv struct FNodeData {
@@ -45,9 +45,9 @@ pub fn new_fnode(label? : String = "") -> FNode {
     displacement: @core.new_kvector(),
     position: @core.new_kvector(),
     size: @core.new_kvector(),
-    int_properties: {},
-    double_properties: {},
-    bool_properties: {},
+    int_properties: Map([]),
+    double_properties: Map([]),
+    bool_properties: Map([]),
     origin: None,
   })
   id

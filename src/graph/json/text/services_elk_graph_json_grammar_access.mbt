@@ -9,7 +9,7 @@ pub struct ElkGraphJsonGrammarAccess {
 
 ///|
 pub fn new_elk_graph_json_grammar_access() -> ElkGraphJsonGrammarAccess {
-  let rules : Map[String, String] = {}
+  let rules : Map[String, String] = Map([])
   rules["RootNode"] = "{ElkNode} ('graph' identifier=ID)? ShapeLayout? properties+=Property* (labels+=ElkLabel | ports+=ElkPort | children+=ElkNode | containedEdges+=ElkEdge)*"
   rules["JsonObject"] = "'{' (members+=JsonMember (',' members+=JsonMember)*)? '}'"
   rules["JsonMember"] = "key=STRING ':' value=JsonValue"

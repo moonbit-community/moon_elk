@@ -16,11 +16,11 @@ pub fn[S, T] new_dot_transformation_data() -> DotTransformationData[S, T] {
     source_graph: None,
     target_graphs: [],
     log_messages: [],
-    bool_properties: {},
-    int_properties: {},
-    string_properties: {},
-    command_properties: {},
-    graph_elem_map_properties: {},
+    bool_properties: Map([]),
+    int_properties: Map([]),
+    string_properties: Map([]),
+    command_properties: Map([]),
+    graph_elem_map_properties: Map([]),
   }
 }
 
@@ -145,7 +145,7 @@ pub fn[S, T] DotTransformationData::get_command_property(
 fn dot_graph_elem_map_clone(
   source : Map[String, DotGraphElement],
 ) -> Map[String, DotGraphElement] {
-  let copied : Map[String, DotGraphElement] = {}
+  let copied : Map[String, DotGraphElement] = Map([])
   for entry in source.to_array() {
     copied[entry.0] = entry.1
   }

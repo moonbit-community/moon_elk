@@ -166,7 +166,7 @@ pub fn Spacing::parse(self : Spacing, string : String) -> Unit {
       }
       return
     }
-    let key = key_and_value[0].trim().to_string()
+    let key = key_and_value[0].trim().to_owned()
     let value = _parse_double_or_abort(
       key_and_value[1],
       "The given string contains parts that cannot be parsed as numbers.",

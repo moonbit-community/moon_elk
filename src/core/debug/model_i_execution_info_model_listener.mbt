@@ -5,7 +5,7 @@ pub(all) struct IExecutionInfoModelListener {
 }
 
 ///|
-let execution_info_model_listener_id_ref : Ref[Int] = Ref::new(0)
+let execution_info_model_listener_id_ref : Ref[Int] = Ref(0)
 
 ///|
 pub fn new_execution_info_model_listener(

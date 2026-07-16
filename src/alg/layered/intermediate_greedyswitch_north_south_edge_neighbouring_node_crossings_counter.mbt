@@ -60,7 +60,7 @@ pub fn new_north_south_edge_neighbouring_node_crossings_counter(
   let counter = {
     upper_lower_crossings: 0,
     lower_upper_crossings: 0,
-    port_positions: {},
+    port_positions: Map([]),
     layer: nodes,
   }
   counter.initialize_port_positions()

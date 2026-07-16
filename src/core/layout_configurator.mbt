@@ -25,7 +25,7 @@ pub(all) struct LayoutConfigurator {
 
 ///|
 pub fn new_layout_configurator() -> LayoutConfigurator {
-  { element_option_map: {}, class_option_map: {}, option_filters: [] }
+  { element_option_map: Map([]), class_option_map: Map([]), option_filters: [] }
 }
 
 ///|
@@ -51,7 +51,7 @@ pub fn LayoutConfigurator::configure_node_property(
 ) -> Unit {
   let options = match self.element_option_map.get(node) {
     Some(existing) => existing
-    None => {}
+    None => Map([])
   }
   upsert_option(options, property, value)
   self.element_option_map[node] = options
@@ -66,7 +66,7 @@ pub fn LayoutConfigurator::configure_class_property(
 ) -> Unit {
   let options = match self.class_option_map.get(class_key(element_class)) {
     Some(existing) => existing
-    None => {}
+    None => Map([])
   }
   upsert_option(options, property, value)
   self.class_option_map[class_key(element_class)] = options
@@ -100,7 +100,7 @@ fn find_class_options(
   configurator : LayoutConfigurator,
   node : @graph.ElkNode,
 ) -> Map[String, DoublePropertyAssignment] {
-  let combined : Map[String, DoublePropertyAssignment] = {}
+  let combined : Map[String, DoublePropertyAssignment] = Map([])
   merge_assignments(
     combined,
     configurator.class_option_map.get(class_graph_element),

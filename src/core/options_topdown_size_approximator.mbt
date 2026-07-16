@@ -126,7 +126,7 @@ fn topdown_size_approximator_lookahead_layout(
   let cloned_node = @graph.create_node(None)
   @graph.node_copy_properties(cloned_node, original_graph)
 
-  let old_to_new_node_map : Map[@graph.ElkNode, @graph.ElkNode] = {}
+  let old_to_new_node_map : Map[@graph.ElkNode, @graph.ElkNode] = Map([])
 
   for child in @graph.node_children(original_graph) {
     let new_child = @graph.create_node(Some(cloned_node))

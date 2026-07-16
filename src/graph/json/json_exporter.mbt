@@ -21,9 +21,9 @@ fn new_json_exporter(builder : ElkGraphJsonExportBuilder) -> JsonExporter {
     omit_layout_information: builder.omit_layout_information,
     short_layout_option_keys: builder.short_layout_option_keys,
     omit_unknown_layout_options: builder.omit_unknown_layout_options,
-    node_id_map: {},
-    edge_id_map: {},
-    used_ids: {},
+    node_id_map: Map([]),
+    edge_id_map: Map([]),
+    used_ids: Map([]),
     node_id_counter: 0,
     edge_id_counter: 0,
     duplicate_id_counter: 0,
@@ -137,7 +137,7 @@ fn exporter_add_layout_options(
   json_obj : Map[String, Json],
   node : @graph.ElkNode,
 ) -> Unit {
-  let layout_options : Map[String, Json] = {}
+  let layout_options : Map[String, Json] = Map([])
   if @graph.node_has_string_property(node, @core.direction) {
     let key = exporter_option_key(exporter, @core.direction.get_id())
     layout_options[key] = Json::string(
@@ -169,7 +169,7 @@ fn exporter_add_individual_spacings(
   json_obj : Map[String, Json],
   node : @graph.ElkNode,
 ) -> Unit {
-  let individual_spacings : Map[String, Json] = {}
+  let individual_spacings : Map[String, Json] = Map([])
   for entry in @graph.node_individual_spacing_option_string_entries(node) {
     let option_id = entry.0
     let option_value = entry.1
@@ -188,11 +188,11 @@ fn exporter_transform_edge(
   exporter : JsonExporter,
   edge : @graph.ElkEdge,
 ) -> Json {
-  let json_edge : Map[String, Json] = {}
+  let json_edge : Map[String, Json] = Map([])
   json_edge["id"] = Json::string(exporter_edge_id(exporter, edge))
   let sources = []
   for source in @graph.edge_sources(edge) {
-    match connectable_shape_id(source, exporter.node_id_map, {}) {
+    match connectable_shape_id(source, exporter.node_id_map, Map([])) {
       Some(id) => sources.push(Json::string(id))
       None => ()
     }
@@ -200,7 +200,7 @@ fn exporter_transform_edge(
   json_edge["sources"] = Json::array(sources)
   let targets = []
   for target in @graph.edge_targets(edge) {
-    match connectable_shape_id(target, exporter.node_id_map, {}) {
+    match connectable_shape_id(target, exporter.node_id_map, Map([])) {
       Some(id) => targets.push(Json::string(id))
       None => ()
     }
@@ -214,7 +214,7 @@ fn exporter_transform_node(
   exporter : JsonExporter,
   node : @graph.ElkNode,
 ) -> Json {
-  let json_node : Map[String, Json] = {}
+  let json_node : Map[String, Json] = Map([])
   json_node["id"] = Json::string(exporter_node_id(exporter, node))
   let children = []
   for child in @graph.node_children(node) {

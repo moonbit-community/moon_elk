@@ -263,8 +263,8 @@ pub fn FixedLayoutProvider::layout(
   ignore(progress_monitor.begin("Fixed Layout", 1.0))
 
   let edge_routing_kind = fixed_layout_provider_parse_edge_routing(layout_node)
-  let maxx : Ref[Double] = Ref::new(0.0)
-  let maxy : Ref[Double] = Ref::new(0.0)
+  let maxx : Ref[Double] = Ref(0.0)
+  let maxy : Ref[Double] = Ref(0.0)
 
   for node in @graph.node_children(layout_node) {
     if fixed_layout_provider_parse_position(

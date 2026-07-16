@@ -11,7 +11,7 @@ test "elk_graph_resource creates helper and save" {
   let helper = resource.create_xml_helper()
   inspect(helper.get_resource_uri(), content="memory:/graph.elkg")
   let plain_save = resource.create_xml_save()
-  let with_options_save = resource.create_xml_save_with_options({})
+  let with_options_save = resource.create_xml_save_with_options(Map([]))
   inspect(
     plain_save.get_helper().get_resource_uri(),
     content="memory:/graph.elkg",
@@ -65,7 +65,7 @@ test "elk_graph_xmi_save only saves known options" {
   )
   let resource = new_elk_graph_resource("memory:/graph.elkg")
   let save = new_elk_graph_xmi_save(new_elk_graph_xmi_helper(resource))
-  let sink : Map[String, String] = {}
+  let sink : Map[String, String] = Map([])
   inspect(
     save.save_property_entry(sink, Some(no_layout.get_id()), "true"),
     content="true",

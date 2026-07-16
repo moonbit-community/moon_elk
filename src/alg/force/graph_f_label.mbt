@@ -2,7 +2,7 @@
 pub type FLabel = Int
 
 ///|
-let flabel_store : Ref[Array[FLabelData]] = Ref::new([])
+let flabel_store : Ref[Array[FLabelData]] = Ref([])
 
 ///|
 priv struct FLabelData {
@@ -41,8 +41,8 @@ pub fn new_flabel(edge : FEdge, text? : String = "") -> FLabel {
     displacement: @core.new_kvector(),
     position: @core.new_kvector(),
     size: @core.new_kvector(),
-    bool_properties: {},
-    double_properties: {},
+    bool_properties: Map([]),
+    double_properties: Map([]),
     origin: None,
   })
   let edge_data = fedge_store.val[edge]

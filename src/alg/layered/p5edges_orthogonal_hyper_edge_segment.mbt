@@ -1,5 +1,5 @@
 ///|
-let hyper_edge_segment_next_handle_ref : Ref[Int] = Ref::new(0)
+let hyper_edge_segment_next_handle_ref : Ref[Int] = Ref(0)
 
 ///|
 fn hyper_edge_segment_next_handle() -> Int {

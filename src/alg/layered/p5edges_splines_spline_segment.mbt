@@ -195,7 +195,7 @@ fn new_spline_segment_base(is_straight : Bool) -> SplineSegment {
     hyper_edge_top_y_pos: 0.0,
     hyper_edge_bottom_y_pos: 0.0,
     center_control_point_y: 0.0,
-    edge_information: {},
+    edge_information: Map([]),
   }
 }
 

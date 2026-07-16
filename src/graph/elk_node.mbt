@@ -23,7 +23,7 @@ priv struct NodeData {
 }
 
 ///|
-let node_store : Ref[Array[NodeData]] = Ref::new([])
+let node_store : Ref[Array[NodeData]] = Ref([])
 
 ///|
 fn checked_node(node : ElkNode) -> Unit {
@@ -34,28 +34,28 @@ fn checked_node(node : ElkNode) -> Unit {
 
 ///|
 fn clone_string_int_map(source : Map[String, Int]) -> Map[String, Int] {
-  let result = {}
+  let result = Map([])
   source.each((key, value) => result[key] = value)
   result
 }
 
 ///|
 fn clone_string_double_map(source : Map[String, Double]) -> Map[String, Double] {
-  let result = {}
+  let result = Map([])
   source.each((key, value) => result[key] = value)
   result
 }
 
 ///|
 fn clone_string_bool_map(source : Map[String, Bool]) -> Map[String, Bool] {
-  let result = {}
+  let result = Map([])
   source.each((key, value) => result[key] = value)
   result
 }
 
 ///|
 fn clone_string_string_map(source : Map[String, String]) -> Map[String, String] {
-  let result = {}
+  let result = Map([])
   source.each((key, value) => result[key] = value)
   result
 }
@@ -64,7 +64,7 @@ fn clone_string_string_map(source : Map[String, String]) -> Map[String, String] 
 fn clone_string_string_array_map(
   source : Map[String, Array[String]],
 ) -> Map[String, Array[String]] {
-  let result = {}
+  let result = Map([])
   source.each((key, value) => result[key] = value.copy())
   result
 }
@@ -124,14 +124,14 @@ pub fn create_node(parent : ElkNode?) -> ElkNode {
     y: 0.0,
     width: 0.0,
     height: 0.0,
-    int_properties: {},
-    double_properties: {},
-    kvector_properties: {},
-    bool_properties: {},
-    string_properties: {},
-    string_set_properties: {},
-    layout_option_string_values: {},
-    individual_spacing_option_string_values: {},
+    int_properties: Map([]),
+    double_properties: Map([]),
+    kvector_properties: Map([]),
+    bool_properties: Map([]),
+    string_properties: Map([]),
+    string_set_properties: Map([]),
+    layout_option_string_values: Map([]),
+    individual_spacing_option_string_values: Map([]),
   })
   if parent is Some(parent_id) {
     checked_node(parent_id)
@@ -256,19 +256,19 @@ pub fn node_set_int_property(
 
 ///|
 fn parse_int_property_text(value : String) -> Int? {
-  let parsed : Result[Int, Error] = try? @string.parse_int(value.trim())
-  match parsed {
-    Ok(result) => Some(result)
-    Err(_) => None
+  try @string.parse_int(value.trim()) catch {
+    _ => None
+  } noraise {
+    result => Some(result)
   }
 }
 
 ///|
 fn parse_double_property_text(value : String) -> Double? {
-  let parsed : Result[Double, Error] = try? @string.parse_double(value.trim())
-  match parsed {
-    Ok(result) => Some(result)
-    Err(_) => None
+  try @string.parse_double(value.trim()) catch {
+    _ => None
+  } noraise {
+    result => Some(result)
   }
 }
 

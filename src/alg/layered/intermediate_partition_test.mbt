@@ -63,7 +63,7 @@ fn partition_test_require_node(port : LPort) -> LNode {
 ///|
 fn partition_test_collect_unique_edges(nodes : Array[LNode]) -> Array[LEdge] {
   let edges = []
-  let handles : Map[Int, Bool] = {}
+  let handles : Map[Int, Bool] = Map([])
   for node in nodes {
     for port in node.get_ports() {
       for edge in port.get_outgoing_edges() {

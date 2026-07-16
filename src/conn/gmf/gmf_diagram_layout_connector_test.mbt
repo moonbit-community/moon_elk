@@ -24,12 +24,12 @@ test "GmfDiagramLayoutConnector hierarchy utilities follow parent chain rules" {
   gmf_edit_part_set_parent(left, Some(diagram))
   gmf_edit_part_set_parent(right, Some(diagram))
 
-  inspect(
+  debug_inspect(
     gmf_diagram_layout_connector_get_diagram_edit_part(left),
     content="Some(\{diagram})",
   )
   inspect(gmf_diagram_layout_connector_is_parent(diagram, left), content="true")
-  inspect(
+  debug_inspect(
     gmf_diagram_layout_connector_common_parent(left, right),
     content="Some(\{diagram})",
   )
@@ -60,7 +60,7 @@ test "GmfDiagramLayoutConnector build_layout_graph keeps selection offset" {
     Selection([left, right]),
   )
 
-  inspect(mapping.diagram_edit_part, content="Some(\{diagram})")
+  debug_inspect(mapping.diagram_edit_part, content="Some(\{diagram})")
   inspect(mapping.graph_element_count() > 0, content="true")
   inspect(mapping.coordinate_offset is Some(_), content="true")
 }

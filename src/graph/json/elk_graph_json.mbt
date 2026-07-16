@@ -67,7 +67,7 @@ fn parse_non_lenient_json(graph : String) -> Json {
   let parsed = try @core_json.parse(graph) catch {
     _ => {
       @core.layout_runtime_report_json_import("Failed to parse JSON input.")
-      Json::object({})
+      Json::object(Map([]))
     }
   } noraise {
     parsed => parsed
@@ -82,17 +82,17 @@ fn char_at(source : String, index : Int) -> Char {
 
 ///|
 fn safe_slice(source : String, start : Int, end_ : Int) -> String {
-  source[start:end_].to_string()
+  source[start:end_].to_owned()
 }
 
 ///|
 fn safe_slice_from(source : String, start : Int) -> String {
-  source[start:].to_string()
+  source[start:].to_owned()
 }
 
 ///|
 fn strip_json_comments(source : String) -> String {
-  let output = @buffer.new()
+  let output = StringBuilder()
   let mut index = 0
   let mut in_string = false
   let mut escaped = false
@@ -158,7 +158,7 @@ fn strip_json_comments(source : String) -> String {
 
 ///|
 fn replace_single_quotes(source : String) -> String {
-  let output = @buffer.new()
+  let output = StringBuilder()
   let mut index = 0
   let mut in_double_string = false
   let mut escaped = false
@@ -195,7 +195,7 @@ fn replace_single_quotes(source : String) -> String {
 
 ///|
 fn replace_semicolons(source : String) -> String {
-  let output = @buffer.new()
+  let output = StringBuilder()
   let mut index = 0
   let mut in_string = false
   let mut escaped = false
@@ -274,7 +274,7 @@ fn set_context_expect_key(
 
 ///|
 fn quote_unquoted_object_keys(source : String) -> String {
-  let output = @buffer.new()
+  let output = StringBuilder()
   let context_is_object : Array[Bool] = []
   let context_expect_key : Array[Bool] = []
   let mut index = 0
@@ -389,7 +389,7 @@ fn ensure_json_object(value : Json) -> Map[String, Json] {
       @core.layout_runtime_report_json_import(
         "Top-level element of the graph must be a json object.",
       )
-      {}
+      Map([])
     }
   }
 }
@@ -503,7 +503,7 @@ fn is_edge_coords_option_id(id : String) -> Bool {
 
 ///|
 fn parse_bool_option(text : String) -> Bool? {
-  let normalized = text.trim().to_string()
+  let normalized = text.trim().to_owned()
   match normalized {
     "true" | "TRUE" | "True" => Some(true)
     "false" | "FALSE" | "False" => Some(false)
@@ -569,7 +569,7 @@ fn is_known_layout_option_id(id : String) -> Bool {
 
 ///|
 fn parse_shape_coords_mode(text : String) -> JsonShapeCoordsMode {
-  let normalized = text.trim().to_string()
+  let normalized = text.trim().to_owned()
   match normalized {
     "ROOT" | "root" => ShapeRoot
     "PARENT" | "parent" => ShapeParent
@@ -580,7 +580,7 @@ fn parse_shape_coords_mode(text : String) -> JsonShapeCoordsMode {
 
 ///|
 fn parse_edge_coords_mode(text : String) -> JsonEdgeCoordsMode {
-  let normalized = text.trim().to_string()
+  let normalized = text.trim().to_owned()
   match normalized {
     "ROOT" | "root" => EdgeRoot
     "PARENT" | "parent" => EdgeParent
@@ -704,7 +704,7 @@ fn import_builder_graph_object(
           ensure_json_object(parse_json_graph(text, builder.lenient))
         None => {
           @core.layout_runtime_report_json_import("Graph input is missing.")
-          {}
+          Map([])
         }
       }
   }

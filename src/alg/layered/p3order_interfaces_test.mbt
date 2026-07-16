@@ -53,18 +53,34 @@ test "IInitializable traverses layers, nodes, ports, and edges in order" {
 
   i_initializable_init([initializable], order)
 
-  inspect(
+  debug_inspect(
     events,
-    content="[\"L0\", \"N0,0\", \"P0,0,0\", \"E0,0,0,0,100\", \"N0,1\", \"P0,1,0\", \"E0,1,0,0,101\", \"L1\", \"N1,0\", \"P1,0,0\", \"E1,0,0,0,100\", \"E1,0,0,1,101\", \"DONE\"]",
+    content=(
+      #|[
+      #|  "L0",
+      #|  "N0,0",
+      #|  "P0,0,0",
+      #|  "E0,0,0,0,100",
+      #|  "N0,1",
+      #|  "P0,1,0",
+      #|  "E0,1,0,0,101",
+      #|  "L1",
+      #|  "N1,0",
+      #|  "P1,0,0",
+      #|  "E1,0,0,0,100",
+      #|  "E1,0,0,1,101",
+      #|  "DONE",
+      #|]
+    ),
   )
 }
 
 ///|
 test "ICrossingMinimizationHeuristic delegates behavior and init hooks" {
-  let first_layer_order_calls : Ref[Int] = Ref::new(0)
-  let minimized_free_layer_index : Ref[Int] = Ref::new(-1)
-  let forward_sweep_seen : Ref[Bool] = Ref::new(false)
-  let first_sweep_seen : Ref[Bool] = Ref::new(false)
+  let first_layer_order_calls : Ref[Int] = Ref(0)
+  let minimized_free_layer_index : Ref[Int] = Ref(-1)
+  let forward_sweep_seen : Ref[Bool] = Ref(false)
+  let first_sweep_seen : Ref[Bool] = Ref(false)
   let init_events = []
 
   let heuristic = new_i_crossing_minimization_heuristic(
@@ -97,5 +113,5 @@ test "ICrossingMinimizationHeuristic delegates behavior and init hooks" {
   assert_eq(heuristic.is_deterministic(), false)
 
   i_crossing_minimization_heuristic_init([heuristic], order)
-  inspect(init_events, content="[\"L0\", \"L1\", \"DONE\"]")
+  debug_inspect(init_events, content="[\"L0\", \"L1\", \"DONE\"]")
 }

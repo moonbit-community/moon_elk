@@ -14,7 +14,7 @@ test "Property default clone map" {
   let property = new_property_cloneable("dummyMap", default_value, value => {
     Some(
       {
-        let copy = {}
+        let copy = Map([])
         value.each((key, element) => copy[key] = element)
         copy
       },

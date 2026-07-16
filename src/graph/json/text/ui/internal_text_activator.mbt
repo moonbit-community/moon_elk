@@ -142,7 +142,7 @@ pub struct GraphJsonTextUiBundle {
 pub fn new_graph_json_text_ui_bundle(
   symbolic_name? : String = graph_json_text_ui_plugin_id,
 ) -> GraphJsonTextUiBundle {
-  { symbolic_name, classes: {} }
+  { symbolic_name, classes: Map([]) }
 }
 
 ///|
@@ -178,7 +178,7 @@ pub struct GraphJsonTextUiInjector {
 
 ///|
 pub fn new_graph_json_text_ui_injector() -> GraphJsonTextUiInjector {
-  { providers: {} }
+  { providers: Map([]) }
 }
 
 ///|
@@ -215,13 +215,13 @@ pub struct GraphJsonTextActivator {
 }
 
 ///|
-let graph_json_text_activator_instance_ref : Ref[GraphJsonTextActivator?] = Ref::new(
+let graph_json_text_activator_instance_ref : Ref[GraphJsonTextActivator?] = Ref(
   None,
 )
 
 ///|
 pub fn new_graph_json_text_activator() -> GraphJsonTextActivator {
-  { bundle: new_graph_json_text_ui_bundle(), injectors: {} }
+  { bundle: new_graph_json_text_ui_bundle(), injectors: Map([]) }
 }
 
 ///|

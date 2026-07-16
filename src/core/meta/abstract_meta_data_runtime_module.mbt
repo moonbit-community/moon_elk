@@ -14,7 +14,7 @@ pub(all) struct AbstractMetaDataRuntimeModule {
 
 ///|
 pub fn new_abstract_meta_data_runtime_module(
-  properties? : Map[String, String] = {},
+  properties? : Map[String, String] = Map([]),
 ) -> AbstractMetaDataRuntimeModule {
   { properties, }
 }

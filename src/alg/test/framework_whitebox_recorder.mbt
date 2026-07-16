@@ -34,7 +34,7 @@ pub struct WhiteboxRecorder {
 pub fn new_whitebox_recorder() -> WhiteboxRecorder {
   {
     executed_whitebox_tests: [],
-    whitebox_test_failures: {},
+    whitebox_test_failures: Map([]),
     currently_running_test: None,
   }
 }

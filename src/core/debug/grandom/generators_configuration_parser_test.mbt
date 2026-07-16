@@ -1,6 +1,6 @@
 ///|
 fn core_debug_grandom_parser_test_random(seed : Int64) -> @random.Rand {
-  let seed_buffer = @buffer.new()
+  let seed_buffer = Buffer()
   seed_buffer.write_int64_le(seed)
   seed_buffer.write_int64_le(0)
   seed_buffer.write_int64_le(0)

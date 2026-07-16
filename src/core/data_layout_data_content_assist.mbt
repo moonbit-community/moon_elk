@@ -87,7 +87,7 @@ fn split_dotted(text : String) -> Array[String] {
   let parts = []
   for part in text.split(".") {
     if !part.is_empty() {
-      parts.push(part.to_string())
+      parts.push(part.to_owned())
     }
   }
   parts

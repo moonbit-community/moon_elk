@@ -1,5 +1,5 @@
 ///|
-let lport_next_handle_ref : Ref[Int] = Ref::new(0)
+let lport_next_handle_ref : Ref[Int] = Ref(0)
 
 ///|
 fn lport_next_handle() -> Int {
@@ -47,11 +47,11 @@ pub fn new_l_port() -> LPort {
     incoming_edges: [],
     outgoing_edges: [],
     connected_to_external_nodes: true,
-    int_properties: {},
-    bool_properties: {},
-    double_properties: {},
-    node_properties: {},
-    port_properties: {},
+    int_properties: Map([]),
+    bool_properties: Map([]),
+    double_properties: Map([]),
+    node_properties: Map([]),
+    port_properties: Map([]),
   }
 }
 

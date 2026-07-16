@@ -67,7 +67,7 @@ test "ElkGraphStandaloneSetup registers extension maps" {
 test "ElkGraphQualifiedNameConverter converts dotted names" {
   let converter = new_elk_graph_qualified_name_converter()
   converter.initialize(new_elk_graph_grammar_access())
-  inspect(
+  debug_inspect(
     converter.to_qualified_name("org.eclipse.elk"),
     content="[\"org\", \"eclipse\", \"elk\"]",
   )
@@ -85,7 +85,7 @@ test "ElkGraphQualifiedNameProvider prepends parent names" {
   @graph.port_set_identifier(port, "p")
 
   let provider = new_elk_graph_qualified_name_provider()
-  inspect(
+  debug_inspect(
     provider.qualified_name(GraphPort(port)),
     content="[\"root\", \"child\", \"p\"]",
   )
@@ -149,7 +149,7 @@ test "ElkGraphScopeProvider resolves sibling section identifiers" {
 ///|
 test "ElkGraph syntactic and semantic sequencers keep generated defaults" {
   let syntactic = new_abstract_elk_graph_syntactic_sequencer()
-  inspect(
+  debug_inspect(
     syntactic.emit_unassigned_tokens("", [
       "ElkEdge___LeftCurlyBracketKeyword_7_0_RightCurlyBracketKeyword_7_4__q",
     ]),

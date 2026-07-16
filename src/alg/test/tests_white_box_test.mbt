@@ -18,7 +18,7 @@ fn new_white_box_test_runner(
     "graphMethod(compoundGraph)",
   )
   new_layout_test_runner(
-    () => Ref::new(0),
+    () => Ref(0),
     [test_algorithm_identity()],
     [white_box_test_default_configuration()],
     [graph],
@@ -32,7 +32,7 @@ test "WhiteBoxTest executes whitebox test after matching processor event" {
   reset_graph_model_for_test()
   reset_experiment_runner_ids_for_test()
 
-  let counter = Ref::new(0)
+  let counter = Ref(0)
   let whitebox_test = new_whitebox_test_method(
     "testNoLayerlessNodes",
     (test_instance : Ref[Int], graph : Int) => {

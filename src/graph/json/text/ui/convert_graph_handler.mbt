@@ -17,7 +17,7 @@ pub struct GraphJsonTextProject {
 
 ///|
 pub fn new_graph_json_text_project() -> GraphJsonTextProject {
-  { files: {} }
+  { files: Map([]) }
 }
 
 ///|

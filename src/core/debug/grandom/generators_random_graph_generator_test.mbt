@@ -1,6 +1,6 @@
 ///|
 fn core_debug_grandom_random_graph_test_random(seed : Int64) -> @random.Rand {
-  let seed_buffer = @buffer.new()
+  let seed_buffer = Buffer()
   seed_buffer.write_int64_le(seed)
   seed_buffer.write_int64_le(0)
   seed_buffer.write_int64_le(0)
@@ -64,7 +64,7 @@ fn core_debug_grandom_random_graph_has_cycle_from(
 
 ///|
 fn core_debug_grandom_random_graph_is_acyclic(root : @graph.ElkNode) -> Bool {
-  let states : Map[@graph.ElkNode, Int] = {}
+  let states : Map[@graph.ElkNode, Int] = Map([])
   for node in @graph.node_all_descendants_including_self(root) {
     if node == root {
       continue

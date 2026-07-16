@@ -7,7 +7,7 @@ pub struct BiLinkedHashMultiMap[V] {
 
 ///|
 pub fn[V : Hash + Eq] new_bi_linked_hash_multi_map() -> BiLinkedHashMultiMap[V] {
-  { key_to_values: {}, value_to_key: {}, key_order: [] }
+  { key_to_values: Map([]), value_to_key: Map([]), key_order: [] }
 }
 
 ///|

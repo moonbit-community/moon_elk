@@ -64,7 +64,7 @@ pub fn KVectorChain::get(self : KVectorChain, index : Int) -> KVector {
 
 ///|
 pub fn KVectorChain::to_string(self : KVectorChain) -> String {
-  let builder = @buffer.new()
+  let builder = StringBuilder()
   builder.write_char('(')
   let mut i = 0
   while i < self.vectors.length() {
@@ -118,7 +118,7 @@ pub fn KVectorChain::parse(self : KVectorChain, string : String) -> Unit {
   let mut x = 0.0
   let mut y = 0.0
   while i < tokens.length() {
-    let token = tokens[i].trim().to_string()
+    let token = tokens[i].trim().to_owned()
     if token.length() > 0 {
       if xy % 2 == 0 {
         x = _parse_double_or_abort(

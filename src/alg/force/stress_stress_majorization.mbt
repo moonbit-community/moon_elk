@@ -42,8 +42,8 @@ pub fn new_stress_majorization() -> StressMajorization {
     dimension: StressDimensionXY,
     epsilon: stress_epsilon.get_default(),
     iteration_limit: stress_iteration_limit.get_default(),
-    connected_edges: {},
-    node_by_id: {},
+    connected_edges: Map([]),
+    node_by_id: Map([]),
   }
 }
 

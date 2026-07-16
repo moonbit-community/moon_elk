@@ -23,7 +23,11 @@ fn graph_text_property_value_parse_bool(text : String) -> Bool? {
 
 ///|
 fn graph_text_property_value_parse_number(text : String) -> Double? {
-  let parsed : Result[Double, Error] = try? @string.parse_double(text)
+  let parsed : Result[Double, Error] = try @string.parse_double(text) catch {
+    error => Err(error)
+  } noraise {
+    value => Ok(value)
+  }
   match parsed {
     Ok(value) => Some(value)
     Err(_) => None

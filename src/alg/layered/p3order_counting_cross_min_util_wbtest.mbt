@@ -50,31 +50,31 @@ fn cross_min_node_with_sided_ports() -> (
 test "CrossMinUtil iterates south/west in reverse side order" {
   let (node, _north, _east, _south_a, _south_b, _west) = cross_min_node_with_sided_ports()
 
-  inspect(
+  debug_inspect(
     cross_min_port_ids(
       in_north_south_east_west_order(node, @core.PortSide::North),
     ),
     content="[1]",
   )
-  inspect(
+  debug_inspect(
     cross_min_port_ids(
       in_north_south_east_west_order(node, @core.PortSide::East),
     ),
     content="[2]",
   )
-  inspect(
+  debug_inspect(
     cross_min_port_ids(
       in_north_south_east_west_order(node, @core.PortSide::South),
     ),
     content="[4, 3]",
   )
-  inspect(
+  debug_inspect(
     cross_min_port_ids(
       in_north_south_east_west_order(node, @core.PortSide::West),
     ),
     content="[5]",
   )
-  inspect(
+  debug_inspect(
     cross_min_port_ids(
       in_north_south_east_west_order(node, @core.PortSide::SideUndefined),
     ),
@@ -104,35 +104,35 @@ test "LNode exposes side and type filtered ports and edge views" {
   outgoing.set_source(Some(east))
   outgoing.set_target(Some(target_port))
 
-  inspect(
+  debug_inspect(
     cross_min_port_ids(node.get_ports_by_side(@core.PortSide::South)),
     content="[3, 4]",
   )
-  inspect(
+  debug_inspect(
     cross_min_port_ids(node.get_port_side_view(@core.PortSide::East)),
     content="[2]",
   )
-  inspect(
+  debug_inspect(
     cross_min_port_ids(node.get_ports_by_type(PortType::Input)),
     content="[3]",
   )
-  inspect(
+  debug_inspect(
     cross_min_port_ids(node.get_ports_by_type(PortType::Output)),
     content="[2]",
   )
-  inspect(
+  debug_inspect(
     cross_min_port_ids(
       node.get_ports_by_type_and_side(PortType::Input, @core.PortSide::South),
     ),
     content="[3]",
   )
-  inspect(
+  debug_inspect(
     cross_min_port_ids(
       node.get_ports_by_type_and_side(PortType::Output, @core.PortSide::East),
     ),
     content="[2]",
   )
-  inspect(
+  debug_inspect(
     cross_min_port_ids(node.get_ports_by_type(PortType::Undefined)),
     content="[]",
   )

@@ -1,5 +1,5 @@
 ///|
-let core_comments_next_matcher_id_ref : Ref[Int] = Ref::new(0)
+let core_comments_next_matcher_id_ref : Ref[Int] = Ref(0)
 
 ///|
 fn core_comments_next_matcher_id() -> Int {

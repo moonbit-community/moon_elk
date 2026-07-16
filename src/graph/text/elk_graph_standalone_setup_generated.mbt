@@ -8,11 +8,13 @@ pub let graph_text_resource_factory_value : String = "org.eclipse.xtext.resource
 pub let graph_text_resource_service_provider_value : String = "org.eclipse.xtext.resource.IResourceServiceProvider"
 
 ///|
-let graph_text_resource_factory_registry_ref : Ref[Map[String, String]] = Ref::new({},
+let graph_text_resource_factory_registry_ref : Ref[Map[String, String]] = Ref(
+  Map([]),
 )
 
 ///|
-let graph_text_resource_service_provider_registry_ref : Ref[Map[String, String]] = Ref::new({},
+let graph_text_resource_service_provider_registry_ref : Ref[Map[String, String]] = Ref(
+  Map([]),
 )
 
 ///|

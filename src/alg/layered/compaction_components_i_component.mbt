@@ -8,7 +8,7 @@ pub struct IComponent[N, E] {
 }
 
 ///|
-let component_next_instance_id : Ref[Int] = Ref::new(0)
+let component_next_instance_id : Ref[Int] = Ref(0)
 
 ///|
 fn new_component_instance_id() -> Int {

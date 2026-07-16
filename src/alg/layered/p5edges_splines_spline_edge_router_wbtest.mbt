@@ -161,9 +161,9 @@ test "spline edge router edge chain and spline path follow successor map" {
   let segment_1 = new_spline_segment_single_edge(edge_1, Left, Right)
   let segment_2 = new_spline_segment_single_edge(edge_2, Left, Right)
 
-  let successing_edge : Map[Int, LEdge] = {}
+  let successing_edge : Map[Int, LEdge] = Map([])
   successing_edge[ledge_internal_handle(edge_1)] = edge_2
-  let edge_to_segment_map : Map[Int, SplineSegment] = {}
+  let edge_to_segment_map : Map[Int, SplineSegment] = Map([])
   edge_to_segment_map[ledge_internal_handle(edge_1)] = segment_1
   edge_to_segment_map[ledge_internal_handle(edge_2)] = segment_2
 
@@ -197,7 +197,7 @@ test "spline edge router find and add successor maps through dummy target node" 
 
   let first = spline_edge_router_wb_new_edge(source_port, dummy_in)
   let second = spline_edge_router_wb_new_edge(dummy_out, next_target)
-  let successors : Map[Int, LEdge] = {}
+  let successors : Map[Int, LEdge] = Map([])
   spline_edge_router_find_and_add_successor(first, successors)
 
   let next = successors.get(ledge_internal_handle(first)).unwrap()
@@ -210,7 +210,7 @@ test "spline edge router create hyper edge segments groups upward edges" {
   let right_ports : Array[LPort] = []
   let edges_remaining : Array[LEdge] = []
   let hyper_edges : Array[SplineSegment] = []
-  let edge_to_segment_map : Map[Int, SplineSegment] = {}
+  let edge_to_segment_map : Map[Int, SplineSegment] = Map([])
 
   let source_node = new_l_node()
   ignore(source_node.get_position().set_xy(0.0, 10.0))
@@ -252,7 +252,7 @@ test "spline edge router create segments and ranking assigns topological ranks" 
   let right_ports : Array[LPort] = []
   let edges_remaining : Array[LEdge] = []
   let spline_segments : Array[SplineSegment] = []
-  let edge_to_segment_map : Map[Int, SplineSegment] = {}
+  let edge_to_segment_map : Map[Int, SplineSegment] = Map([])
 
   let edge_a = spline_edge_router_wb_new_edge(
     spline_edge_router_wb_new_port(0.0, @core.PortSide::West),
@@ -330,7 +330,7 @@ test "spline edge router clear then fill mappings collects layer-local sets" {
   let spline_segments_layer : Array[SplineSegment] = []
   let self_loops_layer : Array[LEdge] = []
   let start_edges : Array[LEdge] = []
-  let successing_edge : Map[Int, LEdge] = {}
+  let successing_edge : Map[Int, LEdge] = Map([])
 
   spline_edge_router_clear_then_fill_mappings(
     Some(left_layer),

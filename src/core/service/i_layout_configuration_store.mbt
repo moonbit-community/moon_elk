@@ -95,7 +95,7 @@ pub fn LayoutConfigurationStoreProvider::get(
 
 ///|
 pub fn new_simple_layout_configuration_store(
-  options? : Map[String, String] = {},
+  options? : Map[String, String] = Map([]),
   option_targets? : Array[@core.LayoutOptionTarget] = [ParentsTarget],
   parent? : ILayoutConfigurationStore? = None,
   editing_domain? : Int? = None,

@@ -139,7 +139,7 @@ fn breaking_point_inserter_compute_score(
 ///|
 fn breaking_point_inserter_compute_edge_spans(graph : LGraph) -> Array[Int] {
   let spans = []
-  let open : Map[Int, Bool] = {}
+  let open : Map[Int, Bool] = Map([])
   let mut open_count = 0
 
   for layer in graph.get_layers() {
@@ -372,7 +372,7 @@ fn breaking_point_inserter_apply_cuts(
   let mut cut = cuts[cut_idx]
   let mut no_split_edges = 0
 
-  let already_split : Map[Int, Bool] = {}
+  let already_split : Map[Int, Bool] = Map([])
   let open_edges = []
 
   for layer in original_layers {

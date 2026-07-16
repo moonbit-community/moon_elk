@@ -15,12 +15,12 @@ pub fn new_graphviz_preference_store(
 ) -> GraphvizPreferenceStore {
   {
     symbolic_name,
-    int_values: {},
-    int_defaults: {},
-    string_values: {},
-    string_defaults: {},
-    bool_values: {},
-    bool_defaults: {},
+    int_values: Map([]),
+    int_defaults: Map([]),
+    string_values: Map([]),
+    string_defaults: Map([]),
+    bool_values: Map([]),
+    bool_defaults: Map([]),
   }
 }
 
@@ -138,7 +138,7 @@ pub struct GraphvizLayouterPreferenceStore {
 ///|
 let graphviz_layouter_preference_store_ref : Ref[
   GraphvizLayouterPreferenceStore?,
-] = Ref::new(None)
+] = Ref(None)
 
 ///|
 pub fn new_graphviz_layouter_preference_store() -> GraphvizLayouterPreferenceStore {

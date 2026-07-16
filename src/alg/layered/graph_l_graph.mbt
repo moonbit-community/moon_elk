@@ -1,5 +1,5 @@
 ///|
-let layered_l_graph_next_handle : Ref[Int] = Ref::new(1)
+let layered_l_graph_next_handle : Ref[Int] = Ref(1)
 
 ///|
 fn layered_l_graph_allocate_handle() -> Int {
@@ -51,23 +51,23 @@ pub fn new_l_graph() -> LGraph {
   {
     id: 0,
     handle: layered_l_graph_allocate_handle(),
-    port_side_array_properties: {},
-    graph_properties_array_properties: {},
-    cross_hierarchy_map_entry_array_properties: {},
-    node_array_properties: {},
-    layout_processor_array_properties: {},
-    random_properties: {},
-    int_properties: {},
-    bool_properties: {},
-    double_properties: {},
-    string_properties: {},
-    string_array_properties: {},
-    label_manager_properties: {},
-    spacings_properties: {},
-    elk_margin_properties: {},
-    component_ordering_strategy_properties: {},
-    direction_properties: {},
-    spline_routing_mode_properties: {},
+    port_side_array_properties: Map([]),
+    graph_properties_array_properties: Map([]),
+    cross_hierarchy_map_entry_array_properties: Map([]),
+    node_array_properties: Map([]),
+    layout_processor_array_properties: Map([]),
+    random_properties: Map([]),
+    int_properties: Map([]),
+    bool_properties: Map([]),
+    double_properties: Map([]),
+    string_properties: Map([]),
+    string_array_properties: Map([]),
+    label_manager_properties: Map([]),
+    spacings_properties: Map([]),
+    elk_margin_properties: Map([]),
+    component_ordering_strategy_properties: Map([]),
+    direction_properties: Map([]),
+    spline_routing_mode_properties: Map([]),
     size: @core.new_kvector(),
     padding: new_l_padding(),
     offset: @core.new_kvector(),

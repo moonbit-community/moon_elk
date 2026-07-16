@@ -1,5 +1,5 @@
 ///|
-let graphviz_layouter_preference_store_access_ui_available_ref : Ref[Bool] = Ref::new(
+let graphviz_layouter_preference_store_access_ui_available_ref : Ref[Bool] = Ref(
   true,
 )
 

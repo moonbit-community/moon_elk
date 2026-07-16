@@ -15,7 +15,7 @@ pub fn new_layout_property_source(
   {
     layout_config: config,
     property_descriptors: None,
-    dependency_options: {},
+    dependency_options: Map([]),
     config_manager: manager,
     layout_option_validator: None,
   }
@@ -155,7 +155,7 @@ fn layout_property_source_split_values(value : String) -> Array[String] {
   for part in normalized.split(" ") {
     let trimmed = part.trim()
     if !trimmed.is_empty() {
-      result.push(trimmed.to_string())
+      result.push(trimmed.to_owned())
     }
   }
   result

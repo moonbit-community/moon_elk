@@ -1,5 +1,7 @@
 ///|
-let random_graph_from_file_contents_ref : Ref[Map[String, String]] = Ref::new({})
+let random_graph_from_file_contents_ref : Ref[Map[String, String]] = Ref(
+  Map([]),
+)
 
 ///|
 pub fn random_graph_from_file_register_content_for_test(

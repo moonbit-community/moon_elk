@@ -1,0 +1,15 @@
+name = "Milky2018/moon_elk"
+
+version = "0.1.14"
+
+source = "src"
+
+readme = "README.mbt.md"
+
+repository = "https://github.com/moonbit-community/moon_elk.git"
+
+license = "EPL-2.0"
+
+keywords = [ "elk", "layout" ]
+
+description = "A MoonBit port of Eclipse Layout Kernel (ELK)."

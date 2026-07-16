@@ -1,7 +1,7 @@
 ///|
 test "graph element adapter forwards base accessors and properties" {
-  let size_ref : Ref[KVector] = Ref::new(new_kvector_xy(1.0, 2.0))
-  let position_ref : Ref[KVector] = Ref::new(new_kvector_xy(3.0, 4.0))
+  let size_ref : Ref[KVector] = Ref(new_kvector_xy(1.0, 2.0))
+  let position_ref : Ref[KVector] = Ref(new_kvector_xy(3.0, 4.0))
 
   let int_property = @graph.new_property("graph.adapters.test.int", 7)
   let bool_property = @graph.new_property("graph.adapters.test.bool", true)
@@ -68,10 +68,10 @@ test "graph element adapter forwards base accessors and properties" {
 
 ///|
 test "node and graph adapters forward composed behavior" {
-  let padding_ref : Ref[ElkPadding] = Ref::new(new_elk_padding_any(2.0))
-  let margin_ref : Ref[ElkMargin] = Ref::new(new_elk_margin_any(3.0))
-  let sort_calls : Ref[Int] = Ref::new(0)
-  let sort_with_calls : Ref[Int] = Ref::new(0)
+  let padding_ref : Ref[ElkPadding] = Ref(new_elk_padding_any(2.0))
+  let margin_ref : Ref[ElkMargin] = Ref(new_elk_margin_any(3.0))
+  let sort_calls : Ref[Int] = Ref(0)
+  let sort_with_calls : Ref[Int] = Ref(0)
 
   let element_adapter = new_graph_element_adapter(
     "node-1",
@@ -133,7 +133,7 @@ test "node and graph adapters forward composed behavior" {
 
 ///|
 test "port label and edge adapters expose dedicated accessors" {
-  let margin_ref : Ref[ElkMargin] = Ref::new(new_elk_margin_any(5.0))
+  let margin_ref : Ref[ElkMargin] = Ref(new_elk_margin_any(5.0))
   let port_side = sides_north[0]
   let label_side = @layered.new_l_label().get_property_label_side(
     @layered.internal_properties_label_side,

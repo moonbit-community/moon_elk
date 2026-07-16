@@ -270,7 +270,7 @@ pub fn HyperedgeCrossingsCounter::count_crossings(
     target_count = target_count + other_input_ports
   }
 
-  let port_to_hyperedge : Map[Int, Int] = {}
+  let port_to_hyperedge : Map[Int, Int] = Map([])
   let hyperedges = []
 
   for node in left_layer {

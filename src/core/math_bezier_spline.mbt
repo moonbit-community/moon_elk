@@ -143,7 +143,7 @@ pub fn BezierSpline::get_curves(self : BezierSpline) -> Array[BezierCurve] {
 
 ///|
 pub fn BezierSpline::to_string(self : BezierSpline) -> String {
-  let buffer = @buffer.new()
+  let buffer = StringBuilder()
   for curve in self.curves {
     buffer.write_string(
       "\{curve.start.to_string()} -> \{curve.fst_control_pnt.to_string()} -> \{curve.snd_control_pnt.to_string()} -> \{curve.end.to_string()}\n",

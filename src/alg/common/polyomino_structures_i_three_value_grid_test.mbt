@@ -21,13 +21,13 @@ test "IThreeValueGrid adapter delegates to TwoBitGrid" {
 
 ///|
 test "IThreeValueGrid custom implementation callbacks" {
-  let get_width_calls = Ref::new(0)
-  let get_height_calls = Ref::new(0)
-  let reinit_width = Ref::new(-1)
-  let reinit_height = Ref::new(-1)
-  let set_empty_calls = Ref::new(0)
-  let set_blocked_calls = Ref::new(0)
-  let set_weakly_blocked_calls = Ref::new(0)
+  let get_width_calls = Ref(0)
+  let get_height_calls = Ref(0)
+  let reinit_width = Ref(-1)
+  let reinit_height = Ref(-1)
+  let set_empty_calls = Ref(0)
+  let set_blocked_calls = Ref(0)
+  let set_weakly_blocked_calls = Ref(0)
 
   let grid = new_three_value_grid(
     () => {

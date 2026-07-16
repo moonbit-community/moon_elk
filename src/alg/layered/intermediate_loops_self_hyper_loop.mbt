@@ -75,7 +75,7 @@ pub fn new_self_hyper_loop(sl_holder : SelfLoopHolder) -> SelfHyperLoop {
     sl_edges: [],
     sl_labels: None,
     self_loop_type: None,
-    sl_ports_by_side: {},
+    sl_ports_by_side: Map([]),
     leftmost_port: None,
     rightmost_port: None,
     occupied_port_sides: [],

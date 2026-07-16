@@ -2,10 +2,10 @@
 let dis_co_image_export_action_id : String = "org.eclipse.elk.alg.disco.debug.imageExport"
 
 ///|
-let dis_co_last_image_file_name_ref : Ref[String] = Ref::new("")
+let dis_co_last_image_file_name_ref : Ref[String] = Ref("")
 
 ///|
-let dis_co_exported_image_files_ref : Ref[Array[String]] = Ref::new([])
+let dis_co_exported_image_files_ref : Ref[Array[String]] = Ref([])
 
 ///|
 pub struct DisCoImageExportAction {

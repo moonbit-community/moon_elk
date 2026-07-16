@@ -319,7 +319,7 @@ fn bk_node_placer_process(
   ignore(monitor.begin("Brandes & Koepf node placement", 1.0))
 
   let ni = neighborhood_information_build_for(layered_graph)
-  let marked_edges : Map[Int, Bool] = {}
+  let marked_edges : Map[Int, Bool] = Map([])
 
   let fixed_alignment = bk_node_placer_parse_fixed_alignment(
     layered_graph.get_property_string(

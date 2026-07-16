@@ -5,11 +5,13 @@ pub type ElkReflectNewInstanceFunction = () -> Json
 pub type ElkReflectCloneFunction = (Json) -> Json
 
 ///|
-let elk_reflect_registry_new : Ref[Map[String, ElkReflectNewInstanceFunction]] = Ref::new({},
+let elk_reflect_registry_new : Ref[Map[String, ElkReflectNewInstanceFunction]] = Ref(
+  Map([]),
 )
 
 ///|
-let elk_reflect_registry_clone : Ref[Map[String, ElkReflectCloneFunction]] = Ref::new({},
+let elk_reflect_registry_clone : Ref[Map[String, ElkReflectCloneFunction]] = Ref(
+  Map([]),
 )
 
 ///|

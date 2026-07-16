@@ -6,7 +6,7 @@ pub(all) suberror ElkGraphUtilException {
 } derive(Debug, ToJson)
 
 ///|
-pub impl Show for ElkGraphUtilException with output(self, logger) {
+pub impl Show for ElkGraphUtilException with fn output(self, logger) {
   logger.write_string(to_repr(self).to_string())
 }
 

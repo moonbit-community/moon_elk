@@ -61,7 +61,7 @@ test "ElkGraphJsonQualifiedNameProvider yields element identifier" {
   let root = @graph.create_graph()
   @graph.node_set_identifier(root, "root")
   let provider = new_elk_graph_json_qualified_name_provider()
-  inspect(
+  debug_inspect(
     provider.qualified_name(GraphJsonTextNode(root)),
     content="[\"root\"]",
   )
@@ -129,7 +129,7 @@ test "ElkGraphJsonScopeProvider resolves sibling section identifiers" {
 ///|
 test "ElkGraphJson syntactic and semantic sequencers keep generated defaults" {
   let syntactic = new_abstract_elk_graph_json_syntactic_sequencer()
-  inspect(
+  debug_inspect(
     syntactic.emit_unassigned_tokens("", [
       "JsonObject___LeftCurlyBracketKeyword_0_RightCurlyBracketKeyword_3__q",
     ]),

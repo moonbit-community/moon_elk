@@ -2,11 +2,11 @@
 test "GraphvizException keeps message and optional cause" {
   let without_cause = new_graphviz_exception("failed")
   inspect(without_cause.get_message(), content="failed")
-  inspect(without_cause.get_cause(), content="None")
+  debug_inspect(without_cause.get_cause(), content="None")
   inspect(without_cause.to_string(), content="failed")
 
   let with_cause = new_graphviz_exception_with_cause("failed", "io")
-  inspect(with_cause.get_cause(), content="Some(\"io\")")
+  debug_inspect(with_cause.get_cause(), content="Some(\"io\")")
   inspect(with_cause.to_string(), content="failed: io")
 }
 
@@ -108,8 +108,8 @@ test "ForkedOutputStream writes flushes and closes all streams" {
   forked.flush()
   forked.close()
 
-  inspect(sink0.get_bytes(), content="[65, 66]")
-  inspect(sink1.get_bytes(), content="[65, 66]")
+  debug_inspect(sink0.get_bytes(), content="[65, 66]")
+  debug_inspect(sink1.get_bytes(), content="[65, 66]")
   inspect(sink0.get_flush_count(), content="1")
   inspect(sink1.get_flush_count(), content="1")
   inspect(sink0.is_closed(), content="true")
@@ -128,17 +128,17 @@ test "ForwardingInputStream forwards read bytes but does not close output stream
   inspect(forwarding.read(), content="1")
   let read_buffer = [0, 0, 0]
   inspect(forwarding.read_bytes(read_buffer), content="3")
-  inspect(read_buffer, content="[2, 3, 4]")
+  debug_inspect(read_buffer, content="[2, 3, 4]")
   let offset_buffer = [9, 9, 9, 9]
   inspect(forwarding.read_bytes_with_offset(offset_buffer, 1, 2), content="1")
-  inspect(offset_buffer, content="[9, 5, 9, 9]")
+  debug_inspect(offset_buffer, content="[9, 5, 9, 9]")
   inspect(forwarding.available(), content="0")
   inspect(forwarding.skip(10), content="0")
   forwarding.close()
 
   inspect(source.is_closed(), content="true")
   inspect(sink.is_closed(), content="false")
-  inspect(sink.get_bytes(), content="[1, 2, 3, 4, 5]")
+  debug_inspect(sink.get_bytes(), content="[1, 2, 3, 4, 5]")
 }
 
 ///|
@@ -157,5 +157,5 @@ test "ForwardingInputStream forwards mark and reset behavior" {
   forwarding.reset()
   inspect(forwarding.read(), content="11")
   inspect(forwarding.read(), content="12")
-  inspect(sink.get_bytes(), content="[10, 11, 11, 12]")
+  debug_inspect(sink.get_bytes(), content="[10, 11, 11, 12]")
 }

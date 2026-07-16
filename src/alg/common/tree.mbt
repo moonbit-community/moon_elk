@@ -6,7 +6,7 @@ pub struct Tree[T] {
 }
 
 ///|
-let tree_uid_counter : Ref[Int] = Ref::new(0)
+let tree_uid_counter : Ref[Int] = Ref(0)
 
 ///|
 fn next_tree_uid() -> Int {

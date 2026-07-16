@@ -283,7 +283,7 @@ pub fn ElkGraphJsonValidator::check_unique_properties(
 ) -> Array[GraphJsonTextValidationIssue] {
   ignore(self)
   let issues : Array[GraphJsonTextValidationIssue] = []
-  let used : Map[String, Int] = {}
+  let used : Map[String, Int] = Map([])
   for property in properties {
     let key_id = graph_json_text_property_key_id(property.key)
     match used.get(key_id) {
@@ -334,7 +334,7 @@ pub fn ElkGraphJsonValidator::check_unique_names_for_node(
   node : @graph.ElkNode,
 ) -> Array[GraphJsonTextValidationIssue] {
   ignore(self)
-  let used : Map[String, Int] = {}
+  let used : Map[String, Int] = Map([])
   let issues : Array[GraphJsonTextValidationIssue] = []
   for child in @graph.node_children(node) {
     let id = @graph.node_identifier(child)
@@ -595,7 +595,7 @@ pub fn ElkGraphJsonValidator::check_unique_section_names(
   edge : @graph.ElkEdge,
 ) -> Array[GraphJsonTextValidationIssue] {
   ignore(self)
-  let used : Map[String, Int] = {}
+  let used : Map[String, Int] = Map([])
   let issues : Array[GraphJsonTextValidationIssue] = []
   for section in @graph.edge_sections(edge) {
     let id = @graph.edge_section_identifier(section)

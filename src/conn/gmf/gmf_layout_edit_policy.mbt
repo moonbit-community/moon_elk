@@ -5,7 +5,7 @@ pub struct GmfLayoutEditPolicy {
 
 ///|
 pub fn new_gmf_layout_edit_policy() -> GmfLayoutEditPolicy {
-  { point_list_map: {} }
+  { point_list_map: Map([]) }
 }
 
 ///|

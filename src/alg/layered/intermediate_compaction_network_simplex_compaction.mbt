@@ -259,8 +259,8 @@ fn network_simplex_compaction_add_edge_constraints(
   compactor : @common.OneDimensionalCompactor,
   n_nodes : Array[@common.NNode],
 ) -> Unit raise NetworkSimplexCompactionException {
-  let lnode_map : Map[Int, @common.CNode] = {}
-  let ledge_map : Map[Int, Array[@common.CNode]] = {}
+  let lnode_map : Map[Int, @common.CNode] = Map([])
+  let ledge_map : Map[Int, Array[@common.CNode]] = Map([])
 
   for c_node in compactor.c_graph.c_nodes {
     match horizontal_graph_compactor_get_lnode_or_null(c_node) {

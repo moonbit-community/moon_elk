@@ -1,6 +1,6 @@
 ///|
 fn string_starts_with_null_prefix(value : String) -> Bool {
-  value.length() >= 4 && value[0:4].to_string() == "null"
+  value.length() >= 4 && value[0:4].to_owned() == "null"
 }
 
 ///|
@@ -37,7 +37,7 @@ fn svg_group_content(image : SvgImage, key : String) -> String {
 ///|
 fn svg_content(image : SvgImage) -> String {
   let scale = svg_scale(image)
-  let output = @buffer.new()
+  let output = StringBuilder()
   output.write_string("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n")
   output.write_string(
     "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100%\" height=\"100%\" viewBox=\"\{image.view_box_x * scale - image.spacing} \{image.view_box_y * scale - image.spacing} \{image.view_box_w * scale + 2.0 * image.spacing} \{image.view_box_h * scale + 2.0 * image.spacing}\">\n",
@@ -314,7 +314,7 @@ pub fn SvgImage::add_poly(
   points : Array[@core.KVector],
 ) -> Unit {
   if self.debug {
-    let output = @buffer.new()
+    let output = StringBuilder()
     output.write_string("<polyline points=\"")
     for point in points {
       output.write_string("\{point.x},\{point.y} ")

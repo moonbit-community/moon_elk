@@ -17,7 +17,7 @@ priv struct EdgeSectionData {
 }
 
 ///|
-let edge_section_store : Ref[Array[EdgeSectionData]] = Ref::new([])
+let edge_section_store : Ref[Array[EdgeSectionData]] = Ref([])
 
 ///|
 fn checked_edge_section(section : ElkEdgeSection) -> Unit {

@@ -150,7 +150,7 @@ pub let internal_properties_long_edge_target_node : @graph.IProperty[LNode?] = @
 ///|
 pub let internal_properties_target_node_model_order : @graph.IProperty[
   Map[Int, Int],
-] = @graph.new_property("targetNode.modelOrder", {})
+] = @graph.new_property("targetNode.modelOrder", Map([]))
 
 ///|
 pub let internal_properties_target_offset : @graph.IProperty[@core.KVector] = @graph.new_property(

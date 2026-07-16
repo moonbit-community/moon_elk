@@ -22,10 +22,10 @@ test "elk layered do_compound_layout notifies installed test controller" {
     .length() +
     2
 
-  let ready_count = Ref::new(0)
-  let finished_count = Ref::new(0)
-  let root_ready_count = Ref::new(0)
-  let root_finished_count = Ref::new(0)
+  let ready_count = Ref(0)
+  let finished_count = Ref(0)
+  let root_ready_count = Ref(0)
+  let root_finished_count = Ref(0)
 
   let listener : ILayoutExecutionListener[LGraph] = new_layout_execution_listener(
     (processor_id, graph, is_root) => {

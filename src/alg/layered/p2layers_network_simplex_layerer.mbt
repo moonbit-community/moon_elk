@@ -186,8 +186,8 @@ fn network_simplex_layerer_initialize(
   the_nodes : Array[LNode],
 ) -> NetworkSimplexLayererInitResult raise NetworkSimplexLayererException {
   let graph = @common.new_ngraph()
-  let lnode_to_nnode : Map[Int, @common.NNode] = {}
-  let node_map : Map[Int, LNode] = {}
+  let lnode_to_nnode : Map[Int, @common.NNode] = Map([])
+  let node_map : Map[Int, LNode] = Map([])
 
   for lnode in the_nodes {
     let nnode = @common.nnode_of()

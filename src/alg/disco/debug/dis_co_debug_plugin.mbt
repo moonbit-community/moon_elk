@@ -28,10 +28,10 @@ pub struct DisCoLayoutListener {
 }
 
 ///|
-let dis_co_layout_listener_id_ref : Ref[Int] = Ref::new(0)
+let dis_co_layout_listener_id_ref : Ref[Int] = Ref(0)
 
 ///|
-let dis_co_layout_listeners_ref : Ref[Array[DisCoLayoutListener]] = Ref::new([])
+let dis_co_layout_listeners_ref : Ref[Array[DisCoLayoutListener]] = Ref([])
 
 ///|
 pub fn new_dis_co_layout_listener(
@@ -79,7 +79,7 @@ pub struct DisCoDebugPlugin {
 }
 
 ///|
-let dis_co_debug_plugin_ref : Ref[DisCoDebugPlugin?] = Ref::new(None)
+let dis_co_debug_plugin_ref : Ref[DisCoDebugPlugin?] = Ref(None)
 
 ///|
 pub fn new_dis_co_debug_plugin() -> DisCoDebugPlugin {

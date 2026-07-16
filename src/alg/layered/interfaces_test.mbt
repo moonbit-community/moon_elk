@@ -1,15 +1,23 @@
 ///|
 test "LayeredPhases keep upstream constant names and order" {
-  inspect(
+  debug_inspect(
     layered_phase_values(),
-    content="[\"P1_CYCLE_BREAKING\", \"P2_LAYERING\", \"P3_NODE_ORDERING\", \"P4_NODE_PLACEMENT\", \"P5_EDGE_ROUTING\"]",
+    content=(
+      #|[
+      #|  "P1_CYCLE_BREAKING",
+      #|  "P2_LAYERING",
+      #|  "P3_NODE_ORDERING",
+      #|  "P4_NODE_PLACEMENT",
+      #|  "P5_EDGE_ROUTING",
+      #|]
+    ),
   )
 }
 
 ///|
 test "LayeredIGraphTransformer delegates import and apply" {
-  let seen_input : Ref[String] = Ref::new("")
-  let seen_applied_id : Ref[Int] = Ref::new(-1)
+  let seen_input : Ref[String] = Ref("")
+  let seen_applied_id : Ref[Int] = Ref(-1)
 
   let imported_graph = new_l_graph()
   imported_graph.set_id(17)

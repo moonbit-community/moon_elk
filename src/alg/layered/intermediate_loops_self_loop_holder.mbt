@@ -50,7 +50,7 @@ pub fn new_self_loop_holder(l_node : LNode) -> SelfLoopHolder {
   {
     l_node,
     sl_hyper_loops: [],
-    sl_ports: {},
+    sl_ports: Map([]),
     sl_port_order: [],
     are_ports_hidden: false,
     routing_slot_count: [0, 0, 0, 0, 0],

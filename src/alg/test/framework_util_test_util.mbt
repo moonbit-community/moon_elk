@@ -41,7 +41,7 @@ fn array_contains(values : Array[String], value : String) -> Bool {
 
 ///|
 fn join_type_names(type_names : Array[String]) -> String {
-  let rendered = @buffer.new()
+  let rendered = StringBuilder()
   rendered.write_string("[")
   let mut first = true
   for type_name in type_names {

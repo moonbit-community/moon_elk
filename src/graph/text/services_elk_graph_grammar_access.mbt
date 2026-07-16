@@ -9,7 +9,7 @@ pub struct ElkGraphGrammarAccess {
 
 ///|
 pub fn new_elk_graph_grammar_access() -> ElkGraphGrammarAccess {
-  let rules : Map[String, String] = {}
+  let rules : Map[String, String] = Map([])
   rules["RootNode"] = "{ElkNode} ('graph' identifier=ID)? ShapeLayout? properties+=Property* (labels+=ElkLabel | ports+=ElkPort | children+=ElkNode | containedEdges+=ElkEdge)*"
   rules["ElkNode"] = "'node' identifier=ID ('{' ShapeLayout? properties+=Property* (labels+=ElkLabel | ports+=ElkPort | children+=ElkNode | containedEdges+=ElkEdge)* '}')?"
   rules["ElkLabel"] = "'label' (identifier=ID ':')? text=STRING ('{' ShapeLayout? properties+=Property* labels+=ElkLabel* '}')?"

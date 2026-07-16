@@ -61,7 +61,7 @@ pub fn InternalElkGraphJsonParser::get_grammar_access(
 fn graph_json_text_parser_rebuild_json(
   tokens : Array[ElkGraphJsonLexToken],
 ) -> String {
-  let buffer = @buffer.new()
+  let buffer = StringBuilder()
   for token in tokens {
     buffer.write_string(token.lexeme)
   }
@@ -92,7 +92,11 @@ fn graph_json_text_parser_strip_quotes(text : String) -> String {
 
 ///|
 fn graph_json_text_parser_parse_double(text : String) -> Double? {
-  let parsed : Result[Double, Error] = try? @string.parse_double(text)
+  let parsed : Result[Double, Error] = try @string.parse_double(text) catch {
+    error => Err(error)
+  } noraise {
+    value => Ok(value)
+  }
   match parsed {
     Ok(value) => Some(value)
     Err(_) => None
@@ -578,7 +582,7 @@ fn graph_json_text_parser_parse_edge_layout(
     return start
   }
   index += 1
-  let section_by_id : Map[String, @graph.ElkEdgeSection] = {}
+  let section_by_id : Map[String, @graph.ElkEdgeSection] = Map([])
   let pending_outgoing : Array[GraphJsonTextPendingOutgoingSection] = []
   while index < tokens.length() && tokens[index].lexeme != "]" {
     if tokens[index].lexeme == "section" {
@@ -1022,7 +1026,7 @@ pub fn InternalElkGraphJsonParser::rule_elk_label(
   self : InternalElkGraphJsonParser,
 ) -> @graph.ElkLabel {
   let root = @graph.create_graph()
-  let id_to_shape : Map[String, @graph.ElkConnectableShape] = {}
+  let id_to_shape : Map[String, @graph.ElkConnectableShape] = Map([])
   match
     graph_json_text_parser_parse_label(
       self.tokens,
@@ -1047,7 +1051,7 @@ pub fn InternalElkGraphJsonParser::rule_elk_port(
   self : InternalElkGraphJsonParser,
 ) -> @graph.ElkPort {
   let root = @graph.create_graph()
-  let id_to_shape : Map[String, @graph.ElkConnectableShape] = {}
+  let id_to_shape : Map[String, @graph.ElkConnectableShape] = Map([])
   match graph_json_text_parser_parse_port(self.tokens, 0, root, id_to_shape) {
     Some((port, _)) => port
     None => @graph.create_port(Some(root))
@@ -1066,7 +1070,7 @@ pub fn InternalElkGraphJsonParser::rule_elk_edge(
   self : InternalElkGraphJsonParser,
 ) -> @graph.ElkEdge {
   let root = @graph.create_graph()
-  let id_to_shape : Map[String, @graph.ElkConnectableShape] = {}
+  let id_to_shape : Map[String, @graph.ElkConnectableShape] = Map([])
   match graph_json_text_parser_parse_edge(self.tokens, 0, root, id_to_shape) {
     Some((edge, _)) => edge
     None => @graph.create_edge(Some(root))
@@ -1087,7 +1091,7 @@ pub fn InternalElkGraphJsonParser::rule_edge_layout(
   self : InternalElkGraphJsonParser,
   edge : @graph.ElkEdge,
 ) -> @graph.ElkEdge {
-  let id_to_shape : Map[String, @graph.ElkConnectableShape] = {}
+  let id_to_shape : Map[String, @graph.ElkConnectableShape] = Map([])
   ignore(
     graph_json_text_parser_parse_edge_layout(self.tokens, 0, edge, id_to_shape),
   )
@@ -1107,7 +1111,7 @@ pub fn InternalElkGraphJsonParser::rule_elk_single_edge_section(
 ) -> @graph.ElkEdgeSection {
   let root = @graph.create_graph()
   let edge = @graph.create_edge(Some(root))
-  let id_to_shape : Map[String, @graph.ElkConnectableShape] = {}
+  let id_to_shape : Map[String, @graph.ElkConnectableShape] = Map([])
   let (section, _) = graph_json_text_parser_parse_single_edge_section(
     self.tokens,
     0,
@@ -1130,8 +1134,8 @@ pub fn InternalElkGraphJsonParser::rule_elk_edge_section(
 ) -> @graph.ElkEdgeSection {
   let root = @graph.create_graph()
   let edge = @graph.create_edge(Some(root))
-  let id_to_shape : Map[String, @graph.ElkConnectableShape] = {}
-  let section_by_id : Map[String, @graph.ElkEdgeSection] = {}
+  let id_to_shape : Map[String, @graph.ElkConnectableShape] = Map([])
+  let section_by_id : Map[String, @graph.ElkEdgeSection] = Map([])
   let pending_outgoing : Array[GraphJsonTextPendingOutgoingSection] = []
   match
     graph_json_text_parser_parse_named_edge_section(

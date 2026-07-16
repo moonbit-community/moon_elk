@@ -51,7 +51,7 @@ fn horizontal_graph_compactor_port_side_is(
 fn horizontal_graph_compactor_parse_graph_compaction_strategy(
   value : String,
 ) -> GraphCompactionStrategy {
-  let normalized = value.trim().to_string().to_upper()
+  let normalized = value.trim().to_owned().to_upper()
   match normalized {
     "LEFT" => GraphCompactionStrategy::Left
     "RIGHT" => GraphCompactionStrategy::Right
@@ -68,7 +68,7 @@ fn horizontal_graph_compactor_parse_graph_compaction_strategy(
 fn horizontal_graph_compactor_parse_post_compaction_constraints(
   value : String,
 ) -> String {
-  value.trim().to_string().to_upper()
+  value.trim().to_owned().to_upper()
 }
 
 ///|
@@ -129,8 +129,8 @@ pub fn horizontal_graph_compactor_register_origin_vertical_segment(
 
 ///|
 pub fn horizontal_graph_compactor_clear_origin_lookup() -> Unit {
-  horizontal_graph_compactor_lnode_origin_lookup.val = {}
-  horizontal_graph_compactor_vertical_segment_origin_lookup.val = {}
+  horizontal_graph_compactor_lnode_origin_lookup.val = Map([])
+  horizontal_graph_compactor_vertical_segment_origin_lookup.val = Map([])
 }
 
 ///|
@@ -391,13 +391,14 @@ pub fn new_horizontal_graph_compactor_layout_processor() -> @core.ILayoutProcess
 }
 
 ///|
-let horizontal_graph_compactor_lnode_origin_lookup : Ref[Map[String, LNode]] = Ref::new({},
+let horizontal_graph_compactor_lnode_origin_lookup : Ref[Map[String, LNode]] = Ref(
+  Map([]),
 )
 
 ///|
 let horizontal_graph_compactor_vertical_segment_origin_lookup : Ref[
   Map[String, VerticalSegment],
-] = Ref::new({})
+] = Ref(Map([]))
 
 ///|
 pub let horizontal_graph_compactor_network_simplex_compaction : @common.ICompactionAlgorithm = network_simplex_compaction

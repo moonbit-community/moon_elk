@@ -17,12 +17,12 @@ pub fn new_elk_graph_transformer(
 ) -> ElkGraphTransformer {
   {
     parent: None,
-    node_mapping: {},
-    label_mapping: {},
-    port_mapping: {},
-    edge_mapping: {},
-    incoming_extensions_mapping: {},
-    outgoing_extensions_mapping: {},
+    node_mapping: Map([]),
+    label_mapping: Map([]),
+    port_mapping: Map([]),
+    edge_mapping: Map([]),
+    incoming_extensions_mapping: Map([]),
+    outgoing_extensions_mapping: Map([]),
     transformed_graph: None,
     component_spacing,
   }
@@ -33,7 +33,7 @@ fn disco_transform_parse_double_or_default(
   text : String,
   default_value : Double,
 ) -> Double {
-  let trimmed = text.trim().to_string()
+  let trimmed = text.trim().to_owned()
   if trimmed.is_empty() {
     return default_value
   }
@@ -141,7 +141,7 @@ fn disco_transform_target_port(edge : @graph.ElkEdge) -> @graph.ElkPort? {
 fn disco_transform_all_incident_edges(
   node : @graph.ElkNode,
 ) -> Array[@graph.ElkEdge] {
-  let edges_map : Map[@graph.ElkEdge, Unit] = {}
+  let edges_map : Map[@graph.ElkEdge, Unit] = Map([])
   for edge in @graph.node_incoming_edges(node) {
     edges_map[edge] = ()
   }
@@ -178,7 +178,7 @@ fn disco_transform_edge_points(
   section : @graph.ElkEdgeSection,
 ) -> @core.KVectorChain {
   let points = @core.new_kvector_chain()
-  let visited : Map[@graph.ElkEdgeSection, Unit] = {}
+  let visited : Map[@graph.ElkEdgeSection, Unit] = Map([])
   let mut current = section
   points.add_xy(
     @graph.edge_section_start_x(current),
@@ -639,7 +639,7 @@ pub fn ElkGraphTransformer::import_graph(
   for component in components {
     let sub_result : Array[DCElement] = []
     result.push(sub_result)
-    let edge_set : Map[@graph.ElkEdge, Unit] = {}
+    let edge_set : Map[@graph.ElkEdge, Unit] = Map([])
     for node in component {
       let component_node = disco_transform_import_node_shape(
         self, node, true, 0.0, 0.0,
@@ -801,7 +801,7 @@ pub fn ElkGraphTransformer::apply_layout(self : ElkGraphTransformer) -> Unit {
     )
   })
 
-  let adjusted_ports : Map[@graph.ElkPort, Unit] = {}
+  let adjusted_ports : Map[@graph.ElkPort, Unit] = Map([])
   self.incoming_extensions_mapping.each((edge, extension) => {
     let section = disco_transform_first_or_create_edge_section(edge)
     let new_points = disco_transform_adjust_first_segment(

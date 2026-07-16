@@ -33,11 +33,11 @@ pub fn RadiusExtensionOverlapRemoval::remove_overlaps(
     @graph.node_get_double_property(graph, @core.spacing_node_node),
   )
   let successors = radial_get_successors(root)
-  self.extend(graph, successors, progress_monitor)
+  self.extend_radius(graph, successors, progress_monitor)
 }
 
 ///|
-pub fn RadiusExtensionOverlapRemoval::extend(
+pub fn RadiusExtensionOverlapRemoval::extend_radius(
   self : RadiusExtensionOverlapRemoval,
   graph : @graph.ElkNode,
   nodes : Array[@graph.ElkNode],
@@ -85,7 +85,7 @@ pub fn RadiusExtensionOverlapRemoval::extend(
     let sorted_next_level_nodes = next_level_nodes.copy()
     sorter.sort(sorted_next_level_nodes)
   }
-  self.extend(graph, next_level_nodes.copy(), progress_monitor)
+  self.extend_radius(graph, next_level_nodes.copy(), progress_monitor)
 }
 
 ///|

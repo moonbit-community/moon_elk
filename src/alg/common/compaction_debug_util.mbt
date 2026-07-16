@@ -25,7 +25,7 @@ pub fn draw_hitboxes(c_graph : CGraph, file_name : String) -> String {
     bottom_right.x - top_left.x,
     bottom_right.y - top_left.y,
   )
-  let output = @buffer.new()
+  let output = StringBuilder()
   output.write_string("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n")
   output.write_string(
     "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100%\" height=\"100%\" viewBox=\"\{top_left.x} \{top_left.y} \{size.x} \{size.y}\">\n",

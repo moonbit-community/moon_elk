@@ -77,7 +77,7 @@ pub fn GraphIdentifierGenerator::execute(
     generate_node_identifiers(self.graph, state)
   }
   if self.unique {
-    let known_ids : Map[String, Bool] = {}
+    let known_ids : Map[String, Bool] = Map([])
     let random = @random.Rand::new()
     assert_unique_node_identifiers(self.graph, known_ids, random, false)
   }
@@ -191,7 +191,7 @@ fn collect_existing_node_identifiers(
 
 ///|
 fn new_graph_identifier_state(graph : ElkNode) -> GraphIdentifierState {
-  let ids : Map[String, Bool] = {}
+  let ids : Map[String, Bool] = Map([])
   collect_existing_node_identifiers(graph, ids, false)
   { current_ids: [0, 0, 0, 0, 0], existing_identifiers: ids }
 }

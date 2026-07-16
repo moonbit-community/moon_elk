@@ -15,19 +15,19 @@ test "ConfigState updates bounds and notifies in Java order" {
   })
 
   config_state_set_low(config, 2)
-  inspect(events, content="[\"LOWER\", \"UPPER\"]")
+  debug_inspect(events, content="[\"LOWER\", \"UPPER\"]")
   assert_eq(config_state_get_lower_lvl(config), 2)
   assert_eq(config_state_get_upper_lvl(config), 2)
 
   events.clear()
   config_state_set_high(config, 1)
-  inspect(events, content="[\"UPPER\", \"LOWER\"]")
+  debug_inspect(events, content="[\"UPPER\", \"LOWER\"]")
   assert_eq(config_state_get_lower_lvl(config), 1)
   assert_eq(config_state_get_upper_lvl(config), 1)
 
   events.clear()
   config_state_set_depth(config, 5)
-  inspect(events, content="[\"DEPTH\"]")
+  debug_inspect(events, content="[\"DEPTH\"]")
   assert_eq(expect_some_int(config_state_get_max_depth(config)), 5)
 }
 

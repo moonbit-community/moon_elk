@@ -14,16 +14,17 @@ pub let graphviz_dot_resource_factory_value : String = "org.eclipse.xtext.resour
 pub let graphviz_dot_resource_service_provider_value : String = "org.eclipse.xtext.resource.IResourceServiceProvider"
 
 ///|
-let graphviz_dot_epackage_registry_ref : Ref[Map[String, String]] = Ref::new({})
+let graphviz_dot_epackage_registry_ref : Ref[Map[String, String]] = Ref(Map([]))
 
 ///|
-let graphviz_dot_resource_factory_registry_ref : Ref[Map[String, String]] = Ref::new({},
+let graphviz_dot_resource_factory_registry_ref : Ref[Map[String, String]] = Ref(
+  Map([]),
 )
 
 ///|
 let graphviz_dot_resource_service_provider_registry_ref : Ref[
   Map[String, String],
-] = Ref::new({})
+] = Ref(Map([]))
 
 ///|
 pub struct GraphvizDotStandaloneSetupGenerated {

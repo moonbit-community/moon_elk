@@ -16,7 +16,7 @@ fn graphviz_dot_runtime_module_default_serializer_provider() -> GraphvizDotSeria
 pub fn new_graphviz_dot_runtime_module(
   serializer_provider? : () -> GraphvizDotSerializer = graphviz_dot_runtime_module_default_serializer_provider,
 ) -> GraphvizDotRuntimeModule {
-  let injector_providers : Map[String, () -> GraphvizDotObject] = {}
+  let injector_providers : Map[String, () -> GraphvizDotObject] = Map([])
   injector_providers[graphviz_dot_serializer_class_name] = () => {
     GraphvizDotObjectSerializer(serializer_provider())
   }

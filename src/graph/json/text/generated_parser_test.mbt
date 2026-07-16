@@ -36,7 +36,7 @@ test "AbstractElkGraphJsonRuntimeModule exposes generated bindings" {
     content="org.eclipse.elk.graph.json.text.parser.antlr.internal.InternalElkGraphJsonLexer",
   )
 
-  let properties : Map[String, String] = {}
+  let properties : Map[String, String] = Map([])
   properties["fileExtensions"] = "json"
   runtime_module.configure(properties)
   inspect(runtime_module.configure_file_extensions(), content="json")

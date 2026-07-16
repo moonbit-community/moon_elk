@@ -96,10 +96,10 @@ pub fn[C, T] IDataProvider::attach(
 pub fn[C : Eq, T] IDataProvider::cached(
   self : IDataProvider[C, T],
 ) -> IDataProvider[C, T] {
-  let comments_cache_ref : Ref[Array[C]?] = Ref::new(None)
-  let targets_cache_ref : Ref[Array[T]?] = Ref::new(None)
-  let comment_targets_cache_ref : Ref[Array[(C, Array[T])]] = Ref::new([])
-  let sub_provider_cache_ref : Ref[Array[IDataProvider[C, T]]?] = Ref::new(None)
+  let comments_cache_ref : Ref[Array[C]?] = Ref(None)
+  let targets_cache_ref : Ref[Array[T]?] = Ref(None)
+  let comment_targets_cache_ref : Ref[Array[(C, Array[T])]] = Ref([])
+  let sub_provider_cache_ref : Ref[Array[IDataProvider[C, T]]?] = Ref(None)
 
   new_data_provider(
     () => {

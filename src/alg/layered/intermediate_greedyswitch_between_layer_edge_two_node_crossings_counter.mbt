@@ -225,9 +225,9 @@ pub fn new_between_layer_edge_two_node_crossings_counter(
     lower_upper_crossings: 0,
     current_node_order,
     free_layer_index,
-    port_positions: {},
-    eastern_adjacencies: {},
-    western_adjacencies: {},
+    port_positions: Map([]),
+    eastern_adjacencies: Map([]),
+    western_adjacencies: Map([]),
   }
   counter.set_port_positions_for_neighbouring_layers()
   counter

@@ -56,10 +56,10 @@ pub struct NEdgeBuilder {
 }
 
 ///|
-let nnode_store : Ref[Array[NNodeData]] = Ref::new([])
+let nnode_store : Ref[Array[NNodeData]] = Ref([])
 
 ///|
-let nedge_store : Ref[Array[NEdgeData]] = Ref::new([])
+let nedge_store : Ref[Array[NEdgeData]] = Ref([])
 
 ///|
 pub(all) suberror NetworkSimplexException {
@@ -67,7 +67,7 @@ pub(all) suberror NetworkSimplexException {
 } derive(Debug, ToJson)
 
 ///|
-pub impl Show for NetworkSimplexException with output(self, logger) {
+pub impl Show for NetworkSimplexException with fn output(self, logger) {
   logger.write_string(to_repr(self).to_string())
 }
 

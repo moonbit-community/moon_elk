@@ -184,15 +184,15 @@ test "PortSide helpers" {
 
 ///|
 test "NodeLabelPlacement helpers" {
-  inspect(
+  debug_inspect(
     node_label_placements_to_strings(node_label_placement_fixed()),
     content="[]",
   )
-  inspect(
+  debug_inspect(
     node_label_placements_to_strings(node_label_placement_inside_top_left()),
     content="[\"INSIDE\", \"V_TOP\", \"H_LEFT\"]",
   )
-  inspect(
+  debug_inspect(
     node_label_placements_to_strings(
       node_label_placement_outside_bottom_right(),
     ),
@@ -227,15 +227,15 @@ test "NodeLabelPlacement helpers" {
 
 ///|
 test "PortLabelPlacement helpers" {
-  inspect(
+  debug_inspect(
     port_label_placements_to_strings(port_label_placement_fixed()),
     content="[]",
   )
-  inspect(
+  debug_inspect(
     port_label_placements_to_strings(port_label_placement_inside()),
     content="[\"INSIDE\"]",
   )
-  inspect(
+  debug_inspect(
     port_label_placements_to_strings(port_label_placement_outside()),
     content="[\"OUTSIDE\"]",
   )

@@ -1,6 +1,6 @@
 ///|
 fn basic_cross_min_record_layer_assignment(graph : LGraph) -> Map[Int, Int] {
-  let assignment = {}
+  let assignment = Map([])
   for layer in graph.get_layers() {
     let layer_id = layer.get_id()
     for node in layer.get_nodes() {

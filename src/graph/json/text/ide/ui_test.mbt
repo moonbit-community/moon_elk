@@ -128,7 +128,7 @@ test "ElkGraphJson executable extension factory resolves provider and initialize
   @ui.graph_json_text_activator_reset_for_test()
   let activator = @ui.new_graph_json_text_activator()
   let class_name = "example.ElkGraphJsonExtension"
-  let contributor_ref : Ref[String] = Ref::new("none")
+  let contributor_ref : Ref[String] = Ref("none")
 
   activator.register_bundle_class(class_name)
   activator.register_injector_provider(
@@ -151,7 +151,7 @@ test "ElkGraphJson executable extension factory resolves provider and initialize
   )
   activator.start()
 
-  let data_map : Map[String, String] = {}
+  let data_map : Map[String, String] = Map([])
   data_map[@ui.graph_json_text_extension_factory_guicekey] = class_name
   let factory = @ui.new_elk_graph_json_executable_extension_factory()
   factory.set_initialization_data(

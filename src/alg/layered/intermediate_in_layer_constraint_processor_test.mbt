@@ -70,11 +70,11 @@ test "in-layer constraint processor enforces top none bottom ordering per layer"
   let processor = new_in_layer_constraint_processor_layout_processor()
   processor.process(graph, None)
 
-  inspect(
+  debug_inspect(
     in_layer_constraint_processor_test_constraints(layer),
     content="[\"TOP\", \"TOP\", \"NONE\", \"NONE\", \"BOTTOM\", \"BOTTOM\"]",
   )
-  inspect(
+  debug_inspect(
     in_layer_constraint_processor_test_ids(layer),
     content="[1, 3, 0, 4, 2, 5]",
   )

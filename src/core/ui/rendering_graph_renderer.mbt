@@ -148,7 +148,7 @@ pub fn new_graph_renderer(
   configurator : GraphRenderingConfigurator,
 ) -> GraphRenderer {
   {
-    bounds_map: {},
+    bounds_map: Map([]),
     configurator,
     scale: 1.0,
     base_offset: @core.new_kvector(),

@@ -1,10 +1,8 @@
 import {
-  "Milky2018/moon_elk/core" @core,
-  "Milky2018/moon_elk/graph" @graph,
-  "Milky2018/moon_elk/graph/json" @json,
-  "Milky2018/moon_elk/graph/text" @text,
+  "Milky2018/moon_elk/core",
+  "Milky2018/moon_elk/graph",
+  "Milky2018/moon_elk/graph/json",
+  "Milky2018/moon_elk/graph/text",
 }
 
-options(
-  "is-main": true,
-)
+pkgtype(kind: "executable")

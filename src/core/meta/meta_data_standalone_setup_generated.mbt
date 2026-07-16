@@ -14,14 +14,16 @@ pub let core_meta_resource_factory_value : String = "org.eclipse.xtext.resource.
 pub let core_meta_resource_service_provider_value : String = "org.eclipse.xtext.resource.IResourceServiceProvider"
 
 ///|
-let core_meta_epackage_registry_ref : Ref[Map[String, String]] = Ref::new({})
+let core_meta_epackage_registry_ref : Ref[Map[String, String]] = Ref(Map([]))
 
 ///|
-let core_meta_resource_factory_registry_ref : Ref[Map[String, String]] = Ref::new({},
+let core_meta_resource_factory_registry_ref : Ref[Map[String, String]] = Ref(
+  Map([]),
 )
 
 ///|
-let core_meta_resource_service_provider_registry_ref : Ref[Map[String, String]] = Ref::new({},
+let core_meta_resource_service_provider_registry_ref : Ref[Map[String, String]] = Ref(
+  Map([]),
 )
 
 ///|

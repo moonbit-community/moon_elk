@@ -47,7 +47,7 @@ fn lgraph_to_cgraph_transformer_port_side_equals(
 fn lgraph_to_cgraph_transformer_parse_edge_routing(
   value : String,
 ) -> @core.EdgeRouting {
-  let normalized = value.trim().to_string().to_upper()
+  let normalized = value.trim().to_owned().to_upper()
   match normalized {
     "POLYLINE" => @core.EdgeRouting::Polyline
     "SPLINES" => @core.EdgeRouting::Splines
@@ -456,8 +456,8 @@ fn lgraph_to_cgraph_transformer_vertical_segment_to_cnode(
   let lock = @common.new_quadruplet()
   transformer.lock_map[origin_key] = lock
 
-  let incoming_ports : Map[Int, Bool] = {}
-  let outgoing_ports : Map[Int, Bool] = {}
+  let incoming_ports : Map[Int, Bool] = Map([])
+  let outgoing_ports : Map[Int, Bool] = Map([])
   for edge in vertical_segment.represented_l_edges {
     let source = lgraph_to_cgraph_transformer_require_source(edge)
     let target = lgraph_to_cgraph_transformer_require_target(edge)
@@ -682,10 +682,10 @@ fn lgraph_to_cgraph_transformer_apply_external_port_positions(
 fn lgraph_to_cgraph_transformer_cleanup(
   transformer : LGraphToCGraphTransformer,
 ) -> Unit {
-  transformer.nodes_map = {}
+  transformer.nodes_map = Map([])
   transformer.comment_offsets.clear()
-  transformer.vertical_segments_map = {}
-  transformer.lock_map = {}
+  transformer.vertical_segments_map = Map([])
+  transformer.lock_map = Map([])
   horizontal_graph_compactor_clear_origin_lookup()
 
   match transformer.c_graph {
@@ -718,9 +718,9 @@ pub fn new_lgraph_to_cgraph_transformer() -> LGraphToCGraphTransformer {
     layered_graph: None,
     edge_routing: @core.EdgeRouting::RoutingUndefined,
     comment_offsets: [],
-    nodes_map: {},
-    vertical_segments_map: {},
-    lock_map: {},
+    nodes_map: Map([]),
+    vertical_segments_map: Map([]),
+    lock_map: Map([]),
   }
 }
 
@@ -752,10 +752,10 @@ fn LGraphToCGraphTransformer::init(
   )
 
   self.c_graph = Some(@common.new_cgraph(supported_directions))
-  self.nodes_map = {}
+  self.nodes_map = Map([])
   self.comment_offsets.clear()
-  self.lock_map = {}
-  self.vertical_segments_map = {}
+  self.lock_map = Map([])
+  self.vertical_segments_map = Map([])
   horizontal_graph_compactor_clear_origin_lookup()
 }
 

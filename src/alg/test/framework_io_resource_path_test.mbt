@@ -35,7 +35,7 @@ test "AbstractResourcePath lists directory files with extension filter" {
   path.set_filter(Some(filter.to_filter()))
   inspect(path.is_directory(), content="true")
   inspect(path.is_recursive(), content="false")
-  inspect(
+  debug_inspect(
     absolute_path_strings(path.list_resources()),
     content="[\"/repo/a.elkg\"]",
   )
@@ -50,7 +50,7 @@ test "AbstractResourcePath recursive directory scan works with file name filter"
   path.set_filter(Some(filter.to_filter()))
   inspect(path.is_directory(), content="true")
   inspect(path.is_recursive(), content="true")
-  inspect(
+  debug_inspect(
     absolute_path_strings(path.list_resources()),
     content="[\"/repo/a.elkg\", \"/repo/sub/c.elkg\"]",
   )

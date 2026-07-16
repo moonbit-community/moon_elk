@@ -55,28 +55,31 @@ test "DropdownIntRangeAction updates label, state and upper bound" {
   inspect(dis_co_graph_rendering_canvas_get_redraw_count(canvas), content="1")
 
   config_state_set_depth(config, 5)
-  inspect(dropdown_int_range_action_get_menu(action), content="[0, 1, 2, 3, 4]")
+  debug_inspect(
+    dropdown_int_range_action_get_menu(action),
+    content="[0, 1, 2, 3, 4]",
+  )
 }
 
 ///|
 test "DisCoImageExportAction checkFileName mirrors Java rules" {
-  inspect(
+  debug_inspect(
     dis_co_image_export_action_check_file_name(Some("graph.png")),
     content="Some(\"graph.png\")",
   )
-  inspect(
+  debug_inspect(
     dis_co_image_export_action_check_file_name(Some("graph.pn")),
     content="Some(\"graph.png\")",
   )
-  inspect(
+  debug_inspect(
     dis_co_image_export_action_check_file_name(Some("graph.p")),
     content="Some(\"graph.png\")",
   )
-  inspect(
+  debug_inspect(
     dis_co_image_export_action_check_file_name(Some("graph.")),
     content="Some(\"graph.png\")",
   )
-  inspect(
+  debug_inspect(
     dis_co_image_export_action_check_file_name(Some("graph")),
     content="Some(\"graph.png\")",
   )
@@ -95,7 +98,7 @@ test "DisCoImageExportAction stores selected normalized output path" {
   dis_co_image_export_action_set_selected_file_name(action, Some("render.p"))
   dis_co_image_export_action_run(action)
   inspect(dis_co_image_export_action_get_last_file_name(), content="render.png")
-  inspect(
+  debug_inspect(
     dis_co_image_export_action_get_exported_files(),
     content="[\"render.png\"]",
   )

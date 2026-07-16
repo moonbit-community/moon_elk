@@ -2,7 +2,7 @@
 fn self_loop_holder_test_edge_handle_set(
   edges : Array[LEdge],
 ) -> Map[Int, Bool] {
-  let handles : Map[Int, Bool] = {}
+  let handles : Map[Int, Bool] = Map([])
   for edge in edges {
     handles[edge.get_handle()] = true
   }
@@ -13,7 +13,7 @@ fn self_loop_holder_test_edge_handle_set(
 fn self_loop_holder_test_hyper_loop_edge_handle_set(
   sl_hyper_loop : SelfHyperLoop,
 ) -> Map[Int, Bool] {
-  let handles : Map[Int, Bool] = {}
+  let handles : Map[Int, Bool] = Map([])
   for sl_edge in sl_hyper_loop.get_sl_edges() {
     handles[sl_edge.get_l_edge().get_handle()] = true
   }

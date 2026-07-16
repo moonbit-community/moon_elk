@@ -302,7 +302,7 @@ fn split_enumset_values(value : String) -> Array[String] {
   for part in normalized.split(" ") {
     let trimmed = part.trim()
     if !trimmed.is_empty() {
-      result.push(trimmed.to_string())
+      result.push(trimmed.to_owned())
     }
   }
   result
@@ -320,16 +320,26 @@ pub fn LayoutOptionData::parse_value(
         None => value
       }
     IntType => {
-      let parsed : Result[Int, Error] = try? @string.parse_int(value.trim())
+      let parsed : Result[Int, Error] = try
+        @string.parse_int(value.trim())
+      catch {
+        error => Err(error)
+      } noraise {
+        value => Ok(value)
+      }
       match parsed {
         Ok(parsed) => parsed.to_string()
         Err(_) => value
       }
     }
     DoubleType => {
-      let parsed : Result[Double, Error] = try? @string.parse_double(
-        value.trim(),
-      )
+      let parsed : Result[Double, Error] = try
+        @string.parse_double(value.trim())
+      catch {
+        error => Err(error)
+      } noraise {
+        value => Ok(value)
+      }
       match parsed {
         Ok(parsed) => parsed.to_string()
         Err(_) => value

@@ -48,7 +48,7 @@ pub(all) struct AlgorithmContentProvider {
 
 ///|
 pub fn new_algorithm_content_provider() -> AlgorithmContentProvider {
-  { filter_map: {}, filter_value: "", best_filter_match: None }
+  { filter_map: Map([]), filter_value: "", best_filter_match: None }
 }
 
 ///|

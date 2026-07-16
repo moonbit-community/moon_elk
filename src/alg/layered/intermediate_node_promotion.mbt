@@ -325,7 +325,7 @@ fn node_promotion_new_state(
     dummy_size: 0.0,
     promotion_strategy,
     bi_layer_map: new_bi_linked_hash_multi_map(),
-    nodes_by_id: {},
+    nodes_by_id: Map([]),
   }
 }
 
@@ -361,7 +361,7 @@ fn node_promotion_precalculate_and_set_information(
   state.degree_diff = node_promotion_degree_array(node_id)
   state.nodes = []
   state.nodes_with_incoming_edges = []
-  state.nodes_by_id = {}
+  state.nodes_by_id = Map([])
   let mut dummy_baggage = 0
   state.dummy_node_count = 0
 
@@ -412,7 +412,7 @@ fn node_promotion_precalculate_and_set_information_model_order(
   state : NodePromotionState,
 ) -> Unit {
   state.bi_layer_map = new_bi_linked_hash_multi_map()
-  state.nodes_by_id = {}
+  state.nodes_by_id = Map([])
   let mut node_id = 0
   let mut layer_id = 0
   for layer in state.master_graph.get_layers() {

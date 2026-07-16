@@ -24,8 +24,8 @@ pub fn libavoid_server_cleanup_stop() -> LibavoidServerCleanup {
 pub let libavoid_server_process_def_timeout : Int = 60000
 
 ///|
-let libavoid_server_default_output_data_ref : Ref[Map[String, String]?] = Ref::new(
-  Some({}),
+let libavoid_server_default_output_data_ref : Ref[Map[String, String]?] = Ref(
+  Some(Map([])),
 )
 
 ///|
@@ -57,7 +57,7 @@ pub fn libavoid_server_set_default_output_data_for_test(
 
 ///|
 pub fn libavoid_server_reset_runtime_for_test() -> Unit {
-  libavoid_server_default_output_data_ref.val = Some({})
+  libavoid_server_default_output_data_ref.val = Some(Map([]))
 }
 
 ///|

@@ -116,12 +116,12 @@ pub fn KVector::hash_code(self : KVector) -> Int {
 }
 
 ///|
-pub impl Eq for KVector with equal(self : KVector, other : KVector) -> Bool {
+pub impl Eq for KVector with fn equal(self : KVector, other : KVector) -> Bool {
   self.equals(other)
 }
 
 ///|
-pub impl Hash for KVector with hash_combine(self : KVector, hasher) -> Unit {
+pub impl Hash for KVector with fn hash_combine(self : KVector, hasher) -> Unit {
   hasher.combine(self.hash_code())
 }
 

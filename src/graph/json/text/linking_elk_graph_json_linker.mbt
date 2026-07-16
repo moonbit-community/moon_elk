@@ -14,7 +14,7 @@ pub struct ElkGraphJsonLinker {
 
 ///|
 pub fn new_elk_graph_json_linker() -> ElkGraphJsonLinker {
-  let opposite_refs : Map[String, Unit] = {}
+  let opposite_refs : Map[String, Unit] = Map([])
   opposite_refs[graph_json_text_opposite_ref_incoming_edges] = ()
   opposite_refs[graph_json_text_opposite_ref_outgoing_edges] = ()
   opposite_refs[graph_json_text_opposite_ref_incoming_sections] = ()

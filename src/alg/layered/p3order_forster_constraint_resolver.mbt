@@ -1,5 +1,5 @@
 ///|
-let forster_constraint_group_next_handle_ref : Ref[Int] = Ref::new(0)
+let forster_constraint_group_next_handle_ref : Ref[Int] = Ref(0)
 
 ///|
 fn forster_constraint_group_next_handle() -> Int {
@@ -89,7 +89,7 @@ pub fn BarycenterState::to_string(self : BarycenterState) -> String {
   ", degree=" +
   self.degree.to_string() +
   ", barycenter=" +
-  self.barycenter.to_string() +
+  to_repr(self.barycenter).to_string() +
   ", visited=" +
   self.visited.to_string() +
   "]"
@@ -299,7 +299,7 @@ pub fn new_forster_constraint_resolver(
 
   {
     constraints_between_non_dummies,
-    layout_units: {},
+    layout_units: Map([]),
     barycenter_states: Array::make(current_node_order.length(), []),
     constraint_groups: Array::make(current_node_order.length(), []),
   }

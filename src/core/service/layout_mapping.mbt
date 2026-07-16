@@ -16,7 +16,7 @@ pub(all) enum LayoutMappingStatus {
 } derive(Eq, Debug)
 
 ///|
-pub impl Show for LayoutMappingStatus with output(self, logger) {
+pub impl Show for LayoutMappingStatus with fn output(self, logger) {
   logger.write_string(to_repr(self).to_string())
 }
 
@@ -37,14 +37,14 @@ pub fn new_layout_mapping(
   workbench_part? : ServiceWorkbenchPart? = None,
 ) -> LayoutMapping {
   {
-    graph_elem_map: {},
-    diagram_elem_map: {},
+    graph_elem_map: Map([]),
+    diagram_elem_map: Map([]),
     layout_graph: None,
     parent_element: None,
     workbench_part,
     status: None,
     connector_id: None,
-    properties: {},
+    properties: Map([]),
   }
 }
 

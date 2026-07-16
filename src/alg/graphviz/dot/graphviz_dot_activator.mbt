@@ -193,7 +193,7 @@ pub struct GraphvizDotBundle {
 pub fn new_graphviz_dot_bundle(
   symbolic_name? : String = graphviz_dot_plugin_id,
 ) -> GraphvizDotBundle {
-  { symbolic_name, class_registry: {} }
+  { symbolic_name, class_registry: Map([]) }
 }
 
 ///|
@@ -229,7 +229,7 @@ pub struct GraphvizDotInjector {
 
 ///|
 pub fn new_graphviz_dot_injector() -> GraphvizDotInjector {
-  { providers: {} }
+  { providers: Map([]) }
 }
 
 ///|
@@ -275,13 +275,11 @@ pub struct GraphvizDotActivator {
 }
 
 ///|
-let graphviz_dot_activator_instance_ref : Ref[GraphvizDotActivator?] = Ref::new(
-  None,
-)
+let graphviz_dot_activator_instance_ref : Ref[GraphvizDotActivator?] = Ref(None)
 
 ///|
 pub fn new_graphviz_dot_activator() -> GraphvizDotActivator {
-  { injectors: {}, bundle: new_graphviz_dot_bundle() }
+  { injectors: Map([]), bundle: new_graphviz_dot_bundle() }
 }
 
 ///|

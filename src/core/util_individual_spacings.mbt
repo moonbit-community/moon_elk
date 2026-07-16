@@ -29,14 +29,14 @@ pub(all) struct IndividualSpacings {
 
 ///|
 pub fn new_individual_spacings() -> IndividualSpacings {
-  { values: {} }
+  { values: Map([]) }
 }
 
 ///|
 pub fn new_individual_spacings_from(
   other : IndividualSpacings,
 ) -> IndividualSpacings {
-  let values : Map[String, String] = {}
+  let values : Map[String, String] = Map([])
   for entry in other.values.to_array() {
     let (option_id, option_value) = entry
     values[option_id] = option_value
@@ -97,8 +97,8 @@ fn individual_spacings_parse_option(
       "The given string does not match the expected format for individual spacings.",
     )
   }
-  let option_suffix = option[0].trim().to_string()
-  let option_value = option[1].to_string()
+  let option_suffix = option[0].trim().to_owned()
+  let option_value = option[1].to_owned()
   let option_data = match
     layout_meta_data_service_get_option_data_by_suffix(option_suffix) {
     Some(value) => value
@@ -122,9 +122,7 @@ pub fn IndividualSpacings::parse(
     if option_string.is_empty() {
       continue
     }
-    try
-      individual_spacings_parse_option(self, option_string.to_string())
-    catch {
+    try individual_spacings_parse_option(self, option_string.to_owned()) catch {
       err =>
         layout_runtime_report_unsupported_configuration(
           individual_spacings_exception_message(err),
@@ -162,7 +160,13 @@ pub fn individual_spacings_apply_to_node(
 
 ///|
 fn individual_spacings_parse_double(value : String) -> Double? {
-  let parsed : Result[Double, Error] = try? @string.parse_double(value.trim())
+  let parsed : Result[Double, Error] = try
+    @string.parse_double(value.trim())
+  catch {
+    error => Err(error)
+  } noraise {
+    value => Ok(value)
+  }
   match parsed {
     Ok(parsed) => Some(parsed)
     Err(_) => None

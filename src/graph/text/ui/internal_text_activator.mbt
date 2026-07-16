@@ -139,7 +139,7 @@ pub struct GraphTextUiBundle {
 pub fn new_graph_text_ui_bundle(
   symbolic_name? : String = graph_text_ui_plugin_id,
 ) -> GraphTextUiBundle {
-  { symbolic_name, classes: {} }
+  { symbolic_name, classes: Map([]) }
 }
 
 ///|
@@ -173,7 +173,7 @@ pub struct GraphTextUiInjector {
 
 ///|
 pub fn new_graph_text_ui_injector() -> GraphTextUiInjector {
-  { providers: {} }
+  { providers: Map([]) }
 }
 
 ///|
@@ -208,11 +208,11 @@ pub struct TextActivator {
 }
 
 ///|
-let graph_text_activator_instance_ref : Ref[TextActivator?] = Ref::new(None)
+let graph_text_activator_instance_ref : Ref[TextActivator?] = Ref(None)
 
 ///|
 pub fn new_text_activator() -> TextActivator {
-  { bundle: new_graph_text_ui_bundle(), injectors: {} }
+  { bundle: new_graph_text_ui_bundle(), injectors: Map([]) }
 }
 
 ///|

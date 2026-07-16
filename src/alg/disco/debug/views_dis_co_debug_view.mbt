@@ -2,7 +2,7 @@
 pub let dis_co_debug_view_id : String = "org.eclipse.elk.debug.disCoDebugView"
 
 ///|
-let active_dis_co_debug_view_ref : Ref[DisCoDebugView?] = Ref::new(None)
+let active_dis_co_debug_view_ref : Ref[DisCoDebugView?] = Ref(None)
 
 ///|
 pub struct DisCoDebugView {

@@ -14,13 +14,13 @@ pub struct JsonImporter {
 pub fn new_json_importer() -> JsonImporter {
   {
     input_model: None,
-    node_id_map: {},
-    port_id_map: {},
-    node_json_map: {},
-    port_json_map: {},
-    edge_json_map: {},
-    label_json_map: {},
-    edge_original_parent_map: {},
+    node_id_map: Map([]),
+    port_id_map: Map([]),
+    node_json_map: Map([]),
+    port_json_map: Map([]),
+    edge_json_map: Map([]),
+    label_json_map: Map([]),
+    edge_original_parent_map: Map([]),
   }
 }
 
@@ -837,9 +837,9 @@ fn importer_transform_edge_sections(
     Some(sections) => sections
     None => return
   }
-  let section_by_id : Map[String, @graph.ElkEdgeSection] = {}
-  let incoming_section_ids : Map[@graph.ElkEdgeSection, Array[String]] = {}
-  let outgoing_section_ids : Map[@graph.ElkEdgeSection, Array[String]] = {}
+  let section_by_id : Map[String, @graph.ElkEdgeSection] = Map([])
+  let incoming_section_ids : Map[@graph.ElkEdgeSection, Array[String]] = Map([])
+  let outgoing_section_ids : Map[@graph.ElkEdgeSection, Array[String]] = Map([])
   for section_json in sections_json {
     let section_obj = match section_json {
       Object(value) => value
@@ -1285,7 +1285,7 @@ fn importer_transfer_edge_sections(
   if @graph.edge_sections(edge).is_empty() {
     return
   }
-  let section_id_map : Map[@graph.ElkEdgeSection, String] = {}
+  let section_id_map : Map[@graph.ElkEdgeSection, String] = Map([])
   for i = 0; i < @graph.edge_sections(edge).length(); i = i + 1 {
     let section = @graph.edge_sections(edge)[i]
     let section_id = if @graph.edge_section_identifier(section).is_empty() {

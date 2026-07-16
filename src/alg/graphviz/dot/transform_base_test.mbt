@@ -96,7 +96,7 @@ test "DotTransformationData properties" {
 
   let graph_elem_property : @graph.IProperty[Map[String, DotGraphElement]] = @graph.new_property(
     "dot.test.graphElems",
-    {},
+    Map([]),
   )
   let graph_elems = data.get_graph_elem_map_property(graph_elem_property)
   inspect(graph_elems.length(), content="0")

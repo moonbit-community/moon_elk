@@ -8,9 +8,7 @@ pub(all) struct ElkEngine {
 pub type ElkEngineLayoutDelegate = (Map[String, Json], Map[String, Json]) -> Unit
 
 ///|
-let elk_engine_layout_delegate_ref : Ref[ElkEngineLayoutDelegate?] = Ref::new(
-  None,
-)
+let elk_engine_layout_delegate_ref : Ref[ElkEngineLayoutDelegate?] = Ref(None)
 
 ///|
 pub fn elk_engine_register_layout_delegate(
@@ -44,7 +42,7 @@ fn copy_json_map(source : Map[String, Json]) -> Map[String, Json] {
 
 ///|
 pub fn new_elk_engine(
-  default_layout_options? : Map[String, Json] = {},
+  default_layout_options? : Map[String, Json] = Map([]),
   algorithms? : Array[String] = [
     "layered", "force", "stress", "radial", "mrtree", "rectpacking", "sporeOverlap",
     "sporeCompaction", "fixed", "box", "random", "vertiflex", "disco", "topdownpacking",
@@ -234,7 +232,7 @@ fn add_logging(
   graph_obj : Map[String, Json],
   include_execution_time : Bool,
 ) -> Unit {
-  let logging = { "children": Json::array([Json::object({})]) }
+  let logging = { "children": Json::array([Json::object(Map([]))]) }
   if include_execution_time {
     logging["executionTime"] = Json::number(1)
   }
@@ -261,7 +259,7 @@ fn is_known_unsupported_algorithm(algorithm : String) -> Bool {
 pub fn ElkEngine::layout(
   self : ElkEngine,
   graph? : Json,
-  layout_options? : Map[String, Json] = {},
+  layout_options? : Map[String, Json] = Map([]),
   logging? : Bool = false,
   measure_execution_time? : Bool = false,
 ) -> Json raise {

@@ -38,7 +38,7 @@ pub fn mrtree_tree_util_depth(root : MrtreeNode) -> Int {
 ///|
 pub fn mrtree_tree_util_get_children(node : MrtreeNode) -> Array[MrtreeNode] {
   let children = []
-  let seen : Map[MrtreeNode, Bool] = {}
+  let seen : Map[MrtreeNode, Bool] = Map([])
   for edge in mrtree_node_outgoing_edges(node) {
     let target = mrtree_edge_target(edge)
     if !seen.contains(target) {
@@ -271,7 +271,7 @@ pub fn mrtree_tree_util_get_all_incoming_edges(
   graph : MrtreeGraph,
 ) -> Array[MrtreeEdge] {
   let result = []
-  let signatures : Map[String, Bool] = {}
+  let signatures : Map[String, Bool] = Map([])
   for edge in mrtree_graph_edges(graph) {
     let source = mrtree_edge_source(edge)
     let target = mrtree_edge_target(edge)
@@ -294,7 +294,7 @@ pub fn mrtree_tree_util_get_all_outgoing_edges(
   graph : MrtreeGraph,
 ) -> Array[MrtreeEdge] {
   let result = []
-  let signatures : Map[String, Bool] = {}
+  let signatures : Map[String, Bool] = Map([])
   for edge in mrtree_graph_edges(graph) {
     let source = mrtree_edge_source(edge)
     let target = mrtree_edge_target(edge)

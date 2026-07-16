@@ -1,5 +1,5 @@
 ///|
-let plain_java_initialization_initialized : Ref[Bool] = Ref::new(false)
+let plain_java_initialization_initialized : Ref[Bool] = Ref(false)
 
 ///|
 fn plain_java_initialization_register_algorithm_if_missing(

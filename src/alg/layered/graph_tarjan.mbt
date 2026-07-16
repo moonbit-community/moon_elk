@@ -46,7 +46,7 @@ pub fn new_tarjan(edges_to_be_reversed : Array[LEdge]) -> Tarjan {
     index: 0,
     strongly_connected_components: [],
     stack: [],
-    node_to_scc_id: {},
+    node_to_scc_id: Map([]),
   }
 }
 

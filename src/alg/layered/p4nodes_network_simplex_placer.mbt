@@ -346,7 +346,7 @@ fn network_simplex_new_auxiliary_state(
     spacings: new_layered_spacings(layered_graph),
     node_reps: Array::make(node_count, None),
     edge_reps: Array::make(edge_count, None),
-    port_map: {},
+    port_map: Map([]),
     flexible_where_space_permits_edges: [],
     node_state: Array::make(node_count, network_simplex_other),
     two_paths: [],
@@ -825,7 +825,7 @@ fn network_simplex_insert_in_layer_edge_auxiliary_edges(
   layered_graph : LGraph,
   state : NetworkSimplexAuxiliaryState,
 ) -> Unit {
-  let processed_edges : Map[Int, Bool] = {}
+  let processed_edges : Map[Int, Bool] = Map([])
   for layer in layered_graph.get_layers() {
     for node in layer.get_nodes() {
       if !network_simplex_node_type_is_normal(node.get_type()) {

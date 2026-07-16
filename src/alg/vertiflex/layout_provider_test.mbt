@@ -54,7 +54,7 @@ test "Vertiflex util finds root node" {
   let root = vertiflex_make_node(graph, 20.0, 10.0)
   let child = vertiflex_make_node(graph, 10.0, 10.0)
   ignore(@graph.create_simple_edge(root, child))
-  inspect(vertiflex_find_root(graph), content="Some(\{root})")
+  debug_inspect(vertiflex_find_root(graph), content="Some(\{root})")
 }
 
 ///|

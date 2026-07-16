@@ -11,7 +11,7 @@ priv struct RectangleNodeData {
 }
 
 ///|
-let rectangle_node_store : Ref[Array[RectangleNodeData]] = Ref::new([])
+let rectangle_node_store : Ref[Array[RectangleNodeData]] = Ref([])
 
 ///|
 pub struct RectangleStripOverlapRemover {

@@ -203,8 +203,8 @@ fn vertiflex_split_nodes_with_model_order(
   }
 
   let mut current_group : Array[@graph.ElkNode] = []
-  let width_left_ref : Ref[Double] = Ref::new(0.0)
-  let width_right_ref : Ref[Double] = Ref::new(0.0)
+  let width_left_ref : Ref[Double] = Ref(0.0)
+  let width_right_ref : Ref[Double] = Ref(0.0)
   let mut current = original[0]
   current_group.push(current)
   for i = 1; i < original.length(); i = i + 1 {

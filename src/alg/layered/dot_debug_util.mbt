@@ -46,7 +46,7 @@ fn dot_debug_util_node_label(
 
 ///|
 fn dot_debug_util_write_layer(
-  writer : @buffer.Buffer,
+  writer : StringBuilder,
   layer_number : Int,
   nodes : Array[LNode],
 ) -> Unit {
@@ -101,7 +101,7 @@ fn dot_debug_util_write_layer(
 
 ///|
 pub fn dot_debug_util_create_debug_graph(lgraph : LGraph) -> String {
-  let writer = @buffer.new()
+  let writer = StringBuilder()
   writer.write_string("digraph {\n")
   writer.write_string("    rankdir=LR;\n")
 
@@ -125,7 +125,7 @@ pub fn dot_debug_util_create_debug_graph_linear_segments(
 ) -> String {
   ignore(layered_graph)
 
-  let writer = @buffer.new()
+  let writer = StringBuilder()
   writer.write_string("digraph {\n")
 
   for i = 0; i < segment_list.length(); i = i + 1 {
@@ -162,7 +162,7 @@ pub fn dot_debug_util_create_debug_graph_hypernodes(
 ) -> String {
   ignore(layered_graph)
 
-  let writer = @buffer.new()
+  let writer = StringBuilder()
   writer.write_string("digraph {\n")
 
   for hypernode in hypernodes {

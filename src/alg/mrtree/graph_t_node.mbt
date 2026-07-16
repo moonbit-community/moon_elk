@@ -36,7 +36,7 @@ priv struct MrtreeNodeData {
 }
 
 ///|
-let mrtree_node_store : Ref[Array[MrtreeNodeData]] = Ref::new([])
+let mrtree_node_store : Ref[Array[MrtreeNodeData]] = Ref([])
 
 ///|
 fn checked_mrtree_node(node : MrtreeNode) -> Unit {

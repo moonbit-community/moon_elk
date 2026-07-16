@@ -1,12 +1,16 @@
 ///|
-let radial_internal_root_store : Ref[Map[@graph.ElkNode, @graph.ElkNode]] = Ref::new({},
+let radial_internal_root_store : Ref[Map[@graph.ElkNode, @graph.ElkNode]] = Ref(
+  Map([]),
 )
 
 ///|
-let radial_internal_order_id_store : Ref[Map[@graph.ElkNode, Int]] = Ref::new({})
+let radial_internal_order_id_store : Ref[Map[@graph.ElkNode, Int]] = Ref(
+  Map([]),
+)
 
 ///|
-let radial_internal_position_store : Ref[Map[@graph.ElkNode, @core.KVector]] = Ref::new({},
+let radial_internal_position_store : Ref[Map[@graph.ElkNode, @core.KVector]] = Ref(
+  Map([]),
 )
 
 ///|

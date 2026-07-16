@@ -32,7 +32,7 @@ fn mrtree_build_levels(graph : MrtreeGraph) -> Array[Array[MrtreeNode]] {
     queued_nodes.push(root)
     queued_levels.push(0)
   }
-  let seen = {}
+  let seen = Map([])
   let mut head = 0
   while head < queued_nodes.length() {
     let node = queued_nodes[head]

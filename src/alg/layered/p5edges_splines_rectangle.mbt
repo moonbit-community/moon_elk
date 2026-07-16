@@ -68,13 +68,13 @@ pub fn new_rectangle_position(position : @core.KVector) -> Rectangle {
 ///|
 pub fn new_rectangle_shape(shape : LShape) -> Rectangle {
   let position = shape.get_position()
-  let extend = position.clone().add(shape.get_size())
+  let extent = position.clone().add(shape.get_size())
 
   {
-    top: rectangle_min_double(position.y, extend.y),
-    bottom: rectangle_max_double(position.y, extend.y),
-    left: rectangle_min_double(position.x, extend.x),
-    right: rectangle_max_double(position.x, extend.x),
+    top: rectangle_min_double(position.y, extent.y),
+    bottom: rectangle_max_double(position.y, extent.y),
+    left: rectangle_min_double(position.x, extent.x),
+    right: rectangle_max_double(position.x, extent.x),
   }
 }
 

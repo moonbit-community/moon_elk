@@ -1,6 +1,6 @@
 ///|
 fn init_model_order_component_group_constraints() -> Map[Int, Array[Int]] {
-  let constraints : Map[Int, Array[Int]] = {}
+  let constraints : Map[Int, Array[Int]] = Map([])
 
   component_group_add_constraint(
     constraints, @core.sides_north, @core.sides_none,
@@ -319,7 +319,7 @@ pub struct ModelOrderComponentGroup {
 
 ///|
 pub fn new_model_order_component_group() -> ModelOrderComponentGroup {
-  { components: {}, component_order: [] }
+  { components: Map([]), component_order: [] }
 }
 
 ///|

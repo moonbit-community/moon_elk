@@ -13,7 +13,7 @@ priv struct PortData {
 }
 
 ///|
-let port_store : Ref[Array[PortData]] = Ref::new([])
+let port_store : Ref[Array[PortData]] = Ref([])
 
 ///|
 fn checked_port(port : ElkPort) -> Unit {
@@ -32,7 +32,7 @@ pub fn create_port(parent : ElkNode?) -> ElkPort {
     y: 0.0,
     width: 0.0,
     height: 0.0,
-    layout_option_string_values: {},
+    layout_option_string_values: Map([]),
   })
   if parent is Some(parent_id) {
     checked_node(parent_id)

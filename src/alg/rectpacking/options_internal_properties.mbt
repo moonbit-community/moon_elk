@@ -49,7 +49,8 @@ pub let rectpacking_internal_max_row_decrease : @graph.IProperty[Double] = @grap
 )
 
 ///|
-let rectpacking_internal_rows_store : Ref[Map[@graph.ElkNode, Array[RectRow]]] = Ref::new({},
+let rectpacking_internal_rows_store : Ref[Map[@graph.ElkNode, Array[RectRow]]] = Ref(
+  Map([]),
 )
 
 ///|

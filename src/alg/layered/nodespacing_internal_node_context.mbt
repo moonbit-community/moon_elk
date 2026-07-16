@@ -291,7 +291,7 @@ pub fn new_node_context(
   )
   if !@core.port_label_placement_is_valid(port_labels_placement) {
     node_context_raise_unsupported_configuration(
-      "Invalid port label placement: \{node.get_property_string_array(node_context_port_labels_placement_property)}",
+      "Invalid port label placement: \{to_repr(node.get_property_string_array(node_context_port_labels_placement_property))}",
     )
   }
   let port_labels_treat_as_group = node.get_property_bool(
@@ -302,7 +302,7 @@ pub fn new_node_context(
   )
   if !@core.node_label_placement_is_valid(node_label_placement) {
     node_context_raise_unsupported_configuration(
-      "Invalid node label placement: \{node.get_property_string_array(node_context_node_labels_placement_property)}",
+      "Invalid node label placement: \{to_repr(node.get_property_string_array(node_context_node_labels_placement_property))}",
     )
   }
 
@@ -361,13 +361,13 @@ pub fn new_node_context(
     port_label_spacing_vertical,
     surrounding_port_margins,
     topdown_layout,
-    port_contexts: {},
+    port_contexts: Map([]),
     node_container,
     node_container_middle_row,
     inside_node_label_container: new_grid_container_cell(false, symmetry, 0.0),
-    inside_port_label_cells: {},
-    outside_node_label_containers: {},
-    node_label_cells: {},
+    inside_port_label_cells: Map([]),
+    outside_node_label_containers: Map([]),
+    node_label_cells: Map([]),
   }
 }
 

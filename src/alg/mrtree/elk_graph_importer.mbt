@@ -22,7 +22,7 @@ fn mrtree_target_node_from_edge(edge : @graph.ElkEdge) -> @graph.ElkNode? {
 ///|
 fn mrtree_all_outgoing_edges(node : @graph.ElkNode) -> Array[@graph.ElkEdge] {
   let outgoing = []
-  let seen : Map[@graph.ElkEdge, Bool] = {}
+  let seen : Map[@graph.ElkEdge, Bool] = Map([])
 
   for edge in @graph.node_outgoing_edges(node) {
     if !seen.contains(edge) {
@@ -164,7 +164,7 @@ pub fn MrtreeElkGraphImporter::import_graph(
   ignore(self)
   let graph = new_mrtree_graph()
   mrtree_graph_copy_properties_from_elk(graph, elk_graph)
-  let elem_map = {}
+  let elem_map = Map([])
   mrtree_transform_nodes(elk_graph, graph, elem_map)
   mrtree_transform_edges(elk_graph, elem_map)
   graph

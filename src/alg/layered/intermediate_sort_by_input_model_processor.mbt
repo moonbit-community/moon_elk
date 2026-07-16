@@ -76,7 +76,7 @@ pub fn sort_by_input_model_processor_long_edge_target_node_preprocessing(
     )
   }
 
-  let target_node_model_order : Map[Int, Int] = {}
+  let target_node_model_order : Map[Int, Int] = Map([])
 
   for port in node.get_ports() {
     if port.get_outgoing_edges().is_empty() {

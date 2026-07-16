@@ -6,7 +6,7 @@ pub struct LibavoidLayoutProvider {
 
 ///|
 pub fn new_libavoid_layout_provider() -> LibavoidLayoutProvider {
-  { parent_node_to_server: {}, comm: new_libavoid_server_communicator() }
+  { parent_node_to_server: Map([]), comm: new_libavoid_server_communicator() }
 }
 
 ///|

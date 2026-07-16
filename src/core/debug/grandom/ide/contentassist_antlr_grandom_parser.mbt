@@ -9,7 +9,7 @@ pub(all) struct CoreDebugGRandomIdeGrammarAccess {
 
 ///|
 pub fn new_core_debug_grandom_ide_grammar_access() -> CoreDebugGRandomIdeGrammarAccess {
-  let rules : Map[String, String] = {}
+  let rules : Map[String, String] = Map([])
   rules["RandGraph"] = "configs+=Configuration*"
   rules["Configuration"] = "'generate' '{' ... '}'"
   rules["Hierarchy"] = "'hierarchy' '{' ... '}'"
@@ -68,7 +68,7 @@ pub fn new_core_debug_grandom_name_mappings(
   grammar_access : CoreDebugGRandomIdeGrammarAccess,
 ) -> CoreDebugGRandomNameMappings {
   ignore(grammar_access)
-  let mappings : Map[String, String] = {}
+  let mappings : Map[String, String] = Map([])
   mappings["Edges.Alternatives_0_1"] = "rule__Edges__Alternatives_0_1"
   mappings["DoubleQuantity.Alternatives"] = "rule__DoubleQuantity__Alternatives"
   mappings["Formats.Alternatives"] = "rule__Formats__Alternatives"

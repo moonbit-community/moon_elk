@@ -28,7 +28,7 @@ priv struct MrtreeGraphData {
 }
 
 ///|
-let mrtree_graph_store : Ref[Array[MrtreeGraphData]] = Ref::new([])
+let mrtree_graph_store : Ref[Array[MrtreeGraphData]] = Ref([])
 
 ///|
 fn checked_mrtree_graph(graph : MrtreeGraph) -> Unit {

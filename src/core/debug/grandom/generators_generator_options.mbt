@@ -622,16 +622,16 @@ pub(all) struct CoreDebugGRandomGeneratorOptions {
 ///|
 pub fn new_core_debug_grandom_generator_options() -> CoreDebugGRandomGeneratorOptions {
   {
-    bool_values: {},
-    int_values: {},
-    double_values: {},
-    string_values: {},
-    rand_values: {},
-    rand_opt_values: {},
-    port_constraint_values: {},
-    file_format_values: {},
-    graph_type_values: {},
-    edge_determination_values: {},
+    bool_values: Map([]),
+    int_values: Map([]),
+    double_values: Map([]),
+    string_values: Map([]),
+    rand_values: Map([]),
+    rand_opt_values: Map([]),
+    port_constraint_values: Map([]),
+    file_format_values: Map([]),
+    graph_type_values: Map([]),
+    edge_determination_values: Map([]),
   }
 }
 

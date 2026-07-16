@@ -55,7 +55,7 @@ fn component_group_add_constraint(
 
 ///|
 fn init_component_group_constraints() -> Map[Int, Array[Int]] {
-  let constraints : Map[Int, Array[Int]] = {}
+  let constraints : Map[Int, Array[Int]] = Map([])
 
   component_group_add_constraint(
     constraints, @core.sides_none, @core.sides_north_east_south_west,
@@ -290,7 +290,7 @@ pub struct ComponentGroup {
 
 ///|
 pub fn new_component_group() -> ComponentGroup {
-  { components: {} }
+  { components: Map([]) }
 }
 
 ///|

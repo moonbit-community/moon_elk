@@ -74,7 +74,11 @@ pub fn GraphJsonTextNumberValueConverter::to_value(
     }
     return 0.0
   }
-  let parsed : Result[Double, Error] = try? @string.parse_double(text)
+  let parsed : Result[Double, Error] = try @string.parse_double(text) catch {
+    error => Err(error)
+  } noraise {
+    value => Ok(value)
+  }
   match parsed {
     Ok(value) => value
     Err(_) => {

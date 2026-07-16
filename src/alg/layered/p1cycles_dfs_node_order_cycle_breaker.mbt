@@ -114,7 +114,7 @@ fn dfs_node_order_cycle_breaker_dfs(
   state.visited[node_id] = true
   state.active[node_id] = true
 
-  let model_order_map : Map[Int, Array[LEdge]] = {}
+  let model_order_map : Map[Int, Array[LEdge]] = Map([])
   let group_model_order = dfs_node_order_cycle_breaker_group_model_order(state)
 
   for edge in node.get_outgoing_edges() {

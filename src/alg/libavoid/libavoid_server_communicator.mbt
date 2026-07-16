@@ -66,12 +66,12 @@ fn libavoid_communicator_exception_message(
 ///|
 pub fn new_libavoid_server_communicator() -> LibavoidServerCommunicator {
   {
-    node_id_map: {},
-    node_inverse_map: {},
-    port_id_map: {},
-    port_inverse_map: {},
-    edge_id_map: {},
-    edge_inverse_map: {},
+    node_id_map: Map([]),
+    node_inverse_map: Map([]),
+    port_id_map: Map([]),
+    port_inverse_map: Map([]),
+    edge_id_map: Map([]),
+    edge_inverse_map: Map([]),
     node_id_counter: libavoid_communicator_node_id_start,
     port_id_counter: libavoid_communicator_port_id_start,
     edge_id_counter: 1,
@@ -157,7 +157,11 @@ fn libavoid_communicator_process_timeout_of(
     Some(value) => value
     None => libavoid_option_process_timeout.get_default().to_string()
   }
-  let parsed : Result[Int, Error] = try? @string.parse_int(timeout_text)
+  let parsed : Result[Int, Error] = try @string.parse_int(timeout_text) catch {
+    error => Err(error)
+  } noraise {
+    value => Ok(value)
+  }
   match parsed {
     Ok(value) => value
     Err(_) => libavoid_option_process_timeout.get_default()
@@ -266,7 +270,7 @@ fn libavoid_communicator_first_or_create_edge_section(
 fn libavoid_communicator_edge_id_from_key(key : String) -> Int? {
   let tokens : Array[String] = []
   for token in key.split(" ") {
-    let value = token.trim().to_string()
+    let value = token.trim().to_owned()
     if !value.is_empty() {
       tokens.push(value)
     }
@@ -274,7 +278,11 @@ fn libavoid_communicator_edge_id_from_key(key : String) -> Int? {
   if tokens.length() < 2 {
     return None
   }
-  let parsed : Result[Int, Error] = try? @string.parse_int(tokens[1])
+  let parsed : Result[Int, Error] = try @string.parse_int(tokens[1]) catch {
+    error => Err(error)
+  } noraise {
+    value => Ok(value)
+  }
   match parsed {
     Ok(value) => Some(value)
     Err(_) => None
@@ -283,7 +291,11 @@ fn libavoid_communicator_edge_id_from_key(key : String) -> Int? {
 
 ///|
 fn libavoid_communicator_parse_double_or_zero(value : String) -> Double {
-  let parsed : Result[Double, Error] = try? @string.parse_double(value)
+  let parsed : Result[Double, Error] = try @string.parse_double(value) catch {
+    error => Err(error)
+  } noraise {
+    value => Ok(value)
+  }
   match parsed {
     Ok(number) => number
     Err(_) => 0.0
@@ -294,7 +306,7 @@ fn libavoid_communicator_parse_double_or_zero(value : String) -> Double {
 fn libavoid_communicator_parse_point_list(value : String) -> @core.KVectorChain {
   let tokens : Array[String] = []
   for token in value.split(" ") {
-    let normalized = token.trim().to_string()
+    let normalized = token.trim().to_owned()
     if !normalized.is_empty() {
       tokens.push(normalized)
     }
@@ -393,7 +405,7 @@ fn LibavoidServerCommunicator::calculate_junction_points(
   graph : @graph.ElkNode,
 ) -> Unit {
   ignore(self)
-  let visited : Map[@graph.ElkEdge, Unit] = {}
+  let visited : Map[@graph.ElkEdge, Unit] = Map([])
   for node in @graph.node_children(graph) {
     for edge in @graph.node_outgoing_edges(node) {
       if !visited.contains(edge) {
@@ -430,7 +442,7 @@ fn LibavoidServerCommunicator::read_layout_information(
   } noraise {
     output => output
   }
-  let layout_information : Map[String, @core.KVectorChain] = {}
+  let layout_information : Map[String, @core.KVectorChain] = Map([])
   match output_data {
     Some(data) =>
       data.each((key, value) => {
@@ -469,9 +481,9 @@ fn LibavoidServerCommunicator::write_text_graph(
 ///|
 fn libavoid_communicator_option_id(id : String) -> String {
   if id.has_prefix("org.eclipse.elk.alg.libavoid.") {
-    id["org.eclipse.elk.alg.libavoid.".length():].to_string()
+    id["org.eclipse.elk.alg.libavoid.".length():].to_owned()
   } else if id.has_prefix("org.eclipse.elk.") {
-    id["org.eclipse.elk.".length():].to_string()
+    id["org.eclipse.elk.".length():].to_owned()
   } else {
     id
   }

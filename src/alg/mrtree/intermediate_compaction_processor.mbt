@@ -1,5 +1,5 @@
 ///|
-let mrtree_compaction_levels : Ref[Array[@core.KVector]] = Ref::new([])
+let mrtree_compaction_levels : Ref[Array[@core.KVector]] = Ref([])
 
 ///|
 fn mrtree_compaction_projection(
@@ -173,7 +173,7 @@ fn mrtree_compaction_compute_node_constraints(
   }
 
   let active_nodes = []
-  let candidates : Map[MrtreeNode, MrtreeNode] = {}
+  let candidates : Map[MrtreeNode, MrtreeNode] = Map([])
 
   for point in points {
     let current_node = point.get_first()

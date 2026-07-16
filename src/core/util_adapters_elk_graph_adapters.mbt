@@ -46,7 +46,7 @@ fn elk_graph_adapters_exception_message(
 
 ///|
 fn elk_graph_adapters_parse_int(raw : String) -> Int? {
-  try @string.parse_int(raw.trim().to_string()) catch {
+  try @string.parse_int(raw.trim().to_owned()) catch {
     _ => None
   } noraise {
     value => Some(value)
@@ -55,7 +55,7 @@ fn elk_graph_adapters_parse_int(raw : String) -> Int? {
 
 ///|
 fn elk_graph_adapters_parse_double(raw : String) -> Double? {
-  try @string.parse_double(raw.trim().to_string()) catch {
+  try @string.parse_double(raw.trim().to_owned()) catch {
     _ => None
   } noraise {
     value => Some(value)
@@ -64,7 +64,7 @@ fn elk_graph_adapters_parse_double(raw : String) -> Double? {
 
 ///|
 fn elk_graph_adapters_parse_bool(raw : String) -> Bool? {
-  match raw.trim().to_string() {
+  match raw.trim().to_owned() {
     "true" => Some(true)
     "TRUE" => Some(true)
     "True" => Some(true)

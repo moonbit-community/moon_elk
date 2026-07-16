@@ -87,7 +87,7 @@ test "json adapter rejects non integer id with JsonImportException" {
   let obj : Map[String, Json] = { "id": Json::number(3.14) }
   try adapter.get_id(obj) catch {
     err =>
-      inspect(
+      debug_inspect(
         err.get_message(),
         content="Some(\"Id must be a string or an integer: '3.14'.\")",
       )
@@ -99,10 +99,10 @@ test "json adapter rejects non integer id with JsonImportException" {
 ///|
 test "json adapter requires id with JsonImportException" {
   let adapter = new_json_adapter()
-  let obj : Map[String, Json] = {}
+  let obj : Map[String, Json] = Map([])
   try adapter.get_id(obj) catch {
     err =>
-      inspect(
+      debug_inspect(
         err.get_message(),
         content="Some(\"Every element must have an id.\")",
       )

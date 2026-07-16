@@ -41,7 +41,7 @@ pub fn spore_min_st_convert(
   tree : @common.Tree[@core.KVector],
   graph : SporeGraph,
 ) -> Unit {
-  let node_map : Map[@core.KVector, @common.Node] = {}
+  let node_map : Map[@core.KVector, @common.Node] = Map([])
   for node in graph.vertices {
     node_map[node.original_vertex] = node
   }

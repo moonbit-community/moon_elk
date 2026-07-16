@@ -2,7 +2,7 @@
 pub type FEdge = Int
 
 ///|
-let fedge_store : Ref[Array[FEdgeData]] = Ref::new([])
+let fedge_store : Ref[Array[FEdgeData]] = Ref([])
 
 ///|
 priv struct FEdgeData {
@@ -43,9 +43,9 @@ pub fn new_fedge() -> FEdge {
     target: None,
     labels: [],
     bendpoints: [],
-    int_properties: {},
-    double_properties: {},
-    bool_properties: {},
+    int_properties: Map([]),
+    double_properties: Map([]),
+    bool_properties: Map([]),
     origin: None,
   })
   id

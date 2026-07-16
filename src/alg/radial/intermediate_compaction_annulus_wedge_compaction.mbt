@@ -11,8 +11,8 @@ pub struct AnnulusWedgeCompaction {
 pub fn new_annulus_wedge_compaction() -> AnnulusWedgeCompaction {
   {
     base: new_abstract_radius_extension_compaction(),
-    left_contour: {},
-    right_contour: {},
+    left_contour: Map([]),
+    right_contour: Map([]),
     sorter: None,
     root: None,
   }

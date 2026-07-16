@@ -5,7 +5,7 @@ pub(all) struct CoreUiAlgorithmSelectionListener {
 }
 
 ///|
-let core_ui_algorithm_selection_listener_id_ref : Ref[Int] = Ref::new(1)
+let core_ui_algorithm_selection_listener_id_ref : Ref[Int] = Ref(1)
 
 ///|
 pub fn new_core_ui_algorithm_selection_listener(
@@ -41,7 +41,7 @@ pub fn new_algorithm_selection_dialog(
     description: "",
     image: None,
     content_provider: new_algorithm_content_provider(),
-    image_cache: {},
+    image_cache: Map([]),
     selection_listeners: [],
     selected_data: None,
     ok_enabled: false,

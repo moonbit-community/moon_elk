@@ -132,7 +132,11 @@ pub fn LayoutOptionValidator::check_property(
   let issues : Array[GraphIssue] = []
   match option_data.get_type() {
     IntType => {
-      let parsed : Result[Int, Error] = try? @string.parse_int(trimmed)
+      let parsed : Result[Int, Error] = try @string.parse_int(trimmed) catch {
+        error => Err(error)
+      } noraise {
+        value => Ok(value)
+      }
       match parsed {
         Ok(_) => ()
         Err(_) =>
@@ -144,7 +148,13 @@ pub fn LayoutOptionValidator::check_property(
       }
     }
     DoubleType => {
-      let parsed : Result[Double, Error] = try? @string.parse_double(trimmed)
+      let parsed : Result[Double, Error] = try
+        @string.parse_double(trimmed)
+      catch {
+        error => Err(error)
+      } noraise {
+        value => Ok(value)
+      }
       match parsed {
         Ok(parsed) =>
           match option_data.get_lower_bound() {

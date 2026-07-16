@@ -75,7 +75,7 @@ fn random_layout_provider_read_int_option(
   }
   if @graph.node_layout_option_string_value(node, property.get_id())
     is Some(raw) {
-    try @string.parse_int(raw.trim().to_string()) catch {
+    try @string.parse_int(raw.trim().to_owned()) catch {
       _ => property.get_default()
     } noraise {
       value => value
@@ -95,7 +95,7 @@ fn random_layout_provider_read_double_option(
   }
   if @graph.node_layout_option_string_value(node, property.get_id())
     is Some(raw) {
-    try @string.parse_double(raw.trim().to_string()) catch {
+    try @string.parse_double(raw.trim().to_owned()) catch {
       _ => property.get_default()
     } noraise {
       value => value
@@ -218,7 +218,7 @@ fn random_layout_provider_randomize_edge(
   }
 
   let source_shape = sources[0]
-  let source_x_ref : Ref[Double] = Ref::new(
+  let source_x_ref : Ref[Double] = Ref(
     random_layout_provider_shape_x(source_shape),
   )
   let mut source_y = random_layout_provider_shape_y(source_shape)
@@ -230,7 +230,7 @@ fn random_layout_provider_randomize_edge(
 
   // Keep this identical to upstream Java implementation.
   let target_shape = @graph.edge_sources(edge)[0]
-  let target_x_ref : Ref[Double] = Ref::new(
+  let target_x_ref : Ref[Double] = Ref(
     random_layout_provider_shape_x(target_shape),
   )
   let mut target_y = random_layout_provider_shape_y(target_shape)

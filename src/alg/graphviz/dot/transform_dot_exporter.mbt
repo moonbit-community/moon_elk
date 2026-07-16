@@ -74,7 +74,7 @@ pub let dot_exporter_option_edge_routing = "org.eclipse.elk.edgeRouting"
 ///|
 pub let dot_exporter_graph_elems : @graph.IProperty[
   Map[String, DotGraphElement],
-] = @graph.new_property("dotExporter.graphElemMap", {})
+] = @graph.new_property("dotExporter.graphElemMap", Map([]))
 
 ///|
 pub let dot_exporter_use_splines : @graph.IProperty[Bool] = @graph.new_property(
@@ -208,7 +208,7 @@ fn dot_exporter_parse_edge_label_placement(
   value : String?,
 ) -> @core.EdgeLabelPlacement {
   let normalized = match value {
-    Some(v) => v.trim().to_string().to_upper()
+    Some(v) => v.trim().to_owned().to_upper()
     None => ""
   }
   if normalized == "HEAD" || normalized.has_suffix(".HEAD") {
@@ -223,13 +223,19 @@ fn dot_exporter_parse_edge_label_placement(
 ///|
 fn dot_exporter_parse_int_token(text : String?) -> Int? {
   let normalized = match text {
-    Some(v) => v.trim().to_string()
+    Some(v) => v.trim().to_owned()
     None => ""
   }
   if normalized.is_empty() {
     return None
   }
-  let parsed_int : Result[Int, Error] = try? @string.parse_int(normalized)
+  let parsed_int : Result[Int, Error] = try
+    @string.parse_int(normalized)
+  catch {
+    error => Err(error)
+  } noraise {
+    value => Ok(value)
+  }
   match parsed_int {
     Ok(value) => Some(value)
     Err(_) =>
@@ -597,7 +603,7 @@ pub fn DotExporter::transform(
     Some(graph) => graph
     None => return
   }
-  trans_data.set_graph_elem_map_property(dot_exporter_graph_elems, {})
+  trans_data.set_graph_elem_map_property(dot_exporter_graph_elems, Map([]))
   trans_data.set_int_property(dot_exporter_next_node_id, 1)
   trans_data.set_int_property(dot_exporter_next_edge_id, 1)
 
@@ -942,12 +948,12 @@ fn dot_exporter_is_number_char(c : Char) -> Bool {
 
 ///|
 fn dot_exporter_slice(text : String, start : Int, end_ : Int) -> String {
-  text[start:end_].to_string()
+  text[start:end_].to_owned()
 }
 
 ///|
 fn dot_exporter_slice_from(text : String, start : Int) -> String {
-  text[start:].to_string()
+  text[start:].to_owned()
 }
 
 ///|
@@ -1369,7 +1375,7 @@ pub fn DotExporter::apply_edge_label_pos(
 
 ///|
 pub fn dot_exporter_create_string(label : String) -> String {
-  let escape_buffer = @buffer.new()
+  let escape_buffer = StringBuilder()
   escape_buffer.write_char('"')
   let mut index = 0
   while index < label.length() {
@@ -1391,7 +1397,7 @@ pub fn dot_exporter_create_string(label : String) -> String {
 pub fn dot_exporter_create_attribute_map(
   attributes : Array[DotAttribute],
 ) -> Map[String, String] {
-  let attribute_map : Map[String, String] = {}
+  let attribute_map : Map[String, String] = Map([])
   for attribute in attributes {
     match (attribute.get_name(), attribute.get_value()) {
       (Some(name), Some(value)) => attribute_map[name] = value
@@ -1417,7 +1423,7 @@ fn dot_exporter_split_on_quote_and_semicolon(text : String) -> Array[String] {
       if token_start < index {
         let token = dot_exporter_slice(text, token_start, index)
           .trim()
-          .to_string()
+          .to_owned()
         if !token.is_empty() {
           tokens.push(token)
         }
@@ -1427,7 +1433,7 @@ fn dot_exporter_split_on_quote_and_semicolon(text : String) -> Array[String] {
     index += 1
   }
   if token_start < text.length() {
-    let token = dot_exporter_slice_from(text, token_start).trim().to_string()
+    let token = dot_exporter_slice_from(text, token_start).trim().to_owned()
     if !token.is_empty() {
       tokens.push(token)
     }
@@ -1458,11 +1464,17 @@ fn dot_exporter_split_on_whitespace(text : String) -> Array[String] {
 
 ///|
 fn dot_exporter_parse_double_token(text : String) -> Double? {
-  let normalized = text.trim().to_string()
+  let normalized = text.trim().to_owned()
   if normalized.is_empty() {
     return None
   }
-  let parsed : Result[Double, Error] = try? @string.parse_double(normalized)
+  let parsed : Result[Double, Error] = try
+    @string.parse_double(normalized)
+  catch {
+    error => Err(error)
+  } noraise {
+    value => Ok(value)
+  }
   match parsed {
     Ok(value) => Some(value)
     Err(_) => None
@@ -1471,7 +1483,7 @@ fn dot_exporter_parse_double_token(text : String) -> Double? {
 
 ///|
 fn dot_exporter_parse_point_token(token : String) -> @core.KVector? {
-  let mut normalized = token.trim().to_string()
+  let mut normalized = token.trim().to_owned()
   if normalized.length() >= 2 &&
     normalized.has_prefix("\"") &&
     normalized.has_suffix("\"") {
@@ -1486,8 +1498,8 @@ fn dot_exporter_parse_point_token(token : String) -> @core.KVector? {
   }
   match
     (
-      dot_exporter_parse_double_token(parts[0].to_string()),
-      dot_exporter_parse_double_token(parts[1].to_string()),
+      dot_exporter_parse_double_token(parts[0].to_owned()),
+      dot_exporter_parse_double_token(parts[1].to_owned()),
     ) {
     (Some(x), Some(y)) => Some(@core.new_kvector_xy(x, y))
     _ => None

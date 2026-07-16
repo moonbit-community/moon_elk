@@ -363,7 +363,7 @@ pub struct RadiusExtensionOverlapRemoval {
   mut sorter : IRadialSorter?
 }
 pub fn RadiusExtensionOverlapRemoval::as_i_overlap_removal(Self) -> IOverlapRemoval
-pub fn RadiusExtensionOverlapRemoval::extend(Self, Int, Array[Int], @core.IElkProgressMonitor?) -> Unit
+pub fn RadiusExtensionOverlapRemoval::extend_radius(Self, Int, Array[Int], @core.IElkProgressMonitor?) -> Unit
 pub fn RadiusExtensionOverlapRemoval::remove_overlaps(Self, Int, @core.IElkProgressMonitor?) -> Unit
 
 pub struct StraightLineEdgeRouter {

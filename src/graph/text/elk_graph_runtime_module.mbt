@@ -5,7 +5,7 @@ pub struct GraphTextInjector {
 
 ///|
 pub fn new_graph_text_injector() -> GraphTextInjector {
-  { providers: {} }
+  { providers: Map([]) }
 }
 
 ///|

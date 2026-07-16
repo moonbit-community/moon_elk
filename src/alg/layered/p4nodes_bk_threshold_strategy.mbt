@@ -48,7 +48,7 @@ pub fn new_bk_null_threshold_strategy() -> BkThresholdStrategy {
     kind: BkThresholdStrategyKind::NullThreshold,
     bal: None,
     ni: None,
-    block_finished: {},
+    block_finished: Map([]),
     post_processables_queue: [],
     post_processables_stack: [],
   }
@@ -60,7 +60,7 @@ pub fn new_bk_simple_threshold_strategy() -> BkThresholdStrategy {
     kind: BkThresholdStrategyKind::SimpleThreshold,
     bal: None,
     ni: None,
-    block_finished: {},
+    block_finished: Map([]),
     post_processables_queue: [],
     post_processables_stack: [],
   }

@@ -1,6 +1,6 @@
 ///|
 fn core_debug_grandom_blind_text_test_random(seed : Int64) -> @random.Rand {
-  let seed_buffer = @buffer.new()
+  let seed_buffer = Buffer()
   seed_buffer.write_int64_le(seed)
   seed_buffer.write_int64_le(0)
   seed_buffer.write_int64_le(0)
@@ -20,7 +20,7 @@ test "grandom blind text generated length and trim" {
     core_debug_grandom_blind_text_character_min_length +
     core_debug_grandom_blind_text_character_range,
   )
-  assert_eq(text, text.trim().to_string())
+  assert_eq(text, text.trim().to_owned())
 }
 
 ///|

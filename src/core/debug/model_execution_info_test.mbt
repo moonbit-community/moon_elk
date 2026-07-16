@@ -12,7 +12,7 @@ test "ExecutionInfo can be built from monitor and file metadata" {
 
   inspect(execution_info_get_name(info), content="Layout Task")
   inspect(execution_info_is_loaded_from_file(info), content="true")
-  inspect(
+  debug_inspect(
     execution_info_get_file_name(info),
     content="Some(\"/tmp/demo.elkt\")",
   )
@@ -51,7 +51,7 @@ test "ExecutionInfo copies monitor debug folder when persistence is enabled" {
 test "ExecutionInfoModel add replace remove notifies listener" {
   execution_info_reset_for_test()
   let model = new_execution_info_model()
-  let count = Ref::new(0)
+  let count = Ref(0)
   let listener = new_execution_info_model_listener(() => {
     count.val = count.val + 1
   })
@@ -90,5 +90,5 @@ test "ExecutionInfoContentProvider filters elements and children" {
   inspect(filtered.length(), content="1")
   inspect(filtered[0], content="\{info_a}")
   inspect(provider.has_children(Some(info_a)), content="false")
-  inspect(provider.get_parent(Some(info_a)), content="None")
+  debug_inspect(provider.get_parent(Some(info_a)), content="None")
 }

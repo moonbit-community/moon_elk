@@ -9,7 +9,7 @@ fn mrtree_fan_format_right(value : Int, len : Int) -> String {
 
 ///|
 fn mrtree_fan_safe_slice(text : String, start : Int, end_ : Int) -> String {
-  text[start:end_].to_string()
+  text[start:end_].to_owned()
 }
 
 ///|
@@ -50,7 +50,7 @@ fn mrtree_fan_calculate(
     }
   }
 
-  let local_fan_map : Map[String, Int] = {}
+  let local_fan_map : Map[String, Int] = Map([])
   let prefix_count = last_assigned_id.length() - digits
   for i = 0; i < prefix_count; i = i + 1 {
     for node in current_level {
@@ -94,8 +94,8 @@ fn mrtree_fan_processor_process(
     None => ()
   }
 
-  let global_fan_map : Map[String, Int] = {}
-  let global_desc_map : Map[String, Int] = {}
+  let global_fan_map : Map[String, Int] = Map([])
+  let global_desc_map : Map[String, Int] = Map([])
 
   let mut root : MrtreeNode? = None
   for node in mrtree_graph_nodes(graph) {

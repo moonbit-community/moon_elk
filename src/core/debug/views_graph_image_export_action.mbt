@@ -5,7 +5,7 @@ pub let image_export_action_id : String = "org.eclipse.elk.debug.actions.imageEx
 let image_export_action_last_file_name_pref : String = "imageExportAction.lastImageFile"
 
 ///|
-let image_export_action_exported_files_ref : Ref[Array[String]] = Ref::new([])
+let image_export_action_exported_files_ref : Ref[Array[String]] = Ref([])
 
 ///|
 pub(all) struct ImageExportAction {

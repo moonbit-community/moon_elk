@@ -132,7 +132,7 @@ test "LibavoidServerCommunicator reports error if server has no output" {
   let monitor = new_elk_progress_monitor()
   communicator.request_layout(root, monitor, server)
   inspect(monitor.is_running(), content="false")
-  inspect(
+  debug_inspect(
     @core.layout_runtime_take_error_message(),
     content="Some(\"org.eclipse.elk.core.UnsupportedConfigurationException: No output from the Libavoid process. Try increasing the timeout value in the preferences (KIELER / Layout / Libavoid).\")",
   )
@@ -181,11 +181,11 @@ test "LibavoidLayoutProvider prepares ports routes and releases server" {
   let monitor = new_elk_progress_monitor()
   provider.layout(root, monitor)
 
-  inspect(
+  debug_inspect(
     port_layout_option_string_value(src_port, port_side.get_id()),
     content="Some(\"EAST\")",
   )
-  inspect(
+  debug_inspect(
     port_layout_option_string_value(tgt_port, port_side.get_id()),
     content="Some(\"WEST\")",
   )

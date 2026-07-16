@@ -65,10 +65,10 @@ pub fn new_bk_compactor(
     thresh_strategy,
     ni,
     spacings: new_layered_spacings(layered_graph),
-    class_nodes: {},
-    class_outgoing: {},
-    class_indegree: {},
-    class_shift: {},
+    class_nodes: Map([]),
+    class_outgoing: Map([]),
+    class_indegree: Map([]),
+    class_shift: Map([]),
   }
 }
 

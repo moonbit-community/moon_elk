@@ -45,7 +45,7 @@ fn PolarCP::get_cp(self : PolarCP) -> @core.KVector {
 
 ///|
 fn PolarCP::to_string(self : PolarCP) -> String {
-  self.cp.to_string() + "@" + self.polar_coordinate.to_string()
+  self.cp.to_string() + "@" + to_repr(self.polar_coordinate).to_string()
 }
 
 ///|
@@ -685,7 +685,7 @@ pub fn NubSpline::to_string(self : NubSpline) -> String {
   for control_point in self.control_points {
     pieces.push(control_point.to_string())
   }
-  pieces.to_string()
+  to_repr(pieces).to_string()
 }
 
 ///|

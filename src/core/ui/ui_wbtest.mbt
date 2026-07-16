@@ -134,7 +134,7 @@ test "AlgorithmContentProvider and selection dialog filtering" {
     content="org.eclipse.elk.category.layered",
   )
 
-  let selected_count : Ref[Int] = Ref::new(0)
+  let selected_count : Ref[Int] = Ref(0)
   let dialog = new_algorithm_selection_dialog(algorithm_data.get_id())
   dialog.add_algorithm_selection_listener(
     new_core_ui_algorithm_selection_listener(_ => {
@@ -200,18 +200,23 @@ test "LayoutOptionLabelProvider and handler use expected UI semantics" {
     choices=["A", "B"],
   )
   let enum_provider = new_layout_option_label_provider(enum_like)
-  inspect(enum_provider.get_text(CoreUiIntValue(1)), content="B")
+  debug_inspect(
+    enum_provider.get_text(CoreUiIntValue(1)),
+    content=(
+      #|"B"
+    ),
+  )
 
   let pref_store = elk_ui_plugin_get_instance().get_preference_store()
   pref_store.set_default_boolean(core_ui_pref_animation, true)
   pref_store.set_default_boolean(core_ui_pref_zoom, false)
   pref_store.set_default_boolean(core_ui_pref_progress, true)
 
-  let captured : Ref[String] = Ref::new("")
+  let captured : Ref[String] = Ref("")
   let handler = new_layout_handler(invoke_layout_fn=invocation => {
-    captured.val = "\{invocation.editor}|\{invocation.diagram_part}|\{invocation.animation}|\{invocation.progress_dialog}|\{invocation.zoom_to_fit}"
+    captured.val = "\{to_repr(invocation.editor)}|\{to_repr(invocation.diagram_part)}|\{to_repr(invocation.animation)}|\{to_repr(invocation.progress_dialog)}|\{to_repr(invocation.zoom_to_fit)}"
   })
-  let event_params : Map[String, String] = {}
+  let event_params : Map[String, String] = Map([])
   event_params[core_ui_param_layout_scope] = core_ui_val_selection
   handler.execute(
     new_core_ui_execution_event(
@@ -245,7 +250,7 @@ test "Preference initializer and page synchronize stores and refresh view" {
   let page = new_layout_preference_page()
   page.init()
   page.create_contents()
-  inspect(
+  debug_inspect(
     page.get_values(),
     content="(true, false, false, false, false, false)",
   )
@@ -267,7 +272,7 @@ test "Preference initializer and page synchronize stores and refresh view" {
   inspect(view.get_refresh_count(), content="1")
 
   page.perform_defaults()
-  inspect(
+  debug_inspect(
     page.get_values(),
     content="(true, false, false, false, false, false)",
   )
@@ -277,7 +282,7 @@ test "Preference initializer and page synchronize stores and refresh view" {
     "/tmp/elk-debug", true,
   )
   page.open_log_folder()
-  inspect(
+  debug_inspect(
     core_ui_layout_preference_page_get_launched_paths_for_test(),
     content="[\"/tmp/elk-debug\"]",
   )
@@ -341,7 +346,7 @@ test "ElkUiUtil and property source stack perform translations and validation" {
     content="true",
   )
 
-  let options : Map[String, String] = {}
+  let options : Map[String, String] = Map([])
   options[@core.algorithm.get_id()] = algorithm_data.get_id()
   options["opt.flag"] = "true"
   options["opt.threshold"] = "2.5"
@@ -369,14 +374,14 @@ test "ElkUiUtil and property source stack perform translations and validation" {
     Some(value) => value
     None => abort("missing descriptor")
   }
-  inspect(descriptor.get_category(), content="Some(\"Subgraph Options\")")
+  debug_inspect(descriptor.get_category(), content="Some(\"Subgraph Options\")")
   inspect(descriptor.get_description(), content="Threshold.")
-  inspect(descriptor.get_filter_flags(), content="None")
+  debug_inspect(descriptor.get_filter_flags(), content="None")
   let editor = match descriptor.create_property_editor() {
     Some(value) => value
     None => abort("missing editor")
   }
-  inspect(
+  debug_inspect(
     editor.validate(CoreUiStringValue("0.1")),
     content="Some(\"The assigned value 0.1 of the option 'Threshold' is less than the lower bound 1.0.\")",
   )
@@ -389,15 +394,15 @@ test "ElkUiUtil and property source stack perform translations and validation" {
     content="1",
   )
   source.set_property_value("opt.flag", CoreUiIntValue(0))
-  inspect(config.get_option_value("opt.flag"), content="Some(\"false\")")
+  debug_inspect(config.get_option_value("opt.flag"), content="Some(\"false\")")
   inspect(view.get_refresh_count(), content="1")
   source.reset_property_value("opt.flag")
-  inspect(config.get_option_value("opt.flag"), content="None")
-  inspect(
+  debug_inspect(config.get_option_value("opt.flag"), content="None")
+  debug_inspect(
     core_ui_elk_ui_util_model_change_labels_for_domain(42),
     content="[\"Set Layout Option\", \"!elk.ui.12!\"]",
   )
-  inspect(
+  debug_inspect(
     core_ui_layout_property_source_get_layout_hint("Layered (ELK)"),
     content="Some(\"org.eclipse.elk.layered\")",
   )
@@ -438,7 +443,7 @@ test "Validating property sheet entry builds overlay image and error description
   algorithm_data.add_known_option(@core.algorithm.get_id())
   algorithm_data.add_known_option("opt.numeric")
 
-  let numeric_options : Map[String, String] = {}
+  let numeric_options : Map[String, String] = Map([])
   numeric_options[@core.algorithm.get_id()] = algorithm_data.get_id()
   numeric_options["opt.numeric"] = "2.0"
   let config = @service.new_simple_layout_configuration_store(
@@ -493,7 +498,7 @@ test "Layout view handler, cell editors, and rendering stack integrate" {
   handler.execute(new_core_ui_show_layout_view_event())
   inspect(layout_view_part_find_view() is Some(_), content="true")
   handler.execute(new_core_ui_show_layout_view_event(can_open=false))
-  inspect(
+  debug_inspect(
     handler.get_last_error(),
     content="Some(\"Could not open Layout View.\")",
   )
@@ -504,7 +509,7 @@ test "Layout view handler, cell editors, and rendering stack integrate" {
     Some(algorithm_data.get_id()),
   )
   algorithm_editor.on_double_click()
-  inspect(algorithm_editor.get_counts_for_test(), content="(1, 1)")
+  debug_inspect(algorithm_editor.get_counts_for_test(), content="(1, 1)")
   inspect(view.is_focused(), content="true")
 
   let multiple_editor = new_multiple_options_cell_editor(
@@ -513,7 +518,7 @@ test "Layout view handler, cell editors, and rendering stack integrate" {
   )
   multiple_editor.set_next_dialog_result_for_test(Some(["A", "B"]))
   multiple_editor.on_double_click()
-  inspect(multiple_editor.get_value(), content="[\"A\", \"B\"]")
+  debug_inspect(multiple_editor.get_value(), content="[\"A\", \"B\"]")
 
   let graph = @graph.create_graph()
   @graph.node_set_dimensions(graph, 10.0, 10.0)

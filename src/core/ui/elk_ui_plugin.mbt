@@ -37,7 +37,7 @@ pub(all) struct CoreUiImageRegistry {
 
 ///|
 pub fn new_core_ui_image_registry() -> CoreUiImageRegistry {
-  { images: {} }
+  { images: Map([]) }
 }
 
 ///|
@@ -72,7 +72,12 @@ pub(all) struct CoreUiPreferenceStore {
 
 ///|
 pub fn new_core_ui_preference_store() -> CoreUiPreferenceStore {
-  { bool_values: {}, bool_defaults: {}, string_values: {}, string_defaults: {} }
+  {
+    bool_values: Map([]),
+    bool_defaults: Map([]),
+    string_values: Map([]),
+    string_defaults: Map([]),
+  }
 }
 
 ///|
@@ -168,7 +173,7 @@ pub(all) struct ElkUiPlugin {
 }
 
 ///|
-let elk_ui_plugin_ref : Ref[ElkUiPlugin?] = Ref::new(None)
+let elk_ui_plugin_ref : Ref[ElkUiPlugin?] = Ref(None)
 
 ///|
 pub fn new_elk_ui_plugin() -> ElkUiPlugin {

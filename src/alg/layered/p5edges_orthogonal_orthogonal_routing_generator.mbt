@@ -216,7 +216,7 @@ pub fn OrthogonalRoutingGenerator::route_edges(
   ignore(source_layer_index)
   ignore(self.debug_prefix)
 
-  let port_to_edge_segment_map : Map[Int, HyperEdgeSegment] = {}
+  let port_to_edge_segment_map : Map[Int, HyperEdgeSegment] = Map([])
   let edge_segments = []
 
   self.create_hyper_edge_segments(

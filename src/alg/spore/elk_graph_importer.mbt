@@ -15,7 +15,7 @@ pub struct SporeElkGraphImporter {
 
 ///|
 pub fn new_spore_elk_graph_importer() -> SporeElkGraphImporter {
-  { graph: None, node_map: {}, elk_graph: None, spacing_node_node: 0.0 }
+  { graph: None, node_map: Map([]), elk_graph: None, spacing_node_node: 0.0 }
 }
 
 ///|
@@ -313,7 +313,7 @@ pub fn SporeElkGraphImporter::update_graph(
   self : SporeElkGraphImporter,
   graph : SporeGraph,
 ) -> Unit {
-  let updated_node_map : Map[@core.KVector, SporeNodeEntry] = {}
+  let updated_node_map : Map[@core.KVector, SporeNodeEntry] = Map([])
   graph.t_edges = None
   graph.tree = None
 

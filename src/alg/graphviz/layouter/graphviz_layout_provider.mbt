@@ -131,12 +131,12 @@ fn graphviz_layout_provider_default_parser(
 ///|
 let graphviz_layout_provider_serializer_ref : Ref[
   (@dot.DotGraphvizModel) -> Array[Int],
-] = Ref::new(graphviz_layout_provider_default_serializer)
+] = Ref(graphviz_layout_provider_default_serializer)
 
 ///|
 let graphviz_layout_provider_parser_ref : Ref[
   (Array[Int]) -> GraphvizLayoutParseResult,
-] = Ref::new(graphviz_layout_provider_default_parser)
+] = Ref(graphviz_layout_provider_default_parser)
 
 ///|
 fn graphviz_layout_provider_default_resource_set_provider() -> GraphvizLayoutResourceSet {
@@ -149,13 +149,14 @@ fn graphviz_layout_provider_default_resource_set_provider() -> GraphvizLayoutRes
 ///|
 let graphviz_layout_provider_resource_set_provider_ref : Ref[
   () -> GraphvizLayoutResourceSet,
-] = Ref::new(graphviz_layout_provider_default_resource_set_provider)
+] = Ref(graphviz_layout_provider_default_resource_set_provider)
 
 ///|
-let graphviz_layout_provider_serial_call_no_ref : Ref[Int] = Ref::new(0)
+let graphviz_layout_provider_serial_call_no_ref : Ref[Int] = Ref(0)
 
 ///|
-let graphviz_layout_provider_debug_bytes_ref : Ref[Map[String, Array[Int]]] = Ref::new({},
+let graphviz_layout_provider_debug_bytes_ref : Ref[Map[String, Array[Int]]] = Ref(
+  Map([]),
 )
 
 ///|
@@ -325,7 +326,7 @@ pub fn GraphvizLayoutProvider::dispose(self : GraphvizLayoutProvider) -> Unit {
 fn graphviz_layout_provider_render_errors(
   errors : Array[GraphvizLayoutDiagnostic],
 ) -> String {
-  let output = @buffer.new()
+  let output = StringBuilder()
   output.write_string("Errors in Graphviz output:")
   for diagnostic in errors {
     output.write_string(

@@ -33,13 +33,19 @@ test "GmfLayoutCommand applies shape and edge layout updates" {
   inspect(gmf_view_location_y(node_view), content="200")
   inspect(gmf_view_width(node_view), content="300")
   inspect(gmf_view_height(node_view), content="400")
-  inspect(gmf_view_source_terminal(edge_view), content="Some(\"0.1,0.2\")")
-  inspect(gmf_view_target_terminal(edge_view), content="Some(\"0.8,0.9\")")
-  inspect(
+  debug_inspect(
+    gmf_view_source_terminal(edge_view),
+    content="Some(\"0.1,0.2\")",
+  )
+  debug_inspect(
+    gmf_view_target_terminal(edge_view),
+    content="Some(\"0.8,0.9\")",
+  )
+  debug_inspect(
     gmf_view_get_style(edge_view, junction_points_style_name),
     content="Some(\"(5,6)\")",
   )
-  inspect(command.get_affected_files(), content="[\"diagram.notation\"]")
+  debug_inspect(command.get_affected_files(), content="[\"diagram.notation\"]")
 }
 
 ///|
@@ -52,7 +58,7 @@ test "GmfLayoutCommand removes junction style and enforces oblique routing" {
   command.add_edge_layout(edge_view, None, None, None, None)
   command.execute()
 
-  inspect(
+  debug_inspect(
     gmf_view_get_style(edge_view, junction_points_style_name),
     content="None",
   )

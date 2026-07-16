@@ -663,7 +663,7 @@ fn mrtree_edge_router_avoid_overlap_special_edges(
   edge_end_texture_padding : Double,
 ) -> Unit {
   let mut side_counts = { side_one: 0, side_two: 0 }
-  let node_gaps : Map[Int64, MrtreeMultiLevelEdgeNodeNodeGap] = {}
+  let node_gaps : Map[Int64, MrtreeMultiLevelEdgeNodeNodeGap] = Map([])
 
   let mut max_level = 0
   for node in mrtree_graph_nodes(graph) {

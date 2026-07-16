@@ -40,7 +40,7 @@ pub(all) enum GraphTextPropertyValue {
 } derive(Debug)
 
 ///|
-pub impl Show for GraphTextPropertyValue with output(self, logger) {
+pub impl Show for GraphTextPropertyValue with fn output(self, logger) {
   logger.write_string(to_repr(self).to_string())
 }
 
@@ -110,7 +110,7 @@ pub(all) enum GraphTextListTransient {
 } derive(Debug)
 
 ///|
-pub impl Show for GraphTextListTransient with output(self, logger) {
+pub impl Show for GraphTextListTransient with fn output(self, logger) {
   logger.write_string(to_repr(self).to_string())
 }
 

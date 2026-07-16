@@ -5,7 +5,7 @@ pub(all) struct PropertyConstantsDelegator {
 
 ///|
 pub fn property_constants_delegator_create_empty() -> PropertyConstantsDelegator {
-  { property_delegate_ids: {} }
+  { property_delegate_ids: Map([]) }
 }
 
 ///|

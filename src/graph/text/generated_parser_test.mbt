@@ -36,7 +36,7 @@ test "AbstractElkGraphRuntimeModule exposes generated bindings" {
     content="org.eclipse.elk.graph.text.parser.antlr.internal.InternalElkGraphLexer",
   )
 
-  let properties : Map[String, String] = {}
+  let properties : Map[String, String] = Map([])
   properties["fileExtensions"] = "txt"
   runtime_module.configure(properties)
   inspect(runtime_module.configure_file_extensions(), content="txt")

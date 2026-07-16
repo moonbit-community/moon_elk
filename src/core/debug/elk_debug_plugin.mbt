@@ -5,7 +5,7 @@ pub(all) struct ElkDebugPlugin {
 }
 
 ///|
-let elk_debug_plugin_ref : Ref[ElkDebugPlugin?] = Ref::new(None)
+let elk_debug_plugin_ref : Ref[ElkDebugPlugin?] = Ref(None)
 
 ///|
 pub fn new_elk_debug_plugin() -> ElkDebugPlugin {

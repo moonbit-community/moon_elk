@@ -105,7 +105,7 @@ fn partition_preprocessor_must_be_reversed(
   }
 
   let queue = [source_node]
-  let visited : Map[Int, Bool] = {}
+  let visited : Map[Int, Bool] = Map([])
   visited[source_node.get_handle()] = true
   let mut queue_index = 0
 

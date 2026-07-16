@@ -462,12 +462,12 @@ fn dis_co_paint_polygon_intersects(
 ///|
 let dis_co_debug_node_component_graph_store : Ref[
   Map[@graph.ElkNode, @disco.DCGraph],
-] = Ref::new({})
+] = Ref(Map([]))
 
 ///|
 let dis_co_debug_node_polyomino_store : Ref[
   Map[@graph.ElkNode, Array[@disco.DCPolyomino]],
-] = Ref::new({})
+] = Ref(Map([]))
 
 ///|
 pub fn dis_co_graph_renderer_bind_component_graph(
@@ -644,12 +644,12 @@ pub fn new_dis_co_graph_renderer(
       configurator,
       scale * config_state_get_pattern_scale(state).to_double(),
     ),
-    bounds_map: {},
-    polygon_map: {},
-    dc_extension_map: {},
-    polyomino_map: {},
-    polyomino_center_map: {},
-    polyomino_extension_map: {},
+    bounds_map: Map([]),
+    polygon_map: Map([]),
+    dc_extension_map: Map([]),
+    polyomino_map: Map([]),
+    polyomino_center_map: Map([]),
+    polyomino_extension_map: Map([]),
     most_recently_drawn_graph: None,
     paint_elk_graph: true,
     paint_dc_graph: true,
@@ -1196,7 +1196,7 @@ fn dis_co_graph_renderer_render_recursively(
       level_number <= upper_lvl
     ) ||
     (config_state_draw_ghost_parent(renderer.state) && level_number == 0) {
-    let edge_set : Map[@graph.ElkEdge, Bool] = {}
+    let edge_set : Map[@graph.ElkEdge, Bool] = Map([])
     dis_co_graph_renderer_render_node_children(
       renderer, parent, area, offset, edge_set,
     )

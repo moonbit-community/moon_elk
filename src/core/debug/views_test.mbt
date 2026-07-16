@@ -56,7 +56,10 @@ test "ExecutionTimeView persists widths and filter state" {
   let restored = new_execution_time_view()
   restored.load_state()
   inspect(restored.get_base().is_filter_tree_enabled(), content="true")
-  inspect(restored.get_column_widths_for_test(), content="(111, 222, 333)")
+  debug_inspect(
+    restored.get_column_widths_for_test(),
+    content="(111, 222, 333)",
+  )
 
   elk_debug_plugin_stop(plugin)
 }
@@ -142,7 +145,7 @@ test "LoadGraphAction, ReloadFromFileAction and DropAdapter update model" {
   inspect(plugin.get_model().get_execution_infos().length(), content="1")
   let old_info = plugin.get_model().get_execution_infos()[0]
   inspect(execution_info_is_loaded_from_file(old_info), content="true")
-  inspect(
+  debug_inspect(
     execution_info_get_file_name(old_info),
     content="Some(\"/tmp/a.elkg\")",
   )
@@ -187,7 +190,7 @@ test "ImageExportAction completes png extension and records exports" {
   export_action.set_selected_file_name_for_test(Some("render.p"))
   export_action.run()
 
-  inspect(
+  debug_inspect(
     image_export_action_get_exported_files_for_test(),
     content="[\"render.png\"]",
   )

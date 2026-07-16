@@ -1,5 +1,5 @@
 ///|
-let ledge_next_handle_ref : Ref[Int] = Ref::new(0)
+let ledge_next_handle_ref : Ref[Int] = Ref(0)
 
 ///|
 fn ledge_next_handle() -> Int {
@@ -58,16 +58,16 @@ pub fn new_l_edge() -> LEdge {
     source: None,
     target: None,
     labels: [],
-    int_properties: {},
-    double_properties: {},
-    kvector_properties: {},
-    kvector_chain_properties: {},
-    bool_properties: {},
-    l_edge_array_properties: {},
-    spline_segment_array_properties: {},
-    port_properties: {},
-    edge_properties: {},
-    l_graph_properties: {},
+    int_properties: Map([]),
+    double_properties: Map([]),
+    kvector_properties: Map([]),
+    kvector_chain_properties: Map([]),
+    bool_properties: Map([]),
+    l_edge_array_properties: Map([]),
+    spline_segment_array_properties: Map([]),
+    port_properties: Map([]),
+    edge_properties: Map([]),
+    l_graph_properties: Map([]),
   }
 }
 

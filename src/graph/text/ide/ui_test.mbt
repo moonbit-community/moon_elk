@@ -192,7 +192,7 @@ test "ElkGraph executable extension factory resolves provider and initializes ex
   @ui.text_activator_reset_for_test()
   let activator = @ui.new_text_activator()
   let class_name = "example.ElkGraphExtension"
-  let contributor_ref : Ref[String] = Ref::new("none")
+  let contributor_ref : Ref[String] = Ref("none")
 
   activator.register_bundle_class(class_name)
   activator.register_injector_provider(
@@ -215,7 +215,7 @@ test "ElkGraph executable extension factory resolves provider and initializes ex
   )
   activator.start()
 
-  let data_map : Map[String, String] = {}
+  let data_map : Map[String, String] = Map([])
   data_map[@ui.graph_text_ui_extension_factory_guicekey] = class_name
   let factory = @ui.new_elk_graph_executable_extension_factory()
   factory.set_initialization_data(
@@ -351,7 +351,10 @@ test "ElkGraph layout connector setup and convert handler work" {
     Ok(value) => value
     Err(_) => @ui.new_text_layout_mapping("xtext", root, root)
   }
-  inspect(connector.apply_layout(mapping, {}), content="layout-dialog:xtext")
+  inspect(
+    connector.apply_layout(mapping, Map([])),
+    content="layout-dialog:xtext",
+  )
 
   let setup = @ui.new_text_layout_setup()
   inspect(

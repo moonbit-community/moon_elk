@@ -94,7 +94,7 @@ test "Filter collapse expand and preference actions update view state" {
   filter_action.run()
 
   inspect(view.is_filter_tree_enabled(), content="true")
-  inspect(view.get_visible_root_infos_for_test(), content="[0]")
+  debug_inspect(view.get_visible_root_infos_for_test(), content="[0]")
 
   let collapse = new_collapse_execution_tree_action(view)
   collapse.run()
@@ -138,7 +138,7 @@ test "RevealLogFolderAction enables and launches only for a single directory-bac
   reveal.update_enablement()
   inspect(reveal.is_enabled(), content="true")
   reveal.run()
-  inspect(
+  debug_inspect(
     core_debug_get_launched_programs_for_test(),
     content="[\"/logs/run1\"]",
   )
@@ -180,7 +180,7 @@ test "CompressLogFolderAction mirrors zip extension completion and records zip e
   let outputs = core_debug_get_zip_outputs_for_test()
   inspect(outputs.length(), content="1")
   inspect(outputs[0].file_name, content="archive.zip")
-  inspect(
+  debug_inspect(
     outputs[0].entries,
     content="[\"/\", \"/run1/\", \"/run1/root.log\", \"/run1/sub/\", \"/run1/sub/inner.log\"]",
   )

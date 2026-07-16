@@ -1,5 +1,5 @@
 ///|
-let next_experiment_runner_id_ref : Ref[Int] = Ref::new(0)
+let next_experiment_runner_id_ref : Ref[Int] = Ref(0)
 
 ///|
 fn next_experiment_runner_id() -> Int {
@@ -63,7 +63,7 @@ pub fn[T, G] new_experiment_runner(
   whitebox_tests : Array[WhiteboxTestMethod[T, G]],
 ) -> ExperimentRunner[T, G] {
   let runner_id = next_experiment_runner_id()
-  let descriptions : Map[String, String] = {}
+  let descriptions : Map[String, String] = Map([])
   for blackbox in blackbox_tests {
     descriptions[blackbox.get_method_name()] = describe_method_name_for_runner(
       blackbox.get_method_name(),
@@ -76,8 +76,8 @@ pub fn[T, G] new_experiment_runner(
       runner_id,
     )
   }
-  let before_mappings : Map[String, Array[WhiteboxTestMethod[T, G]]] = {}
-  let after_mappings : Map[String, Array[WhiteboxTestMethod[T, G]]] = {}
+  let before_mappings : Map[String, Array[WhiteboxTestMethod[T, G]]] = Map([])
+  let after_mappings : Map[String, Array[WhiteboxTestMethod[T, G]]] = Map([])
   register_whitebox_processor_mappings(
     whitebox_tests, before_mappings, after_mappings,
   )

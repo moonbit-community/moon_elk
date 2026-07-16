@@ -107,9 +107,9 @@ fn disco_get_inner_neighbors_of_port(
 ) -> Map[@graph.ElkNode, Unit] {
   let port_parent_node = match @graph.port_parent(port) {
     Some(parent) => parent
-    None => return {}
+    None => return Map([])
   }
-  let neighbors : Map[@graph.ElkNode, Unit] = {}
+  let neighbors : Map[@graph.ElkNode, Unit] = Map([])
   let all_edges = @graph.port_incoming_edges(port).copy()
   for edge in @graph.port_outgoing_edges(port) {
     all_edges.push(edge)
@@ -160,9 +160,9 @@ fn disco_compute_incidences(
   let adjacent_and_inside_parent : Map[
     @graph.ElkPort,
     Map[@graph.ElkNode, Unit],
-  ] = {}
+  ] = Map([])
   for node in nodes {
-    let adjacent_nodes : Map[@graph.ElkNode, Unit] = {}
+    let adjacent_nodes : Map[@graph.ElkNode, Unit] = Map([])
     incidence_map[node] = adjacent_nodes
 
     let incoming_same_level : Array[@graph.ElkEdge] = []
@@ -239,8 +239,8 @@ fn disco_compute_incidences(
 pub fn elk_graph_components_processor_split(
   graph : @graph.ElkNode,
 ) -> Array[Array[@graph.ElkNode]] {
-  let visited : Map[@graph.ElkNode, Unit] = {}
-  let incidence_map : Map[@graph.ElkNode, Map[@graph.ElkNode, Unit]] = {}
+  let visited : Map[@graph.ElkNode, Unit] = Map([])
+  let incidence_map : Map[@graph.ElkNode, Map[@graph.ElkNode, Unit]] = Map([])
   let components : Array[Array[@graph.ElkNode]] = []
   let children = @graph.node_children(graph)
   disco_compute_incidences(children, incidence_map)

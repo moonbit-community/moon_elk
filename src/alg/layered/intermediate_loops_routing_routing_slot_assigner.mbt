@@ -157,8 +157,8 @@ pub struct RoutingSlotAssigner {
 pub fn new_routing_slot_assigner() -> RoutingSlotAssigner {
   {
     hyper_edge_segments: [],
-    sl_loop_to_segment_map: {},
-    sl_loop_activity_over_ports: {},
+    sl_loop_to_segment_map: Map([]),
+    sl_loop_activity_over_ports: Map([]),
   }
 }
 

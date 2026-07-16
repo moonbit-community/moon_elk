@@ -11,7 +11,7 @@ pub struct GraphTextProject {
 
 ///|
 pub fn new_graph_text_project() -> GraphTextProject {
-  { files: {} }
+  { files: Map([]) }
 }
 
 ///|

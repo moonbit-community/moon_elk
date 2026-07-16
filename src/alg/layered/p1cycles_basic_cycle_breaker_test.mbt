@@ -130,7 +130,7 @@ fn basic_cycle_breaker_dfs_cycle(node : LNode, states : Map[Int, Int]) -> Bool {
 
 ///|
 fn basic_cycle_breaker_has_cycle(graph : LGraph) -> Bool {
-  let states = {}
+  let states = Map([])
   for node in graph.get_layerless_nodes() {
     if basic_cycle_breaker_state_of(states, node) == 0 &&
       basic_cycle_breaker_dfs_cycle(node, states) {

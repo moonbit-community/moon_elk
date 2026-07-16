@@ -7,7 +7,7 @@ test "GraphValidationException carries message and issues" {
     "graph invalid",
     [issue],
   )
-  inspect(exception.get_message(), content="Some(\"graph invalid\")")
+  debug_inspect(exception.get_message(), content="Some(\"graph invalid\")")
   let issues = exception.get_issues()
   inspect(
     match issues {

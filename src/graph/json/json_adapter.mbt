@@ -239,7 +239,7 @@ pub fn JsonAdapter::get_json_arr(
 ///|
 pub fn JsonAdapter::new_json_object(self : JsonAdapter) -> Map[String, Json] {
   ignore(self)
-  {}
+  Map([])
 }
 
 ///|

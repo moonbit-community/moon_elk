@@ -5,7 +5,7 @@ pub struct MapPropertyHolder {
 
 ///|
 pub fn new_map_property_holder() -> MapPropertyHolder {
-  { property_map: {} }
+  { property_map: Map([]) }
 }
 
 ///|
@@ -66,7 +66,7 @@ pub fn MapPropertyHolder::copy_properties(
 pub fn MapPropertyHolder::get_all_properties(
   self : MapPropertyHolder,
 ) -> Map[String, Json] {
-  let properties = {}
+  let properties = Map([])
   self.property_map.each((key, value) => properties[key] = value)
   properties
 }
