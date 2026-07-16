@@ -1,14 +1,5 @@
 ///|
-type GraphTestShape = @test.GraphTestShape
-
-///|
 type ILayoutExecutionListener[T] = @core.ILayoutExecutionListener[T]
-
-///|
-type NodeLabelPlacement = @core.NodeLabelPlacement
-
-///|
-type ElkLabelParent = @graph.ElkLabelParent
 
 ///|
 type SizeConstraint = @core.SizeConstraint
@@ -85,64 +76,13 @@ let port_width = @test.port_width
 let port_height = @test.port_height
 
 ///|
-let make_node_label_parent = @test.make_node_label_parent
-
-///|
-let make_edge_label_parent = @test.make_edge_label_parent
-
-///|
 let label_side_to_string = @core.label_side_to_string
 
 ///|
 let node_set_string_set_property = @graph.node_set_string_set_property
 
 ///|
-let port_set_identifier = @graph.port_set_identifier
-
-///|
-let node_labels = @graph.node_labels
-
-///|
-let make_port_label_parent = @graph.make_port_label_parent
-
-///|
-let label_set_layout_option_string_by_id = @graph.label_set_layout_option_string_by_id
-
-///|
-let port_label_placement_fixed = @core.port_label_placement_fixed
-
-///|
-let edge_set_identifier = @graph.edge_set_identifier
-
-///|
-let edge_containing_node = @graph.edge_containing_node
-
-///|
-let port_label_placement_inside = @core.port_label_placement_inside
-
-///|
-let port_label_placement_outside = @core.port_label_placement_outside
-
-///|
 let new_i_label_manager = @core.new_i_label_manager
-
-///|
-let graph_test_utils_all_nodes = @test.graph_test_utils_all_nodes
-
-///|
-let graph_test_shape_label = @test.graph_test_shape_label
-
-///|
-let graph_test_utils_have_overlaps = @test.graph_test_utils_have_overlaps
-
-///|
-let node_all_descendants_including_self = @graph.node_all_descendants_including_self
-
-///|
-let port_layout_option_string_value = @test.port_layout_option_string_value
-
-///|
-let new_elk_padding_any = @core.new_elk_padding_any
 
 ///|
 let new_kvector_chain_from_array = @core.new_kvector_chain_from_array
@@ -165,30 +105,6 @@ let plain_java_initialization_reset_for_test = @test.plain_java_initialization_r
 
 ///|
 let plain_java_initialization_initialize_plain_java_layout = @test.plain_java_initialization_initialize_plain_java_layout
-
-///|
-let edge_identifier = @test.edge_identifier
-
-///|
-let edge_section_incoming_shape = @graph.edge_section_incoming_shape
-
-///|
-let edge_section_outgoing_shape = @graph.edge_section_outgoing_shape
-
-///|
-let edge_set_layout_option_string_by_id = @test.edge_set_layout_option_string_by_id
-
-///|
-let node_label_placement_inside_top_center = @core.node_label_placement_inside_top_center
-
-///|
-let label_parent = @test.label_parent
-
-///|
-let port_labels = @test.port_labels
-
-///|
-let new_elk_graph_parser = @test.new_elk_graph_parser
 
 ///|
 let size_constraint_to_string = @core.size_constraint_to_string
