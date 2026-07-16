@@ -1,11 +1,16 @@
 ///|
-fn bk_compactor_same_node(left : LNode, right : LNode) -> Bool {
+fn bk_compactor_same_node(
+  left : @layered.LNode,
+  right : @layered.LNode,
+) -> Bool {
   left.get_handle() == right.get_handle()
 }
 
 ///|
-fn bk_compactor_reverse_layers(layers : Array[Layer]) -> Array[Layer] {
-  let reversed : Array[Layer] = []
+fn bk_compactor_reverse_layers(
+  layers : Array[@layered.Layer],
+) -> Array[@layered.Layer] {
+  let reversed : Array[@layered.Layer] = []
   for i = layers.length() - 1; i >= 0; i = i - 1 {
     reversed.push(layers[i])
   }
@@ -13,8 +18,10 @@ fn bk_compactor_reverse_layers(layers : Array[Layer]) -> Array[Layer] {
 }
 
 ///|
-fn bk_compactor_reverse_nodes(nodes : Array[LNode]) -> Array[LNode] {
-  let reversed : Array[LNode] = []
+fn bk_compactor_reverse_nodes(
+  nodes : Array[@layered.LNode],
+) -> Array[@layered.LNode] {
+  let reversed : Array[@layered.LNode] = []
   for i = nodes.length() - 1; i >= 0; i = i - 1 {
     reversed.push(nodes[i])
   }
@@ -24,22 +31,22 @@ fn bk_compactor_reverse_nodes(nodes : Array[LNode]) -> Array[LNode] {
 ///|
 fn bk_compactor_vertical_spacing(
   compactor : BKCompactor,
-  first : LNode,
-  second : LNode,
+  first : @layered.LNode,
+  second : @layered.LNode,
 ) -> Double raise BKAlignedLayoutException {
   compactor.spacings.get_vertical_spacing(first, second) catch {
-    LayeredSpacingsException(message) =>
+    @layered.LayeredSpacingsException(message) =>
       bk_aligned_layout_raise_illegal_state(message)
   }
 }
 
 ///|
 pub struct BKCompactor {
-  layered_graph : LGraph
+  layered_graph : @layered.LGraph
   thresh_strategy : BkThresholdStrategy
   ni : NeighborhoodInformation
-  spacings : Spacings
-  class_nodes : Map[Int, LNode]
+  spacings : @layered.Spacings
+  class_nodes : Map[Int, @layered.LNode]
   class_outgoing : Map[Int, Array[(Int, Double)]]
   class_indegree : Map[Int, Int]
   class_shift : Map[Int, Double]
@@ -47,7 +54,7 @@ pub struct BKCompactor {
 
 ///|
 pub fn new_bk_compactor(
-  layered_graph : LGraph,
+  layered_graph : @layered.LGraph,
   ni : NeighborhoodInformation,
 ) -> BKCompactor {
   let edge_straightening = layered_graph.get_property_string(
@@ -64,7 +71,7 @@ pub fn new_bk_compactor(
     layered_graph,
     thresh_strategy,
     ni,
-    spacings: new_layered_spacings(layered_graph),
+    spacings: @layered.new_layered_spacings(layered_graph),
     class_nodes: Map([]),
     class_outgoing: Map([]),
     class_indegree: Map([]),
@@ -73,7 +80,10 @@ pub fn new_bk_compactor(
 }
 
 ///|
-fn BKCompactor::ensure_class_node(self : BKCompactor, sink_node : LNode) -> Int {
+fn BKCompactor::ensure_class_node(
+  self : BKCompactor,
+  sink_node : @layered.LNode,
+) -> Int {
   let handle = sink_node.get_handle()
   if !self.class_nodes.contains(handle) {
     self.class_nodes[handle] = sink_node
@@ -86,8 +96,8 @@ fn BKCompactor::ensure_class_node(self : BKCompactor, sink_node : LNode) -> Int 
 ///|
 fn BKCompactor::add_class_edge(
   self : BKCompactor,
-  source_sink : LNode,
-  target_sink : LNode,
+  source_sink : @layered.LNode,
+  target_sink : @layered.LNode,
   separation : Double,
 ) -> Unit {
   let source_handle = self.ensure_class_node(source_sink)
@@ -188,7 +198,7 @@ fn BKCompactor::place_classes(
 ///|
 fn BKCompactor::place_block(
   self : BKCompactor,
-  root : LNode,
+  root : @layered.LNode,
   bal : BKAlignedLayout,
 ) -> Unit raise BKAlignedLayoutException {
   if bal.y[root.get_id()] is Some(_) {

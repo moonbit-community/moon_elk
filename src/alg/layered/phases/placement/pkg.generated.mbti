@@ -1,0 +1,168 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/moon_elk/alg/layered/phases/placement"
+
+import {
+  "Milky2018/moon_elk/alg/layered",
+  "Milky2018/moon_elk/core",
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn bk_aligned_layout_exception_message(BKAlignedLayoutException) -> String
+
+pub fn bk_hdirection_is_left(BKHDirection) -> Bool
+
+pub fn bk_hdirection_is_right(BKHDirection) -> Bool
+
+pub fn bk_vdirection_is_down(BKVDirection) -> Bool
+
+pub fn bk_vdirection_is_up(BKVDirection) -> Bool
+
+pub fn neighborhood_information_build_for(@layered.LGraph) -> NeighborhoodInformation
+
+pub fn new_bk_aligned_layout(@layered.LGraph, Int, BKVDirection?, BKHDirection?) -> BKAlignedLayout
+
+pub fn new_bk_aligner(@layered.LGraph, NeighborhoodInformation) -> BKAligner
+
+pub fn new_bk_compactor(@layered.LGraph, NeighborhoodInformation) -> BKCompactor
+
+pub fn new_bk_i_compactor((BKAlignedLayout) -> Unit) -> BkICompactor
+
+pub fn new_bk_node_placer_layout_phase() -> @core.ILayoutProcessor[@layered.LayeredPhases, @layered.LGraph]
+
+pub fn new_bk_null_threshold_strategy() -> BkThresholdStrategy
+
+pub fn new_bk_simple_threshold_strategy() -> BkThresholdStrategy
+
+pub fn new_interactive_node_placer_layout_phase() -> @core.ILayoutProcessor[@layered.LayeredPhases, @layered.LGraph]
+
+pub fn new_linear_segments_node_placer_layout_phase() -> @core.ILayoutProcessor[@layered.LayeredPhases, @layered.LGraph]
+
+pub fn new_network_simplex_placer_layout_phase() -> @core.ILayoutProcessor[@layered.LayeredPhases, @layered.LGraph]
+
+pub fn new_simple_node_placer_layout_phase() -> @core.ILayoutProcessor[@layered.LayeredPhases, @layered.LGraph]
+
+pub let placement_phase_linked : Bool
+
+// Errors
+pub(all) suberror BKAlignedLayoutException {
+  IllegalStateException(String)
+} derive(ToJson, @debug.Debug)
+
+pub suberror BkThresholdStrategyException {
+  BkThresholdStrategyException(String)
+} derive(ToJson, @debug.Debug)
+
+pub suberror NetworkSimplexPlacerException {
+  NetworkSimplexPlacerException(String)
+} derive(ToJson, @debug.Debug)
+
+// Types and methods
+pub struct BKAlignedLayout {
+  layered_graph : @layered.LGraph
+  spacings : @layered.Spacings
+  root : Array[@layered.LNode?]
+  block_size : Array[Double]
+  align : Array[@layered.LNode?]
+  inner_shift : Array[Double]
+  sink : Array[@layered.LNode?]
+  shift : Array[Double]
+  y : Array[Double?]
+  vdir : BKVDirection?
+  hdir : BKHDirection?
+  su : Array[Bool]
+  od : Array[Bool]
+}
+pub fn BKAlignedLayout::calculate_delta(Self, @layered.LPort, @layered.LPort) -> Double raise BKAlignedLayoutException
+pub fn BKAlignedLayout::check_space_above(Self, @layered.LNode, Double, NeighborhoodInformation) -> Double raise BKAlignedLayoutException
+pub fn BKAlignedLayout::check_space_below(Self, @layered.LNode, Double, NeighborhoodInformation) -> Double raise BKAlignedLayoutException
+pub fn BKAlignedLayout::cleanup(Self) -> Unit
+pub fn BKAlignedLayout::get_max_y(Self, @layered.LNode) -> Double raise BKAlignedLayoutException
+pub fn BKAlignedLayout::get_min_y(Self, @layered.LNode) -> Double raise BKAlignedLayoutException
+pub fn BKAlignedLayout::layout_size(Self) -> Double raise BKAlignedLayoutException
+pub fn BKAlignedLayout::require_align(Self, @layered.LNode) -> @layered.LNode raise BKAlignedLayoutException
+pub fn BKAlignedLayout::require_align_by_id(Self, Int) -> @layered.LNode raise BKAlignedLayoutException
+pub fn BKAlignedLayout::require_hdir(Self) -> BKHDirection raise BKAlignedLayoutException
+pub fn BKAlignedLayout::require_root(Self, @layered.LNode) -> @layered.LNode raise BKAlignedLayoutException
+pub fn BKAlignedLayout::require_root_by_id(Self, Int) -> @layered.LNode raise BKAlignedLayoutException
+pub fn BKAlignedLayout::require_sink(Self, @layered.LNode) -> @layered.LNode raise BKAlignedLayoutException
+pub fn BKAlignedLayout::require_sink_by_id(Self, Int) -> @layered.LNode raise BKAlignedLayoutException
+pub fn BKAlignedLayout::require_vdir(Self) -> BKVDirection raise BKAlignedLayoutException
+pub fn BKAlignedLayout::require_y(Self, @layered.LNode) -> Double raise BKAlignedLayoutException
+pub fn BKAlignedLayout::require_y_by_id(Self, Int) -> Double raise BKAlignedLayoutException
+pub fn BKAlignedLayout::set_y_by_id(Self, Int, Double) -> Unit raise BKAlignedLayoutException
+pub fn BKAlignedLayout::shift_block(Self, @layered.LNode, Double) -> Unit raise BKAlignedLayoutException
+pub fn BKAlignedLayout::to_string(Self) -> String
+
+pub struct BKAligner {
+  layered_graph : @layered.LGraph
+  ni : NeighborhoodInformation
+}
+pub fn BKAligner::inside_block_shift(Self, BKAlignedLayout) -> Unit raise BKAlignedLayoutException
+pub fn BKAligner::vertical_alignment(Self, BKAlignedLayout, Map[Int, Bool]) -> Unit raise BKAlignedLayoutException
+
+pub struct BKCompactor {
+  layered_graph : @layered.LGraph
+  thresh_strategy : BkThresholdStrategy
+  ni : NeighborhoodInformation
+  spacings : @layered.Spacings
+  class_nodes : Map[Int, @layered.LNode]
+  class_outgoing : Map[Int, Array[(Int, Double)]]
+  class_indegree : Map[Int, Int]
+  class_shift : Map[Int, Double]
+}
+pub fn BKCompactor::horizontal_compaction(Self, BKAlignedLayout) -> Unit raise BKAlignedLayoutException
+
+pub enum BKHDirection {
+  Right
+  Left
+}
+
+pub enum BKVDirection {
+  Down
+  Up
+}
+
+pub struct BkICompactor {
+  horizontal_compaction_fn : (BKAlignedLayout) -> Unit
+}
+pub fn BkICompactor::horizontal_compaction(Self, BKAlignedLayout) -> Unit
+
+pub struct BkPostprocessable {
+  free : @layered.LNode
+  is_root : Bool
+  mut has_edges : Bool
+  mut edge : @layered.LEdge?
+}
+
+pub struct BkThresholdStrategy {
+  kind : BkThresholdStrategyKind
+  mut bal : BKAlignedLayout?
+  mut ni : NeighborhoodInformation?
+  block_finished : Map[Int, Bool]
+  post_processables_queue : Array[BkPostprocessable]
+  post_processables_stack : Array[BkPostprocessable]
+}
+pub fn BkThresholdStrategy::calculate_threshold(Self, Double, @layered.LNode, @layered.LNode) -> Double
+pub fn BkThresholdStrategy::finish_block(Self, @layered.LNode) -> Unit
+pub fn BkThresholdStrategy::get_other(Self, @layered.LEdge, @layered.LNode) -> @layered.LNode raise BkThresholdStrategyException
+pub fn BkThresholdStrategy::init(Self, BKAlignedLayout, NeighborhoodInformation) -> Unit
+pub fn BkThresholdStrategy::post_process(Self) -> Unit
+
+pub enum BkThresholdStrategyKind {
+  NullThreshold
+  SimpleThreshold
+}
+
+pub struct NeighborhoodInformation {
+  mut node_count : Int
+  mut layer_index : Array[Int]
+  mut node_index : Array[Int]
+  mut left_neighbors : Array[Array[(@layered.LNode, @layered.LEdge)]]
+  mut right_neighbors : Array[Array[(@layered.LNode, @layered.LEdge)]]
+}
+pub fn NeighborhoodInformation::cleanup(Self) -> Unit
+
+// Type aliases
+
+// Traits

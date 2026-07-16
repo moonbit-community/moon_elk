@@ -46,7 +46,7 @@ fn network_simplex_placer_raise_unit(
 
 ///|
 priv struct NetworkSimplexNodeRep {
-  origin : LNode
+  origin : @layered.LNode
   is_flexible : Bool
   head : @common.NNode
   tail : @common.NNode
@@ -54,7 +54,7 @@ priv struct NetworkSimplexNodeRep {
 
 ///|
 priv struct NetworkSimplexEdgeRep {
-  _origin : LEdge
+  _origin : @layered.LEdge
   left : @common.NEdge
   right : @common.NEdge
 }
@@ -62,13 +62,13 @@ priv struct NetworkSimplexEdgeRep {
 ///|
 priv struct NetworkSimplexAuxiliaryState {
   n_graph : @common.NGraph
-  spacings : Spacings
+  spacings : @layered.Spacings
   node_reps : Array[NetworkSimplexNodeRep?]
   edge_reps : Array[NetworkSimplexEdgeRep?]
   port_map : Map[Int, @common.NNode]
   flexible_where_space_permits_edges : Array[@common.NEdge]
   node_state : Array[Int]
-  two_paths : Array[Array[LEdge]]
+  two_paths : Array[Array[@layered.LEdge]]
   crossing : Array[Bool]
 }
 
@@ -163,7 +163,7 @@ fn network_simplex_port_constraints_is_pos_fixed(value : String) -> Bool {
 }
 
 ///|
-fn network_simplex_node_flexibility_value(node : LNode) -> String {
+fn network_simplex_node_flexibility_value(node : @layered.LNode) -> String {
   if node.has_property_string(
       @options.layered_options_node_placement_network_simplex_node_flexibility,
     ) {
@@ -181,7 +181,7 @@ fn network_simplex_node_flexibility_value(node : LNode) -> String {
 
 ///|
 fn network_simplex_get_individual_or_default_elk_margin(
-  node : LNode,
+  node : @layered.LNode,
   property : @graph.IProperty[@core.ElkMargin],
 ) -> @core.ElkMargin {
   if node.has_property_elk_margin(property) {
@@ -193,9 +193,9 @@ fn network_simplex_get_individual_or_default_elk_margin(
 
 ///|
 fn network_simplex_node_requires_more_height_for_flexible_ports(
-  node : LNode,
+  node : @layered.LNode,
 ) -> Bool {
-  let port_spacing = layered_spacings_get_individual_or_default(
+  let port_spacing = @layered.layered_spacings_get_individual_or_default(
     node, @core.spacing_port_port,
   )
   let additional_port_spacing = if node.has_property_elk_margin(
@@ -235,15 +235,17 @@ fn network_simplex_node_requires_more_height_for_flexible_ports(
 }
 
 ///|
-fn network_simplex_node_type_is_normal(node_type : NodeType) -> Bool {
+fn network_simplex_node_type_is_normal(node_type : @layered.NodeType) -> Bool {
   match node_type {
-    Normal => true
+    @layered.Normal => true
     _ => false
   }
 }
 
 ///|
-fn network_simplex_node_type_is_long_edge(node_type : NodeType) -> Bool {
+fn network_simplex_node_type_is_long_edge(
+  node_type : @layered.NodeType,
+) -> Bool {
   match node_type {
     LongEdge => true
     _ => false
@@ -260,29 +262,37 @@ fn network_simplex_port_side_is_east_west(port_side : @core.PortSide) -> Bool {
 }
 
 ///|
-fn network_simplex_require_port_node(port : LPort) -> LNode {
+fn network_simplex_require_port_node(port : @layered.LPort) -> @layered.LNode {
   port.get_node().unwrap()
 }
 
 ///|
-fn network_simplex_require_edge_source_port(edge : LEdge) -> LPort {
+fn network_simplex_require_edge_source_port(
+  edge : @layered.LEdge,
+) -> @layered.LPort {
   edge.get_source().unwrap()
 }
 
 ///|
-fn network_simplex_require_edge_target_port(edge : LEdge) -> LPort {
+fn network_simplex_require_edge_target_port(
+  edge : @layered.LEdge,
+) -> @layered.LPort {
   edge.get_target().unwrap()
 }
 
 ///|
-fn network_simplex_require_edge_source_node(edge : LEdge) -> LNode {
+fn network_simplex_require_edge_source_node(
+  edge : @layered.LEdge,
+) -> @layered.LNode {
   network_simplex_require_port_node(
     network_simplex_require_edge_source_port(edge),
   )
 }
 
 ///|
-fn network_simplex_require_edge_target_node(edge : LEdge) -> LNode {
+fn network_simplex_require_edge_target_node(
+  edge : @layered.LEdge,
+) -> @layered.LNode {
   network_simplex_require_port_node(
     network_simplex_require_edge_target_port(edge),
   )
@@ -291,7 +301,7 @@ fn network_simplex_require_edge_target_node(edge : LEdge) -> LNode {
 ///|
 fn network_simplex_require_node_rep(
   state : NetworkSimplexAuxiliaryState,
-  node : LNode,
+  node : @layered.LNode,
 ) -> NetworkSimplexNodeRep {
   state.node_reps[node.get_id()].unwrap()
 }
@@ -299,7 +309,7 @@ fn network_simplex_require_node_rep(
 ///|
 fn network_simplex_require_port_rep(
   state : NetworkSimplexAuxiliaryState,
-  port : LPort,
+  port : @layered.LPort,
 ) -> @common.NNode {
   state.port_map.get(port.get_handle()).unwrap()
 }
@@ -307,23 +317,29 @@ fn network_simplex_require_port_rep(
 ///|
 fn network_simplex_require_edge_rep(
   state : NetworkSimplexAuxiliaryState,
-  edge : LEdge,
+  edge : @layered.LEdge,
 ) -> NetworkSimplexEdgeRep {
   state.edge_reps[edge.get_id()].unwrap()
 }
 
 ///|
-fn network_simplex_require_node_layer(node : LNode) -> Layer {
+fn network_simplex_require_node_layer(node : @layered.LNode) -> @layered.Layer {
   node.get_layer().unwrap()
 }
 
 ///|
-fn network_simplex_layers_equal(left : Layer, right : Layer) -> Bool {
+fn network_simplex_layers_equal(
+  left : @layered.Layer,
+  right : @layered.Layer,
+) -> Bool {
   left.get_index() == right.get_index()
 }
 
 ///|
-fn network_simplex_node_is_in_layer(node : LNode, layer : Layer) -> Bool {
+fn network_simplex_node_is_in_layer(
+  node : @layered.LNode,
+  layer : @layered.Layer,
+) -> Bool {
   match node.get_layer() {
     Some(node_layer) => network_simplex_layers_equal(node_layer, layer)
     None => false
@@ -331,8 +347,10 @@ fn network_simplex_node_is_in_layer(node : LNode, layer : Layer) -> Bool {
 }
 
 ///|
-fn network_simplex_reverse_ports(ports : Array[LPort]) -> Array[LPort] {
-  let reversed : Array[LPort] = []
+fn network_simplex_reverse_ports(
+  ports : Array[@layered.LPort],
+) -> Array[@layered.LPort] {
+  let reversed : Array[@layered.LPort] = []
   let mut idx = ports.length()
   while idx > 0 {
     idx -= 1
@@ -343,13 +361,13 @@ fn network_simplex_reverse_ports(ports : Array[LPort]) -> Array[LPort] {
 
 ///|
 fn network_simplex_new_auxiliary_state(
-  layered_graph : LGraph,
+  layered_graph : @layered.LGraph,
   node_count : Int,
   edge_count : Int,
 ) -> NetworkSimplexAuxiliaryState {
   {
     n_graph: @common.new_ngraph(),
-    spacings: new_layered_spacings(layered_graph),
+    spacings: @layered.new_layered_spacings(layered_graph),
     node_reps: Array::make(node_count, None),
     edge_reps: Array::make(edge_count, None),
     port_map: Map([]),
@@ -363,11 +381,11 @@ fn network_simplex_new_auxiliary_state(
 ///|
 fn network_simplex_vertical_spacing(
   state : NetworkSimplexAuxiliaryState,
-  first : LNode,
-  second : LNode,
+  first : @layered.LNode,
+  second : @layered.LNode,
 ) -> Double {
   state.spacings.get_vertical_spacing(first, second) catch {
-    LayeredSpacingsException(message) => {
+    @layered.LayeredSpacingsException(message) => {
       @core.layout_runtime_report_unsupported_configuration(message)
       0.0
     }
@@ -376,8 +394,8 @@ fn network_simplex_vertical_spacing(
 
 ///|
 fn network_simplex_node_type_edge_weight(
-  source_type : NodeType,
-  target_type : NodeType,
+  source_type : @layered.NodeType,
+  target_type : @layered.NodeType,
 ) -> Double {
   if network_simplex_node_type_is_normal(source_type) &&
     network_simplex_node_type_is_normal(target_type) {
@@ -391,7 +409,7 @@ fn network_simplex_node_type_edge_weight(
 }
 
 ///|
-fn network_simplex_get_edge_weight(edge : LEdge) -> Double {
+fn network_simplex_get_edge_weight(edge : @layered.LEdge) -> Double {
   let source_port = network_simplex_require_edge_source_port(edge)
   let target_port = network_simplex_require_edge_target_port(edge)
   let source_node = network_simplex_require_port_node(source_port)
@@ -408,12 +426,12 @@ fn network_simplex_get_edge_weight(edge : LEdge) -> Double {
 }
 
 ///|
-fn network_simplex_is_handled_edge(edge : LEdge) -> Bool {
+fn network_simplex_is_handled_edge(edge : @layered.LEdge) -> Bool {
   !edge.is_self_loop() && !edge.is_in_layer_edge()
 }
 
 ///|
-fn network_simplex_node_is_flexible(node : LNode) -> Bool {
+fn network_simplex_node_is_flexible(node : @layered.LNode) -> Bool {
   if !network_simplex_node_type_is_normal(node.get_type()) {
     return false
   }
@@ -444,7 +462,7 @@ fn network_simplex_node_is_flexible(node : LNode) -> Bool {
 }
 
 ///|
-fn network_simplex_prepare(layered_graph : LGraph) -> (Int, Int) {
+fn network_simplex_prepare(layered_graph : @layered.LGraph) -> (Int, Int) {
   let mut node_idx = 0
   let mut edge_idx = 0
 
@@ -482,7 +500,7 @@ fn network_simplex_prepare(layered_graph : LGraph) -> (Int, Int) {
 
 ///|
 fn network_simplex_transform_fixed_pos_node(
-  node : LNode,
+  node : @layered.LNode,
   state : NetworkSimplexAuxiliaryState,
 ) -> NetworkSimplexNodeRep {
   let single_node = @common.nnode_of()
@@ -501,7 +519,7 @@ fn network_simplex_transform_fixed_pos_node(
 
 ///|
 fn network_simplex_transform_ports(
-  ports : Array[LPort],
+  ports : Array[@layered.LPort],
   corners : NetworkSimplexNodeRep,
   state : NetworkSimplexAuxiliaryState,
 ) -> Unit {
@@ -509,7 +527,7 @@ fn network_simplex_transform_ports(
     return
   }
 
-  let port_spacing = layered_spacings_get_individual_or_default(
+  let port_spacing = @layered.layered_spacings_get_individual_or_default(
     corners.origin,
     @core.spacing_port_port,
   )
@@ -519,7 +537,7 @@ fn network_simplex_transform_ports(
   )
 
   let mut last_nnode = corners.head
-  let mut last_port : LPort? = None
+  let mut last_port : @layered.LPort? = None
   for port in ports {
     let spacing = match last_port {
       Some(previous) => port_spacing + previous.get_size().y
@@ -557,7 +575,7 @@ fn network_simplex_transform_ports(
 
 ///|
 fn network_simplex_transform_fixed_order_node(
-  node : LNode,
+  node : @layered.LNode,
   state : NetworkSimplexAuxiliaryState,
 ) -> NetworkSimplexNodeRep {
   let top = @common.nnode_of()
@@ -601,7 +619,7 @@ fn network_simplex_transform_fixed_order_node(
 
 ///|
 fn network_simplex_transform_layer(
-  layer : Layer,
+  layer : @layered.Layer,
   state : NetworkSimplexAuxiliaryState,
 ) -> Unit {
   let mut last_rep : NetworkSimplexNodeRep? = None
@@ -640,7 +658,7 @@ fn network_simplex_transform_layer(
 
 ///|
 fn network_simplex_transform_edge(
-  edge : LEdge,
+  edge : @layered.LEdge,
   state : NetworkSimplexAuxiliaryState,
 ) -> Unit {
   let dummy = @common.nnode_of().node_type("edge").create(state.n_graph)
@@ -724,7 +742,7 @@ fn network_simplex_nedge_length(edge : @common.NEdge) -> Int {
 
 ///|
 fn network_simplex_transform_edges(
-  layered_graph : LGraph,
+  layered_graph : @layered.LGraph,
   state : NetworkSimplexAuxiliaryState,
 ) -> Unit {
   for layer in layered_graph.get_layers() {
@@ -740,7 +758,7 @@ fn network_simplex_transform_edges(
 
 ///|
 fn network_simplex_build_initial_auxiliary_graph(
-  layered_graph : LGraph,
+  layered_graph : @layered.LGraph,
   state : NetworkSimplexAuxiliaryState,
 ) -> Unit {
   for layer in layered_graph.get_layers() {
@@ -751,13 +769,14 @@ fn network_simplex_build_initial_auxiliary_graph(
 
 ///|
 fn network_simplex_insert_north_south_auxiliary_edges(
-  layered_graph : LGraph,
+  layered_graph : @layered.LGraph,
   state : NetworkSimplexAuxiliaryState,
 ) -> Unit {
   for layer in layered_graph.get_layers() {
     for node in layer.get_nodes() {
       for port in node.get_port_side_view(South) {
-        match port.get_property_l_node(internal_properties_port_dummy) {
+        match
+          port.get_property_l_node(@layered.internal_properties_port_dummy) {
           Some(other) =>
             ignore(
               network_simplex_create_edge(
@@ -772,7 +791,8 @@ fn network_simplex_insert_north_south_auxiliary_edges(
         }
       }
       for port in node.get_port_side_view(North) {
-        match port.get_property_l_node(internal_properties_port_dummy) {
+        match
+          port.get_property_l_node(@layered.internal_properties_port_dummy) {
           Some(other) =>
             ignore(
               network_simplex_create_edge(
@@ -791,7 +811,10 @@ fn network_simplex_insert_north_south_auxiliary_edges(
 }
 
 ///|
-fn network_simplex_get_other_port_or_abort(edge : LEdge, port : LPort) -> LPort {
+fn network_simplex_get_other_port_or_abort(
+  edge : @layered.LEdge,
+  port : @layered.LPort,
+) -> @layered.LPort {
   try edge.get_other_port(port) catch {
     IllegalArgumentException(message) => {
       @core.layout_runtime_report_unsupported_configuration(message)
@@ -807,7 +830,10 @@ fn network_simplex_get_other_port_or_abort(edge : LEdge, port : LPort) -> LPort 
 }
 
 ///|
-fn network_simplex_get_other_node_or_abort(edge : LEdge, node : LNode) -> LNode {
+fn network_simplex_get_other_node_or_abort(
+  edge : @layered.LEdge,
+  node : @layered.LNode,
+) -> @layered.LNode {
   try edge.get_other_node(node) catch {
     IllegalArgumentException(message) => {
       @core.layout_runtime_report_unsupported_configuration(message)
@@ -824,7 +850,7 @@ fn network_simplex_get_other_node_or_abort(edge : LEdge, node : LNode) -> LNode 
 
 ///|
 fn network_simplex_insert_in_layer_edge_auxiliary_edges(
-  layered_graph : LGraph,
+  layered_graph : @layered.LGraph,
   state : NetworkSimplexAuxiliaryState,
 ) -> Unit {
   let processed_edges : Map[Int, Bool] = Map([])
@@ -946,7 +972,7 @@ fn network_simplex_insert_flexible_where_space_auxiliary_edges(
 
 ///|
 fn network_simplex_execute_auxiliary_graph(
-  layered_graph : LGraph,
+  layered_graph : @layered.LGraph,
   state : NetworkSimplexAuxiliaryState,
   monitor : @core.IElkProgressMonitor,
 ) -> Unit {
@@ -985,14 +1011,16 @@ fn network_simplex_execute_auxiliary_graph(
 }
 
 ///|
-fn network_simplex_favor_straight_edges(layered_graph : LGraph) -> Bool {
+fn network_simplex_favor_straight_edges(
+  layered_graph : @layered.LGraph,
+) -> Bool {
   layered_graph.get_property_bool(
     @options.layered_options_node_placement_favor_straight_edges,
   )
 }
 
 ///|
-fn network_simplex_get_node_state(node : LNode) -> Int {
+fn network_simplex_get_node_state(node : @layered.LNode) -> Int {
   let mut incoming = 0
   let mut outgoing = 0
   for port in node.get_ports() {
@@ -1019,11 +1047,11 @@ fn network_simplex_get_node_state(node : LNode) -> Int {
 
 ///|
 fn network_simplex_mark_crossing_edges(
-  left : Layer,
-  right : Layer,
+  left : @layered.Layer,
+  right : @layered.Layer,
   state : NetworkSimplexAuxiliaryState,
 ) -> Unit {
-  let open_edges : Array[LEdge] = []
+  let open_edges : Array[@layered.LEdge] = []
   for node in left.get_nodes() {
     for port in node.get_port_side_view(East) {
       for edge in port.get_outgoing_edges() {
@@ -1076,7 +1104,7 @@ fn network_simplex_mark_crossing_edges(
 
 ///|
 fn network_simplex_mark_edge_crossings(
-  layered_graph : LGraph,
+  layered_graph : @layered.LGraph,
   state : NetworkSimplexAuxiliaryState,
 ) -> Unit {
   state.crossing.clear()
@@ -1096,11 +1124,11 @@ fn network_simplex_mark_edge_crossings(
 
 ///|
 fn network_simplex_follow_path(
-  edge : LEdge,
-  current : LNode,
-  path : Array[LEdge],
+  edge : @layered.LEdge,
+  current : @layered.LNode,
+  path : Array[@layered.LEdge],
   state : NetworkSimplexAuxiliaryState,
-) -> Array[LEdge] {
+) -> Array[@layered.LEdge] {
   let other = network_simplex_get_other_node_or_abort(edge, current)
   path.push(edge)
 
@@ -1124,10 +1152,10 @@ fn network_simplex_follow_path(
 
 ///|
 fn network_simplex_identify_paths(
-  layered_graph : LGraph,
+  layered_graph : @layered.LGraph,
   state : NetworkSimplexAuxiliaryState,
-) -> Array[Array[LEdge]] {
-  let paths : Array[Array[LEdge]] = []
+) -> Array[Array[@layered.LEdge]] {
+  let paths : Array[Array[@layered.LEdge]] = []
   for layer in layered_graph.get_layers() {
     for junction in layer.get_nodes() {
       if state.node_state[junction.get_id()] != network_simplex_junction {
@@ -1148,7 +1176,9 @@ fn network_simplex_identify_paths(
 }
 
 ///|
-fn network_simplex_path_contains_long_edge_dummy(path : Array[LEdge]) -> Bool {
+fn network_simplex_path_contains_long_edge_dummy(
+  path : Array[@layered.LEdge],
+) -> Bool {
   if path.is_empty() {
     return false
   }
@@ -1169,7 +1199,7 @@ fn network_simplex_path_contains_long_edge_dummy(path : Array[LEdge]) -> Bool {
 
 ///|
 fn network_simplex_path_contains_flexible_node(
-  path : Array[LEdge],
+  path : Array[@layered.LEdge],
   predicate : (String) -> Bool,
 ) -> Bool {
   if path.is_empty() {
@@ -1195,7 +1225,9 @@ fn network_simplex_path_contains_flexible_node(
 }
 
 ///|
-fn network_simplex_order_two_path(path : Array[LEdge]) -> Array[LEdge] {
+fn network_simplex_order_two_path(
+  path : Array[@layered.LEdge],
+) -> Array[@layered.LEdge] {
   if path.length() != 2 {
     try
       network_simplex_placer_raise_unit("Order only allowed for two paths.")
@@ -1222,7 +1254,7 @@ fn network_simplex_order_two_path(path : Array[LEdge]) -> Array[LEdge] {
 
 ///|
 fn network_simplex_two_path_center_node_is_flexible(
-  path : Array[LEdge],
+  path : Array[@layered.LEdge],
 ) -> Bool {
   network_simplex_node_is_flexible(
     network_simplex_require_edge_target_node(path[0]),
@@ -1231,7 +1263,7 @@ fn network_simplex_two_path_center_node_is_flexible(
 
 ///|
 fn network_simplex_prefer_straight_edges(
-  layered_graph : LGraph,
+  layered_graph : @layered.LGraph,
   state : NetworkSimplexAuxiliaryState,
 ) -> Unit {
   state.node_state.clear()
@@ -1274,7 +1306,7 @@ fn network_simplex_prefer_straight_edges(
       let edge = path[i]
       let rep = network_simplex_require_edge_rep(state, edge)
       let mut weight = if i == 0 || i == path.length() - 1 {
-        network_simplex_node_type_edge_weight(Normal, LongEdge)
+        network_simplex_node_type_edge_weight(@layered.Normal, LongEdge)
       } else {
         network_simplex_node_type_edge_weight(LongEdge, LongEdge)
       }
@@ -1292,7 +1324,7 @@ fn network_simplex_prefer_straight_edges(
 
 ///|
 fn network_simplex_improve_two_path(
-  path : Array[LEdge],
+  path : Array[@layered.LEdge],
   state : NetworkSimplexAuxiliaryState,
   probe : Bool,
 ) -> Bool {
@@ -1401,12 +1433,12 @@ fn network_simplex_improve_two_path(
 fn network_simplex_post_process_two_paths(
   state : NetworkSimplexAuxiliaryState,
 ) -> Unit {
-  let queue : Array[Array[LEdge]] = []
+  let queue : Array[Array[@layered.LEdge]] = []
   for path in state.two_paths {
     queue.push(path)
   }
 
-  let stack : Array[Array[LEdge]] = []
+  let stack : Array[Array[@layered.LEdge]] = []
   while !queue.is_empty() {
     let path = queue.remove(0)
     let try_again = network_simplex_improve_two_path(path, state, true)
@@ -1436,8 +1468,8 @@ fn network_simplex_string_array_contains(
 
 ///|
 fn network_simplex_adjust_label_position(
-  node : LNode,
-  label : LLabel,
+  node : @layered.LNode,
+  label : @layered.LLabel,
   size_delta : Double,
 ) -> Unit {
   let placements = node.get_property_string_array(@core.node_labels_placement)
@@ -1452,7 +1484,7 @@ fn network_simplex_adjust_label_position(
 
 ///|
 fn network_simplex_apply_positions(
-  layered_graph : LGraph,
+  layered_graph : @layered.LGraph,
   state : NetworkSimplexAuxiliaryState,
 ) -> Unit {
   for layer in layered_graph.get_layers() {
@@ -1513,7 +1545,7 @@ fn network_simplex_cleanup(state : NetworkSimplexAuxiliaryState) -> Unit {
 
 ///|
 fn network_simplex_node_placer_process(
-  layered_graph : LGraph,
+  layered_graph : @layered.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
 ) -> Unit {
   let monitor = match progress_monitor {
@@ -1569,22 +1601,22 @@ fn network_simplex_node_placer_process(
 
 ///|
 pub fn new_network_simplex_placer_layout_phase() -> @core.ILayoutProcessor[
-  LayeredPhases,
-  LGraph,
+  @layered.LayeredPhases,
+  @layered.LGraph,
 ] {
   @core.new_layout_phase(network_simplex_node_placer_process, graph => {
     for
       property in graph.get_property_graph_properties_array(
-        internal_properties_graph_properties,
+        @layered.internal_properties_graph_properties,
       ) {
       match property {
-        ExternalPorts =>
+        @layered.ExternalPorts =>
           return Some(
             @core.layout_processor_configuration_create(
-              layered_phase_descriptor,
+              @layered.layered_phase_descriptor,
             ).add_before(
               P5EdgeRouting,
-              layered_intermediate_processor_factory(
+              @layered.layered_intermediate_processor_factory(
                 HierarchicalPortPositionProcessor,
               ),
             ),

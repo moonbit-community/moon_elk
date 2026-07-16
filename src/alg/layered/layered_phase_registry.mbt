@@ -11,6 +11,12 @@ let layered_layering_factories : Map[
 ] = Map([])
 
 ///|
+let layered_node_placement_factories : Map[
+  String,
+  @core.ILayoutProcessorFactory[LayeredPhases, LGraph],
+] = Map([])
+
+///|
 /// Registers a cycle-breaking phase at the composition seam.
 ///
 /// Concrete phase packages depend on the shared layered model and register
@@ -30,6 +36,14 @@ pub fn register_layered_layering_phase(
   factory : @core.ILayoutProcessorFactory[LayeredPhases, LGraph],
 ) -> Unit {
   layered_layering_factories[strategy] = factory
+}
+
+///|
+pub fn register_layered_node_placement_phase(
+  strategy : String,
+  factory : @core.ILayoutProcessorFactory[LayeredPhases, LGraph],
+) -> Unit {
+  layered_node_placement_factories[strategy] = factory
 }
 
 ///|
@@ -72,6 +86,28 @@ fn layered_layering_phase_factory(
             "Layered layering phase is not linked for strategy " + strategy,
           )
           @core.new_layout_processor_factory(22000, 1, () => {
+            @core.new_layout_processor((_, _) => ())
+          })
+        }
+      }
+  }
+}
+
+///|
+fn layered_node_placement_phase_factory(
+  strategy : String,
+) -> @core.ILayoutProcessorFactory[LayeredPhases, LGraph] {
+  match layered_node_placement_factories.get(strategy) {
+    Some(factory) => factory
+    None =>
+      match layered_node_placement_factories.get("BRANDES_KOEPF") {
+        Some(factory) => factory
+        None => {
+          @core.layout_runtime_report_unsupported_configuration(
+            "Layered node-placement phase is not linked for strategy " +
+            strategy,
+          )
+          @core.new_layout_processor_factory(24103, 3, () => {
             @core.new_layout_processor((_, _) => ())
           })
         }

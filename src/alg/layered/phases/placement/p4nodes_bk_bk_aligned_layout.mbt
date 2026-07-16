@@ -66,24 +66,24 @@ pub fn bk_aligned_layout_exception_message(
 ///|
 fn bk_aligned_layout_vertical_spacing(
   layout : BKAlignedLayout,
-  first : LNode,
-  second : LNode,
+  first : @layered.LNode,
+  second : @layered.LNode,
 ) -> Double raise BKAlignedLayoutException {
   layout.spacings.get_vertical_spacing(first, second) catch {
-    LayeredSpacingsException(message) =>
+    @layered.LayeredSpacingsException(message) =>
       bk_aligned_layout_raise_illegal_state(message)
   }
 }
 
 ///|
 pub struct BKAlignedLayout {
-  layered_graph : LGraph
-  spacings : Spacings
-  root : Array[LNode?]
+  layered_graph : @layered.LGraph
+  spacings : @layered.Spacings
+  root : Array[@layered.LNode?]
   block_size : Array[Double]
-  align : Array[LNode?]
+  align : Array[@layered.LNode?]
   inner_shift : Array[Double]
-  sink : Array[LNode?]
+  sink : Array[@layered.LNode?]
   shift : Array[Double]
   y : Array[Double?]
   vdir : BKVDirection?
@@ -94,16 +94,16 @@ pub struct BKAlignedLayout {
 
 ///|
 pub fn new_bk_aligned_layout(
-  layered_graph : LGraph,
+  layered_graph : @layered.LGraph,
   node_count : Int,
   vdir : BKVDirection?,
   hdir : BKHDirection?,
 ) -> BKAlignedLayout {
-  let root : Array[LNode?] = Array::make(node_count, None)
+  let root : Array[@layered.LNode?] = Array::make(node_count, None)
   let block_size : Array[Double] = Array::make(node_count, 0.0)
-  let align : Array[LNode?] = Array::make(node_count, None)
+  let align : Array[@layered.LNode?] = Array::make(node_count, None)
   let inner_shift : Array[Double] = Array::make(node_count, 0.0)
-  let sink : Array[LNode?] = Array::make(node_count, None)
+  let sink : Array[@layered.LNode?] = Array::make(node_count, None)
   let shift : Array[Double] = Array::make(node_count, 0.0)
   let y : Array[Double?] = Array::make(node_count, None)
   let su : Array[Bool] = Array::make(node_count, false)
@@ -111,7 +111,7 @@ pub fn new_bk_aligned_layout(
 
   {
     layered_graph,
-    spacings: new_layered_spacings(layered_graph),
+    spacings: @layered.new_layered_spacings(layered_graph),
     root,
     block_size,
     align,
@@ -177,8 +177,8 @@ pub fn BKAlignedLayout::require_hdir(
 ///|
 pub fn BKAlignedLayout::require_root(
   self : BKAlignedLayout,
-  node : LNode,
-) -> LNode raise BKAlignedLayoutException {
+  node : @layered.LNode,
+) -> @layered.LNode raise BKAlignedLayoutException {
   self.require_root_by_id(node.get_id())
 }
 
@@ -186,7 +186,7 @@ pub fn BKAlignedLayout::require_root(
 pub fn BKAlignedLayout::require_root_by_id(
   self : BKAlignedLayout,
   node_id : Int,
-) -> LNode raise BKAlignedLayoutException {
+) -> @layered.LNode raise BKAlignedLayoutException {
   bk_aligned_layout_require_index(self.root.length(), node_id, "root")
   match self.root[node_id] {
     Some(value) => value
@@ -198,8 +198,8 @@ pub fn BKAlignedLayout::require_root_by_id(
 ///|
 pub fn BKAlignedLayout::require_align(
   self : BKAlignedLayout,
-  node : LNode,
-) -> LNode raise BKAlignedLayoutException {
+  node : @layered.LNode,
+) -> @layered.LNode raise BKAlignedLayoutException {
   self.require_align_by_id(node.get_id())
 }
 
@@ -207,7 +207,7 @@ pub fn BKAlignedLayout::require_align(
 pub fn BKAlignedLayout::require_align_by_id(
   self : BKAlignedLayout,
   node_id : Int,
-) -> LNode raise BKAlignedLayoutException {
+) -> @layered.LNode raise BKAlignedLayoutException {
   bk_aligned_layout_require_index(self.align.length(), node_id, "align")
   match self.align[node_id] {
     Some(value) => value
@@ -219,8 +219,8 @@ pub fn BKAlignedLayout::require_align_by_id(
 ///|
 pub fn BKAlignedLayout::require_sink(
   self : BKAlignedLayout,
-  node : LNode,
-) -> LNode raise BKAlignedLayoutException {
+  node : @layered.LNode,
+) -> @layered.LNode raise BKAlignedLayoutException {
   self.require_sink_by_id(node.get_id())
 }
 
@@ -228,7 +228,7 @@ pub fn BKAlignedLayout::require_sink(
 pub fn BKAlignedLayout::require_sink_by_id(
   self : BKAlignedLayout,
   node_id : Int,
-) -> LNode raise BKAlignedLayoutException {
+) -> @layered.LNode raise BKAlignedLayoutException {
   bk_aligned_layout_require_index(self.sink.length(), node_id, "sink")
   match self.sink[node_id] {
     Some(value) => value
@@ -240,7 +240,7 @@ pub fn BKAlignedLayout::require_sink_by_id(
 ///|
 pub fn BKAlignedLayout::require_y(
   self : BKAlignedLayout,
-  node : LNode,
+  node : @layered.LNode,
 ) -> Double raise BKAlignedLayoutException {
   self.require_y_by_id(node.get_id())
 }
@@ -301,8 +301,8 @@ pub fn BKAlignedLayout::layout_size(
 ///|
 pub fn BKAlignedLayout::calculate_delta(
   self : BKAlignedLayout,
-  src : LPort,
-  tgt : LPort,
+  src : @layered.LPort,
+  tgt : @layered.LPort,
 ) -> Double raise BKAlignedLayoutException {
   let src_node = src.get_node().unwrap()
   let tgt_node = tgt.get_node().unwrap()
@@ -325,7 +325,7 @@ pub fn BKAlignedLayout::calculate_delta(
 ///|
 pub fn BKAlignedLayout::shift_block(
   self : BKAlignedLayout,
-  root_node : LNode,
+  root_node : @layered.LNode,
   delta : Double,
 ) -> Unit raise BKAlignedLayoutException {
   let root_handle = root_node.get_handle()
@@ -346,7 +346,7 @@ pub fn BKAlignedLayout::shift_block(
 ///|
 pub fn BKAlignedLayout::check_space_above(
   self : BKAlignedLayout,
-  block_root : LNode,
+  block_root : @layered.LNode,
   delta : Double,
   ni : NeighborhoodInformation,
 ) -> Double raise BKAlignedLayoutException {
@@ -383,7 +383,7 @@ pub fn BKAlignedLayout::check_space_above(
 ///|
 pub fn BKAlignedLayout::check_space_below(
   self : BKAlignedLayout,
-  block_root : LNode,
+  block_root : @layered.LNode,
   delta : Double,
   ni : NeighborhoodInformation,
 ) -> Double raise BKAlignedLayoutException {
@@ -420,7 +420,7 @@ pub fn BKAlignedLayout::check_space_below(
 ///|
 pub fn BKAlignedLayout::get_min_y(
   self : BKAlignedLayout,
-  node : LNode,
+  node : @layered.LNode,
 ) -> Double raise BKAlignedLayoutException {
   let root_node = self.require_root(node)
   self.require_y(root_node) +
@@ -431,7 +431,7 @@ pub fn BKAlignedLayout::get_min_y(
 ///|
 pub fn BKAlignedLayout::get_max_y(
   self : BKAlignedLayout,
-  node : LNode,
+  node : @layered.LNode,
 ) -> Double raise BKAlignedLayoutException {
   let root_node = self.require_root(node)
   self.require_y(root_node) +
@@ -443,9 +443,9 @@ pub fn BKAlignedLayout::get_max_y(
 ///|
 fn BKAlignedLayout::get_lower_neighbor(
   self : BKAlignedLayout,
-  node : LNode,
+  node : @layered.LNode,
   ni : NeighborhoodInformation,
-) -> LNode? {
+) -> @layered.LNode? {
   ignore(self)
   let layer = match node.get_layer() {
     Some(value) => value
@@ -466,9 +466,9 @@ fn BKAlignedLayout::get_lower_neighbor(
 ///|
 fn BKAlignedLayout::get_upper_neighbor(
   self : BKAlignedLayout,
-  node : LNode,
+  node : @layered.LNode,
   ni : NeighborhoodInformation,
-) -> LNode? {
+) -> @layered.LNode? {
   ignore(self)
   let layer = match node.get_layer() {
     Some(value) => value

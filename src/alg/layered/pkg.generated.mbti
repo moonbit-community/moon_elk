@@ -25,16 +25,6 @@ pub fn ard_cut_index_heuristic_get_chunk_count(GraphStats) -> Int
 
 pub fn base_routing_direction_strategy_for_routing_direction(RoutingDirection) -> BaseRoutingDirectionStrategy
 
-pub fn bk_aligned_layout_exception_message(BKAlignedLayoutException) -> String
-
-pub fn bk_hdirection_is_left(BKHDirection) -> Bool
-
-pub fn bk_hdirection_is_right(BKHDirection) -> Bool
-
-pub fn bk_vdirection_is_down(BKVDirection) -> Bool
-
-pub fn bk_vdirection_is_up(BKVDirection) -> Bool
-
 pub fn bp_info_is_end(LNode) -> Bool
 
 pub fn bp_info_is_start(LNode) -> Bool
@@ -435,8 +425,6 @@ pub fn lport_internal_handle(LPort) -> Int
 
 pub fn model_order_barycenter_heuristic_insertion_sort(Array[LNode], (LNode, LNode) -> Int, ModelOrderBarycenterHeuristic) -> Unit
 
-pub fn neighborhood_information_build_for(LGraph) -> NeighborhoodInformation
-
 pub fn network_simplex_compaction(@common.OneDimensionalCompactor) -> Unit
 
 pub fn new_abstract_barycenter_port_distributor(Int, (AbstractBarycenterPortDistributor, LNode, Double, PortType) -> Double) -> AbstractBarycenterPortDistributor
@@ -462,20 +450,6 @@ pub fn new_between_layer_edge_two_node_crossings_counter(Array[Array[LNode]], In
 pub fn[V : Hash + Eq] new_bi_linked_hash_multi_map() -> BiLinkedHashMultiMap[V]
 
 pub fn new_binary_indexed_tree(Int) -> BinaryIndexedTree
-
-pub fn new_bk_aligned_layout(LGraph, Int, BKVDirection?, BKHDirection?) -> BKAlignedLayout
-
-pub fn new_bk_aligner(LGraph, NeighborhoodInformation) -> BKAligner
-
-pub fn new_bk_compactor(LGraph, NeighborhoodInformation) -> BKCompactor
-
-pub fn new_bk_i_compactor((BKAlignedLayout) -> Unit) -> BkICompactor
-
-pub fn new_bk_node_placer_layout_phase() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
-
-pub fn new_bk_null_threshold_strategy() -> BkThresholdStrategy
-
-pub fn new_bk_simple_threshold_strategy() -> BkThresholdStrategy
 
 pub fn new_bp_info(LNode, LNode, LEdge, LEdge, LEdge) -> BPInfo
 
@@ -609,8 +583,6 @@ pub fn new_interactive_layered_graph_element_visitor() -> @core.IGraphElementVis
 
 pub fn new_interactive_layered_graph_visitor() -> InteractiveLayeredGraphVisitor
 
-pub fn new_interactive_node_placer_layout_phase() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
-
 pub fn new_inverted_port_processor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_l_edge() -> LEdge
@@ -715,8 +687,6 @@ pub fn new_layered_spacings(LGraph) -> Spacings
 
 pub fn new_lgraph_to_cgraph_transformer() -> LGraphToCGraphTransformer
 
-pub fn new_linear_segments_node_placer_layout_phase() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
-
 pub fn new_long_edge_joiner_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_long_edge_splitter_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
@@ -744,8 +714,6 @@ pub fn new_model_order_port_comparator_from_layer(LGraph, Layer, OrderingStrateg
 pub fn new_model_order_port_comparator_without_target_node_model_order(LGraph, Array[LNode], OrderingStrategy, Bool) -> ModelOrderPortComparator
 
 pub fn new_msd_cut_index_heuristic() -> ICutIndexCalculator
-
-pub fn new_network_simplex_placer_layout_phase() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_no_crossing_minimizer_layout_phase() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
@@ -838,8 +806,6 @@ pub fn new_self_loop_pre_processor_layout_processor() -> @core.ILayoutProcessor[
 pub fn new_self_loop_router_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_semi_interactive_cross_min_processor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
-
-pub fn new_simple_node_placer_layout_phase() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_single_edge_graph_wrapper_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
@@ -1037,6 +1003,8 @@ pub fn register_layered_cycle_breaking_phase(String, @core.ILayoutProcessorFacto
 
 pub fn register_layered_layering_phase(String, @core.ILayoutProcessorFactory[LayeredPhases, LGraph]) -> Unit
 
+pub fn register_layered_node_placement_phase(String, @core.ILayoutProcessorFactory[LayeredPhases, LGraph]) -> Unit
+
 pub fn resize_node(LNode, @core.KVector, Bool, Bool) -> Unit
 
 pub fn routing_direction_to_string(RoutingDirection) -> String
@@ -1154,14 +1122,6 @@ pub fn vertical_port_placement_size_calculator_calculate_vertical_port_placement
 pub fn vertical_segment_origin_key(VerticalSegment) -> String
 
 // Errors
-pub(all) suberror BKAlignedLayoutException {
-  IllegalStateException(String)
-} derive(ToJson, @debug.Debug)
-
-pub suberror BkThresholdStrategyException {
-  BkThresholdStrategyException(String)
-} derive(ToJson, @debug.Debug)
-
 pub(all) suberror CrossHierarchyEdgeComparatorException {
   CrossHierarchyEdgeComparatorException(String)
 } derive(ToJson, @debug.Debug)
@@ -1201,10 +1161,6 @@ pub suberror LayerTotalPortDistributorException {
 
 pub suberror LayeredSpacingsException {
   LayeredSpacingsException(String)
-} derive(ToJson, @debug.Debug)
-
-pub suberror NetworkSimplexPlacerException {
-  NetworkSimplexPlacerException(String)
 } derive(ToJson, @debug.Debug)
 
 pub(all) suberror NodeContextException {
@@ -1290,71 +1246,6 @@ pub fn AllCrossingsCounter::init_after_traversal(Self) -> Unit
 pub fn AllCrossingsCounter::init_at_edge_level(Self, Int, Int, Int, Int, LEdge, Array[Array[LNode]]) -> Unit
 pub fn AllCrossingsCounter::init_at_node_level(Self, Int, Int, Array[Array[LNode]]) -> Unit
 pub fn AllCrossingsCounter::init_at_port_level(Self, Int, Int, Int, Array[Array[LNode]]) -> Unit
-
-pub struct BKAlignedLayout {
-  layered_graph : LGraph
-  spacings : Spacings
-  root : Array[LNode?]
-  block_size : Array[Double]
-  align : Array[LNode?]
-  inner_shift : Array[Double]
-  sink : Array[LNode?]
-  shift : Array[Double]
-  y : Array[Double?]
-  vdir : BKVDirection?
-  hdir : BKHDirection?
-  su : Array[Bool]
-  od : Array[Bool]
-}
-pub fn BKAlignedLayout::calculate_delta(Self, LPort, LPort) -> Double raise BKAlignedLayoutException
-pub fn BKAlignedLayout::check_space_above(Self, LNode, Double, NeighborhoodInformation) -> Double raise BKAlignedLayoutException
-pub fn BKAlignedLayout::check_space_below(Self, LNode, Double, NeighborhoodInformation) -> Double raise BKAlignedLayoutException
-pub fn BKAlignedLayout::cleanup(Self) -> Unit
-pub fn BKAlignedLayout::get_max_y(Self, LNode) -> Double raise BKAlignedLayoutException
-pub fn BKAlignedLayout::get_min_y(Self, LNode) -> Double raise BKAlignedLayoutException
-pub fn BKAlignedLayout::layout_size(Self) -> Double raise BKAlignedLayoutException
-pub fn BKAlignedLayout::require_align(Self, LNode) -> LNode raise BKAlignedLayoutException
-pub fn BKAlignedLayout::require_align_by_id(Self, Int) -> LNode raise BKAlignedLayoutException
-pub fn BKAlignedLayout::require_hdir(Self) -> BKHDirection raise BKAlignedLayoutException
-pub fn BKAlignedLayout::require_root(Self, LNode) -> LNode raise BKAlignedLayoutException
-pub fn BKAlignedLayout::require_root_by_id(Self, Int) -> LNode raise BKAlignedLayoutException
-pub fn BKAlignedLayout::require_sink(Self, LNode) -> LNode raise BKAlignedLayoutException
-pub fn BKAlignedLayout::require_sink_by_id(Self, Int) -> LNode raise BKAlignedLayoutException
-pub fn BKAlignedLayout::require_vdir(Self) -> BKVDirection raise BKAlignedLayoutException
-pub fn BKAlignedLayout::require_y(Self, LNode) -> Double raise BKAlignedLayoutException
-pub fn BKAlignedLayout::require_y_by_id(Self, Int) -> Double raise BKAlignedLayoutException
-pub fn BKAlignedLayout::set_y_by_id(Self, Int, Double) -> Unit raise BKAlignedLayoutException
-pub fn BKAlignedLayout::shift_block(Self, LNode, Double) -> Unit raise BKAlignedLayoutException
-pub fn BKAlignedLayout::to_string(Self) -> String
-
-pub struct BKAligner {
-  layered_graph : LGraph
-  ni : NeighborhoodInformation
-}
-pub fn BKAligner::inside_block_shift(Self, BKAlignedLayout) -> Unit raise BKAlignedLayoutException
-pub fn BKAligner::vertical_alignment(Self, BKAlignedLayout, Map[Int, Bool]) -> Unit raise BKAlignedLayoutException
-
-pub struct BKCompactor {
-  layered_graph : LGraph
-  thresh_strategy : BkThresholdStrategy
-  ni : NeighborhoodInformation
-  spacings : Spacings
-  class_nodes : Map[Int, LNode]
-  class_outgoing : Map[Int, Array[(Int, Double)]]
-  class_indegree : Map[Int, Int]
-  class_shift : Map[Int, Double]
-}
-pub fn BKCompactor::horizontal_compaction(Self, BKAlignedLayout) -> Unit raise BKAlignedLayoutException
-
-pub enum BKHDirection {
-  Right
-  Left
-}
-
-pub enum BKVDirection {
-  Down
-  Up
-}
 
 pub struct BPInfo {
   start : LNode
@@ -1455,37 +1346,6 @@ pub fn BinaryIndexedTree::is_empty(Self) -> Bool
 pub fn BinaryIndexedTree::rank(Self, Int) -> Int
 pub fn BinaryIndexedTree::remove_all(Self, Int) -> Unit
 pub fn BinaryIndexedTree::size(Self) -> Int
-
-pub struct BkICompactor {
-  horizontal_compaction_fn : (BKAlignedLayout) -> Unit
-}
-pub fn BkICompactor::horizontal_compaction(Self, BKAlignedLayout) -> Unit
-
-pub struct BkPostprocessable {
-  free : LNode
-  is_root : Bool
-  mut has_edges : Bool
-  mut edge : LEdge?
-}
-
-pub struct BkThresholdStrategy {
-  kind : BkThresholdStrategyKind
-  mut bal : BKAlignedLayout?
-  mut ni : NeighborhoodInformation?
-  block_finished : Map[Int, Bool]
-  post_processables_queue : Array[BkPostprocessable]
-  post_processables_stack : Array[BkPostprocessable]
-}
-pub fn BkThresholdStrategy::calculate_threshold(Self, Double, LNode, LNode) -> Double
-pub fn BkThresholdStrategy::finish_block(Self, LNode) -> Unit
-pub fn BkThresholdStrategy::get_other(Self, LEdge, LNode) -> LNode raise BkThresholdStrategyException
-pub fn BkThresholdStrategy::init(Self, BKAlignedLayout, NeighborhoodInformation) -> Unit
-pub fn BkThresholdStrategy::post_process(Self) -> Unit
-
-pub enum BkThresholdStrategyKind {
-  NullThreshold
-  SimpleThreshold
-}
 
 pub struct BreakingPointInserterCut {
   mut index : Int
@@ -1756,7 +1616,7 @@ pub struct EndLabelCellLabel {
   l_label : LLabel
 }
 
-pub enum FixedAlignment {
+pub(all) enum FixedAlignment {
   NoneType
   LeftUp
   RightUp
@@ -3035,7 +2895,16 @@ pub enum LayeringStrategy {
   LsDfModelOrder
 }
 
-type LinearSegment
+pub(all) struct LinearSegment {
+  nodes : Array[LNode]
+  mut id : Int
+  mut index_in_last_layer : Int
+  mut last_layer : Int
+  mut deflection : Double
+  mut weight : Int
+  mut ref_segment_id : Int
+  mut _node_type : NodeType
+}
 
 pub enum LongEdgeOrderingStrategy {
   DummyNodeOver
@@ -3105,15 +2974,6 @@ pub struct ModelOrderPortComparator {
 pub fn ModelOrderPortComparator::check_port_model_order(Self, LPort, LPort) -> Int
 pub fn ModelOrderPortComparator::clear_transitive_ordering(Self) -> Unit
 pub fn ModelOrderPortComparator::compare(Self, LPort, LPort) -> Int
-
-pub struct NeighborhoodInformation {
-  mut node_count : Int
-  mut layer_index : Array[Int]
-  mut node_index : Array[Int]
-  mut left_neighbors : Array[Array[(LNode, LEdge)]]
-  mut right_neighbors : Array[Array[(LNode, LEdge)]]
-}
-pub fn NeighborhoodInformation::cleanup(Self) -> Unit
 
 pub struct NodeContext {
   node : LNodeAdapter
@@ -3239,7 +3099,7 @@ pub fn NodeRelativePortDistributor::init_at_layer_level(Self, Int, Array[Array[L
 pub fn NodeRelativePortDistributor::init_at_node_level(Self, Int, Int, Array[Array[LNode]]) -> Unit
 pub fn NodeRelativePortDistributor::init_at_port_level(Self, Int, Int, Int, Array[Array[LNode]]) -> Unit
 
-pub enum NodeType {
+pub(all) enum NodeType {
   Normal
   LongEdge
   ExternalPort

@@ -21,14 +21,17 @@ fn[T] bk_threshold_strategy_raise(
 
 ///|
 pub struct BkPostprocessable {
-  free : LNode
+  free : @layered.LNode
   is_root : Bool
   mut has_edges : Bool
-  mut edge : LEdge?
+  mut edge : @layered.LEdge?
 }
 
 ///|
-fn new_bk_postprocessable(free : LNode, is_root : Bool) -> BkPostprocessable {
+fn new_bk_postprocessable(
+  free : @layered.LNode,
+  is_root : Bool,
+) -> BkPostprocessable {
   { free, is_root, has_edges: false, edge: None }
 }
 
@@ -109,8 +112,8 @@ fn bk_threshold_strategy_bal_require_hdir(
 ///|
 fn bk_threshold_strategy_bal_require_root(
   bal : BKAlignedLayout,
-  node : LNode,
-) -> LNode raise BkThresholdStrategyException {
+  node : @layered.LNode,
+) -> @layered.LNode raise BkThresholdStrategyException {
   bal.require_root(node) catch {
     IllegalStateException(message) => bk_threshold_strategy_raise(message)
   }
@@ -119,8 +122,8 @@ fn bk_threshold_strategy_bal_require_root(
 ///|
 fn bk_threshold_strategy_bal_require_align(
   bal : BKAlignedLayout,
-  node : LNode,
-) -> LNode raise BkThresholdStrategyException {
+  node : @layered.LNode,
+) -> @layered.LNode raise BkThresholdStrategyException {
   bal.require_align(node) catch {
     IllegalStateException(message) => bk_threshold_strategy_raise(message)
   }
@@ -129,7 +132,7 @@ fn bk_threshold_strategy_bal_require_align(
 ///|
 fn bk_threshold_strategy_bal_require_y(
   bal : BKAlignedLayout,
-  node : LNode,
+  node : @layered.LNode,
 ) -> Double raise BkThresholdStrategyException {
   bal.require_y(node) catch {
     IllegalStateException(message) => bk_threshold_strategy_raise(message)
@@ -139,8 +142,8 @@ fn bk_threshold_strategy_bal_require_y(
 ///|
 fn bk_threshold_strategy_bal_calculate_delta(
   bal : BKAlignedLayout,
-  fix : LPort,
-  block : LPort,
+  fix : @layered.LPort,
+  block : @layered.LPort,
 ) -> Double raise BkThresholdStrategyException {
   bal.calculate_delta(fix, block) catch {
     IllegalStateException(message) => bk_threshold_strategy_raise(message)
@@ -150,7 +153,7 @@ fn bk_threshold_strategy_bal_calculate_delta(
 ///|
 fn bk_threshold_strategy_bal_check_space_above(
   bal : BKAlignedLayout,
-  node : LNode,
+  node : @layered.LNode,
   delta : Double,
   ni : NeighborhoodInformation,
 ) -> Double raise BkThresholdStrategyException {
@@ -162,7 +165,7 @@ fn bk_threshold_strategy_bal_check_space_above(
 ///|
 fn bk_threshold_strategy_bal_check_space_below(
   bal : BKAlignedLayout,
-  node : LNode,
+  node : @layered.LNode,
   delta : Double,
   ni : NeighborhoodInformation,
 ) -> Double raise BkThresholdStrategyException {
@@ -174,7 +177,7 @@ fn bk_threshold_strategy_bal_check_space_below(
 ///|
 fn bk_threshold_strategy_bal_shift_block(
   bal : BKAlignedLayout,
-  node : LNode,
+  node : @layered.LNode,
   delta : Double,
 ) -> Unit raise BkThresholdStrategyException {
   bal.shift_block(node, delta) catch {
@@ -183,14 +186,17 @@ fn bk_threshold_strategy_bal_shift_block(
 }
 
 ///|
-fn bk_threshold_strategy_same_node(left : LNode, right : LNode) -> Bool {
+fn bk_threshold_strategy_same_node(
+  left : @layered.LNode,
+  right : @layered.LNode,
+) -> Bool {
   left.get_handle() == right.get_handle()
 }
 
 ///|
 fn bk_threshold_strategy_require_node_from_port(
-  port : LPort,
-) -> LNode raise BkThresholdStrategyException {
+  port : @layered.LPort,
+) -> @layered.LNode raise BkThresholdStrategyException {
   match port.get_node() {
     Some(value) => value
     None =>
@@ -201,7 +207,7 @@ fn bk_threshold_strategy_require_node_from_port(
 ///|
 fn bk_threshold_strategy_require_edge(
   pp : BkPostprocessable,
-) -> LEdge raise BkThresholdStrategyException {
+) -> @layered.LEdge raise BkThresholdStrategyException {
   match pp.edge {
     Some(value) => value
     None =>
@@ -227,7 +233,7 @@ pub fn BkThresholdStrategy::init(
 ///|
 pub fn BkThresholdStrategy::finish_block(
   self : BkThresholdStrategy,
-  node : LNode,
+  node : @layered.LNode,
 ) -> Unit {
   self.block_finished[node.get_handle()] = true
 }
@@ -235,9 +241,9 @@ pub fn BkThresholdStrategy::finish_block(
 ///|
 pub fn BkThresholdStrategy::get_other(
   self : BkThresholdStrategy,
-  edge : LEdge,
-  node : LNode,
-) -> LNode raise BkThresholdStrategyException {
+  edge : @layered.LEdge,
+  node : @layered.LNode,
+) -> @layered.LNode raise BkThresholdStrategyException {
   ignore(self)
   let source = match edge.get_source() {
     Some(value) => value
@@ -335,7 +341,7 @@ fn BkThresholdStrategy::pick_edge(
 ///|
 fn BkThresholdStrategy::get_bound(
   self : BkThresholdStrategy,
-  block_node : LNode,
+  block_node : @layered.LNode,
   is_root : Bool,
 ) -> Double raise BkThresholdStrategyException {
   let bal = self.require_bal()
@@ -436,8 +442,8 @@ fn BkThresholdStrategy::get_bound(
 fn BkThresholdStrategy::calculate_threshold_simple(
   self : BkThresholdStrategy,
   old_thresh : Double,
-  block_root : LNode,
-  current_node : LNode,
+  block_root : @layered.LNode,
+  current_node : @layered.LNode,
 ) -> Double raise BkThresholdStrategyException {
   let bal = self.require_bal()
 
@@ -553,8 +559,8 @@ fn BkThresholdStrategy::post_process_simple(
 pub fn BkThresholdStrategy::calculate_threshold(
   self : BkThresholdStrategy,
   old_thresh : Double,
-  block_root : LNode,
-  current_node : LNode,
+  block_root : @layered.LNode,
+  current_node : @layered.LNode,
 ) -> Double {
   try {
     match self.kind {

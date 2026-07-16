@@ -1,19 +1,23 @@
 ///|
-fn interactive_node_placer_node_type_is_normal(node_type : NodeType) -> Bool {
+fn interactive_node_placer_node_type_is_normal(
+  node_type : @layered.NodeType,
+) -> Bool {
   match node_type {
-    Normal => true
+    @layered.Normal => true
     _ => false
   }
 }
 
 ///|
-fn interactive_node_placer_graph_has_external_ports(graph : LGraph) -> Bool {
+fn interactive_node_placer_graph_has_external_ports(
+  graph : @layered.LGraph,
+) -> Bool {
   for
     property in graph.get_property_graph_properties_array(
-      internal_properties_graph_properties,
+      @layered.internal_properties_graph_properties,
     ) {
     match property {
-      ExternalPorts => return true
+      @layered.ExternalPorts => return true
       _ => ()
     }
   }
@@ -22,21 +26,21 @@ fn interactive_node_placer_graph_has_external_ports(graph : LGraph) -> Bool {
 
 ///|
 fn interactive_node_placer_place_nodes(
-  layer : Layer,
-  spacings : Spacings,
-) -> Unit raise LayeredSpacingsException {
+  layer : @layered.Layer,
+  spacings : @layered.Spacings,
+) -> Unit raise @layered.LayeredSpacingsException {
   let mut min_valid_y = @double.neg_infinity
-  let mut prev_node_type = NodeType::Normal
+  let mut prev_node_type = @layered.NodeType::@layered.Normal
 
   for node in layer.get_nodes() {
     let node_type = node.get_type()
 
     if !interactive_node_placer_node_type_is_normal(node_type) {
       if node.has_property_double(
-          internal_properties_original_dummy_node_position,
+          @layered.internal_properties_original_dummy_node_position,
         ) {
         node.get_position().y = node.get_property_double(
-          internal_properties_original_dummy_node_position,
+          @layered.internal_properties_original_dummy_node_position,
         )
       } else {
         if min_valid_y < 0.0 {
@@ -63,7 +67,7 @@ fn interactive_node_placer_place_nodes(
 
 ///|
 fn interactive_node_placer_process(
-  layered_graph : LGraph,
+  layered_graph : @layered.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
 ) -> Unit {
   let monitor = match progress_monitor {
@@ -72,13 +76,13 @@ fn interactive_node_placer_process(
   }
   ignore(monitor.begin("Interactive node placement", 1.0))
 
-  let spacings = new_layered_spacings(layered_graph)
+  let spacings = @layered.new_layered_spacings(layered_graph)
   try {
     for layer in layered_graph.get_layers() {
       interactive_node_placer_place_nodes(layer, spacings)
     }
   } catch {
-    LayeredSpacingsException(message) =>
+    @layered.LayeredSpacingsException(message) =>
       @core.layout_runtime_report_unsupported_configuration(message)
   }
 
@@ -87,15 +91,17 @@ fn interactive_node_placer_process(
 
 ///|
 pub fn new_interactive_node_placer_layout_phase() -> @core.ILayoutProcessor[
-  LayeredPhases,
-  LGraph,
+  @layered.LayeredPhases,
+  @layered.LGraph,
 ] {
   @core.new_layout_phase(interactive_node_placer_process, graph => {
     if interactive_node_placer_graph_has_external_ports(graph) {
       return Some(
-        @core.layout_processor_configuration_create(layered_phase_descriptor).add_before(
+        @core.layout_processor_configuration_create(
+          @layered.layered_phase_descriptor,
+        ).add_before(
           P5EdgeRouting,
-          layered_intermediate_processor_factory(
+          @layered.layered_intermediate_processor_factory(
             HierarchicalPortPositionProcessor,
           ),
         ),

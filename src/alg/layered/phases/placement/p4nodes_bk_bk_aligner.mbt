@@ -1,20 +1,22 @@
 ///|
 pub struct BKAligner {
-  layered_graph : LGraph
+  layered_graph : @layered.LGraph
   ni : NeighborhoodInformation
 }
 
 ///|
 pub fn new_bk_aligner(
-  layered_graph : LGraph,
+  layered_graph : @layered.LGraph,
   ni : NeighborhoodInformation,
 ) -> BKAligner {
   { layered_graph, ni }
 }
 
 ///|
-fn bk_aligner_reverse_layers(layers : Array[Layer]) -> Array[Layer] {
-  let reversed : Array[Layer] = []
+fn bk_aligner_reverse_layers(
+  layers : Array[@layered.Layer],
+) -> Array[@layered.Layer] {
+  let reversed : Array[@layered.Layer] = []
   for i = layers.length() - 1; i >= 0; i = i - 1 {
     reversed.push(layers[i])
   }
@@ -22,8 +24,10 @@ fn bk_aligner_reverse_layers(layers : Array[Layer]) -> Array[Layer] {
 }
 
 ///|
-fn bk_aligner_reverse_nodes(nodes : Array[LNode]) -> Array[LNode] {
-  let reversed : Array[LNode] = []
+fn bk_aligner_reverse_nodes(
+  nodes : Array[@layered.LNode],
+) -> Array[@layered.LNode] {
+  let reversed : Array[@layered.LNode] = []
   for i = nodes.length() - 1; i >= 0; i = i - 1 {
     reversed.push(nodes[i])
   }
@@ -31,12 +35,15 @@ fn bk_aligner_reverse_nodes(nodes : Array[LNode]) -> Array[LNode] {
 }
 
 ///|
-fn bk_aligner_same_node(left : LNode, right : LNode) -> Bool {
+fn bk_aligner_same_node(left : @layered.LNode, right : @layered.LNode) -> Bool {
   left.get_handle() == right.get_handle()
 }
 
 ///|
-fn bk_aligner_get_edge(source : LNode, target : LNode) -> LEdge? {
+fn bk_aligner_get_edge(
+  source : @layered.LNode,
+  target : @layered.LNode,
+) -> @layered.LEdge? {
   for edge in source.get_connected_edges() {
     let source_node = match edge.get_source() {
       Some(port) =>

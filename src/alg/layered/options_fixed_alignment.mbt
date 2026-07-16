@@ -1,5 +1,5 @@
 ///|
-pub enum FixedAlignment {
+pub(all) enum FixedAlignment {
   NoneType
   LeftUp
   RightUp

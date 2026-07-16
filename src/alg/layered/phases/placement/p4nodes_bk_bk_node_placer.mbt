@@ -1,10 +1,13 @@
 ///|
-fn _bk_node_placer_same_node(left : LNode, right : LNode) -> Bool {
+fn _bk_node_placer_same_node(
+  left : @layered.LNode,
+  right : @layered.LNode,
+) -> Bool {
   left.get_handle() == right.get_handle()
 }
 
 ///|
-fn bk_node_placer_node_type_is_long_edge(node_type : NodeType) -> Bool {
+fn bk_node_placer_node_type_is_long_edge(node_type : @layered.NodeType) -> Bool {
   match node_type {
     LongEdge => true
     _ => false
@@ -12,7 +15,9 @@ fn bk_node_placer_node_type_is_long_edge(node_type : NodeType) -> Bool {
 }
 
 ///|
-fn bk_node_placer_fixed_alignment_is_none(value : FixedAlignment) -> Bool {
+fn bk_node_placer_fixed_alignment_is_none(
+  value : @layered.FixedAlignment,
+) -> Bool {
   match value {
     NoneType => true
     _ => false
@@ -20,7 +25,9 @@ fn bk_node_placer_fixed_alignment_is_none(value : FixedAlignment) -> Bool {
 }
 
 ///|
-fn bk_node_placer_fixed_alignment_is_balanced(value : FixedAlignment) -> Bool {
+fn bk_node_placer_fixed_alignment_is_balanced(
+  value : @layered.FixedAlignment,
+) -> Bool {
   match value {
     Balanced => true
     _ => false
@@ -28,8 +35,10 @@ fn bk_node_placer_fixed_alignment_is_balanced(value : FixedAlignment) -> Bool {
 }
 
 ///|
-fn _bk_node_placer_reverse_layers(layers : Array[Layer]) -> Array[Layer] {
-  let reversed : Array[Layer] = []
+fn _bk_node_placer_reverse_layers(
+  layers : Array[@layered.Layer],
+) -> Array[@layered.Layer] {
+  let reversed : Array[@layered.Layer] = []
   for i = layers.length() - 1; i >= 0; i = i - 1 {
     reversed.push(layers[i])
   }
@@ -37,7 +46,9 @@ fn _bk_node_placer_reverse_layers(layers : Array[Layer]) -> Array[Layer] {
 }
 
 ///|
-fn bk_node_placer_parse_fixed_alignment(value : String) -> FixedAlignment {
+fn bk_node_placer_parse_fixed_alignment(
+  value : String,
+) -> @layered.FixedAlignment {
   match value {
     "LEFTDOWN" => LeftDown
     "LEFTUP" => LeftUp
@@ -49,7 +60,7 @@ fn bk_node_placer_parse_fixed_alignment(value : String) -> FixedAlignment {
 }
 
 ///|
-fn bk_node_placer_favor_straight_edges(layered_graph : LGraph) -> Bool {
+fn bk_node_placer_favor_straight_edges(layered_graph : @layered.LGraph) -> Bool {
   if layered_graph.has_property_bool(
       @options.layered_options_node_placement_favor_straight_edges,
     ) {
@@ -63,7 +74,7 @@ fn bk_node_placer_favor_straight_edges(layered_graph : LGraph) -> Bool {
 
 ///|
 fn bk_node_placer_incident_to_inner_segment(
-  node : LNode,
+  node : @layered.LNode,
   layer1 : Int,
   layer2 : Int,
   ni : NeighborhoodInformation,
@@ -104,7 +115,7 @@ fn bk_node_placer_incident_to_inner_segment(
 
 ///|
 fn bk_node_placer_mark_conflicts(
-  layered_graph : LGraph,
+  layered_graph : @layered.LGraph,
   ni : NeighborhoodInformation,
   marked_edges : Map[Int, Bool],
 ) -> Unit {
@@ -181,7 +192,7 @@ fn bk_node_placer_mark_conflicts(
 
 ///|
 fn bk_node_placer_create_balanced_layout(
-  l_graph : LGraph,
+  l_graph : @layered.LGraph,
   layouts : Array[BKAlignedLayout],
   node_count : Int,
 ) -> BKAlignedLayout raise BKAlignedLayoutException {
@@ -252,7 +263,7 @@ fn bk_node_placer_create_balanced_layout(
 
 ///|
 fn bk_node_placer_check_order_constraint(
-  layered_graph : LGraph,
+  layered_graph : @layered.LGraph,
   bal : BKAlignedLayout,
   monitor : @core.IElkProgressMonitor,
 ) -> Bool raise BKAlignedLayoutException {
@@ -260,7 +271,7 @@ fn bk_node_placer_check_order_constraint(
 
   for layer in layered_graph.get_layers() {
     let mut pos = @double.neg_infinity
-    let mut previous : LNode? = None
+    let mut previous : @layered.LNode? = None
 
     for node in layer.get_nodes() {
       let top = bal.require_y(node) +
@@ -309,7 +320,7 @@ fn bk_node_placer_check_order_constraint(
 
 ///|
 fn bk_node_placer_process(
-  layered_graph : LGraph,
+  layered_graph : @layered.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
 ) -> Unit {
   let monitor = match progress_monitor {
@@ -482,18 +493,20 @@ fn bk_node_placer_process(
 
 ///|
 fn bk_node_placer_configuration(
-  graph : LGraph,
-) -> @core.LayoutProcessorConfiguration[LayeredPhases, LGraph]? {
+  graph : @layered.LGraph,
+) -> @core.LayoutProcessorConfiguration[@layered.LayeredPhases, @layered.LGraph]? {
   for
     property in graph.get_property_graph_properties_array(
-      internal_properties_graph_properties,
+      @layered.internal_properties_graph_properties,
     ) {
     match property {
-      ExternalPorts =>
+      @layered.ExternalPorts =>
         return Some(
-          @core.layout_processor_configuration_create(layered_phase_descriptor).add_before(
+          @core.layout_processor_configuration_create(
+            @layered.layered_phase_descriptor,
+          ).add_before(
             P5EdgeRouting,
-            layered_intermediate_processor_factory(
+            @layered.layered_intermediate_processor_factory(
               HierarchicalPortPositionProcessor,
             ),
           ),
@@ -506,8 +519,8 @@ fn bk_node_placer_configuration(
 
 ///|
 pub fn new_bk_node_placer_layout_phase() -> @core.ILayoutProcessor[
-  LayeredPhases,
-  LGraph,
+  @layered.LayeredPhases,
+  @layered.LGraph,
 ] {
   @core.new_layout_phase(bk_node_placer_process, bk_node_placer_configuration)
 }

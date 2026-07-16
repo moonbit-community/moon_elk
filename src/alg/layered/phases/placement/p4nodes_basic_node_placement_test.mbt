@@ -1,21 +1,21 @@
 ///|
 fn p4_basic_node_placement_test_setup_plain_java_layout() -> Unit {
-  layout_meta_data_service_reset_for_test()
-  plain_java_initialization_reset_for_test()
-  plain_java_initialization_initialize_plain_java_layout()
+  @core.layout_meta_data_service_reset_for_test()
+  @test.plain_java_initialization_reset_for_test()
+  @test.plain_java_initialization_initialize_plain_java_layout()
 }
 
 ///|
 fn p4_basic_node_placement_test_layout(graph : @graph.ElkNode) -> Unit {
-  let resolver = new_layout_algorithm_resolver()
-  apply_visitors(graph, [resolver.to_visitor()])
-  let layout_engine = new_recursive_graph_layout_engine()
+  let resolver = @core.new_layout_algorithm_resolver()
+  @core.apply_visitors(graph, [resolver.to_visitor()])
+  let layout_engine = @core.new_recursive_graph_layout_engine()
   layout_engine.layout(graph, @core.new_null_elk_progress_monitor())
 }
 
 ///|
 fn p4_basic_node_placement_test_build_diamond_graph() -> Array[@graph.ElkNode] {
-  let graph = create_graph()
+  let graph = @graph.create_graph()
   let source = @graph.create_node(Some(graph))
   let mid_a = @graph.create_node(Some(graph))
   let mid_b = @graph.create_node(Some(graph))
@@ -26,25 +26,25 @@ fn p4_basic_node_placement_test_build_diamond_graph() -> Array[@graph.ElkNode] {
   @graph.node_set_dimensions(mid_b, 16.0, 12.0)
   @graph.node_set_dimensions(target, 16.0, 10.0)
 
-  let e1 = create_edge(None)
-  edge_add_source(e1, make_node_shape(source))
-  edge_add_target(e1, make_node_shape(mid_a))
-  layered_test_update_containment(Some(e1))
+  let e1 = @graph.create_edge(None)
+  @graph.edge_add_source(e1, @graph.make_node_shape(source))
+  @graph.edge_add_target(e1, @graph.make_node_shape(mid_a))
+  @layered.layered_test_update_containment(Some(e1))
 
-  let e2 = create_edge(None)
-  edge_add_source(e2, make_node_shape(source))
-  edge_add_target(e2, make_node_shape(mid_b))
-  layered_test_update_containment(Some(e2))
+  let e2 = @graph.create_edge(None)
+  @graph.edge_add_source(e2, @graph.make_node_shape(source))
+  @graph.edge_add_target(e2, @graph.make_node_shape(mid_b))
+  @layered.layered_test_update_containment(Some(e2))
 
-  let e3 = create_edge(None)
-  edge_add_source(e3, make_node_shape(mid_a))
-  edge_add_target(e3, make_node_shape(target))
-  layered_test_update_containment(Some(e3))
+  let e3 = @graph.create_edge(None)
+  @graph.edge_add_source(e3, @graph.make_node_shape(mid_a))
+  @graph.edge_add_target(e3, @graph.make_node_shape(target))
+  @layered.layered_test_update_containment(Some(e3))
 
-  let e4 = create_edge(None)
-  edge_add_source(e4, make_node_shape(mid_b))
-  edge_add_target(e4, make_node_shape(target))
-  layered_test_update_containment(Some(e4))
+  let e4 = @graph.create_edge(None)
+  @graph.edge_add_source(e4, @graph.make_node_shape(mid_b))
+  @graph.edge_add_target(e4, @graph.make_node_shape(target))
+  @layered.layered_test_update_containment(Some(e4))
 
   [graph, source, mid_a, mid_b, target]
 }
@@ -67,7 +67,7 @@ fn p4_basic_node_placement_test_layout_ok_for_config(
   bk_edge_straightening : String?,
   bk_fixed_alignment : String?,
 ) -> Bool {
-  reset_graph_model_for_test()
+  @graph.reset_graph_model_for_test()
   p4_basic_node_placement_test_setup_plain_java_layout()
 
   let nodes = p4_basic_node_placement_test_build_diamond_graph()
@@ -96,7 +96,7 @@ fn p4_basic_node_placement_test_layout_ok_for_config(
   p4_basic_node_placement_test_layout(graph)
 
   let algorithm_resolved = @graph.node_get_string_property(
-      graph, resolved_algorithm,
+      graph, @core.resolved_algorithm,
     ) ==
     "org.eclipse.elk.layered"
   let middle_nodes_non_overlapping = p4_basic_node_placement_test_nodes_do_not_overlap_vertically(

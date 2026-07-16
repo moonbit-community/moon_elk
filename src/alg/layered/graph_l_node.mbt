@@ -62,7 +62,7 @@ fn lnode_node_type_is_label_node(node_type : NodeType) -> Bool {
 }
 
 ///|
-pub enum NodeType {
+pub(all) enum NodeType {
   Normal
   LongEdge
   ExternalPort

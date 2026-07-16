@@ -170,32 +170,7 @@ fn elk_layered_crossing_factory(
 fn elk_layered_node_placement_factory(
   strategy : String,
 ) -> @core.ILayoutProcessorFactory[LayeredPhases, LGraph] {
-  match strategy {
-    "SIMPLE" =>
-      @core.new_layout_processor_factory(24100, 3, () => {
-        new_simple_node_placer_layout_phase()
-      })
-    "INTERACTIVE" =>
-      @core.new_layout_processor_factory(24101, 3, () => {
-        new_interactive_node_placer_layout_phase()
-      })
-    "LINEAR_SEGMENTS" =>
-      @core.new_layout_processor_factory(24102, 3, () => {
-        new_linear_segments_node_placer_layout_phase()
-      })
-    "BRANDES_KOEPF" =>
-      @core.new_layout_processor_factory(24103, 3, () => {
-        new_bk_node_placer_layout_phase()
-      })
-    "NETWORK_SIMPLEX" =>
-      @core.new_layout_processor_factory(24104, 3, () => {
-        new_network_simplex_placer_layout_phase()
-      })
-    _ =>
-      @core.new_layout_processor_factory(24103, 3, () => {
-        new_bk_node_placer_layout_phase()
-      })
-  }
+  layered_node_placement_phase_factory(strategy)
 }
 
 ///|

@@ -46,19 +46,7 @@ priv enum LinearSegmentsMode {
 }
 
 ///|
-struct LinearSegment {
-  nodes : Array[LNode]
-  mut id : Int
-  mut index_in_last_layer : Int
-  mut last_layer : Int
-  mut deflection : Double
-  mut weight : Int
-  mut ref_segment_id : Int
-  mut _node_type : NodeType
-}
-
-///|
-fn new_linear_segment(id : Int) -> LinearSegment {
+fn new_linear_segment(id : Int) -> @layered.LinearSegment {
   {
     nodes: [],
     id,
@@ -67,14 +55,14 @@ fn new_linear_segment(id : Int) -> LinearSegment {
     deflection: 0.0,
     weight: 0,
     ref_segment_id: -1,
-    _node_type: Normal,
+    _node_type: @layered.Normal,
   }
 }
 
 ///|
 priv struct LinearSegmentsState {
-  mut linear_segments : Array[LinearSegment]
-  mut spacings : Spacings?
+  mut linear_segments : Array[@layered.LinearSegment]
+  mut spacings : @layered.Spacings?
 }
 
 ///|
@@ -85,7 +73,7 @@ fn new_linear_segments_state() -> LinearSegmentsState {
 ///|
 fn linear_segments_require_spacings(
   state : LinearSegmentsState,
-) -> Spacings raise LinearSegmentsNodePlacerException {
+) -> @layered.Spacings raise LinearSegmentsNodePlacerException {
   match state.spacings {
     Some(value) => value
     None => linear_segments_raise("LinearSegmentsNodePlacer: spacings not set")
@@ -94,23 +82,23 @@ fn linear_segments_require_spacings(
 
 ///|
 fn linear_segments_vertical_spacing(
-  spacings : Spacings,
-  first : LNode,
-  second : LNode,
+  spacings : @layered.Spacings,
+  first : @layered.LNode,
+  second : @layered.LNode,
 ) -> Double raise LinearSegmentsNodePlacerException {
   spacings.get_vertical_spacing(first, second) catch {
-    LayeredSpacingsException(message) => linear_segments_raise(message)
+    @layered.LayeredSpacingsException(message) => linear_segments_raise(message)
   }
 }
 
 ///|
-fn linear_segments_graph_has_external_ports(graph : LGraph) -> Bool {
+fn linear_segments_graph_has_external_ports(graph : @layered.LGraph) -> Bool {
   for
     property in graph.get_property_graph_properties_array(
-      internal_properties_graph_properties,
+      @layered.internal_properties_graph_properties,
     ) {
     match property {
-      ExternalPorts => return true
+      @layered.ExternalPorts => return true
       _ => ()
     }
   }
@@ -134,7 +122,7 @@ fn linear_segments_mode_is_backw(mode : LinearSegmentsMode) -> Bool {
 }
 
 ///|
-fn linear_segments_node_type_is_dummy(node_type : NodeType) -> Bool {
+fn linear_segments_node_type_is_dummy(node_type : @layered.NodeType) -> Bool {
   match node_type {
     LongEdge => true
     NorthSouthPort => true
@@ -144,11 +132,12 @@ fn linear_segments_node_type_is_dummy(node_type : NodeType) -> Bool {
 
 ///|
 fn linear_segments_node_index_in_segment(
-  segment : LinearSegment,
-  node : LNode,
+  segment : @layered.LinearSegment,
+  node : @layered.LNode,
 ) -> Int {
   for i in 0..<segment.nodes.length() {
-    if lnode_internal_handle(segment.nodes[i]) == lnode_internal_handle(node) {
+    if @layered.lnode_internal_handle(segment.nodes[i]) ==
+      @layered.lnode_internal_handle(node) {
       return i
     }
   }
@@ -156,18 +145,22 @@ fn linear_segments_node_index_in_segment(
 }
 
 ///|
-fn linear_segments_same_layer(left : LNode, right : LNode) -> Bool {
+fn linear_segments_same_layer(
+  left : @layered.LNode,
+  right : @layered.LNode,
+) -> Bool {
   match (left.get_layer(), right.get_layer()) {
     (Some(left_layer), Some(right_layer)) =>
-      layer_internal_handle(left_layer) == layer_internal_handle(right_layer)
+      @layered.layer_internal_handle(left_layer) ==
+      @layered.layer_internal_handle(right_layer)
     _ => false
   }
 }
 
 ///|
 fn linear_segments_require_node_layer(
-  node : LNode,
-) -> Layer raise LinearSegmentsNodePlacerException {
+  node : @layered.LNode,
+) -> @layered.Layer raise LinearSegmentsNodePlacerException {
   match node.get_layer() {
     Some(value) => value
     None => linear_segments_raise("LinearSegmentsNodePlacer: node has no layer")
@@ -176,8 +169,8 @@ fn linear_segments_require_node_layer(
 
 ///|
 fn linear_segments_require_port_node(
-  port : LPort,
-) -> LNode raise LinearSegmentsNodePlacerException {
+  port : @layered.LPort,
+) -> @layered.LNode raise LinearSegmentsNodePlacerException {
   match port.get_node() {
     Some(value) => value
     None => linear_segments_raise("LinearSegmentsNodePlacer: port has no node")
@@ -185,7 +178,9 @@ fn linear_segments_require_port_node(
 }
 
 ///|
-fn linear_segments_successor_ports(port : LPort) -> Array[LPort] {
+fn linear_segments_successor_ports(
+  port : @layered.LPort,
+) -> Array[@layered.LPort] {
   let ports = []
   for edge in port.get_outgoing_edges() {
     match edge.get_target() {
@@ -197,10 +192,14 @@ fn linear_segments_successor_ports(port : LPort) -> Array[LPort] {
 }
 
 ///|
-fn linear_segments_find_node_index(layer : Layer, node : LNode) -> Int {
+fn linear_segments_find_node_index(
+  layer : @layered.Layer,
+  node : @layered.LNode,
+) -> Int {
   let nodes = layer.get_nodes()
   for i in 0..<nodes.length() {
-    if lnode_internal_handle(nodes[i]) == lnode_internal_handle(node) {
+    if @layered.lnode_internal_handle(nodes[i]) ==
+      @layered.lnode_internal_handle(node) {
       return i
     }
   }
@@ -209,11 +208,11 @@ fn linear_segments_find_node_index(layer : Layer, node : LNode) -> Int {
 
 ///|
 fn linear_segments_split_segment(
-  segment_list : Array[LinearSegment],
+  segment_list : Array[@layered.LinearSegment],
   segment_id : Int,
-  split_node : LNode,
+  split_node : @layered.LNode,
   new_id : Int,
-) -> LinearSegment raise LinearSegmentsNodePlacerException {
+) -> @layered.LinearSegment raise LinearSegmentsNodePlacerException {
   let segment = segment_list[segment_id]
   let split_index = linear_segments_node_index_in_segment(segment, split_node)
   if split_index < 0 {
@@ -234,9 +233,9 @@ fn linear_segments_split_segment(
 
 ///|
 fn linear_segments_fill_segment(
-  node : LNode,
+  node : @layered.LNode,
   segment_id : Int,
-  segment_list : Array[LinearSegment],
+  segment_list : Array[@layered.LinearSegment],
 ) -> Bool raise LinearSegmentsNodePlacerException {
   let node_type = node.get_type()
 
@@ -285,8 +284,8 @@ fn linear_segments_remove_dependency(
 ///|
 fn linear_segments_create_dependency_graph_edges(
   monitor : @core.IElkProgressMonitor,
-  layered_graph : LGraph,
-  segment_list : Array[LinearSegment],
+  layered_graph : @layered.LGraph,
+  segment_list : Array[@layered.LinearSegment],
   outgoing_list : Array[Array[Int]],
   incoming_count_list : Array[Int],
 ) -> Unit raise LinearSegmentsNodePlacerException {
@@ -300,8 +299,8 @@ fn linear_segments_create_dependency_graph_edges(
     }
 
     let mut index_in_layer = 0
-    let mut previous_node : LNode? = None
-    let mut current_node : LNode? = Some(nodes[0])
+    let mut previous_node : @layered.LNode? = None
+    let mut current_node : @layered.LNode? = Some(nodes[0])
     let mut next_node_index = 1
 
     while true {
@@ -362,7 +361,7 @@ fn linear_segments_create_dependency_graph_edges(
         }
       }
 
-      let mut next_node : LNode? = None
+      let mut next_node : @layered.LNode? = None
       if next_node_index < nodes.length() {
         let next = nodes[next_node_index]
         next_node_index = next_node_index + 1
@@ -394,11 +393,11 @@ fn linear_segments_create_dependency_graph_edges(
 
 ///|
 fn linear_segments_sort_linear_segments(
-  layered_graph : LGraph,
+  layered_graph : @layered.LGraph,
   monitor : @core.IElkProgressMonitor,
   state : LinearSegmentsState,
-) -> Array[LinearSegment] raise LinearSegmentsNodePlacerException {
-  let segment_list : Array[LinearSegment] = []
+) -> Array[@layered.LinearSegment] raise LinearSegmentsNodePlacerException {
+  let segment_list : Array[@layered.LinearSegment] = []
 
   for layer in layered_graph.get_layers() {
     for node in layer.get_nodes() {
@@ -474,7 +473,7 @@ fn linear_segments_sort_linear_segments(
     }
   }
 
-  let reordered_opt : Array[LinearSegment?] = Array::make(
+  let reordered_opt : Array[@layered.LinearSegment?] = Array::make(
     segment_list.length(),
     None,
   )
@@ -488,7 +487,7 @@ fn linear_segments_sort_linear_segments(
     }
   }
 
-  let reordered : Array[LinearSegment] = []
+  let reordered : Array[@layered.LinearSegment] = []
   for item in reordered_opt {
     match item {
       Some(segment) => reordered.push(segment)
@@ -505,12 +504,12 @@ fn linear_segments_sort_linear_segments(
 
 ///|
 fn linear_segments_create_unbalanced_placement(
-  layered_graph : LGraph,
+  layered_graph : @layered.LGraph,
   state : LinearSegmentsState,
 ) -> Unit raise LinearSegmentsNodePlacerException {
   let layer_count = layered_graph.get_layers().length()
   let node_count : Array[Int] = Array::make(layer_count, 0)
-  let recent_node : Array[LNode?] = Array::make(layer_count, None)
+  let recent_node : Array[@layered.LNode?] = Array::make(layer_count, None)
 
   for segment in state.linear_segments {
     let mut uppermost_place = 0.0
@@ -691,7 +690,7 @@ fn linear_segments_region_id(
 
 ///|
 fn linear_segments_merge_regions(
-  layered_graph : LGraph,
+  layered_graph : @layered.LGraph,
   state : LinearSegmentsState,
 ) -> Bool raise LinearSegmentsNodePlacerException {
   let mut changed = false
@@ -759,7 +758,7 @@ fn linear_segments_merge_regions(
 
 ///|
 fn linear_segments_balance_placement(
-  layered_graph : LGraph,
+  layered_graph : @layered.LGraph,
   state : LinearSegmentsState,
 ) -> Unit raise LinearSegmentsNodePlacerException {
   let deflection_dampening = layered_graph.get_property_double(
@@ -957,7 +956,7 @@ fn linear_segments_post_process(
 
 ///|
 fn linear_segments_node_placer_process(
-  layered_graph : LGraph,
+  layered_graph : @layered.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
 ) -> Unit {
   let monitor = match progress_monitor {
@@ -967,7 +966,7 @@ fn linear_segments_node_placer_process(
   ignore(monitor.begin("Linear segments node placement", 1.0))
 
   let state = new_linear_segments_state()
-  state.spacings = Some(new_layered_spacings(layered_graph))
+  state.spacings = Some(@layered.new_layered_spacings(layered_graph))
 
   try {
     ignore(linear_segments_sort_linear_segments(layered_graph, monitor, state))
@@ -990,15 +989,17 @@ fn linear_segments_node_placer_process(
 
 ///|
 pub fn new_linear_segments_node_placer_layout_phase() -> @core.ILayoutProcessor[
-  LayeredPhases,
-  LGraph,
+  @layered.LayeredPhases,
+  @layered.LGraph,
 ] {
   @core.new_layout_phase(linear_segments_node_placer_process, graph => {
     if linear_segments_graph_has_external_ports(graph) {
       return Some(
-        @core.layout_processor_configuration_create(layered_phase_descriptor).add_before(
+        @core.layout_processor_configuration_create(
+          @layered.layered_phase_descriptor,
+        ).add_before(
           P5EdgeRouting,
-          layered_intermediate_processor_factory(
+          @layered.layered_intermediate_processor_factory(
             HierarchicalPortPositionProcessor,
           ),
         ),

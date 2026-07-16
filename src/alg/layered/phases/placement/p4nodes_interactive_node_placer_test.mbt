@@ -1,13 +1,15 @@
 ///|
-fn interactive_node_placer_test_add_layer(graph : LGraph) -> Layer {
-  let layer = new_layer(graph)
+fn interactive_node_placer_test_add_layer(
+  graph : @layered.LGraph,
+) -> @layered.Layer {
+  let layer = @layered.new_layer(graph)
   graph.get_layers().push(layer)
   layer
 }
 
 ///|
-fn interactive_node_placer_test_node_type(name : String) -> NodeType {
-  let values = node_type_values()
+fn interactive_node_placer_test_node_type(name : String) -> @layered.NodeType {
+  let values = @layered.node_type_values()
   if name == "NORMAL" {
     return values[0]
   }
@@ -38,9 +40,9 @@ fn interactive_node_placer_test_node_type(name : String) -> NodeType {
 ///|
 fn interactive_node_placer_test_graph_property(
   name : String,
-) -> GraphProperties {
-  for property in graph_properties_values() {
-    if graph_properties_to_string(property) == name {
+) -> @layered.GraphProperties {
+  for property in @layered.graph_properties_values() {
+    if @layered.graph_properties_to_string(property) == name {
       return property
     }
   }
@@ -50,9 +52,9 @@ fn interactive_node_placer_test_graph_property(
 ///|
 fn interactive_node_placer_test_strategy(
   name : String,
-) -> IntermediateProcessorStrategy {
-  for strategy in intermediate_processor_strategy_values() {
-    if intermediate_processor_strategy_to_string(strategy) == name {
+) -> @layered.IntermediateProcessorStrategy {
+  for strategy in @layered.intermediate_processor_strategy_values() {
+    if @layered.intermediate_processor_strategy_to_string(strategy) == name {
       return strategy
     }
   }
@@ -61,12 +63,12 @@ fn interactive_node_placer_test_strategy(
 
 ///|
 fn interactive_node_placer_test_add_node(
-  layer : Layer,
-  node_type : NodeType,
+  layer : @layered.Layer,
+  node_type : @layered.NodeType,
   y : Double,
   height : Double,
-) -> LNode {
-  let node = new_l_node()
+) -> @layered.LNode {
+  let node = @layered.new_l_node()
   node.set_type(node_type)
   node.set_layer(Some(layer))
   ignore(node.get_position().set_xy(node.get_position().x, y))
@@ -78,7 +80,9 @@ fn interactive_node_placer_test_add_node(
 
 ///|
 fn interactive_node_placer_test_contains_factory(
-  factories : Array[@core.ILayoutProcessorFactory[LayeredPhases, LGraph]],
+  factories : Array[
+    @core.ILayoutProcessorFactory[@layered.LayeredPhases, @layered.LGraph],
+  ],
   expected_factory_id : Int,
 ) -> Bool {
   for factory in factories {
@@ -94,14 +98,14 @@ test "@core.interactive node placer layout phase starts monitor with expected ta
   let phase = new_interactive_node_placer_layout_phase()
   assert_true(phase.is_layout_phase())
 
-  let monitor = new_elk_progress_monitor()
-  phase.process(new_l_graph(), Some(monitor))
+  let monitor = @core.new_elk_progress_monitor()
+  phase.process(@layered.new_l_graph(), Some(monitor))
   inspect(monitor.get_task_name(), content="Interactive node placement")
 }
 
 ///|
 test "@core.interactive node placer restores ORIGINAL_DUMMY_NODE_POSITION for dummy nodes" {
-  let graph = new_l_graph()
+  let graph = @layered.new_l_graph()
   graph.set_property_double(@core.spacing_edge_node, 0.0)
   let layer = interactive_node_placer_test_add_layer(graph)
   let dummy = interactive_node_placer_test_add_node(
@@ -111,7 +115,7 @@ test "@core.interactive node placer restores ORIGINAL_DUMMY_NODE_POSITION for du
     5.0,
   )
   dummy.set_property_double(
-    internal_properties_original_dummy_node_position, 42.0,
+    @layered.internal_properties_original_dummy_node_position, 42.0,
   )
 
   let phase = new_interactive_node_placer_layout_phase()
@@ -122,7 +126,7 @@ test "@core.interactive node placer restores ORIGINAL_DUMMY_NODE_POSITION for du
 
 ///|
 test "@core.interactive node placer computes dummy y from min valid y when original is missing" {
-  let graph = new_l_graph()
+  let graph = @layered.new_l_graph()
   graph.set_property_double(@core.spacing_node_node, 0.0)
   graph.set_property_double(@core.spacing_edge_node, 0.0)
   let layer = interactive_node_placer_test_add_layer(graph)
@@ -148,7 +152,7 @@ test "@core.interactive node placer computes dummy y from min valid y when origi
 
 ///|
 test "@core.interactive node placer shifts overlapping normal nodes downward" {
-  let graph = new_l_graph()
+  let graph = @layered.new_l_graph()
   graph.set_property_double(@core.spacing_node_node, 0.0)
   let layer = interactive_node_placer_test_add_layer(graph)
   ignore(
@@ -175,9 +179,9 @@ test "@core.interactive node placer shifts overlapping normal nodes downward" {
 ///|
 test "@core.interactive node placer config adds hierarchical port position processor for external ports" {
   let phase = new_interactive_node_placer_layout_phase()
-  let graph = new_l_graph()
+  let graph = @layered.new_l_graph()
   graph.set_property_graph_properties_array(
-    internal_properties_graph_properties,
+    @layered.internal_properties_graph_properties,
     [interactive_node_placer_test_graph_property("EXTERNAL_PORTS")],
   )
 
@@ -186,8 +190,8 @@ test "@core.interactive node placer config adds hierarchical port position proce
     None => abort("@core.interactive node placer configuration must exist")
   }
 
-  let p5 = layered_phase_constants()[4]
-  let expected = layered_intermediate_processor_factory(
+  let p5 = @layered.layered_phase_constants()[4]
+  let expected = @layered.layered_intermediate_processor_factory(
     interactive_node_placer_test_strategy(
       "HIERARCHICAL_PORT_POSITION_PROCESSOR",
     ),
@@ -203,7 +207,7 @@ test "@core.interactive node placer config adds hierarchical port position proce
 ///|
 test "@core.interactive node placer config is none without external ports" {
   let phase = new_interactive_node_placer_layout_phase()
-  let graph = new_l_graph()
+  let graph = @layered.new_l_graph()
   assert_eq(
     match phase.get_layout_processor_configuration(graph) {
       Some(_) => true

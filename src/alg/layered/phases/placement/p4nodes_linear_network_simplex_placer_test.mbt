@@ -1,7 +1,7 @@
 ///|
-fn p4nodes_test_graph_property(name : String) -> GraphProperties {
-  for property in graph_properties_values() {
-    if graph_properties_to_string(property) == name {
+fn p4nodes_test_graph_property(name : String) -> @layered.GraphProperties {
+  for property in @layered.graph_properties_values() {
+    if @layered.graph_properties_to_string(property) == name {
       return property
     }
   }
@@ -9,9 +9,11 @@ fn p4nodes_test_graph_property(name : String) -> GraphProperties {
 }
 
 ///|
-fn p4nodes_test_strategy(name : String) -> IntermediateProcessorStrategy {
-  for strategy in intermediate_processor_strategy_values() {
-    if intermediate_processor_strategy_to_string(strategy) == name {
+fn p4nodes_test_strategy(
+  name : String,
+) -> @layered.IntermediateProcessorStrategy {
+  for strategy in @layered.intermediate_processor_strategy_values() {
+    if @layered.intermediate_processor_strategy_to_string(strategy) == name {
       return strategy
     }
   }
@@ -20,7 +22,9 @@ fn p4nodes_test_strategy(name : String) -> IntermediateProcessorStrategy {
 
 ///|
 fn p4nodes_test_contains_factory(
-  factories : Array[@core.ILayoutProcessorFactory[LayeredPhases, LGraph]],
+  factories : Array[
+    @core.ILayoutProcessorFactory[@layered.LayeredPhases, @layered.LGraph],
+  ],
   expected_factory_id : Int,
 ) -> Bool {
   for factory in factories {
@@ -33,31 +37,34 @@ fn p4nodes_test_contains_factory(
 
 ///|
 fn p4nodes_test_expected_hierarchical_port_position_factory_id() -> Int {
-  layered_intermediate_processor_factory(
+  @layered.layered_intermediate_processor_factory(
     p4nodes_test_strategy("HIERARCHICAL_PORT_POSITION_PROCESSOR"),
   ).factory_id()
 }
 
 ///|
-fn p4nodes_test_external_ports_graph() -> LGraph {
-  let graph = new_l_graph()
+fn p4nodes_test_external_ports_graph() -> @layered.LGraph {
+  let graph = @layered.new_l_graph()
   graph.set_property_graph_properties_array(
-    internal_properties_graph_properties,
+    @layered.internal_properties_graph_properties,
     [p4nodes_test_graph_property("EXTERNAL_PORTS")],
   )
   graph
 }
 
 ///|
-fn p4nodes_test_add_layer(graph : LGraph) -> Layer {
-  let layer = new_layer(graph)
+fn p4nodes_test_add_layer(graph : @layered.LGraph) -> @layered.Layer {
+  let layer = @layered.new_layer(graph)
   graph.get_layers().push(layer)
   layer
 }
 
 ///|
-fn p4nodes_test_add_basic_node(layer : Layer, height : Double) -> LNode {
-  let node = new_l_node()
+fn p4nodes_test_add_basic_node(
+  layer : @layered.Layer,
+  height : Double,
+) -> @layered.LNode {
+  let node = @layered.new_l_node()
   node.set_layer(Some(layer))
   ignore(node.get_size().set_xy(10.0, height))
   node.get_margin().set_top(0.0)
@@ -95,12 +102,12 @@ let p4nodes_test_network_simplex_node_flexibility_default : @graph.IProperty[
 
 ///|
 fn p4nodes_test_add_port(
-  node : LNode,
+  node : @layered.LNode,
   side : @core.PortSide,
   anchor_y : Double,
   position_y : Double,
-) -> LPort {
-  let port = new_l_port()
+) -> @layered.LPort {
+  let port = @layered.new_l_port()
   port.set_node(Some(node))
   port.set_side(side)
   ignore(port.get_anchor().set_xy(port.get_anchor().x, anchor_y))
@@ -109,23 +116,26 @@ fn p4nodes_test_add_port(
 }
 
 ///|
-fn p4nodes_test_connect_nodes(source : LNode, target : LNode) -> LEdge {
-  let source_port = new_l_port()
+fn p4nodes_test_connect_nodes(
+  source : @layered.LNode,
+  target : @layered.LNode,
+) -> @layered.LEdge {
+  let source_port = @layered.new_l_port()
   source_port.set_node(Some(source))
   source_port.set_side(p4nodes_test_port_side("EAST"))
 
-  let target_port = new_l_port()
+  let target_port = @layered.new_l_port()
   target_port.set_node(Some(target))
   target_port.set_side(p4nodes_test_port_side("WEST"))
 
-  let edge = new_l_edge()
+  let edge = @layered.new_l_edge()
   edge.set_source(Some(source_port))
   edge.set_target(Some(target_port))
   edge
 }
 
 ///|
-fn p4nodes_test_layer_has_proper_coordinates(layer : Layer) -> Bool {
+fn p4nodes_test_layer_has_proper_coordinates(layer : @layered.Layer) -> Bool {
   let nodes = layer.get_nodes()
   if nodes.length() <= 1 {
     return true
@@ -145,8 +155,8 @@ fn p4nodes_test_layer_has_proper_coordinates(layer : Layer) -> Bool {
 }
 
 ///|
-fn p4nodes_test_proper_coordinate_graph() -> LGraph {
-  let graph = new_l_graph()
+fn p4nodes_test_proper_coordinate_graph() -> @layered.LGraph {
+  let graph = @layered.new_l_graph()
   let layer0 = p4nodes_test_add_layer(graph)
   let layer1 = p4nodes_test_add_layer(graph)
 
@@ -164,7 +174,7 @@ fn p4nodes_test_proper_coordinate_graph() -> LGraph {
 }
 
 ///|
-fn p4nodes_test_graph_has_proper_coordinates(graph : LGraph) -> Bool {
+fn p4nodes_test_graph_has_proper_coordinates(graph : @layered.LGraph) -> Bool {
   for layer in graph.get_layers() {
     if !p4nodes_test_layer_has_proper_coordinates(layer) {
       return false
@@ -178,8 +188,8 @@ test "linear segments node placer layout phase starts monitor with expected task
   let phase = new_linear_segments_node_placer_layout_phase()
   assert_true(phase.is_layout_phase())
 
-  let monitor = new_elk_progress_monitor()
-  phase.process(new_l_graph(), Some(monitor))
+  let monitor = @core.new_elk_progress_monitor()
+  phase.process(@layered.new_l_graph(), Some(monitor))
   inspect(monitor.get_task_name(), content="Linear segments node placement")
 }
 
@@ -193,7 +203,7 @@ test "linear segments node placer config adds hierarchical port position process
     None => abort("linear segments node placer configuration must exist")
   }
 
-  let p5 = layered_phase_constants()[4]
+  let p5 = @layered.layered_phase_constants()[4]
   assert_true(
     p4nodes_test_contains_factory(
       configuration.processors_before(p5),
@@ -205,7 +215,7 @@ test "linear segments node placer config adds hierarchical port position process
 ///|
 test "linear segments node placer uses @core.spacing_edge_edge for first segment placement" {
   let phase = new_linear_segments_node_placer_layout_phase()
-  let graph = new_l_graph()
+  let graph = @layered.new_l_graph()
   graph.set_property_double(@core.spacing_edge_edge, 13.0)
 
   let layer = p4nodes_test_add_layer(graph)
@@ -220,7 +230,7 @@ test "linear segments node placer uses @core.spacing_edge_edge for first segment
 ///|
 test "linear segments node placer config is none without external ports" {
   let phase = new_linear_segments_node_placer_layout_phase()
-  let graph = new_l_graph()
+  let graph = @layered.new_l_graph()
   assert_eq(
     match phase.get_layout_processor_configuration(graph) {
       Some(_) => true
@@ -256,7 +266,7 @@ test "bk node placer assigns proper coordinates in each layer" {
 
 ///|
 test "network simplex node placer integerifies non-flexible port y positions during prepare" {
-  let graph = new_l_graph()
+  let graph = @layered.new_l_graph()
   let layer = p4nodes_test_add_layer(graph)
   let node = p4nodes_test_add_basic_node(layer, 10.0)
 
@@ -277,7 +287,7 @@ test "network simplex node placer integerifies non-flexible port y positions dur
 
 ///|
 test "network simplex node placer integerifies flexible node anchor and absolute port y" {
-  let graph = new_l_graph()
+  let graph = @layered.new_l_graph()
   let layer = p4nodes_test_add_layer(graph)
   let node = p4nodes_test_add_basic_node(layer, 100.0)
   node.set_property_string(@core.port_constraints, "FIXED_ORDER")
@@ -306,7 +316,7 @@ test "network simplex node placer integerifies flexible node anchor and absolute
 
 ///|
 test "network simplex node placer does not integerify one-port PORT_POSITION anchor" {
-  let graph = new_l_graph()
+  let graph = @layered.new_l_graph()
   let layer = p4nodes_test_add_layer(graph)
   let node = p4nodes_test_add_basic_node(layer, 100.0)
   node.set_property_string(@core.port_constraints, "FIXED_ORDER")
@@ -332,7 +342,7 @@ test "network simplex node placer does not integerify one-port PORT_POSITION anc
 
 ///|
 test "network simplex node placer uses graph default flexibility during prepare" {
-  let graph = new_l_graph()
+  let graph = @layered.new_l_graph()
   graph.set_property_string(
     p4nodes_test_network_simplex_node_flexibility_default, "PORT_POSITION",
   )
@@ -356,7 +366,7 @@ test "network simplex node placer uses graph default flexibility during prepare"
 
 ///|
 test "network simplex node placer uses node portsSurrounding before graph value" {
-  let graph = new_l_graph()
+  let graph = @layered.new_l_graph()
   graph.set_property_elk_margin(
     @options.layered_options_spacing_ports_surrounding,
     @core.new_elk_margin_values(80.0, 0.0, 80.0, 0.0),
@@ -396,7 +406,7 @@ test "network simplex node placer uses node portsSurrounding before graph value"
 
 ///|
 test "network simplex node placer prepare assigns sequential node and edge ids" {
-  let graph = new_l_graph()
+  let graph = @layered.new_l_graph()
   let layer = p4nodes_test_add_layer(graph)
   let source = p4nodes_test_add_basic_node(layer, 10.0)
   let target = p4nodes_test_add_basic_node(layer, 10.0)
@@ -423,8 +433,8 @@ test "network simplex node placer layout phase starts monitor with expected task
   let phase = new_network_simplex_placer_layout_phase()
   assert_true(phase.is_layout_phase())
 
-  let monitor = new_elk_progress_monitor()
-  phase.process(new_l_graph(), Some(monitor))
+  let monitor = @core.new_elk_progress_monitor()
+  phase.process(@layered.new_l_graph(), Some(monitor))
   inspect(monitor.get_task_name(), content="Network simplex node placement")
 }
 
@@ -438,7 +448,7 @@ test "network simplex node placer config adds hierarchical port position process
     None => abort("network simplex node placer configuration must exist")
   }
 
-  let p5 = layered_phase_constants()[4]
+  let p5 = @layered.layered_phase_constants()[4]
   assert_true(
     p4nodes_test_contains_factory(
       configuration.processors_before(p5),
@@ -450,7 +460,7 @@ test "network simplex node placer config adds hierarchical port position process
 ///|
 test "network simplex node placer config is none without external ports" {
   let phase = new_network_simplex_placer_layout_phase()
-  let graph = new_l_graph()
+  let graph = @layered.new_l_graph()
   assert_eq(
     match phase.get_layout_processor_configuration(graph) {
       Some(_) => true

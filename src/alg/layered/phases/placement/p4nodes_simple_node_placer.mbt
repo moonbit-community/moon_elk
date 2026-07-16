@@ -1,6 +1,6 @@
 ///|
 fn simple_node_placer_process(
-  layered_graph : LGraph,
+  layered_graph : @layered.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
 ) -> Unit {
   let monitor = match progress_monitor {
@@ -9,13 +9,13 @@ fn simple_node_placer_process(
   }
   ignore(monitor.begin("Simple node placement", 1.0))
 
-  let spacings = new_layered_spacings(layered_graph)
+  let spacings = @layered.new_layered_spacings(layered_graph)
   try {
     let mut max_height = 0.0
     for layer in layered_graph.get_layers() {
       let layer_size = layer.get_size()
       layer_size.y = 0.0
-      let mut last_node : LNode? = None
+      let mut last_node : @layered.LNode? = None
       for node in layer.get_nodes() {
         match last_node {
           Some(previous) =>
@@ -34,7 +34,7 @@ fn simple_node_placer_process(
     for layer in layered_graph.get_layers() {
       let layer_size = layer.get_size()
       let mut pos = (max_height - layer_size.y) / 2.0
-      let mut last_node : LNode? = None
+      let mut last_node : @layered.LNode? = None
       for node in layer.get_nodes() {
         match last_node {
           Some(previous) => pos += spacings.get_vertical_spacing(node, previous)
@@ -48,7 +48,7 @@ fn simple_node_placer_process(
       }
     }
   } catch {
-    LayeredSpacingsException(message) =>
+    @layered.LayeredSpacingsException(message) =>
       @core.layout_runtime_report_unsupported_configuration(message)
   }
 
@@ -57,22 +57,22 @@ fn simple_node_placer_process(
 
 ///|
 pub fn new_simple_node_placer_layout_phase() -> @core.ILayoutProcessor[
-  LayeredPhases,
-  LGraph,
+  @layered.LayeredPhases,
+  @layered.LGraph,
 ] {
   @core.new_layout_phase(simple_node_placer_process, graph => {
     for
       property in graph.get_property_graph_properties_array(
-        internal_properties_graph_properties,
+        @layered.internal_properties_graph_properties,
       ) {
       match property {
-        ExternalPorts =>
+        @layered.ExternalPorts =>
           return Some(
             @core.layout_processor_configuration_create(
-              layered_phase_descriptor,
+              @layered.layered_phase_descriptor,
             ).add_before(
               P5EdgeRouting,
-              layered_intermediate_processor_factory(
+              @layered.layered_intermediate_processor_factory(
                 HierarchicalPortPositionProcessor,
               ),
             ),
