@@ -61,7 +61,7 @@ pub(all) enum IntermediateProcessorStrategy {
 }
 
 ///|
-fn intermediate_processor_strategy_ordinal(
+pub fn intermediate_processor_strategy_ordinal(
   strategy : IntermediateProcessorStrategy,
 ) -> Int {
   match strategy {
@@ -316,7 +316,7 @@ fn intermediate_processor_create(
 ) -> @core.ILayoutProcessor[LayeredPhases, LGraph] {
   match strategy {
     DirectionPreprocessor => new_direction_preprocessor_layout_processor()
-    CommentPreprocessor => new_comment_preprocessor_layout_processor()
+    CommentPreprocessor => layered_registered_intermediate_processor(strategy)
     EdgeAndLayerConstraintEdgeReverser =>
       new_edge_and_layer_constraint_edge_reverser_layout_processor()
     InteractiveExternalPortPositioner =>
@@ -369,7 +369,7 @@ fn intermediate_processor_create(
       new_innermost_node_margin_calculator_layout_processor()
     SelfLoopRouter => new_self_loop_router_layout_processor()
     CommentNodeMarginCalculator =>
-      new_comment_node_margin_calculator_layout_processor()
+      layered_registered_intermediate_processor(strategy)
     EndLabelPreprocessor => new_end_label_preprocessor_layout_processor()
     LabelDummySwitcher => new_label_dummy_switcher_layout_processor()
     CenterLabelManagementProcessor =>
@@ -383,7 +383,7 @@ fn intermediate_processor_create(
     HierarchicalPortPositionProcessor =>
       new_hierarchical_port_position_processor_layout_processor()
     ConstraintsPostprocessor => new_constraints_postprocessor_layout_processor()
-    CommentPostprocessor => new_comment_postprocessor_layout_processor()
+    CommentPostprocessor => layered_registered_intermediate_processor(strategy)
     HypernodeProcessor => new_hypernodes_processor_layout_processor()
     HierarchicalPortOrthogonalEdgeRouter =>
       new_hierarchical_port_orthogonal_edge_router_layout_processor()

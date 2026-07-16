@@ -14,14 +14,17 @@ fn comment_preprocessor_port_constraints_from_string(
 
 ///|
 fn comment_preprocessor_reverse_edge(
-  edge : LEdge,
-  layered_graph : LGraph,
+  edge : @layered.LEdge,
+  layered_graph : @layered.LGraph,
 ) -> Unit {
   edge.reverse(layered_graph, true)
 }
 
 ///|
-fn comment_preprocessor_port_equals(left : LPort?, right : LPort) -> Bool {
+fn comment_preprocessor_port_equals(
+  left : @layered.LPort?,
+  right : @layered.LPort,
+) -> Bool {
   match left {
     Some(port) => port.get_handle() == right.get_handle()
     None => false
@@ -30,9 +33,10 @@ fn comment_preprocessor_port_equals(left : LPort?, right : LPort) -> Bool {
 
 ///|
 fn comment_preprocessor_remove_hierarchical_port_dummy_node(
-  opposite_port : LPort,
+  opposite_port : @layered.LPort,
 ) -> Unit {
-  match opposite_port.get_property_l_node(internal_properties_port_dummy) {
+  match
+    opposite_port.get_property_l_node(@layered.internal_properties_port_dummy) {
     Some(dummy) =>
       match dummy.get_layer() {
         Some(layer) => {
@@ -52,10 +56,10 @@ fn comment_preprocessor_remove_hierarchical_port_dummy_node(
 
 ///|
 fn comment_preprocessor_process_box(
-  box : LNode,
-  edge : LEdge,
-  opposite_port : LPort,
-  real_node : LNode,
+  box : @layered.LNode,
+  edge : @layered.LEdge,
+  opposite_port : @layered.LPort,
+  real_node : @layered.LNode,
 ) -> Unit {
   let mut top_first = true
   let mut only_top = false
@@ -112,27 +116,29 @@ fn comment_preprocessor_process_box(
     top_first = !only_bottom
   }
 
-  let mut box_list : Array[LNode] = []
+  let mut box_list : Array[@layered.LNode] = []
   let mut use_top = false
   if top_first {
-    if !real_node.has_property_l_node_array(internal_properties_top_comments) {
+    if !real_node.has_property_l_node_array(
+        @layered.internal_properties_top_comments,
+      ) {
       box_list = []
       use_top = true
     } else {
       let top_boxes = real_node.get_property_l_node_array(
-        internal_properties_top_comments,
+        @layered.internal_properties_top_comments,
       )
       if only_top {
         box_list = top_boxes
         use_top = true
       } else if !real_node.has_property_l_node_array(
-          internal_properties_bottom_comments,
+          @layered.internal_properties_bottom_comments,
         ) {
         box_list = []
         use_top = false
       } else {
         let bottom_boxes = real_node.get_property_l_node_array(
-          internal_properties_bottom_comments,
+          @layered.internal_properties_bottom_comments,
         )
         if top_boxes.length() <= bottom_boxes.length() {
           box_list = top_boxes
@@ -144,25 +150,25 @@ fn comment_preprocessor_process_box(
       }
     }
   } else if !real_node.has_property_l_node_array(
-      internal_properties_bottom_comments,
+      @layered.internal_properties_bottom_comments,
     ) {
     box_list = []
     use_top = false
   } else {
     let bottom_boxes = real_node.get_property_l_node_array(
-      internal_properties_bottom_comments,
+      @layered.internal_properties_bottom_comments,
     )
     if only_bottom {
       box_list = bottom_boxes
       use_top = false
     } else if !real_node.has_property_l_node_array(
-        internal_properties_top_comments,
+        @layered.internal_properties_top_comments,
       ) {
       box_list = []
       use_top = true
     } else {
       let top_boxes = real_node.get_property_l_node_array(
-        internal_properties_top_comments,
+        @layered.internal_properties_top_comments,
       )
       if bottom_boxes.length() <= top_boxes.length() {
         box_list = bottom_boxes
@@ -177,16 +183,16 @@ fn comment_preprocessor_process_box(
   box_list.push(box)
   if use_top {
     real_node.set_property_l_node_array(
-      internal_properties_top_comments, box_list,
+      @layered.internal_properties_top_comments, box_list,
     )
   } else {
     real_node.set_property_l_node_array(
-      internal_properties_bottom_comments, box_list,
+      @layered.internal_properties_bottom_comments, box_list,
     )
   }
 
   box.set_property_l_port(
-    internal_properties_comment_conn_port,
+    @layered.internal_properties_comment_conn_port,
     Some(opposite_port),
   )
 
@@ -207,7 +213,7 @@ fn comment_preprocessor_process_box(
 
 ///|
 fn comment_preprocessor_process(
-  layered_graph : LGraph,
+  layered_graph : @layered.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
 ) -> Unit {
   let monitor = match progress_monitor {
@@ -226,8 +232,8 @@ fn comment_preprocessor_process(
       comment_box_count = comment_box_count + 1
 
       let mut edge_count = 0
-      let mut edge : LEdge? = None
-      let mut opposite_port : LPort? = None
+      let mut edge : @layered.LEdge? = None
+      let mut opposite_port : @layered.LPort? = None
       for port in node.get_ports() {
         edge_count = edge_count + port.get_degree()
         if port.get_incoming_edges().length() == 1 {
@@ -266,7 +272,7 @@ fn comment_preprocessor_process(
         continue
       }
 
-      let rev_edges : Array[LEdge] = []
+      let rev_edges : Array[@layered.LEdge] = []
       for port in node.get_ports() {
         for outedge in port.get_outgoing_edges() {
           match outedge.get_target() {
@@ -305,8 +311,8 @@ fn comment_preprocessor_process(
 
 ///|
 pub fn new_comment_preprocessor_layout_processor() -> @core.ILayoutProcessor[
-  LayeredPhases,
-  LGraph,
+  @layered.LayeredPhases,
+  @layered.LGraph,
 ] {
   @core.new_layout_processor(comment_preprocessor_process)
 }

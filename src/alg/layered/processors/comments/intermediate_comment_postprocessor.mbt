@@ -8,9 +8,11 @@ fn comment_postprocessor_max(a : Double, b : Double) -> Double {
 }
 
 ///|
-fn comment_postprocessor_get_box_port(comment_box : LNode) -> LPort? {
+fn comment_postprocessor_get_box_port(
+  comment_box : @layered.LNode,
+) -> @layered.LPort? {
   let node_port = comment_box.get_property_l_port(
-    internal_properties_comment_conn_port,
+    @layered.internal_properties_comment_conn_port,
   )
   for port in comment_box.get_ports() {
     for edge in port.get_outgoing_edges() {
@@ -27,15 +29,15 @@ fn comment_postprocessor_get_box_port(comment_box : LNode) -> LPort? {
 
 ///|
 fn comment_postprocessor_process_node(
-  node : LNode,
-  top_boxes : Array[LNode]?,
-  bottom_boxes : Array[LNode]?,
+  node : @layered.LNode,
+  top_boxes : Array[@layered.LNode]?,
+  bottom_boxes : Array[@layered.LNode]?,
 ) -> Unit {
   let node_pos = node.get_position()
   let node_size = node.get_size()
   let margin = node.get_margin()
 
-  let comment_comment_spacing = layered_spacings_get_individual_or_default(
+  let comment_comment_spacing = @layered.layered_spacings_get_individual_or_default(
     node, @options.layered_options_spacing_comment_comment,
   )
 
@@ -65,7 +67,9 @@ fn comment_postprocessor_process_node(
             box_port.get_position().y = box.get_size().y
 
             match
-              box.get_property_l_port(internal_properties_comment_conn_port) {
+              box.get_property_l_port(
+                @layered.internal_properties_comment_conn_port,
+              ) {
               Some(node_port) =>
                 if node_port.get_degree() == 1 {
                   node_port.get_position().x = anchor_x -
@@ -111,7 +115,9 @@ fn comment_postprocessor_process_node(
             box_port.get_position().y = 0.0
 
             match
-              box.get_property_l_port(internal_properties_comment_conn_port) {
+              box.get_property_l_port(
+                @layered.internal_properties_comment_conn_port,
+              ) {
               Some(node_port) =>
                 if node_port.get_degree() == 1 {
                   node_port.get_position().x = anchor_x -
@@ -134,7 +140,7 @@ fn comment_postprocessor_process_node(
 
 ///|
 fn comment_postprocessor_process(
-  layered_graph : LGraph,
+  layered_graph : @layered.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
 ) -> Unit {
   let monitor = match progress_monitor {
@@ -144,20 +150,26 @@ fn comment_postprocessor_process(
   ignore(monitor.begin("Comment post-processing", 1.0))
 
   for layer in layered_graph.get_layers() {
-    let boxes : Array[LNode] = []
+    let boxes : Array[@layered.LNode] = []
     for node in layer.get_nodes() {
       let top_boxes = if node.has_property_l_node_array(
-          internal_properties_top_comments,
+          @layered.internal_properties_top_comments,
         ) {
-        Some(node.get_property_l_node_array(internal_properties_top_comments))
+        Some(
+          node.get_property_l_node_array(
+            @layered.internal_properties_top_comments,
+          ),
+        )
       } else {
         None
       }
       let bottom_boxes = if node.has_property_l_node_array(
-          internal_properties_bottom_comments,
+          @layered.internal_properties_bottom_comments,
         ) {
         Some(
-          node.get_property_l_node_array(internal_properties_bottom_comments),
+          node.get_property_l_node_array(
+            @layered.internal_properties_bottom_comments,
+          ),
         )
       } else {
         None
@@ -200,8 +212,8 @@ fn comment_postprocessor_process(
 
 ///|
 pub fn new_comment_postprocessor_layout_processor() -> @core.ILayoutProcessor[
-  LayeredPhases,
-  LGraph,
+  @layered.LayeredPhases,
+  @layered.LGraph,
 ] {
   @core.new_layout_processor(comment_postprocessor_process)
 }

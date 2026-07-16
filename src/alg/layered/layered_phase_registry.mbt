@@ -17,6 +17,12 @@ let layered_node_placement_factories : Map[
 ] = Map([])
 
 ///|
+let layered_intermediate_processor_factories : Map[
+  Int,
+  @core.ILayoutProcessorFactory[LayeredPhases, LGraph],
+] = Map([])
+
+///|
 /// Registers a cycle-breaking phase at the composition seam.
 ///
 /// Concrete phase packages depend on the shared layered model and register
@@ -44,6 +50,33 @@ pub fn register_layered_node_placement_phase(
   factory : @core.ILayoutProcessorFactory[LayeredPhases, LGraph],
 ) -> Unit {
   layered_node_placement_factories[strategy] = factory
+}
+
+///|
+pub fn register_layered_intermediate_processor(
+  strategy : IntermediateProcessorStrategy,
+  factory : @core.ILayoutProcessorFactory[LayeredPhases, LGraph],
+) -> Unit {
+  layered_intermediate_processor_factories[intermediate_processor_strategy_ordinal(
+    strategy,
+  )] = factory
+}
+
+///|
+fn layered_registered_intermediate_processor(
+  strategy : IntermediateProcessorStrategy,
+) -> @core.ILayoutProcessor[LayeredPhases, LGraph] {
+  let ordinal = intermediate_processor_strategy_ordinal(strategy)
+  match layered_intermediate_processor_factories.get(ordinal) {
+    Some(factory) => factory.create()
+    None => {
+      @core.layout_runtime_report_unsupported_configuration(
+        "Layered intermediate processor is not linked for strategy " +
+        intermediate_processor_strategy_to_string(strategy),
+      )
+      @core.new_layout_processor((_, _) => ())
+    }
+  }
 }
 
 ///|

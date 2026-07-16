@@ -15,7 +15,9 @@ fn node_margin_calculator_test_new_node(
 
 ///|
 test "comment node margin calculator reports expected task name" {
-  let processor = new_comment_node_margin_calculator_layout_processor()
+  let processor = layered_intermediate_processor_factory(
+    CommentNodeMarginCalculator,
+  ).create()
   let monitor = new_elk_progress_monitor()
   processor.process(new_l_graph(), Some(monitor))
   inspect(monitor.get_task_name(), content="Node margin calculation")
@@ -46,7 +48,9 @@ test "comment node margin calculator expands margins for top and bottom comments
   ])
   node.set_property_l_node_array(internal_properties_bottom_comments, [bottom_a])
 
-  let processor = new_comment_node_margin_calculator_layout_processor()
+  let processor = layered_intermediate_processor_factory(
+    CommentNodeMarginCalculator,
+  ).create()
   processor.process(graph, None)
 
   inspect(node.get_margin().get_top(), content="28")
@@ -69,7 +73,9 @@ test "comment node margin calculator keeps margins unchanged without comments" {
   let node = node_margin_calculator_test_new_node(graph, layer, 10, 100.0, 40.0)
   node.get_margin().set_values(2.0, 3.0, 4.0, 5.0)
 
-  let processor = new_comment_node_margin_calculator_layout_processor()
+  let processor = layered_intermediate_processor_factory(
+    CommentNodeMarginCalculator,
+  ).create()
   processor.process(graph, None)
 
   inspect(node.get_margin().get_top(), content="2")
@@ -93,7 +99,9 @@ test "comment node margin calculator treats empty comment list as present proper
   node.get_margin().set_values(2.0, 3.0, 4.0, 5.0)
   node.set_property_l_node_array(internal_properties_top_comments, [])
 
-  let processor = new_comment_node_margin_calculator_layout_processor()
+  let processor = layered_intermediate_processor_factory(
+    CommentNodeMarginCalculator,
+  ).create()
   processor.process(graph, None)
 
   inspect(node.get_margin().get_top(), content="9")

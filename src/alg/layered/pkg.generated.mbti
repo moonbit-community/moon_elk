@@ -217,6 +217,8 @@ pub fn interactive_reference_point_to_string(InteractiveReferencePoint) -> Strin
 
 pub fn interactive_reference_point_values() -> Array[String]
 
+pub fn intermediate_processor_strategy_ordinal(IntermediateProcessorStrategy) -> Int
+
 pub fn intermediate_processor_strategy_to_string(IntermediateProcessorStrategy) -> String
 
 pub fn intermediate_processor_strategy_values() -> Array[IntermediateProcessorStrategy]
@@ -460,12 +462,6 @@ pub fn new_breaking_point_processor_layout_processor() -> @core.ILayoutProcessor
 pub fn new_breaking_point_remover_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_cell() -> Cell
-
-pub fn new_comment_node_margin_calculator_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
-
-pub fn new_comment_postprocessor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
-
-pub fn new_comment_preprocessor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_component_group() -> ComponentGroup
 
@@ -1000,6 +996,8 @@ pub fn recursive_layered_apply_transformed_graph(LGraph) -> Bool
 pub fn recursive_layered_import_graph_for_transform(Int) -> LGraph?
 
 pub fn register_layered_cycle_breaking_phase(String, @core.ILayoutProcessorFactory[LayeredPhases, LGraph]) -> Unit
+
+pub fn register_layered_intermediate_processor(IntermediateProcessorStrategy, @core.ILayoutProcessorFactory[LayeredPhases, LGraph]) -> Unit
 
 pub fn register_layered_layering_phase(String, @core.ILayoutProcessorFactory[LayeredPhases, LGraph]) -> Unit
 

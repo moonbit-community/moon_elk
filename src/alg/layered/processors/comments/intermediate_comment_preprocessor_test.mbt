@@ -1,10 +1,10 @@
 ///|
 fn comment_preprocessor_test_new_node(
-  graph : LGraph,
+  graph : @layered.LGraph,
   id : Int,
   comment_box : Bool,
-) -> LNode {
-  let node = new_l_node(graph=Some(graph))
+) -> @layered.LNode {
+  let node = @layered.new_l_node(graph=Some(graph))
   node.set_id(id)
   node.set_property_bool(@options.layered_options_comment_box, comment_box)
   graph.get_layerless_nodes().push(node)
@@ -12,8 +12,11 @@ fn comment_preprocessor_test_new_node(
 }
 
 ///|
-fn comment_preprocessor_test_new_port(node : LNode, id : Int) -> LPort {
-  let port = new_l_port()
+fn comment_preprocessor_test_new_port(
+  node : @layered.LNode,
+  id : Int,
+) -> @layered.LPort {
+  let port = @layered.new_l_port()
   port.set_id(id)
   port.set_node(Some(node))
   port
@@ -22,10 +25,10 @@ fn comment_preprocessor_test_new_port(node : LNode, id : Int) -> LPort {
 ///|
 fn comment_preprocessor_test_new_edge(
   id : Int,
-  source : LPort?,
-  target : LPort?,
-) -> LEdge {
-  let edge = new_l_edge()
+  source : @layered.LPort?,
+  target : @layered.LPort?,
+) -> @layered.LEdge {
+  let edge = @layered.new_l_edge()
   edge.set_id(id)
   edge.set_source(source)
   edge.set_target(target)
@@ -33,7 +36,7 @@ fn comment_preprocessor_test_new_edge(
 }
 
 ///|
-fn comment_preprocessor_test_port_id(port : LPort?) -> Int {
+fn comment_preprocessor_test_port_id(port : @layered.LPort?) -> Int {
   match port {
     Some(value) => value.get_id()
     None => -1
@@ -41,7 +44,7 @@ fn comment_preprocessor_test_port_id(port : LPort?) -> Int {
 }
 
 ///|
-fn comment_preprocessor_test_is_none(port : LPort?) -> Bool {
+fn comment_preprocessor_test_is_none(port : @layered.LPort?) -> Bool {
   match port {
     Some(_) => false
     None => true
@@ -49,7 +52,7 @@ fn comment_preprocessor_test_is_none(port : LPort?) -> Bool {
 }
 
 ///|
-fn comment_preprocessor_test_node_is_none(node : LNode?) -> Bool {
+fn comment_preprocessor_test_node_is_none(node : @layered.LNode?) -> Bool {
   match node {
     Some(_) => false
     None => true
@@ -59,14 +62,14 @@ fn comment_preprocessor_test_node_is_none(node : LNode?) -> Bool {
 ///|
 test "comment preprocessor reports expected task name" {
   let processor = new_comment_preprocessor_layout_processor()
-  let monitor = new_elk_progress_monitor()
-  processor.process(new_l_graph(), Some(monitor))
+  let monitor = @core.new_elk_progress_monitor()
+  processor.process(@layered.new_l_graph(), Some(monitor))
   inspect(monitor.get_task_name(), content="Comment pre-processing")
 }
 
 ///|
 test "comment preprocessor extracts singly connected comment box" {
-  let graph = new_l_graph()
+  let graph = @layered.new_l_graph()
 
   let real = comment_preprocessor_test_new_node(graph, 1, false)
   let box = comment_preprocessor_test_new_node(graph, 2, true)
@@ -86,21 +89,23 @@ test "comment preprocessor extracts singly connected comment box" {
   inspect(graph.get_layerless_nodes()[0].get_id(), content="1")
 
   inspect(
-    real.has_property_l_node_array(internal_properties_top_comments),
+    real.has_property_l_node_array(@layered.internal_properties_top_comments),
     content="true",
   )
   inspect(
-    real.get_property_l_node_array(internal_properties_top_comments).length(),
+    real
+    .get_property_l_node_array(@layered.internal_properties_top_comments)
+    .length(),
     content="1",
   )
   inspect(
-    real.get_property_l_node_array(internal_properties_top_comments)[0].get_id(),
+    real.get_property_l_node_array(@layered.internal_properties_top_comments)[0].get_id(),
     content="2",
   )
 
   inspect(
     comment_preprocessor_test_port_id(
-      box.get_property_l_port(internal_properties_comment_conn_port),
+      box.get_property_l_port(@layered.internal_properties_comment_conn_port),
     ),
     content="11",
   )
@@ -115,7 +120,7 @@ test "comment preprocessor extracts singly connected comment box" {
 
 ///|
 test "comment preprocessor reverses oddly connected comment edge" {
-  let graph = new_l_graph()
+  let graph = @layered.new_l_graph()
 
   let comment = comment_preprocessor_test_new_node(graph, 10, true)
   let left = comment_preprocessor_test_new_node(graph, 11, false)
@@ -147,7 +152,7 @@ test "comment preprocessor reverses oddly connected comment edge" {
     content="101",
   )
   inspect(
-    odd_edge.get_property_bool(internal_properties_reversed),
+    odd_edge.get_property_bool(@layered.internal_properties_reversed),
     content="true",
   )
 }
