@@ -166,3 +166,4 @@ pub fn NeighborhoodInformation::cleanup(Self) -> Unit
 // Type aliases
 
 // Traits
+
