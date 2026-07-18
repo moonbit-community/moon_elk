@@ -507,11 +507,143 @@ fn ModelOrderNodeComparator::handle_helper_dummy_nodes(
 }
 
 ///|
+fn model_order_node_compare_int(left : Int, right : Int) -> Int {
+  if left < right {
+    -1
+  } else if left > right {
+    1
+  } else {
+    0
+  }
+}
+
+///|
+fn ModelOrderNodeComparator::update_elk_0_8_1_compare_result(
+  self : ModelOrderNodeComparator,
+  n1 : LNode,
+  n2 : LNode,
+  n1_order : Int,
+  n2_order : Int,
+) -> Int {
+  if n1_order > n2_order {
+    self.update_bigger_and_smaller_associations(n1, n2)
+  } else {
+    self.update_bigger_and_smaller_associations(n2, n1)
+  }
+  model_order_node_compare_int(n1_order, n2_order)
+}
+
+///|
+fn ModelOrderNodeComparator::compare_nodes_and_edges_elk_0_8_1(
+  self : ModelOrderNodeComparator,
+  n1 : LNode,
+  n2 : LNode,
+) -> Int {
+  let n1_handle = lnode_internal_handle(n1)
+  let n2_handle = lnode_internal_handle(n2)
+
+  let n1_bigger = model_order_node_associations_get(self.bigger_than, n1_handle)
+  if model_order_node_contains(n1_bigger, n2_handle) {
+    return 1
+  }
+  let n2_bigger = model_order_node_associations_get(self.bigger_than, n2_handle)
+  if model_order_node_contains(n2_bigger, n1_handle) {
+    return -1
+  }
+  let n1_smaller = model_order_node_associations_get(
+    self.smaller_than,
+    n1_handle,
+  )
+  if model_order_node_contains(n1_smaller, n2_handle) {
+    return -1
+  }
+  let n2_smaller = model_order_node_associations_get(
+    self.smaller_than,
+    n2_handle,
+  )
+  if model_order_node_contains(n2_smaller, n1_handle) {
+    return 1
+  }
+
+  if !n1.has_property_int(internal_properties_model_order) ||
+    !n2.has_property_int(internal_properties_model_order) {
+    let p1_source_port = model_order_node_get_first_incoming_source_port_of_node(
+      n1,
+    )
+    let p2_source_port = model_order_node_get_first_incoming_source_port_of_node(
+      n2,
+    )
+
+    match (p1_source_port, p2_source_port) {
+      (Some(source1), Some(source2)) =>
+        match (source1.get_node(), source2.get_node()) {
+          (Some(left_node), Some(right_node)) => {
+            if lnode_internal_handle(left_node) ==
+              lnode_internal_handle(right_node) {
+              for port in left_node.get_ports() {
+                if lport_internal_handle(port) == lport_internal_handle(source1) {
+                  self.update_bigger_and_smaller_associations(n2, n1)
+                  return -1
+                } else if lport_internal_handle(port) ==
+                  lport_internal_handle(source2) {
+                  self.update_bigger_and_smaller_associations(n1, n2)
+                  return 1
+                }
+              }
+              return self.update_elk_0_8_1_compare_result(
+                n1,
+                n2,
+                self.get_model_order_from_connected_edges(n1),
+                self.get_model_order_from_connected_edges(n2),
+              )
+            }
+
+            for previous_node in self.previous_layer {
+              if lnode_internal_handle(previous_node) ==
+                lnode_internal_handle(left_node) {
+                self.update_bigger_and_smaller_associations(n2, n1)
+                return -1
+              } else if lnode_internal_handle(previous_node) ==
+                lnode_internal_handle(right_node) {
+                self.update_bigger_and_smaller_associations(n1, n2)
+                return 1
+              }
+            }
+          }
+          _ => ()
+        }
+      _ => ()
+    }
+
+    return self.update_elk_0_8_1_compare_result(
+      n1,
+      n2,
+      self.get_model_order_from_connected_edges(n1),
+      self.get_model_order_from_connected_edges(n2),
+    )
+  }
+
+  self.update_elk_0_8_1_compare_result(
+    n1,
+    n2,
+    n1.get_property_int(internal_properties_model_order),
+    n2.get_property_int(internal_properties_model_order),
+  )
+}
+
+///|
 pub fn ModelOrderNodeComparator::compare(
   self : ModelOrderNodeComparator,
   n1 : LNode,
   n2 : LNode,
 ) -> Int {
+  // D2 embeds elkjs 0.8.2 (ELK 0.8.1), whose NODES_AND_EDGES
+  // comparator predates the feedback-edge and group-order extensions below.
+  match self.ordering_strategy {
+    NodesAndEdges => return self.compare_nodes_and_edges_elk_0_8_1(n1, n2)
+    _ => ()
+  }
+
   let n1_handle = lnode_internal_handle(n1)
   let n2_handle = lnode_internal_handle(n2)
 

@@ -290,7 +290,11 @@ pub let internal_properties_first_try_with_initial_order : @graph.IProperty[
 ///|
 pub let internal_properties_second_try_with_initial_order : @graph.IProperty[
   Bool,
-] = @graph.new_property("crossingMinimization.secondTryWithInitialOrder", false)
+] = @graph.new_property(
+  // ELK 0.8.1 exposes both sweep attempts through this same historical key.
+  // Keeping the alias preserves elkjs 0.8.2's randomized sweep sequence.
+  "crossingMinimization.firstTryWithInitialOrder", false,
+)
 
 ///|
 pub let internal_properties_original_dummy_node_position : @graph.IProperty[

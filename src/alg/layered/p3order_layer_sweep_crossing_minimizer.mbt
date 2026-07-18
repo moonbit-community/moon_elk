@@ -791,12 +791,18 @@ fn LayerSweepCrossingMinimizer::minimize_crossings_with_counter(
   }
 
   ignore(self.sweep_reducing_crossings(graph_data, is_forward_sweep, true))
-  if second_try_with_initial_order {
+  // Read both aliased ELK 0.8.1 properties in sequence. Clearing the second
+  // attempt must be visible when the first attempt is checked immediately after.
+  if graph_data
+    .l_graph()
+    .get_property_bool(internal_properties_second_try_with_initial_order) {
     graph_data
     .l_graph()
     .set_property_bool(internal_properties_second_try_with_initial_order, false)
   }
-  if first_try_with_initial_order {
+  if graph_data
+    .l_graph()
+    .get_property_bool(internal_properties_first_try_with_initial_order) {
     graph_data
     .l_graph()
     .set_property_bool(internal_properties_first_try_with_initial_order, false)
@@ -853,12 +859,18 @@ fn LayerSweepCrossingMinimizer::minimize_crossings_node_port_order_with_counter(
   }
 
   ignore(self.sweep_reducing_crossings(graph_data, is_forward_sweep, true))
-  if second_try_with_initial_order {
+  // See minimize_crossings_with_counter: these two properties share a
+  // historical ELK 0.8.1 key, so cached values would change the RNG sequence.
+  if graph_data
+    .l_graph()
+    .get_property_bool(internal_properties_second_try_with_initial_order) {
     graph_data
     .l_graph()
     .set_property_bool(internal_properties_second_try_with_initial_order, false)
   }
-  if first_try_with_initial_order {
+  if graph_data
+    .l_graph()
+    .get_property_bool(internal_properties_first_try_with_initial_order) {
     graph_data
     .l_graph()
     .set_property_bool(internal_properties_first_try_with_initial_order, false)
