@@ -13,15 +13,15 @@ fn register_partition_processor(
 ///|
 fn init {
   register_partition_processor(
-    @layered.PartitionPreprocessor,
+    PartitionPreprocessor,
     new_partition_preprocessor_layout_processor,
   )
   register_partition_processor(
-    @layered.PartitionMidprocessor,
+    PartitionMidprocessor,
     new_partition_midprocessor_layout_processor,
   )
   register_partition_processor(
-    @layered.PartitionPostprocessor,
+    PartitionPostprocessor,
     new_partition_postprocessor_layout_processor,
   )
 }

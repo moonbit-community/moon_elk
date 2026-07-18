@@ -26,13 +26,13 @@ let breadth_first_model_order_layerer_baseline_processing_configuration : @core.
     @layered.layered_phase_descriptor,
   )
   .add_before(
-    @layered.P1CycleBreaking,
+    P1CycleBreaking,
     @layered.layered_intermediate_processor_factory(
       EdgeAndLayerConstraintEdgeReverser,
     ),
   )
   .add_before(
-    @layered.P2Layering,
+    P2Layering,
     breadth_first_model_order_layerer_layer_constraint_preprocessor_factory(),
   )
   .add_before(

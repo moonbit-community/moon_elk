@@ -53,9 +53,9 @@ fn final_spline_spline_routing_mode_equals(
   right : @options.SplineRoutingMode,
 ) -> Bool {
   match (left, right) {
-    (@options.Conservative, @options.Conservative) => true
-    (@options.ConservativeSoft, @options.ConservativeSoft) => true
-    (@options.Sloppy, @options.Sloppy) => true
+    (Conservative, Conservative) => true
+    (ConservativeSoft, ConservativeSoft) => true
+    (Sloppy, Sloppy) => true
     _ => false
   }
 }
@@ -578,10 +578,7 @@ fn final_spline_calculate_bezier_bend_points(
   }
   all_control_points.add_last_vector(target_port.get_absolute_anchor())
 
-  if final_spline_spline_routing_mode_equals(
-      spline_routing_mode,
-      @options.Conservative,
-    ) {
+  if final_spline_spline_routing_mode_equals(spline_routing_mode, Conservative) {
     final_spline_insert_straightening_control_points(
       all_control_points, source_port, target_port,
     )
@@ -681,7 +678,7 @@ fn final_spline_calculate_control_points(
 
     let sloppy = final_spline_spline_routing_mode_equals(
         spline_routing_mode,
-        @options.Sloppy,
+        Sloppy,
       ) &&
       (edge_info.normal_source_node || edge_info.normal_target_node) &&
       final_spline_segment_allows_sloppy_routing(segment, compaction_strategy) &&

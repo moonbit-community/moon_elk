@@ -68,13 +68,13 @@ let min_width_layerer_baseline_processing_configuration : @core.LayoutProcessorC
     @layered.layered_phase_descriptor,
   )
   .add_before(
-    @layered.P1CycleBreaking,
+    P1CycleBreaking,
     @layered.layered_intermediate_processor_factory(
       EdgeAndLayerConstraintEdgeReverser,
     ),
   )
   .add_before(
-    @layered.P2Layering,
+    P2Layering,
     min_width_layerer_layer_constraint_preprocessor_factory(),
   )
   .add_before(

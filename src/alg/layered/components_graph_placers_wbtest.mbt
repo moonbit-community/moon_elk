@@ -57,7 +57,7 @@ test "LayeredSimpleRowGraphPlacer places components into one row" {
   let target = new_l_graph()
   target.set_property_component_ordering_strategy(
     @options.layered_options_consider_model_order_components,
-    @options.ModelOrder,
+    ModelOrder,
   )
 
   let first = layered_components_test_new_graph(1, 30.0, 10.0, @core.sides_none)
@@ -155,7 +155,7 @@ test "LayeredComponentsProcessor picks model-order row placer for model-order st
   )
   config.set_property_component_ordering_strategy(
     @options.layered_options_consider_model_order_components,
-    @options.ModelOrder,
+    ModelOrder,
   )
 
   let processor = new_layered_components_processor()

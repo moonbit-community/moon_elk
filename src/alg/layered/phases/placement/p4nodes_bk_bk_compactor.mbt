@@ -35,7 +35,7 @@ fn bk_compactor_vertical_spacing(
   second : @layered.LNode,
 ) -> Double raise BKAlignedLayoutException {
   compactor.spacings.get_vertical_spacing(first, second) catch {
-    @layered.LayeredSpacingsException(message) =>
+    LayeredSpacingsException(message) =>
       bk_aligned_layout_raise_illegal_state(message)
   }
 }

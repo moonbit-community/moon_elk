@@ -13,15 +13,15 @@ fn register_comment_processor(
 ///|
 fn init {
   register_comment_processor(
-    @layered.CommentPreprocessor,
+    CommentPreprocessor,
     new_comment_preprocessor_layout_processor,
   )
   register_comment_processor(
-    @layered.CommentNodeMarginCalculator,
+    CommentNodeMarginCalculator,
     new_comment_node_margin_calculator_layout_processor,
   )
   register_comment_processor(
-    @layered.CommentPostprocessor,
+    CommentPostprocessor,
     new_comment_postprocessor_layout_processor,
   )
 }

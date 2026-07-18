@@ -55,7 +55,7 @@ fn new_linear_segment(id : Int) -> @layered.LinearSegment {
     deflection: 0.0,
     weight: 0,
     ref_segment_id: -1,
-    _node_type: @layered.Normal,
+    _node_type: Normal,
   }
 }
 
@@ -87,7 +87,7 @@ fn linear_segments_vertical_spacing(
   second : @layered.LNode,
 ) -> Double raise LinearSegmentsNodePlacerException {
   spacings.get_vertical_spacing(first, second) catch {
-    @layered.LayeredSpacingsException(message) => linear_segments_raise(message)
+    LayeredSpacingsException(message) => linear_segments_raise(message)
   }
 }
 
@@ -98,7 +98,7 @@ fn linear_segments_graph_has_external_ports(graph : @layered.LGraph) -> Bool {
       @layered.internal_properties_graph_properties,
     ) {
     match property {
-      @layered.ExternalPorts => return true
+      ExternalPorts => return true
       _ => ()
     }
   }

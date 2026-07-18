@@ -70,7 +70,7 @@ fn bk_aligned_layout_vertical_spacing(
   second : @layered.LNode,
 ) -> Double raise BKAlignedLayoutException {
   layout.spacings.get_vertical_spacing(first, second) catch {
-    @layered.LayeredSpacingsException(message) =>
+    LayeredSpacingsException(message) =>
       bk_aligned_layout_raise_illegal_state(message)
   }
 }

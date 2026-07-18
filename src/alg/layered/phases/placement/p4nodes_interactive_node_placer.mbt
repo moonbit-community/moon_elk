@@ -3,7 +3,7 @@ fn interactive_node_placer_node_type_is_normal(
   node_type : @layered.NodeType,
 ) -> Bool {
   match node_type {
-    @layered.Normal => true
+    Normal => true
     _ => false
   }
 }
@@ -17,7 +17,7 @@ fn interactive_node_placer_graph_has_external_ports(
       @layered.internal_properties_graph_properties,
     ) {
     match property {
-      @layered.ExternalPorts => return true
+      ExternalPorts => return true
       _ => ()
     }
   }
@@ -82,7 +82,7 @@ fn interactive_node_placer_process(
       interactive_node_placer_place_nodes(layer, spacings)
     }
   } catch {
-    @layered.LayeredSpacingsException(message) =>
+    LayeredSpacingsException(message) =>
       @core.layout_runtime_report_unsupported_configuration(message)
   }
 

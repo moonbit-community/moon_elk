@@ -209,9 +209,8 @@ pub fn LayeredComponentsProcessor::split(
 
     if ext_ports {
       match component_ordering {
-        @options.GroupModelOrder =>
-          self.graph_placer_kind = ComponentGroupModelOrder
-        @options.ModelOrder => self.graph_placer_kind = ModelOrderRow
+        GroupModelOrder => self.graph_placer_kind = ComponentGroupModelOrder
+        ModelOrder => self.graph_placer_kind = ModelOrderRow
         _ => self.graph_placer_kind = ComponentGroup
       }
     }
@@ -221,10 +220,7 @@ pub fn LayeredComponentsProcessor::split(
     [graph]
   }
 
-  if !@options.component_ordering_strategy_equals(
-      component_ordering,
-      @options.NoneType,
-    ) {
+  if !@options.component_ordering_strategy_equals(component_ordering, NoneType) {
     layered_components_sort_by_model_order(result)
   }
 

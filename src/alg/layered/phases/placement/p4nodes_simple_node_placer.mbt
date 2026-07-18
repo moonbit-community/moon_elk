@@ -48,7 +48,7 @@ fn simple_node_placer_process(
       }
     }
   } catch {
-    @layered.LayeredSpacingsException(message) =>
+    LayeredSpacingsException(message) =>
       @core.layout_runtime_report_unsupported_configuration(message)
   }
 
@@ -66,7 +66,7 @@ pub fn new_simple_node_placer_layout_phase() -> @core.ILayoutProcessor[
         @layered.internal_properties_graph_properties,
       ) {
       match property {
-        @layered.ExternalPorts =>
+        ExternalPorts =>
           return Some(
             @core.layout_processor_configuration_create(
               @layered.layered_phase_descriptor,

@@ -237,7 +237,7 @@ fn network_simplex_node_requires_more_height_for_flexible_ports(
 ///|
 fn network_simplex_node_type_is_normal(node_type : @layered.NodeType) -> Bool {
   match node_type {
-    @layered.Normal => true
+    Normal => true
     _ => false
   }
 }
@@ -385,7 +385,7 @@ fn network_simplex_vertical_spacing(
   second : @layered.LNode,
 ) -> Double {
   state.spacings.get_vertical_spacing(first, second) catch {
-    @layered.LayeredSpacingsException(message) => {
+    LayeredSpacingsException(message) => {
       @core.layout_runtime_report_unsupported_configuration(message)
       0.0
     }
@@ -1306,7 +1306,7 @@ fn network_simplex_prefer_straight_edges(
       let edge = path[i]
       let rep = network_simplex_require_edge_rep(state, edge)
       let mut weight = if i == 0 || i == path.length() - 1 {
-        network_simplex_node_type_edge_weight(@layered.Normal, LongEdge)
+        network_simplex_node_type_edge_weight(Normal, LongEdge)
       } else {
         network_simplex_node_type_edge_weight(LongEdge, LongEdge)
       }
@@ -1610,7 +1610,7 @@ pub fn new_network_simplex_placer_layout_phase() -> @core.ILayoutProcessor[
         @layered.internal_properties_graph_properties,
       ) {
       match property {
-        @layered.ExternalPorts =>
+        ExternalPorts =>
           return Some(
             @core.layout_processor_configuration_create(
               @layered.layered_phase_descriptor,

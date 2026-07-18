@@ -128,7 +128,7 @@ fn interactive_cycle_breaker_configuration(
       @layered.layered_phase_descriptor,
     )
     .add_before(
-      @layered.P1CycleBreaking,
+      P1CycleBreaking,
       @layered.layered_intermediate_processor_factory(
         InteractiveExternalPortPositioner,
       ),

@@ -500,7 +500,7 @@ fn bk_node_placer_configuration(
       @layered.internal_properties_graph_properties,
     ) {
     match property {
-      @layered.ExternalPorts =>
+      ExternalPorts =>
         return Some(
           @core.layout_processor_configuration_create(
             @layered.layered_phase_descriptor,

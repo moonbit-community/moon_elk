@@ -193,13 +193,13 @@ fn interactive_layerer_configuration(
       @layered.layered_phase_descriptor,
     )
     .add_before(
-      @layered.P1CycleBreaking,
+      P1CycleBreaking,
       @layered.layered_intermediate_processor_factory(
         InteractiveExternalPortPositioner,
       ),
     )
     .add_before(
-      @layered.P2Layering,
+      P2Layering,
       interactive_layerer_layer_constraint_preprocessor_factory(),
     )
     .add_before(
