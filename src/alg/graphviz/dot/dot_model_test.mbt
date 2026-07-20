@@ -112,14 +112,3 @@ test "Dot factory instance" {
   )
   inspect(factory.get_dot_package(), content=alg_graphviz_dot_dot_ens_uri)
 }
-
-///|
-test "Dot resource set provider delegates" {
-  let mut counter = 0
-  let provider = new_dot_resource_set_provider(() => {
-    counter = counter + 1
-    "resource-" + counter.to_string()
-  })
-  inspect(provider.create_resource_set(), content="resource-1")
-  inspect(provider.create_resource_set(), content="resource-2")
-}

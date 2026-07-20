@@ -1,0 +1,116 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/moon_elk/alg/force/options"
+
+import {
+  "Milky2018/moon_elk/core",
+}
+
+// Values
+pub let force_aspect_ratio : ForceDoubleOption
+
+pub let force_edge_labels_inline : ForceBoolOption
+
+pub let force_interactive : ForceBoolOption
+
+pub let force_iterations : ForceIntOption
+
+pub let force_model : ForceModelOption
+
+pub let force_omit_node_micro_layout : ForceBoolOption
+
+pub let force_padding : ForcePaddingOption
+
+pub let force_priority : ForceIntOption
+
+pub let force_random_seed : ForceIntOption
+
+pub let force_repulsion : ForceDoubleOption
+
+pub let force_repulsive_power : ForceIntOption
+
+pub let force_separate_connected_components : ForceBoolOption
+
+pub let force_spacing_edge_label : ForceDoubleOption
+
+pub let force_spacing_node_node : ForceDoubleOption
+
+pub let force_temperature : ForceDoubleOption
+
+pub fn new_force_bool_option(String, Bool) -> ForceBoolOption
+
+pub fn new_force_double_option(String, Double) -> ForceDoubleOption
+
+pub fn new_force_int_option(String, Int) -> ForceIntOption
+
+pub fn new_force_model_option(String, ForceModelStrategy) -> ForceModelOption
+
+pub fn new_force_padding_option(String, @core.Spacing) -> ForcePaddingOption
+
+pub let stress_desired_edge_length : ForceDoubleOption
+
+pub let stress_dimension : ForceIntOption
+
+pub fn stress_dimension_from_int(Int) -> StressDimension
+
+pub let stress_epsilon : ForceDoubleOption
+
+pub let stress_fixed : ForceBoolOption
+
+pub let stress_interactive : ForceBoolOption
+
+pub let stress_iteration_limit : ForceIntOption
+
+pub let stress_omit_node_micro_layout : ForceBoolOption
+
+// Errors
+
+// Types and methods
+pub struct ForceBoolOption {
+  id : String
+  default_value : Bool
+}
+pub fn ForceBoolOption::get_default(Self) -> Bool
+pub fn ForceBoolOption::get_id(Self) -> String
+
+pub struct ForceDoubleOption {
+  id : String
+  default_value : Double
+}
+pub fn ForceDoubleOption::get_default(Self) -> Double
+pub fn ForceDoubleOption::get_id(Self) -> String
+
+pub struct ForceIntOption {
+  id : String
+  default_value : Int
+}
+pub fn ForceIntOption::get_default(Self) -> Int
+pub fn ForceIntOption::get_id(Self) -> String
+
+pub struct ForceModelOption {
+  id : String
+  default_value : ForceModelStrategy
+}
+pub fn ForceModelOption::get_default(Self) -> ForceModelStrategy
+pub fn ForceModelOption::get_id(Self) -> String
+
+pub(all) enum ForceModelStrategy {
+  Eades
+  FruchtermanReingold
+}
+
+pub struct ForcePaddingOption {
+  id : String
+  default_value : @core.Spacing
+}
+pub fn ForcePaddingOption::get_default(Self) -> @core.Spacing
+pub fn ForcePaddingOption::get_id(Self) -> String
+
+pub(all) enum StressDimension {
+  StressDimensionXY
+  StressDimensionX
+  StressDimensionY
+}
+
+// Type aliases
+
+// Traits

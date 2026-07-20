@@ -1,0 +1,47 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/moon_elk/alg/layered/pipeline/compound"
+
+import {
+  "Milky2018/moon_elk/alg/layered/options",
+  "Milky2018/moon_elk/alg/layered/runtime",
+  "Milky2018/moon_elk/core",
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn cross_hierarchy_edge_comparator_exception_message(CrossHierarchyEdgeComparatorException) -> String
+
+pub fn new_compound_graph_postprocessor_layout_processor() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
+
+pub fn new_compound_graph_preprocessor_layout_processor() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
+
+pub fn new_cross_hierarchy_edge(@runtime.LEdge, @runtime.LGraph, @options.PortType) -> CrossHierarchyEdge
+
+pub fn new_cross_hierarchy_edge_comparator(@runtime.LGraph) -> CrossHierarchyEdgeComparator
+
+// Errors
+pub(all) suberror CrossHierarchyEdgeComparatorException {
+  CrossHierarchyEdgeComparatorException(String)
+} derive(ToJson, @debug.Debug)
+
+// Types and methods
+pub struct CrossHierarchyEdge {
+  new_edge : @runtime.LEdge
+  graph : @runtime.LGraph
+  port_type : @options.PortType
+}
+pub fn CrossHierarchyEdge::get_actual_source(Self) -> @runtime.LPort
+pub fn CrossHierarchyEdge::get_actual_target(Self) -> @runtime.LPort
+pub fn CrossHierarchyEdge::get_edge(Self) -> @runtime.LEdge
+pub fn CrossHierarchyEdge::get_graph(Self) -> @runtime.LGraph
+pub fn CrossHierarchyEdge::get_type(Self) -> @options.PortType
+pub fn CrossHierarchyEdge::to_string(Self) -> String
+
+pub struct CrossHierarchyEdgeComparator {
+  graph : @runtime.LGraph
+}
+pub fn CrossHierarchyEdgeComparator::compare(Self, CrossHierarchyEdge, CrossHierarchyEdge) -> Int raise CrossHierarchyEdgeComparatorException
+
+// Type aliases
+
+// Traits

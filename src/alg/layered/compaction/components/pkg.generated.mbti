@@ -1,0 +1,101 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/moon_elk/alg/layered/compaction/components"
+
+import {
+  "Milky2018/moon_elk/alg/common/compaction",
+  "Milky2018/moon_elk/core",
+}
+
+// Values
+pub fn[N, E] components_to_cgraph_spacing_handler(ComponentsToCGraphTransformer[N, E]) -> @compaction.ISpacingsHandler
+
+pub fn[N, E] init_one_dimensional_components_compaction(IConnectedComponents[N, E], Double) -> OneDimensionalComponentsCompaction[N, E]
+
+pub fn[N, E] new_component(() -> Array[@core.ElkRectangle], () -> Array[IExternalExtension[E]], () -> Array[@core.PortSide]) -> IComponent[N, E]
+
+pub fn[N, E] new_components_to_cgraph_transformer(Double) -> ComponentsToCGraphTransformer[N, E]
+
+pub fn[N, E] new_connected_components(() -> Array[IComponent[N, E]], () -> Bool) -> IConnectedComponents[N, E]
+
+pub fn[E] new_external_extension(() -> E, () -> @core.ElkRectangle, () -> @core.ElkRectangle, () -> @core.Direction, get_placeholder? : () -> @core.ElkRectangle?) -> IExternalExtension[E]
+
+pub fn[N, E] new_one_dimensional_components_compaction(IConnectedComponents[N, E], Double) -> OneDimensionalComponentsCompaction[N, E]
+
+// Errors
+
+// Types and methods
+type ComponentsCompactionComponentOffset
+
+type ComponentsCompactionExternalExtensionEntry[E]
+
+type ComponentsCompactionNodeInfo
+
+type ComponentsCompactionPlaceholderEntry
+
+pub struct ComponentsToCGraphTransformer[N, E] {
+  mut c_graph : @compaction.CGraph
+  spacing : Double
+  component_offsets : Array[ComponentsCompactionComponentOffset]
+  external_extensions : Array[ComponentsCompactionExternalExtensionEntry[E]]
+  external_placeholders : Array[ComponentsCompactionPlaceholderEntry]
+  node_infos : Array[ComponentsCompactionNodeInfo]
+  mut global_offset : @core.KVector
+  mut graph_size : @core.KVector
+  _phantom : N?
+}
+pub fn[N, E] ComponentsToCGraphTransformer::apply_layout(Self[N, E]) -> Unit
+pub fn[N, E] ComponentsToCGraphTransformer::get_external_extensions(Self[N, E]) -> Array[(IExternalExtension[E], (@compaction.CGroup, @compaction.CNode))]
+pub fn[N, E] ComponentsToCGraphTransformer::get_external_placeholders(Self[N, E]) -> Array[(@core.Direction, (@compaction.CGroup, @compaction.CNode))]
+pub fn[N, E] ComponentsToCGraphTransformer::get_global_offset(Self[N, E]) -> @core.KVector
+pub fn[N, E] ComponentsToCGraphTransformer::get_graph_size(Self[N, E]) -> @core.KVector
+pub fn[N, E] ComponentsToCGraphTransformer::get_offset(Self[N, E], IComponent[N, E]) -> @core.KVector
+pub fn[N, E] ComponentsToCGraphTransformer::is_locked(Self[N, E], @compaction.CNode, @core.Direction) -> Bool
+pub fn[N, E] ComponentsToCGraphTransformer::transform(Self[N, E], IConnectedComponents[N, E]) -> @compaction.CGraph
+
+pub struct IComponent[N, E] {
+  _instance_id : Int
+  get_hull_fn : () -> Array[@core.ElkRectangle]
+  get_external_extensions_fn : () -> Array[IExternalExtension[E]]
+  get_external_extension_sides_fn : () -> Array[@core.PortSide]
+  _phantom : N?
+}
+pub fn[N, E] IComponent::get_external_extension_sides(Self[N, E]) -> Array[@core.PortSide]
+pub fn[N, E] IComponent::get_external_extensions(Self[N, E]) -> Array[IExternalExtension[E]]
+pub fn[N, E] IComponent::get_hull(Self[N, E]) -> Array[@core.ElkRectangle]
+
+pub struct IConnectedComponents[N, E] {
+  get_components_fn : () -> Array[IComponent[N, E]]
+  is_contains_external_extensions_fn : () -> Bool
+}
+pub fn[N, E] IConnectedComponents::get_components(Self[N, E]) -> Array[IComponent[N, E]]
+pub fn[N, E] IConnectedComponents::is_contains_external_extensions(Self[N, E]) -> Bool
+
+pub struct IExternalExtension[E] {
+  _instance_id : Int
+  get_representative_fn : () -> E
+  get_representor_fn : () -> @core.ElkRectangle
+  get_placeholder_fn : () -> @core.ElkRectangle?
+  get_parent_fn : () -> @core.ElkRectangle
+  get_direction_fn : () -> @core.Direction
+}
+pub fn[E] IExternalExtension::get_direction(Self[E]) -> @core.Direction
+pub fn[E] IExternalExtension::get_parent(Self[E]) -> @core.ElkRectangle
+pub fn[E] IExternalExtension::get_placeholder(Self[E]) -> @core.ElkRectangle?
+pub fn[E] IExternalExtension::get_representative(Self[E]) -> E
+pub fn[E] IExternalExtension::get_representor(Self[E]) -> @core.ElkRectangle
+
+pub struct OneDimensionalComponentsCompaction[N, E] {
+  compaction_graph : @compaction.CGraph
+  transformer : ComponentsToCGraphTransformer[N, E]
+  vertical_external_extensions : Array[(@compaction.CGroup, @compaction.CNode)]
+  horizontal_external_extensions : Array[(@compaction.CGroup, @compaction.CNode)]
+  mut top_left : @core.KVector
+  mut bottom_right : @core.KVector
+}
+pub fn[N, E] OneDimensionalComponentsCompaction::compact(Self[N, E], @core.IElkProgressMonitor) -> Unit
+pub fn[N, E] OneDimensionalComponentsCompaction::get_graph_size(Self[N, E]) -> @core.KVector
+pub fn[N, E] OneDimensionalComponentsCompaction::get_offset(Self[N, E], IComponent[N, E]) -> @core.KVector
+
+// Type aliases
+
+// Traits

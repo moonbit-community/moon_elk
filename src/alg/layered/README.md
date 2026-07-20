@@ -11,16 +11,19 @@ The implementation is split by dependency direction:
 - `runtime` owns the shared layered graph model, internal properties, processor
   protocol, and the mutually dependent ordering, routing, spacing, and
   intermediate-processing kernel.
-- `pipeline` owns ELK graph import and layout transfer, graph configuration,
-  component and compound orchestration, and the public layout provider.
+- `pipeline` owns the public layout provider and composition flow. Its
+  `transform`, `components`, and `compound` subpackages own graph conversion,
+  disconnected-component placement, and compound-graph preprocessing
+  respectively.
 - `engine` links concrete phase and processor packages and runs their
   registration initializers.
 - `phases/cycle`, `phases/layering`, and `phases/placement` own the concrete
   implementations for the first, second, and fourth layered phases.
 - `processors/comments` and `processors/partition` own the extracted
   intermediate processor families.
-- `compaction` owns the independent one-dimensional compaction model and
-  algorithms.
+- `compaction` is a namespace for independent compaction packages: `oned`
+  owns the one-dimensional constraint model, `components` owns component
+  compaction, and `recthull` owns rectilinear hull utilities.
 - `tests/issues` owns black-box regressions for reported issues.
 
 The production dependency graph is intentionally acyclic:

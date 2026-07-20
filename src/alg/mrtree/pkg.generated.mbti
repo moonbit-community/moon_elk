@@ -2,32 +2,18 @@
 package "Milky2018/moon_elk/alg/mrtree"
 
 import {
+  "Milky2018/moon_elk/alg/mrtree/options",
   "Milky2018/moon_elk/core",
-  "Milky2018/moon_elk/graph",
 }
 
 // Values
 pub fn interactive_mrtree_graph_visitor_set_interactive_options(Int) -> Unit
 
-pub let mrtree_algorithm_id : String
-
-pub let mrtree_aspect_ratio : @graph.IProperty[Double]
-
-pub let mrtree_compaction : @graph.IProperty[Bool]
-
-pub fn mrtree_compaction_mode_from_string(String) -> MrtreeCompactionMode
-
 pub fn mrtree_edge_bend_points(Int) -> @core.KVectorChain
-
-pub let mrtree_edge_end_texture_length : @graph.IProperty[Double]
 
 pub fn mrtree_edge_labels(Int) -> Array[Int]
 
 pub fn mrtree_edge_origin(Int) -> Int?
-
-pub let mrtree_edge_routing_mode : @graph.IProperty[String]
-
-pub fn mrtree_edge_routing_mode_from_string(String) -> MrtreeEdgeRoutingMode
 
 pub fn mrtree_edge_set_origin(Int, Int?) -> Unit
 
@@ -63,7 +49,7 @@ pub fn mrtree_graph_direction_is_horizontal(Int) -> Bool
 
 pub fn mrtree_graph_edge_end_texture_length(Int) -> Double
 
-pub fn mrtree_graph_edge_routing_mode(Int) -> MrtreeEdgeRoutingMode
+pub fn mrtree_graph_edge_routing_mode(Int) -> @options.MrtreeEdgeRoutingMode
 
 pub fn mrtree_graph_edges(Int) -> Array[Int]
 
@@ -83,11 +69,9 @@ pub fn mrtree_graph_padding(Int) -> @core.Spacing
 
 pub fn mrtree_graph_priority(Int) -> Int
 
-pub fn mrtree_graph_property_from_string(String) -> MrtreeGraphProperty
-
 pub fn mrtree_graph_removable_edges(Int) -> Array[Int]
 
-pub fn mrtree_graph_search_order(Int) -> MrtreeTreeifyingOrder
+pub fn mrtree_graph_search_order(Int) -> @options.MrtreeTreeifyingOrder
 
 pub fn mrtree_graph_separate_connected_components(Int) -> Bool
 
@@ -121,69 +105,9 @@ pub fn mrtree_graph_spacing_edge_node(Int) -> Double
 
 pub fn mrtree_graph_spacing_node_node(Int) -> Double
 
-pub fn mrtree_graph_weighting(Int) -> MrtreeOrderWeighting
+pub fn mrtree_graph_weighting(Int) -> @options.MrtreeOrderWeighting
 
 pub fn mrtree_intermediate_processor_factory(MrtreeIntermediateProcessorStrategy) -> @core.ILayoutProcessorFactory[MrtreeTreeLayoutPhases, Int]
-
-pub let mrtree_internal_bb_low_right : String
-
-pub let mrtree_internal_bb_up_left : String
-
-pub let mrtree_internal_compact_constraints : String
-
-pub let mrtree_internal_compact_level_ascension : String
-
-pub let mrtree_internal_depth : String
-
-pub let mrtree_internal_descendants : String
-
-pub let mrtree_internal_dummy : String
-
-pub let mrtree_internal_fan : String
-
-pub let mrtree_internal_graph_xmax : String
-
-pub let mrtree_internal_graph_xmin : String
-
-pub let mrtree_internal_graph_ymax : String
-
-pub let mrtree_internal_graph_ymin : String
-
-pub let mrtree_internal_id : String
-
-pub let mrtree_internal_left_neighbor : String
-
-pub let mrtree_internal_left_sibling : String
-
-pub let mrtree_internal_level : String
-
-pub let mrtree_internal_level_height : String
-
-pub let mrtree_internal_level_max : String
-
-pub let mrtree_internal_level_min : String
-
-pub let mrtree_internal_modifier : String
-
-pub let mrtree_internal_origin : String
-
-pub let mrtree_internal_position : String
-
-pub let mrtree_internal_prelim : String
-
-pub let mrtree_internal_random : String
-
-pub let mrtree_internal_removable_edges : String
-
-pub let mrtree_internal_right_neighbor : String
-
-pub let mrtree_internal_right_sibling : String
-
-pub let mrtree_internal_root : String
-
-pub let mrtree_internal_xcoor : String
-
-pub let mrtree_internal_ycoor : String
 
 pub fn mrtree_label_edge(Int) -> Int
 
@@ -327,35 +251,15 @@ pub fn mrtree_node_xcoor(Int) -> Int
 
 pub fn mrtree_node_ycoor(Int) -> Int
 
-pub let mrtree_omit_node_micro_layout : @graph.IProperty[Bool]
-
 pub fn mrtree_order_balance_process(Int, @core.IElkProgressMonitor?) -> Unit
-
-pub fn mrtree_order_weighting_from_string(String) -> MrtreeOrderWeighting
-
-pub let mrtree_padding : @graph.IProperty[String]
-
-pub let mrtree_position_constraint : @graph.IProperty[Double]
-
-pub let mrtree_priority : @graph.IProperty[Double]
-
-pub let mrtree_search_order : @graph.IProperty[String]
-
-pub let mrtree_separate_connected_components : @graph.IProperty[Bool]
 
 pub fn mrtree_shape_position(MrtreeShape) -> @core.KVector
 
 pub fn mrtree_shape_size(MrtreeShape) -> @core.KVector
 
-pub let mrtree_spacing_edge_node : @graph.IProperty[Double]
-
-pub let mrtree_spacing_node_node : @graph.IProperty[Double]
-
 pub let mrtree_tree_layout_phase_descriptor : @core.PhaseDescriptor[MrtreeTreeLayoutPhases]
 
 pub fn mrtree_tree_layout_phase_factory(MrtreeTreeLayoutPhases) -> @core.ILayoutProcessorFactory[MrtreeTreeLayoutPhases, Int]
-
-pub let mrtree_tree_level : @graph.IProperty[Int]
 
 pub fn mrtree_tree_util_depth(Int) -> Int
 
@@ -400,10 +304,6 @@ pub fn mrtree_tree_util_to_node_border(@core.KVector, @core.KVector, @core.KVect
 pub fn mrtree_tree_util_turn_left(String) -> String
 
 pub fn mrtree_tree_util_turn_right(String) -> String
-
-pub fn mrtree_treeifying_order_from_string(String) -> MrtreeTreeifyingOrder
-
-pub let mrtree_weighting : @graph.IProperty[String]
 
 pub fn new_interactive_mrtree_graph_element_visitor() -> @core.IGraphElementVisitor
 
@@ -482,33 +382,17 @@ pub struct Mrtree {
 }
 pub fn Mrtree::do_layout(Self, Int, @core.IElkProgressMonitor) -> Int
 
-pub enum MrtreeCompactionMode {
-  NONE
-  LEVEL_PRESERVING
-  AGGRESSIVE
-}
-
 pub struct MrtreeComponentsProcessor {
   marker : Int
 }
 pub fn MrtreeComponentsProcessor::pack(Self, Array[Int]) -> Int
 pub fn MrtreeComponentsProcessor::split(Self, Int) -> Array[Int]
 
-pub enum MrtreeEdgeRoutingMode {
-  NONE
-  MIDDLE_TO_MIDDLE
-  AVOID_OVERLAP
-}
-
 pub struct MrtreeElkGraphImporter {
   marker : Int
 }
 pub fn MrtreeElkGraphImporter::apply_layout(Self, Int) -> Unit
 pub fn MrtreeElkGraphImporter::import_graph(Self, Int) -> Int
-
-pub enum MrtreeGraphProperty {
-  SELF_LOOPS
-}
 
 pub struct MrtreeIGraphImporter[T] {
   import_graph_fn : (T) -> Int
@@ -546,13 +430,6 @@ pub fn MrtreeMultiLevelEdgeNodeNodeGap::neighbor_two(Self) -> Int?
 pub fn MrtreeMultiLevelEdgeNodeNodeGap::on_first_node_side(Self) -> Bool
 pub fn MrtreeMultiLevelEdgeNodeNodeGap::on_last_node_side(Self) -> Bool
 
-pub enum MrtreeOrderWeighting {
-  MODEL_ORDER
-  DESCENDANTS
-  FAN
-  CONSTRAINT
-}
-
 pub enum MrtreeShape {
   MrtreeNodeShape(Int)
   MrtreeLabelShape(Int)
@@ -571,11 +448,6 @@ pub struct MrtreeTreeLayoutProvider {
 }
 pub fn MrtreeTreeLayoutProvider::layout(Self, Int, @core.IElkProgressMonitor) -> Unit
 
-pub enum MrtreeTreeifyingOrder {
-  DFS
-  BFS
-}
-
 // Type aliases
 pub type MrtreeEdge = Int
 
@@ -586,4 +458,3 @@ pub type MrtreeLabel = Int
 pub type MrtreeNode = Int
 
 // Traits
-

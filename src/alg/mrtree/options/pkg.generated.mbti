@@ -1,0 +1,142 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/moon_elk/alg/mrtree/options"
+
+import {
+  "Milky2018/moon_elk/graph",
+}
+
+// Values
+pub let mrtree_algorithm_id : String
+
+pub let mrtree_aspect_ratio : @graph.IProperty[Double]
+
+pub let mrtree_compaction : @graph.IProperty[Bool]
+
+pub fn mrtree_compaction_mode_from_string(String) -> MrtreeCompactionMode
+
+pub let mrtree_edge_end_texture_length : @graph.IProperty[Double]
+
+pub let mrtree_edge_routing_mode : @graph.IProperty[String]
+
+pub fn mrtree_edge_routing_mode_from_string(String) -> MrtreeEdgeRoutingMode
+
+pub fn mrtree_graph_property_from_string(String) -> MrtreeGraphProperty
+
+pub let mrtree_internal_bb_low_right : String
+
+pub let mrtree_internal_bb_up_left : String
+
+pub let mrtree_internal_compact_constraints : String
+
+pub let mrtree_internal_compact_level_ascension : String
+
+pub let mrtree_internal_depth : String
+
+pub let mrtree_internal_descendants : String
+
+pub let mrtree_internal_dummy : String
+
+pub let mrtree_internal_fan : String
+
+pub let mrtree_internal_graph_xmax : String
+
+pub let mrtree_internal_graph_xmin : String
+
+pub let mrtree_internal_graph_ymax : String
+
+pub let mrtree_internal_graph_ymin : String
+
+pub let mrtree_internal_id : String
+
+pub let mrtree_internal_left_neighbor : String
+
+pub let mrtree_internal_left_sibling : String
+
+pub let mrtree_internal_level : String
+
+pub let mrtree_internal_level_height : String
+
+pub let mrtree_internal_level_max : String
+
+pub let mrtree_internal_level_min : String
+
+pub let mrtree_internal_modifier : String
+
+pub let mrtree_internal_origin : String
+
+pub let mrtree_internal_position : String
+
+pub let mrtree_internal_prelim : String
+
+pub let mrtree_internal_random : String
+
+pub let mrtree_internal_removable_edges : String
+
+pub let mrtree_internal_right_neighbor : String
+
+pub let mrtree_internal_right_sibling : String
+
+pub let mrtree_internal_root : String
+
+pub let mrtree_internal_xcoor : String
+
+pub let mrtree_internal_ycoor : String
+
+pub let mrtree_omit_node_micro_layout : @graph.IProperty[Bool]
+
+pub fn mrtree_order_weighting_from_string(String) -> MrtreeOrderWeighting
+
+pub let mrtree_padding : @graph.IProperty[String]
+
+pub let mrtree_position_constraint : @graph.IProperty[Double]
+
+pub let mrtree_priority : @graph.IProperty[Double]
+
+pub let mrtree_search_order : @graph.IProperty[String]
+
+pub let mrtree_separate_connected_components : @graph.IProperty[Bool]
+
+pub let mrtree_spacing_edge_node : @graph.IProperty[Double]
+
+pub let mrtree_spacing_node_node : @graph.IProperty[Double]
+
+pub let mrtree_tree_level : @graph.IProperty[Int]
+
+pub fn mrtree_treeifying_order_from_string(String) -> MrtreeTreeifyingOrder
+
+pub let mrtree_weighting : @graph.IProperty[String]
+
+// Errors
+
+// Types and methods
+pub(all) enum MrtreeCompactionMode {
+  NONE
+  LEVEL_PRESERVING
+  AGGRESSIVE
+}
+
+pub(all) enum MrtreeEdgeRoutingMode {
+  NONE
+  MIDDLE_TO_MIDDLE
+  AVOID_OVERLAP
+}
+
+pub(all) enum MrtreeGraphProperty {
+  SELF_LOOPS
+}
+
+pub(all) enum MrtreeOrderWeighting {
+  MODEL_ORDER
+  DESCENDANTS
+  FAN
+  CONSTRAINT
+}
+
+pub(all) enum MrtreeTreeifyingOrder {
+  DFS
+  BFS
+}
+
+// Type aliases
+
+// Traits

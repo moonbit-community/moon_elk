@@ -3,6 +3,7 @@ package "Milky2018/moon_elk/alg/graphviz/layouter"
 
 import {
   "Milky2018/moon_elk/alg/graphviz/dot",
+  "Milky2018/moon_elk/alg/graphviz/dot/transform",
   "Milky2018/moon_elk/core",
   "Milky2018/moon_elk/graph",
   "moonbitlang/core/debug",
@@ -166,7 +167,7 @@ pub fn new_graphviz_preference_store(String) -> GraphvizPreferenceStore
 
 pub fn new_graphviz_process(GraphvizOutputStream, GraphvizInputStream, GraphvizInputStream, destroy_fn? : () -> Unit, close_fn? : () -> Unit, exit_value_fn? : () -> Int?) -> GraphvizProcess
 
-pub fn new_graphviz_tool(@dot.Command) -> GraphvizTool raise GraphvizException
+pub fn new_graphviz_tool(@transform.Command) -> GraphvizTool raise GraphvizException
 
 pub fn new_layout_dot_exporter() -> LayoutDotExporter
 
@@ -260,9 +261,9 @@ pub fn GraphvizLayoutParseResult::get_errors(Self) -> Array[GraphvizLayoutDiagno
 pub fn GraphvizLayoutParseResult::get_model(Self) -> @dot.DotGraphvizModel?
 
 pub struct GraphvizLayoutProvider {
-  mut command : @dot.Command
+  mut command : @transform.Command
   mut graphviz_tool : GraphvizTool?
-  mut dot_resource_set_provider : @dot.DotResourceSetProvider[GraphvizLayoutResourceSet]
+  mut dot_resource_set_provider : @transform.DotResourceSetProvider[GraphvizLayoutResourceSet]
   mut my_call_no : Int
 }
 pub fn GraphvizLayoutProvider::debug_file_base(Self) -> String
@@ -376,7 +377,7 @@ pub fn GraphvizProcess::get_output_stream(Self) -> GraphvizOutputStream
 
 pub struct GraphvizTool {
   mut process : GraphvizProcess?
-  command : @dot.Command
+  command : @transform.Command
   mut watchdog : GraphvizWatchdog?
   mut graphviz_stream : GraphvizInputStream?
 }
@@ -396,11 +397,10 @@ pub struct GraphvizWatchdog {
 }
 
 pub struct LayoutDotExporter {
-  base : @dot.DotExporter
+  base : @transform.DotExporter
 }
-pub fn LayoutDotExporter::transform(Self, @dot.DotTransformationData[Int, @dot.DotGraphvizModel]) -> Unit
+pub fn LayoutDotExporter::transform(Self, @transform.DotTransformationData[Int, @dot.DotGraphvizModel]) -> Unit
 
 // Type aliases
 
 // Traits
-

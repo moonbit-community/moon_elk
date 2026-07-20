@@ -6,7 +6,7 @@ let edge_aware_scanline_small_epsilon : Double = 0.01
 
 ///|
 priv struct EdgeAwareScanlineTimestamp {
-  node : @common.CNode
+  node : @compaction.CNode
   low : Bool
 }
 
@@ -42,21 +42,21 @@ fn[T : Eq] edge_aware_scanline_remove_first(
 }
 
 ///|
-fn edge_aware_scanline_center_x(node : @common.CNode) -> Double {
+fn edge_aware_scanline_center_x(node : @compaction.CNode) -> Double {
   let hitbox = node.hitbox()
   hitbox.x + hitbox.width / 2.0
 }
 
 ///|
 fn edge_aware_scanline_interval_floor(
-  intervals : Array[@common.CNode],
-  node : @common.CNode,
-) -> @common.CNode? {
+  intervals : Array[@compaction.CNode],
+  node : @compaction.CNode,
+) -> @compaction.CNode? {
   let key = edge_aware_scanline_center_x(node)
-  let mut result : @common.CNode? = None
+  let mut result : @compaction.CNode? = None
   for current in intervals {
     let current_key = edge_aware_scanline_center_x(current)
-    if current_key < key || @common.compare_fuzzy_eq(current_key, key) {
+    if current_key < key || @compaction.compare_fuzzy_eq(current_key, key) {
       result = Some(current)
     } else {
       break
@@ -67,13 +67,13 @@ fn edge_aware_scanline_interval_floor(
 
 ///|
 fn edge_aware_scanline_interval_ceiling(
-  intervals : Array[@common.CNode],
-  node : @common.CNode,
-) -> @common.CNode? {
+  intervals : Array[@compaction.CNode],
+  node : @compaction.CNode,
+) -> @compaction.CNode? {
   let key = edge_aware_scanline_center_x(node)
   for current in intervals {
     let current_key = edge_aware_scanline_center_x(current)
-    if current_key > key || @common.compare_fuzzy_eq(current_key, key) {
+    if current_key > key || @compaction.compare_fuzzy_eq(current_key, key) {
       return Some(current)
     }
   }
@@ -82,14 +82,14 @@ fn edge_aware_scanline_interval_ceiling(
 
 ///|
 fn edge_aware_scanline_interval_lower(
-  intervals : Array[@common.CNode],
-  node : @common.CNode,
-) -> @common.CNode? {
+  intervals : Array[@compaction.CNode],
+  node : @compaction.CNode,
+) -> @compaction.CNode? {
   let key = edge_aware_scanline_center_x(node)
-  let mut result : @common.CNode? = None
+  let mut result : @compaction.CNode? = None
   for current in intervals {
     let current_key = edge_aware_scanline_center_x(current)
-    if current_key < key && !@common.compare_fuzzy_eq(current_key, key) {
+    if current_key < key && !@compaction.compare_fuzzy_eq(current_key, key) {
       result = Some(current)
     } else {
       break
@@ -100,13 +100,13 @@ fn edge_aware_scanline_interval_lower(
 
 ///|
 fn edge_aware_scanline_interval_higher(
-  intervals : Array[@common.CNode],
-  node : @common.CNode,
-) -> @common.CNode? {
+  intervals : Array[@compaction.CNode],
+  node : @compaction.CNode,
+) -> @compaction.CNode? {
   let key = edge_aware_scanline_center_x(node)
   for current in intervals {
     let current_key = edge_aware_scanline_center_x(current)
-    if current_key > key && !@common.compare_fuzzy_eq(current_key, key) {
+    if current_key > key && !@compaction.compare_fuzzy_eq(current_key, key) {
       return Some(current)
     }
   }
@@ -115,14 +115,14 @@ fn edge_aware_scanline_interval_higher(
 
 ///|
 fn edge_aware_scanline_interval_insert(
-  intervals : Array[@common.CNode],
-  node : @common.CNode,
+  intervals : Array[@compaction.CNode],
+  node : @compaction.CNode,
 ) -> Bool {
   let key = edge_aware_scanline_center_x(node)
   let mut insert_index = intervals.length()
   for i in 0..<intervals.length() {
     let current_key = edge_aware_scanline_center_x(intervals[i])
-    if @common.compare_fuzzy_eq(current_key, key) {
+    if @compaction.compare_fuzzy_eq(current_key, key) {
       return false
     }
     if current_key > key {
@@ -143,8 +143,8 @@ fn edge_aware_scanline_interval_insert(
 
 ///|
 fn edge_aware_scanline_overlap(
-  n1 : @common.CNode?,
-  n2 : @common.CNode?,
+  n1 : @compaction.CNode?,
+  n2 : @compaction.CNode?,
 ) -> Bool {
   match (n1, n2) {
     (Some(left), Some(right)) => {
@@ -153,11 +153,11 @@ fn edge_aware_scanline_overlap(
       }
       let left_hitbox = left.hitbox()
       let right_hitbox = right.hitbox()
-      @common.compare_fuzzy_le(
+      @compaction.compare_fuzzy_le(
         left_hitbox.x,
         right_hitbox.x + right_hitbox.width,
       ) &&
-      @common.compare_fuzzy_le(
+      @compaction.compare_fuzzy_le(
         right_hitbox.x,
         left_hitbox.x + left_hitbox.width,
       )
@@ -202,8 +202,8 @@ fn edge_aware_scanline_timestamp_comparator(
 
 ///|
 fn edge_aware_scanline_sweep(
-  compactor : @common.OneDimensionalCompactor,
-  filter_fun : (@common.CNode) -> Bool,
+  compactor : @compaction.OneDimensionalCompactor,
+  filter_fun : (@compaction.CNode) -> Bool,
 ) -> Unit {
   let points : Array[EdgeAwareScanlineTimestamp] = []
   for node in compactor.c_graph.c_nodes {
@@ -213,8 +213,8 @@ fn edge_aware_scanline_sweep(
     }
   }
 
-  let intervals : Array[@common.CNode] = []
-  let candidate : Array[@common.CNode?] = []
+  let intervals : Array[@compaction.CNode] = []
+  let candidate : Array[@compaction.CNode?] = []
   for _ in 0..<compactor.c_graph.c_nodes.length() {
     candidate.push(None)
   }
@@ -225,7 +225,7 @@ fn edge_aware_scanline_sweep(
     index = index + 1
   }
 
-  @common.scanline_execute_single(
+  @compaction.scanline_execute_single(
     points,
     edge_aware_scanline_timestamp_comparator,
     point => {
@@ -307,7 +307,7 @@ fn edge_aware_scanline_sweep(
 
 ///|
 fn edge_aware_scanline_alter_hitbox(
-  n : @common.CNode,
+  n : @compaction.CNode,
   spacing : Double,
   fac : Double,
 ) -> Unit {
@@ -342,7 +342,7 @@ fn edge_aware_scanline_alter_hitbox(
 
 ///|
 fn edge_aware_scanline_alter_grouped_hitbox_orthogonal(
-  group : @common.CGroup,
+  group : @compaction.CGroup,
   spacing : Double,
   fac : Double,
 ) -> Unit {
@@ -387,7 +387,7 @@ fn edge_aware_scanline_alter_grouped_hitbox_orthogonal(
 
 ///|
 fn edge_aware_scanline_min_spacing(
-  compactor : @common.OneDimensionalCompactor,
+  compactor : @compaction.OneDimensionalCompactor,
   vertical_edge_edge_spacing : Double,
 ) -> Double {
   let mut min_spacing = @double.infinity
@@ -429,7 +429,7 @@ fn edge_aware_scanline_min_spacing(
 ///|
 fn edge_aware_scanline_calculate_for_spline(
   calculation : EdgeAwareScanlineCalculation,
-  compactor : @common.OneDimensionalCompactor,
+  compactor : @compaction.OneDimensionalCompactor,
 ) -> Unit {
   edge_aware_scanline_sweep(compactor, node => {
     horizontal_graph_compactor_get_vertical_segment_or_null(node) is Some(_)
@@ -440,7 +440,7 @@ fn edge_aware_scanline_calculate_for_spline(
     calculation.vertical_edge_edge_spacing,
   )
 
-  let altered_nodes : Array[@common.CNode] = []
+  let altered_nodes : Array[@compaction.CNode] = []
   for node in compactor.c_graph.c_nodes {
     if horizontal_graph_compactor_get_lnode_or_null(node) is Some(_) {
       edge_aware_scanline_alter_hitbox(node, min_spacing, 1.0)
@@ -458,13 +458,13 @@ fn edge_aware_scanline_calculate_for_spline(
 ///|
 fn edge_aware_scanline_calculate_for_orthogonal(
   calculation : EdgeAwareScanlineCalculation,
-  compactor : @common.OneDimensionalCompactor,
+  compactor : @compaction.OneDimensionalCompactor,
 ) -> Unit {
   let vertical_spacing = @cmp.maximum(
     0.0,
     calculation.vertical_edge_edge_spacing / 2.0 - edge_aware_scanline_epsilon,
   )
-  let altered_segments : Array[@common.CNode] = []
+  let altered_segments : Array[@compaction.CNode] = []
   for node in compactor.c_graph.c_nodes {
     if horizontal_graph_compactor_get_vertical_segment_or_null(node) is Some(_) {
       edge_aware_scanline_alter_hitbox(node, vertical_spacing, 1.0)
@@ -480,7 +480,7 @@ fn edge_aware_scanline_calculate_for_orthogonal(
     edge_aware_scanline_alter_hitbox(node, vertical_spacing, -1.0)
   }
 
-  let altered_nodes : Array[(@common.CNode, Double)] = []
+  let altered_nodes : Array[(@compaction.CNode, Double)] = []
   for node in compactor.c_graph.c_nodes {
     match horizontal_graph_compactor_get_lnode_or_null(node) {
       Some(l_node) => {
@@ -512,7 +512,7 @@ fn edge_aware_scanline_calculate_for_orthogonal(
     calculation.vertical_edge_edge_spacing,
   )
 
-  let altered_groups : Array[@common.CGroup] = []
+  let altered_groups : Array[@compaction.CGroup] = []
   for group in compactor.c_graph.c_groups {
     edge_aware_scanline_alter_grouped_hitbox_orthogonal(group, min_spacing, 1.0)
     altered_groups.push(group)
@@ -530,7 +530,7 @@ fn edge_aware_scanline_calculate_for_orthogonal(
 ///|
 fn edge_aware_scanline_calculate_constraints(
   calculation : EdgeAwareScanlineCalculation,
-  compactor : @common.OneDimensionalCompactor,
+  compactor : @compaction.OneDimensionalCompactor,
 ) -> Unit {
   match calculation.edge_routing {
     Orthogonal =>
@@ -546,7 +546,7 @@ fn edge_aware_scanline_calculate_constraints(
 ///|
 pub fn new_edge_aware_scanline_constraint_calculation(
   graph : LGraph,
-) -> @common.IConstraintCalculationAlgorithm {
+) -> @compaction.IConstraintCalculationAlgorithm {
   let calculation : EdgeAwareScanlineCalculation = {
     vertical_edge_edge_spacing: graph.get_property_double(
       @core.spacing_edge_edge,

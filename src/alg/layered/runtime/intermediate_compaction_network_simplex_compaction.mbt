@@ -27,8 +27,8 @@ fn network_simplex_compaction_int_max(left : Int, right : Int) -> Int {
 
 ///|
 fn network_simplex_compaction_require_group(
-  node : @common.CNode,
-) -> @common.CGroup raise NetworkSimplexCompactionException {
+  node : @compaction.CNode,
+) -> @compaction.CGroup raise NetworkSimplexCompactionException {
   match node.group() {
     Some(group) => group
     None => network_simplex_compaction_raise("Compaction node has no group.")
@@ -67,9 +67,9 @@ fn network_simplex_compaction_require_port_node(
 
 ///|
 fn network_simplex_compaction_group_node(
-  n_nodes : Array[@common.NNode],
-  group : @common.CGroup,
-) -> @common.NNode raise NetworkSimplexCompactionException {
+  n_nodes : Array[@networksimplex.NNode],
+  group : @compaction.CGroup,
+) -> @networksimplex.NNode raise NetworkSimplexCompactionException {
   let id = group.id()
   if id < 0 || id >= n_nodes.length() {
     network_simplex_compaction_raise(
@@ -81,26 +81,26 @@ fn network_simplex_compaction_group_node(
 
 ///|
 fn network_simplex_compaction_lnode_map_put(
-  mapping : Map[Int, @common.CNode],
+  mapping : Map[Int, @compaction.CNode],
   l_node : LNode,
-  c_node : @common.CNode,
+  c_node : @compaction.CNode,
 ) -> Unit {
   mapping[l_node.get_handle()] = c_node
 }
 
 ///|
 fn network_simplex_compaction_lnode_map_get(
-  mapping : Map[Int, @common.CNode],
+  mapping : Map[Int, @compaction.CNode],
   l_node : LNode,
-) -> @common.CNode? {
+) -> @compaction.CNode? {
   mapping.get(l_node.get_handle())
 }
 
 ///|
 fn network_simplex_compaction_edge_map_put(
-  mapping : Map[Int, Array[@common.CNode]],
+  mapping : Map[Int, Array[@compaction.CNode]],
   l_edge : LEdge,
-  c_node : @common.CNode,
+  c_node : @compaction.CNode,
 ) -> Unit {
   let edge_handle = l_edge.get_handle()
   match mapping.get(edge_handle) {
@@ -111,9 +111,9 @@ fn network_simplex_compaction_edge_map_put(
 
 ///|
 fn network_simplex_compaction_edge_map_get(
-  mapping : Map[Int, Array[@common.CNode]],
+  mapping : Map[Int, Array[@compaction.CNode]],
   l_edge : LEdge,
-) -> Array[@common.CNode] {
+) -> Array[@compaction.CNode] {
   match mapping.get(l_edge.get_handle()) {
     Some(values) => values
     None => []
@@ -122,16 +122,16 @@ fn network_simplex_compaction_edge_map_get(
 
 ///|
 fn network_simplex_compaction_same_nnode(
-  source : @common.NNode,
-  target : @common.NNode,
+  source : @networksimplex.NNode,
+  target : @networksimplex.NNode,
 ) -> Bool {
   source == target
 }
 
 ///|
 fn network_simplex_compaction_create_edge(
-  builder : @common.NEdgeBuilder,
-) -> @common.NEdge raise NetworkSimplexCompactionException {
+  builder : @networksimplex.NEdgeBuilder,
+) -> @networksimplex.NEdge raise NetworkSimplexCompactionException {
   try builder.create() catch {
     NetworkSimplexException(message) =>
       network_simplex_compaction_raise(message)
@@ -142,9 +142,9 @@ fn network_simplex_compaction_create_edge(
 
 ///|
 fn network_simplex_compaction_add_separation_constraints(
-  compactor : @common.OneDimensionalCompactor,
-  network_graph : @common.NGraph,
-  n_nodes : Array[@common.NNode],
+  compactor : @compaction.OneDimensionalCompactor,
+  network_graph : @networksimplex.NGraph,
+  n_nodes : Array[@networksimplex.NNode],
 ) -> Unit raise NetworkSimplexCompactionException {
   for c_node in compactor.c_graph.c_nodes {
     for inc_node in c_node.constraints() {
@@ -190,7 +190,7 @@ fn network_simplex_compaction_add_separation_constraints(
 
         ignore(
           network_simplex_compaction_create_edge(
-            @common.nedge_of()
+            @networksimplex.nedge_of()
             .delta(delta.to_int())
             .weight(weight)
             .source(network_simplex_compaction_group_node(n_nodes, c_group))
@@ -198,7 +198,7 @@ fn network_simplex_compaction_add_separation_constraints(
           ),
         )
       } else {
-        let helper = @common.nnode_of().create(network_graph)
+        let helper = @networksimplex.nnode_of().create(network_graph)
         let offset_delta = (inc_offset.x - c_offset.x).ceil().to_int()
 
         let mut adjust = offset_delta.to_double() - (inc_offset.x - c_offset.x)
@@ -233,7 +233,7 @@ fn network_simplex_compaction_add_separation_constraints(
 
         ignore(
           network_simplex_compaction_create_edge(
-            @common.nedge_of()
+            @networksimplex.nedge_of()
             .delta(network_simplex_compaction_int_max(0, offset_delta))
             .weight(network_simplex_compaction_separation_weight)
             .source(helper)
@@ -242,7 +242,7 @@ fn network_simplex_compaction_add_separation_constraints(
         )
         ignore(
           network_simplex_compaction_create_edge(
-            @common.nedge_of()
+            @networksimplex.nedge_of()
             .delta(network_simplex_compaction_int_max(0, -offset_delta))
             .weight(network_simplex_compaction_separation_weight)
             .source(helper)
@@ -256,11 +256,11 @@ fn network_simplex_compaction_add_separation_constraints(
 
 ///|
 fn network_simplex_compaction_add_edge_constraints(
-  compactor : @common.OneDimensionalCompactor,
-  n_nodes : Array[@common.NNode],
+  compactor : @compaction.OneDimensionalCompactor,
+  n_nodes : Array[@networksimplex.NNode],
 ) -> Unit raise NetworkSimplexCompactionException {
-  let lnode_map : Map[Int, @common.CNode] = Map([])
-  let ledge_map : Map[Int, Array[@common.CNode]] = Map([])
+  let lnode_map : Map[Int, @compaction.CNode] = Map([])
+  let ledge_map : Map[Int, Array[@compaction.CNode]] = Map([])
 
   for c_node in compactor.c_graph.c_nodes {
     match horizontal_graph_compactor_get_lnode_or_null(c_node) {
@@ -305,7 +305,7 @@ fn network_simplex_compaction_add_edge_constraints(
 
       ignore(
         network_simplex_compaction_create_edge(
-          @common.nedge_of()
+          @networksimplex.nedge_of()
           .delta(0)
           .weight(network_simplex_compaction_edge_weight)
           .source(
@@ -340,7 +340,7 @@ fn network_simplex_compaction_add_edge_constraints(
             }
             ignore(
               network_simplex_compaction_create_edge(
-                @common.nedge_of()
+                @networksimplex.nedge_of()
                 .delta(1)
                 .weight(network_simplex_compaction_edge_weight)
                 .source(src)
@@ -368,7 +368,7 @@ fn network_simplex_compaction_add_edge_constraints(
             }
             ignore(
               network_simplex_compaction_create_edge(
-                @common.nedge_of()
+                @networksimplex.nedge_of()
                 .delta(1)
                 .weight(network_simplex_compaction_edge_weight)
                 .source(src)
@@ -384,10 +384,10 @@ fn network_simplex_compaction_add_edge_constraints(
 
 ///|
 fn network_simplex_compaction_add_artificial_source_node(
-  network_graph : @common.NGraph,
+  network_graph : @networksimplex.NGraph,
   index : Int,
 ) -> Int raise NetworkSimplexCompactionException {
-  let sources : Array[@common.NNode] = []
+  let sources : Array[@networksimplex.NNode] = []
   for node in network_graph.nodes {
     if node.get_incoming_edges().is_empty() {
       sources.push(node)
@@ -395,11 +395,13 @@ fn network_simplex_compaction_add_artificial_source_node(
   }
 
   if sources.length() > 1 {
-    let dummy_source = @common.nnode_of().id(index).create(network_graph)
+    let dummy_source = @networksimplex.nnode_of()
+      .id(index)
+      .create(network_graph)
     for source in sources {
       ignore(
         network_simplex_compaction_create_edge(
-          @common.nedge_of()
+          @networksimplex.nedge_of()
           .delta(1)
           .weight(0.0)
           .source(dummy_source)
@@ -415,16 +417,16 @@ fn network_simplex_compaction_add_artificial_source_node(
 
 ///|
 pub fn network_simplex_compaction(
-  compactor : @common.OneDimensionalCompactor,
+  compactor : @compaction.OneDimensionalCompactor,
 ) -> Unit {
   try {
-    let network_graph = @common.new_ngraph()
-    let n_nodes : Array[@common.NNode] = []
+    let network_graph = @networksimplex.new_ngraph()
+    let n_nodes : Array[@networksimplex.NNode] = []
     let mut index = 0
 
     for c_group in compactor.c_graph.c_groups {
       c_group.set_id(index)
-      let n_node = @common.nnode_of().id(index).create(network_graph)
+      let n_node = @networksimplex.nnode_of().id(index).create(network_graph)
       n_nodes.push(n_node)
       index = index + 1
     }
@@ -439,7 +441,7 @@ pub fn network_simplex_compaction(
       ),
     )
 
-    @common.network_simplex_for_graph(network_graph).execute()
+    @networksimplex.network_simplex_for_graph(network_graph).execute()
 
     for c_node in compactor.c_graph.c_nodes {
       let group = network_simplex_compaction_require_group(c_node)

@@ -8,9 +8,11 @@ import {
   "moonbitlang/core/string",
   "Milky2018/moon_elk/graph",
   "Milky2018/moon_elk/core",
-  "Milky2018/moon_elk/alg/common",
   "Milky2018/moon_elk/alg/layered/options",
   "Milky2018/moon_elk/alg/layered/runtime",
+  "Milky2018/moon_elk/alg/layered/pipeline/transform",
+  "Milky2018/moon_elk/alg/layered/pipeline/components",
+  "Milky2018/moon_elk/alg/layered/pipeline/compound",
 }
 
 import {

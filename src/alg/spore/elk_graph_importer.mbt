@@ -174,7 +174,7 @@ pub fn SporeElkGraphImporter::import_graph(
 ) -> SporeGraph {
   self.elk_graph = Some(input_graph)
   self.node_map.clear()
-  @common.node_dimension_calculation_calculate_node_margins(
+  @nodespacing.node_dimension_calculation_calculate_node_margins(
     @core.adapt(input_graph),
   )
 

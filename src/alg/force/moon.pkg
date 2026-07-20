@@ -9,7 +9,8 @@ import {
   "moonbitlang/core/random",
   "moonbitlang/core/strconv",
   "moonbitlang/core/string",
-  "Milky2018/moon_elk/alg/common",
+  "Milky2018/moon_elk/alg/common/nodespacing",
+  "Milky2018/moon_elk/alg/force/options" @force_options,
   "Milky2018/moon_elk/core",
   "Milky2018/moon_elk/graph",
 }

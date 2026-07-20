@@ -103,11 +103,13 @@ fn lgraph_to_cgraph_transformer_require_port_node(
 ///|
 fn lgraph_to_cgraph_transformer_require_cgraph(
   transformer : LGraphToCGraphTransformer,
-) -> @common.CGraph raise LGraphToCGraphTransformerException {
+) -> @compaction.CGraph raise LGraphToCGraphTransformerException {
   match transformer.c_graph {
     Some(graph) => graph
     None =>
-      lgraph_to_cgraph_transformer_raise("Transformer has no @common.CGraph.")
+      lgraph_to_cgraph_transformer_raise(
+        "Transformer has no @compaction.CGraph.",
+      )
   }
 }
 
@@ -126,7 +128,7 @@ fn lgraph_to_cgraph_transformer_require_lgraph(
 fn lgraph_to_cgraph_transformer_lookup_node(
   transformer : LGraphToCGraphTransformer,
   node : LNode,
-) -> @common.CNode? {
+) -> @compaction.CNode? {
   transformer.nodes_map.get(node.get_handle())
 }
 
@@ -134,7 +136,7 @@ fn lgraph_to_cgraph_transformer_lookup_node(
 fn lgraph_to_cgraph_transformer_lookup_vertical_segment(
   transformer : LGraphToCGraphTransformer,
   segment : VerticalSegment,
-) -> @common.CNode? {
+) -> @compaction.CNode? {
   transformer.vertical_segments_map.get(segment.get_id())
 }
 
@@ -188,7 +190,7 @@ fn lgraph_to_cgraph_transformer_comment_offset(
 
 ///|
 fn lgraph_to_cgraph_transformer_require_hitbox_pre_compaction(
-  c_node : @common.CNode,
+  c_node : @compaction.CNode,
 ) -> @core.ElkRectangle raise LGraphToCGraphTransformerException {
   match c_node.hitbox_pre_compaction() {
     Some(value) => value
@@ -255,7 +257,7 @@ fn lgraph_to_cgraph_transformer_collect_vertical_segments_orthogonal(
         let mut i = 1
         while i < bends.length() {
           let bend2 = bends[i]
-          if !@common.compare_fuzzy_eq(bend1.y, bend2.y) {
+          if !@compaction.compare_fuzzy_eq(bend1.y, bend2.y) {
             let current = new_vertical_segment(bend1, bend2, None, edge)
             vertical_segments.push(current)
             last_segment = Some(current)
@@ -409,7 +411,7 @@ fn lgraph_to_cgraph_transformer_vertical_segment_to_cnode(
     vertical_segment,
   )
 
-  let c_node = @common.cnode_of()
+  let c_node = @compaction.cnode_of()
     .origin(origin_key)
     .node_type("vs")
     .hitbox(@core.new_elk_rectangle_copy(vertical_segment.hitbox))
@@ -424,7 +426,7 @@ fn lgraph_to_cgraph_transformer_vertical_segment_to_cnode(
     }
   }
 
-  let lock = @common.new_quadruplet()
+  let lock = @compaction.new_quadruplet()
   transformer.lock_map[origin_key] = lock
 
   let incoming_ports : Map[Int, Bool] = Map([])
@@ -502,7 +504,7 @@ fn lgraph_to_cgraph_transformer_apply_comment_positions(
 fn lgraph_to_cgraph_transformer_lookup_cnode_for_spline_endpoint(
   transformer : LGraphToCGraphTransformer,
   node : LNode?,
-) -> @common.CNode? {
+) -> @compaction.CNode? {
   match node {
     Some(value) => transformer.nodes_map.get(value.get_handle())
     None => None
@@ -673,13 +675,13 @@ fn lgraph_to_cgraph_transformer_cleanup(
 
 ///|
 pub struct LGraphToCGraphTransformer {
-  mut c_graph : @common.CGraph?
+  mut c_graph : @compaction.CGraph?
   mut layered_graph : LGraph?
   mut edge_routing : @core.EdgeRouting
   comment_offsets : Array[(LNode, LNode, @core.KVector)]
-  mut nodes_map : Map[Int, @common.CNode]
-  mut vertical_segments_map : Map[Int, @common.CNode]
-  mut lock_map : Map[String, @common.Quadruplet]
+  mut nodes_map : Map[Int, @compaction.CNode]
+  mut vertical_segments_map : Map[Int, @compaction.CNode]
+  mut lock_map : Map[String, @compaction.Quadruplet]
 }
 
 ///|
@@ -698,15 +700,15 @@ pub fn new_lgraph_to_cgraph_transformer() -> LGraphToCGraphTransformer {
 ///|
 pub fn LGraphToCGraphTransformer::get_lock_map(
   self : LGraphToCGraphTransformer,
-) -> Map[String, @common.Quadruplet] {
+) -> Map[String, @compaction.Quadruplet] {
   self.lock_map
 }
 
 ///|
 pub fn LGraphToCGraphTransformer::get_lock(
   self : LGraphToCGraphTransformer,
-  node : @common.CNode,
-) -> @common.Quadruplet? {
+  node : @compaction.CNode,
+) -> @compaction.Quadruplet? {
   match node.origin() {
     Some(origin_key) => self.lock_map.get(origin_key)
     None => None
@@ -722,7 +724,7 @@ fn LGraphToCGraphTransformer::init(
     layered_graph,
   )
 
-  self.c_graph = Some(@common.new_cgraph(supported_directions))
+  self.c_graph = Some(@compaction.new_cgraph(supported_directions))
   self.nodes_map = Map([])
   self.comment_offsets.clear()
   self.lock_map = Map([])
@@ -773,14 +775,16 @@ fn LGraphToCGraphTransformer::transform_nodes(
       )
 
       let origin_key = horizontal_graph_compactor_lnode_origin_key(node)
-      let c_node = @common.cnode_of()
+      let c_node = @compaction.cnode_of()
         .origin(origin_key)
         .hitbox(hitbox)
         .to_string_delegate(_ => node.to_string())
         .create(c_graph)
-      ignore(@common.cgroup_of().nodes([c_node]).master(c_node).create(c_graph))
+      ignore(
+        @compaction.cgroup_of().nodes([c_node]).master(c_node).create(c_graph),
+      )
 
-      let node_lock = @common.new_quadruplet()
+      let node_lock = @compaction.new_quadruplet()
       self.lock_map[origin_key] = node_lock
 
       let difference = node.get_incoming_edges().length() -
@@ -849,7 +853,7 @@ fn LGraphToCGraphTransformer::transform_edges(
 pub fn LGraphToCGraphTransformer::transform(
   self : LGraphToCGraphTransformer,
   input_graph : LGraph,
-) -> @common.CGraph {
+) -> @compaction.CGraph {
   self.layered_graph = Some(input_graph)
   self.edge_routing = lgraph_to_cgraph_transformer_parse_edge_routing(
     input_graph.get_property_string(@core.edge_routing),
@@ -867,7 +871,7 @@ pub fn LGraphToCGraphTransformer::transform(
       )
       match self.c_graph {
         Some(graph) => graph
-        None => @common.new_cgraph([Undefined, Leftward, Rightward])
+        None => @compaction.new_cgraph([Undefined, Leftward, Rightward])
       }
     }
   } noraise {

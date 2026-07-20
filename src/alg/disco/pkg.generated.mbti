@@ -3,6 +3,7 @@ package "Milky2018/moon_elk/alg/disco"
 
 import {
   "Milky2018/moon_elk/alg/common",
+  "Milky2018/moon_elk/alg/common/polyomino",
   "Milky2018/moon_elk/core",
   "Milky2018/moon_elk/graph",
   "moonbitlang/core/debug",
@@ -148,14 +149,14 @@ pub fn DCGraph::set_padding(Self, @core.Spacing) -> Unit
 pub fn DCGraph::set_polyomino_fill(Self, Bool) -> Unit
 
 pub struct DCPolyomino {
-  polyomino : @common.Polyomino
+  polyomino : @polyomino.Polyomino
   representee : DCComponent
   p_width : Int
   p_height : Int
   cell_size_x : Double
   cell_size_y : Double
 }
-pub fn DCPolyomino::as_polyomino(Self) -> @common.Polyomino
+pub fn DCPolyomino::as_polyomino(Self) -> @polyomino.Polyomino
 pub fn DCPolyomino::get_cell_size_x(Self) -> Double
 pub fn DCPolyomino::get_cell_size_y(Self) -> Double
 pub fn DCPolyomino::get_center_x(Self) -> Int
@@ -163,7 +164,7 @@ pub fn DCPolyomino::get_center_y(Self) -> Int
 pub fn DCPolyomino::get_id(Self) -> Int
 pub fn DCPolyomino::get_min_corner_on_canvas(Self) -> @core.KVector
 pub fn DCPolyomino::get_offset(Self) -> @core.KVector
-pub fn DCPolyomino::get_polyomino_extensions(Self) -> Array[@common.UniqueTriple[@common.PolyominoDirection, Int, Int]]
+pub fn DCPolyomino::get_polyomino_extensions(Self) -> Array[@common.UniqueTriple[@polyomino.PolyominoDirection, Int, Int]]
 pub fn DCPolyomino::get_representee(Self) -> DCComponent
 pub fn DCPolyomino::get_x(Self) -> Int
 pub fn DCPolyomino::get_y(Self) -> Int
@@ -187,7 +188,7 @@ pub struct DisCoPolyominoCompactor {
   upper_bound : Double
   mut cmp_graph : DCGraph?
   polys : Array[DCPolyomino]
-  mut grid : @common.PlanarGrid?
+  mut grid : @polyomino.PlanarGrid?
   mut aspect_ratio : Double
   mut fill : Bool
 }
@@ -222,4 +223,3 @@ pub fn[G] IGraphTransformer::import_graph(Self[G], G) -> DCGraph
 // Type aliases
 
 // Traits
-

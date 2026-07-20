@@ -30,7 +30,7 @@ pub fn LayeredLayoutProvider::layout(
   elk_graph : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor,
 ) -> Unit {
-  let graph_transformer = new_layered_elk_graph_transformer()
+  let graph_transformer = @transform.new_layered_elk_graph_transformer()
   let layered_graph = graph_transformer.import_graph(elk_graph)
 
   if @graph.node_get_string_property(
@@ -46,7 +46,7 @@ pub fn LayeredLayoutProvider::layout(
     graph_transformer.apply_layout(layered_graph)
   } else {
     dispose_layered_graph(layered_graph)
-    recursive_layered_clear_transform_state()
+    @transform.recursive_layered_clear_transform_state()
   }
 }
 
@@ -55,7 +55,7 @@ pub fn LayeredLayoutProvider::start_layout_test(
   self : LayeredLayoutProvider,
   elk_graph : @graph.ElkNode,
 ) -> ElkLayeredTestExecutionState {
-  let graph_importer = new_layered_elk_graph_transformer()
+  let graph_importer = @transform.new_layered_elk_graph_transformer()
   let layered_graph = graph_importer.import_graph(elk_graph)
   self.elk_layered.prepare_layout_test(layered_graph)
 }

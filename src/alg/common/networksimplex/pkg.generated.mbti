@@ -1,0 +1,127 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/moon_elk/alg/common/networksimplex"
+
+import {
+  "Milky2018/moon_elk/core",
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn nedge_of() -> NEdgeBuilder
+
+pub fn network_simplex_for_graph(NGraph) -> NetworkSimplex
+
+pub fn network_simplex_nedge_of() -> NEdgeBuilder
+
+pub fn network_simplex_nnode_of() -> NNodeBuilder
+
+pub fn new_ngraph() -> NGraph
+
+pub fn nnode_of() -> NNodeBuilder
+
+pub fn reset_network_simplex_model_for_test() -> Unit
+
+// Errors
+pub(all) suberror NetworkSimplexException {
+  NetworkSimplexException(String)
+} derive(ToJson, @debug.Debug)
+pub impl Show for NetworkSimplexException
+
+// Types and methods
+#alias(NetworkSimplexNEdge)
+pub struct NEdge {
+  handle : Int
+} derive(Eq)
+pub fn NEdge::get_delta(Self) -> Int
+pub fn NEdge::get_id(Self) -> Int
+pub fn NEdge::get_internal_id(Self) -> Int
+pub fn NEdge::get_other(Self, NNode) -> NNode raise NetworkSimplexException
+pub fn NEdge::get_source(Self) -> NNode
+pub fn NEdge::get_target(Self) -> NNode
+pub fn NEdge::get_weight(Self) -> Double
+pub fn NEdge::is_tree_edge(Self) -> Bool
+pub fn NEdge::reverse(Self) -> Self
+pub fn NEdge::set_delta(Self, Int) -> Unit
+pub fn NEdge::set_internal_id(Self, Int) -> Unit
+pub fn NEdge::set_source(Self, NNode) -> Unit
+pub fn NEdge::set_target(Self, NNode) -> Unit
+pub fn NEdge::set_tree_edge(Self, Bool) -> Unit
+pub fn NEdge::set_weight(Self, Double) -> Unit
+
+#alias(NetworkSimplexNEdgeBuilder)
+pub struct NEdgeBuilder {
+  mut id : Int
+  mut origin : String?
+  mut weight : Double
+  mut delta : Int
+  mut source : NNode?
+  mut target : NNode?
+}
+pub fn NEdgeBuilder::create(Self) -> NEdge raise NetworkSimplexException
+pub fn NEdgeBuilder::delta(Self, Int) -> Self
+pub fn NEdgeBuilder::id(Self, Int) -> Self
+pub fn NEdgeBuilder::origin(Self, String) -> Self
+pub fn NEdgeBuilder::source(Self, NNode) -> Self
+pub fn NEdgeBuilder::target(Self, NNode) -> Self
+pub fn NEdgeBuilder::weight(Self, Double) -> Self
+
+pub struct NGraph {
+  nodes : Array[NNode]
+}
+pub fn NGraph::is_acyclic(Self) -> Bool
+pub fn NGraph::make_connected(Self) -> NNode?
+pub fn NGraph::write_debug_graph(Self, String) -> Unit
+
+#alias(NetworkSimplexNNode)
+pub struct NNode {
+  handle : Int
+} derive(Eq)
+pub fn NNode::add_unknown_cutvalue(Self, NEdge) -> Unit
+pub fn NNode::clear_unknown_cutvalues(Self) -> Unit
+pub fn NNode::get_connected_edges(Self) -> Array[NEdge]
+pub fn NNode::get_id(Self) -> Int
+pub fn NNode::get_incoming_edges(Self) -> Array[NEdge]
+pub fn NNode::get_internal_id(Self) -> Int
+pub fn NNode::get_layer(Self) -> Int
+pub fn NNode::get_outgoing_edges(Self) -> Array[NEdge]
+pub fn NNode::is_tree_node(Self) -> Bool
+pub fn NNode::remove_unknown_cutvalue(Self, NEdge) -> Unit
+pub fn NNode::set_internal_id(Self, Int) -> Unit
+pub fn NNode::set_layer(Self, Int) -> Unit
+pub fn NNode::set_tree_node(Self, Bool) -> Unit
+pub fn NNode::unknown_cutvalues(Self) -> Array[NEdge]
+
+#alias(NetworkSimplexNNodeBuilder)
+pub struct NNodeBuilder {
+  mut id : Int
+  mut origin : String?
+  mut node_type : String
+}
+pub fn NNodeBuilder::create(Self, NGraph) -> NNode
+pub fn NNodeBuilder::id(Self, Int) -> Self
+pub fn NNodeBuilder::node_type(Self, String) -> Self
+pub fn NNodeBuilder::origin(Self, String) -> Self
+
+pub struct NetworkSimplex {
+  graph : NGraph
+  mut previous_layering_node_counts : Array[Int]?
+  mut balance : Bool
+  mut iteration_limit : Int
+  mut edges : Array[NEdge]
+  tree_edges : Array[NEdge]
+  sources : Array[NNode]
+  mut edge_visited : Array[Bool]
+  mut post_order : Int
+  mut po_id : Array[Int]
+  mut lowest_po_id : Array[Int]
+  mut cutvalue : Array[Double]
+  subtree_nodes_stack : Array[(NNode, NEdge)]
+}
+pub fn NetworkSimplex::execute(Self, monitor? : @core.IElkProgressMonitor) -> Unit
+pub fn NetworkSimplex::with_balancing(Self, Bool) -> Self
+pub fn NetworkSimplex::with_iteration_limit(Self, Int) -> Self
+pub fn NetworkSimplex::with_previous_layering(Self, Array[Int]) -> Self
+
+// Type aliases
+
+// Traits

@@ -2,6 +2,7 @@
 package "Milky2018/moon_elk/alg/rectpacking"
 
 import {
+  "Milky2018/moon_elk/alg/rectpacking/options",
   "Milky2018/moon_elk/core",
   "Milky2018/moon_elk/graph",
   "moonbitlang/core/debug",
@@ -10,7 +11,7 @@ import {
 // Values
 pub fn new_interactive_rectpacking_graph_visitor() -> InteractiveRectPackingGraphVisitor
 
-pub fn new_rectpacking_area_approximation(Double, RectpackingOptimizationGoal, Bool) -> RectpackingAreaApproximation
+pub fn new_rectpacking_area_approximation(Double, @options.RectpackingOptimizationGoal, Bool) -> RectpackingAreaApproximation
 
 pub fn new_rectpacking_block(Double, Double, RectRow, Double) -> Block
 
@@ -48,11 +49,7 @@ pub fn new_rectpacking_target_width_approximator_layout_phase() -> @core.ILayout
 
 pub fn new_rectpacking_to_aspectratio_node_expander_layout_phase() -> @core.ILayoutProcessor[RectPackingLayoutPhases, Int]
 
-pub let rectpacking_algorithm_id : String
-
 pub fn rectpacking_area_filter(Array[RectpackingDrawingData], Double, @core.Spacing) -> Array[RectpackingDrawingData]
-
-pub let rectpacking_aspect_ratio : @graph.IProperty[Double]
 
 pub fn rectpacking_aspect_ratio_filter(Array[RectpackingDrawingData], Double, @core.Spacing) -> Array[RectpackingDrawingData]
 
@@ -76,19 +73,11 @@ pub fn rectpacking_compaction_compact(Int, Array[RectRow], Double, Double, Bool)
 
 pub fn rectpacking_compute_scale_measure(Double, Double, Double) -> Double
 
-pub let rectpacking_current_position : @graph.IProperty[Double]
-
-pub let rectpacking_desired_position : @graph.IProperty[Double]
-
-pub let rectpacking_in_new_row : @graph.IProperty[Bool]
-
 pub fn rectpacking_initial_placement_is_similar_height(Block, Int, Double) -> Bool
 
 pub fn rectpacking_initial_placement_place(Array[Int], Double, Double) -> Array[RectRow]
 
 pub fn rectpacking_initial_placement_place_rect_in_block(RectRow, Block, Int, Double, Double) -> Bool
-
-pub let rectpacking_interactive : @graph.IProperty[Bool]
 
 pub fn rectpacking_intermediate_processor_factory(RectpackingIntermediateProcessorStrategy) -> @core.ILayoutProcessorFactory[RectPackingLayoutPhases, Int]
 
@@ -124,25 +113,9 @@ pub fn rectpacking_layout_provider_as_layout_provider(RectPackingLayoutProvider)
 
 pub fn rectpacking_node_size_compare(Int, Int) -> Int
 
-pub let rectpacking_node_size_fixed_graph_size : @graph.IProperty[Bool]
-
-pub let rectpacking_omit_node_micro_layout : @graph.IProperty[Bool]
-
-pub fn rectpacking_optimization_goal_from_string(String) -> RectpackingOptimizationGoal
-
-pub let rectpacking_order_by_size : @graph.IProperty[Bool]
-
-pub let rectpacking_packing_compaction_iterations : @graph.IProperty[Double]
-
-pub let rectpacking_packing_compaction_row_height_reevaluation : @graph.IProperty[Bool]
-
-pub let rectpacking_packing_strategy : @graph.IProperty[String]
-
 pub fn rectpacking_packing_strategy_from_string(String) -> RectpackingPackingStrategy
 
 pub fn rectpacking_packing_strategy_phase_factory(RectpackingPackingStrategy) -> @core.ILayoutProcessorFactory[RectPackingLayoutPhases, Int]
-
-pub let rectpacking_padding : @graph.IProperty[String]
 
 pub let rectpacking_phase_descriptor : @core.PhaseDescriptor[RectPackingLayoutPhases]
 
@@ -152,29 +125,15 @@ pub fn rectpacking_reset_coordinates(Array[Int]) -> Unit
 
 pub fn rectpacking_scale_measure_filter(Array[RectpackingDrawingData], Double, @core.Spacing) -> Array[RectpackingDrawingData]
 
-pub let rectpacking_spacing_node_node : @graph.IProperty[Double]
-
-pub let rectpacking_trybox : @graph.IProperty[Bool]
-
-pub let rectpacking_white_space_elimination_strategy : @graph.IProperty[String]
-
 pub fn rectpacking_whitespace_elimination_strategy_from_string(String) -> RectpackingWhiteSpaceEliminationStrategy
 
 pub fn rectpacking_whitespace_elimination_strategy_phase_factory(RectpackingWhiteSpaceEliminationStrategy) -> @core.ILayoutProcessorFactory[RectPackingLayoutPhases, Int]
 
 pub fn rectpacking_width_approximation_exception_message(RectpackingWidthApproximationException) -> String
 
-pub let rectpacking_width_approximation_last_place_shift : @graph.IProperty[Bool]
-
-pub let rectpacking_width_approximation_optimization_goal : @graph.IProperty[String]
-
-pub let rectpacking_width_approximation_strategy : @graph.IProperty[String]
-
 pub fn rectpacking_width_approximation_strategy_from_string(String) -> RectpackingWidthApproximationStrategy
 
 pub fn rectpacking_width_approximation_strategy_phase_factory(RectpackingWidthApproximationStrategy) -> @core.ILayoutProcessorFactory[RectPackingLayoutPhases, Int]
-
-pub let rectpacking_width_approximation_target_width : @graph.IProperty[Double]
 
 // Errors
 pub suberror RectpackingWidthApproximationException {
@@ -284,7 +243,7 @@ pub fn RectRow::set_y(Self, Double) -> Unit
 
 pub struct RectpackingAreaApproximation {
   aspect_ratio : Double
-  goal : RectpackingOptimizationGoal
+  goal : @options.RectpackingOptimizationGoal
   last_place_shift : Bool
 }
 pub fn RectpackingAreaApproximation::approx_bounding_box(Self, Array[Int], Double, @core.Spacing) -> RectpackingDrawingData raise RectpackingWidthApproximationException
@@ -318,12 +277,6 @@ pub enum RectpackingIntermediateProcessorStrategy {
   MIN_SIZE_POST_PROCESSOR
 }
 
-pub enum RectpackingOptimizationGoal {
-  ASPECT_RATIO_DRIVEN
-  MAX_SCALE_DRIVEN
-  AREA_DRIVEN
-}
-
 pub enum RectpackingPackingStrategy {
   COMPACTION
   SIMPLE
@@ -355,4 +308,3 @@ pub enum RectpackingWidthApproximationStrategy {
 pub type RectpackingBestCandidateFilter = (Array[RectpackingDrawingData], Double, @core.Spacing) -> Array[RectpackingDrawingData]
 
 // Traits
-

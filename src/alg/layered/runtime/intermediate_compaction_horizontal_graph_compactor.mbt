@@ -96,8 +96,8 @@ fn horizontal_graph_compactor_edge_list_intersects(
 
 ///|
 fn horizontal_graph_compactor_require_group(
-  node : @common.CNode,
-) -> @common.CGroup {
+  node : @compaction.CNode,
+) -> @compaction.CGroup {
   match node.group() {
     Some(group) => group
     None => {
@@ -145,7 +145,7 @@ pub fn horizontal_graph_compactor_vertical_segment_origin_key(
 
 ///|
 pub fn horizontal_graph_compactor_get_lnode_or_null(
-  c_node : @common.CNode,
+  c_node : @compaction.CNode,
 ) -> LNode? {
   match c_node.origin() {
     Some(origin_key) =>
@@ -159,7 +159,7 @@ pub fn horizontal_graph_compactor_get_lnode_or_null(
 
 ///|
 pub fn horizontal_graph_compactor_get_vertical_segment_or_null(
-  c_node : @common.CNode,
+  c_node : @compaction.CNode,
 ) -> VerticalSegment? {
   match c_node.origin() {
     Some(origin_key) =>
@@ -176,8 +176,8 @@ pub fn horizontal_graph_compactor_get_vertical_segment_or_null(
 
 ///|
 pub fn horizontal_graph_compactor_is_vertical_segments_of_same_edge(
-  c_node1 : @common.CNode,
-  c_node2 : @common.CNode,
+  c_node1 : @compaction.CNode,
+  c_node2 : @compaction.CNode,
 ) -> Bool {
   match
     (
@@ -196,10 +196,10 @@ pub fn horizontal_graph_compactor_is_vertical_segments_of_same_edge(
 ///|
 fn horizontal_graph_compactor_spacings_handler(
   graph : LGraph,
-) -> @common.ISpacingsHandler {
+) -> @compaction.ISpacingsHandler {
   let spacings = new_layered_spacings(graph)
 
-  @common.new_spacings_handler(
+  @compaction.new_spacings_handler(
     (c_node1, c_node2) => {
       if horizontal_graph_compactor_is_vertical_segments_of_same_edge(
           c_node1, c_node2,
@@ -299,7 +299,7 @@ fn horizontal_graph_compactor_process(
   }
 
   let transformer = new_lgraph_to_cgraph_transformer()
-  let odc = @common.new_one_dimensional_compactor(
+  let odc = @compaction.new_one_dimensional_compactor(
     transformer.transform(layered_graph),
   )
   ignore(
@@ -322,7 +322,7 @@ fn horizontal_graph_compactor_process(
   } else {
     ignore(
       odc.set_constraint_algorithm(
-        @common.one_dimensional_compactor_quadratic_constraints,
+        @compaction.one_dimensional_compactor_quadratic_constraints,
       ),
     )
   }
@@ -398,4 +398,4 @@ let horizontal_graph_compactor_vertical_segment_origin_lookup : Ref[
 ] = Ref(Map([]))
 
 ///|
-pub let horizontal_graph_compactor_network_simplex_compaction : @common.ICompactionAlgorithm = network_simplex_compaction
+pub let horizontal_graph_compactor_network_simplex_compaction : @compaction.ICompactionAlgorithm = network_simplex_compaction

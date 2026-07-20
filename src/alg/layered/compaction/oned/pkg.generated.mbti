@@ -1,0 +1,105 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/moon_elk/alg/layered/compaction/oned"
+
+import {
+  "Milky2018/moon_elk/alg/common/compaction",
+  "Milky2018/moon_elk/core",
+}
+
+// Values
+pub fn layered_cgroup_of() -> @compaction.CGroupBuilder
+
+pub fn layered_cnode_apply_position(@compaction.CNode) -> Unit
+
+pub fn layered_cnode_get_position(@compaction.CNode) -> Double
+
+pub fn layered_cnode_of() -> @compaction.CNodeBuilder
+
+pub fn layered_compactor_apply_locking_strategy(@compaction.OneDimensionalCompactor) -> @compaction.OneDimensionalCompactor
+
+pub fn layered_compactor_apply_locking_strategy_with_direction(@compaction.OneDimensionalCompactor, @core.Direction) -> @compaction.OneDimensionalCompactor
+
+pub fn layered_compactor_set_locking_strategy(@compaction.OneDimensionalCompactor, (@compaction.CNode, @core.Direction) -> Bool) -> @compaction.OneDimensionalCompactor
+
+pub fn layered_compare_fuzzy_eq(Double, Double) -> Bool
+
+pub fn layered_compare_fuzzy_ge(Double, Double) -> Bool
+
+pub fn layered_compare_fuzzy_gt(Double, Double) -> Bool
+
+pub fn layered_compare_fuzzy_le(Double, Double) -> Bool
+
+pub fn layered_compare_fuzzy_lt(Double, Double) -> Bool
+
+pub let layered_compare_fuzzy_tolerance : Double
+
+pub fn layered_default_spacing_handler() -> @compaction.ISpacingsHandler
+
+pub fn layered_longest_path_compaction(@compaction.OneDimensionalCompactor) -> Unit
+
+pub fn layered_one_dimensional_compactor_longest_path_compaction(@compaction.OneDimensionalCompactor) -> Unit
+
+pub fn layered_one_dimensional_compactor_quadratic_constraints(@compaction.OneDimensionalCompactor) -> Unit
+
+pub fn layered_one_dimensional_compactor_scanline_constraints(@compaction.OneDimensionalCompactor) -> Unit
+
+pub fn layered_quadratic_constraint_calculation(@compaction.OneDimensionalCompactor) -> Unit
+
+pub fn layered_scanline_constraint_calculation(@compaction.OneDimensionalCompactor) -> Unit
+
+pub fn new_layered_c_graph(Array[@core.Direction]) -> @compaction.CGraph
+
+pub fn[T] new_layered_c_graph_transformer((T) -> @compaction.CGraph, () -> Unit) -> LayeredICGraphTransformer[T]
+
+pub fn new_layered_one_dimensional_compactor(@compaction.CGraph) -> @compaction.OneDimensionalCompactor
+
+pub fn new_layered_quadruplet() -> LayeredQuadruplet
+
+pub fn new_layered_quadruplet_with_values(Bool, Bool, Bool, Bool) -> LayeredQuadruplet
+
+pub fn new_layered_spacings_handler((@compaction.CNode, @compaction.CNode) -> Double, (@compaction.CNode, @compaction.CNode) -> Double) -> @compaction.ISpacingsHandler
+
+pub fn reset_layered_compaction_oned_model_for_test() -> Unit
+
+// Errors
+
+// Types and methods
+pub struct LayeredICGraphTransformer[T] {
+  transform_fn : (T) -> @compaction.CGraph
+  apply_layout_fn : () -> Unit
+}
+pub fn[T] LayeredICGraphTransformer::apply_layout(Self[T]) -> Unit
+pub fn[T] LayeredICGraphTransformer::transform(Self[T], T) -> @compaction.CGraph
+
+pub struct LayeredQuadruplet {
+  mut left : Bool
+  mut right : Bool
+  mut up : Bool
+  mut down : Bool
+}
+pub fn LayeredQuadruplet::get(Self, @core.Direction) -> Bool
+pub fn LayeredQuadruplet::set_for_direction(Self, Bool, @core.Direction) -> Unit
+pub fn LayeredQuadruplet::set_values(Self, Bool, Bool, Bool, Bool) -> Unit
+
+// Type aliases
+pub using @compaction {type CGraph as LayeredCGraph}
+
+pub using @compaction {type CGroup as LayeredCGroup}
+
+pub using @compaction {type CGroupBuilder as LayeredCGroupBuilder}
+
+pub using @compaction {type CNode as LayeredCNode}
+
+pub using @compaction {type CNodeBuilder as LayeredCNodeBuilder}
+
+pub type LayeredICompactionAlgorithm = (@compaction.OneDimensionalCompactor) -> Unit
+
+pub type LayeredIConstraintCalculationAlgorithm = (@compaction.OneDimensionalCompactor) -> Unit
+
+pub type LayeredILockFunction = (@compaction.CNode, @core.Direction) -> Bool
+
+pub using @compaction {type ISpacingsHandler as LayeredISpacingsHandler}
+
+pub using @compaction {type OneDimensionalCompactor as LayeredOneDimensionalCompactor}
+
+// Traits

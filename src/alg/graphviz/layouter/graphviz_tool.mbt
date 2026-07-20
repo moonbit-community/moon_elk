@@ -205,14 +205,14 @@ fn new_graphviz_watchdog() -> GraphvizWatchdog {
 ///|
 pub struct GraphvizTool {
   mut process : GraphvizProcess?
-  command : @dot.Command
+  command : @transform.Command
   mut watchdog : GraphvizWatchdog?
   mut graphviz_stream : GraphvizInputStream?
 }
 
 ///|
 pub fn new_graphviz_tool(
-  thecommand : @dot.Command,
+  thecommand : @transform.Command,
 ) -> GraphvizTool raise GraphvizException {
   match thecommand {
     Invalid => raise new_graphviz_exception("Invalid Graphviz command.")
@@ -524,7 +524,7 @@ pub fn GraphvizTool::initialize(
     executable,
     graphviz_tool_arg_nowarnings,
     graphviz_tool_arg_invertyaxis,
-    graphviz_tool_arg_command + @dot.command_to_string(self.command),
+    graphviz_tool_arg_command + @transform.command_to_string(self.command),
   ]
   match arguments {
     Some(values) =>

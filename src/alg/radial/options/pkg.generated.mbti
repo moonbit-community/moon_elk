@@ -1,0 +1,94 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/moon_elk/alg/radial/options"
+
+import {
+  "Milky2018/moon_elk/graph",
+}
+
+// Values
+pub let radial_algorithm_id : String
+
+pub fn radial_annulus_wedge_criteria_from_string(String) -> RadialAnnulusWedgeCriteria
+
+pub let radial_center_on_root : @graph.IProperty[Bool]
+
+pub let radial_compaction_step_size : @graph.IProperty[Double]
+
+pub fn radial_compaction_strategy_from_string(String) -> RadialCompactionStrategy
+
+pub let radial_compactor : @graph.IProperty[String]
+
+pub fn radial_graph_compaction_step_size(Int) -> Int
+
+pub fn radial_graph_compaction_strategy(Int) -> RadialCompactionStrategy
+
+pub fn radial_graph_sorting_strategy(Int) -> RadialSortingStrategy
+
+pub fn radial_graph_translation_strategy(Int) -> RadialTranslationStrategy
+
+pub fn radial_graph_wedge_criteria(Int) -> RadialAnnulusWedgeCriteria
+
+pub let radial_omit_node_micro_layout : @graph.IProperty[Bool]
+
+pub let radial_optimization_criteria : @graph.IProperty[String]
+
+pub let radial_option_margins_id : String
+
+pub let radial_option_position_id : String
+
+pub let radial_order_id : @graph.IProperty[Double]
+
+pub fn radial_overlap_removal_strategy_from_string(String) -> RadialOverlapRemovalStrategy
+
+pub let radial_radius : @graph.IProperty[Double]
+
+pub let radial_rotate : @graph.IProperty[Bool]
+
+pub let radial_rotation_compute_additional_wedge_space : @graph.IProperty[Bool]
+
+pub let radial_rotation_outgoing_edge_angles : @graph.IProperty[Bool]
+
+pub let radial_rotation_target_angle : @graph.IProperty[Double]
+
+pub let radial_sorter : @graph.IProperty[String]
+
+pub fn radial_sorting_strategy_from_string(String) -> RadialSortingStrategy
+
+pub fn radial_translation_strategy_from_string(String) -> RadialTranslationStrategy
+
+pub let radial_wedge_criteria : @graph.IProperty[String]
+
+// Errors
+
+// Types and methods
+pub(all) enum RadialAnnulusWedgeCriteria {
+  LEAF_NUMBER
+  NODE_SIZE
+}
+
+pub(all) enum RadialCompactionStrategy {
+  NONE
+  RADIAL_COMPACTION
+  WEDGE_COMPACTION
+}
+
+pub(all) enum RadialOverlapRemovalStrategy {
+  EXTENT_RADII
+}
+
+pub(all) enum RadialSortingStrategy {
+  NONE
+  POLAR_COORDINATE
+  ID
+}
+
+pub(all) enum RadialTranslationStrategy {
+  NONE
+  EDGE_LENGTH
+  EDGE_LENGTH_BY_POSITION
+  CROSSING_MINIMIZATION_BY_POSITION
+}
+
+// Type aliases
+
+// Traits

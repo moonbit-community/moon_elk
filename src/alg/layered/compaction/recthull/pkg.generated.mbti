@@ -1,0 +1,76 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/moon_elk/alg/layered/compaction/recthull"
+
+import {
+  "Milky2018/moon_elk/core",
+}
+
+// Values
+pub fn layered_is_both_left_or_both_right(LayeredQuadrant, LayeredQuadrant) -> Bool
+
+pub fn layered_is_one_left_one_right(LayeredQuadrant, LayeredQuadrant) -> Bool
+
+pub fn layered_point_from_kvector(@core.KVector) -> LayeredPoint
+
+pub fn layered_point_with_quadrant(LayeredPoint, LayeredQuadrant) -> LayeredPoint
+
+pub fn layered_quadrant_eq(LayeredQuadrant, LayeredQuadrant) -> Bool
+
+pub fn layered_rectilinear_convex_hull_of(Array[LayeredPoint]) -> LayeredRectilinearConvexHull
+
+pub fn[T] layered_scanline_execute(Array[T], (T, T) -> Int, Array[(T) -> Unit]) -> Unit
+
+pub fn[T] layered_scanline_execute_single(Array[T], (T, T) -> Int, (T) -> Unit) -> Unit
+
+pub fn new_layered_point(Double, Double) -> LayeredPoint
+
+pub fn new_layered_point_in_quadrant(Double, Double, LayeredQuadrant) -> LayeredPoint
+
+pub fn new_layered_rectilinear_convex_hull() -> LayeredRectilinearConvexHull
+
+// Errors
+
+// Types and methods
+pub struct LayeredHullRectangleEventState {
+  rects : Array[@core.ElkRectangle]
+  mut min_y : LayeredPoint?
+  mut max_y : LayeredPoint?
+  mut last_x : Double
+  mut queued : @core.ElkRectangle?
+  mut queued_point : LayeredPoint?
+}
+
+pub struct LayeredPoint {
+  x : Double
+  y : Double
+  quadrant : LayeredQuadrant?
+  mut convex : Bool
+}
+
+pub enum LayeredQuadrant {
+  LQ1
+  LQ4
+  LQ2
+  LQ3
+}
+pub fn LayeredQuadrant::is_left(Self) -> Bool
+pub fn LayeredQuadrant::is_upper(Self) -> Bool
+
+pub struct LayeredRectilinearConvexHull {
+  hull : Array[LayeredPoint]
+  mut x_max1 : LayeredPoint?
+  mut x_max2 : LayeredPoint?
+  mut x_min1 : LayeredPoint?
+  mut x_min2 : LayeredPoint?
+  mut y_max1 : LayeredPoint?
+  mut y_max2 : LayeredPoint?
+  mut y_min1 : LayeredPoint?
+  mut y_min2 : LayeredPoint?
+}
+pub fn LayeredRectilinearConvexHull::get_hull(Self) -> Array[LayeredPoint]
+pub fn LayeredRectilinearConvexHull::split_into_rectangles(Self) -> Array[@core.ElkRectangle]
+
+// Type aliases
+pub type LayeredScanlineEventHandler[T] = (T) -> Unit
+
+// Traits

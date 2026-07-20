@@ -34,14 +34,16 @@ fn spore_test_underlap_computation(
 
   let underlap = n1.underlap(n2)
   assert_true(
-    compare_fuzzy_eq(
+    @compaction.compare_fuzzy_eq(
       underlap,
       n1.distance(n2, n1.vertex.clone().sub(n2.vertex)),
     ),
   )
 
   n2.translate(n1.vertex.clone().sub(n2.vertex).scale_to_length(underlap))
-  assert_true(compare_fuzzy_eq(shortest_distance(n1.rect, n2.rect), 0.0))
+  assert_true(
+    @compaction.compare_fuzzy_eq(shortest_distance(n1.rect, n2.rect), 0.0),
+  )
 }
 
 ///|
@@ -89,7 +91,10 @@ test "spore node distance by arbitrary vectors" {
     if test_case.should_collide {
       probe.translate(test_case.vector.clone().scale_to_length(distance))
       assert_true(
-        compare_fuzzy_eq(shortest_distance(root.rect, probe.rect), 0.0),
+        @compaction.compare_fuzzy_eq(
+          shortest_distance(root.rect, probe.rect),
+          0.0,
+        ),
       )
     } else {
       assert_true(distance == @double.infinity)

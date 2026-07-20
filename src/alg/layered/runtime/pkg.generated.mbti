@@ -2,7 +2,8 @@
 package "Milky2018/moon_elk/alg/layered/runtime"
 
 import {
-  "Milky2018/moon_elk/alg/common",
+  "Milky2018/moon_elk/alg/common/compaction",
+  "Milky2018/moon_elk/alg/common/nodespacing",
   "Milky2018/moon_elk/alg/layered/options",
   "Milky2018/moon_elk/core",
   "Milky2018/moon_elk/graph",
@@ -115,15 +116,15 @@ pub fn grid_container_cell_set_only_center_cell_contributes_to_minimum_size(Cell
 
 pub fn horizontal_graph_compactor_clear_origin_lookup() -> Unit
 
-pub fn horizontal_graph_compactor_get_lnode_or_null(@common.CNode) -> LNode?
+pub fn horizontal_graph_compactor_get_lnode_or_null(@compaction.CNode) -> LNode?
 
-pub fn horizontal_graph_compactor_get_vertical_segment_or_null(@common.CNode) -> VerticalSegment?
+pub fn horizontal_graph_compactor_get_vertical_segment_or_null(@compaction.CNode) -> VerticalSegment?
 
-pub fn horizontal_graph_compactor_is_vertical_segments_of_same_edge(@common.CNode, @common.CNode) -> Bool
+pub fn horizontal_graph_compactor_is_vertical_segments_of_same_edge(@compaction.CNode, @compaction.CNode) -> Bool
 
 pub fn horizontal_graph_compactor_lnode_origin_key(LNode) -> String
 
-pub fn horizontal_graph_compactor_network_simplex_compaction(@common.OneDimensionalCompactor) -> Unit
+pub fn horizontal_graph_compactor_network_simplex_compaction(@compaction.OneDimensionalCompactor) -> Unit
 
 pub fn horizontal_graph_compactor_register_origin_lnode(String, LNode) -> Unit
 
@@ -361,7 +362,7 @@ pub fn lport_internal_handle(LPort) -> Int
 
 pub fn model_order_barycenter_heuristic_insertion_sort(Array[LNode], (LNode, LNode) -> Int, ModelOrderBarycenterHeuristic) -> Unit
 
-pub fn network_simplex_compaction(@common.OneDimensionalCompactor) -> Unit
+pub fn network_simplex_compaction(@compaction.OneDimensionalCompactor) -> Unit
 
 pub fn new_abstract_barycenter_port_distributor(Int, (AbstractBarycenterPortDistributor, LNode, Double, @options.PortType) -> Double) -> AbstractBarycenterPortDistributor
 
@@ -415,7 +416,7 @@ pub fn new_dummy_self_loop_processor_layout_processor() -> @core.ILayoutProcesso
 
 pub fn new_edge_and_layer_constraint_edge_reverser_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
-pub fn new_edge_aware_scanline_constraint_calculation(LGraph) -> (@common.OneDimensionalCompactor) -> Unit
+pub fn new_edge_aware_scanline_constraint_calculation(LGraph) -> (@compaction.OneDimensionalCompactor) -> Unit
 
 pub fn new_end_label_cell(Double, Bool, @core.LabelSide) -> EndLabelCell
 
@@ -723,7 +724,7 @@ pub fn new_tarjan(Array[LEdge]) -> Tarjan
 
 pub fn new_test_graph_creator() -> GreedySwitchTestGraphCreator
 
-pub fn new_vertical_segment(@core.KVector, @core.KVector, @common.CNode?, LEdge) -> VerticalSegment
+pub fn new_vertical_segment(@core.KVector, @core.KVector, @compaction.CNode?, LEdge) -> VerticalSegment
 
 pub fn new_west_to_east_routing_strategy() -> BaseRoutingDirectionStrategy
 
@@ -1350,7 +1351,7 @@ pub enum EdgeRoutingDirection {
 }
 
 pub struct EndLabelCell {
-  label_cell : @common.Cell
+  label_cell : @nodespacing.Cell
   label_side : @core.LabelSide
   labels : Array[EndLabelCellLabel]
 }
@@ -1361,8 +1362,8 @@ pub fn EndLabelCell::get_label_side(Self) -> @core.LabelSide
 pub fn EndLabelCell::get_minimum_height(Self) -> Double
 pub fn EndLabelCell::get_minimum_width(Self) -> Double
 pub fn EndLabelCell::has_labels(Self) -> Bool
-pub fn EndLabelCell::set_horizontal_alignment(Self, @common.HorizontalLabelAlignment) -> Unit
-pub fn EndLabelCell::set_vertical_alignment(Self, @common.VerticalLabelAlignment) -> Unit
+pub fn EndLabelCell::set_horizontal_alignment(Self, @nodespacing.HorizontalLabelAlignment) -> Unit
+pub fn EndLabelCell::set_vertical_alignment(Self, @nodespacing.VerticalLabelAlignment) -> Unit
 
 pub struct EndLabelCellLabel {
   elk_label : Int
@@ -2053,18 +2054,18 @@ pub fn LGraphElement::set_id(Self, Int) -> Unit
 pub fn LGraphElement::set_origin_identifier(Self, String?) -> Unit
 
 pub struct LGraphToCGraphTransformer {
-  mut c_graph : @common.CGraph?
+  mut c_graph : @compaction.CGraph?
   mut layered_graph : LGraph?
   mut edge_routing : @core.EdgeRouting
   comment_offsets : Array[(LNode, LNode, @core.KVector)]
-  mut nodes_map : Map[Int, @common.CNode]
-  mut vertical_segments_map : Map[Int, @common.CNode]
-  mut lock_map : Map[String, @common.Quadruplet]
+  mut nodes_map : Map[Int, @compaction.CNode]
+  mut vertical_segments_map : Map[Int, @compaction.CNode]
+  mut lock_map : Map[String, @compaction.Quadruplet]
 }
 pub fn LGraphToCGraphTransformer::apply_layout(Self) -> Unit
-pub fn LGraphToCGraphTransformer::get_lock(Self, @common.CNode) -> @common.Quadruplet?
-pub fn LGraphToCGraphTransformer::get_lock_map(Self) -> Map[String, @common.Quadruplet]
-pub fn LGraphToCGraphTransformer::transform(Self, LGraph) -> @common.CGraph
+pub fn LGraphToCGraphTransformer::get_lock(Self, @compaction.CNode) -> @compaction.Quadruplet?
+pub fn LGraphToCGraphTransformer::get_lock_map(Self) -> Map[String, @compaction.Quadruplet]
+pub fn LGraphToCGraphTransformer::transform(Self, LGraph) -> @compaction.CGraph
 
 pub struct LLabel {
   shape : LShape
@@ -3019,13 +3020,13 @@ pub enum VerticalLabelAlignment {
 
 pub struct VerticalSegment {
   id : Int
-  potential_group_parents : Array[@common.CNode]
+  potential_group_parents : Array[@compaction.CNode]
   represented_l_edges : Array[LEdge]
   affected_bends : Array[@core.KVector]
   affected_bounding_boxes : Array[@core.ElkRectangle]
   hitbox : @core.ElkRectangle
   junction_points : @core.KVectorChain
-  ignore_spacing : @common.Quadruplet
+  ignore_spacing : @compaction.Quadruplet
   constraints : Array[VerticalSegment]
   mut a_port : LPort?
   joined : Array[VerticalSegment]
@@ -3046,4 +3047,3 @@ pub using @core {type Spacing as LPadding}
 pub type LayeredIHierarchyAwareLayoutProcessor = Unit
 
 // Traits
-

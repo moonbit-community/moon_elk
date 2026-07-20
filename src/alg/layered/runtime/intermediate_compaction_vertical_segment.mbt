@@ -45,13 +45,13 @@ fn vertical_segment_next_id() -> Int {
 ///|
 pub struct VerticalSegment {
   id : Int
-  potential_group_parents : Array[@common.CNode]
+  potential_group_parents : Array[@compaction.CNode]
   represented_l_edges : Array[LEdge]
   affected_bends : Array[@core.KVector]
   affected_bounding_boxes : Array[@core.ElkRectangle]
   hitbox : @core.ElkRectangle
   junction_points : @core.KVectorChain
-  ignore_spacing : @common.Quadruplet
+  ignore_spacing : @compaction.Quadruplet
   constraints : Array[VerticalSegment]
   mut a_port : LPort?
   joined : Array[VerticalSegment]
@@ -61,7 +61,7 @@ pub struct VerticalSegment {
 pub fn new_vertical_segment(
   bend1 : @core.KVector,
   bend2 : @core.KVector,
-  c_node : @common.CNode?,
+  c_node : @compaction.CNode?,
   l_edge : LEdge,
 ) -> VerticalSegment {
   let affected_bends = []
@@ -80,7 +80,7 @@ pub fn new_vertical_segment(
       @options.layered_options_junction_points,
     )
     for junction_point in in_junction_points.to_array() {
-      if @common.compare_fuzzy_eq(junction_point.x, bend1.x) {
+      if @compaction.compare_fuzzy_eq(junction_point.x, bend1.x) {
         junction_points.add_vector(junction_point)
       }
     }
@@ -103,7 +103,7 @@ pub fn new_vertical_segment(
     id: vertical_segment_next_id(),
     hitbox,
     junction_points,
-    ignore_spacing: @common.new_quadruplet(),
+    ignore_spacing: @compaction.new_quadruplet(),
     constraints: [],
     a_port: None,
     joined: [],
@@ -182,9 +182,12 @@ pub fn VerticalSegment::intersects(
   self : VerticalSegment,
   other : VerticalSegment,
 ) -> Bool {
-  @common.compare_fuzzy_eq(self.hitbox.x, other.hitbox.x) &&
-  !(@common.compare_fuzzy_lt(self.hitbox.get_bottom_left().y, other.hitbox.y) ||
-  @common.compare_fuzzy_lt(other.hitbox.get_bottom_left().y, self.hitbox.y))
+  @compaction.compare_fuzzy_eq(self.hitbox.x, other.hitbox.x) &&
+  !(@compaction.compare_fuzzy_lt(
+    self.hitbox.get_bottom_left().y,
+    other.hitbox.y,
+  ) ||
+  @compaction.compare_fuzzy_lt(other.hitbox.get_bottom_left().y, self.hitbox.y))
 }
 
 ///|
@@ -192,9 +195,9 @@ pub fn VerticalSegment::compare_to(
   self : VerticalSegment,
   other : VerticalSegment,
 ) -> Int {
-  if @common.compare_fuzzy_lt(self.hitbox.x, other.hitbox.x) {
+  if @compaction.compare_fuzzy_lt(self.hitbox.x, other.hitbox.x) {
     -1
-  } else if @common.compare_fuzzy_gt(self.hitbox.x, other.hitbox.x) {
+  } else if @compaction.compare_fuzzy_gt(self.hitbox.x, other.hitbox.x) {
     1
   } else {
     vertical_segment_compare_double(self.hitbox.y, other.hitbox.y)

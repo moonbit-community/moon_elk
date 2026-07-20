@@ -192,7 +192,7 @@ fn dis_co_dc_direction_to_string(direction : @disco.DCDirection) -> String {
 
 ///|
 fn dis_co_poly_direction_to_string(
-  direction : @common.PolyominoDirection,
+  direction : @polyomino.PolyominoDirection,
 ) -> String {
   match direction {
     North => "NORTH"
@@ -555,7 +555,7 @@ fn dis_co_graph_renderer_poly_center_key(poly : @disco.DCPolyomino) -> String {
 ///|
 fn dis_co_graph_renderer_poly_extension_key(
   poly : @disco.DCPolyomino,
-  direction : @common.PolyominoDirection,
+  direction : @polyomino.PolyominoDirection,
   start : Int,
   end_ : Int,
 ) -> String {

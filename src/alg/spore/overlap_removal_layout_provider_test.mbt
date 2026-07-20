@@ -35,7 +35,7 @@ fn spore_overlap_exists(graph : @graph.ElkNode) -> Bool {
         @graph.node_width(nb),
         @graph.node_height(nb),
       )
-      if @common.compare_fuzzy_lt(@core.shortest_distance(r1, r2), 0.0) {
+      if @compaction.compare_fuzzy_lt(@core.shortest_distance(r1, r2), 0.0) {
         return true
       }
     }

@@ -41,7 +41,7 @@ fn graphviz_tool_test_fake_process(
 
 ///|
 test "panic GraphvizTool rejects invalid command" {
-  ignore(new_graphviz_tool(@dot.command_parse("invalid")))
+  ignore(new_graphviz_tool(@transform.command_parse("invalid")))
 }
 
 ///|
@@ -108,7 +108,7 @@ test "GraphvizTool initialize assembles command line and graph stream" {
     )
   })
 
-  let tool = new_graphviz_tool(@dot.command_parse("dot"))
+  let tool = new_graphviz_tool(@transform.command_parse("dot"))
   tool.initialize(arguments=Some(["-Tdot"]))
   debug_inspect(
     graphviz_tool_get_last_exec_args_for_test(),
@@ -148,7 +148,7 @@ test "panic GraphvizTool cleanup error raises GraphvizException message" {
       ),
     )
   })
-  let tool = new_graphviz_tool(@dot.command_parse("dot"))
+  let tool = new_graphviz_tool(@transform.command_parse("dot"))
   tool.initialize()
   ignore(tool.output().read())
   tool.cleanup(graphviz_cleanup_error())

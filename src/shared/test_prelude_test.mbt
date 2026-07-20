@@ -116,16 +116,16 @@ let no_layout = @core.no_layout
 let _layered_algorithm_id = @options.layered_algorithm_id
 
 ///|
-let radial_radius = @radial.radial_radius
+let radial_radius = @radial_options.radial_radius
 
 ///|
-let radial_compactor = @radial.radial_compactor
+let radial_compactor = @radial_options.radial_compactor
 
 ///|
-let rectpacking_width_approximation_target_width = @rectpacking.rectpacking_width_approximation_target_width
+let rectpacking_width_approximation_target_width = @rectpacking_options.rectpacking_width_approximation_target_width
 
 ///|
-let rectpacking_interactive = @rectpacking.rectpacking_interactive
+let rectpacking_interactive = @rectpacking_options.rectpacking_interactive
 
 ///|
 let spore_compaction_orthogonal = @spore.spore_compaction_orthogonal

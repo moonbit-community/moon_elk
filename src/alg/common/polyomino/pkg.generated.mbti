@@ -1,0 +1,229 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/moon_elk/alg/common/polyomino"
+
+import {
+  "Milky2018/moon_elk/alg/common",
+  "Milky2018/moon_elk/core",
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn fill_polyomino(Polyomino) -> Unit
+
+pub fn high_level_sorting_criterion_values() -> Array[HighLevelSortingCriterion]
+
+pub fn low_level_sorting_criterion_values() -> Array[LowLevelSortingCriterion]
+
+pub fn new_empty_planar_grid() -> PlanarGrid
+
+pub fn new_empty_polyomino() -> Polyomino
+
+pub fn new_ipolyomino_successor((PolyominoCoords, Polyomino) -> PolyominoCoords) -> IPolyominoSuccessor
+
+pub fn new_planar_grid(Int, Int) -> PlanarGrid
+
+pub fn new_polyomino(Int, Int) -> Polyomino
+
+pub fn new_polyomino_compactor() -> PolyominoCompactor
+
+pub fn new_polyomino_coords(Int, Int) -> PolyominoCoords
+
+pub fn new_polyomino_with_extensions(Int, Int, Array[@common.UniqueTriple[PolyominoDirection, Int, Int]]) -> Polyomino
+
+pub fn new_polyominoes(Array[Polyomino], Double, fill? : Bool) -> Polyominoes
+
+pub fn new_successor_combination(IPolyominoSuccessor, IPolyominoSuccessor) -> IPolyominoSuccessor
+
+pub fn new_successor_jitter() -> IPolyominoSuccessor
+
+pub fn new_successor_line_by_line() -> IPolyominoSuccessor
+
+pub fn new_successor_manhattan() -> IPolyominoSuccessor
+
+pub fn new_successor_max_norm_winding_in_math_pos_sense() -> IPolyominoSuccessor
+
+pub fn new_successor_quadrants_generic(IPolyominoSuccessor) -> IPolyominoSuccessor
+
+pub fn new_three_value_grid(() -> Int, () -> Int, (Int, Int) -> Bool, (Int, Int) -> Bool, (Int, Int) -> Bool, (Int, Int) -> Bool, (Int, Int) -> Unit, (Int, Int) -> Unit, (Int, Int) -> Unit, (Int, Int) -> Unit) -> IThreeValueGrid
+
+pub fn new_three_value_grid_from_two_bit_grid(TwoBitGrid) -> IThreeValueGrid
+
+pub fn new_two_bit_grid(Int, Int) -> TwoBitGrid
+
+pub fn polyomino_direction_values() -> Array[PolyominoDirection]
+
+pub fn traversal_strategy_values() -> Array[TraversalStrategy]
+
+// Errors
+
+// Types and methods
+pub enum HighLevelSortingCriterion {
+  NumOfExternalSidesThanNumOfExtensionsLast
+  CornerCasesThanSingleSideLast
+}
+
+pub struct IPolyominoSuccessor {
+  apply : (PolyominoCoords, Polyomino) -> PolyominoCoords
+}
+pub fn IPolyominoSuccessor::apply(Self, PolyominoCoords, Polyomino) -> PolyominoCoords
+
+pub struct IThreeValueGrid {
+  get_width_fn : () -> Int
+  get_height_fn : () -> Int
+  is_empty_fn : (Int, Int) -> Bool
+  is_blocked_fn : (Int, Int) -> Bool
+  is_weakly_blocked_fn : (Int, Int) -> Bool
+  in_bounds_fn : (Int, Int) -> Bool
+  reinitialize_fn : (Int, Int) -> Unit
+  set_empty_fn : (Int, Int) -> Unit
+  set_blocked_fn : (Int, Int) -> Unit
+  set_weakly_blocked_fn : (Int, Int) -> Unit
+}
+pub fn IThreeValueGrid::get_height(Self) -> Int
+pub fn IThreeValueGrid::get_width(Self) -> Int
+pub fn IThreeValueGrid::in_bounds(Self, Int, Int) -> Bool
+pub fn IThreeValueGrid::is_blocked(Self, Int, Int) -> Bool
+pub fn IThreeValueGrid::is_empty(Self, Int, Int) -> Bool
+pub fn IThreeValueGrid::is_weakly_blocked(Self, Int, Int) -> Bool
+pub fn IThreeValueGrid::reinitialize(Self, Int, Int) -> Unit
+pub fn IThreeValueGrid::set_blocked(Self, Int, Int) -> Unit
+pub fn IThreeValueGrid::set_empty(Self, Int, Int) -> Unit
+pub fn IThreeValueGrid::set_weakly_blocked(Self, Int, Int) -> Unit
+
+pub enum LowLevelSortingCriterion {
+  BySize
+  BySizeAndShape
+}
+
+pub struct PlanarGrid {
+  two_bit_grid : TwoBitGrid
+  mut x_center : Int
+  mut y_center : Int
+}
+pub fn PlanarGrid::add_filled_cells_from(Self, Self, Int, Int) -> Unit
+pub fn PlanarGrid::add_filled_cells_from_polyomino(Self, Polyomino, Int, Int) -> Unit
+pub fn PlanarGrid::get_center_x(Self) -> Int
+pub fn PlanarGrid::get_center_y(Self) -> Int
+pub fn PlanarGrid::get_filled_bounds(Self) -> @core.Quadruple[Int, Int, Int, Int]
+pub fn PlanarGrid::height(Self) -> Int
+pub fn PlanarGrid::in_bounds(Self, Int, Int) -> Bool
+pub fn PlanarGrid::in_bounds_center_based(Self, Int, Int) -> Bool
+pub fn PlanarGrid::intersects_with_center_based(Self, Self, Int, Int) -> Bool
+pub fn PlanarGrid::intersects_with_center_based_polyomino(Self, Polyomino, Int, Int) -> Bool
+pub fn PlanarGrid::is_blocked(Self, Int, Int) -> Bool
+pub fn PlanarGrid::is_blocked_center_based(Self, Int, Int) -> Bool
+pub fn PlanarGrid::is_empty(Self, Int, Int) -> Bool
+pub fn PlanarGrid::is_empty_center_based(Self, Int, Int) -> Bool
+pub fn PlanarGrid::is_weakly_blocked(Self, Int, Int) -> Bool
+pub fn PlanarGrid::is_weakly_blocked_center_based(Self, Int, Int) -> Bool
+pub fn PlanarGrid::reinitialize(Self, Int, Int) -> Unit
+pub fn PlanarGrid::set_blocked(Self, Int, Int) -> Unit
+pub fn PlanarGrid::set_blocked_center_based(Self, Int, Int) -> Unit
+pub fn PlanarGrid::set_empty(Self, Int, Int) -> Unit
+pub fn PlanarGrid::set_empty_center_based(Self, Int, Int) -> Unit
+pub fn PlanarGrid::set_weakly_blocked(Self, Int, Int) -> Unit
+pub fn PlanarGrid::set_weakly_blocked_center_based(Self, Int, Int) -> Unit
+pub fn PlanarGrid::to_string(Self) -> String
+pub fn PlanarGrid::weakly_block_area(Self, Int, Int, Int, Int) -> Unit
+pub fn PlanarGrid::weakly_intersects_area(Self, Int, Int, Int, Int) -> Bool
+pub fn PlanarGrid::width(Self) -> Int
+
+pub struct Polyomino {
+  planar_grid : PlanarGrid
+  mut x : Int
+  mut y : Int
+  polyomino_extensions : Array[@common.UniqueTriple[PolyominoDirection, Int, Int]]
+}
+pub fn Polyomino::add_extension(Self, PolyominoDirection, Int, Int) -> Unit
+pub fn Polyomino::as_planar_grid(Self) -> PlanarGrid
+pub fn Polyomino::get_center_x(Self) -> Int
+pub fn Polyomino::get_center_y(Self) -> Int
+pub fn Polyomino::get_polyomino_extensions(Self) -> Array[@common.UniqueTriple[PolyominoDirection, Int, Int]]
+pub fn Polyomino::get_x(Self) -> Int
+pub fn Polyomino::get_y(Self) -> Int
+pub fn Polyomino::height(Self) -> Int
+pub fn Polyomino::in_bounds(Self, Int, Int) -> Bool
+pub fn Polyomino::in_bounds_center_based(Self, Int, Int) -> Bool
+pub fn Polyomino::is_blocked(Self, Int, Int) -> Bool
+pub fn Polyomino::is_blocked_center_based(Self, Int, Int) -> Bool
+pub fn Polyomino::is_empty(Self, Int, Int) -> Bool
+pub fn Polyomino::is_empty_center_based(Self, Int, Int) -> Bool
+pub fn Polyomino::is_weakly_blocked(Self, Int, Int) -> Bool
+pub fn Polyomino::is_weakly_blocked_center_based(Self, Int, Int) -> Bool
+pub fn Polyomino::reinitialize(Self, Int, Int) -> Unit
+pub fn Polyomino::set_blocked(Self, Int, Int) -> Unit
+pub fn Polyomino::set_blocked_center_based(Self, Int, Int) -> Unit
+pub fn Polyomino::set_empty(Self, Int, Int) -> Unit
+pub fn Polyomino::set_empty_center_based(Self, Int, Int) -> Unit
+pub fn Polyomino::set_weakly_blocked(Self, Int, Int) -> Unit
+pub fn Polyomino::set_weakly_blocked_center_based(Self, Int, Int) -> Unit
+pub fn Polyomino::set_x(Self, Int) -> Unit
+pub fn Polyomino::set_y(Self, Int) -> Unit
+pub fn Polyomino::width(Self) -> Int
+
+pub struct PolyominoCompactor {
+  unit : Unit
+}
+pub fn PolyominoCompactor::pack_polyominoes(Self, Polyominoes) -> Unit
+
+pub struct PolyominoCoords {
+  x : Int
+  y : Int
+} derive(Eq, @debug.Debug)
+
+pub enum PolyominoDirection {
+  North
+  East
+  South
+  West
+}
+pub fn PolyominoDirection::is_horizontal(Self) -> Bool
+
+pub struct Polyominoes {
+  polys : Array[Polyomino]
+  grid : PlanarGrid
+  mut high_level_sorting_criterion : HighLevelSortingCriterion
+  mut low_level_sorting_criterion : LowLevelSortingCriterion
+  mut traversal_strategy : TraversalStrategy
+}
+pub fn Polyominoes::get_grid(Self) -> PlanarGrid
+pub fn Polyominoes::get_high_level_sorting_criterion(Self) -> HighLevelSortingCriterion
+pub fn Polyominoes::get_low_level_sorting_criterion(Self) -> LowLevelSortingCriterion
+pub fn Polyominoes::get_polyominoes(Self) -> Array[Polyomino]
+pub fn Polyominoes::get_traversal_strategy(Self) -> TraversalStrategy
+pub fn Polyominoes::set_high_level_sorting_criterion(Self, HighLevelSortingCriterion) -> Self
+pub fn Polyominoes::set_low_level_sorting_criterion(Self, LowLevelSortingCriterion) -> Self
+pub fn Polyominoes::set_traversal_strategy(Self, TraversalStrategy) -> Self
+
+pub enum TraversalStrategy {
+  Spiral
+  LineByLine
+  Manhattan
+  Jitter
+  QuadrantsLineByLine
+  QuadrantsManhattan
+  QuadrantsJitter
+  CombineLineByLineManhattan
+  CombineJitterManhattan
+}
+
+pub struct TwoBitGrid {
+  mut x_size : Int
+  mut y_size : Int
+  mut cells : Array[Int]
+}
+pub fn TwoBitGrid::height(Self) -> Int
+pub fn TwoBitGrid::in_bounds(Self, Int, Int) -> Bool
+pub fn TwoBitGrid::is_blocked(Self, Int, Int) -> Bool
+pub fn TwoBitGrid::is_empty(Self, Int, Int) -> Bool
+pub fn TwoBitGrid::is_weakly_blocked(Self, Int, Int) -> Bool
+pub fn TwoBitGrid::reinitialize(Self, Int, Int) -> Unit
+pub fn TwoBitGrid::set_blocked(Self, Int, Int) -> Unit
+pub fn TwoBitGrid::set_empty(Self, Int, Int) -> Unit
+pub fn TwoBitGrid::set_weakly_blocked(Self, Int, Int) -> Unit
+pub fn TwoBitGrid::to_string(Self) -> String
+pub fn TwoBitGrid::width(Self) -> Int
+
+// Type aliases
+
+// Traits

@@ -14,9 +14,9 @@ import {
   "Milky2018/moon_elk/graph",
   "Milky2018/moon_elk/graph/json",
   "Milky2018/moon_elk/graph/text",
-  "Milky2018/moon_elk/alg/common",
+  "Milky2018/moon_elk/alg/common/compaction",
   "Milky2018/moon_elk/alg/force",
-  "Milky2018/moon_elk/alg/rectpacking",
+  "Milky2018/moon_elk/alg/rectpacking/options" @rectpacking_options,
   "Milky2018/moon_elk/alg/spore",
   "Milky2018/moon_elk/alg/vertiflex",
 }

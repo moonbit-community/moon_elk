@@ -1,0 +1,68 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/moon_elk/alg/layered/pipeline/transform"
+
+import {
+  "Milky2018/moon_elk/alg/layered/runtime",
+}
+
+// Values
+pub fn graph_configurator_activate_greedy_switch_for(@runtime.LGraph) -> Bool
+
+pub fn graph_configurator_configure_graph_properties(@runtime.LGraph) -> Unit
+
+pub fn graph_configurator_copy_port_constraints(@runtime.LGraph) -> Unit
+
+pub fn graph_configurator_default_favor_straight_edges(@runtime.LGraph) -> Unit
+
+pub fn graph_configurator_enforce_direction(@runtime.LGraph) -> Unit
+
+pub fn graph_configurator_enforce_min_edge_spacing(@runtime.LGraph) -> Unit
+
+pub fn graph_configurator_initialize_random_next_boolean(@runtime.LGraph) -> Unit
+
+pub fn layered_elk_graph_transformer_get_origin_identifier(@runtime.LGraphElement) -> String?
+
+pub fn new_layered_elk_graph_importer() -> LayeredElkGraphImporter
+
+pub fn new_layered_elk_graph_layout_transferrer() -> LayeredElkGraphLayoutTransferrer
+
+pub fn new_layered_elk_graph_transformer() -> LayeredElkGraphTransformer
+
+pub fn[T] new_layered_igraph_transformer((T) -> @runtime.LGraph?, (@runtime.LGraph) -> Unit) -> LayeredIGraphTransformer[T]
+
+pub fn recursive_layered_apply_transformed_graph(@runtime.LGraph) -> Bool
+
+pub fn recursive_layered_clear_transform_state() -> Unit
+
+pub fn recursive_layered_import_graph_for_transform(Int) -> @runtime.LGraph?
+
+// Errors
+
+// Types and methods
+pub struct LayeredElkGraphImporter {
+  marker : Int
+}
+pub fn LayeredElkGraphImporter::import_graph(Self, Int) -> @runtime.LGraph
+
+pub struct LayeredElkGraphLayoutTransferrer {
+  marker : Int
+}
+pub fn LayeredElkGraphLayoutTransferrer::apply_layout(Self, @runtime.LGraph) -> Unit
+
+pub struct LayeredElkGraphTransformer {
+  unit : Unit
+}
+pub fn LayeredElkGraphTransformer::apply_layout(Self, @runtime.LGraph) -> Unit
+pub fn LayeredElkGraphTransformer::as_layered_igraph_transformer(Self) -> LayeredIGraphTransformer[Int]
+pub fn LayeredElkGraphTransformer::import_graph(Self, Int) -> @runtime.LGraph
+
+pub struct LayeredIGraphTransformer[T] {
+  import_graph_fn : (T) -> @runtime.LGraph?
+  apply_layout_fn : (@runtime.LGraph) -> Unit
+}
+pub fn[T] LayeredIGraphTransformer::apply_layout(Self[T], @runtime.LGraph) -> Unit
+pub fn[T] LayeredIGraphTransformer::import_graph(Self[T], T) -> @runtime.LGraph?
+
+// Type aliases
+
+// Traits

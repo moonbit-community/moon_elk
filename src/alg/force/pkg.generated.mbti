@@ -2,6 +2,7 @@
 package "Milky2018/moon_elk/alg/force"
 
 import {
+  "Milky2018/moon_elk/alg/force/options",
   "Milky2018/moon_elk/core",
   "moonbitlang/core/debug",
 }
@@ -41,23 +42,23 @@ pub fn fedge_bendpoints(Int) -> Array[Int]
 
 pub fn fedge_distribute_bendpoints(Int) -> Unit
 
-pub fn fedge_get_bool_property(Int, ForceBoolOption) -> Bool
+pub fn fedge_get_bool_property(Int, @options.ForceBoolOption) -> Bool
 
-pub fn fedge_get_double_property(Int, ForceDoubleOption) -> Double
+pub fn fedge_get_double_property(Int, @options.ForceDoubleOption) -> Double
 
-pub fn fedge_get_int_property(Int, ForceIntOption) -> Int
+pub fn fedge_get_int_property(Int, @options.ForceIntOption) -> Int
 
-pub fn fedge_has_double_property(Int, ForceDoubleOption) -> Bool
+pub fn fedge_has_double_property(Int, @options.ForceDoubleOption) -> Bool
 
 pub fn fedge_labels(Int) -> Array[Int]
 
 pub fn fedge_origin(Int) -> Int?
 
-pub fn fedge_set_bool_property(Int, ForceBoolOption, Bool) -> Unit
+pub fn fedge_set_bool_property(Int, @options.ForceBoolOption, Bool) -> Unit
 
-pub fn fedge_set_double_property(Int, ForceDoubleOption, Double) -> Unit
+pub fn fedge_set_double_property(Int, @options.ForceDoubleOption, Double) -> Unit
 
-pub fn fedge_set_int_property(Int, ForceIntOption, Int) -> Unit
+pub fn fedge_set_int_property(Int, @options.ForceIntOption, Int) -> Unit
 
 pub fn fedge_set_origin(Int, Int) -> Unit
 
@@ -81,9 +82,9 @@ pub fn flabel_displacement(Int) -> @core.KVector
 
 pub fn flabel_edge(Int) -> Int
 
-pub fn flabel_get_bool_property(Int, ForceBoolOption) -> Bool
+pub fn flabel_get_bool_property(Int, @options.ForceBoolOption) -> Bool
 
-pub fn flabel_get_double_property(Int, ForceDoubleOption) -> Double
+pub fn flabel_get_double_property(Int, @options.ForceDoubleOption) -> Double
 
 pub fn flabel_origin(Int) -> Int?
 
@@ -93,9 +94,9 @@ pub fn flabel_radius(Int) -> Double
 
 pub fn flabel_refresh_position(Int) -> Unit
 
-pub fn flabel_set_bool_property(Int, ForceBoolOption, Bool) -> Unit
+pub fn flabel_set_bool_property(Int, @options.ForceBoolOption, Bool) -> Unit
 
-pub fn flabel_set_double_property(Int, ForceDoubleOption, Double) -> Unit
+pub fn flabel_set_double_property(Int, @options.ForceDoubleOption, Double) -> Unit
 
 pub fn flabel_set_origin(Int, Int) -> Unit
 
@@ -111,13 +112,13 @@ pub fn fnode_depth(Int) -> Int
 
 pub fn fnode_displacement(Int) -> @core.KVector
 
-pub fn fnode_get_bool_property(Int, ForceBoolOption) -> Bool
+pub fn fnode_get_bool_property(Int, @options.ForceBoolOption) -> Bool
 
-pub fn fnode_get_double_property(Int, ForceDoubleOption) -> Double
+pub fn fnode_get_double_property(Int, @options.ForceDoubleOption) -> Double
 
-pub fn fnode_get_int_property(Int, ForceIntOption) -> Int
+pub fn fnode_get_int_property(Int, @options.ForceIntOption) -> Int
 
-pub fn fnode_has_bool_property(Int, ForceBoolOption) -> Bool
+pub fn fnode_has_bool_property(Int, @options.ForceBoolOption) -> Bool
 
 pub fn fnode_id(Int) -> Int
 
@@ -133,13 +134,13 @@ pub fn fnode_position(Int) -> @core.KVector
 
 pub fn fnode_radius(Int) -> Double
 
-pub fn fnode_set_bool_property(Int, ForceBoolOption, Bool) -> Unit
+pub fn fnode_set_bool_property(Int, @options.ForceBoolOption, Bool) -> Unit
 
-pub fn fnode_set_double_property(Int, ForceDoubleOption, Double) -> Unit
+pub fn fnode_set_double_property(Int, @options.ForceDoubleOption, Double) -> Unit
 
 pub fn fnode_set_id(Int, Int) -> Unit
 
-pub fn fnode_set_int_property(Int, ForceIntOption, Int) -> Unit
+pub fn fnode_set_int_property(Int, @options.ForceIntOption, Int) -> Unit
 
 pub fn fnode_set_origin(Int, Int) -> Unit
 
@@ -147,15 +148,9 @@ pub fn fnode_size(Int) -> @core.KVector
 
 pub let force_algorithm_id : String
 
-pub let force_aspect_ratio : ForceDoubleOption
-
 pub let force_category_id : String
 
-pub let force_edge_labels_inline : ForceBoolOption
-
 pub fn force_import_exception_message(ForceImportException) -> String
-
-pub let force_interactive : ForceBoolOption
 
 pub let force_internal_bb_low_right : ForceInternalVectorProperty
 
@@ -165,8 +160,6 @@ pub let force_internal_origin : ForceInternalNodeProperty
 
 pub let force_internal_random : ForceInternalRandomProperty
 
-pub let force_iterations : ForceIntOption
-
 pub fn force_layout_meta_data_providers() -> Array[@core.ILayoutMetaDataProvider]
 
 pub fn force_layout_provider_as_layout_provider(ForceLayoutProvider) -> @core.AbstractLayoutProvider
@@ -175,31 +168,9 @@ pub fn force_max(Double, Double) -> Double
 
 pub fn force_min(Double, Double) -> Double
 
-pub let force_model : ForceModelOption
-
-pub let force_omit_node_micro_layout : ForceBoolOption
-
-pub let force_padding : ForcePaddingOption
-
-pub let force_priority : ForceIntOption
-
-pub let force_random_seed : ForceIntOption
-
-pub let force_repulsion : ForceDoubleOption
-
-pub let force_repulsive_power : ForceIntOption
-
-pub let force_separate_connected_components : ForceBoolOption
-
-pub let force_spacing_edge_label : ForceDoubleOption
-
-pub let force_spacing_node_node : ForceDoubleOption
-
-pub let force_temperature : ForceDoubleOption
-
 pub fn fparticle_displacement(FParticle) -> @core.KVector
 
-pub fn fparticle_get_int_property(FParticle, ForceIntOption) -> Int
+pub fn fparticle_get_int_property(FParticle, @options.ForceIntOption) -> Int
 
 pub fn fparticle_position(FParticle) -> @core.KVector
 
@@ -229,12 +200,6 @@ pub fn new_flabel(Int, text? : String) -> Int
 
 pub fn new_fnode(label? : String) -> Int
 
-pub fn new_force_bool_option(String, Bool) -> ForceBoolOption
-
-pub fn new_force_double_option(String, Double) -> ForceDoubleOption
-
-pub fn new_force_int_option(String, Int) -> ForceIntOption
-
 pub fn new_force_internal_node_property(String) -> ForceInternalNodeProperty
 
 pub fn new_force_internal_random_property(String) -> ForceInternalRandomProperty
@@ -244,10 +209,6 @@ pub fn new_force_internal_vector_property(String) -> ForceInternalVectorProperty
 pub fn new_force_layout_provider() -> ForceLayoutProvider
 
 pub fn new_force_meta_data_provider() -> @core.ILayoutMetaDataProvider
-
-pub fn new_force_model_option(String, ForceModelStrategy) -> ForceModelOption
-
-pub fn new_force_padding_option(String, @core.Spacing) -> ForcePaddingOption
 
 pub fn new_fruchterman_reingold_model() -> FruchtermanReingoldModel
 
@@ -263,25 +224,9 @@ pub fn reset_force_graph_model_for_test() -> Unit
 
 pub let stress_algorithm_id : String
 
-pub let stress_desired_edge_length : ForceDoubleOption
-
-pub let stress_dimension : ForceIntOption
-
-pub fn stress_dimension_from_int(Int) -> StressDimension
-
-pub let stress_epsilon : ForceDoubleOption
-
-pub let stress_fixed : ForceBoolOption
-
-pub let stress_interactive : ForceBoolOption
-
-pub let stress_iteration_limit : ForceIntOption
-
 pub fn stress_layout_provider_as_layout_provider(StressLayoutProvider) -> @core.AbstractLayoutProvider
 
 pub fn stress_majorization_exception_message(StressMajorizationException) -> String
-
-pub let stress_omit_node_micro_layout : ForceBoolOption
 
 // Errors
 pub suberror ForceImportException {
@@ -330,7 +275,7 @@ pub struct FGraph {
   bool_properties : Map[String, Bool]
   int_properties : Map[String, Int]
   double_properties : Map[String, Double]
-  model_properties : Map[String, ForceModelStrategy]
+  model_properties : Map[String, @options.ForceModelStrategy]
   padding_properties : Map[String, @core.Spacing]
   node_properties : Map[String, Int]
   random_properties : Map[String, @core.JavaRandom]
@@ -344,53 +289,32 @@ pub fn FGraph::add_node(Self, Int) -> Unit
 pub fn FGraph::calc_adjacency(Self) -> Unit
 pub fn FGraph::get_bendpoints(Self) -> Array[Int]
 pub fn FGraph::get_connection(Self, FParticle, FParticle) -> Int
-pub fn FGraph::get_double_property(Self, ForceDoubleOption) -> Double
+pub fn FGraph::get_double_property(Self, @options.ForceDoubleOption) -> Double
 pub fn FGraph::get_edges(Self) -> Array[Int]
-pub fn FGraph::get_int_property(Self, ForceIntOption) -> Int
+pub fn FGraph::get_int_property(Self, @options.ForceIntOption) -> Int
 pub fn FGraph::get_internal_node_property(Self, ForceInternalNodeProperty) -> Int?
 pub fn FGraph::get_internal_random_property(Self, ForceInternalRandomProperty) -> @core.JavaRandom?
 pub fn FGraph::get_internal_vector_property(Self, ForceInternalVectorProperty) -> @core.KVector?
 pub fn FGraph::get_labels(Self) -> Array[Int]
-pub fn FGraph::get_model_property(Self, ForceModelOption) -> ForceModelStrategy
+pub fn FGraph::get_model_property(Self, @options.ForceModelOption) -> @options.ForceModelStrategy
 pub fn FGraph::get_nodes(Self) -> Array[Int]
-pub fn FGraph::get_padding_property(Self, ForcePaddingOption) -> @core.Spacing
+pub fn FGraph::get_padding_property(Self, @options.ForcePaddingOption) -> @core.Spacing
 pub fn FGraph::get_particles(Self) -> Array[FParticle]
-pub fn FGraph::get_property(Self, ForceBoolOption) -> Bool
-pub fn FGraph::set_double_property(Self, ForceDoubleOption, Double) -> Unit
-pub fn FGraph::set_int_property(Self, ForceIntOption, Int) -> Unit
+pub fn FGraph::get_property(Self, @options.ForceBoolOption) -> Bool
+pub fn FGraph::set_double_property(Self, @options.ForceDoubleOption, Double) -> Unit
+pub fn FGraph::set_int_property(Self, @options.ForceIntOption, Int) -> Unit
 pub fn FGraph::set_internal_node_property(Self, ForceInternalNodeProperty, Int) -> Unit
 pub fn FGraph::set_internal_random_property(Self, ForceInternalRandomProperty, @core.JavaRandom) -> Unit
 pub fn FGraph::set_internal_vector_property(Self, ForceInternalVectorProperty, @core.KVector) -> Unit
-pub fn FGraph::set_model_property(Self, ForceModelOption, ForceModelStrategy) -> Unit
-pub fn FGraph::set_padding_property(Self, ForcePaddingOption, @core.Spacing) -> Unit
-pub fn FGraph::set_property(Self, ForceBoolOption, Bool) -> Unit
+pub fn FGraph::set_model_property(Self, @options.ForceModelOption, @options.ForceModelStrategy) -> Unit
+pub fn FGraph::set_padding_property(Self, @options.ForcePaddingOption, @core.Spacing) -> Unit
+pub fn FGraph::set_property(Self, @options.ForceBoolOption, Bool) -> Unit
 
 pub enum FParticle {
   Node(Int)
   Label(Int)
   Bendpoint(Int)
 }
-
-pub struct ForceBoolOption {
-  id : String
-  default_value : Bool
-}
-pub fn ForceBoolOption::get_default(Self) -> Bool
-pub fn ForceBoolOption::get_id(Self) -> String
-
-pub struct ForceDoubleOption {
-  id : String
-  default_value : Double
-}
-pub fn ForceDoubleOption::get_default(Self) -> Double
-pub fn ForceDoubleOption::get_id(Self) -> String
-
-pub struct ForceIntOption {
-  id : String
-  default_value : Int
-}
-pub fn ForceIntOption::get_default(Self) -> Int
-pub fn ForceIntOption::get_id(Self) -> String
 
 pub struct ForceInternalNodeProperty {
   id : String
@@ -418,25 +342,6 @@ pub enum ForceModel {
   FruchtermanReingoldModelValue(FruchtermanReingoldModel)
 }
 
-pub struct ForceModelOption {
-  id : String
-  default_value : ForceModelStrategy
-}
-pub fn ForceModelOption::get_default(Self) -> ForceModelStrategy
-pub fn ForceModelOption::get_id(Self) -> String
-
-pub enum ForceModelStrategy {
-  Eades
-  FruchtermanReingold
-}
-
-pub struct ForcePaddingOption {
-  id : String
-  default_value : @core.Spacing
-}
-pub fn ForcePaddingOption::get_default(Self) -> @core.Spacing
-pub fn ForcePaddingOption::get_id(Self) -> String
-
 pub struct FruchtermanReingoldModel {
   state : AbstractForceModelState
   mut temperature : Double
@@ -456,12 +361,6 @@ pub struct IGraphImporter[T] {
 pub fn[T] IGraphImporter::apply_layout(Self[T], FGraph) -> Unit
 pub fn[T] IGraphImporter::import_graph(Self[T], T) -> FGraph
 
-pub enum StressDimension {
-  StressDimensionXY
-  StressDimensionX
-  StressDimensionY
-}
-
 pub struct StressLayoutProvider {
   components_processor : ComponentsProcessor
   stress_majorization : StressMajorization
@@ -473,7 +372,7 @@ pub struct StressMajorization {
   apsp : Array[Array[Double]]
   weights : Array[Array[Double]]
   mut desired_edge_length : Double
-  mut dimension : StressDimension
+  mut dimension : @options.StressDimension
   mut epsilon : Double
   mut iteration_limit : Int
   connected_edges : Map[Int, Array[Int]]
@@ -492,4 +391,3 @@ pub type FLabel = Int
 pub type FNode = Int
 
 // Traits
-

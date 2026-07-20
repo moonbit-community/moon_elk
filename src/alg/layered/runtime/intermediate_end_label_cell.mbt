@@ -17,7 +17,7 @@ pub fn new_end_label_cell_label(
 
 ///|
 pub struct EndLabelCell {
-  label_cell : @common.LabelCell
+  label_cell : @nodespacing.LabelCell
   label_side : @core.LabelSide
   labels : Array[EndLabelCellLabel]
 }
@@ -29,7 +29,7 @@ pub fn new_end_label_cell(
   label_side : @core.LabelSide,
 ) -> EndLabelCell {
   {
-    label_cell: @common.new_label_cell_with_layout_mode(
+    label_cell: @nodespacing.new_label_cell_with_layout_mode(
       label_gap, horizontal_layout_mode,
     ),
     label_side,
@@ -40,7 +40,7 @@ pub fn new_end_label_cell(
 ///|
 pub fn EndLabelCell::set_horizontal_alignment(
   self : EndLabelCell,
-  alignment : @common.HorizontalLabelAlignment,
+  alignment : @nodespacing.HorizontalLabelAlignment,
 ) -> Unit {
   ignore(self.label_cell.set_horizontal_alignment(alignment))
 }
@@ -48,7 +48,7 @@ pub fn EndLabelCell::set_horizontal_alignment(
 ///|
 pub fn EndLabelCell::set_vertical_alignment(
   self : EndLabelCell,
-  alignment : @common.VerticalLabelAlignment,
+  alignment : @nodespacing.VerticalLabelAlignment,
 ) -> Unit {
   ignore(self.label_cell.set_vertical_alignment(alignment))
 }

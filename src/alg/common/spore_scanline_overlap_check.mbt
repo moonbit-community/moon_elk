@@ -98,8 +98,8 @@ fn spore_scanline_overlap(n1 : Node, n2 : Node) -> Bool {
   if n1.uid == n2.uid {
     return false
   }
-  compare_fuzzy_lt(n1.rect.x, n2.rect.x + n2.rect.width) &&
-  compare_fuzzy_lt(n2.rect.x, n1.rect.x + n1.rect.width)
+  @compaction.compare_fuzzy_lt(n1.rect.x, n2.rect.x + n2.rect.width) &&
+  @compaction.compare_fuzzy_lt(n2.rect.x, n1.rect.x + n1.rect.width)
 }
 
 ///|
@@ -209,13 +209,17 @@ pub fn ScanlineOverlapCheck::sweep(
   self.svg.isave()
 
   let intervals_sort_left : Array[Node] = []
-  scanline_execute_single(points, spore_scanline_timestamp_comparator, timestamp => {
-    if timestamp.low {
-      spore_scanline_insert(self, intervals_sort_left, timestamp.node)
-    } else {
-      spore_scanline_remove(intervals_sort_left, timestamp.node)
-    }
-  })
+  @compaction.scanline_execute_single(
+    points,
+    spore_scanline_timestamp_comparator,
+    timestamp => {
+      if timestamp.low {
+        spore_scanline_insert(self, intervals_sort_left, timestamp.node)
+      } else {
+        spore_scanline_remove(intervals_sort_left, timestamp.node)
+      }
+    },
+  )
 
   self.svg.isave()
 }

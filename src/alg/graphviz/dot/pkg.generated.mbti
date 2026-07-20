@@ -2,8 +2,6 @@
 package "Milky2018/moon_elk/alg/graphviz/dot"
 
 import {
-  "Milky2018/moon_elk/core",
-  "Milky2018/moon_elk/graph",
   "moonbitlang/core/debug",
 }
 
@@ -110,100 +108,6 @@ pub let alg_graphviz_dot_dot_subgraph_name_feature_id : Int
 
 pub let alg_graphviz_dot_dot_subgraph_statements_feature_id : Int
 
-pub fn command_parse(String) -> Command
-
-pub fn command_to_string(Command) -> String
-
-pub let dot_attr_boundingbox : String
-
-pub let dot_attr_comment : String
-
-pub let dot_attr_compound : String
-
-pub let dot_attr_concentrate : String
-
-pub let dot_attr_crossmin_limit : String
-
-pub let dot_attr_damping : String
-
-pub let dot_attr_edgedir : String
-
-pub let dot_attr_edgelen : String
-
-pub let dot_attr_epsilon : String
-
-pub let dot_attr_fixedsize : String
-
-pub let dot_attr_fontname : String
-
-pub let dot_attr_fontsize : String
-
-pub let dot_attr_headlabel : String
-
-pub let dot_attr_headlp : String
-
-pub let dot_attr_height : String
-
-pub let dot_attr_label : String
-
-pub let dot_attr_labelangle : String
-
-pub let dot_attr_labeldistance : String
-
-pub let dot_attr_labelpos : String
-
-pub let dot_attr_layout : String
-
-pub let dot_attr_lhead : String
-
-pub let dot_attr_ltail : String
-
-pub let dot_attr_margin : String
-
-pub let dot_attr_maxiter : String
-
-pub let dot_attr_mindist : String
-
-pub let dot_attr_neato_model : String
-
-pub let dot_attr_nodesep : String
-
-pub let dot_attr_overlap : String
-
-pub let dot_attr_pack : String
-
-pub let dot_attr_pad : String
-
-pub let dot_attr_pos : String
-
-pub let dot_attr_rankdir : String
-
-pub let dot_attr_ranksep : String
-
-pub let dot_attr_ratio : String
-
-pub let dot_attr_sep : String
-
-pub let dot_attr_shape : String
-
-pub let dot_attr_simplex_limit : String
-
-pub let dot_attr_splines : String
-
-pub let dot_attr_spring_constant : String
-
-pub let dot_attr_start : String
-
-pub let dot_attr_style : String
-
-pub let dot_attr_taillabel : String
-
-pub let dot_attr_taillp : String
-
-pub let dot_attr_weight : String
-
-pub let dot_attr_width : String
-
 pub fn dot_attribute_type_edge() -> DotAttributeType
 
 pub fn dot_attribute_type_from_int(Int) -> DotAttributeType?
@@ -264,93 +168,9 @@ pub fn dot_edge_operator_undirected() -> DotEdgeOperator
 
 pub fn dot_edge_operator_value(DotEdgeOperator) -> Int
 
-pub let dot_exporter_adapt_port_positions : @graph.IProperty[Bool]
-
-pub let dot_exporter_cluster_dummy : @graph.IProperty[String]
-
-pub let dot_exporter_command : @graph.IProperty[Command]
-
-pub fn dot_exporter_create_attribute(String, String) -> DotAttribute
-
-pub fn dot_exporter_create_attribute_double(String, Double) -> DotAttribute
-
-pub fn dot_exporter_create_attribute_float(String, Float) -> DotAttribute
-
-pub fn dot_exporter_create_attribute_int(String, Int) -> DotAttribute
-
-pub fn dot_exporter_create_attribute_map(Array[DotAttribute]) -> Map[String, String]
-
-pub fn dot_exporter_create_string(String) -> String
-
-pub let dot_exporter_def_spacing_large : Double
-
-pub let dot_exporter_def_spacing_small : Double
-
-pub let dot_exporter_def_spacing_xlarge : Double
-
-pub let dot_exporter_dpi : Float
-
-pub fn dot_exporter_get_edge_id(Int, DotTransformationData[Int, DotGraphvizModel]) -> String
-
-pub fn dot_exporter_get_node_id(Int, DotExporterNodeType, DotTransformationData[Int, DotGraphvizModel]) -> String
-
-pub let dot_exporter_graph_elems : @graph.IProperty[Map[String, DotGraphElement]]
-
-pub let dot_exporter_hierarchy : @graph.IProperty[Bool]
-
-pub fn dot_exporter_is_inside_graph(Int, Int) -> Bool
-
-pub let dot_exporter_next_edge_id : @graph.IProperty[Int]
-
-pub let dot_exporter_next_node_id : @graph.IProperty[Int]
-
-pub fn dot_exporter_node_type_cluster() -> DotExporterNodeType
-
-pub fn dot_exporter_node_type_dummy() -> DotExporterNodeType
-
-pub fn dot_exporter_node_type_node() -> DotExporterNodeType
-
-pub let dot_exporter_option_edge_labels_placement : String
-
-pub let dot_exporter_option_edge_routing : String
-
-pub let dot_exporter_option_font_name : String
-
-pub let dot_exporter_option_font_size : String
-
-pub fn dot_exporter_parse_spline_points(String, Array[@core.KVectorChain], @core.KVector) -> @core.Pair[@core.KVector, @core.KVector]
-
-pub fn dot_exporter_set_edge_labels(Int, Array[DotAttribute], Bool) -> Unit
-
-pub fn dot_exporter_set_general_edge_attributes(Array[DotStatement]) -> Array[DotAttribute]
-
-pub fn dot_exporter_set_general_node_attributes(Array[DotStatement]) -> Array[DotAttribute]
-
-pub let dot_exporter_transform_edge_layout : @graph.IProperty[Bool]
-
-pub let dot_exporter_transform_node_labels : @graph.IProperty[Bool]
-
-pub let dot_exporter_transform_node_layout : @graph.IProperty[Bool]
-
-pub let dot_exporter_use_edge_ids : @graph.IProperty[Bool]
-
-pub let dot_exporter_use_splines : @graph.IProperty[Bool]
-
 pub fn dot_factory_impl_init() -> DotFactory
 
 pub let dot_factory_instance : DotFactory
-
-pub fn dot_graph_element_as_edge(DotGraphElement) -> Int?
-
-pub fn dot_graph_element_as_node(DotGraphElement) -> Int?
-
-pub fn dot_graph_element_edge(Int) -> DotGraphElement
-
-pub fn dot_graph_element_label(Int) -> DotGraphElement
-
-pub fn dot_graph_element_node(Int) -> DotGraphElement
-
-pub fn dot_graph_element_port(Int) -> DotGraphElement
 
 pub fn dot_graph_type_digraph() -> DotGraphType
 
@@ -492,14 +312,6 @@ pub fn graphviz_dot_standalone_setup_do_setup() -> GraphvizDotInjector
 
 pub let graphviz_dot_status_error : Int
 
-pub fn neato_model_default() -> NeatoModel
-
-pub fn neato_model_literal(NeatoModel) -> String
-
-pub fn neato_model_parse(String) -> NeatoModel raise NeatoModelException
-
-pub fn neato_model_to_string(NeatoModel) -> String
-
 pub fn new_abstract_graphviz_dot_runtime_module(properties? : Map[String, String]) -> AbstractGraphvizDotRuntimeModule
 
 pub fn new_abstract_graphviz_dot_semantic_sequencer(grammar_access? : GraphvizDotGrammarAccess) -> AbstractGraphvizDotSemanticSequencer
@@ -516,8 +328,6 @@ pub fn new_dot_edge_statement_impl() -> DotEdgeStatement
 
 pub fn new_dot_edge_target_impl() -> DotEdgeTarget
 
-pub fn new_dot_exporter() -> DotExporter
-
 pub fn new_dot_factory() -> DotFactory
 
 pub fn new_dot_factory_impl() -> DotFactory
@@ -525,8 +335,6 @@ pub fn new_dot_factory_impl() -> DotFactory
 pub fn new_dot_graph_impl() -> DotGraph
 
 pub fn new_dot_graphviz_model_impl() -> DotGraphvizModel
-
-pub fn new_dot_importer() -> DotImporter
 
 pub fn new_dot_node_impl() -> DotNode
 
@@ -536,15 +344,11 @@ pub fn new_dot_package_impl() -> String
 
 pub fn new_dot_port_impl() -> DotPort
 
-pub fn[R] new_dot_resource_set_provider(() -> R) -> DotResourceSetProvider[R]
-
 pub fn new_dot_statement_impl() -> DotStatement
 
 pub fn new_dot_subgraph_impl() -> DotSubgraph
 
 pub fn[T] new_dot_switch(case_graphviz_model? : (DotGraphvizModel) -> T?, case_graph? : (DotGraph) -> T?, case_statement? : (DotStatement) -> T?, case_attribute? : (DotAttribute) -> T?, case_node_statement? : (DotNodeStatement) -> T?, case_node? : (DotNode) -> T?, case_edge_statement? : (DotEdgeStatement) -> T?, case_edge_target? : (DotEdgeTarget) -> T?, case_attribute_statement? : (DotAttributeStatement) -> T?, case_subgraph? : (DotSubgraph) -> T?, case_port? : (DotPort) -> T?, default_case? : () -> T?) -> DotSwitch[T]
-
-pub fn[S, T] new_dot_transformation_data() -> DotTransformationData[S, T]
 
 pub fn new_graphviz_dot_activator() -> GraphvizDotActivator
 
@@ -594,32 +398,12 @@ pub fn new_internal_graphviz_dot_lexer(String) -> InternalGraphvizDotLexer
 
 pub fn new_internal_graphviz_dot_parser(Array[GraphvizDotLexToken], grammar_access? : GraphvizDotGrammarAccess) -> InternalGraphvizDotParser
 
-pub fn overlap_mode_default() -> OverlapMode
-
-pub fn overlap_mode_literal(OverlapMode) -> String
-
-pub fn overlap_mode_parse(String) -> OverlapMode raise OverlapModeException
-
-pub fn overlap_mode_to_string(OverlapMode) -> String
-
 // Errors
-pub suberror DotExporterException {
-  DotExporterException(String)
-} derive(ToJson, @debug.Debug)
-
 pub suberror GraphvizDotActivatorException {
   IllegalArgumentException(String)
 } derive(ToJson, @debug.Debug)
 
 pub suberror GraphvizDotExecutableExtensionFactoryException {
-  IllegalArgumentException(String)
-} derive(ToJson, @debug.Debug)
-
-pub(all) suberror NeatoModelException {
-  IllegalArgumentException(String)
-} derive(ToJson, @debug.Debug)
-
-pub(all) suberror OverlapModeException {
   IllegalArgumentException(String)
 } derive(ToJson, @debug.Debug)
 
@@ -683,15 +467,6 @@ pub fn[A, B, C] AbstractGraphvizDotSyntacticSequencer::emit_subgraph_subgraph_ke
 pub fn AbstractGraphvizDotSyntacticSequencer::emit_unassigned_tokens(Self, String, Array[String]) -> Array[String]
 pub fn AbstractGraphvizDotSyntacticSequencer::get_grammar_access(Self) -> GraphvizDotGrammarAccess
 pub fn AbstractGraphvizDotSyntacticSequencer::get_unassigned_rule_call_token(Self, String, String, String) -> String
-
-pub enum Command {
-  Invalid
-  Dot
-  Neato
-  Twopi
-  Fdp
-  Circo
-}
 
 pub struct DotAdapterFactory {
   model_package : String
@@ -765,29 +540,6 @@ pub fn DotEdgeTarget::set_operator(Self, DotEdgeOperator?) -> Unit
 pub fn DotEdgeTarget::set_target_subgraph(Self, DotSubgraph?) -> Unit
 pub fn DotEdgeTarget::set_targetnode(Self, DotNode?) -> Unit
 
-pub struct DotExporter {
-  _dummy : Unit
-}
-pub fn DotExporter::apply_edge_label_pos(Self, Int, String, @core.EdgeLabelPlacement, @core.KVector) -> Unit
-pub fn DotExporter::apply_edge_layout(Self, DotEdgeStatement, @core.KVector, DotTransformationData[Int, DotGraphvizModel]) -> Unit
-pub fn DotExporter::apply_layout(Self, Int, Array[DotStatement], @core.KVector, @core.Spacing, DotTransformationData[Int, DotGraphvizModel]) -> Unit
-pub fn DotExporter::apply_node_layout(Self, DotNodeStatement, @core.KVector, @core.Spacing, DotTransformationData[Int, DotGraphvizModel]) -> Unit
-pub fn DotExporter::is_inside_graph(Self, Int, Int) -> Bool
-pub fn DotExporter::set_edge_labels(Self, Int, Array[DotAttribute], Bool) -> Unit
-pub fn DotExporter::set_general_edge_attributes(Self, Array[DotStatement]) -> Array[DotAttribute]
-pub fn DotExporter::set_general_node_attributes(Self, Array[DotStatement]) -> Array[DotAttribute]
-pub fn DotExporter::set_graph_attributes(Self, Array[DotStatement], Int, DotTransformationData[Int, DotGraphvizModel]) -> Unit
-pub fn DotExporter::transfer_layout(Self, DotTransformationData[Int, DotGraphvizModel]) -> Unit
-pub fn DotExporter::transform(Self, DotTransformationData[Int, DotGraphvizModel]) -> Unit
-pub fn DotExporter::transform_edges(Self, Int, Array[DotStatement], DotTransformationData[Int, DotGraphvizModel]) -> Unit
-pub fn DotExporter::transform_nodes(Self, Int, Array[DotStatement], @core.KVector, DotTransformationData[Int, DotGraphvizModel]) -> Unit
-
-pub enum DotExporterNodeType {
-  DotExporterNodeTypeNode
-  DotExporterNodeTypeCluster
-  DotExporterNodeTypeDummy
-}
-
 #alias(DotFactoryImpl)
 pub struct DotFactory {
   create_graphviz_model_fn : () -> DotGraphvizModel
@@ -831,13 +583,6 @@ pub fn DotGraph::set_name(Self, String?) -> Unit
 pub fn DotGraph::set_strict(Self, Bool) -> Unit
 pub fn DotGraph::set_type(Self, DotGraphType?) -> Unit
 
-pub enum DotGraphElement {
-  DotGraphElementNode(Int)
-  DotGraphElementEdge(Int)
-  DotGraphElementPort(Int)
-  DotGraphElementLabel(Int)
-}
-
 pub enum DotGraphType {
   DotGraphTypeGraph
   DotGraphTypeDigraph
@@ -848,30 +593,6 @@ pub struct DotGraphvizModel {
   graphs : Array[DotGraph]
 }
 pub fn DotGraphvizModel::get_graphs(Self) -> Array[DotGraph]
-
-pub struct DotImporter {
-  mut node_id_map : Map[String, Int]
-  mut port_id_map : Map[String, Int]
-  node_statement_map : Map[Int, DotStatement]
-  edge_statement_map : Map[Int, DotEdgeStatement]
-  edge_statement_attached : Map[Int, Bool]
-  root_graph_map : Map[Int, DotGraph]
-}
-pub fn DotImporter::apply_layout_edge(Self, Int, @core.KVector, DotGraph) -> Unit
-pub fn DotImporter::apply_layout_node(Self, Int, @core.KVector, DotGraph) -> Unit
-pub fn DotImporter::transfer_layout(Self, DotTransformationData[DotGraphvizModel, Int]) -> Unit
-pub fn DotImporter::transform(Self, DotTransformationData[DotGraphvizModel, Int]) -> Unit
-pub fn DotImporter::transform_edge_statement(Self, DotEdgeStatement, Int, DotTransformationData[DotGraphvizModel, Int], DotImporterPropertyHolder) -> Unit
-pub fn DotImporter::transform_node_identifier(Self, String?, Int) -> Int
-pub fn DotImporter::transform_node_statement(Self, DotNodeStatement, Int, DotTransformationData[DotGraphvizModel, Int], DotImporterPropertyHolder) -> Unit
-pub fn DotImporter::transform_port_identifier(Self, String?, Int) -> Int
-pub fn DotImporter::transform_statements(Self, Array[DotStatement], Int, DotTransformationData[DotGraphvizModel, Int], DotImporterPropertyHolder, DotImporterPropertyHolder) -> Unit
-
-pub struct DotImporterPropertyHolder {
-  layout_options : Map[String, String]
-  mut def_width : Double?
-  mut def_height : Double?
-}
 
 #alias(DotNodeImpl)
 pub struct DotNode {
@@ -901,11 +622,6 @@ pub fn DotPort::get_compass_pt(Self) -> String?
 pub fn DotPort::get_name(Self) -> String?
 pub fn DotPort::set_compass_pt(Self, String?) -> Unit
 pub fn DotPort::set_name(Self, String?) -> Unit
-
-pub struct DotResourceSetProvider[R] {
-  resource_set_provider : () -> R
-}
-pub fn[R] DotResourceSetProvider::create_resource_set(Self[R]) -> R
 
 #alias(DotStatementImpl)
 pub enum DotStatement {
@@ -957,33 +673,6 @@ pub enum DotSwitchTarget {
   DotSubgraphTarget(DotSubgraph)
   DotPortTarget(DotPort)
 }
-
-#alias(IDotTransformationData)
-pub struct DotTransformationData[S, T] {
-  mut source_graph : S?
-  target_graphs : Array[T]
-  log_messages : Array[String]
-  bool_properties : Map[String, Bool]
-  int_properties : Map[String, Int]
-  string_properties : Map[String, String]
-  command_properties : Map[String, Command]
-  graph_elem_map_properties : Map[String, Map[String, DotGraphElement]]
-}
-pub fn[S, T] DotTransformationData::get_bool_property(Self[S, T], @graph.IProperty[Bool]) -> Bool
-pub fn[S, T] DotTransformationData::get_command_property(Self[S, T], @graph.IProperty[Command]) -> Command
-pub fn[S, T] DotTransformationData::get_graph_elem_map_property(Self[S, T], @graph.IProperty[Map[String, DotGraphElement]]) -> Map[String, DotGraphElement]
-pub fn[S, T] DotTransformationData::get_int_property(Self[S, T], @graph.IProperty[Int]) -> Int
-pub fn[S, T] DotTransformationData::get_messages(Self[S, T]) -> Array[String]
-pub fn[S, T] DotTransformationData::get_source_graph(Self[S, T]) -> S?
-pub fn[S, T] DotTransformationData::get_string_property(Self[S, T], @graph.IProperty[String]) -> String
-pub fn[S, T] DotTransformationData::get_target_graphs(Self[S, T]) -> Array[T]
-pub fn[S, T] DotTransformationData::log(Self[S, T], String) -> Unit
-pub fn[S, T] DotTransformationData::set_bool_property(Self[S, T], @graph.IProperty[Bool], Bool) -> Unit
-pub fn[S, T] DotTransformationData::set_command_property(Self[S, T], @graph.IProperty[Command], Command) -> Unit
-pub fn[S, T] DotTransformationData::set_graph_elem_map_property(Self[S, T], @graph.IProperty[Map[String, DotGraphElement]], Map[String, DotGraphElement]) -> Unit
-pub fn[S, T] DotTransformationData::set_int_property(Self[S, T], @graph.IProperty[Int], Int) -> Unit
-pub fn[S, T] DotTransformationData::set_source_graph(Self[S, T], S) -> Unit
-pub fn[S, T] DotTransformationData::set_string_property(Self[S, T], @graph.IProperty[String], String) -> Unit
 
 pub struct GraphvizDotActivator {
   injectors : Map[String, GraphvizDotInjector]
@@ -1180,20 +869,6 @@ pub fn InternalGraphvizDotParser::get_grammar_file_name(Self) -> String
 pub fn InternalGraphvizDotParser::get_token_names(Self) -> Array[String]
 pub fn InternalGraphvizDotParser::rule_graphviz_model(Self) -> DotGraphvizModel
 
-pub enum NeatoModel {
-  Shortpath
-  Circuit
-  Subset
-}
-
-pub enum OverlapMode {
-  OverlapNone
-  OverlapScale
-  OverlapScalexy
-  OverlapPrism
-  OverlapCompress
-}
-
 // Type aliases
 pub type DotModelAdapter = Unit
 
@@ -1204,4 +879,3 @@ pub type DotPackageImpl = String
 pub type GraphvizDotFormatter2 = (GraphvizDotFormatterRequest) -> String
 
 // Traits
-

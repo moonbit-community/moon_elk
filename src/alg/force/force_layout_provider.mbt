@@ -115,7 +115,7 @@ fn force_layout_provider_layout_impl(
 ) -> Unit raise ForceImportException {
   ignore(progress_monitor.begin("ELK Force", 1.0))
   if !force_option_bool_from_layout_options(graph, force_omit_node_micro_layout) {
-    @common.node_micro_layout_for_graph(graph).execute()
+    @nodespacing.node_micro_layout_for_graph(graph).execute()
   }
   let importer = new_elk_graph_importer()
   let force_graph = importer.import_graph(graph)

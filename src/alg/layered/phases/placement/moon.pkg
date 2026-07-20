@@ -3,7 +3,7 @@ import {
   "moonbitlang/core/int",
   "Milky2018/moon_elk/core",
   "Milky2018/moon_elk/graph",
-  "Milky2018/moon_elk/alg/common",
+  "Milky2018/moon_elk/alg/common/networksimplex",
   "Milky2018/moon_elk/alg/layered/options",
   "Milky2018/moon_elk/alg/layered/runtime",
 }

@@ -35,7 +35,7 @@ pub let algorithm : @graph.IProperty[String] = @core.algorithm
 pub let port_side : @graph.IProperty[String] = @core.port_side
 
 ///|
-pub let rectpacking_algorithm_id : String = @rectpacking.rectpacking_algorithm_id
+pub let rectpacking_algorithm_id : String = @rectpacking_options.rectpacking_algorithm_id
 
 ///|
 pub let spore_compaction_algorithm_id : String = @spore.spore_compaction_algorithm_id
@@ -414,7 +414,7 @@ pub fn new_kvector_xy(x : Double, y : Double) -> KVector {
 
 ///|
 pub fn compare_fuzzy_ge(first : Double, second : Double) -> Bool {
-  @common.compare_fuzzy_ge(first, second)
+  @compaction.compare_fuzzy_ge(first, second)
 }
 
 ///|

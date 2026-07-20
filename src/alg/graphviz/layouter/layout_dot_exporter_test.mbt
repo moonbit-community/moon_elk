@@ -16,7 +16,7 @@ fn layout_dot_exporter_test_find_attribute_map(
       DotStatementAttributeStatement(attribute_statement) =>
         if @dot.dot_attribute_type_value(attribute_statement.get_type()) ==
           @dot.dot_attribute_type_value(attribute_type) {
-          return @dot.dot_exporter_create_attribute_map(
+          return @transform.dot_exporter_create_attribute_map(
             attribute_statement.get_attributes(),
           )
         }
@@ -33,7 +33,7 @@ fn layout_dot_exporter_test_find_first_edge_attribute_map(
   for statement in statements {
     match statement {
       DotStatementEdgeStatement(edge_statement) =>
-        return @dot.dot_exporter_create_attribute_map(
+        return @transform.dot_exporter_create_attribute_map(
           edge_statement.get_attributes(),
         )
       DotStatementSubgraph(subgraph) => {
@@ -53,11 +53,14 @@ fn layout_dot_exporter_test_find_first_edge_attribute_map(
 ///|
 fn layout_dot_exporter_test_setup_data(
   root : @graph.ElkNode,
-  command : @dot.Command,
-) -> @dot.DotTransformationData[@graph.ElkNode, @dot.DotGraphvizModel] {
-  let data : @dot.DotTransformationData[@graph.ElkNode, @dot.DotGraphvizModel] = @dot.new_dot_transformation_data()
+  command : @transform.Command,
+) -> @transform.DotTransformationData[@graph.ElkNode, @dot.DotGraphvizModel] {
+  let data : @transform.DotTransformationData[
+    @graph.ElkNode,
+    @dot.DotGraphvizModel,
+  ] = @transform.new_dot_transformation_data()
   data.set_source_graph(root)
-  data.set_command_property(@dot.dot_exporter_command, command)
+  data.set_command_property(@transform.dot_exporter_command, command)
   data
 }
 
@@ -83,33 +86,39 @@ test "LayoutDotExporter sets DOT graph attributes and transformation flags" {
 
   let data = layout_dot_exporter_test_setup_data(
     root,
-    @dot.command_parse("dot"),
+    @transform.command_parse("dot"),
   )
   let exporter = new_layout_dot_exporter()
   exporter.transform(data)
 
   inspect(
-    data.get_bool_property(@dot.dot_exporter_use_edge_ids),
+    data.get_bool_property(@transform.dot_exporter_use_edge_ids),
     content="true",
   )
-  inspect(data.get_bool_property(@dot.dot_exporter_hierarchy), content="true")
   inspect(
-    data.get_bool_property(@dot.dot_exporter_transform_node_layout),
+    data.get_bool_property(@transform.dot_exporter_hierarchy),
+    content="true",
+  )
+  inspect(
+    data.get_bool_property(@transform.dot_exporter_transform_node_layout),
     content="false",
   )
   inspect(
-    data.get_bool_property(@dot.dot_exporter_transform_edge_layout),
+    data.get_bool_property(@transform.dot_exporter_transform_edge_layout),
     content="false",
   )
   inspect(
-    data.get_bool_property(@dot.dot_exporter_transform_node_labels),
+    data.get_bool_property(@transform.dot_exporter_transform_node_labels),
     content="false",
   )
   inspect(
-    data.get_bool_property(@dot.dot_exporter_adapt_port_positions),
+    data.get_bool_property(@transform.dot_exporter_adapt_port_positions),
     content="false",
   )
-  inspect(data.get_bool_property(@dot.dot_exporter_use_splines), content="true")
+  inspect(
+    data.get_bool_property(@transform.dot_exporter_use_splines),
+    content="true",
+  )
 
   let graph = data.get_target_graphs()[0].get_graphs()[0]
   let graph_attrs = layout_dot_exporter_test_find_attribute_map(
@@ -118,49 +127,49 @@ test "LayoutDotExporter sets DOT graph attributes and transformation flags" {
   )
   inspect(
     layout_dot_exporter_test_option_string_or_none(
-      graph_attrs.get(@dot.dot_attr_nodesep),
+      graph_attrs.get(@transform.dot_attr_nodesep),
     ),
     content="\"1\"",
   )
   inspect(
     layout_dot_exporter_test_option_string_or_none(
-      graph_attrs.get(@dot.dot_attr_ranksep),
+      graph_attrs.get(@transform.dot_attr_ranksep),
     ),
     content="\"2\"",
   )
   inspect(
     layout_dot_exporter_test_option_string_or_none(
-      graph_attrs.get(@dot.dot_attr_rankdir),
+      graph_attrs.get(@transform.dot_attr_rankdir),
     ),
     content="LR",
   )
   inspect(
     layout_dot_exporter_test_option_string_or_none(
-      graph_attrs.get(@dot.dot_attr_crossmin_limit),
+      graph_attrs.get(@transform.dot_attr_crossmin_limit),
     ),
     content="\"0.5\"",
   )
   inspect(
     layout_dot_exporter_test_option_string_or_none(
-      graph_attrs.get(@dot.dot_attr_simplex_limit),
+      graph_attrs.get(@transform.dot_attr_simplex_limit),
     ),
     content="\"50\"",
   )
   inspect(
     layout_dot_exporter_test_option_string_or_none(
-      graph_attrs.get(@dot.dot_attr_compound),
+      graph_attrs.get(@transform.dot_attr_compound),
     ),
     content="true",
   )
   inspect(
     layout_dot_exporter_test_option_string_or_none(
-      graph_attrs.get(@dot.dot_attr_splines),
+      graph_attrs.get(@transform.dot_attr_splines),
     ),
     content="spline",
   )
   inspect(
     layout_dot_exporter_test_option_string_or_none(
-      graph_attrs.get(@dot.dot_attr_concentrate),
+      graph_attrs.get(@transform.dot_attr_concentrate),
     ),
     content="true",
   )
@@ -198,13 +207,13 @@ test "LayoutDotExporter sets NEATO specific graph and edge attributes" {
 
   let data = layout_dot_exporter_test_setup_data(
     root,
-    @dot.command_parse("neato"),
+    @transform.command_parse("neato"),
   )
   let exporter = new_layout_dot_exporter()
   exporter.transform(data)
 
   inspect(
-    data.get_bool_property(@dot.dot_exporter_use_splines),
+    data.get_bool_property(@transform.dot_exporter_use_splines),
     content="false",
   )
 
@@ -215,49 +224,49 @@ test "LayoutDotExporter sets NEATO specific graph and edge attributes" {
   )
   inspect(
     layout_dot_exporter_test_option_string_or_none(
-      graph_attrs.get(@dot.dot_attr_start),
+      graph_attrs.get(@transform.dot_attr_start),
     ),
     content="random-1",
   )
   inspect(
     layout_dot_exporter_test_option_string_or_none(
-      graph_attrs.get(@dot.dot_attr_epsilon),
+      graph_attrs.get(@transform.dot_attr_epsilon),
     ),
     content="\"0.2\"",
   )
   inspect(
     layout_dot_exporter_test_option_string_or_none(
-      graph_attrs.get(@dot.dot_attr_neato_model),
+      graph_attrs.get(@transform.dot_attr_neato_model),
     ),
     content="circuit",
   )
   inspect(
     layout_dot_exporter_test_option_string_or_none(
-      graph_attrs.get(@dot.dot_attr_overlap),
+      graph_attrs.get(@transform.dot_attr_overlap),
     ),
     content="scale",
   )
   inspect(
     layout_dot_exporter_test_option_string_or_none(
-      graph_attrs.get(@dot.dot_attr_sep),
+      graph_attrs.get(@transform.dot_attr_sep),
     ),
     content="\"+36\"",
   )
   inspect(
     layout_dot_exporter_test_option_string_or_none(
-      graph_attrs.get(@dot.dot_attr_pack),
+      graph_attrs.get(@transform.dot_attr_pack),
     ),
     content="\"72\"",
   )
   inspect(
     layout_dot_exporter_test_option_string_or_none(
-      graph_attrs.get(@dot.dot_attr_maxiter),
+      graph_attrs.get(@transform.dot_attr_maxiter),
     ),
     content="\"10\"",
   )
   inspect(
     layout_dot_exporter_test_option_string_or_none(
-      graph_attrs.get(@dot.dot_attr_splines),
+      graph_attrs.get(@transform.dot_attr_splines),
     ),
     content="polyline",
   )
@@ -268,13 +277,13 @@ test "LayoutDotExporter sets NEATO specific graph and edge attributes" {
   )
   inspect(
     layout_dot_exporter_test_option_string_or_none(
-      edge_attrs.get(@dot.dot_attr_edgedir),
+      edge_attrs.get(@transform.dot_attr_edgedir),
     ),
     content="none",
   )
   inspect(
     layout_dot_exporter_test_option_string_or_none(
-      edge_attrs.get(@dot.dot_attr_edgelen),
+      edge_attrs.get(@transform.dot_attr_edgelen),
     ),
     content="\"1\"",
   )
@@ -302,12 +311,12 @@ test "LayoutDotExporter appends label distance and angle for head/tail labels" {
   let label = @graph.create_label(Some(@graph.make_edge_label_parent(edge)))
   @graph.label_set_text(label, "head")
   @graph.label_set_layout_option_string_by_id(
-    label, @dot.dot_exporter_option_edge_labels_placement, "HEAD",
+    label, @transform.dot_exporter_option_edge_labels_placement, "HEAD",
   )
 
   let data = layout_dot_exporter_test_setup_data(
     root,
-    @dot.command_parse("dot"),
+    @transform.command_parse("dot"),
   )
   let exporter = new_layout_dot_exporter()
   exporter.transform(data)
@@ -318,13 +327,13 @@ test "LayoutDotExporter appends label distance and angle for head/tail labels" {
   )
   inspect(
     layout_dot_exporter_test_option_string_or_none(
-      edge_attrs.get(@dot.dot_attr_labeldistance),
+      edge_attrs.get(@transform.dot_attr_labeldistance),
     ),
     content="\"2.5\"",
   )
   inspect(
     layout_dot_exporter_test_option_string_or_none(
-      edge_attrs.get(@dot.dot_attr_labelangle),
+      edge_attrs.get(@transform.dot_attr_labelangle),
     ),
     content="\"-30\"",
   )

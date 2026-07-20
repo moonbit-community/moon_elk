@@ -12,4 +12,5 @@ import {
   "Milky2018/moon_elk/graph",
   "Milky2018/moon_elk/alg/disco",
   "Milky2018/moon_elk/alg/common",
+  "Milky2018/moon_elk/alg/common/polyomino",
 }

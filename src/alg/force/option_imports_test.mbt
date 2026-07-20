@@ -1,0 +1,21 @@
+///|
+using @force_options {
+  force_aspect_ratio,
+  force_edge_labels_inline,
+  force_interactive,
+  force_iterations,
+  force_model,
+  force_padding,
+  force_priority,
+  force_random_seed,
+  force_repulsion,
+  force_repulsive_power,
+  force_separate_connected_components,
+  force_spacing_node_node,
+  force_temperature,
+  stress_desired_edge_length,
+  stress_dimension,
+  stress_epsilon,
+  stress_fixed,
+  stress_iteration_limit,
+}

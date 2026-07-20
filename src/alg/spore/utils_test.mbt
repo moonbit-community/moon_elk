@@ -20,7 +20,7 @@ fn spore_utils_overlap_non_negative_after_move(
   let c3 = c1.clone().add(d.scale(o))
   let r3 = @core.new_elk_rectangle_copy(r2)
   ignore(r3.move_by(c3.clone().sub(c2)))
-  @common.compare_fuzzy_ge(@core.shortest_distance(r1, r3), 0.0)
+  @compaction.compare_fuzzy_ge(@core.shortest_distance(r1, r3), 0.0)
 }
 
 ///|
@@ -74,14 +74,17 @@ test "spore utils underlap and distance" {
     let n2 = @common.new_node(sample.get_center(), sample)
     let underlap = n1.underlap(n2)
     assert_true(
-      @common.compare_fuzzy_eq(
+      @compaction.compare_fuzzy_eq(
         underlap,
         n1.distance(n2, n1.vertex.clone().sub(n2.vertex)),
       ),
     )
     n2.translate(n1.vertex.clone().sub(n2.vertex).scale_to_length(underlap))
     assert_true(
-      @common.compare_fuzzy_eq(@core.shortest_distance(n1.rect, n2.rect), 0.0),
+      @compaction.compare_fuzzy_eq(
+        @core.shortest_distance(n1.rect, n2.rect),
+        0.0,
+      ),
     )
   }
 
@@ -108,7 +111,7 @@ test "spore utils underlap and distance" {
     if item.should_collide {
       n2.translate(item.vector.clone().scale_to_length(distance))
       assert_true(
-        @common.compare_fuzzy_eq(
+        @compaction.compare_fuzzy_eq(
           @core.shortest_distance(root.rect, n2.rect),
           0.0,
         ),

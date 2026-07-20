@@ -1,0 +1,62 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/moon_elk/alg/rectpacking/options"
+
+import {
+  "Milky2018/moon_elk/graph",
+}
+
+// Values
+pub let rectpacking_algorithm_id : String
+
+pub let rectpacking_aspect_ratio : @graph.IProperty[Double]
+
+pub let rectpacking_current_position : @graph.IProperty[Double]
+
+pub let rectpacking_desired_position : @graph.IProperty[Double]
+
+pub let rectpacking_in_new_row : @graph.IProperty[Bool]
+
+pub let rectpacking_interactive : @graph.IProperty[Bool]
+
+pub let rectpacking_node_size_fixed_graph_size : @graph.IProperty[Bool]
+
+pub let rectpacking_omit_node_micro_layout : @graph.IProperty[Bool]
+
+pub fn rectpacking_optimization_goal_from_string(String) -> RectpackingOptimizationGoal
+
+pub let rectpacking_order_by_size : @graph.IProperty[Bool]
+
+pub let rectpacking_packing_compaction_iterations : @graph.IProperty[Double]
+
+pub let rectpacking_packing_compaction_row_height_reevaluation : @graph.IProperty[Bool]
+
+pub let rectpacking_packing_strategy : @graph.IProperty[String]
+
+pub let rectpacking_padding : @graph.IProperty[String]
+
+pub let rectpacking_spacing_node_node : @graph.IProperty[Double]
+
+pub let rectpacking_trybox : @graph.IProperty[Bool]
+
+pub let rectpacking_white_space_elimination_strategy : @graph.IProperty[String]
+
+pub let rectpacking_width_approximation_last_place_shift : @graph.IProperty[Bool]
+
+pub let rectpacking_width_approximation_optimization_goal : @graph.IProperty[String]
+
+pub let rectpacking_width_approximation_strategy : @graph.IProperty[String]
+
+pub let rectpacking_width_approximation_target_width : @graph.IProperty[Double]
+
+// Errors
+
+// Types and methods
+pub(all) enum RectpackingOptimizationGoal {
+  ASPECT_RATIO_DRIVEN
+  MAX_SCALE_DRIVEN
+  AREA_DRIVEN
+}
+
+// Type aliases
+
+// Traits

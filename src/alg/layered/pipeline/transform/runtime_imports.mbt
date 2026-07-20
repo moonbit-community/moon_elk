@@ -1,0 +1,45 @@
+///|
+/// Import only the shared runtime vocabulary used by the pipeline layer.
+///
+/// Keeping this list explicit documents the dependency seam: pipeline owns
+/// orchestration and graph transformation, while runtime owns the layered
+/// graph model and the processor implementations it coordinates.
+using @runtime {
+  type GreedySwitchMockRandom,
+  type LEdge,
+  type LGraph,
+  type LGraphElement,
+  type LLabel,
+  type LNode,
+  type LPort,
+  create_port_for_edge,
+  dispose_layered_graph,
+  get_direction,
+  initialize_port,
+  internal_properties_cb_num_model_order_groups,
+  internal_properties_compound_node,
+  internal_properties_coordinate_system_origin,
+  internal_properties_edge_constraint,
+  internal_properties_ext_port_side,
+  internal_properties_ext_port_size,
+  internal_properties_graph_properties,
+  internal_properties_in_layer_constraint,
+  internal_properties_inside_connections,
+  internal_properties_max_model_order_nodes,
+  internal_properties_model_order,
+  internal_properties_origin_l_port,
+  internal_properties_original_port_constraints,
+  internal_properties_port_ratio_or_position,
+  internal_properties_random,
+  internal_properties_random_next_boolean,
+  internal_properties_spacings,
+  internal_properties_target_offset,
+  is_descendant_l_node,
+  new_greedy_switch_mock_random_seeded,
+  new_l_edge,
+  new_l_graph,
+  new_l_label_text,
+  new_l_node,
+  new_l_port,
+  new_layered_spacings,
+}

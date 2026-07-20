@@ -1,6 +1,6 @@
 ///|
 pub struct ElkLayered {
-  components_processor : LayeredComponentsProcessor
+  components_processor : @components.LayeredComponentsProcessor
   compound_graph_preprocessor : @core.ILayoutProcessor[LayeredPhases, LGraph]
   compound_graph_postprocessor : @core.ILayoutProcessor[LayeredPhases, LGraph]
   mut test_controller : @core.TestController[LGraph]?
@@ -493,7 +493,7 @@ fn elk_layered_collect_algorithm_for_graph(
     )
   }
 
-  if graph_configurator_activate_greedy_switch_for(lgraph) {
+  if @transform.graph_configurator_activate_greedy_switch_for(lgraph) {
     ignore(
       assembler.add_processor_configuration(
         @core.layout_processor_configuration_create(layered_phase_descriptor).add_before(
@@ -861,9 +861,9 @@ fn ElkLayered::layout_test(
 ///|
 pub fn new_elk_layered() -> ElkLayered {
   {
-    components_processor: new_layered_components_processor(),
-    compound_graph_preprocessor: new_compound_graph_preprocessor_layout_processor(),
-    compound_graph_postprocessor: new_compound_graph_postprocessor_layout_processor(),
+    components_processor: @components.new_layered_components_processor(),
+    compound_graph_preprocessor: @compound.new_compound_graph_preprocessor_layout_processor(),
+    compound_graph_postprocessor: @compound.new_compound_graph_postprocessor_layout_processor(),
     test_controller: None,
   }
 }

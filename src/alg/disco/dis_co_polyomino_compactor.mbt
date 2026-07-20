@@ -5,7 +5,7 @@ pub struct DisCoPolyominoCompactor {
   upper_bound : Double
   mut cmp_graph : DCGraph?
   polys : Array[DCPolyomino]
-  mut grid : @common.PlanarGrid?
+  mut grid : @polyomino.PlanarGrid?
   mut aspect_ratio : Double
   mut fill : Bool
 }
@@ -96,17 +96,17 @@ fn dis_co_pack_polyominoes(compactor : DisCoPolyominoCompactor) -> Unit {
     id = id + 1
   }
 
-  let raw_polys : Array[@common.Polyomino] = []
+  let raw_polys : Array[@polyomino.Polyomino] = []
   for poly in compactor.polys {
     raw_polys.push(poly.as_polyomino())
   }
 
-  let holder = @common.new_polyominoes(
+  let holder = @polyomino.new_polyominoes(
     raw_polys,
     compactor.aspect_ratio,
     fill=compactor.fill,
   )
-  let generic_compactor = @common.new_polyomino_compactor()
+  let generic_compactor = @polyomino.new_polyomino_compactor()
   generic_compactor.pack_polyominoes(holder)
   compactor.grid = Some(holder.get_grid())
 }

@@ -198,9 +198,9 @@ pub fn graphviz_layout_provider_reset_runtime_for_test() -> Unit {
 
 ///|
 pub struct GraphvizLayoutProvider {
-  mut command : @dot.Command
+  mut command : @transform.Command
   mut graphviz_tool : GraphvizTool?
-  mut dot_resource_set_provider : @dot.DotResourceSetProvider[
+  mut dot_resource_set_provider : @transform.DotResourceSetProvider[
     GraphvizLayoutResourceSet,
   ]
   mut my_call_no : Int
@@ -209,9 +209,9 @@ pub struct GraphvizLayoutProvider {
 ///|
 pub fn new_graphviz_layout_provider() -> GraphvizLayoutProvider {
   {
-    command: @dot.command_parse("invalid"),
+    command: @transform.command_parse("invalid"),
     graphviz_tool: None,
-    dot_resource_set_provider: @dot.new_dot_resource_set_provider(() => {
+    dot_resource_set_provider: @transform.new_dot_resource_set_provider(() => {
       (graphviz_layout_provider_resource_set_provider_ref.val)()
     }),
     my_call_no: 0,
@@ -264,7 +264,9 @@ fn graphviz_layout_provider_read_all(
 }
 
 ///|
-fn graphviz_layout_provider_command_is_invalid(command : @dot.Command) -> Bool {
+fn graphviz_layout_provider_command_is_invalid(
+  command : @transform.Command,
+) -> Bool {
   match command {
     Invalid => true
     _ => false
@@ -289,7 +291,7 @@ pub fn GraphvizLayoutProvider::initialize(
   self : GraphvizLayoutProvider,
   parameter : String?,
 ) -> Unit {
-  self.command = @dot.command_parse(
+  self.command = @transform.command_parse(
     match parameter {
       Some(value) => value
       None => ""
@@ -303,7 +305,7 @@ pub fn GraphvizLayoutProvider::initialize(
   } noraise {
     tool => self.graphviz_tool = Some(tool)
   }
-  self.dot_resource_set_provider = @dot.new_dot_resource_set_provider(() => {
+  self.dot_resource_set_provider = @transform.new_dot_resource_set_provider(() => {
     (graphviz_layout_provider_resource_set_provider_ref.val)()
   })
 }
@@ -443,7 +445,7 @@ fn graphviz_layout_provider_layout_impl(
 
   ignore(
     progress_monitor.begin(
-      "Graphviz layout (" + @dot.command_to_string(provider.command) + ")",
+      "Graphviz layout (" + @transform.command_to_string(provider.command) + ")",
       2.0,
     ),
   )
@@ -464,12 +466,15 @@ fn graphviz_layout_provider_layout_impl(
 
   let resource_set = provider.dot_resource_set_provider.create_resource_set()
   let dot_exporter = new_layout_dot_exporter()
-  let trans_data : @dot.DotTransformationData[
+  let trans_data : @transform.DotTransformationData[
     @graph.ElkNode,
     @dot.DotGraphvizModel,
-  ] = @dot.new_dot_transformation_data()
+  ] = @transform.new_dot_transformation_data()
   trans_data.set_source_graph(parent_node)
-  trans_data.set_command_property(@dot.dot_exporter_command, provider.command)
+  trans_data.set_command_property(
+    @transform.dot_exporter_command,
+    provider.command,
+  )
   dot_exporter.transform(trans_data)
 
   let target_graphs = trans_data.get_target_graphs()

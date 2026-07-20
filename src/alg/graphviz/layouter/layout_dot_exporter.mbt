@@ -163,11 +163,11 @@ fn layout_dot_exporter_edge_option_double(
 ///|
 fn layout_dot_exporter_parse_neato_model_or_abort(
   value : String,
-) -> @dot.NeatoModel {
-  try @dot.neato_model_parse(value) catch {
+) -> @transform.NeatoModel {
+  try @transform.neato_model_parse(value) catch {
     IllegalArgumentException(message) => {
       @core.layout_runtime_report_unsupported_configuration(message)
-      @dot.neato_model_default()
+      @transform.neato_model_default()
     }
   } noraise {
     model => model
@@ -175,7 +175,9 @@ fn layout_dot_exporter_parse_neato_model_or_abort(
 }
 
 ///|
-fn layout_dot_exporter_parse_neato_model(value : String) -> @dot.NeatoModel {
+fn layout_dot_exporter_parse_neato_model(
+  value : String,
+) -> @transform.NeatoModel {
   let normalized = value.trim().to_owned().to_upper()
   if normalized == "CIRCUIT" ||
     normalized == "SUBSET" ||
@@ -189,11 +191,11 @@ fn layout_dot_exporter_parse_neato_model(value : String) -> @dot.NeatoModel {
 ///|
 fn layout_dot_exporter_parse_overlap_mode_or_abort(
   value : String,
-) -> @dot.OverlapMode {
-  try @dot.overlap_mode_parse(value) catch {
+) -> @transform.OverlapMode {
+  try @transform.overlap_mode_parse(value) catch {
     IllegalArgumentException(message) => {
       @core.layout_runtime_report_unsupported_configuration(message)
-      @dot.overlap_mode_default()
+      @transform.overlap_mode_default()
     }
   } noraise {
     mode => mode
@@ -201,7 +203,9 @@ fn layout_dot_exporter_parse_overlap_mode_or_abort(
 }
 
 ///|
-fn layout_dot_exporter_parse_overlap_mode(value : String) -> @dot.OverlapMode {
+fn layout_dot_exporter_parse_overlap_mode(
+  value : String,
+) -> @transform.OverlapMode {
   let normalized = value.trim().to_owned().to_upper()
   if normalized == "NONE" ||
     normalized == "TRUE" ||
@@ -244,7 +248,7 @@ fn layout_dot_exporter_is_end_label_placement(
 }
 
 ///|
-fn layout_dot_exporter_is_shortpath(model : @dot.NeatoModel) -> Bool {
+fn layout_dot_exporter_is_shortpath(model : @transform.NeatoModel) -> Bool {
   match model {
     Shortpath => true
     _ => false
@@ -252,7 +256,7 @@ fn layout_dot_exporter_is_shortpath(model : @dot.NeatoModel) -> Bool {
 }
 
 ///|
-fn layout_dot_exporter_is_command_dot(command : @dot.Command) -> Bool {
+fn layout_dot_exporter_is_command_dot(command : @transform.Command) -> Bool {
   match command {
     Dot => true
     _ => false
@@ -260,7 +264,7 @@ fn layout_dot_exporter_is_command_dot(command : @dot.Command) -> Bool {
 }
 
 ///|
-fn layout_dot_exporter_is_command_twopi(command : @dot.Command) -> Bool {
+fn layout_dot_exporter_is_command_twopi(command : @transform.Command) -> Bool {
   match command {
     Twopi => true
     _ => false
@@ -268,7 +272,9 @@ fn layout_dot_exporter_is_command_twopi(command : @dot.Command) -> Bool {
 }
 
 ///|
-fn layout_dot_exporter_is_command_neato_or_fdp(command : @dot.Command) -> Bool {
+fn layout_dot_exporter_is_command_neato_or_fdp(
+  command : @transform.Command,
+) -> Bool {
   match command {
     Neato => true
     Fdp => true
@@ -277,7 +283,7 @@ fn layout_dot_exporter_is_command_neato_or_fdp(command : @dot.Command) -> Bool {
 }
 
 ///|
-fn layout_dot_exporter_is_overlap_none(mode : @dot.OverlapMode) -> Bool {
+fn layout_dot_exporter_is_overlap_none(mode : @transform.OverlapMode) -> Bool {
   match mode {
     OverlapNone => true
     _ => false
@@ -289,7 +295,7 @@ fn layout_dot_exporter_has_end_labels(edge : @graph.ElkEdge) -> Bool {
   for label in @graph.edge_labels(edge) {
     let placement = layout_dot_exporter_parse_edge_label_placement(
       @graph.label_layout_option_string_value(
-        label, @dot.dot_exporter_option_edge_labels_placement,
+        label, @transform.dot_exporter_option_edge_labels_placement,
       ),
     )
     if layout_dot_exporter_is_end_label_placement(placement) {
@@ -312,15 +318,18 @@ fn layout_dot_exporter_unquote(text : String) -> String {
 fn layout_dot_exporter_statement_attribute_map(
   edge_statement : @dot.DotEdgeStatement,
 ) -> Map[String, String] {
-  @dot.dot_exporter_create_attribute_map(edge_statement.get_attributes())
+  @transform.dot_exporter_create_attribute_map(edge_statement.get_attributes())
 }
 
 ///|
 fn layout_dot_exporter_append_graph_attributes(
   statements : Array[@dot.DotStatement],
   parent_node : @graph.ElkNode,
-  command : @dot.Command,
-  trans_data : @dot.DotTransformationData[@graph.ElkNode, @dot.DotGraphvizModel],
+  command : @transform.Command,
+  trans_data : @transform.DotTransformationData[
+    @graph.ElkNode,
+    @dot.DotGraphvizModel,
+  ],
 ) -> Unit {
   let graph_attr_statement = @dot.dot_create_attribute_statement()
   graph_attr_statement.set_type(Some(@dot.dot_attribute_type_graph()))
@@ -338,10 +347,12 @@ fn layout_dot_exporter_append_graph_attributes(
   )
   let node_attrs = node_attr_statement.get_attributes()
   node_attrs.push(
-    @dot.dot_exporter_create_attribute(@dot.dot_attr_shape, "box"),
+    @transform.dot_exporter_create_attribute(@transform.dot_attr_shape, "box"),
   )
   node_attrs.push(
-    @dot.dot_exporter_create_attribute(@dot.dot_attr_fixedsize, "true"),
+    @transform.dot_exporter_create_attribute(
+      @transform.dot_attr_fixedsize, "true",
+    ),
   )
 
   let edge_attr_statement = @dot.dot_create_attribute_statement()
@@ -352,7 +363,9 @@ fn layout_dot_exporter_append_graph_attributes(
   )
   let edge_attrs = edge_attr_statement.get_attributes()
   edge_attrs.push(
-    @dot.dot_exporter_create_attribute(@dot.dot_attr_edgedir, "none"),
+    @transform.dot_exporter_create_attribute(
+      @transform.dot_attr_edgedir, "none",
+    ),
   )
 
   let mut spacing = layout_dot_exporter_node_option_double(
@@ -360,27 +373,27 @@ fn layout_dot_exporter_append_graph_attributes(
   )
   if spacing < 0.0 {
     match command {
-      Circo | Fdp | Neato => spacing = @dot.dot_exporter_def_spacing_large
-      Twopi => spacing = @dot.dot_exporter_def_spacing_xlarge
-      _ => spacing = @dot.dot_exporter_def_spacing_small
+      Circo | Fdp | Neato => spacing = @transform.dot_exporter_def_spacing_large
+      Twopi => spacing = @transform.dot_exporter_def_spacing_xlarge
+      _ => spacing = @transform.dot_exporter_def_spacing_small
     }
   }
 
   match command {
     Dot => {
       graph_attrs.push(
-        @dot.dot_exporter_create_attribute_double(
-          @dot.dot_attr_nodesep,
-          spacing / @dot.dot_exporter_dpi.to_double(),
+        @transform.dot_exporter_create_attribute_double(
+          @transform.dot_attr_nodesep,
+          spacing / @transform.dot_exporter_dpi.to_double(),
         ),
       )
       let rank_sep_factor = layout_dot_exporter_node_option_double(
         parent_node, graphviz_option_layer_spacing_factor,
       )
       graph_attrs.push(
-        @dot.dot_exporter_create_attribute_double(
-          @dot.dot_attr_ranksep,
-          rank_sep_factor * spacing / @dot.dot_exporter_dpi.to_double(),
+        @transform.dot_exporter_create_attribute_double(
+          @transform.dot_attr_ranksep,
+          rank_sep_factor * spacing / @transform.dot_exporter_dpi.to_double(),
         ),
       )
       let direction_value = @graph.node_get_string_property(
@@ -388,19 +401,27 @@ fn layout_dot_exporter_append_graph_attributes(
       ).to_upper()
       if direction_value == "UP" {
         graph_attrs.push(
-          @dot.dot_exporter_create_attribute(@dot.dot_attr_rankdir, "BT"),
+          @transform.dot_exporter_create_attribute(
+            @transform.dot_attr_rankdir, "BT",
+          ),
         )
       } else if direction_value == "LEFT" {
         graph_attrs.push(
-          @dot.dot_exporter_create_attribute(@dot.dot_attr_rankdir, "RL"),
+          @transform.dot_exporter_create_attribute(
+            @transform.dot_attr_rankdir, "RL",
+          ),
         )
       } else if direction_value == "RIGHT" {
         graph_attrs.push(
-          @dot.dot_exporter_create_attribute(@dot.dot_attr_rankdir, "LR"),
+          @transform.dot_exporter_create_attribute(
+            @transform.dot_attr_rankdir, "LR",
+          ),
         )
       } else {
         graph_attrs.push(
-          @dot.dot_exporter_create_attribute(@dot.dot_attr_rankdir, "TB"),
+          @transform.dot_exporter_create_attribute(
+            @transform.dot_attr_rankdir, "TB",
+          ),
         )
       }
       let iterations_factor = layout_dot_exporter_node_option_double(
@@ -408,14 +429,14 @@ fn layout_dot_exporter_append_graph_attributes(
       )
       if iterations_factor > 0.0 {
         graph_attrs.push(
-          @dot.dot_exporter_create_attribute_double(
-            @dot.dot_attr_crossmin_limit, iterations_factor,
+          @transform.dot_exporter_create_attribute_double(
+            @transform.dot_attr_crossmin_limit, iterations_factor,
           ),
         )
         if iterations_factor < 1.0 {
           graph_attrs.push(
-            @dot.dot_exporter_create_attribute_double(
-              @dot.dot_attr_simplex_limit,
+            @transform.dot_exporter_create_attribute_double(
+              @transform.dot_attr_simplex_limit,
               iterations_factor * layout_dot_exporter_nslimit_base.to_double(),
             ),
           )
@@ -426,29 +447,31 @@ fn layout_dot_exporter_append_graph_attributes(
       ).to_upper()
       if hierarchy_handling == "INCLUDE_CHILDREN" {
         graph_attrs.push(
-          @dot.dot_exporter_create_attribute(@dot.dot_attr_compound, "true"),
+          @transform.dot_exporter_create_attribute(
+            @transform.dot_attr_compound, "true",
+          ),
         )
       }
     }
     Twopi =>
       graph_attrs.push(
-        @dot.dot_exporter_create_attribute_double(
-          @dot.dot_attr_ranksep,
-          spacing / @dot.dot_exporter_dpi.to_double(),
+        @transform.dot_exporter_create_attribute_double(
+          @transform.dot_attr_ranksep,
+          spacing / @transform.dot_exporter_dpi.to_double(),
         ),
       )
     Circo =>
       graph_attrs.push(
-        @dot.dot_exporter_create_attribute_double(
-          @dot.dot_attr_mindist,
-          spacing / @dot.dot_exporter_dpi.to_double(),
+        @transform.dot_exporter_create_attribute_double(
+          @transform.dot_attr_mindist,
+          spacing / @transform.dot_exporter_dpi.to_double(),
         ),
       )
     Neato => {
       edge_attrs.push(
-        @dot.dot_exporter_create_attribute_double(
-          @dot.dot_attr_edgelen,
-          spacing / @dot.dot_exporter_dpi.to_double(),
+        @transform.dot_exporter_create_attribute_double(
+          @transform.dot_attr_edgelen,
+          spacing / @transform.dot_exporter_dpi.to_double(),
         ),
       )
       let seed_value = layout_dot_exporter_node_option_int(
@@ -462,8 +485,8 @@ fn layout_dot_exporter_append_graph_attributes(
         seed_value
       }
       graph_attrs.push(
-        @dot.dot_exporter_create_attribute(
-          @dot.dot_attr_start,
+        @transform.dot_exporter_create_attribute(
+          @transform.dot_attr_start,
           "random" + seed.to_string(),
         ),
       )
@@ -472,8 +495,8 @@ fn layout_dot_exporter_append_graph_attributes(
       )
       if epsilon > 0.0 {
         graph_attrs.push(
-          @dot.dot_exporter_create_attribute_double(
-            @dot.dot_attr_epsilon, epsilon,
+          @transform.dot_exporter_create_attribute_double(
+            @transform.dot_attr_epsilon, epsilon,
           ),
         )
       }
@@ -484,18 +507,18 @@ fn layout_dot_exporter_append_graph_attributes(
       )
       if !layout_dot_exporter_is_shortpath(model) {
         graph_attrs.push(
-          @dot.dot_exporter_create_attribute(
-            @dot.dot_attr_neato_model,
-            @dot.neato_model_literal(model),
+          @transform.dot_exporter_create_attribute(
+            @transform.dot_attr_neato_model,
+            @transform.neato_model_literal(model),
           ),
         )
       }
     }
     Fdp =>
       graph_attrs.push(
-        @dot.dot_exporter_create_attribute_double(
-          @dot.dot_attr_spring_constant,
-          spacing / @dot.dot_exporter_dpi.to_double(),
+        @transform.dot_exporter_create_attribute_double(
+          @transform.dot_attr_spring_constant,
+          spacing / @transform.dot_exporter_dpi.to_double(),
         ),
       )
     Invalid => ()
@@ -507,7 +530,9 @@ fn layout_dot_exporter_append_graph_attributes(
     )
     if maxiter > 0 {
       graph_attrs.push(
-        @dot.dot_exporter_create_attribute_int(@dot.dot_attr_maxiter, maxiter),
+        @transform.dot_exporter_create_attribute_int(
+          @transform.dot_attr_maxiter, maxiter,
+        ),
       )
     }
   }
@@ -520,14 +545,14 @@ fn layout_dot_exporter_append_graph_attributes(
     )
     if !layout_dot_exporter_is_overlap_none(overlap_mode) {
       graph_attrs.push(
-        @dot.dot_exporter_create_attribute(
-          @dot.dot_attr_overlap,
-          @dot.overlap_mode_literal(overlap_mode),
+        @transform.dot_exporter_create_attribute(
+          @transform.dot_attr_overlap,
+          @transform.overlap_mode_literal(overlap_mode),
         ),
       )
       graph_attrs.push(
-        @dot.dot_exporter_create_attribute(
-          @dot.dot_attr_sep,
+        @transform.dot_exporter_create_attribute(
+          @transform.dot_attr_sep,
           "\"+" + (spacing / 2.0).round().to_int().to_string() + "\"",
         ),
       )
@@ -537,8 +562,8 @@ fn layout_dot_exporter_append_graph_attributes(
     )
     if layout_dot_exporter_is_command_twopi(command) || pack {
       graph_attrs.push(
-        @dot.dot_exporter_create_attribute_int(
-          @dot.dot_attr_pack,
+        @transform.dot_exporter_create_attribute_int(
+          @transform.dot_attr_pack,
           spacing.to_int(),
         ),
       )
@@ -550,24 +575,32 @@ fn layout_dot_exporter_append_graph_attributes(
   ).to_upper()
   if edge_routing == "POLYLINE" {
     graph_attrs.push(
-      @dot.dot_exporter_create_attribute(@dot.dot_attr_splines, "polyline"),
+      @transform.dot_exporter_create_attribute(
+        @transform.dot_attr_splines, "polyline",
+      ),
     )
   } else if edge_routing == "ORTHOGONAL" {
     graph_attrs.push(
-      @dot.dot_exporter_create_attribute(@dot.dot_attr_splines, "ortho"),
+      @transform.dot_exporter_create_attribute(
+        @transform.dot_attr_splines, "ortho",
+      ),
     )
   } else {
     graph_attrs.push(
-      @dot.dot_exporter_create_attribute(@dot.dot_attr_splines, "spline"),
+      @transform.dot_exporter_create_attribute(
+        @transform.dot_attr_splines, "spline",
+      ),
     )
-    trans_data.set_bool_property(@dot.dot_exporter_use_splines, true)
+    trans_data.set_bool_property(@transform.dot_exporter_use_splines, true)
   }
 
   if layout_dot_exporter_node_option_bool(
       parent_node, graphviz_option_concentrate,
     ) {
     graph_attrs.push(
-      @dot.dot_exporter_create_attribute(@dot.dot_attr_concentrate, "true"),
+      @transform.dot_exporter_create_attribute(
+        @transform.dot_attr_concentrate, "true",
+      ),
     )
   }
 }
@@ -576,14 +609,17 @@ fn layout_dot_exporter_append_graph_attributes(
 fn layout_dot_exporter_apply_graph_attributes_recursive(
   statements : Array[@dot.DotStatement],
   parent_node : @graph.ElkNode,
-  command : @dot.Command,
-  trans_data : @dot.DotTransformationData[@graph.ElkNode, @dot.DotGraphvizModel],
+  command : @transform.Command,
+  trans_data : @transform.DotTransformationData[
+    @graph.ElkNode,
+    @dot.DotGraphvizModel,
+  ],
 ) -> Unit {
   layout_dot_exporter_append_graph_attributes(
     statements, parent_node, command, trans_data,
   )
   let graph_elems = trans_data.get_graph_elem_map_property(
-    @dot.dot_exporter_graph_elems,
+    @transform.dot_exporter_graph_elems,
   )
   for statement in statements.copy() {
     match statement {
@@ -592,7 +628,7 @@ fn layout_dot_exporter_apply_graph_attributes_recursive(
           Some(name) =>
             match graph_elems.get(name) {
               Some(graph_elem) =>
-                match @dot.dot_graph_element_as_node(graph_elem) {
+                match @transform.dot_graph_element_as_node(graph_elem) {
                   Some(node) =>
                     layout_dot_exporter_apply_graph_attributes_recursive(
                       subgraph.get_statements(),
@@ -614,20 +650,23 @@ fn layout_dot_exporter_apply_graph_attributes_recursive(
 ///|
 fn layout_dot_exporter_set_edge_labels_for_statement(
   edge_statement : @dot.DotEdgeStatement,
-  trans_data : @dot.DotTransformationData[@graph.ElkNode, @dot.DotGraphvizModel],
+  trans_data : @transform.DotTransformationData[
+    @graph.ElkNode,
+    @dot.DotGraphvizModel,
+  ],
 ) -> Unit {
   let attributes = edge_statement.get_attributes()
   let attr_map = layout_dot_exporter_statement_attribute_map(edge_statement)
-  let edge_id = match attr_map.get(@dot.dot_attr_comment) {
+  let edge_id = match attr_map.get(@transform.dot_attr_comment) {
     Some(value) => layout_dot_exporter_unquote(value)
     None => return
   }
   let graph_elems = trans_data.get_graph_elem_map_property(
-    @dot.dot_exporter_graph_elems,
+    @transform.dot_exporter_graph_elems,
   )
   let edge = match graph_elems.get(edge_id) {
     Some(graph_elem) =>
-      match @dot.dot_graph_element_as_edge(graph_elem) {
+      match @transform.dot_graph_element_as_edge(graph_elem) {
         Some(value) => value
         None => return
       }
@@ -636,24 +675,26 @@ fn layout_dot_exporter_set_edge_labels_for_statement(
   if !layout_dot_exporter_has_end_labels(edge) {
     return
   }
-  if attr_map.get(@dot.dot_attr_labeldistance) is None {
+  if attr_map.get(@transform.dot_attr_labeldistance) is None {
     let distance = layout_dot_exporter_edge_option_double(
       edge, graphviz_option_label_distance,
     )
     if distance >= 0.0 {
       attributes.push(
-        @dot.dot_exporter_create_attribute_double(
-          @dot.dot_attr_labeldistance, distance,
+        @transform.dot_exporter_create_attribute_double(
+          @transform.dot_attr_labeldistance, distance,
         ),
       )
     }
   }
-  if attr_map.get(@dot.dot_attr_labelangle) is None {
+  if attr_map.get(@transform.dot_attr_labelangle) is None {
     let angle = layout_dot_exporter_edge_option_double(
       edge, graphviz_option_label_angle,
     )
     attributes.push(
-      @dot.dot_exporter_create_attribute_double(@dot.dot_attr_labelangle, angle),
+      @transform.dot_exporter_create_attribute_double(
+        @transform.dot_attr_labelangle, angle,
+      ),
     )
   }
 }
@@ -661,7 +702,10 @@ fn layout_dot_exporter_set_edge_labels_for_statement(
 ///|
 fn layout_dot_exporter_apply_edge_labels_recursive(
   statements : Array[@dot.DotStatement],
-  trans_data : @dot.DotTransformationData[@graph.ElkNode, @dot.DotGraphvizModel],
+  trans_data : @transform.DotTransformationData[
+    @graph.ElkNode,
+    @dot.DotGraphvizModel,
+  ],
 ) -> Unit {
   for statement in statements {
     match statement {
@@ -681,43 +725,50 @@ fn layout_dot_exporter_apply_edge_labels_recursive(
 
 ///|
 pub struct LayoutDotExporter {
-  base : @dot.DotExporter
+  base : @transform.DotExporter
 }
 
 ///|
 pub fn new_layout_dot_exporter() -> LayoutDotExporter {
-  { base: @dot.new_dot_exporter() }
+  { base: @transform.new_dot_exporter() }
 }
 
 ///|
 pub fn LayoutDotExporter::transform(
   self : LayoutDotExporter,
-  trans_data : @dot.DotTransformationData[@graph.ElkNode, @dot.DotGraphvizModel],
+  trans_data : @transform.DotTransformationData[
+    @graph.ElkNode,
+    @dot.DotGraphvizModel,
+  ],
 ) -> Unit {
   let source_graph = match trans_data.get_source_graph() {
     Some(graph) => graph
     None => return
   }
-  let command = trans_data.get_command_property(@dot.dot_exporter_command)
+  let command = trans_data.get_command_property(@transform.dot_exporter_command)
   let hierarchy_handling = layout_dot_exporter_node_option_string(
     source_graph, graphviz_core_option_hierarchy_handling,
   ).to_upper()
-  trans_data.set_bool_property(@dot.dot_exporter_use_edge_ids, true)
+  trans_data.set_bool_property(@transform.dot_exporter_use_edge_ids, true)
   trans_data.set_bool_property(
-    @dot.dot_exporter_hierarchy,
+    @transform.dot_exporter_hierarchy,
     hierarchy_handling == "INCLUDE_CHILDREN" &&
     layout_dot_exporter_is_command_dot(command),
   )
   trans_data.set_bool_property(
-    @dot.dot_exporter_transform_node_layout,
+    @transform.dot_exporter_transform_node_layout,
     layout_dot_exporter_node_option_bool(
       source_graph, graphviz_core_option_interactive,
     ),
   )
-  trans_data.set_bool_property(@dot.dot_exporter_transform_edge_layout, false)
-  trans_data.set_bool_property(@dot.dot_exporter_transform_node_labels, false)
   trans_data.set_bool_property(
-    @dot.dot_exporter_adapt_port_positions,
+    @transform.dot_exporter_transform_edge_layout, false,
+  )
+  trans_data.set_bool_property(
+    @transform.dot_exporter_transform_node_labels, false,
+  )
+  trans_data.set_bool_property(
+    @transform.dot_exporter_adapt_port_positions,
     layout_dot_exporter_node_option_bool(
       source_graph, graphviz_option_adapt_port_positions,
     ),

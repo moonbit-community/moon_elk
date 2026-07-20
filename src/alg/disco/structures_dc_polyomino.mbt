@@ -1,6 +1,6 @@
 ///|
 pub struct DCPolyomino {
-  polyomino : @common.Polyomino
+  polyomino : @polyomino.Polyomino
   representee : DCComponent
   p_width : Int
   p_height : Int
@@ -17,7 +17,7 @@ pub fn new_dc_polyomino(
   let dims = component.get_dimensions_of_bounding_rectangle()
   let p_width = compute_low_res_dimension(dims.x, cell_size_x)
   let p_height = compute_low_res_dimension(dims.y, cell_size_y)
-  let polyomino = @common.new_polyomino(p_width, p_height)
+  let polyomino = @polyomino.new_polyomino(p_width, p_height)
   let dc_polyomino = {
     polyomino,
     representee: component,
@@ -91,7 +91,7 @@ pub fn DCPolyomino::get_representee(self : DCPolyomino) -> DCComponent {
 }
 
 ///|
-pub fn DCPolyomino::as_polyomino(self : DCPolyomino) -> @common.Polyomino {
+pub fn DCPolyomino::as_polyomino(self : DCPolyomino) -> @polyomino.Polyomino {
   self.polyomino
 }
 
@@ -132,7 +132,7 @@ pub fn DCPolyomino::get_center_y(self : DCPolyomino) -> Int {
 ///|
 pub fn DCPolyomino::get_polyomino_extensions(
   self : DCPolyomino,
-) -> Array[@common.UniqueTriple[@common.PolyominoDirection, Int, Int]] {
+) -> Array[@common.UniqueTriple[@polyomino.PolyominoDirection, Int, Int]] {
   self.polyomino.get_polyomino_extensions()
 }
 
@@ -202,7 +202,7 @@ fn DCPolyomino::add_extensions_to_poly(
     let yp = (ye / self.cell_size_y).to_int()
 
     let dir = extension.get_direction()
-    let poly_dirs = @common.polyomino_direction_values()
+    let poly_dirs = @polyomino.polyomino_direction_values()
     let poly_dir = match dir {
       DCNorth => poly_dirs[0]
       DCEast => poly_dirs[1]

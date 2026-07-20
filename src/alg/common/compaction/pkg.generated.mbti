@@ -1,0 +1,212 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/moon_elk/alg/common/compaction"
+
+import {
+  "Milky2018/moon_elk/core",
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn cgroup_of() -> CGroupBuilder
+
+pub fn cnode_of() -> CNodeBuilder
+
+pub fn compare_fuzzy_eq(Double, Double) -> Bool
+
+pub fn compare_fuzzy_ge(Double, Double) -> Bool
+
+pub fn compare_fuzzy_gt(Double, Double) -> Bool
+
+pub fn compare_fuzzy_le(Double, Double) -> Bool
+
+pub fn compare_fuzzy_lt(Double, Double) -> Bool
+
+pub let compare_fuzzy_tolerance : Double
+
+pub fn default_spacing_handler() -> ISpacingsHandler
+
+pub fn draw_hitboxes(CGraph, String) -> String
+
+pub fn longest_path_compaction(OneDimensionalCompactor) -> Unit
+
+pub fn new_cgraph(Array[@core.Direction]) -> CGraph
+
+pub fn new_one_dimensional_compactor(CGraph) -> OneDimensionalCompactor
+
+pub fn new_quadruplet() -> Quadruplet
+
+pub fn new_quadruplet_values(Bool, Bool, Bool, Bool) -> Quadruplet
+
+pub fn new_spacings_handler((CNode, CNode) -> Double, (CNode, CNode) -> Double) -> ISpacingsHandler
+
+pub fn one_dimensional_compactor_longest_path_compaction(OneDimensionalCompactor) -> Unit
+
+pub fn one_dimensional_compactor_quadratic_constraints(OneDimensionalCompactor) -> Unit
+
+pub fn one_dimensional_compactor_scanline_constraints(OneDimensionalCompactor) -> Unit
+
+pub fn quadratic_constraint_calculation(OneDimensionalCompactor) -> Unit
+
+pub fn reset_compaction_oned_model_for_test() -> Unit
+
+pub fn scanline_constraint_calculation(OneDimensionalCompactor) -> Unit
+
+pub fn[T] scanline_execute(Array[T], (T, T) -> Int, Array[(T) -> Unit]) -> Unit
+
+pub fn[T] scanline_execute_single(Array[T], (T, T) -> Int, (T) -> Unit) -> Unit
+
+// Errors
+pub suberror CGroupException {
+  CGroupException(String)
+} derive(ToJson, @debug.Debug)
+
+pub(all) suberror OneDimensionalCompactorException {
+  IllegalStateException(String)
+  IllegalArgumentException(String)
+} derive(ToJson, @debug.Debug)
+
+pub suberror ScanlineConstraintCalculatorException {
+  ScanlineConstraintCalculatorException(String)
+} derive(ToJson, @debug.Debug)
+
+// Types and methods
+pub struct CGraph {
+  c_nodes : Array[CNode]
+  c_groups : Array[CGroup]
+  supported_directions : Array[@core.Direction]
+  predefined_horizontal_constraints : Array[(CNode, CNode)]
+  predefined_vertical_constraints : Array[(CNode, CNode)]
+}
+pub fn CGraph::add_predefined_horizontal_constraint(Self, CNode, CNode) -> Unit
+pub fn CGraph::add_predefined_vertical_constraint(Self, CNode, CNode) -> Unit
+pub fn CGraph::groups(Self) -> Array[CGroup]
+pub fn CGraph::nodes(Self) -> Array[CNode]
+pub fn CGraph::supports(Self, @core.Direction) -> Bool
+
+pub struct CGroup {
+  handle : Int
+} derive(Eq)
+pub fn CGroup::add_cnode(Self, CNode) -> Unit
+pub fn CGroup::add_delta(Self, Double) -> Unit
+pub fn CGroup::add_delta_normalized(Self, Double) -> Unit
+pub fn CGroup::add_incoming_constraint(Self, CNode) -> Bool
+pub fn CGroup::c_nodes(Self) -> Array[CNode]
+pub fn CGroup::clear_incoming_constraints(Self) -> Unit
+pub fn CGroup::delta(Self) -> Double
+pub fn CGroup::delta_normalized(Self) -> Double
+pub fn CGroup::id(Self) -> Int
+pub fn CGroup::incoming_constraints(Self) -> Array[CNode]
+pub fn CGroup::master(Self) -> CNode?
+pub fn CGroup::out_degree(Self) -> Int
+pub fn CGroup::out_degree_real(Self) -> Int
+pub fn CGroup::reference(Self) -> CNode?
+pub fn CGroup::remove_cnode(Self, CNode) -> Bool
+pub fn CGroup::set_id(Self, Int) -> Unit
+pub fn CGroup::set_master(Self, CNode) -> Unit
+pub fn CGroup::set_out_degree(Self, Int) -> Unit
+pub fn CGroup::set_out_degree_real(Self, Int) -> Unit
+pub fn CGroup::set_reference(Self, CNode?) -> Unit
+pub fn CGroup::set_start_pos(Self, Double) -> Unit
+pub fn CGroup::start_pos(Self) -> Double
+
+pub struct CGroupBuilder {
+  nodes : Array[CNode]
+  mut reference : CNode?
+  mut master : CNode?
+}
+pub fn CGroupBuilder::create(Self, CGraph) -> CGroup
+pub fn CGroupBuilder::master(Self, CNode) -> Self
+pub fn CGroupBuilder::nodes(Self, Array[CNode]) -> Self
+pub fn CGroupBuilder::reference(Self, CNode) -> Self
+
+pub struct CNode {
+  handle : Int
+} derive(Eq)
+pub fn CNode::add_constraint(Self, Self) -> Unit
+pub fn CNode::c_group_offset(Self) -> @core.KVector
+pub fn CNode::clear_constraints(Self) -> Unit
+pub fn CNode::constraints(Self) -> Array[Self]
+pub fn CNode::get_debug_svg(Self) -> String
+pub fn CNode::group(Self) -> CGroup?
+pub fn CNode::hitbox(Self) -> @core.ElkRectangle
+pub fn CNode::hitbox_pre_compaction(Self) -> @core.ElkRectangle?
+pub fn CNode::id(Self) -> Int
+pub fn CNode::node_type(Self) -> String?
+pub fn CNode::origin(Self) -> String?
+pub fn CNode::replace_constraints(Self, Array[Self]) -> Unit
+pub fn CNode::set_c_group_offset(Self, @core.KVector) -> Unit
+pub fn CNode::set_group(Self, CGroup?) -> Unit
+pub fn CNode::set_hitbox(Self, @core.ElkRectangle) -> Unit
+pub fn CNode::set_hitbox_pre_compaction(Self, @core.ElkRectangle?) -> Unit
+pub fn CNode::set_id(Self, Int) -> Unit
+pub fn CNode::set_node_type(Self, String?) -> Unit
+pub fn CNode::set_origin(Self, String?) -> Unit
+pub fn CNode::set_start_pos(Self, Double) -> Unit
+pub fn CNode::set_to_string_delegate(Self, ((Self) -> String)?) -> Unit
+pub fn CNode::start_pos(Self) -> Double
+pub fn CNode::to_string(Self) -> String
+pub fn CNode::to_string_delegate(Self) -> ((Self) -> String)?
+
+pub struct CNodeBuilder {
+  mut id : Int
+  mut origin : String?
+  mut node_type : String?
+  mut to_string_delegate : ((CNode) -> String)?
+  mut hitbox : @core.ElkRectangle?
+  mut group_parent : CNode?
+}
+pub fn CNodeBuilder::create(Self, CGraph) -> CNode
+pub fn CNodeBuilder::group_with(Self, CNode) -> Self
+pub fn CNodeBuilder::hitbox(Self, @core.ElkRectangle) -> Self
+pub fn CNodeBuilder::id(Self, Int) -> Self
+pub fn CNodeBuilder::node_type(Self, String) -> Self
+pub fn CNodeBuilder::origin(Self, String) -> Self
+pub fn CNodeBuilder::to_string_delegate(Self, (CNode) -> String) -> Self
+
+pub struct ISpacingsHandler {
+  get_horizontal_spacing : (CNode, CNode) -> Double
+  get_vertical_spacing : (CNode, CNode) -> Double
+}
+
+pub struct OneDimensionalCompactor {
+  c_graph : CGraph
+  mut lock_fun : ((CNode, @core.Direction) -> Bool)?
+  mut spacings_handler : ISpacingsHandler
+  mut direction : @core.Direction
+  mut finished : Bool
+  mut compaction_algorithm : (OneDimensionalCompactor) -> Unit
+  mut constraint_algorithm : (OneDimensionalCompactor) -> Unit
+}
+pub fn OneDimensionalCompactor::calculate_group_offsets(Self) -> Self
+pub fn OneDimensionalCompactor::change_direction(Self, @core.Direction) -> Self
+pub fn OneDimensionalCompactor::compact(Self) -> Self
+pub fn OneDimensionalCompactor::finish(Self) -> Self
+pub fn OneDimensionalCompactor::force_constraints_recalculation(Self) -> Self
+pub fn OneDimensionalCompactor::is_locked_group(Self, CGroup, @core.Direction) -> Bool
+pub fn OneDimensionalCompactor::is_locked_node(Self, CNode, @core.Direction) -> Bool
+pub fn OneDimensionalCompactor::set_compaction_algorithm(Self, (Self) -> Unit) -> Self
+pub fn OneDimensionalCompactor::set_constraint_algorithm(Self, (Self) -> Unit) -> Self
+pub fn OneDimensionalCompactor::set_lock_function(Self, ((CNode, @core.Direction) -> Bool)?) -> Self
+pub fn OneDimensionalCompactor::set_spacings_handler(Self, ISpacingsHandler) -> Self
+
+pub struct Quadruplet {
+  mut left : Bool
+  mut right : Bool
+  mut up : Bool
+  mut down : Bool
+}
+pub fn Quadruplet::apply_or(Self, Self) -> Unit
+pub fn Quadruplet::get(Self, @core.Direction) -> Bool
+pub fn Quadruplet::set(Self, Bool, Bool, Bool, Bool) -> Unit
+pub fn Quadruplet::set_direction(Self, Bool, @core.Direction) -> Unit
+
+// Type aliases
+pub type ICompactionAlgorithm = (OneDimensionalCompactor) -> Unit
+
+pub type IConstraintCalculationAlgorithm = (OneDimensionalCompactor) -> Unit
+
+pub type ILockFunction = (CNode, @core.Direction) -> Bool
+
+pub type ScanlineEventHandler[T] = (T) -> Unit
+
+// Traits

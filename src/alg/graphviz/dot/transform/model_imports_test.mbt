@@ -1,0 +1,22 @@
+///|
+using @dot {
+  type DotAttribute,
+  type DotEdgeStatement,
+  type DotGraphvizModel,
+  type DotNodeStatement,
+  type DotStatement,
+  dot_attribute_type_graph,
+  dot_attribute_type_to_string,
+  dot_create_attribute_statement,
+  dot_create_edge_statement,
+  dot_create_edge_target,
+  dot_create_graph,
+  dot_create_graphviz_model,
+  dot_create_node,
+  dot_create_node_statement,
+  dot_graph_type_digraph,
+  dot_graph_type_to_string,
+  dot_statement_attribute_statement,
+  dot_statement_edge_statement,
+  dot_statement_node_statement,
+}

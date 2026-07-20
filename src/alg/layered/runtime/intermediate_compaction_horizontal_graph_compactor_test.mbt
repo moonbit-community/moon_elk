@@ -1,6 +1,6 @@
 ///|
-fn horizontal_compactor_test_graph() -> @common.CGraph {
-  @common.new_cgraph(@core.direction_values())
+fn horizontal_compactor_test_graph() -> @compaction.CGraph {
+  @compaction.new_cgraph(@core.direction_values())
 }
 
 ///|
@@ -12,7 +12,7 @@ test "horizontal compactor origin lookup resolves lnode and vertical segment" {
   let l_node = new_l_node()
   l_node.set_id(7)
   let l_node_origin = horizontal_graph_compactor_lnode_origin_key(l_node)
-  let c_lnode = @common.cnode_of()
+  let c_lnode = @compaction.cnode_of()
     .origin(l_node_origin)
     .hitbox(@core.new_elk_rectangle_xywh(0.0, 0.0, 10.0, 10.0))
     .create(c_graph)
@@ -29,7 +29,7 @@ test "horizontal compactor origin lookup resolves lnode and vertical segment" {
   let segment_origin = horizontal_graph_compactor_vertical_segment_origin_key(
     segment,
   )
-  let c_segment = @common.cnode_of()
+  let c_segment = @compaction.cnode_of()
     .origin(segment_origin)
     .hitbox(@core.new_elk_rectangle_copy(segment.hitbox))
     .create(c_graph)
@@ -69,11 +69,11 @@ test "horizontal compactor detects vertical segments of same edge" {
     edge,
   )
 
-  let c_segment1 = @common.cnode_of()
+  let c_segment1 = @compaction.cnode_of()
     .origin(horizontal_graph_compactor_vertical_segment_origin_key(segment1))
     .hitbox(@core.new_elk_rectangle_copy(segment1.hitbox))
     .create(c_graph)
-  let c_segment2 = @common.cnode_of()
+  let c_segment2 = @compaction.cnode_of()
     .origin(horizontal_graph_compactor_vertical_segment_origin_key(segment2))
     .hitbox(@core.new_elk_rectangle_copy(segment2.hitbox))
     .create(c_graph)

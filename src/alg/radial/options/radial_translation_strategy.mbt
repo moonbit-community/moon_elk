@@ -1,0 +1,7 @@
+///|
+pub(all) enum RadialTranslationStrategy {
+  NONE
+  EDGE_LENGTH
+  EDGE_LENGTH_BY_POSITION
+  CROSSING_MINIMIZATION_BY_POSITION
+}
