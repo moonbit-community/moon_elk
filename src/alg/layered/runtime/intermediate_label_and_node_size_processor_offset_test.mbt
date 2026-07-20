@@ -31,9 +31,9 @@ fn label_and_node_size_offset_test_node_type(name : String) -> NodeType {
 ///|
 fn label_and_node_size_offset_test_graph_property(
   name : String,
-) -> GraphProperties {
-  for property in graph_properties_values() {
-    if graph_properties_to_string(property) == name {
+) -> @options.GraphProperties {
+  for property in @options.graph_properties_values() {
+    if @options.graph_properties_to_string(property) == name {
       return property
     }
   }

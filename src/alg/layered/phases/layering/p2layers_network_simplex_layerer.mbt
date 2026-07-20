@@ -24,34 +24,34 @@ fn network_simplex_layerer_exception_message(
 
 ///|
 fn network_simplex_layerer_layer_constraint_preprocessor_factory() -> @core.ILayoutProcessorFactory[
-  @layered.LayeredPhases,
-  @layered.LGraph,
+  @runtime.LayeredPhases,
+  @runtime.LGraph,
 ] {
   @core.new_layout_processor_factory(23007, 7, () => {
-    @layered.new_layer_constraint_preprocessor_layout_processor()
+    @runtime.new_layer_constraint_preprocessor_layout_processor()
   })
 }
 
 ///|
 fn network_simplex_layerer_layer_constraint_postprocessor_factory() -> @core.ILayoutProcessorFactory[
-  @layered.LayeredPhases,
-  @layered.LGraph,
+  @runtime.LayeredPhases,
+  @runtime.LGraph,
 ] {
   @core.new_layout_processor_factory(23011, 11, () => {
-    @layered.new_layer_constraint_postprocessor_layout_processor()
+    @runtime.new_layer_constraint_postprocessor_layout_processor()
   })
 }
 
 ///|
 let network_simplex_layerer_baseline_processing_configuration : @core.LayoutProcessorConfiguration[
-  @layered.LayeredPhases,
-  @layered.LGraph,
+  @runtime.LayeredPhases,
+  @runtime.LGraph,
 ] = @core.layout_processor_configuration_create(
-    @layered.layered_phase_descriptor,
+    @runtime.layered_phase_descriptor,
   )
   .add_before(
     P1CycleBreaking,
-    @layered.layered_intermediate_processor_factory(
+    @runtime.layered_intermediate_processor_factory(
       EdgeAndLayerConstraintEdgeReverser,
     ),
   )
@@ -66,8 +66,8 @@ let network_simplex_layerer_baseline_processing_configuration : @core.LayoutProc
 
 ///|
 fn network_simplex_layerer_require_port_node(
-  port : @layered.LPort,
-) -> @layered.LNode raise NetworkSimplexLayererException {
+  port : @runtime.LPort,
+) -> @runtime.LNode raise NetworkSimplexLayererException {
   match port.get_node() {
     Some(value) => value
     None => network_simplex_layerer_raise("port has no owner node")
@@ -76,8 +76,8 @@ fn network_simplex_layerer_require_port_node(
 
 ///|
 fn network_simplex_layerer_require_edge_source_port(
-  edge : @layered.LEdge,
-) -> @layered.LPort raise NetworkSimplexLayererException {
+  edge : @runtime.LEdge,
+) -> @runtime.LPort raise NetworkSimplexLayererException {
   match edge.get_source() {
     Some(value) => value
     None => network_simplex_layerer_raise("edge has no source port")
@@ -86,8 +86,8 @@ fn network_simplex_layerer_require_edge_source_port(
 
 ///|
 fn network_simplex_layerer_require_edge_target_port(
-  edge : @layered.LEdge,
-) -> @layered.LPort raise NetworkSimplexLayererException {
+  edge : @runtime.LEdge,
+) -> @runtime.LPort raise NetworkSimplexLayererException {
   match edge.get_target() {
     Some(value) => value
     None => network_simplex_layerer_raise("edge has no target port")
@@ -96,16 +96,16 @@ fn network_simplex_layerer_require_edge_target_port(
 
 ///|
 fn network_simplex_layerer_get_opposite(
-  port : @layered.LPort,
-  edge : @layered.LEdge,
-) -> @layered.LPort raise NetworkSimplexLayererException {
+  port : @runtime.LPort,
+  edge : @runtime.LEdge,
+) -> @runtime.LPort raise NetworkSimplexLayererException {
   let source = network_simplex_layerer_require_edge_source_port(edge)
   let target = network_simplex_layerer_require_edge_target_port(edge)
-  if @layered.lport_internal_handle(source) ==
-    @layered.lport_internal_handle(port) {
+  if @runtime.lport_internal_handle(source) ==
+    @runtime.lport_internal_handle(port) {
     target
-  } else if @layered.lport_internal_handle(target) ==
-    @layered.lport_internal_handle(port) {
+  } else if @runtime.lport_internal_handle(target) ==
+    @runtime.lport_internal_handle(port) {
     source
   } else {
     network_simplex_layerer_raise(
@@ -127,9 +127,9 @@ fn network_simplex_layerer_create_edge(
 
 ///|
 fn network_simplex_layerer_connected_components_dfs(
-  node : @layered.LNode,
+  node : @runtime.LNode,
   node_visited : Array[Bool],
-  component_nodes : Array[@layered.LNode],
+  component_nodes : Array[@runtime.LNode],
 ) -> Unit raise NetworkSimplexLayererException {
   node_visited[node.get_id()] = true
   component_nodes.push(node)
@@ -149,10 +149,10 @@ fn network_simplex_layerer_connected_components_dfs(
 
 ///|
 fn network_simplex_layerer_connected_components(
-  the_nodes : Array[@layered.LNode],
-) -> Array[Array[@layered.LNode]] raise NetworkSimplexLayererException {
+  the_nodes : Array[@runtime.LNode],
+) -> Array[Array[@runtime.LNode]] raise NetworkSimplexLayererException {
   let node_visited = Array::make(the_nodes.length(), false)
-  let components : Array[Array[@layered.LNode]] = []
+  let components : Array[Array[@runtime.LNode]] = []
 
   let mut counter = 0
   for node in the_nodes {
@@ -182,16 +182,16 @@ fn network_simplex_layerer_connected_components(
 ///|
 priv struct NetworkSimplexLayererInitResult {
   graph : @common.NGraph
-  node_map : Map[Int, @layered.LNode]
+  node_map : Map[Int, @runtime.LNode]
 }
 
 ///|
 fn network_simplex_layerer_initialize(
-  the_nodes : Array[@layered.LNode],
+  the_nodes : Array[@runtime.LNode],
 ) -> NetworkSimplexLayererInitResult raise NetworkSimplexLayererException {
   let graph = @common.new_ngraph()
   let lnode_to_nnode : Map[Int, @common.NNode] = Map([])
-  let node_map : Map[Int, @layered.LNode] = Map([])
+  let node_map : Map[Int, @runtime.LNode] = Map([])
 
   for lnode in the_nodes {
     let nnode = @common.nnode_of()
@@ -246,15 +246,15 @@ fn network_simplex_layerer_initialize(
 
 ///|
 fn network_simplex_layerer_configuration(
-  graph : @layered.LGraph,
-) -> @core.LayoutProcessorConfiguration[@layered.LayeredPhases, @layered.LGraph]? {
+  graph : @runtime.LGraph,
+) -> @core.LayoutProcessorConfiguration[@runtime.LayeredPhases, @runtime.LGraph]? {
   ignore(graph)
   Some(network_simplex_layerer_baseline_processing_configuration)
 }
 
 ///|
 fn network_simplex_layerer_process(
-  the_layered_graph : @layered.LGraph,
+  the_layered_graph : @runtime.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
 ) -> Unit {
   let monitor = match progress_monitor {
@@ -321,7 +321,7 @@ fn network_simplex_layerer_process(
     for nnode in graph.nodes {
       let layer_index = nnode.get_layer()
       while layers.length() <= layer_index {
-        layers.push(@layered.new_layer(the_layered_graph))
+        layers.push(@runtime.new_layer(the_layered_graph))
       }
 
       let lnode = match initialized.node_map.get(nnode.get_id()) {
@@ -352,8 +352,8 @@ fn network_simplex_layerer_process(
 
 ///|
 pub fn new_network_simplex_layerer_layout_phase() -> @core.ILayoutProcessor[
-  @layered.LayeredPhases,
-  @layered.LGraph,
+  @runtime.LayeredPhases,
+  @runtime.LGraph,
 ] {
   @core.new_layout_phase(
     network_simplex_layerer_process, network_simplex_layerer_configuration,

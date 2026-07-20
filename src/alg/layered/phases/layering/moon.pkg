@@ -5,7 +5,7 @@ import {
   "Milky2018/moon_elk/graph",
   "Milky2018/moon_elk/alg/common",
   "Milky2018/moon_elk/alg/layered/options",
-  "Milky2018/moon_elk/alg/layered/runtime" @layered,
+  "Milky2018/moon_elk/alg/layered/runtime",
 }
 
 import {

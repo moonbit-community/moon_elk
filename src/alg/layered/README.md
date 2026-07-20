@@ -1,8 +1,8 @@
 # Layered package structure
 
-The top-level `layered` package is a compatibility facade. It keeps the public
-algorithm identifier, option vocabulary, and layout-provider constructor at
-their established import path, but it does not own their implementations.
+`alg/layered` is a namespace directory, not a MoonBit package. Callers import
+the package that owns the capability they use; there is deliberately no
+compatibility facade at `Milky2018/moon_elk/alg/layered`.
 
 The implementation is split by dependency direction:
 
@@ -13,8 +13,8 @@ The implementation is split by dependency direction:
   intermediate-processing kernel.
 - `pipeline` owns ELK graph import and layout transfer, graph configuration,
   component and compound orchestration, and the public layout provider.
-- `engine` is the composition root. Importing it links concrete phase and
-  processor packages and runs their registration initializers.
+- `engine` links concrete phase and processor packages and runs their
+  registration initializers.
 - `phases/cycle`, `phases/layering`, and `phases/placement` own the concrete
   implementations for the first, second, and fourth layered phases.
 - `processors/comments` and `processors/partition` own the extracted
@@ -26,14 +26,20 @@ The implementation is split by dependency direction:
 The production dependency graph is intentionally acyclic:
 
 ```text
-layered facade ──> pipeline ──> runtime ──> options
-       │              │
-       └──> engine ───┴──> concrete phases/processors ──> runtime
+application ──> options
+     ├───────> pipeline ──> runtime ──> options
+     └───────> engine ──> concrete phases/processors ──> runtime
 ```
 
+Applications that execute layered layout import both `pipeline` and `engine`:
+the former installs the layout-provider adapter and the latter installs the
+concrete phase factories. Code that only declares layered options imports
+`options`; code that directly manipulates the internal layered graph imports
+`runtime`.
+
 Concrete packages register factories through the runtime composition seam.
-The runtime package must never import `pipeline`, `engine`, the top-level
-facade, or a concrete implementation package in production code.
+The runtime package must never import `pipeline`, `engine`, or a concrete
+implementation package in production code.
 
 ## Why ordering, routing, and spacing remain in runtime
 

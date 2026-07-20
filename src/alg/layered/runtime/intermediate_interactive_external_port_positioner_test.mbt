@@ -13,9 +13,9 @@ fn interactive_external_port_positioner_test_strategy(
 ///|
 fn interactive_external_port_positioner_test_graph_property(
   name : String,
-) -> GraphProperties {
-  for property in graph_properties_values() {
-    if graph_properties_to_string(property) == name {
+) -> @options.GraphProperties {
+  for property in @options.graph_properties_values() {
+    if @options.graph_properties_to_string(property) == name {
       return property
     }
   }

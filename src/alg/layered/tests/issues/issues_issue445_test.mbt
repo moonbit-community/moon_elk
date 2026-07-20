@@ -20,7 +20,7 @@ test "Issue445 feedback edge tail labels are not left at origin" {
   let edge = @graph.create_edge(None)
   @graph.edge_add_source(edge, @graph.make_node_shape(n1))
   @graph.edge_add_target(edge, @graph.make_node_shape(n2))
-  @layered.layered_test_update_containment(Some(edge))
+  @runtime.layered_test_update_containment(Some(edge))
 
   let tail_label = @graph.create_label(
     Some(@graph.make_edge_label_parent(edge)),

@@ -1,5 +1,5 @@
 ///|
-using @layered {
+using @runtime {
   type LEdge,
   type LGraph,
   type LNode,

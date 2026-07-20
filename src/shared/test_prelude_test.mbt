@@ -113,7 +113,7 @@ let interactive = @core.interactive
 let no_layout = @core.no_layout
 
 ///|
-let _layered_algorithm_id = @layered.layered_algorithm_id
+let _layered_algorithm_id = @options.layered_algorithm_id
 
 ///|
 let radial_radius = @radial.radial_radius

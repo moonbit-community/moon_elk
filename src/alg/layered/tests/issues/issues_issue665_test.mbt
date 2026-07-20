@@ -17,7 +17,7 @@ test "Issue665 nested graph imports and layouts without unsupported graph errors
   let edge = @graph.create_edge(None)
   @graph.edge_add_source(edge, @graph.make_node_shape(child))
   @graph.edge_add_target(edge, @graph.make_node_shape(sibling))
-  @layered.layered_test_update_containment(Some(edge))
+  @runtime.layered_test_update_containment(Some(edge))
 
   let resolver = @core.new_layout_algorithm_resolver()
   @core.apply_visitors(graph, [resolver.to_visitor()])

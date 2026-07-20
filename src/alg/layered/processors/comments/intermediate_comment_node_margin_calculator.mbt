@@ -9,35 +9,35 @@ fn comment_node_margin_calculator_max(a : Double, b : Double) -> Double {
 
 ///|
 fn comment_node_margin_calculator_process_comments(
-  node : @layered.LNode,
+  node : @runtime.LNode,
 ) -> Unit {
   let margin = node.get_margin()
 
   let has_top = node.has_property_l_node_array(
-    @layered.internal_properties_top_comments,
+    @runtime.internal_properties_top_comments,
   )
   let has_bottom = node.has_property_l_node_array(
-    @layered.internal_properties_bottom_comments,
+    @runtime.internal_properties_bottom_comments,
   )
   if !has_top && !has_bottom {
     return
   }
 
   let top_boxes = if has_top {
-    node.get_property_l_node_array(@layered.internal_properties_top_comments)
+    node.get_property_l_node_array(@runtime.internal_properties_top_comments)
   } else {
     []
   }
   let bottom_boxes = if has_bottom {
-    node.get_property_l_node_array(@layered.internal_properties_bottom_comments)
+    node.get_property_l_node_array(@runtime.internal_properties_bottom_comments)
   } else {
     []
   }
 
-  let comment_comment_spacing = @layered.layered_spacings_get_individual_or_default(
+  let comment_comment_spacing = @runtime.layered_spacings_get_individual_or_default(
     node, @options.layered_options_spacing_comment_comment,
   )
-  let comment_node_spacing = @layered.layered_spacings_get_individual_or_default(
+  let comment_node_spacing = @runtime.layered_spacings_get_individual_or_default(
     node, @options.layered_options_spacing_comment_node,
   )
 
@@ -83,7 +83,7 @@ fn comment_node_margin_calculator_process_comments(
 
 ///|
 fn comment_node_margin_calculator_process(
-  layered_graph : @layered.LGraph,
+  layered_graph : @runtime.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
 ) -> Unit {
   let monitor = match progress_monitor {
@@ -103,8 +103,8 @@ fn comment_node_margin_calculator_process(
 
 ///|
 pub fn new_comment_node_margin_calculator_layout_processor() -> @core.ILayoutProcessor[
-  @layered.LayeredPhases,
-  @layered.LGraph,
+  @runtime.LayeredPhases,
+  @runtime.LGraph,
 ] {
   @core.new_layout_processor(comment_node_margin_calculator_process)
 }

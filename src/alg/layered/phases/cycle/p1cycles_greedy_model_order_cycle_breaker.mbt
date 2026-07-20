@@ -1,24 +1,24 @@
 ///|
 fn greedy_model_order_cycle_breaker_choose_node_with_max_outflow(
-  nodes : Array[@layered.LNode],
-  graph : @layered.LGraph,
-  random : @layered.MockRandom,
-) -> @layered.LNode {
-  let mut return_node : @layered.LNode? = None
+  nodes : Array[@runtime.LNode],
+  graph : @runtime.LGraph,
+  random : @runtime.MockRandom,
+) -> @runtime.LNode {
+  let mut return_node : @runtime.LNode? = None
   let mut minimum_model_order = @int.MAX_VALUE
   let offset = if graph.get_layerless_nodes().length() >
-    graph.get_property_int(@layered.internal_properties_max_model_order_nodes) {
+    graph.get_property_int(@runtime.internal_properties_max_model_order_nodes) {
     graph.get_layerless_nodes().length()
   } else {
-    graph.get_property_int(@layered.internal_properties_max_model_order_nodes)
+    graph.get_property_int(@runtime.internal_properties_max_model_order_nodes)
   }
   let big_offset = offset *
     graph.get_property_int(
-      @layered.internal_properties_cb_num_model_order_groups,
+      @runtime.internal_properties_cb_num_model_order_groups,
     )
   let mo_calculator = new_group_model_order_calculator()
-  let enforce_group_model_order = @layered.group_order_strategy_equals(
-    @layered.group_order_strategy_from_string(
+  let enforce_group_model_order = @options.group_order_strategy_equals(
+    @options.group_order_strategy_from_string(
       graph.get_property_string(
         @options.layered_options_consider_model_order_group_model_order_cb_group_order_strategy,
       ),
@@ -27,7 +27,7 @@ fn greedy_model_order_cycle_breaker_choose_node_with_max_outflow(
   )
 
   for node in nodes {
-    if node.has_property_int(@layered.internal_properties_model_order) {
+    if node.has_property_int(@runtime.internal_properties_model_order) {
       let model_order = if enforce_group_model_order {
         mo_calculator.compute_constraint_group_model_order(
           node, big_offset, offset,
@@ -53,7 +53,7 @@ fn greedy_model_order_cycle_breaker_choose_node_with_max_outflow(
 
 ///|
 fn greedy_model_order_cycle_breaker_process(
-  layered_graph : @layered.LGraph,
+  layered_graph : @runtime.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
 ) -> Unit {
   greedy_cycle_breaker_process_with_chooser(
@@ -63,8 +63,8 @@ fn greedy_model_order_cycle_breaker_process(
 
 ///|
 pub fn new_greedy_model_order_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[
-  @layered.LayeredPhases,
-  @layered.LGraph,
+  @runtime.LayeredPhases,
+  @runtime.LGraph,
 ] {
   @core.new_layout_phase(
     greedy_model_order_cycle_breaker_process, greedy_cycle_breaker_configuration,

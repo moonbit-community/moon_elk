@@ -19,13 +19,13 @@ fn switch_decider_bb_port_side_west() -> @core.PortSide {
 }
 
 ///|
-fn switch_decider_bb_greedy_one_sided() -> GreedySwitchType {
-  greedy_switch_type_values()[0]
+fn switch_decider_bb_greedy_one_sided() -> @options.GreedySwitchType {
+  @options.greedy_switch_type_values()[0]
 }
 
 ///|
-fn switch_decider_bb_greedy_two_sided() -> GreedySwitchType {
-  greedy_switch_type_values()[1]
+fn switch_decider_bb_greedy_two_sided() -> @options.GreedySwitchType {
+  @options.greedy_switch_type_values()[1]
 }
 
 ///|
@@ -83,12 +83,14 @@ fn switch_decider_bb_port_count(node_order : Array[Array[LNode]]) -> Int {
 }
 
 ///|
-fn switch_decider_bb_cross_types() -> Array[GreedySwitchType] {
+fn switch_decider_bb_cross_types() -> Array[@options.GreedySwitchType] {
   [switch_decider_bb_greedy_one_sided(), switch_decider_bb_greedy_two_sided()]
 }
 
 ///|
-fn switch_decider_bb_is_one_sided(switch_type : GreedySwitchType) -> Bool {
+fn switch_decider_bb_is_one_sided(
+  switch_type : @options.GreedySwitchType,
+) -> Bool {
   match switch_type {
     OneSided => true
     _ => false
@@ -107,7 +109,7 @@ fn switch_decider_bb_current_order(graph : LGraph) -> Array[Array[LNode]] {
 ///|
 fn switch_decider_bb_new_decider_for_layer(
   graph : LGraph,
-  switch_type : GreedySwitchType,
+  switch_type : @options.GreedySwitchType,
   free_layer_index : Int,
   side : CrossingCountSide,
 ) -> (SwitchDecider, Array[Array[LNode]]) {

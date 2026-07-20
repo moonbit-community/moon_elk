@@ -1,16 +1,16 @@
 ///|
 fn bk_compactor_same_node(
-  left : @layered.LNode,
-  right : @layered.LNode,
+  left : @runtime.LNode,
+  right : @runtime.LNode,
 ) -> Bool {
   left.get_handle() == right.get_handle()
 }
 
 ///|
 fn bk_compactor_reverse_layers(
-  layers : Array[@layered.Layer],
-) -> Array[@layered.Layer] {
-  let reversed : Array[@layered.Layer] = []
+  layers : Array[@runtime.Layer],
+) -> Array[@runtime.Layer] {
+  let reversed : Array[@runtime.Layer] = []
   for i = layers.length() - 1; i >= 0; i = i - 1 {
     reversed.push(layers[i])
   }
@@ -19,9 +19,9 @@ fn bk_compactor_reverse_layers(
 
 ///|
 fn bk_compactor_reverse_nodes(
-  nodes : Array[@layered.LNode],
-) -> Array[@layered.LNode] {
-  let reversed : Array[@layered.LNode] = []
+  nodes : Array[@runtime.LNode],
+) -> Array[@runtime.LNode] {
+  let reversed : Array[@runtime.LNode] = []
   for i = nodes.length() - 1; i >= 0; i = i - 1 {
     reversed.push(nodes[i])
   }
@@ -31,8 +31,8 @@ fn bk_compactor_reverse_nodes(
 ///|
 fn bk_compactor_vertical_spacing(
   compactor : BKCompactor,
-  first : @layered.LNode,
-  second : @layered.LNode,
+  first : @runtime.LNode,
+  second : @runtime.LNode,
 ) -> Double raise BKAlignedLayoutException {
   compactor.spacings.get_vertical_spacing(first, second) catch {
     LayeredSpacingsException(message) =>
@@ -42,11 +42,11 @@ fn bk_compactor_vertical_spacing(
 
 ///|
 pub struct BKCompactor {
-  layered_graph : @layered.LGraph
+  layered_graph : @runtime.LGraph
   thresh_strategy : BkThresholdStrategy
   ni : NeighborhoodInformation
-  spacings : @layered.Spacings
-  class_nodes : Map[Int, @layered.LNode]
+  spacings : @runtime.Spacings
+  class_nodes : Map[Int, @runtime.LNode]
   class_outgoing : Map[Int, Array[(Int, Double)]]
   class_indegree : Map[Int, Int]
   class_shift : Map[Int, Double]
@@ -54,7 +54,7 @@ pub struct BKCompactor {
 
 ///|
 pub fn new_bk_compactor(
-  layered_graph : @layered.LGraph,
+  layered_graph : @runtime.LGraph,
   ni : NeighborhoodInformation,
 ) -> BKCompactor {
   let edge_straightening = layered_graph.get_property_string(
@@ -71,7 +71,7 @@ pub fn new_bk_compactor(
     layered_graph,
     thresh_strategy,
     ni,
-    spacings: @layered.new_layered_spacings(layered_graph),
+    spacings: @runtime.new_layered_spacings(layered_graph),
     class_nodes: Map([]),
     class_outgoing: Map([]),
     class_indegree: Map([]),
@@ -82,7 +82,7 @@ pub fn new_bk_compactor(
 ///|
 fn BKCompactor::ensure_class_node(
   self : BKCompactor,
-  sink_node : @layered.LNode,
+  sink_node : @runtime.LNode,
 ) -> Int {
   let handle = sink_node.get_handle()
   if !self.class_nodes.contains(handle) {
@@ -96,8 +96,8 @@ fn BKCompactor::ensure_class_node(
 ///|
 fn BKCompactor::add_class_edge(
   self : BKCompactor,
-  source_sink : @layered.LNode,
-  target_sink : @layered.LNode,
+  source_sink : @runtime.LNode,
+  target_sink : @runtime.LNode,
   separation : Double,
 ) -> Unit {
   let source_handle = self.ensure_class_node(source_sink)
@@ -198,7 +198,7 @@ fn BKCompactor::place_classes(
 ///|
 fn BKCompactor::place_block(
   self : BKCompactor,
-  root : @layered.LNode,
+  root : @runtime.LNode,
   bal : BKAlignedLayout,
 ) -> Unit raise BKAlignedLayoutException {
   if bal.y[root.get_id()] is Some(_) {

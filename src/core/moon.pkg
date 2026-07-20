@@ -13,6 +13,6 @@ import {
 }
 
 import {
-  "Milky2018/moon_elk/alg/layered/runtime" @layered,
+  "Milky2018/moon_elk/alg/layered/runtime",
   "Milky2018/moon_elk/graph/json" @elk_graph_json,
 } for "test"

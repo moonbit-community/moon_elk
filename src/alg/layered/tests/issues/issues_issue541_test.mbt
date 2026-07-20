@@ -18,12 +18,12 @@ test "Issue541 end-label sorting path does not throw" {
   let edge1 = @graph.create_edge(None)
   @graph.edge_add_source(edge1, @graph.make_node_shape(left))
   @graph.edge_add_target(edge1, @graph.make_port_shape(shared_target_port))
-  @layered.layered_test_update_containment(Some(edge1))
+  @runtime.layered_test_update_containment(Some(edge1))
 
   let edge2 = @graph.create_edge(None)
   @graph.edge_add_source(edge2, @graph.make_node_shape(right))
   @graph.edge_add_target(edge2, @graph.make_port_shape(shared_target_port))
-  @layered.layered_test_update_containment(Some(edge2))
+  @runtime.layered_test_update_containment(Some(edge2))
 
   let resolver = @core.new_layout_algorithm_resolver()
   @core.apply_visitors(graph, [resolver.to_visitor()])

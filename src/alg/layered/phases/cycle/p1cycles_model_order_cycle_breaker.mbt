@@ -12,8 +12,8 @@ fn[T] model_order_cycle_breaker_raise_unsupported_graph(
 
 ///|
 fn model_order_cycle_breaker_require_target_node(
-  edge : @layered.LEdge,
-) -> @layered.LNode raise ModelOrderCycleBreakerException {
+  edge : @runtime.LEdge,
+) -> @runtime.LNode raise ModelOrderCycleBreakerException {
   let target = match edge.get_target() {
     Some(value) => value
     None =>
@@ -32,30 +32,30 @@ fn model_order_cycle_breaker_require_target_node(
 
 ///|
 fn model_order_cycle_breaker_reverse_edge(
-  edge : @layered.LEdge,
-  graph : @layered.LGraph,
+  edge : @runtime.LEdge,
+  graph : @runtime.LGraph,
 ) -> Unit {
   edge.reverse(graph, true)
 }
 
 ///|
 fn model_order_cycle_breaker_configuration(
-  graph : @layered.LGraph,
-) -> @core.LayoutProcessorConfiguration[@layered.LayeredPhases, @layered.LGraph]? {
+  graph : @runtime.LGraph,
+) -> @core.LayoutProcessorConfiguration[@runtime.LayeredPhases, @runtime.LGraph]? {
   ignore(graph)
   Some(
     @core.layout_processor_configuration_create(
-      @layered.layered_phase_descriptor,
+      @runtime.layered_phase_descriptor,
     ).add_after(
       P5EdgeRouting,
-      @layered.layered_intermediate_processor_factory(ReversedEdgeRestorer),
+      @runtime.layered_intermediate_processor_factory(ReversedEdgeRestorer),
     ),
   )
 }
 
 ///|
 fn model_order_cycle_breaker_process(
-  layered_graph : @layered.LGraph,
+  layered_graph : @runtime.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
 ) -> Unit {
   let monitor = match progress_monitor {
@@ -68,20 +68,20 @@ fn model_order_cycle_breaker_process(
     let rev_edges = []
     let offset = if layered_graph.get_layerless_nodes().length() >
       layered_graph.get_property_int(
-        @layered.internal_properties_max_model_order_nodes,
+        @runtime.internal_properties_max_model_order_nodes,
       ) {
       layered_graph.get_layerless_nodes().length()
     } else {
       layered_graph.get_property_int(
-        @layered.internal_properties_max_model_order_nodes,
+        @runtime.internal_properties_max_model_order_nodes,
       )
     }
     let big_offset = offset *
       layered_graph.get_property_int(
-        @layered.internal_properties_cb_num_model_order_groups,
+        @runtime.internal_properties_cb_num_model_order_groups,
       )
-    let enforce_group_model_order = @layered.group_order_strategy_equals(
-      @layered.group_order_strategy_from_string(
+    let enforce_group_model_order = @options.group_order_strategy_equals(
+      @options.group_order_strategy_from_string(
         layered_graph.get_property_string(
           @options.layered_options_consider_model_order_group_model_order_cb_group_order_strategy,
         ),
@@ -118,7 +118,7 @@ fn model_order_cycle_breaker_process(
 
     for edge in rev_edges {
       model_order_cycle_breaker_reverse_edge(edge, layered_graph)
-      layered_graph.set_property_bool(@layered.internal_properties_cyclic, true)
+      layered_graph.set_property_bool(@runtime.internal_properties_cyclic, true)
     }
     rev_edges.clear()
   } catch {
@@ -135,8 +135,8 @@ fn model_order_cycle_breaker_process(
 
 ///|
 pub fn new_model_order_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[
-  @layered.LayeredPhases,
-  @layered.LGraph,
+  @runtime.LayeredPhases,
+  @runtime.LGraph,
 ] {
   @core.new_layout_phase(
     model_order_cycle_breaker_process, model_order_cycle_breaker_configuration,

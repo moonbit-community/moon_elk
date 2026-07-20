@@ -31,27 +31,27 @@ fn p2_basic_layer_assignment_test_build_dag() -> Array[@graph.ElkNode] {
   let e0 = @graph.create_edge(None)
   @graph.edge_add_source(e0, @graph.make_node_shape(n0))
   @graph.edge_add_target(e0, @graph.make_node_shape(n2))
-  @layered.layered_test_update_containment(Some(e0))
+  @runtime.layered_test_update_containment(Some(e0))
 
   let e1 = @graph.create_edge(None)
   @graph.edge_add_source(e1, @graph.make_node_shape(n1))
   @graph.edge_add_target(e1, @graph.make_node_shape(n2))
-  @layered.layered_test_update_containment(Some(e1))
+  @runtime.layered_test_update_containment(Some(e1))
 
   let e2 = @graph.create_edge(None)
   @graph.edge_add_source(e2, @graph.make_node_shape(n2))
   @graph.edge_add_target(e2, @graph.make_node_shape(n3))
-  @layered.layered_test_update_containment(Some(e2))
+  @runtime.layered_test_update_containment(Some(e2))
 
   let e3 = @graph.create_edge(None)
   @graph.edge_add_source(e3, @graph.make_node_shape(n2))
   @graph.edge_add_target(e3, @graph.make_node_shape(n4))
-  @layered.layered_test_update_containment(Some(e3))
+  @runtime.layered_test_update_containment(Some(e3))
 
   let e4 = @graph.create_edge(None)
   @graph.edge_add_source(e4, @graph.make_node_shape(n1))
   @graph.edge_add_target(e4, @graph.make_node_shape(n4))
-  @layered.layered_test_update_containment(Some(e4))
+  @runtime.layered_test_update_containment(Some(e4))
 
   [graph, n0, n1, n2, n3, n4]
 }

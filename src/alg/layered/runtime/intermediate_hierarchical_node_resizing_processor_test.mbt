@@ -1,7 +1,7 @@
 ///|
 fn hierarchical_node_resizing_test_graph_property_equals(
-  left : GraphProperties,
-  right : GraphProperties,
+  left : @options.GraphProperties,
+  right : @options.GraphProperties,
 ) -> Bool {
   match (left, right) {
     (Comments, Comments) => true
@@ -20,8 +20,8 @@ fn hierarchical_node_resizing_test_graph_property_equals(
 
 ///|
 fn hierarchical_node_resizing_test_graph_properties_contain(
-  values : Array[GraphProperties],
-  value : GraphProperties,
+  values : Array[@options.GraphProperties],
+  value : @options.GraphProperties,
 ) -> Bool {
   for property in values {
     if hierarchical_node_resizing_test_graph_property_equals(property, value) {
@@ -34,9 +34,9 @@ fn hierarchical_node_resizing_test_graph_properties_contain(
 ///|
 fn hierarchical_node_resizing_test_graph_property(
   name : String,
-) -> GraphProperties {
-  for value in graph_properties_values() {
-    if graph_properties_to_string(value) == name {
+) -> @options.GraphProperties {
+  for value in @options.graph_properties_values() {
+    if @options.graph_properties_to_string(value) == name {
       return value
     }
   }

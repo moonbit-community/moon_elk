@@ -19,13 +19,13 @@ fn barycenter_test_minimize_crossings(
 }
 
 ///|
-fn barycenter_test_port_type_input() -> PortType {
-  port_type_values()[1]
+fn barycenter_test_port_type_input() -> @options.PortType {
+  @options.port_type_values()[1]
 }
 
 ///|
-fn barycenter_test_port_type_output() -> PortType {
-  port_type_values()[2]
+fn barycenter_test_port_type_output() -> @options.PortType {
+  @options.port_type_values()[2]
 }
 
 ///|

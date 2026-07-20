@@ -29,22 +29,22 @@ fn p4_basic_node_placement_test_build_diamond_graph() -> Array[@graph.ElkNode] {
   let e1 = @graph.create_edge(None)
   @graph.edge_add_source(e1, @graph.make_node_shape(source))
   @graph.edge_add_target(e1, @graph.make_node_shape(mid_a))
-  @layered.layered_test_update_containment(Some(e1))
+  @runtime.layered_test_update_containment(Some(e1))
 
   let e2 = @graph.create_edge(None)
   @graph.edge_add_source(e2, @graph.make_node_shape(source))
   @graph.edge_add_target(e2, @graph.make_node_shape(mid_b))
-  @layered.layered_test_update_containment(Some(e2))
+  @runtime.layered_test_update_containment(Some(e2))
 
   let e3 = @graph.create_edge(None)
   @graph.edge_add_source(e3, @graph.make_node_shape(mid_a))
   @graph.edge_add_target(e3, @graph.make_node_shape(target))
-  @layered.layered_test_update_containment(Some(e3))
+  @runtime.layered_test_update_containment(Some(e3))
 
   let e4 = @graph.create_edge(None)
   @graph.edge_add_source(e4, @graph.make_node_shape(mid_b))
   @graph.edge_add_target(e4, @graph.make_node_shape(target))
-  @layered.layered_test_update_containment(Some(e4))
+  @runtime.layered_test_update_containment(Some(e4))
 
   [graph, source, mid_a, mid_b, target]
 }

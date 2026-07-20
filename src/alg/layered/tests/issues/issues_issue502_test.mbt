@@ -70,7 +70,7 @@ test "Issue502 compound nodes stay large enough for children and edge routes" {
   let edge = @graph.create_edge(None)
   @graph.edge_add_source(edge, @graph.make_node_shape(child_a))
   @graph.edge_add_target(edge, @graph.make_node_shape(child_b))
-  @layered.layered_test_update_containment(Some(edge))
+  @runtime.layered_test_update_containment(Some(edge))
 
   issue502_test_layout(graph)
 

@@ -3,12 +3,12 @@ priv struct GreedyCycleBreakerState {
   indeg : Array[Int]
   outdeg : Array[Int]
   mark : Array[Int]
-  sources : Array[@layered.LNode]
+  sources : Array[@runtime.LNode]
   mut source_head : Int
-  sinks : Array[@layered.LNode]
+  sinks : Array[@runtime.LNode]
   mut sink_head : Int
-  layered_graph : @layered.LGraph
-  random : @layered.MockRandom
+  layered_graph : @runtime.LGraph
+  random : @runtime.MockRandom
 }
 
 ///|
@@ -25,8 +25,8 @@ fn[T] greedy_cycle_breaker_raise_unsupported_graph(
 
 ///|
 fn greedy_cycle_breaker_require_target_node(
-  edge : @layered.LEdge,
-) -> @layered.LNode raise GreedyCycleBreakerException {
+  edge : @runtime.LEdge,
+) -> @runtime.LNode raise GreedyCycleBreakerException {
   let target = match edge.get_target() {
     Some(value) => value
     None =>
@@ -43,8 +43,8 @@ fn greedy_cycle_breaker_require_target_node(
 
 ///|
 fn greedy_cycle_breaker_reverse_edge(
-  edge : @layered.LEdge,
-  graph : @layered.LGraph,
+  edge : @runtime.LEdge,
+  graph : @runtime.LGraph,
 ) -> Unit {
   edge.reverse(graph, true)
 }
@@ -59,16 +59,16 @@ fn greedy_cycle_breaker_node_priority_contribution(priority : Int) -> Int {
 }
 
 ///|
-fn greedy_cycle_breaker_array_clear(values : Array[@layered.LNode]) -> Unit {
+fn greedy_cycle_breaker_array_clear(values : Array[@runtime.LNode]) -> Unit {
   values.clear()
 }
 
 ///|
 fn greedy_cycle_breaker_choose_node_with_max_outflow_default(
-  nodes : Array[@layered.LNode],
-  graph : @layered.LGraph,
-  random : @layered.MockRandom,
-) -> @layered.LNode {
+  nodes : Array[@runtime.LNode],
+  graph : @runtime.LGraph,
+  random : @runtime.MockRandom,
+) -> @runtime.LNode {
   ignore(graph)
   let index = random.int(nodes.length())
   nodes[index]
@@ -77,7 +77,7 @@ fn greedy_cycle_breaker_choose_node_with_max_outflow_default(
 ///|
 fn greedy_cycle_breaker_update_neighbors(
   state : GreedyCycleBreakerState,
-  node : @layered.LNode,
+  node : @runtime.LNode,
 ) -> Unit {
   for port in node.get_ports() {
     for edge in port.get_connected_edges() {
@@ -85,8 +85,8 @@ fn greedy_cycle_breaker_update_neighbors(
       let target = edge.get_target()
       let connected_port = match (source, target) {
         (Some(source_port), Some(target_port)) =>
-          if @layered.lport_internal_handle(source_port) ==
-            @layered.lport_internal_handle(port) {
+          if @runtime.lport_internal_handle(source_port) ==
+            @runtime.lport_internal_handle(port) {
             target_port
           } else {
             source_port
@@ -98,8 +98,8 @@ fn greedy_cycle_breaker_update_neighbors(
         None => continue
       }
 
-      if @layered.lnode_internal_handle(node) ==
-        @layered.lnode_internal_handle(endpoint) {
+      if @runtime.lnode_internal_handle(node) ==
+        @runtime.lnode_internal_handle(endpoint) {
         continue
       }
 
@@ -115,8 +115,8 @@ fn greedy_cycle_breaker_update_neighbors(
           Some(value) => value
           None => continue
         }
-        if @layered.lport_internal_handle(edge_target) ==
-          @layered.lport_internal_handle(connected_port) {
+        if @runtime.lport_internal_handle(edge_target) ==
+          @runtime.lport_internal_handle(connected_port) {
           state.indeg[index] = state.indeg[index] - priority - 1
           if state.indeg[index] <= 0 && state.outdeg[index] > 0 {
             state.sources.push(endpoint)
@@ -136,10 +136,10 @@ fn greedy_cycle_breaker_update_neighbors(
 fn greedy_cycle_breaker_collect_and_mark(
   state : GreedyCycleBreakerState,
   choose_node_with_max_outflow : (
-    Array[@layered.LNode],
-    @layered.LGraph,
-    @layered.MockRandom,
-  ) -> @layered.LNode,
+    Array[@runtime.LNode],
+    @runtime.LGraph,
+    @runtime.MockRandom,
+  ) -> @runtime.LNode,
 ) -> Unit {
   let nodes = state.layered_graph.get_layerless_nodes()
   let mut unprocessed_node_count = nodes.length()
@@ -228,7 +228,7 @@ fn greedy_cycle_breaker_reverse_edges_pointing_left(
         if state.mark[node_id] > state.mark[target_ix] {
           greedy_cycle_breaker_reverse_edge(edge, state.layered_graph)
           state.layered_graph.set_property_bool(
-            @layered.internal_properties_cyclic, true,
+            @runtime.internal_properties_cyclic, true,
           )
         }
       }
@@ -238,28 +238,28 @@ fn greedy_cycle_breaker_reverse_edges_pointing_left(
 
 ///|
 fn greedy_cycle_breaker_configuration(
-  graph : @layered.LGraph,
-) -> @core.LayoutProcessorConfiguration[@layered.LayeredPhases, @layered.LGraph]? {
+  graph : @runtime.LGraph,
+) -> @core.LayoutProcessorConfiguration[@runtime.LayeredPhases, @runtime.LGraph]? {
   ignore(graph)
   Some(
     @core.layout_processor_configuration_create(
-      @layered.layered_phase_descriptor,
+      @runtime.layered_phase_descriptor,
     ).add_after(
       P5EdgeRouting,
-      @layered.layered_intermediate_processor_factory(ReversedEdgeRestorer),
+      @runtime.layered_intermediate_processor_factory(ReversedEdgeRestorer),
     ),
   )
 }
 
 ///|
 fn greedy_cycle_breaker_process_with_chooser(
-  layered_graph : @layered.LGraph,
+  layered_graph : @runtime.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
   choose_node_with_max_outflow : (
-    Array[@layered.LNode],
-    @layered.LGraph,
-    @layered.MockRandom,
-  ) -> @layered.LNode,
+    Array[@runtime.LNode],
+    @runtime.LGraph,
+    @runtime.MockRandom,
+  ) -> @runtime.LNode,
 ) -> Unit {
   let monitor = match progress_monitor {
     Some(value) => value
@@ -269,18 +269,18 @@ fn greedy_cycle_breaker_process_with_chooser(
 
   let nodes = layered_graph.get_layerless_nodes()
   let random = if layered_graph.get_property_mock_random(
-      @layered.internal_properties_random,
+      @runtime.internal_properties_random,
     )
     is Some(value) {
     value
   } else {
     let seed_value = layered_graph.get_property_int(@core.random_seed)
     if seed_value == 0 {
-      @layered.new_greedy_switch_mock_random_seeded(
+      @runtime.new_greedy_switch_mock_random_seeded(
         @random.Rand::new().int(limit=@int.MAX_VALUE),
       )
     } else {
-      @layered.new_greedy_switch_mock_random_seeded(seed_value)
+      @runtime.new_greedy_switch_mock_random_seeded(seed_value)
     }
   }
   let state = {
@@ -309,8 +309,8 @@ fn greedy_cycle_breaker_process_with_chooser(
           Some(value) => value
           None => continue
         }
-        if @layered.lnode_internal_handle(source_node) ==
-          @layered.lnode_internal_handle(node) {
+        if @runtime.lnode_internal_handle(source_node) ==
+          @runtime.lnode_internal_handle(node) {
           continue
         }
         let priority = edge.get_property_int(
@@ -329,8 +329,8 @@ fn greedy_cycle_breaker_process_with_chooser(
           Some(value) => value
           None => continue
         }
-        if @layered.lnode_internal_handle(target_node) ==
-          @layered.lnode_internal_handle(node) {
+        if @runtime.lnode_internal_handle(target_node) ==
+          @runtime.lnode_internal_handle(node) {
           continue
         }
         let priority = edge.get_property_int(
@@ -367,7 +367,7 @@ fn greedy_cycle_breaker_process_with_chooser(
 
 ///|
 fn greedy_cycle_breaker_process(
-  layered_graph : @layered.LGraph,
+  layered_graph : @runtime.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
 ) -> Unit {
   greedy_cycle_breaker_process_with_chooser(
@@ -377,8 +377,8 @@ fn greedy_cycle_breaker_process(
 
 ///|
 pub fn new_greedy_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[
-  @layered.LayeredPhases,
-  @layered.LGraph,
+  @runtime.LayeredPhases,
+  @runtime.LGraph,
 ] {
   @core.new_layout_phase(
     greedy_cycle_breaker_process, greedy_cycle_breaker_configuration,

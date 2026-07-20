@@ -4,7 +4,7 @@
 /// Keeping this list explicit documents the dependency seam: pipeline owns
 /// orchestration and graph transformation, while runtime owns the layered
 /// graph model and the processor implementations it coordinates.
-using @layered {
+using @runtime {
   type GreedySwitchMockRandom,
   type IntermediateProcessorStrategy,
   type LEdge,

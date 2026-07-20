@@ -71,13 +71,13 @@ fn l_graph_util_test_port_constraints_fixed_order() -> @core.PortConstraints {
 }
 
 ///|
-fn l_graph_util_test_port_type_input() -> PortType {
-  port_type_values()[1]
+fn l_graph_util_test_port_type_input() -> @options.PortType {
+  @options.port_type_values()[1]
 }
 
 ///|
-fn l_graph_util_test_port_type_output() -> PortType {
-  port_type_values()[2]
+fn l_graph_util_test_port_type_output() -> @options.PortType {
+  @options.port_type_values()[2]
 }
 
 ///|
@@ -114,7 +114,7 @@ fn l_graph_util_test_graph_has_property_name(
     property in graph.get_property_graph_properties_array(
       internal_properties_graph_properties,
     ) {
-    if graph_properties_to_string(property) == expected_name {
+    if @options.graph_properties_to_string(property) == expected_name {
       return true
     }
   }
@@ -342,7 +342,7 @@ test "compute_graph_properties follows LGraphUtil reference rules" {
   )
   graph.set_property_graph_properties_array(
     internal_properties_graph_properties,
-    [graph_properties_values()[9]],
+    [@options.graph_properties_values()[9]],
   )
 
   let comment_node = new_l_node(graph=Some(graph))

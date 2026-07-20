@@ -1,8 +1,8 @@
 ///|
 fn sc_connectivity_find_nodes(
-  graph : @layered.LGraph,
-  strongly_connected_components : Array[Array[@layered.LNode]],
-  rev_edges : Array[@layered.LEdge],
+  graph : @runtime.LGraph,
+  strongly_connected_components : Array[Array[@runtime.LNode]],
+  rev_edges : Array[@runtime.LEdge],
   offset : Int,
   big_offset : Int,
 ) -> Unit raise SCCModelOrderCycleBreakerException {
@@ -15,8 +15,8 @@ fn sc_connectivity_find_nodes(
       continue
     }
 
-    let mut min_node : @layered.LNode? = None
-    let mut max_node : @layered.LNode? = None
+    let mut min_node : @runtime.LNode? = None
+    let mut max_node : @runtime.LNode? = None
     let mut model_order_min = @int.MAX_VALUE
     let mut model_order_max = -@int.MAX_VALUE
     let calculator = new_group_model_order_calculator()
@@ -82,7 +82,7 @@ fn sc_connectivity_find_nodes(
 
 ///|
 fn sc_connectivity_process(
-  layered_graph : @layered.LGraph,
+  layered_graph : @runtime.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
 ) -> Unit {
   scc_model_order_cycle_breaker_process_with_finder(
@@ -92,8 +92,8 @@ fn sc_connectivity_process(
 
 ///|
 pub fn new_sc_connectivity_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[
-  @layered.LayeredPhases,
-  @layered.LGraph,
+  @runtime.LayeredPhases,
+  @runtime.LGraph,
 ] {
   @core.new_layout_phase(
     sc_connectivity_process, scc_model_order_cycle_breaker_configuration,

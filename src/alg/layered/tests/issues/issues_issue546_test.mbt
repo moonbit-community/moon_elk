@@ -70,7 +70,7 @@ test "Issue546 routed edge starts on source port rectangle" {
   let edge = @graph.create_edge(None)
   @graph.edge_add_source(edge, @graph.make_port_shape(src_port))
   @graph.edge_add_target(edge, @graph.make_port_shape(dst_port))
-  @layered.layered_test_update_containment(Some(edge))
+  @runtime.layered_test_update_containment(Some(edge))
 
   issue546_test_layout(graph)
 

@@ -35,7 +35,16 @@ priv enum JsonEdgeCoordsMode {
 }
 
 ///|
-let _graph_json_layered_algorithm_id = @layered.layered_algorithm_id
+let _graph_json_layered_algorithm_id = @options.layered_algorithm_id
+
+///|
+/// JSON layout is an application entry point, so it links both orchestration
+/// and the concrete phase registrations instead of relying on a facade package
+/// to pull them in indirectly.
+let _graph_json_layered_pipeline_linked = @pipeline.layered_pipeline_linked
+
+///|
+let _graph_json_layered_engine_linked = @engine.layered_engine_linked
 
 ///|
 pub fn elk_graph_json_for_graph(graph : String) -> ElkGraphJsonImportBuilder {

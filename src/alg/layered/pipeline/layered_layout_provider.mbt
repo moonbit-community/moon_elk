@@ -19,6 +19,12 @@ fn init {
 }
 
 ///|
+/// Linking this package installs the layered layout handler. Composition roots
+/// reference this marker explicitly so registration is never an accidental
+/// side effect of a compatibility import.
+pub let layered_pipeline_linked : Bool = true
+
+///|
 pub fn LayeredLayoutProvider::layout(
   self : LayeredLayoutProvider,
   elk_graph : @graph.ElkNode,

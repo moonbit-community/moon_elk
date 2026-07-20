@@ -135,8 +135,8 @@ test "node and graph adapters forward composed behavior" {
 test "port label and edge adapters expose dedicated accessors" {
   let margin_ref : Ref[ElkMargin] = Ref(new_elk_margin_any(5.0))
   let port_side = sides_north[0]
-  let label_side = @layered.new_l_label().get_property_label_side(
-    @layered.internal_properties_label_side,
+  let label_side = @runtime.new_l_label().get_property_label_side(
+    @runtime.internal_properties_label_side,
   )
 
   let element_adapter = new_graph_element_adapter(

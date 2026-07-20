@@ -1,6 +1,6 @@
 ///|
 fn simple_node_placer_process(
-  layered_graph : @layered.LGraph,
+  layered_graph : @runtime.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
 ) -> Unit {
   let monitor = match progress_monitor {
@@ -9,13 +9,13 @@ fn simple_node_placer_process(
   }
   ignore(monitor.begin("Simple node placement", 1.0))
 
-  let spacings = @layered.new_layered_spacings(layered_graph)
+  let spacings = @runtime.new_layered_spacings(layered_graph)
   try {
     let mut max_height = 0.0
     for layer in layered_graph.get_layers() {
       let layer_size = layer.get_size()
       layer_size.y = 0.0
-      let mut last_node : @layered.LNode? = None
+      let mut last_node : @runtime.LNode? = None
       for node in layer.get_nodes() {
         match last_node {
           Some(previous) =>
@@ -34,7 +34,7 @@ fn simple_node_placer_process(
     for layer in layered_graph.get_layers() {
       let layer_size = layer.get_size()
       let mut pos = (max_height - layer_size.y) / 2.0
-      let mut last_node : @layered.LNode? = None
+      let mut last_node : @runtime.LNode? = None
       for node in layer.get_nodes() {
         match last_node {
           Some(previous) => pos += spacings.get_vertical_spacing(node, previous)
@@ -57,22 +57,22 @@ fn simple_node_placer_process(
 
 ///|
 pub fn new_simple_node_placer_layout_phase() -> @core.ILayoutProcessor[
-  @layered.LayeredPhases,
-  @layered.LGraph,
+  @runtime.LayeredPhases,
+  @runtime.LGraph,
 ] {
   @core.new_layout_phase(simple_node_placer_process, graph => {
     for
       property in graph.get_property_graph_properties_array(
-        @layered.internal_properties_graph_properties,
+        @runtime.internal_properties_graph_properties,
       ) {
       match property {
         ExternalPorts =>
           return Some(
             @core.layout_processor_configuration_create(
-              @layered.layered_phase_descriptor,
+              @runtime.layered_phase_descriptor,
             ).add_before(
               P5EdgeRouting,
-              @layered.layered_intermediate_processor_factory(
+              @runtime.layered_intermediate_processor_factory(
                 HierarchicalPortPositionProcessor,
               ),
             ),

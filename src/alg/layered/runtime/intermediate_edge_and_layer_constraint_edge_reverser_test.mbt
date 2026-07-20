@@ -83,8 +83,8 @@ fn edge_and_layer_constraint_edge_reverser_test_require_node(
 ///|
 fn edge_and_layer_constraint_edge_reverser_test_constraint(
   node : LNode,
-) -> LayerConstraint {
-  layer_constraint_from_string(
+) -> @options.LayerConstraint {
+  @options.layer_constraint_from_string(
     node.get_property_string(@options.layered_options_layering_layer_constraint),
   )
 }
@@ -271,7 +271,7 @@ test "edge and layer constraint edge reverser enforces outer-node @core.directio
       edge_and_layer_constraint_edge_reverser_test_require_source(incoming),
     )
     assert_eq(
-      layer_constraint_to_string(
+      @options.layer_constraint_to_string(
         edge_and_layer_constraint_edge_reverser_test_constraint(source_node),
       ),
       "FIRST_SEPARATE",
@@ -283,7 +283,7 @@ test "edge and layer constraint edge reverser enforces outer-node @core.directio
       edge_and_layer_constraint_edge_reverser_test_require_target(outgoing),
     )
     assert_eq(
-      layer_constraint_to_string(
+      @options.layer_constraint_to_string(
         edge_and_layer_constraint_edge_reverser_test_constraint(target_node),
       ),
       "LAST_SEPARATE",

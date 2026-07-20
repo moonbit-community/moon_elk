@@ -1,6 +1,8 @@
 ///|
-fn layer_constraint_processor_test_constraint(node : LNode) -> LayerConstraint {
-  layer_constraint_from_string(
+fn layer_constraint_processor_test_constraint(
+  node : LNode,
+) -> @options.LayerConstraint {
+  @options.layer_constraint_from_string(
     node.get_property_string(@options.layered_options_layering_layer_constraint),
   )
 }
@@ -282,13 +284,13 @@ test "layer constraint preprocessor propagates FIRST and LAST to isolated opposi
   preprocessor.process(graph, None)
 
   assert_eq(
-    layer_constraint_to_string(
+    @options.layer_constraint_to_string(
       layer_constraint_processor_test_constraint(only_from_first_separate),
     ),
     "FIRST",
   )
   assert_eq(
-    layer_constraint_to_string(
+    @options.layer_constraint_to_string(
       layer_constraint_processor_test_constraint(only_to_last_separate),
     ),
     "LAST",

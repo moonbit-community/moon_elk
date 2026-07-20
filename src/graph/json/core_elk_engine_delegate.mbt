@@ -30,7 +30,7 @@ fn elk_graph_json_core_delegate_register_additional_algorithms() -> Unit {
 fn elk_graph_json_core_delegate_enable_layered_features() -> Unit {
   match
     @core.layout_meta_data_service_get_algorithm_data(
-      @layered.layered_algorithm_id,
+      @options.layered_algorithm_id,
     ) {
     Some(algorithm_data) =>
       for

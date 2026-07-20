@@ -33,8 +33,6 @@ pub fn cell_system_configurator_configure_cell_system_size_contributions(NodeCon
 
 pub fn cell_system_configurator_update_vertical_inside_port_label_cell_padding(NodeContext) -> Unit
 
-pub fn center_edge_label_placement_strategy_uses_label_size_information_values() -> Array[Bool]
-
 pub fn change_coord_system(@core.KVector, LGraph, LGraph) -> Unit
 
 pub fn cm_group_model_order_calculate_model_order_or_group_model_order(LNode, LNode, LGraph, Int) -> Int
@@ -63,15 +61,7 @@ pub fn cross_min_type_constants() -> Array[CrossMinType]
 
 pub fn crossing_count_side_values() -> Array[CrossingCountSide]
 
-pub fn crossing_minimization_strategy_to_string(@options.CrossingMinimizationStrategy) -> String
-
-pub fn crossing_minimization_strategy_values() -> Array[String]
-
 pub fn cutting_utils_insert_dummies(LGraph, LEdge, Int) -> Array[LEdge] raise CuttingUtilsException
-
-pub fn cycle_breaking_strategy_to_string(@options.CycleBreakingStrategy) -> String
-
-pub fn cycle_breaking_strategy_values() -> Array[String]
 
 pub fn debug_util_log_debug_graph(@core.IElkProgressMonitor, LGraph, Int, String) -> Unit
 
@@ -89,10 +79,6 @@ pub fn dot_debug_util_create_debug_graph_hypernodes(LGraph, Array[HyperEdgeSegme
 
 pub fn dot_debug_util_create_debug_graph_linear_segments(LGraph, Array[LinearSegment], Array[Array[LinearSegment]]) -> String
 
-pub fn edge_label_side_selection_to_string(@options.EdgeLabelSideSelection) -> String
-
-pub fn edge_label_side_selection_transpose_values() -> Array[String]
-
 pub fn edge_router_factory_factory_for(@core.EdgeRouting) -> @core.ILayoutProcessorFactory[LayeredPhases, LGraph]
 
 pub let final_spline_node_to_straightening_cp_gap : Double
@@ -106,12 +92,6 @@ pub fn get_external_port_position(LGraph, LNode, Double, Double) -> @core.KVecto
 pub fn get_individual_or_inherited(LNode, @graph.IProperty[Double]) -> Double
 
 pub fn get_minimal_model_order(LGraph) -> Int
-
-pub fn graph_properties_to_string(@options.GraphProperties) -> String
-
-pub fn graph_properties_values() -> Array[@options.GraphProperties]
-
-pub fn greedy_switch_type_values() -> Array[@options.GreedySwitchType]
 
 pub fn grid_container_cell_compute_minimum_height(Cell) -> Double
 
@@ -132,14 +112,6 @@ pub fn grid_container_cell_set_cell(Cell, ContainerArea, ContainerArea, Cell?) -
 pub fn grid_container_cell_set_center_cell_minimum_size(Cell, @core.KVector) -> Unit
 
 pub fn grid_container_cell_set_only_center_cell_contributes_to_minimum_size(Cell, Bool) -> Unit
-
-pub fn group_order_strategy_equals(@options.GroupOrderStrategy, @options.GroupOrderStrategy) -> Bool
-
-pub fn group_order_strategy_from_string(String) -> @options.GroupOrderStrategy
-
-pub fn group_order_strategy_to_string(@options.GroupOrderStrategy) -> String
-
-pub fn group_order_strategy_values() -> Array[String]
 
 pub fn horizontal_graph_compactor_clear_origin_lookup() -> Unit
 
@@ -196,10 +168,6 @@ pub let interactive_layered_graph_visitor_last_layer_index : Int
 pub let interactive_layered_graph_visitor_pseudo_position_spacing : Int
 
 pub fn interactive_layered_graph_visitor_set_interactive_options_and_pseudo_positions(Int) -> Unit
-
-pub fn interactive_reference_point_to_string(@options.InteractiveReferencePoint) -> String
-
-pub fn interactive_reference_point_values() -> Array[String]
 
 pub fn intermediate_processor_strategy_ordinal(IntermediateProcessorStrategy) -> Int
 
@@ -353,14 +321,6 @@ pub let label_management_processor_min_width_edge_labels : Double
 
 pub fn label_placer_place_labels(NodeContext) -> Unit
 
-pub fn layer_constraint_from_string(String) -> @options.LayerConstraint
-
-pub fn layer_constraint_is_first_or_last_separate(@options.LayerConstraint) -> Bool
-
-pub fn layer_constraint_to_string(@options.LayerConstraint) -> String
-
-pub fn layer_constraint_values() -> Array[String]
-
 pub fn layer_internal_handle(Layer) -> Int
 
 pub let layered_components_direction : @graph.IProperty[@core.Direction]
@@ -391,15 +351,9 @@ pub fn layered_spacings_with_base_value(Double) -> LayeredSpacingsBuilder
 
 pub fn layered_test_update_containment(Int?) -> Unit
 
-pub fn layering_strategy_to_string(@options.LayeringStrategy) -> String
-
-pub fn layering_strategy_values() -> Array[String]
-
 pub fn lnode_internal_handle(LNode) -> Int
 
 pub fn long_edge_joiner_join_at(LNode, Bool) -> Unit
-
-pub fn long_edge_ordering_strategy_return_values() -> Array[Int]
 
 pub fn long_edge_splitter_split_edge(LEdge, LNode) -> LEdge
 
@@ -803,10 +757,6 @@ pub fn node_dimension_calculation_sort_port_lists(LGraphAdapter) -> Unit
 
 pub fn node_dimension_calculation_sort_port_lists_for_layered_graph(LGraph) -> Unit
 
-pub fn node_flexibility_flags() -> Array[Bool]
-
-pub fn node_flexibility_is_at_least_values() -> Array[Bool]
-
 pub fn node_label_and_size_calculator_process_layered_graph(LGraph) -> Unit
 
 pub fn node_label_and_size_utilities_apply_stuff(NodeContext) -> Unit
@@ -836,10 +786,6 @@ pub fn node_label_location_from_node_label_placement(Array[@core.NodeLabelPlacem
 pub fn node_label_location_to_string(NodeLabelLocation) -> String
 
 pub fn node_label_location_values() -> Array[NodeLabelLocation]
-
-pub fn node_placement_strategy_to_string(@options.NodePlacementStrategy) -> String
-
-pub fn node_placement_strategy_values() -> Array[String]
 
 pub fn node_size_calculator_set_node_height(NodeContext) -> Unit
 
@@ -920,8 +866,6 @@ pub let port_placement_calculator_port_ratio_or_position : @graph.IProperty[Doub
 pub fn port_restorer_sorted_two_side_loop_port_sides(SelfHyperLoop) -> Array[@core.PortSide]
 
 pub fn port_side_processor_set_port_side(LPort) -> Unit
-
-pub fn port_type_values() -> Array[@options.PortType]
 
 pub fn provide_collector_port(LGraph, LNode, @options.PortType, @core.PortSide) -> LPort
 
@@ -3095,72 +3039,11 @@ pub fn VerticalSegment::set_a_port(Self, LPort?) -> Unit
 pub fn VerticalSegment::to_string(Self) -> String
 
 // Type aliases
-pub using @options {type CenterEdgeLabelPlacementStrategy}
-
-pub using @options {type ConstraintCalculationStrategy}
-
-pub using @options {type CrossingMinimizationStrategy}
-
-pub using @options {type CuttingStrategy}
-
-pub using @options {type CycleBreakingStrategy}
-
-pub using @options {type DirectionCongruency}
-
-pub using @options {type EdgeConstraint}
-
-pub using @options {type EdgeLabelSideSelection}
-
-pub using @options {type EdgeStraighteningStrategy}
-
-pub using @options {type FixedAlignment}
-
-pub using @options {type GraphCompactionStrategy}
-
-pub using @options {type GraphProperties}
-
-pub using @options {type GreedySwitchType}
-
-pub using @options {type GroupOrderStrategy}
-
-pub using @options {type InLayerConstraint}
-
-pub using @options {type InteractiveReferencePoint}
-
 pub using @core {type Spacing as LMargin}
 
 pub using @core {type Spacing as LPadding}
 
-pub using @options {type LayerConstraint}
-
-pub using @options {type LayerUnzippingStrategy}
-
 pub type LayeredIHierarchyAwareLayoutProcessor = Unit
 
-pub using @options {type LayeringStrategy}
-
-pub using @options {type LongEdgeOrderingStrategy}
-
-pub using @options {type NodeFlexibility}
-
-pub using @options {type NodePlacementStrategy}
-
-pub using @options {type NodePromotionStrategy}
-
-pub using @options {type OrderingStrategy}
-
-pub using @options {type PortSortingStrategy}
-
-pub using @options {type PortType}
-
-pub using @options {type SelfLoopDistributionStrategy}
-
-pub using @options {type SelfLoopOrderingStrategy}
-
-pub using @options {type SelfLoopPlacementStrategy}
-
-pub using @options {type ValidifyStrategy}
-
-pub using @options {type WrappingStrategy}
-
 // Traits
+

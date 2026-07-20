@@ -9,17 +9,17 @@ fn network_simplex_wbtest_port_side(name : String) -> @core.PortSide {
 }
 
 ///|
-fn network_simplex_wbtest_add_layer(graph : @layered.LGraph) -> @layered.Layer {
-  let layer = @layered.new_layer(graph)
+fn network_simplex_wbtest_add_layer(graph : @runtime.LGraph) -> @runtime.Layer {
+  let layer = @runtime.new_layer(graph)
   graph.get_layers().push(layer)
   layer
 }
 
 ///|
 fn network_simplex_wbtest_add_basic_node(
-  layer : @layered.Layer,
-) -> @layered.LNode {
-  let node = @layered.new_l_node()
+  layer : @runtime.Layer,
+) -> @runtime.LNode {
+  let node = @runtime.new_l_node()
   node.set_layer(Some(layer))
   ignore(node.get_size().set_xy(10.0, 10.0))
   node
@@ -27,10 +27,10 @@ fn network_simplex_wbtest_add_basic_node(
 
 ///|
 fn network_simplex_wbtest_add_port(
-  node : @layered.LNode,
+  node : @runtime.LNode,
   side : @core.PortSide,
-) -> @layered.LPort {
-  let port = @layered.new_l_port()
+) -> @runtime.LPort {
+  let port = @runtime.new_l_port()
   port.set_node(Some(node))
   port.set_side(side)
   port
@@ -38,7 +38,7 @@ fn network_simplex_wbtest_add_port(
 
 ///|
 test "network simplex crossing marker keeps first open edge unmarked on unmatched close" {
-  let graph = @layered.new_l_graph()
+  let graph = @runtime.new_l_graph()
   let left = network_simplex_wbtest_add_layer(graph)
   let right = network_simplex_wbtest_add_layer(graph)
 
@@ -63,11 +63,11 @@ test "network simplex crossing marker keeps first open edge unmarked on unmatche
     network_simplex_wbtest_port_side("WEST"),
   )
 
-  let open_edge = @layered.new_l_edge()
+  let open_edge = @runtime.new_l_edge()
   open_edge.set_source(Some(source_east))
   open_edge.set_target(Some(open_target_west))
 
-  let unmatched_close_edge = @layered.new_l_edge()
+  let unmatched_close_edge = @runtime.new_l_edge()
   unmatched_close_edge.set_source(Some(source_west))
   unmatched_close_edge.set_target(Some(unmatched_target_west))
 
@@ -82,7 +82,7 @@ test "network simplex crossing marker keeps first open edge unmarked on unmatche
 
 ///|
 test "network simplex crossing marker follows Java hasPrevious boundary with two opens" {
-  let graph = @layered.new_l_graph()
+  let graph = @runtime.new_l_graph()
   let left = network_simplex_wbtest_add_layer(graph)
   let right = network_simplex_wbtest_add_layer(graph)
 
@@ -113,15 +113,15 @@ test "network simplex crossing marker follows Java hasPrevious boundary with two
   )
 
   // Create in this order so right_top incoming order is [second_open_edge, first_open_edge].
-  let second_open_edge = @layered.new_l_edge()
+  let second_open_edge = @runtime.new_l_edge()
   second_open_edge.set_source(Some(left_top_east))
   second_open_edge.set_target(Some(right_top_west))
 
-  let first_open_edge = @layered.new_l_edge()
+  let first_open_edge = @runtime.new_l_edge()
   first_open_edge.set_source(Some(left_bottom_east))
   first_open_edge.set_target(Some(right_top_west))
 
-  let unmatched_close_edge = @layered.new_l_edge()
+  let unmatched_close_edge = @runtime.new_l_edge()
   unmatched_close_edge.set_source(Some(left_top_west))
   unmatched_close_edge.set_target(Some(right_bottom_west))
 

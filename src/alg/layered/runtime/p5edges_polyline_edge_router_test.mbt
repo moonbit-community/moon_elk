@@ -20,9 +20,11 @@ fn polyline_edge_router_test_node_type(name : String) -> NodeType {
 }
 
 ///|
-fn polyline_edge_router_test_graph_property(name : String) -> GraphProperties {
-  for property in graph_properties_values() {
-    if graph_properties_to_string(property) == name {
+fn polyline_edge_router_test_graph_property(
+  name : String,
+) -> @options.GraphProperties {
+  for property in @options.graph_properties_values() {
+    if @options.graph_properties_to_string(property) == name {
       return property
     }
   }

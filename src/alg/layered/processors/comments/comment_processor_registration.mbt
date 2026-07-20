@@ -1,10 +1,10 @@
 ///|
 fn register_comment_processor(
-  strategy : @layered.IntermediateProcessorStrategy,
-  create : () -> @core.ILayoutProcessor[@layered.LayeredPhases, @layered.LGraph],
+  strategy : @runtime.IntermediateProcessorStrategy,
+  create : () -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph],
 ) -> Unit {
-  let ordinal = @layered.intermediate_processor_strategy_ordinal(strategy)
-  @layered.register_layered_intermediate_processor(
+  let ordinal = @runtime.intermediate_processor_strategy_ordinal(strategy)
+  @runtime.register_layered_intermediate_processor(
     strategy,
     @core.new_layout_processor_factory(23000 + ordinal, ordinal, create),
   )

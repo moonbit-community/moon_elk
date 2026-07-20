@@ -36,6 +36,8 @@ pub fn layered_elk_graph_transformer_get_origin_identifier(@runtime.LGraphElemen
 
 pub fn layered_layout_provider_as_layout_provider(LayeredLayoutProvider) -> @core.AbstractLayoutProvider
 
+pub let layered_pipeline_linked : Bool
+
 pub fn new_component_group() -> ComponentGroup
 
 pub fn new_component_group_with_component(@runtime.LGraph) -> ComponentGroup
@@ -249,3 +251,4 @@ pub fn ModelOrderComponentGroup::get_port_sides(Self) -> Array[Array[@core.PortS
 // Type aliases
 
 // Traits
+

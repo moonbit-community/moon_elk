@@ -33,7 +33,7 @@ test "Issue552 hierarchy self-loop ports are not left at y=0" {
   let self_loop = @graph.create_edge(None)
   @graph.edge_add_source(self_loop, @graph.make_port_shape(src_port))
   @graph.edge_add_target(self_loop, @graph.make_port_shape(dst_port))
-  @layered.layered_test_update_containment(Some(self_loop))
+  @runtime.layered_test_update_containment(Some(self_loop))
 
   issue552_test_layout(graph)
 

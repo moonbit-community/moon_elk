@@ -2,9 +2,9 @@
 fn register_cycle_breaking_phase(
   strategy : String,
   id : Int,
-  create : () -> @core.ILayoutProcessor[@layered.LayeredPhases, @layered.LGraph],
+  create : () -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph],
 ) -> Unit {
-  @layered.register_layered_cycle_breaking_phase(
+  @runtime.register_layered_cycle_breaking_phase(
     strategy,
     @core.new_layout_processor_factory(id, 0, create),
   )

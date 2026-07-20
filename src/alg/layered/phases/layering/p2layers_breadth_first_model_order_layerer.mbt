@@ -1,33 +1,33 @@
 ///|
 fn breadth_first_model_order_layerer_layer_constraint_preprocessor_factory() -> @core.ILayoutProcessorFactory[
-  @layered.LayeredPhases,
-  @layered.LGraph,
+  @runtime.LayeredPhases,
+  @runtime.LGraph,
 ] {
   @core.new_layout_processor_factory(23007, 7, () => {
-    @layered.new_layer_constraint_preprocessor_layout_processor()
+    @runtime.new_layer_constraint_preprocessor_layout_processor()
   })
 }
 
 ///|
 fn breadth_first_model_order_layerer_layer_constraint_postprocessor_factory() -> @core.ILayoutProcessorFactory[
-  @layered.LayeredPhases,
-  @layered.LGraph,
+  @runtime.LayeredPhases,
+  @runtime.LGraph,
 ] {
   @core.new_layout_processor_factory(23011, 11, () => {
-    @layered.new_layer_constraint_postprocessor_layout_processor()
+    @runtime.new_layer_constraint_postprocessor_layout_processor()
   })
 }
 
 ///|
 let breadth_first_model_order_layerer_baseline_processing_configuration : @core.LayoutProcessorConfiguration[
-  @layered.LayeredPhases,
-  @layered.LGraph,
+  @runtime.LayeredPhases,
+  @runtime.LGraph,
 ] = @core.layout_processor_configuration_create(
-    @layered.layered_phase_descriptor,
+    @runtime.layered_phase_descriptor,
   )
   .add_before(
     P1CycleBreaking,
-    @layered.layered_intermediate_processor_factory(
+    @runtime.layered_intermediate_processor_factory(
       EdgeAndLayerConstraintEdgeReverser,
     ),
   )
@@ -54,8 +54,8 @@ fn[T] breadth_first_model_order_layerer_raise_unsupported_graph(
 
 ///|
 fn breadth_first_model_order_layerer_require_edge_source_node(
-  edge : @layered.LEdge,
-) -> @layered.LNode raise BreadthFirstModelOrderLayererException {
+  edge : @runtime.LEdge,
+) -> @runtime.LNode raise BreadthFirstModelOrderLayererException {
   let source = match edge.get_source() {
     Some(value) => value
     None =>
@@ -74,21 +74,21 @@ fn breadth_first_model_order_layerer_require_edge_source_node(
 
 ///|
 fn breadth_first_model_order_layerer_layer_equals(
-  layer : @layered.Layer?,
-  target : @layered.Layer,
+  layer : @runtime.Layer?,
+  target : @runtime.Layer,
 ) -> Bool {
   match layer {
     Some(value) =>
-      @layered.layer_internal_handle(value) ==
-      @layered.layer_internal_handle(target)
+      @runtime.layer_internal_handle(value) ==
+      @runtime.layer_internal_handle(target)
     None => false
   }
 }
 
 ///|
 fn breadth_first_model_order_layerer_label_connects_to_current_layer(
-  label_dummy : @layered.LNode,
-  current_layer : @layered.Layer,
+  label_dummy : @runtime.LNode,
+  current_layer : @runtime.Layer,
 ) -> Bool raise BreadthFirstModelOrderLayererException {
   let incoming_edges = label_dummy.get_incoming_edges()
   if incoming_edges.is_empty() {
@@ -107,8 +107,8 @@ fn breadth_first_model_order_layerer_label_connects_to_current_layer(
 
 ///|
 fn breadth_first_model_order_layerer_incoming_edge_connects_to_current_layer(
-  edge : @layered.LEdge,
-  current_layer : @layered.Layer,
+  edge : @runtime.LEdge,
+  current_layer : @runtime.Layer,
 ) -> Bool raise BreadthFirstModelOrderLayererException {
   let source_node = breadth_first_model_order_layerer_require_edge_source_node(
     edge,
@@ -129,10 +129,10 @@ fn breadth_first_model_order_layerer_incoming_edge_connects_to_current_layer(
 
 ///|
 fn breadth_first_model_order_layerer_model_order(
-  node : @layered.LNode,
+  node : @runtime.LNode,
 ) -> Int raise BreadthFirstModelOrderLayererException {
-  if node.has_property_int(@layered.internal_properties_model_order) {
-    node.get_property_int(@layered.internal_properties_model_order)
+  if node.has_property_int(@runtime.internal_properties_model_order) {
+    node.get_property_int(@runtime.internal_properties_model_order)
   } else {
     breadth_first_model_order_layerer_raise_unsupported_graph(
       "The BF model order layer assigner requires all real nodes to have a model order.",
@@ -142,7 +142,7 @@ fn breadth_first_model_order_layerer_model_order(
 
 ///|
 fn breadth_first_model_order_layerer_sort_real_nodes(
-  real_nodes : Array[@layered.LNode],
+  real_nodes : Array[@runtime.LNode],
 ) -> Unit raise BreadthFirstModelOrderLayererException {
   let mut i = 1
   while i < real_nodes.length() {
@@ -164,13 +164,13 @@ fn breadth_first_model_order_layerer_sort_real_nodes(
 
 ///|
 fn breadth_first_model_order_layerer_remove_layer(
-  layered_graph : @layered.LGraph,
-  target : @layered.Layer,
+  layered_graph : @runtime.LGraph,
+  target : @runtime.Layer,
 ) -> Unit {
   let layers = layered_graph.get_layers()
   for i in 0..<layers.length() {
-    if @layered.layer_internal_handle(layers[i]) ==
-      @layered.layer_internal_handle(target) {
+    if @runtime.layer_internal_handle(layers[i]) ==
+      @runtime.layer_internal_handle(target) {
       ignore(layers.remove(i))
       return
     }
@@ -179,15 +179,15 @@ fn breadth_first_model_order_layerer_remove_layer(
 
 ///|
 fn breadth_first_model_order_layerer_configuration(
-  graph : @layered.LGraph,
-) -> @core.LayoutProcessorConfiguration[@layered.LayeredPhases, @layered.LGraph]? {
+  graph : @runtime.LGraph,
+) -> @core.LayoutProcessorConfiguration[@runtime.LayeredPhases, @runtime.LGraph]? {
   ignore(graph)
   Some(breadth_first_model_order_layerer_baseline_processing_configuration)
 }
 
 ///|
 fn breadth_first_model_order_layerer_process(
-  layered_graph : @layered.LGraph,
+  layered_graph : @runtime.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
 ) -> Unit {
   let monitor = match progress_monitor {
@@ -206,8 +206,8 @@ fn breadth_first_model_order_layerer_process(
     breadth_first_model_order_layerer_sort_real_nodes(real_nodes)
 
     let mut first_node = true
-    let mut current_layer = @layered.new_layer(layered_graph)
-    let mut current_dummy_layer : @layered.Layer? = None
+    let mut current_layer = @runtime.new_layer(layered_graph)
+    let mut current_dummy_layer : @runtime.Layer? = None
     layered_graph.get_layers().push(current_layer)
 
     for node in real_nodes {
@@ -219,11 +219,11 @@ fn breadth_first_model_order_layerer_process(
           if breadth_first_model_order_layerer_incoming_edge_connects_to_current_layer(
               edge, current_layer,
             ) {
-            let new_dummy_layer = @layered.new_layer(layered_graph)
+            let new_dummy_layer = @runtime.new_layer(layered_graph)
             layered_graph.get_layers().push(new_dummy_layer)
             current_dummy_layer = Some(new_dummy_layer)
 
-            let new_current_layer = @layered.new_layer(layered_graph)
+            let new_current_layer = @runtime.new_layer(layered_graph)
             layered_graph.get_layers().push(new_current_layer)
             current_layer = new_current_layer
           }
@@ -275,8 +275,8 @@ fn breadth_first_model_order_layerer_process(
 
 ///|
 pub fn new_breadth_first_model_order_layerer_layout_phase() -> @core.ILayoutProcessor[
-  @layered.LayeredPhases,
-  @layered.LGraph,
+  @runtime.LayeredPhases,
+  @runtime.LGraph,
 ] {
   @core.new_layout_phase(
     breadth_first_model_order_layerer_process, breadth_first_model_order_layerer_configuration,

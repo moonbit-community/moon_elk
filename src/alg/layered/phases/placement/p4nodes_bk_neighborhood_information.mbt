@@ -3,15 +3,15 @@ pub struct NeighborhoodInformation {
   mut node_count : Int
   mut layer_index : Array[Int]
   mut node_index : Array[Int]
-  mut left_neighbors : Array[Array[(@layered.LNode, @layered.LEdge)]]
-  mut right_neighbors : Array[Array[(@layered.LNode, @layered.LEdge)]]
+  mut left_neighbors : Array[Array[(@runtime.LNode, @runtime.LEdge)]]
+  mut right_neighbors : Array[Array[(@runtime.LNode, @runtime.LEdge)]]
 }
 
 ///|
 fn bk_neighbor_lists_with_capacity(
   count : Int,
-) -> Array[Array[(@layered.LNode, @layered.LEdge)]] {
-  let lists : Array[Array[(@layered.LNode, @layered.LEdge)]] = []
+) -> Array[Array[(@runtime.LNode, @runtime.LEdge)]] {
+  let lists : Array[Array[(@runtime.LNode, @runtime.LEdge)]] = []
   for i = 0; i < count; i = i + 1 {
     ignore(i)
     lists.push([])
@@ -41,7 +41,7 @@ pub fn NeighborhoodInformation::cleanup(self : NeighborhoodInformation) -> Unit 
 ///|
 fn neighborhood_information_sort_neighbors(
   ni : NeighborhoodInformation,
-  neighbors : Array[(@layered.LNode, @layered.LEdge)],
+  neighbors : Array[(@runtime.LNode, @runtime.LEdge)],
 ) -> Unit {
   let mut i = 1
   while i < neighbors.length() {
@@ -65,11 +65,11 @@ fn neighborhood_information_sort_neighbors(
 ///|
 fn neighborhood_information_determine_all_right_neighbors(
   ni : NeighborhoodInformation,
-  graph : @layered.LGraph,
+  graph : @runtime.LGraph,
 ) -> Unit {
   for layer in graph.get_layers() {
     for node in layer.get_nodes() {
-      let result : Array[(@layered.LNode, @layered.LEdge)] = []
+      let result : Array[(@runtime.LNode, @runtime.LEdge)] = []
       let mut max_priority = 0
 
       for edge in node.get_outgoing_edges() {
@@ -110,11 +110,11 @@ fn neighborhood_information_determine_all_right_neighbors(
 ///|
 fn neighborhood_information_determine_all_left_neighbors(
   ni : NeighborhoodInformation,
-  graph : @layered.LGraph,
+  graph : @runtime.LGraph,
 ) -> Unit {
   for layer in graph.get_layers() {
     for node in layer.get_nodes() {
-      let result : Array[(@layered.LNode, @layered.LEdge)] = []
+      let result : Array[(@runtime.LNode, @runtime.LEdge)] = []
       let mut max_priority = 0
 
       for edge in node.get_incoming_edges() {
@@ -154,7 +154,7 @@ fn neighborhood_information_determine_all_left_neighbors(
 
 ///|
 pub fn neighborhood_information_build_for(
-  graph : @layered.LGraph,
+  graph : @runtime.LGraph,
 ) -> NeighborhoodInformation {
   let ni = new_neighborhood_information()
 

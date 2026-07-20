@@ -37,12 +37,12 @@ test "Issue726 orthogonal routing never emits diagonal sections" {
   let e1 = @graph.create_edge(None)
   @graph.edge_add_source(e1, @graph.make_node_shape(n1))
   @graph.edge_add_target(e1, @graph.make_node_shape(n2))
-  @layered.layered_test_update_containment(Some(e1))
+  @runtime.layered_test_update_containment(Some(e1))
 
   let e2 = @graph.create_edge(None)
   @graph.edge_add_source(e2, @graph.make_node_shape(n2))
   @graph.edge_add_target(e2, @graph.make_node_shape(n3))
-  @layered.layered_test_update_containment(Some(e2))
+  @runtime.layered_test_update_containment(Some(e2))
 
   issue726_test_layout(graph)
 

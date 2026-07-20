@@ -21,7 +21,10 @@ fn model_order_barycenter_test_build_heuristic(
     ],
     node_order,
   )
-  port_distributor.calculate_port_ranks(node_order[0], port_type_values()[2])
+  port_distributor.calculate_port_ranks(
+    node_order[0],
+    @options.port_type_values()[2],
+  )
   let heuristic = new_model_order_barycenter_heuristic(
     constraint_resolver,
     random,

@@ -58,7 +58,7 @@ fn issue143_and318_test_connect_ports(
   @graph.edge_set_identifier(edge, id)
   @graph.edge_add_source(edge, @graph.make_port_shape(source))
   @graph.edge_add_target(edge, @graph.make_port_shape(target))
-  @layered.layered_test_update_containment(Some(edge))
+  @runtime.layered_test_update_containment(Some(edge))
 }
 
 ///|

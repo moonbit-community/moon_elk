@@ -37,39 +37,39 @@ priv struct MinWidthLayererData {
 ///|
 priv struct MinWidthLayererResult {
   max_width : Double
-  layers : Array[Array[@layered.LNode]]
+  layers : Array[Array[@runtime.LNode]]
 }
 
 ///|
 fn min_width_layerer_layer_constraint_preprocessor_factory() -> @core.ILayoutProcessorFactory[
-  @layered.LayeredPhases,
-  @layered.LGraph,
+  @runtime.LayeredPhases,
+  @runtime.LGraph,
 ] {
   @core.new_layout_processor_factory(23007, 7, () => {
-    @layered.new_layer_constraint_preprocessor_layout_processor()
+    @runtime.new_layer_constraint_preprocessor_layout_processor()
   })
 }
 
 ///|
 fn min_width_layerer_layer_constraint_postprocessor_factory() -> @core.ILayoutProcessorFactory[
-  @layered.LayeredPhases,
-  @layered.LGraph,
+  @runtime.LayeredPhases,
+  @runtime.LGraph,
 ] {
   @core.new_layout_processor_factory(23011, 11, () => {
-    @layered.new_layer_constraint_postprocessor_layout_processor()
+    @runtime.new_layer_constraint_postprocessor_layout_processor()
   })
 }
 
 ///|
 let min_width_layerer_baseline_processing_configuration : @core.LayoutProcessorConfiguration[
-  @layered.LayeredPhases,
-  @layered.LGraph,
+  @runtime.LayeredPhases,
+  @runtime.LGraph,
 ] = @core.layout_processor_configuration_create(
-    @layered.layered_phase_descriptor,
+    @runtime.layered_phase_descriptor,
   )
   .add_before(
     P1CycleBreaking,
-    @layered.layered_intermediate_processor_factory(
+    @runtime.layered_intermediate_processor_factory(
       EdgeAndLayerConstraintEdgeReverser,
     ),
   )
@@ -84,15 +84,15 @@ let min_width_layerer_baseline_processing_configuration : @core.LayoutProcessorC
 
 ///|
 fn min_width_layerer_require_edge_target_node(
-  edge : @layered.LEdge,
-) -> @layered.LNode {
+  edge : @runtime.LEdge,
+) -> @runtime.LNode {
   let target = match edge.get_target() {
     Some(value) => value
     None => {
       @core.layout_runtime_report_unsupported_configuration(
         "edge has no target port",
       )
-      return @layered.new_l_node()
+      return @runtime.new_l_node()
     }
   }
   match target.get_node() {
@@ -101,14 +101,14 @@ fn min_width_layerer_require_edge_target_node(
       @core.layout_runtime_report_unsupported_configuration(
         "target port has no owner node",
       )
-      @layered.new_l_node()
+      @runtime.new_l_node()
     }
   }
 }
 
 ///|
 fn min_width_layerer_count_edges_except_self_loops(
-  edges : Array[@layered.LEdge],
+  edges : Array[@runtime.LEdge],
 ) -> Int {
   let mut count = 0
   for edge in edges {
@@ -121,7 +121,7 @@ fn min_width_layerer_count_edges_except_self_loops(
 
 ///|
 fn min_width_layerer_precalc_successors(
-  nodes : Array[@layered.LNode],
+  nodes : Array[@runtime.LNode],
 ) -> Array[Map[Int, Bool]] {
   let successors = []
   for node in nodes {
@@ -140,7 +140,7 @@ fn min_width_layerer_precalc_successors(
 
 ///|
 fn min_width_layerer_sort_nodes_by_desc_out_degree(
-  nodes : Array[@layered.LNode],
+  nodes : Array[@runtime.LNode],
   out_degree : Array[Int],
 ) -> Unit {
   let mut i = 1
@@ -172,10 +172,10 @@ fn min_width_layerer_targets_contain_all(
 
 ///|
 fn min_width_layerer_select_node(
-  nodes : Array[@layered.LNode],
+  nodes : Array[@runtime.LNode],
   successors : Array[Map[Int, Bool]],
   targets : Map[Int, Bool],
-) -> @layered.LNode? {
+) -> @runtime.LNode? {
   for node in nodes {
     if min_width_layerer_targets_contain_all(targets, successors[node.get_id()]) {
       return Some(node)
@@ -186,8 +186,8 @@ fn min_width_layerer_select_node(
 
 ///|
 fn min_width_layerer_remove_unplaced_node(
-  nodes : Array[@layered.LNode],
-  node : @layered.LNode,
+  nodes : Array[@runtime.LNode],
+  node : @runtime.LNode,
 ) -> Unit {
   let handle = node.get_handle()
   let mut i = 0
@@ -204,7 +204,7 @@ fn min_width_layerer_remove_unplaced_node(
 fn min_width_layerer_compute_min_width_layering(
   upper_bound_on_width : Int,
   compensator : Int,
-  nodes : Array[@layered.LNode],
+  nodes : Array[@runtime.LNode],
   node_successors : Array[Map[Int, Bool]],
   data : MinWidthLayererData,
 ) -> MinWidthLayererResult {
@@ -219,7 +219,7 @@ fn min_width_layerer_compute_min_width_layering(
   let mut already_placed_in_current_layer : Map[Int, Bool] = Map([])
   let already_placed_in_other_layers : Map[Int, Bool] = Map([])
 
-  let mut current_layer : Array[@layered.LNode] = []
+  let mut current_layer : Array[@runtime.LNode] = []
 
   let mut width_current = 0.0
   let mut width_up = 0.0
@@ -292,7 +292,7 @@ fn min_width_layerer_compute_min_width_layering(
 }
 
 ///|
-fn min_width_layerer_reverse_layers(layers : Array[@layered.Layer]) -> Unit {
+fn min_width_layerer_reverse_layers(layers : Array[@runtime.Layer]) -> Unit {
   if layers.length() < 2 {
     return
   }
@@ -310,15 +310,15 @@ fn min_width_layerer_reverse_layers(layers : Array[@layered.Layer]) -> Unit {
 
 ///|
 fn min_width_layerer_configuration(
-  graph : @layered.LGraph,
-) -> @core.LayoutProcessorConfiguration[@layered.LayeredPhases, @layered.LGraph]? {
+  graph : @runtime.LGraph,
+) -> @core.LayoutProcessorConfiguration[@runtime.LayeredPhases, @runtime.LGraph]? {
   ignore(graph)
   Some(min_width_layerer_baseline_processing_configuration)
 }
 
 ///|
 fn min_width_layerer_process(
-  layered_graph : @layered.LGraph,
+  layered_graph : @runtime.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
 ) -> Unit {
   let monitor = match progress_monitor {
@@ -385,7 +385,7 @@ fn min_width_layerer_process(
 
   let mut min_width = @double.infinity
   let mut min_num_of_layers = @int.MAX_VALUE
-  let mut candidate_layering : Array[Array[@layered.LNode]]? = None
+  let mut candidate_layering : Array[Array[@runtime.LNode]]? = None
 
   let mut ubw_start = upper_bound_on_width
   let mut ubw_end = upper_bound_on_width
@@ -426,7 +426,7 @@ fn min_width_layerer_process(
     None => []
   }
   for layer_list in chosen_layering {
-    let current_layer = @layered.new_layer(layered_graph)
+    let current_layer = @runtime.new_layer(layered_graph)
     for node in layer_list {
       node.set_layer(Some(current_layer))
     }
@@ -440,8 +440,8 @@ fn min_width_layerer_process(
 
 ///|
 pub fn new_min_width_layerer_layout_phase() -> @core.ILayoutProcessor[
-  @layered.LayeredPhases,
-  @layered.LGraph,
+  @runtime.LayeredPhases,
+  @runtime.LGraph,
 ] {
   @core.new_layout_phase(
     min_width_layerer_process, min_width_layerer_configuration,

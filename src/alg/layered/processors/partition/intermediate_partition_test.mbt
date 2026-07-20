@@ -10,10 +10,10 @@ fn partition_test_port_side(name : String) -> @core.PortSide {
 
 ///|
 fn partition_test_new_node(
-  graph : @layered.LGraph,
+  graph : @runtime.LGraph,
   partition : Int?,
-) -> @layered.LNode {
-  let node = @layered.new_l_node(graph=Some(graph))
+) -> @runtime.LNode {
+  let node = @runtime.new_l_node(graph=Some(graph))
   match partition {
     Some(value) =>
       node.set_property_int(
@@ -27,10 +27,10 @@ fn partition_test_new_node(
 
 ///|
 fn partition_test_new_port(
-  node : @layered.LNode,
+  node : @runtime.LNode,
   side : String,
-) -> @layered.LPort {
-  let port = @layered.new_l_port()
+) -> @runtime.LPort {
+  let port = @runtime.new_l_port()
   port.set_node(Some(node))
   port.set_side(partition_test_port_side(side))
   port
@@ -38,17 +38,17 @@ fn partition_test_new_port(
 
 ///|
 fn partition_test_new_edge(
-  source : @layered.LPort,
-  target : @layered.LPort,
-) -> @layered.LEdge {
-  let edge = @layered.new_l_edge()
+  source : @runtime.LPort,
+  target : @runtime.LPort,
+) -> @runtime.LEdge {
+  let edge = @runtime.new_l_edge()
   edge.set_source(Some(source))
   edge.set_target(Some(target))
   edge
 }
 
 ///|
-fn partition_test_require_source(edge : @layered.LEdge) -> @layered.LPort {
+fn partition_test_require_source(edge : @runtime.LEdge) -> @runtime.LPort {
   match edge.get_source() {
     Some(value) => value
     None => abort("edge has no source")
@@ -56,7 +56,7 @@ fn partition_test_require_source(edge : @layered.LEdge) -> @layered.LPort {
 }
 
 ///|
-fn partition_test_require_target(edge : @layered.LEdge) -> @layered.LPort {
+fn partition_test_require_target(edge : @runtime.LEdge) -> @runtime.LPort {
   match edge.get_target() {
     Some(value) => value
     None => abort("edge has no target")
@@ -64,7 +64,7 @@ fn partition_test_require_target(edge : @layered.LEdge) -> @layered.LPort {
 }
 
 ///|
-fn partition_test_require_node(port : @layered.LPort) -> @layered.LNode {
+fn partition_test_require_node(port : @runtime.LPort) -> @runtime.LNode {
   match port.get_node() {
     Some(value) => value
     None => abort("port has no owner node")
@@ -73,8 +73,8 @@ fn partition_test_require_node(port : @layered.LPort) -> @layered.LNode {
 
 ///|
 fn partition_test_collect_unique_edges(
-  nodes : Array[@layered.LNode],
-) -> Array[@layered.LEdge] {
+  nodes : Array[@runtime.LNode],
+) -> Array[@runtime.LEdge] {
   let edges = []
   let handles : Map[Int, Bool] = Map([])
   for node in nodes {
@@ -104,17 +104,17 @@ test "partition processors report expected task names" {
   let midprocessor = new_partition_midprocessor_layout_processor()
 
   let pre_monitor = @core.new_elk_progress_monitor()
-  preprocessor.process(@layered.new_l_graph(), Some(pre_monitor))
+  preprocessor.process(@runtime.new_l_graph(), Some(pre_monitor))
   inspect(pre_monitor.get_task_name(), content="Partition preprocessing")
 
   let mid_monitor = @core.new_elk_progress_monitor()
-  midprocessor.process(@layered.new_l_graph(), Some(mid_monitor))
+  midprocessor.process(@runtime.new_l_graph(), Some(mid_monitor))
   inspect(mid_monitor.get_task_name(), content="Partition midprocessing")
 }
 
 ///|
 test "partition preprocessor reverses higher-to-lower direct partition edge and increases priority" {
-  let graph = @layered.new_l_graph()
+  let graph = @runtime.new_l_graph()
   let preprocessor = new_partition_preprocessor_layout_processor()
 
   let source = partition_test_new_node(graph, Some(2))
@@ -135,7 +135,7 @@ test "partition preprocessor reverses higher-to-lower direct partition edge and 
     partition_test_require_target(edge).get_handle(),
     source_out.get_handle(),
   )
-  assert_true(edge.get_property_bool(@layered.internal_properties_reversed))
+  assert_true(edge.get_property_bool(@runtime.internal_properties_reversed))
   assert_eq(
     edge.get_property_int(@options.layered_options_priority_direction),
     1007,
@@ -144,7 +144,7 @@ test "partition preprocessor reverses higher-to-lower direct partition edge and 
 
 ///|
 test "partition preprocessor reverses path to unpartitioned node when lower partition is reachable" {
-  let graph = @layered.new_l_graph()
+  let graph = @runtime.new_l_graph()
   let preprocessor = new_partition_preprocessor_layout_processor()
 
   let high = partition_test_new_node(graph, Some(2))
@@ -169,7 +169,7 @@ test "partition preprocessor reverses path to unpartitioned node when lower part
     partition_test_require_target(edge0).get_handle(),
     high_out.get_handle(),
   )
-  assert_true(edge0.get_property_bool(@layered.internal_properties_reversed))
+  assert_true(edge0.get_property_bool(@runtime.internal_properties_reversed))
 
   assert_eq(
     partition_test_require_source(edge1).get_handle(),
@@ -179,12 +179,12 @@ test "partition preprocessor reverses path to unpartitioned node when lower part
     partition_test_require_target(edge1).get_handle(),
     low_in.get_handle(),
   )
-  assert_false(edge1.get_property_bool(@layered.internal_properties_reversed))
+  assert_false(edge1.get_property_bool(@runtime.internal_properties_reversed))
 }
 
 ///|
 test "partition midprocessor inserts partition dummy edges between consecutive partitions" {
-  let graph = @layered.new_l_graph()
+  let graph = @runtime.new_l_graph()
   let midprocessor = new_partition_midprocessor_layout_processor()
 
   let p0a = partition_test_new_node(graph, Some(0))
@@ -200,7 +200,7 @@ test "partition midprocessor inserts partition dummy edges between consecutive p
   let mut partition_dummy_port_count = 0
   for node in nodes {
     for port in node.get_ports() {
-      if port.get_property_bool(@layered.internal_properties_partition_dummy) {
+      if port.get_property_bool(@runtime.internal_properties_partition_dummy) {
         partition_dummy_port_count += 1
       }
     }
@@ -210,18 +210,18 @@ test "partition midprocessor inserts partition dummy edges between consecutive p
   assert_eq(edges.length(), 3)
   for edge in edges {
     assert_true(
-      edge.get_property_bool(@layered.internal_properties_partition_dummy),
+      edge.get_property_bool(@runtime.internal_properties_partition_dummy),
     )
     let source_port = partition_test_require_source(edge)
     let target_port = partition_test_require_target(edge)
     assert_true(
       source_port.get_property_bool(
-        @layered.internal_properties_partition_dummy,
+        @runtime.internal_properties_partition_dummy,
       ),
     )
     assert_true(
       target_port.get_property_bool(
-        @layered.internal_properties_partition_dummy,
+        @runtime.internal_properties_partition_dummy,
       ),
     )
     assert_eq(@core.port_side_to_string(source_port.get_side()), "EAST")

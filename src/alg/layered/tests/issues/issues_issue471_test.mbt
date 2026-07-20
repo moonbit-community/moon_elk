@@ -31,7 +31,7 @@ test "Issue471 vertical inline edge labels are centered" {
   let edge1 = @graph.create_edge(None)
   @graph.edge_add_source(edge1, @graph.make_node_shape(n1))
   @graph.edge_add_target(edge1, @graph.make_node_shape(n2))
-  @layered.layered_test_update_containment(Some(edge1))
+  @runtime.layered_test_update_containment(Some(edge1))
 
   let l1 = @graph.create_label(Some(@graph.make_edge_label_parent(edge1)))
   @graph.label_set_text(l1, "L1")
@@ -40,7 +40,7 @@ test "Issue471 vertical inline edge labels are centered" {
   let edge2 = @graph.create_edge(None)
   @graph.edge_add_source(edge2, @graph.make_node_shape(n2))
   @graph.edge_add_target(edge2, @graph.make_node_shape(n3))
-  @layered.layered_test_update_containment(Some(edge2))
+  @runtime.layered_test_update_containment(Some(edge2))
 
   let l2 = @graph.create_label(Some(@graph.make_edge_label_parent(edge2)))
   @graph.label_set_text(l2, "L2")

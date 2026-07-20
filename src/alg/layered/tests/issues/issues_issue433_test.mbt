@@ -17,7 +17,7 @@ test "Issue433 self-loop label stays inside graph bounds" {
   let loop_edge = @graph.create_edge(None)
   @graph.edge_add_source(loop_edge, @graph.make_node_shape(node))
   @graph.edge_add_target(loop_edge, @graph.make_node_shape(node))
-  @layered.layered_test_update_containment(Some(loop_edge))
+  @runtime.layered_test_update_containment(Some(loop_edge))
 
   let label = @graph.create_label(
     Some(@graph.make_edge_label_parent(loop_edge)),

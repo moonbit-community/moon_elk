@@ -2,9 +2,9 @@
 fn register_node_placement_phase(
   strategy : String,
   id : Int,
-  create : () -> @core.ILayoutProcessor[@layered.LayeredPhases, @layered.LGraph],
+  create : () -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph],
 ) -> Unit {
-  @layered.register_layered_node_placement_phase(
+  @runtime.register_layered_node_placement_phase(
     strategy,
     @core.new_layout_processor_factory(id, 3, create),
   )

@@ -1,14 +1,14 @@
 ///|
 fn comment_postprocessor_test_new_node(
-  graph : @layered.LGraph,
-  layer : @layered.Layer,
+  graph : @runtime.LGraph,
+  layer : @runtime.Layer,
   id : Int,
   x : Double,
   y : Double,
   width : Double,
   height : Double,
-) -> @layered.LNode {
-  let node = @layered.new_l_node(graph=Some(graph))
+) -> @runtime.LNode {
+  let node = @runtime.new_l_node(graph=Some(graph))
   node.set_id(id)
   node.set_layer(Some(layer))
   ignore(node.get_position().set_xy(x, y))
@@ -18,12 +18,12 @@ fn comment_postprocessor_test_new_node(
 
 ///|
 fn comment_postprocessor_test_new_comment_box(
-  graph : @layered.LGraph,
+  graph : @runtime.LGraph,
   id : Int,
   width : Double,
   height : Double,
-) -> @layered.LNode {
-  let box = @layered.new_l_node(graph=Some(graph))
+) -> @runtime.LNode {
+  let box = @runtime.new_l_node(graph=Some(graph))
   box.set_id(id)
   ignore(box.get_size().set_xy(width, height))
   box
@@ -31,17 +31,17 @@ fn comment_postprocessor_test_new_comment_box(
 
 ///|
 fn comment_postprocessor_test_new_port(
-  owner : @layered.LNode?,
+  owner : @runtime.LNode?,
   id : Int,
-) -> @layered.LPort {
-  let port = @layered.new_l_port()
+) -> @runtime.LPort {
+  let port = @runtime.new_l_port()
   port.set_id(id)
   port.set_node(owner)
   port
 }
 
 ///|
-fn comment_postprocessor_test_port_id(port : @layered.LPort?) -> Int {
+fn comment_postprocessor_test_port_id(port : @runtime.LPort?) -> Int {
   match port {
     Some(value) => value.get_id()
     None => -1
@@ -52,18 +52,18 @@ fn comment_postprocessor_test_port_id(port : @layered.LPort?) -> Int {
 test "comment postprocessor reports expected task name" {
   let processor = new_comment_postprocessor_layout_processor()
   let monitor = @core.new_elk_progress_monitor()
-  processor.process(@layered.new_l_graph(), Some(monitor))
+  processor.process(@runtime.new_l_graph(), Some(monitor))
   inspect(monitor.get_task_name(), content="Comment post-processing")
 }
 
 ///|
 test "comment postprocessor repositions comments and reconnects detached edges" {
-  let graph = @layered.new_l_graph()
+  let graph = @runtime.new_l_graph()
   graph.set_property_double(
     @options.layered_options_spacing_comment_comment, 5.0,
   )
 
-  let layer = @layered.new_layer(graph)
+  let layer = @runtime.new_layer(graph)
   graph.get_layers().push(layer)
 
   let node = comment_postprocessor_test_new_node(
@@ -74,11 +74,11 @@ test "comment postprocessor repositions comments and reconnects detached edges" 
   let top_box = comment_postprocessor_test_new_comment_box(graph, 2, 20.0, 10.0)
   let top_node_port = comment_postprocessor_test_new_port(None, 101)
   top_box.set_property_l_port(
-    @layered.internal_properties_comment_conn_port,
+    @runtime.internal_properties_comment_conn_port,
     Some(top_node_port),
   )
   let top_box_port = comment_postprocessor_test_new_port(Some(top_box), 201)
-  let top_edge = @layered.new_l_edge()
+  let top_edge = @runtime.new_l_edge()
   top_edge.set_id(301)
   top_edge.set_source(Some(top_box_port))
 
@@ -87,21 +87,21 @@ test "comment postprocessor repositions comments and reconnects detached edges" 
   )
   let bottom_node_port = comment_postprocessor_test_new_port(None, 102)
   bottom_box.set_property_l_port(
-    @layered.internal_properties_comment_conn_port,
+    @runtime.internal_properties_comment_conn_port,
     Some(bottom_node_port),
   )
   let bottom_box_port = comment_postprocessor_test_new_port(
     Some(bottom_box),
     202,
   )
-  let bottom_edge = @layered.new_l_edge()
+  let bottom_edge = @runtime.new_l_edge()
   bottom_edge.set_id(302)
   bottom_edge.set_target(Some(bottom_box_port))
 
-  node.set_property_l_node_array(@layered.internal_properties_top_comments, [
+  node.set_property_l_node_array(@runtime.internal_properties_top_comments, [
     top_box,
   ])
-  node.set_property_l_node_array(@layered.internal_properties_bottom_comments, [
+  node.set_property_l_node_array(@runtime.internal_properties_bottom_comments, [
     bottom_box,
   ])
 

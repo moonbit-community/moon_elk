@@ -13,7 +13,7 @@ fn issue871_connect_nodes(
   let edge = @graph.create_edge(None)
   @graph.edge_add_source(edge, @graph.make_node_shape(source))
   @graph.edge_add_target(edge, @graph.make_node_shape(target))
-  @layered.layered_test_update_containment(Some(edge))
+  @runtime.layered_test_update_containment(Some(edge))
   edge
 }
 

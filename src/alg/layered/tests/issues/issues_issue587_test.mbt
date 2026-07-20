@@ -13,7 +13,7 @@ fn issue587_test_build_graph() -> @graph.ElkNode {
   let edge = @graph.create_edge(None)
   @graph.edge_add_source(edge, @graph.make_node_shape(n1))
   @graph.edge_add_target(edge, @graph.make_node_shape(n2))
-  @layered.layered_test_update_containment(Some(edge))
+  @runtime.layered_test_update_containment(Some(edge))
   graph
 }
 

@@ -10,25 +10,25 @@ fn partition_post_processor_test_port_side(name : String) -> @core.PortSide {
 
 ///|
 fn partition_post_processor_test_new_node(
-  graph : @layered.LGraph,
-  layer : @layered.Layer,
-) -> @layered.LNode {
-  let node = @layered.new_l_node(graph=Some(graph))
+  graph : @runtime.LGraph,
+  layer : @runtime.Layer,
+) -> @runtime.LNode {
+  let node = @runtime.new_l_node(graph=Some(graph))
   node.set_layer(Some(layer))
   node
 }
 
 ///|
 fn partition_post_processor_test_new_port(
-  node : @layered.LNode,
+  node : @runtime.LNode,
   side : String,
   partition_dummy : Bool,
-) -> @layered.LPort {
-  let port = @layered.new_l_port()
+) -> @runtime.LPort {
+  let port = @runtime.new_l_port()
   port.set_node(Some(node))
   port.set_side(partition_post_processor_test_port_side(side))
   port.set_property_bool(
-    @layered.internal_properties_partition_dummy, partition_dummy,
+    @runtime.internal_properties_partition_dummy, partition_dummy,
   )
   port
 }
@@ -45,14 +45,14 @@ fn[T] partition_post_processor_test_is_none(value : T?) -> Bool {
 test "partition postprocessor reports expected task name" {
   let processor = new_partition_postprocessor_layout_processor()
   let monitor = @core.new_elk_progress_monitor()
-  processor.process(@layered.new_l_graph(), Some(monitor))
+  processor.process(@runtime.new_l_graph(), Some(monitor))
   inspect(monitor.get_task_name(), content="Partition postprocessing")
 }
 
 ///|
 test "partition postprocessor removes only partition dummy ports" {
-  let graph = @layered.new_l_graph()
-  let layer0 = @layered.new_layer(graph)
+  let graph = @runtime.new_l_graph()
+  let layer0 = @runtime.new_layer(graph)
   graph.get_layers().push(layer0)
 
   let node1 = partition_post_processor_test_new_node(graph, layer0)
@@ -73,12 +73,12 @@ test "partition postprocessor removes only partition dummy ports" {
   assert_eq(node2.get_ports()[0].get_handle(), node2_keep.get_handle())
   assert_false(
     node1.get_ports()[0].get_property_bool(
-      @layered.internal_properties_partition_dummy,
+      @runtime.internal_properties_partition_dummy,
     ),
   )
   assert_false(
     node2.get_ports()[0].get_property_bool(
-      @layered.internal_properties_partition_dummy,
+      @runtime.internal_properties_partition_dummy,
     ),
   )
 

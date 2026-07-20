@@ -12,12 +12,12 @@ pub fn new_group_model_order_calculator() -> GroupModelOrderCalculator {
 ///|
 pub fn GroupModelOrderCalculator::compute_constraint_model_order(
   self : GroupModelOrderCalculator,
-  node : @layered.LNode,
+  node : @runtime.LNode,
   offset : Int,
 ) -> Int {
   let mut model_order = 0
   match
-    @layered.layer_constraint_from_string(
+    @options.layer_constraint_from_string(
       node.get_property_string(
         @options.layered_options_layering_layer_constraint,
       ),
@@ -35,9 +35,9 @@ pub fn GroupModelOrderCalculator::compute_constraint_model_order(
     _ => ()
   }
 
-  if node.has_property_int(@layered.internal_properties_model_order) {
+  if node.has_property_int(@runtime.internal_properties_model_order) {
     model_order += node.get_property_int(
-      @layered.internal_properties_model_order,
+      @runtime.internal_properties_model_order,
     )
   }
   model_order
@@ -46,13 +46,13 @@ pub fn GroupModelOrderCalculator::compute_constraint_model_order(
 ///|
 pub fn GroupModelOrderCalculator::compute_constraint_group_model_order(
   self : GroupModelOrderCalculator,
-  node : @layered.LNode,
+  node : @runtime.LNode,
   offset : Int,
   small_offset : Int,
 ) -> Int {
   let mut model_order = 0
   match
-    @layered.layer_constraint_from_string(
+    @options.layer_constraint_from_string(
       node.get_property_string(
         @options.layered_options_layering_layer_constraint,
       ),
@@ -70,12 +70,12 @@ pub fn GroupModelOrderCalculator::compute_constraint_group_model_order(
     _ => ()
   }
 
-  if node.has_property_int(@layered.internal_properties_model_order) {
+  if node.has_property_int(@runtime.internal_properties_model_order) {
     model_order += node.get_property_int(
         @options.layered_options_consider_model_order_group_model_order_cycle_breaking_id,
       ) *
       small_offset +
-      node.get_property_int(@layered.internal_properties_model_order)
+      node.get_property_int(@runtime.internal_properties_model_order)
   }
   model_order
 }
