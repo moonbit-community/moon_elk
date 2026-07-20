@@ -7,7 +7,47 @@ import {
 }
 
 // Values
+pub fn center_edge_label_placement_strategy_uses_label_size_information_values() -> Array[Bool]
+
 pub fn component_ordering_strategy_equals(ComponentOrderingStrategy, ComponentOrderingStrategy) -> Bool
+
+pub fn crossing_minimization_strategy_to_string(CrossingMinimizationStrategy) -> String
+
+pub fn crossing_minimization_strategy_values() -> Array[String]
+
+pub fn cycle_breaking_strategy_to_string(CycleBreakingStrategy) -> String
+
+pub fn cycle_breaking_strategy_values() -> Array[String]
+
+pub fn edge_label_side_selection_to_string(EdgeLabelSideSelection) -> String
+
+pub fn edge_label_side_selection_transpose_values() -> Array[String]
+
+pub fn graph_properties_to_string(GraphProperties) -> String
+
+pub fn graph_properties_values() -> Array[GraphProperties]
+
+pub fn greedy_switch_type_values() -> Array[GreedySwitchType]
+
+pub fn group_order_strategy_equals(GroupOrderStrategy, GroupOrderStrategy) -> Bool
+
+pub fn group_order_strategy_from_string(String) -> GroupOrderStrategy
+
+pub fn group_order_strategy_to_string(GroupOrderStrategy) -> String
+
+pub fn group_order_strategy_values() -> Array[String]
+
+pub fn interactive_reference_point_to_string(InteractiveReferencePoint) -> String
+
+pub fn interactive_reference_point_values() -> Array[String]
+
+pub fn layer_constraint_from_string(String) -> LayerConstraint
+
+pub fn layer_constraint_is_first_or_last_separate(LayerConstraint) -> Bool
+
+pub fn layer_constraint_to_string(LayerConstraint) -> String
+
+pub fn layer_constraint_values() -> Array[String]
 
 pub let layered_algorithm_id : String
 
@@ -209,6 +249,22 @@ pub let layered_options_wrapping_validify_forbidden_indices : @graph.IProperty[S
 
 pub let layered_options_wrapping_validify_strategy : @graph.IProperty[String]
 
+pub fn layering_strategy_to_string(LayeringStrategy) -> String
+
+pub fn layering_strategy_values() -> Array[String]
+
+pub fn long_edge_ordering_strategy_return_values() -> Array[Int]
+
+pub fn node_flexibility_flags() -> Array[Bool]
+
+pub fn node_flexibility_is_at_least_values() -> Array[Bool]
+
+pub fn node_placement_strategy_to_string(NodePlacementStrategy) -> String
+
+pub fn node_placement_strategy_values() -> Array[String]
+
+pub fn port_type_values() -> Array[PortType]
+
 pub fn spline_routing_mode_to_string(SplineRoutingMode) -> String
 
 pub fn spline_routing_mode_values() -> Array[SplineRoutingMode]
@@ -216,6 +272,16 @@ pub fn spline_routing_mode_values() -> Array[SplineRoutingMode]
 // Errors
 
 // Types and methods
+pub(all) enum CenterEdgeLabelPlacementStrategy {
+  MedianLayer
+  TailLayer
+  HeadLayer
+  SpaceEfficientLayer
+  WidestLayer
+  CenterLayer
+}
+pub fn CenterEdgeLabelPlacementStrategy::uses_label_size_information(Self) -> Bool
+
 pub(all) enum ComponentOrderingStrategy {
   NoneType
   InsidePortSideGroups
@@ -223,10 +289,232 @@ pub(all) enum ComponentOrderingStrategy {
   ModelOrder
 }
 
+pub(all) enum ConstraintCalculationStrategy {
+  Quadratic
+  Scanline
+}
+
+pub(all) enum CrossingMinimizationStrategy {
+  CmsLayerSweep
+  CmsMedianLayerSweep
+  CmsInteractive
+  CmsNone
+}
+
+pub(all) enum CuttingStrategy {
+  Ard
+  Msd
+  Manual
+}
+
+pub(all) enum CycleBreakingStrategy {
+  CbsGreedy
+  CbsDepthFirst
+  CbsInteractive
+  CbsModelOrder
+  CbsGreedyModelOrder
+  CbsSccConnectivity
+  CbsSccNodeType
+  CbsDfsNodeOrder
+  CbsBfsNodeOrder
+}
+
+pub(all) enum DirectionCongruency {
+  ReadingDirection
+  Rotation
+}
+
+pub(all) enum EdgeConstraint {
+  NoneType
+  IncomingOnly
+  OutgoingOnly
+}
+
+pub(all) enum EdgeLabelSideSelection {
+  AlwaysUp
+  AlwaysDown
+  DirectionUp
+  DirectionDown
+  SmartUp
+  SmartDown
+}
+pub fn EdgeLabelSideSelection::transpose(Self) -> Self
+
+pub(all) enum EdgeStraighteningStrategy {
+  NoneType
+  ImproveStraightness
+}
+
+pub(all) enum FixedAlignment {
+  NoneType
+  LeftUp
+  RightUp
+  LeftDown
+  RightDown
+  Balanced
+}
+
+pub(all) enum GraphCompactionStrategy {
+  NoneType
+  Left
+  Right
+  LeftRightConstraintLocking
+  LeftRightConnectionLocking
+  EdgeLength
+}
+
+pub(all) enum GraphProperties {
+  Comments
+  ExternalPorts
+  Hyperedges
+  Hypernodes
+  NonFreePorts
+  NorthSouthPorts
+  SelfLoops
+  CenterLabels
+  EndLabels
+  Partitions
+}
+
+pub(all) enum GreedySwitchType {
+  OneSided
+  TwoSided
+  Off
+}
+
+pub(all) enum GroupOrderStrategy {
+  OnlyWithinGroup
+  ModelOrder
+  Enforced
+}
+
+pub(all) enum InLayerConstraint {
+  NoneType
+  Top
+  Bottom
+}
+
+pub(all) enum InteractiveReferencePoint {
+  Center
+  TopLeft
+}
+
+pub(all) enum LayerConstraint {
+  NoneType
+  First
+  FirstSeparate
+  Last
+  LastSeparate
+}
+
+pub(all) enum LayerUnzippingStrategy {
+  NoneType
+  Alternating
+}
+
+pub(all) enum LayeringStrategy {
+  LsNetworkSimplex
+  LsLongestPath
+  LsLongestPathSource
+  LsCoffmanGraham
+  LsInteractive
+  LsStretchWidth
+  LsMinWidth
+  LsBfModelOrder
+  LsDfModelOrder
+}
+
+pub(all) enum LongEdgeOrderingStrategy {
+  DummyNodeOver
+  DummyNodeUnder
+  Equal
+}
+pub fn LongEdgeOrderingStrategy::return_value(Self) -> Int
+
+pub(all) enum NodeFlexibility {
+  NfNone
+  NfPortPosition
+  NfNodeSizeWhereSpacePermits
+  NfNodeSize
+}
+pub fn NodeFlexibility::is_at_least(Self, Self) -> Bool
+pub fn NodeFlexibility::is_flexible_ports(Self) -> Bool
+pub fn NodeFlexibility::is_flexible_size(Self) -> Bool
+pub fn NodeFlexibility::is_flexible_size_where_space_permits(Self) -> Bool
+
+pub(all) enum NodePlacementStrategy {
+  NpsSimple
+  NpsInteractive
+  NpsLinearSegments
+  NpsBrandesKoepf
+  NpsNetworkSimplex
+}
+
+pub(all) enum NodePromotionStrategy {
+  NoneType
+  Nikolov
+  NikolovPixel
+  NikolovImproved
+  NikolovImprovedPixel
+  DummyNodePercentage
+  NodeCountPercentage
+  NoBoundary
+  ModelOrderLeftToRight
+  ModelOrderRightToLeft
+}
+
+pub(all) enum OrderingStrategy {
+  NoneType
+  NodesAndEdges
+  PreferEdges
+  PreferNodes
+}
+
+pub(all) enum PortSortingStrategy {
+  InputOrder
+  PortDegree
+}
+
+pub(all) enum PortType {
+  Undefined
+  Input
+  Output
+}
+
+pub(all) enum SelfLoopDistributionStrategy {
+  Equally
+  North
+  NorthSouth
+}
+
+pub(all) enum SelfLoopOrderingStrategy {
+  Stacked
+  ReverseStacked
+  Sequenced
+}
+
+pub(all) enum SelfLoopPlacementStrategy {
+  EquallyDistributed
+  NorthStacked
+  NorthSequence
+}
+
 pub(all) enum SplineRoutingMode {
   Conservative
   ConservativeSoft
   Sloppy
+}
+
+pub(all) enum ValidifyStrategy {
+  No
+  Greedy
+  LookBack
+}
+
+pub(all) enum WrappingStrategy {
+  Off
+  SingleEdge
+  MultiEdge
 }
 
 // Type aliases

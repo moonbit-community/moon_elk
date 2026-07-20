@@ -1,0 +1,251 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/moon_elk/alg/layered/pipeline"
+
+import {
+  "Milky2018/moon_elk/alg/layered/options",
+  "Milky2018/moon_elk/alg/layered/runtime",
+  "Milky2018/moon_elk/core",
+  "Milky2018/moon_elk/graph",
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn cross_hierarchy_edge_comparator_exception_message(CrossHierarchyEdgeComparatorException) -> String
+
+pub fn graph_configurator_activate_greedy_switch_for(@runtime.LGraph) -> Bool
+
+pub fn graph_configurator_configure_graph_properties(@runtime.LGraph) -> Unit
+
+pub fn graph_configurator_copy_port_constraints(@runtime.LGraph) -> Unit
+
+pub fn graph_configurator_default_favor_straight_edges(@runtime.LGraph) -> Unit
+
+pub fn graph_configurator_enforce_direction(@runtime.LGraph) -> Unit
+
+pub fn graph_configurator_enforce_min_edge_spacing(@runtime.LGraph) -> Unit
+
+pub fn graph_configurator_initialize_random_next_boolean(@runtime.LGraph) -> Unit
+
+pub fn graph_configurator_prepare_graph_for_layout(@runtime.LGraph) -> @runtime.LayeredLayoutPlan
+
+pub let layered_components_priority : @graph.IProperty[Int]
+
+pub let layered_components_separate_connected_components : @graph.IProperty[Bool]
+
+pub fn layered_elk_graph_transformer_get_origin_identifier(@runtime.LGraphElement) -> String?
+
+pub fn layered_layout_provider_as_layout_provider(LayeredLayoutProvider) -> @core.AbstractLayoutProvider
+
+pub fn new_component_group() -> ComponentGroup
+
+pub fn new_component_group_with_component(@runtime.LGraph) -> ComponentGroup
+
+pub fn new_compound_graph_postprocessor_layout_processor() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
+
+pub fn new_compound_graph_preprocessor_layout_processor() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
+
+pub fn new_cross_hierarchy_edge(@runtime.LEdge, @runtime.LGraph, @options.PortType) -> CrossHierarchyEdge
+
+pub fn new_cross_hierarchy_edge_comparator(@runtime.LGraph) -> CrossHierarchyEdgeComparator
+
+pub fn new_elk_layered() -> ElkLayered
+
+pub fn new_layered_abstract_graph_placer() -> LayeredAbstractGraphPlacer
+
+pub fn new_layered_component_group_graph_placer() -> LayeredComponentGroupGraphPlacer
+
+pub fn new_layered_component_group_model_order_graph_placer() -> LayeredComponentGroupModelOrderGraphPlacer
+
+pub fn new_layered_components_compactor() -> LayeredComponentsCompactor
+
+pub fn new_layered_components_processor() -> LayeredComponentsProcessor
+
+pub fn new_layered_elk_graph_importer() -> LayeredElkGraphImporter
+
+pub fn new_layered_elk_graph_layout_transferrer() -> LayeredElkGraphLayoutTransferrer
+
+pub fn new_layered_elk_graph_transformer() -> LayeredElkGraphTransformer
+
+pub fn[T] new_layered_igraph_transformer((T) -> @runtime.LGraph?, (@runtime.LGraph) -> Unit) -> LayeredIGraphTransformer[T]
+
+pub fn new_layered_layout_provider() -> LayeredLayoutProvider
+
+pub fn new_layered_model_order_row_graph_placer() -> LayeredModelOrderRowGraphPlacer
+
+pub fn new_layered_simple_row_graph_placer() -> LayeredSimpleRowGraphPlacer
+
+pub fn new_model_order_component_group() -> ModelOrderComponentGroup
+
+pub fn new_model_order_component_group_with_component(@runtime.LGraph) -> ModelOrderComponentGroup
+
+pub fn recursive_layered_apply_transformed_graph(@runtime.LGraph) -> Bool
+
+pub fn recursive_layered_import_graph_for_transform(Int) -> @runtime.LGraph?
+
+// Errors
+pub(all) suberror CrossHierarchyEdgeComparatorException {
+  CrossHierarchyEdgeComparatorException(String)
+} derive(ToJson, @debug.Debug)
+
+pub suberror ElkLayeredTestExecutionException {
+  ElkLayeredTestExecutionException(String)
+} derive(ToJson, @debug.Debug)
+
+// Types and methods
+pub struct ComponentGroup {
+  components : Map[Int, Array[@runtime.LGraph]]
+}
+pub fn ComponentGroup::add(Self, @runtime.LGraph) -> Bool
+pub fn ComponentGroup::can_add(Self, @runtime.LGraph) -> Bool
+pub fn ComponentGroup::get_components(Self) -> Array[@runtime.LGraph]
+pub fn ComponentGroup::get_components_with_connections(Self, Array[@core.PortSide]) -> Array[@runtime.LGraph]
+pub fn ComponentGroup::get_port_sides(Self) -> Array[Array[@core.PortSide]]
+
+pub struct CrossHierarchyEdge {
+  new_edge : @runtime.LEdge
+  graph : @runtime.LGraph
+  port_type : @options.PortType
+}
+pub fn CrossHierarchyEdge::get_actual_source(Self) -> @runtime.LPort
+pub fn CrossHierarchyEdge::get_actual_target(Self) -> @runtime.LPort
+pub fn CrossHierarchyEdge::get_edge(Self) -> @runtime.LEdge
+pub fn CrossHierarchyEdge::get_graph(Self) -> @runtime.LGraph
+pub fn CrossHierarchyEdge::get_type(Self) -> @options.PortType
+pub fn CrossHierarchyEdge::to_string(Self) -> String
+
+pub struct CrossHierarchyEdgeComparator {
+  graph : @runtime.LGraph
+}
+pub fn CrossHierarchyEdgeComparator::compare(Self, CrossHierarchyEdge, CrossHierarchyEdge) -> Int raise CrossHierarchyEdgeComparatorException
+
+pub struct ElkLayered {
+  components_processor : LayeredComponentsProcessor
+  compound_graph_preprocessor : @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
+  compound_graph_postprocessor : @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
+  mut test_controller : @core.TestController[@runtime.LGraph]?
+}
+pub fn ElkLayered::do_compound_layout(Self, @runtime.LGraph, @core.IElkProgressMonitor?) -> Unit
+pub fn ElkLayered::do_layout(Self, @runtime.LGraph, @core.IElkProgressMonitor?) -> Unit
+pub fn ElkLayered::get_layout_test_configuration(Self, ElkLayeredTestExecutionState) -> Array[@core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]]
+pub fn ElkLayered::is_layout_test_finished(Self, ElkLayeredTestExecutionState) -> Bool
+pub fn ElkLayered::prepare_layout_test(Self, @runtime.LGraph) -> ElkLayeredTestExecutionState
+pub fn ElkLayered::run_layout_test_step(Self, ElkLayeredTestExecutionState) -> Unit raise ElkLayeredTestExecutionException
+pub fn ElkLayered::run_layout_test_until(Self, @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph], ElkLayeredTestExecutionState, inclusive? : Bool) -> Unit
+pub fn ElkLayered::set_test_controller(Self, @core.TestController[@runtime.LGraph]?) -> Unit
+
+pub struct ElkLayeredTestExecutionState {
+  graphs : Array[@runtime.LGraph]
+  plan : @runtime.LayeredLayoutPlan
+  mut step : Int
+}
+pub fn ElkLayeredTestExecutionState::get_graphs(Self) -> Array[@runtime.LGraph]
+pub fn ElkLayeredTestExecutionState::get_step(Self) -> Int
+
+pub struct LayeredAbstractGraphPlacer {
+  _dummy : Unit
+}
+pub fn LayeredAbstractGraphPlacer::move_graph(Self, @runtime.LGraph, @runtime.LGraph, Double, Double) -> Unit
+pub fn LayeredAbstractGraphPlacer::move_graphs(Self, @runtime.LGraph, Array[@runtime.LGraph], Double, Double) -> Unit
+pub fn LayeredAbstractGraphPlacer::offset_graph(Self, @runtime.LGraph, Double, Double) -> Unit
+pub fn LayeredAbstractGraphPlacer::offset_graphs(Self, Array[@runtime.LGraph], Double, Double) -> Unit
+
+pub struct LayeredComponentGroupGraphPlacer {
+  base : LayeredAbstractGraphPlacer
+  component_groups : Array[ComponentGroup]
+}
+pub fn LayeredComponentGroupGraphPlacer::add_component(Self, @runtime.LGraph) -> Unit
+pub fn LayeredComponentGroupGraphPlacer::combine(Self, Array[@runtime.LGraph], @runtime.LGraph) -> Unit
+pub fn LayeredComponentGroupGraphPlacer::place_components(Self, ComponentGroup, Double) -> @core.KVector
+pub fn LayeredComponentGroupGraphPlacer::place_components_horizontally(Self, Array[@runtime.LGraph], Double) -> @core.KVector
+pub fn LayeredComponentGroupGraphPlacer::place_components_in_rows(Self, Array[@runtime.LGraph], Double) -> @core.KVector
+pub fn LayeredComponentGroupGraphPlacer::place_components_vertically(Self, Array[@runtime.LGraph], Double) -> @core.KVector
+
+pub struct LayeredComponentGroupModelOrderGraphPlacer {
+  base : LayeredAbstractGraphPlacer
+  helper : LayeredComponentGroupGraphPlacer
+  component_groups : Array[ModelOrderComponentGroup]
+}
+pub fn LayeredComponentGroupModelOrderGraphPlacer::add_component(Self, @runtime.LGraph) -> Unit
+pub fn LayeredComponentGroupModelOrderGraphPlacer::combine(Self, Array[@runtime.LGraph], @runtime.LGraph) -> Unit
+pub fn LayeredComponentGroupModelOrderGraphPlacer::place_components(Self, ModelOrderComponentGroup, Double) -> @core.KVector
+
+pub struct LayeredComponentsCompactor {
+  mut offset : @core.KVector
+  mut graph_size : @core.KVector
+}
+pub fn LayeredComponentsCompactor::compact(Self, Array[@runtime.LGraph], @core.KVector, Double) -> Unit
+pub fn LayeredComponentsCompactor::get_graph_size(Self) -> @core.KVector
+pub fn LayeredComponentsCompactor::get_offset(Self) -> @core.KVector
+
+pub struct LayeredComponentsProcessor {
+  component_group_graph_placer : LayeredComponentGroupGraphPlacer
+  component_group_model_order_graph_placer : LayeredComponentGroupModelOrderGraphPlacer
+  model_order_row_graph_placer : LayeredModelOrderRowGraphPlacer
+  simple_row_graph_placer : LayeredSimpleRowGraphPlacer
+  mut graph_placer_kind : LayeredGraphPlacerKind
+}
+pub fn LayeredComponentsProcessor::combine(Self, Array[@runtime.LGraph], @runtime.LGraph) -> Unit
+pub fn LayeredComponentsProcessor::split(Self, @runtime.LGraph) -> Array[@runtime.LGraph]
+
+pub struct LayeredElkGraphImporter {
+  marker : Int
+}
+pub fn LayeredElkGraphImporter::import_graph(Self, Int) -> @runtime.LGraph
+
+pub struct LayeredElkGraphLayoutTransferrer {
+  marker : Int
+}
+pub fn LayeredElkGraphLayoutTransferrer::apply_layout(Self, @runtime.LGraph) -> Unit
+
+pub struct LayeredElkGraphTransformer {
+  unit : Unit
+}
+pub fn LayeredElkGraphTransformer::apply_layout(Self, @runtime.LGraph) -> Unit
+pub fn LayeredElkGraphTransformer::as_layered_igraph_transformer(Self) -> LayeredIGraphTransformer[Int]
+pub fn LayeredElkGraphTransformer::import_graph(Self, Int) -> @runtime.LGraph
+
+type LayeredGraphPlacerKind
+
+pub struct LayeredIGraphTransformer[T] {
+  import_graph_fn : (T) -> @runtime.LGraph?
+  apply_layout_fn : (@runtime.LGraph) -> Unit
+}
+pub fn[T] LayeredIGraphTransformer::apply_layout(Self[T], @runtime.LGraph) -> Unit
+pub fn[T] LayeredIGraphTransformer::import_graph(Self[T], T) -> @runtime.LGraph?
+
+pub struct LayeredLayoutProvider {
+  elk_layered : ElkLayered
+}
+pub fn LayeredLayoutProvider::get_layout_algorithm(Self) -> ElkLayered
+pub fn LayeredLayoutProvider::layout(Self, Int, @core.IElkProgressMonitor) -> Unit
+pub fn LayeredLayoutProvider::set_test_controller(Self, @core.TestController[@runtime.LGraph]?) -> Unit
+pub fn LayeredLayoutProvider::start_layout_test(Self, Int) -> ElkLayeredTestExecutionState
+
+pub struct LayeredModelOrderRowGraphPlacer {
+  base : LayeredAbstractGraphPlacer
+}
+pub fn LayeredModelOrderRowGraphPlacer::combine(Self, Array[@runtime.LGraph], @runtime.LGraph) -> Unit
+pub fn LayeredModelOrderRowGraphPlacer::place_components(Self, Array[@runtime.LGraph], @runtime.LGraph, Double, Double) -> Unit
+pub fn LayeredModelOrderRowGraphPlacer::sort_components(Self, Array[@runtime.LGraph], @runtime.LGraph) -> Unit
+
+pub struct LayeredSimpleRowGraphPlacer {
+  base : LayeredAbstractGraphPlacer
+}
+pub fn LayeredSimpleRowGraphPlacer::combine(Self, Array[@runtime.LGraph], @runtime.LGraph) -> Unit
+pub fn LayeredSimpleRowGraphPlacer::place_components(Self, Array[@runtime.LGraph], @runtime.LGraph, Double, Double) -> Unit
+pub fn LayeredSimpleRowGraphPlacer::sort_components(Self, Array[@runtime.LGraph], @runtime.LGraph) -> Unit
+
+pub struct ModelOrderComponentGroup {
+  components : Map[Int, Array[@runtime.LGraph]]
+  component_order : Array[@runtime.LGraph]
+}
+pub fn ModelOrderComponentGroup::add(Self, @runtime.LGraph) -> Bool
+pub fn ModelOrderComponentGroup::can_add(Self, @runtime.LGraph) -> Bool
+pub fn ModelOrderComponentGroup::get_component_order(Self) -> Array[@runtime.LGraph]
+pub fn ModelOrderComponentGroup::get_components(Self) -> Array[@runtime.LGraph]
+pub fn ModelOrderComponentGroup::get_components_with_connections(Self, Array[@core.PortSide]) -> Array[@runtime.LGraph]
+pub fn ModelOrderComponentGroup::get_port_sides(Self) -> Array[Array[@core.PortSide]]
+
+// Type aliases
+
+// Traits

@@ -3,5 +3,5 @@ import {
   "moonbitlang/core/random",
   "Milky2018/moon_elk/core",
   "Milky2018/moon_elk/alg/layered/options",
-  "Milky2018/moon_elk/alg/layered",
+  "Milky2018/moon_elk/alg/layered/runtime" @layered,
 }

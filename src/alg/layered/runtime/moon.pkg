@@ -10,9 +10,12 @@ import {
   "moonbitlang/core/strconv",
   "moonbitlang/core/string",
   "Milky2018/moon_elk/graph",
+  "Milky2018/moon_elk/core",
+  "Milky2018/moon_elk/alg/common",
+  "Milky2018/moon_elk/alg/layered/options",
 }
 
 import {
-  "Milky2018/moon_elk/alg/layered/runtime" @layered,
-  "Milky2018/moon_elk/graph/json" @elk_graph_json,
+  "Milky2018/moon_elk/alg/test",
+  "Milky2018/moon_elk/alg/layered/engine",
 } for "test"

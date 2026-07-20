@@ -1,31 +1,53 @@
 # Layered package structure
 
-The `layered` package is the shared foundation and facade for the layered
-layout algorithm. It owns the graph model, phase descriptors, processor
-configuration, shared intermediate data, and the public layout provider.
+The top-level `layered` package is a compatibility facade. It keeps the public
+algorithm identifier, option vocabulary, and layout-provider constructor at
+their established import path, but it does not own their implementations.
 
-Concrete implementation clusters live in child packages:
+The implementation is split by dependency direction:
 
-- `engine` is the composition root. Importing it links the concrete phase and
+- `options` owns all layered option identifiers, enums, parsing helpers, and
+  option metadata. No algorithm package owns a second copy of these types.
+- `runtime` owns the shared layered graph model, internal properties, processor
+  protocol, and the mutually dependent ordering, routing, spacing, and
+  intermediate-processing kernel.
+- `pipeline` owns ELK graph import and layout transfer, graph configuration,
+  component and compound orchestration, and the public layout provider.
+- `engine` is the composition root. Importing it links concrete phase and
   processor packages and runs their registration initializers.
-- `phases/cycle` owns cycle-breaking implementations.
-- `phases/layering` owns layer-assignment implementations.
-- `phases/placement` owns node-placement implementations.
-- `processors/comments` owns comment-related intermediate processors.
-- `processors/partition` owns partition-related intermediate processors.
+- `phases/cycle`, `phases/layering`, and `phases/placement` own the concrete
+  implementations for the first, second, and fourth layered phases.
+- `processors/comments` and `processors/partition` own the extracted
+  intermediate processor families.
 - `compaction` owns the independent one-dimensional compaction model and
   algorithms.
-- `options` owns option definitions that do not depend on the shared layered
-  model.
-- `tests/issues` owns black-box regression tests for reported issues.
+- `tests/issues` owns black-box regressions for reported issues.
 
-Concrete packages depend on the shared `layered` package and register their
-factories through the composition seam. The shared package must not import a
-concrete implementation package, because doing so would create an import cycle.
+The production dependency graph is intentionally acyclic:
 
-The `p3order_*` and `p5edges_*` files remain in the shared package for now.
-Their apparent phase prefixes are misleading: crossing-minimization helpers
-are also used by greedy-switch intermediate processors, while routing types
-and spline helpers are stored in the graph model or consumed by self-loop and
-final-bendpoint processors. They should move only after those shared
-interfaces have been separated, not as a mechanical directory split.
+```text
+layered facade ──> pipeline ──> runtime ──> options
+       │              │
+       └──> engine ───┴──> concrete phases/processors ──> runtime
+```
+
+Concrete packages register factories through the runtime composition seam.
+The runtime package must never import `pipeline`, `engine`, the top-level
+facade, or a concrete implementation package in production code.
+
+## Why ordering, routing, and spacing remain in runtime
+
+These files are not merely independent phase implementations. The layered
+graph's typed property stores contain ordering random state, spacing state,
+self-loop state, wrapping state, end-label cells, and spline segments. Those
+types in turn operate directly on `LGraph`, `LNode`, `LPort`, and `LEdge`.
+Source-level dependency analysis therefore places the model and most of these
+processors in one strong component.
+
+Moving the files into separate directories while widening fields or using
+global handle maps would hide the cycle rather than remove it, and global maps
+would also reintroduce the lifetime risks that explicit graph disposal avoids.
+A future split must first redesign algorithm-specific property storage so that
+per-run state is owned outside the graph model. Until then, `runtime` is the
+explicit internal kernel rather than a public facade or a collection of
+unrelated definitions.

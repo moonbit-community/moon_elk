@@ -2,9 +2,6 @@
 let elk_graph_json_core_delegate_initialized : Ref[Bool] = Ref(false)
 
 ///|
-let _elk_graph_json_layered_engine_linked : Bool = @layered_engine.layered_engine_linked
-
-///|
 fn elk_graph_json_core_delegate_register_algorithm_if_missing(
   algorithm_id : String,
 ) -> Unit {

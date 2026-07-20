@@ -11,7 +11,6 @@ import {
   "Milky2018/moon_elk/graph",
   "Milky2018/moon_elk/core",
   "Milky2018/moon_elk/alg/layered",
-  "Milky2018/moon_elk/alg/layered/engine" @layered_engine,
   "Milky2018/moon_elk/alg/disco",
   "Milky2018/moon_elk/alg/mrtree",
   "Milky2018/moon_elk/alg/force",

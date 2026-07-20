@@ -2,18 +2,18 @@
 package "Milky2018/moon_elk/alg/layered/processors/comments"
 
 import {
-  "Milky2018/moon_elk/alg/layered",
+  "Milky2018/moon_elk/alg/layered/runtime",
   "Milky2018/moon_elk/core",
 }
 
 // Values
 pub let comment_processors_linked : Bool
 
-pub fn new_comment_node_margin_calculator_layout_processor() -> @core.ILayoutProcessor[@layered.LayeredPhases, @layered.LGraph]
+pub fn new_comment_node_margin_calculator_layout_processor() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
 
-pub fn new_comment_postprocessor_layout_processor() -> @core.ILayoutProcessor[@layered.LayeredPhases, @layered.LGraph]
+pub fn new_comment_postprocessor_layout_processor() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
 
-pub fn new_comment_preprocessor_layout_processor() -> @core.ILayoutProcessor[@layered.LayeredPhases, @layered.LGraph]
+pub fn new_comment_preprocessor_layout_processor() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
 
 // Errors
 
