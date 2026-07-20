@@ -50,7 +50,7 @@ fn barycenter_test_new_port_dist_and_resolver(
 ///|
 test "BarycenterHeuristic removes crossing in simple cross" {
   let creator = new_test_graph_creator()
-  let random = new_mock_random()
+  let random = new_greedy_switch_mock_random()
   let graph = creator.get_graph()
 
   let left_nodes = creator.add_nodes_to_layer(2, creator.make_layer(graph))
@@ -97,7 +97,7 @@ test "BarycenterHeuristic removes crossing in simple cross" {
 ///|
 test "BarycenterHeuristic mock randomize first layer" {
   let creator = new_test_graph_creator()
-  let random = new_mock_random()
+  let random = new_greedy_switch_mock_random()
   let graph = creator.get_graph()
 
   let left_nodes = creator.add_nodes_to_layer(2, creator.make_layer(graph))
@@ -146,7 +146,7 @@ test "BarycenterHeuristic mock randomize first layer" {
 ///|
 test "BarycenterHeuristic fills unknown barycenters" {
   let creator = new_test_graph_creator()
-  let random = new_mock_random()
+  let random = new_greedy_switch_mock_random()
   let graph = creator.get_graph()
 
   let left_node = creator.add_node_to_layer(creator.make_layer(graph))
@@ -198,7 +198,7 @@ test "BarycenterHeuristic fills unknown barycenters" {
 ///|
 test "BarycenterHeuristic fixed port order removes crossing independent of random" {
   let creator = new_test_graph_creator()
-  let random = new_mock_random()
+  let random = new_greedy_switch_mock_random()
   let graph = creator.get_graph()
 
   let left_layer = creator.make_layer(graph)
@@ -251,7 +251,7 @@ test "BarycenterHeuristic fixed port order removes crossing independent of rando
 ///|
 test "BarycenterHeuristic fixed port order removes crossing backwards" {
   let creator = new_test_graph_creator()
-  let random = new_mock_random()
+  let random = new_greedy_switch_mock_random()
   let graph = creator.get_graph()
 
   let left_nodes = creator.add_nodes_to_layer(2, creator.make_layer(graph))
@@ -293,7 +293,7 @@ test "BarycenterHeuristic fixed port order removes crossing backwards" {
 ///|
 test "BarycenterHeuristic handles in-layer edges" {
   let creator = new_test_graph_creator()
-  let random = new_mock_random()
+  let random = new_greedy_switch_mock_random()
   let graph = creator.get_graph()
 
   let left_node = creator.add_node_to_layer(creator.make_layer(graph))
@@ -340,7 +340,7 @@ test "BarycenterHeuristic handles in-layer edges" {
 ///|
 test "BarycenterHeuristic handles north south edges" {
   let creator = new_test_graph_creator()
-  let random = new_mock_random()
+  let random = new_greedy_switch_mock_random()
   let graph = creator.get_graph()
 
   let left_nodes = creator.add_nodes_to_layer(1, creator.make_layer(graph))

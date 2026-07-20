@@ -2,7 +2,7 @@
 fn greedy_model_order_cycle_breaker_choose_node_with_max_outflow(
   nodes : Array[@runtime.LNode],
   graph : @runtime.LGraph,
-  random : @runtime.MockRandom,
+  random : @state.GreedySwitchMockRandom,
 ) -> @runtime.LNode {
   let mut return_node : @runtime.LNode? = None
   let mut minimum_model_order = @int.MAX_VALUE

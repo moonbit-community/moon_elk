@@ -99,3 +99,4 @@ pub fn[N, E] OneDimensionalComponentsCompaction::get_offset(Self[N, E], ICompone
 // Type aliases
 
 // Traits
+

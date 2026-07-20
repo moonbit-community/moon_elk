@@ -10,7 +10,7 @@ fn model_order_barycenter_test_node_ids(nodes : Array[LNode]) -> Array[Int] {
 ///|
 fn model_order_barycenter_test_build_heuristic(
   node_order : Array[Array[LNode]],
-  random : MockRandom,
+  random : GreedySwitchMockRandom,
 ) -> (ModelOrderBarycenterHeuristic, NodeRelativePortDistributor) {
   let port_distributor = new_node_relative_port_distributor(node_order.length())
   let constraint_resolver = new_forster_constraint_resolver(node_order)
@@ -54,7 +54,7 @@ fn model_order_barycenter_test_cross_graph(
 ///|
 test "ModelOrderBarycenterHeuristic preserves model order when forced" {
   let creator = new_test_graph_creator()
-  let random = new_mock_random()
+  let random = new_greedy_switch_mock_random()
   let graph = creator.get_graph()
   let node_order = model_order_barycenter_test_cross_graph(creator)
   let free_layer = node_order[1]
@@ -89,7 +89,7 @@ test "ModelOrderBarycenterHeuristic preserves model order when forced" {
 ///|
 test "ModelOrderBarycenterHeuristic keeps model order across groups when forced" {
   let creator = new_test_graph_creator()
-  let random = new_mock_random()
+  let random = new_greedy_switch_mock_random()
   let graph = creator.get_graph()
   let node_order = model_order_barycenter_test_cross_graph(creator)
   let free_layer = node_order[1]
@@ -128,7 +128,7 @@ test "ModelOrderBarycenterHeuristic keeps model order across groups when forced"
 ///|
 test "ModelOrderBarycenterHeuristic ignores separate-layer constraint when forced" {
   let creator = new_test_graph_creator()
-  let random = new_mock_random()
+  let random = new_greedy_switch_mock_random()
   let graph = creator.get_graph()
   let node_order = model_order_barycenter_test_cross_graph(creator)
   let free_layer = node_order[1]

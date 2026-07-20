@@ -53,3 +53,4 @@ pub fn RectangleStripOverlapRemover::with_start_coordinate(Self, Double) -> Self
 // Type aliases
 
 // Traits
+

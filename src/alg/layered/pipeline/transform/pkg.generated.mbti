@@ -18,7 +18,7 @@ pub fn graph_configurator_enforce_direction(@runtime.LGraph) -> Unit
 
 pub fn graph_configurator_enforce_min_edge_spacing(@runtime.LGraph) -> Unit
 
-pub fn graph_configurator_initialize_random_next_boolean(@runtime.LGraph) -> Unit
+pub fn graph_configurator_initialize_layout_state(@runtime.LGraph) -> Unit
 
 pub fn layered_elk_graph_transformer_get_origin_identifier(@runtime.LGraphElement) -> String?
 
@@ -66,3 +66,4 @@ pub fn[T] LayeredIGraphTransformer::import_graph(Self[T], T) -> @runtime.LGraph?
 // Type aliases
 
 // Traits
+

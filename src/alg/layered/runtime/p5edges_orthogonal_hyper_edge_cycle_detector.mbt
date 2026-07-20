@@ -141,7 +141,7 @@ fn hyper_edge_cycle_detector_compute_linear_ordering_marks(
   sources : Array[HyperEdgeSegment],
   sinks : Array[HyperEdgeSegment],
   critical_only : Bool,
-  random : MockRandom,
+  random : GreedySwitchMockRandom,
 ) -> Unit {
   let unprocessed = hyper_edge_cycle_detector_sorted_unprocessed(segments)
   let max_segments = []
@@ -219,7 +219,7 @@ fn hyper_edge_cycle_detector_compute_linear_ordering_marks(
 pub fn hyper_edge_cycle_detector_detect_cycles(
   segments : Array[HyperEdgeSegment],
   critical_only : Bool,
-  random : MockRandom,
+  random : GreedySwitchMockRandom,
 ) -> Array[HyperEdgeSegmentDependency] {
   let result = []
 

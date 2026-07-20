@@ -19,7 +19,7 @@ pub struct LGraph {
     Array[(LEdge, (LEdge, LGraph, PortType))],
   ]
   node_array_properties : Map[String, Array[LNode]]
-  random_properties : Map[String, GreedySwitchMockRandom]
+  mut layout_state : LayeredLayoutState
   int_properties : Map[String, Int]
   bool_properties : Map[String, Bool]
   double_properties : Map[String, Double]
@@ -51,7 +51,7 @@ pub fn new_l_graph() -> LGraph {
     graph_properties_array_properties: Map([]),
     cross_hierarchy_map_entry_array_properties: Map([]),
     node_array_properties: Map([]),
-    random_properties: Map([]),
+    layout_state: new_layered_layout_state(),
     int_properties: Map([]),
     bool_properties: Map([]),
     double_properties: Map([]),
@@ -181,39 +181,6 @@ pub fn LGraph::has_property_l_node_array(
   property : @graph.IProperty[Array[LNode]],
 ) -> Bool {
   self.node_array_properties.contains(property.get_id())
-}
-
-///|
-pub fn LGraph::set_property_mock_random(
-  self : LGraph,
-  property : @graph.IProperty[GreedySwitchMockRandom?],
-  value : GreedySwitchMockRandom?,
-) -> Unit {
-  if value is Some(random) {
-    self.random_properties[property.get_id()] = random
-  } else {
-    ignore(self.random_properties.remove(property.get_id()))
-  }
-}
-
-///|
-pub fn LGraph::get_property_mock_random(
-  self : LGraph,
-  property : @graph.IProperty[GreedySwitchMockRandom?],
-) -> GreedySwitchMockRandom? {
-  if self.random_properties.get(property.get_id()) is Some(random) {
-    Some(random)
-  } else {
-    property.get_default()
-  }
-}
-
-///|
-pub fn LGraph::has_property_mock_random(
-  self : LGraph,
-  property : @graph.IProperty[GreedySwitchMockRandom?],
-) -> Bool {
-  self.random_properties.contains(property.get_id())
 }
 
 ///|
@@ -579,7 +546,16 @@ pub fn LGraph::set_parent_node(self : LGraph, parent_node : LNode?) -> Unit {
 }
 
 ///|
+pub fn LGraph::get_layout_state(self : LGraph) -> LayeredLayoutState {
+  self.layout_state
+}
+
+///|
 pub fn LGraph::copy_properties(self : LGraph, source : LGraph) -> Unit {
+  // Component graphs participate in the same execution plan and must consume
+  // the same transient state, especially the deterministic random sequence.
+  self.layout_state = source.layout_state
+
   self.port_side_array_properties.clear()
   for entry in source.port_side_array_properties.to_array() {
     let (key, value) = entry
@@ -602,12 +578,6 @@ pub fn LGraph::copy_properties(self : LGraph, source : LGraph) -> Unit {
   for entry in source.node_array_properties.to_array() {
     let (key, value) = entry
     self.node_array_properties[key] = value.copy()
-  }
-
-  self.random_properties.clear()
-  for entry in source.random_properties.to_array() {
-    let (key, value) = entry
-    self.random_properties[key] = value
   }
 
   self.int_properties.clear()

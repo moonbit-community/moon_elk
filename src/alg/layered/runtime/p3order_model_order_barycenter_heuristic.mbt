@@ -69,7 +69,7 @@ pub struct ModelOrderBarycenterHeuristic {
 ///|
 pub fn new_model_order_barycenter_heuristic(
   constraint_resolver : ForsterConstraintResolver,
-  random : MockRandom,
+  random : GreedySwitchMockRandom,
   port_distributor : AbstractBarycenterPortDistributor,
   graph : Array[Array[LNode]],
 ) -> ModelOrderBarycenterHeuristic {

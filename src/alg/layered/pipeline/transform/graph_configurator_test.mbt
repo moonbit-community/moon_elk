@@ -235,16 +235,15 @@ test "graph configurator preserves explicit favor-straight-edges value" {
 }
 
 ///|
-test "graph configurator initializes random-next-boolean from random seed" {
+test "graph configurator initializes per-layout state from random seed" {
   let graph = graph_configurator_test_graph(0)
   graph.set_property_int(@core.random_seed, 42)
 
-  graph_configurator_initialize_random_next_boolean(graph)
+  graph_configurator_initialize_layout_state(graph)
 
-  assert_true(graph.has_property_bool(internal_properties_random_next_boolean))
   assert_eq(
-    graph.get_property_bool(internal_properties_random_next_boolean),
-    graph_configurator_test_seeded_next_boolean(42),
+    graph.get_layout_state().first_random_boolean(),
+    Some(graph_configurator_test_seeded_next_boolean(42)),
   )
 }
 
@@ -280,8 +279,8 @@ test "graph configurator configures graph properties in one call" {
     "FIXED_ORDER",
   )
   assert_eq(
-    graph.get_property_bool(internal_properties_random_next_boolean),
-    graph_configurator_test_seeded_next_boolean(5),
+    graph.get_layout_state().first_random_boolean(),
+    Some(graph_configurator_test_seeded_next_boolean(5)),
   )
   assert_true(graph.has_property_spacings(internal_properties_spacings))
   assert_true(

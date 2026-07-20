@@ -241,7 +241,7 @@ pub fn dispose_layered_graph(root : LGraph) -> Unit {
       graph.graph_properties_array_properties.clear()
       graph.cross_hierarchy_map_entry_array_properties.clear()
       graph.node_array_properties.clear()
-      graph.random_properties.clear()
+      graph.layout_state.clear()
       graph.int_properties.clear()
       graph.bool_properties.clear()
       graph.double_properties.clear()

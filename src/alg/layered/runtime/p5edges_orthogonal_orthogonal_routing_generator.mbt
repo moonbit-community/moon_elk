@@ -132,25 +132,10 @@ pub fn OrthogonalRoutingGenerator::get_critical_conflict_threshold(
 ///|
 fn orthogonal_routing_generator_graph_random(
   layered_graph : LGraph,
-) -> MockRandom {
-  if layered_graph.get_property_mock_random(internal_properties_random)
-    is Some(random) {
-    random
-  } else {
-    let seed_value = layered_graph.get_property_int(@core.random_seed)
-    let random = if seed_value == 0 {
-      new_greedy_switch_mock_random_seeded(
-        @random.Rand::new().int(limit=@int.MAX_VALUE),
-      )
-    } else {
-      new_greedy_switch_mock_random_seeded(seed_value)
-    }
-    layered_graph.set_property_mock_random(
-      internal_properties_random,
-      Some(random),
-    )
-    random
-  }
+) -> GreedySwitchMockRandom {
+  layered_graph
+  .get_layout_state()
+  .random(layered_graph.get_property_int(@core.random_seed))
 }
 
 ///|
@@ -181,7 +166,7 @@ fn OrthogonalRoutingGenerator::create_hyper_edge_segments(
 fn OrthogonalRoutingGenerator::break_critical_cycles(
   self : OrthogonalRoutingGenerator,
   edge_segments : Array[HyperEdgeSegment],
-  random : MockRandom,
+  random : GreedySwitchMockRandom,
 ) -> Unit {
   let cycle_dependencies = hyper_edge_cycle_detector_detect_cycles(
     edge_segments, true, random,
@@ -483,7 +468,7 @@ pub fn orthogonal_routing_generator_count_crossings(
 ///|
 pub fn orthogonal_routing_generator_break_non_critical_cycles(
   edge_segments : Array[HyperEdgeSegment],
-  random : MockRandom,
+  random : GreedySwitchMockRandom,
 ) -> Unit {
   let cycle_dependencies = hyper_edge_cycle_detector_detect_cycles(
     edge_segments, false, random,

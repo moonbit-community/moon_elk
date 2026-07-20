@@ -225,3 +225,4 @@ pub type ICostFunction = (TEdge) -> Double
 pub type IOverlapHandler = (Node, Node) -> Unit
 
 // Traits
+

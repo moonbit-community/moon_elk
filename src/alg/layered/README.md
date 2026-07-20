@@ -10,7 +10,8 @@ The implementation is split by dependency direction:
   option metadata. No algorithm package owns a second copy of these types.
 - `runtime` owns the shared layered graph model, internal properties, processor
   protocol, and the mutually dependent ordering, routing, spacing, and
-  intermediate-processing kernel.
+  intermediate-processing kernel. Its `state` subpackage owns mutable state
+  shared for the duration of one layout run.
 - `pipeline` owns the public layout provider and composition flow. Its
   `transform`, `components`, and `compound` subpackages own graph conversion,
   disconnected-component placement, and compound-graph preprocessing
@@ -44,19 +45,26 @@ Concrete packages register factories through the runtime composition seam.
 The runtime package must never import `pipeline`, `engine`, or a concrete
 implementation package in production code.
 
-## Why ordering, routing, and spacing remain in runtime
+## Why most ordering, routing, and spacing code remains in runtime
 
 These files are not merely independent phase implementations. The layered
-graph's typed property stores contain ordering random state, spacing state,
-self-loop state, wrapping state, end-label cells, and spline segments. Those
-types in turn operate directly on `LGraph`, `LNode`, `LPort`, and `LEdge`.
-Source-level dependency analysis therefore places the model and most of these
-processors in one strong component.
+graph's typed property stores still contain spacing state, self-loop state,
+wrapping state, end-label cells, and spline segments. Those types in turn
+operate directly on `LGraph`, `LNode`, `LPort`, and `LEdge`. Source-level
+dependency analysis therefore places the model and most of these processors in
+one strong component.
+
+The ordering random state is the first state extracted from that component.
+The execution plan retains `runtime/state::LayeredLayoutState` for the full
+run, while the root graph and its split component graphs carry the same
+reference so existing processors consume one deterministic random sequence.
+Disposal clears the state explicitly; the random object is neither stored in a
+generic property map nor retained in a global registry.
 
 Moving the files into separate directories while widening fields or using
 global handle maps would hide the cycle rather than remove it, and global maps
 would also reintroduce the lifetime risks that explicit graph disposal avoids.
-A future split must first redesign algorithm-specific property storage so that
-per-run state is owned outside the graph model. Until then, `runtime` is the
-explicit internal kernel rather than a public facade or a collection of
-unrelated definitions.
+Further splits must continue moving algorithm-specific state behind similarly
+explicit lifetime boundaries before moving dependent processors. Until then,
+`runtime` is the explicit internal kernel rather than a public facade or a
+collection of unrelated definitions.

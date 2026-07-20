@@ -227,3 +227,4 @@ pub fn TwoBitGrid::width(Self) -> Int
 // Type aliases
 
 // Traits
+

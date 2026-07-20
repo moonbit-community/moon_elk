@@ -210,3 +210,4 @@ pub type ILockFunction = (CNode, @core.Direction) -> Bool
 pub type ScanlineEventHandler[T] = (T) -> Unit
 
 // Traits
+

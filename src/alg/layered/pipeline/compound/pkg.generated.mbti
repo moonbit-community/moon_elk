@@ -45,3 +45,4 @@ pub fn CrossHierarchyEdgeComparator::compare(Self, CrossHierarchyEdge, CrossHier
 // Type aliases
 
 // Traits
+

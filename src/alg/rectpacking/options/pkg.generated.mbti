@@ -60,3 +60,4 @@ pub(all) enum RectpackingOptimizationGoal {
 // Type aliases
 
 // Traits
+

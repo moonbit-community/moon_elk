@@ -107,7 +107,7 @@ fn barycenter_is_first_layer(
 ///|
 pub struct BarycenterHeuristic {
   mut port_ranks : Array[Double]
-  random : MockRandom
+  random : GreedySwitchMockRandom
   constraint_resolver : ForsterConstraintResolver
   mut barycenter_state : Array[Array[BarycenterState?]]
   port_distributor : AbstractBarycenterPortDistributor
@@ -116,7 +116,7 @@ pub struct BarycenterHeuristic {
 ///|
 pub fn new_barycenter_heuristic(
   constraint_resolver : ForsterConstraintResolver,
-  random : MockRandom,
+  random : GreedySwitchMockRandom,
   port_distributor : AbstractBarycenterPortDistributor,
   graph : Array[Array[LNode]],
 ) -> BarycenterHeuristic {

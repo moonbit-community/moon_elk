@@ -74,3 +74,4 @@ pub fn LayeredRectilinearConvexHull::split_into_rectangles(Self) -> Array[@core.
 pub type LayeredScanlineEventHandler[T] = (T) -> Unit
 
 // Traits
+

@@ -47,7 +47,7 @@ fn orthogonal_routing_generator_test_contains_dependency(
 }
 
 ///|
-fn orthogonal_routing_generator_test_seeded_random() -> MockRandom {
+fn orthogonal_routing_generator_test_seeded_random() -> GreedySwitchMockRandom {
   new_greedy_switch_mock_random_seeded(1)
 }
 

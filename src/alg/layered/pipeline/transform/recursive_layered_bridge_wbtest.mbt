@@ -52,10 +52,8 @@ test "recursive layered context applies graph configurator properties" {
     ),
   )
   assert_eq(
-    context.layered_graph.get_property_bool(
-      internal_properties_random_next_boolean,
-    ),
-    recursive_graph_layout_engine_test_seeded_next_boolean(5),
+    context.layered_graph.get_layout_state().first_random_boolean(),
+    Some(recursive_graph_layout_engine_test_seeded_next_boolean(5)),
   )
 
   let fixed_lnode = match context.elk_to_lnode.get(fixed_node) {

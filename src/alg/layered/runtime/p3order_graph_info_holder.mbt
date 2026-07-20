@@ -56,25 +56,14 @@ fn graph_info_is_two_sided(cross_min_type : CrossMinType) -> Bool {
 }
 
 ///|
-fn graph_info_random(graph : LGraph) -> MockRandom {
-  if graph.get_property_mock_random(internal_properties_random) is Some(random) {
-    random
-  } else {
-    let seed_value = graph.get_property_int(@core.random_seed)
-    if seed_value == 0 {
-      new_greedy_switch_mock_random_seeded(
-        @random.Rand::new().int(limit=@int.MAX_VALUE),
-      )
-    } else {
-      new_greedy_switch_mock_random_seeded(seed_value)
-    }
-  }
+fn graph_info_random(graph : LGraph) -> GreedySwitchMockRandom {
+  graph.get_layout_state().random(graph.get_property_int(@core.random_seed))
 }
 
 ///|
 fn graph_info_port_distributor_as_barycenter(
   node_order : Array[Array[LNode]],
-  random : MockRandom,
+  random : GreedySwitchMockRandom,
 ) -> (ISweepPortDistributor, AbstractBarycenterPortDistributor) {
   if random.next_boolean() {
     let node_relative = new_node_relative_port_distributor(node_order.length())
@@ -144,7 +133,7 @@ pub struct GraphInfoHolder {
   mut cross_minimizer_ref : ICrossingMinimizationHeuristic?
   mut port_distributor_ref : ISweepPortDistributor?
   mut crossings_counter_ref : AllCrossingsCounter?
-  mut random_ref : MockRandom?
+  mut random_ref : GreedySwitchMockRandom?
   mut n_ports : Int
   mut cross_min_deterministic_ref : Bool
   mut cross_min_always_improves_ref : Bool
@@ -468,7 +457,9 @@ pub fn GraphInfoHolder::cross_min_always_improves(
 }
 
 ///|
-pub fn GraphInfoHolder::random(self : GraphInfoHolder) -> MockRandom? {
+pub fn GraphInfoHolder::random(
+  self : GraphInfoHolder,
+) -> GreedySwitchMockRandom? {
   self.random_ref
 }
 

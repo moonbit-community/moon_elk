@@ -8,7 +8,7 @@ priv struct GreedyCycleBreakerState {
   sinks : Array[@runtime.LNode]
   mut sink_head : Int
   layered_graph : @runtime.LGraph
-  random : @runtime.MockRandom
+  random : @state.GreedySwitchMockRandom
 }
 
 ///|
@@ -67,7 +67,7 @@ fn greedy_cycle_breaker_array_clear(values : Array[@runtime.LNode]) -> Unit {
 fn greedy_cycle_breaker_choose_node_with_max_outflow_default(
   nodes : Array[@runtime.LNode],
   graph : @runtime.LGraph,
-  random : @runtime.MockRandom,
+  random : @state.GreedySwitchMockRandom,
 ) -> @runtime.LNode {
   ignore(graph)
   let index = random.int(nodes.length())
@@ -138,7 +138,7 @@ fn greedy_cycle_breaker_collect_and_mark(
   choose_node_with_max_outflow : (
     Array[@runtime.LNode],
     @runtime.LGraph,
-    @runtime.MockRandom,
+    @state.GreedySwitchMockRandom,
   ) -> @runtime.LNode,
 ) -> Unit {
   let nodes = state.layered_graph.get_layerless_nodes()
@@ -258,7 +258,7 @@ fn greedy_cycle_breaker_process_with_chooser(
   choose_node_with_max_outflow : (
     Array[@runtime.LNode],
     @runtime.LGraph,
-    @runtime.MockRandom,
+    @state.GreedySwitchMockRandom,
   ) -> @runtime.LNode,
 ) -> Unit {
   let monitor = match progress_monitor {
@@ -268,21 +268,9 @@ fn greedy_cycle_breaker_process_with_chooser(
   ignore(monitor.begin("Greedy cycle removal", 1.0))
 
   let nodes = layered_graph.get_layerless_nodes()
-  let random = if layered_graph.get_property_mock_random(
-      @runtime.internal_properties_random,
-    )
-    is Some(value) {
-    value
-  } else {
-    let seed_value = layered_graph.get_property_int(@core.random_seed)
-    if seed_value == 0 {
-      @runtime.new_greedy_switch_mock_random_seeded(
-        @random.Rand::new().int(limit=@int.MAX_VALUE),
-      )
-    } else {
-      @runtime.new_greedy_switch_mock_random_seeded(seed_value)
-    }
-  }
+  let random = layered_graph
+    .get_layout_state()
+    .random(layered_graph.get_property_int(@core.random_seed))
   let state = {
     indeg: Array::make(nodes.length(), 0),
     outdeg: Array::make(nodes.length(), 0),

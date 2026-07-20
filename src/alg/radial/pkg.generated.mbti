@@ -295,3 +295,4 @@ pub fn StraightLineEdgeRouter::route_edges(Self, Int) -> Unit
 // Type aliases
 
 // Traits
+

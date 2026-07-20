@@ -158,7 +158,7 @@ pub struct LayerSweepCrossingMinimizer {
   cross_min_type : CrossMinType
   graph_info_holders : Array[GraphInfoHolder]
   graphs_whose_node_order_changed : Array[GraphInfoHolder]
-  mut random : MockRandom
+  mut random : GreedySwitchMockRandom
   mut random_seed : Int64
 }
 
@@ -170,7 +170,7 @@ pub fn new_layer_sweep_crossing_minimizer(
     cross_min_type,
     graph_info_holders: [],
     graphs_whose_node_order_changed: [],
-    random: new_mock_random(),
+    random: new_greedy_switch_mock_random(),
     random_seed: 0L,
   }
 }
@@ -1055,24 +1055,10 @@ fn LayerSweepCrossingMinimizer::initialize(
 ) -> Array[GraphInfoHolder] {
   self.clear_graph_info_holders()
 
-  if root_graph.get_property_mock_random(internal_properties_random)
-    is Some(random) {
-    self.random = random
-  } else {
-    let seed_value = root_graph.get_property_int(@core.random_seed)
-    self.random = if seed_value == 0 {
-      new_greedy_switch_mock_random_seeded(
-        @random.Rand::new().int(limit=@int.MAX_VALUE),
-      )
-    } else {
-      new_greedy_switch_mock_random_seeded(seed_value)
-    }
-  }
+  self.random = root_graph
+    .get_layout_state()
+    .random(root_graph.get_property_int(@core.random_seed))
   self.random_seed = self.random.next_long()
-  root_graph.set_property_mock_random(
-    internal_properties_random,
-    Some(self.random),
-  )
 
   let graphs_to_sweep_on = []
   let graphs = [root_graph]
