@@ -115,24 +115,6 @@ pub fn grid_container_cell_set_center_cell_minimum_size(Cell, @core.KVector) -> 
 
 pub fn grid_container_cell_set_only_center_cell_contributes_to_minimum_size(Cell, Bool) -> Unit
 
-pub fn horizontal_graph_compactor_clear_origin_lookup() -> Unit
-
-pub fn horizontal_graph_compactor_get_lnode_or_null(@compaction.CNode) -> LNode?
-
-pub fn horizontal_graph_compactor_get_vertical_segment_or_null(@compaction.CNode) -> VerticalSegment?
-
-pub fn horizontal_graph_compactor_is_vertical_segments_of_same_edge(@compaction.CNode, @compaction.CNode) -> Bool
-
-pub fn horizontal_graph_compactor_lnode_origin_key(LNode) -> String
-
-pub fn horizontal_graph_compactor_network_simplex_compaction(@compaction.OneDimensionalCompactor) -> Unit
-
-pub fn horizontal_graph_compactor_register_origin_lnode(String, LNode) -> Unit
-
-pub fn horizontal_graph_compactor_register_origin_vertical_segment(String, VerticalSegment) -> Unit
-
-pub fn horizontal_graph_compactor_vertical_segment_origin_key(VerticalSegment) -> String
-
 pub fn horizontal_label_alignment_center() -> HorizontalLabelAlignment
 
 pub fn horizontal_label_alignment_left() -> HorizontalLabelAlignment
@@ -359,8 +341,6 @@ pub fn lport_internal_handle(LPort) -> Int
 
 pub fn model_order_barycenter_heuristic_insertion_sort(Array[LNode], (LNode, LNode) -> Int, ModelOrderBarycenterHeuristic) -> Unit
 
-pub fn network_simplex_compaction(@compaction.OneDimensionalCompactor) -> Unit
-
 pub fn new_abstract_barycenter_port_distributor(Int, (AbstractBarycenterPortDistributor, LNode, Double, @options.PortType) -> Double) -> AbstractBarycenterPortDistributor
 
 pub fn new_abstract_self_loop_router((SelfLoopHolder) -> Unit) -> AbstractSelfLoopRouter
@@ -412,8 +392,6 @@ pub fn new_direction_preprocessor_layout_processor() -> @core.ILayoutProcessor[L
 pub fn new_dummy_self_loop_processor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_edge_and_layer_constraint_edge_reverser_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
-
-pub fn new_edge_aware_scanline_constraint_calculation(LGraph) -> (@compaction.OneDimensionalCompactor) -> Unit
 
 pub fn new_end_label_cell(Double, Bool, @core.LabelSide) -> EndLabelCell
 
@@ -572,8 +550,6 @@ pub fn new_layered_hierarchy_aware_layout_processor() -> Unit
 pub fn new_layered_layout_plan(Array[@core.ILayoutProcessor[LayeredPhases, LGraph]], state? : @state.LayeredLayoutState) -> LayeredLayoutPlan
 
 pub fn new_layered_spacings(LGraph) -> Spacings
-
-pub fn new_lgraph_to_cgraph_transformer() -> LGraphToCGraphTransformer
 
 pub fn new_long_edge_joiner_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
@@ -2018,20 +1994,6 @@ pub fn LGraphElement::get_id(Self) -> Int
 pub fn LGraphElement::get_origin_identifier(Self) -> String?
 pub fn LGraphElement::set_id(Self, Int) -> Unit
 pub fn LGraphElement::set_origin_identifier(Self, String?) -> Unit
-
-pub struct LGraphToCGraphTransformer {
-  mut c_graph : @compaction.CGraph?
-  mut layered_graph : LGraph?
-  mut edge_routing : @core.EdgeRouting
-  comment_offsets : Array[(LNode, LNode, @core.KVector)]
-  mut nodes_map : Map[Int, @compaction.CNode]
-  mut vertical_segments_map : Map[Int, @compaction.CNode]
-  mut lock_map : Map[String, @compaction.Quadruplet]
-}
-pub fn LGraphToCGraphTransformer::apply_layout(Self) -> Unit
-pub fn LGraphToCGraphTransformer::get_lock(Self, @compaction.CNode) -> @compaction.Quadruplet?
-pub fn LGraphToCGraphTransformer::get_lock_map(Self) -> Map[String, @compaction.Quadruplet]
-pub fn LGraphToCGraphTransformer::transform(Self, LGraph) -> @compaction.CGraph
 
 pub struct LLabel {
   shape : LShape

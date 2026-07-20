@@ -5,8 +5,7 @@ fn horizontal_compactor_test_graph() -> @compaction.CGraph {
 
 ///|
 test "horizontal compactor origin lookup resolves lnode and vertical segment" {
-  horizontal_graph_compactor_clear_origin_lookup()
-
+  let origin_lookup = new_horizontal_graph_compactor_origin_lookup()
   let c_graph = horizontal_compactor_test_graph()
 
   let l_node = new_l_node()
@@ -16,7 +15,7 @@ test "horizontal compactor origin lookup resolves lnode and vertical segment" {
     .origin(l_node_origin)
     .hitbox(@core.new_elk_rectangle_xywh(0.0, 0.0, 10.0, 10.0))
     .create(c_graph)
-  horizontal_graph_compactor_register_origin_lnode(l_node_origin, l_node)
+  origin_lookup.register_lnode(l_node_origin, l_node)
 
   let edge = new_l_edge()
   edge.set_id(33)
@@ -33,15 +32,13 @@ test "horizontal compactor origin lookup resolves lnode and vertical segment" {
     .origin(segment_origin)
     .hitbox(@core.new_elk_rectangle_copy(segment.hitbox))
     .create(c_graph)
-  horizontal_graph_compactor_register_origin_vertical_segment(
-    segment_origin, segment,
-  )
+  origin_lookup.register_vertical_segment(segment_origin, segment)
 
-  match horizontal_graph_compactor_get_lnode_or_null(c_lnode) {
+  match origin_lookup.get_lnode_or_null(c_lnode) {
     Some(value) => assert_eq(value.get_handle(), l_node.get_handle())
     None => abort("Expected lnode origin.")
   }
-  match horizontal_graph_compactor_get_vertical_segment_or_null(c_segment) {
+  match origin_lookup.get_vertical_segment_or_null(c_segment) {
     Some(value) => assert_eq(value.get_id(), segment.get_id())
     None => abort("Expected vertical segment origin.")
   }
@@ -49,8 +46,7 @@ test "horizontal compactor origin lookup resolves lnode and vertical segment" {
 
 ///|
 test "horizontal compactor detects vertical segments of same edge" {
-  horizontal_graph_compactor_clear_origin_lookup()
-
+  let origin_lookup = new_horizontal_graph_compactor_origin_lookup()
   let c_graph = horizontal_compactor_test_graph()
 
   let edge = new_l_edge()
@@ -78,18 +74,37 @@ test "horizontal compactor detects vertical segments of same edge" {
     .hitbox(@core.new_elk_rectangle_copy(segment2.hitbox))
     .create(c_graph)
 
-  horizontal_graph_compactor_register_origin_vertical_segment(
+  origin_lookup.register_vertical_segment(
     horizontal_graph_compactor_vertical_segment_origin_key(segment1),
     segment1,
   )
-  horizontal_graph_compactor_register_origin_vertical_segment(
+  origin_lookup.register_vertical_segment(
     horizontal_graph_compactor_vertical_segment_origin_key(segment2),
     segment2,
   )
 
   assert_true(
-    horizontal_graph_compactor_is_vertical_segments_of_same_edge(
-      c_segment1, c_segment2,
-    ),
+    origin_lookup.is_vertical_segments_of_same_edge(c_segment1, c_segment2),
   )
+}
+
+///|
+test "horizontal compactor origin lookups are isolated per transformer" {
+  let c_graph = horizontal_compactor_test_graph()
+  let node = new_l_node()
+  let origin = horizontal_graph_compactor_lnode_origin_key(node)
+  let c_node = @compaction.cnode_of()
+    .origin(origin)
+    .hitbox(@core.new_elk_rectangle_xywh(0.0, 0.0, 1.0, 1.0))
+    .create(c_graph)
+
+  let first = new_horizontal_graph_compactor_origin_lookup()
+  let second = new_horizontal_graph_compactor_origin_lookup()
+  first.register_lnode(origin, node)
+
+  assert_true(first.get_lnode_or_null(c_node) is Some(_))
+  assert_true(second.get_lnode_or_null(c_node) is None)
+
+  first.clear()
+  assert_true(first.get_lnode_or_null(c_node) is None)
 }

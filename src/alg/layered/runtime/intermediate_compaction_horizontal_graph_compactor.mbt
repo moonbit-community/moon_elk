@@ -110,79 +110,86 @@ fn horizontal_graph_compactor_require_group(
 }
 
 ///|
-pub fn horizontal_graph_compactor_register_origin_lnode(
+priv struct HorizontalGraphCompactorOriginLookup {
+  lnodes : Map[String, LNode]
+  vertical_segments : Map[String, VerticalSegment]
+}
+
+///|
+fn new_horizontal_graph_compactor_origin_lookup() -> HorizontalGraphCompactorOriginLookup {
+  { lnodes: Map([]), vertical_segments: Map([]) }
+}
+
+///|
+fn HorizontalGraphCompactorOriginLookup::register_lnode(
+  self : HorizontalGraphCompactorOriginLookup,
   key : String,
   node : LNode,
 ) -> Unit {
-  horizontal_graph_compactor_lnode_origin_lookup.val[key] = node
+  self.lnodes[key] = node
 }
 
 ///|
-pub fn horizontal_graph_compactor_register_origin_vertical_segment(
+fn HorizontalGraphCompactorOriginLookup::register_vertical_segment(
+  self : HorizontalGraphCompactorOriginLookup,
   key : String,
   segment : VerticalSegment,
 ) -> Unit {
-  horizontal_graph_compactor_vertical_segment_origin_lookup.val[key] = segment
+  self.vertical_segments[key] = segment
 }
 
 ///|
-pub fn horizontal_graph_compactor_clear_origin_lookup() -> Unit {
-  horizontal_graph_compactor_lnode_origin_lookup.val = Map([])
-  horizontal_graph_compactor_vertical_segment_origin_lookup.val = Map([])
+fn HorizontalGraphCompactorOriginLookup::clear(
+  self : HorizontalGraphCompactorOriginLookup,
+) -> Unit {
+  self.lnodes.clear()
+  self.vertical_segments.clear()
 }
 
 ///|
-pub fn horizontal_graph_compactor_lnode_origin_key(node : LNode) -> String {
+fn horizontal_graph_compactor_lnode_origin_key(node : LNode) -> String {
   "lnode:" + node.get_handle().to_string()
 }
 
 ///|
-pub fn horizontal_graph_compactor_vertical_segment_origin_key(
+fn horizontal_graph_compactor_vertical_segment_origin_key(
   segment : VerticalSegment,
 ) -> String {
   vertical_segment_origin_key(segment)
 }
 
 ///|
-pub fn horizontal_graph_compactor_get_lnode_or_null(
+fn HorizontalGraphCompactorOriginLookup::get_lnode_or_null(
+  self : HorizontalGraphCompactorOriginLookup,
   c_node : @compaction.CNode,
 ) -> LNode? {
   match c_node.origin() {
-    Some(origin_key) =>
-      match horizontal_graph_compactor_lnode_origin_lookup.val.get(origin_key) {
-        Some(node) => Some(node)
-        None => None
-      }
+    Some(origin_key) => self.lnodes.get(origin_key)
     None => None
   }
 }
 
 ///|
-pub fn horizontal_graph_compactor_get_vertical_segment_or_null(
+fn HorizontalGraphCompactorOriginLookup::get_vertical_segment_or_null(
+  self : HorizontalGraphCompactorOriginLookup,
   c_node : @compaction.CNode,
 ) -> VerticalSegment? {
   match c_node.origin() {
-    Some(origin_key) =>
-      match
-        horizontal_graph_compactor_vertical_segment_origin_lookup.val.get(
-          origin_key,
-        ) {
-        Some(segment) => Some(segment)
-        None => None
-      }
+    Some(origin_key) => self.vertical_segments.get(origin_key)
     None => None
   }
 }
 
 ///|
-pub fn horizontal_graph_compactor_is_vertical_segments_of_same_edge(
+fn HorizontalGraphCompactorOriginLookup::is_vertical_segments_of_same_edge(
+  self : HorizontalGraphCompactorOriginLookup,
   c_node1 : @compaction.CNode,
   c_node2 : @compaction.CNode,
 ) -> Bool {
   match
     (
-      horizontal_graph_compactor_get_vertical_segment_or_null(c_node1),
-      horizontal_graph_compactor_get_vertical_segment_or_null(c_node2),
+      self.get_vertical_segment_or_null(c_node1),
+      self.get_vertical_segment_or_null(c_node2),
     ) {
     (Some(v1), Some(v2)) =>
       horizontal_graph_compactor_edge_list_intersects(
@@ -196,19 +203,18 @@ pub fn horizontal_graph_compactor_is_vertical_segments_of_same_edge(
 ///|
 fn horizontal_graph_compactor_spacings_handler(
   graph : LGraph,
+  origin_lookup : HorizontalGraphCompactorOriginLookup,
 ) -> @compaction.ISpacingsHandler {
   let spacings = new_layered_spacings(graph)
 
   @compaction.new_spacings_handler(
     (c_node1, c_node2) => {
-      if horizontal_graph_compactor_is_vertical_segments_of_same_edge(
-          c_node1, c_node2,
-        ) {
+      if origin_lookup.is_vertical_segments_of_same_edge(c_node1, c_node2) {
         return 0.0
       }
 
-      let node1 = horizontal_graph_compactor_get_lnode_or_null(c_node1)
-      let node2 = horizontal_graph_compactor_get_lnode_or_null(c_node2)
+      let node1 = origin_lookup.get_lnode_or_null(c_node1)
+      let node2 = origin_lookup.get_lnode_or_null(c_node2)
 
       match node1 {
         Some(value) =>
@@ -248,14 +254,12 @@ fn horizontal_graph_compactor_spacings_handler(
       }
     },
     (c_node1, c_node2) => {
-      if horizontal_graph_compactor_is_vertical_segments_of_same_edge(
-          c_node1, c_node2,
-        ) {
+      if origin_lookup.is_vertical_segments_of_same_edge(c_node1, c_node2) {
         return 1.0
       }
 
-      let node1 = horizontal_graph_compactor_get_lnode_or_null(c_node1)
-      let node2 = horizontal_graph_compactor_get_lnode_or_null(c_node2)
+      let node1 = origin_lookup.get_lnode_or_null(c_node1)
+      let node2 = origin_lookup.get_lnode_or_null(c_node2)
 
       let node_type1 = match node1 {
         Some(value) => value.get_type()
@@ -299,12 +303,13 @@ fn horizontal_graph_compactor_process(
   }
 
   let transformer = new_lgraph_to_cgraph_transformer()
+  let origin_lookup = transformer.get_origin_lookup()
   let odc = @compaction.new_one_dimensional_compactor(
     transformer.transform(layered_graph),
   )
   ignore(
     odc.set_spacings_handler(
-      horizontal_graph_compactor_spacings_handler(layered_graph),
+      horizontal_graph_compactor_spacings_handler(layered_graph, origin_lookup),
     ),
   )
 
@@ -316,7 +321,9 @@ fn horizontal_graph_compactor_process(
   if constraint_mode == "SCANLINE" {
     ignore(
       odc.set_constraint_algorithm(
-        new_edge_aware_scanline_constraint_calculation(layered_graph),
+        new_edge_aware_scanline_constraint_calculation(
+          layered_graph, origin_lookup,
+        ),
       ),
     )
   } else {
@@ -360,9 +367,9 @@ fn horizontal_graph_compactor_process(
       )
     EdgeLength => {
       ignore(
-        odc.set_compaction_algorithm(
-          horizontal_graph_compactor_network_simplex_compaction,
-        ),
+        odc.set_compaction_algorithm(compactor => {
+          network_simplex_compaction(origin_lookup, compactor)
+        }),
       )
       ignore(odc.compact())
     }
@@ -371,7 +378,6 @@ fn horizontal_graph_compactor_process(
 
   ignore(odc.finish())
   transformer.apply_layout()
-  horizontal_graph_compactor_clear_origin_lookup()
 
   match progress_monitor {
     Some(monitor) => monitor.done()
@@ -386,16 +392,3 @@ pub fn new_horizontal_graph_compactor_layout_processor() -> @core.ILayoutProcess
 ] {
   @core.new_layout_processor(horizontal_graph_compactor_process)
 }
-
-///|
-let horizontal_graph_compactor_lnode_origin_lookup : Ref[Map[String, LNode]] = Ref(
-  Map([]),
-)
-
-///|
-let horizontal_graph_compactor_vertical_segment_origin_lookup : Ref[
-  Map[String, VerticalSegment],
-] = Ref(Map([]))
-
-///|
-pub let horizontal_graph_compactor_network_simplex_compaction : @compaction.ICompactionAlgorithm = network_simplex_compaction

@@ -14,6 +14,7 @@ priv struct EdgeAwareScanlineTimestamp {
 priv struct EdgeAwareScanlineCalculation {
   vertical_edge_edge_spacing : Double
   edge_routing : @core.EdgeRouting
+  origin_lookup : HorizontalGraphCompactorOriginLookup
 }
 
 ///|
@@ -307,6 +308,7 @@ fn edge_aware_scanline_sweep(
 
 ///|
 fn edge_aware_scanline_alter_hitbox(
+  origin_lookup : HorizontalGraphCompactorOriginLookup,
   n : @compaction.CNode,
   spacing : Double,
   fac : Double,
@@ -314,7 +316,7 @@ fn edge_aware_scanline_alter_hitbox(
   let delta = spacing * fac
   let hitbox = n.hitbox()
 
-  match horizontal_graph_compactor_get_vertical_segment_or_null(n) {
+  match origin_lookup.get_vertical_segment_or_null(n) {
     Some(vs) => {
       if !vs.ignore_spacing.up {
         hitbox.y = hitbox.y - delta - edge_aware_scanline_small_epsilon
@@ -329,7 +331,7 @@ fn edge_aware_scanline_alter_hitbox(
       n.set_hitbox(hitbox)
     }
     None =>
-      match horizontal_graph_compactor_get_lnode_or_null(n) {
+      match origin_lookup.get_lnode_or_null(n) {
         Some(_) => {
           hitbox.y = hitbox.y - delta
           hitbox.height = hitbox.height + 2.0 * delta
@@ -342,6 +344,7 @@ fn edge_aware_scanline_alter_hitbox(
 
 ///|
 fn edge_aware_scanline_alter_grouped_hitbox_orthogonal(
+  origin_lookup : HorizontalGraphCompactorOriginLookup,
   group : @compaction.CGroup,
   spacing : Double,
   fac : Double,
@@ -355,7 +358,7 @@ fn edge_aware_scanline_alter_grouped_hitbox_orthogonal(
       }
   }
 
-  edge_aware_scanline_alter_hitbox(master, spacing, fac)
+  edge_aware_scanline_alter_hitbox(origin_lookup, master, spacing, fac)
   if group.c_nodes().length() == 1 {
     return
   }
@@ -365,7 +368,7 @@ fn edge_aware_scanline_alter_grouped_hitbox_orthogonal(
     if n == master {
       continue
     }
-    match horizontal_graph_compactor_get_vertical_segment_or_null(n) {
+    match origin_lookup.get_vertical_segment_or_null(n) {
       Some(vs) => {
         let hitbox = n.hitbox()
         if vs.ignore_spacing.up {
@@ -387,12 +390,13 @@ fn edge_aware_scanline_alter_grouped_hitbox_orthogonal(
 
 ///|
 fn edge_aware_scanline_min_spacing(
+  origin_lookup : HorizontalGraphCompactorOriginLookup,
   compactor : @compaction.OneDimensionalCompactor,
   vertical_edge_edge_spacing : Double,
 ) -> Double {
   let mut min_spacing = @double.infinity
   for node in compactor.c_graph.c_nodes {
-    let spacing = match horizontal_graph_compactor_get_lnode_or_null(node) {
+    let spacing = match origin_lookup.get_lnode_or_null(node) {
       Some(l_node) =>
         if horizontal_graph_compactor_node_type_equals(
             l_node.get_type(),
@@ -406,7 +410,7 @@ fn edge_aware_scanline_min_spacing(
           @cmp.maximum(0.0, individual / 2.0 - edge_aware_scanline_epsilon)
         }
       None =>
-        match horizontal_graph_compactor_get_vertical_segment_or_null(node) {
+        match origin_lookup.get_vertical_segment_or_null(node) {
           Some(_) =>
             @cmp.maximum(
               0.0,
@@ -431,19 +435,21 @@ fn edge_aware_scanline_calculate_for_spline(
   calculation : EdgeAwareScanlineCalculation,
   compactor : @compaction.OneDimensionalCompactor,
 ) -> Unit {
+  let origin_lookup = calculation.origin_lookup
   edge_aware_scanline_sweep(compactor, node => {
-    horizontal_graph_compactor_get_vertical_segment_or_null(node) is Some(_)
+    origin_lookup.get_vertical_segment_or_null(node) is Some(_)
   })
 
   let min_spacing = edge_aware_scanline_min_spacing(
+    origin_lookup,
     compactor,
     calculation.vertical_edge_edge_spacing,
   )
 
   let altered_nodes : Array[@compaction.CNode] = []
   for node in compactor.c_graph.c_nodes {
-    if horizontal_graph_compactor_get_lnode_or_null(node) is Some(_) {
-      edge_aware_scanline_alter_hitbox(node, min_spacing, 1.0)
+    if origin_lookup.get_lnode_or_null(node) is Some(_) {
+      edge_aware_scanline_alter_hitbox(origin_lookup, node, min_spacing, 1.0)
       altered_nodes.push(node)
     }
   }
@@ -451,7 +457,7 @@ fn edge_aware_scanline_calculate_for_spline(
   edge_aware_scanline_sweep(compactor, _ => true)
 
   for node in altered_nodes {
-    edge_aware_scanline_alter_hitbox(node, min_spacing, -1.0)
+    edge_aware_scanline_alter_hitbox(origin_lookup, node, min_spacing, -1.0)
   }
 }
 
@@ -460,29 +466,34 @@ fn edge_aware_scanline_calculate_for_orthogonal(
   calculation : EdgeAwareScanlineCalculation,
   compactor : @compaction.OneDimensionalCompactor,
 ) -> Unit {
+  let origin_lookup = calculation.origin_lookup
   let vertical_spacing = @cmp.maximum(
     0.0,
     calculation.vertical_edge_edge_spacing / 2.0 - edge_aware_scanline_epsilon,
   )
   let altered_segments : Array[@compaction.CNode] = []
   for node in compactor.c_graph.c_nodes {
-    if horizontal_graph_compactor_get_vertical_segment_or_null(node) is Some(_) {
-      edge_aware_scanline_alter_hitbox(node, vertical_spacing, 1.0)
+    if origin_lookup.get_vertical_segment_or_null(node) is Some(_) {
+      edge_aware_scanline_alter_hitbox(
+        origin_lookup, node, vertical_spacing, 1.0,
+      )
       altered_segments.push(node)
     }
   }
 
   edge_aware_scanline_sweep(compactor, node => {
-    horizontal_graph_compactor_get_vertical_segment_or_null(node) is Some(_)
+    origin_lookup.get_vertical_segment_or_null(node) is Some(_)
   })
 
   for node in altered_segments {
-    edge_aware_scanline_alter_hitbox(node, vertical_spacing, -1.0)
+    edge_aware_scanline_alter_hitbox(
+      origin_lookup, node, vertical_spacing, -1.0,
+    )
   }
 
   let altered_nodes : Array[(@compaction.CNode, Double)] = []
   for node in compactor.c_graph.c_nodes {
-    match horizontal_graph_compactor_get_lnode_or_null(node) {
+    match origin_lookup.get_lnode_or_null(node) {
       Some(l_node) => {
         let spacing = layered_spacings_get_individual_or_default(
           l_node, @core.spacing_edge_edge,
@@ -491,7 +502,9 @@ fn edge_aware_scanline_calculate_for_orthogonal(
           0.0,
           spacing / 2.0 - edge_aware_scanline_epsilon,
         )
-        edge_aware_scanline_alter_hitbox(node, final_spacing, 1.0)
+        edge_aware_scanline_alter_hitbox(
+          origin_lookup, node, final_spacing, 1.0,
+        )
         altered_nodes.push((node, final_spacing))
       }
       None => ()
@@ -499,22 +512,25 @@ fn edge_aware_scanline_calculate_for_orthogonal(
   }
 
   edge_aware_scanline_sweep(compactor, node => {
-    horizontal_graph_compactor_get_lnode_or_null(node) is Some(_)
+    origin_lookup.get_lnode_or_null(node) is Some(_)
   })
 
   for entry in altered_nodes {
     let (node, spacing) = entry
-    edge_aware_scanline_alter_hitbox(node, spacing, -1.0)
+    edge_aware_scanline_alter_hitbox(origin_lookup, node, spacing, -1.0)
   }
 
   let min_spacing = edge_aware_scanline_min_spacing(
+    origin_lookup,
     compactor,
     calculation.vertical_edge_edge_spacing,
   )
 
   let altered_groups : Array[@compaction.CGroup] = []
   for group in compactor.c_graph.c_groups {
-    edge_aware_scanline_alter_grouped_hitbox_orthogonal(group, min_spacing, 1.0)
+    edge_aware_scanline_alter_grouped_hitbox_orthogonal(
+      origin_lookup, group, min_spacing, 1.0,
+    )
     altered_groups.push(group)
   }
 
@@ -522,7 +538,7 @@ fn edge_aware_scanline_calculate_for_orthogonal(
 
   for group in altered_groups {
     edge_aware_scanline_alter_grouped_hitbox_orthogonal(
-      group, min_spacing, -1.0,
+      origin_lookup, group, min_spacing, -1.0,
     )
   }
 }
@@ -544,8 +560,9 @@ fn edge_aware_scanline_calculate_constraints(
 }
 
 ///|
-pub fn new_edge_aware_scanline_constraint_calculation(
+fn new_edge_aware_scanline_constraint_calculation(
   graph : LGraph,
+  origin_lookup : HorizontalGraphCompactorOriginLookup,
 ) -> @compaction.IConstraintCalculationAlgorithm {
   let calculation : EdgeAwareScanlineCalculation = {
     vertical_edge_edge_spacing: graph.get_property_double(
@@ -554,6 +571,7 @@ pub fn new_edge_aware_scanline_constraint_calculation(
     edge_routing: edge_aware_scanline_parse_edge_routing(
       graph.get_property_string(@core.edge_routing),
     ),
+    origin_lookup,
   }
   compactor => edge_aware_scanline_calculate_constraints(calculation, compactor)
 }

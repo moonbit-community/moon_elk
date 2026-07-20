@@ -258,6 +258,4 @@ pub fn dispose_layered_graph(root : LGraph) -> Unit {
       ignore(seen_graphs.remove(graph.get_handle()))
     }
   }
-
-  horizontal_graph_compactor_clear_origin_lookup()
 }

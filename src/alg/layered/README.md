@@ -61,6 +61,11 @@ reference so existing processors consume one deterministic random sequence.
 Disposal clears the state explicitly; the random object is neither stored in a
 generic property map nor retained in a global registry.
 
+Horizontal compaction follows a narrower lifetime: its origin lookup is owned
+by one `LGraphToCGraphTransformer` and is injected into spacing, scanline, and
+network-simplex closures. This keeps `LNode` and `VerticalSegment` references
+out of process-wide maps and lets concurrent transformations remain isolated.
+
 Moving the files into separate directories while widening fields or using
 global handle maps would hide the cycle rather than remove it, and global maps
 would also reintroduce the lifetime risks that explicit graph disposal avoids.

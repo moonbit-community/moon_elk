@@ -451,7 +451,7 @@ fn lgraph_to_cgraph_transformer_vertical_segment_to_cnode(
     transformer.vertical_segments_map[other.get_id()] = c_node
   }
   transformer.vertical_segments_map[vertical_segment.get_id()] = c_node
-  horizontal_graph_compactor_register_origin_vertical_segment(
+  transformer.origin_lookup.register_vertical_segment(
     origin_key, vertical_segment,
   )
 }
@@ -627,7 +627,7 @@ fn lgraph_to_cgraph_transformer_apply_external_port_positions(
 ) -> Unit raise LGraphToCGraphTransformerException {
   let c_graph = lgraph_to_cgraph_transformer_require_cgraph(transformer)
   for c_node in c_graph.c_nodes {
-    let l_node = match horizontal_graph_compactor_get_lnode_or_null(c_node) {
+    let l_node = match transformer.origin_lookup.get_lnode_or_null(c_node) {
       Some(node) => node
       None => continue
     }
@@ -659,7 +659,7 @@ fn lgraph_to_cgraph_transformer_cleanup(
   transformer.comment_offsets.clear()
   transformer.vertical_segments_map = Map([])
   transformer.lock_map = Map([])
-  horizontal_graph_compactor_clear_origin_lookup()
+  transformer.origin_lookup.clear()
 
   match transformer.c_graph {
     Some(graph) => {
@@ -674,7 +674,7 @@ fn lgraph_to_cgraph_transformer_cleanup(
 }
 
 ///|
-pub struct LGraphToCGraphTransformer {
+priv struct LGraphToCGraphTransformer {
   mut c_graph : @compaction.CGraph?
   mut layered_graph : LGraph?
   mut edge_routing : @core.EdgeRouting
@@ -682,10 +682,11 @@ pub struct LGraphToCGraphTransformer {
   mut nodes_map : Map[Int, @compaction.CNode]
   mut vertical_segments_map : Map[Int, @compaction.CNode]
   mut lock_map : Map[String, @compaction.Quadruplet]
+  origin_lookup : HorizontalGraphCompactorOriginLookup
 }
 
 ///|
-pub fn new_lgraph_to_cgraph_transformer() -> LGraphToCGraphTransformer {
+fn new_lgraph_to_cgraph_transformer() -> LGraphToCGraphTransformer {
   {
     c_graph: None,
     layered_graph: None,
@@ -694,18 +695,19 @@ pub fn new_lgraph_to_cgraph_transformer() -> LGraphToCGraphTransformer {
     nodes_map: Map([]),
     vertical_segments_map: Map([]),
     lock_map: Map([]),
+    origin_lookup: new_horizontal_graph_compactor_origin_lookup(),
   }
 }
 
 ///|
-pub fn LGraphToCGraphTransformer::get_lock_map(
+fn LGraphToCGraphTransformer::get_origin_lookup(
   self : LGraphToCGraphTransformer,
-) -> Map[String, @compaction.Quadruplet] {
-  self.lock_map
+) -> HorizontalGraphCompactorOriginLookup {
+  self.origin_lookup
 }
 
 ///|
-pub fn LGraphToCGraphTransformer::get_lock(
+fn LGraphToCGraphTransformer::get_lock(
   self : LGraphToCGraphTransformer,
   node : @compaction.CNode,
 ) -> @compaction.Quadruplet? {
@@ -729,7 +731,7 @@ fn LGraphToCGraphTransformer::init(
   self.comment_offsets.clear()
   self.lock_map = Map([])
   self.vertical_segments_map = Map([])
-  horizontal_graph_compactor_clear_origin_lookup()
+  self.origin_lookup.clear()
 }
 
 ///|
@@ -803,7 +805,7 @@ fn LGraphToCGraphTransformer::transform_nodes(
       }
 
       self.nodes_map[node.get_handle()] = c_node
-      horizontal_graph_compactor_register_origin_lnode(origin_key, node)
+      self.origin_lookup.register_lnode(origin_key, node)
     }
   }
 }
@@ -850,7 +852,7 @@ fn LGraphToCGraphTransformer::transform_edges(
 }
 
 ///|
-pub fn LGraphToCGraphTransformer::transform(
+fn LGraphToCGraphTransformer::transform(
   self : LGraphToCGraphTransformer,
   input_graph : LGraph,
 ) -> @compaction.CGraph {
@@ -880,7 +882,7 @@ pub fn LGraphToCGraphTransformer::transform(
 }
 
 ///|
-pub fn LGraphToCGraphTransformer::apply_layout(
+fn LGraphToCGraphTransformer::apply_layout(
   self : LGraphToCGraphTransformer,
 ) -> Unit {
   try {
@@ -888,7 +890,7 @@ pub fn LGraphToCGraphTransformer::apply_layout(
     let layered_graph = lgraph_to_cgraph_transformer_require_lgraph(self)
 
     for c_node in c_graph.c_nodes {
-      match horizontal_graph_compactor_get_lnode_or_null(c_node) {
+      match self.origin_lookup.get_lnode_or_null(c_node) {
         Some(node) => {
           let hitbox = c_node.hitbox()
           node.get_position().x = hitbox.x + node.get_margin().left
@@ -900,7 +902,7 @@ pub fn LGraphToCGraphTransformer::apply_layout(
     lgraph_to_cgraph_transformer_apply_comment_positions(self)
 
     for c_node in c_graph.c_nodes {
-      match horizontal_graph_compactor_get_vertical_segment_or_null(c_node) {
+      match self.origin_lookup.get_vertical_segment_or_null(c_node) {
         Some(segment) => {
           let hitbox = c_node.hitbox()
           let original = lgraph_to_cgraph_transformer_require_hitbox_pre_compaction(

@@ -6,7 +6,6 @@ fn network_simplex_compaction_test_graph() -> @compaction.CGraph {
 ///|
 test "network simplex compaction preserves required left-to-right order" {
   @compaction.reset_compaction_oned_model_for_test()
-  horizontal_graph_compactor_clear_origin_lookup()
 
   let c_graph = network_simplex_compaction_test_graph()
   let left = @compaction.cnode_of()
@@ -21,7 +20,10 @@ test "network simplex compaction preserves required left-to-right order" {
 
   left.add_constraint(right)
 
-  network_simplex_compaction(compactor)
+  network_simplex_compaction(
+    new_horizontal_graph_compactor_origin_lookup(),
+    compactor,
+  )
 
   let left_hitbox = left.hitbox()
   let right_hitbox = right.hitbox()

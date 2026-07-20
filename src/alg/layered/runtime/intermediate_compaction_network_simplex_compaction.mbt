@@ -142,6 +142,7 @@ fn network_simplex_compaction_create_edge(
 
 ///|
 fn network_simplex_compaction_add_separation_constraints(
+  origin_lookup : HorizontalGraphCompactorOriginLookup,
   compactor : @compaction.OneDimensionalCompactor,
   network_graph : @networksimplex.NGraph,
   n_nodes : Array[@networksimplex.NNode],
@@ -168,22 +169,14 @@ fn network_simplex_compaction_add_separation_constraints(
       delta = delta.ceil()
       delta = if delta < 0.0 { 0.0 } else { delta }
 
-      if !horizontal_graph_compactor_is_vertical_segments_of_same_edge(
-          c_node, inc_node,
-        ) {
+      if !origin_lookup.is_vertical_segments_of_same_edge(c_node, inc_node) {
         let mut weight = network_simplex_compaction_separation_weight
-        let c_is_vs = horizontal_graph_compactor_get_vertical_segment_or_null(
-            c_node,
-          )
+        let c_is_vs = origin_lookup.get_vertical_segment_or_null(c_node)
           is Some(_)
-        let inc_is_vs = horizontal_graph_compactor_get_vertical_segment_or_null(
-            inc_node,
-          )
+        let inc_is_vs = origin_lookup.get_vertical_segment_or_null(inc_node)
           is Some(_)
-        let c_is_node = horizontal_graph_compactor_get_lnode_or_null(c_node)
-          is Some(_)
-        let inc_is_node = horizontal_graph_compactor_get_lnode_or_null(inc_node)
-          is Some(_)
+        let c_is_node = origin_lookup.get_lnode_or_null(c_node) is Some(_)
+        let inc_is_node = origin_lookup.get_lnode_or_null(inc_node) is Some(_)
         if (c_is_vs && inc_is_node) || (inc_is_vs && c_is_node) {
           weight = 2.0
         }
@@ -205,13 +198,12 @@ fn network_simplex_compaction_add_separation_constraints(
         let mut alter_offset = c_node
 
         let mut port : LPort? = None
-        match horizontal_graph_compactor_get_vertical_segment_or_null(c_node) {
+        match origin_lookup.get_vertical_segment_or_null(c_node) {
           Some(segment) => port = segment.get_a_port()
           None => ()
         }
         if port is None {
-          match
-            horizontal_graph_compactor_get_vertical_segment_or_null(inc_node) {
+          match origin_lookup.get_vertical_segment_or_null(inc_node) {
             Some(segment) => {
               port = segment.get_a_port()
               adjust = -adjust
@@ -256,6 +248,7 @@ fn network_simplex_compaction_add_separation_constraints(
 
 ///|
 fn network_simplex_compaction_add_edge_constraints(
+  origin_lookup : HorizontalGraphCompactorOriginLookup,
   compactor : @compaction.OneDimensionalCompactor,
   n_nodes : Array[@networksimplex.NNode],
 ) -> Unit raise NetworkSimplexCompactionException {
@@ -263,11 +256,11 @@ fn network_simplex_compaction_add_edge_constraints(
   let ledge_map : Map[Int, Array[@compaction.CNode]] = Map([])
 
   for c_node in compactor.c_graph.c_nodes {
-    match horizontal_graph_compactor_get_lnode_or_null(c_node) {
+    match origin_lookup.get_lnode_or_null(c_node) {
       Some(l_node) =>
         network_simplex_compaction_lnode_map_put(lnode_map, l_node, c_node)
       None =>
-        match horizontal_graph_compactor_get_vertical_segment_or_null(c_node) {
+        match origin_lookup.get_vertical_segment_or_null(c_node) {
           Some(vs) =>
             for edge in vs.represented_l_edges {
               network_simplex_compaction_edge_map_put(ledge_map, edge, c_node)
@@ -278,7 +271,7 @@ fn network_simplex_compaction_add_edge_constraints(
   }
 
   for c_node in compactor.c_graph.c_nodes {
-    let l_node = match horizontal_graph_compactor_get_lnode_or_null(c_node) {
+    let l_node = match origin_lookup.get_lnode_or_null(c_node) {
       Some(value) => value
       None => continue
     }
@@ -416,7 +409,8 @@ fn network_simplex_compaction_add_artificial_source_node(
 }
 
 ///|
-pub fn network_simplex_compaction(
+fn network_simplex_compaction(
+  origin_lookup : HorizontalGraphCompactorOriginLookup,
   compactor : @compaction.OneDimensionalCompactor,
 ) -> Unit {
   try {
@@ -432,9 +426,11 @@ pub fn network_simplex_compaction(
     }
 
     network_simplex_compaction_add_separation_constraints(
-      compactor, network_graph, n_nodes,
+      origin_lookup, compactor, network_graph, n_nodes,
     )
-    network_simplex_compaction_add_edge_constraints(compactor, n_nodes)
+    network_simplex_compaction_add_edge_constraints(
+      origin_lookup, compactor, n_nodes,
+    )
     ignore(
       network_simplex_compaction_add_artificial_source_node(
         network_graph, index,
