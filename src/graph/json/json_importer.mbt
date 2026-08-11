@@ -14,11 +14,11 @@ pub struct JsonImporter {
 
 ///|
 pub fn new_json_importer(
-  runtime : @core.LayoutRuntime,
+  metadata : @core.OptionMetadata,
   session : @core.LayoutSession,
 ) -> JsonImporter {
   {
-    metadata: runtime.option_metadata(),
+    metadata,
     session,
     input_model: None,
     node_id_map: Map([]),

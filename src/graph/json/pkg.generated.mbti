@@ -20,6 +20,8 @@ pub fn layout_category_data_to_json(@core.LayoutCategoryData) -> Json
 
 pub fn layout_option_data_to_json(@core.LayoutOptionData) -> Json
 
+pub fn new_codec_metadata() -> @core.OptionMetadata
+
 pub fn new_json_adapter() -> JsonAdapter
 
 pub fn new_json_import_exception() -> JsonImportException
@@ -30,9 +32,7 @@ pub fn new_json_import_exception_message(String) -> JsonImportException
 
 pub fn new_json_import_exception_message_cause(String, String) -> JsonImportException
 
-pub fn new_json_importer(@core.LayoutRuntime, @core.LayoutSession) -> JsonImporter
-
-pub fn new_layout_runtime() -> @core.LayoutRuntime
+pub fn new_json_importer(@core.OptionMetadata, @core.LayoutSession) -> JsonImporter
 
 // Errors
 pub suberror JsonImportException {
@@ -60,7 +60,7 @@ pub fn ElkGraphJsonExportBuilder::short_layout_option_keys(Self, Bool) -> Self
 pub fn ElkGraphJsonExportBuilder::to_json(Self) -> String
 
 pub struct ElkGraphJsonImportBuilder {
-  runtime : @core.LayoutRuntime
+  metadata : @core.OptionMetadata
   session : @core.LayoutSession
   graph : String?
   json_graph : Json?

@@ -10,7 +10,7 @@ fn required_importer(
 
 ///|
 pub fn layout_json(input_graph : String) -> String raise {
-  let runtime = @json.new_layout_runtime()
+  let runtime = @all_engine.new_layout_runtime()
   let session = @core.new_layout_session()
 
   let maybe_importer : @core.Maybe[@json.JsonImporter] = @core.maybe_create()

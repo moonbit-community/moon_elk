@@ -14,5 +14,5 @@ import {
 
 import {
   "Milky2018/moon_elk/alg/layered/runtime",
-  "Milky2018/moon_elk/graph/json" @elk_graph_json,
+  "Milky2018/moon_elk/engine/all" @all_engine,
 } for "test"

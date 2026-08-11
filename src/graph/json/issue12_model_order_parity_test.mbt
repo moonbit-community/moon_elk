@@ -17,7 +17,7 @@ fn graph_json_issue12_classes_input_json() -> String {
 fn graph_json_issue12_layout(input : String) -> @graph.ElkNode {
   let root = elk_graph_json_for_graph(input).to_elk()
   @core.new_recursive_graph_layout_engine(
-    new_layout_runtime(),
+    @all_engine.new_layout_runtime(),
     @core.new_layout_session(),
   ).layout(root, @core.new_null_elk_progress_monitor())
   root

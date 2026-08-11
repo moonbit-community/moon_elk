@@ -320,7 +320,7 @@ pub fn new_elk_cancel_indicator(canceled? : Bool) -> IElkCancelIndicator
 
 pub fn new_elk_edge_adapter(@graph.ElkEdge) -> ElkEdgeAdapter
 
-pub fn new_elk_engine(LayoutRuntime, default_layout_options? : Map[String, Json], algorithms? : Array[String]) -> ElkEngine
+pub fn new_elk_engine(LayoutRuntime, default_layout_options? : Map[String, Json], algorithms? : Array[String], algorithm_aliases? : Map[String, String]) -> ElkEngine
 
 pub fn new_elk_graph_adapter(@graph.ElkNode) -> ElkGraphAdapter
 
@@ -1097,6 +1097,7 @@ pub(all) struct ElkEngine {
   runtime : LayoutRuntime
   default_layout_options : Map[String, Json]
   algorithms : Array[String]
+  algorithm_aliases : Map[String, String]
 }
 pub fn ElkEngine::known_layout_algorithms(Self) -> Array[String]
 pub fn ElkEngine::layout(Self, graph? : Json, layout_options? : Map[String, Json], logging? : Bool, measure_execution_time? : Bool) -> Json raise

@@ -1,6 +1,6 @@
 ///|
 pub struct ElkGraphJsonImportBuilder {
-  runtime : @core.LayoutRuntime
+  metadata : @core.OptionMetadata
   session : @core.LayoutSession
   graph : String?
   json_graph : Json?
@@ -37,18 +37,20 @@ priv enum JsonEdgeCoordsMode {
 }
 
 ///|
-let _graph_json_layered_algorithm_id = @options.layered_algorithm_id
-
-///|
-/// JSON layout is an application entry point, so it links both orchestration
-/// and the concrete phase registrations instead of relying on a facade package
-/// to pull them in indirectly.
-let _graph_json_layered_pipeline_linked = @pipeline.layered_pipeline_linked
+/// Creates the metadata needed to canonicalize layout option keys and values.
+/// This codec metadata describes names only; it does not register or link any
+/// layout algorithm implementation.
+pub fn new_codec_metadata() -> @core.OptionMetadata {
+  let metadata = @core.new_option_metadata()
+  metadata.register_default_options()
+  metadata.register_default_algorithms()
+  metadata
+}
 
 ///|
 pub fn elk_graph_json_for_graph(graph : String) -> ElkGraphJsonImportBuilder {
   {
-    runtime: new_layout_runtime(),
+    metadata: new_codec_metadata(),
     session: @core.new_layout_session(),
     graph: Some(graph),
     json_graph: None,
@@ -60,7 +62,7 @@ pub fn elk_graph_json_for_graph(graph : String) -> ElkGraphJsonImportBuilder {
 ///|
 pub fn elk_graph_json_for_json_graph(graph : Json) -> ElkGraphJsonImportBuilder {
   {
-    runtime: new_layout_runtime(),
+    metadata: new_codec_metadata(),
     session: @core.new_layout_session(),
     graph: None,
     json_graph: Some(graph),
@@ -703,7 +705,7 @@ pub fn ElkGraphJsonImportBuilder::remember_importer(
   maybe : @core.Maybe[JsonImporter],
 ) -> ElkGraphJsonImportBuilder {
   {
-    runtime: self.runtime,
+    metadata: self.metadata,
     session: self.session,
     graph: self.graph,
     json_graph: self.json_graph,
@@ -718,7 +720,7 @@ pub fn ElkGraphJsonImportBuilder::lenient(
   be_lenient : Bool,
 ) -> ElkGraphJsonImportBuilder {
   {
-    runtime: self.runtime,
+    metadata: self.metadata,
     session: self.session,
     graph: self.graph,
     json_graph: self.json_graph,
@@ -752,7 +754,7 @@ pub fn ElkGraphJsonImportBuilder::to_elk(
   self.session.clear_error()
   try {
     let json_graph = import_builder_graph_object(self)
-    let importer = new_json_importer(self.runtime, self.session)
+    let importer = new_json_importer(self.metadata, self.session)
     let root = importer.transform(json_graph)
     match self.importer_maybe {
       Some(importer_maybe) => importer_maybe.set(Some(importer))

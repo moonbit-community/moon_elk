@@ -24,7 +24,7 @@ test "Issue457 node minimum size respected for box layout" {
   }
 
   let engine = new_recursive_graph_layout_engine(
-    @elk_graph_json.new_layout_runtime(),
+    @all_engine.new_layout_runtime(),
     new_layout_session(),
   )
   engine.layout(root, new_basic_progress_monitor())
@@ -58,7 +58,7 @@ test "Issue489 child placement respects node padding" {
   }
 
   let engine = new_recursive_graph_layout_engine(
-    @elk_graph_json.new_layout_runtime(),
+    @all_engine.new_layout_runtime(),
     new_layout_session(),
   )
   engine.layout(root, new_basic_progress_monitor())

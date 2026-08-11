@@ -72,7 +72,7 @@ test "ElkGraphJson value converters parse numbers keys and values" {
   inspect(number_converter.to_string(Some(12.0)), content="12")
   inspect(number_converter.to_value("-4.5"), content="-4.5")
 
-  let metadata = @graph_json.new_layout_runtime().option_metadata()
+  let metadata = @graph_json.new_codec_metadata()
   let key_converter = new_graph_json_text_property_key_value_converter(metadata)
   key_converter.initialize(new_elk_graph_json_grammar_access())
   let key = key_converter.to_value("\"algorithm\"")
@@ -131,7 +131,7 @@ test "ElkGraphJson syntactic and semantic sequencers keep generated defaults" {
     content="[\"{}\"]",
   )
 
-  let metadata = @graph_json.new_layout_runtime().option_metadata()
+  let metadata = @graph_json.new_codec_metadata()
   let semantic = new_elk_graph_json_semantic_sequencer(metadata)
   let option = metadata.option_data(@core.algorithm.get_id())
   let result = semantic.sequence_property(
@@ -162,9 +162,7 @@ test "ElkGraphJsonTransientValueService marks opposite lists as transient" {
 
 ///|
 test "ElkGraphJson validator and issue-code provider expose generated defaults" {
-  let validator = new_elk_graph_json_validator(
-    @graph_json.new_layout_runtime().option_metadata(),
-  )
+  let validator = new_elk_graph_json_validator(@graph_json.new_codec_metadata())
   inspect(
     graph_json_text_runtime_bool_to_string(validator.is_enabled()),
     content="true",

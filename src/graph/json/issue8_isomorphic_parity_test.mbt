@@ -66,7 +66,7 @@ fn graph_json_issue8_required_section(
 test "issue8 isomorphic layout matches elkjs 0.8.2 routing" {
   let root = elk_graph_json_for_graph(graph_json_issue8_input_json()).to_elk()
   let engine = @core.new_recursive_graph_layout_engine(
-    new_layout_runtime(),
+    @all_engine.new_layout_runtime(),
     @core.new_layout_session(),
   )
   engine.layout(root, @core.new_null_elk_progress_monitor())

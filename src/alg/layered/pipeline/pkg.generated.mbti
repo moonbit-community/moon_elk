@@ -14,8 +14,6 @@ pub fn graph_configurator_prepare_graph_for_layout(@runtime.LayeredPhaseRegistry
 
 pub fn layered_layout_provider_as_layout_provider(LayeredLayoutProvider) -> @core.AbstractLayoutProvider
 
-pub let layered_pipeline_linked : Bool
-
 pub fn new_elk_layered(@core.LayoutRuntime, @core.LayoutSession, @runtime.LayeredPhaseRegistry) -> ElkLayered
 
 pub fn new_layered_layout_provider(@core.LayoutRuntime, @core.LayoutSession, @runtime.LayeredPhaseRegistry) -> LayeredLayoutProvider

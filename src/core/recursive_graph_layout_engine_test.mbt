@@ -24,7 +24,7 @@ test "RecursiveGraphLayoutEngine unresolved graph" {
   let graph = new_recursive_layout_graph_fixture()
   @graph.node_set_string_property(graph.root, algorithm, "org.eclipse.elk.box")
   let engine = new_recursive_graph_layout_engine(
-    @elk_graph_json.new_layout_runtime(),
+    @all_engine.new_layout_runtime(),
     new_layout_session(),
   )
   engine.layout(graph.root, new_basic_progress_monitor())
@@ -42,7 +42,7 @@ test "RecursiveGraphLayoutEngine resolved graph" {
     "org.eclipse.elk.box",
   )
   let engine = new_recursive_graph_layout_engine(
-    @elk_graph_json.new_layout_runtime(),
+    @all_engine.new_layout_runtime(),
     new_layout_session(),
   )
   engine.layout(graph.root, new_basic_progress_monitor())
@@ -57,7 +57,7 @@ test "RecursiveGraphLayoutEngine unknown algorithm reports runtime error" {
   @graph.node_set_string_property(graph.root, algorithm, "foo.Bar")
   let session = new_layout_session()
   let engine = new_recursive_graph_layout_engine(
-    @elk_graph_json.new_layout_runtime(),
+    @all_engine.new_layout_runtime(),
     session,
   )
   engine.layout(graph.root, new_basic_progress_monitor())
@@ -73,7 +73,7 @@ test "RecursiveGraphLayoutEngine empty algorithm id falls back to layered" {
   init_layout_metadata_for_engine_test()
   let graph = new_recursive_layout_graph_fixture()
   let engine = new_recursive_graph_layout_engine(
-    @elk_graph_json.new_layout_runtime(),
+    @all_engine.new_layout_runtime(),
     new_layout_session(),
   )
   engine.layout(graph.root, new_basic_progress_monitor())

@@ -124,7 +124,7 @@ test "graph json import individual spacings" {
     true,
   )
   let engine = @core.new_recursive_graph_layout_engine(
-    new_layout_runtime(),
+    @all_engine.new_layout_runtime(),
     @core.new_layout_session(),
   )
   engine.layout(root, @core.new_null_elk_progress_monitor())

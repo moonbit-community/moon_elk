@@ -104,7 +104,7 @@ test "InternalElkGraphJsonLexer tokenizes generated terminal set" {
 test "InternalElkGraphJsonParser parses node graph from json text" {
   let text = "{\"id\":\"root\",\"children\":[{\"id\":\"n1\"}],\"edges\":[{\"id\":\"e1\",\"sources\":[\"n1\"],\"targets\":[\"n1\"]}]}"
   let lexer = new_internal_elk_graph_json_lexer(text)
-  let metadata = @graph_json.new_layout_runtime().option_metadata()
+  let metadata = @graph_json.new_codec_metadata()
   let parser = new_internal_elk_graph_json_parser(metadata, lexer.lex_all())
   let root = parser.entry_rule_elk_node()
 
@@ -121,9 +121,7 @@ test "InternalElkGraphJsonParser parses node graph from json text" {
 
 ///|
 test "ElkGraphJsonParser wires lexer and internal parser" {
-  let parser = new_elk_graph_json_parser(
-    @graph_json.new_layout_runtime().option_metadata(),
-  )
+  let parser = new_elk_graph_json_parser(@graph_json.new_codec_metadata())
   inspect(parser.get_default_rule_name(), content="ElkNode")
   inspect(parser.get_initial_hidden_tokens().length(), content="3")
   let root = parser.parse(

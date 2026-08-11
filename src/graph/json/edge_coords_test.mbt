@@ -143,7 +143,7 @@ fn edge_coords_run_case(
     .remember_importer(maybe_importer)
     .to_elk()
   let engine = @core.new_recursive_graph_layout_engine(
-    new_layout_runtime(),
+    @all_engine.new_layout_runtime(),
     @core.new_layout_session(),
   )
   engine.layout(root, @core.new_basic_progress_monitor())

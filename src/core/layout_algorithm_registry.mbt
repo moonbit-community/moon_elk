@@ -32,3 +32,10 @@ fn LayoutRuntime::layout_algorithm(
 ) -> RecursiveGraphLayoutHandler? {
   self.algorithm_registry().handlers.get(algorithm_id)
 }
+
+///|
+fn LayoutRuntime::layout_algorithm_ids(self : LayoutRuntime) -> Array[String] {
+  let ids = []
+  self.algorithm_registry().handlers.each((id, _handler) => ids.push(id))
+  ids
+}

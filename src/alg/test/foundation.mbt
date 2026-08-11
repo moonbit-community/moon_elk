@@ -428,7 +428,7 @@ pub fn elk_graph_json_for_elk_graph(
 
 ///|
 pub fn new_elk_graph_parser() -> @text.ElkGraphParser {
-  @text.new_elk_graph_parser(@json.new_layout_runtime().option_metadata())
+  @text.new_elk_graph_parser(@json.new_codec_metadata())
 }
 
 ///|
@@ -449,7 +449,7 @@ pub fn new_graph_element_visitor(
 ///|
 pub fn new_recursive_graph_layout_engine() -> @core.RecursiveGraphLayoutEngine {
   @core.new_recursive_graph_layout_engine(
-    @json.new_layout_runtime(),
+    @all_engine.new_layout_runtime(),
     @core.new_layout_session(),
   )
 }

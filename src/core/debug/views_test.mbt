@@ -138,7 +138,7 @@ test "LoadGraphAction, ReloadFromFileAction and DropAdapter update model" {
   core_debug_register_graph_file_for_test("/tmp/b.elkg", graph_b)
 
   let view = new_layout_graph_view()
-  let runtime = @graph_json.new_layout_runtime()
+  let runtime = @layered_engine.new_layout_runtime()
   let session = @core.new_layout_session()
   let load = new_load_graph_action(runtime, session, view)
   load.set_selected_file_name_for_test(Some("/tmp/a.elkg"))

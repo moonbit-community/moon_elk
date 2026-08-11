@@ -1,8 +1,8 @@
 ///|
 fn parse_graph_text(content : String) -> @graph.ElkNode {
-  let graph = @text.new_elk_graph_parser(
-    @json.new_layout_runtime().option_metadata(),
-  ).parse(content)
+  let graph = @text.new_elk_graph_parser(@json.new_codec_metadata()).parse(
+    content,
+  )
   @graph.node_set_string_property(
     graph, @core.algorithm, "org.eclipse.elk.layered",
   )

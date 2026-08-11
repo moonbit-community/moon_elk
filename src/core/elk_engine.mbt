@@ -3,6 +3,30 @@ pub(all) struct ElkEngine {
   runtime : LayoutRuntime
   default_layout_options : Map[String, Json]
   algorithms : Array[String]
+  algorithm_aliases : Map[String, String]
+}
+
+///|
+fn elk_engine_algorithm_name_from_id(algorithm_id : String) -> String {
+  if algorithm_id.has_prefix("org.eclipse.elk.") {
+    algorithm_id[16:].to_owned()
+  } else if algorithm_id.has_prefix("elk.") {
+    algorithm_id[4:].to_owned()
+  } else {
+    algorithm_id
+  }
+}
+
+///|
+fn elk_engine_default_algorithms(runtime : LayoutRuntime) -> Array[String] {
+  let algorithms = ["fixed", "box", "random"]
+  for algorithm_id in runtime.layout_algorithm_ids() {
+    let name = elk_engine_algorithm_name_from_id(algorithm_id)
+    if !algorithms.contains(name) {
+      algorithms.push(name)
+    }
+  }
+  algorithms
 }
 
 ///|
@@ -14,16 +38,17 @@ fn copy_json_map(source : Map[String, Json]) -> Map[String, Json] {
 pub fn new_elk_engine(
   runtime : LayoutRuntime,
   default_layout_options? : Map[String, Json] = Map([]),
-  algorithms? : Array[String] = [
-    "layered", "force", "stress", "radial", "mrtree", "rectpacking", "sporeOverlap",
-    "sporeCompaction", "fixed", "box", "random", "vertiflex", "disco", "topdownpacking",
-    "libavoid", "dot", "neato", "fdp", "sfdp", "twopi", "circo",
-  ],
+  algorithms? : Array[String],
+  algorithm_aliases? : Map[String, String] = Map([]),
 ) -> ElkEngine {
   {
     runtime,
     default_layout_options: copy_json_map(default_layout_options),
-    algorithms: algorithms.copy(),
+    algorithms: match algorithms {
+      Some(configured) => configured.copy()
+      None => elk_engine_default_algorithms(runtime)
+    },
+    algorithm_aliases: algorithm_aliases.copy(),
   }
 }
 
@@ -160,15 +185,29 @@ fn normalize_algorithm(raw_algorithm : String) -> String? {
       Some("twopi")
     "circo" | "elk.graphviz.circo" | "org.eclipse.elk.graphviz.circo" =>
       Some("circo")
-    _ => None
+    _ => {
+      let normalized = elk_engine_algorithm_name_from_id(raw_algorithm)
+      if normalized.is_empty() {
+        None
+      } else {
+        Some(normalized)
+      }
+    }
   }
 }
 
 ///|
-fn resolve_algorithm(options : Map[String, Json]) -> String raise {
+fn resolve_algorithm(
+  options : Map[String, Json],
+  algorithm_aliases : Map[String, String],
+) -> String raise {
   let raw = option_string_by_keys(options, [
     "algorithm", "elk.algorithm", "org.eclipse.elk.algorithm",
   ]).unwrap_or("layered")
+  match algorithm_aliases.get(raw) {
+    Some(algorithm) => return algorithm
+    None => ()
+  }
   match normalize_algorithm(raw) {
     Some(algorithm) => algorithm
     None =>
@@ -247,7 +286,7 @@ pub fn ElkEngine::layout(
     layout_options,
     graph_obj,
   )
-  let root_algorithm = resolve_algorithm(options)
+  let root_algorithm = resolve_algorithm(options, self.algorithm_aliases)
   if !self.algorithms.contains(root_algorithm) {
     raise invalid_graph_error(
       "org.eclipse.elk.core.UnsupportedConfigurationException: Unknown layouter id",
