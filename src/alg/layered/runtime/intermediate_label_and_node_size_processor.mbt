@@ -236,8 +236,10 @@ fn label_and_node_size_processor_process(
     ),
   )
 
-  node_dimension_calculation_calculate_label_and_node_sizes_for_layered_graph(
-    layered_graph,
+  @nodespacing.node_dimension_calculation_calculate_label_and_node_sizes_for_adapter(
+    adapt_l_graph_with_options(layered_graph, true, true, node => {
+      node.get_type() is Normal
+    }),
   )
 
   if label_and_node_size_graph_has_external_ports(layered_graph) {

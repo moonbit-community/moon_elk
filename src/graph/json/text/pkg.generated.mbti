@@ -555,4 +555,3 @@ pub type ElkGraphJsonResource = String
 pub type GraphJsonTextIssueSeverity = Int
 
 // Traits
-

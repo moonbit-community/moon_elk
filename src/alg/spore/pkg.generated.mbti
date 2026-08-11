@@ -179,4 +179,3 @@ pub enum SporeTreeConstructionStrategy {
 // Type aliases
 
 // Traits
-

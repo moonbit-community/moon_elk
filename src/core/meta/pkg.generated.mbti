@@ -700,4 +700,3 @@ pub fn MetaDataValidator::get_epackages(Self) -> Array[String]
 // Type aliases
 
 // Traits
-

@@ -593,4 +593,3 @@ pub type GmfRunnable = () -> Unit
 pub type GmfView = Int
 
 // Traits
-

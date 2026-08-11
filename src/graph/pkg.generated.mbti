@@ -660,4 +660,3 @@ pub type ElkShapeImpl = Int
 pub type ExperimentalPropertyValue = Unit
 
 // Traits
-

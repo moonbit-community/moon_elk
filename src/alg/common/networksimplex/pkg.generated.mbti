@@ -125,4 +125,3 @@ pub fn NetworkSimplex::with_previous_layering(Self, Array[Int]) -> Self
 // Type aliases
 
 // Traits
-

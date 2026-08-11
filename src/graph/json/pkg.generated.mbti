@@ -115,4 +115,3 @@ pub fn JsonImporter::transform(Self, Map[String, Json]) -> Int
 // Type aliases
 
 // Traits
-

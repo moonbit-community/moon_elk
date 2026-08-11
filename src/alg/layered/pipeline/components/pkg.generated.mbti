@@ -122,4 +122,3 @@ pub fn ModelOrderComponentGroup::get_port_sides(Self) -> Array[Array[@core.PortS
 // Type aliases
 
 // Traits
-

@@ -156,7 +156,7 @@ fn node_label_cell_creator_retrieve_node_label_cell(
 ///|
 fn node_label_cell_creator_handle_node_label(
   node_context : NodeContext,
-  label : @core.ElkLabelAdapter,
+  label : &NodeSpacingLabel,
   only_inside : Bool,
   horizontal_layout_mode : Bool,
 ) -> Unit raise NodeLabelCellCreatorException {

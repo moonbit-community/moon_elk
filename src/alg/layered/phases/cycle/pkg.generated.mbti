@@ -69,4 +69,3 @@ pub fn GroupModelOrderCalculator::reset_internal_counters(Self) -> Unit
 // Type aliases
 
 // Traits
-

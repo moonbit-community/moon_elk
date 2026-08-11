@@ -66,4 +66,3 @@ pub fn[T] LayeredIGraphTransformer::import_graph(Self[T], T) -> @runtime.LGraph?
 // Type aliases
 
 // Traits
-

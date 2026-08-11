@@ -391,4 +391,3 @@ pub type FLabel = Int
 pub type FNode = Int
 
 // Traits
-

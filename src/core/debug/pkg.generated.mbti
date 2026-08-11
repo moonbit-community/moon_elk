@@ -549,4 +549,3 @@ pub fn RevealLogFolderAction::update_enablement(Self) -> Unit
 pub type ExecutionInfo = Int
 
 // Traits
-

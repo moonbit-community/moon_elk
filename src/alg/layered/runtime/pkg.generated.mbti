@@ -31,10 +31,6 @@ pub fn bp_info_is_end(LNode) -> Bool
 
 pub fn bp_info_is_start(LNode) -> Bool
 
-pub fn cell_system_configurator_configure_cell_system_size_contributions(NodeContext) -> Unit
-
-pub fn cell_system_configurator_update_vertical_inside_port_label_cell_padding(NodeContext) -> Unit
-
 pub fn change_coord_system(@core.KVector, LGraph, LGraph) -> Unit
 
 pub fn cm_group_model_order_calculate_model_order_or_group_model_order(LNode, LNode, LGraph, Int) -> Int
@@ -44,14 +40,6 @@ pub fn cm_group_model_order_calculate_model_order_or_group_model_order_edge(LEdg
 pub fn cm_group_model_order_calculate_model_order_or_group_model_order_port(LPort, LPort, LGraph, Int) -> Int
 
 pub fn compute_graph_properties(LGraph) -> Unit
-
-pub fn container_area_to_string(ContainerArea) -> String
-
-pub fn container_area_values() -> Array[ContainerArea]
-
-pub fn container_cell_min_height_of_cell(Cell?, Bool) -> Double
-
-pub fn container_cell_min_width_of_cell(Cell?, Bool) -> Double
 
 pub fn create_external_port_dummy(LPort, @core.PortConstraints, @core.PortSide, Int, @core.KVector?, @core.KVector?, @core.KVector, @core.Direction, LGraph) -> LNode raise LGraphUtilException
 
@@ -95,40 +83,6 @@ pub fn get_individual_or_inherited(LNode, @graph.IProperty[Double]) -> Double
 
 pub fn get_minimal_model_order(LGraph) -> Int
 
-pub fn grid_container_cell_compute_minimum_height(Cell) -> Double
-
-pub fn grid_container_cell_compute_minimum_width(Cell) -> Double
-
-pub fn grid_container_cell_get_cell(Cell, ContainerArea, ContainerArea) -> Cell?
-
-pub fn grid_container_cell_get_center_cell_rectangle(Cell) -> @core.ElkRectangle
-
-pub fn grid_container_cell_get_gap(Cell) -> Double
-
-pub fn grid_container_cell_layout_children_horizontally(Cell) -> Unit
-
-pub fn grid_container_cell_layout_children_vertically(Cell) -> Unit
-
-pub fn grid_container_cell_set_cell(Cell, ContainerArea, ContainerArea, Cell?) -> Unit
-
-pub fn grid_container_cell_set_center_cell_minimum_size(Cell, @core.KVector) -> Unit
-
-pub fn grid_container_cell_set_only_center_cell_contributes_to_minimum_size(Cell, Bool) -> Unit
-
-pub fn horizontal_label_alignment_center() -> HorizontalLabelAlignment
-
-pub fn horizontal_label_alignment_left() -> HorizontalLabelAlignment
-
-pub fn horizontal_label_alignment_right() -> HorizontalLabelAlignment
-
-pub fn horizontal_label_alignment_to_string(HorizontalLabelAlignment) -> String
-
-pub fn horizontal_label_alignment_values() -> Array[HorizontalLabelAlignment]
-
-pub fn horizontal_port_placement_size_calculator_calculate_horizontal_port_placement_size(NodeContext) -> Unit
-
-pub fn horizontal_port_placement_size_calculator_min_size_required_to_respect_spacing(Double, Double, Double) -> Double
-
 pub fn hyper_edge_cycle_detector_detect_cycles(Array[HyperEdgeSegment], Bool, @state.GreedySwitchMockRandom) -> Array[HyperEdgeSegmentDependency]
 
 pub fn hyper_edge_segment_dependency_create_and_add_critical(HyperEdgeSegment, HyperEdgeSegment) -> HyperEdgeSegmentDependency
@@ -144,8 +98,6 @@ pub fn i_sweep_port_distributor_init(Array[ISweepPortDistributor], Array[Array[L
 pub fn in_north_south_east_west_order(LNode, @core.PortSide) -> Array[LPort]
 
 pub fn initialize_port(LPort, @core.PortConstraints, @core.Direction, @core.KVector?) -> Unit
-
-pub fn inside_port_label_cell_creator_create_inside_port_label_cells(NodeContext) -> Unit
 
 pub let interactive_layered_graph_visitor_last_layer_index : Int
 
@@ -299,8 +251,6 @@ pub fn label_management_processor_do_manage_labels(@core.ILabelManager, Array[LL
 
 pub let label_management_processor_min_width_edge_labels : Double
 
-pub fn label_placer_place_labels(NodeContext) -> Unit
-
 pub fn layer_internal_handle(Layer) -> Int
 
 pub let layered_components_direction : @graph.IProperty[@core.Direction]
@@ -351,8 +301,6 @@ pub fn new_alternating_layer_unzipper_layout_processor() -> @core.ILayoutProcess
 
 pub fn new_ard_cut_index_heuristic() -> ICutIndexCalculator
 
-pub fn new_atomic_cell() -> Cell
-
 pub fn new_barycenter_heuristic(ForsterConstraintResolver, @state.GreedySwitchMockRandom, AbstractBarycenterPortDistributor, Array[Array[LNode]]) -> BarycenterHeuristic
 
 pub fn new_barycenter_layer_sweep_crossing_minimizer_layout_phase() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
@@ -375,11 +323,7 @@ pub fn new_breaking_point_processor_layout_processor() -> @core.ILayoutProcessor
 
 pub fn new_breaking_point_remover_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
-pub fn new_cell() -> Cell
-
 pub fn new_constraints_postprocessor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
-
-pub fn new_container_cell() -> Cell
 
 pub fn new_crossing_matrix_filler(@options.GreedySwitchType, Array[Array[LNode]], Int, CrossingCountSide) -> CrossingMatrixFiller
 
@@ -424,8 +368,6 @@ pub fn new_greedy_switch_in_layer_edge_test_graph_creator() -> GreedySwitchInLay
 pub fn new_greedy_switch_north_south_edge_test_graph_creator() -> GreedySwitchNorthSouthEdgeTestGraphCreator
 
 pub fn new_greedy_switch_test_graph_creator() -> GreedySwitchTestGraphCreator
-
-pub fn new_grid_container_cell(Bool, Bool, Double) -> Cell
 
 pub fn new_hierarchical_node_resizing_processor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
@@ -505,14 +447,6 @@ pub fn new_l_shape() -> LShape
 
 pub fn new_label_and_node_size_processor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
-pub fn new_label_cell(Double) -> Cell
-
-pub fn new_label_cell_full(Double, NodeLabelLocation, Bool) -> Cell
-
-pub fn new_label_cell_with_layout_mode(Double, Bool) -> Cell
-
-pub fn new_label_cell_with_node_label_location(Double, NodeLabelLocation) -> Cell
-
 pub fn new_label_dummy_inserter_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_label_dummy_remover_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
@@ -577,10 +511,6 @@ pub fn new_msd_cut_index_heuristic() -> ICutIndexCalculator
 
 pub fn new_no_crossing_minimizer_layout_phase() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
-pub fn new_node_context(LNodeAdapter) -> NodeContext raise NodeContextException
-
-pub fn new_node_margin_calculator(LGraphAdapter) -> NodeMarginCalculator
-
 pub fn new_node_promotion_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
 pub fn new_node_relative_port_distributor(Int) -> NodeRelativePortDistributor
@@ -614,8 +544,6 @@ pub fn new_polyline_edge_router_layout_phase() -> @core.ILayoutProcessor[Layered
 pub fn new_polyline_self_loop_router() -> AbstractSelfLoopRouter
 
 pub fn new_port_comparator() -> PortComparator
-
-pub fn new_port_context(NodeContext, LPortAdapter, Int) -> PortContext
 
 pub fn new_port_list_sorter_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
@@ -677,8 +605,6 @@ pub fn new_spline_segment_single_edge(LEdge, SplineSideToProcess, SplineSideToPr
 
 pub fn new_spline_self_loop_router() -> AbstractSelfLoopRouter
 
-pub fn new_strip_container_cell(Strip, Bool, Double) -> Cell
-
 pub fn new_sweep_copy(Array[Array[LNode]]) -> SweepCopy
 
 pub fn new_sweep_copy_from(SweepCopy) -> SweepCopy
@@ -693,77 +619,7 @@ pub fn new_vertical_segment(@core.KVector, @core.KVector, @compaction.CNode?, LE
 
 pub fn new_west_to_east_routing_strategy() -> BaseRoutingDirectionStrategy
 
-pub fn node_context_add_port_context(NodeContext, @core.PortSide, PortContext) -> Unit
-
-pub fn node_context_compare_port_sides(@core.PortSide, @core.PortSide) -> Int
-
-pub fn node_context_get_all_port_contexts(NodeContext) -> Array[PortContext]
-
-pub fn node_context_get_port_contexts(NodeContext, @core.PortSide) -> Array[PortContext]
-
-pub fn node_context_node_label_location_key(NodeLabelLocation) -> String
-
-pub fn node_context_port_alignment_equals(@core.PortAlignment, @core.PortAlignment) -> Bool
-
-pub fn node_context_port_constraints_equals(@core.PortConstraints, @core.PortConstraints) -> Bool
-
-pub fn node_context_port_side_key(@core.PortSide) -> String
-
-pub fn node_dimension_calculation_calculate_label_and_node_sizes(LGraphAdapter) -> Unit
-
-pub fn node_dimension_calculation_calculate_label_and_node_sizes_for_layered_graph(LGraph) -> Unit
-
-pub fn node_dimension_calculation_calculate_node_margins(LGraphAdapter) -> Unit
-
-pub fn node_dimension_calculation_calculate_node_margins_for_layered_graph(LGraph) -> Unit
-
-pub fn node_dimension_calculation_get_node_margin_calculator(LGraphAdapter) -> NodeMarginCalculator
-
-pub fn node_dimension_calculation_sort_port_lists(LGraphAdapter) -> Unit
-
-pub fn node_dimension_calculation_sort_port_lists_for_layered_graph(LGraph) -> Unit
-
-pub fn node_label_and_size_calculator_process_layered_graph(LGraph) -> Unit
-
-pub fn node_label_and_size_utilities_apply_stuff(NodeContext) -> Unit
-
-pub fn node_label_and_size_utilities_are_size_constraints_fixed(NodeContext) -> Bool
-
-pub fn node_label_and_size_utilities_get_minimum_client_area_size(NodeContext) -> @core.KVector?
-
-pub fn node_label_and_size_utilities_get_minimum_node_or_client_area_size(NodeContext) -> @core.KVector
-
-pub fn node_label_and_size_utilities_get_minimum_node_size(NodeContext) -> @core.KVector?
-
-pub fn node_label_and_size_utilities_is_first_outside_port_label_placed_differently(NodeContext, @core.PortSide) -> Bool
-
-pub fn node_label_and_size_utilities_offset_southern_ports_by_node_size(NodeContext) -> Unit
-
-pub fn node_label_and_size_utilities_set_node_padding(NodeContext) -> Unit
-
-pub fn node_label_and_size_utilities_setup_minimum_client_area_size(NodeContext) -> Unit
-
-pub fn node_label_and_size_utilities_setup_node_padding_for_ports_with_offset(NodeContext) -> Unit
-
-pub fn node_label_cell_creator_create_node_label_cells(NodeContext, Bool, Bool) -> Unit raise NodeLabelCellCreatorException
-
-pub fn node_label_location_from_node_label_placement(Array[@core.NodeLabelPlacement]) -> NodeLabelLocation
-
-pub fn node_label_location_to_string(NodeLabelLocation) -> String
-
-pub fn node_label_location_values() -> Array[NodeLabelLocation]
-
-pub fn node_size_calculator_set_node_height(NodeContext) -> Unit
-
-pub fn node_size_calculator_set_node_width(NodeContext) -> Unit
-
 pub fn node_type_values() -> Array[NodeType]
-
-pub let nodespacing_port_border_offset_property : @graph.IProperty[Double]
-
-pub fn nodespacing_port_border_offset_value(LPortAdapter) -> Double
-
-pub fn nodespacing_port_labels_bounds(LPortAdapter) -> @core.ElkRectangle
 
 pub let nub_spline_dim : Int
 
@@ -816,18 +672,6 @@ pub fn polyline_edge_router_is_external_west_or_east_port(LNode) -> Bool
 pub fn polyline_self_loop_router_cut_corners(@core.KVectorChain, Double) -> @core.KVectorChain
 
 pub fn polyline_self_loop_router_route_self_loops(SelfLoopHolder) -> Unit
-
-pub fn port_context_creator_create_port_contexts(NodeContext, Bool) -> Unit raise PortContextCreatorException
-
-pub fn port_label_placement_calculator_place_horizontal_port_labels(NodeContext) -> Unit
-
-pub fn port_label_placement_calculator_place_vertical_port_labels(NodeContext) -> Unit
-
-pub fn port_placement_calculator_place_horizontal_ports(NodeContext) -> Unit
-
-pub fn port_placement_calculator_place_vertical_ports(NodeContext) -> Unit
-
-pub let port_placement_calculator_port_ratio_or_position : @graph.IProperty[Double]
 
 pub fn port_restorer_sorted_two_side_loop_port_sides(SelfHyperLoop) -> Array[@core.PortSide]
 
@@ -935,31 +779,11 @@ pub let splines_math_three_half_pi : Double
 
 pub let splines_math_two_pi : Double
 
-pub fn strip_container_cell_compute_minimum_height(Cell) -> Double
-
-pub fn strip_container_cell_compute_minimum_width(Cell) -> Double
-
-pub fn strip_container_cell_layout_children_horizontally(Cell) -> Unit
-
-pub fn strip_container_cell_layout_children_vertically(Cell) -> Unit
-
 pub fn to_edge_array(Array[LEdge]) -> Array[LEdge]
 
 pub fn to_node_array(Array[LNode]) -> Array[LNode]
 
 pub fn to_port_array(Array[LPort]) -> Array[LPort]
-
-pub fn vertical_label_alignment_bottom() -> VerticalLabelAlignment
-
-pub fn vertical_label_alignment_center() -> VerticalLabelAlignment
-
-pub fn vertical_label_alignment_to_string(VerticalLabelAlignment) -> String
-
-pub fn vertical_label_alignment_top() -> VerticalLabelAlignment
-
-pub fn vertical_label_alignment_values() -> Array[VerticalLabelAlignment]
-
-pub fn vertical_port_placement_size_calculator_calculate_vertical_port_placement_size(NodeContext) -> Unit
 
 pub fn vertical_segment_origin_key(VerticalSegment) -> String
 
@@ -997,23 +821,11 @@ pub suberror LayeredSpacingsException {
   LayeredSpacingsException(String)
 } derive(ToJson, @debug.Debug)
 
-pub(all) suberror NodeContextException {
-  UnsupportedConfigurationException(String)
-} derive(ToJson, @debug.Debug)
-
-pub(all) suberror NodeLabelCellCreatorException {
-  IllegalArgumentException(String)
-} derive(ToJson, @debug.Debug)
-
 pub suberror NodeRelativePortDistributorException {
   NodeRelativePortDistributorException(String)
 } derive(ToJson, @debug.Debug)
 
 pub(all) suberror NubSplineException {
-  IllegalArgumentException(String)
-} derive(ToJson, @debug.Debug)
-
-pub(all) suberror PortContextCreatorException {
   IllegalArgumentException(String)
 } derive(ToJson, @debug.Debug)
 
@@ -1189,84 +1001,7 @@ pub struct BreakingPointInserterCut {
   mut assigned : Bool
 }
 
-#alias(AtomicCell)
-#alias(ContainerCell)
-#alias(GridContainerCell)
-#alias(LabelCell)
-#alias(StripContainerCell)
-pub struct Cell {
-  mut kind : CellKind
-  mut padding : @core.Spacing
-  mut cell_rectangle : @core.ElkRectangle
-  mut contributes_to_minimum_width : Bool
-  mut contributes_to_minimum_height : Bool
-  mut minimum_content_area_size : @core.KVector?
-  mut strip_container_mode : Strip?
-  mut strip_symmetrical : Bool
-  mut strip_gap : Double
-  mut strip_cells : Array[Cell?]?
-  mut grid_tabular : Bool
-  mut grid_symmetrical : Bool
-  mut grid_gap : Double
-  mut grid_cells : Array[Array[Cell?]]?
-  mut center_cell_minimum_size : @core.KVector?
-  mut only_center_cell_contributes_to_minimum_size : Bool
-  mut center_cell_rect : @core.ElkRectangle
-  mut label_horizontal_layout_mode : Bool
-  mut label_horizontal_alignment : HorizontalLabelAlignment
-  mut label_vertical_alignment : VerticalLabelAlignment
-  mut label_gap : Double
-  mut labels : Array[Int]?
-  mut l_labels : Array[LLabelAdapter]?
-}
-pub fn Cell::add_l_label(Self, LLabelAdapter) -> Unit
-pub fn Cell::add_label(Self, Int) -> Unit
-pub fn Cell::apply_horizontal_layout(Self, Self?, Double, Double) -> Unit
-pub fn Cell::apply_label_layout(Self) -> Unit
-pub fn Cell::apply_vertical_layout(Self, Self?, Double, Double) -> Unit
-pub fn Cell::get_cell(Self, ContainerArea) -> Self?
-pub fn Cell::get_cell_rectangle(Self) -> @core.ElkRectangle
-pub fn Cell::get_container_mode(Self) -> Strip
-pub fn Cell::get_gap(Self) -> Double
-pub fn Cell::get_horizontal_alignment(Self) -> HorizontalLabelAlignment
-pub fn Cell::get_l_labels(Self) -> Array[LLabelAdapter]
-pub fn Cell::get_labels(Self) -> Array[Int]
-pub fn Cell::get_minimum_content_area_size(Self) -> @core.KVector
-pub fn Cell::get_minimum_height(Self) -> Double
-pub fn Cell::get_minimum_width(Self) -> Double
-pub fn Cell::get_padding(Self) -> @core.Spacing
-pub fn Cell::get_vertical_alignment(Self) -> VerticalLabelAlignment
-pub fn Cell::has_labels(Self) -> Bool
-pub fn Cell::is_contributing_to_minimum_height(Self) -> Bool
-pub fn Cell::is_contributing_to_minimum_width(Self) -> Bool
-pub fn Cell::label_count(Self) -> Int
-pub fn Cell::layout_children_horizontally(Self) -> Unit
-pub fn Cell::layout_children_vertically(Self) -> Unit
-pub fn Cell::set_cell(Self, ContainerArea, Self?) -> Unit
-pub fn Cell::set_cell_rectangle(Self, @core.ElkRectangle) -> Unit
-pub fn Cell::set_contributes_to_minimum_height(Self, Bool) -> Unit
-pub fn Cell::set_contributes_to_minimum_width(Self, Bool) -> Unit
-pub fn Cell::set_horizontal_alignment(Self, HorizontalLabelAlignment) -> Self
-pub fn Cell::set_minimum_content_area_size(Self, @core.KVector, Bool) -> Unit
-pub fn Cell::set_padding(Self, @core.Spacing) -> Unit
-pub fn Cell::set_vertical_alignment(Self, VerticalLabelAlignment) -> Self
-
-pub enum CellKind {
-  BaseCellKind
-  AtomicCellKind
-  ContainerCellKind
-  StripContainerCellKind
-  GridContainerCellKind
-  LabelCellKind
-}
-
 type ConstraintGroup
-
-pub(all) enum ContainerArea {
-  Begin
-  Center
-  End
-}
 
 pub enum CrossMinType {
   Barycenter
@@ -1596,12 +1331,6 @@ pub struct HighDegreeNodeInformation {
   inc_tree_roots : Array[LNode]
   mut out_trees_max_height : Int
   out_tree_roots : Array[LNode]
-}
-
-pub enum HorizontalLabelAlignment {
-  Left
-  Center
-  Right
 }
 
 pub struct HyperEdgeSegment {
@@ -2468,84 +2197,6 @@ pub fn ModelOrderPortComparator::check_port_model_order(Self, LPort, LPort) -> I
 pub fn ModelOrderPortComparator::clear_transitive_ordering(Self) -> Unit
 pub fn ModelOrderPortComparator::compare(Self, LPort, LPort) -> Int
 
-pub struct NodeContext {
-  node : LNodeAdapter
-  node_size : @core.KVector
-  treat_as_compound_node : Bool
-  size_constraints : Array[@core.SizeConstraint]
-  size_options : Array[@core.SizeOptions]
-  port_constraints : @core.PortConstraints
-  port_labels_placement : Array[@core.PortLabelPlacement]
-  port_labels_treat_as_group : Bool
-  node_label_placement : Array[@core.NodeLabelPlacement]
-  node_labels_padding : @core.Spacing
-  node_label_spacing : Double
-  label_label_spacing : Double
-  label_cell_spacing : Double
-  port_port_spacing : Double
-  port_label_spacing_horizontal : Double
-  port_label_spacing_vertical : Double
-  surrounding_port_margins : @core.Spacing
-  topdown_layout : Bool
-  port_contexts : Map[String, Array[PortContext]]
-  node_container : Cell
-  node_container_middle_row : Cell
-  mut inside_node_label_container : Cell
-  inside_port_label_cells : Map[String, Cell]
-  outside_node_label_containers : Map[String, Cell]
-  node_label_cells : Map[String, Cell]
-}
-pub fn NodeContext::apply_node_size(Self) -> Unit
-pub fn NodeContext::get_port_alignment(Self, @core.PortSide) -> @core.PortAlignment
-pub fn NodeContext::has_port_label_placement(Self, @core.PortLabelPlacement) -> Bool
-pub fn NodeContext::has_size_constraint(Self, @core.SizeConstraint) -> Bool
-pub fn NodeContext::has_size_option(Self, @core.SizeOptions) -> Bool
-
-pub enum NodeLabelLocation {
-  OutTL
-  OutTC
-  OutTR
-  OutBL
-  OutBC
-  OutBR
-  OutLT
-  OutLC
-  OutLB
-  OutRT
-  OutRC
-  OutRB
-  InTL
-  InTC
-  InTR
-  InCL
-  InCC
-  InCR
-  InBL
-  InBC
-  InBR
-  UndefinedNodeLabelLocation
-}
-pub fn NodeLabelLocation::container_column(Self) -> ContainerArea?
-pub fn NodeLabelLocation::container_row(Self) -> ContainerArea?
-pub fn NodeLabelLocation::horizontal_alignment(Self) -> HorizontalLabelAlignment?
-pub fn NodeLabelLocation::is_inside_location(Self) -> Bool
-pub fn NodeLabelLocation::outside_side(Self) -> @core.PortSide
-pub fn NodeLabelLocation::vertical_alignment(Self) -> VerticalLabelAlignment?
-
-pub struct NodeMarginCalculator {
-  mut include_labels : Bool
-  mut include_ports : Bool
-  mut include_port_labels : Bool
-  mut include_edge_head_tail_labels : Bool
-  adapter : LGraphAdapter
-}
-pub fn NodeMarginCalculator::exclude_edge_head_tail_labels(Self) -> Self
-pub fn NodeMarginCalculator::exclude_labels(Self) -> Self
-pub fn NodeMarginCalculator::exclude_port_labels(Self) -> Self
-pub fn NodeMarginCalculator::exclude_ports(Self) -> Self
-pub fn NodeMarginCalculator::process(Self) -> Unit
-pub fn NodeMarginCalculator::process_node(Self, LNodeAdapter) -> Unit
-
 pub struct NodeRelativePortDistributor {
   distributor : AbstractBarycenterPortDistributor
 }
@@ -2638,17 +2289,6 @@ pub struct PortComparator {
   unit : Unit
 }
 pub fn PortComparator::compare(Self, LPort, LPort) -> Int
-
-pub struct PortContext {
-  parent_node_context : NodeContext
-  port : LPortAdapter
-  port_position : @core.KVector
-  labels_next_to_port : Bool
-  volatile_id : Int
-  port_margin : @core.Spacing
-  mut port_label_cell : Cell?
-}
-pub fn PortContext::apply_port_position(Self) -> Unit
 
 pub struct PortRestorer {
   mut sl_loops_by_type : Map[Int, Array[SelfHyperLoop]]
@@ -2904,11 +2544,6 @@ pub enum SplineSideToProcess {
   Right
 }
 
-pub(all) enum Strip {
-  Vertical
-  Horizontal
-}
-
 pub struct SweepCopy {
   node_order : Array[Array[LNode]]
   port_orders : Array[Array[Array[LPort]]]
@@ -2942,12 +2577,6 @@ pub fn Tarjan::reset_tarjan(Self, LGraph) -> Unit
 pub fn Tarjan::strongly_connected(Self, LNode) -> Unit
 pub fn Tarjan::tarjan(Self, LGraph) -> Unit
 
-pub enum VerticalLabelAlignment {
-  Top
-  Center
-  Bottom
-}
-
 pub struct VerticalSegment {
   id : Int
   potential_group_parents : Array[@compaction.CNode]
@@ -2977,4 +2606,3 @@ pub using @core {type Spacing as LPadding}
 pub type LayeredIHierarchyAwareLayoutProcessor = Unit
 
 // Traits
-

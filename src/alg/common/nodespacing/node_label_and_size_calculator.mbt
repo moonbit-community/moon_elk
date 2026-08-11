@@ -3,8 +3,8 @@ let node_label_and_size_calculator_direction_property : @graph.IProperty[String]
 
 ///|
 fn node_label_and_size_calculator_process_node(
-  layered_graph : @graph.ElkNode,
-  node : @core.ElkNodeAdapter,
+  graph : &NodeSpacingGraph,
+  node : &NodeSpacingNode,
   apply_stuff : Bool,
   ignore_inside_port_labels : Bool,
 ) -> @core.KVector {
@@ -17,7 +17,7 @@ fn node_label_and_size_calculator_process_node(
       node_context, ignore_inside_port_labels,
     )
 
-    let layout_direction = @core.adapt(layered_graph).get_property_string(
+    let layout_direction = graph.get_property_string(
       node_label_and_size_calculator_direction_property,
     )
     let horizontal_layout_mode = layout_direction == "" ||
@@ -93,16 +93,20 @@ pub fn node_label_and_size_calculator_process_layered_graph(
   layered_graph : @graph.ElkNode,
 ) -> Unit {
   let adapter = @core.adapt(layered_graph)
+  node_label_and_size_calculator_process_graph(adapter)
+}
+
+///|
+#internal(nodespacing)
+pub fn node_label_and_size_calculator_process_graph(
+  adapter : &NodeSpacingGraph,
+) -> Unit {
   for node in adapter.get_nodes() {
     ignore(
-      node_label_and_size_calculator_process_node(
-        layered_graph, node, true, false,
-      ),
+      node_label_and_size_calculator_process_node(adapter, node, true, false),
     )
   }
-  // Cached node adapters point back to the graph adapter. Explicitly discard
-  // the cache after this calculation to avoid an adapter ownership cycle.
-  adapter.child_nodes = None
+  adapter.cleanup()
 }
 
 ///|
@@ -112,9 +116,10 @@ pub fn node_label_and_size_calculator_process_single_node(
   apply_stuff : Bool,
   ignore_inside_port_labels : Bool,
 ) -> @core.KVector {
+  let graph_adapter = @core.adapt(layered_graph)
   node_label_and_size_calculator_process_node(
-    layered_graph,
-    @core.adapt_single_node(node),
+    graph_adapter,
+    @core.adapt_single_node(node) as &NodeSpacingNode,
     apply_stuff,
     ignore_inside_port_labels,
   )
@@ -126,7 +131,9 @@ pub fn node_label_and_size_calculator_compute_inside_node_label_padding(
   layout_direction : @core.Direction,
 ) -> @core.ElkPadding {
   try {
-    let node_context = new_node_context(@core.adapt_single_node(node))
+    let node_context = new_node_context(
+      @core.adapt_single_node(node) as &NodeSpacingNode,
+    )
     node_label_cell_creator_create_node_label_cells(
       node_context,
       true,

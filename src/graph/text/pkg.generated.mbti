@@ -530,4 +530,3 @@ pub fn PropertyValueValueConverter::to_value(Self, String, property_key? : Graph
 pub type GraphTextIssueSeverity = Int
 
 // Traits
-

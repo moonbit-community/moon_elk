@@ -10,10 +10,10 @@ fn node_margin_calculator_max(a : Double, b : Double) -> Double {
 ///|
 fn node_margin_calculator_process_edge_head_tail_labels(
   bounding_box : @core.ElkRectangle,
-  outgoing_edges : Array[@core.ElkEdgeAdapter],
-  incoming_edges : Array[@core.ElkEdgeAdapter],
-  node : @core.ElkNodeAdapter,
-  port : @core.ElkPortAdapter?,
+  outgoing_edges : Array[&NodeSpacingEdge],
+  incoming_edges : Array[&NodeSpacingEdge],
+  node : &NodeSpacingNode,
+  port : &NodeSpacingPort?,
   port_label_space : @core.KVector?,
   label_spacing : Double,
 ) -> Unit {
@@ -47,10 +47,10 @@ fn node_margin_calculator_process_edge_head_tail_labels(
 ///|
 fn node_margin_calculator_compute_label_box(
   label_box : @core.ElkRectangle,
-  label : @core.ElkLabelAdapter,
+  label : &NodeSpacingLabel,
   incoming_edge : Bool,
-  node : @core.ElkNodeAdapter,
-  port : @core.ElkPortAdapter?,
+  node : &NodeSpacingNode,
+  port : &NodeSpacingPort?,
   port_label_space : @core.KVector?,
   label_spacing : Double,
 ) -> Unit {
@@ -115,7 +115,7 @@ fn node_margin_calculator_compute_label_box(
 ///|
 fn node_margin_calculator_process_node(
   calculator : NodeMarginCalculator,
-  node : @core.ElkNodeAdapter,
+  node : &NodeSpacingNode,
   label_spacing : Double,
 ) -> Unit {
   let node_position = node.get_position()
@@ -243,12 +243,20 @@ pub struct NodeMarginCalculator {
   mut include_ports : Bool
   mut include_port_labels : Bool
   mut include_edge_head_tail_labels : Bool
-  adapter : @core.ElkGraphAdapter
+  adapter : &NodeSpacingGraph
 }
 
 ///|
 pub fn new_node_margin_calculator(
   adapter : @core.ElkGraphAdapter,
+) -> NodeMarginCalculator {
+  new_node_margin_calculator_for_adapter(adapter)
+}
+
+///|
+#internal(nodespacing)
+pub fn new_node_margin_calculator_for_adapter(
+  adapter : &NodeSpacingGraph,
 ) -> NodeMarginCalculator {
   {
     include_labels: true,
@@ -303,7 +311,7 @@ pub fn NodeMarginCalculator::process(self : NodeMarginCalculator) -> Unit {
 ///|
 pub fn NodeMarginCalculator::process_node(
   self : NodeMarginCalculator,
-  node : @core.ElkNodeAdapter,
+  node : &NodeSpacingNode,
 ) -> Unit {
   let label_spacing = self.adapter.get_property_double(@core.spacing_label_node)
   node_margin_calculator_process_node(self, node, label_spacing)

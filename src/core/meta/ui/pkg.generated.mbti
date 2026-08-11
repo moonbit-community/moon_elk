@@ -335,4 +335,3 @@ pub fn MetaDataUiModule::get_base(Self) -> AbstractMetaDataUiModule
 // Type aliases
 
 // Traits
-

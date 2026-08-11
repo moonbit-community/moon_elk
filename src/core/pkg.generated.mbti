@@ -2334,4 +2334,3 @@ pub type LayoutConfiguratorFilter = (Int, @graph.IProperty[Double]) -> Bool
 pub type RecursiveGraphLayoutHandler = (Int, IElkProgressMonitor) -> Unit
 
 // Traits
-

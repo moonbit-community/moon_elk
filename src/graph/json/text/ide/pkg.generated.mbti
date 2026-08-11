@@ -162,4 +162,3 @@ pub fn PartialElkGraphJsonContentAssistParser::initialize_for(Self, String?) -> 
 // Type aliases
 
 // Traits
-

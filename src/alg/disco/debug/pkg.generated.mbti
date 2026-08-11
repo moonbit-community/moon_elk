@@ -456,4 +456,3 @@ pub enum State {
 pub type ConfigStateObserver = (State) -> Unit
 
 // Traits
-

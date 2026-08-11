@@ -161,4 +161,3 @@ pub fn PartialElkGraphContentAssistParser::initialize_for(Self, String?) -> Unit
 // Type aliases
 
 // Traits
-

@@ -137,4 +137,3 @@ pub enum WhitespaceEliminationStrategy {
 // Type aliases
 
 // Traits
-

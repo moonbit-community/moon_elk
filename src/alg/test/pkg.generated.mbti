@@ -775,4 +775,3 @@ pub using @core {type LayoutConfigurator}
 pub type ResourcePathFilter = (String) -> Bool
 
 // Traits
-

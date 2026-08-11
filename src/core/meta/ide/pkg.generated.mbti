@@ -113,4 +113,3 @@ pub fn PartialCoreMetaContentAssistParser::initialize_for(Self, String?) -> Unit
 // Type aliases
 
 // Traits
-

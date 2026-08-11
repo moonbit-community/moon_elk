@@ -192,4 +192,3 @@ pub fn LibavoidServerPool::size(Self) -> Int
 // Type aliases
 
 // Traits
-

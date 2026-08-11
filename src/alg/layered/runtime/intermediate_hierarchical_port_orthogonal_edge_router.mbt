@@ -161,10 +161,12 @@ fn hierarchical_port_orthogonal_restore_dummy(
     }
   }
 
-  let margin_calculator = node_dimension_calculation_get_node_margin_calculator(
+  let margin_calculator = @nodespacing.node_dimension_calculation_get_node_margin_calculator_for_adapter(
     adapt_l_graph(layered_graph),
   )
-  margin_calculator.process_node(adapt_l_node(dummy, false))
+  margin_calculator.process_node(
+    adapt_l_node(dummy, false) as &@nodespacing.NodeSpacingNode,
+  )
 }
 
 ///|

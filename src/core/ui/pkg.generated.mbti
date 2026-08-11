@@ -645,4 +645,3 @@ pub fn ValidatingPropertySheetEntry::validate(Self) -> Array[@core.GraphIssue]
 // Type aliases
 
 // Traits
-

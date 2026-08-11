@@ -238,7 +238,7 @@ fn[T] node_context_raise_unsupported_configuration(
 
 ///|
 pub struct NodeContext {
-  node : @core.ElkNodeAdapter
+  node : &NodeSpacingNode
   node_size : @core.KVector
   treat_as_compound_node : Bool
   size_constraints : Array[@core.SizeConstraint]
@@ -267,7 +267,7 @@ pub struct NodeContext {
 
 ///|
 pub fn new_node_context(
-  node : @core.ElkNodeAdapter,
+  node : &NodeSpacingNode,
 ) -> NodeContext raise NodeContextException {
   let node_size = node.get_size().clone()
 
@@ -309,24 +309,15 @@ pub fn new_node_context(
   let node_labels_padding = node_context_parse_padding(
     node.get_property_string(node_context_node_labels_padding_property),
   )
-  let node_label_spacing = @core.individual_spacings_get_individual_or_inherited(
-    node.get_node(),
-    @core.spacing_label_node,
-  )
-  let label_label_spacing = @core.individual_spacings_get_individual_or_inherited(
-    node.get_node(),
+  let node_label_spacing = node.get_individual_spacing(@core.spacing_label_node)
+  let label_label_spacing = node.get_individual_spacing(
     @core.spacing_label_label,
   )
-  let port_port_spacing = @core.individual_spacings_get_individual_or_inherited(
-    node.get_node(),
-    @core.spacing_port_port,
-  )
-  let port_label_spacing_horizontal = @core.individual_spacings_get_individual_or_inherited(
-    node.get_node(),
+  let port_port_spacing = node.get_individual_spacing(@core.spacing_port_port)
+  let port_label_spacing_horizontal = node.get_individual_spacing(
     @core.spacing_label_port_horizontal,
   )
-  let port_label_spacing_vertical = @core.individual_spacings_get_individual_or_inherited(
-    node.get_node(),
+  let port_label_spacing_vertical = node.get_individual_spacing(
     @core.spacing_label_port_vertical,
   )
   let surrounding_port_margins = node_context_parse_margin(

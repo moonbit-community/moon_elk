@@ -879,4 +879,3 @@ pub type DotPackageImpl = String
 pub type GraphvizDotFormatter2 = (GraphvizDotFormatterRequest) -> String
 
 // Traits
-

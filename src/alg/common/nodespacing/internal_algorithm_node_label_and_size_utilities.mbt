@@ -41,9 +41,7 @@ fn nodespacing_parse_minimum_size(text : String) -> @core.KVector {
 }
 
 ///|
-pub fn nodespacing_port_border_offset_value(
-  port : @core.ElkPortAdapter,
-) -> Double {
+pub fn nodespacing_port_border_offset_value(port : &NodeSpacingPort) -> Double {
   if port.has_property_double(nodespacing_port_border_offset_property) {
     port.get_property_double(nodespacing_port_border_offset_property)
   } else {
@@ -53,7 +51,7 @@ pub fn nodespacing_port_border_offset_value(
 
 ///|
 pub fn nodespacing_port_labels_bounds(
-  port : @core.ElkPortAdapter,
+  port : &NodeSpacingPort,
 ) -> @core.ElkRectangle {
   let labels = port.get_labels()
   if labels.is_empty() {
@@ -83,7 +81,7 @@ pub fn nodespacing_port_labels_bounds(
 
 ///|
 fn nodespacing_compute_inside_part_for_port(
-  port : @core.ElkPortAdapter,
+  port : &NodeSpacingPort,
   port_border_offset : Double,
 ) -> Double {
   let label_bounds = nodespacing_port_labels_bounds(port)

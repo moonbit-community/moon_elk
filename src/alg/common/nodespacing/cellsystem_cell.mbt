@@ -32,7 +32,7 @@ pub struct Cell {
   mut label_vertical_alignment : VerticalLabelAlignment
   mut label_gap : Double
   mut labels : Array[@graph.ElkLabel]?
-  mut l_labels : Array[@core.ElkLabelAdapter]?
+  mut l_labels : Array[&NodeSpacingLabel]?
 }
 
 ///|
