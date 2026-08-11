@@ -214,7 +214,7 @@ test "LayoutOptionLabelProvider and handler use expected UI semantics" {
 
   let captured : Ref[String] = Ref("")
   let handler = new_layout_handler(invoke_layout_fn=invocation => {
-    captured.val = "\{to_repr(invocation.editor)}|\{to_repr(invocation.diagram_part)}|\{to_repr(invocation.animation)}|\{to_repr(invocation.progress_dialog)}|\{to_repr(invocation.zoom_to_fit)}"
+    captured.val = "\{Repr(invocation.editor)}|\{Repr(invocation.diagram_part)}|\{Repr(invocation.animation)}|\{Repr(invocation.progress_dialog)}|\{Repr(invocation.zoom_to_fit)}"
   })
   let event_params : Map[String, String] = Map([])
   event_params[core_ui_param_layout_scope] = core_ui_val_selection

@@ -15,7 +15,7 @@ pub enum GmfLayoutOptionTarget {
 
 ///|
 pub impl Show for GmfLayoutOptionTarget with fn output(self, logger) {
-  logger.write_string(to_repr(self).to_string())
+  logger.write_string(Repr(self).to_string())
 }
 
 ///|

@@ -8,7 +8,7 @@ pub(all) enum MonitoredOperationStatus {
 
 ///|
 pub impl Show for MonitoredOperationStatus with fn output(self, logger) {
-  logger.write_string(to_repr(self).to_string())
+  logger.write_string(Repr(self).to_string())
 }
 
 ///|

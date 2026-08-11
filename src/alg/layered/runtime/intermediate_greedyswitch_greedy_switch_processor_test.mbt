@@ -33,9 +33,9 @@ fn greedy_switch_processor_test_assert_layer_order(
   if actual_handles != expected_handles {
     abort(
       "unexpected layer order actual=" +
-      to_repr(actual_handles).to_string() +
+      Repr(actual_handles).to_string() +
       " expected=" +
-      to_repr(expected_handles).to_string(),
+      Repr(expected_handles).to_string(),
     )
   }
 }

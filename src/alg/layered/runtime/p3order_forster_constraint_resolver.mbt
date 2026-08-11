@@ -89,7 +89,7 @@ pub fn BarycenterState::to_string(self : BarycenterState) -> String {
   ", degree=" +
   self.degree.to_string() +
   ", barycenter=" +
-  to_repr(self.barycenter).to_string() +
+  Repr(self.barycenter).to_string() +
   ", visited=" +
   self.visited.to_string() +
   "]"
