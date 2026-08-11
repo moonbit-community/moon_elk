@@ -1,18 +1,19 @@
 ///|
 /// Owns every graph object created for one root graph.
 ///
-/// Handles keep a reference to their arena so ordinary graph operations do not
-/// need a process-global store. Disposing the arena clears both directions of
-/// that ownership relation and makes every owned handle invalid.
+/// Each handle identifies an arena-owned slot by index and generation. Graph
+/// access therefore uses checked array indexing instead of a process-global
+/// handle-to-slot map. Disposing the arena releases every payload and makes all
+/// outstanding handles invalid.
 pub struct GraphArena {
-  mut alive : Bool
-  mut next_object_id : Int
-  mut root : ElkNode?
-  nodes : Array[ElkNode]
-  ports : Array[ElkPort]
-  edges : Array[ElkEdge]
-  edge_sections : Array[ElkEdgeSection]
-  labels : Array[ElkLabel]
+  priv mut alive : Bool
+  priv mut next_object_id : Int
+  priv mut root : ElkNode?
+  priv nodes : Array[NodeSlot]
+  priv ports : Array[PortSlot]
+  priv edges : Array[EdgeSlot]
+  priv edge_sections : Array[EdgeSectionSlot]
+  priv labels : Array[LabelSlot]
 }
 
 ///|
@@ -50,60 +51,95 @@ fn GraphArena::allocate_object_id(self : GraphArena) -> Int {
 }
 
 ///|
-fn graph_arena_register_node(arena : GraphArena, node : ElkNode) -> Unit {
-  checked_graph_arena(arena)
-  arena.nodes.push(node)
-}
-
-///|
-fn graph_arena_register_port(arena : GraphArena, port : ElkPort) -> Unit {
-  checked_graph_arena(arena)
-  arena.ports.push(port)
-}
-
-///|
-fn graph_arena_register_edge(arena : GraphArena, edge : ElkEdge) -> Unit {
-  checked_graph_arena(arena)
-  arena.edges.push(edge)
-}
-
-///|
-fn graph_arena_register_edge_section(
-  arena : GraphArena,
-  section : ElkEdgeSection,
-) -> Unit {
-  checked_graph_arena(arena)
-  arena.edge_sections.push(section)
-}
-
-///|
-fn graph_arena_register_label(arena : GraphArena, label : ElkLabel) -> Unit {
-  checked_graph_arena(arena)
-  arena.labels.push(label)
-}
-
-///|
-fn[T : Eq] remove_arena_member(members : Array[T], removed : T) -> Unit {
-  let retained = []
-  for current in members {
-    if current != removed {
-      retained.push(current)
-    }
-  }
-  members.clear()
-  for current in retained {
-    members.push(current)
-  }
-}
-
-///|
 fn label_has_edge_ancestor(label : ElkLabel, edge : ElkEdge) -> Bool {
   let mut current = label
   while true {
-    match current.data.parent {
+    match label_data(current).parent {
       Some(EdgeLabelParent(parent_edge)) => return parent_edge == edge
       Some(LabelLabelParent(parent_label)) => current = parent_label
       _ => return false
+    }
+  }
+  false
+}
+
+///|
+fn graph_arena_move_edge_slot(edge : ElkEdge, target : GraphArena) -> EdgeData {
+  let source_slot = checked_edge_slot(edge)
+  let data = match source_slot.data {
+    Some(data) => data
+    None => abort("invalid or disposed edge id")
+  }
+  source_slot.data = None
+  source_slot.generation += 1
+  let target_slot = target.edges.length()
+  edge.arena = target
+  edge.slot = target_slot
+  edge.generation = 0
+  target.edges.push({ generation: 0, handle: edge, data: Some(data) })
+  data
+}
+
+///|
+fn graph_arena_move_edge_section_slot(
+  section : ElkEdgeSection,
+  target : GraphArena,
+) -> Unit {
+  let source_slot = checked_edge_section_slot(section)
+  let data = match source_slot.data {
+    Some(data) => data
+    None => abort("invalid or disposed edge section id")
+  }
+  source_slot.data = None
+  source_slot.generation += 1
+  let target_slot = target.edge_sections.length()
+  section.arena = target
+  section.slot = target_slot
+  section.generation = 0
+  target.edge_sections.push({ generation: 0, handle: section, data: Some(data) })
+}
+
+///|
+fn graph_arena_move_label_slot(label : ElkLabel, target : GraphArena) -> Unit {
+  let source_slot = checked_label_slot(label)
+  let data = match source_slot.data {
+    Some(data) => data
+    None => abort("invalid or disposed label id")
+  }
+  source_slot.data = None
+  source_slot.generation += 1
+  let target_slot = target.labels.length()
+  label.arena = target
+  label.slot = target_slot
+  label.generation = 0
+  target.labels.push({ generation: 0, handle: label, data: Some(data) })
+}
+
+///|
+fn graph_arena_has_owned_objects(arena : GraphArena) -> Bool {
+  for slot in arena.nodes {
+    if slot.data is Some(_) {
+      return true
+    }
+  }
+  for slot in arena.ports {
+    if slot.data is Some(_) {
+      return true
+    }
+  }
+  for slot in arena.edges {
+    if slot.data is Some(_) {
+      return true
+    }
+  }
+  for slot in arena.edge_sections {
+    if slot.data is Some(_) {
+      return true
+    }
+  }
+  for slot in arena.labels {
+    if slot.data is Some(_) {
+      return true
     }
   }
   false
@@ -116,29 +152,28 @@ fn graph_arena_move_edge(edge : ElkEdge, target_arena : GraphArena) -> Unit {
     return
   }
   checked_graph_arena(target_arena)
-  remove_arena_member(source_arena.edges, edge)
-  target_arena.edges.push(edge)
-  edge.arena = Some(target_arena)
-  for section in edge.data.sections {
+  let sections = edge_data(edge).sections.copy()
+  let labels = []
+  for slot in source_arena.labels {
+    if slot.data is Some(_) && label_has_edge_ancestor(slot.handle, edge) {
+      labels.push(slot.handle)
+    }
+  }
+  ignore(graph_arena_move_edge_slot(edge, target_arena))
+  for section in sections {
     if physical_equal(edge_section_graph_arena(section), source_arena) {
-      remove_arena_member(source_arena.edge_sections, section)
-      target_arena.edge_sections.push(section)
-      section.arena = Some(target_arena)
+      graph_arena_move_edge_section_slot(section, target_arena)
     }
   }
-  for label in source_arena.labels.copy() {
-    if label_has_edge_ancestor(label, edge) {
-      remove_arena_member(source_arena.labels, label)
-      target_arena.labels.push(label)
-      label.arena = Some(target_arena)
-    }
+  for label in labels {
+    graph_arena_move_label_slot(label, target_arena)
   }
-  if source_arena.root is None &&
-    source_arena.nodes.is_empty() &&
-    source_arena.ports.is_empty() &&
-    source_arena.edges.is_empty() &&
-    source_arena.edge_sections.is_empty() &&
-    source_arena.labels.is_empty() {
+  if source_arena.root is None && !graph_arena_has_owned_objects(source_arena) {
+    source_arena.nodes.clear()
+    source_arena.ports.clear()
+    source_arena.edges.clear()
+    source_arena.edge_sections.clear()
+    source_arena.labels.clear()
     source_arena.alive = false
   }
 }
@@ -198,20 +233,30 @@ pub fn GraphArena::dispose(self : GraphArena) -> Unit {
   }
   // Reset object payloads before clearing the owning arrays. This breaks the
   // graph's internal cycles and makes stale handles fail deterministically.
-  for label in self.labels.copy() {
-    dispose_label_slot(label)
+  for slot in self.labels.copy() {
+    if slot.data is Some(_) {
+      dispose_label_slot(slot.handle)
+    }
   }
-  for section in self.edge_sections.copy() {
-    dispose_edge_section_slot(section)
+  for slot in self.edge_sections.copy() {
+    if slot.data is Some(_) {
+      dispose_edge_section_slot(slot.handle)
+    }
   }
-  for edge in self.edges.copy() {
-    dispose_edge_slot(edge)
+  for slot in self.edges.copy() {
+    if slot.data is Some(_) {
+      dispose_edge_slot(slot.handle)
+    }
   }
-  for port in self.ports.copy() {
-    dispose_port_slot(port)
+  for slot in self.ports.copy() {
+    if slot.data is Some(_) {
+      dispose_port_slot(slot.handle)
+    }
   }
-  for node in self.nodes.copy() {
-    dispose_node_slot(node)
+  for slot in self.nodes.copy() {
+    if slot.data is Some(_) {
+      dispose_node_slot(slot.handle)
+    }
   }
   self.labels.clear()
   self.edge_sections.clear()

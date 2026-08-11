@@ -614,14 +614,7 @@ pub enum ElkShape {
 }
 
 pub struct GraphArena {
-  mut alive : Bool
-  mut next_object_id : Int
-  mut root : ElkNode?
-  nodes : Array[ElkNode]
-  ports : Array[ElkPort]
-  edges : Array[ElkEdge]
-  edge_sections : Array[ElkEdgeSection]
-  labels : Array[ElkLabel]
+  // private fields
 }
 pub fn GraphArena::all_edges(Self) -> Array[ElkEdge]
 pub fn GraphArena::create_edge(Self) -> ElkEdge

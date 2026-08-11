@@ -1,7 +1,8 @@
 ///|
 pub struct ElkLabel {
-  priv mut data : LabelData
-  priv mut arena : GraphArena?
+  priv mut arena : GraphArena
+  priv mut slot : Int
+  priv mut generation : Int
   priv id : Int
 }
 
@@ -71,20 +72,48 @@ priv struct LabelData {
 }
 
 ///|
+priv struct LabelSlot {
+  mut generation : Int
+  handle : ElkLabel
+  mut data : LabelData?
+}
+
+///|
+fn checked_label_slot(label : ElkLabel) -> LabelSlot {
+  let arena = label.arena
+  checked_graph_arena(arena)
+  if label.slot < 0 || label.slot >= arena.labels.length() {
+    abort("invalid or disposed label id")
+  }
+  let slot = arena.labels[label.slot]
+  if slot.generation != label.generation || slot.data is None {
+    abort("invalid or disposed label id")
+  }
+  slot
+}
+
+///|
 fn checked_label(label : ElkLabel) -> Unit {
-  match label.arena {
-    Some(arena) => checked_graph_arena(arena)
+  ignore(checked_label_slot(label))
+}
+
+///|
+fn label_data(label : ElkLabel) -> LabelData {
+  match checked_label_slot(label).data {
+    Some(data) => data
     None => abort("invalid or disposed label id")
   }
 }
 
 ///|
+fn set_label_data(label : ElkLabel, data : LabelData) -> Unit {
+  checked_label_slot(label).data = Some(data)
+}
+
+///|
 fn label_graph_arena(label : ElkLabel) -> GraphArena {
   checked_label(label)
-  match label.arena {
-    Some(arena) => arena
-    None => abort("invalid or disposed label id")
-  }
+  label.arena
 }
 
 ///|
@@ -93,22 +122,10 @@ pub fn ElkLabel::graph_arena(self : ElkLabel) -> GraphArena {
 }
 
 ///|
-let disposed_label_data : LabelData = {
-  parent: None,
-  identifier: "",
-  text: "",
-  x: 0.0,
-  y: 0.0,
-  width: 0.0,
-  height: 0.0,
-  layout_option_string_values: Map([]),
-}
-
-///|
 fn dispose_label_slot(label : ElkLabel) -> Unit {
-  checked_label(label)
-  label.data = disposed_label_data
-  label.arena = None
+  let slot = checked_label_slot(label)
+  slot.data = None
+  slot.generation += 1
 }
 
 ///|
@@ -124,8 +141,18 @@ fn create_label_in_arena(
       LabelLabelParent(label) => checked_label(label)
     }
   }
+  checked_graph_arena(arena)
+  let slot = arena.labels.length()
   let label : ElkLabel = {
-    data: {
+    arena,
+    slot,
+    generation: 0,
+    id: arena.allocate_object_id(),
+  }
+  arena.labels.push({
+    generation: 0,
+    handle: label,
+    data: Some({
       parent,
       identifier: "",
       text: "",
@@ -134,11 +161,8 @@ fn create_label_in_arena(
       width: 0.0,
       height: 0.0,
       layout_option_string_values: Map([]),
-    },
-    arena: Some(arena),
-    id: arena.allocate_object_id(),
-  }
-  graph_arena_register_label(arena, label)
+    }),
+  })
   label
 }
 
@@ -177,18 +201,16 @@ pub fn label_set_layout_option_string_by_id(
   option_id : String,
   value : String,
 ) -> Unit {
-  checked_label(label)
-  let data = label.data
+  let data = label_data(label)
   data.layout_option_string_values[option_id] = value
-  label.data = data
+  set_label_data(label, data)
 }
 
 ///|
 pub fn label_layout_option_string_entries(
   label : ElkLabel,
 ) -> Array[(String, String)] {
-  checked_label(label)
-  label.data.layout_option_string_values.to_array()
+  label_data(label).layout_option_string_values.to_array()
 }
 
 ///|
@@ -196,15 +218,13 @@ pub fn label_layout_option_string_value(
   label : ElkLabel,
   option_id : String,
 ) -> String? {
-  checked_label(label)
-  label.data.layout_option_string_values.get(option_id)
+  label_data(label).layout_option_string_values.get(option_id)
 }
 
 ///|
 pub fn label_set_identifier(label : ElkLabel, identifier : String) -> Unit {
-  checked_label(label)
-  let data = label.data
-  label.data = {
+  let data = label_data(label)
+  set_label_data(label, {
     parent: data.parent,
     identifier,
     text: data.text,
@@ -213,20 +233,18 @@ pub fn label_set_identifier(label : ElkLabel, identifier : String) -> Unit {
     width: data.width,
     height: data.height,
     layout_option_string_values: data.layout_option_string_values,
-  }
+  })
 }
 
 ///|
 pub fn label_identifier(label : ElkLabel) -> String {
-  checked_label(label)
-  label.data.identifier
+  label_data(label).identifier
 }
 
 ///|
 pub fn label_set_text(label : ElkLabel, text : String) -> Unit {
-  checked_label(label)
-  let data = label.data
-  label.data = {
+  let data = label_data(label)
+  set_label_data(label, {
     parent: data.parent,
     identifier: data.identifier,
     text,
@@ -235,20 +253,18 @@ pub fn label_set_text(label : ElkLabel, text : String) -> Unit {
     width: data.width,
     height: data.height,
     layout_option_string_values: data.layout_option_string_values,
-  }
+  })
 }
 
 ///|
 pub fn label_text(label : ElkLabel) -> String {
-  checked_label(label)
-  label.data.text
+  label_data(label).text
 }
 
 ///|
 pub fn label_set_location(label : ElkLabel, x : Double, y : Double) -> Unit {
-  checked_label(label)
-  let data = label.data
-  label.data = {
+  let data = label_data(label)
+  set_label_data(label, {
     parent: data.parent,
     identifier: data.identifier,
     text: data.text,
@@ -257,19 +273,17 @@ pub fn label_set_location(label : ElkLabel, x : Double, y : Double) -> Unit {
     width: data.width,
     height: data.height,
     layout_option_string_values: data.layout_option_string_values,
-  }
+  })
 }
 
 ///|
 pub fn label_x(label : ElkLabel) -> Double {
-  checked_label(label)
-  label.data.x
+  label_data(label).x
 }
 
 ///|
 pub fn label_y(label : ElkLabel) -> Double {
-  checked_label(label)
-  label.data.y
+  label_data(label).y
 }
 
 ///|
@@ -278,9 +292,8 @@ pub fn label_set_dimensions(
   width : Double,
   height : Double,
 ) -> Unit {
-  checked_label(label)
-  let data = label.data
-  label.data = {
+  let data = label_data(label)
+  set_label_data(label, {
     parent: data.parent,
     identifier: data.identifier,
     text: data.text,
@@ -289,33 +302,33 @@ pub fn label_set_dimensions(
     width,
     height,
     layout_option_string_values: data.layout_option_string_values,
-  }
+  })
 }
 
 ///|
 pub fn label_width(label : ElkLabel) -> Double {
-  checked_label(label)
-  label.data.width
+  label_data(label).width
 }
 
 ///|
 pub fn label_height(label : ElkLabel) -> Double {
-  checked_label(label)
-  label.data.height
+  label_data(label).height
 }
 
 ///|
 pub fn label_parent(label : ElkLabel) -> ElkLabelParent? {
-  checked_label(label)
-  label.data.parent
+  label_data(label).parent
 }
 
 ///|
 pub fn node_labels(node : ElkNode) -> Array[ElkLabel] {
-  checked_node(node)
   let labels = []
-  for label in node_graph_arena(node).labels {
-    match label.data.parent {
+  for slot in node_graph_arena(node).labels {
+    if slot.data is None {
+      continue
+    }
+    let label = slot.handle
+    match label_data(label).parent {
       Some(NodeLabelParent(parent_node)) =>
         if parent_node == node {
           labels.push(label)
@@ -329,10 +342,13 @@ pub fn node_labels(node : ElkNode) -> Array[ElkLabel] {
 
 ///|
 pub fn port_labels(port : ElkPort) -> Array[ElkLabel] {
-  checked_port(port)
   let labels = []
-  for label in port_graph_arena(port).labels {
-    match label.data.parent {
+  for slot in port_graph_arena(port).labels {
+    if slot.data is None {
+      continue
+    }
+    let label = slot.handle
+    match label_data(label).parent {
       Some(PortLabelParent(parent_port)) =>
         if parent_port == port {
           labels.push(label)
@@ -346,10 +362,13 @@ pub fn port_labels(port : ElkPort) -> Array[ElkLabel] {
 
 ///|
 pub fn edge_labels(edge : ElkEdge) -> Array[ElkLabel] {
-  checked_edge(edge)
   let labels = []
-  for label in edge_graph_arena(edge).labels {
-    match label.data.parent {
+  for slot in edge_graph_arena(edge).labels {
+    if slot.data is None {
+      continue
+    }
+    let label = slot.handle
+    match label_data(label).parent {
       Some(EdgeLabelParent(parent_edge)) =>
         if parent_edge == edge {
           labels.push(label)
@@ -363,10 +382,13 @@ pub fn edge_labels(edge : ElkEdge) -> Array[ElkLabel] {
 
 ///|
 pub fn label_labels(parent : ElkLabel) -> Array[ElkLabel] {
-  checked_label(parent)
   let labels = []
-  for label in label_graph_arena(parent).labels {
-    match label.data.parent {
+  for slot in label_graph_arena(parent).labels {
+    if slot.data is None {
+      continue
+    }
+    let label = slot.handle
+    match label_data(label).parent {
       Some(LabelLabelParent(parent_label)) =>
         if parent_label == parent {
           labels.push(label)
