@@ -231,7 +231,7 @@ fn breaking_point_processor_drop_dummies(
   in_layer_dummy : LNode,
   forwards : Bool,
   force : Bool,
-) -> Bool raise BreakingPointProcessorException {
+) -> Bool raise {
   let mut pred_one = breaking_point_processor_next_long_edge_dummy(
     bp_node, forwards,
   )
@@ -317,7 +317,7 @@ fn breaking_point_processor_drop_dummies(
 ///|
 fn breaking_point_processor_improve_multi_cut_index_edges(
   graph : LGraph,
-) -> Unit raise BreakingPointProcessorException {
+) -> Unit raise {
   for layer in graph.get_layers() {
     for node in layer.get_nodes().copy() {
       if bp_info_is_start(node) {
@@ -413,7 +413,7 @@ fn breaking_point_processor_improve_multi_cut_index_edges(
 fn breaking_point_processor_improve_unnecessarily_long_edges(
   graph : LGraph,
   forwards : Bool,
-) -> Unit raise BreakingPointProcessorException {
+) -> Unit raise {
   let mut didsome = false
   while true {
     didsome = false
@@ -565,7 +565,7 @@ fn breaking_point_processor_perform_wrapping(
 fn breaking_point_processor_process(
   graph : LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()
@@ -593,9 +593,10 @@ fn breaking_point_processor_process(
     }
   } catch {
     BreakingPointProcessorException(message) =>
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "java.lang.IllegalStateException: " + message,
       )
+    err => raise err
   } noraise {
     _ => ()
   }

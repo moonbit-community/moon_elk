@@ -72,9 +72,7 @@ pub fn self_loop_holder_needs_self_loop_processing(l_node : LNode) -> Bool {
 }
 
 ///|
-pub fn self_loop_holder_install(
-  l_node : LNode,
-) -> SelfLoopHolder raise SelfLoopHolderException {
+pub fn self_loop_holder_install(l_node : LNode) -> SelfLoopHolder raise {
   if !self_loop_holder_needs_self_loop_processing(l_node) {
     self_loop_holder_raise_unsupported_configuration(
       "self loop holder can only be installed on normal nodes with self loops",
@@ -94,7 +92,7 @@ pub fn self_loop_holder_install(
 fn self_loop_holder_self_loop_port_for(
   holder : SelfLoopHolder,
   l_port : LPort,
-) -> SelfLoopPort {
+) -> SelfLoopPort raise {
   let handle = lport_internal_handle(l_port)
   match holder.sl_ports.get(handle) {
     Some(sl_port) => sl_port
@@ -111,7 +109,7 @@ fn self_loop_holder_self_loop_port_for(
 fn self_loop_holder_initialize_hyper_loop(
   holder : SelfLoopHolder,
   sl_port : SelfLoopPort,
-) -> SelfHyperLoop {
+) -> SelfHyperLoop raise {
   let sl_loop = new_self_hyper_loop(holder)
 
   let bfs_queue = [sl_port]
@@ -145,9 +143,7 @@ fn self_loop_holder_initialize_hyper_loop(
 }
 
 ///|
-fn self_loop_holder_initialize(
-  holder : SelfLoopHolder,
-) -> Unit raise SelfLoopHolderException {
+fn self_loop_holder_initialize(holder : SelfLoopHolder) -> Unit raise {
   let sl_edges = []
 
   for l_edge in holder.l_node.get_outgoing_edges() {

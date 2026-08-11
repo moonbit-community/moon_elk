@@ -45,11 +45,11 @@ let execution_info_store_ref : Ref[Array[ExecutionInfoData]] = Ref([])
 let execution_info_creation_tick_ref : Ref[Int] = Ref(0)
 
 ///|
-fn checked_execution_info(info : ExecutionInfo) -> Unit {
+fn checked_execution_info(info : ExecutionInfo) -> Unit raise {
   if info < 0 || info >= execution_info_store_ref.val.length() {
     try execution_info_raise_unit("invalid execution info") catch {
       err =>
-        @core.layout_runtime_report_unsupported_configuration(
+        @core.layout_runtime_raise_unsupported_configuration(
           execution_info_exception_message(err),
         )
     } noraise {
@@ -112,14 +112,15 @@ fn execution_info_from_progress_monitor_internal(
       Some(info),
     )
     data.children.push(child_info)
+    let child_data = execution_info_store_ref.val[child_info]
     data.execution_time_local = data.execution_time_local -
-      execution_info_get_execution_time_including_children(child_info)
+      child_data.execution_time_including_children
     data.has_descendants_with_log_messages = data.has_descendants_with_log_messages ||
-      execution_info_has_log_messages(child_info) ||
-      execution_info_has_descendants_with_log_messages(child_info)
+      !child_data.log_messages.is_empty() ||
+      child_data.has_descendants_with_log_messages
     data.has_descendants_with_log_graphs = data.has_descendants_with_log_graphs ||
-      execution_info_has_logged_graphs(child_info) ||
-      execution_info_has_descendants_with_logged_graphs(child_info)
+      !child_data.log_graphs.is_empty() ||
+      child_data.has_descendants_with_log_graphs
   }
   if data.execution_time_local < 0.0 {
     data.execution_time_local = 0.0
@@ -150,19 +151,19 @@ pub fn execution_info_from_progress_monitor_and_file(
 }
 
 ///|
-pub fn execution_info_get_name(info : ExecutionInfo) -> String {
+pub fn execution_info_get_name(info : ExecutionInfo) -> String raise {
   checked_execution_info(info)
   execution_info_store_ref.val[info].name
 }
 
 ///|
-pub fn execution_info_get_creation_tick(info : ExecutionInfo) -> Int {
+pub fn execution_info_get_creation_tick(info : ExecutionInfo) -> Int raise {
   checked_execution_info(info)
   execution_info_store_ref.val[info].creation_tick
 }
 
 ///|
-pub fn execution_info_get_parent(info : ExecutionInfo) -> ExecutionInfo? {
+pub fn execution_info_get_parent(info : ExecutionInfo) -> ExecutionInfo? raise {
   checked_execution_info(info)
   execution_info_store_ref.val[info].parent
 }
@@ -170,7 +171,7 @@ pub fn execution_info_get_parent(info : ExecutionInfo) -> ExecutionInfo? {
 ///|
 pub fn execution_info_get_children(
   info : ExecutionInfo,
-) -> Array[ExecutionInfo] {
+) -> Array[ExecutionInfo] raise {
   checked_execution_info(info)
   execution_info_store_ref.val[info].children
 }
@@ -179,7 +180,7 @@ pub fn execution_info_get_children(
 pub fn execution_info_remove_child(
   parent : ExecutionInfo,
   child : ExecutionInfo,
-) -> Unit {
+) -> Unit raise {
   checked_execution_info(parent)
   checked_execution_info(child)
   let data = execution_info_store_ref.val[parent]
@@ -197,25 +198,29 @@ pub fn execution_info_remove_child(
 }
 
 ///|
-pub fn execution_info_is_loaded_from_file(info : ExecutionInfo) -> Bool {
+pub fn execution_info_is_loaded_from_file(info : ExecutionInfo) -> Bool raise {
   checked_execution_info(info)
   execution_info_store_ref.val[info].file_name is Some(_)
 }
 
 ///|
-pub fn execution_info_get_file_name(info : ExecutionInfo) -> String? {
+pub fn execution_info_get_file_name(info : ExecutionInfo) -> String? raise {
   checked_execution_info(info)
   execution_info_store_ref.val[info].file_name
 }
 
 ///|
-pub fn execution_info_is_laid_out_after_load(info : ExecutionInfo) -> Bool {
+pub fn execution_info_is_laid_out_after_load(
+  info : ExecutionInfo,
+) -> Bool raise {
   checked_execution_info(info)
   execution_info_store_ref.val[info].laid_out_after_load
 }
 
 ///|
-pub fn execution_info_is_execution_time_measured(info : ExecutionInfo) -> Bool {
+pub fn execution_info_is_execution_time_measured(
+  info : ExecutionInfo,
+) -> Bool raise {
   checked_execution_info(info)
   execution_info_store_ref.val[info].execution_time_measured
 }
@@ -223,13 +228,15 @@ pub fn execution_info_is_execution_time_measured(info : ExecutionInfo) -> Bool {
 ///|
 pub fn execution_info_get_execution_time_including_children(
   info : ExecutionInfo,
-) -> Double {
+) -> Double raise {
   checked_execution_info(info)
   execution_info_store_ref.val[info].execution_time_including_children
 }
 
 ///|
-pub fn execution_info_get_execution_time_local(info : ExecutionInfo) -> Double {
+pub fn execution_info_get_execution_time_local(
+  info : ExecutionInfo,
+) -> Double raise {
   checked_execution_info(info)
   execution_info_store_ref.val[info].execution_time_local
 }
@@ -240,7 +247,7 @@ pub fn execution_info_set_execution_time_for_test(
   measured : Bool,
   including_children : Double,
   local_time : Double,
-) -> Unit {
+) -> Unit raise {
   checked_execution_info(info)
   let data = execution_info_store_ref.val[info]
   data.execution_time_measured = measured
@@ -250,7 +257,7 @@ pub fn execution_info_set_execution_time_for_test(
 }
 
 ///|
-pub fn execution_info_get_debug_folder(info : ExecutionInfo) -> String {
+pub fn execution_info_get_debug_folder(info : ExecutionInfo) -> String raise {
   checked_execution_info(info)
   execution_info_store_ref.val[info].debug_folder
 }
@@ -259,7 +266,7 @@ pub fn execution_info_get_debug_folder(info : ExecutionInfo) -> String {
 pub fn execution_info_set_debug_folder_for_test(
   info : ExecutionInfo,
   debug_folder : String,
-) -> Unit {
+) -> Unit raise {
   checked_execution_info(info)
   let data = execution_info_store_ref.val[info]
   data.debug_folder = debug_folder
@@ -267,13 +274,15 @@ pub fn execution_info_set_debug_folder_for_test(
 }
 
 ///|
-pub fn execution_info_get_log_messages(info : ExecutionInfo) -> Array[String] {
+pub fn execution_info_get_log_messages(
+  info : ExecutionInfo,
+) -> Array[String] raise {
   checked_execution_info(info)
   execution_info_store_ref.val[info].log_messages.copy()
 }
 
 ///|
-pub fn execution_info_has_log_messages(info : ExecutionInfo) -> Bool {
+pub fn execution_info_has_log_messages(info : ExecutionInfo) -> Bool raise {
   checked_execution_info(info)
   !execution_info_store_ref.val[info].log_messages.is_empty()
 }
@@ -281,7 +290,7 @@ pub fn execution_info_has_log_messages(info : ExecutionInfo) -> Bool {
 ///|
 pub fn execution_info_has_descendants_with_log_messages(
   info : ExecutionInfo,
-) -> Bool {
+) -> Bool raise {
   checked_execution_info(info)
   execution_info_store_ref.val[info].has_descendants_with_log_messages
 }
@@ -289,13 +298,13 @@ pub fn execution_info_has_descendants_with_log_messages(
 ///|
 pub fn execution_info_get_logged_graphs(
   info : ExecutionInfo,
-) -> Array[@core.LoggedGraph] {
+) -> Array[@core.LoggedGraph] raise {
   checked_execution_info(info)
   execution_info_store_ref.val[info].log_graphs.copy()
 }
 
 ///|
-pub fn execution_info_has_logged_graphs(info : ExecutionInfo) -> Bool {
+pub fn execution_info_has_logged_graphs(info : ExecutionInfo) -> Bool raise {
   checked_execution_info(info)
   !execution_info_store_ref.val[info].log_graphs.is_empty()
 }
@@ -303,7 +312,7 @@ pub fn execution_info_has_logged_graphs(info : ExecutionInfo) -> Bool {
 ///|
 pub fn execution_info_has_descendants_with_logged_graphs(
   info : ExecutionInfo,
-) -> Bool {
+) -> Bool raise {
   checked_execution_info(info)
   execution_info_store_ref.val[info].has_descendants_with_log_graphs
 }

@@ -7,7 +7,7 @@ fn msd_cut_index_heuristic_guarantee_valid() -> Bool {
 fn msd_cut_index_heuristic_get_cut_indexes(
   graph : LGraph,
   graph_stats : GraphStats,
-) -> Array[Int] {
+) -> Array[Int] raise {
   let widths = graph_stats.get_widths()
   let heights = graph_stats.get_heights()
 

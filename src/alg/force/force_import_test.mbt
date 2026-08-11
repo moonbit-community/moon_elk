@@ -26,7 +26,7 @@ fn force_import_graph_or_abort(
   graph : @graph.ElkNode,
 ) -> FGraph {
   try importer.import_graph(graph) catch {
-    err => abort(force_import_exception_message(err))
+    err => abort(err.to_string())
   } noraise {
     imported => imported
   }
@@ -98,16 +98,12 @@ fn imported_label_by_origin(
 
 ///|
 test "ForceImportTest import simple graph" {
-  reset_graph_model_for_test()
-  reset_force_graph_model_for_test()
   let graph = create_simple_graph()
   check_simple_graph(graph)
 }
 
 ///|
 test "ForceImportTest separate connected components" {
-  reset_graph_model_for_test()
-  reset_force_graph_model_for_test()
   let processor = new_components_processor()
   let graph = create_two_components_graph()
   graph.set_property(force_separate_connected_components, true)
@@ -120,8 +116,6 @@ test "ForceImportTest separate connected components" {
 
 ///|
 test "ForceImportTest do not separate connected components" {
-  reset_graph_model_for_test()
-  reset_force_graph_model_for_test()
   let processor = new_components_processor()
   let graph = create_two_components_graph()
   graph.set_property(force_separate_connected_components, false)
@@ -135,8 +129,6 @@ test "ForceImportTest do not separate connected components" {
 
 ///|
 test "ElkGraphImporter applyLayout resizes parent and sets child area" {
-  reset_graph_model_for_test()
-  reset_force_graph_model_for_test()
   let graph = create_graph()
   let node = @graph.create_node(Some(graph))
   @graph.node_set_dimensions(node, 10.0, 10.0)
@@ -157,8 +149,6 @@ test "ElkGraphImporter applyLayout resizes parent and sets child area" {
 
 ///|
 test "ElkGraphImporter applyLayout respects fixed graph size" {
-  reset_graph_model_for_test()
-  reset_force_graph_model_for_test()
   let graph = create_graph()
   @graph.node_set_dimensions(graph, 37.0, 41.0)
   @graph.node_set_bool_property(graph, @core.node_size_fixed_graph_size, true)
@@ -181,8 +171,6 @@ test "ElkGraphImporter applyLayout respects fixed graph size" {
 
 ///|
 test "ElkGraphImporter importGraph copies graph and element options" {
-  reset_graph_model_for_test()
-  reset_force_graph_model_for_test()
   let graph = create_graph()
   @graph.node_set_layout_option_string_by_id(
     graph,
@@ -323,8 +311,6 @@ test "ElkGraphImporter importGraph copies graph and element options" {
 
 ///|
 test "ElkGraphImporter importGraph keeps edge desired length as explicit override only" {
-  reset_graph_model_for_test()
-  reset_force_graph_model_for_test()
   let graph = create_graph()
   @graph.node_set_layout_option_string_by_id(
     graph,

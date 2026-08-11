@@ -4,6 +4,7 @@ package "Milky2018/moon_elk/alg/radial"
 import {
   "Milky2018/moon_elk/alg/radial/options",
   "Milky2018/moon_elk/core",
+  "Milky2018/moon_elk/graph",
   "moonbitlang/core/debug",
 }
 
@@ -24,111 +25,111 @@ pub fn new_edge_length_optimization() -> EdgeLengthOptimization
 
 pub fn new_edge_length_position_optimization() -> EdgeLengthPositionOptimization
 
-pub fn new_i_annulus_wedge_criteria((Int) -> Double) -> IAnnulusWedgeCriteria
+pub fn new_i_annulus_wedge_criteria((@graph.ElkNode) -> Double) -> IAnnulusWedgeCriteria
 
-pub fn new_i_evaluation((Int) -> Double) -> IEvaluation
+pub fn new_i_evaluation((@graph.ElkNode) -> Double raise) -> IEvaluation
 
-pub fn new_i_overlap_removal((Int, @core.IElkProgressMonitor?) -> Unit) -> IOverlapRemoval
+pub fn new_i_overlap_removal((@graph.ElkNode, @core.IElkProgressMonitor?) -> Unit raise) -> IOverlapRemoval
 
-pub fn new_i_radial_compactor((Int) -> Unit) -> IRadialCompactor
+pub fn new_i_radial_compactor((@graph.ElkNode) -> Unit raise) -> IRadialCompactor
 
-pub fn new_i_radial_edge_router((Int) -> Unit) -> IRadialEdgeRouter
+pub fn new_i_radial_edge_router((@graph.ElkNode) -> Unit) -> IRadialEdgeRouter
 
-pub fn new_i_radial_rotator((Int) -> Unit) -> IRadialRotator
+pub fn new_i_radial_rotator((@graph.ElkNode) -> Unit) -> IRadialRotator
 
-pub fn new_i_radial_sorter((Array[Int]) -> Unit, initialize? : (Int) -> Unit) -> IRadialSorter
+pub fn new_i_radial_sorter((Array[@graph.ElkNode]) -> Unit raise, initialize? : (@graph.ElkNode) -> Unit raise) -> IRadialSorter
 
 pub fn new_id_sorter() -> IDSorter
 
 pub fn new_polar_coordinate_sorter() -> PolarCoordinateSorter
 
-pub fn new_radial_calculate_graph_size_layout_processor() -> @core.ILayoutProcessor[RadialLayoutPhases, Int]
+pub fn new_pure_i_evaluation((@graph.ElkNode) -> Double) -> IEvaluation
+
+pub fn new_pure_i_radial_sorter((Array[@graph.ElkNode]) -> Unit) -> IRadialSorter
+
+pub fn new_radial_calculate_graph_size_layout_processor() -> @core.ILayoutProcessor[RadialLayoutPhases, @graph.ElkNode]
 
 pub fn new_radial_compaction() -> RadialCompaction
 
-pub fn new_radial_eades_layout_phase() -> @core.ILayoutProcessor[RadialLayoutPhases, Int]
+pub fn new_radial_eades_layout_phase() -> @core.ILayoutProcessor[RadialLayoutPhases, @graph.ElkNode]
 
-pub fn new_radial_edge_angle_calculator_layout_processor() -> @core.ILayoutProcessor[RadialLayoutPhases, Int]
+pub fn new_radial_edge_angle_calculator_layout_processor() -> @core.ILayoutProcessor[RadialLayoutPhases, @graph.ElkNode]
 
-pub fn new_radial_general_compactor_layout_processor() -> @core.ILayoutProcessor[RadialLayoutPhases, Int]
+pub fn new_radial_general_compactor_layout_processor() -> @core.ILayoutProcessor[RadialLayoutPhases, @graph.ElkNode]
 
-pub fn new_radial_general_rotator_layout_processor() -> @core.ILayoutProcessor[RadialLayoutPhases, Int]
+pub fn new_radial_general_rotator_layout_processor() -> @core.ILayoutProcessor[RadialLayoutPhases, @graph.ElkNode]
 
-pub fn new_radial_layout_provider() -> RadialLayoutProvider
+pub fn new_radial_layout_provider() -> RadialLayoutProvider raise
 
-pub fn new_radial_straight_line_edge_router_layout_phase() -> @core.ILayoutProcessor[RadialLayoutPhases, Int]
+pub fn new_radial_straight_line_edge_router_layout_phase() -> @core.ILayoutProcessor[RadialLayoutPhases, @graph.ElkNode]
 
 pub fn new_radius_extension_overlap_removal() -> RadiusExtensionOverlapRemoval
 
-pub fn new_radius_extension_overlap_removal_layout_processor() -> @core.ILayoutProcessor[RadialLayoutPhases, Int]
+pub fn new_radius_extension_overlap_removal_layout_processor() -> @core.ILayoutProcessor[RadialLayoutPhases, @graph.ElkNode]
 
 pub fn new_straight_line_edge_router() -> StraightLineEdgeRouter
 
 pub fn radial_annulus_wedge_criteria_create(@options.RadialAnnulusWedgeCriteria) -> IAnnulusWedgeCriteria
 
-pub fn radial_center_nodes_on_radi(Int, Double, Double) -> Unit
+pub fn radial_center_nodes_on_radi(@graph.ElkNode, Double, Double) -> Unit
 
 pub fn radial_compaction_strategy_create(@options.RadialCompactionStrategy) -> IRadialCompactor raise RadialCompactionStrategyException
 
-pub fn radial_create_polar_comparator(Double, Double) -> (Int, Int) -> Int
+pub fn radial_create_polar_comparator(Double, Double) -> (@graph.ElkNode, @graph.ElkNode) -> Int raise
 
-pub fn radial_find_largest_node_in_graph(Int) -> Double
+pub fn radial_find_largest_node_in_graph(@graph.ElkNode) -> Double
 
-pub fn radial_find_root(Int) -> Int?
+pub fn radial_find_root(@graph.ElkNode) -> @graph.ElkNode?
 
-pub fn radial_find_root_of_node(Int) -> Int
+pub fn radial_find_root_of_node(@graph.ElkNode) -> @graph.ElkNode
 
-pub fn radial_get_last_level_nodes(Array[Int]) -> Array[Int]
+pub fn radial_get_last_level_nodes(Array[@graph.ElkNode]) -> Array[@graph.ElkNode]
 
-pub fn radial_get_next_level_node_set(Array[Int]) -> Array[Int]
+pub fn radial_get_next_level_node_set(Array[@graph.ElkNode]) -> Array[@graph.ElkNode]
 
-pub fn radial_get_next_level_nodes(Array[Int]) -> Array[Int]
+pub fn radial_get_next_level_nodes(Array[@graph.ElkNode]) -> Array[@graph.ElkNode]
 
-pub fn radial_get_number_of_leaves(Int) -> Int
+pub fn radial_get_number_of_leaves(@graph.ElkNode) -> Int
 
-pub fn radial_get_successor_set(Int) -> Array[Int]
+pub fn radial_get_successor_set(@graph.ElkNode) -> Array[@graph.ElkNode]
 
-pub fn radial_get_successors(Int) -> Array[Int]
+pub fn radial_get_successors(@graph.ElkNode) -> Array[@graph.ElkNode]
 
-pub fn radial_get_tree_parent(Int) -> Int?
+pub fn radial_get_tree_parent(@graph.ElkNode) -> @graph.ElkNode?
 
-pub fn radial_intermediate_processor_factory(RadialIntermediateProcessorStrategy) -> @core.ILayoutProcessorFactory[RadialLayoutPhases, Int]
+pub fn radial_intermediate_processor_factory(RadialIntermediateProcessorStrategy) -> @core.ILayoutProcessorFactory[RadialLayoutPhases, @graph.ElkNode]
 
-pub fn radial_internal_clear_root(Int) -> Unit
+pub fn radial_internal_graph_padding(@graph.ElkNode) -> @core.Spacing raise
 
-pub fn radial_internal_clear_transient_state() -> Unit
+pub fn radial_internal_has_order_id(@graph.ElkNode) -> Bool
 
-pub fn radial_internal_graph_padding(Int) -> @core.Spacing
+pub fn radial_internal_node_margins(@graph.ElkNode) -> @core.Spacing raise
 
-pub fn radial_internal_has_order_id(Int) -> Bool
+pub fn radial_internal_order_id(@graph.ElkNode) -> Int
 
-pub fn radial_internal_node_margins(Int) -> @core.Spacing
+pub fn radial_internal_position(@graph.ElkNode) -> @core.KVector raise
 
-pub fn radial_internal_order_id(Int) -> Int
+pub fn radial_internal_root(@graph.ElkNode) -> @graph.ElkNode?
 
-pub fn radial_internal_position(Int) -> @core.KVector
+pub fn radial_internal_set_order_id(@graph.ElkNode, Int) -> Unit
 
-pub fn radial_internal_root(Int) -> Int?
-
-pub fn radial_internal_set_order_id(Int, Int) -> Unit
-
-pub fn radial_internal_set_position(Int, @core.KVector) -> Unit
-
-pub fn radial_internal_set_root(Int, Int) -> Unit
+pub fn radial_internal_set_position(@graph.ElkNode, @core.KVector) -> Unit
 
 pub let radial_layout_phase_descriptor : @core.PhaseDescriptor[RadialLayoutPhases]
 
-pub fn radial_layout_phase_factory(RadialLayoutPhases) -> @core.ILayoutProcessorFactory[RadialLayoutPhases, Int]
+pub fn radial_layout_phase_factory(RadialLayoutPhases) -> @core.ILayoutProcessorFactory[RadialLayoutPhases, @graph.ElkNode]
 
 pub fn radial_overlap_removal_strategy_create(@options.RadialOverlapRemovalStrategy) -> IOverlapRemoval
 
-pub fn radial_shift_closest_edge_to_radi(Int, Double, Double) -> Unit
+pub fn radial_shift_closest_edge_to_radi(@graph.ElkNode, Double, Double) -> Unit
 
-pub fn radial_sort_nodes(Array[Int], (Int, Int) -> Int) -> Unit
+pub fn radial_sort_nodes(Array[@graph.ElkNode], (@graph.ElkNode, @graph.ElkNode) -> Int raise?) -> Unit raise?
 
 pub fn radial_sorting_strategy_create(@options.RadialSortingStrategy) -> IRadialSorter?
 
 pub fn radial_translation_strategy_create(@options.RadialTranslationStrategy) -> IEvaluation?
+
+pub fn register_radial_layout_algorithm(@core.LayoutRuntime) -> Unit
 
 // Errors
 pub(all) suberror RadialCompactionStrategyException {
@@ -139,16 +140,16 @@ pub(all) suberror RadialCompactionStrategyException {
 pub struct AbstractRadiusExtensionCompaction {
   mut compaction_step : Int
   mut spacing : Double
-  mut root : Int?
+  mut root : @graph.ElkNode?
 }
 pub fn AbstractRadiusExtensionCompaction::compaction_step(Self) -> Int
-pub fn AbstractRadiusExtensionCompaction::contract_layer(Self, Array[Int], Bool) -> Unit
-pub fn AbstractRadiusExtensionCompaction::move_node(Self, Int, Double) -> Unit
-pub fn AbstractRadiusExtensionCompaction::overlap(Self, Int, Int) -> Bool
-pub fn AbstractRadiusExtensionCompaction::overlap_layer(Self, Array[Int]) -> Bool
-pub fn AbstractRadiusExtensionCompaction::root(Self) -> Int?
+pub fn AbstractRadiusExtensionCompaction::contract_layer(Self, Array[@graph.ElkNode], Bool) -> Unit
+pub fn AbstractRadiusExtensionCompaction::move_node(Self, @graph.ElkNode, Double) -> Unit
+pub fn AbstractRadiusExtensionCompaction::overlap(Self, @graph.ElkNode, @graph.ElkNode) -> Bool
+pub fn AbstractRadiusExtensionCompaction::overlap_layer(Self, Array[@graph.ElkNode]) -> Bool
+pub fn AbstractRadiusExtensionCompaction::root(Self) -> @graph.ElkNode?
 pub fn AbstractRadiusExtensionCompaction::set_compaction_step(Self, Int) -> Unit
-pub fn AbstractRadiusExtensionCompaction::set_root(Self, Int) -> Unit
+pub fn AbstractRadiusExtensionCompaction::set_root(Self, @graph.ElkNode) -> Unit
 pub fn AbstractRadiusExtensionCompaction::set_spacing(Self, Double) -> Unit
 pub fn AbstractRadiusExtensionCompaction::spacing(Self) -> Double
 
@@ -156,109 +157,111 @@ pub struct AngleRotation {
   rotator : IRadialRotator
 }
 pub fn AngleRotation::as_i_radial_rotator(Self) -> IRadialRotator
-pub fn AngleRotation::rotate(Self, Int) -> Unit
+pub fn AngleRotation::rotate(Self, @graph.ElkNode) -> Unit
 
 pub struct AnnulusWedgeByLeafs {
   criteria : IAnnulusWedgeCriteria
 }
 pub fn AnnulusWedgeByLeafs::as_i_annulus_wedge_criteria(Self) -> IAnnulusWedgeCriteria
-pub fn AnnulusWedgeByLeafs::calculate_wedge_space(Self, Int) -> Double
+pub fn AnnulusWedgeByLeafs::calculate_wedge_space(Self, @graph.ElkNode) -> Double
 
 pub struct AnnulusWedgeByNodeSpace {
   criteria : IAnnulusWedgeCriteria
 }
 pub fn AnnulusWedgeByNodeSpace::as_i_annulus_wedge_criteria(Self) -> IAnnulusWedgeCriteria
-pub fn AnnulusWedgeByNodeSpace::calculate_wedge_space(Self, Int) -> Double
+pub fn AnnulusWedgeByNodeSpace::calculate_wedge_space(Self, @graph.ElkNode) -> Double
 
 pub struct AnnulusWedgeCompaction {
   base : AbstractRadiusExtensionCompaction
-  left_contour : Map[Int, Array[Int]]
-  right_contour : Map[Int, Array[Int]]
+  left_contour : Map[@graph.ElkNode, Array[@graph.ElkNode]]
+  right_contour : Map[@graph.ElkNode, Array[@graph.ElkNode]]
   mut sorter : IRadialSorter?
-  mut root : Int?
+  mut root : @graph.ElkNode?
 }
-pub fn AnnulusWedgeCompaction::compact(Self, Int) -> Unit
+pub fn AnnulusWedgeCompaction::compact(Self, @graph.ElkNode) -> Unit raise
 
 pub struct CrossingMinimizationPosition {
   evaluator : IEvaluation
 }
 pub fn CrossingMinimizationPosition::as_i_evaluation(Self) -> IEvaluation
-pub fn CrossingMinimizationPosition::evaluate(Self, Int) -> Double
+pub fn CrossingMinimizationPosition::evaluate(Self, @graph.ElkNode) -> Double raise
 
 pub struct EdgeLengthOptimization {
   evaluator : IEvaluation
 }
 pub fn EdgeLengthOptimization::as_i_evaluation(Self) -> IEvaluation
-pub fn EdgeLengthOptimization::evaluate(Self, Int) -> Double
+pub fn EdgeLengthOptimization::evaluate(Self, @graph.ElkNode) -> Double raise
 
 pub struct EdgeLengthPositionOptimization {
   evaluator : IEvaluation
 }
 pub fn EdgeLengthPositionOptimization::as_i_evaluation(Self) -> IEvaluation
-pub fn EdgeLengthPositionOptimization::evaluate(Self, Int) -> Double
+pub fn EdgeLengthPositionOptimization::evaluate(Self, @graph.ElkNode) -> Double raise
 
 pub struct IAnnulusWedgeCriteria {
-  calculate_wedge_space_fn : (Int) -> Double
+  calculate_wedge_space_fn : (@graph.ElkNode) -> Double
 }
-pub fn IAnnulusWedgeCriteria::calculate_wedge_space(Self, Int) -> Double
+pub fn IAnnulusWedgeCriteria::calculate_wedge_space(Self, @graph.ElkNode) -> Double
 
 pub struct IDSorter {
   sorter : IRadialSorter
 }
 pub fn IDSorter::as_i_radial_sorter(Self) -> IRadialSorter
-pub fn IDSorter::initialize(Self, Int) -> Unit
-pub fn IDSorter::sort(Self, Array[Int]) -> Unit
+pub fn IDSorter::initialize(Self, @graph.ElkNode) -> Unit raise
+pub fn IDSorter::sort(Self, Array[@graph.ElkNode]) -> Unit raise
 
 pub struct IEvaluation {
-  evaluate_fn : (Int) -> Double
+  evaluate_fn : ((@graph.ElkNode) -> Double raise)?
+  pure_evaluate_fn : ((@graph.ElkNode) -> Double)?
 }
-pub fn IEvaluation::evaluate(Self, Int) -> Double
+pub fn IEvaluation::evaluate(Self, @graph.ElkNode) -> Double raise
 
 pub struct IOverlapRemoval {
-  remove_overlaps_fn : (Int, @core.IElkProgressMonitor?) -> Unit
+  remove_overlaps_fn : (@graph.ElkNode, @core.IElkProgressMonitor?) -> Unit raise
 }
-pub fn IOverlapRemoval::remove_overlaps(Self, Int, @core.IElkProgressMonitor?) -> Unit
+pub fn IOverlapRemoval::remove_overlaps(Self, @graph.ElkNode, @core.IElkProgressMonitor?) -> Unit raise
 
 pub struct IRadialCompactor {
-  compact_fn : (Int) -> Unit
+  compact_fn : (@graph.ElkNode) -> Unit raise
 }
-pub fn IRadialCompactor::compact(Self, Int) -> Unit
+pub fn IRadialCompactor::compact(Self, @graph.ElkNode) -> Unit raise
 
 pub struct IRadialEdgeRouter {
-  route_edges_fn : (Int) -> Unit
+  route_edges_fn : (@graph.ElkNode) -> Unit
 }
-pub fn IRadialEdgeRouter::route_edges(Self, Int) -> Unit
+pub fn IRadialEdgeRouter::route_edges(Self, @graph.ElkNode) -> Unit
 
 pub struct IRadialRotator {
-  rotate_fn : (Int) -> Unit
+  rotate_fn : (@graph.ElkNode) -> Unit
 }
-pub fn IRadialRotator::rotate(Self, Int) -> Unit
+pub fn IRadialRotator::rotate(Self, @graph.ElkNode) -> Unit
 
 pub struct IRadialSorter {
-  sort_fn : (Array[Int]) -> Unit
-  initialize_fn : (Int) -> Unit
+  sort_fn : ((Array[@graph.ElkNode]) -> Unit raise)?
+  pure_sort_fn : ((Array[@graph.ElkNode]) -> Unit)?
+  initialize_fn : ((@graph.ElkNode) -> Unit raise)?
 }
-pub fn IRadialSorter::initialize(Self, Int) -> Unit
-pub fn IRadialSorter::sort(Self, Array[Int]) -> Unit
+pub fn IRadialSorter::initialize(Self, @graph.ElkNode) -> Unit raise
+pub fn IRadialSorter::sort(Self, Array[@graph.ElkNode]) -> Unit raise
 
 pub struct PolarCoordinateSorter {
-  comp_right : (Int, Int) -> Int
-  comp_left : (Int, Int) -> Int
-  comp_top : (Int, Int) -> Int
-  comp_bottom : (Int, Int) -> Int
+  comp_right : (@graph.ElkNode, @graph.ElkNode) -> Int raise
+  comp_left : (@graph.ElkNode, @graph.ElkNode) -> Int raise
+  comp_top : (@graph.ElkNode, @graph.ElkNode) -> Int raise
+  comp_bottom : (@graph.ElkNode, @graph.ElkNode) -> Int raise
   mut id_sorter : IDSorter?
 }
 pub fn PolarCoordinateSorter::as_i_radial_sorter(Self) -> IRadialSorter
-pub fn PolarCoordinateSorter::initialize(Self, Int) -> Unit
-pub fn PolarCoordinateSorter::sort(Self, Array[Int]) -> Unit
+pub fn PolarCoordinateSorter::initialize(Self, @graph.ElkNode) -> Unit raise
+pub fn PolarCoordinateSorter::sort(Self, Array[@graph.ElkNode]) -> Unit raise
 
 pub struct RadialCompaction {
   base : AbstractRadiusExtensionCompaction
   mut sorter : IRadialSorter?
   mut last_radius : Double
 }
-pub fn RadialCompaction::compact(Self, Int) -> Unit
-pub fn RadialCompaction::contract(Self, Array[Int]) -> Unit
+pub fn RadialCompaction::compact(Self, @graph.ElkNode) -> Unit raise
+pub fn RadialCompaction::contract(Self, Array[@graph.ElkNode]) -> Unit raise
 
 pub enum RadialIntermediateProcessorStrategy {
   OVERLAP_REMOVAL
@@ -274,23 +277,23 @@ pub enum RadialLayoutPhases {
 }
 
 pub struct RadialLayoutProvider {
-  algorithm_assembler : @core.AlgorithmAssembler[RadialLayoutPhases, Int]
+  algorithm_assembler : @core.AlgorithmAssembler[RadialLayoutPhases, @graph.ElkNode]
 }
-pub fn RadialLayoutProvider::layout(Self, Int, @core.IElkProgressMonitor) -> Unit
+pub fn RadialLayoutProvider::layout(Self, @graph.ElkNode, @core.IElkProgressMonitor) -> Unit raise
 
 pub struct RadiusExtensionOverlapRemoval {
   base : AbstractRadiusExtensionCompaction
   mut sorter : IRadialSorter?
 }
 pub fn RadiusExtensionOverlapRemoval::as_i_overlap_removal(Self) -> IOverlapRemoval
-pub fn RadiusExtensionOverlapRemoval::extend_radius(Self, Int, Array[Int], @core.IElkProgressMonitor?) -> Unit
-pub fn RadiusExtensionOverlapRemoval::remove_overlaps(Self, Int, @core.IElkProgressMonitor?) -> Unit
+pub fn RadiusExtensionOverlapRemoval::extend_radius(Self, @graph.ElkNode, Array[@graph.ElkNode], @core.IElkProgressMonitor?) -> Unit raise
+pub fn RadiusExtensionOverlapRemoval::remove_overlaps(Self, @graph.ElkNode, @core.IElkProgressMonitor?) -> Unit raise
 
 pub struct StraightLineEdgeRouter {
   edge_router : IRadialEdgeRouter
 }
 pub fn StraightLineEdgeRouter::as_i_radial_edge_router(Self) -> IRadialEdgeRouter
-pub fn StraightLineEdgeRouter::route_edges(Self, Int) -> Unit
+pub fn StraightLineEdgeRouter::route_edges(Self, @graph.ElkNode) -> Unit
 
 // Type aliases
 

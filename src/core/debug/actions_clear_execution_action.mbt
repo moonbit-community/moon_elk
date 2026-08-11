@@ -27,7 +27,7 @@ pub fn ClearExecutionAction::update_enablement(
 }
 
 ///|
-pub fn ClearExecutionAction::run(self : ClearExecutionAction) -> Unit {
+pub fn ClearExecutionAction::run(self : ClearExecutionAction) -> Unit raise {
   let selected_infos = self.view.get_selected_execution_infos()
   match elk_debug_plugin_get_default() {
     Some(plugin) => plugin.get_model().remove_execution_infos(selected_infos)

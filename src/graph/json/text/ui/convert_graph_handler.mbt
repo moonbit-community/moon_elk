@@ -91,6 +91,7 @@ fn graph_json_text_remove_extension(path : String) -> String {
 
 ///|
 pub struct GraphJsonTextConvertGraphHandler {
+  metadata : @core.OptionMetadata
   project : GraphJsonTextProject
   mut target_extension : String
   errors : Array[String]
@@ -98,9 +99,10 @@ pub struct GraphJsonTextConvertGraphHandler {
 
 ///|
 pub fn new_graph_json_text_convert_graph_handler(
+  metadata : @core.OptionMetadata,
   project? : GraphJsonTextProject = new_graph_json_text_project(),
 ) -> GraphJsonTextConvertGraphHandler {
-  { project, target_extension: "", errors: [] }
+  { metadata, project, target_extension: "", errors: [] }
 }
 
 ///|
@@ -155,8 +157,7 @@ pub fn GraphJsonTextConvertGraphHandler::read_model(
   self : GraphJsonTextConvertGraphHandler,
   content : String,
 ) -> @graph.ElkNode {
-  ignore(self)
-  @text.new_elk_graph_json_parser().parse(content)
+  @text.new_elk_graph_json_parser(self.metadata).parse(content)
 }
 
 ///|

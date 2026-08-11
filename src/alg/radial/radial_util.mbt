@@ -19,8 +19,8 @@ fn radial_double_fuzzy_compare(a : Double, b : Double, eps : Double) -> Int {
 ///|
 pub fn radial_sort_nodes(
   nodes : Array[@graph.ElkNode],
-  comparator : (@graph.ElkNode, @graph.ElkNode) -> Int,
-) -> Unit {
+  comparator : (@graph.ElkNode, @graph.ElkNode) -> Int raise?,
+) -> Unit raise? {
   let mut i = 1
   while i < nodes.length() {
     let value = nodes[i]
@@ -134,8 +134,8 @@ pub fn radial_get_number_of_leaves(node : @graph.ElkNode) -> Int {
 pub fn radial_create_polar_comparator(
   radial_offset : Double,
   node_offset_y : Double,
-) -> (@graph.ElkNode, @graph.ElkNode) -> Int {
-  (node1, node2) => {
+) -> (@graph.ElkNode, @graph.ElkNode) -> Int raise {
+  fn(node1, node2) raise {
     let position1 = radial_internal_position(node1)
     let x_pos1 = position1.x
     let y_pos1 = position1.y + node_offset_y

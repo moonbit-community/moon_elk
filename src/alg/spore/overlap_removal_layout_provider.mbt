@@ -1,11 +1,15 @@
 ///|
 pub struct SporeOverlapRemovalLayoutProvider {
+  metadata : @core.OptionMetadata
   algorithm_assembler : @core.AlgorithmAssembler[SPOrEPhases, SporeGraph]
 }
 
 ///|
-pub fn new_spore_overlap_removal_layout_provider() -> SporeOverlapRemovalLayoutProvider {
+pub fn new_spore_overlap_removal_layout_provider(
+  metadata : @core.OptionMetadata,
+) -> SporeOverlapRemovalLayoutProvider raise {
   {
+    metadata,
     algorithm_assembler: @core.algorithm_assembler_create(
       spore_phase_descriptor,
     ),
@@ -13,15 +17,19 @@ pub fn new_spore_overlap_removal_layout_provider() -> SporeOverlapRemovalLayoutP
 }
 
 ///|
-fn init {
-  @core.recursive_graph_layout_engine_register_handler(
-    spore_overlap_removal_algorithm_id,
-    (layout_graph, progress_monitor) => {
-      new_spore_overlap_removal_layout_provider().layout(
-        layout_graph, progress_monitor,
-      )
-    },
-  )
+pub fn register_spore_overlap_layout_algorithm(
+  runtime : @core.LayoutRuntime,
+) -> Unit {
+  runtime.register_layout_algorithm(spore_overlap_removal_algorithm_id, (
+    _runtime,
+    _session,
+    layout_graph,
+    progress_monitor,
+  ) => {
+    new_spore_overlap_removal_layout_provider(runtime.option_metadata()).layout(
+      layout_graph, progress_monitor,
+    )
+  })
 }
 
 ///|
@@ -29,7 +37,7 @@ pub fn SporeOverlapRemovalLayoutProvider::layout(
   self : SporeOverlapRemovalLayoutProvider,
   layout_graph : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor,
-) -> Unit {
+) -> Unit raise {
   if @graph.node_has_string_property(
       layout_graph, spore_underlying_layout_algorithm,
     ) {
@@ -37,11 +45,7 @@ pub fn SporeOverlapRemovalLayoutProvider::layout(
       layout_graph, spore_underlying_layout_algorithm,
     )
     if !requested_algorithm.is_empty() {
-      ignore(
-        @core.layout_meta_data_service_get_algorithm_data_by_suffix(
-          requested_algorithm,
-        ),
-      )
+      ignore(self.metadata.algorithm_data_by_suffix(requested_algorithm))
     }
   }
 

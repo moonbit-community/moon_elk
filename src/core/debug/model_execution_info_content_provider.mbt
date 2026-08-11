@@ -64,7 +64,7 @@ pub fn ExecutionInfoContentProvider::get_elements(
 pub fn ExecutionInfoContentProvider::get_children(
   self : ExecutionInfoContentProvider,
   parent : ExecutionInfo?,
-) -> Array[ExecutionInfo] {
+) -> Array[ExecutionInfo] raise {
   match parent {
     Some(info) => {
       let filtered : Array[ExecutionInfo] = []
@@ -83,7 +83,7 @@ pub fn ExecutionInfoContentProvider::get_children(
 pub fn ExecutionInfoContentProvider::get_parent(
   _self : ExecutionInfoContentProvider,
   element : ExecutionInfo?,
-) -> ExecutionInfo? {
+) -> ExecutionInfo? raise {
   match element {
     Some(info) => execution_info_get_parent(info)
     None => None
@@ -94,7 +94,7 @@ pub fn ExecutionInfoContentProvider::get_parent(
 pub fn ExecutionInfoContentProvider::has_children(
   self : ExecutionInfoContentProvider,
   element : ExecutionInfo?,
-) -> Bool {
+) -> Bool raise {
   match element {
     Some(info) => {
       for child in execution_info_get_children(info) {

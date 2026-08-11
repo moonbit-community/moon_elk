@@ -134,6 +134,7 @@ pub fn ElkGraphIdeNameMappings::get_rule_name(
 
 ///|
 pub struct ElkGraphIdeParser {
+  metadata : @core.OptionMetadata
   mut name_mappings : ElkGraphIdeNameMappings
   mut grammar_access : @text.ElkGraphGrammarAccess
   mut initial_hidden_tokens : Array[String]
@@ -141,9 +142,11 @@ pub struct ElkGraphIdeParser {
 
 ///|
 pub fn new_elk_graph_ide_parser(
+  metadata : @core.OptionMetadata,
   grammar_access? : @text.ElkGraphGrammarAccess = @text.new_elk_graph_grammar_access(),
 ) -> ElkGraphIdeParser {
   {
+    metadata,
     name_mappings: new_elk_graph_ide_name_mappings(grammar_access),
     grammar_access,
     initial_hidden_tokens: ["RULE_WS", "RULE_ML_COMMENT", "RULE_SL_COMMENT"],
@@ -155,7 +158,11 @@ pub fn ElkGraphIdeParser::create_parser(
   self : ElkGraphIdeParser,
   tokens : Array[@text.ElkGraphLexToken],
 ) -> InternalElkGraphIdeParser {
-  new_internal_elk_graph_ide_parser(tokens, grammar_access=self.grammar_access)
+  new_internal_elk_graph_ide_parser(
+    self.metadata,
+    tokens,
+    grammar_access=self.grammar_access,
+  )
 }
 
 ///|

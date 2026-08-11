@@ -26,7 +26,7 @@ pub fn[V : Hash + Eq] BiLinkedHashMultiMap::put_all(
   self : BiLinkedHashMultiMap[V],
   key : Int,
   values : Array[V],
-) -> Unit {
+) -> Unit raise {
   for value in values {
     self.put(key, value)
   }
@@ -37,7 +37,7 @@ pub fn[V : Hash + Eq] BiLinkedHashMultiMap::put(
   self : BiLinkedHashMultiMap[V],
   key : Int,
   value : V,
-) -> Unit {
+) -> Unit raise {
   match self.value_to_key.get(value) {
     Some(old_key) =>
       match self.key_to_values.get(old_key) {
@@ -55,7 +55,7 @@ pub fn[V : Hash + Eq] BiLinkedHashMultiMap::put(
   match self.key_to_values.get(key) {
     Some(current_values) => current_values.push(value)
     None =>
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "key must exist after ensure_key",
       )
   }

@@ -30,8 +30,8 @@ pub struct CrossHierarchyEdge {
   graph : @runtime.LGraph
   port_type : @options.PortType
 }
-pub fn CrossHierarchyEdge::get_actual_source(Self) -> @runtime.LPort
-pub fn CrossHierarchyEdge::get_actual_target(Self) -> @runtime.LPort
+pub fn CrossHierarchyEdge::get_actual_source(Self) -> @runtime.LPort raise
+pub fn CrossHierarchyEdge::get_actual_target(Self) -> @runtime.LPort raise
 pub fn CrossHierarchyEdge::get_edge(Self) -> @runtime.LEdge
 pub fn CrossHierarchyEdge::get_graph(Self) -> @runtime.LGraph
 pub fn CrossHierarchyEdge::get_type(Self) -> @options.PortType

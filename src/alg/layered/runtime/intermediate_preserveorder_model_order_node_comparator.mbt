@@ -287,7 +287,7 @@ fn ModelOrderNodeComparator::handle_helper_dummy_nodes(
   self : ModelOrderNodeComparator,
   n1 : LNode,
   n2 : LNode,
-) -> Int {
+) -> Int raise {
   if model_order_node_type_equals(n1.get_type(), LongEdge) &&
     model_order_node_type_equals(n2.get_type(), Normal) {
     let dummy_node_source_port = model_order_node_get_first_incoming_source_port_of_node(
@@ -636,7 +636,7 @@ pub fn ModelOrderNodeComparator::compare(
   self : ModelOrderNodeComparator,
   n1 : LNode,
   n2 : LNode,
-) -> Int {
+) -> Int raise {
   // D2 embeds elkjs 0.8.2 (ELK 0.8.1), whose NODES_AND_EDGES
   // comparator predates the feedback-edge and group-order extensions below.
   match self.ordering_strategy {

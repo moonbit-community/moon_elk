@@ -161,14 +161,14 @@ fn node_context_contains_size_option(
 }
 
 ///|
-fn node_context_parse_padding(value : String) -> @core.ElkPadding {
+fn node_context_parse_padding(value : String) -> @core.ElkPadding raise {
   let parsed = @core.new_elk_padding()
   parsed.parse(value)
   parsed
 }
 
 ///|
-fn node_context_parse_margin(value : String) -> @core.ElkMargin {
+fn node_context_parse_margin(value : String) -> @core.ElkMargin raise {
   let parsed = @core.new_elk_margin()
   parsed.parse(value)
   parsed
@@ -266,9 +266,7 @@ pub struct NodeContext {
 }
 
 ///|
-pub fn new_node_context(
-  node : &NodeSpacingNode,
-) -> NodeContext raise NodeContextException {
+pub fn new_node_context(node : &NodeSpacingNode) -> NodeContext raise {
   let node_size = node.get_size().clone()
 
   let topdown_layout = node.get_property_bool(

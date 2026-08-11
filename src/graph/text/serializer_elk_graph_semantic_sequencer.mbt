@@ -1,15 +1,20 @@
 ///|
 pub struct ElkGraphSemanticSequencer {
+  metadata : @core.OptionMetadata
   base : AbstractElkGraphSemanticSequencer
   value_converter : PropertyValueValueConverter
 }
 
 ///|
 pub fn new_elk_graph_semantic_sequencer(
+  metadata : @core.OptionMetadata,
   base? : AbstractElkGraphSemanticSequencer = new_abstract_elk_graph_semantic_sequencer(),
-  value_converter? : PropertyValueValueConverter = new_property_value_value_converter(),
+  value_converter? : PropertyValueValueConverter,
 ) -> ElkGraphSemanticSequencer {
-  { base, value_converter }
+  let value_converter = value_converter.unwrap_or(
+    new_property_value_value_converter(metadata),
+  )
+  { metadata, base, value_converter }
 }
 
 ///|
@@ -39,8 +44,11 @@ pub fn ElkGraphSemanticSequencer::sequence_property(
   self : ElkGraphSemanticSequencer,
   context : String,
   semantic_object : GraphTextPropertyAssignment,
-) -> GraphTextPropertyAssignment {
-  let option = graph_text_property_key_to_layout_option(semantic_object.key)
+) -> GraphTextPropertyAssignment raise {
+  let option = graph_text_property_key_to_layout_option(
+    self.metadata,
+    semantic_object.key,
+  )
   let resolved = match semantic_object.value {
     ProxyValue(proxy_text) =>
       match option {

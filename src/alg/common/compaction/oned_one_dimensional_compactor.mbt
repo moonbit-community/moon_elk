@@ -30,14 +30,14 @@ fn[T] one_dimensional_compactor_raise_illegal_argument(
 }
 
 ///|
-fn one_dimensional_compactor_abort_message(message : String) -> Unit {
-  @core.layout_runtime_report_unsupported_configuration(message)
+fn one_dimensional_compactor_abort_message(message : String) -> Unit raise {
+  @core.layout_runtime_raise_unsupported_configuration(message)
 }
 
 ///|
 pub fn new_one_dimensional_compactor(
   c_graph : CGraph,
-) -> OneDimensionalCompactor {
+) -> OneDimensionalCompactor raise {
   let compactor : OneDimensionalCompactor = {
     c_graph,
     lock_fun: None,
@@ -99,7 +99,7 @@ pub fn OneDimensionalCompactor::set_lock_function(
 ///|
 pub fn OneDimensionalCompactor::compact(
   self : OneDimensionalCompactor,
-) -> OneDimensionalCompactor {
+) -> OneDimensionalCompactor raise {
   if self.finished {
     one_dimensional_compactor_raise_illegal_state(
       "The OneDimensionalCompactor instance has been finished already.",
@@ -129,7 +129,7 @@ pub fn OneDimensionalCompactor::compact(
 ///|
 pub fn OneDimensionalCompactor::finish(
   self : OneDimensionalCompactor,
-) -> OneDimensionalCompactor {
+) -> OneDimensionalCompactor raise {
   ignore(self.change_direction(Leftward))
   self.finished = true
   self
@@ -139,7 +139,7 @@ pub fn OneDimensionalCompactor::finish(
 pub fn OneDimensionalCompactor::change_direction(
   self : OneDimensionalCompactor,
   dir : @core.Direction,
-) -> OneDimensionalCompactor {
+) -> OneDimensionalCompactor raise {
   if self.finished {
     one_dimensional_compactor_raise_illegal_state(
       "The OneDimensionalCompactor instance has been finished already.",
@@ -268,7 +268,7 @@ pub fn OneDimensionalCompactor::change_direction(
 ///|
 pub fn OneDimensionalCompactor::force_constraints_recalculation(
   self : OneDimensionalCompactor,
-) -> OneDimensionalCompactor {
+) -> OneDimensionalCompactor raise {
   one_dimensional_compactor_calculate_constraints(self)
   self
 }
@@ -278,7 +278,7 @@ pub fn OneDimensionalCompactor::is_locked_group(
   self : OneDimensionalCompactor,
   group : CGroup,
   dir : @core.Direction,
-) -> Bool {
+) -> Bool raise {
   for node in group.c_nodes() {
     if self.is_locked_node(node, dir) {
       return true
@@ -292,7 +292,7 @@ pub fn OneDimensionalCompactor::is_locked_node(
   self : OneDimensionalCompactor,
   node : CNode,
   dir : @core.Direction,
-) -> Bool {
+) -> Bool raise {
   match self.lock_fun {
     Some(lock_function) => lock_function(node, dir)
     None => false
@@ -380,7 +380,7 @@ fn one_dimensional_compactor_transpose_hitboxes(
 ///|
 fn one_dimensional_compactor_calculate_constraints(
   compactor : OneDimensionalCompactor,
-) -> Unit {
+) -> Unit raise {
   for node in compactor.c_graph.c_nodes {
     node.clear_constraints()
   }

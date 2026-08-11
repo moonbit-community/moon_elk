@@ -1,2 +1,2 @@
 ///|
-pub type ICompactionAlgorithm = (OneDimensionalCompactor) -> Unit
+pub type ICompactionAlgorithm = (OneDimensionalCompactor) -> Unit raise

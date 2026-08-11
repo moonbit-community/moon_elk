@@ -44,7 +44,6 @@ fn inside_port_label_assemble_labels(node : ElkNode) -> Array[ElkLabel] {
 
 ///|
 test "InsidePortLabelTest no label overlaps" {
-  reset_graph_model_for_test()
   let graph = create_graph()
   let node = create_node(Some(graph))
   node_set_dimensions(node, 80.0, 40.0)

@@ -10,16 +10,15 @@ fn graph_child_exists(parent : @graph.ElkNode, identifier : String) -> Bool {
 
 ///|
 test "graph json graph must be object" {
-  @graph.reset_graph_model_for_test()
   let root = elk_graph_json_for_graph("{\"id\": 1}").to_elk()
   assert_eq(@graph.node_identifier(root), "1")
 }
 
 ///|
 test "graph json graph must be object fail array reports runtime error" {
-  @graph.reset_graph_model_for_test()
-  ignore(elk_graph_json_for_graph("[]").to_elk())
-  let error = @core.layout_runtime_take_error_message()
+  let builder = elk_graph_json_for_graph("[]")
+  ignore(builder.to_elk())
+  let error = builder.take_error_message()
   assert_eq(error is Some(_), true)
   if error is Some(message) {
     assert_eq(message.is_empty(), false)
@@ -28,7 +27,6 @@ test "graph json graph must be object fail array reports runtime error" {
 
 ///|
 test "graph json small graph" {
-  @graph.reset_graph_model_for_test()
   let graph = gj_obj([
     ("id", gj_str("root")),
     ("properties", gj_obj([("elk.direction", gj_str("DOWN"))])),
@@ -66,10 +64,10 @@ test "graph json small graph" {
 
 ///|
 test "graph json reject sloppy json if not lenient reports runtime error" {
-  @graph.reset_graph_model_for_test()
   let sloppy_json_graph = "{\n  // the root node\n  id: \"root\",\n  /* Now the graph */\n  \"children\": [ {\"id\": \"c\"}; {\"id\": \"c1\"} ],\n  'edges': [] // Endline comment\n}"
-  ignore(elk_graph_json_for_graph(sloppy_json_graph).lenient(false).to_elk())
-  let error = @core.layout_runtime_take_error_message()
+  let builder = elk_graph_json_for_graph(sloppy_json_graph).lenient(false)
+  ignore(builder.to_elk())
+  let error = builder.take_error_message()
   assert_eq(error is Some(_), true)
   if error is Some(message) {
     assert_eq(message.is_empty(), false)
@@ -78,7 +76,6 @@ test "graph json reject sloppy json if not lenient reports runtime error" {
 
 ///|
 test "graph json accept sloppy json if lenient" {
-  @graph.reset_graph_model_for_test()
   let sloppy_json_graph = "{\n  // the root node\n  id: \"root\",\n  /* Now the graph */\n  \"children\": [ {\"id\": \"c\"}; {\"id\": \"c1\"} ],\n  'edges': [] // Endline comment\n}"
   let root = elk_graph_json_for_graph(sloppy_json_graph).to_elk()
   assert_eq(@graph.node_identifier(root), "root")

@@ -1,8 +1,9 @@
 ///|
 fn rectpacking_simple_placement_process(
+  session : RectPackingSession,
   graph : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   match progress_monitor {
     Some(monitor) => ignore(monitor.begin("No Compaction", 1.0))
     None => ()
@@ -24,6 +25,7 @@ fn rectpacking_simple_placement_process(
     target_width,
     node_node_spacing,
   )
+  session.set_rows(graph, rows)
 
   let size = if rows.is_empty() {
     rectpacking_calculate_dimensions_rectangles(@graph.node_children(graph))
@@ -64,7 +66,6 @@ fn rectpacking_simple_placement_process(
     rectpacking_internal_drawing_height,
     height + additional_height,
   )
-  rectpacking_internal_set_rows(graph, rows)
 
   match progress_monitor {
     Some(monitor) => monitor.done()
@@ -73,9 +74,13 @@ fn rectpacking_simple_placement_process(
 }
 
 ///|
-pub fn new_rectpacking_simple_placement_layout_phase() -> @core.ILayoutProcessor[
-  RectPackingLayoutPhases,
-  @graph.ElkNode,
-] {
-  @core.new_layout_phase(rectpacking_simple_placement_process, _ => None)
+pub fn new_rectpacking_simple_placement_layout_phase(
+  session : RectPackingSession,
+) -> @core.ILayoutProcessor[RectPackingLayoutPhases, @graph.ElkNode] {
+  @core.new_layout_phase(
+    (graph, progress_monitor) => {
+      rectpacking_simple_placement_process(session, graph, progress_monitor)
+    },
+    _ => None,
+  )
 }

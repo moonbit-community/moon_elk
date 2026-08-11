@@ -19,35 +19,25 @@ struct LayoutSetupEntry {
 
 ///|
 pub(all) struct LayoutConnectorsService {
+  runtime : @core.LayoutRuntime
+  session : @core.LayoutSession
   mut entries : Array[LayoutSetupEntry]
   mut layout_listeners : Array[ILayoutListener]
 }
 
 ///|
-let layout_connectors_service_instance_ref : Ref[LayoutConnectorsService?] = Ref(
-  None,
-)
-
-///|
-pub fn new_layout_connectors_service() -> LayoutConnectorsService {
-  { entries: [], layout_listeners: [] }
+pub fn new_layout_connectors_service(
+  runtime : @core.LayoutRuntime,
+  session : @core.LayoutSession,
+) -> LayoutConnectorsService {
+  { runtime, session, entries: [], layout_listeners: [] }
 }
 
 ///|
-pub fn layout_connectors_service_get_instance() -> LayoutConnectorsService {
-  match layout_connectors_service_instance_ref.val {
-    Some(instance) => instance
-    None => {
-      let instance = new_layout_connectors_service()
-      layout_connectors_service_instance_ref.val = Some(instance)
-      instance
-    }
-  }
-}
-
-///|
-pub fn layout_connectors_service_unload() -> Unit {
-  layout_connectors_service_instance_ref.val = None
+pub fn LayoutConnectorsService::option_metadata(
+  self : LayoutConnectorsService,
+) -> @core.OptionMetadata {
+  self.runtime.option_metadata()
 }
 
 ///|
@@ -130,7 +120,7 @@ fn layout_connectors_service_get_injector_for_entry(
     Some(injector) => Some(injector)
     None => {
       let injector = service.entries[index].setup.create_injector(
-        new_default_module(),
+        new_default_module(service.runtime, service.session),
       )
       service.entries[index].injector = Some(injector)
       service.entries[index].injector

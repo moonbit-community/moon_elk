@@ -4,7 +4,7 @@ fn mrtree_level_height_set_level_height(
   number_of_nodes : Int,
   direction_value : String,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   if current_level.is_empty() {
     return
   }
@@ -60,7 +60,7 @@ fn mrtree_level_height_set_level_height(
 fn mrtree_level_height_processor_process(
   graph : MrtreeGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   match progress_monitor {
     Some(monitor) =>
       ignore(

@@ -17,7 +17,7 @@ fn mrtree_fan_calculate(
   current_level : Array[MrtreeNode],
   global_fan_map : Map[String, Int],
   global_desc_map : Map[String, Int],
-) -> Unit {
+) -> Unit raise {
   if current_level.is_empty() {
     return
   }
@@ -88,7 +88,7 @@ fn mrtree_fan_calculate(
 fn mrtree_fan_processor_process(
   graph : MrtreeGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   match progress_monitor {
     Some(monitor) => ignore(monitor.begin("Processor compute fanout", 1.0))
     None => ()

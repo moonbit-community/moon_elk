@@ -49,7 +49,7 @@ pub fn[P, G] layout_processor_configuration_create(
 ///|
 pub fn[P, G] layout_processor_configuration_create_from(
   source : LayoutProcessorConfiguration[P, G],
-) -> LayoutProcessorConfiguration[P, G] {
+) -> LayoutProcessorConfiguration[P, G] raise {
   layout_processor_configuration_create(source.phase_descriptor).add_all(source)
 }
 
@@ -84,7 +84,7 @@ pub fn[P, G] LayoutProcessorConfiguration::after(
 pub fn[P, G] LayoutProcessorConfiguration::add(
   self : LayoutProcessorConfiguration[P, G],
   processor : ILayoutProcessorFactory[P, G],
-) -> LayoutProcessorConfiguration[P, G] {
+) -> LayoutProcessorConfiguration[P, G] raise {
   if self.current_index < 0 {
     try
       layout_processor_configuration_raise(
@@ -92,7 +92,7 @@ pub fn[P, G] LayoutProcessorConfiguration::add(
       )
     catch {
       err =>
-        layout_runtime_report_unsupported_configuration(
+        layout_runtime_raise_unsupported_configuration(
           layout_processor_configuration_exception_message(err),
         )
     } noraise {
@@ -109,7 +109,7 @@ pub fn[P, G] LayoutProcessorConfiguration::add_before(
   self : LayoutProcessorConfiguration[P, G],
   phase : P,
   processor : ILayoutProcessorFactory[P, G],
-) -> LayoutProcessorConfiguration[P, G] {
+) -> LayoutProcessorConfiguration[P, G] raise {
   self.current_index = -1
   self.do_add(self.phase_descriptor.ordinal_of(phase), processor)
   self
@@ -120,7 +120,7 @@ pub fn[P, G] LayoutProcessorConfiguration::add_after(
   self : LayoutProcessorConfiguration[P, G],
   phase : P,
   processor : ILayoutProcessorFactory[P, G],
-) -> LayoutProcessorConfiguration[P, G] {
+) -> LayoutProcessorConfiguration[P, G] raise {
   self.current_index = -1
   self.do_add(self.phase_descriptor.ordinal_of(phase) + 1, processor)
   self
@@ -131,7 +131,7 @@ pub fn[P, G] LayoutProcessorConfiguration::do_add(
   self : LayoutProcessorConfiguration[P, G],
   index : Int,
   processor : ILayoutProcessorFactory[P, G],
-) -> Unit {
+) -> Unit raise {
   let slot = self.list_accessor.get_list_item(index)
   if !slot_contains_processor_factory(slot, processor) {
     slot.push(processor)
@@ -155,7 +155,7 @@ fn[P, G] slot_contains_processor_factory(
 pub fn[P, G] LayoutProcessorConfiguration::add_all(
   self : LayoutProcessorConfiguration[P, G],
   configuration : LayoutProcessorConfiguration[P, G],
-) -> LayoutProcessorConfiguration[P, G] {
+) -> LayoutProcessorConfiguration[P, G] raise {
   for i = 0; i < configuration.list_accessor.get_list_size(); i = i + 1 {
     for processor in configuration.list_accessor.get_list_item(i) {
       self.do_add(i, processor)
@@ -168,7 +168,7 @@ pub fn[P, G] LayoutProcessorConfiguration::add_all(
 pub fn[P, G] LayoutProcessorConfiguration::processors_before(
   self : LayoutProcessorConfiguration[P, G],
   phase : P,
-) -> Array[ILayoutProcessorFactory[P, G]] {
+) -> Array[ILayoutProcessorFactory[P, G]] raise {
   self.processors(self.phase_descriptor.ordinal_of(phase))
 }
 
@@ -176,7 +176,7 @@ pub fn[P, G] LayoutProcessorConfiguration::processors_before(
 pub fn[P, G] LayoutProcessorConfiguration::processors_after(
   self : LayoutProcessorConfiguration[P, G],
   phase : P,
-) -> Array[ILayoutProcessorFactory[P, G]] {
+) -> Array[ILayoutProcessorFactory[P, G]] raise {
   self.processors(self.phase_descriptor.ordinal_of(phase) + 1)
 }
 
@@ -184,6 +184,6 @@ pub fn[P, G] LayoutProcessorConfiguration::processors_after(
 pub fn[P, G] LayoutProcessorConfiguration::processors(
   self : LayoutProcessorConfiguration[P, G],
   index : Int,
-) -> Array[ILayoutProcessorFactory[P, G]] {
+) -> Array[ILayoutProcessorFactory[P, G]] raise {
   self.list_accessor.get_list_item(index).copy()
 }

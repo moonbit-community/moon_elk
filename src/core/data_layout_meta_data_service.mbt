@@ -1,15 +1,18 @@
 ///|
-let layout_algorithm_data_store : Ref[Map[String, LayoutAlgorithmData]] = Ref(
-  Map([]),
-)
+pub struct OptionMetadata {
+  priv algorithm_data_store : Map[String, LayoutAlgorithmData]
+  priv option_data_store : Map[String, LayoutOptionData]
+  priv category_data_store : Map[String, LayoutCategoryData]
+}
 
 ///|
-let layout_option_data_store : Ref[Map[String, LayoutOptionData]] = Ref(Map([]))
-
-///|
-let layout_category_data_store : Ref[Map[String, LayoutCategoryData]] = Ref(
-  Map([]),
-)
+pub fn new_option_metadata() -> OptionMetadata {
+  {
+    algorithm_data_store: Map([]),
+    option_data_store: Map([]),
+    category_data_store: Map([]),
+  }
+}
 
 ///|
 priv suberror LayoutMetaDataServiceException {
@@ -33,32 +36,34 @@ fn layout_meta_data_service_exception_message(
 }
 
 ///|
-pub fn layout_meta_data_service_reset_for_test() -> Unit {
-  layout_algorithm_data_store.val.clear()
-  layout_option_data_store.val.clear()
-  layout_category_data_store.val.clear()
+pub fn OptionMetadata::clear(self : OptionMetadata) -> Unit {
+  self.algorithm_data_store.clear()
+  self.option_data_store.clear()
+  self.category_data_store.clear()
 }
 
 ///|
-pub fn layout_meta_data_service_register_algorithm(
+pub fn OptionMetadata::register_algorithm(
+  self : OptionMetadata,
   algorithm_data : LayoutAlgorithmData,
 ) -> Unit {
-  layout_algorithm_data_store.val[algorithm_data.get_id()] = algorithm_data
+  self.algorithm_data_store[algorithm_data.get_id()] = algorithm_data
 }
 
 ///|
-pub fn layout_meta_data_service_get_algorithm_data(
+pub fn OptionMetadata::algorithm_data(
+  self : OptionMetadata,
   id : String,
 ) -> LayoutAlgorithmData? {
-  layout_algorithm_data_store.val.get(id)
+  self.algorithm_data_store.get(id)
 }
 
 ///|
-pub fn layout_meta_data_service_algorithm_data_values() -> Array[
-  LayoutAlgorithmData,
-] {
+pub fn OptionMetadata::algorithm_data_values(
+  self : OptionMetadata,
+) -> Array[LayoutAlgorithmData] {
   let values = []
-  layout_algorithm_data_store.val.each((id, data) => {
+  self.algorithm_data_store.each((id, data) => {
     ignore(id)
     values.push(data)
   })
@@ -71,18 +76,19 @@ fn has_matching_suffix(id : String, suffix : String) -> Bool {
 }
 
 ///|
-pub fn layout_meta_data_service_get_algorithm_data_by_suffix(
+pub fn OptionMetadata::algorithm_data_by_suffix(
+  self : OptionMetadata,
   suffix : String,
 ) -> LayoutAlgorithmData? {
   if suffix.trim().is_empty() {
     return None
   }
-  if layout_algorithm_data_store.val.contains(suffix) {
-    return layout_algorithm_data_store.val.get(suffix)
+  if self.algorithm_data_store.contains(suffix) {
+    return self.algorithm_data_store.get(suffix)
   }
   let mut duplicate = false
   let mut result : LayoutAlgorithmData? = None
-  layout_algorithm_data_store.val.each((id, data) => {
+  self.algorithm_data_store.each((id, data) => {
     if has_matching_suffix(id, suffix) {
       match result {
         None => result = Some(data)
@@ -98,26 +104,29 @@ pub fn layout_meta_data_service_get_algorithm_data_by_suffix(
 }
 
 ///|
-pub fn layout_meta_data_service_register_option(
+pub fn OptionMetadata::register_option(
+  self : OptionMetadata,
   option_data : LayoutOptionData,
 ) -> Unit {
-  layout_option_data_store.val[option_data.get_id()] = option_data
+  self.option_data_store[option_data.get_id()] = option_data
 }
 
 ///|
-pub fn layout_meta_data_service_register_category(
+pub fn OptionMetadata::register_category(
+  self : OptionMetadata,
   category_data : LayoutCategoryData,
 ) -> Unit {
-  layout_category_data_store.val[category_data.get_id()] = category_data
+  self.category_data_store[category_data.get_id()] = category_data
 }
 
 ///|
-fn layout_meta_data_service_add_dependency(
+fn OptionMetadata::add_dependency(
+  self : OptionMetadata,
   source_option : String,
   target_option : String,
   required_value : String?,
 ) -> Unit {
-  match layout_option_data_store.val.get(source_option) {
+  match self.option_data_store.get(source_option) {
     Some(option_data) =>
       option_data.add_dependency(target_option, expected_value=required_value)
     None => ()
@@ -125,66 +134,66 @@ fn layout_meta_data_service_add_dependency(
 }
 
 ///|
-fn layout_meta_data_service_add_option_support(
+fn OptionMetadata::add_option_support(
+  self : OptionMetadata,
   algorithm_id : String,
   option_id : String,
   default_value : String?,
 ) -> Unit {
   ignore(default_value)
-  match layout_algorithm_data_store.val.get(algorithm_id) {
+  match self.algorithm_data_store.get(algorithm_id) {
     Some(algorithm_data) => algorithm_data.add_known_option(option_id)
     None => ()
   }
 }
 
 ///|
-fn layout_meta_data_service_registry() -> LayoutMetaDataRegistry {
+fn OptionMetadata::registry(self : OptionMetadata) -> LayoutMetaDataRegistry {
   new_layout_meta_data_registry(
-    algorithm_data => {
-      layout_meta_data_service_register_algorithm(algorithm_data)
-    },
-    option_data => layout_meta_data_service_register_option(option_data),
-    category_data => layout_meta_data_service_register_category(category_data),
+    algorithm_data => self.register_algorithm(algorithm_data),
+    option_data => self.register_option(option_data),
+    category_data => self.register_category(category_data),
     (source_option, target_option, required_value) => {
-      layout_meta_data_service_add_dependency(
-        source_option, target_option, required_value,
-      )
+      self.add_dependency(source_option, target_option, required_value)
     },
     (algorithm_id, option_id, default_value) => {
-      layout_meta_data_service_add_option_support(
-        algorithm_id, option_id, default_value,
-      )
+      self.add_option_support(algorithm_id, option_id, default_value)
     },
   )
 }
 
 ///|
-pub fn layout_meta_data_service_register_layout_meta_data_provider(
+pub fn OptionMetadata::register_provider(
+  self : OptionMetadata,
   provider : ILayoutMetaDataProvider,
 ) -> Unit {
-  provider.apply(layout_meta_data_service_registry())
+  provider.apply(self.registry())
 }
 
 ///|
-pub fn layout_meta_data_service_register_layout_meta_data_providers(
+pub fn OptionMetadata::register_providers(
+  self : OptionMetadata,
   providers : Array[ILayoutMetaDataProvider],
 ) -> Unit {
   for provider in providers {
-    layout_meta_data_service_register_layout_meta_data_provider(provider)
+    self.register_provider(provider)
   }
 }
 
 ///|
-pub fn layout_meta_data_service_get_option_data_opt(
+pub fn OptionMetadata::option_data_opt(
+  self : OptionMetadata,
   id : String,
 ) -> LayoutOptionData? {
-  layout_option_data_store.val.get(id)
+  self.option_data_store.get(id)
 }
 
 ///|
-pub fn layout_meta_data_service_option_data_values() -> Array[LayoutOptionData] {
+pub fn OptionMetadata::option_data_values(
+  self : OptionMetadata,
+) -> Array[LayoutOptionData] {
   let values = []
-  layout_option_data_store.val.each((id, data) => {
+  self.option_data_store.each((id, data) => {
     ignore(id)
     values.push(data)
   })
@@ -192,18 +201,19 @@ pub fn layout_meta_data_service_option_data_values() -> Array[LayoutOptionData] 
 }
 
 ///|
-pub fn layout_meta_data_service_get_option_data_by_suffix(
+pub fn OptionMetadata::option_data_by_suffix(
+  self : OptionMetadata,
   suffix : String,
 ) -> LayoutOptionData? {
   if suffix.trim().is_empty() {
     return None
   }
-  if layout_option_data_store.val.contains(suffix) {
-    return layout_option_data_store.val.get(suffix)
+  if self.option_data_store.contains(suffix) {
+    return self.option_data_store.get(suffix)
   }
   let mut duplicate = false
   let mut result : LayoutOptionData? = None
-  layout_option_data_store.val.each((id, data) => {
+  self.option_data_store.each((id, data) => {
     if has_matching_suffix(id, suffix) {
       match result {
         None => result = Some(data)
@@ -219,15 +229,16 @@ pub fn layout_meta_data_service_get_option_data_by_suffix(
 }
 
 ///|
-pub fn layout_meta_data_service_get_option_data(
+pub fn OptionMetadata::option_data(
+  self : OptionMetadata,
   id : String,
-) -> LayoutOptionData {
-  match layout_option_data_store.val.get(id) {
+) -> LayoutOptionData raise {
+  match self.option_data_store.get(id) {
     Some(option_data) => option_data
     None => {
       try layout_meta_data_service_raise_unit("unknown layout option") catch {
         err =>
-          layout_runtime_report_unsupported_configuration(
+          layout_runtime_raise_unsupported_configuration(
             layout_meta_data_service_exception_message(err),
           )
       } noraise {
@@ -239,18 +250,19 @@ pub fn layout_meta_data_service_get_option_data(
 }
 
 ///|
-pub fn layout_meta_data_service_get_category_data(
+pub fn OptionMetadata::category_data(
+  self : OptionMetadata,
   id : String,
 ) -> LayoutCategoryData? {
-  layout_category_data_store.val.get(id)
+  self.category_data_store.get(id)
 }
 
 ///|
-pub fn layout_meta_data_service_category_data_values() -> Array[
-  LayoutCategoryData,
-] {
+pub fn OptionMetadata::category_data_values(
+  self : OptionMetadata,
+) -> Array[LayoutCategoryData] {
   let values = []
-  layout_category_data_store.val.each((id, data) => {
+  self.category_data_store.each((id, data) => {
     ignore(id)
     values.push(data)
   })
@@ -258,7 +270,8 @@ pub fn layout_meta_data_service_category_data_values() -> Array[
 }
 
 ///|
-fn register_default_algorithm_with_known_option_ids(
+fn OptionMetadata::register_default_algorithm(
+  self : OptionMetadata,
   algorithm_id : String,
   known_option_ids : Array[String],
 ) -> Unit {
@@ -266,17 +279,19 @@ fn register_default_algorithm_with_known_option_ids(
   for option_id in known_option_ids {
     algorithm_data.add_known_option(option_id)
   }
-  layout_meta_data_service_register_algorithm(algorithm_data)
+  self.register_algorithm(algorithm_data)
 }
 
 ///|
-pub fn layout_meta_data_service_register_default_algorithms() -> Unit {
-  register_default_algorithm_with_known_option_ids("org.eclipse.elk.fixed", [
+pub fn OptionMetadata::register_default_algorithms(
+  self : OptionMetadata,
+) -> Unit {
+  self.register_default_algorithm("org.eclipse.elk.fixed", [
     padding.get_id(),
     node_size_constraints.get_id(),
     node_size_minimum.get_id(),
   ])
-  register_default_algorithm_with_known_option_ids("org.eclipse.elk.box", [
+  self.register_default_algorithm("org.eclipse.elk.box", [
     padding.get_id(),
     spacing_node_node.get_id(),
     priority.get_id(),
@@ -289,13 +304,13 @@ pub fn layout_meta_data_service_register_default_algorithms() -> Unit {
     box_packing_mode.get_id(),
     content_alignment.get_id(),
   ])
-  register_default_algorithm_with_known_option_ids("org.eclipse.elk.random", [
+  self.register_default_algorithm("org.eclipse.elk.random", [
     padding.get_id(),
     spacing_node_node.get_id(),
     aspect_ratio.get_id(),
   ])
-  register_default_algorithm_with_known_option_ids("org.eclipse.elk.layered", [])
-  register_default_algorithm_with_known_option_ids("org.eclipse.elk.mrtree", [
+  self.register_default_algorithm("org.eclipse.elk.layered", [])
+  self.register_default_algorithm("org.eclipse.elk.mrtree", [
     padding.get_id(),
     spacing_node_node.get_id(),
     aspect_ratio.get_id(),
@@ -305,8 +320,8 @@ pub fn layout_meta_data_service_register_default_algorithms() -> Unit {
 }
 
 ///|
-pub fn layout_meta_data_service_register_default_options() -> Unit {
-  layout_meta_data_service_register_option(
+pub fn OptionMetadata::register_default_options(self : OptionMetadata) -> Unit {
+  self.register_option(
     new_layout_option_data(
       algorithm.get_id(),
       name="Algorithm",
@@ -315,7 +330,7 @@ pub fn layout_meta_data_service_register_default_options() -> Unit {
       targets=[ParentsTarget],
     ),
   )
-  layout_meta_data_service_register_option(
+  self.register_option(
     new_layout_option_data(
       direction.get_id(),
       name="Direction",
@@ -324,7 +339,7 @@ pub fn layout_meta_data_service_register_default_options() -> Unit {
       targets=[ParentsTarget],
     ),
   )
-  layout_meta_data_service_register_option(
+  self.register_option(
     new_layout_option_data(
       "org.eclipse.elk.position",
       name="Position",
@@ -333,7 +348,7 @@ pub fn layout_meta_data_service_register_default_options() -> Unit {
       targets=[NodesTarget, PortsTarget, LabelsTarget],
     ),
   )
-  layout_meta_data_service_register_option(
+  self.register_option(
     new_layout_option_data(
       "org.eclipse.elk.bendPoints",
       name="Bend Points",
@@ -342,7 +357,7 @@ pub fn layout_meta_data_service_register_default_options() -> Unit {
       targets=[EdgesTarget],
     ),
   )
-  layout_meta_data_service_register_option(
+  self.register_option(
     new_layout_option_data(
       alignment.get_id(),
       name="Alignment",
@@ -351,7 +366,7 @@ pub fn layout_meta_data_service_register_default_options() -> Unit {
       targets=[NodesTarget],
     ),
   )
-  layout_meta_data_service_register_option(
+  self.register_option(
     new_layout_option_data(
       aspect_ratio.get_id(),
       name="Aspect Ratio",
@@ -362,7 +377,7 @@ pub fn layout_meta_data_service_register_default_options() -> Unit {
       targets=[NodesTarget],
     ),
   )
-  layout_meta_data_service_register_option(
+  self.register_option(
     new_layout_option_data(
       spacing_node_node.get_id(),
       name="Node Node",
@@ -371,7 +386,7 @@ pub fn layout_meta_data_service_register_default_options() -> Unit {
       targets=[NodesTarget],
     ),
   )
-  layout_meta_data_service_register_option(
+  self.register_option(
     new_layout_option_data(
       spacing_edge_node.get_id(),
       name="Edge Node",
@@ -380,7 +395,7 @@ pub fn layout_meta_data_service_register_default_options() -> Unit {
       targets=[NodesTarget],
     ),
   )
-  layout_meta_data_service_register_option(
+  self.register_option(
     new_layout_option_data(
       priority.get_id(),
       name="Priority",
@@ -389,7 +404,7 @@ pub fn layout_meta_data_service_register_default_options() -> Unit {
       targets=[EdgesTarget],
     ),
   )
-  layout_meta_data_service_register_option(
+  self.register_option(
     new_layout_option_data(
       content_alignment.get_id(),
       name="Content Alignment",
@@ -398,7 +413,7 @@ pub fn layout_meta_data_service_register_default_options() -> Unit {
       targets=[NodesTarget],
     ),
   )
-  layout_meta_data_service_register_option(
+  self.register_option(
     new_layout_option_data(
       node_labels_placement.get_id(),
       name="Node Labels Placement",
@@ -407,7 +422,7 @@ pub fn layout_meta_data_service_register_default_options() -> Unit {
       targets=[NodesTarget, LabelsTarget],
     ),
   )
-  layout_meta_data_service_register_option(
+  self.register_option(
     new_layout_option_data(
       port_labels_placement.get_id(),
       name="Port Labels Placement",
@@ -416,7 +431,7 @@ pub fn layout_meta_data_service_register_default_options() -> Unit {
       targets=[PortsTarget, LabelsTarget],
     ),
   )
-  layout_meta_data_service_register_option(
+  self.register_option(
     new_layout_option_data(
       port_constraints.get_id(),
       name="Port Constraints",
@@ -425,7 +440,7 @@ pub fn layout_meta_data_service_register_default_options() -> Unit {
       targets=[NodesTarget],
     ),
   )
-  layout_meta_data_service_register_option(
+  self.register_option(
     new_layout_option_data(
       port_side.get_id(),
       name="Port Side",
@@ -434,7 +449,7 @@ pub fn layout_meta_data_service_register_default_options() -> Unit {
       targets=[PortsTarget],
     ),
   )
-  layout_meta_data_service_register_option(
+  self.register_option(
     new_layout_option_data(
       port_labels_next_to_port_if_possible.get_id(),
       name="Port Labels Next To Port If Possible",
@@ -443,7 +458,7 @@ pub fn layout_meta_data_service_register_default_options() -> Unit {
       targets=[PortsTarget, LabelsTarget],
     ),
   )
-  layout_meta_data_service_register_option(
+  self.register_option(
     new_layout_option_data(
       port_labels_treat_as_group.get_id(),
       name="Treat Port Labels as Group",
@@ -452,7 +467,7 @@ pub fn layout_meta_data_service_register_default_options() -> Unit {
       targets=[NodesTarget],
     ),
   )
-  layout_meta_data_service_register_option(
+  self.register_option(
     new_layout_option_data(
       padding.get_id(),
       name="Padding",
@@ -461,7 +476,7 @@ pub fn layout_meta_data_service_register_default_options() -> Unit {
       targets=[NodesTarget],
     ),
   )
-  layout_meta_data_service_register_option(
+  self.register_option(
     new_layout_option_data(
       node_size_constraints.get_id(),
       name="Node Size Constraints",
@@ -470,7 +485,7 @@ pub fn layout_meta_data_service_register_default_options() -> Unit {
       targets=[NodesTarget],
     ),
   )
-  layout_meta_data_service_register_option(
+  self.register_option(
     new_layout_option_data(
       node_size_minimum.get_id(),
       name="Node Size Minimum",
@@ -479,7 +494,7 @@ pub fn layout_meta_data_service_register_default_options() -> Unit {
       targets=[NodesTarget],
     ),
   )
-  layout_meta_data_service_register_option(
+  self.register_option(
     new_layout_option_data(
       node_size_options.get_id(),
       name="Node Size Options",
@@ -488,7 +503,7 @@ pub fn layout_meta_data_service_register_default_options() -> Unit {
       targets=[NodesTarget],
     ),
   )
-  layout_meta_data_service_register_option(
+  self.register_option(
     new_layout_option_data(
       no_layout.get_id(),
       name="No Layout",
@@ -497,7 +512,7 @@ pub fn layout_meta_data_service_register_default_options() -> Unit {
       targets=[ParentsTarget, NodesTarget],
     ),
   )
-  layout_meta_data_service_register_option(
+  self.register_option(
     new_layout_option_data(
       expand_nodes.get_id(),
       name="Expand Nodes",
@@ -506,7 +521,7 @@ pub fn layout_meta_data_service_register_default_options() -> Unit {
       targets=[ParentsTarget],
     ),
   )
-  layout_meta_data_service_register_option(
+  self.register_option(
     new_layout_option_data(
       "org.eclipse.elk.hierarchyHandling",
       name="Hierarchy Handling",
@@ -515,7 +530,7 @@ pub fn layout_meta_data_service_register_default_options() -> Unit {
       targets=[ParentsTarget, NodesTarget],
     ),
   )
-  layout_meta_data_service_register_option(
+  self.register_option(
     new_layout_option_data(
       interactive.get_id(),
       name="Interactive",
@@ -524,7 +539,7 @@ pub fn layout_meta_data_service_register_default_options() -> Unit {
       targets=[ParentsTarget],
     ),
   )
-  layout_meta_data_service_register_option(
+  self.register_option(
     new_layout_option_data(
       box_packing_mode.get_id(),
       name="Box Layout Mode",

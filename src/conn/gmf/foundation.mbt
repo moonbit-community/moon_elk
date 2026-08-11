@@ -267,7 +267,7 @@ pub fn new_gmf_command_stack() -> GmfCommandStack {
 pub fn GmfCommandStack::execute(
   self : GmfCommandStack,
   command : GmfLayoutCommand,
-) -> Unit {
+) -> Unit raise {
   command.execute()
   self.executed_labels.push(command.get_label())
 }
@@ -298,23 +298,23 @@ pub fn reset_conn_gmf_foundation_for_test() -> Unit {
 }
 
 ///|
-fn gmf_checked_figure(figure : GmfFigure) -> Unit {
+fn gmf_checked_figure(figure : GmfFigure) -> Unit raise {
   if figure < 0 || figure >= gmf_figure_store_ref.val.length() {
-    @core.layout_runtime_report_unsupported_configuration("invalid gmf figure")
+    @core.layout_runtime_raise_unsupported_configuration("invalid gmf figure")
   }
 }
 
 ///|
-fn gmf_checked_view(view : GmfView) -> Unit {
+fn gmf_checked_view(view : GmfView) -> Unit raise {
   if view < 0 || view >= gmf_view_store_ref.val.length() {
-    @core.layout_runtime_report_unsupported_configuration("invalid gmf view")
+    @core.layout_runtime_raise_unsupported_configuration("invalid gmf view")
   }
 }
 
 ///|
-fn gmf_checked_edit_part(edit_part : GmfEditPart) -> Unit {
+fn gmf_checked_edit_part(edit_part : GmfEditPart) -> Unit raise {
   if edit_part < 0 || edit_part >= gmf_edit_part_store_ref.val.length() {
-    @core.layout_runtime_report_unsupported_configuration(
+    @core.layout_runtime_raise_unsupported_configuration(
       "invalid gmf edit part",
     )
   }
@@ -351,13 +351,16 @@ pub fn new_gmf_figure(
 }
 
 ///|
-pub fn gmf_figure_kind(figure : GmfFigure) -> GmfFigureKind {
+pub fn gmf_figure_kind(figure : GmfFigure) -> GmfFigureKind raise {
   gmf_checked_figure(figure)
   gmf_figure_store_ref.val[figure].kind
 }
 
 ///|
-pub fn gmf_figure_set_parent(figure : GmfFigure, parent : GmfFigure?) -> Unit {
+pub fn gmf_figure_set_parent(
+  figure : GmfFigure,
+  parent : GmfFigure?,
+) -> Unit raise {
   gmf_checked_figure(figure)
   gmf_figure_store_ref.val[figure].parent = parent
   match parent {
@@ -370,43 +373,46 @@ pub fn gmf_figure_set_parent(figure : GmfFigure, parent : GmfFigure?) -> Unit {
 }
 
 ///|
-pub fn gmf_figure_parent(figure : GmfFigure) -> GmfFigure? {
+pub fn gmf_figure_parent(figure : GmfFigure) -> GmfFigure? raise {
   gmf_checked_figure(figure)
   gmf_figure_store_ref.val[figure].parent
 }
 
 ///|
-pub fn gmf_figure_children(figure : GmfFigure) -> Array[GmfFigure] {
+pub fn gmf_figure_children(figure : GmfFigure) -> Array[GmfFigure] raise {
   gmf_checked_figure(figure)
   gmf_figure_store_ref.val[figure].children
 }
 
 ///|
-pub fn gmf_figure_set_visible(figure : GmfFigure, visible : Bool) -> Unit {
+pub fn gmf_figure_set_visible(figure : GmfFigure, visible : Bool) -> Unit raise {
   gmf_checked_figure(figure)
   gmf_figure_store_ref.val[figure].visible = visible
 }
 
 ///|
-pub fn gmf_figure_is_visible(figure : GmfFigure) -> Bool {
+pub fn gmf_figure_is_visible(figure : GmfFigure) -> Bool raise {
   gmf_checked_figure(figure)
   gmf_figure_store_ref.val[figure].visible
 }
 
 ///|
-pub fn gmf_figure_set_bounds(figure : GmfFigure, bounds : GmfRectangle) -> Unit {
+pub fn gmf_figure_set_bounds(
+  figure : GmfFigure,
+  bounds : GmfRectangle,
+) -> Unit raise {
   gmf_checked_figure(figure)
   gmf_figure_store_ref.val[figure].bounds = bounds
 }
 
 ///|
-pub fn gmf_figure_bounds(figure : GmfFigure) -> GmfRectangle {
+pub fn gmf_figure_bounds(figure : GmfFigure) -> GmfRectangle raise {
   gmf_checked_figure(figure)
   gmf_figure_store_ref.val[figure].bounds
 }
 
 ///|
-pub fn gmf_figure_absolute_bounds(figure : GmfFigure) -> GmfRectangle {
+pub fn gmf_figure_absolute_bounds(figure : GmfFigure) -> GmfRectangle raise {
   gmf_checked_figure(figure)
   let figure_data = gmf_figure_store_ref.val[figure]
   let mut abs_x = figure_data.bounds.x
@@ -432,13 +438,16 @@ pub fn gmf_figure_absolute_bounds(figure : GmfFigure) -> GmfRectangle {
 }
 
 ///|
-pub fn gmf_figure_set_insets(figure : GmfFigure, insets : GmfInsets) -> Unit {
+pub fn gmf_figure_set_insets(
+  figure : GmfFigure,
+  insets : GmfInsets,
+) -> Unit raise {
   gmf_checked_figure(figure)
   gmf_figure_store_ref.val[figure].insets = insets
 }
 
 ///|
-pub fn gmf_figure_insets(figure : GmfFigure) -> GmfInsets {
+pub fn gmf_figure_insets(figure : GmfFigure) -> GmfInsets raise {
   gmf_checked_figure(figure)
   gmf_figure_store_ref.val[figure].insets
 }
@@ -447,37 +456,40 @@ pub fn gmf_figure_insets(figure : GmfFigure) -> GmfInsets {
 pub fn gmf_figure_set_coordinate_system(
   figure : GmfFigure,
   is_coordinate_system : Bool,
-) -> Unit {
+) -> Unit raise {
   gmf_checked_figure(figure)
   gmf_figure_store_ref.val[figure].is_coordinate_system = is_coordinate_system
 }
 
 ///|
-pub fn gmf_figure_is_coordinate_system(figure : GmfFigure) -> Bool {
+pub fn gmf_figure_is_coordinate_system(figure : GmfFigure) -> Bool raise {
   gmf_checked_figure(figure)
   gmf_figure_store_ref.val[figure].is_coordinate_system
 }
 
 ///|
-pub fn gmf_figure_set_expanded(figure : GmfFigure, expanded : Bool) -> Unit {
+pub fn gmf_figure_set_expanded(
+  figure : GmfFigure,
+  expanded : Bool,
+) -> Unit raise {
   gmf_checked_figure(figure)
   gmf_figure_store_ref.val[figure].expanded = expanded
 }
 
 ///|
-pub fn gmf_figure_is_expanded(figure : GmfFigure) -> Bool {
+pub fn gmf_figure_is_expanded(figure : GmfFigure) -> Bool raise {
   gmf_checked_figure(figure)
   gmf_figure_store_ref.val[figure].expanded
 }
 
 ///|
-pub fn gmf_figure_set_text(figure : GmfFigure, text : String) -> Unit {
+pub fn gmf_figure_set_text(figure : GmfFigure, text : String) -> Unit raise {
   gmf_checked_figure(figure)
   gmf_figure_store_ref.val[figure].text = text
 }
 
 ///|
-pub fn gmf_figure_text(figure : GmfFigure) -> String {
+pub fn gmf_figure_text(figure : GmfFigure) -> String raise {
   gmf_checked_figure(figure)
   gmf_figure_store_ref.val[figure].text
 }
@@ -488,7 +500,7 @@ pub fn gmf_figure_set_icon(
   width : Int,
   height : Int,
   text_gap? : Int = 0,
-) -> Unit {
+) -> Unit raise {
   gmf_checked_figure(figure)
   gmf_figure_store_ref.val[figure].icon_width = width
   gmf_figure_store_ref.val[figure].icon_height = height
@@ -496,19 +508,19 @@ pub fn gmf_figure_set_icon(
 }
 
 ///|
-pub fn gmf_figure_icon_width(figure : GmfFigure) -> Int {
+pub fn gmf_figure_icon_width(figure : GmfFigure) -> Int raise {
   gmf_checked_figure(figure)
   gmf_figure_store_ref.val[figure].icon_width
 }
 
 ///|
-pub fn gmf_figure_icon_height(figure : GmfFigure) -> Int {
+pub fn gmf_figure_icon_height(figure : GmfFigure) -> Int raise {
   gmf_checked_figure(figure)
   gmf_figure_store_ref.val[figure].icon_height
 }
 
 ///|
-pub fn gmf_figure_icon_text_gap(figure : GmfFigure) -> Int {
+pub fn gmf_figure_icon_text_gap(figure : GmfFigure) -> Int raise {
   gmf_checked_figure(figure)
   gmf_figure_store_ref.val[figure].icon_text_gap
 }
@@ -517,13 +529,13 @@ pub fn gmf_figure_icon_text_gap(figure : GmfFigure) -> Int {
 pub fn gmf_figure_set_minimum_size(
   figure : GmfFigure,
   size : GmfDimension,
-) -> Unit {
+) -> Unit raise {
   gmf_checked_figure(figure)
   gmf_figure_store_ref.val[figure].minimum_size = size
 }
 
 ///|
-pub fn gmf_figure_minimum_size(figure : GmfFigure) -> GmfDimension {
+pub fn gmf_figure_minimum_size(figure : GmfFigure) -> GmfDimension raise {
   gmf_checked_figure(figure)
   gmf_figure_store_ref.val[figure].minimum_size
 }
@@ -532,13 +544,13 @@ pub fn gmf_figure_minimum_size(figure : GmfFigure) -> GmfDimension {
 pub fn gmf_figure_set_preferred_size(
   figure : GmfFigure,
   size : GmfDimension,
-) -> Unit {
+) -> Unit raise {
   gmf_checked_figure(figure)
   gmf_figure_store_ref.val[figure].preferred_size = size
 }
 
 ///|
-pub fn gmf_figure_preferred_size(figure : GmfFigure) -> GmfDimension {
+pub fn gmf_figure_preferred_size(figure : GmfFigure) -> GmfDimension raise {
   gmf_checked_figure(figure)
   gmf_figure_store_ref.val[figure].preferred_size
 }
@@ -548,7 +560,7 @@ pub fn gmf_figure_set_font(
   figure : GmfFigure,
   font_name : String,
   font_size : Int,
-) -> Unit {
+) -> Unit raise {
   gmf_checked_figure(figure)
   gmf_figure_store_ref.val[figure].font_name = Some(font_name)
   gmf_figure_store_ref.val[figure].font_size = font_size
@@ -556,13 +568,13 @@ pub fn gmf_figure_set_font(
 }
 
 ///|
-pub fn gmf_figure_font_name(figure : GmfFigure) -> String? {
+pub fn gmf_figure_font_name(figure : GmfFigure) -> String? raise {
   gmf_checked_figure(figure)
   gmf_figure_store_ref.val[figure].font_name
 }
 
 ///|
-pub fn gmf_figure_font_size(figure : GmfFigure) -> Int {
+pub fn gmf_figure_font_size(figure : GmfFigure) -> Int raise {
   gmf_checked_figure(figure)
   gmf_figure_store_ref.val[figure].font_size
 }
@@ -571,13 +583,13 @@ pub fn gmf_figure_font_size(figure : GmfFigure) -> Int {
 pub fn gmf_figure_set_font_disposed(
   figure : GmfFigure,
   disposed : Bool,
-) -> Unit {
+) -> Unit raise {
   gmf_checked_figure(figure)
   gmf_figure_store_ref.val[figure].font_disposed = disposed
 }
 
 ///|
-pub fn gmf_figure_font_is_disposed(figure : GmfFigure) -> Bool {
+pub fn gmf_figure_font_is_disposed(figure : GmfFigure) -> Bool raise {
   gmf_checked_figure(figure)
   gmf_figure_store_ref.val[figure].font_disposed
 }
@@ -586,25 +598,28 @@ pub fn gmf_figure_font_is_disposed(figure : GmfFigure) -> Bool {
 pub fn gmf_figure_set_border_item_container(
   figure : GmfFigure,
   container : GmfFigure?,
-) -> Unit {
+) -> Unit raise {
   gmf_checked_figure(figure)
   gmf_figure_store_ref.val[figure].border_item_container = container
 }
 
 ///|
-pub fn gmf_figure_border_item_container(figure : GmfFigure) -> GmfFigure? {
+pub fn gmf_figure_border_item_container(figure : GmfFigure) -> GmfFigure? raise {
   gmf_checked_figure(figure)
   gmf_figure_store_ref.val[figure].border_item_container
 }
 
 ///|
-pub fn gmf_figure_set_points(figure : GmfFigure, points : GmfPointList) -> Unit {
+pub fn gmf_figure_set_points(
+  figure : GmfFigure,
+  points : GmfPointList,
+) -> Unit raise {
   gmf_checked_figure(figure)
   gmf_figure_store_ref.val[figure].points = points
 }
 
 ///|
-pub fn gmf_figure_points(figure : GmfFigure) -> GmfPointList {
+pub fn gmf_figure_points(figure : GmfFigure) -> GmfPointList raise {
   gmf_checked_figure(figure)
   gmf_figure_store_ref.val[figure].points
 }
@@ -635,63 +650,71 @@ pub fn new_gmf_view(
 }
 
 ///|
-pub fn gmf_view_location_x(view : GmfView) -> Int {
+pub fn gmf_view_location_x(view : GmfView) -> Int raise {
   gmf_checked_view(view)
   gmf_view_store_ref.val[view].location_x
 }
 
 ///|
-pub fn gmf_view_location_y(view : GmfView) -> Int {
+pub fn gmf_view_location_y(view : GmfView) -> Int raise {
   gmf_checked_view(view)
   gmf_view_store_ref.val[view].location_y
 }
 
 ///|
-pub fn gmf_view_width(view : GmfView) -> Int {
+pub fn gmf_view_width(view : GmfView) -> Int raise {
   gmf_checked_view(view)
   gmf_view_store_ref.val[view].width
 }
 
 ///|
-pub fn gmf_view_height(view : GmfView) -> Int {
+pub fn gmf_view_height(view : GmfView) -> Int raise {
   gmf_checked_view(view)
   gmf_view_store_ref.val[view].height
 }
 
 ///|
-pub fn gmf_view_set_location(view : GmfView, x : Int, y : Int) -> Unit {
+pub fn gmf_view_set_location(view : GmfView, x : Int, y : Int) -> Unit raise {
   gmf_checked_view(view)
   gmf_view_store_ref.val[view].location_x = x
   gmf_view_store_ref.val[view].location_y = y
 }
 
 ///|
-pub fn gmf_view_set_size(view : GmfView, width : Int, height : Int) -> Unit {
+pub fn gmf_view_set_size(
+  view : GmfView,
+  width : Int,
+  height : Int,
+) -> Unit raise {
   gmf_checked_view(view)
   gmf_view_store_ref.val[view].width = width
   gmf_view_store_ref.val[view].height = height
 }
 
 ///|
-pub fn gmf_view_set_style(view : GmfView, key : String, value : String) -> Unit {
+pub fn gmf_view_set_style(
+  view : GmfView,
+  key : String,
+  value : String,
+) -> Unit raise {
   gmf_checked_view(view)
   gmf_view_store_ref.val[view].styles[key] = value
 }
 
 ///|
-pub fn gmf_view_get_style(view : GmfView, key : String) -> String? {
+pub fn gmf_view_get_style(view : GmfView, key : String) -> String? raise {
   gmf_checked_view(view)
   gmf_view_store_ref.val[view].styles.get(key)
 }
 
 ///|
-pub fn gmf_view_remove_style(view : GmfView, key : String) -> Unit {
+pub fn gmf_view_remove_style(view : GmfView, key : String) -> Unit raise {
   gmf_checked_view(view)
   ignore(gmf_view_store_ref.val[view].styles.remove(key))
 }
 
 ///|
-pub fn gmf_view_style_entries(view : GmfView) -> Array[(String, String)] {
+pub fn gmf_view_style_entries(view : GmfView) -> Array[(String, String)] raise {
   gmf_checked_view(view)
   gmf_view_store_ref.val[view].styles.to_array()
 }
@@ -700,67 +723,73 @@ pub fn gmf_view_style_entries(view : GmfView) -> Array[(String, String)] {
 pub fn gmf_view_set_bendpoints(
   view : GmfView,
   bendpoints : GmfPointList,
-) -> Unit {
+) -> Unit raise {
   gmf_checked_view(view)
   gmf_view_store_ref.val[view].bendpoints = bendpoints
 }
 
 ///|
-pub fn gmf_view_bendpoints(view : GmfView) -> GmfPointList {
+pub fn gmf_view_bendpoints(view : GmfView) -> GmfPointList raise {
   gmf_checked_view(view)
   gmf_view_store_ref.val[view].bendpoints
 }
 
 ///|
-pub fn gmf_view_set_source_terminal(view : GmfView, terminal : String?) -> Unit {
+pub fn gmf_view_set_source_terminal(
+  view : GmfView,
+  terminal : String?,
+) -> Unit raise {
   gmf_checked_view(view)
   gmf_view_store_ref.val[view].source_terminal = terminal
 }
 
 ///|
-pub fn gmf_view_source_terminal(view : GmfView) -> String? {
+pub fn gmf_view_source_terminal(view : GmfView) -> String? raise {
   gmf_checked_view(view)
   gmf_view_store_ref.val[view].source_terminal
 }
 
 ///|
-pub fn gmf_view_set_target_terminal(view : GmfView, terminal : String?) -> Unit {
+pub fn gmf_view_set_target_terminal(
+  view : GmfView,
+  terminal : String?,
+) -> Unit raise {
   gmf_checked_view(view)
   gmf_view_store_ref.val[view].target_terminal = terminal
 }
 
 ///|
-pub fn gmf_view_target_terminal(view : GmfView) -> String? {
+pub fn gmf_view_target_terminal(view : GmfView) -> String? raise {
   gmf_checked_view(view)
   gmf_view_store_ref.val[view].target_terminal
 }
 
 ///|
-pub fn gmf_view_set_routing_manual(view : GmfView, manual : Bool) -> Unit {
+pub fn gmf_view_set_routing_manual(view : GmfView, manual : Bool) -> Unit raise {
   gmf_checked_view(view)
   gmf_view_store_ref.val[view].routing_manual = manual
 }
 
 ///|
-pub fn gmf_view_is_routing_manual(view : GmfView) -> Bool {
+pub fn gmf_view_is_routing_manual(view : GmfView) -> Bool raise {
   gmf_checked_view(view)
   gmf_view_store_ref.val[view].routing_manual
 }
 
 ///|
-pub fn gmf_view_set_smoothness_none(view : GmfView, none : Bool) -> Unit {
+pub fn gmf_view_set_smoothness_none(view : GmfView, none : Bool) -> Unit raise {
   gmf_checked_view(view)
   gmf_view_store_ref.val[view].smoothness_none = none
 }
 
 ///|
-pub fn gmf_view_is_smoothness_none(view : GmfView) -> Bool {
+pub fn gmf_view_is_smoothness_none(view : GmfView) -> Bool raise {
   gmf_checked_view(view)
   gmf_view_store_ref.val[view].smoothness_none
 }
 
 ///|
-pub fn gmf_view_name(view : GmfView) -> String {
+pub fn gmf_view_name(view : GmfView) -> String raise {
   gmf_checked_view(view)
   gmf_view_store_ref.val[view].name
 }
@@ -790,7 +819,7 @@ pub fn new_gmf_edit_part(
 }
 
 ///|
-pub fn gmf_edit_part_kind(edit_part : GmfEditPart) -> GmfEditPartKind {
+pub fn gmf_edit_part_kind(edit_part : GmfEditPart) -> GmfEditPartKind raise {
   gmf_checked_edit_part(edit_part)
   gmf_edit_part_store_ref.val[edit_part].kind
 }
@@ -799,7 +828,7 @@ pub fn gmf_edit_part_kind(edit_part : GmfEditPart) -> GmfEditPartKind {
 pub fn gmf_edit_part_set_parent(
   edit_part : GmfEditPart,
   parent : GmfEditPart?,
-) -> Unit {
+) -> Unit raise {
   gmf_checked_edit_part(edit_part)
   gmf_edit_part_store_ref.val[edit_part].parent = parent
   match parent {
@@ -812,19 +841,21 @@ pub fn gmf_edit_part_set_parent(
 }
 
 ///|
-pub fn gmf_edit_part_parent(edit_part : GmfEditPart) -> GmfEditPart? {
+pub fn gmf_edit_part_parent(edit_part : GmfEditPart) -> GmfEditPart? raise {
   gmf_checked_edit_part(edit_part)
   gmf_edit_part_store_ref.val[edit_part].parent
 }
 
 ///|
-pub fn gmf_edit_part_children(edit_part : GmfEditPart) -> Array[GmfEditPart] {
+pub fn gmf_edit_part_children(
+  edit_part : GmfEditPart,
+) -> Array[GmfEditPart] raise {
   gmf_checked_edit_part(edit_part)
   gmf_edit_part_store_ref.val[edit_part].children
 }
 
 ///|
-pub fn gmf_edit_part_figure(edit_part : GmfEditPart) -> GmfFigure {
+pub fn gmf_edit_part_figure(edit_part : GmfEditPart) -> GmfFigure raise {
   gmf_checked_edit_part(edit_part)
   gmf_edit_part_store_ref.val[edit_part].figure
 }
@@ -833,13 +864,13 @@ pub fn gmf_edit_part_figure(edit_part : GmfEditPart) -> GmfFigure {
 pub fn gmf_edit_part_set_notation_node(
   edit_part : GmfEditPart,
   notation_node : String,
-) -> Unit {
+) -> Unit raise {
   gmf_checked_edit_part(edit_part)
   gmf_edit_part_store_ref.val[edit_part].notation_node = notation_node
 }
 
 ///|
-pub fn gmf_edit_part_notation_node(edit_part : GmfEditPart) -> String {
+pub fn gmf_edit_part_notation_node(edit_part : GmfEditPart) -> String raise {
   gmf_checked_edit_part(edit_part)
   gmf_edit_part_store_ref.val[edit_part].notation_node
 }
@@ -848,13 +879,13 @@ pub fn gmf_edit_part_notation_node(edit_part : GmfEditPart) -> String {
 pub fn gmf_edit_part_set_notation_view(
   edit_part : GmfEditPart,
   view : GmfView?,
-) -> Unit {
+) -> Unit raise {
   gmf_checked_edit_part(edit_part)
   gmf_edit_part_store_ref.val[edit_part].notation_view = view
 }
 
 ///|
-pub fn gmf_edit_part_notation_view(edit_part : GmfEditPart) -> GmfView? {
+pub fn gmf_edit_part_notation_view(edit_part : GmfEditPart) -> GmfView? raise {
   gmf_checked_edit_part(edit_part)
   gmf_edit_part_store_ref.val[edit_part].notation_view
 }
@@ -863,7 +894,7 @@ pub fn gmf_edit_part_notation_view(edit_part : GmfEditPart) -> GmfView? {
 pub fn gmf_edit_part_set_top_graphic_edit_part(
   edit_part : GmfEditPart,
   top_graphic_edit_part : GmfEditPart?,
-) -> Unit {
+) -> Unit raise {
   gmf_checked_edit_part(edit_part)
   gmf_edit_part_store_ref.val[edit_part].top_graphic_edit_part = top_graphic_edit_part
 }
@@ -871,7 +902,7 @@ pub fn gmf_edit_part_set_top_graphic_edit_part(
 ///|
 pub fn gmf_edit_part_top_graphic_edit_part(
   edit_part : GmfEditPart,
-) -> GmfEditPart? {
+) -> GmfEditPart? raise {
   gmf_checked_edit_part(edit_part)
   gmf_edit_part_store_ref.val[edit_part].top_graphic_edit_part
 }
@@ -880,13 +911,13 @@ pub fn gmf_edit_part_top_graphic_edit_part(
 pub fn gmf_edit_part_set_source(
   edit_part : GmfEditPart,
   source : GmfEditPart?,
-) -> Unit {
+) -> Unit raise {
   gmf_checked_edit_part(edit_part)
   gmf_edit_part_store_ref.val[edit_part].source = source
 }
 
 ///|
-pub fn gmf_edit_part_source(edit_part : GmfEditPart) -> GmfEditPart? {
+pub fn gmf_edit_part_source(edit_part : GmfEditPart) -> GmfEditPart? raise {
   gmf_checked_edit_part(edit_part)
   gmf_edit_part_store_ref.val[edit_part].source
 }
@@ -895,13 +926,13 @@ pub fn gmf_edit_part_source(edit_part : GmfEditPart) -> GmfEditPart? {
 pub fn gmf_edit_part_set_target(
   edit_part : GmfEditPart,
   target : GmfEditPart?,
-) -> Unit {
+) -> Unit raise {
   gmf_checked_edit_part(edit_part)
   gmf_edit_part_store_ref.val[edit_part].target = target
 }
 
 ///|
-pub fn gmf_edit_part_target(edit_part : GmfEditPart) -> GmfEditPart? {
+pub fn gmf_edit_part_target(edit_part : GmfEditPart) -> GmfEditPart? raise {
   gmf_checked_edit_part(edit_part)
   gmf_edit_part_store_ref.val[edit_part].target
 }
@@ -910,7 +941,7 @@ pub fn gmf_edit_part_target(edit_part : GmfEditPart) -> GmfEditPart? {
 pub fn gmf_edit_part_add_target_connection(
   edit_part : GmfEditPart,
   connection : GmfEditPart,
-) -> Unit {
+) -> Unit raise {
   gmf_checked_edit_part(edit_part)
   gmf_edit_part_store_ref.val[edit_part].target_connections.push(connection)
 }
@@ -918,7 +949,7 @@ pub fn gmf_edit_part_add_target_connection(
 ///|
 pub fn gmf_edit_part_target_connections(
   edit_part : GmfEditPart,
-) -> Array[GmfEditPart] {
+) -> Array[GmfEditPart] raise {
   gmf_checked_edit_part(edit_part)
   gmf_edit_part_store_ref.val[edit_part].target_connections
 }
@@ -928,7 +959,7 @@ pub fn gmf_edit_part_install_edit_policy(
   edit_part : GmfEditPart,
   role : String,
   policy_name : String,
-) -> Unit {
+) -> Unit raise {
   gmf_checked_edit_part(edit_part)
   gmf_edit_part_store_ref.val[edit_part].installed_policies[role] = policy_name
 }
@@ -937,7 +968,7 @@ pub fn gmf_edit_part_install_edit_policy(
 pub fn gmf_edit_part_get_installed_edit_policy(
   edit_part : GmfEditPart,
   role : String,
-) -> String? {
+) -> String? raise {
   gmf_checked_edit_part(edit_part)
   gmf_edit_part_store_ref.val[edit_part].installed_policies.get(role)
 }
@@ -946,13 +977,13 @@ pub fn gmf_edit_part_get_installed_edit_policy(
 pub fn gmf_edit_part_set_key_point(
   edit_part : GmfEditPart,
   key_point : Int,
-) -> Unit {
+) -> Unit raise {
   gmf_checked_edit_part(edit_part)
   gmf_edit_part_store_ref.val[edit_part].key_point = key_point
 }
 
 ///|
-pub fn gmf_edit_part_key_point(edit_part : GmfEditPart) -> Int {
+pub fn gmf_edit_part_key_point(edit_part : GmfEditPart) -> Int raise {
   gmf_checked_edit_part(edit_part)
   gmf_edit_part_store_ref.val[edit_part].key_point
 }
@@ -961,7 +992,7 @@ pub fn gmf_edit_part_key_point(edit_part : GmfEditPart) -> Int {
 pub fn gmf_find_edit_part_by_notation_node(
   parent : GmfEditPart,
   notation_node : String,
-) -> GmfEditPart? {
+) -> GmfEditPart? raise {
   gmf_checked_edit_part(parent)
   let queue : Array[GmfEditPart] = [parent]
   while !queue.is_empty() {

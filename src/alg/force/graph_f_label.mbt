@@ -1,8 +1,12 @@
 ///|
-pub type FLabel = Int
+pub struct FLabel {
+  priv mut data : FLabelData
+}
 
 ///|
-let flabel_store : Ref[Array[FLabelData]] = Ref([])
+pub impl Eq for FLabel with fn equal(self, other) {
+  physical_equal(self, other)
+}
 
 ///|
 priv struct FLabelData {
@@ -17,35 +21,25 @@ priv struct FLabelData {
 }
 
 ///|
-fn checked_flabel(label : FLabel) -> Unit {
-  if label < 0 || label >= flabel_store.val.length() {
-    @core.layout_runtime_report_unsupported_configuration(
-      "invalid force label id",
-    )
-  }
-}
-
-///|
 fn set_flabel_data(label : FLabel, data : FLabelData) -> Unit {
-  checked_flabel(label)
-  flabel_store.val[label] = data
+  label.data = data
 }
 
 ///|
 pub fn new_flabel(edge : FEdge, text? : String = "") -> FLabel {
-  checked_fedge(edge)
-  let label = flabel_store.val.length()
-  flabel_store.val.push({
-    edge,
-    text,
-    displacement: @core.new_kvector(),
-    position: @core.new_kvector(),
-    size: @core.new_kvector(),
-    bool_properties: Map([]),
-    double_properties: Map([]),
-    origin: None,
-  })
-  let edge_data = fedge_store.val[edge]
+  let label : FLabel = {
+    data: {
+      edge,
+      text,
+      displacement: @core.new_kvector(),
+      position: @core.new_kvector(),
+      size: @core.new_kvector(),
+      bool_properties: Map([]),
+      double_properties: Map([]),
+      origin: None,
+    },
+  }
+  let edge_data = edge.data
   edge_data.labels.push(label)
   set_fedge_data(edge, edge_data)
   label
@@ -53,32 +47,27 @@ pub fn new_flabel(edge : FEdge, text? : String = "") -> FLabel {
 
 ///|
 pub fn flabel_text(label : FLabel) -> String {
-  checked_flabel(label)
-  flabel_store.val[label].text
+  label.data.text
 }
 
 ///|
 pub fn flabel_edge(label : FLabel) -> FEdge {
-  checked_flabel(label)
-  flabel_store.val[label].edge
+  label.data.edge
 }
 
 ///|
 pub fn flabel_displacement(label : FLabel) -> @core.KVector {
-  checked_flabel(label)
-  flabel_store.val[label].displacement
+  label.data.displacement
 }
 
 ///|
 pub fn flabel_position(label : FLabel) -> @core.KVector {
-  checked_flabel(label)
-  flabel_store.val[label].position
+  label.data.position
 }
 
 ///|
 pub fn flabel_size(label : FLabel) -> @core.KVector {
-  checked_flabel(label)
-  flabel_store.val[label].size
+  label.data.size
 }
 
 ///|
@@ -92,8 +81,7 @@ pub fn flabel_set_bool_property(
   property : ForceBoolOption,
   value : Bool,
 ) -> Unit {
-  checked_flabel(label)
-  let data = flabel_store.val[label]
+  let data = label.data
   data.bool_properties[property.get_id()] = value
   set_flabel_data(label, data)
 }
@@ -103,8 +91,7 @@ pub fn flabel_get_bool_property(
   label : FLabel,
   property : ForceBoolOption,
 ) -> Bool {
-  checked_flabel(label)
-  let data = flabel_store.val[label]
+  let data = label.data
   match data.bool_properties.get(property.get_id()) {
     Some(value) => value
     None => property.get_default()
@@ -117,8 +104,7 @@ pub fn flabel_set_double_property(
   property : ForceDoubleOption,
   value : Double,
 ) -> Unit {
-  checked_flabel(label)
-  let data = flabel_store.val[label]
+  let data = label.data
   data.double_properties[property.get_id()] = value
   set_flabel_data(label, data)
 }
@@ -128,8 +114,7 @@ pub fn flabel_get_double_property(
   label : FLabel,
   property : ForceDoubleOption,
 ) -> Double {
-  checked_flabel(label)
-  let data = flabel_store.val[label]
+  let data = label.data
   match data.double_properties.get(property.get_id()) {
     Some(value) => value
     None => property.get_default()
@@ -138,21 +123,18 @@ pub fn flabel_get_double_property(
 
 ///|
 pub fn flabel_set_origin(label : FLabel, origin : @graph.ElkLabel) -> Unit {
-  checked_flabel(label)
-  let data = flabel_store.val[label]
+  let data = label.data
   data.origin = Some(origin)
   set_flabel_data(label, data)
 }
 
 ///|
 pub fn flabel_origin(label : FLabel) -> @graph.ElkLabel? {
-  checked_flabel(label)
-  flabel_store.val[label].origin
+  label.data.origin
 }
 
 ///|
 pub fn flabel_refresh_position(label : FLabel) -> Unit {
-  checked_flabel(label)
   let edge = flabel_edge(label)
   let source = match fedge_source(edge) {
     Some(source) => source

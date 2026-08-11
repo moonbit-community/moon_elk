@@ -203,7 +203,7 @@ fn port_label_placement_calculator_center_port_label(
 fn port_label_placement_calculator_constrained_inside_port_label_placement(
   node_context : NodeContext,
   port_side : @core.PortSide,
-) -> Unit {
+) -> Unit raise {
   if port_label_placement_calculator_side_is_east_or_west(port_side) {
     port_label_placement_calculator_simple_inside_port_label_placement(
       node_context, port_side,
@@ -439,7 +439,7 @@ fn port_label_placement_calculator_simple_outside_port_label_placement(
 fn port_label_placement_calculator_constrained_outside_port_label_placement(
   node_context : NodeContext,
   port_side : @core.PortSide,
-) -> Unit {
+) -> Unit raise {
   let port_contexts = node_context_get_port_contexts(node_context, port_side)
 
   if port_contexts.length() <= 2 ||
@@ -539,7 +539,7 @@ fn port_label_placement_calculator_constrained_outside_port_label_placement(
 fn port_label_placement_calculator_place_port_labels(
   node_context : NodeContext,
   port_side : @core.PortSide,
-) -> Unit {
+) -> Unit raise {
   let constrained_placement = port_label_placement_calculator_constrained_placement(
     node_context,
   )
@@ -569,7 +569,7 @@ fn port_label_placement_calculator_place_port_labels(
 ///|
 pub fn port_label_placement_calculator_place_horizontal_port_labels(
   node_context : NodeContext,
-) -> Unit {
+) -> Unit raise {
   port_label_placement_calculator_place_port_labels(node_context, North)
   port_label_placement_calculator_place_port_labels(node_context, South)
 }
@@ -577,7 +577,7 @@ pub fn port_label_placement_calculator_place_horizontal_port_labels(
 ///|
 pub fn port_label_placement_calculator_place_vertical_port_labels(
   node_context : NodeContext,
-) -> Unit {
+) -> Unit raise {
   port_label_placement_calculator_place_port_labels(node_context, East)
   port_label_placement_calculator_place_port_labels(node_context, West)
 }

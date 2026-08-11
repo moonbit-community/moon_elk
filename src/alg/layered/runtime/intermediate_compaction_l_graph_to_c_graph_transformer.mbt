@@ -191,7 +191,7 @@ fn lgraph_to_cgraph_transformer_comment_offset(
 ///|
 fn lgraph_to_cgraph_transformer_require_hitbox_pre_compaction(
   c_node : @compaction.CNode,
-) -> @core.ElkRectangle raise LGraphToCGraphTransformerException {
+) -> @core.ElkRectangle raise {
   match c_node.hitbox_pre_compaction() {
     Some(value) => value
     None => lgraph_to_cgraph_transformer_raise("Missing pre-compaction hitbox.")
@@ -201,7 +201,7 @@ fn lgraph_to_cgraph_transformer_require_hitbox_pre_compaction(
 ///|
 fn lgraph_to_cgraph_transformer_collect_vertical_segments_orthogonal(
   transformer : LGraphToCGraphTransformer,
-) -> Array[VerticalSegment] raise LGraphToCGraphTransformerException {
+) -> Array[VerticalSegment] raise {
   let vertical_segments : Array[VerticalSegment] = []
   let layered_graph = lgraph_to_cgraph_transformer_require_lgraph(transformer)
 
@@ -405,7 +405,7 @@ fn lgraph_to_cgraph_transformer_collect_vertical_segments_splines(
 fn lgraph_to_cgraph_transformer_vertical_segment_to_cnode(
   transformer : LGraphToCGraphTransformer,
   vertical_segment : VerticalSegment,
-) -> Unit raise LGraphToCGraphTransformerException {
+) -> Unit raise {
   let c_graph = lgraph_to_cgraph_transformer_require_cgraph(transformer)
   let origin_key = horizontal_graph_compactor_vertical_segment_origin_key(
     vertical_segment,
@@ -460,7 +460,7 @@ fn lgraph_to_cgraph_transformer_vertical_segment_to_cnode(
 fn lgraph_to_cgraph_transformer_merge_vertical_segments(
   transformer : LGraphToCGraphTransformer,
   vertical_segments : Array[VerticalSegment],
-) -> Unit raise LGraphToCGraphTransformerException {
+) -> Unit raise {
   if vertical_segments.is_empty() {
     return
   }
@@ -624,7 +624,7 @@ fn lgraph_to_cgraph_transformer_apply_external_port_positions(
   transformer : LGraphToCGraphTransformer,
   top_left : @core.KVector,
   bottom_right : @core.KVector,
-) -> Unit raise LGraphToCGraphTransformerException {
+) -> Unit raise {
   let c_graph = lgraph_to_cgraph_transformer_require_cgraph(transformer)
   for c_node in c_graph.c_nodes {
     let l_node = match transformer.origin_lookup.get_lnode_or_null(c_node) {
@@ -737,7 +737,7 @@ fn LGraphToCGraphTransformer::init(
 ///|
 fn LGraphToCGraphTransformer::transform_nodes(
   self : LGraphToCGraphTransformer,
-) -> Unit raise LGraphToCGraphTransformerException {
+) -> Unit raise {
   let layered_graph = lgraph_to_cgraph_transformer_require_lgraph(self)
   let c_graph = lgraph_to_cgraph_transformer_require_cgraph(self)
 
@@ -813,7 +813,7 @@ fn LGraphToCGraphTransformer::transform_nodes(
 ///|
 fn LGraphToCGraphTransformer::transform_edges(
   self : LGraphToCGraphTransformer,
-) -> Unit raise LGraphToCGraphTransformerException {
+) -> Unit raise {
   let mut vertical_segments : Array[VerticalSegment] = []
   match self.edge_routing {
     Orthogonal =>
@@ -855,7 +855,7 @@ fn LGraphToCGraphTransformer::transform_edges(
 fn LGraphToCGraphTransformer::transform(
   self : LGraphToCGraphTransformer,
   input_graph : LGraph,
-) -> @compaction.CGraph {
+) -> @compaction.CGraph raise {
   self.layered_graph = Some(input_graph)
   self.edge_routing = lgraph_to_cgraph_transformer_parse_edge_routing(
     input_graph.get_property_string(@core.edge_routing),
@@ -868,7 +868,7 @@ fn LGraphToCGraphTransformer::transform(
     lgraph_to_cgraph_transformer_require_cgraph(self)
   } catch {
     LGraphToCGraphTransformerException(message) => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "java.lang.IllegalStateException: " + message,
       )
       match self.c_graph {
@@ -876,6 +876,7 @@ fn LGraphToCGraphTransformer::transform(
         None => @compaction.new_cgraph([Undefined, Leftward, Rightward])
       }
     }
+    err => raise err
   } noraise {
     result => result
   }
@@ -884,7 +885,7 @@ fn LGraphToCGraphTransformer::transform(
 ///|
 fn LGraphToCGraphTransformer::apply_layout(
   self : LGraphToCGraphTransformer,
-) -> Unit {
+) -> Unit raise {
   try {
     let c_graph = lgraph_to_cgraph_transformer_require_cgraph(self)
     let layered_graph = lgraph_to_cgraph_transformer_require_lgraph(self)
@@ -1008,11 +1009,12 @@ fn LGraphToCGraphTransformer::apply_layout(
     lgraph_to_cgraph_transformer_cleanup(self)
   } catch {
     LGraphToCGraphTransformerException(message) => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "java.lang.IllegalStateException: " + message,
       )
       lgraph_to_cgraph_transformer_cleanup(self)
     }
+    err => raise err
   } noraise {
     _ => ()
   }

@@ -7,7 +7,7 @@ fn node_label_and_size_calculator_process_node(
   node : &NodeSpacingNode,
   apply_stuff : Bool,
   ignore_inside_port_labels : Bool,
-) -> @core.KVector {
+) -> @core.KVector raise {
   let fallback_size = node.get_size().clone()
   let mut context_to_cleanup : NodeContext? = None
   try {
@@ -80,7 +80,7 @@ fn node_label_and_size_calculator_process_node(
         Some(node_context) => node_context.cleanup()
         None => ()
       }
-      @core.layout_runtime_report_unsupported_configuration(err.to_string())
+      @core.layout_runtime_raise_unsupported_configuration(err.to_string())
       fallback_size
     }
   } noraise {
@@ -91,7 +91,7 @@ fn node_label_and_size_calculator_process_node(
 ///|
 pub fn node_label_and_size_calculator_process_layered_graph(
   layered_graph : @graph.ElkNode,
-) -> Unit {
+) -> Unit raise {
   let adapter = @core.adapt(layered_graph)
   node_label_and_size_calculator_process_graph(adapter)
 }
@@ -100,7 +100,7 @@ pub fn node_label_and_size_calculator_process_layered_graph(
 #internal(nodespacing)
 pub fn node_label_and_size_calculator_process_graph(
   adapter : &NodeSpacingGraph,
-) -> Unit {
+) -> Unit raise {
   for node in adapter.get_nodes() {
     ignore(
       node_label_and_size_calculator_process_node(adapter, node, true, false),
@@ -115,7 +115,7 @@ pub fn node_label_and_size_calculator_process_single_node(
   node : @graph.ElkNode,
   apply_stuff : Bool,
   ignore_inside_port_labels : Bool,
-) -> @core.KVector {
+) -> @core.KVector raise {
   let graph_adapter = @core.adapt(layered_graph)
   node_label_and_size_calculator_process_node(
     graph_adapter,
@@ -129,7 +129,7 @@ pub fn node_label_and_size_calculator_process_single_node(
 pub fn node_label_and_size_calculator_compute_inside_node_label_padding(
   node : @graph.ElkNode,
   layout_direction : @core.Direction,
-) -> @core.ElkPadding {
+) -> @core.ElkPadding raise {
   try {
     let node_context = new_node_context(
       @core.adapt_single_node(node) as &NodeSpacingNode,
@@ -199,7 +199,7 @@ pub fn node_label_and_size_calculator_compute_inside_node_label_padding(
     padding
   } catch {
     err => {
-      @core.layout_runtime_report_unsupported_configuration(err.to_string())
+      @core.layout_runtime_raise_unsupported_configuration(err.to_string())
       @core.new_elk_padding()
     }
   } noraise {

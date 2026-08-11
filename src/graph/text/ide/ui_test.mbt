@@ -51,7 +51,10 @@ test "ElkGraph ide modules expose generated bindings" {
 
 ///|
 test "ElkGraph ide parser and partial parser keep generated defaults" {
-  let parser = new_elk_graph_ide_parser()
+  let metadata = @core.new_layout_runtime().option_metadata()
+  metadata.register_default_options()
+  metadata.register_default_algorithms()
+  let parser = new_elk_graph_ide_parser(metadata)
   inspect(parser.get_initial_hidden_tokens().length(), content="3")
   inspect(
     parser.get_rule_name("RootNode.Group").unwrap_or("missing"),
@@ -72,10 +75,9 @@ test "ElkGraph ide parser and partial parser keep generated defaults" {
 
 ///|
 test "ElkGraph ide proposal provider exposes property and crossref behavior" {
-  @core.layout_meta_data_service_reset_for_test()
-  @core.layout_meta_data_service_register_default_options()
-  @core.layout_meta_data_service_register_default_algorithms()
-  @graph.reset_graph_model_for_test()
+  let metadata = @core.new_layout_runtime().option_metadata()
+  metadata.register_default_options()
+  metadata.register_default_algorithms()
   let root = @graph.create_graph()
   @graph.node_set_identifier(root, "root")
   let node = @graph.create_node(Some(root))
@@ -88,7 +90,7 @@ test "ElkGraph ide proposal provider exposes property and crossref behavior" {
   @graph.edge_add_target(edge, @graph.make_port_shape(port))
   let section = @graph.create_edge_section(edge)
 
-  let provider = new_elk_graph_ide_proposal_provider()
+  let provider = new_elk_graph_ide_proposal_provider(metadata)
 
   let keyword_acceptor = new_graph_text_ide_completion_proposal_acceptor()
   provider.create_keyword_proposals(
@@ -112,9 +114,7 @@ test "ElkGraph ide proposal provider exposes property and crossref behavior" {
     content="true",
   )
 
-  let option = @core.layout_meta_data_service_get_option_data(
-    @core.algorithm.get_id(),
-  )
+  let option = metadata.option_data(@core.algorithm.get_id())
   let value_acceptor = new_graph_text_ide_completion_proposal_acceptor()
   provider.create_assignment_proposals(
     "Property.ValueAssignment_2_1",
@@ -241,10 +241,9 @@ test "ElkGraph executable extension factory resolves provider and initializes ex
 
 ///|
 test "ElkGraph ui providers expose generated behavior" {
-  @core.layout_meta_data_service_reset_for_test()
-  @core.layout_meta_data_service_register_default_options()
-  @core.layout_meta_data_service_register_default_algorithms()
-  @graph.reset_graph_model_for_test()
+  let metadata = @core.new_layout_runtime().option_metadata()
+  metadata.register_default_options()
+  metadata.register_default_algorithms()
   let root = @graph.create_graph()
   @graph.node_set_identifier(root, "root")
   let child = @graph.create_node(Some(root))
@@ -259,7 +258,7 @@ test "ElkGraph ui providers expose generated behavior" {
   @graph.label_set_identifier(label, "l")
   @graph.label_set_text(label, "txt")
 
-  let proposal_provider = @ui.new_elk_graph_ui_proposal_provider()
+  let proposal_provider = @ui.new_elk_graph_ui_proposal_provider(metadata)
   let proposal_acceptor = @ui.new_graph_text_ui_completion_proposal_acceptor()
   proposal_provider.create_assignment_proposals(
     "Property.KeyAssignment_0",
@@ -282,7 +281,7 @@ test "ElkGraph ui providers expose generated behavior" {
     content="elknode.gif",
   )
 
-  let option = @core.layout_meta_data_service_get_option_data(
+  let option = metadata.option_data(
     @core.port_labels_next_to_port_if_possible.get_id(),
   )
   inspect(
@@ -334,7 +333,9 @@ test "ElkGraph ui providers expose generated behavior" {
 
 ///|
 test "ElkGraph layout connector setup and convert handler work" {
-  @graph.reset_graph_model_for_test()
+  let metadata = @core.new_layout_runtime().option_metadata()
+  metadata.register_default_options()
+  metadata.register_default_algorithms()
   let root = @graph.create_graph()
   @graph.node_set_identifier(root, "root")
 
@@ -371,7 +372,7 @@ test "ElkGraph layout connector setup and convert handler work" {
 
   let project = @ui.new_graph_text_project()
   project.write_file("demo.elkt", "existing")
-  let handler = @ui.new_convert_graph_handler(project~)
+  let handler = @ui.new_convert_graph_handler(metadata, project~)
   let processed = handler.execute(
     [
       GraphTextSelectionOther,

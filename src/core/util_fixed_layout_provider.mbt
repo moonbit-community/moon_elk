@@ -44,7 +44,7 @@ fn fixed_layout_provider_parse_edge_routing(
 ///|
 fn fixed_layout_provider_parse_padding(
   layout_node : @graph.ElkNode,
-) -> ElkPadding {
+) -> ElkPadding raise {
   let parsed = new_elk_padding()
   parsed.parse(
     @graph.node_get_string_property(
@@ -55,7 +55,7 @@ fn fixed_layout_provider_parse_padding(
 }
 
 ///|
-fn fixed_layout_provider_parse_position(text : String?) -> KVector? {
+fn fixed_layout_provider_parse_position(text : String?) -> KVector? raise {
   if text is Some(value) {
     let parsed = new_kvector()
     parsed.parse(value)
@@ -66,7 +66,9 @@ fn fixed_layout_provider_parse_position(text : String?) -> KVector? {
 }
 
 ///|
-fn fixed_layout_provider_parse_bend_points(text : String?) -> KVectorChain? {
+fn fixed_layout_provider_parse_bend_points(
+  text : String?,
+) -> KVectorChain? raise {
   if text is Some(value) {
     let parsed = new_kvector_chain()
     parsed.parse(value)
@@ -113,7 +115,9 @@ fn fixed_layout_provider_contains_constraint(
 }
 
 ///|
-fn fixed_layout_provider_apply_minimum_size(node : @graph.ElkNode) -> Unit {
+fn fixed_layout_provider_apply_minimum_size(
+  node : @graph.ElkNode,
+) -> Unit raise {
   if !fixed_layout_provider_contains_constraint(
       @graph.node_get_string_set_property(node, node_size_constraints),
       "MINIMUM_SIZE",
@@ -161,7 +165,7 @@ fn fixed_layout_provider_source_parent(
 fn fixed_layout_provider_process_edge(
   edge : @graph.ElkEdge,
   edge_routing_kind : FixedLayoutProviderEdgeRouting,
-) -> KVector {
+) -> KVector raise {
   ignore(edge_routing_kind)
   let maxv = new_kvector()
   let sources = @graph.edge_sources(edge)
@@ -258,7 +262,7 @@ pub fn FixedLayoutProvider::layout(
   self : FixedLayoutProvider,
   layout_node : @graph.ElkNode,
   progress_monitor : IElkProgressMonitor,
-) -> Unit {
+) -> Unit raise {
   ignore(self.initialized)
   ignore(progress_monitor.begin("Fixed Layout", 1.0))
 

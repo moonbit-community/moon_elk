@@ -150,6 +150,7 @@ fn prefix_matches_parts(
 
 ///|
 fn proposal_for_layout_option(
+  metadata : OptionMetadata,
   option_data : LayoutOptionData,
   prefix : String,
 ) -> LayoutDataProposal[LayoutOptionData]? {
@@ -171,7 +172,7 @@ fn proposal_for_layout_option(
   let mut i = start
   while i >= 0 {
     let suffix = join_dotted(id_parts, i)
-    if layout_meta_data_service_get_option_data_by_suffix(suffix) is Some(_) {
+    if metadata.option_data_by_suffix(suffix) is Some(_) {
       let suffix_parts = sub_parts(id_parts, i)
       if matches_name || prefix_matches_parts(suffix_parts, prefix_parts) {
         return Some(new_layout_data_proposal(suffix, option_data))
@@ -184,6 +185,7 @@ fn proposal_for_layout_option(
 
 ///|
 fn proposal_for_layout_algorithm(
+  metadata : OptionMetadata,
   algorithm_data : LayoutAlgorithmData,
   prefix : String,
 ) -> LayoutDataProposal[LayoutAlgorithmData]? {
@@ -195,7 +197,7 @@ fn proposal_for_layout_algorithm(
   let mut i = id_parts.length() - 1
   while i >= 0 {
     let suffix = join_dotted(id_parts, i)
-    if layout_meta_data_service_get_algorithm_data_by_suffix(suffix) is Some(_) {
+    if metadata.algorithm_data_by_suffix(suffix) is Some(_) {
       let suffix_parts = sub_parts(id_parts, i)
       if prefix_matches_parts(suffix_parts, prefix_parts) {
         return Some(new_layout_data_proposal(suffix, algorithm_data))
@@ -286,6 +288,7 @@ fn relevant_node_for_element(
 
 ///|
 fn algorithm_for_element(
+  metadata : OptionMetadata,
   element : LayoutDataContentAssistElement,
 ) -> LayoutAlgorithmData? {
   match relevant_node_for_element(element) {
@@ -295,7 +298,7 @@ fn algorithm_for_element(
           if algorithm_id.trim().is_empty() {
             None
           } else {
-            layout_meta_data_service_get_algorithm_data_by_suffix(algorithm_id)
+            metadata.algorithm_data_by_suffix(algorithm_id)
           }
         None => None
       }
@@ -305,13 +308,14 @@ fn algorithm_for_element(
 
 ///|
 pub fn layout_data_content_assist_get_layout_option_proposals_for_element(
+  metadata : OptionMetadata,
   element : LayoutDataContentAssistElement,
   prefix : String,
 ) -> Array[LayoutDataProposal[LayoutOptionData]] {
   let target_types = element_target_types(element)
-  let responsible_algorithm = algorithm_for_element(element)
+  let responsible_algorithm = algorithm_for_element(metadata, element)
   let proposals = []
-  for option_data in layout_meta_data_service_option_data_values() {
+  for option_data in metadata.option_data_values() {
     if is_hidden_visibility(option_data.get_visibility()) {
       continue
     }
@@ -329,7 +333,7 @@ pub fn layout_data_content_assist_get_layout_option_proposals_for_element(
     if element_option_string_value(element, option_data.get_id()) is Some(_) {
       continue
     }
-    match proposal_for_layout_option(option_data, prefix) {
+    match proposal_for_layout_option(metadata, option_data, prefix) {
       Some(proposal) => proposals.push(proposal)
       None => ()
     }
@@ -339,10 +343,12 @@ pub fn layout_data_content_assist_get_layout_option_proposals_for_element(
 
 ///|
 pub fn layout_data_content_assist_get_layout_option_proposals(
+  metadata : OptionMetadata,
   element : @graph.ElkNode,
   prefix : String,
 ) -> Array[LayoutDataProposal[LayoutOptionData]] {
   layout_data_content_assist_get_layout_option_proposals_for_element(
+    metadata,
     NodeLayoutDataElement(element),
     prefix,
   )
@@ -350,10 +356,12 @@ pub fn layout_data_content_assist_get_layout_option_proposals(
 
 ///|
 pub fn layout_data_content_assist_get_layout_option_proposals_for_edge(
+  metadata : OptionMetadata,
   element : @graph.ElkEdge,
   prefix : String,
 ) -> Array[LayoutDataProposal[LayoutOptionData]] {
   layout_data_content_assist_get_layout_option_proposals_for_element(
+    metadata,
     EdgeLayoutDataElement(element),
     prefix,
   )
@@ -361,10 +369,12 @@ pub fn layout_data_content_assist_get_layout_option_proposals_for_edge(
 
 ///|
 pub fn layout_data_content_assist_get_layout_option_proposals_for_port(
+  metadata : OptionMetadata,
   element : @graph.ElkPort,
   prefix : String,
 ) -> Array[LayoutDataProposal[LayoutOptionData]] {
   layout_data_content_assist_get_layout_option_proposals_for_element(
+    metadata,
     PortLayoutDataElement(element),
     prefix,
   )
@@ -372,10 +382,12 @@ pub fn layout_data_content_assist_get_layout_option_proposals_for_port(
 
 ///|
 pub fn layout_data_content_assist_get_layout_option_proposals_for_label(
+  metadata : OptionMetadata,
   element : @graph.ElkLabel,
   prefix : String,
 ) -> Array[LayoutDataProposal[LayoutOptionData]] {
   layout_data_content_assist_get_layout_option_proposals_for_element(
+    metadata,
     LabelLayoutDataElement(element),
     prefix,
   )
@@ -383,11 +395,12 @@ pub fn layout_data_content_assist_get_layout_option_proposals_for_label(
 
 ///|
 pub fn layout_data_content_assist_get_layout_algorithm_proposals(
+  metadata : OptionMetadata,
   prefix : String,
 ) -> Array[LayoutDataProposal[LayoutAlgorithmData]] {
   let proposals = []
-  for algorithm_data in layout_meta_data_service_algorithm_data_values() {
-    match proposal_for_layout_algorithm(algorithm_data, prefix) {
+  for algorithm_data in metadata.algorithm_data_values() {
+    match proposal_for_layout_algorithm(metadata, algorithm_data, prefix) {
       Some(proposal) => proposals.push(proposal)
       None => ()
     }

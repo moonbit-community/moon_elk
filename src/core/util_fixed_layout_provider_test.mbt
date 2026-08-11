@@ -1,6 +1,5 @@
 ///|
 test "fixed layout provider applies fixed positions and minimum size" {
-  @graph.reset_graph_model_for_test()
   let graph = @graph.create_graph()
   let child = @graph.create_node(Some(graph))
   @graph.node_set_dimensions(child, 10.0, 10.0)
@@ -53,7 +52,6 @@ test "fixed layout provider applies fixed positions and minimum size" {
 
 ///|
 test "fixed layout provider applies bend point endpoints to edge section" {
-  @graph.reset_graph_model_for_test()
   let graph = @graph.create_graph()
   let source = @graph.create_node(Some(graph))
   @graph.node_set_dimensions(source, 10.0, 10.0)
@@ -86,7 +84,6 @@ test "fixed layout provider applies bend point endpoints to edge section" {
 
 ///|
 test "fixed layout provider does not resize fixed-size graph" {
-  @graph.reset_graph_model_for_test()
   let graph = @graph.create_graph()
   @graph.node_set_dimensions(graph, 77.0, 66.0)
   @graph.node_set_bool_property(graph, node_size_fixed_graph_size, true)

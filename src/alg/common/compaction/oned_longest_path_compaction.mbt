@@ -11,7 +11,9 @@ fn[T] longest_path_compaction_raise_unsupported_graph(
 }
 
 ///|
-pub fn longest_path_compaction(compactor : OneDimensionalCompactor) -> Unit {
+pub fn longest_path_compaction(
+  compactor : OneDimensionalCompactor,
+) -> Unit raise {
   try {
     let mut min_start_pos = @double.infinity
     for cnode in compactor.c_graph.c_nodes {
@@ -83,9 +85,9 @@ pub fn longest_path_compaction(compactor : OneDimensionalCompactor) -> Unit {
       for node in group.c_nodes() {
         for inc_node in node.constraints() {
           let spacing = if compactor.direction.is_horizontal() {
-            (compactor.spacings_handler.get_horizontal_spacing)(node, inc_node)
+            compactor.spacings_handler.horizontal_spacing(node, inc_node)
           } else {
-            (compactor.spacings_handler.get_vertical_spacing)(node, inc_node)
+            compactor.spacings_handler.vertical_spacing(node, inc_node)
           }
 
           let inc_group = match inc_node.group() {
@@ -127,7 +129,8 @@ pub fn longest_path_compaction(compactor : OneDimensionalCompactor) -> Unit {
     }
   } catch {
     UnsupportedGraphException(message) =>
-      @core.layout_runtime_report_unsupported_configuration(message)
+      @core.layout_runtime_raise_unsupported_configuration(message)
+    err => raise err
   } noraise {
     _ => ()
   }

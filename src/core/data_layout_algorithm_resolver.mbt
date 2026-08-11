@@ -1,13 +1,15 @@
 ///|
 pub(all) struct LayoutAlgorithmResolver {
+  metadata : OptionMetadata
   default_layout_algorithm_id : String
 }
 
 ///|
 pub fn new_layout_algorithm_resolver(
+  metadata : OptionMetadata,
   default_layout_algorithm_id? : String = "org.eclipse.elk.layered",
 ) -> LayoutAlgorithmResolver {
-  { default_layout_algorithm_id, }
+  { metadata, default_layout_algorithm_id }
 }
 
 ///|
@@ -31,7 +33,7 @@ pub fn LayoutAlgorithmResolver::resolve_and_set_algorithm(
   node : @graph.ElkNode,
 ) -> Bool {
   ignore(self)
-  match layout_meta_data_service_get_algorithm_data_by_suffix(algorithm_id) {
+  match self.metadata.algorithm_data_by_suffix(algorithm_id) {
     Some(algorithm_data) => {
       @graph.node_set_string_property(
         node,
@@ -48,7 +50,7 @@ pub fn LayoutAlgorithmResolver::resolve_and_set_algorithm(
 pub fn LayoutAlgorithmResolver::resolve_algorithm(
   self : LayoutAlgorithmResolver,
   node : @graph.ElkNode,
-) -> Unit {
+) -> Unit raise {
   let algorithm_id = @graph.node_get_string_property(node, algorithm)
   if self.resolve_and_set_algorithm(algorithm_id, node) {
     return
@@ -59,12 +61,12 @@ pub fn LayoutAlgorithmResolver::resolve_algorithm(
         let message = "Unable to load default layout algorithm " +
           self.default_layout_algorithm_id +
           " for unconfigured node"
-        layout_runtime_report_unsupported_configuration(message)
+        layout_runtime_raise_unsupported_configuration(message)
         return
       }
     } else {
       let message = "Layout algorithm '" + algorithm_id + "' not found"
-      layout_runtime_report_unsupported_configuration(message)
+      layout_runtime_raise_unsupported_configuration(message)
       return
     }
   }
@@ -74,7 +76,7 @@ pub fn LayoutAlgorithmResolver::resolve_algorithm(
 pub fn LayoutAlgorithmResolver::visit(
   self : LayoutAlgorithmResolver,
   node : @graph.ElkNode,
-) -> Unit {
+) -> Unit raise {
   if @graph.node_get_bool_property(node, no_layout) {
     return
   }

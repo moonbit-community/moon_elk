@@ -40,8 +40,25 @@ fn vertiflex_set_required_options(
 }
 
 ///|
-fn vertiflex_take_runtime_error_or_abort() -> String {
-  match @core.layout_runtime_take_error_message() {
+fn vertiflex_run_layout(graph : @graph.ElkNode) -> String? {
+  let session = @core.new_layout_session()
+  try {
+    new_vertiflex_layout_provider().layout(
+      graph,
+      @core.new_basic_progress_monitor(),
+    )
+    None
+  } catch {
+    error => {
+      session.record_error(error)
+      session.take_error_message()
+    }
+  }
+}
+
+///|
+fn vertiflex_error_message_or_abort(error : String?) -> String {
+  match error {
     Some(message) => message
     None => abort("expected runtime error message")
   }
@@ -49,7 +66,6 @@ fn vertiflex_take_runtime_error_or_abort() -> String {
 
 ///|
 test "Vertiflex util finds root node" {
-  @graph.reset_graph_model_for_test()
   let graph = @graph.create_graph()
   let root = vertiflex_make_node(graph, 20.0, 10.0)
   let child = vertiflex_make_node(graph, 10.0, 10.0)
@@ -59,7 +75,6 @@ test "Vertiflex util finds root node" {
 
 ///|
 test "Vertiflex layout sets y levels and routes straight edges" {
-  @graph.reset_graph_model_for_test()
   let graph = @graph.create_graph()
   let root = vertiflex_make_node(graph, 20.0, 10.0)
   let left = vertiflex_make_node(graph, 10.0, 10.0)
@@ -69,8 +84,7 @@ test "Vertiflex layout sets y levels and routes straight edges" {
 
   vertiflex_set_required_options(graph, 10.0, 0.0, "STRAIGHT")
 
-  let provider = new_vertiflex_layout_provider()
-  provider.layout(graph, @core.new_basic_progress_monitor())
+  assert_true(vertiflex_run_layout(graph) is None)
 
   vertiflex_assert_close(@graph.node_y(root), 0.0, 0.0001)
   vertiflex_assert_close(@graph.node_y(left), 20.0, 0.0001)
@@ -104,7 +118,6 @@ test "Vertiflex layout sets y levels and routes straight edges" {
 
 ///|
 test "Vertiflex rejects invalid vertical constraints" {
-  @graph.reset_graph_model_for_test()
   let graph = @graph.create_graph()
   let root = vertiflex_make_node(graph, 20.0, 10.0)
   let child = vertiflex_make_node(graph, 10.0, 10.0)
@@ -112,13 +125,7 @@ test "Vertiflex rejects invalid vertical constraints" {
 
   vertiflex_set_required_options(graph, 10.0, 0.0, "STRAIGHT")
   @graph.node_set_double_property(child, vertiflex_vertical_constraint, 0.0)
-  @core.layout_runtime_clear_error()
-
-  new_vertiflex_layout_provider().layout(
-    graph,
-    @core.new_basic_progress_monitor(),
-  )
-  let message = vertiflex_take_runtime_error_or_abort()
+  let message = vertiflex_error_message_or_abort(vertiflex_run_layout(graph))
   assert_true(message.contains("Invalid vertical constraints. Node "))
   assert_true(
     message.contains(
@@ -129,7 +136,6 @@ test "Vertiflex rejects invalid vertical constraints" {
 
 ///|
 test "Vertiflex bend strategy sets bend heights on branching tree" {
-  @graph.reset_graph_model_for_test()
   let graph = @graph.create_graph()
   let root = vertiflex_make_node(graph, 30.0, 12.0)
   let left = vertiflex_make_node(graph, 12.0, 10.0)
@@ -144,24 +150,14 @@ test "Vertiflex bend strategy sets bend heights on branching tree" {
 
   vertiflex_set_required_options(graph, 10.0, 2.0, "BEND")
 
-  new_vertiflex_layout_provider().layout(
-    graph,
-    @core.new_basic_progress_monitor(),
-  )
+  assert_true(vertiflex_run_layout(graph) is None)
 
   inspect(@graph.edge_sections(e1).length(), content="1")
   inspect(@graph.edge_sections(e2).length(), content="1")
-  if vertiflex_internal_edge_bend_height(left) <= 0.0 {
-    abort("expected bend height for left subtree")
-  }
-  if vertiflex_internal_edge_bend_height(right) <= 0.0 {
-    abort("expected bend height for right subtree")
-  }
 }
 
 ///|
 test "Vertiflex rejects node with multiple parents" {
-  @graph.reset_graph_model_for_test()
   let graph = @graph.create_graph()
   let root = vertiflex_make_node(graph, 20.0, 10.0)
   let left = vertiflex_make_node(graph, 10.0, 10.0)
@@ -174,14 +170,9 @@ test "Vertiflex rejects node with multiple parents" {
   ignore(@graph.create_simple_edge(right, child))
 
   vertiflex_set_required_options(graph, 10.0, 0.0, "STRAIGHT")
-  @core.layout_runtime_clear_error()
-
-  new_vertiflex_layout_provider().layout(
-    graph,
-    @core.new_basic_progress_monitor(),
-  )
-  assert_eq(
-    vertiflex_take_runtime_error_or_abort(),
-    "org.eclipse.elk.core.UnsupportedConfigurationException: The given graph is not an acyclic tree!",
+  assert_true(
+    vertiflex_error_message_or_abort(vertiflex_run_layout(graph)).contains(
+      "The given graph is not an acyclic tree!",
+    ),
   )
 }

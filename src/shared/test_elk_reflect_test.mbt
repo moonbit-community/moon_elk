@@ -1,13 +1,13 @@
 ///|
-fn shared_elk_reflect_test_setup_plain_java_layout() -> Unit {
-  layout_meta_data_service_reset_for_test()
-  plain_java_initialization_reset_for_test()
-  plain_java_initialization_initialize_plain_java_layout()
+fn shared_elk_reflect_test_metadata() -> @core.OptionMetadata {
+  let metadata = @core.new_option_metadata()
+  plain_java_initialization_initialize_plain_java_layout(metadata)
+  metadata
 }
 
 ///|
 test "ElkReflectTest simple property defaults are accessible" {
-  shared_elk_reflect_test_setup_plain_java_layout()
+  ignore(shared_elk_reflect_test_metadata())
 
   let double_properties : Array[IProperty[Double]] = [
     spacing_node_node, aspect_ratio, priority, rectpacking_width_approximation_target_width,
@@ -47,9 +47,7 @@ test "ElkReflectTest simple property defaults are accessible" {
 
 ///|
 test "ElkReflectTest layout option data parse does not fail for known types" {
-  shared_elk_reflect_test_setup_plain_java_layout()
-
-  let options = layout_meta_data_service_option_data_values()
+  let options = shared_elk_reflect_test_metadata().option_data_values()
   assert_true(!options.is_empty())
   for option in options {
     let sample = match option.get_type() {

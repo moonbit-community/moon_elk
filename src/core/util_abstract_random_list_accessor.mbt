@@ -36,11 +36,11 @@ pub fn[T] new_abstract_random_list_accessor(
 pub fn[T] AbstractRandomListAccessor::get_list_item(
   self : AbstractRandomListAccessor[T],
   index : Int,
-) -> T {
+) -> T raise {
   if index < 0 {
     try random_list_accessor_raise("Invalid index: \{index}") catch {
       err =>
-        layout_runtime_report_unsupported_configuration(
+        layout_runtime_raise_unsupported_configuration(
           random_list_accessor_exception_message(err),
         )
     } noraise {
@@ -57,11 +57,11 @@ pub fn[T] AbstractRandomListAccessor::set_list_item(
   self : AbstractRandomListAccessor[T],
   index : Int,
   value : T,
-) -> Unit {
+) -> Unit raise {
   if index < 0 {
     try random_list_accessor_raise("Invalid index: \{index}") catch {
       err =>
-        layout_runtime_report_unsupported_configuration(
+        layout_runtime_raise_unsupported_configuration(
           random_list_accessor_exception_message(err),
         )
     } noraise {

@@ -18,6 +18,7 @@ pub fn new_core_ui_algorithm_selection_listener(
 
 ///|
 pub(all) struct AlgorithmSelectionDialog {
+  metadata : @core.OptionMetadata
   mut layouter_hint : String
   mut display_name : String
   mut description : String
@@ -33,14 +34,16 @@ pub(all) struct AlgorithmSelectionDialog {
 
 ///|
 pub fn new_algorithm_selection_dialog(
+  metadata : @core.OptionMetadata,
   current_hint : String,
 ) -> AlgorithmSelectionDialog {
   {
+    metadata,
     layouter_hint: current_hint,
     display_name: "",
     description: "",
     image: None,
-    content_provider: new_algorithm_content_provider(),
+    content_provider: new_algorithm_content_provider(metadata),
     image_cache: Map([]),
     selection_listeners: [],
     selected_data: None,
@@ -161,12 +164,13 @@ pub fn AlgorithmSelectionDialog::update_value(
 
 ///|
 fn algorithm_selection_dialog_find_by_hint(
+  metadata : @core.OptionMetadata,
   hint : String,
 ) -> CoreUiLayoutMetaData? {
-  match @core.layout_meta_data_service_get_algorithm_data_by_suffix(hint) {
+  match metadata.algorithm_data_by_suffix(hint) {
     Some(algorithm_data) => Some(CoreUiLayoutAlgorithmMeta(algorithm_data))
     None =>
-      match @core.layout_meta_data_service_get_category_data(hint) {
+      match metadata.category_data(hint) {
         Some(category_data) => Some(CoreUiLayoutCategoryMeta(category_data))
         None => None
       }
@@ -180,7 +184,8 @@ pub fn AlgorithmSelectionDialog::create_dialog_area(
   self.content_provider.update_filter(None)
   self.filter_text = ""
   if !self.layouter_hint.is_empty() {
-    match algorithm_selection_dialog_find_by_hint(self.layouter_hint) {
+    match
+      algorithm_selection_dialog_find_by_hint(self.metadata, self.layouter_hint) {
       Some(layout_data) => self.update_value(layout_data)
       None => ()
     }

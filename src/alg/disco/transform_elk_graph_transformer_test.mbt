@@ -5,7 +5,6 @@ fn disco_transform_test_close(a : Double, b : Double) -> Bool {
 
 ///|
 test "ElkGraphTransformer imports and applies offsets" {
-  @graph.reset_graph_model_for_test()
   let root = @graph.create_graph()
   @graph.node_set_dimensions(root, 60.0, 30.0)
 

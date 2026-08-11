@@ -1,5 +1,12 @@
 ///|
-pub type FBendpoint = Int
+pub struct FBendpoint {
+  priv data : FBendpointData
+}
+
+///|
+pub impl Eq for FBendpoint with fn equal(self, other) {
+  physical_equal(self, other)
+}
 
 ///|
 priv struct FBendpointData {
@@ -10,28 +17,16 @@ priv struct FBendpointData {
 }
 
 ///|
-let fbendpoint_store : Ref[Array[FBendpointData]] = Ref([])
-
-///|
-fn checked_fbendpoint(bendpoint : FBendpoint) -> Unit {
-  if bendpoint < 0 || bendpoint >= fbendpoint_store.val.length() {
-    @core.layout_runtime_report_unsupported_configuration(
-      "invalid force bendpoint id",
-    )
-  }
-}
-
-///|
 pub fn new_fbendpoint(edge : FEdge) -> FBendpoint {
-  checked_fedge(edge)
-  let bendpoint = fbendpoint_store.val.length()
-  fbendpoint_store.val.push({
-    edge,
-    displacement: @core.new_kvector(),
-    position: @core.new_kvector(),
-    size: @core.new_kvector(),
-  })
-  let edge_data = fedge_store.val[edge]
+  let bendpoint : FBendpoint = {
+    data: {
+      edge,
+      displacement: @core.new_kvector(),
+      position: @core.new_kvector(),
+      size: @core.new_kvector(),
+    },
+  }
+  let edge_data = edge.data
   edge_data.bendpoints.push(bendpoint)
   set_fedge_data(edge, edge_data)
   bendpoint
@@ -39,26 +34,22 @@ pub fn new_fbendpoint(edge : FEdge) -> FBendpoint {
 
 ///|
 pub fn fbendpoint_edge(bendpoint : FBendpoint) -> FEdge {
-  checked_fbendpoint(bendpoint)
-  fbendpoint_store.val[bendpoint].edge
+  bendpoint.data.edge
 }
 
 ///|
 pub fn fbendpoint_displacement(bendpoint : FBendpoint) -> @core.KVector {
-  checked_fbendpoint(bendpoint)
-  fbendpoint_store.val[bendpoint].displacement
+  bendpoint.data.displacement
 }
 
 ///|
 pub fn fbendpoint_position(bendpoint : FBendpoint) -> @core.KVector {
-  checked_fbendpoint(bendpoint)
-  fbendpoint_store.val[bendpoint].position
+  bendpoint.data.position
 }
 
 ///|
 pub fn fbendpoint_size(bendpoint : FBendpoint) -> @core.KVector {
-  checked_fbendpoint(bendpoint)
-  fbendpoint_store.val[bendpoint].size
+  bendpoint.data.size
 }
 
 ///|

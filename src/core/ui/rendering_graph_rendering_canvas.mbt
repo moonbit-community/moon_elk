@@ -66,7 +66,7 @@ pub(all) struct GraphRenderingCanvas {
 ///|
 pub fn new_graph_rendering_canvas(
   display : CoreUiDisplay,
-) -> GraphRenderingCanvas {
+) -> GraphRenderingCanvas raise {
   new_graph_rendering_canvas_with_configurator(
     display,
     new_graph_rendering_configurator(display),
@@ -77,7 +77,7 @@ pub fn new_graph_rendering_canvas(
 pub fn new_graph_rendering_canvas_with_configurator(
   display : CoreUiDisplay,
   configurator : GraphRenderingConfigurator,
-) -> GraphRenderingCanvas {
+) -> GraphRenderingCanvas raise {
   if configurator.get_display() != display {
     try
       graph_rendering_canvas_raise_unit(
@@ -85,7 +85,7 @@ pub fn new_graph_rendering_canvas_with_configurator(
       )
     catch {
       err =>
-        @core.layout_runtime_report_unsupported_configuration(
+        @core.layout_runtime_raise_unsupported_configuration(
           graph_rendering_canvas_exception_message(err),
         )
     } noraise {

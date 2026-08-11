@@ -4,7 +4,7 @@ fn gmf_connector_test_new_shape(
   y : Int,
   width : Int,
   height : Int,
-) -> (GmfFigure, GmfEditPart, GmfView) {
+) -> (GmfFigure, GmfEditPart, GmfView) raise {
   let figure = new_gmf_figure(bounds=new_gmf_rectangle(x~, y~, width~, height~))
   let edit_part = new_gmf_edit_part(ShapeNodeEditPart, figure~)
   let view = new_gmf_view(location_x=x, location_y=y, width~, height~)
@@ -38,7 +38,6 @@ test "GmfDiagramLayoutConnector hierarchy utilities follow parent chain rules" {
 ///|
 test "GmfDiagramLayoutConnector build_layout_graph keeps selection offset" {
   reset_conn_gmf_foundation_for_test()
-  @graph.reset_graph_model_for_test()
   let connector = new_gmf_diagram_layout_connector()
 
   let diagram_figure = new_gmf_figure(
@@ -68,7 +67,6 @@ test "GmfDiagramLayoutConnector build_layout_graph keeps selection offset" {
 ///|
 test "GmfDiagramLayoutConnector apply_layout transfers and executes command" {
   reset_conn_gmf_foundation_for_test()
-  @graph.reset_graph_model_for_test()
   let connector = new_gmf_diagram_layout_connector()
 
   let diagram_figure = new_gmf_figure(

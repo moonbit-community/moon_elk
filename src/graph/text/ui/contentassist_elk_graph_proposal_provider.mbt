@@ -10,9 +10,13 @@ pub struct ElkGraphUiProposalProvider {
 
 ///|
 pub fn new_elk_graph_ui_proposal_provider(
-  ide_provider? : @ide.ElkGraphIdeProposalProvider = @ide.new_elk_graph_ide_proposal_provider(),
+  metadata : @core.OptionMetadata,
+  ide_provider? : @ide.ElkGraphIdeProposalProvider,
   grammar? : @text.ElkGraphGrammarAccess = @text.new_elk_graph_grammar_access(),
 ) -> ElkGraphUiProposalProvider {
+  let ide_provider = ide_provider.unwrap_or(
+    @ide.new_elk_graph_ide_proposal_provider(metadata),
+  )
   { base: new_abstract_elk_graph_proposal_provider(), ide_provider, grammar }
 }
 

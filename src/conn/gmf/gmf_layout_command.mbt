@@ -82,7 +82,7 @@ pub fn GmfLayoutCommand::set_oblique_routing(
 }
 
 ///|
-pub fn GmfLayoutCommand::execute(self : GmfLayoutCommand) -> Unit {
+pub fn GmfLayoutCommand::execute(self : GmfLayoutCommand) -> Unit raise {
   for shape_layout in self.shape_layouts {
     match shape_layout.location {
       Some(location) =>
@@ -137,7 +137,7 @@ pub fn GmfLayoutCommand::execute(self : GmfLayoutCommand) -> Unit {
 ///|
 pub fn GmfLayoutCommand::get_affected_files(
   self : GmfLayoutCommand,
-) -> Array[String] {
+) -> Array[String] raise {
   match self.diagram_view {
     Some(view) => [gmf_view_name(view)]
     None => []

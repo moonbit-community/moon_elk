@@ -324,7 +324,10 @@ pub fn LayoutPropertyDescriptor::get_label_provider(
   match self.label_provider {
     Some(provider) => provider
     None => {
-      let provider = new_layout_option_label_provider(self.option_data)
+      let provider = new_layout_option_label_provider(
+        self.source.metadata,
+        self.option_data,
+      )
       self.label_provider = Some(provider)
       provider
     }

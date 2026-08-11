@@ -57,7 +57,6 @@ test "ElkGraphJsonStandaloneSetup registers extension maps" {
 
 ///|
 test "ElkGraphJsonQualifiedNameProvider yields element identifier" {
-  @graph.reset_graph_model_for_test()
   let root = @graph.create_graph()
   @graph.node_set_identifier(root, "root")
   let provider = new_elk_graph_json_qualified_name_provider()
@@ -69,15 +68,12 @@ test "ElkGraphJsonQualifiedNameProvider yields element identifier" {
 
 ///|
 test "ElkGraphJson value converters parse numbers keys and values" {
-  @core.layout_meta_data_service_reset_for_test()
-  @core.layout_meta_data_service_register_default_options()
-  @core.layout_meta_data_service_register_default_algorithms()
-
   let number_converter = new_graph_json_text_number_value_converter()
   inspect(number_converter.to_string(Some(12.0)), content="12")
   inspect(number_converter.to_value("-4.5"), content="-4.5")
 
-  let key_converter = new_graph_json_text_property_key_value_converter()
+  let metadata = @graph_json.new_layout_runtime().option_metadata()
+  let key_converter = new_graph_json_text_property_key_value_converter(metadata)
   key_converter.initialize(new_elk_graph_json_grammar_access())
   let key = key_converter.to_value("\"algorithm\"")
   inspect(
@@ -86,10 +82,10 @@ test "ElkGraphJson value converters parse numbers keys and values" {
   )
   inspect(key_converter.to_string(Some(key)), content="algorithm")
 
-  let value_converter = new_graph_json_text_property_value_value_converter()
-  let no_layout_option = @core.layout_meta_data_service_get_option_data(
-    @core.no_layout.get_id(),
+  let value_converter = new_graph_json_text_property_value_value_converter(
+    metadata,
   )
+  let no_layout_option = metadata.option_data(@core.no_layout.get_id())
   inspect(
     value_converter.to_value(
       "\"true\"",
@@ -111,7 +107,6 @@ test "ElkGraphJson value converters parse numbers keys and values" {
 
 ///|
 test "ElkGraphJsonScopeProvider resolves sibling section identifiers" {
-  @graph.reset_graph_model_for_test()
   let root = @graph.create_graph()
   let edge = @graph.create_edge(Some(root))
   let s1 = @graph.create_edge_section(edge)
@@ -136,10 +131,9 @@ test "ElkGraphJson syntactic and semantic sequencers keep generated defaults" {
     content="[\"{}\"]",
   )
 
-  let semantic = new_elk_graph_json_semantic_sequencer()
-  let option = @core.layout_meta_data_service_get_option_data(
-    @core.algorithm.get_id(),
-  )
+  let metadata = @graph_json.new_layout_runtime().option_metadata()
+  let semantic = new_elk_graph_json_semantic_sequencer(metadata)
+  let option = metadata.option_data(@core.algorithm.get_id())
   let result = semantic.sequence_property(
     "Property",
     new_graph_json_text_property_assignment(
@@ -168,7 +162,9 @@ test "ElkGraphJsonTransientValueService marks opposite lists as transient" {
 
 ///|
 test "ElkGraphJson validator and issue-code provider expose generated defaults" {
-  let validator = new_elk_graph_json_validator()
+  let validator = new_elk_graph_json_validator(
+    @graph_json.new_layout_runtime().option_metadata(),
+  )
   inspect(
     graph_json_text_runtime_bool_to_string(validator.is_enabled()),
     content="true",

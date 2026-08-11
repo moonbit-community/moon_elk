@@ -57,7 +57,7 @@ pub fn FruchtermanReingoldModel::calc_displacement(
   self : FruchtermanReingoldModel,
   forcer : FParticle,
   forcee : FParticle,
-) -> @core.KVector {
+) -> @core.KVector raise {
   abstract_force_model_avoid_same_position(
     abstract_force_model_random(self.state),
     forcer,
@@ -95,7 +95,7 @@ pub fn FruchtermanReingoldModel::layout(
   self : FruchtermanReingoldModel,
   graph : FGraph,
   monitor : @core.IElkProgressMonitor,
-) -> Unit {
+) -> Unit raise {
   abstract_force_model_layout(
     self.state,
     graph,

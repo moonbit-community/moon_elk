@@ -165,7 +165,7 @@ fn dfs_node_order_cycle_breaker_dfs(
 ///|
 fn dfs_node_order_cycle_breaker_configuration(
   graph : @runtime.LGraph,
-) -> @core.LayoutProcessorConfiguration[@runtime.LayeredPhases, @runtime.LGraph]? {
+) -> @core.LayoutProcessorConfiguration[@runtime.LayeredPhases, @runtime.LGraph]? raise {
   ignore(graph)
   Some(
     @core.layout_processor_configuration_create(
@@ -181,7 +181,7 @@ fn dfs_node_order_cycle_breaker_configuration(
 fn dfs_node_order_cycle_breaker_process(
   graph : @runtime.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()
@@ -223,7 +223,7 @@ fn dfs_node_order_cycle_breaker_process(
     }
   } catch {
     UnsupportedGraphException(message) => {
-      @core.layout_runtime_report_unsupported_configuration(message)
+      @core.layout_runtime_raise_unsupported_configuration(message)
       monitor.done()
       return
     }

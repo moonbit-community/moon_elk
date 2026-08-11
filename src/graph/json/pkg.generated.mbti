@@ -3,11 +3,12 @@ package "Milky2018/moon_elk/graph/json"
 
 import {
   "Milky2018/moon_elk/core",
+  "Milky2018/moon_elk/graph",
   "moonbitlang/core/debug",
 }
 
 // Values
-pub fn elk_graph_json_for_elk_graph(Int) -> ElkGraphJsonExportBuilder
+pub fn elk_graph_json_for_elk_graph(@graph.ElkNode) -> ElkGraphJsonExportBuilder
 
 pub fn elk_graph_json_for_graph(String) -> ElkGraphJsonImportBuilder
 
@@ -29,7 +30,9 @@ pub fn new_json_import_exception_message(String) -> JsonImportException
 
 pub fn new_json_import_exception_message_cause(String, String) -> JsonImportException
 
-pub fn new_json_importer() -> JsonImporter
+pub fn new_json_importer(@core.LayoutRuntime, @core.LayoutSession) -> JsonImporter
+
+pub fn new_layout_runtime() -> @core.LayoutRuntime
 
 // Errors
 pub suberror JsonImportException {
@@ -40,7 +43,7 @@ pub fn JsonImportException::get_message(Self) -> String?
 
 // Types and methods
 pub struct ElkGraphJsonExportBuilder {
-  graph : Int
+  graph : @graph.ElkNode
   pretty_print : Bool
   omit_zero_position : Bool
   omit_zero_dimension : Bool
@@ -57,6 +60,8 @@ pub fn ElkGraphJsonExportBuilder::short_layout_option_keys(Self, Bool) -> Self
 pub fn ElkGraphJsonExportBuilder::to_json(Self) -> String
 
 pub struct ElkGraphJsonImportBuilder {
+  runtime : @core.LayoutRuntime
+  session : @core.LayoutSession
   graph : String?
   json_graph : Json?
   importer_maybe : @core.Maybe[JsonImporter]?
@@ -64,7 +69,8 @@ pub struct ElkGraphJsonImportBuilder {
 }
 pub fn ElkGraphJsonImportBuilder::lenient(Self, Bool) -> Self
 pub fn ElkGraphJsonImportBuilder::remember_importer(Self, @core.Maybe[JsonImporter]) -> Self
-pub fn ElkGraphJsonImportBuilder::to_elk(Self) -> Int
+pub fn ElkGraphJsonImportBuilder::take_error_message(Self) -> String?
+pub fn ElkGraphJsonImportBuilder::to_elk(Self) -> @graph.ElkNode
 
 pub struct JsonAdapter {
   unit : Unit
@@ -99,18 +105,20 @@ pub fn JsonAdapter::to_json_object(Self, Json) -> Map[String, Json]
 pub fn JsonAdapter::to_json_string(Self, String) -> Json
 
 pub struct JsonImporter {
+  metadata : @core.OptionMetadata
+  session : @core.LayoutSession
   mut input_model : Map[String, Json]?
-  node_id_map : Map[String, Int]
-  port_id_map : Map[String, Int]
-  node_json_map : Map[Int, Map[String, Json]]
-  port_json_map : Map[Int, Map[String, Json]]
-  edge_json_map : Map[Int, Map[String, Json]]
-  label_json_map : Map[Int, Map[String, Json]]
-  edge_original_parent_map : Map[Int, Int]
+  node_id_map : Map[String, @graph.ElkNode]
+  port_id_map : Map[String, @graph.ElkPort]
+  node_json_map : Map[@graph.ElkNode, Map[String, Json]]
+  port_json_map : Map[@graph.ElkPort, Map[String, Json]]
+  edge_json_map : Map[@graph.ElkEdge, Map[String, Json]]
+  label_json_map : Map[@graph.ElkLabel, Map[String, Json]]
+  edge_original_parent_map : Map[@graph.ElkEdge, @graph.ElkNode]
 }
 pub fn JsonImporter::get_input_model(Self) -> Map[String, Json]?
-pub fn JsonImporter::transfer_layout(Self, Int) -> Unit
-pub fn JsonImporter::transform(Self, Map[String, Json]) -> Int
+pub fn JsonImporter::transfer_layout(Self, @graph.ElkNode) -> Unit raise
+pub fn JsonImporter::transform(Self, Map[String, Json]) -> @graph.ElkNode raise
 
 // Type aliases
 

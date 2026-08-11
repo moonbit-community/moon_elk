@@ -1,13 +1,15 @@
 ///|
 pub struct PropertyValueValueConverter {
+  metadata : @core.OptionMetadata
   qualified_name_converter : ElkGraphQualifiedNameConverter
 }
 
 ///|
 pub fn new_property_value_value_converter(
+  metadata : @core.OptionMetadata,
   qualified_name_converter? : ElkGraphQualifiedNameConverter = new_elk_graph_qualified_name_converter(),
 ) -> PropertyValueValueConverter {
-  { qualified_name_converter, }
+  { metadata, qualified_name_converter }
 }
 
 ///|
@@ -65,7 +67,7 @@ fn graph_text_property_value_needs_quoting(text : String) -> Bool {
 fn graph_text_property_value_quote_if_necessary(
   converter : ElkGraphQualifiedNameConverter,
   text : String,
-) -> String {
+) -> String raise {
   if graph_text_property_value_needs_quoting(text) {
     "\"" + text + "\""
   } else {
@@ -77,7 +79,7 @@ fn graph_text_property_value_quote_if_necessary(
 fn graph_text_property_value_unquote_if_necessary(
   converter : ElkGraphQualifiedNameConverter,
   text : String,
-) -> String {
+) -> String raise {
   if text.length() >= 2 &&
     (
       (text.has_prefix("\"") && text.has_suffix("\"")) ||
@@ -125,7 +127,7 @@ fn graph_text_property_value_from_option_type(
 pub fn PropertyValueValueConverter::to_string(
   self : PropertyValueValueConverter,
   value : GraphTextPropertyValue,
-) -> String {
+) -> String raise {
   match value {
     NullValue => "null"
     NumberValue(number) =>
@@ -159,7 +161,7 @@ pub fn PropertyValueValueConverter::to_value(
   self : PropertyValueValueConverter,
   text : String,
   property_key? : GraphTextPropertyKey? = None,
-) -> GraphTextPropertyValue {
+) -> GraphTextPropertyValue raise {
   if text == "" || text == "null" {
     return NullValue
   }
@@ -169,7 +171,7 @@ pub fn PropertyValueValueConverter::to_value(
   )
   match property_key {
     Some(key) =>
-      match graph_text_property_key_to_layout_option(key) {
+      match graph_text_property_key_to_layout_option(self.metadata, key) {
         Some(option_data) =>
           graph_text_property_value_from_option_type(option_data, unquoted)
         None => ProxyValue(unquoted)

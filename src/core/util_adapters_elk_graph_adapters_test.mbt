@@ -20,8 +20,6 @@ fn elk_graph_adapters_test_set_label_side(
 
 ///|
 test "elk graph adapter adapts and caches child nodes" {
-  @graph.reset_graph_model_for_test()
-
   let root = @graph.create_graph()
   let child1 = @graph.create_node(Some(root))
   let child2 = @graph.create_node(Some(root))
@@ -39,8 +37,6 @@ test "elk graph adapter adapts and caches child nodes" {
 
 ///|
 test "adapt single node uses parent graph when present" {
-  @graph.reset_graph_model_for_test()
-
   let root = @graph.create_graph()
   let child = @graph.create_node(Some(root))
 
@@ -53,8 +49,6 @@ test "adapt single node uses parent graph when present" {
 
 ///|
 test "node adapter exposes labels ports and incident edges" {
-  @graph.reset_graph_model_for_test()
-
   let root = @graph.create_graph()
   let node1 = @graph.create_node(Some(root))
   let node2 = @graph.create_node(Some(root))
@@ -90,8 +84,6 @@ test "node adapter exposes labels ports and incident edges" {
 
 ///|
 test "node adapter sort port list respects fixed order constraint" {
-  @graph.reset_graph_model_for_test()
-
   let root = @graph.create_graph()
   let ordered = @graph.create_node(Some(root))
   @graph.node_set_string_property(ordered, port_constraints, "FIXED_ORDER")
@@ -125,8 +117,6 @@ test "node adapter sort port list respects fixed order constraint" {
 
 ///|
 test "single port adapter exposes side labels edges and compound connections" {
-  @graph.reset_graph_model_for_test()
-
   let root = @graph.create_graph()
   let owner = @graph.create_node(Some(root))
   let descendant = @graph.create_node(Some(owner))
@@ -161,8 +151,6 @@ test "single port adapter exposes side labels edges and compound connections" {
 
 ///|
 test "inside self loops yo is treated as compound connection" {
-  @graph.reset_graph_model_for_test()
-
   let root = @graph.create_graph()
   let node = @graph.create_node(Some(root))
   let port = @graph.create_port(Some(node))
@@ -180,8 +168,6 @@ test "inside self loops yo is treated as compound connection" {
 
 ///|
 test "padding and margin copy semantics follow Java behavior" {
-  @graph.reset_graph_model_for_test()
-
   let root = @graph.create_graph()
   let node = @graph.create_node(Some(root))
   let port = @graph.create_port(Some(node))

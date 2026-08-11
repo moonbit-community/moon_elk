@@ -208,7 +208,7 @@ fn polyomino_compactor_choose_successor(
 pub fn PolyominoCompactor::pack_polyominoes(
   self : PolyominoCompactor,
   poly_holder : Polyominoes,
-) -> Unit {
+) -> Unit raise {
   ignore(self)
   let polys = poly_holder.get_polyominoes()
   let grid = poly_holder.get_grid()

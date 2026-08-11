@@ -32,10 +32,10 @@ fn label_management_processor_node_type_is_label_node(
 ///|
 fn label_management_processor_require_first_connected_edge(
   node : LNode,
-) -> LEdge {
+) -> LEdge raise {
   let connected_edges = node.get_connected_edges()
   if connected_edges.is_empty() {
-    @core.layout_runtime_report_unsupported_configuration(
+    @core.layout_runtime_raise_unsupported_configuration(
       "label dummy node has no connected edge",
     )
     return new_l_edge()
@@ -192,7 +192,7 @@ fn label_management_processor_manage_center_labels(
   label_manager : @core.ILabelManager,
   edge_label_spacing : Double,
   label_label_spacing : Double,
-) -> Unit {
+) -> Unit raise {
   let vertical_layout = label_management_processor_parse_direction(
     graph.get_property_string(@core.direction),
   ).is_vertical()
@@ -294,7 +294,7 @@ pub fn LabelManagementProcessor::process(
   self : LabelManagementProcessor,
   layered_graph : LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()

@@ -13,7 +13,7 @@ pub fn new_dc_polyomino(
   component : DCComponent,
   cell_size_x : Double,
   cell_size_y : Double,
-) -> DCPolyomino {
+) -> DCPolyomino raise {
   let dims = component.get_dimensions_of_bounding_rectangle()
   let p_width = compute_low_res_dimension(dims.x, cell_size_x)
   let p_height = compute_low_res_dimension(dims.y, cell_size_y)
@@ -106,7 +106,11 @@ pub fn DCPolyomino::height(self : DCPolyomino) -> Int {
 }
 
 ///|
-pub fn DCPolyomino::is_blocked(self : DCPolyomino, x : Int, y : Int) -> Bool {
+pub fn DCPolyomino::is_blocked(
+  self : DCPolyomino,
+  x : Int,
+  y : Int,
+) -> Bool raise {
   self.polyomino.is_blocked(x, y)
 }
 
@@ -115,7 +119,7 @@ pub fn DCPolyomino::is_weakly_blocked(
   self : DCPolyomino,
   x : Int,
   y : Int,
-) -> Bool {
+) -> Bool raise {
   self.polyomino.is_weakly_blocked(x, y)
 }
 
@@ -157,7 +161,7 @@ pub fn DCPolyomino::set_y(self : DCPolyomino, y : Int) -> Unit {
 }
 
 ///|
-fn DCPolyomino::fill_cells(self : DCPolyomino) -> Unit {
+fn DCPolyomino::fill_cells(self : DCPolyomino) -> Unit raise {
   let comp_corner = self.representee.get_min_corner()
   let polyo_offset = self.get_offset()
   let base_x = comp_corner.x - polyo_offset.x
@@ -181,7 +185,7 @@ fn DCPolyomino::fill_cells(self : DCPolyomino) -> Unit {
 fn DCPolyomino::add_extensions_to_poly(
   self : DCPolyomino,
   elem : DCElement,
-) -> Unit {
+) -> Unit raise {
   let extensions = elem.get_extensions()
 
   let comp_corner = self.representee.get_min_corner()

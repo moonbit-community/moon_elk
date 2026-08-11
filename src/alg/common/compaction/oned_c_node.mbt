@@ -1,42 +1,48 @@
 ///|
 pub struct CNode {
   handle : Int
-} derive(Eq)
+  priv data : CNodeData
+}
+
+///|
+pub impl Eq for CNode with fn equal(self, other) {
+  physical_equal(self, other)
+}
 
 ///|
 pub fn CNode::id(self : CNode) -> Int {
   checked_cnode(self)
-  cnode_store.val[self.handle].id
+  self.data.id
 }
 
 ///|
 pub fn CNode::origin(self : CNode) -> String? {
   checked_cnode(self)
-  cnode_store.val[self.handle].origin
+  self.data.origin
 }
 
 ///|
 pub fn CNode::set_origin(self : CNode, origin : String?) -> Unit {
   checked_cnode(self)
-  cnode_store.val[self.handle].origin = origin
+  self.data.origin = origin
 }
 
 ///|
 pub fn CNode::node_type(self : CNode) -> String? {
   checked_cnode(self)
-  cnode_store.val[self.handle].node_type
+  self.data.node_type
 }
 
 ///|
 pub fn CNode::set_node_type(self : CNode, node_type : String?) -> Unit {
   checked_cnode(self)
-  cnode_store.val[self.handle].node_type = node_type
+  self.data.node_type = node_type
 }
 
 ///|
 pub fn CNode::to_string_delegate(self : CNode) -> ((CNode) -> String)? {
   checked_cnode(self)
-  cnode_store.val[self.handle].to_string_delegate
+  self.data.to_string_delegate
 }
 
 ///|
@@ -45,19 +51,19 @@ pub fn CNode::set_to_string_delegate(
   delegate : ((CNode) -> String)?,
 ) -> Unit {
   checked_cnode(self)
-  cnode_store.val[self.handle].to_string_delegate = delegate
+  self.data.to_string_delegate = delegate
 }
 
 ///|
 pub fn CNode::set_id(self : CNode, id : Int) -> Unit {
   checked_cnode(self)
-  cnode_store.val[self.handle].id = id
+  self.data.id = id
 }
 
 ///|
 pub fn CNode::group(self : CNode) -> CGroup? {
   checked_cnode(self)
-  cnode_store.val[self.handle].c_group
+  self.data.c_group
 }
 
 ///|
@@ -67,25 +73,25 @@ pub fn CNode::set_group(self : CNode, group : CGroup?) -> Unit {
     Some(value) => checked_cgroup(value)
     None => ()
   }
-  cnode_store.val[self.handle].c_group = group
+  self.data.c_group = group
 }
 
 ///|
 pub fn CNode::hitbox(self : CNode) -> @core.ElkRectangle {
   checked_cnode(self)
-  cnode_store.val[self.handle].hitbox
+  self.data.hitbox
 }
 
 ///|
 pub fn CNode::set_hitbox(self : CNode, hitbox : @core.ElkRectangle) -> Unit {
   checked_cnode(self)
-  cnode_store.val[self.handle].hitbox = copy_rect(hitbox)
+  self.data.hitbox = copy_rect(hitbox)
 }
 
 ///|
 pub fn CNode::hitbox_pre_compaction(self : CNode) -> @core.ElkRectangle? {
   checked_cnode(self)
-  cnode_store.val[self.handle].hitbox_pre_compaction
+  self.data.hitbox_pre_compaction
 }
 
 ///|
@@ -94,7 +100,7 @@ pub fn CNode::set_hitbox_pre_compaction(
   hitbox : @core.ElkRectangle?,
 ) -> Unit {
   checked_cnode(self)
-  cnode_store.val[self.handle].hitbox_pre_compaction = match hitbox {
+  self.data.hitbox_pre_compaction = match hitbox {
     Some(value) => Some(copy_rect(value))
     None => None
   }
@@ -103,44 +109,44 @@ pub fn CNode::set_hitbox_pre_compaction(
 ///|
 pub fn CNode::start_pos(self : CNode) -> Double {
   checked_cnode(self)
-  cnode_store.val[self.handle].start_pos
+  self.data.start_pos
 }
 
 ///|
 pub fn CNode::set_start_pos(self : CNode, start_pos : Double) -> Unit {
   checked_cnode(self)
-  cnode_store.val[self.handle].start_pos = start_pos
+  self.data.start_pos = start_pos
 }
 
 ///|
 pub fn CNode::c_group_offset(self : CNode) -> @core.KVector {
   checked_cnode(self)
-  cnode_store.val[self.handle].c_group_offset
+  self.data.c_group_offset
 }
 
 ///|
 pub fn CNode::set_c_group_offset(self : CNode, offset : @core.KVector) -> Unit {
   checked_cnode(self)
-  cnode_store.val[self.handle].c_group_offset = copy_vec(offset)
+  self.data.c_group_offset = copy_vec(offset)
 }
 
 ///|
 pub fn CNode::constraints(self : CNode) -> Array[CNode] {
   checked_cnode(self)
-  cnode_store.val[self.handle].constraints
+  self.data.constraints
 }
 
 ///|
 pub fn CNode::clear_constraints(self : CNode) -> Unit {
   checked_cnode(self)
-  cnode_store.val[self.handle].constraints.clear()
+  self.data.constraints.clear()
 }
 
 ///|
 pub fn CNode::add_constraint(self : CNode, node : CNode) -> Unit {
   checked_cnode(self)
   checked_cnode(node)
-  cnode_store.val[self.handle].constraints.push(node)
+  self.data.constraints.push(node)
 }
 
 ///|
@@ -149,10 +155,10 @@ pub fn CNode::replace_constraints(
   constraints : Array[CNode],
 ) -> Unit {
   checked_cnode(self)
-  cnode_store.val[self.handle].constraints.clear()
+  self.data.constraints.clear()
   for node in constraints {
     checked_cnode(node)
-    cnode_store.val[self.handle].constraints.push(node)
+    self.data.constraints.push(node)
   }
 }
 

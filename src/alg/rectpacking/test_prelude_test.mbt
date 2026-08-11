@@ -1,5 +1,4 @@
 ///|
-let reset_graph_model_for_test = @test.reset_graph_model_for_test
 
 ///|
 let create_graph = @test.create_graph

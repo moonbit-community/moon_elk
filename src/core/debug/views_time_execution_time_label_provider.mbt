@@ -63,7 +63,7 @@ fn execution_time_label_provider_time_to_string(time : Double) -> String {
 pub fn ExecutionTimeLabelProvider::get_text(
   self : ExecutionTimeLabelProvider,
   execution : ExecutionInfo,
-) -> String {
+) -> String raise {
   match self.display_mode {
     NameDisplay => {
       let base = execution_info_get_name(execution)

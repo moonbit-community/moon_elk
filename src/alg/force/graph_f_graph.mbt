@@ -1,12 +1,4 @@
 ///|
-pub fn reset_force_graph_model_for_test() -> Unit {
-  fnode_store.val.clear()
-  fedge_store.val.clear()
-  flabel_store.val.clear()
-  fbendpoint_store.val.clear()
-}
-
-///|
 pub struct FGraph {
   nodes : Array[FNode]
   edges : Array[FEdge]
@@ -66,25 +58,21 @@ pub fn fgraph_copy_properties(target : FGraph, source : FGraph) -> Unit {
 
 ///|
 pub fn FGraph::add_node(self : FGraph, node : FNode) -> Unit {
-  checked_fnode(node)
   self.nodes.push(node)
 }
 
 ///|
 pub fn FGraph::add_edge(self : FGraph, edge : FEdge) -> Unit {
-  checked_fedge(edge)
   self.edges.push(edge)
 }
 
 ///|
 pub fn FGraph::add_label(self : FGraph, label : FLabel) -> Unit {
-  checked_flabel(label)
   self.labels.push(label)
 }
 
 ///|
 pub fn FGraph::add_bendpoint(self : FGraph, bendpoint : FBendpoint) -> Unit {
-  checked_fbendpoint(bendpoint)
   self.bendpoints.push(bendpoint)
 }
 

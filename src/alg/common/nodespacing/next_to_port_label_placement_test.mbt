@@ -50,7 +50,6 @@ fn next_to_port_should_label_be_placed_next_to_port(
 
 ///|
 fn next_to_port_fixture() -> (ElkNode, ElkNode, ElkNode, ElkPort) {
-  reset_graph_model_for_test()
   let root = create_graph()
   let parent = create_node(Some(root))
   let descendant = create_node(Some(parent))

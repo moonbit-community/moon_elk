@@ -1,6 +1,10 @@
 ///|
 test "elk layered do_layout scaffold completes monitor lifecycle" {
-  let elk_layered = new_elk_layered()
+  let elk_layered = new_elk_layered(
+    @core.new_layout_runtime(),
+    @core.new_layout_session(),
+    @engine.new_layered_phase_registry(),
+  )
   let lgraph = new_l_graph()
   let monitor = new_elk_progress_monitor()
 
@@ -11,7 +15,11 @@ test "elk layered do_layout scaffold completes monitor lifecycle" {
 
 ///|
 test "elk layered do_compound_layout notifies installed test controller" {
-  let elk_layered = new_elk_layered()
+  let elk_layered = new_elk_layered(
+    @core.new_layout_runtime(),
+    @core.new_layout_session(),
+    @engine.new_layered_phase_registry(),
+  )
   let expected_graph = elk_layered_test_graph_with_greedy_switch_off()
   let lgraph = elk_layered_test_graph_with_greedy_switch_off()
   let monitor = new_elk_progress_monitor()
@@ -61,7 +69,11 @@ test "elk layered do_compound_layout notifies installed test controller" {
 
 ///|
 test "elk layered run_layout_test_until follows inclusive boundary semantics" {
-  let elk_layered = new_elk_layered()
+  let elk_layered = new_elk_layered(
+    @core.new_layout_runtime(),
+    @core.new_layout_session(),
+    @engine.new_layered_phase_registry(),
+  )
   let state = elk_layered.prepare_layout_test(
     elk_layered_test_graph_with_greedy_switch_off(),
   )
@@ -98,8 +110,12 @@ fn elk_layered_test_graph_with_greedy_switch_off() -> LGraph {
 }
 
 ///|
-fn elk_layered_test_algorithm_length(graph : LGraph) -> Int {
-  let elk_layered = new_elk_layered()
+fn elk_layered_test_algorithm_length(graph : LGraph) -> Int raise {
+  let elk_layered = new_elk_layered(
+    @core.new_layout_runtime(),
+    @core.new_layout_session(),
+    @engine.new_layered_phase_registry(),
+  )
   let state = elk_layered.prepare_layout_test(graph)
   elk_layered.get_layout_test_configuration(state).length()
 }

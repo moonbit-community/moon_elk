@@ -3,8 +3,12 @@ pub let layout_graph_view_id : String = "org.eclipse.elk.debug.graphView"
 
 ///|
 fn layout_graph_view_filter(info : ExecutionInfo) -> Bool {
-  execution_info_has_logged_graphs(info) ||
-  execution_info_has_descendants_with_logged_graphs(info)
+  try
+    execution_info_has_logged_graphs(info) ||
+    execution_info_has_descendants_with_logged_graphs(info)
+  catch {
+    _ => false
+  }
 }
 
 ///|
@@ -51,13 +55,15 @@ pub fn LayoutGraphView::get_selected_execution_infos(
 pub fn LayoutGraphView::set_selected_execution_infos(
   self : LayoutGraphView,
   infos : Array[ExecutionInfo],
-) -> Unit {
+) -> Unit raise {
   self.base.set_selected_execution_infos(infos)
   self.tree_selection_changed()
 }
 
 ///|
-pub fn LayoutGraphView::tree_selection_changed(self : LayoutGraphView) -> Unit {
+pub fn LayoutGraphView::tree_selection_changed(
+  self : LayoutGraphView,
+) -> Unit raise {
   let collected : Array[@core.LoggedGraph] = []
   for info in self.base.get_selected_execution_infos() {
     for graph in execution_info_get_logged_graphs(info) {

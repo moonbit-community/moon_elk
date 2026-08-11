@@ -1,12 +1,8 @@
 ///|
 test "ExperimentalObject realize combines graph algorithm and configuration" {
-  layout_meta_data_service_reset_for_test()
-  layout_meta_data_service_register_algorithm(
-    new_layout_algorithm_data("org.eclipse.elk.demo"),
-  )
-  reset_graph_model_for_test()
-  let algorithm_data = match
-    layout_meta_data_service_get_algorithm_data("org.eclipse.elk.demo") {
+  let metadata = @core.new_option_metadata()
+  metadata.register_algorithm(new_layout_algorithm_data("org.eclipse.elk.demo"))
+  let algorithm_data = match metadata.algorithm_data("org.eclipse.elk.demo") {
     Some(value) => value
     None => abort("missing algorithm data")
   }
@@ -33,7 +29,6 @@ test "ExperimentalObject realize combines graph algorithm and configuration" {
 
 ///|
 test "ExperimentalObject inflate creates cartesian product" {
-  layout_meta_data_service_reset_for_test()
   let graph_a = new_test_graph((_test_instance : Unit) => create_graph(), "a")
   let graph_b = new_test_graph((_test_instance : Unit) => create_graph(), "b")
   let config : TestConfiguration[Unit] = new_test_configuration()

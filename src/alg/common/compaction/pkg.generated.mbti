@@ -27,33 +27,33 @@ pub fn default_spacing_handler() -> ISpacingsHandler
 
 pub fn draw_hitboxes(CGraph, String) -> String
 
-pub fn longest_path_compaction(OneDimensionalCompactor) -> Unit
+pub fn longest_path_compaction(OneDimensionalCompactor) -> Unit raise
 
 pub fn new_cgraph(Array[@core.Direction]) -> CGraph
 
-pub fn new_one_dimensional_compactor(CGraph) -> OneDimensionalCompactor
+pub fn new_one_dimensional_compactor(CGraph) -> OneDimensionalCompactor raise
 
 pub fn new_quadruplet() -> Quadruplet
 
 pub fn new_quadruplet_values(Bool, Bool, Bool, Bool) -> Quadruplet
 
-pub fn new_spacings_handler((CNode, CNode) -> Double, (CNode, CNode) -> Double) -> ISpacingsHandler
+pub fn new_spacings_handler((CNode, CNode) -> Double raise, (CNode, CNode) -> Double raise) -> ISpacingsHandler
 
-pub fn one_dimensional_compactor_longest_path_compaction(OneDimensionalCompactor) -> Unit
+pub fn one_dimensional_compactor_longest_path_compaction(OneDimensionalCompactor) -> Unit raise
 
-pub fn one_dimensional_compactor_quadratic_constraints(OneDimensionalCompactor) -> Unit
+pub fn one_dimensional_compactor_quadratic_constraints(OneDimensionalCompactor) -> Unit raise
 
-pub fn one_dimensional_compactor_scanline_constraints(OneDimensionalCompactor) -> Unit
+pub fn one_dimensional_compactor_scanline_constraints(OneDimensionalCompactor) -> Unit raise
 
-pub fn quadratic_constraint_calculation(OneDimensionalCompactor) -> Unit
+pub fn quadratic_constraint_calculation(OneDimensionalCompactor) -> Unit raise
 
-pub fn reset_compaction_oned_model_for_test() -> Unit
+pub fn scanline_constraint_calculation(OneDimensionalCompactor) -> Unit raise
 
-pub fn scanline_constraint_calculation(OneDimensionalCompactor) -> Unit
+pub fn[T] scanline_execute(Array[T], (T, T) -> Int raise?, Array[(T) -> Unit]) -> Unit raise?
 
-pub fn[T] scanline_execute(Array[T], (T, T) -> Int, Array[(T) -> Unit]) -> Unit
+pub fn[T] scanline_execute_single(Array[T], (T, T) -> Int raise?, (T) -> Unit) -> Unit raise?
 
-pub fn[T] scanline_execute_single(Array[T], (T, T) -> Int, (T) -> Unit) -> Unit
+pub fn[T] scanline_execute_single_raise(Array[T], (T, T) -> Int raise?, (T) -> Unit raise) -> Unit raise
 
 // Errors
 pub suberror CGroupException {
@@ -85,8 +85,9 @@ pub fn CGraph::supports(Self, @core.Direction) -> Bool
 
 pub struct CGroup {
   handle : Int
-} derive(Eq)
-pub fn CGroup::add_cnode(Self, CNode) -> Unit
+  // private fields
+}
+pub fn CGroup::add_cnode(Self, CNode) -> Unit raise
 pub fn CGroup::add_delta(Self, Double) -> Unit
 pub fn CGroup::add_delta_normalized(Self, Double) -> Unit
 pub fn CGroup::add_incoming_constraint(Self, CNode) -> Bool
@@ -108,20 +109,22 @@ pub fn CGroup::set_out_degree_real(Self, Int) -> Unit
 pub fn CGroup::set_reference(Self, CNode?) -> Unit
 pub fn CGroup::set_start_pos(Self, Double) -> Unit
 pub fn CGroup::start_pos(Self) -> Double
+pub impl Eq for CGroup
 
 pub struct CGroupBuilder {
   nodes : Array[CNode]
   mut reference : CNode?
   mut master : CNode?
 }
-pub fn CGroupBuilder::create(Self, CGraph) -> CGroup
+pub fn CGroupBuilder::create(Self, CGraph) -> CGroup raise
 pub fn CGroupBuilder::master(Self, CNode) -> Self
 pub fn CGroupBuilder::nodes(Self, Array[CNode]) -> Self
 pub fn CGroupBuilder::reference(Self, CNode) -> Self
 
 pub struct CNode {
   handle : Int
-} derive(Eq)
+  // private fields
+}
 pub fn CNode::add_constraint(Self, Self) -> Unit
 pub fn CNode::c_group_offset(Self) -> @core.KVector
 pub fn CNode::clear_constraints(Self) -> Unit
@@ -146,6 +149,7 @@ pub fn CNode::set_to_string_delegate(Self, ((Self) -> String)?) -> Unit
 pub fn CNode::start_pos(Self) -> Double
 pub fn CNode::to_string(Self) -> String
 pub fn CNode::to_string_delegate(Self) -> ((Self) -> String)?
+pub impl Eq for CNode
 
 pub struct CNodeBuilder {
   mut id : Int
@@ -155,7 +159,7 @@ pub struct CNodeBuilder {
   mut hitbox : @core.ElkRectangle?
   mut group_parent : CNode?
 }
-pub fn CNodeBuilder::create(Self, CGraph) -> CNode
+pub fn CNodeBuilder::create(Self, CGraph) -> CNode raise
 pub fn CNodeBuilder::group_with(Self, CNode) -> Self
 pub fn CNodeBuilder::hitbox(Self, @core.ElkRectangle) -> Self
 pub fn CNodeBuilder::id(Self, Int) -> Self
@@ -164,29 +168,33 @@ pub fn CNodeBuilder::origin(Self, String) -> Self
 pub fn CNodeBuilder::to_string_delegate(Self, (CNode) -> String) -> Self
 
 pub struct ISpacingsHandler {
-  get_horizontal_spacing : (CNode, CNode) -> Double
-  get_vertical_spacing : (CNode, CNode) -> Double
+  get_horizontal_spacing : ((CNode, CNode) -> Double raise)?
+  get_vertical_spacing : ((CNode, CNode) -> Double raise)?
+  pure_horizontal_spacing : ((CNode, CNode) -> Double)?
+  pure_vertical_spacing : ((CNode, CNode) -> Double)?
 }
+pub fn ISpacingsHandler::horizontal_spacing(Self, CNode, CNode) -> Double raise
+pub fn ISpacingsHandler::vertical_spacing(Self, CNode, CNode) -> Double raise
 
 pub struct OneDimensionalCompactor {
   c_graph : CGraph
-  mut lock_fun : ((CNode, @core.Direction) -> Bool)?
+  mut lock_fun : ((CNode, @core.Direction) -> Bool raise)?
   mut spacings_handler : ISpacingsHandler
   mut direction : @core.Direction
   mut finished : Bool
-  mut compaction_algorithm : (OneDimensionalCompactor) -> Unit
-  mut constraint_algorithm : (OneDimensionalCompactor) -> Unit
+  mut compaction_algorithm : (OneDimensionalCompactor) -> Unit raise
+  mut constraint_algorithm : (OneDimensionalCompactor) -> Unit raise
 }
 pub fn OneDimensionalCompactor::calculate_group_offsets(Self) -> Self
-pub fn OneDimensionalCompactor::change_direction(Self, @core.Direction) -> Self
-pub fn OneDimensionalCompactor::compact(Self) -> Self
-pub fn OneDimensionalCompactor::finish(Self) -> Self
-pub fn OneDimensionalCompactor::force_constraints_recalculation(Self) -> Self
-pub fn OneDimensionalCompactor::is_locked_group(Self, CGroup, @core.Direction) -> Bool
-pub fn OneDimensionalCompactor::is_locked_node(Self, CNode, @core.Direction) -> Bool
-pub fn OneDimensionalCompactor::set_compaction_algorithm(Self, (Self) -> Unit) -> Self
-pub fn OneDimensionalCompactor::set_constraint_algorithm(Self, (Self) -> Unit) -> Self
-pub fn OneDimensionalCompactor::set_lock_function(Self, ((CNode, @core.Direction) -> Bool)?) -> Self
+pub fn OneDimensionalCompactor::change_direction(Self, @core.Direction) -> Self raise
+pub fn OneDimensionalCompactor::compact(Self) -> Self raise
+pub fn OneDimensionalCompactor::finish(Self) -> Self raise
+pub fn OneDimensionalCompactor::force_constraints_recalculation(Self) -> Self raise
+pub fn OneDimensionalCompactor::is_locked_group(Self, CGroup, @core.Direction) -> Bool raise
+pub fn OneDimensionalCompactor::is_locked_node(Self, CNode, @core.Direction) -> Bool raise
+pub fn OneDimensionalCompactor::set_compaction_algorithm(Self, (Self) -> Unit raise) -> Self
+pub fn OneDimensionalCompactor::set_constraint_algorithm(Self, (Self) -> Unit raise) -> Self
+pub fn OneDimensionalCompactor::set_lock_function(Self, ((CNode, @core.Direction) -> Bool raise)?) -> Self
 pub fn OneDimensionalCompactor::set_spacings_handler(Self, ISpacingsHandler) -> Self
 
 pub struct Quadruplet {
@@ -201,11 +209,11 @@ pub fn Quadruplet::set(Self, Bool, Bool, Bool, Bool) -> Unit
 pub fn Quadruplet::set_direction(Self, Bool, @core.Direction) -> Unit
 
 // Type aliases
-pub type ICompactionAlgorithm = (OneDimensionalCompactor) -> Unit
+pub type ICompactionAlgorithm = (OneDimensionalCompactor) -> Unit raise
 
-pub type IConstraintCalculationAlgorithm = (OneDimensionalCompactor) -> Unit
+pub type IConstraintCalculationAlgorithm = (OneDimensionalCompactor) -> Unit raise
 
-pub type ILockFunction = (CNode, @core.Direction) -> Bool
+pub type ILockFunction = (CNode, @core.Direction) -> Bool raise
 
 pub type ScanlineEventHandler[T] = (T) -> Unit
 

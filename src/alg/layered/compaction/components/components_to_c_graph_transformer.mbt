@@ -249,7 +249,7 @@ fn[N, E] components_compaction_create_rect_node(
   transformer : ComponentsToCGraphTransformer[N, E],
   rect : @core.ElkRectangle,
   in_graph : Bool,
-) -> @compaction.CNode {
+) -> @compaction.CNode raise {
   let node = @compaction.cnode_of()
     .hitbox(@core.new_elk_rectangle_copy(rect))
     .create(transformer.c_graph)
@@ -268,7 +268,7 @@ fn[N, E] components_compaction_create_rect_node(
 fn[N, E] components_compaction_add_placeholder_group(
   transformer : ComponentsToCGraphTransformer[N, E],
   placeholder : @compaction.CNode,
-) -> Unit {
+) -> Unit raise {
   let dummy_group = @compaction.cgroup_of()
     .nodes([placeholder])
     .create(transformer.c_graph)
@@ -301,7 +301,7 @@ pub fn[N, E] new_components_to_cgraph_transformer(
 pub fn[N, E] ComponentsToCGraphTransformer::transform(
   self : ComponentsToCGraphTransformer[N, E],
   ccs : IConnectedComponents[N, E],
-) -> @compaction.CGraph {
+) -> @compaction.CGraph raise {
   self.c_graph = @compaction.new_cgraph(@core.direction_values())
   self.component_offsets.clear()
   self.external_extensions.clear()

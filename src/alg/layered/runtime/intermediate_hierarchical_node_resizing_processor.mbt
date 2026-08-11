@@ -254,7 +254,9 @@ fn hierarchical_node_resizing_processor_graph_layout_to_node(
 }
 
 ///|
-fn hierarchical_node_resizing_processor_resize_graph(lgraph : LGraph) -> Unit {
+fn hierarchical_node_resizing_processor_resize_graph(
+  lgraph : LGraph,
+) -> Unit raise {
   let size_constraint = lgraph.get_property_string_array(
     @core.node_size_constraints,
   )
@@ -367,7 +369,7 @@ fn hierarchical_node_resizing_processor_resize_graph_no_really_i_mean_it(
 fn hierarchical_node_resizing_processor_process(
   graph : LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()

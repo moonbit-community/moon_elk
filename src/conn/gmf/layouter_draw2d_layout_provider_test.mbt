@@ -5,7 +5,6 @@ fn conn_gmf_draw2d_test_graph() -> (
   @graph.ElkNode,
   @graph.ElkEdge,
 ) {
-  @graph.reset_graph_model_for_test()
   let parent = @graph.create_graph()
   let source = @graph.create_node(Some(parent))
   let target = @graph.create_node(Some(parent))

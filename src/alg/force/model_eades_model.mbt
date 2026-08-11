@@ -33,7 +33,7 @@ pub fn EadesModel::calc_displacement(
   self : EadesModel,
   forcer : FParticle,
   forcee : FParticle,
-) -> @core.KVector {
+) -> @core.KVector raise {
   abstract_force_model_avoid_same_position(
     abstract_force_model_random(self.state),
     forcer,
@@ -66,14 +66,14 @@ pub fn EadesModel::layout(
   self : EadesModel,
   graph : FGraph,
   monitor : @core.IElkProgressMonitor,
-) -> Unit {
+) -> Unit raise {
   abstract_force_model_layout(
     self.state,
     graph,
     monitor,
     () => self.initialize(graph),
     count => self.more_iterations(count),
-    (forcer, forcee) => Some(self.calc_displacement(forcer, forcee)),
+    fn(forcer, forcee) raise { Some(self.calc_displacement(forcer, forcee)) },
     () => (),
   )
 }

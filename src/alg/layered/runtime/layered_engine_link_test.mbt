@@ -1,2 +1,4 @@
 ///|
-let _layered_engine_linked_for_tests : Bool = @engine.layered_engine_linked
+test "layered engine builds an isolated phase registry" {
+  ignore(@engine.new_layered_phase_registry())
+}

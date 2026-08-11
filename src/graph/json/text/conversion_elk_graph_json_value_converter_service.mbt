@@ -7,10 +7,19 @@ pub struct ElkGraphJsonValueConverterService {
 
 ///|
 pub fn new_elk_graph_json_value_converter_service(
+  metadata : @core.OptionMetadata,
   number_value_converter? : GraphJsonTextNumberValueConverter = new_graph_json_text_number_value_converter(),
-  property_key_value_converter? : GraphJsonTextPropertyKeyValueConverter = new_graph_json_text_property_key_value_converter(),
-  property_value_value_converter? : GraphJsonTextPropertyValueValueConverter = new_graph_json_text_property_value_value_converter(),
+  property_key_value_converter? : GraphJsonTextPropertyKeyValueConverter? = None,
+  property_value_value_converter? : GraphJsonTextPropertyValueValueConverter? = None,
 ) -> ElkGraphJsonValueConverterService {
+  let property_key_value_converter = match property_key_value_converter {
+    Some(value) => value
+    None => new_graph_json_text_property_key_value_converter(metadata)
+  }
+  let property_value_value_converter = match property_value_value_converter {
+    Some(value) => value
+    None => new_graph_json_text_property_value_value_converter(metadata)
+  }
   {
     number_value_converter,
     property_key_value_converter,

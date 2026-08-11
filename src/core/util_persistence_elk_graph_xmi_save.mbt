@@ -28,7 +28,7 @@ pub fn ElkGraphXMISave::should_save_property_entry(
 ) -> Bool {
   ignore(self)
   if property_id is Some(id) {
-    if layout_meta_data_service_get_option_data_opt(id) is Some(option_data) {
+    if self.helper.metadata.option_data_opt(id) is Some(option_data) {
       elk_graph_xmi_save_can_parse_value(option_data)
     } else {
       false

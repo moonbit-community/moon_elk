@@ -204,8 +204,8 @@ fn edge_aware_scanline_timestamp_comparator(
 ///|
 fn edge_aware_scanline_sweep(
   compactor : @compaction.OneDimensionalCompactor,
-  filter_fun : (@compaction.CNode) -> Bool,
-) -> Unit {
+  filter_fun : (@compaction.CNode) -> Bool raise?,
+) -> Unit raise {
   let points : Array[EdgeAwareScanlineTimestamp] = []
   for node in compactor.c_graph.c_nodes {
     if filter_fun(node) {
@@ -226,14 +226,14 @@ fn edge_aware_scanline_sweep(
     index = index + 1
   }
 
-  @compaction.scanline_execute_single(
+  @compaction.scanline_execute_single_raise(
     points,
     edge_aware_scanline_timestamp_comparator,
-    point => {
+    fn(point) raise {
       if point.low {
         let success = edge_aware_scanline_interval_insert(intervals, point.node)
         if !success {
-          @core.layout_runtime_report_unsupported_configuration(
+          @core.layout_runtime_raise_unsupported_configuration(
             "Invalid hitboxes for scanline constraint calculation.",
           )
           return
@@ -434,9 +434,9 @@ fn edge_aware_scanline_min_spacing(
 fn edge_aware_scanline_calculate_for_spline(
   calculation : EdgeAwareScanlineCalculation,
   compactor : @compaction.OneDimensionalCompactor,
-) -> Unit {
+) -> Unit raise {
   let origin_lookup = calculation.origin_lookup
-  edge_aware_scanline_sweep(compactor, node => {
+  edge_aware_scanline_sweep(compactor, fn(node) {
     origin_lookup.get_vertical_segment_or_null(node) is Some(_)
   })
 
@@ -465,7 +465,7 @@ fn edge_aware_scanline_calculate_for_spline(
 fn edge_aware_scanline_calculate_for_orthogonal(
   calculation : EdgeAwareScanlineCalculation,
   compactor : @compaction.OneDimensionalCompactor,
-) -> Unit {
+) -> Unit raise {
   let origin_lookup = calculation.origin_lookup
   let vertical_spacing = @cmp.maximum(
     0.0,
@@ -481,7 +481,7 @@ fn edge_aware_scanline_calculate_for_orthogonal(
     }
   }
 
-  edge_aware_scanline_sweep(compactor, node => {
+  edge_aware_scanline_sweep(compactor, fn(node) {
     origin_lookup.get_vertical_segment_or_null(node) is Some(_)
   })
 
@@ -511,7 +511,7 @@ fn edge_aware_scanline_calculate_for_orthogonal(
     }
   }
 
-  edge_aware_scanline_sweep(compactor, node => {
+  edge_aware_scanline_sweep(compactor, fn(node) {
     origin_lookup.get_lnode_or_null(node) is Some(_)
   })
 
@@ -547,13 +547,13 @@ fn edge_aware_scanline_calculate_for_orthogonal(
 fn edge_aware_scanline_calculate_constraints(
   calculation : EdgeAwareScanlineCalculation,
   compactor : @compaction.OneDimensionalCompactor,
-) -> Unit {
+) -> Unit raise {
   match calculation.edge_routing {
     Orthogonal =>
       edge_aware_scanline_calculate_for_orthogonal(calculation, compactor)
     Splines => edge_aware_scanline_calculate_for_spline(calculation, compactor)
     _ =>
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "Unsupported edge routing for edge-aware scanline constraints.",
       )
   }

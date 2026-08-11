@@ -19,12 +19,11 @@ fn longest_path_source_layerer_layer_constraint_postprocessor_factory() -> @core
 }
 
 ///|
-let longest_path_source_layerer_baseline_processing_configuration : @core.LayoutProcessorConfiguration[
+fn longest_path_source_layerer_baseline_processing_configuration() -> @core.LayoutProcessorConfiguration[
   @runtime.LayeredPhases,
   @runtime.LGraph,
-] = @core.layout_processor_configuration_create(
-    @runtime.layered_phase_descriptor,
-  )
+] raise {
+  @core.layout_processor_configuration_create(@runtime.layered_phase_descriptor)
   .add_before(
     P1CycleBreaking,
     @runtime.layered_intermediate_processor_factory(
@@ -39,6 +38,7 @@ let longest_path_source_layerer_baseline_processing_configuration : @core.Layout
     P3NodeOrdering,
     longest_path_source_layerer_layer_constraint_postprocessor_factory(),
   )
+}
 
 ///|
 pub(all) suberror LongestPathSourceLayererException {
@@ -129,11 +129,11 @@ fn longest_path_source_layerer_visit(
 ///|
 fn longest_path_source_layerer_configuration(
   graph : @runtime.LGraph,
-) -> @core.LayoutProcessorConfiguration[@runtime.LayeredPhases, @runtime.LGraph]? {
+) -> @core.LayoutProcessorConfiguration[@runtime.LayeredPhases, @runtime.LGraph]? raise {
   ignore(graph)
   Some(
     @core.layout_processor_configuration_create_from(
-      longest_path_source_layerer_baseline_processing_configuration,
+      longest_path_source_layerer_baseline_processing_configuration(),
     ),
   )
 }
@@ -142,7 +142,7 @@ fn longest_path_source_layerer_configuration(
 fn longest_path_source_layerer_process(
   layered_graph : @runtime.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()
@@ -168,7 +168,7 @@ fn longest_path_source_layerer_process(
     nodes.clear()
   } catch {
     UnsupportedGraphException(message) => {
-      @core.layout_runtime_report_unsupported_configuration(message)
+      @core.layout_runtime_raise_unsupported_configuration(message)
       monitor.done()
       return
     }

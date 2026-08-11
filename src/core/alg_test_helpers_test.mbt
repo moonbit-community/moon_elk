@@ -132,7 +132,7 @@ pub fn count_layout_phases(
 ///|
 pub fn run_processor_step(
   processor : ILayoutProcessor[TestPhases, StringBuffer?],
-) -> String {
+) -> String raise {
   let buffer = new_string_buffer()
   processor.process(Some(buffer), None)
   buffer.to_string()

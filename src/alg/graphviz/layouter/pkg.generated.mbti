@@ -161,7 +161,7 @@ pub fn new_graphviz_layouter_preference_store() -> GraphvizLayouterPreferenceSto
 
 pub fn new_graphviz_output_stream((Int) -> Unit, (Array[Int], Int, Int) -> Unit, () -> Unit, () -> Unit) -> GraphvizOutputStream
 
-pub fn new_graphviz_preference_page() -> GraphvizPreferencePage
+pub fn new_graphviz_preference_page(@core.OptionMetadata) -> GraphvizPreferencePage
 
 pub fn new_graphviz_preference_store(String) -> GraphvizPreferenceStore
 
@@ -267,11 +267,11 @@ pub struct GraphvizLayoutProvider {
   mut my_call_no : Int
 }
 pub fn GraphvizLayoutProvider::debug_file_base(Self) -> String
-pub fn GraphvizLayoutProvider::dispose(Self) -> Unit
-pub fn GraphvizLayoutProvider::initialize(Self, String?) -> Unit
-pub fn GraphvizLayoutProvider::layout(Self, Int, @core.IElkProgressMonitor) -> Unit
-pub fn GraphvizLayoutProvider::read_dot_graph(Self, @core.IElkProgressMonitor, Bool, GraphvizLayoutResourceSet) -> @dot.DotGraphvizModel raise GraphvizException
-pub fn GraphvizLayoutProvider::write_dot_graph(Self, @dot.DotGraphvizModel, @core.IElkProgressMonitor, Bool, GraphvizLayoutResourceSet) -> Unit raise GraphvizException
+pub fn GraphvizLayoutProvider::dispose(Self) -> Unit raise
+pub fn GraphvizLayoutProvider::initialize(Self, String?) -> Unit raise
+pub fn GraphvizLayoutProvider::layout(Self, @graph.ElkNode, @core.IElkProgressMonitor) -> Unit raise
+pub fn GraphvizLayoutProvider::read_dot_graph(Self, @core.IElkProgressMonitor, Bool, GraphvizLayoutResourceSet) -> @dot.DotGraphvizModel raise
+pub fn GraphvizLayoutProvider::write_dot_graph(Self, @dot.DotGraphvizModel, @core.IElkProgressMonitor, Bool, GraphvizLayoutResourceSet) -> Unit raise
 
 pub struct GraphvizLayoutResourceSet {
   serialize_fn : (@dot.DotGraphvizModel) -> Array[Int]
@@ -330,6 +330,7 @@ pub enum GraphvizPreferenceFieldKind {
 }
 
 pub struct GraphvizPreferencePage {
+  metadata : @core.OptionMetadata
   fields : Array[GraphvizPreferenceField]
   mut preference_store : GraphvizPreferenceStore?
 }
@@ -399,7 +400,7 @@ pub struct GraphvizWatchdog {
 pub struct LayoutDotExporter {
   base : @transform.DotExporter
 }
-pub fn LayoutDotExporter::transform(Self, @transform.DotTransformationData[Int, @dot.DotGraphvizModel]) -> Unit
+pub fn LayoutDotExporter::transform(Self, @transform.DotTransformationData[@graph.ElkNode, @dot.DotGraphvizModel]) -> Unit raise
 
 // Type aliases
 

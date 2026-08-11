@@ -8,7 +8,7 @@ pub fn new_radial_edge_angle_calculator_layout_processor() -> @core.ILayoutProce
     let root = match radial_internal_root(graph) {
       Some(root_node) => root_node
       None => {
-        @core.layout_runtime_report_unsupported_configuration(
+        @core.layout_runtime_raise_unsupported_configuration(
           "radial root node is missing",
         )
         graph

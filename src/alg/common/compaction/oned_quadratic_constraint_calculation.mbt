@@ -1,7 +1,7 @@
 ///|
 pub fn quadratic_constraint_calculation(
   compactor : OneDimensionalCompactor,
-) -> Unit {
+) -> Unit raise {
   for cnode in compactor.c_graph.c_nodes {
     cnode.clear_constraints()
   }
@@ -18,9 +18,9 @@ pub fn quadratic_constraint_calculation(
       }
 
       let spacing = if compactor.direction.is_horizontal() {
-        (compactor.spacings_handler.get_vertical_spacing)(cnode1, cnode2)
+        compactor.spacings_handler.vertical_spacing(cnode1, cnode2)
       } else {
-        (compactor.spacings_handler.get_horizontal_spacing)(cnode1, cnode2)
+        compactor.spacings_handler.horizontal_spacing(cnode1, cnode2)
       }
 
       let hitbox1 = cnode1.hitbox()

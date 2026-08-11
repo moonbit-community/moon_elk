@@ -5,7 +5,6 @@ fn section_id_has_prefix(section : ElkEdgeSection, prefix : String) -> Bool {
 
 ///|
 test "graph identifier generator assert exists" {
-  reset_graph_model_for_test()
   let root = create_graph()
   let child = create_node(Some(root))
   let port = create_port(Some(child))
@@ -30,7 +29,6 @@ test "graph identifier generator assert exists" {
 
 ///|
 test "graph identifier generator assert valid" {
-  reset_graph_model_for_test()
   let root = create_graph()
   let child = create_node(Some(root))
   let port = create_port(Some(child))
@@ -57,7 +55,6 @@ test "graph identifier generator assert valid" {
 
 ///|
 test "graph identifier generator assert unique" {
-  reset_graph_model_for_test()
   let root = create_graph()
   let node_a = create_node(Some(root))
   let node_b = create_node(Some(root))
@@ -81,7 +78,6 @@ test "graph identifier generator assert unique" {
 
 ///|
 test "graph identifier generator avoids existing identifiers" {
-  reset_graph_model_for_test()
   let root = create_graph()
   let node_with_id = create_node(Some(root))
   let node_without_id = create_node(Some(root))

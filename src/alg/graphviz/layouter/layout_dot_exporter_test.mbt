@@ -66,7 +66,6 @@ fn layout_dot_exporter_test_setup_data(
 
 ///|
 test "LayoutDotExporter sets DOT graph attributes and transformation flags" {
-  @graph.reset_graph_model_for_test()
   let root = @graph.create_graph()
   @graph.node_set_double_property(root, @core.spacing_node_node, 72.0)
   @graph.node_set_string_property(root, @core.direction, "RIGHT")
@@ -177,7 +176,6 @@ test "LayoutDotExporter sets DOT graph attributes and transformation flags" {
 
 ///|
 test "LayoutDotExporter sets NEATO specific graph and edge attributes" {
-  @graph.reset_graph_model_for_test()
   let root = @graph.create_graph()
   @graph.node_set_double_property(root, @core.spacing_node_node, 72.0)
   @graph.node_set_layout_option_string_by_id(
@@ -291,7 +289,6 @@ test "LayoutDotExporter sets NEATO specific graph and edge attributes" {
 
 ///|
 test "LayoutDotExporter appends label distance and angle for head/tail labels" {
-  @graph.reset_graph_model_for_test()
   let root = @graph.create_graph()
   let source = @graph.create_node(Some(root))
   let target = @graph.create_node(Some(root))

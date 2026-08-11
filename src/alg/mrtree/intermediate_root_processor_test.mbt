@@ -24,8 +24,6 @@ fn mrtree_root_processor_test_require_node_by_label(
 
 ///|
 test "Mrtree RootProcessor creates DUMMY_ROOT when no roots exist" {
-  reset_mrtree_graph_model_for_test()
-
   let graph = new_mrtree_graph()
   let n0 = new_mrtree_node(0, graph, label="n0")
   let n1 = new_mrtree_node(1, graph, label="n1")
@@ -49,8 +47,6 @@ test "Mrtree RootProcessor creates DUMMY_ROOT when no roots exist" {
 
 ///|
 test "Mrtree RootProcessor creates SUPER_ROOT for multiple roots" {
-  reset_mrtree_graph_model_for_test()
-
   let graph = new_mrtree_graph()
   let n0 = new_mrtree_node(0, graph, label="n0")
   let n1 = new_mrtree_node(1, graph, label="n1")

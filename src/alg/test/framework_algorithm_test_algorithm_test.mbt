@@ -1,19 +1,17 @@
 ///|
-fn test_algorithm_test_prepare_registry() -> Unit {
-  layout_meta_data_service_reset_for_test()
-  layout_meta_data_service_register_algorithm(
-    new_layout_algorithm_data("org.eclipse.elk.b"),
-  )
-  layout_meta_data_service_register_algorithm(
-    new_layout_algorithm_data("org.eclipse.elk.a"),
-  )
+fn test_algorithm_test_prepare_registry() -> @core.OptionMetadata {
+  let metadata = @core.new_option_metadata()
+  metadata.register_algorithm(new_layout_algorithm_data("org.eclipse.elk.b"))
+  metadata.register_algorithm(new_layout_algorithm_data("org.eclipse.elk.a"))
+  metadata
 }
 
 ///|
 test "TestAlgorithm resolves and sorts annotations" {
-  test_algorithm_test_prepare_registry()
+  let metadata = test_algorithm_test_prepare_registry()
   let errors : Array[String] = []
   let algorithms = test_algorithm_from_annotations(
+    metadata,
     [new_algorithm("org.eclipse.elk.b"), new_algorithm("org.eclipse.elk.a")],
     false,
     errors,
@@ -26,13 +24,10 @@ test "TestAlgorithm resolves and sorts annotations" {
 
 ///|
 test "TestAlgorithm applies configured algorithm id to graph tree" {
-  test_algorithm_test_prepare_registry()
-  reset_graph_model_for_test()
+  let metadata = test_algorithm_test_prepare_registry()
   let graph = create_graph()
   let child = create_node(Some(graph))
-  let alg_data = layout_meta_data_service_get_algorithm_data(
-    "org.eclipse.elk.a",
-  )
+  let alg_data = metadata.algorithm_data("org.eclipse.elk.a")
   let test_algorithm = match alg_data {
     Some(value) => new_test_algorithm(Some(value))
     None => abort("missing algorithm data")

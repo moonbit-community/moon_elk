@@ -11,32 +11,23 @@ fn rectpacking_raise_unsupported_configuration(
 }
 
 ///|
-fn rectpacking_equal_whitespace_eliminator_exception_message(
-  err : RectPackingEqualWhitespaceEliminatorException,
-) -> String {
-  match err {
-    UnsupportedConfiguration(message) => message
-  }
-}
-
-///|
 fn rectpacking_equal_whitespace_eliminator_process(
+  session : RectPackingSession,
   graph : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   try
     rectpacking_equal_whitespace_eliminator_process_impl(
-      graph, progress_monitor,
+      session, graph, progress_monitor,
     )
   catch {
-    err => {
-      @core.layout_runtime_report_unsupported_configuration(
-        rectpacking_equal_whitespace_eliminator_exception_message(err),
-      )
+    UnsupportedConfiguration(message) => {
       if progress_monitor is Some(monitor) && monitor.is_running() {
         monitor.done()
       }
+      @core.layout_runtime_raise_unsupported_configuration(message)
     }
+    err => raise err
   } noraise {
     _ => ()
   }
@@ -44,15 +35,16 @@ fn rectpacking_equal_whitespace_eliminator_process(
 
 ///|
 fn rectpacking_equal_whitespace_eliminator_process_impl(
+  session : RectPackingSession,
   graph : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit raise RectPackingEqualWhitespaceEliminatorException {
+) -> Unit raise {
   match progress_monitor {
     Some(monitor) => ignore(monitor.begin("Equal Whitespace Eliminator", 1.0))
     None => ()
   }
 
-  match rectpacking_internal_get_rows(graph) {
+  match session.get_rows(graph) {
     Some(rows) =>
       rectpacking_rectangle_expansion_expand(
         rows,
@@ -77,11 +69,15 @@ fn rectpacking_equal_whitespace_eliminator_process_impl(
 }
 
 ///|
-pub fn new_rectpacking_equal_whitespace_eliminator_layout_phase() -> @core.ILayoutProcessor[
-  RectPackingLayoutPhases,
-  @graph.ElkNode,
-] {
-  @core.new_layout_phase(rectpacking_equal_whitespace_eliminator_process, _ => {
-    None
-  })
+pub fn new_rectpacking_equal_whitespace_eliminator_layout_phase(
+  session : RectPackingSession,
+) -> @core.ILayoutProcessor[RectPackingLayoutPhases, @graph.ElkNode] {
+  @core.new_layout_phase(
+    (graph, progress_monitor) => {
+      rectpacking_equal_whitespace_eliminator_process(
+        session, graph, progress_monitor,
+      )
+    },
+    _ => None,
+  )
 }

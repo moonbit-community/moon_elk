@@ -97,11 +97,11 @@ fn horizontal_graph_compactor_edge_list_intersects(
 ///|
 fn horizontal_graph_compactor_require_group(
   node : @compaction.CNode,
-) -> @compaction.CGroup {
+) -> @compaction.CGroup raise {
   match node.group() {
     Some(group) => group
     None => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "Compaction node has no group.",
       )
       horizontal_graph_compactor_require_group(node)
@@ -208,7 +208,7 @@ fn horizontal_graph_compactor_spacings_handler(
   let spacings = new_layered_spacings(graph)
 
   @compaction.new_spacings_handler(
-    (c_node1, c_node2) => {
+    fn(c_node1, c_node2) raise {
       if origin_lookup.is_vertical_segments_of_same_edge(c_node1, c_node2) {
         return 0.0
       }
@@ -248,12 +248,12 @@ fn horizontal_graph_compactor_spacings_handler(
 
       spacings.get_horizontal_spacing_for_node_type(node_type1, node_type2) catch {
         LayeredSpacingsException(message) => {
-          @core.layout_runtime_report_unsupported_configuration(message)
+          @core.layout_runtime_raise_unsupported_configuration(message)
           0.0
         }
       }
     },
-    (c_node1, c_node2) => {
+    fn(c_node1, c_node2) raise {
       if origin_lookup.is_vertical_segments_of_same_edge(c_node1, c_node2) {
         return 1.0
       }
@@ -272,7 +272,7 @@ fn horizontal_graph_compactor_spacings_handler(
 
       spacings.get_vertical_spacing_for_node_type(node_type1, node_type2) catch {
         LayeredSpacingsException(message) => {
-          @core.layout_runtime_report_unsupported_configuration(message)
+          @core.layout_runtime_raise_unsupported_configuration(message)
           0.0
         }
       }
@@ -284,7 +284,7 @@ fn horizontal_graph_compactor_spacings_handler(
 fn horizontal_graph_compactor_process(
   layered_graph : LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let strategy = horizontal_graph_compactor_parse_graph_compaction_strategy(
     layered_graph.get_property_string(
       @options.layered_options_compaction_post_compaction_strategy,

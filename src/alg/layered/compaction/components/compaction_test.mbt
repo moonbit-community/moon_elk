@@ -78,7 +78,7 @@ test "ComponentsToCGraphTransformer applies lock, spacing and rectangle layout" 
 
   let spacing_handler = components_to_cgraph_spacing_handler(transformer)
   layered_compaction_test_close(
-    (spacing_handler.get_horizontal_spacing)(extension_node, placeholder_node),
+    spacing_handler.horizontal_spacing(extension_node, placeholder_node),
     1.0,
   )
 
@@ -177,7 +177,7 @@ fn layered_compaction_test_down() -> @core.Direction {
 ///|
 fn layered_compaction_test_compacter(
   graph : LayeredCGraph,
-) -> LayeredOneDimensionalCompactor {
+) -> LayeredOneDimensionalCompactor raise {
   new_layered_one_dimensional_compactor(graph).set_constraint_algorithm(
     layered_one_dimensional_compactor_quadratic_constraints,
   )

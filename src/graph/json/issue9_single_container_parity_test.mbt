@@ -92,12 +92,11 @@ fn graph_json_issue9_required_section(
 
 ///|
 test "issue9 single-container include-self layout matches elkjs 0.8.2" {
-  @graph.reset_graph_model_for_test()
-  @core.layout_meta_data_service_reset_for_test()
-  @core.layout_meta_data_service_register_default_algorithms()
-
   let root = elk_graph_json_for_graph(graph_json_issue9_input_json()).to_elk()
-  let engine = @core.new_recursive_graph_layout_engine()
+  let engine = @core.new_recursive_graph_layout_engine(
+    new_layout_runtime(),
+    @core.new_layout_session(),
+  )
   engine.layout(root, @core.new_null_elk_progress_monitor())
 
   graph_json_issue9_assert_close(

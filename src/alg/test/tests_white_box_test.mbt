@@ -12,7 +12,7 @@ fn white_box_test_default_configuration() -> TestConfiguration[Ref[Int]] {
 ///|
 fn new_white_box_test_runner(
   whitebox_tests : Array[WhiteboxTestMethod[Ref[Int], Int]],
-) -> LayoutTestRunner[Ref[Int], Int] {
+) -> LayoutTestRunner[Ref[Int], Int] raise {
   let graph = new_test_graph(
     (_test_instance : Ref[Int]) => create_graph(),
     "graphMethod(compoundGraph)",
@@ -29,7 +29,6 @@ fn new_white_box_test_runner(
 
 ///|
 test "WhiteBoxTest executes whitebox test after matching processor event" {
-  reset_graph_model_for_test()
   reset_experiment_runner_ids_for_test()
 
   let counter = Ref(0)
@@ -73,7 +72,6 @@ test "WhiteBoxTest executes whitebox test after matching processor event" {
 
 ///|
 test "WhiteBoxTest fails when fail_if_not_executed whitebox test did not run" {
-  reset_graph_model_for_test()
   reset_experiment_runner_ids_for_test()
 
   let whitebox_test = new_whitebox_test_method(
@@ -101,7 +99,6 @@ test "WhiteBoxTest fails when fail_if_not_executed whitebox test did not run" {
 
 ///|
 test "WhiteBoxTest only_on_root_node ignores non-root execution points" {
-  reset_graph_model_for_test()
   reset_experiment_runner_ids_for_test()
 
   let whitebox_test = new_whitebox_test_method(

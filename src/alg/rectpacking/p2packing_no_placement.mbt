@@ -2,7 +2,7 @@
 fn rectpacking_no_placement_process(
   graph : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   match progress_monitor {
     Some(monitor) => ignore(monitor.begin("No Compaction", 1.0))
     None => ()

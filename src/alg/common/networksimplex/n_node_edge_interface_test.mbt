@@ -1,7 +1,5 @@
 ///|
 test "network simplex node/edge file-level exports are usable" {
-  reset_network_simplex_model_for_test()
-
   let graph = new_ngraph()
   let source = network_simplex_nnode_of().id(1).create(graph)
   let target = network_simplex_nnode_of().id(2).create(graph)

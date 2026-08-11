@@ -6,7 +6,7 @@ pub(all) struct IValidatingGraphElementVisitor {
 
 ///|
 pub fn new_validating_graph_element_visitor(
-  visit_fn : (@graph.ElkNode) -> Unit,
+  visit_fn : (@graph.ElkNode) -> Unit raise,
   get_issues_fn : () -> Array[GraphIssue],
 ) -> IValidatingGraphElementVisitor {
   { visitor: new_graph_element_visitor(visit_fn), get_issues_fn }
@@ -16,7 +16,7 @@ pub fn new_validating_graph_element_visitor(
 pub fn IValidatingGraphElementVisitor::visit(
   self : IValidatingGraphElementVisitor,
   element : @graph.ElkNode,
-) -> Unit {
+) -> Unit raise {
   self.visitor.visit(element)
 }
 

@@ -332,7 +332,7 @@ fn final_spline_compute_sloppy_center_y(
 fn final_spline_calculate_control_points_sloppy(
   edge : LEdge,
   containing_segment : SplineSegment,
-) -> Unit {
+) -> Unit raise {
   let edge_info = final_spline_require_edge_information(
     containing_segment, edge,
   )
@@ -656,7 +656,7 @@ fn final_spline_calculate_control_points(
   edge_node_spacing : Double,
   spline_routing_mode : @options.SplineRoutingMode,
   compaction_strategy : GraphCompactionStrategy,
-) -> Unit {
+) -> Unit raise {
   if segment.handled {
     return
   }
@@ -707,7 +707,7 @@ fn final_spline_calculate_control_points(
 fn final_spline_bendpoints_calculator_process(
   graph : LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   ignore(progress_monitor)
 
   let edge_edge_spacing = graph.get_property_double(
@@ -758,10 +758,11 @@ fn final_spline_bendpoints_calculator_process(
       edge.set_property_l_edge_array(internal_properties_spline_edge_chain, [])
     }
   } catch {
-    IllegalArgumentException(message) =>
-      @core.layout_runtime_report_unsupported_configuration(
+    FinalSplineBendpointsCalculatorException::IllegalArgumentException(message) =>
+      @core.layout_runtime_raise_unsupported_configuration(
         "java.lang.IllegalArgumentException: " + message,
       )
+    err => raise err
   } noraise {
     _ => ()
   }

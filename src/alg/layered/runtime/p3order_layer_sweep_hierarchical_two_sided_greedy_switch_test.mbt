@@ -56,7 +56,7 @@ fn layer_sweep_two_sided_set_on_all_graphs(
 }
 
 ///|
-fn layer_sweep_two_sided_run(creator : TestGraphCreator) -> Unit {
+fn layer_sweep_two_sided_run(creator : TestGraphCreator) -> Unit raise {
   let cross_min = new_layer_sweep_crossing_minimizer(
     cross_min_type_constants()[2],
   )

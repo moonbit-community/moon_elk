@@ -1,9 +1,10 @@
 ///|
 fn core_service_test_reset_environment() -> LayoutConnectorsService {
-  layout_connectors_service_unload()
   reset_layout_listener_ids_for_test()
-  @graph.reset_graph_model_for_test()
-  layout_connectors_service_get_instance()
+  new_layout_connectors_service(
+    @core.new_layout_runtime(),
+    @core.new_layout_session(),
+  )
 }
 
 ///|
@@ -112,7 +113,7 @@ test "DiagramLayoutEngine invoke flow calls connector build layout and apply" {
   )
   service.register_setup(setup, priority=1)
 
-  let mapping = diagram_layout_engine_invoke_layout(Some(7), Some(9))
+  let mapping = diagram_layout_engine_invoke_layout(service, Some(7), Some(9))
   debug_inspect(events, content="[\"build\", \"layout\", \"apply\"]")
   debug_inspect(
     match mapping {
@@ -145,13 +146,12 @@ test "Layout listeners receive about-to-start and done callbacks" {
     ),
   )
 
-  ignore(diagram_layout_engine_invoke_layout(Some(11), Some(12)))
+  ignore(diagram_layout_engine_invoke_layout(service, Some(11), Some(12)))
   debug_inspect(listener_events, content="[\"about\", \"done\"]")
 }
 
 ///|
 test "LayoutMapping stores graph-to-diagram and diagram-to-graph associations" {
-  @graph.reset_graph_model_for_test()
   let root = @graph.create_graph()
   let child = @graph.create_node(Some(root))
   let mapping = new_layout_mapping(workbench_part=Some(42))
@@ -169,7 +169,6 @@ test "LayoutMapping stores graph-to-diagram and diagram-to-graph associations" {
 
 ///|
 test "CompoundGraphElementVisitor supports element-first and full-graph-first modes" {
-  @graph.reset_graph_model_for_test()
   let root = @graph.create_graph()
   let child = @graph.create_node(Some(root))
 

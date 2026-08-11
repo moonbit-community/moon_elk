@@ -165,7 +165,7 @@ pub fn sort_by_input_model_processor_get_target_node(port : LPort) -> LNode? {
 pub fn sort_by_input_model_processor_insertion_sort(
   layer : Array[LNode],
   comparator : ModelOrderNodeComparator,
-) -> Unit {
+) -> Unit raise {
   let mut i = 1
   while i < layer.length() {
     let current = layer[i]
@@ -184,7 +184,7 @@ pub fn sort_by_input_model_processor_insertion_sort(
 pub fn sort_by_input_model_processor_insertion_sort_port(
   ports : Array[LPort],
   comparator : ModelOrderPortComparator,
-) -> Unit {
+) -> Unit raise {
   let mut i = 1
   while i < ports.length() {
     let current = ports[i]
@@ -203,7 +203,7 @@ pub fn sort_by_input_model_processor_insertion_sort_port(
 fn sort_by_input_model_processor_process(
   graph : LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()
@@ -269,9 +269,16 @@ fn sort_by_input_model_processor_process(
         sort_by_input_model_processor_long_edge_target_node_preprocessing(node),
         port_model_order,
       )
-      node
-      .get_ports()
-      .sort_by((left, right) => port_comparator.compare(left, right))
+      let ports = node.get_ports()
+      for i = 1; i < ports.length(); i = i + 1 {
+        let current = ports[i]
+        let mut j = i
+        while j > 0 && port_comparator.compare(ports[j - 1], current) > 0 {
+          ports[j] = ports[j - 1]
+          j = j - 1
+        }
+        ports[j] = current
+      }
       port_comparator.clear_transitive_ordering()
 
       if monitor.is_logging_enabled() {

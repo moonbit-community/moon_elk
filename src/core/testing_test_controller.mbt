@@ -111,7 +111,7 @@ pub fn[G] TestController::targets(
 pub fn[G] TestController::install(
   self : TestController[G],
   layout_provider : IWhiteBoxTestable[G],
-) -> Unit {
+) -> Unit raise {
   if self.current_layout_provider is Some(_) {
     try
       test_controller_raise_unit(
@@ -119,7 +119,7 @@ pub fn[G] TestController::install(
       )
     catch {
       err =>
-        layout_runtime_report_unsupported_configuration(
+        layout_runtime_raise_unsupported_configuration(
           test_controller_exception_message(err),
         )
     } noraise {

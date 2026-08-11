@@ -1,15 +1,11 @@
 ///|
 fn issue143_and318_test_setup_plain_java_layout() -> Unit {
-  @core.layout_meta_data_service_reset_for_test()
-  @test.plain_java_initialization_reset_for_test()
-  @test.plain_java_initialization_initialize_plain_java_layout()
+
 }
 
 ///|
 fn issue143_and318_test_layout(graph : @graph.ElkNode) -> Unit {
-  let resolver = @core.new_layout_algorithm_resolver()
-  @core.apply_visitors(graph, [resolver.to_visitor()])
-  let layout_engine = @core.new_recursive_graph_layout_engine()
+  let layout_engine = @test.new_recursive_graph_layout_engine()
   layout_engine.layout(graph, @core.new_null_elk_progress_monitor())
 }
 
@@ -299,7 +295,6 @@ fn issue143_and318_test_assert_no_close_edge_proximities(
 
 ///|
 test "Issue143 small vertical edge segment spacing keeps horizontal segments separated" {
-  @graph.reset_graph_model_for_test()
   issue143_and318_test_setup_plain_java_layout()
   issue143_and318_test_assert_no_close_edge_proximities(
     issue143_and318_test_build_issue143_graph(),
@@ -309,7 +304,6 @@ test "Issue143 small vertical edge segment spacing keeps horizontal segments sep
 
 ///|
 test "Issue318 overlapping horizontal edge segments stay beyond proximity threshold" {
-  @graph.reset_graph_model_for_test()
   issue143_and318_test_setup_plain_java_layout()
   issue143_and318_test_assert_no_close_edge_proximities(
     issue143_and318_test_build_issue318_graph(),

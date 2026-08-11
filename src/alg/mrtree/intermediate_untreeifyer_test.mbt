@@ -1,7 +1,5 @@
 ///|
 test "Mrtree Untreeifyer reinserts removable edges without deduplication" {
-  reset_mrtree_graph_model_for_test()
-
   let graph = new_mrtree_graph()
   let source = new_mrtree_node(0, graph, label="source")
   let target = new_mrtree_node(1, graph, label="target")

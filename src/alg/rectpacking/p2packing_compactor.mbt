@@ -30,7 +30,7 @@ fn rectpacking_compactor_configure_second_iteration(
   layout_graph : @graph.ElkNode,
   clone : @graph.ElkNode,
   drawing : RectpackingDrawingData,
-) -> Unit {
+) -> Unit raise {
   let padding = @core.new_elk_padding()
   padding.parse(
     @graph.node_get_string_property(layout_graph, rectpacking_padding),
@@ -206,9 +206,10 @@ fn rectpacking_compactor_copy_position(
 
 ///|
 fn rectpacking_compactor_process(
+  session : RectPackingSession,
   graph : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   match progress_monitor {
     Some(monitor) => ignore(monitor.begin("Compaction", 1.0))
     None => ()
@@ -228,7 +229,7 @@ fn rectpacking_compactor_process(
     aspect_ratio, node_node_spacing,
   )
   let drawing = second_iteration.start(
-    rectangles, progress_monitor, graph, padding,
+    session, rectangles, progress_monitor, graph, padding,
   )
 
   rectpacking_compactor_copy_row_width_change_values(graph, second_iteration)
@@ -246,7 +247,7 @@ fn rectpacking_compactor_process(
       aspect_ratio, node_node_spacing,
     )
     let new_drawing = second_iteration.start(
-      rectangles, progress_monitor, clone, padding,
+      session, rectangles, progress_monitor, clone, padding,
     )
 
     let new_sm = new_drawing.scale_measure
@@ -288,9 +289,13 @@ fn rectpacking_compactor_process(
 }
 
 ///|
-pub fn new_rectpacking_compactor_layout_phase() -> @core.ILayoutProcessor[
-  RectPackingLayoutPhases,
-  @graph.ElkNode,
-] {
-  @core.new_layout_phase(rectpacking_compactor_process, _ => None)
+pub fn new_rectpacking_compactor_layout_phase(
+  session : RectPackingSession,
+) -> @core.ILayoutProcessor[RectPackingLayoutPhases, @graph.ElkNode] {
+  @core.new_layout_phase(
+    (graph, progress_monitor) => {
+      rectpacking_compactor_process(session, graph, progress_monitor)
+    },
+    _ => None,
+  )
 }

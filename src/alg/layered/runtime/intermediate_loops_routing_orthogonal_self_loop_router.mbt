@@ -46,11 +46,11 @@ fn orthogonal_self_loop_router_occupied_contains(
 ///|
 fn orthogonal_self_loop_router_require_hyper_loop(
   sl_edge : SelfLoopEdge,
-) -> SelfHyperLoop {
+) -> SelfHyperLoop raise {
   match sl_edge.get_sl_hyper_loop() {
     Some(sl_loop) => sl_loop
     None => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "self-loop edge has no hyper loop",
       )
       new_self_hyper_loop(new_self_loop_holder(new_l_node()))
@@ -61,7 +61,7 @@ fn orthogonal_self_loop_router_require_hyper_loop(
 ///|
 fn orthogonal_self_loop_router_compute_edge_routing_direction(
   sl_edge : SelfLoopEdge,
-) -> EdgeRoutingDirection {
+) -> EdgeRoutingDirection raise {
   let source_l_port = sl_edge.get_sl_source().get_l_port()
   let source_port_side = source_l_port.get_side()
 
@@ -316,7 +316,7 @@ fn orthogonal_self_loop_router_add_outer_bend_point(
   sl_port : SelfLoopPort,
   routing_slot_positions : Array[Array[Double]],
   bend_points : @core.KVectorChain,
-) -> Unit {
+) -> Unit raise {
   let sl_loop = orthogonal_self_loop_router_require_hyper_loop(sl_edge)
   let l_port = sl_port.get_l_port()
   let port_side = l_port.get_side()
@@ -344,7 +344,7 @@ fn orthogonal_self_loop_router_add_corner_bend_points(
   routing_direction : EdgeRoutingDirection,
   routing_slot_positions : Array[Array[Double]],
   bend_points : @core.KVectorChain,
-) -> Unit {
+) -> Unit raise {
   let source_port = sl_edge.get_sl_source().get_l_port()
   let target_port = sl_edge.get_sl_target().get_l_port()
   if orthogonal_self_loop_router_port_side_equals(
@@ -416,7 +416,7 @@ fn orthogonal_self_loop_router_compute_orthogonal_bend_points(
   sl_edge : SelfLoopEdge,
   routing_direction : EdgeRoutingDirection,
   routing_slot_positions : Array[Array[Double]],
-) -> @core.KVectorChain {
+) -> @core.KVectorChain raise {
   let bend_points = @core.new_kvector_chain()
   orthogonal_self_loop_router_add_outer_bend_point(
     sl_edge,
@@ -483,8 +483,8 @@ fn orthogonal_self_loop_router_default_modify_bend_points(
 ///|
 pub fn orthogonal_self_loop_router_route_with_modifier(
   sl_holder : SelfLoopHolder,
-  modify_bend_points : (SelfLoopEdge, EdgeRoutingDirection, @core.KVectorChain) -> @core.KVectorChain,
-) -> Unit {
+  modify_bend_points : (SelfLoopEdge, EdgeRoutingDirection, @core.KVectorChain) -> @core.KVectorChain raise?,
+) -> Unit raise {
   let l_node = sl_holder.get_l_node()
   let node_size = l_node.get_size()
   let node_margins = l_node.get_margin()
@@ -548,7 +548,7 @@ pub fn orthogonal_self_loop_router_route_with_modifier(
 ///|
 pub fn orthogonal_self_loop_router_route_self_loops(
   sl_holder : SelfLoopHolder,
-) -> Unit {
+) -> Unit raise {
   orthogonal_self_loop_router_route_with_modifier(
     sl_holder, orthogonal_self_loop_router_default_modify_bend_points,
   )

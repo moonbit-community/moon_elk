@@ -1,15 +1,11 @@
 ///|
 fn issue628_test_setup_plain_java_layout() -> Unit {
-  @core.layout_meta_data_service_reset_for_test()
-  @test.plain_java_initialization_reset_for_test()
-  @test.plain_java_initialization_initialize_plain_java_layout()
+
 }
 
 ///|
 fn issue628_test_layout(graph : @graph.ElkNode) -> Unit {
-  let resolver = @core.new_layout_algorithm_resolver()
-  @core.apply_visitors(graph, [resolver.to_visitor()])
-  let layout_engine = @core.new_recursive_graph_layout_engine()
+  let layout_engine = @test.new_recursive_graph_layout_engine()
   layout_engine.layout(graph, @core.new_null_elk_progress_monitor())
 }
 
@@ -65,7 +61,6 @@ fn issue628_test_layout_with_configurator(
   configure_hierarchical_greedy_switch : Bool,
   configure_greedy_switch : Bool,
 ) -> (@graph.ElkNode, @graph.ElkNode, @graph.ElkNode) {
-  @graph.reset_graph_model_for_test()
   issue628_test_setup_plain_java_layout()
 
   let (graph, l2_1, l2_2) = issue628_test_build_graph()

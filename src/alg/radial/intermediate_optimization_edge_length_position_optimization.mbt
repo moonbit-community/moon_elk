@@ -1,5 +1,7 @@
 ///|
-fn edge_length_position_optimization_evaluate(root : @graph.ElkNode) -> Double {
+fn edge_length_position_optimization_evaluate(
+  root : @graph.ElkNode,
+) -> Double raise {
   let mut edge_length = 0.0
   for edge in @graph.node_outgoing_edges(root) {
     let targets = @graph.edge_targets(edge)
@@ -42,7 +44,7 @@ pub fn new_edge_length_position_optimization() -> EdgeLengthPositionOptimization
 pub fn EdgeLengthPositionOptimization::evaluate(
   self : EdgeLengthPositionOptimization,
   root : @graph.ElkNode,
-) -> Double {
+) -> Double raise {
   self.evaluator.evaluate(root)
 }
 

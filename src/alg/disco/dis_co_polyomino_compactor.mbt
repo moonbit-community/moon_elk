@@ -71,7 +71,7 @@ fn dis_co_compute_cell_size(
 }
 
 ///|
-fn dis_co_create_polyominoes(compactor : DisCoPolyominoCompactor) -> Unit {
+fn dis_co_create_polyominoes(compactor : DisCoPolyominoCompactor) -> Unit raise {
   let graph = match compactor.cmp_graph {
     Some(graph) => graph
     None => return
@@ -89,7 +89,7 @@ fn dis_co_create_polyominoes(compactor : DisCoPolyominoCompactor) -> Unit {
 }
 
 ///|
-fn dis_co_pack_polyominoes(compactor : DisCoPolyominoCompactor) -> Unit {
+fn dis_co_pack_polyominoes(compactor : DisCoPolyominoCompactor) -> Unit raise {
   let mut id = 0
   for poly in compactor.polys {
     poly.set_id(id)
@@ -112,7 +112,7 @@ fn dis_co_pack_polyominoes(compactor : DisCoPolyominoCompactor) -> Unit {
 }
 
 ///|
-fn dis_co_apply_to_dc_graph(compactor : DisCoPolyominoCompactor) -> Unit {
+fn dis_co_apply_to_dc_graph(compactor : DisCoPolyominoCompactor) -> Unit raise {
   let graph = match compactor.cmp_graph {
     Some(graph) => graph
     None => return
@@ -157,7 +157,7 @@ fn dis_co_apply_to_dc_graph(compactor : DisCoPolyominoCompactor) -> Unit {
 pub fn DisCoPolyominoCompactor::compact(
   self : DisCoPolyominoCompactor,
   graph : DCGraph,
-) -> Unit {
+) -> Unit raise {
   self.cmp_graph = Some(graph)
   self.polys.clear()
 
@@ -187,5 +187,5 @@ pub fn DisCoPolyominoCompactor::compact(
 pub fn dis_co_polyomino_compactor_as_icompactor(
   compactor : DisCoPolyominoCompactor,
 ) -> ICompactor {
-  new_icompactor(graph => compactor.compact(graph))
+  new_icompactor(fn(graph) raise { compactor.compact(graph) })
 }

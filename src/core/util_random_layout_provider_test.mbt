@@ -16,8 +16,7 @@ priv struct RandomLayoutProviderSnapshot {
 ///|
 fn random_layout_provider_test_snapshot(
   seed_value : Int,
-) -> RandomLayoutProviderSnapshot {
-  @graph.reset_graph_model_for_test()
+) -> RandomLayoutProviderSnapshot raise {
   let graph = @graph.create_graph()
   @graph.node_set_double_property(graph, aspect_ratio, 1.6)
   @graph.node_set_double_property(graph, spacing_node_node, 20.0)
@@ -57,7 +56,6 @@ fn random_layout_provider_test_snapshot(
 
 ///|
 test "random layout provider returns early for graph without children" {
-  @graph.reset_graph_model_for_test()
   let graph = @graph.create_graph()
   @graph.node_set_dimensions(graph, 77.0, 66.0)
 

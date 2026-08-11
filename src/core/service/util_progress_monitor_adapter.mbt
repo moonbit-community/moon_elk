@@ -19,7 +19,7 @@ pub fn ProgressMonitorAdapter::begin(
   name : String,
   total_work : Double,
   top_instance? : Bool = true,
-) -> Unit {
+) -> Unit raise {
   if top_instance {
     ignore(self.progress_monitor.begin(name, total_work))
   } else if self.max_hierarchy_levels != 0 {
@@ -31,7 +31,7 @@ pub fn ProgressMonitorAdapter::begin(
 pub fn ProgressMonitorAdapter::done(
   self : ProgressMonitorAdapter,
   top_instance? : Bool = true,
-) -> Unit {
+) -> Unit raise {
   if top_instance {
     self.progress_monitor.done()
   }

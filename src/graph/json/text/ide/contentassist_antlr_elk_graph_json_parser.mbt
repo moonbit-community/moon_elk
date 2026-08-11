@@ -134,6 +134,7 @@ pub fn ElkGraphJsonIdeNameMappings::get_rule_name(
 
 ///|
 pub struct ElkGraphJsonIdeParser {
+  metadata : @core.OptionMetadata
   mut name_mappings : ElkGraphJsonIdeNameMappings
   mut grammar_access : @text.ElkGraphJsonGrammarAccess
   mut initial_hidden_tokens : Array[String]
@@ -141,9 +142,11 @@ pub struct ElkGraphJsonIdeParser {
 
 ///|
 pub fn new_elk_graph_json_ide_parser(
+  metadata : @core.OptionMetadata,
   grammar_access? : @text.ElkGraphJsonGrammarAccess = @text.new_elk_graph_json_grammar_access(),
 ) -> ElkGraphJsonIdeParser {
   {
+    metadata,
     name_mappings: new_elk_graph_json_ide_name_mappings(grammar_access),
     grammar_access,
     initial_hidden_tokens: ["RULE_WS", "RULE_ML_COMMENT", "RULE_SL_COMMENT"],
@@ -156,6 +159,7 @@ pub fn ElkGraphJsonIdeParser::create_parser(
   tokens : Array[@text.ElkGraphJsonLexToken],
 ) -> InternalElkGraphJsonIdeParser {
   new_internal_elk_graph_json_ide_parser(
+    self.metadata,
     tokens,
     grammar_access=self.grammar_access,
   )

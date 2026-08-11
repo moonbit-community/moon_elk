@@ -2,7 +2,7 @@
 pub fn core_debug_grandom_configuration_parser_parse(
   config : CoreDebugGRandomConfiguration,
   random : @random.Rand,
-) -> CoreDebugGRandomGeneratorOptions {
+) -> CoreDebugGRandomGeneratorOptions raise {
   let options = new_core_debug_grandom_generator_options()
   core_debug_grandom_configuration_parser_set_graph_type(config, options)
   core_debug_grandom_configuration_parser_nodes(config.nodes, random, options)
@@ -102,7 +102,7 @@ fn core_debug_grandom_configuration_parser_nodes(
   nodes : CoreDebugGRandomNodes?,
   random : @random.Rand,
   options : CoreDebugGRandomGeneratorOptions,
-) -> Unit {
+) -> Unit raise {
   ignore(random)
   match nodes {
     Some(node_settings) => {
@@ -143,7 +143,7 @@ fn core_debug_grandom_configuration_parser_size(
 fn core_debug_grandom_configuration_parser_ports(
   nodes : CoreDebugGRandomNodes,
   options : CoreDebugGRandomGeneratorOptions,
-) -> Unit {
+) -> Unit raise {
   match nodes.ports {
     Some(ports) => {
       options.set_bool_property(core_debug_grandom_enable_ports, true)
@@ -217,7 +217,7 @@ fn core_debug_grandom_configuration_parser_set_flow_side(
   flow_type : CoreDebugGRandomFlowType,
   side : CoreDebugGRandomSide,
   quantity : CoreDebugGRandomDoubleQuantity?,
-) -> Unit {
+) -> Unit raise {
   let amount = match
     core_debug_grandom_configuration_parser_to_optional_rand_val(quantity) {
     Some(rand_val) => rand_val.int_val(@random.Rand::new())

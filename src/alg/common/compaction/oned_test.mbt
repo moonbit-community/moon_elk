@@ -23,7 +23,7 @@ fn assert_close(actual : Double, expected : Double) -> Unit raise {
 }
 
 ///|
-fn compacter(graph : CGraph) -> OneDimensionalCompactor {
+fn compacter(graph : CGraph) -> OneDimensionalCompactor raise {
   new_one_dimensional_compactor(graph).set_constraint_algorithm(
     one_dimensional_compactor_quadratic_constraints,
   )
@@ -51,8 +51,6 @@ fn dir_up() -> Direction {
 
 ///|
 test "OneDimensionalCompactor left compaction" {
-  reset_compaction_oned_model_for_test()
-
   let graph = new_cgraph(direction_values())
 
   let left = cnode_of().hitbox(rect(0.0, 0.0, 20.0, 20.0)).create(graph)
@@ -66,8 +64,6 @@ test "OneDimensionalCompactor left compaction" {
 
 ///|
 test "OneDimensionalCompactor left compaction equal y" {
-  reset_compaction_oned_model_for_test()
-
   let graph = new_cgraph(direction_values())
 
   let top = cnode_of().hitbox(rect(0.0, 0.0, 20.0, 20.0)).create(graph)
@@ -87,8 +83,6 @@ test "OneDimensionalCompactor left compaction equal y" {
 
 ///|
 test "OneDimensionalCompactor left compaction spacing aware" {
-  reset_compaction_oned_model_for_test()
-
   let graph = new_cgraph(direction_values())
 
   let left = cnode_of().hitbox(rect(0.0, 0.0, 20.0, 20.0)).create(graph)
@@ -110,8 +104,6 @@ test "OneDimensionalCompactor left compaction spacing aware" {
 
 ///|
 test "OneDimensionalCompactor left compaction spacing aware 2" {
-  reset_compaction_oned_model_for_test()
-
   let graph = new_cgraph(direction_values())
 
   let left = cnode_of().hitbox(rect(0.0, 0.0, 20.0, 20.0)).create(graph)
@@ -133,8 +125,6 @@ test "OneDimensionalCompactor left compaction spacing aware 2" {
 
 ///|
 test "OneDimensionalCompactor right compaction" {
-  reset_compaction_oned_model_for_test()
-
   let graph = new_cgraph(direction_values())
 
   let left = cnode_of().hitbox(rect(0.0, 0.0, 20.0, 20.0)).create(graph)
@@ -148,8 +138,6 @@ test "OneDimensionalCompactor right compaction" {
 
 ///|
 test "OneDimensionalCompactor up compaction" {
-  reset_compaction_oned_model_for_test()
-
   let graph = new_cgraph(direction_values())
 
   let upper = cnode_of().hitbox(rect(0.0, 0.0, 20.0, 20.0)).create(graph)
@@ -163,8 +151,6 @@ test "OneDimensionalCompactor up compaction" {
 
 ///|
 test "OneDimensionalCompactor down compaction" {
-  reset_compaction_oned_model_for_test()
-
   let graph = new_cgraph(direction_values())
 
   let upper = cnode_of().hitbox(rect(0.0, 0.0, 20.0, 20.0)).create(graph)
@@ -178,8 +164,6 @@ test "OneDimensionalCompactor down compaction" {
 
 ///|
 test "OneDimensionalCompactor left group compaction" {
-  reset_compaction_oned_model_for_test()
-
   let graph = new_cgraph(direction_values())
 
   let left = cnode_of().hitbox(rect(0.0, 0.0, 20.0, 20.0)).create(graph)
@@ -199,8 +183,6 @@ test "OneDimensionalCompactor left group compaction" {
 
 ///|
 test "OneDimensionalCompactor right group compaction" {
-  reset_compaction_oned_model_for_test()
-
   let graph = new_cgraph(direction_values())
 
   let left = cnode_of().hitbox(rect(0.0, 5.0, 20.0, 20.0)).create(graph)
@@ -220,8 +202,6 @@ test "OneDimensionalCompactor right group compaction" {
 
 ///|
 test "OneDimensionalCompactor up group compaction" {
-  reset_compaction_oned_model_for_test()
-
   let graph = new_cgraph(direction_values())
 
   let upper_left = cnode_of().hitbox(rect(0.0, 0.0, 20.0, 20.0)).create(graph)
@@ -239,8 +219,6 @@ test "OneDimensionalCompactor up group compaction" {
 
 ///|
 test "OneDimensionalCompactor down group compaction" {
-  reset_compaction_oned_model_for_test()
-
   let graph = new_cgraph(direction_values())
 
   let upper_left = cnode_of().hitbox(rect(0.0, 0.0, 20.0, 20.0)).create(graph)
@@ -258,8 +236,6 @@ test "OneDimensionalCompactor down group compaction" {
 
 ///|
 test "OneDimensionalCompactor no spacing within groups" {
-  reset_compaction_oned_model_for_test()
-
   let graph = new_cgraph(direction_values())
 
   let one = cnode_of().hitbox(rect(0.0, 0.0, 20.0, 20.0)).create(graph)
@@ -303,8 +279,6 @@ test "OneDimensionalCompactor no spacing within groups" {
 
 ///|
 test "OneDimensionalCompactor subsequent directions compaction" {
-  reset_compaction_oned_model_for_test()
-
   let graph = new_cgraph(direction_values())
 
   let one = cnode_of().hitbox(rect(0.0, 0.0, 20.0, 20.0)).create(graph)
@@ -351,8 +325,6 @@ test "OneDimensionalCompactor subsequent directions compaction" {
 
 ///|
 test "OneDimensionalCompactor horizontal spacings" {
-  reset_compaction_oned_model_for_test()
-
   let graph = new_cgraph(direction_values())
 
   let one = cnode_of().hitbox(rect(0.0, 0.0, 20.0, 20.0)).create(graph)
@@ -413,8 +385,6 @@ test "OneDimensionalCompactor horizontal spacings" {
 
 ///|
 test "OneDimensionalCompactor vertical spacing during horizontal compaction" {
-  reset_compaction_oned_model_for_test()
-
   let graph = new_cgraph(direction_values())
 
   let one = cnode_of().hitbox(rect(150.0, 11.0, 20.0, 20.0)).create(graph)
@@ -448,8 +418,6 @@ test "OneDimensionalCompactor vertical spacing during horizontal compaction" {
 
 ///|
 test "OneDimensionalCompactor vertical spacings" {
-  reset_compaction_oned_model_for_test()
-
   let graph = new_cgraph(direction_values())
 
   let one = cnode_of().hitbox(rect(0.0, 0.0, 20.0, 20.0)).create(graph)
@@ -507,8 +475,6 @@ test "OneDimensionalCompactor vertical spacings" {
 
 ///|
 test "OneDimensionalCompactor horizontal spacing during vertical compaction" {
-  reset_compaction_oned_model_for_test()
-
   let graph = new_cgraph(direction_values())
 
   let one = cnode_of().hitbox(rect(16.0, 150.0, 20.0, 20.0)).create(graph)

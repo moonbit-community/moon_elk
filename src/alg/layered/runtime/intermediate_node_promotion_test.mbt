@@ -1,12 +1,10 @@
 ///|
 fn node_promotion_test_setup_plain_java_layout() -> Unit {
-  layout_meta_data_service_reset_for_test()
-  plain_java_initialization_reset_for_test()
-  plain_java_initialization_initialize_plain_java_layout()
+
 }
 
 ///|
-fn node_promotion_test_layout(graph : @graph.ElkNode) -> Unit {
+fn node_promotion_test_layout(graph : @graph.ElkNode) -> Unit raise {
   let resolver = new_layout_algorithm_resolver()
   apply_visitors(graph, [resolver.to_visitor()])
   let layout_engine = new_recursive_graph_layout_engine()
@@ -41,8 +39,7 @@ fn node_promotion_test_run_with_options(
   cycle_breaking_strategy : String?,
   layering_strategy : String?,
   ordering_strategy : String?,
-) -> Unit {
-  reset_graph_model_for_test()
+) -> Unit raise {
   node_promotion_test_setup_plain_java_layout()
 
   let graph = node_promotion_test_new_chain_graph()

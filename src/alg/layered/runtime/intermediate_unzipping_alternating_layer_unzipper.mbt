@@ -148,7 +148,7 @@ fn alternating_layer_unzipper_shift_node(
   sub_layers : Array[Layer],
   target_layer : Int,
   node_index : Int,
-) -> Int {
+) -> Int raise {
   let node = sub_layers[0].get_nodes()[node_index]
   if target_layer > 0 {
     node.set_layer(Some(sub_layers[target_layer]))
@@ -265,7 +265,7 @@ fn alternating_layer_unzipper_shift_node(
 fn alternating_layer_unzipper_process(
   graph : LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   ignore(progress_monitor)
 
   let mut insertion_layer_offset = 1

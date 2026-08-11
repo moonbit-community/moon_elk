@@ -45,6 +45,7 @@ fn rectpacking_row_filling_adjust_width_and_height(
 ///|
 pub fn RectpackingRowFillingAndCompaction::start(
   self : RectpackingRowFillingAndCompaction,
+  session : RectPackingSession,
   rectangles : Array[@graph.ElkNode],
   progress_monitor : @core.IElkProgressMonitor?,
   layout_graph : @graph.ElkNode,
@@ -68,6 +69,7 @@ pub fn RectpackingRowFillingAndCompaction::start(
     target_width,
     self.node_node_spacing,
   )
+  session.set_rows(layout_graph, rows)
 
   let mut row_idx = 0
   while row_idx < rows.length() {
@@ -173,7 +175,6 @@ pub fn RectpackingRowFillingAndCompaction::start(
   @graph.node_set_double_property(
     layout_graph, rectpacking_internal_additional_height, additional_height,
   )
-  rectpacking_internal_set_rows(layout_graph, rows)
 
   ignore(rectangles)
   new_rectpacking_drawing_data(

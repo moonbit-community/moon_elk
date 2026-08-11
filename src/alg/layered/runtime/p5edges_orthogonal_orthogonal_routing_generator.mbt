@@ -167,7 +167,7 @@ fn OrthogonalRoutingGenerator::break_critical_cycles(
   self : OrthogonalRoutingGenerator,
   edge_segments : Array[HyperEdgeSegment],
   random : GreedySwitchMockRandom,
-) -> Unit {
+) -> Unit raise {
   let cycle_dependencies = hyper_edge_cycle_detector_detect_cycles(
     edge_segments, true, random,
   )
@@ -196,7 +196,7 @@ pub fn OrthogonalRoutingGenerator::route_edges(
   source_layer_index : Int,
   target_layer_nodes : Array[LNode]?,
   start_pos : Double,
-) -> Int {
+) -> Int raise {
   ignore(monitor)
   ignore(source_layer_index)
   ignore(self.debug_prefix)
@@ -469,7 +469,7 @@ pub fn orthogonal_routing_generator_count_crossings(
 pub fn orthogonal_routing_generator_break_non_critical_cycles(
   edge_segments : Array[HyperEdgeSegment],
   random : GreedySwitchMockRandom,
-) -> Unit {
+) -> Unit raise {
   let cycle_dependencies = hyper_edge_cycle_detector_detect_cycles(
     edge_segments, false, random,
   )

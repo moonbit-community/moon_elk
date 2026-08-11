@@ -47,7 +47,7 @@ fn annulus_wedge_contour_get(
 pub fn AnnulusWedgeCompaction::compact(
   self : AnnulusWedgeCompaction,
   graph : @graph.ElkNode,
-) -> Unit {
+) -> Unit raise {
   let root = radial_internal_root(graph).unwrap()
   self.root = Some(root)
   self.base.set_root(root)
@@ -103,7 +103,7 @@ fn AnnulusWedgeCompaction::contract_wedge(
   radial_predecessor : @graph.ElkNode,
   radial_successor : @graph.ElkNode,
   current_radius_nodes : Array[@graph.ElkNode],
-) -> Unit {
+) -> Unit raise {
   ignore(wedge_parent)
   let mut is_overlapping = self.overlapping(
     predecessors, radial_predecessor, radial_successor, current_radius_nodes,
@@ -157,7 +157,7 @@ fn AnnulusWedgeCompaction::overlapping(
   left_parent : @graph.ElkNode,
   right_parent : @graph.ElkNode,
   layer_nodes : Array[@graph.ElkNode],
-) -> Bool {
+) -> Bool raise {
   if self.sorter is Some(sorter) {
     sorter.sort(layer_nodes)
   }
@@ -186,7 +186,7 @@ fn AnnulusWedgeCompaction::overlapping(
 fn AnnulusWedgeCompaction::construct_contour(
   self : AnnulusWedgeCompaction,
   nodes : Array[@graph.ElkNode],
-) -> Unit {
+) -> Unit raise {
   for node in nodes {
     annulus_wedge_contour_put(self.left_contour, node, node)
     annulus_wedge_contour_put(self.right_contour, node, node)

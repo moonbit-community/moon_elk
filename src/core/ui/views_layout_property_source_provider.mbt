@@ -1,5 +1,6 @@
 ///|
 pub(all) struct LayoutPropertySourceProvider {
+  metadata : @core.OptionMetadata
   mut configuration_store_provider : @service.LayoutConfigurationStoreProvider?
   config_manager : @service.LayoutConfigurationManager
   layout_option_validator_provider : () -> @core.LayoutOptionValidator
@@ -9,13 +10,20 @@ pub(all) struct LayoutPropertySourceProvider {
 
 ///|
 pub fn new_layout_property_source_provider(
+  metadata : @core.OptionMetadata,
   configuration_store_provider? : @service.LayoutConfigurationStoreProvider? = None,
-  config_manager? : @service.LayoutConfigurationManager = @service.new_layout_configuration_manager(),
-  layout_option_validator_provider? : () -> @core.LayoutOptionValidator = () => {
-    @core.new_layout_option_validator()
-  },
+  config_manager? : @service.LayoutConfigurationManager,
+  layout_option_validator_provider? : () -> @core.LayoutOptionValidator,
 ) -> LayoutPropertySourceProvider {
+  let config_manager = config_manager.unwrap_or(
+    @service.new_layout_configuration_manager(metadata),
+  )
+  let layout_option_validator_provider = layout_option_validator_provider.unwrap_or(() => {
+      @core.new_layout_option_validator(metadata)
+    },
+  )
   {
+    metadata,
     configuration_store_provider,
     config_manager,
     layout_option_validator_provider,
@@ -67,6 +75,7 @@ pub fn LayoutPropertySourceProvider::create_property_source(
   config : @service.ILayoutConfigurationStore,
 ) -> LayoutPropertySource {
   let result = new_layout_property_source(
+    self.metadata,
     config,
     self.get_configuration_manager(),
   )

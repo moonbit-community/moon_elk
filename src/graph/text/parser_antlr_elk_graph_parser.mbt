@@ -1,14 +1,17 @@
 ///|
 pub struct ElkGraphParser {
+  metadata : @core.OptionMetadata
   mut grammar_access : ElkGraphGrammarAccess
   mut initial_hidden_tokens : Array[String]
 }
 
 ///|
 pub fn new_elk_graph_parser(
+  metadata : @core.OptionMetadata,
   grammar_access? : ElkGraphGrammarAccess = new_elk_graph_grammar_access(),
 ) -> ElkGraphParser {
   {
+    metadata,
     grammar_access,
     initial_hidden_tokens: ["RULE_WS", "RULE_ML_COMMENT", "RULE_SL_COMMENT"],
   }
@@ -35,6 +38,7 @@ pub fn ElkGraphParser::create_parser(
   tokens : Array[ElkGraphLexToken],
 ) -> InternalElkGraphParser {
   new_internal_elk_graph_parser(
+    self.metadata,
     tokens,
     grammar_access=self.get_grammar_access(),
   )

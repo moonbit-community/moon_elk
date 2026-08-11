@@ -54,7 +54,6 @@ fn node_micro_layout_verify_node_labels_have_been_positioned(
 
 ///|
 fn node_micro_layout_fixture(positioned : Bool) -> ElkNode {
-  reset_graph_model_for_test()
   let graph = create_graph()
   if !positioned {
     node_set_bool_property(graph, omit_node_micro_layout, true)

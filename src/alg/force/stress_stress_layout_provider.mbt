@@ -13,8 +13,10 @@ pub fn new_stress_layout_provider() -> StressLayoutProvider {
 }
 
 ///|
-fn init {
-  @core.recursive_graph_layout_engine_register_handler(stress_algorithm_id, (
+pub fn register_stress_layout_algorithm(runtime : @core.LayoutRuntime) -> Unit {
+  runtime.register_layout_algorithm(stress_algorithm_id, (
+    _runtime,
+    _session,
     layout_graph,
     progress_monitor,
   ) => new_stress_layout_provider().layout(layout_graph, progress_monitor))
@@ -43,17 +45,21 @@ pub fn StressLayoutProvider::layout(
   self : StressLayoutProvider,
   layout_graph : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor,
-) -> Unit {
+) -> Unit raise {
   try
     stress_layout_provider_layout_impl(self, layout_graph, progress_monitor)
   catch {
-    err => {
-      @core.layout_runtime_report_unsupported_graph(
-        force_import_exception_message(err),
-      )
+    ForceImportException::UnsupportedGraph(message) => {
+      @core.layout_runtime_raise_unsupported_graph(message)
       if progress_monitor.is_running() {
         progress_monitor.done()
       }
+    }
+    err => {
+      if progress_monitor.is_running() {
+        progress_monitor.done()
+      }
+      raise err
     }
   } noraise {
     _ => ()
@@ -65,7 +71,7 @@ fn stress_layout_provider_layout_impl(
   provider : StressLayoutProvider,
   layout_graph : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor,
-) -> Unit raise ForceImportException {
+) -> Unit raise {
   ignore(progress_monitor.begin("ELK Stress", 1.0))
   if !stress_option_bool_from_layout_options(layout_graph, stress_interactive) {
     let force_provider = new_force_layout_provider()
@@ -87,13 +93,12 @@ fn stress_layout_provider_layout_impl(
       continue
     }
     try provider.stress_majorization.initialize(sub_graph) catch {
-      err => {
-        @core.layout_runtime_report_unsupported_configuration(
-          stress_majorization_exception_message(err),
-        )
+      StressMajorizationException::StressMajorizationException(message) => {
+        @core.layout_runtime_raise_unsupported_configuration(message)
         progress_monitor.done()
         return
       }
+      err => raise err
     } noraise {
       _ => ()
     }

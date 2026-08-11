@@ -3,6 +3,7 @@ package "Milky2018/moon_elk/graph/text/ui"
 
 import {
   "Milky2018/moon_elk/core",
+  "Milky2018/moon_elk/graph",
   "Milky2018/moon_elk/graph/text",
   "Milky2018/moon_elk/graph/text/ide",
   "moonbitlang/core/debug",
@@ -35,7 +36,7 @@ pub fn new_abstract_elk_graph_proposal_provider() -> AbstractElkGraphProposalPro
 
 pub fn new_abstract_elk_graph_ui_module(plugin_id? : String) -> AbstractElkGraphUiModule
 
-pub fn new_convert_graph_handler(project? : GraphTextProject) -> ConvertGraphHandler
+pub fn new_convert_graph_handler(@core.OptionMetadata, project? : GraphTextProject) -> ConvertGraphHandler
 
 pub fn new_elk_graph_description_label_provider() -> ElkGraphDescriptionLabelProvider
 
@@ -51,7 +52,7 @@ pub fn new_elk_graph_text_ui_activator() -> ElkGraphTextUiActivator
 
 pub fn new_elk_graph_ui_module(plugin_id? : String) -> ElkGraphUiModule
 
-pub fn new_elk_graph_ui_proposal_provider(ide_provider? : @ide.ElkGraphIdeProposalProvider, grammar? : @text.ElkGraphGrammarAccess) -> ElkGraphUiProposalProvider
+pub fn new_elk_graph_ui_proposal_provider(@core.OptionMetadata, ide_provider? : @ide.ElkGraphIdeProposalProvider, grammar? : @text.ElkGraphGrammarAccess) -> ElkGraphUiProposalProvider
 
 pub fn new_graph_text_assignment(String) -> GraphTextAssignment
 
@@ -67,7 +68,7 @@ pub fn new_graph_text_ui_bundle(symbolic_name? : String) -> GraphTextUiBundle
 
 pub fn new_graph_text_ui_completion_proposal_acceptor() -> GraphTextUiCompletionProposalAcceptor
 
-pub fn new_graph_text_ui_content_assist_context(prefix? : String, current_model? : @text.GraphTextElement?, current_property_key? : @text.GraphTextPropertyKey?, current_edge_section? : Int?, conflict_on_a? : Bool) -> GraphTextUiContentAssistContext
+pub fn new_graph_text_ui_content_assist_context(prefix? : String, current_model? : @text.GraphTextElement?, current_property_key? : @text.GraphTextPropertyKey?, current_edge_section? : @graph.ElkEdgeSection?, conflict_on_a? : Bool) -> GraphTextUiContentAssistContext
 
 pub fn new_graph_text_ui_core_exception(GraphTextUiStatus) -> GraphTextUiCoreException
 
@@ -81,7 +82,7 @@ pub fn new_text_activator() -> TextActivator
 
 pub fn new_text_layout_connector() -> TextLayoutConnector
 
-pub fn new_text_layout_mapping(String, Int, Int) -> TextLayoutMapping
+pub fn new_text_layout_mapping(String, @graph.ElkNode, @graph.ElkNode) -> TextLayoutMapping
 
 pub fn new_text_layout_module() -> TextLayoutModule
 
@@ -227,6 +228,7 @@ pub fn AbstractElkGraphUiModule::provide_language_registry(Self) -> String
 pub fn AbstractElkGraphUiModule::provide_templates_language_configuration(Self) -> String
 
 pub struct ConvertGraphHandler {
+  metadata : @core.OptionMetadata
   project : GraphTextProject
   mut target_extension : String
   errors : Array[String]
@@ -237,11 +239,11 @@ pub fn ConvertGraphHandler::execute(Self, Array[GraphTextSelectionItem], String)
 pub fn ConvertGraphHandler::get_errors(Self) -> Array[String]
 pub fn ConvertGraphHandler::get_project(Self) -> GraphTextProject
 pub fn ConvertGraphHandler::is_valid_target_extension(Self, String) -> Bool
-pub fn ConvertGraphHandler::read_model(Self, String) -> Int
-pub fn ConvertGraphHandler::remove_invalid_properties(Self, Int) -> Int
-pub fn ConvertGraphHandler::remove_unnecessary_layouts(Self, Int) -> Int
-pub fn ConvertGraphHandler::save_model(Self, Int, String) -> Unit
-pub fn ConvertGraphHandler::transform(Self, Int) -> Int
+pub fn ConvertGraphHandler::read_model(Self, String) -> @graph.ElkNode
+pub fn ConvertGraphHandler::remove_invalid_properties(Self, @graph.ElkNode) -> @graph.ElkNode
+pub fn ConvertGraphHandler::remove_unnecessary_layouts(Self, @graph.ElkNode) -> @graph.ElkNode
+pub fn ConvertGraphHandler::save_model(Self, @graph.ElkNode, String) -> Unit
+pub fn ConvertGraphHandler::transform(Self, @graph.ElkNode) -> @graph.ElkNode
 
 pub struct ElkGraphDescriptionLabelProvider {
   unit : Unit
@@ -258,18 +260,18 @@ pub fn ElkGraphExecutableExtensionFactory::set_initialization_data(Self, GraphTe
 pub struct ElkGraphLabelProvider {
   name_provider : @text.ElkGraphQualifiedNameProvider
 }
-pub fn ElkGraphLabelProvider::image_elk_edge(Self, Int) -> String
-pub fn ElkGraphLabelProvider::image_elk_label(Self, Int) -> String
-pub fn ElkGraphLabelProvider::image_elk_node(Self, Int) -> String
-pub fn ElkGraphLabelProvider::image_elk_port(Self, Int) -> String
-pub fn ElkGraphLabelProvider::text_elk_edge(Self, Int) -> String
-pub fn ElkGraphLabelProvider::text_elk_label(Self, Int) -> String
+pub fn ElkGraphLabelProvider::image_elk_edge(Self, @graph.ElkEdge) -> String
+pub fn ElkGraphLabelProvider::image_elk_label(Self, @graph.ElkLabel) -> String
+pub fn ElkGraphLabelProvider::image_elk_node(Self, @graph.ElkNode) -> String
+pub fn ElkGraphLabelProvider::image_elk_port(Self, @graph.ElkPort) -> String
+pub fn ElkGraphLabelProvider::text_elk_edge(Self, @graph.ElkEdge) -> String
+pub fn ElkGraphLabelProvider::text_elk_label(Self, @graph.ElkLabel) -> String
 
 pub struct ElkGraphOutlineTreeProvider {
   unit : Unit
 }
-pub fn ElkGraphOutlineTreeProvider::create_children_for_edge(Self, Int) -> Array[GraphTextOutlineNode]
-pub fn ElkGraphOutlineTreeProvider::create_outline(Self, Int) -> GraphTextOutlineNode
+pub fn ElkGraphOutlineTreeProvider::create_children_for_edge(Self, @graph.ElkEdge) -> Array[GraphTextOutlineNode]
+pub fn ElkGraphOutlineTreeProvider::create_outline(Self, @graph.ElkNode) -> GraphTextOutlineNode
 
 pub struct ElkGraphQuickfixProvider {
   unit : Unit
@@ -361,7 +363,7 @@ pub struct GraphTextUiContentAssistContext {
   prefix : String
   current_model : @text.GraphTextElement?
   current_property_key : @text.GraphTextPropertyKey?
-  current_edge_section : Int?
+  current_edge_section : @graph.ElkEdgeSection?
   conflict_on_a : Bool
 }
 
@@ -413,15 +415,15 @@ pub struct TextLayoutConnector {
   unit : Unit
 }
 pub fn TextLayoutConnector::apply_layout(Self, TextLayoutMapping, Map[String, String]) -> String
-pub fn TextLayoutConnector::build_layout_graph(Self, String, Int?) -> Result[TextLayoutMapping, String]
+pub fn TextLayoutConnector::build_layout_graph(Self, String, @graph.ElkNode?) -> Result[TextLayoutMapping, String]
 
 pub struct TextLayoutMapping {
   workbench_part : String
-  parent_element : Int
-  layout_graph : Int
+  parent_element : @graph.ElkNode
+  layout_graph : @graph.ElkNode
 }
-pub fn TextLayoutMapping::get_layout_graph(Self) -> Int
-pub fn TextLayoutMapping::get_parent_element(Self) -> Int
+pub fn TextLayoutMapping::get_layout_graph(Self) -> @graph.ElkNode
+pub fn TextLayoutMapping::get_parent_element(Self) -> @graph.ElkNode
 
 pub struct TextLayoutModule {
   unit : Unit

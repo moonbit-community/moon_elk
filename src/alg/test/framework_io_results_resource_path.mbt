@@ -17,13 +17,15 @@ fn results_resource_path_raise_unit(
 }
 
 ///|
-pub fn new_results_resource_path(relative_path : String) -> ResultsResourcePath {
+pub fn new_results_resource_path(
+  relative_path : String,
+) -> ResultsResourcePath raise {
   let effective_relative_path = if relative_path.is_empty() {
     try
       results_resource_path_raise_unit("The file path cannot be empty.")
     catch {
       ResultsResourcePathException(message) =>
-        @core.layout_runtime_report_unsupported_configuration(
+        @core.layout_runtime_raise_unsupported_configuration(
           "org.eclipse.elk.alg.test.framework.io.ResultsResourcePath: " +
           message,
         )
@@ -38,7 +40,7 @@ pub fn new_results_resource_path(relative_path : String) -> ResultsResourcePath 
     Some(
       base_path_for_property(results_resource_path_property) catch {
         IllegalStateException(message) => {
-          @core.layout_runtime_report_unsupported_configuration(message)
+          @core.layout_runtime_raise_unsupported_configuration(message)
           "."
         }
       },
@@ -48,10 +50,10 @@ pub fn new_results_resource_path(relative_path : String) -> ResultsResourcePath 
 }
 
 ///|
-pub fn ensure_results_path_exists() -> Unit {
+pub fn ensure_results_path_exists() -> Unit raise {
   let path = base_path_for_property(results_resource_path_property) catch {
     IllegalStateException(message) => {
-      @core.layout_runtime_report_unsupported_configuration(message)
+      @core.layout_runtime_raise_unsupported_configuration(message)
       "."
     }
   }

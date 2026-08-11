@@ -18,7 +18,7 @@ pub fn new_radial_compaction() -> RadialCompaction {
 pub fn RadialCompaction::compact(
   self : RadialCompaction,
   graph : @graph.ElkNode,
-) -> Unit {
+) -> Unit raise {
   let root = radial_internal_root(graph).unwrap()
   self.base.set_root(root)
   self.sorter = radial_sorting_strategy_create(
@@ -74,7 +74,7 @@ fn RadialCompaction::overlapping(
 pub fn RadialCompaction::contract(
   self : RadialCompaction,
   nodes : Array[@graph.ElkNode],
-) -> Unit {
+) -> Unit raise {
   if nodes.is_empty() {
     return
   }

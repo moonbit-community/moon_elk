@@ -201,7 +201,7 @@ fn compound_graph_postprocessor_copy_junction_points(
   source : LEdge,
   target : @core.KVectorChain?,
   offset : @core.KVector,
-) -> Unit {
+) -> Unit raise {
   if !source.has_property_kvector_chain(
       @options.layered_options_junction_points,
     ) {
@@ -264,7 +264,7 @@ fn compound_graph_postprocessor_copy_labels_back(
 fn compound_graph_postprocessor_process(
   graph : LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()
@@ -298,7 +298,7 @@ fn compound_graph_postprocessor_process(
         )
       catch {
         err => {
-          @core.layout_runtime_report_unsupported_configuration(
+          @core.layout_runtime_raise_unsupported_configuration(
             cross_hierarchy_edge_comparator_exception_message(err),
           )
           monitor.done()
@@ -408,10 +408,11 @@ fn compound_graph_postprocessor_process(
     }
   } catch {
     UnsupportedGraphException(message) => {
-      @core.layout_runtime_report_unsupported_configuration(message)
+      @core.layout_runtime_raise_unsupported_configuration(message)
       monitor.done()
       return
     }
+    err => raise err
   } noraise {
     _ => ()
   }

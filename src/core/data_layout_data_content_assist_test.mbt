@@ -1,8 +1,9 @@
 ///|
-fn setup_content_assist_test_registry() -> Unit {
-  layout_meta_data_service_reset_for_test()
-  layout_meta_data_service_register_default_algorithms()
-  layout_meta_data_service_register_default_options()
+fn setup_content_assist_test_registry() -> OptionMetadata {
+  let metadata = new_option_metadata()
+  metadata.register_default_algorithms()
+  metadata.register_default_options()
+  metadata
 }
 
 ///|
@@ -46,14 +47,13 @@ fn algorithm_proposals_have_id(
 
 ///|
 test "LayoutDataContentAssist supports node option id/name prefixes" {
-  @graph.reset_graph_model_for_test()
-  setup_content_assist_test_registry()
+  let metadata = setup_content_assist_test_registry()
   let root = @graph.create_graph()
   ignore(@graph.create_node(Some(root)))
   inspect(
     option_proposals_have_id(
       layout_data_content_assist_get_layout_option_proposals(
-        root, "org.eclipse.elk.portConstraints",
+        metadata, root, "org.eclipse.elk.portConstraints",
       ),
       port_constraints.get_id(),
     ),
@@ -62,7 +62,7 @@ test "LayoutDataContentAssist supports node option id/name prefixes" {
   inspect(
     option_proposals_have_id(
       layout_data_content_assist_get_layout_option_proposals(
-        root, "eclipse.elk.portConstraints",
+        metadata, root, "eclipse.elk.portConstraints",
       ),
       port_constraints.get_id(),
     ),
@@ -71,7 +71,7 @@ test "LayoutDataContentAssist supports node option id/name prefixes" {
   inspect(
     option_proposals_have_id(
       layout_data_content_assist_get_layout_option_proposals(
-        root, "elk.portConstraints",
+        metadata, root, "elk.portConstraints",
       ),
       port_constraints.get_id(),
     ),
@@ -80,7 +80,7 @@ test "LayoutDataContentAssist supports node option id/name prefixes" {
   inspect(
     option_proposals_have_id(
       layout_data_content_assist_get_layout_option_proposals(
-        root, "portConstraints",
+        metadata, root, "portConstraints",
       ),
       port_constraints.get_id(),
     ),
@@ -88,28 +88,32 @@ test "LayoutDataContentAssist supports node option id/name prefixes" {
   )
   inspect(
     option_proposals_have_id(
-      layout_data_content_assist_get_layout_option_proposals(root, "portCo"),
+      layout_data_content_assist_get_layout_option_proposals(
+        metadata, root, "portCo",
+      ),
       port_constraints.get_id(),
     ),
     content="true",
   )
   inspect(
     option_proposals_have_id(
-      layout_data_content_assist_get_layout_option_proposals(root, "rt Constr"),
+      layout_data_content_assist_get_layout_option_proposals(
+        metadata, root, "rt Constr",
+      ),
       port_constraints.get_id(),
     ),
     content="true",
   )
   inspect(
     option_proposals_have_id(
-      layout_data_content_assist_get_layout_option_proposals(root, ""),
+      layout_data_content_assist_get_layout_option_proposals(metadata, root, ""),
       padding.get_id(),
     ),
     content="true",
   )
   inspect(
     option_proposals_have_id(
-      layout_data_content_assist_get_layout_option_proposals(root, ""),
+      layout_data_content_assist_get_layout_option_proposals(metadata, root, ""),
       alignment.get_id(),
     ),
     content="true",
@@ -118,8 +122,7 @@ test "LayoutDataContentAssist supports node option id/name prefixes" {
 
 ///|
 test "LayoutDataContentAssist supports edge and port option prefixes" {
-  @graph.reset_graph_model_for_test()
-  setup_content_assist_test_registry()
+  let metadata = setup_content_assist_test_registry()
   let root = @graph.create_graph()
   let child = @graph.create_node(Some(root))
   let edge = @graph.create_edge(Some(root))
@@ -131,7 +134,7 @@ test "LayoutDataContentAssist supports edge and port option prefixes" {
   inspect(
     option_proposals_have_id(
       layout_data_content_assist_get_layout_option_proposals_for_edge(
-        edge, "prio",
+        metadata, edge, "prio",
       ),
       priority.get_id(),
     ),
@@ -140,7 +143,7 @@ test "LayoutDataContentAssist supports edge and port option prefixes" {
   inspect(
     option_proposals_have_id(
       layout_data_content_assist_get_layout_option_proposals_for_port(
-        port, "port.sid",
+        metadata, port, "port.sid",
       ),
       port_side.get_id(),
     ),
@@ -149,7 +152,7 @@ test "LayoutDataContentAssist supports edge and port option prefixes" {
   inspect(
     option_proposals_have_id(
       layout_data_content_assist_get_layout_option_proposals_for_label(
-        label, "nodeLabels.pla",
+        metadata, label, "nodeLabels.pla",
       ),
       node_labels_placement.get_id(),
     ),
@@ -159,11 +162,11 @@ test "LayoutDataContentAssist supports edge and port option prefixes" {
 
 ///|
 test "LayoutDataContentAssist respects parent and child node targets" {
-  @graph.reset_graph_model_for_test()
-  setup_content_assist_test_registry()
+  let metadata = setup_content_assist_test_registry()
   let root = @graph.create_graph()
   let child = @graph.create_node(Some(root))
   let parent_proposals = layout_data_content_assist_get_layout_option_proposals(
+    metadata,
     root,
     algorithm.get_id(),
   )
@@ -172,6 +175,7 @@ test "LayoutDataContentAssist respects parent and child node targets" {
     content="true",
   )
   let child_proposals = layout_data_content_assist_get_layout_option_proposals(
+    metadata,
     child,
     algorithm.get_id(),
   )
@@ -183,8 +187,7 @@ test "LayoutDataContentAssist respects parent and child node targets" {
 
 ///|
 test "LayoutDataContentAssist respects algorithm specific known options" {
-  @graph.reset_graph_model_for_test()
-  setup_content_assist_test_registry()
+  let metadata = setup_content_assist_test_registry()
   let root = @graph.create_graph()
   ignore(@graph.create_node(Some(root)))
   @graph.node_set_layout_option_string_by_id(
@@ -193,6 +196,7 @@ test "LayoutDataContentAssist respects algorithm specific known options" {
     "org.eclipse.elk.box",
   )
   let proposals = layout_data_content_assist_get_layout_option_proposals(
+    metadata,
     root,
     expand_nodes.get_id(),
   )
@@ -204,8 +208,7 @@ test "LayoutDataContentAssist respects algorithm specific known options" {
 
 ///|
 test "LayoutDataContentAssist hides unknown options for selected algorithm" {
-  @graph.reset_graph_model_for_test()
-  setup_content_assist_test_registry()
+  let metadata = setup_content_assist_test_registry()
   let root = @graph.create_graph()
   ignore(@graph.create_node(Some(root)))
   @graph.node_set_layout_option_string_by_id(
@@ -214,6 +217,7 @@ test "LayoutDataContentAssist hides unknown options for selected algorithm" {
     "org.eclipse.elk.fixed",
   )
   let proposals = layout_data_content_assist_get_layout_option_proposals(
+    metadata,
     root,
     expand_nodes.get_id(),
   )
@@ -225,12 +229,11 @@ test "LayoutDataContentAssist hides unknown options for selected algorithm" {
 
 ///|
 test "LayoutDataContentAssist keeps option group in proposal suffix" {
-  @graph.reset_graph_model_for_test()
-  setup_content_assist_test_registry()
+  let metadata = setup_content_assist_test_registry()
   let root = @graph.create_graph()
   ignore(@graph.create_node(Some(root)))
   let proposals = layout_data_content_assist_get_layout_option_proposals(
-    root, "nodeN",
+    metadata, root, "nodeN",
   )
   let proposal_text = option_proposal_text_by_id(
     proposals,
@@ -248,10 +251,10 @@ test "LayoutDataContentAssist keeps option group in proposal suffix" {
 
 ///|
 test "LayoutDataContentAssist suggests algorithms by suffix" {
-  layout_meta_data_service_reset_for_test()
-  layout_meta_data_service_register_default_algorithms()
+  let metadata = new_option_metadata()
+  metadata.register_default_algorithms()
   let proposals = layout_data_content_assist_get_layout_algorithm_proposals(
-    "layer",
+    metadata, "layer",
   )
   inspect(
     algorithm_proposals_have_id(proposals, "org.eclipse.elk.layered"),

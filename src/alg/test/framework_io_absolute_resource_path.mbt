@@ -2,6 +2,8 @@
 pub type AbsoluteResourcePath = AbstractResourcePath
 
 ///|
-pub fn new_absolute_resource_path(file_path : String) -> AbsoluteResourcePath {
+pub fn new_absolute_resource_path(
+  file_path : String,
+) -> AbsoluteResourcePath raise {
   new_abstract_resource_path(None, file_path)
 }

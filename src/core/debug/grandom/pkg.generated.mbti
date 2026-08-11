@@ -16,7 +16,7 @@ pub fn core_debug_grandom_blind_text_generate() -> String
 
 pub fn core_debug_grandom_blind_text_generate_with_random(@random.Rand) -> String
 
-pub fn core_debug_grandom_configuration_parser_parse(CoreDebugGRandomConfiguration, @random.Rand) -> CoreDebugGRandomGeneratorOptions
+pub fn core_debug_grandom_configuration_parser_parse(CoreDebugGRandomConfiguration, @random.Rand) -> CoreDebugGRandomGeneratorOptions raise
 
 pub fn core_debug_grandom_constraint_free() -> CoreDebugGRandomConstraintType
 
@@ -174,9 +174,9 @@ pub fn core_debug_grandom_rand_val_gaussian(Double, Double) -> CoreDebugGRandomR
 
 pub fn core_debug_grandom_rand_val_min_max(Double, Double) -> CoreDebugGRandomRandVal
 
-pub fn core_debug_grandom_random_graph_generator_generate(CoreDebugGRandomRandomGraphGenerator, CoreDebugGRandomGeneratorOptions) -> Int
+pub fn core_debug_grandom_random_graph_generator_generate(CoreDebugGRandomRandomGraphGenerator, CoreDebugGRandomGeneratorOptions) -> @graph.ElkNode raise
 
-pub fn core_debug_grandom_random_graph_generator_generate_from_configuration(CoreDebugGRandomRandomGraphGenerator, CoreDebugGRandomConfiguration) -> Array[Int]
+pub fn core_debug_grandom_random_graph_generator_generate_from_configuration(CoreDebugGRandomRandomGraphGenerator, CoreDebugGRandomConfiguration) -> Array[@graph.ElkNode] raise
 
 pub let core_debug_grandom_randomization_seed : @graph.IProperty[Int]
 
@@ -429,15 +429,15 @@ pub(all) struct CoreDebugGRandomRandVal {
 }
 pub fn CoreDebugGRandomRandVal::default_int(Self) -> Int
 pub fn CoreDebugGRandomRandVal::default_val(Self) -> Double
-pub fn CoreDebugGRandomRandVal::float_val(Self, @random.Rand) -> Double
-pub fn CoreDebugGRandomRandVal::int_val(Self, @random.Rand) -> Int
+pub fn CoreDebugGRandomRandVal::float_val(Self, @random.Rand) -> Double raise
+pub fn CoreDebugGRandomRandVal::int_val(Self, @random.Rand) -> Int raise
 pub fn CoreDebugGRandomRandVal::max(Self) -> Double
 pub fn CoreDebugGRandomRandVal::min(Self) -> Double
 pub fn CoreDebugGRandomRandVal::set_max(Self, Int) -> Unit
 pub fn CoreDebugGRandomRandVal::set_mean(Self, Double) -> Unit
 pub fn CoreDebugGRandomRandVal::set_min(Self, Int) -> Unit
 pub fn CoreDebugGRandomRandVal::set_stddv(Self, Double) -> Unit
-pub fn CoreDebugGRandomRandVal::val(Self, @random.Rand) -> Double
+pub fn CoreDebugGRandomRandVal::val(Self, @random.Rand) -> Double raise
 
 pub(all) struct CoreDebugGRandomRandomGraphGenerator {
   mut options : CoreDebugGRandomGeneratorOptions

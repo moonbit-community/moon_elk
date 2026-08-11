@@ -50,7 +50,7 @@ pub fn LayoutGraphDialog::get_shell_text(self : LayoutGraphDialog) -> String {
 pub fn LayoutGraphDialog::create_contents(
   self : LayoutGraphDialog,
   display : CoreUiDisplay,
-) -> GraphRenderingCanvas {
+) -> GraphRenderingCanvas raise {
   let canvas = new_graph_rendering_canvas_with_configurator(
     display,
     self.configurator,

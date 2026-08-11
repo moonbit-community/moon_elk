@@ -15,17 +15,18 @@ fn new_recursive_layout_graph_fixture() -> RecursiveLayoutGraphFixture {
 
 ///|
 fn init_layout_metadata_for_engine_test() -> Unit {
-  layout_meta_data_service_reset_for_test()
-  layout_meta_data_service_register_default_algorithms()
+  ()
 }
 
 ///|
 test "RecursiveGraphLayoutEngine unresolved graph" {
-  @graph.reset_graph_model_for_test()
   init_layout_metadata_for_engine_test()
   let graph = new_recursive_layout_graph_fixture()
   @graph.node_set_string_property(graph.root, algorithm, "org.eclipse.elk.box")
-  let engine = new_recursive_graph_layout_engine()
+  let engine = new_recursive_graph_layout_engine(
+    @elk_graph_json.new_layout_runtime(),
+    new_layout_session(),
+  )
   engine.layout(graph.root, new_basic_progress_monitor())
   assert_true(@graph.node_width(graph.root) > 0.0)
   assert_true(@graph.node_height(graph.root) > 0.0)
@@ -33,7 +34,6 @@ test "RecursiveGraphLayoutEngine unresolved graph" {
 
 ///|
 test "RecursiveGraphLayoutEngine resolved graph" {
-  @graph.reset_graph_model_for_test()
   init_layout_metadata_for_engine_test()
   let graph = new_recursive_layout_graph_fixture()
   @graph.node_set_string_property(
@@ -41,7 +41,10 @@ test "RecursiveGraphLayoutEngine resolved graph" {
     resolved_algorithm,
     "org.eclipse.elk.box",
   )
-  let engine = new_recursive_graph_layout_engine()
+  let engine = new_recursive_graph_layout_engine(
+    @elk_graph_json.new_layout_runtime(),
+    new_layout_session(),
+  )
   engine.layout(graph.root, new_basic_progress_monitor())
   assert_true(@graph.node_width(graph.root) > 0.0)
   assert_true(@graph.node_height(graph.root) > 0.0)
@@ -49,13 +52,16 @@ test "RecursiveGraphLayoutEngine resolved graph" {
 
 ///|
 test "RecursiveGraphLayoutEngine unknown algorithm reports runtime error" {
-  @graph.reset_graph_model_for_test()
   init_layout_metadata_for_engine_test()
   let graph = new_recursive_layout_graph_fixture()
   @graph.node_set_string_property(graph.root, algorithm, "foo.Bar")
-  let engine = new_recursive_graph_layout_engine()
+  let session = new_layout_session()
+  let engine = new_recursive_graph_layout_engine(
+    @elk_graph_json.new_layout_runtime(),
+    session,
+  )
   engine.layout(graph.root, new_basic_progress_monitor())
-  let error = layout_runtime_take_error_message()
+  let error = session.take_error_message()
   assert_eq(error is Some(_), true)
   if error is Some(message) {
     assert_eq(message.is_empty(), false)
@@ -64,10 +70,12 @@ test "RecursiveGraphLayoutEngine unknown algorithm reports runtime error" {
 
 ///|
 test "RecursiveGraphLayoutEngine empty algorithm id falls back to layered" {
-  @graph.reset_graph_model_for_test()
   init_layout_metadata_for_engine_test()
   let graph = new_recursive_layout_graph_fixture()
-  let engine = new_recursive_graph_layout_engine()
+  let engine = new_recursive_graph_layout_engine(
+    @elk_graph_json.new_layout_runtime(),
+    new_layout_session(),
+  )
   engine.layout(graph.root, new_basic_progress_monitor())
   assert_eq(
     @graph.node_get_string_property(graph.root, resolved_algorithm),

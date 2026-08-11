@@ -34,7 +34,6 @@ fn sections_shape_node(shape : @graph.ElkConnectableShape?) -> @graph.ElkNode {
 
 ///|
 test "graph json edge section import" {
-  @graph.reset_graph_model_for_test()
   let graph = gj_obj([
     ("id", gj_str("root")),
     (
@@ -88,7 +87,6 @@ test "graph json edge section import" {
 
 ///|
 test "graph json preserve section ids through transfer" {
-  @graph.reset_graph_model_for_test()
   let graph = gj_obj([
     ("id", gj_str("root")),
     (
@@ -132,7 +130,10 @@ test "graph json preserve section ids through transfer" {
     .remember_importer(maybe_importer)
     .to_elk()
   let edge = @graph.node_contained_edges(root)[0]
-  assert_eq(sections_find_by_id(edge, "xyz") >= 0, true)
+  assert_eq(
+    sections_find_by_id(edge, "xyz") == @graph.edge_sections(edge)[0],
+    true,
+  )
   required_importer(maybe_importer).transfer_layout(root)
   let json_text = graph.stringify()
   assert_eq(json_text.contains("\"id\":\"xyz\""), true)
@@ -140,7 +141,6 @@ test "graph json preserve section ids through transfer" {
 
 ///|
 test "graph json transfer does not add empty sections for extended edge" {
-  @graph.reset_graph_model_for_test()
   let graph = gj_obj([
     ("id", gj_str("root")),
     (
@@ -168,7 +168,6 @@ test "graph json transfer does not add empty sections for extended edge" {
 
 ///|
 test "graph json transfer does not add empty sections for primitive edge" {
-  @graph.reset_graph_model_for_test()
   let graph = gj_obj([
     ("id", gj_str("root")),
     (

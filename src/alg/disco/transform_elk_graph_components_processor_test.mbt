@@ -43,7 +43,6 @@ fn disco_components_signature(
 
 ///|
 test "ElkGraphComponentsProcessor split handles disconnected nodes" {
-  @graph.reset_graph_model_for_test()
   let root = @graph.create_graph()
   let node_a = @graph.create_node(Some(root))
   let node_b = @graph.create_node(Some(root))
@@ -60,7 +59,6 @@ test "ElkGraphComponentsProcessor split handles disconnected nodes" {
 
 ///|
 test "ElkGraphComponentsProcessor split connects through parent port" {
-  @graph.reset_graph_model_for_test()
   let root = @graph.create_graph()
   let node_a = @graph.create_node(Some(root))
   let node_b = @graph.create_node(Some(root))

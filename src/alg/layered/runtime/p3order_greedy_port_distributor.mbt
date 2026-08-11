@@ -33,11 +33,11 @@ fn greedy_port_distributor_to_node_array(graph : LGraph) -> Array[Array[LNode]] 
 ///|
 fn greedy_port_distributor_crossings_counter(
   distributor : GreedyPortDistributor,
-) -> CrossingsCounter {
+) -> CrossingsCounter raise {
   match distributor.crossings_counter {
     Some(counter) => counter
     None => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "greedy port distributor is not initialized",
       )
       new_crossings_counter(distributor.port_pos)
@@ -48,11 +48,11 @@ fn greedy_port_distributor_crossings_counter(
 ///|
 fn greedy_port_distributor_hierarchical_counter(
   distributor : GreedyPortDistributor,
-) -> BetweenLayerEdgeTwoNodeCrossingsCounter {
+) -> BetweenLayerEdgeTwoNodeCrossingsCounter raise {
   match distributor.hierarchical_crossings_counter {
     Some(counter) => counter
     None => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "hierarchical crossing counter is not initialized",
       )
       new_between_layer_edge_two_node_crossings_counter([], 0)
@@ -108,7 +108,7 @@ fn GreedyPortDistributor::init_for_layers(
   self : GreedyPortDistributor,
   left_layer : Array[LNode],
   right_layer : Array[LNode],
-) -> Unit {
+) -> Unit raise {
   let counter = greedy_port_distributor_crossings_counter(self)
   counter.init_for_counting_between(left_layer, right_layer)
 }
@@ -119,7 +119,7 @@ fn GreedyPortDistributor::initialize(
   node_order : Array[Array[LNode]],
   current_index : Int,
   is_forward_sweep : Bool,
-) -> Unit {
+) -> Unit raise {
   if is_forward_sweep && current_index > 0 {
     self.init_for_layers(
       node_order[current_index - 1],
@@ -151,7 +151,7 @@ fn GreedyPortDistributor::switching_decreases_crossings(
   upper_port : LPort,
   lower_port : LPort,
   use_hierarchical_crosscounter : Bool,
-) -> Bool {
+) -> Bool raise {
   let counter = greedy_port_distributor_crossings_counter(self)
   let original_and_switched = counter.count_crossings_between_ports_in_both_orders(
     upper_port, lower_port,
@@ -197,7 +197,7 @@ fn GreedyPortDistributor::switch_ports(
   node : LNode,
   top_port : Int,
   bottom_port : Int,
-) -> Unit {
+) -> Unit raise {
   let counter = greedy_port_distributor_crossings_counter(self)
   counter.switch_ports(ports[top_port], ports[bottom_port])
   greedy_port_distributor_swap_ports_on_node(
@@ -217,7 +217,7 @@ fn GreedyPortDistributor::distribute_ports_on_node(
   node : LNode,
   side : @core.PortSide,
   use_hierarchical_crosscounter : Bool,
-) -> Bool {
+) -> Bool raise {
   let ports = if lnode_port_side_equals(side, South) ||
     lnode_port_side_equals(side, West) {
     greedy_port_distributor_reverse_ports(node.get_port_side_view(side))
@@ -253,7 +253,7 @@ fn GreedyPortDistributor::distribute_ports_in_layer(
   node_order : Array[Array[LNode]],
   current_index : Int,
   is_forward_sweep : Bool,
-) -> Bool {
+) -> Bool raise {
   let side = if is_forward_sweep { @core.PortSide::West } else { East }
   let mut improved = false
 
@@ -305,7 +305,7 @@ pub fn GreedyPortDistributor::distribute_ports_while_sweeping(
   node_order : Array[Array[LNode]],
   current_index : Int,
   is_forward_sweep : Bool,
-) -> Bool {
+) -> Bool raise {
   self.initialize(node_order, current_index, is_forward_sweep)
   self.distribute_ports_in_layer(node_order, current_index, is_forward_sweep)
 }
@@ -334,7 +334,7 @@ pub fn GreedyPortDistributor::as_i_sweep_port_distributor(
   self : GreedyPortDistributor,
 ) -> ISweepPortDistributor {
   new_i_sweep_port_distributor(
-    (node_order, current_index, is_forward_sweep) => {
+    fn(node_order, current_index, is_forward_sweep) raise {
       self.distribute_ports_while_sweeping(
         node_order, current_index, is_forward_sweep,
       )

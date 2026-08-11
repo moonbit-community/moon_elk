@@ -426,10 +426,10 @@ fn RoutingDirector::determine_loop_routes_impl(
 pub fn RoutingDirector::determine_loop_routes(
   self : RoutingDirector,
   sl_holder : SelfLoopHolder,
-) -> Unit {
+) -> Unit raise {
   try self.determine_loop_routes_impl(sl_holder) catch {
     err =>
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         routing_director_exception_message(err),
       )
   } noraise {

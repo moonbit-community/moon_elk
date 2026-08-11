@@ -21,7 +21,7 @@ pub fn new_radial_eades_layout_phase() -> @core.ILayoutProcessor[
       let root = match radial_internal_root(graph) {
         Some(value) => value
         None => {
-          @core.layout_runtime_report_unsupported_configuration(
+          @core.layout_runtime_raise_unsupported_configuration(
             "radial root node is missing",
           )
           graph
@@ -55,7 +55,7 @@ fn radial_translate(
   sorter : IRadialSorter?,
   wedge_criteria : IAnnulusWedgeCriteria,
   optimizer : IEvaluation?,
-) -> Unit {
+) -> Unit raise {
   ignore(graph)
   let mut optimal_offset = 0.0
   let mut optimal_value = @double.max_value
@@ -106,7 +106,7 @@ fn radial_position_nodes(
   min_alpha : Double,
   max_alpha : Double,
   optimal_offset : Double,
-) -> Unit {
+) -> Unit raise {
   let radial_offset = optimal_offset
   let alpha_point = (min_alpha + max_alpha) / 2.0 + radial_offset
   let x_pos = current_radius * @math.cos(alpha_point)

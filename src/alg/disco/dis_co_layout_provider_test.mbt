@@ -1,6 +1,5 @@
 ///|
 test "DisCoLayoutProvider runs polyomino compaction end-to-end" {
-  @graph.reset_graph_model_for_test()
   let root = @graph.create_graph()
   @graph.node_set_dimensions(root, 120.0, 60.0)
 
@@ -24,7 +23,9 @@ test "DisCoLayoutProvider runs polyomino compaction end-to-end" {
   let before_left_x = @graph.node_x(left)
   let before_right_x = @graph.node_x(right)
 
-  let provider = new_dis_co_layout_provider()
+  let provider = new_dis_co_layout_provider(
+    @core.new_layout_runtime().option_metadata(),
+  )
   let monitor = @core.new_elk_progress_monitor()
   provider.layout(root, monitor)
 

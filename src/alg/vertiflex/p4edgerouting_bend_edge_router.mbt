@@ -1,5 +1,8 @@
 ///|
-fn vertiflex_bend_edge_router_route_edges(node : @graph.ElkNode) -> Unit {
+fn vertiflex_bend_edge_router_route_edges(
+  session : VertiFlexSession,
+  node : @graph.ElkNode,
+) -> Unit raise {
   for edge in @graph.node_outgoing_edges(node) {
     let target = vertiflex_internal_child_of_edge(edge)
     let section = vertiflex_first_or_create_edge_section(edge)
@@ -13,7 +16,7 @@ fn vertiflex_bend_edge_router_route_edges(node : @graph.ElkNode) -> Unit {
       match @graph.node_parent(target) {
         Some(parent) => parent
         None => {
-          @core.layout_runtime_report_unsupported_configuration(
+          @core.layout_runtime_raise_unsupported_configuration(
             "VertiFlex target node must have a parent graph.",
           )
           target
@@ -21,7 +24,7 @@ fn vertiflex_bend_edge_router_route_edges(node : @graph.ElkNode) -> Unit {
       },
       vertiflex_spacing_node_node,
     )
-    let bend_height = vertiflex_internal_edge_bend_height(target)
+    let bend_height = vertiflex_internal_edge_bend_height(session, target)
     let epsilon = 0.0001
     if (bend_height - (end_y - spacing / 2.0)).abs() > epsilon {
       let sections = @graph.edge_sections(edge)
@@ -42,30 +45,38 @@ fn vertiflex_bend_edge_router_route_edges(node : @graph.ElkNode) -> Unit {
     } else {
       @graph.edge_section_set_end(section, end_x, end_y)
     }
-    vertiflex_bend_edge_router_route_edges(target)
+    vertiflex_bend_edge_router_route_edges(session, target)
   }
 }
 
 ///|
 fn vertiflex_bend_edge_router_process(
+  session : VertiFlexSession,
   graph : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(existing) => existing
     None => @core.new_null_elk_progress_monitor()
   }
   ignore(monitor.begin("BendEdgeRouter", 1.0))
   if !@graph.node_children(graph).is_empty() {
-    vertiflex_bend_edge_router_route_edges(vertiflex_internal_root_node(graph))
+    vertiflex_bend_edge_router_route_edges(
+      session,
+      vertiflex_internal_root_node(session, graph),
+    )
   }
   monitor.done()
 }
 
 ///|
-pub fn new_vertiflex_bend_edge_router_layout_phase() -> @core.ILayoutProcessor[
-  VertiFlexLayoutPhases,
-  @graph.ElkNode,
-] {
-  @core.new_layout_phase(vertiflex_bend_edge_router_process, _ => None)
+pub fn new_vertiflex_bend_edge_router_layout_phase(
+  session : VertiFlexSession,
+) -> @core.ILayoutProcessor[VertiFlexLayoutPhases, @graph.ElkNode] {
+  @core.new_layout_phase(
+    (graph, monitor) => {
+      vertiflex_bend_edge_router_process(session, graph, monitor)
+    },
+    _ => None,
+  )
 }

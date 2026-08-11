@@ -128,7 +128,7 @@ pub fn SelfHyperLoop::get_sl_holder(self : SelfHyperLoop) -> SelfLoopHolder {
 pub fn SelfHyperLoop::add_self_loop_edge(
   self : SelfHyperLoop,
   sl_edge : SelfLoopEdge,
-) -> Unit {
+) -> Unit raise {
   if self_hyper_loop_has_edge(self.sl_edges, sl_edge) {
     return
   }

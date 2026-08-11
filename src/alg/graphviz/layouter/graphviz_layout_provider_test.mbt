@@ -22,25 +22,32 @@ fn graphviz_layout_provider_test_process(
 
 ///|
 test "GraphvizLayoutProvider reports invalid initialization parameter" {
-  @core.layout_runtime_clear_error()
+  let session = @core.new_layout_session()
   let provider = new_graphviz_layout_provider()
-  provider.initialize(Some("not-a-command"))
+  try provider.initialize(Some("not-a-command")) catch {
+    error => session.record_error(error)
+  } noraise {
+    _ => ()
+  }
   debug_inspect(
-    @core.layout_runtime_take_error_message(),
+    session.take_error_message(),
     content="Some(\"org.eclipse.elk.core.UnsupportedConfigurationException: Invalid Graphviz command.\")",
   )
 }
 
 ///|
 test "GraphvizLayoutProvider reports missing initialize before layout" {
-  @core.layout_runtime_clear_error()
-  @graph.reset_graph_model_for_test()
+  let session = @core.new_layout_session()
   let provider = new_graphviz_layout_provider()
   let root = @graph.create_graph()
   ignore(@graph.create_node(Some(root)))
-  provider.layout(root, @core.new_elk_progress_monitor())
+  try provider.layout(root, @core.new_elk_progress_monitor()) catch {
+    error => session.record_error(error)
+  } noraise {
+    _ => ()
+  }
   debug_inspect(
-    @core.layout_runtime_take_error_message(),
+    session.take_error_message(),
     content="Some(\"org.eclipse.elk.core.UnsupportedConfigurationException: The Graphviz layout provider is not initialized.\")",
   )
 }
@@ -75,7 +82,6 @@ test "GraphvizLayoutProvider returns early for empty parent" {
 
 ///|
 test "GraphvizLayoutProvider runs pipeline and records debug streams" {
-  @graph.reset_graph_model_for_test()
   graphviz_layout_provider_reset_runtime_for_test()
   graphviz_tool_reset_runtime_for_test()
   graphviz_tool_set_default_locations_for_test(["/usr/bin/"])
@@ -127,7 +133,6 @@ test "GraphvizLayoutProvider runs pipeline and records debug streams" {
 
 ///|
 test "GraphvizLayoutProvider honors reuse-process preference and dispose stops tool" {
-  @graph.reset_graph_model_for_test()
   graphviz_layout_provider_reset_runtime_for_test()
   graphviz_tool_reset_runtime_for_test()
   graphviz_layouter_preference_store_reset_for_test()

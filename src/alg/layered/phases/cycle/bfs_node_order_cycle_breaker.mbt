@@ -169,7 +169,7 @@ fn bfs_node_order_loop(state : BfsNodeOrderCycleBreakerState) -> Unit {
 ///|
 fn bfs_node_order_configuration(
   graph : @runtime.LGraph,
-) -> @core.LayoutProcessorConfiguration[@runtime.LayeredPhases, @runtime.LGraph]? {
+) -> @core.LayoutProcessorConfiguration[@runtime.LayeredPhases, @runtime.LGraph]? raise {
   ignore(graph)
   Some(
     @core.layout_processor_configuration_create(
@@ -185,7 +185,7 @@ fn bfs_node_order_configuration(
 fn bfs_node_order_process(
   graph : @runtime.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()

@@ -53,7 +53,7 @@ fn spore_shrink_tree_compaction_debug_out(
 fn spore_shrink_tree_compaction_phase_process(
   graph : SporeGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(existing) => existing
     None => @core.new_null_elk_progress_monitor()
@@ -87,7 +87,7 @@ pub fn new_spore_shrink_tree_compaction_layout_phase() -> @core.ILayoutProcessor
   SPOrEPhases,
   SporeGraph,
 ] {
-  @core.new_layout_phase(
+  @core.new_pure_layout_phase(
     spore_shrink_tree_compaction_phase_process, spore_shrink_tree_compaction_phase_configuration,
   )
 }

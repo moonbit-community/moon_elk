@@ -9,11 +9,11 @@ fn tarjan_edge_is_reversed(tarjan : Tarjan, edge : LEdge) -> Bool {
 }
 
 ///|
-fn tarjan_pop_stack(stack : Array[LNode]) -> LNode {
+fn tarjan_pop_stack(stack : Array[LNode]) -> LNode raise {
   match stack.pop() {
     Some(node) => node
     None => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "tarjan stack is empty",
       )
       tarjan_pop_stack(stack)
@@ -63,7 +63,7 @@ pub fn Tarjan::get_node_to_scc_id(self : Tarjan) -> Map[Int, Int] {
 }
 
 ///|
-pub fn Tarjan::tarjan(self : Tarjan, graph : LGraph) -> Unit {
+pub fn Tarjan::tarjan(self : Tarjan, graph : LGraph) -> Unit raise {
   self.index = 0
   self.stack.clear()
   self.strongly_connected_components.clear()
@@ -78,7 +78,7 @@ pub fn Tarjan::tarjan(self : Tarjan, graph : LGraph) -> Unit {
 }
 
 ///|
-pub fn Tarjan::strongly_connected(self : Tarjan, node_v : LNode) -> Unit {
+pub fn Tarjan::strongly_connected(self : Tarjan, node_v : LNode) -> Unit raise {
   node_v.set_property_int(internal_properties_tarjan_id, self.index)
   node_v.set_property_int(internal_properties_tarjan_lowlink, self.index)
   self.index += 1

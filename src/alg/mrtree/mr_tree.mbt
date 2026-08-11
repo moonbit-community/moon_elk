@@ -55,7 +55,7 @@ fn mrtree_build_levels(graph : MrtreeGraph) -> Array[Array[MrtreeNode]] {
 }
 
 ///|
-pub fn mrtree_layout_levels(graph : MrtreeGraph) -> Unit {
+pub fn mrtree_layout_levels(graph : MrtreeGraph) -> Unit raise {
   let levels = mrtree_build_levels(graph)
   let spacing = mrtree_graph_spacing_node_node(graph)
   let level_widths = []
@@ -94,7 +94,7 @@ pub fn mrtree_layout_levels(graph : MrtreeGraph) -> Unit {
 ///|
 fn mrtree_update_modules(
   graph : MrtreeGraph,
-) -> Array[@core.ILayoutProcessor[MrtreeTreeLayoutPhases, MrtreeGraph]] {
+) -> Array[@core.ILayoutProcessor[MrtreeTreeLayoutPhases, MrtreeGraph]] raise {
   let algorithm_assembler = @core.algorithm_assembler_create(
     mrtree_tree_layout_phase_descriptor,
   )
@@ -131,7 +131,7 @@ fn mrtree_layout(
   graph : MrtreeGraph,
   algorithm : Array[@core.ILayoutProcessor[MrtreeTreeLayoutPhases, MrtreeGraph]],
   monitor_opt : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match monitor_opt {
     Some(existing) => existing
     None => @core.new_basic_progress_monitor()
@@ -151,7 +151,7 @@ pub fn Mrtree::do_layout(
   self : Mrtree,
   graph : MrtreeGraph,
   progress_monitor : @core.IElkProgressMonitor,
-) -> MrtreeGraph {
+) -> MrtreeGraph raise {
   ignore(self)
   ignore(progress_monitor.begin("@common.Tree layout", 1.0))
   let algorithm = mrtree_update_modules(graph)

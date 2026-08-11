@@ -29,17 +29,16 @@ fn mrtree_dfs(
   node : MrtreeNode,
   visited : Array[Bool],
   incidence : Array[Array[MrtreeEdge]],
-  component? : MrtreeGraph = -1,
-) -> MrtreeGraph? {
+  component? : MrtreeGraph,
+) -> MrtreeGraph? raise {
   let node_id = mrtree_node_id(node)
   if visited[node_id] {
     return None
   }
   visited[node_id] = true
-  let current_component = if component >= 0 {
-    component
-  } else {
-    new_mrtree_graph()
+  let current_component = match component {
+    Some(value) => value
+    None => new_mrtree_graph()
   }
   mrtree_graph_add_existing_node(current_component, node)
   for edge in incidence[node_id] {
@@ -66,7 +65,7 @@ fn mrtree_dfs(
 pub fn MrtreeComponentsProcessor::split(
   self : MrtreeComponentsProcessor,
   graph : MrtreeGraph,
-) -> Array[MrtreeGraph] {
+) -> Array[MrtreeGraph] raise {
   ignore(self)
   if !mrtree_graph_separate_connected_components(graph) {
     return [graph]
@@ -192,10 +191,10 @@ fn mrtree_move_graph(
 }
 
 ///|
-fn mrtree_process_graph_bounds(graph : MrtreeGraph) -> Unit {
+fn mrtree_process_graph_bounds(graph : MrtreeGraph) -> Unit raise {
   let nodes = mrtree_graph_nodes(graph)
   if nodes.is_empty() {
-    @core.layout_runtime_report_unsupported_configuration(
+    @core.layout_runtime_raise_unsupported_configuration(
       "Mrtree graph bounds processor requires at least one node.",
     )
     return
@@ -227,7 +226,9 @@ fn mrtree_process_graph_bounds(graph : MrtreeGraph) -> Unit {
 }
 
 ///|
-fn mrtree_apply_padding_and_normalize_positions(graph : MrtreeGraph) -> Unit {
+fn mrtree_apply_padding_and_normalize_positions(
+  graph : MrtreeGraph,
+) -> Unit raise {
   let padding_value = mrtree_graph_padding(graph)
   mrtree_graph_set_bb_up_left(graph, @core.new_kvector())
   let temp_graph = new_mrtree_graph()
@@ -244,7 +245,7 @@ fn mrtree_apply_padding_and_normalize_positions(graph : MrtreeGraph) -> Unit {
 pub fn MrtreeComponentsProcessor::pack(
   self : MrtreeComponentsProcessor,
   components : Array[MrtreeGraph],
-) -> MrtreeGraph {
+) -> MrtreeGraph raise {
   ignore(self)
   if components.length() == 1 {
     let component = components[0]

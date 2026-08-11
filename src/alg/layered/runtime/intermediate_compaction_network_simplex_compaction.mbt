@@ -28,7 +28,7 @@ fn network_simplex_compaction_int_max(left : Int, right : Int) -> Int {
 ///|
 fn network_simplex_compaction_require_group(
   node : @compaction.CNode,
-) -> @compaction.CGroup raise NetworkSimplexCompactionException {
+) -> @compaction.CGroup raise {
   match node.group() {
     Some(group) => group
     None => network_simplex_compaction_raise("Compaction node has no group.")
@@ -69,7 +69,7 @@ fn network_simplex_compaction_require_port_node(
 fn network_simplex_compaction_group_node(
   n_nodes : Array[@networksimplex.NNode],
   group : @compaction.CGroup,
-) -> @networksimplex.NNode raise NetworkSimplexCompactionException {
+) -> @networksimplex.NNode raise {
   let id = group.id()
   if id < 0 || id >= n_nodes.length() {
     network_simplex_compaction_raise(
@@ -146,7 +146,7 @@ fn network_simplex_compaction_add_separation_constraints(
   compactor : @compaction.OneDimensionalCompactor,
   network_graph : @networksimplex.NGraph,
   n_nodes : Array[@networksimplex.NNode],
-) -> Unit raise NetworkSimplexCompactionException {
+) -> Unit raise {
   for c_node in compactor.c_graph.c_nodes {
     for inc_node in c_node.constraints() {
       let c_group = network_simplex_compaction_require_group(c_node)
@@ -156,9 +156,9 @@ fn network_simplex_compaction_add_separation_constraints(
       }
 
       let spacing = if compactor.direction.is_horizontal() {
-        (compactor.spacings_handler.get_horizontal_spacing)(c_node, inc_node)
+        compactor.spacings_handler.horizontal_spacing(c_node, inc_node)
       } else {
-        (compactor.spacings_handler.get_vertical_spacing)(c_node, inc_node)
+        compactor.spacings_handler.vertical_spacing(c_node, inc_node)
       }
 
       let c_offset = c_node.c_group_offset()
@@ -251,7 +251,7 @@ fn network_simplex_compaction_add_edge_constraints(
   origin_lookup : HorizontalGraphCompactorOriginLookup,
   compactor : @compaction.OneDimensionalCompactor,
   n_nodes : Array[@networksimplex.NNode],
-) -> Unit raise NetworkSimplexCompactionException {
+) -> Unit raise {
   let lnode_map : Map[Int, @compaction.CNode] = Map([])
   let ledge_map : Map[Int, Array[@compaction.CNode]] = Map([])
 
@@ -379,7 +379,7 @@ fn network_simplex_compaction_add_edge_constraints(
 fn network_simplex_compaction_add_artificial_source_node(
   network_graph : @networksimplex.NGraph,
   index : Int,
-) -> Int raise NetworkSimplexCompactionException {
+) -> Int raise {
   let sources : Array[@networksimplex.NNode] = []
   for node in network_graph.nodes {
     if node.get_incoming_edges().is_empty() {
@@ -412,7 +412,7 @@ fn network_simplex_compaction_add_artificial_source_node(
 fn network_simplex_compaction(
   origin_lookup : HorizontalGraphCompactorOriginLookup,
   compactor : @compaction.OneDimensionalCompactor,
-) -> Unit {
+) -> Unit raise {
   try {
     let network_graph = @networksimplex.new_ngraph()
     let n_nodes : Array[@networksimplex.NNode] = []
@@ -449,9 +449,10 @@ fn network_simplex_compaction(
     }
   } catch {
     NetworkSimplexCompactionException(message) =>
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "java.lang.IllegalStateException: " + message,
       )
+    err => raise err
   } noraise {
     _ => ()
   }

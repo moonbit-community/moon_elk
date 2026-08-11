@@ -9,7 +9,7 @@ fn force_model_layout(
   model : ForceModel,
   graph : FGraph,
   monitor : @core.IElkProgressMonitor,
-) -> Unit {
+) -> Unit raise {
   match model {
     EadesModelValue(eades_model) => eades_model.layout(graph, monitor)
     FruchtermanReingoldModelValue(fr_model) => fr_model.layout(graph, monitor)
@@ -28,8 +28,10 @@ pub fn new_force_layout_provider() -> ForceLayoutProvider {
 }
 
 ///|
-fn init {
-  @core.recursive_graph_layout_engine_register_handler(force_algorithm_id, (
+pub fn register_force_layout_algorithm(runtime : @core.LayoutRuntime) -> Unit {
+  runtime.register_layout_algorithm(force_algorithm_id, (
+    _runtime,
+    _session,
     layout_graph,
     progress_monitor,
   ) => new_force_layout_provider().layout(layout_graph, progress_monitor))
@@ -92,15 +94,19 @@ pub fn ForceLayoutProvider::layout(
   self : ForceLayoutProvider,
   graph : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor,
-) -> Unit {
+) -> Unit raise {
   try force_layout_provider_layout_impl(self, graph, progress_monitor) catch {
-    err => {
-      @core.layout_runtime_report_unsupported_graph(
-        force_import_exception_message(err),
-      )
+    ForceImportException::UnsupportedGraph(message) => {
+      @core.layout_runtime_raise_unsupported_graph(message)
       if progress_monitor.is_running() {
         progress_monitor.done()
       }
+    }
+    err => {
+      if progress_monitor.is_running() {
+        progress_monitor.done()
+      }
+      raise err
     }
   } noraise {
     _ => ()
@@ -112,7 +118,7 @@ fn force_layout_provider_layout_impl(
   provider : ForceLayoutProvider,
   graph : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor,
-) -> Unit raise ForceImportException {
+) -> Unit raise {
   ignore(progress_monitor.begin("ELK Force", 1.0))
   if !force_option_bool_from_layout_options(graph, force_omit_node_micro_layout) {
     @nodespacing.node_micro_layout_for_graph(graph).execute()

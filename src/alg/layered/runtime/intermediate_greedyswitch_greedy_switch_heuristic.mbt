@@ -1,11 +1,11 @@
 ///|
 fn GreedySwitchHeuristic::greedy_switch_heuristic_switch_decider(
   self : GreedySwitchHeuristic,
-) -> SwitchDecider {
+) -> SwitchDecider raise {
   match self.switch_decider {
     Some(decider) => decider
     None => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "greedy switch heuristic is not initialized",
       )
       self.greedy_switch_heuristic_switch_decider()
@@ -55,7 +55,7 @@ pub fn GreedySwitchHeuristic::minimize_crossings(
   free_layer_index : Int,
   forward_sweep : Bool,
   is_first_sweep : Bool,
-) -> Bool {
+) -> Bool raise {
   ignore(is_first_sweep)
   self.set_up(order, free_layer_index, forward_sweep)
   self.continue_switching_until_no_improvement_in_layer(free_layer_index)
@@ -66,7 +66,7 @@ pub fn GreedySwitchHeuristic::set_first_layer_order(
   self : GreedySwitchHeuristic,
   current_order : Array[Array[LNode]],
   is_forward_sweep : Bool,
-) -> Bool {
+) -> Bool raise {
   let start_index = self.start_index(is_forward_sweep, current_order.length())
   self.set_up(current_order, start_index, is_forward_sweep)
   self.sweep_downward_in_layer(start_index)
@@ -78,7 +78,7 @@ fn GreedySwitchHeuristic::set_up(
   order : Array[Array[LNode]],
   free_layer_index : Int,
   forward_sweep : Bool,
-) -> Unit {
+) -> Unit raise {
   self.current_node_order = order
   let side = if forward_sweep { CrossingCountSide::West } else { East }
   self.switch_decider = Some(
@@ -91,7 +91,7 @@ fn GreedySwitchHeuristic::get_new_switch_decider(
   self : GreedySwitchHeuristic,
   free_layer_index : Int,
   side : CrossingCountSide,
-) -> SwitchDecider {
+) -> SwitchDecider raise {
   let crossing_matrix_filler = new_crossing_matrix_filler(
     self.greedy_switch_type,
     self.current_node_order,
@@ -113,7 +113,7 @@ fn GreedySwitchHeuristic::get_new_switch_decider(
 fn GreedySwitchHeuristic::continue_switching_until_no_improvement_in_layer(
   self : GreedySwitchHeuristic,
   free_layer_index : Int,
-) -> Bool {
+) -> Bool raise {
   let mut improved = false
   let mut continue_switching = true
   while continue_switching {
@@ -127,7 +127,7 @@ fn GreedySwitchHeuristic::continue_switching_until_no_improvement_in_layer(
 fn GreedySwitchHeuristic::sweep_downward_in_layer(
   self : GreedySwitchHeuristic,
   layer_index : Int,
-) -> Bool {
+) -> Bool raise {
   let mut continue_switching = false
   let length_of_free_layer = self.current_node_order[layer_index].length()
   if length_of_free_layer <= 1 {
@@ -149,7 +149,7 @@ fn GreedySwitchHeuristic::switch_if_improves(
   layer_index : Int,
   upper_node_index : Int,
   lower_node_index : Int,
-) -> Bool {
+) -> Bool raise {
   let decider = self.greedy_switch_heuristic_switch_decider()
   if decider.does_switch_reduce_crossings(upper_node_index, lower_node_index) {
     self.exchange_nodes(upper_node_index, lower_node_index, layer_index)
@@ -165,7 +165,7 @@ fn GreedySwitchHeuristic::exchange_nodes(
   index_one : Int,
   index_two : Int,
   layer_index : Int,
-) -> Unit {
+) -> Unit raise {
   let decider = self.greedy_switch_heuristic_switch_decider()
   decider.notify_of_switch(
     self.current_node_order[layer_index][index_one],
@@ -249,10 +249,10 @@ pub fn GreedySwitchHeuristic::as_i_crossing_minimization_heuristic(
 ) -> ICrossingMinimizationHeuristic {
   new_i_crossing_minimization_heuristic(
     () => self.always_improves(),
-    (node_order, is_forward_sweep) => {
+    fn(node_order, is_forward_sweep) raise {
       self.set_first_layer_order(node_order, is_forward_sweep)
     },
-    (order, free_layer_index, forward_sweep, is_first_sweep) => {
+    fn(order, free_layer_index, forward_sweep, is_first_sweep) raise {
       self.minimize_crossings(
         order, free_layer_index, forward_sweep, is_first_sweep,
       )

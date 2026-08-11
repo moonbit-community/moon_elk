@@ -1,6 +1,5 @@
 ///|
 test "TestConfiguration adds edge labels and computes label sizes" {
-  reset_graph_model_for_test()
   let graph = create_graph()
   let source = create_node(Some(graph))
   let target = create_node(Some(graph))
@@ -26,7 +25,6 @@ test "TestConfiguration adds edge labels and computes label sizes" {
 
 ///|
 test "MethodTestConfiguration applies configurator callback" {
-  reset_graph_model_for_test()
   let graph = create_graph()
   let config : MethodTestConfiguration[Unit] = new_method_test_configuration(
     "configure",
@@ -40,7 +38,6 @@ test "MethodTestConfiguration applies configurator callback" {
 
 ///|
 test "ConfiguratorTestConfiguration applies layout configurator" {
-  reset_graph_model_for_test()
   let graph = create_graph()
   let child = create_node(Some(graph))
   let config : ConfiguratorTestConfiguration[Unit] = new_configurator_test_configuration(

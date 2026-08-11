@@ -36,9 +36,9 @@ pub let disco_polyomino_fill : @graph.IProperty[Bool]
 
 pub let disco_spacing_component_component : @graph.IProperty[Double]
 
-pub fn elk_graph_components_processor_split(Int) -> Array[Array[Int]]
+pub fn elk_graph_components_processor_split(@graph.ElkNode) -> Array[Array[@graph.ElkNode]] raise
 
-pub fn elk_graph_transformer_as_igraph_transformer(ElkGraphTransformer) -> IGraphTransformer[Int]
+pub fn elk_graph_transformer_as_igraph_transformer(ElkGraphTransformer) -> IGraphTransformer[@graph.ElkNode]
 
 pub fn new_dc_component() -> DCComponent
 
@@ -48,17 +48,19 @@ pub fn new_dc_extension(DCElement, DCDirection, @core.KVector, Double) -> DCExte
 
 pub fn new_dc_graph(Array[Array[DCElement]], inset? : Double) -> DCGraph
 
-pub fn new_dc_polyomino(DCComponent, Double, Double) -> DCPolyomino
+pub fn new_dc_polyomino(DCComponent, Double, Double) -> DCPolyomino raise
 
-pub fn new_dis_co_layout_provider() -> DisCoLayoutProvider
+pub fn new_dis_co_layout_provider(@core.OptionMetadata) -> DisCoLayoutProvider
 
 pub fn new_dis_co_polyomino_compactor() -> DisCoPolyominoCompactor
 
 pub fn new_elk_graph_transformer(component_spacing? : Double) -> ElkGraphTransformer
 
-pub fn new_icompactor((DCGraph) -> Unit) -> ICompactor
+pub fn new_icompactor((DCGraph) -> Unit raise) -> ICompactor
 
-pub fn[G] new_igraph_transformer((G) -> DCGraph, () -> Unit) -> IGraphTransformer[G]
+pub fn[G] new_igraph_transformer((G) -> DCGraph raise, () -> Unit raise) -> IGraphTransformer[G]
+
+pub fn register_disco_layout_algorithm(@core.LayoutRuntime) -> Unit
 
 // Errors
 pub suberror DCElementException {
@@ -169,18 +171,19 @@ pub fn DCPolyomino::get_representee(Self) -> DCComponent
 pub fn DCPolyomino::get_x(Self) -> Int
 pub fn DCPolyomino::get_y(Self) -> Int
 pub fn DCPolyomino::height(Self) -> Int
-pub fn DCPolyomino::is_blocked(Self, Int, Int) -> Bool
-pub fn DCPolyomino::is_weakly_blocked(Self, Int, Int) -> Bool
+pub fn DCPolyomino::is_blocked(Self, Int, Int) -> Bool raise
+pub fn DCPolyomino::is_weakly_blocked(Self, Int, Int) -> Bool raise
 pub fn DCPolyomino::set_id(Self, Int) -> Unit
 pub fn DCPolyomino::set_x(Self, Int) -> Unit
 pub fn DCPolyomino::set_y(Self, Int) -> Unit
 pub fn DCPolyomino::width(Self) -> Int
 
 pub struct DisCoLayoutProvider {
+  metadata : @core.OptionMetadata
   mut result : DCGraph?
   mut component_spacing : Double
 }
-pub fn DisCoLayoutProvider::layout(Self, Int, @core.IElkProgressMonitor) -> Unit
+pub fn DisCoLayoutProvider::layout(Self, @graph.ElkNode, @core.IElkProgressMonitor) -> Unit raise
 
 pub struct DisCoPolyominoCompactor {
   mut grid_cell_size_x : Double
@@ -192,33 +195,33 @@ pub struct DisCoPolyominoCompactor {
   mut aspect_ratio : Double
   mut fill : Bool
 }
-pub fn DisCoPolyominoCompactor::compact(Self, DCGraph) -> Unit
+pub fn DisCoPolyominoCompactor::compact(Self, DCGraph) -> Unit raise
 
 pub struct ElkGraphTransformer {
-  mut parent : Int?
-  node_mapping : Map[Int, DCElement]
-  label_mapping : Map[Int, DCElement]
-  port_mapping : Map[Int, DCElement]
-  edge_mapping : Map[Int, DCElement]
-  incoming_extensions_mapping : Map[Int, DCExtension]
-  outgoing_extensions_mapping : Map[Int, DCExtension]
+  mut parent : @graph.ElkNode?
+  node_mapping : Map[@graph.ElkNode, DCElement]
+  label_mapping : Map[@graph.ElkLabel, DCElement]
+  port_mapping : Map[@graph.ElkPort, DCElement]
+  edge_mapping : Map[@graph.ElkEdge, DCElement]
+  incoming_extensions_mapping : Map[@graph.ElkEdge, DCExtension]
+  outgoing_extensions_mapping : Map[@graph.ElkEdge, DCExtension]
   mut transformed_graph : DCGraph?
   component_spacing : Double
 }
-pub fn ElkGraphTransformer::apply_layout(Self) -> Unit
-pub fn ElkGraphTransformer::import_graph(Self, Int) -> DCGraph
+pub fn ElkGraphTransformer::apply_layout(Self) -> Unit raise
+pub fn ElkGraphTransformer::import_graph(Self, @graph.ElkNode) -> DCGraph raise
 
 pub struct ICompactor {
-  compact_fn : (DCGraph) -> Unit
+  compact_fn : (DCGraph) -> Unit raise
 }
-pub fn ICompactor::compact(Self, DCGraph) -> Unit
+pub fn ICompactor::compact(Self, DCGraph) -> Unit raise
 
 pub struct IGraphTransformer[G] {
-  import_graph_fn : (G) -> DCGraph
-  apply_layout_fn : () -> Unit
+  import_graph_fn : (G) -> DCGraph raise
+  apply_layout_fn : () -> Unit raise
 }
-pub fn[G] IGraphTransformer::apply_layout(Self[G]) -> Unit
-pub fn[G] IGraphTransformer::import_graph(Self[G], G) -> DCGraph
+pub fn[G] IGraphTransformer::apply_layout(Self[G]) -> Unit raise
+pub fn[G] IGraphTransformer::import_graph(Self[G], G) -> DCGraph raise
 
 // Type aliases
 

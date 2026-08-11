@@ -155,7 +155,7 @@ fn scanline_timestamp_comparator(
 fn scanline_constraints_sweep(
   compactor : OneDimensionalCompactor,
   filter_fun : (CNode) -> Bool,
-) -> Unit {
+) -> Unit raise {
   let points : Array[ScanlineTimestamp] = []
   for node in compactor.c_graph.c_nodes {
     if filter_fun(node) {
@@ -176,7 +176,9 @@ fn scanline_constraints_sweep(
     index = index + 1
   }
 
-  scanline_execute_single(points, scanline_timestamp_comparator, point => {
+  scanline_execute_single_raise(points, scanline_timestamp_comparator, fn(
+    point,
+  ) raise {
     if point.low {
       let success = scanline_interval_insert(intervals, point.node)
       if !success {
@@ -186,7 +188,7 @@ fn scanline_constraints_sweep(
           )
         catch {
           ScanlineConstraintCalculatorException(message) =>
-            @core.layout_runtime_report_unsupported_configuration(
+            @core.layout_runtime_raise_unsupported_configuration(
               "org.eclipse.elk.alg.common.compaction.oned.ScanlineConstraintCalculator: " +
               message,
             )
@@ -265,7 +267,7 @@ fn scanline_constraints_sweep(
 ///|
 pub fn scanline_constraint_calculation(
   compactor : OneDimensionalCompactor,
-) -> Unit {
+) -> Unit raise {
   scanline_constraints_sweep(compactor, _ => true)
 }
 

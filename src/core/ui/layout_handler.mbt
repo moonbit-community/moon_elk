@@ -59,12 +59,15 @@ pub(all) struct CoreUiLayoutInvocation {
 
 ///|
 pub(all) struct LayoutHandler {
-  invoke_layout_fn : (CoreUiLayoutInvocation) -> Unit
+  invoke_layout_fn : (CoreUiLayoutInvocation) -> Unit raise
   mut last_invocation : CoreUiLayoutInvocation?
 }
 
 ///|
-fn layout_handler_default_invoke(invocation : CoreUiLayoutInvocation) -> Unit {
+fn layout_handler_default_invoke(
+  service : @service.LayoutConnectorsService,
+  invocation : CoreUiLayoutInvocation,
+) -> Unit raise {
   let params = @service.new_diagram_layout_engine_parameters()
   ignore(
     params
@@ -75,6 +78,7 @@ fn layout_handler_default_invoke(invocation : CoreUiLayoutInvocation) -> Unit {
   )
   ignore(
     @service.diagram_layout_engine_invoke_layout(
+      service,
       invocation.editor,
       invocation.diagram_part,
       params~,
@@ -84,10 +88,12 @@ fn layout_handler_default_invoke(invocation : CoreUiLayoutInvocation) -> Unit {
 
 ///|
 pub fn new_layout_handler(
-  invoke_layout_fn? : (CoreUiLayoutInvocation) -> Unit = invocation => {
-    layout_handler_default_invoke(invocation)
-  },
+  service : @service.LayoutConnectorsService,
+  invoke_layout_fn? : (CoreUiLayoutInvocation) -> Unit raise,
 ) -> LayoutHandler {
+  let invoke_layout_fn = invoke_layout_fn.unwrap_or(fn(invocation) raise {
+    layout_handler_default_invoke(service, invocation)
+  })
   { invoke_layout_fn, last_invocation: None }
 }
 
@@ -111,7 +117,7 @@ fn layout_handler_selection_to_diagram_part(
 pub fn LayoutHandler::execute(
   self : LayoutHandler,
   event : CoreUiExecutionEvent,
-) -> Unit {
+) -> Unit raise {
   let layout_scope = event.get_parameter(core_ui_param_layout_scope)
   let selection = match layout_scope {
     Some(scope) =>

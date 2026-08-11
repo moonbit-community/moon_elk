@@ -4,29 +4,33 @@ pub struct RectPackingLayoutProvider {
     RectPackingLayoutPhases,
     @graph.ElkNode,
   ]
+  session : RectPackingSession
 }
 
 ///|
-pub fn new_rectpacking_layout_provider() -> RectPackingLayoutProvider {
+pub fn new_rectpacking_layout_provider() -> RectPackingLayoutProvider raise {
   {
     algorithm_assembler: @core.algorithm_assembler_create(
       rectpacking_phase_descriptor,
     ),
+    session: new_rectpacking_session(),
   }
 }
 
 ///|
-fn init {
-  @core.recursive_graph_layout_engine_register_handler(
-    rectpacking_algorithm_id,
-    (layout_graph, progress_monitor) => {
-      new_rectpacking_layout_provider().layout(layout_graph, progress_monitor)
-    },
-  )
+pub fn register_rectpacking_layout_algorithm(
+  runtime : @core.LayoutRuntime,
+) -> Unit {
+  runtime.register_layout_algorithm(rectpacking_algorithm_id, (
+    _runtime,
+    _session,
+    layout_graph,
+    progress_monitor,
+  ) => new_rectpacking_layout_provider().layout(layout_graph, progress_monitor))
 }
 
 ///|
-fn rectpacking_parse_padding(value : String) -> @core.Spacing {
+fn rectpacking_parse_padding(value : String) -> @core.Spacing raise {
   let padding_value = @core.new_elk_padding()
   padding_value.parse(value)
   padding_value
@@ -49,7 +53,7 @@ fn rectpacking_apply_padding(
 ///|
 fn rectpacking_get_phase_independent_layout_processor_configuration(
   layout_graph : @graph.ElkNode,
-) -> @core.LayoutProcessorConfiguration[RectPackingLayoutPhases, @graph.ElkNode] {
+) -> @core.LayoutProcessorConfiguration[RectPackingLayoutPhases, @graph.ElkNode] raise {
   let configuration = @core.layout_processor_configuration_create(
     rectpacking_phase_descriptor,
   )
@@ -93,7 +97,7 @@ fn rectpacking_get_phase_independent_layout_processor_configuration(
 pub fn RectPackingLayoutProvider::assemble_algorithm(
   self : RectPackingLayoutProvider,
   layout_graph : @graph.ElkNode,
-) -> Array[@core.ILayoutProcessor[RectPackingLayoutPhases, @graph.ElkNode]] {
+) -> Array[@core.ILayoutProcessor[RectPackingLayoutPhases, @graph.ElkNode]] raise {
   ignore(self.algorithm_assembler.reset())
 
   ignore(
@@ -113,6 +117,7 @@ pub fn RectPackingLayoutProvider::assemble_algorithm(
     self.algorithm_assembler.set_phase(
       P2_PACKING,
       rectpacking_packing_strategy_phase_factory(
+        self.session,
         rectpacking_packing_strategy_from_string(
           @graph.node_get_string_property(
             layout_graph, rectpacking_packing_strategy,
@@ -126,6 +131,7 @@ pub fn RectPackingLayoutProvider::assemble_algorithm(
     self.algorithm_assembler.set_phase(
       P3_WHITESPACE_ELIMINATION,
       rectpacking_whitespace_elimination_strategy_phase_factory(
+        self.session,
         rectpacking_whitespace_elimination_strategy_from_string(
           @graph.node_get_string_property(
             layout_graph, rectpacking_white_space_elimination_strategy,
@@ -151,7 +157,8 @@ pub fn RectPackingLayoutProvider::layout(
   self : RectPackingLayoutProvider,
   layout_graph : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor,
-) -> Unit {
+) -> Unit raise {
+  self.session.clear()
   ignore(progress_monitor.begin("Rectangle Packing", 1.0))
 
   let padding = rectpacking_parse_padding(
@@ -247,6 +254,7 @@ pub fn RectPackingLayoutProvider::layout(
   }
 
   progress_monitor.done()
+  self.session.clear()
 }
 
 ///|

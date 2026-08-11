@@ -1,11 +1,13 @@
 ///|
 pub struct ElkGraphTextUtil {
-  marker : Unit
+  metadata : @core.OptionMetadata
 }
 
 ///|
-pub fn new_elk_graph_text_util() -> ElkGraphTextUtil {
-  { marker: () }
+pub fn new_elk_graph_text_util(
+  metadata : @core.OptionMetadata,
+) -> ElkGraphTextUtil {
+  { metadata, }
 }
 
 ///|
@@ -39,6 +41,7 @@ fn graph_text_util_algorithm_node_for_label_parent(
 
 ///|
 pub fn elk_graph_text_util_get_algorithm(
+  metadata : @core.OptionMetadata,
   element : GraphTextElement,
 ) -> @core.LayoutAlgorithmData? {
   let node = match element {
@@ -71,9 +74,7 @@ pub fn elk_graph_text_util_get_algorithm(
           if algorithm_id == "" {
             None
           } else {
-            @core.layout_meta_data_service_get_algorithm_data_by_suffix(
-              algorithm_id,
-            )
+            metadata.algorithm_data_by_suffix(algorithm_id)
           }
         None => None
       }

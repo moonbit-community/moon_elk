@@ -399,14 +399,14 @@ fn interactive_external_port_positioner_process_impl(
 fn interactive_external_port_positioner_process(
   layered_graph : LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   try
     interactive_external_port_positioner_process_impl(
       layered_graph, progress_monitor,
     )
   catch {
     err =>
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         interactive_external_port_positioner_exception_message(err),
       )
   } noraise {

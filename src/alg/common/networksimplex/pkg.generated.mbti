@@ -19,8 +19,6 @@ pub fn new_ngraph() -> NGraph
 
 pub fn nnode_of() -> NNodeBuilder
 
-pub fn reset_network_simplex_model_for_test() -> Unit
-
 // Errors
 pub(all) suberror NetworkSimplexException {
   NetworkSimplexException(String)
@@ -31,11 +29,12 @@ pub impl Show for NetworkSimplexException
 #alias(NetworkSimplexNEdge)
 pub struct NEdge {
   handle : Int
-} derive(Eq)
+  // private fields
+}
 pub fn NEdge::get_delta(Self) -> Int
 pub fn NEdge::get_id(Self) -> Int
 pub fn NEdge::get_internal_id(Self) -> Int
-pub fn NEdge::get_other(Self, NNode) -> NNode raise NetworkSimplexException
+pub fn NEdge::get_other(Self, NNode) -> NNode raise
 pub fn NEdge::get_source(Self) -> NNode
 pub fn NEdge::get_target(Self) -> NNode
 pub fn NEdge::get_weight(Self) -> Double
@@ -47,6 +46,7 @@ pub fn NEdge::set_source(Self, NNode) -> Unit
 pub fn NEdge::set_target(Self, NNode) -> Unit
 pub fn NEdge::set_tree_edge(Self, Bool) -> Unit
 pub fn NEdge::set_weight(Self, Double) -> Unit
+pub impl Eq for NEdge
 
 #alias(NetworkSimplexNEdgeBuilder)
 pub struct NEdgeBuilder {
@@ -69,13 +69,14 @@ pub struct NGraph {
   nodes : Array[NNode]
 }
 pub fn NGraph::is_acyclic(Self) -> Bool
-pub fn NGraph::make_connected(Self) -> NNode?
+pub fn NGraph::make_connected(Self) -> NNode? raise
 pub fn NGraph::write_debug_graph(Self, String) -> Unit
 
 #alias(NetworkSimplexNNode)
 pub struct NNode {
   handle : Int
-} derive(Eq)
+  // private fields
+}
 pub fn NNode::add_unknown_cutvalue(Self, NEdge) -> Unit
 pub fn NNode::clear_unknown_cutvalues(Self) -> Unit
 pub fn NNode::get_connected_edges(Self) -> Array[NEdge]
@@ -90,6 +91,7 @@ pub fn NNode::set_internal_id(Self, Int) -> Unit
 pub fn NNode::set_layer(Self, Int) -> Unit
 pub fn NNode::set_tree_node(Self, Bool) -> Unit
 pub fn NNode::unknown_cutvalues(Self) -> Array[NEdge]
+pub impl Eq for NNode
 
 #alias(NetworkSimplexNNodeBuilder)
 pub struct NNodeBuilder {
@@ -117,7 +119,7 @@ pub struct NetworkSimplex {
   mut cutvalue : Array[Double]
   subtree_nodes_stack : Array[(NNode, NEdge)]
 }
-pub fn NetworkSimplex::execute(Self, monitor? : @core.IElkProgressMonitor) -> Unit
+pub fn NetworkSimplex::execute(Self, monitor? : @core.IElkProgressMonitor) -> Unit raise
 pub fn NetworkSimplex::with_balancing(Self, Bool) -> Self
 pub fn NetworkSimplex::with_iteration_limit(Self, Int) -> Self
 pub fn NetworkSimplex::with_previous_layering(Self, Array[Int]) -> Self

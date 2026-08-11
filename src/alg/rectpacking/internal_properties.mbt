@@ -49,29 +49,38 @@ pub let rectpacking_internal_max_row_decrease : @graph.IProperty[Double] = @grap
 )
 
 ///|
-let rectpacking_internal_rows_store : Ref[Map[@graph.ElkNode, Array[RectRow]]] = Ref(
-  Map([]),
-)
+/// Per-layout data shared by rectangle-packing phases.
+///
+/// Rows are produced during packing and consumed during whitespace elimination.
+/// Keeping them in this session makes that phase dependency explicit and prevents
+/// layouts from communicating through a graph-keyed global map.
+pub struct RectPackingSession {
+  priv rows : Map[@graph.ElkNode, Array[RectRow]]
+}
 
 ///|
-pub fn rectpacking_internal_set_rows(
+pub fn new_rectpacking_session() -> RectPackingSession {
+  { rows: Map([]) }
+}
+
+///|
+fn RectPackingSession::set_rows(
+  self : RectPackingSession,
   graph : @graph.ElkNode,
   rows : Array[RectRow],
 ) -> Unit {
-  rectpacking_internal_rows_store.val[graph] = rows
+  self.rows[graph] = rows
 }
 
 ///|
-pub fn rectpacking_internal_get_rows(graph : @graph.ElkNode) -> Array[RectRow]? {
-  rectpacking_internal_rows_store.val.get(graph)
+fn RectPackingSession::get_rows(
+  self : RectPackingSession,
+  graph : @graph.ElkNode,
+) -> Array[RectRow]? {
+  self.rows.get(graph)
 }
 
 ///|
-pub fn rectpacking_internal_has_rows(graph : @graph.ElkNode) -> Bool {
-  rectpacking_internal_rows_store.val.contains(graph)
-}
-
-///|
-pub fn rectpacking_internal_clear_rows(graph : @graph.ElkNode) -> Unit {
-  rectpacking_internal_rows_store.val.remove(graph)
+fn RectPackingSession::clear(self : RectPackingSession) -> Unit {
+  self.rows.clear()
 }

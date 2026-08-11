@@ -155,7 +155,6 @@ fn port_label_variants_add_edge_to_external(
 
 ///|
 fn port_label_variants_fixture(side_name : String) -> ElkNode {
-  reset_graph_model_for_test()
   let root = create_graph()
   let external = create_node(Some(root))
   node_set_identifier(external, "external")

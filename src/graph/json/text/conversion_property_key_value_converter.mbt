@@ -1,5 +1,6 @@
 ///|
 pub struct GraphJsonTextPropertyKeyValueConverter {
+  metadata : @core.OptionMetadata
   mut id_rule : String
 }
 
@@ -16,8 +17,10 @@ fn graph_json_text_property_key_value_converter_raise_unit(
 }
 
 ///|
-pub fn new_graph_json_text_property_key_value_converter() -> GraphJsonTextPropertyKeyValueConverter {
-  { id_rule: "ID" }
+pub fn new_graph_json_text_property_key_value_converter(
+  metadata : @core.OptionMetadata,
+) -> GraphJsonTextPropertyKeyValueConverter {
+  { metadata, id_rule: "ID" }
 }
 
 ///|
@@ -110,7 +113,7 @@ fn graph_json_text_property_key_unquote_if_necessary(text : String) -> String {
 pub fn GraphJsonTextPropertyKeyValueConverter::to_string(
   self : GraphJsonTextPropertyKeyValueConverter,
   value : GraphJsonTextPropertyKey?,
-) -> String {
+) -> String raise {
   ignore(self.id_rule)
   match value {
     None => {
@@ -120,7 +123,7 @@ pub fn GraphJsonTextPropertyKeyValueConverter::to_string(
         )
       catch {
         GraphJsonTextPropertyKeyValueConverterException(message) =>
-          @core.layout_runtime_report_unsupported_configuration(
+          @core.layout_runtime_raise_unsupported_configuration(
             "org.eclipse.elk.graph.json.text.conversion.PropertyKeyValueConverter: " +
             message,
           )
@@ -144,8 +147,7 @@ pub fn GraphJsonTextPropertyKeyValueConverter::to_string(
           Some(current) => current
           None => ""
         }
-        match
-          @core.layout_meta_data_service_get_option_data_by_suffix(maybe_suffix) {
+        match self.metadata.option_data_by_suffix(maybe_suffix) {
           Some(known_option) =>
             if known_option.get_group() == "" ||
               maybe_suffix.contains(known_option.get_group()) {
@@ -170,7 +172,7 @@ pub fn GraphJsonTextPropertyKeyValueConverter::to_string(
 pub fn GraphJsonTextPropertyKeyValueConverter::to_value(
   self : GraphJsonTextPropertyKeyValueConverter,
   text : String,
-) -> GraphJsonTextPropertyKey {
+) -> GraphJsonTextPropertyKey raise {
   ignore(self.id_rule)
   if text == "" {
     try
@@ -179,7 +181,7 @@ pub fn GraphJsonTextPropertyKeyValueConverter::to_value(
       )
     catch {
       GraphJsonTextPropertyKeyValueConverterException(message) =>
-        @core.layout_runtime_report_unsupported_configuration(
+        @core.layout_runtime_raise_unsupported_configuration(
           "org.eclipse.elk.graph.json.text.conversion.PropertyKeyValueConverter: " +
           message,
         )
@@ -194,7 +196,7 @@ pub fn GraphJsonTextPropertyKeyValueConverter::to_value(
     decoded_segments.push(graph_json_text_property_key_id_to_value(segment))
   }
   let id_suffix = graph_json_text_join_dotted_segments(decoded_segments)
-  match @core.layout_meta_data_service_get_option_data_by_suffix(id_suffix) {
+  match self.metadata.option_data_by_suffix(id_suffix) {
     Some(option_data) => GraphJsonTextLayoutOption(option_data)
     None => GraphJsonTextCustomProperty(id_suffix)
   }

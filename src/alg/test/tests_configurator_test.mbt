@@ -5,8 +5,6 @@ fn configurator_test_property() -> IProperty[Double] {
 
 ///|
 test "ConfiguratorTest applies configurator method" {
-  reset_graph_model_for_test()
-
   let test_property = configurator_test_property()
   let test_property_value = 42.0
 

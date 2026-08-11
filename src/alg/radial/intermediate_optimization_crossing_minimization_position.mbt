@@ -3,7 +3,7 @@ fn crossing_minimization_position_is_crossing(
   root : @graph.ElkNode,
   node1 : @graph.ElkNode,
   node2 : @graph.ElkNode,
-) -> Bool {
+) -> Bool raise {
   let root_x = @graph.node_x(root) + @graph.node_width(root) / 2.0
   let root_y = @graph.node_x(root) + @graph.node_width(root) / 2.0
 
@@ -42,7 +42,9 @@ fn crossing_minimization_position_is_crossing(
 }
 
 ///|
-fn crossing_minimization_position_evaluate(root : @graph.ElkNode) -> Double {
+fn crossing_minimization_position_evaluate(
+  root : @graph.ElkNode,
+) -> Double raise {
   let mut crossings = 0
   let nodes = radial_get_successors(root)
   let mut k = 0
@@ -74,7 +76,7 @@ pub fn new_crossing_minimization_position() -> CrossingMinimizationPosition {
 pub fn CrossingMinimizationPosition::evaluate(
   self : CrossingMinimizationPosition,
   root : @graph.ElkNode,
-) -> Double {
+) -> Double raise {
   self.evaluator.evaluate(root)
 }
 

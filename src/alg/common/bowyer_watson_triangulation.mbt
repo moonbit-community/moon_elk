@@ -137,7 +137,7 @@ pub fn bowyer_watson_triangulate(
       for edge in triangle.t_edges {
         let mut on_boundary = true
         for other in invalid_triangles {
-          if other.uid != triangle.uid && other.contains_edge(edge) {
+          if !physical_equal(other, triangle) && other.contains_edge(edge) {
             on_boundary = false
           }
         }

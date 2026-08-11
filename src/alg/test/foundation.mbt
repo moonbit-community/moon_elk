@@ -105,11 +105,6 @@ pub fn make_edge_label_parent(edge : ElkEdge) -> ElkLabelParent {
 }
 
 ///|
-pub fn reset_graph_model_for_test() -> Unit {
-  @graph.reset_graph_model_for_test()
-}
-
-///|
 pub fn node_parent(node : ElkNode) -> ElkNode? {
   @graph.node_parent(node)
 }
@@ -433,27 +428,30 @@ pub fn elk_graph_json_for_elk_graph(
 
 ///|
 pub fn new_elk_graph_parser() -> @text.ElkGraphParser {
-  @text.new_elk_graph_parser()
+  @text.new_elk_graph_parser(@json.new_layout_runtime().option_metadata())
 }
 
 ///|
 pub fn apply_visitors(
   graph : ElkNode,
   visitors : Array[@core.IGraphElementVisitor],
-) -> Unit {
+) -> Unit raise {
   @core.apply_visitors(graph, visitors)
 }
 
 ///|
 pub fn new_graph_element_visitor(
-  visit_fn : (ElkNode) -> Unit,
+  visit_fn : (ElkNode) -> Unit raise,
 ) -> @core.IGraphElementVisitor {
   @core.new_graph_element_visitor(visit_fn)
 }
 
 ///|
 pub fn new_recursive_graph_layout_engine() -> @core.RecursiveGraphLayoutEngine {
-  @core.new_recursive_graph_layout_engine()
+  @core.new_recursive_graph_layout_engine(
+    @json.new_layout_runtime(),
+    @core.new_layout_session(),
+  )
 }
 
 ///|
@@ -462,51 +460,8 @@ pub fn new_basic_progress_monitor() -> @core.IElkProgressMonitor {
 }
 
 ///|
-pub fn layout_meta_data_service_get_algorithm_data(
-  id : String,
-) -> LayoutAlgorithmData? {
-  @core.layout_meta_data_service_get_algorithm_data(id)
-}
-
-///|
-pub fn layout_meta_data_service_algorithm_data_values() -> Array[
-  LayoutAlgorithmData,
-] {
-  @core.layout_meta_data_service_algorithm_data_values()
-}
-
-///|
-pub fn layout_meta_data_service_register_algorithm(
-  algorithm_data : LayoutAlgorithmData,
-) -> Unit {
-  @core.layout_meta_data_service_register_algorithm(algorithm_data)
-}
-
-///|
-pub fn layout_meta_data_service_reset_for_test() -> Unit {
-  @core.layout_meta_data_service_reset_for_test()
-}
-
-///|
 pub fn new_layout_algorithm_data(algorithm_id : String) -> LayoutAlgorithmData {
   @core.new_layout_algorithm_data(algorithm_id)
-}
-
-///|
-pub fn layout_meta_data_service_register_default_options() -> Unit {
-  @core.layout_meta_data_service_register_default_options()
-}
-
-///|
-pub fn layout_meta_data_service_register_default_algorithms() -> Unit {
-  @core.layout_meta_data_service_register_default_algorithms()
-}
-
-///|
-pub fn layout_meta_data_service_register_layout_meta_data_providers(
-  providers : Array[@core.ILayoutMetaDataProvider],
-) -> Unit {
-  @core.layout_meta_data_service_register_layout_meta_data_providers(providers)
 }
 
 ///|
@@ -585,7 +540,7 @@ pub fn[T] new_property(id : String, default_value : T) -> IProperty[T] {
 pub fn core_debug_grandom_random_graph_generator_generate(
   generator : @grandom.CoreDebugGRandomRandomGraphGenerator,
   options : CoreDebugGRandomGeneratorOptions,
-) -> ElkNode {
+) -> ElkNode raise {
   @grandom.core_debug_grandom_random_graph_generator_generate(
     generator, options,
   )
@@ -595,7 +550,7 @@ pub fn core_debug_grandom_random_graph_generator_generate(
 pub fn core_debug_grandom_random_graph_generator_generate_from_configuration(
   generator : @grandom.CoreDebugGRandomRandomGraphGenerator,
   configuration : @grandom.CoreDebugGRandomConfiguration,
-) -> Array[ElkNode] {
+) -> Array[ElkNode] raise {
   @grandom.core_debug_grandom_random_graph_generator_generate_from_configuration(
     generator, configuration,
   )

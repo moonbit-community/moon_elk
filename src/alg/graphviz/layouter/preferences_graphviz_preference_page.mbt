@@ -121,13 +121,16 @@ pub fn GraphvizPreferenceField::get_max_value(
 
 ///|
 pub struct GraphvizPreferencePage {
+  metadata : @core.OptionMetadata
   fields : Array[GraphvizPreferenceField]
   mut preference_store : GraphvizPreferenceStore?
 }
 
 ///|
-pub fn new_graphviz_preference_page() -> GraphvizPreferencePage {
-  { fields: [], preference_store: None }
+pub fn new_graphviz_preference_page(
+  metadata : @core.OptionMetadata,
+) -> GraphvizPreferencePage {
+  { metadata, fields: [], preference_store: None }
 }
 
 ///|
@@ -189,8 +192,7 @@ pub fn GraphvizPreferencePage::get_preference_store(
 pub fn GraphvizPreferencePage::perform_ok(
   self : GraphvizPreferencePage,
 ) -> Bool {
-  ignore(self)
-  for algorithm_data in @core.layout_meta_data_service_algorithm_data_values() {
+  for algorithm_data in self.metadata.algorithm_data_values() {
     if algorithm_data.get_bundle_name() ==
       graphviz_preference_page_graphviz_bundle_name {
       algorithm_data.clear_instance_pool()

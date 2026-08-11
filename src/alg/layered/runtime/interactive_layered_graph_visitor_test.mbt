@@ -37,7 +37,7 @@ fn interactive_layered_graph_visitor_test_expect_non_empty_layout_option(
 ///|
 fn interactive_layered_graph_visitor_test_require_position(
   node : @graph.ElkNode,
-) -> @core.KVector {
+) -> @core.KVector raise {
   match
     @graph.node_layout_option_string_value(
       node,
@@ -55,14 +55,13 @@ fn interactive_layered_graph_visitor_test_require_position(
 ///|
 fn interactive_layered_graph_visitor_test_expect_typed_position(
   node : @graph.ElkNode,
-) -> Bool {
+) -> Bool raise {
   ignore(interactive_layered_graph_visitor_test_require_position(node))
   true
 }
 
 ///|
 test "@core.interactive layered graph visitor sets @core.interactive strategies" {
-  reset_graph_model_for_test()
   let root = create_graph()
   ignore(@graph.create_node(Some(root)))
 
@@ -143,7 +142,6 @@ test "@core.interactive layered graph visitor sets @core.interactive strategies"
 
 ///|
 test "@core.interactive layered graph visitor ignores non-layered roots" {
-  reset_graph_model_for_test()
   let root = create_graph()
   ignore(@graph.create_node(Some(root)))
 
@@ -212,7 +210,6 @@ test "@core.interactive layered graph visitor ignores non-layered roots" {
 
 ///|
 test "@core.interactive layered graph visitor translates layer constraints to layer choice constraints" {
-  reset_graph_model_for_test()
   let root = create_graph()
   let first_node = @graph.create_node(Some(root))
   let last_node = @graph.create_node(Some(root))
@@ -259,7 +256,6 @@ test "@core.interactive layered graph visitor translates layer constraints to la
 
 ///|
 test "@core.interactive layered graph visitor shifts same-layer neighbors for constrained nodes" {
-  reset_graph_model_for_test()
   let root = create_graph()
   let source = @graph.create_node(Some(root))
   let target = @graph.create_node(Some(root))
@@ -315,7 +311,6 @@ test "@core.interactive layered graph visitor shifts same-layer neighbors for co
 
 ///|
 test "@core.interactive layered graph visitor reads typed layer choice constraints like Java properties" {
-  reset_graph_model_for_test()
   let root = create_graph()
   let source = @graph.create_node(Some(root))
   let target = @graph.create_node(Some(root))
@@ -375,7 +370,6 @@ test "@core.interactive layered graph visitor reads typed layer choice constrain
 
 ///|
 test "@core.interactive layered graph visitor propagates position constraints through relative constraints" {
-  reset_graph_model_for_test()
   let root = create_graph()
   let first = @graph.create_node(Some(root))
   let second = @graph.create_node(Some(root))
@@ -467,7 +461,6 @@ test "@core.interactive layered graph visitor propagates position constraints th
 
 ///|
 test "@core.interactive layered graph visitor breaks relative-constraint cycles like Java sortRCNodes" {
-  reset_graph_model_for_test()
   let root = create_graph()
   let first = @graph.create_node(Some(root))
   let second = @graph.create_node(Some(root))
@@ -530,7 +523,6 @@ test "@core.interactive layered graph visitor breaks relative-constraint cycles 
 
 ///|
 test "@core.interactive layered graph visitor converts both-RC nodes to PC path when predecessor has PC" {
-  reset_graph_model_for_test()
   let root = create_graph()
   let constrained = @graph.create_node(Some(root))
   let predecessor = @graph.create_node(Some(root))
@@ -605,7 +597,6 @@ test "@core.interactive layered graph visitor converts both-RC nodes to PC path 
 
 ///|
 test "@core.interactive layered graph visitor places layer-choice -1 nodes before unconstrained layers" {
-  reset_graph_model_for_test()
   let root = create_graph()
   let first_layer_node = @graph.create_node(Some(root))
   let unconstrained_node = @graph.create_node(Some(root))
@@ -651,7 +642,6 @@ test "@core.interactive layered graph visitor places layer-choice -1 nodes befor
 
 ///|
 test "@core.interactive layered graph visitor assigns orthogonal pseudo positions in DOWN @core.direction" {
-  reset_graph_model_for_test()
   let root = create_graph()
   let first = @graph.create_node(Some(root))
   let second = @graph.create_node(Some(root))

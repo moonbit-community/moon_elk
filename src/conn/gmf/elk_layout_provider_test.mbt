@@ -4,7 +4,7 @@ fn conn_gmf_elk_layout_provider_test_parent_with_children() -> (
   GmfEditPart,
   GmfEditPart,
   GmfEditPart,
-) {
+) raise {
   let parent = new_gmf_edit_part(DiagramEditPart, notation_node="root")
   let shape = new_gmf_edit_part(ShapeNodeEditPart, notation_node="shape")
   let border = new_gmf_edit_part(

@@ -13,7 +13,7 @@ pub fn new_radius_extension_overlap_removal() -> RadiusExtensionOverlapRemoval {
 pub fn RadiusExtensionOverlapRemoval::as_i_overlap_removal(
   self : RadiusExtensionOverlapRemoval,
 ) -> IOverlapRemoval {
-  new_i_overlap_removal((graph, progress_monitor) => {
+  new_i_overlap_removal(fn(graph, progress_monitor) raise {
     self.remove_overlaps(graph, progress_monitor)
   })
 }
@@ -23,7 +23,7 @@ pub fn RadiusExtensionOverlapRemoval::remove_overlaps(
   self : RadiusExtensionOverlapRemoval,
   graph : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let root = radial_internal_root(graph).unwrap()
   self.base.set_root(root)
   self.sorter = radial_sorting_strategy_create(
@@ -42,7 +42,7 @@ pub fn RadiusExtensionOverlapRemoval::extend_radius(
   graph : @graph.ElkNode,
   nodes : Array[@graph.ElkNode],
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   if nodes.is_empty() {
     return
   }

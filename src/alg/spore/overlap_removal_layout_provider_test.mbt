@@ -51,13 +51,18 @@ fn spore_run_overlap_removal(
   @graph.node_set_bool_property(
     graph, spore_overlap_removal_run_scanline, run_scanline,
   )
-  let provider = new_spore_overlap_removal_layout_provider()
-  provider.layout(graph, @core.new_basic_progress_monitor())
+  try {
+    let provider = new_spore_overlap_removal_layout_provider(
+      @core.new_layout_runtime().option_metadata(),
+    )
+    provider.layout(graph, @core.new_basic_progress_monitor())
+  } catch {
+    _ => abort("Spore overlap removal should complete without errors")
+  }
 }
 
 ///|
 test "spore @common.overlap removal scanline toggle matches upstream behavior" {
-  @graph.reset_graph_model_for_test()
   let graph_with_scanline = spore_overlap_test_graph()
   let graph_without_scanline = spore_overlap_test_graph()
 

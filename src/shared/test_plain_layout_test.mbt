@@ -1,13 +1,10 @@
 ///|
 fn shared_plain_layout_test_setup_plain_java_layout() -> Unit {
-  @test.layout_meta_data_service_reset_for_test()
-  @test.plain_java_initialization_reset_for_test()
-  @test.plain_java_initialization_initialize_plain_java_layout()
+
 }
 
 ///|
 test "PlainLayoutTest hierarchical layout does not fail" {
-  @test.reset_graph_model_for_test()
   shared_plain_layout_test_setup_plain_java_layout()
 
   let parent_node = @test.graph_test_utils_create_hierarchical_graph()

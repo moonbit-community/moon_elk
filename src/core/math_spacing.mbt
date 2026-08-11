@@ -142,7 +142,7 @@ pub fn Spacing::to_string(self : Spacing) -> String {
 }
 
 ///|
-pub fn Spacing::parse(self : Spacing, string : String) -> Unit {
+pub fn Spacing::parse(self : Spacing, string : String) -> Unit raise {
   let (start, end) = _trim_delim_bounds(
     string, "([{\"' \t\r\n", ")]}\"' \t\r\n",
   )
@@ -158,7 +158,7 @@ pub fn Spacing::parse(self : Spacing, string : String) -> Unit {
         spacing_parse_raise_unit("Expecting a list of key-value pairs.")
       catch {
         err =>
-          layout_runtime_report_unsupported_configuration(
+          layout_runtime_raise_unsupported_configuration(
             spacing_parse_exception_message(err),
           )
       } noraise {

@@ -5,8 +5,6 @@ fn configurator_provider_test_property() -> IProperty[Double] {
 
 ///|
 test "ConfiguratorProviderTest applies layout configurator provider" {
-  reset_graph_model_for_test()
-
   let test_property = configurator_provider_test_property()
   let test_property_value = 42.0
 

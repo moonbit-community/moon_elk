@@ -3,6 +3,7 @@ package "Milky2018/moon_elk/graph/json/text/ui"
 
 import {
   "Milky2018/moon_elk/core",
+  "Milky2018/moon_elk/graph",
   "Milky2018/moon_elk/graph/json/text",
   "Milky2018/moon_elk/graph/json/text/ide",
   "moonbitlang/core/debug",
@@ -59,7 +60,7 @@ pub fn new_elk_graph_json_quickfix_provider() -> ElkGraphJsonQuickfixProvider
 
 pub fn new_elk_graph_json_ui_module(plugin_id? : String) -> ElkGraphJsonUiModule
 
-pub fn new_elk_graph_json_ui_proposal_provider(ide_provider? : @ide.ElkGraphJsonIdeProposalProvider, grammar? : @text.ElkGraphJsonGrammarAccess) -> ElkGraphJsonUiProposalProvider
+pub fn new_elk_graph_json_ui_proposal_provider(@core.OptionMetadata, ide_provider? : @ide.ElkGraphJsonIdeProposalProvider?, grammar? : @text.ElkGraphJsonGrammarAccess) -> ElkGraphJsonUiProposalProvider
 
 pub fn new_elk_graph_json_validator_configuration_block(provider? : @text.ElkGraphJsonConfigurableIssueCodesProvider) -> ElkGraphJsonValidatorConfigurationBlock
 
@@ -69,7 +70,7 @@ pub fn new_graph_json_text_assignment(String) -> GraphJsonTextAssignment
 
 pub fn new_graph_json_text_configuration_element(contributor? : String?) -> GraphJsonTextConfigurationElement
 
-pub fn new_graph_json_text_convert_graph_handler(project? : GraphJsonTextProject) -> GraphJsonTextConvertGraphHandler
+pub fn new_graph_json_text_convert_graph_handler(@core.OptionMetadata, project? : GraphJsonTextProject) -> GraphJsonTextConvertGraphHandler
 
 pub fn new_graph_json_text_executable_extension(set_initialization_data_fn? : (GraphJsonTextConfigurationElement?, String?, GraphJsonTextInitializationData?) -> Unit) -> GraphJsonTextExecutableExtension
 
@@ -81,7 +82,7 @@ pub fn new_graph_json_text_ui_bundle(symbolic_name? : String) -> GraphJsonTextUi
 
 pub fn new_graph_json_text_ui_completion_proposal_acceptor() -> GraphJsonTextUiCompletionProposalAcceptor
 
-pub fn new_graph_json_text_ui_content_assist_context(prefix? : String, current_model? : @text.GraphJsonTextElement?, current_property_key? : @text.GraphJsonTextPropertyKey?, current_edge_section? : Int?, conflict_on_a? : Bool) -> GraphJsonTextUiContentAssistContext
+pub fn new_graph_json_text_ui_content_assist_context(prefix? : String, current_model? : @text.GraphJsonTextElement?, current_property_key? : @text.GraphJsonTextPropertyKey?, current_edge_section? : @graph.ElkEdgeSection?, conflict_on_a? : Bool) -> GraphJsonTextUiContentAssistContext
 
 pub fn new_graph_json_text_ui_core_exception(GraphJsonTextUiStatus) -> GraphJsonTextUiCoreException
 
@@ -251,20 +252,20 @@ pub fn ElkGraphJsonJsonTextUiActivator::stop(Self) -> Unit
 pub struct ElkGraphJsonLabelProvider {
   name_provider : @text.ElkGraphJsonQualifiedNameProvider
 }
-pub fn ElkGraphJsonLabelProvider::image_elk_edge(Self, Int) -> String
-pub fn ElkGraphJsonLabelProvider::image_elk_label(Self, Int) -> String
-pub fn ElkGraphJsonLabelProvider::image_elk_node(Self, Int) -> String
-pub fn ElkGraphJsonLabelProvider::image_elk_port(Self, Int) -> String
-pub fn ElkGraphJsonLabelProvider::text_elk_edge(Self, Int) -> String
-pub fn ElkGraphJsonLabelProvider::text_elk_label(Self, Int) -> String
-pub fn ElkGraphJsonLabelProvider::text_elk_node(Self, Int) -> String
+pub fn ElkGraphJsonLabelProvider::image_elk_edge(Self, @graph.ElkEdge) -> String
+pub fn ElkGraphJsonLabelProvider::image_elk_label(Self, @graph.ElkLabel) -> String
+pub fn ElkGraphJsonLabelProvider::image_elk_node(Self, @graph.ElkNode) -> String
+pub fn ElkGraphJsonLabelProvider::image_elk_port(Self, @graph.ElkPort) -> String
+pub fn ElkGraphJsonLabelProvider::text_elk_edge(Self, @graph.ElkEdge) -> String
+pub fn ElkGraphJsonLabelProvider::text_elk_label(Self, @graph.ElkLabel) -> String
+pub fn ElkGraphJsonLabelProvider::text_elk_node(Self, @graph.ElkNode) -> String
 
 pub struct ElkGraphJsonOutlineTreeProvider {
   unit : Unit
 }
-pub fn ElkGraphJsonOutlineTreeProvider::create_children_for_edge(Self, Int) -> Array[GraphJsonTextOutlineNode]
-pub fn ElkGraphJsonOutlineTreeProvider::create_children_for_node(Self, Int) -> Array[GraphJsonTextOutlineNode]
-pub fn ElkGraphJsonOutlineTreeProvider::create_outline(Self, Int) -> GraphJsonTextOutlineNode
+pub fn ElkGraphJsonOutlineTreeProvider::create_children_for_edge(Self, @graph.ElkEdge) -> Array[GraphJsonTextOutlineNode]
+pub fn ElkGraphJsonOutlineTreeProvider::create_children_for_node(Self, @graph.ElkNode) -> Array[GraphJsonTextOutlineNode]
+pub fn ElkGraphJsonOutlineTreeProvider::create_outline(Self, @graph.ElkNode) -> GraphJsonTextOutlineNode
 
 pub struct ElkGraphJsonQuickfixProvider {
   unit : Unit
@@ -322,6 +323,7 @@ pub struct GraphJsonTextConfigurationElement {
 pub fn GraphJsonTextConfigurationElement::get_contributor(Self) -> String?
 
 pub struct GraphJsonTextConvertGraphHandler {
+  metadata : @core.OptionMetadata
   project : GraphJsonTextProject
   mut target_extension : String
   errors : Array[String]
@@ -332,11 +334,11 @@ pub fn GraphJsonTextConvertGraphHandler::execute(Self, Array[GraphJsonTextSelect
 pub fn GraphJsonTextConvertGraphHandler::get_errors(Self) -> Array[String]
 pub fn GraphJsonTextConvertGraphHandler::get_project(Self) -> GraphJsonTextProject
 pub fn GraphJsonTextConvertGraphHandler::is_valid_target_extension(Self, String) -> Bool
-pub fn GraphJsonTextConvertGraphHandler::read_model(Self, String) -> Int
-pub fn GraphJsonTextConvertGraphHandler::remove_invalid_properties(Self, Int) -> Int
-pub fn GraphJsonTextConvertGraphHandler::remove_unnecessary_layouts(Self, Int) -> Int
-pub fn GraphJsonTextConvertGraphHandler::save_model(Self, Int, String) -> Unit
-pub fn GraphJsonTextConvertGraphHandler::transform(Self, Int) -> Int
+pub fn GraphJsonTextConvertGraphHandler::read_model(Self, String) -> @graph.ElkNode
+pub fn GraphJsonTextConvertGraphHandler::remove_invalid_properties(Self, @graph.ElkNode) -> @graph.ElkNode
+pub fn GraphJsonTextConvertGraphHandler::remove_unnecessary_layouts(Self, @graph.ElkNode) -> @graph.ElkNode
+pub fn GraphJsonTextConvertGraphHandler::save_model(Self, @graph.ElkNode, String) -> Unit
+pub fn GraphJsonTextConvertGraphHandler::transform(Self, @graph.ElkNode) -> @graph.ElkNode
 
 pub struct GraphJsonTextExecutableExtension {
   set_initialization_data_fn : (GraphJsonTextConfigurationElement?, String?, GraphJsonTextInitializationData?) -> Unit
@@ -385,7 +387,7 @@ pub struct GraphJsonTextUiContentAssistContext {
   prefix : String
   current_model : @text.GraphJsonTextElement?
   current_property_key : @text.GraphJsonTextPropertyKey?
-  current_edge_section : Int?
+  current_edge_section : @graph.ElkEdgeSection?
   conflict_on_a : Bool
 }
 

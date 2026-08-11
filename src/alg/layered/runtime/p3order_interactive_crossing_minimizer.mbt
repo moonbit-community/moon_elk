@@ -114,7 +114,7 @@ fn interactive_crossing_minimizer_sort_nodes(
 fn interactive_crossing_minimizer_intermediate_configuration() -> @core.LayoutProcessorConfiguration[
   LayeredPhases,
   LGraph,
-] {
+] raise {
   @core.layout_processor_configuration_create(layered_phase_descriptor)
   .add_before(
     P3NodeOrdering,
@@ -129,18 +129,20 @@ fn interactive_crossing_minimizer_intermediate_configuration() -> @core.LayoutPr
 }
 
 ///|
-let interactive_crossing_minimizer_default_configuration : @core.LayoutProcessorConfiguration[
+fn interactive_crossing_minimizer_default_configuration() -> @core.LayoutProcessorConfiguration[
   LayeredPhases,
   LGraph,
-] = interactive_crossing_minimizer_intermediate_configuration()
+] raise {
+  interactive_crossing_minimizer_intermediate_configuration()
+}
 
 ///|
 fn interactive_crossing_minimizer_configuration(
   graph : LGraph,
-) -> @core.LayoutProcessorConfiguration[LayeredPhases, LGraph]? {
+) -> @core.LayoutProcessorConfiguration[LayeredPhases, LGraph]? raise {
   ignore(graph)
   let configuration = @core.layout_processor_configuration_create_from(
-    interactive_crossing_minimizer_default_configuration,
+    interactive_crossing_minimizer_default_configuration(),
   )
   ignore(
     configuration.add_before(
@@ -155,7 +157,7 @@ fn interactive_crossing_minimizer_configuration(
 fn interactive_crossing_minimizer_process(
   layered_graph : LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()

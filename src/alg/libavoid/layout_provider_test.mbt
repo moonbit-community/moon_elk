@@ -42,7 +42,6 @@ fn libavoid_test_main_graph() -> (
   @graph.ElkPort,
   @graph.ElkEdge,
 ) {
-  reset_graph_model_for_test()
   let root = create_graph()
   let left = @graph.create_node(Some(root))
   @graph.node_set_location(left, 10.0, 10.0)
@@ -86,7 +85,12 @@ test "LibavoidServerCommunicator writes protocol text and applies output layout"
   let communicator = new_libavoid_server_communicator()
   let server = new_libavoid_server()
   server.set_output_data_for_test(Some({ "PEDGEP 1": "11 12 21 22 31 32" }))
-  communicator.request_layout(root, new_elk_progress_monitor(), server)
+  communicator.request_layout(
+    root,
+    new_elk_progress_monitor(),
+    server,
+    @core.new_layout_session(),
+  )
 
   let input_bytes = server.get_input_bytes()
   inspect(
@@ -128,13 +132,17 @@ test "LibavoidServerCommunicator reports error if server has no output" {
   let communicator = new_libavoid_server_communicator()
   let server = new_libavoid_server()
   server.set_output_data_for_test(None)
-  @core.layout_runtime_clear_error()
   let monitor = new_elk_progress_monitor()
-  communicator.request_layout(root, monitor, server)
+  let session = @core.new_layout_session()
+  communicator.request_layout(root, monitor, server, session)
+  let message = match session.take_error_message() {
+    Some(message) => message
+    None => ""
+  }
   inspect(monitor.is_running(), content="false")
-  debug_inspect(
-    @core.layout_runtime_take_error_message(),
-    content="Some(\"org.eclipse.elk.core.UnsupportedConfigurationException: No output from the Libavoid process. Try increasing the timeout value in the preferences (KIELER / Layout / Libavoid).\")",
+  inspect(
+    message,
+    content="org.eclipse.elk.core.UnsupportedConfigurationException: No output from the Libavoid process. Try increasing the timeout value in the preferences (KIELER / Layout / Libavoid).",
   )
 }
 
@@ -145,7 +153,6 @@ fn libavoid_test_provider_graph() -> (
   @graph.ElkPort,
   @graph.ElkEdge,
 ) {
-  reset_graph_model_for_test()
   let root = create_graph()
   @graph.node_set_string_property(root, libavoid_option_direction, "RIGHT")
 
@@ -179,7 +186,7 @@ test "LibavoidLayoutProvider prepares ports routes and releases server" {
   let (root, src_port, tgt_port, edge) = libavoid_test_provider_graph()
   let provider = new_libavoid_layout_provider()
   let monitor = new_elk_progress_monitor()
-  provider.layout(root, monitor)
+  provider.layout(root, monitor, @core.new_layout_session())
 
   debug_inspect(
     port_layout_option_string_value(src_port, port_side.get_id()),
@@ -196,7 +203,6 @@ test "LibavoidLayoutProvider prepares ports routes and releases server" {
 
 ///|
 test "LibavoidLayoutProvider cancel layouting cancels mapped server" {
-  reset_graph_model_for_test()
   let provider = new_libavoid_layout_provider()
   let root = create_graph()
   let server = new_libavoid_server()

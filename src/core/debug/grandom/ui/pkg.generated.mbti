@@ -3,6 +3,7 @@ package "Milky2018/moon_elk/core/debug/grandom/ui"
 
 import {
   "Milky2018/moon_elk/core/debug/grandom",
+  "Milky2018/moon_elk/graph",
   "moonbitlang/core/debug",
 }
 
@@ -167,14 +168,14 @@ pub fn CoreDebugGRandomExecutableExtensionFactory::set_initialization_data(Self,
 pub(all) struct CoreDebugGRandomGraphMaker {
   configs : Array[@grandom.CoreDebugGRandomConfiguration]
 }
-pub fn CoreDebugGRandomGraphMaker::gen(Self, CoreDebugGRandomProject) -> Unit
-pub fn CoreDebugGRandomGraphMaker::load_graph(Self) -> Array[Int]
+pub fn CoreDebugGRandomGraphMaker::gen(Self, CoreDebugGRandomProject) -> Unit raise
+pub fn CoreDebugGRandomGraphMaker::load_graph(Self) -> Array[@graph.ElkNode] raise
 
 pub(all) struct CoreDebugGRandomHandler {
   project : CoreDebugGRandomProject
   errors : Array[String]
 }
-pub fn CoreDebugGRandomHandler::execute(Self, Array[CoreDebugGRandomSelectionItem]) -> Int
+pub fn CoreDebugGRandomHandler::execute(Self, Array[CoreDebugGRandomSelectionItem]) -> Int raise
 pub fn CoreDebugGRandomHandler::get_errors(Self) -> Array[String]
 pub fn CoreDebugGRandomHandler::get_project(Self) -> CoreDebugGRandomProject
 pub fn CoreDebugGRandomHandler::record_error(Self, String) -> Unit

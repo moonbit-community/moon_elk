@@ -163,10 +163,10 @@ fn layout_dot_exporter_edge_option_double(
 ///|
 fn layout_dot_exporter_parse_neato_model_or_abort(
   value : String,
-) -> @transform.NeatoModel {
+) -> @transform.NeatoModel raise {
   try @transform.neato_model_parse(value) catch {
     IllegalArgumentException(message) => {
-      @core.layout_runtime_report_unsupported_configuration(message)
+      @core.layout_runtime_raise_unsupported_configuration(message)
       @transform.neato_model_default()
     }
   } noraise {
@@ -177,7 +177,7 @@ fn layout_dot_exporter_parse_neato_model_or_abort(
 ///|
 fn layout_dot_exporter_parse_neato_model(
   value : String,
-) -> @transform.NeatoModel {
+) -> @transform.NeatoModel raise {
   let normalized = value.trim().to_owned().to_upper()
   if normalized == "CIRCUIT" ||
     normalized == "SUBSET" ||
@@ -191,10 +191,10 @@ fn layout_dot_exporter_parse_neato_model(
 ///|
 fn layout_dot_exporter_parse_overlap_mode_or_abort(
   value : String,
-) -> @transform.OverlapMode {
+) -> @transform.OverlapMode raise {
   try @transform.overlap_mode_parse(value) catch {
     IllegalArgumentException(message) => {
-      @core.layout_runtime_report_unsupported_configuration(message)
+      @core.layout_runtime_raise_unsupported_configuration(message)
       @transform.overlap_mode_default()
     }
   } noraise {
@@ -205,7 +205,7 @@ fn layout_dot_exporter_parse_overlap_mode_or_abort(
 ///|
 fn layout_dot_exporter_parse_overlap_mode(
   value : String,
-) -> @transform.OverlapMode {
+) -> @transform.OverlapMode raise {
   let normalized = value.trim().to_owned().to_upper()
   if normalized == "NONE" ||
     normalized == "TRUE" ||
@@ -330,7 +330,7 @@ fn layout_dot_exporter_append_graph_attributes(
     @graph.ElkNode,
     @dot.DotGraphvizModel,
   ],
-) -> Unit {
+) -> Unit raise {
   let graph_attr_statement = @dot.dot_create_attribute_statement()
   graph_attr_statement.set_type(Some(@dot.dot_attribute_type_graph()))
   statements.insert(
@@ -614,7 +614,7 @@ fn layout_dot_exporter_apply_graph_attributes_recursive(
     @graph.ElkNode,
     @dot.DotGraphvizModel,
   ],
-) -> Unit {
+) -> Unit raise {
   layout_dot_exporter_append_graph_attributes(
     statements, parent_node, command, trans_data,
   )
@@ -740,7 +740,7 @@ pub fn LayoutDotExporter::transform(
     @graph.ElkNode,
     @dot.DotGraphvizModel,
   ],
-) -> Unit {
+) -> Unit raise {
   let source_graph = match trans_data.get_source_graph() {
     Some(graph) => graph
     None => return

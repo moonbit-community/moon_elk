@@ -19,7 +19,7 @@ pub fn layered_compactor_apply_locking_strategy(@compaction.OneDimensionalCompac
 
 pub fn layered_compactor_apply_locking_strategy_with_direction(@compaction.OneDimensionalCompactor, @core.Direction) -> @compaction.OneDimensionalCompactor
 
-pub fn layered_compactor_set_locking_strategy(@compaction.OneDimensionalCompactor, (@compaction.CNode, @core.Direction) -> Bool) -> @compaction.OneDimensionalCompactor
+pub fn layered_compactor_set_locking_strategy(@compaction.OneDimensionalCompactor, (@compaction.CNode, @core.Direction) -> Bool raise) -> @compaction.OneDimensionalCompactor
 
 pub fn layered_compare_fuzzy_eq(Double, Double) -> Bool
 
@@ -35,29 +35,29 @@ pub let layered_compare_fuzzy_tolerance : Double
 
 pub fn layered_default_spacing_handler() -> @compaction.ISpacingsHandler
 
-pub fn layered_longest_path_compaction(@compaction.OneDimensionalCompactor) -> Unit
+pub fn layered_longest_path_compaction(@compaction.OneDimensionalCompactor) -> Unit raise
 
-pub fn layered_one_dimensional_compactor_longest_path_compaction(@compaction.OneDimensionalCompactor) -> Unit
+pub fn layered_one_dimensional_compactor_longest_path_compaction(@compaction.OneDimensionalCompactor) -> Unit raise
 
-pub fn layered_one_dimensional_compactor_quadratic_constraints(@compaction.OneDimensionalCompactor) -> Unit
+pub fn layered_one_dimensional_compactor_quadratic_constraints(@compaction.OneDimensionalCompactor) -> Unit raise
 
-pub fn layered_one_dimensional_compactor_scanline_constraints(@compaction.OneDimensionalCompactor) -> Unit
+pub fn layered_one_dimensional_compactor_scanline_constraints(@compaction.OneDimensionalCompactor) -> Unit raise
 
-pub fn layered_quadratic_constraint_calculation(@compaction.OneDimensionalCompactor) -> Unit
+pub fn layered_quadratic_constraint_calculation(@compaction.OneDimensionalCompactor) -> Unit raise
 
-pub fn layered_scanline_constraint_calculation(@compaction.OneDimensionalCompactor) -> Unit
+pub fn layered_scanline_constraint_calculation(@compaction.OneDimensionalCompactor) -> Unit raise
 
 pub fn new_layered_c_graph(Array[@core.Direction]) -> @compaction.CGraph
 
 pub fn[T] new_layered_c_graph_transformer((T) -> @compaction.CGraph, () -> Unit) -> LayeredICGraphTransformer[T]
 
-pub fn new_layered_one_dimensional_compactor(@compaction.CGraph) -> @compaction.OneDimensionalCompactor
+pub fn new_layered_one_dimensional_compactor(@compaction.CGraph) -> @compaction.OneDimensionalCompactor raise
 
 pub fn new_layered_quadruplet() -> LayeredQuadruplet
 
 pub fn new_layered_quadruplet_with_values(Bool, Bool, Bool, Bool) -> LayeredQuadruplet
 
-pub fn new_layered_spacings_handler((@compaction.CNode, @compaction.CNode) -> Double, (@compaction.CNode, @compaction.CNode) -> Double) -> @compaction.ISpacingsHandler
+pub fn new_layered_spacings_handler((@compaction.CNode, @compaction.CNode) -> Double raise, (@compaction.CNode, @compaction.CNode) -> Double raise) -> @compaction.ISpacingsHandler
 
 pub fn reset_layered_compaction_oned_model_for_test() -> Unit
 
@@ -92,11 +92,11 @@ pub using @compaction {type CNode as LayeredCNode}
 
 pub using @compaction {type CNodeBuilder as LayeredCNodeBuilder}
 
-pub type LayeredICompactionAlgorithm = (@compaction.OneDimensionalCompactor) -> Unit
+pub type LayeredICompactionAlgorithm = (@compaction.OneDimensionalCompactor) -> Unit raise
 
-pub type LayeredIConstraintCalculationAlgorithm = (@compaction.OneDimensionalCompactor) -> Unit
+pub type LayeredIConstraintCalculationAlgorithm = (@compaction.OneDimensionalCompactor) -> Unit raise
 
-pub type LayeredILockFunction = (@compaction.CNode, @core.Direction) -> Bool
+pub type LayeredILockFunction = (@compaction.CNode, @core.Direction) -> Bool raise
 
 pub using @compaction {type ISpacingsHandler as LayeredISpacingsHandler}
 

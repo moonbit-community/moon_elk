@@ -3,6 +3,7 @@ package "Milky2018/moon_elk/core/debug"
 
 import {
   "Milky2018/moon_elk/core",
+  "Milky2018/moon_elk/graph",
 }
 
 // Values
@@ -16,7 +17,7 @@ pub fn compress_log_folder_action_complete_file_name(String?) -> String?
 
 pub let compress_log_folder_action_id : String
 
-pub fn compress_log_folder_action_suggested_file_name(Array[Int]) -> String
+pub fn compress_log_folder_action_suggested_file_name(Array[Int]) -> String raise
 
 pub fn core_debug_dialog_settings_section(String) -> CoreDebugDialogSettingsSection
 
@@ -40,9 +41,9 @@ pub fn core_debug_layout_connectors_fire_layout_done(CoreDebugLayoutMapping, @co
 
 pub fn core_debug_layout_connectors_remove_layout_listener(CoreDebugLayoutListener) -> Unit
 
-pub fn core_debug_layout_mapping_get_layout_graph(CoreDebugLayoutMapping) -> Int?
+pub fn core_debug_layout_mapping_get_layout_graph(CoreDebugLayoutMapping) -> @graph.ElkNode?
 
-pub fn core_debug_load_graph_from_registered_file(String) -> Int
+pub fn core_debug_load_graph_from_registered_file(String) -> @graph.ElkNode raise
 
 pub fn core_debug_path_file_name(String) -> String
 
@@ -64,7 +65,7 @@ pub fn core_debug_register_directory_for_test(String, Array[String]) -> Unit
 
 pub fn core_debug_register_graph_file_content_for_test(String, String) -> Unit
 
-pub fn core_debug_register_graph_file_for_test(String, Int) -> Unit
+pub fn core_debug_register_graph_file_for_test(String, @graph.ElkNode) -> Unit
 
 pub fn core_debug_register_regular_file_for_test(String) -> Unit
 
@@ -86,47 +87,47 @@ pub fn execution_info_from_progress_monitor(@core.IElkProgressMonitor) -> Int
 
 pub fn execution_info_from_progress_monitor_and_file(@core.IElkProgressMonitor, String, Bool) -> Int
 
-pub fn execution_info_get_children(Int) -> Array[Int]
+pub fn execution_info_get_children(Int) -> Array[Int] raise
 
-pub fn execution_info_get_creation_tick(Int) -> Int
+pub fn execution_info_get_creation_tick(Int) -> Int raise
 
-pub fn execution_info_get_debug_folder(Int) -> String
+pub fn execution_info_get_debug_folder(Int) -> String raise
 
-pub fn execution_info_get_execution_time_including_children(Int) -> Double
+pub fn execution_info_get_execution_time_including_children(Int) -> Double raise
 
-pub fn execution_info_get_execution_time_local(Int) -> Double
+pub fn execution_info_get_execution_time_local(Int) -> Double raise
 
-pub fn execution_info_get_file_name(Int) -> String?
+pub fn execution_info_get_file_name(Int) -> String? raise
 
-pub fn execution_info_get_log_messages(Int) -> Array[String]
+pub fn execution_info_get_log_messages(Int) -> Array[String] raise
 
-pub fn execution_info_get_logged_graphs(Int) -> Array[@core.LoggedGraph]
+pub fn execution_info_get_logged_graphs(Int) -> Array[@core.LoggedGraph] raise
 
-pub fn execution_info_get_name(Int) -> String
+pub fn execution_info_get_name(Int) -> String raise
 
-pub fn execution_info_get_parent(Int) -> Int?
+pub fn execution_info_get_parent(Int) -> Int? raise
 
-pub fn execution_info_has_descendants_with_log_messages(Int) -> Bool
+pub fn execution_info_has_descendants_with_log_messages(Int) -> Bool raise
 
-pub fn execution_info_has_descendants_with_logged_graphs(Int) -> Bool
+pub fn execution_info_has_descendants_with_logged_graphs(Int) -> Bool raise
 
-pub fn execution_info_has_log_messages(Int) -> Bool
+pub fn execution_info_has_log_messages(Int) -> Bool raise
 
-pub fn execution_info_has_logged_graphs(Int) -> Bool
+pub fn execution_info_has_logged_graphs(Int) -> Bool raise
 
-pub fn execution_info_is_execution_time_measured(Int) -> Bool
+pub fn execution_info_is_execution_time_measured(Int) -> Bool raise
 
-pub fn execution_info_is_laid_out_after_load(Int) -> Bool
+pub fn execution_info_is_laid_out_after_load(Int) -> Bool raise
 
-pub fn execution_info_is_loaded_from_file(Int) -> Bool
+pub fn execution_info_is_loaded_from_file(Int) -> Bool raise
 
-pub fn execution_info_remove_child(Int, Int) -> Unit
+pub fn execution_info_remove_child(Int, Int) -> Unit raise
 
 pub fn execution_info_reset_for_test() -> Unit
 
-pub fn execution_info_set_debug_folder_for_test(Int, String) -> Unit
+pub fn execution_info_set_debug_folder_for_test(Int, String) -> Unit raise
 
-pub fn execution_info_set_execution_time_for_test(Int, Bool, Double, Double) -> Unit
+pub fn execution_info_set_execution_time_for_test(Int, Bool, Double, Double) -> Unit raise
 
 pub fn execution_time_display_local() -> ExecutionTimeDisplayMode
 
@@ -160,13 +161,13 @@ pub fn layout_upon_load_setting_action_should_layout_upon_load() -> Bool
 
 pub let load_graph_action_id : String
 
-pub fn load_graph_action_layout(String, Int) -> Int
+pub fn load_graph_action_layout(@core.LayoutRuntime, @core.LayoutSession, String, @graph.ElkNode) -> Int raise
 
-pub fn load_graph_action_layout_internal(String, Bool, Int) -> Int
+pub fn load_graph_action_layout_internal(@core.LayoutRuntime, @core.LayoutSession, String, Bool, @graph.ElkNode) -> Int raise
 
-pub fn load_graph_action_load_from_file(String) -> Int
+pub fn load_graph_action_load_from_file(String) -> @graph.ElkNode raise
 
-pub fn load_graph_action_run_file(String?, LayoutGraphView) -> Unit
+pub fn load_graph_action_run_file(@core.LayoutRuntime, @core.LayoutSession, String?, LayoutGraphView) -> Unit raise
 
 pub fn melk_template_build_file_content(String, String, String, String, String, String) -> String
 
@@ -186,7 +187,7 @@ pub fn new_compress_log_folder_action(AbstractLayoutDebugView) -> CompressLogFol
 
 pub fn new_core_debug_layout_listener((CoreDebugLayoutMapping, @core.IElkProgressMonitor) -> Unit, (CoreDebugLayoutMapping, @core.IElkProgressMonitor) -> Unit) -> CoreDebugLayoutListener
 
-pub fn new_core_debug_layout_mapping(Int?) -> CoreDebugLayoutMapping
+pub fn new_core_debug_layout_mapping(@graph.ElkNode?) -> CoreDebugLayoutMapping
 
 pub fn new_core_debug_wizard_project(String, natures? : Array[String]) -> CoreDebugWizardProject
 
@@ -214,19 +215,19 @@ pub fn new_image_export_action(LayoutGraphView) -> ImageExportAction
 
 pub fn new_layout_graph_view() -> LayoutGraphView
 
-pub fn new_layout_graph_view_drop_adapter(LayoutGraphView) -> LayoutGraphViewDropAdapter
+pub fn new_layout_graph_view_drop_adapter(@core.LayoutRuntime, @core.LayoutSession, LayoutGraphView) -> LayoutGraphViewDropAdapter
 
 pub fn new_layout_log_view() -> LayoutLogView
 
 pub fn new_layout_upon_load_setting_action() -> LayoutUponLoadSettingAction
 
-pub fn new_load_graph_action(LayoutGraphView) -> LoadGraphAction
+pub fn new_load_graph_action(@core.LayoutRuntime, @core.LayoutSession, LayoutGraphView) -> LoadGraphAction
 
 pub fn new_log_label_provider() -> LogLabelProvider
 
 pub fn new_preference_action(String) -> PreferenceAction
 
-pub fn new_reload_from_file_action(LayoutGraphView) -> ReloadFromFileAction
+pub fn new_reload_from_file_action(@core.LayoutRuntime, @core.LayoutSession, LayoutGraphView) -> ReloadFromFileAction
 
 pub fn new_reveal_log_folder_action(AbstractLayoutDebugView) -> RevealLogFolderAction
 
@@ -261,7 +262,7 @@ pub fn AbstractLayoutDebugView::get_preference_id(Self) -> String
 pub fn AbstractLayoutDebugView::get_refresh_count_for_test(Self) -> Int
 pub fn AbstractLayoutDebugView::get_selected_execution_infos(Self) -> Array[Int]
 pub fn AbstractLayoutDebugView::get_view_id(Self) -> String
-pub fn AbstractLayoutDebugView::get_visible_children_for_test(Self, Int) -> Array[Int]
+pub fn AbstractLayoutDebugView::get_visible_children_for_test(Self, Int) -> Array[Int] raise
 pub fn AbstractLayoutDebugView::get_visible_root_infos_for_test(Self) -> Array[Int]
 pub fn AbstractLayoutDebugView::is_filter_tree_enabled(Self) -> Bool
 pub fn AbstractLayoutDebugView::is_tree_expanded(Self) -> Bool
@@ -300,7 +301,7 @@ pub(all) struct ClearExecutionAction {
   mut enabled : Bool
 }
 pub fn ClearExecutionAction::is_enabled(Self) -> Bool
-pub fn ClearExecutionAction::run(Self) -> Unit
+pub fn ClearExecutionAction::run(Self) -> Unit raise
 pub fn ClearExecutionAction::update_enablement(Self) -> Unit
 
 pub(all) struct ClearExecutionsAction {
@@ -321,9 +322,9 @@ pub(all) struct CompressLogFolderAction {
   mut selected_output_file_name : String?
 }
 pub fn CompressLogFolderAction::is_enabled(Self) -> Bool
-pub fn CompressLogFolderAction::run(Self) -> Unit
+pub fn CompressLogFolderAction::run(Self) -> Unit raise
 pub fn CompressLogFolderAction::set_selected_output_file_name(Self, String?) -> Unit
-pub fn CompressLogFolderAction::update_enablement(Self) -> Unit
+pub fn CompressLogFolderAction::update_enablement(Self) -> Unit raise
 
 pub(all) struct CoreDebugDialogSettingsSection {
   section : String
@@ -342,7 +343,7 @@ pub(all) struct CoreDebugLayoutListener {
 }
 
 pub(all) struct CoreDebugLayoutMapping {
-  layout_graph : Int?
+  layout_graph : @graph.ElkNode?
 }
 
 pub(all) struct CoreDebugWizardProject {
@@ -373,10 +374,10 @@ pub(all) struct ExecutionInfoContentProvider {
   mut filter_fn : (Int) -> Bool
   mut filter_is_default : Bool
 }
-pub fn ExecutionInfoContentProvider::get_children(Self, Int?) -> Array[Int]
+pub fn ExecutionInfoContentProvider::get_children(Self, Int?) -> Array[Int] raise
 pub fn ExecutionInfoContentProvider::get_elements(Self, Array[Int]?) -> Array[Int]
-pub fn ExecutionInfoContentProvider::get_parent(Self, Int?) -> Int?
-pub fn ExecutionInfoContentProvider::has_children(Self, Int?) -> Bool
+pub fn ExecutionInfoContentProvider::get_parent(Self, Int?) -> Int? raise
+pub fn ExecutionInfoContentProvider::has_children(Self, Int?) -> Bool raise
 pub fn ExecutionInfoContentProvider::is_filtering(Self) -> Bool
 pub fn ExecutionInfoContentProvider::set_filter(Self, ((Int) -> Bool)?) -> Unit
 
@@ -389,7 +390,7 @@ pub fn ExecutionInfoModel::add_execution_info_model_listener(Self, IExecutionInf
 pub fn ExecutionInfoModel::get_execution_infos(Self) -> Array[Int]
 pub fn ExecutionInfoModel::remove_all_execution_infos(Self) -> Unit
 pub fn ExecutionInfoModel::remove_execution_info_model_listener(Self, IExecutionInfoModelListener) -> Unit
-pub fn ExecutionInfoModel::remove_execution_infos(Self, Array[Int]) -> Unit
+pub fn ExecutionInfoModel::remove_execution_infos(Self, Array[Int]) -> Unit raise
 pub fn ExecutionInfoModel::replace_execution(Self, Int, Int) -> Unit
 
 pub(all) enum ExecutionTimeDisplayMode {
@@ -403,7 +404,7 @@ pub(all) struct ExecutionTimeLabelProvider {
   element_image : String
 }
 pub fn ExecutionTimeLabelProvider::get_image(Self, Int) -> String?
-pub fn ExecutionTimeLabelProvider::get_text(Self, Int) -> String
+pub fn ExecutionTimeLabelProvider::get_text(Self, Int) -> String raise
 
 pub(all) struct ExecutionTimeView {
   base : AbstractLayoutDebugView
@@ -442,8 +443,8 @@ pub(all) struct GraphTreeLabelProvider {
   graph_image : String
   no_graph_image : String
 }
-pub fn GraphTreeLabelProvider::get_image(Self, Int) -> String
-pub fn GraphTreeLabelProvider::get_text(Self, Int) -> String
+pub fn GraphTreeLabelProvider::get_image(Self, Int) -> String raise
+pub fn GraphTreeLabelProvider::get_text(Self, Int) -> String raise
 
 pub(all) struct IExecutionInfoModelListener {
   id : Int
@@ -467,27 +468,29 @@ pub(all) struct LayoutGraphView {
   graph_list_label_provider : GraphListLabelProvider
   mut logged_graphs : Array[@core.LoggedGraph]
   mut selected_logged_graph : @core.LoggedGraph?
-  mut visual_graph : Int?
+  mut visual_graph : @graph.ElkNode?
   mut textual_graph : String
   mut showing_visual_graph : Bool
 }
 pub fn LayoutGraphView::get_base(Self) -> AbstractLayoutDebugView
-pub fn LayoutGraphView::get_canvas_graph_for_test(Self) -> Int?
+pub fn LayoutGraphView::get_canvas_graph_for_test(Self) -> @graph.ElkNode?
 pub fn LayoutGraphView::get_logged_graphs_for_test(Self) -> Array[@core.LoggedGraph]
 pub fn LayoutGraphView::get_selected_execution_infos(Self) -> Array[Int]
 pub fn LayoutGraphView::get_textual_graph_for_test(Self) -> String
 pub fn LayoutGraphView::is_showing_visual_graph_for_test(Self) -> Bool
 pub fn LayoutGraphView::list_selection_changed(Self) -> Unit
 pub fn LayoutGraphView::select_logged_graph_for_test(Self, Int) -> Unit
-pub fn LayoutGraphView::set_canvas_graph_for_test(Self, Int?) -> Unit
-pub fn LayoutGraphView::set_selected_execution_infos(Self, Array[Int]) -> Unit
+pub fn LayoutGraphView::set_canvas_graph_for_test(Self, @graph.ElkNode?) -> Unit
+pub fn LayoutGraphView::set_selected_execution_infos(Self, Array[Int]) -> Unit raise
 pub fn LayoutGraphView::show_logged_graph(Self, @core.LoggedGraph) -> Unit
-pub fn LayoutGraphView::tree_selection_changed(Self) -> Unit
+pub fn LayoutGraphView::tree_selection_changed(Self) -> Unit raise
 
 pub(all) struct LayoutGraphViewDropAdapter {
+  runtime : @core.LayoutRuntime
+  session : @core.LayoutSession
   layout_graph_view : LayoutGraphView
 }
-pub fn LayoutGraphViewDropAdapter::perform_drop(Self, Array[String]) -> Bool
+pub fn LayoutGraphViewDropAdapter::perform_drop(Self, Array[String]) -> Bool raise
 pub fn LayoutGraphViewDropAdapter::validate_drop(Self) -> Bool
 
 pub(all) struct LayoutLogView {
@@ -496,8 +499,8 @@ pub(all) struct LayoutLogView {
 }
 pub fn LayoutLogView::get_base(Self) -> AbstractLayoutDebugView
 pub fn LayoutLogView::get_log_text(Self) -> String
-pub fn LayoutLogView::set_selected_execution_infos(Self, Array[Int]) -> Unit
-pub fn LayoutLogView::tree_selection_changed(Self) -> Unit
+pub fn LayoutLogView::set_selected_execution_infos(Self, Array[Int]) -> Unit raise
+pub fn LayoutLogView::tree_selection_changed(Self) -> Unit raise
 
 pub(all) struct LayoutUponLoadSettingAction {
   mut checked : Bool
@@ -507,18 +510,20 @@ pub fn LayoutUponLoadSettingAction::run(Self) -> Unit
 pub fn LayoutUponLoadSettingAction::set_checked(Self, Bool) -> Unit
 
 pub(all) struct LoadGraphAction {
+  runtime : @core.LayoutRuntime
+  session : @core.LayoutSession
   view : LayoutGraphView
   mut selected_file_name : String?
 }
-pub fn LoadGraphAction::run(Self) -> Unit
+pub fn LoadGraphAction::run(Self) -> Unit raise
 pub fn LoadGraphAction::set_selected_file_name_for_test(Self, String?) -> Unit
 
 pub(all) struct LogLabelProvider {
   log_image : String
   no_log_image : String
 }
-pub fn LogLabelProvider::get_image(Self, Int) -> String
-pub fn LogLabelProvider::get_text(Self, Int) -> String
+pub fn LogLabelProvider::get_image(Self, Int) -> String raise
+pub fn LogLabelProvider::get_text(Self, Int) -> String raise
 
 pub(all) struct PreferenceAction {
   preference_id : String
@@ -530,20 +535,22 @@ pub fn PreferenceAction::run(Self) -> Unit
 pub fn PreferenceAction::update_checked_state(Self) -> Unit
 
 pub(all) struct ReloadFromFileAction {
+  runtime : @core.LayoutRuntime
+  session : @core.LayoutSession
   view : LayoutGraphView
   mut enabled : Bool
 }
 pub fn ReloadFromFileAction::is_enabled(Self) -> Bool
-pub fn ReloadFromFileAction::run(Self) -> Unit
-pub fn ReloadFromFileAction::update_enablement(Self) -> Unit
+pub fn ReloadFromFileAction::run(Self) -> Unit raise
+pub fn ReloadFromFileAction::update_enablement(Self) -> Unit raise
 
 pub(all) struct RevealLogFolderAction {
   view : AbstractLayoutDebugView
   mut enabled : Bool
 }
 pub fn RevealLogFolderAction::is_enabled(Self) -> Bool
-pub fn RevealLogFolderAction::run(Self) -> Unit
-pub fn RevealLogFolderAction::update_enablement(Self) -> Unit
+pub fn RevealLogFolderAction::run(Self) -> Unit raise
+pub fn RevealLogFolderAction::update_enablement(Self) -> Unit raise
 
 // Type aliases
 pub type ExecutionInfo = Int

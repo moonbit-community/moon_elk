@@ -36,11 +36,11 @@ fn end_label_preprocessor_edge_source_is_port(
 }
 
 ///|
-fn end_label_preprocessor_require_node(port : LPort) -> LNode {
+fn end_label_preprocessor_require_node(port : LPort) -> LNode raise {
   match port.get_node() {
     Some(value) => value
     None => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "port has no owner node",
       )
       end_label_preprocessor_require_node(port)
@@ -175,7 +175,7 @@ fn end_label_preprocessor_place_labels_for_port(
   port : LPort,
   label_cell : EndLabelCell,
   edge_label_spacing : Double,
-) -> Unit {
+) -> Unit raise {
   let label_cell_rect = label_cell.get_cell_rectangle()
   let owner_node = end_label_preprocessor_require_node(port)
   let node_size = owner_node.get_size()
@@ -334,7 +334,7 @@ fn end_label_preprocessor_remove_label_overlaps(
   port_side : @core.PortSide,
   label_label_spacing : Double,
   edge_label_spacing : Double,
-) -> Unit {
+) -> Unit raise {
   let overlap_remover = @overlaps.create_rectangle_strip_overlap_remover_for_direction(
       end_label_preprocessor_port_side_to_overlap_removal_direction(port_side),
     )
@@ -372,7 +372,7 @@ fn end_label_preprocessor_place_labels(
   label_label_spacing : Double,
   edge_label_spacing : Double,
   vertical_layout : Bool,
-) -> Unit {
+) -> Unit raise {
   for port in node.get_ports() {
     let port_id = port.get_id()
     if port_id < 0 || port_id >= port_label_cells.length() {
@@ -458,7 +458,7 @@ fn end_label_preprocessor_process_node(
   edge_label_spacing : Double,
   label_label_spacing : Double,
   vertical_layout : Bool,
-) -> Unit {
+) -> Unit raise {
   let port_count = node.get_ports().length()
   let port_label_cells : Array[EndLabelCell?] = []
 
@@ -500,7 +500,7 @@ fn end_label_preprocessor_process_node(
 fn end_label_preprocessor_process(
   layered_graph : LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()

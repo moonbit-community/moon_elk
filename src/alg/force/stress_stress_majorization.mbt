@@ -48,10 +48,7 @@ pub fn new_stress_majorization() -> StressMajorization {
 }
 
 ///|
-fn stress_get_other(
-  edge : FEdge,
-  one : FNode,
-) -> FNode raise StressMajorizationException {
+fn stress_get_other(edge : FEdge, one : FNode) -> FNode raise {
   match (fedge_source(edge), fedge_target(edge)) {
     (Some(source), Some(target)) =>
       if source == one {
@@ -103,7 +100,7 @@ fn stress_initialize_matrices(stress : StressMajorization, size : Int) -> Unit {
 fn stress_dijkstra(
   stress : StressMajorization,
   source_id : Int,
-) -> Array[Double] raise StressMajorizationException {
+) -> Array[Double] raise {
   let graph = match stress.graph {
     Some(graph) => graph
     None => return []
@@ -164,7 +161,7 @@ fn stress_dijkstra(
 pub fn StressMajorization::initialize(
   self : StressMajorization,
   graph : FGraph,
-) -> Unit raise StressMajorizationException {
+) -> Unit raise {
   if graph.get_nodes().length() <= 1 {
     self.graph = Some(graph)
     return

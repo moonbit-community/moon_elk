@@ -59,7 +59,7 @@ pub fn new_dis_co_graph_rendering_canvas(
 pub fn new_dis_co_graph_rendering_canvas_with_configurator(
   display : DisCoDebugDisplay,
   configurator : DisCoGraphRenderingConfigurator,
-) -> DisCoGraphRenderingCanvas {
+) -> DisCoGraphRenderingCanvas raise {
   let graph_renderer = if dis_co_graph_rendering_configurator_get_display(
       configurator,
     ) !=
@@ -70,7 +70,7 @@ pub fn new_dis_co_graph_rendering_canvas_with_configurator(
       )
     catch {
       DisCoGraphRenderingCanvasException(message) =>
-        @core.layout_runtime_report_unsupported_configuration(
+        @core.layout_runtime_raise_unsupported_configuration(
           "org.eclipse.elk.alg.disco.debug.views.DisCoGraphRenderingCanvas: " +
           message,
         )
@@ -154,7 +154,7 @@ pub fn dis_co_graph_rendering_canvas_get_display(
 pub fn dis_co_graph_rendering_canvas_paint_control(
   canvas : DisCoGraphRenderingCanvas,
   event : DisCoPaintEvent,
-) -> Unit {
+) -> Unit raise {
   match canvas.layout_graph {
     Some(graph) => {
       let area = new_dis_co_paint_rectangle(

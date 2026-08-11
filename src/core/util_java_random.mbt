@@ -87,11 +87,11 @@ pub fn JavaRandom::double(self : JavaRandom) -> Double {
 }
 
 ///|
-pub fn JavaRandom::int(self : JavaRandom, limit : Int) -> Int {
+pub fn JavaRandom::int(self : JavaRandom, limit : Int) -> Int raise {
   if limit <= 0 {
     try java_random_raise_unit("bound must be positive") catch {
       err =>
-        layout_runtime_report_unsupported_configuration(
+        layout_runtime_raise_unsupported_configuration(
           java_random_exception_message(err),
         )
     } noraise {

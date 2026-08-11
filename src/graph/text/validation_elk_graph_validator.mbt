@@ -18,6 +18,7 @@ pub let graph_text_feature_edge_section_outgoing_shape : String = "ELK_EDGE_SECT
 
 ///|
 pub struct ElkGraphValidator {
+  metadata : @core.OptionMetadata
   base : AbstractElkGraphValidator
   layout_option_validator : @core.LayoutOptionValidator
   value_converter : PropertyValueValueConverter
@@ -25,11 +26,18 @@ pub struct ElkGraphValidator {
 
 ///|
 pub fn new_elk_graph_validator(
+  metadata : @core.OptionMetadata,
   base? : AbstractElkGraphValidator = new_abstract_elk_graph_validator(),
-  layout_option_validator? : @core.LayoutOptionValidator = @core.new_layout_option_validator(),
-  value_converter? : PropertyValueValueConverter = new_property_value_value_converter(),
+  layout_option_validator? : @core.LayoutOptionValidator,
+  value_converter? : PropertyValueValueConverter,
 ) -> ElkGraphValidator {
-  { base, layout_option_validator, value_converter }
+  let layout_option_validator = layout_option_validator.unwrap_or(
+    @core.new_layout_option_validator(metadata),
+  )
+  let value_converter = value_converter.unwrap_or(
+    new_property_value_value_converter(metadata),
+  )
+  { metadata, base, layout_option_validator, value_converter }
 }
 
 ///|
@@ -121,20 +129,22 @@ fn graph_text_validator_issue_from_graph_issue(
 
 ///|
 fn graph_text_validator_algorithm_for_element(
+  metadata : @core.OptionMetadata,
   element : GraphTextElement,
 ) -> @core.LayoutAlgorithmData? {
-  elk_graph_text_util_get_algorithm(element)
+  elk_graph_text_util_get_algorithm(metadata, element)
 }
 
 ///|
 fn graph_text_validator_check_algorithm_support(
+  metadata : @core.OptionMetadata,
   option : @core.LayoutOptionData,
   element : GraphTextElement,
 ) -> GraphTextValidationIssue? {
   if option.get_id() == @core.algorithm.get_id() {
     return None
   }
-  match graph_text_validator_algorithm_for_element(element) {
+  match graph_text_validator_algorithm_for_element(metadata, element) {
     Some(algorithm_data) =>
       if !algorithm_data.knows_option(option.get_id()) {
         Some(
@@ -160,8 +170,7 @@ pub fn ElkGraphValidator::check_property_key(
   self : ElkGraphValidator,
   entry : GraphTextPropertyAssignment,
 ) -> Array[GraphTextValidationIssue] {
-  ignore(self)
-  match graph_text_property_key_to_layout_option(entry.key) {
+  match graph_text_property_key_to_layout_option(self.metadata, entry.key) {
     Some(_) => []
     None =>
       [
@@ -180,7 +189,7 @@ pub fn ElkGraphValidator::check_property_key(
 fn graph_text_validator_effective_value(
   value_converter : PropertyValueValueConverter,
   entry : GraphTextPropertyAssignment,
-) -> GraphTextPropertyValue {
+) -> GraphTextPropertyValue raise {
   match entry.value {
     ProxyValue(proxy_value) =>
       value_converter.to_value(proxy_value, property_key=Some(entry.key))
@@ -223,15 +232,20 @@ pub fn ElkGraphValidator::check_property_value(
   self : ElkGraphValidator,
   entry : GraphTextPropertyAssignment,
   container : GraphTextElement,
-) -> Array[GraphTextValidationIssue] {
+) -> Array[GraphTextValidationIssue] raise {
   let issues : Array[GraphTextValidationIssue] = []
-  match graph_text_property_key_to_layout_option(entry.key) {
+  match graph_text_property_key_to_layout_option(self.metadata, entry.key) {
     Some(option) => {
       match graph_text_validator_check_property_target(option, container) {
         Some(issue) => issues.push(issue)
         None => ()
       }
-      match graph_text_validator_check_algorithm_support(option, container) {
+      match
+        graph_text_validator_check_algorithm_support(
+          self.metadata,
+          option,
+          container,
+        ) {
         Some(issue) => issues.push(issue)
         None => ()
       }
@@ -245,10 +259,7 @@ pub fn ElkGraphValidator::check_property_value(
         issues.push(graph_text_validator_issue_from_graph_issue(issue))
       }
       if option.get_id() == @core.algorithm.get_id() {
-        match
-          @core.layout_meta_data_service_get_algorithm_data_by_suffix(
-            text_value,
-          ) {
+        match self.metadata.algorithm_data_by_suffix(text_value) {
           Some(_) => ()
           None =>
             issues.push(
@@ -421,7 +432,7 @@ pub fn ElkGraphValidator::check_unique_names_for_node(
 fn graph_text_validator_find_parent_edge(
   section : @graph.ElkEdgeSection,
 ) -> @graph.ElkEdge? {
-  for edge in @graph.all_edges() {
+  for edge in section.graph_arena().all_edges() {
     for candidate in @graph.edge_sections(edge) {
       if candidate == section {
         return Some(edge)

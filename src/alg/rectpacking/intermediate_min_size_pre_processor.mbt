@@ -14,7 +14,7 @@ fn rectpacking_has_minimum_size_constraint(graph : @graph.ElkNode) -> Bool {
 ///|
 fn rectpacking_effective_min_size_constraint_for(
   graph : @graph.ElkNode,
-) -> @core.KVector {
+) -> @core.KVector raise {
   if !rectpacking_has_minimum_size_constraint(graph) {
     return @core.new_kvector_xy(0.0, 0.0)
   }
@@ -28,7 +28,7 @@ fn rectpacking_effective_min_size_constraint_for(
 fn rectpacking_min_size_pre_processor_process(
   graph : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   match progress_monitor {
     Some(monitor) => ignore(monitor.begin("Min Size Preprocessing", 1.0))
     None => ()

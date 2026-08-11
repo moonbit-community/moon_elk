@@ -84,7 +84,7 @@ fn sc_connectivity_find_nodes(
 fn sc_connectivity_process(
   layered_graph : @runtime.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   scc_model_order_cycle_breaker_process_with_finder(
     layered_graph, progress_monitor, sc_connectivity_find_nodes,
   )

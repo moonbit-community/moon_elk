@@ -213,7 +213,7 @@ pub fn core_debug_grandom_rand_val_gaussian(
 pub fn CoreDebugGRandomRandVal::val(
   self : CoreDebugGRandomRandVal,
   random : @random.Rand,
-) -> Double {
+) -> Double raise {
   let mut result = 0.0
   if self.use_exact {
     result = self.exact
@@ -225,7 +225,7 @@ pub fn CoreDebugGRandomRandVal::val(
         )
       catch {
         err =>
-          @core.layout_runtime_report_unsupported_configuration(
+          @core.layout_runtime_raise_unsupported_configuration(
             core_debug_grandom_generator_options_exception_message(err),
           )
       } noraise {
@@ -250,7 +250,7 @@ pub fn CoreDebugGRandomRandVal::val(
 pub fn CoreDebugGRandomRandVal::int_val(
   self : CoreDebugGRandomRandVal,
   random : @random.Rand,
-) -> Int {
+) -> Int raise {
   self.val(random).round().to_int()
 }
 
@@ -265,7 +265,7 @@ pub fn CoreDebugGRandomRandVal::default_int(
 pub fn CoreDebugGRandomRandVal::float_val(
   self : CoreDebugGRandomRandVal,
   random : @random.Rand,
-) -> Double {
+) -> Double raise {
   self.val(random)
 }
 

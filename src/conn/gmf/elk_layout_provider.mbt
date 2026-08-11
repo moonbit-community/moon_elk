@@ -20,7 +20,9 @@ pub fn ElkLayoutProvider::provides(
 }
 
 ///|
-fn elk_layout_provider_is_layoutable_shape(edit_part : GmfEditPart?) -> Bool {
+fn elk_layout_provider_is_layoutable_shape(
+  edit_part : GmfEditPart?,
+) -> Bool raise {
   match edit_part {
     Some(value) => {
       let kind = gmf_edit_part_kind(value)
@@ -36,7 +38,7 @@ fn elk_layout_provider_is_layoutable_shape(edit_part : GmfEditPart?) -> Bool {
 fn elk_layout_provider_find_edit_part(
   parent : GmfEditPart,
   notation_node : String,
-) -> GmfEditPart? {
+) -> GmfEditPart? raise {
   gmf_find_edit_part_by_notation_node(parent, notation_node)
 }
 
@@ -46,7 +48,7 @@ pub fn ElkLayoutProvider::can_layout_nodes(
   layout_nodes : Array[GmfLayoutNode],
   _should_offset_from_bounding_box : Bool,
   layout_hint : GmfLayoutHint,
-) -> Bool {
+) -> Bool raise {
   let parent = layout_hint.get_graphical_edit_part()
   match parent {
     None => false
@@ -82,7 +84,7 @@ pub fn ElkLayoutProvider::layout_layout_nodes(
   layout_nodes : Array[GmfLayoutNode],
   _offset_from_bounding_box : Bool,
   layout_hint : GmfLayoutHint,
-) -> GmfRunnable {
+) -> GmfRunnable raise {
   let zoom_to_fit = gmf_get_boolean_preference(
     "org.eclipse.elk.core.ui", "org.eclipse.elk.zoomToFit", false,
   )

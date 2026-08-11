@@ -61,7 +61,7 @@ pub fn port_side_processor_set_port_side(port : LPort) -> Unit {
 fn port_side_processor_process(
   layered_graph : LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()

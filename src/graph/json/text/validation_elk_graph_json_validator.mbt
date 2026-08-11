@@ -18,18 +18,35 @@ pub let graph_json_text_feature_edge_section_outgoing_shape : String = "ELK_EDGE
 
 ///|
 pub struct ElkGraphJsonValidator {
+  metadata : @core.OptionMetadata
   base : AbstractElkGraphJsonValidator
+  text_util : ElkGraphJsonJsonTextUtil
   layout_option_validator : @core.LayoutOptionValidator
   value_converter : GraphJsonTextPropertyValueValueConverter
 }
 
 ///|
 pub fn new_elk_graph_json_validator(
+  metadata : @core.OptionMetadata,
   base? : AbstractElkGraphJsonValidator = new_abstract_elk_graph_json_validator(),
-  layout_option_validator? : @core.LayoutOptionValidator = @core.new_layout_option_validator(),
-  value_converter? : GraphJsonTextPropertyValueValueConverter = new_graph_json_text_property_value_value_converter(),
+  layout_option_validator? : @core.LayoutOptionValidator? = None,
+  value_converter? : GraphJsonTextPropertyValueValueConverter? = None,
 ) -> ElkGraphJsonValidator {
-  { base, layout_option_validator, value_converter }
+  let layout_option_validator = match layout_option_validator {
+    Some(value) => value
+    None => @core.new_layout_option_validator(metadata)
+  }
+  let value_converter = match value_converter {
+    Some(value) => value
+    None => new_graph_json_text_property_value_value_converter(metadata)
+  }
+  {
+    metadata,
+    base,
+    text_util: new_elk_graph_json_json_text_util(metadata),
+    layout_option_validator,
+    value_converter,
+  }
 }
 
 ///|
@@ -127,20 +144,22 @@ fn graph_json_text_validator_issue_from_graph_issue(
 
 ///|
 fn graph_json_text_validator_algorithm_for_element(
+  text_util : ElkGraphJsonJsonTextUtil,
   element : GraphJsonTextElement,
 ) -> @core.LayoutAlgorithmData? {
-  elk_graph_json_json_text_util_get_algorithm(element)
+  text_util.get_algorithm(element)
 }
 
 ///|
 fn graph_json_text_validator_check_algorithm_support(
+  text_util : ElkGraphJsonJsonTextUtil,
   option : @core.LayoutOptionData,
   element : GraphJsonTextElement,
 ) -> GraphJsonTextValidationIssue? {
   if option.get_id() == @core.algorithm.get_id() {
     return None
   }
-  match graph_json_text_validator_algorithm_for_element(element) {
+  match graph_json_text_validator_algorithm_for_element(text_util, element) {
     Some(algorithm_data) =>
       if !algorithm_data.knows_option(option.get_id()) {
         Some(
@@ -166,8 +185,8 @@ pub fn ElkGraphJsonValidator::check_property_key(
   self : ElkGraphJsonValidator,
   entry : GraphJsonTextPropertyAssignment,
 ) -> Array[GraphJsonTextValidationIssue] {
-  ignore(self)
-  match graph_json_text_property_key_to_layout_option(entry.key) {
+  match
+    graph_json_text_property_key_to_layout_option(self.metadata, entry.key) {
     Some(_) => []
     None =>
       [
@@ -186,7 +205,7 @@ pub fn ElkGraphJsonValidator::check_property_key(
 fn graph_json_text_validator_effective_value(
   value_converter : GraphJsonTextPropertyValueValueConverter,
   entry : GraphJsonTextPropertyAssignment,
-) -> GraphJsonTextPropertyValue {
+) -> GraphJsonTextPropertyValue raise {
   match entry.value {
     GraphJsonTextProxyValue(proxy_value) =>
       value_converter.to_value(proxy_value, property_key=Some(entry.key))
@@ -229,16 +248,21 @@ pub fn ElkGraphJsonValidator::check_property_value(
   self : ElkGraphJsonValidator,
   entry : GraphJsonTextPropertyAssignment,
   container : GraphJsonTextElement,
-) -> Array[GraphJsonTextValidationIssue] {
+) -> Array[GraphJsonTextValidationIssue] raise {
   let issues : Array[GraphJsonTextValidationIssue] = []
-  match graph_json_text_property_key_to_layout_option(entry.key) {
+  match
+    graph_json_text_property_key_to_layout_option(self.metadata, entry.key) {
     Some(option) => {
       match graph_json_text_validator_check_property_target(option, container) {
         Some(issue) => issues.push(issue)
         None => ()
       }
       match
-        graph_json_text_validator_check_algorithm_support(option, container) {
+        graph_json_text_validator_check_algorithm_support(
+          self.text_util,
+          option,
+          container,
+        ) {
         Some(issue) => issues.push(issue)
         None => ()
       }
@@ -252,10 +276,7 @@ pub fn ElkGraphJsonValidator::check_property_value(
         issues.push(graph_json_text_validator_issue_from_graph_issue(issue))
       }
       if option.get_id() == @core.algorithm.get_id() {
-        match
-          @core.layout_meta_data_service_get_algorithm_data_by_suffix(
-            text_value,
-          ) {
+        match self.metadata.algorithm_data_by_suffix(text_value) {
           Some(_) => ()
           None =>
             issues.push(
@@ -431,7 +452,7 @@ pub fn ElkGraphJsonValidator::check_unique_names_for_node(
 fn graph_json_text_validator_find_parent_edge(
   section : @graph.ElkEdgeSection,
 ) -> @graph.ElkEdge? {
-  for edge in @graph.all_edges() {
+  for edge in section.graph_arena().all_edges() {
     for candidate in @graph.edge_sections(edge) {
       if candidate == section {
         return Some(edge)

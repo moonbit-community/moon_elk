@@ -25,11 +25,11 @@ pub fn new_all_crossings_counter(
 ///|
 fn all_crossings_counter_crossings_counter(
   state : AllCrossingsCounter,
-) -> CrossingsCounter {
+) -> CrossingsCounter raise {
   match state.crossing_counter {
     Some(counter) => counter
     None => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "all crossings counter is not initialized",
       )
       new_crossings_counter([])
@@ -40,11 +40,11 @@ fn all_crossings_counter_crossings_counter(
 ///|
 fn all_crossings_counter_hyperedge_counter(
   state : AllCrossingsCounter,
-) -> HyperedgeCrossingsCounter {
+) -> HyperedgeCrossingsCounter raise {
   match state.hyperedge_crossings_counter {
     Some(counter) => counter
     None => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "all crossings counter is not initialized",
       )
       new_hyperedge_crossings_counter([], [], [])
@@ -79,7 +79,7 @@ fn all_crossings_counter_port_side_is(
 pub fn AllCrossingsCounter::count_all_crossings(
   self : AllCrossingsCounter,
   current_order : Array[Array[LNode]],
-) -> Int {
+) -> Int raise {
   if current_order.length() == 0 {
     return 0
   }
@@ -108,7 +108,7 @@ fn AllCrossingsCounter::count_crossings_at(
   self : AllCrossingsCounter,
   layer_index : Int,
   current_order : Array[Array[LNode]],
-) -> Int {
+) -> Int raise {
   let counter = all_crossings_counter_crossings_counter(self)
   let mut total_crossings = 0
   let left_layer = current_order[layer_index]

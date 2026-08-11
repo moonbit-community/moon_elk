@@ -1,5 +1,6 @@
 ///|
 pub(all) struct LayoutPropertySource {
+  metadata : @core.OptionMetadata
   layout_config : @service.ILayoutConfigurationStore
   mut property_descriptors : Array[LayoutPropertyDescriptor]?
   dependency_options : Map[String, Unit]
@@ -9,10 +10,12 @@ pub(all) struct LayoutPropertySource {
 
 ///|
 pub fn new_layout_property_source(
+  metadata : @core.OptionMetadata,
   config : @service.ILayoutConfigurationStore,
   manager : @service.LayoutConfigurationManager,
 ) -> LayoutPropertySource {
   {
+    metadata,
     layout_config: config,
     property_descriptors: None,
     dependency_options: Map([]),
@@ -54,10 +57,7 @@ fn layout_property_source_matches_dependency(
   source : LayoutPropertySource,
   dependency : @core.LayoutOptionDependency,
 ) -> Bool {
-  match
-    @core.layout_meta_data_service_get_option_data_opt(
-      dependency.get_option_id(),
-    ) {
+  match source.metadata.option_data_opt(dependency.get_option_id()) {
     Some(target_option) =>
       match
         source.config_manager.get_option_value(
@@ -203,7 +203,7 @@ pub fn LayoutPropertySource::get_property_value(
   self : LayoutPropertySource,
   id : String,
 ) -> CoreUiValue {
-  match @core.layout_meta_data_service_get_option_data_opt(id) {
+  match self.metadata.option_data_opt(id) {
     Some(option_data) =>
       self.translate_to_ui(
         self.config_manager.get_option_value(option_data, self.layout_config),
@@ -257,7 +257,7 @@ pub fn LayoutPropertySource::set_property_value(
   id : String,
   value : CoreUiValue,
 ) -> Unit {
-  match @core.layout_meta_data_service_get_option_data_opt(id) {
+  match self.metadata.option_data_opt(id) {
     Some(option_data) => {
       core_ui_elk_ui_util_run_model_change(
         () => {
@@ -329,11 +329,12 @@ pub fn LayoutPropertySource::reset_property_value(
 
 ///|
 pub fn core_ui_layout_property_source_get_layout_hint(
+  metadata : @core.OptionMetadata,
   displayed_name : String,
 ) -> String? {
   let mut best_hint : String? = None
   let mut best_length = 0
-  for layouter_data in @core.layout_meta_data_service_algorithm_data_values() {
+  for layouter_data in metadata.algorithm_data_values() {
     let name = layouter_data.get_name()
     if displayed_name.has_prefix(name) && name.length() > best_length {
       best_hint = Some(layouter_data.get_id())

@@ -163,7 +163,7 @@ fn self_loop_preprocessor_test_assert_hidden_edges(
 ///|
 fn self_loop_preprocessor_test_ports_hidden(
   constraints : @core.PortConstraints,
-) -> Unit {
+) -> Unit raise {
   let test_graph = self_loop_preprocessor_test_new_graph(constraints)
   let processor = new_self_loop_pre_processor_layout_processor()
   processor.process(
@@ -190,7 +190,7 @@ fn self_loop_preprocessor_test_ports_hidden(
 ///|
 fn self_loop_preprocessor_test_ports_untouched(
   constraints : @core.PortConstraints,
-) -> Unit {
+) -> Unit raise {
   let test_graph = self_loop_preprocessor_test_new_graph(constraints)
   let processor = new_self_loop_pre_processor_layout_processor()
   processor.process(

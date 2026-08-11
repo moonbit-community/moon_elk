@@ -112,7 +112,7 @@ fn switch_decider_bb_new_decider_for_layer(
   switch_type : @options.GreedySwitchType,
   free_layer_index : Int,
   side : CrossingCountSide,
-) -> (SwitchDecider, Array[Array[LNode]]) {
+) -> (SwitchDecider, Array[Array[LNode]]) raise {
   let node_order = switch_decider_bb_current_order(graph)
   let filler = new_crossing_matrix_filler(
     switch_type, node_order, free_layer_index, side,
@@ -203,7 +203,7 @@ fn switch_decider_bb_cross_graph() -> (Array[Array[LNode]], LNode, LNode) {
 }
 
 ///|
-fn switch_decider_bb_switch_and_recount_counter_bug_graph() -> LGraph {
+fn switch_decider_bb_switch_and_recount_counter_bug_graph() -> LGraph raise {
   let creator = new_greedy_switch_test_graph_creator()
   let graph = creator.get_graph()
 

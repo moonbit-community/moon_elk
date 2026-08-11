@@ -1,6 +1,5 @@
 ///|
 test "Mrtree TLabel attaches to edge and formats text" {
-  reset_mrtree_graph_model_for_test()
   let graph = new_mrtree_graph()
   let source = new_mrtree_node(1, graph, label="src")
   let target = new_mrtree_node(2, graph, label="tgt")
@@ -16,7 +15,6 @@ test "Mrtree TLabel attaches to edge and formats text" {
 
 ///|
 test "Mrtree edge set source and target updates node edge lists" {
-  reset_mrtree_graph_model_for_test()
   let graph = new_mrtree_graph()
   let n1 = new_mrtree_node(1, graph, label="n1")
   let n2 = new_mrtree_node(2, graph, label="n2")
@@ -34,7 +32,6 @@ test "Mrtree edge set source and target updates node edge lists" {
 
 ///|
 test "Mrtree shape helpers read node and label geometry" {
-  reset_mrtree_graph_model_for_test()
   let graph = new_mrtree_graph()
   let source = new_mrtree_node(1, graph, label="src")
   let target = new_mrtree_node(2, graph, label="tgt")

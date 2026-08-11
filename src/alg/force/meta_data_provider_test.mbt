@@ -22,14 +22,10 @@ fn option_targets_contain_edge(option_data : @core.LayoutOptionData) -> Bool {
 
 ///|
 test "ForceMetaDataProvider registers algorithms and category" {
-  @test.layout_meta_data_service_reset_for_test()
-  @test.layout_meta_data_service_register_default_options()
-  @test.layout_meta_data_service_register_layout_meta_data_providers(
-    force_layout_meta_data_providers(),
-  )
-  let force_algorithm = @core.layout_meta_data_service_get_algorithm_data(
-    force_algorithm_id,
-  )
+  let metadata = @core.new_option_metadata()
+  metadata.register_default_options()
+  metadata.register_providers(force_layout_meta_data_providers())
+  let force_algorithm = metadata.algorithm_data(force_algorithm_id)
   inspect(force_algorithm is Some(_), content="true")
   inspect(
     match force_algorithm {
@@ -46,9 +42,7 @@ test "ForceMetaDataProvider registers algorithms and category" {
     },
     content="true",
   )
-  let stress_algorithm = @core.layout_meta_data_service_get_algorithm_data(
-    stress_algorithm_id,
-  )
+  let stress_algorithm = metadata.algorithm_data(stress_algorithm_id)
   inspect(stress_algorithm is Some(_), content="true")
   inspect(
     match stress_algorithm {
@@ -58,22 +52,16 @@ test "ForceMetaDataProvider registers algorithms and category" {
     },
     content="true",
   )
-  let force_category = @core.layout_meta_data_service_get_category_data(
-    force_category_id,
-  )
+  let force_category = metadata.category_data(force_category_id)
   inspect(force_category is Some(_), content="true")
 }
 
 ///|
 test "ForceMetaDataProvider registers option metadata types and targets" {
-  @test.layout_meta_data_service_reset_for_test()
-  @test.layout_meta_data_service_register_default_options()
-  @test.layout_meta_data_service_register_layout_meta_data_providers(
-    force_layout_meta_data_providers(),
-  )
-  let force_iterations_option = @core.layout_meta_data_service_get_option_data(
-    force_iterations.get_id(),
-  )
+  let metadata = @core.new_option_metadata()
+  metadata.register_default_options()
+  metadata.register_providers(force_layout_meta_data_providers())
+  let force_iterations_option = metadata.option_data(force_iterations.get_id())
   inspect(
     match force_iterations_option.get_type() {
       IntType => true
@@ -85,7 +73,7 @@ test "ForceMetaDataProvider registers option metadata types and targets" {
     option_targets_contain_parent(force_iterations_option),
     content="true",
   )
-  let stress_edge_length_option = @core.layout_meta_data_service_get_option_data(
+  let stress_edge_length_option = metadata.option_data(
     stress_desired_edge_length.get_id(),
   )
   inspect(
@@ -103,7 +91,7 @@ test "ForceMetaDataProvider registers option metadata types and targets" {
     option_targets_contain_edge(stress_edge_length_option),
     content="true",
   )
-  let stress_dimension_option = @core.layout_meta_data_service_get_option_data_by_suffix(
+  let stress_dimension_option = metadata.option_data_by_suffix(
     "stress.dimension",
   )
   inspect(stress_dimension_option is Some(_), content="true")

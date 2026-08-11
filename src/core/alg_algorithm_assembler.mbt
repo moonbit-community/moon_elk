@@ -43,7 +43,7 @@ fn[P, G] none_phase_factory() -> ILayoutPhaseFactory[P, G]? {
 ///|
 pub fn[P, G] algorithm_assembler_create(
   phase_descriptor : PhaseDescriptor[P],
-) -> AlgorithmAssembler[P, G] {
+) -> AlgorithmAssembler[P, G] raise {
   let number_of_phases = phase_descriptor.size()
   if number_of_phases == 0 {
     try
@@ -52,7 +52,7 @@ pub fn[P, G] algorithm_assembler_create(
       )
     catch {
       err =>
-        layout_runtime_report_unsupported_configuration(
+        layout_runtime_raise_unsupported_configuration(
           algorithm_assembler_exception_message(err),
         )
     } noraise {
@@ -137,7 +137,7 @@ pub fn[P, G] AlgorithmAssembler::set_phase(
   self : AlgorithmAssembler[P, G],
   phase : P,
   phase_factory : ILayoutPhaseFactory[P, G],
-) -> AlgorithmAssembler[P, G] {
+) -> AlgorithmAssembler[P, G] raise {
   let index = self.phase_descriptor.ordinal_of(phase)
   self.phase_accessor.set_list_item(index, Some(phase_factory))
   self.configured_phases[index] = true
@@ -148,7 +148,7 @@ pub fn[P, G] AlgorithmAssembler::set_phase(
 pub fn[P, G] AlgorithmAssembler::add_processor_configuration(
   self : AlgorithmAssembler[P, G],
   config : LayoutProcessorConfiguration[P, G],
-) -> AlgorithmAssembler[P, G] {
+) -> AlgorithmAssembler[P, G] raise {
   ignore(self.additional_processors.add_all(config))
   self
 }
@@ -157,7 +157,7 @@ pub fn[P, G] AlgorithmAssembler::add_processor_configuration(
 pub fn[P, G] AlgorithmAssembler::build(
   self : AlgorithmAssembler[P, G],
   graph : G,
-) -> Array[ILayoutProcessor[P, G]] {
+) -> Array[ILayoutProcessor[P, G]] raise {
   if self.fail_on_missing_phase &&
     self.count_configured_phases() < self.number_of_phases {
     try
@@ -166,7 +166,7 @@ pub fn[P, G] AlgorithmAssembler::build(
       )
     catch {
       err =>
-        layout_runtime_report_unsupported_configuration(
+        layout_runtime_raise_unsupported_configuration(
           algorithm_assembler_exception_message(err),
         )
     } noraise {
@@ -245,7 +245,7 @@ pub fn[P, G] AlgorithmAssembler::count_configured_phases(
 pub fn[P, G] AlgorithmAssembler::retrieve_processors(
   self : AlgorithmAssembler[P, G],
   factories : Array[ILayoutProcessorFactory[P, G]],
-) -> Array[ILayoutProcessor[P, G]] {
+) -> Array[ILayoutProcessor[P, G]] raise {
   let processors = []
   let sorted_factories = sort_processor_factories(
     factories,
@@ -279,7 +279,7 @@ fn[P, G] sort_processor_factories(
 pub fn[P, G] AlgorithmAssembler::retrieve_phase(
   self : AlgorithmAssembler[P, G],
   factory : ILayoutPhaseFactory[P, G],
-) -> ILayoutProcessor[P, G] {
+) -> ILayoutProcessor[P, G] raise {
   self.retrieve_processor(factory)
 }
 
@@ -287,7 +287,7 @@ pub fn[P, G] AlgorithmAssembler::retrieve_phase(
 pub fn[P, G] AlgorithmAssembler::retrieve_processor(
   self : AlgorithmAssembler[P, G],
   factory : ILayoutProcessorFactory[P, G],
-) -> ILayoutProcessor[P, G] {
+) -> ILayoutProcessor[P, G] raise {
   if self.enable_caching {
     if find_cached_processor(self.cache, factory.factory_id())
       is Some(processor) {

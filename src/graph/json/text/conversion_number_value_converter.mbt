@@ -24,7 +24,7 @@ pub fn new_graph_json_text_number_value_converter() -> GraphJsonTextNumberValueC
 pub fn GraphJsonTextNumberValueConverter::to_string(
   self : GraphJsonTextNumberValueConverter,
   value : Double?,
-) -> String {
+) -> String raise {
   ignore(self)
   match value {
     None => {
@@ -34,7 +34,7 @@ pub fn GraphJsonTextNumberValueConverter::to_string(
         )
       catch {
         GraphJsonTextNumberValueConverterException(message) =>
-          @core.layout_runtime_report_unsupported_configuration(
+          @core.layout_runtime_raise_unsupported_configuration(
             "org.eclipse.elk.graph.json.text.conversion.NumberValueConverter: " +
             message,
           )
@@ -56,7 +56,7 @@ pub fn GraphJsonTextNumberValueConverter::to_string(
 pub fn GraphJsonTextNumberValueConverter::to_value(
   self : GraphJsonTextNumberValueConverter,
   text : String,
-) -> Double {
+) -> Double raise {
   ignore(self)
   if text == "" {
     try
@@ -65,7 +65,7 @@ pub fn GraphJsonTextNumberValueConverter::to_value(
       )
     catch {
       GraphJsonTextNumberValueConverterException(message) =>
-        @core.layout_runtime_report_unsupported_configuration(
+        @core.layout_runtime_raise_unsupported_configuration(
           "org.eclipse.elk.graph.json.text.conversion.NumberValueConverter: " +
           message,
         )
@@ -88,7 +88,7 @@ pub fn GraphJsonTextNumberValueConverter::to_value(
         )
       catch {
         GraphJsonTextNumberValueConverterException(message) =>
-          @core.layout_runtime_report_unsupported_configuration(
+          @core.layout_runtime_raise_unsupported_configuration(
             "org.eclipse.elk.graph.json.text.conversion.NumberValueConverter: " +
             message,
           )

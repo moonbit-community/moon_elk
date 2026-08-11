@@ -9,10 +9,10 @@ pub(all) struct AlgorithmCellEditor {
 
 ///|
 pub fn new_algorithm_cell_editor(
+  metadata : @core.OptionMetadata,
   layout_option_id : String,
 ) -> AlgorithmCellEditor {
-  let algorithm_option = match
-    @core.layout_meta_data_service_get_option_data_opt(layout_option_id) {
+  let algorithm_option = match metadata.option_data_opt(layout_option_id) {
     Some(option_data) => option_data
     None =>
       @core.new_layout_option_data(
@@ -22,7 +22,7 @@ pub fn new_algorithm_cell_editor(
       )
   }
   {
-    label_provider: new_layout_option_label_provider(algorithm_option),
+    label_provider: new_layout_option_label_provider(metadata, algorithm_option),
     value: "",
     apply_count: 0,
     cancel_count: 0,

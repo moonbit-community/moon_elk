@@ -26,12 +26,12 @@ pub fn graph_json_text_property_key_group(
 
 ///|
 pub fn graph_json_text_property_key_to_layout_option(
+  metadata : @core.OptionMetadata,
   key : GraphJsonTextPropertyKey,
 ) -> @core.LayoutOptionData? {
   match key {
     GraphJsonTextLayoutOption(option_data) => Some(option_data)
-    GraphJsonTextCustomProperty(id) =>
-      @core.layout_meta_data_service_get_option_data_opt(id)
+    GraphJsonTextCustomProperty(id) => metadata.option_data_opt(id)
   }
 }
 

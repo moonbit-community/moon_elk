@@ -2,14 +2,14 @@
 pub(all) struct ILayoutProcessorFactory[P, G] {
   id : Int
   order : Int
-  create_fn : () -> ILayoutProcessor[P, G]
+  create_fn : () -> ILayoutProcessor[P, G] raise
 }
 
 ///|
 pub fn[P, G] new_layout_processor_factory(
   id : Int,
   order : Int,
-  create_fn : () -> ILayoutProcessor[P, G],
+  create_fn : () -> ILayoutProcessor[P, G] raise,
 ) -> ILayoutProcessorFactory[P, G] {
   { id, order, create_fn }
 }
@@ -17,7 +17,7 @@ pub fn[P, G] new_layout_processor_factory(
 ///|
 pub fn[P, G] ILayoutProcessorFactory::create(
   self : ILayoutProcessorFactory[P, G],
-) -> ILayoutProcessor[P, G] {
+) -> ILayoutProcessor[P, G] raise {
   (self.create_fn)()
 }
 

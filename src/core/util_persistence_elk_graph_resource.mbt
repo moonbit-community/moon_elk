@@ -3,13 +3,17 @@ pub let elk_graph_resource_default_encoding : String = "utf-8"
 
 ///|
 pub(all) struct ElkGraphResource {
+  metadata : OptionMetadata
   uri : String
   mut encoding : String
 }
 
 ///|
-pub fn new_elk_graph_resource(uri : String) -> ElkGraphResource {
-  { uri, encoding: elk_graph_resource_default_encoding }
+pub fn new_elk_graph_resource(
+  metadata : OptionMetadata,
+  uri : String,
+) -> ElkGraphResource {
+  { metadata, uri, encoding: elk_graph_resource_default_encoding }
 }
 
 ///|
@@ -50,5 +54,5 @@ pub fn ElkGraphResource::create_xml_save_with_options(
 pub fn ElkGraphResource::create_xml_helper(
   self : ElkGraphResource,
 ) -> ElkGraphXMIHelper {
-  new_elk_graph_xmi_helper(self)
+  new_elk_graph_xmi_helper(self.metadata, self)
 }

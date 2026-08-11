@@ -86,7 +86,7 @@ pub fn new_core_debug_grandom_graph_maker(
 pub fn CoreDebugGRandomGraphMaker::gen(
   self : CoreDebugGRandomGraphMaker,
   project : CoreDebugGRandomProject,
-) -> Unit {
+) -> Unit raise {
   let generator = @grandom.new_core_debug_grandom_random_graph_generator(None)
   for config in self.configs {
     let filename = match config.filename {
@@ -118,7 +118,7 @@ pub fn CoreDebugGRandomGraphMaker::gen(
 ///|
 pub fn CoreDebugGRandomGraphMaker::load_graph(
   self : CoreDebugGRandomGraphMaker,
-) -> Array[@graph.ElkNode] {
+) -> Array[@graph.ElkNode] raise {
   let graphs : Array[@graph.ElkNode] = []
   let generator = @grandom.new_core_debug_grandom_random_graph_generator(None)
   for config in self.configs {

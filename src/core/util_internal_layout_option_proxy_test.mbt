@@ -13,23 +13,25 @@ test "layout_option_proxy set_proxy_value stores proxy by key" {
 
 ///|
 test "layout_option_proxy resolve_value resolves by property metadata" {
-  layout_meta_data_service_reset_for_test()
-  layout_meta_data_service_register_default_options()
+  let metadata = new_option_metadata()
+  metadata.register_default_options()
   let property : @graph.IProperty[String] = @graph.new_property(
     no_layout.get_id(),
     "",
   )
   let proxy = new_layout_option_proxy("1")
-  debug_inspect(proxy.resolve_value(Some(property)), content="Some(\"true\")")
-  debug_inspect(proxy.resolve_value(None), content="None")
+  debug_inspect(
+    proxy.resolve_value(metadata, Some(property)),
+    content="Some(\"true\")",
+  )
+  debug_inspect(proxy.resolve_value(metadata, None), content="None")
 }
 
 ///|
 test "layout_option_proxy resolve_value_with_option mirrors parse_value" {
-  layout_meta_data_service_reset_for_test()
-  layout_meta_data_service_register_default_options()
-  let option_data = match
-    layout_meta_data_service_get_option_data_opt(content_alignment.get_id()) {
+  let metadata = new_option_metadata()
+  metadata.register_default_options()
+  let option_data = match metadata.option_data_opt(content_alignment.get_id()) {
     Some(value) => value
     None => abort("expected default option metadata for content alignment")
   }

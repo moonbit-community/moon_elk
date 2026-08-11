@@ -60,7 +60,7 @@ fn concrete_sort_by_input_model_configure_graph(graph : LGraph) -> Unit {
 fn concrete_sort_by_input_model_run(
   graph : LGraph,
   port_model_order : Bool,
-) -> Unit {
+) -> Unit raise {
   graph.set_property_bool(
     @options.layered_options_consider_model_order_port_model_order, port_model_order,
   )

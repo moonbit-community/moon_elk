@@ -2,11 +2,11 @@
 test "AbstractLayoutProvider forwards lifecycle and layout calls" {
   let initialized = Ref("")
   let disposed = Ref(false)
-  let laid_out_node = Ref(-1)
+  let laid_out_node : Ref[@graph.ElkNode?] = Ref(None)
   let provider = new_abstract_layout_provider(
     (node, monitor) => {
       ignore(monitor)
-      laid_out_node.val = node
+      laid_out_node.val = Some(node)
     },
     initialize_fn=parameter => {
       initialized.val = match parameter {
@@ -22,7 +22,7 @@ test "AbstractLayoutProvider forwards lifecycle and layout calls" {
   provider.layout(root, monitor)
   provider.dispose()
   inspect(initialized.val, content="box")
-  inspect(laid_out_node.val == root, content="true")
+  inspect(laid_out_node.val == Some(root), content="true")
   inspect(disposed.val, content="true")
 }
 

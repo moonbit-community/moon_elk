@@ -36,7 +36,7 @@ fn all_crossings_bb_port_side_south() -> @core.PortSide {
 }
 
 ///|
-fn all_crossings_bb_count_all_crossings(graph : LGraph) -> Int {
+fn all_crossings_bb_count_all_crossings(graph : LGraph) -> Int raise {
   all_crossings_bb_set_up_ids(graph)
   let order = all_crossings_bb_order(graph)
   let graph_data = new_graph_info_holder_from_graph(

@@ -1,13 +1,13 @@
 ///|
 pub struct IGraphTransformer[G] {
-  import_graph_fn : (G) -> DCGraph
-  apply_layout_fn : () -> Unit
+  import_graph_fn : (G) -> DCGraph raise
+  apply_layout_fn : () -> Unit raise
 }
 
 ///|
 pub fn[G] new_igraph_transformer(
-  import_graph_fn : (G) -> DCGraph,
-  apply_layout_fn : () -> Unit,
+  import_graph_fn : (G) -> DCGraph raise,
+  apply_layout_fn : () -> Unit raise,
 ) -> IGraphTransformer[G] {
   { import_graph_fn, apply_layout_fn }
 }
@@ -16,11 +16,13 @@ pub fn[G] new_igraph_transformer(
 pub fn[G] IGraphTransformer::import_graph(
   self : IGraphTransformer[G],
   graph : G,
-) -> DCGraph {
+) -> DCGraph raise {
   (self.import_graph_fn)(graph)
 }
 
 ///|
-pub fn[G] IGraphTransformer::apply_layout(self : IGraphTransformer[G]) -> Unit {
+pub fn[G] IGraphTransformer::apply_layout(
+  self : IGraphTransformer[G],
+) -> Unit raise {
   (self.apply_layout_fn)()
 }

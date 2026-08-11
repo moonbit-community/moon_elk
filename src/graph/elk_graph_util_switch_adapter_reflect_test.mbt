@@ -18,16 +18,19 @@ test "elk reflect register/new-instance/clone" {
 
 ///|
 test "elk graph switch dispatches case handler and default" {
+  let graph = create_graph()
+  let edge = create_edge(Some(graph))
   let direct_switcher = new_elk_graph_switch(case_elk_node=_ => Some("node"), default_case=() => {
     Some("default")
   })
 
   inspect(
-    direct_switcher.do_switch(elk_switch_target_elk_node(1)) == Some("node"),
+    direct_switcher.do_switch(elk_switch_target_elk_node(graph)) == Some("node"),
     content="true",
   )
   inspect(
-    direct_switcher.do_switch(elk_switch_target_elk_edge(2)) == Some("default"),
+    direct_switcher.do_switch(elk_switch_target_elk_edge(edge)) ==
+    Some("default"),
     content="true",
   )
 
@@ -38,7 +41,8 @@ test "elk graph switch dispatches case handler and default" {
   )
 
   inspect(
-    inherited_switcher.do_switch(elk_switch_target_elk_node(7)) == Some("shape"),
+    inherited_switcher.do_switch(elk_switch_target_elk_node(graph)) ==
+    Some("shape"),
     content="true",
   )
   inspect(
@@ -58,6 +62,7 @@ test "elk graph switch dispatches case handler and default" {
 ///|
 test "elk graph adapter factory package check and default adapters" {
   let factory = new_elk_graph_adapter_factory()
+  let graph = create_graph()
 
   inspect(
     factory.is_factory_for_type(elk_graph_package_instance),
@@ -65,7 +70,7 @@ test "elk graph adapter factory package check and default adapters" {
   )
   inspect(factory.is_factory_for_type("other.package"), content="false")
   inspect(
-    factory.create_adapter(elk_switch_target_elk_node(0)) is None,
+    factory.create_adapter(elk_switch_target_elk_node(graph)) is None,
     content="true",
   )
 }

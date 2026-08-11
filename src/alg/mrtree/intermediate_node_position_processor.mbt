@@ -23,7 +23,7 @@ fn mrtree_node_position_set_coordinates(
 fn mrtree_node_position_processor_process(
   graph : MrtreeGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   match progress_monitor {
     Some(monitor) => ignore(monitor.begin("Processor set coordinates", 1.0))
     None => ()

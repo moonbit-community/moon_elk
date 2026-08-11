@@ -1,8 +1,17 @@
 ///|
-pub type FEdge = Int
+pub struct FEdge {
+  priv mut data : FEdgeData
+}
 
 ///|
-let fedge_store : Ref[Array[FEdgeData]] = Ref([])
+pub impl Eq for FEdge with fn equal(self, other) {
+  physical_equal(self, other)
+}
+
+///|
+fn[T] force_edge_abort(message : String) -> T {
+  abort(message)
+}
 
 ///|
 priv struct FEdgeData {
@@ -17,80 +26,58 @@ priv struct FEdgeData {
 }
 
 ///|
-fn force_edge_abort(message : String) -> Int {
-  @core.layout_runtime_report_unsupported_configuration(message)
-  0
-}
-
-///|
-fn checked_fedge(edge : FEdge) -> Unit {
-  if edge < 0 || edge >= fedge_store.val.length() {
-    ignore(force_edge_abort("invalid force edge id"))
-  }
-}
-
-///|
 fn set_fedge_data(edge : FEdge, data : FEdgeData) -> Unit {
-  checked_fedge(edge)
-  fedge_store.val[edge] = data
+  edge.data = data
 }
 
 ///|
 pub fn new_fedge() -> FEdge {
-  let id = fedge_store.val.length()
-  fedge_store.val.push({
-    source: None,
-    target: None,
-    labels: [],
-    bendpoints: [],
-    int_properties: Map([]),
-    double_properties: Map([]),
-    bool_properties: Map([]),
-    origin: None,
-  })
-  id
+  {
+    data: {
+      source: None,
+      target: None,
+      labels: [],
+      bendpoints: [],
+      int_properties: Map([]),
+      double_properties: Map([]),
+      bool_properties: Map([]),
+      origin: None,
+    },
+  }
 }
 
 ///|
 pub fn fedge_set_source(edge : FEdge, source : FNode) -> Unit {
-  checked_fedge(edge)
-  checked_fnode(source)
-  let data = fedge_store.val[edge]
+  let data = edge.data
   data.source = Some(source)
   set_fedge_data(edge, data)
 }
 
 ///|
 pub fn fedge_set_target(edge : FEdge, target : FNode) -> Unit {
-  checked_fedge(edge)
-  checked_fnode(target)
-  let data = fedge_store.val[edge]
+  let data = edge.data
   data.target = Some(target)
   set_fedge_data(edge, data)
 }
 
 ///|
 pub fn fedge_source(edge : FEdge) -> FNode? {
-  checked_fedge(edge)
-  fedge_store.val[edge].source
+  edge.data.source
 }
 
 ///|
 pub fn fedge_target(edge : FEdge) -> FNode? {
-  checked_fedge(edge)
-  fedge_store.val[edge].target
+  edge.data.target
 }
 
 ///|
 pub fn fedge_labels(edge : FEdge) -> Array[FLabel] {
-  checked_fedge(edge)
-  fedge_store.val[edge].labels
+  edge.data.labels
 }
 
 ///|
 pub fn fedge_bendpoints(edge : FEdge) -> Array[FBendpoint] {
-  checked_fedge(edge)
-  fedge_store.val[edge].bendpoints
+  edge.data.bendpoints
 }
 
 ///|
@@ -99,16 +86,14 @@ pub fn fedge_set_int_property(
   property : ForceIntOption,
   value : Int,
 ) -> Unit {
-  checked_fedge(edge)
-  let data = fedge_store.val[edge]
+  let data = edge.data
   data.int_properties[property.get_id()] = value
   set_fedge_data(edge, data)
 }
 
 ///|
 pub fn fedge_get_int_property(edge : FEdge, property : ForceIntOption) -> Int {
-  checked_fedge(edge)
-  let data = fedge_store.val[edge]
+  let data = edge.data
   match data.int_properties.get(property.get_id()) {
     Some(value) => value
     None => property.get_default()
@@ -121,8 +106,7 @@ pub fn fedge_set_double_property(
   property : ForceDoubleOption,
   value : Double,
 ) -> Unit {
-  checked_fedge(edge)
-  let data = fedge_store.val[edge]
+  let data = edge.data
   data.double_properties[property.get_id()] = value
   set_fedge_data(edge, data)
 }
@@ -132,8 +116,7 @@ pub fn fedge_get_double_property(
   edge : FEdge,
   property : ForceDoubleOption,
 ) -> Double {
-  checked_fedge(edge)
-  let data = fedge_store.val[edge]
+  let data = edge.data
   match data.double_properties.get(property.get_id()) {
     Some(value) => value
     None => property.get_default()
@@ -145,8 +128,7 @@ pub fn fedge_has_double_property(
   edge : FEdge,
   property : ForceDoubleOption,
 ) -> Bool {
-  checked_fedge(edge)
-  fedge_store.val[edge].double_properties.contains(property.get_id())
+  edge.data.double_properties.contains(property.get_id())
 }
 
 ///|
@@ -155,8 +137,7 @@ pub fn fedge_set_bool_property(
   property : ForceBoolOption,
   value : Bool,
 ) -> Unit {
-  checked_fedge(edge)
-  let data = fedge_store.val[edge]
+  let data = edge.data
   data.bool_properties[property.get_id()] = value
   set_fedge_data(edge, data)
 }
@@ -166,8 +147,7 @@ pub fn fedge_get_bool_property(
   edge : FEdge,
   property : ForceBoolOption,
 ) -> Bool {
-  checked_fedge(edge)
-  let data = fedge_store.val[edge]
+  let data = edge.data
   match data.bool_properties.get(property.get_id()) {
     Some(value) => value
     None => property.get_default()
@@ -176,21 +156,18 @@ pub fn fedge_get_bool_property(
 
 ///|
 pub fn fedge_set_origin(edge : FEdge, origin : @graph.ElkEdge) -> Unit {
-  checked_fedge(edge)
-  let data = fedge_store.val[edge]
+  let data = edge.data
   data.origin = Some(origin)
   set_fedge_data(edge, data)
 }
 
 ///|
 pub fn fedge_origin(edge : FEdge) -> @graph.ElkEdge? {
-  checked_fedge(edge)
-  fedge_store.val[edge].origin
+  edge.data.origin
 }
 
 ///|
 pub fn fedge_source_point(edge : FEdge) -> @core.KVector {
-  checked_fedge(edge)
   let source = match fedge_source(edge) {
     Some(source) => source
     None => force_edge_abort("edge source is missing")
@@ -207,7 +184,6 @@ pub fn fedge_source_point(edge : FEdge) -> @core.KVector {
 
 ///|
 pub fn fedge_target_point(edge : FEdge) -> @core.KVector {
-  checked_fedge(edge)
   let source = match fedge_source(edge) {
     Some(source) => source
     None => force_edge_abort("edge source is missing")
@@ -224,7 +200,6 @@ pub fn fedge_target_point(edge : FEdge) -> @core.KVector {
 
 ///|
 pub fn fedge_to_vector_chain(edge : FEdge) -> @core.KVectorChain {
-  checked_fedge(edge)
   let chain = @core.new_kvector_chain()
   chain.add_vector(fedge_source_point(edge))
   for bendpoint in fedge_bendpoints(edge) {
@@ -236,7 +211,6 @@ pub fn fedge_to_vector_chain(edge : FEdge) -> @core.KVectorChain {
 
 ///|
 pub fn fedge_distribute_bendpoints(edge : FEdge) -> Unit {
-  checked_fedge(edge)
   let bendpoints = fedge_bendpoints(edge)
   let count = bendpoints.length()
   if count <= 0 {

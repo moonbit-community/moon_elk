@@ -1,15 +1,17 @@
 ///|
 pub(all) struct AlgorithmFactory {
+  session : LayoutSession
   create_algorithm_fn : () -> AbstractLayoutProvider
   parameter : String?
 }
 
 ///|
 pub fn new_algorithm_factory(
+  session : LayoutSession,
   create_algorithm_fn : () -> AbstractLayoutProvider,
   parameter? : String? = None,
 ) -> AlgorithmFactory {
-  { create_algorithm_fn, parameter }
+  { session, create_algorithm_fn, parameter }
 }
 
 ///|
@@ -17,7 +19,11 @@ pub fn AlgorithmFactory::create(
   self : AlgorithmFactory,
 ) -> AbstractLayoutProvider {
   let algorithm = (self.create_algorithm_fn)()
-  algorithm.initialize(self.parameter)
+  try algorithm.initialize(self.parameter) catch {
+    error => self.session.record_error(error)
+  } noraise {
+    _ => ()
+  }
   algorithm
 }
 
@@ -27,7 +33,11 @@ pub fn AlgorithmFactory::destroy(
   obj : AbstractLayoutProvider,
 ) -> Unit {
   ignore(self)
-  obj.dispose()
+  try obj.dispose() catch {
+    error => self.session.record_error(error)
+  } noraise {
+    _ => ()
+  }
 }
 
 ///|

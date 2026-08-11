@@ -493,7 +493,7 @@ fn breaking_point_inserter_apply_cuts(
 fn breaking_point_inserter_process(
   graph : LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()
@@ -552,9 +552,10 @@ fn breaking_point_inserter_process(
     ignore(breaking_point_inserter_apply_cuts(graph, cuts))
   } catch {
     BreakingPointInserterException(message) =>
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "java.lang.IllegalStateException: " + message,
       )
+    err => raise err
   } noraise {
     _ => ()
   }

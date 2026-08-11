@@ -1,11 +1,14 @@
 ///|
 pub(all) struct ElkGraphResourceFactory {
+  metadata : OptionMetadata
   initialized : Bool
 }
 
 ///|
-pub fn new_elk_graph_resource_factory() -> ElkGraphResourceFactory {
-  { initialized: true }
+pub fn new_elk_graph_resource_factory(
+  metadata : OptionMetadata,
+) -> ElkGraphResourceFactory {
+  { metadata, initialized: true }
 }
 
 ///|
@@ -14,5 +17,5 @@ pub fn ElkGraphResourceFactory::create_resource(
   uri : String,
 ) -> ElkGraphResource {
   ignore(self.initialized)
-  new_elk_graph_resource(uri)
+  new_elk_graph_resource(self.metadata, uri)
 }

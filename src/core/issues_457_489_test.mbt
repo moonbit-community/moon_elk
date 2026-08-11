@@ -1,12 +1,10 @@
 ///|
 fn setup_core_issue_tests_registry() -> Unit {
-  layout_meta_data_service_reset_for_test()
-  layout_meta_data_service_register_default_algorithms()
+  ()
 }
 
 ///|
 test "Issue457 node minimum size respected for box layout" {
-  @graph.reset_graph_model_for_test()
   setup_core_issue_tests_registry()
   let root = @graph.create_graph()
   @graph.node_set_string_property(root, algorithm, "org.eclipse.elk.box")
@@ -25,7 +23,10 @@ test "Issue457 node minimum size respected for box layout" {
     )
   }
 
-  let engine = new_recursive_graph_layout_engine()
+  let engine = new_recursive_graph_layout_engine(
+    @elk_graph_json.new_layout_runtime(),
+    new_layout_session(),
+  )
   engine.layout(root, new_basic_progress_monitor())
 
   for node in @graph.node_children(root) {
@@ -36,7 +37,6 @@ test "Issue457 node minimum size respected for box layout" {
 
 ///|
 test "Issue489 child placement respects node padding" {
-  @graph.reset_graph_model_for_test()
   setup_core_issue_tests_registry()
   let root = @graph.create_graph()
   @graph.node_set_string_property(root, algorithm, "org.eclipse.elk.box")
@@ -57,7 +57,10 @@ test "Issue489 child placement respects node padding" {
     @graph.node_set_dimensions(child, pair.1.x, pair.1.y)
   }
 
-  let engine = new_recursive_graph_layout_engine()
+  let engine = new_recursive_graph_layout_engine(
+    @elk_graph_json.new_layout_runtime(),
+    new_layout_session(),
+  )
   engine.layout(root, new_basic_progress_monitor())
 
   for node in @graph.node_children(root) {

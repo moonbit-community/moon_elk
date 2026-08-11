@@ -66,7 +66,7 @@ fn overlaps_test_strategy(
 
 ///|
 fn overlaps_new_test_strategy() -> IRectangleStripOverlapRemovalStrategy {
-  new_irectangle_strip_overlap_removal_strategy(overlaps_test_strategy)
+  new_pure_irectangle_strip_overlap_removal_strategy(overlaps_test_strategy)
 }
 
 ///|

@@ -19,12 +19,12 @@ fn spore_min_st_add_node(
   node_map : Map[@core.KVector, @common.Node],
   target : @common.Tree[@common.Node],
   source : @common.Tree[@core.KVector],
-) -> Unit {
+) -> Unit raise {
   for child in source.children {
     let mapped = match spore_kvector_node_find(node_map, child.node) {
       Some(node) => node
       None => {
-        @core.layout_runtime_report_unsupported_configuration(
+        @core.layout_runtime_raise_unsupported_configuration(
           "Spore MinST conversion failed: missing mapped child node",
         )
         continue
@@ -40,7 +40,7 @@ fn spore_min_st_add_node(
 pub fn spore_min_st_convert(
   tree : @common.Tree[@core.KVector],
   graph : SporeGraph,
-) -> Unit {
+) -> Unit raise {
   let node_map : Map[@core.KVector, @common.Node] = Map([])
   for node in graph.vertices {
     node_map[node.original_vertex] = node
@@ -48,7 +48,7 @@ pub fn spore_min_st_convert(
   let root = match spore_kvector_node_find(node_map, tree.node) {
     Some(node) => @common.new_tree(node)
     None => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "Spore MinST conversion failed: missing mapped root node",
       )
       return
@@ -62,7 +62,7 @@ pub fn spore_min_st_convert(
 fn spore_min_st_phase_process(
   graph : SporeGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(existing) => existing
     None => @core.new_null_elk_progress_monitor()
@@ -100,7 +100,7 @@ pub fn new_spore_min_st_layout_phase() -> @core.ILayoutProcessor[
   SPOrEPhases,
   SporeGraph,
 ] {
-  @core.new_layout_phase(
+  @core.new_pure_layout_phase(
     spore_min_st_phase_process, spore_min_st_phase_configuration,
   )
 }

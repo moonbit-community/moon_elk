@@ -49,10 +49,10 @@ pub struct GmfLayoutMapping {
   workbench_part : GmfConnectorWorkbenchPart?
   parent_element : GmfEditPart?
   layout_graph : @graph.ElkNode
-  node_map : Map[Int, GmfEditPart]
-  port_map : Map[Int, GmfEditPart]
-  edge_map : Map[Int, GmfEditPart]
-  label_map : Map[Int, GmfEditPart]
+  node_map : Map[@graph.ElkNode, GmfEditPart]
+  port_map : Map[@graph.ElkPort, GmfEditPart]
+  edge_map : Map[@graph.ElkEdge, GmfEditPart]
+  label_map : Map[@graph.ElkLabel, GmfEditPart]
   connections : Array[GmfEditPart]
   mut diagram_edit_part : GmfEditPart?
   mut layout_command : GmfLayoutCommand?
@@ -122,14 +122,14 @@ pub fn new_gmf_diagram_layout_connector(
 ///|
 pub fn gmf_diagram_layout_connector_get_absolute_bounds(
   figure : GmfFigure,
-) -> GmfRectangle {
+) -> GmfRectangle raise {
   gmf_figure_absolute_bounds(figure)
 }
 
 ///|
 fn gmf_diagram_layout_connector_root_diagram_child(
   root_edit_part : GmfEditPart,
-) -> GmfEditPart? {
+) -> GmfEditPart? raise {
   for child in gmf_edit_part_children(root_edit_part) {
     if gmf_edit_part_kind(child) == DiagramEditPart {
       return Some(child)
@@ -141,7 +141,7 @@ fn gmf_diagram_layout_connector_root_diagram_child(
 ///|
 pub fn gmf_diagram_layout_connector_get_diagram_edit_part(
   edit_part : GmfEditPart,
-) -> GmfEditPart? {
+) -> GmfEditPart? raise {
   let mut current : GmfEditPart? = Some(edit_part)
   while current is Some(value) {
     let kind = gmf_edit_part_kind(value)
@@ -160,7 +160,7 @@ pub fn gmf_diagram_layout_connector_get_diagram_edit_part(
 pub fn gmf_diagram_layout_connector_is_parent(
   parent : GmfEditPart,
   child : GmfEditPart,
-) -> Bool {
+) -> Bool raise {
   let mut current : GmfEditPart? = Some(child)
   while current is Some(value) {
     if value == parent {
@@ -175,7 +175,7 @@ pub fn gmf_diagram_layout_connector_is_parent(
 pub fn gmf_diagram_layout_connector_common_parent(
   edit_part1 : GmfEditPart,
   edit_part2 : GmfEditPart,
-) -> GmfEditPart? {
+) -> GmfEditPart? raise {
   let mut ep1 : GmfEditPart? = Some(edit_part1)
   let mut ep2 : GmfEditPart? = Some(edit_part2)
   while ep1 is Some(left) && ep2 is Some(right) {
@@ -206,7 +206,7 @@ fn gmf_diagram_layout_connector_get_diagram_editor(
 ///|
 fn gmf_diagram_layout_connector_is_layout_root_candidate(
   edit_part : GmfEditPart,
-) -> Bool {
+) -> Bool raise {
   let kind = gmf_edit_part_kind(edit_part)
   kind == ShapeNodeEditPart || kind == DiagramEditPart
 }
@@ -216,7 +216,7 @@ fn gmf_diagram_layout_connector_collect_selection_roots(
   connector : GmfDiagramLayoutConnector,
   selection : Array[GmfEditPart],
   layout_root_part : GmfEditPart,
-) -> Array[GmfEditPart] {
+) -> Array[GmfEditPart] raise {
   let selected_parts : Array[GmfEditPart] = []
   for selected in selection {
     let mut candidate : GmfEditPart? = Some(selected)
@@ -249,7 +249,7 @@ fn gmf_diagram_layout_connector_add_connections(
   connector : GmfDiagramLayoutConnector,
   mapping : GmfLayoutMapping,
   edit_part : GmfEditPart,
-) -> Unit {
+) -> Unit raise {
   for target_connection in gmf_edit_part_target_connections(edit_part) {
     if connector.edit_part_filter.filter(target_connection) {
       mapping.connections.push(target_connection)
@@ -267,7 +267,7 @@ fn gmf_diagram_layout_connector_create_node(
   node_edit_part : GmfEditPart,
   parent_edit_part : GmfEditPart?,
   parent_layout_node : @graph.ElkNode?,
-) -> @graph.ElkNode {
+) -> @graph.ElkNode raise {
   ignore(parent_edit_part)
   let child_layout_node = @graph.create_node(parent_layout_node)
   let node_figure = gmf_edit_part_figure(node_edit_part)
@@ -306,7 +306,7 @@ fn gmf_diagram_layout_connector_create_port(
   port_edit_part : GmfEditPart,
   node_edit_part : GmfEditPart,
   elk_node : @graph.ElkNode,
-) -> @graph.ElkPort {
+) -> @graph.ElkPort raise {
   ignore(connector)
   let port = @graph.create_port(Some(elk_node))
   let port_bounds = gmf_figure_absolute_bounds(
@@ -338,7 +338,7 @@ fn gmf_diagram_layout_connector_create_node_label(
   label_edit_part : GmfEditPart,
   node_edit_part : GmfEditPart,
   elk_node : @graph.ElkNode,
-) -> @graph.ElkLabel? {
+) -> @graph.ElkLabel? raise {
   let label_figure = gmf_edit_part_figure(label_edit_part)
   let text = gmf_figure_text(label_figure)
   if text.is_empty() {
@@ -386,7 +386,7 @@ fn gmf_diagram_layout_connector_build_layout_graph_recursively(
   parent_edit_part : GmfEditPart,
   parent_layout_node : @graph.ElkNode,
   current_edit_part : GmfEditPart,
-) -> Unit {
+) -> Unit raise {
   for child in gmf_edit_part_children(current_edit_part) {
     if !gmf_figure_is_visible(gmf_edit_part_figure(child)) {
       continue
@@ -455,7 +455,7 @@ fn gmf_diagram_layout_connector_set_edge_layout(
   connection_edit_part : GmfEditPart,
   offset_x : Double,
   offset_y : Double,
-) -> Unit {
+) -> Unit raise {
   let point_list = gmf_figure_points(gmf_edit_part_figure(connection_edit_part))
   if point_list.size() < 2 {
     return
@@ -482,7 +482,7 @@ fn gmf_diagram_layout_connector_process_edge_labels(
   edge : @graph.ElkEdge,
   offset_x : Double,
   offset_y : Double,
-) -> Unit {
+) -> Unit raise {
   for child in gmf_edit_part_children(connection_edit_part) {
     if gmf_edit_part_kind(child) != LabelEditPart {
       continue
@@ -532,7 +532,7 @@ fn gmf_diagram_layout_connector_process_edge_labels(
 ///|
 fn gmf_diagram_layout_connector_process_connections(
   mapping : GmfLayoutMapping,
-) -> Unit {
+) -> Unit raise {
   for connection in mapping.connections {
     let source_edit_part = match gmf_edit_part_source(connection) {
       Some(source) =>
@@ -611,7 +611,7 @@ fn gmf_diagram_layout_connector_build_layout_graph_for_root(
   layout_root_part : GmfEditPart,
   selection : Array[GmfEditPart]?,
   workbench_part : GmfConnectorWorkbenchPart?,
-) -> GmfLayoutMapping {
+) -> GmfLayoutMapping raise {
   let top_node = if gmf_edit_part_kind(layout_root_part) == ShapeNodeEditPart {
     @graph.create_graph()
   } else {
@@ -720,7 +720,7 @@ pub fn GmfDiagramLayoutConnector::build_layout_graph(
   self : GmfDiagramLayoutConnector,
   workbench_part : GmfConnectorWorkbenchPart?,
   diagram_part : GmfConnectorDiagramPart,
-) -> GmfLayoutMapping {
+) -> GmfLayoutMapping raise {
   let diagram_editor = gmf_diagram_layout_connector_get_diagram_editor(
     workbench_part,
   )
@@ -783,7 +783,7 @@ pub fn GmfDiagramLayoutConnector::build_layout_graph(
         )
       catch {
         GmfDiagramLayoutConnectorException(message) =>
-          @core.layout_runtime_report_unsupported_configuration(
+          @core.layout_runtime_raise_unsupported_configuration(
             "org.eclipse.elk.conn.gmf.GmfDiagramLayoutConnector: " + message,
           )
       } noraise {
@@ -887,7 +887,7 @@ fn gmf_diagram_layout_connector_transfer_edge(
   edit_part : GmfEditPart,
   element_id : Int,
   edge : @graph.ElkEdge,
-) -> Unit {
+) -> Unit raise {
   let bends = new_gmf_point_list()
   let sections = @graph.edge_sections(edge)
   if !sections.is_empty() {
@@ -928,7 +928,7 @@ fn gmf_diagram_layout_connector_transfer_edge(
 pub fn GmfDiagramLayoutConnector::transfer_layout(
   _self : GmfDiagramLayoutConnector,
   mapping : GmfLayoutMapping,
-) -> Unit {
+) -> Unit raise {
   let request = new_apply_layout_request()
   let mut element_id = 1
 
@@ -1002,7 +1002,7 @@ pub fn GmfDiagramLayoutConnector::transfer_layout(
 pub fn GmfDiagramLayoutConnector::apply_transferred_layout(
   _self : GmfDiagramLayoutConnector,
   mapping : GmfLayoutMapping,
-) -> Unit {
+) -> Unit raise {
   match mapping.layout_command {
     Some(command) =>
       match mapping.command_stack {
@@ -1022,7 +1022,7 @@ pub fn GmfDiagramLayoutConnector::apply_layout_internal(
   self : GmfDiagramLayoutConnector,
   mapping : GmfLayoutMapping,
   animation_time : Int,
-) -> Unit {
+) -> Unit raise {
   self.transfer_layout(mapping)
   ignore(animation_time)
   self.apply_transferred_layout(mapping)
@@ -1034,7 +1034,7 @@ pub fn GmfDiagramLayoutConnector::apply_layout(
   mapping : GmfLayoutMapping,
   settings : GmfConnectorLayoutSettings,
   viewer_not_visible? : Bool = false,
-) -> Unit {
+) -> Unit raise {
   mapping.animation_time = self.calc_animation_time(
     mapping, settings, viewer_not_visible,
   )

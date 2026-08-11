@@ -1,7 +1,7 @@
 ///|
 fn mrtree_node_orderer_layout_processor_configuration(
   graph : MrtreeGraph,
-) -> @core.LayoutProcessorConfiguration[MrtreeTreeLayoutPhases, MrtreeGraph]? {
+) -> @core.LayoutProcessorConfiguration[MrtreeTreeLayoutPhases, MrtreeGraph]? raise {
   ignore(graph)
   Some(
     @core.layout_processor_configuration_create(
@@ -100,7 +100,7 @@ fn mrtree_node_orderer_order_level_fan_descendants(
   current_level : Array[MrtreeNode],
   weighting : MrtreeOrderWeighting,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   match progress_monitor {
     Some(monitor) => ignore(monitor.begin("Processor arrange level", 1.0))
     None => ()
@@ -198,7 +198,7 @@ fn mrtree_node_orderer_sort_nodes_constraint_desc(
 fn mrtree_node_orderer_order_level_constraint(
   current_level : Array[MrtreeNode],
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   match progress_monitor {
     Some(monitor) => ignore(monitor.begin("Processor arrange level", 1.0))
     None => ()
@@ -314,7 +314,7 @@ fn mrtree_node_orderer_order_level_constraint(
 fn mrtree_node_orderer_process(
   graph : MrtreeGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   match progress_monitor {
     Some(monitor) => ignore(monitor.begin("Processor arrange node", 1.0))
     None => ()

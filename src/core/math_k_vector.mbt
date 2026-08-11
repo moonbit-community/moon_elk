@@ -246,17 +246,17 @@ pub fn KVector::negate(self : KVector) -> KVector {
 }
 
 ///|
-pub fn KVector::to_degrees(self : KVector) -> Double {
+pub fn KVector::to_degrees(self : KVector) -> Double raise {
   self.to_radians() * 180.0 / @math.PI
 }
 
 ///|
-pub fn KVector::to_radians(self : KVector) -> Double {
+pub fn KVector::to_radians(self : KVector) -> Double raise {
   let len = self.length()
   if len <= 0.0 {
     try kvector_raise_unit("The length of the vector must not be 0") catch {
       err =>
-        layout_runtime_report_unsupported_configuration(
+        layout_runtime_raise_unsupported_configuration(
           kvector_exception_message(err),
         )
     } noraise {
@@ -320,7 +320,7 @@ pub fn KVector::bound(
   lowy : Double,
   highx : Double,
   highy : Double,
-) -> KVector {
+) -> KVector raise {
   if highx < lowx || highy < lowy {
     try
       kvector_raise_unit(
@@ -328,7 +328,7 @@ pub fn KVector::bound(
       )
     catch {
       err =>
-        layout_runtime_report_unsupported_configuration(
+        layout_runtime_raise_unsupported_configuration(
           kvector_exception_message(err),
         )
     } noraise {
@@ -360,7 +360,7 @@ pub fn KVector::is_infinite(self : KVector) -> Bool {
 }
 
 ///|
-pub fn KVector::parse(self : KVector, string : String) -> Unit {
+pub fn KVector::parse(self : KVector, string : String) -> Unit raise {
   let (start, end) = _trim_delim_bounds(
     string, "([{\"' \t\r\n", ")]}\"' \t\r\n",
   )
@@ -369,7 +369,7 @@ pub fn KVector::parse(self : KVector, string : String) -> Unit {
       kvector_raise_unit("The given string does not contain any numbers.")
     catch {
       err =>
-        layout_runtime_report_unsupported_configuration(
+        layout_runtime_raise_unsupported_configuration(
           kvector_exception_message(err),
         )
     } noraise {
@@ -386,7 +386,7 @@ pub fn KVector::parse(self : KVector, string : String) -> Unit {
       )
     catch {
       err =>
-        layout_runtime_report_unsupported_configuration(
+        layout_runtime_raise_unsupported_configuration(
           kvector_exception_message(err),
         )
     } noraise {

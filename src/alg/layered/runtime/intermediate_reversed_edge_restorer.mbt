@@ -10,7 +10,7 @@ fn reversed_edge_restorer_reverse_edge(
 fn reversed_edge_restorer_process(
   layered_graph : LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()

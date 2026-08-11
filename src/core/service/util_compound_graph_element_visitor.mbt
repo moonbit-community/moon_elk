@@ -23,7 +23,7 @@ pub fn new_compound_graph_element_visitor_with_mode(
 fn compound_graph_element_visitor_apply_single_visitor(
   root : @graph.ElkNode,
   visitor : @core.IGraphElementVisitor,
-) -> Unit {
+) -> Unit raise {
   for element in @graph.node_all_descendants_including_self(root) {
     visitor.visit(element)
   }
@@ -33,7 +33,7 @@ fn compound_graph_element_visitor_apply_single_visitor(
 pub fn CompoundGraphElementVisitor::visit(
   self : CompoundGraphElementVisitor,
   element : @graph.ElkNode,
-) -> Unit {
+) -> Unit raise {
   if self.apply_to_full_graph_first {
     if @graph.node_parent(element) is None {
       for graph_visitor in self.graph_visitors {

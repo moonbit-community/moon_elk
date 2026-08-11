@@ -57,11 +57,13 @@ fn layered_quadrant_order(quadrant : LayeredQuadrant) -> Int {
 }
 
 ///|
-fn layered_point_quadrant_or_abort(point : LayeredPoint) -> LayeredQuadrant {
+fn layered_point_quadrant_or_abort(
+  point : LayeredPoint,
+) -> LayeredQuadrant raise {
   match point.quadrant {
     Some(quadrant) => quadrant
     None => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "LayeredPoint quadrant is required",
       )
       LQ1
@@ -118,7 +120,7 @@ fn layered_left_low_first(left : LayeredPoint, right : LayeredPoint) -> Int {
 fn layered_right_special_order(
   left : LayeredPoint,
   right : LayeredPoint,
-) -> Int {
+) -> Int raise {
   if left.x != right.x {
     return layered_compare_double(left.x, right.x)
   }
@@ -165,9 +167,9 @@ fn layered_hull_add_concave_corners(
 ///|
 fn layered_maximal_elements(
   points : Array[LayeredPoint],
-  comparator : (LayeredPoint, LayeredPoint) -> Int,
+  comparator : (LayeredPoint, LayeredPoint) -> Int raise?,
   quadrant : LayeredQuadrant,
-) -> Array[LayeredPoint] {
+) -> Array[LayeredPoint] raise {
   let result = []
   let mut maximal_y = if layered_quadrant_eq(quadrant, LQ1) ||
     layered_quadrant_eq(quadrant, LQ2) {
@@ -194,7 +196,7 @@ fn layered_maximal_elements(
 ///|
 pub fn layered_rectilinear_convex_hull_of(
   points : Array[LayeredPoint],
-) -> LayeredRectilinearConvexHull {
+) -> LayeredRectilinearConvexHull raise {
   let hull = new_layered_rectilinear_convex_hull()
   for point in points {
     let max1_x = match hull.x_max1 {
@@ -289,7 +291,7 @@ fn new_layered_hull_rectangle_event_state(
 fn layered_hull_rectangle_event_handle(
   state : LayeredHullRectangleEventState,
   point : LayeredPoint,
-) -> Unit {
+) -> Unit raise {
   match (state.queued, state.queued_point) {
     (Some(queued), Some(queued_point)) =>
       if point.x != queued_point.x ||
@@ -335,7 +337,7 @@ fn layered_hull_rectangle_event_handle(
 ///|
 pub fn LayeredRectilinearConvexHull::split_into_rectangles(
   self : LayeredRectilinearConvexHull,
-) -> Array[@core.ElkRectangle] {
+) -> Array[@core.ElkRectangle] raise {
   let left1 = match self.x_min1 {
     Some(point) => point.x
     None => 0.0
@@ -347,9 +349,11 @@ pub fn LayeredRectilinearConvexHull::split_into_rectangles(
   let state = new_layered_hull_rectangle_event_state(
     layered_min_double(left1, left2),
   )
-  layered_scanline_execute_single(self.hull, layered_right_special_order, point => {
-    layered_hull_rectangle_event_handle(state, point)
-  })
+  layered_scanline_execute_single_raise(
+    self.hull,
+    layered_right_special_order,
+    fn(point) raise { layered_hull_rectangle_event_handle(state, point) },
+  )
   match state.queued {
     Some(rect) => state.rects.push(rect)
     None => ()

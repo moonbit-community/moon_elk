@@ -1,11 +1,11 @@
 ///|
-fn partition_midprocessor_port_side(name : String) -> @core.PortSide {
+fn partition_midprocessor_port_side(name : String) -> @core.PortSide raise {
   for side in @core.port_side_values() {
     if @core.port_side_to_string(side) == name {
       return side
     }
   }
-  @core.layout_runtime_report_unsupported_configuration("unknown port side")
+  @core.layout_runtime_raise_unsupported_configuration("unknown port side")
   SideUndefined
 }
 
@@ -28,7 +28,7 @@ fn partition_midprocessor_sort_partition_ids(ids : Array[Int]) -> Unit {
 fn partition_midprocessor_connect_nodes(
   first_partition : Array[@runtime.LNode],
   second_partition : Array[@runtime.LNode],
-) -> Unit {
+) -> Unit raise {
   for node in first_partition {
     let source_port = @runtime.new_l_port()
     source_port.set_node(Some(node))
@@ -57,7 +57,7 @@ fn partition_midprocessor_connect_nodes(
 fn partition_midprocessor_process(
   graph : @runtime.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()
@@ -96,7 +96,7 @@ fn partition_midprocessor_process(
     let first_partition = match partition_to_nodes.get(first_id) {
       Some(nodes) => nodes
       None => {
-        @core.layout_runtime_report_unsupported_configuration(
+        @core.layout_runtime_raise_unsupported_configuration(
           "first partition missing",
         )
         []
@@ -105,7 +105,7 @@ fn partition_midprocessor_process(
     let second_partition = match partition_to_nodes.get(second_id) {
       Some(nodes) => nodes
       None => {
-        @core.layout_runtime_report_unsupported_configuration(
+        @core.layout_runtime_raise_unsupported_configuration(
           "second partition missing",
         )
         []

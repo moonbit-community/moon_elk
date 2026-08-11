@@ -10,7 +10,7 @@ import {
 // Values
 pub fn new_spore_delaunay_triangulation_layout_phase() -> @core.ILayoutProcessor[SPOrEPhases, SporeGraph]
 
-pub fn new_spore_elk_graph_as_igraph_importer() -> SporeIGraphImporter[Int]
+pub fn new_spore_elk_graph_as_igraph_importer() -> SporeIGraphImporter[@graph.ElkNode]
 
 pub fn new_spore_elk_graph_importer() -> SporeElkGraphImporter
 
@@ -18,19 +18,23 @@ pub fn new_spore_graph((@common.TEdge) -> Double, SporeTreeConstructionStrategy,
 
 pub fn new_spore_grow_tree_layout_phase() -> @core.ILayoutProcessor[SPOrEPhases, SporeGraph]
 
-pub fn[T] new_spore_igraph_importer((T) -> SporeGraph, (SporeGraph) -> Unit, (SporeGraph) -> Unit) -> SporeIGraphImporter[T]
+pub fn[T] new_spore_igraph_importer((T) -> SporeGraph raise, (SporeGraph) -> Unit raise, (SporeGraph) -> Unit) -> SporeIGraphImporter[T]
 
 pub fn new_spore_max_st_layout_phase() -> @core.ILayoutProcessor[SPOrEPhases, SporeGraph]
 
 pub fn new_spore_min_st_layout_phase() -> @core.ILayoutProcessor[SPOrEPhases, SporeGraph]
 
-pub fn new_spore_overlap_removal_layout_provider() -> SporeOverlapRemovalLayoutProvider
+pub fn new_spore_overlap_removal_layout_provider(@core.OptionMetadata) -> SporeOverlapRemovalLayoutProvider raise
 
-pub fn new_spore_shrink_tree() -> SporeShrinkTree
+pub fn new_spore_shrink_tree() -> SporeShrinkTree raise
 
 pub fn new_spore_shrink_tree_compaction_layout_phase() -> @core.ILayoutProcessor[SPOrEPhases, SporeGraph]
 
-pub fn new_spore_shrink_tree_layout_provider() -> SporeShrinkTreeLayoutProvider
+pub fn new_spore_shrink_tree_layout_provider(@core.OptionMetadata) -> SporeShrinkTreeLayoutProvider raise
+
+pub fn register_spore_compaction_layout_algorithm(@core.LayoutRuntime) -> Unit
+
+pub fn register_spore_overlap_layout_algorithm(@core.LayoutRuntime) -> Unit
 
 pub let spore_compaction_algorithm_id : String
 
@@ -44,7 +48,7 @@ pub fn spore_compaction_strategy_phase_factory(SporeCompactionStrategy) -> @core
 
 pub let spore_debug_mode : @graph.IProperty[Bool]
 
-pub fn spore_min_st_convert(@common.Tree[@core.KVector], SporeGraph) -> Unit
+pub fn spore_min_st_convert(@common.Tree[@core.KVector], SporeGraph) -> Unit raise
 
 pub let spore_overlap_removal_algorithm_id : String
 
@@ -104,11 +108,11 @@ pub enum SporeCompactionStrategy {
 pub struct SporeElkGraphImporter {
   mut graph : SporeGraph?
   mut node_map : Map[@core.KVector, SporeNodeEntry]
-  mut elk_graph : Int?
+  mut elk_graph : @graph.ElkNode?
   mut spacing_node_node : Double
 }
-pub fn SporeElkGraphImporter::apply_positions(Self, SporeGraph) -> Unit
-pub fn SporeElkGraphImporter::import_graph(Self, Int) -> SporeGraph
+pub fn SporeElkGraphImporter::apply_positions(Self, SporeGraph) -> Unit raise
+pub fn SporeElkGraphImporter::import_graph(Self, @graph.ElkNode) -> SporeGraph raise
 pub fn SporeElkGraphImporter::update_graph(Self, SporeGraph) -> Unit
 
 pub struct SporeGraph {
@@ -125,20 +129,21 @@ pub struct SporeGraph {
 }
 
 pub struct SporeIGraphImporter[T] {
-  import_graph_fn : (T) -> SporeGraph
-  apply_positions_fn : (SporeGraph) -> Unit
+  import_graph_fn : (T) -> SporeGraph raise
+  apply_positions_fn : (SporeGraph) -> Unit raise
   update_graph_fn : (SporeGraph) -> Unit
 }
-pub fn[T] SporeIGraphImporter::apply_positions(Self[T], SporeGraph) -> Unit
-pub fn[T] SporeIGraphImporter::import_graph(Self[T], T) -> SporeGraph
+pub fn[T] SporeIGraphImporter::apply_positions(Self[T], SporeGraph) -> Unit raise
+pub fn[T] SporeIGraphImporter::import_graph(Self[T], T) -> SporeGraph raise
 pub fn[T] SporeIGraphImporter::update_graph(Self[T], SporeGraph) -> Unit
 
 type SporeNodeEntry
 
 pub struct SporeOverlapRemovalLayoutProvider {
+  metadata : @core.OptionMetadata
   algorithm_assembler : @core.AlgorithmAssembler[SPOrEPhases, SporeGraph]
 }
-pub fn SporeOverlapRemovalLayoutProvider::layout(Self, Int, @core.IElkProgressMonitor) -> Unit
+pub fn SporeOverlapRemovalLayoutProvider::layout(Self, @graph.ElkNode, @core.IElkProgressMonitor) -> Unit raise
 
 pub enum SporeOverlapRemovalStrategy {
   GROW_TREE
@@ -152,12 +157,13 @@ pub enum SporeRootSelection {
 pub struct SporeShrinkTree {
   algorithm_assembler : @core.AlgorithmAssembler[SPOrEPhases, SporeGraph]
 }
-pub fn SporeShrinkTree::shrink(Self, SporeGraph, @core.IElkProgressMonitor) -> Unit
+pub fn SporeShrinkTree::shrink(Self, SporeGraph, @core.IElkProgressMonitor) -> Unit raise
 
 pub struct SporeShrinkTreeLayoutProvider {
+  metadata : @core.OptionMetadata
   shrink_tree : SporeShrinkTree
 }
-pub fn SporeShrinkTreeLayoutProvider::layout(Self, Int, @core.IElkProgressMonitor) -> Unit
+pub fn SporeShrinkTreeLayoutProvider::layout(Self, @graph.ElkNode, @core.IElkProgressMonitor) -> Unit raise
 
 pub enum SporeSpanningTreeCostFunction {
   CENTER_DISTANCE

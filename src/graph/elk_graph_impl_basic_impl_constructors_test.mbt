@@ -1,7 +1,5 @@
 ///|
 test "basic impl constructors map to graph model creators" {
-  reset_graph_model_for_test()
-
   let root = new_elk_node_impl()
   inspect(node_parent(root) is None, content="true")
 

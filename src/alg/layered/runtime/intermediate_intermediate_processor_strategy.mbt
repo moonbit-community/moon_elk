@@ -313,27 +313,27 @@ fn intermediate_processor_new_greedy_switch_layout_processor(
 ///|
 fn intermediate_processor_create(
   strategy : IntermediateProcessorStrategy,
-) -> @core.ILayoutProcessor[LayeredPhases, LGraph] {
+) -> @core.ILayoutProcessor[LayeredPhases, LGraph] raise {
   match strategy {
     DirectionPreprocessor => new_direction_preprocessor_layout_processor()
-    CommentPreprocessor => layered_registered_intermediate_processor(strategy)
+    CommentPreprocessor => intermediate_processor_missing_registered(strategy)
     EdgeAndLayerConstraintEdgeReverser =>
       new_edge_and_layer_constraint_edge_reverser_layout_processor()
     InteractiveExternalPortPositioner =>
       new_interactive_external_port_positioner_layout_processor()
-    PartitionPreprocessor => layered_registered_intermediate_processor(strategy)
+    PartitionPreprocessor => intermediate_processor_missing_registered(strategy)
     LabelDummyInserter => new_label_dummy_inserter_layout_processor()
     SelfLoopPreprocessor => new_self_loop_pre_processor_layout_processor()
     LayerConstraintPreprocessor =>
       new_layer_constraint_preprocessor_layout_processor()
-    PartitionMidprocessor => layered_registered_intermediate_processor(strategy)
+    PartitionMidprocessor => intermediate_processor_missing_registered(strategy)
     HighDegreeNodeLayerProcessor =>
       new_high_degree_node_layering_processor_layout_processor()
     NodePromotion => new_node_promotion_layout_processor()
     LayerConstraintPostprocessor =>
       new_layer_constraint_postprocessor_layout_processor()
     PartitionPostprocessor =>
-      layered_registered_intermediate_processor(strategy)
+      intermediate_processor_missing_registered(strategy)
     HierarchicalPortConstraintProcessor =>
       new_hierarchical_port_constraint_processor_layout_processor()
     SemiInteractiveCrossMinProcessor =>
@@ -370,7 +370,7 @@ fn intermediate_processor_create(
       new_innermost_node_margin_calculator_layout_processor()
     SelfLoopRouter => new_self_loop_router_layout_processor()
     CommentNodeMarginCalculator =>
-      layered_registered_intermediate_processor(strategy)
+      intermediate_processor_missing_registered(strategy)
     EndLabelPreprocessor => new_end_label_preprocessor_layout_processor()
     LabelDummySwitcher => new_label_dummy_switcher_layout_processor()
     CenterLabelManagementProcessor =>
@@ -384,7 +384,7 @@ fn intermediate_processor_create(
     HierarchicalPortPositionProcessor =>
       new_hierarchical_port_position_processor_layout_processor()
     ConstraintsPostprocessor => new_constraints_postprocessor_layout_processor()
-    CommentPostprocessor => layered_registered_intermediate_processor(strategy)
+    CommentPostprocessor => intermediate_processor_missing_registered(strategy)
     HypernodeProcessor => new_hypernodes_processor_layout_processor()
     HierarchicalPortOrthogonalEdgeRouter =>
       new_hierarchical_port_orthogonal_edge_router_layout_processor()
@@ -407,11 +407,22 @@ fn intermediate_processor_create(
 }
 
 ///|
+fn intermediate_processor_missing_registered(
+  strategy : IntermediateProcessorStrategy,
+) -> @core.ILayoutProcessor[LayeredPhases, LGraph] raise {
+  @core.layout_runtime_raise_unsupported_configuration(
+    "Layered intermediate processor is not linked for strategy " +
+    intermediate_processor_strategy_to_string(strategy),
+  )
+  @core.new_layout_processor((_, _) => ())
+}
+
+///|
 pub fn layered_intermediate_processor_factory(
   strategy : IntermediateProcessorStrategy,
 ) -> @core.ILayoutProcessorFactory[LayeredPhases, LGraph] {
   let ordinal = intermediate_processor_strategy_ordinal(strategy)
-  @core.new_layout_processor_factory(23000 + ordinal, ordinal, () => {
+  @core.new_layout_processor_factory(23000 + ordinal, ordinal, fn() raise {
     intermediate_processor_create(strategy)
   })
 }

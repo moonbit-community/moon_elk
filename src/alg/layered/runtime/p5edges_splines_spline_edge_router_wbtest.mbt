@@ -39,7 +39,7 @@ fn spline_edge_router_wb_new_segment(
   target_y : Double,
   source_side : SplineSideToProcess,
   target_side : SplineSideToProcess,
-) -> SplineSegment {
+) -> SplineSegment raise {
   let source = spline_edge_router_wb_new_port(source_y, West)
   let target = spline_edge_router_wb_new_port(target_y, East)
   let edge = spline_edge_router_wb_new_edge(source, target)

@@ -50,10 +50,10 @@ pub fn new_crossing_matrix_filler(
   graph : Array[Array[LNode]],
   free_layer_index : Int,
   direction : CrossingCountSide,
-) -> CrossingMatrixFiller {
+) -> CrossingMatrixFiller raise {
   let effective_free_layer_index = if free_layer_index < 0 ||
     free_layer_index >= graph.length() {
-    @core.layout_runtime_report_unsupported_configuration(
+    @core.layout_runtime_raise_unsupported_configuration(
       "crossing matrix filler free layer index is out of range",
     )
     if graph.is_empty() {

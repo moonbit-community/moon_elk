@@ -1,7 +1,9 @@
 ///|
 fn core_ui_test_reset_environment() -> @service.LayoutConnectorsService {
-  @service.layout_connectors_service_unload()
-  let service = @service.layout_connectors_service_get_instance()
+  let service = @service.new_layout_connectors_service(
+    @core.new_layout_runtime(),
+    @core.new_layout_session(),
+  )
   service.clear_setups_for_test()
   service.clear_listeners_for_test()
   elk_ui_plugin_reset_for_test()
@@ -12,8 +14,6 @@ fn core_ui_test_reset_environment() -> @service.LayoutConnectorsService {
   core_ui_layout_view_part_reset_for_test()
   core_ui_layout_preference_page_reset_for_test()
   core_ui_elk_ui_util_reset_for_test()
-  @core.layout_meta_data_service_reset_for_test()
-  @graph.reset_graph_model_for_test()
   service
 }
 
@@ -40,10 +40,9 @@ fn core_ui_test_make_setup(
 }
 
 ///|
-fn core_ui_test_register_algorithm_and_category() -> (
-  @core.LayoutCategoryData,
-  @core.LayoutAlgorithmData,
-) {
+fn core_ui_test_register_algorithm_and_category(
+  metadata : @core.OptionMetadata,
+) -> (@core.LayoutCategoryData, @core.LayoutAlgorithmData) {
   let category = @core.new_layout_category_data(
     "org.eclipse.elk.category.layered",
     name="Layered Family",
@@ -58,14 +57,14 @@ fn core_ui_test_register_algorithm_and_category() -> (
     defining_bundle_id="bundle.layered",
   )
   category.add_layouter(algorithm_data)
-  @core.layout_meta_data_service_register_category(category)
-  @core.layout_meta_data_service_register_algorithm(algorithm_data)
+  metadata.register_category(category)
+  metadata.register_algorithm(algorithm_data)
   (category, algorithm_data)
 }
 
 ///|
 test "core.ui messages and plugin registry behavior" {
-  ignore(core_ui_test_reset_environment())
+  let _service = core_ui_test_reset_environment()
 
   inspect(
     core_ui_messages_get_string("elk.ui.58"),
@@ -97,7 +96,7 @@ test "ActiveEditorSupportedTester delegates to connector service" {
   )
   service.register_setup(core_ui_test_make_setup(7, connector), priority=1)
 
-  let tester = new_active_editor_supported_tester()
+  let tester = new_active_editor_supported_tester(service)
   inspect(tester.is_supported(Some(7)), content="true")
   inspect(tester.is_supported(Some(8)), content="false")
   inspect(tester.is_supported(None), content="false")
@@ -105,12 +104,15 @@ test "ActiveEditorSupportedTester delegates to connector service" {
 
 ///|
 test "AlgorithmContentProvider and selection dialog filtering" {
-  ignore(core_ui_test_reset_environment())
-  let (category, algorithm_data) = core_ui_test_register_algorithm_and_category()
+  let service = core_ui_test_reset_environment()
+  let metadata = service.option_metadata()
+  let (category, algorithm_data) = core_ui_test_register_algorithm_and_category(
+    metadata,
+  )
   let other = @core.new_layout_category_data("", name="")
-  @core.layout_meta_data_service_register_category(other)
+  metadata.register_category(other)
 
-  let provider = new_algorithm_content_provider()
+  let provider = new_algorithm_content_provider(metadata)
   inspect(provider.get_elements().length(), content="2")
   inspect(
     provider.has_children(CoreUiLayoutCategoryMeta(category)),
@@ -135,7 +137,7 @@ test "AlgorithmContentProvider and selection dialog filtering" {
   )
 
   let selected_count : Ref[Int] = Ref(0)
-  let dialog = new_algorithm_selection_dialog(algorithm_data.get_id())
+  let dialog = new_algorithm_selection_dialog(metadata, algorithm_data.get_id())
   dialog.add_algorithm_selection_listener(
     new_core_ui_algorithm_selection_listener(_ => {
       selected_count.val = selected_count.val + 1
@@ -166,15 +168,20 @@ test "AlgorithmContentProvider and selection dialog filtering" {
 
 ///|
 test "LayoutOptionLabelProvider and handler use expected UI semantics" {
-  ignore(core_ui_test_reset_environment())
-  let (_category, algorithm_data) = core_ui_test_register_algorithm_and_category()
+  let service = core_ui_test_reset_environment()
+  let metadata = service.option_metadata()
+  let (_category, algorithm_data) = core_ui_test_register_algorithm_and_category(
+    metadata,
+  )
 
   let algorithm_option = @core.new_layout_option_data(
     @core.algorithm.get_id(),
     name="Algorithm",
     option_type=StringType,
   )
-  let algorithm_provider = new_layout_option_label_provider(algorithm_option)
+  let algorithm_provider = new_layout_option_label_provider(
+    metadata, algorithm_option,
+  )
   inspect(
     algorithm_provider.get_text(CoreUiStringValue(algorithm_data.get_id())),
     content="Layered (ELK)",
@@ -185,7 +192,7 @@ test "LayoutOptionLabelProvider and handler use expected UI semantics" {
     option_type=BoolType,
     choices=["false", "true"],
   )
-  let bool_provider = new_layout_option_label_provider(bool_option)
+  let bool_provider = new_layout_option_label_provider(metadata, bool_option)
   inspect(
     match bool_provider.get_image(CoreUiIntValue(0)) {
       Some(descriptor) => descriptor.path
@@ -199,7 +206,7 @@ test "LayoutOptionLabelProvider and handler use expected UI semantics" {
     option_type=StringType,
     choices=["A", "B"],
   )
-  let enum_provider = new_layout_option_label_provider(enum_like)
+  let enum_provider = new_layout_option_label_provider(metadata, enum_like)
   debug_inspect(
     enum_provider.get_text(CoreUiIntValue(1)),
     content=(
@@ -213,7 +220,7 @@ test "LayoutOptionLabelProvider and handler use expected UI semantics" {
   pref_store.set_default_boolean(core_ui_pref_progress, true)
 
   let captured : Ref[String] = Ref("")
-  let handler = new_layout_handler(invoke_layout_fn=invocation => {
+  let handler = new_layout_handler(service, invoke_layout_fn=invocation => {
     captured.val = "\{Repr(invocation.editor)}|\{Repr(invocation.diagram_part)}|\{Repr(invocation.animation)}|\{Repr(invocation.progress_dialog)}|\{Repr(invocation.zoom_to_fit)}"
   })
   let event_params : Map[String, String] = Map([])
@@ -230,7 +237,7 @@ test "LayoutOptionLabelProvider and handler use expected UI semantics" {
 
 ///|
 test "Preference initializer and page synchronize stores and refresh view" {
-  ignore(core_ui_test_reset_environment())
+  let _service = core_ui_test_reset_environment()
   core_ui_preference_initializer_initialize_default_preferences()
 
   let pref_store = elk_ui_plugin_get_instance().get_preference_store()
@@ -290,8 +297,11 @@ test "Preference initializer and page synchronize stores and refresh view" {
 
 ///|
 test "ElkUiUtil and property source stack perform translations and validation" {
-  ignore(core_ui_test_reset_environment())
-  let (_category, algorithm_data) = core_ui_test_register_algorithm_and_category()
+  let service = core_ui_test_reset_environment()
+  let metadata = service.option_metadata()
+  let (_category, algorithm_data) = core_ui_test_register_algorithm_and_category(
+    metadata,
+  )
 
   let flag_option = @core.new_layout_option_data(
     "opt.flag",
@@ -317,7 +327,7 @@ test "ElkUiUtil and property source stack perform translations and validation" {
     visibility=AdvancedOption,
   )
   mode_option.mark_advanced_choice("B")
-  @core.layout_meta_data_service_register_option(
+  metadata.register_option(
     @core.new_layout_option_data(
       @core.algorithm.get_id(),
       name="Algorithm",
@@ -325,20 +335,22 @@ test "ElkUiUtil and property source stack perform translations and validation" {
       targets=[ParentsTarget],
     ),
   )
-  @core.layout_meta_data_service_register_option(flag_option)
-  @core.layout_meta_data_service_register_option(threshold_option)
-  @core.layout_meta_data_service_register_option(mode_option)
+  metadata.register_option(flag_option)
+  metadata.register_option(threshold_option)
+  metadata.register_option(mode_option)
   algorithm_data.add_known_option(@core.algorithm.get_id())
   algorithm_data.add_known_option("opt.flag")
   algorithm_data.add_known_option("opt.threshold")
   algorithm_data.add_known_option("opt.mode")
 
   inspect(
-    core_ui_elk_ui_util_get_option_data(algorithm_data, "Threshold") is Some(_),
+    core_ui_elk_ui_util_get_option_data(metadata, algorithm_data, "Threshold")
+    is Some(_),
     content="true",
   )
   inspect(
     core_ui_elk_ui_util_get_option_data_from_providers(
+      metadata,
       [algorithm_data],
       "missing",
     )
@@ -356,9 +368,9 @@ test "ElkUiUtil and property source stack perform translations and validation" {
     option_targets=[ParentsTarget, NodesTarget],
     editing_domain=Some(42),
   )
-  let manager = @service.new_layout_configuration_manager()
-  let source = new_layout_property_source(config, manager)
-  source.set_validator(@core.new_layout_option_validator())
+  let manager = @service.new_layout_configuration_manager(metadata)
+  let source = new_layout_property_source(metadata, config, manager)
+  source.set_validator(@core.new_layout_option_validator(metadata))
 
   let view = layout_view_part_open()
   let descriptors = source.get_property_descriptors()
@@ -403,11 +415,12 @@ test "ElkUiUtil and property source stack perform translations and validation" {
     content="[\"Set Layout Option\", \"!elk.ui.12!\"]",
   )
   debug_inspect(
-    core_ui_layout_property_source_get_layout_hint("Layered (ELK)"),
+    core_ui_layout_property_source_get_layout_hint(metadata, "Layered (ELK)"),
     content="Some(\"org.eclipse.elk.layered\")",
   )
 
   let provider = new_layout_property_source_provider(
+    metadata,
     configuration_store_provider=Some(
       @service.new_layout_configuration_store_provider((_wb, _obj) => {
         Some(config)
@@ -422,8 +435,11 @@ test "ElkUiUtil and property source stack perform translations and validation" {
 
 ///|
 test "Validating property sheet entry builds overlay image and error description" {
-  ignore(core_ui_test_reset_environment())
-  let (_category, algorithm_data) = core_ui_test_register_algorithm_and_category()
+  let service = core_ui_test_reset_environment()
+  let metadata = service.option_metadata()
+  let (_category, algorithm_data) = core_ui_test_register_algorithm_and_category(
+    metadata,
+  )
   let numeric = @core.new_layout_option_data(
     "opt.numeric",
     name="Numeric",
@@ -431,7 +447,7 @@ test "Validating property sheet entry builds overlay image and error description
     lower_bound=Some(1.0),
     targets=[NodesTarget],
   )
-  @core.layout_meta_data_service_register_option(
+  metadata.register_option(
     @core.new_layout_option_data(
       @core.algorithm.get_id(),
       name="Algorithm",
@@ -439,7 +455,7 @@ test "Validating property sheet entry builds overlay image and error description
       targets=[ParentsTarget],
     ),
   )
-  @core.layout_meta_data_service_register_option(numeric)
+  metadata.register_option(numeric)
   algorithm_data.add_known_option(@core.algorithm.get_id())
   algorithm_data.add_known_option("opt.numeric")
 
@@ -451,10 +467,11 @@ test "Validating property sheet entry builds overlay image and error description
     option_targets=[NodesTarget],
   )
   let source = new_layout_property_source(
+    metadata,
     config,
-    @service.new_layout_configuration_manager(),
+    @service.new_layout_configuration_manager(metadata),
   )
-  source.set_validator(@core.new_layout_option_validator())
+  source.set_validator(@core.new_layout_option_validator(metadata))
   let descriptor = new_layout_property_descriptor(
     source,
     numeric,
@@ -483,9 +500,12 @@ test "Validating property sheet entry builds overlay image and error description
 
 ///|
 test "Layout view handler, cell editors, and rendering stack integrate" {
-  ignore(core_ui_test_reset_environment())
-  let (_category, algorithm_data) = core_ui_test_register_algorithm_and_category()
-  @core.layout_meta_data_service_register_option(
+  let service = core_ui_test_reset_environment()
+  let metadata = service.option_metadata()
+  let (_category, algorithm_data) = core_ui_test_register_algorithm_and_category(
+    metadata,
+  )
+  metadata.register_option(
     @core.new_layout_option_data(
       @core.algorithm.get_id(),
       name="Algorithm",
@@ -504,7 +524,10 @@ test "Layout view handler, cell editors, and rendering stack integrate" {
   )
 
   let view = layout_view_part_open()
-  let algorithm_editor = new_algorithm_cell_editor(@core.algorithm.get_id())
+  let algorithm_editor = new_algorithm_cell_editor(
+    metadata,
+    @core.algorithm.get_id(),
+  )
   algorithm_editor.set_next_dialog_result_for_test(
     Some(algorithm_data.get_id()),
   )

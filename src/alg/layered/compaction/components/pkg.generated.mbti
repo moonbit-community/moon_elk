@@ -9,7 +9,7 @@ import {
 // Values
 pub fn[N, E] components_to_cgraph_spacing_handler(ComponentsToCGraphTransformer[N, E]) -> @compaction.ISpacingsHandler
 
-pub fn[N, E] init_one_dimensional_components_compaction(IConnectedComponents[N, E], Double) -> OneDimensionalComponentsCompaction[N, E]
+pub fn[N, E] init_one_dimensional_components_compaction(IConnectedComponents[N, E], Double) -> OneDimensionalComponentsCompaction[N, E] raise
 
 pub fn[N, E] new_component(() -> Array[@core.ElkRectangle], () -> Array[IExternalExtension[E]], () -> Array[@core.PortSide]) -> IComponent[N, E]
 
@@ -19,7 +19,7 @@ pub fn[N, E] new_connected_components(() -> Array[IComponent[N, E]], () -> Bool)
 
 pub fn[E] new_external_extension(() -> E, () -> @core.ElkRectangle, () -> @core.ElkRectangle, () -> @core.Direction, get_placeholder? : () -> @core.ElkRectangle?) -> IExternalExtension[E]
 
-pub fn[N, E] new_one_dimensional_components_compaction(IConnectedComponents[N, E], Double) -> OneDimensionalComponentsCompaction[N, E]
+pub fn[N, E] new_one_dimensional_components_compaction(IConnectedComponents[N, E], Double) -> OneDimensionalComponentsCompaction[N, E] raise
 
 // Errors
 
@@ -50,7 +50,7 @@ pub fn[N, E] ComponentsToCGraphTransformer::get_global_offset(Self[N, E]) -> @co
 pub fn[N, E] ComponentsToCGraphTransformer::get_graph_size(Self[N, E]) -> @core.KVector
 pub fn[N, E] ComponentsToCGraphTransformer::get_offset(Self[N, E], IComponent[N, E]) -> @core.KVector
 pub fn[N, E] ComponentsToCGraphTransformer::is_locked(Self[N, E], @compaction.CNode, @core.Direction) -> Bool
-pub fn[N, E] ComponentsToCGraphTransformer::transform(Self[N, E], IConnectedComponents[N, E]) -> @compaction.CGraph
+pub fn[N, E] ComponentsToCGraphTransformer::transform(Self[N, E], IConnectedComponents[N, E]) -> @compaction.CGraph raise
 
 pub struct IComponent[N, E] {
   _instance_id : Int
@@ -92,7 +92,7 @@ pub struct OneDimensionalComponentsCompaction[N, E] {
   mut top_left : @core.KVector
   mut bottom_right : @core.KVector
 }
-pub fn[N, E] OneDimensionalComponentsCompaction::compact(Self[N, E], @core.IElkProgressMonitor) -> Unit
+pub fn[N, E] OneDimensionalComponentsCompaction::compact(Self[N, E], @core.IElkProgressMonitor) -> Unit raise
 pub fn[N, E] OneDimensionalComponentsCompaction::get_graph_size(Self[N, E]) -> @core.KVector
 pub fn[N, E] OneDimensionalComponentsCompaction::get_offset(Self[N, E], IComponent[N, E]) -> @core.KVector
 

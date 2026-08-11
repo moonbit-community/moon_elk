@@ -541,7 +541,7 @@ fn dot_exporter_layout_direction_is_vertical(parent : @graph.ElkNode) -> Bool {
 }
 
 ///|
-fn dot_exporter_parse_padding(node : @graph.ElkNode) -> @core.ElkPadding {
+fn dot_exporter_parse_padding(node : @graph.ElkNode) -> @core.ElkPadding raise {
   let value = @graph.node_get_string_property(node, @core.padding)
   let parsed = @core.new_elk_padding()
   parsed.parse(value)
@@ -598,7 +598,7 @@ fn dot_exporter_to_absolute(
 pub fn DotExporter::transform(
   self : DotExporter,
   trans_data : DotTransformationData[@graph.ElkNode, DotGraphvizModel],
-) -> Unit {
+) -> Unit raise {
   let source_graph = match trans_data.get_source_graph() {
     Some(graph) => graph
     None => return
@@ -629,7 +629,7 @@ pub fn DotExporter::transform_nodes(
   statements : Array[DotStatement],
   offset : @core.KVector,
   trans_data : DotTransformationData[@graph.ElkNode, DotGraphvizModel],
-) -> Unit {
+) -> Unit raise {
   self.set_graph_attributes(statements, parent, trans_data)
   let hierarchy = trans_data.get_bool_property(dot_exporter_hierarchy)
   let transform_node_layout = trans_data.get_bool_property(
@@ -732,7 +732,7 @@ pub fn DotExporter::transform_edges(
   parent : @graph.ElkNode,
   statements : Array[DotStatement],
   trans_data : DotTransformationData[@graph.ElkNode, DotGraphvizModel],
-) -> Unit {
+) -> Unit raise {
   let _ = self
   let hierarchy = trans_data.get_bool_property(dot_exporter_hierarchy)
   let transform_edge_layout = trans_data.get_bool_property(
@@ -757,7 +757,7 @@ pub fn DotExporter::transform_edges(
         @graph.edge_targets(edge).length() != 1 {
         try dot_exporter_raise_unit("Hyperedges are not supported.") catch {
           DotExporterException(message) =>
-            @core.layout_runtime_report_unsupported_configuration(
+            @core.layout_runtime_raise_unsupported_configuration(
               "org.eclipse.elk.alg.graphviz.dot.transform.DotExporter: " +
               message,
             )
@@ -891,7 +891,7 @@ pub fn DotExporter::transform_edges(
 pub fn DotExporter::transfer_layout(
   self : DotExporter,
   trans_data : DotTransformationData[@graph.ElkNode, DotGraphvizModel],
-) -> Unit {
+) -> Unit raise {
   let source_graph = match trans_data.get_source_graph() {
     Some(graph) => graph
     None => return

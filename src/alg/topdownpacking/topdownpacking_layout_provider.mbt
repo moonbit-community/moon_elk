@@ -7,7 +7,7 @@ pub struct TopdownpackingLayoutProvider {
 }
 
 ///|
-pub fn new_topdownpacking_layout_provider() -> TopdownpackingLayoutProvider {
+pub fn new_topdownpacking_layout_provider() -> TopdownpackingLayoutProvider raise {
   {
     algorithm_assembler: @core.algorithm_assembler_create(
       topdownpacking_phase_descriptor,
@@ -19,7 +19,7 @@ pub fn new_topdownpacking_layout_provider() -> TopdownpackingLayoutProvider {
 pub fn TopdownpackingLayoutProvider::assemble_algorithm(
   self : TopdownpackingLayoutProvider,
   graph : GridElkNode,
-) -> Array[@core.ILayoutProcessor[TopdownPackingPhases, GridElkNode]] {
+) -> Array[@core.ILayoutProcessor[TopdownPackingPhases, GridElkNode]] raise {
   ignore(self.algorithm_assembler.reset())
 
   let node_arrangement_strategy = topdownpacking_node_arrangement_strategy_from_string(
@@ -53,7 +53,7 @@ pub fn TopdownpackingLayoutProvider::layout(
   self : TopdownpackingLayoutProvider,
   layout_graph : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor,
-) -> Unit {
+) -> Unit raise {
   let wrapped_graph = new_grid_elk_node(layout_graph)
   let algorithm = self.assemble_algorithm(wrapped_graph)
   ignore(
@@ -69,7 +69,7 @@ pub fn TopdownpackingLayoutProvider::layout(
 pub fn TopdownpackingLayoutProvider::get_predicted_graph_size(
   self : TopdownpackingLayoutProvider,
   graph : @graph.ElkNode,
-) -> @core.KVector {
+) -> @core.KVector raise {
   ignore(self)
   let node_arrangement_strategy = topdownpacking_node_arrangement_strategy_from_string(
     @graph.node_get_string_property(

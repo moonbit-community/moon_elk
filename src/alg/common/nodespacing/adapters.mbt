@@ -31,10 +31,10 @@ pub(open) trait NodeSpacingNode {
   fn get_ports(Self) -> Array[&NodeSpacingPort]
   fn get_incoming_edges(Self) -> Array[&NodeSpacingEdge]
   fn get_outgoing_edges(Self) -> Array[&NodeSpacingEdge]
-  fn sort_port_list(Self) -> Unit
+  fn sort_port_list(Self) -> Unit raise
   fn is_compound_node(Self) -> Bool
   fn set_padding(Self, @core.ElkPadding) -> Unit
-  fn get_margin(Self) -> @core.ElkMargin
+  fn get_margin(Self) -> @core.ElkMargin raise
   fn set_margin(Self, @core.ElkMargin) -> Unit
   fn get_individual_spacing(Self, @graph.IProperty[Double]) -> Double
 }
@@ -194,7 +194,7 @@ impl NodeSpacingNode for @core.ElkNodeAdapter with fn get_outgoing_edges(self) {
 }
 
 ///|
-impl NodeSpacingNode for @core.ElkNodeAdapter with fn sort_port_list(self) {
+impl NodeSpacingNode for @core.ElkNodeAdapter with fn sort_port_list(self) raise {
   self.sort_port_list()
 }
 
@@ -209,7 +209,7 @@ impl NodeSpacingNode for @core.ElkNodeAdapter with fn set_padding(self, padding)
 }
 
 ///|
-impl NodeSpacingNode for @core.ElkNodeAdapter with fn get_margin(self) {
+impl NodeSpacingNode for @core.ElkNodeAdapter with fn get_margin(self) raise {
   self.get_margin()
 }
 

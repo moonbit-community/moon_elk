@@ -561,7 +561,7 @@ pub fn BkThresholdStrategy::calculate_threshold(
   old_thresh : Double,
   block_root : @runtime.LNode,
   current_node : @runtime.LNode,
-) -> Double {
+) -> Double raise {
   try {
     match self.kind {
       NullThreshold =>
@@ -577,7 +577,7 @@ pub fn BkThresholdStrategy::calculate_threshold(
     }
   } catch {
     BkThresholdStrategyException(message) => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "java.lang.IllegalStateException: " + message,
       )
       old_thresh
@@ -588,7 +588,9 @@ pub fn BkThresholdStrategy::calculate_threshold(
 }
 
 ///|
-pub fn BkThresholdStrategy::post_process(self : BkThresholdStrategy) -> Unit {
+pub fn BkThresholdStrategy::post_process(
+  self : BkThresholdStrategy,
+) -> Unit raise {
   try {
     match self.kind {
       NullThreshold => ()
@@ -596,7 +598,7 @@ pub fn BkThresholdStrategy::post_process(self : BkThresholdStrategy) -> Unit {
     }
   } catch {
     BkThresholdStrategyException(message) =>
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "java.lang.IllegalStateException: " + message,
       )
   } noraise {

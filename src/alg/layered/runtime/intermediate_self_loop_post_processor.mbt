@@ -18,12 +18,12 @@ fn self_loop_post_processor_restore_edge(
 }
 
 ///|
-fn self_loop_post_processor_process_node(l_node : LNode) -> Unit {
+fn self_loop_post_processor_process_node(l_node : LNode) -> Unit raise {
   let sl_holder = match
     l_node.get_property_self_loop_holder(internal_properties_self_loop_holder) {
     Some(holder) => holder
     None => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "node missing SELF_LOOP_HOLDER property",
       )
       return
@@ -48,7 +48,7 @@ fn self_loop_post_processor_process_node(l_node : LNode) -> Unit {
 fn self_loop_post_processor_process(
   graph : LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()

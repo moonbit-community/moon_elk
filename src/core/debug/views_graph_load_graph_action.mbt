@@ -6,13 +6,21 @@ let load_graph_action_last_file_name_pref : String = "loadGraphAction.lastGraphF
 
 ///|
 pub(all) struct LoadGraphAction {
+  runtime : @core.LayoutRuntime
+  session : @core.LayoutSession
   view : LayoutGraphView
   mut selected_file_name : String?
 }
 
 ///|
-pub fn new_load_graph_action(view : LayoutGraphView) -> LoadGraphAction {
+pub fn new_load_graph_action(
+  runtime : @core.LayoutRuntime,
+  session : @core.LayoutSession,
+  view : LayoutGraphView,
+) -> LoadGraphAction {
   {
+    runtime,
+    session,
     view,
     selected_file_name: Some(
       core_debug_plugin_get_string_preference(
@@ -31,15 +39,22 @@ pub fn LoadGraphAction::set_selected_file_name_for_test(
 }
 
 ///|
-pub fn LoadGraphAction::run(self : LoadGraphAction) -> Unit {
-  load_graph_action_run_file(self.selected_file_name, self.view)
+pub fn LoadGraphAction::run(self : LoadGraphAction) -> Unit raise {
+  load_graph_action_run_file(
+    self.runtime,
+    self.session,
+    self.selected_file_name,
+    self.view,
+  )
 }
 
 ///|
 pub fn load_graph_action_run_file(
+  runtime : @core.LayoutRuntime,
+  session : @core.LayoutSession,
   full_file_path : String?,
   layout_graph_view : LayoutGraphView,
-) -> Unit {
+) -> Unit raise {
   match full_file_path {
     None => ()
     Some(file_name) => {
@@ -47,7 +62,7 @@ pub fn load_graph_action_run_file(
         load_graph_action_last_file_name_pref, file_name,
       )
       let graph = load_graph_action_load_from_file(file_name)
-      let info = load_graph_action_layout(file_name, graph)
+      let info = load_graph_action_layout(runtime, session, file_name, graph)
       match elk_debug_plugin_get_default() {
         Some(plugin) => plugin.get_model().add_execution(info)
         None => ()
@@ -58,16 +73,22 @@ pub fn load_graph_action_run_file(
 }
 
 ///|
-pub fn load_graph_action_load_from_file(file_name : String) -> @graph.ElkNode {
+pub fn load_graph_action_load_from_file(
+  file_name : String,
+) -> @graph.ElkNode raise {
   core_debug_load_graph_from_registered_file(file_name)
 }
 
 ///|
 pub fn load_graph_action_layout(
+  runtime : @core.LayoutRuntime,
+  session : @core.LayoutSession,
   file_name : String,
   graph : @graph.ElkNode,
-) -> ExecutionInfo {
+) -> ExecutionInfo raise {
   load_graph_action_layout_internal(
+    runtime,
+    session,
     file_name,
     layout_upon_load_setting_action_should_layout_upon_load(),
     graph,
@@ -76,15 +97,19 @@ pub fn load_graph_action_layout(
 
 ///|
 pub fn load_graph_action_layout_internal(
+  runtime : @core.LayoutRuntime,
+  session : @core.LayoutSession,
   file_name : String,
   perform_layout : Bool,
   graph : @graph.ElkNode,
-) -> ExecutionInfo {
+) -> ExecutionInfo raise {
   let monitor = @core.new_basic_progress_monitor()
   ignore(monitor.begin(file_name, 1.0))
 
   if perform_layout {
-    let layout_engine = @core.new_recursive_graph_layout_engine()
+    let layout_engine = @core.new_recursive_graph_layout_engine(
+      runtime, session,
+    )
     layout_engine.layout(graph, monitor)
   }
 

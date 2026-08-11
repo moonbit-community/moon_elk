@@ -30,7 +30,7 @@ fn rectpacking_sort_nodes_by_desired_position(
 fn rectpacking_interactive_node_reorderer_process(
   graph : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   match progress_monitor {
     Some(monitor) => ignore(monitor.begin("Interactive Node Reorderer", 1.0))
     None => ()

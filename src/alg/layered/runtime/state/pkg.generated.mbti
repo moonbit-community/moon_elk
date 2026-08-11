@@ -21,11 +21,11 @@ pub struct GreedySwitchMockRandom {
   mut next_boolean_override : Bool?
 }
 pub fn GreedySwitchMockRandom::clear_next_boolean_override(Self) -> Unit
-pub fn GreedySwitchMockRandom::int(Self, Int) -> Int
+pub fn GreedySwitchMockRandom::int(Self, Int) -> Int raise
 pub fn GreedySwitchMockRandom::next_boolean(Self) -> Bool
 pub fn GreedySwitchMockRandom::next_double(Self) -> Double
 pub fn GreedySwitchMockRandom::next_float(Self) -> Float
-pub fn GreedySwitchMockRandom::next_int(Self, Int) -> Int
+pub fn GreedySwitchMockRandom::next_int(Self, Int) -> Int raise
 pub fn GreedySwitchMockRandom::next_long(Self) -> Int64
 pub fn GreedySwitchMockRandom::set_change_by(Self, Double) -> Unit
 pub fn GreedySwitchMockRandom::set_current(Self, Float) -> Unit

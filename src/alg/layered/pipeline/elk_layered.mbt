@@ -1,5 +1,8 @@
 ///|
 pub struct ElkLayered {
+  runtime : @core.LayoutRuntime
+  session : @core.LayoutSession
+  phase_registry : LayeredPhaseRegistry
   components_processor : @components.LayeredComponentsProcessor
   compound_graph_preprocessor : @core.ILayoutProcessor[LayeredPhases, LGraph]
   compound_graph_postprocessor : @core.ILayoutProcessor[LayeredPhases, LGraph]
@@ -130,16 +133,18 @@ fn elk_layered_greedy_switch_strategy(
 
 ///|
 fn elk_layered_cycle_breaking_factory(
+  registry : LayeredPhaseRegistry,
   strategy : String,
-) -> @core.ILayoutProcessorFactory[LayeredPhases, LGraph] {
-  layered_cycle_breaking_phase_factory(strategy)
+) -> @core.ILayoutProcessorFactory[LayeredPhases, LGraph] raise {
+  registry.cycle_breaking_phase_factory(strategy)
 }
 
 ///|
 fn elk_layered_layering_factory(
+  registry : LayeredPhaseRegistry,
   strategy : String,
-) -> @core.ILayoutProcessorFactory[LayeredPhases, LGraph] {
-  layered_layering_phase_factory(strategy)
+) -> @core.ILayoutProcessorFactory[LayeredPhases, LGraph] raise {
+  registry.layering_phase_factory(strategy)
 }
 
 ///|
@@ -168,9 +173,10 @@ fn elk_layered_crossing_factory(
 
 ///|
 fn elk_layered_node_placement_factory(
+  registry : LayeredPhaseRegistry,
   strategy : String,
-) -> @core.ILayoutProcessorFactory[LayeredPhases, LGraph] {
-  layered_node_placement_phase_factory(strategy)
+) -> @core.ILayoutProcessorFactory[LayeredPhases, LGraph] raise {
+  registry.node_placement_phase_factory(strategy)
 }
 
 ///|
@@ -216,8 +222,9 @@ fn[P] ElkLayered::notify_processor_finished(
 
 ///|
 fn elk_layered_collect_algorithm_for_graph(
+  registry : LayeredPhaseRegistry,
   lgraph : LGraph,
-) -> Array[@core.ILayoutProcessor[LayeredPhases, LGraph]] {
+) -> Array[@core.ILayoutProcessor[LayeredPhases, LGraph]] raise {
   let layering_strategy = lgraph.get_property_string(
     @options.layered_options_layering_strategy,
   )
@@ -280,13 +287,13 @@ fn elk_layered_collect_algorithm_for_graph(
   ignore(
     assembler.set_phase(
       P1CycleBreaking,
-      elk_layered_cycle_breaking_factory(cycle_breaking_strategy),
+      elk_layered_cycle_breaking_factory(registry, cycle_breaking_strategy),
     ),
   )
   ignore(
     assembler.set_phase(
       P2Layering,
-      elk_layered_layering_factory(layering_strategy),
+      elk_layered_layering_factory(registry, layering_strategy),
     ),
   )
   ignore(
@@ -298,7 +305,7 @@ fn elk_layered_collect_algorithm_for_graph(
   ignore(
     assembler.set_phase(
       P4NodePlacement,
-      elk_layered_node_placement_factory(node_placement_strategy),
+      elk_layered_node_placement_factory(registry, node_placement_strategy),
     ),
   )
   ignore(
@@ -314,21 +321,21 @@ fn elk_layered_collect_algorithm_for_graph(
       @core.layout_processor_configuration_create(layered_phase_descriptor)
       .add_before(
         P4NodePlacement,
-        layered_intermediate_processor_factory(InnermostNodeMarginCalculator),
+        registry.intermediate_processor_factory(InnermostNodeMarginCalculator),
       )
       .add_before(
         P4NodePlacement,
-        layered_intermediate_processor_factory(LabelAndNodeSizeProcessor),
+        registry.intermediate_processor_factory(LabelAndNodeSizeProcessor),
       )
       .add_before(
         P5EdgeRouting,
-        layered_intermediate_processor_factory(
+        registry.intermediate_processor_factory(
           LayerSizeAndGraphHeightCalculator,
         ),
       )
       .add_after(
         P5EdgeRouting,
-        layered_intermediate_processor_factory(EndLabelSorter),
+        registry.intermediate_processor_factory(EndLabelSorter),
       ),
     ),
   )
@@ -337,7 +344,7 @@ fn elk_layered_collect_algorithm_for_graph(
       assembler.add_processor_configuration(
         @core.layout_processor_configuration_create(layered_phase_descriptor).add_after(
           P5EdgeRouting,
-          layered_intermediate_processor_factory(HierarchicalNodeResizer),
+          registry.intermediate_processor_factory(HierarchicalNodeResizer),
         ),
       ),
     )
@@ -347,7 +354,7 @@ fn elk_layered_collect_algorithm_for_graph(
       assembler.add_processor_configuration(
         @core.layout_processor_configuration_create(layered_phase_descriptor).add_before(
           P1CycleBreaking,
-          layered_intermediate_processor_factory(PortSideProcessor),
+          registry.intermediate_processor_factory(PortSideProcessor),
         ),
       ),
     )
@@ -356,7 +363,7 @@ fn elk_layered_collect_algorithm_for_graph(
       assembler.add_processor_configuration(
         @core.layout_processor_configuration_create(layered_phase_descriptor).add_before(
           P3NodeOrdering,
-          layered_intermediate_processor_factory(PortSideProcessor),
+          registry.intermediate_processor_factory(PortSideProcessor),
         ),
       ),
     )
@@ -368,11 +375,13 @@ fn elk_layered_collect_algorithm_for_graph(
         @core.layout_processor_configuration_create(layered_phase_descriptor)
         .add_before(
           P4NodePlacement,
-          layered_intermediate_processor_factory(CenterLabelManagementProcessor),
+          registry.intermediate_processor_factory(
+            CenterLabelManagementProcessor,
+          ),
         )
         .add_before(
           P4NodePlacement,
-          layered_intermediate_processor_factory(
+          registry.intermediate_processor_factory(
             EndNodePortLabelManagementProcessor,
           ),
         ),
@@ -385,7 +394,7 @@ fn elk_layered_collect_algorithm_for_graph(
       assembler.add_processor_configuration(
         @core.layout_processor_configuration_create(layered_phase_descriptor).add_after(
           P5EdgeRouting,
-          layered_intermediate_processor_factory(ConstraintsPostprocessor),
+          registry.intermediate_processor_factory(ConstraintsPostprocessor),
         ),
       ),
     )
@@ -397,11 +406,11 @@ fn elk_layered_collect_algorithm_for_graph(
         @core.layout_processor_configuration_create(layered_phase_descriptor)
         .add_before(
           P1CycleBreaking,
-          layered_intermediate_processor_factory(DirectionPreprocessor),
+          registry.intermediate_processor_factory(DirectionPreprocessor),
         )
         .add_after(
           P5EdgeRouting,
-          layered_intermediate_processor_factory(DirectionPostprocessor),
+          registry.intermediate_processor_factory(DirectionPostprocessor),
         ),
       ),
     )
@@ -413,15 +422,15 @@ fn elk_layered_collect_algorithm_for_graph(
         @core.layout_processor_configuration_create(layered_phase_descriptor)
         .add_before(
           P1CycleBreaking,
-          layered_intermediate_processor_factory(CommentPreprocessor),
+          registry.intermediate_processor_factory(CommentPreprocessor),
         )
         .add_before(
           P4NodePlacement,
-          layered_intermediate_processor_factory(CommentNodeMarginCalculator),
+          registry.intermediate_processor_factory(CommentNodeMarginCalculator),
         )
         .add_after(
           P5EdgeRouting,
-          layered_intermediate_processor_factory(CommentPostprocessor),
+          registry.intermediate_processor_factory(CommentPostprocessor),
         ),
       ),
     )
@@ -432,7 +441,7 @@ fn elk_layered_collect_algorithm_for_graph(
       assembler.add_processor_configuration(
         @core.layout_processor_configuration_create(layered_phase_descriptor).add_before(
           P3NodeOrdering,
-          layered_intermediate_processor_factory(NodePromotion),
+          registry.intermediate_processor_factory(NodePromotion),
         ),
       ),
     )
@@ -444,15 +453,15 @@ fn elk_layered_collect_algorithm_for_graph(
         @core.layout_processor_configuration_create(layered_phase_descriptor)
         .add_before(
           P1CycleBreaking,
-          layered_intermediate_processor_factory(PartitionPreprocessor),
+          registry.intermediate_processor_factory(PartitionPreprocessor),
         )
         .add_before(
           P2Layering,
-          layered_intermediate_processor_factory(PartitionMidprocessor),
+          registry.intermediate_processor_factory(PartitionMidprocessor),
         )
         .add_before(
           P3NodeOrdering,
-          layered_intermediate_processor_factory(PartitionPostprocessor),
+          registry.intermediate_processor_factory(PartitionPostprocessor),
         ),
       ),
     )
@@ -463,7 +472,7 @@ fn elk_layered_collect_algorithm_for_graph(
       assembler.add_processor_configuration(
         @core.layout_processor_configuration_create(layered_phase_descriptor).add_after(
           P5EdgeRouting,
-          layered_intermediate_processor_factory(HorizontalCompactor),
+          registry.intermediate_processor_factory(HorizontalCompactor),
         ),
       ),
     )
@@ -474,7 +483,7 @@ fn elk_layered_collect_algorithm_for_graph(
       assembler.add_processor_configuration(
         @core.layout_processor_configuration_create(layered_phase_descriptor).add_before(
           P3NodeOrdering,
-          layered_intermediate_processor_factory(HighDegreeNodeLayerProcessor),
+          registry.intermediate_processor_factory(HighDegreeNodeLayerProcessor),
         ),
       ),
     )
@@ -485,7 +494,7 @@ fn elk_layered_collect_algorithm_for_graph(
       assembler.add_processor_configuration(
         @core.layout_processor_configuration_create(layered_phase_descriptor).add_before(
           P3NodeOrdering,
-          layered_intermediate_processor_factory(
+          registry.intermediate_processor_factory(
             SemiInteractiveCrossMinProcessor,
           ),
         ),
@@ -498,7 +507,7 @@ fn elk_layered_collect_algorithm_for_graph(
       assembler.add_processor_configuration(
         @core.layout_processor_configuration_create(layered_phase_descriptor).add_before(
           P4NodePlacement,
-          layered_intermediate_processor_factory(
+          registry.intermediate_processor_factory(
             elk_layered_greedy_switch_strategy(greedy_switch_type),
           ),
         ),
@@ -511,7 +520,7 @@ fn elk_layered_collect_algorithm_for_graph(
       assembler.add_processor_configuration(
         @core.layout_processor_configuration_create(layered_phase_descriptor).add_before(
           P4NodePlacement,
-          layered_intermediate_processor_factory(AlternatingLayerUnzipper),
+          registry.intermediate_processor_factory(AlternatingLayerUnzipper),
         ),
       ),
     )
@@ -523,7 +532,7 @@ fn elk_layered_collect_algorithm_for_graph(
         assembler.add_processor_configuration(
           @core.layout_processor_configuration_create(layered_phase_descriptor).add_before(
             P4NodePlacement,
-            layered_intermediate_processor_factory(SingleEdgeGraphWrapper),
+            registry.intermediate_processor_factory(SingleEdgeGraphWrapper),
           ),
         ),
       )
@@ -533,15 +542,15 @@ fn elk_layered_collect_algorithm_for_graph(
           @core.layout_processor_configuration_create(layered_phase_descriptor)
           .add_before(
             P3NodeOrdering,
-            layered_intermediate_processor_factory(BreakingPointInserter),
+            registry.intermediate_processor_factory(BreakingPointInserter),
           )
           .add_before(
             P4NodePlacement,
-            layered_intermediate_processor_factory(BreakingPointProcessor),
+            registry.intermediate_processor_factory(BreakingPointProcessor),
           )
           .add_after(
             P5EdgeRouting,
-            layered_intermediate_processor_factory(BreakingPointRemover),
+            registry.intermediate_processor_factory(BreakingPointRemover),
           ),
         ),
       )
@@ -556,7 +565,7 @@ fn elk_layered_collect_algorithm_for_graph(
       assembler.add_processor_configuration(
         @core.layout_processor_configuration_create(layered_phase_descriptor).add_before(
           P3NodeOrdering,
-          layered_intermediate_processor_factory(SortByInputOrderOfModel),
+          registry.intermediate_processor_factory(SortByInputOrderOfModel),
         ),
       ),
     )
@@ -599,7 +608,7 @@ fn elk_layered_collect_all_graphs_bottom_up(root : LGraph) -> Array[LGraph] {
 fn elk_layered_review_and_correct_hierarchical_processors(
   root : LGraph,
   graphs : Array[LGraph],
-) -> Unit {
+) -> Unit raise {
   let parent_crossing_strategy = root.get_property_string(
     @options.layered_options_crossing_minimization_strategy,
   )
@@ -608,7 +617,7 @@ fn elk_layered_review_and_correct_hierarchical_processors(
       @options.layered_options_crossing_minimization_strategy,
     )
     if child_crossing_strategy != parent_crossing_strategy {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "org.eclipse.elk.core.UnsupportedGraphException: The hierarchy aware processor " +
         child_crossing_strategy +
         " in a child graph is only allowed if the root graph specifies the same hierarchical processor.",
@@ -629,7 +638,7 @@ fn elk_layered_review_and_correct_hierarchical_processors(
 }
 
 ///|
-fn elk_layered_resize_graph(lgraph : LGraph) -> Unit {
+fn elk_layered_resize_graph(lgraph : LGraph) -> Unit raise {
   let size_constraint = lgraph.get_property_string_array(
     @core.node_size_constraints,
   )
@@ -731,7 +740,7 @@ fn ElkLayered::layout(
   lgraph : LGraph,
   plan : LayeredLayoutPlan,
   monitor : @core.IElkProgressMonitor,
-) -> Unit {
+) -> Unit raise {
   let monitor_was_already_running = monitor.is_running()
   if !monitor_was_already_running {
     ignore(monitor.begin("Component Layout", 1.0))
@@ -745,14 +754,14 @@ fn ElkLayered::layout(
   }
 
   for processor in algorithm {
-    if monitor.is_canceled() || @core.layout_runtime_has_error() {
+    if monitor.is_canceled() || self.session.has_error() {
       return
     }
 
     self.notify_processor_ready(lgraph, processor)
     processor.process(lgraph, monitor.sub_task(monitor_progress))
     self.notify_processor_finished(lgraph, processor)
-    if @core.layout_runtime_has_error() {
+    if self.session.has_error() {
       return
     }
   }
@@ -780,7 +789,7 @@ fn ElkLayered::hierarchical_layout(
   self : ElkLayered,
   lgraph : LGraph,
   monitor : @core.IElkProgressMonitor,
-) -> Unit {
+) -> Unit raise {
   let graphs = elk_layered_collect_all_graphs_bottom_up(lgraph)
   elk_layered_review_and_correct_hierarchical_processors(lgraph, graphs)
 
@@ -789,7 +798,10 @@ fn ElkLayered::hierarchical_layout(
   let mut total_work = 0
 
   for graph in graphs {
-    let algorithm = graph_configurator_prepare_graph_for_layout(graph).get_processors()
+    let algorithm = graph_configurator_prepare_graph_for_layout(
+      self.phase_registry,
+      graph,
+    ).get_processors()
     total_work = total_work + algorithm.length()
     algorithms.push(algorithm)
     processor_indices.push(0)
@@ -809,7 +821,7 @@ fn ElkLayered::hierarchical_layout(
       let algorithm = algorithms[i]
 
       while processor_indices[i] < algorithm.length() {
-        if monitor.is_canceled() || @core.layout_runtime_has_error() {
+        if monitor.is_canceled() || self.session.has_error() {
           return
         }
 
@@ -822,7 +834,7 @@ fn ElkLayered::hierarchical_layout(
           self.notify_processor_ready(graph, processor)
           processor.process(graph, monitor.sub_task(1.0))
           self.notify_processor_finished(graph, processor)
-          if @core.layout_runtime_has_error() {
+          if self.session.has_error() {
             return
           }
           continue
@@ -832,7 +844,7 @@ fn ElkLayered::hierarchical_layout(
           self.notify_processor_ready(graph, processor)
           processor.process(graph, monitor.sub_task(1.0))
           self.notify_processor_finished(graph, processor)
-          if @core.layout_runtime_has_error() {
+          if self.session.has_error() {
             return
           }
         }
@@ -850,7 +862,7 @@ fn ElkLayered::layout_test(
   self : ElkLayered,
   lgraphs : Array[LGraph],
   processor : @core.ILayoutProcessor[LayeredPhases, LGraph],
-) -> Unit {
+) -> Unit raise {
   for lgraph in lgraphs {
     self.notify_processor_ready(lgraph, processor)
     processor.process(lgraph, Some(@core.new_null_elk_progress_monitor()))
@@ -859,8 +871,15 @@ fn ElkLayered::layout_test(
 }
 
 ///|
-pub fn new_elk_layered() -> ElkLayered {
+pub fn new_elk_layered(
+  runtime : @core.LayoutRuntime,
+  session : @core.LayoutSession,
+  phase_registry : LayeredPhaseRegistry,
+) -> ElkLayered {
   {
+    runtime,
+    session,
+    phase_registry,
     components_processor: @components.new_layered_components_processor(),
     compound_graph_preprocessor: @compound.new_compound_graph_preprocessor_layout_processor(),
     compound_graph_postprocessor: @compound.new_compound_graph_postprocessor_layout_processor(),
@@ -873,11 +892,14 @@ pub fn ElkLayered::do_layout(
   self : ElkLayered,
   lgraph : LGraph,
   monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let actual_monitor = elk_layered_resolve_monitor(monitor)
   ignore(actual_monitor.begin("Layered layout", 1.0))
 
-  let plan = graph_configurator_prepare_graph_for_layout(lgraph)
+  let plan = graph_configurator_prepare_graph_for_layout(
+    self.phase_registry,
+    lgraph,
+  )
 
   let components = self.components_processor.split(lgraph)
   if components.length() == 1 {
@@ -893,13 +915,13 @@ pub fn ElkLayered::do_layout(
         None => actual_monitor
       }
       self.layout(comp, plan, comp_monitor)
-      if @core.layout_runtime_has_error() {
+      if self.session.has_error() {
         actual_monitor.done()
         return
       }
     }
   }
-  if @core.layout_runtime_has_error() {
+  if self.session.has_error() {
     actual_monitor.done()
     return
   }
@@ -914,14 +936,14 @@ pub fn ElkLayered::do_compound_layout(
   self : ElkLayered,
   lgraph : LGraph,
   monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let actual_monitor = elk_layered_resolve_monitor(monitor)
   ignore(actual_monitor.begin("Layered layout", 2.0))
 
   self.notify_processor_ready(lgraph, self.compound_graph_preprocessor)
   self.compound_graph_preprocessor.process(lgraph, actual_monitor.sub_task(1.0))
   self.notify_processor_finished(lgraph, self.compound_graph_preprocessor)
-  if @core.layout_runtime_has_error() {
+  if self.session.has_error() {
     actual_monitor.done()
     return
   }
@@ -931,7 +953,7 @@ pub fn ElkLayered::do_compound_layout(
     None => actual_monitor
   }
   self.hierarchical_layout(lgraph, hierarchy_monitor)
-  if @core.layout_runtime_has_error() {
+  if self.session.has_error() {
     actual_monitor.done()
     return
   }
@@ -942,7 +964,7 @@ pub fn ElkLayered::do_compound_layout(
     actual_monitor.sub_task(1.0),
   )
   self.notify_processor_finished(lgraph, self.compound_graph_postprocessor)
-  if @core.layout_runtime_has_error() {
+  if self.session.has_error() {
     actual_monitor.done()
     return
   }
@@ -968,8 +990,11 @@ pub fn ElkLayeredTestExecutionState::get_step(
 pub fn ElkLayered::prepare_layout_test(
   self : ElkLayered,
   lgraph : LGraph,
-) -> ElkLayeredTestExecutionState {
-  let plan = graph_configurator_prepare_graph_for_layout(lgraph)
+) -> ElkLayeredTestExecutionState raise {
+  let plan = graph_configurator_prepare_graph_for_layout(
+    self.phase_registry,
+    lgraph,
+  )
   let graphs = self.components_processor.split(lgraph)
   { graphs, plan, step: 0 }
 }
@@ -993,7 +1018,7 @@ pub fn ElkLayered::run_layout_test_until(
   phase : @core.ILayoutProcessor[LayeredPhases, LGraph],
   state : ElkLayeredTestExecutionState,
   inclusive? : Bool = true,
-) -> Unit {
+) -> Unit raise {
   if state.graphs.is_empty() {
     return
   }
@@ -1028,7 +1053,7 @@ pub fn ElkLayered::run_layout_test_until(
 pub fn ElkLayered::run_layout_test_step(
   self : ElkLayered,
   state : ElkLayeredTestExecutionState,
-) -> Unit raise ElkLayeredTestExecutionException {
+) -> Unit raise {
   if self.is_layout_test_finished(state) {
     elk_layered_test_execution_raise("Current layout test run has finished.")
   }

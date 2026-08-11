@@ -146,7 +146,7 @@ fn dummy_self_loop_processor_create_dummy(
 fn dummy_self_loop_processor_process(
   layered_graph : LGraph,
   monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let progress = match monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()
@@ -213,7 +213,7 @@ fn dummy_self_loop_processor_process(
     }
   } catch {
     UnsupportedGraphException(message) => {
-      @core.layout_runtime_report_unsupported_configuration(message)
+      @core.layout_runtime_raise_unsupported_configuration(message)
       progress.done()
       return
     }

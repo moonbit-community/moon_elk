@@ -8,8 +8,6 @@ import {
 }
 
 // Values
-pub let cycle_phase_linked : Bool
-
 pub fn new_bfs_node_order_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
 
 pub fn new_depth_first_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
@@ -31,6 +29,8 @@ pub fn new_sc_connectivity_cycle_breaker_layout_phase() -> @core.ILayoutProcesso
 pub fn new_scc_model_order_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
 
 pub fn new_scc_node_type_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
+
+pub fn register_cycle_breaking_phases(@runtime.LayeredPhaseRegistry) -> Unit
 
 // Errors
 pub(all) suberror DepthFirstCycleBreakerException {

@@ -322,7 +322,7 @@ fn bk_node_placer_check_order_constraint(
 fn bk_node_placer_process(
   layered_graph : @runtime.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()
@@ -476,10 +476,9 @@ fn bk_node_placer_process(
       }
     }
   } catch {
-    error =>
-      @core.layout_runtime_report_unsupported_configuration(
-        bk_aligned_layout_exception_message(error),
-      )
+    BKAlignedLayoutException::IllegalStateException(message) =>
+      @core.layout_runtime_raise_unsupported_configuration(message)
+    error => raise error
   }
 
   for bal in layouts {
@@ -494,7 +493,7 @@ fn bk_node_placer_process(
 ///|
 fn bk_node_placer_configuration(
   graph : @runtime.LGraph,
-) -> @core.LayoutProcessorConfiguration[@runtime.LayeredPhases, @runtime.LGraph]? {
+) -> @core.LayoutProcessorConfiguration[@runtime.LayeredPhases, @runtime.LGraph]? raise {
   for
     property in graph.get_property_graph_properties_array(
       @runtime.internal_properties_graph_properties,

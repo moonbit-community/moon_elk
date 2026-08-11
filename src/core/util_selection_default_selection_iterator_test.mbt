@@ -56,7 +56,6 @@ fn selection_graph_elements_to_strings(
 
 ///|
 test "DefaultSelectionIterator follows edge direction without ports" {
-  @graph.reset_graph_model_for_test()
   let root = @graph.create_graph()
   let node0 = @graph.create_node(Some(root))
   let node1 = @graph.create_node(Some(root))
@@ -80,7 +79,6 @@ test "DefaultSelectionIterator follows edge direction without ports" {
 
 ///|
 test "DefaultSelectionIterator optionally includes ports" {
-  @graph.reset_graph_model_for_test()
   let root = @graph.create_graph()
   let node0 = @graph.create_node(Some(root))
   let node1 = @graph.create_node(Some(root))
@@ -110,7 +108,6 @@ test "DefaultSelectionIterator optionally includes ports" {
 
 ///|
 test "DefaultSelectionIterator can traverse against edge direction" {
-  @graph.reset_graph_model_for_test()
   let root = @graph.create_graph()
   let node0 = @graph.create_node(Some(root))
   let node1 = @graph.create_node(Some(root))
@@ -131,7 +128,6 @@ test "DefaultSelectionIterator can traverse against edge direction" {
 
 ///|
 test "DefaultSelectionIterator ignores non-port edge endpoints" {
-  @graph.reset_graph_model_for_test()
   let root = @graph.create_graph()
   let source_node = @graph.create_node(Some(root))
   let target_node = @graph.create_node(Some(root))
@@ -146,7 +142,6 @@ test "DefaultSelectionIterator ignores non-port edge endpoints" {
 
 ///|
 test "DefaultSelectionIterator supports shared visited sets" {
-  @graph.reset_graph_model_for_test()
   let root = @graph.create_graph()
   let node0 = @graph.create_node(Some(root))
   let node1 = @graph.create_node(Some(root))

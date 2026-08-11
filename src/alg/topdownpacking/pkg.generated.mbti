@@ -10,13 +10,13 @@ import {
 // Values
 pub fn[T] new_grid((Int, Int, T) -> Unit, (Int, Int) -> T, (Int) -> Array[T], (Int) -> Array[T], () -> Int, () -> Int, (Int, Int) -> Unit) -> Grid[T]
 
-pub fn new_grid_elk_node(Int) -> GridElkNode
+pub fn new_grid_elk_node(@graph.ElkNode) -> GridElkNode
 
-pub fn new_node_arranger((Int) -> @core.KVector) -> INodeArranger
+pub fn new_node_arranger((@graph.ElkNode) -> @core.KVector raise) -> INodeArranger
 
 pub fn new_topdownpacking_bottom_row_equal_whitespace_eliminator_layout_phase() -> @core.ILayoutProcessor[TopdownPackingPhases, GridElkNode]
 
-pub fn new_topdownpacking_layout_provider() -> TopdownpackingLayoutProvider
+pub fn new_topdownpacking_layout_provider() -> TopdownpackingLayoutProvider raise
 
 pub fn new_topdownpacking_left_right_top_down_node_placer_layout_phase() -> @core.ILayoutProcessor[TopdownPackingPhases, GridElkNode]
 
@@ -34,7 +34,7 @@ pub fn topdownpacking_layout_provider_as_layout_provider(TopdownpackingLayoutPro
 
 pub fn topdownpacking_layout_provider_as_topdown_layout_provider(TopdownpackingLayoutProvider) -> @core.ITopdownLayoutProvider
 
-pub fn topdownpacking_left_right_top_down_node_placer_get_predicted_size(Int) -> @core.KVector
+pub fn topdownpacking_left_right_top_down_node_placer_get_predicted_size(@graph.ElkNode) -> @core.KVector raise
 
 pub let topdownpacking_node_arrangement_strategy : @graph.IProperty[String]
 
@@ -80,27 +80,27 @@ pub fn[T] Grid::put(Self[T], Int, Int, T) -> Unit
 pub fn[T] Grid::set_grid_size(Self[T], Int, Int) -> Unit
 
 pub struct GridElkNode {
-  node : Int
-  mut grid : Array[Array[Int?]]
+  node : @graph.ElkNode
+  mut grid : Array[Array[@graph.ElkNode?]]
   mut rows : Int
   mut cols : Int
 }
-pub fn GridElkNode::get(Self, Int, Int) -> Int? raise TopdownpackingGridException
+pub fn GridElkNode::get(Self, Int, Int) -> @graph.ElkNode? raise TopdownpackingGridException
 pub fn GridElkNode::get_bool_property(Self, @graph.IProperty[Bool]) -> Bool
-pub fn GridElkNode::get_children(Self) -> Array[Int]
-pub fn GridElkNode::get_column(Self, Int) -> Array[Int?] raise TopdownpackingGridException
+pub fn GridElkNode::get_children(Self) -> Array[@graph.ElkNode]
+pub fn GridElkNode::get_column(Self, Int) -> Array[@graph.ElkNode?] raise TopdownpackingGridException
 pub fn GridElkNode::get_columns(Self) -> Int
 pub fn GridElkNode::get_double_property(Self, @graph.IProperty[Double]) -> Double
 pub fn GridElkNode::get_height(Self) -> Double
 pub fn GridElkNode::get_identifier(Self) -> String
-pub fn GridElkNode::get_node(Self) -> Int
-pub fn GridElkNode::get_row(Self, Int) -> Array[Int?] raise TopdownpackingGridException
+pub fn GridElkNode::get_node(Self) -> @graph.ElkNode
+pub fn GridElkNode::get_row(Self, Int) -> Array[@graph.ElkNode?] raise TopdownpackingGridException
 pub fn GridElkNode::get_rows(Self) -> Int
 pub fn GridElkNode::get_string_property(Self, @graph.IProperty[String]) -> String
 pub fn GridElkNode::get_width(Self) -> Double
 pub fn GridElkNode::get_x(Self) -> Double
 pub fn GridElkNode::get_y(Self) -> Double
-pub fn GridElkNode::put(Self, Int, Int, Int) -> Unit raise TopdownpackingGridException
+pub fn GridElkNode::put(Self, Int, Int, @graph.ElkNode) -> Unit raise TopdownpackingGridException
 pub fn GridElkNode::set_dimensions(Self, Double, Double) -> Unit
 pub fn GridElkNode::set_grid_size(Self, Int, Int) -> Unit
 pub fn GridElkNode::set_height(Self, Double) -> Unit
@@ -110,9 +110,9 @@ pub fn GridElkNode::set_x(Self, Double) -> Unit
 pub fn GridElkNode::set_y(Self, Double) -> Unit
 
 pub struct INodeArranger {
-  get_predicted_size_fn : (Int) -> @core.KVector
+  get_predicted_size_fn : (@graph.ElkNode) -> @core.KVector raise
 }
-pub fn INodeArranger::get_predicted_size(Self, Int) -> @core.KVector
+pub fn INodeArranger::get_predicted_size(Self, @graph.ElkNode) -> @core.KVector raise
 
 pub enum NodeArrangementStrategy {
   LEFT_RIGHT_TOP_DOWN_NODE_PLACER
@@ -126,9 +126,9 @@ pub enum TopdownPackingPhases {
 pub struct TopdownpackingLayoutProvider {
   algorithm_assembler : @core.AlgorithmAssembler[TopdownPackingPhases, GridElkNode]
 }
-pub fn TopdownpackingLayoutProvider::assemble_algorithm(Self, GridElkNode) -> Array[@core.ILayoutProcessor[TopdownPackingPhases, GridElkNode]]
-pub fn TopdownpackingLayoutProvider::get_predicted_graph_size(Self, Int) -> @core.KVector
-pub fn TopdownpackingLayoutProvider::layout(Self, Int, @core.IElkProgressMonitor) -> Unit
+pub fn TopdownpackingLayoutProvider::assemble_algorithm(Self, GridElkNode) -> Array[@core.ILayoutProcessor[TopdownPackingPhases, GridElkNode]] raise
+pub fn TopdownpackingLayoutProvider::get_predicted_graph_size(Self, @graph.ElkNode) -> @core.KVector raise
+pub fn TopdownpackingLayoutProvider::layout(Self, @graph.ElkNode, @core.IElkProgressMonitor) -> Unit raise
 
 pub enum WhitespaceEliminationStrategy {
   BOTTOM_ROW_EQUAL_WHITESPACE_ELIMINATOR

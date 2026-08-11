@@ -65,7 +65,6 @@ fn dot_importer_test_find_edge_statement(
 
 ///|
 test "DotImporter transform basic graph" {
-  @graph.reset_graph_model_for_test()
   let graphviz_model = dot_create_graphviz_model()
   let graph = dot_create_graph()
   graph.set_type(Some(dot_graph_type_digraph()))
@@ -158,7 +157,6 @@ test "DotImporter transform basic graph" {
 
 ///|
 test "DotImporter transfer_layout updates statements" {
-  @graph.reset_graph_model_for_test()
   let graphviz_model = dot_create_graphviz_model()
   let graph = dot_create_graph()
   graph.set_type(Some(dot_graph_type_digraph()))

@@ -21,9 +21,9 @@ fn north_south_same_node(left : LNode?, right : LNode?) -> Bool {
 }
 
 ///|
-fn north_south_origin_port_of(node : LNode) -> LPort {
+fn north_south_origin_port_of(node : LNode) -> LPort raise {
   if node.get_ports().is_empty() {
-    @core.layout_runtime_report_unsupported_configuration(
+    @core.layout_runtime_raise_unsupported_configuration(
       "north south dummy node has no ports",
     )
     return new_l_port()
@@ -32,7 +32,7 @@ fn north_south_origin_port_of(node : LNode) -> LPort {
     node.get_ports()[0].get_property_l_port(internal_properties_origin_l_port) {
     Some(origin) => origin
     None => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "north south dummy node has no origin port",
       )
       new_l_port()
@@ -96,7 +96,7 @@ pub fn NorthSouthEdgeNeighbouringNodeCrossingsCounter::count_crossings(
   self : NorthSouthEdgeNeighbouringNodeCrossingsCounter,
   upper_node : LNode,
   lower_node : LNode,
-) -> Unit {
+) -> Unit raise {
   self.upper_lower_crossings = 0
   self.lower_upper_crossings = 0
 
@@ -112,7 +112,7 @@ fn NorthSouthEdgeNeighbouringNodeCrossingsCounter::process_if_two_north_south_no
   self : NorthSouthEdgeNeighbouringNodeCrossingsCounter,
   upper_node : LNode,
   lower_node : LNode,
-) -> Unit {
+) -> Unit raise {
   if self.is_north_south(upper_node) &&
     self.is_north_south(lower_node) &&
     !self.have_different_origins(upper_node, lower_node) {
@@ -129,7 +129,7 @@ fn NorthSouthEdgeNeighbouringNodeCrossingsCounter::count_crossings_of_two_north_
   self : NorthSouthEdgeNeighbouringNodeCrossingsCounter,
   further_from_normal_node : LNode,
   closer_to_normal_node : LNode,
-) -> Unit {
+) -> Unit raise {
   if self.origin_port_position_of(further_from_normal_node) >
     self.origin_port_position_of(closer_to_normal_node) {
     let closer_east_ports = closer_to_normal_node.get_port_side_view(East)
@@ -167,7 +167,7 @@ fn NorthSouthEdgeNeighbouringNodeCrossingsCounter::process_if_north_south_long_e
   self : NorthSouthEdgeNeighbouringNodeCrossingsCounter,
   upper_node : LNode,
   lower_node : LNode,
-) -> Unit {
+) -> Unit raise {
   if self.is_north_south(upper_node) && self.is_long_edge_dummy(lower_node) {
     if self.is_north_of_normal_node(upper_node) {
       self.upper_lower_crossings = 1
@@ -256,7 +256,7 @@ fn NorthSouthEdgeNeighbouringNodeCrossingsCounter::have_different_origins(
 fn NorthSouthEdgeNeighbouringNodeCrossingsCounter::origin_port_position_of(
   self : NorthSouthEdgeNeighbouringNodeCrossingsCounter,
   node : LNode,
-) -> Int {
+) -> Int raise {
   let origin = north_south_origin_port_of(node)
   let key = lport_internal_handle(origin)
   self.port_positions.get(key).unwrap()
@@ -266,7 +266,7 @@ fn NorthSouthEdgeNeighbouringNodeCrossingsCounter::origin_port_position_of(
 fn NorthSouthEdgeNeighbouringNodeCrossingsCounter::is_north_of_normal_node(
   self : NorthSouthEdgeNeighbouringNodeCrossingsCounter,
   node : LNode,
-) -> Bool {
+) -> Bool raise {
   ignore(self)
   north_south_is_side(north_south_origin_port_of(node), North)
 }

@@ -14,24 +14,28 @@ pub fn greedy_rectangle_strip_overlap_remover_remove_overlaps(RectangleStripOver
 
 pub fn new_greedy_rectangle_strip_overlap_removal_strategy() -> IRectangleStripOverlapRemovalStrategy
 
-pub fn new_irectangle_strip_overlap_removal_strategy((RectangleStripOverlapRemover) -> Double) -> IRectangleStripOverlapRemovalStrategy
+pub fn new_irectangle_strip_overlap_removal_strategy((RectangleStripOverlapRemover) -> Double raise) -> IRectangleStripOverlapRemovalStrategy
+
+pub fn new_pure_irectangle_strip_overlap_removal_strategy((RectangleStripOverlapRemover) -> Double) -> IRectangleStripOverlapRemovalStrategy
 
 // Errors
 
 // Types and methods
 pub struct IRectangleStripOverlapRemovalStrategy {
-  remove_overlaps : (RectangleStripOverlapRemover) -> Double
+  remove_overlaps : ((RectangleStripOverlapRemover) -> Double raise)?
+  pure_remove_overlaps : ((RectangleStripOverlapRemover) -> Double)?
 }
-pub fn IRectangleStripOverlapRemovalStrategy::remove_overlaps(Self, RectangleStripOverlapRemover) -> Double
+pub fn IRectangleStripOverlapRemovalStrategy::remove_overlaps(Self, RectangleStripOverlapRemover) -> Double raise
 
 pub struct RectangleNode {
-  handle : Int
-} derive(Eq)
+  // private fields
+}
 pub fn RectangleNode::add_overlapping_node(Self, Self) -> Unit
 pub fn RectangleNode::clear_overlapping_nodes(Self) -> Unit
 pub fn RectangleNode::get_overlapping_nodes(Self) -> Array[Self]
 pub fn RectangleNode::get_rectangle(Self) -> @core.ElkRectangle
 pub fn RectangleNode::set_rectangle_y(Self, Double) -> Unit
+pub impl Eq for RectangleNode
 
 pub struct RectangleStripOverlapRemover {
   overlap_removal_direction : @core.Direction
@@ -45,7 +49,7 @@ pub fn RectangleStripOverlapRemover::add_rectangle(Self, @core.ElkRectangle) -> 
 pub fn RectangleStripOverlapRemover::get_horizontal_gap(Self) -> Double
 pub fn RectangleStripOverlapRemover::get_rectangle_nodes(Self) -> Array[RectangleNode]
 pub fn RectangleStripOverlapRemover::get_vertical_gap(Self) -> Double
-pub fn RectangleStripOverlapRemover::remove_overlaps(Self) -> Double
+pub fn RectangleStripOverlapRemover::remove_overlaps(Self) -> Double raise
 pub fn RectangleStripOverlapRemover::with_gap(Self, Double, Double) -> Self
 pub fn RectangleStripOverlapRemover::with_overlap_removal_strategy(Self, IRectangleStripOverlapRemovalStrategy) -> Self
 pub fn RectangleStripOverlapRemover::with_start_coordinate(Self, Double) -> Self

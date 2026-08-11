@@ -16,11 +16,13 @@ pub fn layered_point_with_quadrant(LayeredPoint, LayeredQuadrant) -> LayeredPoin
 
 pub fn layered_quadrant_eq(LayeredQuadrant, LayeredQuadrant) -> Bool
 
-pub fn layered_rectilinear_convex_hull_of(Array[LayeredPoint]) -> LayeredRectilinearConvexHull
+pub fn layered_rectilinear_convex_hull_of(Array[LayeredPoint]) -> LayeredRectilinearConvexHull raise
 
-pub fn[T] layered_scanline_execute(Array[T], (T, T) -> Int, Array[(T) -> Unit]) -> Unit
+pub fn[T] layered_scanline_execute(Array[T], (T, T) -> Int raise?, Array[(T) -> Unit]) -> Unit raise?
 
-pub fn[T] layered_scanline_execute_single(Array[T], (T, T) -> Int, (T) -> Unit) -> Unit
+pub fn[T] layered_scanline_execute_single(Array[T], (T, T) -> Int raise?, (T) -> Unit) -> Unit raise?
+
+pub fn[T] layered_scanline_execute_single_raise(Array[T], (T, T) -> Int raise?, (T) -> Unit raise) -> Unit raise
 
 pub fn new_layered_point(Double, Double) -> LayeredPoint
 
@@ -68,7 +70,7 @@ pub struct LayeredRectilinearConvexHull {
   mut y_min2 : LayeredPoint?
 }
 pub fn LayeredRectilinearConvexHull::get_hull(Self) -> Array[LayeredPoint]
-pub fn LayeredRectilinearConvexHull::split_into_rectangles(Self) -> Array[@core.ElkRectangle]
+pub fn LayeredRectilinearConvexHull::split_into_rectangles(Self) -> Array[@core.ElkRectangle] raise
 
 // Type aliases
 pub type LayeredScanlineEventHandler[T] = (T) -> Unit

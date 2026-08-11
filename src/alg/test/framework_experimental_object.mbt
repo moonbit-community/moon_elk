@@ -35,7 +35,7 @@ pub fn[T] experimental_object_inflate(
 pub fn[T] ExperimentalObject::realize(
   self : ExperimentalObject[T],
   test_instance : T,
-) -> ElkNode {
+) -> ElkNode raise {
   let test_graph = self.graph.provide_graph(test_instance)
   self.layout_algorithm.apply(test_graph)
   self.configuration.apply(test_instance, test_graph)

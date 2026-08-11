@@ -86,7 +86,7 @@ pub struct AbstractResourcePath {
 pub fn new_abstract_resource_path(
   base : String?,
   relative : String,
-) -> AbstractResourcePath {
+) -> AbstractResourcePath raise {
   let path = {
     file: "",
     is_directory: false,
@@ -102,7 +102,7 @@ pub fn AbstractResourcePath::initialize(
   self : AbstractResourcePath,
   base : String?,
   relative : String,
-) -> Unit {
+) -> Unit raise {
   let normalized_base = match base {
     Some(value) => resource_path_normalize_slashes(value)
     None => ""
@@ -112,7 +112,7 @@ pub fn AbstractResourcePath::initialize(
       abstract_resource_path_raise_unit("Relative path cannot be null.")
     catch {
       AbstractResourcePathException(message) =>
-        @core.layout_runtime_report_unsupported_configuration(
+        @core.layout_runtime_raise_unsupported_configuration(
           "org.eclipse.elk.alg.test.framework.io.AbstractResourcePath: " +
           message,
         )
@@ -221,7 +221,7 @@ fn abstract_resource_path_fill_file_list(
   root_path : AbstractResourcePath,
   directory : String,
   result : Array[AbsoluteResourcePath],
-) -> Unit {
+) -> Unit raise {
   let children = core_debug_directory_children(directory)
   for child in children {
     if !resource_path_filter_accepts(root_path.get_filter(), child) {
@@ -238,7 +238,7 @@ fn abstract_resource_path_fill_file_list(
 ///|
 pub fn AbstractResourcePath::list_resources(
   self : AbstractResourcePath,
-) -> Array[AbsoluteResourcePath] {
+) -> Array[AbsoluteResourcePath] raise {
   let result : Array[AbsoluteResourcePath] = []
   let file = self.get_file()
   if !resource_path_exists(file) {

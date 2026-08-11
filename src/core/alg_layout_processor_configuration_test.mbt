@@ -45,13 +45,14 @@ test "LayoutProcessorConfiguration testAddBefore1" {
 
 ///|
 test "LayoutProcessorConfiguration testAddBefore2 reports runtime error" {
-  @core.layout_runtime_clear_error()
-  let config = layout_processor_configuration_create(test_phase_descriptor)
-  ignore(config.before(Phase1))
-  ignore(config.add_before(Phase2, test_processor_factory(Processor1)))
-  ignore(config.add(test_processor_factory(Processor2)))
+  let error = capture_layout_error(fn() raise {
+    let config = layout_processor_configuration_create(test_phase_descriptor)
+    ignore(config.before(Phase1))
+    ignore(config.add_before(Phase2, test_processor_factory(Processor1)))
+    ignore(config.add(test_processor_factory(Processor2)))
+  })
   assert_eq(
-    @core.layout_runtime_take_error_message(),
+    error,
     Some(
       "org.eclipse.elk.core.UnsupportedConfigurationException: Did not call before(...) or after(...) before calling add(...).",
     ),
@@ -71,13 +72,14 @@ test "LayoutProcessorConfiguration testAddAfter1" {
 
 ///|
 test "LayoutProcessorConfiguration testAddAfter2 reports runtime error" {
-  @core.layout_runtime_clear_error()
-  let config = layout_processor_configuration_create(test_phase_descriptor)
-  ignore(config.before(Phase1))
-  ignore(config.add_after(Phase1, test_processor_factory(Processor1)))
-  ignore(config.add(test_processor_factory(Processor2)))
+  let error = capture_layout_error(fn() raise {
+    let config = layout_processor_configuration_create(test_phase_descriptor)
+    ignore(config.before(Phase1))
+    ignore(config.add_after(Phase1, test_processor_factory(Processor1)))
+    ignore(config.add(test_processor_factory(Processor2)))
+  })
   assert_eq(
-    @core.layout_runtime_take_error_message(),
+    error,
     Some(
       "org.eclipse.elk.core.UnsupportedConfigurationException: Did not call before(...) or after(...) before calling add(...).",
     ),

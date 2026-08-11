@@ -5,16 +5,9 @@ type ElkNode = @graph.ElkNode
 type IProperty[T] = @graph.IProperty[T]
 
 ///|
-let layout_meta_data_service_reset_for_test = @test.layout_meta_data_service_reset_for_test
-
-///|
-let plain_java_initialization_reset_for_test = @test.plain_java_initialization_reset_for_test
-
-///|
 let plain_java_initialization_initialize_plain_java_layout = @test.plain_java_initialization_initialize_plain_java_layout
 
 ///|
-let reset_graph_model_for_test = @test.reset_graph_model_for_test
 
 ///|
 let graph_test_utils_create_simple_graph = @test.graph_test_utils_create_simple_graph
@@ -30,11 +23,9 @@ let new_recursive_graph_layout_engine = @test.new_recursive_graph_layout_engine
 
 ///|
 fn new_abstract_layout_provider(
-  layout_fn : (ElkNode, @core.IElkProgressMonitor) -> Unit,
-  initialize_fn? : (String?) -> Unit = _ => (),
-  dispose_fn? : () -> Unit = () => (),
+  layout_fn : (ElkNode, @core.IElkProgressMonitor) -> Unit raise,
 ) -> @core.AbstractLayoutProvider {
-  @core.new_abstract_layout_provider(layout_fn, initialize_fn~, dispose_fn~)
+  @core.new_abstract_layout_provider(layout_fn)
 }
 
 ///|
@@ -137,4 +128,3 @@ let spore_underlying_layout_algorithm = @spore.spore_underlying_layout_algorithm
 let vertiflex_consider_node_model_order = @vertiflex.vertiflex_consider_node_model_order
 
 ///|
-let layout_meta_data_service_option_data_values = @core.layout_meta_data_service_option_data_values

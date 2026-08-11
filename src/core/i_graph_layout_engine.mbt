@@ -1,11 +1,11 @@
 ///|
 pub(all) struct IGraphLayoutEngine {
-  layout_fn : (@graph.ElkNode, IElkProgressMonitor) -> Unit
+  layout_fn : (@graph.ElkNode, IElkProgressMonitor) -> Unit raise
 }
 
 ///|
 pub fn new_graph_layout_engine(
-  layout_fn : (@graph.ElkNode, IElkProgressMonitor) -> Unit,
+  layout_fn : (@graph.ElkNode, IElkProgressMonitor) -> Unit raise,
 ) -> IGraphLayoutEngine {
   { layout_fn, }
 }
@@ -15,6 +15,6 @@ pub fn IGraphLayoutEngine::layout(
   self : IGraphLayoutEngine,
   layout_graph : @graph.ElkNode,
   progress_monitor : IElkProgressMonitor,
-) -> Unit {
+) -> Unit raise {
   (self.layout_fn)(layout_graph, progress_monitor)
 }

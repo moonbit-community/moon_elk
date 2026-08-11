@@ -95,7 +95,7 @@ fn spore_scanline_timestamp_comparator(
 
 ///|
 fn spore_scanline_overlap(n1 : Node, n2 : Node) -> Bool {
-  if n1.uid == n2.uid {
+  if physical_equal(n1, n2) {
     return false
   }
   @compaction.compare_fuzzy_lt(n1.rect.x, n2.rect.x + n2.rect.width) &&
@@ -136,7 +136,7 @@ fn spore_scanline_insert(
   checker : ScanlineOverlapCheck,
   intervals : Array[Node],
   node : Node,
-) -> Unit {
+) -> Unit raise {
   if !spore_scanline_insert_sorted(intervals, node) {
     try
       spore_scanline_overlap_check_raise_unit(
@@ -144,7 +144,7 @@ fn spore_scanline_insert(
       )
     catch {
       ScanlineOverlapCheckException(message) =>
-        @core.layout_runtime_report_unsupported_configuration(
+        @core.layout_runtime_raise_unsupported_configuration(
           "org.eclipse.elk.alg.common.spore.ScanlineOverlapCheck: " + message,
         )
     } noraise {
@@ -189,7 +189,7 @@ fn spore_scanline_insert(
 pub fn ScanlineOverlapCheck::sweep(
   self : ScanlineOverlapCheck,
   nodes : Array[Node],
-) -> Unit {
+) -> Unit raise {
   self.svg.clear_group("n")
   self.svg.clear_group("o")
   self.svg.clear_group("e")
@@ -209,10 +209,10 @@ pub fn ScanlineOverlapCheck::sweep(
   self.svg.isave()
 
   let intervals_sort_left : Array[Node] = []
-  @compaction.scanline_execute_single(
+  @compaction.scanline_execute_single_raise(
     points,
     spore_scanline_timestamp_comparator,
-    timestamp => {
+    fn(timestamp) raise {
       if timestamp.low {
         spore_scanline_insert(self, intervals_sort_left, timestamp.node)
       } else {

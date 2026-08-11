@@ -5,6 +5,7 @@ pub struct VertiFlexLayoutProvider {
     @graph.ElkNode,
   ]
   mut node_node_spacing : Double
+  session : VertiFlexSession
 }
 
 ///|
@@ -20,27 +21,23 @@ fn vertiflex_raise_unsupported_configuration(
 }
 
 ///|
-fn vertiflex_exception_message(
-  err : VertiFlexLayoutProviderException,
-) -> String {
-  match err {
-    UnsupportedConfiguration(message) => message
-  }
-}
-
-///|
-pub fn new_vertiflex_layout_provider() -> VertiFlexLayoutProvider {
+pub fn new_vertiflex_layout_provider() -> VertiFlexLayoutProvider raise {
   {
     algorithm_assembler: @core.algorithm_assembler_create(
       vertiflex_layout_phase_descriptor,
     ),
     node_node_spacing: 0.0,
+    session: new_vertiflex_session(),
   }
 }
 
 ///|
-fn init {
-  @core.recursive_graph_layout_engine_register_handler(vertiflex_algorithm_id, (
+pub fn register_vertiflex_layout_algorithm(
+  runtime : @core.LayoutRuntime,
+) -> Unit {
+  runtime.register_layout_algorithm(vertiflex_algorithm_id, (
+    _runtime,
+    _session,
     layout_graph,
     progress_monitor,
   ) => new_vertiflex_layout_provider().layout(layout_graph, progress_monitor))
@@ -52,7 +49,7 @@ fn vertiflex_node_micro_layout_execute(graph : @graph.ElkNode) -> Unit {
 }
 
 ///|
-fn vertiflex_parse_padding(value : String) -> @core.ElkPadding {
+fn vertiflex_parse_padding(value : String) -> @core.ElkPadding raise {
   let padding_value = @core.new_elk_padding()
   padding_value.parse(value)
   padding_value
@@ -63,7 +60,7 @@ fn vertiflex_check_vertical_constraint_validity(
   provider : VertiFlexLayoutProvider,
   root : @graph.ElkNode,
   current_min_constraint : Double,
-) -> Unit raise VertiFlexLayoutProviderException {
+) -> Unit raise {
   let root_height = if @graph.node_has_double_property(
       root, vertiflex_vertical_constraint,
     ) {
@@ -98,7 +95,7 @@ fn vertiflex_check_vertical_constraint_validity(
 }
 
 ///|
-fn vertiflex_set_graph_size(graph : @graph.ElkNode) -> Unit {
+fn vertiflex_set_graph_size(graph : @graph.ElkNode) -> Unit raise {
   let padding_value = vertiflex_parse_padding(
     @graph.node_get_string_property(graph, vertiflex_padding),
   )
@@ -124,24 +121,24 @@ fn vertiflex_set_graph_size(graph : @graph.ElkNode) -> Unit {
 pub fn VertiFlexLayoutProvider::assemble_algorithm(
   self : VertiFlexLayoutProvider,
   graph : @graph.ElkNode,
-) -> Array[@core.ILayoutProcessor[VertiFlexLayoutPhases, @graph.ElkNode]] {
+) -> Array[@core.ILayoutProcessor[VertiFlexLayoutPhases, @graph.ElkNode]] raise {
   ignore(self.algorithm_assembler.reset())
   ignore(
     self.algorithm_assembler.set_phase(
       P1_NODE_Y_PLACEMENT,
-      vertiflex_node_y_placer_phase_factory(SIMPLE_Y_PLACING),
+      vertiflex_node_y_placer_phase_factory(self.session, SIMPLE_Y_PLACING),
     ),
   )
   ignore(
     self.algorithm_assembler.set_phase(
       P2_NODE_RELATIVE_PLACEMENT,
-      vertiflex_relative_x_placer_phase_factory(SIMPLE_X_PLACING),
+      vertiflex_relative_x_placer_phase_factory(self.session, SIMPLE_X_PLACING),
     ),
   )
   ignore(
     self.algorithm_assembler.set_phase(
       P3_NODE_ABSOLUTE_PLACEMENT,
-      vertiflex_absolute_x_placer_phase_factory(ABSOLUTE_XPLACING),
+      vertiflex_absolute_x_placer_phase_factory(self.session, ABSOLUTE_XPLACING),
     ),
   )
   let router_strategy = match
@@ -154,7 +151,7 @@ pub fn VertiFlexLayoutProvider::assemble_algorithm(
   ignore(
     self.algorithm_assembler.set_phase(
       P4_EDGE_ROUTING,
-      vertiflex_edgerouter_phase_factory(router_strategy),
+      vertiflex_edgerouter_phase_factory(self.session, router_strategy),
     ),
   )
   self.algorithm_assembler.build(graph)
@@ -165,17 +162,21 @@ pub fn VertiFlexLayoutProvider::layout(
   self : VertiFlexLayoutProvider,
   graph : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor,
-) -> Unit {
+) -> Unit raise {
   try
     vertiflex_layout_provider_layout_impl(self, graph, progress_monitor)
   catch {
-    err => {
-      @core.layout_runtime_report_unsupported_configuration(
-        vertiflex_exception_message(err),
-      )
+    UnsupportedConfiguration(message) => {
       if progress_monitor.is_running() {
         progress_monitor.done()
       }
+      @core.layout_runtime_raise_unsupported_configuration(message)
+    }
+    err => {
+      if progress_monitor.is_running() {
+        progress_monitor.done()
+      }
+      raise err
     }
   } noraise {
     _ => ()
@@ -187,8 +188,8 @@ fn vertiflex_layout_provider_layout_impl(
   provider : VertiFlexLayoutProvider,
   graph : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor,
-) -> Unit raise VertiFlexLayoutProviderException {
-  vertiflex_internal_reset()
+) -> Unit raise {
+  provider.session.clear()
   let algorithm = provider.assemble_algorithm(graph)
   ignore(
     progress_monitor.begin(
@@ -205,7 +206,8 @@ fn vertiflex_layout_provider_layout_impl(
   }
 
   match vertiflex_find_root(graph) {
-    Some(root) => vertiflex_internal_set_root_node(graph, root)
+    Some(root) =>
+      vertiflex_internal_set_root_node(provider.session, graph, root)
     None =>
       vertiflex_raise_unsupported_configuration(
         "The given graph is not a tree!",
@@ -223,13 +225,13 @@ fn vertiflex_layout_provider_layout_impl(
 
   vertiflex_check_vertical_constraint_validity(
     provider,
-    vertiflex_internal_root_node(graph),
+    vertiflex_internal_root_node(provider.session, graph),
     0.0,
   )
 
   let mut count = 0
   for node in @graph.node_children(graph) {
-    vertiflex_internal_set_node_model_order(node, count)
+    vertiflex_internal_set_node_model_order(provider.session, node, count)
     count += 1
   }
 
@@ -238,6 +240,7 @@ fn vertiflex_layout_provider_layout_impl(
   }
   vertiflex_set_graph_size(graph)
   progress_monitor.done()
+  provider.session.clear()
 }
 
 ///|

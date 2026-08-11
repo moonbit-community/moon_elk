@@ -42,7 +42,7 @@ pub fn new_network_simplex_placer_layout_phase() -> @core.ILayoutProcessor[@runt
 
 pub fn new_simple_node_placer_layout_phase() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
 
-pub let placement_phase_linked : Bool
+pub fn register_node_placement_phases(@runtime.LayeredPhaseRegistry) -> Unit
 
 // Errors
 pub(all) suberror BKAlignedLayoutException {
@@ -111,7 +111,7 @@ pub struct BKCompactor {
   class_indegree : Map[Int, Int]
   class_shift : Map[Int, Double]
 }
-pub fn BKCompactor::horizontal_compaction(Self, BKAlignedLayout) -> Unit raise BKAlignedLayoutException
+pub fn BKCompactor::horizontal_compaction(Self, BKAlignedLayout) -> Unit raise
 
 pub enum BKHDirection {
   Right
@@ -143,11 +143,11 @@ pub struct BkThresholdStrategy {
   post_processables_queue : Array[BkPostprocessable]
   post_processables_stack : Array[BkPostprocessable]
 }
-pub fn BkThresholdStrategy::calculate_threshold(Self, Double, @runtime.LNode, @runtime.LNode) -> Double
+pub fn BkThresholdStrategy::calculate_threshold(Self, Double, @runtime.LNode, @runtime.LNode) -> Double raise
 pub fn BkThresholdStrategy::finish_block(Self, @runtime.LNode) -> Unit
 pub fn BkThresholdStrategy::get_other(Self, @runtime.LEdge, @runtime.LNode) -> @runtime.LNode raise BkThresholdStrategyException
 pub fn BkThresholdStrategy::init(Self, BKAlignedLayout, NeighborhoodInformation) -> Unit
-pub fn BkThresholdStrategy::post_process(Self) -> Unit
+pub fn BkThresholdStrategy::post_process(Self) -> Unit raise
 
 pub enum BkThresholdStrategyKind {
   NullThreshold

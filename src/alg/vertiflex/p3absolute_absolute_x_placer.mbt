@@ -1,5 +1,7 @@
 ///|
-fn vertiflex_absolute_x_placer_find_minimal_x(tree : @graph.ElkNode) -> Double {
+fn vertiflex_absolute_x_placer_find_minimal_x(
+  tree : @graph.ElkNode,
+) -> Double raise {
   let children_edges = @graph.node_outgoing_edges(tree)
   if children_edges.is_empty() {
     @graph.node_x(tree)
@@ -20,7 +22,7 @@ fn vertiflex_absolute_x_placer_find_minimal_x(tree : @graph.ElkNode) -> Double {
 ///|
 fn vertiflex_absolute_x_placer_absolute_tree_coords(
   tree : @graph.ElkNode,
-) -> Unit {
+) -> Unit raise {
   for edge in @graph.node_outgoing_edges(tree) {
     let child = vertiflex_internal_child_of_edge(edge)
     @graph.node_set_location(
@@ -34,16 +36,17 @@ fn vertiflex_absolute_x_placer_absolute_tree_coords(
 
 ///|
 fn vertiflex_absolute_x_placer_process(
+  session : VertiFlexSession,
   graph : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(existing) => existing
     None => @core.new_null_elk_progress_monitor()
   }
   ignore(monitor.begin("AbsolutPlacer", 1.0))
   if !@graph.node_children(graph).is_empty() {
-    let parent = vertiflex_internal_root_node(graph)
+    let parent = vertiflex_internal_root_node(session, graph)
     @graph.node_set_location(
       parent,
       @graph.node_x(parent) - vertiflex_absolute_x_placer_find_minimal_x(parent),
@@ -55,9 +58,13 @@ fn vertiflex_absolute_x_placer_process(
 }
 
 ///|
-pub fn new_vertiflex_absolute_x_placer_layout_phase() -> @core.ILayoutProcessor[
-  VertiFlexLayoutPhases,
-  @graph.ElkNode,
-] {
-  @core.new_layout_phase(vertiflex_absolute_x_placer_process, _ => None)
+pub fn new_vertiflex_absolute_x_placer_layout_phase(
+  session : VertiFlexSession,
+) -> @core.ILayoutProcessor[VertiFlexLayoutPhases, @graph.ElkNode] {
+  @core.new_layout_phase(
+    (graph, monitor) => {
+      vertiflex_absolute_x_placer_process(session, graph, monitor)
+    },
+    _ => None,
+  )
 }

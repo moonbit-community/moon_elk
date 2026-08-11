@@ -11,7 +11,7 @@ import {
 // Values
 pub fn bowyer_watson_triangulate(Array[@core.KVector], debug_output_file? : String?) -> Array[TEdge]
 
-pub fn depth_first_compaction_compact(Tree[Node], Bool, debug_output_file? : String?) -> Unit
+pub fn depth_first_compaction_compact(Tree[Node], Bool, debug_output_file? : String?) -> Unit raise
 
 pub fn get_rect_edges(@core.ElkRectangle) -> Array[TEdge]
 
@@ -51,7 +51,7 @@ pub fn point_with_quadrant(Point, Quadrant) -> Point
 
 pub fn quadrant_eq(Quadrant, Quadrant) -> Bool
 
-pub fn rectilinear_convex_hull_of(Array[Point]) -> RectilinearConvexHull
+pub fn rectilinear_convex_hull_of(Array[Point]) -> RectilinearConvexHull raise
 
 pub let spore_debug_svg : @graph.IProperty[Bool]
 
@@ -94,7 +94,6 @@ pub fn JavaTTriangleSet::remove(Self, TTriangle) -> Bool
 pub fn JavaTTriangleSet::to_array(Self) -> Array[TTriangle]
 
 pub struct Node {
-  uid : Int
   mut original_vertex : @core.KVector
   vertex : @core.KVector
   rect : @core.ElkRectangle
@@ -134,13 +133,13 @@ pub struct RectilinearConvexHull {
   mut y_min2 : Point?
 }
 pub fn RectilinearConvexHull::get_hull(Self) -> Array[Point]
-pub fn RectilinearConvexHull::split_into_rectangles(Self) -> Array[@core.ElkRectangle]
+pub fn RectilinearConvexHull::split_into_rectangles(Self) -> Array[@core.ElkRectangle] raise
 
 pub struct ScanlineOverlapCheck {
   overlap_handler : (Node, Node) -> Unit
   svg : SvgImage
 }
-pub fn ScanlineOverlapCheck::sweep(Self, Array[Node]) -> Unit
+pub fn ScanlineOverlapCheck::sweep(Self, Array[Node]) -> Unit raise
 
 pub struct SvgImage {
   spacing : Double
@@ -186,7 +185,6 @@ pub impl Eq for TEdge
 pub impl Hash for TEdge
 
 pub struct TTriangle {
-  uid : Int
   a : @core.KVector
   b : @core.KVector
   c : @core.KVector
@@ -204,7 +202,6 @@ pub impl Eq for TTriangle
 pub impl Hash for TTriangle
 
 pub struct Tree[T] {
-  uid : Int
   node : T
   children : Array[Tree[T]]
 }

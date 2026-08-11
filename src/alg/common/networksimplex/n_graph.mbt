@@ -1,12 +1,24 @@
 ///|
 pub struct NNode {
   handle : Int
-} derive(Eq)
+  priv data : NNodeData
+}
+
+///|
+pub impl Eq for NNode with fn equal(self, other) {
+  physical_equal(self, other)
+}
 
 ///|
 pub struct NEdge {
   handle : Int
-} derive(Eq)
+  priv data : NEdgeData
+}
+
+///|
+pub impl Eq for NEdge with fn equal(self, other) {
+  physical_equal(self, other)
+}
 
 ///|
 priv struct NNodeData {
@@ -56,12 +68,6 @@ pub struct NEdgeBuilder {
 }
 
 ///|
-let nnode_store : Ref[Array[NNodeData]] = Ref([])
-
-///|
-let nedge_store : Ref[Array[NEdgeData]] = Ref([])
-
-///|
 pub(all) suberror NetworkSimplexException {
   NetworkSimplexException(String)
 } derive(Debug, ToJson)
@@ -77,28 +83,13 @@ fn new_network_simplex_exception(message : String) -> NetworkSimplexException {
 }
 
 ///|
-fn network_simplex_exception_message(err : NetworkSimplexException) -> String {
-  match err {
-    NetworkSimplexException(message) => message
-  }
-}
-
-///|
 fn checked_nnode(node : NNode) -> Unit {
-  if node.handle < 0 || node.handle >= nnode_store.val.length() {
-    @core.layout_runtime_report_unsupported_configuration(
-      "invalid network simplex node id",
-    )
-  }
+  ignore(node)
 }
 
 ///|
 fn checked_nedge(edge : NEdge) -> Unit {
-  if edge.handle < 0 || edge.handle >= nedge_store.val.length() {
-    @core.layout_runtime_report_unsupported_configuration(
-      "invalid network simplex edge id",
-    )
-  }
+  ignore(edge)
 }
 
 ///|
@@ -119,12 +110,6 @@ fn int_max(left : Int, right : Int) -> Int {
   } else {
     right
   }
-}
-
-///|
-pub fn reset_network_simplex_model_for_test() -> Unit {
-  nnode_store.val.clear()
-  nedge_store.val.clear()
 }
 
 ///|
@@ -169,18 +154,20 @@ pub fn NNodeBuilder::node_type(
 
 ///|
 pub fn NNodeBuilder::create(self : NNodeBuilder, graph : NGraph) -> NNode {
-  let node : NNode = { handle: nnode_store.val.length() }
-  nnode_store.val.push({
-    id: self.id,
-    internal_id: 0,
-    _origin: self.origin,
-    _node_type: self.node_type,
-    layer: 0,
-    outgoing_edges: [],
-    incoming_edges: [],
-    tree_node: false,
-    unknown_cutvalues: [],
-  })
+  let node : NNode = {
+    handle: graph.nodes.length(),
+    data: {
+      id: self.id,
+      internal_id: 0,
+      _origin: self.origin,
+      _node_type: self.node_type,
+      layer: 0,
+      outgoing_edges: [],
+      incoming_edges: [],
+      tree_node: false,
+      unknown_cutvalues: [],
+    },
+  }
   graph.nodes.push(node)
   node
 }
@@ -266,84 +253,86 @@ pub fn NEdgeBuilder::create(
       target.handle.to_string(),
     )
   }
-  let edge : NEdge = { handle: nedge_store.val.length() }
-  nedge_store.val.push({
-    id: self.id,
-    internal_id: 0,
-    _origin: self.origin,
-    source: Some(source),
-    target: Some(target),
-    weight: self.weight,
-    delta: self.delta,
-    tree_edge: false,
-  })
-  nnode_store.val[source.handle].outgoing_edges.push(edge)
-  nnode_store.val[target.handle].incoming_edges.push(edge)
+  let edge : NEdge = {
+    handle: self.id,
+    data: {
+      id: self.id,
+      internal_id: 0,
+      _origin: self.origin,
+      source: Some(source),
+      target: Some(target),
+      weight: self.weight,
+      delta: self.delta,
+      tree_edge: false,
+    },
+  }
+  source.data.outgoing_edges.push(edge)
+  target.data.incoming_edges.push(edge)
   edge
 }
 
 ///|
 pub fn NNode::get_id(self : NNode) -> Int {
   checked_nnode(self)
-  nnode_store.val[self.handle].id
+  self.data.id
 }
 
 ///|
 pub fn NNode::set_internal_id(self : NNode, internal_id : Int) -> Unit {
   checked_nnode(self)
-  nnode_store.val[self.handle].internal_id = internal_id
+  self.data.internal_id = internal_id
 }
 
 ///|
 pub fn NNode::get_internal_id(self : NNode) -> Int {
   checked_nnode(self)
-  nnode_store.val[self.handle].internal_id
+  self.data.internal_id
 }
 
 ///|
 pub fn NNode::set_layer(self : NNode, layer : Int) -> Unit {
   checked_nnode(self)
-  nnode_store.val[self.handle].layer = layer
+  self.data.layer = layer
 }
 
 ///|
 pub fn NNode::get_layer(self : NNode) -> Int {
   checked_nnode(self)
-  nnode_store.val[self.handle].layer
+  self.data.layer
 }
 
 ///|
 pub fn NNode::set_tree_node(self : NNode, tree_node : Bool) -> Unit {
   checked_nnode(self)
-  nnode_store.val[self.handle].tree_node = tree_node
+  self.data.tree_node = tree_node
 }
 
 ///|
 pub fn NNode::is_tree_node(self : NNode) -> Bool {
   checked_nnode(self)
-  nnode_store.val[self.handle].tree_node
+  self.data.tree_node
 }
 
 ///|
 pub fn NNode::get_outgoing_edges(self : NNode) -> Array[NEdge] {
   checked_nnode(self)
-  nnode_store.val[self.handle].outgoing_edges
+  self.data.outgoing_edges
 }
 
 ///|
 pub fn NNode::get_incoming_edges(self : NNode) -> Array[NEdge] {
   checked_nnode(self)
-  nnode_store.val[self.handle].incoming_edges
+  self.data.incoming_edges
 }
 
 ///|
 pub fn NNode::get_connected_edges(self : NNode) -> Array[NEdge] {
   checked_nnode(self)
   let edges : Array[NEdge] = []
-  for edge in nnode_store.val[self.handle].incoming_edges {
+  for edge in self.data.incoming_edges {
     edges.push(edge)
   }
-  for edge in nnode_store.val[self.handle].outgoing_edges {
+  for edge in self.data.outgoing_edges {
     edges.push(edge)
   }
   edges
@@ -352,114 +341,111 @@ pub fn NNode::get_connected_edges(self : NNode) -> Array[NEdge] {
 ///|
 pub fn NNode::clear_unknown_cutvalues(self : NNode) -> Unit {
   checked_nnode(self)
-  nnode_store.val[self.handle].unknown_cutvalues.clear()
+  self.data.unknown_cutvalues.clear()
 }
 
 ///|
 pub fn NNode::add_unknown_cutvalue(self : NNode, edge : NEdge) -> Unit {
   checked_nnode(self)
   checked_nedge(edge)
-  nnode_store.val[self.handle].unknown_cutvalues.push(edge)
+  self.data.unknown_cutvalues.push(edge)
 }
 
 ///|
 pub fn NNode::remove_unknown_cutvalue(self : NNode, edge : NEdge) -> Unit {
   checked_nnode(self)
   checked_nedge(edge)
-  ignore(remove_first(nnode_store.val[self.handle].unknown_cutvalues, edge))
+  ignore(remove_first(self.data.unknown_cutvalues, edge))
 }
 
 ///|
 pub fn NNode::unknown_cutvalues(self : NNode) -> Array[NEdge] {
   checked_nnode(self)
-  nnode_store.val[self.handle].unknown_cutvalues
+  self.data.unknown_cutvalues
 }
 
 ///|
 pub fn NEdge::get_id(self : NEdge) -> Int {
   checked_nedge(self)
-  nedge_store.val[self.handle].id
+  self.data.id
 }
 
 ///|
 pub fn NEdge::set_internal_id(self : NEdge, internal_id : Int) -> Unit {
   checked_nedge(self)
-  nedge_store.val[self.handle].internal_id = internal_id
+  self.data.internal_id = internal_id
 }
 
 ///|
 pub fn NEdge::get_internal_id(self : NEdge) -> Int {
   checked_nedge(self)
-  nedge_store.val[self.handle].internal_id
+  self.data.internal_id
 }
 
 ///|
 pub fn NEdge::set_tree_edge(self : NEdge, tree_edge : Bool) -> Unit {
   checked_nedge(self)
-  nedge_store.val[self.handle].tree_edge = tree_edge
+  self.data.tree_edge = tree_edge
 }
 
 ///|
 pub fn NEdge::is_tree_edge(self : NEdge) -> Bool {
   checked_nedge(self)
-  nedge_store.val[self.handle].tree_edge
+  self.data.tree_edge
 }
 
 ///|
 pub fn NEdge::get_source(self : NEdge) -> NNode {
   checked_nedge(self)
-  nedge_store.val[self.handle].source.unwrap()
+  self.data.source.unwrap()
 }
 
 ///|
 pub fn NEdge::get_target(self : NEdge) -> NNode {
   checked_nedge(self)
-  nedge_store.val[self.handle].target.unwrap()
+  self.data.target.unwrap()
 }
 
 ///|
 pub fn NEdge::set_source(self : NEdge, source : NNode) -> Unit {
   checked_nedge(self)
   checked_nnode(source)
-  nedge_store.val[self.handle].source = Some(source)
+  self.data.source = Some(source)
 }
 
 ///|
 pub fn NEdge::set_target(self : NEdge, target : NNode) -> Unit {
   checked_nedge(self)
   checked_nnode(target)
-  nedge_store.val[self.handle].target = Some(target)
+  self.data.target = Some(target)
 }
 
 ///|
 pub fn NEdge::get_weight(self : NEdge) -> Double {
   checked_nedge(self)
-  nedge_store.val[self.handle].weight
+  self.data.weight
 }
 
 ///|
 pub fn NEdge::set_weight(self : NEdge, weight : Double) -> Unit {
   checked_nedge(self)
-  nedge_store.val[self.handle].weight = weight
+  self.data.weight = weight
 }
 
 ///|
 pub fn NEdge::get_delta(self : NEdge) -> Int {
   checked_nedge(self)
-  nedge_store.val[self.handle].delta
+  self.data.delta
 }
 
 ///|
 pub fn NEdge::set_delta(self : NEdge, delta : Int) -> Unit {
   checked_nedge(self)
-  nedge_store.val[self.handle].delta = delta
+  self.data.delta = delta
 }
 
 ///|
-pub fn NEdge::get_other(
-  self : NEdge,
-  some : NNode,
-) -> NNode raise NetworkSimplexException {
+pub fn NEdge::get_other(self : NEdge, some : NNode) -> NNode raise {
   checked_nedge(self)
   checked_nnode(some)
   let source = self.get_source()
@@ -485,18 +471,15 @@ pub fn NEdge::reverse(self : NEdge) -> NEdge {
   let target = self.get_target()
   self.set_source(target)
   self.set_target(source)
-  ignore(remove_first(nnode_store.val[source.handle].outgoing_edges, self))
-  nnode_store.val[source.handle].incoming_edges.push(self)
-  ignore(remove_first(nnode_store.val[target.handle].incoming_edges, self))
-  nnode_store.val[target.handle].outgoing_edges.push(self)
+  ignore(remove_first(source.data.outgoing_edges, self))
+  source.data.incoming_edges.push(self)
+  ignore(remove_first(target.data.incoming_edges, self))
+  target.data.outgoing_edges.push(self)
   self
 }
 
 ///|
-fn ngraph_dfs(
-  node : NNode,
-  mark : Array[Bool],
-) -> Unit raise NetworkSimplexException {
+fn ngraph_dfs(node : NNode, mark : Array[Bool]) -> Unit raise {
   let node_internal_id = node.get_internal_id()
   if mark[node_internal_id] {
     return
@@ -509,9 +492,7 @@ fn ngraph_dfs(
 }
 
 ///|
-fn ngraph_find_con_comp_representatives(
-  graph : NGraph,
-) -> Array[NNode] raise NetworkSimplexException {
+fn ngraph_find_con_comp_representatives(graph : NGraph) -> Array[NNode] raise {
   let cc_rep : Array[NNode] = []
   let mark : Array[Bool] = []
   for _ in 0..<graph.nodes.length() {
@@ -530,7 +511,7 @@ fn ngraph_find_con_comp_representatives(
 fn ngraph_create_artificial_root_and_connect(
   graph : NGraph,
   nodes_to_connect : Array[NNode],
-) -> NNode raise NetworkSimplexException {
+) -> NNode raise {
   let root = nnode_of().create(graph)
   for src in nodes_to_connect {
     ignore(nedge_of().delta(0).weight(0.0).source(root).target(src).create())
@@ -539,9 +520,7 @@ fn ngraph_create_artificial_root_and_connect(
 }
 
 ///|
-fn ngraph_make_connected_impl(
-  graph : NGraph,
-) -> NNode? raise NetworkSimplexException {
+fn ngraph_make_connected_impl(graph : NGraph) -> NNode? raise {
   let mut id = 0
   for node in graph.nodes {
     node.set_internal_id(id)
@@ -556,14 +535,13 @@ fn ngraph_make_connected_impl(
 }
 
 ///|
-pub fn NGraph::make_connected(self : NGraph) -> NNode? {
+pub fn NGraph::make_connected(self : NGraph) -> NNode? raise {
   try ngraph_make_connected_impl(self) catch {
-    err => {
-      @core.layout_runtime_report_unsupported_configuration(
-        network_simplex_exception_message(err),
-      )
+    NetworkSimplexException(message) => {
+      @core.layout_runtime_raise_unsupported_configuration(message)
       None
     }
+    err => raise err
   } noraise {
     value => value
   }

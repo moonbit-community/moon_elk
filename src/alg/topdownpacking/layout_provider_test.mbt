@@ -32,7 +32,6 @@ fn topdownpacking_set_required_options(
 
 ///|
 test "Topdownpacking predicted size from children count" {
-  @test.reset_graph_model_for_test()
   let graph = @test.create_graph()
   ignore(@graph.create_node(Some(graph)))
   ignore(@graph.create_node(Some(graph)))
@@ -48,7 +47,6 @@ test "Topdownpacking predicted size from children count" {
 
 ///|
 test "Topdownpacking layout places nodes on grid" {
-  @test.reset_graph_model_for_test()
   let graph = @test.create_graph()
   let n0 = @graph.create_node(Some(graph))
   let n1 = @graph.create_node(Some(graph))
@@ -75,7 +73,6 @@ test "Topdownpacking layout places nodes on grid" {
 
 ///|
 test "Topdownpacking whitespace elimination expands rows and columns" {
-  @test.reset_graph_model_for_test()
   let graph = @test.create_graph()
   @graph.node_set_dimensions(graph, 30.0, 30.0)
   let n0 = @graph.create_node(Some(graph))

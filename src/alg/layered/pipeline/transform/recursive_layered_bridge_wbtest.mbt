@@ -12,7 +12,6 @@ fn recursive_graph_layout_engine_test_seeded_next_boolean(
 
 ///|
 test "recursive layered context applies graph configurator properties" {
-  @graph.reset_graph_model_for_test()
   let graph = @graph.create_graph()
   @graph.node_set_double_property(graph, @core.spacing_edge_edge, 1.0)
   @graph.node_set_string_property(graph, @core.direction, "UNDEFINED")
@@ -36,7 +35,8 @@ test "recursive layered context applies graph configurator properties" {
     undefined_node, @core.port_constraints, "UNDEFINED",
   )
 
-  let context = match recursive_layered_create_context(graph, None) {
+  let session = new_layered_transform_session()
+  let context = match recursive_layered_create_context(session, graph, None) {
     Some(value) => value
     None => fail("expected layered context")
   }
@@ -86,7 +86,6 @@ test "recursive layered context applies graph configurator properties" {
 
 ///|
 test "recursive layered context copies individual spacing overrides to LNode" {
-  @graph.reset_graph_model_for_test()
   let graph = @graph.create_graph()
   @graph.node_set_double_property(graph, @core.spacing_edge_label, 7.0)
 
@@ -98,7 +97,8 @@ test "recursive layered context copies individual spacing overrides to LNode" {
     "42.5",
   )
 
-  let context = match recursive_layered_create_context(graph, None) {
+  let session = new_layered_transform_session()
+  let context = match recursive_layered_create_context(session, graph, None) {
     Some(value) => value
     None => fail("expected layered context")
   }
@@ -116,11 +116,11 @@ test "recursive layered context copies individual spacing overrides to LNode" {
 
 ///|
 test "recursive layered context accepts elk.randomSeed alias" {
-  @graph.reset_graph_model_for_test()
   let graph = @graph.create_graph()
   @graph.node_set_layout_option_string_by_id(graph, "elk.randomSeed", "42")
 
-  let context = match recursive_layered_create_context(graph, None) {
+  let session = new_layered_transform_session()
+  let context = match recursive_layered_create_context(session, graph, None) {
     Some(value) => value
     None => fail("expected layered context")
   }
@@ -130,7 +130,6 @@ test "recursive layered context accepts elk.randomSeed alias" {
 
 ///|
 test "recursive layered context marks east-west fixed ports as north-south ports for DOWN direction" {
-  @graph.reset_graph_model_for_test()
   let graph = @graph.create_graph()
   @graph.node_set_string_property(graph, @core.direction, "DOWN")
 
@@ -158,7 +157,8 @@ test "recursive layered context marks east-west fixed ports as north-south ports
   )
   @graph.port_set_location(west, 0.0, 60.0)
 
-  let context = match recursive_layered_create_context(graph, None) {
+  let session = new_layered_transform_session()
+  let context = match recursive_layered_create_context(session, graph, None) {
     Some(value) => value
     None => fail("expected layered context")
   }
@@ -170,21 +170,21 @@ test "recursive layered context marks east-west fixed ports as north-south ports
 
 ///|
 test "applying a transformed graph releases pipeline-owned indexes" {
-  @graph.reset_graph_model_for_test()
   let graph = @graph.create_graph()
+  let session = new_layered_transform_session()
   let layered_graph = match
-    recursive_layered_import_graph_for_transform(graph) {
+    recursive_layered_import_graph_for_transform(session, graph) {
     Some(value) => value
     None => fail("expected imported layered graph")
   }
 
-  assert_false(recursive_layered_transform_context_store.val.is_empty())
-  assert_true(recursive_layered_apply_transformed_graph(layered_graph))
-  assert_true(recursive_layered_transform_context_store.val.is_empty())
-  assert_true(recursive_layered_global_elk_to_lnode.val.is_empty())
-  assert_true(recursive_layered_global_elk_to_lport.val.is_empty())
-  assert_true(recursive_layered_global_ledge_to_elk_edge.val.is_empty())
-  assert_true(recursive_layered_model_order_node_assignments.val.is_empty())
-  assert_true(recursive_layered_model_order_edge_assignments.val.is_empty())
+  assert_false(session.contexts.is_empty())
+  assert_true(recursive_layered_apply_transformed_graph(session, layered_graph))
+  assert_true(session.contexts.is_empty())
+  assert_true(session.elk_to_lnode.is_empty())
+  assert_true(session.elk_to_lport.is_empty())
+  assert_true(session.ledge_to_elk_edge.is_empty())
+  assert_true(session.node_assignments.is_empty())
+  assert_true(session.edge_assignments.is_empty())
   dispose_layered_graph(layered_graph)
 }

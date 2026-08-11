@@ -2,18 +2,17 @@
 fn rectpacking_greedy_width_approximator_process(
   graph : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   try
     rectpacking_greedy_width_approximator_process_impl(graph, progress_monitor)
   catch {
-    err => {
-      @core.layout_runtime_report_unsupported_configuration(
-        rectpacking_width_approximation_exception_message(err),
-      )
+    RectpackingWidthApproximationException(message) => {
+      @core.layout_runtime_raise_unsupported_configuration(message)
       if progress_monitor is Some(monitor) && monitor.is_running() {
         monitor.done()
       }
     }
+    err => raise err
   } noraise {
     _ => ()
   }
@@ -23,7 +22,7 @@ fn rectpacking_greedy_width_approximator_process(
 fn rectpacking_greedy_width_approximator_process_impl(
   graph : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit raise RectpackingWidthApproximationException {
+) -> Unit raise {
   match progress_monitor {
     Some(monitor) => ignore(monitor.begin("Greedy Width Approximator", 1.0))
     None => ()

@@ -55,15 +55,6 @@ fn[T] libavoid_communicator_raise(
 }
 
 ///|
-fn libavoid_communicator_exception_message(
-  err : LibavoidCommunicatorException,
-) -> String {
-  match err {
-    LibavoidCommunicatorException(message) => message
-  }
-}
-
-///|
 pub fn new_libavoid_server_communicator() -> LibavoidServerCommunicator {
   {
     node_id_map: Map([]),
@@ -174,17 +165,34 @@ pub fn LibavoidServerCommunicator::request_layout(
   layout_node : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor,
   lv_server : LibavoidServer,
+  session : @core.LayoutSession,
 ) -> Unit {
   try self.request_layout_impl(layout_node, progress_monitor, lv_server) catch {
-    err => {
-      @core.layout_runtime_report_unsupported_configuration(
-        libavoid_communicator_exception_message(err),
-      )
+    LibavoidCommunicatorException(message) => {
+      session.report_unsupported_configuration(message)
       if lv_server.is_running() {
         lv_server.cleanup(libavoid_server_cleanup_error())
       }
       if progress_monitor.is_running() {
-        progress_monitor.done()
+        try progress_monitor.done() catch {
+          cleanup_error => session.record_error(cleanup_error)
+        } noraise {
+          _ => ()
+        }
+      }
+      self.reset()
+    }
+    err => {
+      session.record_error(err)
+      if lv_server.is_running() {
+        lv_server.cleanup(libavoid_server_cleanup_error())
+      }
+      if progress_monitor.is_running() {
+        try progress_monitor.done() catch {
+          cleanup_error => session.record_error(cleanup_error)
+        } noraise {
+          _ => ()
+        }
       }
       self.reset()
     }
@@ -199,7 +207,7 @@ fn LibavoidServerCommunicator::request_layout_impl(
   layout_node : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor,
   lv_server : LibavoidServer,
-) -> Unit raise LibavoidCommunicatorException {
+) -> Unit raise {
   self.reset()
   ignore(
     progress_monitor.begin("Libavoid Layout", libavoid_communicator_layout_work),
@@ -323,7 +331,9 @@ fn libavoid_communicator_parse_point_list(value : String) -> @core.KVectorChain 
 }
 
 ///|
-fn libavoid_communicator_padding_of(node : @graph.ElkNode) -> @core.ElkPadding {
+fn libavoid_communicator_padding_of(
+  node : @graph.ElkNode,
+) -> @core.ElkPadding raise {
   let parsed = @core.new_elk_padding()
   parsed.parse(@graph.node_get_string_property(node, @core.padding))
   parsed
@@ -335,7 +345,7 @@ fn LibavoidServerCommunicator::apply_layout(
   parent_node : @graph.ElkNode,
   layout_information : Map[String, @core.KVectorChain],
   progress_monitor : @core.IElkProgressMonitor,
-) -> Unit raise LibavoidCommunicatorException {
+) -> Unit raise {
   ignore(
     progress_monitor.begin("Apply layout", libavoid_communicator_subtask_work),
   )
@@ -433,7 +443,7 @@ fn LibavoidServerCommunicator::read_layout_information(
   self : LibavoidServerCommunicator,
   libavoid_server : LibavoidServer,
   progress_monitor : @core.IElkProgressMonitor,
-) -> Map[String, @core.KVectorChain] raise LibavoidCommunicatorException {
+) -> Map[String, @core.KVectorChain] raise {
   ignore(self)
   ignore(progress_monitor.begin("Read output from Libavoid", 1.0))
   let output_data = try libavoid_server.read_output_data() catch {

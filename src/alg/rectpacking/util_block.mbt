@@ -1,16 +1,5 @@
 ///|
-let rectpacking_next_block_id_ref : Ref[Int] = Ref(0)
-
-///|
-fn rectpacking_next_block_id() -> Int {
-  let id = rectpacking_next_block_id_ref.val
-  rectpacking_next_block_id_ref.val = id + 1
-  id
-}
-
-///|
 pub struct Block {
-  id : Int
   mut smallest_rect_width : Double
   mut min_width : Double
   mut width : Double
@@ -38,7 +27,6 @@ pub fn new_rectpacking_block(
   node_node_spacing : Double,
 ) -> Block {
   {
-    id: rectpacking_next_block_id(),
     smallest_rect_width: @double.infinity,
     min_width: 0.0,
     width: 0.0,

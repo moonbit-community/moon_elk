@@ -1,11 +1,4 @@
 ///|
-let reset_graph_model_for_test = @test.reset_graph_model_for_test
-
-///|
-let layout_meta_data_service_reset_for_test = @test.layout_meta_data_service_reset_for_test
-
-///|
-let layout_meta_data_service_register_default_algorithms = @test.layout_meta_data_service_register_default_algorithms
 
 ///|
 let create_graph = @test.create_graph

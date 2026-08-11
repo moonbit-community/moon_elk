@@ -2,7 +2,7 @@
 fn rectpacking_min_size_post_processor_process(
   graph : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   match progress_monitor {
     Some(monitor) => ignore(monitor.begin("Min Size Postprocessing", 1.0))
     None => ()

@@ -238,7 +238,7 @@ fn layer_constraint_postprocessor_restore_hidden_nodes(
 fn layer_constraint_postprocessor_process_impl(
   layered_graph : LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit raise LayerConstraintPostprocessorException {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()
@@ -286,12 +286,14 @@ fn layer_constraint_postprocessor_process_impl(
 fn layer_constraint_postprocessor_process(
   layered_graph : LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   layer_constraint_postprocessor_process_impl(layered_graph, progress_monitor) catch {
-    UnsupportedConfigurationException(message) =>
-      @core.layout_runtime_report_unsupported_configuration(message)
-    IllegalStateException(message) =>
-      @core.layout_runtime_report_unsupported_configuration(message)
+    LayerConstraintPostprocessorException::UnsupportedConfigurationException(
+      message
+    ) => @core.layout_runtime_raise_unsupported_configuration(message)
+    LayerConstraintPostprocessorException::IllegalStateException(message) =>
+      @core.layout_runtime_raise_unsupported_configuration(message)
+    err => raise err
   }
 }
 

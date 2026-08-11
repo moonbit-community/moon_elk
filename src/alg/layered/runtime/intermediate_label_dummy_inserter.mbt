@@ -89,7 +89,7 @@ fn label_dummy_inserter_create_label_dummy(
   layered_graph : LGraph,
   edge : LEdge,
   thickness : Double,
-) -> LNode {
+) -> LNode raise {
   let dummy_node = new_l_node(graph=Some(layered_graph))
   dummy_node.set_type(LabelNode)
   dummy_node.set_property_l_edge(internal_properties_origin_l_edge, Some(edge))
@@ -121,7 +121,7 @@ fn label_dummy_inserter_create_label_dummy(
 fn label_dummy_inserter_process(
   layered_graph : LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()
@@ -204,11 +204,12 @@ fn label_dummy_inserter_process(
       layered_graph.get_layerless_nodes().push(dummy_node)
     }
   } catch {
-    UnsupportedGraphException(message) => {
-      @core.layout_runtime_report_unsupported_configuration(message)
+    LabelDummyInserterException::UnsupportedGraphException(message) => {
+      @core.layout_runtime_raise_unsupported_configuration(message)
       monitor.done()
       return
     }
+    err => raise err
   } noraise {
     _ => ()
   }

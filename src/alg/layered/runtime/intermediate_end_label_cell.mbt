@@ -5,9 +5,6 @@ pub struct EndLabelCellLabel {
 }
 
 ///|
-let end_label_cell_arenas : Map[Int, @graph.GraphArena] = Map([])
-
-///|
 pub fn new_end_label_cell_label(
   elk_label : @graph.ElkLabel,
   l_label : LLabel,
@@ -17,6 +14,7 @@ pub fn new_end_label_cell_label(
 
 ///|
 pub struct EndLabelCell {
+  mut arena : @graph.GraphArena?
   label_cell : @nodespacing.LabelCell
   label_side : @core.LabelSide
   labels : Array[EndLabelCellLabel]
@@ -29,6 +27,7 @@ pub fn new_end_label_cell(
   label_side : @core.LabelSide,
 ) -> EndLabelCell {
   {
+    arena: None,
     label_cell: @nodespacing.new_label_cell_with_layout_mode(
       label_gap, horizontal_layout_mode,
     ),
@@ -83,15 +82,16 @@ pub fn EndLabelCell::has_labels(self : EndLabelCell) -> Bool {
 ///|
 pub fn EndLabelCell::add_l_label(self : EndLabelCell, label : LLabel) -> Unit {
   let arena = if self.labels.is_empty() {
-    @graph.new_graph_arena()
+    let created = @graph.new_graph_arena()
+    self.arena = Some(created)
+    created
   } else {
-    match end_label_cell_arenas.get(self.labels[0].elk_label) {
+    match self.arena {
       Some(value) => value
       None => @graph.new_graph_arena()
     }
   }
   let adapted = arena.create_label()
-  end_label_cell_arenas[adapted] = arena
   @graph.label_set_text(adapted, label.get_text())
   @graph.label_set_dimensions(adapted, label.get_size().x, label.get_size().y)
   self.label_cell.add_label(adapted)
@@ -103,13 +103,11 @@ fn EndLabelCell::dispose(self : EndLabelCell) -> Unit {
   if self.labels.is_empty() {
     return
   }
-  match end_label_cell_arenas.get(self.labels[0].elk_label) {
+  match self.arena {
     Some(arena) => {
       // Adapted labels are temporary public graph objects owned by this cell.
       arena.dispose()
-      for label_mapping in self.labels {
-        ignore(end_label_cell_arenas.remove(label_mapping.elk_label))
-      }
+      self.arena = None
     }
     None => ()
   }
@@ -117,8 +115,7 @@ fn EndLabelCell::dispose(self : EndLabelCell) -> Unit {
 
 ///|
 pub fn EndLabelCell::apply_label_layout(self : EndLabelCell) -> Unit {
-  if !self.labels.is_empty() &&
-    !end_label_cell_arenas.contains(self.labels[0].elk_label) {
+  if !self.labels.is_empty() && self.arena is None {
     return
   }
   self.label_cell.apply_label_layout()

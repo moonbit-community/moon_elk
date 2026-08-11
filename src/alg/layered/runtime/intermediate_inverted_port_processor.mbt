@@ -236,7 +236,7 @@ fn inverted_port_processor_create_west_port_side_dummies(
 fn inverted_port_processor_process(
   layered_graph : LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()
@@ -299,7 +299,7 @@ fn inverted_port_processor_process(
     }
   } catch {
     UnsupportedGraphException(message) => {
-      @core.layout_runtime_report_unsupported_configuration(message)
+      @core.layout_runtime_raise_unsupported_configuration(message)
       monitor.done()
       return
     }

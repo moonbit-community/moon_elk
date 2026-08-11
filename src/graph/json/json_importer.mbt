@@ -1,5 +1,7 @@
 ///|
 pub struct JsonImporter {
+  metadata : @core.OptionMetadata
+  session : @core.LayoutSession
   mut input_model : Map[String, Json]?
   node_id_map : Map[String, @graph.ElkNode]
   port_id_map : Map[String, @graph.ElkPort]
@@ -11,8 +13,13 @@ pub struct JsonImporter {
 }
 
 ///|
-pub fn new_json_importer() -> JsonImporter {
+pub fn new_json_importer(
+  runtime : @core.LayoutRuntime,
+  session : @core.LayoutSession,
+) -> JsonImporter {
   {
+    metadata: runtime.option_metadata(),
+    session,
     input_model: None,
     node_id_map: Map([]),
     port_id_map: Map([]),
@@ -25,13 +32,16 @@ pub fn new_json_importer() -> JsonImporter {
 }
 
 ///|
-fn importer_report_json_error(message : String) -> Unit {
-  @core.layout_runtime_report_json_import(message)
+fn importer_report_json_error(
+  importer : JsonImporter,
+  message : String,
+) -> Unit {
+  importer.session.report_json_import(message)
 }
 
 ///|
-fn importer_has_error() -> Bool {
-  @core.layout_runtime_has_error()
+fn importer_has_error(importer : JsonImporter) -> Bool {
+  importer.session.has_error()
 }
 
 ///|
@@ -41,10 +51,7 @@ fn importer_apply_option(
   option_id : String,
   value : String,
 ) -> Unit {
-  ignore(importer)
-  let option_data = @core.layout_meta_data_service_get_option_data_by_suffix(
-    option_id,
-  )
+  let option_data = importer.metadata.option_data_by_suffix(option_id)
   let canonical_id = match option_data {
     Some(data) => data.get_id()
     None => canonical_layout_option_id(option_id)
@@ -111,6 +118,7 @@ fn importer_transform_properties(
 
 ///|
 fn importer_transform_individual_spacings(
+  importer : JsonImporter,
   json_node : Map[String, Json],
   node : @graph.ElkNode,
 ) -> Unit {
@@ -119,9 +127,7 @@ fn importer_transform_individual_spacings(
       individual_spacings.each((key, value) => {
         match json_value_as_string(value) {
           Some(value_string) => {
-            let option_data = @core.layout_meta_data_service_get_option_data_by_suffix(
-              key,
-            )
+            let option_data = importer.metadata.option_data_by_suffix(key)
             let canonical_id = match option_data {
               Some(data) => data.get_id()
               None => canonical_layout_option_id(key)
@@ -178,15 +184,14 @@ fn importer_transform_shape_layout_node(
 
 ///|
 fn importer_transform_layout_options_port(
+  importer : JsonImporter,
   json_options : Map[String, Json],
   port : @graph.ElkPort,
 ) -> Unit {
   json_options.each((key, value) => {
     match json_value_as_string(value) {
       Some(value_string) => {
-        let option_data = @core.layout_meta_data_service_get_option_data_by_suffix(
-          key,
-        )
+        let option_data = importer.metadata.option_data_by_suffix(key)
         let canonical_id = match option_data {
           Some(data) => data.get_id()
           None => canonical_layout_option_id(key)
@@ -206,31 +211,32 @@ fn importer_transform_layout_options_port(
 
 ///|
 fn importer_transform_properties_port(
+  importer : JsonImporter,
   json_port : Map[String, Json],
   port : @graph.ElkPort,
 ) -> Unit {
   match json_object_field(json_port, "properties") {
-    Some(properties) => importer_transform_layout_options_port(properties, port)
+    Some(properties) =>
+      importer_transform_layout_options_port(importer, properties, port)
     None => ()
   }
   match json_object_field(json_port, "layoutOptions") {
     Some(layout_options) =>
-      importer_transform_layout_options_port(layout_options, port)
+      importer_transform_layout_options_port(importer, layout_options, port)
     None => ()
   }
 }
 
 ///|
 fn importer_transform_layout_options_edge(
+  importer : JsonImporter,
   json_options : Map[String, Json],
   edge : @graph.ElkEdge,
 ) -> Unit {
   json_options.each((key, value) => {
     match json_value_as_string(value) {
       Some(value_string) => {
-        let option_data = @core.layout_meta_data_service_get_option_data_by_suffix(
-          key,
-        )
+        let option_data = importer.metadata.option_data_by_suffix(key)
         let canonical_id = match option_data {
           Some(data) => data.get_id()
           None => canonical_layout_option_id(key)
@@ -250,31 +256,32 @@ fn importer_transform_layout_options_edge(
 
 ///|
 fn importer_transform_properties_edge(
+  importer : JsonImporter,
   json_edge : Map[String, Json],
   edge : @graph.ElkEdge,
 ) -> Unit {
   match json_object_field(json_edge, "properties") {
-    Some(properties) => importer_transform_layout_options_edge(properties, edge)
+    Some(properties) =>
+      importer_transform_layout_options_edge(importer, properties, edge)
     None => ()
   }
   match json_object_field(json_edge, "layoutOptions") {
     Some(layout_options) =>
-      importer_transform_layout_options_edge(layout_options, edge)
+      importer_transform_layout_options_edge(importer, layout_options, edge)
     None => ()
   }
 }
 
 ///|
 fn importer_transform_layout_options_label(
+  importer : JsonImporter,
   json_options : Map[String, Json],
   label : @graph.ElkLabel,
 ) -> Unit {
   json_options.each((key, value) => {
     match json_value_as_string(value) {
       Some(value_string) => {
-        let option_data = @core.layout_meta_data_service_get_option_data_by_suffix(
-          key,
-        )
+        let option_data = importer.metadata.option_data_by_suffix(key)
         let canonical_id = match option_data {
           Some(data) => data.get_id()
           None => canonical_layout_option_id(key)
@@ -294,17 +301,18 @@ fn importer_transform_layout_options_label(
 
 ///|
 fn importer_transform_properties_label(
+  importer : JsonImporter,
   json_label : Map[String, Json],
   label : @graph.ElkLabel,
 ) -> Unit {
   match json_object_field(json_label, "properties") {
     Some(properties) =>
-      importer_transform_layout_options_label(properties, label)
+      importer_transform_layout_options_label(importer, properties, label)
     None => ()
   }
   match json_object_field(json_label, "layoutOptions") {
     Some(layout_options) =>
-      importer_transform_layout_options_label(layout_options, label)
+      importer_transform_layout_options_label(importer, layout_options, label)
     None => ()
   }
 }
@@ -399,7 +407,7 @@ fn importer_transform_labels_for_node(
             )
             @graph.label_set_text(label, text)
             importer.label_json_map[label] = label_obj
-            importer_transform_properties_label(label_obj, label)
+            importer_transform_properties_label(importer, label_obj, label)
             importer_transform_shape_layout_label(label_obj, label)
           }
           _ => ()
@@ -429,7 +437,7 @@ fn importer_transform_labels_for_port(
             )
             @graph.label_set_text(label, text)
             importer.label_json_map[label] = label_obj
-            importer_transform_properties_label(label_obj, label)
+            importer_transform_properties_label(importer, label_obj, label)
             importer_transform_shape_layout_label(label_obj, label)
           }
           _ => ()
@@ -459,7 +467,7 @@ fn importer_transform_labels_for_edge(
             )
             @graph.label_set_text(label, text)
             importer.label_json_map[label] = label_obj
-            importer_transform_properties_label(label_obj, label)
+            importer_transform_properties_label(importer, label_obj, label)
             importer_transform_shape_layout_label(label_obj, label)
           }
           _ => ()
@@ -474,13 +482,13 @@ fn importer_transform_port(
   importer : JsonImporter,
   json_port : Map[String, Json],
   parent : @graph.ElkNode,
-) -> Unit {
+) -> Unit raise {
   let port = @graph.create_port(Some(parent))
   let port_id = required_json_id(json_port)
   @graph.port_set_identifier(port, port_id)
   importer.port_id_map[port_id] = port
   importer.port_json_map[port] = json_port
-  importer_transform_properties_port(json_port, port)
+  importer_transform_properties_port(importer, json_port, port)
   importer_transform_shape_layout_port(json_port, port)
   importer_transform_labels_for_port(importer, json_port, port)
 }
@@ -490,7 +498,7 @@ fn importer_transform_ports(
   importer : JsonImporter,
   json_node : Map[String, Json],
   parent : @graph.ElkNode,
-) -> Unit {
+) -> Unit raise {
   match json_array_field(json_node, "ports") {
     Some(ports) =>
       for port in ports {
@@ -509,7 +517,7 @@ fn importer_transform_node(
   importer : JsonImporter,
   json_node : Map[String, Json],
   parent : @graph.ElkNode?,
-) -> @graph.ElkNode {
+) -> @graph.ElkNode raise {
   let node = @graph.create_node(parent)
   let id = required_json_id(json_node)
   @graph.node_set_identifier(node, id)
@@ -521,7 +529,7 @@ fn importer_transform_node(
   importer.node_id_map[id] = node
   importer.node_json_map[node] = json_node
   importer_transform_properties(importer, json_node, node)
-  importer_transform_individual_spacings(json_node, node)
+  importer_transform_individual_spacings(importer, json_node, node)
   importer_transform_ports(importer, json_node, node)
   importer_transform_labels_for_node(importer, json_node, node)
   match json_array_field(json_node, "children") {
@@ -543,7 +551,7 @@ fn importer_transform_edge(
   importer : JsonImporter,
   json_edge : Map[String, Json],
   parent : @graph.ElkNode,
-) -> @graph.ElkEdge {
+) -> @graph.ElkEdge raise {
   let edge = @graph.create_edge(Some(parent))
   let edge_id = required_json_id(json_edge)
   @graph.edge_set_identifier(edge, edge_id)
@@ -580,6 +588,7 @@ fn importer_transform_edge(
     }
     if !@graph.edge_is_connected(edge) {
       importer_report_json_error(
+        importer,
         "An edge must have at least one source and one target (edge id: '" +
         edge_id +
         "').",
@@ -593,6 +602,7 @@ fn importer_transform_edge(
           Some(source) => source
           None => {
             importer_report_json_error(
+              importer,
               "Invalid source reference (edge id: '" + edge_id + "').",
             )
             return edge
@@ -600,6 +610,7 @@ fn importer_transform_edge(
         }
       None => {
         importer_report_json_error(
+          importer,
           "Missing source reference (edge id: '" + edge_id + "').",
         )
         return edge
@@ -611,6 +622,7 @@ fn importer_transform_edge(
           Some(target) => target
           None => {
             importer_report_json_error(
+              importer,
               "Invalid target reference (edge id: '" + edge_id + "').",
             )
             return edge
@@ -618,6 +630,7 @@ fn importer_transform_edge(
         }
       None => {
         importer_report_json_error(
+          importer,
           "Missing target reference (edge id: '" + edge_id + "').",
         )
         return edge
@@ -627,6 +640,7 @@ fn importer_transform_edge(
       Some(node) => node
       None => {
         importer_report_json_error(
+          importer,
           "Referenced source node does not exist (edge id: '" + edge_id + "').",
         )
         return edge
@@ -642,6 +656,7 @@ fn importer_transform_edge(
                   @graph.make_port_shape(port)
                 } else {
                   importer_report_json_error(
+                    importer,
                     "Referenced source port does not belong to source node (edge id: '" +
                     edge_id +
                     "').",
@@ -650,6 +665,7 @@ fn importer_transform_edge(
                 }
               None => {
                 importer_report_json_error(
+                  importer,
                   "Referenced source port does not exist (edge id: '" +
                   edge_id +
                   "').",
@@ -659,6 +675,7 @@ fn importer_transform_edge(
             }
           None => {
             importer_report_json_error(
+              importer,
               "Invalid source port reference (edge id: '" + edge_id + "').",
             )
             return edge
@@ -670,6 +687,7 @@ fn importer_transform_edge(
       Some(node) => node
       None => {
         importer_report_json_error(
+          importer,
           "Referenced target node does not exist (edge id: '" + edge_id + "').",
         )
         return edge
@@ -685,6 +703,7 @@ fn importer_transform_edge(
                   @graph.make_port_shape(port)
                 } else {
                   importer_report_json_error(
+                    importer,
                     "Referenced target port does not belong to target node (edge id: '" +
                     edge_id +
                     "').",
@@ -693,6 +712,7 @@ fn importer_transform_edge(
                 }
               None => {
                 importer_report_json_error(
+                  importer,
                   "Referenced target port does not exist (edge id: '" +
                   edge_id +
                   "').",
@@ -702,6 +722,7 @@ fn importer_transform_edge(
             }
           None => {
             importer_report_json_error(
+              importer,
               "Invalid target port reference (edge id: '" + edge_id + "').",
             )
             return edge
@@ -712,18 +733,19 @@ fn importer_transform_edge(
     @graph.edge_add_source(edge, source_shape)
     @graph.edge_add_target(edge, target_shape)
   }
-  if importer_has_error() {
+  if importer_has_error(importer) {
     return edge
   }
-  importer_transform_properties_edge(json_edge, edge)
+  importer_transform_properties_edge(importer, json_edge, edge)
   importer_transform_edge_sections(importer, json_edge, edge)
-  if importer_has_error() {
+  if importer_has_error(importer) {
     return edge
   }
   importer_transform_labels_for_edge(importer, json_edge, edge)
   @graph.update_containment(Some(edge)) catch {
     _ =>
       importer_report_json_error(
+        importer,
         "Failed to determine edge containment (edge id: '" +
         @graph.edge_identifier(edge) +
         "').",
@@ -777,20 +799,25 @@ fn json_id_array_values(value : Json?) -> Array[String] {
 
 ///|
 fn importer_fill_edge_section_points(
+  importer : JsonImporter,
   json_section : Map[String, Json],
   section : @graph.ElkEdgeSection,
 ) -> Unit {
   let start_point = match json_object_field(json_section, "startPoint") {
     Some(value) => value
     None => {
-      importer_report_json_error("All edge sections need a start point.")
+      importer_report_json_error(
+        importer, "All edge sections need a start point.",
+      )
       return
     }
   }
   let end_point = match json_object_field(json_section, "endPoint") {
     Some(value) => value
     None => {
-      importer_report_json_error("All edge sections need an end point.")
+      importer_report_json_error(
+        importer, "All edge sections need an end point.",
+      )
       return
     }
   }
@@ -829,8 +856,8 @@ fn importer_transform_edge_sections(
   importer : JsonImporter,
   json_edge : Map[String, Json],
   edge : @graph.ElkEdge,
-) -> Unit {
-  if importer_has_error() {
+) -> Unit raise {
+  if importer_has_error(importer) {
     return
   }
   let sections_json = match json_array_field(json_edge, "sections") {
@@ -852,8 +879,8 @@ fn importer_transform_edge_sections(
     }
     @graph.edge_section_set_identifier(section, section_id)
     section_by_id[section_id] = section
-    importer_fill_edge_section_points(section_obj, section)
-    if importer_has_error() {
+    importer_fill_edge_section_points(importer, section_obj, section)
+    if importer_has_error(importer) {
       return
     }
     match section_obj.get("incomingShape") {
@@ -896,6 +923,7 @@ fn importer_transform_edge_sections(
           @graph.edge_section_add_incoming_section(section, referenced)
         None => {
           importer_report_json_error(
+            importer,
             "Referenced edge section does not exist: " +
             section_id +
             " (edge id: '" +
@@ -914,6 +942,7 @@ fn importer_transform_edge_sections(
           @graph.edge_section_add_outgoing_section(section, referenced)
         None => {
           importer_report_json_error(
+            importer,
             "Referenced edge section does not exist: " +
             section_id +
             " (edge id: '" +
@@ -947,18 +976,19 @@ fn importer_transform_edge_sections(
 fn importer_transform_edges(
   importer : JsonImporter,
   json_node : Map[String, Json],
-) -> Unit {
-  if importer_has_error() {
+) -> Unit raise {
+  if importer_has_error(importer) {
     return
   }
   let node_id = required_json_id(json_node)
-  if importer_has_error() {
+  if importer_has_error(importer) {
     return
   }
   let node = match importer.node_id_map.get(node_id) {
     Some(node) => node
     None => {
       importer_report_json_error(
+        importer,
         "Referenced node does not exist (node id: '" + node_id + "').",
       )
       return
@@ -991,7 +1021,7 @@ fn importer_transform_edges(
 pub fn JsonImporter::transform(
   self : JsonImporter,
   graph : Map[String, Json],
-) -> @graph.ElkNode {
+) -> @graph.ElkNode raise {
   self.input_model = Some(graph)
   self.node_id_map.clear()
   self.port_id_map.clear()
@@ -1001,7 +1031,7 @@ pub fn JsonImporter::transform(
   self.label_json_map.clear()
   self.edge_original_parent_map.clear()
   let root = importer_transform_node(self, graph, None)
-  if importer_has_error() {
+  if importer_has_error(self) {
     return root
   }
   importer_transform_edges(self, graph)
@@ -1408,11 +1438,12 @@ fn importer_transfer_edge_junction_points(
 fn importer_transfer_layout_node(
   importer : JsonImporter,
   node : @graph.ElkNode,
-) -> Unit {
+) -> Unit raise {
   let json_node = match importer.node_json_map.get(node) {
     Some(json_obj) => json_obj
     None => {
       importer_report_json_error(
+        importer,
         "Missing JSON mapping for node '" + @graph.node_identifier(node) + "'.",
       )
       return
@@ -1486,6 +1517,7 @@ fn importer_transfer_layout_node(
       Some(json_obj) => json_obj
       None => {
         importer_report_json_error(
+          importer,
           "Missing JSON mapping for edge '" +
           @graph.edge_identifier(edge) +
           "'.",
@@ -1535,6 +1567,6 @@ fn importer_transfer_layout_node(
 pub fn JsonImporter::transfer_layout(
   self : JsonImporter,
   graph : @graph.ElkNode,
-) -> Unit {
+) -> Unit raise {
   importer_transfer_layout_node(self, graph)
 }

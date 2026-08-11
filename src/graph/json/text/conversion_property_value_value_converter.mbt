@@ -1,13 +1,15 @@
 ///|
 pub struct GraphJsonTextPropertyValueValueConverter {
+  metadata : @core.OptionMetadata
   qualified_name_converter : ElkGraphJsonQualifiedNameConverter
 }
 
 ///|
 pub fn new_graph_json_text_property_value_value_converter(
+  metadata : @core.OptionMetadata,
   qualified_name_converter? : ElkGraphJsonQualifiedNameConverter = new_elk_graph_json_qualified_name_converter(),
 ) -> GraphJsonTextPropertyValueValueConverter {
-  { qualified_name_converter, }
+  { metadata, qualified_name_converter }
 }
 
 ///|
@@ -65,7 +67,7 @@ fn graph_json_text_property_value_needs_quoting(text : String) -> Bool {
 fn graph_json_text_property_value_quote_if_necessary(
   converter : ElkGraphJsonQualifiedNameConverter,
   text : String,
-) -> String {
+) -> String raise {
   if graph_json_text_property_value_needs_quoting(text) {
     "\"" + text + "\""
   } else {
@@ -77,7 +79,7 @@ fn graph_json_text_property_value_quote_if_necessary(
 fn graph_json_text_property_value_unquote_if_necessary(
   converter : ElkGraphJsonQualifiedNameConverter,
   text : String,
-) -> String {
+) -> String raise {
   if text.length() >= 2 &&
     (
       (text.has_prefix("\"") && text.has_suffix("\"")) ||
@@ -125,7 +127,7 @@ fn graph_json_text_property_value_from_option_type(
 pub fn GraphJsonTextPropertyValueValueConverter::to_string(
   self : GraphJsonTextPropertyValueValueConverter,
   value : GraphJsonTextPropertyValue,
-) -> String {
+) -> String raise {
   match value {
     GraphJsonTextNullValue => "null"
     GraphJsonTextNumberValue(number) =>
@@ -155,7 +157,7 @@ pub fn GraphJsonTextPropertyValueValueConverter::to_value(
   self : GraphJsonTextPropertyValueValueConverter,
   text : String,
   property_key? : GraphJsonTextPropertyKey? = None,
-) -> GraphJsonTextPropertyValue {
+) -> GraphJsonTextPropertyValue raise {
   if text == "" || text == "null" {
     return GraphJsonTextNullValue
   }
@@ -165,7 +167,7 @@ pub fn GraphJsonTextPropertyValueValueConverter::to_value(
   )
   match property_key {
     Some(key) =>
-      match graph_json_text_property_key_to_layout_option(key) {
+      match graph_json_text_property_key_to_layout_option(self.metadata, key) {
         Some(option_data) =>
           graph_json_text_property_value_from_option_type(option_data, unquoted)
         None => GraphJsonTextProxyValue(unquoted)

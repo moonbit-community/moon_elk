@@ -63,7 +63,7 @@ fn interactive_cycle_breaker_find_cycles(
 fn interactive_cycle_breaker_process(
   layered_graph : @runtime.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()
@@ -108,7 +108,7 @@ fn interactive_cycle_breaker_process(
     rev_edges.clear()
   } catch {
     UnsupportedGraphException(message) => {
-      @core.layout_runtime_report_unsupported_configuration(message)
+      @core.layout_runtime_raise_unsupported_configuration(message)
       monitor.done()
       return
     }
@@ -121,7 +121,7 @@ fn interactive_cycle_breaker_process(
 ///|
 fn interactive_cycle_breaker_configuration(
   graph : @runtime.LGraph,
-) -> @core.LayoutProcessorConfiguration[@runtime.LayeredPhases, @runtime.LGraph]? {
+) -> @core.LayoutProcessorConfiguration[@runtime.LayeredPhases, @runtime.LGraph]? raise {
   ignore(graph)
   Some(
     @core.layout_processor_configuration_create(

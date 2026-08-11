@@ -4,7 +4,7 @@ pub struct SporeShrinkTree {
 }
 
 ///|
-pub fn new_spore_shrink_tree() -> SporeShrinkTree {
+pub fn new_spore_shrink_tree() -> SporeShrinkTree raise {
   {
     algorithm_assembler: @core.algorithm_assembler_create(
       spore_phase_descriptor,
@@ -17,7 +17,7 @@ pub fn SporeShrinkTree::shrink(
   self : SporeShrinkTree,
   graph : SporeGraph,
   progress_monitor : @core.IElkProgressMonitor,
-) -> Unit {
+) -> Unit raise {
   ignore(self.algorithm_assembler.reset())
   ignore(
     self.algorithm_assembler.set_phase(

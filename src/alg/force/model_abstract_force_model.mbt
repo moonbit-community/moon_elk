@@ -17,11 +17,13 @@ pub fn new_abstract_force_model_state() -> AbstractForceModelState {
 }
 
 ///|
-pub fn abstract_force_model_graph(state : AbstractForceModelState) -> FGraph {
+pub fn abstract_force_model_graph(
+  state : AbstractForceModelState,
+) -> FGraph raise {
   match state.graph {
     Some(graph) => graph
     None => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "force model graph is not initialized",
       )
       new_fgraph()
@@ -85,7 +87,7 @@ pub fn abstract_force_model_initialize(
 ///|
 pub fn abstract_force_model_iteration_done(
   state : AbstractForceModelState,
-) -> Unit {
+) -> Unit raise {
   for edge in abstract_force_model_graph(state).get_edges() {
     for label in fedge_labels(edge) {
       flabel_refresh_position(label)
@@ -99,11 +101,11 @@ pub fn abstract_force_model_layout(
   state : AbstractForceModelState,
   graph : FGraph,
   monitor : @core.IElkProgressMonitor,
-  initialize_hook : () -> Unit,
-  more_iterations : (Int) -> Bool,
-  calc_displacement : (FParticle, FParticle) -> @core.KVector?,
-  iteration_done_hook : () -> Unit,
-) -> Unit {
+  initialize_hook : () -> Unit raise,
+  more_iterations : (Int) -> Bool raise,
+  calc_displacement : (FParticle, FParticle) -> @core.KVector? raise,
+  iteration_done_hook : () -> Unit raise,
+) -> Unit raise {
   ignore(monitor.begin("Component Layout", 1.0))
   abstract_force_model_initialize(state, graph)
   initialize_hook()

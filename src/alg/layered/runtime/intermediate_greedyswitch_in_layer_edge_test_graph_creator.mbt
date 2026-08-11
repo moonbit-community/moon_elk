@@ -4,21 +4,21 @@ pub struct GreedySwitchInLayerEdgeTestGraphCreator {
 }
 
 ///|
-pub fn new_greedy_switch_in_layer_edge_test_graph_creator() -> GreedySwitchInLayerEdgeTestGraphCreator {
+pub fn new_greedy_switch_in_layer_edge_test_graph_creator() -> GreedySwitchInLayerEdgeTestGraphCreator raise {
   { base: new_greedy_switch_test_graph_creator() }
 }
 
 ///|
 pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_graph(
   self : GreedySwitchInLayerEdgeTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   self.base.get_graph()
 }
 
 ///|
 pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_graph_with_crossings_to_between_layer_edge_with_fixed_port_order(
   self : GreedySwitchInLayerEdgeTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let layers = self.base.make_layers(2)
 
   let left_node = self.base.add_node_to_layer(layers[0])
@@ -36,7 +36,7 @@ pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_graph_with_cr
 ///|
 pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_with_fixed_port_order_and_normal_edge_crossings(
   self : GreedySwitchInLayerEdgeTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let layer = self.base.make_layers(2)
   let left_node = self.base.add_node_to_layer(layer[0])
   let right_nodes = self.base.add_nodes_to_layer(3, layer[1])
@@ -50,7 +50,7 @@ pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_with_fixed_po
 ///|
 pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_crossings_but_no_fixed_order(
   self : GreedySwitchInLayerEdgeTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let layer = self.base.make_layers(2)
   let left_nodes = self.base.add_nodes_to_layer(2, layer[0])
   let right_nodes = self.base.add_nodes_to_layer(2, layer[1])
@@ -64,7 +64,7 @@ pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_crossings_but
 ///|
 pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_crossings_no_fixed_order_no_edge_between_upper_and_lower(
   self : GreedySwitchInLayerEdgeTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let layer = self.base.make_layers(2)
   let left_nodes = self.base.add_nodes_to_layer(2, layer[0])
   let right_nodes = self.base.add_nodes_to_layer(3, layer[1])
@@ -79,7 +79,7 @@ pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_crossings_no_
 ///|
 pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_crossings_no_fixed_order_no_edge_between_upper_and_lower_upside_down(
   self : GreedySwitchInLayerEdgeTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let layer = self.base.make_layers(2)
   let left_nodes = self.base.add_nodes_to_layer(2, layer[0])
   let right_nodes = self.base.add_nodes_to_layer(4, layer[1])
@@ -95,7 +95,7 @@ pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_crossings_no_
 ///|
 pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_crossings_on_both_sides(
   self : GreedySwitchInLayerEdgeTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let layers = self.base.make_layers(3)
   let left_node = self.base.add_node_to_layer(layers[0])
   let middle_nodes = self.base.add_nodes_to_layer(3, layers[1])
@@ -111,7 +111,7 @@ pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_crossings_on_both_s
 ///|
 pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_fixed_port_order_in_layer_and_in_between_layer_crossing(
   self : GreedySwitchInLayerEdgeTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let layers = self.base.make_layers(2)
   let left_node = self.base.add_node_to_layer(layers[0])
   let right_nodes = self.base.add_nodes_to_layer(3, layers[1])
@@ -126,7 +126,7 @@ pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_fixed_port_or
 ///|
 pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_fixed_port_order_in_layer_crossing(
   self : GreedySwitchInLayerEdgeTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let nodes = self.base.add_nodes_to_layer(
     3,
     self.base.make_layer(self.base.get_graph()),
@@ -140,7 +140,7 @@ pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_fixed_port_or
 ///|
 pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_fixed_port_order_two_in_layer_edges_cross_each_other(
   self : GreedySwitchInLayerEdgeTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let nodes = self.base.add_nodes_to_layer(
     3,
     self.base.make_layer(self.base.get_graph()),
@@ -154,7 +154,7 @@ pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_fixed_port_order_two_in_laye
 ///|
 pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_downward_graph_no_fixed_order(
   self : GreedySwitchInLayerEdgeTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let layers = self.base.make_layers(2)
   let left_node = self.base.add_node_to_layer(layers[0])
   let right_nodes = self.base.add_nodes_to_layer(3, layers[1])
@@ -168,7 +168,7 @@ pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_downward_grap
 ///|
 pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_multiple_edges_into_single_port(
   self : GreedySwitchInLayerEdgeTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let layer_two = self.base.make_layer(self.base.get_graph())
   let left_node = self.base.add_node_to_layer(layer_two)
   let layer_one = self.base.make_layer(self.base.get_graph())
@@ -187,7 +187,7 @@ pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_multiple_edge
 ///|
 pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_one_layer_with_in_layer_crossings(
   self : GreedySwitchInLayerEdgeTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let layer = self.base.make_layer(self.base.get_graph())
   let nodes = self.base.add_nodes_to_layer(4, layer)
   self.base.add_in_layer_edge_nodes(nodes[0], nodes[2], West)
@@ -198,7 +198,7 @@ pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_one_layer_with_in_layer_cros
 ///|
 pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_one_layer_no_crossings(
   self : GreedySwitchInLayerEdgeTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let layer = self.base.make_layer(self.base.get_graph())
   let nodes = self.base.add_nodes_to_layer(4, layer)
   self.base.add_in_layer_edge_nodes(nodes[0], nodes[3], West)

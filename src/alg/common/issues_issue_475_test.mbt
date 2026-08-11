@@ -59,7 +59,6 @@ fn issue_475_new_non_fixed_node(parent : ElkNode) -> ElkNode {
 
 ///|
 test "Issue475 fixed-size node keeps configured dimensions" {
-  reset_graph_model_for_test()
   let graph = create_graph()
   let fixed_node = issue_475_new_fixed_node(graph)
 
@@ -68,7 +67,6 @@ test "Issue475 fixed-size node keeps configured dimensions" {
 
 ///|
 test "Issue475 non-fixed node encloses children bounds" {
-  reset_graph_model_for_test()
   let graph = create_graph()
   let free_node = issue_475_new_non_fixed_node(graph)
 
@@ -77,7 +75,6 @@ test "Issue475 non-fixed node encloses children bounds" {
 
 ///|
 test "Issue475 top-level loop over graph children" {
-  reset_graph_model_for_test()
   let graph = create_graph()
   ignore(issue_475_new_fixed_node(graph))
   ignore(issue_475_new_non_fixed_node(graph))

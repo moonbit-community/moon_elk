@@ -102,11 +102,11 @@ fn label_side_selector_port_side_is_north_or_east(
 }
 
 ///|
-fn label_side_selector_require_origin_edge(label_dummy : LNode) -> LEdge {
+fn label_side_selector_require_origin_edge(label_dummy : LNode) -> LEdge raise {
   match label_dummy.get_property_l_edge(internal_properties_origin_l_edge) {
     Some(value) => value
     None => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "label dummy has no origin edge",
       )
       new_l_edge()
@@ -117,10 +117,10 @@ fn label_side_selector_require_origin_edge(label_dummy : LNode) -> LEdge {
 ///|
 fn label_side_selector_require_first_incoming_edge(
   label_dummy : LNode,
-) -> LEdge {
+) -> LEdge raise {
   let incoming = label_dummy.get_incoming_edges()
   if incoming.is_empty() {
-    @core.layout_runtime_report_unsupported_configuration(
+    @core.layout_runtime_raise_unsupported_configuration(
       "label dummy has no incoming edge",
     )
     return new_l_edge()
@@ -131,10 +131,10 @@ fn label_side_selector_require_first_incoming_edge(
 ///|
 fn label_side_selector_require_first_outgoing_edge(
   label_dummy : LNode,
-) -> LEdge {
+) -> LEdge raise {
   let outgoing = label_dummy.get_outgoing_edges()
   if outgoing.is_empty() {
-    @core.layout_runtime_report_unsupported_configuration(
+    @core.layout_runtime_raise_unsupported_configuration(
       "label dummy has no outgoing edge",
     )
     return new_l_edge()
@@ -146,7 +146,7 @@ fn label_side_selector_require_first_outgoing_edge(
 fn label_side_selector_apply_label_side_to_node(
   label_dummy : LNode,
   side : @core.LabelSide,
-) -> Unit {
+) -> Unit raise {
   if !label_side_selector_node_type_is_label(label_dummy.get_type()) {
     return
   }
@@ -208,7 +208,9 @@ fn label_side_selector_does_edge_point_right(edge : LEdge) -> Bool {
 }
 
 ///|
-fn label_side_selector_does_dummy_edge_point_right(label_dummy : LNode) -> Bool {
+fn label_side_selector_does_dummy_edge_point_right(
+  label_dummy : LNode,
+) -> Bool raise {
   let incoming = label_side_selector_require_first_incoming_edge(label_dummy)
   let outgoing = label_side_selector_require_first_outgoing_edge(label_dummy)
   label_side_selector_does_edge_point_right(incoming) ||
@@ -236,7 +238,7 @@ fn label_side_selector_get_long_edge_end_node(
 fn label_side_selector_apply_label_sides_to_label_dummy_run(
   label_dummy_run : Array[LNode],
   default_side : @core.LabelSide,
-) -> Unit {
+) -> Unit raise {
   if label_dummy_run.is_empty() {
     return
   }
@@ -258,7 +260,7 @@ fn label_side_selector_apply_for_dummy_node_run_with_simple_loops(
   dummy_nodes : Array[LNode],
   label_dummy_count : Int,
   default_side : @core.LabelSide,
-) -> Unit {
+) -> Unit raise {
   ignore(label_dummy_count)
 
   let label_dummy_run : Array[LNode] = []
@@ -303,7 +305,7 @@ fn label_side_selector_smart_for_consecutive_dummy_node_run(
   top_group : Bool,
   bottom_group : Bool,
   default_side : @core.LabelSide,
-) -> Unit {
+) -> Unit raise {
   if dummy_nodes.is_empty() {
     return
   }
@@ -495,7 +497,7 @@ fn label_side_selector_smart_for_regular_node(
 fn label_side_selector_same_side(
   graph : LGraph,
   label_side : @core.LabelSide,
-) -> Unit {
+) -> Unit raise {
   for layer in graph.get_layers() {
     for node in layer.get_nodes() {
       if label_side_selector_node_type_is_label(node.get_type()) {
@@ -513,7 +515,7 @@ fn label_side_selector_same_side(
 fn label_side_selector_based_on_direction(
   graph : LGraph,
   side_for_rightward_edges : @core.LabelSide,
-) -> Unit {
+) -> Unit raise {
   for layer in graph.get_layers() {
     for node in layer.get_nodes() {
       if label_side_selector_node_type_is_label(node.get_type()) {
@@ -541,7 +543,7 @@ fn label_side_selector_based_on_direction(
 fn label_side_selector_smart(
   graph : LGraph,
   default_side : @core.LabelSide,
-) -> Unit {
+) -> Unit raise {
   let dummy_node_queue : Array[LNode] = []
 
   for layer in graph.get_layers() {
@@ -586,7 +588,7 @@ fn label_side_selector_smart(
 fn label_side_selector_process(
   layered_graph : LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()

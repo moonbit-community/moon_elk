@@ -1,15 +1,17 @@
 ///|
 pub struct InternalElkGraphJsonIdeParser {
+  metadata : @core.OptionMetadata
   tokens : Array[@text.ElkGraphJsonLexToken]
   grammar_access : @text.ElkGraphJsonGrammarAccess
 }
 
 ///|
 pub fn new_internal_elk_graph_json_ide_parser(
+  metadata : @core.OptionMetadata,
   tokens : Array[@text.ElkGraphJsonLexToken],
   grammar_access? : @text.ElkGraphJsonGrammarAccess = @text.new_elk_graph_json_grammar_access(),
 ) -> InternalElkGraphJsonIdeParser {
-  { tokens, grammar_access }
+  { metadata, tokens, grammar_access }
 }
 
 ///|
@@ -48,6 +50,7 @@ pub fn InternalElkGraphJsonIdeParser::entry_rule_root_node(
   self : InternalElkGraphJsonIdeParser,
 ) -> @graph.ElkNode {
   @text.new_internal_elk_graph_json_parser(
+    self.metadata,
     self.tokens,
     grammar_access=self.grammar_access,
   ).entry_rule_elk_node()

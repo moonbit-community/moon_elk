@@ -1,11 +1,12 @@
 ///|
 pub(all) struct GraphValidator {
+  metadata : OptionMetadata
   issues : Array[GraphIssue]
 }
 
 ///|
-pub fn new_graph_validator() -> GraphValidator {
-  { issues: [] }
+pub fn new_graph_validator(metadata : OptionMetadata) -> GraphValidator {
+  { metadata, issues: [] }
 }
 
 ///|
@@ -34,7 +35,7 @@ fn run_algorithm_specific_validation(
   node : @graph.ElkNode,
   algorithm_id : String,
 ) -> Unit {
-  match layout_meta_data_service_get_algorithm_data(algorithm_id) {
+  match validator.metadata.algorithm_data(algorithm_id) {
     Some(algorithm_data) =>
       match algorithm_data.get_validator() {
         Some(visit_algorithm) =>

@@ -1,5 +1,5 @@
 ///|
-pub fn fill_polyomino(poly : Polyomino) -> Unit {
+pub fn fill_polyomino(poly : Polyomino) -> Unit raise {
   let width = poly.width()
   let north_profile = Array::make(width, 0)
   let south_profile = Array::make(width, 0)

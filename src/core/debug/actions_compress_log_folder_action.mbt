@@ -33,7 +33,7 @@ pub fn CompressLogFolderAction::set_selected_output_file_name(
 ///|
 fn compress_log_folder_action_get_selected_layout_runs_with_debug_folder(
   view : AbstractLayoutDebugView,
-) -> Array[ExecutionInfo] {
+) -> Array[ExecutionInfo] raise {
   let selected_layout_runs : Array[ExecutionInfo] = []
   for info in view.get_selected_execution_infos() {
     if execution_info_get_parent(info) is None {
@@ -49,7 +49,7 @@ fn compress_log_folder_action_get_selected_layout_runs_with_debug_folder(
 ///|
 pub fn CompressLogFolderAction::update_enablement(
   self : CompressLogFolderAction,
-) -> Unit {
+) -> Unit raise {
   self.enabled = !compress_log_folder_action_get_selected_layout_runs_with_debug_folder(
     self.view,
   ).is_empty()
@@ -58,7 +58,7 @@ pub fn CompressLogFolderAction::update_enablement(
 ///|
 pub fn compress_log_folder_action_suggested_file_name(
   execution_infos : Array[ExecutionInfo],
-) -> String {
+) -> String raise {
   let names : Array[String] = []
   for info in execution_infos {
     let folder = execution_info_get_debug_folder(info)
@@ -93,7 +93,9 @@ pub fn compress_log_folder_action_complete_file_name(
 }
 
 ///|
-pub fn CompressLogFolderAction::run(self : CompressLogFolderAction) -> Unit {
+pub fn CompressLogFolderAction::run(
+  self : CompressLogFolderAction,
+) -> Unit raise {
   let selected_infos = compress_log_folder_action_get_selected_layout_runs_with_debug_folder(
     self.view,
   )
@@ -115,7 +117,7 @@ pub fn CompressLogFolderAction::run(self : CompressLogFolderAction) -> Unit {
 fn compress_log_folder_action_do_zip(
   layout_runs : Array[ExecutionInfo],
   zip_file_name : String,
-) -> Unit {
+) -> Unit raise {
   let entries : Array[String] = ["/"]
   for layout_run in layout_runs {
     compress_log_folder_action_do_zip_layout_run(layout_run, entries)
@@ -127,7 +129,7 @@ fn compress_log_folder_action_do_zip(
 fn compress_log_folder_action_do_zip_layout_run(
   layout_run : ExecutionInfo,
   entries : Array[String],
-) -> Unit {
+) -> Unit raise {
   let debug_folder = execution_info_get_debug_folder(layout_run)
   if core_debug_is_directory(debug_folder) {
     compress_log_folder_action_do_zip_folder("/", debug_folder, entries)

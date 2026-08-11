@@ -180,7 +180,7 @@ pub fn AbstractLayoutDebugView::get_visible_root_infos_for_test(
 pub fn AbstractLayoutDebugView::get_visible_children_for_test(
   self : AbstractLayoutDebugView,
   info : ExecutionInfo,
-) -> Array[ExecutionInfo] {
+) -> Array[ExecutionInfo] raise {
   self.tree_content_provider.get_children(Some(info))
 }
 

@@ -20,7 +20,7 @@ pub fn new_graph_tree_label_provider() -> GraphTreeLabelProvider {
 pub fn GraphTreeLabelProvider::get_text(
   _self : GraphTreeLabelProvider,
   execution : ExecutionInfo,
-) -> String {
+) -> String raise {
   let base = execution_info_get_name(execution)
   match execution_info_get_parent(execution) {
     Some(_) => base
@@ -36,7 +36,7 @@ pub fn GraphTreeLabelProvider::get_text(
 pub fn GraphTreeLabelProvider::get_image(
   self : GraphTreeLabelProvider,
   execution : ExecutionInfo,
-) -> String {
+) -> String raise {
   if execution_info_has_logged_graphs(execution) {
     self.graph_image
   } else {

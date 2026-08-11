@@ -5,12 +5,13 @@ pub enum AbsoluteXPlacerStrategy {
 
 ///|
 pub fn vertiflex_absolute_x_placer_phase_factory(
+  session : VertiFlexSession,
   strategy : AbsoluteXPlacerStrategy,
 ) -> @core.ILayoutPhaseFactory[VertiFlexLayoutPhases, @graph.ElkNode] {
   match strategy {
     ABSOLUTE_XPLACING =>
       @core.new_layout_processor_factory(81002, 2, () => {
-        new_vertiflex_absolute_x_placer_layout_phase()
+        new_vertiflex_absolute_x_placer_layout_phase(session)
       })
   }
 }

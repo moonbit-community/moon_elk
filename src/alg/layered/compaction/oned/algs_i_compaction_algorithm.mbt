@@ -1,2 +1,2 @@
 ///|
-pub type LayeredICompactionAlgorithm = (LayeredOneDimensionalCompactor) -> Unit
+pub type LayeredICompactionAlgorithm = (LayeredOneDimensionalCompactor) -> Unit raise

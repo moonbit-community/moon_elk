@@ -290,7 +290,7 @@ fn graphviz_layout_provider_read_all_forwarding(
 pub fn GraphvizLayoutProvider::initialize(
   self : GraphvizLayoutProvider,
   parameter : String?,
-) -> Unit {
+) -> Unit raise {
   self.command = @transform.command_parse(
     match parameter {
       Some(value) => value
@@ -299,7 +299,7 @@ pub fn GraphvizLayoutProvider::initialize(
   )
   try new_graphviz_tool(self.command) catch {
     err => {
-      @core.layout_runtime_report_unsupported_configuration(err.to_string())
+      @core.layout_runtime_raise_unsupported_configuration(err.to_string())
       self.graphviz_tool = None
     }
   } noraise {
@@ -311,12 +311,14 @@ pub fn GraphvizLayoutProvider::initialize(
 }
 
 ///|
-pub fn GraphvizLayoutProvider::dispose(self : GraphvizLayoutProvider) -> Unit {
+pub fn GraphvizLayoutProvider::dispose(
+  self : GraphvizLayoutProvider,
+) -> Unit raise {
   match self.graphviz_tool {
     Some(tool) =>
       try tool.cleanup(graphviz_cleanup_stop()) catch {
         err =>
-          @core.layout_runtime_report_unsupported_configuration(err.to_string())
+          @core.layout_runtime_raise_unsupported_configuration(err.to_string())
       } noraise {
         _ => ()
       }
@@ -345,7 +347,7 @@ pub fn GraphvizLayoutProvider::write_dot_graph(
   monitor : @core.IElkProgressMonitor,
   debug_mode : Bool,
   resource_set : GraphvizLayoutResourceSet,
-) -> Unit raise GraphvizException {
+) -> Unit raise {
   ignore(monitor.begin("Serialize model", 1.0))
   let tool = graphviz_layout_provider_tool_of(self)
   let output_stream = tool.input()
@@ -385,7 +387,7 @@ pub fn GraphvizLayoutProvider::read_dot_graph(
   monitor : @core.IElkProgressMonitor,
   debug_mode : Bool,
   resource_set : GraphvizLayoutResourceSet,
-) -> @dot.DotGraphvizModel raise GraphvizException {
+) -> @dot.DotGraphvizModel raise {
   ignore(monitor.begin("Parse output", 1.0))
   let tool = graphviz_layout_provider_tool_of(self)
   let input_stream = tool.output()
@@ -436,7 +438,7 @@ fn graphviz_layout_provider_layout_impl(
   provider : GraphvizLayoutProvider,
   parent_node : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor,
-) -> Unit raise GraphvizException {
+) -> Unit raise {
   if graphviz_layout_provider_command_is_invalid(provider.command) {
     raise new_graphviz_exception(
       "The Graphviz layout provider is not initialized.",
@@ -520,15 +522,21 @@ pub fn GraphvizLayoutProvider::layout(
   self : GraphvizLayoutProvider,
   parent_node : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor,
-) -> Unit {
+) -> Unit raise {
   try
     graphviz_layout_provider_layout_impl(self, parent_node, progress_monitor)
   catch {
-    err => {
-      @core.layout_runtime_report_unsupported_configuration(err.to_string())
+    GraphvizException(message, _) => {
       if progress_monitor.is_running() {
         progress_monitor.done()
       }
+      @core.layout_runtime_raise_unsupported_configuration(message)
+    }
+    err => {
+      if progress_monitor.is_running() {
+        progress_monitor.done()
+      }
+      @core.layout_runtime_raise_unsupported_configuration(err.to_string())
     }
   } noraise {
     _ => ()

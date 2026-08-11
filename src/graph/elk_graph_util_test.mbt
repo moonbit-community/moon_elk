@@ -15,7 +15,6 @@ fn create_edge_without_containment(
 
 ///|
 test "ElkGraphUtil connectableShapeToNode" {
-  reset_graph_model_for_test()
   let node = create_node(None)
   assert_eq(connectable_shape_to_node(Some(make_node_shape(node))), node)
   let port = create_port(Some(node))
@@ -29,7 +28,6 @@ test "panic ElkGraphUtil connectableShapeToNode with none" {
 
 ///|
 test "ElkGraphUtil connectableShapeToPort" {
-  reset_graph_model_for_test()
   let node = create_node(None)
   assert_eq(connectable_shape_to_port(Some(make_node_shape(node))), None)
   let port = create_port(Some(node))
@@ -43,7 +41,6 @@ test "panic ElkGraphUtil connectableShapeToPort with none" {
 
 ///|
 test "ElkGraphUtil edge convenience iterables" {
-  reset_graph_model_for_test()
   let graph = create_graph()
   let node1 = create_node(Some(graph))
   let node2 = create_node(Some(graph))
@@ -94,7 +91,6 @@ test "ElkGraphUtil edge convenience iterables" {
 
 ///|
 test "ElkGraphUtil allIncidentSections" {
-  reset_graph_model_for_test()
   let edge = create_edge(None)
   let section0 = create_edge_section(edge)
   let section1 = create_edge_section(edge)
@@ -108,7 +104,6 @@ test "ElkGraphUtil allIncidentSections" {
 
 ///|
 test "ElkGraphUtil createLabelWithText" {
-  reset_graph_model_for_test()
   let graph = create_graph()
   let node = create_node(Some(graph))
   let label = create_label_with_text(
@@ -125,7 +120,6 @@ test "ElkGraphUtil createLabelWithText" {
 
 ///|
 test "ElkGraphUtil createHyperedge" {
-  reset_graph_model_for_test()
   let graph = create_graph()
   let node1 = create_node(Some(graph))
   let node2 = create_node(Some(graph))
@@ -156,7 +150,6 @@ test "ElkGraphUtil createHyperedge" {
 
 ///|
 test "ElkGraphUtil createSimpleEdgeForShapes" {
-  reset_graph_model_for_test()
   let graph = create_graph()
   let node1 = create_node(Some(graph))
   let node2 = create_node(Some(graph))
@@ -183,7 +176,6 @@ test "ElkGraphUtil createSimpleEdgeForShapes" {
 
 ///|
 test "ElkGraphUtil findBestEdgeContainment" {
-  reset_graph_model_for_test()
   let graph1 = create_graph()
   let node1 = create_node(Some(graph1))
   let node2 = create_node(Some(graph1))
@@ -254,7 +246,6 @@ test "ElkGraphUtil findBestEdgeContainment" {
 
 ///|
 test "panic ElkGraphUtil findBestEdgeContainment with unconnected edge" {
-  reset_graph_model_for_test()
   let edge = create_edge(None)
   ignore(find_best_edge_containment(Some(edge)))
 }

@@ -2,16 +2,16 @@
 pub struct ICrossingMinimizationHeuristic {
   initializable : IInitializable
   always_improves_fn : () -> Bool
-  set_first_layer_order_fn : (Array[Array[LNode]], Bool) -> Bool
-  minimize_crossings_fn : (Array[Array[LNode]], Int, Bool, Bool) -> Bool
+  set_first_layer_order_fn : (Array[Array[LNode]], Bool) -> Bool raise
+  minimize_crossings_fn : (Array[Array[LNode]], Int, Bool, Bool) -> Bool raise
   is_deterministic_fn : () -> Bool
 }
 
 ///|
 pub fn new_i_crossing_minimization_heuristic(
   always_improves : () -> Bool,
-  set_first_layer_order : (Array[Array[LNode]], Bool) -> Bool,
-  minimize_crossings : (Array[Array[LNode]], Int, Bool, Bool) -> Bool,
+  set_first_layer_order : (Array[Array[LNode]], Bool) -> Bool raise,
+  minimize_crossings : (Array[Array[LNode]], Int, Bool, Bool) -> Bool raise,
   is_deterministic : () -> Bool,
   init_at_layer_level? : (Int, Array[Array[LNode]]) -> Unit = (_, _) => (),
   init_at_node_level? : (Int, Int, Array[Array[LNode]]) -> Unit = (_, _, _) => {
@@ -72,7 +72,7 @@ pub fn ICrossingMinimizationHeuristic::set_first_layer_order(
   self : ICrossingMinimizationHeuristic,
   order : Array[Array[LNode]],
   forward_sweep : Bool,
-) -> Bool {
+) -> Bool raise {
   (self.set_first_layer_order_fn)(order, forward_sweep)
 }
 
@@ -83,7 +83,7 @@ pub fn ICrossingMinimizationHeuristic::minimize_crossings(
   free_layer_index : Int,
   forward_sweep : Bool,
   is_first_sweep : Bool,
-) -> Bool {
+) -> Bool raise {
   (self.minimize_crossings_fn)(
     order, free_layer_index, forward_sweep, is_first_sweep,
   )

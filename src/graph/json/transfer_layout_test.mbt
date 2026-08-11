@@ -80,18 +80,17 @@ fn transfer_positive_coordinate(obj : Map[String, Json], key : String) -> Bool {
 
 ///|
 test "graph json transfer layout" {
-  @graph.reset_graph_model_for_test()
   let graph = transfer_sample_graph()
   let maybe_importer : @core.Maybe[JsonImporter] = @core.maybe_create()
-  let root = elk_graph_json_for_json_graph(graph)
-    .remember_importer(maybe_importer)
-    .to_elk()
+  let builder = elk_graph_json_for_json_graph(graph).remember_importer(
+    maybe_importer,
+  )
+  let root = builder.to_elk()
   required_importer(maybe_importer).transfer_layout(root)
 }
 
 ///|
 test "graph json transfer layout includes junction points" {
-  @graph.reset_graph_model_for_test()
   let graph = transfer_sample_graph()
   let maybe_importer : @core.Maybe[JsonImporter] = @core.maybe_create()
   let root = elk_graph_json_for_json_graph(graph)
@@ -114,15 +113,15 @@ test "graph json transfer layout includes junction points" {
 
 ///|
 test "graph json transfer layout fail when graph changed reports runtime error" {
-  @graph.reset_graph_model_for_test()
   let graph = transfer_sample_graph()
   let maybe_importer : @core.Maybe[JsonImporter] = @core.maybe_create()
-  let root = elk_graph_json_for_json_graph(graph)
-    .remember_importer(maybe_importer)
-    .to_elk()
+  let builder = elk_graph_json_for_json_graph(graph).remember_importer(
+    maybe_importer,
+  )
+  let root = builder.to_elk()
   ignore(@graph.create_node(Some(root)))
   required_importer(maybe_importer).transfer_layout(root)
-  let error = @core.layout_runtime_take_error_message()
+  let error = builder.take_error_message()
   assert_eq(error is Some(_), true)
   if error is Some(message) {
     assert_eq(message.is_empty(), false)
@@ -131,15 +130,15 @@ test "graph json transfer layout fail when graph changed reports runtime error" 
 
 ///|
 test "graph json transfer layout edge section exists" {
-  @graph.reset_graph_model_for_test()
-  @core.layout_meta_data_service_reset_for_test()
-  @core.layout_meta_data_service_register_default_algorithms()
   let graph = transfer_sample_graph()
   let maybe_importer : @core.Maybe[JsonImporter] = @core.maybe_create()
   let root = elk_graph_json_for_json_graph(graph)
     .remember_importer(maybe_importer)
     .to_elk()
-  let engine = @core.new_recursive_graph_layout_engine()
+  let engine = @core.new_recursive_graph_layout_engine(
+    new_layout_runtime(),
+    @core.new_layout_session(),
+  )
   engine.layout(root, @core.new_basic_progress_monitor())
   required_importer(maybe_importer).transfer_layout(root)
   let graph_obj = transfer_json_obj(graph)

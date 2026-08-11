@@ -78,7 +78,6 @@ fn core_debug_grandom_random_graph_is_acyclic(root : @graph.ElkNode) -> Bool {
 
 ///|
 test "grandom random graph generator custom absolute graph" {
-  @graph.reset_graph_model_for_test()
   let generator = new_core_debug_grandom_random_graph_generator(
     Some(core_debug_grandom_random_graph_test_random(101)),
   )
@@ -113,7 +112,6 @@ test "grandom random graph generator custom absolute graph" {
 
 ///|
 test "grandom random graph generator tree graph shape" {
-  @graph.reset_graph_model_for_test()
   let generator = new_core_debug_grandom_random_graph_generator(
     Some(core_debug_grandom_random_graph_test_random(202)),
   )
@@ -138,7 +136,6 @@ test "grandom random graph generator tree graph shape" {
 
 ///|
 test "grandom random graph generator from configuration samples" {
-  @graph.reset_graph_model_for_test()
   let generator = new_core_debug_grandom_random_graph_generator(
     Some(core_debug_grandom_random_graph_test_random(303)),
   )
@@ -168,7 +165,6 @@ test "grandom random graph generator from configuration samples" {
 
 ///|
 test "grandom random graph generator distributes fixed-pos ports" {
-  @graph.reset_graph_model_for_test()
   let generator = new_core_debug_grandom_random_graph_generator(
     Some(core_debug_grandom_random_graph_test_random(404)),
   )
@@ -236,7 +232,6 @@ test "grandom random graph generator distributes fixed-pos ports" {
 
 ///|
 test "grandom random graph generator biconnected uses minimum bounds" {
-  @graph.reset_graph_model_for_test()
   let generator = new_core_debug_grandom_random_graph_generator(
     Some(core_debug_grandom_random_graph_test_random(505)),
   )
@@ -266,7 +261,6 @@ test "grandom random graph generator biconnected uses minimum bounds" {
 
 ///|
 test "grandom random graph generator triconnected uses minimum bounds" {
-  @graph.reset_graph_model_for_test()
   let generator = new_core_debug_grandom_random_graph_generator(
     Some(core_debug_grandom_random_graph_test_random(606)),
   )
@@ -295,7 +289,6 @@ test "grandom random graph generator triconnected uses minimum bounds" {
 
 ///|
 test "grandom random graph generator ante graph is acyclic" {
-  @graph.reset_graph_model_for_test()
   let generator = new_core_debug_grandom_random_graph_generator(
     Some(core_debug_grandom_random_graph_test_random(707)),
   )

@@ -11,7 +11,7 @@ fn model_order_barycenter_test_node_ids(nodes : Array[LNode]) -> Array[Int] {
 fn model_order_barycenter_test_build_heuristic(
   node_order : Array[Array[LNode]],
   random : GreedySwitchMockRandom,
-) -> (ModelOrderBarycenterHeuristic, NodeRelativePortDistributor) {
+) -> (ModelOrderBarycenterHeuristic, NodeRelativePortDistributor) raise {
   let port_distributor = new_node_relative_port_distributor(node_order.length())
   let constraint_resolver = new_forster_constraint_resolver(node_order)
   i_initializable_init(
@@ -41,7 +41,7 @@ fn model_order_barycenter_test_build_heuristic(
 ///|
 fn model_order_barycenter_test_cross_graph(
   creator : TestGraphCreator,
-) -> Array[Array[LNode]] {
+) -> Array[Array[LNode]] raise {
   let graph = creator.get_graph()
   let left_nodes = creator.add_nodes_to_layer(2, creator.make_layer(graph))
   let right_nodes = creator.add_nodes_to_layer(2, creator.make_layer(graph))

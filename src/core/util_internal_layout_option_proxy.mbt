@@ -20,11 +20,11 @@ pub fn layout_option_proxy_set_proxy_value(
 ///|
 pub fn LayoutOptionProxy::resolve_value(
   self : LayoutOptionProxy,
+  metadata : OptionMetadata,
   property : @graph.IProperty[String]?,
 ) -> String? {
   if property is Some(prop) {
-    if layout_meta_data_service_get_option_data_opt(prop.get_id())
-      is Some(option_data) {
+    if metadata.option_data_opt(prop.get_id()) is Some(option_data) {
       return Some(option_data.parse_value(self.value))
     }
   }

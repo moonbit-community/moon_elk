@@ -3,11 +3,12 @@ package "Milky2018/moon_elk/core/service"
 
 import {
   "Milky2018/moon_elk/core",
+  "Milky2018/moon_elk/graph",
   "moonbitlang/core/debug",
 }
 
 // Values
-pub fn diagram_layout_engine_invoke_layout(Int?, Int?, params? : DiagramLayoutEngineParameters) -> LayoutMapping?
+pub fn diagram_layout_engine_invoke_layout(LayoutConnectorsService, Int?, Int?, params? : DiagramLayoutEngineParameters) -> LayoutMapping? raise
 
 pub let diagram_layout_engine_mapping_connector_key : String
 
@@ -35,39 +36,35 @@ pub let layout_connectors_attribute_priority : String
 
 pub let layout_connectors_element_setup : String
 
-pub fn layout_connectors_service_get_instance() -> LayoutConnectorsService
-
-pub fn layout_connectors_service_unload() -> Unit
-
 pub fn monitored_operation_status_ok() -> MonitoredOperationStatus
 
 pub fn new_compound_graph_element_visitor(visitors? : Array[@core.IGraphElementVisitor]) -> CompoundGraphElementVisitor
 
 pub fn new_compound_graph_element_visitor_with_mode(Bool, visitors? : Array[@core.IGraphElementVisitor]) -> CompoundGraphElementVisitor
 
-pub fn new_core_service_injector(bindings? : Map[String, String], diagram_layout_connector? : IDiagramLayoutConnector?, layout_configuration_store_provider? : LayoutConfigurationStoreProvider?, layout_configuration_manager? : LayoutConfigurationManager?, graph_layout_engine? : @core.IGraphLayoutEngine?) -> CoreServiceInjector
+pub fn new_core_service_injector(@core.LayoutRuntime, @core.LayoutSession, bindings? : Map[String, String], diagram_layout_connector? : IDiagramLayoutConnector?, layout_configuration_store_provider? : LayoutConfigurationStoreProvider?, layout_configuration_manager? : LayoutConfigurationManager?, graph_layout_engine? : @core.IGraphLayoutEngine?) -> CoreServiceInjector
 
-pub fn new_default_module() -> CoreServiceInjector
+pub fn new_default_module(@core.LayoutRuntime, @core.LayoutSession) -> CoreServiceInjector
 
 pub fn new_diagram_layout_connector(build_layout_graph_fn? : (Int?, Int?) -> LayoutMapping?, apply_layout_fn? : (LayoutMapping, Map[String, String]) -> Unit, id? : String) -> IDiagramLayoutConnector
 
-pub fn new_diagram_layout_engine(IDiagramLayoutConnector, config_manager? : LayoutConfigurationManager, graph_layout_engine? : @core.IGraphLayoutEngine, algorithm_resolver? : @core.LayoutAlgorithmResolver, connectors_service? : LayoutConnectorsService) -> DiagramLayoutEngine
+pub fn new_diagram_layout_engine(@core.LayoutRuntime, @core.LayoutSession, IDiagramLayoutConnector, config_manager? : LayoutConfigurationManager, graph_layout_engine? : @core.IGraphLayoutEngine, algorithm_resolver? : @core.LayoutAlgorithmResolver, connectors_service? : LayoutConnectorsService) -> DiagramLayoutEngine
 
 pub fn new_diagram_layout_engine_parameters() -> DiagramLayoutEngineParameters
 
-pub fn new_layout_configuration_manager(config_provider? : LayoutConfigurationStoreProvider?, layout_algorithm_resolver? : @core.LayoutAlgorithmResolver) -> LayoutConfigurationManager
+pub fn new_layout_configuration_manager(@core.OptionMetadata, config_provider? : LayoutConfigurationStoreProvider?, layout_algorithm_resolver? : @core.LayoutAlgorithmResolver) -> LayoutConfigurationManager
 
 pub fn new_layout_configuration_store(get_editing_domain_fn? : () -> Int?, get_option_value_fn? : (String) -> String?, set_option_value_fn? : (String, String?) -> Unit, get_affected_options_fn? : () -> Array[String], get_option_targets_fn? : () -> Array[@core.LayoutOptionTarget], get_parent_fn? : () -> ILayoutConfigurationStore?) -> ILayoutConfigurationStore
 
 pub fn new_layout_configuration_store_provider((Int?, Int?) -> ILayoutConfigurationStore?) -> LayoutConfigurationStoreProvider
 
-pub fn new_layout_connectors_service() -> LayoutConnectorsService
+pub fn new_layout_connectors_service(@core.LayoutRuntime, @core.LayoutSession) -> LayoutConnectorsService
 
 pub fn new_layout_listener(layout_about_to_start_fn? : (LayoutMapping, @core.IElkProgressMonitor) -> Unit, layout_done_fn? : (LayoutMapping, @core.IElkProgressMonitor) -> Unit) -> ILayoutListener
 
 pub fn new_layout_mapping(workbench_part? : Int?) -> LayoutMapping
 
-pub fn new_layout_mapping_with_graph(Int?, Int?, Int) -> LayoutMapping
+pub fn new_layout_mapping_with_graph(Int?, Int?, @graph.ElkNode) -> LayoutMapping
 
 pub fn new_layout_setup((LayoutSetupObject) -> Bool, (CoreServiceInjector) -> CoreServiceInjector) -> ILayoutSetup
 
@@ -93,9 +90,11 @@ pub(all) struct CompoundGraphElementVisitor {
 pub fn CompoundGraphElementVisitor::add_graph_visitors(Self, Array[@core.IGraphElementVisitor]) -> Unit
 pub fn CompoundGraphElementVisitor::get_graph_visitors(Self) -> Array[@core.IGraphElementVisitor]
 pub fn CompoundGraphElementVisitor::to_visitor(Self) -> @core.IGraphElementVisitor
-pub fn CompoundGraphElementVisitor::visit(Self, Int) -> Unit
+pub fn CompoundGraphElementVisitor::visit(Self, @graph.ElkNode) -> Unit raise
 
 pub(all) struct CoreServiceInjector {
+  runtime : @core.LayoutRuntime
+  session : @core.LayoutSession
   bindings : Map[String, String]
   mut diagram_layout_connector : IDiagramLayoutConnector?
   mut layout_configuration_store_provider : LayoutConfigurationStoreProvider?
@@ -121,7 +120,7 @@ pub(all) struct DiagramLayoutEngine {
   algorithm_resolver : @core.LayoutAlgorithmResolver
   connectors_service : LayoutConnectorsService
 }
-pub fn DiagramLayoutEngine::layout(Self, Int?, Int?, progress_monitor? : @core.IElkProgressMonitor, params? : DiagramLayoutEngineParameters) -> LayoutMapping?
+pub fn DiagramLayoutEngine::layout(Self, Int?, Int?, progress_monitor? : @core.IElkProgressMonitor, params? : DiagramLayoutEngineParameters) -> LayoutMapping? raise
 
 pub(all) struct DiagramLayoutEngineParameters {
   configurators : Array[@core.IGraphElementVisitor]
@@ -192,6 +191,7 @@ pub fn ILayoutSetup::create_injector(Self, CoreServiceInjector) -> CoreServiceIn
 pub fn ILayoutSetup::supports(Self, LayoutSetupObject) -> Bool
 
 pub struct LayoutConfigurationManager {
+  metadata : @core.OptionMetadata
   mut config_provider : LayoutConfigurationStoreProvider?
   layout_algorithm_resolver : @core.LayoutAlgorithmResolver
 }
@@ -212,6 +212,8 @@ pub(all) struct LayoutConfigurationStoreProvider {
 pub fn LayoutConfigurationStoreProvider::get(Self, Int?, Int?) -> ILayoutConfigurationStore?
 
 pub(all) struct LayoutConnectorsService {
+  runtime : @core.LayoutRuntime
+  session : @core.LayoutSession
   mut entries : Array[LayoutSetupEntry]
   mut layout_listeners : Array[ILayoutListener]
 }
@@ -222,14 +224,15 @@ pub fn LayoutConnectorsService::fire_layout_about_to_start(Self, LayoutMapping, 
 pub fn LayoutConnectorsService::fire_layout_done(Self, LayoutMapping, @core.IElkProgressMonitor) -> Unit
 pub fn LayoutConnectorsService::get_connector(Self, Int?, Int?) -> IDiagramLayoutConnector?
 pub fn LayoutConnectorsService::get_injector(Self, Int?, Int?) -> CoreServiceInjector?
+pub fn LayoutConnectorsService::option_metadata(Self) -> @core.OptionMetadata
 pub fn LayoutConnectorsService::register_setup(Self, ILayoutSetup, priority? : Int) -> Unit
 pub fn LayoutConnectorsService::registered_priorities_for_test(Self) -> Array[Int]
 pub fn LayoutConnectorsService::remove_layout_listener(Self, ILayoutListener) -> Unit
 
 pub(all) struct LayoutMapping {
-  graph_elem_map : Map[Int, Int]
-  diagram_elem_map : Map[Int, Int]
-  mut layout_graph : Int?
+  graph_elem_map : Map[@graph.ElkNode, Int]
+  diagram_elem_map : Map[Int, @graph.ElkNode]
+  mut layout_graph : @graph.ElkNode?
   mut parent_element : Int?
   workbench_part : Int?
   mut status : LayoutMappingStatus?
@@ -237,18 +240,18 @@ pub(all) struct LayoutMapping {
   properties : Map[String, String]
 }
 pub fn LayoutMapping::get_connector_id(Self) -> String?
-pub fn LayoutMapping::get_diagram_element(Self, Int) -> Int?
-pub fn LayoutMapping::get_graph_element(Self, Int) -> Int?
-pub fn LayoutMapping::get_layout_graph(Self) -> Int?
+pub fn LayoutMapping::get_diagram_element(Self, @graph.ElkNode) -> Int?
+pub fn LayoutMapping::get_graph_element(Self, Int) -> @graph.ElkNode?
+pub fn LayoutMapping::get_layout_graph(Self) -> @graph.ElkNode?
 pub fn LayoutMapping::get_parent_element(Self) -> Int?
 pub fn LayoutMapping::get_property(Self, String) -> String?
 pub fn LayoutMapping::get_status(Self) -> LayoutMappingStatus?
 pub fn LayoutMapping::get_workbench_part(Self) -> Int?
-pub fn LayoutMapping::graph_map_entries(Self) -> Array[(Int, Int)]
+pub fn LayoutMapping::graph_map_entries(Self) -> Array[(@graph.ElkNode, Int)]
 pub fn LayoutMapping::graph_map_size(Self) -> Int
-pub fn LayoutMapping::put_graph_mapping(Self, Int, Int) -> Unit
+pub fn LayoutMapping::put_graph_mapping(Self, @graph.ElkNode, Int) -> Unit
 pub fn LayoutMapping::set_connector_id(Self, String?) -> Unit
-pub fn LayoutMapping::set_layout_graph(Self, Int?) -> Unit
+pub fn LayoutMapping::set_layout_graph(Self, @graph.ElkNode?) -> Unit
 pub fn LayoutMapping::set_parent_element(Self, Int?) -> Unit
 pub fn LayoutMapping::set_property(Self, String, String) -> Unit
 pub fn LayoutMapping::set_status(Self, LayoutMappingStatus?) -> Unit
@@ -299,8 +302,8 @@ pub(all) struct ProgressMonitorAdapter {
   mut submitted_work : Int
   max_hierarchy_levels : Int
 }
-pub fn ProgressMonitorAdapter::begin(Self, String, Double, top_instance? : Bool) -> Unit
-pub fn ProgressMonitorAdapter::done(Self, top_instance? : Bool) -> Unit
+pub fn ProgressMonitorAdapter::begin(Self, String, Double, top_instance? : Bool) -> Unit raise
+pub fn ProgressMonitorAdapter::done(Self, top_instance? : Bool) -> Unit raise
 pub fn ProgressMonitorAdapter::is_canceled(Self) -> Bool
 pub fn ProgressMonitorAdapter::sub_task(Self, Double) -> Self
 pub fn ProgressMonitorAdapter::worked(Self, Double, Double, top_instance? : Bool) -> Unit
@@ -310,7 +313,7 @@ pub type LayoutApplySettings = Map[String, String]
 
 pub type ServiceDiagramElement = Int
 
-pub type ServiceGraphElement = Int
+pub using @graph {type ElkNode as ServiceGraphElement}
 
 pub type ServiceWorkbenchPart = Int
 

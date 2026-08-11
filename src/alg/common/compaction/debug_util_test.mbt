@@ -1,6 +1,5 @@
 ///|
 test "DebugUtil draw hitboxes returns svg content" {
-  reset_compaction_oned_model_for_test()
   let graph = new_cgraph(direction_values())
   let left_hitbox = new_elk_rectangle_xywh(0.0, 0.0, 20.0, 20.0)
   let right_hitbox = new_elk_rectangle_xywh(30.0, 0.0, 20.0, 20.0)

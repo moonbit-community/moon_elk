@@ -14,16 +14,7 @@ using @options {
 }
 
 ///|
-using @test {
-  create_edge,
-  create_graph,
-  edge_add_source,
-  edge_add_target,
-  reset_graph_model_for_test,
-}
-
-///|
-let _pipeline_engine_linked_for_blackbox_tests : Bool = @engine.layered_engine_linked
+using @test {create_edge, create_graph, edge_add_source, edge_add_target}
 
 ///|
 type ILayoutExecutionListener[T] = @core.ILayoutExecutionListener[T]

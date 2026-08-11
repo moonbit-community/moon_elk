@@ -80,10 +80,10 @@ fn graph_stats_determine_layer_height(
 fn graph_stats_determine_width(
   graph_stats : GraphStats,
   reducer : (Double, Double) -> Double,
-) -> Double {
+) -> Double raise {
   let layers = graph_stats.graph.get_layers()
   if layers.is_empty() {
-    @core.layout_runtime_report_unsupported_configuration(
+    @core.layout_runtime_raise_unsupported_configuration(
       "GraphStats.determineWidth() requires at least one layer",
     )
     return 0.0
@@ -103,10 +103,10 @@ fn graph_stats_determine_width(
 fn graph_stats_determine_height(
   graph_stats : GraphStats,
   reducer : (Double, Double) -> Double,
-) -> Double {
+) -> Double raise {
   let layers = graph_stats.graph.get_layers()
   if layers.is_empty() {
-    @core.layout_runtime_report_unsupported_configuration(
+    @core.layout_runtime_raise_unsupported_configuration(
       "GraphStats.determineHeight() requires at least one layer",
     )
     return 0.0
@@ -166,7 +166,7 @@ fn graph_stats_init_widths_and_heights(graph_stats : GraphStats) -> Unit {
 }
 
 ///|
-fn graph_stats_require_widths(graph_stats : GraphStats) -> Array[Double] {
+fn graph_stats_require_widths(graph_stats : GraphStats) -> Array[Double] raise {
   match graph_stats.widths {
     Some(values) => values
     None => {
@@ -174,7 +174,7 @@ fn graph_stats_require_widths(graph_stats : GraphStats) -> Array[Double] {
       match graph_stats.widths {
         Some(values) => values
         None => {
-          @core.layout_runtime_report_unsupported_configuration(
+          @core.layout_runtime_raise_unsupported_configuration(
             "widths should be initialized",
           )
           []
@@ -185,7 +185,7 @@ fn graph_stats_require_widths(graph_stats : GraphStats) -> Array[Double] {
 }
 
 ///|
-fn graph_stats_require_heights(graph_stats : GraphStats) -> Array[Double] {
+fn graph_stats_require_heights(graph_stats : GraphStats) -> Array[Double] raise {
   match graph_stats.heights {
     Some(values) => values
     None => {
@@ -193,7 +193,7 @@ fn graph_stats_require_heights(graph_stats : GraphStats) -> Array[Double] {
       match graph_stats.heights {
         Some(values) => values
         None => {
-          @core.layout_runtime_report_unsupported_configuration(
+          @core.layout_runtime_raise_unsupported_configuration(
             "heights should be initialized",
           )
           []
@@ -343,7 +343,9 @@ pub fn GraphStats::get_approximate_layer_width(
 }
 
 ///|
-pub fn GraphStats::get_approximate_layering_width(self : GraphStats) -> Double {
+pub fn GraphStats::get_approximate_layering_width(
+  self : GraphStats,
+) -> Double raise {
   self.get_sum_width()
 }
 
@@ -351,7 +353,7 @@ pub fn GraphStats::get_approximate_layering_width(self : GraphStats) -> Double {
 pub fn GraphStats::get_approximate_chunk_based_layering_width(
   self : GraphStats,
   cuts : Array[Int],
-) -> Double {
+) -> Double raise {
   if cuts.is_empty() {
     return self.get_approximate_layering_width()
   }
@@ -387,7 +389,9 @@ pub fn GraphStats::get_approximate_layer_height(
 }
 
 ///|
-pub fn GraphStats::get_approximate_layering_height(self : GraphStats) -> Double {
+pub fn GraphStats::get_approximate_layering_height(
+  self : GraphStats,
+) -> Double raise {
   self.get_max_height()
 }
 
@@ -417,7 +421,7 @@ pub fn GraphStats::get_approximate_chunk_based_layering_height(
 }
 
 ///|
-pub fn GraphStats::get_max_width(self : GraphStats) -> Double {
+pub fn GraphStats::get_max_width(self : GraphStats) -> Double raise {
   match self.max_width {
     Some(value) => value
     None => {
@@ -429,7 +433,7 @@ pub fn GraphStats::get_max_width(self : GraphStats) -> Double {
 }
 
 ///|
-pub fn GraphStats::get_sum_width(self : GraphStats) -> Double {
+pub fn GraphStats::get_sum_width(self : GraphStats) -> Double raise {
   match self.sum_width {
     Some(value) => value
     None => {
@@ -441,12 +445,12 @@ pub fn GraphStats::get_sum_width(self : GraphStats) -> Double {
 }
 
 ///|
-pub fn GraphStats::get_widths(self : GraphStats) -> Array[Double] {
+pub fn GraphStats::get_widths(self : GraphStats) -> Array[Double] raise {
   graph_stats_require_widths(self)
 }
 
 ///|
-pub fn GraphStats::get_max_height(self : GraphStats) -> Double {
+pub fn GraphStats::get_max_height(self : GraphStats) -> Double raise {
   match self.max_height {
     Some(value) => value
     None => {
@@ -458,7 +462,7 @@ pub fn GraphStats::get_max_height(self : GraphStats) -> Double {
 }
 
 ///|
-pub fn GraphStats::get_heights(self : GraphStats) -> Array[Double] {
+pub fn GraphStats::get_heights(self : GraphStats) -> Array[Double] raise {
   graph_stats_require_heights(self)
 }
 

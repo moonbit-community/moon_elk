@@ -18,15 +18,15 @@ pub fn radial_compaction_strategy_from_string(String) -> RadialCompactionStrateg
 
 pub let radial_compactor : @graph.IProperty[String]
 
-pub fn radial_graph_compaction_step_size(Int) -> Int
+pub fn radial_graph_compaction_step_size(@graph.ElkNode) -> Int
 
-pub fn radial_graph_compaction_strategy(Int) -> RadialCompactionStrategy
+pub fn radial_graph_compaction_strategy(@graph.ElkNode) -> RadialCompactionStrategy
 
-pub fn radial_graph_sorting_strategy(Int) -> RadialSortingStrategy
+pub fn radial_graph_sorting_strategy(@graph.ElkNode) -> RadialSortingStrategy
 
-pub fn radial_graph_translation_strategy(Int) -> RadialTranslationStrategy
+pub fn radial_graph_translation_strategy(@graph.ElkNode) -> RadialTranslationStrategy
 
-pub fn radial_graph_wedge_criteria(Int) -> RadialAnnulusWedgeCriteria
+pub fn radial_graph_wedge_criteria(@graph.ElkNode) -> RadialAnnulusWedgeCriteria
 
 pub let radial_omit_node_micro_layout : @graph.IProperty[Bool]
 

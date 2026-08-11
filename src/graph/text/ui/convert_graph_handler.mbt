@@ -83,6 +83,7 @@ fn graph_text_remove_extension(path : String) -> String {
 
 ///|
 pub struct ConvertGraphHandler {
+  metadata : @core.OptionMetadata
   project : GraphTextProject
   mut target_extension : String
   errors : Array[String]
@@ -90,9 +91,10 @@ pub struct ConvertGraphHandler {
 
 ///|
 pub fn new_convert_graph_handler(
+  metadata : @core.OptionMetadata,
   project? : GraphTextProject = new_graph_text_project(),
 ) -> ConvertGraphHandler {
-  { project, target_extension: "", errors: [] }
+  { metadata, project, target_extension: "", errors: [] }
 }
 
 ///|
@@ -146,8 +148,7 @@ pub fn ConvertGraphHandler::read_model(
   self : ConvertGraphHandler,
   content : String,
 ) -> @graph.ElkNode {
-  ignore(self)
-  @text.new_elk_graph_parser().parse(content)
+  @text.new_elk_graph_parser(self.metadata).parse(content)
 }
 
 ///|

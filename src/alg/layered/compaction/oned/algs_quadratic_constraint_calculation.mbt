@@ -1,7 +1,7 @@
 ///|
 pub fn layered_quadratic_constraint_calculation(
   compactor : LayeredOneDimensionalCompactor,
-) -> Unit {
+) -> Unit raise {
   @compaction.quadratic_constraint_calculation(compactor)
 }
 

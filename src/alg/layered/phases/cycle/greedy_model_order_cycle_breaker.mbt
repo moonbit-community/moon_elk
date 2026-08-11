@@ -3,7 +3,7 @@ fn greedy_model_order_cycle_breaker_choose_node_with_max_outflow(
   nodes : Array[@runtime.LNode],
   graph : @runtime.LGraph,
   random : @state.GreedySwitchMockRandom,
-) -> @runtime.LNode {
+) -> @runtime.LNode raise {
   let mut return_node : @runtime.LNode? = None
   let mut minimum_model_order = @int.MAX_VALUE
   let offset = if graph.get_layerless_nodes().length() >
@@ -55,7 +55,7 @@ fn greedy_model_order_cycle_breaker_choose_node_with_max_outflow(
 fn greedy_model_order_cycle_breaker_process(
   layered_graph : @runtime.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   greedy_cycle_breaker_process_with_chooser(
     layered_graph, progress_monitor, greedy_model_order_cycle_breaker_choose_node_with_max_outflow,
   )

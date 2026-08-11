@@ -117,23 +117,26 @@ fn graph_json_text_ide_algorithm_description(
 
 ///|
 fn graph_json_text_ide_layout_option_proposals_for_element(
+  metadata : @core.OptionMetadata,
   element : @text.GraphJsonTextElement,
   prefix : String,
 ) -> Array[@core.LayoutDataProposal[@core.LayoutOptionData]] {
   match element {
     GraphJsonTextNode(node) =>
-      @core.layout_data_content_assist_get_layout_option_proposals(node, prefix)
+      @core.layout_data_content_assist_get_layout_option_proposals(
+        metadata, node, prefix,
+      )
     GraphJsonTextEdge(edge) =>
       @core.layout_data_content_assist_get_layout_option_proposals_for_edge(
-        edge, prefix,
+        metadata, edge, prefix,
       )
     GraphJsonTextPort(port) =>
       @core.layout_data_content_assist_get_layout_option_proposals_for_port(
-        port, prefix,
+        metadata, port, prefix,
       )
     GraphJsonTextLabel(label) =>
       @core.layout_data_content_assist_get_layout_option_proposals_for_label(
-        label, prefix,
+        metadata, label, prefix,
       )
   }
 }
@@ -167,7 +170,7 @@ fn graph_json_text_ide_shape_in_list(
 fn graph_json_text_ide_find_parent_edge(
   section : @graph.ElkEdgeSection,
 ) -> @graph.ElkEdge? {
-  for edge in @graph.all_edges() {
+  for edge in section.graph_arena().all_edges() {
     for existing in @graph.edge_sections(edge) {
       if existing == section {
         return Some(edge)
@@ -179,14 +182,16 @@ fn graph_json_text_ide_find_parent_edge(
 
 ///|
 pub struct ElkGraphJsonIdeProposalProvider {
+  metadata : @core.OptionMetadata
   grammar : @text.ElkGraphJsonGrammarAccess
 }
 
 ///|
 pub fn new_elk_graph_json_ide_proposal_provider(
+  metadata : @core.OptionMetadata,
   grammar? : @text.ElkGraphJsonGrammarAccess = @text.new_elk_graph_json_grammar_access(),
 ) -> ElkGraphJsonIdeProposalProvider {
-  { grammar, }
+  { metadata, grammar }
 }
 
 ///|
@@ -275,6 +280,7 @@ pub fn ElkGraphJsonIdeProposalProvider::complete_property_key(
   let mut emitted = false
   for
     proposal in graph_json_text_ide_layout_option_proposals_for_element(
+      self.metadata,
       model,
       context.prefix,
     ) {
@@ -344,12 +350,12 @@ pub fn ElkGraphJsonIdeProposalProvider::propose_algorithms(
   context : GraphJsonTextIdeContentAssistContext,
   acceptor : GraphJsonTextIdeCompletionProposalAcceptor,
 ) -> Unit {
-  ignore(self)
   if context.conflict_on_a {
     return
   }
   for
     proposal in @core.layout_data_content_assist_get_layout_algorithm_proposals(
+      self.metadata,
       context.prefix,
     ) {
     let algorithm_data = proposal.get_data()

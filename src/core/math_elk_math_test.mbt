@@ -88,10 +88,9 @@ test "ElkMath testFactl" {
 
 ///|
 test "ElkMath testFactlLittleIllegalArgumentException" {
-  @core.layout_runtime_clear_error()
-  ignore(factl(-50))
+  let error = capture_layout_error(fn() raise { ignore(factl(-50)) })
   assert_eq(
-    @core.layout_runtime_take_error_message(),
+    error,
     Some(
       "org.eclipse.elk.core.UnsupportedConfigurationException: The input must be between 0 and 21",
     ),
@@ -100,10 +99,9 @@ test "ElkMath testFactlLittleIllegalArgumentException" {
 
 ///|
 test "ElkMath testFactlBigIllegalArgumentException" {
-  @core.layout_runtime_clear_error()
-  ignore(factl(21))
+  let error = capture_layout_error(fn() raise { ignore(factl(21)) })
   assert_eq(
-    @core.layout_runtime_take_error_message(),
+    error,
     Some(
       "org.eclipse.elk.core.UnsupportedConfigurationException: The input must be between 0 and 21",
     ),
@@ -118,10 +116,9 @@ test "ElkMath testFactd" {
 
 ///|
 test "ElkMath testFactdLittleIllegalArgumentException" {
-  @core.layout_runtime_clear_error()
-  ignore(factd(-1))
+  let error = capture_layout_error(fn() raise { ignore(factd(-1)) })
   assert_eq(
-    @core.layout_runtime_take_error_message(),
+    error,
     Some(
       "org.eclipse.elk.core.UnsupportedConfigurationException: The input must be positive",
     ),
@@ -137,10 +134,9 @@ test "ElkMath testBinomiall" {
 
 ///|
 test "ElkMath testBinomiallLittleIllegalArgumentException" {
-  @core.layout_runtime_clear_error()
-  ignore(binomiall(-1, 1))
+  let error = capture_layout_error(fn() raise { ignore(binomiall(-1, 1)) })
   assert_eq(
-    @core.layout_runtime_take_error_message(),
+    error,
     Some(
       "org.eclipse.elk.core.UnsupportedConfigurationException: k and n must be positive",
     ),
@@ -156,10 +152,9 @@ test "ElkMath testBinomiald" {
 
 ///|
 test "ElkMath testBinomialdLittleIllegalArgumentException" {
-  @core.layout_runtime_clear_error()
-  ignore(binomiald(-1, 1))
+  let error = capture_layout_error(fn() raise { ignore(binomiald(-1, 1)) })
   assert_eq(
-    @core.layout_runtime_take_error_message(),
+    error,
     Some(
       "org.eclipse.elk.core.UnsupportedConfigurationException: k and n must be positive",
     ),

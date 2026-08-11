@@ -217,7 +217,7 @@ fn make_linear_graph(node_count : Int) -> Json {
 
 ///|
 test "ElkEngine parameters: missing graph" {
-  let elk = new_elk_engine()
+  let elk = new_elk_engine(@elk_graph_json.new_layout_runtime())
   let result = try elk.layout() catch {
     error => Err(error)
   } noraise {
@@ -228,7 +228,7 @@ test "ElkEngine parameters: missing graph" {
 
 ///|
 test "ElkEngine id validation" {
-  let elk = new_elk_engine()
+  let elk = new_elk_engine(@elk_graph_json.new_layout_runtime())
   assert_true(
     (try elk.layout(graph=j_obj([("id", j_str("x"))])) catch {
       error => Err(error)
@@ -289,7 +289,7 @@ test "ElkEngine id validation" {
 
 ///|
 test "ElkEngine option precedence and spacing" {
-  let elk = new_elk_engine()
+  let elk = new_elk_engine(@elk_graph_json.new_layout_runtime())
   let graph = make_simple_graph()
   let laid_out = elk.layout(graph~, layout_options={
     "org.eclipse.elk.layered.spacing.nodeNodeBetweenLayers": j_num(11),
@@ -303,7 +303,7 @@ test "ElkEngine option precedence and spacing" {
 
 ///|
 test "ElkEngine concrete graph options are not overridden" {
-  let elk = new_elk_engine()
+  let elk = new_elk_engine(@elk_graph_json.new_layout_runtime())
   let graph = make_simple_graph()
   let laid_out = elk.layout(graph~, layout_options={
     "org.eclipse.elk.direction": j_str("DOWN"),
@@ -320,7 +320,7 @@ test "ElkEngine concrete graph options are not overridden" {
 
 ///|
 test "ElkEngine parses ElkPadding" {
-  let elk = new_elk_engine()
+  let elk = new_elk_engine(@elk_graph_json.new_layout_runtime())
   let graph = j_obj([
     ("id", j_str("root")),
     (
@@ -345,7 +345,7 @@ test "ElkEngine parses ElkPadding" {
 
 ///|
 test "ElkEngine parses KVector for fixed algorithm" {
-  let elk = new_elk_engine()
+  let elk = new_elk_engine(@elk_graph_json.new_layout_runtime())
   let graph = j_obj([
     ("id", j_str("root")),
     (
@@ -370,7 +370,7 @@ test "ElkEngine parses KVector for fixed algorithm" {
 
 ///|
 test "ElkEngine parses KVectorChain for fixed edges" {
-  let elk = new_elk_engine()
+  let elk = new_elk_engine(@elk_graph_json.new_layout_runtime())
   let graph = j_obj([
     ("id", j_str("root")),
     (
@@ -408,7 +408,7 @@ test "ElkEngine parses KVectorChain for fixed edges" {
 
 ///|
 test "ElkEngine invalid layouter id raises unsupported configuration" {
-  let elk = new_elk_engine()
+  let elk = new_elk_engine(@elk_graph_json.new_layout_runtime())
   let graph = j_obj([
     ("id", j_str("root")),
     (
@@ -432,7 +432,7 @@ test "ElkEngine invalid layouter id raises unsupported configuration" {
 
 ///|
 test "ElkEngine default global layout options" {
-  let elk = new_elk_engine(default_layout_options={
+  let elk = new_elk_engine(@elk_graph_json.new_layout_runtime(), default_layout_options={
     "elk.layered.spacing.nodeNodeBetweenLayers": j_num(33),
   })
   let laid_out = elk.layout(graph=make_simple_graph())
@@ -444,7 +444,7 @@ test "ElkEngine default global layout options" {
 
 ///|
 test "ElkEngine logging behavior" {
-  let elk = new_elk_engine()
+  let elk = new_elk_engine(@elk_graph_json.new_layout_runtime())
   let graph = make_simple_graph()
   let with_logging = elk.layout(
     graph~,
@@ -473,7 +473,7 @@ test "ElkEngine logging behavior" {
 
 ///|
 test "ElkEngine clears previous logging" {
-  let elk = new_elk_engine()
+  let elk = new_elk_engine(@elk_graph_json.new_layout_runtime())
   let graph = make_simple_graph()
   ignore(elk.layout(graph~, logging=true))
   assert_true(json_obj(graph).get("logging") is Some(_))
@@ -483,7 +483,7 @@ test "ElkEngine clears previous logging" {
 
 ///|
 test "ElkEngine SPOrE algorithms" {
-  let elk = new_elk_engine()
+  let elk = new_elk_engine(@elk_graph_json.new_layout_runtime())
   let graph = j_obj([
     ("id", j_str("root")),
     (
@@ -584,7 +584,7 @@ test "ElkEngine SPOrE algorithms" {
 
 ///|
 test "ElkEngine bug regressions that should fulfill" {
-  let elk = new_elk_engine()
+  let elk = new_elk_engine(@elk_graph_json.new_layout_runtime())
   let bug63_graph = j_obj([
     ("id", j_str("root")),
     (
@@ -689,7 +689,7 @@ test "ElkEngine bug regressions that should fulfill" {
 
 ///|
 test "ElkEngine bug #7 style graph should succeed" {
-  let elk = new_elk_engine()
+  let elk = new_elk_engine(@elk_graph_json.new_layout_runtime())
   let graph = j_obj([
     ("id", j_str("root")),
     (
@@ -748,7 +748,7 @@ test "ElkEngine bug #7 style graph should succeed" {
 
 ///|
 test "ElkEngine large graph should finish (ChangeAwareArrayList)" {
-  let elk = new_elk_engine()
+  let elk = new_elk_engine(@elk_graph_json.new_layout_runtime())
   let graph = make_linear_graph(120)
   assert_true(
     (try elk.layout(graph~) catch {
@@ -762,7 +762,7 @@ test "ElkEngine large graph should finish (ChangeAwareArrayList)" {
 
 ///|
 test "ElkEngine construction and terminate worker no-op" {
-  let elk = new_elk_engine(algorithms=[
+  let elk = new_elk_engine(@elk_graph_json.new_layout_runtime(), algorithms=[
     "layered", "stress", "sporeCompaction", "sporeOverlap", "rectpacking", "fixed",
   ])
   let algorithms = elk.known_layout_algorithms()
@@ -780,7 +780,7 @@ test "ElkEngine construction and terminate worker no-op" {
 
 ///|
 test "ElkEngine hierarchical layout behavior (bug #8)" {
-  let elk = new_elk_engine()
+  let elk = new_elk_engine(@elk_graph_json.new_layout_runtime())
   let separate_result = try
     elk.layout(graph=make_bug8_graph(false), layout_options={
       "hierarchyHandling": j_str("SEPARATE_CHILDREN"),
@@ -818,7 +818,7 @@ test "ElkEngine hierarchical layout behavior (bug #8)" {
 
 ///|
 test "ElkEngine unsupported configuration raise" {
-  let elk = new_elk_engine()
+  let elk = new_elk_engine(@elk_graph_json.new_layout_runtime())
   let result = try elk.layout(graph=make_cycle_first_graph()) catch {
     error => Err(error)
   } noraise {

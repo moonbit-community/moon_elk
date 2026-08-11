@@ -34,7 +34,7 @@ fn reveal_log_folder_action_get_single_selected_execution_info_or_none(
 ///|
 pub fn RevealLogFolderAction::update_enablement(
   self : RevealLogFolderAction,
-) -> Unit {
+) -> Unit raise {
   match
     reveal_log_folder_action_get_single_selected_execution_info_or_none(
       self.view,
@@ -48,7 +48,7 @@ pub fn RevealLogFolderAction::update_enablement(
 }
 
 ///|
-pub fn RevealLogFolderAction::run(self : RevealLogFolderAction) -> Unit {
+pub fn RevealLogFolderAction::run(self : RevealLogFolderAction) -> Unit raise {
   match
     reveal_log_folder_action_get_single_selected_execution_info_or_none(
       self.view,

@@ -1,9 +1,9 @@
 ///|
-fn test_graph_creator_pop_graph(graphs : Array[LGraph]) -> LGraph {
+fn test_graph_creator_pop_graph(graphs : Array[LGraph]) -> LGraph raise {
   match graphs.pop() {
     Some(graph) => graph
     None => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "test graph stack is empty",
       )
       new_l_graph()
@@ -72,7 +72,7 @@ pub struct GreedySwitchTestGraphCreator {
 }
 
 ///|
-pub fn new_greedy_switch_test_graph_creator() -> GreedySwitchTestGraphCreator {
+pub fn new_greedy_switch_test_graph_creator() -> GreedySwitchTestGraphCreator raise {
   let creator = {
     port_id: 0,
     node_id: 0,
@@ -87,7 +87,7 @@ pub fn new_greedy_switch_test_graph_creator() -> GreedySwitchTestGraphCreator {
 ///|
 pub fn GreedySwitchTestGraphCreator::get_graph(
   self : GreedySwitchTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   self.set_up_graph(self.graph)
 }
 
@@ -95,7 +95,7 @@ pub fn GreedySwitchTestGraphCreator::get_graph(
 pub fn GreedySwitchTestGraphCreator::set_graph(
   self : GreedySwitchTestGraphCreator,
   graph : LGraph,
-) -> LGraph {
+) -> LGraph raise {
   self.graph = graph
   self.set_up_graph(self.graph)
 }
@@ -104,7 +104,7 @@ pub fn GreedySwitchTestGraphCreator::set_graph(
 pub fn GreedySwitchTestGraphCreator::set_up_graph(
   self : GreedySwitchTestGraphCreator,
   graph : LGraph,
-) -> LGraph {
+) -> LGraph raise {
   self.set_up_ids()
   graph
   .get_layout_state()
@@ -118,7 +118,7 @@ pub fn GreedySwitchTestGraphCreator::set_up_graph(
 ///|
 pub fn GreedySwitchTestGraphCreator::get_empty_graph(
   self : GreedySwitchTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   self.graph = new_l_graph()
   self.set_up_graph(self.graph)
 }
@@ -126,7 +126,7 @@ pub fn GreedySwitchTestGraphCreator::get_empty_graph(
 ///|
 pub fn GreedySwitchTestGraphCreator::get_two_nodes_no_connection_graph(
   self : GreedySwitchTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let layer = self.make_layer(self.graph)
   ignore(self.add_node_to_layer(layer))
   ignore(self.add_node_to_layer(layer))
@@ -137,7 +137,7 @@ pub fn GreedySwitchTestGraphCreator::get_two_nodes_no_connection_graph(
 ///|
 pub fn GreedySwitchTestGraphCreator::set_up_ids(
   self : GreedySwitchTestGraphCreator,
-) -> Unit {
+) -> Unit raise {
   let graphs = [self.graph]
   while !graphs.is_empty() {
     let graph = test_graph_creator_pop_graph(graphs)
@@ -166,7 +166,7 @@ pub fn GreedySwitchTestGraphCreator::set_up_ids(
 ///|
 pub fn GreedySwitchTestGraphCreator::get_cross_formed_graph(
   self : GreedySwitchTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let left_layer = self.make_layer(self.graph)
   let right_layer = self.make_layer(self.graph)
 
@@ -184,7 +184,7 @@ pub fn GreedySwitchTestGraphCreator::get_cross_formed_graph(
 ///|
 pub fn GreedySwitchTestGraphCreator::multiple_edges_and_single_edge(
   self : GreedySwitchTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let left_layer = self.make_layer(self.graph)
   let right_layer = self.make_layer(self.graph)
 
@@ -202,7 +202,7 @@ pub fn GreedySwitchTestGraphCreator::multiple_edges_and_single_edge(
 ///|
 pub fn GreedySwitchTestGraphCreator::get_cross_formed_graph_with_constraints_in_second_layer(
   self : GreedySwitchTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   ignore(self.get_cross_formed_graph())
   let layer_one = self.graph.get_layers()[1]
   let top_node = layer_one.get_nodes()[0]
@@ -215,7 +215,7 @@ pub fn GreedySwitchTestGraphCreator::get_cross_formed_graph_with_constraints_in_
 ///|
 pub fn GreedySwitchTestGraphCreator::get_cross_formed_graph_constraints_prevent_any_switch(
   self : GreedySwitchTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let left_layer = self.make_layer(self.graph)
   let right_layer = self.make_layer(self.graph)
 
@@ -235,7 +235,7 @@ pub fn GreedySwitchTestGraphCreator::get_cross_formed_graph_constraints_prevent_
 ///|
 pub fn GreedySwitchTestGraphCreator::get_one_node_graph(
   self : GreedySwitchTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let layer = self.make_layer(self.graph)
   ignore(self.add_node_to_layer(layer))
   self.set_up_ids()
@@ -245,7 +245,7 @@ pub fn GreedySwitchTestGraphCreator::get_one_node_graph(
 ///|
 pub fn GreedySwitchTestGraphCreator::get_in_layer_edges_graph(
   self : GreedySwitchTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let left_layer = self.make_layer(self.graph)
   let middle_layer = self.make_layer(self.graph)
   let right_layer = self.make_layer(self.graph)
@@ -264,7 +264,7 @@ pub fn GreedySwitchTestGraphCreator::get_in_layer_edges_graph(
 ///|
 pub fn GreedySwitchTestGraphCreator::get_in_layer_edges_graph_which_results_in_crossings_when_switched(
   self : GreedySwitchTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let left_layer = self.make_layer(self.graph)
   let right_layer = self.make_layer(self.graph)
 
@@ -281,7 +281,7 @@ pub fn GreedySwitchTestGraphCreator::get_in_layer_edges_graph_which_results_in_c
 ///|
 pub fn GreedySwitchTestGraphCreator::get_multiple_edges_between_same_nodes_graph(
   self : GreedySwitchTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let left_layer = self.make_layer(self.graph)
   let right_layer = self.make_layer(self.graph)
 
@@ -302,7 +302,7 @@ pub fn GreedySwitchTestGraphCreator::get_multiple_edges_between_same_nodes_graph
 ///|
 pub fn GreedySwitchTestGraphCreator::get_cross_with_extra_edge_in_between_graph(
   self : GreedySwitchTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let left_layer = self.make_layer(self.graph)
   let right_layer = self.make_layer(self.graph)
 
@@ -320,7 +320,7 @@ pub fn GreedySwitchTestGraphCreator::get_cross_with_extra_edge_in_between_graph(
 ///|
 pub fn GreedySwitchTestGraphCreator::get_cross_with_many_self_loops_graph(
   self : GreedySwitchTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let left_layer = self.make_layer(self.graph)
   let right_layer = self.make_layer(self.graph)
 
@@ -366,7 +366,7 @@ pub fn GreedySwitchTestGraphCreator::self_loop_on(
 ///|
 pub fn GreedySwitchTestGraphCreator::get_more_complex_three_layer_graph(
   self : GreedySwitchTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let left_layer = self.make_layer(self.graph)
   let middle_layer = self.make_layer(self.graph)
   let right_layer = self.make_layer(self.graph)
@@ -408,7 +408,7 @@ pub fn GreedySwitchTestGraphCreator::get_more_complex_three_layer_graph(
 ///|
 pub fn GreedySwitchTestGraphCreator::get_fixed_port_order_graph(
   self : GreedySwitchTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let left_layer = self.make_layer(self.graph)
   let right_layer = self.make_layer(self.graph)
 
@@ -428,7 +428,7 @@ pub fn GreedySwitchTestGraphCreator::get_fixed_port_order_graph(
 ///|
 pub fn GreedySwitchTestGraphCreator::get_graph_no_crossings_due_to_port_order_not_fixed(
   self : GreedySwitchTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let left_layer = self.make_layer(self.graph)
   let right_layer = self.make_layer(self.graph)
 
@@ -446,7 +446,7 @@ pub fn GreedySwitchTestGraphCreator::get_graph_no_crossings_due_to_port_order_no
 ///|
 pub fn GreedySwitchTestGraphCreator::get_switch_only_one_sided(
   self : GreedySwitchTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let layers = self.make_layers(3)
 
   let left_nodes = self.add_nodes_to_layer(2, layers[0])
@@ -465,7 +465,7 @@ pub fn GreedySwitchTestGraphCreator::get_switch_only_one_sided(
 ///|
 pub fn GreedySwitchTestGraphCreator::get_switch_only_east_one_sided(
   self : GreedySwitchTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let layers = self.make_layers(3)
 
   let left_nodes = self.add_nodes_to_layer(2, layers[0])
@@ -484,7 +484,7 @@ pub fn GreedySwitchTestGraphCreator::get_switch_only_east_one_sided(
 ///|
 pub fn GreedySwitchTestGraphCreator::get_fixed_port_order_in_layer_edges_dont_cross_each_other(
   self : GreedySwitchTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let layer = self.make_layer(self.graph)
   let nodes = self.add_nodes_to_layer(2, layer)
   self.set_fixed_order_constraint(nodes[0])
@@ -503,7 +503,7 @@ pub fn GreedySwitchTestGraphCreator::get_fixed_port_order_in_layer_edges_dont_cr
 ///|
 pub fn GreedySwitchTestGraphCreator::get_fixed_port_order_in_layer_edges_with_crossings(
   self : GreedySwitchTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let layer = self.make_layer(self.graph)
   let nodes = self.add_nodes_to_layer(2, layer)
   self.set_fixed_order_constraint(nodes[0])
@@ -517,7 +517,7 @@ pub fn GreedySwitchTestGraphCreator::get_fixed_port_order_in_layer_edges_with_cr
 ///|
 pub fn GreedySwitchTestGraphCreator::get_more_complex_in_layer_graph(
   self : GreedySwitchTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let layers = self.make_layers(3)
   let left_nodes = self.add_nodes_to_layer(4, layers[0])
   let middle_nodes = self.add_nodes_to_layer(3, layers[1])
@@ -543,7 +543,7 @@ pub fn GreedySwitchTestGraphCreator::get_more_complex_in_layer_graph(
 ///|
 pub fn GreedySwitchTestGraphCreator::get_graph_which_could_be_worsened_by_switch(
   self : GreedySwitchTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let layers = self.make_layers(3)
   let left_nodes = self.add_nodes_to_layer(2, layers[0])
   let middle_nodes = self.add_nodes_to_layer(2, layers[1])
@@ -566,7 +566,7 @@ pub fn GreedySwitchTestGraphCreator::get_graph_which_could_be_worsened_by_switch
 ///|
 pub fn GreedySwitchTestGraphCreator::get_nodes_in_different_layout_units_prevent_switch(
   self : GreedySwitchTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let layers = self.make_layers(2)
   let left_nodes = self.add_nodes_to_layer(2, layers[0])
   let right_nodes = self.add_nodes_to_layer(3, layers[1])
@@ -597,7 +597,7 @@ pub fn GreedySwitchTestGraphCreator::get_nodes_in_different_layout_units_prevent
 ///|
 pub fn GreedySwitchTestGraphCreator::multiple_in_between_layer_edges_into_node_with_no_fixed_port_order(
   self : GreedySwitchTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let left_layer = self.make_layer(self.graph)
   let left_nodes = self.add_nodes_to_layer(2, left_layer)
   let right_layer = self.make_layer(self.graph)
@@ -613,7 +613,7 @@ pub fn GreedySwitchTestGraphCreator::multiple_in_between_layer_edges_into_node_w
 ///|
 pub fn GreedySwitchTestGraphCreator::multiple_in_between_layer_edges_into_node_with_no_fixed_port_order_cause_crossings(
   self : GreedySwitchTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let left_layer = self.make_layer(self.graph)
   let left_nodes = self.add_nodes_to_layer(2, left_layer)
   let right_layer = self.make_layer(self.graph)
@@ -629,7 +629,7 @@ pub fn GreedySwitchTestGraphCreator::multiple_in_between_layer_edges_into_node_w
 ///|
 pub fn GreedySwitchTestGraphCreator::get_switched_problem_graph(
   self : GreedySwitchTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let left_nodes = self.add_nodes_to_layer(2, self.make_layer(self.graph))
   let right_nodes = self.add_nodes_to_layer(4, self.make_layer(self.graph))
 
@@ -647,7 +647,7 @@ pub fn GreedySwitchTestGraphCreator::get_switched_problem_graph(
 ///|
 pub fn GreedySwitchTestGraphCreator::two_edges_into_same_port(
   self : GreedySwitchTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let left_layer = self.make_layer(self.graph)
   let right_layer = self.make_layer(self.graph)
 
@@ -1093,7 +1093,7 @@ pub fn GreedySwitchTestGraphCreator::add_external_port_dummies_to_layer(
 pub fn GreedySwitchTestGraphCreator::nested_graph(
   self : GreedySwitchTestGraphCreator,
   node : LNode,
-) -> LGraph {
+) -> LGraph raise {
   match node.get_nested_graph() {
     Some(graph) => graph
     None => {

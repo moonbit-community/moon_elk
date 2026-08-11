@@ -8,7 +8,6 @@ fn layout_runner_test_default_configuration() -> TestConfiguration[Unit] {
 
 ///|
 test "LayoutTestRunner inflates all algorithm configuration graph combinations" {
-  reset_graph_model_for_test()
   reset_experiment_runner_ids_for_test()
 
   let algorithms = [
@@ -46,7 +45,6 @@ test "LayoutTestRunner inflates all algorithm configuration graph combinations" 
 
 ///|
 test "ExperimentRunner appends runner id to test descriptions" {
-  reset_graph_model_for_test()
   reset_experiment_runner_ids_for_test()
 
   let graph = new_test_graph(

@@ -9,7 +9,6 @@ priv struct MrtreeCycleFixture {
 
 ///|
 fn mrtree_build_cycle_fixture(search_order : String) -> MrtreeCycleFixture {
-  reset_mrtree_graph_model_for_test()
   let graph = new_mrtree_graph()
   mrtree_graph_set_search_order(graph, search_order)
   let n0 = new_mrtree_node(0, graph)

@@ -19,16 +19,7 @@ fn radial_layout_provider_raise_unsupported_configuration(
 }
 
 ///|
-fn radial_layout_provider_exception_message(
-  err : RadialLayoutProviderException,
-) -> String {
-  match err {
-    UnsupportedConfiguration(message) => message
-  }
-}
-
-///|
-pub fn new_radial_layout_provider() -> RadialLayoutProvider {
+pub fn new_radial_layout_provider() -> RadialLayoutProvider raise {
   {
     algorithm_assembler: @core.algorithm_assembler_create(
       radial_layout_phase_descriptor,
@@ -37,8 +28,10 @@ pub fn new_radial_layout_provider() -> RadialLayoutProvider {
 }
 
 ///|
-fn init {
-  @core.recursive_graph_layout_engine_register_handler(radial_algorithm_id, (
+pub fn register_radial_layout_algorithm(runtime : @core.LayoutRuntime) -> Unit {
+  runtime.register_layout_algorithm(radial_algorithm_id, (
+    _runtime,
+    _session,
     layout_graph,
     progress_monitor,
   ) => new_radial_layout_provider().layout(layout_graph, progress_monitor))
@@ -53,7 +46,7 @@ fn radial_node_micro_layout_execute(layout_graph : @graph.ElkNode) -> Unit {
 fn radial_layout_provider_assemble_algorithm(
   provider : RadialLayoutProvider,
   layout_graph : @graph.ElkNode,
-) -> Array[@core.ILayoutProcessor[RadialLayoutPhases, @graph.ElkNode]] {
+) -> Array[@core.ILayoutProcessor[RadialLayoutPhases, @graph.ElkNode]] raise {
   ignore(provider.algorithm_assembler.reset())
   ignore(
     provider.algorithm_assembler.set_phase(
@@ -124,18 +117,17 @@ pub fn RadialLayoutProvider::layout(
   self : RadialLayoutProvider,
   layout_graph : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor,
-) -> Unit {
+) -> Unit raise {
   try
     radial_layout_provider_layout_impl(self, layout_graph, progress_monitor)
   catch {
-    err => {
-      @core.layout_runtime_report_unsupported_configuration(
-        radial_layout_provider_exception_message(err),
-      )
+    UnsupportedConfiguration(message) => {
+      @core.layout_runtime_raise_unsupported_configuration(message)
       if progress_monitor.is_running() {
         progress_monitor.done()
       }
     }
+    err => raise err
   } noraise {
     _ => ()
   }
@@ -146,7 +138,7 @@ fn radial_layout_provider_layout_impl(
   provider : RadialLayoutProvider,
   layout_graph : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor,
-) -> Unit raise RadialLayoutProviderException {
+) -> Unit raise {
   let algorithm = radial_layout_provider_assemble_algorithm(
     provider, layout_graph,
   )
@@ -159,8 +151,7 @@ fn radial_layout_provider_layout_impl(
 
   let root = radial_find_root(layout_graph)
   match root {
-    Some(root_node) => {
-      radial_internal_set_root(layout_graph, root_node)
+    Some(_) => {
       let mut layout_radius = @graph.node_get_double_property(
         layout_graph, radial_radius,
       )

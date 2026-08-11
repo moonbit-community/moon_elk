@@ -1,2 +1,6 @@
 ///|
-pub type ElkShape = Int
+pub enum ElkShape {
+  ElkNodeShape(ElkNode)
+  ElkPortShape(ElkPort)
+  ElkLabelShape(ElkLabel)
+}

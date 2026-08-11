@@ -88,11 +88,11 @@ pub fn KVectorChain::to_array(self : KVectorChain) -> Array[KVector] {
 pub fn KVectorChain::to_array_from(
   self : KVectorChain,
   begin_index : Int,
-) -> Array[KVector] {
+) -> Array[KVector] raise {
   if begin_index < 0 || begin_index > self.vectors.length() {
     try kvector_chain_raise_unit("IndexOutOfBoundsException") catch {
       err =>
-        layout_runtime_report_unsupported_configuration(
+        layout_runtime_raise_unsupported_configuration(
           kvector_chain_exception_message(err),
         )
     } noraise {
@@ -110,7 +110,7 @@ pub fn KVectorChain::to_array_from(
 }
 
 ///|
-pub fn KVectorChain::parse(self : KVectorChain, string : String) -> Unit {
+pub fn KVectorChain::parse(self : KVectorChain, string : String) -> Unit raise {
   let tokens = _split_by_any_delims_keep_empty(string, ",;()[]{} \t\n")
   self.vectors.clear()
   let mut i = 0
@@ -216,11 +216,11 @@ pub fn KVectorChain::add_all_as_copies(
   self : KVectorChain,
   index : Int,
   chain : KVectorChain,
-) -> Unit {
+) -> Unit raise {
   if index < 0 || index > self.vectors.length() {
     try kvector_chain_raise_unit("IndexOutOfBoundsException") catch {
       err =>
-        layout_runtime_report_unsupported_configuration(
+        layout_runtime_raise_unsupported_configuration(
           kvector_chain_exception_message(err),
         )
     } noraise {
@@ -350,7 +350,7 @@ pub fn KVectorChain::has_infinite(self : KVectorChain) -> Bool {
 pub fn KVectorChain::point_on_line(
   self : KVectorChain,
   dist : Double,
-) -> KVector {
+) -> KVector raise {
   let size = self.vectors.length()
   if size >= 2 {
     let abs_distance = dist.abs()
@@ -385,7 +385,7 @@ pub fn KVectorChain::point_on_line(
     if size < 3 {
       try kvector_chain_raise_unit("NoSuchElementException") catch {
         err =>
-          layout_runtime_report_unsupported_configuration(
+          layout_runtime_raise_unsupported_configuration(
             kvector_chain_exception_message(err),
           )
       } noraise {
@@ -429,7 +429,7 @@ pub fn KVectorChain::point_on_line(
     )
   catch {
     err =>
-      layout_runtime_report_unsupported_configuration(
+      layout_runtime_raise_unsupported_configuration(
         kvector_chain_exception_message(err),
       )
   } noraise {
@@ -442,7 +442,7 @@ pub fn KVectorChain::point_on_line(
 pub fn KVectorChain::angle_on_line(
   self : KVectorChain,
   dist : Double,
-) -> Double {
+) -> Double raise {
   let size = self.vectors.length()
   if size < 2 {
     try
@@ -451,7 +451,7 @@ pub fn KVectorChain::angle_on_line(
       )
     catch {
       err =>
-        layout_runtime_report_unsupported_configuration(
+        layout_runtime_raise_unsupported_configuration(
           kvector_chain_exception_message(err),
         )
     } noraise {
@@ -484,7 +484,7 @@ pub fn KVectorChain::angle_on_line(
   if size < 3 {
     try kvector_chain_raise_unit("NoSuchElementException") catch {
       err =>
-        layout_runtime_report_unsupported_configuration(
+        layout_runtime_raise_unsupported_configuration(
           kvector_chain_exception_message(err),
         )
     } noraise {

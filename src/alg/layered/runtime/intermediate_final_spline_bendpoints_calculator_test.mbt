@@ -83,7 +83,7 @@ fn final_spline_test_connect(
 }
 
 ///|
-fn final_spline_test_build_graph() -> (LGraph, LEdge) {
+fn final_spline_test_build_graph() -> (LGraph, LEdge) raise {
   let graph = new_l_graph()
   let layer0 = final_spline_test_new_layer(graph)
   let layer1 = final_spline_test_new_layer(graph)

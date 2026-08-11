@@ -110,7 +110,7 @@ fn components_compaction_compact_in_direction(
   compactor : @compaction.OneDimensionalCompactor,
   direction : @core.Direction,
   recalculate_constraints_for_first_run : Bool,
-) -> Unit {
+) -> Unit raise {
   let lock_function = compactor.lock_fun
 
   ignore(compactor.set_lock_function(None))
@@ -149,7 +149,7 @@ let components_compaction_epsilon = 0.0001
 pub fn[N, E] init_one_dimensional_components_compaction(
   connected_components : IConnectedComponents[N, E],
   spacing : Double,
-) -> OneDimensionalComponentsCompaction[N, E] {
+) -> OneDimensionalComponentsCompaction[N, E] raise {
   let transformer = new_components_to_cgraph_transformer(spacing)
   let compaction_graph = transformer.transform(connected_components)
   {
@@ -166,7 +166,7 @@ pub fn[N, E] init_one_dimensional_components_compaction(
 pub fn[N, E] new_one_dimensional_components_compaction(
   connected_components : IConnectedComponents[N, E],
   spacing : Double,
-) -> OneDimensionalComponentsCompaction[N, E] {
+) -> OneDimensionalComponentsCompaction[N, E] raise {
   init_one_dimensional_components_compaction(connected_components, spacing)
 }
 
@@ -174,7 +174,7 @@ pub fn[N, E] new_one_dimensional_components_compaction(
 fn[N, E] OneDimensionalComponentsCompaction::add_external_edge_representations(
   self : OneDimensionalComponentsCompaction[N, E],
   external_edges : Array[(@compaction.CGroup, @compaction.CNode)],
-) -> Unit {
+) -> Unit raise {
   for external_edge in external_edges {
     let (group, node) = external_edge
     if !components_compaction_contains(self.compaction_graph.c_nodes, node) {
@@ -342,7 +342,7 @@ fn[N, E] OneDimensionalComponentsCompaction::update_external_extension_dimension
 fn[N, E] OneDimensionalComponentsCompaction::compact_iteration(
   self : OneDimensionalComponentsCompaction[N, E],
   compactor : @compaction.OneDimensionalCompactor,
-) -> Double {
+) -> Double raise {
   let mut delta = 0.0
 
   components_compaction_reset_group_deltas(self.compaction_graph.c_groups)
@@ -391,7 +391,7 @@ fn[N, E] OneDimensionalComponentsCompaction::compact_iteration(
 pub fn[N, E] OneDimensionalComponentsCompaction::compact(
   self : OneDimensionalComponentsCompaction[N, E],
   _monitor : @core.IElkProgressMonitor,
-) -> Unit {
+) -> Unit raise {
   let all_nodes : Array[@compaction.CNode] = []
   self.vertical_external_extensions.clear()
   self.horizontal_external_extensions.clear()
@@ -456,7 +456,7 @@ pub fn[N, E] OneDimensionalComponentsCompaction::compact(
 
   ignore(
     compactor.set_lock_function(
-      Some((node, _direction) => {
+      Some(fn(node, _direction) {
         match node.group() {
           Some(group) => group.out_degree() != 0
           None => false
@@ -477,7 +477,7 @@ pub fn[N, E] OneDimensionalComponentsCompaction::compact(
 
   ignore(
     compactor.set_lock_function(
-      Some((node, direction) => {
+      Some(fn(node, direction) {
         self.transformer.is_locked(node, direction) ||
         (match node.group() {
           Some(group) =>

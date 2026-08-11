@@ -1,34 +1,35 @@
 ///|
-let plain_java_initialization_initialized : Ref[Bool] = Ref(false)
-
-///|
 fn plain_java_initialization_register_algorithm_if_missing(
+  metadata : @core.OptionMetadata,
   algorithm_id : String,
 ) -> Unit {
-  match layout_meta_data_service_get_algorithm_data(algorithm_id) {
+  match metadata.algorithm_data(algorithm_id) {
     Some(_) => ()
-    None =>
-      layout_meta_data_service_register_algorithm(
-        new_layout_algorithm_data(algorithm_id),
-      )
+    None => metadata.register_algorithm(new_layout_algorithm_data(algorithm_id))
   }
 }
 
 ///|
-fn plain_java_initialization_register_additional_algorithms() -> Unit {
+fn plain_java_initialization_register_additional_algorithms(
+  metadata : @core.OptionMetadata,
+) -> Unit {
   let additional_algorithm_ids = [
     "org.eclipse.elk.disco", "org.eclipse.elk.force", "org.eclipse.elk.stress", "org.eclipse.elk.radial",
     rectpacking_algorithm_id, spore_compaction_algorithm_id, spore_overlap_removal_algorithm_id,
     vertiflex_algorithm_id,
   ]
   for algorithm_id in additional_algorithm_ids {
-    plain_java_initialization_register_algorithm_if_missing(algorithm_id)
+    plain_java_initialization_register_algorithm_if_missing(
+      metadata, algorithm_id,
+    )
   }
 }
 
 ///|
-fn plain_java_initialization_enable_layered_features() -> Unit {
-  match layout_meta_data_service_get_algorithm_data("org.eclipse.elk.layered") {
+fn plain_java_initialization_enable_layered_features(
+  metadata : @core.OptionMetadata,
+) -> Unit {
+  match metadata.algorithm_data("org.eclipse.elk.layered") {
     Some(algorithm_data) =>
       for
         feature in [
@@ -48,21 +49,12 @@ fn plain_java_initialization_enable_layered_features() -> Unit {
 }
 
 ///|
-pub fn plain_java_initialization_initialize_plain_java_layout() -> Unit {
-  if plain_java_initialization_initialized.val {
-    return
-  }
-  layout_meta_data_service_register_default_options()
-  layout_meta_data_service_register_default_algorithms()
-  layout_meta_data_service_register_layout_meta_data_providers(
-    force_layout_meta_data_providers(),
-  )
-  plain_java_initialization_register_additional_algorithms()
-  plain_java_initialization_enable_layered_features()
-  plain_java_initialization_initialized.val = true
-}
-
-///|
-pub fn plain_java_initialization_reset_for_test() -> Unit {
-  plain_java_initialization_initialized.val = false
+pub fn plain_java_initialization_initialize_plain_java_layout(
+  metadata : @core.OptionMetadata,
+) -> Unit {
+  metadata.register_default_options()
+  metadata.register_default_algorithms()
+  metadata.register_providers(force_layout_meta_data_providers())
+  plain_java_initialization_register_additional_algorithms(metadata)
+  plain_java_initialization_enable_layered_features(metadata)
 }

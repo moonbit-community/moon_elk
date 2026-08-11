@@ -21,7 +21,7 @@ pub fn new_core_debug_grandom_handler(
 pub fn CoreDebugGRandomHandler::execute(
   self : CoreDebugGRandomHandler,
   selection : Array[CoreDebugGRandomSelectionItem],
-) -> Int {
+) -> Int raise {
   let parser = @ide.new_core_debug_grandom_parser()
   let mut processed = 0
   for item in selection {

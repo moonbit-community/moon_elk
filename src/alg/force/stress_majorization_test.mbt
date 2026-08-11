@@ -23,12 +23,9 @@ fn build_stress_graph() -> (FGraph, FNode, FNode) {
 }
 
 ///|
-fn stress_majorization_test_expect_ok(
-  action : () -> Unit raise StressMajorizationException,
-) -> Unit {
+fn stress_majorization_test_expect_ok(action : () -> Unit raise) -> Unit {
   try action() catch {
-    StressMajorizationException(message) =>
-      abort("unexpected StressMajorizationException: \{message}")
+    err => abort(err.to_string())
   } noraise {
     _ => ()
   }
@@ -36,7 +33,6 @@ fn stress_majorization_test_expect_ok(
 
 ///|
 test "StressMajorization execute keeps finite positions" {
-  reset_force_graph_model_for_test()
   let (graph, left, right) = build_stress_graph()
   let stress = new_stress_majorization()
   stress_majorization_test_expect_ok(() => stress.initialize(graph))
@@ -49,7 +45,6 @@ test "StressMajorization execute keeps finite positions" {
 
 ///|
 test "StressMajorization respects X-only dimension" {
-  reset_force_graph_model_for_test()
   let (graph, left, right) = build_stress_graph()
   graph.set_int_property(stress_dimension, 1)
   let left_y = fnode_position(left).y

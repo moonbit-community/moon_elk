@@ -155,14 +155,14 @@ pub fn IElkProgressMonitor::begin(
   self : IElkProgressMonitor,
   name : String,
   total_work : Double,
-) -> Bool {
+) -> Bool raise {
   if self.null_mode {
     return false
   }
   if self.closed {
     try elk_progress_monitor_raise("The task is already done.") catch {
       err =>
-        layout_runtime_report_unsupported_configuration(
+        layout_runtime_raise_unsupported_configuration(
           elk_progress_monitor_exception_message(err),
         )
     } noraise {
@@ -214,14 +214,14 @@ pub fn IElkProgressMonitor::worked(
 }
 
 ///|
-pub fn IElkProgressMonitor::done(self : IElkProgressMonitor) -> Unit {
+pub fn IElkProgressMonitor::done(self : IElkProgressMonitor) -> Unit raise {
   if self.null_mode {
     return
   }
   if !self.running && !self.closed {
     try elk_progress_monitor_raise("The task has not begun yet.") catch {
       err =>
-        layout_runtime_report_unsupported_configuration(
+        layout_runtime_raise_unsupported_configuration(
           elk_progress_monitor_exception_message(err),
         )
     } noraise {

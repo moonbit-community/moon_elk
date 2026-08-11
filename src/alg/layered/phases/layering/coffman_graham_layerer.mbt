@@ -19,12 +19,11 @@ fn coffman_graham_layerer_layer_constraint_postprocessor_factory() -> @core.ILay
 }
 
 ///|
-let coffman_graham_layerer_baseline_processing_configuration : @core.LayoutProcessorConfiguration[
+fn coffman_graham_layerer_baseline_processing_configuration() -> @core.LayoutProcessorConfiguration[
   @runtime.LayeredPhases,
   @runtime.LGraph,
-] = @core.layout_processor_configuration_create(
-    @runtime.layered_phase_descriptor,
-  )
+] raise {
+  @core.layout_processor_configuration_create(@runtime.layered_phase_descriptor)
   .add_before(
     P1CycleBreaking,
     @runtime.layered_intermediate_processor_factory(
@@ -39,6 +38,7 @@ let coffman_graham_layerer_baseline_processing_configuration : @core.LayoutProce
     P3NodeOrdering,
     coffman_graham_layerer_layer_constraint_postprocessor_factory(),
   )
+}
 
 ///|
 pub(all) suberror CoffmanGrahamLayererException {
@@ -243,16 +243,16 @@ fn coffman_graham_layerer_transitive_reduction(
 ///|
 fn coffman_graham_layerer_configuration(
   graph : @runtime.LGraph,
-) -> @core.LayoutProcessorConfiguration[@runtime.LayeredPhases, @runtime.LGraph]? {
+) -> @core.LayoutProcessorConfiguration[@runtime.LayeredPhases, @runtime.LGraph]? raise {
   ignore(graph)
-  Some(coffman_graham_layerer_baseline_processing_configuration)
+  Some(coffman_graham_layerer_baseline_processing_configuration())
 }
 
 ///|
 fn coffman_graham_layerer_process(
   layered_graph : @runtime.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()
@@ -376,7 +376,7 @@ fn coffman_graham_layerer_process(
     layered_graph.get_layerless_nodes().clear()
   } catch {
     UnsupportedGraphException(message) => {
-      @core.layout_runtime_report_unsupported_configuration(message)
+      @core.layout_runtime_raise_unsupported_configuration(message)
       monitor.done()
       return
     }

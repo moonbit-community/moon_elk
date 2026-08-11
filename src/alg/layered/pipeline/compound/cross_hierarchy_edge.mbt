@@ -1,9 +1,9 @@
 ///|
-fn cross_hierarchy_edge_require_source_port(edge : LEdge) -> LPort {
+fn cross_hierarchy_edge_require_source_port(edge : LEdge) -> LPort raise {
   match edge.get_source() {
     Some(port) => port
     None => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "edge has no source port",
       )
       new_l_port()
@@ -12,11 +12,11 @@ fn cross_hierarchy_edge_require_source_port(edge : LEdge) -> LPort {
 }
 
 ///|
-fn cross_hierarchy_edge_require_target_port(edge : LEdge) -> LPort {
+fn cross_hierarchy_edge_require_target_port(edge : LEdge) -> LPort raise {
   match edge.get_target() {
     Some(port) => port
     None => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "edge has no target port",
       )
       new_l_port()
@@ -25,11 +25,11 @@ fn cross_hierarchy_edge_require_target_port(edge : LEdge) -> LPort {
 }
 
 ///|
-fn cross_hierarchy_edge_require_port_node(port : LPort) -> LNode {
+fn cross_hierarchy_edge_require_port_node(port : LPort) -> LNode raise {
   match port.get_node() {
     Some(node) => node
     None => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "port has no owner node",
       )
       new_l_node()
@@ -47,7 +47,9 @@ fn cross_hierarchy_edge_port_type_to_string(port_type : PortType) -> String {
 }
 
 ///|
-fn cross_hierarchy_edge_resolve_external_port_origin(port : LPort) -> LPort {
+fn cross_hierarchy_edge_resolve_external_port_origin(
+  port : LPort,
+) -> LPort raise {
   let node = cross_hierarchy_edge_require_port_node(port)
   match node.get_type() {
     ExternalPort => ()
@@ -101,7 +103,7 @@ pub fn CrossHierarchyEdge::get_type(self : CrossHierarchyEdge) -> PortType {
 ///|
 pub fn CrossHierarchyEdge::get_actual_source(
   self : CrossHierarchyEdge,
-) -> LPort {
+) -> LPort raise {
   let source = cross_hierarchy_edge_require_source_port(self.new_edge)
   cross_hierarchy_edge_resolve_external_port_origin(source)
 }
@@ -109,7 +111,7 @@ pub fn CrossHierarchyEdge::get_actual_source(
 ///|
 pub fn CrossHierarchyEdge::get_actual_target(
   self : CrossHierarchyEdge,
-) -> LPort {
+) -> LPort raise {
   let target = cross_hierarchy_edge_require_target_port(self.new_edge)
   cross_hierarchy_edge_resolve_external_port_origin(target)
 }

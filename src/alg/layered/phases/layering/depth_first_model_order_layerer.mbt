@@ -29,12 +29,11 @@ fn depth_first_model_order_layerer_layer_constraint_postprocessor_factory() -> @
 }
 
 ///|
-let depth_first_model_order_layerer_baseline_processing_configuration : @core.LayoutProcessorConfiguration[
+fn depth_first_model_order_layerer_baseline_processing_configuration() -> @core.LayoutProcessorConfiguration[
   @runtime.LayeredPhases,
   @runtime.LGraph,
-] = @core.layout_processor_configuration_create(
-    @runtime.layered_phase_descriptor,
-  )
+] raise {
+  @core.layout_processor_configuration_create(@runtime.layered_phase_descriptor)
   .add_before(
     P1CycleBreaking,
     @runtime.layered_intermediate_processor_factory(
@@ -49,6 +48,7 @@ let depth_first_model_order_layerer_baseline_processing_configuration : @core.La
     P3NodeOrdering,
     depth_first_model_order_layerer_layer_constraint_postprocessor_factory(),
   )
+}
 
 ///|
 pub(all) suberror DepthFirstModelOrderLayererException {
@@ -263,16 +263,16 @@ fn depth_first_model_order_layerer_place_nodes_to_place(
 ///|
 fn depth_first_model_order_layerer_configuration(
   graph : @runtime.LGraph,
-) -> @core.LayoutProcessorConfiguration[@runtime.LayeredPhases, @runtime.LGraph]? {
+) -> @core.LayoutProcessorConfiguration[@runtime.LayeredPhases, @runtime.LGraph]? raise {
   ignore(graph)
-  Some(depth_first_model_order_layerer_baseline_processing_configuration)
+  Some(depth_first_model_order_layerer_baseline_processing_configuration())
 }
 
 ///|
 fn depth_first_model_order_layerer_process(
   layered_graph : @runtime.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()
@@ -399,7 +399,7 @@ fn depth_first_model_order_layerer_process(
     }
   } catch {
     UnsupportedGraphException(message) => {
-      @core.layout_runtime_report_unsupported_configuration(message)
+      @core.layout_runtime_raise_unsupported_configuration(message)
       monitor.done()
       return
     }

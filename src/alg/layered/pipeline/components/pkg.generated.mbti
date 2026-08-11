@@ -90,7 +90,7 @@ pub struct LayeredComponentsProcessor {
   mut graph_placer_kind : LayeredGraphPlacerKind
 }
 pub fn LayeredComponentsProcessor::combine(Self, Array[@runtime.LGraph], @runtime.LGraph) -> Unit
-pub fn LayeredComponentsProcessor::split(Self, @runtime.LGraph) -> Array[@runtime.LGraph]
+pub fn LayeredComponentsProcessor::split(Self, @runtime.LGraph) -> Array[@runtime.LGraph] raise
 
 type LayeredGraphPlacerKind
 

@@ -97,7 +97,7 @@ fn graph_text_id_to_string(text : String) -> String {
 pub fn ElkGraphQualifiedNameConverter::to_qualified_name(
   self : ElkGraphQualifiedNameConverter,
   qualified_name_as_text : String,
-) -> Array[String] {
+) -> Array[String] raise {
   ignore(self.id_rule)
   if qualified_name_as_text == "" {
     try
@@ -106,7 +106,7 @@ pub fn ElkGraphQualifiedNameConverter::to_qualified_name(
       )
     catch {
       ElkGraphQualifiedNameConverterException(message) =>
-        @core.layout_runtime_report_unsupported_configuration(
+        @core.layout_runtime_raise_unsupported_configuration(
           "org.eclipse.elk.graph.text.naming.ElkGraphQualifiedNameConverter: " +
           message,
         )
@@ -136,7 +136,7 @@ pub fn ElkGraphQualifiedNameConverter::to_qualified_name(
 pub fn ElkGraphQualifiedNameConverter::to_string(
   self : ElkGraphQualifiedNameConverter,
   name : Array[String],
-) -> String {
+) -> String raise {
   ignore(self.id_rule)
   if name.length() == 0 {
     try
@@ -145,7 +145,7 @@ pub fn ElkGraphQualifiedNameConverter::to_string(
       )
     catch {
       ElkGraphQualifiedNameConverterException(message) =>
-        @core.layout_runtime_report_unsupported_configuration(
+        @core.layout_runtime_raise_unsupported_configuration(
           "org.eclipse.elk.graph.text.naming.ElkGraphQualifiedNameConverter: " +
           message,
         )

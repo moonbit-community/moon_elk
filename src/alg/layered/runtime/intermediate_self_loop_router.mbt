@@ -37,7 +37,7 @@ fn self_loop_router_process_node(
   routing_slot_assigner : RoutingSlotAssigner,
   sl_router : AbstractSelfLoopRouter,
   monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   routing_director.determine_loop_routes(sl_holder)
   label_placer.place_labels(sl_holder, label_manager, monitor)
   routing_slot_assigner.assign_routing_slots(sl_holder)
@@ -48,7 +48,7 @@ fn self_loop_router_process_node(
 fn self_loop_router_process(
   graph : LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()

@@ -1,11 +1,11 @@
 ///|
 pub(all) struct ITopdownLayoutProvider {
-  get_predicted_graph_size_fn : (@graph.ElkNode) -> KVector
+  get_predicted_graph_size_fn : (@graph.ElkNode) -> KVector raise
 }
 
 ///|
 pub fn new_topdown_layout_provider(
-  get_predicted_graph_size_fn : (@graph.ElkNode) -> KVector,
+  get_predicted_graph_size_fn : (@graph.ElkNode) -> KVector raise,
 ) -> ITopdownLayoutProvider {
   { get_predicted_graph_size_fn, }
 }
@@ -14,6 +14,6 @@ pub fn new_topdown_layout_provider(
 pub fn ITopdownLayoutProvider::get_predicted_graph_size(
   self : ITopdownLayoutProvider,
   graph : @graph.ElkNode,
-) -> KVector {
+) -> KVector raise {
   (self.get_predicted_graph_size_fn)(graph)
 }

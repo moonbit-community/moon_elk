@@ -1,7 +1,5 @@
 ///|
 test "Rectpacking issue 583 decrease approximated width" {
-  reset_graph_model_for_test()
-
   let parent = create_graph()
   let n1 = @graph.create_node(Some(parent))
   let n2 = @graph.create_node(Some(parent))

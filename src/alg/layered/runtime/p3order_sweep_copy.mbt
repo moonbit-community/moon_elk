@@ -81,10 +81,10 @@ fn sweep_copy_compare_doubles(left : Double, right : Double) -> Int {
 }
 
 ///|
-fn sweep_copy_compare_ports(left : LPort, right : LPort) -> Int {
+fn sweep_copy_compare_ports(left : LPort, right : LPort) -> Int raise {
   try sweep_copy_compare_ports_raise(left, right) catch {
     SweepCopyException(message) => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "org.eclipse.elk.alg.layered.p3order.SweepCopy: " + message,
       )
       0
@@ -137,7 +137,7 @@ fn sweep_copy_compare_ports_raise(
 }
 
 ///|
-fn sweep_copy_sort_ports(ports : Array[LPort]) -> Unit {
+fn sweep_copy_sort_ports(ports : Array[LPort]) -> Unit raise {
   let mut i = 1
   while i < ports.length() {
     let current = ports[i]
@@ -221,7 +221,7 @@ pub fn SweepCopy::transfer_node_and_port_orders_to_graph(
   self : SweepCopy,
   l_graph : LGraph,
   set_port_constraints : Bool,
-) -> Unit {
+) -> Unit raise {
   let north_south_port_dummies = []
   let update_port_order = []
 
@@ -275,10 +275,10 @@ pub fn SweepCopy::transfer_node_and_port_orders_to_graph(
 fn SweepCopy::assert_correct_port_sides(
   self : SweepCopy,
   dummy : LNode,
-) -> LNode {
+) -> LNode raise {
   try self.assert_correct_port_sides_raise(dummy) catch {
     SweepCopyException(message) => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "org.eclipse.elk.alg.layered.p3order.SweepCopy: " + message,
       )
       dummy

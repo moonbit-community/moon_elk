@@ -1,5 +1,5 @@
 ///|
-fn topdownpacking_parse_padding(value : String) -> @core.ElkPadding {
+fn topdownpacking_parse_padding(value : String) -> @core.ElkPadding raise {
   let padding = @core.new_elk_padding()
   padding.parse(value)
   padding
@@ -19,21 +19,20 @@ fn topdownpacking_left_right_top_down_node_placer_configuration(
 fn topdownpacking_left_right_top_down_node_placer_process(
   layout_graph : GridElkNode,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   try
     topdownpacking_left_right_top_down_node_placer_process_impl(
       layout_graph, progress_monitor,
     )
   catch {
-    err => {
-      @core.layout_runtime_report_unsupported_configuration(
-        topdownpacking_grid_exception_message(err),
-      )
+    TopdownpackingGridException(message) => {
+      @core.layout_runtime_raise_unsupported_configuration(message)
       match progress_monitor {
         Some(monitor) => if monitor.is_running() { monitor.done() }
         None => ()
       }
     }
+    err => raise err
   } noraise {
     _ => ()
   }
@@ -43,7 +42,7 @@ fn topdownpacking_left_right_top_down_node_placer_process(
 fn topdownpacking_left_right_top_down_node_placer_process_impl(
   layout_graph : GridElkNode,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit raise TopdownpackingGridException {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(existing) => existing
     None => @core.new_null_elk_progress_monitor()
@@ -131,7 +130,7 @@ fn topdownpacking_left_right_top_down_node_placer_process_impl(
 ///|
 pub fn topdownpacking_left_right_top_down_node_placer_get_predicted_size(
   graph : @graph.ElkNode,
-) -> @core.KVector {
+) -> @core.KVector raise {
   let number_of_children = @graph.node_children(graph).length()
   let padding = topdownpacking_parse_padding(
     @graph.node_get_string_property(graph, topdownpacking_padding),
@@ -170,7 +169,7 @@ pub fn new_topdownpacking_left_right_top_down_node_placer_layout_phase() -> @cor
   TopdownPackingPhases,
   GridElkNode,
 ] {
-  @core.new_layout_phase(
+  @core.new_pure_layout_phase(
     topdownpacking_left_right_top_down_node_placer_process, topdownpacking_left_right_top_down_node_placer_configuration,
   )
 }

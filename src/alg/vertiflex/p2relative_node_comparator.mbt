@@ -1,5 +1,6 @@
 ///|
 fn vertiflex_node_comparator_compare(
+  session : VertiFlexSession,
   a : @graph.ElkNode,
   b : @graph.ElkNode,
   invert : Bool,
@@ -20,8 +21,8 @@ fn vertiflex_node_comparator_compare(
     0
   }
   if sort_y_result == 0 {
-    let order_a = vertiflex_internal_node_model_order(a)
-    let order_b = vertiflex_internal_node_model_order(b)
+    let order_a = vertiflex_internal_node_model_order(session, a)
+    let order_b = vertiflex_internal_node_model_order(session, b)
     if order_a < order_b {
       -1
     } else if order_a > order_b {

@@ -207,7 +207,10 @@ fn long_edge_splitter_create_dummy_node(
 }
 
 ///|
-pub fn long_edge_splitter_split_edge(edge : LEdge, dummy_node : LNode) -> LEdge {
+pub fn long_edge_splitter_split_edge(
+  edge : LEdge,
+  dummy_node : LNode,
+) -> LEdge raise {
   try {
     let old_edge_target = long_edge_splitter_require_target(edge)
 
@@ -249,7 +252,7 @@ pub fn long_edge_splitter_split_edge(edge : LEdge, dummy_node : LNode) -> LEdge 
     dummy_edge
   } catch {
     UnsupportedGraphException(message) => {
-      @core.layout_runtime_report_unsupported_configuration(message)
+      @core.layout_runtime_raise_unsupported_configuration(message)
       edge
     }
   } noraise {
@@ -261,7 +264,7 @@ pub fn long_edge_splitter_split_edge(edge : LEdge, dummy_node : LNode) -> LEdge 
 fn long_edge_splitter_process(
   layered_graph : LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()
@@ -306,11 +309,12 @@ fn long_edge_splitter_process(
       }
     }
   } catch {
-    UnsupportedGraphException(message) => {
-      @core.layout_runtime_report_unsupported_configuration(message)
+    LongEdgeSplitterException::UnsupportedGraphException(message) => {
+      @core.layout_runtime_raise_unsupported_configuration(message)
       monitor.done()
       return
     }
+    err => raise err
   } noraise {
     _ => ()
   }

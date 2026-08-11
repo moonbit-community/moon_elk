@@ -1,6 +1,5 @@
 ///|
 test "Rectpacking min size pre processor stores minimum width and height" {
-  reset_graph_model_for_test()
   let graph = create_graph()
   node_set_string_set_property(graph, @core.node_size_constraints, [
     "MINIMUM_SIZE",
@@ -23,7 +22,6 @@ test "Rectpacking min size pre processor stores minimum width and height" {
 
 ///|
 test "Rectpacking min size pre processor stores zero when no minimum size constraint exists" {
-  reset_graph_model_for_test()
   let graph = create_graph()
   node_set_string_set_property(graph, @core.node_size_constraints, [])
   @graph.node_set_string_property(
@@ -44,7 +42,6 @@ test "Rectpacking min size pre processor stores zero when no minimum size constr
 
 ///|
 test "Rectpacking min size post processor keeps target width at least minimum width" {
-  reset_graph_model_for_test()
   let graph = create_graph()
   @graph.node_set_double_property(graph, rectpacking_internal_min_width, 120.0)
   @graph.node_set_double_property(

@@ -18,11 +18,14 @@ pub fn new_dis_co_graph_rendering_fill_patterns(
 }
 
 ///|
-fn require_color(color : DisCoDebugColor?, name : String) -> DisCoDebugColor {
+fn require_color(
+  color : DisCoDebugColor?,
+  name : String,
+) -> DisCoDebugColor raise {
   match color {
     Some(value) => value
     None => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "Missing color in DisCoGraphRenderingConfigurator: " + name,
       )
       new_dis_co_debug_color(new_dis_co_debug_display(), 0, 0, 0)
@@ -59,7 +62,7 @@ fn fill_rectangle(
 pub fn dis_co_graph_rendering_fill_patterns_get_dc_extension_pattern(
   patterns : DisCoGraphRenderingFillPatterns,
   alpha : Int,
-) -> DisCoDebugPattern {
+) -> DisCoDebugPattern raise {
   ignore(
     require_color(
       dis_co_graph_rendering_configurator_get_dc_element_external_fill_color(
@@ -80,7 +83,7 @@ pub fn dis_co_graph_rendering_fill_patterns_get_dc_extension_pattern(
 pub fn dis_co_graph_rendering_fill_patterns_get_polyomino_extension_pattern(
   patterns : DisCoGraphRenderingFillPatterns,
   alpha : Int,
-) -> DisCoDebugPattern {
+) -> DisCoDebugPattern raise {
   ignore(
     require_color(
       dis_co_graph_rendering_configurator_get_polyomino_weakly_blocked_color(
@@ -106,7 +109,7 @@ pub fn dis_co_graph_rendering_fill_patterns_get_polyomino_extension_pattern(
 pub fn dis_co_graph_rendering_fill_patterns_get_polyomino_center_pattern(
   patterns : DisCoGraphRenderingFillPatterns,
   alpha : Int,
-) -> DisCoDebugPattern {
+) -> DisCoDebugPattern raise {
   ignore(
     require_color(
       dis_co_graph_rendering_configurator_get_polyomino_center_color(

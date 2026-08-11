@@ -17,7 +17,6 @@ type PortSide = @core.PortSide
 let create_graph = @graph.create_graph
 
 ///|
-let reset_graph_model_for_test = @graph.reset_graph_model_for_test
 
 ///|
 let create_node = @graph.create_node

@@ -1,5 +1,34 @@
 ///|
-pub type ElkEdge = Int
+pub struct ElkEdge {
+  priv mut data : EdgeData
+  priv mut arena : GraphArena?
+  priv id : Int
+}
+
+///|
+pub impl Eq for ElkEdge with fn equal(self, other) {
+  physical_equal(self, other)
+}
+
+///|
+pub impl Hash for ElkEdge with fn hash(self) {
+  self.id
+}
+
+///|
+pub impl Hash for ElkEdge with fn hash_combine(self, hasher) {
+  hasher.combine_int(self.id)
+}
+
+///|
+pub impl @debug.Debug for ElkEdge with fn to_repr(self) {
+  Repr(self.id)
+}
+
+///|
+pub impl Show for ElkEdge with fn output(self, logger) {
+  logger.write_string(self.id.to_string())
+}
 
 ///|
 priv struct EdgeData {
@@ -13,40 +42,25 @@ priv struct EdgeData {
 }
 
 ///|
-let edge_store : Ref[Array[EdgeData]] = Ref([])
-
-///|
-let edge_next_handle : Ref[Int] = Ref(0)
-
-///|
-let edge_free_slots : Ref[Array[Int]] = Ref([])
-
-///|
-let edge_handle_slots : Ref[Map[Int, Int]] = Ref(Map([]))
-
-///|
-let edge_slot_handles : Ref[Array[Int]] = Ref([])
-
-///|
-fn edge_allocated_slot(edge : ElkEdge) -> Int {
-  match edge_handle_slots.val.get(edge) {
-    Some(slot) => slot
+fn checked_edge(edge : ElkEdge) -> Unit {
+  match edge.arena {
+    Some(arena) => checked_graph_arena(arena)
     None => abort("invalid or disposed edge id")
   }
 }
 
 ///|
-fn edge_slot(edge : ElkEdge) -> Int {
-  let slot = edge_allocated_slot(edge)
-  if edge_arena_store.val[slot] < 0 {
-    abort("invalid or disposed edge id")
+fn edge_graph_arena(edge : ElkEdge) -> GraphArena {
+  checked_edge(edge)
+  match edge.arena {
+    Some(arena) => arena
+    None => abort("invalid or disposed edge id")
   }
-  slot
 }
 
 ///|
-fn checked_edge(edge : ElkEdge) -> Unit {
-  ignore(edge_slot(edge))
+pub fn ElkEdge::graph_arena(self : ElkEdge) -> GraphArena {
+  edge_graph_arena(self)
 }
 
 ///|
@@ -62,56 +76,40 @@ let disposed_edge_data : EdgeData = {
 
 ///|
 fn dispose_edge_slot(edge : ElkEdge) -> Unit {
-  let slot = edge_slot(edge)
-  edge_store.val[slot] = disposed_edge_data
-  edge_arena_store.val[slot] = -1
-  graph_handle_release(
-    edge,
-    slot,
-    edge_handle_slots.val,
-    edge_slot_handles.val,
-    edge_free_slots.val,
-  )
+  checked_edge(edge)
+  edge.data = disposed_edge_data
+  edge.arena = None
 }
 
 ///|
-fn create_edge_in_arena(containing_node : ElkNode?, arena_id : Int) -> ElkEdge {
-  let slot = match edge_free_slots.val.pop() {
-    Some(reused) => reused
-    None => {
-      let fresh = edge_store.val.length()
-      edge_store.val.push(disposed_edge_data)
-      edge_arena_store.val.push(-1)
-      edge_slot_handles.val.push(-1)
-      fresh
-    }
+fn create_edge_in_arena(
+  containing_node : ElkNode?,
+  arena : GraphArena,
+) -> ElkEdge {
+  let edge : ElkEdge = {
+    data: {
+      containing_node,
+      sources: [],
+      targets: [],
+      identifier: "",
+      sections: [],
+      junction_points: [],
+      layout_option_string_values: Map([]),
+    },
+    arena: Some(arena),
+    id: arena.allocate_object_id(),
   }
-  let id = graph_handle_allocate(
-    slot,
-    edge_next_handle,
-    edge_handle_slots.val,
-    edge_slot_handles.val,
-  )
-  edge_store.val[slot] = {
-    containing_node,
-    sources: [],
-    targets: [],
-    identifier: "",
-    sections: [],
-    junction_points: [],
-    layout_option_string_values: Map([]),
-  }
-  graph_arena_register_edge(arena_id, id)
+  graph_arena_register_edge(arena, edge)
   if containing_node is Some(node_id) {
-    append_contained_edge(node_id, id)
+    append_contained_edge(node_id, edge)
   }
-  id
+  edge
 }
 
 ///|
 pub fn GraphArena::create_edge(self : GraphArena) -> ElkEdge {
   checked_graph_arena(self)
-  create_edge_in_arena(None, self.id)
+  create_edge_in_arena(None, self)
 }
 
 ///|
@@ -119,10 +117,7 @@ pub fn create_edge(containing_node : ElkNode?) -> ElkEdge {
   match containing_node {
     Some(node_id) => {
       checked_node(node_id)
-      create_edge_in_arena(
-        Some(node_id),
-        node_arena_store.val[node_slot(node_id)],
-      )
+      create_edge_in_arena(Some(node_id), node_graph_arena(node_id))
     }
     None => new_graph_arena().create_edge()
   }
@@ -136,9 +131,9 @@ pub fn edge_add_source(edge : ElkEdge, source : ElkConnectableShape) -> Unit {
     PortShape(port) => checked_port(port)
   }
   graph_arena_adopt_standalone_edge(edge, graph_arena_for_shape(source))
-  let data = edge_store.val[edge_slot(edge)]
+  let data = edge.data
   data.sources.push(source)
-  edge_store.val[edge_slot(edge)] = data
+  edge.data = data
 }
 
 ///|
@@ -149,9 +144,9 @@ pub fn edge_add_target(edge : ElkEdge, target : ElkConnectableShape) -> Unit {
     PortShape(port) => checked_port(port)
   }
   graph_arena_adopt_standalone_edge(edge, graph_arena_for_shape(target))
-  let data = edge_store.val[edge_slot(edge)]
+  let data = edge.data
   data.targets.push(target)
-  edge_store.val[edge_slot(edge)] = data
+  edge.data = data
 }
 
 ///|
@@ -161,9 +156,9 @@ pub fn edge_set_layout_option_string_by_id(
   value : String,
 ) -> Unit {
   checked_edge(edge)
-  let data = edge_store.val[edge_slot(edge)]
+  let data = edge.data
   data.layout_option_string_values[option_id] = value
-  edge_store.val[edge_slot(edge)] = data
+  edge.data = data
 }
 
 ///|
@@ -172,7 +167,7 @@ pub fn edge_layout_option_string_value(
   option_id : String,
 ) -> String? {
   checked_edge(edge)
-  edge_store.val[edge_slot(edge)].layout_option_string_values.get(option_id)
+  edge.data.layout_option_string_values.get(option_id)
 }
 
 ///|
@@ -180,16 +175,16 @@ pub fn edge_layout_option_string_entries(
   edge : ElkEdge,
 ) -> Array[(String, String)] {
   checked_edge(edge)
-  edge_store.val[edge_slot(edge)].layout_option_string_values.to_array()
+  edge.data.layout_option_string_values.to_array()
 }
 
 ///|
 pub fn edge_copy_properties(target : ElkEdge, source : ElkEdge) -> Unit {
   checked_edge(target)
   checked_edge(source)
-  let target_data = edge_store.val[edge_slot(target)]
-  let source_data = edge_store.val[edge_slot(source)]
-  edge_store.val[edge_slot(target)] = {
+  let target_data = target.data
+  let source_data = source.data
+  target.data = {
     containing_node: target_data.containing_node,
     sources: target_data.sources,
     targets: target_data.targets,
@@ -205,37 +200,31 @@ pub fn edge_copy_properties(target : ElkEdge, source : ElkEdge) -> Unit {
 ///|
 pub fn edge_sources(edge : ElkEdge) -> Array[ElkConnectableShape] {
   checked_edge(edge)
-  edge_store.val[edge_slot(edge)].sources.copy()
+  edge.data.sources.copy()
 }
 
 ///|
 pub fn edge_targets(edge : ElkEdge) -> Array[ElkConnectableShape] {
   checked_edge(edge)
-  edge_store.val[edge_slot(edge)].targets.copy()
+  edge.data.targets.copy()
 }
 
 ///|
-pub fn all_edges() -> Array[ElkEdge] {
-  let edges = []
-  for slot = 0; slot < edge_store.val.length(); slot = slot + 1 {
-    if edge_arena_store.val[slot] >= 0 {
-      edges.push(edge_slot_handles.val[slot])
-    }
-  }
-  edges
+pub fn GraphArena::all_edges(self : GraphArena) -> Array[ElkEdge] {
+  checked_graph_arena(self)
+  self.edges.copy()
 }
 
 ///|
 pub fn edge_is_connected(edge : ElkEdge) -> Bool {
   checked_edge(edge)
-  !edge_store.val[edge_slot(edge)].sources.is_empty() &&
-  !edge_store.val[edge_slot(edge)].targets.is_empty()
+  !edge.data.sources.is_empty() && !edge.data.targets.is_empty()
 }
 
 ///|
 pub fn edge_containing_node(edge : ElkEdge) -> ElkNode? {
   checked_edge(edge)
-  edge_store.val[edge_slot(edge)].containing_node
+  edge.data.containing_node
 }
 
 ///|
@@ -246,19 +235,16 @@ pub fn edge_set_containing_node(
   checked_edge(edge)
   if containing_node is Some(node_id) {
     checked_node(node_id)
-    graph_arena_adopt_standalone_edge(
-      edge,
-      node_arena_store.val[node_slot(node_id)],
-    )
+    graph_arena_adopt_standalone_edge(edge, node_graph_arena(node_id))
   }
-  let data = edge_store.val[edge_slot(edge)]
+  let data = edge.data
   if data.containing_node is Some(old_parent) {
     remove_contained_edge(old_parent, edge)
   }
   if containing_node is Some(new_parent) {
     append_contained_edge(new_parent, edge)
   }
-  edge_store.val[edge_slot(edge)] = {
+  edge.data = {
     containing_node,
     sources: data.sources,
     targets: data.targets,
@@ -272,8 +258,8 @@ pub fn edge_set_containing_node(
 ///|
 pub fn edge_set_identifier(edge : ElkEdge, identifier : String) -> Unit {
   checked_edge(edge)
-  let data = edge_store.val[edge_slot(edge)]
-  edge_store.val[edge_slot(edge)] = {
+  let data = edge.data
+  edge.data = {
     containing_node: data.containing_node,
     sources: data.sources,
     targets: data.targets,
@@ -287,13 +273,13 @@ pub fn edge_set_identifier(edge : ElkEdge, identifier : String) -> Unit {
 ///|
 pub fn edge_identifier(edge : ElkEdge) -> String {
   checked_edge(edge)
-  edge_store.val[edge_slot(edge)].identifier
+  edge.data.identifier
 }
 
 ///|
 pub fn edge_junction_points(edge : ElkEdge) -> Array[ElkBendPoint] {
   checked_edge(edge)
-  edge_store.val[edge_slot(edge)].junction_points
+  edge.data.junction_points
 }
 
 ///|
@@ -302,8 +288,8 @@ pub fn edge_set_junction_points(
   junction_points : Array[ElkBendPoint],
 ) -> Unit {
   checked_edge(edge)
-  let data = edge_store.val[edge_slot(edge)]
-  edge_store.val[edge_slot(edge)] = {
+  let data = edge.data
+  edge.data = {
     containing_node: data.containing_node,
     sources: data.sources,
     targets: data.targets,
@@ -317,15 +303,15 @@ pub fn edge_set_junction_points(
 ///|
 pub fn edge_add_junction_point(edge : ElkEdge, point : ElkBendPoint) -> Unit {
   checked_edge(edge)
-  let data = edge_store.val[edge_slot(edge)]
+  let data = edge.data
   data.junction_points.push(point)
-  edge_store.val[edge_slot(edge)] = data
+  edge.data = data
 }
 
 ///|
 pub fn edge_clear_junction_points(edge : ElkEdge) -> Unit {
   checked_edge(edge)
-  let data = edge_store.val[edge_slot(edge)]
+  let data = edge.data
   data.junction_points.clear()
-  edge_store.val[edge_slot(edge)] = data
+  edge.data = data
 }

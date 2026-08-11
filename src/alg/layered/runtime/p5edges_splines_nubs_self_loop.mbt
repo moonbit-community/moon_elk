@@ -48,11 +48,11 @@ fn new_nubs_self_loop_internal(
   clamped : Bool,
   dimension : Int,
   k_vectors : Array[@core.KVector],
-) -> NubsSelfLoop {
+) -> NubsSelfLoop raise {
   {
     nub_spline: new_nub_spline(clamped, dimension, k_vectors) catch {
       IllegalArgumentException(message) => {
-        @core.layout_runtime_report_unsupported_configuration(message)
+        @core.layout_runtime_raise_unsupported_configuration(message)
         new_nubs_self_loop_internal(
           true,
           nub_spline_dim,
@@ -82,7 +82,7 @@ pub fn new_nubs_self_loop_copy(nubs : NubsSelfLoop) -> NubsSelfLoop {
 pub fn new_nubs_self_loop(
   dimension : Int,
   k_vectors : Array[@core.KVector],
-) -> NubsSelfLoop {
+) -> NubsSelfLoop raise {
   new_nubs_self_loop_internal(true, dimension, k_vectors)
 }
 
@@ -91,7 +91,7 @@ pub fn new_nubs_self_loop_with_clamped(
   clamped : Bool,
   dimension : Int,
   k_vectors : Array[@core.KVector],
-) -> NubsSelfLoop {
+) -> NubsSelfLoop raise {
   new_nubs_self_loop_internal(clamped, dimension, k_vectors)
 }
 
@@ -132,7 +132,7 @@ pub fn nubs_self_loop_create_side_self_loop(
   source : LPort,
   target : LPort,
   length : Double,
-) -> NubsSelfLoop {
+) -> NubsSelfLoop raise {
   let direction = splines_math_port_side_to_direction(source.get_side())
   let source_pos = nubs_self_loop_port_position(source)
   let target_pos = nubs_self_loop_port_position(target)
@@ -160,7 +160,7 @@ pub fn nubs_self_loop_create_corner_self_loop(
   target : LPort,
   source_height : Double,
   target_height : Double,
-) -> NubsSelfLoop {
+) -> NubsSelfLoop raise {
   let source_dir = splines_math_port_side_to_direction(source.get_side())
   let target_dir = splines_math_port_side_to_direction(target.get_side())
   let source_pos = nubs_self_loop_port_position(source)
@@ -229,11 +229,11 @@ pub fn nubs_self_loop_create_across_self_loop(
   source_bend_point : @core.KVector,
   corner_bend_points : Array[@core.KVector],
   target_bend_point : @core.KVector,
-) -> NubsSelfLoop {
+) -> NubsSelfLoop raise {
   let source_pos = nubs_self_loop_port_position(source)
   let target_pos = nubs_self_loop_port_position(target)
   let normalized_corner_bend_points = if corner_bend_points.length() != 2 {
-    @core.layout_runtime_report_unsupported_configuration(
+    @core.layout_runtime_raise_unsupported_configuration(
       "corner bend points size must be 2",
     )
     nubs_self_loop_normalize_corner_points(corner_bend_points, 2)
@@ -258,11 +258,11 @@ pub fn nubs_self_loop_create_three_side_self_loop(
   source_bend_point : @core.KVector,
   corner_bend_points : Array[@core.KVector],
   target_bend_point : @core.KVector,
-) -> NubsSelfLoop {
+) -> NubsSelfLoop raise {
   let source_pos = nubs_self_loop_port_position(source)
   let target_pos = nubs_self_loop_port_position(target)
   let normalized_corner_bend_points = if corner_bend_points.length() != 3 {
-    @core.layout_runtime_report_unsupported_configuration(
+    @core.layout_runtime_raise_unsupported_configuration(
       "corner bend points size must be 3",
     )
     nubs_self_loop_normalize_corner_points(corner_bend_points, 3)
@@ -287,11 +287,11 @@ pub fn nubs_self_loop_create_four_side_self_loop(
   source_bend_point : @core.KVector,
   corner_bend_points : Array[@core.KVector],
   target_bend_point : @core.KVector,
-) -> NubsSelfLoop {
+) -> NubsSelfLoop raise {
   let source_pos = nubs_self_loop_port_position(source)
   let target_pos = nubs_self_loop_port_position(target)
   let normalized_corner_bend_points = if corner_bend_points.length() != 4 {
-    @core.layout_runtime_report_unsupported_configuration(
+    @core.layout_runtime_raise_unsupported_configuration(
       "corner bend points size must be 4",
     )
     nubs_self_loop_normalize_corner_points(corner_bend_points, 4)

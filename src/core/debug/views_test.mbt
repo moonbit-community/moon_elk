@@ -138,7 +138,9 @@ test "LoadGraphAction, ReloadFromFileAction and DropAdapter update model" {
   core_debug_register_graph_file_for_test("/tmp/b.elkg", graph_b)
 
   let view = new_layout_graph_view()
-  let load = new_load_graph_action(view)
+  let runtime = @graph_json.new_layout_runtime()
+  let session = @core.new_layout_session()
+  let load = new_load_graph_action(runtime, session, view)
   load.set_selected_file_name_for_test(Some("/tmp/a.elkg"))
   load.run()
 
@@ -152,7 +154,7 @@ test "LoadGraphAction, ReloadFromFileAction and DropAdapter update model" {
 
   core_debug_register_graph_file_for_test("/tmp/a.elkg", graph_b)
   view.set_selected_execution_infos([old_info])
-  let reload = new_reload_from_file_action(view)
+  let reload = new_reload_from_file_action(runtime, session, view)
   reload.update_enablement()
   inspect(reload.is_enabled(), content="true")
   reload.run()
@@ -161,7 +163,7 @@ test "LoadGraphAction, ReloadFromFileAction and DropAdapter update model" {
   let new_info = plugin.get_model().get_execution_infos()[0]
   inspect(new_info == old_info, content="false")
 
-  let drop = new_layout_graph_view_drop_adapter(view)
+  let drop = new_layout_graph_view_drop_adapter(runtime, session, view)
   inspect(drop.validate_drop(), content="true")
   inspect(drop.perform_drop(["/tmp/b.elkg"]), content="true")
   inspect(plugin.get_model().get_execution_infos().length(), content="2")

@@ -19,7 +19,7 @@ pub fn new_spore_elk_graph_importer() -> SporeElkGraphImporter {
 }
 
 ///|
-fn spore_padding_from_graph(graph : @graph.ElkNode) -> @core.ElkPadding {
+fn spore_padding_from_graph(graph : @graph.ElkNode) -> @core.ElkPadding raise {
   let result = @core.new_elk_padding()
   result.parse(@graph.node_get_string_property(graph, spore_padding))
   result
@@ -171,7 +171,7 @@ fn spore_apply_translation_to_sections(
 pub fn SporeElkGraphImporter::import_graph(
   self : SporeElkGraphImporter,
   input_graph : @graph.ElkNode,
-) -> SporeGraph {
+) -> SporeGraph raise {
   self.elk_graph = Some(input_graph)
   self.node_map.clear()
   @nodespacing.node_dimension_calculation_calculate_node_margins(
@@ -336,7 +336,7 @@ pub fn SporeElkGraphImporter::update_graph(
 pub fn SporeElkGraphImporter::apply_positions(
   self : SporeElkGraphImporter,
   graph : SporeGraph,
-) -> Unit {
+) -> Unit raise {
   let elk_graph = match self.elk_graph {
     Some(value) => value
     None => return
@@ -429,8 +429,8 @@ pub fn new_spore_elk_graph_as_igraph_importer() -> SporeIGraphImporter[
 ] {
   let importer = new_spore_elk_graph_importer()
   new_spore_igraph_importer(
-    graph => importer.import_graph(graph),
-    graph => importer.apply_positions(graph),
+    fn(graph) raise { importer.import_graph(graph) },
+    fn(graph) raise { importer.apply_positions(graph) },
     graph => importer.update_graph(graph),
   )
 }

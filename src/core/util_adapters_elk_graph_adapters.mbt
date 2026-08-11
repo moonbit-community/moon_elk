@@ -133,7 +133,7 @@ fn elk_graph_adapters_port_side_rank(side : PortSide) -> Int {
 }
 
 ///|
-fn elk_graph_adapters_node_padding(node : @graph.ElkNode) -> ElkPadding {
+fn elk_graph_adapters_node_padding(node : @graph.ElkNode) -> ElkPadding raise {
   if @graph.node_has_string_property(node, padding) {
     let parsed = new_elk_padding()
     parsed.parse(@graph.node_get_string_property(node, padding))
@@ -162,7 +162,7 @@ fn elk_graph_adapters_node_set_padding(
 }
 
 ///|
-fn elk_graph_adapters_node_margin(node : @graph.ElkNode) -> ElkMargin {
+fn elk_graph_adapters_node_margin(node : @graph.ElkNode) -> ElkMargin raise {
   if @graph.node_has_string_property(node, elk_graph_adapters_margins_property) {
     let parsed = new_elk_margin()
     parsed.parse(
@@ -203,7 +203,7 @@ fn elk_graph_adapters_node_set_margin(
 }
 
 ///|
-fn elk_graph_adapters_port_margin(port : @graph.ElkPort) -> ElkMargin {
+fn elk_graph_adapters_port_margin(port : @graph.ElkPort) -> ElkMargin raise {
   match
     @graph.port_layout_option_string_value(
       port,
@@ -869,8 +869,8 @@ pub fn ElkNodeAdapter::get_outgoing_edges(
 fn elk_graph_adapters_insertion_sort_ports_with_adapters(
   ports : Array[@graph.ElkPort],
   adapters : Array[ElkPortAdapter],
-  comparator : (ElkPortAdapter, ElkPortAdapter) -> Int,
-) -> Unit {
+  comparator : (ElkPortAdapter, ElkPortAdapter) -> Int raise,
+) -> Unit raise {
   let mut index = 1
   while index < adapters.length() {
     let current_port = ports[index]
@@ -891,7 +891,7 @@ fn elk_graph_adapters_insertion_sort_ports_with_adapters(
 }
 
 ///|
-pub fn ElkNodeAdapter::sort_port_list(self : ElkNodeAdapter) -> Unit {
+pub fn ElkNodeAdapter::sort_port_list(self : ElkNodeAdapter) -> Unit raise {
   self.sort_port_list_with((left, right) => {
     elk_default_portlist_sorter.compare(left.get_port(), right.get_port())
   })
@@ -900,8 +900,8 @@ pub fn ElkNodeAdapter::sort_port_list(self : ElkNodeAdapter) -> Unit {
 ///|
 pub fn ElkNodeAdapter::sort_port_list_with(
   self : ElkNodeAdapter,
-  comparator : (ElkPortAdapter, ElkPortAdapter) -> Int,
-) -> Unit {
+  comparator : (ElkPortAdapter, ElkPortAdapter) -> Int raise,
+) -> Unit raise {
   if !elk_graph_adapters_node_port_constraints(self.element).is_order_fixed() {
     return
   }
@@ -920,7 +920,7 @@ pub fn ElkNodeAdapter::is_compound_node(self : ElkNodeAdapter) -> Bool {
 }
 
 ///|
-pub fn ElkNodeAdapter::get_padding(self : ElkNodeAdapter) -> ElkPadding {
+pub fn ElkNodeAdapter::get_padding(self : ElkNodeAdapter) -> ElkPadding raise {
   new_elk_padding_copy(elk_graph_adapters_node_padding(self.element))
 }
 
@@ -933,7 +933,7 @@ pub fn ElkNodeAdapter::set_padding(
 }
 
 ///|
-pub fn ElkNodeAdapter::get_margin(self : ElkNodeAdapter) -> ElkMargin {
+pub fn ElkNodeAdapter::get_margin(self : ElkNodeAdapter) -> ElkMargin raise {
   elk_graph_adapters_node_margin(self.element)
 }
 
@@ -1124,7 +1124,7 @@ pub fn ElkPortAdapter::get_labels(
 }
 
 ///|
-pub fn ElkPortAdapter::get_margin(self : ElkPortAdapter) -> ElkMargin {
+pub fn ElkPortAdapter::get_margin(self : ElkPortAdapter) -> ElkMargin raise {
   elk_graph_adapters_port_margin(self.element)
 }
 
@@ -1433,7 +1433,7 @@ pub fn ElkPortComparator::compare(
   self : ElkPortComparator,
   port1 : @graph.ElkPort,
   port2 : @graph.ElkPort,
-) -> Int {
+) -> Int raise {
   ignore(self)
   let ordinal_difference = elk_graph_adapters_port_side_rank(
       elk_graph_adapters_port_side(port1),
@@ -1479,7 +1479,7 @@ pub fn ElkPortComparator::compare(
     SideUndefined => {
       try elk_graph_adapters_raise_unit("Port side is undefined") catch {
         err =>
-          layout_runtime_report_unsupported_configuration(
+          layout_runtime_raise_unsupported_configuration(
             elk_graph_adapters_exception_message(err),
           )
       } noraise {

@@ -44,8 +44,6 @@ fn radial_assert_centered(
 
 ///|
 test "Radial center on root simple tree" {
-  @test.reset_graph_model_for_test()
-
   let parent = @test.create_graph()
   let root = radial_make_node(parent, 20.0, 20.0)
   let n1 = radial_make_node(parent, 20.0, 20.0)
@@ -66,8 +64,6 @@ test "Radial center on root simple tree" {
 
 ///|
 test "Radial center on root larger tree" {
-  @test.reset_graph_model_for_test()
-
   let parent = @test.create_graph()
   let root = radial_make_node(parent, 20.0, 20.0)
 

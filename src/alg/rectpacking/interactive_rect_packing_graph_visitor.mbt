@@ -26,7 +26,7 @@ pub fn new_interactive_rectpacking_graph_visitor() -> InteractiveRectPackingGrap
 pub fn InteractiveRectPackingGraphVisitor::visit(
   self : InteractiveRectPackingGraphVisitor,
   element : @graph.ElkNode,
-) -> Unit {
+) -> Unit raise {
   self.visitor.visit(element)
 }
 

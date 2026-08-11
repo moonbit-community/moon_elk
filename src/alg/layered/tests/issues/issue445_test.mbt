@@ -1,13 +1,10 @@
 ///|
 fn issue445_test_setup_plain_java_layout() -> Unit {
-  @core.layout_meta_data_service_reset_for_test()
-  @test.plain_java_initialization_reset_for_test()
-  @test.plain_java_initialization_initialize_plain_java_layout()
+
 }
 
 ///|
 test "Issue445 feedback edge tail labels are not left at origin" {
-  @graph.reset_graph_model_for_test()
   issue445_test_setup_plain_java_layout()
 
   let graph = @graph.create_graph()
@@ -31,9 +28,7 @@ test "Issue445 feedback edge tail labels are not left at origin" {
   )
   @graph.label_set_dimensions(tail_label, 20.0, 10.0)
 
-  let resolver = @core.new_layout_algorithm_resolver()
-  @core.apply_visitors(graph, [resolver.to_visitor()])
-  let layout_engine = @core.new_recursive_graph_layout_engine()
+  let layout_engine = @test.new_recursive_graph_layout_engine()
   layout_engine.layout(graph, @core.new_null_elk_progress_monitor())
 
   let misplaced = @graph.label_x(tail_label).abs() <= 0.0001 &&

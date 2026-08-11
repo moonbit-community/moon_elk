@@ -40,6 +40,7 @@ fn test_algorithm_insert_sorted(
 
 ///|
 pub fn test_algorithm_from_annotations(
+  metadata : @core.OptionMetadata,
   algorithm_annotations : Array[Algorithm],
   include_all_algorithms : Bool,
   errors : Array[String],
@@ -52,13 +53,13 @@ pub fn test_algorithm_from_annotations(
     return []
   }
   if include_all_algorithms {
-    for data in layout_meta_data_service_algorithm_data_values() {
+    for data in metadata.algorithm_data_values() {
       test_algorithm_insert_sorted(algorithm_data, data)
     }
   } else {
     for annotation in algorithm_annotations {
       let id = annotation.get_value()
-      match layout_meta_data_service_get_algorithm_data(id) {
+      match metadata.algorithm_data(id) {
         Some(data) => test_algorithm_insert_sorted(algorithm_data, data)
         None => errors.push("Unknown layout algorithm: " + id)
       }
@@ -72,7 +73,10 @@ pub fn test_algorithm_from_annotations(
 }
 
 ///|
-pub fn TestAlgorithm::apply(self : TestAlgorithm, graph : ElkNode) -> Unit {
+pub fn TestAlgorithm::apply(
+  self : TestAlgorithm,
+  graph : ElkNode,
+) -> Unit raise {
   match self.algorithm_data {
     Some(data) => {
       let visitor = new_graph_element_visitor(node => {

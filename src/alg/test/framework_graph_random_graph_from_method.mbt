@@ -32,7 +32,7 @@ pub fn new_random_graph_from_method(
 pub fn random_graph_from_method_from_options(
   method_name : String,
   options : CoreDebugGRandomGeneratorOptions,
-) -> RandomGraphFromMethod {
+) -> RandomGraphFromMethod raise {
   let generator = new_core_debug_grandom_random_graph_generator(
     Some(random_graph_from_method_seeded_random()),
   )

@@ -1,7 +1,7 @@
 ///|
 fn mrtree_order_balance_layout_processor_configuration(
   graph : MrtreeGraph,
-) -> @core.LayoutProcessorConfiguration[MrtreeTreeLayoutPhases, MrtreeGraph]? {
+) -> @core.LayoutProcessorConfiguration[MrtreeTreeLayoutPhases, MrtreeGraph]? raise {
   ignore(graph)
   Some(
     @core.layout_processor_configuration_create(
@@ -51,7 +51,7 @@ fn mrtree_order_balance_order_level(
   left_most : MrtreeNode?,
   odd : Bool,
   weighting : MrtreeOrderWeighting,
-) -> Unit {
+) -> Unit raise {
   match left_most {
     None => ()
     Some(start_node) => {
@@ -60,7 +60,7 @@ fn mrtree_order_balance_order_level(
         let node = match current_node {
           Some(value) => value
           None => {
-            @core.layout_runtime_report_unsupported_configuration("unreachable")
+            @core.layout_runtime_raise_unsupported_configuration("unreachable")
             break
           }
         }
@@ -120,7 +120,7 @@ fn mrtree_order_balance_order_level(
 pub fn mrtree_order_balance_process(
   graph : MrtreeGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(value) => value
     None => @core.new_basic_progress_monitor()
@@ -161,7 +161,7 @@ pub fn mrtree_order_balance_process(
                       left_start = match scan {
                         Some(value) => value
                         None => {
-                          @core.layout_runtime_report_unsupported_configuration(
+                          @core.layout_runtime_raise_unsupported_configuration(
                             "unreachable",
                           )
                           break

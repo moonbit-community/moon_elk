@@ -492,7 +492,7 @@ pub fn create_port_for_edge(
   end_point : @core.KVector?,
   port_type : PortType,
   layered_graph : LGraph,
-) -> LPort {
+) -> LPort raise {
   let direction = get_direction(layered_graph)
   let merge_ports = layered_graph.get_property_bool(
     @options.layered_options_merge_edges,

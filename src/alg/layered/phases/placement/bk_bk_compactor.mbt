@@ -200,7 +200,7 @@ fn BKCompactor::place_block(
   self : BKCompactor,
   root : @runtime.LNode,
   bal : BKAlignedLayout,
-) -> Unit raise BKAlignedLayoutException {
+) -> Unit raise {
   if bal.y[root.get_id()] is Some(_) {
     return
   }
@@ -371,7 +371,7 @@ fn BKCompactor::place_block(
 pub fn BKCompactor::horizontal_compaction(
   self : BKCompactor,
   bal : BKAlignedLayout,
-) -> Unit raise BKAlignedLayoutException {
+) -> Unit raise {
   for layer in self.layered_graph.get_layers() {
     for node in layer.get_nodes() {
       let node_id = node.get_id()

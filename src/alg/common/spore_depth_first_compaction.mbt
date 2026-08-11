@@ -1,11 +1,9 @@
 ///|
-let depth_first_compaction_root : Ref[Tree[Node]?] = Ref(None)
-
-///|
-let depth_first_compaction_orthogonal_compaction : Ref[Bool] = Ref(false)
-
-///|
-let depth_first_compaction_svg : Ref[SvgImage?] = Ref(None)
+priv struct DepthFirstCompactionSession {
+  root : Tree[Node]
+  orthogonal : Bool
+  svg : SvgImage
+}
 
 ///|
 fn depth_first_compaction_node_identity_eq(left : Node, right : Node) -> Bool {
@@ -18,7 +16,7 @@ fn depth_first_compaction_tree_identity_eq(
   left : Tree[Node],
   right : Tree[Node],
 ) -> Bool {
-  left.uid == right.uid
+  physical_equal(left, right)
 }
 
 ///|
@@ -33,54 +31,33 @@ fn depth_first_compaction_fuzzy_compare(left : Double, right : Double) -> Int {
 }
 
 ///|
-fn depth_first_compaction_svg_get() -> SvgImage {
-  match depth_first_compaction_svg.val {
-    Some(svg) => svg
-    None => {
-      @core.layout_runtime_report_unsupported_configuration(
-        "DepthFirstCompaction is not initialized",
-      )
-      new_svg_image(None)
-    }
-  }
-}
-
-///|
-fn depth_first_compaction_root_get() -> Tree[Node] {
-  match depth_first_compaction_root.val {
-    Some(root) => root
-    None => {
-      @core.layout_runtime_report_unsupported_configuration(
-        "DepthFirstCompaction root is not initialized",
-      )
-      new_tree(new_node(@core.new_kvector(), @core.new_elk_rectangle()))
-    }
-  }
-}
-
-///|
 pub fn depth_first_compaction_compact(
   tree : Tree[Node],
   orthogonal : Bool,
   debug_output_file? : String? = None,
-) -> Unit {
-  depth_first_compaction_svg.val = Some(new_svg_image(debug_output_file))
-  depth_first_compaction_orthogonal_compaction.val = orthogonal
-  depth_first_compaction_root.val = Some(tree)
-  depth_first_compaction_debug_out(tree, None)
-  depth_first_compaction_compact_tree(tree)
+) -> Unit raise {
+  let session : DepthFirstCompactionSession = {
+    root: tree,
+    orthogonal,
+    svg: new_svg_image(debug_output_file),
+  }
+  depth_first_compaction_debug_out(session, tree, None)
+  depth_first_compaction_compact_tree(session, tree)
 }
 
 ///|
-fn depth_first_compaction_compact_tree(tree : Tree[Node]) -> Unit {
+fn depth_first_compaction_compact_tree(
+  session : DepthFirstCompactionSession,
+  tree : Tree[Node],
+) -> Unit raise {
   for child in tree.children {
-    depth_first_compaction_compact_tree(child)
+    depth_first_compaction_compact_tree(session, child)
   }
 
   for child in tree.children {
     let compaction_vector = tree.node.vertex.clone().sub(child.node.vertex)
 
-    if depth_first_compaction_orthogonal_compaction.val {
+    if session.orthogonal {
       let root_rect = tree.node.rect
       let child_rect = child.node.rect
       if compaction_vector.x.abs() >= compaction_vector.y.abs() {
@@ -115,7 +92,7 @@ fn depth_first_compaction_compact_tree(tree : Tree[Node]) -> Unit {
     }
 
     let min_underlap = depth_first_compaction_get_min_underlap(
-      depth_first_compaction_root_get(),
+      session.root,
       child,
       compaction_vector.length(),
       compaction_vector,
@@ -123,7 +100,7 @@ fn depth_first_compaction_compact_tree(tree : Tree[Node]) -> Unit {
 
     ignore(compaction_vector.scale_to_length(min_underlap))
     depth_first_compaction_translate_subtree(child, compaction_vector)
-    depth_first_compaction_debug_out(tree, Some(child))
+    depth_first_compaction_debug_out(session, tree, Some(child))
   }
 }
 
@@ -286,12 +263,13 @@ fn depth_first_compaction_draw_tree(
 
 ///|
 fn depth_first_compaction_debug_out(
+  session : DepthFirstCompactionSession,
   tree : Tree[Node],
   mark : Tree[Node]?,
 ) -> Unit {
   ignore(tree)
-  let svg = depth_first_compaction_svg_get()
-  let root = depth_first_compaction_root_get()
+  let svg = session.svg
+  let root = session.root
   svg.clear()
   svg.add_groups(["rects", "root", "edges", "centers", "marks"])
   svg

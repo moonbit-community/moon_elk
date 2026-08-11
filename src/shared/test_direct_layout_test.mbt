@@ -1,8 +1,6 @@
 ///|
 fn shared_direct_layout_test_setup_plain_java_layout() -> Unit {
-  layout_meta_data_service_reset_for_test()
-  plain_java_initialization_reset_for_test()
-  plain_java_initialization_initialize_plain_java_layout()
+
 }
 
 ///|
@@ -39,14 +37,13 @@ fn shared_direct_layout_test_add_layered_options(parent_node : ElkNode) -> Unit 
 
 ///|
 test "DirectLayoutTest ELK layered sets positive coordinates" {
-  reset_graph_model_for_test()
   shared_direct_layout_test_setup_plain_java_layout()
 
   let parent_node = graph_test_utils_create_simple_graph()
   shared_direct_layout_test_add_layered_options(parent_node)
 
   let progress_monitor = new_basic_progress_monitor()
-  let layout_provider = new_abstract_layout_provider((layout_graph, monitor) => {
+  let layout_provider = new_abstract_layout_provider(fn(layout_graph, monitor) {
     let layout_engine = new_recursive_graph_layout_engine()
     layout_engine.layout(layout_graph, monitor)
   })

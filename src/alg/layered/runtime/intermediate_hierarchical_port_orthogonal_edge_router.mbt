@@ -106,7 +106,7 @@ fn hierarchical_port_orthogonal_string_array_contains(
 fn hierarchical_port_orthogonal_restore_dummy(
   dummy : LNode,
   layered_graph : LGraph,
-) -> Unit {
+) -> Unit raise {
   let side = dummy.get_property_port_side(internal_properties_ext_port_side)
   let ports = dummy.get_ports()
   if ports.is_empty() {
@@ -194,7 +194,7 @@ fn hierarchical_port_orthogonal_connect_node_to_dummy(
 ///|
 fn hierarchical_port_orthogonal_restore_north_south_dummies(
   layered_graph : LGraph,
-) -> Array[LNode] {
+) -> Array[LNode] raise {
   let restored_dummies = []
   let replaced = layered_graph.get_property_l_node_array(
     internal_properties_ext_port_replaced_dummies,
@@ -492,7 +492,7 @@ fn hierarchical_port_orthogonal_route_edges(
   monitor : @core.IElkProgressMonitor,
   layered_graph : LGraph,
   north_south_dummies : Array[LNode],
-) -> Double {
+) -> Double raise {
   let northern_source_layer = []
   let northern_target_layer = []
   let southern_source_layer = []
@@ -592,7 +592,7 @@ fn hierarchical_port_orthogonal_route_edges(
 ///|
 fn hierarchical_port_orthogonal_remove_temporary_north_south_dummies(
   layered_graph : LGraph,
-) -> Unit {
+) -> Unit raise {
   let nodes_to_remove = []
 
   for layer in layered_graph.get_layers() {
@@ -855,7 +855,7 @@ fn hierarchical_port_orthogonal_correct_slanted_edge_segments(
 fn hierarchical_port_orthogonal_edge_router_process(
   layered_graph : LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()

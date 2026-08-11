@@ -1,13 +1,10 @@
 ///|
 fn issue562_test_setup_plain_java_layout() -> Unit {
-  @core.layout_meta_data_service_reset_for_test()
-  @test.plain_java_initialization_reset_for_test()
-  @test.plain_java_initialization_initialize_plain_java_layout()
+
 }
 
 ///|
 test "Issue562 inside self loops options do not fail layout" {
-  @graph.reset_graph_model_for_test()
   issue562_test_setup_plain_java_layout()
 
   let graph = @graph.create_graph()
@@ -24,9 +21,7 @@ test "Issue562 inside self loops options do not fail layout" {
     edge, "org.eclipse.elk.insideSelfLoops.yo", "true",
   )
 
-  let resolver = @core.new_layout_algorithm_resolver()
-  @core.apply_visitors(graph, [resolver.to_visitor()])
-  let layout_engine = @core.new_recursive_graph_layout_engine()
+  let layout_engine = @test.new_recursive_graph_layout_engine()
   layout_engine.layout(graph, @core.new_null_elk_progress_monitor())
 
   assert_eq(

@@ -23,7 +23,9 @@ pub fn[T] new_configurator_test_configuration(
         generated
       }
     }
-    apply_visitors(graph, [configurator.to_visitor()])
+    apply_visitors(graph, [configurator.to_visitor()]) catch {
+      _ => abort("Failed to apply layout configurator.")
+    }
   })
   { base, configurator_method_name }
 }

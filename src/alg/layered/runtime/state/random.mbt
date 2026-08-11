@@ -138,9 +138,9 @@ pub fn GreedySwitchMockRandom::next_double(
 pub fn GreedySwitchMockRandom::next_int(
   self : GreedySwitchMockRandom,
   limit : Int,
-) -> Int {
+) -> Int raise {
   if limit <= 0 {
-    @core.layout_runtime_report_unsupported_configuration(
+    @core.layout_runtime_raise_unsupported_configuration(
       "limit must be positive",
     )
     return 0
@@ -165,7 +165,7 @@ pub fn GreedySwitchMockRandom::next_int(
       return value
     }
   }
-  @core.layout_runtime_report_unsupported_configuration("unreachable")
+  @core.layout_runtime_raise_unsupported_configuration("unreachable")
   0
 }
 
@@ -173,7 +173,7 @@ pub fn GreedySwitchMockRandom::next_int(
 pub fn GreedySwitchMockRandom::int(
   self : GreedySwitchMockRandom,
   limit : Int,
-) -> Int {
+) -> Int raise {
   self.next_int(limit)
 }
 

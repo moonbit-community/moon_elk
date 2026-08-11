@@ -1,7 +1,7 @@
 ///|
 fn mrtree_dfs_treeifyer_configuration(
   graph : MrtreeGraph,
-) -> @core.LayoutProcessorConfiguration[MrtreeTreeLayoutPhases, MrtreeGraph]? {
+) -> @core.LayoutProcessorConfiguration[MrtreeTreeLayoutPhases, MrtreeGraph]? raise {
   ignore(graph)
   Some(
     @core.layout_processor_configuration_create(
@@ -34,7 +34,7 @@ fn mrtree_dfs_treeifyer_dfs(
   node : MrtreeNode,
   visited : Array[Int],
   eliminated : Array[MrtreeEdge],
-) -> Unit {
+) -> Unit raise {
   visited[mrtree_node_id(node)] = 1
   for edge in mrtree_node_outgoing_edges(node) {
     let target = mrtree_edge_target(edge)
@@ -79,7 +79,7 @@ fn mrtree_dfs_treeifyer_bfs(
 fn mrtree_dfs_treeifyer_collect_edges(
   graph : MrtreeGraph,
   visited : Array[Int],
-) -> Array[MrtreeEdge] {
+) -> Array[MrtreeEdge] raise {
   let eliminated = []
   let treeifying_order = mrtree_graph_search_order(graph)
   for node in mrtree_graph_nodes(graph) {
@@ -105,7 +105,7 @@ fn mrtree_dfs_treeifyer_collect_edges(
 fn mrtree_dfs_treeifyer_process(
   graph : MrtreeGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   match progress_monitor {
     Some(monitor) => ignore(monitor.begin("DFS Treeifying phase", 1.0))
     None => ()

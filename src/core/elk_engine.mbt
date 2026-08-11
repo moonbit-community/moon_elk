@@ -1,38 +1,8 @@
 ///|
 pub(all) struct ElkEngine {
+  runtime : LayoutRuntime
   default_layout_options : Map[String, Json]
   algorithms : Array[String]
-}
-
-///|
-pub type ElkEngineLayoutDelegate = (Map[String, Json], Map[String, Json]) -> Unit
-
-///|
-let elk_engine_layout_delegate_ref : Ref[ElkEngineLayoutDelegate?] = Ref(None)
-
-///|
-pub fn elk_engine_register_layout_delegate(
-  delegate : ElkEngineLayoutDelegate,
-) -> Unit {
-  elk_engine_layout_delegate_ref.val = Some(delegate)
-}
-
-///|
-pub fn elk_engine_clear_layout_delegate_for_test() -> Unit {
-  elk_engine_layout_delegate_ref.val = None
-}
-
-///|
-fn elk_engine_apply_delegate_if_registered(
-  graph_obj : Map[String, Json],
-  options : Map[String, Json],
-) -> Bool {
-  if elk_engine_layout_delegate_ref.val is Some(delegate) {
-    delegate(graph_obj, options)
-    true
-  } else {
-    false
-  }
 }
 
 ///|
@@ -42,6 +12,7 @@ fn copy_json_map(source : Map[String, Json]) -> Map[String, Json] {
 
 ///|
 pub fn new_elk_engine(
+  runtime : LayoutRuntime,
   default_layout_options? : Map[String, Json] = Map([]),
   algorithms? : Array[String] = [
     "layered", "force", "stress", "radial", "mrtree", "rectpacking", "sporeOverlap",
@@ -50,6 +21,7 @@ pub fn new_elk_engine(
   ],
 ) -> ElkEngine {
   {
+    runtime,
     default_layout_options: copy_json_map(default_layout_options),
     algorithms: algorithms.copy(),
   }
@@ -288,13 +260,20 @@ pub fn ElkEngine::layout(
       "' not found for Root Node root",
     )
   }
-  layout_runtime_clear_error()
-  if !elk_engine_apply_delegate_if_registered(graph_obj, options) {
-    raise invalid_graph_error(
-      "org.eclipse.elk.core.UnsupportedConfigurationException: Unknown layouter id",
-    )
+  let session = new_layout_session()
+  match self.runtime.elk_engine_layout_delegate() {
+    Some(delegate) =>
+      try delegate(self.runtime, session, graph_obj, options) catch {
+        error => session.record_error(error)
+      } noraise {
+        _ => ()
+      }
+    None =>
+      raise invalid_graph_error(
+        "org.eclipse.elk.core.UnsupportedConfigurationException: Unknown layouter id",
+      )
   }
-  if layout_runtime_take_error_message() is Some(layout_error) {
+  if session.take_error_message() is Some(layout_error) {
     raise invalid_graph_error(layout_error)
   }
   if logging || measure_execution_time {

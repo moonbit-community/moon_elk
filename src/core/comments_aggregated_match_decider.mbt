@@ -48,10 +48,10 @@ fn aggregated_match_decider_max_impl(
 }
 
 ///|
-pub fn aggregated_match_decider_max(values : Array[Double]) -> Double {
+pub fn aggregated_match_decider_max(values : Array[Double]) -> Double raise {
   try aggregated_match_decider_max_impl(values) catch {
     err => {
-      layout_runtime_report_unsupported_configuration(
+      layout_runtime_raise_unsupported_configuration(
         aggregated_match_decider_exception_message(err),
       )
       0.0
@@ -78,10 +78,10 @@ fn aggregated_match_decider_min_impl(
 }
 
 ///|
-pub fn aggregated_match_decider_min(values : Array[Double]) -> Double {
+pub fn aggregated_match_decider_min(values : Array[Double]) -> Double raise {
   try aggregated_match_decider_min_impl(values) catch {
     err => {
-      layout_runtime_report_unsupported_configuration(
+      layout_runtime_raise_unsupported_configuration(
         aggregated_match_decider_exception_message(err),
       )
       0.0
@@ -110,7 +110,7 @@ pub fn aggregated_match_decider_sum(values : Array[Double]) -> Double {
 
 ///|
 pub(all) struct AggregatedMatchDecider[T] {
-  mut aggregator : (Array[Double]) -> Double
+  mut aggregator : (Array[Double]) -> Double raise
   mut lower_boundary : Double
   mut include_lower_boundary : Bool
   _phantom : T?
@@ -129,7 +129,7 @@ pub fn[T] new_aggregated_match_decider() -> AggregatedMatchDecider[T] {
 ///|
 pub fn[T] AggregatedMatchDecider::with_aggregator(
   self : AggregatedMatchDecider[T],
-  aggregator : (Array[Double]) -> Double,
+  aggregator : (Array[Double]) -> Double raise,
 ) -> AggregatedMatchDecider[T] {
   self.aggregator = aggregator
   self
@@ -160,7 +160,7 @@ pub fn[T] AggregatedMatchDecider::with_lower_boundary_included(
 fn[T] aggregated_match_decider_make_attachment_decision_impl(
   decider : AggregatedMatchDecider[T],
   normalized_heuristics : DeciderHeuristicResult[T],
-) -> T? raise AggregatedMatchDeciderException {
+) -> T? raise {
   let mut max_aggregate = -1.0
   let mut max_target : T? = None
 
@@ -200,18 +200,17 @@ fn[T] aggregated_match_decider_make_attachment_decision_impl(
 pub fn[T] AggregatedMatchDecider::make_attachment_decision(
   self : AggregatedMatchDecider[T],
   normalized_heuristics : DeciderHeuristicResult[T],
-) -> T? {
+) -> T? raise {
   try
     aggregated_match_decider_make_attachment_decision_impl(
       self, normalized_heuristics,
     )
   catch {
-    err => {
-      layout_runtime_report_unsupported_configuration(
-        aggregated_match_decider_exception_message(err),
-      )
+    AggregatedMatchDeciderException(message) => {
+      layout_runtime_raise_unsupported_configuration(message)
       None
     }
+    error => raise error
   } noraise {
     value => value
   }

@@ -160,7 +160,7 @@ fn mrtree_transform_edges(
 pub fn MrtreeElkGraphImporter::import_graph(
   self : MrtreeElkGraphImporter,
   elk_graph : @graph.ElkNode,
-) -> MrtreeGraph {
+) -> MrtreeGraph raise {
   ignore(self)
   let graph = new_mrtree_graph()
   mrtree_graph_copy_properties_from_elk(graph, elk_graph)
@@ -297,7 +297,7 @@ pub fn new_mrtree_elk_graph_as_igraph_importer() -> MrtreeIGraphImporter[
 ] {
   let importer = new_mrtree_elk_graph_importer()
   new_mrtree_igraph_importer(
-    fn(graph : @graph.ElkNode) { importer.import_graph(graph) },
+    fn(graph : @graph.ElkNode) raise { importer.import_graph(graph) },
     fn(graph : MrtreeGraph) { importer.apply_layout(graph) },
   )
 }

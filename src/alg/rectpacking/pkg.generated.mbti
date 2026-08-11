@@ -19,79 +19,75 @@ pub fn new_rectpacking_block_row(Double, Double, Double) -> BlockRow
 
 pub fn new_rectpacking_block_stack(Double, Double, Double) -> BlockStack
 
-pub fn new_rectpacking_compactor_layout_phase() -> @core.ILayoutProcessor[RectPackingLayoutPhases, Int]
+pub fn new_rectpacking_compactor_layout_phase(RectPackingSession) -> @core.ILayoutProcessor[RectPackingLayoutPhases, @graph.ElkNode]
 
 pub fn new_rectpacking_drawing_data(Double, Double, Double, RectpackingDrawingDataDescriptor, next_x_coordinate? : Double, next_y_coordinate? : Double) -> RectpackingDrawingData
 
-pub fn new_rectpacking_equal_whitespace_eliminator_layout_phase() -> @core.ILayoutProcessor[RectPackingLayoutPhases, Int]
+pub fn new_rectpacking_equal_whitespace_eliminator_layout_phase(RectPackingSession) -> @core.ILayoutProcessor[RectPackingLayoutPhases, @graph.ElkNode]
 
-pub fn new_rectpacking_greedy_width_approximator_layout_phase() -> @core.ILayoutProcessor[RectPackingLayoutPhases, Int]
+pub fn new_rectpacking_greedy_width_approximator_layout_phase() -> @core.ILayoutProcessor[RectPackingLayoutPhases, @graph.ElkNode]
 
-pub fn new_rectpacking_interactive_node_reorderer_layout_processor() -> @core.ILayoutProcessor[RectPackingLayoutPhases, Int]
+pub fn new_rectpacking_interactive_node_reorderer_layout_processor() -> @core.ILayoutProcessor[RectPackingLayoutPhases, @graph.ElkNode]
 
-pub fn new_rectpacking_layout_provider() -> RectPackingLayoutProvider
+pub fn new_rectpacking_layout_provider() -> RectPackingLayoutProvider raise
 
-pub fn new_rectpacking_min_size_post_processor_layout_processor() -> @core.ILayoutProcessor[RectPackingLayoutPhases, Int]
+pub fn new_rectpacking_min_size_post_processor_layout_processor() -> @core.ILayoutProcessor[RectPackingLayoutPhases, @graph.ElkNode]
 
-pub fn new_rectpacking_min_size_pre_processor_layout_processor() -> @core.ILayoutProcessor[RectPackingLayoutPhases, Int]
+pub fn new_rectpacking_min_size_pre_processor_layout_processor() -> @core.ILayoutProcessor[RectPackingLayoutPhases, @graph.ElkNode]
 
-pub fn new_rectpacking_no_placement_layout_phase() -> @core.ILayoutProcessor[RectPackingLayoutPhases, Int]
+pub fn new_rectpacking_no_placement_layout_phase() -> @core.ILayoutProcessor[RectPackingLayoutPhases, @graph.ElkNode]
 
-pub fn new_rectpacking_node_size_reorderer_layout_processor() -> @core.ILayoutProcessor[RectPackingLayoutPhases, Int]
+pub fn new_rectpacking_node_size_reorderer_layout_processor() -> @core.ILayoutProcessor[RectPackingLayoutPhases, @graph.ElkNode]
 
 pub fn new_rectpacking_rect_row(Double, Double) -> RectRow
 
 pub fn new_rectpacking_row_filling_and_compaction(Double, Double) -> RectpackingRowFillingAndCompaction
 
-pub fn new_rectpacking_simple_placement_layout_phase() -> @core.ILayoutProcessor[RectPackingLayoutPhases, Int]
+pub fn new_rectpacking_session() -> RectPackingSession
 
-pub fn new_rectpacking_target_width_approximator_layout_phase() -> @core.ILayoutProcessor[RectPackingLayoutPhases, Int]
+pub fn new_rectpacking_simple_placement_layout_phase(RectPackingSession) -> @core.ILayoutProcessor[RectPackingLayoutPhases, @graph.ElkNode]
 
-pub fn new_rectpacking_to_aspectratio_node_expander_layout_phase() -> @core.ILayoutProcessor[RectPackingLayoutPhases, Int]
+pub fn new_rectpacking_target_width_approximator_layout_phase() -> @core.ILayoutProcessor[RectPackingLayoutPhases, @graph.ElkNode]
+
+pub fn new_rectpacking_to_aspectratio_node_expander_layout_phase(RectPackingSession) -> @core.ILayoutProcessor[RectPackingLayoutPhases, @graph.ElkNode]
 
 pub fn rectpacking_area_filter(Array[RectpackingDrawingData], Double, @core.Spacing) -> Array[RectpackingDrawingData]
 
 pub fn rectpacking_aspect_ratio_filter(Array[RectpackingDrawingData], Double, @core.Spacing) -> Array[RectpackingDrawingData]
 
-pub fn rectpacking_calculate_dimensions_rectangles(Array[Int]) -> @core.KVector
+pub fn rectpacking_calculate_dimensions_rectangles(Array[@graph.ElkNode]) -> @core.KVector
 
 pub fn rectpacking_calculate_dimensions_rows(Array[RectRow], Double) -> @core.KVector
 
-pub fn rectpacking_calculations_area_lpb(Int, Int, RectpackingDrawingData) -> Double
+pub fn rectpacking_calculations_area_lpb(@graph.ElkNode, @graph.ElkNode, RectpackingDrawingData) -> Double
 
-pub fn rectpacking_calculations_area_lpr(Int, Int, RectpackingDrawingData) -> Double
+pub fn rectpacking_calculations_area_lpr(@graph.ElkNode, @graph.ElkNode, RectpackingDrawingData) -> Double
 
 pub fn rectpacking_calculations_height_lpr_or_lpb(Double, Double, Double) -> Double
 
 pub fn rectpacking_calculations_width_lpr_or_lpb(Double, Double, Double) -> Double
 
-pub fn rectpacking_calculations_x_for_lpb(Double, Array[Int], Int, Double) -> Double
+pub fn rectpacking_calculations_x_for_lpb(Double, Array[@graph.ElkNode], @graph.ElkNode, Double) -> Double
 
-pub fn rectpacking_calculations_y_for_lpr(Double, Array[Int], Int, Double) -> Double
+pub fn rectpacking_calculations_y_for_lpr(Double, Array[@graph.ElkNode], @graph.ElkNode, Double) -> Double
 
 pub fn rectpacking_compaction_compact(Int, Array[RectRow], Double, Double, Bool) -> (Bool, Bool)
 
 pub fn rectpacking_compute_scale_measure(Double, Double, Double) -> Double
 
-pub fn rectpacking_initial_placement_is_similar_height(Block, Int, Double) -> Bool
+pub fn rectpacking_initial_placement_is_similar_height(Block, @graph.ElkNode, Double) -> Bool
 
-pub fn rectpacking_initial_placement_place(Array[Int], Double, Double) -> Array[RectRow]
+pub fn rectpacking_initial_placement_place(Array[@graph.ElkNode], Double, Double) -> Array[RectRow]
 
-pub fn rectpacking_initial_placement_place_rect_in_block(RectRow, Block, Int, Double, Double) -> Bool
+pub fn rectpacking_initial_placement_place_rect_in_block(RectRow, Block, @graph.ElkNode, Double, Double) -> Bool
 
-pub fn rectpacking_intermediate_processor_factory(RectpackingIntermediateProcessorStrategy) -> @core.ILayoutProcessorFactory[RectPackingLayoutPhases, Int]
+pub fn rectpacking_intermediate_processor_factory(RectpackingIntermediateProcessorStrategy) -> @core.ILayoutProcessorFactory[RectPackingLayoutPhases, @graph.ElkNode]
 
 pub let rectpacking_internal_additional_height : @graph.IProperty[Double]
-
-pub fn rectpacking_internal_clear_rows(Int) -> Unit
 
 pub let rectpacking_internal_drawing_height : @graph.IProperty[Double]
 
 pub let rectpacking_internal_drawing_width : @graph.IProperty[Double]
-
-pub fn rectpacking_internal_get_rows(Int) -> Array[RectRow]?
-
-pub fn rectpacking_internal_has_rows(Int) -> Bool
 
 pub let rectpacking_internal_max_row_decrease : @graph.IProperty[Double]
 
@@ -105,35 +101,35 @@ pub let rectpacking_internal_min_row_increase : @graph.IProperty[Double]
 
 pub let rectpacking_internal_min_width : @graph.IProperty[Double]
 
-pub fn rectpacking_internal_set_rows(Int, Array[RectRow]) -> Unit
-
 pub let rectpacking_internal_target_width : @graph.IProperty[Double]
 
 pub fn rectpacking_layout_provider_as_layout_provider(RectPackingLayoutProvider) -> @core.AbstractLayoutProvider
 
-pub fn rectpacking_node_size_compare(Int, Int) -> Int
+pub fn rectpacking_node_size_compare(@graph.ElkNode, @graph.ElkNode) -> Int
 
 pub fn rectpacking_packing_strategy_from_string(String) -> RectpackingPackingStrategy
 
-pub fn rectpacking_packing_strategy_phase_factory(RectpackingPackingStrategy) -> @core.ILayoutProcessorFactory[RectPackingLayoutPhases, Int]
+pub fn rectpacking_packing_strategy_phase_factory(RectPackingSession, RectpackingPackingStrategy) -> @core.ILayoutProcessorFactory[RectPackingLayoutPhases, @graph.ElkNode]
 
 pub let rectpacking_phase_descriptor : @core.PhaseDescriptor[RectPackingLayoutPhases]
 
 pub fn rectpacking_rectangle_expansion_expand(Array[RectRow], Double, Double, Double) -> Unit
 
-pub fn rectpacking_reset_coordinates(Array[Int]) -> Unit
+pub fn rectpacking_reset_coordinates(Array[@graph.ElkNode]) -> Unit
 
 pub fn rectpacking_scale_measure_filter(Array[RectpackingDrawingData], Double, @core.Spacing) -> Array[RectpackingDrawingData]
 
 pub fn rectpacking_whitespace_elimination_strategy_from_string(String) -> RectpackingWhiteSpaceEliminationStrategy
 
-pub fn rectpacking_whitespace_elimination_strategy_phase_factory(RectpackingWhiteSpaceEliminationStrategy) -> @core.ILayoutProcessorFactory[RectPackingLayoutPhases, Int]
+pub fn rectpacking_whitespace_elimination_strategy_phase_factory(RectPackingSession, RectpackingWhiteSpaceEliminationStrategy) -> @core.ILayoutProcessorFactory[RectPackingLayoutPhases, @graph.ElkNode]
 
 pub fn rectpacking_width_approximation_exception_message(RectpackingWidthApproximationException) -> String
 
 pub fn rectpacking_width_approximation_strategy_from_string(String) -> RectpackingWidthApproximationStrategy
 
-pub fn rectpacking_width_approximation_strategy_phase_factory(RectpackingWidthApproximationStrategy) -> @core.ILayoutProcessorFactory[RectPackingLayoutPhases, Int]
+pub fn rectpacking_width_approximation_strategy_phase_factory(RectpackingWidthApproximationStrategy) -> @core.ILayoutProcessorFactory[RectPackingLayoutPhases, @graph.ElkNode]
+
+pub fn register_rectpacking_layout_algorithm(@core.LayoutRuntime) -> Unit
 
 // Errors
 pub suberror RectpackingWidthApproximationException {
@@ -142,7 +138,6 @@ pub suberror RectpackingWidthApproximationException {
 
 // Types and methods
 pub struct Block {
-  id : Int
   mut smallest_rect_width : Double
   mut min_width : Double
   mut width : Double
@@ -151,7 +146,7 @@ pub struct Block {
   mut average_height : Double
   mut max_height : Double
   mut height : Double
-  children : Array[Int]
+  children : Array[@graph.ElkNode]
   mut rows : Array[BlockRow]
   mut x : Double
   mut y : Double
@@ -161,8 +156,8 @@ pub struct Block {
   mut fixed : Bool
   mut position_fixed : Bool
 }
-pub fn Block::add_child(Self, Int) -> Unit
-pub fn Block::add_child_in_new_row(Self, Int) -> Unit
+pub fn Block::add_child(Self, @graph.ElkNode) -> Unit
+pub fn Block::add_child_in_new_row(Self, @graph.ElkNode) -> Unit
 pub fn Block::expand(Self, Double, Double) -> Unit
 pub fn Block::get_height_for_target_width(Self, Double) -> Double
 pub fn Block::get_width_for_target_height(Self, Double) -> Double
@@ -171,7 +166,7 @@ pub fn Block::last_row_new_x(Self) -> Double
 pub fn Block::last_row_y(Self) -> Double
 pub fn Block::place_rects_in(Self, Double, Double) -> Bool
 pub fn Block::place_rects_in_width(Self, Double) -> Bool
-pub fn Block::remove_child(Self, Int) -> Unit
+pub fn Block::remove_child(Self, @graph.ElkNode) -> Unit
 pub fn Block::reset_block(Self) -> Unit
 pub fn Block::set_location(Self, Double, Double) -> Unit
 
@@ -181,11 +176,11 @@ pub struct BlockRow {
   mut width : Double
   mut height : Double
   node_node_spacing : Double
-  nodes : Array[Int]
+  nodes : Array[@graph.ElkNode]
 }
-pub fn BlockRow::add_rectangle(Self, Int) -> Bool
+pub fn BlockRow::add_rectangle(Self, @graph.ElkNode) -> Bool
 pub fn BlockRow::expand(Self, Double, Double, Int) -> Unit
-pub fn BlockRow::remove_rectangle(Self, Int, Bool) -> Unit
+pub fn BlockRow::remove_rectangle(Self, @graph.ElkNode, Bool) -> Unit
 pub fn BlockRow::update_row(Self) -> Unit
 
 pub struct BlockStack {
@@ -206,8 +201,8 @@ pub fn BlockStack::update_dimension(Self) -> Unit
 pub struct InteractiveRectPackingGraphVisitor {
   visitor : @core.IGraphElementVisitor
 }
-pub fn InteractiveRectPackingGraphVisitor::set_interactive_options(Self, Int) -> Unit
-pub fn InteractiveRectPackingGraphVisitor::visit(Self, Int) -> Unit
+pub fn InteractiveRectPackingGraphVisitor::set_interactive_options(Self, @graph.ElkNode) -> Unit
+pub fn InteractiveRectPackingGraphVisitor::visit(Self, @graph.ElkNode) -> Unit raise
 
 pub enum RectPackingLayoutPhases {
   P1_WIDTH_APPROXIMATION
@@ -216,10 +211,15 @@ pub enum RectPackingLayoutPhases {
 }
 
 pub struct RectPackingLayoutProvider {
-  algorithm_assembler : @core.AlgorithmAssembler[RectPackingLayoutPhases, Int]
+  algorithm_assembler : @core.AlgorithmAssembler[RectPackingLayoutPhases, @graph.ElkNode]
+  session : RectPackingSession
 }
-pub fn RectPackingLayoutProvider::assemble_algorithm(Self, Int) -> Array[@core.ILayoutProcessor[RectPackingLayoutPhases, Int]]
-pub fn RectPackingLayoutProvider::layout(Self, Int, @core.IElkProgressMonitor) -> Unit
+pub fn RectPackingLayoutProvider::assemble_algorithm(Self, @graph.ElkNode) -> Array[@core.ILayoutProcessor[RectPackingLayoutPhases, @graph.ElkNode]] raise
+pub fn RectPackingLayoutProvider::layout(Self, @graph.ElkNode, @core.IElkProgressMonitor) -> Unit raise
+
+pub struct RectPackingSession {
+  // private fields
+}
 
 pub struct RectRow {
   mut height : Double
@@ -246,7 +246,7 @@ pub struct RectpackingAreaApproximation {
   goal : @options.RectpackingOptimizationGoal
   last_place_shift : Bool
 }
-pub fn RectpackingAreaApproximation::approx_bounding_box(Self, Array[Int], Double, @core.Spacing) -> RectpackingDrawingData raise RectpackingWidthApproximationException
+pub fn RectpackingAreaApproximation::approx_bounding_box(Self, Array[@graph.ElkNode], Double, @core.Spacing) -> RectpackingDrawingData raise RectpackingWidthApproximationException
 
 pub struct RectpackingDrawingData {
   mut scale_measure : Double
@@ -291,7 +291,7 @@ pub struct RectpackingRowFillingAndCompaction {
   mut potential_row_width_increase_min : Double
   mut potential_row_width_increase_max : Double
 }
-pub fn RectpackingRowFillingAndCompaction::start(Self, Array[Int], @core.IElkProgressMonitor?, Int, @core.Spacing) -> RectpackingDrawingData
+pub fn RectpackingRowFillingAndCompaction::start(Self, RectPackingSession, Array[@graph.ElkNode], @core.IElkProgressMonitor?, @graph.ElkNode, @core.Spacing) -> RectpackingDrawingData
 
 pub enum RectpackingWhiteSpaceEliminationStrategy {
   EQUAL_BETWEEN_STRUCTURES

@@ -1,12 +1,12 @@
 ///|
 pub struct LayeredIGraphTransformer[T] {
-  import_graph_fn : (T) -> LGraph?
+  import_graph_fn : (T) -> LGraph? raise
   apply_layout_fn : (LGraph) -> Unit
 }
 
 ///|
 pub fn[T] new_layered_igraph_transformer(
-  import_graph : (T) -> LGraph?,
+  import_graph : (T) -> LGraph? raise,
   apply_layout : (LGraph) -> Unit,
 ) -> LayeredIGraphTransformer[T] {
   { import_graph_fn: import_graph, apply_layout_fn: apply_layout }
@@ -16,7 +16,7 @@ pub fn[T] new_layered_igraph_transformer(
 pub fn[T] LayeredIGraphTransformer::import_graph(
   self : LayeredIGraphTransformer[T],
   graph : T,
-) -> LGraph? {
+) -> LGraph? raise {
   (self.import_graph_fn)(graph)
 }
 

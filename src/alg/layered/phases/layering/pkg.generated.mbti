@@ -8,8 +8,6 @@ import {
 }
 
 // Values
-pub let layering_phase_linked : Bool
-
 pub fn new_breadth_first_model_order_layerer_layout_phase() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
 
 pub fn new_coffman_graham_layerer_layout_phase() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
@@ -27,6 +25,8 @@ pub fn new_min_width_layerer_layout_phase() -> @core.ILayoutProcessor[@runtime.L
 pub fn new_network_simplex_layerer_layout_phase() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
 
 pub fn new_stretch_width_layerer_layout_phase() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
+
+pub fn register_layering_phases(@runtime.LayeredPhaseRegistry) -> Unit
 
 // Errors
 pub(all) suberror BreadthFirstModelOrderLayererException {

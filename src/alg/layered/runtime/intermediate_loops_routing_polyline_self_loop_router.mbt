@@ -146,7 +146,7 @@ fn polyline_self_loop_router_modify_bend_points(
 ///|
 pub fn polyline_self_loop_router_route_self_loops(
   sl_holder : SelfLoopHolder,
-) -> Unit {
+) -> Unit raise {
   orthogonal_self_loop_router_route_with_modifier(
     sl_holder, polyline_self_loop_router_modify_bend_points,
   )

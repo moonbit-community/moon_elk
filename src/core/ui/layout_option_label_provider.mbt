@@ -3,14 +3,16 @@ pub let core_ui_disco_layout_alg_id : String = "org.eclipse.elk.disco.componentC
 
 ///|
 pub(all) struct LayoutOptionLabelProvider {
+  metadata : @core.OptionMetadata
   option_data : @core.LayoutOptionData
 }
 
 ///|
 pub fn new_layout_option_label_provider(
+  metadata : @core.OptionMetadata,
   option_data : @core.LayoutOptionData,
 ) -> LayoutOptionLabelProvider {
-  { option_data, }
+  { metadata, option_data }
 }
 
 ///|
@@ -25,10 +27,10 @@ fn layout_option_label_provider_is_true(value : CoreUiValue) -> Bool {
 
 ///|
 fn layout_option_label_provider_algorithm_name(
+  metadata : @core.OptionMetadata,
   algorithm_id : String,
 ) -> String? {
-  match
-    @core.layout_meta_data_service_get_algorithm_data_by_suffix(algorithm_id) {
+  match metadata.algorithm_data_by_suffix(algorithm_id) {
     Some(algorithm_data) => {
       let bundle_name = algorithm_data.get_bundle_name()
       if bundle_name.is_empty() {
@@ -99,7 +101,11 @@ pub fn LayoutOptionLabelProvider::get_text(
       if layout_option_label_provider_is_algorithm_option(self.option_data) {
         match core_ui_value_as_string(element) {
           Some(algorithm_id) =>
-            match layout_option_label_provider_algorithm_name(algorithm_id) {
+            match
+              layout_option_label_provider_algorithm_name(
+                self.metadata,
+                algorithm_id,
+              ) {
               Some(name) => name
               None => core_ui_messages_get_string("elk.ui.8")
             }

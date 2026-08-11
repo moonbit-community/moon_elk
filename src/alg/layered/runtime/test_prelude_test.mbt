@@ -12,7 +12,6 @@ fn new_elk_progress_monitor(
 }
 
 ///|
-let reset_graph_model_for_test = @test.reset_graph_model_for_test
 
 ///|
 let create_graph = @test.create_graph
@@ -60,7 +59,9 @@ let port_set_location = @graph.port_set_location
 fn new_layout_algorithm_resolver(
   default_layout_algorithm_id? : String = "org.eclipse.elk.layered",
 ) -> @core.LayoutAlgorithmResolver {
-  @core.new_layout_algorithm_resolver(default_layout_algorithm_id~)
+  let metadata = @core.new_option_metadata()
+  @test.plain_java_initialization_initialize_plain_java_layout(metadata)
+  @core.new_layout_algorithm_resolver(metadata, default_layout_algorithm_id~)
 }
 
 ///|
@@ -83,15 +84,6 @@ let new_i_label_manager = @core.new_i_label_manager
 
 ///|
 let new_kvector_chain_from_array = @core.new_kvector_chain_from_array
-
-///|
-let layout_meta_data_service_reset_for_test = @test.layout_meta_data_service_reset_for_test
-
-///|
-let plain_java_initialization_reset_for_test = @test.plain_java_initialization_reset_for_test
-
-///|
-let plain_java_initialization_initialize_plain_java_layout = @test.plain_java_initialization_initialize_plain_java_layout
 
 ///|
 let size_constraint_to_string = @core.size_constraint_to_string

@@ -19,7 +19,7 @@ fn create_spacing_test_graph() -> @graph.ElkNode {
 ///|
 fn create_and_configure_spacing_test_graph(
   configurator : IGraphElementVisitor,
-) -> @graph.ElkNode {
+) -> @graph.ElkNode raise {
   let graph = create_spacing_test_graph()
   apply_visitor(graph, configurator)
   graph
@@ -51,7 +51,6 @@ fn spacing_options_to_test() -> Array[@graph.IProperty[Double]] {
 
 ///|
 test "SpacingConfiguration testCreateVisitor" {
-  @graph.reset_graph_model_for_test()
   let node = @graph.create_node(None)
   let visitor = elk_spacings_with_base_value(3.0).to_visitor()
   visitor.visit(node)
@@ -64,7 +63,6 @@ test "SpacingConfiguration testCreateVisitor" {
 
 ///|
 test "SpacingConfiguration testApplyTo" {
-  @graph.reset_graph_model_for_test()
   let node = @graph.create_node(None)
   elk_spacings_with_base_value(3.0).apply(node)
   assert_double_eq(
@@ -76,7 +74,6 @@ test "SpacingConfiguration testApplyTo" {
 
 ///|
 test "panic SpacingConfiguration testSpacingWithNegativeFactor" {
-  @graph.reset_graph_model_for_test()
   ignore(
     create_and_configure_spacing_test_graph(
       elk_spacings_with_base_value(33.0)
@@ -88,7 +85,6 @@ test "panic SpacingConfiguration testSpacingWithNegativeFactor" {
 
 ///|
 test "panic SpacingConfiguration testSpacingWithNegativeValue" {
-  @graph.reset_graph_model_for_test()
   ignore(
     create_and_configure_spacing_test_graph(
       elk_spacings_with_base_value(33.0)
@@ -110,7 +106,6 @@ test "SpacingConfiguration testDefaultFactors" {
 
 ///|
 test "SpacingConfiguration testSpacingWithFactor" {
-  @graph.reset_graph_model_for_test()
   for option in spacing_options_to_test() {
     let graph = create_and_configure_spacing_test_graph(
       elk_spacings_with_base_value(33.0).with_factor(option, 2.0).to_visitor(),
@@ -121,7 +116,6 @@ test "SpacingConfiguration testSpacingWithFactor" {
 
 ///|
 test "SpacingConfiguration testSpacingWithValue" {
-  @graph.reset_graph_model_for_test()
   for option in spacing_options_to_test() {
     let graph = create_and_configure_spacing_test_graph(
       elk_spacings_with_base_value(33.0).with_value(option, 24.0).to_visitor(),
@@ -132,7 +126,6 @@ test "SpacingConfiguration testSpacingWithValue" {
 
 ///|
 test "SpacingConfiguration testOverwriteIfRequested" {
-  @graph.reset_graph_model_for_test()
   for option in spacing_options_to_test() {
     let graph = create_spacing_test_graph()
     let first_child = @graph.node_children(graph)[0]
@@ -160,7 +153,6 @@ test "SpacingConfiguration testOverwriteIfRequested" {
 
 ///|
 test "SpacingConfiguration testDontOverwriteIfNotRequested" {
-  @graph.reset_graph_model_for_test()
   for option in spacing_options_to_test() {
     let graph = create_spacing_test_graph()
     let first_child = @graph.node_children(graph)[0]

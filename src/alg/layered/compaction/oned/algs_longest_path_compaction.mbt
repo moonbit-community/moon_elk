@@ -1,7 +1,7 @@
 ///|
 pub fn layered_longest_path_compaction(
   compactor : LayeredOneDimensionalCompactor,
-) -> Unit {
+) -> Unit raise {
   @compaction.longest_path_compaction(compactor)
 }
 

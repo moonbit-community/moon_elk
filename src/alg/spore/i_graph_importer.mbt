@@ -1,14 +1,14 @@
 ///|
 pub struct SporeIGraphImporter[T] {
-  import_graph_fn : (T) -> SporeGraph
-  apply_positions_fn : (SporeGraph) -> Unit
+  import_graph_fn : (T) -> SporeGraph raise
+  apply_positions_fn : (SporeGraph) -> Unit raise
   update_graph_fn : (SporeGraph) -> Unit
 }
 
 ///|
 pub fn[T] new_spore_igraph_importer(
-  import_graph_fn : (T) -> SporeGraph,
-  apply_positions_fn : (SporeGraph) -> Unit,
+  import_graph_fn : (T) -> SporeGraph raise,
+  apply_positions_fn : (SporeGraph) -> Unit raise,
   update_graph_fn : (SporeGraph) -> Unit,
 ) -> SporeIGraphImporter[T] {
   { import_graph_fn, apply_positions_fn, update_graph_fn }
@@ -18,7 +18,7 @@ pub fn[T] new_spore_igraph_importer(
 pub fn[T] SporeIGraphImporter::import_graph(
   self : SporeIGraphImporter[T],
   graph : T,
-) -> SporeGraph {
+) -> SporeGraph raise {
   (self.import_graph_fn)(graph)
 }
 
@@ -26,7 +26,7 @@ pub fn[T] SporeIGraphImporter::import_graph(
 pub fn[T] SporeIGraphImporter::apply_positions(
   self : SporeIGraphImporter[T],
   graph : SporeGraph,
-) -> Unit {
+) -> Unit raise {
   (self.apply_positions_fn)(graph)
 }
 

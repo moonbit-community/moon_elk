@@ -88,6 +88,7 @@ pub fn IndividualSpacings::to_string(self : IndividualSpacings) -> String {
 
 ///|
 fn individual_spacings_parse_option(
+  metadata : OptionMetadata,
   spacings : IndividualSpacings,
   option_string : String,
 ) -> Unit raise IndividualSpacingsException {
@@ -99,8 +100,7 @@ fn individual_spacings_parse_option(
   }
   let option_suffix = option[0].trim().to_owned()
   let option_value = option[1].to_owned()
-  let option_data = match
-    layout_meta_data_service_get_option_data_by_suffix(option_suffix) {
+  let option_data = match metadata.option_data_by_suffix(option_suffix) {
     Some(value) => value
     None => individual_spacings_raise("Invalid option id: " + option_suffix)
   }
@@ -110,8 +110,9 @@ fn individual_spacings_parse_option(
 ///|
 pub fn IndividualSpacings::parse(
   self : IndividualSpacings,
+  metadata : OptionMetadata,
   string : String,
-) -> Unit {
+) -> Unit raise {
   if string.is_empty() {
     return
   }
@@ -122,9 +123,11 @@ pub fn IndividualSpacings::parse(
     if option_string.is_empty() {
       continue
     }
-    try individual_spacings_parse_option(self, option_string.to_owned()) catch {
+    try
+      individual_spacings_parse_option(metadata, self, option_string.to_owned())
+    catch {
       err =>
-        layout_runtime_report_unsupported_configuration(
+        layout_runtime_raise_unsupported_configuration(
           individual_spacings_exception_message(err),
         )
     } noraise {

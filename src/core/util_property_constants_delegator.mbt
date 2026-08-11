@@ -21,9 +21,10 @@ pub fn property_constants_delegator_create_for_layout_algorithm_data(
 
 ///|
 pub fn property_constants_delegator_create_for_layout_algorithm_with_id(
+  metadata : OptionMetadata,
   algorithm_id : String,
 ) -> PropertyConstantsDelegator {
-  match layout_meta_data_service_get_algorithm_data(algorithm_id) {
+  match metadata.algorithm_data(algorithm_id) {
     Some(algorithm_data) =>
       property_constants_delegator_create_for_layout_algorithm_data(
         algorithm_data,
@@ -115,7 +116,7 @@ pub fn PropertyConstantsDelegator::get_property_kvector(
   self : PropertyConstantsDelegator,
   node : @graph.ElkNode,
   property : @graph.IProperty[KVector],
-) -> KVector {
+) -> KVector raise {
   let delegated = self.get_property_or_delegate(property)
   match @graph.node_layout_option_string_value(node, delegated.get_id()) {
     Some(value) => {

@@ -263,7 +263,7 @@ fn high_degree_move_tree_root(
 fn high_degree_node_layering_processor_process(
   layered_graph : LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   ignore(progress_monitor)
 
   try {
@@ -341,7 +341,7 @@ fn high_degree_node_layering_processor_process(
     }
   } catch {
     HighDegreeNodeLayeringProcessorException(message) =>
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "java.lang.IllegalStateException: " + message,
       )
   } noraise {

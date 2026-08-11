@@ -7,7 +7,7 @@ fn expect_some_int_in_renderer_test(value : Int?) -> Int {
 }
 
 ///|
-fn new_renderer_test_dc_graph() -> (@disco.DCGraph, Array[@disco.DCPolyomino]) {
+fn new_renderer_test_dc_graph() -> (@disco.DCGraph, Array[@disco.DCPolyomino]) raise {
   let chain = @core.new_kvector_chain()
   chain.add_xy(0.0, 0.0)
   chain.add_xy(10.0, 0.0)
@@ -48,21 +48,18 @@ fn new_renderer_test_concave_dc_graph() -> @disco.DCGraph {
 
 ///|
 test "DisCoGraphRenderer renders and fills debug caches" {
-  dis_co_graph_renderer_clear_bindings_for_test()
-
   let root = @graph.create_graph()
   @graph.node_set_dimensions(root, 50.0, 50.0)
   let child = @graph.create_node(Some(root))
   @graph.node_set_location(child, 5.0, 6.0)
   @graph.node_set_dimensions(child, 12.0, 13.0)
 
-  let (dc_graph, polys) = new_renderer_test_dc_graph()
-  dis_co_graph_renderer_bind_component_graph(root, dc_graph)
-  dis_co_graph_renderer_bind_polyominoes(root, polys)
-
   let renderer = new_dis_co_graph_renderer(
     new_dis_co_graph_rendering_configurator(new_dis_co_debug_display()),
   )
+  let (dc_graph, polys) = new_renderer_test_dc_graph()
+  dis_co_graph_renderer_bind_component_graph(renderer, root, dc_graph)
+  dis_co_graph_renderer_bind_polyominoes(renderer, root, polys)
   dis_co_graph_renderer_render(
     renderer,
     root,
@@ -101,7 +98,6 @@ test "DisCoGraphRenderer setVisible follows Java commands" {
 
 ///|
 test "DisCoGraphRenderer markDirty resets painted cache entries" {
-  dis_co_graph_renderer_clear_bindings_for_test()
   let root = @graph.create_graph()
   @graph.node_set_dimensions(root, 20.0, 20.0)
   let child = @graph.create_node(Some(root))
@@ -120,15 +116,13 @@ test "DisCoGraphRenderer markDirty resets painted cache entries" {
 
 ///|
 test "DisCoGraphRenderer polygon dirty check uses polygon geometry" {
-  dis_co_graph_renderer_clear_bindings_for_test()
   let root = @graph.create_graph()
   @graph.node_set_dimensions(root, 20.0, 20.0)
-  let dc_graph = new_renderer_test_concave_dc_graph()
-  dis_co_graph_renderer_bind_component_graph(root, dc_graph)
-
   let renderer = new_dis_co_graph_renderer(
     new_dis_co_graph_rendering_configurator(new_dis_co_debug_display()),
   )
+  let dc_graph = new_renderer_test_concave_dc_graph()
+  dis_co_graph_renderer_bind_component_graph(renderer, root, dc_graph)
   dis_co_graph_renderer_render(
     renderer,
     root,

@@ -5,7 +5,7 @@ pub type ServiceWorkbenchPart = Int
 pub type ServiceDiagramElement = Int
 
 ///|
-pub type ServiceGraphElement = Int
+pub type ServiceGraphElement = @graph.ElkNode
 
 ///|
 pub(all) enum LayoutMappingStatus {

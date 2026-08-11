@@ -9,7 +9,7 @@ import {
 }
 
 // Values
-pub fn libavoid_layout_provider_as_layout_provider(LibavoidLayoutProvider) -> @core.AbstractLayoutProvider
+pub fn libavoid_layout_provider_as_layout_provider(LibavoidLayoutProvider, @core.LayoutSession) -> @core.AbstractLayoutProvider
 
 pub let libavoid_option_angle_penalty : @graph.IProperty[Double]
 
@@ -119,13 +119,13 @@ pub struct LibavoidBundle {
 pub fn LibavoidBundle::get_symbolic_name(Self) -> String
 
 pub struct LibavoidLayoutProvider {
-  parent_node_to_server : Map[Int, LibavoidServer]
+  parent_node_to_server : Map[@graph.ElkNode, LibavoidServer]
   comm : LibavoidServerCommunicator
 }
-pub fn LibavoidLayoutProvider::cancel_layouting(Self, Int) -> Bool
-pub fn LibavoidLayoutProvider::layout(Self, Int, @core.IElkProgressMonitor) -> Unit
-pub fn LibavoidLayoutProvider::prepare_graph(Self, Int) -> Unit
-pub fn LibavoidLayoutProvider::register_server_for_test(Self, Int, LibavoidServer) -> Unit
+pub fn LibavoidLayoutProvider::cancel_layouting(Self, @graph.ElkNode) -> Bool
+pub fn LibavoidLayoutProvider::layout(Self, @graph.ElkNode, @core.IElkProgressMonitor, @core.LayoutSession) -> Unit
+pub fn LibavoidLayoutProvider::prepare_graph(Self, @graph.ElkNode) -> Unit
+pub fn LibavoidLayoutProvider::register_server_for_test(Self, @graph.ElkNode, LibavoidServer) -> Unit
 
 pub struct LibavoidPlugin {
   bundle : LibavoidBundle
@@ -160,18 +160,18 @@ pub enum LibavoidServerCleanup {
 }
 
 pub struct LibavoidServerCommunicator {
-  node_id_map : Map[Int, Int]
-  node_inverse_map : Map[Int, Int]
-  port_id_map : Map[Int, Int]
-  port_inverse_map : Map[Int, Int]
-  edge_id_map : Map[Int, Int]
-  edge_inverse_map : Map[Int, Int]
+  node_id_map : Map[Int, @graph.ElkNode]
+  node_inverse_map : Map[@graph.ElkNode, Int]
+  port_id_map : Map[Int, @graph.ElkPort]
+  port_inverse_map : Map[@graph.ElkPort, Int]
+  edge_id_map : Map[Int, @graph.ElkEdge]
+  edge_inverse_map : Map[@graph.ElkEdge, Int]
   mut node_id_counter : Int
   mut port_id_counter : Int
   mut edge_id_counter : Int
   lines : Array[String]
 }
-pub fn LibavoidServerCommunicator::request_layout(Self, Int, @core.IElkProgressMonitor, LibavoidServer) -> Unit
+pub fn LibavoidServerCommunicator::request_layout(Self, @graph.ElkNode, @core.IElkProgressMonitor, LibavoidServer, @core.LayoutSession) -> Unit
 
 pub struct LibavoidServerException {
   message : String

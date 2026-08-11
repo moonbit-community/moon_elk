@@ -1,13 +1,17 @@
 ///|
 pub(all) struct LayoutGraphViewDropAdapter {
+  runtime : @core.LayoutRuntime
+  session : @core.LayoutSession
   layout_graph_view : LayoutGraphView
 }
 
 ///|
 pub fn new_layout_graph_view_drop_adapter(
+  runtime : @core.LayoutRuntime,
+  session : @core.LayoutSession,
   layout_graph_view : LayoutGraphView,
 ) -> LayoutGraphViewDropAdapter {
-  { layout_graph_view, }
+  { runtime, session, layout_graph_view }
 }
 
 ///|
@@ -21,12 +25,17 @@ pub fn LayoutGraphViewDropAdapter::validate_drop(
 pub fn LayoutGraphViewDropAdapter::perform_drop(
   self : LayoutGraphViewDropAdapter,
   file_paths : Array[String],
-) -> Bool {
+) -> Bool raise {
   if file_paths.is_empty() {
     return false
   }
   for file_path in file_paths {
-    load_graph_action_run_file(Some(file_path), self.layout_graph_view)
+    load_graph_action_run_file(
+      self.runtime,
+      self.session,
+      Some(file_path),
+      self.layout_graph_view,
+    )
   }
   true
 }

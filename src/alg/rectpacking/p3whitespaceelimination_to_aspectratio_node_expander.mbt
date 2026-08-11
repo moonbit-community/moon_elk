@@ -1,8 +1,9 @@
 ///|
 fn rectpacking_to_aspectratio_node_expander_process(
+  session : RectPackingSession,
   graph : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   match progress_monitor {
     Some(monitor) =>
       ignore(monitor.begin("To Aspect Ratio Whitesapce Eliminator", 1.0))
@@ -40,7 +41,9 @@ fn rectpacking_to_aspectratio_node_expander_process(
     )
   }
 
-  rectpacking_equal_whitespace_eliminator_process(graph, progress_monitor)
+  rectpacking_equal_whitespace_eliminator_process(
+    session, graph, progress_monitor,
+  )
 
   match progress_monitor {
     Some(monitor) => monitor.done()
@@ -49,11 +52,15 @@ fn rectpacking_to_aspectratio_node_expander_process(
 }
 
 ///|
-pub fn new_rectpacking_to_aspectratio_node_expander_layout_phase() -> @core.ILayoutProcessor[
-  RectPackingLayoutPhases,
-  @graph.ElkNode,
-] {
-  @core.new_layout_phase(rectpacking_to_aspectratio_node_expander_process, _ => {
-    None
-  })
+pub fn new_rectpacking_to_aspectratio_node_expander_layout_phase(
+  session : RectPackingSession,
+) -> @core.ILayoutProcessor[RectPackingLayoutPhases, @graph.ElkNode] {
+  @core.new_layout_phase(
+    (graph, progress_monitor) => {
+      rectpacking_to_aspectratio_node_expander_process(
+        session, graph, progress_monitor,
+      )
+    },
+    _ => None,
+  )
 }

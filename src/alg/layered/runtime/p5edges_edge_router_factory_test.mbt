@@ -9,7 +9,7 @@ fn edge_router_factory_test_routing(name : String) -> @core.EdgeRouting {
 }
 
 ///|
-fn edge_router_factory_test_run(strategy : @core.EdgeRouting) -> String {
+fn edge_router_factory_test_run(strategy : @core.EdgeRouting) -> String raise {
   let factory = edge_router_factory_factory_for(strategy)
   let processor = factory.create()
   if !processor.is_layout_phase() {

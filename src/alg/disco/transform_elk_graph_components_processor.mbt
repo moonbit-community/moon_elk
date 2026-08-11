@@ -1,15 +1,15 @@
 ///|
-fn disco_edge_source_node(edge : @graph.ElkEdge) -> @graph.ElkNode {
+fn disco_edge_source_node(edge : @graph.ElkEdge) -> @graph.ElkNode raise {
   let sources = @graph.edge_sources(edge)
   if sources.is_empty() {
-    @core.layout_runtime_report_unsupported_configuration(
+    @core.layout_runtime_raise_unsupported_configuration(
       "edge source is missing",
     )
     return @graph.create_node(None)
   }
   try @graph.connectable_shape_to_node(Some(sources[0])) catch {
     _ => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "edge source shape is not attached to a node",
       )
       @graph.create_node(None)
@@ -20,17 +20,17 @@ fn disco_edge_source_node(edge : @graph.ElkEdge) -> @graph.ElkNode {
 }
 
 ///|
-fn disco_edge_target_node(edge : @graph.ElkEdge) -> @graph.ElkNode {
+fn disco_edge_target_node(edge : @graph.ElkEdge) -> @graph.ElkNode raise {
   let targets = @graph.edge_targets(edge)
   if targets.is_empty() {
-    @core.layout_runtime_report_unsupported_configuration(
+    @core.layout_runtime_raise_unsupported_configuration(
       "edge target is missing",
     )
     return @graph.create_node(None)
   }
   try @graph.connectable_shape_to_node(Some(targets[0])) catch {
     _ => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "edge target shape is not attached to a node",
       )
       @graph.create_node(None)
@@ -94,8 +94,8 @@ fn disco_all_outgoing_edges(node : @graph.ElkNode) -> Array[@graph.ElkEdge] {
 fn disco_add_nodes_to_incidence_set(
   incident_nodes : Map[@graph.ElkNode, Unit],
   edges : Array[@graph.ElkEdge],
-  choose_node : (@graph.ElkEdge) -> @graph.ElkNode,
-) -> Unit {
+  choose_node : (@graph.ElkEdge) -> @graph.ElkNode raise,
+) -> Unit raise {
   for edge in edges {
     incident_nodes[choose_node(edge)] = ()
   }
@@ -104,7 +104,7 @@ fn disco_add_nodes_to_incidence_set(
 ///|
 fn disco_get_inner_neighbors_of_port(
   port : @graph.ElkPort,
-) -> Map[@graph.ElkNode, Unit] {
+) -> Map[@graph.ElkNode, Unit] raise {
   let port_parent_node = match @graph.port_parent(port) {
     Some(parent) => parent
     None => return Map([])
@@ -156,7 +156,7 @@ fn disco_dfs(
 fn disco_compute_incidences(
   nodes : Array[@graph.ElkNode],
   incidence_map : Map[@graph.ElkNode, Map[@graph.ElkNode, Unit]],
-) -> Unit {
+) -> Unit raise {
   let adjacent_and_inside_parent : Map[
     @graph.ElkPort,
     Map[@graph.ElkNode, Unit],
@@ -238,7 +238,7 @@ fn disco_compute_incidences(
 ///|
 pub fn elk_graph_components_processor_split(
   graph : @graph.ElkNode,
-) -> Array[Array[@graph.ElkNode]] {
+) -> Array[Array[@graph.ElkNode]] raise {
   let visited : Map[@graph.ElkNode, Unit] = Map([])
   let incidence_map : Map[@graph.ElkNode, Map[@graph.ElkNode, Unit]] = Map([])
   let components : Array[Array[@graph.ElkNode]] = []

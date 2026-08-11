@@ -129,15 +129,15 @@ pub let dot_exporter_def_spacing_xlarge : Double
 
 pub let dot_exporter_dpi : Float
 
-pub fn dot_exporter_get_edge_id(Int, DotTransformationData[Int, @dot.DotGraphvizModel]) -> String
+pub fn dot_exporter_get_edge_id(@graph.ElkEdge, DotTransformationData[@graph.ElkNode, @dot.DotGraphvizModel]) -> String
 
-pub fn dot_exporter_get_node_id(Int, DotExporterNodeType, DotTransformationData[Int, @dot.DotGraphvizModel]) -> String
+pub fn dot_exporter_get_node_id(@graph.ElkNode, DotExporterNodeType, DotTransformationData[@graph.ElkNode, @dot.DotGraphvizModel]) -> String
 
 pub let dot_exporter_graph_elems : @graph.IProperty[Map[String, DotGraphElement]]
 
 pub let dot_exporter_hierarchy : @graph.IProperty[Bool]
 
-pub fn dot_exporter_is_inside_graph(Int, Int) -> Bool
+pub fn dot_exporter_is_inside_graph(@graph.ElkNode, @graph.ElkNode) -> Bool
 
 pub let dot_exporter_next_edge_id : @graph.IProperty[Int]
 
@@ -159,7 +159,7 @@ pub let dot_exporter_option_font_size : String
 
 pub fn dot_exporter_parse_spline_points(String, Array[@core.KVectorChain], @core.KVector) -> @core.Pair[@core.KVector, @core.KVector]
 
-pub fn dot_exporter_set_edge_labels(Int, Array[@dot.DotAttribute], Bool) -> Unit
+pub fn dot_exporter_set_edge_labels(@graph.ElkEdge, Array[@dot.DotAttribute], Bool) -> Unit
 
 pub fn dot_exporter_set_general_edge_attributes(Array[@dot.DotStatement]) -> Array[@dot.DotAttribute]
 
@@ -175,17 +175,17 @@ pub let dot_exporter_use_edge_ids : @graph.IProperty[Bool]
 
 pub let dot_exporter_use_splines : @graph.IProperty[Bool]
 
-pub fn dot_graph_element_as_edge(DotGraphElement) -> Int?
+pub fn dot_graph_element_as_edge(DotGraphElement) -> @graph.ElkEdge?
 
-pub fn dot_graph_element_as_node(DotGraphElement) -> Int?
+pub fn dot_graph_element_as_node(DotGraphElement) -> @graph.ElkNode?
 
-pub fn dot_graph_element_edge(Int) -> DotGraphElement
+pub fn dot_graph_element_edge(@graph.ElkEdge) -> DotGraphElement
 
-pub fn dot_graph_element_label(Int) -> DotGraphElement
+pub fn dot_graph_element_label(@graph.ElkLabel) -> DotGraphElement
 
-pub fn dot_graph_element_node(Int) -> DotGraphElement
+pub fn dot_graph_element_node(@graph.ElkNode) -> DotGraphElement
 
-pub fn dot_graph_element_port(Int) -> DotGraphElement
+pub fn dot_graph_element_port(@graph.ElkPort) -> DotGraphElement
 
 pub fn neato_model_default() -> NeatoModel
 
@@ -237,19 +237,19 @@ pub enum Command {
 pub struct DotExporter {
   _dummy : Unit
 }
-pub fn DotExporter::apply_edge_label_pos(Self, Int, String, @core.EdgeLabelPlacement, @core.KVector) -> Unit
-pub fn DotExporter::apply_edge_layout(Self, @dot.DotEdgeStatement, @core.KVector, DotTransformationData[Int, @dot.DotGraphvizModel]) -> Unit
-pub fn DotExporter::apply_layout(Self, Int, Array[@dot.DotStatement], @core.KVector, @core.Spacing, DotTransformationData[Int, @dot.DotGraphvizModel]) -> Unit
-pub fn DotExporter::apply_node_layout(Self, @dot.DotNodeStatement, @core.KVector, @core.Spacing, DotTransformationData[Int, @dot.DotGraphvizModel]) -> Unit
-pub fn DotExporter::is_inside_graph(Self, Int, Int) -> Bool
-pub fn DotExporter::set_edge_labels(Self, Int, Array[@dot.DotAttribute], Bool) -> Unit
+pub fn DotExporter::apply_edge_label_pos(Self, @graph.ElkEdge, String, @core.EdgeLabelPlacement, @core.KVector) -> Unit
+pub fn DotExporter::apply_edge_layout(Self, @dot.DotEdgeStatement, @core.KVector, DotTransformationData[@graph.ElkNode, @dot.DotGraphvizModel]) -> Unit
+pub fn DotExporter::apply_layout(Self, @graph.ElkNode, Array[@dot.DotStatement], @core.KVector, @core.Spacing, DotTransformationData[@graph.ElkNode, @dot.DotGraphvizModel]) -> Unit
+pub fn DotExporter::apply_node_layout(Self, @dot.DotNodeStatement, @core.KVector, @core.Spacing, DotTransformationData[@graph.ElkNode, @dot.DotGraphvizModel]) -> Unit
+pub fn DotExporter::is_inside_graph(Self, @graph.ElkNode, @graph.ElkNode) -> Bool
+pub fn DotExporter::set_edge_labels(Self, @graph.ElkEdge, Array[@dot.DotAttribute], Bool) -> Unit
 pub fn DotExporter::set_general_edge_attributes(Self, Array[@dot.DotStatement]) -> Array[@dot.DotAttribute]
 pub fn DotExporter::set_general_node_attributes(Self, Array[@dot.DotStatement]) -> Array[@dot.DotAttribute]
-pub fn DotExporter::set_graph_attributes(Self, Array[@dot.DotStatement], Int, DotTransformationData[Int, @dot.DotGraphvizModel]) -> Unit
-pub fn DotExporter::transfer_layout(Self, DotTransformationData[Int, @dot.DotGraphvizModel]) -> Unit
-pub fn DotExporter::transform(Self, DotTransformationData[Int, @dot.DotGraphvizModel]) -> Unit
-pub fn DotExporter::transform_edges(Self, Int, Array[@dot.DotStatement], DotTransformationData[Int, @dot.DotGraphvizModel]) -> Unit
-pub fn DotExporter::transform_nodes(Self, Int, Array[@dot.DotStatement], @core.KVector, DotTransformationData[Int, @dot.DotGraphvizModel]) -> Unit
+pub fn DotExporter::set_graph_attributes(Self, Array[@dot.DotStatement], @graph.ElkNode, DotTransformationData[@graph.ElkNode, @dot.DotGraphvizModel]) -> Unit
+pub fn DotExporter::transfer_layout(Self, DotTransformationData[@graph.ElkNode, @dot.DotGraphvizModel]) -> Unit raise
+pub fn DotExporter::transform(Self, DotTransformationData[@graph.ElkNode, @dot.DotGraphvizModel]) -> Unit raise
+pub fn DotExporter::transform_edges(Self, @graph.ElkNode, Array[@dot.DotStatement], DotTransformationData[@graph.ElkNode, @dot.DotGraphvizModel]) -> Unit raise
+pub fn DotExporter::transform_nodes(Self, @graph.ElkNode, Array[@dot.DotStatement], @core.KVector, DotTransformationData[@graph.ElkNode, @dot.DotGraphvizModel]) -> Unit raise
 
 pub enum DotExporterNodeType {
   DotExporterNodeTypeNode
@@ -258,29 +258,29 @@ pub enum DotExporterNodeType {
 }
 
 pub enum DotGraphElement {
-  DotGraphElementNode(Int)
-  DotGraphElementEdge(Int)
-  DotGraphElementPort(Int)
-  DotGraphElementLabel(Int)
+  DotGraphElementNode(@graph.ElkNode)
+  DotGraphElementEdge(@graph.ElkEdge)
+  DotGraphElementPort(@graph.ElkPort)
+  DotGraphElementLabel(@graph.ElkLabel)
 }
 
 pub struct DotImporter {
-  mut node_id_map : Map[String, Int]
-  mut port_id_map : Map[String, Int]
-  node_statement_map : Map[Int, @dot.DotStatement]
-  edge_statement_map : Map[Int, @dot.DotEdgeStatement]
-  edge_statement_attached : Map[Int, Bool]
-  root_graph_map : Map[Int, @dot.DotGraph]
+  mut node_id_map : Map[String, @graph.ElkNode]
+  mut port_id_map : Map[String, @graph.ElkPort]
+  node_statement_map : Map[@graph.ElkNode, @dot.DotStatement]
+  edge_statement_map : Map[@graph.ElkEdge, @dot.DotEdgeStatement]
+  edge_statement_attached : Map[@graph.ElkEdge, Bool]
+  root_graph_map : Map[@graph.ElkNode, @dot.DotGraph]
 }
-pub fn DotImporter::apply_layout_edge(Self, Int, @core.KVector, @dot.DotGraph) -> Unit
-pub fn DotImporter::apply_layout_node(Self, Int, @core.KVector, @dot.DotGraph) -> Unit
-pub fn DotImporter::transfer_layout(Self, DotTransformationData[@dot.DotGraphvizModel, Int]) -> Unit
-pub fn DotImporter::transform(Self, DotTransformationData[@dot.DotGraphvizModel, Int]) -> Unit
-pub fn DotImporter::transform_edge_statement(Self, @dot.DotEdgeStatement, Int, DotTransformationData[@dot.DotGraphvizModel, Int], DotImporterPropertyHolder) -> Unit
-pub fn DotImporter::transform_node_identifier(Self, String?, Int) -> Int
-pub fn DotImporter::transform_node_statement(Self, @dot.DotNodeStatement, Int, DotTransformationData[@dot.DotGraphvizModel, Int], DotImporterPropertyHolder) -> Unit
-pub fn DotImporter::transform_port_identifier(Self, String?, Int) -> Int
-pub fn DotImporter::transform_statements(Self, Array[@dot.DotStatement], Int, DotTransformationData[@dot.DotGraphvizModel, Int], DotImporterPropertyHolder, DotImporterPropertyHolder) -> Unit
+pub fn DotImporter::apply_layout_edge(Self, @graph.ElkEdge, @core.KVector, @dot.DotGraph) -> Unit
+pub fn DotImporter::apply_layout_node(Self, @graph.ElkNode, @core.KVector, @dot.DotGraph) -> Unit
+pub fn DotImporter::transfer_layout(Self, DotTransformationData[@dot.DotGraphvizModel, @graph.ElkNode]) -> Unit
+pub fn DotImporter::transform(Self, DotTransformationData[@dot.DotGraphvizModel, @graph.ElkNode]) -> Unit
+pub fn DotImporter::transform_edge_statement(Self, @dot.DotEdgeStatement, @graph.ElkNode, DotTransformationData[@dot.DotGraphvizModel, @graph.ElkNode], DotImporterPropertyHolder) -> Unit
+pub fn DotImporter::transform_node_identifier(Self, String?, @graph.ElkNode) -> @graph.ElkNode
+pub fn DotImporter::transform_node_statement(Self, @dot.DotNodeStatement, @graph.ElkNode, DotTransformationData[@dot.DotGraphvizModel, @graph.ElkNode], DotImporterPropertyHolder) -> Unit
+pub fn DotImporter::transform_port_identifier(Self, String?, @graph.ElkNode) -> @graph.ElkPort
+pub fn DotImporter::transform_statements(Self, Array[@dot.DotStatement], @graph.ElkNode, DotTransformationData[@dot.DotGraphvizModel, @graph.ElkNode], DotImporterPropertyHolder, DotImporterPropertyHolder) -> Unit
 
 pub struct DotImporterPropertyHolder {
   layout_options : Map[String, String]

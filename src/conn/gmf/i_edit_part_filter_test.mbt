@@ -11,7 +11,7 @@ test "IEditPartFilter custom callback is honored" {
   reset_conn_gmf_foundation_for_test()
   let shape = new_gmf_edit_part(ShapeNodeEditPart)
   let border = new_gmf_edit_part(AbstractBorderItemEditPart)
-  let filter = new_i_edit_part_filter(edit_part => {
+  let filter = new_i_edit_part_filter(fn(edit_part) raise {
     gmf_edit_part_kind(edit_part) == ShapeNodeEditPart
   })
   inspect(filter.filter(shape), content="true")

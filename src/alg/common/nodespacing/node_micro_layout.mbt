@@ -16,7 +16,7 @@ pub fn node_micro_layout_for_adapter(
 }
 
 ///|
-pub fn NodeMicroLayout::execute(self : NodeMicroLayout) -> Unit {
+pub fn NodeMicroLayout::execute(self : NodeMicroLayout) -> Unit raise {
   node_dimension_calculation_sort_port_lists(self.adapter)
   node_dimension_calculation_calculate_label_and_node_sizes(self.adapter)
   node_dimension_calculation_calculate_node_margins(self.adapter)

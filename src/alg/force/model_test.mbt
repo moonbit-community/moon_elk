@@ -42,7 +42,6 @@ test "FruchtermanReingold constants" {
 
 ///|
 test "EadesModel layout changes positions" {
-  reset_force_graph_model_for_test()
   let (graph, left, right) = build_two_node_graph()
   new_eades_model().layout(graph, @core.new_null_elk_progress_monitor())
   let moved = fnode_position(left).x != 0.0 || fnode_position(right).x != 10.0
@@ -51,7 +50,6 @@ test "EadesModel layout changes positions" {
 
 ///|
 test "FRModel layout keeps finite positions" {
-  reset_force_graph_model_for_test()
   let (graph, left, right) = build_two_node_graph()
   new_fruchterman_reingold_model().layout(
     graph,
@@ -65,7 +63,6 @@ test "FRModel layout keeps finite positions" {
 
 ///|
 test "Components recombine sorts by @core.priority" {
-  reset_force_graph_model_for_test()
   let high = new_fgraph()
   high.set_double_property(force_aspect_ratio, 100.0)
   high.set_double_property(force_spacing_node_node, 10.0)

@@ -2,7 +2,7 @@
 fn mrtree_direction_processor_process(
   graph : MrtreeGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   match progress_monitor {
     Some(monitor) => ignore(monitor.begin("Process directions", 1.0))
     None => ()

@@ -18,10 +18,10 @@ let radial_sort_degree_315 : Double = 1.75 * @math.PI
 
 ///|
 pub struct PolarCoordinateSorter {
-  comp_right : (@graph.ElkNode, @graph.ElkNode) -> Int
-  comp_left : (@graph.ElkNode, @graph.ElkNode) -> Int
-  comp_top : (@graph.ElkNode, @graph.ElkNode) -> Int
-  comp_bottom : (@graph.ElkNode, @graph.ElkNode) -> Int
+  comp_right : (@graph.ElkNode, @graph.ElkNode) -> Int raise
+  comp_left : (@graph.ElkNode, @graph.ElkNode) -> Int raise
+  comp_top : (@graph.ElkNode, @graph.ElkNode) -> Int raise
+  comp_bottom : (@graph.ElkNode, @graph.ElkNode) -> Int raise
   mut id_sorter : IDSorter?
 }
 
@@ -41,7 +41,7 @@ fn PolarCoordinateSorter::set_id_for_nodes(
   self : PolarCoordinateSorter,
   nodes : Array[@graph.ElkNode],
   id_offset : Int,
-) -> Int {
+) -> Int raise {
   let mut id = id_offset
   for node in nodes {
     radial_internal_set_order_id(node, id)
@@ -76,7 +76,7 @@ fn PolarCoordinateSorter::set_id_for_nodes(
 pub fn PolarCoordinateSorter::initialize(
   self : PolarCoordinateSorter,
   root : @graph.ElkNode,
-) -> Unit {
+) -> Unit raise {
   self.id_sorter = Some(new_id_sorter())
   let successors = radial_get_successors(root)
   radial_sort_nodes(successors, self.comp_right)
@@ -87,7 +87,7 @@ pub fn PolarCoordinateSorter::initialize(
 pub fn PolarCoordinateSorter::sort(
   self : PolarCoordinateSorter,
   nodes : Array[@graph.ElkNode],
-) -> Unit {
+) -> Unit raise {
   if nodes.is_empty() {
     return
   }
@@ -108,7 +108,7 @@ pub fn PolarCoordinateSorter::as_i_radial_sorter(
 ) -> IRadialSorter {
   let sorter = self
   new_i_radial_sorter(
-    fn(nodes : Array[@graph.ElkNode]) { sorter.sort(nodes) },
-    initialize=(root : @graph.ElkNode) => sorter.initialize(root),
+    fn(nodes : Array[@graph.ElkNode]) raise { sorter.sort(nodes) },
+    initialize=fn(root : @graph.ElkNode) raise { sorter.initialize(root) },
   )
 }

@@ -30,7 +30,7 @@ fn random_graph_from_file_clone(graph : ElkNode) -> ElkNode {
 ///|
 fn random_graph_from_file_random_graphs(
   path : AbsoluteResourcePath,
-) -> Array[ElkNode] {
+) -> Array[ElkNode] raise {
   let file_name = path.get_file()
   let content = match random_graph_from_file_contents_ref.val.get(file_name) {
     Some(value) => value
@@ -67,7 +67,7 @@ pub fn new_random_graph_from_file(
 ///|
 pub fn random_graph_from_file_from_resource_paths(
   resource_paths : Array[AbstractResourcePath],
-) -> Array[RandomGraphFromFile] {
+) -> Array[RandomGraphFromFile] raise {
   let graphs : Array[RandomGraphFromFile] = []
   for abstract_path in resource_paths {
     abstract_path.set_filter(Some(random_graph_from_file_filter().to_filter()))

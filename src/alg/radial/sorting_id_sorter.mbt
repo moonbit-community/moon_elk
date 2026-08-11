@@ -14,19 +14,25 @@ pub struct IDSorter {
 ///|
 pub fn new_id_sorter() -> IDSorter {
   {
-    sorter: new_i_radial_sorter(fn(nodes : Array[@graph.ElkNode]) {
+    sorter: new_pure_i_radial_sorter(fn(nodes : Array[@graph.ElkNode]) {
       radial_sort_nodes(nodes, radial_id_sorter_compare)
     }),
   }
 }
 
 ///|
-pub fn IDSorter::sort(self : IDSorter, nodes : Array[@graph.ElkNode]) -> Unit {
+pub fn IDSorter::sort(
+  self : IDSorter,
+  nodes : Array[@graph.ElkNode],
+) -> Unit raise {
   self.sorter.sort(nodes)
 }
 
 ///|
-pub fn IDSorter::initialize(self : IDSorter, root : @graph.ElkNode) -> Unit {
+pub fn IDSorter::initialize(
+  self : IDSorter,
+  root : @graph.ElkNode,
+) -> Unit raise {
   self.sorter.initialize(root)
 }
 

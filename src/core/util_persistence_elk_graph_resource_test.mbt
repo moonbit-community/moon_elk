@@ -1,13 +1,15 @@
 ///|
 test "elk_graph_resource defaults to utf-8 encoding" {
-  let resource = new_elk_graph_resource("memory:/graph.elkg")
+  let metadata = new_option_metadata()
+  let resource = new_elk_graph_resource(metadata, "memory:/graph.elkg")
   inspect(resource.get_uri(), content="memory:/graph.elkg")
   inspect(resource.get_encoding(), content="utf-8")
 }
 
 ///|
 test "elk_graph_resource creates helper and save" {
-  let resource = new_elk_graph_resource("memory:/graph.elkg")
+  let metadata = new_option_metadata()
+  let resource = new_elk_graph_resource(metadata, "memory:/graph.elkg")
   let helper = resource.create_xml_helper()
   inspect(helper.get_resource_uri(), content="memory:/graph.elkg")
   let plain_save = resource.create_xml_save()
@@ -24,7 +26,8 @@ test "elk_graph_resource creates helper and save" {
 
 ///|
 test "elk_graph_resource_factory creates resource" {
-  let factory = new_elk_graph_resource_factory()
+  let metadata = new_option_metadata()
+  let factory = new_elk_graph_resource_factory(metadata)
   let resource = factory.create_resource("file:/tmp/a.elkg")
   inspect(resource.get_uri(), content="file:/tmp/a.elkg")
   inspect(resource.get_encoding(), content="utf-8")
@@ -32,10 +35,10 @@ test "elk_graph_resource_factory creates resource" {
 
 ///|
 test "elk_graph_xmi_helper create_from_string handles property and value" {
-  layout_meta_data_service_reset_for_test()
-  layout_meta_data_service_register_default_options()
-  let resource = new_elk_graph_resource("memory:/graph.elkg")
-  let helper = new_elk_graph_xmi_helper(resource)
+  let metadata = new_option_metadata()
+  metadata.register_default_options()
+  let resource = new_elk_graph_resource(metadata, "memory:/graph.elkg")
+  let helper = new_elk_graph_xmi_helper(metadata, resource)
   match
     helper.create_from_string(
       elk_graph_xmi_data_type_iproperty,
@@ -58,13 +61,13 @@ test "elk_graph_xmi_helper create_from_string handles property and value" {
 
 ///|
 test "elk_graph_xmi_save only saves known options" {
-  layout_meta_data_service_reset_for_test()
-  layout_meta_data_service_register_default_options()
-  layout_meta_data_service_register_option(
-    new_layout_option_data("org.eclipse.elk.objectOnly"),
+  let metadata = new_option_metadata()
+  metadata.register_default_options()
+  metadata.register_option(new_layout_option_data("org.eclipse.elk.objectOnly"))
+  let resource = new_elk_graph_resource(metadata, "memory:/graph.elkg")
+  let save = new_elk_graph_xmi_save(
+    new_elk_graph_xmi_helper(metadata, resource),
   )
-  let resource = new_elk_graph_resource("memory:/graph.elkg")
-  let save = new_elk_graph_xmi_save(new_elk_graph_xmi_helper(resource))
   let sink : Map[String, String] = Map([])
   inspect(
     save.save_property_entry(sink, Some(no_layout.get_id()), "true"),

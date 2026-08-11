@@ -109,7 +109,7 @@ pub fn RectRow::add_block(self : RectRow, block : Block) -> Unit {
 pub fn RectRow::remove_block(self : RectRow, block : Block) -> Unit {
   let filtered = []
   for child in self.children {
-    if child.id != block.id {
+    if !physical_equal(child, block) {
       filtered.push(child)
     }
   }

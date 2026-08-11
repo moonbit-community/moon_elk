@@ -1,7 +1,7 @@
 ///|
 pub fn layered_scanline_constraint_calculation(
   compactor : LayeredOneDimensionalCompactor,
-) -> Unit {
+) -> Unit raise {
   @compaction.scanline_constraint_calculation(compactor)
 }
 

@@ -30,7 +30,7 @@ fn model_order_barycenter_add_all_unique(
 fn model_order_barycenter_associations_for(
   associations : Map[Int, Array[Int]],
   node_handle : Int,
-) -> Array[Int] {
+) -> Array[Int] raise {
   match associations.get(node_handle) {
     Some(values) => values
     None => {
@@ -38,7 +38,7 @@ fn model_order_barycenter_associations_for(
       match associations.get(node_handle) {
         Some(values) => values
         None => {
-          @core.layout_runtime_report_unsupported_configuration(
+          @core.layout_runtime_raise_unsupported_configuration(
             "association map entry initialization failed",
           )
           []
@@ -95,7 +95,7 @@ fn ModelOrderBarycenterHeuristic::compare_based_on_transitive_dependencies(
   self : ModelOrderBarycenterHeuristic,
   first : LNode,
   second : LNode,
-) -> Int {
+) -> Int raise {
   let first_handle = lnode_internal_handle(first)
   let second_handle = lnode_internal_handle(second)
 
@@ -137,7 +137,7 @@ fn ModelOrderBarycenterHeuristic::update_bigger_and_smaller_associations(
   self : ModelOrderBarycenterHeuristic,
   bigger : LNode,
   smaller : LNode,
-) -> Unit {
+) -> Unit raise {
   let bigger_handle = lnode_internal_handle(bigger)
   let smaller_handle = lnode_internal_handle(smaller)
 
@@ -191,7 +191,7 @@ fn ModelOrderBarycenterHeuristic::compare_based_on_barycenter(
   self : ModelOrderBarycenterHeuristic,
   first : LNode,
   second : LNode,
-) -> Int {
+) -> Int raise {
   let first_state = self.base.state_of(first)
   let second_state = self.base.state_of(second)
 
@@ -222,7 +222,7 @@ fn ModelOrderBarycenterHeuristic::compare_nodes(
   self : ModelOrderBarycenterHeuristic,
   first : LNode,
   second : LNode,
-) -> Int {
+) -> Int raise {
   let transitive_comparison = self.compare_based_on_transitive_dependencies(
     first, second,
   )
@@ -251,9 +251,9 @@ fn ModelOrderBarycenterHeuristic::compare_nodes(
 ///|
 pub fn model_order_barycenter_heuristic_insertion_sort(
   layer : Array[LNode],
-  comparator : (LNode, LNode) -> Int,
+  comparator : (LNode, LNode) -> Int raise,
   barycenter_heuristic : ModelOrderBarycenterHeuristic,
-) -> Unit {
+) -> Unit raise {
   let mut i = 1
   while i < layer.length() {
     let current = layer[i]
@@ -275,7 +275,7 @@ pub fn ModelOrderBarycenterHeuristic::minimize_crossings_layer(
   pre_ordered : Bool,
   randomize : Bool,
   forward : Bool,
-) -> Unit {
+) -> Unit raise {
   if randomize {
     self.base.randomize_barycenters(layer)
   } else {
@@ -292,11 +292,11 @@ pub fn ModelOrderBarycenterHeuristic::minimize_crossings_layer(
     if force_model_order {
       model_order_barycenter_heuristic_insertion_sort(
         layer,
-        (first, second) => self.compare_nodes(first, second),
+        fn(first, second) raise { self.compare_nodes(first, second) },
         self,
       )
     } else {
-      barycenter_sort_nodes(layer, (first, second) => {
+      barycenter_sort_nodes_raising(layer, fn(first, second) raise {
         self.compare_nodes(first, second)
       })
     }
@@ -312,7 +312,7 @@ pub fn ModelOrderBarycenterHeuristic::set_first_layer_order(
   self : ModelOrderBarycenterHeuristic,
   order : Array[Array[LNode]],
   is_forward_sweep : Bool,
-) -> Bool {
+) -> Bool raise {
   if order.is_empty() {
     return false
   }
@@ -338,7 +338,7 @@ pub fn ModelOrderBarycenterHeuristic::minimize_crossings(
   free_layer_index : Int,
   forward_sweep : Bool,
   is_first_sweep : Bool,
-) -> Bool {
+) -> Bool raise {
   if order.is_empty() ||
     free_layer_index < 0 ||
     free_layer_index >= order.length() ||
@@ -412,10 +412,10 @@ pub fn ModelOrderBarycenterHeuristic::as_i_crossing_minimization_heuristic(
 ) -> ICrossingMinimizationHeuristic {
   new_i_crossing_minimization_heuristic(
     () => self.always_improves(),
-    (order, is_forward_sweep) => {
+    fn(order, is_forward_sweep) raise {
       self.set_first_layer_order(order, is_forward_sweep)
     },
-    (order, free_layer_index, forward_sweep, is_first_sweep) => {
+    fn(order, free_layer_index, forward_sweep, is_first_sweep) raise {
       self.minimize_crossings(
         order, free_layer_index, forward_sweep, is_first_sweep,
       )

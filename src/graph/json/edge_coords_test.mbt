@@ -136,16 +136,16 @@ fn edge_coords_sample_graph(
 fn edge_coords_run_case(
   shape_coords : String,
   edge_coords : String,
-) -> Map[String, Json] {
-  @graph.reset_graph_model_for_test()
-  @core.layout_meta_data_service_reset_for_test()
-  @core.layout_meta_data_service_register_default_algorithms()
+) -> Map[String, Json] raise {
   let graph = edge_coords_sample_graph(shape_coords, edge_coords)
   let maybe_importer : @core.Maybe[JsonImporter] = @core.maybe_create()
   let root = elk_graph_json_for_json_graph(graph)
     .remember_importer(maybe_importer)
     .to_elk()
-  let engine = @core.new_recursive_graph_layout_engine()
+  let engine = @core.new_recursive_graph_layout_engine(
+    new_layout_runtime(),
+    @core.new_layout_session(),
+  )
   engine.layout(root, @core.new_basic_progress_monitor())
   edge_coords_required_importer(maybe_importer).transfer_layout(root)
   edge_coords_json_obj(graph)

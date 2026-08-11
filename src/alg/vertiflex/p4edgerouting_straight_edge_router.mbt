@@ -11,7 +11,9 @@ fn vertiflex_first_or_create_edge_section(
 }
 
 ///|
-fn vertiflex_straight_edge_router_route_edges(node : @graph.ElkNode) -> Unit {
+fn vertiflex_straight_edge_router_route_edges(
+  node : @graph.ElkNode,
+) -> Unit raise {
   for edge in @graph.node_outgoing_edges(node) {
     let target = vertiflex_internal_child_of_edge(edge)
     let section = vertiflex_first_or_create_edge_section(edge)
@@ -27,9 +29,10 @@ fn vertiflex_straight_edge_router_route_edges(node : @graph.ElkNode) -> Unit {
 
 ///|
 fn vertiflex_straight_edge_router_process(
+  session : VertiFlexSession,
   graph : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(existing) => existing
     None => @core.new_null_elk_progress_monitor()
@@ -37,16 +40,20 @@ fn vertiflex_straight_edge_router_process(
   ignore(monitor.begin("StraightEdgeRouter", 1.0))
   if !@graph.node_children(graph).is_empty() {
     vertiflex_straight_edge_router_route_edges(
-      vertiflex_internal_root_node(graph),
+      vertiflex_internal_root_node(session, graph),
     )
   }
   monitor.done()
 }
 
 ///|
-pub fn new_vertiflex_straight_edge_router_layout_phase() -> @core.ILayoutProcessor[
-  VertiFlexLayoutPhases,
-  @graph.ElkNode,
-] {
-  @core.new_layout_phase(vertiflex_straight_edge_router_process, _ => None)
+pub fn new_vertiflex_straight_edge_router_layout_phase(
+  session : VertiFlexSession,
+) -> @core.ILayoutProcessor[VertiFlexLayoutPhases, @graph.ElkNode] {
+  @core.new_layout_phase(
+    (graph, monitor) => {
+      vertiflex_straight_edge_router_process(session, graph, monitor)
+    },
+    _ => None,
+  )
 }

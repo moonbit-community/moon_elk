@@ -1,2 +1,2 @@
 ///|
-pub type ILockFunction = (CNode, @core.Direction) -> Bool
+pub type ILockFunction = (CNode, @core.Direction) -> Bool raise

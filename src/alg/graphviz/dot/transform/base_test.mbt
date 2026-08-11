@@ -43,14 +43,6 @@ fn option_int_to_string(value : Int?) -> String {
 }
 
 ///|
-fn base_option_string_or_none(value : String?) -> String {
-  match value {
-    Some(v) => v
-    None => "none"
-  }
-}
-
-///|
 test "DotTransformationData storage" {
   let data : DotTransformationData[Int, String] = new_dot_transformation_data()
   inspect(option_int_to_string(data.get_source_graph()), content="none")
@@ -100,31 +92,25 @@ test "DotTransformationData properties" {
   )
   let graph_elems = data.get_graph_elem_map_property(graph_elem_property)
   inspect(graph_elems.length(), content="0")
-  graph_elems["node-1"] = dot_graph_element_node(1)
-  graph_elems["edge-2"] = dot_graph_element_edge(2)
+  let graph = @graph.create_graph()
+  let edge = @graph.create_edge(Some(graph))
+  graph_elems["node-1"] = dot_graph_element_node(graph)
+  graph_elems["edge-2"] = dot_graph_element_edge(edge)
 
   let graph_elems2 = data.get_graph_elem_map_property(graph_elem_property)
   inspect(graph_elems2.length(), content="2")
-  inspect(
-    option_int_to_string(
-      match graph_elems2.get("node-1") {
-        Some(element) => dot_graph_element_as_node(element)
-        None => None
-      },
-    ),
-    content="1",
+  assert_eq(
+    match graph_elems2.get("node-1") {
+      Some(element) => dot_graph_element_as_node(element) == Some(graph)
+      None => false
+    },
+    true,
   )
-  inspect(
-    base_option_string_or_none(
-      match graph_elems2.get("edge-2") {
-        Some(element) =>
-          match dot_graph_element_as_edge(element) {
-            Some(value) => Some(value.to_string())
-            None => None
-          }
-        None => None
-      },
-    ),
-    content="2",
+  assert_eq(
+    match graph_elems2.get("edge-2") {
+      Some(element) => dot_graph_element_as_edge(element) == Some(edge)
+      None => false
+    },
+    true,
   )
 }

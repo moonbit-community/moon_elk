@@ -61,14 +61,14 @@ pub struct EdgeLengthOptimization {
 
 ///|
 pub fn new_edge_length_optimization() -> EdgeLengthOptimization {
-  { evaluator: new_i_evaluation(edge_length_optimization_evaluate) }
+  { evaluator: new_pure_i_evaluation(edge_length_optimization_evaluate) }
 }
 
 ///|
 pub fn EdgeLengthOptimization::evaluate(
   self : EdgeLengthOptimization,
   root : @graph.ElkNode,
-) -> Double {
+) -> Double raise {
   self.evaluator.evaluate(root)
 }
 

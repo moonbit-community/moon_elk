@@ -57,11 +57,11 @@ fn quadrant_order(quadrant : Quadrant) -> Int {
 }
 
 ///|
-fn point_quadrant_or_abort(point : Point) -> Quadrant {
+fn point_quadrant_or_abort(point : Point) -> Quadrant raise {
   match point.quadrant {
     Some(quadrant) => quadrant
     None => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "Point quadrant is required",
       )
       Q1
@@ -115,7 +115,7 @@ fn left_low_first(left : Point, right : Point) -> Int {
 }
 
 ///|
-fn right_special_order(left : Point, right : Point) -> Int {
+fn right_special_order(left : Point, right : Point) -> Int raise {
   if left.x != right.x {
     return compare_double(left.x, right.x)
   }
@@ -159,9 +159,9 @@ fn hull_add_concave_corners(points : Array[Point], quadrant : Quadrant) -> Unit 
 ///|
 fn maximal_elements(
   points : Array[Point],
-  comparator : (Point, Point) -> Int,
+  comparator : (Point, Point) -> Int raise?,
   quadrant : Quadrant,
-) -> Array[Point] {
+) -> Array[Point] raise {
   let result = []
   let mut maximal_y = if quadrant_eq(quadrant, Q1) || quadrant_eq(quadrant, Q2) {
     1.0e20
@@ -186,7 +186,7 @@ fn maximal_elements(
 ///|
 pub fn rectilinear_convex_hull_of(
   points : Array[Point],
-) -> RectilinearConvexHull {
+) -> RectilinearConvexHull raise {
   let hull = new_rectilinear_convex_hull()
   for point in points {
     let max1_x = match hull.x_max1 {
@@ -281,7 +281,7 @@ fn new_hull_rectangle_event_state(
 fn hull_rectangle_event_handle(
   state : HullRectangleEventState,
   point : Point,
-) -> Unit {
+) -> Unit raise {
   match (state.queued, state.queued_point) {
     (Some(queued), Some(queued_point)) =>
       if point.x != queued_point.x ||
@@ -327,7 +327,7 @@ fn hull_rectangle_event_handle(
 ///|
 pub fn RectilinearConvexHull::split_into_rectangles(
   self : RectilinearConvexHull,
-) -> Array[@core.ElkRectangle] {
+) -> Array[@core.ElkRectangle] raise {
   let left1 = match self.x_min1 {
     Some(point) => point.x
     None => 0.0
@@ -337,7 +337,9 @@ pub fn RectilinearConvexHull::split_into_rectangles(
     None => left1
   }
   let state = new_hull_rectangle_event_state(min_double(left1, left2))
-  @compaction.scanline_execute_single(self.hull, right_special_order, point => {
+  @compaction.scanline_execute_single_raise(self.hull, right_special_order, fn(
+    point,
+  ) raise {
     hull_rectangle_event_handle(state, point)
   })
   match state.queued {

@@ -102,7 +102,7 @@ pub fn[C, T] CommentAttacher::with_attachment_decider(
 pub fn[C, T] CommentAttacher::attach_comments(
   self : CommentAttacher[C, T],
   data_provider : IDataProvider[C, T],
-) -> Unit {
+) -> Unit raise {
   self.preprocess(data_provider)
 
   let explicit_attachments = []
@@ -153,7 +153,7 @@ pub fn[C, T] CommentAttacher::attach_comments(
 pub fn[C, T] CommentAttacher::preprocess(
   self : CommentAttacher[C, T],
   data_provider : IDataProvider[C, T],
-) -> Unit {
+) -> Unit raise {
   self.explicit_attachment_provider.preprocess(
     data_provider,
     self.include_hierarchy,
@@ -177,7 +177,7 @@ pub fn[C, T] CommentAttacher::preprocess(
 pub fn[C, T] CommentAttacher::is_eligible_for_heuristic_attachment(
   self : CommentAttacher[C, T],
   comment : C,
-) -> Bool {
+) -> Bool raise {
   for filter in self.filters {
     if !filter.eligible_for_attachment(comment) {
       return false
@@ -192,7 +192,7 @@ pub fn[C, T] CommentAttacher::find_match(
   self : CommentAttacher[C, T],
   data_provider : IDataProvider[C, T],
   comment : C,
-) -> T? {
+) -> T? raise {
   if self.matchers.is_empty() {
     return None
   }
@@ -240,7 +240,9 @@ pub fn[C, T] CommentAttacher::edgeify_found_attachments(
 }
 
 ///|
-pub fn[C, T] CommentAttacher::cleanup(self : CommentAttacher[C, T]) -> Unit {
+pub fn[C, T] CommentAttacher::cleanup(
+  self : CommentAttacher[C, T],
+) -> Unit raise {
   self.explicit_attachment_provider.cleanup()
 
   for filter in self.filters {

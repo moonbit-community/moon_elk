@@ -70,8 +70,8 @@ fn l_graph_adapters_node_type_is_north_south_port(node_type : NodeType) -> Bool 
 ///|
 fn l_graph_adapters_insertion_sort_ports(
   ports : Array[LPort],
-  comparator : (LPort, LPort) -> Int,
-) -> Unit {
+  comparator : (LPort, LPort) -> Int raise?,
+) -> Unit raise? {
   let mut i = 1
   while i < ports.length() {
     let current = ports[i]
@@ -165,11 +165,11 @@ pub fn LGraphAdapter::set_size(
 }
 
 ///|
-pub fn LGraphAdapter::get_position(self : LGraphAdapter) -> @core.KVector {
+pub fn LGraphAdapter::get_position(self : LGraphAdapter) -> @core.KVector raise {
   ignore(self)
   try l_graph_adapters_raise_unit("Not supported by LGraph") catch {
     LGraphAdapterException(message) =>
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "org.eclipse.elk.alg.layered.graph.LGraphAdapter: " + message,
       )
   } noraise {
@@ -182,11 +182,11 @@ pub fn LGraphAdapter::get_position(self : LGraphAdapter) -> @core.KVector {
 pub fn LGraphAdapter::set_position(
   self : LGraphAdapter,
   _position : @core.KVector,
-) -> Unit {
+) -> Unit raise {
   ignore(self)
   try l_graph_adapters_raise_unit("Not supported by LGraph") catch {
     LGraphAdapterException(message) =>
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "org.eclipse.elk.alg.layered.graph.LGraphAdapter: " + message,
       )
   } noraise {
@@ -552,8 +552,8 @@ pub fn LNodeAdapter::get_outgoing_edges(
 }
 
 ///|
-pub fn LNodeAdapter::sort_port_list(self : LNodeAdapter) -> Unit {
-  self.sort_port_list_with_comparator((left, right) => {
+pub fn LNodeAdapter::sort_port_list(self : LNodeAdapter) -> Unit raise {
+  self.sort_port_list_with_comparator(fn(left, right) raise {
     default_portlist_sorter.compare(left, right)
   })
 }
@@ -562,8 +562,8 @@ pub fn LNodeAdapter::sort_port_list(self : LNodeAdapter) -> Unit {
 pub fn LNodeAdapter::sort_port_list_with(
   self : LNodeAdapter,
   comparator : PortComparator,
-) -> Unit {
-  self.sort_port_list_with_comparator((left, right) => {
+) -> Unit raise {
+  self.sort_port_list_with_comparator(fn(left, right) raise {
     comparator.compare(left, right)
   })
 }
@@ -571,8 +571,8 @@ pub fn LNodeAdapter::sort_port_list_with(
 ///|
 pub fn LNodeAdapter::sort_port_list_with_comparator(
   self : LNodeAdapter,
-  comparator : (LPort, LPort) -> Int,
-) -> Unit {
+  comparator : (LPort, LPort) -> Int raise?,
+) -> Unit raise? {
   let port_constraints_value = self.element.get_property_string(
     @core.port_constraints,
   )
@@ -1097,7 +1097,7 @@ pub fn PortComparator::compare(
   self : PortComparator,
   port1 : LPort,
   port2 : LPort,
-) -> Int {
+) -> Int raise {
   ignore(self)
   let ordinal_difference = l_graph_adapters_port_side_rank(port1.get_side()) -
     l_graph_adapters_port_side_rank(port2.get_side())
@@ -1141,7 +1141,7 @@ pub fn PortComparator::compare(
     SideUndefined =>
       try l_graph_adapters_raise("Port side is undefined") catch {
         LGraphAdapterException(message) => {
-          @core.layout_runtime_report_unsupported_configuration(
+          @core.layout_runtime_raise_unsupported_configuration(
             "org.eclipse.elk.alg.layered.graph.PortComparator: " + message,
           )
           0

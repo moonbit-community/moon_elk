@@ -1,15 +1,21 @@
 ///|
 pub struct ElkGraphJsonSemanticSequencer {
+  metadata : @core.OptionMetadata
   base : AbstractElkGraphJsonSemanticSequencer
   value_converter : GraphJsonTextPropertyValueValueConverter
 }
 
 ///|
 pub fn new_elk_graph_json_semantic_sequencer(
+  metadata : @core.OptionMetadata,
   base? : AbstractElkGraphJsonSemanticSequencer = new_abstract_elk_graph_json_semantic_sequencer(),
-  value_converter? : GraphJsonTextPropertyValueValueConverter = new_graph_json_text_property_value_value_converter(),
+  value_converter? : GraphJsonTextPropertyValueValueConverter? = None,
 ) -> ElkGraphJsonSemanticSequencer {
-  { base, value_converter }
+  let value_converter = match value_converter {
+    Some(value) => value
+    None => new_graph_json_text_property_value_value_converter(metadata)
+  }
+  { metadata, base, value_converter }
 }
 
 ///|
@@ -39,8 +45,9 @@ pub fn ElkGraphJsonSemanticSequencer::sequence_property(
   self : ElkGraphJsonSemanticSequencer,
   context : String,
   semantic_object : GraphJsonTextPropertyAssignment,
-) -> GraphJsonTextPropertyAssignment {
+) -> GraphJsonTextPropertyAssignment raise {
   let option = graph_json_text_property_key_to_layout_option(
+    self.metadata,
     semantic_object.key,
   )
   let resolved = match semantic_object.value {

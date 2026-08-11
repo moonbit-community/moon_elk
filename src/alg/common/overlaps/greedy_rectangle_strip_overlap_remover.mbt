@@ -55,7 +55,7 @@ pub fn greedy_rectangle_strip_overlap_remover_remove_overlaps(
 
 ///|
 pub fn new_greedy_rectangle_strip_overlap_removal_strategy() -> IRectangleStripOverlapRemovalStrategy {
-  new_irectangle_strip_overlap_removal_strategy(
+  new_pure_irectangle_strip_overlap_removal_strategy(
     greedy_rectangle_strip_overlap_remover_remove_overlaps,
   )
 }

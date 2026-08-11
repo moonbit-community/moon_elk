@@ -27,7 +27,9 @@ fn node_size_calculator_outside_container_minimum_height(
 }
 
 ///|
-pub fn node_size_calculator_set_node_width(node_context : NodeContext) -> Unit {
+pub fn node_size_calculator_set_node_width(
+  node_context : NodeContext,
+) -> Unit raise {
   let node_size = node_context.node_size
   let width = if node_label_and_size_utilities_are_size_constraints_fixed(
       node_context,
@@ -84,7 +86,9 @@ pub fn node_size_calculator_set_node_width(node_context : NodeContext) -> Unit {
 }
 
 ///|
-pub fn node_size_calculator_set_node_height(node_context : NodeContext) -> Unit {
+pub fn node_size_calculator_set_node_height(
+  node_context : NodeContext,
+) -> Unit raise {
   let node_size = node_context.node_size
   let height = if node_label_and_size_utilities_are_size_constraints_fixed(
       node_context,

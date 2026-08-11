@@ -1,5 +1,17 @@
 ///|
-pub type MrtreeLabel = Int
+pub struct MrtreeLabel {
+  priv data : MrtreeLabelData
+}
+
+///|
+pub impl Eq for MrtreeLabel with fn equal(self, other) {
+  physical_equal(self, other)
+}
+
+///|
+pub impl @debug.Debug for MrtreeLabel with fn to_repr(self) {
+  Repr(mrtree_label_to_string(self))
+}
 
 ///|
 priv struct MrtreeLabelData {
@@ -10,28 +22,16 @@ priv struct MrtreeLabelData {
 }
 
 ///|
-let mrtree_label_store : Ref[Array[MrtreeLabelData]] = Ref([])
-
-///|
-fn checked_mrtree_label(label : MrtreeLabel) -> Unit {
-  if label < 0 || label >= mrtree_label_store.val.length() {
-    @core.layout_runtime_report_unsupported_configuration(
-      "invalid mrtree label id",
-    )
-  }
-}
-
-///|
 pub fn new_mrtree_label(edge : MrtreeEdge, text : String) -> MrtreeLabel {
-  checked_mrtree_edge(edge)
-  let label = mrtree_label_store.val.length()
-  mrtree_label_store.val.push({
-    edge,
-    text,
-    position: @core.new_kvector(),
-    size: @core.new_kvector(),
-  })
-  let edge_data = mrtree_edge_store.val[edge]
+  let label : MrtreeLabel = {
+    data: {
+      edge,
+      text,
+      position: @core.new_kvector(),
+      size: @core.new_kvector(),
+    },
+  }
+  let edge_data = edge.data
   edge_data.labels.push(label)
   set_mrtree_edge_data(edge, edge_data)
   label
@@ -39,32 +39,27 @@ pub fn new_mrtree_label(edge : MrtreeEdge, text : String) -> MrtreeLabel {
 
 ///|
 pub fn mrtree_label_text(label : MrtreeLabel) -> String {
-  checked_mrtree_label(label)
-  mrtree_label_store.val[label].text
+  label.data.text
 }
 
 ///|
 pub fn mrtree_label_edge(label : MrtreeLabel) -> MrtreeEdge {
-  checked_mrtree_label(label)
-  mrtree_label_store.val[label].edge
+  label.data.edge
 }
 
 ///|
 pub fn mrtree_label_position(label : MrtreeLabel) -> @core.KVector {
-  checked_mrtree_label(label)
-  mrtree_label_store.val[label].position
+  label.data.position
 }
 
 ///|
 pub fn mrtree_label_size(label : MrtreeLabel) -> @core.KVector {
-  checked_mrtree_label(label)
-  mrtree_label_store.val[label].size
+  label.data.size
 }
 
 ///|
 pub fn mrtree_label_to_string(label : MrtreeLabel) -> String {
-  checked_mrtree_label(label)
-  let label_data = mrtree_label_store.val[label]
+  let label_data = label.data
   if label_data.text.is_empty() {
     "l[\{mrtree_edge_to_string(label_data.edge)}]"
   } else {

@@ -84,7 +84,9 @@ test "ExecutionInfoContentProvider filters elements and children" {
   )
 
   let provider = new_execution_info_content_provider()
-  provider.set_filter(Some(info => execution_info_has_log_messages(info)))
+  provider.set_filter(
+    Some(info => execution_info_has_log_messages(info) catch { _ => false }),
+  )
 
   let filtered = provider.get_elements(Some([info_a, info_b]))
   inspect(filtered.length(), content="1")

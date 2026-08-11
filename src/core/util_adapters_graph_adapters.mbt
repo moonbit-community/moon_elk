@@ -224,8 +224,8 @@ pub(all) struct NodeAdapter[T, G, L, P, E] {
   get_ports_fn : () -> Array[P]
   get_incoming_edges_fn : () -> Array[E]
   get_outgoing_edges_fn : () -> Array[E]
-  sort_port_list_fn : () -> Unit
-  sort_port_list_with_fn : ((P, P) -> Int) -> Unit
+  sort_port_list_fn : () -> Unit raise
+  sort_port_list_with_fn : ((P, P) -> Int raise) -> Unit raise
   is_compound_node_fn : () -> Bool
   get_padding_fn : () -> ElkPadding
   set_padding_fn : (ElkPadding) -> Unit
@@ -241,8 +241,8 @@ pub fn[T, G, L, P, E] new_node_adapter(
   get_ports_fn : () -> Array[P],
   get_incoming_edges_fn : () -> Array[E],
   get_outgoing_edges_fn : () -> Array[E],
-  sort_port_list_fn : () -> Unit,
-  sort_port_list_with_fn : ((P, P) -> Int) -> Unit,
+  sort_port_list_fn : () -> Unit raise,
+  sort_port_list_with_fn : ((P, P) -> Int raise) -> Unit raise,
   is_compound_node_fn : () -> Bool,
   get_padding_fn : () -> ElkPadding,
   set_padding_fn : (ElkPadding) -> Unit,
@@ -311,15 +311,15 @@ pub fn[T, G, L, P, E] NodeAdapter::get_outgoing_edges(
 ///|
 pub fn[T, G, L, P, E] NodeAdapter::sort_port_list(
   self : NodeAdapter[T, G, L, P, E],
-) -> Unit {
+) -> Unit raise {
   (self.sort_port_list_fn)()
 }
 
 ///|
 pub fn[T, G, L, P, E] NodeAdapter::sort_port_list_with(
   self : NodeAdapter[T, G, L, P, E],
-  comparator : (P, P) -> Int,
-) -> Unit {
+  comparator : (P, P) -> Int raise,
+) -> Unit raise {
   (self.sort_port_list_with_fn)(comparator)
 }
 

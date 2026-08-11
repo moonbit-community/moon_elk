@@ -13,7 +13,7 @@ pub fn new_partition_postprocessor_layout_processor() -> @core.ILayoutProcessor[
 
 pub fn new_partition_preprocessor_layout_processor() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
 
-pub let partition_processors_linked : Bool
+pub fn register_partition_processors(@runtime.LayeredPhaseRegistry) -> Unit
 
 // Errors
 

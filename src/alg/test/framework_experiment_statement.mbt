@@ -66,7 +66,7 @@ pub fn[T, G] ExperimentStatement::add_layout_processor_finished_event(
 ///|
 fn[T, G] experiment_statement_create_test_graph(
   statement : ExperimentStatement[T, G],
-) -> ElkNode {
+) -> ElkNode raise {
   let test_instance = statement.experiment_runner.create_test_instance()
   statement.experiment_runner.get_experimental_object().realize(test_instance)
 }
@@ -191,7 +191,7 @@ fn[T, G] experiment_statement_simulate_whitebox_tests_for_notifier(
 ///|
 pub fn[T, G] ExperimentStatement::evaluate(
   self : ExperimentStatement[T, G],
-) -> Unit {
+) -> Unit raise {
   let graph = experiment_statement_create_test_graph(self)
   self.test_graph = Some(graph)
 

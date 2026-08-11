@@ -1,15 +1,21 @@
 ///|
 pub struct LayoutConfigurationManager {
+  metadata : @core.OptionMetadata
   mut config_provider : LayoutConfigurationStoreProvider?
   layout_algorithm_resolver : @core.LayoutAlgorithmResolver
 }
 
 ///|
 pub fn new_layout_configuration_manager(
+  metadata : @core.OptionMetadata,
   config_provider? : LayoutConfigurationStoreProvider? = None,
-  layout_algorithm_resolver? : @core.LayoutAlgorithmResolver = @core.new_layout_algorithm_resolver(),
+  layout_algorithm_resolver? : @core.LayoutAlgorithmResolver,
 ) -> LayoutConfigurationManager {
-  { config_provider, layout_algorithm_resolver }
+  let layout_algorithm_resolver = match layout_algorithm_resolver {
+    Some(resolver) => resolver
+    None => @core.new_layout_algorithm_resolver(metadata)
+  }
+  { metadata, config_provider, layout_algorithm_resolver }
 }
 
 ///|
@@ -29,21 +35,20 @@ pub fn LayoutConfigurationManager::get_algorithm(
   match configured_algorithm {
     Some(value) =>
       if value.trim().is_empty() {
-        @core.layout_meta_data_service_get_algorithm_data_by_suffix(
+        self.metadata.algorithm_data_by_suffix(
           self.layout_algorithm_resolver.default_layout_algorithm_id,
         )
       } else {
-        match
-          @core.layout_meta_data_service_get_algorithm_data_by_suffix(value) {
+        match self.metadata.algorithm_data_by_suffix(value) {
           Some(data) => Some(data)
           None =>
-            @core.layout_meta_data_service_get_algorithm_data_by_suffix(
+            self.metadata.algorithm_data_by_suffix(
               self.layout_algorithm_resolver.default_layout_algorithm_id,
             )
         }
       }
     None =>
-      @core.layout_meta_data_service_get_algorithm_data_by_suffix(
+      self.metadata.algorithm_data_by_suffix(
         self.layout_algorithm_resolver.default_layout_algorithm_id,
       )
   }
@@ -57,7 +62,7 @@ pub fn LayoutConfigurationManager::get_supported_options(
   let option_data : Map[String, @core.LayoutOptionData] = Map([])
   match self.get_algorithm(config) {
     Some(algo_data) =>
-      for candidate in @core.layout_meta_data_service_option_data_values() {
+      for candidate in self.metadata.option_data_values() {
         if algo_data.knows_option(candidate.get_id()) {
           option_data[candidate.get_id()] = candidate
         }
@@ -66,7 +71,7 @@ pub fn LayoutConfigurationManager::get_supported_options(
   }
 
   for option_id in config.get_affected_options() {
-    match @core.layout_meta_data_service_get_option_data_opt(option_id) {
+    match self.metadata.option_data_opt(option_id) {
       Some(found_option) => option_data[option_id] = found_option
       None => ()
     }
@@ -174,8 +179,8 @@ pub fn LayoutConfigurationManager::clear_option_values(
 ///|
 fn layout_configuration_manager_collect_nodes(
   root : @graph.ElkNode,
-) -> Map[Int, Bool] {
-  let nodes : Map[Int, Bool] = Map([])
+) -> Map[@graph.ElkNode, Bool] {
+  let nodes : Map[@graph.ElkNode, Bool] = Map([])
   for node in @graph.node_all_descendants_including_self(root) {
     nodes[node] = true
   }

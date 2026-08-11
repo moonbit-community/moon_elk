@@ -96,13 +96,14 @@ pub fn LibavoidLayoutProvider::layout(
   self : LibavoidLayoutProvider,
   parent_node : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor,
+  session : @core.LayoutSession,
 ) -> Unit {
   ignore(progress_monitor)
   self.prepare_graph(parent_node)
   let server_pool = libavoid_server_pool_instance()
   let lv_server = server_pool.fetch()
   self.parent_node_to_server[parent_node] = lv_server
-  self.comm.request_layout(parent_node, progress_monitor, lv_server)
+  self.comm.request_layout(parent_node, progress_monitor, lv_server, session)
   ignore(self.parent_node_to_server.remove(parent_node))
   server_pool.release(lv_server)
 }
@@ -134,8 +135,9 @@ pub fn LibavoidLayoutProvider::register_server_for_test(
 ///|
 pub fn libavoid_layout_provider_as_layout_provider(
   provider : LibavoidLayoutProvider,
+  session : @core.LayoutSession,
 ) -> @core.AbstractLayoutProvider {
   @core.new_abstract_layout_provider((graph, monitor) => {
-    provider.layout(graph, monitor)
+    provider.layout(graph, monitor, session)
   })
 }

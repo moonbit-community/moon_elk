@@ -44,7 +44,7 @@ fn greedy_switch_processor_test_assert_layer_order(
 fn greedy_switch_processor_test_run(
   creator : GreedySwitchTestGraphCreator,
   cross_type : CrossMinType,
-) -> Unit {
+) -> Unit raise {
   let minimizer = new_layer_sweep_crossing_minimizer(cross_type)
   minimizer.process(
     creator.get_graph(),
@@ -56,7 +56,7 @@ fn greedy_switch_processor_test_run(
 fn greedy_switch_processor_test_horizontal_sides() -> (
   @core.PortSide,
   @core.PortSide,
-) {
+) raise {
   let creator = new_greedy_switch_test_graph_creator()
   let layers = creator.make_layers(2)
   let left = creator.add_node_to_layer(layers[0])

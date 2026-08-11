@@ -28,7 +28,7 @@ fn hierarchical_port_dummy_size_processor_set_widths(
 fn hierarchical_port_dummy_size_processor_process(
   graph : LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()

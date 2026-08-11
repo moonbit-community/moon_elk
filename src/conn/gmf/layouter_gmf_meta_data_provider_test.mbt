@@ -1,14 +1,10 @@
 ///|
 test "GmfMetaDataProvider registers Draw2D algorithm support" {
-  @core.layout_meta_data_service_reset_for_test()
-  @core.layout_meta_data_service_register_default_options()
-  @core.layout_meta_data_service_register_layout_meta_data_providers(
-    gmf_layout_meta_data_providers(),
-  )
+  let metadata = @core.new_layout_runtime().option_metadata()
+  metadata.register_default_options()
+  metadata.register_providers(gmf_layout_meta_data_providers())
 
-  let draw2d = @core.layout_meta_data_service_get_algorithm_data(
-    gmf_draw2d_algorithm_id,
-  )
+  let draw2d = metadata.algorithm_data(gmf_draw2d_algorithm_id)
   inspect(draw2d is Some(_), content="true")
   inspect(
     match draw2d {

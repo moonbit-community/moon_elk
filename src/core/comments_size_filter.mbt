@@ -70,10 +70,10 @@ pub fn[C, T] SizeFilter::preprocess(
   self : SizeFilter[C, T],
   _data_provider : IDataProvider[C, T],
   _include_hierarchy : Bool,
-) -> Unit {
+) -> Unit raise {
   try self.check_configuration() catch {
     err =>
-      layout_runtime_report_unsupported_configuration(
+      layout_runtime_raise_unsupported_configuration(
         size_filter_exception_message(err),
       )
   } noraise {
@@ -97,10 +97,10 @@ fn[C, T] size_filter_eligible_for_attachment_impl(
 pub fn[C, T] SizeFilter::eligible_for_attachment(
   self : SizeFilter[C, T],
   comment : C,
-) -> Bool {
+) -> Bool raise {
   try size_filter_eligible_for_attachment_impl(self, comment) catch {
     err => {
-      layout_runtime_report_unsupported_configuration(
+      layout_runtime_raise_unsupported_configuration(
         size_filter_exception_message(err),
       )
       false

@@ -13,8 +13,10 @@ pub fn new_mrtree_tree_layout_provider() -> MrtreeTreeLayoutProvider {
 }
 
 ///|
-fn init {
-  @core.recursive_graph_layout_engine_register_handler(mrtree_algorithm_id, (
+pub fn register_mrtree_layout_algorithm(runtime : @core.LayoutRuntime) -> Unit {
+  runtime.register_layout_algorithm(mrtree_algorithm_id, (
+    _runtime,
+    _session,
     layout_graph,
     progress_monitor,
   ) => new_mrtree_tree_layout_provider().layout(layout_graph, progress_monitor))
@@ -30,7 +32,7 @@ pub fn MrtreeTreeLayoutProvider::layout(
   self : MrtreeTreeLayoutProvider,
   layout_graph : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor,
-) -> Unit {
+) -> Unit raise {
   let default_work = 0.1
   if !@graph.node_get_bool_property(layout_graph, mrtree_omit_node_micro_layout) {
     mrtree_node_micro_layout_execute(layout_graph)

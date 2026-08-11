@@ -410,7 +410,7 @@ fn node_promotion_precalculate_and_set_information(
 ///|
 fn node_promotion_precalculate_and_set_information_model_order(
   state : NodePromotionState,
-) -> Unit {
+) -> Unit raise {
   state.bi_layer_map = new_bi_linked_hash_multi_map()
   state.nodes_by_id = Map([])
   let mut node_id = 0
@@ -567,7 +567,7 @@ fn node_promotion_promote_node_by_model_order(
   state : NodePromotionState,
   node : LNode,
   left_to_right : Bool,
-) -> Array[LNode] raise NodePromotionException {
+) -> Array[LNode] raise {
   let old_layer_id = node_promotion_require_bi_layer_key(
     state.bi_layer_map,
     node,
@@ -603,7 +603,7 @@ fn node_promotion_promote_node_by_model_order(
 fn node_promotion_model_order_node_promotion(
   state : NodePromotionState,
   left_to_right : Bool,
-) -> Unit raise NodePromotionException {
+) -> Unit raise {
   let mut something_changed = true
   while something_changed {
     something_changed = false
@@ -871,7 +871,7 @@ fn _node_promotion_configuration(
 fn node_promotion_process(
   layered_graph : LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()
@@ -953,9 +953,10 @@ fn node_promotion_process(
     }
   } catch {
     NodePromotionException(message) =>
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "java.lang.IllegalStateException: " + message,
       )
+    err => raise err
   } noraise {
     _ => ()
   }

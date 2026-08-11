@@ -1,8 +1,12 @@
 // Generated using `moon info`, DON'T EDIT IT
 package "Milky2018/moon_elk/alg/layered/engine"
 
+import {
+  "Milky2018/moon_elk/alg/layered/runtime",
+}
+
 // Values
-pub let layered_engine_linked : Bool
+pub fn new_layered_phase_registry() -> @runtime.LayeredPhaseRegistry
 
 // Errors
 

@@ -11,18 +11,18 @@ fn core_comments_next_matcher_id() -> Int {
 ///|
 pub(all) struct IMatcher[C, T] {
   id : Int
-  raw_fn : (C, T) -> Double
-  normalized_fn : (C, T) -> Double
-  preprocess_fn : (IDataProvider[C, T], Bool) -> Unit
-  cleanup_fn : () -> Unit
+  raw_fn : (C, T) -> Double raise
+  normalized_fn : (C, T) -> Double raise
+  preprocess_fn : (IDataProvider[C, T], Bool) -> Unit raise
+  cleanup_fn : () -> Unit raise
 }
 
 ///|
 pub fn[C, T] new_matcher(
-  raw_fn : (C, T) -> Double,
-  normalized_fn : (C, T) -> Double,
-  preprocess_fn : (IDataProvider[C, T], Bool) -> Unit,
-  cleanup_fn : () -> Unit,
+  raw_fn : (C, T) -> Double raise,
+  normalized_fn : (C, T) -> Double raise,
+  preprocess_fn : (IDataProvider[C, T], Bool) -> Unit raise,
+  cleanup_fn : () -> Unit raise,
 ) -> IMatcher[C, T] {
   {
     id: core_comments_next_matcher_id(),
@@ -35,8 +35,8 @@ pub fn[C, T] new_matcher(
 
 ///|
 pub fn[C, T] new_matcher_with_default_lifecycle(
-  raw_fn : (C, T) -> Double,
-  normalized_fn : (C, T) -> Double,
+  raw_fn : (C, T) -> Double raise,
+  normalized_fn : (C, T) -> Double raise,
 ) -> IMatcher[C, T] {
   new_matcher(raw_fn, normalized_fn, (_provider, _include_hierarchy) => (), () => {
     ()
@@ -48,7 +48,7 @@ pub fn[C, T] IMatcher::raw(
   self : IMatcher[C, T],
   comment : C,
   target : T,
-) -> Double {
+) -> Double raise {
   (self.raw_fn)(comment, target)
 }
 
@@ -57,7 +57,7 @@ pub fn[C, T] IMatcher::normalized(
   self : IMatcher[C, T],
   comment : C,
   target : T,
-) -> Double {
+) -> Double raise {
   (self.normalized_fn)(comment, target)
 }
 
@@ -66,12 +66,12 @@ pub fn[C, T] IMatcher::preprocess(
   self : IMatcher[C, T],
   data_provider : IDataProvider[C, T],
   include_hierarchy : Bool,
-) -> Unit {
+) -> Unit raise {
   (self.preprocess_fn)(data_provider, include_hierarchy)
 }
 
 ///|
-pub fn[C, T] IMatcher::cleanup(self : IMatcher[C, T]) -> Unit {
+pub fn[C, T] IMatcher::cleanup(self : IMatcher[C, T]) -> Unit raise {
   (self.cleanup_fn)()
 }
 

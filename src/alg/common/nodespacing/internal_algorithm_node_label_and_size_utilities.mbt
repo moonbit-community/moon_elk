@@ -34,7 +34,7 @@ fn nodespacing_contains_only_port_labels(
 }
 
 ///|
-fn nodespacing_parse_minimum_size(text : String) -> @core.KVector {
+fn nodespacing_parse_minimum_size(text : String) -> @core.KVector raise {
   let parsed = @core.new_kvector()
   parsed.parse(text)
   parsed
@@ -109,7 +109,7 @@ fn nodespacing_compute_inside_part_for_port(
 ///|
 pub fn node_label_and_size_utilities_setup_minimum_client_area_size(
   node_context : NodeContext,
-) -> Unit {
+) -> Unit raise {
   match
     node_label_and_size_utilities_get_minimum_client_area_size(node_context) {
     Some(min_size) =>
@@ -281,7 +281,7 @@ pub fn node_label_and_size_utilities_apply_stuff(
 ///|
 pub fn node_label_and_size_utilities_get_minimum_client_area_size(
   node_context : NodeContext,
-) -> @core.KVector? {
+) -> @core.KVector? raise {
   if node_context.has_size_constraint(MinimumSize) &&
     node_context.has_size_option(MinimumSizeAccountsForPadding) {
     return Some(
@@ -296,7 +296,7 @@ pub fn node_label_and_size_utilities_get_minimum_client_area_size(
 ///|
 pub fn node_label_and_size_utilities_get_minimum_node_size(
   node_context : NodeContext,
-) -> @core.KVector? {
+) -> @core.KVector? raise {
   if node_context.has_size_constraint(MinimumSize) &&
     !node_context.has_size_option(MinimumSizeAccountsForPadding) {
     return Some(
@@ -311,7 +311,7 @@ pub fn node_label_and_size_utilities_get_minimum_node_size(
 ///|
 pub fn node_label_and_size_utilities_get_minimum_node_or_client_area_size(
   node_context : NodeContext,
-) -> @core.KVector {
+) -> @core.KVector raise {
   let min_size = nodespacing_parse_minimum_size(
     node_context.node.get_property_string(@core.node_size_minimum),
   )

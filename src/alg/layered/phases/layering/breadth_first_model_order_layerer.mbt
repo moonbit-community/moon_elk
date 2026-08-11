@@ -19,12 +19,11 @@ fn breadth_first_model_order_layerer_layer_constraint_postprocessor_factory() ->
 }
 
 ///|
-let breadth_first_model_order_layerer_baseline_processing_configuration : @core.LayoutProcessorConfiguration[
+fn breadth_first_model_order_layerer_baseline_processing_configuration() -> @core.LayoutProcessorConfiguration[
   @runtime.LayeredPhases,
   @runtime.LGraph,
-] = @core.layout_processor_configuration_create(
-    @runtime.layered_phase_descriptor,
-  )
+] raise {
+  @core.layout_processor_configuration_create(@runtime.layered_phase_descriptor)
   .add_before(
     P1CycleBreaking,
     @runtime.layered_intermediate_processor_factory(
@@ -39,6 +38,7 @@ let breadth_first_model_order_layerer_baseline_processing_configuration : @core.
     P3NodeOrdering,
     breadth_first_model_order_layerer_layer_constraint_postprocessor_factory(),
   )
+}
 
 ///|
 pub(all) suberror BreadthFirstModelOrderLayererException {
@@ -180,16 +180,16 @@ fn breadth_first_model_order_layerer_remove_layer(
 ///|
 fn breadth_first_model_order_layerer_configuration(
   graph : @runtime.LGraph,
-) -> @core.LayoutProcessorConfiguration[@runtime.LayeredPhases, @runtime.LGraph]? {
+) -> @core.LayoutProcessorConfiguration[@runtime.LayeredPhases, @runtime.LGraph]? raise {
   ignore(graph)
-  Some(breadth_first_model_order_layerer_baseline_processing_configuration)
+  Some(breadth_first_model_order_layerer_baseline_processing_configuration())
 }
 
 ///|
 fn breadth_first_model_order_layerer_process(
   layered_graph : @runtime.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()
@@ -262,7 +262,7 @@ fn breadth_first_model_order_layerer_process(
     }
   } catch {
     UnsupportedGraphException(message) => {
-      @core.layout_runtime_report_unsupported_configuration(message)
+      @core.layout_runtime_raise_unsupported_configuration(message)
       monitor.done()
       return
     }

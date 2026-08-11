@@ -9,7 +9,6 @@ fn box_layout_provider_test_close(
 
 ///|
 test "box layout provider simple mode honors priority order" {
-  @graph.reset_graph_model_for_test()
   let graph = @graph.create_graph()
   @graph.node_set_double_property(graph, spacing_node_node, 10.0)
   @graph.node_set_double_property(graph, aspect_ratio, 10.0)
@@ -60,7 +59,6 @@ test "box layout provider simple mode honors priority order" {
 
 ///|
 test "box layout provider expand nodes fills row and honors minimum size" {
-  @graph.reset_graph_model_for_test()
   let graph = @graph.create_graph()
   @graph.node_set_double_property(graph, spacing_node_node, 10.0)
   @graph.node_set_double_property(graph, aspect_ratio, 2.0)
@@ -107,7 +105,6 @@ test "box layout provider expand nodes fills row and honors minimum size" {
 
 ///|
 test "box layout provider grouped mode places all nodes" {
-  @graph.reset_graph_model_for_test()
   let graph = @graph.create_graph()
   @graph.node_set_string_property(graph, box_packing_mode, "GROUP_DEC")
   @graph.node_set_double_property(graph, spacing_node_node, 8.0)

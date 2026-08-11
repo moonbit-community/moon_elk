@@ -1,7 +1,12 @@
 ///|
 pub struct RectangleNode {
-  handle : Int
-} derive(Eq)
+  priv data : RectangleNodeData
+}
+
+///|
+pub impl Eq for RectangleNode with fn equal(self, other) {
+  physical_equal(self, other)
+}
 
 ///|
 priv struct RectangleNodeData {
@@ -9,9 +14,6 @@ priv struct RectangleNodeData {
   rectangle : @core.ElkRectangle
   overlapping_nodes : Array[RectangleNode]
 }
-
-///|
-let rectangle_node_store : Ref[Array[RectangleNodeData]] = Ref([])
 
 ///|
 pub struct RectangleStripOverlapRemover {
@@ -25,11 +27,7 @@ pub struct RectangleStripOverlapRemover {
 
 ///|
 fn checked_rectangle_node(node : RectangleNode) -> Unit {
-  if node.handle < 0 || node.handle >= rectangle_node_store.val.length() {
-    @core.layout_runtime_report_unsupported_configuration(
-      "Invalid RectangleNode handle",
-    )
-  }
+  ignore(node)
 }
 
 ///|
@@ -37,25 +35,19 @@ fn new_rectangle_node(
   original_rectangle : @core.ElkRectangle,
   rectangle : @core.ElkRectangle,
 ) -> RectangleNode {
-  let node : RectangleNode = { handle: rectangle_node_store.val.length() }
-  rectangle_node_store.val.push({
-    original_rectangle,
-    rectangle,
-    overlapping_nodes: [],
-  })
-  node
+  { data: { original_rectangle, rectangle, overlapping_nodes: [] } }
 }
 
 ///|
 pub fn RectangleNode::get_rectangle(self : RectangleNode) -> @core.ElkRectangle {
   checked_rectangle_node(self)
-  rectangle_node_store.val[self.handle].rectangle
+  self.data.rectangle
 }
 
 ///|
 pub fn RectangleNode::set_rectangle_y(self : RectangleNode, y : Double) -> Unit {
   checked_rectangle_node(self)
-  rectangle_node_store.val[self.handle].rectangle.y = y
+  self.data.rectangle.y = y
 }
 
 ///|
@@ -63,13 +55,13 @@ pub fn RectangleNode::get_overlapping_nodes(
   self : RectangleNode,
 ) -> Array[RectangleNode] {
   checked_rectangle_node(self)
-  rectangle_node_store.val[self.handle].overlapping_nodes
+  self.data.overlapping_nodes
 }
 
 ///|
 pub fn RectangleNode::clear_overlapping_nodes(self : RectangleNode) -> Unit {
   checked_rectangle_node(self)
-  rectangle_node_store.val[self.handle].overlapping_nodes.clear()
+  self.data.overlapping_nodes.clear()
 }
 
 ///|
@@ -79,7 +71,7 @@ pub fn RectangleNode::add_overlapping_node(
 ) -> Unit {
   checked_rectangle_node(self)
   checked_rectangle_node(other)
-  rectangle_node_store.val[self.handle].overlapping_nodes.push(other)
+  self.data.overlapping_nodes.push(other)
 }
 
 ///|
@@ -266,7 +258,7 @@ fn rectangle_strip_overlap_remover_export_rectangle(
   node : RectangleNode,
 ) -> Unit {
   checked_rectangle_node(node)
-  let data = rectangle_node_store.val[node.handle]
+  let data = node.data
   let original = data.original_rectangle
   let rectangle = data.rectangle
 
@@ -280,13 +272,13 @@ fn rectangle_strip_overlap_remover_export_rectangle(
     Undefined => ()
   }
 
-  rectangle_node_store.val[node.handle].original_rectangle = original
+  node.data.original_rectangle = original
 }
 
 ///|
 pub fn RectangleStripOverlapRemover::remove_overlaps(
   self : RectangleStripOverlapRemover,
-) -> Double {
+) -> Double raise {
   if self.overlap_removal_strategy is None {
     self.overlap_removal_strategy = Some(
       new_greedy_rectangle_strip_overlap_removal_strategy(),

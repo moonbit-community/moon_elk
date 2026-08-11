@@ -10,9 +10,14 @@ pub struct ElkGraphJsonUiProposalProvider {
 
 ///|
 pub fn new_elk_graph_json_ui_proposal_provider(
-  ide_provider? : @ide.ElkGraphJsonIdeProposalProvider = @ide.new_elk_graph_json_ide_proposal_provider(),
+  metadata : @core.OptionMetadata,
+  ide_provider? : @ide.ElkGraphJsonIdeProposalProvider? = None,
   grammar? : @text.ElkGraphJsonGrammarAccess = @text.new_elk_graph_json_grammar_access(),
 ) -> ElkGraphJsonUiProposalProvider {
+  let ide_provider = match ide_provider {
+    Some(value) => value
+    None => @ide.new_elk_graph_json_ide_proposal_provider(metadata)
+  }
   {
     base: new_abstract_elk_graph_json_proposal_provider(),
     ide_provider,

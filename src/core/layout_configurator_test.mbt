@@ -15,7 +15,6 @@ fn new_layout_configurator_graph_fixture() -> LayoutConfiguratorGraphFixture {
 
 ///|
 test "LayoutConfigurator element overrides class" {
-  @graph.reset_graph_model_for_test()
   let graph = new_layout_configurator_graph_fixture()
   let configurator = new_layout_configurator()
   configurator.configure_class_property(
@@ -34,7 +33,6 @@ test "LayoutConfigurator element overrides class" {
 
 ///|
 test "LayoutConfigurator combines element and class options" {
-  @graph.reset_graph_model_for_test()
   let graph = new_layout_configurator_graph_fixture()
   let configurator = new_layout_configurator()
   configurator.configure_class_property(
@@ -48,7 +46,6 @@ test "LayoutConfigurator combines element and class options" {
 
 ///|
 test "LayoutConfigurator combines multiple classes" {
-  @graph.reset_graph_model_for_test()
   let graph = new_layout_configurator_graph_fixture()
   let configurator = new_layout_configurator()
   configurator.configure_class_property(
@@ -64,7 +61,6 @@ test "LayoutConfigurator combines multiple classes" {
 
 ///|
 test "LayoutConfigurator overrides existing options" {
-  @graph.reset_graph_model_for_test()
   let graph = new_layout_configurator_graph_fixture()
   @graph.node_set_double_property(graph.root, spacing_node_node, 13.0)
   let configurator = new_layout_configurator()
@@ -80,7 +76,6 @@ test "LayoutConfigurator overrides existing options" {
 
 ///|
 test "LayoutConfigurator no-overwrite filter" {
-  @graph.reset_graph_model_for_test()
   let graph = new_layout_configurator_graph_fixture()
   @graph.node_set_double_property(graph.root, spacing_node_node, 13.0)
   let configurator = new_layout_configurator()

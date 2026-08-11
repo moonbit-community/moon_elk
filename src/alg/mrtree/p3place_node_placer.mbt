@@ -1,7 +1,7 @@
 ///|
 fn mrtree_node_placer_layout_processor_configuration(
   graph : MrtreeGraph,
-) -> @core.LayoutProcessorConfiguration[MrtreeTreeLayoutPhases, MrtreeGraph]? {
+) -> @core.LayoutProcessorConfiguration[MrtreeTreeLayoutPhases, MrtreeGraph]? raise {
   ignore(graph)
   Some(
     @core.layout_processor_configuration_create(
@@ -52,7 +52,7 @@ fn mrtree_node_placer_apportion(
   level : Int,
   spacing : Double,
   direction_value : String,
-) -> Unit {
+) -> Unit raise {
   ignore(level)
   let node_children = mrtree_node_children_copy(node)
   let mut leftmost = if node_children.is_empty() {
@@ -174,7 +174,7 @@ fn mrtree_node_placer_first_walk(
   level : Int,
   spacing : Double,
   direction_value : String,
-) -> Unit {
+) -> Unit raise {
   mrtree_node_set_modifier(current_node, 0.0)
   let left_sibling = mrtree_node_left_sibling(current_node)
 
@@ -232,7 +232,7 @@ fn mrtree_node_placer_second_walk(
   ycoor : Double,
   modsum : Double,
   spacing : Double,
-) -> Unit {
+) -> Unit raise {
   match node {
     Some(current_node) => {
       let xtemp = mrtree_node_prelim(current_node) + modsum
@@ -268,7 +268,7 @@ fn mrtree_node_placer_second_walk(
 fn mrtree_node_placer_process(
   graph : MrtreeGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   match progress_monitor {
     Some(monitor) => ignore(monitor.begin("Processor order nodes", 2.0))
     None => ()

@@ -29,7 +29,6 @@ fn edges_first_target_node(edge : @graph.ElkEdge) -> @graph.ElkNode {
 
 ///|
 test "graph json extended edge" {
-  @graph.reset_graph_model_for_test()
   let graph = gj_obj([
     ("id", gj_str("root")),
     (
@@ -61,7 +60,6 @@ test "graph json extended edge" {
 
 ///|
 test "graph json primitive edge" {
-  @graph.reset_graph_model_for_test()
   let graph = gj_obj([
     ("id", gj_str("root")),
     (
@@ -93,7 +91,6 @@ test "graph json primitive edge" {
 
 ///|
 test "graph json edge containment" {
-  @graph.reset_graph_model_for_test()
   let graph = gj_obj([
     ("id", gj_str("root")),
     (
@@ -123,7 +120,6 @@ test "graph json edge containment" {
 
 ///|
 test "graph json root edge imports when root id is empty string" {
-  @graph.reset_graph_model_for_test()
   let graph = gj_obj([
     ("id", gj_str("")),
     (

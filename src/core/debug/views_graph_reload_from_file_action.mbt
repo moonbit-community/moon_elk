@@ -3,15 +3,19 @@ pub let reload_from_file_action_id : String = "org.eclipse.elk.debug.actions.rel
 
 ///|
 pub(all) struct ReloadFromFileAction {
+  runtime : @core.LayoutRuntime
+  session : @core.LayoutSession
   view : LayoutGraphView
   mut enabled : Bool
 }
 
 ///|
 pub fn new_reload_from_file_action(
+  runtime : @core.LayoutRuntime,
+  session : @core.LayoutSession,
   view : LayoutGraphView,
 ) -> ReloadFromFileAction {
-  { view, enabled: false }
+  { runtime, session, view, enabled: false }
 }
 
 ///|
@@ -22,14 +26,14 @@ pub fn ReloadFromFileAction::is_enabled(self : ReloadFromFileAction) -> Bool {
 ///|
 pub fn ReloadFromFileAction::update_enablement(
   self : ReloadFromFileAction,
-) -> Unit {
+) -> Unit raise {
   let selection = self.view.get_selected_execution_infos()
   self.enabled = selection.length() == 1 &&
     execution_info_is_loaded_from_file(selection[0])
 }
 
 ///|
-pub fn ReloadFromFileAction::run(self : ReloadFromFileAction) -> Unit {
+pub fn ReloadFromFileAction::run(self : ReloadFromFileAction) -> Unit raise {
   let selection = self.view.get_selected_execution_infos()
   if selection.length() != 1 {
     return
@@ -47,6 +51,8 @@ pub fn ReloadFromFileAction::run(self : ReloadFromFileAction) -> Unit {
 
   let graph = load_graph_action_load_from_file(file_name)
   let new_info = load_graph_action_layout_internal(
+    self.runtime,
+    self.session,
     file_name,
     execution_info_is_laid_out_after_load(old_info),
     graph,

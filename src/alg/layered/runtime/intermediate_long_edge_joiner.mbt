@@ -29,26 +29,22 @@ fn long_edge_joiner_port_side_equals(
 }
 
 ///|
-fn _long_edge_joiner_require_source(edge : LEdge) -> LPort {
+fn _long_edge_joiner_require_source(edge : LEdge) -> LPort raise {
   match edge.get_source() {
     Some(value) => value
     None => {
-      @core.layout_runtime_report_unsupported_configuration(
-        "edge has no source",
-      )
+      @core.layout_runtime_raise_unsupported_configuration("edge has no source")
       new_l_port()
     }
   }
 }
 
 ///|
-fn long_edge_joiner_require_target(edge : LEdge) -> LPort {
+fn long_edge_joiner_require_target(edge : LEdge) -> LPort raise {
   match edge.get_target() {
     Some(value) => value
     None => {
-      @core.layout_runtime_report_unsupported_configuration(
-        "edge has no target",
-      )
+      @core.layout_runtime_raise_unsupported_configuration("edge has no target")
       new_l_port()
     }
   }
@@ -106,7 +102,7 @@ fn long_edge_joiner_set_target_and_insert_at_index(
 pub fn long_edge_joiner_join_at(
   long_edge_dummy : LNode,
   add_unnecessary_bendpoints : Bool,
-) -> Unit {
+) -> Unit raise {
   let west_ports = long_edge_joiner_port_side_ports(long_edge_dummy, West)
   let east_ports = long_edge_joiner_port_side_ports(long_edge_dummy, East)
   if west_ports.is_empty() || east_ports.is_empty() {
@@ -183,7 +179,7 @@ pub fn long_edge_joiner_join_at(
 fn long_edge_joiner_process(
   layered_graph : LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()

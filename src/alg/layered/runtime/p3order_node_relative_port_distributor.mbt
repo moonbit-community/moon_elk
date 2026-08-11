@@ -73,14 +73,14 @@ fn node_relative_calculate_port_ranks(
   node : LNode,
   rank_sum : Double,
   port_type : PortType,
-) -> Double {
+) -> Double raise {
   try
     node_relative_calculate_port_ranks_raise(
       distributor, node, rank_sum, port_type,
     )
   catch {
     NodeRelativePortDistributorException(message) => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "org.eclipse.elk.alg.layered.p3order.NodeRelativePortDistributor: " +
         message,
       )
@@ -127,7 +127,7 @@ pub fn NodeRelativePortDistributor::distribute_ports_while_sweeping(
   node_order : Array[Array[LNode]],
   current_index : Int,
   is_forward_sweep : Bool,
-) -> Bool {
+) -> Bool raise {
   self.distributor.distribute_ports_while_sweeping(
     node_order, current_index, is_forward_sweep,
   )
@@ -138,7 +138,7 @@ pub fn NodeRelativePortDistributor::calculate_port_ranks(
   self : NodeRelativePortDistributor,
   layer : Array[LNode],
   port_type : PortType,
-) -> Unit {
+) -> Unit raise {
   self.distributor.calculate_port_ranks(layer, port_type)
 }
 

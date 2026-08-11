@@ -59,7 +59,7 @@ pub fn new_core_debug_grandom_random_graph_generator(
 pub fn core_debug_grandom_random_graph_generator_generate(
   generator : CoreDebugGRandomRandomGraphGenerator,
   options : CoreDebugGRandomGeneratorOptions,
-) -> @graph.ElkNode {
+) -> @graph.ElkNode raise {
   generator.node_label_counter = 0
   generator.port_label_counter = 0
   generator.options = options
@@ -86,7 +86,7 @@ pub fn core_debug_grandom_random_graph_generator_generate(
 pub fn core_debug_grandom_random_graph_generator_generate_from_configuration(
   generator : CoreDebugGRandomRandomGraphGenerator,
   configuration : CoreDebugGRandomConfiguration,
-) -> Array[@graph.ElkNode] {
+) -> Array[@graph.ElkNode] raise {
   generator.random = core_debug_grandom_random_from_configuration(configuration)
   let options = core_debug_grandom_configuration_parser_parse(
     configuration,
@@ -127,7 +127,7 @@ fn core_debug_grandom_random_from_configuration(
 fn core_debug_grandom_generator_add_hierarchical_nodes(
   generator : CoreDebugGRandomRandomGraphGenerator,
   parent : @graph.ElkNode,
-) -> Array[Array[@graph.ElkNode]] {
+) -> Array[Array[@graph.ElkNode]] raise {
   let atomic_nodes = []
   let all_graphs = [parent]
   for i in 0..<generator.max_hierarchy_level {
@@ -164,12 +164,12 @@ fn core_debug_grandom_generator_add_hierarchical_nodes(
 fn core_debug_grandom_generator_connect_atomic_nodes_on_different_levels(
   generator : CoreDebugGRandomRandomGraphGenerator,
   atomic_nodes : Array[Array[@graph.ElkNode]],
-) -> Unit {
+) -> Unit raise {
   let num_cross_hier = if core_debug_grandom_generator_get_optional_rand(
       generator, core_debug_grandom_exact_relative_hier,
     )
     is Some(relative_hier) {
-    let seen_edges : Map[Int, Bool] = Map([])
+    let seen_edges : Map[@graph.ElkEdge, Bool] = Map([])
     for level in atomic_nodes {
       for node in level {
         for edge in @graph.node_incoming_edges(node) {
@@ -250,7 +250,7 @@ fn[T] core_debug_grandom_generator_sample(
 fn core_debug_grandom_generator_make_graph(
   generator : CoreDebugGRandomRandomGraphGenerator,
   graph : @graph.ElkNode,
-) -> @graph.ElkNode {
+) -> @graph.ElkNode raise {
   if !core_debug_grandom_generator_get_bool(
       generator, core_debug_grandom_enable_hierarchy,
     ) {
@@ -377,7 +377,7 @@ fn core_debug_grandom_generator_generate_custom_graph(
   n : Int,
   m : Int,
   graph : @graph.ElkNode,
-) -> Array[@graph.ElkNode] {
+) -> Array[@graph.ElkNode] raise {
   let generated_nodes = match
     core_debug_grandom_generator_get_edge_determination(
       generator, core_debug_grandom_edge_determination,
@@ -467,7 +467,7 @@ fn core_debug_grandom_generator_generate_any_graph(
   n : Int,
   m : Int,
   hierarchy_level : Int,
-) -> Array[@graph.ElkNode] {
+) -> Array[@graph.ElkNode] raise {
   let nodes = core_debug_grandom_generator_create_independent_set(
     generator, parent, n,
   )
@@ -532,7 +532,7 @@ fn core_debug_grandom_generator_generate_any_graph_outgoing(
   parent : @graph.ElkNode,
   n : Int,
   hierarchy_level : Int,
-) -> Array[@graph.ElkNode] {
+) -> Array[@graph.ElkNode] raise {
   let nodes = core_debug_grandom_generator_create_independent_set(
     generator, parent, n,
   )
@@ -594,7 +594,7 @@ fn core_debug_grandom_generator_generate_bipartite(
   n : Int,
   m : Int,
   hierarchy_level : Int,
-) -> Unit {
+) -> Unit raise {
   let partition = core_debug_grandom_generator_get_rand(
     generator, core_debug_grandom_partition_frac,
   ).val(generator.random)
@@ -692,7 +692,7 @@ fn core_debug_grandom_generator_generate_tree(
   max_degree : Int,
   max_width : Int,
   hierarchy_level : Int,
-) -> Unit {
+) -> Unit raise {
   let mut max_index = 0
   let mut node_id_counter = 0
   let possible_nodes = []
@@ -792,7 +792,7 @@ fn core_debug_grandom_generator_generate_biconnected_graph(
   n : Int,
   m : Int,
   hierarchy_level : Int,
-) -> Unit {
+) -> Unit raise {
   let real_n = if n > 3 { n } else { 3 }
   let real_m = if m > real_n { m } else { real_n }
   let mut split_edge_ops = real_n - 3
@@ -904,7 +904,7 @@ fn core_debug_grandom_generator_generate_triconnected_graph(
   p1 : Double,
   p2 : Double,
   hierarchy_level : Int,
-) -> Unit {
+) -> Unit raise {
   let real_n = if n > 4 { n } else { 4 }
   let nodes = core_debug_grandom_generator_create_clique(generator, parent, 4)
   for _ in 4..<real_n {
@@ -1064,7 +1064,7 @@ fn core_debug_grandom_generator_generate_ante_graph(
   planar : Bool,
   single_source : Bool,
   hierarchy_level : Int,
-) -> Unit {
+) -> Unit raise {
   let nnr : Array[@graph.ElkNode] = []
   let vrt = []
   let fst = []
@@ -1288,7 +1288,7 @@ fn core_debug_grandom_generator_create_clique(
   generator : CoreDebugGRandomRandomGraphGenerator,
   parent : @graph.ElkNode,
   n : Int,
-) -> Array[@graph.ElkNode] {
+) -> Array[@graph.ElkNode] raise {
   let nodes = core_debug_grandom_generator_create_independent_set(
     generator, parent, n,
   )
@@ -1311,7 +1311,7 @@ fn core_debug_grandom_generator_create_independent_set(
   generator : CoreDebugGRandomRandomGraphGenerator,
   parent : @graph.ElkNode,
   n : Int,
-) -> Array[@graph.ElkNode] {
+) -> Array[@graph.ElkNode] raise {
   let nodes = []
   for _ in 0..<n {
     nodes.push(core_debug_grandom_generator_create_node(generator, parent))
@@ -1323,7 +1323,7 @@ fn core_debug_grandom_generator_create_independent_set(
 fn core_debug_grandom_generator_create_node(
   generator : CoreDebugGRandomRandomGraphGenerator,
   parent : @graph.ElkNode,
-) -> @graph.ElkNode {
+) -> @graph.ElkNode raise {
   let node = @graph.create_node(Some(parent))
 
   let hypernode_chance = core_debug_grandom_generator_get_double(
@@ -1378,7 +1378,7 @@ fn core_debug_grandom_generator_create_port(
   generator : CoreDebugGRandomRandomGraphGenerator,
   node : @graph.ElkNode,
   source : Bool,
-) -> @graph.ElkPort {
+) -> @graph.ElkPort raise {
   let port = @graph.create_port(Some(node))
 
   let port_id = generator.port_label_counter.to_string()
@@ -1469,7 +1469,7 @@ fn core_debug_grandom_generator_connect(
   generator : CoreDebugGRandomRandomGraphGenerator,
   source : @graph.ElkConnectableShape,
   target : @graph.ElkConnectableShape,
-) -> @graph.ElkEdge {
+) -> @graph.ElkEdge raise {
   let source_node = core_debug_grandom_generator_shape_to_node(source)
   let target_node = core_debug_grandom_generator_shape_to_node(target)
   let mut source_port = core_debug_grandom_generator_shape_to_port(source)
@@ -1543,7 +1543,7 @@ fn core_debug_grandom_generator_retrieve_port(
   generator : CoreDebugGRandomRandomGraphGenerator,
   node : @graph.ElkNode,
   source : Bool,
-) -> @graph.ElkPort {
+) -> @graph.ElkPort raise {
   let reuse_ports_chance = core_debug_grandom_generator_get_rand(
     generator, core_debug_grandom_use_existing_ports_chance,
   ).float_val(generator.random)
@@ -1578,7 +1578,7 @@ fn core_debug_grandom_generator_connect_conditional(
   generator : CoreDebugGRandomRandomGraphGenerator,
   source : @graph.ElkNode,
   target : @graph.ElkNode,
-) -> Bool {
+) -> Bool raise {
   if core_debug_grandom_generator_basic_condition(generator, source, target) {
     ignore(
       core_debug_grandom_generator_connect(
@@ -1679,7 +1679,7 @@ fn core_debug_grandom_generator_move_source(
   edge : @graph.ElkEdge,
   old_connect_shape : @graph.ElkConnectableShape,
   new_connect_shape : @graph.ElkConnectableShape,
-) -> Unit {
+) -> Unit raise {
   if core_debug_grandom_generator_get_bool(
       generator, core_debug_grandom_enable_ports,
     ) {
@@ -1775,7 +1775,7 @@ fn core_debug_grandom_generator_move_target(
   edge : @graph.ElkEdge,
   old_connect_shape : @graph.ElkConnectableShape,
   new_connect_shape : @graph.ElkConnectableShape,
-) -> Unit {
+) -> Unit raise {
   if core_debug_grandom_generator_get_bool(
       generator, core_debug_grandom_enable_ports,
     ) {
@@ -1869,7 +1869,7 @@ fn core_debug_grandom_generator_move_target(
 fn core_debug_grandom_generator_split(
   generator : CoreDebugGRandomRandomGraphGenerator,
   edge : @graph.ElkEdge,
-) -> (@graph.ElkNode, @graph.ElkEdge) {
+) -> (@graph.ElkNode, @graph.ElkEdge) raise {
   let parent = match @graph.edge_containing_node(edge) {
     Some(node) => node
     None => {
@@ -1879,7 +1879,7 @@ fn core_debug_grandom_generator_split(
         )
       catch {
         err =>
-          @core.layout_runtime_report_unsupported_configuration(
+          @core.layout_runtime_raise_unsupported_configuration(
             core_debug_grandom_generator_exception_message(err),
           )
       } noraise {
@@ -1895,7 +1895,7 @@ fn core_debug_grandom_generator_split(
       core_debug_grandom_generator_raise_unit("split requires edge target")
     catch {
       err =>
-        @core.layout_runtime_report_unsupported_configuration(
+        @core.layout_runtime_raise_unsupported_configuration(
           core_debug_grandom_generator_exception_message(err),
         )
     } noraise {
@@ -2018,7 +2018,7 @@ fn core_debug_grandom_generator_connect_randomly_and_conditional(
   source : @graph.ElkNode,
   targets : Array[@graph.ElkNode],
   number : Int,
-) -> Int {
+) -> Int raise {
   let target_buffer = targets.copy()
   let mut edges = 0
   let mut buffer_end = target_buffer.length() - 1
@@ -2044,7 +2044,7 @@ fn core_debug_grandom_generator_connect_randomly_and_conditional_all(
   generator : CoreDebugGRandomRandomGraphGenerator,
   nodes : Array[@graph.ElkNode],
   outgoing_edges : Array[Int],
-) -> Int {
+) -> Int raise {
   let mut edges = 0
   for i in 0..<nodes.length() {
     edges = edges +
@@ -2063,7 +2063,7 @@ fn core_debug_grandom_generator_determine_outgoing_edges_rand(
   generator : CoreDebugGRandomRandomGraphGenerator,
   nodes : Array[@graph.ElkNode],
   value : CoreDebugGRandomRandVal,
-) -> Array[Int] {
+) -> Array[Int] raise {
   let number_of_edges = []
   for _ in 0..<nodes.length() {
     number_of_edges.push(value.int_val(generator.random))
@@ -2167,7 +2167,7 @@ fn core_debug_grandom_generator_connected(
 fn core_debug_grandom_generator_distribute_ports(
   generator : CoreDebugGRandomRandomGraphGenerator,
   node : @graph.ElkNode,
-) -> Unit {
+) -> Unit raise {
   let mut north_count = 0
   let mut east_count = 0
   let mut south_count = 0
@@ -2311,7 +2311,7 @@ fn core_debug_grandom_generator_bound_int(
 ///|
 fn core_debug_grandom_generator_shape_to_node(
   shape : @graph.ElkConnectableShape,
-) -> @graph.ElkNode {
+) -> @graph.ElkNode raise {
   match shape {
     NodeShape(node) => node
     PortShape(port) =>
@@ -2324,7 +2324,7 @@ fn core_debug_grandom_generator_shape_to_node(
             )
           catch {
             err =>
-              @core.layout_runtime_report_unsupported_configuration(
+              @core.layout_runtime_raise_unsupported_configuration(
                 core_debug_grandom_generator_exception_message(err),
               )
           } noraise {

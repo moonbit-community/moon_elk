@@ -85,7 +85,7 @@ fn comment_node_margin_calculator_process_comments(
 fn comment_node_margin_calculator_process(
   layered_graph : @runtime.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()

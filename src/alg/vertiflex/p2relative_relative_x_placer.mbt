@@ -2,11 +2,11 @@
 let vertiflex_relative_x_placer_minimal_y : Double = -100.0
 
 ///|
-fn vertiflex_outline_require(outline : OutlineNode?) -> OutlineNode {
+fn vertiflex_outline_require(outline : OutlineNode?) -> OutlineNode raise {
   match outline {
     Some(value) => value
     None => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "VertiFlex outline unexpectedly missing.",
       )
       new_outline_node(0.0, 0.0, None)
@@ -15,7 +15,7 @@ fn vertiflex_outline_require(outline : OutlineNode?) -> OutlineNode {
 }
 
 ///|
-fn vertiflex_outline_require_next(outline : OutlineNode) -> OutlineNode {
+fn vertiflex_outline_require_next(outline : OutlineNode) -> OutlineNode raise {
   vertiflex_outline_require(outline.next)
 }
 
@@ -23,7 +23,7 @@ fn vertiflex_outline_require_next(outline : OutlineNode) -> OutlineNode {
 fn vertiflex_outline_distance(
   outline1 : OutlineNode,
   outline2 : OutlineNode,
-) -> Double {
+) -> Double raise {
   let changed_outline1 = new_outline_node(
     outline1.relative_x,
     vertiflex_relative_x_placer_minimal_y,
@@ -91,17 +91,18 @@ fn vertiflex_outline_distance(
 
 ///|
 fn vertiflex_sort_sub_trees(
+  session : VertiFlexSession,
   children : Array[@graph.ElkNode],
   consider_node_model_order : Bool,
 ) -> Unit {
   @radial.radial_sort_nodes(children, (a, b) => {
-    vertiflex_node_comparator_compare(a, b, false)
+    vertiflex_node_comparator_compare(session, a, b, false)
   })
   let left : Array[@graph.ElkNode] = []
   let right : Array[@graph.ElkNode] = []
 
   if consider_node_model_order {
-    vertiflex_split_nodes_with_model_order(children, left, right)
+    vertiflex_split_nodes_with_model_order(session, children, left, right)
   } else if !children.is_empty() {
     left.push(children[children.length() - 1])
     let mut width_left = 0.0
@@ -131,7 +132,7 @@ fn vertiflex_sort_sub_trees(
   }
 
   @radial.radial_sort_nodes(right, (a, b) => {
-    vertiflex_node_comparator_compare(a, b, true)
+    vertiflex_node_comparator_compare(session, a, b, true)
   })
   for node in right {
     left.push(node)
@@ -177,6 +178,7 @@ fn vertiflex_split_group(
 
 ///|
 fn vertiflex_split_nodes_with_model_order(
+  session : VertiFlexSession,
   original : Array[@graph.ElkNode],
   left : Array[@graph.ElkNode],
   right : Array[@graph.ElkNode],
@@ -191,8 +193,8 @@ fn vertiflex_split_nodes_with_model_order(
   if original.length() == 2 {
     let first = original[0]
     let second = original[1]
-    if vertiflex_internal_node_model_order(first) >
-      vertiflex_internal_node_model_order(second) {
+    if vertiflex_internal_node_model_order(session, first) >
+      vertiflex_internal_node_model_order(session, second) {
       left.push(second)
       right.push(first)
     } else {
@@ -241,9 +243,10 @@ fn vertiflex_split_nodes_with_model_order(
 
 ///|
 fn vertiflex_make_simple_outlines(
+  session : VertiFlexSession,
   graph : @graph.ElkNode,
   spacing_node_node : Double,
-) -> Unit {
+) -> Unit raise {
   let margins = vertiflex_internal_node_margins(graph)
   let left_end = new_outline_node(
     0.0,
@@ -263,6 +266,7 @@ fn vertiflex_make_simple_outlines(
     ),
   )
   vertiflex_internal_set_left_outline(
+    session,
     graph,
     new_outline_node(
       -margins.left - spacing_node_node / 2.0 + @graph.node_width(graph) / 2.0,
@@ -291,6 +295,7 @@ fn vertiflex_make_simple_outlines(
     ),
   )
   vertiflex_internal_set_right_outline(
+    session,
     graph,
     new_outline_node(
       @graph.node_width(graph) / 2.0 + margins.right + spacing_node_node / 2.0,
@@ -304,48 +309,62 @@ fn vertiflex_make_simple_outlines(
       ),
     ),
   )
-  vertiflex_internal_set_min_x(graph, @graph.node_x(graph) - margins.left)
+  vertiflex_internal_set_min_x(
+    session,
+    graph,
+    @graph.node_x(graph) - margins.left,
+  )
   vertiflex_internal_set_max_x(
+    session,
     graph,
     @graph.node_x(graph) + margins.right + @graph.node_width(graph),
   )
-  vertiflex_internal_set_min_y(graph, @graph.node_y(graph) - margins.top)
+  vertiflex_internal_set_min_y(
+    session,
+    graph,
+    @graph.node_y(graph) - margins.top,
+  )
   vertiflex_internal_set_max_y(
+    session,
     graph,
     @graph.node_y(graph) + margins.bottom + @graph.node_height(graph),
   )
   vertiflex_internal_set_outline_max_depth(
+    session,
     graph,
     vertiflex_outline_require_next(
-      vertiflex_outline_require_next(vertiflex_internal_left_outline(graph)),
+      vertiflex_outline_require_next(
+        vertiflex_internal_left_outline(session, graph),
+      ),
     ).absolute_y,
   )
 }
 
 ///|
 fn vertiflex_bundle_children(
+  session : VertiFlexSession,
   left_subtree : @graph.ElkNode,
   a : @graph.ElkNode,
   b : @graph.ElkNode,
-) -> Unit {
+) -> Unit raise {
   let dist = vertiflex_outline_distance(
-    vertiflex_internal_right_outline(a),
-    vertiflex_internal_left_outline(b),
+    vertiflex_internal_right_outline(session, a),
+    vertiflex_internal_left_outline(session, b),
   )
   @graph.node_set_location(b, @graph.node_x(a) + dist, @graph.node_y(b))
 
-  if vertiflex_internal_outline_max_depth(left_subtree) <
-    vertiflex_internal_outline_max_depth(b) {
-    let mut last_l = vertiflex_internal_left_outline(left_subtree)
+  if vertiflex_internal_outline_max_depth(session, left_subtree) <
+    vertiflex_internal_outline_max_depth(session, b) {
+    let mut last_l = vertiflex_internal_left_outline(session, left_subtree)
     let mut l_abs_x = last_l.relative_x + @graph.node_x(left_subtree)
     while !last_l.is_last() {
       last_l = vertiflex_outline_require_next(last_l)
       l_abs_x += last_l.relative_x
     }
     let mut b_iterator = new_outline_node(
-      vertiflex_internal_left_outline(b).relative_x,
+      vertiflex_internal_left_outline(session, b).relative_x,
       vertiflex_relative_x_placer_minimal_y,
-      vertiflex_internal_left_outline(b).next,
+      vertiflex_internal_left_outline(session, b).next,
     )
     let mut r_abs_x = b_iterator.relative_x + @graph.node_x(b)
     while vertiflex_outline_require_next(b_iterator).absolute_y <=
@@ -367,23 +386,24 @@ fn vertiflex_bundle_children(
       new_outline_node(new_x, last_l.absolute_y, Some(new_next)),
     )
     vertiflex_internal_set_outline_max_depth(
+      session,
       left_subtree,
-      vertiflex_internal_outline_max_depth(b),
+      vertiflex_internal_outline_max_depth(session, b),
     )
   }
 
-  if vertiflex_internal_outline_max_depth(b) <
-    vertiflex_internal_outline_max_depth(a) {
-    let mut last_b = vertiflex_internal_right_outline(b)
+  if vertiflex_internal_outline_max_depth(session, b) <
+    vertiflex_internal_outline_max_depth(session, a) {
+    let mut last_b = vertiflex_internal_right_outline(session, b)
     let mut r_abs_x = last_b.relative_x + @graph.node_x(b)
     while !last_b.is_last() {
       last_b = vertiflex_outline_require_next(last_b)
       r_abs_x += last_b.relative_x
     }
     let mut a_iterator = new_outline_node(
-      vertiflex_internal_right_outline(a).relative_x,
+      vertiflex_internal_right_outline(session, a).relative_x,
       vertiflex_relative_x_placer_minimal_y,
-      vertiflex_internal_right_outline(a).next,
+      vertiflex_internal_right_outline(session, a).next,
     )
     let mut a_abs_x = a_iterator.relative_x + @graph.node_x(a)
     while vertiflex_outline_require_next(a_iterator).absolute_y <=
@@ -405,19 +425,21 @@ fn vertiflex_bundle_children(
       new_outline_node(new_x, last_b.absolute_y, Some(new_next)),
     )
     vertiflex_internal_set_outline_max_depth(
+      session,
       b,
-      vertiflex_internal_outline_max_depth(a),
+      vertiflex_internal_outline_max_depth(session, a),
     )
   }
 }
 
 ///|
 fn vertiflex_recursive_straightline_placement(
+  session : VertiFlexSession,
   graph : @graph.ElkNode,
   spacing_node_node : Double,
   consider_node_model_order : Bool,
-) -> Unit {
-  vertiflex_make_simple_outlines(graph, spacing_node_node)
+) -> Unit raise {
+  vertiflex_make_simple_outlines(session, graph, spacing_node_node)
   let outgoing = @graph.node_outgoing_edges(graph)
   if outgoing.is_empty() {
     return
@@ -427,13 +449,18 @@ fn vertiflex_recursive_straightline_placement(
   for edge in outgoing {
     let child = vertiflex_internal_child_of_edge(edge)
     vertiflex_recursive_straightline_placement(
-      child, spacing_node_node, consider_node_model_order,
+      session, child, spacing_node_node, consider_node_model_order,
     )
     children.push(child)
   }
-  vertiflex_sort_sub_trees(children, consider_node_model_order)
+  vertiflex_sort_sub_trees(session, children, consider_node_model_order)
   for i = 0; i < children.length() - 1; i = i + 1 {
-    vertiflex_bundle_children(children[0], children[i], children[i + 1])
+    vertiflex_bundle_children(
+      session,
+      children[0],
+      children[i],
+      children[i + 1],
+    )
   }
 
   let mut pos = 0
@@ -470,7 +497,10 @@ fn vertiflex_recursive_straightline_placement(
     if better_move_root < move_root {
       for i = 0; i < max_depth_start_pos; i = i + 1 {
         for j = i + 1; j < max_depth_start_pos + 1; j = j + 1 {
-          let mut right_outline = vertiflex_internal_right_outline(children[i])
+          let mut right_outline = vertiflex_internal_right_outline(
+            session,
+            children[i],
+          )
           let mut right_outline_x = @graph.node_x(children[i]) +
             right_outline.relative_x
           let pos_x = @graph.node_x(children[j]) +
@@ -497,7 +527,10 @@ fn vertiflex_recursive_straightline_placement(
     if better_move_root > move_root {
       for i = pos; i < children.length(); i = i + 1 {
         for j = pos - 1; j < i; j = j + 1 {
-          let mut left_outline = vertiflex_internal_left_outline(children[i])
+          let mut left_outline = vertiflex_internal_left_outline(
+            session,
+            children[i],
+          )
           let mut left_outline_x = @graph.node_x(children[i]) +
             left_outline.relative_x
           let pos_x = @graph.node_x(children[j]) +
@@ -531,8 +564,8 @@ fn vertiflex_recursive_straightline_placement(
     )
   }
 
-  let graph_left_outline = vertiflex_internal_left_outline(graph)
-  let left_child_outline = vertiflex_internal_left_outline(children[0])
+  let graph_left_outline = vertiflex_internal_left_outline(session, graph)
+  let left_child_outline = vertiflex_internal_left_outline(session, children[0])
   let new_x_left = @graph.node_x(children[0]) +
     left_child_outline.relative_x -
     graph_left_outline.relative_x
@@ -546,8 +579,9 @@ fn vertiflex_recursive_straightline_placement(
     ),
   )
 
-  let graph_right_outline = vertiflex_internal_right_outline(graph)
+  let graph_right_outline = vertiflex_internal_right_outline(session, graph)
   let right_child_outline = vertiflex_internal_right_outline(
+    session,
     children[children.length() - 1],
   )
   let new_x_right = @graph.node_x(children[children.length() - 1]) +
@@ -565,39 +599,44 @@ fn vertiflex_recursive_straightline_placement(
 
   for child in children {
     vertiflex_internal_set_outline_max_depth(
+      session,
       graph,
       @cmp.maximum(
-        vertiflex_internal_outline_max_depth(graph),
-        vertiflex_internal_outline_max_depth(child),
+        vertiflex_internal_outline_max_depth(session, graph),
+        vertiflex_internal_outline_max_depth(session, child),
       ),
     )
     vertiflex_internal_set_min_x(
+      session,
       graph,
       @cmp.minimum(
-        vertiflex_internal_min_x(graph),
-        @graph.node_x(child) + vertiflex_internal_min_x(child),
+        vertiflex_internal_min_x(session, graph),
+        @graph.node_x(child) + vertiflex_internal_min_x(session, child),
       ),
     )
     vertiflex_internal_set_max_x(
+      session,
       graph,
       @cmp.maximum(
-        vertiflex_internal_max_x(graph),
-        @graph.node_x(child) + vertiflex_internal_max_x(child),
+        vertiflex_internal_max_x(session, graph),
+        @graph.node_x(child) + vertiflex_internal_max_x(session, child),
       ),
     )
   }
   vertiflex_internal_set_max_y(
+    session,
     graph,
-    vertiflex_internal_outline_max_depth(graph),
+    vertiflex_internal_outline_max_depth(session, graph),
   )
 }
 
 ///|
 fn vertiflex_recursive_bentline_placement(
+  session : VertiFlexSession,
   graph : @graph.ElkNode,
   spacing_node_node : Double,
-) -> Unit {
-  vertiflex_make_simple_outlines(graph, spacing_node_node)
+) -> Unit raise {
+  vertiflex_make_simple_outlines(session, graph, spacing_node_node)
   let outgoing = @graph.node_outgoing_edges(graph)
   if outgoing.is_empty() {
     return
@@ -605,12 +644,17 @@ fn vertiflex_recursive_bentline_placement(
   let children : Array[@graph.ElkNode] = []
   for edge in outgoing {
     let child = vertiflex_internal_child_of_edge(edge)
-    vertiflex_recursive_bentline_placement(child, spacing_node_node)
+    vertiflex_recursive_bentline_placement(session, child, spacing_node_node)
     children.push(child)
   }
   let children_size = children.length()
   for i = 0; i < children.length() - 1; i = i + 1 {
-    vertiflex_bundle_children(children[0], children[i], children[i + 1])
+    vertiflex_bundle_children(
+      session,
+      children[0],
+      children[i],
+      children[i + 1],
+    )
   }
   let move_root = (
       @graph.node_x(children[0]) +
@@ -628,8 +672,9 @@ fn vertiflex_recursive_bentline_placement(
       @graph.node_y(child),
     )
     vertiflex_internal_set_edge_bend_height(
+      session,
       child,
-      vertiflex_internal_left_outline(child).absolute_y,
+      vertiflex_internal_left_outline(session, child).absolute_y,
     )
   }
 
@@ -642,12 +687,23 @@ fn vertiflex_recursive_bentline_placement(
         0.0 {
     i += 1
   }
-  let mut global_bend_height = vertiflex_internal_edge_bend_height(children[i])
+  let mut global_bend_height = vertiflex_internal_edge_bend_height(
+    session,
+    children[i],
+  )
   for a = 0; a < children_size; a = a + 1 {
-    if global_bend_height < vertiflex_internal_edge_bend_height(children[a]) {
-      vertiflex_internal_set_edge_bend_height(children[a], global_bend_height)
+    if global_bend_height <
+      vertiflex_internal_edge_bend_height(session, children[a]) {
+      vertiflex_internal_set_edge_bend_height(
+        session,
+        children[a],
+        global_bend_height,
+      )
     } else {
-      global_bend_height = vertiflex_internal_edge_bend_height(children[a])
+      global_bend_height = vertiflex_internal_edge_bend_height(
+        session,
+        children[a],
+      )
     }
   }
 
@@ -661,16 +717,24 @@ fn vertiflex_recursive_bentline_placement(
   }
   if i < children_size {
     for a = i; a >= 0; a = a - 1 {
-      if global_bend_height < vertiflex_internal_edge_bend_height(children[a]) {
-        vertiflex_internal_set_edge_bend_height(children[a], global_bend_height)
+      if global_bend_height <
+        vertiflex_internal_edge_bend_height(session, children[a]) {
+        vertiflex_internal_set_edge_bend_height(
+          session,
+          children[a],
+          global_bend_height,
+        )
       } else {
-        global_bend_height = vertiflex_internal_edge_bend_height(children[a])
+        global_bend_height = vertiflex_internal_edge_bend_height(
+          session,
+          children[a],
+        )
       }
     }
   }
 
-  let left_child_outline = vertiflex_internal_left_outline(children[0])
-  let graph_left_outline = vertiflex_internal_left_outline(graph)
+  let left_child_outline = vertiflex_internal_left_outline(session, children[0])
+  let graph_left_outline = vertiflex_internal_left_outline(session, graph)
   let new_x_left = @graph.node_x(children[0]) +
     left_child_outline.relative_x -
     graph_left_outline.relative_x
@@ -684,13 +748,14 @@ fn vertiflex_recursive_bentline_placement(
   graph_left_o3.next = Some(
     new_outline_node(
       new_x_left,
-      vertiflex_internal_edge_bend_height(children[0]),
+      vertiflex_internal_edge_bend_height(session, children[0]),
       Some(new_outline_part_left),
     ),
   )
 
-  let graph_right_outline = vertiflex_internal_right_outline(graph)
+  let graph_right_outline = vertiflex_internal_right_outline(session, graph)
   let right_child_outline = vertiflex_internal_right_outline(
+    session,
     children[children_size - 1],
   )
   let new_x_right = @graph.node_x(children[children_size - 1]) +
@@ -706,45 +771,50 @@ fn vertiflex_recursive_bentline_placement(
   graph_right_o3.next = Some(
     new_outline_node(
       new_x_right,
-      vertiflex_internal_edge_bend_height(children[children_size - 1]),
+      vertiflex_internal_edge_bend_height(session, children[children_size - 1]),
       Some(new_outline_part_right),
     ),
   )
 
   for child in children {
     vertiflex_internal_set_outline_max_depth(
+      session,
       graph,
       @cmp.maximum(
-        vertiflex_internal_outline_max_depth(graph),
-        vertiflex_internal_outline_max_depth(child),
+        vertiflex_internal_outline_max_depth(session, graph),
+        vertiflex_internal_outline_max_depth(session, child),
       ),
     )
     vertiflex_internal_set_min_x(
+      session,
       graph,
       @cmp.minimum(
-        vertiflex_internal_min_x(graph),
-        @graph.node_x(child) + vertiflex_internal_min_x(child),
+        vertiflex_internal_min_x(session, graph),
+        @graph.node_x(child) + vertiflex_internal_min_x(session, child),
       ),
     )
     vertiflex_internal_set_max_x(
+      session,
       graph,
       @cmp.maximum(
-        vertiflex_internal_max_x(graph),
-        @graph.node_x(child) + vertiflex_internal_max_x(child),
+        vertiflex_internal_max_x(session, graph),
+        @graph.node_x(child) + vertiflex_internal_max_x(session, child),
       ),
     )
   }
   vertiflex_internal_set_max_y(
+    session,
     graph,
-    vertiflex_internal_outline_max_depth(graph),
+    vertiflex_internal_outline_max_depth(session, graph),
   )
 }
 
 ///|
 fn vertiflex_relative_x_placer_process(
+  session : VertiFlexSession,
   graph : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(existing) => existing
     None => @core.new_null_elk_progress_monitor()
@@ -757,25 +827,32 @@ fn vertiflex_relative_x_placer_process(
     graph, vertiflex_consider_node_model_order,
   )
   if !@graph.node_children(graph).is_empty() {
-    let parent = vertiflex_internal_root_node(graph)
+    let parent = vertiflex_internal_root_node(session, graph)
     match
       vertiflex_edge_routing_strategy_from_string(
         @graph.node_get_string_property(graph, vertiflex_layout_strategy),
       ) {
       STRAIGHT =>
         vertiflex_recursive_straightline_placement(
-          parent, spacing_node_node, consider_node_model_order,
+          session, parent, spacing_node_node, consider_node_model_order,
         )
-      BEND => vertiflex_recursive_bentline_placement(parent, spacing_node_node)
+      BEND =>
+        vertiflex_recursive_bentline_placement(
+          session, parent, spacing_node_node,
+        )
     }
   }
   monitor.done()
 }
 
 ///|
-pub fn new_vertiflex_relative_x_placer_layout_phase() -> @core.ILayoutProcessor[
-  VertiFlexLayoutPhases,
-  @graph.ElkNode,
-] {
-  @core.new_layout_phase(vertiflex_relative_x_placer_process, _ => None)
+pub fn new_vertiflex_relative_x_placer_layout_phase(
+  session : VertiFlexSession,
+) -> @core.ILayoutProcessor[VertiFlexLayoutPhases, @graph.ElkNode] {
+  @core.new_layout_phase(
+    (graph, monitor) => {
+      vertiflex_relative_x_placer_process(session, graph, monitor)
+    },
+    _ => None,
+  )
 }

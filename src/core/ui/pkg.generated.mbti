@@ -4,6 +4,7 @@ package "Milky2018/moon_elk/core/ui"
 import {
   "Milky2018/moon_elk/core",
   "Milky2018/moon_elk/core/service",
+  "Milky2018/moon_elk/graph",
 }
 
 // Values
@@ -13,9 +14,9 @@ pub fn core_ui_color_is_disposed(CoreUiColor) -> Bool
 
 pub let core_ui_disco_layout_alg_id : String
 
-pub fn core_ui_elk_ui_util_get_option_data(@core.LayoutAlgorithmData, String) -> @core.LayoutOptionData?
+pub fn core_ui_elk_ui_util_get_option_data(@core.OptionMetadata, @core.LayoutAlgorithmData, String) -> @core.LayoutOptionData?
 
-pub fn core_ui_elk_ui_util_get_option_data_from_providers(Array[@core.LayoutAlgorithmData], String) -> @core.LayoutOptionData?
+pub fn core_ui_elk_ui_util_get_option_data_from_providers(@core.OptionMetadata, Array[@core.LayoutAlgorithmData], String) -> @core.LayoutOptionData?
 
 pub fn core_ui_elk_ui_util_model_change_labels_for_domain(Int) -> Array[String]
 
@@ -43,7 +44,7 @@ pub fn core_ui_layout_preference_page_set_debug_folder_for_test(String) -> Unit
 
 pub let core_ui_layout_property_descriptor_disco_layout_alg_id : String
 
-pub fn core_ui_layout_property_source_get_layout_hint(String) -> String?
+pub fn core_ui_layout_property_source_get_layout_hint(@core.OptionMetadata, String) -> String?
 
 pub let core_ui_layout_view_id : String
 
@@ -111,13 +112,13 @@ pub fn layout_view_part_find_view() -> LayoutViewPart?
 
 pub fn layout_view_part_open() -> LayoutViewPart
 
-pub fn new_active_editor_supported_tester() -> ActiveEditorSupportedTester
+pub fn new_active_editor_supported_tester(@service.LayoutConnectorsService) -> ActiveEditorSupportedTester
 
-pub fn new_algorithm_cell_editor(String) -> AlgorithmCellEditor
+pub fn new_algorithm_cell_editor(@core.OptionMetadata, String) -> AlgorithmCellEditor
 
-pub fn new_algorithm_content_provider() -> AlgorithmContentProvider
+pub fn new_algorithm_content_provider(@core.OptionMetadata) -> AlgorithmContentProvider
 
-pub fn new_algorithm_selection_dialog(String) -> AlgorithmSelectionDialog
+pub fn new_algorithm_selection_dialog(@core.OptionMetadata, String) -> AlgorithmSelectionDialog
 
 pub fn new_core_ui_algorithm_selection_listener((CoreUiLayoutMetaData) -> Unit) -> CoreUiAlgorithmSelectionListener
 
@@ -147,25 +148,25 @@ pub fn new_elk_ui_plugin() -> ElkUiPlugin
 
 pub fn new_graph_renderer(GraphRenderingConfigurator) -> GraphRenderer
 
-pub fn new_graph_rendering_canvas(CoreUiDisplay) -> GraphRenderingCanvas
+pub fn new_graph_rendering_canvas(CoreUiDisplay) -> GraphRenderingCanvas raise
 
-pub fn new_graph_rendering_canvas_with_configurator(CoreUiDisplay, GraphRenderingConfigurator) -> GraphRenderingCanvas
+pub fn new_graph_rendering_canvas_with_configurator(CoreUiDisplay, GraphRenderingConfigurator) -> GraphRenderingCanvas raise
 
 pub fn new_graph_rendering_configurator(CoreUiDisplay) -> GraphRenderingConfigurator
 
-pub fn new_layout_graph_dialog(Int, String?, GraphRenderingConfigurator) -> LayoutGraphDialog
+pub fn new_layout_graph_dialog(@graph.ElkNode, String?, GraphRenderingConfigurator) -> LayoutGraphDialog
 
-pub fn new_layout_handler(invoke_layout_fn? : (CoreUiLayoutInvocation) -> Unit) -> LayoutHandler
+pub fn new_layout_handler(@service.LayoutConnectorsService, invoke_layout_fn? : (CoreUiLayoutInvocation) -> Unit raise) -> LayoutHandler
 
-pub fn new_layout_option_label_provider(@core.LayoutOptionData) -> LayoutOptionLabelProvider
+pub fn new_layout_option_label_provider(@core.OptionMetadata, @core.LayoutOptionData) -> LayoutOptionLabelProvider
 
 pub fn new_layout_preference_page() -> LayoutPreferencePage
 
 pub fn new_layout_property_descriptor(LayoutPropertySource, @core.LayoutOptionData, Array[@core.LayoutOptionTarget]?) -> LayoutPropertyDescriptor
 
-pub fn new_layout_property_source(@service.ILayoutConfigurationStore, @service.LayoutConfigurationManager) -> LayoutPropertySource
+pub fn new_layout_property_source(@core.OptionMetadata, @service.ILayoutConfigurationStore, @service.LayoutConfigurationManager) -> LayoutPropertySource
 
-pub fn new_layout_property_source_provider(configuration_store_provider? : @service.LayoutConfigurationStoreProvider?, config_manager? : @service.LayoutConfigurationManager, layout_option_validator_provider? : () -> @core.LayoutOptionValidator) -> LayoutPropertySourceProvider
+pub fn new_layout_property_source_provider(@core.OptionMetadata, configuration_store_provider? : @service.LayoutConfigurationStoreProvider?, config_manager? : @service.LayoutConfigurationManager, layout_option_validator_provider? : () -> @core.LayoutOptionValidator) -> LayoutPropertySourceProvider
 
 pub fn new_layout_view_part() -> LayoutViewPart
 
@@ -179,7 +180,7 @@ pub fn new_validating_property_sheet_entry() -> ValidatingPropertySheetEntry
 
 // Types and methods
 pub(all) struct ActiveEditorSupportedTester {
-  _dummy : Int
+  service : @service.LayoutConnectorsService
 }
 pub fn ActiveEditorSupportedTester::is_supported(Self, Int?) -> Bool
 
@@ -200,6 +201,7 @@ pub fn AlgorithmCellEditor::set_value(Self, String) -> Unit
 pub fn AlgorithmCellEditor::update_contents(Self) -> String
 
 pub(all) struct AlgorithmContentProvider {
+  metadata : @core.OptionMetadata
   filter_map : Map[String, Bool]
   mut filter_value : String
   mut best_filter_match : CoreUiLayoutMetaData?
@@ -215,6 +217,7 @@ pub fn AlgorithmContentProvider::input_changed(Self, _old_input? : String?, _new
 pub fn AlgorithmContentProvider::update_filter(Self, String?) -> Unit
 
 pub(all) struct AlgorithmSelectionDialog {
+  metadata : @core.OptionMetadata
   mut layouter_hint : String
   mut display_name : String
   mut description : String
@@ -395,21 +398,21 @@ pub(all) struct GraphRenderer {
   configurator : GraphRenderingConfigurator
   mut scale : Double
   mut base_offset : @core.KVector
-  mut most_recently_drawn_graph : Int?
+  mut most_recently_drawn_graph : @graph.ElkNode?
 }
-pub fn GraphRenderer::calculate_base_offset_from_top_level_graph(Self, Int) -> Unit
+pub fn GraphRenderer::calculate_base_offset_from_top_level_graph(Self, @graph.ElkNode) -> Unit
 pub fn GraphRenderer::dispose(Self) -> Unit
 pub fn GraphRenderer::flush_cache(Self) -> Unit
 pub fn GraphRenderer::get_base_offset(Self) -> @core.KVector
 pub fn GraphRenderer::get_scale(Self) -> Double
 pub fn GraphRenderer::make_arrow_for_test(Self, @core.KVector, @core.KVector) -> Array[Int]?
 pub fn GraphRenderer::mark_dirty(Self, CoreUiPaintRectangle?) -> Unit
-pub fn GraphRenderer::render(Self, Int, CoreUiGraphics, CoreUiPaintRectangle) -> Unit
+pub fn GraphRenderer::render(Self, @graph.ElkNode, CoreUiGraphics, CoreUiPaintRectangle) -> Unit
 pub fn GraphRenderer::set_base_offset(Self, @core.KVector?) -> Unit
 pub fn GraphRenderer::set_scale(Self, Double) -> Unit
 
 pub(all) struct GraphRenderingCanvas {
-  mut layout_graph : Int?
+  mut layout_graph : @graph.ElkNode?
   graph_renderer : GraphRenderer
   background_color : CoreUiColor
   display : CoreUiDisplay
@@ -421,11 +424,11 @@ pub(all) struct GraphRenderingCanvas {
   mut last_x : Int
   mut last_y : Int
 }
-pub fn GraphRenderingCanvas::calculate_required_canvas_size_and_base_offset(Self, Int?) -> @core.KVector
+pub fn GraphRenderingCanvas::calculate_required_canvas_size_and_base_offset(Self, @graph.ElkNode?) -> @core.KVector
 pub fn GraphRenderingCanvas::compute_size(Self, Int, Int, _changed? : Bool) -> CoreUiPoint
 pub fn GraphRenderingCanvas::dispose(Self) -> Unit
 pub fn GraphRenderingCanvas::get_display(Self) -> CoreUiDisplay
-pub fn GraphRenderingCanvas::get_layout_graph(Self) -> Int?
+pub fn GraphRenderingCanvas::get_layout_graph(Self) -> @graph.ElkNode?
 pub fn GraphRenderingCanvas::get_redraw_count(Self) -> Int
 pub fn GraphRenderingCanvas::get_renderer(Self) -> GraphRenderer
 pub fn GraphRenderingCanvas::get_size_for_test(Self) -> (Int, Int)
@@ -436,7 +439,7 @@ pub fn GraphRenderingCanvas::mouse_up(Self, Int, Int) -> Unit
 pub fn GraphRenderingCanvas::paint_control(Self, CoreUiPaintEvent) -> Unit
 pub fn GraphRenderingCanvas::pan(Self, @core.KVector) -> Unit
 pub fn GraphRenderingCanvas::redraw(Self) -> Unit
-pub fn GraphRenderingCanvas::set_layout_graph(Self, Int?) -> Unit
+pub fn GraphRenderingCanvas::set_layout_graph(Self, @graph.ElkNode?) -> Unit
 pub fn GraphRenderingCanvas::setup_mouse_interaction(Self) -> Unit
 pub fn GraphRenderingCanvas::zoom(Self, Double, @core.KVector) -> Unit
 
@@ -478,26 +481,27 @@ pub fn GraphRenderingConfigurator::initialize(Self) -> Unit
 pub fn GraphRenderingConfigurator::set_scale(Self, Double) -> Unit
 
 pub(all) struct LayoutGraphDialog {
-  graph : Int
+  graph : @graph.ElkNode
   resource_file_name : String?
   configurator : GraphRenderingConfigurator
   mut graph_canvas : GraphRenderingCanvas?
   mut shell_text : String
 }
 pub fn LayoutGraphDialog::configure_shell(Self) -> Unit
-pub fn LayoutGraphDialog::create_contents(Self, CoreUiDisplay) -> GraphRenderingCanvas
+pub fn LayoutGraphDialog::create_contents(Self, CoreUiDisplay) -> GraphRenderingCanvas raise
 pub fn LayoutGraphDialog::get_graph_canvas(Self) -> GraphRenderingCanvas?
 pub fn LayoutGraphDialog::get_shell_text(Self) -> String
 pub fn LayoutGraphDialog::is_resizable(Self) -> Bool
 
 pub(all) struct LayoutHandler {
-  invoke_layout_fn : (CoreUiLayoutInvocation) -> Unit
+  invoke_layout_fn : (CoreUiLayoutInvocation) -> Unit raise
   mut last_invocation : CoreUiLayoutInvocation?
 }
-pub fn LayoutHandler::execute(Self, CoreUiExecutionEvent) -> Unit
+pub fn LayoutHandler::execute(Self, CoreUiExecutionEvent) -> Unit raise
 pub fn LayoutHandler::get_last_invocation(Self) -> CoreUiLayoutInvocation?
 
 pub(all) struct LayoutOptionLabelProvider {
+  metadata : @core.OptionMetadata
   option_data : @core.LayoutOptionData
 }
 pub fn LayoutOptionLabelProvider::get_image(Self, CoreUiValue) -> CoreUiImageDescriptor?
@@ -544,6 +548,7 @@ pub fn LayoutPropertyDescriptor::get_option_data(Self) -> @core.LayoutOptionData
 pub fn LayoutPropertyDescriptor::is_compatible_with(Self, Self) -> Bool
 
 pub(all) struct LayoutPropertySource {
+  metadata : @core.OptionMetadata
   layout_config : @service.ILayoutConfigurationStore
   mut property_descriptors : Array[LayoutPropertyDescriptor]?
   dependency_options : Map[String, Unit]
@@ -563,6 +568,7 @@ pub fn LayoutPropertySource::translate_to_ui(Self, String?, @core.LayoutOptionDa
 pub fn LayoutPropertySource::validate_property_value(Self, @core.LayoutOptionData, String) -> Array[@core.GraphIssue]?
 
 pub(all) struct LayoutPropertySourceProvider {
+  metadata : @core.OptionMetadata
   mut configuration_store_provider : @service.LayoutConfigurationStoreProvider?
   config_manager : @service.LayoutConfigurationManager
   layout_option_validator_provider : () -> @core.LayoutOptionValidator

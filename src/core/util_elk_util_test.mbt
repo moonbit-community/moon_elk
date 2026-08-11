@@ -23,7 +23,6 @@ fn assert_inner_behavior_translation(
   expected_x : Double,
   expected_y : Double,
 ) -> Unit raise {
-  @graph.reset_graph_model_for_test()
   let parent = create_content_alignment_test_graph(alignments)
   let node = @graph.node_children(parent)[0]
   let inner_behavior = @graph.node_children(node)[0]

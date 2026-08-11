@@ -12,7 +12,7 @@ fn layer_size_and_graph_height_calculator_is_external_port(
 fn layer_size_and_graph_height_calculator_process(
   layered_graph : LGraph,
   monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let progress = match monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()

@@ -1,5 +1,5 @@
 ///|
-fn count_blocked_cells(grid : PlanarGrid) -> Int {
+fn count_blocked_cells(grid : PlanarGrid) -> Int raise {
   let mut count = 0
   for x in 0..<grid.width() {
     for y in 0..<grid.height() {

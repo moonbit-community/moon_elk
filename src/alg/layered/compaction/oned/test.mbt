@@ -41,7 +41,7 @@ fn layered_oned_dir_up() -> @core.Direction {
 ///|
 fn layered_oned_compactor(
   graph : LayeredCGraph,
-) -> LayeredOneDimensionalCompactor {
+) -> LayeredOneDimensionalCompactor raise {
   new_layered_one_dimensional_compactor(graph).set_constraint_algorithm(
     layered_one_dimensional_compactor_quadratic_constraints,
   )

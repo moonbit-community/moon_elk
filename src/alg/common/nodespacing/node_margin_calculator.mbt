@@ -117,7 +117,7 @@ fn node_margin_calculator_process_node(
   calculator : NodeMarginCalculator,
   node : &NodeSpacingNode,
   label_spacing : Double,
-) -> Unit {
+) -> Unit raise {
   let node_position = node.get_position()
   let node_size = node.get_size()
 
@@ -300,7 +300,7 @@ pub fn NodeMarginCalculator::exclude_edge_head_tail_labels(
 }
 
 ///|
-pub fn NodeMarginCalculator::process(self : NodeMarginCalculator) -> Unit {
+pub fn NodeMarginCalculator::process(self : NodeMarginCalculator) -> Unit raise {
   let label_spacing = self.adapter.get_property_double(@core.spacing_label_node)
 
   for node in self.adapter.get_nodes() {
@@ -312,7 +312,7 @@ pub fn NodeMarginCalculator::process(self : NodeMarginCalculator) -> Unit {
 pub fn NodeMarginCalculator::process_node(
   self : NodeMarginCalculator,
   node : &NodeSpacingNode,
-) -> Unit {
+) -> Unit raise {
   let label_spacing = self.adapter.get_property_double(@core.spacing_label_node)
   node_margin_calculator_process_node(self, node, label_spacing)
 }

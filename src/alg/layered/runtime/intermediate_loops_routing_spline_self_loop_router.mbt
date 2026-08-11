@@ -57,7 +57,7 @@ fn spline_self_loop_router_modify_bend_points(
   sl_edge : SelfLoopEdge,
   routing_direction : EdgeRoutingDirection,
   bend_points : @core.KVectorChain,
-) -> @core.KVectorChain {
+) -> @core.KVectorChain raise {
   let sl_loop = match sl_edge.get_sl_hyper_loop() {
     Some(curr_loop) => curr_loop
     None => return bend_points
@@ -86,7 +86,7 @@ fn spline_self_loop_router_modify_bend_points(
     )
   catch {
     IllegalArgumentException(message) => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "java.lang.IllegalArgumentException: " + message,
       )
       return bend_points
@@ -100,7 +100,7 @@ fn spline_self_loop_router_modify_bend_points(
 ///|
 pub fn spline_self_loop_router_route_self_loops(
   sl_holder : SelfLoopHolder,
-) -> Unit {
+) -> Unit raise {
   orthogonal_self_loop_router_route_with_modifier(
     sl_holder, spline_self_loop_router_modify_bend_points,
   )

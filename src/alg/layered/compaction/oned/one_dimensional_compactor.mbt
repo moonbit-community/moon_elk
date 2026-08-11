@@ -2,12 +2,12 @@
 pub type LayeredOneDimensionalCompactor = @compaction.OneDimensionalCompactor
 
 ///|
-pub type LayeredILockFunction = (LayeredCNode, @core.Direction) -> Bool
+pub type LayeredILockFunction = (LayeredCNode, @core.Direction) -> Bool raise
 
 ///|
 pub fn new_layered_one_dimensional_compactor(
   c_graph : LayeredCGraph,
-) -> LayeredOneDimensionalCompactor {
+) -> LayeredOneDimensionalCompactor raise {
   let compactor = @compaction.new_one_dimensional_compactor(c_graph)
   ignore(
     compactor.set_compaction_algorithm(

@@ -24,9 +24,9 @@ fn self_loop_port_had_only_self_loops(l_port : LPort) -> Bool {
 }
 
 ///|
-pub fn new_self_loop_port(l_port : LPort) -> SelfLoopPort {
+pub fn new_self_loop_port(l_port : LPort) -> SelfLoopPort raise {
   if self_loop_port_connected_edge_count(l_port) == 0 {
-    @core.layout_runtime_report_unsupported_configuration(
+    @core.layout_runtime_raise_unsupported_configuration(
       "SelfLoopPort requires at least one connected edge",
     )
   }

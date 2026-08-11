@@ -6,9 +6,9 @@ pub struct TwoBitGrid {
 }
 
 ///|
-fn create_cells(width : Int, height : Int) -> Array[Int] {
+fn create_cells(width : Int, height : Int) -> Array[Int] raise {
   if width < 0 || height < 0 {
-    @core.layout_runtime_report_unsupported_configuration(
+    @core.layout_runtime_raise_unsupported_configuration(
       "grid dimensions must be non-negative",
     )
     return []
@@ -17,9 +17,9 @@ fn create_cells(width : Int, height : Int) -> Array[Int] {
 }
 
 ///|
-fn grid_cell_index(grid : TwoBitGrid, x : Int, y : Int) -> Int {
+fn grid_cell_index(grid : TwoBitGrid, x : Int, y : Int) -> Int raise {
   if !grid.in_bounds(x, y) {
-    @core.layout_runtime_report_unsupported_configuration(
+    @core.layout_runtime_raise_unsupported_configuration(
       "requested point is out of bounds",
     )
     return 0
@@ -28,7 +28,7 @@ fn grid_cell_index(grid : TwoBitGrid, x : Int, y : Int) -> Int {
 }
 
 ///|
-pub fn new_two_bit_grid(width : Int, height : Int) -> TwoBitGrid {
+pub fn new_two_bit_grid(width : Int, height : Int) -> TwoBitGrid raise {
   { x_size: width, y_size: height, cells: create_cells(width, height) }
 }
 
@@ -48,12 +48,16 @@ pub fn TwoBitGrid::in_bounds(self : TwoBitGrid, x : Int, y : Int) -> Bool {
 }
 
 ///|
-pub fn TwoBitGrid::is_empty(self : TwoBitGrid, x : Int, y : Int) -> Bool {
+pub fn TwoBitGrid::is_empty(self : TwoBitGrid, x : Int, y : Int) -> Bool raise {
   self.cells[grid_cell_index(self, x, y)] == 0
 }
 
 ///|
-pub fn TwoBitGrid::is_blocked(self : TwoBitGrid, x : Int, y : Int) -> Bool {
+pub fn TwoBitGrid::is_blocked(
+  self : TwoBitGrid,
+  x : Int,
+  y : Int,
+) -> Bool raise {
   self.cells[grid_cell_index(self, x, y)] == 1
 }
 
@@ -62,7 +66,7 @@ pub fn TwoBitGrid::is_weakly_blocked(
   self : TwoBitGrid,
   x : Int,
   y : Int,
-) -> Bool {
+) -> Bool raise {
   self.cells[grid_cell_index(self, x, y)] == 2
 }
 
@@ -71,19 +75,23 @@ pub fn TwoBitGrid::reinitialize(
   self : TwoBitGrid,
   width : Int,
   height : Int,
-) -> Unit {
+) -> Unit raise {
   self.x_size = width
   self.y_size = height
   self.cells = create_cells(width, height)
 }
 
 ///|
-pub fn TwoBitGrid::set_empty(self : TwoBitGrid, x : Int, y : Int) -> Unit {
+pub fn TwoBitGrid::set_empty(self : TwoBitGrid, x : Int, y : Int) -> Unit raise {
   self.cells[grid_cell_index(self, x, y)] = 0
 }
 
 ///|
-pub fn TwoBitGrid::set_blocked(self : TwoBitGrid, x : Int, y : Int) -> Unit {
+pub fn TwoBitGrid::set_blocked(
+  self : TwoBitGrid,
+  x : Int,
+  y : Int,
+) -> Unit raise {
   self.cells[grid_cell_index(self, x, y)] = 1
 }
 
@@ -92,7 +100,7 @@ pub fn TwoBitGrid::set_weakly_blocked(
   self : TwoBitGrid,
   x : Int,
   y : Int,
-) -> Unit {
+) -> Unit raise {
   self.cells[grid_cell_index(self, x, y)] = 2
 }
 

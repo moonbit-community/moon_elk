@@ -20,7 +20,7 @@ pub fn new_log_label_provider() -> LogLabelProvider {
 pub fn LogLabelProvider::get_text(
   _self : LogLabelProvider,
   execution : ExecutionInfo,
-) -> String {
+) -> String raise {
   let base = execution_info_get_name(execution)
   match execution_info_get_parent(execution) {
     Some(_) => base
@@ -36,7 +36,7 @@ pub fn LogLabelProvider::get_text(
 pub fn LogLabelProvider::get_image(
   self : LogLabelProvider,
   execution : ExecutionInfo,
-) -> String {
+) -> String raise {
   if execution_info_has_log_messages(execution) {
     self.log_image
   } else {

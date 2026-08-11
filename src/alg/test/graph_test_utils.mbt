@@ -171,11 +171,11 @@ pub fn graph_test_utils_have_overlaps(shapes : Array[GraphTestShape]) -> Bool {
 fn graph_test_utils_create_port_edge(
   source_port : ElkPort,
   target_port : ElkPort,
-) -> ElkEdge {
+) -> ElkEdge raise {
   let source_node = match port_parent(source_port) {
     Some(node) => node
     None => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "Source port has no parent node.",
       )
       create_graph()
@@ -184,7 +184,7 @@ fn graph_test_utils_create_port_edge(
   let target_node = match port_parent(target_port) {
     Some(node) => node
     None => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "Target port has no parent node.",
       )
       create_graph()
@@ -202,7 +202,7 @@ fn graph_test_utils_create_port_edge(
 }
 
 ///|
-fn graph_test_utils_populate_simple_graph(parent_node : ElkNode) -> Unit {
+fn graph_test_utils_populate_simple_graph(parent_node : ElkNode) -> Unit raise {
   let child_node1 = create_node(Some(parent_node))
   let child_node1_label = create_label(
     Some(make_node_label_parent(child_node1)),
@@ -221,7 +221,7 @@ fn graph_test_utils_populate_simple_graph(parent_node : ElkNode) -> Unit {
 }
 
 ///|
-pub fn graph_test_utils_create_simple_graph() -> ElkNode {
+pub fn graph_test_utils_create_simple_graph() -> ElkNode raise {
   let parent_node = create_graph()
   graph_test_utils_populate_simple_graph(parent_node)
   parent_node
@@ -245,7 +245,7 @@ pub fn graph_test_utils_create_three_node_graph() -> ElkNode {
 }
 
 ///|
-pub fn graph_test_utils_create_hierarchical_graph() -> ElkNode {
+pub fn graph_test_utils_create_hierarchical_graph() -> ElkNode raise {
   let parent_node = create_graph()
 
   let child1 = create_node(Some(parent_node))
@@ -265,7 +265,7 @@ pub fn graph_test_utils_create_hierarchical_graph() -> ElkNode {
 pub fn graph_test_utils_get_child(
   parent : ElkNode,
   child_path : Array[String],
-) -> ElkNode {
+) -> ElkNode raise {
   let mut current_parent = parent
   let mut result = parent
   for identifier in child_path {
@@ -282,7 +282,7 @@ pub fn graph_test_utils_get_child(
         current_parent = child
       }
       None => {
-        @core.layout_runtime_report_unsupported_configuration(
+        @core.layout_runtime_raise_unsupported_configuration(
           "The node \"" +
           node_identifier(current_parent) +
           "\" has no child with identifier \"" +
@@ -297,13 +297,16 @@ pub fn graph_test_utils_get_child(
 }
 
 ///|
-pub fn graph_test_utils_get_port(node : ElkNode, port_id : String) -> ElkPort {
+pub fn graph_test_utils_get_port(
+  node : ElkNode,
+  port_id : String,
+) -> ElkPort raise {
   for port in node_ports(node) {
     if port_identifier(port) == port_id {
       return port
     }
   }
-  @core.layout_runtime_report_unsupported_configuration(
+  @core.layout_runtime_raise_unsupported_configuration(
     "The node \"" +
     node_identifier(node) +
     "\" has no port with identifier \"" +

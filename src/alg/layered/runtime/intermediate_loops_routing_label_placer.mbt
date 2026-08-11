@@ -548,7 +548,7 @@ pub fn LabelPlacer::place_labels(
   sl_holder : SelfLoopHolder,
   label_manager : @core.ILabelManager?,
   monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   ignore(monitor)
   try {
     self.assign_side_and_alignment(sl_holder)
@@ -562,7 +562,7 @@ pub fn LabelPlacer::place_labels(
     }
   } catch {
     error =>
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         label_placer_exception_message(error),
       )
   }

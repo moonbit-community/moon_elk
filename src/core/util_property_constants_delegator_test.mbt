@@ -24,10 +24,10 @@ test "property_constants_delegator create_for_layout_algorithm_data" {
 
 ///|
 test "property_constants_delegator create_for_layout_algorithm_with_id" {
-  layout_meta_data_service_reset_for_test()
-  layout_meta_data_service_register_default_algorithms()
+  let metadata = new_option_metadata()
+  metadata.register_default_algorithms()
   let delegator = property_constants_delegator_create_for_layout_algorithm_with_id(
-    "org.eclipse.elk.box",
+    metadata, "org.eclipse.elk.box",
   )
   inspect(
     delegator.has_delegate_for(spacing_node_node.get_id()),
@@ -35,14 +35,13 @@ test "property_constants_delegator create_for_layout_algorithm_with_id" {
   )
   inspect(delegator.has_delegate_for(priority.get_id()), content="true")
   let missing = property_constants_delegator_create_for_layout_algorithm_with_id(
-    "org.eclipse.elk.unknown",
+    metadata, "org.eclipse.elk.unknown",
   )
   inspect(missing.has_delegate_for(spacing_node_node.get_id()), content="false")
 }
 
 ///|
 test "property_constants_delegator get_property helpers on node" {
-  @graph.reset_graph_model_for_test()
   let graph = @graph.create_graph()
   @graph.node_set_double_property(graph, spacing_node_node, 77.0)
   @graph.node_set_bool_property(graph, no_layout, true)
@@ -61,7 +60,6 @@ test "property_constants_delegator get_property helpers on node" {
 
 ///|
 test "property_constants_delegator get_individual_or_inherited_property" {
-  @graph.reset_graph_model_for_test()
   let root = @graph.create_graph()
   let child = @graph.create_node(Some(root))
   @graph.node_set_double_property(root, spacing_edge_label, 3.0)

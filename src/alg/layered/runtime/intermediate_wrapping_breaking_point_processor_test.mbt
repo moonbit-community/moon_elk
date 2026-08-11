@@ -68,7 +68,7 @@ fn breaking_point_processor_test_connect(
 }
 
 ///|
-fn breaking_point_processor_test_new_graph() -> LGraph {
+fn breaking_point_processor_test_new_graph() -> LGraph raise {
   let graph = new_l_graph()
   let layers = []
   let nodes = []

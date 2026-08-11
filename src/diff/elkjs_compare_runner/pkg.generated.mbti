@@ -2,7 +2,7 @@
 package "Milky2018/moon_elk/diff/elkjs_compare_runner"
 
 // Values
-pub fn layout_json(String) -> String
+pub fn layout_json(String) -> String raise
 
 // Errors
 

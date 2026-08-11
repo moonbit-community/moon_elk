@@ -41,14 +41,17 @@ fn core_ui_algorithm_content_key(element : CoreUiLayoutMetaData) -> String {
 
 ///|
 pub(all) struct AlgorithmContentProvider {
+  metadata : @core.OptionMetadata
   filter_map : Map[String, Bool]
   mut filter_value : String
   mut best_filter_match : CoreUiLayoutMetaData?
 }
 
 ///|
-pub fn new_algorithm_content_provider() -> AlgorithmContentProvider {
-  { filter_map: Map([]), filter_value: "", best_filter_match: None }
+pub fn new_algorithm_content_provider(
+  metadata : @core.OptionMetadata,
+) -> AlgorithmContentProvider {
+  { metadata, filter_map: Map([]), filter_value: "", best_filter_match: None }
 }
 
 ///|
@@ -64,9 +67,8 @@ pub fn AlgorithmContentProvider::input_changed(
 pub fn AlgorithmContentProvider::get_elements(
   self : AlgorithmContentProvider,
 ) -> Array[CoreUiLayoutMetaData] {
-  ignore(self)
   let result : Array[CoreUiLayoutMetaData] = []
-  for category_data in @core.layout_meta_data_service_category_data_values() {
+  for category_data in self.metadata.category_data_values() {
     result.push(CoreUiLayoutCategoryMeta(category_data))
   }
   result
@@ -95,13 +97,9 @@ pub fn AlgorithmContentProvider::get_parent(
   self : AlgorithmContentProvider,
   element : CoreUiLayoutMetaData,
 ) -> CoreUiLayoutMetaData? {
-  ignore(self)
   match element {
     CoreUiLayoutAlgorithmMeta(layouter_data) =>
-      match
-        @core.layout_meta_data_service_get_category_data(
-          layouter_data.get_category_id(),
-        ) {
+      match self.metadata.category_data(layouter_data.get_category_id()) {
         Some(category_data) => Some(CoreUiLayoutCategoryMeta(category_data))
         None => None
       }

@@ -42,15 +42,13 @@ fn rectpacking_compaction_setup_parent(
 }
 
 ///|
-fn rectpacking_compaction_layout(parent : @graph.ElkNode) -> Unit {
+fn rectpacking_compaction_layout(parent : @graph.ElkNode) -> Unit raise {
   let provider = new_rectpacking_layout_provider()
   provider.layout(parent, @core.new_basic_progress_monitor())
 }
 
 ///|
 test "Rectpacking compaction place block from next row on top" {
-  reset_graph_model_for_test()
-
   let parent = rectpacking_compaction_setup_parent(110.0, 10.0)
   let n1 = @graph.create_node(Some(parent))
   let n2 = @graph.create_node(Some(parent))
@@ -88,8 +86,6 @@ test "Rectpacking compaction place block from next row on top" {
 
 ///|
 test "Rectpacking compaction place block from next row on top does not work" {
-  reset_graph_model_for_test()
-
   let parent = rectpacking_compaction_setup_parent(110.0, 10.0)
   let n1 = @graph.create_node(Some(parent))
   let n2 = @graph.create_node(Some(parent))
@@ -125,8 +121,6 @@ test "Rectpacking compaction place block from next row on top does not work" {
 
 ///|
 test "Rectpacking compaction absorb block" {
-  reset_graph_model_for_test()
-
   let parent = rectpacking_compaction_setup_parent(110.0, 10.0)
   let n1 = @graph.create_node(Some(parent))
   let n2 = @graph.create_node(Some(parent))
@@ -164,8 +158,6 @@ test "Rectpacking compaction absorb block" {
 
 ///|
 test "Rectpacking compaction absorb block in stack" {
-  reset_graph_model_for_test()
-
   let parent = rectpacking_compaction_setup_parent(330.0, 1.0)
 
   let n1 = @graph.create_node(Some(parent))
@@ -224,8 +216,6 @@ test "Rectpacking compaction absorb block in stack" {
 
 ///|
 test "Rectpacking compaction compact block" {
-  reset_graph_model_for_test()
-
   let parent = rectpacking_compaction_setup_parent(190.0, 10.0)
   let n1 = @graph.create_node(Some(parent))
   let n2 = @graph.create_node(Some(parent))
@@ -257,8 +247,6 @@ test "Rectpacking compaction compact block" {
 
 ///|
 test "Rectpacking compaction split block" {
-  reset_graph_model_for_test()
-
   let parent = rectpacking_compaction_setup_parent(110.0, 10.0)
   let n1 = @graph.create_node(Some(parent))
   let n2 = @graph.create_node(Some(parent))
@@ -298,8 +286,6 @@ test "Rectpacking compaction split block" {
 
 ///|
 test "Rectpacking compaction place block from next row right" {
-  reset_graph_model_for_test()
-
   let parent = rectpacking_compaction_setup_parent(110.0, 10.0)
   let n1 = @graph.create_node(Some(parent))
   let n2 = @graph.create_node(Some(parent))
@@ -327,8 +313,6 @@ test "Rectpacking compaction place block from next row right" {
 
 ///|
 test "Rectpacking compaction place block from current row right" {
-  reset_graph_model_for_test()
-
   let parent = rectpacking_compaction_setup_parent(150.0, 10.0)
   let n1 = @graph.create_node(Some(parent))
   let n2 = @graph.create_node(Some(parent))
@@ -356,8 +340,6 @@ test "Rectpacking compaction place block from current row right" {
 
 ///|
 test "Rectpacking compaction place block from current row on top" {
-  reset_graph_model_for_test()
-
   let parent = rectpacking_compaction_setup_parent(150.0, 10.0)
   let n1 = @graph.create_node(Some(parent))
   let n2 = @graph.create_node(Some(parent))
@@ -385,8 +367,6 @@ test "Rectpacking compaction place block from current row on top" {
 
 ///|
 test "Rectpacking compaction place stack next to multiple block stack" {
-  reset_graph_model_for_test()
-
   let parent = rectpacking_compaction_setup_parent(135.0, 5.0)
   let n1 = @graph.create_node(Some(parent))
   let n2 = @graph.create_node(Some(parent))

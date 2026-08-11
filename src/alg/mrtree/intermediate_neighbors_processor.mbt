@@ -3,7 +3,7 @@ fn mrtree_neighbors_set_neighbors(
   current_level : Array[MrtreeNode],
   number_of_nodes : Int,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   if current_level.is_empty() {
     return
   }
@@ -51,7 +51,7 @@ fn mrtree_neighbors_set_neighbors(
 fn mrtree_neighbors_processor_process(
   graph : MrtreeGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   match progress_monitor {
     Some(monitor) => ignore(monitor.begin("Processor set neighbors", 1.0))
     None => ()

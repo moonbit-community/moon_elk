@@ -56,7 +56,6 @@ fn rectpacking_create_four_30_nodes(
 
 ///|
 test "Rectpacking @core.padding top" {
-  reset_graph_model_for_test()
   let parent = create_graph()
   let (n1, n2, n3, n4) = rectpacking_create_four_30_nodes(parent)
   rectpacking_set_padding_case_options(parent, 1000.0, 0.0, 0.0, 0.0)
@@ -78,7 +77,6 @@ test "Rectpacking @core.padding top" {
 
 ///|
 test "Rectpacking @core.padding left" {
-  reset_graph_model_for_test()
   let parent = create_graph()
   let (n1, n2, n3, n4) = rectpacking_create_four_30_nodes(parent)
   rectpacking_set_padding_case_options(parent, 0.0, 0.0, 0.0, 1000.0)
@@ -100,7 +98,6 @@ test "Rectpacking @core.padding left" {
 
 ///|
 test "Rectpacking @core.padding bottom" {
-  reset_graph_model_for_test()
   let parent = create_graph()
   let (n1, n2, n3, n4) = rectpacking_create_four_30_nodes(parent)
   rectpacking_set_padding_case_options(parent, 0.0, 0.0, 1000.0, 0.0)
@@ -122,7 +119,6 @@ test "Rectpacking @core.padding bottom" {
 
 ///|
 test "Rectpacking @core.padding right" {
-  reset_graph_model_for_test()
   let parent = create_graph()
   let (n1, n2, n3, n4) = rectpacking_create_four_30_nodes(parent)
   rectpacking_set_padding_case_options(parent, 0.0, 1000.0, 0.0, 0.0)

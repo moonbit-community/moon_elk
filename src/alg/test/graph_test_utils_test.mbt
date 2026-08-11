@@ -1,6 +1,5 @@
 ///|
 test "GraphTestUtils createSimpleGraph builds two nodes with one edge" {
-  reset_graph_model_for_test()
   let graph = graph_test_utils_create_simple_graph()
   let children = node_children(graph)
   assert_eq(children.length(), 2)
@@ -11,7 +10,6 @@ test "GraphTestUtils createSimpleGraph builds two nodes with one edge" {
 
 ///|
 test "GraphTestUtils allNodes includes or excludes graph as requested" {
-  reset_graph_model_for_test()
   let graph = graph_test_utils_create_hierarchical_graph()
   let with_graph = graph_test_utils_all_nodes(graph, true)
   let without_graph = graph_test_utils_all_nodes(graph, false)
@@ -21,7 +19,6 @@ test "GraphTestUtils allNodes includes or excludes graph as requested" {
 
 ///|
 test "GraphTestUtils haveOverlaps detects rectangle intersections" {
-  reset_graph_model_for_test()
   let root = create_graph()
   let first = create_node(Some(root))
   node_set_location(first, 0.0, 0.0)

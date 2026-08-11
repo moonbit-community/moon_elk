@@ -70,7 +70,7 @@ fn basic_consider_model_order_run_case(
   strategy : String,
   weighted : Bool,
   use_port_model_order : Bool,
-) -> Array[Int] {
+) -> Array[Int] raise {
   let (graph, layer0, layer1) = basic_consider_model_order_new_graph()
   graph.set_property_string(
     @options.layered_options_consider_model_order_strategy, strategy,

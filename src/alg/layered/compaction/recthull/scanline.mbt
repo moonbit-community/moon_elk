@@ -4,8 +4,8 @@ pub type LayeredScanlineEventHandler[T] = (T) -> Unit
 ///|
 fn[T] layered_scanline_sort_in_place(
   points : Array[T],
-  comparator : (T, T) -> Int,
-) -> Unit {
+  comparator : (T, T) -> Int raise?,
+) -> Unit raise? {
   let length = points.length()
   for i in 1..<length {
     let current = points[i]
@@ -21,9 +21,9 @@ fn[T] layered_scanline_sort_in_place(
 ///|
 pub fn[T] layered_scanline_execute(
   points : Array[T],
-  comparator : (T, T) -> Int,
+  comparator : (T, T) -> Int raise?,
   event_handlers : Array[LayeredScanlineEventHandler[T]],
-) -> Unit {
+) -> Unit raise? {
   let copy = points.copy()
   layered_scanline_sort_in_place(copy, comparator)
   for point in copy {
@@ -36,8 +36,21 @@ pub fn[T] layered_scanline_execute(
 ///|
 pub fn[T] layered_scanline_execute_single(
   points : Array[T],
-  comparator : (T, T) -> Int,
+  comparator : (T, T) -> Int raise?,
   event_handler : LayeredScanlineEventHandler[T],
-) -> Unit {
+) -> Unit raise? {
   layered_scanline_execute(points, comparator, [event_handler])
+}
+
+///|
+pub fn[T] layered_scanline_execute_single_raise(
+  points : Array[T],
+  comparator : (T, T) -> Int raise?,
+  event_handler : (T) -> Unit raise,
+) -> Unit raise {
+  let copy = points.copy()
+  layered_scanline_sort_in_place(copy, comparator)
+  for point in copy {
+    event_handler(point)
+  }
 }

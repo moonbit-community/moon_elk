@@ -12,7 +12,7 @@ pub fn new_polyominoes(
   polyominoes : Array[Polyomino],
   aspect_ratio : Double,
   fill? : Bool = false,
-) -> Polyominoes {
+) -> Polyominoes raise {
   let polys : Array[Polyomino] = []
   let mut grid_width = 0
   let mut grid_height = 0

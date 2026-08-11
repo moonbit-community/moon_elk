@@ -59,11 +59,11 @@ fn layered_components_add_port_side(
 }
 
 ///|
-fn layered_components_require_port_node(port : LPort) -> LNode {
+fn layered_components_require_port_node(port : LPort) -> LNode raise {
   match port.get_node() {
     Some(value) => value
     None => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "Port without owning node in components DFS.",
       )
       layered_components_require_port_node(port)
@@ -90,7 +90,7 @@ fn layered_components_sort_by_model_order(components : Array[LGraph]) -> Unit {
 fn layered_components_dfs(
   node : LNode,
   data : (Array[LNode], Array[@core.PortSide])?,
-) -> (Array[LNode], Array[@core.PortSide])? {
+) -> (Array[LNode], Array[@core.PortSide])? raise {
   if node.get_id() != 0 {
     return None
   }
@@ -157,7 +157,7 @@ pub fn new_layered_components_processor() -> LayeredComponentsProcessor {
 pub fn LayeredComponentsProcessor::split(
   self : LayeredComponentsProcessor,
   graph : LGraph,
-) -> Array[LGraph] {
+) -> Array[LGraph] raise {
   self.graph_placer_kind = SimpleRow
 
   let separate = graph.get_property_bool(

@@ -17,8 +17,6 @@ fn ignored_test_default_configuration() -> TestConfiguration[Unit] {
 
 ///|
 test "IgnoredTest marks ignored blackbox tests for each experiment" {
-  reset_graph_model_for_test()
-
   let test_graphs : Array[TestGraph[Unit]] = []
   let mut index = 0
   while index < 2 {

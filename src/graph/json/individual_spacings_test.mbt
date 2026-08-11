@@ -109,9 +109,6 @@ fn individual_spacing_sample_graph() -> Json {
 
 ///|
 test "graph json import individual spacings" {
-  @graph.reset_graph_model_for_test()
-  @core.layout_meta_data_service_reset_for_test()
-  @core.layout_meta_data_service_register_default_algorithms()
   let graph = individual_spacing_sample_graph()
   let root = elk_graph_json_for_json_graph(graph).to_elk()
   let i1 = individual_find_node_by_id(root, "i1")
@@ -126,7 +123,10 @@ test "graph json import individual spacings" {
     is Some(_),
     true,
   )
-  let engine = @core.new_recursive_graph_layout_engine()
+  let engine = @core.new_recursive_graph_layout_engine(
+    new_layout_runtime(),
+    @core.new_layout_session(),
+  )
   engine.layout(root, @core.new_null_elk_progress_monitor())
   let l1 = @graph.node_labels(i1)[0]
   let l2 = @graph.node_labels(i2)[0]
@@ -136,7 +136,6 @@ test "graph json import individual spacings" {
 
 ///|
 test "graph json export individual spacings" {
-  @graph.reset_graph_model_for_test()
   let graph = @graph.create_graph()
   @graph.node_set_double_property(graph, @core.spacing_node_node, 10.0)
   @graph.node_set_individual_spacing_option_string_by_id(
@@ -152,7 +151,6 @@ test "graph json export individual spacings" {
 
 ///|
 test "graph json export no individual spacings" {
-  @graph.reset_graph_model_for_test()
   let graph = @graph.create_graph()
   let json = elk_graph_json_for_elk_graph(graph)
     .omit_unknown_layout_options(true)

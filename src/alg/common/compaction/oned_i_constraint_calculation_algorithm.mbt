@@ -1,2 +1,2 @@
 ///|
-pub type IConstraintCalculationAlgorithm = (OneDimensionalCompactor) -> Unit
+pub type IConstraintCalculationAlgorithm = (OneDimensionalCompactor) -> Unit raise

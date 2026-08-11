@@ -4,24 +4,20 @@ fn required_importer(
 ) -> @json.JsonImporter {
   match maybe_importer.get() {
     Some(importer) => importer
-    None => {
-      @core.layout_runtime_report_unsupported_configuration("missing importer")
-      @json.new_json_importer()
-    }
+    None => abort("missing importer")
   }
 }
 
 ///|
-pub fn layout_json(input_graph : String) -> String {
-  @test.reset_graph_model_for_test()
-  @test.plain_java_initialization_reset_for_test()
-  @test.plain_java_initialization_initialize_plain_java_layout()
+pub fn layout_json(input_graph : String) -> String raise {
+  let runtime = @json.new_layout_runtime()
+  let session = @core.new_layout_session()
 
   let maybe_importer : @core.Maybe[@json.JsonImporter] = @core.maybe_create()
   let root = @test.elk_graph_json_for_graph(input_graph)
     .remember_importer(maybe_importer)
     .to_elk()
-  let engine = @test.new_recursive_graph_layout_engine()
+  let engine = @core.new_recursive_graph_layout_engine(runtime, session)
   engine.layout(root, @test.new_basic_progress_monitor())
 
   let importer = required_importer(maybe_importer)
@@ -29,7 +25,7 @@ pub fn layout_json(input_graph : String) -> String {
   match importer.get_input_model() {
     Some(model) => Json::object(model).stringify()
     None => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "missing input model",
       )
       "{}"
@@ -38,6 +34,6 @@ pub fn layout_json(input_graph : String) -> String {
 }
 
 ///|
-fn main {
+fn main raise {
   println(layout_json(case_input_graph_json()))
 }

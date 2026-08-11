@@ -1,12 +1,10 @@
 ///|
 fn overall_layout_test_setup_plain_java_layout() -> Unit {
-  layout_meta_data_service_reset_for_test()
-  plain_java_initialization_reset_for_test()
-  plain_java_initialization_initialize_plain_java_layout()
+
 }
 
 ///|
-fn overall_layout_test_layout(graph : @graph.ElkNode) -> Unit {
+fn overall_layout_test_layout(graph : @graph.ElkNode) -> Unit raise {
   let resolver = new_layout_algorithm_resolver()
   apply_visitors(graph, [resolver.to_visitor()])
   let layout_engine = new_recursive_graph_layout_engine()
@@ -54,8 +52,7 @@ fn overall_layout_test_create_simple_graph() -> @graph.ElkNode {
 }
 
 ///|
-fn overall_layout_test_build_and_layout_simple_graph() -> @graph.ElkNode {
-  reset_graph_model_for_test()
+fn overall_layout_test_build_and_layout_simple_graph() -> @graph.ElkNode raise {
   overall_layout_test_setup_plain_java_layout()
   let graph = overall_layout_test_create_simple_graph()
   overall_layout_test_layout(graph)

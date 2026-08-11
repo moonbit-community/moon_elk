@@ -1,12 +1,12 @@
 ///|
 pub struct ISweepPortDistributor {
   initializable : IInitializable
-  distribute_ports_while_sweeping_fn : (Array[Array[LNode]], Int, Bool) -> Bool
+  distribute_ports_while_sweeping_fn : (Array[Array[LNode]], Int, Bool) -> Bool raise
 }
 
 ///|
 pub fn new_i_sweep_port_distributor(
-  distribute_ports_while_sweeping : (Array[Array[LNode]], Int, Bool) -> Bool,
+  distribute_ports_while_sweeping : (Array[Array[LNode]], Int, Bool) -> Bool raise,
   init_at_layer_level? : (Int, Array[Array[LNode]]) -> Unit = (_, _) => (),
   init_at_node_level? : (Int, Int, Array[Array[LNode]]) -> Unit = (_, _, _) => {
     ()
@@ -57,7 +57,7 @@ pub fn ISweepPortDistributor::distribute_ports_while_sweeping(
   order : Array[Array[LNode]],
   free_layer_index : Int,
   is_forward_sweep : Bool,
-) -> Bool {
+) -> Bool raise {
   (self.distribute_ports_while_sweeping_fn)(
     order, free_layer_index, is_forward_sweep,
   )

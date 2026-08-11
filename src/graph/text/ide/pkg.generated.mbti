@@ -2,6 +2,7 @@
 package "Milky2018/moon_elk/graph/text/ide"
 
 import {
+  "Milky2018/moon_elk/core",
   "Milky2018/moon_elk/graph",
   "Milky2018/moon_elk/graph/text",
 }
@@ -21,15 +22,15 @@ pub fn new_elk_graph_ide_module() -> ElkGraphIdeModule
 
 pub fn new_elk_graph_ide_name_mappings(@text.ElkGraphGrammarAccess) -> ElkGraphIdeNameMappings
 
-pub fn new_elk_graph_ide_parser(grammar_access? : @text.ElkGraphGrammarAccess) -> ElkGraphIdeParser
+pub fn new_elk_graph_ide_parser(@core.OptionMetadata, grammar_access? : @text.ElkGraphGrammarAccess) -> ElkGraphIdeParser
 
-pub fn new_elk_graph_ide_proposal_provider(grammar? : @text.ElkGraphGrammarAccess) -> ElkGraphIdeProposalProvider
+pub fn new_elk_graph_ide_proposal_provider(@core.OptionMetadata, grammar? : @text.ElkGraphGrammarAccess) -> ElkGraphIdeProposalProvider
 
 pub fn new_elk_graph_ide_setup() -> ElkGraphIdeSetup
 
 pub fn new_graph_text_ide_completion_proposal_acceptor() -> GraphTextIdeCompletionProposalAcceptor
 
-pub fn new_graph_text_ide_content_assist_context(prefix? : String, current_model? : @text.GraphTextElement?, current_property_key? : @text.GraphTextPropertyKey?, current_edge_section? : Int?, conflict_on_a? : Bool) -> GraphTextIdeContentAssistContext
+pub fn new_graph_text_ide_content_assist_context(prefix? : String, current_model? : @text.GraphTextElement?, current_property_key? : @text.GraphTextPropertyKey?, current_edge_section? : @graph.ElkEdgeSection?, conflict_on_a? : Bool) -> GraphTextIdeContentAssistContext
 
 pub fn new_graph_text_ide_content_assist_entry(String, String, String, label? : String?, description? : String?, documentation? : String?, source? : String?) -> GraphTextIdeContentAssistEntry
 
@@ -37,7 +38,7 @@ pub fn new_graph_text_ide_content_assist_lexer_binding(String, String) -> GraphT
 
 pub fn new_internal_elk_graph_ide_lexer(String) -> InternalElkGraphIdeLexer
 
-pub fn new_internal_elk_graph_ide_parser(Array[@text.ElkGraphLexToken], grammar_access? : @text.ElkGraphGrammarAccess) -> InternalElkGraphIdeParser
+pub fn new_internal_elk_graph_ide_parser(@core.OptionMetadata, Array[@text.ElkGraphLexToken], grammar_access? : @text.ElkGraphGrammarAccess) -> InternalElkGraphIdeParser
 
 pub fn new_partial_elk_graph_content_assist_parser() -> PartialElkGraphContentAssistParser
 
@@ -71,6 +72,7 @@ pub struct ElkGraphIdeNameMappings {
 pub fn ElkGraphIdeNameMappings::get_rule_name(Self, String) -> String?
 
 pub struct ElkGraphIdeParser {
+  metadata : @core.OptionMetadata
   mut name_mappings : ElkGraphIdeNameMappings
   mut grammar_access : @text.ElkGraphGrammarAccess
   mut initial_hidden_tokens : Array[String]
@@ -80,12 +82,13 @@ pub fn ElkGraphIdeParser::get_grammar_access(Self) -> @text.ElkGraphGrammarAcces
 pub fn ElkGraphIdeParser::get_initial_hidden_tokens(Self) -> Array[String]
 pub fn ElkGraphIdeParser::get_name_mappings(Self) -> ElkGraphIdeNameMappings
 pub fn ElkGraphIdeParser::get_rule_name(Self, String) -> String?
-pub fn ElkGraphIdeParser::parse(Self, String) -> Int
+pub fn ElkGraphIdeParser::parse(Self, String) -> @graph.ElkNode
 pub fn ElkGraphIdeParser::set_grammar_access(Self, @text.ElkGraphGrammarAccess) -> Unit
 pub fn ElkGraphIdeParser::set_initial_hidden_tokens(Self, Array[String]) -> Unit
 pub fn ElkGraphIdeParser::set_name_mappings(Self, ElkGraphIdeNameMappings) -> Unit
 
 pub struct ElkGraphIdeProposalProvider {
+  metadata : @core.OptionMetadata
   grammar : @text.ElkGraphGrammarAccess
 }
 pub fn ElkGraphIdeProposalProvider::complete_property_key(Self, GraphTextIdeContentAssistContext, GraphTextIdeCompletionProposalAcceptor) -> Unit
@@ -115,7 +118,7 @@ pub struct GraphTextIdeContentAssistContext {
   prefix : String
   current_model : @text.GraphTextElement?
   current_property_key : @text.GraphTextPropertyKey?
-  current_edge_section : Int?
+  current_edge_section : @graph.ElkEdgeSection?
   conflict_on_a : Bool
 }
 
@@ -142,10 +145,11 @@ pub fn InternalElkGraphIdeLexer::get_token_names(Self) -> Array[String]
 pub fn InternalElkGraphIdeLexer::lex_all(Self) -> Array[@text.ElkGraphLexToken]
 
 pub struct InternalElkGraphIdeParser {
+  metadata : @core.OptionMetadata
   tokens : Array[@text.ElkGraphLexToken]
   grammar_access : @text.ElkGraphGrammarAccess
 }
-pub fn InternalElkGraphIdeParser::entry_rule_root_node(Self) -> Int
+pub fn InternalElkGraphIdeParser::entry_rule_root_node(Self) -> @graph.ElkNode
 pub fn InternalElkGraphIdeParser::get_first_rule_name(Self) -> String
 pub fn InternalElkGraphIdeParser::get_follow_elements(Self) -> Array[String]
 pub fn InternalElkGraphIdeParser::get_grammar_access(Self) -> @text.ElkGraphGrammarAccess

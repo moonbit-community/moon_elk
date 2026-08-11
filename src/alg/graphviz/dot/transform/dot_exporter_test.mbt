@@ -15,14 +15,6 @@ fn option_vector_or_none(value : @core.KVector?) -> String {
 }
 
 ///|
-fn option_int_or_none(value : Int?) -> String {
-  match value {
-    Some(v) => v.to_string()
-    None => "none"
-  }
-}
-
-///|
 test "DotExporter create_attribute overloads" {
   let attr0 = dot_exporter_create_attribute(dot_attr_label, "\"hello\"")
   inspect(option_string_or_none(attr0.get_name()), content="label")
@@ -127,7 +119,6 @@ test "DotExporter wrappers and is_inside_graph" {
 
 ///|
 test "DotExporter node and edge id generation" {
-  @graph.reset_graph_model_for_test()
   let root = @graph.create_graph()
   let n0 = @graph.create_node(Some(root))
   let n1 = @graph.create_node(Some(root))
@@ -167,38 +158,31 @@ test "DotExporter node and edge id generation" {
 
   let graph_elems = data.get_graph_elem_map_property(map_property)
   inspect(graph_elems.length(), content="3")
-  inspect(
-    option_int_or_none(
-      match graph_elems.get("node1") {
-        Some(element) => dot_graph_element_as_node(element)
-        None => None
-      },
-    ),
-    content="1",
+  assert_eq(
+    match graph_elems.get("node1") {
+      Some(element) => dot_graph_element_as_node(element) == Some(n0)
+      None => false
+    },
+    true,
   )
-  inspect(
-    option_int_or_none(
-      match graph_elems.get("cluster2") {
-        Some(element) => dot_graph_element_as_node(element)
-        None => None
-      },
-    ),
-    content="2",
+  assert_eq(
+    match graph_elems.get("cluster2") {
+      Some(element) => dot_graph_element_as_node(element) == Some(n1)
+      None => false
+    },
+    true,
   )
-  inspect(
-    option_int_or_none(
-      match graph_elems.get("edge1") {
-        Some(element) => dot_graph_element_as_edge(element)
-        None => None
-      },
-    ),
-    content="0",
+  assert_eq(
+    match graph_elems.get("edge1") {
+      Some(element) => dot_graph_element_as_edge(element) == Some(e0)
+      None => false
+    },
+    true,
   )
 }
 
 ///|
 test "DotExporter transform basic graph" {
-  @graph.reset_graph_model_for_test()
   let root = @graph.create_graph()
   let source = @graph.create_node(Some(root))
   @graph.node_set_dimensions(source, 72.0, 36.0)
@@ -282,7 +266,6 @@ test "DotExporter transform basic graph" {
 
 ///|
 test "DotExporter transform emits edge ids when enabled" {
-  @graph.reset_graph_model_for_test()
   let root = @graph.create_graph()
   let source = @graph.create_node(Some(root))
   let target = @graph.create_node(Some(root))
@@ -309,20 +292,17 @@ test "DotExporter transform emits edge ids when enabled" {
   )
 
   let graph_elems = data.get_graph_elem_map_property(dot_exporter_graph_elems)
-  inspect(
-    option_int_or_none(
-      match graph_elems.get("edge1") {
-        Some(element) => dot_graph_element_as_edge(element)
-        None => None
-      },
-    ),
-    content="0",
+  assert_eq(
+    match graph_elems.get("edge1") {
+      Some(element) => dot_graph_element_as_edge(element) == Some(edge)
+      None => false
+    },
+    true,
   )
 }
 
 ///|
 test "DotExporter transform exports edge position from section" {
-  @graph.reset_graph_model_for_test()
   let root = @graph.create_graph()
   let source = @graph.create_node(Some(root))
   let target = @graph.create_node(Some(root))
@@ -353,7 +333,6 @@ test "DotExporter transform exports edge position from section" {
 
 ///|
 test "DotExporter transfer_layout applies node edge and label geometry" {
-  @graph.reset_graph_model_for_test()
   let root = @graph.create_graph()
   let source = @graph.create_node(Some(root))
   let target = @graph.create_node(Some(root))

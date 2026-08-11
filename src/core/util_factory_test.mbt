@@ -26,6 +26,7 @@ test "AlgorithmFactory forwards initialize parameter and dispose" {
   let disposed = Ref(false)
 
   let algorithm_factory = new_algorithm_factory(
+    new_layout_session(),
     () => {
       new_abstract_layout_provider(
         (_, _) => (),
@@ -52,7 +53,7 @@ test "AlgorithmFactory forwards initialize parameter and dispose" {
 ///|
 test "AlgorithmFactory defaults to None parameter" {
   let initialized_with_none = Ref(false)
-  let algorithm_factory = new_algorithm_factory(() => {
+  let algorithm_factory = new_algorithm_factory(new_layout_session(), () => {
     new_abstract_layout_provider((_, _) => (), initialize_fn=parameter => {
       if parameter is None {
         initialized_with_none.val = true

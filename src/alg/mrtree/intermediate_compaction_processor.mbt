@@ -1,7 +1,4 @@
 ///|
-let mrtree_compaction_levels : Ref[Array[@core.KVector]] = Ref([])
-
-///|
 fn mrtree_compaction_projection(
   node : MrtreeNode,
   direction_vector : @core.KVector,
@@ -86,15 +83,14 @@ fn mrtree_compaction_get_lowest_dependent_node(
 fn mrtree_compaction_set_up_levels(
   graph : MrtreeGraph,
   direction_value : String,
-) -> Unit {
-  mrtree_compaction_levels.val = []
+) -> Array[@core.KVector] {
+  let levels : Array[@core.KVector] = []
   for node in mrtree_graph_nodes(graph) {
-    while mrtree_node_tree_level(node) >
-          mrtree_compaction_levels.val.length() - 1 {
-      mrtree_compaction_levels.val.push(@core.new_kvector_xy(1.0e20, -1.0e20))
+    while mrtree_node_tree_level(node) > levels.length() - 1 {
+      levels.push(@core.new_kvector_xy(1.0e20, -1.0e20))
     }
     let current_level = mrtree_node_tree_level(node)
-    let level = mrtree_compaction_levels.val[current_level]
+    let level = levels[current_level]
     let position = mrtree_node_position(node)
     let size = mrtree_node_size(node)
     if mrtree_tree_util_direction_is_horizontal(direction_value) {
@@ -113,6 +109,7 @@ fn mrtree_compaction_set_up_levels(
       }
     }
   }
+  levels
 }
 
 ///|
@@ -248,7 +245,7 @@ fn mrtree_compaction_sort_nodes(
 fn mrtree_compaction_processor_process(
   graph : MrtreeGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   match progress_monitor {
     Some(monitor) => ignore(monitor.begin("Process compaction", 1.0))
     None => ()
@@ -261,7 +258,7 @@ fn mrtree_compaction_processor_process(
   let direction_value = mrtree_graph_direction(graph)
   let node_node_spacing = mrtree_graph_spacing_node_node(graph)
 
-  mrtree_compaction_set_up_levels(graph, direction_value)
+  let levels = mrtree_compaction_set_up_levels(graph, direction_value)
   mrtree_compaction_compute_node_constraints(
     graph,
     node_node_spacing / 2.0 / 2.0,
@@ -351,8 +348,8 @@ fn mrtree_compaction_processor_process(
 
       if mrtree_graph_edge_routing_mode(graph) is AVOID_OVERLAP {
         let mut level_index : Int? = None
-        for i in 0..<mrtree_compaction_levels.val.length() {
-          let level = mrtree_compaction_levels.val[i]
+        for i in 0..<levels.length() {
+          let level = levels[i]
           if level.x <= new_pos && level.y >= new_pos_size {
             level_index = Some(i)
             break
@@ -366,15 +363,15 @@ fn mrtree_compaction_processor_process(
             mrtree_node_position(node).y = new_pos
           }
         } else if direction_value == "LEFT" || direction_value == "UP" {
-          for i in 1..<mrtree_compaction_levels.val.length() {
-            if mrtree_compaction_levels.val[i].x <= new_pos {
+          for i in 1..<levels.length() {
+            if levels[i].x <= new_pos {
               level_index = Some(i)
               break
             }
           }
         } else {
-          for i in 1..<mrtree_compaction_levels.val.length() {
-            if mrtree_compaction_levels.val[i].x >= new_pos {
+          for i in 1..<levels.length() {
+            if levels[i].x >= new_pos {
               level_index = Some(i)
               break
             }
@@ -383,7 +380,7 @@ fn mrtree_compaction_processor_process(
 
         match level_index {
           Some(index) => {
-            let forced_pos = mrtree_compaction_levels.val[index].x
+            let forced_pos = levels[index].x
             if mrtree_tree_util_direction_is_horizontal(direction_value) {
               mrtree_node_position(node).x = forced_pos
             } else {

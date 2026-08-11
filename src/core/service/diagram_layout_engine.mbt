@@ -111,8 +111,13 @@ pub(all) struct DiagramLayoutEngine {
 }
 
 ///|
-fn diagram_layout_engine_default_graph_layout_engine() -> @core.IGraphLayoutEngine {
-  let recursive_engine = @core.new_recursive_graph_layout_engine()
+fn diagram_layout_engine_default_graph_layout_engine(
+  runtime : @core.LayoutRuntime,
+  session : @core.LayoutSession,
+) -> @core.IGraphLayoutEngine {
+  let recursive_engine = @core.new_recursive_graph_layout_engine(
+    runtime, session,
+  )
   @core.new_graph_layout_engine((layout_graph, progress_monitor) => {
     recursive_engine.layout(layout_graph, progress_monitor)
   })
@@ -120,12 +125,27 @@ fn diagram_layout_engine_default_graph_layout_engine() -> @core.IGraphLayoutEngi
 
 ///|
 pub fn new_diagram_layout_engine(
+  runtime : @core.LayoutRuntime,
+  session : @core.LayoutSession,
   connector : IDiagramLayoutConnector,
-  config_manager? : LayoutConfigurationManager = new_layout_configuration_manager(),
-  graph_layout_engine? : @core.IGraphLayoutEngine = diagram_layout_engine_default_graph_layout_engine(),
-  algorithm_resolver? : @core.LayoutAlgorithmResolver = @core.new_layout_algorithm_resolver(),
-  connectors_service? : LayoutConnectorsService = layout_connectors_service_get_instance(),
+  config_manager? : LayoutConfigurationManager,
+  graph_layout_engine? : @core.IGraphLayoutEngine,
+  algorithm_resolver? : @core.LayoutAlgorithmResolver,
+  connectors_service? : LayoutConnectorsService,
 ) -> DiagramLayoutEngine {
+  let metadata = runtime.option_metadata()
+  let config_manager = config_manager.unwrap_or(
+    new_layout_configuration_manager(metadata),
+  )
+  let graph_layout_engine = graph_layout_engine.unwrap_or(
+    diagram_layout_engine_default_graph_layout_engine(runtime, session),
+  )
+  let algorithm_resolver = algorithm_resolver.unwrap_or(
+    @core.new_layout_algorithm_resolver(metadata),
+  )
+  let connectors_service = connectors_service.unwrap_or(
+    new_layout_connectors_service(runtime, session),
+  )
   {
     connector,
     config_manager,
@@ -158,7 +178,7 @@ pub fn DiagramLayoutEngine::layout(
   diagram_part : ServiceDiagramElement?,
   progress_monitor? : @core.IElkProgressMonitor = @core.new_basic_progress_monitor(),
   params? : DiagramLayoutEngineParameters = new_diagram_layout_engine_parameters(),
-) -> LayoutMapping? {
+) -> LayoutMapping? raise {
   if workbench_part is None && diagram_part is None {
     return None
   }
@@ -235,15 +255,22 @@ fn diagram_layout_engine_from_injector(
         Some(manager) => manager
         None =>
           new_layout_configuration_manager(
+            injector.runtime.option_metadata(),
             config_provider=injector.get_layout_configuration_store_provider(),
           )
       }
       let graph_layout_engine = match injector.get_graph_layout_engine() {
         Some(engine) => engine
-        None => diagram_layout_engine_default_graph_layout_engine()
+        None =>
+          diagram_layout_engine_default_graph_layout_engine(
+            injector.runtime,
+            injector.session,
+          )
       }
       Some(
         new_diagram_layout_engine(
+          injector.runtime,
+          injector.session,
           connector,
           config_manager~,
           graph_layout_engine~,
@@ -257,11 +284,11 @@ fn diagram_layout_engine_from_injector(
 
 ///|
 pub fn diagram_layout_engine_invoke_layout(
+  service : LayoutConnectorsService,
   workbench_part : ServiceWorkbenchPart?,
   diagram_part : ServiceDiagramElement?,
   params? : DiagramLayoutEngineParameters = new_diagram_layout_engine_parameters(),
-) -> LayoutMapping? {
-  let service = layout_connectors_service_get_instance()
+) -> LayoutMapping? raise {
   match service.get_injector(workbench_part, diagram_part) {
     Some(injector) =>
       match diagram_layout_engine_from_injector(injector, service) {

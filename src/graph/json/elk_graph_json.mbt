@@ -1,5 +1,7 @@
 ///|
 pub struct ElkGraphJsonImportBuilder {
+  runtime : @core.LayoutRuntime
+  session : @core.LayoutSession
   graph : String?
   json_graph : Json?
   importer_maybe : @core.Maybe[JsonImporter]?
@@ -44,16 +46,27 @@ let _graph_json_layered_algorithm_id = @options.layered_algorithm_id
 let _graph_json_layered_pipeline_linked = @pipeline.layered_pipeline_linked
 
 ///|
-let _graph_json_layered_engine_linked = @engine.layered_engine_linked
-
-///|
 pub fn elk_graph_json_for_graph(graph : String) -> ElkGraphJsonImportBuilder {
-  { graph: Some(graph), json_graph: None, importer_maybe: None, lenient: true }
+  {
+    runtime: new_layout_runtime(),
+    session: @core.new_layout_session(),
+    graph: Some(graph),
+    json_graph: None,
+    importer_maybe: None,
+    lenient: true,
+  }
 }
 
 ///|
 pub fn elk_graph_json_for_json_graph(graph : Json) -> ElkGraphJsonImportBuilder {
-  { graph: None, json_graph: Some(graph), importer_maybe: None, lenient: true }
+  {
+    runtime: new_layout_runtime(),
+    session: @core.new_layout_session(),
+    graph: None,
+    json_graph: Some(graph),
+    importer_maybe: None,
+    lenient: true,
+  }
 }
 
 ///|
@@ -72,10 +85,19 @@ pub fn elk_graph_json_for_elk_graph(
 }
 
 ///|
-fn parse_non_lenient_json(graph : String) -> Json {
+/// Returns and clears the error reported while importing or laying out this
+/// graph. Error ownership stays with the builder's explicit layout session.
+pub fn ElkGraphJsonImportBuilder::take_error_message(
+  self : ElkGraphJsonImportBuilder,
+) -> String? {
+  self.session.take_error_message()
+}
+
+///|
+fn parse_non_lenient_json(graph : String) -> Json raise {
   let parsed = try @core_json.parse(graph) catch {
     _ => {
-      @core.layout_runtime_report_json_import("Failed to parse JSON input.")
+      @core.layout_runtime_raise_json_import("Failed to parse JSON input.")
       Json::object(Map([]))
     }
   } noraise {
@@ -374,7 +396,7 @@ fn quote_unquoted_object_keys(source : String) -> String {
 }
 
 ///|
-fn parse_lenient_json(graph : String) -> Json {
+fn parse_lenient_json(graph : String) -> Json raise {
   let normalized = quote_unquoted_object_keys(
     replace_semicolons(replace_single_quotes(strip_json_comments(graph))),
   )
@@ -382,7 +404,7 @@ fn parse_lenient_json(graph : String) -> Json {
 }
 
 ///|
-fn parse_json_graph(graph : String, lenient : Bool) -> Json {
+fn parse_json_graph(graph : String, lenient : Bool) -> Json raise {
   if lenient {
     parse_lenient_json(graph)
   } else {
@@ -391,11 +413,11 @@ fn parse_json_graph(graph : String, lenient : Bool) -> Json {
 }
 
 ///|
-fn ensure_json_object(value : Json) -> Map[String, Json] {
+fn ensure_json_object(value : Json) -> Map[String, Json] raise {
   match value {
     Object(obj) => obj
     _ => {
-      @core.layout_runtime_report_json_import(
+      @core.layout_runtime_raise_json_import(
         "Top-level element of the graph must be a json object.",
       )
       Map([])
@@ -434,20 +456,20 @@ fn json_id_to_string(value : Json) -> String? {
 }
 
 ///|
-fn required_json_id(json_obj : Map[String, Json]) -> String {
+fn required_json_id(json_obj : Map[String, Json]) -> String raise {
   match json_obj.get("id") {
     Some(id_json) =>
       match json_id_to_string(id_json) {
         Some(id) => id
         None => {
-          @core.layout_runtime_report_json_import(
+          @core.layout_runtime_raise_json_import(
             "Id must be a string or an integer.",
           )
           ""
         }
       }
     None => {
-      @core.layout_runtime_report_json_import("Every element must have an id.")
+      @core.layout_runtime_raise_json_import("Every element must have an id.")
       ""
     }
   }
@@ -681,6 +703,8 @@ pub fn ElkGraphJsonImportBuilder::remember_importer(
   maybe : @core.Maybe[JsonImporter],
 ) -> ElkGraphJsonImportBuilder {
   {
+    runtime: self.runtime,
+    session: self.session,
     graph: self.graph,
     json_graph: self.json_graph,
     importer_maybe: Some(maybe),
@@ -694,6 +718,8 @@ pub fn ElkGraphJsonImportBuilder::lenient(
   be_lenient : Bool,
 ) -> ElkGraphJsonImportBuilder {
   {
+    runtime: self.runtime,
+    session: self.session,
     graph: self.graph,
     json_graph: self.json_graph,
     importer_maybe: self.importer_maybe,
@@ -704,7 +730,7 @@ pub fn ElkGraphJsonImportBuilder::lenient(
 ///|
 fn import_builder_graph_object(
   builder : ElkGraphJsonImportBuilder,
-) -> Map[String, Json] {
+) -> Map[String, Json] raise {
   match builder.json_graph {
     Some(json_graph) => ensure_json_object(json_graph)
     None =>
@@ -712,7 +738,7 @@ fn import_builder_graph_object(
         Some(text) =>
           ensure_json_object(parse_json_graph(text, builder.lenient))
         None => {
-          @core.layout_runtime_report_json_import("Graph input is missing.")
+          builder.session.report_json_import("Graph input is missing.")
           Map([])
         }
       }
@@ -723,15 +749,22 @@ fn import_builder_graph_object(
 pub fn ElkGraphJsonImportBuilder::to_elk(
   self : ElkGraphJsonImportBuilder,
 ) -> @graph.ElkNode {
-  @core.layout_runtime_clear_error()
-  let json_graph = import_builder_graph_object(self)
-  let importer = new_json_importer()
-  let root = importer.transform(json_graph)
-  match self.importer_maybe {
-    Some(importer_maybe) => importer_maybe.set(Some(importer))
-    None => ()
+  self.session.clear_error()
+  try {
+    let json_graph = import_builder_graph_object(self)
+    let importer = new_json_importer(self.runtime, self.session)
+    let root = importer.transform(json_graph)
+    match self.importer_maybe {
+      Some(importer_maybe) => importer_maybe.set(Some(importer))
+      None => ()
+    }
+    root
+  } catch {
+    error => {
+      self.session.record_error(error)
+      @graph.create_graph()
+    }
   }
-  root
 }
 
 ///|

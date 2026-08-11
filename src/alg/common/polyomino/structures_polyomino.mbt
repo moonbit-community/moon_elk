@@ -13,7 +13,7 @@ pub fn new_polyomino_with_extensions(
   width : Int,
   height : Int,
   extensions : Array[@common.UniqueTriple[PolyominoDirection, Int, Int]],
-) -> Polyomino {
+) -> Polyomino raise {
   {
     planar_grid: new_planar_grid(width, height),
     x: 0,
@@ -23,12 +23,12 @@ pub fn new_polyomino_with_extensions(
 }
 
 ///|
-pub fn new_polyomino(width : Int, height : Int) -> Polyomino {
+pub fn new_polyomino(width : Int, height : Int) -> Polyomino raise {
   new_polyomino_with_extensions(width, height, [])
 }
 
 ///|
-pub fn new_empty_polyomino() -> Polyomino {
+pub fn new_empty_polyomino() -> Polyomino raise {
   new_polyomino(0, 0)
 }
 
@@ -48,17 +48,21 @@ pub fn Polyomino::height(self : Polyomino) -> Int {
 }
 
 ///|
-pub fn Polyomino::is_empty(self : Polyomino, x : Int, y : Int) -> Bool {
+pub fn Polyomino::is_empty(self : Polyomino, x : Int, y : Int) -> Bool raise {
   self.planar_grid.is_empty(x, y)
 }
 
 ///|
-pub fn Polyomino::is_blocked(self : Polyomino, x : Int, y : Int) -> Bool {
+pub fn Polyomino::is_blocked(self : Polyomino, x : Int, y : Int) -> Bool raise {
   self.planar_grid.is_blocked(x, y)
 }
 
 ///|
-pub fn Polyomino::is_weakly_blocked(self : Polyomino, x : Int, y : Int) -> Bool {
+pub fn Polyomino::is_weakly_blocked(
+  self : Polyomino,
+  x : Int,
+  y : Int,
+) -> Bool raise {
   self.planar_grid.is_weakly_blocked(x, y)
 }
 
@@ -72,17 +76,17 @@ pub fn Polyomino::reinitialize(
   self : Polyomino,
   width : Int,
   height : Int,
-) -> Unit {
+) -> Unit raise {
   self.planar_grid.reinitialize(width, height)
 }
 
 ///|
-pub fn Polyomino::set_empty(self : Polyomino, x : Int, y : Int) -> Unit {
+pub fn Polyomino::set_empty(self : Polyomino, x : Int, y : Int) -> Unit raise {
   self.planar_grid.set_empty(x, y)
 }
 
 ///|
-pub fn Polyomino::set_blocked(self : Polyomino, x : Int, y : Int) -> Unit {
+pub fn Polyomino::set_blocked(self : Polyomino, x : Int, y : Int) -> Unit raise {
   self.planar_grid.set_blocked(x, y)
 }
 
@@ -91,7 +95,7 @@ pub fn Polyomino::set_weakly_blocked(
   self : Polyomino,
   x : Int,
   y : Int,
-) -> Unit {
+) -> Unit raise {
   self.planar_grid.set_weakly_blocked(x, y)
 }
 
@@ -100,7 +104,7 @@ pub fn Polyomino::is_empty_center_based(
   self : Polyomino,
   x : Int,
   y : Int,
-) -> Bool {
+) -> Bool raise {
   self.planar_grid.is_empty_center_based(x, y)
 }
 
@@ -109,7 +113,7 @@ pub fn Polyomino::is_blocked_center_based(
   self : Polyomino,
   x : Int,
   y : Int,
-) -> Bool {
+) -> Bool raise {
   self.planar_grid.is_blocked_center_based(x, y)
 }
 
@@ -118,7 +122,7 @@ pub fn Polyomino::is_weakly_blocked_center_based(
   self : Polyomino,
   x : Int,
   y : Int,
-) -> Bool {
+) -> Bool raise {
   self.planar_grid.is_weakly_blocked_center_based(x, y)
 }
 
@@ -136,7 +140,7 @@ pub fn Polyomino::set_blocked_center_based(
   self : Polyomino,
   x : Int,
   y : Int,
-) -> Unit {
+) -> Unit raise {
   self.planar_grid.set_blocked_center_based(x, y)
 }
 
@@ -145,7 +149,7 @@ pub fn Polyomino::set_empty_center_based(
   self : Polyomino,
   x : Int,
   y : Int,
-) -> Unit {
+) -> Unit raise {
   self.planar_grid.set_empty_center_based(x, y)
 }
 
@@ -154,7 +158,7 @@ pub fn Polyomino::set_weakly_blocked_center_based(
   self : Polyomino,
   x : Int,
   y : Int,
-) -> Unit {
+) -> Unit raise {
   self.planar_grid.set_weakly_blocked_center_based(x, y)
 }
 

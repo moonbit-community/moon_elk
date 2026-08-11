@@ -104,7 +104,7 @@ fn layer_sweep_test_make_nested_two_node_graph_with_western_ports(
   creator : TestGraphCreator,
   right_outer_node : LNode,
   right_outer_ports : Array[LPort],
-) -> LGraph {
+) -> LGraph raise {
   let right_inner_graph = creator.nested_graph(right_outer_node)
   let right_inner_dummy_nodes = creator.add_external_port_dummies_to_layer(
     creator.make_layer(right_inner_graph),
@@ -130,7 +130,7 @@ fn layer_sweep_test_make_nested_two_node_graph_with_eastern_ports(
   creator : TestGraphCreator,
   left_outer_node : LNode,
   left_outer_ports : Array[LPort],
-) -> LGraph {
+) -> LGraph raise {
   let left_inner_graph = creator.nested_graph(left_outer_node)
   let left_inner_nodes = creator.add_nodes_to_layer(
     2,
@@ -155,7 +155,7 @@ fn layer_sweep_test_make_nested_two_node_graph_with_eastern_ports(
 fn layer_sweep_test_run(
   creator : TestGraphCreator,
   cross_min_type : CrossMinType,
-) -> Unit {
+) -> Unit raise {
   let cross_min = new_layer_sweep_crossing_minimizer(cross_min_type)
   cross_min.process(
     creator.get_graph(),
@@ -167,7 +167,7 @@ fn layer_sweep_test_run(
 fn layer_sweep_test_run_and_get_cross_min(
   creator : TestGraphCreator,
   cross_min_type : CrossMinType,
-) -> LayerSweepCrossingMinimizer {
+) -> LayerSweepCrossingMinimizer raise {
   let cross_min = new_layer_sweep_crossing_minimizer(cross_min_type)
   cross_min.process(
     creator.get_graph(),

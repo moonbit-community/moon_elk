@@ -15,15 +15,11 @@ fn graph_json_issue12_classes_input_json() -> String {
 
 ///|
 fn graph_json_issue12_layout(input : String) -> @graph.ElkNode {
-  @graph.reset_graph_model_for_test()
-  @core.layout_meta_data_service_reset_for_test()
-  @core.layout_meta_data_service_register_default_algorithms()
-
   let root = elk_graph_json_for_graph(input).to_elk()
-  @core.new_recursive_graph_layout_engine().layout(
-    root,
-    @core.new_null_elk_progress_monitor(),
-  )
+  @core.new_recursive_graph_layout_engine(
+    new_layout_runtime(),
+    @core.new_layout_session(),
+  ).layout(root, @core.new_null_elk_progress_monitor())
   root
 }
 

@@ -1,6 +1,5 @@
 ///|
 test "GraphFromMethod provides graph from callback" {
-  reset_graph_model_for_test()
   let source = create_graph()
   let graph = new_graph_from_method("source", _ => source)
   inspect(graph.to_string(), content="graphMethod(source)")
@@ -12,7 +11,6 @@ test "GraphFromMethod provides graph from callback" {
 
 ///|
 test "GraphFromFile loads registered graph text by absolute path" {
-  reset_graph_model_for_test()
   graph_from_file_reset_content_for_test()
   let path = new_absolute_resource_path("/graphs/simple.elkg")
   graph_from_file_register_content_for_test(
@@ -25,7 +23,6 @@ test "GraphFromFile loads registered graph text by absolute path" {
 
 ///|
 test "RandomGraphFromMethod creates copyable deterministic random graph" {
-  reset_graph_model_for_test()
   let options = new_core_debug_grandom_generator_options()
   let random_graph = random_graph_from_method_from_options("rnd", options)
   let first = random_graph.provide_graph(())
@@ -37,7 +34,6 @@ test "RandomGraphFromMethod creates copyable deterministic random graph" {
 
 ///|
 test "RandomGraphFromFile creates graph instances from .elkr resources" {
-  reset_graph_model_for_test()
   core_debug_reset_foundation_for_test()
   random_graph_from_file_reset_content_for_test()
   core_debug_register_directory_for_test("/cases", ["/cases/a.elkr"])

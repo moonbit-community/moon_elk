@@ -31,7 +31,9 @@ test "GraphvizPreferencePage exposes id description and fields" {
   graphviz_layouter_preference_store_reset_for_test()
   graphviz_layouter_plugin_reset_for_test()
 
-  let page = new_graphviz_preference_page()
+  let page = new_graphviz_preference_page(
+    @core.new_layout_runtime().option_metadata(),
+  )
   inspect(
     graphviz_preference_page_id,
     content="org.eclipse.elk.alg.graphviz.preferences",
@@ -66,7 +68,9 @@ test "GraphvizPreferencePage init binds preference store" {
   let plugin = new_graphviz_layouter_plugin()
   plugin.start()
 
-  let page = new_graphviz_preference_page()
+  let page = new_graphviz_preference_page(
+    @core.new_layout_runtime().option_metadata(),
+  )
   page.init()
   inspect(
     match page.get_preference_store() {
@@ -81,9 +85,9 @@ test "GraphvizPreferencePage init binds preference store" {
 
 ///|
 test "GraphvizPreferencePage perform_ok clears Graphviz instance pools" {
-  @core.layout_meta_data_service_reset_for_test()
+  let metadata = @core.new_layout_runtime().option_metadata()
   let clear_count_ref : Ref[Int] = Ref(0)
-  @core.layout_meta_data_service_register_algorithm(
+  metadata.register_algorithm(
     @core.new_layout_algorithm_data(
       "org.eclipse.elk.graphviz.dot",
       name="Graphviz Dot",
@@ -91,7 +95,7 @@ test "GraphvizPreferencePage perform_ok clears Graphviz instance pools" {
       instance_pool_clear_fn=() => clear_count_ref.val = clear_count_ref.val + 1,
     ),
   )
-  @core.layout_meta_data_service_register_algorithm(
+  metadata.register_algorithm(
     @core.new_layout_algorithm_data(
       "org.eclipse.elk.layered",
       name="Layered",
@@ -102,7 +106,7 @@ test "GraphvizPreferencePage perform_ok clears Graphviz instance pools" {
     ),
   )
 
-  let page = new_graphviz_preference_page()
+  let page = new_graphviz_preference_page(metadata)
   inspect(page.perform_ok(), content="true")
   inspect(clear_count_ref.val, content="1")
 }

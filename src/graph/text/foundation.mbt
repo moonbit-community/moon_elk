@@ -22,11 +22,12 @@ pub fn graph_text_property_key_group(key : GraphTextPropertyKey) -> String {
 
 ///|
 pub fn graph_text_property_key_to_layout_option(
+  metadata : @core.OptionMetadata,
   key : GraphTextPropertyKey,
 ) -> @core.LayoutOptionData? {
   match key {
     LayoutOption(option_data) => Some(option_data)
-    CustomProperty(id) => @core.layout_meta_data_service_get_option_data_opt(id)
+    CustomProperty(id) => metadata.option_data_opt(id)
   }
 }
 

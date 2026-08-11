@@ -1,5 +1,5 @@
 ///|
-fn mrtree_run_p2_processors(graph : MrtreeGraph) -> Unit {
+fn mrtree_run_p2_processors(graph : MrtreeGraph) -> Unit raise {
   new_mrtree_root_processor_layout_processor().process(
     graph,
     Some(@core.new_basic_progress_monitor()),
@@ -20,7 +20,6 @@ fn mrtree_run_p2_processors(graph : MrtreeGraph) -> Unit {
 
 ///|
 test "Mrtree NodeOrderer FAN weighting follows fan/leaf strategy" {
-  reset_mrtree_graph_model_for_test()
   let graph = new_mrtree_graph()
   mrtree_graph_set_weighting(graph, "FAN")
 
@@ -56,7 +55,6 @@ test "Mrtree NodeOrderer FAN weighting follows fan/leaf strategy" {
 
 ///|
 test "Mrtree NodeOrderer CONSTRAINT weighting enforces position constraints" {
-  reset_mrtree_graph_model_for_test()
   let graph = new_mrtree_graph()
   mrtree_graph_set_weighting(graph, "CONSTRAINT")
 

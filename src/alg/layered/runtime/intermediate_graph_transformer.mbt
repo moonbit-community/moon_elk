@@ -372,7 +372,7 @@ fn graph_transformer_mirror_alignment_y(node : LNode) -> Unit {
 }
 
 ///|
-fn graph_transformer_transpose_node_properties(node : LNode) -> Unit {
+fn graph_transformer_transpose_node_properties(node : LNode) -> Unit raise {
   let min_size = @core.new_kvector()
   min_size.parse(node.get_property_string(@core.node_size_minimum))
   node.set_property_string(
@@ -401,7 +401,7 @@ fn graph_transformer_transpose_node_properties(node : LNode) -> Unit {
 ///|
 fn graph_transformer_mirror_x_node_labels_padding(
   layered_graph : LGraph,
-) -> Unit {
+) -> Unit raise {
   let node_labels_padding = @core.new_spacing()
   node_labels_padding.parse(
     layered_graph.get_property_string(
@@ -418,7 +418,7 @@ fn graph_transformer_mirror_x_node_labels_padding(
 ///|
 fn graph_transformer_mirror_y_node_labels_padding(
   layered_graph : LGraph,
-) -> Unit {
+) -> Unit raise {
   let node_labels_padding = @core.new_spacing()
   node_labels_padding.parse(
     layered_graph.get_property_string(
@@ -435,7 +435,7 @@ fn graph_transformer_mirror_y_node_labels_padding(
 ///|
 fn graph_transformer_transpose_node_labels_padding(
   layered_graph : LGraph,
-) -> Unit {
+) -> Unit raise {
   let node_labels_padding = @core.new_spacing()
   node_labels_padding.parse(
     layered_graph.get_property_string(
@@ -450,7 +450,9 @@ fn graph_transformer_transpose_node_labels_padding(
 }
 
 ///|
-fn graph_transformer_mirror_x_node_labels_padding_node(node : LNode) -> Unit {
+fn graph_transformer_mirror_x_node_labels_padding_node(
+  node : LNode,
+) -> Unit raise {
   if !node.has_property_string(graph_transformer_node_labels_padding_property) {
     return
   }
@@ -466,7 +468,9 @@ fn graph_transformer_mirror_x_node_labels_padding_node(node : LNode) -> Unit {
 }
 
 ///|
-fn graph_transformer_mirror_y_node_labels_padding_node(node : LNode) -> Unit {
+fn graph_transformer_mirror_y_node_labels_padding_node(
+  node : LNode,
+) -> Unit raise {
   if !node.has_property_string(graph_transformer_node_labels_padding_property) {
     return
   }
@@ -482,7 +486,9 @@ fn graph_transformer_mirror_y_node_labels_padding_node(node : LNode) -> Unit {
 }
 
 ///|
-fn graph_transformer_transpose_node_labels_padding_node(node : LNode) -> Unit {
+fn graph_transformer_transpose_node_labels_padding_node(
+  node : LNode,
+) -> Unit raise {
   if !node.has_property_string(graph_transformer_node_labels_padding_property) {
     return
   }
@@ -608,7 +614,7 @@ fn graph_transformer_collect_nodes(layered_graph : LGraph) -> Array[LNode] {
 fn graph_transformer_mirror_x(
   layered_graph : LGraph,
   nodes : Array[LNode],
-) -> Unit {
+) -> Unit raise {
   let graph_size = layered_graph.get_size()
   let graph_offset = layered_graph.get_offset()
 
@@ -718,7 +724,7 @@ fn graph_transformer_mirror_x(
 fn graph_transformer_mirror_y(
   layered_graph : LGraph,
   nodes : Array[LNode],
-) -> Unit {
+) -> Unit raise {
   let graph_size = layered_graph.get_size()
   let graph_offset = layered_graph.get_offset()
 
@@ -828,7 +834,7 @@ fn graph_transformer_mirror_y(
 fn graph_transformer_transpose(
   layered_graph : LGraph,
   nodes : Array[LNode],
-) -> Unit {
+) -> Unit raise {
   for node in nodes {
     graph_transformer_transpose_vector(node.get_position())
     graph_transformer_transpose_vector(node.get_size())
@@ -901,7 +907,7 @@ fn graph_transformer_transpose(
 fn graph_transformer_rotate_90_clockwise(
   layered_graph : LGraph,
   nodes : Array[LNode],
-) -> Unit {
+) -> Unit raise {
   graph_transformer_transpose(layered_graph, nodes)
   graph_transformer_mirror_x(layered_graph, nodes)
 }
@@ -910,7 +916,7 @@ fn graph_transformer_rotate_90_clockwise(
 fn graph_transformer_rotate_90_counter_clockwise(
   layered_graph : LGraph,
   nodes : Array[LNode],
-) -> Unit {
+) -> Unit raise {
   graph_transformer_mirror_x(layered_graph, nodes)
   graph_transformer_transpose(layered_graph, nodes)
 }
@@ -919,7 +925,7 @@ fn graph_transformer_rotate_90_counter_clockwise(
 fn graph_transformer_process_mode(
   layered_graph : LGraph,
   mode : GraphTransformerMode,
-) -> Unit {
+) -> Unit raise {
   let nodes = graph_transformer_collect_nodes(layered_graph)
   let direction_value = layered_graph.get_property_string(@core.direction)
   let congruency = graph_transformer_parse_direction_congruency(
@@ -964,7 +970,7 @@ fn graph_transformer_process(
   mode : GraphTransformerMode,
   layered_graph : LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()

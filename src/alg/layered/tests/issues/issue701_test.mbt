@@ -1,15 +1,11 @@
 ///|
 fn issue701_test_setup_plain_java_layout() -> Unit {
-  @core.layout_meta_data_service_reset_for_test()
-  @test.plain_java_initialization_reset_for_test()
-  @test.plain_java_initialization_initialize_plain_java_layout()
+
 }
 
 ///|
 fn issue701_test_layout(graph : @graph.ElkNode) -> Unit {
-  let resolver = @core.new_layout_algorithm_resolver()
-  @core.apply_visitors(graph, [resolver.to_visitor()])
-  let layout_engine = @core.new_recursive_graph_layout_engine()
+  let layout_engine = @test.new_recursive_graph_layout_engine()
   layout_engine.layout(graph, @core.new_null_elk_progress_monitor())
 }
 
@@ -200,7 +196,6 @@ fn issue701_test_create_node_with_port_label(
 
 ///|
 test "Issue701 inside labels" {
-  @graph.reset_graph_model_for_test()
   issue701_test_setup_plain_java_layout()
 
   let graph = @graph.create_graph()
@@ -281,7 +276,6 @@ test "Issue701 inside labels" {
 
 ///|
 test "Issue701 outside labels" {
-  @graph.reset_graph_model_for_test()
   issue701_test_setup_plain_java_layout()
 
   let graph = @graph.create_graph()
@@ -342,7 +336,6 @@ test "Issue701 outside labels" {
 
 ///|
 test "Issue701 mix inside and outside labels" {
-  @graph.reset_graph_model_for_test()
   issue701_test_setup_plain_java_layout()
 
   let graph = @graph.create_graph()
@@ -432,7 +425,6 @@ test "Issue701 mix inside and outside labels" {
 
 ///|
 test "Issue701 fixed inside labels" {
-  @graph.reset_graph_model_for_test()
   issue701_test_setup_plain_java_layout()
 
   let graph = @graph.create_graph()
@@ -466,7 +458,6 @@ test "Issue701 fixed inside labels" {
 
 ///|
 test "Issue701 fixed outside labels" {
-  @graph.reset_graph_model_for_test()
   issue701_test_setup_plain_java_layout()
 
   let graph = @graph.create_graph()
@@ -498,7 +489,6 @@ test "Issue701 fixed outside labels" {
 
 ///|
 test "Issue701 fixed mix inside and outside labels" {
-  @graph.reset_graph_model_for_test()
   issue701_test_setup_plain_java_layout()
 
   let graph = @graph.create_graph()

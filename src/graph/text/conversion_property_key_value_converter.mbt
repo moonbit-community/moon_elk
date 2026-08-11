@@ -1,5 +1,6 @@
 ///|
 pub struct PropertyKeyValueConverter {
+  metadata : @core.OptionMetadata
   mut id_rule : String
 }
 
@@ -16,8 +17,10 @@ fn property_key_value_converter_raise_unit(
 }
 
 ///|
-pub fn new_property_key_value_converter() -> PropertyKeyValueConverter {
-  { id_rule: "ID" }
+pub fn new_property_key_value_converter(
+  metadata : @core.OptionMetadata,
+) -> PropertyKeyValueConverter {
+  { metadata, id_rule: "ID" }
 }
 
 ///|
@@ -97,7 +100,7 @@ fn graph_text_property_key_id_to_string(text : String) -> String {
 pub fn PropertyKeyValueConverter::to_string(
   self : PropertyKeyValueConverter,
   value : GraphTextPropertyKey?,
-) -> String {
+) -> String raise {
   ignore(self.id_rule)
   match value {
     None => {
@@ -107,7 +110,7 @@ pub fn PropertyKeyValueConverter::to_string(
         )
       catch {
         PropertyKeyValueConverterException(message) =>
-          @core.layout_runtime_report_unsupported_configuration(
+          @core.layout_runtime_raise_unsupported_configuration(
             "org.eclipse.elk.graph.text.conversion.PropertyKeyValueConverter: " +
             message,
           )
@@ -131,8 +134,7 @@ pub fn PropertyKeyValueConverter::to_string(
           Some(current) => current
           None => ""
         }
-        match
-          @core.layout_meta_data_service_get_option_data_by_suffix(maybe_suffix) {
+        match self.metadata.option_data_by_suffix(maybe_suffix) {
           Some(known_option) =>
             if known_option.get_group() == "" ||
               maybe_suffix.contains(known_option.get_group()) {
@@ -155,7 +157,7 @@ pub fn PropertyKeyValueConverter::to_string(
 pub fn PropertyKeyValueConverter::to_value(
   self : PropertyKeyValueConverter,
   text : String,
-) -> GraphTextPropertyKey {
+) -> GraphTextPropertyKey raise {
   ignore(self.id_rule)
   if text == "" {
     try
@@ -164,7 +166,7 @@ pub fn PropertyKeyValueConverter::to_value(
       )
     catch {
       PropertyKeyValueConverterException(message) =>
-        @core.layout_runtime_report_unsupported_configuration(
+        @core.layout_runtime_raise_unsupported_configuration(
           "org.eclipse.elk.graph.text.conversion.PropertyKeyValueConverter: " +
           message,
         )
@@ -178,7 +180,7 @@ pub fn PropertyKeyValueConverter::to_value(
     decoded_segments.push(graph_text_property_key_id_to_value(segment))
   }
   let id_suffix = graph_text_join_dotted_segments(decoded_segments)
-  match @core.layout_meta_data_service_get_option_data_by_suffix(id_suffix) {
+  match self.metadata.option_data_by_suffix(id_suffix) {
     Some(option_data) => LayoutOption(option_data)
     None => CustomProperty(text)
   }

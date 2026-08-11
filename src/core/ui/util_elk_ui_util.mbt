@@ -38,10 +38,11 @@ pub fn core_ui_elk_ui_util_run_model_change(
 
 ///|
 pub fn core_ui_elk_ui_util_get_option_data(
+  metadata : @core.OptionMetadata,
   provider_data : @core.LayoutAlgorithmData,
   option_name : String,
 ) -> @core.LayoutOptionData? {
-  for option_data in @core.layout_meta_data_service_option_data_values() {
+  for option_data in metadata.option_data_values() {
     if option_data.get_name() == option_name &&
       provider_data.knows_option(option_data.get_id()) {
       return Some(option_data)
@@ -52,14 +53,16 @@ pub fn core_ui_elk_ui_util_get_option_data(
 
 ///|
 pub fn core_ui_elk_ui_util_get_option_data_from_providers(
+  metadata : @core.OptionMetadata,
   provider_data_array : Array[@core.LayoutAlgorithmData],
   display_name : String,
 ) -> @core.LayoutOptionData? {
   for provider_data in provider_data_array {
-    match core_ui_elk_ui_util_get_option_data(provider_data, display_name) {
+    match
+      core_ui_elk_ui_util_get_option_data(metadata, provider_data, display_name) {
       Some(option_data) => return Some(option_data)
       None => ()
     }
   }
-  @core.layout_meta_data_service_get_option_data_opt(@core.algorithm.get_id())
+  metadata.option_data_opt(@core.algorithm.get_id())
 }

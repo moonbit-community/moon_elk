@@ -1,4 +1,4 @@
 ///|
 pub type LayeredIConstraintCalculationAlgorithm = (
   LayeredOneDimensionalCompactor,
-) -> Unit
+) -> Unit raise

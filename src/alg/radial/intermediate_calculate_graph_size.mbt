@@ -62,7 +62,7 @@ pub fn new_radial_calculate_graph_size_layout_processor() -> @core.ILayoutProces
       let root = match radial_internal_root(graph) {
         Some(value) => value
         None => {
-          @core.layout_runtime_report_unsupported_configuration(
+          @core.layout_runtime_raise_unsupported_configuration(
             "radial root node is missing",
           )
           graph

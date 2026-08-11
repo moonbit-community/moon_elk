@@ -51,7 +51,7 @@ pub fn ExecutionInfoModel::replace_execution(
 pub fn ExecutionInfoModel::remove_execution_infos(
   self : ExecutionInfoModel,
   infos : Array[ExecutionInfo],
-) -> Unit {
+) -> Unit raise {
   for info in infos {
     match execution_info_get_parent(info) {
       Some(parent) => execution_info_remove_child(parent, info)

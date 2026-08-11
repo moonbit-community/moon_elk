@@ -34,7 +34,7 @@ fn force_dfs(
   graph : FGraph?,
   visited : Array[Bool],
   incidence : Array[Array[FEdge]],
-) -> FGraph? {
+) -> FGraph? raise {
   let node_id = fnode_id(node)
   if visited[node_id] {
     return None
@@ -159,7 +159,7 @@ fn move_graph(
 pub fn ComponentsProcessor::split(
   self : ComponentsProcessor,
   graph : FGraph,
-) -> Array[FGraph] {
+) -> Array[FGraph] raise {
   ignore(self)
   if !graph.get_property(force_separate_connected_components) {
     return [graph]

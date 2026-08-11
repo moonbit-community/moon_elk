@@ -9,7 +9,7 @@ pub type LayeredCGroupBuilder = @compaction.CGroupBuilder
 
 ///|
 pub fn reset_layered_compaction_oned_model_for_test() -> Unit {
-  @compaction.reset_compaction_oned_model_for_test()
+
 }
 
 ///|

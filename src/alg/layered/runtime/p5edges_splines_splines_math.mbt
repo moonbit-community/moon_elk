@@ -139,7 +139,7 @@ pub fn splines_math_convert_kvector_array_to_string(
 pub fn splines_math_length_to_orthogonal(
   direction : Double,
   point : @core.KVector,
-) -> Double {
+) -> Double raise {
   let mut angle = splines_math_inner_angle_directions(
     direction,
     point.to_radians(),

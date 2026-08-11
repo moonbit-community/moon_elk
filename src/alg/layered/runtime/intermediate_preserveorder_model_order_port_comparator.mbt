@@ -360,7 +360,7 @@ pub fn ModelOrderPortComparator::compare(
   self : ModelOrderPortComparator,
   original_p1 : LPort,
   original_p2 : LPort,
-) -> Int {
+) -> Int raise {
   try {
     let p1 = original_p1
     let p2 = original_p2
@@ -705,7 +705,7 @@ pub fn ModelOrderPortComparator::compare(
     }
   } catch {
     ModelOrderPortComparatorException(message) => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "java.lang.IllegalStateException: " + message,
       )
       0

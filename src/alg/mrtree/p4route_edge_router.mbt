@@ -888,7 +888,7 @@ fn _mrtree_edge_router_avoid_overlap(graph : MrtreeGraph) -> Unit {
 fn mrtree_edge_router_process(
   graph : MrtreeGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   match progress_monitor {
     Some(monitor) => ignore(monitor.begin("Dull edge routing", 1.0))
     None => ()
@@ -911,7 +911,7 @@ pub fn new_mrtree_edge_router_layout_phase() -> @core.ILayoutProcessor[
   MrtreeTreeLayoutPhases,
   MrtreeGraph,
 ] {
-  @core.new_layout_phase(
+  @core.new_pure_layout_phase(
     mrtree_edge_router_process, mrtree_edge_router_layout_processor_configuration,
   )
 }

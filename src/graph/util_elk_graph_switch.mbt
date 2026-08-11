@@ -171,23 +171,31 @@ pub fn[T] ElkGraphSwitch::do_switch(
       chain((self.case_elk_graph_element_fn)(element), self.default_case_fn)
     ElkShapeTarget(shape) =>
       chain((self.case_elk_shape_fn)(shape), () => {
-        chain((self.case_elk_graph_element_fn)(shape), self.default_case_fn)
+        let element = match shape {
+          ElkNodeShape(node) => ElkNodeElement(node)
+          ElkPortShape(port) => ElkPortElement(port)
+          ElkLabelShape(label) => ElkLabelElement(label)
+        }
+        chain((self.case_elk_graph_element_fn)(element), self.default_case_fn)
       })
     ElkLabelTarget(label) =>
       chain((self.case_elk_label_fn)(label), () => {
-        chain((self.case_elk_shape_fn)(label), () => {
-          chain((self.case_elk_graph_element_fn)(label), self.default_case_fn)
+        chain((self.case_elk_shape_fn)(ElkLabelShape(label)), () => {
+          chain(
+            (self.case_elk_graph_element_fn)(ElkLabelElement(label)),
+            self.default_case_fn,
+          )
         })
       })
     ElkConnectableShapeTarget(shape) => {
-      let shape_as_shape = match shape {
-        NodeShape(node) => node
-        PortShape(port) => port
+      let (shape_as_shape, shape_as_element) = match shape {
+        NodeShape(node) => (ElkNodeShape(node), ElkNodeElement(node))
+        PortShape(port) => (ElkPortShape(port), ElkPortElement(port))
       }
       chain((self.case_elk_connectable_shape_fn)(shape), () => {
         chain((self.case_elk_shape_fn)(shape_as_shape), () => {
           chain(
-            (self.case_elk_graph_element_fn)(shape_as_shape),
+            (self.case_elk_graph_element_fn)(shape_as_element),
             self.default_case_fn,
           )
         })
@@ -196,22 +204,31 @@ pub fn[T] ElkGraphSwitch::do_switch(
     ElkNodeTarget(node) =>
       chain((self.case_elk_node_fn)(node), () => {
         chain((self.case_elk_connectable_shape_fn)(make_node_shape(node)), () => {
-          chain((self.case_elk_shape_fn)(node), () => {
-            chain((self.case_elk_graph_element_fn)(node), self.default_case_fn)
+          chain((self.case_elk_shape_fn)(ElkNodeShape(node)), () => {
+            chain(
+              (self.case_elk_graph_element_fn)(ElkNodeElement(node)),
+              self.default_case_fn,
+            )
           })
         })
       })
     ElkPortTarget(port) =>
       chain((self.case_elk_port_fn)(port), () => {
         chain((self.case_elk_connectable_shape_fn)(make_port_shape(port)), () => {
-          chain((self.case_elk_shape_fn)(port), () => {
-            chain((self.case_elk_graph_element_fn)(port), self.default_case_fn)
+          chain((self.case_elk_shape_fn)(ElkPortShape(port)), () => {
+            chain(
+              (self.case_elk_graph_element_fn)(ElkPortElement(port)),
+              self.default_case_fn,
+            )
           })
         })
       })
     ElkEdgeTarget(edge) =>
       chain((self.case_elk_edge_fn)(edge), () => {
-        chain((self.case_elk_graph_element_fn)(edge), self.default_case_fn)
+        chain(
+          (self.case_elk_graph_element_fn)(ElkEdgeElement(edge)),
+          self.default_case_fn,
+        )
       })
     ElkBendPointTarget(bend_point) =>
       chain((self.case_elk_bend_point_fn)(bend_point), self.default_case_fn)

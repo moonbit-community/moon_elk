@@ -19,13 +19,13 @@ fn hyperedge_dummy_merger_lport_equals(left : LPort, right : LPort) -> Bool {
 }
 
 ///|
-fn hyperedge_dummy_merger_port_side(name : String) -> @core.PortSide {
+fn hyperedge_dummy_merger_port_side(name : String) -> @core.PortSide raise {
   for side in @core.port_side_values() {
     if @core.port_side_to_string(side) == name {
       return side
     }
   }
-  @core.layout_runtime_report_unsupported_configuration("unknown port side")
+  @core.layout_runtime_raise_unsupported_configuration("unknown port side")
   SideUndefined
 }
 
@@ -33,12 +33,12 @@ fn hyperedge_dummy_merger_port_side(name : String) -> @core.PortSide {
 fn hyperedge_dummy_merger_require_port_on_side(
   node : LNode,
   side_name : String,
-) -> LPort {
+) -> LPort raise {
   let ports = node.get_ports_by_side(
     hyperedge_dummy_merger_port_side(side_name),
   )
   if ports.is_empty() {
-    @core.layout_runtime_report_unsupported_configuration(
+    @core.layout_runtime_raise_unsupported_configuration(
       "missing required port side",
     )
     return new_l_port()
@@ -131,7 +131,7 @@ fn hyperedge_dummy_merger_merge_nodes(
   merge_target : LNode,
   keep_source_port : Bool,
   keep_target_port : Bool,
-) -> Unit {
+) -> Unit raise {
   let merge_target_input_port = hyperedge_dummy_merger_require_port_on_side(
     merge_target, "WEST",
   )
@@ -208,7 +208,7 @@ fn hyperedge_dummy_merger_identify_hyperedges(graph : LGraph) -> Unit {
 fn hyperedge_dummy_merger_process(
   layered_graph : LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()

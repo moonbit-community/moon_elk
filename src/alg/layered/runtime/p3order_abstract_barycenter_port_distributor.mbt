@@ -64,7 +64,7 @@ pub struct AbstractBarycenterPortDistributor {
     LNode,
     Double,
     PortType,
-  ) -> Double
+  ) -> Double raise
 }
 
 ///|
@@ -75,7 +75,7 @@ pub fn new_abstract_barycenter_port_distributor(
     LNode,
     Double,
     PortType,
-  ) -> Double,
+  ) -> Double raise,
 ) -> AbstractBarycenterPortDistributor {
   let node_positions = []
   for _ in 0..<num_layers {
@@ -106,7 +106,7 @@ pub fn AbstractBarycenterPortDistributor::distribute_ports_while_sweeping(
   node_order : Array[Array[LNode]],
   current_index : Int,
   is_forward_sweep : Bool,
-) -> Bool {
+) -> Bool raise {
   self.update_node_positions(node_order, current_index)
   let free_layer = node_order[current_index]
   let side = if is_forward_sweep { @core.PortSide::West } else { East }
@@ -148,7 +148,7 @@ pub fn AbstractBarycenterPortDistributor::calculate_port_ranks(
   self : AbstractBarycenterPortDistributor,
   layer : Array[LNode],
   port_type : PortType,
-) -> Unit {
+) -> Unit raise {
   let mut consumed_rank = 0.0
   for node in layer {
     consumed_rank += self.calculate_port_ranks_on_node(
@@ -163,7 +163,7 @@ pub fn AbstractBarycenterPortDistributor::calculate_port_ranks_on_node(
   node : LNode,
   rank_sum : Double,
   port_type : PortType,
-) -> Double {
+) -> Double raise {
   (self.calculate_port_ranks_fn)(self, node, rank_sum, port_type)
 }
 
@@ -531,7 +531,7 @@ pub fn AbstractBarycenterPortDistributor::as_i_sweep_port_distributor(
   self : AbstractBarycenterPortDistributor,
 ) -> ISweepPortDistributor {
   new_i_sweep_port_distributor(
-    (order, free_layer_index, is_forward_sweep) => {
+    fn(order, free_layer_index, is_forward_sweep) raise {
       self.distribute_ports_while_sweeping(
         order, free_layer_index, is_forward_sweep,
       )

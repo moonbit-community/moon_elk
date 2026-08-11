@@ -53,12 +53,6 @@ pub struct CGroupBuilder {
 }
 
 ///|
-let cnode_store : Ref[Array[CNodeData]] = Ref([])
-
-///|
-let cgroup_store : Ref[Array[CGroupData]] = Ref([])
-
-///|
 fn[T : Eq] array_add_unique(array : Array[T], value : T) -> Bool {
   for existing in array {
     if existing == value {
@@ -94,20 +88,12 @@ fn direction_eq(left : @core.Direction, right : @core.Direction) -> Bool {
 
 ///|
 fn checked_cnode(node : CNode) -> Unit {
-  if node.handle < 0 || node.handle >= cnode_store.val.length() {
-    @core.layout_runtime_report_unsupported_configuration(
-      "invalid compaction node",
-    )
-  }
+  ignore(node)
 }
 
 ///|
 fn checked_cgroup(group : CGroup) -> Unit {
-  if group.handle < 0 || group.handle >= cgroup_store.val.length() {
-    @core.layout_runtime_report_unsupported_configuration(
-      "invalid compaction group",
-    )
-  }
+  ignore(group)
 }
 
 ///|
@@ -118,12 +104,6 @@ fn copy_rect(rect : @core.ElkRectangle) -> @core.ElkRectangle {
 ///|
 fn copy_vec(vec : @core.KVector) -> @core.KVector {
   { x: vec.x, y: vec.y }
-}
-
-///|
-pub fn reset_compaction_oned_model_for_test() -> Unit {
-  cnode_store.val.clear()
-  cgroup_store.val.clear()
 }
 
 ///|
@@ -244,25 +224,27 @@ pub fn CNodeBuilder::group_with(
 }
 
 ///|
-pub fn CNodeBuilder::create(self : CNodeBuilder, graph : CGraph) -> CNode {
+pub fn CNodeBuilder::create(self : CNodeBuilder, graph : CGraph) -> CNode raise {
   let hitbox = match self.hitbox {
     Some(rect) => rect
     None => @core.new_elk_rectangle()
   }
 
-  let node : CNode = { handle: cnode_store.val.length() }
-  cnode_store.val.push({
-    id: self.id,
-    origin: self.origin,
-    node_type: self.node_type,
-    to_string_delegate: self.to_string_delegate,
-    c_group: None,
-    c_group_offset: { x: 0.0, y: 0.0 },
-    hitbox_pre_compaction: None,
-    hitbox,
-    constraints: [],
-    start_pos: @double.neg_infinity,
-  })
+  let node : CNode = {
+    handle: graph.c_nodes.length(),
+    data: {
+      id: self.id,
+      origin: self.origin,
+      node_type: self.node_type,
+      to_string_delegate: self.to_string_delegate,
+      c_group: None,
+      c_group_offset: { x: 0.0, y: 0.0 },
+      hitbox_pre_compaction: None,
+      hitbox,
+      constraints: [],
+      start_pos: @double.neg_infinity,
+    },
+  }
   graph.c_nodes.push(node)
 
   match self.group_parent {
@@ -315,20 +297,25 @@ pub fn CGroupBuilder::master(
 }
 
 ///|
-pub fn CGroupBuilder::create(self : CGroupBuilder, graph : CGraph) -> CGroup {
-  let group : CGroup = { handle: cgroup_store.val.length() }
-  cgroup_store.val.push({
-    id: 0,
-    master: self.master,
-    c_nodes: [],
-    start_pos: @double.neg_infinity,
-    incoming_constraints: [],
-    out_degree: 0,
-    out_degree_real: 0,
-    reference: None,
-    delta: 0.0,
-    delta_normalized: 0.0,
-  })
+pub fn CGroupBuilder::create(
+  self : CGroupBuilder,
+  graph : CGraph,
+) -> CGroup raise {
+  let group : CGroup = {
+    handle: graph.c_groups.length(),
+    data: {
+      id: 0,
+      master: self.master,
+      c_nodes: [],
+      start_pos: @double.neg_infinity,
+      incoming_constraints: [],
+      out_degree: 0,
+      out_degree_real: 0,
+      reference: None,
+      delta: 0.0,
+      delta_normalized: 0.0,
+    },
+  }
   graph.c_groups.push(group)
 
   for node in self.nodes {

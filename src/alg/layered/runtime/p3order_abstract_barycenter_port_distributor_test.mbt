@@ -34,7 +34,7 @@ fn abstract_port_test_port_handles(ports : Array[LPort]) -> Array[Int] {
 ///|
 fn abstract_port_test_distribute_ports_in_complete_graph(
   graph : LGraph,
-) -> Unit {
+) -> Unit raise {
   let graph_data = new_graph_info_holder_from_graph(
     graph,
     abstract_port_test_cross_min_type_barycenter(),

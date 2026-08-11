@@ -1,6 +1,8 @@
 ///|
-fn assert_json_import_error() -> Unit {
-  match @core.layout_runtime_take_error_message() {
+fn assert_json_import_error(source : String) -> Unit {
+  let builder = elk_graph_json_for_graph(source)
+  ignore(builder.to_elk())
+  match builder.take_error_message() {
     Some(message) =>
       if message.is_empty() {
         abort("Expected non-empty Json import error message.")
@@ -11,32 +13,27 @@ fn assert_json_import_error() -> Unit {
 
 ///|
 test "graph json id no id reports runtime error" {
-  ignore(elk_graph_json_for_graph("{}").to_elk())
-  assert_json_import_error()
+  assert_json_import_error("{}")
 }
 
 ///|
 test "graph json id wrong number type reports runtime error" {
-  ignore(elk_graph_json_for_graph("{ id: 1.2 }").to_elk())
-  assert_json_import_error()
+  assert_json_import_error("{ id: 1.2 }")
 }
 
 ///|
 test "graph json id wrong object type reports runtime error" {
-  ignore(elk_graph_json_for_graph("{ id: {} }").to_elk())
-  assert_json_import_error()
+  assert_json_import_error("{ id: {} }")
 }
 
 ///|
 test "graph json id wrong array type reports runtime error" {
-  ignore(elk_graph_json_for_graph("{ id: [] }").to_elk())
-  assert_json_import_error()
+  assert_json_import_error("{ id: [] }")
 }
 
 ///|
 test "graph json id wrong boolean type reports runtime error" {
-  ignore(elk_graph_json_for_graph("{ id: true }").to_elk())
-  assert_json_import_error()
+  assert_json_import_error("{ id: true }")
 }
 
 ///|

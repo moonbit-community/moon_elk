@@ -33,7 +33,7 @@ pub fn Draw2DLayoutProvider::is_compound_mode(
 }
 
 ///|
-fn draw2d_parse_padding(layout_node : @graph.ElkNode) -> @core.Spacing {
+fn draw2d_parse_padding(layout_node : @graph.ElkNode) -> @core.Spacing raise {
   let value = @graph.node_get_string_property(layout_node, draw2d_padding)
   let parsed = @core.new_spacing()
   if !value.is_empty() {
@@ -52,7 +52,7 @@ fn draw2d_layout_is_vertical(layout_node : @graph.ElkNode) -> Bool {
 fn draw2d_layout_collect_edges(
   layout_node : @graph.ElkNode,
 ) -> Array[@graph.ElkEdge] {
-  let edge_map : Map[Int, Bool] = Map([])
+  let edge_map : Map[@graph.ElkEdge, Bool] = Map([])
   for child in @graph.node_children(layout_node) {
     for edge in @graph.node_outgoing_edges(child) {
       if @graph.edge_targets(edge).length() == 1 &&
@@ -109,7 +109,7 @@ fn draw2d_layout_apply_nodes(
 ///|
 fn draw2d_layout_apply_edges(layout_node : @graph.ElkNode) -> Unit {
   let children = @graph.node_children(layout_node)
-  let child_map : Map[Int, Bool] = Map([])
+  let child_map : Map[@graph.ElkNode, Bool] = Map([])
   for child in children {
     child_map[child] = true
   }
@@ -178,7 +178,7 @@ pub fn Draw2DLayoutProvider::layout(
   self : Draw2DLayoutProvider,
   layout_node : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor,
-) -> Unit {
+) -> Unit raise {
   ignore(self.compound_mode)
   ignore(progress_monitor.begin("Draw2D Directed Graph layout", 1.0))
 

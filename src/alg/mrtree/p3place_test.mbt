@@ -1,7 +1,5 @@
 ///|
 test "Mrtree NodePlacer computes walker coordinates and final positions" {
-  reset_mrtree_graph_model_for_test()
-
   let graph = new_mrtree_graph()
   let root = new_mrtree_node(0, graph)
   let left = new_mrtree_node(1, graph)

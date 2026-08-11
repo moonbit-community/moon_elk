@@ -1,8 +1,8 @@
 ///|
-fn tests_plain_java_initialization_test_setup() -> Unit {
-  layout_meta_data_service_reset_for_test()
-  plain_java_initialization_reset_for_test()
-  plain_java_initialization_initialize_plain_java_layout()
+fn tests_plain_java_initialization_test_setup() -> @core.OptionMetadata {
+  let metadata = @core.new_option_metadata()
+  plain_java_initialization_initialize_plain_java_layout(metadata)
+  metadata
 }
 
 ///|
@@ -16,7 +16,9 @@ fn tests_plain_java_initialization_default_configuration() -> TestConfiguration[
 }
 
 ///|
-fn tests_plain_java_initialization_algorithms() -> Array[TestAlgorithm] {
+fn tests_plain_java_initialization_algorithms(
+  metadata : @core.OptionMetadata,
+) -> Array[TestAlgorithm] {
   let algorithm_ids = [
     "org.eclipse.elk.box", "org.eclipse.elk.disco", "org.eclipse.elk.fixed", "org.eclipse.elk.force",
     "org.eclipse.elk.layered", "org.eclipse.elk.mrtree", "org.eclipse.elk.radial",
@@ -25,7 +27,7 @@ fn tests_plain_java_initialization_algorithms() -> Array[TestAlgorithm] {
   ]
   let algorithms : Array[TestAlgorithm] = []
   for algorithm_id in algorithm_ids {
-    match layout_meta_data_service_get_algorithm_data(algorithm_id) {
+    match metadata.algorithm_data(algorithm_id) {
       Some(data) => algorithms.push(new_test_algorithm(Some(data)))
       None => abort("Unknown layout algorithm: " + algorithm_id)
     }
@@ -35,8 +37,7 @@ fn tests_plain_java_initialization_algorithms() -> Array[TestAlgorithm] {
 
 ///|
 test "PlainJavaInitializationTest algorithm property is available for all expected algorithms" {
-  reset_graph_model_for_test()
-  tests_plain_java_initialization_test_setup()
+  let metadata = tests_plain_java_initialization_test_setup()
 
   let graph = new_test_graph(
     (_test_instance : Unit) => create_graph(),
@@ -53,7 +54,7 @@ test "PlainJavaInitializationTest algorithm property is available for all expect
 
   let runner : LayoutTestRunner[Unit, Int] = new_layout_test_runner(
     () => (),
-    tests_plain_java_initialization_algorithms(),
+    tests_plain_java_initialization_algorithms(metadata),
     [tests_plain_java_initialization_default_configuration()],
     [graph],
     [blackbox_test],

@@ -583,7 +583,7 @@ fn spline_edge_router_create_spline_segments(
   right_ports : Array[LPort],
   hyper_edges : Array[SplineSegment],
   edge_to_segment_map : Map[Int, SplineSegment],
-) -> Unit raise SplineEdgeRouterException {
+) -> Unit raise {
   for edge in edges {
     let source_port = spline_edge_router_edge_source(edge)
     let source_side = spline_edge_router_side_for_port(
@@ -610,7 +610,7 @@ fn spline_edge_router_create_spline_segments_for_hyper_edges(
   edges_remaining : Array[LEdge],
   hyper_edges : Array[SplineSegment],
   edge_to_segment_map : Map[Int, SplineSegment],
-) -> Unit raise SplineEdgeRouterException {
+) -> Unit raise {
   let ports_to_process = match side_to_process {
     Left => left_ports
     Right => right_ports
@@ -697,7 +697,7 @@ fn spline_edge_router_create_segments_and_compute_ranking(
   spline_segments : Array[SplineSegment],
   edge_to_segment_map : Map[Int, SplineSegment],
   random : @random.Rand,
-) -> Unit raise SplineEdgeRouterException {
+) -> Unit raise {
   spline_edge_router_create_spline_segments_for_hyper_edges(
     left_ports,
     right_ports,
@@ -1098,7 +1098,7 @@ fn spline_edge_router_get_spline_path(
 ///|
 fn spline_edge_router_configuration(
   graph : LGraph,
-) -> @core.LayoutProcessorConfiguration[LayeredPhases, LGraph]? {
+) -> @core.LayoutProcessorConfiguration[LayeredPhases, LGraph]? raise {
   let configuration = @core.layout_processor_configuration_create(
     layered_phase_descriptor,
   )
@@ -1199,7 +1199,7 @@ fn spline_edge_router_configuration(
 fn spline_edge_router_process(
   layered_graph : LGraph,
   monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let actual_monitor = match monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()
@@ -1381,9 +1381,10 @@ fn spline_edge_router_process(
     layered_graph.set_size_xy(xpos, layered_graph.get_size().y)
   } catch {
     SplineEdgeRouterException(message) =>
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "java.lang.IllegalStateException: " + message,
       )
+    err => raise err
   } noraise {
     _ => ()
   }

@@ -1,8 +1,6 @@
 ///|
 fn issue871_test_setup_plain_java_layout() -> Unit {
-  @core.layout_meta_data_service_reset_for_test()
-  @test.plain_java_initialization_reset_for_test()
-  @test.plain_java_initialization_initialize_plain_java_layout()
+
 }
 
 ///|
@@ -80,7 +78,6 @@ fn issue871_assert_close(
 
 ///|
 test "Issue871 feedback edge below keeps aligned node pair" {
-  @graph.reset_graph_model_for_test()
   issue871_test_setup_plain_java_layout()
 
   let parent = @graph.create_graph()
@@ -103,7 +100,7 @@ test "Issue871 feedback edge below keeps aligned node pair" {
   issue871_add_node_label(n3, "n3")
   issue871_add_node_label(n4, "n4")
 
-  let layout_engine = @core.new_recursive_graph_layout_engine()
+  let layout_engine = @test.new_recursive_graph_layout_engine()
   layout_engine.layout(parent, @core.new_basic_progress_monitor())
 
   issue871_assert_close(
@@ -116,7 +113,6 @@ test "Issue871 feedback edge below keeps aligned node pair" {
 
 ///|
 test "Issue871 basic feedback edge keeps aligned nodes" {
-  @graph.reset_graph_model_for_test()
   issue871_test_setup_plain_java_layout()
 
   let parent = @graph.create_graph()
@@ -135,7 +131,7 @@ test "Issue871 basic feedback edge keeps aligned nodes" {
   issue871_add_node_label(n2, "n2")
   issue871_add_node_label(n3, "n3")
 
-  let layout_engine = @core.new_recursive_graph_layout_engine()
+  let layout_engine = @test.new_recursive_graph_layout_engine()
   layout_engine.layout(parent, @core.new_basic_progress_monitor())
 
   issue871_assert_close(
@@ -148,7 +144,6 @@ test "Issue871 basic feedback edge keeps aligned nodes" {
 
 ///|
 test "Issue871 no-feedback case keeps reference coordinates" {
-  @graph.reset_graph_model_for_test()
   issue871_test_setup_plain_java_layout()
 
   let parent = @graph.create_graph()
@@ -174,7 +169,7 @@ test "Issue871 no-feedback case keeps reference coordinates" {
   issue871_add_node_label(n3, "n3")
   issue871_add_node_label(n4, "n4")
 
-  let layout_engine = @core.new_recursive_graph_layout_engine()
+  let layout_engine = @test.new_recursive_graph_layout_engine()
   layout_engine.layout(parent, @core.new_basic_progress_monitor())
 
   issue871_assert_close("no-feedback n1.x", @graph.node_x(n1), 0.0, 0.1)

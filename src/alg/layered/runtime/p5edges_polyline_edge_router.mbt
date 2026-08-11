@@ -218,19 +218,22 @@ fn polyline_edge_router_place_nodes_horizontally(
 }
 
 ///|
-let polyline_edge_router_baseline_processor_configuration : @core.LayoutProcessorConfiguration[
+fn polyline_edge_router_baseline_processor_configuration() -> @core.LayoutProcessorConfiguration[
   LayeredPhases,
   LGraph,
-] = @core.layout_processor_configuration_create(layered_phase_descriptor).add_before(
-  P3NodeOrdering,
-  layered_intermediate_processor_factory(InvertedPortProcessor),
-)
+] raise {
+  @core.layout_processor_configuration_create(layered_phase_descriptor).add_before(
+    P3NodeOrdering,
+    layered_intermediate_processor_factory(InvertedPortProcessor),
+  )
+}
 
 ///|
-let polyline_edge_router_north_south_port_processing_additions : @core.LayoutProcessorConfiguration[
+fn polyline_edge_router_north_south_port_processing_additions() -> @core.LayoutProcessorConfiguration[
   LayeredPhases,
   LGraph,
-] = @core.layout_processor_configuration_create(layered_phase_descriptor)
+] raise {
+  @core.layout_processor_configuration_create(layered_phase_descriptor)
   .add_before(
     P3NodeOrdering,
     layered_intermediate_processor_factory(NorthSouthPortPreprocessor),
@@ -239,12 +242,14 @@ let polyline_edge_router_north_south_port_processing_additions : @core.LayoutPro
     P5EdgeRouting,
     layered_intermediate_processor_factory(NorthSouthPortPostprocessor),
   )
+}
 
 ///|
-let polyline_edge_router_self_loop_processing_additions : @core.LayoutProcessorConfiguration[
+fn polyline_edge_router_self_loop_processing_additions() -> @core.LayoutProcessorConfiguration[
   LayeredPhases,
   LGraph,
-] = @core.layout_processor_configuration_create(layered_phase_descriptor)
+] raise {
+  @core.layout_processor_configuration_create(layered_phase_descriptor)
   .add_before(
     P1CycleBreaking,
     layered_intermediate_processor_factory(SelfLoopPreprocessor),
@@ -256,12 +261,14 @@ let polyline_edge_router_self_loop_processing_additions : @core.LayoutProcessorC
   .before(P4NodePlacement)
   .add(layered_intermediate_processor_factory(SelfLoopPortRestorer))
   .add(layered_intermediate_processor_factory(SelfLoopRouter))
+}
 
 ///|
-let polyline_edge_router_center_edge_label_processing_additions : @core.LayoutProcessorConfiguration[
+fn polyline_edge_router_center_edge_label_processing_additions() -> @core.LayoutProcessorConfiguration[
   LayeredPhases,
   LGraph,
-] = @core.layout_processor_configuration_create(layered_phase_descriptor)
+] raise {
+  @core.layout_processor_configuration_create(layered_phase_descriptor)
   .add_before(
     P2Layering,
     layered_intermediate_processor_factory(LabelDummyInserter),
@@ -278,12 +285,14 @@ let polyline_edge_router_center_edge_label_processing_additions : @core.LayoutPr
     P5EdgeRouting,
     layered_intermediate_processor_factory(LabelDummyRemover),
   )
+}
 
 ///|
-let polyline_edge_router_end_edge_label_processing_additions : @core.LayoutProcessorConfiguration[
+fn polyline_edge_router_end_edge_label_processing_additions() -> @core.LayoutProcessorConfiguration[
   LayeredPhases,
   LGraph,
-] = @core.layout_processor_configuration_create(layered_phase_descriptor)
+] raise {
+  @core.layout_processor_configuration_create(layered_phase_descriptor)
   .add_before(
     P4NodePlacement,
     layered_intermediate_processor_factory(LabelSideSelector),
@@ -296,17 +305,18 @@ let polyline_edge_router_end_edge_label_processing_additions : @core.LayoutProce
     P5EdgeRouting,
     layered_intermediate_processor_factory(EndLabelPostprocessor),
   )
+}
 
 ///|
 fn polyline_edge_router_configuration(
   graph : LGraph,
-) -> @core.LayoutProcessorConfiguration[LayeredPhases, LGraph]? {
+) -> @core.LayoutProcessorConfiguration[LayeredPhases, LGraph]? raise {
   let graph_properties = graph.get_property_graph_properties_array(
     internal_properties_graph_properties,
   )
 
   let configuration = @core.layout_processor_configuration_create_from(
-    polyline_edge_router_baseline_processor_configuration,
+    polyline_edge_router_baseline_processor_configuration(),
   )
 
   if polyline_edge_router_graph_properties_contain(
@@ -315,14 +325,16 @@ fn polyline_edge_router_configuration(
     ) {
     ignore(
       configuration.add_all(
-        polyline_edge_router_north_south_port_processing_additions,
+        polyline_edge_router_north_south_port_processing_additions(),
       ),
     )
   }
 
   if polyline_edge_router_graph_properties_contain(graph_properties, SelfLoops) {
     ignore(
-      configuration.add_all(polyline_edge_router_self_loop_processing_additions),
+      configuration.add_all(
+        polyline_edge_router_self_loop_processing_additions(),
+      ),
     )
   }
 
@@ -332,7 +344,7 @@ fn polyline_edge_router_configuration(
     ) {
     ignore(
       configuration.add_all(
-        polyline_edge_router_center_edge_label_processing_additions,
+        polyline_edge_router_center_edge_label_processing_additions(),
       ),
     )
   }
@@ -340,7 +352,7 @@ fn polyline_edge_router_configuration(
   if polyline_edge_router_graph_properties_contain(graph_properties, EndLabels) {
     ignore(
       configuration.add_all(
-        polyline_edge_router_end_edge_label_processing_additions,
+        polyline_edge_router_end_edge_label_processing_additions(),
       ),
     )
   }
@@ -545,7 +557,7 @@ fn polyline_edge_router_is_in_layer_dummy(node : LNode) -> Bool {
 fn polyline_edge_router_process(
   layered_graph : LGraph,
   monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let actual_monitor = match monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()

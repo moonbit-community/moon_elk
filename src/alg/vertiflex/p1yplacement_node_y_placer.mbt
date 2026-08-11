@@ -4,7 +4,7 @@ fn vertiflex_node_y_placer_set_y_levels(
   min_height : Double,
   layer_distance : Double,
   node_node_spacing : Double,
-) -> Unit {
+) -> Unit raise {
   let constrained_min_height = if @graph.node_has_double_property(
       node, vertiflex_vertical_constraint,
     ) {
@@ -28,9 +28,10 @@ fn vertiflex_node_y_placer_set_y_levels(
 
 ///|
 fn vertiflex_node_y_placer_process(
+  session : VertiFlexSession,
   graph : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(existing) => existing
     None => @core.new_null_elk_progress_monitor()
@@ -44,7 +45,7 @@ fn vertiflex_node_y_placer_process(
     graph, vertiflex_spacing_node_node,
   )
   if !@graph.node_children(graph).is_empty() {
-    let parent = vertiflex_internal_root_node(graph)
+    let parent = vertiflex_internal_root_node(session, graph)
     vertiflex_node_y_placer_set_y_levels(
       parent, 0.0, layer_distance, node_node_spacing,
     )
@@ -53,9 +54,11 @@ fn vertiflex_node_y_placer_process(
 }
 
 ///|
-pub fn new_vertiflex_node_y_placer_layout_phase() -> @core.ILayoutProcessor[
-  VertiFlexLayoutPhases,
-  @graph.ElkNode,
-] {
-  @core.new_layout_phase(vertiflex_node_y_placer_process, _ => None)
+pub fn new_vertiflex_node_y_placer_layout_phase(
+  session : VertiFlexSession,
+) -> @core.ILayoutProcessor[VertiFlexLayoutPhases, @graph.ElkNode] {
+  @core.new_layout_phase(
+    (graph, monitor) => vertiflex_node_y_placer_process(session, graph, monitor),
+    _ => None,
+  )
 }

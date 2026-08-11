@@ -1,15 +1,11 @@
 ///|
 fn p2_model_order_layer_assignment_test_setup_plain_java_layout() -> Unit {
-  @core.layout_meta_data_service_reset_for_test()
-  @test.plain_java_initialization_reset_for_test()
-  @test.plain_java_initialization_initialize_plain_java_layout()
+
 }
 
 ///|
 fn p2_model_order_layer_assignment_test_layout(graph : @graph.ElkNode) -> Unit {
-  let resolver = @core.new_layout_algorithm_resolver()
-  @core.apply_visitors(graph, [resolver.to_visitor()])
-  let layout_engine = @core.new_recursive_graph_layout_engine()
+  let layout_engine = @test.new_recursive_graph_layout_engine()
   layout_engine.layout(graph, @core.new_null_elk_progress_monitor())
 }
 
@@ -97,7 +93,6 @@ fn p2_model_order_layer_assignment_test_assert_close(
 
 ///|
 test "ModelOrderLayerAssignment forward promotion disregards edge length" {
-  @graph.reset_graph_model_for_test()
   p2_model_order_layer_assignment_test_setup_plain_java_layout()
 
   let parent = @graph.create_graph()
@@ -174,7 +169,6 @@ test "ModelOrderLayerAssignment forward promotion disregards edge length" {
 
 ///|
 test "ModelOrderLayerAssignment backward promotion disregards edge length" {
-  @graph.reset_graph_model_for_test()
   p2_model_order_layer_assignment_test_setup_plain_java_layout()
 
   let parent = @graph.create_graph()
@@ -251,7 +245,6 @@ test "ModelOrderLayerAssignment backward promotion disregards edge length" {
 
 ///|
 test "ModelOrderLayerAssignment forward promotion more nodes" {
-  @graph.reset_graph_model_for_test()
   p2_model_order_layer_assignment_test_setup_plain_java_layout()
 
   let parent = @graph.create_graph()
@@ -341,7 +334,6 @@ test "ModelOrderLayerAssignment forward promotion more nodes" {
 
 ///|
 test "ModelOrderLayerAssignment backward promotion more nodes" {
-  @graph.reset_graph_model_for_test()
   p2_model_order_layer_assignment_test_setup_plain_java_layout()
 
   let parent = @graph.create_graph()
@@ -431,7 +423,6 @@ test "ModelOrderLayerAssignment backward promotion more nodes" {
 
 ///|
 test "ModelOrderLayerAssignment forward promotion no end node" {
-  @graph.reset_graph_model_for_test()
   p2_model_order_layer_assignment_test_setup_plain_java_layout()
 
   let parent = @graph.create_graph()
@@ -495,7 +486,6 @@ test "ModelOrderLayerAssignment forward promotion no end node" {
 
 ///|
 test "ModelOrderLayerAssignment backward promotion no end node" {
-  @graph.reset_graph_model_for_test()
   p2_model_order_layer_assignment_test_setup_plain_java_layout()
 
   let parent = @graph.create_graph()
@@ -559,7 +549,6 @@ test "ModelOrderLayerAssignment backward promotion no end node" {
 
 ///|
 test "ModelOrderLayerAssignment backward promotion no end node 2" {
-  @graph.reset_graph_model_for_test()
   p2_model_order_layer_assignment_test_setup_plain_java_layout()
 
   let parent = @graph.create_graph()

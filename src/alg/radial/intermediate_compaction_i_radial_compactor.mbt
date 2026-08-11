@@ -1,11 +1,11 @@
 ///|
 pub struct IRadialCompactor {
-  compact_fn : (@graph.ElkNode) -> Unit
+  compact_fn : (@graph.ElkNode) -> Unit raise
 }
 
 ///|
 pub fn new_i_radial_compactor(
-  compact : (@graph.ElkNode) -> Unit,
+  compact : (@graph.ElkNode) -> Unit raise,
 ) -> IRadialCompactor {
   { compact_fn: compact }
 }
@@ -14,6 +14,6 @@ pub fn new_i_radial_compactor(
 pub fn IRadialCompactor::compact(
   self : IRadialCompactor,
   graph : @graph.ElkNode,
-) -> Unit {
+) -> Unit raise {
   (self.compact_fn)(graph)
 }

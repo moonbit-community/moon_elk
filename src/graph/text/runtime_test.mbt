@@ -76,7 +76,6 @@ test "ElkGraphQualifiedNameConverter converts dotted names" {
 
 ///|
 test "ElkGraphQualifiedNameProvider prepends parent names" {
-  @graph.reset_graph_model_for_test()
   let root = @graph.create_graph()
   @graph.node_set_identifier(root, "root")
   let child = @graph.create_node(Some(root))
@@ -93,24 +92,22 @@ test "ElkGraphQualifiedNameProvider prepends parent names" {
 
 ///|
 test "ElkGraph value converters parse numbers keys and values" {
-  @core.layout_meta_data_service_reset_for_test()
-  @core.layout_meta_data_service_register_default_options()
-  @core.layout_meta_data_service_register_default_algorithms()
+  let metadata = @core.new_layout_runtime().option_metadata()
+  metadata.register_default_options()
+  metadata.register_default_algorithms()
 
   let number_converter = new_number_value_converter()
   inspect(number_converter.to_string(Some(12.0)), content="12")
   inspect(number_converter.to_value("-4.5"), content="-4.5")
 
-  let key_converter = new_property_key_value_converter()
+  let key_converter = new_property_key_value_converter(metadata)
   key_converter.initialize(new_elk_graph_grammar_access())
   let key = key_converter.to_value("algorithm")
   inspect(graph_text_property_key_id(key), content="org.eclipse.elk.algorithm")
   inspect(key_converter.to_string(Some(key)), content="algorithm")
 
-  let value_converter = new_property_value_value_converter()
-  let no_layout_option = @core.layout_meta_data_service_get_option_data(
-    @core.no_layout.get_id(),
-  )
+  let value_converter = new_property_value_value_converter(metadata)
+  let no_layout_option = metadata.option_data(@core.no_layout.get_id())
   inspect(
     value_converter.to_value(
       "true",
@@ -130,7 +127,6 @@ test "ElkGraph value converters parse numbers keys and values" {
 
 ///|
 test "ElkGraphScopeProvider resolves sibling section identifiers" {
-  @graph.reset_graph_model_for_test()
   let root = @graph.create_graph()
   let edge = @graph.create_edge(Some(root))
   let s1 = @graph.create_edge_section(edge)
@@ -156,12 +152,10 @@ test "ElkGraph syntactic and semantic sequencers keep generated defaults" {
     content="[\"{}\"]",
   )
 
-  @core.layout_meta_data_service_reset_for_test()
-  @core.layout_meta_data_service_register_default_options()
-  let option = @core.layout_meta_data_service_get_option_data(
-    @core.algorithm.get_id(),
-  )
-  let semantic = new_elk_graph_semantic_sequencer()
+  let metadata = @core.new_layout_runtime().option_metadata()
+  metadata.register_default_options()
+  let option = metadata.option_data(@core.algorithm.get_id())
+  let semantic = new_elk_graph_semantic_sequencer(metadata)
   let result = semantic.sequence_property(
     "Property",
     new_graph_text_property_assignment(
@@ -200,10 +194,9 @@ test "ElkGraphLinker skips opposite references during clearReference" {
 
 ///|
 test "ElkGraphTextUtil resolves algorithm for nested elements" {
-  @graph.reset_graph_model_for_test()
-  @core.layout_meta_data_service_reset_for_test()
-  @core.layout_meta_data_service_register_default_options()
-  @core.layout_meta_data_service_register_default_algorithms()
+  let metadata = @core.new_layout_runtime().option_metadata()
+  metadata.register_default_options()
+  metadata.register_default_algorithms()
 
   let root = @graph.create_graph()
   @graph.node_set_identifier(root, "root")
@@ -217,7 +210,10 @@ test "ElkGraphTextUtil resolves algorithm for nested elements" {
   let port = @graph.create_port(Some(child))
   @graph.port_set_identifier(port, "p")
 
-  let algorithm_data = elk_graph_text_util_get_algorithm(GraphPort(port))
+  let algorithm_data = elk_graph_text_util_get_algorithm(
+    metadata,
+    GraphPort(port),
+  )
   inspect(
     graph_text_runtime_string_or_none(
       match algorithm_data {
@@ -231,12 +227,11 @@ test "ElkGraphTextUtil resolves algorithm for nested elements" {
 
 ///|
 test "ElkGraphValidator checks property values and uniqueness" {
-  @graph.reset_graph_model_for_test()
-  @core.layout_meta_data_service_reset_for_test()
-  @core.layout_meta_data_service_register_default_options()
-  @core.layout_meta_data_service_register_default_algorithms()
+  let metadata = @core.new_layout_runtime().option_metadata()
+  metadata.register_default_options()
+  metadata.register_default_algorithms()
 
-  let validator = new_elk_graph_validator()
+  let validator = new_elk_graph_validator(metadata)
   let root = @graph.create_graph()
   @graph.node_set_identifier(root, "root")
   @graph.node_set_layout_option_string_by_id(
@@ -245,9 +240,7 @@ test "ElkGraphValidator checks property values and uniqueness" {
     "org.eclipse.elk.layered",
   )
 
-  let priority_option = @core.layout_meta_data_service_get_option_data(
-    @core.priority.get_id(),
-  )
+  let priority_option = metadata.option_data(@core.priority.get_id())
   let priority_entry = new_graph_text_property_assignment(
     LayoutOption(priority_option),
     NumberValue(2.0),
@@ -262,9 +255,7 @@ test "ElkGraphValidator checks property values and uniqueness" {
   )
 
   let unknown_algo_entry = new_graph_text_property_assignment(
-    LayoutOption(
-      @core.layout_meta_data_service_get_option_data(@core.algorithm.get_id()),
-    ),
+    LayoutOption(metadata.option_data(@core.algorithm.get_id())),
     ProxyValue("org.eclipse.elk.unknown"),
   )
   let algorithm_issues = validator.check_property_value(

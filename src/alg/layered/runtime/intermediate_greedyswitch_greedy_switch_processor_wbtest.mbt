@@ -157,7 +157,7 @@ fn greedy_switch_processor_test_sweep_reducing_crossings(
   port_distributor : ISweepPortDistributor,
   is_forward_sweep : Bool,
   is_first_sweep : Bool,
-) -> Bool {
+) -> Bool raise {
   let length = node_order.length()
   if length <= 1 {
     return false
@@ -193,7 +193,7 @@ fn greedy_switch_processor_test_sweep_reducing_crossings(
 fn greedy_switch_processor_test_start_greedy_switcher(
   creator : GreedySwitchTestGraphCreator,
   greedy_type : GreedySwitchType,
-) -> Unit {
+) -> Unit raise {
   let graph = creator.get_graph()
   let node_order = creator.get_current_order(graph)
   let graph_data = new_graph_info_holder(node_order)

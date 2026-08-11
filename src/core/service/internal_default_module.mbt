@@ -1,5 +1,7 @@
 ///|
 pub(all) struct CoreServiceInjector {
+  runtime : @core.LayoutRuntime
+  session : @core.LayoutSession
   bindings : Map[String, String]
   mut diagram_layout_connector : IDiagramLayoutConnector?
   mut layout_configuration_store_provider : LayoutConfigurationStoreProvider?
@@ -9,6 +11,8 @@ pub(all) struct CoreServiceInjector {
 
 ///|
 pub fn new_core_service_injector(
+  runtime : @core.LayoutRuntime,
+  session : @core.LayoutSession,
   bindings? : Map[String, String] = Map([]),
   diagram_layout_connector? : IDiagramLayoutConnector? = None,
   layout_configuration_store_provider? : LayoutConfigurationStoreProvider? = None,
@@ -16,6 +20,8 @@ pub fn new_core_service_injector(
   graph_layout_engine? : @core.IGraphLayoutEngine? = None,
 ) -> CoreServiceInjector {
   {
+    runtime,
+    session,
     bindings,
     diagram_layout_connector,
     layout_configuration_store_provider,
@@ -29,6 +35,8 @@ pub fn CoreServiceInjector::copy(
   self : CoreServiceInjector,
 ) -> CoreServiceInjector {
   new_core_service_injector(
+    self.runtime,
+    self.session,
     bindings=self.bindings.copy(),
     diagram_layout_connector=self.diagram_layout_connector,
     layout_configuration_store_provider=self.layout_configuration_store_provider,
@@ -115,21 +123,33 @@ pub fn CoreServiceInjector::get_graph_layout_engine(
 }
 
 ///|
-fn default_graph_layout_engine() -> @core.IGraphLayoutEngine {
-  let recursive_engine = @core.new_recursive_graph_layout_engine()
+fn default_graph_layout_engine(
+  runtime : @core.LayoutRuntime,
+  session : @core.LayoutSession,
+) -> @core.IGraphLayoutEngine {
+  let recursive_engine = @core.new_recursive_graph_layout_engine(
+    runtime, session,
+  )
   @core.new_graph_layout_engine((layout_graph, progress_monitor) => {
     recursive_engine.layout(layout_graph, progress_monitor)
   })
 }
 
 ///|
-pub fn new_default_module() -> CoreServiceInjector {
+pub fn new_default_module(
+  runtime : @core.LayoutRuntime,
+  session : @core.LayoutSession,
+) -> CoreServiceInjector {
   new_core_service_injector(
+    runtime,
+    session,
     bindings={
       "IGraphLayoutEngine": "RecursiveGraphLayoutEngine",
       "LayoutConfigurationManager": "LayoutConfigurationManager",
     },
-    layout_configuration_manager=Some(new_layout_configuration_manager()),
-    graph_layout_engine=Some(default_graph_layout_engine()),
+    layout_configuration_manager=Some(
+      new_layout_configuration_manager(runtime.option_metadata()),
+    ),
+    graph_layout_engine=Some(default_graph_layout_engine(runtime, session)),
   )
 }

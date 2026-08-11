@@ -27,7 +27,7 @@ fn gmf_layout_edit_policy_add_shape_layout(
   element : GmfElkGraphElement,
   edit_part : GmfEditPart,
   scale : Double,
-) -> Unit {
+) -> Unit raise {
   let view = match gmf_edit_part_notation_view(edit_part) {
     Some(view) => view
     None => return
@@ -80,7 +80,7 @@ fn gmf_layout_edit_policy_scaled_bend_points(
 ///|
 fn gmf_layout_edit_policy_is_connection_attachment(
   connection_edit_part : GmfEditPart,
-) -> Bool {
+) -> Bool raise {
   let source_is_connection = match gmf_edit_part_source(connection_edit_part) {
     Some(source) => gmf_edit_part_kind(source) == ConnectionEditPart
     None => false
@@ -98,7 +98,7 @@ fn gmf_layout_edit_policy_add_edge_layout(
   element : GmfElkGraphElement,
   connection_edit_part : GmfEditPart,
   scale : Double,
-) -> Unit {
+) -> Unit raise {
   let edge_view = match gmf_edit_part_notation_view(connection_edit_part) {
     Some(view) => view
     None => return
@@ -130,7 +130,7 @@ pub fn GmfLayoutEditPolicy::get_command(
   self : GmfLayoutEditPolicy,
   request : ApplyLayoutRequest,
   host_edit_part : GmfEditPart,
-) -> GmfLayoutCommand? {
+) -> GmfLayoutCommand? raise {
   if !self.understands_request(request.get_type()) {
     return None
   }

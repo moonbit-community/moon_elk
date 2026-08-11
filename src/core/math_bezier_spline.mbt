@@ -124,7 +124,7 @@ pub fn BezierSpline::get_base_points(self : BezierSpline) -> Array[KVector] {
 pub fn BezierSpline::get_polyline_apprx(
   self : BezierSpline,
   accuracy : Int,
-) -> Array[KVector] {
+) -> Array[KVector] raise {
   let apprx = []
   apprx.push(self.curves[0].start)
   for curve in self.curves {

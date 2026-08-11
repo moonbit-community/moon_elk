@@ -23,7 +23,7 @@ pub fn adapt_l_label(LLabel) -> LLabelAdapter
 
 pub fn adapt_l_node(LNode, Bool) -> LNodeAdapter
 
-pub fn ard_cut_index_heuristic_get_chunk_count(GraphStats) -> Int
+pub fn ard_cut_index_heuristic_get_chunk_count(GraphStats) -> Int raise
 
 pub fn base_routing_direction_strategy_for_routing_direction(RoutingDirection) -> BaseRoutingDirectionStrategy
 
@@ -43,7 +43,7 @@ pub fn compute_graph_properties(LGraph) -> Unit
 
 pub fn create_external_port_dummy(LPort, @core.PortConstraints, @core.PortSide, Int, @core.KVector?, @core.KVector?, @core.KVector, @core.Direction, LGraph) -> LNode raise LGraphUtilException
 
-pub fn create_port_for_edge(LNode, @core.KVector?, @options.PortType, LGraph) -> LPort
+pub fn create_port_for_edge(LNode, @core.KVector?, @options.PortType, LGraph) -> LPort raise
 
 pub let critical_dependency_weight : Int
 
@@ -83,7 +83,7 @@ pub fn get_individual_or_inherited(LNode, @graph.IProperty[Double]) -> Double
 
 pub fn get_minimal_model_order(LGraph) -> Int
 
-pub fn hyper_edge_cycle_detector_detect_cycles(Array[HyperEdgeSegment], Bool, @state.GreedySwitchMockRandom) -> Array[HyperEdgeSegmentDependency]
+pub fn hyper_edge_cycle_detector_detect_cycles(Array[HyperEdgeSegment], Bool, @state.GreedySwitchMockRandom) -> Array[HyperEdgeSegmentDependency] raise
 
 pub fn hyper_edge_segment_dependency_create_and_add_critical(HyperEdgeSegment, HyperEdgeSegment) -> HyperEdgeSegmentDependency
 
@@ -103,7 +103,7 @@ pub let interactive_layered_graph_visitor_last_layer_index : Int
 
 pub let interactive_layered_graph_visitor_pseudo_position_spacing : Int
 
-pub fn interactive_layered_graph_visitor_set_interactive_options_and_pseudo_positions(Int) -> Unit
+pub fn interactive_layered_graph_visitor_set_interactive_options_and_pseudo_positions(@graph.ElkNode) -> Unit
 
 pub fn intermediate_processor_strategy_ordinal(IntermediateProcessorStrategy) -> Int
 
@@ -255,13 +255,7 @@ pub fn layer_internal_handle(Layer) -> Int
 
 pub let layered_components_direction : @graph.IProperty[@core.Direction]
 
-pub fn layered_cycle_breaking_phase_factory(String) -> @core.ILayoutProcessorFactory[LayeredPhases, LGraph]
-
 pub fn layered_intermediate_processor_factory(IntermediateProcessorStrategy) -> @core.ILayoutProcessorFactory[LayeredPhases, LGraph]
-
-pub fn layered_layering_phase_factory(String) -> @core.ILayoutProcessorFactory[LayeredPhases, LGraph]
-
-pub fn layered_node_placement_phase_factory(String) -> @core.ILayoutProcessorFactory[LayeredPhases, LGraph]
 
 pub fn layered_phase_constants() -> Array[LayeredPhases]
 
@@ -279,21 +273,21 @@ pub fn layered_spacings_get_individual_or_default(LNode, @graph.IProperty[Double
 
 pub fn layered_spacings_with_base_value(Double) -> LayeredSpacingsBuilder
 
-pub fn layered_test_update_containment(Int?) -> Unit
+pub fn layered_test_update_containment(@graph.ElkEdge?) -> Unit
 
 pub fn lnode_internal_handle(LNode) -> Int
 
-pub fn long_edge_joiner_join_at(LNode, Bool) -> Unit
+pub fn long_edge_joiner_join_at(LNode, Bool) -> Unit raise
 
-pub fn long_edge_splitter_split_edge(LEdge, LNode) -> LEdge
+pub fn long_edge_splitter_split_edge(LEdge, LNode) -> LEdge raise
 
 pub fn lport_internal_handle(LPort) -> Int
 
-pub fn model_order_barycenter_heuristic_insertion_sort(Array[LNode], (LNode, LNode) -> Int, ModelOrderBarycenterHeuristic) -> Unit
+pub fn model_order_barycenter_heuristic_insertion_sort(Array[LNode], (LNode, LNode) -> Int raise, ModelOrderBarycenterHeuristic) -> Unit raise
 
-pub fn new_abstract_barycenter_port_distributor(Int, (AbstractBarycenterPortDistributor, LNode, Double, @options.PortType) -> Double) -> AbstractBarycenterPortDistributor
+pub fn new_abstract_barycenter_port_distributor(Int, (AbstractBarycenterPortDistributor, LNode, Double, @options.PortType) -> Double raise) -> AbstractBarycenterPortDistributor
 
-pub fn new_abstract_self_loop_router((SelfLoopHolder) -> Unit) -> AbstractSelfLoopRouter
+pub fn new_abstract_self_loop_router((SelfLoopHolder) -> Unit raise) -> AbstractSelfLoopRouter
 
 pub fn new_all_crossings_counter(Array[Array[LNode]]) -> AllCrossingsCounter
 
@@ -325,7 +319,7 @@ pub fn new_breaking_point_remover_layout_processor() -> @core.ILayoutProcessor[L
 
 pub fn new_constraints_postprocessor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
-pub fn new_crossing_matrix_filler(@options.GreedySwitchType, Array[Array[LNode]], Int, CrossingCountSide) -> CrossingMatrixFiller
+pub fn new_crossing_matrix_filler(@options.GreedySwitchType, Array[Array[LNode]], Int, CrossingCountSide) -> CrossingMatrixFiller raise
 
 pub fn new_crossings_counter(Array[Int]) -> CrossingsCounter
 
@@ -339,7 +333,7 @@ pub fn new_edge_and_layer_constraint_edge_reverser_layout_processor() -> @core.I
 
 pub fn new_end_label_cell(Double, Bool, @core.LabelSide) -> EndLabelCell
 
-pub fn new_end_label_cell_label(Int, LLabel) -> EndLabelCellLabel
+pub fn new_end_label_cell_label(@graph.ElkLabel, LLabel) -> EndLabelCellLabel
 
 pub fn new_end_label_postprocessor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
@@ -363,11 +357,11 @@ pub fn new_greedy_port_distributor() -> GreedyPortDistributor
 
 pub fn new_greedy_switch_heuristic(@options.GreedySwitchType, GraphInfoHolder) -> GreedySwitchHeuristic
 
-pub fn new_greedy_switch_in_layer_edge_test_graph_creator() -> GreedySwitchInLayerEdgeTestGraphCreator
+pub fn new_greedy_switch_in_layer_edge_test_graph_creator() -> GreedySwitchInLayerEdgeTestGraphCreator raise
 
-pub fn new_greedy_switch_north_south_edge_test_graph_creator() -> GreedySwitchNorthSouthEdgeTestGraphCreator
+pub fn new_greedy_switch_north_south_edge_test_graph_creator() -> GreedySwitchNorthSouthEdgeTestGraphCreator raise
 
-pub fn new_greedy_switch_test_graph_creator() -> GreedySwitchTestGraphCreator
+pub fn new_greedy_switch_test_graph_creator() -> GreedySwitchTestGraphCreator raise
 
 pub fn new_hierarchical_node_resizing_processor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
@@ -393,13 +387,13 @@ pub fn new_hyperedge_dummy_merger_layout_processor() -> @core.ILayoutProcessor[L
 
 pub fn new_hypernodes_processor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
-pub fn new_i_crossing_minimization_heuristic(() -> Bool, (Array[Array[LNode]], Bool) -> Bool, (Array[Array[LNode]], Int, Bool, Bool) -> Bool, () -> Bool, init_at_layer_level? : (Int, Array[Array[LNode]]) -> Unit, init_at_node_level? : (Int, Int, Array[Array[LNode]]) -> Unit, init_at_port_level? : (Int, Int, Int, Array[Array[LNode]]) -> Unit, init_at_edge_level? : (Int, Int, Int, Int, LEdge, Array[Array[LNode]]) -> Unit, init_after_traversal? : () -> Unit) -> ICrossingMinimizationHeuristic
+pub fn new_i_crossing_minimization_heuristic(() -> Bool, (Array[Array[LNode]], Bool) -> Bool raise, (Array[Array[LNode]], Int, Bool, Bool) -> Bool raise, () -> Bool, init_at_layer_level? : (Int, Array[Array[LNode]]) -> Unit, init_at_node_level? : (Int, Int, Array[Array[LNode]]) -> Unit, init_at_port_level? : (Int, Int, Int, Array[Array[LNode]]) -> Unit, init_at_edge_level? : (Int, Int, Int, Int, LEdge, Array[Array[LNode]]) -> Unit, init_after_traversal? : () -> Unit) -> ICrossingMinimizationHeuristic
 
-pub fn new_i_cut_index_calculator((LGraph, GraphStats) -> Array[Int], () -> Bool) -> ICutIndexCalculator
+pub fn new_i_cut_index_calculator((LGraph, GraphStats) -> Array[Int] raise, () -> Bool) -> ICutIndexCalculator
 
 pub fn new_i_initializable(init_at_layer_level? : (Int, Array[Array[LNode]]) -> Unit, init_at_node_level? : (Int, Int, Array[Array[LNode]]) -> Unit, init_at_port_level? : (Int, Int, Int, Array[Array[LNode]]) -> Unit, init_at_edge_level? : (Int, Int, Int, Int, LEdge, Array[Array[LNode]]) -> Unit, init_after_traversal? : () -> Unit) -> IInitializable
 
-pub fn new_i_sweep_port_distributor((Array[Array[LNode]], Int, Bool) -> Bool, init_at_layer_level? : (Int, Array[Array[LNode]]) -> Unit, init_at_node_level? : (Int, Int, Array[Array[LNode]]) -> Unit, init_at_port_level? : (Int, Int, Int, Array[Array[LNode]]) -> Unit, init_at_edge_level? : (Int, Int, Int, Int, LEdge, Array[Array[LNode]]) -> Unit, init_after_traversal? : () -> Unit) -> ISweepPortDistributor
+pub fn new_i_sweep_port_distributor((Array[Array[LNode]], Int, Bool) -> Bool raise, init_at_layer_level? : (Int, Array[Array[LNode]]) -> Unit, init_at_node_level? : (Int, Int, Array[Array[LNode]]) -> Unit, init_at_port_level? : (Int, Int, Int, Array[Array[LNode]]) -> Unit, init_at_edge_level? : (Int, Int, Int, Int, LEdge, Array[Array[LNode]]) -> Unit, init_after_traversal? : () -> Unit) -> ISweepPortDistributor
 
 pub fn new_in_layer_constraint_processor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
@@ -483,6 +477,8 @@ pub fn new_layered_hierarchy_aware_layout_processor() -> Unit
 
 pub fn new_layered_layout_plan(Array[@core.ILayoutProcessor[LayeredPhases, LGraph]], state? : @state.LayeredLayoutState) -> LayeredLayoutPlan
 
+pub fn new_layered_phase_registry() -> LayeredPhaseRegistry
+
 pub fn new_layered_spacings(LGraph) -> Spacings
 
 pub fn new_long_edge_joiner_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
@@ -527,11 +523,11 @@ pub fn new_nub_spline(Bool, Int, Array[@core.KVector]) -> NubSpline raise NubSpl
 
 pub fn new_nub_spline_copy(NubSpline) -> NubSpline
 
-pub fn new_nubs_self_loop(Int, Array[@core.KVector]) -> NubsSelfLoop
+pub fn new_nubs_self_loop(Int, Array[@core.KVector]) -> NubsSelfLoop raise
 
 pub fn new_nubs_self_loop_copy(NubsSelfLoop) -> NubsSelfLoop
 
-pub fn new_nubs_self_loop_with_clamped(Bool, Int, Array[@core.KVector]) -> NubsSelfLoop
+pub fn new_nubs_self_loop_with_clamped(Bool, Int, Array[@core.KVector]) -> NubsSelfLoop raise
 
 pub fn new_orthogonal_edge_router_layout_phase() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
@@ -553,6 +549,8 @@ pub fn new_port_side_assigner() -> PortSideAssigner
 
 pub fn new_port_side_processor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
+pub fn new_pure_i_cut_index_calculator((LGraph, GraphStats) -> Array[Int], () -> Bool) -> ICutIndexCalculator
+
 pub fn new_rectangle_copy(Rectangle) -> Rectangle
 
 pub fn new_rectangle_position(@core.KVector) -> Rectangle
@@ -573,11 +571,11 @@ pub fn new_self_hyper_loop(SelfLoopHolder) -> SelfHyperLoop
 
 pub fn new_self_hyper_loop_labels(SelfHyperLoop) -> SelfHyperLoopLabels
 
-pub fn new_self_loop_edge(LEdge, SelfLoopPort, SelfLoopPort) -> SelfLoopEdge
+pub fn new_self_loop_edge(LEdge, SelfLoopPort, SelfLoopPort) -> SelfLoopEdge raise
 
 pub fn new_self_loop_holder(LNode) -> SelfLoopHolder
 
-pub fn new_self_loop_port(LPort) -> SelfLoopPort
+pub fn new_self_loop_port(LPort) -> SelfLoopPort raise
 
 pub fn new_self_loop_port_restorer_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
@@ -599,9 +597,9 @@ pub fn new_spline_dependency(SplineSegment, SplineSegment, Int) -> SplineDepende
 
 pub fn new_spline_edge_router_layout_phase() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
 
-pub fn new_spline_segment_hyper_edge(LPort, Array[@core.Pair[SplineSideToProcess, LEdge]], SplineSideToProcess) -> SplineSegment
+pub fn new_spline_segment_hyper_edge(LPort, Array[@core.Pair[SplineSideToProcess, LEdge]], SplineSideToProcess) -> SplineSegment raise
 
-pub fn new_spline_segment_single_edge(LEdge, SplineSideToProcess, SplineSideToProcess) -> SplineSegment
+pub fn new_spline_segment_single_edge(LEdge, SplineSideToProcess, SplineSideToProcess) -> SplineSegment raise
 
 pub fn new_spline_self_loop_router() -> AbstractSelfLoopRouter
 
@@ -609,11 +607,11 @@ pub fn new_sweep_copy(Array[Array[LNode]]) -> SweepCopy
 
 pub fn new_sweep_copy_from(SweepCopy) -> SweepCopy
 
-pub fn new_switch_decider(Int, Array[Array[LNode]], CrossingMatrixFiller, Array[Int], GraphInfoHolder, Bool) -> SwitchDecider
+pub fn new_switch_decider(Int, Array[Array[LNode]], CrossingMatrixFiller, Array[Int], GraphInfoHolder, Bool) -> SwitchDecider raise
 
 pub fn new_tarjan(Array[LEdge]) -> Tarjan
 
-pub fn new_test_graph_creator() -> GreedySwitchTestGraphCreator
+pub fn new_test_graph_creator() -> GreedySwitchTestGraphCreator raise
 
 pub fn new_vertical_segment(@core.KVector, @core.KVector, @compaction.CNode?, LEdge) -> VerticalSegment
 
@@ -639,21 +637,21 @@ pub fn nub_spline_get_last_vertical_point(NubSpline, Double, Int) -> @core.KVect
 
 pub fn nub_spline_get_t_from_control_point(PolarCP) -> Double
 
-pub fn nubs_self_loop_create_across_self_loop(LPort, LPort, @core.KVector, Array[@core.KVector], @core.KVector) -> NubsSelfLoop
+pub fn nubs_self_loop_create_across_self_loop(LPort, LPort, @core.KVector, Array[@core.KVector], @core.KVector) -> NubsSelfLoop raise
 
-pub fn nubs_self_loop_create_corner_self_loop(LPort, LPort, Double, Double) -> NubsSelfLoop
+pub fn nubs_self_loop_create_corner_self_loop(LPort, LPort, Double, Double) -> NubsSelfLoop raise
 
-pub fn nubs_self_loop_create_four_side_self_loop(LPort, LPort, @core.KVector, Array[@core.KVector], @core.KVector) -> NubsSelfLoop
+pub fn nubs_self_loop_create_four_side_self_loop(LPort, LPort, @core.KVector, Array[@core.KVector], @core.KVector) -> NubsSelfLoop raise
 
-pub fn nubs_self_loop_create_side_self_loop(LPort, LPort, Double) -> NubsSelfLoop
+pub fn nubs_self_loop_create_side_self_loop(LPort, LPort, Double) -> NubsSelfLoop raise
 
-pub fn nubs_self_loop_create_three_side_self_loop(LPort, LPort, @core.KVector, Array[@core.KVector], @core.KVector) -> NubsSelfLoop
+pub fn nubs_self_loop_create_three_side_self_loop(LPort, LPort, @core.KVector, Array[@core.KVector], @core.KVector) -> NubsSelfLoop raise
 
 pub fn offset_graph(LGraph, Double, Double) -> Unit
 
 pub fn offset_graphs(Array[LGraph], Double, Double) -> Unit
 
-pub fn orthogonal_routing_generator_break_non_critical_cycles(Array[HyperEdgeSegment], @state.GreedySwitchMockRandom) -> Unit
+pub fn orthogonal_routing_generator_break_non_critical_cycles(Array[HyperEdgeSegment], @state.GreedySwitchMockRandom) -> Unit raise
 
 pub fn orthogonal_routing_generator_count_crossings(Array[Double], Double, Double) -> Int
 
@@ -661,9 +659,9 @@ pub let orthogonal_routing_generator_tolerance : Double
 
 pub fn orthogonal_routing_generator_topological_numbering(Array[HyperEdgeSegment]) -> Unit
 
-pub fn orthogonal_self_loop_router_route_self_loops(SelfLoopHolder) -> Unit
+pub fn orthogonal_self_loop_router_route_self_loops(SelfLoopHolder) -> Unit raise
 
-pub fn orthogonal_self_loop_router_route_with_modifier(SelfLoopHolder, (SelfLoopEdge, EdgeRoutingDirection, @core.KVectorChain) -> @core.KVectorChain) -> Unit
+pub fn orthogonal_self_loop_router_route_with_modifier(SelfLoopHolder, (SelfLoopEdge, EdgeRoutingDirection, @core.KVectorChain) -> @core.KVectorChain raise?) -> Unit raise
 
 pub fn place_nodes_horizontally(Layer, Double) -> Unit
 
@@ -671,7 +669,7 @@ pub fn polyline_edge_router_is_external_west_or_east_port(LNode) -> Bool
 
 pub fn polyline_self_loop_router_cut_corners(@core.KVectorChain, Double) -> @core.KVectorChain
 
-pub fn polyline_self_loop_router_route_self_loops(SelfLoopHolder) -> Unit
+pub fn polyline_self_loop_router_route_self_loops(SelfLoopHolder) -> Unit raise
 
 pub fn port_restorer_sorted_two_side_loop_port_sides(SelfHyperLoop) -> Array[@core.PortSide]
 
@@ -683,14 +681,6 @@ pub fn rectangle_union(Rectangle, Rectangle) -> Rectangle
 
 pub fn rectangle_union_collection(Array[Rectangle]) -> Rectangle raise RectangleException
 
-pub fn register_layered_cycle_breaking_phase(String, @core.ILayoutProcessorFactory[LayeredPhases, LGraph]) -> Unit
-
-pub fn register_layered_intermediate_processor(IntermediateProcessorStrategy, @core.ILayoutProcessorFactory[LayeredPhases, LGraph]) -> Unit
-
-pub fn register_layered_layering_phase(String, @core.ILayoutProcessorFactory[LayeredPhases, LGraph]) -> Unit
-
-pub fn register_layered_node_placement_phase(String, @core.ILayoutProcessorFactory[LayeredPhases, LGraph]) -> Unit
-
 pub fn resize_node(LNode, @core.KVector, Bool, Bool) -> Unit
 
 pub fn routing_direction_to_string(RoutingDirection) -> String
@@ -699,7 +689,7 @@ pub fn routing_direction_values() -> Array[RoutingDirection]
 
 pub fn self_loop_holder_exception_message(SelfLoopHolderException) -> String
 
-pub fn self_loop_holder_install(LNode) -> SelfLoopHolder raise SelfLoopHolderException
+pub fn self_loop_holder_install(LNode) -> SelfLoopHolder raise
 
 pub fn self_loop_holder_needs_self_loop_processing(LNode) -> Bool
 
@@ -725,9 +715,9 @@ pub fn single_edge_graph_wrapper_validify_indexes_looking_back(GraphStats, Array
 
 pub fn sort_by_input_model_processor_get_target_node(LPort) -> LNode?
 
-pub fn sort_by_input_model_processor_insertion_sort(Array[LNode], ModelOrderNodeComparator) -> Unit
+pub fn sort_by_input_model_processor_insertion_sort(Array[LNode], ModelOrderNodeComparator) -> Unit raise
 
-pub fn sort_by_input_model_processor_insertion_sort_port(Array[LPort], ModelOrderPortComparator) -> Unit
+pub fn sort_by_input_model_processor_insertion_sort_port(Array[LPort], ModelOrderPortComparator) -> Unit raise
 
 pub fn sort_by_input_model_processor_long_edge_target_node_preprocessing(LNode) -> Map[Int, Int]
 
@@ -739,7 +729,7 @@ pub fn spline_edge_router_is_straight(Double, Double) -> Bool
 
 pub let spline_edge_router_spline_dimension : Int
 
-pub fn spline_self_loop_router_route_self_loops(SelfLoopHolder) -> Unit
+pub fn spline_self_loop_router_route_self_loops(SelfLoopHolder) -> Unit raise
 
 pub fn spline_side_to_process_to_string(SplineSideToProcess) -> String
 
@@ -767,7 +757,7 @@ pub fn splines_math_is_between_double(Double, Double, Double) -> Bool
 
 pub fn splines_math_is_between_int(Int, Int, Int) -> Bool
 
-pub fn splines_math_length_to_orthogonal(Double, @core.KVector) -> Double
+pub fn splines_math_length_to_orthogonal(Double, @core.KVector) -> Double raise
 
 pub fn splines_math_port_side_to_direction(@core.PortSide) -> Double
 
@@ -855,13 +845,13 @@ pub struct AbstractBarycenterPortDistributor {
   mut port_barycenter : Array[Double]
   in_layer_ports : Array[LPort]
   mut n_ports : Int
-  calculate_port_ranks_fn : (AbstractBarycenterPortDistributor, LNode, Double, @options.PortType) -> Double
+  calculate_port_ranks_fn : (AbstractBarycenterPortDistributor, LNode, Double, @options.PortType) -> Double raise
 }
 pub fn AbstractBarycenterPortDistributor::as_i_sweep_port_distributor(Self) -> ISweepPortDistributor
 pub fn AbstractBarycenterPortDistributor::as_initializable(Self) -> IInitializable
-pub fn AbstractBarycenterPortDistributor::calculate_port_ranks(Self, Array[LNode], @options.PortType) -> Unit
-pub fn AbstractBarycenterPortDistributor::calculate_port_ranks_on_node(Self, LNode, Double, @options.PortType) -> Double
-pub fn AbstractBarycenterPortDistributor::distribute_ports_while_sweeping(Self, Array[Array[LNode]], Int, Bool) -> Bool
+pub fn AbstractBarycenterPortDistributor::calculate_port_ranks(Self, Array[LNode], @options.PortType) -> Unit raise
+pub fn AbstractBarycenterPortDistributor::calculate_port_ranks_on_node(Self, LNode, Double, @options.PortType) -> Double raise
+pub fn AbstractBarycenterPortDistributor::distribute_ports_while_sweeping(Self, Array[Array[LNode]], Int, Bool) -> Bool raise
 pub fn AbstractBarycenterPortDistributor::get_port_ranks(Self) -> Array[Double]
 pub fn AbstractBarycenterPortDistributor::init_after_traversal(Self) -> Unit
 pub fn AbstractBarycenterPortDistributor::init_at_layer_level(Self, Int, Array[Array[LNode]]) -> Unit
@@ -869,9 +859,9 @@ pub fn AbstractBarycenterPortDistributor::init_at_node_level(Self, Int, Int, Arr
 pub fn AbstractBarycenterPortDistributor::init_at_port_level(Self, Int, Int, Int, Array[Array[LNode]]) -> Unit
 
 pub struct AbstractSelfLoopRouter {
-  route_self_loops_fn : (SelfLoopHolder) -> Unit
+  route_self_loops_fn : (SelfLoopHolder) -> Unit raise
 }
-pub fn AbstractSelfLoopRouter::route_self_loops(Self, SelfLoopHolder) -> Unit
+pub fn AbstractSelfLoopRouter::route_self_loops(Self, SelfLoopHolder) -> Unit raise
 
 pub enum AddMode {
   Prepend
@@ -887,7 +877,7 @@ pub struct AllCrossingsCounter {
   mut n_ports : Int
 }
 pub fn AllCrossingsCounter::as_initializable(Self) -> IInitializable
-pub fn AllCrossingsCounter::count_all_crossings(Self, Array[Array[LNode]]) -> Int
+pub fn AllCrossingsCounter::count_all_crossings(Self, Array[Array[LNode]]) -> Int raise
 pub fn AllCrossingsCounter::init_after_traversal(Self) -> Unit
 pub fn AllCrossingsCounter::init_at_edge_level(Self, Int, Int, Int, Int, LEdge, Array[Array[LNode]]) -> Unit
 pub fn AllCrossingsCounter::init_at_node_level(Self, Int, Int, Array[Array[LNode]]) -> Unit
@@ -925,7 +915,7 @@ pub fn BarycenterHeuristic::as_i_crossing_minimization_heuristic(Self) -> ICross
 pub fn BarycenterHeuristic::init_after_traversal(Self) -> Unit
 pub fn BarycenterHeuristic::init_at_layer_level(Self, Int, Array[Array[LNode]]) -> Unit
 pub fn BarycenterHeuristic::is_deterministic(Self) -> Bool
-pub fn BarycenterHeuristic::minimize_crossings(Self, Array[Array[LNode]], Int, Bool, Bool) -> Bool
+pub fn BarycenterHeuristic::minimize_crossings(Self, Array[Array[LNode]], Int, Bool, Bool) -> Bool raise
 pub fn BarycenterHeuristic::minimize_crossings_layer(Self, Array[LNode], Bool, Bool, Bool) -> Unit
 pub fn BarycenterHeuristic::set_first_layer_order(Self, Array[Array[LNode]], Bool) -> Bool
 
@@ -977,8 +967,8 @@ pub fn[V] BiLinkedHashMultiMap::get_values(Self[V], Int) -> Array[V]
 pub fn[V] BiLinkedHashMultiMap::is_maximal_key(Self[V], Int) -> Bool
 pub fn[V] BiLinkedHashMultiMap::is_minimal_key(Self[V], Int) -> Bool
 pub fn[V] BiLinkedHashMultiMap::key_set(Self[V]) -> Array[Int]
-pub fn[V : Hash + Eq] BiLinkedHashMultiMap::put(Self[V], Int, V) -> Unit
-pub fn[V : Hash + Eq] BiLinkedHashMultiMap::put_all(Self[V], Int, Array[V]) -> Unit
+pub fn[V : Hash + Eq] BiLinkedHashMultiMap::put(Self[V], Int, V) -> Unit raise
+pub fn[V : Hash + Eq] BiLinkedHashMultiMap::put_all(Self[V], Int, Array[V]) -> Unit raise
 
 pub struct BinaryIndexedTree {
   mut binary_sums : Array[Int]
@@ -1051,6 +1041,7 @@ pub enum EdgeRoutingDirection {
 }
 
 pub struct EndLabelCell {
+  mut arena : @graph.GraphArena?
   label_cell : @nodespacing.Cell
   label_side : @core.LabelSide
   labels : Array[EndLabelCellLabel]
@@ -1066,7 +1057,7 @@ pub fn EndLabelCell::set_horizontal_alignment(Self, @nodespacing.HorizontalLabel
 pub fn EndLabelCell::set_vertical_alignment(Self, @nodespacing.VerticalLabelAlignment) -> Unit
 
 pub struct EndLabelCellLabel {
-  elk_label : Int
+  elk_label : @graph.ElkLabel
   l_label : LLabel
 }
 
@@ -1149,17 +1140,17 @@ pub struct GraphStats {
   mut cuts_allowed : Array[Bool]?
 }
 pub fn GraphStats::get_approximate_chunk_based_layering_height(Self, Array[Int]) -> Double
-pub fn GraphStats::get_approximate_chunk_based_layering_width(Self, Array[Int]) -> Double
+pub fn GraphStats::get_approximate_chunk_based_layering_width(Self, Array[Int]) -> Double raise
 pub fn GraphStats::get_approximate_layer_height(Self, Layer) -> Double
 pub fn GraphStats::get_approximate_layer_width(Self, Layer) -> Double
-pub fn GraphStats::get_approximate_layering_height(Self) -> Double
-pub fn GraphStats::get_approximate_layering_width(Self) -> Double
+pub fn GraphStats::get_approximate_layering_height(Self) -> Double raise
+pub fn GraphStats::get_approximate_layering_width(Self) -> Double raise
 pub fn GraphStats::get_cuts_allowed(Self) -> Array[Bool]
-pub fn GraphStats::get_heights(Self) -> Array[Double]
-pub fn GraphStats::get_max_height(Self) -> Double
-pub fn GraphStats::get_max_width(Self) -> Double
-pub fn GraphStats::get_sum_width(Self) -> Double
-pub fn GraphStats::get_widths(Self) -> Array[Double]
+pub fn GraphStats::get_heights(Self) -> Array[Double] raise
+pub fn GraphStats::get_max_height(Self) -> Double raise
+pub fn GraphStats::get_max_width(Self) -> Double raise
+pub fn GraphStats::get_sum_width(Self) -> Double raise
+pub fn GraphStats::get_widths(Self) -> Array[Double] raise
 pub fn GraphStats::is_cut_allowed(Self, Int) -> Bool
 
 pub enum GraphTransformerMode {
@@ -1175,7 +1166,7 @@ pub struct GreedyPortDistributor {
 }
 pub fn GreedyPortDistributor::as_i_sweep_port_distributor(Self) -> ISweepPortDistributor
 pub fn GreedyPortDistributor::as_initializable(Self) -> IInitializable
-pub fn GreedyPortDistributor::distribute_ports_while_sweeping(Self, Array[Array[LNode]], Int, Bool) -> Bool
+pub fn GreedyPortDistributor::distribute_ports_while_sweeping(Self, Array[Array[LNode]], Int, Bool) -> Bool raise
 pub fn GreedyPortDistributor::init_after_traversal(Self) -> Unit
 pub fn GreedyPortDistributor::init_at_node_level(Self, Int, Int, Array[Array[LNode]]) -> Unit
 
@@ -1194,61 +1185,61 @@ pub fn GreedySwitchHeuristic::init_after_traversal(Self) -> Unit
 pub fn GreedySwitchHeuristic::init_at_layer_level(Self, Int, Array[Array[LNode]]) -> Unit
 pub fn GreedySwitchHeuristic::init_at_port_level(Self, Int, Int, Int, Array[Array[LNode]]) -> Unit
 pub fn GreedySwitchHeuristic::is_deterministic(Self) -> Bool
-pub fn GreedySwitchHeuristic::minimize_crossings(Self, Array[Array[LNode]], Int, Bool, Bool) -> Bool
-pub fn GreedySwitchHeuristic::set_first_layer_order(Self, Array[Array[LNode]], Bool) -> Bool
+pub fn GreedySwitchHeuristic::minimize_crossings(Self, Array[Array[LNode]], Int, Bool, Bool) -> Bool raise
+pub fn GreedySwitchHeuristic::set_first_layer_order(Self, Array[Array[LNode]], Bool) -> Bool raise
 
 pub struct GreedySwitchInLayerEdgeTestGraphCreator {
   base : GreedySwitchTestGraphCreator
 }
-pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_fixed_port_order_two_in_layer_edges_cross_each_other(Self) -> LGraph
-pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_graph(Self) -> LGraph
-pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_crossings_on_both_sides(Self) -> LGraph
-pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_crossings_but_no_fixed_order(Self) -> LGraph
-pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_crossings_no_fixed_order_no_edge_between_upper_and_lower(Self) -> LGraph
-pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_crossings_no_fixed_order_no_edge_between_upper_and_lower_upside_down(Self) -> LGraph
-pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_downward_graph_no_fixed_order(Self) -> LGraph
-pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_fixed_port_order_in_layer_and_in_between_layer_crossing(Self) -> LGraph
-pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_fixed_port_order_in_layer_crossing(Self) -> LGraph
-pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_graph_with_crossings_to_between_layer_edge_with_fixed_port_order(Self) -> LGraph
-pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_multiple_edges_into_single_port(Self) -> LGraph
-pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_with_fixed_port_order_and_normal_edge_crossings(Self) -> LGraph
-pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_one_layer_no_crossings(Self) -> LGraph
-pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_one_layer_with_in_layer_crossings(Self) -> LGraph
+pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_fixed_port_order_two_in_layer_edges_cross_each_other(Self) -> LGraph raise
+pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_graph(Self) -> LGraph raise
+pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_crossings_on_both_sides(Self) -> LGraph raise
+pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_crossings_but_no_fixed_order(Self) -> LGraph raise
+pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_crossings_no_fixed_order_no_edge_between_upper_and_lower(Self) -> LGraph raise
+pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_crossings_no_fixed_order_no_edge_between_upper_and_lower_upside_down(Self) -> LGraph raise
+pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_downward_graph_no_fixed_order(Self) -> LGraph raise
+pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_fixed_port_order_in_layer_and_in_between_layer_crossing(Self) -> LGraph raise
+pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_fixed_port_order_in_layer_crossing(Self) -> LGraph raise
+pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_graph_with_crossings_to_between_layer_edge_with_fixed_port_order(Self) -> LGraph raise
+pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_multiple_edges_into_single_port(Self) -> LGraph raise
+pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_with_fixed_port_order_and_normal_edge_crossings(Self) -> LGraph raise
+pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_one_layer_no_crossings(Self) -> LGraph raise
+pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_one_layer_with_in_layer_crossings(Self) -> LGraph raise
 
 pub struct GreedySwitchNorthSouthEdgeTestGraphCreator {
   base : GreedySwitchTestGraphCreator
 }
-pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_graph(Self) -> LGraph
-pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_graph_layout_unit_does_not_prevent_switch_with_long_edge_dummy(Self) -> LGraph
-pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_graph_layout_unit_prevents_switch_with_node_with_node_with_northern_edges(Self) -> LGraph
-pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_graph_layout_unit_prevents_switch_with_node_with_node_with_southern_edges(Self) -> LGraph
-pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_graph_where_layout_unit_prevents_switch(Self) -> LGraph
-pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_long_edge_dummy_and_normal_node_with_unused_ports_on_northern_side(Self) -> LGraph
-pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_long_edge_dummy_and_normal_node_with_unused_ports_on_southern_side(Self) -> LGraph
-pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_multiple_north_south_and_long_edge_dummies_on_both_sides(Self) -> LGraph
-pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_port_ond_normal_node_above_long_edge_dummy(Self) -> LGraph
-pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_all_sides_multiple_crossings(Self) -> LGraph
-pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_downward_crossing_graph(Self) -> LGraph
-pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_downward_multiple_crossing_graph(Self) -> LGraph
-pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_edges_from_east_and_west_and_cross(Self) -> LGraph
-pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_northern_eastern_port_to_west_western_port_to_east(Self) -> LGraph
-pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_northern_western_edges(Self) -> LGraph
-pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_southern_three_western_edges(Self) -> LGraph
-pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_southern_two_western_edges(Self) -> LGraph
-pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_southern_western_port_to_east_and_eastern_port_to_west(Self) -> LGraph
-pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_upward_crossing_graph(Self) -> LGraph
-pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_upward_multiple_crossing_graph(Self) -> LGraph
-pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_northern_north_south_dummy_edge_crossing_graph(Self) -> LGraph
-pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_northern_north_south_graph_edges_from_east_and_west_no_crossings(Self) -> LGraph
-pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_northern_north_south_graph_edges_from_east_and_west_no_crossings_upper_edge_east(Self) -> LGraph
-pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_south_port_on_normal_node_below_long_edge_dummy(Self) -> LGraph
-pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_southern_north_south_dummy_edge_crossing_graph(Self) -> LGraph
-pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_southern_north_south_dummy_edge_two_crossing_graph(Self) -> LGraph
-pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_southern_north_south_edges_both_to_east(Self) -> LGraph
-pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_southern_north_south_graph_edges_from_east_and_west_no_crossings(Self) -> LGraph
-pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_southern_two_dummy_edge_and_north_south_crossing_graph(Self) -> LGraph
-pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_three_layer_north_south_crossing_graph(Self) -> LGraph
-pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_three_layer_north_south_crossing_should_switch_graph(Self) -> LGraph
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_graph(Self) -> LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_graph_layout_unit_does_not_prevent_switch_with_long_edge_dummy(Self) -> LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_graph_layout_unit_prevents_switch_with_node_with_node_with_northern_edges(Self) -> LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_graph_layout_unit_prevents_switch_with_node_with_node_with_southern_edges(Self) -> LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_graph_where_layout_unit_prevents_switch(Self) -> LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_long_edge_dummy_and_normal_node_with_unused_ports_on_northern_side(Self) -> LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_long_edge_dummy_and_normal_node_with_unused_ports_on_southern_side(Self) -> LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_multiple_north_south_and_long_edge_dummies_on_both_sides(Self) -> LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_port_ond_normal_node_above_long_edge_dummy(Self) -> LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_all_sides_multiple_crossings(Self) -> LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_downward_crossing_graph(Self) -> LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_downward_multiple_crossing_graph(Self) -> LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_edges_from_east_and_west_and_cross(Self) -> LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_northern_eastern_port_to_west_western_port_to_east(Self) -> LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_northern_western_edges(Self) -> LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_southern_three_western_edges(Self) -> LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_southern_two_western_edges(Self) -> LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_southern_western_port_to_east_and_eastern_port_to_west(Self) -> LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_upward_crossing_graph(Self) -> LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_upward_multiple_crossing_graph(Self) -> LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_northern_north_south_dummy_edge_crossing_graph(Self) -> LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_northern_north_south_graph_edges_from_east_and_west_no_crossings(Self) -> LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_northern_north_south_graph_edges_from_east_and_west_no_crossings_upper_edge_east(Self) -> LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_south_port_on_normal_node_below_long_edge_dummy(Self) -> LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_southern_north_south_dummy_edge_crossing_graph(Self) -> LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_southern_north_south_dummy_edge_two_crossing_graph(Self) -> LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_southern_north_south_edges_both_to_east(Self) -> LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_southern_north_south_graph_edges_from_east_and_west_no_crossings(Self) -> LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_southern_two_dummy_edge_and_north_south_crossing_graph(Self) -> LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_three_layer_north_south_crossing_graph(Self) -> LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_three_layer_north_south_crossing_should_switch_graph(Self) -> LGraph raise
 
 #alias(TestGraphCreator)
 pub struct GreedySwitchTestGraphCreator {
@@ -1278,53 +1269,53 @@ pub fn GreedySwitchTestGraphCreator::east_west_edge_from_to_nodes(Self, LNode, L
 pub fn GreedySwitchTestGraphCreator::east_west_edge_from_to_port_node(Self, LPort, LNode) -> Unit
 pub fn GreedySwitchTestGraphCreator::east_west_edges_from_to(Self, Int, LNode, LNode) -> Unit
 pub fn GreedySwitchTestGraphCreator::get_copy_with_switched_order(Self, Int, Int, Array[LNode]) -> Array[LNode]
-pub fn GreedySwitchTestGraphCreator::get_cross_formed_graph(Self) -> LGraph
-pub fn GreedySwitchTestGraphCreator::get_cross_formed_graph_constraints_prevent_any_switch(Self) -> LGraph
-pub fn GreedySwitchTestGraphCreator::get_cross_formed_graph_with_constraints_in_second_layer(Self) -> LGraph
-pub fn GreedySwitchTestGraphCreator::get_cross_with_extra_edge_in_between_graph(Self) -> LGraph
-pub fn GreedySwitchTestGraphCreator::get_cross_with_many_self_loops_graph(Self) -> LGraph
+pub fn GreedySwitchTestGraphCreator::get_cross_formed_graph(Self) -> LGraph raise
+pub fn GreedySwitchTestGraphCreator::get_cross_formed_graph_constraints_prevent_any_switch(Self) -> LGraph raise
+pub fn GreedySwitchTestGraphCreator::get_cross_formed_graph_with_constraints_in_second_layer(Self) -> LGraph raise
+pub fn GreedySwitchTestGraphCreator::get_cross_with_extra_edge_in_between_graph(Self) -> LGraph raise
+pub fn GreedySwitchTestGraphCreator::get_cross_with_many_self_loops_graph(Self) -> LGraph raise
 pub fn GreedySwitchTestGraphCreator::get_current_order(Self, LGraph) -> Array[Array[LNode]]
-pub fn GreedySwitchTestGraphCreator::get_empty_graph(Self) -> LGraph
-pub fn GreedySwitchTestGraphCreator::get_fixed_port_order_graph(Self) -> LGraph
-pub fn GreedySwitchTestGraphCreator::get_fixed_port_order_in_layer_edges_dont_cross_each_other(Self) -> LGraph
-pub fn GreedySwitchTestGraphCreator::get_fixed_port_order_in_layer_edges_with_crossings(Self) -> LGraph
-pub fn GreedySwitchTestGraphCreator::get_graph(Self) -> LGraph
-pub fn GreedySwitchTestGraphCreator::get_graph_no_crossings_due_to_port_order_not_fixed(Self) -> LGraph
-pub fn GreedySwitchTestGraphCreator::get_graph_which_could_be_worsened_by_switch(Self) -> LGraph
-pub fn GreedySwitchTestGraphCreator::get_in_layer_edges_graph(Self) -> LGraph
-pub fn GreedySwitchTestGraphCreator::get_in_layer_edges_graph_which_results_in_crossings_when_switched(Self) -> LGraph
+pub fn GreedySwitchTestGraphCreator::get_empty_graph(Self) -> LGraph raise
+pub fn GreedySwitchTestGraphCreator::get_fixed_port_order_graph(Self) -> LGraph raise
+pub fn GreedySwitchTestGraphCreator::get_fixed_port_order_in_layer_edges_dont_cross_each_other(Self) -> LGraph raise
+pub fn GreedySwitchTestGraphCreator::get_fixed_port_order_in_layer_edges_with_crossings(Self) -> LGraph raise
+pub fn GreedySwitchTestGraphCreator::get_graph(Self) -> LGraph raise
+pub fn GreedySwitchTestGraphCreator::get_graph_no_crossings_due_to_port_order_not_fixed(Self) -> LGraph raise
+pub fn GreedySwitchTestGraphCreator::get_graph_which_could_be_worsened_by_switch(Self) -> LGraph raise
+pub fn GreedySwitchTestGraphCreator::get_in_layer_edges_graph(Self) -> LGraph raise
+pub fn GreedySwitchTestGraphCreator::get_in_layer_edges_graph_which_results_in_crossings_when_switched(Self) -> LGraph raise
 pub fn[T] GreedySwitchTestGraphCreator::get_list_copy_in_index_order(Self, Array[T], Array[Int]) -> Array[T]
-pub fn GreedySwitchTestGraphCreator::get_more_complex_in_layer_graph(Self) -> LGraph
-pub fn GreedySwitchTestGraphCreator::get_more_complex_three_layer_graph(Self) -> LGraph
-pub fn GreedySwitchTestGraphCreator::get_multiple_edges_between_same_nodes_graph(Self) -> LGraph
-pub fn GreedySwitchTestGraphCreator::get_nodes_in_different_layout_units_prevent_switch(Self) -> LGraph
-pub fn GreedySwitchTestGraphCreator::get_one_node_graph(Self) -> LGraph
+pub fn GreedySwitchTestGraphCreator::get_more_complex_in_layer_graph(Self) -> LGraph raise
+pub fn GreedySwitchTestGraphCreator::get_more_complex_three_layer_graph(Self) -> LGraph raise
+pub fn GreedySwitchTestGraphCreator::get_multiple_edges_between_same_nodes_graph(Self) -> LGraph raise
+pub fn GreedySwitchTestGraphCreator::get_nodes_in_different_layout_units_prevent_switch(Self) -> LGraph raise
+pub fn GreedySwitchTestGraphCreator::get_one_node_graph(Self) -> LGraph raise
 pub fn GreedySwitchTestGraphCreator::get_random(Self) -> @state.GreedySwitchMockRandom
-pub fn GreedySwitchTestGraphCreator::get_switch_only_east_one_sided(Self) -> LGraph
-pub fn GreedySwitchTestGraphCreator::get_switch_only_one_sided(Self) -> LGraph
-pub fn GreedySwitchTestGraphCreator::get_switched_problem_graph(Self) -> LGraph
-pub fn GreedySwitchTestGraphCreator::get_two_nodes_no_connection_graph(Self) -> LGraph
+pub fn GreedySwitchTestGraphCreator::get_switch_only_east_one_sided(Self) -> LGraph raise
+pub fn GreedySwitchTestGraphCreator::get_switch_only_one_sided(Self) -> LGraph raise
+pub fn GreedySwitchTestGraphCreator::get_switched_problem_graph(Self) -> LGraph raise
+pub fn GreedySwitchTestGraphCreator::get_two_nodes_no_connection_graph(Self) -> LGraph raise
 pub fn GreedySwitchTestGraphCreator::make_layer(Self, LGraph) -> Layer
 pub fn GreedySwitchTestGraphCreator::make_layers(Self, Int) -> Array[Layer]
 pub fn GreedySwitchTestGraphCreator::make_layers_in_graph(Self, Int, LGraph) -> Array[Layer]
-pub fn GreedySwitchTestGraphCreator::multiple_edges_and_single_edge(Self) -> LGraph
-pub fn GreedySwitchTestGraphCreator::multiple_in_between_layer_edges_into_node_with_no_fixed_port_order(Self) -> LGraph
-pub fn GreedySwitchTestGraphCreator::multiple_in_between_layer_edges_into_node_with_no_fixed_port_order_cause_crossings(Self) -> LGraph
-pub fn GreedySwitchTestGraphCreator::nested_graph(Self, LNode) -> LGraph
+pub fn GreedySwitchTestGraphCreator::multiple_edges_and_single_edge(Self) -> LGraph raise
+pub fn GreedySwitchTestGraphCreator::multiple_in_between_layer_edges_into_node_with_no_fixed_port_order(Self) -> LGraph raise
+pub fn GreedySwitchTestGraphCreator::multiple_in_between_layer_edges_into_node_with_no_fixed_port_order_cause_crossings(Self) -> LGraph raise
+pub fn GreedySwitchTestGraphCreator::nested_graph(Self, LNode) -> LGraph raise
 pub fn GreedySwitchTestGraphCreator::self_loop_on(Self, LNode, @core.PortSide) -> Unit
 pub fn GreedySwitchTestGraphCreator::set_as_long_edge_dummy(Self, LNode) -> Unit
 pub fn GreedySwitchTestGraphCreator::set_as_north_south_node(Self, LNode) -> Unit
 pub fn GreedySwitchTestGraphCreator::set_fixed_order_constraint(Self, LNode) -> Unit
 pub fn GreedySwitchTestGraphCreator::set_fixed_order_constraint_on_nodes(Self, Array[LNode]) -> Unit
-pub fn GreedySwitchTestGraphCreator::set_graph(Self, LGraph) -> LGraph
+pub fn GreedySwitchTestGraphCreator::set_graph(Self, LGraph) -> LGraph raise
 pub fn GreedySwitchTestGraphCreator::set_in_layer_order_constraint(Self, LNode, LNode) -> Unit
 pub fn GreedySwitchTestGraphCreator::set_port_order_fixed(Self, LNode) -> Unit
 pub fn GreedySwitchTestGraphCreator::set_random(Self, @state.GreedySwitchMockRandom) -> Unit
-pub fn GreedySwitchTestGraphCreator::set_up_graph(Self, LGraph) -> LGraph
-pub fn GreedySwitchTestGraphCreator::set_up_ids(Self) -> Unit
+pub fn GreedySwitchTestGraphCreator::set_up_graph(Self, LGraph) -> LGraph raise
+pub fn GreedySwitchTestGraphCreator::set_up_ids(Self) -> Unit raise
 pub fn[T] GreedySwitchTestGraphCreator::switch_order_in_array(Self, Int, Int, Array[T]) -> Array[T]
 pub fn GreedySwitchTestGraphCreator::switch_order_of_nodes_in_layer(Self, Int, Int, Layer) -> Array[LNode]
-pub fn GreedySwitchTestGraphCreator::two_edges_into_same_port(Self) -> LGraph
+pub fn GreedySwitchTestGraphCreator::two_edges_into_same_port(Self) -> LGraph raise
 
 pub struct HighDegreeNodeInformation {
   mut inc_trees_max_height : Int
@@ -1418,8 +1409,8 @@ pub fn HyperedgeCrossingsCounter::count_crossings(Self, Array[LNode], Array[LNod
 pub struct ICrossingMinimizationHeuristic {
   initializable : IInitializable
   always_improves_fn : () -> Bool
-  set_first_layer_order_fn : (Array[Array[LNode]], Bool) -> Bool
-  minimize_crossings_fn : (Array[Array[LNode]], Int, Bool, Bool) -> Bool
+  set_first_layer_order_fn : (Array[Array[LNode]], Bool) -> Bool raise
+  minimize_crossings_fn : (Array[Array[LNode]], Int, Bool, Bool) -> Bool raise
   is_deterministic_fn : () -> Bool
 }
 pub fn ICrossingMinimizationHeuristic::always_improves(Self) -> Bool
@@ -1430,14 +1421,15 @@ pub fn ICrossingMinimizationHeuristic::init_at_layer_level(Self, Int, Array[Arra
 pub fn ICrossingMinimizationHeuristic::init_at_node_level(Self, Int, Int, Array[Array[LNode]]) -> Unit
 pub fn ICrossingMinimizationHeuristic::init_at_port_level(Self, Int, Int, Int, Array[Array[LNode]]) -> Unit
 pub fn ICrossingMinimizationHeuristic::is_deterministic(Self) -> Bool
-pub fn ICrossingMinimizationHeuristic::minimize_crossings(Self, Array[Array[LNode]], Int, Bool, Bool) -> Bool
-pub fn ICrossingMinimizationHeuristic::set_first_layer_order(Self, Array[Array[LNode]], Bool) -> Bool
+pub fn ICrossingMinimizationHeuristic::minimize_crossings(Self, Array[Array[LNode]], Int, Bool, Bool) -> Bool raise
+pub fn ICrossingMinimizationHeuristic::set_first_layer_order(Self, Array[Array[LNode]], Bool) -> Bool raise
 
 pub struct ICutIndexCalculator {
-  get_cut_indexes : (LGraph, GraphStats) -> Array[Int]
+  get_cut_indexes : ((LGraph, GraphStats) -> Array[Int] raise)?
+  pure_get_cut_indexes : ((LGraph, GraphStats) -> Array[Int])?
   guarantee_valid : () -> Bool
 }
-pub fn ICutIndexCalculator::get_cut_indexes(Self, LGraph, GraphStats) -> Array[Int]
+pub fn ICutIndexCalculator::get_cut_indexes(Self, LGraph, GraphStats) -> Array[Int] raise
 pub fn ICutIndexCalculator::guarantee_valid(Self) -> Bool
 
 pub struct IInitializable {
@@ -1455,10 +1447,10 @@ pub fn IInitializable::init_at_port_level(Self, Int, Int, Int, Array[Array[LNode
 
 pub struct ISweepPortDistributor {
   initializable : IInitializable
-  distribute_ports_while_sweeping_fn : (Array[Array[LNode]], Int, Bool) -> Bool
+  distribute_ports_while_sweeping_fn : (Array[Array[LNode]], Int, Bool) -> Bool raise
 }
 pub fn ISweepPortDistributor::as_initializable(Self) -> IInitializable
-pub fn ISweepPortDistributor::distribute_ports_while_sweeping(Self, Array[Array[LNode]], Int, Bool) -> Bool
+pub fn ISweepPortDistributor::distribute_ports_while_sweeping(Self, Array[Array[LNode]], Int, Bool) -> Bool raise
 pub fn ISweepPortDistributor::init_after_traversal(Self) -> Unit
 pub fn ISweepPortDistributor::init_at_edge_level(Self, Int, Int, Int, Int, LEdge, Array[Array[LNode]]) -> Unit
 pub fn ISweepPortDistributor::init_at_layer_level(Self, Int, Array[Array[LNode]]) -> Unit
@@ -1468,7 +1460,7 @@ pub fn ISweepPortDistributor::init_at_port_level(Self, Int, Int, Int, Array[Arra
 pub struct InteractiveLayeredGraphVisitor {
   marker : Int
 }
-pub fn InteractiveLayeredGraphVisitor::visit(Self, Int) -> Unit
+pub fn InteractiveLayeredGraphVisitor::visit(Self, @graph.ElkNode) -> Unit
 
 pub(all) enum IntermediateProcessorStrategy {
   DirectionPreprocessor
@@ -1697,7 +1689,7 @@ pub struct LGraphAdapter {
 }
 pub fn LGraphAdapter::get_graph(Self) -> LGraph
 pub fn LGraphAdapter::get_nodes(Self) -> Array[LNodeAdapter]
-pub fn LGraphAdapter::get_position(Self) -> @core.KVector
+pub fn LGraphAdapter::get_position(Self) -> @core.KVector raise
 pub fn LGraphAdapter::get_property_bool(Self, @graph.IProperty[Bool]) -> Bool
 pub fn LGraphAdapter::get_property_double(Self, @graph.IProperty[Double]) -> Double
 pub fn LGraphAdapter::get_property_int(Self, @graph.IProperty[Int]) -> Int
@@ -1710,7 +1702,7 @@ pub fn LGraphAdapter::has_property_double(Self, @graph.IProperty[Double]) -> Boo
 pub fn LGraphAdapter::has_property_int(Self, @graph.IProperty[Int]) -> Bool
 pub fn LGraphAdapter::has_property_string(Self, @graph.IProperty[String]) -> Bool
 pub fn LGraphAdapter::has_property_string_array(Self, @graph.IProperty[Array[String]]) -> Bool
-pub fn LGraphAdapter::set_position(Self, @core.KVector) -> Unit
+pub fn LGraphAdapter::set_position(Self, @core.KVector) -> Unit raise
 pub fn LGraphAdapter::set_size(Self, @core.KVector) -> Unit
 pub fn LGraphAdapter::set_volatile_id(Self, Int) -> Unit
 
@@ -1933,9 +1925,9 @@ pub fn LNodeAdapter::set_padding(Self, @core.Spacing) -> Unit
 pub fn LNodeAdapter::set_position(Self, @core.KVector) -> Unit
 pub fn LNodeAdapter::set_size(Self, @core.KVector) -> Unit
 pub fn LNodeAdapter::set_volatile_id(Self, Int) -> Unit
-pub fn LNodeAdapter::sort_port_list(Self) -> Unit
-pub fn LNodeAdapter::sort_port_list_with(Self, PortComparator) -> Unit
-pub fn LNodeAdapter::sort_port_list_with_comparator(Self, (LPort, LPort) -> Int) -> Unit
+pub fn LNodeAdapter::sort_port_list(Self) -> Unit raise
+pub fn LNodeAdapter::sort_port_list_with(Self, PortComparator) -> Unit raise
+pub fn LNodeAdapter::sort_port_list_with_comparator(Self, (LPort, LPort) -> Int raise?) -> Unit raise?
 
 pub struct LPort {
   shape : LShape
@@ -2045,12 +2037,12 @@ pub fn LShape::set_origin_identifier(Self, String?) -> Unit
 pub struct LabelManagementProcessor {
   center_labels : Bool
 }
-pub fn LabelManagementProcessor::process(Self, LGraph, @core.IElkProgressMonitor?) -> Unit
+pub fn LabelManagementProcessor::process(Self, LGraph, @core.IElkProgressMonitor?) -> Unit raise
 
 pub struct LabelPlacer {
   _reserved : Int
 }
-pub fn LabelPlacer::place_labels(Self, SelfLoopHolder, @core.ILabelManager?, @core.IElkProgressMonitor?) -> Unit
+pub fn LabelPlacer::place_labels(Self, SelfLoopHolder, @core.ILabelManager?, @core.IElkProgressMonitor?) -> Unit raise
 
 pub struct Layer {
   graph_element : LGraphElement
@@ -2075,7 +2067,7 @@ pub struct LayerSweepCrossingMinimizer {
   mut random_seed : Int64
 }
 pub fn LayerSweepCrossingMinimizer::get_graph_data(Self) -> Array[GraphInfoHolder]
-pub fn LayerSweepCrossingMinimizer::process(Self, LGraph, progress_monitor? : @core.IElkProgressMonitor?) -> Unit
+pub fn LayerSweepCrossingMinimizer::process(Self, LGraph, progress_monitor? : @core.IElkProgressMonitor?) -> Unit raise
 
 pub struct LayerSweepTypeDecider {
   node_info : Array[Array[LayerSweepTypeDeciderNodeInfo]]
@@ -2099,8 +2091,8 @@ pub struct LayerTotalPortDistributor {
 pub fn LayerTotalPortDistributor::as_abstract_barycenter_port_distributor(Self) -> AbstractBarycenterPortDistributor
 pub fn LayerTotalPortDistributor::as_i_sweep_port_distributor(Self) -> ISweepPortDistributor
 pub fn LayerTotalPortDistributor::as_initializable(Self) -> IInitializable
-pub fn LayerTotalPortDistributor::calculate_port_ranks(Self, Array[LNode], @options.PortType) -> Unit
-pub fn LayerTotalPortDistributor::distribute_ports_while_sweeping(Self, Array[Array[LNode]], Int, Bool) -> Bool
+pub fn LayerTotalPortDistributor::calculate_port_ranks(Self, Array[LNode], @options.PortType) -> Unit raise
+pub fn LayerTotalPortDistributor::distribute_ports_while_sweeping(Self, Array[Array[LNode]], Int, Bool) -> Bool raise
 pub fn LayerTotalPortDistributor::get_port_ranks(Self) -> Array[Double]
 pub fn LayerTotalPortDistributor::init_after_traversal(Self) -> Unit
 pub fn LayerTotalPortDistributor::init_at_layer_level(Self, Int, Array[Array[LNode]]) -> Unit
@@ -2113,6 +2105,21 @@ pub struct LayeredLayoutPlan {
 }
 pub fn LayeredLayoutPlan::get_processors(Self) -> Array[@core.ILayoutProcessor[LayeredPhases, LGraph]]
 pub fn LayeredLayoutPlan::get_state(Self) -> @state.LayeredLayoutState
+
+pub struct LayeredPhaseRegistry {
+  cycle_breaking_factories : Map[String, @core.ILayoutProcessorFactory[LayeredPhases, LGraph]]
+  layering_factories : Map[String, @core.ILayoutProcessorFactory[LayeredPhases, LGraph]]
+  node_placement_factories : Map[String, @core.ILayoutProcessorFactory[LayeredPhases, LGraph]]
+  intermediate_processor_factories : Map[Int, @core.ILayoutProcessorFactory[LayeredPhases, LGraph]]
+}
+pub fn LayeredPhaseRegistry::cycle_breaking_phase_factory(Self, String) -> @core.ILayoutProcessorFactory[LayeredPhases, LGraph] raise
+pub fn LayeredPhaseRegistry::intermediate_processor_factory(Self, IntermediateProcessorStrategy) -> @core.ILayoutProcessorFactory[LayeredPhases, LGraph]
+pub fn LayeredPhaseRegistry::layering_phase_factory(Self, String) -> @core.ILayoutProcessorFactory[LayeredPhases, LGraph] raise
+pub fn LayeredPhaseRegistry::node_placement_phase_factory(Self, String) -> @core.ILayoutProcessorFactory[LayeredPhases, LGraph] raise
+pub fn LayeredPhaseRegistry::register_cycle_breaking_phase(Self, String, @core.ILayoutProcessorFactory[LayeredPhases, LGraph]) -> Unit
+pub fn LayeredPhaseRegistry::register_intermediate_processor(Self, IntermediateProcessorStrategy, @core.ILayoutProcessorFactory[LayeredPhases, LGraph]) -> Unit
+pub fn LayeredPhaseRegistry::register_layering_phase(Self, String, @core.ILayoutProcessorFactory[LayeredPhases, LGraph]) -> Unit
+pub fn LayeredPhaseRegistry::register_node_placement_phase(Self, String, @core.ILayoutProcessorFactory[LayeredPhases, LGraph]) -> Unit
 
 pub(all) enum LayeredPhases {
   P1CycleBreaking
@@ -2166,9 +2173,9 @@ pub fn ModelOrderBarycenterHeuristic::clear_transitive_ordering(Self) -> Unit
 pub fn ModelOrderBarycenterHeuristic::init_after_traversal(Self) -> Unit
 pub fn ModelOrderBarycenterHeuristic::init_at_layer_level(Self, Int, Array[Array[LNode]]) -> Unit
 pub fn ModelOrderBarycenterHeuristic::is_deterministic(Self) -> Bool
-pub fn ModelOrderBarycenterHeuristic::minimize_crossings(Self, Array[Array[LNode]], Int, Bool, Bool) -> Bool
-pub fn ModelOrderBarycenterHeuristic::minimize_crossings_layer(Self, Array[LNode], Bool, Bool, Bool) -> Unit
-pub fn ModelOrderBarycenterHeuristic::set_first_layer_order(Self, Array[Array[LNode]], Bool) -> Bool
+pub fn ModelOrderBarycenterHeuristic::minimize_crossings(Self, Array[Array[LNode]], Int, Bool, Bool) -> Bool raise
+pub fn ModelOrderBarycenterHeuristic::minimize_crossings_layer(Self, Array[LNode], Bool, Bool, Bool) -> Unit raise
+pub fn ModelOrderBarycenterHeuristic::set_first_layer_order(Self, Array[Array[LNode]], Bool) -> Bool raise
 
 pub struct ModelOrderNodeComparator {
   previous_layer : Array[LNode]
@@ -2181,7 +2188,7 @@ pub struct ModelOrderNodeComparator {
   before_ports : Bool
 }
 pub fn ModelOrderNodeComparator::clear_transitive_ordering(Self) -> Unit
-pub fn ModelOrderNodeComparator::compare(Self, LNode, LNode) -> Int
+pub fn ModelOrderNodeComparator::compare(Self, LNode, LNode) -> Int raise
 
 pub struct ModelOrderPortComparator {
   target_node_model_order : Map[Int, Int]
@@ -2195,7 +2202,7 @@ pub struct ModelOrderPortComparator {
 }
 pub fn ModelOrderPortComparator::check_port_model_order(Self, LPort, LPort) -> Int
 pub fn ModelOrderPortComparator::clear_transitive_ordering(Self) -> Unit
-pub fn ModelOrderPortComparator::compare(Self, LPort, LPort) -> Int
+pub fn ModelOrderPortComparator::compare(Self, LPort, LPort) -> Int raise
 
 pub struct NodeRelativePortDistributor {
   distributor : AbstractBarycenterPortDistributor
@@ -2203,8 +2210,8 @@ pub struct NodeRelativePortDistributor {
 pub fn NodeRelativePortDistributor::as_abstract_barycenter_port_distributor(Self) -> AbstractBarycenterPortDistributor
 pub fn NodeRelativePortDistributor::as_i_sweep_port_distributor(Self) -> ISweepPortDistributor
 pub fn NodeRelativePortDistributor::as_initializable(Self) -> IInitializable
-pub fn NodeRelativePortDistributor::calculate_port_ranks(Self, Array[LNode], @options.PortType) -> Unit
-pub fn NodeRelativePortDistributor::distribute_ports_while_sweeping(Self, Array[Array[LNode]], Int, Bool) -> Bool
+pub fn NodeRelativePortDistributor::calculate_port_ranks(Self, Array[LNode], @options.PortType) -> Unit raise
+pub fn NodeRelativePortDistributor::distribute_ports_while_sweeping(Self, Array[Array[LNode]], Int, Bool) -> Bool raise
 pub fn NodeRelativePortDistributor::get_port_ranks(Self) -> Array[Double]
 pub fn NodeRelativePortDistributor::init_after_traversal(Self) -> Unit
 pub fn NodeRelativePortDistributor::init_at_layer_level(Self, Int, Array[Array[LNode]]) -> Unit
@@ -2228,7 +2235,7 @@ pub struct NorthSouthEdgeNeighbouringNodeCrossingsCounter {
   port_positions : Map[Int, Int]
   layer : Array[LNode]
 }
-pub fn NorthSouthEdgeNeighbouringNodeCrossingsCounter::count_crossings(Self, LNode, LNode) -> Unit
+pub fn NorthSouthEdgeNeighbouringNodeCrossingsCounter::count_crossings(Self, LNode, LNode) -> Unit raise
 pub fn NorthSouthEdgeNeighbouringNodeCrossingsCounter::get_lower_upper_crossings(Self) -> Int
 pub fn NorthSouthEdgeNeighbouringNodeCrossingsCounter::get_upper_lower_crossings(Self) -> Int
 
@@ -2277,7 +2284,7 @@ pub fn OrthogonalRoutingGenerator::get_critical_conflict_threshold(Self) -> Doub
 pub fn OrthogonalRoutingGenerator::get_edge_spacing(Self) -> Double
 pub fn OrthogonalRoutingGenerator::get_routing_strategy(Self) -> BaseRoutingDirectionStrategy
 pub fn OrthogonalRoutingGenerator::minimum_horizontal_segment_distance(Self, Array[HyperEdgeSegment]) -> Double
-pub fn OrthogonalRoutingGenerator::route_edges(Self, @core.IElkProgressMonitor, LGraph, Array[LNode]?, Int, Array[LNode]?, Double) -> Int
+pub fn OrthogonalRoutingGenerator::route_edges(Self, @core.IElkProgressMonitor, LGraph, Array[LNode]?, Int, Array[LNode]?, Double) -> Int raise
 pub fn OrthogonalRoutingGenerator::set_critical_conflict_threshold(Self, Double) -> Unit
 
 pub struct PolarCP {
@@ -2288,7 +2295,7 @@ pub struct PolarCP {
 pub struct PortComparator {
   unit : Unit
 }
-pub fn PortComparator::compare(Self, LPort, LPort) -> Int
+pub fn PortComparator::compare(Self, LPort, LPort) -> Int raise
 
 pub struct PortRestorer {
   mut sl_loops_by_type : Map[Int, Array[SelfHyperLoop]]
@@ -2355,14 +2362,14 @@ pub enum RoutingDirectionStrategyType {
 pub struct RoutingDirector {
   mut port_penalties : Array[Int]?
 }
-pub fn RoutingDirector::determine_loop_routes(Self, SelfLoopHolder) -> Unit
+pub fn RoutingDirector::determine_loop_routes(Self, SelfLoopHolder) -> Unit raise
 
 pub struct RoutingSlotAssigner {
   hyper_edge_segments : Array[HyperEdgeSegment]
   sl_loop_to_segment_map : Map[Int, HyperEdgeSegment]
   sl_loop_activity_over_ports : Map[Int, Array[Bool]]
 }
-pub fn RoutingSlotAssigner::assign_routing_slots(Self, SelfLoopHolder) -> Unit
+pub fn RoutingSlotAssigner::assign_routing_slots(Self, SelfLoopHolder) -> Unit raise
 
 pub struct SelfHyperLoop {
   mut id : Int
@@ -2377,7 +2384,7 @@ pub struct SelfHyperLoop {
   occupied_port_sides : Array[@core.PortSide]
   routing_slot : Array[Int]
 }
-pub fn SelfHyperLoop::add_self_loop_edge(Self, SelfLoopEdge) -> Unit
+pub fn SelfHyperLoop::add_self_loop_edge(Self, SelfLoopEdge) -> Unit raise
 pub fn SelfHyperLoop::compute_ports_per_side(Self) -> Unit raise SelfLoopTypeException
 pub fn SelfHyperLoop::get_id(Self) -> Int
 pub fn SelfHyperLoop::get_leftmost_port(Self) -> SelfLoopPort?
@@ -2442,7 +2449,7 @@ pub fn SelfLoopEdge::get_sl_hyper_loop(Self) -> SelfHyperLoop?
 pub fn SelfLoopEdge::get_sl_source(Self) -> SelfLoopPort
 pub fn SelfLoopEdge::get_sl_target(Self) -> SelfLoopPort
 pub fn SelfLoopEdge::is_inline(Self) -> Bool
-pub fn SelfLoopEdge::set_sl_hyper_loop(Self, SelfHyperLoop) -> Unit
+pub fn SelfLoopEdge::set_sl_hyper_loop(Self, SelfHyperLoop) -> Unit raise
 
 pub struct SelfLoopHolder {
   l_node : LNode
@@ -2549,7 +2556,7 @@ pub struct SweepCopy {
   port_orders : Array[Array[Array[LPort]]]
 }
 pub fn SweepCopy::nodes(Self) -> Array[Array[LNode]]
-pub fn SweepCopy::transfer_node_and_port_orders_to_graph(Self, LGraph, Bool) -> Unit
+pub fn SweepCopy::transfer_node_and_port_orders_to_graph(Self, LGraph, Bool) -> Unit raise
 
 pub struct SwitchDecider {
   free_layer : Array[LNode]
@@ -2561,8 +2568,8 @@ pub struct SwitchDecider {
   mut parent_cross_counter : CrossingsCounter?
   count_crossings_caused_by_port_switch : Bool
 }
-pub fn SwitchDecider::does_switch_reduce_crossings(Self, Int, Int) -> Bool
-pub fn SwitchDecider::notify_of_switch(Self, LNode, LNode) -> Unit
+pub fn SwitchDecider::does_switch_reduce_crossings(Self, Int, Int) -> Bool raise
+pub fn SwitchDecider::notify_of_switch(Self, LNode, LNode) -> Unit raise
 
 pub struct Tarjan {
   edges_to_be_reversed : Array[LEdge]
@@ -2574,8 +2581,8 @@ pub struct Tarjan {
 pub fn Tarjan::get_node_to_scc_id(Self) -> Map[Int, Int]
 pub fn Tarjan::get_strongly_connected_components(Self) -> Array[Array[LNode]]
 pub fn Tarjan::reset_tarjan(Self, LGraph) -> Unit
-pub fn Tarjan::strongly_connected(Self, LNode) -> Unit
-pub fn Tarjan::tarjan(Self, LGraph) -> Unit
+pub fn Tarjan::strongly_connected(Self, LNode) -> Unit raise
+pub fn Tarjan::tarjan(Self, LGraph) -> Unit raise
 
 pub struct VerticalSegment {
   id : Int

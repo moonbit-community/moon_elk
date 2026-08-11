@@ -88,7 +88,7 @@ fn box_layout_provider_compare_double(left : Double, right : Double) -> Int {
 ///|
 fn box_layout_provider_parse_padding(
   layout_node : @graph.ElkNode,
-) -> ElkPadding {
+) -> ElkPadding raise {
   let parsed = new_elk_padding()
   parsed.parse(
     @graph.node_get_string_property(
@@ -126,7 +126,7 @@ fn box_layout_provider_has_minimum_size_constraint(
 ///|
 fn box_layout_provider_effective_min_size_constraint_for(
   node : @graph.ElkNode,
-) -> KVector {
+) -> KVector raise {
   if !box_layout_provider_has_minimum_size_constraint(node) {
     return new_kvector_xy(0.0, 0.0)
   }
@@ -156,7 +156,7 @@ fn box_layout_provider_resize_node(
   new_height : Double,
   move_ports : Bool,
   move_labels : Bool,
-) -> KVector {
+) -> KVector raise {
   ignore(move_ports)
   ignore(move_labels)
 
@@ -176,7 +176,7 @@ fn box_layout_provider_resize_node(
 ///|
 fn box_layout_provider_resize_node_to_constraints(
   node : @graph.ElkNode,
-) -> Unit {
+) -> Unit raise {
   ignore(
     box_layout_provider_resize_node(
       node,
@@ -499,7 +499,7 @@ fn box_layout_provider_place_boxes_sorted(
   min_total_height : Double,
   expand_nodes_value : Bool,
   aspect_ratio_value : Double,
-) -> KVector {
+) -> KVector raise {
   let mut max_row_width = 0.0
   let mut total_area = 0.0
   for box in sorted_boxes {
@@ -619,7 +619,7 @@ fn box_layout_provider_place_boxes(
   padding_value : ElkPadding,
   expand_nodes_value : Bool,
   interactive_mode : Bool,
-) -> Unit {
+) -> Unit raise {
   let sorted_boxes = box_layout_provider_sorted_boxes(
     parent_node, interactive_mode,
   )
@@ -667,7 +667,7 @@ fn box_layout_provider_place_inner_boxes(
   min_total_height : Double,
   expand_nodes_value : Bool,
   aspect_ratio_value : Double,
-) -> (BoxGroup, KVector) {
+) -> (BoxGroup, KVector) raise {
   let updated_group = group
   updated_group.bottom = []
   updated_group.right = []
@@ -813,7 +813,7 @@ fn box_layout_provider_merge_and_place_dec(
   min_height : Double,
   expand_nodes_value : Bool,
   aspect_ratio_value : Double,
-) -> Array[BoxGroup] {
+) -> Array[BoxGroup] raise {
   ignore(aspect_ratio_value)
 
   let sorted_groups = box_layout_provider_copy_groups(groups)
@@ -851,7 +851,7 @@ fn box_layout_provider_merge_and_place_dec(
               box_layout_provider_raise_unit("boxToBeat should be defined")
             catch {
               err =>
-                layout_runtime_report_unsupported_configuration(
+                layout_runtime_raise_unsupported_configuration(
                   box_layout_provider_exception_message(err),
                 )
             } noraise {
@@ -904,7 +904,7 @@ fn box_layout_provider_merge_and_place_mixed(
   min_height : Double,
   expand_nodes_value : Bool,
   aspect_ratio_value : Double,
-) -> Array[BoxGroup] {
+) -> Array[BoxGroup] raise {
   ignore(aspect_ratio_value)
 
   let cum_area_array = []
@@ -986,7 +986,7 @@ fn box_layout_provider_merge_and_place_inc(
   min_height : Double,
   expand_nodes_value : Bool,
   aspect_ratio_value : Double,
-) -> Array[BoxGroup] {
+) -> Array[BoxGroup] raise {
   ignore(aspect_ratio_value)
 
   let sorted_groups = box_layout_provider_copy_groups(groups)
@@ -1037,7 +1037,7 @@ fn box_layout_provider_place_boxes_grouping(
   obj_spacing : Double,
   padding_value : ElkPadding,
   expand_nodes_value : Bool,
-) -> Unit {
+) -> Unit raise {
   let min_size = new_kvector()
   min_size.parse(
     @graph.node_get_string_property(parent_node, node_size_minimum),
@@ -1141,7 +1141,7 @@ pub fn BoxLayoutProvider::layout(
   self : BoxLayoutProvider,
   layout_node : @graph.ElkNode,
   progress_monitor : IElkProgressMonitor,
-) -> Unit {
+) -> Unit raise {
   ignore(self.initialized)
   ignore(progress_monitor.begin("Box layout", 2.0))
 

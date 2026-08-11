@@ -28,11 +28,11 @@ fn spline_segment_port_side_equals(
 ///|
 fn spline_segment_pair_side(
   pair : @core.Pair[SplineSideToProcess, LEdge],
-) -> SplineSideToProcess? {
+) -> SplineSideToProcess? raise {
   match pair.get_first() {
     Some(side) => Some(side)
     None => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "missing side information in edge pair",
       )
       None
@@ -43,11 +43,11 @@ fn spline_segment_pair_side(
 ///|
 fn spline_segment_pair_edge(
   pair : @core.Pair[SplineSideToProcess, LEdge],
-) -> LEdge? {
+) -> LEdge? raise {
   match pair.get_second() {
     Some(edge) => Some(edge)
     None => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "missing edge in edge pair",
       )
       None
@@ -56,11 +56,11 @@ fn spline_segment_pair_edge(
 }
 
 ///|
-fn spline_segment_edge_source(edge : LEdge) -> LPort? {
+fn spline_segment_edge_source(edge : LEdge) -> LPort? raise {
   match edge.get_source() {
     Some(source) => Some(source)
     None => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "edge source is not connected",
       )
       None
@@ -69,11 +69,11 @@ fn spline_segment_edge_source(edge : LEdge) -> LPort? {
 }
 
 ///|
-fn spline_segment_edge_target(edge : LEdge) -> LPort? {
+fn spline_segment_edge_target(edge : LEdge) -> LPort? raise {
   match edge.get_target() {
     Some(target) => Some(target)
     None => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "edge target is not connected",
       )
       None
@@ -237,7 +237,7 @@ fn spline_segment_set_relevant_positions(
 }
 
 ///|
-fn SplineSegment::add_edge(self : SplineSegment, edge : LEdge) -> Unit {
+fn SplineSegment::add_edge(self : SplineSegment, edge : LEdge) -> Unit raise {
   if !spline_segment_add_edge_if_absent(self.edges, edge) {
     return
   }
@@ -272,9 +272,9 @@ pub fn new_spline_segment_hyper_edge(
   single_port : LPort,
   edges : Array[@core.Pair[SplineSideToProcess, LEdge]],
   source_side : SplineSideToProcess,
-) -> SplineSegment {
+) -> SplineSegment raise {
   if edges.is_empty() {
-    @core.layout_runtime_report_unsupported_configuration(
+    @core.layout_runtime_raise_unsupported_configuration(
       "hyperedge segment requires at least one edge",
     )
     return new_spline_segment_base(false)
@@ -356,7 +356,7 @@ pub fn new_spline_segment_single_edge(
   edge : LEdge,
   source_side : SplineSideToProcess,
   target_side : SplineSideToProcess,
-) -> SplineSegment {
+) -> SplineSegment raise {
   let segment = new_spline_segment_base(false)
 
   let source = match spline_segment_edge_source(edge) {

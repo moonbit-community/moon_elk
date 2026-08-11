@@ -68,7 +68,7 @@ fn greedy_cycle_breaker_choose_node_with_max_outflow_default(
   nodes : Array[@runtime.LNode],
   graph : @runtime.LGraph,
   random : @state.GreedySwitchMockRandom,
-) -> @runtime.LNode {
+) -> @runtime.LNode raise {
   ignore(graph)
   let index = random.int(nodes.length())
   nodes[index]
@@ -139,8 +139,8 @@ fn greedy_cycle_breaker_collect_and_mark(
     Array[@runtime.LNode],
     @runtime.LGraph,
     @state.GreedySwitchMockRandom,
-  ) -> @runtime.LNode,
-) -> Unit {
+  ) -> @runtime.LNode raise?,
+) -> Unit raise {
   let nodes = state.layered_graph.get_layerless_nodes()
   let mut unprocessed_node_count = nodes.length()
   let mut next_right = -1
@@ -185,7 +185,7 @@ fn greedy_cycle_breaker_collect_and_mark(
       }
 
       if max_nodes.is_empty() {
-        @core.layout_runtime_report_unsupported_configuration(
+        @core.layout_runtime_raise_unsupported_configuration(
           "no node with maximal outflow found",
         )
         break
@@ -239,7 +239,7 @@ fn greedy_cycle_breaker_reverse_edges_pointing_left(
 ///|
 fn greedy_cycle_breaker_configuration(
   graph : @runtime.LGraph,
-) -> @core.LayoutProcessorConfiguration[@runtime.LayeredPhases, @runtime.LGraph]? {
+) -> @core.LayoutProcessorConfiguration[@runtime.LayeredPhases, @runtime.LGraph]? raise {
   ignore(graph)
   Some(
     @core.layout_processor_configuration_create(
@@ -259,8 +259,8 @@ fn greedy_cycle_breaker_process_with_chooser(
     Array[@runtime.LNode],
     @runtime.LGraph,
     @state.GreedySwitchMockRandom,
-  ) -> @runtime.LNode,
-) -> Unit {
+  ) -> @runtime.LNode raise?,
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()
@@ -341,11 +341,12 @@ fn greedy_cycle_breaker_process_with_chooser(
     greedy_cycle_breaker_shift_sink_ranks(state)
     greedy_cycle_breaker_reverse_edges_pointing_left(state)
   } catch {
-    UnsupportedGraphException(message) => {
-      @core.layout_runtime_report_unsupported_configuration(message)
+    GreedyCycleBreakerException::UnsupportedGraphException(message) => {
+      @core.layout_runtime_raise_unsupported_configuration(message)
       monitor.done()
       return
     }
+    error => raise error
   } noraise {
     _ => ()
   }
@@ -357,7 +358,7 @@ fn greedy_cycle_breaker_process_with_chooser(
 fn greedy_cycle_breaker_process(
   layered_graph : @runtime.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   greedy_cycle_breaker_process_with_chooser(
     layered_graph, progress_monitor, greedy_cycle_breaker_choose_node_with_max_outflow_default,
   )

@@ -93,10 +93,10 @@ pub fn new_switch_decider(
   port_positions : Array[Int],
   graph_data : GraphInfoHolder,
   one_sided : Bool,
-) -> SwitchDecider {
+) -> SwitchDecider raise {
   let effective_free_layer_index = if free_layer_index < 0 ||
     free_layer_index >= graph.length() {
-    @core.layout_runtime_report_unsupported_configuration(
+    @core.layout_runtime_raise_unsupported_configuration(
       "Greedy SwitchDecider: free layer not in graph",
     )
     if graph.is_empty() {
@@ -163,7 +163,7 @@ fn SwitchDecider::init_parent_crossings_counters(
   self : SwitchDecider,
   free_layer_index : Int,
   graph_length : Int,
-) -> Unit {
+) -> Unit raise {
   let parent_graph_data = self.graph_data.parent_graph_data()
   let parent_node_order = parent_graph_data.current_node_order()
   let port_pos = parent_graph_data.port_positions()
@@ -187,7 +187,7 @@ fn SwitchDecider::init_parent_crossings_counters(
   let counter = match self.switch_decider_parent_cross_counter() {
     Some(value) => value
     None => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "parent crossings counter is not initialized",
       )
       return
@@ -205,7 +205,7 @@ pub fn SwitchDecider::notify_of_switch(
   self : SwitchDecider,
   upper_node : LNode,
   lower_node : LNode,
-) -> Unit {
+) -> Unit raise {
   self.left_in_layer_counter.switch_nodes(upper_node, lower_node, West)
   self.right_in_layer_counter.switch_nodes(upper_node, lower_node, East)
 
@@ -214,7 +214,7 @@ pub fn SwitchDecider::notify_of_switch(
       switch_decider_origin_port_of_external_dummy(upper_node) {
       Some(value) => value
       None => {
-        @core.layout_runtime_report_unsupported_configuration(
+        @core.layout_runtime_raise_unsupported_configuration(
           "external port dummy has no origin port",
         )
         return
@@ -224,7 +224,7 @@ pub fn SwitchDecider::notify_of_switch(
       switch_decider_origin_port_of_external_dummy(lower_node) {
       Some(value) => value
       None => {
-        @core.layout_runtime_report_unsupported_configuration(
+        @core.layout_runtime_raise_unsupported_configuration(
           "external port dummy has no origin port",
         )
         return
@@ -233,7 +233,7 @@ pub fn SwitchDecider::notify_of_switch(
     let counter = match self.switch_decider_parent_cross_counter() {
       Some(value) => value
       None => {
-        @core.layout_runtime_report_unsupported_configuration(
+        @core.layout_runtime_raise_unsupported_configuration(
           "parent crossings counter is not initialized",
         )
         return
@@ -248,7 +248,7 @@ pub fn SwitchDecider::does_switch_reduce_crossings(
   self : SwitchDecider,
   upper_node_index : Int,
   lower_node_index : Int,
-) -> Bool {
+) -> Bool raise {
   if self.constraints_prevent_switch(upper_node_index, lower_node_index) {
     return false
   }
@@ -288,7 +288,7 @@ pub fn SwitchDecider::does_switch_reduce_crossings(
       switch_decider_origin_port_of_external_dummy(upper_node) {
       Some(value) => value
       None => {
-        @core.layout_runtime_report_unsupported_configuration(
+        @core.layout_runtime_raise_unsupported_configuration(
           "external port dummy has no origin port",
         )
         return false
@@ -298,7 +298,7 @@ pub fn SwitchDecider::does_switch_reduce_crossings(
       switch_decider_origin_port_of_external_dummy(lower_node) {
       Some(value) => value
       None => {
-        @core.layout_runtime_report_unsupported_configuration(
+        @core.layout_runtime_raise_unsupported_configuration(
           "external port dummy has no origin port",
         )
         return false
@@ -307,7 +307,7 @@ pub fn SwitchDecider::does_switch_reduce_crossings(
     let counter = match self.switch_decider_parent_cross_counter() {
       Some(value) => value
       None => {
-        @core.layout_runtime_report_unsupported_configuration(
+        @core.layout_runtime_raise_unsupported_configuration(
           "parent crossings counter is not initialized",
         )
         return false

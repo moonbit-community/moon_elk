@@ -19,7 +19,7 @@ pub let all_files_recursive_suffix : String
 
 pub let all_files_suffix : String
 
-pub fn apply_visitors(Int, Array[@core.IGraphElementVisitor]) -> Unit
+pub fn apply_visitors(@graph.ElkNode, Array[@core.IGraphElementVisitor]) -> Unit raise
 
 pub fn base_path_for_property(String) -> String raise AbstractPropertyDependentResourcePathException
 
@@ -33,9 +33,9 @@ pub fn[T] configurator_test_configuration_from_providers(Array[(String, (T) -> @
 
 pub fn core_debug_directory_children(String) -> Array[String]
 
-pub fn core_debug_grandom_random_graph_generator_generate(@grandom.CoreDebugGRandomRandomGraphGenerator, @grandom.CoreDebugGRandomGeneratorOptions) -> Int
+pub fn core_debug_grandom_random_graph_generator_generate(@grandom.CoreDebugGRandomRandomGraphGenerator, @grandom.CoreDebugGRandomGeneratorOptions) -> @graph.ElkNode raise
 
-pub fn core_debug_grandom_random_graph_generator_generate_from_configuration(@grandom.CoreDebugGRandomRandomGraphGenerator, @grandom.CoreDebugGRandomConfiguration) -> Array[Int]
+pub fn core_debug_grandom_random_graph_generator_generate_from_configuration(@grandom.CoreDebugGRandomRandomGraphGenerator, @grandom.CoreDebugGRandomConfiguration) -> Array[@graph.ElkNode] raise
 
 pub fn core_debug_is_directory(String) -> Bool
 
@@ -49,115 +49,101 @@ pub fn core_debug_register_regular_file_for_test(String) -> Unit
 
 pub fn core_debug_reset_foundation_for_test() -> Unit
 
-pub fn create_edge(Int?) -> Int
+pub fn create_edge(@graph.ElkNode?) -> @graph.ElkEdge
 
-pub fn create_graph() -> Int
+pub fn create_graph() -> @graph.ElkNode
 
-pub fn create_label(@graph.ElkLabelParent?) -> Int
+pub fn create_label(@graph.ElkLabelParent?) -> @graph.ElkLabel
 
-pub fn create_node(Int?) -> Int
+pub fn create_node(@graph.ElkNode?) -> @graph.ElkNode
 
-pub fn create_port(Int?) -> Int
+pub fn create_port(@graph.ElkNode?) -> @graph.ElkPort
 
-pub fn create_simple_edge(Int, Int) -> Int
+pub fn create_simple_edge(@graph.ElkNode, @graph.ElkNode) -> @graph.ElkEdge
 
-pub fn edge_add_source(Int, @graph.ElkConnectableShape) -> Unit
+pub fn edge_add_source(@graph.ElkEdge, @graph.ElkConnectableShape) -> Unit
 
-pub fn edge_add_target(Int, @graph.ElkConnectableShape) -> Unit
+pub fn edge_add_target(@graph.ElkEdge, @graph.ElkConnectableShape) -> Unit
 
-pub fn edge_containing_node(Int) -> Int?
+pub fn edge_containing_node(@graph.ElkEdge) -> @graph.ElkNode?
 
-pub fn edge_identifier(Int) -> String
+pub fn edge_identifier(@graph.ElkEdge) -> String
 
-pub fn edge_labels(Int) -> Array[Int]
+pub fn edge_labels(@graph.ElkEdge) -> Array[@graph.ElkLabel]
 
-pub fn edge_set_identifier(Int, String) -> Unit
+pub fn edge_set_identifier(@graph.ElkEdge, String) -> Unit
 
-pub fn edge_set_layout_option_string_by_id(Int, String, String) -> Unit
+pub fn edge_set_layout_option_string_by_id(@graph.ElkEdge, String, String) -> Unit
 
-pub fn elk_graph_json_for_elk_graph(Int) -> @json.ElkGraphJsonExportBuilder
+pub fn elk_graph_json_for_elk_graph(@graph.ElkNode) -> @json.ElkGraphJsonExportBuilder
 
 pub fn elk_graph_json_for_graph(String) -> @json.ElkGraphJsonImportBuilder
 
-pub fn ensure_results_path_exists() -> Unit
+pub fn ensure_results_path_exists() -> Unit raise
 
 pub fn[T] experimental_object_inflate(Array[TestAlgorithm], Array[TestConfiguration[T]], Array[TestGraph[T]]) -> Array[ExperimentalObject[T]]
 
-pub fn find_lowest_common_ancestor(Int, Int) -> Int?
+pub fn find_lowest_common_ancestor(@graph.ElkNode, @graph.ElkNode) -> @graph.ElkNode?
 
 pub fn force_layout_meta_data_providers() -> Array[@core.ILayoutMetaDataProvider]
 
 pub fn graph_from_file_filter() -> FileExtensionFilter
 
-pub fn graph_from_file_from_resource_paths(Array[AbstractResourcePath]) -> Array[GraphFromFile]
+pub fn graph_from_file_from_resource_paths(Array[AbstractResourcePath]) -> Array[GraphFromFile] raise
 
 pub fn graph_from_file_register_content_for_test(String, String) -> Unit
 
 pub fn graph_from_file_reset_content_for_test() -> Unit
 
-pub fn graph_test_shape_label(Int) -> GraphTestShape
+pub fn graph_test_shape_label(@graph.ElkLabel) -> GraphTestShape
 
-pub fn graph_test_shape_node(Int) -> GraphTestShape
+pub fn graph_test_shape_node(@graph.ElkNode) -> GraphTestShape
 
-pub fn graph_test_shape_port(Int) -> GraphTestShape
+pub fn graph_test_shape_port(@graph.ElkPort) -> GraphTestShape
 
-pub fn graph_test_utils_all_nodes(Int, Bool) -> Array[Int]
+pub fn graph_test_utils_all_nodes(@graph.ElkNode, Bool) -> Array[@graph.ElkNode]
 
-pub fn graph_test_utils_create_hierarchical_graph() -> Int
+pub fn graph_test_utils_create_hierarchical_graph() -> @graph.ElkNode raise
 
-pub fn graph_test_utils_create_simple_graph() -> Int
+pub fn graph_test_utils_create_simple_graph() -> @graph.ElkNode raise
 
-pub fn graph_test_utils_create_three_node_graph() -> Int
+pub fn graph_test_utils_create_three_node_graph() -> @graph.ElkNode
 
-pub fn graph_test_utils_get_child(Int, Array[String]) -> Int
+pub fn graph_test_utils_get_child(@graph.ElkNode, Array[String]) -> @graph.ElkNode raise
 
-pub fn graph_test_utils_get_port(Int, String) -> Int
+pub fn graph_test_utils_get_port(@graph.ElkNode, String) -> @graph.ElkPort raise
 
 pub fn graph_test_utils_have_overlaps(Array[GraphTestShape]) -> Bool
 
-pub fn label_height(Int) -> Double
+pub fn label_height(@graph.ElkLabel) -> Double
 
-pub fn label_parent(Int) -> @graph.ElkLabelParent?
+pub fn label_parent(@graph.ElkLabel) -> @graph.ElkLabelParent?
 
-pub fn label_set_dimensions(Int, Double, Double) -> Unit
+pub fn label_set_dimensions(@graph.ElkLabel, Double, Double) -> Unit
 
-pub fn label_set_text(Int, String) -> Unit
+pub fn label_set_text(@graph.ElkLabel, String) -> Unit
 
-pub fn label_text(Int) -> String
+pub fn label_text(@graph.ElkLabel) -> String
 
-pub fn label_width(Int) -> Double
+pub fn label_width(@graph.ElkLabel) -> Double
 
-pub fn label_x(Int) -> Double
+pub fn label_x(@graph.ElkLabel) -> Double
 
-pub fn label_y(Int) -> Double
+pub fn label_y(@graph.ElkLabel) -> Double
 
-pub fn layout_meta_data_service_algorithm_data_values() -> Array[@core.LayoutAlgorithmData]
+pub fn make_edge_label_parent(@graph.ElkEdge) -> @graph.ElkLabelParent
 
-pub fn layout_meta_data_service_get_algorithm_data(String) -> @core.LayoutAlgorithmData?
+pub fn make_node_label_parent(@graph.ElkNode) -> @graph.ElkLabelParent
 
-pub fn layout_meta_data_service_register_algorithm(@core.LayoutAlgorithmData) -> Unit
+pub fn make_port_shape(@graph.ElkPort) -> @graph.ElkConnectableShape
 
-pub fn layout_meta_data_service_register_default_algorithms() -> Unit
-
-pub fn layout_meta_data_service_register_default_options() -> Unit
-
-pub fn layout_meta_data_service_register_layout_meta_data_providers(Array[@core.ILayoutMetaDataProvider]) -> Unit
-
-pub fn layout_meta_data_service_reset_for_test() -> Unit
-
-pub fn make_edge_label_parent(Int) -> @graph.ElkLabelParent
-
-pub fn make_node_label_parent(Int) -> @graph.ElkLabelParent
-
-pub fn make_port_shape(Int) -> @graph.ElkConnectableShape
-
-pub fn[T] method_test_configuration_from_methods(Array[(String, (T, Int) -> Unit)], default_configuration? : DefaultConfiguration?) -> Array[MethodTestConfiguration[T]]
+pub fn[T] method_test_configuration_from_methods(Array[(String, (T, @graph.ElkNode) -> Unit)], default_configuration? : DefaultConfiguration?) -> Array[MethodTestConfiguration[T]]
 
 pub let model_resource_path_property : String
 
-pub fn new_absolute_resource_path(String) -> AbstractResourcePath
+pub fn new_absolute_resource_path(String) -> AbstractResourcePath raise
 
-pub fn new_abstract_resource_path(String?, String) -> AbstractResourcePath
+pub fn new_abstract_resource_path(String?, String) -> AbstractResourcePath raise
 
 pub fn new_algorithm(String) -> Algorithm
 
@@ -167,9 +153,9 @@ pub fn new_all_algorithms() -> AllAlgorithms
 
 pub fn new_basic_progress_monitor() -> @core.IElkProgressMonitor
 
-pub fn[T] new_blackbox_test_method(String, (T, Int) -> Unit, ignored? : Bool) -> BlackboxTestMethod[T]
+pub fn[T] new_blackbox_test_method(String, (T, @graph.ElkNode) -> Unit, ignored? : Bool) -> BlackboxTestMethod[T]
 
-pub fn new_bundle_resource_path(String, String) -> AbstractResourcePath
+pub fn new_bundle_resource_path(String, String) -> AbstractResourcePath raise
 
 pub fn new_configurator() -> Configurator
 
@@ -203,11 +189,11 @@ pub fn new_file_name_filter(String) -> FileNameFilter
 
 pub fn new_file_name_filter_with_expressions(Array[String]) -> FileNameFilter
 
-pub fn new_graph_element_visitor((Int) -> Unit) -> @core.IGraphElementVisitor
+pub fn new_graph_element_visitor((@graph.ElkNode) -> Unit raise) -> @core.IGraphElementVisitor
 
 pub fn new_graph_from_file(AbstractResourcePath) -> GraphFromFile
 
-pub fn[T] new_graph_from_method(String, (T) -> Int) -> GraphFromMethod[T]
+pub fn[T] new_graph_from_method(String, (T) -> @graph.ElkNode) -> GraphFromMethod[T]
 
 pub fn new_graph_provider() -> GraphProvider
 
@@ -221,11 +207,11 @@ pub fn new_layout_algorithm_data(String) -> @core.LayoutAlgorithmData
 
 pub fn new_layout_configurator() -> @core.LayoutConfigurator
 
-pub fn[T, G] new_layout_test_runner(() -> T, Array[TestAlgorithm], Array[TestConfiguration[T]], Array[TestGraph[T]], Array[BlackboxTestMethod[T]], Array[WhiteboxTestMethod[T, G]]) -> LayoutTestRunner[T, G]
+pub fn[T, G] new_layout_test_runner(() -> T, Array[TestAlgorithm], Array[TestConfiguration[T]], Array[TestGraph[T]], Array[BlackboxTestMethod[T]], Array[WhiteboxTestMethod[T, G]]) -> LayoutTestRunner[T, G] raise
 
-pub fn[T] new_method_test_configuration(String, (T, Int) -> Unit, default_configuration? : DefaultConfiguration?) -> MethodTestConfiguration[T]
+pub fn[T] new_method_test_configuration(String, (T, @graph.ElkNode) -> Unit, default_configuration? : DefaultConfiguration?) -> MethodTestConfiguration[T]
 
-pub fn new_model_resource_path(String) -> AbstractResourcePath
+pub fn new_model_resource_path(String) -> AbstractResourcePath raise
 
 pub fn new_only_on_root_node() -> OnlyOnRootNode
 
@@ -235,13 +221,13 @@ pub fn new_random_generator_file() -> RandomGeneratorFile
 
 pub fn new_random_generator_options() -> RandomGeneratorOptions
 
-pub fn new_random_graph_from_file(AbstractResourcePath, Int) -> RandomGraphFromFile
+pub fn new_random_graph_from_file(AbstractResourcePath, @graph.ElkNode) -> RandomGraphFromFile
 
-pub fn new_random_graph_from_method(String, Int) -> RandomGraphFromMethod
+pub fn new_random_graph_from_method(String, @graph.ElkNode) -> RandomGraphFromMethod
 
 pub fn new_recursive_graph_layout_engine() -> @core.RecursiveGraphLayoutEngine
 
-pub fn new_results_resource_path(String) -> AbstractResourcePath
+pub fn new_results_resource_path(String) -> AbstractResourcePath raise
 
 pub fn new_run_failure(String, String) -> RunFailure
 
@@ -259,9 +245,9 @@ pub fn new_test_before_processors(Array[TestBeforeProcessor]) -> TestBeforeProce
 
 pub fn new_test_class_constructor_signature(Bool, Int) -> TestClassConstructorSignature
 
-pub fn[T] new_test_configuration(default_configuration? : DefaultConfiguration?, apply_base_configuration_fn? : (T, Int) -> Unit) -> TestConfiguration[T]
+pub fn[T] new_test_configuration(default_configuration? : DefaultConfiguration?, apply_base_configuration_fn? : (T, @graph.ElkNode) -> Unit) -> TestConfiguration[T]
 
-pub fn[T] new_test_graph((T) -> Int, String) -> TestGraph[T]
+pub fn[T] new_test_graph((T) -> @graph.ElkNode, String) -> TestGraph[T]
 
 pub fn new_test_method_signature(String, Bool, String, Array[String], annotations? : Array[String]) -> TestMethodSignature
 
@@ -271,91 +257,87 @@ pub fn[T, G] new_whitebox_test_method(String, (T, G) -> Unit, ignored? : Bool, f
 
 pub let no_layout : @graph.IProperty[Bool]
 
-pub fn node_children(Int) -> Array[Int]
+pub fn node_children(@graph.ElkNode) -> Array[@graph.ElkNode]
 
-pub fn node_contained_edges(Int) -> Array[Int]
+pub fn node_contained_edges(@graph.ElkNode) -> Array[@graph.ElkEdge]
 
-pub fn node_get_bool_property(Int, @graph.IProperty[Bool]) -> Bool
+pub fn node_get_bool_property(@graph.ElkNode, @graph.IProperty[Bool]) -> Bool
 
-pub fn node_get_double_property(Int, @graph.IProperty[Double]) -> Double
+pub fn node_get_double_property(@graph.ElkNode, @graph.IProperty[Double]) -> Double
 
-pub fn node_get_string_property(Int, @graph.IProperty[String]) -> String
+pub fn node_get_string_property(@graph.ElkNode, @graph.IProperty[String]) -> String
 
-pub fn node_has_string_property(Int, @graph.IProperty[String]) -> Bool
+pub fn node_has_string_property(@graph.ElkNode, @graph.IProperty[String]) -> Bool
 
-pub fn node_height(Int) -> Double
+pub fn node_height(@graph.ElkNode) -> Double
 
-pub fn node_identifier(Int) -> String
+pub fn node_identifier(@graph.ElkNode) -> String
 
-pub fn node_labels(Int) -> Array[Int]
+pub fn node_labels(@graph.ElkNode) -> Array[@graph.ElkLabel]
 
-pub fn node_outgoing_edges(Int) -> Array[Int]
+pub fn node_outgoing_edges(@graph.ElkNode) -> Array[@graph.ElkEdge]
 
-pub fn node_parent(Int) -> Int?
+pub fn node_parent(@graph.ElkNode) -> @graph.ElkNode?
 
-pub fn node_ports(Int) -> Array[Int]
+pub fn node_ports(@graph.ElkNode) -> Array[@graph.ElkPort]
 
-pub fn node_set_bool_property(Int, @graph.IProperty[Bool], Bool) -> Unit
+pub fn node_set_bool_property(@graph.ElkNode, @graph.IProperty[Bool], Bool) -> Unit
 
-pub fn node_set_dimensions(Int, Double, Double) -> Unit
+pub fn node_set_dimensions(@graph.ElkNode, Double, Double) -> Unit
 
-pub fn node_set_double_property(Int, @graph.IProperty[Double], Double) -> Unit
+pub fn node_set_double_property(@graph.ElkNode, @graph.IProperty[Double], Double) -> Unit
 
-pub fn node_set_location(Int, Double, Double) -> Unit
+pub fn node_set_location(@graph.ElkNode, Double, Double) -> Unit
 
-pub fn node_set_string_property(Int, @graph.IProperty[String], String) -> Unit
+pub fn node_set_string_property(@graph.ElkNode, @graph.IProperty[String], String) -> Unit
 
-pub fn node_width(Int) -> Double
+pub fn node_width(@graph.ElkNode) -> Double
 
-pub fn node_x(Int) -> Double
+pub fn node_x(@graph.ElkNode) -> Double
 
-pub fn node_y(Int) -> Double
+pub fn node_y(@graph.ElkNode) -> Double
 
-pub fn plain_java_initialization_initialize_plain_java_layout() -> Unit
+pub fn plain_java_initialization_initialize_plain_java_layout(@core.OptionMetadata) -> Unit
 
-pub fn plain_java_initialization_reset_for_test() -> Unit
+pub fn port_height(@graph.ElkPort) -> Double
 
-pub fn port_height(Int) -> Double
+pub fn port_identifier(@graph.ElkPort) -> String
 
-pub fn port_identifier(Int) -> String
+pub fn port_incoming_edges(@graph.ElkPort) -> Array[@graph.ElkEdge]
 
-pub fn port_incoming_edges(Int) -> Array[Int]
+pub fn port_labels(@graph.ElkPort) -> Array[@graph.ElkLabel]
 
-pub fn port_labels(Int) -> Array[Int]
+pub fn port_layout_option_string_value(@graph.ElkPort, String) -> String?
 
-pub fn port_layout_option_string_value(Int, String) -> String?
+pub fn port_outgoing_edges(@graph.ElkPort) -> Array[@graph.ElkEdge]
 
-pub fn port_outgoing_edges(Int) -> Array[Int]
+pub fn port_parent(@graph.ElkPort) -> @graph.ElkNode?
 
-pub fn port_parent(Int) -> Int?
+pub fn port_set_dimensions(@graph.ElkPort, Double, Double) -> Unit
 
-pub fn port_set_dimensions(Int, Double, Double) -> Unit
-
-pub fn port_set_layout_option_string_by_id(Int, String, String) -> Unit
+pub fn port_set_layout_option_string_by_id(@graph.ElkPort, String, String) -> Unit
 
 pub let port_side : @graph.IProperty[String]
 
-pub fn port_width(Int) -> Double
+pub fn port_width(@graph.ElkPort) -> Double
 
-pub fn port_x(Int) -> Double
+pub fn port_x(@graph.ElkPort) -> Double
 
-pub fn port_y(Int) -> Double
+pub fn port_y(@graph.ElkPort) -> Double
 
 pub fn random_graph_from_file_filter() -> FileExtensionFilter
 
-pub fn random_graph_from_file_from_resource_paths(Array[AbstractResourcePath]) -> Array[RandomGraphFromFile]
+pub fn random_graph_from_file_from_resource_paths(Array[AbstractResourcePath]) -> Array[RandomGraphFromFile] raise
 
 pub fn random_graph_from_file_register_content_for_test(String, String) -> Unit
 
 pub fn random_graph_from_file_reset_content_for_test() -> Unit
 
-pub fn random_graph_from_method_from_options(String, @grandom.CoreDebugGRandomGeneratorOptions) -> RandomGraphFromMethod
+pub fn random_graph_from_method_from_options(String, @grandom.CoreDebugGRandomGeneratorOptions) -> RandomGraphFromMethod raise
 
 pub let rectpacking_algorithm_id : String
 
 pub fn reset_experiment_runner_ids_for_test() -> Unit
-
-pub fn reset_graph_model_for_test() -> Unit
 
 pub fn resource_path_clear_properties_for_test() -> Unit
 
@@ -371,7 +353,7 @@ pub let spore_compaction_algorithm_id : String
 
 pub let spore_overlap_removal_algorithm_id : String
 
-pub fn test_algorithm_from_annotations(Array[Algorithm], Bool, Array[String]) -> Array[TestAlgorithm]
+pub fn test_algorithm_from_annotations(@core.OptionMetadata, Array[Algorithm], Bool, Array[String]) -> Array[TestAlgorithm]
 
 pub fn test_algorithm_identity() -> TestAlgorithm
 
@@ -430,10 +412,10 @@ pub struct AbstractResourcePath {
 }
 pub fn AbstractResourcePath::get_file(Self) -> String
 pub fn AbstractResourcePath::get_filter(Self) -> ((String) -> Bool)?
-pub fn AbstractResourcePath::initialize(Self, String?, String) -> Unit
+pub fn AbstractResourcePath::initialize(Self, String?, String) -> Unit raise
 pub fn AbstractResourcePath::is_directory(Self) -> Bool
 pub fn AbstractResourcePath::is_recursive(Self) -> Bool
-pub fn AbstractResourcePath::list_resources(Self) -> Array[Self]
+pub fn AbstractResourcePath::list_resources(Self) -> Array[Self] raise
 pub fn AbstractResourcePath::set_filter(Self, ((String) -> Bool)?) -> Unit
 pub fn AbstractResourcePath::to_string(Self) -> String
 pub fn AbstractResourcePath::with_filter(Self, ((String) -> Bool)?) -> Self
@@ -455,10 +437,10 @@ pub struct AllAlgorithms {
 pub struct BlackboxTestMethod[T] {
   method_name : String
   ignored : Bool
-  run_fn : (T, Int) -> Unit
+  run_fn : (T, @graph.ElkNode) -> Unit
 }
 pub fn[T] BlackboxTestMethod::get_method_name(Self[T]) -> String
-pub fn[T] BlackboxTestMethod::invoke(Self[T], T, Int) -> Unit
+pub fn[T] BlackboxTestMethod::invoke(Self[T], T, @graph.ElkNode) -> Unit
 pub fn[T] BlackboxTestMethod::is_ignored(Self[T]) -> Bool
 
 pub struct Configurator {
@@ -473,7 +455,7 @@ pub struct ConfiguratorTestConfiguration[T] {
   base : TestConfiguration[T]
   configurator_method_name : String
 }
-pub fn[T] ConfiguratorTestConfiguration::apply(Self[T], T, Int) -> Unit
+pub fn[T] ConfiguratorTestConfiguration::apply(Self[T], T, @graph.ElkNode) -> Unit
 pub fn[T] ConfiguratorTestConfiguration::as_test_configuration(Self[T]) -> TestConfiguration[T]
 pub fn[T] ConfiguratorTestConfiguration::to_string(Self[T]) -> String
 
@@ -517,11 +499,11 @@ pub struct ExperimentStatement[T, G] {
   notifier : RunNotifier
   whitebox_recorder : WhiteboxRecorder
   mut whitebox_events : Array[WhiteboxLayoutEvent[G]]
-  mut test_graph : Int?
+  mut test_graph : @graph.ElkNode?
 }
 pub fn[T, G] ExperimentStatement::add_layout_processor_finished_event(Self[T, G], String, G, Bool) -> Unit
 pub fn[T, G] ExperimentStatement::add_layout_processor_ready_event(Self[T, G], String, G, Bool) -> Unit
-pub fn[T, G] ExperimentStatement::evaluate(Self[T, G]) -> Unit
+pub fn[T, G] ExperimentStatement::evaluate(Self[T, G]) -> Unit raise
 pub fn[T, G] ExperimentStatement::get_notifier(Self[T, G]) -> RunNotifier
 pub fn[T, G] ExperimentStatement::get_whitebox_recorder(Self[T, G]) -> WhiteboxRecorder
 
@@ -533,7 +515,7 @@ pub struct ExperimentalObject[T] {
 pub fn[T] ExperimentalObject::get_configuration(Self[T]) -> TestConfiguration[T]
 pub fn[T] ExperimentalObject::get_graph(Self[T]) -> TestGraph[T]
 pub fn[T] ExperimentalObject::get_layout_algorithm(Self[T]) -> TestAlgorithm
-pub fn[T] ExperimentalObject::realize(Self[T], T) -> Int
+pub fn[T] ExperimentalObject::realize(Self[T], T) -> @graph.ElkNode raise
 pub fn[T] ExperimentalObject::to_string(Self[T]) -> String
 
 pub struct FailIfNotExecuted {
@@ -555,15 +537,15 @@ pub fn FileNameFilter::to_filter(Self) -> (String) -> Bool
 pub struct GraphFromFile {
   resource_path : AbstractResourcePath
 }
-pub fn GraphFromFile::provide_graph(Self, Unit) -> Int
+pub fn GraphFromFile::provide_graph(Self, Unit) -> @graph.ElkNode
 pub fn GraphFromFile::to_string(Self) -> String
 pub fn GraphFromFile::to_test_graph(Self) -> TestGraph[Unit]
 
 pub struct GraphFromMethod[T] {
   method_name : String
-  provider_fn : (T) -> Int
+  provider_fn : (T) -> @graph.ElkNode
 }
-pub fn[T] GraphFromMethod::provide_graph(Self[T], T) -> Int
+pub fn[T] GraphFromMethod::provide_graph(Self[T], T) -> @graph.ElkNode
 pub fn[T] GraphFromMethod::to_string(Self[T]) -> String
 pub fn[T] GraphFromMethod::to_test_graph(Self[T]) -> TestGraph[T]
 
@@ -576,9 +558,9 @@ pub struct GraphResourceProvider {
 }
 
 pub enum GraphTestShape {
-  GraphTestNode(Int)
-  GraphTestPort(Int)
-  GraphTestLabel(Int)
+  GraphTestNode(@graph.ElkNode)
+  GraphTestPort(@graph.ElkPort)
+  GraphTestLabel(@graph.ElkLabel)
 }
 
 pub struct LayoutTestRunner[T, G] {
@@ -596,14 +578,14 @@ pub fn[T, G] LayoutTestRunner::get_test_algorithms(Self[T, G]) -> Array[TestAlgo
 pub fn[T, G] LayoutTestRunner::get_test_configurations(Self[T, G]) -> Array[TestConfiguration[T]]
 pub fn[T, G] LayoutTestRunner::get_test_graphs(Self[T, G]) -> Array[TestGraph[T]]
 pub fn[T, G] LayoutTestRunner::get_whitebox_tests(Self[T, G]) -> Array[WhiteboxTestMethod[T, G]]
-pub fn[T, G] LayoutTestRunner::run(Self[T, G], RunNotifier) -> Unit
-pub fn[T, G] LayoutTestRunner::run_child(Self[T, G], ExperimentRunner[T, G], RunNotifier) -> Unit
+pub fn[T, G] LayoutTestRunner::run(Self[T, G], RunNotifier) -> Unit raise
+pub fn[T, G] LayoutTestRunner::run_child(Self[T, G], ExperimentRunner[T, G], RunNotifier) -> Unit raise
 
 pub struct MethodTestConfiguration[T] {
   base : TestConfiguration[T]
   configurator_method_name : String
 }
-pub fn[T] MethodTestConfiguration::apply(Self[T], T, Int) -> Unit
+pub fn[T] MethodTestConfiguration::apply(Self[T], T, @graph.ElkNode) -> Unit
 pub fn[T] MethodTestConfiguration::as_test_configuration(Self[T]) -> TestConfiguration[T]
 pub fn[T] MethodTestConfiguration::to_string(Self[T]) -> String
 
@@ -621,17 +603,17 @@ pub struct RandomGeneratorOptions {
 
 pub struct RandomGraphFromFile {
   resource_path : AbstractResourcePath
-  graph : Int
+  graph : @graph.ElkNode
 }
-pub fn RandomGraphFromFile::provide_graph(Self, Unit) -> Int
+pub fn RandomGraphFromFile::provide_graph(Self, Unit) -> @graph.ElkNode
 pub fn RandomGraphFromFile::to_string(Self) -> String
 pub fn RandomGraphFromFile::to_test_graph(Self) -> TestGraph[Unit]
 
 pub struct RandomGraphFromMethod {
   configurator_method_name : String
-  graph : Int
+  graph : @graph.ElkNode
 }
-pub fn RandomGraphFromMethod::provide_graph(Self, Unit) -> Int
+pub fn RandomGraphFromMethod::provide_graph(Self, Unit) -> @graph.ElkNode
 pub fn RandomGraphFromMethod::to_string(Self) -> String
 pub fn RandomGraphFromMethod::to_test_graph(Self) -> TestGraph[Unit]
 
@@ -673,7 +655,7 @@ pub fn TestAfterProcessors::get_value(Self) -> Array[TestAfterProcessor]
 pub struct TestAlgorithm {
   algorithm_data : @core.LayoutAlgorithmData?
 }
-pub fn TestAlgorithm::apply(Self, Int) -> Unit
+pub fn TestAlgorithm::apply(Self, @graph.ElkNode) -> Unit raise
 pub fn TestAlgorithm::get_algorithm_data(Self) -> @core.LayoutAlgorithmData?
 pub fn TestAlgorithm::to_string(Self) -> String
 
@@ -697,16 +679,16 @@ pub struct TestConfiguration[T] {
   use_default_port_config : Bool
   use_default_edge_config : Bool
   add_random_edge_labels : Bool
-  apply_base_configuration_fn : (T, Int) -> Unit
+  apply_base_configuration_fn : (T, @graph.ElkNode) -> Unit
 }
-pub fn[T] TestConfiguration::apply(Self[T], T, Int) -> Unit
+pub fn[T] TestConfiguration::apply(Self[T], T, @graph.ElkNode) -> Unit
 pub fn[T] TestConfiguration::to_string(Self[T]) -> String
 
 pub struct TestGraph[T] {
-  provide_graph_fn : (T) -> Int
+  provide_graph_fn : (T) -> @graph.ElkNode
   description : String
 }
-pub fn[T] TestGraph::provide_graph(Self[T], T) -> Int
+pub fn[T] TestGraph::provide_graph(Self[T], T) -> @graph.ElkNode
 pub fn[T] TestGraph::to_string(Self[T]) -> String
 
 pub struct TestMethodSignature {
@@ -754,15 +736,15 @@ pub fn[T, G] WhiteboxTestMethod::is_ignored(Self[T, G]) -> Bool
 // Type aliases
 pub using @grandom {type CoreDebugGRandomGeneratorOptions}
 
-pub type ElkEdge = Int
+pub using @graph {type ElkEdge}
 
-pub type ElkLabel = Int
+pub using @graph {type ElkLabel}
 
 pub using @graph {type ElkLabelParent}
 
-pub type ElkNode = Int
+pub using @graph {type ElkNode}
 
-pub type ElkPort = Int
+pub using @graph {type ElkPort}
 
 pub using @graph {type IProperty}
 

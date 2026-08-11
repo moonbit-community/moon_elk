@@ -3,7 +3,7 @@ fn mrtree_level_set_level(
   current_level : Array[MrtreeNode],
   level : Int,
   global_level_map : Map[Int, Int],
-) -> Unit {
+) -> Unit raise {
   if current_level.is_empty() {
     return
   }
@@ -21,7 +21,7 @@ fn mrtree_level_set_level(
 fn mrtree_level_processor_process(
   graph : MrtreeGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   match progress_monitor {
     Some(monitor) => ignore(monitor.begin("Processor compute fanout", 1.0))
     None => ()

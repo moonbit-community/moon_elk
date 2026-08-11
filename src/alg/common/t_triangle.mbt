@@ -20,16 +20,6 @@ fn t_triangle_to_signed_int32(value : Int64) -> Int {
 }
 
 ///|
-let t_triangle_uid_counter : Ref[Int] = Ref(0)
-
-///|
-fn next_t_triangle_uid() -> Int {
-  let uid = t_triangle_uid_counter.val
-  t_triangle_uid_counter.val = uid + 1
-  uid
-}
-
-///|
 fn calculate_circumcenter(
   a : @core.KVector,
   b : @core.KVector,
@@ -48,7 +38,6 @@ fn calculate_circumcenter(
 
 ///|
 pub struct TTriangle {
-  uid : Int
   a : @core.KVector
   b : @core.KVector
   c : @core.KVector
@@ -64,7 +53,6 @@ pub fn new_ttriangle(
   c : @core.KVector,
 ) -> TTriangle {
   {
-    uid: next_t_triangle_uid(),
     a,
     b,
     c,

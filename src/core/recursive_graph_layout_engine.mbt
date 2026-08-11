@@ -1,12 +1,4 @@
 ///|
-pub type RecursiveGraphLayoutHandler = (@graph.ElkNode, IElkProgressMonitor) -> Unit
-
-///|
-let recursive_graph_layout_engine_handlers : Ref[
-  Map[String, RecursiveGraphLayoutHandler],
-] = Ref(Map([]))
-
-///|
 let recursive_graph_layout_engine_hierarchy_handling_property : @graph.IProperty[
   String,
 ] = @graph.new_property("org.eclipse.elk.hierarchyHandling", "INHERIT")
@@ -15,33 +7,17 @@ let recursive_graph_layout_engine_hierarchy_handling_property : @graph.IProperty
 let recursive_graph_layout_engine_inside_self_loops_yo_option_id = "org.eclipse.elk.insideSelfLoops.yo"
 
 ///|
-pub fn recursive_graph_layout_engine_register_handler(
-  algorithm_id : String,
-  handler : RecursiveGraphLayoutHandler,
-) -> Unit {
-  recursive_graph_layout_engine_handlers.val[algorithm_id] = handler
-}
-
-///|
-pub fn recursive_graph_layout_engine_clear_handlers_for_test() -> Unit {
-  recursive_graph_layout_engine_handlers.val.clear()
-}
-
-///|
-fn recursive_graph_layout_engine_get_handler(
-  algorithm_id : String,
-) -> RecursiveGraphLayoutHandler? {
-  recursive_graph_layout_engine_handlers.val.get(algorithm_id)
-}
-
-///|
 pub(all) struct RecursiveGraphLayoutEngine {
-  marker : Int
+  runtime : LayoutRuntime
+  session : LayoutSession
 }
 
 ///|
-pub fn new_recursive_graph_layout_engine() -> RecursiveGraphLayoutEngine {
-  { marker: 0 }
+pub fn new_recursive_graph_layout_engine(
+  runtime : LayoutRuntime,
+  session : LayoutSession,
+) -> RecursiveGraphLayoutEngine {
+  { runtime, session }
 }
 
 ///|
@@ -279,11 +255,12 @@ fn recursive_graph_layout_engine_work_from_node_count(
 
 ///|
 fn recursive_graph_layout_engine_execute_algorithm(
+  engine : RecursiveGraphLayoutEngine,
   layout_node : @graph.ElkNode,
   resolved_algorithm_id : String,
   progress_monitor : IElkProgressMonitor,
-) -> Unit {
-  if layout_runtime_has_error() {
+) -> Unit raise {
+  if engine.session.has_error() {
     return
   }
   if resolved_algorithm_id == "org.eclipse.elk.box" {
@@ -299,10 +276,11 @@ fn recursive_graph_layout_engine_execute_algorithm(
     return
   }
 
-  match recursive_graph_layout_engine_get_handler(resolved_algorithm_id) {
-    Some(handler) => handler(layout_node, progress_monitor)
+  match engine.runtime.layout_algorithm(resolved_algorithm_id) {
+    Some(handler) =>
+      handler(engine.runtime, engine.session, layout_node, progress_monitor)
     None => {
-      layout_runtime_report_unsupported_configuration(
+      engine.session.report_unsupported_configuration(
         "No recursive layout handler registered for " + resolved_algorithm_id,
       )
       return
@@ -320,10 +298,11 @@ fn recursive_graph_layout_engine_supports_hierarchy(
 
 ///|
 fn recursive_graph_layout_engine_layout_recursively(
+  engine : RecursiveGraphLayoutEngine,
   layout_node : @graph.ElkNode,
   progress_monitor : IElkProgressMonitor,
-) -> Array[@graph.ElkEdge] {
-  if layout_runtime_has_error() {
+) -> Array[@graph.ElkEdge] raise {
+  if engine.session.has_error() {
     return []
   }
   if progress_monitor.is_canceled() {
@@ -347,16 +326,18 @@ fn recursive_graph_layout_engine_layout_recursively(
     layout_node,
   )
   if resolved_algorithm_id.is_empty() {
-    layout_runtime_report_unsupported_configuration(
+    engine.session.report_unsupported_configuration(
       "Resolved algorithm is not set; apply a LayoutAlgorithmResolver before computing layout.",
     )
     return []
   }
   let algorithm_data = match
-    layout_meta_data_service_get_algorithm_data_by_suffix(resolved_algorithm_id) {
+    engine.runtime
+    .option_metadata()
+    .algorithm_data_by_suffix(resolved_algorithm_id) {
     Some(data) => data
     None => {
-      layout_runtime_report_unsupported_configuration(
+      engine.session.report_unsupported_configuration(
         "Resolved algorithm is unknown.",
       )
       return []
@@ -407,7 +388,7 @@ fn recursive_graph_layout_engine_layout_recursively(
 
       if stop_hierarchy || switch_algorithm {
         let child_layout_self_loops = recursive_graph_layout_engine_layout_recursively(
-          node, progress_monitor,
+          engine, node, progress_monitor,
         )
         for child_self_loop in child_layout_self_loops {
           children_inside_self_loops.push(child_self_loop)
@@ -424,7 +405,7 @@ fn recursive_graph_layout_engine_layout_recursively(
   } else {
     for child in @graph.node_children(layout_node) {
       let child_layout_self_loops = recursive_graph_layout_engine_layout_recursively(
-        child, progress_monitor,
+        engine, child, progress_monitor,
       )
       for child_self_loop in child_layout_self_loops {
         children_inside_self_loops.push(child_self_loop)
@@ -445,6 +426,7 @@ fn recursive_graph_layout_engine_layout_recursively(
   }
 
   recursive_graph_layout_engine_execute_algorithm(
+    engine,
     layout_node,
     resolved_algorithm_id,
     recursive_graph_layout_engine_sub_monitor(
@@ -470,8 +452,29 @@ pub fn RecursiveGraphLayoutEngine::layout(
   layout_graph : @graph.ElkNode,
   progress_monitor : IElkProgressMonitor,
 ) -> Unit {
-  ignore(self)
-  layout_runtime_clear_error()
+  try self.layout_impl(layout_graph, progress_monitor) catch {
+    error => {
+      self.session.record_error(error)
+      if progress_monitor.is_running() {
+        try progress_monitor.done() catch {
+          cleanup_error => self.session.record_error(cleanup_error)
+        } noraise {
+          _ => ()
+        }
+      }
+    }
+  } noraise {
+    _ => ()
+  }
+}
+
+///|
+fn RecursiveGraphLayoutEngine::layout_impl(
+  self : RecursiveGraphLayoutEngine,
+  layout_graph : @graph.ElkNode,
+  progress_monitor : IElkProgressMonitor,
+) -> Unit raise {
+  self.session.clear_error()
 
   let node_count = recursive_graph_layout_engine_count_nodes_recursively(
     layout_graph, true,
@@ -489,9 +492,9 @@ pub fn RecursiveGraphLayoutEngine::layout(
   ])
 
   if recursive_graph_layout_engine_resolved_algorithm_id(layout_graph).is_empty() {
-    let resolver = new_layout_algorithm_resolver()
+    let resolver = new_layout_algorithm_resolver(self.runtime.option_metadata())
     apply_visitors(layout_graph, [resolver.to_visitor()])
-    if layout_runtime_has_error() {
+    if self.session.has_error() {
       progress_monitor.done()
       return
     }
@@ -499,7 +502,7 @@ pub fn RecursiveGraphLayoutEngine::layout(
 
   ignore(
     recursive_graph_layout_engine_layout_recursively(
-      layout_graph, progress_monitor,
+      self, layout_graph, progress_monitor,
     ),
   )
   progress_monitor.done()

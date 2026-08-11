@@ -16,8 +16,6 @@ test "Mrtree CompactionMode parsing follows upstream names" {
 
 ///|
 test "InteractiveMrtreeGraphVisitor sets @core.interactive options on root" {
-  reset_graph_model_for_test()
-
   let root = create_graph()
   ignore(@graph.create_node(Some(root)))
   @graph.node_set_string_property(
@@ -37,9 +35,6 @@ test "InteractiveMrtreeGraphVisitor sets @core.interactive options on root" {
 
 ///|
 test "Mrtree IGraphImporter adapter wraps ElkGraphImporter" {
-  reset_graph_model_for_test()
-  reset_mrtree_graph_model_for_test()
-
   let elk_graph = create_graph()
   ignore(@graph.create_node(Some(elk_graph)))
   let importer = new_mrtree_elk_graph_as_igraph_importer()
@@ -51,8 +46,6 @@ test "Mrtree IGraphImporter adapter wraps ElkGraphImporter" {
 
 ///|
 test "OrderBalance reorders heavier inner nodes toward center phase order" {
-  reset_mrtree_graph_model_for_test()
-
   let graph = new_mrtree_graph()
   mrtree_graph_set_weighting(graph, "FAN")
 

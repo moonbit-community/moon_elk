@@ -69,6 +69,24 @@ fn barycenter_sort_nodes(
 }
 
 ///|
+fn barycenter_sort_nodes_raising(
+  nodes : Array[LNode],
+  compare : (LNode, LNode) -> Int raise,
+) -> Unit raise {
+  let mut i = 1
+  while i < nodes.length() {
+    let node = nodes[i]
+    let mut j = i
+    while j > 0 && compare(nodes[j - 1], node) > 0 {
+      nodes[j] = nodes[j - 1]
+      j = j - 1
+    }
+    nodes[j] = node
+    i = i + 1
+  }
+}
+
+///|
 fn barycenter_change_index(direction : Bool) -> Int {
   if direction {
     1
@@ -347,7 +365,7 @@ pub fn BarycenterHeuristic::minimize_crossings(
   free_layer_index : Int,
   forward_sweep : Bool,
   is_first_sweep : Bool,
-) -> Bool {
+) -> Bool raise {
   if order.is_empty() ||
     free_layer_index < 0 ||
     free_layer_index >= order.length() ||

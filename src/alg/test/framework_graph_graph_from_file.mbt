@@ -42,7 +42,7 @@ pub fn new_graph_from_file(
 ///|
 pub fn graph_from_file_from_resource_paths(
   resource_paths : Array[AbstractResourcePath],
-) -> Array[GraphFromFile] {
+) -> Array[GraphFromFile] raise {
   let result : Array[GraphFromFile] = []
   for resource_path in resource_paths {
     if resource_path.get_filter() is None {

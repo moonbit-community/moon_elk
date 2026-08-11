@@ -1,6 +1,5 @@
 ///|
 test "graph json import layout options" {
-  @graph.reset_graph_model_for_test()
   let graph = gj_obj([
     ("id", gj_str("root")),
     ("layoutOptions", gj_obj([("elk.direction", gj_str("DOWN"))])),
@@ -12,7 +11,6 @@ test "graph json import layout options" {
 
 ///|
 test "graph json import legacy properties" {
-  @graph.reset_graph_model_for_test()
   let graph = gj_obj([
     ("id", gj_str("root")),
     ("properties", gj_obj([("elk.direction", gj_str("DOWN"))])),
@@ -24,7 +22,6 @@ test "graph json import legacy properties" {
 
 ///|
 test "graph json layout options have priority over properties" {
-  @graph.reset_graph_model_for_test()
   let graph = gj_obj([
     ("id", gj_str("root")),
     ("layoutOptions", gj_obj([("elk.direction", gj_str("UP"))])),
@@ -37,7 +34,6 @@ test "graph json layout options have priority over properties" {
 
 ///|
 test "graph json export layout options" {
-  @graph.reset_graph_model_for_test()
   let root = @graph.create_graph()
   @graph.node_set_string_property(root, @core.direction, "UP")
   let json_text = elk_graph_json_for_elk_graph(root).to_json()
@@ -47,7 +43,6 @@ test "graph json export layout options" {
 
 ///|
 test "graph json export omit unknown options" {
-  @graph.reset_graph_model_for_test()
   let root = @graph.create_graph()
   @graph.node_set_string_property(root, @core.direction, "RIGHT")
   @graph.node_set_layout_option_string_by_id(root, "foo.bar.dummy", "0")

@@ -4,18 +4,29 @@ pub struct LayeredLayoutProvider {
 }
 
 ///|
-pub fn new_layered_layout_provider() -> LayeredLayoutProvider {
-  { elk_layered: new_elk_layered() }
+pub fn new_layered_layout_provider(
+  runtime : @core.LayoutRuntime,
+  session : @core.LayoutSession,
+  phase_registry : LayeredPhaseRegistry,
+) -> LayeredLayoutProvider {
+  { elk_layered: new_elk_layered(runtime, session, phase_registry) }
 }
 
 ///|
-fn init {
-  @core.recursive_graph_layout_engine_register_handler(
-    @options.layered_algorithm_id,
-    (layout_graph, progress_monitor) => {
-      new_layered_layout_provider().layout(layout_graph, progress_monitor)
-    },
-  )
+pub fn register_layered_layout_algorithm(
+  runtime : @core.LayoutRuntime,
+  phase_registry : LayeredPhaseRegistry,
+) -> Unit {
+  runtime.register_layout_algorithm(@options.layered_algorithm_id, (
+    runtime,
+    session,
+    layout_graph,
+    progress_monitor,
+  ) => {
+    new_layered_layout_provider(runtime, session, phase_registry).layout(
+      layout_graph, progress_monitor,
+    )
+  })
 }
 
 ///|
@@ -29,7 +40,7 @@ pub fn LayeredLayoutProvider::layout(
   self : LayeredLayoutProvider,
   elk_graph : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor,
-) -> Unit {
+) -> Unit raise {
   let graph_transformer = @transform.new_layered_elk_graph_transformer()
   let layered_graph = graph_transformer.import_graph(elk_graph)
 
@@ -46,7 +57,7 @@ pub fn LayeredLayoutProvider::layout(
     graph_transformer.apply_layout(layered_graph)
   } else {
     dispose_layered_graph(layered_graph)
-    @transform.recursive_layered_clear_transform_state()
+    graph_transformer.clear()
   }
 }
 
@@ -54,7 +65,7 @@ pub fn LayeredLayoutProvider::layout(
 pub fn LayeredLayoutProvider::start_layout_test(
   self : LayeredLayoutProvider,
   elk_graph : @graph.ElkNode,
-) -> ElkLayeredTestExecutionState {
+) -> ElkLayeredTestExecutionState raise {
   let graph_importer = @transform.new_layered_elk_graph_transformer()
   let layered_graph = graph_importer.import_graph(elk_graph)
   self.elk_layered.prepare_layout_test(layered_graph)

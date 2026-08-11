@@ -45,10 +45,12 @@ fn disco_transform_parse_double_or_default(
 }
 
 ///|
-fn disco_transform_element_offset_or_zero(element : DCElement) -> @core.KVector {
+fn disco_transform_element_offset_or_zero(
+  element : DCElement,
+) -> @core.KVector raise {
   try element.get_offset() catch {
     DCElementException(message) => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "org.eclipse.elk.alg.disco.graph.DCElement: " + message,
       )
       @core.new_kvector()
@@ -68,17 +70,17 @@ fn disco_transform_edge_thickness(edge : @graph.ElkEdge) -> Double {
 }
 
 ///|
-fn disco_transform_source_node(edge : @graph.ElkEdge) -> @graph.ElkNode {
+fn disco_transform_source_node(edge : @graph.ElkEdge) -> @graph.ElkNode raise {
   let sources = @graph.edge_sources(edge)
   if sources.is_empty() {
-    @core.layout_runtime_report_unsupported_configuration(
+    @core.layout_runtime_raise_unsupported_configuration(
       "edge source is missing",
     )
     return @graph.create_node(None)
   }
   try @graph.connectable_shape_to_node(Some(sources[0])) catch {
     _ => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "edge source shape is not attached to a node",
       )
       @graph.create_node(None)
@@ -89,17 +91,17 @@ fn disco_transform_source_node(edge : @graph.ElkEdge) -> @graph.ElkNode {
 }
 
 ///|
-fn disco_transform_target_node(edge : @graph.ElkEdge) -> @graph.ElkNode {
+fn disco_transform_target_node(edge : @graph.ElkEdge) -> @graph.ElkNode raise {
   let targets = @graph.edge_targets(edge)
   if targets.is_empty() {
-    @core.layout_runtime_report_unsupported_configuration(
+    @core.layout_runtime_raise_unsupported_configuration(
       "edge target is missing",
     )
     return @graph.create_node(None)
   }
   try @graph.connectable_shape_to_node(Some(targets[0])) catch {
     _ => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "edge target shape is not attached to a node",
       )
       @graph.create_node(None)
@@ -512,7 +514,7 @@ fn disco_transform_import_extension(
   edge : @graph.ElkEdge,
   new_component : Array[DCElement],
   outgoing_extension : Bool,
-) -> Unit {
+) -> Unit raise {
   let edge_section = disco_transform_first_or_create_edge_section(edge)
   let points = if outgoing_extension {
     @core.kvector_chain_reverse(disco_transform_edge_points(edge_section))
@@ -587,7 +589,7 @@ fn disco_transform_import_elk_edges(
   transformer : ElkGraphTransformer,
   edges : Array[@graph.ElkEdge],
   new_component : Array[DCElement],
-) -> Unit {
+) -> Unit raise {
   for edge in edges {
     if transformer.edge_mapping.contains(edge) {
       continue
@@ -613,7 +615,9 @@ fn disco_transform_import_elk_edges(
 }
 
 ///|
-fn disco_transform_padding_from_node(node : @graph.ElkNode) -> @core.ElkPadding {
+fn disco_transform_padding_from_node(
+  node : @graph.ElkNode,
+) -> @core.ElkPadding raise {
   let value = @graph.node_get_string_property(node, disco_padding)
   let parsed = @core.new_elk_padding()
   parsed.parse(value)
@@ -624,7 +628,7 @@ fn disco_transform_padding_from_node(node : @graph.ElkNode) -> @core.ElkPadding 
 pub fn ElkGraphTransformer::import_graph(
   self : ElkGraphTransformer,
   graph : @graph.ElkNode,
-) -> DCGraph {
+) -> DCGraph raise {
   self.parent = Some(graph)
   self.node_mapping.clear()
   self.label_mapping.clear()
@@ -750,7 +754,9 @@ fn disco_transform_adjust_first_segment(
 }
 
 ///|
-pub fn ElkGraphTransformer::apply_layout(self : ElkGraphTransformer) -> Unit {
+pub fn ElkGraphTransformer::apply_layout(
+  self : ElkGraphTransformer,
+) -> Unit raise {
   let graph = match self.transformed_graph {
     Some(graph) => graph
     None => return
@@ -854,7 +860,7 @@ pub fn ElkGraphTransformer::apply_layout(self : ElkGraphTransformer) -> Unit {
 pub fn elk_graph_transformer_as_igraph_transformer(
   transformer : ElkGraphTransformer,
 ) -> IGraphTransformer[@graph.ElkNode] {
-  new_igraph_transformer(graph => transformer.import_graph(graph), () => {
+  new_igraph_transformer(fn(graph) raise { transformer.import_graph(graph) }, fn() raise {
     transformer.apply_layout()
   })
 }

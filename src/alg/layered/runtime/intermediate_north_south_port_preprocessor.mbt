@@ -661,7 +661,7 @@ fn north_south_port_preprocessor_create_dummy_nodes(
 fn north_south_port_preprocessor_process(
   layered_graph : LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()
@@ -806,7 +806,7 @@ fn north_south_port_preprocessor_process(
     }
   } catch {
     NorthSouthPortPreprocessorException(message) =>
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "java.lang.IllegalStateException: " + message,
       )
   } noraise {

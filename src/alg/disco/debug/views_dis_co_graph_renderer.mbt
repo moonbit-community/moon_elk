@@ -55,10 +55,10 @@ fn dis_co_paint_rectangle_intersects(
 ///|
 fn dis_co_graph_renderer_element_offset_or_zero(
   element : @disco.DCElement,
-) -> @core.KVector {
+) -> @core.KVector raise {
   try element.get_offset() catch {
     err => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         @disco.dc_element_exception_message(err),
       )
       @core.new_kvector()
@@ -347,7 +347,7 @@ fn new_dis_co_paint_polygon(
   element : @disco.DCElement,
   offset : @core.KVector,
   scale : Double,
-) -> DisCoPaintPolygon {
+) -> DisCoPaintPolygon raise {
   let coords = element.get_coords()
   let component_offset = dis_co_graph_renderer_element_offset_or_zero(element)
 
@@ -460,49 +460,37 @@ fn dis_co_paint_polygon_intersects(
 }
 
 ///|
-let dis_co_debug_node_component_graph_store : Ref[
-  Map[@graph.ElkNode, @disco.DCGraph],
-] = Ref(Map([]))
-
-///|
-let dis_co_debug_node_polyomino_store : Ref[
-  Map[@graph.ElkNode, Array[@disco.DCPolyomino]],
-] = Ref(Map([]))
-
-///|
 pub fn dis_co_graph_renderer_bind_component_graph(
+  renderer : DisCoGraphRenderer,
   node : @graph.ElkNode,
   graph : @disco.DCGraph,
 ) -> Unit {
-  dis_co_debug_node_component_graph_store.val[node] = graph
+  renderer.component_graphs[node] = graph
 }
 
 ///|
 pub fn dis_co_graph_renderer_bind_polyominoes(
+  renderer : DisCoGraphRenderer,
   node : @graph.ElkNode,
   polys : Array[@disco.DCPolyomino],
 ) -> Unit {
-  dis_co_debug_node_polyomino_store.val[node] = polys
-}
-
-///|
-pub fn dis_co_graph_renderer_clear_bindings_for_test() -> Unit {
-  dis_co_debug_node_component_graph_store.val.clear()
-  dis_co_debug_node_polyomino_store.val.clear()
+  renderer.polyominoes[node] = polys
 }
 
 ///|
 fn dis_co_graph_renderer_component_graph_of(
+  renderer : DisCoGraphRenderer,
   node : @graph.ElkNode,
 ) -> @disco.DCGraph? {
-  dis_co_debug_node_component_graph_store.val.get(node)
+  renderer.component_graphs.get(node)
 }
 
 ///|
 fn dis_co_graph_renderer_polys_of(
+  renderer : DisCoGraphRenderer,
   node : @graph.ElkNode,
 ) -> Array[@disco.DCPolyomino]? {
-  dis_co_debug_node_polyomino_store.val.get(node)
+  renderer.polyominoes.get(node)
 }
 
 ///|
@@ -620,6 +608,8 @@ pub struct DisCoGraphRenderer {
   polyomino_map : Map[String, DisCoPaintRectangle]
   polyomino_center_map : Map[String, DisCoPaintRectangle]
   polyomino_extension_map : Map[String, DisCoPaintRectangle]
+  component_graphs : Map[@graph.ElkNode, @disco.DCGraph]
+  polyominoes : Map[@graph.ElkNode, Array[@disco.DCPolyomino]]
   mut most_recently_drawn_graph : @graph.ElkNode?
   mut paint_elk_graph : Bool
   mut paint_dc_graph : Bool
@@ -650,6 +640,8 @@ pub fn new_dis_co_graph_renderer(
     polyomino_map: Map([]),
     polyomino_center_map: Map([]),
     polyomino_extension_map: Map([]),
+    component_graphs: Map([]),
+    polyominoes: Map([]),
     most_recently_drawn_graph: None,
     paint_elk_graph: true,
     paint_dc_graph: true,
@@ -671,6 +663,8 @@ fn dis_co_graph_renderer_flush_cache(renderer : DisCoGraphRenderer) -> Unit {
 ///|
 pub fn dis_co_graph_renderer_dispose(renderer : DisCoGraphRenderer) -> Unit {
   dis_co_graph_renderer_flush_cache(renderer)
+  renderer.component_graphs.clear()
+  renderer.polyominoes.clear()
   renderer.most_recently_drawn_graph = None
   dis_co_graph_rendering_configurator_dispose(renderer.configurator)
 }
@@ -1002,7 +996,7 @@ fn dis_co_graph_renderer_render_component_graph(
   area : DisCoPaintRectangle,
   offset : @core.KVector,
   level_number : Int,
-) -> Unit {
+) -> Unit raise {
   ignore(level_number)
   let boundaries = @core.new_kvector_xy(
     @graph.node_width(parent),
@@ -1184,8 +1178,10 @@ fn dis_co_graph_renderer_render_recursively(
   area : DisCoPaintRectangle,
   offset : @core.KVector,
   level_number : Int,
-) -> Unit {
-  let component_graph = dis_co_graph_renderer_component_graph_of(parent)
+) -> Unit raise {
+  let component_graph = dis_co_graph_renderer_component_graph_of(
+    renderer, parent,
+  )
 
   let lower_lvl = config_state_get_lower_lvl(renderer.state)
   let upper_lvl = config_state_get_upper_lvl(renderer.state)
@@ -1223,7 +1219,7 @@ fn dis_co_graph_renderer_render_recursively(
   if renderer.paint_polys &&
     level_number >= lower_lvl &&
     level_number <= upper_lvl {
-    match dis_co_graph_renderer_polys_of(parent) {
+    match dis_co_graph_renderer_polys_of(renderer, parent) {
       Some(polys) =>
         dis_co_graph_renderer_render_polyominoes(
           renderer, parent, polys, area, offset, level_number,
@@ -1254,8 +1250,10 @@ pub fn dis_co_graph_renderer_render(
   renderer : DisCoGraphRenderer,
   parent_node : @graph.ElkNode,
   area : DisCoPaintRectangle,
-) -> Unit {
-  let component_graph = dis_co_graph_renderer_component_graph_of(parent_node)
+) -> Unit raise {
+  let component_graph = dis_co_graph_renderer_component_graph_of(
+    renderer, parent_node,
+  )
 
   if renderer.most_recently_drawn_graph != Some(parent_node) {
     dis_co_graph_renderer_flush_cache(renderer)

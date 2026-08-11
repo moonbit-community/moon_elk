@@ -10,7 +10,6 @@ fn contains_string(values : Array[String], target : String) -> Bool {
 
 ///|
 test "DeprecatedLayoutOptionReplacer testReplacesNextToPortIfPossible" {
-  @graph.reset_graph_model_for_test()
   let replacer = new_deprecated_layout_option_replacer()
   let node = @graph.create_graph()
   @graph.node_set_bool_property(
@@ -31,7 +30,6 @@ test "DeprecatedLayoutOptionReplacer testReplacesNextToPortIfPossible" {
 
 ///|
 test "DeprecatedLayoutOptionReplacer testMovesSpaceEfficientPortLabels" {
-  @graph.reset_graph_model_for_test()
   let replacer = new_deprecated_layout_option_replacer()
   let node = @graph.create_graph()
   @graph.node_set_string_set_property(node, node_size_options, [

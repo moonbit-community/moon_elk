@@ -2,6 +2,7 @@
 package "Milky2018/moon_elk/graph/json/text/ide"
 
 import {
+  "Milky2018/moon_elk/core",
   "Milky2018/moon_elk/graph",
   "Milky2018/moon_elk/graph/json/text",
 }
@@ -21,15 +22,15 @@ pub fn new_elk_graph_json_ide_module() -> ElkGraphJsonIdeModule
 
 pub fn new_elk_graph_json_ide_name_mappings(@text.ElkGraphJsonGrammarAccess) -> ElkGraphJsonIdeNameMappings
 
-pub fn new_elk_graph_json_ide_parser(grammar_access? : @text.ElkGraphJsonGrammarAccess) -> ElkGraphJsonIdeParser
+pub fn new_elk_graph_json_ide_parser(@core.OptionMetadata, grammar_access? : @text.ElkGraphJsonGrammarAccess) -> ElkGraphJsonIdeParser
 
-pub fn new_elk_graph_json_ide_proposal_provider(grammar? : @text.ElkGraphJsonGrammarAccess) -> ElkGraphJsonIdeProposalProvider
+pub fn new_elk_graph_json_ide_proposal_provider(@core.OptionMetadata, grammar? : @text.ElkGraphJsonGrammarAccess) -> ElkGraphJsonIdeProposalProvider
 
 pub fn new_elk_graph_json_ide_setup() -> ElkGraphJsonIdeSetup
 
 pub fn new_graph_json_text_ide_completion_proposal_acceptor() -> GraphJsonTextIdeCompletionProposalAcceptor
 
-pub fn new_graph_json_text_ide_content_assist_context(prefix? : String, current_model? : @text.GraphJsonTextElement?, current_property_key? : @text.GraphJsonTextPropertyKey?, current_edge_section? : Int?, conflict_on_a? : Bool) -> GraphJsonTextIdeContentAssistContext
+pub fn new_graph_json_text_ide_content_assist_context(prefix? : String, current_model? : @text.GraphJsonTextElement?, current_property_key? : @text.GraphJsonTextPropertyKey?, current_edge_section? : @graph.ElkEdgeSection?, conflict_on_a? : Bool) -> GraphJsonTextIdeContentAssistContext
 
 pub fn new_graph_json_text_ide_content_assist_entry(String, String, String, label? : String?, description? : String?, documentation? : String?, source? : String?) -> GraphJsonTextIdeContentAssistEntry
 
@@ -37,7 +38,7 @@ pub fn new_graph_json_text_ide_content_assist_lexer_binding(String, String) -> G
 
 pub fn new_internal_elk_graph_json_ide_lexer(String) -> InternalElkGraphJsonIdeLexer
 
-pub fn new_internal_elk_graph_json_ide_parser(Array[@text.ElkGraphJsonLexToken], grammar_access? : @text.ElkGraphJsonGrammarAccess) -> InternalElkGraphJsonIdeParser
+pub fn new_internal_elk_graph_json_ide_parser(@core.OptionMetadata, Array[@text.ElkGraphJsonLexToken], grammar_access? : @text.ElkGraphJsonGrammarAccess) -> InternalElkGraphJsonIdeParser
 
 pub fn new_partial_elk_graph_json_content_assist_parser() -> PartialElkGraphJsonContentAssistParser
 
@@ -71,6 +72,7 @@ pub struct ElkGraphJsonIdeNameMappings {
 pub fn ElkGraphJsonIdeNameMappings::get_rule_name(Self, String) -> String?
 
 pub struct ElkGraphJsonIdeParser {
+  metadata : @core.OptionMetadata
   mut name_mappings : ElkGraphJsonIdeNameMappings
   mut grammar_access : @text.ElkGraphJsonGrammarAccess
   mut initial_hidden_tokens : Array[String]
@@ -80,12 +82,13 @@ pub fn ElkGraphJsonIdeParser::get_grammar_access(Self) -> @text.ElkGraphJsonGram
 pub fn ElkGraphJsonIdeParser::get_initial_hidden_tokens(Self) -> Array[String]
 pub fn ElkGraphJsonIdeParser::get_name_mappings(Self) -> ElkGraphJsonIdeNameMappings
 pub fn ElkGraphJsonIdeParser::get_rule_name(Self, String) -> String?
-pub fn ElkGraphJsonIdeParser::parse(Self, String) -> Int
+pub fn ElkGraphJsonIdeParser::parse(Self, String) -> @graph.ElkNode
 pub fn ElkGraphJsonIdeParser::set_grammar_access(Self, @text.ElkGraphJsonGrammarAccess) -> Unit
 pub fn ElkGraphJsonIdeParser::set_initial_hidden_tokens(Self, Array[String]) -> Unit
 pub fn ElkGraphJsonIdeParser::set_name_mappings(Self, ElkGraphJsonIdeNameMappings) -> Unit
 
 pub struct ElkGraphJsonIdeProposalProvider {
+  metadata : @core.OptionMetadata
   grammar : @text.ElkGraphJsonGrammarAccess
 }
 pub fn ElkGraphJsonIdeProposalProvider::complete_property_key(Self, GraphJsonTextIdeContentAssistContext, GraphJsonTextIdeCompletionProposalAcceptor) -> Unit
@@ -115,7 +118,7 @@ pub struct GraphJsonTextIdeContentAssistContext {
   prefix : String
   current_model : @text.GraphJsonTextElement?
   current_property_key : @text.GraphJsonTextPropertyKey?
-  current_edge_section : Int?
+  current_edge_section : @graph.ElkEdgeSection?
   conflict_on_a : Bool
 }
 
@@ -142,11 +145,12 @@ pub fn InternalElkGraphJsonIdeLexer::get_token_names(Self) -> Array[String]
 pub fn InternalElkGraphJsonIdeLexer::lex_all(Self) -> Array[@text.ElkGraphJsonLexToken]
 
 pub struct InternalElkGraphJsonIdeParser {
+  metadata : @core.OptionMetadata
   tokens : Array[@text.ElkGraphJsonLexToken]
   grammar_access : @text.ElkGraphJsonGrammarAccess
 }
-pub fn InternalElkGraphJsonIdeParser::entry_rule_elk_node(Self) -> Int
-pub fn InternalElkGraphJsonIdeParser::entry_rule_root_node(Self) -> Int
+pub fn InternalElkGraphJsonIdeParser::entry_rule_elk_node(Self) -> @graph.ElkNode
+pub fn InternalElkGraphJsonIdeParser::entry_rule_root_node(Self) -> @graph.ElkNode
 pub fn InternalElkGraphJsonIdeParser::get_first_rule_name(Self) -> String
 pub fn InternalElkGraphJsonIdeParser::get_follow_elements(Self) -> Array[String]
 pub fn InternalElkGraphJsonIdeParser::get_grammar_access(Self) -> @text.ElkGraphJsonGrammarAccess

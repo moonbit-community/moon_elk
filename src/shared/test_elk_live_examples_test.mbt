@@ -1,12 +1,10 @@
 ///|
 fn shared_elk_live_examples_test_setup_plain_java_layout() -> Unit {
-  layout_meta_data_service_reset_for_test()
-  plain_java_initialization_reset_for_test()
-  plain_java_initialization_initialize_plain_java_layout()
+
 }
 
 ///|
-fn shared_elk_live_examples_test_graphs() -> Array[ElkNode] {
+fn shared_elk_live_examples_test_graphs() -> Array[ElkNode] raise {
   [
     graph_test_utils_create_simple_graph(),
     graph_test_utils_create_hierarchical_graph(),
@@ -15,7 +13,6 @@ fn shared_elk_live_examples_test_graphs() -> Array[ElkNode] {
 
 ///|
 test "ElkLiveExamplesTest no exception on example graphs" {
-  reset_graph_model_for_test()
   shared_elk_live_examples_test_setup_plain_java_layout()
 
   for graph in shared_elk_live_examples_test_graphs() {

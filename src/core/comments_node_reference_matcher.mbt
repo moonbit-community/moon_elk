@@ -281,7 +281,7 @@ pub fn[C, T] NodeReferenceMatcher::with_bounds_provider(
 ///|
 pub fn[C, T] NodeReferenceMatcher::check_configuration(
   self : NodeReferenceMatcher[C, T],
-) -> Unit raise NodeReferenceMatcherException {
+) -> Unit raise {
   ignore(node_reference_matcher_comment_text_provider_or_raise(self))
   ignore(node_reference_matcher_target_name_provider_or_raise(self))
   if self.max_distance >= 0.0 {
@@ -294,7 +294,7 @@ fn[C, T] node_reference_matcher_preprocess_impl(
   matcher : NodeReferenceMatcher[C, T],
   data_provider : IDataProvider[C, T],
   include_hierarchy : Bool,
-) -> Unit raise NodeReferenceMatcherException {
+) -> Unit raise {
   matcher.check_configuration()
 
   let comment_text_provider = node_reference_matcher_comment_text_provider_or_raise(
@@ -334,16 +334,15 @@ pub fn[C, T] NodeReferenceMatcher::preprocess(
   self : NodeReferenceMatcher[C, T],
   data_provider : IDataProvider[C, T],
   include_hierarchy : Bool,
-) -> Unit {
+) -> Unit raise {
   try
     node_reference_matcher_preprocess_impl(
       self, data_provider, include_hierarchy,
     )
   catch {
-    err =>
-      layout_runtime_report_unsupported_configuration(
-        node_reference_matcher_exception_message(err),
-      )
+    NodeReferenceMatcherException(message) =>
+      layout_runtime_raise_unsupported_configuration(message)
+    error => raise error
   } noraise {
     _ => ()
   }
@@ -446,14 +445,14 @@ pub fn[C, T] NodeReferenceMatcher::go_find_matches(
   self : NodeReferenceMatcher[C, T],
   comment_texts : Array[(C, String)],
   target_names : Array[(T, String)],
-) -> Unit {
+) -> Unit raise {
   try
     node_reference_matcher_go_find_matches_impl(
       self, comment_texts, target_names,
     )
   catch {
     err =>
-      layout_runtime_report_unsupported_configuration(
+      layout_runtime_raise_unsupported_configuration(
         node_reference_matcher_exception_message(err),
       )
   } noraise {

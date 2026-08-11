@@ -3,7 +3,7 @@ fn new_execution_info_for_core_debug_test(
   name : String,
   debug_folder? : String? = None,
   with_log? : Bool = false,
-) -> ExecutionInfo {
+) -> ExecutionInfo raise {
   let monitor = @core.new_elk_progress_monitor(task_name=name)
   if with_log {
     ignore(monitor.with_logging(true))
@@ -87,7 +87,9 @@ test "Filter collapse expand and preference actions update view state" {
   plugin.get_model().add_execution(info_without_log)
 
   let view = new_abstract_layout_debug_view("view", "pref", info => {
-    execution_info_has_log_messages(info)
+    execution_info_has_log_messages(info) catch {
+      _ => false
+    }
   })
   let filter_action = new_filter_execution_tree_action(view)
   filter_action.set_checked(true)

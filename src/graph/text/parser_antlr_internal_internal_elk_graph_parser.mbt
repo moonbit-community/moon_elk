@@ -14,16 +14,18 @@ pub fn new_graph_text_pending_outgoing_section(
 
 ///|
 pub struct InternalElkGraphParser {
+  metadata : @core.OptionMetadata
   tokens : Array[ElkGraphLexToken]
   grammar_access : ElkGraphGrammarAccess
 }
 
 ///|
 pub fn new_internal_elk_graph_parser(
+  metadata : @core.OptionMetadata,
   tokens : Array[ElkGraphLexToken],
   grammar_access? : ElkGraphGrammarAccess = new_elk_graph_grammar_access(),
 ) -> InternalElkGraphParser {
-  { tokens, grammar_access }
+  { metadata, tokens, grammar_access }
 }
 
 ///|
@@ -229,12 +231,13 @@ fn graph_text_parser_resolve_shape(
 
 ///|
 fn graph_text_parser_parse_property_key(
+  metadata : @core.OptionMetadata,
   tokens : Array[ElkGraphLexToken],
   start : Int,
 ) -> (GraphTextPropertyKey, Int)? {
   match graph_text_parser_parse_qualified_id(tokens, start) {
     Some((id, consumed)) =>
-      match @core.layout_meta_data_service_get_option_data_by_suffix(id) {
+      match metadata.option_data_by_suffix(id) {
         Some(option_data) => Some((LayoutOption(option_data), consumed))
         None => Some((CustomProperty(id), consumed))
       }
@@ -275,10 +278,11 @@ fn graph_text_parser_parse_property_value(
 
 ///|
 fn graph_text_parser_parse_property(
+  metadata : @core.OptionMetadata,
   tokens : Array[ElkGraphLexToken],
   start : Int,
 ) -> (GraphTextPropertyAssignment, Int)? {
-  match graph_text_parser_parse_property_key(tokens, start) {
+  match graph_text_parser_parse_property_key(metadata, tokens, start) {
     Some((key, key_consumed)) => {
       let mut index = start + key_consumed
       if index >= tokens.length() || tokens[index].lexeme != ":" {
@@ -456,6 +460,7 @@ fn graph_text_parser_parse_bends(
 
 ///|
 fn graph_text_parser_parse_edge_section_body(
+  metadata : @core.OptionMetadata,
   tokens : Array[ElkGraphLexToken],
   start : Int,
   section : @graph.ElkEdgeSection,
@@ -525,7 +530,7 @@ fn graph_text_parser_parse_edge_section_body(
       index = graph_text_parser_parse_bends(tokens, index)
       continue
     }
-    match graph_text_parser_parse_property(tokens, index) {
+    match graph_text_parser_parse_property(metadata, tokens, index) {
       Some((_, consumed)) => {
         index += consumed
         continue
@@ -539,6 +544,7 @@ fn graph_text_parser_parse_edge_section_body(
 
 ///|
 fn graph_text_parser_parse_named_edge_section(
+  metadata : @core.OptionMetadata,
   tokens : Array[ElkGraphLexToken],
   start : Int,
   edge : @graph.ElkEdge,
@@ -580,6 +586,7 @@ fn graph_text_parser_parse_named_edge_section(
   }
   if index < tokens.length() && tokens[index].lexeme == "[" {
     index = graph_text_parser_parse_edge_section_body(
+      metadata,
       tokens,
       index + 1,
       section,
@@ -596,6 +603,7 @@ fn graph_text_parser_parse_named_edge_section(
 
 ///|
 fn graph_text_parser_parse_single_edge_section(
+  metadata : @core.OptionMetadata,
   tokens : Array[ElkGraphLexToken],
   start : Int,
   edge : @graph.ElkEdge,
@@ -604,7 +612,7 @@ fn graph_text_parser_parse_single_edge_section(
 ) -> (@graph.ElkEdgeSection, Int) {
   let section = @graph.create_edge_section(edge)
   let mut index = graph_text_parser_parse_edge_section_body(
-    tokens, start, section, id_to_shape, scope_qualified_id, "]",
+    metadata, tokens, start, section, id_to_shape, scope_qualified_id, "]",
   )
   while index < tokens.length() && tokens[index].lexeme == "|" {
     index += 1
@@ -614,6 +622,7 @@ fn graph_text_parser_parse_single_edge_section(
 
 ///|
 fn graph_text_parser_parse_edge_layout(
+  metadata : @core.OptionMetadata,
   tokens : Array[ElkGraphLexToken],
   start : Int,
   edge : @graph.ElkEdge,
@@ -635,7 +644,8 @@ fn graph_text_parser_parse_edge_layout(
     if tokens[index].lexeme == "section" {
       match
         graph_text_parser_parse_named_edge_section(
-          tokens, index, edge, id_to_shape, scope_qualified_id, section_by_id, pending_outgoing,
+          metadata, tokens, index, edge, id_to_shape, scope_qualified_id, section_by_id,
+          pending_outgoing,
         ) {
         Some((_, consumed_index)) => {
           index = consumed_index
@@ -645,7 +655,7 @@ fn graph_text_parser_parse_edge_layout(
       }
     } else {
       let (_, consumed_index) = graph_text_parser_parse_single_edge_section(
-        tokens, index, edge, id_to_shape, scope_qualified_id,
+        metadata, tokens, index, edge, id_to_shape, scope_qualified_id,
       )
       if consumed_index > index {
         index = consumed_index
@@ -690,6 +700,7 @@ fn graph_text_parser_register_shape(
 
 ///|
 fn graph_text_parser_parse_label(
+  metadata : @core.OptionMetadata,
   tokens : Array[ElkGraphLexToken],
   start : Int,
   owner : GraphTextLabelOwner,
@@ -731,6 +742,7 @@ fn graph_text_parser_parse_label(
       if tokens[index].lexeme == "label" {
         match
           graph_text_parser_parse_label(
+            metadata,
             tokens,
             index,
             LabelOnLabel(label),
@@ -743,7 +755,7 @@ fn graph_text_parser_parse_label(
           None => ()
         }
       }
-      match graph_text_parser_parse_property(tokens, index) {
+      match graph_text_parser_parse_property(metadata, tokens, index) {
         Some((property, consumed)) => {
           graph_text_parser_apply_property_to_label(label, property)
           index += consumed
@@ -762,6 +774,7 @@ fn graph_text_parser_parse_label(
 
 ///|
 fn graph_text_parser_parse_port(
+  metadata : @core.OptionMetadata,
   tokens : Array[ElkGraphLexToken],
   start : Int,
   parent : @graph.ElkNode,
@@ -809,6 +822,7 @@ fn graph_text_parser_parse_port(
       if tokens[index].lexeme == "label" {
         match
           graph_text_parser_parse_label(
+            metadata,
             tokens,
             index,
             LabelOnPort(port),
@@ -821,7 +835,7 @@ fn graph_text_parser_parse_port(
           None => ()
         }
       }
-      match graph_text_parser_parse_property(tokens, index) {
+      match graph_text_parser_parse_property(metadata, tokens, index) {
         Some((property, consumed)) => {
           graph_text_parser_apply_property_to_port(port, property)
           index += consumed
@@ -840,6 +854,7 @@ fn graph_text_parser_parse_port(
 
 ///|
 fn graph_text_parser_parse_edge(
+  metadata : @core.OptionMetadata,
   tokens : Array[ElkGraphLexToken],
   start : Int,
   parent : @graph.ElkNode,
@@ -908,13 +923,14 @@ fn graph_text_parser_parse_edge(
     while index < tokens.length() && tokens[index].lexeme != "}" {
       if tokens[index].lexeme == "layout" {
         index = graph_text_parser_parse_edge_layout(
-          tokens, index, edge, id_to_shape, scope_qualified_id,
+          metadata, tokens, index, edge, id_to_shape, scope_qualified_id,
         )
         continue
       }
       if tokens[index].lexeme == "label" {
         match
           graph_text_parser_parse_label(
+            metadata,
             tokens,
             index,
             LabelOnEdge(edge),
@@ -927,7 +943,7 @@ fn graph_text_parser_parse_edge(
           None => ()
         }
       }
-      match graph_text_parser_parse_property(tokens, index) {
+      match graph_text_parser_parse_property(metadata, tokens, index) {
         Some((property, consumed)) => {
           graph_text_parser_apply_property_to_edge(edge, property)
           index += consumed
@@ -946,6 +962,7 @@ fn graph_text_parser_parse_edge(
 
 ///|
 fn graph_text_parser_parse_node(
+  metadata : @core.OptionMetadata,
   tokens : Array[ElkGraphLexToken],
   start : Int,
   parent : @graph.ElkNode,
@@ -993,6 +1010,7 @@ fn graph_text_parser_parse_node(
       if tokens[index].lexeme == "label" {
         match
           graph_text_parser_parse_label(
+            metadata,
             tokens,
             index,
             LabelOnNode(node),
@@ -1008,7 +1026,7 @@ fn graph_text_parser_parse_node(
       if tokens[index].lexeme == "port" {
         match
           graph_text_parser_parse_port(
-            tokens, index, node, node_qualified_id, id_to_shape,
+            metadata, tokens, index, node, node_qualified_id, id_to_shape,
           ) {
           Some((_, next_index)) => {
             index = next_index
@@ -1020,7 +1038,7 @@ fn graph_text_parser_parse_node(
       if tokens[index].lexeme == "node" {
         match
           graph_text_parser_parse_node(
-            tokens, index, node, node_qualified_id, id_to_shape,
+            metadata, tokens, index, node, node_qualified_id, id_to_shape,
           ) {
           Some((_, next_index)) => {
             index = next_index
@@ -1032,7 +1050,7 @@ fn graph_text_parser_parse_node(
       if tokens[index].lexeme == "edge" {
         match
           graph_text_parser_parse_edge(
-            tokens, index, node, node_qualified_id, id_to_shape,
+            metadata, tokens, index, node, node_qualified_id, id_to_shape,
           ) {
           Some((_, next_index)) => {
             index = next_index
@@ -1041,7 +1059,7 @@ fn graph_text_parser_parse_node(
           None => ()
         }
       }
-      match graph_text_parser_parse_property(tokens, index) {
+      match graph_text_parser_parse_property(metadata, tokens, index) {
         Some((property, consumed)) => {
           graph_text_parser_apply_property_to_node(node, property)
           index += consumed
@@ -1099,6 +1117,7 @@ pub fn InternalElkGraphParser::rule_root_node(
     if self.tokens[index].lexeme == "label" {
       match
         graph_text_parser_parse_label(
+          self.metadata,
           self.tokens,
           index,
           LabelOnNode(root),
@@ -1114,6 +1133,7 @@ pub fn InternalElkGraphParser::rule_root_node(
     if self.tokens[index].lexeme == "port" {
       match
         graph_text_parser_parse_port(
+          self.metadata,
           self.tokens,
           index,
           root,
@@ -1130,6 +1150,7 @@ pub fn InternalElkGraphParser::rule_root_node(
     if self.tokens[index].lexeme == "node" {
       match
         graph_text_parser_parse_node(
+          self.metadata,
           self.tokens,
           index,
           root,
@@ -1146,6 +1167,7 @@ pub fn InternalElkGraphParser::rule_root_node(
     if self.tokens[index].lexeme == "edge" {
       match
         graph_text_parser_parse_edge(
+          self.metadata,
           self.tokens,
           index,
           root,
@@ -1159,7 +1181,7 @@ pub fn InternalElkGraphParser::rule_root_node(
         None => ()
       }
     }
-    match graph_text_parser_parse_property(self.tokens, index) {
+    match graph_text_parser_parse_property(self.metadata, self.tokens, index) {
       Some((property, consumed)) => {
         graph_text_parser_apply_property_to_node(root, property)
         index += consumed
@@ -1185,7 +1207,15 @@ pub fn InternalElkGraphParser::rule_elk_node(
 ) -> @graph.ElkNode {
   let root = @graph.create_graph()
   let id_to_shape : Map[String, @graph.ElkConnectableShape] = Map([])
-  match graph_text_parser_parse_node(self.tokens, 0, root, "", id_to_shape) {
+  match
+    graph_text_parser_parse_node(
+      self.metadata,
+      self.tokens,
+      0,
+      root,
+      "",
+      id_to_shape,
+    ) {
     Some((node, _)) => node
     None => @graph.create_node(Some(root))
   }
@@ -1206,6 +1236,7 @@ pub fn InternalElkGraphParser::rule_elk_label(
   let id_to_shape : Map[String, @graph.ElkConnectableShape] = Map([])
   match
     graph_text_parser_parse_label(
+      self.metadata,
       self.tokens,
       0,
       LabelOnNode(root),
@@ -1229,7 +1260,15 @@ pub fn InternalElkGraphParser::rule_elk_port(
 ) -> @graph.ElkPort {
   let root = @graph.create_graph()
   let id_to_shape : Map[String, @graph.ElkConnectableShape] = Map([])
-  match graph_text_parser_parse_port(self.tokens, 0, root, "", id_to_shape) {
+  match
+    graph_text_parser_parse_port(
+      self.metadata,
+      self.tokens,
+      0,
+      root,
+      "",
+      id_to_shape,
+    ) {
     Some((port, _)) => port
     None => @graph.create_port(Some(root))
   }
@@ -1248,7 +1287,15 @@ pub fn InternalElkGraphParser::rule_elk_edge(
 ) -> @graph.ElkEdge {
   let root = @graph.create_graph()
   let id_to_shape : Map[String, @graph.ElkConnectableShape] = Map([])
-  match graph_text_parser_parse_edge(self.tokens, 0, root, "", id_to_shape) {
+  match
+    graph_text_parser_parse_edge(
+      self.metadata,
+      self.tokens,
+      0,
+      root,
+      "",
+      id_to_shape,
+    ) {
     Some((edge, _)) => edge
     None => @graph.create_edge(Some(root))
   }
@@ -1270,7 +1317,14 @@ pub fn InternalElkGraphParser::rule_edge_layout(
 ) -> @graph.ElkEdge {
   let id_to_shape : Map[String, @graph.ElkConnectableShape] = Map([])
   ignore(
-    graph_text_parser_parse_edge_layout(self.tokens, 0, edge, id_to_shape, ""),
+    graph_text_parser_parse_edge_layout(
+      self.metadata,
+      self.tokens,
+      0,
+      edge,
+      id_to_shape,
+      "",
+    ),
   )
   edge
 }
@@ -1290,6 +1344,7 @@ pub fn InternalElkGraphParser::rule_elk_single_edge_section(
   let edge = @graph.create_edge(Some(root))
   let id_to_shape : Map[String, @graph.ElkConnectableShape] = Map([])
   let (section, _) = graph_text_parser_parse_single_edge_section(
+    self.metadata,
     self.tokens,
     0,
     edge,
@@ -1317,6 +1372,7 @@ pub fn InternalElkGraphParser::rule_elk_edge_section(
   let pending_outgoing : Array[GraphTextPendingOutgoingSection] = []
   match
     graph_text_parser_parse_named_edge_section(
+      self.metadata,
       self.tokens,
       0,
       edge,
@@ -1398,7 +1454,7 @@ pub fn InternalElkGraphParser::entry_rule_property(
 pub fn InternalElkGraphParser::rule_property(
   self : InternalElkGraphParser,
 ) -> GraphTextPropertyAssignment {
-  match graph_text_parser_parse_property(self.tokens, 0) {
+  match graph_text_parser_parse_property(self.metadata, self.tokens, 0) {
     Some((property, _)) => property
     None => new_graph_text_property_assignment(CustomProperty(""), NullValue)
   }
@@ -1415,7 +1471,7 @@ pub fn InternalElkGraphParser::entry_rule_property_key(
 pub fn InternalElkGraphParser::rule_property_key(
   self : InternalElkGraphParser,
 ) -> GraphTextPropertyKey {
-  match graph_text_parser_parse_property_key(self.tokens, 0) {
+  match graph_text_parser_parse_property_key(self.metadata, self.tokens, 0) {
     Some((key, _)) => key
     None => CustomProperty("")
   }

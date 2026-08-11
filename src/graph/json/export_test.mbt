@@ -10,7 +10,6 @@ fn export_make_graph_with_three_children() -> @graph.ElkNode {
 
 ///|
 test "graph json export port-less edge" {
-  @graph.reset_graph_model_for_test()
   let graph = @graph.create_graph()
   let node1 = @graph.create_node(Some(graph))
   let node2 = @graph.create_node(Some(graph))
@@ -21,7 +20,6 @@ test "graph json export port-less edge" {
 
 ///|
 test "graph json export unique ids" {
-  @graph.reset_graph_model_for_test()
   let graph = @graph.create_graph()
   let node1 = @graph.create_node(Some(graph))
   @graph.node_set_identifier(node1, "foo")
@@ -33,7 +31,6 @@ test "graph json export unique ids" {
 
 ///|
 test "graph json export ids increasing" {
-  @graph.reset_graph_model_for_test()
   let graph = export_make_graph_with_three_children()
   let json_text = elk_graph_json_for_elk_graph(graph).to_json()
   assert_eq(json_text.contains("\"n1\""), true)
@@ -44,7 +41,6 @@ test "graph json export ids increasing" {
 
 ///|
 test "graph json export does not add empty sections" {
-  @graph.reset_graph_model_for_test()
   let graph = @graph.create_graph()
   let node1 = @graph.create_node(Some(graph))
   let node2 = @graph.create_node(Some(graph))

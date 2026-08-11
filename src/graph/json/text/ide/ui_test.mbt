@@ -41,7 +41,9 @@ test "ElkGraphJson ide modules expose generated bindings" {
 
 ///|
 test "ElkGraphJson ide parser and partial parser keep generated defaults" {
-  let parser = new_elk_graph_json_ide_parser()
+  let metadata = @core.new_option_metadata()
+  metadata.register_default_options()
+  let parser = new_elk_graph_json_ide_parser(metadata)
   inspect(parser.get_initial_hidden_tokens().length(), content="3")
   inspect(
     parser.get_rule_name("ElkNode.Group").unwrap_or("missing"),
@@ -62,14 +64,13 @@ test "ElkGraphJson ide parser and partial parser keep generated defaults" {
 
 ///|
 test "ElkGraphJson ide proposal provider exposes property and key behavior" {
-  @core.layout_meta_data_service_reset_for_test()
-  @core.layout_meta_data_service_register_default_options()
-  @core.layout_meta_data_service_register_default_algorithms()
-  @graph.reset_graph_model_for_test()
   let root = @graph.create_graph()
   @graph.node_set_identifier(root, "root")
 
-  let provider = new_elk_graph_json_ide_proposal_provider()
+  let metadata = @core.new_option_metadata()
+  metadata.register_default_options()
+  metadata.register_default_algorithms()
+  let provider = new_elk_graph_json_ide_proposal_provider(metadata)
 
   let keyword_acceptor = new_graph_json_text_ide_completion_proposal_acceptor()
   provider.create_keyword_proposals(
@@ -177,13 +178,15 @@ test "ElkGraphJson executable extension factory resolves provider and initialize
 
 ///|
 test "ElkGraphJson ui providers expose generated behavior" {
-  @graph.reset_graph_model_for_test()
   let root = @graph.create_graph()
   @graph.node_set_identifier(root, "root")
   let child = @graph.create_node(Some(root))
   @graph.node_set_identifier(child, "child")
 
-  let proposal_provider = @ui.new_elk_graph_json_ui_proposal_provider()
+  let metadata = @core.new_option_metadata()
+  metadata.register_default_options()
+  metadata.register_default_algorithms()
+  let proposal_provider = @ui.new_elk_graph_json_ui_proposal_provider(metadata)
   let proposal_acceptor = @ui.new_graph_json_text_ui_completion_proposal_acceptor()
   proposal_provider.create_assignment_proposals(
     "Property.KeyAssignment_0",
@@ -236,7 +239,12 @@ test "ElkGraphJson ui providers expose generated behavior" {
 test "ElkGraphJson convert handler works" {
   let project = @ui.new_graph_json_text_project()
   project.write_file("demo.elkj", "existing")
-  let handler = @ui.new_graph_json_text_convert_graph_handler(project~)
+  let metadata = @core.new_option_metadata()
+  metadata.register_default_options()
+  let handler = @ui.new_graph_json_text_convert_graph_handler(
+    metadata,
+    project~,
+  )
   let processed = handler.execute(
     [
       GraphJsonTextSelectionOther,

@@ -240,7 +240,7 @@ fn ns_layering_topological_numbering(
 fn ns_tight_tree_dfs(
   network_simplex : NetworkSimplex,
   node : NNode,
-) -> Int raise NetworkSimplexException {
+) -> Int raise {
   let mut node_count = 1
   node.set_tree_node(true)
   let node_stack = [node]
@@ -310,7 +310,7 @@ fn ns_minimal_slack(network_simplex : NetworkSimplex) -> NEdge? {
 fn ns_postorder_traversal(
   network_simplex : NetworkSimplex,
   node : NNode,
-) -> Int raise NetworkSimplexException {
+) -> Int raise {
   let node_stack = [node]
   let edge_stack = [node.get_connected_edges()]
   let index_stack = [0]
@@ -464,7 +464,7 @@ fn ns_leave_edge(network_simplex : NetworkSimplex) -> NEdge? {
 fn ns_enter_edge(
   network_simplex : NetworkSimplex,
   leave : NEdge,
-) -> NEdge? raise NetworkSimplexException {
+) -> NEdge? raise {
   if !leave.is_tree_edge() {
     raise new_network_simplex_exception("The input edge is not a tree edge.")
   }
@@ -490,7 +490,7 @@ fn ns_exchange(
   network_simplex : NetworkSimplex,
   leave : NEdge,
   enter : NEdge,
-) -> Unit raise NetworkSimplexException {
+) -> Unit raise {
   if !leave.is_tree_edge() {
     raise new_network_simplex_exception("Given leave edge is no tree edge.")
   }
@@ -596,9 +596,7 @@ fn ns_balance(network_simplex : NetworkSimplex, filling : Array[Int]) -> Unit {
 }
 
 ///|
-fn ns_remove_subtrees(
-  network_simplex : NetworkSimplex,
-) -> Unit raise NetworkSimplexException {
+fn ns_remove_subtrees(network_simplex : NetworkSimplex) -> Unit raise {
   network_simplex.subtree_nodes_stack.clear()
   let leafs : Array[NNode] = []
   for node in network_simplex.graph.nodes {
@@ -630,9 +628,7 @@ fn ns_remove_subtrees(
 }
 
 ///|
-fn ns_reattach_subtrees(
-  network_simplex : NetworkSimplex,
-) -> Unit raise NetworkSimplexException {
+fn ns_reattach_subtrees(network_simplex : NetworkSimplex) -> Unit raise {
   while !network_simplex.subtree_nodes_stack.is_empty() {
     let last_index = network_simplex.subtree_nodes_stack.length() - 1
     let (node, edge) = network_simplex.subtree_nodes_stack[last_index]
@@ -650,9 +646,7 @@ fn ns_reattach_subtrees(
 }
 
 ///|
-fn ns_feasible_tree(
-  network_simplex : NetworkSimplex,
-) -> Unit raise NetworkSimplexException {
+fn ns_feasible_tree(network_simplex : NetworkSimplex) -> Unit raise {
   ns_layering_topological_numbering(network_simplex, network_simplex.sources)
   if network_simplex.edges.length() > 0 {
     ns_reset_edge_visited(network_simplex)
@@ -687,7 +681,7 @@ fn ns_feasible_tree(
 fn ns_execute_impl(
   network_simplex : NetworkSimplex,
   remove_subtrees : Bool,
-) -> Unit raise NetworkSimplexException {
+) -> Unit raise {
   if remove_subtrees {
     ns_remove_subtrees(network_simplex)
   }
@@ -720,7 +714,7 @@ fn ns_execute_impl(
 pub fn NetworkSimplex::execute(
   self : NetworkSimplex,
   monitor? : @core.IElkProgressMonitor = @core.new_basic_progress_monitor(),
-) -> Unit {
+) -> Unit raise {
   ignore(monitor.begin("Network simplex", 1.0))
   if self.graph.nodes.length() < 1 {
     monitor.done()
@@ -731,7 +725,7 @@ pub fn NetworkSimplex::execute(
   }
   let remove_subtrees = self.graph.nodes.length() >= ns_remove_subtrees_thresh
   try ns_execute_impl(self, remove_subtrees) catch {
-    err => {
+    NetworkSimplexException(message) => {
       if remove_subtrees {
         try ns_reattach_subtrees(self) catch {
           _ => ()
@@ -740,12 +734,14 @@ pub fn NetworkSimplex::execute(
         }
       }
       ns_dispose(self)
-      @core.layout_runtime_report_unsupported_configuration(
-        network_simplex_exception_message(err),
-      )
+      @core.layout_runtime_raise_unsupported_configuration(message)
       if monitor.is_running() {
         monitor.done()
       }
+    }
+    err => {
+      ns_dispose(self)
+      raise err
     }
   } noraise {
     _ => {

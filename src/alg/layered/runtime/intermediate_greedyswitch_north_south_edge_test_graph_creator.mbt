@@ -4,21 +4,21 @@ pub struct GreedySwitchNorthSouthEdgeTestGraphCreator {
 }
 
 ///|
-pub fn new_greedy_switch_north_south_edge_test_graph_creator() -> GreedySwitchNorthSouthEdgeTestGraphCreator {
+pub fn new_greedy_switch_north_south_edge_test_graph_creator() -> GreedySwitchNorthSouthEdgeTestGraphCreator raise {
   { base: new_greedy_switch_test_graph_creator() }
 }
 
 ///|
 pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_graph(
   self : GreedySwitchNorthSouthEdgeTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   self.base.get_graph()
 }
 
 ///|
 pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_upward_crossing_graph(
   self : GreedySwitchNorthSouthEdgeTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let left_nodes = self.base.add_nodes_to_layer(
     3,
     self.base.make_layer(self.base.get_graph()),
@@ -50,7 +50,7 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_upward_crossi
 ///|
 pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_upward_multiple_crossing_graph(
   self : GreedySwitchNorthSouthEdgeTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let left_nodes = self.base.add_nodes_to_layer(
     4,
     self.base.make_layer(self.base.get_graph()),
@@ -89,7 +89,7 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_upward_multip
 ///|
 pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_three_layer_north_south_crossing_graph(
   self : GreedySwitchNorthSouthEdgeTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let left_node = self.base.add_node_to_layer(
     self.base.make_layer(self.base.get_graph()),
   )
@@ -126,7 +126,7 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_three_layer_north_south_c
 ///|
 pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_three_layer_north_south_crossing_should_switch_graph(
   self : GreedySwitchNorthSouthEdgeTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   ignore(
     self.base.add_node_to_layer(self.base.make_layer(self.base.get_graph())),
   )
@@ -192,7 +192,7 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_three_layer_north_south_c
 ///|
 pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_southern_north_south_dummy_edge_crossing_graph(
   self : GreedySwitchNorthSouthEdgeTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let left_node = self.base.add_node_to_layer(
     self.base.make_layer(self.base.get_graph()),
   )
@@ -222,7 +222,7 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_southern_north_south_dumm
 ///|
 pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_southern_north_south_dummy_edge_two_crossing_graph(
   self : GreedySwitchNorthSouthEdgeTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let left_node = self.base.add_node_to_layer(
     self.base.make_layer(self.base.get_graph()),
   )
@@ -260,7 +260,7 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_southern_north_south_dumm
 ///|
 pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_southern_two_dummy_edge_and_north_south_crossing_graph(
   self : GreedySwitchNorthSouthEdgeTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let left_nodes = self.base.add_nodes_to_layer(
     2,
     self.base.make_layer(self.base.get_graph()),
@@ -305,7 +305,7 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_southern_two_dummy_edge_a
 ///|
 pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_northern_north_south_dummy_edge_crossing_graph(
   self : GreedySwitchNorthSouthEdgeTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let left_node = self.base.add_node_to_layer(
     self.base.make_layer(self.base.get_graph()),
   )
@@ -335,7 +335,7 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_northern_north_south_dumm
 ///|
 pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_south_port_on_normal_node_below_long_edge_dummy(
   self : GreedySwitchNorthSouthEdgeTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let left_node = self.base.add_node_to_layer(
     self.base.make_layer(self.base.get_graph()),
   )
@@ -366,7 +366,7 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_south_port_on_normal_node
 ///|
 pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_port_ond_normal_node_above_long_edge_dummy(
   self : GreedySwitchNorthSouthEdgeTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let left_node = self.base.add_node_to_layer(
     self.base.make_layer(self.base.get_graph()),
   )
@@ -397,7 +397,7 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_port_ond_normal_nod
 ///|
 pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_long_edge_dummy_and_normal_node_with_unused_ports_on_southern_side(
   self : GreedySwitchNorthSouthEdgeTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let left_node = self.base.add_node_to_layer(
     self.base.make_layer(self.base.get_graph()),
   )
@@ -423,7 +423,7 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_long_edge_dummy_and_norma
 ///|
 pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_long_edge_dummy_and_normal_node_with_unused_ports_on_northern_side(
   self : GreedySwitchNorthSouthEdgeTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let left_node = self.base.add_node_to_layer(
     self.base.make_layer(self.base.get_graph()),
   )
@@ -447,7 +447,7 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_long_edge_dummy_and_norma
 ///|
 pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_multiple_north_south_and_long_edge_dummies_on_both_sides(
   self : GreedySwitchNorthSouthEdgeTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let left_nodes = self.base.add_nodes_to_layer(
     2,
     self.base.make_layer(self.base.get_graph()),
@@ -503,7 +503,7 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_multiple_north_south_and_
 ///|
 pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_downward_crossing_graph(
   self : GreedySwitchNorthSouthEdgeTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let left_nodes = self.base.add_nodes_to_layer(
     3,
     self.base.make_layer(self.base.get_graph()),
@@ -535,7 +535,7 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_downward_cros
 ///|
 pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_downward_multiple_crossing_graph(
   self : GreedySwitchNorthSouthEdgeTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let left_nodes = self.base.add_nodes_to_layer(
     4,
     self.base.make_layer(self.base.get_graph()),
@@ -574,7 +574,7 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_downward_mult
 ///|
 pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_southern_north_south_graph_edges_from_east_and_west_no_crossings(
   self : GreedySwitchNorthSouthEdgeTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let left_node = self.base.add_node_to_layer(
     self.base.make_layer(self.base.get_graph()),
   )
@@ -608,7 +608,7 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_southern_north_south_grap
 ///|
 pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_northern_north_south_graph_edges_from_east_and_west_no_crossings(
   self : GreedySwitchNorthSouthEdgeTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let left_node = self.base.add_node_to_layer(
     self.base.make_layer(self.base.get_graph()),
   )
@@ -643,7 +643,7 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_northern_north_south_grap
 ///|
 pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_northern_north_south_graph_edges_from_east_and_west_no_crossings_upper_edge_east(
   self : GreedySwitchNorthSouthEdgeTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let left_node = self.base.add_node_to_layer(
     self.base.make_layer(self.base.get_graph()),
   )
@@ -678,7 +678,7 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_northern_north_south_grap
 ///|
 pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_edges_from_east_and_west_and_cross(
   self : GreedySwitchNorthSouthEdgeTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let left_node = self.base.add_node_to_layer(
     self.base.make_layer(self.base.get_graph()),
   )
@@ -713,7 +713,7 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_edges_from_ea
 ///|
 pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_southern_north_south_edges_both_to_east(
   self : GreedySwitchNorthSouthEdgeTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let middle_nodes = self.base.add_nodes_to_layer(
     3,
     self.base.make_layer(self.base.get_graph()),
@@ -746,7 +746,7 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_southern_north_south_edge
 ///|
 pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_southern_two_western_edges(
   self : GreedySwitchNorthSouthEdgeTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let left_nodes = self.base.add_nodes_to_layer(
     2,
     self.base.make_layer(self.base.get_graph()),
@@ -779,7 +779,7 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_southern_two_
 ///|
 pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_southern_three_western_edges(
   self : GreedySwitchNorthSouthEdgeTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let left_nodes = self.base.add_nodes_to_layer(
     3,
     self.base.make_layer(self.base.get_graph()),
@@ -819,7 +819,7 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_southern_thre
 ///|
 pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_northern_western_edges(
   self : GreedySwitchNorthSouthEdgeTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let left_nodes = self.base.add_nodes_to_layer(
     2,
     self.base.make_layer(self.base.get_graph()),
@@ -852,7 +852,7 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_northern_west
 ///|
 pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_northern_eastern_port_to_west_western_port_to_east(
   self : GreedySwitchNorthSouthEdgeTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let left_node = self.base.add_node_to_layer(
     self.base.make_layer(self.base.get_graph()),
   )
@@ -887,7 +887,7 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_northern_east
 ///|
 pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_all_sides_multiple_crossings(
   self : GreedySwitchNorthSouthEdgeTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let left_node = self.base.add_node_to_layer(
     self.base.make_layer(self.base.get_graph()),
   )
@@ -952,7 +952,7 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_all_sides_mul
 ///|
 pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_southern_western_port_to_east_and_eastern_port_to_west(
   self : GreedySwitchNorthSouthEdgeTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let left_node = self.base.add_node_to_layer(
     self.base.make_layer(self.base.get_graph()),
   )
@@ -987,7 +987,7 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_southern_west
 ///|
 pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_graph_where_layout_unit_prevents_switch(
   self : GreedySwitchNorthSouthEdgeTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let left_nodes = self.base.add_nodes_to_layer(
     4,
     self.base.make_layer(self.base.get_graph()),
@@ -1020,7 +1020,7 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_graph_where_layout_unit_p
 ///|
 pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_graph_layout_unit_prevents_switch_with_node_with_node_with_northern_edges(
   self : GreedySwitchNorthSouthEdgeTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let left_nodes = self.base.add_nodes_to_layer(
     3,
     self.base.make_layer(self.base.get_graph()),
@@ -1046,7 +1046,7 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_graph_layout_unit_prevent
 ///|
 pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_graph_layout_unit_prevents_switch_with_node_with_node_with_southern_edges(
   self : GreedySwitchNorthSouthEdgeTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let left_nodes = self.base.add_nodes_to_layer(
     4,
     self.base.make_layer(self.base.get_graph()),
@@ -1072,7 +1072,7 @@ pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_graph_layout_unit_prevent
 ///|
 pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_graph_layout_unit_does_not_prevent_switch_with_long_edge_dummy(
   self : GreedySwitchNorthSouthEdgeTestGraphCreator,
-) -> LGraph {
+) -> LGraph raise {
   let left_node = self.base.add_node_to_layer(
     self.base.make_layer(self.base.get_graph()),
   )

@@ -366,13 +366,13 @@ pub fn core_debug_register_graph_file_content_for_test(
 ///|
 pub fn core_debug_load_graph_from_registered_file(
   path : String,
-) -> @graph.ElkNode {
+) -> @graph.ElkNode raise {
   match core_debug_graph_file_contents_ref.val.get(path) {
     Some(content) => @graph_json.elk_graph_json_for_graph(content).to_elk()
     None => {
       try core_debug_foundation_raise_unit("graph file not registered") catch {
         err =>
-          @core.layout_runtime_report_unsupported_configuration(
+          @core.layout_runtime_raise_unsupported_configuration(
             core_debug_foundation_exception_message(err),
           )
       } noraise {

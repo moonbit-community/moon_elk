@@ -95,10 +95,10 @@ test "InternalElkGraphLexer tokenizes generated terminal set" {
 
 ///|
 test "InternalElkGraphParser parses root node with children and edge sections" {
-  @graph.reset_graph_model_for_test()
+  let metadata = @core.new_layout_runtime().option_metadata()
   let text = "graph root node a { layout [position: 10, 20] } node b { } edge e: a -> b { layout [ section s1 [ start: 0, 0 end: 5, 5 ] ] }"
   let lexer = new_internal_elk_graph_lexer(text)
-  let parser = new_internal_elk_graph_parser(lexer.lex_all())
+  let parser = new_internal_elk_graph_parser(metadata, lexer.lex_all())
   let root = parser.entry_rule_root_node()
 
   inspect(parser.get_grammar_file_name(), content="InternalElkGraph.g")
@@ -117,8 +117,9 @@ test "InternalElkGraphParser parses root node with children and edge sections" {
 
 ///|
 test "ElkGraphParser wires lexer and internal parser" {
-  @graph.reset_graph_model_for_test()
-  let parser = new_elk_graph_parser()
+  let parser = new_elk_graph_parser(
+    @core.new_layout_runtime().option_metadata(),
+  )
   inspect(parser.get_default_rule_name(), content="RootNode")
   inspect(parser.get_initial_hidden_tokens().length(), content="3")
   let root = parser.parse(

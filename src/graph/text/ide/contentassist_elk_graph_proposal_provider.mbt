@@ -108,23 +108,26 @@ fn graph_text_ide_algorithm_description(
 
 ///|
 fn graph_text_ide_layout_option_proposals_for_element(
+  metadata : @core.OptionMetadata,
   element : @text.GraphTextElement,
   prefix : String,
 ) -> Array[@core.LayoutDataProposal[@core.LayoutOptionData]] {
   match element {
     GraphNode(node) =>
-      @core.layout_data_content_assist_get_layout_option_proposals(node, prefix)
+      @core.layout_data_content_assist_get_layout_option_proposals(
+        metadata, node, prefix,
+      )
     GraphEdge(edge) =>
       @core.layout_data_content_assist_get_layout_option_proposals_for_edge(
-        edge, prefix,
+        metadata, edge, prefix,
       )
     GraphPort(port) =>
       @core.layout_data_content_assist_get_layout_option_proposals_for_port(
-        port, prefix,
+        metadata, port, prefix,
       )
     GraphLabel(label) =>
       @core.layout_data_content_assist_get_layout_option_proposals_for_label(
-        label, prefix,
+        metadata, label, prefix,
       )
   }
 }
@@ -158,7 +161,7 @@ fn graph_text_ide_shape_in_list(
 fn graph_text_ide_find_parent_edge(
   section : @graph.ElkEdgeSection,
 ) -> @graph.ElkEdge? {
-  for edge in @graph.all_edges() {
+  for edge in section.graph_arena().all_edges() {
     for existing in @graph.edge_sections(edge) {
       if existing == section {
         return Some(edge)
@@ -170,14 +173,16 @@ fn graph_text_ide_find_parent_edge(
 
 ///|
 pub struct ElkGraphIdeProposalProvider {
+  metadata : @core.OptionMetadata
   grammar : @text.ElkGraphGrammarAccess
 }
 
 ///|
 pub fn new_elk_graph_ide_proposal_provider(
+  metadata : @core.OptionMetadata,
   grammar? : @text.ElkGraphGrammarAccess = @text.new_elk_graph_grammar_access(),
 ) -> ElkGraphIdeProposalProvider {
-  { grammar, }
+  { metadata, grammar }
 }
 
 ///|
@@ -265,6 +270,7 @@ pub fn ElkGraphIdeProposalProvider::complete_property_key(
   }
   for
     proposal in graph_text_ide_layout_option_proposals_for_element(
+      self.metadata,
       model,
       context.prefix,
     ) {
@@ -318,6 +324,7 @@ pub fn ElkGraphIdeProposalProvider::propose_algorithms(
   }
   for
     proposal in @core.layout_data_content_assist_get_layout_algorithm_proposals(
+      self.metadata,
       context.prefix,
     ) {
     let algorithm_data = proposal.get_data()

@@ -42,7 +42,7 @@ fn self_loop_holder_test_same_edge_handle_set(
 ///|
 fn self_loop_holder_test_install_or_abort(l_node : LNode) -> SelfLoopHolder {
   self_loop_holder_install(l_node) catch {
-    error => abort(self_loop_holder_exception_message(error))
+    error => abort(error.to_string())
   }
 }
 
@@ -58,14 +58,13 @@ test "self loop holder does not process non-self-loop graph" {
 test "self loop holder install rejects nodes without self loops" {
   let l_graph = self_loop_test_graph_creator_basic_graph_without_self_loops()
   let l_node = l_graph.get_layerless_nodes()[0]
-  try {
+  let message = try {
     ignore(self_loop_holder_install(l_node))
-    abort("expected UnsupportedConfigurationException")
+    ""
   } catch {
-    UnsupportedConfigurationException(_) => ()
-    IllegalStateException(message) =>
-      abort("unexpected IllegalStateException: \{message}")
+    error => error.to_string()
   }
+  assert_true(message.contains("UnsupportedConfigurationException"))
 }
 
 ///|

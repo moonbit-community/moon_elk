@@ -13,8 +13,6 @@ test "elk graph package core constants match reference values" {
 
 ///|
 test "elk graph factory impl constructors map to graph model creators" {
-  reset_graph_model_for_test()
-
   let arena = new_graph_arena()
   let factory = new_elk_graph_factory_impl_in_arena(arena)
   let node = factory.create_elk_node()

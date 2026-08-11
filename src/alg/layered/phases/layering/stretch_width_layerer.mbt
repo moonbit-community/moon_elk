@@ -62,12 +62,11 @@ fn stretch_width_layerer_layer_constraint_postprocessor_factory() -> @core.ILayo
 }
 
 ///|
-let stretch_width_layerer_baseline_processing_configuration : @core.LayoutProcessorConfiguration[
+fn stretch_width_layerer_baseline_processing_configuration() -> @core.LayoutProcessorConfiguration[
   @runtime.LayeredPhases,
   @runtime.LGraph,
-] = @core.layout_processor_configuration_create(
-    @runtime.layered_phase_descriptor,
-  )
+] raise {
+  @core.layout_processor_configuration_create(@runtime.layered_phase_descriptor)
   .add_before(
     P1CycleBreaking,
     @runtime.layered_intermediate_processor_factory(
@@ -82,6 +81,7 @@ let stretch_width_layerer_baseline_processing_configuration : @core.LayoutProces
     P3NodeOrdering,
     stretch_width_layerer_layer_constraint_postprocessor_factory(),
   )
+}
 
 ///|
 fn stretch_width_layerer_new_state(
@@ -334,16 +334,16 @@ fn stretch_width_layerer_reverse_layers(layers : Array[@runtime.Layer]) -> Unit 
 ///|
 fn stretch_width_layerer_configuration(
   graph : @runtime.LGraph,
-) -> @core.LayoutProcessorConfiguration[@runtime.LayeredPhases, @runtime.LGraph]? {
+) -> @core.LayoutProcessorConfiguration[@runtime.LayeredPhases, @runtime.LGraph]? raise {
   ignore(graph)
-  Some(stretch_width_layerer_baseline_processing_configuration)
+  Some(stretch_width_layerer_baseline_processing_configuration())
 }
 
 ///|
 fn stretch_width_layerer_process(
   layered_graph : @runtime.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()
@@ -442,7 +442,7 @@ fn stretch_width_layerer_process(
     stretch_width_layerer_reverse_layers(layered_graph.get_layers())
   } catch {
     error =>
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         stretch_width_layerer_exception_message(error),
       )
   }

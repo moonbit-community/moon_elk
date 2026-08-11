@@ -11,15 +11,6 @@ fn[T] topdown_size_approximator_raise(
 }
 
 ///|
-fn topdown_size_approximator_exception_message(
-  err : TopdownSizeApproximatorException,
-) -> String {
-  match err {
-    TopdownSizeApproximatorException(message) => message
-  }
-}
-
-///|
 pub(all) enum TopdownSizeApproximator {
   CountChildren
   LookaheadLayout
@@ -58,13 +49,17 @@ pub fn topdown_size_approximator_from_string(
 
 ///|
 pub fn topdown_size_approximator_as_interface(
+  runtime : LayoutRuntime,
+  session : LayoutSession,
   approximator : TopdownSizeApproximator,
 ) -> ITopdownSizeApproximator {
-  new_topdown_size_approximator(node => approximator.get_size(node))
+  new_topdown_size_approximator(node => {
+    approximator.get_size(runtime, session, node)
+  })
 }
 
 ///|
-fn topdown_size_approximator_parse_padding(value : String) -> ElkPadding {
+fn topdown_size_approximator_parse_padding(value : String) -> ElkPadding raise {
   let padding_value = new_elk_padding()
   padding_value.parse(value)
   padding_value
@@ -98,10 +93,14 @@ fn topdown_size_approximator_first_target_node(
 
 ///|
 fn topdown_size_approximator_layout_graph(
+  runtime : LayoutRuntime,
+  session : LayoutSession,
   layout_graph : @graph.ElkNode,
 ) -> Unit {
   let progress_monitor = new_null_elk_progress_monitor()
-  new_recursive_graph_layout_engine().layout(layout_graph, progress_monitor)
+  new_recursive_graph_layout_engine(runtime, session).layout(
+    layout_graph, progress_monitor,
+  )
 }
 
 ///|
@@ -121,8 +120,10 @@ fn topdown_size_approximator_count_children(node : @graph.ElkNode) -> KVector {
 
 ///|
 fn topdown_size_approximator_lookahead_layout(
+  runtime : LayoutRuntime,
+  session : LayoutSession,
   original_graph : @graph.ElkNode,
-) -> KVector raise TopdownSizeApproximatorException {
+) -> KVector raise {
   let cloned_node = @graph.create_node(None)
   @graph.node_copy_properties(cloned_node, original_graph)
 
@@ -172,7 +173,7 @@ fn topdown_size_approximator_lookahead_layout(
     }
   }
 
-  topdown_size_approximator_layout_graph(cloned_node)
+  topdown_size_approximator_layout_graph(runtime, session, cloned_node)
 
   if !(@graph.node_has_double_property(cloned_node, child_area_width) ||
     @graph.node_has_double_property(cloned_node, child_area_height)) {
@@ -216,7 +217,7 @@ fn topdown_size_approximator_lookahead_layout(
 ///|
 fn topdown_size_approximator_fixed_integer_ratio_boxes(
   original_graph : @graph.ElkNode,
-) -> KVector {
+) -> KVector raise {
   let base_width = @graph.node_get_double_property(
     original_graph, topdown_hierarchical_node_width,
   )
@@ -252,8 +253,10 @@ fn topdown_size_approximator_fixed_integer_ratio_boxes(
 
 ///|
 fn topdown_size_approximator_layout_next_level(
+  runtime : LayoutRuntime,
+  session : LayoutSession,
   original_graph : @graph.ElkNode,
-) -> KVector {
+) -> KVector raise {
   for child_node in @graph.node_children(original_graph) {
     if @graph.node_children(child_node).length() > 0 {
       let approximator_value = @graph.node_get_string_property(
@@ -261,7 +264,7 @@ fn topdown_size_approximator_layout_next_level(
       )
       if topdown_size_approximator_from_string(approximator_value)
         is Some(approximator) {
-        let size = approximator.get_size(child_node)
+        let size = approximator.get_size(runtime, session, child_node)
         let padding_value = topdown_size_approximator_parse_padding(
           @graph.node_get_string_property(child_node, padding),
         )
@@ -314,12 +317,14 @@ fn topdown_size_approximator_layout_next_level(
     }
   }
 
-  topdown_size_approximator_layout_graph(original_graph)
+  topdown_size_approximator_layout_graph(runtime, session, original_graph)
 
   @graph.node_set_string_property(
     original_graph, algorithm, "org.eclipse.elk.fixed",
   )
-  apply_visitors(original_graph, [new_layout_algorithm_resolver().to_visitor()])
+  apply_visitors(original_graph, [
+    new_layout_algorithm_resolver(runtime.option_metadata()).to_visitor(),
+  ])
 
   compute_child_area_dimensions(original_graph)
   new_kvector_xy(
@@ -330,32 +335,43 @@ fn topdown_size_approximator_layout_next_level(
 
 ///|
 fn topdown_size_approximator_get_size_impl(
+  runtime : LayoutRuntime,
+  session : LayoutSession,
   approximator : TopdownSizeApproximator,
   original_graph : @graph.ElkNode,
-) -> KVector raise TopdownSizeApproximatorException {
+) -> KVector raise {
   match approximator {
     CountChildren => topdown_size_approximator_count_children(original_graph)
     LookaheadLayout =>
-      topdown_size_approximator_lookahead_layout(original_graph)
+      topdown_size_approximator_lookahead_layout(
+        runtime, session, original_graph,
+      )
     FixedIntegerRatioBoxes =>
       topdown_size_approximator_fixed_integer_ratio_boxes(original_graph)
     LayoutNextLevel =>
-      topdown_size_approximator_layout_next_level(original_graph)
+      topdown_size_approximator_layout_next_level(
+        runtime, session, original_graph,
+      )
   }
 }
 
 ///|
 pub fn TopdownSizeApproximator::get_size(
   self : TopdownSizeApproximator,
+  runtime : LayoutRuntime,
+  session : LayoutSession,
   original_graph : @graph.ElkNode,
-) -> KVector {
-  try topdown_size_approximator_get_size_impl(self, original_graph) catch {
-    err => {
-      layout_runtime_report_unsupported_configuration(
-        topdown_size_approximator_exception_message(err),
-      )
+) -> KVector raise {
+  try
+    topdown_size_approximator_get_size_impl(
+      runtime, session, self, original_graph,
+    )
+  catch {
+    TopdownSizeApproximatorException(message) => {
+      layout_runtime_raise_unsupported_configuration(message)
       topdown_size_approximator_count_children(original_graph)
     }
+    error => raise error
   } noraise {
     size => size
   }

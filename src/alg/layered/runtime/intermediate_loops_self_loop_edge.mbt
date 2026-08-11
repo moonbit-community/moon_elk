@@ -27,14 +27,14 @@ pub fn new_self_loop_edge(
   l_edge : LEdge,
   sl_source : SelfLoopPort,
   sl_target : SelfLoopPort,
-) -> SelfLoopEdge {
+) -> SelfLoopEdge raise {
   if !l_edge.is_self_loop() {
-    @core.layout_runtime_report_unsupported_configuration(
+    @core.layout_runtime_raise_unsupported_configuration(
       "SelfLoopEdge requires a self loop edge",
     )
   }
   if !self_loop_edge_ports_match_ledge(l_edge, sl_source, sl_target) {
-    @core.layout_runtime_report_unsupported_configuration(
+    @core.layout_runtime_raise_unsupported_configuration(
       "SelfLoopEdge source/target ports must match the represented edge",
     )
   }
@@ -61,9 +61,9 @@ pub fn SelfLoopEdge::get_sl_hyper_loop(self : SelfLoopEdge) -> SelfHyperLoop? {
 pub fn SelfLoopEdge::set_sl_hyper_loop(
   self : SelfLoopEdge,
   sl_hyper_loop : SelfHyperLoop,
-) -> Unit {
+) -> Unit raise {
   if self.sl_hyper_loop is Some(_) {
-    @core.layout_runtime_report_unsupported_configuration(
+    @core.layout_runtime_raise_unsupported_configuration(
       "SelfLoopEdge hyper loop may only be set once",
     )
     return

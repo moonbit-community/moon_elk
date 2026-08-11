@@ -26,13 +26,15 @@ pub(all) enum ElkGraphXmiValue {
 ///|
 pub(all) struct ElkGraphXMIHelper {
   resource_uri : String
+  metadata : OptionMetadata
 }
 
 ///|
 pub fn new_elk_graph_xmi_helper(
+  metadata : OptionMetadata,
   resource : ElkGraphResource,
 ) -> ElkGraphXMIHelper {
-  { resource_uri: resource.get_uri() }
+  { resource_uri: resource.get_uri(), metadata }
 }
 
 ///|
@@ -42,9 +44,10 @@ pub fn ElkGraphXMIHelper::get_resource_uri(self : ElkGraphXMIHelper) -> String {
 
 ///|
 fn elk_graph_xmi_helper_create_i_property_from_string(
+  metadata : OptionMetadata,
   id : String,
 ) -> @graph.IProperty[String] {
-  if layout_meta_data_service_get_option_data_opt(id) is Some(option_data) {
+  if metadata.option_data_opt(id) is Some(option_data) {
     @graph.new_property(option_data.get_id(), "")
   } else {
     @graph.new_property(id, "")
@@ -67,7 +70,9 @@ pub fn ElkGraphXMIHelper::create_from_string(
   ignore(self)
   match data_type {
     IPropertyDataType =>
-      PropertyId(elk_graph_xmi_helper_create_i_property_from_string(value))
+      PropertyId(
+        elk_graph_xmi_helper_create_i_property_from_string(self.metadata, value),
+      )
     PropertyValueDataType =>
       PropertyValue(
         elk_graph_xmi_helper_create_property_value_from_string(value),

@@ -1,11 +1,13 @@
 ///|
 pub(all) struct ActiveEditorSupportedTester {
-  _dummy : Int
+  service : @service.LayoutConnectorsService
 }
 
 ///|
-pub fn new_active_editor_supported_tester() -> ActiveEditorSupportedTester {
-  { _dummy: 0 }
+pub fn new_active_editor_supported_tester(
+  service : @service.LayoutConnectorsService,
+) -> ActiveEditorSupportedTester {
+  { service, }
 }
 
 ///|
@@ -13,14 +15,9 @@ pub fn ActiveEditorSupportedTester::is_supported(
   self : ActiveEditorSupportedTester,
   receiver : @service.ServiceWorkbenchPart?,
 ) -> Bool {
-  ignore(self)
   match receiver {
     Some(workbench_part) =>
-      @service.layout_connectors_service_get_instance().get_connector(
-        Some(workbench_part),
-        None,
-      )
-      is Some(_)
+      self.service.get_connector(Some(workbench_part), None) is Some(_)
     None => false
   }
 }

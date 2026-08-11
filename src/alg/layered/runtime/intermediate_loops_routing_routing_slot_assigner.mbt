@@ -73,11 +73,11 @@ fn routing_slot_assigner_sort_loops_by_side_slot(
 fn routing_slot_assigner_require_segment(
   segments : Map[Int, HyperEdgeSegment],
   loop_id : Int,
-) -> HyperEdgeSegment {
+) -> HyperEdgeSegment raise {
   match segments.get(loop_id) {
     Some(segment) => segment
     None => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "missing segment for self loop",
       )
       new_hyper_edge_segment(new_west_to_east_routing_strategy())
@@ -89,11 +89,11 @@ fn routing_slot_assigner_require_segment(
 fn routing_slot_assigner_require_loop_activity(
   loop_activity : Map[Int, Array[Bool]],
   loop_id : Int,
-) -> Array[Bool] {
+) -> Array[Bool] raise {
   match loop_activity.get(loop_id) {
     Some(activity) => activity
     None => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "missing loop activity",
       )
       []
@@ -250,7 +250,7 @@ fn RoutingSlotAssigner::count_crossings(
   self : RoutingSlotAssigner,
   sl_upper_loop : SelfHyperLoop,
   sl_lower_loop : SelfHyperLoop,
-) -> Int {
+) -> Int raise {
   ignore(self)
   let lower_loop_activity = routing_slot_assigner_require_loop_activity(
     self.sl_loop_activity_over_ports,
@@ -290,7 +290,7 @@ fn RoutingSlotAssigner::create_dependencies(
   sl_loop_1 : SelfHyperLoop,
   sl_loop_2 : SelfHyperLoop,
   label_crossing_matrix : Array[Array[Bool]],
-) -> Unit {
+) -> Unit raise {
   let first_above_second_crossings = self.count_crossings(sl_loop_1, sl_loop_2)
   let second_above_first_crossings = self.count_crossings(sl_loop_2, sl_loop_1)
 
@@ -339,7 +339,7 @@ fn RoutingSlotAssigner::create_crossing_graph(
   self : RoutingSlotAssigner,
   sl_holder : SelfLoopHolder,
   label_crossing_matrix : Array[Array[Bool]],
-) -> Unit {
+) -> Unit raise {
   let sl_loops = sl_holder.get_sl_hyper_loops()
   self.hyper_edge_segments.clear()
   self.sl_loop_to_segment_map.clear()
@@ -410,7 +410,7 @@ fn RoutingSlotAssigner::assign_raw_routing_slots_to_segments(
 fn RoutingSlotAssigner::assign_raw_routing_slots_to_loops(
   self : RoutingSlotAssigner,
   sl_holder : SelfLoopHolder,
-) -> Unit {
+) -> Unit raise {
   for sl_loop in sl_holder.get_sl_hyper_loops() {
     let slot = routing_slot_assigner_require_segment(
       self.sl_loop_to_segment_map,
@@ -429,7 +429,7 @@ fn RoutingSlotAssigner::shift_towards_node_on_side(
   side : @core.PortSide,
   next_free_routing_slot_at_port : Array[Int],
   label_crossing_matrix : Array[Array[Bool]],
-) -> Unit {
+) -> Unit raise {
   let sl_loops = []
   for sl_loop in sl_holder.get_sl_hyper_loops() {
     if routing_slot_assigner_has_side(sl_loop, side) {
@@ -519,7 +519,7 @@ fn RoutingSlotAssigner::shift_towards_node(
   self : RoutingSlotAssigner,
   sl_holder : SelfLoopHolder,
   label_crossing_matrix : Array[Array[Bool]],
-) -> Unit {
+) -> Unit raise {
   let next_free_routing_slot_at_port = []
   for _ in 0..<sl_holder.get_l_node().get_ports().length() {
     next_free_routing_slot_at_port.push(0)
@@ -556,7 +556,7 @@ fn RoutingSlotAssigner::do_assign_routing_slots(
   self : RoutingSlotAssigner,
   sl_holder : SelfLoopHolder,
   label_crossing_matrix : Array[Array[Bool]],
-) -> Unit {
+) -> Unit raise {
   self.assign_raw_routing_slots_to_segments()
   self.assign_raw_routing_slots_to_loops(sl_holder)
   self.shift_towards_node(sl_holder, label_crossing_matrix)
@@ -566,7 +566,7 @@ fn RoutingSlotAssigner::do_assign_routing_slots(
 pub fn RoutingSlotAssigner::assign_routing_slots(
   self : RoutingSlotAssigner,
   sl_holder : SelfLoopHolder,
-) -> Unit {
+) -> Unit raise {
   let label_crossing_matrix = self.compute_label_crossing_matrix(sl_holder)
   self.create_crossing_graph(sl_holder, label_crossing_matrix)
   orthogonal_routing_generator_break_non_critical_cycles(

@@ -1,9 +1,9 @@
 ///|
 test "individual_spacings parse and serialize" {
-  layout_meta_data_service_reset_for_test()
-  layout_meta_data_service_register_default_options()
+  let metadata = new_option_metadata()
+  metadata.register_default_options()
   let spacings = new_individual_spacings()
-  spacings.parse("spacing.nodeNode:12")
+  spacings.parse(metadata, "spacing.nodeNode:12")
   debug_inspect(
     spacings.get_option(spacing_node_node.get_id()),
     content="Some(\"12\")",
@@ -27,7 +27,6 @@ test "individual_spacings copy constructor preserves entries" {
 
 ///|
 test "individual_spacings move between node and object" {
-  @graph.reset_graph_model_for_test()
   let source = @graph.create_graph()
   @graph.node_set_individual_spacing_option_string_by_id(
     source,
@@ -48,7 +47,6 @@ test "individual_spacings move between node and object" {
 
 ///|
 test "individual_spacings_get_individual_or_inherited prefers node override" {
-  @graph.reset_graph_model_for_test()
   let root = @graph.create_graph()
   let child = @graph.create_node(Some(root))
   @graph.node_set_double_property(root, spacing_node_node, 3.0)
@@ -65,7 +63,6 @@ test "individual_spacings_get_individual_or_inherited prefers node override" {
 
 ///|
 test "individual_spacings_get_individual_or_inherited falls back to parent" {
-  @graph.reset_graph_model_for_test()
   let root = @graph.create_graph()
   let child = @graph.create_node(Some(root))
   @graph.node_set_double_property(root, spacing_node_node, 3.0)

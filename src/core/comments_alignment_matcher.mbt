@@ -242,10 +242,10 @@ pub fn[C, T] AlignmentMatcher::preprocess(
   self : AlignmentMatcher[C, T],
   _data_provider : IDataProvider[C, T],
   _include_hierarchy : Bool,
-) -> Unit {
+) -> Unit raise {
   try self.check_configuration() catch {
     err =>
-      layout_runtime_report_unsupported_configuration(
+      layout_runtime_raise_unsupported_configuration(
         alignment_matcher_exception_message(err),
       )
   } noraise {
@@ -282,10 +282,10 @@ pub fn[C, T] AlignmentMatcher::raw(
   self : AlignmentMatcher[C, T],
   comment : C,
   target : T,
-) -> Double {
+) -> Double raise {
   try alignment_matcher_raw_impl(self, comment, target) catch {
     err => {
-      layout_runtime_report_unsupported_configuration(
+      layout_runtime_raise_unsupported_configuration(
         alignment_matcher_exception_message(err),
       )
       self.get_worst_raw_value()
@@ -354,7 +354,7 @@ pub fn[C, T] AlignmentMatcher::normalized(
   self : AlignmentMatcher[C, T],
   comment : C,
   target : T,
-) -> Double {
+) -> Double raise {
   let raw_value = self.raw(comment, target)
   match self.normalization_function {
     Linear => self.normalize_linear(raw_value)

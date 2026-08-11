@@ -34,7 +34,7 @@ pub fn new_gmf_layout_configuration_store_provider(
 pub fn GmfLayoutConfigurationStoreProvider::get(
   self : GmfLayoutConfigurationStoreProvider,
   context : GmfEditPart?,
-) -> GmfLayoutConfigurationStore? {
+) -> GmfLayoutConfigurationStore? raise {
   match context {
     Some(edit_part) =>
       Some(new_gmf_layout_configuration_store(edit_part, self.edit_part_filter))
@@ -51,7 +51,7 @@ pub struct GmfLayoutConfigurationStore {
 ///|
 fn gmf_layout_configuration_store_resolve_context_edit_part(
   edit_part : GmfEditPart,
-) -> GmfEditPart {
+) -> GmfEditPart raise {
   let kind = gmf_edit_part_kind(edit_part)
   if kind == CompartmentEditPart || kind == ResizableCompartmentEditPart {
     match gmf_edit_part_parent(edit_part) {
@@ -74,7 +74,7 @@ fn gmf_layout_configuration_store_resolve_context_edit_part(
 pub fn new_gmf_layout_configuration_store(
   edit_part : GmfEditPart,
   edit_part_filter : IEditPartFilter,
-) -> GmfLayoutConfigurationStore {
+) -> GmfLayoutConfigurationStore raise {
   {
     edit_part: gmf_layout_configuration_store_resolve_context_edit_part(
       edit_part,
@@ -86,7 +86,7 @@ pub fn new_gmf_layout_configuration_store(
 ///|
 fn gmf_layout_configuration_store_get_default_options(
   store : GmfLayoutConfigurationStore,
-) -> Map[String, String]? {
+) -> Map[String, String]? raise {
   if gmf_edit_part_kind(store.edit_part) == NoteEditPart {
     let defaults : Map[String, String] = Map([])
     defaults[gmf_core_option_comment_box_id] = "true"
@@ -100,7 +100,7 @@ fn gmf_layout_configuration_store_get_default_options(
 pub fn GmfLayoutConfigurationStore::get_option_value(
   self : GmfLayoutConfigurationStore,
   option_id : String,
-) -> String? {
+) -> String? raise {
   match gmf_edit_part_notation_view(self.edit_part) {
     Some(view) => {
       let key = gmf_layout_configuration_prefix + option_id
@@ -126,7 +126,7 @@ pub fn GmfLayoutConfigurationStore::set_option_value(
   self : GmfLayoutConfigurationStore,
   option_id : String,
   value : String?,
-) -> Unit {
+) -> Unit raise {
   match gmf_edit_part_notation_view(self.edit_part) {
     Some(view) => {
       let key = gmf_layout_configuration_prefix + option_id
@@ -142,7 +142,7 @@ pub fn GmfLayoutConfigurationStore::set_option_value(
 ///|
 pub fn GmfLayoutConfigurationStore::get_affected_options(
   self : GmfLayoutConfigurationStore,
-) -> Array[String] {
+) -> Array[String] raise {
   let options_map : Map[String, Bool] = Map([])
   match gmf_edit_part_notation_view(self.edit_part) {
     Some(view) =>
@@ -173,7 +173,7 @@ pub fn GmfLayoutConfigurationStore::get_affected_options(
 ///|
 pub fn GmfLayoutConfigurationStore::get_option_targets(
   self : GmfLayoutConfigurationStore,
-) -> Array[GmfLayoutOptionTarget] {
+) -> Array[GmfLayoutOptionTarget] raise {
   let kind = gmf_edit_part_kind(self.edit_part)
   if kind == AbstractBorderItemEditPart {
     [Ports]
@@ -202,7 +202,7 @@ pub fn GmfLayoutConfigurationStore::get_option_targets(
 ///|
 fn gmf_layout_configuration_store_grand_parent(
   edit_part : GmfEditPart,
-) -> GmfEditPart? {
+) -> GmfEditPart? raise {
   match gmf_edit_part_parent(edit_part) {
     Some(parent) => gmf_edit_part_parent(parent)
     None => None
@@ -213,7 +213,7 @@ fn gmf_layout_configuration_store_grand_parent(
 fn gmf_layout_configuration_store_find_containing_edit_part(
   store : GmfLayoutConfigurationStore,
   node_edit_part : GmfEditPart,
-) -> GmfEditPart? {
+) -> GmfEditPart? raise {
   for child in gmf_edit_part_children(node_edit_part) {
     if store.edit_part_filter.filter(child) {
       let child_kind = gmf_edit_part_kind(child)
@@ -236,7 +236,7 @@ fn gmf_layout_configuration_store_find_containing_edit_part(
 ///|
 fn gmf_layout_configuration_store_get_container(
   store : GmfLayoutConfigurationStore,
-) -> GmfEditPart? {
+) -> GmfEditPart? raise {
   let kind = gmf_edit_part_kind(store.edit_part)
   if kind == AbstractBorderItemEditPart {
     gmf_layout_configuration_store_grand_parent(store.edit_part)
@@ -284,7 +284,7 @@ fn gmf_layout_configuration_store_get_container(
 ///|
 pub fn GmfLayoutConfigurationStore::get_parent(
   self : GmfLayoutConfigurationStore,
-) -> GmfLayoutConfigurationStore? {
+) -> GmfLayoutConfigurationStore? raise {
   match gmf_layout_configuration_store_get_container(self) {
     Some(container) =>
       Some(new_gmf_layout_configuration_store(container, self.edit_part_filter))

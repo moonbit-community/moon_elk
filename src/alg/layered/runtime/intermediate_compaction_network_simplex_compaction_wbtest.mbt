@@ -5,8 +5,6 @@ fn network_simplex_compaction_test_graph() -> @compaction.CGraph {
 
 ///|
 test "network simplex compaction preserves required left-to-right order" {
-  @compaction.reset_compaction_oned_model_for_test()
-
   let c_graph = network_simplex_compaction_test_graph()
   let left = @compaction.cnode_of()
     .hitbox(@core.new_elk_rectangle_xywh(0.0, 0.0, 10.0, 10.0))

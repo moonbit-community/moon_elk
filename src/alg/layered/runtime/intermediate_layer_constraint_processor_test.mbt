@@ -319,14 +319,15 @@ test "layer constraint preprocessor rejects incoming edges on FIRST_SEPARATE nod
     layer_constraint_processor_test_new_edge(source_out, first_separate_in),
   )
 
-  @core.layout_runtime_clear_error()
-  preprocessor.process(graph, None)
-  match @core.layout_runtime_take_error_message() {
-    Some(message) =>
-      assert_true(message.contains("UnsupportedConfigurationException"))
-    None =>
-      abort(
-        "expected org.eclipse.elk.core.UnsupportedConfigurationException message",
-      )
+  let session = @core.new_layout_session()
+  try preprocessor.process(graph, None) catch {
+    error => session.record_error(error)
+  } noraise {
+    _ => ()
   }
+  let message = match session.take_error_message() {
+    Some(message) => message
+    None => ""
+  }
+  assert_true(message.contains("UnsupportedConfigurationException"))
 }

@@ -2,7 +2,7 @@
 pub fn apply_visitors(
   graph : @graph.ElkNode,
   visitors : Array[IGraphElementVisitor],
-) -> Unit {
+) -> Unit raise {
   for element in @graph.node_all_descendants_including_self(graph) {
     for visitor in visitors {
       visitor.visit(element)
@@ -14,7 +14,7 @@ pub fn apply_visitors(
 pub fn apply_visitor(
   graph : @graph.ElkNode,
   visitor : IGraphElementVisitor,
-) -> Unit {
+) -> Unit raise {
   apply_visitors(graph, [visitor])
 }
 
@@ -72,7 +72,7 @@ pub fn translate_xy(
 }
 
 ///|
-fn parse_shape_margins(value : String?) -> ElkMargin {
+fn parse_shape_margins(value : String?) -> ElkMargin raise {
   let margins = new_elk_margin()
   if value is Some(text) {
     margins.parse(text)
@@ -111,7 +111,7 @@ fn update_bounds(
 }
 
 ///|
-pub fn compute_child_area_dimensions(node : @graph.ElkNode) -> Unit {
+pub fn compute_child_area_dimensions(node : @graph.ElkNode) -> Unit raise {
   let min_x : Ref[Double] = Ref(@double.infinity)
   let min_y : Ref[Double] = Ref(@double.infinity)
   let max_x : Ref[Double] = Ref(0.0)

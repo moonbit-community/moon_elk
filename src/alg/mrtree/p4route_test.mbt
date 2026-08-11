@@ -1,7 +1,5 @@
 ///|
 test "Mrtree EdgeRouter middle-to-middle routes to node borders" {
-  reset_mrtree_graph_model_for_test()
-
   let graph = new_mrtree_graph()
   mrtree_graph_set_edge_routing_mode(graph, "MIDDLE_TO_MIDDLE")
 

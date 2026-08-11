@@ -23,21 +23,20 @@ fn topdownpacking_bottom_row_equal_whitespace_eliminator_configuration(
 fn topdownpacking_bottom_row_equal_whitespace_eliminator_process(
   layout_graph : GridElkNode,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   try
     topdownpacking_bottom_row_equal_whitespace_eliminator_process_impl(
       layout_graph, progress_monitor,
     )
   catch {
-    err => {
-      @core.layout_runtime_report_unsupported_configuration(
-        topdownpacking_grid_exception_message(err),
-      )
+    TopdownpackingGridException(message) => {
+      @core.layout_runtime_raise_unsupported_configuration(message)
       match progress_monitor {
         Some(monitor) => if monitor.is_running() { monitor.done() }
         None => ()
       }
     }
+    err => raise err
   } noraise {
     _ => ()
   }
@@ -47,7 +46,7 @@ fn topdownpacking_bottom_row_equal_whitespace_eliminator_process(
 fn topdownpacking_bottom_row_equal_whitespace_eliminator_process_impl(
   layout_graph : GridElkNode,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit raise TopdownpackingGridException {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(existing) => existing
     None => @core.new_null_elk_progress_monitor()
@@ -140,7 +139,7 @@ pub fn new_topdownpacking_bottom_row_equal_whitespace_eliminator_layout_phase() 
   TopdownPackingPhases,
   GridElkNode,
 ] {
-  @core.new_layout_phase(
+  @core.new_pure_layout_phase(
     topdownpacking_bottom_row_equal_whitespace_eliminator_process, topdownpacking_bottom_row_equal_whitespace_eliminator_configuration,
   )
 }

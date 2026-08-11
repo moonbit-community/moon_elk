@@ -17,10 +17,10 @@ fn bundle_resource_path_raise_unit(
 }
 
 ///|
-fn bundle_resource_path_bundle_id_to_path(bundle_id : String) -> String {
+fn bundle_resource_path_bundle_id_to_path(bundle_id : String) -> String raise {
   let mut path = base_path_for_property(bundle_resource_path_property) catch {
     IllegalStateException(message) => {
-      @core.layout_runtime_report_unsupported_configuration(message)
+      @core.layout_runtime_raise_unsupported_configuration(message)
       "."
     }
   }
@@ -39,13 +39,13 @@ fn bundle_resource_path_bundle_id_to_path(bundle_id : String) -> String {
 pub fn new_bundle_resource_path(
   bundle_id : String,
   file_path : String,
-) -> BundleResourcePath {
+) -> BundleResourcePath raise {
   let effective_bundle_id = if bundle_id.is_empty() {
     try
       bundle_resource_path_raise_unit("The bundle ID cannot be empty.")
     catch {
       BundleResourcePathException(message) =>
-        @core.layout_runtime_report_unsupported_configuration(
+        @core.layout_runtime_raise_unsupported_configuration(
           "org.eclipse.elk.alg.test.framework.io.BundleResourcePath: " + message,
         )
     } noraise {
@@ -60,7 +60,7 @@ pub fn new_bundle_resource_path(
       bundle_resource_path_raise_unit("The file path cannot be empty.")
     catch {
       BundleResourcePathException(message) =>
-        @core.layout_runtime_report_unsupported_configuration(
+        @core.layout_runtime_raise_unsupported_configuration(
           "org.eclipse.elk.alg.test.framework.io.BundleResourcePath: " + message,
         )
     } noraise {

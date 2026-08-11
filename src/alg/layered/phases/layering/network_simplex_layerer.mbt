@@ -43,12 +43,11 @@ fn network_simplex_layerer_layer_constraint_postprocessor_factory() -> @core.ILa
 }
 
 ///|
-let network_simplex_layerer_baseline_processing_configuration : @core.LayoutProcessorConfiguration[
+fn network_simplex_layerer_baseline_processing_configuration() -> @core.LayoutProcessorConfiguration[
   @runtime.LayeredPhases,
   @runtime.LGraph,
-] = @core.layout_processor_configuration_create(
-    @runtime.layered_phase_descriptor,
-  )
+] raise {
+  @core.layout_processor_configuration_create(@runtime.layered_phase_descriptor)
   .add_before(
     P1CycleBreaking,
     @runtime.layered_intermediate_processor_factory(
@@ -63,6 +62,7 @@ let network_simplex_layerer_baseline_processing_configuration : @core.LayoutProc
     P3NodeOrdering,
     network_simplex_layerer_layer_constraint_postprocessor_factory(),
   )
+}
 
 ///|
 fn network_simplex_layerer_require_port_node(
@@ -188,7 +188,7 @@ priv struct NetworkSimplexLayererInitResult {
 ///|
 fn network_simplex_layerer_initialize(
   the_nodes : Array[@runtime.LNode],
-) -> NetworkSimplexLayererInitResult raise NetworkSimplexLayererException {
+) -> NetworkSimplexLayererInitResult raise {
   let graph = @networksimplex.new_ngraph()
   let lnode_to_nnode : Map[Int, @networksimplex.NNode] = Map([])
   let node_map : Map[Int, @runtime.LNode] = Map([])
@@ -247,16 +247,16 @@ fn network_simplex_layerer_initialize(
 ///|
 fn network_simplex_layerer_configuration(
   graph : @runtime.LGraph,
-) -> @core.LayoutProcessorConfiguration[@runtime.LayeredPhases, @runtime.LGraph]? {
+) -> @core.LayoutProcessorConfiguration[@runtime.LayeredPhases, @runtime.LGraph]? raise {
   ignore(graph)
-  Some(network_simplex_layerer_baseline_processing_configuration)
+  Some(network_simplex_layerer_baseline_processing_configuration())
 }
 
 ///|
 fn network_simplex_layerer_process(
   the_layered_graph : @runtime.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()
@@ -278,7 +278,7 @@ fn network_simplex_layerer_process(
     network_simplex_layerer_connected_components(the_nodes)
   catch {
     err => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         network_simplex_layerer_exception_message(err),
       )
       monitor.done()
@@ -293,13 +293,12 @@ fn network_simplex_layerer_process(
     let iter_limit = thoroughness *
       conn_comp.length().to_double().sqrt().to_int()
     let initialized = try network_simplex_layerer_initialize(conn_comp) catch {
-      err => {
-        @core.layout_runtime_report_unsupported_configuration(
-          network_simplex_layerer_exception_message(err),
-        )
+      NetworkSimplexLayererException(message) => {
+        @core.layout_runtime_raise_unsupported_configuration(message)
         monitor.done()
         return
       }
+      err => raise err
     } noraise {
       value => value
     }
@@ -327,7 +326,7 @@ fn network_simplex_layerer_process(
       let lnode = match initialized.node_map.get(nnode.get_id()) {
         Some(value) => value
         None => {
-          @core.layout_runtime_report_unsupported_configuration(
+          @core.layout_runtime_raise_unsupported_configuration(
             "missing original node for network simplex node",
           )
           monitor.done()

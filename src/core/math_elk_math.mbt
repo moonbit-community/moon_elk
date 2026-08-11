@@ -33,10 +33,10 @@ fn factl_impl(x : Int) -> Int64 raise ElkMathException {
 }
 
 ///|
-pub fn factl(x : Int) -> Int64 {
+pub fn factl(x : Int) -> Int64 raise {
   try factl_impl(x) catch {
     err => {
-      layout_runtime_report_unsupported_configuration(
+      layout_runtime_raise_unsupported_configuration(
         elk_math_exception_message(err),
       )
       Int64::from_int(0)
@@ -59,10 +59,10 @@ fn factd_impl(x : Int) -> Double raise ElkMathException {
 }
 
 ///|
-pub fn factd(x : Int) -> Double {
+pub fn factd(x : Int) -> Double raise {
   try factd_impl(x) catch {
     err => {
-      layout_runtime_report_unsupported_configuration(
+      layout_runtime_raise_unsupported_configuration(
         elk_math_exception_message(err),
       )
       0.0
@@ -93,10 +93,10 @@ fn binomiall_impl(n : Int, k : Int) -> Int64 raise ElkMathException {
 }
 
 ///|
-pub fn binomiall(n : Int, k : Int) -> Int64 {
+pub fn binomiall(n : Int, k : Int) -> Int64 raise {
   try binomiall_impl(n, k) catch {
     err => {
-      layout_runtime_report_unsupported_configuration(
+      layout_runtime_raise_unsupported_configuration(
         elk_math_exception_message(err),
       )
       Int64::from_int(0)
@@ -124,10 +124,10 @@ fn binomiald_impl(n : Int, k : Int) -> Double raise ElkMathException {
 }
 
 ///|
-pub fn binomiald(n : Int, k : Int) -> Double {
+pub fn binomiald(n : Int, k : Int) -> Double raise {
   try binomiald_impl(n, k) catch {
     err => {
-      layout_runtime_report_unsupported_configuration(
+      layout_runtime_raise_unsupported_configuration(
         elk_math_exception_message(err),
       )
       0.0
@@ -183,7 +183,7 @@ pub fn powf(a : Double, b : Int) -> Double {
 pub fn approximate_bezier_segment(
   result_size : Int,
   control_points : Array[KVector],
-) -> Array[KVector] {
+) -> Array[KVector] raise {
   if result_size <= 0 {
     return []
   }
@@ -202,7 +202,7 @@ pub fn approximate_bezier_segment(
 ///|
 pub fn approximate_bezier_segment_auto(
   control_points : Array[KVector],
-) -> Array[KVector] {
+) -> Array[KVector] raise {
   let approximation_count = control_points.length() + 1
   approximate_bezier_segment(approximation_count, control_points)
 }
@@ -211,7 +211,7 @@ pub fn approximate_bezier_segment_auto(
 pub fn get_point_on_bezier_segment(
   t : Double,
   control_points : Array[KVector],
-) -> KVector {
+) -> KVector raise {
   let n = control_points.length() - 1
   let mut px = 0.0
   let mut py = 0.0
@@ -227,7 +227,9 @@ pub fn get_point_on_bezier_segment(
 }
 
 ///|
-pub fn approximate_bezier_spline(control_points : KVectorChain) -> KVectorChain {
+pub fn approximate_bezier_spline(
+  control_points : KVectorChain,
+) -> KVectorChain raise {
   let ctrl_pt_count = control_points.size()
   let spline = new_kvector_chain()
   let mut index = 0

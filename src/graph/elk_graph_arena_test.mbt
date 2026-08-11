@@ -1,6 +1,5 @@
 ///|
 test "disposing a graph arena leaves other graph handles valid" {
-  reset_graph_model_for_test()
   let first_arena = new_graph_arena()
   let first_root = first_arena.create_graph()
   let first_child = create_node(Some(first_root))
@@ -23,7 +22,6 @@ test "disposing a graph arena leaves other graph handles valid" {
 
 ///|
 test "dispose_graph releases the arena that owns the root" {
-  reset_graph_model_for_test()
   let root = create_graph()
   ignore(create_node(Some(root)))
   dispose_graph(root)
@@ -36,7 +34,6 @@ test "dispose_graph releases the arena that owns the root" {
 
 ///|
 test "a stale arena handle cannot dispose a reused arena slot" {
-  reset_graph_model_for_test()
   let stale_arena = new_graph_arena()
   ignore(stale_arena.create_graph())
   stale_arena.dispose()
@@ -52,7 +49,6 @@ test "a stale arena handle cannot dispose a reused arena slot" {
 
 ///|
 test "graph collection queries do not expose mutable model storage" {
-  reset_graph_model_for_test()
   let root = create_graph()
   let child = create_node(Some(root))
   let edge = create_edge(Some(root))
@@ -72,7 +68,6 @@ test "graph collection queries do not expose mutable model storage" {
 
 ///|
 test "panic edges cannot retain targets from another graph arena" {
-  reset_graph_model_for_test()
   let first_root = create_graph()
   let edge = create_edge(Some(first_root))
   let second_root = create_graph()
@@ -83,7 +78,6 @@ test "panic edges cannot retain targets from another graph arena" {
 
 ///|
 test "panic edge section relations cannot create cycles" {
-  reset_graph_model_for_test()
   let root = create_graph()
   let edge = create_edge(Some(root))
   let first = create_edge_section(edge)
@@ -95,7 +89,6 @@ test "panic edge section relations cannot create cycles" {
 
 ///|
 test "panic incoming edge section relations cannot create cycles" {
-  reset_graph_model_for_test()
   let root = create_graph()
   let edge = create_edge(Some(root))
   let first = create_edge_section(edge)
@@ -107,7 +100,6 @@ test "panic incoming edge section relations cannot create cycles" {
 
 ///|
 test "a graph arena owns detached graph objects explicitly" {
-  reset_graph_model_for_test()
   let arena = new_graph_arena()
   let node = arena.create_node()
   let port = arena.create_port()
@@ -131,7 +123,6 @@ test "a graph arena owns detached graph objects explicitly" {
 
 ///|
 test "panic a stale graph handle cannot access a reused slot" {
-  reset_graph_model_for_test()
   let first_root = create_graph()
   dispose_graph(first_root)
   let second_root = create_graph()

@@ -20,7 +20,9 @@ pub(all) struct ExecutionTimeView {
 
 ///|
 fn execution_time_view_filter(info : ExecutionInfo) -> Bool {
-  execution_info_is_execution_time_measured(info)
+  execution_info_is_execution_time_measured(info) catch {
+    _ => false
+  }
 }
 
 ///|

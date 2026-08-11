@@ -1,11 +1,14 @@
 ///|
 pub(all) struct LayoutOptionValidator {
+  metadata : OptionMetadata
   issues : Array[GraphIssue]
 }
 
 ///|
-pub fn new_layout_option_validator() -> LayoutOptionValidator {
-  { issues: [] }
+pub fn new_layout_option_validator(
+  metadata : OptionMetadata,
+) -> LayoutOptionValidator {
+  { metadata, issues: [] }
 }
 
 ///|
@@ -25,7 +28,7 @@ fn check_string_override(
   option_id : String,
   value : String,
 ) -> Unit {
-  match layout_meta_data_service_get_option_data_opt(option_id) {
+  match validator.metadata.option_data_opt(option_id) {
     Some(option_data) =>
       match option_data.get_type() {
         DoubleType => {
@@ -47,7 +50,7 @@ fn check_double_assignment(
   option_id : String,
   value : Double,
 ) -> Unit {
-  match layout_meta_data_service_get_option_data_opt(option_id) {
+  match validator.metadata.option_data_opt(option_id) {
     Some(option_data) =>
       match option_data.get_lower_bound() {
         Some(lower_bound) => {

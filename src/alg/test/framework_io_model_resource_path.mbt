@@ -17,11 +17,11 @@ fn model_resource_path_raise_unit(
 }
 
 ///|
-pub fn new_model_resource_path(file_path : String) -> ModelResourcePath {
+pub fn new_model_resource_path(file_path : String) -> ModelResourcePath raise {
   let effective_file_path = if file_path.is_empty() {
     try model_resource_path_raise_unit("The file path cannot be empty.") catch {
       ModelResourcePathException(message) =>
-        @core.layout_runtime_report_unsupported_configuration(
+        @core.layout_runtime_raise_unsupported_configuration(
           "org.eclipse.elk.alg.test.framework.io.ModelResourcePath: " + message,
         )
     } noraise {
@@ -35,7 +35,7 @@ pub fn new_model_resource_path(file_path : String) -> ModelResourcePath {
     Some(
       base_path_for_property(model_resource_path_property) catch {
         IllegalStateException(message) => {
-          @core.layout_runtime_report_unsupported_configuration(message)
+          @core.layout_runtime_raise_unsupported_configuration(message)
           "."
         }
       },

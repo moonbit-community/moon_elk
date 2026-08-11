@@ -61,7 +61,7 @@ fn self_loop_preprocessor_hide_self_loops(sl_holder : SelfLoopHolder) -> Unit {
 }
 
 ///|
-fn self_loop_preprocessor_hide_ports(sl_holder : SelfLoopHolder) -> Unit {
+fn self_loop_preprocessor_hide_ports(sl_holder : SelfLoopHolder) -> Unit raise {
   let l_node = sl_holder.get_l_node()
   let nested_graph = l_node.get_nested_graph()
 
@@ -95,7 +95,7 @@ fn self_loop_preprocessor_hide_ports(sl_holder : SelfLoopHolder) -> Unit {
     sl_holder.set_ports_hidden(true)
 
     if l_port.get_property_l_node(internal_properties_port_dummy) is Some(_) {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "self loop preprocessor should not encounter PORT_DUMMY here",
       )
     }
@@ -106,7 +106,7 @@ fn self_loop_preprocessor_hide_ports(sl_holder : SelfLoopHolder) -> Unit {
 fn self_loop_pre_processor_process(
   graph : LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()
@@ -119,12 +119,11 @@ fn self_loop_pre_processor_process(
     }
 
     let sl_holder = self_loop_holder_install(l_node) catch {
-      error => {
-        @core.layout_runtime_report_unsupported_configuration(
-          self_loop_holder_exception_message(error),
-        )
+      SelfLoopHolderException::UnsupportedConfigurationException(message) => {
+        @core.layout_runtime_raise_unsupported_configuration(message)
         continue
       }
+      error => raise error
     }
     self_loop_preprocessor_hide_self_loops(sl_holder)
     self_loop_preprocessor_hide_ports(sl_holder)

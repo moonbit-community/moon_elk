@@ -24,7 +24,7 @@ pub fn new_number_value_converter() -> NumberValueConverter {
 pub fn NumberValueConverter::to_string(
   self : NumberValueConverter,
   value : Double?,
-) -> String {
+) -> String raise {
   ignore(self)
   match value {
     None => {
@@ -32,7 +32,7 @@ pub fn NumberValueConverter::to_string(
         number_value_converter_raise_unit("Double value may not be null.")
       catch {
         NumberValueConverterException(message) =>
-          @core.layout_runtime_report_unsupported_configuration(
+          @core.layout_runtime_raise_unsupported_configuration(
             "org.eclipse.elk.graph.text.conversion.NumberValueConverter: " +
             message,
           )
@@ -54,7 +54,7 @@ pub fn NumberValueConverter::to_string(
 pub fn NumberValueConverter::to_value(
   self : NumberValueConverter,
   text : String,
-) -> Double {
+) -> Double raise {
   ignore(self)
   if text == "" {
     try
@@ -63,7 +63,7 @@ pub fn NumberValueConverter::to_value(
       )
     catch {
       NumberValueConverterException(message) =>
-        @core.layout_runtime_report_unsupported_configuration(
+        @core.layout_runtime_raise_unsupported_configuration(
           "org.eclipse.elk.graph.text.conversion.NumberValueConverter: " +
           message,
         )
@@ -86,7 +86,7 @@ pub fn NumberValueConverter::to_value(
         )
       catch {
         NumberValueConverterException(message) =>
-          @core.layout_runtime_report_unsupported_configuration(
+          @core.layout_runtime_raise_unsupported_configuration(
             "org.eclipse.elk.graph.text.conversion.NumberValueConverter: " +
             message,
           )

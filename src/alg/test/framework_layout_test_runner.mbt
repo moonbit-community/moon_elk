@@ -37,11 +37,11 @@ pub fn[T, G] new_layout_test_runner(
   test_graphs : Array[TestGraph[T]],
   blackbox_tests : Array[BlackboxTestMethod[T]],
   whitebox_tests : Array[WhiteboxTestMethod[T, G]],
-) -> LayoutTestRunner[T, G] {
+) -> LayoutTestRunner[T, G] raise {
   let effective_test_graphs = if test_graphs.is_empty() {
     try layout_test_runner_raise_unit("No test graphs specified.") catch {
       LayoutTestRunnerException(message) =>
-        @core.layout_runtime_report_unsupported_configuration(
+        @core.layout_runtime_raise_unsupported_configuration(
           "org.eclipse.elk.alg.test.framework.LayoutTestRunner: " + message,
         )
     } noraise {
@@ -130,7 +130,7 @@ pub fn[T, G] LayoutTestRunner::run_child(
   self : LayoutTestRunner[T, G],
   child : ExperimentRunner[T, G],
   notifier : RunNotifier,
-) -> Unit {
+) -> Unit raise {
   ignore(self)
   let statement = new_experiment_statement(child, notifier)
   statement.evaluate()
@@ -140,7 +140,7 @@ pub fn[T, G] LayoutTestRunner::run_child(
 pub fn[T, G] LayoutTestRunner::run(
   self : LayoutTestRunner[T, G],
   notifier : RunNotifier,
-) -> Unit {
+) -> Unit raise {
   for child in self.child_runners {
     self.run_child(child, notifier)
   }

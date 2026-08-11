@@ -1,9 +1,37 @@
 ///|
-pub type ElkEdgeSection = Int
+pub struct ElkEdgeSection {
+  priv mut data : EdgeSectionData
+  priv mut arena : GraphArena?
+  priv id : Int
+}
+
+///|
+pub impl Eq for ElkEdgeSection with fn equal(self, other) {
+  physical_equal(self, other)
+}
+
+///|
+pub impl Hash for ElkEdgeSection with fn hash(self) {
+  self.id
+}
+
+///|
+pub impl Hash for ElkEdgeSection with fn hash_combine(self, hasher) {
+  hasher.combine_int(self.id)
+}
+
+///|
+pub impl @debug.Debug for ElkEdgeSection with fn to_repr(self) {
+  Repr(self.id)
+}
+
+///|
+pub impl Show for ElkEdgeSection with fn output(self, logger) {
+  logger.write_string(self.id.to_string())
+}
 
 ///|
 priv struct EdgeSectionData {
-  _edge : ElkEdge
   mut identifier : String
   mut start_x : Double
   mut start_y : Double
@@ -17,45 +45,29 @@ priv struct EdgeSectionData {
 }
 
 ///|
-let edge_section_store : Ref[Array[EdgeSectionData]] = Ref([])
-
-///|
-let edge_section_next_handle : Ref[Int] = Ref(0)
-
-///|
-let edge_section_free_slots : Ref[Array[Int]] = Ref([])
-
-///|
-let edge_section_handle_slots : Ref[Map[Int, Int]] = Ref(Map([]))
-
-///|
-let edge_section_slot_handles : Ref[Array[Int]] = Ref([])
-
-///|
-fn edge_section_allocated_slot(section : ElkEdgeSection) -> Int {
-  match edge_section_handle_slots.val.get(section) {
-    Some(slot) => slot
+fn checked_edge_section(section : ElkEdgeSection) -> Unit {
+  match section.arena {
+    Some(arena) => checked_graph_arena(arena)
     None => abort("invalid or disposed edge section id")
   }
 }
 
 ///|
-fn edge_section_slot(section : ElkEdgeSection) -> Int {
-  let slot = edge_section_allocated_slot(section)
-  if edge_section_arena_store.val[slot] < 0 {
-    abort("invalid or disposed edge section id")
+fn edge_section_graph_arena(section : ElkEdgeSection) -> GraphArena {
+  checked_edge_section(section)
+  match section.arena {
+    Some(arena) => arena
+    None => abort("invalid or disposed edge section id")
   }
-  slot
 }
 
 ///|
-fn checked_edge_section(section : ElkEdgeSection) -> Unit {
-  ignore(edge_section_slot(section))
+pub fn ElkEdgeSection::graph_arena(self : ElkEdgeSection) -> GraphArena {
+  edge_section_graph_arena(self)
 }
 
 ///|
 let disposed_edge_section_data : EdgeSectionData = {
-  _edge: -1,
   identifier: "",
   start_x: 0.0,
   start_y: 0.0,
@@ -70,67 +82,48 @@ let disposed_edge_section_data : EdgeSectionData = {
 
 ///|
 fn dispose_edge_section_slot(section : ElkEdgeSection) -> Unit {
-  let slot = edge_section_slot(section)
-  edge_section_store.val[slot] = disposed_edge_section_data
-  edge_section_arena_store.val[slot] = -1
-  graph_handle_release(
-    section,
-    slot,
-    edge_section_handle_slots.val,
-    edge_section_slot_handles.val,
-    edge_section_free_slots.val,
-  )
+  checked_edge_section(section)
+  section.data = disposed_edge_section_data
+  section.arena = None
 }
 
 ///|
 pub fn create_edge_section(edge : ElkEdge) -> ElkEdgeSection {
   checked_edge(edge)
-  let slot = match edge_section_free_slots.val.pop() {
-    Some(reused) => reused
-    None => {
-      let fresh = edge_section_store.val.length()
-      edge_section_store.val.push(disposed_edge_section_data)
-      edge_section_arena_store.val.push(-1)
-      edge_section_slot_handles.val.push(-1)
-      fresh
-    }
+  let arena = edge_graph_arena(edge)
+  let section : ElkEdgeSection = {
+    data: {
+      identifier: "",
+      start_x: 0.0,
+      start_y: 0.0,
+      end_x: 0.0,
+      end_y: 0.0,
+      bend_points: [],
+      incoming_shape: None,
+      outgoing_shape: None,
+      incoming_sections: [],
+      outgoing_sections: [],
+    },
+    arena: Some(arena),
+    id: arena.allocate_object_id(),
   }
-  let id = graph_handle_allocate(
-    slot,
-    edge_section_next_handle,
-    edge_section_handle_slots.val,
-    edge_section_slot_handles.val,
-  )
-  edge_section_store.val[slot] = {
-    _edge: edge,
-    identifier: "",
-    start_x: 0.0,
-    start_y: 0.0,
-    end_x: 0.0,
-    end_y: 0.0,
-    bend_points: [],
-    incoming_shape: None,
-    outgoing_shape: None,
-    incoming_sections: [],
-    outgoing_sections: [],
-  }
-  graph_arena_register_edge_section(edge_arena_store.val[edge_slot(edge)], id)
-  let edge_data = edge_store.val[edge_slot(edge)]
-  edge_data.sections.push(id)
-  edge_store.val[edge_slot(edge)] = edge_data
-  id
+  graph_arena_register_edge_section(arena, section)
+  let edge_data = edge.data
+  edge_data.sections.push(section)
+  edge.data = edge_data
+  section
 }
 
 ///|
 pub fn edge_sections(edge : ElkEdge) -> Array[ElkEdgeSection] {
   checked_edge(edge)
-  edge_store.val[edge_slot(edge)].sections.copy()
+  edge.data.sections.copy()
 }
 
 ///|
 pub fn edge_section_identifier(section : ElkEdgeSection) -> String {
   checked_edge_section(section)
-  edge_section_store.val[edge_section_slot(section)].identifier
+  section.data.identifier
 }
 
 ///|
@@ -139,9 +132,9 @@ pub fn edge_section_set_identifier(
   identifier : String,
 ) -> Unit {
   checked_edge_section(section)
-  let section_data = edge_section_store.val[edge_section_slot(section)]
+  let section_data = section.data
   section_data.identifier = identifier
-  edge_section_store.val[edge_section_slot(section)] = section_data
+  section.data = section_data
 }
 
 ///|
@@ -151,10 +144,10 @@ pub fn edge_section_set_start(
   y : Double,
 ) -> Unit {
   checked_edge_section(section)
-  let section_data = edge_section_store.val[edge_section_slot(section)]
+  let section_data = section.data
   section_data.start_x = x
   section_data.start_y = y
-  edge_section_store.val[edge_section_slot(section)] = section_data
+  section.data = section_data
 }
 
 ///|
@@ -164,34 +157,34 @@ pub fn edge_section_set_end(
   y : Double,
 ) -> Unit {
   checked_edge_section(section)
-  let section_data = edge_section_store.val[edge_section_slot(section)]
+  let section_data = section.data
   section_data.end_x = x
   section_data.end_y = y
-  edge_section_store.val[edge_section_slot(section)] = section_data
+  section.data = section_data
 }
 
 ///|
 pub fn edge_section_start_x(section : ElkEdgeSection) -> Double {
   checked_edge_section(section)
-  edge_section_store.val[edge_section_slot(section)].start_x
+  section.data.start_x
 }
 
 ///|
 pub fn edge_section_start_y(section : ElkEdgeSection) -> Double {
   checked_edge_section(section)
-  edge_section_store.val[edge_section_slot(section)].start_y
+  section.data.start_y
 }
 
 ///|
 pub fn edge_section_end_x(section : ElkEdgeSection) -> Double {
   checked_edge_section(section)
-  edge_section_store.val[edge_section_slot(section)].end_x
+  section.data.end_x
 }
 
 ///|
 pub fn edge_section_end_y(section : ElkEdgeSection) -> Double {
   checked_edge_section(section)
-  edge_section_store.val[edge_section_slot(section)].end_y
+  section.data.end_y
 }
 
 ///|
@@ -199,7 +192,7 @@ pub fn edge_section_bend_points(
   section : ElkEdgeSection,
 ) -> Array[ElkBendPoint] {
   checked_edge_section(section)
-  edge_section_store.val[edge_section_slot(section)].bend_points.copy()
+  section.data.bend_points.copy()
 }
 
 ///|
@@ -208,17 +201,17 @@ pub fn edge_section_add_bend_point(
   bend_point : ElkBendPoint,
 ) -> Unit {
   checked_edge_section(section)
-  let section_data = edge_section_store.val[edge_section_slot(section)]
+  let section_data = section.data
   section_data.bend_points.push(bend_point)
-  edge_section_store.val[edge_section_slot(section)] = section_data
+  section.data = section_data
 }
 
 ///|
 pub fn edge_section_clear_bend_points(section : ElkEdgeSection) -> Unit {
   checked_edge_section(section)
-  let section_data = edge_section_store.val[edge_section_slot(section)]
+  let section_data = section.data
   section_data.bend_points.clear()
-  edge_section_store.val[edge_section_slot(section)] = section_data
+  section.data = section_data
 }
 
 ///|
@@ -229,13 +222,13 @@ pub fn edge_section_set_incoming_shape(
   checked_edge_section(section)
   if shape is Some(value) {
     graph_arena_require_same(
-      edge_section_arena_store.val[edge_section_slot(section)],
+      edge_section_graph_arena(section),
       graph_arena_for_shape(value),
     )
   }
-  let section_data = edge_section_store.val[edge_section_slot(section)]
+  let section_data = section.data
   section_data.incoming_shape = shape
-  edge_section_store.val[edge_section_slot(section)] = section_data
+  section.data = section_data
 }
 
 ///|
@@ -246,13 +239,13 @@ pub fn edge_section_set_outgoing_shape(
   checked_edge_section(section)
   if shape is Some(value) {
     graph_arena_require_same(
-      edge_section_arena_store.val[edge_section_slot(section)],
+      edge_section_graph_arena(section),
       graph_arena_for_shape(value),
     )
   }
-  let section_data = edge_section_store.val[edge_section_slot(section)]
+  let section_data = section.data
   section_data.outgoing_shape = shape
-  edge_section_store.val[edge_section_slot(section)] = section_data
+  section.data = section_data
 }
 
 ///|
@@ -260,7 +253,7 @@ pub fn edge_section_incoming_shape(
   section : ElkEdgeSection,
 ) -> ElkConnectableShape? {
   checked_edge_section(section)
-  edge_section_store.val[edge_section_slot(section)].incoming_shape
+  section.data.incoming_shape
 }
 
 ///|
@@ -268,7 +261,7 @@ pub fn edge_section_outgoing_shape(
   section : ElkEdgeSection,
 ) -> ElkConnectableShape? {
   checked_edge_section(section)
-  edge_section_store.val[edge_section_slot(section)].outgoing_shape
+  section.data.outgoing_shape
 }
 
 ///|
@@ -279,17 +272,17 @@ pub fn edge_section_add_incoming_section(
   checked_edge_section(section)
   checked_edge_section(incoming_section)
   graph_arena_require_same(
-    edge_section_arena_store.val[edge_section_slot(section)],
-    edge_section_arena_store.val[edge_section_slot(incoming_section)],
+    edge_section_graph_arena(section),
+    edge_section_graph_arena(incoming_section),
   )
   if edge_section_reaches(section, incoming_section) {
     abort("edge section relation would create a cycle")
   }
-  let section_data = edge_section_store.val[edge_section_slot(section)]
+  let section_data = section.data
   if !section_data.incoming_sections.contains(incoming_section) {
     section_data.incoming_sections.push(incoming_section)
   }
-  edge_section_store.val[edge_section_slot(section)] = section_data
+  section.data = section_data
 }
 
 ///|
@@ -300,17 +293,17 @@ pub fn edge_section_add_outgoing_section(
   checked_edge_section(section)
   checked_edge_section(outgoing_section)
   graph_arena_require_same(
-    edge_section_arena_store.val[edge_section_slot(section)],
-    edge_section_arena_store.val[edge_section_slot(outgoing_section)],
+    edge_section_graph_arena(section),
+    edge_section_graph_arena(outgoing_section),
   )
   if edge_section_reaches(outgoing_section, section) {
     abort("edge section relation would create a cycle")
   }
-  let section_data = edge_section_store.val[edge_section_slot(section)]
+  let section_data = section.data
   if !section_data.outgoing_sections.contains(outgoing_section) {
     section_data.outgoing_sections.push(outgoing_section)
   }
-  edge_section_store.val[edge_section_slot(section)] = section_data
+  section.data = section_data
 }
 
 ///|
@@ -342,11 +335,10 @@ fn edge_section_reaches(
 fn edge_section_outgoing_neighbors(
   section : ElkEdgeSection,
 ) -> Array[ElkEdgeSection] {
-  let neighbors = edge_section_store.val[edge_section_slot(section)].outgoing_sections.copy()
-  for slot = 0; slot < edge_section_store.val.length(); slot = slot + 1 {
-    if edge_section_arena_store.val[slot] >= 0 &&
-      edge_section_store.val[slot].incoming_sections.contains(section) {
-      neighbors.push(edge_section_slot_handles.val[slot])
+  let neighbors = section.data.outgoing_sections.copy()
+  for candidate in edge_section_graph_arena(section).edge_sections {
+    if candidate.data.incoming_sections.contains(section) {
+      neighbors.push(candidate)
     }
   }
   neighbors
@@ -357,7 +349,7 @@ pub fn edge_section_incoming_sections(
   section : ElkEdgeSection,
 ) -> Array[ElkEdgeSection] {
   checked_edge_section(section)
-  edge_section_store.val[edge_section_slot(section)].incoming_sections.copy()
+  section.data.incoming_sections.copy()
 }
 
 ///|
@@ -365,5 +357,5 @@ pub fn edge_section_outgoing_sections(
   section : ElkEdgeSection,
 ) -> Array[ElkEdgeSection] {
   checked_edge_section(section)
-  edge_section_store.val[edge_section_slot(section)].outgoing_sections.copy()
+  section.data.outgoing_sections.copy()
 }

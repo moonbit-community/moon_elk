@@ -111,10 +111,10 @@ fn network_simplex_double_max(left : Double, right : Double) -> Double {
 ///|
 fn network_simplex_create_edge(
   builder : @networksimplex.NEdgeBuilder,
-) -> @networksimplex.NEdge {
+) -> @networksimplex.NEdge raise {
   try builder.create() catch {
     err => {
-      @core.layout_runtime_report_unsupported_configuration(err.to_string())
+      @core.layout_runtime_raise_unsupported_configuration(err.to_string())
       network_simplex_create_edge(builder)
     }
   } noraise {
@@ -385,10 +385,10 @@ fn network_simplex_vertical_spacing(
   state : NetworkSimplexAuxiliaryState,
   first : @runtime.LNode,
   second : @runtime.LNode,
-) -> Double {
+) -> Double raise {
   state.spacings.get_vertical_spacing(first, second) catch {
     LayeredSpacingsException(message) => {
-      @core.layout_runtime_report_unsupported_configuration(message)
+      @core.layout_runtime_raise_unsupported_configuration(message)
       0.0
     }
   }
@@ -524,7 +524,7 @@ fn network_simplex_transform_ports(
   ports : Array[@runtime.LPort],
   corners : NetworkSimplexNodeRep,
   state : NetworkSimplexAuxiliaryState,
-) -> Unit {
+) -> Unit raise {
   if ports.is_empty() {
     return
   }
@@ -579,7 +579,7 @@ fn network_simplex_transform_ports(
 fn network_simplex_transform_fixed_order_node(
   node : @runtime.LNode,
   state : NetworkSimplexAuxiliaryState,
-) -> NetworkSimplexNodeRep {
+) -> NetworkSimplexNodeRep raise {
   let top = @networksimplex.nnode_of()
     .origin(node.get_handle().to_string())
     .node_type("flexible-head")
@@ -623,7 +623,7 @@ fn network_simplex_transform_fixed_order_node(
 fn network_simplex_transform_layer(
   layer : @runtime.Layer,
   state : NetworkSimplexAuxiliaryState,
-) -> Unit {
+) -> Unit raise {
   let mut last_rep : NetworkSimplexNodeRep? = None
   for node in layer.get_nodes() {
     let node_rep = if network_simplex_node_is_flexible(node) {
@@ -662,7 +662,7 @@ fn network_simplex_transform_layer(
 fn network_simplex_transform_edge(
   edge : @runtime.LEdge,
   state : NetworkSimplexAuxiliaryState,
-) -> Unit {
+) -> Unit raise {
   let dummy = @networksimplex.nnode_of().node_type("edge").create(state.n_graph)
 
   let source_port = network_simplex_require_edge_source_port(edge)
@@ -687,7 +687,7 @@ fn network_simplex_transform_edge(
       network_simplex_placer_raise_unit("Port positions must be integral")
     catch {
       NetworkSimplexPlacerException(message) =>
-        @core.layout_runtime_report_unsupported_configuration(
+        @core.layout_runtime_raise_unsupported_configuration(
           "org.eclipse.elk.alg.layered.p4nodes.NetworkSimplexPlacer: " + message,
         )
     } noraise {
@@ -746,7 +746,7 @@ fn network_simplex_nedge_length(edge : @networksimplex.NEdge) -> Int {
 fn network_simplex_transform_edges(
   layered_graph : @runtime.LGraph,
   state : NetworkSimplexAuxiliaryState,
-) -> Unit {
+) -> Unit raise {
   for layer in layered_graph.get_layers() {
     for node in layer.get_nodes() {
       for edge in node.get_outgoing_edges() {
@@ -762,7 +762,7 @@ fn network_simplex_transform_edges(
 fn network_simplex_build_initial_auxiliary_graph(
   layered_graph : @runtime.LGraph,
   state : NetworkSimplexAuxiliaryState,
-) -> Unit {
+) -> Unit raise {
   for layer in layered_graph.get_layers() {
     network_simplex_transform_layer(layer, state)
   }
@@ -773,7 +773,7 @@ fn network_simplex_build_initial_auxiliary_graph(
 fn network_simplex_insert_north_south_auxiliary_edges(
   layered_graph : @runtime.LGraph,
   state : NetworkSimplexAuxiliaryState,
-) -> Unit {
+) -> Unit raise {
   for layer in layered_graph.get_layers() {
     for node in layer.get_nodes() {
       for port in node.get_port_side_view(South) {
@@ -816,14 +816,14 @@ fn network_simplex_insert_north_south_auxiliary_edges(
 fn network_simplex_get_other_port_or_abort(
   edge : @runtime.LEdge,
   port : @runtime.LPort,
-) -> @runtime.LPort {
+) -> @runtime.LPort raise {
   try edge.get_other_port(port) catch {
     IllegalArgumentException(message) => {
-      @core.layout_runtime_report_unsupported_configuration(message)
+      @core.layout_runtime_raise_unsupported_configuration(message)
       port
     }
     IllegalStateException(message) => {
-      @core.layout_runtime_report_unsupported_configuration(message)
+      @core.layout_runtime_raise_unsupported_configuration(message)
       port
     }
   } noraise {
@@ -835,14 +835,14 @@ fn network_simplex_get_other_port_or_abort(
 fn network_simplex_get_other_node_or_abort(
   edge : @runtime.LEdge,
   node : @runtime.LNode,
-) -> @runtime.LNode {
+) -> @runtime.LNode raise {
   try edge.get_other_node(node) catch {
     IllegalArgumentException(message) => {
-      @core.layout_runtime_report_unsupported_configuration(message)
+      @core.layout_runtime_raise_unsupported_configuration(message)
       node
     }
     IllegalStateException(message) => {
-      @core.layout_runtime_report_unsupported_configuration(message)
+      @core.layout_runtime_raise_unsupported_configuration(message)
       node
     }
   } noraise {
@@ -854,7 +854,7 @@ fn network_simplex_get_other_node_or_abort(
 fn network_simplex_insert_in_layer_edge_auxiliary_edges(
   layered_graph : @runtime.LGraph,
   state : NetworkSimplexAuxiliaryState,
-) -> Unit {
+) -> Unit raise {
   let processed_edges : Map[Int, Bool] = Map([])
   for layer in layered_graph.get_layers() {
     for node in layer.get_nodes() {
@@ -909,7 +909,7 @@ fn network_simplex_insert_in_layer_edge_auxiliary_edges(
 ///|
 fn network_simplex_insert_flexible_where_space_auxiliary_edges(
   state : NetworkSimplexAuxiliaryState,
-) -> Unit {
+) -> Unit raise {
   if state.n_graph.nodes.is_empty() {
     return
   }
@@ -977,7 +977,7 @@ fn network_simplex_execute_auxiliary_graph(
   layered_graph : @runtime.LGraph,
   state : NetworkSimplexAuxiliaryState,
   monitor : @core.IElkProgressMonitor,
-) -> Unit {
+) -> Unit raise {
   ignore(state.n_graph.make_connected())
 
   let iter_limit = network_simplex_int_max(
@@ -1130,7 +1130,7 @@ fn network_simplex_follow_path(
   current : @runtime.LNode,
   path : Array[@runtime.LEdge],
   state : NetworkSimplexAuxiliaryState,
-) -> Array[@runtime.LEdge] {
+) -> Array[@runtime.LEdge] raise {
   let other = network_simplex_get_other_node_or_abort(edge, current)
   path.push(edge)
 
@@ -1156,7 +1156,7 @@ fn network_simplex_follow_path(
 fn network_simplex_identify_paths(
   layered_graph : @runtime.LGraph,
   state : NetworkSimplexAuxiliaryState,
-) -> Array[Array[@runtime.LEdge]] {
+) -> Array[Array[@runtime.LEdge]] raise {
   let paths : Array[Array[@runtime.LEdge]] = []
   for layer in layered_graph.get_layers() {
     for junction in layer.get_nodes() {
@@ -1229,13 +1229,13 @@ fn network_simplex_path_contains_flexible_node(
 ///|
 fn network_simplex_order_two_path(
   path : Array[@runtime.LEdge],
-) -> Array[@runtime.LEdge] {
+) -> Array[@runtime.LEdge] raise {
   if path.length() != 2 {
     try
       network_simplex_placer_raise_unit("Order only allowed for two paths.")
     catch {
       NetworkSimplexPlacerException(message) =>
-        @core.layout_runtime_report_unsupported_configuration(
+        @core.layout_runtime_raise_unsupported_configuration(
           "org.eclipse.elk.alg.layered.p4nodes.NetworkSimplexPlacer: " + message,
         )
     } noraise {
@@ -1267,7 +1267,7 @@ fn network_simplex_two_path_center_node_is_flexible(
 fn network_simplex_prefer_straight_edges(
   layered_graph : @runtime.LGraph,
   state : NetworkSimplexAuxiliaryState,
-) -> Unit {
+) -> Unit raise {
   state.node_state.clear()
   for _ in 0..<state.node_reps.length() {
     state.node_state.push(network_simplex_other)
@@ -1329,7 +1329,7 @@ fn network_simplex_improve_two_path(
   path : Array[@runtime.LEdge],
   state : NetworkSimplexAuxiliaryState,
   probe : Bool,
-) -> Bool {
+) -> Bool raise {
   let left_edge = network_simplex_require_edge_rep(state, path[0])
   let right_edge = network_simplex_require_edge_rep(state, path[1])
   if network_simplex_edge_rep_is_straight(left_edge) &&
@@ -1434,7 +1434,7 @@ fn network_simplex_improve_two_path(
 ///|
 fn network_simplex_post_process_two_paths(
   state : NetworkSimplexAuxiliaryState,
-) -> Unit {
+) -> Unit raise {
   let queue : Array[Array[@runtime.LEdge]] = []
   for path in state.two_paths {
     queue.push(path)
@@ -1549,7 +1549,7 @@ fn network_simplex_cleanup(state : NetworkSimplexAuxiliaryState) -> Unit {
 fn network_simplex_node_placer_process(
   layered_graph : @runtime.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()

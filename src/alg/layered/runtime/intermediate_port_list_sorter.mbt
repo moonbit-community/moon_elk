@@ -252,7 +252,7 @@ fn port_list_sorter_reverse_west_and_south_side(ports : Array[LPort]) -> Unit {
 fn port_list_sorter_process(
   layered_graph : LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()

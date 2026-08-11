@@ -7,7 +7,6 @@ fn interactive_mrtree_graph_visitor_test_root() -> @graph.ElkNode {
 
 ///|
 test "@core.interactive mrtree graph visitor sets options for mrtree @core.algorithm" {
-  reset_graph_model_for_test()
   let root = interactive_mrtree_graph_visitor_test_root()
   @graph.node_set_layout_option_string_by_id(
     root,
@@ -27,7 +26,6 @@ test "@core.interactive mrtree graph visitor sets options for mrtree @core.algor
 
 ///|
 test "@core.interactive mrtree graph visitor ignores non mrtree @core.algorithm" {
-  reset_graph_model_for_test()
   let root = interactive_mrtree_graph_visitor_test_root()
   @graph.node_set_layout_option_string_by_id(
     root,
@@ -47,7 +45,6 @@ test "@core.interactive mrtree graph visitor ignores non mrtree @core.algorithm"
 
 ///|
 test "@core.interactive mrtree graph visitor ignores missing @core.algorithm" {
-  reset_graph_model_for_test()
   let root = interactive_mrtree_graph_visitor_test_root()
 
   let visitor = new_interactive_mrtree_graph_visitor()

@@ -257,10 +257,10 @@ pub fn[C, T] DistanceMatcher::preprocess(
   self : DistanceMatcher[C, T],
   _data_provider : IDataProvider[C, T],
   _include_hierarchy : Bool,
-) -> Unit {
+) -> Unit raise {
   try self.check_configuration() catch {
     err =>
-      layout_runtime_report_unsupported_configuration(
+      layout_runtime_raise_unsupported_configuration(
         distance_matcher_exception_message(err),
       )
   } noraise {
@@ -297,10 +297,10 @@ pub fn[C, T] DistanceMatcher::raw(
   self : DistanceMatcher[C, T],
   comment : C,
   target : T,
-) -> Double {
+) -> Double raise {
   try distance_matcher_raw_impl(self, comment, target) catch {
     err => {
-      layout_runtime_report_unsupported_configuration(
+      layout_runtime_raise_unsupported_configuration(
         distance_matcher_exception_message(err),
       )
       self.get_worst_raw_value()
@@ -369,7 +369,7 @@ pub fn[C, T] DistanceMatcher::normalized(
   self : DistanceMatcher[C, T],
   comment : C,
   target : T,
-) -> Double {
+) -> Double raise {
   let raw_value = self.raw(comment, target)
   match self.normalization_function {
     Linear => self.normalize_linear(raw_value)

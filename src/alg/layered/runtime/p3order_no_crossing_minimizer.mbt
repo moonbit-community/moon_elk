@@ -2,7 +2,7 @@
 fn no_crossing_minimizer_process(
   graph : LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   ignore(graph)
   let monitor = match progress_monitor {
     Some(value) => value
@@ -16,7 +16,7 @@ fn no_crossing_minimizer_process(
 fn no_crossing_minimizer_intermediate_processing_configuration() -> @core.LayoutProcessorConfiguration[
   LayeredPhases,
   LGraph,
-] {
+] raise {
   @core.layout_processor_configuration_create(layered_phase_descriptor)
   .add_before(
     P3NodeOrdering,
@@ -31,18 +31,20 @@ fn no_crossing_minimizer_intermediate_processing_configuration() -> @core.Layout
 }
 
 ///|
-let no_crossing_minimizer_default_configuration : @core.LayoutProcessorConfiguration[
+fn no_crossing_minimizer_default_configuration() -> @core.LayoutProcessorConfiguration[
   LayeredPhases,
   LGraph,
-] = no_crossing_minimizer_intermediate_processing_configuration()
+] raise {
+  no_crossing_minimizer_intermediate_processing_configuration()
+}
 
 ///|
 fn no_crossing_minimizer_configuration(
   graph : LGraph,
-) -> @core.LayoutProcessorConfiguration[LayeredPhases, LGraph]? {
+) -> @core.LayoutProcessorConfiguration[LayeredPhases, LGraph]? raise {
   ignore(graph)
   let configuration = @core.layout_processor_configuration_create_from(
-    no_crossing_minimizer_default_configuration,
+    no_crossing_minimizer_default_configuration(),
   )
   ignore(
     configuration.add_before(

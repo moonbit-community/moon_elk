@@ -61,12 +61,11 @@ fn min_width_layerer_layer_constraint_postprocessor_factory() -> @core.ILayoutPr
 }
 
 ///|
-let min_width_layerer_baseline_processing_configuration : @core.LayoutProcessorConfiguration[
+fn min_width_layerer_baseline_processing_configuration() -> @core.LayoutProcessorConfiguration[
   @runtime.LayeredPhases,
   @runtime.LGraph,
-] = @core.layout_processor_configuration_create(
-    @runtime.layered_phase_descriptor,
-  )
+] raise {
+  @core.layout_processor_configuration_create(@runtime.layered_phase_descriptor)
   .add_before(
     P1CycleBreaking,
     @runtime.layered_intermediate_processor_factory(
@@ -81,15 +80,16 @@ let min_width_layerer_baseline_processing_configuration : @core.LayoutProcessorC
     P3NodeOrdering,
     min_width_layerer_layer_constraint_postprocessor_factory(),
   )
+}
 
 ///|
 fn min_width_layerer_require_edge_target_node(
   edge : @runtime.LEdge,
-) -> @runtime.LNode {
+) -> @runtime.LNode raise {
   let target = match edge.get_target() {
     Some(value) => value
     None => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "edge has no target port",
       )
       return @runtime.new_l_node()
@@ -98,7 +98,7 @@ fn min_width_layerer_require_edge_target_node(
   match target.get_node() {
     Some(value) => value
     None => {
-      @core.layout_runtime_report_unsupported_configuration(
+      @core.layout_runtime_raise_unsupported_configuration(
         "target port has no owner node",
       )
       @runtime.new_l_node()
@@ -122,7 +122,7 @@ fn min_width_layerer_count_edges_except_self_loops(
 ///|
 fn min_width_layerer_precalc_successors(
   nodes : Array[@runtime.LNode],
-) -> Array[Map[Int, Bool]] {
+) -> Array[Map[Int, Bool]] raise {
   let successors = []
   for node in nodes {
     let out_nodes : Map[Int, Bool] = Map([])
@@ -311,16 +311,16 @@ fn min_width_layerer_reverse_layers(layers : Array[@runtime.Layer]) -> Unit {
 ///|
 fn min_width_layerer_configuration(
   graph : @runtime.LGraph,
-) -> @core.LayoutProcessorConfiguration[@runtime.LayeredPhases, @runtime.LGraph]? {
+) -> @core.LayoutProcessorConfiguration[@runtime.LayeredPhases, @runtime.LGraph]? raise {
   ignore(graph)
-  Some(min_width_layerer_baseline_processing_configuration)
+  Some(min_width_layerer_baseline_processing_configuration())
 }
 
 ///|
 fn min_width_layerer_process(
   layered_graph : @runtime.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
-) -> Unit {
+) -> Unit raise {
   let monitor = match progress_monitor {
     Some(value) => value
     None => @core.new_null_elk_progress_monitor()

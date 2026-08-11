@@ -11,31 +11,74 @@ fn next_layout_processor_id() -> Int {
 ///|
 pub(all) struct ILayoutProcessor[P, G] {
   id : Int
-  process_fn : (G, IElkProgressMonitor?) -> Unit
+  process_fn : ((G, IElkProgressMonitor?) -> Unit raise)?
+  pure_process_fn : ((G, IElkProgressMonitor?) -> Unit)?
   is_phase : Bool
   is_hierarchy_aware : Bool
-  get_layout_processor_configuration_fn : (G) -> LayoutProcessorConfiguration[
+  get_layout_processor_configuration_fn : ((G) -> LayoutProcessorConfiguration[
     P,
     G,
-  ]?
+  ]? raise)?
+  get_pure_layout_processor_configuration_fn : ((G) -> LayoutProcessorConfiguration[
+    P,
+    G,
+  ]?)?
 }
 
 ///|
 pub fn[P, G] new_layout_processor(
+  process_fn : (G, IElkProgressMonitor?) -> Unit raise,
+) -> ILayoutProcessor[P, G] {
+  {
+    id: next_layout_processor_id(),
+    process_fn: Some(process_fn),
+    pure_process_fn: None,
+    is_phase: false,
+    is_hierarchy_aware: false,
+    get_layout_processor_configuration_fn: None,
+    get_pure_layout_processor_configuration_fn: None,
+  }
+}
+
+///|
+pub fn[P, G] new_pure_layout_processor(
   process_fn : (G, IElkProgressMonitor?) -> Unit,
 ) -> ILayoutProcessor[P, G] {
   {
     id: next_layout_processor_id(),
-    process_fn,
+    process_fn: None,
+    pure_process_fn: Some(process_fn),
     is_phase: false,
     is_hierarchy_aware: false,
-    get_layout_processor_configuration_fn: _ => None,
+    get_layout_processor_configuration_fn: None,
+    get_pure_layout_processor_configuration_fn: None,
   }
 }
 
 ///|
 pub fn[P, G] new_layout_phase(
-  process_fn : (G, IElkProgressMonitor?) -> Unit,
+  process_fn : (G, IElkProgressMonitor?) -> Unit raise,
+  get_layout_processor_configuration_fn : (G) -> LayoutProcessorConfiguration[
+    P,
+    G,
+  ]? raise,
+) -> ILayoutProcessor[P, G] {
+  {
+    id: next_layout_processor_id(),
+    process_fn: Some(process_fn),
+    pure_process_fn: None,
+    is_phase: true,
+    is_hierarchy_aware: false,
+    get_layout_processor_configuration_fn: Some(
+      get_layout_processor_configuration_fn,
+    ),
+    get_pure_layout_processor_configuration_fn: None,
+  }
+}
+
+///|
+pub fn[P, G] new_pure_layout_phase(
+  process_fn : (G, IElkProgressMonitor?) -> Unit raise,
   get_layout_processor_configuration_fn : (G) -> LayoutProcessorConfiguration[
     P,
     G,
@@ -43,27 +86,35 @@ pub fn[P, G] new_layout_phase(
 ) -> ILayoutProcessor[P, G] {
   {
     id: next_layout_processor_id(),
-    process_fn,
+    process_fn: Some(process_fn),
+    pure_process_fn: None,
     is_phase: true,
     is_hierarchy_aware: false,
-    get_layout_processor_configuration_fn,
+    get_layout_processor_configuration_fn: None,
+    get_pure_layout_processor_configuration_fn: Some(
+      get_layout_processor_configuration_fn,
+    ),
   }
 }
 
 ///|
 pub fn[P, G] new_hierarchy_aware_layout_phase(
-  process_fn : (G, IElkProgressMonitor?) -> Unit,
+  process_fn : (G, IElkProgressMonitor?) -> Unit raise,
   get_layout_processor_configuration_fn : (G) -> LayoutProcessorConfiguration[
     P,
     G,
-  ]?,
+  ]? raise,
 ) -> ILayoutProcessor[P, G] {
   {
     id: next_layout_processor_id(),
-    process_fn,
+    process_fn: Some(process_fn),
+    pure_process_fn: None,
     is_phase: true,
     is_hierarchy_aware: true,
-    get_layout_processor_configuration_fn,
+    get_layout_processor_configuration_fn: Some(
+      get_layout_processor_configuration_fn,
+    ),
+    get_pure_layout_processor_configuration_fn: None,
   }
 }
 
@@ -72,8 +123,15 @@ pub fn[P, G] ILayoutProcessor::process(
   self : ILayoutProcessor[P, G],
   graph : G,
   progress_monitor : IElkProgressMonitor?,
-) -> Unit {
-  (self.process_fn)(graph, progress_monitor)
+) -> Unit raise {
+  match self.process_fn {
+    Some(process) => process(graph, progress_monitor)
+    None =>
+      match self.pure_process_fn {
+        Some(process) => process(graph, progress_monitor)
+        None => ()
+      }
+  }
 }
 
 ///|
@@ -94,8 +152,15 @@ pub fn[P, G] ILayoutProcessor::is_hierarchy_aware_layout_processor(
 pub fn[P, G] ILayoutProcessor::get_layout_processor_configuration(
   self : ILayoutProcessor[P, G],
   graph : G,
-) -> LayoutProcessorConfiguration[P, G]? {
-  (self.get_layout_processor_configuration_fn)(graph)
+) -> LayoutProcessorConfiguration[P, G]? raise {
+  match self.get_layout_processor_configuration_fn {
+    Some(get_configuration) => get_configuration(graph)
+    None =>
+      match self.get_pure_layout_processor_configuration_fn {
+        Some(get_configuration) => get_configuration(graph)
+        None => None
+      }
+  }
 }
 
 ///|

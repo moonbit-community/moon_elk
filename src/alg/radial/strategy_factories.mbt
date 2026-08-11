@@ -26,9 +26,11 @@ pub fn radial_compaction_strategy_create(
 ) -> IRadialCompactor raise RadialCompactionStrategyException {
   match strategy {
     RADIAL_COMPACTION =>
-      new_i_radial_compactor(graph => new_radial_compaction().compact(graph))
+      new_i_radial_compactor(fn(graph) raise {
+        new_radial_compaction().compact(graph)
+      })
     WEDGE_COMPACTION =>
-      new_i_radial_compactor(graph => {
+      new_i_radial_compactor(fn(graph) raise {
         new_annulus_wedge_compaction().compact(graph)
       })
     NONE =>

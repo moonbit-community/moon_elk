@@ -41,7 +41,7 @@ fn random_layout_provider_max(a : Double, b : Double) -> Double {
 ///|
 fn random_layout_provider_parse_padding(
   layout_node : @graph.ElkNode,
-) -> ElkPadding {
+) -> ElkPadding raise {
   let parsed = new_elk_padding()
   if @graph.node_has_string_property(
       layout_node, random_layout_provider_padding_option,
@@ -211,7 +211,7 @@ fn random_layout_provider_randomize_edge(
   random : JavaRandom,
   draw_width : Double,
   draw_height : Double,
-) -> Unit {
+) -> Unit raise {
   let sources = @graph.edge_sources(edge)
   if sources.is_empty() {
     return
@@ -340,7 +340,7 @@ fn random_layout_provider_randomize(
   aspect_ratio_value : Double,
   spacing_value : Double,
   padding_value : ElkPadding,
-) -> Unit {
+) -> Unit raise {
   let mut nodes_area = 0.0
   let mut max_width = 0.0
   let mut max_height = 0.0
@@ -404,7 +404,7 @@ pub fn RandomLayoutProvider::layout(
   self : RandomLayoutProvider,
   parent_node : @graph.ElkNode,
   progress_monitor : IElkProgressMonitor,
-) -> Unit {
+) -> Unit raise {
   ignore(self.initialized)
   ignore(progress_monitor.begin("Random Layout", 1.0))
 
