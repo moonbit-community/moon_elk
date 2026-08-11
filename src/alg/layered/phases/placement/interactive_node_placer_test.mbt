@@ -80,9 +80,7 @@ fn interactive_node_placer_test_add_node(
 
 ///|
 fn interactive_node_placer_test_contains_factory(
-  factories : Array[
-    @core.ILayoutProcessorFactory[@runtime.LayeredPhases, @runtime.LGraph],
-  ],
+  factories : Array[@core.LayoutProcessorFactory],
   expected_factory_id : Int,
 ) -> Bool {
   for factory in factories {
@@ -192,6 +190,7 @@ test "@core.interactive node placer config adds hierarchical port position proce
 
   let p5 = @runtime.layered_phase_constants()[4]
   let expected = @runtime.layered_intermediate_processor_factory(
+    @runtime.new_l_graph(),
     interactive_node_placer_test_strategy(
       "HIERARCHICAL_PORT_POSITION_PROCESSOR",
     ),

@@ -1,21 +1,19 @@
 ///|
-pub enum SPOrEPhases {
-  P1_STRUCTURE
-  P2_PROCESSING_ORDER
-  P3_EXECUTION
-}
+pub type SPOrEPhases = @core.PhaseId
 
 ///|
-fn spore_phase_ordinal(phase : SPOrEPhases) -> Int {
-  match phase {
-    P1_STRUCTURE => 0
-    P2_PROCESSING_ORDER => 1
-    P3_EXECUTION => 2
-  }
-}
+pub const P1_STRUCTURE : SPOrEPhases = 0
 
 ///|
-pub let spore_phase_descriptor : @core.PhaseDescriptor[SPOrEPhases] = @core.new_phase_descriptor(
-  [P1_STRUCTURE, P2_PROCESSING_ORDER, P3_EXECUTION],
-  spore_phase_ordinal,
+pub const P2_PROCESSING_ORDER : SPOrEPhases = 1
+
+///|
+pub const P3_EXECUTION : SPOrEPhases = 2
+
+///|
+pub let spore_phase_descriptor : @core.PhaseDescriptor = @core.new_phase_descriptor([
+    P1_STRUCTURE,
+    P2_PROCESSING_ORDER,
+    P3_EXECUTION,
+  ],
 )

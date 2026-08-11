@@ -20,8 +20,7 @@ fn mrtree_untreeifyer_process(
 }
 
 ///|
-pub fn new_mrtree_untreeifyer_layout_processor() -> @core.ILayoutProcessor[
-  MrtreeTreeLayoutPhases,
+pub fn new_mrtree_untreeifyer_layout_processor() -> @core.TypedLayoutProcessor[
   MrtreeGraph,
 ] {
   @core.new_layout_processor(mrtree_untreeifyer_process)

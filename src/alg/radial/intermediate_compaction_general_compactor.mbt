@@ -15,8 +15,7 @@ fn radial_compact(graph : @graph.ElkNode) -> Unit raise {
 }
 
 ///|
-pub fn new_radial_general_compactor_layout_processor() -> @core.ILayoutProcessor[
-  RadialLayoutPhases,
+pub fn new_radial_general_compactor_layout_processor() -> @core.TypedLayoutProcessor[
   @graph.ElkNode,
 ] {
   @core.new_layout_processor((graph, progress_monitor) => {

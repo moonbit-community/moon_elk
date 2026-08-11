@@ -1602,8 +1602,7 @@ fn network_simplex_node_placer_process(
 }
 
 ///|
-pub fn new_network_simplex_placer_layout_phase() -> @core.ILayoutProcessor[
-  @runtime.LayeredPhases,
+pub fn new_network_simplex_placer_layout_phase() -> @core.TypedLayoutProcessor[
   @runtime.LGraph,
 ] {
   @core.new_layout_phase(network_simplex_node_placer_process, graph => {
@@ -1614,11 +1613,10 @@ pub fn new_network_simplex_placer_layout_phase() -> @core.ILayoutProcessor[
       match property {
         ExternalPorts =>
           return Some(
-            @core.layout_processor_configuration_create(
-              @runtime.layered_phase_descriptor,
-            ).add_before(
-              P5EdgeRouting,
+            @core.layout_processor_configuration_create().add_before(
+              @runtime.P5EdgeRouting,
               @runtime.layered_intermediate_processor_factory(
+                graph,
                 HierarchicalPortPositionProcessor,
               ),
             ),

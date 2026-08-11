@@ -320,8 +320,7 @@ fn north_south_port_postprocessor_process(
 }
 
 ///|
-pub fn new_north_south_port_postprocessor_layout_processor() -> @core.ILayoutProcessor[
-  LayeredPhases,
+pub fn new_north_south_port_postprocessor_layout_processor() -> @core.TypedLayoutProcessor[
   LGraph,
 ] {
   @core.new_layout_processor(north_south_port_postprocessor_process)

@@ -1,49 +1,47 @@
 ///|
-pub enum MrtreeTreeLayoutPhases {
-  P1Treeification
-  P2NodeOrdering
-  P3NodePlacement
-  P4EdgeRouting
-}
+pub type MrtreeTreeLayoutPhases = @core.PhaseId
 
 ///|
-fn mrtree_tree_layout_phase_ordinal(phase : MrtreeTreeLayoutPhases) -> Int {
-  match phase {
-    P1Treeification => 0
-    P2NodeOrdering => 1
-    P3NodePlacement => 2
-    P4EdgeRouting => 3
-  }
-}
+pub const P1Treeification : MrtreeTreeLayoutPhases = 0
 
 ///|
-pub let mrtree_tree_layout_phase_descriptor : @core.PhaseDescriptor[
-  MrtreeTreeLayoutPhases,
-] = @core.new_phase_descriptor(
-  [P1Treeification, P2NodeOrdering, P3NodePlacement, P4EdgeRouting],
-  mrtree_tree_layout_phase_ordinal,
+pub const P2NodeOrdering : MrtreeTreeLayoutPhases = 1
+
+///|
+pub const P3NodePlacement : MrtreeTreeLayoutPhases = 2
+
+///|
+pub const P4EdgeRouting : MrtreeTreeLayoutPhases = 3
+
+///|
+pub let mrtree_tree_layout_phase_descriptor : @core.PhaseDescriptor = @core.new_phase_descriptor([
+    P1Treeification,
+    P2NodeOrdering,
+    P3NodePlacement,
+    P4EdgeRouting,
+  ],
 )
 
 ///|
 pub fn mrtree_tree_layout_phase_factory(
   phase : MrtreeTreeLayoutPhases,
-) -> @core.ILayoutPhaseFactory[MrtreeTreeLayoutPhases, MrtreeGraph] {
-  match phase {
-    P1Treeification =>
-      @core.new_layout_processor_factory(21100, 0, () => {
-        new_mrtree_dfs_treeifyer_layout_phase()
-      })
-    P2NodeOrdering =>
-      @core.new_layout_processor_factory(21101, 1, () => {
-        new_mrtree_node_orderer_layout_phase()
-      })
-    P3NodePlacement =>
-      @core.new_layout_processor_factory(21102, 2, () => {
-        new_mrtree_node_placer_layout_phase()
-      })
-    P4EdgeRouting =>
-      @core.new_layout_processor_factory(21103, 3, () => {
-        new_mrtree_edge_router_layout_phase()
-      })
+  graph : MrtreeGraph,
+) -> @core.LayoutProcessorFactory {
+  if phase == P1Treeification {
+    @core.new_layout_processor_factory(21100, 0, graph, () => {
+      new_mrtree_dfs_treeifyer_layout_phase()
+    })
+  } else if phase == P2NodeOrdering {
+    @core.new_layout_processor_factory(21101, 1, graph, () => {
+      new_mrtree_node_orderer_layout_phase()
+    })
+  } else if phase == P3NodePlacement {
+    @core.new_layout_processor_factory(21102, 2, graph, () => {
+      new_mrtree_node_placer_layout_phase()
+    })
+  } else {
+    @core.new_layout_processor_factory(21103, 3, graph, () => {
+      new_mrtree_edge_router_layout_phase()
+    })
   }
 }

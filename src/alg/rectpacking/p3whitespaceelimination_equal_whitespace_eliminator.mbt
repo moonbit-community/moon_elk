@@ -71,7 +71,7 @@ fn rectpacking_equal_whitespace_eliminator_process_impl(
 ///|
 pub fn new_rectpacking_equal_whitespace_eliminator_layout_phase(
   session : RectPackingSession,
-) -> @core.ILayoutProcessor[RectPackingLayoutPhases, @graph.ElkNode] {
+) -> @core.TypedLayoutProcessor[@graph.ElkNode] {
   @core.new_layout_phase(
     (graph, progress_monitor) => {
       rectpacking_equal_whitespace_eliminator_process(

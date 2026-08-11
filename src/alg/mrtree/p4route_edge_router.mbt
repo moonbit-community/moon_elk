@@ -13,13 +13,9 @@ priv struct MrtreeEdgeRouterInOutCounts {
 ///|
 fn mrtree_edge_router_layout_processor_configuration(
   graph : MrtreeGraph,
-) -> @core.LayoutProcessorConfiguration[MrtreeTreeLayoutPhases, MrtreeGraph]? {
+) -> @core.LayoutProcessorConfiguration? {
   ignore(graph)
-  Some(
-    @core.layout_processor_configuration_create(
-      mrtree_tree_layout_phase_descriptor,
-    ),
-  )
+  Some(@core.layout_processor_configuration_create())
 }
 
 ///|
@@ -907,8 +903,7 @@ fn mrtree_edge_router_process(
 }
 
 ///|
-pub fn new_mrtree_edge_router_layout_phase() -> @core.ILayoutProcessor[
-  MrtreeTreeLayoutPhases,
+pub fn new_mrtree_edge_router_layout_phase() -> @core.TypedLayoutProcessor[
   MrtreeGraph,
 ] {
   @core.new_pure_layout_phase(

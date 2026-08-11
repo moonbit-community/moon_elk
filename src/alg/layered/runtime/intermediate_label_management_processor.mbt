@@ -332,7 +332,7 @@ pub fn LabelManagementProcessor::process(
 ///|
 pub fn new_label_management_processor_layout_processor(
   center_labels : Bool,
-) -> @core.ILayoutProcessor[LayeredPhases, LGraph] {
+) -> @core.TypedLayoutProcessor[LGraph] {
   let processor = new_label_management_processor(center_labels)
   @core.new_layout_processor((layered_graph, progress_monitor) => {
     processor.process(layered_graph, progress_monitor)

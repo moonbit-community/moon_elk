@@ -988,23 +988,21 @@ fn graph_transformer_process(
 ///|
 pub fn new_graph_transformer_layout_processor(
   mode : GraphTransformerMode,
-) -> @core.ILayoutProcessor[LayeredPhases, LGraph] {
+) -> @core.TypedLayoutProcessor[LGraph] {
   @core.new_layout_processor((layered_graph, progress_monitor) => {
     graph_transformer_process(mode, layered_graph, progress_monitor)
   })
 }
 
 ///|
-pub fn new_direction_preprocessor_layout_processor() -> @core.ILayoutProcessor[
-  LayeredPhases,
+pub fn new_direction_preprocessor_layout_processor() -> @core.TypedLayoutProcessor[
   LGraph,
 ] {
   new_graph_transformer_layout_processor(ToInputDirection)
 }
 
 ///|
-pub fn new_direction_postprocessor_layout_processor() -> @core.ILayoutProcessor[
-  LayeredPhases,
+pub fn new_direction_postprocessor_layout_processor() -> @core.TypedLayoutProcessor[
   LGraph,
 ] {
   new_graph_transformer_layout_processor(ToInternalLtr)

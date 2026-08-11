@@ -8,27 +8,27 @@ import {
 }
 
 // Values
-pub fn new_bfs_node_order_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
+pub fn new_bfs_node_order_cycle_breaker_layout_phase() -> @core.TypedLayoutProcessor[@runtime.LGraph]
 
-pub fn new_depth_first_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
+pub fn new_depth_first_cycle_breaker_layout_phase() -> @core.TypedLayoutProcessor[@runtime.LGraph]
 
-pub fn new_dfs_node_order_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
+pub fn new_dfs_node_order_cycle_breaker_layout_phase() -> @core.TypedLayoutProcessor[@runtime.LGraph]
 
-pub fn new_greedy_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
+pub fn new_greedy_cycle_breaker_layout_phase() -> @core.TypedLayoutProcessor[@runtime.LGraph]
 
-pub fn new_greedy_model_order_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
+pub fn new_greedy_model_order_cycle_breaker_layout_phase() -> @core.TypedLayoutProcessor[@runtime.LGraph]
 
 pub fn new_group_model_order_calculator() -> GroupModelOrderCalculator
 
-pub fn new_interactive_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
+pub fn new_interactive_cycle_breaker_layout_phase() -> @core.TypedLayoutProcessor[@runtime.LGraph]
 
-pub fn new_model_order_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
+pub fn new_model_order_cycle_breaker_layout_phase() -> @core.TypedLayoutProcessor[@runtime.LGraph]
 
-pub fn new_sc_connectivity_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
+pub fn new_sc_connectivity_cycle_breaker_layout_phase() -> @core.TypedLayoutProcessor[@runtime.LGraph]
 
-pub fn new_scc_model_order_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
+pub fn new_scc_model_order_cycle_breaker_layout_phase() -> @core.TypedLayoutProcessor[@runtime.LGraph]
 
-pub fn new_scc_node_type_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
+pub fn new_scc_node_type_cycle_breaker_layout_phase() -> @core.TypedLayoutProcessor[@runtime.LGraph]
 
 pub fn register_cycle_breaking_phases(@runtime.LayeredPhaseRegistry) -> Unit
 

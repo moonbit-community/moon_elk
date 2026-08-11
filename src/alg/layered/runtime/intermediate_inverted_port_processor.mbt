@@ -319,8 +319,7 @@ fn inverted_port_processor_process(
 }
 
 ///|
-pub fn new_inverted_port_processor_layout_processor() -> @core.ILayoutProcessor[
-  LayeredPhases,
+pub fn new_inverted_port_processor_layout_processor() -> @core.TypedLayoutProcessor[
   LGraph,
 ] {
   @core.new_layout_processor(inverted_port_processor_process)

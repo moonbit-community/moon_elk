@@ -106,8 +106,7 @@ fn semi_interactive_cross_min_processor_process(
 }
 
 ///|
-pub fn new_semi_interactive_cross_min_processor_layout_processor() -> @core.ILayoutProcessor[
-  LayeredPhases,
+pub fn new_semi_interactive_cross_min_processor_layout_processor() -> @core.TypedLayoutProcessor[
   LGraph,
 ] {
   @core.new_layout_processor(semi_interactive_cross_min_processor_process)

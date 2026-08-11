@@ -8,23 +8,23 @@ import {
 }
 
 // Values
-pub fn new_breadth_first_model_order_layerer_layout_phase() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
+pub fn new_breadth_first_model_order_layerer_layout_phase() -> @core.TypedLayoutProcessor[@runtime.LGraph]
 
-pub fn new_coffman_graham_layerer_layout_phase() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
+pub fn new_coffman_graham_layerer_layout_phase() -> @core.TypedLayoutProcessor[@runtime.LGraph]
 
-pub fn new_depth_first_model_order_layerer_layout_phase() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
+pub fn new_depth_first_model_order_layerer_layout_phase() -> @core.TypedLayoutProcessor[@runtime.LGraph]
 
-pub fn new_interactive_layerer_layout_phase() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
+pub fn new_interactive_layerer_layout_phase() -> @core.TypedLayoutProcessor[@runtime.LGraph]
 
-pub fn new_longest_path_layerer_layout_phase() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
+pub fn new_longest_path_layerer_layout_phase() -> @core.TypedLayoutProcessor[@runtime.LGraph]
 
-pub fn new_longest_path_source_layerer_layout_phase() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
+pub fn new_longest_path_source_layerer_layout_phase() -> @core.TypedLayoutProcessor[@runtime.LGraph]
 
-pub fn new_min_width_layerer_layout_phase() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
+pub fn new_min_width_layerer_layout_phase() -> @core.TypedLayoutProcessor[@runtime.LGraph]
 
-pub fn new_network_simplex_layerer_layout_phase() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
+pub fn new_network_simplex_layerer_layout_phase() -> @core.TypedLayoutProcessor[@runtime.LGraph]
 
-pub fn new_stretch_width_layerer_layout_phase() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
+pub fn new_stretch_width_layerer_layout_phase() -> @core.TypedLayoutProcessor[@runtime.LGraph]
 
 pub fn register_layering_phases(@runtime.LayeredPhaseRegistry) -> Unit
 

@@ -1,14 +1,12 @@
 ///|
 fn mrtree_dfs_treeifyer_configuration(
   graph : MrtreeGraph,
-) -> @core.LayoutProcessorConfiguration[MrtreeTreeLayoutPhases, MrtreeGraph]? raise {
+) -> @core.LayoutProcessorConfiguration? raise {
   ignore(graph)
   Some(
-    @core.layout_processor_configuration_create(
-      mrtree_tree_layout_phase_descriptor,
-    ).add_after(
+    @core.layout_processor_configuration_create().add_after(
       P3NodePlacement,
-      mrtree_intermediate_processor_factory(DetreeifyingProc),
+      mrtree_intermediate_processor_factory(DetreeifyingProc, graph),
     ),
   )
 }
@@ -122,8 +120,7 @@ fn mrtree_dfs_treeifyer_process(
 }
 
 ///|
-pub fn new_mrtree_dfs_treeifyer_layout_phase() -> @core.ILayoutProcessor[
-  MrtreeTreeLayoutPhases,
+pub fn new_mrtree_dfs_treeifyer_layout_phase() -> @core.TypedLayoutProcessor[
   MrtreeGraph,
 ] {
   @core.new_layout_phase(

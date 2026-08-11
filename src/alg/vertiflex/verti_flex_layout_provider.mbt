@@ -1,9 +1,6 @@
 ///|
 pub struct VertiFlexLayoutProvider {
-  algorithm_assembler : @core.AlgorithmAssembler[
-    VertiFlexLayoutPhases,
-    @graph.ElkNode,
-  ]
+  algorithm_assembler : @core.AlgorithmAssembler
   mut node_node_spacing : Double
   session : VertiFlexSession
 }
@@ -121,24 +118,36 @@ fn vertiflex_set_graph_size(graph : @graph.ElkNode) -> Unit raise {
 pub fn VertiFlexLayoutProvider::assemble_algorithm(
   self : VertiFlexLayoutProvider,
   graph : @graph.ElkNode,
-) -> Array[@core.ILayoutProcessor[VertiFlexLayoutPhases, @graph.ElkNode]] raise {
+) -> @core.LayoutProcessorPlan raise {
   ignore(self.algorithm_assembler.reset())
   ignore(
     self.algorithm_assembler.set_phase(
       P1_NODE_Y_PLACEMENT,
-      vertiflex_node_y_placer_phase_factory(self.session, SIMPLE_Y_PLACING),
+      vertiflex_node_y_placer_phase_factory(
+        self.session,
+        SIMPLE_Y_PLACING,
+        graph,
+      ),
     ),
   )
   ignore(
     self.algorithm_assembler.set_phase(
       P2_NODE_RELATIVE_PLACEMENT,
-      vertiflex_relative_x_placer_phase_factory(self.session, SIMPLE_X_PLACING),
+      vertiflex_relative_x_placer_phase_factory(
+        self.session,
+        SIMPLE_X_PLACING,
+        graph,
+      ),
     ),
   )
   ignore(
     self.algorithm_assembler.set_phase(
       P3_NODE_ABSOLUTE_PLACEMENT,
-      vertiflex_absolute_x_placer_phase_factory(self.session, ABSOLUTE_XPLACING),
+      vertiflex_absolute_x_placer_phase_factory(
+        self.session,
+        ABSOLUTE_XPLACING,
+        graph,
+      ),
     ),
   )
   let router_strategy = match
@@ -151,10 +160,10 @@ pub fn VertiFlexLayoutProvider::assemble_algorithm(
   ignore(
     self.algorithm_assembler.set_phase(
       P4_EDGE_ROUTING,
-      vertiflex_edgerouter_phase_factory(self.session, router_strategy),
+      vertiflex_edgerouter_phase_factory(self.session, router_strategy, graph),
     ),
   )
-  self.algorithm_assembler.build(graph)
+  self.algorithm_assembler.build()
 }
 
 ///|
@@ -190,12 +199,9 @@ fn vertiflex_layout_provider_layout_impl(
   progress_monitor : @core.IElkProgressMonitor,
 ) -> Unit raise {
   provider.session.clear()
-  let algorithm = provider.assemble_algorithm(graph)
+  let plan = provider.assemble_algorithm(graph)
   ignore(
-    progress_monitor.begin(
-      "@common.Tree layout",
-      algorithm.length().to_double(),
-    ),
+    progress_monitor.begin("@common.Tree layout", plan.length().to_double()),
   )
   provider.node_node_spacing = @graph.node_get_double_property(
     graph, vertiflex_spacing_node_node,
@@ -235,8 +241,8 @@ fn vertiflex_layout_provider_layout_impl(
     count += 1
   }
 
-  for processor in algorithm {
-    processor.process(graph, progress_monitor.sub_task(1.0))
+  for processor in plan.steps() {
+    processor.run(progress_monitor.sub_task(1.0))
   }
   vertiflex_set_graph_size(graph)
   progress_monitor.done()

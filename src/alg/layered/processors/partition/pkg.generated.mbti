@@ -7,11 +7,11 @@ import {
 }
 
 // Values
-pub fn new_partition_midprocessor_layout_processor() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
+pub fn new_partition_midprocessor_layout_processor() -> @core.TypedLayoutProcessor[@runtime.LGraph]
 
-pub fn new_partition_postprocessor_layout_processor() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
+pub fn new_partition_postprocessor_layout_processor() -> @core.TypedLayoutProcessor[@runtime.LGraph]
 
-pub fn new_partition_preprocessor_layout_processor() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
+pub fn new_partition_preprocessor_layout_processor() -> @core.TypedLayoutProcessor[@runtime.LGraph]
 
 pub fn register_partition_processors(@runtime.LayeredPhaseRegistry) -> Unit
 

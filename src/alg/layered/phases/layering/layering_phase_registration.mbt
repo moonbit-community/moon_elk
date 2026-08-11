@@ -3,12 +3,9 @@ fn register_layering_phase(
   registry : @runtime.LayeredPhaseRegistry,
   strategy : String,
   id : Int,
-  create : () -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph] raise?,
+  create : () -> @core.TypedLayoutProcessor[@runtime.LGraph],
 ) -> Unit {
-  registry.register_layering_phase(
-    strategy,
-    @core.new_layout_processor_factory(id, 1, fn() raise { create() }),
-  )
+  registry.register_layering_phase(strategy, id, create)
 }
 
 ///|

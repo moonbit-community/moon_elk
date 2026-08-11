@@ -218,8 +218,7 @@ fn label_dummy_inserter_process(
 }
 
 ///|
-pub fn new_label_dummy_inserter_layout_processor() -> @core.ILayoutProcessor[
-  LayeredPhases,
+pub fn new_label_dummy_inserter_layout_processor() -> @core.TypedLayoutProcessor[
   LGraph,
 ] {
   @core.new_layout_processor(label_dummy_inserter_process)

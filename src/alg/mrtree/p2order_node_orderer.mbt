@@ -1,16 +1,14 @@
 ///|
 fn mrtree_node_orderer_layout_processor_configuration(
   graph : MrtreeGraph,
-) -> @core.LayoutProcessorConfiguration[MrtreeTreeLayoutPhases, MrtreeGraph]? raise {
+) -> @core.LayoutProcessorConfiguration? raise {
   ignore(graph)
   Some(
-    @core.layout_processor_configuration_create(
-      mrtree_tree_layout_phase_descriptor,
-    )
+    @core.layout_processor_configuration_create()
     .before(P2NodeOrdering)
-    .add(mrtree_intermediate_processor_factory(RootProc))
-    .add(mrtree_intermediate_processor_factory(FanProc))
-    .add(mrtree_intermediate_processor_factory(LevelProc)),
+    .add(mrtree_intermediate_processor_factory(RootProc, graph))
+    .add(mrtree_intermediate_processor_factory(FanProc, graph))
+    .add(mrtree_intermediate_processor_factory(LevelProc, graph)),
   )
 }
 
@@ -370,8 +368,7 @@ fn mrtree_node_orderer_process(
 }
 
 ///|
-pub fn new_mrtree_node_orderer_layout_phase() -> @core.ILayoutProcessor[
-  MrtreeTreeLayoutPhases,
+pub fn new_mrtree_node_orderer_layout_phase() -> @core.TypedLayoutProcessor[
   MrtreeGraph,
 ] {
   @core.new_layout_phase(

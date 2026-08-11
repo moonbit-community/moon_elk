@@ -17,10 +17,11 @@ pub fn spore_structure_extraction_strategy_from_string(
 ///|
 pub fn spore_structure_extraction_strategy_phase_factory(
   strategy : SporeStructureExtractionStrategy,
-) -> @core.ILayoutPhaseFactory[SPOrEPhases, SporeGraph] {
+  graph : SporeGraph,
+) -> @core.LayoutProcessorFactory {
   match strategy {
     DELAUNAY_TRIANGULATION =>
-      @core.new_layout_processor_factory(82000, 0, () => {
+      @core.new_layout_processor_factory(82000, 0, graph, () => {
         new_spore_delaunay_triangulation_layout_phase()
       })
   }

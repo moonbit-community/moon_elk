@@ -316,10 +316,11 @@ test "label dummy switcher head-layer override moves dummy to edge head and sets
 ///|
 test "label dummy switcher strategy creates concrete processor" {
   let factory = layered_intermediate_processor_factory(
+    new_l_graph(),
     label_dummy_switcher_test_strategy("LABEL_DUMMY_SWITCHER"),
   )
   let processor = factory.create()
   let monitor = new_elk_progress_monitor()
-  processor.process(new_l_graph(), Some(monitor))
+  processor.run(Some(monitor))
   inspect(monitor.get_task_name(), content="Label dummy switching")
 }

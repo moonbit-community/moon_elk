@@ -415,8 +415,7 @@ fn interactive_external_port_positioner_process(
 }
 
 ///|
-pub fn new_interactive_external_port_positioner_layout_processor() -> @core.ILayoutProcessor[
-  LayeredPhases,
+pub fn new_interactive_external_port_positioner_layout_processor() -> @core.TypedLayoutProcessor[
   LGraph,
 ] {
   @core.new_layout_processor(interactive_external_port_positioner_process)

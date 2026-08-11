@@ -44,8 +44,7 @@ fn rectpacking_no_placement_process(
 }
 
 ///|
-pub fn new_rectpacking_no_placement_layout_phase() -> @core.ILayoutProcessor[
-  RectPackingLayoutPhases,
+pub fn new_rectpacking_no_placement_layout_phase() -> @core.TypedLayoutProcessor[
   @graph.ElkNode,
 ] {
   @core.new_layout_phase(rectpacking_no_placement_process, _ => None)

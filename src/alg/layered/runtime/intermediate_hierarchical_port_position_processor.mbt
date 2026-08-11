@@ -113,8 +113,7 @@ fn hierarchical_port_position_process(
 }
 
 ///|
-pub fn new_hierarchical_port_position_processor_layout_processor() -> @core.ILayoutProcessor[
-  LayeredPhases,
+pub fn new_hierarchical_port_position_processor_layout_processor() -> @core.TypedLayoutProcessor[
   LGraph,
 ] {
   @core.new_layout_processor(hierarchical_port_position_process)

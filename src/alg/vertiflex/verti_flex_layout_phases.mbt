@@ -1,30 +1,23 @@
 ///|
-pub enum VertiFlexLayoutPhases {
-  P1_NODE_Y_PLACEMENT
-  P2_NODE_RELATIVE_PLACEMENT
-  P3_NODE_ABSOLUTE_PLACEMENT
-  P4_EDGE_ROUTING
-}
+pub type VertiFlexLayoutPhases = @core.PhaseId
 
 ///|
-fn vertiflex_layout_phase_ordinal(phase : VertiFlexLayoutPhases) -> Int {
-  match phase {
-    P1_NODE_Y_PLACEMENT => 0
-    P2_NODE_RELATIVE_PLACEMENT => 1
-    P3_NODE_ABSOLUTE_PLACEMENT => 2
-    P4_EDGE_ROUTING => 3
-  }
-}
+pub const P1_NODE_Y_PLACEMENT : VertiFlexLayoutPhases = 0
 
 ///|
-pub let vertiflex_layout_phase_descriptor : @core.PhaseDescriptor[
-  VertiFlexLayoutPhases,
-] = @core.new_phase_descriptor(
-  [
+pub const P2_NODE_RELATIVE_PLACEMENT : VertiFlexLayoutPhases = 1
+
+///|
+pub const P3_NODE_ABSOLUTE_PLACEMENT : VertiFlexLayoutPhases = 2
+
+///|
+pub const P4_EDGE_ROUTING : VertiFlexLayoutPhases = 3
+
+///|
+pub let vertiflex_layout_phase_descriptor : @core.PhaseDescriptor = @core.new_phase_descriptor([
     P1_NODE_Y_PLACEMENT,
     P2_NODE_RELATIVE_PLACEMENT,
     P3_NODE_ABSOLUTE_PLACEMENT,
     P4_EDGE_ROUTING,
   ],
-  vertiflex_layout_phase_ordinal,
 )

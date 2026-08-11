@@ -17,10 +17,11 @@ pub fn topdownpacking_whitespace_elimination_strategy_from_string(
 ///|
 pub fn topdownpacking_whitespace_elimination_strategy_phase_factory(
   strategy : WhitespaceEliminationStrategy,
-) -> @core.ILayoutPhaseFactory[TopdownPackingPhases, GridElkNode] {
+  graph : GridElkNode,
+) -> @core.LayoutProcessorFactory {
   match strategy {
     BOTTOM_ROW_EQUAL_WHITESPACE_ELIMINATOR =>
-      @core.new_layout_processor_factory(80001, 1, () => {
+      @core.new_layout_processor_factory(80001, 1, graph, () => {
         new_topdownpacking_bottom_row_equal_whitespace_eliminator_layout_phase()
       })
   }

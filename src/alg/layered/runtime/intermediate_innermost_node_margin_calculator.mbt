@@ -104,8 +104,7 @@ fn innermost_node_margin_calculator_process(
 }
 
 ///|
-pub fn new_innermost_node_margin_calculator_layout_processor() -> @core.ILayoutProcessor[
-  LayeredPhases,
+pub fn new_innermost_node_margin_calculator_layout_processor() -> @core.TypedLayoutProcessor[
   LGraph,
 ] {
   @core.new_layout_processor(innermost_node_margin_calculator_process)

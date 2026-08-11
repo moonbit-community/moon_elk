@@ -1,29 +1,36 @@
 ///|
 test "AlgorithmAssembler testEnableCaching" {
   let assembler = algorithm_assembler_create(test_phase_descriptor)
-  ignore(assembler.set_phase(Phase1, test_phase_factory(Phase1)))
-  ignore(assembler.set_phase(Phase2, test_phase_factory(Phase2)))
-  let algorithm = assembler.build(None)
+  let graph = Some(new_string_buffer())
+  ignore(assembler.set_phase(Phase1, test_phase_factory(Phase1, graph~)))
+  ignore(assembler.set_phase(Phase2, test_phase_factory(Phase2, graph~)))
+  let algorithm = assembler.build()
   assert_eq(count_layout_phases(algorithm), 2)
-  let algorithm2 = assembler.build(None)
+  let algorithm2 = assembler.build()
   assert_eq(count_layout_phases(algorithm2), 2)
   for i = 0; i < algorithm.length(); i = i + 1 {
-    assert_eq(algorithm[i].instance_id(), algorithm2[i].instance_id())
+    assert_eq(
+      algorithm.steps()[i].instance_id(),
+      algorithm2.steps()[i].instance_id(),
+    )
   }
 }
 
 ///|
 test "AlgorithmAssembler testDisableCaching" {
   let assembler = algorithm_assembler_create(test_phase_descriptor)
+  let graph = Some(new_string_buffer())
   ignore(assembler.with_caching(false))
-  ignore(assembler.set_phase(Phase1, test_phase_factory(Phase1)))
-  ignore(assembler.set_phase(Phase2, test_phase_factory(Phase2)))
-  let algorithm = assembler.build(None)
+  ignore(assembler.set_phase(Phase1, test_phase_factory(Phase1, graph~)))
+  ignore(assembler.set_phase(Phase2, test_phase_factory(Phase2, graph~)))
+  let algorithm = assembler.build()
   assert_eq(count_layout_phases(algorithm), 2)
-  let algorithm2 = assembler.build(None)
+  let algorithm2 = assembler.build()
   assert_eq(count_layout_phases(algorithm2), 2)
   for i = 0; i < algorithm.length(); i = i + 1 {
-    assert_true(algorithm[i].instance_id() != algorithm2[i].instance_id())
+    assert_true(
+      algorithm.steps()[i].instance_id() != algorithm2.steps()[i].instance_id(),
+    )
   }
 }
 
@@ -32,7 +39,7 @@ test "AlgorithmAssembler testFailOnMissingPhase reports runtime error" {
   let error = capture_layout_error(fn() raise {
     let assembler = algorithm_assembler_create(test_phase_descriptor)
     ignore(assembler.set_phase(Phase1, test_phase_factory(Phase1)))
-    ignore(assembler.build(None))
+    ignore(assembler.build())
   })
   assert_eq(
     error,
@@ -47,7 +54,7 @@ test "AlgorithmAssembler testDontFailOnMissingPhase" {
   let assembler = algorithm_assembler_create(test_phase_descriptor)
   ignore(assembler.with_fail_on_missing_phase(false))
   ignore(assembler.set_phase(Phase1, test_phase_factory(Phase1)))
-  assert_true(assembler.build(None).length() > 0)
+  assert_true(assembler.build().length() > 0)
 }
 
 ///|
@@ -56,13 +63,15 @@ test "AlgorithmAssembler testClearCache" {
   ignore(assembler.with_caching(true))
   ignore(assembler.set_phase(Phase1, test_phase_factory(Phase1)))
   ignore(assembler.set_phase(Phase2, test_phase_factory(Phase2)))
-  let algorithm = assembler.build(None)
+  let algorithm = assembler.build()
   assert_eq(count_layout_phases(algorithm), 2)
   ignore(assembler.clear_cache())
-  let algorithm2 = assembler.build(None)
+  let algorithm2 = assembler.build()
   assert_eq(count_layout_phases(algorithm2), 2)
   for i = 0; i < algorithm.length(); i = i + 1 {
-    assert_true(algorithm[i].instance_id() != algorithm2[i].instance_id())
+    assert_true(
+      algorithm.steps()[i].instance_id() != algorithm2.steps()[i].instance_id(),
+    )
   }
 }
 
@@ -74,7 +83,7 @@ test "AlgorithmAssembler testResetWithFailOnMissingPhase reports runtime error" 
     ignore(assembler.set_phase(Phase1, test_phase_factory(Phase1)))
     ignore(assembler.set_phase(Phase2, test_phase_factory(Phase2)))
     ignore(assembler.reset())
-    ignore(assembler.build(None))
+    ignore(assembler.build())
   })
   assert_eq(
     error,
@@ -91,27 +100,32 @@ test "AlgorithmAssembler testResetWithoutFailOnMissingPhase" {
   ignore(assembler.set_phase(Phase1, test_phase_factory(Phase1)))
   ignore(assembler.set_phase(Phase2, test_phase_factory(Phase2)))
   ignore(assembler.reset())
-  assert_eq(assembler.build(None).length(), 0)
+  assert_eq(assembler.build().length(), 0)
 }
 
 ///|
 test "AlgorithmAssembler testAddProcessorConfiguration" {
   let assembler = algorithm_assembler_create(test_phase_descriptor)
+  let buffer = new_string_buffer()
+  let graph = Some(buffer)
   ignore(
     assembler.add_processor_configuration(
-      layout_processor_configuration_create(test_phase_descriptor).add_before(
+      layout_processor_configuration_create().add_before(
         Phase1,
-        test_processor_factory(Processor3),
+        test_processor_factory(Processor3, graph~),
       ),
     ),
   )
-  ignore(assembler.set_phase(Phase1, test_phase_factory(Phase1)))
-  ignore(assembler.set_phase(Phase2, test_phase_factory(Phase2)))
-  let algorithm = assembler.build(None)
+  ignore(assembler.set_phase(Phase1, test_phase_factory(Phase1, graph~)))
+  ignore(assembler.set_phase(Phase2, test_phase_factory(Phase2, graph~)))
+  let algorithm = assembler.build()
   let expected_strings = [
     "PROCESSOR_1", "PROCESSOR_3", "PHASE_1", "PROCESSOR_2", "PHASE_2",
   ]
   for i = 0; i < algorithm.length(); i = i + 1 {
-    assert_eq(run_processor_step(algorithm[i]), expected_strings[i])
+    assert_eq(
+      run_processor_step(algorithm.steps()[i], buffer),
+      expected_strings[i],
+    )
   }
 }

@@ -12,11 +12,9 @@ fn topdownpacking_expect_node(
 ///|
 fn topdownpacking_bottom_row_equal_whitespace_eliminator_configuration(
   graph : GridElkNode,
-) -> @core.LayoutProcessorConfiguration[TopdownPackingPhases, GridElkNode]? {
+) -> @core.LayoutProcessorConfiguration? {
   ignore(graph)
-  Some(
-    @core.layout_processor_configuration_create(topdownpacking_phase_descriptor),
-  )
+  Some(@core.layout_processor_configuration_create())
 }
 
 ///|
@@ -135,8 +133,7 @@ fn topdownpacking_bottom_row_equal_whitespace_eliminator_process_impl(
 }
 
 ///|
-pub fn new_topdownpacking_bottom_row_equal_whitespace_eliminator_layout_phase() -> @core.ILayoutProcessor[
-  TopdownPackingPhases,
+pub fn new_topdownpacking_bottom_row_equal_whitespace_eliminator_layout_phase() -> @core.TypedLayoutProcessor[
   GridElkNode,
 ] {
   @core.new_pure_layout_phase(

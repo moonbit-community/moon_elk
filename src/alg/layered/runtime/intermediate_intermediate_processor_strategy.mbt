@@ -267,35 +267,28 @@ pub fn intermediate_processor_strategy_to_string(
 ///|
 fn intermediate_processor_new_greedy_switch_layout_processor(
   cross_min_type : CrossMinType,
-) -> @core.ILayoutProcessor[LayeredPhases, LGraph] {
+) -> @core.TypedLayoutProcessor[LGraph] {
   let minimizer = new_layer_sweep_crossing_minimizer(cross_min_type)
-  let long_edge_splitter_factory = @core.new_layout_processor_factory(
-    23000 + intermediate_processor_strategy_ordinal(LongEdgeSplitter),
-    intermediate_processor_strategy_ordinal(LongEdgeSplitter),
-    () => new_long_edge_splitter_layout_processor(),
-  )
-  let in_layer_constraint_factory = @core.new_layout_processor_factory(
-    23000 + intermediate_processor_strategy_ordinal(InLayerConstraintProcessor),
-    intermediate_processor_strategy_ordinal(InLayerConstraintProcessor),
-    () => new_in_layer_constraint_processor_layout_processor(),
-  )
-  let long_edge_joiner_factory = @core.new_layout_processor_factory(
-    23000 + intermediate_processor_strategy_ordinal(LongEdgeJoiner),
-    intermediate_processor_strategy_ordinal(LongEdgeJoiner),
-    () => new_long_edge_joiner_layout_processor(),
-  )
-  let port_list_sorter_factory = @core.new_layout_processor_factory(
-    23000 + intermediate_processor_strategy_ordinal(PortListSorter),
-    intermediate_processor_strategy_ordinal(PortListSorter),
-    () => new_port_list_sorter_layout_processor(),
-  )
   @core.new_hierarchy_aware_layout_phase(
     (graph, monitor) => minimizer.process(graph, progress_monitor=monitor),
     graph => {
-      ignore(graph)
-      let configuration = @core.layout_processor_configuration_create(
-        layered_phase_descriptor,
+      let long_edge_splitter_factory = layered_intermediate_processor_factory(
+        graph,
+        LongEdgeSplitter,
       )
+      let in_layer_constraint_factory = layered_intermediate_processor_factory(
+        graph,
+        InLayerConstraintProcessor,
+      )
+      let long_edge_joiner_factory = layered_intermediate_processor_factory(
+        graph,
+        LongEdgeJoiner,
+      )
+      let port_list_sorter_factory = layered_intermediate_processor_factory(
+        graph,
+        PortListSorter,
+      )
+      let configuration = @core.layout_processor_configuration_create()
       ignore(
         configuration.add_before(P3NodeOrdering, long_edge_splitter_factory),
       )
@@ -313,7 +306,7 @@ fn intermediate_processor_new_greedy_switch_layout_processor(
 ///|
 fn intermediate_processor_create(
   strategy : IntermediateProcessorStrategy,
-) -> @core.ILayoutProcessor[LayeredPhases, LGraph] raise {
+) -> @core.TypedLayoutProcessor[LGraph] raise {
   match strategy {
     DirectionPreprocessor => new_direction_preprocessor_layout_processor()
     CommentPreprocessor => intermediate_processor_missing_registered(strategy)
@@ -409,7 +402,7 @@ fn intermediate_processor_create(
 ///|
 fn intermediate_processor_missing_registered(
   strategy : IntermediateProcessorStrategy,
-) -> @core.ILayoutProcessor[LayeredPhases, LGraph] raise {
+) -> @core.TypedLayoutProcessor[LGraph] raise {
   @core.layout_runtime_raise_unsupported_configuration(
     "Layered intermediate processor is not linked for strategy " +
     intermediate_processor_strategy_to_string(strategy),
@@ -419,10 +412,11 @@ fn intermediate_processor_missing_registered(
 
 ///|
 pub fn layered_intermediate_processor_factory(
+  graph : LGraph,
   strategy : IntermediateProcessorStrategy,
-) -> @core.ILayoutProcessorFactory[LayeredPhases, LGraph] {
+) -> @core.LayoutProcessorFactory {
   let ordinal = intermediate_processor_strategy_ordinal(strategy)
-  @core.new_layout_processor_factory(23000 + ordinal, ordinal, fn() raise {
+  @core.new_layout_processor_factory(23000 + ordinal, ordinal, graph, fn() raise {
     intermediate_processor_create(strategy)
   })
 }

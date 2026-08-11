@@ -458,8 +458,7 @@ fn edge_and_layer_constraint_edge_reverser_process(
 }
 
 ///|
-pub fn new_edge_and_layer_constraint_edge_reverser_layout_processor() -> @core.ILayoutProcessor[
-  LayeredPhases,
+pub fn new_edge_and_layer_constraint_edge_reverser_layout_processor() -> @core.TypedLayoutProcessor[
   LGraph,
 ] {
   @core.new_layout_processor(edge_and_layer_constraint_edge_reverser_process)

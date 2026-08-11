@@ -55,8 +55,7 @@ fn constraints_postprocessor_process(
 }
 
 ///|
-pub fn new_constraints_postprocessor_layout_processor() -> @core.ILayoutProcessor[
-  LayeredPhases,
+pub fn new_constraints_postprocessor_layout_processor() -> @core.TypedLayoutProcessor[
   LGraph,
 ] {
   @core.new_layout_processor(constraints_postprocessor_process)

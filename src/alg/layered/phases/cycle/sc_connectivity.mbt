@@ -91,8 +91,7 @@ fn sc_connectivity_process(
 }
 
 ///|
-pub fn new_sc_connectivity_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[
-  @runtime.LayeredPhases,
+pub fn new_sc_connectivity_cycle_breaker_layout_phase() -> @core.TypedLayoutProcessor[
   @runtime.LGraph,
 ] {
   @core.new_layout_phase(

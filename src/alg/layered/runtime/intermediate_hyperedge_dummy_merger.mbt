@@ -263,8 +263,7 @@ fn hyperedge_dummy_merger_process(
 }
 
 ///|
-pub fn new_hyperedge_dummy_merger_layout_processor() -> @core.ILayoutProcessor[
-  LayeredPhases,
+pub fn new_hyperedge_dummy_merger_layout_processor() -> @core.TypedLayoutProcessor[
   LGraph,
 ] {
   @core.new_layout_processor(hyperedge_dummy_merger_process)

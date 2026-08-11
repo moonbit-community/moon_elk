@@ -260,8 +260,7 @@ fn single_edge_graph_wrapper_process(
 }
 
 ///|
-pub fn new_single_edge_graph_wrapper_layout_processor() -> @core.ILayoutProcessor[
-  LayeredPhases,
+pub fn new_single_edge_graph_wrapper_layout_processor() -> @core.TypedLayoutProcessor[
   LGraph,
 ] {
   @core.new_layout_processor(single_edge_graph_wrapper_process)

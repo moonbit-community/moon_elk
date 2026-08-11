@@ -8,7 +8,13 @@ import {
 }
 
 // Values
-pub fn new_spore_delaunay_triangulation_layout_phase() -> @core.ILayoutProcessor[SPOrEPhases, SporeGraph]
+pub const P1_STRUCTURE : Int = 0
+
+pub const P2_PROCESSING_ORDER : Int = 1
+
+pub const P3_EXECUTION : Int = 2
+
+pub fn new_spore_delaunay_triangulation_layout_phase() -> @core.TypedLayoutProcessor[SporeGraph]
 
 pub fn new_spore_elk_graph_as_igraph_importer() -> SporeIGraphImporter[@graph.ElkNode]
 
@@ -16,19 +22,19 @@ pub fn new_spore_elk_graph_importer() -> SporeElkGraphImporter
 
 pub fn new_spore_graph((@common.TEdge) -> Double, SporeTreeConstructionStrategy, SporeCompactionStrategy) -> SporeGraph
 
-pub fn new_spore_grow_tree_layout_phase() -> @core.ILayoutProcessor[SPOrEPhases, SporeGraph]
+pub fn new_spore_grow_tree_layout_phase() -> @core.TypedLayoutProcessor[SporeGraph]
 
 pub fn[T] new_spore_igraph_importer((T) -> SporeGraph raise, (SporeGraph) -> Unit raise, (SporeGraph) -> Unit) -> SporeIGraphImporter[T]
 
-pub fn new_spore_max_st_layout_phase() -> @core.ILayoutProcessor[SPOrEPhases, SporeGraph]
+pub fn new_spore_max_st_layout_phase() -> @core.TypedLayoutProcessor[SporeGraph]
 
-pub fn new_spore_min_st_layout_phase() -> @core.ILayoutProcessor[SPOrEPhases, SporeGraph]
+pub fn new_spore_min_st_layout_phase() -> @core.TypedLayoutProcessor[SporeGraph]
 
 pub fn new_spore_overlap_removal_layout_provider(@core.OptionMetadata) -> SporeOverlapRemovalLayoutProvider raise
 
 pub fn new_spore_shrink_tree() -> SporeShrinkTree raise
 
-pub fn new_spore_shrink_tree_compaction_layout_phase() -> @core.ILayoutProcessor[SPOrEPhases, SporeGraph]
+pub fn new_spore_shrink_tree_compaction_layout_phase() -> @core.TypedLayoutProcessor[SporeGraph]
 
 pub fn new_spore_shrink_tree_layout_provider(@core.OptionMetadata) -> SporeShrinkTreeLayoutProvider raise
 
@@ -44,7 +50,7 @@ pub let spore_compaction_orthogonal : @graph.IProperty[Bool]
 
 pub fn spore_compaction_strategy_from_string(String) -> SporeCompactionStrategy
 
-pub fn spore_compaction_strategy_phase_factory(SporeCompactionStrategy) -> @core.ILayoutProcessorFactory[SPOrEPhases, SporeGraph]
+pub fn spore_compaction_strategy_phase_factory(SporeCompactionStrategy, SporeGraph) -> @core.LayoutProcessorFactory
 
 pub let spore_debug_mode : @graph.IProperty[Bool]
 
@@ -58,11 +64,11 @@ pub let spore_overlap_removal_max_iterations : @graph.IProperty[Double]
 
 pub let spore_overlap_removal_run_scanline : @graph.IProperty[Bool]
 
-pub fn spore_overlap_removal_strategy_phase_factory(SporeOverlapRemovalStrategy) -> @core.ILayoutProcessorFactory[SPOrEPhases, SporeGraph]
+pub fn spore_overlap_removal_strategy_phase_factory(SporeOverlapRemovalStrategy, SporeGraph) -> @core.LayoutProcessorFactory
 
 pub let spore_padding : @graph.IProperty[String]
 
-pub let spore_phase_descriptor : @core.PhaseDescriptor[SPOrEPhases]
+pub let spore_phase_descriptor : @core.PhaseDescriptor
 
 pub let spore_processing_order_preferred_root : @graph.IProperty[String]
 
@@ -84,23 +90,17 @@ pub let spore_structure_extraction_strategy : @graph.IProperty[String]
 
 pub fn spore_structure_extraction_strategy_from_string(String) -> SporeStructureExtractionStrategy
 
-pub fn spore_structure_extraction_strategy_phase_factory(SporeStructureExtractionStrategy) -> @core.ILayoutProcessorFactory[SPOrEPhases, SporeGraph]
+pub fn spore_structure_extraction_strategy_phase_factory(SporeStructureExtractionStrategy, SporeGraph) -> @core.LayoutProcessorFactory
 
 pub fn spore_tree_construction_strategy_from_string(String) -> SporeTreeConstructionStrategy
 
-pub fn spore_tree_construction_strategy_phase_factory(SporeTreeConstructionStrategy) -> @core.ILayoutProcessorFactory[SPOrEPhases, SporeGraph]
+pub fn spore_tree_construction_strategy_phase_factory(SporeTreeConstructionStrategy, SporeGraph) -> @core.LayoutProcessorFactory
 
 pub let spore_underlying_layout_algorithm : @graph.IProperty[String]
 
 // Errors
 
 // Types and methods
-pub enum SPOrEPhases {
-  P1_STRUCTURE
-  P2_PROCESSING_ORDER
-  P3_EXECUTION
-}
-
 pub enum SporeCompactionStrategy {
   DEPTH_FIRST
 }
@@ -141,7 +141,7 @@ type SporeNodeEntry
 
 pub struct SporeOverlapRemovalLayoutProvider {
   metadata : @core.OptionMetadata
-  algorithm_assembler : @core.AlgorithmAssembler[SPOrEPhases, SporeGraph]
+  algorithm_assembler : @core.AlgorithmAssembler
 }
 pub fn SporeOverlapRemovalLayoutProvider::layout(Self, @graph.ElkNode, @core.IElkProgressMonitor) -> Unit raise
 
@@ -155,7 +155,7 @@ pub enum SporeRootSelection {
 }
 
 pub struct SporeShrinkTree {
-  algorithm_assembler : @core.AlgorithmAssembler[SPOrEPhases, SporeGraph]
+  algorithm_assembler : @core.AlgorithmAssembler
 }
 pub fn SporeShrinkTree::shrink(Self, SporeGraph, @core.IElkProgressMonitor) -> Unit raise
 
@@ -183,5 +183,6 @@ pub enum SporeTreeConstructionStrategy {
 }
 
 // Type aliases
+pub type SPOrEPhases = Int
 
 // Traits

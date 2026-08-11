@@ -24,7 +24,7 @@ pub fn aggregated_match_decider_sum(Array[Double]) -> Double
 
 pub let algorithm : @graph.IProperty[String]
 
-pub fn[P, G] algorithm_assembler_create(PhaseDescriptor[P]) -> AlgorithmAssembler[P, G] raise
+pub fn algorithm_assembler_create(PhaseDescriptor) -> AlgorithmAssembler raise
 
 pub let alignment : @graph.IProperty[String]
 
@@ -160,7 +160,7 @@ pub fn elk_spacings_with_base_value(Double) -> ElkCoreSpacingsBuilder
 
 pub let elk_unknown_work : Double
 
-pub fn[P, G] enum_based_factory_compare(ILayoutProcessorFactory[P, G], ILayoutProcessorFactory[P, G]) -> Int
+pub fn enum_based_factory_compare(LayoutProcessorFactory, LayoutProcessorFactory) -> Int
 
 pub let expand_nodes : @graph.IProperty[Bool]
 
@@ -238,9 +238,9 @@ pub fn layout_meta_data_for_option(LayoutOptionData) -> ILayoutMetaData
 
 pub fn layout_option_proxy_set_proxy_value(Map[String, LayoutOptionProxy], String, String) -> Unit
 
-pub fn[P, G] layout_processor_configuration_create(PhaseDescriptor[P]) -> LayoutProcessorConfiguration[P, G]
+pub fn layout_processor_configuration_create() -> LayoutProcessorConfiguration
 
-pub fn[P, G] layout_processor_configuration_create_from(LayoutProcessorConfiguration[P, G]) -> LayoutProcessorConfiguration[P, G] raise
+pub fn layout_processor_configuration_create_from(LayoutProcessorConfiguration) -> LayoutProcessorConfiguration raise
 
 pub fn layout_runtime_raise_json_import(String) -> Unit raise
 
@@ -406,7 +406,7 @@ pub fn new_graph_validation_exception_message_issues(String, Array[GraphIssue]) 
 
 pub fn new_graph_validator(OptionMetadata) -> GraphValidator
 
-pub fn[P, G] new_hierarchy_aware_layout_phase((G, IElkProgressMonitor?) -> Unit raise, (G) -> LayoutProcessorConfiguration[P, G]? raise) -> ILayoutProcessor[P, G]
+pub fn[G] new_hierarchy_aware_layout_phase((G, IElkProgressMonitor?) -> Unit raise, (G) -> LayoutProcessorConfiguration? raise) -> TypedLayoutProcessor[G]
 
 pub fn new_i_label_manager((String, Double) -> KVector?) -> ILabelManager
 
@@ -466,11 +466,13 @@ pub fn new_layout_option_proxy(String) -> LayoutOptionProxy
 
 pub fn new_layout_option_validator(OptionMetadata) -> LayoutOptionValidator
 
-pub fn[P, G] new_layout_phase((G, IElkProgressMonitor?) -> Unit raise, (G) -> LayoutProcessorConfiguration[P, G]? raise) -> ILayoutProcessor[P, G]
+pub fn[G] new_layout_phase((G, IElkProgressMonitor?) -> Unit raise, (G) -> LayoutProcessorConfiguration? raise) -> TypedLayoutProcessor[G]
 
-pub fn[P, G] new_layout_processor((G, IElkProgressMonitor?) -> Unit raise) -> ILayoutProcessor[P, G]
+pub fn[G] new_layout_processor((G, IElkProgressMonitor?) -> Unit raise) -> TypedLayoutProcessor[G]
 
-pub fn[P, G] new_layout_processor_factory(Int, Int, () -> ILayoutProcessor[P, G] raise) -> ILayoutProcessorFactory[P, G]
+pub fn[G] new_layout_processor_factory(Int, Int, G, () -> TypedLayoutProcessor[G] raise) -> LayoutProcessorFactory
+
+pub fn new_layout_processor_plan(Array[&RunnableLayoutProcessor]) -> LayoutProcessorPlan
 
 pub fn new_layout_runtime() -> LayoutRuntime
 
@@ -490,13 +492,13 @@ pub fn new_null_elk_progress_monitor() -> IElkProgressMonitor
 
 pub fn new_option_metadata() -> OptionMetadata
 
-pub fn[P] new_phase_descriptor(Array[P], (P) -> Int) -> PhaseDescriptor[P]
+pub fn new_phase_descriptor(Array[Int]) -> PhaseDescriptor
 
 pub fn[T, L, E] new_port_adapter(GraphElementAdapter[T], () -> PortSide, () -> Array[L], () -> Spacing, (Spacing) -> Unit, () -> Array[E], () -> Array[E], () -> Bool) -> PortAdapter[T, L, E]
 
-pub fn[P, G] new_pure_layout_phase((G, IElkProgressMonitor?) -> Unit raise, (G) -> LayoutProcessorConfiguration[P, G]?) -> ILayoutProcessor[P, G]
+pub fn[G] new_pure_layout_phase((G, IElkProgressMonitor?) -> Unit raise, (G) -> LayoutProcessorConfiguration?) -> TypedLayoutProcessor[G]
 
-pub fn[P, G] new_pure_layout_processor((G, IElkProgressMonitor?) -> Unit) -> ILayoutProcessor[P, G]
+pub fn[G] new_pure_layout_processor((G, IElkProgressMonitor?) -> Unit) -> TypedLayoutProcessor[G]
 
 pub fn new_random_layout_provider() -> RandomLayoutProvider
 
@@ -846,29 +848,29 @@ pub fn[T] AggregatedMatchDecider::with_aggregator(Self[T], (Array[Double]) -> Do
 pub fn[T] AggregatedMatchDecider::with_lower_attachment_boundary(Self[T], Double) -> Self[T] raise AggregatedMatchDeciderException
 pub fn[T] AggregatedMatchDecider::with_lower_boundary_included(Self[T], Bool) -> Self[T]
 
-pub(all) struct AlgorithmAssembler[P, G] {
+pub(all) struct AlgorithmAssembler {
   mut enable_caching : Bool
   mut fail_on_missing_phase : Bool
-  mut processor_comparator : (ILayoutProcessorFactory[P, G], ILayoutProcessorFactory[P, G]) -> Int
-  phase_descriptor : PhaseDescriptor[P]
+  mut processor_comparator : (LayoutProcessorFactory, LayoutProcessorFactory) -> Int
+  phase_descriptor : PhaseDescriptor
   number_of_phases : Int
   configured_phases : Array[Bool]
-  phase_accessor : AbstractRandomListAccessor[ILayoutProcessorFactory[P, G]?]
-  additional_processors : LayoutProcessorConfiguration[P, G]
-  cache : Array[(Int, ILayoutProcessor[P, G])]
+  phase_accessor : AbstractRandomListAccessor[LayoutProcessorFactory?]
+  additional_processors : LayoutProcessorConfiguration
+  cache : Array[(Int, &RunnableLayoutProcessor)]
 }
-pub fn[P, G] AlgorithmAssembler::add_processor_configuration(Self[P, G], LayoutProcessorConfiguration[P, G]) -> Self[P, G] raise
-pub fn[P, G] AlgorithmAssembler::build(Self[P, G], G) -> Array[ILayoutProcessor[P, G]] raise
-pub fn[P, G] AlgorithmAssembler::clear_cache(Self[P, G]) -> Self[P, G]
-pub fn[P, G] AlgorithmAssembler::count_configured_phases(Self[P, G]) -> Int
-pub fn[P, G] AlgorithmAssembler::reset(Self[P, G]) -> Self[P, G]
-pub fn[P, G] AlgorithmAssembler::retrieve_phase(Self[P, G], ILayoutProcessorFactory[P, G]) -> ILayoutProcessor[P, G] raise
-pub fn[P, G] AlgorithmAssembler::retrieve_processor(Self[P, G], ILayoutProcessorFactory[P, G]) -> ILayoutProcessor[P, G] raise
-pub fn[P, G] AlgorithmAssembler::retrieve_processors(Self[P, G], Array[ILayoutProcessorFactory[P, G]]) -> Array[ILayoutProcessor[P, G]] raise
-pub fn[P, G] AlgorithmAssembler::set_phase(Self[P, G], P, ILayoutProcessorFactory[P, G]) -> Self[P, G] raise
-pub fn[P, G] AlgorithmAssembler::with_caching(Self[P, G], Bool) -> Self[P, G]
-pub fn[P, G] AlgorithmAssembler::with_fail_on_missing_phase(Self[P, G], Bool) -> Self[P, G]
-pub fn[P, G] AlgorithmAssembler::with_processor_comparator(Self[P, G], (ILayoutProcessorFactory[P, G], ILayoutProcessorFactory[P, G]) -> Int) -> Self[P, G]
+pub fn AlgorithmAssembler::add_processor_configuration(Self, LayoutProcessorConfiguration) -> Self raise
+pub fn AlgorithmAssembler::build(Self) -> LayoutProcessorPlan raise
+pub fn AlgorithmAssembler::clear_cache(Self) -> Self
+pub fn AlgorithmAssembler::count_configured_phases(Self) -> Int
+pub fn AlgorithmAssembler::reset(Self) -> Self
+pub fn AlgorithmAssembler::retrieve_phase(Self, LayoutProcessorFactory) -> &RunnableLayoutProcessor raise
+pub fn AlgorithmAssembler::retrieve_processor(Self, LayoutProcessorFactory) -> &RunnableLayoutProcessor raise
+pub fn AlgorithmAssembler::retrieve_processors(Self, Array[LayoutProcessorFactory]) -> Array[&RunnableLayoutProcessor] raise
+pub fn AlgorithmAssembler::set_phase(Self, Int, LayoutProcessorFactory) -> Self raise
+pub fn AlgorithmAssembler::with_caching(Self, Bool) -> Self
+pub fn AlgorithmAssembler::with_fail_on_missing_phase(Self, Bool) -> Self
+pub fn AlgorithmAssembler::with_processor_comparator(Self, (LayoutProcessorFactory, LayoutProcessorFactory) -> Int) -> Self
 
 pub(all) struct AlgorithmFactory {
   session : LayoutSession
@@ -1547,32 +1549,6 @@ pub(all) struct ILayoutMetaDataProvider {
 }
 pub fn ILayoutMetaDataProvider::apply(Self, LayoutMetaDataRegistry) -> Unit
 
-#alias(ILayoutPhase)
-pub(all) struct ILayoutProcessor[P, G] {
-  id : Int
-  process_fn : ((G, IElkProgressMonitor?) -> Unit raise)?
-  pure_process_fn : ((G, IElkProgressMonitor?) -> Unit)?
-  is_phase : Bool
-  is_hierarchy_aware : Bool
-  get_layout_processor_configuration_fn : ((G) -> LayoutProcessorConfiguration[P, G]? raise)?
-  get_pure_layout_processor_configuration_fn : ((G) -> LayoutProcessorConfiguration[P, G]?)?
-}
-pub fn[P, G] ILayoutProcessor::get_layout_processor_configuration(Self[P, G], G) -> LayoutProcessorConfiguration[P, G]? raise
-pub fn[P, G] ILayoutProcessor::instance_id(Self[P, G]) -> Int
-pub fn[P, G] ILayoutProcessor::is_hierarchy_aware_layout_processor(Self[P, G]) -> Bool
-pub fn[P, G] ILayoutProcessor::is_layout_phase(Self[P, G]) -> Bool
-pub fn[P, G] ILayoutProcessor::process(Self[P, G], G, IElkProgressMonitor?) -> Unit raise
-
-#alias(ILayoutPhaseFactory)
-pub(all) struct ILayoutProcessorFactory[P, G] {
-  id : Int
-  order : Int
-  create_fn : () -> ILayoutProcessor[P, G] raise
-}
-pub fn[P, G] ILayoutProcessorFactory::create(Self[P, G]) -> ILayoutProcessor[P, G] raise
-pub fn[P, G] ILayoutProcessorFactory::factory_id(Self[P, G]) -> Int
-pub fn[P, G] ILayoutProcessorFactory::factory_order(Self[P, G]) -> Int
-
 pub(all) struct IMatcher[C, T] {
   id : Int
   raw_fn : (C, T) -> Double raise
@@ -1907,22 +1883,37 @@ pub(all) enum LayoutOptionVisibility {
 }
 pub fn LayoutOptionVisibility::to_string(Self) -> String
 
-pub(all) struct LayoutProcessorConfiguration[P, G] {
-  phase_descriptor : PhaseDescriptor[P]
-  list_accessor : AbstractRandomListAccessor[Array[ILayoutProcessorFactory[P, G]]]
+pub(all) struct LayoutProcessorConfiguration {
+  list_accessor : AbstractRandomListAccessor[Array[LayoutProcessorFactory]]
   mut current_index : Int
 }
-pub fn[P, G] LayoutProcessorConfiguration::add(Self[P, G], ILayoutProcessorFactory[P, G]) -> Self[P, G] raise
-pub fn[P, G] LayoutProcessorConfiguration::add_after(Self[P, G], P, ILayoutProcessorFactory[P, G]) -> Self[P, G] raise
-pub fn[P, G] LayoutProcessorConfiguration::add_all(Self[P, G], Self[P, G]) -> Self[P, G] raise
-pub fn[P, G] LayoutProcessorConfiguration::add_before(Self[P, G], P, ILayoutProcessorFactory[P, G]) -> Self[P, G] raise
-pub fn[P, G] LayoutProcessorConfiguration::after(Self[P, G], P) -> Self[P, G]
-pub fn[P, G] LayoutProcessorConfiguration::before(Self[P, G], P) -> Self[P, G]
-pub fn[P, G] LayoutProcessorConfiguration::clear(Self[P, G]) -> Self[P, G]
-pub fn[P, G] LayoutProcessorConfiguration::do_add(Self[P, G], Int, ILayoutProcessorFactory[P, G]) -> Unit raise
-pub fn[P, G] LayoutProcessorConfiguration::processors(Self[P, G], Int) -> Array[ILayoutProcessorFactory[P, G]] raise
-pub fn[P, G] LayoutProcessorConfiguration::processors_after(Self[P, G], P) -> Array[ILayoutProcessorFactory[P, G]] raise
-pub fn[P, G] LayoutProcessorConfiguration::processors_before(Self[P, G], P) -> Array[ILayoutProcessorFactory[P, G]] raise
+pub fn LayoutProcessorConfiguration::add(Self, LayoutProcessorFactory) -> Self raise
+pub fn LayoutProcessorConfiguration::add_after(Self, Int, LayoutProcessorFactory) -> Self raise
+pub fn LayoutProcessorConfiguration::add_all(Self, Self) -> Self raise
+pub fn LayoutProcessorConfiguration::add_before(Self, Int, LayoutProcessorFactory) -> Self raise
+pub fn LayoutProcessorConfiguration::after(Self, Int) -> Self
+pub fn LayoutProcessorConfiguration::before(Self, Int) -> Self
+pub fn LayoutProcessorConfiguration::clear(Self) -> Self
+pub fn LayoutProcessorConfiguration::do_add(Self, Int, LayoutProcessorFactory) -> Unit raise
+pub fn LayoutProcessorConfiguration::processors(Self, Int) -> Array[LayoutProcessorFactory] raise
+pub fn LayoutProcessorConfiguration::processors_after(Self, Int) -> Array[LayoutProcessorFactory] raise
+pub fn LayoutProcessorConfiguration::processors_before(Self, Int) -> Array[LayoutProcessorFactory] raise
+
+pub(all) struct LayoutProcessorFactory {
+  id : Int
+  order : Int
+  create_fn : () -> &RunnableLayoutProcessor raise
+}
+pub fn LayoutProcessorFactory::create(Self) -> &RunnableLayoutProcessor raise
+pub fn LayoutProcessorFactory::factory_id(Self) -> Int
+pub fn LayoutProcessorFactory::factory_order(Self) -> Int
+
+pub struct LayoutProcessorPlan {
+  processors : Array[&RunnableLayoutProcessor]
+}
+pub fn LayoutProcessorPlan::is_empty(Self) -> Bool
+pub fn LayoutProcessorPlan::length(Self) -> Int
+pub fn LayoutProcessorPlan::steps(Self) -> Array[&RunnableLayoutProcessor]
 
 pub struct LayoutRuntime {
   // private fields
@@ -2065,13 +2056,11 @@ pub fn[F, S] Pair::set_first(Self[F, S], F?) -> Unit
 pub fn[F, S] Pair::set_second(Self[F, S], S?) -> Unit
 pub fn[F : Show, S : Show] Pair::to_string(Self[F, S]) -> String
 
-pub(all) struct PhaseDescriptor[P] {
-  phases : Array[P]
-  ordinal : (P) -> Int
+pub(all) struct PhaseDescriptor {
+  phases : Array[Int]
 }
-pub fn[P] PhaseDescriptor::ordinal_of(Self[P], P) -> Int
-pub fn[P] PhaseDescriptor::phases(Self[P]) -> Array[P]
-pub fn[P] PhaseDescriptor::size(Self[P]) -> Int
+pub fn PhaseDescriptor::phases(Self) -> Array[Int]
+pub fn PhaseDescriptor::size(Self) -> Int
 
 pub(all) struct PortAdapter[T, L, E] {
   element_adapter : GraphElementAdapter[T]
@@ -2258,10 +2247,10 @@ pub(all) struct TestController[G] {
 pub fn[G] TestController::add_layout_execution_listener(Self[G], ILayoutExecutionListener[G]) -> Unit
 pub fn[G] TestController::get_target_algorithm_id(Self[G]) -> String
 pub fn[G] TestController::install(Self[G], IWhiteBoxTestable[G]) -> Unit raise
-pub fn[P, G] TestController::notify_processor_finished(Self[G], G, ILayoutProcessor[P, G]) -> Unit
-pub fn[P, G] TestController::notify_processor_ready(Self[G], G, ILayoutProcessor[P, G]) -> Unit
-pub fn[P, G] TestController::notify_root_processor_finished(Self[G], G, ILayoutProcessor[P, G]) -> Unit
-pub fn[P, G] TestController::notify_root_processor_ready(Self[G], G, ILayoutProcessor[P, G]) -> Unit
+pub fn[G] TestController::notify_processor_finished(Self[G], G, Int) -> Unit
+pub fn[G] TestController::notify_processor_ready(Self[G], G, Int) -> Unit
+pub fn[G] TestController::notify_root_processor_finished(Self[G], G, Int) -> Unit
+pub fn[G] TestController::notify_root_processor_ready(Self[G], G, Int) -> Unit
 pub fn[G] TestController::remove_layout_execution_listener(Self[G], ILayoutExecutionListener[G]) -> Unit
 pub fn[G] TestController::targets(Self[G], LayoutAlgorithmData) -> Bool
 pub fn[G] TestController::uninstall(Self[G]) -> Unit
@@ -2308,6 +2297,21 @@ pub fn[F, S, T] Triple::get_third(Self[F, S, T]) -> T
 pub fn[F : Hash, S : Hash, T : Hash] Triple::hash_code(Self[F, S, T]) -> Int
 pub fn[F : Show, S : Show, T : Show] Triple::to_string(Self[F, S, T]) -> String
 
+pub(all) struct TypedLayoutProcessor[G] {
+  id : Int
+  process_fn : ((G, IElkProgressMonitor?) -> Unit raise)?
+  pure_process_fn : ((G, IElkProgressMonitor?) -> Unit)?
+  is_phase : Bool
+  is_hierarchy_aware : Bool
+  get_layout_processor_configuration_fn : ((G) -> LayoutProcessorConfiguration? raise)?
+  get_pure_layout_processor_configuration_fn : ((G) -> LayoutProcessorConfiguration?)?
+}
+pub fn[G] TypedLayoutProcessor::get_layout_processor_configuration(Self[G], G) -> LayoutProcessorConfiguration? raise
+pub fn[G] TypedLayoutProcessor::instance_id(Self[G]) -> Int
+pub fn[G] TypedLayoutProcessor::is_hierarchy_aware_layout_processor(Self[G]) -> Bool
+pub fn[G] TypedLayoutProcessor::is_layout_phase(Self[G]) -> Bool
+pub fn[G] TypedLayoutProcessor::process(Self[G], G, IElkProgressMonitor?) -> Unit raise
+
 pub(all) struct UnsupportedConfigurationException {
   message : String?
   cause : String?
@@ -2344,6 +2348,15 @@ pub type LayoutConfiguratorElementClass = String
 
 pub type LayoutConfiguratorFilter = (@graph.ElkNode, @graph.IProperty[Double]) -> Bool
 
+pub type PhaseId = Int
+
 pub type RecursiveGraphLayoutHandler = (LayoutRuntime, LayoutSession, @graph.ElkNode, IElkProgressMonitor) -> Unit raise
 
 // Traits
+pub(open) trait RunnableLayoutProcessor {
+  fn run(Self, IElkProgressMonitor?) -> Unit raise
+  fn instance_id(Self) -> Int
+  fn is_layout_phase(Self) -> Bool
+  fn is_hierarchy_aware_layout_processor(Self) -> Bool
+  fn get_layout_processor_configuration(Self) -> LayoutProcessorConfiguration? raise
+}

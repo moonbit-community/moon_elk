@@ -1,6 +1,6 @@
 ///|
 test "LayoutProcessorConfiguration testBefore" {
-  let config = layout_processor_configuration_create(test_phase_descriptor)
+  let config = layout_processor_configuration_create()
   ignore(
     config
     .before(Phase1)
@@ -17,7 +17,7 @@ test "LayoutProcessorConfiguration testBefore" {
 
 ///|
 test "LayoutProcessorConfiguration testAfter" {
-  let config = layout_processor_configuration_create(test_phase_descriptor)
+  let config = layout_processor_configuration_create()
   ignore(
     config
     .after(Phase1)
@@ -34,7 +34,7 @@ test "LayoutProcessorConfiguration testAfter" {
 
 ///|
 test "LayoutProcessorConfiguration testAddBefore1" {
-  let config = layout_processor_configuration_create(test_phase_descriptor)
+  let config = layout_processor_configuration_create()
   ignore(config.before(Phase1))
   ignore(config.add_before(Phase2, test_processor_factory(Processor1)))
   assert_eq(config.processors_before(Phase1).length(), 0)
@@ -46,7 +46,7 @@ test "LayoutProcessorConfiguration testAddBefore1" {
 ///|
 test "LayoutProcessorConfiguration testAddBefore2 reports runtime error" {
   let error = capture_layout_error(fn() raise {
-    let config = layout_processor_configuration_create(test_phase_descriptor)
+    let config = layout_processor_configuration_create()
     ignore(config.before(Phase1))
     ignore(config.add_before(Phase2, test_processor_factory(Processor1)))
     ignore(config.add(test_processor_factory(Processor2)))
@@ -61,7 +61,7 @@ test "LayoutProcessorConfiguration testAddBefore2 reports runtime error" {
 
 ///|
 test "LayoutProcessorConfiguration testAddAfter1" {
-  let config = layout_processor_configuration_create(test_phase_descriptor)
+  let config = layout_processor_configuration_create()
   ignore(config.before(Phase1))
   ignore(config.add_after(Phase1, test_processor_factory(Processor1)))
   assert_eq(config.processors_before(Phase1).length(), 0)
@@ -73,7 +73,7 @@ test "LayoutProcessorConfiguration testAddAfter1" {
 ///|
 test "LayoutProcessorConfiguration testAddAfter2 reports runtime error" {
   let error = capture_layout_error(fn() raise {
-    let config = layout_processor_configuration_create(test_phase_descriptor)
+    let config = layout_processor_configuration_create()
     ignore(config.before(Phase1))
     ignore(config.add_after(Phase1, test_processor_factory(Processor1)))
     ignore(config.add(test_processor_factory(Processor2)))
@@ -88,7 +88,7 @@ test "LayoutProcessorConfiguration testAddAfter2 reports runtime error" {
 
 ///|
 test "LayoutProcessorConfiguration testAddAll" {
-  let config = layout_processor_configuration_create(test_phase_descriptor)
+  let config = layout_processor_configuration_create()
   ignore(
     config
     .after(Phase1)
@@ -97,7 +97,7 @@ test "LayoutProcessorConfiguration testAddAll" {
     .add(test_processor_factory(Processor2))
     .add(test_processor_factory(Processor3)),
   )
-  let config2 = layout_processor_configuration_create(test_phase_descriptor)
+  let config2 = layout_processor_configuration_create()
   ignore(config2.add_all(config))
   assert_eq(config2.processors_before(Phase1).length(), 0)
   assert_eq(config2.processors_after(Phase1).length(), 1)

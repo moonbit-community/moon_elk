@@ -159,9 +159,7 @@ fn basic_cycle_breaker_has_cycle(graph : @runtime.LGraph) -> Bool {
 
 ///|
 fn basic_cycle_breaker_factory_ids(
-  factories : Array[
-    @core.ILayoutProcessorFactory[@runtime.LayeredPhases, @runtime.LGraph],
-  ],
+  factories : Array[@core.LayoutProcessorFactory],
 ) -> Array[Int] {
   let ids = []
   for factory in factories {

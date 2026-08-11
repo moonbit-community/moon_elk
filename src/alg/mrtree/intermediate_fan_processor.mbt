@@ -133,8 +133,7 @@ fn mrtree_fan_processor_process(
 }
 
 ///|
-pub fn new_mrtree_fan_processor_layout_processor() -> @core.ILayoutProcessor[
-  MrtreeTreeLayoutPhases,
+pub fn new_mrtree_fan_processor_layout_processor() -> @core.TypedLayoutProcessor[
   MrtreeGraph,
 ] {
   @core.new_layout_processor(mrtree_fan_processor_process)

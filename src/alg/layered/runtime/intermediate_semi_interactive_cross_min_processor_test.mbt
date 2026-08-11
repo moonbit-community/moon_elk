@@ -164,9 +164,10 @@ test "semi @core.interactive processor keeps graph flag false when no constraint
   ignore(single_positioned)
 
   let processor = layered_intermediate_processor_factory(
+    graph,
     semi_interactive_test_strategy("SEMI_INTERACTIVE_CROSSMIN_PROCESSOR"),
   ).create()
-  processor.process(graph, None)
+  processor.run(None)
 
   assert_false(
     graph.get_property_bool(

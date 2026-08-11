@@ -817,8 +817,7 @@ fn north_south_port_preprocessor_process(
 }
 
 ///|
-pub fn new_north_south_port_preprocessor_layout_processor() -> @core.ILayoutProcessor[
-  LayeredPhases,
+pub fn new_north_south_port_preprocessor_layout_processor() -> @core.TypedLayoutProcessor[
   LGraph,
 ] {
   @core.new_layout_processor(north_south_port_preprocessor_process)

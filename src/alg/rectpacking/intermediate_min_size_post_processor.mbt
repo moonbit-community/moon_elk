@@ -24,8 +24,7 @@ fn rectpacking_min_size_post_processor_process(
 }
 
 ///|
-pub fn new_rectpacking_min_size_post_processor_layout_processor() -> @core.ILayoutProcessor[
-  RectPackingLayoutPhases,
+pub fn new_rectpacking_min_size_post_processor_layout_processor() -> @core.TypedLayoutProcessor[
   @graph.ElkNode,
 ] {
   @core.new_layout_processor(rectpacking_min_size_post_processor_process)

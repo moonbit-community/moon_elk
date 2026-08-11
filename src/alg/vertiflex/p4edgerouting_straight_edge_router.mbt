@@ -49,7 +49,7 @@ fn vertiflex_straight_edge_router_process(
 ///|
 pub fn new_vertiflex_straight_edge_router_layout_phase(
   session : VertiFlexSession,
-) -> @core.ILayoutProcessor[VertiFlexLayoutPhases, @graph.ElkNode] {
+) -> @core.TypedLayoutProcessor[@graph.ElkNode] {
   @core.new_layout_phase(
     (graph, monitor) => {
       vertiflex_straight_edge_router_process(session, graph, monitor)

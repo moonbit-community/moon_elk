@@ -9,6 +9,14 @@ import {
 }
 
 // Values
+pub const P1Treeification : Int = 0
+
+pub const P2NodeOrdering : Int = 1
+
+pub const P3NodePlacement : Int = 2
+
+pub const P4EdgeRouting : Int = 3
+
 pub fn interactive_mrtree_graph_visitor_set_interactive_options(@graph.ElkNode) -> Unit
 
 pub fn mrtree_edge_bend_points(MrtreeEdge) -> @core.KVectorChain
@@ -109,7 +117,7 @@ pub fn mrtree_graph_spacing_node_node(MrtreeGraph) -> Double
 
 pub fn mrtree_graph_weighting(MrtreeGraph) -> @options.MrtreeOrderWeighting
 
-pub fn mrtree_intermediate_processor_factory(MrtreeIntermediateProcessorStrategy) -> @core.ILayoutProcessorFactory[MrtreeTreeLayoutPhases, MrtreeGraph]
+pub fn mrtree_intermediate_processor_factory(MrtreeIntermediateProcessorStrategy, MrtreeGraph) -> @core.LayoutProcessorFactory
 
 pub fn mrtree_label_edge(MrtreeLabel) -> MrtreeEdge
 
@@ -259,9 +267,9 @@ pub fn mrtree_shape_position(MrtreeShape) -> @core.KVector
 
 pub fn mrtree_shape_size(MrtreeShape) -> @core.KVector
 
-pub let mrtree_tree_layout_phase_descriptor : @core.PhaseDescriptor[MrtreeTreeLayoutPhases]
+pub let mrtree_tree_layout_phase_descriptor : @core.PhaseDescriptor
 
-pub fn mrtree_tree_layout_phase_factory(MrtreeTreeLayoutPhases) -> @core.ILayoutProcessorFactory[MrtreeTreeLayoutPhases, MrtreeGraph]
+pub fn mrtree_tree_layout_phase_factory(Int, MrtreeGraph) -> @core.LayoutProcessorFactory
 
 pub fn mrtree_tree_util_depth(MrtreeNode) -> Int raise
 
@@ -313,27 +321,27 @@ pub fn new_interactive_mrtree_graph_visitor() -> InteractiveMrtreeGraphVisitor
 
 pub fn new_mrtree() -> Mrtree
 
-pub fn new_mrtree_compaction_processor_layout_processor() -> @core.ILayoutProcessor[MrtreeTreeLayoutPhases, MrtreeGraph]
+pub fn new_mrtree_compaction_processor_layout_processor() -> @core.TypedLayoutProcessor[MrtreeGraph]
 
 pub fn new_mrtree_components_processor() -> MrtreeComponentsProcessor
 
-pub fn new_mrtree_dfs_treeifyer_layout_phase() -> @core.ILayoutProcessor[MrtreeTreeLayoutPhases, MrtreeGraph]
+pub fn new_mrtree_dfs_treeifyer_layout_phase() -> @core.TypedLayoutProcessor[MrtreeGraph]
 
-pub fn new_mrtree_direction_processor_layout_processor() -> @core.ILayoutProcessor[MrtreeTreeLayoutPhases, MrtreeGraph]
+pub fn new_mrtree_direction_processor_layout_processor() -> @core.TypedLayoutProcessor[MrtreeGraph]
 
 pub fn new_mrtree_edge(MrtreeNode, MrtreeNode) -> MrtreeEdge
 
-pub fn new_mrtree_edge_router_layout_phase() -> @core.ILayoutProcessor[MrtreeTreeLayoutPhases, MrtreeGraph]
+pub fn new_mrtree_edge_router_layout_phase() -> @core.TypedLayoutProcessor[MrtreeGraph]
 
 pub fn new_mrtree_elk_graph_as_igraph_importer() -> MrtreeIGraphImporter[@graph.ElkNode]
 
 pub fn new_mrtree_elk_graph_importer() -> MrtreeElkGraphImporter
 
-pub fn new_mrtree_fan_processor_layout_processor() -> @core.ILayoutProcessor[MrtreeTreeLayoutPhases, MrtreeGraph]
+pub fn new_mrtree_fan_processor_layout_processor() -> @core.TypedLayoutProcessor[MrtreeGraph]
 
 pub fn new_mrtree_graph() -> MrtreeGraph
 
-pub fn new_mrtree_graph_bounds_processor_layout_processor() -> @core.ILayoutProcessor[MrtreeTreeLayoutPhases, MrtreeGraph]
+pub fn new_mrtree_graph_bounds_processor_layout_processor() -> @core.TypedLayoutProcessor[MrtreeGraph]
 
 pub fn[T] new_mrtree_igraph_importer((T) -> MrtreeGraph raise, (MrtreeGraph) -> Unit raise) -> MrtreeIGraphImporter[T]
 
@@ -341,33 +349,33 @@ pub fn new_mrtree_label(MrtreeEdge, String) -> MrtreeLabel
 
 pub fn new_mrtree_label_shape(MrtreeLabel) -> MrtreeShape
 
-pub fn new_mrtree_level_coordinates_processor_layout_processor() -> @core.ILayoutProcessor[MrtreeTreeLayoutPhases, MrtreeGraph]
+pub fn new_mrtree_level_coordinates_processor_layout_processor() -> @core.TypedLayoutProcessor[MrtreeGraph]
 
-pub fn new_mrtree_level_height_processor_layout_processor() -> @core.ILayoutProcessor[MrtreeTreeLayoutPhases, MrtreeGraph]
+pub fn new_mrtree_level_height_processor_layout_processor() -> @core.TypedLayoutProcessor[MrtreeGraph]
 
-pub fn new_mrtree_level_processor_layout_processor() -> @core.ILayoutProcessor[MrtreeTreeLayoutPhases, MrtreeGraph]
+pub fn new_mrtree_level_processor_layout_processor() -> @core.TypedLayoutProcessor[MrtreeGraph]
 
 pub fn new_mrtree_multi_level_edge_node_node_gap(MrtreeNode?, MrtreeNode?, @core.Triple[@core.KVector, @core.KVector, MrtreeEdge], MrtreeGraph) -> MrtreeMultiLevelEdgeNodeNodeGap
 
-pub fn new_mrtree_neighbors_processor_layout_processor() -> @core.ILayoutProcessor[MrtreeTreeLayoutPhases, MrtreeGraph]
+pub fn new_mrtree_neighbors_processor_layout_processor() -> @core.TypedLayoutProcessor[MrtreeGraph]
 
 pub fn new_mrtree_node(Int, MrtreeGraph, label? : String) -> MrtreeNode
 
-pub fn new_mrtree_node_orderer_layout_phase() -> @core.ILayoutProcessor[MrtreeTreeLayoutPhases, MrtreeGraph]
+pub fn new_mrtree_node_orderer_layout_phase() -> @core.TypedLayoutProcessor[MrtreeGraph]
 
-pub fn new_mrtree_node_placer_layout_phase() -> @core.ILayoutProcessor[MrtreeTreeLayoutPhases, MrtreeGraph]
+pub fn new_mrtree_node_placer_layout_phase() -> @core.TypedLayoutProcessor[MrtreeGraph]
 
-pub fn new_mrtree_node_position_processor_layout_processor() -> @core.ILayoutProcessor[MrtreeTreeLayoutPhases, MrtreeGraph]
+pub fn new_mrtree_node_position_processor_layout_processor() -> @core.TypedLayoutProcessor[MrtreeGraph]
 
 pub fn new_mrtree_node_shape(MrtreeNode) -> MrtreeShape
 
-pub fn new_mrtree_order_balance_layout_phase() -> @core.ILayoutProcessor[MrtreeTreeLayoutPhases, MrtreeGraph]
+pub fn new_mrtree_order_balance_layout_phase() -> @core.TypedLayoutProcessor[MrtreeGraph]
 
-pub fn new_mrtree_root_processor_layout_processor() -> @core.ILayoutProcessor[MrtreeTreeLayoutPhases, MrtreeGraph]
+pub fn new_mrtree_root_processor_layout_processor() -> @core.TypedLayoutProcessor[MrtreeGraph]
 
 pub fn new_mrtree_tree_layout_provider() -> MrtreeTreeLayoutProvider
 
-pub fn new_mrtree_untreeifyer_layout_processor() -> @core.ILayoutProcessor[MrtreeTreeLayoutPhases, MrtreeGraph]
+pub fn new_mrtree_untreeifyer_layout_processor() -> @core.TypedLayoutProcessor[MrtreeGraph]
 
 pub fn register_mrtree_layout_algorithm(@core.LayoutRuntime) -> Unit
 
@@ -459,13 +467,6 @@ pub enum MrtreeShape {
   MrtreeLabelShape(MrtreeLabel)
 }
 
-pub enum MrtreeTreeLayoutPhases {
-  P1Treeification
-  P2NodeOrdering
-  P3NodePlacement
-  P4EdgeRouting
-}
-
 pub struct MrtreeTreeLayoutProvider {
   tree : Mrtree
   components_processor : MrtreeComponentsProcessor
@@ -473,5 +474,6 @@ pub struct MrtreeTreeLayoutProvider {
 pub fn MrtreeTreeLayoutProvider::layout(Self, @graph.ElkNode, @core.IElkProgressMonitor) -> Unit raise
 
 // Type aliases
+pub type MrtreeTreeLayoutPhases = Int
 
 // Traits

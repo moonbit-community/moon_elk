@@ -60,7 +60,7 @@ fn high_degree_test_layer_index(node : LNode) -> Int {
 ///|
 test "high degree processor strategy factory uses Java ordinal id" {
   let strategy = high_degree_test_strategy("HIGH_DEGREE_NODE_LAYER_PROCESSOR")
-  let factory = layered_intermediate_processor_factory(strategy)
+  let factory = layered_intermediate_processor_factory(new_l_graph(), strategy)
   assert_eq(factory.factory_order(), 9)
   assert_eq(factory.factory_id(), 23009)
 }

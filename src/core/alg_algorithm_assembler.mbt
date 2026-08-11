@@ -20,30 +20,28 @@ fn algorithm_assembler_exception_message(
 }
 
 ///|
-pub(all) struct AlgorithmAssembler[P, G] {
+/// Non-generic pipeline scheduler for graph-bound runnable processors.
+pub(all) struct AlgorithmAssembler {
   mut enable_caching : Bool
   mut fail_on_missing_phase : Bool
-  mut processor_comparator : (
-    ILayoutProcessorFactory[P, G],
-    ILayoutProcessorFactory[P, G],
-  ) -> Int
-  phase_descriptor : PhaseDescriptor[P]
+  mut processor_comparator : (LayoutProcessorFactory, LayoutProcessorFactory) -> Int
+  phase_descriptor : PhaseDescriptor
   number_of_phases : Int
   configured_phases : Array[Bool]
-  phase_accessor : AbstractRandomListAccessor[ILayoutPhaseFactory[P, G]?]
-  additional_processors : LayoutProcessorConfiguration[P, G]
-  cache : Array[(Int, ILayoutProcessor[P, G])]
+  phase_accessor : AbstractRandomListAccessor[LayoutProcessorFactory?]
+  additional_processors : LayoutProcessorConfiguration
+  cache : Array[(Int, &RunnableLayoutProcessor)]
 }
 
 ///|
-fn[P, G] none_phase_factory() -> ILayoutPhaseFactory[P, G]? {
+fn none_phase_factory() -> LayoutProcessorFactory? {
   None
 }
 
 ///|
-pub fn[P, G] algorithm_assembler_create(
-  phase_descriptor : PhaseDescriptor[P],
-) -> AlgorithmAssembler[P, G] raise {
+pub fn algorithm_assembler_create(
+  phase_descriptor : PhaseDescriptor,
+) -> AlgorithmAssembler raise {
   let number_of_phases = phase_descriptor.size()
   if number_of_phases == 0 {
     try
@@ -67,97 +65,91 @@ pub fn[P, G] algorithm_assembler_create(
     number_of_phases,
     configured_phases: make_bool_array(number_of_phases),
     phase_accessor: new_abstract_random_list_accessor(none_phase_factory),
-    additional_processors: layout_processor_configuration_create(
-      phase_descriptor,
-    ),
+    additional_processors: layout_processor_configuration_create(),
     cache: [],
   }
 }
 
 ///|
 fn make_bool_array(length : Int) -> Array[Bool] {
-  let array = []
-  let mut i = 0
-  while i < length {
-    array.push(false)
-    i += 1
-  }
-  array
+  [
+    for _ in 0..<length => false
+  ]
 }
 
 ///|
-pub fn[P, G] AlgorithmAssembler::with_caching(
-  self : AlgorithmAssembler[P, G],
+pub fn AlgorithmAssembler::with_caching(
+  self : AlgorithmAssembler,
   enabled : Bool,
-) -> AlgorithmAssembler[P, G] {
+) -> AlgorithmAssembler {
   self.enable_caching = enabled
   self
 }
 
 ///|
-pub fn[P, G] AlgorithmAssembler::with_fail_on_missing_phase(
-  self : AlgorithmAssembler[P, G],
+pub fn AlgorithmAssembler::with_fail_on_missing_phase(
+  self : AlgorithmAssembler,
   fail : Bool,
-) -> AlgorithmAssembler[P, G] {
+) -> AlgorithmAssembler {
   self.fail_on_missing_phase = fail
   self
 }
 
 ///|
-pub fn[P, G] AlgorithmAssembler::with_processor_comparator(
-  self : AlgorithmAssembler[P, G],
-  comparator : (ILayoutProcessorFactory[P, G], ILayoutProcessorFactory[P, G]) -> Int,
-) -> AlgorithmAssembler[P, G] {
+pub fn AlgorithmAssembler::with_processor_comparator(
+  self : AlgorithmAssembler,
+  comparator : (LayoutProcessorFactory, LayoutProcessorFactory) -> Int,
+) -> AlgorithmAssembler {
   self.processor_comparator = comparator
   self
 }
 
 ///|
-pub fn[P, G] AlgorithmAssembler::clear_cache(
-  self : AlgorithmAssembler[P, G],
-) -> AlgorithmAssembler[P, G] {
+pub fn AlgorithmAssembler::clear_cache(
+  self : AlgorithmAssembler,
+) -> AlgorithmAssembler {
   self.cache.clear()
   self
 }
 
 ///|
-pub fn[P, G] AlgorithmAssembler::reset(
-  self : AlgorithmAssembler[P, G],
-) -> AlgorithmAssembler[P, G] {
+pub fn AlgorithmAssembler::reset(
+  self : AlgorithmAssembler,
+) -> AlgorithmAssembler {
   self.phase_accessor.clear_list()
-  for i = 0; i < self.configured_phases.length(); i = i + 1 {
+  for i in 0..<self.configured_phases.length() {
     self.configured_phases[i] = false
   }
   ignore(self.additional_processors.clear())
+  self.cache.clear()
   self
 }
 
 ///|
-pub fn[P, G] AlgorithmAssembler::set_phase(
-  self : AlgorithmAssembler[P, G],
-  phase : P,
-  phase_factory : ILayoutPhaseFactory[P, G],
-) -> AlgorithmAssembler[P, G] raise {
-  let index = self.phase_descriptor.ordinal_of(phase)
+pub fn AlgorithmAssembler::set_phase(
+  self : AlgorithmAssembler,
+  phase : PhaseId,
+  phase_factory : LayoutProcessorFactory,
+) -> AlgorithmAssembler raise {
+  let index = phase
   self.phase_accessor.set_list_item(index, Some(phase_factory))
   self.configured_phases[index] = true
   self
 }
 
 ///|
-pub fn[P, G] AlgorithmAssembler::add_processor_configuration(
-  self : AlgorithmAssembler[P, G],
-  config : LayoutProcessorConfiguration[P, G],
-) -> AlgorithmAssembler[P, G] raise {
+pub fn AlgorithmAssembler::add_processor_configuration(
+  self : AlgorithmAssembler,
+  config : LayoutProcessorConfiguration,
+) -> AlgorithmAssembler raise {
   ignore(self.additional_processors.add_all(config))
   self
 }
 
 ///|
-pub fn[P, G] AlgorithmAssembler::build(
-  self : AlgorithmAssembler[P, G],
-  graph : G,
-) -> Array[ILayoutProcessor[P, G]] raise {
+pub fn AlgorithmAssembler::build(
+  self : AlgorithmAssembler,
+) -> LayoutProcessorPlan raise {
   if self.fail_on_missing_phase &&
     self.count_configured_phases() < self.number_of_phases {
     try
@@ -172,42 +164,37 @@ pub fn[P, G] AlgorithmAssembler::build(
     } noraise {
       _ => ()
     }
-    return []
+    return new_layout_processor_plan([])
   }
-  let phase_enum_constants = self.phase_descriptor.phases()
-  let phase_implementations = []
-  for phase in phase_enum_constants {
-    let index = self.phase_descriptor.ordinal_of(phase)
-    match self.phase_accessor.get_list_item(index) {
+  let phases = self.phase_descriptor.phases()
+  let phase_implementations : Array[&RunnableLayoutProcessor?] = []
+  for phase in phases {
+    match self.phase_accessor.get_list_item(phase) {
       Some(factory) =>
         phase_implementations.push(Some(self.retrieve_phase(factory)))
       None => phase_implementations.push(None)
     }
   }
-  let processor_configuration = layout_processor_configuration_create(
-    self.phase_descriptor,
-  )
+  let processor_configuration = layout_processor_configuration_create()
   for phase in phase_implementations {
     if phase is Some(phase_impl) {
-      if phase_impl.get_layout_processor_configuration(graph) is Some(config) {
+      if phase_impl.get_layout_processor_configuration() is Some(config) {
         ignore(processor_configuration.add_all(config))
       }
     }
   }
   ignore(processor_configuration.add_all(self.additional_processors))
-  let algorithm = []
-  for phase in phase_enum_constants {
+  let algorithm : Array[&RunnableLayoutProcessor] = []
+  for phase in phases {
     append_processors(
       algorithm,
       self.retrieve_processors(processor_configuration.processors_before(phase)),
     )
-    let index = self.phase_descriptor.ordinal_of(phase)
-    if phase_implementations[index] is Some(phase_implementation) {
+    if phase_implementations[phase] is Some(phase_implementation) {
       algorithm.push(phase_implementation)
     }
   }
-  if phase_enum_constants.length() > 0 {
-    let last_phase = phase_enum_constants[phase_enum_constants.length() - 1]
+  if phases is [.., last_phase] {
     append_processors(
       algorithm,
       self.retrieve_processors(
@@ -215,13 +202,13 @@ pub fn[P, G] AlgorithmAssembler::build(
       ),
     )
   }
-  algorithm
+  new_layout_processor_plan(algorithm)
 }
 
 ///|
-fn[P, G] append_processors(
-  target : Array[ILayoutProcessor[P, G]],
-  source : Array[ILayoutProcessor[P, G]],
+fn append_processors(
+  target : Array[&RunnableLayoutProcessor],
+  source : Array[&RunnableLayoutProcessor],
 ) -> Unit {
   for processor in source {
     target.push(processor)
@@ -229,23 +216,23 @@ fn[P, G] append_processors(
 }
 
 ///|
-pub fn[P, G] AlgorithmAssembler::count_configured_phases(
-  self : AlgorithmAssembler[P, G],
+pub fn AlgorithmAssembler::count_configured_phases(
+  self : AlgorithmAssembler,
 ) -> Int {
-  let mut count = 0
-  for configured in self.configured_phases {
+  self.configured_phases.fold(init=0, (count, configured) => {
     if configured {
-      count += 1
+      count + 1
+    } else {
+      count
     }
-  }
-  count
+  })
 }
 
 ///|
-pub fn[P, G] AlgorithmAssembler::retrieve_processors(
-  self : AlgorithmAssembler[P, G],
-  factories : Array[ILayoutProcessorFactory[P, G]],
-) -> Array[ILayoutProcessor[P, G]] raise {
+pub fn AlgorithmAssembler::retrieve_processors(
+  self : AlgorithmAssembler,
+  factories : Array[LayoutProcessorFactory],
+) -> Array[&RunnableLayoutProcessor] raise {
   let processors = []
   let sorted_factories = sort_processor_factories(
     factories,
@@ -258,12 +245,12 @@ pub fn[P, G] AlgorithmAssembler::retrieve_processors(
 }
 
 ///|
-fn[P, G] sort_processor_factories(
-  factories : Array[ILayoutProcessorFactory[P, G]],
-  comparator : (ILayoutProcessorFactory[P, G], ILayoutProcessorFactory[P, G]) -> Int,
-) -> Array[ILayoutProcessorFactory[P, G]] {
+fn sort_processor_factories(
+  factories : Array[LayoutProcessorFactory],
+  comparator : (LayoutProcessorFactory, LayoutProcessorFactory) -> Int,
+) -> Array[LayoutProcessorFactory] {
   let sorted = factories.copy()
-  for i = 1; i < sorted.length(); i = i + 1 {
+  for i in 1..<sorted.length() {
     let mut j = i
     while j > 0 && comparator(sorted[j - 1], sorted[j]) > 0 {
       let previous = sorted[j - 1]
@@ -276,18 +263,18 @@ fn[P, G] sort_processor_factories(
 }
 
 ///|
-pub fn[P, G] AlgorithmAssembler::retrieve_phase(
-  self : AlgorithmAssembler[P, G],
-  factory : ILayoutPhaseFactory[P, G],
-) -> ILayoutProcessor[P, G] raise {
+pub fn AlgorithmAssembler::retrieve_phase(
+  self : AlgorithmAssembler,
+  factory : LayoutProcessorFactory,
+) -> &RunnableLayoutProcessor raise {
   self.retrieve_processor(factory)
 }
 
 ///|
-pub fn[P, G] AlgorithmAssembler::retrieve_processor(
-  self : AlgorithmAssembler[P, G],
-  factory : ILayoutProcessorFactory[P, G],
-) -> ILayoutProcessor[P, G] raise {
+pub fn AlgorithmAssembler::retrieve_processor(
+  self : AlgorithmAssembler,
+  factory : LayoutProcessorFactory,
+) -> &RunnableLayoutProcessor raise {
   if self.enable_caching {
     if find_cached_processor(self.cache, factory.factory_id())
       is Some(processor) {
@@ -303,10 +290,10 @@ pub fn[P, G] AlgorithmAssembler::retrieve_processor(
 }
 
 ///|
-fn[P, G] find_cached_processor(
-  cache : Array[(Int, ILayoutProcessor[P, G])],
+fn find_cached_processor(
+  cache : Array[(Int, &RunnableLayoutProcessor)],
   factory_id : Int,
-) -> ILayoutProcessor[P, G]? {
+) -> &RunnableLayoutProcessor? {
   for entry in cache {
     let (cached_id, processor) = entry
     if cached_id == factory_id {

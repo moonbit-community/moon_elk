@@ -1,9 +1,6 @@
 ///|
 pub struct RectPackingLayoutProvider {
-  algorithm_assembler : @core.AlgorithmAssembler[
-    RectPackingLayoutPhases,
-    @graph.ElkNode,
-  ]
+  algorithm_assembler : @core.AlgorithmAssembler
   session : RectPackingSession
 }
 
@@ -53,22 +50,26 @@ fn rectpacking_apply_padding(
 ///|
 fn rectpacking_get_phase_independent_layout_processor_configuration(
   layout_graph : @graph.ElkNode,
-) -> @core.LayoutProcessorConfiguration[RectPackingLayoutPhases, @graph.ElkNode] raise {
-  let configuration = @core.layout_processor_configuration_create(
-    rectpacking_phase_descriptor,
-  )
+) -> @core.LayoutProcessorConfiguration raise {
+  let configuration = @core.layout_processor_configuration_create()
 
   ignore(
     configuration.add_before(
       P1_WIDTH_APPROXIMATION,
-      rectpacking_intermediate_processor_factory(MIN_SIZE_PRE_PROCESSOR),
+      rectpacking_intermediate_processor_factory(
+        MIN_SIZE_PRE_PROCESSOR,
+        layout_graph,
+      ),
     ),
   )
 
   ignore(
     configuration.add_before(
       P2_PACKING,
-      rectpacking_intermediate_processor_factory(MIN_SIZE_POST_PROCESSOR),
+      rectpacking_intermediate_processor_factory(
+        MIN_SIZE_POST_PROCESSOR,
+        layout_graph,
+      ),
     ),
   )
 
@@ -76,7 +77,10 @@ fn rectpacking_get_phase_independent_layout_processor_configuration(
     ignore(
       configuration.add_before(
         P1_WIDTH_APPROXIMATION,
-        rectpacking_intermediate_processor_factory(NODE_SIZE_REORDERER),
+        rectpacking_intermediate_processor_factory(
+          NODE_SIZE_REORDERER,
+          layout_graph,
+        ),
       ),
     )
   }
@@ -85,7 +89,10 @@ fn rectpacking_get_phase_independent_layout_processor_configuration(
     ignore(
       configuration.add_before(
         P1_WIDTH_APPROXIMATION,
-        rectpacking_intermediate_processor_factory(INTERACTIVE_NODE_REORDERER),
+        rectpacking_intermediate_processor_factory(
+          INTERACTIVE_NODE_REORDERER,
+          layout_graph,
+        ),
       ),
     )
   }
@@ -97,7 +104,7 @@ fn rectpacking_get_phase_independent_layout_processor_configuration(
 pub fn RectPackingLayoutProvider::assemble_algorithm(
   self : RectPackingLayoutProvider,
   layout_graph : @graph.ElkNode,
-) -> Array[@core.ILayoutProcessor[RectPackingLayoutPhases, @graph.ElkNode]] raise {
+) -> @core.LayoutProcessorPlan raise {
   ignore(self.algorithm_assembler.reset())
 
   ignore(
@@ -109,6 +116,7 @@ pub fn RectPackingLayoutProvider::assemble_algorithm(
             layout_graph, rectpacking_width_approximation_strategy,
           ),
         ),
+        layout_graph,
       ),
     ),
   )
@@ -123,6 +131,7 @@ pub fn RectPackingLayoutProvider::assemble_algorithm(
             layout_graph, rectpacking_packing_strategy,
           ),
         ),
+        layout_graph,
       ),
     ),
   )
@@ -137,6 +146,7 @@ pub fn RectPackingLayoutProvider::assemble_algorithm(
             layout_graph, rectpacking_white_space_elimination_strategy,
           ),
         ),
+        layout_graph,
       ),
     ),
   )
@@ -149,7 +159,7 @@ pub fn RectPackingLayoutProvider::assemble_algorithm(
     ),
   )
 
-  self.algorithm_assembler.build(layout_graph)
+  self.algorithm_assembler.build()
 }
 
 ///|
@@ -202,13 +212,13 @@ pub fn RectPackingLayoutProvider::layout(
   }
   ignore(stackable)
 
-  let algorithm = self.assemble_algorithm(layout_graph)
+  let plan = self.assemble_algorithm(layout_graph)
 
-  for processor in algorithm {
+  for processor in plan.steps() {
     if progress_monitor.is_canceled() {
       return
     }
-    processor.process(layout_graph, progress_monitor.sub_task(1.0))
+    processor.run(progress_monitor.sub_task(1.0))
   }
 
   let mut real_width = 0.0

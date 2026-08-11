@@ -21,8 +21,7 @@ fn rectpacking_whitespace_noop_process(
 }
 
 ///|
-fn new_rectpacking_whitespace_noop_layout_phase() -> @core.ILayoutProcessor[
-  RectPackingLayoutPhases,
+fn new_rectpacking_whitespace_noop_layout_phase() -> @core.TypedLayoutProcessor[
   @graph.ElkNode,
 ] {
   @core.new_layout_phase(rectpacking_whitespace_noop_process, _ => None)
@@ -45,18 +44,19 @@ pub fn rectpacking_whitespace_elimination_strategy_from_string(
 pub fn rectpacking_whitespace_elimination_strategy_phase_factory(
   session : RectPackingSession,
   strategy : RectpackingWhiteSpaceEliminationStrategy,
-) -> @core.ILayoutPhaseFactory[RectPackingLayoutPhases, @graph.ElkNode] {
+  graph : @graph.ElkNode,
+) -> @core.LayoutProcessorFactory {
   match strategy {
     EQUAL_BETWEEN_STRUCTURES =>
-      @core.new_layout_processor_factory(84200, 0, () => {
+      @core.new_layout_processor_factory(84200, 0, graph, () => {
         new_rectpacking_equal_whitespace_eliminator_layout_phase(session)
       })
     TO_ASPECT_RATIO =>
-      @core.new_layout_processor_factory(84201, 1, () => {
+      @core.new_layout_processor_factory(84201, 1, graph, () => {
         new_rectpacking_to_aspectratio_node_expander_layout_phase(session)
       })
     NONE =>
-      @core.new_layout_processor_factory(84202, 2, () => {
+      @core.new_layout_processor_factory(84202, 2, graph, () => {
         new_rectpacking_whitespace_noop_layout_phase()
       })
   }

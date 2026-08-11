@@ -41,8 +41,7 @@ fn mrtree_root_processor_process(
 }
 
 ///|
-pub fn new_mrtree_root_processor_layout_processor() -> @core.ILayoutProcessor[
-  MrtreeTreeLayoutPhases,
+pub fn new_mrtree_root_processor_layout_processor() -> @core.TypedLayoutProcessor[
   MrtreeGraph,
 ] {
   @core.new_layout_processor(mrtree_root_processor_process)

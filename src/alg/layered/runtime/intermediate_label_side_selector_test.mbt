@@ -302,15 +302,16 @@ test "label side selector smart mode handles top label dummy and east end labels
 
 ///|
 test "label side selector strategy creates concrete processor" {
+  let graph = new_l_graph()
   let factory = layered_intermediate_processor_factory(
+    graph,
     label_side_selector_test_strategy("LABEL_SIDE_SELECTOR"),
   )
   let processor = factory.create()
-  let graph = new_l_graph()
   graph.set_property_string(
     @options.layered_options_edge_labels_side_selection, "ALWAYS_DOWN",
   )
   let monitor = new_elk_progress_monitor()
-  processor.process(graph, Some(monitor))
+  processor.run(Some(monitor))
   inspect(monitor.get_task_name(), content="Label side selection (ALWAYS_DOWN)")
 }

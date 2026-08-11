@@ -67,6 +67,7 @@ test "end label sorter keeps represented labels lexicographically sorted" {
 ///|
 test "intermediate strategy factory exposes end label sorter" {
   let factory = layered_intermediate_processor_factory(
+    new_l_graph(),
     end_label_sorter_test_strategy("END_LABEL_SORTER"),
   )
   assert_eq(factory.factory_id(), 23053)

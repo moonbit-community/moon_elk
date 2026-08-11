@@ -274,8 +274,7 @@ fn hypernodes_processor_process(
 }
 
 ///|
-pub fn new_hypernodes_processor_layout_processor() -> @core.ILayoutProcessor[
-  LayeredPhases,
+pub fn new_hypernodes_processor_layout_processor() -> @core.TypedLayoutProcessor[
   LGraph,
 ] {
   @core.new_layout_processor(hypernodes_processor_process)

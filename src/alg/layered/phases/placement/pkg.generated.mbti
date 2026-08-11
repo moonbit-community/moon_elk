@@ -28,19 +28,19 @@ pub fn new_bk_compactor(@runtime.LGraph, NeighborhoodInformation) -> BKCompactor
 
 pub fn new_bk_i_compactor((BKAlignedLayout) -> Unit) -> BkICompactor
 
-pub fn new_bk_node_placer_layout_phase() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
+pub fn new_bk_node_placer_layout_phase() -> @core.TypedLayoutProcessor[@runtime.LGraph]
 
 pub fn new_bk_null_threshold_strategy() -> BkThresholdStrategy
 
 pub fn new_bk_simple_threshold_strategy() -> BkThresholdStrategy
 
-pub fn new_interactive_node_placer_layout_phase() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
+pub fn new_interactive_node_placer_layout_phase() -> @core.TypedLayoutProcessor[@runtime.LGraph]
 
-pub fn new_linear_segments_node_placer_layout_phase() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
+pub fn new_linear_segments_node_placer_layout_phase() -> @core.TypedLayoutProcessor[@runtime.LGraph]
 
-pub fn new_network_simplex_placer_layout_phase() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
+pub fn new_network_simplex_placer_layout_phase() -> @core.TypedLayoutProcessor[@runtime.LGraph]
 
-pub fn new_simple_node_placer_layout_phase() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
+pub fn new_simple_node_placer_layout_phase() -> @core.TypedLayoutProcessor[@runtime.LGraph]
 
 pub fn register_node_placement_phases(@runtime.LayeredPhaseRegistry) -> Unit
 

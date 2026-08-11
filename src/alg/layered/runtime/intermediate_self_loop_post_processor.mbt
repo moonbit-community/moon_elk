@@ -73,8 +73,7 @@ fn self_loop_post_processor_process(
 }
 
 ///|
-pub fn new_self_loop_post_processor_layout_processor() -> @core.ILayoutProcessor[
-  LayeredPhases,
+pub fn new_self_loop_post_processor_layout_processor() -> @core.TypedLayoutProcessor[
   LGraph,
 ] {
   @core.new_layout_processor(self_loop_post_processor_process)

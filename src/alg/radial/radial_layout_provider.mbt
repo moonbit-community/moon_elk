@@ -1,9 +1,6 @@
 ///|
 pub struct RadialLayoutProvider {
-  algorithm_assembler : @core.AlgorithmAssembler[
-    RadialLayoutPhases,
-    @graph.ElkNode,
-  ]
+  algorithm_assembler : @core.AlgorithmAssembler
 }
 
 ///|
@@ -46,28 +43,26 @@ fn radial_node_micro_layout_execute(layout_graph : @graph.ElkNode) -> Unit {
 fn radial_layout_provider_assemble_algorithm(
   provider : RadialLayoutProvider,
   layout_graph : @graph.ElkNode,
-) -> Array[@core.ILayoutProcessor[RadialLayoutPhases, @graph.ElkNode]] raise {
+) -> @core.LayoutProcessorPlan raise {
   ignore(provider.algorithm_assembler.reset())
   ignore(
     provider.algorithm_assembler.set_phase(
       P1_NODE_PLACEMENT,
-      radial_layout_phase_factory(P1_NODE_PLACEMENT),
+      radial_layout_phase_factory(P1_NODE_PLACEMENT, layout_graph),
     ),
   )
   ignore(
     provider.algorithm_assembler.set_phase(
       P2_EDGE_ROUTING,
-      radial_layout_phase_factory(P2_EDGE_ROUTING),
+      radial_layout_phase_factory(P2_EDGE_ROUTING, layout_graph),
     ),
   )
 
-  let configuration = @core.layout_processor_configuration_create(
-    radial_layout_phase_descriptor,
-  )
+  let configuration = @core.layout_processor_configuration_create()
   ignore(
     configuration.add_before(
       P2_EDGE_ROUTING,
-      radial_intermediate_processor_factory(OVERLAP_REMOVAL),
+      radial_intermediate_processor_factory(OVERLAP_REMOVAL, layout_graph),
     ),
   )
   let has_compaction = match radial_graph_compaction_strategy(layout_graph) {
@@ -78,7 +73,7 @@ fn radial_layout_provider_assemble_algorithm(
     ignore(
       configuration.add_before(
         P2_EDGE_ROUTING,
-        radial_intermediate_processor_factory(COMPACTION),
+        radial_intermediate_processor_factory(COMPACTION, layout_graph),
       ),
     )
   }
@@ -86,14 +81,17 @@ fn radial_layout_provider_assemble_algorithm(
     ignore(
       configuration.add_before(
         P2_EDGE_ROUTING,
-        radial_intermediate_processor_factory(ROTATION),
+        radial_intermediate_processor_factory(ROTATION, layout_graph),
       ),
     )
   }
   ignore(
     configuration.add_before(
       P2_EDGE_ROUTING,
-      radial_intermediate_processor_factory(GRAPH_SIZE_CALCULATION),
+      radial_intermediate_processor_factory(
+        GRAPH_SIZE_CALCULATION,
+        layout_graph,
+      ),
     ),
   )
   if @graph.node_get_bool_property(
@@ -102,14 +100,17 @@ fn radial_layout_provider_assemble_algorithm(
     ignore(
       configuration.add_after(
         P2_EDGE_ROUTING,
-        radial_intermediate_processor_factory(OUTGOING_EDGE_ANGLES),
+        radial_intermediate_processor_factory(
+          OUTGOING_EDGE_ANGLES,
+          layout_graph,
+        ),
       ),
     )
   }
   ignore(
     provider.algorithm_assembler.add_processor_configuration(configuration),
   )
-  provider.algorithm_assembler.build(layout_graph)
+  provider.algorithm_assembler.build()
 }
 
 ///|
@@ -139,12 +140,8 @@ fn radial_layout_provider_layout_impl(
   layout_graph : @graph.ElkNode,
   progress_monitor : @core.IElkProgressMonitor,
 ) -> Unit raise {
-  let algorithm = radial_layout_provider_assemble_algorithm(
-    provider, layout_graph,
-  )
-  ignore(
-    progress_monitor.begin("Radial layout", algorithm.length().to_double()),
-  )
+  let plan = radial_layout_provider_assemble_algorithm(provider, layout_graph)
+  ignore(progress_monitor.begin("Radial layout", plan.length().to_double()))
   if !@graph.node_get_bool_property(layout_graph, radial_omit_node_micro_layout) {
     radial_node_micro_layout_execute(layout_graph)
   }
@@ -161,11 +158,8 @@ fn radial_layout_provider_layout_impl(
       @graph.node_set_double_property(
         layout_graph, radial_radius, layout_radius,
       )
-      for
-        processor in radial_layout_provider_assemble_algorithm(
-          provider, layout_graph,
-        ) {
-        processor.process(layout_graph, progress_monitor.sub_task(1.0))
+      for processor in plan.steps() {
+        processor.run(progress_monitor.sub_task(1.0))
       }
       progress_monitor.done()
     }

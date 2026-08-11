@@ -769,8 +769,7 @@ fn final_spline_bendpoints_calculator_process(
 }
 
 ///|
-pub fn new_final_spline_bendpoints_calculator_layout_processor() -> @core.ILayoutProcessor[
-  LayeredPhases,
+pub fn new_final_spline_bendpoints_calculator_layout_processor() -> @core.TypedLayoutProcessor[
   LGraph,
 ] {
   @core.new_layout_processor(final_spline_bendpoints_calculator_process)

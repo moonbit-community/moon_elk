@@ -350,8 +350,7 @@ fn high_degree_node_layering_processor_process(
 }
 
 ///|
-pub fn new_high_degree_node_layering_processor_layout_processor() -> @core.ILayoutProcessor[
-  LayeredPhases,
+pub fn new_high_degree_node_layering_processor_layout_processor() -> @core.TypedLayoutProcessor[
   LGraph,
 ] {
   @core.new_layout_processor(high_degree_node_layering_processor_process)

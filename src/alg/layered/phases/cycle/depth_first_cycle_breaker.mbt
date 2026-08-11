@@ -137,21 +137,21 @@ fn depth_first_cycle_breaker_process(
 ///|
 fn depth_first_cycle_breaker_configuration(
   graph : @runtime.LGraph,
-) -> @core.LayoutProcessorConfiguration[@runtime.LayeredPhases, @runtime.LGraph]? raise {
+) -> @core.LayoutProcessorConfiguration? raise {
   ignore(graph)
   Some(
-    @core.layout_processor_configuration_create(
-      @runtime.layered_phase_descriptor,
-    ).add_after(
-      P5EdgeRouting,
-      @runtime.layered_intermediate_processor_factory(ReversedEdgeRestorer),
+    @core.layout_processor_configuration_create().add_after(
+      @runtime.P5EdgeRouting,
+      @runtime.layered_intermediate_processor_factory(
+        graph,
+        ReversedEdgeRestorer,
+      ),
     ),
   )
 }
 
 ///|
-pub fn new_depth_first_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[
-  @runtime.LayeredPhases,
+pub fn new_depth_first_cycle_breaker_layout_phase() -> @core.TypedLayoutProcessor[
   @runtime.LGraph,
 ] {
   @core.new_layout_phase(

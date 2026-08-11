@@ -5,8 +5,7 @@ let radial_circle_degrees = 360
 let radial_degree_to_rad : Double = @math.PI / 180.0
 
 ///|
-pub fn new_radial_eades_layout_phase() -> @core.ILayoutProcessor[
-  RadialLayoutPhases,
+pub fn new_radial_eades_layout_phase() -> @core.TypedLayoutProcessor[
   @graph.ElkNode,
 ] {
   @core.new_layout_phase(

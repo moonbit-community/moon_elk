@@ -146,148 +146,147 @@ fn orthogonal_edge_router_place_nodes_horizontally(
 }
 
 ///|
-fn orthogonal_edge_router_hyperedge_processing_additions() -> @core.LayoutProcessorConfiguration[
-  LayeredPhases,
-  LGraph,
-] raise {
-  @core.layout_processor_configuration_create(layered_phase_descriptor).add_before(
+fn orthogonal_edge_router_hyperedge_processing_additions(
+  graph : LGraph,
+) -> @core.LayoutProcessorConfiguration raise {
+  @core.layout_processor_configuration_create().add_before(
     P4NodePlacement,
-    layered_intermediate_processor_factory(HyperedgeDummyMerger),
+    layered_intermediate_processor_factory(graph, HyperedgeDummyMerger),
   )
 }
 
 ///|
-fn orthogonal_edge_router_inverted_port_processing_additions() -> @core.LayoutProcessorConfiguration[
-  LayeredPhases,
-  LGraph,
-] raise {
-  @core.layout_processor_configuration_create(layered_phase_descriptor).add_before(
+fn orthogonal_edge_router_inverted_port_processing_additions(
+  graph : LGraph,
+) -> @core.LayoutProcessorConfiguration raise {
+  @core.layout_processor_configuration_create().add_before(
     P3NodeOrdering,
-    layered_intermediate_processor_factory(InvertedPortProcessor),
+    layered_intermediate_processor_factory(graph, InvertedPortProcessor),
   )
 }
 
 ///|
-fn orthogonal_edge_router_north_south_port_processing_additions() -> @core.LayoutProcessorConfiguration[
-  LayeredPhases,
-  LGraph,
-] raise {
-  @core.layout_processor_configuration_create(layered_phase_descriptor)
+fn orthogonal_edge_router_north_south_port_processing_additions(
+  graph : LGraph,
+) -> @core.LayoutProcessorConfiguration raise {
+  @core.layout_processor_configuration_create()
   .add_before(
     P3NodeOrdering,
-    layered_intermediate_processor_factory(NorthSouthPortPreprocessor),
+    layered_intermediate_processor_factory(graph, NorthSouthPortPreprocessor),
   )
   .add_after(
     P5EdgeRouting,
-    layered_intermediate_processor_factory(NorthSouthPortPostprocessor),
+    layered_intermediate_processor_factory(graph, NorthSouthPortPostprocessor),
   )
 }
 
 ///|
-fn orthogonal_edge_router_hierarchical_port_processing_additions() -> @core.LayoutProcessorConfiguration[
-  LayeredPhases,
-  LGraph,
-] raise {
-  @core.layout_processor_configuration_create(layered_phase_descriptor)
+fn orthogonal_edge_router_hierarchical_port_processing_additions(
+  graph : LGraph,
+) -> @core.LayoutProcessorConfiguration raise {
+  @core.layout_processor_configuration_create()
   .add_before(
     P3NodeOrdering,
-    layered_intermediate_processor_factory(HierarchicalPortConstraintProcessor),
+    layered_intermediate_processor_factory(
+      graph,
+      HierarchicalPortConstraintProcessor,
+    ),
   )
   .add_before(
     P4NodePlacement,
-    layered_intermediate_processor_factory(HierarchicalPortDummySizeProcessor),
+    layered_intermediate_processor_factory(
+      graph,
+      HierarchicalPortDummySizeProcessor,
+    ),
   )
   .add_after(
     P5EdgeRouting,
-    layered_intermediate_processor_factory(HierarchicalPortOrthogonalEdgeRouter),
+    layered_intermediate_processor_factory(
+      graph,
+      HierarchicalPortOrthogonalEdgeRouter,
+    ),
   )
 }
 
 ///|
-fn orthogonal_edge_router_self_loop_processing_additions() -> @core.LayoutProcessorConfiguration[
-  LayeredPhases,
-  LGraph,
-] raise {
-  @core.layout_processor_configuration_create(layered_phase_descriptor)
+fn orthogonal_edge_router_self_loop_processing_additions(
+  graph : LGraph,
+) -> @core.LayoutProcessorConfiguration raise {
+  @core.layout_processor_configuration_create()
   .add_before(
     P1CycleBreaking,
-    layered_intermediate_processor_factory(SelfLoopPreprocessor),
+    layered_intermediate_processor_factory(graph, SelfLoopPreprocessor),
   )
   .add_after(
     P5EdgeRouting,
-    layered_intermediate_processor_factory(SelfLoopPostprocessor),
+    layered_intermediate_processor_factory(graph, SelfLoopPostprocessor),
   )
   .before(P4NodePlacement)
-  .add(layered_intermediate_processor_factory(SelfLoopPortRestorer))
-  .add(layered_intermediate_processor_factory(SelfLoopRouter))
+  .add(layered_intermediate_processor_factory(graph, SelfLoopPortRestorer))
+  .add(layered_intermediate_processor_factory(graph, SelfLoopRouter))
 }
 
 ///|
-fn orthogonal_edge_router_hypernode_processing_additions() -> @core.LayoutProcessorConfiguration[
-  LayeredPhases,
-  LGraph,
-] raise {
-  @core.layout_processor_configuration_create(layered_phase_descriptor).add_after(
+fn orthogonal_edge_router_hypernode_processing_additions(
+  graph : LGraph,
+) -> @core.LayoutProcessorConfiguration raise {
+  @core.layout_processor_configuration_create().add_after(
     P5EdgeRouting,
-    layered_intermediate_processor_factory(HypernodeProcessor),
+    layered_intermediate_processor_factory(graph, HypernodeProcessor),
   )
 }
 
 ///|
-fn orthogonal_edge_router_center_edge_label_processing_additions() -> @core.LayoutProcessorConfiguration[
-  LayeredPhases,
-  LGraph,
-] raise {
-  @core.layout_processor_configuration_create(layered_phase_descriptor)
+fn orthogonal_edge_router_center_edge_label_processing_additions(
+  graph : LGraph,
+) -> @core.LayoutProcessorConfiguration raise {
+  @core.layout_processor_configuration_create()
   .add_before(
     P2Layering,
-    layered_intermediate_processor_factory(LabelDummyInserter),
+    layered_intermediate_processor_factory(graph, LabelDummyInserter),
   )
   .add_before(
     P4NodePlacement,
-    layered_intermediate_processor_factory(LabelDummySwitcher),
+    layered_intermediate_processor_factory(graph, LabelDummySwitcher),
   )
   .add_before(
     P4NodePlacement,
-    layered_intermediate_processor_factory(LabelSideSelector),
+    layered_intermediate_processor_factory(graph, LabelSideSelector),
   )
   .add_after(
     P5EdgeRouting,
-    layered_intermediate_processor_factory(LabelDummyRemover),
+    layered_intermediate_processor_factory(graph, LabelDummyRemover),
   )
 }
 
 ///|
-fn orthogonal_edge_router_end_edge_label_processing_additions() -> @core.LayoutProcessorConfiguration[
-  LayeredPhases,
-  LGraph,
-] raise {
-  @core.layout_processor_configuration_create(layered_phase_descriptor)
+fn orthogonal_edge_router_end_edge_label_processing_additions(
+  graph : LGraph,
+) -> @core.LayoutProcessorConfiguration raise {
+  @core.layout_processor_configuration_create()
   .add_before(
     P4NodePlacement,
-    layered_intermediate_processor_factory(LabelSideSelector),
+    layered_intermediate_processor_factory(graph, LabelSideSelector),
   )
   .add_before(
     P4NodePlacement,
-    layered_intermediate_processor_factory(EndLabelPreprocessor),
+    layered_intermediate_processor_factory(graph, EndLabelPreprocessor),
   )
   .add_after(
     P5EdgeRouting,
-    layered_intermediate_processor_factory(EndLabelPostprocessor),
+    layered_intermediate_processor_factory(graph, EndLabelPostprocessor),
   )
 }
 
 ///|
 fn orthogonal_edge_router_configuration(
   graph : LGraph,
-) -> @core.LayoutProcessorConfiguration[LayeredPhases, LGraph]? raise {
+) -> @core.LayoutProcessorConfiguration? raise {
   let graph_properties = graph.get_property_graph_properties_array(
     internal_properties_graph_properties,
   )
 
-  let configuration = @core.layout_processor_configuration_create(
-    layered_phase_descriptor,
-  )
+  let configuration = @core.layout_processor_configuration_create()
 
   if orthogonal_edge_router_graph_properties_contain(
       graph_properties,
@@ -295,12 +294,12 @@ fn orthogonal_edge_router_configuration(
     ) {
     ignore(
       configuration.add_all(
-        orthogonal_edge_router_hyperedge_processing_additions(),
+        orthogonal_edge_router_hyperedge_processing_additions(graph),
       ),
     )
     ignore(
       configuration.add_all(
-        orthogonal_edge_router_inverted_port_processing_additions(),
+        orthogonal_edge_router_inverted_port_processing_additions(graph),
       ),
     )
   }
@@ -312,7 +311,7 @@ fn orthogonal_edge_router_configuration(
     graph.get_property_bool(@options.layered_options_feedback_edges) {
     ignore(
       configuration.add_all(
-        orthogonal_edge_router_inverted_port_processing_additions(),
+        orthogonal_edge_router_inverted_port_processing_additions(graph),
       ),
     )
 
@@ -322,7 +321,7 @@ fn orthogonal_edge_router_configuration(
       ) {
       ignore(
         configuration.add_all(
-          orthogonal_edge_router_north_south_port_processing_additions(),
+          orthogonal_edge_router_north_south_port_processing_additions(graph),
         ),
       )
     }
@@ -334,7 +333,7 @@ fn orthogonal_edge_router_configuration(
     ) {
     ignore(
       configuration.add_all(
-        orthogonal_edge_router_hierarchical_port_processing_additions(),
+        orthogonal_edge_router_hierarchical_port_processing_additions(graph),
       ),
     )
   }
@@ -345,7 +344,7 @@ fn orthogonal_edge_router_configuration(
     ) {
     ignore(
       configuration.add_all(
-        orthogonal_edge_router_self_loop_processing_additions(),
+        orthogonal_edge_router_self_loop_processing_additions(graph),
       ),
     )
   }
@@ -356,7 +355,7 @@ fn orthogonal_edge_router_configuration(
     ) {
     ignore(
       configuration.add_all(
-        orthogonal_edge_router_hypernode_processing_additions(),
+        orthogonal_edge_router_hypernode_processing_additions(graph),
       ),
     )
   }
@@ -367,7 +366,7 @@ fn orthogonal_edge_router_configuration(
     ) {
     ignore(
       configuration.add_all(
-        orthogonal_edge_router_center_edge_label_processing_additions(),
+        orthogonal_edge_router_center_edge_label_processing_additions(graph),
       ),
     )
   }
@@ -378,7 +377,7 @@ fn orthogonal_edge_router_configuration(
     ) {
     ignore(
       configuration.add_all(
-        orthogonal_edge_router_end_edge_label_processing_additions(),
+        orthogonal_edge_router_end_edge_label_processing_additions(graph),
       ),
     )
   }
@@ -493,8 +492,7 @@ fn orthogonal_edge_router_process(
 }
 
 ///|
-pub fn new_orthogonal_edge_router_layout_phase() -> @core.ILayoutProcessor[
-  LayeredPhases,
+pub fn new_orthogonal_edge_router_layout_phase() -> @core.TypedLayoutProcessor[
   LGraph,
 ] {
   @core.new_layout_phase(

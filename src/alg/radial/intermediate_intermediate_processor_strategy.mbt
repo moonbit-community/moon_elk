@@ -23,28 +23,29 @@ fn radial_intermediate_strategy_ordinal(
 ///|
 pub fn radial_intermediate_processor_factory(
   strategy : RadialIntermediateProcessorStrategy,
-) -> @core.ILayoutProcessorFactory[RadialLayoutPhases, @graph.ElkNode] {
+  graph : @graph.ElkNode,
+) -> @core.LayoutProcessorFactory {
   let order = radial_intermediate_strategy_ordinal(strategy)
   let id = 31100 + order
   match strategy {
     OVERLAP_REMOVAL =>
-      @core.new_layout_processor_factory(id, order, () => {
+      @core.new_layout_processor_factory(id, order, graph, () => {
         new_radius_extension_overlap_removal_layout_processor()
       })
     COMPACTION =>
-      @core.new_layout_processor_factory(id, order, () => {
+      @core.new_layout_processor_factory(id, order, graph, () => {
         new_radial_general_compactor_layout_processor()
       })
     ROTATION =>
-      @core.new_layout_processor_factory(id, order, () => {
+      @core.new_layout_processor_factory(id, order, graph, () => {
         new_radial_general_rotator_layout_processor()
       })
     GRAPH_SIZE_CALCULATION =>
-      @core.new_layout_processor_factory(id, order, () => {
+      @core.new_layout_processor_factory(id, order, graph, () => {
         new_radial_calculate_graph_size_layout_processor()
       })
     OUTGOING_EDGE_ANGLES =>
-      @core.new_layout_processor_factory(id, order, () => {
+      @core.new_layout_processor_factory(id, order, graph, () => {
         new_radial_edge_angle_calculator_layout_processor()
       })
   }

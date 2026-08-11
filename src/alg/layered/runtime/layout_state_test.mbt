@@ -5,7 +5,10 @@ test "component copies share state retained by layout plan" {
 
   let component = new_l_graph()
   component.copy_properties(graph)
-  let plan = new_layered_layout_plan([], state=graph.get_layout_state())
+  let plan = new_layered_layout_plan(
+    @core.new_layout_processor_plan([]),
+    state=graph.get_layout_state(),
+  )
 
   let expected = @state.new_layered_layout_state()
   expected.initialize_random(42)

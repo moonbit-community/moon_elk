@@ -11,7 +11,7 @@ fn edge_router_factory_strategy_ordinal(strategy : @core.EdgeRouting) -> Int {
 ///|
 fn edge_router_factory_create_router(
   strategy : @core.EdgeRouting,
-) -> @core.ILayoutProcessor[LayeredPhases, LGraph] {
+) -> @core.TypedLayoutProcessor[LGraph] {
   match strategy {
     Polyline => new_polyline_edge_router_layout_phase()
     Splines => new_spline_edge_router_layout_phase()
@@ -21,10 +21,11 @@ fn edge_router_factory_create_router(
 
 ///|
 pub fn edge_router_factory_factory_for(
+  graph : LGraph,
   edge_routing_strategy : @core.EdgeRouting,
-) -> @core.ILayoutProcessorFactory[LayeredPhases, LGraph] {
+) -> @core.LayoutProcessorFactory {
   let ordinal = edge_router_factory_strategy_ordinal(edge_routing_strategy)
-  @core.new_layout_processor_factory(24000 + ordinal, ordinal, () => {
+  @core.new_layout_processor_factory(24000 + ordinal, ordinal, graph, () => {
     edge_router_factory_create_router(edge_routing_strategy)
   })
 }

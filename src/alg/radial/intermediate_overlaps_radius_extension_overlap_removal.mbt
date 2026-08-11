@@ -89,8 +89,7 @@ pub fn RadiusExtensionOverlapRemoval::extend_radius(
 }
 
 ///|
-pub fn new_radius_extension_overlap_removal_layout_processor() -> @core.ILayoutProcessor[
-  RadialLayoutPhases,
+pub fn new_radius_extension_overlap_removal_layout_processor() -> @core.TypedLayoutProcessor[
   @graph.ElkNode,
 ] {
   @core.new_layout_processor((graph, progress_monitor) => {

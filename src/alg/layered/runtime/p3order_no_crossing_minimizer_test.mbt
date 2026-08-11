@@ -9,7 +9,7 @@ fn no_crossing_test_node_ids(nodes : Array[LNode]) -> Array[Int] {
 
 ///|
 fn no_crossing_test_factory_ids(
-  factories : Array[@core.ILayoutProcessorFactory[LayeredPhases, LGraph]],
+  factories : Array[@core.LayoutProcessorFactory],
 ) -> Array[Int] {
   let ids = []
   for factory in factories {

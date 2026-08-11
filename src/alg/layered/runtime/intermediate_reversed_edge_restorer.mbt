@@ -34,8 +34,7 @@ fn reversed_edge_restorer_process(
 }
 
 ///|
-pub fn new_reversed_edge_restorer_layout_processor() -> @core.ILayoutProcessor[
-  LayeredPhases,
+pub fn new_reversed_edge_restorer_layout_processor() -> @core.TypedLayoutProcessor[
   LGraph,
 ] {
   @core.new_layout_processor(reversed_edge_restorer_process)

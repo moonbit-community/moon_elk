@@ -323,8 +323,7 @@ fn breaking_point_remover_process(
 }
 
 ///|
-pub fn new_breaking_point_remover_layout_processor() -> @core.ILayoutProcessor[
-  LayeredPhases,
+pub fn new_breaking_point_remover_layout_processor() -> @core.TypedLayoutProcessor[
   LGraph,
 ] {
   @core.new_layout_processor(breaking_point_remover_process)

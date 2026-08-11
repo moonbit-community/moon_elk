@@ -62,8 +62,7 @@ fn greedy_model_order_cycle_breaker_process(
 }
 
 ///|
-pub fn new_greedy_model_order_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[
-  @runtime.LayeredPhases,
+pub fn new_greedy_model_order_cycle_breaker_layout_phase() -> @core.TypedLayoutProcessor[
   @runtime.LGraph,
 ] {
   @core.new_layout_phase(

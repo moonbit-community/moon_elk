@@ -848,7 +848,7 @@ fn vertiflex_relative_x_placer_process(
 ///|
 pub fn new_vertiflex_relative_x_placer_layout_phase(
   session : VertiFlexSession,
-) -> @core.ILayoutProcessor[VertiFlexLayoutPhases, @graph.ElkNode] {
+) -> @core.TypedLayoutProcessor[@graph.ElkNode] {
   @core.new_layout_phase(
     (graph, monitor) => {
       vertiflex_relative_x_placer_process(session, graph, monitor)

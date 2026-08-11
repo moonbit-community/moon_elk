@@ -238,10 +238,11 @@ test "long edge joiner join_at merges bend points labels and junction points" {
 ///|
 test "long edge joiner strategy creates long edge joiner processor" {
   let factory = layered_intermediate_processor_factory(
+    new_l_graph(),
     long_edge_joiner_test_strategy("LONG_EDGE_JOINER"),
   )
   let processor = factory.create()
   let monitor = new_elk_progress_monitor()
-  processor.process(new_l_graph(), Some(monitor))
+  processor.run(Some(monitor))
   inspect(monitor.get_task_name(), content="Edge joining")
 }

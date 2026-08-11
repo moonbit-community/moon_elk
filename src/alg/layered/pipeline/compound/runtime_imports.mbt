@@ -9,7 +9,6 @@ using @runtime {
   type LGraph,
   type LNode,
   type LPort,
-  type LayeredPhases,
   change_coord_system,
   create_external_port_dummy,
   get_direction,

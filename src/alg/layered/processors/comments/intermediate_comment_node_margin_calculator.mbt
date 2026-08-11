@@ -102,8 +102,7 @@ fn comment_node_margin_calculator_process(
 }
 
 ///|
-pub fn new_comment_node_margin_calculator_layout_processor() -> @core.ILayoutProcessor[
-  @runtime.LayeredPhases,
+pub fn new_comment_node_margin_calculator_layout_processor() -> @core.TypedLayoutProcessor[
   @runtime.LGraph,
 ] {
   @core.new_layout_processor(comment_node_margin_calculator_process)

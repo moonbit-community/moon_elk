@@ -13,6 +13,16 @@ import {
 }
 
 // Values
+pub const P1CycleBreaking : Int = 0
+
+pub const P2Layering : Int = 1
+
+pub const P3NodeOrdering : Int = 2
+
+pub const P4NodePlacement : Int = 3
+
+pub const P5EdgeRouting : Int = 4
+
 pub fn adapt_l_graph(LGraph) -> LGraphAdapter
 
 pub fn adapt_l_graph_with_options(LGraph, Bool, Bool, (LNode) -> Bool) -> LGraphAdapter
@@ -69,7 +79,7 @@ pub fn dot_debug_util_create_debug_graph_hypernodes(LGraph, Array[HyperEdgeSegme
 
 pub fn dot_debug_util_create_debug_graph_linear_segments(LGraph, Array[LinearSegment], Array[Array[LinearSegment]]) -> String
 
-pub fn edge_router_factory_factory_for(@core.EdgeRouting) -> @core.ILayoutProcessorFactory[LayeredPhases, LGraph]
+pub fn edge_router_factory_factory_for(LGraph, @core.EdgeRouting) -> @core.LayoutProcessorFactory
 
 pub let final_spline_node_to_straightening_cp_gap : Double
 
@@ -255,15 +265,15 @@ pub fn layer_internal_handle(Layer) -> Int
 
 pub let layered_components_direction : @graph.IProperty[@core.Direction]
 
-pub fn layered_intermediate_processor_factory(IntermediateProcessorStrategy) -> @core.ILayoutProcessorFactory[LayeredPhases, LGraph]
+pub fn layered_intermediate_processor_factory(LGraph, IntermediateProcessorStrategy) -> @core.LayoutProcessorFactory
 
-pub fn layered_phase_constants() -> Array[LayeredPhases]
+pub fn layered_phase_constants() -> Array[Int]
 
-pub let layered_phase_descriptor : @core.PhaseDescriptor[LayeredPhases]
+pub let layered_phase_descriptor : @core.PhaseDescriptor
 
 pub fn layered_phase_values() -> Array[String]
 
-pub fn layered_phases_to_string(LayeredPhases) -> String
+pub fn layered_phases_to_string(Int) -> String
 
 pub let layered_spacings_base_spacing_option : @graph.IProperty[Double]
 
@@ -291,13 +301,13 @@ pub fn new_abstract_self_loop_router((SelfLoopHolder) -> Unit raise) -> Abstract
 
 pub fn new_all_crossings_counter(Array[Array[LNode]]) -> AllCrossingsCounter
 
-pub fn new_alternating_layer_unzipper_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_alternating_layer_unzipper_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
 pub fn new_ard_cut_index_heuristic() -> ICutIndexCalculator
 
 pub fn new_barycenter_heuristic(ForsterConstraintResolver, @state.GreedySwitchMockRandom, AbstractBarycenterPortDistributor, Array[Array[LNode]]) -> BarycenterHeuristic
 
-pub fn new_barycenter_layer_sweep_crossing_minimizer_layout_phase() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_barycenter_layer_sweep_crossing_minimizer_layout_phase() -> @core.TypedLayoutProcessor[LGraph]
 
 pub fn new_barycenter_state(LNode) -> BarycenterState
 
@@ -311,37 +321,37 @@ pub fn new_binary_indexed_tree(Int) -> BinaryIndexedTree
 
 pub fn new_bp_info(LNode, LNode, LEdge, LEdge, LEdge) -> BPInfo
 
-pub fn new_breaking_point_inserter_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_breaking_point_inserter_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
-pub fn new_breaking_point_processor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_breaking_point_processor_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
-pub fn new_breaking_point_remover_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_breaking_point_remover_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
-pub fn new_constraints_postprocessor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_constraints_postprocessor_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
 pub fn new_crossing_matrix_filler(@options.GreedySwitchType, Array[Array[LNode]], Int, CrossingCountSide) -> CrossingMatrixFiller raise
 
 pub fn new_crossings_counter(Array[Int]) -> CrossingsCounter
 
-pub fn new_direction_postprocessor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_direction_postprocessor_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
-pub fn new_direction_preprocessor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_direction_preprocessor_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
-pub fn new_dummy_self_loop_processor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_dummy_self_loop_processor_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
-pub fn new_edge_and_layer_constraint_edge_reverser_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_edge_and_layer_constraint_edge_reverser_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
 pub fn new_end_label_cell(Double, Bool, @core.LabelSide) -> EndLabelCell
 
 pub fn new_end_label_cell_label(@graph.ElkLabel, LLabel) -> EndLabelCellLabel
 
-pub fn new_end_label_postprocessor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_end_label_postprocessor_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
-pub fn new_end_label_preprocessor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_end_label_preprocessor_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
-pub fn new_end_label_sorter_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_end_label_sorter_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
-pub fn new_final_spline_bendpoints_calculator_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_final_spline_bendpoints_calculator_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
 pub fn new_forster_constraint_resolver(Array[Array[LNode]]) -> ForsterConstraintResolver
 
@@ -351,7 +361,7 @@ pub fn new_graph_info_holder_from_graph(LGraph, CrossMinType, Array[GraphInfoHol
 
 pub fn new_graph_stats(LGraph) -> GraphStats
 
-pub fn new_graph_transformer_layout_processor(GraphTransformerMode) -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_graph_transformer_layout_processor(GraphTransformerMode) -> @core.TypedLayoutProcessor[LGraph]
 
 pub fn new_greedy_port_distributor() -> GreedyPortDistributor
 
@@ -363,19 +373,19 @@ pub fn new_greedy_switch_north_south_edge_test_graph_creator() -> GreedySwitchNo
 
 pub fn new_greedy_switch_test_graph_creator() -> GreedySwitchTestGraphCreator raise
 
-pub fn new_hierarchical_node_resizing_processor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_hierarchical_node_resizing_processor_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
-pub fn new_hierarchical_port_constraint_processor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_hierarchical_port_constraint_processor_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
-pub fn new_hierarchical_port_dummy_size_processor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_hierarchical_port_dummy_size_processor_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
-pub fn new_hierarchical_port_orthogonal_edge_router_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_hierarchical_port_orthogonal_edge_router_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
-pub fn new_hierarchical_port_position_processor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_hierarchical_port_position_processor_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
-pub fn new_high_degree_node_layering_processor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_high_degree_node_layering_processor_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
-pub fn new_horizontal_graph_compactor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_horizontal_graph_compactor_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
 pub fn new_hyper_edge_segment(BaseRoutingDirectionStrategy) -> HyperEdgeSegment
 
@@ -383,9 +393,9 @@ pub fn new_hyper_edge_segment_splitter(OrthogonalRoutingGenerator) -> HyperEdgeS
 
 pub fn new_hyperedge_crossings_counter(Array[Int], Array[Bool], Array[Int]) -> HyperedgeCrossingsCounter
 
-pub fn new_hyperedge_dummy_merger_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_hyperedge_dummy_merger_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
-pub fn new_hypernodes_processor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_hypernodes_processor_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
 pub fn new_i_crossing_minimization_heuristic(() -> Bool, (Array[Array[LNode]], Bool) -> Bool raise, (Array[Array[LNode]], Int, Bool, Bool) -> Bool raise, () -> Bool, init_at_layer_level? : (Int, Array[Array[LNode]]) -> Unit, init_at_node_level? : (Int, Int, Array[Array[LNode]]) -> Unit, init_at_port_level? : (Int, Int, Int, Array[Array[LNode]]) -> Unit, init_at_edge_level? : (Int, Int, Int, Int, LEdge, Array[Array[LNode]]) -> Unit, init_after_traversal? : () -> Unit) -> ICrossingMinimizationHeuristic
 
@@ -395,19 +405,19 @@ pub fn new_i_initializable(init_at_layer_level? : (Int, Array[Array[LNode]]) -> 
 
 pub fn new_i_sweep_port_distributor((Array[Array[LNode]], Int, Bool) -> Bool raise, init_at_layer_level? : (Int, Array[Array[LNode]]) -> Unit, init_at_node_level? : (Int, Int, Array[Array[LNode]]) -> Unit, init_at_port_level? : (Int, Int, Int, Array[Array[LNode]]) -> Unit, init_at_edge_level? : (Int, Int, Int, Int, LEdge, Array[Array[LNode]]) -> Unit, init_after_traversal? : () -> Unit) -> ISweepPortDistributor
 
-pub fn new_in_layer_constraint_processor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_in_layer_constraint_processor_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
-pub fn new_innermost_node_margin_calculator_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_innermost_node_margin_calculator_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
-pub fn new_interactive_crossing_minimizer_layout_phase() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_interactive_crossing_minimizer_layout_phase() -> @core.TypedLayoutProcessor[LGraph]
 
-pub fn new_interactive_external_port_positioner_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_interactive_external_port_positioner_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
 pub fn new_interactive_layered_graph_element_visitor() -> @core.IGraphElementVisitor
 
 pub fn new_interactive_layered_graph_visitor() -> InteractiveLayeredGraphVisitor
 
-pub fn new_inverted_port_processor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_inverted_port_processor_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
 pub fn new_l_edge() -> LEdge
 
@@ -439,33 +449,33 @@ pub fn new_l_port_adapter(LPort, Bool) -> LPortAdapter
 
 pub fn new_l_shape() -> LShape
 
-pub fn new_label_and_node_size_processor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_label_and_node_size_processor_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
-pub fn new_label_dummy_inserter_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_label_dummy_inserter_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
-pub fn new_label_dummy_remover_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_label_dummy_remover_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
-pub fn new_label_dummy_switcher_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_label_dummy_switcher_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
 pub fn new_label_management_processor(Bool) -> LabelManagementProcessor
 
-pub fn new_label_management_processor_layout_processor(Bool) -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_label_management_processor_layout_processor(Bool) -> @core.TypedLayoutProcessor[LGraph]
 
 pub fn new_label_placer() -> LabelPlacer
 
-pub fn new_label_side_selector_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_label_side_selector_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
 pub fn new_layer(LGraph) -> Layer
 
-pub fn new_layer_constraint_postprocessor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_layer_constraint_postprocessor_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
-pub fn new_layer_constraint_preprocessor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_layer_constraint_preprocessor_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
-pub fn new_layer_size_and_graph_height_calculator_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_layer_size_and_graph_height_calculator_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
 pub fn new_layer_sweep_crossing_minimizer(CrossMinType) -> LayerSweepCrossingMinimizer
 
-pub fn new_layer_sweep_crossing_minimizer_layout_phase(CrossMinType) -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_layer_sweep_crossing_minimizer_layout_phase(CrossMinType) -> @core.TypedLayoutProcessor[LGraph]
 
 pub fn new_layer_sweep_type_decider(GraphInfoHolder) -> LayerSweepTypeDecider
 
@@ -475,21 +485,21 @@ pub fn new_layer_total_port_distributor(Int) -> LayerTotalPortDistributor
 
 pub fn new_layered_hierarchy_aware_layout_processor() -> Unit
 
-pub fn new_layered_layout_plan(Array[@core.ILayoutProcessor[LayeredPhases, LGraph]], state? : @state.LayeredLayoutState) -> LayeredLayoutPlan
+pub fn new_layered_layout_plan(@core.LayoutProcessorPlan, state? : @state.LayeredLayoutState) -> LayeredLayoutPlan
 
 pub fn new_layered_phase_registry() -> LayeredPhaseRegistry
 
 pub fn new_layered_spacings(LGraph) -> Spacings
 
-pub fn new_long_edge_joiner_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_long_edge_joiner_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
-pub fn new_long_edge_splitter_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_long_edge_splitter_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
 pub fn new_manual_cut_index_calculator() -> ICutIndexCalculator
 
 pub fn new_median_heuristic(@random.Rand) -> MedianHeuristic
 
-pub fn new_median_layer_sweep_crossing_minimizer_layout_phase() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_median_layer_sweep_crossing_minimizer_layout_phase() -> @core.TypedLayoutProcessor[LGraph]
 
 pub fn new_model_order_barycenter_heuristic(ForsterConstraintResolver, @state.GreedySwitchMockRandom, AbstractBarycenterPortDistributor, Array[Array[LNode]]) -> ModelOrderBarycenterHeuristic
 
@@ -505,17 +515,17 @@ pub fn new_model_order_port_comparator_without_target_node_model_order(LGraph, A
 
 pub fn new_msd_cut_index_heuristic() -> ICutIndexCalculator
 
-pub fn new_no_crossing_minimizer_layout_phase() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_no_crossing_minimizer_layout_phase() -> @core.TypedLayoutProcessor[LGraph]
 
-pub fn new_node_promotion_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_node_promotion_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
 pub fn new_node_relative_port_distributor(Int) -> NodeRelativePortDistributor
 
 pub fn new_north_south_edge_neighbouring_node_crossings_counter(Array[LNode]) -> NorthSouthEdgeNeighbouringNodeCrossingsCounter
 
-pub fn new_north_south_port_postprocessor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_north_south_port_postprocessor_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
-pub fn new_north_south_port_preprocessor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_north_south_port_preprocessor_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
 pub fn new_north_to_south_routing_strategy() -> BaseRoutingDirectionStrategy
 
@@ -529,25 +539,25 @@ pub fn new_nubs_self_loop_copy(NubsSelfLoop) -> NubsSelfLoop
 
 pub fn new_nubs_self_loop_with_clamped(Bool, Int, Array[@core.KVector]) -> NubsSelfLoop raise
 
-pub fn new_orthogonal_edge_router_layout_phase() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_orthogonal_edge_router_layout_phase() -> @core.TypedLayoutProcessor[LGraph]
 
 pub fn new_orthogonal_routing_generator(RoutingDirection, Double, String?) -> OrthogonalRoutingGenerator
 
 pub fn new_orthogonal_self_loop_router() -> AbstractSelfLoopRouter
 
-pub fn new_polyline_edge_router_layout_phase() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_polyline_edge_router_layout_phase() -> @core.TypedLayoutProcessor[LGraph]
 
 pub fn new_polyline_self_loop_router() -> AbstractSelfLoopRouter
 
 pub fn new_port_comparator() -> PortComparator
 
-pub fn new_port_list_sorter_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_port_list_sorter_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
 pub fn new_port_restorer() -> PortRestorer
 
 pub fn new_port_side_assigner() -> PortSideAssigner
 
-pub fn new_port_side_processor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_port_side_processor_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
 pub fn new_pure_i_cut_index_calculator((LGraph, GraphStats) -> Array[Int], () -> Bool) -> ICutIndexCalculator
 
@@ -561,7 +571,7 @@ pub fn new_rectangle_values(Double, Double, Double, Double) -> Rectangle raise R
 
 pub fn new_rectangle_vectors(Array[@core.KVector]) -> Rectangle raise RectangleException
 
-pub fn new_reversed_edge_restorer_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_reversed_edge_restorer_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
 pub fn new_routing_director() -> RoutingDirector
 
@@ -577,25 +587,25 @@ pub fn new_self_loop_holder(LNode) -> SelfLoopHolder
 
 pub fn new_self_loop_port(LPort) -> SelfLoopPort raise
 
-pub fn new_self_loop_port_restorer_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_self_loop_port_restorer_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
-pub fn new_self_loop_post_processor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_self_loop_post_processor_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
-pub fn new_self_loop_pre_processor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_self_loop_pre_processor_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
-pub fn new_self_loop_router_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_self_loop_router_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
-pub fn new_semi_interactive_cross_min_processor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_semi_interactive_cross_min_processor_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
-pub fn new_single_edge_graph_wrapper_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_single_edge_graph_wrapper_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
-pub fn new_sort_by_input_model_processor_layout_processor() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_sort_by_input_model_processor_layout_processor() -> @core.TypedLayoutProcessor[LGraph]
 
 pub fn new_south_to_north_routing_strategy() -> BaseRoutingDirectionStrategy
 
 pub fn new_spline_dependency(SplineSegment, SplineSegment, Int) -> SplineDependency
 
-pub fn new_spline_edge_router_layout_phase() -> @core.ILayoutProcessor[LayeredPhases, LGraph]
+pub fn new_spline_edge_router_layout_phase() -> @core.TypedLayoutProcessor[LGraph]
 
 pub fn new_spline_segment_hyper_edge(LPort, Array[@core.Pair[SplineSideToProcess, LEdge]], SplineSideToProcess) -> SplineSegment raise
 
@@ -2100,34 +2110,26 @@ pub fn LayerTotalPortDistributor::init_at_node_level(Self, Int, Int, Array[Array
 pub fn LayerTotalPortDistributor::init_at_port_level(Self, Int, Int, Int, Array[Array[LNode]]) -> Unit
 
 pub struct LayeredLayoutPlan {
-  processors : Array[@core.ILayoutProcessor[LayeredPhases, LGraph]]
+  processors : Array[&@core.RunnableLayoutProcessor]
   state : @state.LayeredLayoutState
 }
-pub fn LayeredLayoutPlan::get_processors(Self) -> Array[@core.ILayoutProcessor[LayeredPhases, LGraph]]
+pub fn LayeredLayoutPlan::get_processors(Self) -> Array[&@core.RunnableLayoutProcessor]
 pub fn LayeredLayoutPlan::get_state(Self) -> @state.LayeredLayoutState
 
 pub struct LayeredPhaseRegistry {
-  cycle_breaking_factories : Map[String, @core.ILayoutProcessorFactory[LayeredPhases, LGraph]]
-  layering_factories : Map[String, @core.ILayoutProcessorFactory[LayeredPhases, LGraph]]
-  node_placement_factories : Map[String, @core.ILayoutProcessorFactory[LayeredPhases, LGraph]]
-  intermediate_processor_factories : Map[Int, @core.ILayoutProcessorFactory[LayeredPhases, LGraph]]
+  cycle_breaking_factories : Map[String, (Int, Int, () -> @core.TypedLayoutProcessor[LGraph])]
+  layering_factories : Map[String, (Int, Int, () -> @core.TypedLayoutProcessor[LGraph])]
+  node_placement_factories : Map[String, (Int, Int, () -> @core.TypedLayoutProcessor[LGraph])]
+  intermediate_processor_factories : Map[Int, (Int, Int, () -> @core.TypedLayoutProcessor[LGraph])]
 }
-pub fn LayeredPhaseRegistry::cycle_breaking_phase_factory(Self, String) -> @core.ILayoutProcessorFactory[LayeredPhases, LGraph] raise
-pub fn LayeredPhaseRegistry::intermediate_processor_factory(Self, IntermediateProcessorStrategy) -> @core.ILayoutProcessorFactory[LayeredPhases, LGraph]
-pub fn LayeredPhaseRegistry::layering_phase_factory(Self, String) -> @core.ILayoutProcessorFactory[LayeredPhases, LGraph] raise
-pub fn LayeredPhaseRegistry::node_placement_phase_factory(Self, String) -> @core.ILayoutProcessorFactory[LayeredPhases, LGraph] raise
-pub fn LayeredPhaseRegistry::register_cycle_breaking_phase(Self, String, @core.ILayoutProcessorFactory[LayeredPhases, LGraph]) -> Unit
-pub fn LayeredPhaseRegistry::register_intermediate_processor(Self, IntermediateProcessorStrategy, @core.ILayoutProcessorFactory[LayeredPhases, LGraph]) -> Unit
-pub fn LayeredPhaseRegistry::register_layering_phase(Self, String, @core.ILayoutProcessorFactory[LayeredPhases, LGraph]) -> Unit
-pub fn LayeredPhaseRegistry::register_node_placement_phase(Self, String, @core.ILayoutProcessorFactory[LayeredPhases, LGraph]) -> Unit
-
-pub(all) enum LayeredPhases {
-  P1CycleBreaking
-  P2Layering
-  P3NodeOrdering
-  P4NodePlacement
-  P5EdgeRouting
-}
+pub fn LayeredPhaseRegistry::cycle_breaking_phase_factory(Self, LGraph, String) -> @core.LayoutProcessorFactory raise
+pub fn LayeredPhaseRegistry::intermediate_processor_factory(Self, LGraph, IntermediateProcessorStrategy) -> @core.LayoutProcessorFactory
+pub fn LayeredPhaseRegistry::layering_phase_factory(Self, LGraph, String) -> @core.LayoutProcessorFactory raise
+pub fn LayeredPhaseRegistry::node_placement_phase_factory(Self, LGraph, String) -> @core.LayoutProcessorFactory raise
+pub fn LayeredPhaseRegistry::register_cycle_breaking_phase(Self, String, Int, () -> @core.TypedLayoutProcessor[LGraph]) -> Unit
+pub fn LayeredPhaseRegistry::register_intermediate_processor(Self, IntermediateProcessorStrategy, () -> @core.TypedLayoutProcessor[LGraph]) -> Unit
+pub fn LayeredPhaseRegistry::register_layering_phase(Self, String, Int, () -> @core.TypedLayoutProcessor[LGraph]) -> Unit
+pub fn LayeredPhaseRegistry::register_node_placement_phase(Self, String, Int, () -> @core.TypedLayoutProcessor[LGraph]) -> Unit
 
 pub struct LayeredSpacingsBuilder {
   base_spacing : Double
@@ -2611,5 +2613,7 @@ pub using @core {type Spacing as LMargin}
 pub using @core {type Spacing as LPadding}
 
 pub type LayeredIHierarchyAwareLayoutProcessor = Unit
+
+pub type LayeredPhases = Int
 
 // Traits

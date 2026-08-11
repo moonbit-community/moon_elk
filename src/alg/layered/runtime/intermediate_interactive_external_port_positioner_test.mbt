@@ -192,11 +192,12 @@ test "@core.interactive external port positioner strategy applies west/east posi
   )
 
   let processor = layered_intermediate_processor_factory(
+    graph,
     interactive_external_port_positioner_test_strategy(
       "INTERACTIVE_EXTERNAL_PORT_POSITIONER",
     ),
   ).create()
-  processor.process(graph, None)
+  processor.run(None)
 
   inspect(west_dummy.get_position().x, content="85")
   inspect(west_dummy.get_position().y, content="25")

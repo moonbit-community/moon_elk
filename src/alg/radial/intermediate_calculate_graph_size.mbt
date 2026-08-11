@@ -2,8 +2,7 @@
 let radial_java_double_min_value = 4.9406564584124654e-324
 
 ///|
-pub fn new_radial_calculate_graph_size_layout_processor() -> @core.ILayoutProcessor[
-  RadialLayoutPhases,
+pub fn new_radial_calculate_graph_size_layout_processor() -> @core.TypedLayoutProcessor[
   @graph.ElkNode,
 ] {
   @core.new_layout_processor((graph, progress_monitor) => {

@@ -493,7 +493,7 @@ fn bk_node_placer_process(
 ///|
 fn bk_node_placer_configuration(
   graph : @runtime.LGraph,
-) -> @core.LayoutProcessorConfiguration[@runtime.LayeredPhases, @runtime.LGraph]? raise {
+) -> @core.LayoutProcessorConfiguration? raise {
   for
     property in graph.get_property_graph_properties_array(
       @runtime.internal_properties_graph_properties,
@@ -501,11 +501,10 @@ fn bk_node_placer_configuration(
     match property {
       ExternalPorts =>
         return Some(
-          @core.layout_processor_configuration_create(
-            @runtime.layered_phase_descriptor,
-          ).add_before(
-            P5EdgeRouting,
+          @core.layout_processor_configuration_create().add_before(
+            @runtime.P5EdgeRouting,
             @runtime.layered_intermediate_processor_factory(
+              graph,
               HierarchicalPortPositionProcessor,
             ),
           ),
@@ -517,8 +516,7 @@ fn bk_node_placer_configuration(
 }
 
 ///|
-pub fn new_bk_node_placer_layout_phase() -> @core.ILayoutProcessor[
-  @runtime.LayeredPhases,
+pub fn new_bk_node_placer_layout_phase() -> @core.TypedLayoutProcessor[
   @runtime.LGraph,
 ] {
   @core.new_layout_phase(bk_node_placer_process, bk_node_placer_configuration)

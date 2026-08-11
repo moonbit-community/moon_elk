@@ -1,31 +1,23 @@
 ///|
-pub(all) struct PhaseDescriptor[P] {
-  phases : Array[P]
-  ordinal : (P) -> Int
+/// Stable, algorithm-local ordinal for one coarse pipeline phase.
+pub type PhaseId = Int
+
+///|
+pub(all) struct PhaseDescriptor {
+  phases : Array[PhaseId]
 }
 
 ///|
-pub fn[P] new_phase_descriptor(
-  phases : Array[P],
-  ordinal : (P) -> Int,
-) -> PhaseDescriptor[P] {
-  { phases: phases.copy(), ordinal }
+pub fn new_phase_descriptor(phases : Array[PhaseId]) -> PhaseDescriptor {
+  { phases: phases.copy() }
 }
 
 ///|
-pub fn[P] PhaseDescriptor::phases(self : PhaseDescriptor[P]) -> Array[P] {
+pub fn PhaseDescriptor::phases(self : PhaseDescriptor) -> Array[PhaseId] {
   self.phases.copy()
 }
 
 ///|
-pub fn[P] PhaseDescriptor::ordinal_of(
-  self : PhaseDescriptor[P],
-  phase : P,
-) -> Int {
-  (self.ordinal)(phase)
-}
-
-///|
-pub fn[P] PhaseDescriptor::size(self : PhaseDescriptor[P]) -> Int {
+pub fn PhaseDescriptor::size(self : PhaseDescriptor) -> Int {
   self.phases.length()
 }

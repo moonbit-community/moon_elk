@@ -119,8 +119,7 @@ fn partition_midprocessor_process(
 }
 
 ///|
-pub fn new_partition_midprocessor_layout_processor() -> @core.ILayoutProcessor[
-  @runtime.LayeredPhases,
+pub fn new_partition_midprocessor_layout_processor() -> @core.TypedLayoutProcessor[
   @runtime.LGraph,
 ] {
   @core.new_layout_processor(partition_midprocessor_process)

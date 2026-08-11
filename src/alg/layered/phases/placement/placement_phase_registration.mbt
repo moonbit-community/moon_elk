@@ -3,12 +3,9 @@ fn register_node_placement_phase(
   registry : @runtime.LayeredPhaseRegistry,
   strategy : String,
   id : Int,
-  create : () -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph] raise?,
+  create : () -> @core.TypedLayoutProcessor[@runtime.LGraph],
 ) -> Unit {
-  registry.register_node_placement_phase(
-    strategy,
-    @core.new_layout_processor_factory(id, 3, fn() raise { create() }),
-  )
+  registry.register_node_placement_phase(strategy, id, create)
 }
 
 ///|

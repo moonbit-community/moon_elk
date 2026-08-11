@@ -211,8 +211,7 @@ fn comment_postprocessor_process(
 }
 
 ///|
-pub fn new_comment_postprocessor_layout_processor() -> @core.ILayoutProcessor[
-  @runtime.LayeredPhases,
+pub fn new_comment_postprocessor_layout_processor() -> @core.TypedLayoutProcessor[
   @runtime.LGraph,
 ] {
   @core.new_layout_processor(comment_postprocessor_process)

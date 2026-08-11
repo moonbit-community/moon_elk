@@ -54,7 +54,7 @@ fn rectpacking_to_aspectratio_node_expander_process(
 ///|
 pub fn new_rectpacking_to_aspectratio_node_expander_layout_phase(
   session : RectPackingSession,
-) -> @core.ILayoutProcessor[RectPackingLayoutPhases, @graph.ElkNode] {
+) -> @core.TypedLayoutProcessor[@graph.ElkNode] {
   @core.new_layout_phase(
     (graph, progress_monitor) => {
       rectpacking_to_aspectratio_node_expander_process(

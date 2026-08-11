@@ -1,21 +1,15 @@
 ///|
-pub enum TopdownPackingPhases {
-  P1_NODE_ARRANGEMENT
-  P2_WHITESPACE_ELIMINATION
-}
+pub type TopdownPackingPhases = @core.PhaseId
 
 ///|
-fn topdownpacking_phase_ordinal(phase : TopdownPackingPhases) -> Int {
-  match phase {
-    P1_NODE_ARRANGEMENT => 0
-    P2_WHITESPACE_ELIMINATION => 1
-  }
-}
+pub const P1_NODE_ARRANGEMENT : TopdownPackingPhases = 0
 
 ///|
-pub let topdownpacking_phase_descriptor : @core.PhaseDescriptor[
-  TopdownPackingPhases,
-] = @core.new_phase_descriptor(
-  [P1_NODE_ARRANGEMENT, P2_WHITESPACE_ELIMINATION],
-  topdownpacking_phase_ordinal,
+pub const P2_WHITESPACE_ELIMINATION : TopdownPackingPhases = 1
+
+///|
+pub let topdownpacking_phase_descriptor : @core.PhaseDescriptor = @core.new_phase_descriptor([
+    P1_NODE_ARRANGEMENT,
+    P2_WHITESPACE_ELIMINATION,
+  ],
 )

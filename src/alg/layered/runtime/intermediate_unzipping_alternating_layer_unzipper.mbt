@@ -400,8 +400,7 @@ fn alternating_layer_unzipper_process(
 }
 
 ///|
-pub fn new_alternating_layer_unzipper_layout_processor() -> @core.ILayoutProcessor[
-  LayeredPhases,
+pub fn new_alternating_layer_unzipper_layout_processor() -> @core.TypedLayoutProcessor[
   LGraph,
 ] {
   @core.new_layout_processor(alternating_layer_unzipper_process)

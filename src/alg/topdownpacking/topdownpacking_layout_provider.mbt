@@ -1,9 +1,6 @@
 ///|
 pub struct TopdownpackingLayoutProvider {
-  algorithm_assembler : @core.AlgorithmAssembler[
-    TopdownPackingPhases,
-    GridElkNode,
-  ]
+  algorithm_assembler : @core.AlgorithmAssembler
 }
 
 ///|
@@ -19,7 +16,7 @@ pub fn new_topdownpacking_layout_provider() -> TopdownpackingLayoutProvider rais
 pub fn TopdownpackingLayoutProvider::assemble_algorithm(
   self : TopdownpackingLayoutProvider,
   graph : GridElkNode,
-) -> Array[@core.ILayoutProcessor[TopdownPackingPhases, GridElkNode]] raise {
+) -> @core.LayoutProcessorPlan raise {
   ignore(self.algorithm_assembler.reset())
 
   let node_arrangement_strategy = topdownpacking_node_arrangement_strategy_from_string(
@@ -29,7 +26,7 @@ pub fn TopdownpackingLayoutProvider::assemble_algorithm(
     self.algorithm_assembler.set_phase(
       P1_NODE_ARRANGEMENT,
       topdownpacking_node_arrangement_strategy_phase_factory(
-        node_arrangement_strategy,
+        node_arrangement_strategy, graph,
       ),
     ),
   )
@@ -41,11 +38,11 @@ pub fn TopdownpackingLayoutProvider::assemble_algorithm(
     self.algorithm_assembler.set_phase(
       P2_WHITESPACE_ELIMINATION,
       topdownpacking_whitespace_elimination_strategy_phase_factory(
-        whitespace_elimination_strategy,
+        whitespace_elimination_strategy, graph,
       ),
     ),
   )
-  self.algorithm_assembler.build(graph)
+  self.algorithm_assembler.build()
 }
 
 ///|
@@ -55,12 +52,10 @@ pub fn TopdownpackingLayoutProvider::layout(
   progress_monitor : @core.IElkProgressMonitor,
 ) -> Unit raise {
   let wrapped_graph = new_grid_elk_node(layout_graph)
-  let algorithm = self.assemble_algorithm(wrapped_graph)
-  ignore(
-    progress_monitor.begin("Topdown Packing", algorithm.length().to_double()),
-  )
-  for processor in algorithm {
-    processor.process(wrapped_graph, progress_monitor.sub_task(1.0))
+  let plan = self.assemble_algorithm(wrapped_graph)
+  ignore(progress_monitor.begin("Topdown Packing", plan.length().to_double()))
+  for processor in plan.steps() {
+    processor.run(progress_monitor.sub_task(1.0))
   }
   progress_monitor.done()
 }

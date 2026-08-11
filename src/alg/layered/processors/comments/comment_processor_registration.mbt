@@ -2,15 +2,9 @@
 fn register_comment_processor(
   registry : @runtime.LayeredPhaseRegistry,
   strategy : @runtime.IntermediateProcessorStrategy,
-  create : () -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph] raise?,
+  create : () -> @core.TypedLayoutProcessor[@runtime.LGraph],
 ) -> Unit {
-  let ordinal = @runtime.intermediate_processor_strategy_ordinal(strategy)
-  registry.register_intermediate_processor(
-    strategy,
-    @core.new_layout_processor_factory(23000 + ordinal, ordinal, fn() raise {
-      create()
-    }),
-  )
+  registry.register_intermediate_processor(strategy, create)
 }
 
 ///|

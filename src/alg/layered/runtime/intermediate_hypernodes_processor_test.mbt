@@ -198,10 +198,11 @@ test "hypernodes processor keeps left-directed case unchanged (upstream parity)"
 ///|
 test "hypernodes processor strategy creates concrete processor" {
   let factory = layered_intermediate_processor_factory(
+    new_l_graph(),
     hypernodes_processor_test_strategy("HYPERNODE_PROCESSOR"),
   )
   let processor = factory.create()
   let monitor = new_elk_progress_monitor()
-  processor.process(new_l_graph(), Some(monitor))
+  processor.run(Some(monitor))
   inspect(monitor.get_task_name(), content="Hypernodes processing")
 }

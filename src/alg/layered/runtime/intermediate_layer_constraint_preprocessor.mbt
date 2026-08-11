@@ -285,8 +285,7 @@ fn layer_constraint_preprocessor_process(
 }
 
 ///|
-pub fn new_layer_constraint_preprocessor_layout_processor() -> @core.ILayoutProcessor[
-  LayeredPhases,
+pub fn new_layer_constraint_preprocessor_layout_processor() -> @core.TypedLayoutProcessor[
   LGraph,
 ] {
   @core.new_layout_processor(layer_constraint_preprocessor_process)

@@ -1,7 +1,7 @@
 ///|
 pub struct SporeOverlapRemovalLayoutProvider {
   metadata : @core.OptionMetadata
-  algorithm_assembler : @core.AlgorithmAssembler[SPOrEPhases, SporeGraph]
+  algorithm_assembler : @core.AlgorithmAssembler
 }
 
 ///|
@@ -107,6 +107,7 @@ pub fn SporeOverlapRemovalLayoutProvider::layout(
         P1_STRUCTURE,
         spore_structure_extraction_strategy_phase_factory(
           DELAUNAY_TRIANGULATION,
+          graph,
         ),
       ),
     )
@@ -115,18 +116,19 @@ pub fn SporeOverlapRemovalLayoutProvider::layout(
         P2_PROCESSING_ORDER,
         spore_tree_construction_strategy_phase_factory(
           graph.tree_construction_strategy,
+          graph,
         ),
       ),
     )
     ignore(
       self.algorithm_assembler.set_phase(
         P3_EXECUTION,
-        spore_overlap_removal_strategy_phase_factory(GROW_TREE),
+        spore_overlap_removal_strategy_phase_factory(GROW_TREE, graph),
       ),
     )
-    let algorithm = self.algorithm_assembler.build(graph)
-    for processor in algorithm {
-      processor.process(graph, progress_monitor.sub_task(1.0))
+    let plan = self.algorithm_assembler.build()
+    for processor in plan.steps() {
+      processor.run(progress_monitor.sub_task(1.0))
     }
 
     graph_importer.update_graph(graph)

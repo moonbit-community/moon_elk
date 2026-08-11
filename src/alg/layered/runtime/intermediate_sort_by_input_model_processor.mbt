@@ -307,8 +307,7 @@ fn sort_by_input_model_processor_process(
 }
 
 ///|
-pub fn new_sort_by_input_model_processor_layout_processor() -> @core.ILayoutProcessor[
-  LayeredPhases,
+pub fn new_sort_by_input_model_processor_layout_processor() -> @core.TypedLayoutProcessor[
   LGraph,
 ] {
   @core.new_layout_processor(sort_by_input_model_processor_process)

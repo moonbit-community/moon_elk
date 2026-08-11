@@ -68,8 +68,7 @@ fn rectpacking_greedy_width_approximator_process_impl(
 }
 
 ///|
-pub fn new_rectpacking_greedy_width_approximator_layout_phase() -> @core.ILayoutProcessor[
-  RectPackingLayoutPhases,
+pub fn new_rectpacking_greedy_width_approximator_layout_phase() -> @core.TypedLayoutProcessor[
   @graph.ElkNode,
 ] {
   @core.new_layout_phase(rectpacking_greedy_width_approximator_process, _ => {

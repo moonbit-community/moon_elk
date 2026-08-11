@@ -1044,6 +1044,7 @@ test "alternating layer unzipper keeps pure round-robin when reset_on_long_edges
 ///|
 test "intermediate strategy factory exposes alternating layer unzipper" {
   let factory = layered_intermediate_processor_factory(
+    new_l_graph(),
     alternating_layer_unzipper_test_strategy("ALTERNATING_LAYER_UNZIPPER"),
   )
   assert_eq(factory.factory_id(), 23026)

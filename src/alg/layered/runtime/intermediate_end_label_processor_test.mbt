@@ -136,22 +136,24 @@ test "end label postprocessor offsets and applies label positions then clears ce
 ///|
 test "end label processor strategies create concrete processors" {
   let pre_factory = layered_intermediate_processor_factory(
+    new_l_graph(),
     end_label_processor_test_strategy("END_LABEL_PREPROCESSOR"),
   )
   assert_eq(pre_factory.factory_id(), 23034)
   assert_eq(pre_factory.factory_order(), 34)
   let pre_processor = pre_factory.create()
   let pre_monitor = new_elk_progress_monitor()
-  pre_processor.process(new_l_graph(), Some(pre_monitor))
+  pre_processor.run(Some(pre_monitor))
   inspect(pre_monitor.get_task_name(), content="End label pre-processing")
 
   let post_factory = layered_intermediate_processor_factory(
+    new_l_graph(),
     end_label_processor_test_strategy("END_LABEL_POSTPROCESSOR"),
   )
   assert_eq(post_factory.factory_id(), 23055)
   assert_eq(post_factory.factory_order(), 55)
   let post_processor = post_factory.create()
   let post_monitor = new_elk_progress_monitor()
-  post_processor.process(new_l_graph(), Some(post_monitor))
+  post_processor.run(Some(post_monitor))
   inspect(post_monitor.get_task_name(), content="End label post-processing")
 }

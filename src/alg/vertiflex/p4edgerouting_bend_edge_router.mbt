@@ -72,7 +72,7 @@ fn vertiflex_bend_edge_router_process(
 ///|
 pub fn new_vertiflex_bend_edge_router_layout_phase(
   session : VertiFlexSession,
-) -> @core.ILayoutProcessor[VertiFlexLayoutPhases, @graph.ElkNode] {
+) -> @core.TypedLayoutProcessor[@graph.ElkNode] {
   @core.new_layout_phase(
     (graph, monitor) => {
       vertiflex_bend_edge_router_process(session, graph, monitor)

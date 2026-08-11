@@ -83,10 +83,11 @@ test "in-layer constraint processor enforces top none bottom ordering per layer"
 ///|
 test "in-layer constraint processor strategy creates in-layer processor" {
   let factory = layered_intermediate_processor_factory(
+    new_l_graph(),
     in_layer_constraint_processor_test_strategy("IN_LAYER_CONSTRAINT_PROCESSOR"),
   )
   let processor = factory.create()
   let monitor = new_elk_progress_monitor()
-  processor.process(new_l_graph(), Some(monitor))
+  processor.run(Some(monitor))
   inspect(monitor.get_task_name(), content="Layer constraint edge reversal")
 }

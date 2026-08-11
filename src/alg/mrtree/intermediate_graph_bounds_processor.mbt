@@ -15,8 +15,7 @@ fn mrtree_graph_bounds_processor_process(
 }
 
 ///|
-pub fn new_mrtree_graph_bounds_processor_layout_processor() -> @core.ILayoutProcessor[
-  MrtreeTreeLayoutPhases,
+pub fn new_mrtree_graph_bounds_processor_layout_processor() -> @core.TypedLayoutProcessor[
   MrtreeGraph,
 ] {
   @core.new_layout_processor(mrtree_graph_bounds_processor_process)

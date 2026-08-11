@@ -1,9 +1,9 @@
 ///|
 fn spore_min_st_phase_configuration(
   graph : SporeGraph,
-) -> @core.LayoutProcessorConfiguration[SPOrEPhases, SporeGraph]? {
+) -> @core.LayoutProcessorConfiguration? {
   ignore(graph)
-  Some(@core.layout_processor_configuration_create(spore_phase_descriptor))
+  Some(@core.layout_processor_configuration_create())
 }
 
 ///|
@@ -96,10 +96,7 @@ fn spore_min_st_phase_process(
 }
 
 ///|
-pub fn new_spore_min_st_layout_phase() -> @core.ILayoutProcessor[
-  SPOrEPhases,
-  SporeGraph,
-] {
+pub fn new_spore_min_st_layout_phase() -> @core.TypedLayoutProcessor[SporeGraph] {
   @core.new_pure_layout_phase(
     spore_min_st_phase_process, spore_min_st_phase_configuration,
   )

@@ -9,7 +9,6 @@ using @runtime {
   type LGraph,
   type LNode,
   type LayeredLayoutPlan,
-  type LayeredPhases,
   type LayeredPhaseRegistry,
   dispose_layered_graph,
   edge_router_factory_factory_for,

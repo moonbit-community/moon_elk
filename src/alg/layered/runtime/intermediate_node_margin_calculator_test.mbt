@@ -15,11 +15,12 @@ fn node_margin_calculator_test_new_node(
 
 ///|
 test "comment node margin calculator reports expected task name" {
+  let graph = new_l_graph()
   let processor = @engine.new_layered_phase_registry()
-    .intermediate_processor_factory(CommentNodeMarginCalculator)
+    .intermediate_processor_factory(graph, CommentNodeMarginCalculator)
     .create()
   let monitor = new_elk_progress_monitor()
-  processor.process(new_l_graph(), Some(monitor))
+  processor.run(Some(monitor))
   inspect(monitor.get_task_name(), content="Node margin calculation")
 }
 
@@ -49,9 +50,9 @@ test "comment node margin calculator expands margins for top and bottom comments
   node.set_property_l_node_array(internal_properties_bottom_comments, [bottom_a])
 
   let processor = @engine.new_layered_phase_registry()
-    .intermediate_processor_factory(CommentNodeMarginCalculator)
+    .intermediate_processor_factory(graph, CommentNodeMarginCalculator)
     .create()
-  processor.process(graph, None)
+  processor.run(None)
 
   inspect(node.get_margin().get_top(), content="28")
   inspect(node.get_margin().get_bottom(), content="25")
@@ -74,9 +75,9 @@ test "comment node margin calculator keeps margins unchanged without comments" {
   node.get_margin().set_values(2.0, 3.0, 4.0, 5.0)
 
   let processor = @engine.new_layered_phase_registry()
-    .intermediate_processor_factory(CommentNodeMarginCalculator)
+    .intermediate_processor_factory(graph, CommentNodeMarginCalculator)
     .create()
-  processor.process(graph, None)
+  processor.run(None)
 
   inspect(node.get_margin().get_top(), content="2")
   inspect(node.get_margin().get_right(), content="3")
@@ -100,9 +101,9 @@ test "comment node margin calculator treats empty comment list as present proper
   node.set_property_l_node_array(internal_properties_top_comments, [])
 
   let processor = @engine.new_layered_phase_registry()
-    .intermediate_processor_factory(CommentNodeMarginCalculator)
+    .intermediate_processor_factory(graph, CommentNodeMarginCalculator)
     .create()
-  processor.process(graph, None)
+  processor.run(None)
 
   inspect(node.get_margin().get_top(), content="9")
   inspect(node.get_margin().get_right(), content="3")

@@ -7,25 +7,33 @@ import {
 }
 
 // Values
+pub const P1_NODE_Y_PLACEMENT : Int = 0
+
+pub const P2_NODE_RELATIVE_PLACEMENT : Int = 1
+
+pub const P3_NODE_ABSOLUTE_PLACEMENT : Int = 2
+
+pub const P4_EDGE_ROUTING : Int = 3
+
 pub fn new_outline_node(Double, Double, OutlineNode?) -> OutlineNode
 
-pub fn new_vertiflex_absolute_x_placer_layout_phase(VertiFlexSession) -> @core.ILayoutProcessor[VertiFlexLayoutPhases, @graph.ElkNode]
+pub fn new_vertiflex_absolute_x_placer_layout_phase(VertiFlexSession) -> @core.TypedLayoutProcessor[@graph.ElkNode]
 
-pub fn new_vertiflex_bend_edge_router_layout_phase(VertiFlexSession) -> @core.ILayoutProcessor[VertiFlexLayoutPhases, @graph.ElkNode]
+pub fn new_vertiflex_bend_edge_router_layout_phase(VertiFlexSession) -> @core.TypedLayoutProcessor[@graph.ElkNode]
 
 pub fn new_vertiflex_layout_provider() -> VertiFlexLayoutProvider raise
 
-pub fn new_vertiflex_node_y_placer_layout_phase(VertiFlexSession) -> @core.ILayoutProcessor[VertiFlexLayoutPhases, @graph.ElkNode]
+pub fn new_vertiflex_node_y_placer_layout_phase(VertiFlexSession) -> @core.TypedLayoutProcessor[@graph.ElkNode]
 
-pub fn new_vertiflex_relative_x_placer_layout_phase(VertiFlexSession) -> @core.ILayoutProcessor[VertiFlexLayoutPhases, @graph.ElkNode]
+pub fn new_vertiflex_relative_x_placer_layout_phase(VertiFlexSession) -> @core.TypedLayoutProcessor[@graph.ElkNode]
 
 pub fn new_vertiflex_session() -> VertiFlexSession
 
-pub fn new_vertiflex_straight_edge_router_layout_phase(VertiFlexSession) -> @core.ILayoutProcessor[VertiFlexLayoutPhases, @graph.ElkNode]
+pub fn new_vertiflex_straight_edge_router_layout_phase(VertiFlexSession) -> @core.TypedLayoutProcessor[@graph.ElkNode]
 
 pub fn register_vertiflex_layout_algorithm(@core.LayoutRuntime) -> Unit
 
-pub fn vertiflex_absolute_x_placer_phase_factory(VertiFlexSession, AbsoluteXPlacerStrategy) -> @core.ILayoutProcessorFactory[VertiFlexLayoutPhases, @graph.ElkNode]
+pub fn vertiflex_absolute_x_placer_phase_factory(VertiFlexSession, AbsoluteXPlacerStrategy, @graph.ElkNode) -> @core.LayoutProcessorFactory
 
 pub let vertiflex_algorithm_id : String
 
@@ -33,7 +41,7 @@ pub let vertiflex_consider_node_model_order : @graph.IProperty[Bool]
 
 pub fn vertiflex_edge_routing_strategy_from_string(String) -> EdgeRoutingStrategy
 
-pub fn vertiflex_edgerouter_phase_factory(VertiFlexSession, EdgerouterStrategy) -> @core.ILayoutProcessorFactory[VertiFlexLayoutPhases, @graph.ElkNode]
+pub fn vertiflex_edgerouter_phase_factory(VertiFlexSession, EdgerouterStrategy, @graph.ElkNode) -> @core.LayoutProcessorFactory
 
 pub fn vertiflex_find_root(@graph.ElkNode) -> @graph.ElkNode?
 
@@ -83,13 +91,13 @@ pub fn vertiflex_internal_set_root_node(VertiFlexSession, @graph.ElkNode, @graph
 
 pub let vertiflex_layer_distance : @graph.IProperty[Double]
 
-pub let vertiflex_layout_phase_descriptor : @core.PhaseDescriptor[VertiFlexLayoutPhases]
+pub let vertiflex_layout_phase_descriptor : @core.PhaseDescriptor
 
 pub fn vertiflex_layout_provider_as_layout_provider(VertiFlexLayoutProvider) -> @core.AbstractLayoutProvider
 
 pub let vertiflex_layout_strategy : @graph.IProperty[String]
 
-pub fn vertiflex_node_y_placer_phase_factory(VertiFlexSession, NodeYPlacerStrategy) -> @core.ILayoutProcessorFactory[VertiFlexLayoutPhases, @graph.ElkNode]
+pub fn vertiflex_node_y_placer_phase_factory(VertiFlexSession, NodeYPlacerStrategy, @graph.ElkNode) -> @core.LayoutProcessorFactory
 
 pub let vertiflex_omit_node_micro_layout : @graph.IProperty[Bool]
 
@@ -97,7 +105,7 @@ pub let vertiflex_option_margins_id : String
 
 pub let vertiflex_padding : @graph.IProperty[String]
 
-pub fn vertiflex_relative_x_placer_phase_factory(VertiFlexSession, RelativeXPlacerStrategy) -> @core.ILayoutProcessorFactory[VertiFlexLayoutPhases, @graph.ElkNode]
+pub fn vertiflex_relative_x_placer_phase_factory(VertiFlexSession, RelativeXPlacerStrategy, @graph.ElkNode) -> @core.LayoutProcessorFactory
 
 pub let vertiflex_spacing_node_node : @graph.IProperty[Double]
 
@@ -137,19 +145,12 @@ pub enum RelativeXPlacerStrategy {
   SIMPLE_X_PLACING
 }
 
-pub enum VertiFlexLayoutPhases {
-  P1_NODE_Y_PLACEMENT
-  P2_NODE_RELATIVE_PLACEMENT
-  P3_NODE_ABSOLUTE_PLACEMENT
-  P4_EDGE_ROUTING
-}
-
 pub struct VertiFlexLayoutProvider {
-  algorithm_assembler : @core.AlgorithmAssembler[VertiFlexLayoutPhases, @graph.ElkNode]
+  algorithm_assembler : @core.AlgorithmAssembler
   mut node_node_spacing : Double
   session : VertiFlexSession
 }
-pub fn VertiFlexLayoutProvider::assemble_algorithm(Self, @graph.ElkNode) -> Array[@core.ILayoutProcessor[VertiFlexLayoutPhases, @graph.ElkNode]] raise
+pub fn VertiFlexLayoutProvider::assemble_algorithm(Self, @graph.ElkNode) -> @core.LayoutProcessorPlan raise
 pub fn VertiFlexLayoutProvider::layout(Self, @graph.ElkNode, @core.IElkProgressMonitor) -> Unit raise
 
 pub struct VertiFlexSession {
@@ -158,5 +159,6 @@ pub struct VertiFlexSession {
 pub fn VertiFlexSession::clear(Self) -> Unit
 
 // Type aliases
+pub type VertiFlexLayoutPhases = Int
 
 // Traits

@@ -9,26 +9,88 @@ fn next_layout_processor_id() -> Int {
 }
 
 ///|
-pub(all) struct ILayoutProcessor[P, G] {
+/// Graph-specific processor implementation kept inside an algorithm package.
+///
+/// `G` remains concrete throughout the processor body and its inner loops. It
+/// is erased only when the processor is bound to one graph for plan execution.
+pub(all) struct TypedLayoutProcessor[G] {
   id : Int
   process_fn : ((G, IElkProgressMonitor?) -> Unit raise)?
   pure_process_fn : ((G, IElkProgressMonitor?) -> Unit)?
   is_phase : Bool
   is_hierarchy_aware : Bool
-  get_layout_processor_configuration_fn : ((G) -> LayoutProcessorConfiguration[
-    P,
-    G,
-  ]? raise)?
-  get_pure_layout_processor_configuration_fn : ((G) -> LayoutProcessorConfiguration[
-    P,
-    G,
-  ]?)?
+  get_layout_processor_configuration_fn : ((G) -> LayoutProcessorConfiguration? raise)?
+  get_pure_layout_processor_configuration_fn : ((G) -> LayoutProcessorConfiguration?)?
 }
 
 ///|
-pub fn[P, G] new_layout_processor(
+/// Coarse-grained execution seam for a fully bound pipeline step.
+///
+/// Dynamic dispatch happens once per processor. The graph is already captured
+/// by the adapter, so processor implementations never use `Any`, reflection,
+/// or a universal graph trait.
+pub(open) trait RunnableLayoutProcessor {
+  fn run(Self, IElkProgressMonitor?) -> Unit raise
+  fn instance_id(Self) -> Int
+  fn is_layout_phase(Self) -> Bool
+  fn is_hierarchy_aware_layout_processor(Self) -> Bool
+  fn get_layout_processor_configuration(Self) -> LayoutProcessorConfiguration? raise
+}
+
+///|
+priv struct BoundLayoutProcessor[G] {
+  graph : G
+  processor : TypedLayoutProcessor[G]
+}
+
+///|
+impl[G] RunnableLayoutProcessor for BoundLayoutProcessor[G] with fn run(
+  self,
+  progress_monitor,
+) raise {
+  self.processor.process(self.graph, progress_monitor)
+}
+
+///|
+impl[G] RunnableLayoutProcessor for BoundLayoutProcessor[G] with fn instance_id(
+  self,
+) {
+  self.processor.instance_id()
+}
+
+///|
+impl[G] RunnableLayoutProcessor for BoundLayoutProcessor[G] with fn is_layout_phase(
+  self,
+) {
+  self.processor.is_layout_phase()
+}
+
+///|
+impl[G] RunnableLayoutProcessor for BoundLayoutProcessor[G] with fn is_hierarchy_aware_layout_processor(
+  self,
+) {
+  self.processor.is_hierarchy_aware_layout_processor()
+}
+
+///|
+impl[G] RunnableLayoutProcessor for BoundLayoutProcessor[G] with fn get_layout_processor_configuration(
+  self,
+) raise {
+  self.processor.get_layout_processor_configuration(self.graph)
+}
+
+///|
+fn[G] bind_layout_processor(
+  graph : G,
+  processor : TypedLayoutProcessor[G],
+) -> &RunnableLayoutProcessor {
+  BoundLayoutProcessor::{ graph, processor }
+}
+
+///|
+pub fn[G] new_layout_processor(
   process_fn : (G, IElkProgressMonitor?) -> Unit raise,
-) -> ILayoutProcessor[P, G] {
+) -> TypedLayoutProcessor[G] {
   {
     id: next_layout_processor_id(),
     process_fn: Some(process_fn),
@@ -41,9 +103,9 @@ pub fn[P, G] new_layout_processor(
 }
 
 ///|
-pub fn[P, G] new_pure_layout_processor(
+pub fn[G] new_pure_layout_processor(
   process_fn : (G, IElkProgressMonitor?) -> Unit,
-) -> ILayoutProcessor[P, G] {
+) -> TypedLayoutProcessor[G] {
   {
     id: next_layout_processor_id(),
     process_fn: None,
@@ -56,13 +118,10 @@ pub fn[P, G] new_pure_layout_processor(
 }
 
 ///|
-pub fn[P, G] new_layout_phase(
+pub fn[G] new_layout_phase(
   process_fn : (G, IElkProgressMonitor?) -> Unit raise,
-  get_layout_processor_configuration_fn : (G) -> LayoutProcessorConfiguration[
-    P,
-    G,
-  ]? raise,
-) -> ILayoutProcessor[P, G] {
+  get_layout_processor_configuration_fn : (G) -> LayoutProcessorConfiguration? raise,
+) -> TypedLayoutProcessor[G] {
   {
     id: next_layout_processor_id(),
     process_fn: Some(process_fn),
@@ -77,13 +136,10 @@ pub fn[P, G] new_layout_phase(
 }
 
 ///|
-pub fn[P, G] new_pure_layout_phase(
+pub fn[G] new_pure_layout_phase(
   process_fn : (G, IElkProgressMonitor?) -> Unit raise,
-  get_layout_processor_configuration_fn : (G) -> LayoutProcessorConfiguration[
-    P,
-    G,
-  ]?,
-) -> ILayoutProcessor[P, G] {
+  get_layout_processor_configuration_fn : (G) -> LayoutProcessorConfiguration?,
+) -> TypedLayoutProcessor[G] {
   {
     id: next_layout_processor_id(),
     process_fn: Some(process_fn),
@@ -98,13 +154,10 @@ pub fn[P, G] new_pure_layout_phase(
 }
 
 ///|
-pub fn[P, G] new_hierarchy_aware_layout_phase(
+pub fn[G] new_hierarchy_aware_layout_phase(
   process_fn : (G, IElkProgressMonitor?) -> Unit raise,
-  get_layout_processor_configuration_fn : (G) -> LayoutProcessorConfiguration[
-    P,
-    G,
-  ]? raise,
-) -> ILayoutProcessor[P, G] {
+  get_layout_processor_configuration_fn : (G) -> LayoutProcessorConfiguration? raise,
+) -> TypedLayoutProcessor[G] {
   {
     id: next_layout_processor_id(),
     process_fn: Some(process_fn),
@@ -119,8 +172,8 @@ pub fn[P, G] new_hierarchy_aware_layout_phase(
 }
 
 ///|
-pub fn[P, G] ILayoutProcessor::process(
-  self : ILayoutProcessor[P, G],
+pub fn[G] TypedLayoutProcessor::process(
+  self : TypedLayoutProcessor[G],
   graph : G,
   progress_monitor : IElkProgressMonitor?,
 ) -> Unit raise {
@@ -135,24 +188,24 @@ pub fn[P, G] ILayoutProcessor::process(
 }
 
 ///|
-pub fn[P, G] ILayoutProcessor::is_layout_phase(
-  self : ILayoutProcessor[P, G],
+pub fn[G] TypedLayoutProcessor::is_layout_phase(
+  self : TypedLayoutProcessor[G],
 ) -> Bool {
   self.is_phase
 }
 
 ///|
-pub fn[P, G] ILayoutProcessor::is_hierarchy_aware_layout_processor(
-  self : ILayoutProcessor[P, G],
+pub fn[G] TypedLayoutProcessor::is_hierarchy_aware_layout_processor(
+  self : TypedLayoutProcessor[G],
 ) -> Bool {
   self.is_hierarchy_aware
 }
 
 ///|
-pub fn[P, G] ILayoutProcessor::get_layout_processor_configuration(
-  self : ILayoutProcessor[P, G],
+pub fn[G] TypedLayoutProcessor::get_layout_processor_configuration(
+  self : TypedLayoutProcessor[G],
   graph : G,
-) -> LayoutProcessorConfiguration[P, G]? raise {
+) -> LayoutProcessorConfiguration? raise {
   match self.get_layout_processor_configuration_fn {
     Some(get_configuration) => get_configuration(graph)
     None =>
@@ -164,8 +217,8 @@ pub fn[P, G] ILayoutProcessor::get_layout_processor_configuration(
 }
 
 ///|
-pub fn[P, G] ILayoutProcessor::instance_id(
-  self : ILayoutProcessor[P, G],
+pub fn[G] TypedLayoutProcessor::instance_id(
+  self : TypedLayoutProcessor[G],
 ) -> Int {
   self.id
 }

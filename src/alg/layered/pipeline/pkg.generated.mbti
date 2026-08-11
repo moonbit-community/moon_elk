@@ -31,22 +31,22 @@ pub struct ElkLayered {
   session : @core.LayoutSession
   phase_registry : @runtime.LayeredPhaseRegistry
   components_processor : @components.LayeredComponentsProcessor
-  compound_graph_preprocessor : @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
-  compound_graph_postprocessor : @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
+  compound_graph_preprocessor : @core.TypedLayoutProcessor[@runtime.LGraph]
+  compound_graph_postprocessor : @core.TypedLayoutProcessor[@runtime.LGraph]
   mut test_controller : @core.TestController[@runtime.LGraph]?
 }
 pub fn ElkLayered::do_compound_layout(Self, @runtime.LGraph, @core.IElkProgressMonitor?) -> Unit raise
 pub fn ElkLayered::do_layout(Self, @runtime.LGraph, @core.IElkProgressMonitor?) -> Unit raise
-pub fn ElkLayered::get_layout_test_configuration(Self, ElkLayeredTestExecutionState) -> Array[@core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]]
+pub fn ElkLayered::get_layout_test_configuration(Self, ElkLayeredTestExecutionState) -> Array[&@core.RunnableLayoutProcessor]
 pub fn ElkLayered::is_layout_test_finished(Self, ElkLayeredTestExecutionState) -> Bool
 pub fn ElkLayered::prepare_layout_test(Self, @runtime.LGraph) -> ElkLayeredTestExecutionState raise
 pub fn ElkLayered::run_layout_test_step(Self, ElkLayeredTestExecutionState) -> Unit raise
-pub fn ElkLayered::run_layout_test_until(Self, @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph], ElkLayeredTestExecutionState, inclusive? : Bool) -> Unit raise
+pub fn ElkLayered::run_layout_test_until(Self, &@core.RunnableLayoutProcessor, ElkLayeredTestExecutionState, inclusive? : Bool) -> Unit raise
 pub fn ElkLayered::set_test_controller(Self, @core.TestController[@runtime.LGraph]?) -> Unit
 
 pub struct ElkLayeredTestExecutionState {
   graphs : Array[@runtime.LGraph]
-  plan : @runtime.LayeredLayoutPlan
+  plans : Array[@runtime.LayeredLayoutPlan]
   mut step : Int
 }
 pub fn ElkLayeredTestExecutionState::get_graphs(Self) -> Array[@runtime.LGraph]

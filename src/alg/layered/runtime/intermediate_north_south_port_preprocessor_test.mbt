@@ -355,10 +355,11 @@ test "north south port preprocessor skips successor constraints when port may sw
 ///|
 test "north south port preprocessor strategy creates concrete processor" {
   let factory = layered_intermediate_processor_factory(
+    new_l_graph(),
     north_south_port_preprocessor_test_strategy("NORTH_SOUTH_PORT_PREPROCESSOR"),
   )
   let processor = factory.create()
   let monitor = new_elk_progress_monitor()
-  processor.process(new_l_graph(), Some(monitor))
+  processor.run(Some(monitor))
   inspect(monitor.get_task_name(), content="Odd port side processing")
 }

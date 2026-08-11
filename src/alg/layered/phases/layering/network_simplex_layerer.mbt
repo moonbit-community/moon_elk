@@ -23,44 +23,42 @@ fn network_simplex_layerer_exception_message(
 }
 
 ///|
-fn network_simplex_layerer_layer_constraint_preprocessor_factory() -> @core.ILayoutProcessorFactory[
-  @runtime.LayeredPhases,
-  @runtime.LGraph,
-] {
-  @core.new_layout_processor_factory(23007, 7, () => {
+fn network_simplex_layerer_layer_constraint_preprocessor_factory(
+  graph : @runtime.LGraph,
+) -> @core.LayoutProcessorFactory {
+  @core.new_layout_processor_factory(23007, 7, graph, () => {
     @runtime.new_layer_constraint_preprocessor_layout_processor()
   })
 }
 
 ///|
-fn network_simplex_layerer_layer_constraint_postprocessor_factory() -> @core.ILayoutProcessorFactory[
-  @runtime.LayeredPhases,
-  @runtime.LGraph,
-] {
-  @core.new_layout_processor_factory(23011, 11, () => {
+fn network_simplex_layerer_layer_constraint_postprocessor_factory(
+  graph : @runtime.LGraph,
+) -> @core.LayoutProcessorFactory {
+  @core.new_layout_processor_factory(23011, 11, graph, () => {
     @runtime.new_layer_constraint_postprocessor_layout_processor()
   })
 }
 
 ///|
-fn network_simplex_layerer_baseline_processing_configuration() -> @core.LayoutProcessorConfiguration[
-  @runtime.LayeredPhases,
-  @runtime.LGraph,
-] raise {
-  @core.layout_processor_configuration_create(@runtime.layered_phase_descriptor)
+fn network_simplex_layerer_baseline_processing_configuration(
+  graph : @runtime.LGraph,
+) -> @core.LayoutProcessorConfiguration raise {
+  @core.layout_processor_configuration_create()
   .add_before(
-    P1CycleBreaking,
+    @runtime.P1CycleBreaking,
     @runtime.layered_intermediate_processor_factory(
+      graph,
       EdgeAndLayerConstraintEdgeReverser,
     ),
   )
   .add_before(
-    P2Layering,
-    network_simplex_layerer_layer_constraint_preprocessor_factory(),
+    @runtime.P2Layering,
+    network_simplex_layerer_layer_constraint_preprocessor_factory(graph),
   )
   .add_before(
-    P3NodeOrdering,
-    network_simplex_layerer_layer_constraint_postprocessor_factory(),
+    @runtime.P3NodeOrdering,
+    network_simplex_layerer_layer_constraint_postprocessor_factory(graph),
   )
 }
 
@@ -247,9 +245,9 @@ fn network_simplex_layerer_initialize(
 ///|
 fn network_simplex_layerer_configuration(
   graph : @runtime.LGraph,
-) -> @core.LayoutProcessorConfiguration[@runtime.LayeredPhases, @runtime.LGraph]? raise {
+) -> @core.LayoutProcessorConfiguration? raise {
   ignore(graph)
-  Some(network_simplex_layerer_baseline_processing_configuration())
+  Some(network_simplex_layerer_baseline_processing_configuration(graph))
 }
 
 ///|
@@ -350,8 +348,7 @@ fn network_simplex_layerer_process(
 }
 
 ///|
-pub fn new_network_simplex_layerer_layout_phase() -> @core.ILayoutProcessor[
-  @runtime.LayeredPhases,
+pub fn new_network_simplex_layerer_layout_phase() -> @core.TypedLayoutProcessor[
   @runtime.LGraph,
 ] {
   @core.new_layout_phase(

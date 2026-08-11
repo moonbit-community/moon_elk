@@ -67,10 +67,13 @@ fn spline_edge_router_test_strategy(
 
 ///|
 fn spline_edge_router_test_contains_factory(
-  factories : Array[@core.ILayoutProcessorFactory[LayeredPhases, LGraph]],
+  factories : Array[@core.LayoutProcessorFactory],
   strategy : IntermediateProcessorStrategy,
 ) -> Bool {
-  let expected_id = layered_intermediate_processor_factory(strategy).factory_id()
+  let expected_id = layered_intermediate_processor_factory(
+    new_l_graph(),
+    strategy,
+  ).factory_id()
   for factory in factories {
     if factory.factory_id() == expected_id {
       return true

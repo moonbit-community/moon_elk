@@ -132,8 +132,7 @@ pub fn StraightLineEdgeRouter::as_i_radial_edge_router(
 }
 
 ///|
-pub fn new_radial_straight_line_edge_router_layout_phase() -> @core.ILayoutProcessor[
-  RadialLayoutPhases,
+pub fn new_radial_straight_line_edge_router_layout_phase() -> @core.TypedLayoutProcessor[
   @graph.ElkNode,
 ] {
   @core.new_layout_phase(

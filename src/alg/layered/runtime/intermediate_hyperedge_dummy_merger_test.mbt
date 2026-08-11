@@ -212,10 +212,11 @@ test "hyperedge dummy merger respects before-label-dummy gating" {
 ///|
 test "hyperedge dummy merger strategy creates concrete processor" {
   let factory = layered_intermediate_processor_factory(
+    new_l_graph(),
     hyperedge_dummy_merger_test_strategy("HYPEREDGE_DUMMY_MERGER"),
   )
   let processor = factory.create()
   let monitor = new_elk_progress_monitor()
-  processor.process(new_l_graph(), Some(monitor))
+  processor.run(Some(monitor))
   inspect(monitor.get_task_name(), content="Hyperedge merging")
 }

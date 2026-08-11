@@ -211,13 +211,14 @@ test "hierarchical port constraint processor replaces north south dummies" {
 ///|
 test "hierarchical port constraint processor strategy creates concrete processor" {
   let factory = layered_intermediate_processor_factory(
+    new_l_graph(),
     hierarchical_port_constraint_test_strategy(
       "HIERARCHICAL_PORT_CONSTRAINT_PROCESSOR",
     ),
   )
   let processor = factory.create()
   let monitor = new_elk_progress_monitor()
-  processor.process(new_l_graph(), Some(monitor))
+  processor.run(Some(monitor))
   inspect(
     monitor.get_task_name(),
     content="Hierarchical port constraint processing",

@@ -19,32 +19,33 @@ pub fn StringBuffer::to_string(self : StringBuffer) -> String {
 }
 
 ///|
-pub(all) enum TestPhases {
-  Phase1
-  Phase2
-}
+pub type TestPhases = PhaseId
+
+///|
+pub const Phase1 : TestPhases = 0
+
+///|
+pub const Phase2 : TestPhases = 1
 
 ///|
 fn test_phase_label(phase : TestPhases) -> String {
-  match phase {
-    Phase1 => "PHASE_1"
-    Phase2 => "PHASE_2"
+  if phase == Phase1 {
+    "PHASE_1"
+  } else {
+    "PHASE_2"
   }
 }
 
 ///|
 pub fn test_phase_ordinal(phase : TestPhases) -> Int {
-  match phase {
-    Phase1 => 0
-    Phase2 => 1
-  }
+  phase
 }
 
 ///|
-pub let test_phase_descriptor : PhaseDescriptor[TestPhases] = new_phase_descriptor(
-  [Phase1, Phase2],
-  test_phase_ordinal,
-)
+pub let test_phase_descriptor : PhaseDescriptor = new_phase_descriptor([
+  Phase1,
+  Phase2,
+])
 
 ///|
 pub(all) enum TestProcessors {
@@ -74,9 +75,10 @@ fn test_processor_ordinal(processor : TestProcessors) -> Int {
 ///|
 pub fn test_processor_factory(
   processor : TestProcessors,
-) -> ILayoutProcessorFactory[TestPhases, StringBuffer?] {
+  graph? : StringBuffer? = None,
+) -> LayoutProcessorFactory {
   let ordinal = test_processor_ordinal(processor)
-  new_layout_processor_factory(10_000 + ordinal, ordinal, () => {
+  new_layout_processor_factory(10_000 + ordinal, ordinal, graph, () => {
     new_layout_processor((graph, progress_monitor) => {
       ignore(progress_monitor)
       if graph is Some(buffer) {
@@ -89,9 +91,10 @@ pub fn test_processor_factory(
 ///|
 pub fn test_phase_factory(
   phase : TestPhases,
-) -> ILayoutPhaseFactory[TestPhases, StringBuffer?] {
+  graph? : StringBuffer? = None,
+) -> LayoutProcessorFactory {
   let ordinal = test_phase_ordinal(phase)
-  new_layout_processor_factory(20_000 + ordinal, ordinal, () => {
+  new_layout_processor_factory(20_000 + ordinal, ordinal, graph, () => {
     new_layout_phase(
       (graph, progress_monitor) => {
         ignore(progress_monitor)
@@ -100,15 +103,17 @@ pub fn test_phase_factory(
         }
       },
       _ => {
-        let config = layout_processor_configuration_create(
-          test_phase_descriptor,
-        )
-        let phase_processor = match phase {
-          Phase1 => Processor1
-          Phase2 => Processor2
+        let config = layout_processor_configuration_create()
+        let phase_processor = if phase == Phase1 {
+          Processor1
+        } else {
+          Processor2
         }
         ignore(
-          config.add_before(phase, test_processor_factory(phase_processor)),
+          config.add_before(
+            phase,
+            test_processor_factory(phase_processor, graph~),
+          ),
         )
         Some(config)
       },
@@ -117,11 +122,9 @@ pub fn test_phase_factory(
 }
 
 ///|
-pub fn count_layout_phases(
-  algorithm : Array[ILayoutProcessor[TestPhases, StringBuffer?]],
-) -> Int {
+pub fn count_layout_phases(algorithm : LayoutProcessorPlan) -> Int {
   let mut count = 0
-  for processor in algorithm {
+  for processor in algorithm.steps() {
     if processor.is_layout_phase() {
       count += 1
     }
@@ -131,9 +134,10 @@ pub fn count_layout_phases(
 
 ///|
 pub fn run_processor_step(
-  processor : ILayoutProcessor[TestPhases, StringBuffer?],
+  processor : &RunnableLayoutProcessor,
+  buffer : StringBuffer,
 ) -> String raise {
-  let buffer = new_string_buffer()
-  processor.process(Some(buffer), None)
+  buffer.value = ""
+  processor.run(None)
   buffer.to_string()
 }

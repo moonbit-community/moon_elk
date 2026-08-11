@@ -56,7 +56,7 @@ fn vertiflex_node_y_placer_process(
 ///|
 pub fn new_vertiflex_node_y_placer_layout_phase(
   session : VertiFlexSession,
-) -> @core.ILayoutProcessor[VertiFlexLayoutPhases, @graph.ElkNode] {
+) -> @core.TypedLayoutProcessor[@graph.ElkNode] {
   @core.new_layout_phase(
     (graph, monitor) => vertiflex_node_y_placer_process(session, graph, monitor),
     _ => None,

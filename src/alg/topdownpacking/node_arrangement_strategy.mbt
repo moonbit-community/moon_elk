@@ -17,10 +17,11 @@ pub fn topdownpacking_node_arrangement_strategy_from_string(
 ///|
 pub fn topdownpacking_node_arrangement_strategy_phase_factory(
   strategy : NodeArrangementStrategy,
-) -> @core.ILayoutPhaseFactory[TopdownPackingPhases, GridElkNode] {
+  graph : GridElkNode,
+) -> @core.LayoutProcessorFactory {
   match strategy {
     LEFT_RIGHT_TOP_DOWN_NODE_PLACER =>
-      @core.new_layout_processor_factory(80000, 0, () => {
+      @core.new_layout_processor_factory(80000, 0, graph, () => {
         new_topdownpacking_left_right_top_down_node_placer_layout_phase()
       })
   }

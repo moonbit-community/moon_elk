@@ -94,7 +94,7 @@ pub fn mrtree_layout_levels(graph : MrtreeGraph) -> Unit raise {
 ///|
 fn mrtree_update_modules(
   graph : MrtreeGraph,
-) -> Array[@core.ILayoutProcessor[MrtreeTreeLayoutPhases, MrtreeGraph]] raise {
+) -> @core.LayoutProcessorPlan raise {
   let algorithm_assembler = @core.algorithm_assembler_create(
     mrtree_tree_layout_phase_descriptor,
   )
@@ -102,34 +102,33 @@ fn mrtree_update_modules(
   ignore(
     algorithm_assembler.set_phase(
       P1Treeification,
-      mrtree_tree_layout_phase_factory(P1Treeification),
+      mrtree_tree_layout_phase_factory(P1Treeification, graph),
     ),
   )
   ignore(
     algorithm_assembler.set_phase(
       P2NodeOrdering,
-      mrtree_tree_layout_phase_factory(P2NodeOrdering),
+      mrtree_tree_layout_phase_factory(P2NodeOrdering, graph),
     ),
   )
   ignore(
     algorithm_assembler.set_phase(
       P3NodePlacement,
-      mrtree_tree_layout_phase_factory(P3NodePlacement),
+      mrtree_tree_layout_phase_factory(P3NodePlacement, graph),
     ),
   )
   ignore(
     algorithm_assembler.set_phase(
       P4EdgeRouting,
-      mrtree_tree_layout_phase_factory(P4EdgeRouting),
+      mrtree_tree_layout_phase_factory(P4EdgeRouting, graph),
     ),
   )
-  algorithm_assembler.build(graph)
+  algorithm_assembler.build()
 }
 
 ///|
 fn mrtree_layout(
-  graph : MrtreeGraph,
-  algorithm : Array[@core.ILayoutProcessor[MrtreeTreeLayoutPhases, MrtreeGraph]],
+  algorithm : @core.LayoutProcessorPlan,
   monitor_opt : @core.IElkProgressMonitor?,
 ) -> Unit raise {
   let monitor = match monitor_opt {
@@ -137,11 +136,11 @@ fn mrtree_layout(
     None => @core.new_basic_progress_monitor()
   }
   ignore(monitor.begin("Layout", algorithm.length().to_double()))
-  for processor in algorithm {
+  for processor in algorithm.steps() {
     if monitor.is_canceled() {
       return
     }
-    processor.process(graph, monitor.sub_task(1.0))
+    processor.run(monitor.sub_task(1.0))
   }
   monitor.done()
 }
@@ -155,7 +154,7 @@ pub fn Mrtree::do_layout(
   ignore(self)
   ignore(progress_monitor.begin("@common.Tree layout", 1.0))
   let algorithm = mrtree_update_modules(graph)
-  mrtree_layout(graph, algorithm, progress_monitor.sub_task(1.0))
+  mrtree_layout(algorithm, progress_monitor.sub_task(1.0))
   progress_monitor.done()
   graph
 }

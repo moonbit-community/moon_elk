@@ -127,8 +127,7 @@ fn scc_node_type_cycle_breaker_process(
 }
 
 ///|
-pub fn new_scc_node_type_cycle_breaker_layout_phase() -> @core.ILayoutProcessor[
-  @runtime.LayeredPhases,
+pub fn new_scc_node_type_cycle_breaker_layout_phase() -> @core.TypedLayoutProcessor[
   @runtime.LGraph,
 ] {
   @core.new_layout_phase(

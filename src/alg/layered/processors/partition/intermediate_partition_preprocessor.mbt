@@ -191,8 +191,7 @@ fn partition_preprocessor_process(
 }
 
 ///|
-pub fn new_partition_preprocessor_layout_processor() -> @core.ILayoutProcessor[
-  @runtime.LayeredPhases,
+pub fn new_partition_preprocessor_layout_processor() -> @core.TypedLayoutProcessor[
   @runtime.LGraph,
 ] {
   @core.new_layout_processor(partition_preprocessor_process)

@@ -403,8 +403,7 @@ fn hierarchical_node_resizing_processor_process(
 }
 
 ///|
-pub fn new_hierarchical_node_resizing_processor_layout_processor() -> @core.ILayoutProcessor[
-  LayeredPhases,
+pub fn new_hierarchical_node_resizing_processor_layout_processor() -> @core.TypedLayoutProcessor[
   LGraph,
 ] {
   @core.new_layout_processor(hierarchical_node_resizing_processor_process)

@@ -128,8 +128,7 @@ fn in_layer_constraint_processor_process(
 }
 
 ///|
-pub fn new_in_layer_constraint_processor_layout_processor() -> @core.ILayoutProcessor[
-  LayeredPhases,
+pub fn new_in_layer_constraint_processor_layout_processor() -> @core.TypedLayoutProcessor[
   LGraph,
 ] {
   @core.new_layout_processor(in_layer_constraint_processor_process)

@@ -9,6 +9,10 @@ import {
 }
 
 // Values
+pub const P1_NODE_PLACEMENT : Int = 0
+
+pub const P2_EDGE_ROUTING : Int = 1
+
 pub fn new_abstract_radius_extension_compaction() -> AbstractRadiusExtensionCompaction
 
 pub fn new_angle_rotation() -> AngleRotation
@@ -47,25 +51,25 @@ pub fn new_pure_i_evaluation((@graph.ElkNode) -> Double) -> IEvaluation
 
 pub fn new_pure_i_radial_sorter((Array[@graph.ElkNode]) -> Unit) -> IRadialSorter
 
-pub fn new_radial_calculate_graph_size_layout_processor() -> @core.ILayoutProcessor[RadialLayoutPhases, @graph.ElkNode]
+pub fn new_radial_calculate_graph_size_layout_processor() -> @core.TypedLayoutProcessor[@graph.ElkNode]
 
 pub fn new_radial_compaction() -> RadialCompaction
 
-pub fn new_radial_eades_layout_phase() -> @core.ILayoutProcessor[RadialLayoutPhases, @graph.ElkNode]
+pub fn new_radial_eades_layout_phase() -> @core.TypedLayoutProcessor[@graph.ElkNode]
 
-pub fn new_radial_edge_angle_calculator_layout_processor() -> @core.ILayoutProcessor[RadialLayoutPhases, @graph.ElkNode]
+pub fn new_radial_edge_angle_calculator_layout_processor() -> @core.TypedLayoutProcessor[@graph.ElkNode]
 
-pub fn new_radial_general_compactor_layout_processor() -> @core.ILayoutProcessor[RadialLayoutPhases, @graph.ElkNode]
+pub fn new_radial_general_compactor_layout_processor() -> @core.TypedLayoutProcessor[@graph.ElkNode]
 
-pub fn new_radial_general_rotator_layout_processor() -> @core.ILayoutProcessor[RadialLayoutPhases, @graph.ElkNode]
+pub fn new_radial_general_rotator_layout_processor() -> @core.TypedLayoutProcessor[@graph.ElkNode]
 
 pub fn new_radial_layout_provider() -> RadialLayoutProvider raise
 
-pub fn new_radial_straight_line_edge_router_layout_phase() -> @core.ILayoutProcessor[RadialLayoutPhases, @graph.ElkNode]
+pub fn new_radial_straight_line_edge_router_layout_phase() -> @core.TypedLayoutProcessor[@graph.ElkNode]
 
 pub fn new_radius_extension_overlap_removal() -> RadiusExtensionOverlapRemoval
 
-pub fn new_radius_extension_overlap_removal_layout_processor() -> @core.ILayoutProcessor[RadialLayoutPhases, @graph.ElkNode]
+pub fn new_radius_extension_overlap_removal_layout_processor() -> @core.TypedLayoutProcessor[@graph.ElkNode]
 
 pub fn new_straight_line_edge_router() -> StraightLineEdgeRouter
 
@@ -97,7 +101,7 @@ pub fn radial_get_successors(@graph.ElkNode) -> Array[@graph.ElkNode]
 
 pub fn radial_get_tree_parent(@graph.ElkNode) -> @graph.ElkNode?
 
-pub fn radial_intermediate_processor_factory(RadialIntermediateProcessorStrategy) -> @core.ILayoutProcessorFactory[RadialLayoutPhases, @graph.ElkNode]
+pub fn radial_intermediate_processor_factory(RadialIntermediateProcessorStrategy, @graph.ElkNode) -> @core.LayoutProcessorFactory
 
 pub fn radial_internal_graph_padding(@graph.ElkNode) -> @core.Spacing raise
 
@@ -115,9 +119,9 @@ pub fn radial_internal_set_order_id(@graph.ElkNode, Int) -> Unit
 
 pub fn radial_internal_set_position(@graph.ElkNode, @core.KVector) -> Unit
 
-pub let radial_layout_phase_descriptor : @core.PhaseDescriptor[RadialLayoutPhases]
+pub let radial_layout_phase_descriptor : @core.PhaseDescriptor
 
-pub fn radial_layout_phase_factory(RadialLayoutPhases) -> @core.ILayoutProcessorFactory[RadialLayoutPhases, @graph.ElkNode]
+pub fn radial_layout_phase_factory(Int, @graph.ElkNode) -> @core.LayoutProcessorFactory
 
 pub fn radial_overlap_removal_strategy_create(@options.RadialOverlapRemovalStrategy) -> IOverlapRemoval
 
@@ -271,13 +275,8 @@ pub enum RadialIntermediateProcessorStrategy {
   OUTGOING_EDGE_ANGLES
 }
 
-pub enum RadialLayoutPhases {
-  P1_NODE_PLACEMENT
-  P2_EDGE_ROUTING
-}
-
 pub struct RadialLayoutProvider {
-  algorithm_assembler : @core.AlgorithmAssembler[RadialLayoutPhases, @graph.ElkNode]
+  algorithm_assembler : @core.AlgorithmAssembler
 }
 pub fn RadialLayoutProvider::layout(Self, @graph.ElkNode, @core.IElkProgressMonitor) -> Unit raise
 
@@ -296,5 +295,6 @@ pub fn StraightLineEdgeRouter::as_i_radial_edge_router(Self) -> IRadialEdgeRoute
 pub fn StraightLineEdgeRouter::route_edges(Self, @graph.ElkNode) -> Unit
 
 // Type aliases
+pub type RadialLayoutPhases = Int
 
 // Traits

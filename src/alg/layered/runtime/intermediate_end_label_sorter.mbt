@@ -66,8 +66,7 @@ fn end_label_sorter_process(
 }
 
 ///|
-pub fn new_end_label_sorter_layout_processor() -> @core.ILayoutProcessor[
-  LayeredPhases,
+pub fn new_end_label_sorter_layout_processor() -> @core.TypedLayoutProcessor[
   LGraph,
 ] {
   @core.new_layout_processor(end_label_sorter_process)

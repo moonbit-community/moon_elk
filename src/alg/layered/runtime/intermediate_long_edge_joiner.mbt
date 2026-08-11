@@ -208,8 +208,7 @@ fn long_edge_joiner_process(
 }
 
 ///|
-pub fn new_long_edge_joiner_layout_processor() -> @core.ILayoutProcessor[
-  LayeredPhases,
+pub fn new_long_edge_joiner_layout_processor() -> @core.TypedLayoutProcessor[
   LGraph,
 ] {
   @core.new_layout_processor(long_edge_joiner_process)

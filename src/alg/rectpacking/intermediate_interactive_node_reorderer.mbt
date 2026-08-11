@@ -91,8 +91,7 @@ fn rectpacking_interactive_node_reorderer_process(
 }
 
 ///|
-pub fn new_rectpacking_interactive_node_reorderer_layout_processor() -> @core.ILayoutProcessor[
-  RectPackingLayoutPhases,
+pub fn new_rectpacking_interactive_node_reorderer_layout_processor() -> @core.TypedLayoutProcessor[
   @graph.ElkNode,
 ] {
   @core.new_layout_processor(rectpacking_interactive_node_reorderer_process)

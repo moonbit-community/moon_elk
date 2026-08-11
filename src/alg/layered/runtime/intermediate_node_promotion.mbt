@@ -862,7 +862,7 @@ fn node_promotion_set_new_layering_model_order(
 ///|
 fn _node_promotion_configuration(
   graph : LGraph,
-) -> @core.LayoutProcessorConfiguration[LayeredPhases, LGraph]? {
+) -> @core.LayoutProcessorConfiguration? {
   ignore(graph)
   None
 }
@@ -965,8 +965,7 @@ fn node_promotion_process(
 }
 
 ///|
-pub fn new_node_promotion_layout_processor() -> @core.ILayoutProcessor[
-  LayeredPhases,
+pub fn new_node_promotion_layout_processor() -> @core.TypedLayoutProcessor[
   LGraph,
 ] {
   @core.new_layout_processor(node_promotion_process)

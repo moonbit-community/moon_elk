@@ -18,14 +18,15 @@ pub fn spore_tree_construction_strategy_from_string(
 ///|
 pub fn spore_tree_construction_strategy_phase_factory(
   strategy : SporeTreeConstructionStrategy,
-) -> @core.ILayoutPhaseFactory[SPOrEPhases, SporeGraph] {
+  graph : SporeGraph,
+) -> @core.LayoutProcessorFactory {
   match strategy {
     MINIMUM_SPANNING_TREE =>
-      @core.new_layout_processor_factory(82001, 1, () => {
+      @core.new_layout_processor_factory(82001, 1, graph, () => {
         new_spore_min_st_layout_phase()
       })
     MAXIMUM_SPANNING_TREE =>
-      @core.new_layout_processor_factory(82002, 1, () => {
+      @core.new_layout_processor_factory(82002, 1, graph, () => {
         new_spore_max_st_layout_phase()
       })
   }

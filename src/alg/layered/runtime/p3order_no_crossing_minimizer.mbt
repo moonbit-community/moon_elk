@@ -13,51 +13,47 @@ fn no_crossing_minimizer_process(
 }
 
 ///|
-fn no_crossing_minimizer_intermediate_processing_configuration() -> @core.LayoutProcessorConfiguration[
-  LayeredPhases,
-  LGraph,
-] raise {
-  @core.layout_processor_configuration_create(layered_phase_descriptor)
+fn no_crossing_minimizer_intermediate_processing_configuration(
+  graph : LGraph,
+) -> @core.LayoutProcessorConfiguration raise {
+  @core.layout_processor_configuration_create()
   .add_before(
     P3NodeOrdering,
-    layered_intermediate_processor_factory(LongEdgeSplitter),
+    layered_intermediate_processor_factory(graph, LongEdgeSplitter),
   )
   .add_before(
     P4NodePlacement,
-    layered_intermediate_processor_factory(InLayerConstraintProcessor),
+    layered_intermediate_processor_factory(graph, InLayerConstraintProcessor),
   )
   .after(P5EdgeRouting)
-  .add(layered_intermediate_processor_factory(LongEdgeJoiner))
+  .add(layered_intermediate_processor_factory(graph, LongEdgeJoiner))
 }
 
 ///|
-fn no_crossing_minimizer_default_configuration() -> @core.LayoutProcessorConfiguration[
-  LayeredPhases,
-  LGraph,
-] raise {
-  no_crossing_minimizer_intermediate_processing_configuration()
+fn no_crossing_minimizer_default_configuration(
+  graph : LGraph,
+) -> @core.LayoutProcessorConfiguration raise {
+  no_crossing_minimizer_intermediate_processing_configuration(graph)
 }
 
 ///|
 fn no_crossing_minimizer_configuration(
   graph : LGraph,
-) -> @core.LayoutProcessorConfiguration[LayeredPhases, LGraph]? raise {
-  ignore(graph)
+) -> @core.LayoutProcessorConfiguration? raise {
   let configuration = @core.layout_processor_configuration_create_from(
-    no_crossing_minimizer_default_configuration(),
+    no_crossing_minimizer_default_configuration(graph),
   )
   ignore(
     configuration.add_before(
       P3NodeOrdering,
-      layered_intermediate_processor_factory(PortListSorter),
+      layered_intermediate_processor_factory(graph, PortListSorter),
     ),
   )
   Some(configuration)
 }
 
 ///|
-pub fn new_no_crossing_minimizer_layout_phase() -> @core.ILayoutProcessor[
-  LayeredPhases,
+pub fn new_no_crossing_minimizer_layout_phase() -> @core.TypedLayoutProcessor[
   LGraph,
 ] {
   @core.new_layout_phase(

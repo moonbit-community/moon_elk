@@ -7,11 +7,11 @@ import {
 }
 
 // Values
-pub fn new_comment_node_margin_calculator_layout_processor() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
+pub fn new_comment_node_margin_calculator_layout_processor() -> @core.TypedLayoutProcessor[@runtime.LGraph]
 
-pub fn new_comment_postprocessor_layout_processor() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
+pub fn new_comment_postprocessor_layout_processor() -> @core.TypedLayoutProcessor[@runtime.LGraph]
 
-pub fn new_comment_preprocessor_layout_processor() -> @core.ILayoutProcessor[@runtime.LayeredPhases, @runtime.LGraph]
+pub fn new_comment_preprocessor_layout_processor() -> @core.TypedLayoutProcessor[@runtime.LGraph]
 
 pub fn register_comment_processors(@runtime.LayeredPhaseRegistry) -> Unit
 

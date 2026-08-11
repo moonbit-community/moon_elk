@@ -291,7 +291,7 @@ fn rectpacking_compactor_process(
 ///|
 pub fn new_rectpacking_compactor_layout_phase(
   session : RectPackingSession,
-) -> @core.ILayoutProcessor[RectPackingLayoutPhases, @graph.ElkNode] {
+) -> @core.TypedLayoutProcessor[@graph.ElkNode] {
   @core.new_layout_phase(
     (graph, progress_monitor) => {
       rectpacking_compactor_process(session, graph, progress_monitor)

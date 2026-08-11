@@ -1098,19 +1098,20 @@ fn spline_edge_router_get_spline_path(
 ///|
 fn spline_edge_router_configuration(
   graph : LGraph,
-) -> @core.LayoutProcessorConfiguration[LayeredPhases, LGraph]? raise {
-  let configuration = @core.layout_processor_configuration_create(
-    layered_phase_descriptor,
-  )
+) -> @core.LayoutProcessorConfiguration? raise {
+  let configuration = @core.layout_processor_configuration_create()
   ignore(
     configuration
     .add_after(
       P5EdgeRouting,
-      layered_intermediate_processor_factory(FinalSplineBendpointsCalculator),
+      layered_intermediate_processor_factory(
+        graph,
+        FinalSplineBendpointsCalculator,
+      ),
     )
     .add_before(
       P3NodeOrdering,
-      layered_intermediate_processor_factory(InvertedPortProcessor),
+      layered_intermediate_processor_factory(graph, InvertedPortProcessor),
     ),
   )
 
@@ -1123,15 +1124,15 @@ fn spline_edge_router_configuration(
       configuration
       .add_before(
         P1CycleBreaking,
-        layered_intermediate_processor_factory(SelfLoopPreprocessor),
+        layered_intermediate_processor_factory(graph, SelfLoopPreprocessor),
       )
       .add_after(
         P5EdgeRouting,
-        layered_intermediate_processor_factory(SelfLoopPostprocessor),
+        layered_intermediate_processor_factory(graph, SelfLoopPostprocessor),
       )
       .before(P4NodePlacement)
-      .add(layered_intermediate_processor_factory(SelfLoopPortRestorer))
-      .add(layered_intermediate_processor_factory(SelfLoopRouter)),
+      .add(layered_intermediate_processor_factory(graph, SelfLoopPortRestorer))
+      .add(layered_intermediate_processor_factory(graph, SelfLoopRouter)),
     )
   }
 
@@ -1140,19 +1141,19 @@ fn spline_edge_router_configuration(
       configuration
       .add_before(
         P2Layering,
-        layered_intermediate_processor_factory(LabelDummyInserter),
+        layered_intermediate_processor_factory(graph, LabelDummyInserter),
       )
       .add_before(
         P4NodePlacement,
-        layered_intermediate_processor_factory(LabelDummySwitcher),
+        layered_intermediate_processor_factory(graph, LabelDummySwitcher),
       )
       .add_before(
         P4NodePlacement,
-        layered_intermediate_processor_factory(LabelSideSelector),
+        layered_intermediate_processor_factory(graph, LabelSideSelector),
       )
       .add_after(
         P5EdgeRouting,
-        layered_intermediate_processor_factory(LabelDummyRemover),
+        layered_intermediate_processor_factory(graph, LabelDummyRemover),
       ),
     )
   }
@@ -1165,11 +1166,17 @@ fn spline_edge_router_configuration(
       configuration
       .add_before(
         P3NodeOrdering,
-        layered_intermediate_processor_factory(NorthSouthPortPreprocessor),
+        layered_intermediate_processor_factory(
+          graph,
+          NorthSouthPortPreprocessor,
+        ),
       )
       .add_before(
         P5EdgeRouting,
-        layered_intermediate_processor_factory(NorthSouthPortPostprocessor),
+        layered_intermediate_processor_factory(
+          graph,
+          NorthSouthPortPostprocessor,
+        ),
       ),
     )
   }
@@ -1179,15 +1186,15 @@ fn spline_edge_router_configuration(
       configuration
       .add_before(
         P4NodePlacement,
-        layered_intermediate_processor_factory(LabelSideSelector),
+        layered_intermediate_processor_factory(graph, LabelSideSelector),
       )
       .add_before(
         P4NodePlacement,
-        layered_intermediate_processor_factory(EndLabelPreprocessor),
+        layered_intermediate_processor_factory(graph, EndLabelPreprocessor),
       )
       .add_after(
         P5EdgeRouting,
-        layered_intermediate_processor_factory(EndLabelPostprocessor),
+        layered_intermediate_processor_factory(graph, EndLabelPostprocessor),
       ),
     )
   }
@@ -1393,8 +1400,7 @@ fn spline_edge_router_process(
 }
 
 ///|
-pub fn new_spline_edge_router_layout_phase() -> @core.ILayoutProcessor[
-  LayeredPhases,
+pub fn new_spline_edge_router_layout_phase() -> @core.TypedLayoutProcessor[
   LGraph,
 ] {
   @core.new_layout_phase(

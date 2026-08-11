@@ -130,29 +130,27 @@ fn layer_sweep_ordering_strategy_from_string(
 }
 
 ///|
-fn layer_sweep_intermediate_processing_configuration() -> @core.LayoutProcessorConfiguration[
-  LayeredPhases,
-  LGraph,
-] raise {
-  @core.layout_processor_configuration_create(layered_phase_descriptor)
+fn layer_sweep_intermediate_processing_configuration(
+  graph : LGraph,
+) -> @core.LayoutProcessorConfiguration raise {
+  @core.layout_processor_configuration_create()
   .add_before(
     P3NodeOrdering,
-    layered_intermediate_processor_factory(LongEdgeSplitter),
+    layered_intermediate_processor_factory(graph, LongEdgeSplitter),
   )
   .add_before(
     P4NodePlacement,
-    layered_intermediate_processor_factory(InLayerConstraintProcessor),
+    layered_intermediate_processor_factory(graph, InLayerConstraintProcessor),
   )
   .after(P5EdgeRouting)
-  .add(layered_intermediate_processor_factory(LongEdgeJoiner))
+  .add(layered_intermediate_processor_factory(graph, LongEdgeJoiner))
 }
 
 ///|
-fn layer_sweep_default_configuration() -> @core.LayoutProcessorConfiguration[
-  LayeredPhases,
-  LGraph,
-] raise {
-  layer_sweep_intermediate_processing_configuration()
+fn layer_sweep_default_configuration(
+  graph : LGraph,
+) -> @core.LayoutProcessorConfiguration raise {
+  layer_sweep_intermediate_processing_configuration(graph)
 }
 
 ///|
@@ -1174,15 +1172,14 @@ pub fn LayerSweepCrossingMinimizer::get_graph_data(
 ///|
 fn layer_sweep_configuration(
   graph : LGraph,
-) -> @core.LayoutProcessorConfiguration[LayeredPhases, LGraph]? raise {
-  ignore(graph)
+) -> @core.LayoutProcessorConfiguration? raise {
   let configuration = @core.layout_processor_configuration_create_from(
-    layer_sweep_default_configuration(),
+    layer_sweep_default_configuration(graph),
   )
   ignore(
     configuration.add_before(
       P3NodeOrdering,
-      layered_intermediate_processor_factory(PortListSorter),
+      layered_intermediate_processor_factory(graph, PortListSorter),
     ),
   )
   Some(configuration)
@@ -1191,7 +1188,7 @@ fn layer_sweep_configuration(
 ///|
 pub fn new_layer_sweep_crossing_minimizer_layout_phase(
   cross_min_type : CrossMinType,
-) -> @core.ILayoutProcessor[LayeredPhases, LGraph] {
+) -> @core.TypedLayoutProcessor[LGraph] {
   let minimizer = new_layer_sweep_crossing_minimizer(cross_min_type)
   @core.new_hierarchy_aware_layout_phase(
     (graph, monitor) => minimizer.process(graph, progress_monitor=monitor),
@@ -1202,8 +1199,7 @@ pub fn new_layer_sweep_crossing_minimizer_layout_phase(
 ///|
 /// Construct the default barycenter ordering phase without exposing the
 /// implementation-only `CrossMinType` constructors to the pipeline package.
-pub fn new_barycenter_layer_sweep_crossing_minimizer_layout_phase() -> @core.ILayoutProcessor[
-  LayeredPhases,
+pub fn new_barycenter_layer_sweep_crossing_minimizer_layout_phase() -> @core.TypedLayoutProcessor[
   LGraph,
 ] {
   new_layer_sweep_crossing_minimizer_layout_phase(Barycenter)
@@ -1212,8 +1208,7 @@ pub fn new_barycenter_layer_sweep_crossing_minimizer_layout_phase() -> @core.ILa
 ///|
 /// Construct the median ordering phase without exposing the internal strategy
 /// representation across the runtime boundary.
-pub fn new_median_layer_sweep_crossing_minimizer_layout_phase() -> @core.ILayoutProcessor[
-  LayeredPhases,
+pub fn new_median_layer_sweep_crossing_minimizer_layout_phase() -> @core.TypedLayoutProcessor[
   LGraph,
 ] {
   new_layer_sweep_crossing_minimizer_layout_phase(Median)

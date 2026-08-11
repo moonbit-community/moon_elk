@@ -1,22 +1,20 @@
 ///|
-pub(all) enum LayeredPhases {
-  P1CycleBreaking
-  P2Layering
-  P3NodeOrdering
-  P4NodePlacement
-  P5EdgeRouting
-}
+pub type LayeredPhases = @core.PhaseId
 
 ///|
-fn layered_phase_ordinal(phase : LayeredPhases) -> Int {
-  match phase {
-    P1CycleBreaking => 0
-    P2Layering => 1
-    P3NodeOrdering => 2
-    P4NodePlacement => 3
-    P5EdgeRouting => 4
-  }
-}
+pub const P1CycleBreaking : LayeredPhases = 0
+
+///|
+pub const P2Layering : LayeredPhases = 1
+
+///|
+pub const P3NodeOrdering : LayeredPhases = 2
+
+///|
+pub const P4NodePlacement : LayeredPhases = 3
+
+///|
+pub const P5EdgeRouting : LayeredPhases = 4
 
 ///|
 pub fn layered_phase_constants() -> Array[LayeredPhases] {
@@ -24,29 +22,26 @@ pub fn layered_phase_constants() -> Array[LayeredPhases] {
 }
 
 ///|
-pub let layered_phase_descriptor : @core.PhaseDescriptor[LayeredPhases] = @core.new_phase_descriptor(
+pub let layered_phase_descriptor : @core.PhaseDescriptor = @core.new_phase_descriptor(
   layered_phase_constants(),
-  layered_phase_ordinal,
 )
 
 ///|
 pub fn layered_phases_to_string(value : LayeredPhases) -> String {
-  match value {
-    P1CycleBreaking => "P1_CYCLE_BREAKING"
-    P2Layering => "P2_LAYERING"
-    P3NodeOrdering => "P3_NODE_ORDERING"
-    P4NodePlacement => "P4_NODE_PLACEMENT"
-    P5EdgeRouting => "P5_EDGE_ROUTING"
+  if value == P1CycleBreaking {
+    "P1_CYCLE_BREAKING"
+  } else if value == P2Layering {
+    "P2_LAYERING"
+  } else if value == P3NodeOrdering {
+    "P3_NODE_ORDERING"
+  } else if value == P4NodePlacement {
+    "P4_NODE_PLACEMENT"
+  } else {
+    "P5_EDGE_ROUTING"
   }
 }
 
 ///|
 pub fn layered_phase_values() -> Array[String] {
-  [
-    layered_phases_to_string(P1CycleBreaking),
-    layered_phases_to_string(P2Layering),
-    layered_phases_to_string(P3NodeOrdering),
-    layered_phases_to_string(P4NodePlacement),
-    layered_phases_to_string(P5EdgeRouting),
-  ]
+  layered_phase_constants().map(layered_phases_to_string)
 }

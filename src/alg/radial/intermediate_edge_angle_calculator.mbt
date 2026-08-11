@@ -1,6 +1,5 @@
 ///|
-pub fn new_radial_edge_angle_calculator_layout_processor() -> @core.ILayoutProcessor[
-  RadialLayoutPhases,
+pub fn new_radial_edge_angle_calculator_layout_processor() -> @core.TypedLayoutProcessor[
   @graph.ElkNode,
 ] {
   @core.new_layout_processor((graph, progress_monitor) => {

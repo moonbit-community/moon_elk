@@ -24,8 +24,7 @@ fn rectpacking_node_size_reorderer_process(
 }
 
 ///|
-pub fn new_rectpacking_node_size_reorderer_layout_processor() -> @core.ILayoutProcessor[
-  RectPackingLayoutPhases,
+pub fn new_rectpacking_node_size_reorderer_layout_processor() -> @core.TypedLayoutProcessor[
   @graph.ElkNode,
 ] {
   @core.new_pure_layout_processor(rectpacking_node_size_reorderer_process)

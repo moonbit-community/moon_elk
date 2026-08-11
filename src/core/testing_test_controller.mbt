@@ -143,46 +143,46 @@ pub fn[G] TestController::uninstall(self : TestController[G]) -> Unit {
 }
 
 ///|
-pub fn[P, G] TestController::notify_processor_ready(
+pub fn[G] TestController::notify_processor_ready(
   self : TestController[G],
   graph : G,
-  processor : ILayoutProcessor[P, G],
+  processor_id : Int,
 ) -> Unit {
   for listener in self.listeners {
-    listener.layout_processor_ready(processor.instance_id(), graph, false)
+    listener.layout_processor_ready(processor_id, graph, false)
   }
 }
 
 ///|
-pub fn[P, G] TestController::notify_processor_finished(
+pub fn[G] TestController::notify_processor_finished(
   self : TestController[G],
   graph : G,
-  processor : ILayoutProcessor[P, G],
+  processor_id : Int,
 ) -> Unit {
   for listener in self.listeners {
-    listener.layout_processor_finished(processor.instance_id(), graph, false)
+    listener.layout_processor_finished(processor_id, graph, false)
   }
 }
 
 ///|
-pub fn[P, G] TestController::notify_root_processor_ready(
+pub fn[G] TestController::notify_root_processor_ready(
   self : TestController[G],
   graph : G,
-  processor : ILayoutProcessor[P, G],
+  processor_id : Int,
 ) -> Unit {
   for listener in self.listeners {
-    listener.layout_processor_ready(processor.instance_id(), graph, true)
+    listener.layout_processor_ready(processor_id, graph, true)
   }
 }
 
 ///|
-pub fn[P, G] TestController::notify_root_processor_finished(
+pub fn[G] TestController::notify_root_processor_finished(
   self : TestController[G],
   graph : G,
-  processor : ILayoutProcessor[P, G],
+  processor_id : Int,
 ) -> Unit {
   for listener in self.listeners {
-    listener.layout_processor_finished(processor.instance_id(), graph, true)
+    listener.layout_processor_finished(processor_id, graph, true)
   }
 }
 

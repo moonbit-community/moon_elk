@@ -85,8 +85,7 @@ fn layer_size_and_graph_height_calculator_process(
 }
 
 ///|
-pub fn new_layer_size_and_graph_height_calculator_layout_processor() -> @core.ILayoutProcessor[
-  LayeredPhases,
+pub fn new_layer_size_and_graph_height_calculator_layout_processor() -> @core.TypedLayoutProcessor[
   LGraph,
 ] {
   @core.new_layout_processor(layer_size_and_graph_height_calculator_process)

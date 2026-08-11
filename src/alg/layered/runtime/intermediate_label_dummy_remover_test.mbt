@@ -208,10 +208,11 @@ test "label dummy remover vertical up places inline labels in reversed order" {
 ///|
 test "label dummy remover strategy creates concrete processor" {
   let factory = layered_intermediate_processor_factory(
+    new_l_graph(),
     label_dummy_remover_test_strategy("LABEL_DUMMY_REMOVER"),
   )
   let processor = factory.create()
   let monitor = new_elk_progress_monitor()
-  processor.process(new_l_graph(), Some(monitor))
+  processor.run(Some(monitor))
   inspect(monitor.get_task_name(), content="Label dummy removal")
 }

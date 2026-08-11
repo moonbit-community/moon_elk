@@ -426,8 +426,7 @@ fn compound_graph_postprocessor_process(
 }
 
 ///|
-pub fn new_compound_graph_postprocessor_layout_processor() -> @core.ILayoutProcessor[
-  LayeredPhases,
+pub fn new_compound_graph_postprocessor_layout_processor() -> @core.TypedLayoutProcessor[
   LGraph,
 ] {
   @core.new_layout_processor(compound_graph_postprocessor_process)

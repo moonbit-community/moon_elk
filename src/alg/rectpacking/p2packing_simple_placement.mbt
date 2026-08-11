@@ -76,7 +76,7 @@ fn rectpacking_simple_placement_process(
 ///|
 pub fn new_rectpacking_simple_placement_layout_phase(
   session : RectPackingSession,
-) -> @core.ILayoutProcessor[RectPackingLayoutPhases, @graph.ElkNode] {
+) -> @core.TypedLayoutProcessor[@graph.ElkNode] {
   @core.new_layout_phase(
     (graph, progress_monitor) => {
       rectpacking_simple_placement_process(session, graph, progress_monitor)

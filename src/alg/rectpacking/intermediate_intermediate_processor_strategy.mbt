@@ -21,24 +21,25 @@ fn rectpacking_intermediate_processor_strategy_order(
 ///|
 pub fn rectpacking_intermediate_processor_factory(
   strategy : RectpackingIntermediateProcessorStrategy,
-) -> @core.ILayoutProcessorFactory[RectPackingLayoutPhases, @graph.ElkNode] {
+  graph : @graph.ElkNode,
+) -> @core.LayoutProcessorFactory {
   let order = rectpacking_intermediate_processor_strategy_order(strategy)
   let id = 84300 + order
   match strategy {
     NODE_SIZE_REORDERER =>
-      @core.new_layout_processor_factory(id, order, () => {
+      @core.new_layout_processor_factory(id, order, graph, () => {
         new_rectpacking_node_size_reorderer_layout_processor()
       })
     INTERACTIVE_NODE_REORDERER =>
-      @core.new_layout_processor_factory(id, order, () => {
+      @core.new_layout_processor_factory(id, order, graph, () => {
         new_rectpacking_interactive_node_reorderer_layout_processor()
       })
     MIN_SIZE_PRE_PROCESSOR =>
-      @core.new_layout_processor_factory(id, order, () => {
+      @core.new_layout_processor_factory(id, order, graph, () => {
         new_rectpacking_min_size_pre_processor_layout_processor()
       })
     MIN_SIZE_POST_PROCESSOR =>
-      @core.new_layout_processor_factory(id, order, () => {
+      @core.new_layout_processor_factory(id, order, graph, () => {
         new_rectpacking_min_size_post_processor_layout_processor()
       })
   }

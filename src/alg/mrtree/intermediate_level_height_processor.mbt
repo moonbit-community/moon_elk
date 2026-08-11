@@ -101,8 +101,7 @@ fn mrtree_level_height_processor_process(
 }
 
 ///|
-pub fn new_mrtree_level_height_processor_layout_processor() -> @core.ILayoutProcessor[
-  MrtreeTreeLayoutPhases,
+pub fn new_mrtree_level_height_processor_layout_processor() -> @core.TypedLayoutProcessor[
   MrtreeGraph,
 ] {
   @core.new_layout_processor(mrtree_level_height_processor_process)

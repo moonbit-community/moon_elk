@@ -8,17 +8,21 @@ import {
 }
 
 // Values
+pub const P1_NODE_ARRANGEMENT : Int = 0
+
+pub const P2_WHITESPACE_ELIMINATION : Int = 1
+
 pub fn[T] new_grid((Int, Int, T) -> Unit, (Int, Int) -> T, (Int) -> Array[T], (Int) -> Array[T], () -> Int, () -> Int, (Int, Int) -> Unit) -> Grid[T]
 
 pub fn new_grid_elk_node(@graph.ElkNode) -> GridElkNode
 
 pub fn new_node_arranger((@graph.ElkNode) -> @core.KVector raise) -> INodeArranger
 
-pub fn new_topdownpacking_bottom_row_equal_whitespace_eliminator_layout_phase() -> @core.ILayoutProcessor[TopdownPackingPhases, GridElkNode]
+pub fn new_topdownpacking_bottom_row_equal_whitespace_eliminator_layout_phase() -> @core.TypedLayoutProcessor[GridElkNode]
 
 pub fn new_topdownpacking_layout_provider() -> TopdownpackingLayoutProvider raise
 
-pub fn new_topdownpacking_left_right_top_down_node_placer_layout_phase() -> @core.ILayoutProcessor[TopdownPackingPhases, GridElkNode]
+pub fn new_topdownpacking_left_right_top_down_node_placer_layout_phase() -> @core.TypedLayoutProcessor[GridElkNode]
 
 pub fn new_topdownpacking_left_right_top_down_node_placer_node_arranger() -> INodeArranger
 
@@ -42,11 +46,11 @@ pub fn topdownpacking_node_arrangement_strategy_create_node_arranger(NodeArrange
 
 pub fn topdownpacking_node_arrangement_strategy_from_string(String) -> NodeArrangementStrategy
 
-pub fn topdownpacking_node_arrangement_strategy_phase_factory(NodeArrangementStrategy) -> @core.ILayoutProcessorFactory[TopdownPackingPhases, GridElkNode]
+pub fn topdownpacking_node_arrangement_strategy_phase_factory(NodeArrangementStrategy, GridElkNode) -> @core.LayoutProcessorFactory
 
 pub let topdownpacking_padding : @graph.IProperty[String]
 
-pub let topdownpacking_phase_descriptor : @core.PhaseDescriptor[TopdownPackingPhases]
+pub let topdownpacking_phase_descriptor : @core.PhaseDescriptor
 
 pub let topdownpacking_spacing_node_node : @graph.IProperty[Double]
 
@@ -54,7 +58,7 @@ pub let topdownpacking_whitespace_elimination_strategy : @graph.IProperty[String
 
 pub fn topdownpacking_whitespace_elimination_strategy_from_string(String) -> WhitespaceEliminationStrategy
 
-pub fn topdownpacking_whitespace_elimination_strategy_phase_factory(WhitespaceEliminationStrategy) -> @core.ILayoutProcessorFactory[TopdownPackingPhases, GridElkNode]
+pub fn topdownpacking_whitespace_elimination_strategy_phase_factory(WhitespaceEliminationStrategy, GridElkNode) -> @core.LayoutProcessorFactory
 
 // Errors
 pub suberror TopdownpackingGridException {
@@ -118,15 +122,10 @@ pub enum NodeArrangementStrategy {
   LEFT_RIGHT_TOP_DOWN_NODE_PLACER
 }
 
-pub enum TopdownPackingPhases {
-  P1_NODE_ARRANGEMENT
-  P2_WHITESPACE_ELIMINATION
-}
-
 pub struct TopdownpackingLayoutProvider {
-  algorithm_assembler : @core.AlgorithmAssembler[TopdownPackingPhases, GridElkNode]
+  algorithm_assembler : @core.AlgorithmAssembler
 }
-pub fn TopdownpackingLayoutProvider::assemble_algorithm(Self, GridElkNode) -> Array[@core.ILayoutProcessor[TopdownPackingPhases, GridElkNode]] raise
+pub fn TopdownpackingLayoutProvider::assemble_algorithm(Self, GridElkNode) -> @core.LayoutProcessorPlan raise
 pub fn TopdownpackingLayoutProvider::get_predicted_graph_size(Self, @graph.ElkNode) -> @core.KVector raise
 pub fn TopdownpackingLayoutProvider::layout(Self, @graph.ElkNode, @core.IElkProgressMonitor) -> Unit raise
 
@@ -135,5 +134,6 @@ pub enum WhitespaceEliminationStrategy {
 }
 
 // Type aliases
+pub type TopdownPackingPhases = Int
 
 // Traits

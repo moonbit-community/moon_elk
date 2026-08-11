@@ -126,7 +126,7 @@ test "final spline processor strategy factory uses Java ordinal id" {
   let strategy = final_spline_test_strategy(
     "FINAL_SPLINE_BENDPOINTS_CALCULATOR",
   )
-  let factory = layered_intermediate_processor_factory(strategy)
+  let factory = layered_intermediate_processor_factory(new_l_graph(), strategy)
   assert_eq(factory.factory_order(), 52)
   assert_eq(factory.factory_id(), 23052)
 }

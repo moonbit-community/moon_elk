@@ -20,25 +20,20 @@ fn layout_processor_configuration_exception_message(
 }
 
 ///|
-pub(all) struct LayoutProcessorConfiguration[P, G] {
-  phase_descriptor : PhaseDescriptor[P]
-  list_accessor : AbstractRandomListAccessor[
-    Array[ILayoutProcessorFactory[P, G]],
-  ]
+/// Non-generic placement of graph-bound processor factories around phases.
+pub(all) struct LayoutProcessorConfiguration {
+  list_accessor : AbstractRandomListAccessor[Array[LayoutProcessorFactory]]
   mut current_index : Int
 }
 
 ///|
-fn[P, G] empty_processor_factory_slot() -> Array[ILayoutProcessorFactory[P, G]] {
+fn empty_processor_factory_slot() -> Array[LayoutProcessorFactory] {
   []
 }
 
 ///|
-pub fn[P, G] layout_processor_configuration_create(
-  phase_descriptor : PhaseDescriptor[P],
-) -> LayoutProcessorConfiguration[P, G] {
+pub fn layout_processor_configuration_create() -> LayoutProcessorConfiguration {
   {
-    phase_descriptor,
     list_accessor: new_abstract_random_list_accessor(
       empty_processor_factory_slot,
     ),
@@ -47,44 +42,44 @@ pub fn[P, G] layout_processor_configuration_create(
 }
 
 ///|
-pub fn[P, G] layout_processor_configuration_create_from(
-  source : LayoutProcessorConfiguration[P, G],
-) -> LayoutProcessorConfiguration[P, G] raise {
-  layout_processor_configuration_create(source.phase_descriptor).add_all(source)
+pub fn layout_processor_configuration_create_from(
+  source : LayoutProcessorConfiguration,
+) -> LayoutProcessorConfiguration raise {
+  layout_processor_configuration_create().add_all(source)
 }
 
 ///|
-pub fn[P, G] LayoutProcessorConfiguration::clear(
-  self : LayoutProcessorConfiguration[P, G],
-) -> LayoutProcessorConfiguration[P, G] {
+pub fn LayoutProcessorConfiguration::clear(
+  self : LayoutProcessorConfiguration,
+) -> LayoutProcessorConfiguration {
   self.list_accessor.clear_list()
   self.current_index = -1
   self
 }
 
 ///|
-pub fn[P, G] LayoutProcessorConfiguration::before(
-  self : LayoutProcessorConfiguration[P, G],
-  phase : P,
-) -> LayoutProcessorConfiguration[P, G] {
-  self.current_index = self.phase_descriptor.ordinal_of(phase)
+pub fn LayoutProcessorConfiguration::before(
+  self : LayoutProcessorConfiguration,
+  phase : PhaseId,
+) -> LayoutProcessorConfiguration {
+  self.current_index = phase
   self
 }
 
 ///|
-pub fn[P, G] LayoutProcessorConfiguration::after(
-  self : LayoutProcessorConfiguration[P, G],
-  phase : P,
-) -> LayoutProcessorConfiguration[P, G] {
-  self.current_index = self.phase_descriptor.ordinal_of(phase) + 1
+pub fn LayoutProcessorConfiguration::after(
+  self : LayoutProcessorConfiguration,
+  phase : PhaseId,
+) -> LayoutProcessorConfiguration {
+  self.current_index = phase + 1
   self
 }
 
 ///|
-pub fn[P, G] LayoutProcessorConfiguration::add(
-  self : LayoutProcessorConfiguration[P, G],
-  processor : ILayoutProcessorFactory[P, G],
-) -> LayoutProcessorConfiguration[P, G] raise {
+pub fn LayoutProcessorConfiguration::add(
+  self : LayoutProcessorConfiguration,
+  processor : LayoutProcessorFactory,
+) -> LayoutProcessorConfiguration raise {
   if self.current_index < 0 {
     try
       layout_processor_configuration_raise(
@@ -105,32 +100,32 @@ pub fn[P, G] LayoutProcessorConfiguration::add(
 }
 
 ///|
-pub fn[P, G] LayoutProcessorConfiguration::add_before(
-  self : LayoutProcessorConfiguration[P, G],
-  phase : P,
-  processor : ILayoutProcessorFactory[P, G],
-) -> LayoutProcessorConfiguration[P, G] raise {
+pub fn LayoutProcessorConfiguration::add_before(
+  self : LayoutProcessorConfiguration,
+  phase : PhaseId,
+  processor : LayoutProcessorFactory,
+) -> LayoutProcessorConfiguration raise {
   self.current_index = -1
-  self.do_add(self.phase_descriptor.ordinal_of(phase), processor)
+  self.do_add(phase, processor)
   self
 }
 
 ///|
-pub fn[P, G] LayoutProcessorConfiguration::add_after(
-  self : LayoutProcessorConfiguration[P, G],
-  phase : P,
-  processor : ILayoutProcessorFactory[P, G],
-) -> LayoutProcessorConfiguration[P, G] raise {
+pub fn LayoutProcessorConfiguration::add_after(
+  self : LayoutProcessorConfiguration,
+  phase : PhaseId,
+  processor : LayoutProcessorFactory,
+) -> LayoutProcessorConfiguration raise {
   self.current_index = -1
-  self.do_add(self.phase_descriptor.ordinal_of(phase) + 1, processor)
+  self.do_add(phase + 1, processor)
   self
 }
 
 ///|
-pub fn[P, G] LayoutProcessorConfiguration::do_add(
-  self : LayoutProcessorConfiguration[P, G],
+pub fn LayoutProcessorConfiguration::do_add(
+  self : LayoutProcessorConfiguration,
   index : Int,
-  processor : ILayoutProcessorFactory[P, G],
+  processor : LayoutProcessorFactory,
 ) -> Unit raise {
   let slot = self.list_accessor.get_list_item(index)
   if !slot_contains_processor_factory(slot, processor) {
@@ -139,9 +134,9 @@ pub fn[P, G] LayoutProcessorConfiguration::do_add(
 }
 
 ///|
-fn[P, G] slot_contains_processor_factory(
-  slot : Array[ILayoutProcessorFactory[P, G]],
-  processor : ILayoutProcessorFactory[P, G],
+fn slot_contains_processor_factory(
+  slot : Array[LayoutProcessorFactory],
+  processor : LayoutProcessorFactory,
 ) -> Bool {
   for existing in slot {
     if existing.factory_id() == processor.factory_id() {
@@ -152,11 +147,11 @@ fn[P, G] slot_contains_processor_factory(
 }
 
 ///|
-pub fn[P, G] LayoutProcessorConfiguration::add_all(
-  self : LayoutProcessorConfiguration[P, G],
-  configuration : LayoutProcessorConfiguration[P, G],
-) -> LayoutProcessorConfiguration[P, G] raise {
-  for i = 0; i < configuration.list_accessor.get_list_size(); i = i + 1 {
+pub fn LayoutProcessorConfiguration::add_all(
+  self : LayoutProcessorConfiguration,
+  configuration : LayoutProcessorConfiguration,
+) -> LayoutProcessorConfiguration raise {
+  for i in 0..<configuration.list_accessor.get_list_size() {
     for processor in configuration.list_accessor.get_list_item(i) {
       self.do_add(i, processor)
     }
@@ -165,25 +160,25 @@ pub fn[P, G] LayoutProcessorConfiguration::add_all(
 }
 
 ///|
-pub fn[P, G] LayoutProcessorConfiguration::processors_before(
-  self : LayoutProcessorConfiguration[P, G],
-  phase : P,
-) -> Array[ILayoutProcessorFactory[P, G]] raise {
-  self.processors(self.phase_descriptor.ordinal_of(phase))
+pub fn LayoutProcessorConfiguration::processors_before(
+  self : LayoutProcessorConfiguration,
+  phase : PhaseId,
+) -> Array[LayoutProcessorFactory] raise {
+  self.processors(phase)
 }
 
 ///|
-pub fn[P, G] LayoutProcessorConfiguration::processors_after(
-  self : LayoutProcessorConfiguration[P, G],
-  phase : P,
-) -> Array[ILayoutProcessorFactory[P, G]] raise {
-  self.processors(self.phase_descriptor.ordinal_of(phase) + 1)
+pub fn LayoutProcessorConfiguration::processors_after(
+  self : LayoutProcessorConfiguration,
+  phase : PhaseId,
+) -> Array[LayoutProcessorFactory] raise {
+  self.processors(phase + 1)
 }
 
 ///|
-pub fn[P, G] LayoutProcessorConfiguration::processors(
-  self : LayoutProcessorConfiguration[P, G],
+pub fn LayoutProcessorConfiguration::processors(
+  self : LayoutProcessorConfiguration,
   index : Int,
-) -> Array[ILayoutProcessorFactory[P, G]] raise {
+) -> Array[LayoutProcessorFactory] raise {
   self.list_accessor.get_list_item(index).copy()
 }
