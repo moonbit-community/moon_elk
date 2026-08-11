@@ -249,9 +249,9 @@ fn dot_exporter_parse_int_token(text : String?) -> Int? {
 ///|
 fn dot_exporter_parse_edge_label_spacing(edge : @graph.ElkEdge) -> Double {
   match
-    @graph.edge_layout_option_string_value(
+    @graph.edge_layout_option_string_value_by_option_id(
       edge,
-      @core.spacing_edge_label.get_id(),
+      @core.spacing_edge_label.get_property_id(),
     ) {
     Some(raw_value) =>
       match dot_exporter_parse_double_token(raw_value) {

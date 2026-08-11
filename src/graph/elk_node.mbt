@@ -47,14 +47,9 @@ priv struct NodeData {
   y : Double
   width : Double
   height : Double
-  int_properties : Map[String, Int]
-  double_properties : Map[String, Double]
-  kvector_properties : Map[String, String]
-  bool_properties : Map[String, Bool]
-  string_properties : Map[String, String]
-  string_set_properties : Map[String, Array[String]]
-  layout_option_string_values : Map[String, String]
-  individual_spacing_option_string_values : Map[String, String]
+  mut properties : NodePropertyBag?
+  mut layout_options : OptionBag?
+  mut individual_spacings : OptionBag?
 }
 
 ///|
@@ -112,43 +107,6 @@ fn dispose_node_slot(node : ElkNode) -> Unit {
   let slot = checked_node_slot(node)
   slot.data = None
   slot.generation += 1
-}
-
-///|
-fn clone_string_int_map(source : Map[String, Int]) -> Map[String, Int] {
-  let result = Map([])
-  source.each((key, value) => result[key] = value)
-  result
-}
-
-///|
-fn clone_string_double_map(source : Map[String, Double]) -> Map[String, Double] {
-  let result = Map([])
-  source.each((key, value) => result[key] = value)
-  result
-}
-
-///|
-fn clone_string_bool_map(source : Map[String, Bool]) -> Map[String, Bool] {
-  let result = Map([])
-  source.each((key, value) => result[key] = value)
-  result
-}
-
-///|
-fn clone_string_string_map(source : Map[String, String]) -> Map[String, String] {
-  let result = Map([])
-  source.each((key, value) => result[key] = value)
-  result
-}
-
-///|
-fn clone_string_string_array_map(
-  source : Map[String, Array[String]],
-) -> Map[String, Array[String]] {
-  let result = Map([])
-  source.each((key, value) => result[key] = value.copy())
-  result
 }
 
 ///|
@@ -216,14 +174,9 @@ fn create_node_in_arena(parent : ElkNode?, arena : GraphArena) -> ElkNode {
       y: 0.0,
       width: 0.0,
       height: 0.0,
-      int_properties: Map([]),
-      double_properties: Map([]),
-      kvector_properties: Map([]),
-      bool_properties: Map([]),
-      string_properties: Map([]),
-      string_set_properties: Map([]),
-      layout_option_string_values: Map([]),
-      individual_spacing_option_string_values: Map([]),
+      properties: None,
+      layout_options: None,
+      individual_spacings: None,
     }),
   })
   if parent is Some(parent_id) {
@@ -277,14 +230,9 @@ pub fn node_set_location(node : ElkNode, x : Double, y : Double) -> Unit {
     y,
     width: data.width,
     height: data.height,
-    int_properties: data.int_properties,
-    double_properties: data.double_properties,
-    kvector_properties: data.kvector_properties,
-    bool_properties: data.bool_properties,
-    string_properties: data.string_properties,
-    string_set_properties: data.string_set_properties,
-    layout_option_string_values: data.layout_option_string_values,
-    individual_spacing_option_string_values: data.individual_spacing_option_string_values,
+    properties: data.properties,
+    layout_options: data.layout_options,
+    individual_spacings: data.individual_spacings,
   })
 }
 
@@ -315,14 +263,9 @@ pub fn node_set_dimensions(
     y: data.y,
     width,
     height,
-    int_properties: data.int_properties,
-    double_properties: data.double_properties,
-    kvector_properties: data.kvector_properties,
-    bool_properties: data.bool_properties,
-    string_properties: data.string_properties,
-    string_set_properties: data.string_set_properties,
-    layout_option_string_values: data.layout_option_string_values,
-    individual_spacing_option_string_values: data.individual_spacing_option_string_values,
+    properties: data.properties,
+    layout_options: data.layout_options,
+    individual_spacings: data.individual_spacings,
   })
 }
 
@@ -343,8 +286,14 @@ pub fn node_set_int_property(
   value : Int,
 ) -> Unit {
   let data = node_data(node)
-  data.int_properties[property.get_id()] = value
-  set_node_data(node, data)
+  data.properties = Some(
+    node_property_bag_set(
+      data.properties,
+      property.get_property_id(),
+      property.get_id(),
+      NodeIntValue(value),
+    ),
+  )
 }
 
 ///|
@@ -380,15 +329,17 @@ fn parse_bool_property_text(value : String) -> Bool? {
 ///|
 pub fn node_get_int_property(node : ElkNode, property : IProperty[Int]) -> Int {
   let data = node_data(node)
-  match data.int_properties.get(property.get_id()) {
-    Some(value) => value
+  let property_id = property.get_property_id()
+  match node_property_bag_get(data.properties, property_id, NodeIntValue(0)) {
+    Some(NodeIntValue(value)) => value
     None =>
-      match data.string_properties.get(property.get_id()) {
-        Some(text) =>
+      match
+        node_property_bag_get(data.properties, property_id, NodeStringValue("")) {
+        Some(NodeStringValue(text)) =>
           match parse_int_property_text(text) {
             Some(parsed) => parsed
             None =>
-              match data.layout_option_string_values.get(property.get_id()) {
+              match option_bag_get(data.layout_options, property_id) {
                 Some(option_text) =>
                   parse_int_property_text(option_text).unwrap_or(
                     property.get_default(),
@@ -397,21 +348,27 @@ pub fn node_get_int_property(node : ElkNode, property : IProperty[Int]) -> Int {
               }
           }
         None =>
-          match data.layout_option_string_values.get(property.get_id()) {
+          match option_bag_get(data.layout_options, property_id) {
             Some(option_text) =>
               parse_int_property_text(option_text).unwrap_or(
                 property.get_default(),
               )
             None => property.get_default()
           }
+        _ => property.get_default()
       }
+    _ => property.get_default()
   }
 }
 
 ///|
 pub fn node_has_int_property(node : ElkNode, property : IProperty[Int]) -> Bool {
   let data = node_data(node)
-  data.int_properties.contains(property.get_id())
+  node_property_bag_has(
+    data.properties,
+    property.get_property_id(),
+    NodeIntValue(0),
+  )
 }
 
 ///|
@@ -420,8 +377,11 @@ pub fn node_clear_int_property(
   property : IProperty[Int],
 ) -> Unit {
   let data = node_data(node)
-  data.int_properties.remove(property.get_id())
-  set_node_data(node, data)
+  data.properties = node_property_bag_remove(
+    data.properties,
+    property.get_property_id(),
+    NodeIntValue(0),
+  )
 }
 
 ///|
@@ -431,8 +391,14 @@ pub fn node_set_double_property(
   value : Double,
 ) -> Unit {
   let data = node_data(node)
-  data.double_properties[property.get_id()] = value
-  set_node_data(node, data)
+  data.properties = Some(
+    node_property_bag_set(
+      data.properties,
+      property.get_property_id(),
+      property.get_id(),
+      NodeDoubleValue(value),
+    ),
+  )
 }
 
 ///|
@@ -441,15 +407,18 @@ pub fn node_get_double_property(
   property : IProperty[Double],
 ) -> Double {
   let data = node_data(node)
-  match data.double_properties.get(property.get_id()) {
-    Some(value) => value
+  let property_id = property.get_property_id()
+  match
+    node_property_bag_get(data.properties, property_id, NodeDoubleValue(0.0)) {
+    Some(NodeDoubleValue(value)) => value
     None =>
-      match data.string_properties.get(property.get_id()) {
-        Some(text) =>
+      match
+        node_property_bag_get(data.properties, property_id, NodeStringValue("")) {
+        Some(NodeStringValue(text)) =>
           match parse_double_property_text(text) {
             Some(parsed) => parsed
             None =>
-              match data.layout_option_string_values.get(property.get_id()) {
+              match option_bag_get(data.layout_options, property_id) {
                 Some(option_text) =>
                   parse_double_property_text(option_text).unwrap_or(
                     property.get_default(),
@@ -458,14 +427,16 @@ pub fn node_get_double_property(
               }
           }
         None =>
-          match data.layout_option_string_values.get(property.get_id()) {
+          match option_bag_get(data.layout_options, property_id) {
             Some(option_text) =>
               parse_double_property_text(option_text).unwrap_or(
                 property.get_default(),
               )
             None => property.get_default()
           }
+        _ => property.get_default()
       }
+    _ => property.get_default()
   }
 }
 
@@ -475,7 +446,11 @@ pub fn node_has_double_property(
   property : IProperty[Double],
 ) -> Bool {
   let data = node_data(node)
-  data.double_properties.contains(property.get_id())
+  node_property_bag_has(
+    data.properties,
+    property.get_property_id(),
+    NodeDoubleValue(0.0),
+  )
 }
 
 ///|
@@ -484,8 +459,11 @@ pub fn node_clear_double_property(
   property : IProperty[Double],
 ) -> Unit {
   let data = node_data(node)
-  data.double_properties.remove(property.get_id())
-  set_node_data(node, data)
+  data.properties = node_property_bag_remove(
+    data.properties,
+    property.get_property_id(),
+    NodeDoubleValue(0.0),
+  )
 }
 
 ///|
@@ -495,8 +473,14 @@ pub fn node_set_bool_property(
   value : Bool,
 ) -> Unit {
   let data = node_data(node)
-  data.bool_properties[property.get_id()] = value
-  set_node_data(node, data)
+  data.properties = Some(
+    node_property_bag_set(
+      data.properties,
+      property.get_property_id(),
+      property.get_id(),
+      NodeBoolValue(value),
+    ),
+  )
 }
 
 ///|
@@ -505,15 +489,18 @@ pub fn node_get_bool_property(
   property : IProperty[Bool],
 ) -> Bool {
   let data = node_data(node)
-  match data.bool_properties.get(property.get_id()) {
-    Some(value) => value
+  let property_id = property.get_property_id()
+  match
+    node_property_bag_get(data.properties, property_id, NodeBoolValue(false)) {
+    Some(NodeBoolValue(value)) => value
     None =>
-      match data.string_properties.get(property.get_id()) {
-        Some(text) =>
+      match
+        node_property_bag_get(data.properties, property_id, NodeStringValue("")) {
+        Some(NodeStringValue(text)) =>
           match parse_bool_property_text(text) {
             Some(parsed) => parsed
             None =>
-              match data.layout_option_string_values.get(property.get_id()) {
+              match option_bag_get(data.layout_options, property_id) {
                 Some(option_text) =>
                   parse_bool_property_text(option_text).unwrap_or(
                     property.get_default(),
@@ -522,14 +509,16 @@ pub fn node_get_bool_property(
               }
           }
         None =>
-          match data.layout_option_string_values.get(property.get_id()) {
+          match option_bag_get(data.layout_options, property_id) {
             Some(option_text) =>
               parse_bool_property_text(option_text).unwrap_or(
                 property.get_default(),
               )
             None => property.get_default()
           }
+        _ => property.get_default()
       }
+    _ => property.get_default()
   }
 }
 
@@ -539,7 +528,11 @@ pub fn node_has_bool_property(
   property : IProperty[Bool],
 ) -> Bool {
   let data = node_data(node)
-  data.bool_properties.contains(property.get_id())
+  node_property_bag_has(
+    data.properties,
+    property.get_property_id(),
+    NodeBoolValue(false),
+  )
 }
 
 ///|
@@ -548,8 +541,11 @@ pub fn node_clear_bool_property(
   property : IProperty[Bool],
 ) -> Unit {
   let data = node_data(node)
-  data.bool_properties.remove(property.get_id())
-  set_node_data(node, data)
+  data.properties = node_property_bag_remove(
+    data.properties,
+    property.get_property_id(),
+    NodeBoolValue(false),
+  )
 }
 
 ///|
@@ -559,8 +555,14 @@ pub fn node_set_string_property(
   value : String,
 ) -> Unit {
   let data = node_data(node)
-  data.string_properties[property.get_id()] = value
-  set_node_data(node, data)
+  data.properties = Some(
+    node_property_bag_set(
+      data.properties,
+      property.get_property_id(),
+      property.get_id(),
+      NodeStringValue(value),
+    ),
+  )
 }
 
 ///|
@@ -569,13 +571,16 @@ pub fn node_get_string_property(
   property : IProperty[String],
 ) -> String {
   let data = node_data(node)
-  match data.string_properties.get(property.get_id()) {
-    Some(value) => value
+  let property_id = property.get_property_id()
+  match
+    node_property_bag_get(data.properties, property_id, NodeStringValue("")) {
+    Some(NodeStringValue(value)) => value
     None =>
-      match data.layout_option_string_values.get(property.get_id()) {
+      match option_bag_get(data.layout_options, property_id) {
         Some(value) => value
         None => property.get_default()
       }
+    _ => property.get_default()
   }
 }
 
@@ -585,7 +590,11 @@ pub fn node_has_string_property(
   property : IProperty[String],
 ) -> Bool {
   let data = node_data(node)
-  data.string_properties.contains(property.get_id())
+  node_property_bag_has(
+    data.properties,
+    property.get_property_id(),
+    NodeStringValue(""),
+  )
 }
 
 ///|
@@ -594,8 +603,11 @@ pub fn node_clear_string_property(
   property : IProperty[String],
 ) -> Unit {
   let data = node_data(node)
-  data.string_properties.remove(property.get_id())
-  set_node_data(node, data)
+  data.properties = node_property_bag_remove(
+    data.properties,
+    property.get_property_id(),
+    NodeStringValue(""),
+  )
 }
 
 ///|
@@ -611,14 +623,9 @@ pub fn node_set_identifier(node : ElkNode, identifier : String) -> Unit {
     y: data.y,
     width: data.width,
     height: data.height,
-    int_properties: data.int_properties,
-    double_properties: data.double_properties,
-    kvector_properties: data.kvector_properties,
-    bool_properties: data.bool_properties,
-    string_properties: data.string_properties,
-    string_set_properties: data.string_set_properties,
-    layout_option_string_values: data.layout_option_string_values,
-    individual_spacing_option_string_values: data.individual_spacing_option_string_values,
+    properties: data.properties,
+    layout_options: data.layout_options,
+    individual_spacings: data.individual_spacings,
   })
 }
 
@@ -634,8 +641,14 @@ pub fn node_set_string_set_property(
   value : Array[String],
 ) -> Unit {
   let data = node_data(node)
-  data.string_set_properties[property.get_id()] = value.copy()
-  set_node_data(node, data)
+  data.properties = Some(
+    node_property_bag_set(
+      data.properties,
+      property.get_property_id(),
+      property.get_id(),
+      NodeStringSetValue(value.copy()),
+    ),
+  )
 }
 
 ///|
@@ -644,9 +657,15 @@ pub fn node_get_string_set_property(
   property : IProperty[Array[String]],
 ) -> Array[String] {
   let data = node_data(node)
-  match data.string_set_properties.get(property.get_id()) {
-    Some(value) => value.copy()
+  match
+    node_property_bag_get(
+      data.properties,
+      property.get_property_id(),
+      NodeStringSetValue([]),
+    ) {
+    Some(NodeStringSetValue(value)) => value.copy()
     None => property.get_default().copy()
+    _ => property.get_default().copy()
   }
 }
 
@@ -656,7 +675,11 @@ pub fn node_has_string_set_property(
   property : IProperty[Array[String]],
 ) -> Bool {
   let data = node_data(node)
-  data.string_set_properties.contains(property.get_id())
+  node_property_bag_has(
+    data.properties,
+    property.get_property_id(),
+    NodeStringSetValue([]),
+  )
 }
 
 ///|
@@ -665,33 +688,81 @@ pub fn node_clear_string_set_property(
   property : IProperty[Array[String]],
 ) -> Unit {
   let data = node_data(node)
-  data.string_set_properties.remove(property.get_id())
-  set_node_data(node, data)
+  data.properties = node_property_bag_remove(
+    data.properties,
+    property.get_property_id(),
+    NodeStringSetValue([]),
+  )
 }
 
 ///|
 pub fn node_int_property_entries(node : ElkNode) -> Array[(String, Int)] {
-  node_data(node).int_properties.to_array()
+  let result = []
+  match node_data(node).properties {
+    Some(bag) =>
+      for entry in bag.entries {
+        match entry.value {
+          NodeIntValue(value) => result.push((entry.external_id, value))
+          _ => ()
+        }
+      }
+    None => ()
+  }
+  result
 }
 
 ///|
 pub fn node_bool_property_entries(node : ElkNode) -> Array[(String, Bool)] {
-  node_data(node).bool_properties.to_array()
+  let result = []
+  match node_data(node).properties {
+    Some(bag) =>
+      for entry in bag.entries {
+        match entry.value {
+          NodeBoolValue(value) => result.push((entry.external_id, value))
+          _ => ()
+        }
+      }
+    None => ()
+  }
+  result
 }
 
 ///|
 pub fn node_double_property_entries(node : ElkNode) -> Array[(String, Double)] {
-  node_data(node).double_properties.to_array()
+  let result = []
+  match node_data(node).properties {
+    Some(bag) =>
+      for entry in bag.entries {
+        match entry.value {
+          NodeDoubleValue(value) => result.push((entry.external_id, value))
+          _ => ()
+        }
+      }
+    None => ()
+  }
+  result
 }
 
 ///|
 pub fn node_kvector_property_entries(node : ElkNode) -> Array[(String, String)] {
-  node_data(node).kvector_properties.to_array()
+  ignore(node_data(node))
+  []
 }
 
 ///|
 pub fn node_string_property_entries(node : ElkNode) -> Array[(String, String)] {
-  node_data(node).string_properties.to_array()
+  let result = []
+  match node_data(node).properties {
+    Some(bag) =>
+      for entry in bag.entries {
+        match entry.value {
+          NodeStringValue(value) => result.push((entry.external_id, value))
+          _ => ()
+        }
+      }
+    None => ()
+  }
+  result
 }
 
 ///|
@@ -699,8 +770,16 @@ pub fn node_string_set_property_entries(
   node : ElkNode,
 ) -> Array[(String, Array[String])] {
   let entries : Array[(String, Array[String])] = []
-  for entry in node_data(node).string_set_properties.to_array() {
-    entries.push((entry.0, entry.1.copy()))
+  match node_data(node).properties {
+    Some(bag) =>
+      for entry in bag.entries {
+        match entry.value {
+          NodeStringSetValue(value) =>
+            entries.push((entry.external_id, value.copy()))
+          _ => ()
+        }
+      }
+    None => ()
   }
   entries
 }
@@ -712,15 +791,21 @@ pub fn node_set_layout_option_string_by_id(
   value : String,
 ) -> Unit {
   let data = node_data(node)
-  data.layout_option_string_values[option_id] = value
-  set_node_data(node, data)
+  data.layout_options = Some(
+    option_bag_set(
+      data.layout_options,
+      option_id_from_string(option_id),
+      option_id,
+      value,
+    ),
+  )
 }
 
 ///|
 pub fn node_layout_option_string_entries(
   node : ElkNode,
 ) -> Array[(String, String)] {
-  node_data(node).layout_option_string_values.to_array()
+  option_bag_entries(node_data(node).layout_options)
 }
 
 ///|
@@ -728,7 +813,18 @@ pub fn node_layout_option_string_value(
   node : ElkNode,
   option_id : String,
 ) -> String? {
-  node_data(node).layout_option_string_values.get(option_id)
+  option_bag_get(
+    node_data(node).layout_options,
+    option_id_from_string(option_id),
+  )
+}
+
+///|
+pub fn node_layout_option_string_value_by_option_id(
+  node : ElkNode,
+  option_id : OptionId,
+) -> String? {
+  option_bag_get(node_data(node).layout_options, option_id)
 }
 
 ///|
@@ -738,15 +834,21 @@ pub fn node_set_individual_spacing_option_string_by_id(
   value : String,
 ) -> Unit {
   let data = node_data(node)
-  data.individual_spacing_option_string_values[option_id] = value
-  set_node_data(node, data)
+  data.individual_spacings = Some(
+    option_bag_set(
+      data.individual_spacings,
+      option_id_from_string(option_id),
+      option_id,
+      value,
+    ),
+  )
 }
 
 ///|
 pub fn node_individual_spacing_option_string_entries(
   node : ElkNode,
 ) -> Array[(String, String)] {
-  node_data(node).individual_spacing_option_string_values.to_array()
+  option_bag_entries(node_data(node).individual_spacings)
 }
 
 ///|
@@ -754,7 +856,18 @@ pub fn node_individual_spacing_option_string_value(
   node : ElkNode,
   option_id : String,
 ) -> String? {
-  node_data(node).individual_spacing_option_string_values.get(option_id)
+  option_bag_get(
+    node_data(node).individual_spacings,
+    option_id_from_string(option_id),
+  )
+}
+
+///|
+pub fn node_individual_spacing_option_string_value_by_option_id(
+  node : ElkNode,
+  option_id : OptionId,
+) -> String? {
+  option_bag_get(node_data(node).individual_spacings, option_id)
 }
 
 ///|
@@ -771,20 +884,9 @@ pub fn node_copy_properties(target : ElkNode, source : ElkNode) -> Unit {
     y: target_data.y,
     width: target_data.width,
     height: target_data.height,
-    int_properties: clone_string_int_map(source_data.int_properties),
-    double_properties: clone_string_double_map(source_data.double_properties),
-    kvector_properties: clone_string_string_map(source_data.kvector_properties),
-    bool_properties: clone_string_bool_map(source_data.bool_properties),
-    string_properties: clone_string_string_map(source_data.string_properties),
-    string_set_properties: clone_string_string_array_map(
-      source_data.string_set_properties,
-    ),
-    layout_option_string_values: clone_string_string_map(
-      source_data.layout_option_string_values,
-    ),
-    individual_spacing_option_string_values: clone_string_string_map(
-      source_data.individual_spacing_option_string_values,
-    ),
+    properties: clone_node_property_bag(source_data.properties),
+    layout_options: clone_option_bag(source_data.layout_options),
+    individual_spacings: clone_option_bag(source_data.individual_spacings),
   })
 }
 

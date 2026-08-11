@@ -1590,8 +1590,8 @@ pub(all) struct IWhiteBoxTestable[G] {
 }
 pub fn[G] IWhiteBoxTestable::set_test_controller(Self[G], TestController[G]?) -> Unit
 
-pub(all) struct IndividualSpacings {
-  values : Map[String, String]
+pub struct IndividualSpacings {
+  // private fields
 }
 pub fn IndividualSpacings::entries(Self) -> Array[(String, String)]
 pub fn IndividualSpacings::get_option(Self, String) -> String?
@@ -1713,7 +1713,7 @@ pub(all) struct LayoutAlgorithmData {
   mut defining_bundle_id : String
   instance_pool_clear_fn : () -> Unit
   supported_features : Map[String, @graph.GraphFeature]
-  known_options : Map[String, Unit]
+  // private fields
 }
 pub fn LayoutAlgorithmData::add_known_option(Self, String) -> Unit
 pub fn LayoutAlgorithmData::add_supported_feature(Self, @graph.GraphFeature) -> Unit
@@ -1756,9 +1756,8 @@ pub fn LayoutCategoryData::get_layouters(Self) -> Array[LayoutAlgorithmData]
 pub fn LayoutCategoryData::get_name(Self) -> String
 
 pub(all) struct LayoutConfigurator {
-  element_option_map : Map[@graph.ElkNode, Map[String, (@graph.IProperty[Double], Double)]]
-  class_option_map : Map[String, Map[String, (@graph.IProperty[Double], Double)]]
   option_filters : Array[(@graph.ElkNode, @graph.IProperty[Double]) -> Bool]
+  // private fields
 }
 pub fn LayoutConfigurator::add_filter(Self, (@graph.ElkNode, @graph.IProperty[Double]) -> Bool) -> Unit
 pub fn LayoutConfigurator::configure_class_property(Self, String, @graph.IProperty[Double], Double) -> Unit
@@ -2124,7 +2123,7 @@ pub fn PortSide::opposed(Self) -> Self
 pub fn PortSide::right(Self) -> Self
 
 pub(all) struct PropertyConstantsDelegator {
-  property_delegate_ids : Map[String, Unit]
+  // private fields
 }
 pub fn[T] PropertyConstantsDelegator::add_delegate(Self, @graph.IProperty[T]) -> Self
 pub fn PropertyConstantsDelegator::get_individual_or_inherited_property(Self, @graph.ElkNode, @graph.IProperty[Double]) -> Double

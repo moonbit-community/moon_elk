@@ -293,7 +293,11 @@ fn algorithm_for_element(
 ) -> LayoutAlgorithmData? {
   match relevant_node_for_element(element) {
     Some(node) =>
-      match @graph.node_layout_option_string_value(node, algorithm.get_id()) {
+      match
+        @graph.node_layout_option_string_value_by_option_id(
+          node,
+          algorithm.get_property_id(),
+        ) {
         Some(algorithm_id) =>
           if algorithm_id.trim().is_empty() {
             None

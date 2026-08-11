@@ -13,7 +13,7 @@ pub(all) struct LayoutAlgorithmData {
   mut defining_bundle_id : String
   instance_pool_clear_fn : () -> Unit
   supported_features : Map[String, @graph.GraphFeature]
-  known_options : Map[String, Unit]
+  priv known_options : Map[@graph.OptionId, String]
 }
 
 ///|
@@ -159,7 +159,7 @@ pub fn LayoutAlgorithmData::add_known_option(
   self : LayoutAlgorithmData,
   option_id : String,
 ) -> Unit {
-  self.known_options[option_id] = ()
+  self.known_options[@graph.option_id_from_string(option_id)] = option_id
 }
 
 ///|
@@ -167,7 +167,7 @@ pub fn LayoutAlgorithmData::knows_option(
   self : LayoutAlgorithmData,
   option_id : String,
 ) -> Bool {
-  self.known_options.contains(option_id)
+  self.known_options.contains(@graph.option_id_from_string(option_id))
 }
 
 ///|
@@ -175,9 +175,9 @@ pub fn LayoutAlgorithmData::get_known_option_ids(
   self : LayoutAlgorithmData,
 ) -> Array[String] {
   let ids = []
-  self.known_options.each((id, value) => {
-    ignore(value)
-    ids.push(id)
+  self.known_options.each((id, external_id) => {
+    ignore(id)
+    ids.push(external_id)
   })
   ids
 }

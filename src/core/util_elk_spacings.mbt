@@ -53,7 +53,7 @@ fn factor_index(
 ) -> Int? {
   for i = 0; i < factors.length(); i = i + 1 {
     let (current_option, _) = factors[i]
-    if current_option.get_id() == option.get_id() {
+    if current_option.get_property_id() == option.get_property_id() {
       return Some(i)
     }
   }
@@ -115,7 +115,7 @@ pub fn ElkCoreSpacingsBuilder::with_factor(
       "The factor for '\{spacing_option.get_id()}' must not be negative (\{factor}).",
     )
   }
-  if spacing_option.get_id() == spacing_node_node.get_id() {
+  if spacing_option.get_property_id() == spacing_node_node.get_property_id() {
     elk_spacings_raise(
       "'\{spacing_option.get_id()}' is the base spacing option not allowed to use with 'with_factor'.",
     )
@@ -140,7 +140,7 @@ pub fn ElkCoreSpacingsBuilder::with_value(
       "The value for '\{spacing_option.get_id()}' must not be negative (\{value}).",
     )
   }
-  if spacing_option.get_id() == spacing_node_node.get_id() {
+  if spacing_option.get_property_id() == spacing_node_node.get_property_id() {
     elk_spacings_raise(
       "'\{spacing_option.get_id()}' is the base spacing option not allowed to use with 'with_value'.",
     )

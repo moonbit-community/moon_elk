@@ -283,9 +283,7 @@ pub fn DotImporter::transform_port_identifier(Self, String?, @graph.ElkNode) -> 
 pub fn DotImporter::transform_statements(Self, Array[@dot.DotStatement], @graph.ElkNode, DotTransformationData[@dot.DotGraphvizModel, @graph.ElkNode], DotImporterPropertyHolder, DotImporterPropertyHolder) -> Unit
 
 pub struct DotImporterPropertyHolder {
-  layout_options : Map[String, String]
-  mut def_width : Double?
-  mut def_height : Double?
+  // private fields
 }
 
 pub struct DotResourceSetProvider[R] {
@@ -298,11 +296,7 @@ pub struct DotTransformationData[S, T] {
   mut source_graph : S?
   target_graphs : Array[T]
   log_messages : Array[String]
-  bool_properties : Map[String, Bool]
-  int_properties : Map[String, Int]
-  string_properties : Map[String, String]
-  command_properties : Map[String, Command]
-  graph_elem_map_properties : Map[String, Map[String, DotGraphElement]]
+  // private fields
 }
 pub fn[S, T] DotTransformationData::get_bool_property(Self[S, T], @graph.IProperty[Bool]) -> Bool
 pub fn[S, T] DotTransformationData::get_command_property(Self[S, T], @graph.IProperty[Command]) -> Command

@@ -4,14 +4,14 @@ pub struct FGraph {
   edges : Array[FEdge]
   labels : Array[FLabel]
   bendpoints : Array[FBendpoint]
-  bool_properties : Map[String, Bool]
-  int_properties : Map[String, Int]
-  double_properties : Map[String, Double]
-  model_properties : Map[String, ForceModelStrategy]
-  padding_properties : Map[String, @core.ElkPadding]
-  node_properties : Map[String, @graph.ElkNode]
-  random_properties : Map[String, @core.JavaRandom]
-  vector_properties : Map[String, @core.KVector]
+  bool_properties : Map[@graph.PropertyId, Bool]
+  int_properties : Map[@graph.PropertyId, Int]
+  double_properties : Map[@graph.PropertyId, Double]
+  model_properties : Map[@graph.PropertyId, ForceModelStrategy]
+  padding_properties : Map[@graph.PropertyId, @core.ElkPadding]
+  node_properties : Map[@graph.PropertyId, @graph.ElkNode]
+  random_properties : Map[@graph.PropertyId, @core.JavaRandom]
+  vector_properties : Map[@graph.PropertyId, @core.KVector]
   adjacency : Array[Array[Int]]
 }
 
@@ -82,12 +82,12 @@ pub fn FGraph::set_property(
   property : ForceBoolOption,
   value : Bool,
 ) -> Unit {
-  self.bool_properties[property.get_id()] = value
+  self.bool_properties[property.get_property_id()] = value
 }
 
 ///|
 pub fn FGraph::get_property(self : FGraph, property : ForceBoolOption) -> Bool {
-  match self.bool_properties.get(property.get_id()) {
+  match self.bool_properties.get(property.get_property_id()) {
     Some(value) => value
     None => property.get_default()
   }
@@ -99,7 +99,7 @@ pub fn FGraph::set_int_property(
   property : ForceIntOption,
   value : Int,
 ) -> Unit {
-  self.int_properties[property.get_id()] = value
+  self.int_properties[property.get_property_id()] = value
 }
 
 ///|
@@ -107,7 +107,7 @@ pub fn FGraph::get_int_property(
   self : FGraph,
   property : ForceIntOption,
 ) -> Int {
-  match self.int_properties.get(property.get_id()) {
+  match self.int_properties.get(property.get_property_id()) {
     Some(value) => value
     None => property.get_default()
   }
@@ -119,7 +119,7 @@ pub fn FGraph::set_double_property(
   property : ForceDoubleOption,
   value : Double,
 ) -> Unit {
-  self.double_properties[property.get_id()] = value
+  self.double_properties[property.get_property_id()] = value
 }
 
 ///|
@@ -127,7 +127,7 @@ pub fn FGraph::get_double_property(
   self : FGraph,
   property : ForceDoubleOption,
 ) -> Double {
-  match self.double_properties.get(property.get_id()) {
+  match self.double_properties.get(property.get_property_id()) {
     Some(value) => value
     None => property.get_default()
   }
@@ -139,7 +139,7 @@ pub fn FGraph::set_model_property(
   property : ForceModelOption,
   value : ForceModelStrategy,
 ) -> Unit {
-  self.model_properties[property.get_id()] = value
+  self.model_properties[property.get_property_id()] = value
 }
 
 ///|
@@ -147,7 +147,7 @@ pub fn FGraph::get_model_property(
   self : FGraph,
   property : ForceModelOption,
 ) -> ForceModelStrategy {
-  match self.model_properties.get(property.get_id()) {
+  match self.model_properties.get(property.get_property_id()) {
     Some(value) => value
     None => property.get_default()
   }
@@ -159,7 +159,9 @@ pub fn FGraph::set_padding_property(
   property : ForcePaddingOption,
   value : @core.ElkPadding,
 ) -> Unit {
-  self.padding_properties[property.get_id()] = @core.elk_padding_clone(value)
+  self.padding_properties[property.get_property_id()] = @core.elk_padding_clone(
+    value,
+  )
 }
 
 ///|
@@ -167,7 +169,7 @@ pub fn FGraph::get_padding_property(
   self : FGraph,
   property : ForcePaddingOption,
 ) -> @core.ElkPadding {
-  match self.padding_properties.get(property.get_id()) {
+  match self.padding_properties.get(property.get_property_id()) {
     Some(value) => @core.elk_padding_clone(value)
     None => @core.elk_padding_clone(property.get_default())
   }
@@ -179,7 +181,7 @@ pub fn FGraph::set_internal_node_property(
   property : ForceInternalNodeProperty,
   value : @graph.ElkNode,
 ) -> Unit {
-  self.node_properties[property.get_id()] = value
+  self.node_properties[property.get_property_id()] = value
 }
 
 ///|
@@ -187,7 +189,7 @@ pub fn FGraph::get_internal_node_property(
   self : FGraph,
   property : ForceInternalNodeProperty,
 ) -> @graph.ElkNode? {
-  self.node_properties.get(property.get_id())
+  self.node_properties.get(property.get_property_id())
 }
 
 ///|
@@ -196,7 +198,7 @@ pub fn FGraph::set_internal_random_property(
   property : ForceInternalRandomProperty,
   value : @core.JavaRandom,
 ) -> Unit {
-  self.random_properties[property.get_id()] = value
+  self.random_properties[property.get_property_id()] = value
 }
 
 ///|
@@ -204,7 +206,7 @@ pub fn FGraph::get_internal_random_property(
   self : FGraph,
   property : ForceInternalRandomProperty,
 ) -> @core.JavaRandom? {
-  self.random_properties.get(property.get_id())
+  self.random_properties.get(property.get_property_id())
 }
 
 ///|
@@ -213,7 +215,9 @@ pub fn FGraph::set_internal_vector_property(
   property : ForceInternalVectorProperty,
   value : @core.KVector,
 ) -> Unit {
-  self.vector_properties[property.get_id()] = @core.new_kvector_copy(value)
+  self.vector_properties[property.get_property_id()] = @core.new_kvector_copy(
+    value,
+  )
 }
 
 ///|
@@ -221,7 +225,7 @@ pub fn FGraph::get_internal_vector_property(
   self : FGraph,
   property : ForceInternalVectorProperty,
 ) -> @core.KVector? {
-  match self.vector_properties.get(property.get_id()) {
+  match self.vector_properties.get(property.get_property_id()) {
     Some(value) => Some(@core.new_kvector_copy(value))
     None => None
   }

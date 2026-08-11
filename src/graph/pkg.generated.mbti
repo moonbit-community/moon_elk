@@ -69,6 +69,8 @@ pub fn edge_layout_option_string_entries(ElkEdge) -> Array[(String, String)]
 
 pub fn edge_layout_option_string_value(ElkEdge, String) -> String?
 
+pub fn edge_layout_option_string_value_by_option_id(ElkEdge, PropertyId) -> String?
+
 pub fn edge_section_add_bend_point(ElkEdgeSection, ElkBendPoint) -> Unit
 
 pub fn edge_section_add_incoming_section(ElkEdgeSection, ElkEdgeSection) -> Unit
@@ -217,6 +219,8 @@ pub fn label_layout_option_string_entries(ElkLabel) -> Array[(String, String)]
 
 pub fn label_layout_option_string_value(ElkLabel, String) -> String?
 
+pub fn label_layout_option_string_value_by_option_id(ElkLabel, PropertyId) -> String?
+
 pub fn label_parent(ElkLabel) -> ElkLabelParent?
 
 pub fn label_set_dimensions(ElkLabel, Double, Double) -> Unit
@@ -343,6 +347,8 @@ pub fn node_individual_spacing_option_string_entries(ElkNode) -> Array[(String, 
 
 pub fn node_individual_spacing_option_string_value(ElkNode, String) -> String?
 
+pub fn node_individual_spacing_option_string_value_by_option_id(ElkNode, PropertyId) -> String?
+
 pub fn node_int_property_entries(ElkNode) -> Array[(String, Int)]
 
 pub fn node_kvector_property_entries(ElkNode) -> Array[(String, String)]
@@ -352,6 +358,8 @@ pub fn node_labels(ElkNode) -> Array[ElkLabel]
 pub fn node_layout_option_string_entries(ElkNode) -> Array[(String, String)]
 
 pub fn node_layout_option_string_value(ElkNode, String) -> String?
+
+pub fn node_layout_option_string_value_by_option_id(ElkNode, PropertyId) -> String?
 
 pub fn node_outgoing_edges(ElkNode) -> Array[ElkEdge]
 
@@ -389,6 +397,8 @@ pub fn node_x(ElkNode) -> Double
 
 pub fn node_y(ElkNode) -> Double
 
+pub fn option_id_from_string(String) -> PropertyId
+
 pub fn port_height(ElkPort) -> Double
 
 pub fn port_identifier(ElkPort) -> String
@@ -400,6 +410,8 @@ pub fn port_labels(ElkPort) -> Array[ElkLabel]
 pub fn port_layout_option_string_entries(ElkPort) -> Array[(String, String)]
 
 pub fn port_layout_option_string_value(ElkPort, String) -> String?
+
+pub fn port_layout_option_string_value_by_option_id(ElkPort, PropertyId) -> String?
 
 pub fn port_outgoing_edges(ElkPort) -> Array[ElkEdge]
 
@@ -422,6 +434,8 @@ pub fn port_y(ElkPort) -> Double
 pub fn properties_skipping_nodes(ElkNode, include_root? : Bool) -> Array[ElkNode]
 
 pub fn[T] property_holder_comparator_with(IProperty[T]) -> PropertyHolderComparator[T]
+
+pub fn property_id_from_string(String) -> PropertyId
 
 pub fn update_containment(ElkEdge?) -> Unit raise ElkGraphUtilException
 
@@ -654,9 +668,11 @@ pub struct IProperty[T] {
   default_value : T
   clone_required : Bool
   clone_default_fn : ((T) -> T?)?
+  // private fields
 }
 pub fn[T] IProperty::get_default(Self[T]) -> T
 pub fn[T] IProperty::get_id(Self[T]) -> String
+pub fn[T] IProperty::get_property_id(Self[T]) -> PropertyId
 
 pub struct IPropertyValueProxy[T] {
   resolve_value_fn : (IProperty[T]) -> T?
@@ -667,7 +683,7 @@ pub fn[T] IPropertyValueProxy::resolve_value(Self[T], IProperty[T]) -> T?
 #alias(EMapPropertyHolderImpl)
 #alias(IPropertyHolder)
 pub struct MapPropertyHolder {
-  property_map : Map[String, Json]
+  // private fields
 }
 pub fn MapPropertyHolder::copy_properties(Self, Self?) -> Self
 pub fn MapPropertyHolder::get_all_properties(Self) -> Map[String, Json]
@@ -679,6 +695,11 @@ pub struct PropertyHolderComparator[T] {
   property : IProperty[T]
 }
 pub fn[T : Compare + @json.FromJson] PropertyHolderComparator::compare(Self[T], MapPropertyHolder, MapPropertyHolder) -> Int
+
+#alias(OptionId)
+pub struct PropertyId {
+  // private fields
+} derive(Eq, Hash, @debug.Debug)
 
 // Type aliases
 pub type AdvancedPropertyValue = Unit

@@ -3,11 +3,14 @@ pub struct DotTransformationData[S, T] {
   mut source_graph : S?
   target_graphs : Array[T]
   log_messages : Array[String]
-  bool_properties : Map[String, Bool]
-  int_properties : Map[String, Int]
-  string_properties : Map[String, String]
-  command_properties : Map[String, Command]
-  graph_elem_map_properties : Map[String, Map[String, DotGraphElement]]
+  priv bool_properties : Map[@graph.PropertyId, Bool]
+  priv int_properties : Map[@graph.PropertyId, Int]
+  priv string_properties : Map[@graph.PropertyId, String]
+  priv command_properties : Map[@graph.PropertyId, Command]
+  priv graph_elem_map_properties : Map[
+    @graph.PropertyId,
+    Map[String, DotGraphElement],
+  ]
 }
 
 ///|
@@ -67,7 +70,7 @@ pub fn[S, T] DotTransformationData::set_bool_property(
   property : @graph.IProperty[Bool],
   value : Bool,
 ) -> Unit {
-  self.bool_properties[property.get_id()] = value
+  self.bool_properties[property.get_property_id()] = value
 }
 
 ///|
@@ -75,7 +78,7 @@ pub fn[S, T] DotTransformationData::get_bool_property(
   self : DotTransformationData[S, T],
   property : @graph.IProperty[Bool],
 ) -> Bool {
-  match self.bool_properties.get(property.get_id()) {
+  match self.bool_properties.get(property.get_property_id()) {
     Some(value) => value
     None => property.get_default()
   }
@@ -87,7 +90,7 @@ pub fn[S, T] DotTransformationData::set_int_property(
   property : @graph.IProperty[Int],
   value : Int,
 ) -> Unit {
-  self.int_properties[property.get_id()] = value
+  self.int_properties[property.get_property_id()] = value
 }
 
 ///|
@@ -95,7 +98,7 @@ pub fn[S, T] DotTransformationData::get_int_property(
   self : DotTransformationData[S, T],
   property : @graph.IProperty[Int],
 ) -> Int {
-  match self.int_properties.get(property.get_id()) {
+  match self.int_properties.get(property.get_property_id()) {
     Some(value) => value
     None => property.get_default()
   }
@@ -107,7 +110,7 @@ pub fn[S, T] DotTransformationData::set_string_property(
   property : @graph.IProperty[String],
   value : String,
 ) -> Unit {
-  self.string_properties[property.get_id()] = value
+  self.string_properties[property.get_property_id()] = value
 }
 
 ///|
@@ -115,7 +118,7 @@ pub fn[S, T] DotTransformationData::get_string_property(
   self : DotTransformationData[S, T],
   property : @graph.IProperty[String],
 ) -> String {
-  match self.string_properties.get(property.get_id()) {
+  match self.string_properties.get(property.get_property_id()) {
     Some(value) => value
     None => property.get_default()
   }
@@ -127,7 +130,7 @@ pub fn[S, T] DotTransformationData::set_command_property(
   property : @graph.IProperty[Command],
   value : Command,
 ) -> Unit {
-  self.command_properties[property.get_id()] = value
+  self.command_properties[property.get_property_id()] = value
 }
 
 ///|
@@ -135,7 +138,7 @@ pub fn[S, T] DotTransformationData::get_command_property(
   self : DotTransformationData[S, T],
   property : @graph.IProperty[Command],
 ) -> Command {
-  match self.command_properties.get(property.get_id()) {
+  match self.command_properties.get(property.get_property_id()) {
     Some(value) => value
     None => property.get_default()
   }
@@ -158,7 +161,7 @@ pub fn[S, T] DotTransformationData::set_graph_elem_map_property(
   property : @graph.IProperty[Map[String, DotGraphElement]],
   value : Map[String, DotGraphElement],
 ) -> Unit {
-  self.graph_elem_map_properties[property.get_id()] = value
+  self.graph_elem_map_properties[property.get_property_id()] = value
 }
 
 ///|
@@ -166,11 +169,11 @@ pub fn[S, T] DotTransformationData::get_graph_elem_map_property(
   self : DotTransformationData[S, T],
   property : @graph.IProperty[Map[String, DotGraphElement]],
 ) -> Map[String, DotGraphElement] {
-  match self.graph_elem_map_properties.get(property.get_id()) {
+  match self.graph_elem_map_properties.get(property.get_property_id()) {
     Some(value) => value
     None => {
       let created = dot_graph_elem_map_clone(property.get_default())
-      self.graph_elem_map_properties[property.get_id()] = created
+      self.graph_elem_map_properties[property.get_property_id()] = created
       created
     }
   }

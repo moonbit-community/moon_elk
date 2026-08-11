@@ -10,7 +10,7 @@ test "disposing a layered graph breaks its ownership cycles" {
   edge.set_target(Some(port))
   let label = new_l_label_text("label")
   edge.get_labels().push(label)
-  label.l_edge_properties["edge"] = edge
+  label.set_property_l_edge(internal_properties_end_label_edge, Some(edge))
   let nested_graph = new_l_graph()
   nested_graph.set_parent_node(Some(node))
   node.set_nested_graph(Some(nested_graph))
@@ -27,5 +27,5 @@ test "disposing a layered graph breaks its ownership cycles" {
   assert_true(edge.get_source() is None)
   assert_true(edge.get_target() is None)
   assert_true(edge.get_labels().is_empty())
-  assert_true(label.l_edge_properties.is_empty())
+  assert_false(label.has_property_l_edge(internal_properties_end_label_edge))
 }

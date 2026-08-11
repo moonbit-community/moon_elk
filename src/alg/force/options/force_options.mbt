@@ -1,122 +1,53 @@
 ///|
-pub struct ForceBoolOption {
-  id : String
-  default_value : Bool
-}
+pub type ForceBoolOption = @graph.IProperty[Bool]
 
 ///|
 pub fn new_force_bool_option(
   id : String,
   default_value : Bool,
 ) -> ForceBoolOption {
-  { id, default_value }
+  @graph.new_property(id, default_value)
 }
 
 ///|
-pub fn ForceBoolOption::get_id(self : ForceBoolOption) -> String {
-  self.id
-}
-
-///|
-pub fn ForceBoolOption::get_default(self : ForceBoolOption) -> Bool {
-  self.default_value
-}
-
-///|
-pub struct ForceIntOption {
-  id : String
-  default_value : Int
-}
+pub type ForceIntOption = @graph.IProperty[Int]
 
 ///|
 pub fn new_force_int_option(id : String, default_value : Int) -> ForceIntOption {
-  { id, default_value }
+  @graph.new_property(id, default_value)
 }
 
 ///|
-pub fn ForceIntOption::get_id(self : ForceIntOption) -> String {
-  self.id
-}
-
-///|
-pub fn ForceIntOption::get_default(self : ForceIntOption) -> Int {
-  self.default_value
-}
-
-///|
-pub struct ForceDoubleOption {
-  id : String
-  default_value : Double
-}
+pub type ForceDoubleOption = @graph.IProperty[Double]
 
 ///|
 pub fn new_force_double_option(
   id : String,
   default_value : Double,
 ) -> ForceDoubleOption {
-  { id, default_value }
+  @graph.new_property(id, default_value)
 }
 
 ///|
-pub fn ForceDoubleOption::get_id(self : ForceDoubleOption) -> String {
-  self.id
-}
-
-///|
-pub fn ForceDoubleOption::get_default(self : ForceDoubleOption) -> Double {
-  self.default_value
-}
-
-///|
-pub struct ForceModelOption {
-  id : String
-  default_value : ForceModelStrategy
-}
+pub type ForceModelOption = @graph.IProperty[ForceModelStrategy]
 
 ///|
 pub fn new_force_model_option(
   id : String,
   default_value : ForceModelStrategy,
 ) -> ForceModelOption {
-  { id, default_value }
+  @graph.new_property(id, default_value)
 }
 
 ///|
-pub fn ForceModelOption::get_id(self : ForceModelOption) -> String {
-  self.id
-}
-
-///|
-pub fn ForceModelOption::get_default(
-  self : ForceModelOption,
-) -> ForceModelStrategy {
-  self.default_value
-}
-
-///|
-pub struct ForcePaddingOption {
-  id : String
-  default_value : @core.ElkPadding
-}
+pub type ForcePaddingOption = @graph.IProperty[@core.ElkPadding]
 
 ///|
 pub fn new_force_padding_option(
   id : String,
   default_value : @core.ElkPadding,
 ) -> ForcePaddingOption {
-  { id, default_value }
-}
-
-///|
-pub fn ForcePaddingOption::get_id(self : ForcePaddingOption) -> String {
-  self.id
-}
-
-///|
-pub fn ForcePaddingOption::get_default(
-  self : ForcePaddingOption,
-) -> @core.ElkPadding {
-  self.default_value
+  @graph.new_property(id, default_value)
 }
 
 ///|

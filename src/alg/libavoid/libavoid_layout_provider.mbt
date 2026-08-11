@@ -73,7 +73,10 @@ pub fn LibavoidLayoutProvider::prepare_graph(
   for node in @graph.node_children(parent_node) {
     for port in @graph.node_ports(node) {
       let side = match
-        @graph.port_layout_option_string_value(port, @core.port_side.get_id()) {
+        @graph.port_layout_option_string_value_by_option_id(
+          port,
+          @core.port_side.get_property_id(),
+        ) {
         Some(value) => value
         None => "UNDEFINED"
       }

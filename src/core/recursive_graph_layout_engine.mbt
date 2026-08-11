@@ -45,9 +45,9 @@ fn recursive_graph_layout_engine_hierarchy_handling(
   node : @graph.ElkNode,
 ) -> String {
   match
-    @graph.node_layout_option_string_value(
+    @graph.node_layout_option_string_value_by_option_id(
       node,
-      recursive_graph_layout_engine_hierarchy_handling_property.get_id(),
+      recursive_graph_layout_engine_hierarchy_handling_property.get_property_id(),
     ) {
     Some(value) => value
     None =>

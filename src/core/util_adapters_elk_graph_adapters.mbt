@@ -140,7 +140,11 @@ fn elk_graph_adapters_node_padding(node : @graph.ElkNode) -> ElkPadding raise {
     return parsed
   }
 
-  match @graph.node_layout_option_string_value(node, padding.get_id()) {
+  match
+    @graph.node_layout_option_string_value_by_option_id(
+      node,
+      padding.get_property_id(),
+    ) {
     Some(raw) => {
       let parsed = new_elk_padding()
       parsed.parse(raw)
@@ -172,9 +176,9 @@ fn elk_graph_adapters_node_margin(node : @graph.ElkNode) -> ElkMargin raise {
   }
 
   match
-    @graph.node_layout_option_string_value(
+    @graph.node_layout_option_string_value_by_option_id(
       node,
-      elk_graph_adapters_margins_property.get_id(),
+      elk_graph_adapters_margins_property.get_property_id(),
     ) {
     Some(raw) => {
       let parsed = new_elk_margin()
@@ -205,9 +209,9 @@ fn elk_graph_adapters_node_set_margin(
 ///|
 fn elk_graph_adapters_port_margin(port : @graph.ElkPort) -> ElkMargin raise {
   match
-    @graph.port_layout_option_string_value(
+    @graph.port_layout_option_string_value_by_option_id(
       port,
-      elk_graph_adapters_margins_property.get_id(),
+      elk_graph_adapters_margins_property.get_property_id(),
     ) {
     Some(raw) => {
       let parsed = new_elk_margin()
@@ -242,7 +246,10 @@ fn elk_graph_adapters_node_port_constraints(
   }
 
   match
-    @graph.node_layout_option_string_value(node, port_constraints.get_id()) {
+    @graph.node_layout_option_string_value_by_option_id(
+      node,
+      port_constraints.get_property_id(),
+    ) {
     Some(raw) => elk_graph_adapters_parse_port_constraints(raw)
     None =>
       elk_graph_adapters_parse_port_constraints(port_constraints.get_default())
@@ -258,9 +265,9 @@ fn elk_graph_adapters_node_inside_self_loops_activate(
   }
 
   match
-    @graph.node_layout_option_string_value(
+    @graph.node_layout_option_string_value_by_option_id(
       node,
-      inside_self_loops_activate.get_id(),
+      inside_self_loops_activate.get_property_id(),
     ) {
     Some(raw) =>
       match elk_graph_adapters_parse_bool(raw) {
@@ -273,7 +280,11 @@ fn elk_graph_adapters_node_inside_self_loops_activate(
 
 ///|
 fn elk_graph_adapters_port_side(port : @graph.ElkPort) -> PortSide {
-  match @graph.port_layout_option_string_value(port, port_side.get_id()) {
+  match
+    @graph.port_layout_option_string_value_by_option_id(
+      port,
+      port_side.get_property_id(),
+    ) {
     Some(raw) => elk_graph_adapters_parse_port_side(raw)
     None => elk_graph_adapters_parse_port_side(port_side.get_default())
   }
@@ -282,9 +293,9 @@ fn elk_graph_adapters_port_side(port : @graph.ElkPort) -> PortSide {
 ///|
 fn elk_graph_adapters_port_index(port : @graph.ElkPort) -> Int? {
   match
-    @graph.port_layout_option_string_value(
+    @graph.port_layout_option_string_value_by_option_id(
       port,
-      elk_graph_adapters_port_index_property.get_id(),
+      elk_graph_adapters_port_index_property.get_property_id(),
     ) {
     Some(raw) => elk_graph_adapters_parse_int(raw)
     None => None
@@ -294,9 +305,9 @@ fn elk_graph_adapters_port_index(port : @graph.ElkPort) -> Int? {
 ///|
 fn elk_graph_adapters_edge_inside_self_loops_yo(edge : @graph.ElkEdge) -> Bool {
   match
-    @graph.edge_layout_option_string_value(
+    @graph.edge_layout_option_string_value_by_option_id(
       edge,
-      elk_graph_adapters_inside_self_loops_yo_property.get_id(),
+      elk_graph_adapters_inside_self_loops_yo_property.get_property_id(),
     ) {
     Some(raw) =>
       match elk_graph_adapters_parse_bool(raw) {
@@ -312,7 +323,11 @@ fn elk_graph_adapters_port_double_option_or_default(
   port : @graph.ElkPort,
   option : @graph.IProperty[Double],
 ) -> Double {
-  match @graph.port_layout_option_string_value(port, option.get_id()) {
+  match
+    @graph.port_layout_option_string_value_by_option_id(
+      port,
+      option.get_property_id(),
+    ) {
     Some(raw) =>
       match elk_graph_adapters_parse_double(raw) {
         Some(value) => value
@@ -327,7 +342,11 @@ fn elk_graph_adapters_label_double_option_or_default(
   label : @graph.ElkLabel,
   option : @graph.IProperty[Double],
 ) -> Double {
-  match @graph.label_layout_option_string_value(label, option.get_id()) {
+  match
+    @graph.label_layout_option_string_value_by_option_id(
+      label,
+      option.get_property_id(),
+    ) {
     Some(raw) =>
       match elk_graph_adapters_parse_double(raw) {
         Some(value) => value
@@ -342,7 +361,11 @@ fn elk_graph_adapters_port_int_option_or_default(
   port : @graph.ElkPort,
   option : @graph.IProperty[Int],
 ) -> Int {
-  match @graph.port_layout_option_string_value(port, option.get_id()) {
+  match
+    @graph.port_layout_option_string_value_by_option_id(
+      port,
+      option.get_property_id(),
+    ) {
     Some(raw) =>
       match elk_graph_adapters_parse_int(raw) {
         Some(value) => value
@@ -357,7 +380,11 @@ fn elk_graph_adapters_label_int_option_or_default(
   label : @graph.ElkLabel,
   option : @graph.IProperty[Int],
 ) -> Int {
-  match @graph.label_layout_option_string_value(label, option.get_id()) {
+  match
+    @graph.label_layout_option_string_value_by_option_id(
+      label,
+      option.get_property_id(),
+    ) {
     Some(raw) =>
       match elk_graph_adapters_parse_int(raw) {
         Some(value) => value
@@ -372,7 +399,11 @@ fn elk_graph_adapters_port_bool_option_or_default(
   port : @graph.ElkPort,
   option : @graph.IProperty[Bool],
 ) -> Bool {
-  match @graph.port_layout_option_string_value(port, option.get_id()) {
+  match
+    @graph.port_layout_option_string_value_by_option_id(
+      port,
+      option.get_property_id(),
+    ) {
     Some(raw) =>
       match elk_graph_adapters_parse_bool(raw) {
         Some(value) => value
@@ -387,7 +418,11 @@ fn elk_graph_adapters_label_bool_option_or_default(
   label : @graph.ElkLabel,
   option : @graph.IProperty[Bool],
 ) -> Bool {
-  match @graph.label_layout_option_string_value(label, option.get_id()) {
+  match
+    @graph.label_layout_option_string_value_by_option_id(
+      label,
+      option.get_property_id(),
+    ) {
     Some(raw) =>
       match elk_graph_adapters_parse_bool(raw) {
         Some(value) => value
@@ -402,7 +437,11 @@ fn elk_graph_adapters_port_string_option_or_default(
   port : @graph.ElkPort,
   option : @graph.IProperty[String],
 ) -> String {
-  match @graph.port_layout_option_string_value(port, option.get_id()) {
+  match
+    @graph.port_layout_option_string_value_by_option_id(
+      port,
+      option.get_property_id(),
+    ) {
     Some(raw) => raw
     None => option.get_default()
   }
@@ -413,7 +452,11 @@ fn elk_graph_adapters_label_string_option_or_default(
   label : @graph.ElkLabel,
   option : @graph.IProperty[String],
 ) -> String {
-  match @graph.label_layout_option_string_value(label, option.get_id()) {
+  match
+    @graph.label_layout_option_string_value_by_option_id(
+      label,
+      option.get_property_id(),
+    ) {
     Some(raw) => raw
     None => option.get_default()
   }
@@ -424,7 +467,11 @@ fn elk_graph_adapters_port_string_array_option_or_default(
   port : @graph.ElkPort,
   option : @graph.IProperty[Array[String]],
 ) -> Array[String] {
-  match @graph.port_layout_option_string_value(port, option.get_id()) {
+  match
+    @graph.port_layout_option_string_value_by_option_id(
+      port,
+      option.get_property_id(),
+    ) {
     Some(raw) => [raw]
     None => option.get_default().copy()
   }
@@ -435,7 +482,11 @@ fn elk_graph_adapters_label_string_array_option_or_default(
   label : @graph.ElkLabel,
   option : @graph.IProperty[Array[String]],
 ) -> Array[String] {
-  match @graph.label_layout_option_string_value(label, option.get_id()) {
+  match
+    @graph.label_layout_option_string_value_by_option_id(
+      label,
+      option.get_property_id(),
+    ) {
     Some(raw) => [raw]
     None => option.get_default().copy()
   }
@@ -537,10 +588,13 @@ pub fn ElkGraphAdapter::get_property_double(
   self : ElkGraphAdapter,
   property : @graph.IProperty[Double],
 ) -> Double {
-  if property.get_id() ==
-    elk_graph_adapters_port_border_offset_property.get_id() {
+  if property.get_property_id() ==
+    elk_graph_adapters_port_border_offset_property.get_property_id() {
     match
-      @graph.node_layout_option_string_value(self.element, property.get_id()) {
+      @graph.node_layout_option_string_value_by_option_id(
+        self.element,
+        property.get_property_id(),
+      ) {
       Some(raw) =>
         match elk_graph_adapters_parse_double(raw) {
           Some(value) => value
@@ -718,10 +772,13 @@ pub fn ElkNodeAdapter::get_property_double(
   self : ElkNodeAdapter,
   property : @graph.IProperty[Double],
 ) -> Double {
-  if property.get_id() ==
-    elk_graph_adapters_port_border_offset_property.get_id() {
+  if property.get_property_id() ==
+    elk_graph_adapters_port_border_offset_property.get_property_id() {
     match
-      @graph.node_layout_option_string_value(self.element, property.get_id()) {
+      @graph.node_layout_option_string_value_by_option_id(
+        self.element,
+        property.get_property_id(),
+      ) {
       Some(raw) =>
         match elk_graph_adapters_parse_double(raw) {
           Some(value) => value
@@ -1004,7 +1061,10 @@ pub fn ElkPortAdapter::has_property_int(
   self : ElkPortAdapter,
   property : @graph.IProperty[Int],
 ) -> Bool {
-  @graph.port_layout_option_string_value(self.element, property.get_id())
+  @graph.port_layout_option_string_value_by_option_id(
+    self.element,
+    property.get_property_id(),
+  )
   is Some(_)
 }
 
@@ -1021,7 +1081,10 @@ pub fn ElkPortAdapter::has_property_bool(
   self : ElkPortAdapter,
   property : @graph.IProperty[Bool],
 ) -> Bool {
-  @graph.port_layout_option_string_value(self.element, property.get_id())
+  @graph.port_layout_option_string_value_by_option_id(
+    self.element,
+    property.get_property_id(),
+  )
   is Some(_)
 }
 
@@ -1030,8 +1093,8 @@ pub fn ElkPortAdapter::get_property_double(
   self : ElkPortAdapter,
   property : @graph.IProperty[Double],
 ) -> Double {
-  if property.get_id() ==
-    elk_graph_adapters_port_border_offset_property.get_id() {
+  if property.get_property_id() ==
+    elk_graph_adapters_port_border_offset_property.get_property_id() {
     return elk_graph_adapters_port_double_option_or_default(
       self.element,
       elk_graph_adapters_port_border_offset_property,
@@ -1045,7 +1108,10 @@ pub fn ElkPortAdapter::has_property_double(
   self : ElkPortAdapter,
   property : @graph.IProperty[Double],
 ) -> Bool {
-  @graph.port_layout_option_string_value(self.element, property.get_id())
+  @graph.port_layout_option_string_value_by_option_id(
+    self.element,
+    property.get_property_id(),
+  )
   is Some(_)
 }
 
@@ -1062,7 +1128,10 @@ pub fn ElkPortAdapter::has_property_string(
   self : ElkPortAdapter,
   property : @graph.IProperty[String],
 ) -> Bool {
-  @graph.port_layout_option_string_value(self.element, property.get_id())
+  @graph.port_layout_option_string_value_by_option_id(
+    self.element,
+    property.get_property_id(),
+  )
   is Some(_)
 }
 
@@ -1079,7 +1148,10 @@ pub fn ElkPortAdapter::has_property_string_array(
   self : ElkPortAdapter,
   property : @graph.IProperty[Array[String]],
 ) -> Bool {
-  @graph.port_layout_option_string_value(self.element, property.get_id())
+  @graph.port_layout_option_string_value_by_option_id(
+    self.element,
+    property.get_property_id(),
+  )
   is Some(_)
 }
 
@@ -1265,7 +1337,10 @@ pub fn ElkLabelAdapter::has_property_int(
   self : ElkLabelAdapter,
   property : @graph.IProperty[Int],
 ) -> Bool {
-  @graph.label_layout_option_string_value(self.element, property.get_id())
+  @graph.label_layout_option_string_value_by_option_id(
+    self.element,
+    property.get_property_id(),
+  )
   is Some(_)
 }
 
@@ -1282,7 +1357,10 @@ pub fn ElkLabelAdapter::has_property_bool(
   self : ElkLabelAdapter,
   property : @graph.IProperty[Bool],
 ) -> Bool {
-  @graph.label_layout_option_string_value(self.element, property.get_id())
+  @graph.label_layout_option_string_value_by_option_id(
+    self.element,
+    property.get_property_id(),
+  )
   is Some(_)
 }
 
@@ -1291,8 +1369,8 @@ pub fn ElkLabelAdapter::get_property_double(
   self : ElkLabelAdapter,
   property : @graph.IProperty[Double],
 ) -> Double {
-  if property.get_id() ==
-    elk_graph_adapters_port_border_offset_property.get_id() {
+  if property.get_property_id() ==
+    elk_graph_adapters_port_border_offset_property.get_property_id() {
     return elk_graph_adapters_label_double_option_or_default(
       self.element,
       elk_graph_adapters_port_border_offset_property,
@@ -1306,7 +1384,10 @@ pub fn ElkLabelAdapter::has_property_double(
   self : ElkLabelAdapter,
   property : @graph.IProperty[Double],
 ) -> Bool {
-  @graph.label_layout_option_string_value(self.element, property.get_id())
+  @graph.label_layout_option_string_value_by_option_id(
+    self.element,
+    property.get_property_id(),
+  )
   is Some(_)
 }
 
@@ -1323,7 +1404,10 @@ pub fn ElkLabelAdapter::has_property_string(
   self : ElkLabelAdapter,
   property : @graph.IProperty[String],
 ) -> Bool {
-  @graph.label_layout_option_string_value(self.element, property.get_id())
+  @graph.label_layout_option_string_value_by_option_id(
+    self.element,
+    property.get_property_id(),
+  )
   is Some(_)
 }
 
@@ -1343,7 +1427,10 @@ pub fn ElkLabelAdapter::has_property_string_array(
   self : ElkLabelAdapter,
   property : @graph.IProperty[Array[String]],
 ) -> Bool {
-  @graph.label_layout_option_string_value(self.element, property.get_id())
+  @graph.label_layout_option_string_value_by_option_id(
+    self.element,
+    property.get_property_id(),
+  )
   is Some(_)
 }
 
@@ -1368,9 +1455,9 @@ pub fn ElkLabelAdapter::get_label(self : ElkLabelAdapter) -> @graph.ElkLabel {
 ///|
 pub fn ElkLabelAdapter::get_side(self : ElkLabelAdapter) -> LabelSide {
   match
-    @graph.label_layout_option_string_value(
+    @graph.label_layout_option_string_value_by_option_id(
       self.element,
-      elk_graph_adapters_label_side_property.get_id(),
+      elk_graph_adapters_label_side_property.get_property_id(),
     ) {
     Some(raw) => elk_graph_adapters_parse_label_side(raw)
     None => Unknown

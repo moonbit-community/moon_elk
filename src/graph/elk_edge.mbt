@@ -39,7 +39,7 @@ priv struct EdgeData {
   identifier : String
   sections : Array[ElkEdgeSection]
   junction_points : Array[ElkBendPoint]
-  layout_option_string_values : Map[String, String]
+  mut layout_options : OptionBag?
 }
 
 ///|
@@ -122,7 +122,7 @@ fn create_edge_in_arena(
       identifier: "",
       sections: [],
       junction_points: [],
-      layout_option_string_values: Map([]),
+      layout_options: None,
     }),
   })
   if containing_node is Some(node_id) {
@@ -179,8 +179,14 @@ pub fn edge_set_layout_option_string_by_id(
   value : String,
 ) -> Unit {
   let data = edge_data(edge)
-  data.layout_option_string_values[option_id] = value
-  set_edge_data(edge, data)
+  data.layout_options = Some(
+    option_bag_set(
+      data.layout_options,
+      option_id_from_string(option_id),
+      option_id,
+      value,
+    ),
+  )
 }
 
 ///|
@@ -188,14 +194,25 @@ pub fn edge_layout_option_string_value(
   edge : ElkEdge,
   option_id : String,
 ) -> String? {
-  edge_data(edge).layout_option_string_values.get(option_id)
+  option_bag_get(
+    edge_data(edge).layout_options,
+    option_id_from_string(option_id),
+  )
+}
+
+///|
+pub fn edge_layout_option_string_value_by_option_id(
+  edge : ElkEdge,
+  option_id : OptionId,
+) -> String? {
+  option_bag_get(edge_data(edge).layout_options, option_id)
 }
 
 ///|
 pub fn edge_layout_option_string_entries(
   edge : ElkEdge,
 ) -> Array[(String, String)] {
-  edge_data(edge).layout_option_string_values.to_array()
+  option_bag_entries(edge_data(edge).layout_options)
 }
 
 ///|
@@ -209,9 +226,7 @@ pub fn edge_copy_properties(target : ElkEdge, source : ElkEdge) -> Unit {
     identifier: target_data.identifier,
     sections: target_data.sections,
     junction_points: source_data.junction_points.copy(),
-    layout_option_string_values: clone_string_string_map(
-      source_data.layout_option_string_values,
-    ),
+    layout_options: clone_option_bag(source_data.layout_options),
   })
 }
 
@@ -270,7 +285,7 @@ pub fn edge_set_containing_node(
     identifier: data.identifier,
     sections: data.sections,
     junction_points: data.junction_points,
-    layout_option_string_values: data.layout_option_string_values,
+    layout_options: data.layout_options,
   })
 }
 
@@ -284,7 +299,7 @@ pub fn edge_set_identifier(edge : ElkEdge, identifier : String) -> Unit {
     identifier,
     sections: data.sections,
     junction_points: data.junction_points,
-    layout_option_string_values: data.layout_option_string_values,
+    layout_options: data.layout_options,
   })
 }
 
@@ -311,7 +326,7 @@ pub fn edge_set_junction_points(
     identifier: data.identifier,
     sections: data.sections,
     junction_points,
-    layout_option_string_values: data.layout_option_string_values,
+    layout_options: data.layout_options,
   })
 }
 

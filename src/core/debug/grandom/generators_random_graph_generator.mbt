@@ -2350,7 +2350,11 @@ fn core_debug_grandom_generator_shape_to_port(
 fn core_debug_grandom_generator_port_side_or_undefined(
   port : @graph.ElkPort,
 ) -> @core.PortSide {
-  match @graph.port_layout_option_string_value(port, @core.port_side.get_id()) {
+  match
+    @graph.port_layout_option_string_value_by_option_id(
+      port,
+      @core.port_side.get_property_id(),
+    ) {
     Some(side_name) => {
       for value in @core.port_side_values() {
         if @core.port_side_to_string(value) == side_name {

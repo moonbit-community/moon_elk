@@ -607,16 +607,19 @@ pub let core_debug_grandom_exact_relative_hier : @graph.IProperty[
 
 ///|
 pub(all) struct CoreDebugGRandomGeneratorOptions {
-  bool_values : Map[String, Bool]
-  int_values : Map[String, Int]
-  double_values : Map[String, Double]
-  string_values : Map[String, String]
-  rand_values : Map[String, CoreDebugGRandomRandVal]
-  rand_opt_values : Map[String, CoreDebugGRandomRandVal?]
-  port_constraint_values : Map[String, @core.PortConstraints]
-  file_format_values : Map[String, CoreDebugGRandomFileFormat]
-  graph_type_values : Map[String, CoreDebugGRandomGraphType]
-  edge_determination_values : Map[String, CoreDebugGRandomEdgeDetermination]
+  bool_values : Map[@graph.PropertyId, Bool]
+  int_values : Map[@graph.PropertyId, Int]
+  double_values : Map[@graph.PropertyId, Double]
+  string_values : Map[@graph.PropertyId, String]
+  rand_values : Map[@graph.PropertyId, CoreDebugGRandomRandVal]
+  rand_opt_values : Map[@graph.PropertyId, CoreDebugGRandomRandVal?]
+  port_constraint_values : Map[@graph.PropertyId, @core.PortConstraints]
+  file_format_values : Map[@graph.PropertyId, CoreDebugGRandomFileFormat]
+  graph_type_values : Map[@graph.PropertyId, CoreDebugGRandomGraphType]
+  edge_determination_values : Map[
+    @graph.PropertyId,
+    CoreDebugGRandomEdgeDetermination,
+  ]
 }
 
 ///|
@@ -641,7 +644,7 @@ pub fn CoreDebugGRandomGeneratorOptions::set_bool_property(
   property : @graph.IProperty[Bool],
   value : Bool,
 ) -> Unit {
-  self.bool_values[property.get_id()] = value
+  self.bool_values[property.get_property_id()] = value
 }
 
 ///|
@@ -649,7 +652,7 @@ pub fn CoreDebugGRandomGeneratorOptions::get_bool_property(
   self : CoreDebugGRandomGeneratorOptions,
   property : @graph.IProperty[Bool],
 ) -> Bool {
-  match self.bool_values.get(property.get_id()) {
+  match self.bool_values.get(property.get_property_id()) {
     Some(value) => value
     None => property.get_default()
   }
@@ -661,7 +664,7 @@ pub fn CoreDebugGRandomGeneratorOptions::set_int_property(
   property : @graph.IProperty[Int],
   value : Int,
 ) -> Unit {
-  self.int_values[property.get_id()] = value
+  self.int_values[property.get_property_id()] = value
 }
 
 ///|
@@ -669,7 +672,7 @@ pub fn CoreDebugGRandomGeneratorOptions::get_int_property(
   self : CoreDebugGRandomGeneratorOptions,
   property : @graph.IProperty[Int],
 ) -> Int {
-  match self.int_values.get(property.get_id()) {
+  match self.int_values.get(property.get_property_id()) {
     Some(value) => value
     None => property.get_default()
   }
@@ -681,7 +684,7 @@ pub fn CoreDebugGRandomGeneratorOptions::set_double_property(
   property : @graph.IProperty[Double],
   value : Double,
 ) -> Unit {
-  self.double_values[property.get_id()] = value
+  self.double_values[property.get_property_id()] = value
 }
 
 ///|
@@ -689,7 +692,7 @@ pub fn CoreDebugGRandomGeneratorOptions::get_double_property(
   self : CoreDebugGRandomGeneratorOptions,
   property : @graph.IProperty[Double],
 ) -> Double {
-  match self.double_values.get(property.get_id()) {
+  match self.double_values.get(property.get_property_id()) {
     Some(value) => value
     None => property.get_default()
   }
@@ -701,7 +704,7 @@ pub fn CoreDebugGRandomGeneratorOptions::set_string_property(
   property : @graph.IProperty[String],
   value : String,
 ) -> Unit {
-  self.string_values[property.get_id()] = value
+  self.string_values[property.get_property_id()] = value
 }
 
 ///|
@@ -709,7 +712,7 @@ pub fn CoreDebugGRandomGeneratorOptions::get_string_property(
   self : CoreDebugGRandomGeneratorOptions,
   property : @graph.IProperty[String],
 ) -> String {
-  match self.string_values.get(property.get_id()) {
+  match self.string_values.get(property.get_property_id()) {
     Some(value) => value
     None => property.get_default()
   }
@@ -721,7 +724,7 @@ pub fn CoreDebugGRandomGeneratorOptions::set_rand_property(
   property : @graph.IProperty[CoreDebugGRandomRandVal],
   value : CoreDebugGRandomRandVal,
 ) -> Unit {
-  self.rand_values[property.get_id()] = value
+  self.rand_values[property.get_property_id()] = value
 }
 
 ///|
@@ -729,7 +732,7 @@ pub fn CoreDebugGRandomGeneratorOptions::get_rand_property(
   self : CoreDebugGRandomGeneratorOptions,
   property : @graph.IProperty[CoreDebugGRandomRandVal],
 ) -> CoreDebugGRandomRandVal {
-  match self.rand_values.get(property.get_id()) {
+  match self.rand_values.get(property.get_property_id()) {
     Some(value) => value
     None => property.get_default()
   }
@@ -741,7 +744,7 @@ pub fn CoreDebugGRandomGeneratorOptions::set_optional_rand_property(
   property : @graph.IProperty[CoreDebugGRandomRandVal?],
   value : CoreDebugGRandomRandVal?,
 ) -> Unit {
-  self.rand_opt_values[property.get_id()] = value
+  self.rand_opt_values[property.get_property_id()] = value
 }
 
 ///|
@@ -749,7 +752,7 @@ pub fn CoreDebugGRandomGeneratorOptions::get_optional_rand_property(
   self : CoreDebugGRandomGeneratorOptions,
   property : @graph.IProperty[CoreDebugGRandomRandVal?],
 ) -> CoreDebugGRandomRandVal? {
-  match self.rand_opt_values.get(property.get_id()) {
+  match self.rand_opt_values.get(property.get_property_id()) {
     Some(value) => value
     None => property.get_default()
   }
@@ -761,7 +764,7 @@ pub fn CoreDebugGRandomGeneratorOptions::set_port_constraints_property(
   property : @graph.IProperty[@core.PortConstraints],
   value : @core.PortConstraints,
 ) -> Unit {
-  self.port_constraint_values[property.get_id()] = value
+  self.port_constraint_values[property.get_property_id()] = value
 }
 
 ///|
@@ -769,7 +772,7 @@ pub fn CoreDebugGRandomGeneratorOptions::get_port_constraints_property(
   self : CoreDebugGRandomGeneratorOptions,
   property : @graph.IProperty[@core.PortConstraints],
 ) -> @core.PortConstraints {
-  match self.port_constraint_values.get(property.get_id()) {
+  match self.port_constraint_values.get(property.get_property_id()) {
     Some(value) => value
     None => property.get_default()
   }
@@ -781,7 +784,7 @@ pub fn CoreDebugGRandomGeneratorOptions::set_file_format_property(
   property : @graph.IProperty[CoreDebugGRandomFileFormat],
   value : CoreDebugGRandomFileFormat,
 ) -> Unit {
-  self.file_format_values[property.get_id()] = value
+  self.file_format_values[property.get_property_id()] = value
 }
 
 ///|
@@ -789,7 +792,7 @@ pub fn CoreDebugGRandomGeneratorOptions::get_file_format_property(
   self : CoreDebugGRandomGeneratorOptions,
   property : @graph.IProperty[CoreDebugGRandomFileFormat],
 ) -> CoreDebugGRandomFileFormat {
-  match self.file_format_values.get(property.get_id()) {
+  match self.file_format_values.get(property.get_property_id()) {
     Some(value) => value
     None => property.get_default()
   }
@@ -801,7 +804,7 @@ pub fn CoreDebugGRandomGeneratorOptions::set_graph_type_property(
   property : @graph.IProperty[CoreDebugGRandomGraphType],
   value : CoreDebugGRandomGraphType,
 ) -> Unit {
-  self.graph_type_values[property.get_id()] = value
+  self.graph_type_values[property.get_property_id()] = value
 }
 
 ///|
@@ -809,7 +812,7 @@ pub fn CoreDebugGRandomGeneratorOptions::get_graph_type_property(
   self : CoreDebugGRandomGeneratorOptions,
   property : @graph.IProperty[CoreDebugGRandomGraphType],
 ) -> CoreDebugGRandomGraphType {
-  match self.graph_type_values.get(property.get_id()) {
+  match self.graph_type_values.get(property.get_property_id()) {
     Some(value) => value
     None => property.get_default()
   }
@@ -821,7 +824,7 @@ pub fn CoreDebugGRandomGeneratorOptions::set_edge_determination_property(
   property : @graph.IProperty[CoreDebugGRandomEdgeDetermination],
   value : CoreDebugGRandomEdgeDetermination,
 ) -> Unit {
-  self.edge_determination_values[property.get_id()] = value
+  self.edge_determination_values[property.get_property_id()] = value
 }
 
 ///|
@@ -829,7 +832,7 @@ pub fn CoreDebugGRandomGeneratorOptions::get_edge_determination_property(
   self : CoreDebugGRandomGeneratorOptions,
   property : @graph.IProperty[CoreDebugGRandomEdgeDetermination],
 ) -> CoreDebugGRandomEdgeDetermination {
-  match self.edge_determination_values.get(property.get_id()) {
+  match self.edge_determination_values.get(property.get_property_id()) {
     Some(value) => value
     None => property.get_default()
   }

@@ -15,11 +15,14 @@ type DoublePropertyAssignment = (@graph.IProperty[Double], Double)
 
 ///|
 pub(all) struct LayoutConfigurator {
-  element_option_map : Map[
+  priv element_option_map : Map[
     @graph.ElkNode,
-    Map[String, DoublePropertyAssignment],
+    Map[@graph.PropertyId, DoublePropertyAssignment],
   ]
-  class_option_map : Map[String, Map[String, DoublePropertyAssignment]]
+  priv class_option_map : Map[
+    String,
+    Map[@graph.PropertyId, DoublePropertyAssignment],
+  ]
   option_filters : Array[LayoutConfiguratorFilter]
 }
 
@@ -30,11 +33,11 @@ pub fn new_layout_configurator() -> LayoutConfigurator {
 
 ///|
 fn upsert_option(
-  options : Map[String, DoublePropertyAssignment],
+  options : Map[@graph.PropertyId, DoublePropertyAssignment],
   property : @graph.IProperty[Double],
   value : Double,
 ) -> Unit {
-  options[property.get_id()] = (property, value)
+  options[property.get_property_id()] = (property, value)
 }
 
 ///|
@@ -87,8 +90,8 @@ pub fn layout_configurator_no_overwrite_filter() -> LayoutConfiguratorFilter {
 
 ///|
 fn merge_assignments(
-  target : Map[String, DoublePropertyAssignment],
-  source : Map[String, DoublePropertyAssignment]?,
+  target : Map[@graph.PropertyId, DoublePropertyAssignment],
+  source : Map[@graph.PropertyId, DoublePropertyAssignment]?,
 ) -> Unit {
   if source is Some(source_options) {
     source_options.each((id, assignment) => target[id] = assignment)
@@ -99,8 +102,8 @@ fn merge_assignments(
 fn find_class_options(
   configurator : LayoutConfigurator,
   node : @graph.ElkNode,
-) -> Map[String, DoublePropertyAssignment] {
-  let combined : Map[String, DoublePropertyAssignment] = Map([])
+) -> Map[@graph.PropertyId, DoublePropertyAssignment] {
+  let combined : Map[@graph.PropertyId, DoublePropertyAssignment] = Map([])
   merge_assignments(
     combined,
     configurator.class_option_map.get(class_graph_element),

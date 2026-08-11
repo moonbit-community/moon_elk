@@ -12,7 +12,11 @@ pub fn new_interactive_mrtree_graph_visitor() -> InteractiveMrtreeGraphVisitor {
 fn interactive_mrtree_graph_visitor_algorithm_value(
   root : @graph.ElkNode,
 ) -> String? {
-  match @graph.node_layout_option_string_value(root, @core.algorithm.get_id()) {
+  match
+    @graph.node_layout_option_string_value_by_option_id(
+      root,
+      @core.algorithm.get_property_id(),
+    ) {
     Some(value) => Some(value)
     None =>
       if @graph.node_has_string_property(root, @core.algorithm) {

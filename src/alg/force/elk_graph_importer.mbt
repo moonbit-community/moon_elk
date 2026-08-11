@@ -274,9 +274,9 @@ fn force_copy_graph_properties(graph : @graph.ElkNode, fgraph : FGraph) -> Bool 
   fgraph.set_property(
     force_separate_connected_components,
     bool_option_with_default(
-      @graph.node_layout_option_string_value(
+      @graph.node_layout_option_string_value_by_option_id(
         graph,
-        force_separate_connected_components.get_id(),
+        force_separate_connected_components.get_property_id(),
       ),
       force_separate_connected_components.get_default(),
     ),
@@ -284,24 +284,27 @@ fn force_copy_graph_properties(graph : @graph.ElkNode, fgraph : FGraph) -> Bool 
   fgraph.set_property(
     force_interactive,
     bool_option_with_default(
-      @graph.node_layout_option_string_value(graph, force_interactive.get_id()),
+      @graph.node_layout_option_string_value_by_option_id(
+        graph,
+        force_interactive.get_property_id(),
+      ),
       force_interactive.get_default(),
     ),
   )
   fgraph.set_property(
     force_omit_node_micro_layout,
     bool_option_with_default(
-      @graph.node_layout_option_string_value(
+      @graph.node_layout_option_string_value_by_option_id(
         graph,
-        force_omit_node_micro_layout.get_id(),
+        force_omit_node_micro_layout.get_property_id(),
       ),
       force_omit_node_micro_layout.get_default(),
     ),
   )
   let graph_edge_labels_inline = bool_option_with_default(
-    @graph.node_layout_option_string_value(
+    @graph.node_layout_option_string_value_by_option_id(
       graph,
-      force_edge_labels_inline.get_id(),
+      force_edge_labels_inline.get_property_id(),
     ),
     force_edge_labels_inline.get_default(),
   )
@@ -309,21 +312,30 @@ fn force_copy_graph_properties(graph : @graph.ElkNode, fgraph : FGraph) -> Bool 
   fgraph.set_int_property(
     force_iterations,
     int_option_with_default(
-      @graph.node_layout_option_string_value(graph, force_iterations.get_id()),
+      @graph.node_layout_option_string_value_by_option_id(
+        graph,
+        force_iterations.get_property_id(),
+      ),
       force_iterations.get_default(),
     ),
   )
   fgraph.set_int_property(
     force_random_seed,
     int_option_with_default(
-      @graph.node_layout_option_string_value(graph, force_random_seed.get_id()),
+      @graph.node_layout_option_string_value_by_option_id(
+        graph,
+        force_random_seed.get_property_id(),
+      ),
       force_random_seed.get_default(),
     ),
   )
   fgraph.set_int_property(
     stress_dimension,
     match
-      @graph.node_layout_option_string_value(graph, stress_dimension.get_id()) {
+      @graph.node_layout_option_string_value_by_option_id(
+        graph,
+        stress_dimension.get_property_id(),
+      ) {
       Some(value) =>
         match parse_stress_dimension_layout_value(value) {
           Some(parsed) => parsed
@@ -335,9 +347,9 @@ fn force_copy_graph_properties(graph : @graph.ElkNode, fgraph : FGraph) -> Bool 
   fgraph.set_int_property(
     stress_iteration_limit,
     int_option_with_default(
-      @graph.node_layout_option_string_value(
+      @graph.node_layout_option_string_value_by_option_id(
         graph,
-        stress_iteration_limit.get_id(),
+        stress_iteration_limit.get_property_id(),
       ),
       stress_iteration_limit.get_default(),
     ),
@@ -345,23 +357,29 @@ fn force_copy_graph_properties(graph : @graph.ElkNode, fgraph : FGraph) -> Bool 
   fgraph.set_double_property(
     force_temperature,
     double_option_with_default(
-      @graph.node_layout_option_string_value(graph, force_temperature.get_id()),
+      @graph.node_layout_option_string_value_by_option_id(
+        graph,
+        force_temperature.get_property_id(),
+      ),
       force_temperature.get_default(),
     ),
   )
   fgraph.set_double_property(
     force_repulsion,
     double_option_with_default(
-      @graph.node_layout_option_string_value(graph, force_repulsion.get_id()),
+      @graph.node_layout_option_string_value_by_option_id(
+        graph,
+        force_repulsion.get_property_id(),
+      ),
       force_repulsion.get_default(),
     ),
   )
   fgraph.set_double_property(
     force_spacing_node_node,
     double_option_with_default(
-      @graph.node_layout_option_string_value(
+      @graph.node_layout_option_string_value_by_option_id(
         graph,
-        force_spacing_node_node.get_id(),
+        force_spacing_node_node.get_property_id(),
       ),
       force_spacing_node_node.get_default(),
     ),
@@ -369,9 +387,9 @@ fn force_copy_graph_properties(graph : @graph.ElkNode, fgraph : FGraph) -> Bool 
   fgraph.set_double_property(
     force_spacing_edge_label,
     double_option_with_default(
-      @graph.node_layout_option_string_value(
+      @graph.node_layout_option_string_value_by_option_id(
         graph,
-        force_spacing_edge_label.get_id(),
+        force_spacing_edge_label.get_property_id(),
       ),
       force_spacing_edge_label.get_default(),
     ),
@@ -379,16 +397,19 @@ fn force_copy_graph_properties(graph : @graph.ElkNode, fgraph : FGraph) -> Bool 
   fgraph.set_double_property(
     force_aspect_ratio,
     double_option_with_default(
-      @graph.node_layout_option_string_value(graph, force_aspect_ratio.get_id()),
+      @graph.node_layout_option_string_value_by_option_id(
+        graph,
+        force_aspect_ratio.get_property_id(),
+      ),
       force_aspect_ratio.get_default(),
     ),
   )
   fgraph.set_double_property(
     stress_desired_edge_length,
     double_option_with_default(
-      @graph.node_layout_option_string_value(
+      @graph.node_layout_option_string_value_by_option_id(
         graph,
-        stress_desired_edge_length.get_id(),
+        stress_desired_edge_length.get_property_id(),
       ),
       stress_desired_edge_length.get_default(),
     ),
@@ -396,13 +417,20 @@ fn force_copy_graph_properties(graph : @graph.ElkNode, fgraph : FGraph) -> Bool 
   fgraph.set_double_property(
     stress_epsilon,
     double_option_with_default(
-      @graph.node_layout_option_string_value(graph, stress_epsilon.get_id()),
+      @graph.node_layout_option_string_value_by_option_id(
+        graph,
+        stress_epsilon.get_property_id(),
+      ),
       stress_epsilon.get_default(),
     ),
   )
   fgraph.set_model_property(
     force_model,
-    match @graph.node_layout_option_string_value(graph, force_model.get_id()) {
+    match
+      @graph.node_layout_option_string_value_by_option_id(
+        graph,
+        force_model.get_property_id(),
+      ) {
       Some(value) =>
         match parse_force_model_layout_value(value) {
           Some(model) => model
@@ -414,7 +442,10 @@ fn force_copy_graph_properties(graph : @graph.ElkNode, fgraph : FGraph) -> Bool 
   fgraph.set_padding_property(
     force_padding,
     match
-      @graph.node_layout_option_string_value(graph, force_padding.get_id()) {
+      @graph.node_layout_option_string_value_by_option_id(
+        graph,
+        force_padding.get_property_id(),
+      ) {
       Some(value) =>
         match parse_padding_layout_value(value) {
           Some(padding) => padding
@@ -444,7 +475,10 @@ fn force_transform_nodes(
     fnode_size(new_node).x = force_max(@graph.node_width(node), 1.0)
     fnode_size(new_node).y = force_max(@graph.node_height(node), 1.0)
     let priority_value = int_option_with_default(
-      @graph.node_layout_option_string_value(node, force_priority.get_id()),
+      @graph.node_layout_option_string_value_by_option_id(
+        node,
+        force_priority.get_property_id(),
+      ),
       force_priority.get_default(),
     )
     fnode_set_int_property(new_node, force_priority, priority_value)
@@ -452,7 +486,10 @@ fn force_transform_nodes(
       new_node,
       stress_fixed,
       bool_option_with_default(
-        @graph.node_layout_option_string_value(node, stress_fixed.get_id()),
+        @graph.node_layout_option_string_value_by_option_id(
+          node,
+          stress_fixed.get_property_id(),
+        ),
         stress_fixed.get_default(),
       ),
     )
@@ -512,9 +549,9 @@ fn force_transform_edges(
           new_edge,
           force_priority,
           int_option_with_default(
-            @graph.edge_layout_option_string_value(
+            @graph.edge_layout_option_string_value_by_option_id(
               edge,
-              force_priority.get_id(),
+              force_priority.get_property_id(),
             ),
             force_priority.get_default(),
           ),
@@ -523,17 +560,17 @@ fn force_transform_edges(
           new_edge,
           force_repulsive_power,
           int_option_with_default(
-            @graph.edge_layout_option_string_value(
+            @graph.edge_layout_option_string_value_by_option_id(
               edge,
-              force_repulsive_power.get_id(),
+              force_repulsive_power.get_property_id(),
             ),
             force_repulsive_power.get_default(),
           ),
         )
         match
-          @graph.edge_layout_option_string_value(
+          @graph.edge_layout_option_string_value_by_option_id(
             edge,
-            stress_desired_edge_length.get_id(),
+            stress_desired_edge_length.get_property_id(),
           ) {
           Some(value) =>
             match parse_double_layout_value(value) {
@@ -547,9 +584,9 @@ fn force_transform_edges(
         }
         fgraph.add_edge(new_edge)
         let edge_labels_inline = bool_option_with_default(
-          @graph.edge_layout_option_string_value(
+          @graph.edge_layout_option_string_value_by_option_id(
             edge,
-            force_edge_labels_inline.get_id(),
+            force_edge_labels_inline.get_property_id(),
           ),
           graph_edge_labels_inline,
         )
@@ -571,9 +608,9 @@ fn force_transform_edges(
             new_label,
             force_edge_labels_inline,
             bool_option_with_default(
-              @graph.label_layout_option_string_value(
+              @graph.label_layout_option_string_value_by_option_id(
                 edge_label,
-                force_edge_labels_inline.get_id(),
+                force_edge_labels_inline.get_property_id(),
               ),
               edge_labels_inline,
             ),

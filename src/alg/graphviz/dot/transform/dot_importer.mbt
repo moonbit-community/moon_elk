@@ -18,9 +18,9 @@ let dot_importer_def_width = 10.0
 
 ///|
 pub struct DotImporterPropertyHolder {
-  layout_options : Map[String, String]
-  mut def_width : Double?
-  mut def_height : Double?
+  priv layout_options : Map[@graph.OptionId, (String, String)]
+  priv mut def_width : Double?
+  priv mut def_height : Double?
 }
 
 ///|
@@ -29,15 +29,22 @@ fn new_dot_importer_property_holder() -> DotImporterPropertyHolder {
 }
 
 ///|
+fn DotImporterPropertyHolder::set_option(
+  self : DotImporterPropertyHolder,
+  external_id : String,
+  value : String,
+) -> Unit {
+  self.layout_options[@graph.option_id_from_string(external_id)] = (
+    external_id, value,
+  )
+}
+
+///|
 fn dot_importer_property_holder_copy(
   source : DotImporterPropertyHolder,
 ) -> DotImporterPropertyHolder {
-  let copied_layout_options : Map[String, String] = Map([])
-  for entry in source.layout_options.to_array() {
-    copied_layout_options[entry.0] = entry.1
-  }
   {
-    layout_options: copied_layout_options,
+    layout_options: source.layout_options.copy(),
     def_width: source.def_width,
     def_height: source.def_height,
   }
@@ -270,8 +277,9 @@ fn dot_importer_apply_attribute_to_holder(
   }
   let value = dot_importer_trim_value(attribute)
   if name == dot_attr_layout {
-    holder.layout_options[@core.algorithm.get_id()] = dot_importer_algorithm_value(
-      value,
+    holder.set_option(
+      @core.algorithm.get_id(),
+      dot_importer_algorithm_value(value),
     )
   } else if name == dot_attr_width {
     match dot_importer_parse_optional_double(value) {
@@ -293,27 +301,29 @@ fn dot_importer_apply_attribute_to_holder(
     }
   } else if name == dot_attr_fixedsize {
     let normalized = value.to_lower()
-    holder.layout_options[@core.node_size_constraints.get_id()] = if normalized ==
-      "true" {
-      dot_importer_option_node_size_constraints_fixed
-    } else {
-      dot_importer_option_node_size_constraints_minimum
-    }
+    holder.set_option(
+      @core.node_size_constraints.get_id(),
+      if normalized == "true" {
+        dot_importer_option_node_size_constraints_fixed
+      } else {
+        dot_importer_option_node_size_constraints_minimum
+      },
+    )
   } else if name == dot_attr_nodesep {
     match dot_importer_parse_optional_double(value) {
       Some(parsed) =>
-        holder.layout_options[@core.spacing_node_node.get_id()] = parsed.to_string()
+        holder.set_option(@core.spacing_node_node.get_id(), parsed.to_string())
       None =>
         trans_data.log(
           "Discarding attribute \{name}=\{value} since its value could not be parsed correctly.",
         )
     }
   } else if name == dot_attr_pack {
-    holder.layout_options[dot_importer_option_separate_connected_components] = value
+    holder.set_option(dot_importer_option_separate_connected_components, value)
   } else if name == dot_attr_pad {
     match dot_importer_parse_padding_value(value) {
       Some(parsed) =>
-        holder.layout_options[@core.padding.get_id()] = parsed.to_string()
+        holder.set_option(@core.padding.get_id(), parsed.to_string())
       None =>
         trans_data.log(
           "Discarding attribute \{name}=\{value} since its value could not be parsed correctly.",
@@ -321,13 +331,13 @@ fn dot_importer_apply_attribute_to_holder(
     }
   } else if name == dot_attr_rankdir {
     match dot_importer_rankdir_to_direction(value) {
-      Some(parsed) => holder.layout_options[@core.direction.get_id()] = parsed
+      Some(parsed) => holder.set_option(@core.direction.get_id(), parsed)
       None => ()
     }
   } else if name == dot_attr_splines {
     match dot_importer_normalize_edge_routing(value) {
       Some(parsed) =>
-        holder.layout_options[dot_importer_option_edge_routing] = parsed
+        holder.set_option(dot_importer_option_edge_routing, parsed)
       None => ()
     }
   } else if name == dot_attr_start {
@@ -339,14 +349,15 @@ fn dot_importer_apply_attribute_to_holder(
         Some(parsed) => parsed
         None => 0
       }
-      holder.layout_options[dot_importer_option_random_seed] = random_value.to_string()
+      holder.set_option(
+        dot_importer_option_random_seed,
+        random_value.to_string(),
+      )
     }
   } else if name == dot_attr_weight {
     match dot_importer_parse_optional_double(value) {
       Some(parsed) =>
-        holder.layout_options[@core.priority.get_id()] = parsed
-          .to_int()
-          .to_string()
+        holder.set_option(@core.priority.get_id(), parsed.to_int().to_string())
       None =>
         trans_data.log(
           "Discarding attribute \{name}=\{value} since its value could not be parsed correctly.",
@@ -364,26 +375,27 @@ fn dot_importer_apply_attribute_to_node(
   let holder = new_dot_importer_property_holder()
   dot_importer_apply_attribute_to_holder(holder, attribute, trans_data)
   for entry in holder.layout_options.to_array() {
-    if entry.0 == @core.algorithm.get_id() {
-      @graph.node_set_string_property(node, @core.algorithm, entry.1)
-    } else if entry.0 == @core.direction.get_id() {
-      @graph.node_set_string_property(node, @core.direction, entry.1)
-    } else if entry.0 == @core.padding.get_id() {
-      @graph.node_set_string_property(node, @core.padding, entry.1)
-    } else if entry.0 == @core.spacing_node_node.get_id() {
-      match dot_importer_parse_optional_double(entry.1) {
+    let option = entry.1
+    if entry.0 == @core.algorithm.get_property_id() {
+      @graph.node_set_string_property(node, @core.algorithm, option.1)
+    } else if entry.0 == @core.direction.get_property_id() {
+      @graph.node_set_string_property(node, @core.direction, option.1)
+    } else if entry.0 == @core.padding.get_property_id() {
+      @graph.node_set_string_property(node, @core.padding, option.1)
+    } else if entry.0 == @core.spacing_node_node.get_property_id() {
+      match dot_importer_parse_optional_double(option.1) {
         Some(parsed) =>
           @graph.node_set_double_property(node, @core.spacing_node_node, parsed)
         None => ()
       }
-    } else if entry.0 == @core.priority.get_id() {
-      match dot_importer_parse_optional_double(entry.1) {
+    } else if entry.0 == @core.priority.get_property_id() {
+      match dot_importer_parse_optional_double(option.1) {
         Some(parsed) =>
           @graph.node_set_double_property(node, @core.priority, parsed)
         None => ()
       }
     } else {
-      @graph.node_set_layout_option_string_by_id(node, entry.0, entry.1)
+      @graph.node_set_layout_option_string_by_id(node, option.0, option.1)
     }
   }
 }
@@ -397,7 +409,8 @@ fn dot_importer_apply_attribute_to_edge(
   let holder = new_dot_importer_property_holder()
   dot_importer_apply_attribute_to_holder(holder, attribute, trans_data)
   for entry in holder.layout_options.to_array() {
-    @graph.edge_set_layout_option_string_by_id(edge, entry.0, entry.1)
+    let option = entry.1
+    @graph.edge_set_layout_option_string_by_id(edge, option.0, option.1)
   }
 }
 
@@ -407,26 +420,27 @@ fn dot_importer_apply_holder_to_node(
   node : @graph.ElkNode,
 ) -> Unit {
   for entry in holder.layout_options.to_array() {
-    if entry.0 == @core.algorithm.get_id() {
-      @graph.node_set_string_property(node, @core.algorithm, entry.1)
-    } else if entry.0 == @core.direction.get_id() {
-      @graph.node_set_string_property(node, @core.direction, entry.1)
-    } else if entry.0 == @core.padding.get_id() {
-      @graph.node_set_string_property(node, @core.padding, entry.1)
-    } else if entry.0 == @core.spacing_node_node.get_id() {
-      match dot_importer_parse_optional_double(entry.1) {
+    let option = entry.1
+    if entry.0 == @core.algorithm.get_property_id() {
+      @graph.node_set_string_property(node, @core.algorithm, option.1)
+    } else if entry.0 == @core.direction.get_property_id() {
+      @graph.node_set_string_property(node, @core.direction, option.1)
+    } else if entry.0 == @core.padding.get_property_id() {
+      @graph.node_set_string_property(node, @core.padding, option.1)
+    } else if entry.0 == @core.spacing_node_node.get_property_id() {
+      match dot_importer_parse_optional_double(option.1) {
         Some(parsed) =>
           @graph.node_set_double_property(node, @core.spacing_node_node, parsed)
         None => ()
       }
-    } else if entry.0 == @core.priority.get_id() {
-      match dot_importer_parse_optional_double(entry.1) {
+    } else if entry.0 == @core.priority.get_property_id() {
+      match dot_importer_parse_optional_double(option.1) {
         Some(parsed) =>
           @graph.node_set_double_property(node, @core.priority, parsed)
         None => ()
       }
     } else {
-      @graph.node_set_layout_option_string_by_id(node, entry.0, entry.1)
+      @graph.node_set_layout_option_string_by_id(node, option.0, option.1)
     }
   }
   match holder.def_width {
@@ -447,7 +461,8 @@ fn dot_importer_apply_holder_to_edge(
   edge : @graph.ElkEdge,
 ) -> Unit {
   for entry in holder.layout_options.to_array() {
-    @graph.edge_set_layout_option_string_by_id(edge, entry.0, entry.1)
+    let option = entry.1
+    @graph.edge_set_layout_option_string_by_id(edge, option.0, option.1)
   }
 }
 

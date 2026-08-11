@@ -23,25 +23,31 @@ fn individual_spacings_exception_message(
 }
 
 ///|
-pub(all) struct IndividualSpacings {
-  values : Map[String, String]
+pub struct IndividualSpacings {
+  priv mut entries : Array[(@graph.OptionId, String, String)]?
 }
 
 ///|
 pub fn new_individual_spacings() -> IndividualSpacings {
-  { values: Map([]) }
+  { entries: None }
 }
 
 ///|
 pub fn new_individual_spacings_from(
   other : IndividualSpacings,
 ) -> IndividualSpacings {
-  let values : Map[String, String] = Map([])
-  for entry in other.values.to_array() {
-    let (option_id, option_value) = entry
-    values[option_id] = option_value
+  let copy = new_individual_spacings()
+  match other.entries {
+    Some(entries) => {
+      let copied_entries = []
+      for entry in entries {
+        copied_entries.push(entry)
+      }
+      copy.entries = Some(copied_entries)
+    }
+    None => ()
   }
-  { values, }
+  copy
 }
 
 ///|
@@ -50,7 +56,17 @@ pub fn IndividualSpacings::set_option(
   option_id : String,
   option_value : String,
 ) -> Unit {
-  self.values[option_id] = option_value
+  let compact_id = @graph.option_id_from_string(option_id)
+  let entries = self.entries.unwrap_or([])
+  for index in 0..<entries.length() {
+    if entries[index].0 == compact_id {
+      entries[index] = (compact_id, option_id, option_value)
+      self.entries = Some(entries)
+      return
+    }
+  }
+  entries.push((compact_id, option_id, option_value))
+  self.entries = Some(entries)
 }
 
 ///|
@@ -58,7 +74,18 @@ pub fn IndividualSpacings::get_option(
   self : IndividualSpacings,
   option_id : String,
 ) -> String? {
-  self.values.get(option_id)
+  let compact_id = @graph.option_id_from_string(option_id)
+  match self.entries {
+    Some(entries) =>
+      for entry in entries {
+        if entry.0 == compact_id {
+          return Some(entry.2)
+        }
+      } nobreak {
+        None
+      }
+    None => None
+  }
 }
 
 ///|
@@ -66,20 +93,28 @@ pub fn IndividualSpacings::has_option(
   self : IndividualSpacings,
   option_id : String,
 ) -> Bool {
-  self.values.contains(option_id)
+  self.get_option(option_id) is Some(_)
 }
 
 ///|
 pub fn IndividualSpacings::entries(
   self : IndividualSpacings,
 ) -> Array[(String, String)] {
-  self.values.to_array()
+  let result = []
+  match self.entries {
+    Some(entries) =>
+      for entry in entries {
+        result.push((entry.1, entry.2))
+      }
+    None => ()
+  }
+  result
 }
 
 ///|
 pub fn IndividualSpacings::to_string(self : IndividualSpacings) -> String {
   let entries : Array[String] = []
-  for entry in self.values.to_array() {
+  for entry in self.entries() {
     let (option_id, option_value) = entry
     entries.push(option_id + ":" + option_value)
   }
@@ -104,7 +139,10 @@ fn individual_spacings_parse_option(
     Some(value) => value
     None => individual_spacings_raise("Invalid option id: " + option_suffix)
   }
-  spacings.values[option_data.get_id()] = option_data.parse_value(option_value)
+  spacings.set_option(
+    option_data.get_id(),
+    option_data.parse_value(option_value),
+  )
 }
 
 ///|
@@ -193,7 +231,10 @@ pub fn individual_spacings_get_individual_or_inherited(
   property : @graph.IProperty[Double],
 ) -> Double {
   match
-    @graph.node_individual_spacing_option_string_value(node, property.get_id()) {
+    @graph.node_individual_spacing_option_string_value_by_option_id(
+      node,
+      property.get_property_id(),
+    ) {
     Some(value) =>
       match individual_spacings_parse_double(value) {
         Some(parsed) => parsed

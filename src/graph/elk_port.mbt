@@ -39,7 +39,7 @@ priv struct PortData {
   y : Double
   width : Double
   height : Double
-  layout_option_string_values : Map[String, String]
+  mut layout_options : OptionBag?
 }
 
 ///|
@@ -119,7 +119,7 @@ fn create_port_in_arena(parent : ElkNode?, arena : GraphArena) -> ElkPort {
       y: 0.0,
       width: 0.0,
       height: 0.0,
-      layout_option_string_values: Map([]),
+      layout_options: None,
     }),
   })
   if parent is Some(parent_id) {
@@ -155,7 +155,7 @@ pub fn port_set_location(port : ElkPort, x : Double, y : Double) -> Unit {
     y,
     width: data.width,
     height: data.height,
-    layout_option_string_values: data.layout_option_string_values,
+    layout_options: data.layout_options,
   })
 }
 
@@ -183,7 +183,7 @@ pub fn port_set_dimensions(
     y: data.y,
     width,
     height,
-    layout_option_string_values: data.layout_option_string_values,
+    layout_options: data.layout_options,
   })
 }
 
@@ -207,7 +207,7 @@ pub fn port_set_identifier(port : ElkPort, identifier : String) -> Unit {
     y: data.y,
     width: data.width,
     height: data.height,
-    layout_option_string_values: data.layout_option_string_values,
+    layout_options: data.layout_options,
   })
 }
 
@@ -223,15 +223,21 @@ pub fn port_set_layout_option_string_by_id(
   value : String,
 ) -> Unit {
   let data = port_data(port)
-  data.layout_option_string_values[option_id] = value
-  set_port_data(port, data)
+  data.layout_options = Some(
+    option_bag_set(
+      data.layout_options,
+      option_id_from_string(option_id),
+      option_id,
+      value,
+    ),
+  )
 }
 
 ///|
 pub fn port_layout_option_string_entries(
   port : ElkPort,
 ) -> Array[(String, String)] {
-  port_data(port).layout_option_string_values.to_array()
+  option_bag_entries(port_data(port).layout_options)
 }
 
 ///|
@@ -239,7 +245,18 @@ pub fn port_layout_option_string_value(
   port : ElkPort,
   option_id : String,
 ) -> String? {
-  port_data(port).layout_option_string_values.get(option_id)
+  option_bag_get(
+    port_data(port).layout_options,
+    option_id_from_string(option_id),
+  )
+}
+
+///|
+pub fn port_layout_option_string_value_by_option_id(
+  port : ElkPort,
+  option_id : OptionId,
+) -> String? {
+  option_bag_get(port_data(port).layout_options, option_id)
 }
 
 ///|

@@ -1,9 +1,15 @@
 ///|
 pub struct IProperty[T] {
   id : String
+  priv property_id : PropertyId
   default_value : T
   clone_required : Bool
   clone_default_fn : ((T) -> T?)?
+}
+
+///|
+pub fn[T] IProperty::get_property_id(self : IProperty[T]) -> PropertyId {
+  self.property_id
 }
 
 ///|

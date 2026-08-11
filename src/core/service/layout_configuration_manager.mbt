@@ -59,12 +59,12 @@ pub fn LayoutConfigurationManager::get_supported_options(
   self : LayoutConfigurationManager,
   config : ILayoutConfigurationStore,
 ) -> Array[@core.LayoutOptionData] {
-  let option_data : Map[String, @core.LayoutOptionData] = Map([])
+  let option_data : Map[@graph.OptionId, @core.LayoutOptionData] = Map([])
   match self.get_algorithm(config) {
     Some(algo_data) =>
       for candidate in self.metadata.option_data_values() {
         if algo_data.knows_option(candidate.get_id()) {
-          option_data[candidate.get_id()] = candidate
+          option_data[@graph.option_id_from_string(candidate.get_id())] = candidate
         }
       }
     None => ()
@@ -72,7 +72,8 @@ pub fn LayoutConfigurationManager::get_supported_options(
 
   for option_id in config.get_affected_options() {
     match self.metadata.option_data_opt(option_id) {
-      Some(found_option) => option_data[option_id] = found_option
+      Some(found_option) =>
+        option_data[@graph.option_id_from_string(option_id)] = found_option
       None => ()
     }
   }

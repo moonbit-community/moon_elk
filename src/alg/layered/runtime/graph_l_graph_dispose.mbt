@@ -36,13 +36,16 @@ pub fn dispose_layered_graph(root : LGraph) -> Unit {
       if graph.parent_node is Some(parent_node) {
         nodes.push(parent_node)
       }
-      for entry in graph.node_array_properties.to_array() {
+      for entry in layered_property_bag_entries(graph.node_array_properties) {
         let (_, property_nodes) = entry
         for node in property_nodes {
           nodes.push(node)
         }
       }
-      for entry in graph.cross_hierarchy_map_entry_array_properties.to_array() {
+      for
+        entry in layered_property_bag_entries(
+          graph.cross_hierarchy_map_entry_array_properties,
+        ) {
         let (_, entries) = entry
         for cross_hierarchy_entry in entries {
           let (first_edge, (second_edge, related_graph, _)) = cross_hierarchy_entry
@@ -72,21 +75,21 @@ pub fn dispose_layered_graph(root : LGraph) -> Unit {
       for label in node.labels {
         labels.push(label)
       }
-      for entry in node.node_properties.to_array() {
+      for entry in layered_property_bag_entries(node.node_properties) {
         let (_, property_node) = entry
         nodes.push(property_node)
       }
-      for entry in node.node_array_properties.to_array() {
+      for entry in layered_property_bag_entries(node.node_array_properties) {
         let (_, property_nodes) = entry
         for property_node in property_nodes {
           nodes.push(property_node)
         }
       }
-      for entry in node.port_properties.to_array() {
+      for entry in layered_property_bag_entries(node.port_properties) {
         let (_, property_port) = entry
         ports.push(property_port)
       }
-      for entry in node.edge_properties.to_array() {
+      for entry in layered_property_bag_entries(node.edge_properties) {
         let (_, property_edge) = entry
         edges.push(property_edge)
       }
@@ -111,11 +114,11 @@ pub fn dispose_layered_graph(root : LGraph) -> Unit {
       for label in port.labels {
         labels.push(label)
       }
-      for entry in port.node_properties.to_array() {
+      for entry in layered_property_bag_entries(port.node_properties) {
         let (_, property_node) = entry
         nodes.push(property_node)
       }
-      for entry in port.port_properties.to_array() {
+      for entry in layered_property_bag_entries(port.port_properties) {
         let (_, property_port) = entry
         ports.push(property_port)
       }
@@ -137,21 +140,21 @@ pub fn dispose_layered_graph(root : LGraph) -> Unit {
       for label in edge.labels {
         labels.push(label)
       }
-      for entry in edge.l_edge_array_properties.to_array() {
+      for entry in layered_property_bag_entries(edge.l_edge_array_properties) {
         let (_, property_edges) = entry
         for property_edge in property_edges {
           edges.push(property_edge)
         }
       }
-      for entry in edge.port_properties.to_array() {
+      for entry in layered_property_bag_entries(edge.port_properties) {
         let (_, property_port) = entry
         ports.push(property_port)
       }
-      for entry in edge.edge_properties.to_array() {
+      for entry in layered_property_bag_entries(edge.edge_properties) {
         let (_, property_edge) = entry
         edges.push(property_edge)
       }
-      for entry in edge.l_graph_properties.to_array() {
+      for entry in layered_property_bag_entries(edge.l_graph_properties) {
         let (_, property_graph) = entry
         graphs.push(property_graph)
       }
@@ -165,16 +168,16 @@ pub fn dispose_layered_graph(root : LGraph) -> Unit {
       edge.set_source(None)
       edge.set_target(None)
       edge.labels.clear()
-      edge.int_properties.clear()
-      edge.double_properties.clear()
-      edge.kvector_properties.clear()
-      edge.kvector_chain_properties.clear()
-      edge.bool_properties.clear()
-      edge.l_edge_array_properties.clear()
-      edge.spline_segment_array_properties.clear()
-      edge.port_properties.clear()
-      edge.edge_properties.clear()
-      edge.l_graph_properties.clear()
+      edge.int_properties = None
+      edge.double_properties = None
+      edge.kvector_properties = None
+      edge.kvector_chain_properties = None
+      edge.bool_properties = None
+      edge.l_edge_array_properties = None
+      edge.spline_segment_array_properties = None
+      edge.port_properties = None
+      edge.edge_properties = None
+      edge.l_graph_properties = None
       ignore(seen_edges.remove(edge.get_handle()))
     }
   }
@@ -184,11 +187,11 @@ pub fn dispose_layered_graph(root : LGraph) -> Unit {
       port.labels.clear()
       port.incoming_edges.clear()
       port.outgoing_edges.clear()
-      port.int_properties.clear()
-      port.bool_properties.clear()
-      port.double_properties.clear()
-      port.node_properties.clear()
-      port.port_properties.clear()
+      port.int_properties = None
+      port.bool_properties = None
+      port.double_properties = None
+      port.node_properties = None
+      port.port_properties = None
       ignore(seen_ports.remove(port.get_handle()))
     }
   }
@@ -199,60 +202,63 @@ pub fn dispose_layered_graph(root : LGraph) -> Unit {
       node.set_nested_graph(None)
       node.ports.clear()
       node.labels.clear()
-      node.int_properties.clear()
-      node.bool_properties.clear()
-      node.double_properties.clear()
-      node.kvector_properties.clear()
-      node.elk_margin_properties.clear()
-      node.string_properties.clear()
-      node.string_array_properties.clear()
-      node.port_side_properties.clear()
-      node.label_side_properties.clear()
-      node.node_properties.clear()
-      node.node_array_properties.clear()
-      node.label_array_properties.clear()
-      for entry in node.end_label_cell_array_properties.to_array() {
+      node.int_properties = None
+      node.bool_properties = None
+      node.double_properties = None
+      node.kvector_properties = None
+      node.elk_margin_properties = None
+      node.string_properties = None
+      node.string_array_properties = None
+      node.port_side_properties = None
+      node.label_side_properties = None
+      node.node_properties = None
+      node.node_array_properties = None
+      node.label_array_properties = None
+      for
+        entry in layered_property_bag_entries(
+          node.end_label_cell_array_properties,
+        ) {
         let (_, cells) = entry
         for cell in cells {
           cell.dispose()
         }
       }
-      node.end_label_cell_array_properties.clear()
-      node.int_int_map_properties.clear()
-      node.port_properties.clear()
-      node.edge_properties.clear()
-      node.bp_info_properties.clear()
-      node.self_loop_holder_properties.clear()
+      node.end_label_cell_array_properties = None
+      node.int_int_map_properties = None
+      node.port_properties = None
+      node.edge_properties = None
+      node.bp_info_properties = None
+      node.self_loop_holder_properties = None
       node.port_side_indices.clear()
       ignore(seen_nodes.remove(node.get_handle()))
     }
   }
   for label in labels {
-    label.bool_properties.clear()
-    label.string_properties.clear()
-    label.string_array_properties.clear()
-    label.label_side_properties.clear()
-    label.l_edge_properties.clear()
+    label.bool_properties = None
+    label.string_properties = None
+    label.string_array_properties = None
+    label.label_side_properties = None
+    label.l_edge_properties = None
   }
   for graph in graphs {
     if seen_graphs.contains(graph.get_handle()) {
       graph.set_parent_node(None)
-      graph.port_side_array_properties.clear()
-      graph.graph_properties_array_properties.clear()
-      graph.cross_hierarchy_map_entry_array_properties.clear()
-      graph.node_array_properties.clear()
+      graph.port_side_array_properties = None
+      graph.graph_properties_array_properties = None
+      graph.cross_hierarchy_map_entry_array_properties = None
+      graph.node_array_properties = None
       graph.layout_state.clear()
-      graph.int_properties.clear()
-      graph.bool_properties.clear()
-      graph.double_properties.clear()
-      graph.string_properties.clear()
-      graph.string_array_properties.clear()
-      graph.label_manager_properties.clear()
-      graph.spacings_properties.clear()
-      graph.elk_margin_properties.clear()
-      graph.component_ordering_strategy_properties.clear()
-      graph.direction_properties.clear()
-      graph.spline_routing_mode_properties.clear()
+      graph.int_properties = None
+      graph.bool_properties = None
+      graph.double_properties = None
+      graph.string_properties = None
+      graph.string_array_properties = None
+      graph.label_manager_properties = None
+      graph.spacings_properties = None
+      graph.elk_margin_properties = None
+      graph.component_ordering_strategy_properties = None
+      graph.direction_properties = None
+      graph.spline_routing_mode_properties = None
       graph.layerless_nodes.clear()
       graph.layers.clear()
       ignore(seen_graphs.remove(graph.get_handle()))

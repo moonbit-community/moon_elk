@@ -29,7 +29,11 @@ fn interactive_layered_graph_visitor_string_option_value(
   node : @graph.ElkNode,
   option : @graph.IProperty[String],
 ) -> String? {
-  match @graph.node_layout_option_string_value(node, option.get_id()) {
+  match
+    @graph.node_layout_option_string_value_by_option_id(
+      node,
+      option.get_property_id(),
+    ) {
     Some(value) => {
       let normalized = value.trim().to_owned()
       if normalized.is_empty() {
@@ -59,7 +63,11 @@ fn interactive_layered_graph_visitor_int_option_value(
   node : @graph.ElkNode,
   option : @graph.IProperty[Int],
 ) -> Int {
-  match @graph.node_layout_option_string_value(node, option.get_id()) {
+  match
+    @graph.node_layout_option_string_value_by_option_id(
+      node,
+      option.get_property_id(),
+    ) {
     Some(value) =>
       match interactive_layered_graph_visitor_parse_int(value) {
         Some(parsed) => parsed
@@ -84,7 +92,11 @@ fn interactive_layered_graph_visitor_has_int_option(
   node : @graph.ElkNode,
   option : @graph.IProperty[Int],
 ) -> Bool {
-  match @graph.node_layout_option_string_value(node, option.get_id()) {
+  match
+    @graph.node_layout_option_string_value_by_option_id(
+      node,
+      option.get_property_id(),
+    ) {
     Some(value) =>
       !value.trim().to_owned().is_empty() ||
       @graph.node_has_int_property(node, option)
@@ -1462,7 +1474,10 @@ pub fn interactive_layered_graph_visitor_set_interactive_options_and_pseudo_posi
     return
   }
   let configured_algorithm = match
-    @graph.node_layout_option_string_value(root, @core.algorithm.get_id()) {
+    @graph.node_layout_option_string_value_by_option_id(
+      root,
+      @core.algorithm.get_property_id(),
+    ) {
     Some(value) => value
     None => @graph.node_get_string_property(root, @core.algorithm)
   }

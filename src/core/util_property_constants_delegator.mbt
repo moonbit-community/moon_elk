@@ -1,6 +1,6 @@
 ///|
 pub(all) struct PropertyConstantsDelegator {
-  property_delegate_ids : Map[String, Unit]
+  priv property_delegate_ids : Map[@graph.PropertyId, Unit]
 }
 
 ///|
@@ -14,7 +14,7 @@ pub fn property_constants_delegator_create_for_layout_algorithm_data(
 ) -> PropertyConstantsDelegator {
   let delegator = property_constants_delegator_create_empty()
   for option_id in algorithm_data.get_known_option_ids() {
-    delegator.property_delegate_ids[option_id] = ()
+    delegator.property_delegate_ids[@graph.option_id_from_string(option_id)] = ()
   }
   delegator
 }
@@ -38,7 +38,7 @@ pub fn[T] PropertyConstantsDelegator::add_delegate(
   self : PropertyConstantsDelegator,
   delegate : @graph.IProperty[T],
 ) -> PropertyConstantsDelegator {
-  self.property_delegate_ids[delegate.get_id()] = ()
+  self.property_delegate_ids[delegate.get_property_id()] = ()
   self
 }
 
@@ -47,7 +47,7 @@ pub fn[T] PropertyConstantsDelegator::get_property_or_delegate(
   self : PropertyConstantsDelegator,
   property : @graph.IProperty[T],
 ) -> @graph.IProperty[T] {
-  if self.property_delegate_ids.contains(property.get_id()) {
+  if self.property_delegate_ids.contains(property.get_property_id()) {
     // MoonBit metadata currently tracks known option ids but not algorithm-specific
     // typed constants/default values, so delegation is id-based.
     @graph.new_property(property.get_id(), property.get_default())
@@ -118,7 +118,11 @@ pub fn PropertyConstantsDelegator::get_property_kvector(
   property : @graph.IProperty[KVector],
 ) -> KVector raise {
   let delegated = self.get_property_or_delegate(property)
-  match @graph.node_layout_option_string_value(node, delegated.get_id()) {
+  match
+    @graph.node_layout_option_string_value_by_option_id(
+      node,
+      delegated.get_property_id(),
+    ) {
     Some(value) => {
       let parsed = new_kvector()
       parsed.parse(value)
@@ -145,5 +149,5 @@ pub fn PropertyConstantsDelegator::has_delegate_for(
   self : PropertyConstantsDelegator,
   property_id : String,
 ) -> Bool {
-  self.property_delegate_ids.contains(property_id)
+  self.property_delegate_ids.contains(@graph.option_id_from_string(property_id))
 }

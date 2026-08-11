@@ -1,58 +1,31 @@
 ///|
-pub struct ForceInternalNodeProperty {
-  id : String
-}
+pub type ForceInternalNodeProperty = @graph.IProperty[Unit]
 
 ///|
 pub fn new_force_internal_node_property(
   id : String,
 ) -> ForceInternalNodeProperty {
-  { id, }
+  @graph.new_property(id, ())
 }
 
 ///|
-pub fn ForceInternalNodeProperty::get_id(
-  self : ForceInternalNodeProperty,
-) -> String {
-  self.id
-}
-
-///|
-pub struct ForceInternalRandomProperty {
-  id : String
-}
+pub type ForceInternalRandomProperty = @graph.IProperty[Unit]
 
 ///|
 pub fn new_force_internal_random_property(
   id : String,
 ) -> ForceInternalRandomProperty {
-  { id, }
+  @graph.new_property(id, ())
 }
 
 ///|
-pub fn ForceInternalRandomProperty::get_id(
-  self : ForceInternalRandomProperty,
-) -> String {
-  self.id
-}
-
-///|
-pub struct ForceInternalVectorProperty {
-  id : String
-}
+pub type ForceInternalVectorProperty = @graph.IProperty[Unit]
 
 ///|
 pub fn new_force_internal_vector_property(
   id : String,
 ) -> ForceInternalVectorProperty {
-  { id, }
-}
-
-///|
-pub fn ForceInternalVectorProperty::get_id(
-  self : ForceInternalVectorProperty,
-) -> String {
-  self.id
+  @graph.new_property(id, ())
 }
 
 ///|

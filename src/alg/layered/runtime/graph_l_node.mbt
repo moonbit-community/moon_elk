@@ -105,24 +105,27 @@ pub struct LNode {
   mut nested_graph : LGraph?
   margin : LMargin
   padding : LPadding
-  int_properties : Map[String, Int]
-  bool_properties : Map[String, Bool]
-  double_properties : Map[String, Double]
-  kvector_properties : Map[String, @core.KVector]
-  elk_margin_properties : Map[String, @core.ElkMargin]
-  string_properties : Map[String, String]
-  string_array_properties : Map[String, Array[String]]
-  port_side_properties : Map[String, @core.PortSide]
-  label_side_properties : Map[String, @core.LabelSide]
-  node_properties : Map[String, LNode]
-  node_array_properties : Map[String, Array[LNode]]
-  label_array_properties : Map[String, Array[LLabel]]
-  end_label_cell_array_properties : Map[String, Array[EndLabelCell]]
-  int_int_map_properties : Map[String, Map[Int, Int]]
-  port_properties : Map[String, LPort]
-  edge_properties : Map[String, LEdge]
-  bp_info_properties : Map[String, BPInfo]
-  self_loop_holder_properties : Map[String, SelfLoopHolder]
+  priv mut int_properties : Map[@graph.PropertyId, Int]?
+  priv mut bool_properties : Map[@graph.PropertyId, Bool]?
+  priv mut double_properties : Map[@graph.PropertyId, Double]?
+  priv mut kvector_properties : Map[@graph.PropertyId, @core.KVector]?
+  priv mut elk_margin_properties : Map[@graph.PropertyId, @core.ElkMargin]?
+  priv mut string_properties : Map[@graph.PropertyId, String]?
+  priv mut string_array_properties : Map[@graph.PropertyId, Array[String]]?
+  priv mut port_side_properties : Map[@graph.PropertyId, @core.PortSide]?
+  priv mut label_side_properties : Map[@graph.PropertyId, @core.LabelSide]?
+  priv mut node_properties : Map[@graph.PropertyId, LNode]?
+  priv mut node_array_properties : Map[@graph.PropertyId, Array[LNode]]?
+  priv mut label_array_properties : Map[@graph.PropertyId, Array[LLabel]]?
+  priv mut end_label_cell_array_properties : Map[
+    @graph.PropertyId,
+    Array[EndLabelCell],
+  ]?
+  priv mut int_int_map_properties : Map[@graph.PropertyId, Map[Int, Int]]?
+  priv mut port_properties : Map[@graph.PropertyId, LPort]?
+  priv mut edge_properties : Map[@graph.PropertyId, LEdge]?
+  priv mut bp_info_properties : Map[@graph.PropertyId, BPInfo]?
+  priv mut self_loop_holder_properties : Map[@graph.PropertyId, SelfLoopHolder]?
   port_side_indices : Map[Int, PortSideRange]
   mut port_sides_cached : Bool
 }
@@ -140,24 +143,24 @@ pub fn new_l_node(graph? : LGraph? = None) -> LNode {
     nested_graph: None,
     margin: new_l_margin(),
     padding: new_l_padding(),
-    int_properties: Map([]),
-    bool_properties: Map([]),
-    double_properties: Map([]),
-    kvector_properties: Map([]),
-    elk_margin_properties: Map([]),
-    string_properties: Map([]),
-    string_array_properties: Map([]),
-    port_side_properties: Map([]),
-    label_side_properties: Map([]),
-    node_properties: Map([]),
-    node_array_properties: Map([]),
-    label_array_properties: Map([]),
-    end_label_cell_array_properties: Map([]),
-    int_int_map_properties: Map([]),
-    port_properties: Map([]),
-    edge_properties: Map([]),
-    bp_info_properties: Map([]),
-    self_loop_holder_properties: Map([]),
+    int_properties: None,
+    bool_properties: None,
+    double_properties: None,
+    kvector_properties: None,
+    elk_margin_properties: None,
+    string_properties: None,
+    string_array_properties: None,
+    port_side_properties: None,
+    label_side_properties: None,
+    node_properties: None,
+    node_array_properties: None,
+    label_array_properties: None,
+    end_label_cell_array_properties: None,
+    int_int_map_properties: None,
+    port_properties: None,
+    edge_properties: None,
+    bp_info_properties: None,
+    self_loop_holder_properties: None,
     port_side_indices: Map([]),
     port_sides_cached: false,
   }
@@ -546,7 +549,13 @@ pub fn LNode::set_property_int(
   property : @graph.IProperty[Int],
   value : Int,
 ) -> Unit {
-  self.int_properties[property.get_id()] = value
+  self.int_properties = Some(
+    layered_property_bag_set(
+      self.int_properties,
+      property.get_property_id(),
+      value,
+    ),
+  )
 }
 
 ///|
@@ -554,7 +563,8 @@ pub fn LNode::get_property_int(
   self : LNode,
   property : @graph.IProperty[Int],
 ) -> Int {
-  match self.int_properties.get(property.get_id()) {
+  match
+    layered_property_bag_get(self.int_properties, property.get_property_id()) {
     Some(value) => value
     None => property.get_default()
   }
@@ -566,7 +576,13 @@ pub fn LNode::set_property_bool(
   property : @graph.IProperty[Bool],
   value : Bool,
 ) -> Unit {
-  self.bool_properties[property.get_id()] = value
+  self.bool_properties = Some(
+    layered_property_bag_set(
+      self.bool_properties,
+      property.get_property_id(),
+      value,
+    ),
+  )
 }
 
 ///|
@@ -575,7 +591,13 @@ pub fn LNode::set_property_double(
   property : @graph.IProperty[Double],
   value : Double,
 ) -> Unit {
-  self.double_properties[property.get_id()] = value
+  self.double_properties = Some(
+    layered_property_bag_set(
+      self.double_properties,
+      property.get_property_id(),
+      value,
+    ),
+  )
 }
 
 ///|
@@ -584,7 +606,13 @@ pub fn LNode::set_property_kvector(
   property : @graph.IProperty[@core.KVector],
   value : @core.KVector,
 ) -> Unit {
-  self.kvector_properties[property.get_id()] = value.clone()
+  self.kvector_properties = Some(
+    layered_property_bag_set(
+      self.kvector_properties,
+      property.get_property_id(),
+      value.clone(),
+    ),
+  )
 }
 
 ///|
@@ -593,7 +621,13 @@ pub fn LNode::set_property_elk_margin(
   property : @graph.IProperty[@core.ElkMargin],
   value : @core.ElkMargin,
 ) -> Unit {
-  self.elk_margin_properties[property.get_id()] = value.clone()
+  self.elk_margin_properties = Some(
+    layered_property_bag_set(
+      self.elk_margin_properties,
+      property.get_property_id(),
+      value.clone(),
+    ),
+  )
 }
 
 ///|
@@ -602,7 +636,13 @@ pub fn LNode::set_property_string(
   property : @graph.IProperty[String],
   value : String,
 ) -> Unit {
-  self.string_properties[property.get_id()] = value
+  self.string_properties = Some(
+    layered_property_bag_set(
+      self.string_properties,
+      property.get_property_id(),
+      value,
+    ),
+  )
 }
 
 ///|
@@ -611,7 +651,13 @@ pub fn LNode::set_property_string_array(
   property : @graph.IProperty[Array[String]],
   value : Array[String],
 ) -> Unit {
-  self.string_array_properties[property.get_id()] = value.copy()
+  self.string_array_properties = Some(
+    layered_property_bag_set(
+      self.string_array_properties,
+      property.get_property_id(),
+      value.copy(),
+    ),
+  )
 }
 
 ///|
@@ -619,7 +665,8 @@ pub fn LNode::get_property_bool(
   self : LNode,
   property : @graph.IProperty[Bool],
 ) -> Bool {
-  match self.bool_properties.get(property.get_id()) {
+  match
+    layered_property_bag_get(self.bool_properties, property.get_property_id()) {
     Some(value) => value
     None => property.get_default()
   }
@@ -630,7 +677,8 @@ pub fn LNode::get_property_double(
   self : LNode,
   property : @graph.IProperty[Double],
 ) -> Double {
-  match self.double_properties.get(property.get_id()) {
+  match
+    layered_property_bag_get(self.double_properties, property.get_property_id()) {
     Some(value) => value
     None => property.get_default()
   }
@@ -641,7 +689,11 @@ pub fn LNode::get_property_kvector(
   self : LNode,
   property : @graph.IProperty[@core.KVector],
 ) -> @core.KVector {
-  match self.kvector_properties.get(property.get_id()) {
+  match
+    layered_property_bag_get(
+      self.kvector_properties,
+      property.get_property_id(),
+    ) {
     Some(value) => value.clone()
     None => property.get_default().clone()
   }
@@ -652,7 +704,11 @@ pub fn LNode::get_property_elk_margin(
   self : LNode,
   property : @graph.IProperty[@core.ElkMargin],
 ) -> @core.ElkMargin {
-  match self.elk_margin_properties.get(property.get_id()) {
+  match
+    layered_property_bag_get(
+      self.elk_margin_properties,
+      property.get_property_id(),
+    ) {
     Some(value) => value.clone()
     None => property.get_default().clone()
   }
@@ -663,7 +719,8 @@ pub fn LNode::get_property_string(
   self : LNode,
   property : @graph.IProperty[String],
 ) -> String {
-  match self.string_properties.get(property.get_id()) {
+  match
+    layered_property_bag_get(self.string_properties, property.get_property_id()) {
     Some(value) => value
     None => property.get_default()
   }
@@ -674,7 +731,11 @@ pub fn LNode::get_property_string_array(
   self : LNode,
   property : @graph.IProperty[Array[String]],
 ) -> Array[String] {
-  match self.string_array_properties.get(property.get_id()) {
+  match
+    layered_property_bag_get(
+      self.string_array_properties,
+      property.get_property_id(),
+    ) {
     Some(value) => value.copy()
     None => property.get_default().copy()
   }
@@ -686,7 +747,13 @@ pub fn LNode::set_property_port_side(
   property : @graph.IProperty[@core.PortSide],
   value : @core.PortSide,
 ) -> Unit {
-  self.port_side_properties[property.get_id()] = value
+  self.port_side_properties = Some(
+    layered_property_bag_set(
+      self.port_side_properties,
+      property.get_property_id(),
+      value,
+    ),
+  )
 }
 
 ///|
@@ -694,7 +761,11 @@ pub fn LNode::get_property_port_side(
   self : LNode,
   property : @graph.IProperty[@core.PortSide],
 ) -> @core.PortSide {
-  match self.port_side_properties.get(property.get_id()) {
+  match
+    layered_property_bag_get(
+      self.port_side_properties,
+      property.get_property_id(),
+    ) {
     Some(value) => value
     None => property.get_default()
   }
@@ -706,7 +777,13 @@ pub fn LNode::set_property_label_side(
   property : @graph.IProperty[@core.LabelSide],
   value : @core.LabelSide,
 ) -> Unit {
-  self.label_side_properties[property.get_id()] = value
+  self.label_side_properties = Some(
+    layered_property_bag_set(
+      self.label_side_properties,
+      property.get_property_id(),
+      value,
+    ),
+  )
 }
 
 ///|
@@ -714,7 +791,11 @@ pub fn LNode::get_property_label_side(
   self : LNode,
   property : @graph.IProperty[@core.LabelSide],
 ) -> @core.LabelSide {
-  match self.label_side_properties.get(property.get_id()) {
+  match
+    layered_property_bag_get(
+      self.label_side_properties,
+      property.get_property_id(),
+    ) {
     Some(value) => value
     None => property.get_default()
   }
@@ -725,7 +806,7 @@ pub fn LNode::has_property_int(
   self : LNode,
   property : @graph.IProperty[Int],
 ) -> Bool {
-  self.int_properties.contains(property.get_id())
+  layered_property_bag_has(self.int_properties, property.get_property_id())
 }
 
 ///|
@@ -733,7 +814,7 @@ pub fn LNode::has_property_bool(
   self : LNode,
   property : @graph.IProperty[Bool],
 ) -> Bool {
-  self.bool_properties.contains(property.get_id())
+  layered_property_bag_has(self.bool_properties, property.get_property_id())
 }
 
 ///|
@@ -741,7 +822,7 @@ pub fn LNode::has_property_double(
   self : LNode,
   property : @graph.IProperty[Double],
 ) -> Bool {
-  self.double_properties.contains(property.get_id())
+  layered_property_bag_has(self.double_properties, property.get_property_id())
 }
 
 ///|
@@ -749,7 +830,7 @@ pub fn LNode::has_property_kvector(
   self : LNode,
   property : @graph.IProperty[@core.KVector],
 ) -> Bool {
-  self.kvector_properties.contains(property.get_id())
+  layered_property_bag_has(self.kvector_properties, property.get_property_id())
 }
 
 ///|
@@ -757,7 +838,10 @@ pub fn LNode::has_property_elk_margin(
   self : LNode,
   property : @graph.IProperty[@core.ElkMargin],
 ) -> Bool {
-  self.elk_margin_properties.contains(property.get_id())
+  layered_property_bag_has(
+    self.elk_margin_properties,
+    property.get_property_id(),
+  )
 }
 
 ///|
@@ -765,7 +849,7 @@ pub fn LNode::has_property_string(
   self : LNode,
   property : @graph.IProperty[String],
 ) -> Bool {
-  self.string_properties.contains(property.get_id())
+  layered_property_bag_has(self.string_properties, property.get_property_id())
 }
 
 ///|
@@ -773,7 +857,10 @@ pub fn LNode::has_property_string_array(
   self : LNode,
   property : @graph.IProperty[Array[String]],
 ) -> Bool {
-  self.string_array_properties.contains(property.get_id())
+  layered_property_bag_has(
+    self.string_array_properties,
+    property.get_property_id(),
+  )
 }
 
 ///|
@@ -781,7 +868,10 @@ pub fn LNode::has_property_port_side(
   self : LNode,
   property : @graph.IProperty[@core.PortSide],
 ) -> Bool {
-  self.port_side_properties.contains(property.get_id())
+  layered_property_bag_has(
+    self.port_side_properties,
+    property.get_property_id(),
+  )
 }
 
 ///|
@@ -789,7 +879,10 @@ pub fn LNode::has_property_label_side(
   self : LNode,
   property : @graph.IProperty[@core.LabelSide],
 ) -> Bool {
-  self.label_side_properties.contains(property.get_id())
+  layered_property_bag_has(
+    self.label_side_properties,
+    property.get_property_id(),
+  )
 }
 
 ///|
@@ -799,8 +892,19 @@ pub fn LNode::set_property_l_node(
   value : LNode?,
 ) -> Unit {
   match value {
-    Some(node) => self.node_properties[property.get_id()] = node
-    None => ignore(self.node_properties.remove(property.get_id()))
+    Some(node) =>
+      self.node_properties = Some(
+        layered_property_bag_set(
+          self.node_properties,
+          property.get_property_id(),
+          node,
+        ),
+      )
+    None =>
+      self.node_properties = layered_property_bag_remove(
+        self.node_properties,
+        property.get_property_id(),
+      )
   }
 }
 
@@ -809,7 +913,8 @@ pub fn LNode::get_property_l_node(
   self : LNode,
   property : @graph.IProperty[LNode?],
 ) -> LNode? {
-  match self.node_properties.get(property.get_id()) {
+  match
+    layered_property_bag_get(self.node_properties, property.get_property_id()) {
     Some(value) => Some(value)
     None => property.get_default()
   }
@@ -820,7 +925,7 @@ pub fn LNode::has_property_l_node(
   self : LNode,
   property : @graph.IProperty[LNode?],
 ) -> Bool {
-  self.node_properties.contains(property.get_id())
+  layered_property_bag_has(self.node_properties, property.get_property_id())
 }
 
 ///|
@@ -829,7 +934,13 @@ pub fn LNode::set_property_l_node_array(
   property : @graph.IProperty[Array[LNode]],
   value : Array[LNode],
 ) -> Unit {
-  self.node_array_properties[property.get_id()] = value.copy()
+  self.node_array_properties = Some(
+    layered_property_bag_set(
+      self.node_array_properties,
+      property.get_property_id(),
+      value.copy(),
+    ),
+  )
 }
 
 ///|
@@ -837,7 +948,11 @@ pub fn LNode::get_property_l_node_array(
   self : LNode,
   property : @graph.IProperty[Array[LNode]],
 ) -> Array[LNode] {
-  match self.node_array_properties.get(property.get_id()) {
+  match
+    layered_property_bag_get(
+      self.node_array_properties,
+      property.get_property_id(),
+    ) {
     Some(value) => value.copy()
     None => property.get_default().copy()
   }
@@ -848,7 +963,10 @@ pub fn LNode::has_property_l_node_array(
   self : LNode,
   property : @graph.IProperty[Array[LNode]],
 ) -> Bool {
-  self.node_array_properties.contains(property.get_id())
+  layered_property_bag_has(
+    self.node_array_properties,
+    property.get_property_id(),
+  )
 }
 
 ///|
@@ -857,7 +975,13 @@ pub fn LNode::set_property_l_label_array(
   property : @graph.IProperty[Array[LLabel]],
   value : Array[LLabel],
 ) -> Unit {
-  self.label_array_properties[property.get_id()] = value.copy()
+  self.label_array_properties = Some(
+    layered_property_bag_set(
+      self.label_array_properties,
+      property.get_property_id(),
+      value.copy(),
+    ),
+  )
 }
 
 ///|
@@ -865,7 +989,11 @@ pub fn LNode::get_property_l_label_array(
   self : LNode,
   property : @graph.IProperty[Array[LLabel]],
 ) -> Array[LLabel] {
-  match self.label_array_properties.get(property.get_id()) {
+  match
+    layered_property_bag_get(
+      self.label_array_properties,
+      property.get_property_id(),
+    ) {
     Some(value) => value.copy()
     None => property.get_default().copy()
   }
@@ -876,7 +1004,10 @@ pub fn LNode::has_property_l_label_array(
   self : LNode,
   property : @graph.IProperty[Array[LLabel]],
 ) -> Bool {
-  self.label_array_properties.contains(property.get_id())
+  layered_property_bag_has(
+    self.label_array_properties,
+    property.get_property_id(),
+  )
 }
 
 ///|
@@ -885,7 +1016,13 @@ pub fn LNode::set_property_end_label_cell_array(
   property : @graph.IProperty[Array[EndLabelCell]],
   value : Array[EndLabelCell],
 ) -> Unit {
-  self.end_label_cell_array_properties[property.get_id()] = value.copy()
+  self.end_label_cell_array_properties = Some(
+    layered_property_bag_set(
+      self.end_label_cell_array_properties,
+      property.get_property_id(),
+      value.copy(),
+    ),
+  )
 }
 
 ///|
@@ -893,7 +1030,10 @@ pub fn LNode::clear_property_end_label_cell_array(
   self : LNode,
   property : @graph.IProperty[Array[EndLabelCell]],
 ) -> Unit {
-  ignore(self.end_label_cell_array_properties.remove(property.get_id()))
+  self.end_label_cell_array_properties = layered_property_bag_remove(
+    self.end_label_cell_array_properties,
+    property.get_property_id(),
+  )
 }
 
 ///|
@@ -901,7 +1041,11 @@ pub fn LNode::get_property_end_label_cell_array(
   self : LNode,
   property : @graph.IProperty[Array[EndLabelCell]],
 ) -> Array[EndLabelCell] {
-  match self.end_label_cell_array_properties.get(property.get_id()) {
+  match
+    layered_property_bag_get(
+      self.end_label_cell_array_properties,
+      property.get_property_id(),
+    ) {
     Some(value) => value.copy()
     None => property.get_default().copy()
   }
@@ -912,7 +1056,10 @@ pub fn LNode::has_property_end_label_cell_array(
   self : LNode,
   property : @graph.IProperty[Array[EndLabelCell]],
 ) -> Bool {
-  self.end_label_cell_array_properties.contains(property.get_id())
+  layered_property_bag_has(
+    self.end_label_cell_array_properties,
+    property.get_property_id(),
+  )
 }
 
 ///|
@@ -921,8 +1068,12 @@ pub fn LNode::set_property_int_int_map(
   property : @graph.IProperty[Map[Int, Int]],
   value : Map[Int, Int],
 ) -> Unit {
-  self.int_int_map_properties[property.get_id()] = lnode_clone_int_int_map(
-    value,
+  self.int_int_map_properties = Some(
+    layered_property_bag_set(
+      self.int_int_map_properties,
+      property.get_property_id(),
+      lnode_clone_int_int_map(value),
+    ),
   )
 }
 
@@ -931,11 +1082,21 @@ pub fn LNode::get_property_int_int_map(
   self : LNode,
   property : @graph.IProperty[Map[Int, Int]],
 ) -> Map[Int, Int] {
-  match self.int_int_map_properties.get(property.get_id()) {
+  match
+    layered_property_bag_get(
+      self.int_int_map_properties,
+      property.get_property_id(),
+    ) {
     Some(value) => value
     None => {
       let created = lnode_clone_int_int_map(property.get_default())
-      self.int_int_map_properties[property.get_id()] = created
+      self.int_int_map_properties = Some(
+        layered_property_bag_set(
+          self.int_int_map_properties,
+          property.get_property_id(),
+          created,
+        ),
+      )
       created
     }
   }
@@ -946,7 +1107,10 @@ pub fn LNode::has_property_int_int_map(
   self : LNode,
   property : @graph.IProperty[Map[Int, Int]],
 ) -> Bool {
-  self.int_int_map_properties.contains(property.get_id())
+  layered_property_bag_has(
+    self.int_int_map_properties,
+    property.get_property_id(),
+  )
 }
 
 ///|
@@ -956,8 +1120,19 @@ pub fn LNode::set_property_l_port(
   value : LPort?,
 ) -> Unit {
   match value {
-    Some(port) => self.port_properties[property.get_id()] = port
-    None => ignore(self.port_properties.remove(property.get_id()))
+    Some(port) =>
+      self.port_properties = Some(
+        layered_property_bag_set(
+          self.port_properties,
+          property.get_property_id(),
+          port,
+        ),
+      )
+    None =>
+      self.port_properties = layered_property_bag_remove(
+        self.port_properties,
+        property.get_property_id(),
+      )
   }
 }
 
@@ -966,7 +1141,8 @@ pub fn LNode::get_property_l_port(
   self : LNode,
   property : @graph.IProperty[LPort?],
 ) -> LPort? {
-  match self.port_properties.get(property.get_id()) {
+  match
+    layered_property_bag_get(self.port_properties, property.get_property_id()) {
     Some(value) => Some(value)
     None => property.get_default()
   }
@@ -977,7 +1153,7 @@ pub fn LNode::has_property_l_port(
   self : LNode,
   property : @graph.IProperty[LPort?],
 ) -> Bool {
-  self.port_properties.contains(property.get_id())
+  layered_property_bag_has(self.port_properties, property.get_property_id())
 }
 
 ///|
@@ -987,8 +1163,19 @@ pub fn LNode::set_property_l_edge(
   value : LEdge?,
 ) -> Unit {
   match value {
-    Some(edge) => self.edge_properties[property.get_id()] = edge
-    None => ignore(self.edge_properties.remove(property.get_id()))
+    Some(edge) =>
+      self.edge_properties = Some(
+        layered_property_bag_set(
+          self.edge_properties,
+          property.get_property_id(),
+          edge,
+        ),
+      )
+    None =>
+      self.edge_properties = layered_property_bag_remove(
+        self.edge_properties,
+        property.get_property_id(),
+      )
   }
 }
 
@@ -997,7 +1184,8 @@ pub fn LNode::get_property_l_edge(
   self : LNode,
   property : @graph.IProperty[LEdge?],
 ) -> LEdge? {
-  match self.edge_properties.get(property.get_id()) {
+  match
+    layered_property_bag_get(self.edge_properties, property.get_property_id()) {
     Some(value) => Some(value)
     None => property.get_default()
   }
@@ -1008,7 +1196,7 @@ pub fn LNode::has_property_l_edge(
   self : LNode,
   property : @graph.IProperty[LEdge?],
 ) -> Bool {
-  self.edge_properties.contains(property.get_id())
+  layered_property_bag_has(self.edge_properties, property.get_property_id())
 }
 
 ///|
@@ -1018,8 +1206,19 @@ pub fn LNode::set_property_bp_info(
   value : BPInfo?,
 ) -> Unit {
   match value {
-    Some(info) => self.bp_info_properties[property.get_id()] = info
-    None => ignore(self.bp_info_properties.remove(property.get_id()))
+    Some(info) =>
+      self.bp_info_properties = Some(
+        layered_property_bag_set(
+          self.bp_info_properties,
+          property.get_property_id(),
+          info,
+        ),
+      )
+    None =>
+      self.bp_info_properties = layered_property_bag_remove(
+        self.bp_info_properties,
+        property.get_property_id(),
+      )
   }
 }
 
@@ -1028,7 +1227,11 @@ pub fn LNode::get_property_bp_info(
   self : LNode,
   property : @graph.IProperty[BPInfo?],
 ) -> BPInfo? {
-  match self.bp_info_properties.get(property.get_id()) {
+  match
+    layered_property_bag_get(
+      self.bp_info_properties,
+      property.get_property_id(),
+    ) {
     Some(value) => Some(value)
     None => property.get_default()
   }
@@ -1039,7 +1242,7 @@ pub fn LNode::has_property_bp_info(
   self : LNode,
   property : @graph.IProperty[BPInfo?],
 ) -> Bool {
-  self.bp_info_properties.contains(property.get_id())
+  layered_property_bag_has(self.bp_info_properties, property.get_property_id())
 }
 
 ///|
@@ -1049,8 +1252,19 @@ pub fn LNode::set_property_self_loop_holder(
   value : SelfLoopHolder?,
 ) -> Unit {
   match value {
-    Some(holder) => self.self_loop_holder_properties[property.get_id()] = holder
-    None => ignore(self.self_loop_holder_properties.remove(property.get_id()))
+    Some(holder) =>
+      self.self_loop_holder_properties = Some(
+        layered_property_bag_set(
+          self.self_loop_holder_properties,
+          property.get_property_id(),
+          holder,
+        ),
+      )
+    None =>
+      self.self_loop_holder_properties = layered_property_bag_remove(
+        self.self_loop_holder_properties,
+        property.get_property_id(),
+      )
   }
 }
 
@@ -1059,7 +1273,11 @@ pub fn LNode::get_property_self_loop_holder(
   self : LNode,
   property : @graph.IProperty[SelfLoopHolder?],
 ) -> SelfLoopHolder? {
-  match self.self_loop_holder_properties.get(property.get_id()) {
+  match
+    layered_property_bag_get(
+      self.self_loop_holder_properties,
+      property.get_property_id(),
+    ) {
     Some(value) => Some(value)
     None => property.get_default()
   }
@@ -1070,7 +1288,10 @@ pub fn LNode::has_property_self_loop_holder(
   self : LNode,
   property : @graph.IProperty[SelfLoopHolder?],
 ) -> Bool {
-  self.self_loop_holder_properties.contains(property.get_id())
+  layered_property_bag_has(
+    self.self_loop_holder_properties,
+    property.get_property_id(),
+  )
 }
 
 ///|

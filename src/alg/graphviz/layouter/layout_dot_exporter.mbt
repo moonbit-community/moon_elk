@@ -94,7 +94,11 @@ fn layout_dot_exporter_node_option_string(
   node : @graph.ElkNode,
   option : @graph.IProperty[String],
 ) -> String {
-  match @graph.node_layout_option_string_value(node, option.get_id()) {
+  match
+    @graph.node_layout_option_string_value_by_option_id(
+      node,
+      option.get_property_id(),
+    ) {
     Some(value) => value
     None => @graph.node_get_string_property(node, option)
   }
@@ -105,7 +109,11 @@ fn layout_dot_exporter_node_option_bool(
   node : @graph.ElkNode,
   option : @graph.IProperty[Bool],
 ) -> Bool {
-  match @graph.node_layout_option_string_value(node, option.get_id()) {
+  match
+    @graph.node_layout_option_string_value_by_option_id(
+      node,
+      option.get_property_id(),
+    ) {
     Some(value) =>
       match layout_dot_exporter_parse_bool(Some(value)) {
         Some(parsed) => parsed
@@ -120,7 +128,11 @@ fn layout_dot_exporter_node_option_int(
   node : @graph.ElkNode,
   option : @graph.IProperty[Int],
 ) -> Int {
-  match @graph.node_layout_option_string_value(node, option.get_id()) {
+  match
+    @graph.node_layout_option_string_value_by_option_id(
+      node,
+      option.get_property_id(),
+    ) {
     Some(value) =>
       match layout_dot_exporter_parse_int(Some(value)) {
         Some(parsed) => parsed
@@ -135,7 +147,11 @@ fn layout_dot_exporter_node_option_double(
   node : @graph.ElkNode,
   option : @graph.IProperty[Double],
 ) -> Double {
-  match @graph.node_layout_option_string_value(node, option.get_id()) {
+  match
+    @graph.node_layout_option_string_value_by_option_id(
+      node,
+      option.get_property_id(),
+    ) {
     Some(value) =>
       match layout_dot_exporter_parse_double(Some(value)) {
         Some(parsed) => parsed
@@ -150,7 +166,11 @@ fn layout_dot_exporter_edge_option_double(
   edge : @graph.ElkEdge,
   option : @graph.IProperty[Double],
 ) -> Double {
-  match @graph.edge_layout_option_string_value(edge, option.get_id()) {
+  match
+    @graph.edge_layout_option_string_value_by_option_id(
+      edge,
+      option.get_property_id(),
+    ) {
     Some(value) =>
       match layout_dot_exporter_parse_double(Some(value)) {
         Some(parsed) => parsed

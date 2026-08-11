@@ -45,7 +45,7 @@ fn layered_spacings_factor_index(
 ) -> Int? {
   for i in 0..<factors.length() {
     let (current_option, _) = factors[i]
-    if current_option.get_id() == option.get_id() {
+    if current_option.get_property_id() == option.get_property_id() {
       return Some(i)
     }
   }
@@ -127,7 +127,8 @@ pub fn LayeredSpacingsBuilder::with_factor(
       "The factor for '\{spacing_option.get_id()}' must not be negative (\{factor}).",
     )
   }
-  if spacing_option.get_id() == layered_spacings_base_spacing_option.get_id() {
+  if spacing_option.get_property_id() ==
+    layered_spacings_base_spacing_option.get_property_id() {
     layered_spacings_raise(
       "'\{spacing_option.get_id()}' is the base spacing option not allowed to use with 'with_factor'.",
     )
@@ -152,7 +153,8 @@ pub fn LayeredSpacingsBuilder::with_value(
       "The value for '\{spacing_option.get_id()}' must not be negative (\{value}).",
     )
   }
-  if spacing_option.get_id() == layered_spacings_base_spacing_option.get_id() {
+  if spacing_option.get_property_id() ==
+    layered_spacings_base_spacing_option.get_property_id() {
     layered_spacings_raise(
       "'\{spacing_option.get_id()}' is the base spacing option not allowed to use with 'with_value'.",
     )

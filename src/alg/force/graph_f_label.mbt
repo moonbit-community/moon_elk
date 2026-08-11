@@ -15,8 +15,8 @@ priv struct FLabelData {
   displacement : @core.KVector
   position : @core.KVector
   size : @core.KVector
-  bool_properties : Map[String, Bool]
-  double_properties : Map[String, Double]
+  mut bool_properties : Map[@graph.PropertyId, Bool]?
+  mut double_properties : Map[@graph.PropertyId, Double]?
   mut origin : @graph.ElkLabel?
 }
 
@@ -34,8 +34,8 @@ pub fn new_flabel(edge : FEdge, text? : String = "") -> FLabel {
       displacement: @core.new_kvector(),
       position: @core.new_kvector(),
       size: @core.new_kvector(),
-      bool_properties: Map([]),
-      double_properties: Map([]),
+      bool_properties: None,
+      double_properties: None,
       origin: None,
     },
   }
@@ -82,7 +82,13 @@ pub fn flabel_set_bool_property(
   value : Bool,
 ) -> Unit {
   let data = label.data
-  data.bool_properties[property.get_id()] = value
+  data.bool_properties = Some(
+    force_property_bag_set(
+      data.bool_properties,
+      property.get_property_id(),
+      value,
+    ),
+  )
   set_flabel_data(label, data)
 }
 
@@ -92,7 +98,8 @@ pub fn flabel_get_bool_property(
   property : ForceBoolOption,
 ) -> Bool {
   let data = label.data
-  match data.bool_properties.get(property.get_id()) {
+  match
+    force_property_bag_get(data.bool_properties, property.get_property_id()) {
     Some(value) => value
     None => property.get_default()
   }
@@ -105,7 +112,13 @@ pub fn flabel_set_double_property(
   value : Double,
 ) -> Unit {
   let data = label.data
-  data.double_properties[property.get_id()] = value
+  data.double_properties = Some(
+    force_property_bag_set(
+      data.double_properties,
+      property.get_property_id(),
+      value,
+    ),
+  )
   set_flabel_data(label, data)
 }
 
@@ -115,7 +128,8 @@ pub fn flabel_get_double_property(
   property : ForceDoubleOption,
 ) -> Double {
   let data = label.data
-  match data.double_properties.get(property.get_id()) {
+  match
+    force_property_bag_get(data.double_properties, property.get_property_id()) {
     Some(value) => value
     None => property.get_default()
   }

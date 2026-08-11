@@ -37,16 +37,19 @@ pub struct LEdge {
   mut source : LPort?
   mut target : LPort?
   labels : Array[LLabel]
-  int_properties : Map[String, Int]
-  double_properties : Map[String, Double]
-  kvector_properties : Map[String, @core.KVector]
-  kvector_chain_properties : Map[String, @core.KVectorChain]
-  bool_properties : Map[String, Bool]
-  l_edge_array_properties : Map[String, Array[LEdge]]
-  spline_segment_array_properties : Map[String, Array[SplineSegment]]
-  port_properties : Map[String, LPort]
-  edge_properties : Map[String, LEdge]
-  l_graph_properties : Map[String, LGraph]
+  priv mut int_properties : Map[@graph.PropertyId, Int]?
+  priv mut double_properties : Map[@graph.PropertyId, Double]?
+  priv mut kvector_properties : Map[@graph.PropertyId, @core.KVector]?
+  priv mut kvector_chain_properties : Map[@graph.PropertyId, @core.KVectorChain]?
+  priv mut bool_properties : Map[@graph.PropertyId, Bool]?
+  priv mut l_edge_array_properties : Map[@graph.PropertyId, Array[LEdge]]?
+  priv mut spline_segment_array_properties : Map[
+    @graph.PropertyId,
+    Array[SplineSegment],
+  ]?
+  priv mut port_properties : Map[@graph.PropertyId, LPort]?
+  priv mut edge_properties : Map[@graph.PropertyId, LEdge]?
+  priv mut l_graph_properties : Map[@graph.PropertyId, LGraph]?
 }
 
 ///|
@@ -58,16 +61,16 @@ pub fn new_l_edge() -> LEdge {
     source: None,
     target: None,
     labels: [],
-    int_properties: Map([]),
-    double_properties: Map([]),
-    kvector_properties: Map([]),
-    kvector_chain_properties: Map([]),
-    bool_properties: Map([]),
-    l_edge_array_properties: Map([]),
-    spline_segment_array_properties: Map([]),
-    port_properties: Map([]),
-    edge_properties: Map([]),
-    l_graph_properties: Map([]),
+    int_properties: None,
+    double_properties: None,
+    kvector_properties: None,
+    kvector_chain_properties: None,
+    bool_properties: None,
+    l_edge_array_properties: None,
+    spline_segment_array_properties: None,
+    port_properties: None,
+    edge_properties: None,
+    l_graph_properties: None,
   }
 }
 
@@ -229,65 +232,46 @@ pub fn LEdge::get_labels(self : LEdge) -> Array[LLabel] {
 
 ///|
 pub fn LEdge::copy_properties(self : LEdge, source : LEdge) -> Unit {
-  self.int_properties.clear()
-  for entry in source.int_properties.to_array() {
-    let (key, value) = entry
-    self.int_properties[key] = value
-  }
-
-  self.double_properties.clear()
-  for entry in source.double_properties.to_array() {
-    let (key, value) = entry
-    self.double_properties[key] = value
-  }
-
-  self.kvector_properties.clear()
-  for entry in source.kvector_properties.to_array() {
-    let (key, value) = entry
-    self.kvector_properties[key] = value.clone()
-  }
-
-  self.kvector_chain_properties.clear()
-  for entry in source.kvector_chain_properties.to_array() {
-    let (key, value) = entry
-    self.kvector_chain_properties[key] = @core.new_kvector_chain_copy(value)
-  }
-
-  self.bool_properties.clear()
-  for entry in source.bool_properties.to_array() {
-    let (key, value) = entry
-    self.bool_properties[key] = value
-  }
-
-  self.l_edge_array_properties.clear()
-  for entry in source.l_edge_array_properties.to_array() {
-    let (key, value) = entry
-    self.l_edge_array_properties[key] = value.copy()
-  }
-
-  self.spline_segment_array_properties.clear()
-  for entry in source.spline_segment_array_properties.to_array() {
-    let (key, value) = entry
-    self.spline_segment_array_properties[key] = value.copy()
-  }
-
-  self.port_properties.clear()
-  for entry in source.port_properties.to_array() {
-    let (key, value) = entry
-    self.port_properties[key] = value
-  }
-
-  self.edge_properties.clear()
-  for entry in source.edge_properties.to_array() {
-    let (key, value) = entry
-    self.edge_properties[key] = value
-  }
-
-  self.l_graph_properties.clear()
-  for entry in source.l_graph_properties.to_array() {
-    let (key, value) = entry
-    self.l_graph_properties[key] = value
-  }
+  self.int_properties = layered_property_bag_copy(
+    source.int_properties,
+    layered_property_identity,
+  )
+  self.double_properties = layered_property_bag_copy(
+    source.double_properties,
+    layered_property_identity,
+  )
+  self.kvector_properties = layered_property_bag_copy(
+    source.kvector_properties,
+    value => value.clone(),
+  )
+  self.kvector_chain_properties = layered_property_bag_copy(
+    source.kvector_chain_properties,
+    value => @core.new_kvector_chain_copy(value),
+  )
+  self.bool_properties = layered_property_bag_copy(
+    source.bool_properties,
+    layered_property_identity,
+  )
+  self.l_edge_array_properties = layered_property_bag_copy(
+    source.l_edge_array_properties,
+    value => value.copy(),
+  )
+  self.spline_segment_array_properties = layered_property_bag_copy(
+    source.spline_segment_array_properties,
+    value => value.copy(),
+  )
+  self.port_properties = layered_property_bag_copy(
+    source.port_properties,
+    layered_property_identity,
+  )
+  self.edge_properties = layered_property_bag_copy(
+    source.edge_properties,
+    layered_property_identity,
+  )
+  self.l_graph_properties = layered_property_bag_copy(
+    source.l_graph_properties,
+    layered_property_identity,
+  )
 }
 
 ///|
@@ -342,7 +326,13 @@ pub fn LEdge::set_property_bool(
   property : @graph.IProperty[Bool],
   value : Bool,
 ) -> Unit {
-  self.bool_properties[property.get_id()] = value
+  self.bool_properties = Some(
+    layered_property_bag_set(
+      self.bool_properties,
+      property.get_property_id(),
+      value,
+    ),
+  )
 }
 
 ///|
@@ -351,7 +341,13 @@ pub fn LEdge::set_property_int(
   property : @graph.IProperty[Int],
   value : Int,
 ) -> Unit {
-  self.int_properties[property.get_id()] = value
+  self.int_properties = Some(
+    layered_property_bag_set(
+      self.int_properties,
+      property.get_property_id(),
+      value,
+    ),
+  )
 }
 
 ///|
@@ -360,7 +356,13 @@ pub fn LEdge::set_property_double(
   property : @graph.IProperty[Double],
   value : Double,
 ) -> Unit {
-  self.double_properties[property.get_id()] = value
+  self.double_properties = Some(
+    layered_property_bag_set(
+      self.double_properties,
+      property.get_property_id(),
+      value,
+    ),
+  )
 }
 
 ///|
@@ -369,7 +371,13 @@ pub fn LEdge::set_property_kvector(
   property : @graph.IProperty[@core.KVector],
   value : @core.KVector,
 ) -> Unit {
-  self.kvector_properties[property.get_id()] = value.clone()
+  self.kvector_properties = Some(
+    layered_property_bag_set(
+      self.kvector_properties,
+      property.get_property_id(),
+      value.clone(),
+    ),
+  )
 }
 
 ///|
@@ -377,7 +385,8 @@ pub fn LEdge::get_property_int(
   self : LEdge,
   property : @graph.IProperty[Int],
 ) -> Int {
-  match self.int_properties.get(property.get_id()) {
+  match
+    layered_property_bag_get(self.int_properties, property.get_property_id()) {
     Some(value) => value
     None => property.get_default()
   }
@@ -388,7 +397,8 @@ pub fn LEdge::get_property_double(
   self : LEdge,
   property : @graph.IProperty[Double],
 ) -> Double {
-  match self.double_properties.get(property.get_id()) {
+  match
+    layered_property_bag_get(self.double_properties, property.get_property_id()) {
     Some(value) => value
     None => property.get_default()
   }
@@ -399,7 +409,11 @@ pub fn LEdge::get_property_kvector(
   self : LEdge,
   property : @graph.IProperty[@core.KVector],
 ) -> @core.KVector {
-  match self.kvector_properties.get(property.get_id()) {
+  match
+    layered_property_bag_get(
+      self.kvector_properties,
+      property.get_property_id(),
+    ) {
     Some(value) => value.clone()
     None => property.get_default().clone()
   }
@@ -410,7 +424,7 @@ pub fn LEdge::has_property_int(
   self : LEdge,
   property : @graph.IProperty[Int],
 ) -> Bool {
-  self.int_properties.contains(property.get_id())
+  layered_property_bag_has(self.int_properties, property.get_property_id())
 }
 
 ///|
@@ -418,7 +432,7 @@ pub fn LEdge::has_property_double(
   self : LEdge,
   property : @graph.IProperty[Double],
 ) -> Bool {
-  self.double_properties.contains(property.get_id())
+  layered_property_bag_has(self.double_properties, property.get_property_id())
 }
 
 ///|
@@ -426,7 +440,7 @@ pub fn LEdge::has_property_kvector(
   self : LEdge,
   property : @graph.IProperty[@core.KVector],
 ) -> Bool {
-  self.kvector_properties.contains(property.get_id())
+  layered_property_bag_has(self.kvector_properties, property.get_property_id())
 }
 
 ///|
@@ -435,7 +449,13 @@ pub fn LEdge::set_property_kvector_chain(
   property : @graph.IProperty[@core.KVectorChain],
   value : @core.KVectorChain,
 ) -> Unit {
-  self.kvector_chain_properties[property.get_id()] = value
+  self.kvector_chain_properties = Some(
+    layered_property_bag_set(
+      self.kvector_chain_properties,
+      property.get_property_id(),
+      value,
+    ),
+  )
 }
 
 ///|
@@ -443,7 +463,11 @@ pub fn LEdge::get_property_kvector_chain(
   self : LEdge,
   property : @graph.IProperty[@core.KVectorChain],
 ) -> @core.KVectorChain {
-  match self.kvector_chain_properties.get(property.get_id()) {
+  match
+    layered_property_bag_get(
+      self.kvector_chain_properties,
+      property.get_property_id(),
+    ) {
     Some(value) => value
     None => property.get_default()
   }
@@ -454,7 +478,10 @@ pub fn LEdge::has_property_kvector_chain(
   self : LEdge,
   property : @graph.IProperty[@core.KVectorChain],
 ) -> Bool {
-  self.kvector_chain_properties.contains(property.get_id())
+  layered_property_bag_has(
+    self.kvector_chain_properties,
+    property.get_property_id(),
+  )
 }
 
 ///|
@@ -462,7 +489,10 @@ pub fn LEdge::clear_property_kvector_chain(
   self : LEdge,
   property : @graph.IProperty[@core.KVectorChain],
 ) -> Unit {
-  ignore(self.kvector_chain_properties.remove(property.get_id()))
+  self.kvector_chain_properties = layered_property_bag_remove(
+    self.kvector_chain_properties,
+    property.get_property_id(),
+  )
 }
 
 ///|
@@ -471,7 +501,13 @@ pub fn LEdge::set_property_l_edge_array(
   property : @graph.IProperty[Array[LEdge]],
   value : Array[LEdge],
 ) -> Unit {
-  self.l_edge_array_properties[property.get_id()] = value.copy()
+  self.l_edge_array_properties = Some(
+    layered_property_bag_set(
+      self.l_edge_array_properties,
+      property.get_property_id(),
+      value.copy(),
+    ),
+  )
 }
 
 ///|
@@ -479,7 +515,11 @@ pub fn LEdge::get_property_l_edge_array(
   self : LEdge,
   property : @graph.IProperty[Array[LEdge]],
 ) -> Array[LEdge] {
-  match self.l_edge_array_properties.get(property.get_id()) {
+  match
+    layered_property_bag_get(
+      self.l_edge_array_properties,
+      property.get_property_id(),
+    ) {
     Some(value) => value.copy()
     None => property.get_default().copy()
   }
@@ -490,7 +530,10 @@ pub fn LEdge::has_property_l_edge_array(
   self : LEdge,
   property : @graph.IProperty[Array[LEdge]],
 ) -> Bool {
-  self.l_edge_array_properties.contains(property.get_id())
+  layered_property_bag_has(
+    self.l_edge_array_properties,
+    property.get_property_id(),
+  )
 }
 
 ///|
@@ -499,7 +542,13 @@ pub fn LEdge::set_property_spline_segment_array(
   property : @graph.IProperty[Array[SplineSegment]],
   value : Array[SplineSegment],
 ) -> Unit {
-  self.spline_segment_array_properties[property.get_id()] = value.copy()
+  self.spline_segment_array_properties = Some(
+    layered_property_bag_set(
+      self.spline_segment_array_properties,
+      property.get_property_id(),
+      value.copy(),
+    ),
+  )
 }
 
 ///|
@@ -507,7 +556,11 @@ pub fn LEdge::get_property_spline_segment_array(
   self : LEdge,
   property : @graph.IProperty[Array[SplineSegment]],
 ) -> Array[SplineSegment] {
-  match self.spline_segment_array_properties.get(property.get_id()) {
+  match
+    layered_property_bag_get(
+      self.spline_segment_array_properties,
+      property.get_property_id(),
+    ) {
     Some(value) => value.copy()
     None => property.get_default().copy()
   }
@@ -518,7 +571,10 @@ pub fn LEdge::has_property_spline_segment_array(
   self : LEdge,
   property : @graph.IProperty[Array[SplineSegment]],
 ) -> Bool {
-  self.spline_segment_array_properties.contains(property.get_id())
+  layered_property_bag_has(
+    self.spline_segment_array_properties,
+    property.get_property_id(),
+  )
 }
 
 ///|
@@ -528,8 +584,19 @@ pub fn LEdge::set_property_l_port(
   value : LPort?,
 ) -> Unit {
   match value {
-    Some(port) => self.port_properties[property.get_id()] = port
-    None => ignore(self.port_properties.remove(property.get_id()))
+    Some(port) =>
+      self.port_properties = Some(
+        layered_property_bag_set(
+          self.port_properties,
+          property.get_property_id(),
+          port,
+        ),
+      )
+    None =>
+      self.port_properties = layered_property_bag_remove(
+        self.port_properties,
+        property.get_property_id(),
+      )
   }
 }
 
@@ -538,7 +605,8 @@ pub fn LEdge::get_property_l_port(
   self : LEdge,
   property : @graph.IProperty[LPort?],
 ) -> LPort? {
-  match self.port_properties.get(property.get_id()) {
+  match
+    layered_property_bag_get(self.port_properties, property.get_property_id()) {
     Some(value) => Some(value)
     None => property.get_default()
   }
@@ -549,7 +617,7 @@ pub fn LEdge::has_property_l_port(
   self : LEdge,
   property : @graph.IProperty[LPort?],
 ) -> Bool {
-  self.port_properties.contains(property.get_id())
+  layered_property_bag_has(self.port_properties, property.get_property_id())
 }
 
 ///|
@@ -559,8 +627,19 @@ pub fn LEdge::set_property_l_edge(
   value : LEdge?,
 ) -> Unit {
   match value {
-    Some(edge) => self.edge_properties[property.get_id()] = edge
-    None => ignore(self.edge_properties.remove(property.get_id()))
+    Some(edge) =>
+      self.edge_properties = Some(
+        layered_property_bag_set(
+          self.edge_properties,
+          property.get_property_id(),
+          edge,
+        ),
+      )
+    None =>
+      self.edge_properties = layered_property_bag_remove(
+        self.edge_properties,
+        property.get_property_id(),
+      )
   }
 }
 
@@ -569,7 +648,8 @@ pub fn LEdge::get_property_l_edge(
   self : LEdge,
   property : @graph.IProperty[LEdge?],
 ) -> LEdge? {
-  match self.edge_properties.get(property.get_id()) {
+  match
+    layered_property_bag_get(self.edge_properties, property.get_property_id()) {
     Some(value) => Some(value)
     None => property.get_default()
   }
@@ -580,7 +660,7 @@ pub fn LEdge::has_property_l_edge(
   self : LEdge,
   property : @graph.IProperty[LEdge?],
 ) -> Bool {
-  self.edge_properties.contains(property.get_id())
+  layered_property_bag_has(self.edge_properties, property.get_property_id())
 }
 
 ///|
@@ -590,8 +670,19 @@ pub fn LEdge::set_property_l_graph(
   value : LGraph?,
 ) -> Unit {
   match value {
-    Some(graph) => self.l_graph_properties[property.get_id()] = graph
-    None => ignore(self.l_graph_properties.remove(property.get_id()))
+    Some(graph) =>
+      self.l_graph_properties = Some(
+        layered_property_bag_set(
+          self.l_graph_properties,
+          property.get_property_id(),
+          graph,
+        ),
+      )
+    None =>
+      self.l_graph_properties = layered_property_bag_remove(
+        self.l_graph_properties,
+        property.get_property_id(),
+      )
   }
 }
 
@@ -600,7 +691,11 @@ pub fn LEdge::get_property_l_graph(
   self : LEdge,
   property : @graph.IProperty[LGraph?],
 ) -> LGraph? {
-  match self.l_graph_properties.get(property.get_id()) {
+  match
+    layered_property_bag_get(
+      self.l_graph_properties,
+      property.get_property_id(),
+    ) {
     Some(value) => Some(value)
     None => property.get_default()
   }
@@ -611,7 +706,7 @@ pub fn LEdge::has_property_l_graph(
   self : LEdge,
   property : @graph.IProperty[LGraph?],
 ) -> Bool {
-  self.l_graph_properties.contains(property.get_id())
+  layered_property_bag_has(self.l_graph_properties, property.get_property_id())
 }
 
 ///|
@@ -619,7 +714,8 @@ pub fn LEdge::get_property_bool(
   self : LEdge,
   property : @graph.IProperty[Bool],
 ) -> Bool {
-  match self.bool_properties.get(property.get_id()) {
+  match
+    layered_property_bag_get(self.bool_properties, property.get_property_id()) {
     Some(value) => value
     None => property.get_default()
   }

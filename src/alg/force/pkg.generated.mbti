@@ -43,23 +43,23 @@ pub fn fedge_bendpoints(FEdge) -> Array[FBendpoint]
 
 pub fn fedge_distribute_bendpoints(FEdge) -> Unit
 
-pub fn fedge_get_bool_property(FEdge, @options.ForceBoolOption) -> Bool
+pub fn fedge_get_bool_property(FEdge, @graph.IProperty[Bool]) -> Bool
 
-pub fn fedge_get_double_property(FEdge, @options.ForceDoubleOption) -> Double
+pub fn fedge_get_double_property(FEdge, @graph.IProperty[Double]) -> Double
 
-pub fn fedge_get_int_property(FEdge, @options.ForceIntOption) -> Int
+pub fn fedge_get_int_property(FEdge, @graph.IProperty[Int]) -> Int
 
-pub fn fedge_has_double_property(FEdge, @options.ForceDoubleOption) -> Bool
+pub fn fedge_has_double_property(FEdge, @graph.IProperty[Double]) -> Bool
 
 pub fn fedge_labels(FEdge) -> Array[FLabel]
 
 pub fn fedge_origin(FEdge) -> @graph.ElkEdge?
 
-pub fn fedge_set_bool_property(FEdge, @options.ForceBoolOption, Bool) -> Unit
+pub fn fedge_set_bool_property(FEdge, @graph.IProperty[Bool], Bool) -> Unit
 
-pub fn fedge_set_double_property(FEdge, @options.ForceDoubleOption, Double) -> Unit
+pub fn fedge_set_double_property(FEdge, @graph.IProperty[Double], Double) -> Unit
 
-pub fn fedge_set_int_property(FEdge, @options.ForceIntOption, Int) -> Unit
+pub fn fedge_set_int_property(FEdge, @graph.IProperty[Int], Int) -> Unit
 
 pub fn fedge_set_origin(FEdge, @graph.ElkEdge) -> Unit
 
@@ -83,9 +83,9 @@ pub fn flabel_displacement(FLabel) -> @core.KVector
 
 pub fn flabel_edge(FLabel) -> FEdge
 
-pub fn flabel_get_bool_property(FLabel, @options.ForceBoolOption) -> Bool
+pub fn flabel_get_bool_property(FLabel, @graph.IProperty[Bool]) -> Bool
 
-pub fn flabel_get_double_property(FLabel, @options.ForceDoubleOption) -> Double
+pub fn flabel_get_double_property(FLabel, @graph.IProperty[Double]) -> Double
 
 pub fn flabel_origin(FLabel) -> @graph.ElkLabel?
 
@@ -95,9 +95,9 @@ pub fn flabel_radius(FLabel) -> Double
 
 pub fn flabel_refresh_position(FLabel) -> Unit
 
-pub fn flabel_set_bool_property(FLabel, @options.ForceBoolOption, Bool) -> Unit
+pub fn flabel_set_bool_property(FLabel, @graph.IProperty[Bool], Bool) -> Unit
 
-pub fn flabel_set_double_property(FLabel, @options.ForceDoubleOption, Double) -> Unit
+pub fn flabel_set_double_property(FLabel, @graph.IProperty[Double], Double) -> Unit
 
 pub fn flabel_set_origin(FLabel, @graph.ElkLabel) -> Unit
 
@@ -113,13 +113,13 @@ pub fn fnode_depth(FNode) -> Int
 
 pub fn fnode_displacement(FNode) -> @core.KVector
 
-pub fn fnode_get_bool_property(FNode, @options.ForceBoolOption) -> Bool
+pub fn fnode_get_bool_property(FNode, @graph.IProperty[Bool]) -> Bool
 
-pub fn fnode_get_double_property(FNode, @options.ForceDoubleOption) -> Double
+pub fn fnode_get_double_property(FNode, @graph.IProperty[Double]) -> Double
 
-pub fn fnode_get_int_property(FNode, @options.ForceIntOption) -> Int
+pub fn fnode_get_int_property(FNode, @graph.IProperty[Int]) -> Int
 
-pub fn fnode_has_bool_property(FNode, @options.ForceBoolOption) -> Bool
+pub fn fnode_has_bool_property(FNode, @graph.IProperty[Bool]) -> Bool
 
 pub fn fnode_id(FNode) -> Int
 
@@ -135,13 +135,13 @@ pub fn fnode_position(FNode) -> @core.KVector
 
 pub fn fnode_radius(FNode) -> Double
 
-pub fn fnode_set_bool_property(FNode, @options.ForceBoolOption, Bool) -> Unit
+pub fn fnode_set_bool_property(FNode, @graph.IProperty[Bool], Bool) -> Unit
 
-pub fn fnode_set_double_property(FNode, @options.ForceDoubleOption, Double) -> Unit
+pub fn fnode_set_double_property(FNode, @graph.IProperty[Double], Double) -> Unit
 
 pub fn fnode_set_id(FNode, Int) -> Unit
 
-pub fn fnode_set_int_property(FNode, @options.ForceIntOption, Int) -> Unit
+pub fn fnode_set_int_property(FNode, @graph.IProperty[Int], Int) -> Unit
 
 pub fn fnode_set_origin(FNode, @graph.ElkNode) -> Unit
 
@@ -153,13 +153,13 @@ pub let force_category_id : String
 
 pub fn force_import_exception_message(ForceImportException) -> String
 
-pub let force_internal_bb_low_right : ForceInternalVectorProperty
+pub let force_internal_bb_low_right : @graph.IProperty[Unit]
 
-pub let force_internal_bb_up_left : ForceInternalVectorProperty
+pub let force_internal_bb_up_left : @graph.IProperty[Unit]
 
-pub let force_internal_origin : ForceInternalNodeProperty
+pub let force_internal_origin : @graph.IProperty[Unit]
 
-pub let force_internal_random : ForceInternalRandomProperty
+pub let force_internal_random : @graph.IProperty[Unit]
 
 pub fn force_layout_meta_data_providers() -> Array[@core.ILayoutMetaDataProvider]
 
@@ -171,7 +171,7 @@ pub fn force_min(Double, Double) -> Double
 
 pub fn fparticle_displacement(FParticle) -> @core.KVector
 
-pub fn fparticle_get_int_property(FParticle, @options.ForceIntOption) -> Int
+pub fn fparticle_get_int_property(FParticle, @graph.IProperty[Int]) -> Int
 
 pub fn fparticle_position(FParticle) -> @core.KVector
 
@@ -201,11 +201,11 @@ pub fn new_flabel(FEdge, text? : String) -> FLabel
 
 pub fn new_fnode(label? : String) -> FNode
 
-pub fn new_force_internal_node_property(String) -> ForceInternalNodeProperty
+pub fn new_force_internal_node_property(String) -> @graph.IProperty[Unit]
 
-pub fn new_force_internal_random_property(String) -> ForceInternalRandomProperty
+pub fn new_force_internal_random_property(String) -> @graph.IProperty[Unit]
 
-pub fn new_force_internal_vector_property(String) -> ForceInternalVectorProperty
+pub fn new_force_internal_vector_property(String) -> @graph.IProperty[Unit]
 
 pub fn new_force_layout_provider() -> ForceLayoutProvider
 
@@ -285,14 +285,14 @@ pub struct FGraph {
   edges : Array[FEdge]
   labels : Array[FLabel]
   bendpoints : Array[FBendpoint]
-  bool_properties : Map[String, Bool]
-  int_properties : Map[String, Int]
-  double_properties : Map[String, Double]
-  model_properties : Map[String, @options.ForceModelStrategy]
-  padding_properties : Map[String, @core.Spacing]
-  node_properties : Map[String, @graph.ElkNode]
-  random_properties : Map[String, @core.JavaRandom]
-  vector_properties : Map[String, @core.KVector]
+  bool_properties : Map[@graph.PropertyId, Bool]
+  int_properties : Map[@graph.PropertyId, Int]
+  double_properties : Map[@graph.PropertyId, Double]
+  model_properties : Map[@graph.PropertyId, @options.ForceModelStrategy]
+  padding_properties : Map[@graph.PropertyId, @core.Spacing]
+  node_properties : Map[@graph.PropertyId, @graph.ElkNode]
+  random_properties : Map[@graph.PropertyId, @core.JavaRandom]
+  vector_properties : Map[@graph.PropertyId, @core.KVector]
   adjacency : Array[Array[Int]]
 }
 pub fn FGraph::add_bendpoint(Self, FBendpoint) -> Unit
@@ -302,26 +302,26 @@ pub fn FGraph::add_node(Self, FNode) -> Unit
 pub fn FGraph::calc_adjacency(Self) -> Unit
 pub fn FGraph::get_bendpoints(Self) -> Array[FBendpoint]
 pub fn FGraph::get_connection(Self, FParticle, FParticle) -> Int
-pub fn FGraph::get_double_property(Self, @options.ForceDoubleOption) -> Double
+pub fn FGraph::get_double_property(Self, @graph.IProperty[Double]) -> Double
 pub fn FGraph::get_edges(Self) -> Array[FEdge]
-pub fn FGraph::get_int_property(Self, @options.ForceIntOption) -> Int
-pub fn FGraph::get_internal_node_property(Self, ForceInternalNodeProperty) -> @graph.ElkNode?
-pub fn FGraph::get_internal_random_property(Self, ForceInternalRandomProperty) -> @core.JavaRandom?
-pub fn FGraph::get_internal_vector_property(Self, ForceInternalVectorProperty) -> @core.KVector?
+pub fn FGraph::get_int_property(Self, @graph.IProperty[Int]) -> Int
+pub fn FGraph::get_internal_node_property(Self, @graph.IProperty[Unit]) -> @graph.ElkNode?
+pub fn FGraph::get_internal_random_property(Self, @graph.IProperty[Unit]) -> @core.JavaRandom?
+pub fn FGraph::get_internal_vector_property(Self, @graph.IProperty[Unit]) -> @core.KVector?
 pub fn FGraph::get_labels(Self) -> Array[FLabel]
-pub fn FGraph::get_model_property(Self, @options.ForceModelOption) -> @options.ForceModelStrategy
+pub fn FGraph::get_model_property(Self, @graph.IProperty[@options.ForceModelStrategy]) -> @options.ForceModelStrategy
 pub fn FGraph::get_nodes(Self) -> Array[FNode]
-pub fn FGraph::get_padding_property(Self, @options.ForcePaddingOption) -> @core.Spacing
+pub fn FGraph::get_padding_property(Self, @graph.IProperty[@core.Spacing]) -> @core.Spacing
 pub fn FGraph::get_particles(Self) -> Array[FParticle]
-pub fn FGraph::get_property(Self, @options.ForceBoolOption) -> Bool
-pub fn FGraph::set_double_property(Self, @options.ForceDoubleOption, Double) -> Unit
-pub fn FGraph::set_int_property(Self, @options.ForceIntOption, Int) -> Unit
-pub fn FGraph::set_internal_node_property(Self, ForceInternalNodeProperty, @graph.ElkNode) -> Unit
-pub fn FGraph::set_internal_random_property(Self, ForceInternalRandomProperty, @core.JavaRandom) -> Unit
-pub fn FGraph::set_internal_vector_property(Self, ForceInternalVectorProperty, @core.KVector) -> Unit
-pub fn FGraph::set_model_property(Self, @options.ForceModelOption, @options.ForceModelStrategy) -> Unit
-pub fn FGraph::set_padding_property(Self, @options.ForcePaddingOption, @core.Spacing) -> Unit
-pub fn FGraph::set_property(Self, @options.ForceBoolOption, Bool) -> Unit
+pub fn FGraph::get_property(Self, @graph.IProperty[Bool]) -> Bool
+pub fn FGraph::set_double_property(Self, @graph.IProperty[Double], Double) -> Unit
+pub fn FGraph::set_int_property(Self, @graph.IProperty[Int], Int) -> Unit
+pub fn FGraph::set_internal_node_property(Self, @graph.IProperty[Unit], @graph.ElkNode) -> Unit
+pub fn FGraph::set_internal_random_property(Self, @graph.IProperty[Unit], @core.JavaRandom) -> Unit
+pub fn FGraph::set_internal_vector_property(Self, @graph.IProperty[Unit], @core.KVector) -> Unit
+pub fn FGraph::set_model_property(Self, @graph.IProperty[@options.ForceModelStrategy], @options.ForceModelStrategy) -> Unit
+pub fn FGraph::set_padding_property(Self, @graph.IProperty[@core.Spacing], @core.Spacing) -> Unit
+pub fn FGraph::set_property(Self, @graph.IProperty[Bool], Bool) -> Unit
 
 pub struct FLabel {
   // private fields
@@ -338,21 +338,6 @@ pub enum FParticle {
   Label(FLabel)
   Bendpoint(FBendpoint)
 }
-
-pub struct ForceInternalNodeProperty {
-  id : String
-}
-pub fn ForceInternalNodeProperty::get_id(Self) -> String
-
-pub struct ForceInternalRandomProperty {
-  id : String
-}
-pub fn ForceInternalRandomProperty::get_id(Self) -> String
-
-pub struct ForceInternalVectorProperty {
-  id : String
-}
-pub fn ForceInternalVectorProperty::get_id(Self) -> String
 
 pub struct ForceLayoutProvider {
   mut force_model : ForceModel?
@@ -405,5 +390,10 @@ pub fn StressMajorization::execute(Self) -> Unit
 pub fn StressMajorization::initialize(Self, FGraph) -> Unit raise
 
 // Type aliases
+pub type ForceInternalNodeProperty = @graph.IProperty[Unit]
+
+pub type ForceInternalRandomProperty = @graph.IProperty[Unit]
+
+pub type ForceInternalVectorProperty = @graph.IProperty[Unit]
 
 // Traits

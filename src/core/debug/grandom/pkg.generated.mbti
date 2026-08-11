@@ -334,16 +334,16 @@ pub(all) enum CoreDebugGRandomFormats {
 }
 
 pub(all) struct CoreDebugGRandomGeneratorOptions {
-  bool_values : Map[String, Bool]
-  int_values : Map[String, Int]
-  double_values : Map[String, Double]
-  string_values : Map[String, String]
-  rand_values : Map[String, CoreDebugGRandomRandVal]
-  rand_opt_values : Map[String, CoreDebugGRandomRandVal?]
-  port_constraint_values : Map[String, @core.PortConstraints]
-  file_format_values : Map[String, CoreDebugGRandomFileFormat]
-  graph_type_values : Map[String, CoreDebugGRandomGraphType]
-  edge_determination_values : Map[String, CoreDebugGRandomEdgeDetermination]
+  bool_values : Map[@graph.PropertyId, Bool]
+  int_values : Map[@graph.PropertyId, Int]
+  double_values : Map[@graph.PropertyId, Double]
+  string_values : Map[@graph.PropertyId, String]
+  rand_values : Map[@graph.PropertyId, CoreDebugGRandomRandVal]
+  rand_opt_values : Map[@graph.PropertyId, CoreDebugGRandomRandVal?]
+  port_constraint_values : Map[@graph.PropertyId, @core.PortConstraints]
+  file_format_values : Map[@graph.PropertyId, CoreDebugGRandomFileFormat]
+  graph_type_values : Map[@graph.PropertyId, CoreDebugGRandomGraphType]
+  edge_determination_values : Map[@graph.PropertyId, CoreDebugGRandomEdgeDetermination]
 }
 pub fn CoreDebugGRandomGeneratorOptions::get_bool_property(Self, @graph.IProperty[Bool]) -> Bool
 pub fn CoreDebugGRandomGeneratorOptions::get_double_property(Self, @graph.IProperty[Double]) -> Double

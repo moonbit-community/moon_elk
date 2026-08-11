@@ -68,7 +68,7 @@ priv struct LabelData {
   y : Double
   width : Double
   height : Double
-  layout_option_string_values : Map[String, String]
+  mut layout_options : OptionBag?
 }
 
 ///|
@@ -160,7 +160,7 @@ fn create_label_in_arena(
       y: 0.0,
       width: 0.0,
       height: 0.0,
-      layout_option_string_values: Map([]),
+      layout_options: None,
     }),
   })
   label
@@ -202,15 +202,21 @@ pub fn label_set_layout_option_string_by_id(
   value : String,
 ) -> Unit {
   let data = label_data(label)
-  data.layout_option_string_values[option_id] = value
-  set_label_data(label, data)
+  data.layout_options = Some(
+    option_bag_set(
+      data.layout_options,
+      option_id_from_string(option_id),
+      option_id,
+      value,
+    ),
+  )
 }
 
 ///|
 pub fn label_layout_option_string_entries(
   label : ElkLabel,
 ) -> Array[(String, String)] {
-  label_data(label).layout_option_string_values.to_array()
+  option_bag_entries(label_data(label).layout_options)
 }
 
 ///|
@@ -218,7 +224,18 @@ pub fn label_layout_option_string_value(
   label : ElkLabel,
   option_id : String,
 ) -> String? {
-  label_data(label).layout_option_string_values.get(option_id)
+  option_bag_get(
+    label_data(label).layout_options,
+    option_id_from_string(option_id),
+  )
+}
+
+///|
+pub fn label_layout_option_string_value_by_option_id(
+  label : ElkLabel,
+  option_id : OptionId,
+) -> String? {
+  option_bag_get(label_data(label).layout_options, option_id)
 }
 
 ///|
@@ -232,7 +249,7 @@ pub fn label_set_identifier(label : ElkLabel, identifier : String) -> Unit {
     y: data.y,
     width: data.width,
     height: data.height,
-    layout_option_string_values: data.layout_option_string_values,
+    layout_options: data.layout_options,
   })
 }
 
@@ -252,7 +269,7 @@ pub fn label_set_text(label : ElkLabel, text : String) -> Unit {
     y: data.y,
     width: data.width,
     height: data.height,
-    layout_option_string_values: data.layout_option_string_values,
+    layout_options: data.layout_options,
   })
 }
 
@@ -272,7 +289,7 @@ pub fn label_set_location(label : ElkLabel, x : Double, y : Double) -> Unit {
     y,
     width: data.width,
     height: data.height,
-    layout_option_string_values: data.layout_option_string_values,
+    layout_options: data.layout_options,
   })
 }
 
@@ -301,7 +318,7 @@ pub fn label_set_dimensions(
     y: data.y,
     width,
     height,
-    layout_option_string_values: data.layout_option_string_values,
+    layout_options: data.layout_options,
   })
 }
 

@@ -53,9 +53,9 @@ fn random_layout_provider_parse_padding(
     )
     return parsed
   }
-  if @graph.node_layout_option_string_value(
+  if @graph.node_layout_option_string_value_by_option_id(
       layout_node,
-      random_layout_provider_padding_option.get_id(),
+      random_layout_provider_padding_option.get_property_id(),
     )
     is Some(raw) {
     parsed.parse(raw)
@@ -73,7 +73,10 @@ fn random_layout_provider_read_int_option(
   if @graph.node_has_int_property(node, property) {
     return @graph.node_get_int_property(node, property)
   }
-  if @graph.node_layout_option_string_value(node, property.get_id())
+  if @graph.node_layout_option_string_value_by_option_id(
+      node,
+      property.get_property_id(),
+    )
     is Some(raw) {
     try @string.parse_int(raw.trim().to_owned()) catch {
       _ => property.get_default()
@@ -93,7 +96,10 @@ fn random_layout_provider_read_double_option(
   if @graph.node_has_double_property(node, property) {
     return @graph.node_get_double_property(node, property)
   }
-  if @graph.node_layout_option_string_value(node, property.get_id())
+  if @graph.node_layout_option_string_value_by_option_id(
+      node,
+      property.get_property_id(),
+    )
     is Some(raw) {
     try @string.parse_double(raw.trim().to_owned()) catch {
       _ => property.get_default()

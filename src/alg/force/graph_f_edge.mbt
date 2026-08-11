@@ -19,9 +19,9 @@ priv struct FEdgeData {
   mut target : FNode?
   labels : Array[FLabel]
   bendpoints : Array[FBendpoint]
-  int_properties : Map[String, Int]
-  double_properties : Map[String, Double]
-  bool_properties : Map[String, Bool]
+  mut int_properties : Map[@graph.PropertyId, Int]?
+  mut double_properties : Map[@graph.PropertyId, Double]?
+  mut bool_properties : Map[@graph.PropertyId, Bool]?
   mut origin : @graph.ElkEdge?
 }
 
@@ -38,9 +38,9 @@ pub fn new_fedge() -> FEdge {
       target: None,
       labels: [],
       bendpoints: [],
-      int_properties: Map([]),
-      double_properties: Map([]),
-      bool_properties: Map([]),
+      int_properties: None,
+      double_properties: None,
+      bool_properties: None,
       origin: None,
     },
   }
@@ -87,14 +87,21 @@ pub fn fedge_set_int_property(
   value : Int,
 ) -> Unit {
   let data = edge.data
-  data.int_properties[property.get_id()] = value
+  data.int_properties = Some(
+    force_property_bag_set(
+      data.int_properties,
+      property.get_property_id(),
+      value,
+    ),
+  )
   set_fedge_data(edge, data)
 }
 
 ///|
 pub fn fedge_get_int_property(edge : FEdge, property : ForceIntOption) -> Int {
   let data = edge.data
-  match data.int_properties.get(property.get_id()) {
+  match
+    force_property_bag_get(data.int_properties, property.get_property_id()) {
     Some(value) => value
     None => property.get_default()
   }
@@ -107,7 +114,13 @@ pub fn fedge_set_double_property(
   value : Double,
 ) -> Unit {
   let data = edge.data
-  data.double_properties[property.get_id()] = value
+  data.double_properties = Some(
+    force_property_bag_set(
+      data.double_properties,
+      property.get_property_id(),
+      value,
+    ),
+  )
   set_fedge_data(edge, data)
 }
 
@@ -117,7 +130,8 @@ pub fn fedge_get_double_property(
   property : ForceDoubleOption,
 ) -> Double {
   let data = edge.data
-  match data.double_properties.get(property.get_id()) {
+  match
+    force_property_bag_get(data.double_properties, property.get_property_id()) {
     Some(value) => value
     None => property.get_default()
   }
@@ -128,7 +142,10 @@ pub fn fedge_has_double_property(
   edge : FEdge,
   property : ForceDoubleOption,
 ) -> Bool {
-  edge.data.double_properties.contains(property.get_id())
+  force_property_bag_has(
+    edge.data.double_properties,
+    property.get_property_id(),
+  )
 }
 
 ///|
@@ -138,7 +155,13 @@ pub fn fedge_set_bool_property(
   value : Bool,
 ) -> Unit {
   let data = edge.data
-  data.bool_properties[property.get_id()] = value
+  data.bool_properties = Some(
+    force_property_bag_set(
+      data.bool_properties,
+      property.get_property_id(),
+      value,
+    ),
+  )
   set_fedge_data(edge, data)
 }
 
@@ -148,7 +171,8 @@ pub fn fedge_get_bool_property(
   property : ForceBoolOption,
 ) -> Bool {
   let data = edge.data
-  match data.bool_properties.get(property.get_id()) {
+  match
+    force_property_bag_get(data.bool_properties, property.get_property_id()) {
     Some(value) => value
     None => property.get_default()
   }

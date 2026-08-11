@@ -1540,16 +1540,7 @@ pub struct LEdge {
   mut source : LPort?
   mut target : LPort?
   labels : Array[LLabel]
-  int_properties : Map[String, Int]
-  double_properties : Map[String, Double]
-  kvector_properties : Map[String, @core.KVector]
-  kvector_chain_properties : Map[String, @core.KVectorChain]
-  bool_properties : Map[String, Bool]
-  l_edge_array_properties : Map[String, Array[LEdge]]
-  spline_segment_array_properties : Map[String, Array[SplineSegment]]
-  port_properties : Map[String, LPort]
-  edge_properties : Map[String, LEdge]
-  l_graph_properties : Map[String, LGraph]
+  // private fields
 }
 pub fn LEdge::clear_property_kvector_chain(Self, @graph.IProperty[@core.KVectorChain]) -> Unit
 pub fn LEdge::copy_properties(Self, Self) -> Unit
@@ -1609,28 +1600,14 @@ pub fn LEdgeAdapter::get_labels(Self) -> Array[LLabelAdapter]
 pub struct LGraph {
   mut id : Int
   handle : Int
-  port_side_array_properties : Map[String, Array[@core.PortSide]]
-  graph_properties_array_properties : Map[String, Array[@options.GraphProperties]]
-  cross_hierarchy_map_entry_array_properties : Map[String, Array[(LEdge, (LEdge, LGraph, @options.PortType))]]
-  node_array_properties : Map[String, Array[LNode]]
   mut layout_state : @state.LayeredLayoutState
-  int_properties : Map[String, Int]
-  bool_properties : Map[String, Bool]
-  double_properties : Map[String, Double]
-  string_properties : Map[String, String]
-  string_array_properties : Map[String, Array[String]]
-  label_manager_properties : Map[String, @core.ILabelManager]
-  spacings_properties : Map[String, Spacings]
-  elk_margin_properties : Map[String, @core.Spacing]
-  component_ordering_strategy_properties : Map[String, @options.ComponentOrderingStrategy]
-  direction_properties : Map[String, @core.Direction]
-  spline_routing_mode_properties : Map[String, @options.SplineRoutingMode]
   size : @core.KVector
   padding : @core.Spacing
   offset : @core.KVector
   layerless_nodes : Array[LNode]
   layers : Array[Layer]
   mut parent_node : LNode?
+  // private fields
 }
 pub fn LGraph::clear_property_string(Self, @graph.IProperty[String]) -> Unit
 pub fn LGraph::copy_properties(Self, Self) -> Unit
@@ -1729,11 +1706,7 @@ pub fn LGraphElement::set_origin_identifier(Self, String?) -> Unit
 pub struct LLabel {
   shape : LShape
   text : String
-  bool_properties : Map[String, Bool]
-  string_properties : Map[String, String]
-  string_array_properties : Map[String, Array[String]]
-  label_side_properties : Map[String, @core.LabelSide]
-  l_edge_properties : Map[String, LEdge]
+  // private fields
 }
 pub fn LLabel::get_designation(Self) -> String?
 pub fn LLabel::get_id(Self) -> Int
@@ -1791,26 +1764,9 @@ pub struct LNode {
   mut nested_graph : LGraph?
   margin : @core.Spacing
   padding : @core.Spacing
-  int_properties : Map[String, Int]
-  bool_properties : Map[String, Bool]
-  double_properties : Map[String, Double]
-  kvector_properties : Map[String, @core.KVector]
-  elk_margin_properties : Map[String, @core.Spacing]
-  string_properties : Map[String, String]
-  string_array_properties : Map[String, Array[String]]
-  port_side_properties : Map[String, @core.PortSide]
-  label_side_properties : Map[String, @core.LabelSide]
-  node_properties : Map[String, LNode]
-  node_array_properties : Map[String, Array[LNode]]
-  label_array_properties : Map[String, Array[LLabel]]
-  end_label_cell_array_properties : Map[String, Array[EndLabelCell]]
-  int_int_map_properties : Map[String, Map[Int, Int]]
-  port_properties : Map[String, LPort]
-  edge_properties : Map[String, LEdge]
-  bp_info_properties : Map[String, BPInfo]
-  self_loop_holder_properties : Map[String, SelfLoopHolder]
   port_side_indices : Map[Int, PortSideRange]
   mut port_sides_cached : Bool
+  // private fields
 }
 pub fn LNode::add_port(Self, LPort) -> Unit
 pub fn LNode::border_to_content_area_coordinates(Self, Bool, Bool) -> Unit
@@ -1951,11 +1907,7 @@ pub struct LPort {
   incoming_edges : Array[LEdge]
   outgoing_edges : Array[LEdge]
   mut connected_to_external_nodes : Bool
-  int_properties : Map[String, Int]
-  bool_properties : Map[String, Bool]
-  double_properties : Map[String, Double]
-  node_properties : Map[String, LNode]
-  port_properties : Map[String, LPort]
+  // private fields
 }
 pub fn LPort::add_incoming_edge(Self, LEdge) -> Unit
 pub fn LPort::add_outgoing_edge(Self, LEdge) -> Unit

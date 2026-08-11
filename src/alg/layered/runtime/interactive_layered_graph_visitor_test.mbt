@@ -39,9 +39,9 @@ fn interactive_layered_graph_visitor_test_require_position(
   node : @graph.ElkNode,
 ) -> @core.KVector raise {
   match
-    @graph.node_layout_option_string_value(
+    @graph.node_layout_option_string_value_by_option_id(
       node,
-      @options.layered_options_position.get_id(),
+      @options.layered_options_position.get_property_id(),
     ) {
     Some(value) => {
       let parsed = @core.new_kvector()

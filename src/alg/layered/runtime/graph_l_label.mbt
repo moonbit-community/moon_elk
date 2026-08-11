@@ -2,11 +2,11 @@
 pub struct LLabel {
   shape : LShape
   text : String
-  bool_properties : Map[String, Bool]
-  string_properties : Map[String, String]
-  string_array_properties : Map[String, Array[String]]
-  label_side_properties : Map[String, @core.LabelSide]
-  l_edge_properties : Map[String, LEdge]
+  priv mut bool_properties : Map[@graph.PropertyId, Bool]?
+  priv mut string_properties : Map[@graph.PropertyId, String]?
+  priv mut string_array_properties : Map[@graph.PropertyId, Array[String]]?
+  priv mut label_side_properties : Map[@graph.PropertyId, @core.LabelSide]?
+  priv mut l_edge_properties : Map[@graph.PropertyId, LEdge]?
 }
 
 ///|
@@ -19,11 +19,11 @@ pub fn new_l_label_text(thetext : String) -> LLabel {
   {
     shape: new_l_shape(),
     text: thetext,
-    bool_properties: Map([]),
-    string_properties: Map([]),
-    string_array_properties: Map([]),
-    label_side_properties: Map([]),
-    l_edge_properties: Map([]),
+    bool_properties: None,
+    string_properties: None,
+    string_array_properties: None,
+    label_side_properties: None,
+    l_edge_properties: None,
   }
 }
 
@@ -88,7 +88,13 @@ pub fn LLabel::set_property_bool(
   property : @graph.IProperty[Bool],
   value : Bool,
 ) -> Unit {
-  self.bool_properties[property.get_id()] = value
+  self.bool_properties = Some(
+    layered_property_bag_set(
+      self.bool_properties,
+      property.get_property_id(),
+      value,
+    ),
+  )
 }
 
 ///|
@@ -96,7 +102,8 @@ pub fn LLabel::get_property_bool(
   self : LLabel,
   property : @graph.IProperty[Bool],
 ) -> Bool {
-  match self.bool_properties.get(property.get_id()) {
+  match
+    layered_property_bag_get(self.bool_properties, property.get_property_id()) {
     Some(value) => value
     None => property.get_default()
   }
@@ -107,7 +114,7 @@ pub fn LLabel::has_property_bool(
   self : LLabel,
   property : @graph.IProperty[Bool],
 ) -> Bool {
-  self.bool_properties.contains(property.get_id())
+  layered_property_bag_has(self.bool_properties, property.get_property_id())
 }
 
 ///|
@@ -116,7 +123,13 @@ pub fn LLabel::set_property_string(
   property : @graph.IProperty[String],
   value : String,
 ) -> Unit {
-  self.string_properties[property.get_id()] = value
+  self.string_properties = Some(
+    layered_property_bag_set(
+      self.string_properties,
+      property.get_property_id(),
+      value,
+    ),
+  )
 }
 
 ///|
@@ -124,7 +137,8 @@ pub fn LLabel::get_property_string(
   self : LLabel,
   property : @graph.IProperty[String],
 ) -> String {
-  match self.string_properties.get(property.get_id()) {
+  match
+    layered_property_bag_get(self.string_properties, property.get_property_id()) {
     Some(value) => value
     None => property.get_default()
   }
@@ -135,7 +149,7 @@ pub fn LLabel::has_property_string(
   self : LLabel,
   property : @graph.IProperty[String],
 ) -> Bool {
-  self.string_properties.contains(property.get_id())
+  layered_property_bag_has(self.string_properties, property.get_property_id())
 }
 
 ///|
@@ -144,7 +158,13 @@ pub fn LLabel::set_property_string_array(
   property : @graph.IProperty[Array[String]],
   value : Array[String],
 ) -> Unit {
-  self.string_array_properties[property.get_id()] = value.copy()
+  self.string_array_properties = Some(
+    layered_property_bag_set(
+      self.string_array_properties,
+      property.get_property_id(),
+      value.copy(),
+    ),
+  )
 }
 
 ///|
@@ -152,7 +172,11 @@ pub fn LLabel::get_property_string_array(
   self : LLabel,
   property : @graph.IProperty[Array[String]],
 ) -> Array[String] {
-  match self.string_array_properties.get(property.get_id()) {
+  match
+    layered_property_bag_get(
+      self.string_array_properties,
+      property.get_property_id(),
+    ) {
     Some(value) => value
     None => property.get_default()
   }
@@ -163,7 +187,10 @@ pub fn LLabel::has_property_string_array(
   self : LLabel,
   property : @graph.IProperty[Array[String]],
 ) -> Bool {
-  self.string_array_properties.contains(property.get_id())
+  layered_property_bag_has(
+    self.string_array_properties,
+    property.get_property_id(),
+  )
 }
 
 ///|
@@ -172,7 +199,13 @@ pub fn LLabel::set_property_label_side(
   property : @graph.IProperty[@core.LabelSide],
   value : @core.LabelSide,
 ) -> Unit {
-  self.label_side_properties[property.get_id()] = value
+  self.label_side_properties = Some(
+    layered_property_bag_set(
+      self.label_side_properties,
+      property.get_property_id(),
+      value,
+    ),
+  )
 }
 
 ///|
@@ -180,7 +213,11 @@ pub fn LLabel::get_property_label_side(
   self : LLabel,
   property : @graph.IProperty[@core.LabelSide],
 ) -> @core.LabelSide {
-  match self.label_side_properties.get(property.get_id()) {
+  match
+    layered_property_bag_get(
+      self.label_side_properties,
+      property.get_property_id(),
+    ) {
     Some(value) => value
     None => property.get_default()
   }
@@ -191,7 +228,10 @@ pub fn LLabel::has_property_label_side(
   self : LLabel,
   property : @graph.IProperty[@core.LabelSide],
 ) -> Bool {
-  self.label_side_properties.contains(property.get_id())
+  layered_property_bag_has(
+    self.label_side_properties,
+    property.get_property_id(),
+  )
 }
 
 ///|
@@ -201,8 +241,19 @@ pub fn LLabel::set_property_l_edge(
   value : LEdge?,
 ) -> Unit {
   match value {
-    Some(edge) => self.l_edge_properties[property.get_id()] = edge
-    None => ignore(self.l_edge_properties.remove(property.get_id()))
+    Some(edge) =>
+      self.l_edge_properties = Some(
+        layered_property_bag_set(
+          self.l_edge_properties,
+          property.get_property_id(),
+          edge,
+        ),
+      )
+    None =>
+      self.l_edge_properties = layered_property_bag_remove(
+        self.l_edge_properties,
+        property.get_property_id(),
+      )
   }
 }
 
@@ -211,7 +262,8 @@ pub fn LLabel::get_property_l_edge(
   self : LLabel,
   property : @graph.IProperty[LEdge?],
 ) -> LEdge? {
-  match self.l_edge_properties.get(property.get_id()) {
+  match
+    layered_property_bag_get(self.l_edge_properties, property.get_property_id()) {
     Some(value) => Some(value)
     None => property.get_default()
   }
@@ -222,5 +274,5 @@ pub fn LLabel::has_property_l_edge(
   self : LLabel,
   property : @graph.IProperty[LEdge?],
 ) -> Bool {
-  self.l_edge_properties.contains(property.get_id())
+  layered_property_bag_has(self.l_edge_properties, property.get_property_id())
 }

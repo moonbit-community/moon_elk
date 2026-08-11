@@ -54,7 +54,11 @@ fn force_option_bool_from_layout_options(
   node : @graph.ElkNode,
   option : ForceBoolOption,
 ) -> Bool {
-  match @graph.node_layout_option_string_value(node, option.get_id()) {
+  match
+    @graph.node_layout_option_string_value_by_option_id(
+      node,
+      option.get_property_id(),
+    ) {
     Some(value) =>
       if value == "true" {
         true

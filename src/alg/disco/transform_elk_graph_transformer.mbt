@@ -63,7 +63,10 @@ fn disco_transform_element_offset_or_zero(
 ///|
 fn disco_transform_edge_thickness(edge : @graph.ElkEdge) -> Double {
   match
-    @graph.edge_layout_option_string_value(edge, disco_edge_thickness.get_id()) {
+    @graph.edge_layout_option_string_value_by_option_id(
+      edge,
+      disco_edge_thickness.get_property_id(),
+    ) {
     Some(value) => disco_transform_parse_double_or_default(value, 1.0)
     None => 1.0
   }

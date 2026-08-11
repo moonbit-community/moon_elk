@@ -212,9 +212,9 @@ fn recursive_layered_copy_individual_spacing_options(
 ) -> Unit {
   for property in recursive_layered_individual_spacing_options() {
     match
-      @graph.node_individual_spacing_option_string_value(
+      @graph.node_individual_spacing_option_string_value_by_option_id(
         source_node,
-        property.get_id(),
+        property.get_property_id(),
       ) {
       Some(raw_value) => {
         let parsed : Result[Double, Error] = try
@@ -1677,9 +1677,9 @@ fn recursive_layered_parent_port_lport(
       let anchor = @core.new_kvector_xy(port_size.x / 2.0, port_size.y / 2.0)
       let mut explicit_anchor = false
       match
-        @graph.port_layout_option_string_value(
+        @graph.port_layout_option_string_value_by_option_id(
           parent_port,
-          @options.layered_options_port_anchor.get_id(),
+          @options.layered_options_port_anchor.get_property_id(),
         ) {
         Some(anchor_text) => {
           let parsed_anchor = @core.new_kvector()
@@ -1969,9 +1969,9 @@ fn recursive_layered_descendant_port_anchor(
     SideUndefined => ()
   }
   match
-    @graph.port_layout_option_string_value(
+    @graph.port_layout_option_string_value_by_option_id(
       port,
-      @options.layered_options_port_anchor.get_id(),
+      @options.layered_options_port_anchor.get_property_id(),
     ) {
     Some(anchor_text) => {
       let parsed_anchor = @core.new_kvector()
@@ -3019,9 +3019,9 @@ fn recursive_layered_create_context(
       lport.get_position().x = @graph.port_x(elk_port)
       lport.get_position().y = @graph.port_y(elk_port)
       let explicit_anchor = match
-        @graph.port_layout_option_string_value(
+        @graph.port_layout_option_string_value_by_option_id(
           elk_port,
-          @options.layered_options_port_anchor.get_id(),
+          @options.layered_options_port_anchor.get_property_id(),
         ) {
         Some(anchor_text) => {
           let parsed_anchor = @core.new_kvector()

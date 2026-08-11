@@ -219,7 +219,10 @@ test "grandom random graph generator distributes fixed-pos ports" {
       if @graph.port_x(port) != 0.0 || @graph.port_y(port) != 0.0 {
         seen_pos = true
       }
-      if @graph.port_layout_option_string_value(port, @core.port_side.get_id())
+      if @graph.port_layout_option_string_value_by_option_id(
+          port,
+          @core.port_side.get_property_id(),
+        )
         is Some(_) {
         seen_side = true
       }

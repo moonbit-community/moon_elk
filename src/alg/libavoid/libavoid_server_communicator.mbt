@@ -141,9 +141,9 @@ fn libavoid_communicator_process_timeout_of(
   layout_node : @graph.ElkNode,
 ) -> Int {
   let timeout_text = match
-    @graph.node_layout_option_string_value(
+    @graph.node_layout_option_string_value_by_option_id(
       layout_node,
-      libavoid_option_process_timeout.get_id(),
+      libavoid_option_process_timeout.get_property_id(),
     ) {
     Some(value) => value
     None => libavoid_option_process_timeout.get_default().to_string()
@@ -935,7 +935,11 @@ fn libavoid_communicator_opposed_side(side : String) -> String {
 fn libavoid_communicator_port_side_or_undefined(
   port : @graph.ElkPort,
 ) -> String {
-  match @graph.port_layout_option_string_value(port, @core.port_side.get_id()) {
+  match
+    @graph.port_layout_option_string_value_by_option_id(
+      port,
+      @core.port_side.get_property_id(),
+    ) {
     Some(value) => value
     None => "UNDEFINED"
   }

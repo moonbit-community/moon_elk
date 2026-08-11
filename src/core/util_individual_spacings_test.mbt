@@ -37,9 +37,9 @@ test "individual_spacings move between node and object" {
   let target = @graph.create_graph()
   individual_spacings_apply_to_node(spacings, target)
   debug_inspect(
-    @graph.node_individual_spacing_option_string_value(
+    @graph.node_individual_spacing_option_string_value_by_option_id(
       target,
-      spacing_node_node.get_id(),
+      spacing_node_node.get_property_id(),
     ),
     content="Some(\"31\")",
   )

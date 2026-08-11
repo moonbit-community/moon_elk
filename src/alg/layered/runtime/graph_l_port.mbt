@@ -26,11 +26,11 @@ pub struct LPort {
   incoming_edges : Array[LEdge]
   outgoing_edges : Array[LEdge]
   mut connected_to_external_nodes : Bool
-  int_properties : Map[String, Int]
-  bool_properties : Map[String, Bool]
-  double_properties : Map[String, Double]
-  node_properties : Map[String, LNode]
-  port_properties : Map[String, LPort]
+  priv mut int_properties : Map[@graph.PropertyId, Int]?
+  priv mut bool_properties : Map[@graph.PropertyId, Bool]?
+  priv mut double_properties : Map[@graph.PropertyId, Double]?
+  priv mut node_properties : Map[@graph.PropertyId, LNode]?
+  priv mut port_properties : Map[@graph.PropertyId, LPort]?
 }
 
 ///|
@@ -47,11 +47,11 @@ pub fn new_l_port() -> LPort {
     incoming_edges: [],
     outgoing_edges: [],
     connected_to_external_nodes: true,
-    int_properties: Map([]),
-    bool_properties: Map([]),
-    double_properties: Map([]),
-    node_properties: Map([]),
-    port_properties: Map([]),
+    int_properties: None,
+    bool_properties: None,
+    double_properties: None,
+    node_properties: None,
+    port_properties: None,
   }
 }
 
@@ -290,7 +290,13 @@ pub fn LPort::set_property_bool(
   property : @graph.IProperty[Bool],
   value : Bool,
 ) -> Unit {
-  self.bool_properties[property.get_id()] = value
+  self.bool_properties = Some(
+    layered_property_bag_set(
+      self.bool_properties,
+      property.get_property_id(),
+      value,
+    ),
+  )
 }
 
 ///|
@@ -298,7 +304,8 @@ pub fn LPort::get_property_bool(
   self : LPort,
   property : @graph.IProperty[Bool],
 ) -> Bool {
-  match self.bool_properties.get(property.get_id()) {
+  match
+    layered_property_bag_get(self.bool_properties, property.get_property_id()) {
     Some(value) => value
     None => property.get_default()
   }
@@ -310,7 +317,13 @@ pub fn LPort::set_property_int(
   property : @graph.IProperty[Int],
   value : Int,
 ) -> Unit {
-  self.int_properties[property.get_id()] = value
+  self.int_properties = Some(
+    layered_property_bag_set(
+      self.int_properties,
+      property.get_property_id(),
+      value,
+    ),
+  )
 }
 
 ///|
@@ -319,7 +332,13 @@ pub fn LPort::set_property_double(
   property : @graph.IProperty[Double],
   value : Double,
 ) -> Unit {
-  self.double_properties[property.get_id()] = value
+  self.double_properties = Some(
+    layered_property_bag_set(
+      self.double_properties,
+      property.get_property_id(),
+      value,
+    ),
+  )
 }
 
 ///|
@@ -327,7 +346,8 @@ pub fn LPort::get_property_int(
   self : LPort,
   property : @graph.IProperty[Int],
 ) -> Int {
-  match self.int_properties.get(property.get_id()) {
+  match
+    layered_property_bag_get(self.int_properties, property.get_property_id()) {
     Some(value) => value
     None => property.get_default()
   }
@@ -338,7 +358,8 @@ pub fn LPort::get_property_double(
   self : LPort,
   property : @graph.IProperty[Double],
 ) -> Double {
-  match self.double_properties.get(property.get_id()) {
+  match
+    layered_property_bag_get(self.double_properties, property.get_property_id()) {
     Some(value) => value
     None => property.get_default()
   }
@@ -349,7 +370,7 @@ pub fn LPort::has_property_int(
   self : LPort,
   property : @graph.IProperty[Int],
 ) -> Bool {
-  self.int_properties.contains(property.get_id())
+  layered_property_bag_has(self.int_properties, property.get_property_id())
 }
 
 ///|
@@ -357,7 +378,7 @@ pub fn LPort::has_property_double(
   self : LPort,
   property : @graph.IProperty[Double],
 ) -> Bool {
-  self.double_properties.contains(property.get_id())
+  layered_property_bag_has(self.double_properties, property.get_property_id())
 }
 
 ///|
@@ -365,7 +386,7 @@ pub fn LPort::has_property_bool(
   self : LPort,
   property : @graph.IProperty[Bool],
 ) -> Bool {
-  self.bool_properties.contains(property.get_id())
+  layered_property_bag_has(self.bool_properties, property.get_property_id())
 }
 
 ///|
@@ -375,8 +396,19 @@ pub fn LPort::set_property_l_node(
   value : LNode?,
 ) -> Unit {
   match value {
-    Some(node) => self.node_properties[property.get_id()] = node
-    None => ignore(self.node_properties.remove(property.get_id()))
+    Some(node) =>
+      self.node_properties = Some(
+        layered_property_bag_set(
+          self.node_properties,
+          property.get_property_id(),
+          node,
+        ),
+      )
+    None =>
+      self.node_properties = layered_property_bag_remove(
+        self.node_properties,
+        property.get_property_id(),
+      )
   }
 }
 
@@ -385,7 +417,8 @@ pub fn LPort::get_property_l_node(
   self : LPort,
   property : @graph.IProperty[LNode?],
 ) -> LNode? {
-  match self.node_properties.get(property.get_id()) {
+  match
+    layered_property_bag_get(self.node_properties, property.get_property_id()) {
     Some(value) => Some(value)
     None => property.get_default()
   }
@@ -396,7 +429,7 @@ pub fn LPort::has_property_l_node(
   self : LPort,
   property : @graph.IProperty[LNode?],
 ) -> Bool {
-  self.node_properties.contains(property.get_id())
+  layered_property_bag_has(self.node_properties, property.get_property_id())
 }
 
 ///|
@@ -406,8 +439,19 @@ pub fn LPort::set_property_l_port(
   value : LPort?,
 ) -> Unit {
   match value {
-    Some(port) => self.port_properties[property.get_id()] = port
-    None => ignore(self.port_properties.remove(property.get_id()))
+    Some(port) =>
+      self.port_properties = Some(
+        layered_property_bag_set(
+          self.port_properties,
+          property.get_property_id(),
+          port,
+        ),
+      )
+    None =>
+      self.port_properties = layered_property_bag_remove(
+        self.port_properties,
+        property.get_property_id(),
+      )
   }
 }
 
@@ -416,7 +460,8 @@ pub fn LPort::get_property_l_port(
   self : LPort,
   property : @graph.IProperty[LPort?],
 ) -> LPort? {
-  match self.port_properties.get(property.get_id()) {
+  match
+    layered_property_bag_get(self.port_properties, property.get_property_id()) {
     Some(value) => Some(value)
     None => property.get_default()
   }
@@ -427,7 +472,7 @@ pub fn LPort::has_property_l_port(
   self : LPort,
   property : @graph.IProperty[LPort?],
 ) -> Bool {
-  self.port_properties.contains(property.get_id())
+  layered_property_bag_has(self.port_properties, property.get_property_id())
 }
 
 ///|
