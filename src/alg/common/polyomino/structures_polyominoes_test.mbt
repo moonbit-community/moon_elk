@@ -7,6 +7,7 @@ test "Polyominoes grid sizing with aspect ratio" {
   assert_eq(polyominoes.get_polyominoes().length(), 2)
   assert_eq(polyominoes.get_grid().width(), 32)
   assert_eq(polyominoes.get_grid().height(), 14)
+  assert_true(polyominoes.get_traversal_strategy() is QuadrantsLineByLine)
 }
 
 ///|

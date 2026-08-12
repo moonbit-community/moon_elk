@@ -46,7 +46,8 @@ pub fn new_polyominoes(
     grid: new_planar_grid(grid_width, grid_height),
     high_level_sorting_criterion: NumOfExternalSidesThanNumOfExtensionsLast,
     low_level_sorting_criterion: BySizeAndShape,
-    traversal_strategy: QuadrantsJitter,
+    // Polyomino placement is observable, so preserve ELK's traversal default.
+    traversal_strategy: QuadrantsLineByLine,
   }
 }
 

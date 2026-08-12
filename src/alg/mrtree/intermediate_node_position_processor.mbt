@@ -35,6 +35,7 @@ fn mrtree_node_position_processor_process(
     mrtree_graph_nodes(graph).length()
   }
 
+  // Keep positions center-based; the importer converts centers to node origins.
   let mut root : MrtreeNode? = None
   for node in mrtree_graph_nodes(graph) {
     if root == None && mrtree_node_root(node) {
@@ -61,12 +62,6 @@ fn mrtree_node_position_processor_process(
     )
     subtasks = next_level.length().to_double() / number_of_nodes.to_double()
     continue_loop = !next_level.is_empty()
-  }
-
-  for node in mrtree_graph_nodes(graph) {
-    let position = mrtree_node_position(node)
-    let size = mrtree_node_size(node)
-    ignore(position.sub(@core.new_kvector_xy(size.x / 2.0, size.y / 2.0)))
   }
 
   match progress_monitor {

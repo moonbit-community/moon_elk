@@ -24,7 +24,7 @@ fn mrtree_node_orderer_property_value(
 }
 
 ///|
-fn mrtree_node_orderer_sort_nodes_desc(
+fn mrtree_node_orderer_sort_nodes_asc(
   nodes : Array[MrtreeNode],
   weighting : MrtreeOrderWeighting,
 ) -> Unit {
@@ -33,8 +33,9 @@ fn mrtree_node_orderer_sort_nodes_desc(
     let current = nodes[i]
     let current_value = mrtree_node_orderer_property_value(current, weighting)
     let mut j = i
+    // ELK's property comparator is ascending; leaf gap filling depends on it.
     while j > 0 &&
-          current_value >
+          current_value <
           mrtree_node_orderer_property_value(nodes[j - 1], weighting) {
       nodes[j] = nodes[j - 1]
       j -= 1
@@ -106,7 +107,7 @@ fn mrtree_node_orderer_order_level_fan_descendants(
 
   let pos_ref : Ref[Int] = Ref(0)
   let sorted_level = current_level.copy()
-  mrtree_node_orderer_sort_nodes_desc(sorted_level, weighting)
+  mrtree_node_orderer_sort_nodes_asc(sorted_level, weighting)
 
   let mut first_occurrence = sorted_level.length()
   let mut index = sorted_level.length() - 1

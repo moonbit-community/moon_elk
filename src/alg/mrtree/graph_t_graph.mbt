@@ -57,7 +57,7 @@ pub fn new_mrtree_graph() -> MrtreeGraph {
       direction: "UNDEFINED",
       compaction: false,
       edge_routing_mode: "AVOID_OVERLAP",
-      weighting: "DESCENDANTS",
+      weighting: "FAN",
       search_order: "DFS",
       removable_edges: [],
       spacing_node_node: 20.0,

@@ -17,8 +17,9 @@ pub let mrtree_edge_routing_mode : @graph.IProperty[String] = @graph.new_propert
 )
 
 ///|
+// ELK v0.8.x NodeOrderer uses FAN ordering on its default execution path.
 pub let mrtree_weighting : @graph.IProperty[String] = @graph.new_property(
-  "org.eclipse.elk.mrtree.weighting", "DESCENDANTS",
+  "org.eclipse.elk.mrtree.weighting", "FAN",
 )
 
 ///|

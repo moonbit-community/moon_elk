@@ -43,10 +43,10 @@ test "Mrtree NodePlacer computes walker coordinates and final positions" {
   inspect(mrtree_node_xcoor(right), content="30")
   inspect(mrtree_node_ycoor(right), content="30")
 
-  inspect(mrtree_node_position(root).x, content="10")
-  inspect(mrtree_node_position(root).y, content="-5")
-  inspect(mrtree_node_position(left).x, content="-5")
-  inspect(mrtree_node_position(left).y, content="25")
-  inspect(mrtree_node_position(right).x, content="25")
-  inspect(mrtree_node_position(right).y, content="25")
+  inspect(mrtree_node_position(root).x, content="15")
+  inspect(mrtree_node_position(root).y, content="0")
+  inspect(mrtree_node_position(left).x, content="0")
+  inspect(mrtree_node_position(left).y, content="30")
+  inspect(mrtree_node_position(right).x, content="30")
+  inspect(mrtree_node_position(right).y, content="30")
 }
