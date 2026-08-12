@@ -251,22 +251,6 @@ fn add_logging(
 }
 
 ///|
-fn is_known_unsupported_algorithm(algorithm : String) -> Bool {
-  match algorithm {
-    "vertiflex"
-    | "topdownpacking"
-    | "libavoid"
-    | "dot"
-    | "neato"
-    | "fdp"
-    | "sfdp"
-    | "twopi"
-    | "circo" => true
-    _ => false
-  }
-}
-
-///|
 pub fn ElkEngine::layout(
   self : ElkEngine,
   graph? : Json,
@@ -290,13 +274,6 @@ pub fn ElkEngine::layout(
   if !self.algorithms.contains(root_algorithm) {
     raise invalid_graph_error(
       "org.eclipse.elk.core.UnsupportedConfigurationException: Unknown layouter id",
-    )
-  }
-  if is_known_unsupported_algorithm(root_algorithm) {
-    raise invalid_graph_error(
-      "org.eclipse.elk.core.UnsupportedConfigurationException: Layout algorithm '" +
-      root_algorithm +
-      "' not found for Root Node root",
     )
   }
   let session = new_layout_session()
