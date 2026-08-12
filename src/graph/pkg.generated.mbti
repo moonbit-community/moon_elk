@@ -586,7 +586,6 @@ pub struct ElkNode {
   // private fields
 }
 pub fn ElkNode::graph_arena(Self) -> GraphArena
-pub impl Compare for ElkNode
 pub impl Eq for ElkNode
 pub impl Hash for ElkNode
 pub impl Show for ElkNode

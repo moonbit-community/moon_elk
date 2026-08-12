@@ -32,11 +32,6 @@ pub impl Show for ElkNode with fn output(self, logger) {
 }
 
 ///|
-pub impl Compare for ElkNode with fn compare(self, other) {
-  self.id.compare(other.id)
-}
-
-///|
 priv struct NodeData {
   parent : ElkNode?
   children : Array[ElkNode]

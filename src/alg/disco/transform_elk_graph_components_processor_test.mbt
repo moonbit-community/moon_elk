@@ -1,31 +1,14 @@
 ///|
-fn disco_components_sorted(
-  nodes : Array[@graph.ElkNode],
-) -> Array[@graph.ElkNode] {
-  let result = nodes.copy()
-  for i = 1; i < result.length(); i = i + 1 {
-    let current = result[i]
-    let mut j = i
-    while j > 0 && result[j - 1] > current {
-      result[j] = result[j - 1]
-      j = j - 1
-    }
-    result[j] = current
-  }
-  result
-}
-
-///|
 fn disco_components_signature(
   components : Array[Array[@graph.ElkNode]],
 ) -> String {
   let groups : Array[String] = []
   for component in components {
-    let sorted = disco_components_sorted(component)
     let ids : Array[String] = []
-    for node in sorted {
+    for node in component {
       ids.push(node.to_string())
     }
+    ids.sort()
     groups.push(ids.join(","))
   }
   let sorted_groups = groups.copy()
