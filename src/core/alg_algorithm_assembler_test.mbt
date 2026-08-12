@@ -129,3 +129,66 @@ test "AlgorithmAssembler testAddProcessorConfiguration" {
     )
   }
 }
+
+///|
+test "AlgorithmAssembler rejects invalid phase descriptors" {
+  let sparse_error = capture_layout_error(fn() raise {
+    ignore(algorithm_assembler_create(new_phase_descriptor([0, 10])))
+  })
+  assert_eq(
+    sparse_error,
+    Some(
+      "org.eclipse.elk.core.UnsupportedConfigurationException: Phase descriptor must contain consecutive zero-based ordinals in declaration order; expected phase 1, found 10.",
+    ),
+  )
+  let negative_error = capture_layout_error(fn() raise {
+    ignore(algorithm_assembler_create(new_phase_descriptor([-1, 0])))
+  })
+  assert_eq(
+    negative_error,
+    Some(
+      "org.eclipse.elk.core.UnsupportedConfigurationException: Phase descriptor must contain consecutive zero-based ordinals in declaration order; expected phase 0, found -1.",
+    ),
+  )
+  let duplicate_error = capture_layout_error(fn() raise {
+    ignore(algorithm_assembler_create(new_phase_descriptor([0, 0])))
+  })
+  assert_eq(
+    duplicate_error,
+    Some(
+      "org.eclipse.elk.core.UnsupportedConfigurationException: Phase descriptor must contain consecutive zero-based ordinals in declaration order; expected phase 1, found 0.",
+    ),
+  )
+  let reordered_error = capture_layout_error(fn() raise {
+    ignore(algorithm_assembler_create(new_phase_descriptor([1, 0])))
+  })
+  assert_eq(
+    reordered_error,
+    Some(
+      "org.eclipse.elk.core.UnsupportedConfigurationException: Phase descriptor must contain consecutive zero-based ordinals in declaration order; expected phase 0, found 1.",
+    ),
+  )
+}
+
+///|
+test "AlgorithmAssembler rejects phases outside its descriptor" {
+  let assembler = algorithm_assembler_create(test_phase_descriptor)
+  let high_error = capture_layout_error(fn() raise {
+    ignore(assembler.set_phase(10, test_phase_factory(Phase1)))
+  })
+  assert_eq(
+    high_error,
+    Some(
+      "org.eclipse.elk.core.UnsupportedConfigurationException: Phase 10 is outside the descriptor range 0..<2.",
+    ),
+  )
+  let negative_error = capture_layout_error(fn() raise {
+    ignore(assembler.set_phase(-1, test_phase_factory(Phase1)))
+  })
+  assert_eq(
+    negative_error,
+    Some(
+      "org.eclipse.elk.core.UnsupportedConfigurationException: Phase -1 is outside the descriptor range 0..<2.",
+    ),
+  )
+}

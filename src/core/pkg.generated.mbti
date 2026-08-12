@@ -2055,7 +2055,7 @@ pub fn[F, S] Pair::set_first(Self[F, S], F?) -> Unit
 pub fn[F, S] Pair::set_second(Self[F, S], S?) -> Unit
 pub fn[F : Show, S : Show] Pair::to_string(Self[F, S]) -> String
 
-pub(all) struct PhaseDescriptor {
+pub struct PhaseDescriptor {
   phases : Array[Int]
 }
 pub fn PhaseDescriptor::phases(Self) -> Array[Int]

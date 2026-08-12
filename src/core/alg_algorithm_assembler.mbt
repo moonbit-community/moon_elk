@@ -57,6 +57,9 @@ pub fn algorithm_assembler_create(
       _ => ()
     }
   }
+  if phase_descriptor.validation_error() is Some(message) {
+    layout_runtime_raise_unsupported_configuration(message)
+  }
   {
     enable_caching: true,
     fail_on_missing_phase: true,
@@ -131,6 +134,12 @@ pub fn AlgorithmAssembler::set_phase(
   phase : PhaseId,
   phase_factory : LayoutProcessorFactory,
 ) -> AlgorithmAssembler raise {
+  if phase < 0 || phase >= self.number_of_phases {
+    layout_runtime_raise_unsupported_configuration(
+      "Phase \{phase} is outside the descriptor range 0..<\{self.number_of_phases}.",
+    )
+    return self
+  }
   let index = phase
   self.phase_accessor.set_list_item(index, Some(phase_factory))
   self.configured_phases[index] = true
