@@ -2971,9 +2971,6 @@ fn recursive_layered_create_context(
       lport.get_size().y = @graph.port_height(elk_port)
       let port_border_offset = recursive_layered_port_border_offset(elk_port)
       lport.set_property_double(
-        @nodespacing.nodespacing_port_border_offset_property, port_border_offset,
-      )
-      lport.set_property_double(
         @options.layered_options_port_border_offset, port_border_offset,
       )
       lport.set_property_bool(

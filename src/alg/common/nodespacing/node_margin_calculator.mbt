@@ -10,10 +10,10 @@ fn node_margin_calculator_max(a : Double, b : Double) -> Double {
 ///|
 fn node_margin_calculator_process_edge_head_tail_labels(
   bounding_box : @core.ElkRectangle,
-  outgoing_edges : Array[&NodeSpacingEdge],
-  incoming_edges : Array[&NodeSpacingEdge],
-  node : &NodeSpacingNode,
-  port : &NodeSpacingPort?,
+  outgoing_edges : Array[NodeSpacingEdge],
+  incoming_edges : Array[NodeSpacingEdge],
+  node : NodeSpacingNode,
+  port : NodeSpacingPort?,
   port_label_space : @core.KVector?,
   label_spacing : Double,
 ) -> Unit {
@@ -21,8 +21,7 @@ fn node_margin_calculator_process_edge_head_tail_labels(
 
   for edge in outgoing_edges {
     for label in edge.get_labels() {
-      if label.get_property_string(@core.edge_labels_placement) ==
-        @core.edge_label_placement_to_string(Tail) {
+      if label.edge_placement == @core.edge_label_placement_to_string(Tail) {
         node_margin_calculator_compute_label_box(
           label_box, label, false, node, port, port_label_space, label_spacing,
         )
@@ -33,8 +32,7 @@ fn node_margin_calculator_process_edge_head_tail_labels(
 
   for edge in incoming_edges {
     for label in edge.get_labels() {
-      if label.get_property_string(@core.edge_labels_placement) ==
-        @core.edge_label_placement_to_string(Head) {
+      if label.edge_placement == @core.edge_label_placement_to_string(Head) {
         node_margin_calculator_compute_label_box(
           label_box, label, true, node, port, port_label_space, label_spacing,
         )
@@ -47,10 +45,10 @@ fn node_margin_calculator_process_edge_head_tail_labels(
 ///|
 fn node_margin_calculator_compute_label_box(
   label_box : @core.ElkRectangle,
-  label : &NodeSpacingLabel,
+  label : NodeSpacingLabel,
   incoming_edge : Bool,
-  node : &NodeSpacingNode,
-  port : &NodeSpacingPort?,
+  node : NodeSpacingNode,
+  port : NodeSpacingPort?,
   port_label_space : @core.KVector?,
   label_spacing : Double,
 ) -> Unit {
@@ -115,9 +113,9 @@ fn node_margin_calculator_compute_label_box(
 ///|
 fn node_margin_calculator_process_node(
   calculator : NodeMarginCalculator,
-  node : &NodeSpacingNode,
+  node : NodeSpacingNode,
   label_spacing : Double,
-) -> Unit raise {
+) -> Unit {
   let node_position = node.get_position()
   let node_size = node.get_size()
 
@@ -177,9 +175,9 @@ fn node_margin_calculator_process_node(
         -label_spacing,
       )
 
-      if node
-        .get_property_string_array(@core.port_labels_placement)
-        .contains(@core.port_label_placement_to_string(Outside)) {
+      if node.port_labels_placement.contains(
+          @core.port_label_placement_to_string(Outside),
+        ) {
         for label in port.get_labels() {
           let label_size = label.get_size()
           required_port_label_space.x += label_size.x + label_spacing
@@ -243,27 +241,36 @@ pub struct NodeMarginCalculator {
   mut include_ports : Bool
   mut include_port_labels : Bool
   mut include_edge_head_tail_labels : Bool
-  adapter : &NodeSpacingGraph
+  input : NodeSpacingInput
+  elk_adapter : @core.ElkGraphAdapter?
 }
 
 ///|
 pub fn new_node_margin_calculator(
   adapter : @core.ElkGraphAdapter,
-) -> NodeMarginCalculator {
-  new_node_margin_calculator_for_adapter(adapter)
+) -> NodeMarginCalculator raise {
+  {
+    include_labels: true,
+    include_ports: true,
+    include_port_labels: true,
+    include_edge_head_tail_labels: true,
+    input: capture_elk_node_spacing_input(adapter),
+    elk_adapter: Some(adapter),
+  }
 }
 
 ///|
 #internal(nodespacing)
-pub fn new_node_margin_calculator_for_adapter(
-  adapter : &NodeSpacingGraph,
+pub fn new_node_margin_calculator_for_input(
+  input : NodeSpacingInput,
 ) -> NodeMarginCalculator {
   {
     include_labels: true,
     include_ports: true,
     include_port_labels: true,
     include_edge_head_tail_labels: true,
-    adapter,
+    input,
+    elk_adapter: None,
   }
 }
 
@@ -300,19 +307,29 @@ pub fn NodeMarginCalculator::exclude_edge_head_tail_labels(
 }
 
 ///|
-pub fn NodeMarginCalculator::process(self : NodeMarginCalculator) -> Unit raise {
-  let label_spacing = self.adapter.get_property_double(@core.spacing_label_node)
+pub fn NodeMarginCalculator::process(self : NodeMarginCalculator) -> Unit {
+  let label_spacing = self.input.spacing_label_node
 
-  for node in self.adapter.get_nodes() {
+  for node in self.input.nodes {
     node_margin_calculator_process_node(self, node, label_spacing)
   }
+  if self.elk_adapter is Some(adapter) {
+    apply_elk_node_spacing_output(adapter, self.input.output())
+  }
+}
+
+///|
+pub fn NodeMarginCalculator::output(
+  self : NodeMarginCalculator,
+) -> NodeSpacingOutput {
+  self.input.output()
 }
 
 ///|
 pub fn NodeMarginCalculator::process_node(
   self : NodeMarginCalculator,
-  node : &NodeSpacingNode,
-) -> Unit raise {
-  let label_spacing = self.adapter.get_property_double(@core.spacing_label_node)
+  node : NodeSpacingNode,
+) -> Unit {
+  let label_spacing = self.input.spacing_label_node
   node_margin_calculator_process_node(self, node, label_spacing)
 }

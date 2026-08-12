@@ -1,65 +1,4 @@
 ///|
-let node_context_topdown_layout_property : @graph.IProperty[Bool] = @graph.new_property(
-  "org.eclipse.elk.topdownLayout", false,
-)
-
-///|
-let node_context_node_size_constraints_property : @graph.IProperty[
-  Array[String],
-] = @graph.new_property("org.eclipse.elk.nodeSize.constraints", [])
-
-///|
-let node_context_node_size_options_property : @graph.IProperty[Array[String]] = @graph.new_property(
-  "org.eclipse.elk.nodeSize.options",
-  ["DEFAULT_MINIMUM_SIZE"],
-)
-
-///|
-let node_context_port_labels_placement_property : @graph.IProperty[
-  Array[String],
-] = @graph.new_property("org.eclipse.elk.portLabels.placement", ["OUTSIDE"])
-
-///|
-let node_context_node_labels_placement_property : @graph.IProperty[
-  Array[String],
-] = @graph.new_property("org.eclipse.elk.nodeLabels.placement", [])
-
-///|
-let node_context_node_labels_padding_property : @graph.IProperty[String] = @graph.new_property(
-  "org.eclipse.elk.nodeLabels.padding", "[top=5,left=5,bottom=5,right=5]",
-)
-
-///|
-let node_context_spacing_ports_surrounding_property : @graph.IProperty[String] = @graph.new_property(
-  "org.eclipse.elk.spacing.portsSurrounding", "[top=0,left=0,bottom=0,right=0]",
-)
-
-///|
-let node_context_port_alignment_default_property : @graph.IProperty[String] = @graph.new_property(
-  "org.eclipse.elk.portAlignment.default", "DISTRIBUTED",
-)
-
-///|
-let node_context_port_alignment_north_property : @graph.IProperty[String] = @graph.new_property(
-  "org.eclipse.elk.portAlignment.north", "",
-)
-
-///|
-let node_context_port_alignment_south_property : @graph.IProperty[String] = @graph.new_property(
-  "org.eclipse.elk.portAlignment.south", "",
-)
-
-///|
-let node_context_port_alignment_east_property : @graph.IProperty[String] = @graph.new_property(
-  "org.eclipse.elk.portAlignment.east", "",
-)
-
-///|
-let node_context_port_alignment_west_property : @graph.IProperty[String] = @graph.new_property(
-  "org.eclipse.elk.portAlignment.west", "",
-)
-
-///|
 fn node_context_parse_size_constraints(
   values : Array[String],
 ) -> Array[@core.SizeConstraint] {
@@ -238,7 +177,7 @@ fn[T] node_context_raise_unsupported_configuration(
 
 ///|
 pub struct NodeContext {
-  node : &NodeSpacingNode
+  node : NodeSpacingNode
   node_size : @core.KVector
   treat_as_compound_node : Bool
   size_constraints : Array[@core.SizeConstraint]
@@ -266,60 +205,46 @@ pub struct NodeContext {
 }
 
 ///|
-pub fn new_node_context(node : &NodeSpacingNode) -> NodeContext raise {
+pub fn new_node_context(node : NodeSpacingNode) -> NodeContext raise {
   let node_size = node.get_size().clone()
 
-  let topdown_layout = node.get_property_bool(
-    node_context_topdown_layout_property,
-  )
+  let topdown_layout = node.topdown_layout
   let treat_as_compound_node = node.is_compound_node() ||
-    node.get_property_bool(@core.inside_self_loops_activate)
+    node.inside_self_loops_activate
 
   let size_constraints = node_context_parse_size_constraints(
-    node.get_property_string_array(node_context_node_size_constraints_property),
+    node.size_constraints,
   )
-  let size_options = node_context_parse_size_options(
-    node.get_property_string_array(node_context_node_size_options_property),
-  )
+  let size_options = node_context_parse_size_options(node.size_options)
   let parsed_port_constraints = node_context_parse_port_constraints(
-    node.get_property_string(@core.port_constraints),
+    node.port_constraints,
   )
   let port_labels_placement = node_context_parse_port_label_placement(
-    node.get_property_string_array(node_context_port_labels_placement_property),
+    node.port_labels_placement,
   )
   if !@core.port_label_placement_is_valid(port_labels_placement) {
     node_context_raise_unsupported_configuration(
-      "Invalid port label placement: \{Repr(node.get_property_string_array(node_context_port_labels_placement_property))}",
+      "Invalid port label placement: \{Repr(node.port_labels_placement)}",
     )
   }
-  let port_labels_treat_as_group = node.get_property_bool(
-    @core.port_labels_treat_as_group,
-  )
+  let port_labels_treat_as_group = node.port_labels_treat_as_group
   let node_label_placement = node_context_parse_node_label_placement(
-    node.get_property_string_array(node_context_node_labels_placement_property),
+    node.node_labels_placement,
   )
   if !@core.node_label_placement_is_valid(node_label_placement) {
     node_context_raise_unsupported_configuration(
-      "Invalid node label placement: \{Repr(node.get_property_string_array(node_context_node_labels_placement_property))}",
+      "Invalid node label placement: \{Repr(node.node_labels_placement)}",
     )
   }
 
-  let node_labels_padding = node_context_parse_padding(
-    node.get_property_string(node_context_node_labels_padding_property),
-  )
-  let node_label_spacing = node.get_individual_spacing(@core.spacing_label_node)
-  let label_label_spacing = node.get_individual_spacing(
-    @core.spacing_label_label,
-  )
-  let port_port_spacing = node.get_individual_spacing(@core.spacing_port_port)
-  let port_label_spacing_horizontal = node.get_individual_spacing(
-    @core.spacing_label_port_horizontal,
-  )
-  let port_label_spacing_vertical = node.get_individual_spacing(
-    @core.spacing_label_port_vertical,
-  )
+  let node_labels_padding = node_context_parse_padding(node.node_labels_padding)
+  let node_label_spacing = node.spacing_label_node
+  let label_label_spacing = node.spacing_label_label
+  let port_port_spacing = node.spacing_port_port
+  let port_label_spacing_horizontal = node.spacing_label_port_horizontal
+  let port_label_spacing_vertical = node.spacing_label_port_vertical
   let surrounding_port_margins = node_context_parse_margin(
-    node.get_property_string(node_context_spacing_ports_surrounding_property),
+    node.spacing_ports_surrounding,
   )
 
   let symmetry = !node_context_contains_size_option(size_options, Asymmetrical)
@@ -505,54 +430,11 @@ pub fn NodeContext::get_port_alignment(
   port_side : @core.PortSide,
 ) -> @core.PortAlignment {
   let alignment_text = match port_side {
-    North =>
-      if self.node.has_property_string(
-          node_context_port_alignment_north_property,
-        ) {
-        self.node.get_property_string(
-          node_context_port_alignment_north_property,
-        )
-      } else {
-        self.node.get_property_string(
-          node_context_port_alignment_default_property,
-        )
-      }
-    South =>
-      if self.node.has_property_string(
-          node_context_port_alignment_south_property,
-        ) {
-        self.node.get_property_string(
-          node_context_port_alignment_south_property,
-        )
-      } else {
-        self.node.get_property_string(
-          node_context_port_alignment_default_property,
-        )
-      }
-    East =>
-      if self.node.has_property_string(
-          node_context_port_alignment_east_property,
-        ) {
-        self.node.get_property_string(node_context_port_alignment_east_property)
-      } else {
-        self.node.get_property_string(
-          node_context_port_alignment_default_property,
-        )
-      }
-    West =>
-      if self.node.has_property_string(
-          node_context_port_alignment_west_property,
-        ) {
-        self.node.get_property_string(node_context_port_alignment_west_property)
-      } else {
-        self.node.get_property_string(
-          node_context_port_alignment_default_property,
-        )
-      }
-    SideUndefined =>
-      self.node.get_property_string(
-        node_context_port_alignment_default_property,
-      )
+    North => self.node.alignment_north.unwrap_or(self.node.alignment_default)
+    South => self.node.alignment_south.unwrap_or(self.node.alignment_default)
+    East => self.node.alignment_east.unwrap_or(self.node.alignment_default)
+    West => self.node.alignment_west.unwrap_or(self.node.alignment_default)
+    SideUndefined => self.node.alignment_default
   }
   node_context_parse_port_alignment(alignment_text)
 }

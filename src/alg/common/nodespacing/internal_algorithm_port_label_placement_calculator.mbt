@@ -78,12 +78,8 @@ fn port_label_placement_calculator_simple_inside_port_label_placement(
     }
 
     let port_size = port_context.port.get_size()
-    let port_border_offset = if port_context.port.has_property_double(
-        nodespacing_port_border_offset_property,
-      ) {
-      port_context.port.get_property_double(
-        nodespacing_port_border_offset_property,
-      )
+    let port_border_offset = if port_context.port.has_border_offset {
+      port_context.port.border_offset
     } else {
       0.0
     }

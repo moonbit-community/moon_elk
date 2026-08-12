@@ -1,10 +1,7 @@
 ///|
-let node_label_and_size_calculator_direction_property : @graph.IProperty[String] = @core.direction
-
-///|
 fn node_label_and_size_calculator_process_node(
-  graph : &NodeSpacingGraph,
-  node : &NodeSpacingNode,
+  input : NodeSpacingInput,
+  node : NodeSpacingNode,
   apply_stuff : Bool,
   ignore_inside_port_labels : Bool,
 ) -> @core.KVector raise {
@@ -17,9 +14,7 @@ fn node_label_and_size_calculator_process_node(
       node_context, ignore_inside_port_labels,
     )
 
-    let layout_direction = graph.get_property_string(
-      node_label_and_size_calculator_direction_property,
-    )
+    let layout_direction = input.direction
     let horizontal_layout_mode = layout_direction == "" ||
       layout_direction == @core.direction_to_string(Undefined) ||
       layout_direction == @core.direction_to_string(Rightward) ||
@@ -93,20 +88,21 @@ pub fn node_label_and_size_calculator_process_layered_graph(
   layered_graph : @graph.ElkNode,
 ) -> Unit raise {
   let adapter = @core.adapt(layered_graph)
-  node_label_and_size_calculator_process_graph(adapter)
+  let input = capture_elk_node_spacing_input(adapter)
+  node_label_and_size_calculator_process_graph(input)
+  apply_elk_node_spacing_output(adapter, input.output())
 }
 
 ///|
 #internal(nodespacing)
 pub fn node_label_and_size_calculator_process_graph(
-  adapter : &NodeSpacingGraph,
+  input : NodeSpacingInput,
 ) -> Unit raise {
-  for node in adapter.get_nodes() {
+  for node in input.nodes {
     ignore(
-      node_label_and_size_calculator_process_node(adapter, node, true, false),
+      node_label_and_size_calculator_process_node(input, node, true, false),
     )
   }
-  adapter.cleanup()
 }
 
 ///|
@@ -117,12 +113,36 @@ pub fn node_label_and_size_calculator_process_single_node(
   ignore_inside_port_labels : Bool,
 ) -> @core.KVector raise {
   let graph_adapter = @core.adapt(layered_graph)
-  node_label_and_size_calculator_process_node(
+  let graph_nodes = @graph.node_children(layered_graph)
+  let mut node_index = -1
+  for index, candidate in graph_nodes {
+    if candidate == node {
+      node_index = index
+      break
+    }
+  }
+  if node_index < 0 {
+    @core.layout_runtime_raise_unsupported_configuration(
+      "Node spacing input does not contain the requested node.",
+    )
+    return @core.new_kvector()
+  }
+  let input = capture_elk_single_node_spacing_input(
     graph_adapter,
-    @core.adapt_single_node(node) as &NodeSpacingNode,
+    @core.adapt_single_node(node),
+    node_index,
+  )
+  let result = node_label_and_size_calculator_process_node(
+    input,
+    input.nodes[0],
     apply_stuff,
     ignore_inside_port_labels,
   )
+  if apply_stuff {
+    let node_output = input.output().nodes[0]
+    apply_elk_node_spacing_output(graph_adapter, { nodes: [node_output] })
+  }
+  result
 }
 
 ///|
@@ -131,9 +151,8 @@ pub fn node_label_and_size_calculator_compute_inside_node_label_padding(
   layout_direction : @core.Direction,
 ) -> @core.ElkPadding raise {
   try {
-    let node_context = new_node_context(
-      @core.adapt_single_node(node) as &NodeSpacingNode,
-    )
+    let node_input = capture_elk_node_spacing_node(node)
+    let node_context = new_node_context(node_input)
     node_label_cell_creator_create_node_label_cells(
       node_context,
       true,

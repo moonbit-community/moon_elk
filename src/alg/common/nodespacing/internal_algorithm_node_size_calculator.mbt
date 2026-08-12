@@ -68,10 +68,7 @@ pub fn node_size_calculator_set_node_width(
     computed_width
   }
 
-  let fixed_graph_size = match node_context.node.get_graph() {
-    Some(graph) => graph.get_property_bool(@core.node_size_fixed_graph_size)
-    None => false
-  }
+  let fixed_graph_size = node_context.node.graph_fixed_size
 
   if fixed_graph_size {
     node_size.x = @cmp.maximum(node_size.x, width)
@@ -166,10 +163,7 @@ pub fn node_size_calculator_set_node_height(
     computed_height
   }
 
-  let fixed_graph_size = match node_context.node.get_graph() {
-    Some(graph) => graph.get_property_bool(@core.node_size_fixed_graph_size)
-    None => false
-  }
+  let fixed_graph_size = node_context.node.graph_fixed_size
 
   if fixed_graph_size {
     node_size.y = @cmp.maximum(node_size.y, height)

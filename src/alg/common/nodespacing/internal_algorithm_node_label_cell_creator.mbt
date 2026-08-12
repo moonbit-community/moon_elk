@@ -156,16 +156,12 @@ fn node_label_cell_creator_retrieve_node_label_cell(
 ///|
 fn node_label_cell_creator_handle_node_label(
   node_context : NodeContext,
-  label : &NodeSpacingLabel,
+  label : NodeSpacingLabel,
   only_inside : Bool,
   horizontal_layout_mode : Bool,
 ) -> Unit raise NodeLabelCellCreatorException {
-  let label_placement = if label.has_property_string_array(
-      @core.node_labels_placement,
-    ) {
-    node_context_parse_node_label_placement(
-      label.get_property_string_array(@core.node_labels_placement),
-    )
+  let label_placement = if label.has_node_placement {
+    node_context_parse_node_label_placement(label.node_placement)
   } else {
     node_context.node_label_placement
   }

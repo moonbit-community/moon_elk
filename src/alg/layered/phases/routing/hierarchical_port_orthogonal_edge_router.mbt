@@ -106,7 +106,7 @@ fn hierarchical_port_orthogonal_string_array_contains(
 fn hierarchical_port_orthogonal_restore_dummy(
   dummy : @runtime.LNode,
   layered_graph : @runtime.LGraph,
-) -> Unit raise {
+) -> Unit {
   let side = dummy.get_property_port_side(
     @runtime.internal_properties_ext_port_side,
   )
@@ -163,12 +163,7 @@ fn hierarchical_port_orthogonal_restore_dummy(
     }
   }
 
-  let margin_calculator = @nodespacing.node_dimension_calculation_get_node_margin_calculator_for_adapter(
-    @runtime.adapt_l_graph(layered_graph),
-  )
-  margin_calculator.process_node(
-    @runtime.adapt_l_node(dummy, false) as &@nodespacing.NodeSpacingNode,
-  )
+  @runtime.calculate_l_node_margin(layered_graph, dummy)
 }
 
 ///|
@@ -196,7 +191,7 @@ fn hierarchical_port_orthogonal_connect_node_to_dummy(
 ///|
 fn hierarchical_port_orthogonal_restore_north_south_dummies(
   layered_graph : @runtime.LGraph,
-) -> Array[@runtime.LNode] raise {
+) -> Array[@runtime.LNode] {
   let restored_dummies = []
   let replaced = layered_graph.get_property_l_node_array(
     @runtime.internal_properties_ext_port_replaced_dummies,

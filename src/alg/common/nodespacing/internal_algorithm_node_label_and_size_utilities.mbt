@@ -1,9 +1,4 @@
 ///|
-pub let nodespacing_port_border_offset_property : @graph.IProperty[Double] = @graph.new_property(
-  "org.eclipse.elk.port.borderOffset", 0.0,
-)
-
-///|
 let nodespacing_default_min_width = 20.0
 
 ///|
@@ -41,9 +36,9 @@ fn nodespacing_parse_minimum_size(text : String) -> @core.KVector raise {
 }
 
 ///|
-pub fn nodespacing_port_border_offset_value(port : &NodeSpacingPort) -> Double {
-  if port.has_property_double(nodespacing_port_border_offset_property) {
-    port.get_property_double(nodespacing_port_border_offset_property)
+pub fn nodespacing_port_border_offset_value(port : NodeSpacingPort) -> Double {
+  if port.has_border_offset {
+    port.border_offset
   } else {
     0.0
   }
@@ -51,7 +46,7 @@ pub fn nodespacing_port_border_offset_value(port : &NodeSpacingPort) -> Double {
 
 ///|
 pub fn nodespacing_port_labels_bounds(
-  port : &NodeSpacingPort,
+  port : NodeSpacingPort,
 ) -> @core.ElkRectangle {
   let labels = port.get_labels()
   if labels.is_empty() {
@@ -81,7 +76,7 @@ pub fn nodespacing_port_labels_bounds(
 
 ///|
 fn nodespacing_compute_inside_part_for_port(
-  port : &NodeSpacingPort,
+  port : NodeSpacingPort,
   port_border_offset : Double,
 ) -> Double {
   let label_bounds = nodespacing_port_labels_bounds(port)
@@ -312,9 +307,7 @@ pub fn node_label_and_size_utilities_get_minimum_node_size(
 pub fn node_label_and_size_utilities_get_minimum_node_or_client_area_size(
   node_context : NodeContext,
 ) -> @core.KVector raise {
-  let min_size = nodespacing_parse_minimum_size(
-    node_context.node.get_property_string(@core.node_size_minimum),
-  )
+  let min_size = nodespacing_parse_minimum_size(node_context.node.minimum_size)
 
   if node_context.has_size_option(DefaultMinimumSize) {
     if min_size.x <= 0.0 {

@@ -74,13 +74,13 @@ pub fn new_label_cell_with_layout_mode(Double, Bool) -> Cell
 
 pub fn new_label_cell_with_node_label_location(Double, NodeLabelLocation) -> Cell
 
-pub fn new_node_context(&NodeSpacingNode) -> NodeContext raise
+pub fn new_node_context(NodeSpacingNode) -> NodeContext raise
 
-pub fn new_node_margin_calculator(@core.ElkGraphAdapter) -> NodeMarginCalculator
+pub fn new_node_margin_calculator(@core.ElkGraphAdapter) -> NodeMarginCalculator raise
 
-pub fn new_node_margin_calculator_for_adapter(&NodeSpacingGraph) -> NodeMarginCalculator
+pub fn new_node_margin_calculator_for_input(NodeSpacingInput) -> NodeMarginCalculator
 
-pub fn new_port_context(NodeContext, &NodeSpacingPort, Int) -> PortContext
+pub fn new_port_context(NodeContext, NodeSpacingPort, Int) -> PortContext
 
 pub fn new_strip_container_cell(Strip, Bool, Double) -> Cell
 
@@ -102,29 +102,29 @@ pub fn node_context_port_side_key(@core.PortSide) -> String
 
 pub fn node_dimension_calculation_calculate_label_and_node_sizes(@core.ElkGraphAdapter) -> Unit raise
 
-pub fn node_dimension_calculation_calculate_label_and_node_sizes_for_adapter(&NodeSpacingGraph) -> Unit raise
+pub fn node_dimension_calculation_calculate_label_and_node_sizes_for_input(NodeSpacingInput) -> NodeSpacingOutput raise
 
 pub fn node_dimension_calculation_calculate_label_and_node_sizes_for_layered_graph(@graph.ElkNode) -> Unit raise
 
 pub fn node_dimension_calculation_calculate_node_margins(@core.ElkGraphAdapter) -> Unit raise
 
-pub fn node_dimension_calculation_calculate_node_margins_for_adapter(&NodeSpacingGraph) -> Unit raise
+pub fn node_dimension_calculation_calculate_node_margins_for_input(NodeSpacingInput) -> NodeSpacingOutput
 
 pub fn node_dimension_calculation_calculate_node_margins_for_layered_graph(@graph.ElkNode) -> Unit raise
 
-pub fn node_dimension_calculation_get_node_margin_calculator(@core.ElkGraphAdapter) -> NodeMarginCalculator
+pub fn node_dimension_calculation_get_node_margin_calculator(@core.ElkGraphAdapter) -> NodeMarginCalculator raise
 
-pub fn node_dimension_calculation_get_node_margin_calculator_for_adapter(&NodeSpacingGraph) -> NodeMarginCalculator
+pub fn node_dimension_calculation_get_node_margin_calculator_for_input(NodeSpacingInput) -> NodeMarginCalculator
 
 pub fn node_dimension_calculation_sort_port_lists(@core.ElkGraphAdapter) -> Unit raise
 
-pub fn node_dimension_calculation_sort_port_lists_for_adapter(&NodeSpacingGraph) -> Unit raise
+pub fn node_dimension_calculation_sort_port_lists_for_input(NodeSpacingInput) -> NodeSpacingOutput raise
 
 pub fn node_dimension_calculation_sort_port_lists_for_layered_graph(@graph.ElkNode) -> Unit raise
 
 pub fn node_label_and_size_calculator_compute_inside_node_label_padding(@graph.ElkNode, @core.Direction) -> @core.Spacing raise
 
-pub fn node_label_and_size_calculator_process_graph(&NodeSpacingGraph) -> Unit raise
+pub fn node_label_and_size_calculator_process_graph(NodeSpacingInput) -> Unit raise
 
 pub fn node_label_and_size_calculator_process_layered_graph(@graph.ElkNode) -> Unit raise
 
@@ -166,11 +166,9 @@ pub fn node_size_calculator_set_node_height(NodeContext) -> Unit raise
 
 pub fn node_size_calculator_set_node_width(NodeContext) -> Unit raise
 
-pub let nodespacing_port_border_offset_property : @graph.IProperty[Double]
+pub fn nodespacing_port_border_offset_value(NodeSpacingPort) -> Double
 
-pub fn nodespacing_port_border_offset_value(&NodeSpacingPort) -> Double
-
-pub fn nodespacing_port_labels_bounds(&NodeSpacingPort) -> @core.ElkRectangle
+pub fn nodespacing_port_labels_bounds(NodeSpacingPort) -> @core.ElkRectangle
 
 pub fn port_context_creator_create_port_contexts(NodeContext, Bool) -> Unit raise PortContextCreatorException
 
@@ -181,8 +179,6 @@ pub fn port_label_placement_calculator_place_vertical_port_labels(NodeContext) -
 pub fn port_placement_calculator_place_horizontal_ports(NodeContext) -> Unit
 
 pub fn port_placement_calculator_place_vertical_ports(NodeContext) -> Unit
-
-pub let port_placement_calculator_port_ratio_or_position : @graph.IProperty[Double]
 
 pub fn strip_container_cell_compute_minimum_height(Cell) -> Double
 
@@ -246,9 +242,9 @@ pub struct Cell {
   mut label_vertical_alignment : VerticalLabelAlignment
   mut label_gap : Double
   mut labels : Array[@graph.ElkLabel]?
-  mut l_labels : Array[&NodeSpacingLabel]?
+  mut l_labels : Array[NodeSpacingLabel]?
 }
-pub fn Cell::add_l_label(Self, &NodeSpacingLabel) -> Unit
+pub fn Cell::add_l_label(Self, NodeSpacingLabel) -> Unit
 pub fn Cell::add_label(Self, @graph.ElkLabel) -> Unit
 pub fn Cell::apply_horizontal_layout(Self, Self?, Double, Double) -> Unit
 pub fn Cell::apply_label_layout(Self) -> Unit
@@ -258,7 +254,7 @@ pub fn Cell::get_cell_rectangle(Self) -> @core.ElkRectangle
 pub fn Cell::get_container_mode(Self) -> Strip
 pub fn Cell::get_gap(Self) -> Double
 pub fn Cell::get_horizontal_alignment(Self) -> HorizontalLabelAlignment
-pub fn Cell::get_l_labels(Self) -> Array[&NodeSpacingLabel]
+pub fn Cell::get_l_labels(Self) -> Array[NodeSpacingLabel]
 pub fn Cell::get_labels(Self) -> Array[@graph.ElkLabel]
 pub fn Cell::get_minimum_content_area_size(Self) -> @core.KVector
 pub fn Cell::get_minimum_height(Self) -> Double
@@ -302,7 +298,7 @@ pub enum HorizontalLabelAlignment {
 }
 
 pub struct NodeContext {
-  node : &NodeSpacingNode
+  node : NodeSpacingNode
   node_size : @core.KVector
   treat_as_compound_node : Bool
   size_constraints : Array[@core.SizeConstraint]
@@ -370,23 +366,118 @@ pub struct NodeMarginCalculator {
   mut include_ports : Bool
   mut include_port_labels : Bool
   mut include_edge_head_tail_labels : Bool
-  adapter : &NodeSpacingGraph
+  input : NodeSpacingInput
+  elk_adapter : @core.ElkGraphAdapter?
 }
 pub fn NodeMarginCalculator::exclude_edge_head_tail_labels(Self) -> Self
 pub fn NodeMarginCalculator::exclude_labels(Self) -> Self
 pub fn NodeMarginCalculator::exclude_port_labels(Self) -> Self
 pub fn NodeMarginCalculator::exclude_ports(Self) -> Self
-pub fn NodeMarginCalculator::process(Self) -> Unit raise
-pub fn NodeMarginCalculator::process_node(Self, &NodeSpacingNode) -> Unit raise
+pub fn NodeMarginCalculator::output(Self) -> NodeSpacingOutput
+pub fn NodeMarginCalculator::process(Self) -> Unit
+pub fn NodeMarginCalculator::process_node(Self, NodeSpacingNode) -> Unit
 
 pub struct NodeMicroLayout {
   adapter : @core.ElkGraphAdapter
 }
 pub fn NodeMicroLayout::execute(Self) -> Unit raise
 
+pub(all) struct NodeSpacingEdge {
+  labels : Array[NodeSpacingLabel]
+}
+
+pub(all) struct NodeSpacingInput {
+  direction : String
+  spacing_label_node : Double
+  nodes : Array[NodeSpacingNode]
+}
+pub fn NodeSpacingInput::output(Self) -> NodeSpacingOutput
+
+pub(all) struct NodeSpacingLabel {
+  size : @core.KVector
+  mut position : @core.KVector
+  edge_placement : String
+  has_node_placement : Bool
+  node_placement : Array[String]
+}
+
+pub(all) struct NodeSpacingNode {
+  source_index : Int
+  mut size : @core.KVector
+  position : @core.KVector
+  labels : Array[NodeSpacingLabel]
+  ports : Array[NodeSpacingPort]
+  incoming_edges : Array[NodeSpacingEdge]
+  outgoing_edges : Array[NodeSpacingEdge]
+  sort_ports : Bool
+  compound_node : Bool
+  graph_fixed_size : Bool
+  topdown_layout : Bool
+  inside_self_loops_activate : Bool
+  size_constraints : Array[String]
+  size_options : Array[String]
+  port_constraints : String
+  port_labels_placement : Array[String]
+  port_labels_treat_as_group : Bool
+  node_labels_placement : Array[String]
+  node_labels_padding : String
+  spacing_label_node : Double
+  spacing_label_label : Double
+  spacing_port_port : Double
+  spacing_label_port_horizontal : Double
+  spacing_label_port_vertical : Double
+  spacing_ports_surrounding : String
+  alignment_default : String
+  alignment_north : String?
+  alignment_south : String?
+  alignment_east : String?
+  alignment_west : String?
+  minimum_size : String
+  mut padding : @core.Spacing
+  mut margin : @core.Spacing
+}
+
+pub(all) struct NodeSpacingNodeOutput {
+  source_index : Int
+  size : @core.KVector
+  padding : @core.Spacing
+  margin : @core.Spacing
+  port_order : Array[Int]
+  ports : Array[NodeSpacingPortOutput]
+  label_positions : Array[@core.KVector]
+}
+
+pub(all) struct NodeSpacingOutput {
+  nodes : Array[NodeSpacingNodeOutput]
+}
+
+pub(all) struct NodeSpacingPort {
+  source_index : Int
+  size : @core.KVector
+  mut position : @core.KVector
+  side : @core.PortSide
+  labels : Array[NodeSpacingLabel]
+  incoming_edges : Array[NodeSpacingEdge]
+  outgoing_edges : Array[NodeSpacingEdge]
+  has_compound_connections : Bool
+  has_border_offset : Bool
+  border_offset : Double
+  has_ratio_or_position : Bool
+  ratio_or_position : Double
+  sort_index : Int?
+  mut volatile_id : Int
+}
+
+pub(all) struct NodeSpacingPortOutput {
+  source_index : Int
+  position : @core.KVector
+  volatile_id : Int
+  label_positions : Array[@core.KVector]
+}
+
 pub struct PortContext {
   parent_node_context : NodeContext
-  port : &NodeSpacingPort
+  port : NodeSpacingPort
   port_position : @core.KVector
   labels_next_to_port : Bool
   volatile_id : Int
@@ -409,58 +500,3 @@ pub enum VerticalLabelAlignment {
 // Type aliases
 
 // Traits
-pub(open) trait NodeSpacingEdge {
-  fn get_labels(Self) -> Array[&NodeSpacingLabel]
-}
-
-pub(open) trait NodeSpacingGraph {
-  fn get_property_bool(Self, @graph.IProperty[Bool]) -> Bool
-  fn get_property_double(Self, @graph.IProperty[Double]) -> Double
-  fn get_property_string(Self, @graph.IProperty[String]) -> String
-  fn get_nodes(Self) -> Array[&NodeSpacingNode]
-  fn cleanup(Self) -> Unit
-}
-
-pub(open) trait NodeSpacingLabel {
-  fn get_size(Self) -> @core.KVector
-  fn get_position(Self) -> @core.KVector
-  fn set_position(Self, @core.KVector) -> Unit
-  fn get_property_string(Self, @graph.IProperty[String]) -> String
-  fn get_property_string_array(Self, @graph.IProperty[Array[String]]) -> Array[String]
-  fn has_property_string_array(Self, @graph.IProperty[Array[String]]) -> Bool
-}
-
-pub(open) trait NodeSpacingNode {
-  fn get_size(Self) -> @core.KVector
-  fn set_size(Self, @core.KVector) -> Unit
-  fn get_position(Self) -> @core.KVector
-  fn get_property_bool(Self, @graph.IProperty[Bool]) -> Bool
-  fn get_property_string(Self, @graph.IProperty[String]) -> String
-  fn has_property_string(Self, @graph.IProperty[String]) -> Bool
-  fn get_property_string_array(Self, @graph.IProperty[Array[String]]) -> Array[String]
-  fn get_graph(Self) -> &NodeSpacingGraph?
-  fn get_labels(Self) -> Array[&NodeSpacingLabel]
-  fn get_ports(Self) -> Array[&NodeSpacingPort]
-  fn get_incoming_edges(Self) -> Array[&NodeSpacingEdge]
-  fn get_outgoing_edges(Self) -> Array[&NodeSpacingEdge]
-  fn sort_port_list(Self) -> Unit raise
-  fn is_compound_node(Self) -> Bool
-  fn set_padding(Self, @core.Spacing) -> Unit
-  fn get_margin(Self) -> @core.Spacing raise
-  fn set_margin(Self, @core.Spacing) -> Unit
-  fn get_individual_spacing(Self, @graph.IProperty[Double]) -> Double
-}
-
-pub(open) trait NodeSpacingPort {
-  fn get_size(Self) -> @core.KVector
-  fn get_position(Self) -> @core.KVector
-  fn set_position(Self, @core.KVector) -> Unit
-  fn get_property_double(Self, @graph.IProperty[Double]) -> Double
-  fn has_property_double(Self, @graph.IProperty[Double]) -> Bool
-  fn set_volatile_id(Self, Int) -> Unit
-  fn get_side(Self) -> @core.PortSide
-  fn get_labels(Self) -> Array[&NodeSpacingLabel]
-  fn get_incoming_edges(Self) -> Array[&NodeSpacingEdge]
-  fn get_outgoing_edges(Self) -> Array[&NodeSpacingEdge]
-  fn has_compound_connections(Self) -> Bool
-}

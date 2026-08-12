@@ -50,9 +50,7 @@ fn label_and_node_size_offset_test_new_port(
   y : Double,
 ) -> @runtime.LPort {
   let port = @runtime.new_l_port()
-  port.set_property_double(
-    @nodespacing.nodespacing_port_border_offset_property, 0.0,
-  )
+  port.set_property_double(@options.layered_options_port_border_offset, 0.0)
   port.set_side(side)
   ignore(port.get_position().set_xy(x, y))
   port.set_node(Some(node))

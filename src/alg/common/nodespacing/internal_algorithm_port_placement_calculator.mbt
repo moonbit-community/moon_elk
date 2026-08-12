@@ -1,9 +1,4 @@
 ///|
-pub let port_placement_calculator_port_ratio_or_position : @graph.IProperty[
-  Double,
-] = @graph.new_property("portRatioOrPosition", 0.0)
-
-///|
 fn port_placement_calculator_side_equals(
   left : @core.PortSide,
   right : @core.PortSide,
@@ -30,7 +25,7 @@ fn port_placement_calculator_horizontal_port_y_coordinate(
 ) -> Double {
   let port = port_context.port
   let port_border_offset = nodespacing_port_border_offset_value(port)
-  if port.has_property_double(nodespacing_port_border_offset_property) {
+  if port.has_border_offset {
     if port_placement_calculator_side_equals(port.get_side(), North) {
       -port.get_size().y - port_border_offset
     } else {
@@ -50,7 +45,7 @@ fn port_placement_calculator_vertical_port_x_coordinate(
 ) -> Double {
   let port = port_context.port
   let port_border_offset = nodespacing_port_border_offset_value(port)
-  if port.has_property_double(nodespacing_port_border_offset_property) {
+  if port.has_border_offset {
     if port_placement_calculator_side_equals(port.get_side(), West) {
       -port.get_size().x - port_border_offset
     } else {
@@ -82,12 +77,8 @@ fn port_placement_calculator_horizontal_fixed_ratio_ports(
 ) -> Unit {
   let node_width = node_context.node_size.x
   for port_context in node_context_get_port_contexts(node_context, port_side) {
-    let ratio = if port_context.port.has_property_double(
-        port_placement_calculator_port_ratio_or_position,
-      ) {
-      port_context.port.get_property_double(
-        port_placement_calculator_port_ratio_or_position,
-      )
+    let ratio = if port_context.port.has_ratio_or_position {
+      port_context.port.ratio_or_position
     } else {
       0.0
     }
@@ -240,12 +231,8 @@ fn port_placement_calculator_vertical_fixed_ratio_ports(
   let node_height = node_context.node_size.y
 
   for port_context in node_context_get_port_contexts(node_context, port_side) {
-    let ratio = if port_context.port.has_property_double(
-        port_placement_calculator_port_ratio_or_position,
-      ) {
-      port_context.port.get_property_double(
-        port_placement_calculator_port_ratio_or_position,
-      )
+    let ratio = if port_context.port.has_ratio_or_position {
+      port_context.port.ratio_or_position
     } else {
       0.0
     }

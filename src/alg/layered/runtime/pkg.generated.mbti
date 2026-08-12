@@ -31,6 +31,12 @@ pub fn adapt_l_label(LLabel) -> LLabelAdapter
 
 pub fn adapt_l_node(LNode, Bool) -> LNodeAdapter
 
+pub fn apply_l_node_spacing_output(LGraphAdapter, @nodespacing.NodeSpacingOutput) -> Unit
+
+pub fn calculate_l_node_margin(LGraph, LNode) -> Unit
+
+pub fn capture_l_node_spacing_input(LGraphAdapter) -> @nodespacing.NodeSpacingInput
+
 pub fn change_coord_system(@core.KVector, LGraph, LGraph) -> Unit
 
 pub fn compute_graph_properties(LGraph) -> Unit
@@ -532,7 +538,6 @@ pub struct LEdgeAdapter {
   mut label_adapters : Array[LLabelAdapter]?
 }
 pub fn LEdgeAdapter::get_labels(Self) -> Array[LLabelAdapter]
-pub impl @nodespacing.NodeSpacingEdge for LEdgeAdapter
 
 pub struct LGraph {
   mut id : Int
@@ -628,7 +633,6 @@ pub fn LGraphAdapter::has_property_string_array(Self, @graph.IProperty[Array[Str
 pub fn LGraphAdapter::set_position(Self, @core.KVector) -> Unit raise
 pub fn LGraphAdapter::set_size(Self, @core.KVector) -> Unit
 pub fn LGraphAdapter::set_volatile_id(Self, Int) -> Unit
-pub impl @nodespacing.NodeSpacingGraph for LGraphAdapter
 
 pub struct LGraphElement {
   mut id : Int
@@ -689,7 +693,6 @@ pub fn LLabelAdapter::has_property_string_array(Self, @graph.IProperty[Array[Str
 pub fn LLabelAdapter::set_position(Self, @core.KVector) -> Unit
 pub fn LLabelAdapter::set_size(Self, @core.KVector) -> Unit
 pub fn LLabelAdapter::set_volatile_id(Self, Int) -> Unit
-pub impl @nodespacing.NodeSpacingLabel for LLabelAdapter
 
 pub struct LNode {
   shape : LShape
@@ -823,7 +826,6 @@ pub fn LNodeAdapter::set_volatile_id(Self, Int) -> Unit
 pub fn LNodeAdapter::sort_port_list(Self) -> Unit raise
 pub fn LNodeAdapter::sort_port_list_with(Self, PortComparator) -> Unit raise
 pub fn LNodeAdapter::sort_port_list_with_comparator(Self, (LPort, LPort) -> Int raise?) -> Unit raise?
-pub impl @nodespacing.NodeSpacingNode for LNodeAdapter
 
 pub struct LPort {
   shape : LShape
@@ -913,7 +915,6 @@ pub fn LPortAdapter::set_margin(Self, @core.Spacing) -> Unit
 pub fn LPortAdapter::set_position(Self, @core.KVector) -> Unit
 pub fn LPortAdapter::set_size(Self, @core.KVector) -> Unit
 pub fn LPortAdapter::set_volatile_id(Self, Int) -> Unit
-pub impl @nodespacing.NodeSpacingPort for LPortAdapter
 
 pub struct LShape {
   graph_element : LGraphElement

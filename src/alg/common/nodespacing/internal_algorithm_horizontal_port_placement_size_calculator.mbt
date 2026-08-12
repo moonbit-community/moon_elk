@@ -196,12 +196,8 @@ fn horizontal_port_placement_size_calculator_calculate_horizontal_node_size_requ
   let mut previous_port_width = 0.0
 
   for current_port_context in port_contexts {
-    let current_port_ratio = if current_port_context.port.has_property_double(
-        port_placement_calculator_port_ratio_or_position,
-      ) {
-      current_port_context.port.get_property_double(
-        port_placement_calculator_port_ratio_or_position,
-      )
+    let current_port_ratio = if current_port_context.port.has_ratio_or_position {
+      current_port_context.port.ratio_or_position
     } else {
       0.0
     }

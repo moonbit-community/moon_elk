@@ -23,7 +23,7 @@ fn label_cell_labels(cell : LabelCell) -> Array[@graph.ElkLabel] {
 }
 
 ///|
-fn label_cell_l_labels(cell : LabelCell) -> Array[&NodeSpacingLabel] {
+fn label_cell_l_labels(cell : LabelCell) -> Array[NodeSpacingLabel] {
   match cell.l_labels {
     Some(labels) => labels
     None => {
@@ -149,7 +149,7 @@ pub fn LabelCell::get_labels(self : LabelCell) -> Array[@graph.ElkLabel] {
 }
 
 ///|
-pub fn LabelCell::get_l_labels(self : LabelCell) -> Array[&NodeSpacingLabel] {
+pub fn LabelCell::get_l_labels(self : LabelCell) -> Array[NodeSpacingLabel] {
   label_cell_l_labels(self)
 }
 
@@ -187,7 +187,7 @@ pub fn LabelCell::add_label(self : LabelCell, label : @graph.ElkLabel) -> Unit {
 ///|
 pub fn LabelCell::add_l_label(
   self : LabelCell,
-  label : &NodeSpacingLabel,
+  label : NodeSpacingLabel,
 ) -> Unit {
   let had_labels = self.label_count() > 0
   let labels = label_cell_l_labels(self)

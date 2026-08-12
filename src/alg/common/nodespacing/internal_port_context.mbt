@@ -1,12 +1,12 @@
 ///|
-fn port_context_has_compound_connections(port : &NodeSpacingPort) -> Bool {
+fn port_context_has_compound_connections(port : NodeSpacingPort) -> Bool {
   port.has_compound_connections()
 }
 
 ///|
 pub struct PortContext {
   parent_node_context : NodeContext
-  port : &NodeSpacingPort
+  port : NodeSpacingPort
   port_position : @core.KVector
   labels_next_to_port : Bool
   volatile_id : Int
@@ -17,7 +17,7 @@ pub struct PortContext {
 ///|
 pub fn new_port_context(
   parent_node_context : NodeContext,
-  port : &NodeSpacingPort,
+  port : NodeSpacingPort,
   volatile_id : Int,
 ) -> PortContext {
   let port_labels_next_to_port = parent_node_context.has_port_label_placement(

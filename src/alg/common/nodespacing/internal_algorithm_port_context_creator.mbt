@@ -1,7 +1,7 @@
 ///|
 fn port_context_creator_create_port_context(
   node_context : NodeContext,
-  port : &NodeSpacingPort,
+  port : NodeSpacingPort,
   volatile_id : Int,
   im_port_labels : Bool,
 ) -> Unit {
