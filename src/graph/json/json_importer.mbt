@@ -516,9 +516,8 @@ fn importer_transform_ports(
 fn importer_transform_node(
   importer : JsonImporter,
   json_node : Map[String, Json],
-  parent : @graph.ElkNode?,
-) -> @graph.ElkNode raise {
-  let node = @graph.create_node(parent)
+  node : @graph.ElkNode,
+) -> Unit raise {
   let id = required_json_id(json_node)
   @graph.node_set_identifier(node, id)
   match json_value_as_string(json_node.get("id").unwrap_or(Json::string(id))) {
@@ -537,13 +536,16 @@ fn importer_transform_node(
       for child in children {
         match child {
           Object(child_node) =>
-            ignore(importer_transform_node(importer, child_node, Some(node)))
+            importer_transform_node(
+              importer,
+              child_node,
+              @graph.create_node(Some(node)),
+            )
           _ => ()
         }
       }
     None => ()
   }
-  node
 }
 
 ///|
@@ -1018,24 +1020,44 @@ fn importer_transform_edges(
 }
 
 ///|
+/// Owns `arena` until a complete root is returned to the caller.
+///
+/// Every construction failure disposes the arena here because callers cannot
+/// observe a root handle until this function returns successfully.
+fn JsonImporter::transform_in_arena(
+  self : JsonImporter,
+  graph : Map[String, Json],
+  arena : @graph.GraphArena,
+) -> @graph.ElkNode raise {
+  try {
+    self.input_model = Some(graph)
+    self.node_id_map.clear()
+    self.port_id_map.clear()
+    self.node_json_map.clear()
+    self.port_json_map.clear()
+    self.edge_json_map.clear()
+    self.label_json_map.clear()
+    self.edge_original_parent_map.clear()
+    let root = arena.create_graph()
+    importer_transform_node(self, graph, root)
+    if !importer_has_error(self) {
+      importer_transform_edges(self, graph)
+    }
+    root
+  } catch {
+    error => {
+      arena.dispose()
+      raise error
+    }
+  }
+}
+
+///|
 pub fn JsonImporter::transform(
   self : JsonImporter,
   graph : Map[String, Json],
 ) -> @graph.ElkNode raise {
-  self.input_model = Some(graph)
-  self.node_id_map.clear()
-  self.port_id_map.clear()
-  self.node_json_map.clear()
-  self.port_json_map.clear()
-  self.edge_json_map.clear()
-  self.label_json_map.clear()
-  self.edge_original_parent_map.clear()
-  let root = importer_transform_node(self, graph, None)
-  if importer_has_error(self) {
-    return root
-  }
-  importer_transform_edges(self, graph)
-  root
+  self.transform_in_arena(graph, @graph.new_graph_arena())
 }
 
 ///|
