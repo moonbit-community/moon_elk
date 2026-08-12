@@ -26,34 +26,7 @@ let edge_add_source = @test.edge_add_source
 let edge_add_target = @test.edge_add_target
 
 ///|
-let create_port = @test.create_port
-
-///|
-let make_port_shape = @test.make_port_shape
-
-///|
-let port_set_dimensions = @test.port_set_dimensions
-
-///|
-let port_x = @test.port_x
-
-///|
-let port_y = @test.port_y
-
-///|
-let port_set_layout_option_string_by_id = @test.port_set_layout_option_string_by_id
-
-///|
 let new_recursive_graph_layout_engine = @test.new_recursive_graph_layout_engine
-
-///|
-let new_basic_progress_monitor = @test.new_basic_progress_monitor
-
-///|
-let resolved_algorithm = @core.resolved_algorithm
-
-///|
-let port_set_location = @graph.port_set_location
 
 ///|
 fn new_layout_algorithm_resolver(
@@ -68,22 +41,7 @@ fn new_layout_algorithm_resolver(
 let apply_visitors = @test.apply_visitors
 
 ///|
-let port_width = @test.port_width
-
-///|
-let port_height = @test.port_height
-
-///|
-let label_side_to_string = @core.label_side_to_string
-
-///|
 let node_set_string_set_property = @graph.node_set_string_set_property
-
-///|
-let new_i_label_manager = @core.new_i_label_manager
-
-///|
-let new_kvector_chain_from_array = @core.new_kvector_chain_from_array
 
 ///|
 let size_constraint_to_string = @core.size_constraint_to_string

@@ -55,17 +55,21 @@ fn greedy_model_order_cycle_breaker_choose_node_with_max_outflow(
 fn greedy_model_order_cycle_breaker_process(
   layered_graph : @runtime.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
+  state : @runtime.LayeredRunState,
 ) -> Unit raise {
   greedy_cycle_breaker_process_with_chooser(
-    layered_graph, progress_monitor, greedy_model_order_cycle_breaker_choose_node_with_max_outflow,
+    layered_graph, progress_monitor, state, greedy_model_order_cycle_breaker_choose_node_with_max_outflow,
   )
 }
 
 ///|
-pub fn new_greedy_model_order_cycle_breaker_layout_phase() -> @core.TypedLayoutProcessor[
-  @runtime.LGraph,
-] {
+pub fn new_greedy_model_order_cycle_breaker_layout_phase(
+  state? : @runtime.LayeredRunState = @runtime.new_layered_run_state(),
+) -> @core.TypedLayoutProcessor[@runtime.LGraph] {
   @core.new_layout_phase(
-    greedy_model_order_cycle_breaker_process, greedy_cycle_breaker_configuration,
+    (graph, monitor) => {
+      greedy_model_order_cycle_breaker_process(graph, monitor, state)
+    },
+    greedy_cycle_breaker_configuration,
   )
 }

@@ -1,0 +1,22 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/moon_elk/alg/layered/processors/node_spacing"
+
+import {
+  "Milky2018/moon_elk/alg/layered/runtime",
+  "Milky2018/moon_elk/core",
+}
+
+// Values
+pub fn new_innermost_node_margin_calculator_layout_processor() -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_label_and_node_size_processor_layout_processor(state? : @runtime.LayeredRunState) -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn register_node_spacing_processors(@runtime.LayeredPhaseRegistry) -> Unit
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits

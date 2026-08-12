@@ -35,7 +35,7 @@ fn p4nodes_test_contains_factory(
 
 ///|
 fn p4nodes_test_expected_hierarchical_port_position_factory_id() -> Int {
-  @runtime.layered_intermediate_processor_factory(
+  @intermediate.processor_factory(
     @runtime.new_l_graph(),
     p4nodes_test_strategy("HIERARCHICAL_PORT_POSITION_PROCESSOR"),
   ).factory_id()

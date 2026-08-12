@@ -19,7 +19,7 @@ fn[T] l_node_abort(message : String) -> T {
 }
 
 ///|
-fn lnode_port_side_equals(
+pub fn lnode_port_side_equals(
   left : @core.PortSide,
   right : @core.PortSide,
 ) -> Bool {
@@ -117,15 +117,9 @@ pub struct LNode {
   priv mut node_properties : Map[@graph.PropertyId, LNode]?
   priv mut node_array_properties : Map[@graph.PropertyId, Array[LNode]]?
   priv mut label_array_properties : Map[@graph.PropertyId, Array[LLabel]]?
-  priv mut end_label_cell_array_properties : Map[
-    @graph.PropertyId,
-    Array[EndLabelCell],
-  ]?
   priv mut int_int_map_properties : Map[@graph.PropertyId, Map[Int, Int]]?
   priv mut port_properties : Map[@graph.PropertyId, LPort]?
   priv mut edge_properties : Map[@graph.PropertyId, LEdge]?
-  priv mut bp_info_properties : Map[@graph.PropertyId, BPInfo]?
-  priv mut self_loop_holder_properties : Map[@graph.PropertyId, SelfLoopHolder]?
   port_side_indices : Map[Int, PortSideRange]
   mut port_sides_cached : Bool
 }
@@ -155,12 +149,9 @@ pub fn new_l_node(graph? : LGraph? = None) -> LNode {
     node_properties: None,
     node_array_properties: None,
     label_array_properties: None,
-    end_label_cell_array_properties: None,
     int_int_map_properties: None,
     port_properties: None,
     edge_properties: None,
-    bp_info_properties: None,
-    self_loop_holder_properties: None,
     port_side_indices: Map([]),
     port_sides_cached: false,
   }
@@ -1011,58 +1002,6 @@ pub fn LNode::has_property_l_label_array(
 }
 
 ///|
-pub fn LNode::set_property_end_label_cell_array(
-  self : LNode,
-  property : @graph.IProperty[Array[EndLabelCell]],
-  value : Array[EndLabelCell],
-) -> Unit {
-  self.end_label_cell_array_properties = Some(
-    layered_property_bag_set(
-      self.end_label_cell_array_properties,
-      property.get_property_id(),
-      value.copy(),
-    ),
-  )
-}
-
-///|
-pub fn LNode::clear_property_end_label_cell_array(
-  self : LNode,
-  property : @graph.IProperty[Array[EndLabelCell]],
-) -> Unit {
-  self.end_label_cell_array_properties = layered_property_bag_remove(
-    self.end_label_cell_array_properties,
-    property.get_property_id(),
-  )
-}
-
-///|
-pub fn LNode::get_property_end_label_cell_array(
-  self : LNode,
-  property : @graph.IProperty[Array[EndLabelCell]],
-) -> Array[EndLabelCell] {
-  match
-    layered_property_bag_get(
-      self.end_label_cell_array_properties,
-      property.get_property_id(),
-    ) {
-    Some(value) => value.copy()
-    None => property.get_default().copy()
-  }
-}
-
-///|
-pub fn LNode::has_property_end_label_cell_array(
-  self : LNode,
-  property : @graph.IProperty[Array[EndLabelCell]],
-) -> Bool {
-  layered_property_bag_has(
-    self.end_label_cell_array_properties,
-    property.get_property_id(),
-  )
-}
-
-///|
 pub fn LNode::set_property_int_int_map(
   self : LNode,
   property : @graph.IProperty[Map[Int, Int]],
@@ -1197,101 +1136,6 @@ pub fn LNode::has_property_l_edge(
   property : @graph.IProperty[LEdge?],
 ) -> Bool {
   layered_property_bag_has(self.edge_properties, property.get_property_id())
-}
-
-///|
-pub fn LNode::set_property_bp_info(
-  self : LNode,
-  property : @graph.IProperty[BPInfo?],
-  value : BPInfo?,
-) -> Unit {
-  match value {
-    Some(info) =>
-      self.bp_info_properties = Some(
-        layered_property_bag_set(
-          self.bp_info_properties,
-          property.get_property_id(),
-          info,
-        ),
-      )
-    None =>
-      self.bp_info_properties = layered_property_bag_remove(
-        self.bp_info_properties,
-        property.get_property_id(),
-      )
-  }
-}
-
-///|
-pub fn LNode::get_property_bp_info(
-  self : LNode,
-  property : @graph.IProperty[BPInfo?],
-) -> BPInfo? {
-  match
-    layered_property_bag_get(
-      self.bp_info_properties,
-      property.get_property_id(),
-    ) {
-    Some(value) => Some(value)
-    None => property.get_default()
-  }
-}
-
-///|
-pub fn LNode::has_property_bp_info(
-  self : LNode,
-  property : @graph.IProperty[BPInfo?],
-) -> Bool {
-  layered_property_bag_has(self.bp_info_properties, property.get_property_id())
-}
-
-///|
-pub fn LNode::set_property_self_loop_holder(
-  self : LNode,
-  property : @graph.IProperty[SelfLoopHolder?],
-  value : SelfLoopHolder?,
-) -> Unit {
-  match value {
-    Some(holder) =>
-      self.self_loop_holder_properties = Some(
-        layered_property_bag_set(
-          self.self_loop_holder_properties,
-          property.get_property_id(),
-          holder,
-        ),
-      )
-    None =>
-      self.self_loop_holder_properties = layered_property_bag_remove(
-        self.self_loop_holder_properties,
-        property.get_property_id(),
-      )
-  }
-}
-
-///|
-pub fn LNode::get_property_self_loop_holder(
-  self : LNode,
-  property : @graph.IProperty[SelfLoopHolder?],
-) -> SelfLoopHolder? {
-  match
-    layered_property_bag_get(
-      self.self_loop_holder_properties,
-      property.get_property_id(),
-    ) {
-    Some(value) => Some(value)
-    None => property.get_default()
-  }
-}
-
-///|
-pub fn LNode::has_property_self_loop_holder(
-  self : LNode,
-  property : @graph.IProperty[SelfLoopHolder?],
-) -> Bool {
-  layered_property_bag_has(
-    self.self_loop_holder_properties,
-    property.get_property_id(),
-  )
 }
 
 ///|

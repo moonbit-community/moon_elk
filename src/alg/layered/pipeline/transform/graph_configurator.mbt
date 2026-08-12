@@ -94,17 +94,21 @@ pub fn graph_configurator_default_favor_straight_edges(lgraph : LGraph) -> Unit 
 }
 
 ///|
-pub fn graph_configurator_initialize_layout_state(lgraph : LGraph) -> Unit {
-  lgraph
-  .get_layout_state()
-  .initialize_random(lgraph.get_property_int(@core.random_seed))
+pub fn graph_configurator_initialize_layout_state(
+  lgraph : LGraph,
+  state : @runtime.LayeredRunState,
+) -> Unit {
+  state.initialize_random(lgraph.get_property_int(@core.random_seed))
 }
 
 ///|
-pub fn graph_configurator_configure_graph_properties(lgraph : LGraph) -> Unit {
+pub fn graph_configurator_configure_graph_properties(
+  lgraph : LGraph,
+  state : @runtime.LayeredRunState,
+) -> Unit {
   graph_configurator_enforce_min_edge_spacing(lgraph)
   graph_configurator_enforce_direction(lgraph)
-  graph_configurator_initialize_layout_state(lgraph)
+  graph_configurator_initialize_layout_state(lgraph, state)
   graph_configurator_default_favor_straight_edges(lgraph)
   graph_configurator_copy_port_constraints(lgraph)
   lgraph.set_property_spacings(

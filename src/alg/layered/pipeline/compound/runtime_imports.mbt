@@ -23,6 +23,5 @@ using @runtime {
   new_l_label,
   new_l_node,
   new_l_port,
-  orthogonal_routing_generator_tolerance,
   to_edge_array,
 }

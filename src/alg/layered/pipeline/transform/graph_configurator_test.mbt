@@ -238,11 +238,12 @@ test "graph configurator preserves explicit favor-straight-edges value" {
 test "graph configurator initializes per-layout state from random seed" {
   let graph = graph_configurator_test_graph(0)
   graph.set_property_int(@core.random_seed, 42)
+  let state = @runtime.new_layered_run_state()
 
-  graph_configurator_initialize_layout_state(graph)
+  graph_configurator_initialize_layout_state(graph, state)
 
   assert_eq(
-    graph.get_layout_state().first_random_boolean(),
+    state.first_random_boolean(),
     Some(graph_configurator_test_seeded_next_boolean(42)),
   )
 }
@@ -254,12 +255,13 @@ test "graph configurator configures graph properties in one call" {
   graph.set_property_double(@core.aspect_ratio, 0.5)
   graph.set_property_string(@core.edge_routing, "ORTHOGONAL")
   graph.set_property_int(@core.random_seed, 5)
+  let state = @runtime.new_layered_run_state()
 
   let layerless_node = new_l_node(graph=Some(graph))
   layerless_node.set_property_string(@core.port_constraints, "FIXED_ORDER")
   graph.get_layerless_nodes().push(layerless_node)
 
-  graph_configurator_configure_graph_properties(graph)
+  graph_configurator_configure_graph_properties(graph, state)
 
   assert_double_eq(
     graph.get_property_double(@core.spacing_edge_edge),
@@ -279,7 +281,7 @@ test "graph configurator configures graph properties in one call" {
     "FIXED_ORDER",
   )
   assert_eq(
-    graph.get_layout_state().first_random_boolean(),
+    state.first_random_boolean(),
     Some(graph_configurator_test_seeded_next_boolean(5)),
   )
   assert_true(graph.has_property_spacings(internal_properties_spacings))

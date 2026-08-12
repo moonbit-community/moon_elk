@@ -52,7 +52,7 @@ test "recursive layered context applies graph configurator properties" {
     ),
   )
   assert_eq(
-    context.layered_graph.get_layout_state().first_random_boolean(),
+    session.layout_state.first_random_boolean(),
     Some(recursive_graph_layout_engine_test_seeded_next_boolean(5)),
   )
 

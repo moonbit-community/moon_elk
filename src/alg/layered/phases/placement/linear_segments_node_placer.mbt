@@ -996,7 +996,7 @@ pub fn new_linear_segments_node_placer_layout_phase() -> @core.TypedLayoutProces
       return Some(
         @core.layout_processor_configuration_create().add_before(
           @runtime.P5EdgeRouting,
-          @runtime.layered_intermediate_processor_factory(
+          @intermediate.processor_factory(
             graph,
             HierarchicalPortPositionProcessor,
           ),

@@ -1,5 +1,5 @@
 ///|
-impl @nodespacing.NodeSpacingGraph for LGraphAdapter with fn get_property_bool(
+pub impl @nodespacing.NodeSpacingGraph for LGraphAdapter with fn get_property_bool(
   self,
   property,
 ) {
@@ -7,7 +7,7 @@ impl @nodespacing.NodeSpacingGraph for LGraphAdapter with fn get_property_bool(
 }
 
 ///|
-impl @nodespacing.NodeSpacingGraph for LGraphAdapter with fn get_property_double(
+pub impl @nodespacing.NodeSpacingGraph for LGraphAdapter with fn get_property_double(
   self,
   property,
 ) {
@@ -15,7 +15,7 @@ impl @nodespacing.NodeSpacingGraph for LGraphAdapter with fn get_property_double
 }
 
 ///|
-impl @nodespacing.NodeSpacingGraph for LGraphAdapter with fn get_property_string(
+pub impl @nodespacing.NodeSpacingGraph for LGraphAdapter with fn get_property_string(
   self,
   property,
 ) {
@@ -23,7 +23,7 @@ impl @nodespacing.NodeSpacingGraph for LGraphAdapter with fn get_property_string
 }
 
 ///|
-impl @nodespacing.NodeSpacingGraph for LGraphAdapter with fn get_nodes(self) {
+pub impl @nodespacing.NodeSpacingGraph for LGraphAdapter with fn get_nodes(self) {
   // Layerless graphs are used while a layered graph is still being prepared;
   // preserve the old node-spacing entry point's traversal semantics here.
   let nodes : Array[LNodeAdapter] = if self.element.get_layers().is_empty() {
@@ -48,27 +48,32 @@ impl @nodespacing.NodeSpacingGraph for LGraphAdapter with fn get_nodes(self) {
 }
 
 ///|
-impl @nodespacing.NodeSpacingGraph for LGraphAdapter with fn cleanup(self) {
+pub impl @nodespacing.NodeSpacingGraph for LGraphAdapter with fn cleanup(self) {
   self.cleanup()
 }
 
 ///|
-impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn get_size(self) {
+pub impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn get_size(self) {
   self.get_size()
 }
 
 ///|
-impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn set_size(self, size) {
+pub impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn set_size(
+  self,
+  size,
+) {
   self.set_size(size)
 }
 
 ///|
-impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn get_position(self) {
+pub impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn get_position(
+  self,
+) {
   self.get_position()
 }
 
 ///|
-impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn get_property_bool(
+pub impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn get_property_bool(
   self,
   property,
 ) {
@@ -76,7 +81,7 @@ impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn get_property_bool(
 }
 
 ///|
-impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn get_property_string(
+pub impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn get_property_string(
   self,
   property,
 ) {
@@ -84,7 +89,7 @@ impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn get_property_string(
 }
 
 ///|
-impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn has_property_string(
+pub impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn has_property_string(
   self,
   property,
 ) {
@@ -92,7 +97,7 @@ impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn has_property_string(
 }
 
 ///|
-impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn get_property_string_array(
+pub impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn get_property_string_array(
   self,
   property,
 ) {
@@ -100,7 +105,7 @@ impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn get_property_string_a
 }
 
 ///|
-impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn get_graph(self) {
+pub impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn get_graph(self) {
   match self.get_graph() {
     Some(graph) => Some(graph as &@nodespacing.NodeSpacingGraph)
     None => None
@@ -108,19 +113,19 @@ impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn get_graph(self) {
 }
 
 ///|
-impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn get_labels(self) {
+pub impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn get_labels(self) {
   let labels : Array[LLabelAdapter] = self.get_labels()
   labels.map(label => label as &@nodespacing.NodeSpacingLabel)
 }
 
 ///|
-impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn get_ports(self) {
+pub impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn get_ports(self) {
   let ports : Array[LPortAdapter] = self.get_ports()
   ports.map(port => port as &@nodespacing.NodeSpacingPort)
 }
 
 ///|
-impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn get_incoming_edges(
+pub impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn get_incoming_edges(
   self,
 ) {
   let edges : Array[LEdgeAdapter] = self.get_incoming_edges()
@@ -128,7 +133,7 @@ impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn get_incoming_edges(
 }
 
 ///|
-impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn get_outgoing_edges(
+pub impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn get_outgoing_edges(
   self,
 ) {
   let edges : Array[LEdgeAdapter] = self.get_outgoing_edges()
@@ -136,19 +141,21 @@ impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn get_outgoing_edges(
 }
 
 ///|
-impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn sort_port_list(self) {
+pub impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn sort_port_list(
+  self,
+) {
   self.sort_port_list()
 }
 
 ///|
-impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn is_compound_node(
+pub impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn is_compound_node(
   self,
 ) {
   self.is_compound_node()
 }
 
 ///|
-impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn set_padding(
+pub impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn set_padding(
   self,
   padding,
 ) {
@@ -156,12 +163,12 @@ impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn set_padding(
 }
 
 ///|
-impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn get_margin(self) {
+pub impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn get_margin(self) {
   self.get_margin()
 }
 
 ///|
-impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn set_margin(
+pub impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn set_margin(
   self,
   margin,
 ) {
@@ -169,7 +176,7 @@ impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn set_margin(
 }
 
 ///|
-impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn get_individual_spacing(
+pub impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn get_individual_spacing(
   self,
   property,
 ) {
@@ -177,17 +184,19 @@ impl @nodespacing.NodeSpacingNode for LNodeAdapter with fn get_individual_spacin
 }
 
 ///|
-impl @nodespacing.NodeSpacingPort for LPortAdapter with fn get_size(self) {
+pub impl @nodespacing.NodeSpacingPort for LPortAdapter with fn get_size(self) {
   self.get_size()
 }
 
 ///|
-impl @nodespacing.NodeSpacingPort for LPortAdapter with fn get_position(self) {
+pub impl @nodespacing.NodeSpacingPort for LPortAdapter with fn get_position(
+  self,
+) {
   self.get_position()
 }
 
 ///|
-impl @nodespacing.NodeSpacingPort for LPortAdapter with fn set_position(
+pub impl @nodespacing.NodeSpacingPort for LPortAdapter with fn set_position(
   self,
   position,
 ) {
@@ -195,7 +204,7 @@ impl @nodespacing.NodeSpacingPort for LPortAdapter with fn set_position(
 }
 
 ///|
-impl @nodespacing.NodeSpacingPort for LPortAdapter with fn get_property_double(
+pub impl @nodespacing.NodeSpacingPort for LPortAdapter with fn get_property_double(
   self,
   property,
 ) {
@@ -203,7 +212,7 @@ impl @nodespacing.NodeSpacingPort for LPortAdapter with fn get_property_double(
 }
 
 ///|
-impl @nodespacing.NodeSpacingPort for LPortAdapter with fn has_property_double(
+pub impl @nodespacing.NodeSpacingPort for LPortAdapter with fn has_property_double(
   self,
   property,
 ) {
@@ -211,7 +220,7 @@ impl @nodespacing.NodeSpacingPort for LPortAdapter with fn has_property_double(
 }
 
 ///|
-impl @nodespacing.NodeSpacingPort for LPortAdapter with fn set_volatile_id(
+pub impl @nodespacing.NodeSpacingPort for LPortAdapter with fn set_volatile_id(
   self,
   id,
 ) {
@@ -219,18 +228,18 @@ impl @nodespacing.NodeSpacingPort for LPortAdapter with fn set_volatile_id(
 }
 
 ///|
-impl @nodespacing.NodeSpacingPort for LPortAdapter with fn get_side(self) {
+pub impl @nodespacing.NodeSpacingPort for LPortAdapter with fn get_side(self) {
   self.get_side()
 }
 
 ///|
-impl @nodespacing.NodeSpacingPort for LPortAdapter with fn get_labels(self) {
+pub impl @nodespacing.NodeSpacingPort for LPortAdapter with fn get_labels(self) {
   let labels : Array[LLabelAdapter] = self.get_labels()
   labels.map(label => label as &@nodespacing.NodeSpacingLabel)
 }
 
 ///|
-impl @nodespacing.NodeSpacingPort for LPortAdapter with fn get_incoming_edges(
+pub impl @nodespacing.NodeSpacingPort for LPortAdapter with fn get_incoming_edges(
   self,
 ) {
   let edges : Array[LEdgeAdapter] = self.get_incoming_edges()
@@ -238,7 +247,7 @@ impl @nodespacing.NodeSpacingPort for LPortAdapter with fn get_incoming_edges(
 }
 
 ///|
-impl @nodespacing.NodeSpacingPort for LPortAdapter with fn get_outgoing_edges(
+pub impl @nodespacing.NodeSpacingPort for LPortAdapter with fn get_outgoing_edges(
   self,
 ) {
   let edges : Array[LEdgeAdapter] = self.get_outgoing_edges()
@@ -246,24 +255,26 @@ impl @nodespacing.NodeSpacingPort for LPortAdapter with fn get_outgoing_edges(
 }
 
 ///|
-impl @nodespacing.NodeSpacingPort for LPortAdapter with fn has_compound_connections(
+pub impl @nodespacing.NodeSpacingPort for LPortAdapter with fn has_compound_connections(
   self,
 ) {
   self.has_compound_connections()
 }
 
 ///|
-impl @nodespacing.NodeSpacingLabel for LLabelAdapter with fn get_size(self) {
+pub impl @nodespacing.NodeSpacingLabel for LLabelAdapter with fn get_size(self) {
   self.get_size()
 }
 
 ///|
-impl @nodespacing.NodeSpacingLabel for LLabelAdapter with fn get_position(self) {
+pub impl @nodespacing.NodeSpacingLabel for LLabelAdapter with fn get_position(
+  self,
+) {
   self.get_position()
 }
 
 ///|
-impl @nodespacing.NodeSpacingLabel for LLabelAdapter with fn set_position(
+pub impl @nodespacing.NodeSpacingLabel for LLabelAdapter with fn set_position(
   self,
   position,
 ) {
@@ -271,7 +282,7 @@ impl @nodespacing.NodeSpacingLabel for LLabelAdapter with fn set_position(
 }
 
 ///|
-impl @nodespacing.NodeSpacingLabel for LLabelAdapter with fn get_property_string(
+pub impl @nodespacing.NodeSpacingLabel for LLabelAdapter with fn get_property_string(
   self,
   property,
 ) {
@@ -279,7 +290,7 @@ impl @nodespacing.NodeSpacingLabel for LLabelAdapter with fn get_property_string
 }
 
 ///|
-impl @nodespacing.NodeSpacingLabel for LLabelAdapter with fn get_property_string_array(
+pub impl @nodespacing.NodeSpacingLabel for LLabelAdapter with fn get_property_string_array(
   self,
   property,
 ) {
@@ -287,7 +298,7 @@ impl @nodespacing.NodeSpacingLabel for LLabelAdapter with fn get_property_string
 }
 
 ///|
-impl @nodespacing.NodeSpacingLabel for LLabelAdapter with fn has_property_string_array(
+pub impl @nodespacing.NodeSpacingLabel for LLabelAdapter with fn has_property_string_array(
   self,
   property,
 ) {
@@ -295,7 +306,7 @@ impl @nodespacing.NodeSpacingLabel for LLabelAdapter with fn has_property_string
 }
 
 ///|
-impl @nodespacing.NodeSpacingEdge for LEdgeAdapter with fn get_labels(self) {
+pub impl @nodespacing.NodeSpacingEdge for LEdgeAdapter with fn get_labels(self) {
   let labels : Array[LLabelAdapter] = self.get_labels()
   labels.map(label => label as &@nodespacing.NodeSpacingLabel)
 }

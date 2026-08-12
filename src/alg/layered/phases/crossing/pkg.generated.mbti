@@ -1,0 +1,635 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/moon_elk/alg/layered/phases/crossing"
+
+import {
+  "Milky2018/moon_elk/alg/layered/options",
+  "Milky2018/moon_elk/alg/layered/runtime",
+  "Milky2018/moon_elk/alg/layered/runtime/state",
+  "Milky2018/moon_elk/core",
+  "moonbitlang/core/debug",
+  "moonbitlang/core/random",
+}
+
+// Values
+pub fn cross_min_type_constants() -> Array[CrossMinType]
+
+pub fn crossing_count_side_values() -> Array[CrossingCountSide]
+
+pub fn i_crossing_minimization_heuristic_init(Array[ICrossingMinimizationHeuristic], Array[Array[@runtime.LNode]]) -> Unit
+
+pub fn i_initializable_init(Array[IInitializable], Array[Array[@runtime.LNode]]) -> Unit
+
+pub fn i_sweep_port_distributor_init(Array[ISweepPortDistributor], Array[Array[@runtime.LNode]]) -> Unit
+
+pub fn in_north_south_east_west_order(@runtime.LNode, @core.PortSide) -> Array[@runtime.LPort]
+
+pub fn model_order_barycenter_heuristic_insertion_sort(Array[@runtime.LNode], (@runtime.LNode, @runtime.LNode) -> Int raise, ModelOrderBarycenterHeuristic) -> Unit raise
+
+pub fn new_abstract_barycenter_port_distributor(Int, (AbstractBarycenterPortDistributor, @runtime.LNode, Double, @options.PortType) -> Double raise) -> AbstractBarycenterPortDistributor
+
+pub fn new_all_crossings_counter(Array[Array[@runtime.LNode]]) -> AllCrossingsCounter
+
+pub fn new_barycenter_heuristic(ForsterConstraintResolver, @state.GreedySwitchMockRandom, AbstractBarycenterPortDistributor, Array[Array[@runtime.LNode]]) -> BarycenterHeuristic
+
+pub fn new_barycenter_layer_sweep_crossing_minimizer_layout_phase(state? : @runtime.LayeredRunState?) -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_barycenter_state(@runtime.LNode) -> BarycenterState
+
+pub fn new_between_layer_edge_two_node_crossings_counter(Array[Array[@runtime.LNode]], Int) -> BetweenLayerEdgeTwoNodeCrossingsCounter
+
+pub fn new_binary_indexed_tree(Int) -> BinaryIndexedTree
+
+pub fn new_crossing_matrix_filler(@options.GreedySwitchType, Array[Array[@runtime.LNode]], Int, CrossingCountSide) -> CrossingMatrixFiller raise
+
+pub fn new_crossings_counter(Array[Int]) -> CrossingsCounter
+
+pub fn new_forster_constraint_resolver(Array[Array[@runtime.LNode]]) -> ForsterConstraintResolver
+
+pub fn new_graph_info_holder(Array[Array[@runtime.LNode]], parent? : @runtime.LNode?, parent_graph_data? : GraphInfoHolder?, dont_sweep_into? : Bool, port_positions? : Array[Int], l_graph? : @runtime.LGraph?, cross_min_deterministic? : Bool) -> GraphInfoHolder
+
+pub fn new_graph_info_holder_from_graph(@runtime.LGraph, CrossMinType, Array[GraphInfoHolder], state? : @runtime.LayeredRunState?) -> GraphInfoHolder
+
+pub fn new_greedy_port_distributor() -> GreedyPortDistributor
+
+pub fn new_greedy_switch_heuristic(@options.GreedySwitchType, GraphInfoHolder) -> GreedySwitchHeuristic
+
+pub fn new_greedy_switch_in_layer_edge_test_graph_creator() -> GreedySwitchInLayerEdgeTestGraphCreator raise
+
+pub fn new_greedy_switch_north_south_edge_test_graph_creator() -> GreedySwitchNorthSouthEdgeTestGraphCreator raise
+
+pub fn new_greedy_switch_test_graph_creator() -> GreedySwitchTestGraphCreator raise
+
+pub fn new_hyperedge_crossings_counter(Array[Int], Array[Bool], Array[Int]) -> HyperedgeCrossingsCounter
+
+pub fn new_i_crossing_minimization_heuristic(() -> Bool, (Array[Array[@runtime.LNode]], Bool) -> Bool raise, (Array[Array[@runtime.LNode]], Int, Bool, Bool) -> Bool raise, () -> Bool, init_at_layer_level? : (Int, Array[Array[@runtime.LNode]]) -> Unit, init_at_node_level? : (Int, Int, Array[Array[@runtime.LNode]]) -> Unit, init_at_port_level? : (Int, Int, Int, Array[Array[@runtime.LNode]]) -> Unit, init_at_edge_level? : (Int, Int, Int, Int, @runtime.LEdge, Array[Array[@runtime.LNode]]) -> Unit, init_after_traversal? : () -> Unit) -> ICrossingMinimizationHeuristic
+
+pub fn new_i_initializable(init_at_layer_level? : (Int, Array[Array[@runtime.LNode]]) -> Unit, init_at_node_level? : (Int, Int, Array[Array[@runtime.LNode]]) -> Unit, init_at_port_level? : (Int, Int, Int, Array[Array[@runtime.LNode]]) -> Unit, init_at_edge_level? : (Int, Int, Int, Int, @runtime.LEdge, Array[Array[@runtime.LNode]]) -> Unit, init_after_traversal? : () -> Unit) -> IInitializable
+
+pub fn new_i_sweep_port_distributor((Array[Array[@runtime.LNode]], Int, Bool) -> Bool raise, init_at_layer_level? : (Int, Array[Array[@runtime.LNode]]) -> Unit, init_at_node_level? : (Int, Int, Array[Array[@runtime.LNode]]) -> Unit, init_at_port_level? : (Int, Int, Int, Array[Array[@runtime.LNode]]) -> Unit, init_at_edge_level? : (Int, Int, Int, Int, @runtime.LEdge, Array[Array[@runtime.LNode]]) -> Unit, init_after_traversal? : () -> Unit) -> ISweepPortDistributor
+
+pub fn new_interactive_crossing_minimizer_layout_phase() -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_layer_sweep_crossing_minimizer(CrossMinType, state? : @runtime.LayeredRunState?) -> LayerSweepCrossingMinimizer
+
+pub fn new_layer_sweep_crossing_minimizer_layout_phase(CrossMinType, state? : @runtime.LayeredRunState?) -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_layer_sweep_type_decider(GraphInfoHolder) -> LayerSweepTypeDecider
+
+pub fn new_layer_sweep_type_decider_node_info() -> LayerSweepTypeDeciderNodeInfo
+
+pub fn new_layer_total_port_distributor(Int) -> LayerTotalPortDistributor
+
+pub fn new_median_heuristic(@random.Rand) -> MedianHeuristic
+
+pub fn new_median_layer_sweep_crossing_minimizer_layout_phase(state? : @runtime.LayeredRunState?) -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_model_order_barycenter_heuristic(ForsterConstraintResolver, @state.GreedySwitchMockRandom, AbstractBarycenterPortDistributor, Array[Array[@runtime.LNode]]) -> ModelOrderBarycenterHeuristic
+
+pub fn new_no_crossing_minimizer_layout_phase() -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_node_relative_port_distributor(Int) -> NodeRelativePortDistributor
+
+pub fn new_north_south_edge_neighbouring_node_crossings_counter(Array[@runtime.LNode]) -> NorthSouthEdgeNeighbouringNodeCrossingsCounter
+
+pub fn new_sweep_copy(Array[Array[@runtime.LNode]]) -> SweepCopy
+
+pub fn new_sweep_copy_from(SweepCopy) -> SweepCopy
+
+pub fn new_switch_decider(Int, Array[Array[@runtime.LNode]], CrossingMatrixFiller, Array[Int], GraphInfoHolder, Bool) -> SwitchDecider raise
+
+pub fn new_test_graph_creator() -> GreedySwitchTestGraphCreator raise
+
+pub fn register_crossing_minimization_phases(@runtime.LayeredPhaseRegistry) -> Unit
+
+pub fn register_crossing_processors(@runtime.LayeredPhaseRegistry) -> Unit
+
+// Errors
+pub suberror LayerTotalPortDistributorException {
+  LayerTotalPortDistributorException(String)
+} derive(ToJson, @debug.Debug)
+
+pub suberror NodeRelativePortDistributorException {
+  NodeRelativePortDistributorException(String)
+} derive(ToJson, @debug.Debug)
+
+pub suberror SweepCopyException {
+  SweepCopyException(String)
+} derive(ToJson, @debug.Debug)
+
+// Types and methods
+pub struct AbstractBarycenterPortDistributor {
+  mut port_ranks : Array[Double]
+  mut min_barycenter : Double
+  mut max_barycenter : Double
+  node_positions : Array[Array[Int]]
+  mut port_barycenter : Array[Double]
+  in_layer_ports : Array[@runtime.LPort]
+  mut n_ports : Int
+  calculate_port_ranks_fn : (AbstractBarycenterPortDistributor, @runtime.LNode, Double, @options.PortType) -> Double raise
+}
+pub fn AbstractBarycenterPortDistributor::as_i_sweep_port_distributor(Self) -> ISweepPortDistributor
+pub fn AbstractBarycenterPortDistributor::as_initializable(Self) -> IInitializable
+pub fn AbstractBarycenterPortDistributor::calculate_port_ranks(Self, Array[@runtime.LNode], @options.PortType) -> Unit raise
+pub fn AbstractBarycenterPortDistributor::calculate_port_ranks_on_node(Self, @runtime.LNode, Double, @options.PortType) -> Double raise
+pub fn AbstractBarycenterPortDistributor::distribute_ports_while_sweeping(Self, Array[Array[@runtime.LNode]], Int, Bool) -> Bool raise
+pub fn AbstractBarycenterPortDistributor::get_port_ranks(Self) -> Array[Double]
+pub fn AbstractBarycenterPortDistributor::init_after_traversal(Self) -> Unit
+pub fn AbstractBarycenterPortDistributor::init_at_layer_level(Self, Int, Array[Array[@runtime.LNode]]) -> Unit
+pub fn AbstractBarycenterPortDistributor::init_at_node_level(Self, Int, Int, Array[Array[@runtime.LNode]]) -> Unit
+pub fn AbstractBarycenterPortDistributor::init_at_port_level(Self, Int, Int, Int, Array[Array[@runtime.LNode]]) -> Unit
+
+pub struct AllCrossingsCounter {
+  mut crossing_counter : CrossingsCounter?
+  has_hyper_edges_east_of_index : Array[Bool]
+  mut hyperedge_crossings_counter : HyperedgeCrossingsCounter?
+  in_layer_edge_counts : Array[Int]
+  has_north_south_ports : Array[Bool]
+  mut n_ports : Int
+}
+pub fn AllCrossingsCounter::as_initializable(Self) -> IInitializable
+pub fn AllCrossingsCounter::count_all_crossings(Self, Array[Array[@runtime.LNode]]) -> Int raise
+pub fn AllCrossingsCounter::init_after_traversal(Self) -> Unit
+pub fn AllCrossingsCounter::init_at_edge_level(Self, Int, Int, Int, Int, @runtime.LEdge, Array[Array[@runtime.LNode]]) -> Unit
+pub fn AllCrossingsCounter::init_at_node_level(Self, Int, Int, Array[Array[@runtime.LNode]]) -> Unit
+pub fn AllCrossingsCounter::init_at_port_level(Self, Int, Int, Int, Array[Array[@runtime.LNode]]) -> Unit
+
+pub struct BarycenterHeuristic {
+  mut port_ranks : Array[Double]
+  random : @state.GreedySwitchMockRandom
+  constraint_resolver : ForsterConstraintResolver
+  mut barycenter_state : Array[Array[BarycenterState?]]
+  port_distributor : AbstractBarycenterPortDistributor
+}
+pub fn BarycenterHeuristic::always_improves(Self) -> Bool
+pub fn BarycenterHeuristic::as_i_crossing_minimization_heuristic(Self) -> ICrossingMinimizationHeuristic
+pub fn BarycenterHeuristic::init_after_traversal(Self) -> Unit
+pub fn BarycenterHeuristic::init_at_layer_level(Self, Int, Array[Array[@runtime.LNode]]) -> Unit
+pub fn BarycenterHeuristic::is_deterministic(Self) -> Bool
+pub fn BarycenterHeuristic::minimize_crossings(Self, Array[Array[@runtime.LNode]], Int, Bool, Bool) -> Bool raise
+pub fn BarycenterHeuristic::minimize_crossings_layer(Self, Array[@runtime.LNode], Bool, Bool, Bool) -> Unit
+pub fn BarycenterHeuristic::set_first_layer_order(Self, Array[Array[@runtime.LNode]], Bool) -> Bool
+
+pub struct BarycenterState {
+  node : @runtime.LNode
+  mut summed_weight : Double
+  mut degree : Int
+  mut barycenter : Double?
+  mut visited : Bool
+}
+pub fn BarycenterState::to_string(Self) -> String
+
+type BetweenLayerAdjacencyList
+
+pub struct BetweenLayerEdgeTwoNodeCrossingsCounter {
+  mut upper_lower_crossings : Int
+  mut lower_upper_crossings : Int
+  current_node_order : Array[Array[@runtime.LNode]]
+  free_layer_index : Int
+  port_positions : Map[Int, Int]
+  eastern_adjacencies : Map[Int, BetweenLayerAdjacencyList]
+  western_adjacencies : Map[Int, BetweenLayerAdjacencyList]
+}
+pub fn BetweenLayerEdgeTwoNodeCrossingsCounter::count_both_side_crossings(Self, @runtime.LNode, @runtime.LNode) -> Unit
+pub fn BetweenLayerEdgeTwoNodeCrossingsCounter::count_eastern_edge_crossings(Self, @runtime.LNode, @runtime.LNode) -> Unit
+pub fn BetweenLayerEdgeTwoNodeCrossingsCounter::count_western_edge_crossings(Self, @runtime.LNode, @runtime.LNode) -> Unit
+pub fn BetweenLayerEdgeTwoNodeCrossingsCounter::get_lower_upper_crossings(Self) -> Int
+pub fn BetweenLayerEdgeTwoNodeCrossingsCounter::get_upper_lower_crossings(Self) -> Int
+
+pub struct BinaryIndexedTree {
+  mut binary_sums : Array[Int]
+  mut nums_per_index : Array[Int]
+  mut current_size : Int
+  max_num : Int
+}
+pub fn BinaryIndexedTree::add(Self, Int) -> Unit
+pub fn BinaryIndexedTree::clear(Self) -> Unit
+pub fn BinaryIndexedTree::is_empty(Self) -> Bool
+pub fn BinaryIndexedTree::rank(Self, Int) -> Int
+pub fn BinaryIndexedTree::remove_all(Self, Int) -> Unit
+pub fn BinaryIndexedTree::size(Self) -> Int
+
+type ConstraintGroup
+
+pub enum CrossMinType {
+  Barycenter
+  OneSidedGreedySwitch
+  TwoSidedGreedySwitch
+  Median
+}
+
+pub enum CrossingCountSide {
+  West
+  East
+}
+
+pub struct CrossingMatrixFiller {
+  is_crossing_matrix_filled : Array[Array[Bool]]
+  crossing_matrix : Array[Array[Int]]
+  in_between_layer_crossing_counter : BetweenLayerEdgeTwoNodeCrossingsCounter
+  direction : CrossingCountSide
+  one_sided : Bool
+}
+pub fn CrossingMatrixFiller::get_crossing_matrix_entry(Self, @runtime.LNode, @runtime.LNode) -> Int
+
+pub struct CrossingsCounter {
+  port_positions : Array[Int]
+  mut index_tree : BinaryIndexedTree?
+  ends : Array[Int]
+  mut node_cardinalities : Array[Int]
+}
+pub fn CrossingsCounter::count_crossings_between_layers(Self, Array[@runtime.LNode], Array[@runtime.LNode]) -> Int
+pub fn CrossingsCounter::count_crossings_between_ports_in_both_orders(Self, @runtime.LPort, @runtime.LPort) -> @core.Pair[Int, Int]
+pub fn CrossingsCounter::count_in_layer_crossings_between_nodes_in_both_orders(Self, @runtime.LNode, @runtime.LNode, @core.PortSide) -> @core.Pair[Int, Int]
+pub fn CrossingsCounter::count_in_layer_crossings_on_side(Self, Array[@runtime.LNode], @core.PortSide) -> Int
+pub fn CrossingsCounter::count_north_south_port_crossings_in_layer(Self, Array[@runtime.LNode]) -> Int
+pub fn CrossingsCounter::init_for_counting_between(Self, Array[@runtime.LNode], Array[@runtime.LNode]) -> Unit
+pub fn CrossingsCounter::init_port_positions_for_in_layer_crossings(Self, Array[@runtime.LNode], @core.PortSide) -> Array[@runtime.LPort]
+pub fn CrossingsCounter::switch_nodes(Self, @runtime.LNode, @runtime.LNode, @core.PortSide) -> Unit
+pub fn CrossingsCounter::switch_ports(Self, @runtime.LPort, @runtime.LPort) -> Unit
+
+pub struct ForsterConstraintResolver {
+  constraints_between_non_dummies : Bool
+  layout_units : Map[Int, Array[@runtime.LNode]]
+  barycenter_states : Array[Array[BarycenterState?]]
+  constraint_groups : Array[Array[ConstraintGroup?]]
+}
+pub fn ForsterConstraintResolver::as_initializable(Self) -> IInitializable
+pub fn ForsterConstraintResolver::get_barycenter_states(Self) -> Array[Array[BarycenterState?]]
+pub fn ForsterConstraintResolver::init_at_layer_level(Self, Int, Array[Array[@runtime.LNode]]) -> Unit
+pub fn ForsterConstraintResolver::init_at_node_level(Self, Int, Int, Array[Array[@runtime.LNode]]) -> Unit
+pub fn ForsterConstraintResolver::process_constraints(Self, Array[@runtime.LNode]) -> Unit
+pub fn ForsterConstraintResolver::set_barycenter(Self, @runtime.LNode, Double?) -> Unit
+
+pub struct GraphInfoHolder {
+  mut l_graph_ref : @runtime.LGraph?
+  mut current_node_order_ref : Array[Array[@runtime.LNode]]
+  mut currently_best_node_and_port_order_ref : SweepCopy?
+  mut best_node_and_port_order_ref : SweepCopy?
+  mut port_positions_ref : Array[Int]
+  mut use_bottom_up : Bool
+  child_graphs_ref : Array[@runtime.LGraph]
+  mut has_external_ports_ref : Bool
+  mut parent_ref : @runtime.LNode?
+  mut parent_graph_data_ref : GraphInfoHolder?
+  mut cross_minimizer_ref : ICrossingMinimizationHeuristic?
+  mut port_distributor_ref : ISweepPortDistributor?
+  mut crossings_counter_ref : AllCrossingsCounter?
+  mut random_ref : @state.GreedySwitchMockRandom?
+  mut n_ports : Int
+  mut cross_min_deterministic_ref : Bool
+  mut cross_min_always_improves_ref : Bool
+}
+pub fn GraphInfoHolder::as_initializable(Self) -> IInitializable
+pub fn GraphInfoHolder::best_node_n_port_order(Self) -> SweepCopy?
+pub fn GraphInfoHolder::child_graphs(Self) -> Array[@runtime.LGraph]
+pub fn GraphInfoHolder::cross_counter(Self) -> AllCrossingsCounter
+pub fn GraphInfoHolder::cross_min_always_improves(Self) -> Bool
+pub fn GraphInfoHolder::cross_min_deterministic(Self) -> Bool
+pub fn GraphInfoHolder::cross_minimizer(Self) -> ICrossingMinimizationHeuristic
+pub fn GraphInfoHolder::current_node_order(Self) -> Array[Array[@runtime.LNode]]
+pub fn GraphInfoHolder::currently_best_node_and_port_order(Self) -> SweepCopy?
+pub fn GraphInfoHolder::dont_sweep_into(Self) -> Bool
+pub fn GraphInfoHolder::get_best_sweep(Self) -> SweepCopy?
+pub fn GraphInfoHolder::has_external_ports(Self) -> Bool
+pub fn GraphInfoHolder::has_parent(Self) -> Bool
+pub fn GraphInfoHolder::init_after_traversal(Self) -> Unit
+pub fn GraphInfoHolder::init_at_node_level(Self, Int, Int, Array[Array[@runtime.LNode]]) -> Unit
+pub fn GraphInfoHolder::init_at_port_level(Self, Int, Int, Int, Array[Array[@runtime.LNode]]) -> Unit
+pub fn GraphInfoHolder::l_graph(Self) -> @runtime.LGraph
+pub fn GraphInfoHolder::parent(Self) -> @runtime.LNode
+pub fn GraphInfoHolder::parent_graph_data(Self) -> Self
+pub fn GraphInfoHolder::parent_layer_id(Self) -> Int
+pub fn GraphInfoHolder::port_distributor(Self) -> ISweepPortDistributor
+pub fn GraphInfoHolder::port_positions(Self) -> Array[Int]
+pub fn GraphInfoHolder::random(Self) -> @state.GreedySwitchMockRandom?
+pub fn GraphInfoHolder::set_best_node_n_port_order(Self, SweepCopy?) -> Unit
+pub fn GraphInfoHolder::set_cross_min_deterministic(Self, Bool) -> Unit
+pub fn GraphInfoHolder::set_current_node_order(Self, Array[Array[@runtime.LNode]]) -> Unit
+pub fn GraphInfoHolder::set_currently_best_node_and_port_order(Self, SweepCopy?) -> Unit
+pub fn GraphInfoHolder::set_dont_sweep_into(Self, Bool) -> Unit
+pub fn GraphInfoHolder::set_l_graph(Self, @runtime.LGraph?) -> Unit
+pub fn GraphInfoHolder::set_parent(Self, @runtime.LNode?) -> Unit
+pub fn GraphInfoHolder::set_parent_graph_data(Self, Self?) -> Unit
+pub fn GraphInfoHolder::set_port_positions(Self, Array[Int]) -> Unit
+
+pub struct GreedyPortDistributor {
+  mut crossings_counter : CrossingsCounter?
+  mut n_ports : Int
+  mut port_pos : Array[Int]
+  mut hierarchical_crossings_counter : BetweenLayerEdgeTwoNodeCrossingsCounter?
+}
+pub fn GreedyPortDistributor::as_i_sweep_port_distributor(Self) -> ISweepPortDistributor
+pub fn GreedyPortDistributor::as_initializable(Self) -> IInitializable
+pub fn GreedyPortDistributor::distribute_ports_while_sweeping(Self, Array[Array[@runtime.LNode]], Int, Bool) -> Bool raise
+pub fn GreedyPortDistributor::init_after_traversal(Self) -> Unit
+pub fn GreedyPortDistributor::init_at_node_level(Self, Int, Int, Array[Array[@runtime.LNode]]) -> Unit
+
+pub struct GreedySwitchHeuristic {
+  greedy_switch_type : @options.GreedySwitchType
+  mut current_node_order : Array[Array[@runtime.LNode]]
+  mut switch_decider : SwitchDecider?
+  mut port_positions : Array[Int]
+  graph_data : GraphInfoHolder
+  mut n_ports : Int
+}
+pub fn GreedySwitchHeuristic::always_improves(Self) -> Bool
+pub fn GreedySwitchHeuristic::as_i_crossing_minimization_heuristic(Self) -> ICrossingMinimizationHeuristic
+pub fn GreedySwitchHeuristic::as_initializable(Self) -> IInitializable
+pub fn GreedySwitchHeuristic::init_after_traversal(Self) -> Unit
+pub fn GreedySwitchHeuristic::init_at_layer_level(Self, Int, Array[Array[@runtime.LNode]]) -> Unit
+pub fn GreedySwitchHeuristic::init_at_port_level(Self, Int, Int, Int, Array[Array[@runtime.LNode]]) -> Unit
+pub fn GreedySwitchHeuristic::is_deterministic(Self) -> Bool
+pub fn GreedySwitchHeuristic::minimize_crossings(Self, Array[Array[@runtime.LNode]], Int, Bool, Bool) -> Bool raise
+pub fn GreedySwitchHeuristic::set_first_layer_order(Self, Array[Array[@runtime.LNode]], Bool) -> Bool raise
+
+pub struct GreedySwitchInLayerEdgeTestGraphCreator {
+  base : GreedySwitchTestGraphCreator
+}
+pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_fixed_port_order_two_in_layer_edges_cross_each_other(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_graph(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_crossings_on_both_sides(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_crossings_but_no_fixed_order(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_crossings_no_fixed_order_no_edge_between_upper_and_lower(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_crossings_no_fixed_order_no_edge_between_upper_and_lower_upside_down(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_downward_graph_no_fixed_order(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_fixed_port_order_in_layer_and_in_between_layer_crossing(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_fixed_port_order_in_layer_crossing(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_graph_with_crossings_to_between_layer_edge_with_fixed_port_order(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_multiple_edges_into_single_port(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_edges_with_fixed_port_order_and_normal_edge_crossings(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_in_layer_one_layer_no_crossings(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchInLayerEdgeTestGraphCreator::get_one_layer_with_in_layer_crossings(Self) -> @runtime.LGraph raise
+
+pub struct GreedySwitchNorthSouthEdgeTestGraphCreator {
+  base : GreedySwitchTestGraphCreator
+}
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_graph(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_graph_layout_unit_does_not_prevent_switch_with_long_edge_dummy(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_graph_layout_unit_prevents_switch_with_node_with_node_with_northern_edges(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_graph_layout_unit_prevents_switch_with_node_with_node_with_southern_edges(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_graph_where_layout_unit_prevents_switch(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_long_edge_dummy_and_normal_node_with_unused_ports_on_northern_side(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_long_edge_dummy_and_normal_node_with_unused_ports_on_southern_side(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_multiple_north_south_and_long_edge_dummies_on_both_sides(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_port_ond_normal_node_above_long_edge_dummy(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_all_sides_multiple_crossings(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_downward_crossing_graph(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_downward_multiple_crossing_graph(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_edges_from_east_and_west_and_cross(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_northern_eastern_port_to_west_western_port_to_east(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_northern_western_edges(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_southern_three_western_edges(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_southern_two_western_edges(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_southern_western_port_to_east_and_eastern_port_to_west(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_upward_crossing_graph(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_north_south_upward_multiple_crossing_graph(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_northern_north_south_dummy_edge_crossing_graph(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_northern_north_south_graph_edges_from_east_and_west_no_crossings(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_northern_north_south_graph_edges_from_east_and_west_no_crossings_upper_edge_east(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_south_port_on_normal_node_below_long_edge_dummy(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_southern_north_south_dummy_edge_crossing_graph(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_southern_north_south_dummy_edge_two_crossing_graph(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_southern_north_south_edges_both_to_east(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_southern_north_south_graph_edges_from_east_and_west_no_crossings(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_southern_two_dummy_edge_and_north_south_crossing_graph(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_three_layer_north_south_crossing_graph(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchNorthSouthEdgeTestGraphCreator::get_three_layer_north_south_crossing_should_switch_graph(Self) -> @runtime.LGraph raise
+
+#alias(TestGraphCreator)
+pub struct GreedySwitchTestGraphCreator {
+  mut port_id : Int
+  mut node_id : Int
+  mut edge_id : Int
+  mut graph : @runtime.LGraph
+  mut random : @state.GreedySwitchMockRandom
+  state : @runtime.LayeredRunState
+}
+pub fn GreedySwitchTestGraphCreator::add_edge_between_ports(Self, @runtime.LPort, @runtime.LPort) -> Unit
+pub fn GreedySwitchTestGraphCreator::add_external_port_dummies_to_layer(Self, @runtime.Layer, Array[@runtime.LPort]) -> Array[@runtime.LNode]
+pub fn GreedySwitchTestGraphCreator::add_external_port_dummy_node_to_layer(Self, @runtime.Layer, @runtime.LPort) -> @runtime.LNode
+pub fn GreedySwitchTestGraphCreator::add_in_layer_edge_node_port(Self, @runtime.LNode, @runtime.LPort, @core.PortSide) -> Unit
+pub fn GreedySwitchTestGraphCreator::add_in_layer_edge_nodes(Self, @runtime.LNode, @runtime.LNode, @core.PortSide) -> Unit
+pub fn GreedySwitchTestGraphCreator::add_in_layer_edge_port_node(Self, @runtime.LPort, @runtime.LNode) -> Unit
+pub fn GreedySwitchTestGraphCreator::add_node_to_layer(Self, @runtime.Layer) -> @runtime.LNode
+pub fn GreedySwitchTestGraphCreator::add_nodes_to_layer(Self, Int, @runtime.Layer) -> Array[@runtime.LNode]
+pub fn GreedySwitchTestGraphCreator::add_north_south_edge(Self, @core.PortSide, @runtime.LNode, @runtime.LNode, @runtime.LNode, Bool) -> Unit
+pub fn GreedySwitchTestGraphCreator::add_port_on_side(Self, @runtime.LNode, @core.PortSide) -> @runtime.LPort
+pub fn GreedySwitchTestGraphCreator::add_ports_on_side(Self, Int, @runtime.LNode, @core.PortSide) -> Array[@runtime.LPort]
+pub fn[T] GreedySwitchTestGraphCreator::copy_of_list_switching_order(Self, Int, Int, Array[T]) -> Array[T]
+pub fn GreedySwitchTestGraphCreator::copy_of_nodes_in_layer(Self, Int) -> Array[@runtime.LNode]
+pub fn GreedySwitchTestGraphCreator::copy_of_switch_order_of_nodes_in_layer(Self, Int, Int, Int) -> Array[@runtime.LNode]
+pub fn GreedySwitchTestGraphCreator::copy_ports_in_index_order(Self, @runtime.LNode, Array[Int]) -> Array[@runtime.LPort]
+pub fn GreedySwitchTestGraphCreator::east_west_edge_from_to_node_port(Self, @runtime.LNode, @runtime.LPort) -> Unit
+pub fn GreedySwitchTestGraphCreator::east_west_edge_from_to_nodes(Self, @runtime.LNode, @runtime.LNode) -> Unit
+pub fn GreedySwitchTestGraphCreator::east_west_edge_from_to_port_node(Self, @runtime.LPort, @runtime.LNode) -> Unit
+pub fn GreedySwitchTestGraphCreator::east_west_edges_from_to(Self, Int, @runtime.LNode, @runtime.LNode) -> Unit
+pub fn GreedySwitchTestGraphCreator::get_copy_with_switched_order(Self, Int, Int, Array[@runtime.LNode]) -> Array[@runtime.LNode]
+pub fn GreedySwitchTestGraphCreator::get_cross_formed_graph(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchTestGraphCreator::get_cross_formed_graph_constraints_prevent_any_switch(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchTestGraphCreator::get_cross_formed_graph_with_constraints_in_second_layer(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchTestGraphCreator::get_cross_with_extra_edge_in_between_graph(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchTestGraphCreator::get_cross_with_many_self_loops_graph(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchTestGraphCreator::get_current_order(Self, @runtime.LGraph) -> Array[Array[@runtime.LNode]]
+pub fn GreedySwitchTestGraphCreator::get_empty_graph(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchTestGraphCreator::get_fixed_port_order_graph(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchTestGraphCreator::get_fixed_port_order_in_layer_edges_dont_cross_each_other(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchTestGraphCreator::get_fixed_port_order_in_layer_edges_with_crossings(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchTestGraphCreator::get_graph(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchTestGraphCreator::get_graph_no_crossings_due_to_port_order_not_fixed(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchTestGraphCreator::get_graph_which_could_be_worsened_by_switch(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchTestGraphCreator::get_in_layer_edges_graph(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchTestGraphCreator::get_in_layer_edges_graph_which_results_in_crossings_when_switched(Self) -> @runtime.LGraph raise
+pub fn[T] GreedySwitchTestGraphCreator::get_list_copy_in_index_order(Self, Array[T], Array[Int]) -> Array[T]
+pub fn GreedySwitchTestGraphCreator::get_more_complex_in_layer_graph(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchTestGraphCreator::get_more_complex_three_layer_graph(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchTestGraphCreator::get_multiple_edges_between_same_nodes_graph(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchTestGraphCreator::get_nodes_in_different_layout_units_prevent_switch(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchTestGraphCreator::get_one_node_graph(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchTestGraphCreator::get_random(Self) -> @state.GreedySwitchMockRandom
+pub fn GreedySwitchTestGraphCreator::get_state(Self) -> @runtime.LayeredRunState
+pub fn GreedySwitchTestGraphCreator::get_switch_only_east_one_sided(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchTestGraphCreator::get_switch_only_one_sided(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchTestGraphCreator::get_switched_problem_graph(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchTestGraphCreator::get_two_nodes_no_connection_graph(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchTestGraphCreator::make_layer(Self, @runtime.LGraph) -> @runtime.Layer
+pub fn GreedySwitchTestGraphCreator::make_layers(Self, Int) -> Array[@runtime.Layer]
+pub fn GreedySwitchTestGraphCreator::make_layers_in_graph(Self, Int, @runtime.LGraph) -> Array[@runtime.Layer]
+pub fn GreedySwitchTestGraphCreator::multiple_edges_and_single_edge(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchTestGraphCreator::multiple_in_between_layer_edges_into_node_with_no_fixed_port_order(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchTestGraphCreator::multiple_in_between_layer_edges_into_node_with_no_fixed_port_order_cause_crossings(Self) -> @runtime.LGraph raise
+pub fn GreedySwitchTestGraphCreator::nested_graph(Self, @runtime.LNode) -> @runtime.LGraph raise
+pub fn GreedySwitchTestGraphCreator::self_loop_on(Self, @runtime.LNode, @core.PortSide) -> Unit
+pub fn GreedySwitchTestGraphCreator::set_as_long_edge_dummy(Self, @runtime.LNode) -> Unit
+pub fn GreedySwitchTestGraphCreator::set_as_north_south_node(Self, @runtime.LNode) -> Unit
+pub fn GreedySwitchTestGraphCreator::set_fixed_order_constraint(Self, @runtime.LNode) -> Unit
+pub fn GreedySwitchTestGraphCreator::set_fixed_order_constraint_on_nodes(Self, Array[@runtime.LNode]) -> Unit
+pub fn GreedySwitchTestGraphCreator::set_graph(Self, @runtime.LGraph) -> @runtime.LGraph raise
+pub fn GreedySwitchTestGraphCreator::set_in_layer_order_constraint(Self, @runtime.LNode, @runtime.LNode) -> Unit
+pub fn GreedySwitchTestGraphCreator::set_port_order_fixed(Self, @runtime.LNode) -> Unit
+pub fn GreedySwitchTestGraphCreator::set_random(Self, @state.GreedySwitchMockRandom) -> Unit
+pub fn GreedySwitchTestGraphCreator::set_up_graph(Self, @runtime.LGraph) -> @runtime.LGraph raise
+pub fn GreedySwitchTestGraphCreator::set_up_ids(Self) -> Unit raise
+pub fn[T] GreedySwitchTestGraphCreator::switch_order_in_array(Self, Int, Int, Array[T]) -> Array[T]
+pub fn GreedySwitchTestGraphCreator::switch_order_of_nodes_in_layer(Self, Int, Int, @runtime.Layer) -> Array[@runtime.LNode]
+pub fn GreedySwitchTestGraphCreator::two_edges_into_same_port(Self) -> @runtime.LGraph raise
+
+pub struct HyperedgeCrossingsCounter {
+  port_pos : Array[Int]
+}
+pub fn HyperedgeCrossingsCounter::count_crossings(Self, Array[@runtime.LNode], Array[@runtime.LNode]) -> Int
+
+pub struct ICrossingMinimizationHeuristic {
+  initializable : IInitializable
+  always_improves_fn : () -> Bool
+  set_first_layer_order_fn : (Array[Array[@runtime.LNode]], Bool) -> Bool raise
+  minimize_crossings_fn : (Array[Array[@runtime.LNode]], Int, Bool, Bool) -> Bool raise
+  is_deterministic_fn : () -> Bool
+}
+pub fn ICrossingMinimizationHeuristic::always_improves(Self) -> Bool
+pub fn ICrossingMinimizationHeuristic::as_initializable(Self) -> IInitializable
+pub fn ICrossingMinimizationHeuristic::init_after_traversal(Self) -> Unit
+pub fn ICrossingMinimizationHeuristic::init_at_edge_level(Self, Int, Int, Int, Int, @runtime.LEdge, Array[Array[@runtime.LNode]]) -> Unit
+pub fn ICrossingMinimizationHeuristic::init_at_layer_level(Self, Int, Array[Array[@runtime.LNode]]) -> Unit
+pub fn ICrossingMinimizationHeuristic::init_at_node_level(Self, Int, Int, Array[Array[@runtime.LNode]]) -> Unit
+pub fn ICrossingMinimizationHeuristic::init_at_port_level(Self, Int, Int, Int, Array[Array[@runtime.LNode]]) -> Unit
+pub fn ICrossingMinimizationHeuristic::is_deterministic(Self) -> Bool
+pub fn ICrossingMinimizationHeuristic::minimize_crossings(Self, Array[Array[@runtime.LNode]], Int, Bool, Bool) -> Bool raise
+pub fn ICrossingMinimizationHeuristic::set_first_layer_order(Self, Array[Array[@runtime.LNode]], Bool) -> Bool raise
+
+pub struct IInitializable {
+  init_at_layer_level_fn : (Int, Array[Array[@runtime.LNode]]) -> Unit
+  init_at_node_level_fn : (Int, Int, Array[Array[@runtime.LNode]]) -> Unit
+  init_at_port_level_fn : (Int, Int, Int, Array[Array[@runtime.LNode]]) -> Unit
+  init_at_edge_level_fn : (Int, Int, Int, Int, @runtime.LEdge, Array[Array[@runtime.LNode]]) -> Unit
+  init_after_traversal_fn : () -> Unit
+}
+pub fn IInitializable::init_after_traversal(Self) -> Unit
+pub fn IInitializable::init_at_edge_level(Self, Int, Int, Int, Int, @runtime.LEdge, Array[Array[@runtime.LNode]]) -> Unit
+pub fn IInitializable::init_at_layer_level(Self, Int, Array[Array[@runtime.LNode]]) -> Unit
+pub fn IInitializable::init_at_node_level(Self, Int, Int, Array[Array[@runtime.LNode]]) -> Unit
+pub fn IInitializable::init_at_port_level(Self, Int, Int, Int, Array[Array[@runtime.LNode]]) -> Unit
+
+pub struct ISweepPortDistributor {
+  initializable : IInitializable
+  distribute_ports_while_sweeping_fn : (Array[Array[@runtime.LNode]], Int, Bool) -> Bool raise
+}
+pub fn ISweepPortDistributor::as_initializable(Self) -> IInitializable
+pub fn ISweepPortDistributor::distribute_ports_while_sweeping(Self, Array[Array[@runtime.LNode]], Int, Bool) -> Bool raise
+pub fn ISweepPortDistributor::init_after_traversal(Self) -> Unit
+pub fn ISweepPortDistributor::init_at_edge_level(Self, Int, Int, Int, Int, @runtime.LEdge, Array[Array[@runtime.LNode]]) -> Unit
+pub fn ISweepPortDistributor::init_at_layer_level(Self, Int, Array[Array[@runtime.LNode]]) -> Unit
+pub fn ISweepPortDistributor::init_at_node_level(Self, Int, Int, Array[Array[@runtime.LNode]]) -> Unit
+pub fn ISweepPortDistributor::init_at_port_level(Self, Int, Int, Int, Array[Array[@runtime.LNode]]) -> Unit
+
+pub struct LayerSweepCrossingMinimizer {
+  cross_min_type : CrossMinType
+  state : @runtime.LayeredRunState
+  graph_info_holders : Array[GraphInfoHolder]
+  graphs_whose_node_order_changed : Array[GraphInfoHolder]
+  mut random : @state.GreedySwitchMockRandom
+  mut random_seed : Int64
+}
+pub fn LayerSweepCrossingMinimizer::get_graph_data(Self) -> Array[GraphInfoHolder]
+pub fn LayerSweepCrossingMinimizer::process(Self, @runtime.LGraph, progress_monitor? : @core.IElkProgressMonitor?) -> Unit raise
+
+pub struct LayerSweepTypeDecider {
+  node_info : Array[Array[LayerSweepTypeDeciderNodeInfo]]
+  graph_data : GraphInfoHolder
+}
+pub fn LayerSweepTypeDecider::as_initializable(Self) -> IInitializable
+pub fn LayerSweepTypeDecider::init_at_layer_level(Self, Int, Array[Array[@runtime.LNode]]) -> Unit
+pub fn LayerSweepTypeDecider::init_at_node_level(Self, Int, Int, Array[Array[@runtime.LNode]]) -> Unit
+pub fn LayerSweepTypeDecider::use_bottom_up(Self) -> Bool
+
+pub struct LayerSweepTypeDeciderNodeInfo {
+  mut connected_edges : Int
+  mut hierarchical_influence : Int
+  mut random_influence : Int
+}
+pub fn LayerSweepTypeDeciderNodeInfo::transfer(Self, Self) -> Unit
+
+pub struct LayerTotalPortDistributor {
+  distributor : AbstractBarycenterPortDistributor
+}
+pub fn LayerTotalPortDistributor::as_abstract_barycenter_port_distributor(Self) -> AbstractBarycenterPortDistributor
+pub fn LayerTotalPortDistributor::as_i_sweep_port_distributor(Self) -> ISweepPortDistributor
+pub fn LayerTotalPortDistributor::as_initializable(Self) -> IInitializable
+pub fn LayerTotalPortDistributor::calculate_port_ranks(Self, Array[@runtime.LNode], @options.PortType) -> Unit raise
+pub fn LayerTotalPortDistributor::distribute_ports_while_sweeping(Self, Array[Array[@runtime.LNode]], Int, Bool) -> Bool raise
+pub fn LayerTotalPortDistributor::get_port_ranks(Self) -> Array[Double]
+pub fn LayerTotalPortDistributor::init_after_traversal(Self) -> Unit
+pub fn LayerTotalPortDistributor::init_at_layer_level(Self, Int, Array[Array[@runtime.LNode]]) -> Unit
+pub fn LayerTotalPortDistributor::init_at_node_level(Self, Int, Int, Array[Array[@runtime.LNode]]) -> Unit
+pub fn LayerTotalPortDistributor::init_at_port_level(Self, Int, Int, Int, Array[Array[@runtime.LNode]]) -> Unit
+
+pub struct MedianHeuristic {
+  random : @random.Rand
+}
+pub fn MedianHeuristic::always_improves(Self) -> Bool
+pub fn MedianHeuristic::as_i_crossing_minimization_heuristic(Self) -> ICrossingMinimizationHeuristic
+pub fn MedianHeuristic::is_deterministic(Self) -> Bool
+pub fn MedianHeuristic::minimize_crossings(Self, Array[Array[@runtime.LNode]], Int, Bool, Bool) -> Bool
+pub fn MedianHeuristic::set_first_layer_order(Self, Array[Array[@runtime.LNode]], Bool) -> Bool
+
+pub struct ModelOrderBarycenterHeuristic {
+  base : BarycenterHeuristic
+  mut bigger_than : Map[Int, Array[Int]]
+  mut smaller_than : Map[Int, Array[Int]]
+}
+pub fn ModelOrderBarycenterHeuristic::always_improves(Self) -> Bool
+pub fn ModelOrderBarycenterHeuristic::as_i_crossing_minimization_heuristic(Self) -> ICrossingMinimizationHeuristic
+pub fn ModelOrderBarycenterHeuristic::clear_transitive_ordering(Self) -> Unit
+pub fn ModelOrderBarycenterHeuristic::init_after_traversal(Self) -> Unit
+pub fn ModelOrderBarycenterHeuristic::init_at_layer_level(Self, Int, Array[Array[@runtime.LNode]]) -> Unit
+pub fn ModelOrderBarycenterHeuristic::is_deterministic(Self) -> Bool
+pub fn ModelOrderBarycenterHeuristic::minimize_crossings(Self, Array[Array[@runtime.LNode]], Int, Bool, Bool) -> Bool raise
+pub fn ModelOrderBarycenterHeuristic::minimize_crossings_layer(Self, Array[@runtime.LNode], Bool, Bool, Bool) -> Unit raise
+pub fn ModelOrderBarycenterHeuristic::set_first_layer_order(Self, Array[Array[@runtime.LNode]], Bool) -> Bool raise
+
+pub struct NodeRelativePortDistributor {
+  distributor : AbstractBarycenterPortDistributor
+}
+pub fn NodeRelativePortDistributor::as_abstract_barycenter_port_distributor(Self) -> AbstractBarycenterPortDistributor
+pub fn NodeRelativePortDistributor::as_i_sweep_port_distributor(Self) -> ISweepPortDistributor
+pub fn NodeRelativePortDistributor::as_initializable(Self) -> IInitializable
+pub fn NodeRelativePortDistributor::calculate_port_ranks(Self, Array[@runtime.LNode], @options.PortType) -> Unit raise
+pub fn NodeRelativePortDistributor::distribute_ports_while_sweeping(Self, Array[Array[@runtime.LNode]], Int, Bool) -> Bool raise
+pub fn NodeRelativePortDistributor::get_port_ranks(Self) -> Array[Double]
+pub fn NodeRelativePortDistributor::init_after_traversal(Self) -> Unit
+pub fn NodeRelativePortDistributor::init_at_layer_level(Self, Int, Array[Array[@runtime.LNode]]) -> Unit
+pub fn NodeRelativePortDistributor::init_at_node_level(Self, Int, Int, Array[Array[@runtime.LNode]]) -> Unit
+pub fn NodeRelativePortDistributor::init_at_port_level(Self, Int, Int, Int, Array[Array[@runtime.LNode]]) -> Unit
+
+pub struct NorthSouthEdgeNeighbouringNodeCrossingsCounter {
+  mut upper_lower_crossings : Int
+  mut lower_upper_crossings : Int
+  port_positions : Map[Int, Int]
+  layer : Array[@runtime.LNode]
+}
+pub fn NorthSouthEdgeNeighbouringNodeCrossingsCounter::count_crossings(Self, @runtime.LNode, @runtime.LNode) -> Unit raise
+pub fn NorthSouthEdgeNeighbouringNodeCrossingsCounter::get_lower_upper_crossings(Self) -> Int
+pub fn NorthSouthEdgeNeighbouringNodeCrossingsCounter::get_upper_lower_crossings(Self) -> Int
+
+pub struct SweepCopy {
+  node_order : Array[Array[@runtime.LNode]]
+  port_orders : Array[Array[Array[@runtime.LPort]]]
+}
+pub fn SweepCopy::nodes(Self) -> Array[Array[@runtime.LNode]]
+pub fn SweepCopy::transfer_node_and_port_orders_to_graph(Self, @runtime.LGraph, Bool) -> Unit raise
+
+pub struct SwitchDecider {
+  free_layer : Array[@runtime.LNode]
+  left_in_layer_counter : CrossingsCounter
+  right_in_layer_counter : CrossingsCounter
+  north_south_counter : NorthSouthEdgeNeighbouringNodeCrossingsCounter
+  crossing_matrix_filler : CrossingMatrixFiller
+  graph_data : GraphInfoHolder
+  mut parent_cross_counter : CrossingsCounter?
+  count_crossings_caused_by_port_switch : Bool
+}
+pub fn SwitchDecider::does_switch_reduce_crossings(Self, Int, Int) -> Bool raise
+pub fn SwitchDecider::notify_of_switch(Self, @runtime.LNode, @runtime.LNode) -> Unit raise
+
+// Type aliases
+
+// Traits

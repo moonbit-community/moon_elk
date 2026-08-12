@@ -25,7 +25,6 @@ pub struct LGraph {
     Array[(LEdge, (LEdge, LGraph, PortType))],
   ]?
   priv mut node_array_properties : Map[@graph.PropertyId, Array[LNode]]?
-  mut layout_state : LayeredLayoutState
   priv mut int_properties : Map[@graph.PropertyId, Int]?
   priv mut bool_properties : Map[@graph.PropertyId, Bool]?
   priv mut double_properties : Map[@graph.PropertyId, Double]?
@@ -63,7 +62,6 @@ pub fn new_l_graph() -> LGraph {
     graph_properties_array_properties: None,
     cross_hierarchy_map_entry_array_properties: None,
     node_array_properties: None,
-    layout_state: new_layered_layout_state(),
     int_properties: None,
     bool_properties: None,
     double_properties: None,
@@ -726,15 +724,7 @@ pub fn LGraph::set_parent_node(self : LGraph, parent_node : LNode?) -> Unit {
 }
 
 ///|
-pub fn LGraph::get_layout_state(self : LGraph) -> LayeredLayoutState {
-  self.layout_state
-}
-
-///|
 pub fn LGraph::copy_properties(self : LGraph, source : LGraph) -> Unit {
-  // Component graphs participate in the same execution plan and must consume
-  // the same transient state, especially the deterministic random sequence.
-  self.layout_state = source.layout_state
   self.port_side_array_properties = layered_property_bag_copy(
     source.port_side_array_properties,
     value => value.copy(),

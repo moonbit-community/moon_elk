@@ -1,0 +1,759 @@
+///|
+fn port_restorer_port_side_equals(
+  left : @core.PortSide,
+  right : @core.PortSide,
+) -> Bool {
+  match (left, right) {
+    (SideUndefined, SideUndefined) => true
+    (North, North) => true
+    (East, East) => true
+    (South, South) => true
+    (West, West) => true
+    _ => false
+  }
+}
+
+///|
+fn port_restorer_parse_ordering(
+  value : String,
+) -> @options.SelfLoopOrderingStrategy {
+  match value {
+    "STACKED" => Stacked
+    "REVERSE_STACKED" => ReverseStacked
+    "SEQUENCED" => Sequenced
+    _ => Stacked
+  }
+}
+
+///|
+fn port_restorer_ordering_equals(
+  left : @options.SelfLoopOrderingStrategy,
+  right : @options.SelfLoopOrderingStrategy,
+) -> Bool {
+  match (left, right) {
+    (Stacked, Stacked) => true
+    (ReverseStacked, ReverseStacked) => true
+    (Sequenced, Sequenced) => true
+    _ => false
+  }
+}
+
+///|
+fn port_restorer_self_loop_type_index(
+  self_loop_type : @runtime.SelfLoopType,
+) -> Int {
+  match self_loop_type {
+    OneSide => 1
+    TwoSidesCorner => 2
+    TwoSidesOpposing => 3
+    ThreeSides => 4
+    FourSides => 5
+  }
+}
+
+///|
+pub enum PortSideArea {
+  Start
+  Middle
+  End
+}
+
+///|
+fn port_restorer_port_side_area_to_string(area : PortSideArea) -> String {
+  match area {
+    Start => "START"
+    Middle => "MIDDLE"
+    End => "END"
+  }
+}
+
+///|
+pub enum AddMode {
+  Prepend
+  Append
+}
+
+///|
+fn port_restorer_target_area_key(
+  side : @core.PortSide,
+  area : PortSideArea,
+) -> String {
+  @core.port_side_to_string(side) +
+  ":" +
+  port_restorer_port_side_area_to_string(area)
+}
+
+///|
+fn port_restorer_target_area_ensure(
+  target_areas : Map[String, Array[@runtime.SelfLoopPort]],
+  side : @core.PortSide,
+  area : PortSideArea,
+) -> Array[@runtime.SelfLoopPort] {
+  let key = port_restorer_target_area_key(side, area)
+  match target_areas.get(key) {
+    Some(target) => target
+    None => {
+      let target = []
+      target_areas[key] = target
+      target
+    }
+  }
+}
+
+///|
+fn port_restorer_target_area_get(
+  target_areas : Map[String, Array[@runtime.SelfLoopPort]],
+  side : @core.PortSide,
+  area : PortSideArea,
+) -> Array[@runtime.SelfLoopPort] {
+  port_restorer_target_area_ensure(target_areas, side, area)
+}
+
+///|
+fn port_restorer_sl_loops_by_type_get(
+  sl_loops_by_type : Map[Int, Array[@runtime.SelfHyperLoop]],
+  self_loop_type : @runtime.SelfLoopType,
+) -> Array[@runtime.SelfHyperLoop] {
+  let key = port_restorer_self_loop_type_index(self_loop_type)
+  match sl_loops_by_type.get(key) {
+    Some(loops) => loops
+    None => {
+      let loops = []
+      sl_loops_by_type[key] = loops
+      loops
+    }
+  }
+}
+
+///|
+fn port_restorer_subarray(
+  values : Array[@runtime.SelfLoopPort],
+  begin_index : Int,
+  end_index : Int,
+) -> Array[@runtime.SelfLoopPort] {
+  let result = []
+  let mut i = begin_index
+  while i < end_index {
+    result.push(values[i])
+    i += 1
+  }
+  result
+}
+
+///|
+fn port_restorer_reverse_hyper_loops(
+  loops : Array[@runtime.SelfHyperLoop],
+) -> Array[@runtime.SelfHyperLoop] {
+  let result = []
+  let mut index = loops.length() - 1
+  while index >= 0 {
+    result.push(loops[index])
+    index -= 1
+  }
+  result
+}
+
+///|
+fn port_restorer_sort_ports_by_net_flow(
+  sl_ports : Array[@runtime.SelfLoopPort],
+) -> Unit {
+  let mut i = 1
+  while i < sl_ports.length() {
+    let mut j = i
+    while j > 0 &&
+          sl_ports[j - 1].get_sl_net_flow() > sl_ports[j].get_sl_net_flow() {
+      let temp = sl_ports[j - 1]
+      sl_ports[j - 1] = sl_ports[j]
+      sl_ports[j] = temp
+      j -= 1
+    }
+    i += 1
+  }
+}
+
+///|
+fn port_restorer_sort_sides(sides : Array[@core.PortSide]) -> Unit {
+  let mut i = 1
+  while i < sides.length() {
+    let mut j = i
+    while j > 0 &&
+          port_restorer_port_side_order(sides[j - 1]) >
+          port_restorer_port_side_order(sides[j]) {
+      let temp = sides[j - 1]
+      sides[j - 1] = sides[j]
+      sides[j] = temp
+      j -= 1
+    }
+    i += 1
+  }
+}
+
+///|
+pub struct PortRestorer {
+  mut sl_loops_by_type : Map[Int, Array[@runtime.SelfHyperLoop]]
+  target_areas : Map[String, Array[@runtime.SelfLoopPort]]
+}
+
+///|
+pub fn new_port_restorer() -> PortRestorer {
+  { sl_loops_by_type: Map([]), target_areas: Map([]) }
+}
+
+///|
+fn PortRestorer::init_target_areas(self : PortRestorer) -> Unit {
+  self.target_areas.clear()
+  for side in @core.port_side_values() {
+    for area in [PortSideArea::Start, Middle, End] {
+      ignore(port_restorer_target_area_ensure(self.target_areas, side, area))
+    }
+  }
+}
+
+///|
+fn PortRestorer::gather_self_loops_by_type(
+  _self : PortRestorer,
+  sl_holder : @runtime.SelfLoopHolder,
+) -> Map[Int, Array[@runtime.SelfHyperLoop]] {
+  let loops : Map[Int, Array[@runtime.SelfHyperLoop]] = Map([])
+  for sl_loop in sl_holder.get_sl_hyper_loops() {
+    match sl_loop.get_self_loop_type() {
+      Some(self_loop_type) => {
+        let list = port_restorer_sl_loops_by_type_get(loops, self_loop_type)
+        list.push(sl_loop)
+      }
+      None => ()
+    }
+  }
+  loops
+}
+
+///|
+fn PortRestorer::compute_port_list_split_index(
+  self : PortRestorer,
+  sorted_ports : Array[@runtime.SelfLoopPort],
+) -> Int {
+  ignore(self)
+
+  let mut positive_net_flow_index = 0
+  while positive_net_flow_index < sorted_ports.length() {
+    if sorted_ports[positive_net_flow_index].get_sl_net_flow() > 0 {
+      break
+    }
+    positive_net_flow_index += 1
+  }
+
+  if positive_net_flow_index > 0 &&
+    positive_net_flow_index < sorted_ports.length() - 1 {
+    return positive_net_flow_index
+  }
+
+  let mut non_negative_net_flow_index = 0
+  while non_negative_net_flow_index < sorted_ports.length() {
+    if sorted_ports[non_negative_net_flow_index].get_sl_net_flow() > 0 {
+      break
+    }
+    non_negative_net_flow_index += 1
+  }
+
+  if non_negative_net_flow_index > 0 &&
+    positive_net_flow_index < sorted_ports.length() - 1 {
+    return non_negative_net_flow_index
+  }
+
+  sorted_ports.length() / 2
+}
+
+///|
+fn PortRestorer::add_to_target_area_loop(
+  self : PortRestorer,
+  sl_loop : @runtime.SelfHyperLoop,
+  port_side : @core.PortSide,
+  area : PortSideArea,
+  add_mode : AddMode,
+) -> Unit {
+  self.add_to_target_area_ports(
+    sl_loop.get_sl_ports_by_side(port_side),
+    port_side,
+    area,
+    add_mode,
+  )
+}
+
+///|
+fn PortRestorer::add_to_target_area_ports(
+  self : PortRestorer,
+  sl_ports : Array[@runtime.SelfLoopPort],
+  port_side : @core.PortSide,
+  area : PortSideArea,
+  add_mode : AddMode,
+) -> Unit {
+  let hidden_ports = []
+  for sl_port in sl_ports {
+    if sl_port.is_hidden() {
+      hidden_ports.push(sl_port)
+    }
+  }
+
+  let target = port_restorer_target_area_get(self.target_areas, port_side, area)
+
+  match add_mode {
+    Prepend =>
+      for sl_port in hidden_ports {
+        ignore(target.insert(0, sl_port))
+      }
+    Append => {
+      let mut index = hidden_ports.length() - 1
+      while index >= 0 {
+        target.push(hidden_ports[index])
+        index -= 1
+      }
+    }
+  }
+}
+
+///|
+fn PortRestorer::process_one_side_loops(
+  self : PortRestorer,
+  ordering : @options.SelfLoopOrderingStrategy,
+) -> Unit {
+  let mut loops = port_restorer_sl_loops_by_type_get(
+    self.sl_loops_by_type,
+    OneSide,
+  )
+  if port_restorer_ordering_equals(ordering, ReverseStacked) {
+    loops = port_restorer_reverse_hyper_loops(loops)
+  }
+
+  for sl_loop in loops {
+    let side = sl_loop.get_sl_ports()[0].get_l_port().get_side()
+    let sorted_ports = sl_loop.get_sl_ports().copy()
+    port_restorer_sort_ports_by_net_flow(sorted_ports)
+
+    match ordering {
+      Sequenced =>
+        self.add_to_target_area_ports(sorted_ports, side, Middle, Append)
+      ReverseStacked => {
+        let split_index = self.compute_port_list_split_index(sorted_ports)
+        self.add_to_target_area_ports(
+          port_restorer_subarray(sorted_ports, 0, split_index),
+          side,
+          Middle,
+          Prepend,
+        )
+        self.add_to_target_area_ports(
+          port_restorer_subarray(
+            sorted_ports,
+            split_index,
+            sorted_ports.length(),
+          ),
+          side,
+          Middle,
+          Append,
+        )
+      }
+      Stacked => {
+        let split_index = self.compute_port_list_split_index(sorted_ports)
+        self.add_to_target_area_ports(
+          port_restorer_subarray(sorted_ports, 0, split_index),
+          side,
+          Middle,
+          Prepend,
+        )
+        self.add_to_target_area_ports(
+          port_restorer_subarray(
+            sorted_ports,
+            split_index,
+            sorted_ports.length(),
+          ),
+          side,
+          Middle,
+          Append,
+        )
+      }
+    }
+  }
+}
+
+///|
+fn port_restorer_port_side_order(side : @core.PortSide) -> Int {
+  match side {
+    SideUndefined => 0
+    North => 1
+    East => 2
+    South => 3
+    West => 4
+  }
+}
+
+///|
+fn port_restorer_side_pair_swap(values : Array[@core.PortSide]) -> Unit {
+  if values.length() < 2 {
+    return
+  }
+  let first = values[0]
+  values[0] = values[1]
+  values[1] = first
+}
+
+///|
+pub fn port_restorer_sorted_two_side_loop_port_sides(
+  sl_loop : @runtime.SelfHyperLoop,
+) -> Array[@core.PortSide] {
+  let sides = []
+  for side in [@core.PortSide::North, East, South, West] {
+    if sl_loop.has_sl_ports_on_side(side) {
+      sides.push(side)
+    }
+  }
+
+  port_restorer_sort_sides(sides)
+
+  if sides.length() == 2 &&
+    port_restorer_port_side_equals(sides[0], North) &&
+    port_restorer_port_side_equals(sides[1], West) {
+    port_restorer_side_pair_swap(sides)
+  }
+
+  sides
+}
+
+///|
+fn PortRestorer::process_two_side_corner_loops(self : PortRestorer) -> Unit {
+  for
+    sl_loop in port_restorer_sl_loops_by_type_get(
+      self.sl_loops_by_type,
+      TwoSidesCorner,
+    ) {
+    let sides = port_restorer_sorted_two_side_loop_port_sides(sl_loop)
+    if sides.length() == 2 {
+      self.add_to_target_area_loop(sl_loop, sides[0], End, Prepend)
+      self.add_to_target_area_loop(sl_loop, sides[1], Start, Append)
+    }
+  }
+}
+
+///|
+fn PortRestorer::process_two_side_opposing_loops(self : PortRestorer) -> Unit {
+  for
+    sl_loop in port_restorer_sl_loops_by_type_get(
+      self.sl_loops_by_type,
+      TwoSidesOpposing,
+    ) {
+    let sides = port_restorer_sorted_two_side_loop_port_sides(sl_loop)
+    if sides.length() == 2 {
+      self.add_to_target_area_loop(sl_loop, sides[0], End, Prepend)
+      self.add_to_target_area_loop(sl_loop, sides[1], Start, Append)
+    }
+  }
+}
+
+///|
+fn port_restorer_loop_has_side(
+  sl_loop : @runtime.SelfHyperLoop,
+  side : @core.PortSide,
+) -> Bool {
+  sl_loop.has_sl_ports_on_side(side)
+}
+
+///|
+fn PortRestorer::determine_loop_constellation(
+  self : PortRestorer,
+  sl_loop : @runtime.SelfHyperLoop,
+) -> Array[@core.PortSide] {
+  ignore(self)
+  if !port_restorer_loop_has_side(sl_loop, North) {
+    [East, South, West]
+  } else if !port_restorer_loop_has_side(sl_loop, East) {
+    [South, West, North]
+  } else if !port_restorer_loop_has_side(sl_loop, South) {
+    [West, North, East]
+  } else if !port_restorer_loop_has_side(sl_loop, West) {
+    [North, East, South]
+  } else {
+    []
+  }
+}
+
+///|
+fn PortRestorer::process_three_side_loops(self : PortRestorer) -> Unit {
+  for
+    sl_loop in port_restorer_sl_loops_by_type_get(
+      self.sl_loops_by_type,
+      ThreeSides,
+    ) {
+    let sides = self.determine_loop_constellation(sl_loop)
+    if sides.length() == 3 {
+      self.add_to_target_area_loop(sl_loop, sides[0], End, Prepend)
+      self.add_to_target_area_loop(sl_loop, sides[1], Middle, Append)
+      self.add_to_target_area_loop(sl_loop, sides[2], Start, Append)
+    }
+  }
+}
+
+///|
+fn PortRestorer::process_four_side_loops(self : PortRestorer) -> Unit {
+  for
+    sl_loop in port_restorer_sl_loops_by_type_get(
+      self.sl_loops_by_type,
+      FourSides,
+    ) {
+    for side in [@core.PortSide::North, East, South, West] {
+      if sl_loop.has_sl_ports_on_side(side) {
+        self.add_to_target_area_loop(sl_loop, side, Middle, Append)
+      }
+    }
+  }
+}
+
+///|
+fn PortRestorer::add_all(
+  self : PortRestorer,
+  sl_ports : Array[@runtime.SelfLoopPort],
+  l_node : @runtime.LNode,
+) -> Unit {
+  ignore(self)
+  for sl_port in sl_ports {
+    sl_port.get_l_port().set_node(Some(l_node))
+  }
+}
+
+///|
+fn PortRestorer::add_all_that(
+  self : PortRestorer,
+  l_ports : Array[@runtime.LPort],
+  from_index : Int,
+  condition : (@runtime.LPort) -> Bool,
+  target : Array[@runtime.LPort],
+) -> Int {
+  ignore(self)
+  for i in from_index..<l_ports.length() {
+    let l_port = l_ports[i]
+    if condition(l_port) {
+      target.push(l_port)
+    } else {
+      return i
+    }
+  }
+  l_ports.length()
+}
+
+///|
+fn port_restorer_side_set_contains(
+  sides : Array[@core.PortSide],
+  side : @core.PortSide,
+) -> Bool {
+  for existing in sides {
+    if port_restorer_port_side_equals(existing, side) {
+      return true
+    }
+  }
+  false
+}
+
+///|
+fn port_restorer_side_set_add(
+  sides : Array[@core.PortSide],
+  side : @core.PortSide,
+) -> Unit {
+  if !port_restorer_side_set_contains(sides, side) {
+    sides.push(side)
+  }
+}
+
+///|
+fn PortRestorer::north_south_port_connection_sides(
+  self : PortRestorer,
+  l_port : @runtime.LPort,
+) -> Array[@core.PortSide] {
+  ignore(self)
+  let connection_sides = []
+
+  match l_port.get_property_l_node(@runtime.internal_properties_port_dummy) {
+    Some(port_dummy) =>
+      for dummy_l_port in port_dummy.get_ports() {
+        match
+          dummy_l_port.get_property_l_port(
+            @runtime.internal_properties_origin_l_port,
+          ) {
+          Some(origin) =>
+            if @runtime.lport_internal_handle(origin) ==
+              @runtime.lport_internal_handle(l_port) {
+              if !dummy_l_port.get_connected_edges().is_empty() {
+                port_restorer_side_set_add(
+                  connection_sides,
+                  dummy_l_port.get_side(),
+                )
+              }
+            }
+          None => ()
+        }
+      }
+    None => ()
+  }
+
+  connection_sides
+}
+
+///|
+fn PortRestorer::is_north_south_port_with_west_or_west_east_connections(
+  self : PortRestorer,
+  l_port : @runtime.LPort,
+) -> Bool {
+  let connections = self.north_south_port_connection_sides(l_port)
+  let east_connections = port_restorer_side_set_contains(connections, East)
+  let west_connections = port_restorer_side_set_contains(connections, West)
+  west_connections || (west_connections && east_connections)
+}
+
+///|
+fn PortRestorer::is_north_south_port_with_east_connections(
+  self : PortRestorer,
+  l_port : @runtime.LPort,
+) -> Bool {
+  let connections = self.north_south_port_connection_sides(l_port)
+  port_restorer_side_set_contains(connections, East)
+}
+
+///|
+fn PortRestorer::restore_ports_internal(
+  self : PortRestorer,
+  sl_holder : @runtime.SelfLoopHolder,
+) -> Unit {
+  let l_node = sl_holder.get_l_node()
+  let old_port_list = l_node.get_ports().copy()
+  let mut next_old_port_index = 0
+
+  let new_port_list = l_node.get_ports()
+  new_port_list.clear()
+
+  self.add_all(
+    port_restorer_target_area_get(self.target_areas, North, Start),
+    l_node,
+  )
+  next_old_port_index = self.add_all_that(
+    old_port_list,
+    next_old_port_index,
+    l_port => {
+      port_restorer_port_side_equals(l_port.get_side(), North) &&
+      self.is_north_south_port_with_west_or_west_east_connections(l_port)
+    },
+    new_port_list,
+  )
+  self.add_all(
+    port_restorer_target_area_get(self.target_areas, North, Middle),
+    l_node,
+  )
+  next_old_port_index = self.add_all_that(
+    old_port_list,
+    next_old_port_index,
+    l_port => port_restorer_port_side_equals(l_port.get_side(), North),
+    new_port_list,
+  )
+  self.add_all(
+    port_restorer_target_area_get(self.target_areas, North, End),
+    l_node,
+  )
+
+  self.add_all(
+    port_restorer_target_area_get(self.target_areas, East, Start),
+    l_node,
+  )
+  self.add_all(
+    port_restorer_target_area_get(self.target_areas, East, Middle),
+    l_node,
+  )
+  next_old_port_index = self.add_all_that(
+    old_port_list,
+    next_old_port_index,
+    l_port => port_restorer_port_side_equals(l_port.get_side(), East),
+    new_port_list,
+  )
+  self.add_all(
+    port_restorer_target_area_get(self.target_areas, East, End),
+    l_node,
+  )
+
+  self.add_all(
+    port_restorer_target_area_get(self.target_areas, South, Start),
+    l_node,
+  )
+  next_old_port_index = self.add_all_that(
+    old_port_list,
+    next_old_port_index,
+    l_port => {
+      port_restorer_port_side_equals(l_port.get_side(), South) &&
+      self.is_north_south_port_with_east_connections(l_port)
+    },
+    new_port_list,
+  )
+  self.add_all(
+    port_restorer_target_area_get(self.target_areas, South, Middle),
+    l_node,
+  )
+  next_old_port_index = self.add_all_that(
+    old_port_list,
+    next_old_port_index,
+    l_port => port_restorer_port_side_equals(l_port.get_side(), South),
+    new_port_list,
+  )
+  self.add_all(
+    port_restorer_target_area_get(self.target_areas, South, End),
+    l_node,
+  )
+
+  self.add_all(
+    port_restorer_target_area_get(self.target_areas, West, Start),
+    l_node,
+  )
+  next_old_port_index = self.add_all_that(
+    old_port_list,
+    next_old_port_index,
+    l_port => port_restorer_port_side_equals(l_port.get_side(), West),
+    new_port_list,
+  )
+  self.add_all(
+    port_restorer_target_area_get(self.target_areas, West, Middle),
+    l_node,
+  )
+  self.add_all(
+    port_restorer_target_area_get(self.target_areas, West, End),
+    l_node,
+  )
+}
+
+///|
+pub fn PortRestorer::restore_ports(
+  self : PortRestorer,
+  sl_holder : @runtime.SelfLoopHolder,
+  monitor : @core.IElkProgressMonitor?,
+) -> Unit {
+  ignore(monitor)
+  self.init_target_areas()
+  self.sl_loops_by_type = self.gather_self_loops_by_type(sl_holder)
+
+  let ordering = port_restorer_parse_ordering(
+    sl_holder
+    .get_l_node()
+    .get_property_string(
+      @options.layered_options_edge_routing_self_loop_ordering,
+    ),
+  )
+  self.process_one_side_loops(ordering)
+  self.process_two_side_corner_loops()
+  self.process_three_side_loops()
+  self.process_four_side_loops()
+  self.process_two_side_opposing_loops()
+
+  self.restore_ports_internal(sl_holder)
+
+  for side in @core.port_side_values() {
+    for area in [PortSideArea::Start, Middle, End] {
+      for
+        sl_port in port_restorer_target_area_get(self.target_areas, side, area) {
+        sl_port.set_hidden(false)
+      }
+    }
+  }
+  sl_holder.set_ports_hidden(false)
+  self.sl_loops_by_type.clear()
+}

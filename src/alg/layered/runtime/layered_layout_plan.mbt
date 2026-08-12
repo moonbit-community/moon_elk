@@ -5,16 +5,16 @@
 /// is split into components. Keeping processor instances in that model made the
 /// model depend on the pipeline and copied execution state as graph data.
 /// A separate plan owns both graph-bound runnable processors and their per-run
-/// state. The graph model only carries the shared algorithm state reference.
+/// state. The graph model carries no execution-state reference.
 pub struct LayeredLayoutPlan {
   processors : Array[&@core.RunnableLayoutProcessor]
-  state : LayeredLayoutState
+  state : LayeredRunState
 }
 
 ///|
 pub fn new_layered_layout_plan(
   plan : @core.LayoutProcessorPlan,
-  state? : LayeredLayoutState = new_layered_layout_state(),
+  state? : LayeredRunState = new_layered_run_state(),
 ) -> LayeredLayoutPlan {
   { processors: plan.steps(), state }
 }
@@ -29,6 +29,6 @@ pub fn LayeredLayoutPlan::get_processors(
 ///|
 pub fn LayeredLayoutPlan::get_state(
   self : LayeredLayoutPlan,
-) -> LayeredLayoutState {
+) -> LayeredRunState {
   self.state
 }

@@ -54,7 +54,7 @@ test "Dot/Json debug graph generation for layered graph" {
 }
 
 ///|
-test "Dot/Json debug graph generation for segments and hypernodes" {
+test "Dot/Json debug graph generation for segments" {
   let (graph, _, _, _) = layered_debug_util_test_graph_fixture()
 
   let dot_segment_text = dot_debug_util_create_debug_graph_linear_segments(
@@ -70,26 +70,6 @@ test "Dot/Json debug graph generation for segments and hypernodes" {
     [],
   )
   inspect(json_segment_text.contains("\"children\""), content="true")
-
-  let strategy = new_west_to_east_routing_strategy()
-  let hypernode_a = new_hyper_edge_segment(strategy)
-  let hypernode_b = new_hyper_edge_segment(strategy)
-  ignore(
-    hyper_edge_segment_dependency_create_and_add_regular(
-      hypernode_a, hypernode_b, 3,
-    ),
-  )
-
-  let dot_hypernode_text = dot_debug_util_create_debug_graph_hypernodes(graph, [
-    hypernode_a, hypernode_b,
-  ])
-  inspect(dot_hypernode_text.contains("->"), content="true")
-
-  let json_hypernode_text = json_debug_util_create_debug_graph_hypernodes(
-    graph,
-    [hypernode_a, hypernode_b],
-  )
-  inspect(json_hypernode_text.contains("\"target\": \"n"), content="true")
 }
 
 ///|
@@ -97,28 +77,11 @@ test "DebugUtil logs dot/json tags" {
   let monitor = new_elk_progress_monitor().with_logging(true)
   let (graph, _, _, _) = layered_debug_util_test_graph_fixture()
 
-  let strategy = new_west_to_east_routing_strategy()
-  let hypernode_a = new_hyper_edge_segment(strategy)
-  let hypernode_b = new_hyper_edge_segment(strategy)
-  ignore(
-    hyper_edge_segment_dependency_create_and_add_regular(
-      hypernode_a, hypernode_b, 1,
-    ),
-  )
-
   debug_util_log_debug_graph(monitor, graph, 3, "Before")
   debug_util_log_debug_graph_linear_segments(monitor, graph, [], [])
-  debug_util_log_debug_graph_hypernodes(
-    monitor,
-    graph,
-    0,
-    [hypernode_a, hypernode_b],
-    "orthogonal",
-    "cycle",
-  )
 
   let logged_graphs = monitor.get_logged_graphs()
-  inspect(logged_graphs.length(), content="6")
+  inspect(logged_graphs.length(), content="4")
   inspect(logged_graphs[0].tag.contains("[dot]"), content="true")
   inspect(logged_graphs[1].tag.contains("[json]"), content="true")
 }

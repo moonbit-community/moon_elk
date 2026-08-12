@@ -106,9 +106,14 @@ pub fn adapt_l_graph_with_options(
   transparent_north_south_edges : Bool,
   transparent_comment_nodes : Bool,
   node_filter : (LNode) -> Bool,
+  state? : LayeredRunState? = None,
 ) -> LGraphAdapter {
   new_l_graph_adapter(
-    graph, transparent_north_south_edges, transparent_comment_nodes, node_filter,
+    graph,
+    transparent_north_south_edges,
+    transparent_comment_nodes,
+    node_filter,
+    state~,
   )
 }
 
@@ -132,6 +137,7 @@ pub struct LGraphAdapter {
   transparent_north_south_edges : Bool
   transparent_comment_nodes : Bool
   node_filter : (LNode) -> Bool
+  state : LayeredRunState?
 }
 
 ///|
@@ -140,6 +146,7 @@ pub fn new_l_graph_adapter(
   transparent_north_south_edges : Bool,
   transparent_comment_nodes : Bool,
   node_filter : (LNode) -> Bool,
+  state? : LayeredRunState? = None,
 ) -> LGraphAdapter {
   {
     element,
@@ -147,6 +154,7 @@ pub fn new_l_graph_adapter(
     transparent_north_south_edges,
     transparent_comment_nodes,
     node_filter,
+    state,
   }
 }
 
@@ -293,6 +301,7 @@ pub fn LGraphAdapter::get_nodes(self : LGraphAdapter) -> Array[LNodeAdapter] {
                 Some(self),
                 node,
                 self.transparent_north_south_edges,
+                state=self.state,
               ),
             )
 
@@ -304,7 +313,14 @@ pub fn LGraphAdapter::get_nodes(self : LGraphAdapter) -> Array[LNodeAdapter] {
                   comment in node.get_property_l_node_array(
                     internal_properties_top_comments,
                   ) {
-                  adapters.push(new_l_node_adapter(Some(self), comment, false))
+                  adapters.push(
+                    new_l_node_adapter(
+                      Some(self),
+                      comment,
+                      false,
+                      state=self.state,
+                    ),
+                  )
                 }
               }
 
@@ -315,7 +331,14 @@ pub fn LGraphAdapter::get_nodes(self : LGraphAdapter) -> Array[LNodeAdapter] {
                   comment in node.get_property_l_node_array(
                     internal_properties_bottom_comments,
                   ) {
-                  adapters.push(new_l_node_adapter(Some(self), comment, false))
+                  adapters.push(
+                    new_l_node_adapter(
+                      Some(self),
+                      comment,
+                      false,
+                      state=self.state,
+                    ),
+                  )
                 }
               }
             }
@@ -355,6 +378,7 @@ pub struct LNodeAdapter {
   mut label_adapters : Array[LLabelAdapter]?
   mut port_adapters : Array[LPortAdapter]?
   transparent_north_south_edges : Bool
+  state : LayeredRunState?
 }
 
 ///|
@@ -362,6 +386,7 @@ pub fn new_l_node_adapter(
   parent_graph_adapter : LGraphAdapter?,
   element : LNode,
   transparent_north_south_edges : Bool,
+  state? : LayeredRunState? = None,
 ) -> LNodeAdapter {
   {
     parent_graph_adapter,
@@ -369,6 +394,7 @@ pub fn new_l_node_adapter(
     label_adapters: None,
     port_adapters: None,
     transparent_north_south_edges,
+    state,
   }
 }
 
@@ -526,7 +552,11 @@ pub fn LNodeAdapter::get_ports(self : LNodeAdapter) -> Array[LPortAdapter] {
       let adapters = []
       for port in self.element.get_ports() {
         adapters.push(
-          new_l_port_adapter(port, self.transparent_north_south_edges),
+          new_l_port_adapter(
+            port,
+            self.transparent_north_south_edges,
+            state=self.state,
+          ),
         )
       }
       self.port_adapters = Some(adapters)
@@ -638,12 +668,14 @@ pub struct LPortAdapter {
   mut incoming_edge_adapters : Array[LEdgeAdapter]?
   mut outgoing_edge_adapters : Array[LEdgeAdapter]?
   transparent_north_south_edges : Bool
+  state : LayeredRunState?
 }
 
 ///|
 pub fn new_l_port_adapter(
   element : LPort,
   transparent_north_south_edges : Bool,
+  state? : LayeredRunState? = None,
 ) -> LPortAdapter {
   {
     element,
@@ -651,6 +683,7 @@ pub fn new_l_port_adapter(
     incoming_edge_adapters: None,
     outgoing_edge_adapters: None,
     transparent_north_south_edges,
+    state,
   }
 }
 
@@ -830,15 +863,10 @@ pub fn LPortAdapter::get_incoming_edges(
         }
       }
 
-      match node {
-        Some(owner_node) =>
-          if owner_node.has_property_self_loop_holder(
-              internal_properties_self_loop_holder,
-            ) {
-            match
-              owner_node.get_property_self_loop_holder(
-                internal_properties_self_loop_holder,
-              ) {
+      match (node, self.state) {
+        (Some(owner_node), Some(state)) =>
+          if state.has_self_loop_holder(owner_node) {
+            match state.get_self_loop_holder(owner_node) {
               Some(slh) =>
                 match
                   slh.get_sl_port_map().get(lport_internal_handle(self.element)) {
@@ -851,7 +879,7 @@ pub fn LPortAdapter::get_incoming_edges(
               None => ()
             }
           }
-        None => ()
+        _ => ()
       }
 
       self.incoming_edge_adapters = Some(adapters)
@@ -893,15 +921,10 @@ pub fn LPortAdapter::get_outgoing_edges(
         }
       }
 
-      match node {
-        Some(owner_node) =>
-          if owner_node.has_property_self_loop_holder(
-              internal_properties_self_loop_holder,
-            ) {
-            match
-              owner_node.get_property_self_loop_holder(
-                internal_properties_self_loop_holder,
-              ) {
+      match (node, self.state) {
+        (Some(owner_node), Some(state)) =>
+          if state.has_self_loop_holder(owner_node) {
+            match state.get_self_loop_holder(owner_node) {
               Some(slh) =>
                 match
                   slh.get_sl_port_map().get(lport_internal_handle(self.element)) {
@@ -914,7 +937,7 @@ pub fn LPortAdapter::get_outgoing_edges(
               None => ()
             }
           }
-        None => ()
+        _ => ()
       }
 
       self.outgoing_edge_adapters = Some(adapters)

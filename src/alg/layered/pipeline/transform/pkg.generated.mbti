@@ -9,7 +9,7 @@ import {
 // Values
 pub fn graph_configurator_activate_greedy_switch_for(@runtime.LGraph) -> Bool
 
-pub fn graph_configurator_configure_graph_properties(@runtime.LGraph) -> Unit
+pub fn graph_configurator_configure_graph_properties(@runtime.LGraph, @runtime.LayeredRunState) -> Unit
 
 pub fn graph_configurator_copy_port_constraints(@runtime.LGraph) -> Unit
 
@@ -19,7 +19,7 @@ pub fn graph_configurator_enforce_direction(@runtime.LGraph) -> Unit
 
 pub fn graph_configurator_enforce_min_edge_spacing(@runtime.LGraph) -> Unit
 
-pub fn graph_configurator_initialize_layout_state(@runtime.LGraph) -> Unit
+pub fn graph_configurator_initialize_layout_state(@runtime.LGraph, @runtime.LayeredRunState) -> Unit
 
 pub fn layered_elk_graph_transformer_get_origin_identifier(@runtime.LGraphElement) -> String?
 

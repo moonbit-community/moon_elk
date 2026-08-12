@@ -1,0 +1,303 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/moon_elk/alg/layered/processors/intermediate"
+
+import {
+  "Milky2018/moon_elk/alg/common/compaction",
+  "Milky2018/moon_elk/alg/layered/options",
+  "Milky2018/moon_elk/alg/layered/runtime",
+  "Milky2018/moon_elk/core",
+  "Milky2018/moon_elk/graph",
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn ard_cut_index_heuristic_get_chunk_count(GraphStats) -> Int raise
+
+pub fn bp_info_is_end(@runtime.LayeredRunState, @runtime.LNode) -> Bool
+
+pub fn bp_info_is_start(@runtime.LayeredRunState, @runtime.LNode) -> Bool
+
+pub fn cm_group_model_order_calculate_model_order_or_group_model_order(@runtime.LNode, @runtime.LNode, @runtime.LGraph, Int) -> Int
+
+pub fn cm_group_model_order_calculate_model_order_or_group_model_order_edge(@runtime.LEdge, @runtime.LEdge, @runtime.LGraph, Int) -> Int
+
+pub fn cm_group_model_order_calculate_model_order_or_group_model_order_port(@runtime.LPort, @runtime.LPort, @runtime.LGraph, Int) -> Int
+
+pub fn cutting_utils_insert_dummies(@runtime.LGraph, @runtime.LEdge, Int) -> Array[@runtime.LEdge] raise CuttingUtilsException
+
+pub let label_dummy_switcher_include_label : @graph.IProperty[Bool]
+
+pub let label_management_processor_min_width_edge_labels : Double
+
+pub fn long_edge_joiner_join_at(@runtime.LNode, Bool) -> Unit raise
+
+pub fn long_edge_splitter_split_edge(@runtime.LEdge, @runtime.LNode) -> @runtime.LEdge raise
+
+pub fn new_alternating_layer_unzipper_layout_processor() -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_ard_cut_index_heuristic() -> ICutIndexCalculator
+
+pub fn[V : Hash + Eq] new_bi_linked_hash_multi_map() -> BiLinkedHashMultiMap[V]
+
+pub fn new_breaking_point_inserter_layout_processor(state? : @runtime.LayeredRunState) -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_breaking_point_processor_layout_processor(state? : @runtime.LayeredRunState) -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_breaking_point_remover_layout_processor(state? : @runtime.LayeredRunState) -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_constraints_postprocessor_layout_processor() -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_direction_postprocessor_layout_processor() -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_direction_preprocessor_layout_processor() -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_edge_and_layer_constraint_edge_reverser_layout_processor() -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_end_label_postprocessor_layout_processor(state? : @runtime.LayeredRunState) -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_end_label_preprocessor_layout_processor(state? : @runtime.LayeredRunState) -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_end_label_sorter_layout_processor() -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_graph_stats(@runtime.LGraph) -> GraphStats
+
+pub fn new_graph_transformer_layout_processor(GraphTransformerMode) -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_hierarchical_node_resizing_processor_layout_processor() -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_hierarchical_port_constraint_processor_layout_processor() -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_hierarchical_port_dummy_size_processor_layout_processor() -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_hierarchical_port_position_processor_layout_processor() -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_high_degree_node_layering_processor_layout_processor() -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_horizontal_graph_compactor_layout_processor(state? : @runtime.LayeredRunState) -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_hyperedge_dummy_merger_layout_processor() -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_hypernodes_processor_layout_processor() -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_i_cut_index_calculator((@runtime.LGraph, GraphStats) -> Array[Int] raise, () -> Bool) -> ICutIndexCalculator
+
+pub fn new_in_layer_constraint_processor_layout_processor() -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_interactive_external_port_positioner_layout_processor() -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_inverted_port_processor_layout_processor() -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_label_dummy_inserter_layout_processor() -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_label_dummy_switcher_layout_processor() -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_label_management_processor(Bool) -> LabelManagementProcessor
+
+pub fn new_label_management_processor_layout_processor(Bool) -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_label_side_selector_layout_processor() -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_layer_constraint_postprocessor_layout_processor() -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_layer_constraint_preprocessor_layout_processor() -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_layer_size_and_graph_height_calculator_layout_processor() -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_long_edge_joiner_layout_processor() -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_long_edge_splitter_layout_processor() -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_manual_cut_index_calculator() -> ICutIndexCalculator
+
+pub fn new_model_order_node_comparator(@runtime.LGraph, Array[@runtime.LNode], @options.OrderingStrategy, @options.LongEdgeOrderingStrategy, @options.GroupOrderStrategy, Bool) -> ModelOrderNodeComparator
+
+pub fn new_model_order_node_comparator_from_layer(@runtime.LGraph, @runtime.Layer, @options.OrderingStrategy, @options.LongEdgeOrderingStrategy, @options.GroupOrderStrategy, Bool) -> ModelOrderNodeComparator
+
+pub fn new_model_order_port_comparator(@runtime.LGraph, Array[@runtime.LNode], @options.OrderingStrategy, Map[Int, Int], Bool) -> ModelOrderPortComparator
+
+pub fn new_model_order_port_comparator_from_layer(@runtime.LGraph, @runtime.Layer, @options.OrderingStrategy, Map[Int, Int], Bool) -> ModelOrderPortComparator
+
+pub fn new_model_order_port_comparator_without_target_node_model_order(@runtime.LGraph, Array[@runtime.LNode], @options.OrderingStrategy, Bool) -> ModelOrderPortComparator
+
+pub fn new_msd_cut_index_heuristic() -> ICutIndexCalculator
+
+pub fn new_node_promotion_layout_processor() -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_north_south_port_postprocessor_layout_processor() -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_north_south_port_preprocessor_layout_processor() -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_port_list_sorter_layout_processor() -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_port_side_processor_layout_processor() -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_pure_i_cut_index_calculator((@runtime.LGraph, GraphStats) -> Array[Int], () -> Bool) -> ICutIndexCalculator
+
+pub fn new_reversed_edge_restorer_layout_processor() -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_semi_interactive_cross_min_processor_layout_processor() -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_single_edge_graph_wrapper_layout_processor() -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_sort_by_input_model_processor_layout_processor() -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_vertical_segment(@core.KVector, @core.KVector, @compaction.CNode?, @runtime.LEdge) -> VerticalSegment
+
+pub fn port_side_processor_set_port_side(@runtime.LPort) -> Unit
+
+pub fn processor_factory(@runtime.LGraph, @runtime.IntermediateProcessorStrategy, state? : @runtime.LayeredRunState) -> @core.LayoutProcessorFactory
+
+pub fn register_processors(@runtime.LayeredPhaseRegistry) -> Unit
+
+pub fn single_edge_graph_wrapper_validify_indexes_greedily(GraphStats, Array[Int]) -> Array[Int]
+
+pub fn single_edge_graph_wrapper_validify_indexes_looking_back(GraphStats, Array[Int]) -> Array[Int]
+
+pub fn sort_by_input_model_processor_get_target_node(@runtime.LPort) -> @runtime.LNode?
+
+pub fn sort_by_input_model_processor_insertion_sort(Array[@runtime.LNode], ModelOrderNodeComparator) -> Unit raise
+
+pub fn sort_by_input_model_processor_insertion_sort_port(Array[@runtime.LPort], ModelOrderPortComparator) -> Unit raise
+
+pub fn sort_by_input_model_processor_long_edge_target_node_preprocessing(@runtime.LNode) -> Map[Int, Int]
+
+pub fn vertical_segment_origin_key(VerticalSegment) -> String
+
+// Errors
+type CuttingUtilsException derive(ToJson, @debug.Debug)
+
+pub(all) suberror LayerConstraintPostprocessorException {
+  UnsupportedConfigurationException(String)
+  IllegalStateException(String)
+} derive(ToJson, @debug.Debug)
+
+pub(all) suberror LayerConstraintPreprocessorException {
+  UnsupportedConfigurationException(String)
+  IllegalStateException(String)
+} derive(ToJson, @debug.Debug)
+
+// Types and methods
+pub struct BiLinkedHashMultiMap[V] {
+  key_to_values : Map[Int, Array[V]]
+  value_to_key : Map[V, Int]
+  key_order : Array[Int]
+}
+pub fn[V : Hash + Eq] BiLinkedHashMultiMap::get_key(Self[V], V) -> Int?
+pub fn[V] BiLinkedHashMultiMap::get_values(Self[V], Int) -> Array[V]
+pub fn[V] BiLinkedHashMultiMap::is_maximal_key(Self[V], Int) -> Bool
+pub fn[V] BiLinkedHashMultiMap::is_minimal_key(Self[V], Int) -> Bool
+pub fn[V] BiLinkedHashMultiMap::key_set(Self[V]) -> Array[Int]
+pub fn[V : Hash + Eq] BiLinkedHashMultiMap::put(Self[V], Int, V) -> Unit raise
+pub fn[V : Hash + Eq] BiLinkedHashMultiMap::put_all(Self[V], Int, Array[V]) -> Unit raise
+
+pub struct BreakingPointInserterCut {
+  mut index : Int
+  mut new_index : Int
+  mut prev : BreakingPointInserterCut?
+  mut suc : BreakingPointInserterCut?
+  mut assigned : Bool
+}
+
+pub struct GraphStats {
+  graph : @runtime.LGraph
+  spacing : Double
+  in_layer_spacing : Double
+  dar : Double
+  longest_path : Int
+  mut max_width : Double?
+  mut max_height : Double?
+  mut sum_width : Double?
+  mut widths : Array[Double]?
+  mut heights : Array[Double]?
+  mut cuts_allowed : Array[Bool]?
+}
+pub fn GraphStats::get_approximate_chunk_based_layering_height(Self, Array[Int]) -> Double
+pub fn GraphStats::get_approximate_chunk_based_layering_width(Self, Array[Int]) -> Double raise
+pub fn GraphStats::get_approximate_layer_height(Self, @runtime.Layer) -> Double
+pub fn GraphStats::get_approximate_layer_width(Self, @runtime.Layer) -> Double
+pub fn GraphStats::get_approximate_layering_height(Self) -> Double raise
+pub fn GraphStats::get_approximate_layering_width(Self) -> Double raise
+pub fn GraphStats::get_cuts_allowed(Self) -> Array[Bool]
+pub fn GraphStats::get_heights(Self) -> Array[Double] raise
+pub fn GraphStats::get_max_height(Self) -> Double raise
+pub fn GraphStats::get_max_width(Self) -> Double raise
+pub fn GraphStats::get_sum_width(Self) -> Double raise
+pub fn GraphStats::get_widths(Self) -> Array[Double] raise
+pub fn GraphStats::is_cut_allowed(Self, Int) -> Bool
+
+pub enum GraphTransformerMode {
+  ToInternalLtr
+  ToInputDirection
+}
+
+pub struct HighDegreeNodeInformation {
+  mut inc_trees_max_height : Int
+  inc_tree_roots : Array[@runtime.LNode]
+  mut out_trees_max_height : Int
+  out_tree_roots : Array[@runtime.LNode]
+}
+
+pub struct ICutIndexCalculator {
+  get_cut_indexes : ((@runtime.LGraph, GraphStats) -> Array[Int] raise)?
+  pure_get_cut_indexes : ((@runtime.LGraph, GraphStats) -> Array[Int])?
+  guarantee_valid : () -> Bool
+}
+pub fn ICutIndexCalculator::get_cut_indexes(Self, @runtime.LGraph, GraphStats) -> Array[Int] raise
+pub fn ICutIndexCalculator::guarantee_valid(Self) -> Bool
+
+pub struct LabelManagementProcessor {
+  center_labels : Bool
+}
+pub fn LabelManagementProcessor::process(Self, @runtime.LGraph, @core.IElkProgressMonitor?) -> Unit raise
+
+pub struct ModelOrderNodeComparator {
+  previous_layer : Array[@runtime.LNode]
+  graph : @runtime.LGraph
+  ordering_strategy : @options.OrderingStrategy
+  group_order_strategy : @options.GroupOrderStrategy
+  mut bigger_than : Map[Int, Array[Int]]
+  mut smaller_than : Map[Int, Array[Int]]
+  long_edge_node_order : @options.LongEdgeOrderingStrategy
+  before_ports : Bool
+}
+pub fn ModelOrderNodeComparator::clear_transitive_ordering(Self) -> Unit
+pub fn ModelOrderNodeComparator::compare(Self, @runtime.LNode, @runtime.LNode) -> Int raise
+
+pub struct ModelOrderPortComparator {
+  target_node_model_order : Map[Int, Int]
+  has_target_node_model_order : Bool
+  port_model_order : Bool
+  previous_layer : Array[@runtime.LNode]
+  graph : @runtime.LGraph
+  strategy : @options.OrderingStrategy
+  mut bigger_than : Map[Int, Array[Int]]
+  mut smaller_than : Map[Int, Array[Int]]
+}
+pub fn ModelOrderPortComparator::check_port_model_order(Self, @runtime.LPort, @runtime.LPort) -> Int
+pub fn ModelOrderPortComparator::clear_transitive_ordering(Self) -> Unit
+pub fn ModelOrderPortComparator::compare(Self, @runtime.LPort, @runtime.LPort) -> Int raise
+
+pub struct VerticalSegment {
+  id : Int
+  potential_group_parents : Array[@compaction.CNode]
+  represented_l_edges : Array[@runtime.LEdge]
+  affected_bends : Array[@core.KVector]
+  affected_bounding_boxes : Array[@core.ElkRectangle]
+  hitbox : @core.ElkRectangle
+  junction_points : @core.KVectorChain
+  ignore_spacing : @compaction.Quadruplet
+  constraints : Array[VerticalSegment]
+  mut a_port : @runtime.LPort?
+  joined : Array[VerticalSegment]
+}
+pub fn VerticalSegment::compare_to(Self, Self) -> Int
+pub fn VerticalSegment::get_a_port(Self) -> @runtime.LPort?
+pub fn VerticalSegment::get_id(Self) -> Int
+pub fn VerticalSegment::intersects(Self, Self) -> Bool
+pub fn VerticalSegment::join_with(Self, Self) -> Self
+pub fn VerticalSegment::set_a_port(Self, @runtime.LPort?) -> Unit
+pub fn VerticalSegment::to_string(Self) -> String
+
+// Type aliases
+
+// Traits

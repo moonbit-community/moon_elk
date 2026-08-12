@@ -189,7 +189,7 @@ test "@core.interactive node placer config adds hierarchical port position proce
   }
 
   let p5 = @runtime.layered_phase_constants()[4]
-  let expected = @runtime.layered_intermediate_processor_factory(
+  let expected = @intermediate.processor_factory(
     @runtime.new_l_graph(),
     interactive_node_placer_test_strategy(
       "HIERARCHICAL_PORT_POSITION_PROCESSOR",

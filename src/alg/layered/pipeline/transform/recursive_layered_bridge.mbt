@@ -623,6 +623,7 @@ priv struct RecursiveLayeredContext {
 /// The importer and transferrer share one instance. No context can leak into a
 /// concurrent layout or survive after the owning transformer is discarded.
 pub struct LayeredTransformSession {
+  priv layout_state : @runtime.LayeredRunState
   priv mut next_context_id : Int
   priv mut node_assignments : Map[@graph.ElkNode, Int]
   priv mut edge_assignments : Map[@graph.ElkEdge, Int]
@@ -637,6 +638,7 @@ pub struct LayeredTransformSession {
 ///|
 pub fn new_layered_transform_session() -> LayeredTransformSession {
   {
+    layout_state: @runtime.new_layered_run_state(),
     next_context_id: 1,
     node_assignments: Map([]),
     edge_assignments: Map([]),
@@ -3347,7 +3349,10 @@ fn recursive_layered_create_context(
       l_edge.get_labels().push(llabel)
     }
   }
-  graph_configurator_configure_graph_properties(layered_graph)
+  graph_configurator_configure_graph_properties(
+    layered_graph,
+    session.layout_state,
+  )
   recursive_layered_normalize_port_constraints(layered_graph)
 
   Some({

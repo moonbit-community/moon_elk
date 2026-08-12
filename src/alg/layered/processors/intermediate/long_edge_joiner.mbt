@@ -1,0 +1,226 @@
+///|
+fn long_edge_joiner_node_type_equals(
+  left : @runtime.NodeType,
+  right : @runtime.NodeType,
+) -> Bool {
+  match (left, right) {
+    (Normal, Normal) => true
+    (LongEdge, LongEdge) => true
+    (ExternalPort, ExternalPort) => true
+    (NorthSouthPort, NorthSouthPort) => true
+    (LabelNode, LabelNode) => true
+    (BreakingPoint, BreakingPoint) => true
+    (Placeholder, Placeholder) => true
+    (NonshiftingPlaceholder, NonshiftingPlaceholder) => true
+    _ => false
+  }
+}
+
+///|
+fn long_edge_joiner_port_side_equals(
+  left : @core.PortSide,
+  right : @core.PortSide,
+) -> Bool {
+  match (left, right) {
+    (North, North) => true
+    (East, East) => true
+    (South, South) => true
+    (West, West) => true
+    (SideUndefined, SideUndefined) => true
+    _ => false
+  }
+}
+
+///|
+fn _long_edge_joiner_require_source(
+  edge : @runtime.LEdge,
+) -> @runtime.LPort raise {
+  match edge.get_source() {
+    Some(value) => value
+    None => {
+      @core.layout_runtime_raise_unsupported_configuration("edge has no source")
+      @runtime.new_l_port()
+    }
+  }
+}
+
+///|
+fn long_edge_joiner_require_target(
+  edge : @runtime.LEdge,
+) -> @runtime.LPort raise {
+  match edge.get_target() {
+    Some(value) => value
+    None => {
+      @core.layout_runtime_raise_unsupported_configuration("edge has no target")
+      @runtime.new_l_port()
+    }
+  }
+}
+
+///|
+fn long_edge_joiner_port_side_ports(
+  node : @runtime.LNode,
+  side : @core.PortSide,
+) -> Array[@runtime.LPort] {
+  let result = []
+  for port in node.get_ports() {
+    if long_edge_joiner_port_side_equals(port.get_side(), side) {
+      result.push(port)
+    }
+  }
+  result
+}
+
+///|
+fn long_edge_joiner_edge_index(
+  edges : Array[@runtime.LEdge],
+  edge : @runtime.LEdge,
+) -> Int {
+  for i in 0..<edges.length() {
+    if @runtime.ledge_internal_handle(edges[i]) ==
+      @runtime.ledge_internal_handle(edge) {
+      return i
+    }
+  }
+  -1
+}
+
+///|
+fn long_edge_joiner_set_target_and_insert_at_index(
+  edge : @runtime.LEdge,
+  new_target : @runtime.LPort,
+  target_index : Int,
+) -> Unit {
+  edge.set_target(Some(new_target))
+  let incoming = new_target.get_incoming_edges()
+  let edge_index = long_edge_joiner_edge_index(incoming, edge)
+  if edge_index < 0 {
+    return
+  }
+
+  let moved = incoming.remove(edge_index)
+  let insert_index = if target_index < 0 {
+    0
+  } else if target_index > incoming.length() {
+    incoming.length()
+  } else {
+    target_index
+  }
+  ignore(incoming.insert(insert_index, moved))
+}
+
+///|
+pub fn long_edge_joiner_join_at(
+  long_edge_dummy : @runtime.LNode,
+  add_unnecessary_bendpoints : Bool,
+) -> Unit raise {
+  let west_ports = long_edge_joiner_port_side_ports(long_edge_dummy, West)
+  let east_ports = long_edge_joiner_port_side_ports(long_edge_dummy, East)
+  if west_ports.is_empty() || east_ports.is_empty() {
+    return
+  }
+
+  let input_port_edges = west_ports[0].get_incoming_edges()
+  let output_port_edges = east_ports[0].get_outgoing_edges()
+  let mut edge_count = input_port_edges.length()
+  let unnecessary_bendpoint = long_edge_dummy.get_ports()[0].get_absolute_anchor()
+
+  while edge_count > 0 {
+    let surviving_edge = input_port_edges[0]
+    let dropped_edge = output_port_edges[0]
+
+    let dropped_target = long_edge_joiner_require_target(dropped_edge)
+    let target_incoming_edges = dropped_target.get_incoming_edges()
+    let dropped_edge_list_index = long_edge_joiner_edge_index(
+      target_incoming_edges, dropped_edge,
+    )
+
+    long_edge_joiner_set_target_and_insert_at_index(
+      surviving_edge, dropped_target, dropped_edge_list_index,
+    )
+
+    dropped_edge.set_source(None)
+    dropped_edge.set_target(None)
+
+    let surviving_bend_points = surviving_edge.get_bend_points()
+    if add_unnecessary_bendpoints {
+      surviving_bend_points.add_vector(
+        @core.new_kvector_copy(unnecessary_bendpoint),
+      )
+    }
+    for bend_point in dropped_edge.get_bend_points().to_array() {
+      surviving_bend_points.add_vector(@core.new_kvector_copy(bend_point))
+    }
+
+    let surviving_labels = surviving_edge.get_labels()
+    for label in dropped_edge.get_labels() {
+      surviving_labels.push(label)
+    }
+
+    if dropped_edge.has_property_kvector_chain(
+        @options.layered_options_junction_points,
+      ) {
+      let dropped_junction_points = dropped_edge.get_property_kvector_chain(
+        @options.layered_options_junction_points,
+      )
+      if !surviving_edge.has_property_kvector_chain(
+          @options.layered_options_junction_points,
+        ) {
+        surviving_edge.set_property_kvector_chain(
+          @options.layered_options_junction_points,
+          @core.new_kvector_chain(),
+        )
+      }
+
+      let surviving_junction_points = surviving_edge.get_property_kvector_chain(
+        @options.layered_options_junction_points,
+      )
+      for junction_point in dropped_junction_points.to_array() {
+        surviving_junction_points.add_vector(
+          @core.new_kvector_copy(junction_point),
+        )
+      }
+    }
+
+    edge_count = edge_count - 1
+  }
+}
+
+///|
+fn long_edge_joiner_process(
+  layered_graph : @runtime.LGraph,
+  progress_monitor : @core.IElkProgressMonitor?,
+) -> Unit raise {
+  let monitor = match progress_monitor {
+    Some(value) => value
+    None => @core.new_null_elk_progress_monitor()
+  }
+  ignore(monitor.begin("Edge joining", 1.0))
+
+  let add_unnecessary_bendpoints = layered_graph.get_property_bool(
+    @options.layered_options_unnecessary_bendpoints,
+  )
+
+  for layer in layered_graph.get_layers() {
+    let layer_nodes = layer.get_nodes()
+    let mut index = 0
+    while index < layer_nodes.length() {
+      let node = layer_nodes[index]
+      if long_edge_joiner_node_type_equals(node.get_type(), LongEdge) {
+        long_edge_joiner_join_at(node, add_unnecessary_bendpoints)
+        ignore(layer_nodes.remove(index))
+      } else {
+        index = index + 1
+      }
+    }
+  }
+
+  monitor.done()
+}
+
+///|
+pub fn new_long_edge_joiner_layout_processor() -> @core.TypedLayoutProcessor[
+  @runtime.LGraph,
+] {
+  @core.new_layout_processor(long_edge_joiner_process)
+}

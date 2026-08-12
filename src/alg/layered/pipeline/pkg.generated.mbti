@@ -10,7 +10,7 @@ import {
 }
 
 // Values
-pub fn graph_configurator_prepare_graph_for_layout(@runtime.LayeredPhaseRegistry, @runtime.LGraph) -> @runtime.LayeredLayoutPlan raise
+pub fn graph_configurator_prepare_graph_for_layout(@runtime.LayeredPhaseRegistry, @runtime.LGraph, @runtime.LayeredRunState) -> @runtime.LayeredLayoutPlan raise
 
 pub fn layered_layout_provider_as_layout_provider(LayeredLayoutProvider) -> @core.AbstractLayoutProvider
 
@@ -30,6 +30,7 @@ pub struct ElkLayered {
   runtime : @core.LayoutRuntime
   session : @core.LayoutSession
   phase_registry : @runtime.LayeredPhaseRegistry
+  layout_state : @runtime.LayeredRunState
   components_processor : @components.LayeredComponentsProcessor
   compound_graph_preprocessor : @core.TypedLayoutProcessor[@runtime.LGraph]
   compound_graph_postprocessor : @core.TypedLayoutProcessor[@runtime.LGraph]

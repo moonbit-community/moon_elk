@@ -39,12 +39,6 @@ pub let internal_properties_end_label_edge : @graph.IProperty[LEdge?] = @graph.n
 )
 
 ///|
-pub let internal_properties_end_labels : @graph.IProperty[Array[EndLabelCell]] = @graph.new_property(
-  "endLabels",
-  [],
-)
-
-///|
 pub let internal_properties_max_edge_thickness : @graph.IProperty[Double] = @graph.new_property(
   "maxEdgeThickness", 0.0,
 )
@@ -106,12 +100,6 @@ pub let internal_properties_input_collect : @graph.IProperty[Bool] = @graph.new_
 ///|
 pub let internal_properties_output_collect : @graph.IProperty[Bool] = @graph.new_property(
   "outputCollect", false,
-)
-
-///|
-pub let internal_properties_self_loop_holder : @graph.IProperty[SelfLoopHolder?] = @graph.new_property(
-  "selfLoopHolder",
-  None,
 )
 
 ///|
@@ -318,11 +306,6 @@ pub let internal_properties_graph_properties : @graph.IProperty[
 ] = @graph.new_property("graphProperties", [])
 
 ///|
-pub let internal_properties_spline_route_start : @graph.IProperty[
-  Array[SplineSegment],
-] = @graph.new_property("splines.route.start", [])
-
-///|
 pub let internal_properties_spline_edge_chain : @graph.IProperty[Array[LEdge]] = @graph.new_property(
   "splines.edgeChain",
   [],
@@ -335,7 +318,3 @@ pub let internal_properties_spline_surviving_edge : @graph.IProperty[LEdge?] = @
 )
 
 ///|
-pub let internal_properties_breaking_point_info : @graph.IProperty[BPInfo?] = @graph.new_property(
-  "breakingPointInfo",
-  None,
-)

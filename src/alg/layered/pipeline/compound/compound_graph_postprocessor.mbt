@@ -355,9 +355,9 @@ fn compound_graph_postprocessor_process(
               bend_points.get(0)
             }
             let x_diff_enough = (last.x - next_point.x).abs() >
-              orthogonal_routing_generator_tolerance
+              @routing.orthogonal_routing_generator_tolerance
             let y_diff_enough = (last.y - next_point.y).abs() >
-              orthogonal_routing_generator_tolerance
+              @routing.orthogonal_routing_generator_tolerance
 
             if (!add_unnecessary_bendpoints && x_diff_enough && y_diff_enough) ||
               (add_unnecessary_bendpoints && (x_diff_enough || y_diff_enough)) {

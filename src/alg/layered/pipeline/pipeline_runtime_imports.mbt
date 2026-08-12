@@ -11,13 +11,8 @@ using @runtime {
   type LayeredLayoutPlan,
   type LayeredPhaseRegistry,
   dispose_layered_graph,
-  edge_router_factory_factory_for,
   internal_properties_ext_port_side,
   internal_properties_graph_properties,
   layered_phase_descriptor,
-  new_barycenter_layer_sweep_crossing_minimizer_layout_phase,
-  new_interactive_crossing_minimizer_layout_phase,
-  new_median_layer_sweep_crossing_minimizer_layout_phase,
   new_layered_layout_plan,
-  new_no_crossing_minimizer_layout_phase,
 }

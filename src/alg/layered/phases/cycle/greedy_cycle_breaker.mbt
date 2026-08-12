@@ -244,10 +244,7 @@ fn greedy_cycle_breaker_configuration(
   Some(
     @core.layout_processor_configuration_create().add_after(
       @runtime.P5EdgeRouting,
-      @runtime.layered_intermediate_processor_factory(
-        graph,
-        ReversedEdgeRestorer,
-      ),
+      @intermediate.processor_factory(graph, ReversedEdgeRestorer),
     ),
   )
 }
@@ -256,6 +253,7 @@ fn greedy_cycle_breaker_configuration(
 fn greedy_cycle_breaker_process_with_chooser(
   layered_graph : @runtime.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
+  state : @runtime.LayeredRunState,
   choose_node_with_max_outflow : (
     Array[@runtime.LNode],
     @runtime.LGraph,
@@ -269,9 +267,7 @@ fn greedy_cycle_breaker_process_with_chooser(
   ignore(monitor.begin("Greedy cycle removal", 1.0))
 
   let nodes = layered_graph.get_layerless_nodes()
-  let random = layered_graph
-    .get_layout_state()
-    .random(layered_graph.get_property_int(@core.random_seed))
+  let random = state.random(layered_graph.get_property_int(@core.random_seed))
   let state = {
     indeg: Array::make(nodes.length(), 0),
     outdeg: Array::make(nodes.length(), 0),
@@ -359,17 +355,19 @@ fn greedy_cycle_breaker_process_with_chooser(
 fn greedy_cycle_breaker_process(
   layered_graph : @runtime.LGraph,
   progress_monitor : @core.IElkProgressMonitor?,
+  state : @runtime.LayeredRunState,
 ) -> Unit raise {
   greedy_cycle_breaker_process_with_chooser(
-    layered_graph, progress_monitor, greedy_cycle_breaker_choose_node_with_max_outflow_default,
+    layered_graph, progress_monitor, state, greedy_cycle_breaker_choose_node_with_max_outflow_default,
   )
 }
 
 ///|
-pub fn new_greedy_cycle_breaker_layout_phase() -> @core.TypedLayoutProcessor[
-  @runtime.LGraph,
-] {
+pub fn new_greedy_cycle_breaker_layout_phase(
+  state? : @runtime.LayeredRunState = @runtime.new_layered_run_state(),
+) -> @core.TypedLayoutProcessor[@runtime.LGraph] {
   @core.new_layout_phase(
-    greedy_cycle_breaker_process, greedy_cycle_breaker_configuration,
+    (graph, monitor) => greedy_cycle_breaker_process(graph, monitor, state),
+    greedy_cycle_breaker_configuration,
   )
 }

@@ -9,7 +9,7 @@ fn ledge_next_handle() -> Int {
 }
 
 ///|
-fn ledge_internal_handle(edge : LEdge) -> Int {
+pub fn ledge_internal_handle(edge : LEdge) -> Int {
   edge.edge_handle
 }
 
@@ -43,10 +43,6 @@ pub struct LEdge {
   priv mut kvector_chain_properties : Map[@graph.PropertyId, @core.KVectorChain]?
   priv mut bool_properties : Map[@graph.PropertyId, Bool]?
   priv mut l_edge_array_properties : Map[@graph.PropertyId, Array[LEdge]]?
-  priv mut spline_segment_array_properties : Map[
-    @graph.PropertyId,
-    Array[SplineSegment],
-  ]?
   priv mut port_properties : Map[@graph.PropertyId, LPort]?
   priv mut edge_properties : Map[@graph.PropertyId, LEdge]?
   priv mut l_graph_properties : Map[@graph.PropertyId, LGraph]?
@@ -67,7 +63,6 @@ pub fn new_l_edge() -> LEdge {
     kvector_chain_properties: None,
     bool_properties: None,
     l_edge_array_properties: None,
-    spline_segment_array_properties: None,
     port_properties: None,
     edge_properties: None,
     l_graph_properties: None,
@@ -254,10 +249,6 @@ pub fn LEdge::copy_properties(self : LEdge, source : LEdge) -> Unit {
   )
   self.l_edge_array_properties = layered_property_bag_copy(
     source.l_edge_array_properties,
-    value => value.copy(),
-  )
-  self.spline_segment_array_properties = layered_property_bag_copy(
-    source.spline_segment_array_properties,
     value => value.copy(),
   )
   self.port_properties = layered_property_bag_copy(
@@ -532,47 +523,6 @@ pub fn LEdge::has_property_l_edge_array(
 ) -> Bool {
   layered_property_bag_has(
     self.l_edge_array_properties,
-    property.get_property_id(),
-  )
-}
-
-///|
-pub fn LEdge::set_property_spline_segment_array(
-  self : LEdge,
-  property : @graph.IProperty[Array[SplineSegment]],
-  value : Array[SplineSegment],
-) -> Unit {
-  self.spline_segment_array_properties = Some(
-    layered_property_bag_set(
-      self.spline_segment_array_properties,
-      property.get_property_id(),
-      value.copy(),
-    ),
-  )
-}
-
-///|
-pub fn LEdge::get_property_spline_segment_array(
-  self : LEdge,
-  property : @graph.IProperty[Array[SplineSegment]],
-) -> Array[SplineSegment] {
-  match
-    layered_property_bag_get(
-      self.spline_segment_array_properties,
-      property.get_property_id(),
-    ) {
-    Some(value) => value.copy()
-    None => property.get_default().copy()
-  }
-}
-
-///|
-pub fn LEdge::has_property_spline_segment_array(
-  self : LEdge,
-  property : @graph.IProperty[Array[SplineSegment]],
-) -> Bool {
-  layered_property_bag_has(
-    self.spline_segment_array_properties,
     property.get_property_id(),
   )
 }

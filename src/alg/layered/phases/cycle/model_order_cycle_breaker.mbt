@@ -46,10 +46,7 @@ fn model_order_cycle_breaker_configuration(
   Some(
     @core.layout_processor_configuration_create().add_after(
       @runtime.P5EdgeRouting,
-      @runtime.layered_intermediate_processor_factory(
-        graph,
-        ReversedEdgeRestorer,
-      ),
+      @intermediate.processor_factory(graph, ReversedEdgeRestorer),
     ),
   )
 }

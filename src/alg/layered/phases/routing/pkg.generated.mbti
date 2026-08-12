@@ -1,0 +1,475 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/moon_elk/alg/layered/phases/routing"
+
+import {
+  "Milky2018/moon_elk/alg/layered/runtime",
+  "Milky2018/moon_elk/alg/layered/runtime/state",
+  "Milky2018/moon_elk/core",
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn base_routing_direction_strategy_for_routing_direction(RoutingDirection) -> BaseRoutingDirectionStrategy
+
+pub let critical_dependency_weight : Int
+
+pub fn debug_util_log_debug_graph_hypernodes(@core.IElkProgressMonitor, @runtime.LGraph, Int, Array[HyperEdgeSegment], String, String) -> Unit
+
+pub fn dot_debug_util_create_debug_graph_hypernodes(@runtime.LGraph, Array[HyperEdgeSegment]) -> String
+
+pub fn edge_router_factory_factory_for(@runtime.LGraph, @core.EdgeRouting, state? : @runtime.LayeredRunState) -> @core.LayoutProcessorFactory
+
+pub let final_spline_node_to_straightening_cp_gap : Double
+
+pub fn hyper_edge_cycle_detector_detect_cycles(Array[HyperEdgeSegment], Bool, @state.GreedySwitchMockRandom) -> Array[HyperEdgeSegmentDependency] raise
+
+pub fn hyper_edge_segment_dependency_create_and_add_critical(HyperEdgeSegment, HyperEdgeSegment) -> HyperEdgeSegmentDependency
+
+pub fn hyper_edge_segment_dependency_create_and_add_regular(HyperEdgeSegment, HyperEdgeSegment, Int) -> HyperEdgeSegmentDependency
+
+pub fn json_debug_util_create_debug_graph_hypernodes(@runtime.LGraph, Array[HyperEdgeSegment]) -> String
+
+pub fn new_abstract_self_loop_router((@runtime.SelfLoopHolder) -> Unit raise) -> AbstractSelfLoopRouter
+
+pub fn new_base_routing_direction_strategy(RoutingDirectionStrategyType) -> BaseRoutingDirectionStrategy
+
+pub fn new_dummy_self_loop_processor_layout_processor() -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_final_spline_bendpoints_calculator_layout_processor(state? : @runtime.LayeredRunState) -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_hierarchical_port_orthogonal_edge_router_layout_processor(state? : @runtime.LayeredRunState) -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_hyper_edge_segment(BaseRoutingDirectionStrategy) -> HyperEdgeSegment
+
+pub fn new_hyper_edge_segment_splitter(OrthogonalRoutingGenerator) -> HyperEdgeSegmentSplitter
+
+pub fn new_label_dummy_remover_layout_processor() -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_label_placer() -> LabelPlacer
+
+pub fn new_north_to_south_routing_strategy() -> BaseRoutingDirectionStrategy
+
+pub fn new_nub_spline(Bool, Int, Array[@core.KVector]) -> NubSpline raise NubSplineException
+
+pub fn new_nub_spline_copy(NubSpline) -> NubSpline
+
+pub fn new_nubs_self_loop(Int, Array[@core.KVector]) -> NubsSelfLoop raise
+
+pub fn new_nubs_self_loop_copy(NubsSelfLoop) -> NubsSelfLoop
+
+pub fn new_nubs_self_loop_with_clamped(Bool, Int, Array[@core.KVector]) -> NubsSelfLoop raise
+
+pub fn new_orthogonal_edge_router_layout_phase(state? : @runtime.LayeredRunState) -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_orthogonal_routing_generator(RoutingDirection, Double, String?, state? : @runtime.LayeredRunState) -> OrthogonalRoutingGenerator
+
+pub fn new_orthogonal_self_loop_router() -> AbstractSelfLoopRouter
+
+pub fn new_polyline_edge_router_layout_phase(state? : @runtime.LayeredRunState) -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_polyline_self_loop_router() -> AbstractSelfLoopRouter
+
+pub fn new_port_restorer() -> PortRestorer
+
+pub fn new_port_side_assigner() -> PortSideAssigner
+
+pub fn new_rectangle_copy(Rectangle) -> Rectangle
+
+pub fn new_rectangle_position(@core.KVector) -> Rectangle
+
+pub fn new_rectangle_shape(@runtime.LShape) -> Rectangle
+
+pub fn new_rectangle_values(Double, Double, Double, Double) -> Rectangle raise RectangleException
+
+pub fn new_rectangle_vectors(Array[@core.KVector]) -> Rectangle raise RectangleException
+
+pub fn new_routing_director() -> RoutingDirector
+
+pub fn new_routing_slot_assigner(state? : @runtime.LayeredRunState) -> RoutingSlotAssigner
+
+pub fn new_self_loop_port_restorer_layout_processor(state? : @runtime.LayeredRunState) -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_self_loop_post_processor_layout_processor(state? : @runtime.LayeredRunState) -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_self_loop_pre_processor_layout_processor(state? : @runtime.LayeredRunState) -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_self_loop_router_layout_processor(state? : @runtime.LayeredRunState) -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_south_to_north_routing_strategy() -> BaseRoutingDirectionStrategy
+
+pub fn new_spline_edge_router_layout_phase(state? : @runtime.LayeredRunState) -> @core.TypedLayoutProcessor[@runtime.LGraph]
+
+pub fn new_spline_self_loop_router() -> AbstractSelfLoopRouter
+
+pub fn new_west_to_east_routing_strategy() -> BaseRoutingDirectionStrategy
+
+pub let nub_spline_dim : Int
+
+pub fn nub_spline_generate_derived(NubSpline) -> NubSpline raise NubSplineException
+
+pub fn nub_spline_generate_inverted(NubSpline) -> NubSpline raise NubSplineException
+
+pub fn nub_spline_generate_nice_curve() -> NubSpline raise NubSplineException
+
+pub fn nub_spline_get_first_horizontal_point(NubSpline, Double, Int) -> @core.KVector raise NubSplineException
+
+pub fn nub_spline_get_first_vertical_point(NubSpline, Double, Int) -> @core.KVector raise NubSplineException
+
+pub fn nub_spline_get_last_horizontal_point(NubSpline, Double, Int) -> @core.KVector raise NubSplineException
+
+pub fn nub_spline_get_last_vertical_point(NubSpline, Double, Int) -> @core.KVector raise NubSplineException
+
+pub fn nub_spline_get_t_from_control_point(PolarCP) -> Double
+
+pub fn nubs_self_loop_create_across_self_loop(@runtime.LPort, @runtime.LPort, @core.KVector, Array[@core.KVector], @core.KVector) -> NubsSelfLoop raise
+
+pub fn nubs_self_loop_create_corner_self_loop(@runtime.LPort, @runtime.LPort, Double, Double) -> NubsSelfLoop raise
+
+pub fn nubs_self_loop_create_four_side_self_loop(@runtime.LPort, @runtime.LPort, @core.KVector, Array[@core.KVector], @core.KVector) -> NubsSelfLoop raise
+
+pub fn nubs_self_loop_create_side_self_loop(@runtime.LPort, @runtime.LPort, Double) -> NubsSelfLoop raise
+
+pub fn nubs_self_loop_create_three_side_self_loop(@runtime.LPort, @runtime.LPort, @core.KVector, Array[@core.KVector], @core.KVector) -> NubsSelfLoop raise
+
+pub fn orthogonal_routing_generator_break_non_critical_cycles(Array[HyperEdgeSegment], @state.GreedySwitchMockRandom) -> Unit raise
+
+pub fn orthogonal_routing_generator_count_crossings(Array[Double], Double, Double) -> Int
+
+pub let orthogonal_routing_generator_tolerance : Double
+
+pub fn orthogonal_routing_generator_topological_numbering(Array[HyperEdgeSegment]) -> Unit
+
+pub fn orthogonal_self_loop_router_route_self_loops(@runtime.SelfLoopHolder) -> Unit raise
+
+pub fn orthogonal_self_loop_router_route_with_modifier(@runtime.SelfLoopHolder, (@runtime.SelfLoopEdge, EdgeRoutingDirection, @core.KVectorChain) -> @core.KVectorChain raise?) -> Unit raise
+
+pub fn polyline_edge_router_is_external_west_or_east_port(@runtime.LNode) -> Bool
+
+pub fn polyline_self_loop_router_cut_corners(@core.KVectorChain, Double) -> @core.KVectorChain
+
+pub fn polyline_self_loop_router_route_self_loops(@runtime.SelfLoopHolder) -> Unit raise
+
+pub fn port_restorer_sorted_two_side_loop_port_sides(@runtime.SelfHyperLoop) -> Array[@core.PortSide]
+
+pub fn processor_factory(@runtime.LGraph, @runtime.IntermediateProcessorStrategy, @runtime.LayeredRunState?) -> @core.LayoutProcessorFactory
+
+pub fn rectangle_union(Rectangle, Rectangle) -> Rectangle
+
+pub fn rectangle_union_collection(Array[Rectangle]) -> Rectangle raise RectangleException
+
+pub fn register_edge_routing_phases(@runtime.LayeredPhaseRegistry) -> Unit
+
+pub fn register_routing_processors(@runtime.LayeredPhaseRegistry) -> Unit
+
+pub fn routing_direction_to_string(RoutingDirection) -> String
+
+pub fn routing_direction_values() -> Array[RoutingDirection]
+
+pub fn self_loop_test_graph_creator_basic_graph_with_self_loops() -> @runtime.LGraph
+
+pub fn self_loop_test_graph_creator_basic_graph_without_self_loops() -> @runtime.LGraph
+
+pub fn self_loop_test_graph_creator_edge(@runtime.LPort, @runtime.LPort) -> @runtime.LEdge
+
+pub fn self_loop_test_graph_creator_node(@runtime.LGraph) -> @runtime.LNode
+
+pub fn self_loop_test_graph_creator_ports(@runtime.LNode, Int, Int, Int, Int) -> Unit
+
+pub fn spline_edge_router_is_normal_node(@runtime.LNode) -> Bool
+
+pub fn spline_edge_router_is_qualified_as_starting_node(@runtime.LNode) -> Bool
+
+pub fn spline_edge_router_is_straight(Double, Double) -> Bool
+
+pub let spline_edge_router_spline_dimension : Int
+
+pub fn spline_self_loop_router_route_self_loops(@runtime.SelfLoopHolder) -> Unit raise
+
+pub fn splines_math_convert_kvector_array_to_string(Array[@core.KVector]) -> String
+
+pub fn splines_math_convert_kvector_to_string(@core.KVector?) -> String
+
+pub fn splines_math_dist_port_to_node_edge(@runtime.LPort, @core.PortSide) -> Double
+
+pub fn splines_math_get_margin_on_port_side(@runtime.LNode, @core.PortSide) -> Double
+
+pub let splines_math_half_pi : Double
+
+pub fn splines_math_inner_angle_directions(Double, Double) -> Double
+
+pub fn splines_math_inner_angle_vectors(@core.KVector, @core.KVector) -> Double
+
+pub fn splines_math_intersect(@core.KVector, @core.KVector, @core.KVector, @core.KVector) -> @core.KVector?
+
+pub fn splines_math_intersect_by_directions(@core.KVector, @core.KVector, Double, Double) -> @core.KVector?
+
+pub fn splines_math_is_between_double(Double, Double, Double) -> Bool
+
+pub fn splines_math_is_between_int(Int, Int, Int) -> Bool
+
+pub fn splines_math_length_to_orthogonal(Double, @core.KVector) -> Double raise
+
+pub fn splines_math_port_side_to_direction(@core.PortSide) -> Double
+
+pub let splines_math_quarter_pi : Double
+
+pub let splines_math_three : Double
+
+pub let splines_math_three_half_pi : Double
+
+pub let splines_math_two_pi : Double
+
+// Errors
+pub(all) suberror NubSplineException {
+  IllegalArgumentException(String)
+} derive(ToJson, @debug.Debug)
+
+pub suberror RectangleException {
+  RectangleException(String)
+} derive(ToJson, @debug.Debug)
+
+// Types and methods
+pub struct AbstractSelfLoopRouter {
+  route_self_loops_fn : (@runtime.SelfLoopHolder) -> Unit raise
+}
+pub fn AbstractSelfLoopRouter::route_self_loops(Self, @runtime.SelfLoopHolder) -> Unit raise
+
+pub enum AddMode {
+  Prepend
+  Append
+}
+
+pub struct BaseRoutingDirectionStrategy {
+  strategy_type : RoutingDirectionStrategyType
+  created_junction_points : Array[@core.KVector]
+}
+pub fn BaseRoutingDirectionStrategy::add_junction_point_if_necessary(Self, @runtime.LEdge, HyperEdgeSegment, @core.KVector, Bool) -> Unit
+pub fn BaseRoutingDirectionStrategy::calculate_bend_points(Self, HyperEdgeSegment, Double, Double) -> Unit
+pub fn BaseRoutingDirectionStrategy::clear_created_junction_points(Self) -> Unit
+pub fn BaseRoutingDirectionStrategy::get_created_junction_points(Self) -> Array[@core.KVector]
+pub fn BaseRoutingDirectionStrategy::get_port_position_on_hyper_node(Self, @runtime.LPort) -> Double
+pub fn BaseRoutingDirectionStrategy::get_source_port_side(Self) -> @core.PortSide
+pub fn BaseRoutingDirectionStrategy::get_target_port_side(Self) -> @core.PortSide
+
+pub enum DependencyType {
+  Regular
+  Critical
+}
+
+pub enum EdgeRoutingDirection {
+  Clockwise
+  CounterClockwise
+}
+
+pub struct HyperEdgeSegment {
+  segment_handle : Int
+  routing_strategy : BaseRoutingDirectionStrategy
+  ports : Array[@runtime.LPort]
+  mut mark : Int
+  mut routing_slot : Int
+  mut start_position : Double
+  mut end_position : Double
+  incoming_connection_coordinates : Array[Double]
+  outgoing_connection_coordinates : Array[Double]
+  outgoing_segment_dependencies : Array[HyperEdgeSegmentDependency]
+  mut out_dep_weight : Int
+  mut critical_out_dep_weight : Int
+  incoming_segment_dependencies : Array[HyperEdgeSegmentDependency]
+  mut in_dep_weight : Int
+  mut critical_in_dep_weight : Int
+  mut split_partner : HyperEdgeSegment?
+  mut split_by : HyperEdgeSegment?
+}
+pub fn HyperEdgeSegment::add_port_positions(Self, @runtime.LPort, Map[Int, Self]) -> Unit
+pub fn HyperEdgeSegment::compare_to(Self, Self) -> Int
+pub fn HyperEdgeSegment::equals(Self, Self) -> Bool
+pub fn HyperEdgeSegment::get_critical_in_weight(Self) -> Int
+pub fn HyperEdgeSegment::get_critical_out_weight(Self) -> Int
+pub fn HyperEdgeSegment::get_end_coordinate(Self) -> Double
+pub fn HyperEdgeSegment::get_handle(Self) -> Int
+pub fn HyperEdgeSegment::get_in_weight(Self) -> Int
+pub fn HyperEdgeSegment::get_incoming_connection_coordinates(Self) -> Array[Double]
+pub fn HyperEdgeSegment::get_incoming_segment_dependencies(Self) -> Array[HyperEdgeSegmentDependency]
+pub fn HyperEdgeSegment::get_length(Self) -> Double
+pub fn HyperEdgeSegment::get_mark(Self) -> Int
+pub fn HyperEdgeSegment::get_out_weight(Self) -> Int
+pub fn HyperEdgeSegment::get_outgoing_connection_coordinates(Self) -> Array[Double]
+pub fn HyperEdgeSegment::get_outgoing_segment_dependencies(Self) -> Array[HyperEdgeSegmentDependency]
+pub fn HyperEdgeSegment::get_ports(Self) -> Array[@runtime.LPort]
+pub fn HyperEdgeSegment::get_routing_slot(Self) -> Int
+pub fn HyperEdgeSegment::get_split_by(Self) -> Self?
+pub fn HyperEdgeSegment::get_split_partner(Self) -> Self?
+pub fn HyperEdgeSegment::get_start_coordinate(Self) -> Double
+pub fn HyperEdgeSegment::hash_code(Self) -> Int
+pub fn HyperEdgeSegment::is_dummy(Self) -> Bool
+pub fn HyperEdgeSegment::recompute_extent(Self) -> Unit
+pub fn HyperEdgeSegment::represents_hyperedge(Self) -> Bool
+pub fn HyperEdgeSegment::set_critical_in_weight(Self, Int) -> Unit
+pub fn HyperEdgeSegment::set_critical_out_weight(Self, Int) -> Unit
+pub fn HyperEdgeSegment::set_in_weight(Self, Int) -> Unit
+pub fn HyperEdgeSegment::set_mark(Self, Int) -> Unit
+pub fn HyperEdgeSegment::set_out_weight(Self, Int) -> Unit
+pub fn HyperEdgeSegment::set_routing_slot(Self, Int) -> Unit
+pub fn HyperEdgeSegment::set_split_by(Self, Self?) -> Unit
+pub fn HyperEdgeSegment::set_split_partner(Self, Self?) -> Unit
+pub fn HyperEdgeSegment::simulate_split(Self) -> @core.Pair[Self, Self]
+pub fn HyperEdgeSegment::split_at(Self, Double) -> Self
+pub fn HyperEdgeSegment::to_string(Self) -> String
+
+pub struct HyperEdgeSegmentDependency {
+  dependency_handle : Int
+  dependency_type : DependencyType
+  mut source : HyperEdgeSegment?
+  mut target : HyperEdgeSegment?
+  weight : Int
+}
+pub fn HyperEdgeSegmentDependency::get_source(Self) -> HyperEdgeSegment?
+pub fn HyperEdgeSegmentDependency::get_target(Self) -> HyperEdgeSegment?
+pub fn HyperEdgeSegmentDependency::get_type(Self) -> DependencyType
+pub fn HyperEdgeSegmentDependency::get_weight(Self) -> Int
+pub fn HyperEdgeSegmentDependency::remove(Self) -> Unit
+pub fn HyperEdgeSegmentDependency::reverse(Self) -> Unit
+pub fn HyperEdgeSegmentDependency::set_source(Self, HyperEdgeSegment?) -> Unit
+pub fn HyperEdgeSegmentDependency::set_target(Self, HyperEdgeSegment?) -> Unit
+pub fn HyperEdgeSegmentDependency::to_string(Self) -> String
+
+pub struct HyperEdgeSegmentSplitter {
+  routing_generator : OrthogonalRoutingGenerator
+}
+pub fn HyperEdgeSegmentSplitter::split_segments(Self, Array[HyperEdgeSegmentDependency], Array[HyperEdgeSegment], Double) -> Unit
+
+pub struct LabelPlacer {
+  _reserved : Int
+}
+pub fn LabelPlacer::place_labels(Self, @runtime.SelfLoopHolder, @core.ILabelManager?, @core.IElkProgressMonitor?) -> Unit raise
+
+pub struct NubSpline {
+  knot_vector : Array[Double]
+  control_points : Array[PolarCP]
+  dim_nubs : Int
+  is_uniform : Bool
+  is_clamped : Bool
+  mut outer_box : Rectangle?
+  is_bezier : Bool
+  min_knot : Double
+  max_knot : Double
+}
+pub fn NubSpline::get_control_point(Self, Int) -> @core.KVector
+pub fn NubSpline::get_control_points(Self) -> @core.KVectorChain
+pub fn NubSpline::get_control_points_size(Self) -> Int
+pub fn NubSpline::get_dim(Self) -> Int
+pub fn NubSpline::get_knot_vector(Self) -> Array[Double]
+pub fn NubSpline::get_outer_box(Self) -> Rectangle raise RectangleException
+pub fn NubSpline::get_point_on_curve(Self, Double) -> @core.KVector
+pub fn NubSpline::get_point_on_curve_with_modify(Self, Double, Bool) -> @core.KVector
+pub fn NubSpline::set_outer_box(Self, Rectangle) -> Unit
+pub fn NubSpline::to_string(Self) -> String
+
+pub struct NubsSelfLoop {
+  nub_spline : NubSpline
+  mut first_label_position : @core.KVector
+}
+pub fn NubsSelfLoop::as_nub_spline(Self) -> NubSpline
+pub fn NubsSelfLoop::get_control_points(Self) -> @core.KVectorChain
+pub fn NubsSelfLoop::get_dim(Self) -> Int
+pub fn NubsSelfLoop::get_first_label_position(Self) -> @core.KVector
+pub fn NubsSelfLoop::set_first_label_position(Self, @core.KVector) -> Unit
+
+pub struct OrthogonalRoutingGenerator {
+  state : @runtime.LayeredRunState
+  mut segment_splitter : HyperEdgeSegmentSplitter?
+  routing_strategy : BaseRoutingDirectionStrategy
+  edge_spacing : Double
+  conflict_threshold : Double
+  mut critical_conflict_threshold : Double
+  debug_prefix : String?
+}
+pub fn OrthogonalRoutingGenerator::create_dependency_if_necessary(Self, HyperEdgeSegment, HyperEdgeSegment) -> Int
+pub fn OrthogonalRoutingGenerator::get_critical_conflict_threshold(Self) -> Double
+pub fn OrthogonalRoutingGenerator::get_edge_spacing(Self) -> Double
+pub fn OrthogonalRoutingGenerator::get_routing_strategy(Self) -> BaseRoutingDirectionStrategy
+pub fn OrthogonalRoutingGenerator::minimum_horizontal_segment_distance(Self, Array[HyperEdgeSegment]) -> Double
+pub fn OrthogonalRoutingGenerator::route_edges(Self, @core.IElkProgressMonitor, @runtime.LGraph, Array[@runtime.LNode]?, Int, Array[@runtime.LNode]?, Double) -> Int raise
+pub fn OrthogonalRoutingGenerator::set_critical_conflict_threshold(Self, Double) -> Unit
+
+pub struct PolarCP {
+  cp : @core.KVector
+  polar_coordinate : Array[Double]
+}
+
+pub struct PortRestorer {
+  mut sl_loops_by_type : Map[Int, Array[@runtime.SelfHyperLoop]]
+  target_areas : Map[String, Array[@runtime.SelfLoopPort]]
+}
+pub fn PortRestorer::restore_ports(Self, @runtime.SelfLoopHolder, @core.IElkProgressMonitor?) -> Unit
+
+pub enum PortSideArea {
+  Start
+  Middle
+  End
+}
+
+pub struct PortSideAssigner {
+  _reserved : Int
+}
+pub fn PortSideAssigner::assign_port_sides(Self, @runtime.SelfLoopHolder) -> Unit
+
+pub enum PortSideAssignerTarget {
+  NorthTarget
+  SouthTarget
+  EastTarget
+  WestTarget
+  NorthWestCornerTarget
+  NorthEastCornerTarget
+  SouthWestCornerTarget
+  SouthEastCornerTarget
+}
+
+pub struct Rectangle {
+  mut top : Double
+  mut bottom : Double
+  mut left : Double
+  mut right : Double
+}
+pub fn Rectangle::enlarge(Self, Double) -> Unit
+pub fn Rectangle::get_bottom(Self) -> Double
+pub fn Rectangle::get_from_port_side(Self, @core.PortSide) -> Double
+pub fn Rectangle::get_height(Self) -> Double
+pub fn Rectangle::get_left(Self) -> Double
+pub fn Rectangle::get_right(Self) -> Double
+pub fn Rectangle::get_top(Self) -> Double
+pub fn Rectangle::get_width(Self) -> Double
+pub fn Rectangle::to_node_margins(Self, @runtime.LShape) -> @core.Spacing
+pub fn Rectangle::to_string(Self) -> String
+pub fn Rectangle::union_rectangle(Self, Self) -> Unit
+pub fn Rectangle::union_shape(Self, @runtime.LShape) -> Unit
+pub fn Rectangle::union_vector(Self, @core.KVector) -> Unit
+
+pub enum RoutingDirection {
+  WestToEast
+  NorthToSouth
+  SouthToNorth
+}
+
+pub enum RoutingDirectionStrategyType {
+  WestToEastRoutingStrategyType
+  NorthToSouthRoutingStrategyType
+  SouthToNorthRoutingStrategyType
+}
+
+pub struct RoutingDirector {
+  mut port_penalties : Array[Int]?
+}
+pub fn RoutingDirector::determine_loop_routes(Self, @runtime.SelfLoopHolder) -> Unit raise
+
+pub struct RoutingSlotAssigner {
+  state : @runtime.LayeredRunState
+  hyper_edge_segments : Array[HyperEdgeSegment]
+  sl_loop_to_segment_map : Map[Int, HyperEdgeSegment]
+  sl_loop_activity_over_ports : Map[Int, Array[Bool]]
+}
+pub fn RoutingSlotAssigner::assign_routing_slots(Self, @runtime.SelfLoopHolder) -> Unit raise
+
+// Type aliases
+
+// Traits

@@ -1,0 +1,285 @@
+///|
+fn breaking_point_inserter_test_node_type(name : String) -> @runtime.NodeType {
+  for node_type in @runtime.node_type_values() {
+    match node_type {
+      Normal => if name == "NORMAL" { return node_type }
+      LongEdge => if name == "LONG_EDGE" { return node_type }
+      ExternalPort => if name == "EXTERNAL_PORT" { return node_type }
+      NorthSouthPort => if name == "NORTH_SOUTH_PORT" { return node_type }
+      LabelNode => if name == "LABEL_NODE" { return node_type }
+      BreakingPoint => if name == "BREAKING_POINT" { return node_type }
+      Placeholder => if name == "PLACEHOLDER" { return node_type }
+      NonshiftingPlaceholder =>
+        if name == "NONSHIFTING_PLACEHOLDER" {
+          return node_type
+        }
+    }
+  }
+  abort("unknown node type")
+}
+
+///|
+fn breaking_point_inserter_test_port_side(name : String) -> @core.PortSide {
+  for side in @core.port_side_values() {
+    if @core.port_side_to_string(side) == name {
+      return side
+    }
+  }
+  abort("unknown side")
+}
+
+///|
+fn breaking_point_inserter_test_node_type_equals(
+  left : @runtime.NodeType,
+  right : @runtime.NodeType,
+) -> Bool {
+  match (left, right) {
+    (Normal, Normal) => true
+    (LongEdge, LongEdge) => true
+    (ExternalPort, ExternalPort) => true
+    (NorthSouthPort, NorthSouthPort) => true
+    (LabelNode, LabelNode) => true
+    (BreakingPoint, BreakingPoint) => true
+    (Placeholder, Placeholder) => true
+    (NonshiftingPlaceholder, NonshiftingPlaceholder) => true
+    _ => false
+  }
+}
+
+///|
+fn breaking_point_inserter_test_add_port(
+  node : @runtime.LNode,
+  side : String,
+) -> @runtime.LPort {
+  let port = @runtime.new_l_port()
+  port.set_node(Some(node))
+  port.set_side(breaking_point_inserter_test_port_side(side))
+  port
+}
+
+///|
+fn breaking_point_inserter_test_connect(
+  source : @runtime.LNode,
+  target : @runtime.LNode,
+) -> @runtime.LEdge {
+  let source_port = breaking_point_inserter_test_add_port(source, "EAST")
+  let target_port = breaking_point_inserter_test_add_port(target, "WEST")
+
+  let edge = @runtime.new_l_edge()
+  edge.set_source(Some(source_port))
+  edge.set_target(Some(target_port))
+  edge
+}
+
+///|
+fn breaking_point_inserter_test_new_path_graph(
+  layer_count : Int,
+) -> (
+  @runtime.LGraph,
+  Array[@runtime.Layer],
+  Array[@runtime.LNode],
+  Array[@runtime.LEdge],
+) {
+  let graph = @runtime.new_l_graph()
+  let layers = []
+  let nodes = []
+  let edges = []
+
+  for _ in 0..<layer_count {
+    let layer = @runtime.new_layer(graph)
+    graph.get_layers().push(layer)
+    layers.push(layer)
+
+    let node = @runtime.new_l_node(graph=Some(graph))
+    node.set_layer(Some(layer))
+    nodes.push(node)
+  }
+
+  for i in 0..<(layer_count - 1) {
+    edges.push(breaking_point_inserter_test_connect(nodes[i], nodes[i + 1]))
+  }
+
+  (graph, layers, nodes, edges)
+}
+
+///|
+test "breaking point inserter reports expected task name" {
+  let state = @runtime.new_layered_run_state()
+  let processor = new_breaking_point_inserter_layout_processor(state~)
+  let monitor = new_elk_progress_monitor()
+  let graph = @runtime.new_l_graph()
+  graph.get_layers().push(@runtime.new_layer(graph))
+  processor.process(graph, Some(monitor))
+  inspect(monitor.get_task_name(), content="Breaking Point Insertion")
+}
+
+///|
+test "breaking point inserter manual cut inserts breaking point dummies and keeps bp info consistent" {
+  let (graph, _layers, nodes, edges) = breaking_point_inserter_test_new_path_graph(
+    4,
+  )
+  graph.set_property_string(
+    @options.layered_options_wrapping_cutting_strategy, "MANUAL",
+  )
+  graph.set_property_string(
+    @options.layered_options_wrapping_cutting_cuts, "[2]",
+  )
+  graph.set_property_bool(
+    @options.layered_options_wrapping_multi_edge_improve_cuts, false,
+  )
+  graph.set_property_string(
+    @options.layered_options_wrapping_validify_strategy, "NO",
+  )
+
+  let state = @runtime.new_layered_run_state()
+  let processor = new_breaking_point_inserter_layout_processor(state~)
+  processor.process(graph, None)
+
+  assert_eq(graph.get_layers().length(), 6)
+
+  let mut start_dummy : @runtime.LNode? = None
+  let mut end_dummy : @runtime.LNode? = None
+  let mut bp_count = 0
+  for layer in graph.get_layers() {
+    for node in layer.get_nodes() {
+      if breaking_point_inserter_test_node_type_equals(
+          node.get_type(),
+          breaking_point_inserter_test_node_type("BREAKING_POINT"),
+        ) {
+        bp_count = bp_count + 1
+        if bp_info_is_start(state, node) {
+          start_dummy = Some(node)
+        }
+        if bp_info_is_end(state, node) {
+          end_dummy = Some(node)
+        }
+      }
+    }
+  }
+  assert_eq(bp_count, 2)
+
+  let start = match start_dummy {
+    Some(value) => value
+    None => abort("missing breaking-point start dummy")
+  }
+  let end = match end_dummy {
+    Some(value) => value
+    None => abort("missing breaking-point end dummy")
+  }
+
+  let info = match state.get_breaking_point(start) {
+    Some(value) => value
+    None => abort("missing BPInfo on start dummy")
+  }
+  assert_eq(info.start.get_handle(), start.get_handle())
+  assert_eq(info.end.get_handle(), end.get_handle())
+  assert_true(info.prev is None)
+  assert_true(info.next is None)
+
+  let cut_edge = edges[1]
+  let cut_edge_source = match cut_edge.get_source() {
+    Some(source_port) => source_port
+    None => abort("cut edge has no source after insertion")
+  }
+  let cut_edge_source_node = match cut_edge_source.get_node() {
+    Some(source_node) => source_node
+    None => abort("cut edge source has no node")
+  }
+  assert_eq(cut_edge_source_node.get_handle(), end.get_handle())
+
+  let start_layer_index = match start.get_layer() {
+    Some(layer) => layer.get_index()
+    None => abort("start dummy has no layer")
+  }
+  let end_layer_index = match end.get_layer() {
+    Some(layer) => layer.get_index()
+    None => abort("end dummy has no layer")
+  }
+  assert_eq(start_layer_index, 2)
+  assert_eq(end_layer_index, 3)
+
+  assert_eq(nodes.length(), 4)
+}
+
+///|
+test "breaking point inserter links multi-cut chains through prev and next info pointers" {
+  let graph = @runtime.new_l_graph()
+  let layers = []
+  for _ in 0..<3 {
+    let layer = @runtime.new_layer(graph)
+    graph.get_layers().push(layer)
+    layers.push(layer)
+  }
+
+  let source = @runtime.new_l_node(graph=Some(graph))
+  source.set_layer(Some(layers[0]))
+  let middle = @runtime.new_l_node(graph=Some(graph))
+  middle.set_layer(Some(layers[1]))
+  let target = @runtime.new_l_node(graph=Some(graph))
+  target.set_layer(Some(layers[2]))
+
+  ignore(middle)
+  ignore(breaking_point_inserter_test_connect(source, target))
+
+  graph.set_property_string(
+    @options.layered_options_wrapping_cutting_strategy, "MANUAL",
+  )
+  graph.set_property_string(
+    @options.layered_options_wrapping_cutting_cuts, "[1, 2]",
+  )
+  graph.set_property_bool(
+    @options.layered_options_wrapping_multi_edge_improve_cuts, false,
+  )
+  graph.set_property_string(
+    @options.layered_options_wrapping_validify_strategy, "NO",
+  )
+
+  let state = @runtime.new_layered_run_state()
+  let processor = new_breaking_point_inserter_layout_processor(state~)
+  processor.process(graph, None)
+
+  let starts = []
+  for layer in graph.get_layers() {
+    for node in layer.get_nodes() {
+      if bp_info_is_start(state, node) {
+        starts.push(node)
+      }
+    }
+  }
+  assert_eq(starts.length(), 2)
+
+  let mut first_info : @runtime.BPInfo? = None
+  let mut second_info : @runtime.BPInfo? = None
+  for node in starts {
+    let info = match state.get_breaking_point(node) {
+      Some(value) => value
+      None => abort("missing BPInfo")
+    }
+    if info.prev is None {
+      first_info = Some(info)
+    } else {
+      second_info = Some(info)
+    }
+  }
+
+  let first = match first_info {
+    Some(value) => value
+    None => abort("missing first BPInfo")
+  }
+  let second = match second_info {
+    Some(value) => value
+    None => abort("missing second BPInfo")
+  }
+
+  assert_true(first.prev is None)
+  assert_true(second.next is None)
+  match first.next {
+    Some(value) =>
+      assert_eq(value.start.get_handle(), second.start.get_handle())
+    None => abort("expected chained next BPInfo")
+  }
+  match second.prev {
+    Some(value) => assert_eq(value.end.get_handle(), first.end.get_handle())
+    None => abort("expected chained previous BPInfo")
+  }
+}

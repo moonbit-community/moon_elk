@@ -2,7 +2,11 @@ import {
   "Milky2018/moon_elk/alg/layered/runtime",
   "Milky2018/moon_elk/alg/layered/processors/comments",
   "Milky2018/moon_elk/alg/layered/processors/partition",
+  "Milky2018/moon_elk/alg/layered/processors/intermediate",
+  "Milky2018/moon_elk/alg/layered/processors/node_spacing",
   "Milky2018/moon_elk/alg/layered/phases/cycle",
   "Milky2018/moon_elk/alg/layered/phases/layering",
   "Milky2018/moon_elk/alg/layered/phases/placement",
+  "Milky2018/moon_elk/alg/layered/phases/crossing",
+  "Milky2018/moon_elk/alg/layered/phases/routing",
 }

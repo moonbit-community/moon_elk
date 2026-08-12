@@ -127,17 +127,11 @@ fn interactive_cycle_breaker_configuration(
     @core.layout_processor_configuration_create()
     .add_before(
       @runtime.P1CycleBreaking,
-      @runtime.layered_intermediate_processor_factory(
-        graph,
-        InteractiveExternalPortPositioner,
-      ),
+      @intermediate.processor_factory(graph, InteractiveExternalPortPositioner),
     )
     .add_after(
       @runtime.P5EdgeRouting,
-      @runtime.layered_intermediate_processor_factory(
-        graph,
-        ReversedEdgeRestorer,
-      ),
+      @intermediate.processor_factory(graph, ReversedEdgeRestorer),
     ),
   )
 }

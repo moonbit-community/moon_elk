@@ -45,7 +45,7 @@ fn min_width_layerer_layer_constraint_preprocessor_factory(
   graph : @runtime.LGraph,
 ) -> @core.LayoutProcessorFactory {
   @core.new_layout_processor_factory(23007, 7, graph, () => {
-    @runtime.new_layer_constraint_preprocessor_layout_processor()
+    @intermediate.new_layer_constraint_preprocessor_layout_processor()
   })
 }
 
@@ -54,7 +54,7 @@ fn min_width_layerer_layer_constraint_postprocessor_factory(
   graph : @runtime.LGraph,
 ) -> @core.LayoutProcessorFactory {
   @core.new_layout_processor_factory(23011, 11, graph, () => {
-    @runtime.new_layer_constraint_postprocessor_layout_processor()
+    @intermediate.new_layer_constraint_postprocessor_layout_processor()
   })
 }
 
@@ -65,10 +65,7 @@ fn min_width_layerer_baseline_processing_configuration(
   @core.layout_processor_configuration_create()
   .add_before(
     @runtime.P1CycleBreaking,
-    @runtime.layered_intermediate_processor_factory(
-      graph,
-      EdgeAndLayerConstraintEdgeReverser,
-    ),
+    @intermediate.processor_factory(graph, EdgeAndLayerConstraintEdgeReverser),
   )
   .add_before(
     @runtime.P2Layering,

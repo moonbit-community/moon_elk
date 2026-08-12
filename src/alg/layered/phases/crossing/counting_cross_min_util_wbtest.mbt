@@ -1,0 +1,127 @@
+///|
+fn cross_min_port_ids(ports : Array[@runtime.LPort]) -> Array[Int] {
+  let ids = []
+  for port in ports {
+    ids.push(port.get_id())
+  }
+  ids
+}
+
+///|
+fn cross_min_node_with_sided_ports() -> (
+  @runtime.LNode,
+  @runtime.LPort,
+  @runtime.LPort,
+  @runtime.LPort,
+  @runtime.LPort,
+  @runtime.LPort,
+) {
+  let node = @runtime.new_l_node()
+
+  let north = @runtime.new_l_port()
+  north.set_id(1)
+  north.set_side(North)
+  north.set_node(Some(node))
+
+  let east = @runtime.new_l_port()
+  east.set_id(2)
+  east.set_side(East)
+  east.set_node(Some(node))
+
+  let south_a = @runtime.new_l_port()
+  south_a.set_id(3)
+  south_a.set_side(South)
+  south_a.set_node(Some(node))
+
+  let south_b = @runtime.new_l_port()
+  south_b.set_id(4)
+  south_b.set_side(South)
+  south_b.set_node(Some(node))
+
+  let west = @runtime.new_l_port()
+  west.set_id(5)
+  west.set_side(West)
+  west.set_node(Some(node))
+
+  (node, north, east, south_a, south_b, west)
+}
+
+///|
+test "CrossMinUtil iterates south/west in reverse side order" {
+  let (node, _north, _east, _south_a, _south_b, _west) = cross_min_node_with_sided_ports()
+
+  debug_inspect(
+    cross_min_port_ids(in_north_south_east_west_order(node, North)),
+    content="[1]",
+  )
+  debug_inspect(
+    cross_min_port_ids(in_north_south_east_west_order(node, East)),
+    content="[2]",
+  )
+  debug_inspect(
+    cross_min_port_ids(in_north_south_east_west_order(node, South)),
+    content="[4, 3]",
+  )
+  debug_inspect(
+    cross_min_port_ids(in_north_south_east_west_order(node, West)),
+    content="[5]",
+  )
+  debug_inspect(
+    cross_min_port_ids(in_north_south_east_west_order(node, SideUndefined)),
+    content="[]",
+  )
+}
+
+///|
+test "LNode exposes side and type filtered ports and edge views" {
+  let (node, _north, east, south_a, _south_b, _west) = cross_min_node_with_sided_ports()
+
+  let source_helper = @runtime.new_l_node()
+  let source_port = @runtime.new_l_port()
+  source_port.set_node(Some(source_helper))
+  source_port.set_side(West)
+
+  let target_helper = @runtime.new_l_node()
+  let target_port = @runtime.new_l_port()
+  target_port.set_node(Some(target_helper))
+  target_port.set_side(East)
+
+  let incoming = @runtime.new_l_edge()
+  incoming.set_source(Some(source_port))
+  incoming.set_target(Some(south_a))
+
+  let outgoing = @runtime.new_l_edge()
+  outgoing.set_source(Some(east))
+  outgoing.set_target(Some(target_port))
+
+  debug_inspect(
+    cross_min_port_ids(node.get_ports_by_side(South)),
+    content="[3, 4]",
+  )
+  debug_inspect(
+    cross_min_port_ids(node.get_port_side_view(East)),
+    content="[2]",
+  )
+  debug_inspect(
+    cross_min_port_ids(node.get_ports_by_type(Input)),
+    content="[3]",
+  )
+  debug_inspect(
+    cross_min_port_ids(node.get_ports_by_type(Output)),
+    content="[2]",
+  )
+  debug_inspect(
+    cross_min_port_ids(node.get_ports_by_type_and_side(Input, South)),
+    content="[3]",
+  )
+  debug_inspect(
+    cross_min_port_ids(node.get_ports_by_type_and_side(Output, East)),
+    content="[2]",
+  )
+  debug_inspect(
+    cross_min_port_ids(node.get_ports_by_type(Undefined)),
+    content="[]",
+  )
+  assert_eq(node.get_incoming_edges().length(), 1)
+  assert_eq(node.get_outgoing_edges().length(), 1)
+}

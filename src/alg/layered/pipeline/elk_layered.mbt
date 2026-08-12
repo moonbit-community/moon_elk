@@ -3,6 +3,7 @@ pub struct ElkLayered {
   runtime : @core.LayoutRuntime
   session : @core.LayoutSession
   phase_registry : LayeredPhaseRegistry
+  layout_state : @runtime.LayeredRunState
   components_processor : @components.LayeredComponentsProcessor
   compound_graph_preprocessor : @core.TypedLayoutProcessor[LGraph]
   compound_graph_postprocessor : @core.TypedLayoutProcessor[LGraph]
@@ -111,16 +112,6 @@ fn elk_layered_requires_direction_transform(direction_value : String) -> Bool {
 }
 
 ///|
-fn elk_layered_parse_edge_routing(value : String) -> @core.EdgeRouting {
-  for routing in @core.edge_routing_values() {
-    if @core.edge_routing_to_string(routing) == value {
-      return routing
-    }
-  }
-  RoutingUndefined
-}
-
-///|
 fn elk_layered_greedy_switch_strategy(
   greedy_switch_type : String,
 ) -> IntermediateProcessorStrategy {
@@ -135,9 +126,10 @@ fn elk_layered_greedy_switch_strategy(
 fn elk_layered_cycle_breaking_factory(
   registry : LayeredPhaseRegistry,
   graph : LGraph,
+  state : @runtime.LayeredRunState,
   strategy : String,
 ) -> @core.LayoutProcessorFactory raise {
-  registry.cycle_breaking_phase_factory(graph, strategy)
+  registry.cycle_breaking_phase_factory(graph, strategy, state~)
 }
 
 ///|
@@ -151,27 +143,12 @@ fn elk_layered_layering_factory(
 
 ///|
 fn elk_layered_crossing_factory(
+  registry : LayeredPhaseRegistry,
   graph : LGraph,
+  state : @runtime.LayeredRunState,
   strategy : String,
-) -> @core.LayoutProcessorFactory {
-  match strategy {
-    "NONE" =>
-      @core.new_layout_processor_factory(24002, 2, graph, () => {
-        new_no_crossing_minimizer_layout_phase()
-      })
-    "INTERACTIVE" =>
-      @core.new_layout_processor_factory(24003, 2, graph, () => {
-        new_interactive_crossing_minimizer_layout_phase()
-      })
-    "MEDIAN_LAYER_SWEEP" =>
-      @core.new_layout_processor_factory(24001, 2, graph, () => {
-        new_median_layer_sweep_crossing_minimizer_layout_phase()
-      })
-    _ =>
-      @core.new_layout_processor_factory(24000, 2, graph, () => {
-        new_barycenter_layer_sweep_crossing_minimizer_layout_phase()
-      })
-  }
+) -> @core.LayoutProcessorFactory raise {
+  registry.crossing_minimization_phase_factory(graph, strategy, state~)
 }
 
 ///|
@@ -228,6 +205,7 @@ fn ElkLayered::notify_processor_finished(
 fn elk_layered_collect_algorithm_for_graph(
   registry : LayeredPhaseRegistry,
   lgraph : LGraph,
+  state : @runtime.LayeredRunState,
 ) -> @core.LayoutProcessorPlan raise {
   let layering_strategy = lgraph.get_property_string(
     @options.layered_options_layering_strategy,
@@ -292,7 +270,7 @@ fn elk_layered_collect_algorithm_for_graph(
     assembler.set_phase(
       @runtime.P1CycleBreaking,
       elk_layered_cycle_breaking_factory(
-        registry, lgraph, cycle_breaking_strategy,
+        registry, lgraph, state, cycle_breaking_strategy,
       ),
     ),
   )
@@ -305,7 +283,7 @@ fn elk_layered_collect_algorithm_for_graph(
   ignore(
     assembler.set_phase(
       @runtime.P3NodeOrdering,
-      elk_layered_crossing_factory(lgraph, crossing_strategy),
+      elk_layered_crossing_factory(registry, lgraph, state, crossing_strategy),
     ),
   )
   ignore(
@@ -319,10 +297,7 @@ fn elk_layered_collect_algorithm_for_graph(
   ignore(
     assembler.set_phase(
       @runtime.P5EdgeRouting,
-      edge_router_factory_factory_for(
-        lgraph,
-        elk_layered_parse_edge_routing(edge_routing_value),
-      ),
+      registry.edge_routing_phase_factory(lgraph, edge_routing_value, state~),
     ),
   )
   ignore(
@@ -547,6 +522,7 @@ fn elk_layered_collect_algorithm_for_graph(
           registry.intermediate_processor_factory(
             lgraph,
             elk_layered_greedy_switch_strategy(greedy_switch_type),
+            state~,
           ),
         ),
       ),
@@ -857,6 +833,7 @@ fn ElkLayered::hierarchical_layout(
     let algorithm = graph_configurator_prepare_graph_for_layout(
       self.phase_registry,
       graph,
+      self.layout_state,
     ).get_processors()
     total_work = total_work + algorithm.length()
     algorithms.push(algorithm)
@@ -937,6 +914,7 @@ pub fn new_elk_layered(
     runtime,
     session,
     phase_registry,
+    layout_state: @runtime.new_layered_run_state(),
     components_processor: @components.new_layered_components_processor(),
     compound_graph_preprocessor: @compound.new_compound_graph_preprocessor_layout_processor(),
     compound_graph_postprocessor: @compound.new_compound_graph_postprocessor_layout_processor(),
@@ -945,7 +923,7 @@ pub fn new_elk_layered(
 }
 
 ///|
-pub fn ElkLayered::do_layout(
+fn ElkLayered::do_layout_inner(
   self : ElkLayered,
   lgraph : LGraph,
   monitor : @core.IElkProgressMonitor?,
@@ -958,6 +936,7 @@ pub fn ElkLayered::do_layout(
     let plan = graph_configurator_prepare_graph_for_layout(
       self.phase_registry,
       components[0],
+      self.layout_state,
     )
     self.layout(components[0], plan, actual_monitor)
   } else {
@@ -973,6 +952,7 @@ pub fn ElkLayered::do_layout(
       let plan = graph_configurator_prepare_graph_for_layout(
         self.phase_registry,
         comp,
+        self.layout_state,
       )
       self.layout(comp, plan, comp_monitor)
       if self.session.has_error() {
@@ -992,7 +972,25 @@ pub fn ElkLayered::do_layout(
 }
 
 ///|
-pub fn ElkLayered::do_compound_layout(
+pub fn ElkLayered::do_layout(
+  self : ElkLayered,
+  lgraph : LGraph,
+  monitor : @core.IElkProgressMonitor?,
+) -> Unit raise {
+  self.layout_state.clear()
+  try self.do_layout_inner(lgraph, monitor) catch {
+    error => {
+      self.layout_state.clear()
+      raise error
+    }
+  } noraise {
+    _ => ()
+  }
+  self.layout_state.clear()
+}
+
+///|
+fn ElkLayered::do_compound_layout_inner(
   self : ElkLayered,
   lgraph : LGraph,
   monitor : @core.IElkProgressMonitor?,
@@ -1045,6 +1043,24 @@ pub fn ElkLayered::do_compound_layout(
 }
 
 ///|
+pub fn ElkLayered::do_compound_layout(
+  self : ElkLayered,
+  lgraph : LGraph,
+  monitor : @core.IElkProgressMonitor?,
+) -> Unit raise {
+  self.layout_state.clear()
+  try self.do_compound_layout_inner(lgraph, monitor) catch {
+    error => {
+      self.layout_state.clear()
+      raise error
+    }
+  } noraise {
+    _ => ()
+  }
+  self.layout_state.clear()
+}
+
+///|
 pub fn ElkLayeredTestExecutionState::get_graphs(
   self : ElkLayeredTestExecutionState,
 ) -> Array[LGraph] {
@@ -1065,7 +1081,11 @@ pub fn ElkLayered::prepare_layout_test(
 ) -> ElkLayeredTestExecutionState raise {
   let graphs = self.components_processor.split(lgraph)
   let plans = graphs.map(graph => {
-    graph_configurator_prepare_graph_for_layout(self.phase_registry, graph)
+    graph_configurator_prepare_graph_for_layout(
+      self.phase_registry,
+      graph,
+      self.layout_state,
+    )
   })
   { graphs, plans, step: 0 }
 }

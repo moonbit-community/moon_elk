@@ -33,24 +33,3 @@ pub fn debug_util_log_debug_graph_linear_segments(
   monitor.log_graph(tag + " [dot]")
   monitor.log_graph(tag + " [json]")
 }
-
-///|
-pub fn debug_util_log_debug_graph_hypernodes(
-  monitor : @core.IElkProgressMonitor,
-  layered_graph : LGraph,
-  layer_index : Int,
-  hypernodes : Array[HyperEdgeSegment],
-  debug_prefix : String,
-  label : String,
-) -> Unit {
-  ignore(layer_index)
-  let tag = debug_prefix + " - " + label
-  ignore(
-    dot_debug_util_create_debug_graph_hypernodes(layered_graph, hypernodes),
-  )
-  ignore(
-    json_debug_util_create_debug_graph_hypernodes(layered_graph, hypernodes),
-  )
-  monitor.log_graph(tag + " [dot]")
-  monitor.log_graph(tag + " [json]")
-}

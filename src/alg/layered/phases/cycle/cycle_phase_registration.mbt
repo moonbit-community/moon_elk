@@ -21,9 +21,9 @@ pub fn register_cycle_breaking_phases(
   register_cycle_breaking_phase(
     registry, "MODEL_ORDER", 21003, new_model_order_cycle_breaker_layout_phase,
   )
-  register_cycle_breaking_phase(
-    registry, "GREEDY_MODEL_ORDER", 21004, new_greedy_model_order_cycle_breaker_layout_phase,
-  )
+  registry.register_stateful_cycle_breaking_phase("GREEDY_MODEL_ORDER", 21004, state => {
+    new_greedy_model_order_cycle_breaker_layout_phase(state~)
+  })
   register_cycle_breaking_phase(
     registry, "SCC_CONNECTIVITY", 21005, new_sc_connectivity_cycle_breaker_layout_phase,
   )
@@ -36,7 +36,7 @@ pub fn register_cycle_breaking_phases(
   register_cycle_breaking_phase(
     registry, "BFS_NODE_ORDER", 21008, new_bfs_node_order_cycle_breaker_layout_phase,
   )
-  register_cycle_breaking_phase(
-    registry, "GREEDY", 21000, new_greedy_cycle_breaker_layout_phase,
-  )
+  registry.register_stateful_cycle_breaking_phase("GREEDY", 21000, state => {
+    new_greedy_cycle_breaker_layout_phase(state~)
+  })
 }

@@ -174,7 +174,6 @@ pub fn dispose_layered_graph(root : LGraph) -> Unit {
       edge.kvector_chain_properties = None
       edge.bool_properties = None
       edge.l_edge_array_properties = None
-      edge.spline_segment_array_properties = None
       edge.port_properties = None
       edge.edge_properties = None
       edge.l_graph_properties = None
@@ -214,21 +213,9 @@ pub fn dispose_layered_graph(root : LGraph) -> Unit {
       node.node_properties = None
       node.node_array_properties = None
       node.label_array_properties = None
-      for
-        entry in layered_property_bag_entries(
-          node.end_label_cell_array_properties,
-        ) {
-        let (_, cells) = entry
-        for cell in cells {
-          cell.dispose()
-        }
-      }
-      node.end_label_cell_array_properties = None
       node.int_int_map_properties = None
       node.port_properties = None
       node.edge_properties = None
-      node.bp_info_properties = None
-      node.self_loop_holder_properties = None
       node.port_side_indices.clear()
       ignore(seen_nodes.remove(node.get_handle()))
     }
@@ -247,7 +234,6 @@ pub fn dispose_layered_graph(root : LGraph) -> Unit {
       graph.graph_properties_array_properties = None
       graph.cross_hierarchy_map_entry_array_properties = None
       graph.node_array_properties = None
-      graph.layout_state.clear()
       graph.int_properties = None
       graph.bool_properties = None
       graph.double_properties = None
