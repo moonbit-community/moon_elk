@@ -23,6 +23,10 @@ pub fn nnode_of() -> NNodeBuilder
 pub(all) suberror NetworkSimplexException {
   NetworkSimplexException(String)
 } derive(ToJson, @debug.Debug)
+pub fn NetworkSimplexException::output(Self, &Logger) -> Unit
+pub fn NetworkSimplexException::to_json(Self) -> Json
+pub fn NetworkSimplexException::to_repr(Self) -> @debug.Repr
+pub fn NetworkSimplexException::to_string(Self) -> String
 pub impl Show for NetworkSimplexException
 
 // Types and methods
@@ -31,6 +35,7 @@ pub struct NEdge {
   handle : Int
   // private fields
 }
+pub fn NEdge::equal(Self, Self) -> Bool
 pub fn NEdge::get_delta(Self) -> Int
 pub fn NEdge::get_id(Self) -> Int
 pub fn NEdge::get_internal_id(Self) -> Int
@@ -39,6 +44,7 @@ pub fn NEdge::get_source(Self) -> NNode
 pub fn NEdge::get_target(Self) -> NNode
 pub fn NEdge::get_weight(Self) -> Double
 pub fn NEdge::is_tree_edge(Self) -> Bool
+pub fn NEdge::not_equal(Self, Self) -> Bool
 pub fn NEdge::reverse(Self) -> Self
 pub fn NEdge::set_delta(Self, Int) -> Unit
 pub fn NEdge::set_internal_id(Self, Int) -> Unit
@@ -79,6 +85,7 @@ pub struct NNode {
 }
 pub fn NNode::add_unknown_cutvalue(Self, NEdge) -> Unit
 pub fn NNode::clear_unknown_cutvalues(Self) -> Unit
+pub fn NNode::equal(Self, Self) -> Bool
 pub fn NNode::get_connected_edges(Self) -> Array[NEdge]
 pub fn NNode::get_id(Self) -> Int
 pub fn NNode::get_incoming_edges(Self) -> Array[NEdge]
@@ -86,6 +93,7 @@ pub fn NNode::get_internal_id(Self) -> Int
 pub fn NNode::get_layer(Self) -> Int
 pub fn NNode::get_outgoing_edges(Self) -> Array[NEdge]
 pub fn NNode::is_tree_node(Self) -> Bool
+pub fn NNode::not_equal(Self, Self) -> Bool
 pub fn NNode::remove_unknown_cutvalue(Self, NEdge) -> Unit
 pub fn NNode::set_internal_id(Self, Int) -> Unit
 pub fn NNode::set_layer(Self, Int) -> Unit

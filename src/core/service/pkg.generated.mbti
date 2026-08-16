@@ -262,6 +262,11 @@ pub(all) enum LayoutMappingStatus {
   ErrorStatus(String)
   CanceledStatus
 } derive(Eq, @debug.Debug)
+pub fn LayoutMappingStatus::equal(Self, Self) -> Bool
+pub fn LayoutMappingStatus::not_equal(Self, Self) -> Bool
+pub fn LayoutMappingStatus::output(Self, &Logger) -> Unit
+pub fn LayoutMappingStatus::to_repr(Self) -> @debug.Repr
+pub fn LayoutMappingStatus::to_string(Self) -> String
 pub impl Show for LayoutMappingStatus
 
 type LayoutSetupEntry
@@ -272,6 +277,7 @@ pub(all) enum LayoutSetupObject {
   SelectionObject(Array[Int])
   OtherObject
 } derive(@debug.Debug)
+pub fn LayoutSetupObject::to_repr(Self) -> @debug.Repr
 
 pub(all) struct MonitoredOperation {
   mut timestamp : Int
@@ -295,6 +301,11 @@ pub(all) enum MonitoredOperationStatus {
   OperationError
   OperationCanceled
 } derive(Eq, @debug.Debug)
+pub fn MonitoredOperationStatus::equal(Self, Self) -> Bool
+pub fn MonitoredOperationStatus::not_equal(Self, Self) -> Bool
+pub fn MonitoredOperationStatus::output(Self, &Logger) -> Unit
+pub fn MonitoredOperationStatus::to_repr(Self) -> @debug.Repr
+pub fn MonitoredOperationStatus::to_string(Self) -> String
 pub impl Show for MonitoredOperationStatus
 
 pub(all) struct ProgressMonitorAdapter {

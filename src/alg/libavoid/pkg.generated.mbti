@@ -107,10 +107,14 @@ pub fn new_libavoid_server_pool() -> LibavoidServerPool
 pub suberror LibavoidCommunicatorException {
   LibavoidCommunicatorException(String)
 } derive(ToJson, @debug.Debug)
+pub fn LibavoidCommunicatorException::to_json(Self) -> Json
+pub fn LibavoidCommunicatorException::to_repr(Self) -> @debug.Repr
 
 pub suberror LibavoidServerStateException {
   LibavoidServerStateException(String)
 } derive(ToJson, @debug.Debug)
+pub fn LibavoidServerStateException::to_json(Self) -> Json
+pub fn LibavoidServerStateException::to_repr(Self) -> @debug.Repr
 
 // Types and methods
 pub struct LibavoidBundle {

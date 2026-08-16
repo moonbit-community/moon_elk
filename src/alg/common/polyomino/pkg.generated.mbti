@@ -170,6 +170,9 @@ pub struct PolyominoCoords {
   x : Int
   y : Int
 } derive(Eq, @debug.Debug)
+pub fn PolyominoCoords::equal(Self, Self) -> Bool
+pub fn PolyominoCoords::not_equal(Self, Self) -> Bool
+pub fn PolyominoCoords::to_repr(Self) -> @debug.Repr
 
 pub enum PolyominoDirection {
   North
