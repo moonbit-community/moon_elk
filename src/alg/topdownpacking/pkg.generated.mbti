@@ -64,6 +64,8 @@ pub fn topdownpacking_whitespace_elimination_strategy_phase_factory(WhitespaceEl
 pub suberror TopdownpackingGridException {
   TopdownpackingGridException(String)
 } derive(ToJson, @debug.Debug)
+pub fn TopdownpackingGridException::to_json(Self) -> Json
+pub fn TopdownpackingGridException::to_repr(Self) -> @debug.Repr
 
 // Types and methods
 pub struct Grid[T] {

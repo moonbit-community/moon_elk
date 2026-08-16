@@ -139,6 +139,8 @@ pub fn register_radial_layout_algorithm(@core.LayoutRuntime) -> Unit
 pub(all) suberror RadialCompactionStrategyException {
   IllegalArgumentException(String)
 } derive(ToJson, @debug.Debug)
+pub fn RadialCompactionStrategyException::to_json(Self) -> Json
+pub fn RadialCompactionStrategyException::to_repr(Self) -> @debug.Repr
 
 // Types and methods
 pub struct AbstractRadiusExtensionCompaction {

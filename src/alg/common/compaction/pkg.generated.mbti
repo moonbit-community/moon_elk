@@ -59,15 +59,21 @@ pub fn[T] scanline_execute_single_raise(Array[T], (T, T) -> Int raise?, (T) -> U
 pub suberror CGroupException {
   CGroupException(String)
 } derive(ToJson, @debug.Debug)
+pub fn CGroupException::to_json(Self) -> Json
+pub fn CGroupException::to_repr(Self) -> @debug.Repr
 
 pub(all) suberror OneDimensionalCompactorException {
   IllegalStateException(String)
   IllegalArgumentException(String)
 } derive(ToJson, @debug.Debug)
+pub fn OneDimensionalCompactorException::to_json(Self) -> Json
+pub fn OneDimensionalCompactorException::to_repr(Self) -> @debug.Repr
 
 pub suberror ScanlineConstraintCalculatorException {
   ScanlineConstraintCalculatorException(String)
 } derive(ToJson, @debug.Debug)
+pub fn ScanlineConstraintCalculatorException::to_json(Self) -> Json
+pub fn ScanlineConstraintCalculatorException::to_repr(Self) -> @debug.Repr
 
 // Types and methods
 pub struct CGraph {
@@ -95,9 +101,11 @@ pub fn CGroup::c_nodes(Self) -> Array[CNode]
 pub fn CGroup::clear_incoming_constraints(Self) -> Unit
 pub fn CGroup::delta(Self) -> Double
 pub fn CGroup::delta_normalized(Self) -> Double
+pub fn CGroup::equal(Self, Self) -> Bool
 pub fn CGroup::id(Self) -> Int
 pub fn CGroup::incoming_constraints(Self) -> Array[CNode]
 pub fn CGroup::master(Self) -> CNode?
+pub fn CGroup::not_equal(Self, Self) -> Bool
 pub fn CGroup::out_degree(Self) -> Int
 pub fn CGroup::out_degree_real(Self) -> Int
 pub fn CGroup::reference(Self) -> CNode?
@@ -129,12 +137,14 @@ pub fn CNode::add_constraint(Self, Self) -> Unit
 pub fn CNode::c_group_offset(Self) -> @core.KVector
 pub fn CNode::clear_constraints(Self) -> Unit
 pub fn CNode::constraints(Self) -> Array[Self]
+pub fn CNode::equal(Self, Self) -> Bool
 pub fn CNode::get_debug_svg(Self) -> String
 pub fn CNode::group(Self) -> CGroup?
 pub fn CNode::hitbox(Self) -> @core.ElkRectangle
 pub fn CNode::hitbox_pre_compaction(Self) -> @core.ElkRectangle?
 pub fn CNode::id(Self) -> Int
 pub fn CNode::node_type(Self) -> String?
+pub fn CNode::not_equal(Self, Self) -> Bool
 pub fn CNode::origin(Self) -> String?
 pub fn CNode::replace_constraints(Self, Array[Self]) -> Unit
 pub fn CNode::set_c_group_offset(Self, @core.KVector) -> Unit

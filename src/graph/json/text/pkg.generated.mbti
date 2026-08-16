@@ -172,14 +172,20 @@ pub fn new_internal_elk_graph_json_parser(@core.OptionMetadata, Array[ElkGraphJs
 pub suberror ElkGraphJsonQualifiedNameConverterException {
   ElkGraphJsonQualifiedNameConverterException(String)
 } derive(ToJson, @debug.Debug)
+pub fn ElkGraphJsonQualifiedNameConverterException::to_json(Self) -> Json
+pub fn ElkGraphJsonQualifiedNameConverterException::to_repr(Self) -> @debug.Repr
 
 pub suberror GraphJsonTextNumberValueConverterException {
   GraphJsonTextNumberValueConverterException(String)
 } derive(ToJson, @debug.Debug)
+pub fn GraphJsonTextNumberValueConverterException::to_json(Self) -> Json
+pub fn GraphJsonTextNumberValueConverterException::to_repr(Self) -> @debug.Repr
 
 pub suberror GraphJsonTextPropertyKeyValueConverterException {
   GraphJsonTextPropertyKeyValueConverterException(String)
 } derive(ToJson, @debug.Debug)
+pub fn GraphJsonTextPropertyKeyValueConverterException::to_json(Self) -> Json
+pub fn GraphJsonTextPropertyKeyValueConverterException::to_repr(Self) -> @debug.Repr
 
 // Types and methods
 pub struct AbstractElkGraphJsonRuntimeModule {
@@ -440,6 +446,9 @@ pub(all) enum GraphJsonTextListTransient {
   GraphJsonTextListTransientYes
   GraphJsonTextListTransientNo
 } derive(@debug.Debug)
+pub fn GraphJsonTextListTransient::output(Self, &Logger) -> Unit
+pub fn GraphJsonTextListTransient::to_repr(Self) -> @debug.Repr
+pub fn GraphJsonTextListTransient::to_string(Self) -> String
 pub impl Show for GraphJsonTextListTransient
 
 pub struct GraphJsonTextNumberValueConverter {
@@ -478,6 +487,9 @@ pub(all) enum GraphJsonTextPropertyValue {
   GraphJsonTextBooleanValue(Bool)
   GraphJsonTextProxyValue(String)
 } derive(@debug.Debug)
+pub fn GraphJsonTextPropertyValue::output(Self, &Logger) -> Unit
+pub fn GraphJsonTextPropertyValue::to_repr(Self) -> @debug.Repr
+pub fn GraphJsonTextPropertyValue::to_string(Self) -> String
 pub impl Show for GraphJsonTextPropertyValue
 
 pub struct GraphJsonTextPropertyValueValueConverter {

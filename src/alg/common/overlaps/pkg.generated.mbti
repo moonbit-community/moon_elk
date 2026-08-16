@@ -32,8 +32,10 @@ pub struct RectangleNode {
 }
 pub fn RectangleNode::add_overlapping_node(Self, Self) -> Unit
 pub fn RectangleNode::clear_overlapping_nodes(Self) -> Unit
+pub fn RectangleNode::equal(Self, Self) -> Bool
 pub fn RectangleNode::get_overlapping_nodes(Self) -> Array[Self]
 pub fn RectangleNode::get_rectangle(Self) -> @core.ElkRectangle
+pub fn RectangleNode::not_equal(Self, Self) -> Bool
 pub fn RectangleNode::set_rectangle_y(Self, Double) -> Unit
 pub impl Eq for RectangleNode
 

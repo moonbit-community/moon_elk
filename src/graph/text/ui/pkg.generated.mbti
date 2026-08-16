@@ -96,15 +96,21 @@ pub fn text_activator_reset_for_test() -> Unit
 pub(all) suberror ElkGraphTextUiActivatorException {
   IllegalArgumentException(String)
 } derive(ToJson, @debug.Debug)
+pub fn ElkGraphTextUiActivatorException::to_json(Self) -> Json
+pub fn ElkGraphTextUiActivatorException::to_repr(Self) -> @debug.Repr
 
 pub suberror GraphTextActivatorException {
   IllegalArgumentException(String)
   RuntimeException(String)
 } derive(ToJson, @debug.Debug)
+pub fn GraphTextActivatorException::to_json(Self) -> Json
+pub fn GraphTextActivatorException::to_repr(Self) -> @debug.Repr
 
 pub suberror GraphTextExecutableExtensionFactoryException {
   IllegalArgumentException(String)
 } derive(ToJson, @debug.Debug)
+pub fn GraphTextExecutableExtensionFactoryException::to_json(Self) -> Json
+pub fn GraphTextExecutableExtensionFactoryException::to_repr(Self) -> @debug.Repr
 
 // Types and methods
 pub struct AbstractElkGraphProposalProvider {
@@ -344,6 +350,7 @@ pub(all) enum GraphTextSelectionItem {
   GraphTextSelectionFile(String, String)
   GraphTextSelectionOther
 } derive(@debug.Debug)
+pub fn GraphTextSelectionItem::to_repr(Self) -> @debug.Repr
 
 pub struct GraphTextUiBundle {
   symbolic_name : String

@@ -215,14 +215,20 @@ pub fn overlap_mode_to_string(OverlapMode) -> String
 pub suberror DotExporterException {
   DotExporterException(String)
 } derive(ToJson, @debug.Debug)
+pub fn DotExporterException::to_json(Self) -> Json
+pub fn DotExporterException::to_repr(Self) -> @debug.Repr
 
 pub(all) suberror NeatoModelException {
   IllegalArgumentException(String)
 } derive(ToJson, @debug.Debug)
+pub fn NeatoModelException::to_json(Self) -> Json
+pub fn NeatoModelException::to_repr(Self) -> @debug.Repr
 
 pub(all) suberror OverlapModeException {
   IllegalArgumentException(String)
 } derive(ToJson, @debug.Debug)
+pub fn OverlapModeException::to_json(Self) -> Json
+pub fn OverlapModeException::to_repr(Self) -> @debug.Repr
 
 // Types and methods
 pub enum Command {

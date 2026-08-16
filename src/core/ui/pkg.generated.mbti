@@ -262,6 +262,8 @@ pub(all) struct CoreUiColor {
 pub(all) struct CoreUiDisplay {
   id : Int
 } derive(Eq)
+pub fn CoreUiDisplay::equal(Self, Self) -> Bool
+pub fn CoreUiDisplay::not_equal(Self, Self) -> Bool
 
 pub(all) struct CoreUiExecutionEvent {
   parameters : Map[String, String]

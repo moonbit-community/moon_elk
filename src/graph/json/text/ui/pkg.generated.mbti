@@ -96,15 +96,21 @@ pub fn new_graph_json_text_ui_status(Int, String, String) -> GraphJsonTextUiStat
 pub(all) suberror ElkGraphJsonTextUiActivatorException {
   IllegalArgumentException(String)
 } derive(ToJson, @debug.Debug)
+pub fn ElkGraphJsonTextUiActivatorException::to_json(Self) -> Json
+pub fn ElkGraphJsonTextUiActivatorException::to_repr(Self) -> @debug.Repr
 
 pub suberror GraphJsonTextActivatorException {
   IllegalArgumentException(String)
   RuntimeException(String)
 } derive(ToJson, @debug.Debug)
+pub fn GraphJsonTextActivatorException::to_json(Self) -> Json
+pub fn GraphJsonTextActivatorException::to_repr(Self) -> @debug.Repr
 
 pub suberror GraphJsonTextExecutableExtensionFactoryException {
   IllegalArgumentException(String)
 } derive(ToJson, @debug.Debug)
+pub fn GraphJsonTextExecutableExtensionFactoryException::to_json(Self) -> Json
+pub fn GraphJsonTextExecutableExtensionFactoryException::to_repr(Self) -> @debug.Repr
 
 // Types and methods
 pub struct AbstractElkGraphJsonProposalProvider {
@@ -368,6 +374,7 @@ pub(all) enum GraphJsonTextSelectionItem {
   GraphJsonTextSelectionFile(String, String)
   GraphJsonTextSelectionOther
 } derive(@debug.Debug)
+pub fn GraphJsonTextSelectionItem::to_repr(Self) -> @debug.Repr
 
 pub struct GraphJsonTextUiBundle {
   symbolic_name : String

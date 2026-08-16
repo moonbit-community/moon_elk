@@ -141,6 +141,8 @@ pub fn register_rectpacking_layout_algorithm(@core.LayoutRuntime) -> Unit
 pub suberror RectpackingWidthApproximationException {
   RectpackingWidthApproximationException(String)
 } derive(ToJson, @debug.Debug)
+pub fn RectpackingWidthApproximationException::to_json(Self) -> Json
+pub fn RectpackingWidthApproximationException::to_repr(Self) -> @debug.Repr
 
 // Types and methods
 pub struct Block {
