@@ -8,6 +8,5 @@ import {
   "moonbitlang/core/math",
   "moonbitlang/core/json",
   "moonbitlang/core/random",
-  "moonbitlang/core/strconv",
   "moonbitlang/core/string",
 }
