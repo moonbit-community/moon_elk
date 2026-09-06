@@ -9,7 +9,6 @@ import {
   "moonbitlang/core/hashset",
   "moonbitlang/core/set",
   "moonbitlang/core/random",
-  "moonbitlang/core/strconv",
   "moonbitlang/core/string",
   "Milky2018/moon_elk/core",
   "Milky2018/moon_elk/graph",
