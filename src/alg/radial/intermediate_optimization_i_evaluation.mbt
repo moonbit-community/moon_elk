@@ -8,14 +8,14 @@ pub struct IEvaluation {
 pub fn new_i_evaluation(
   evaluate : (@graph.ElkNode) -> Double raise,
 ) -> IEvaluation {
-  { evaluate_fn: Some(evaluate), pure_evaluate_fn: None }
+  { evaluate_fn: Some(evaluate), pure_evaluate_fn: None, }
 }
 
 ///|
 pub fn new_pure_i_evaluation(
   evaluate : (@graph.ElkNode) -> Double,
 ) -> IEvaluation {
-  { evaluate_fn: None, pure_evaluate_fn: Some(evaluate) }
+  { evaluate_fn: None, pure_evaluate_fn: Some(evaluate), }
 }
 
 ///|

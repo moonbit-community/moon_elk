@@ -8,7 +8,7 @@ pub(all) struct ClearExecutionsAction {
 
 ///|
 pub fn new_clear_executions_action() -> ClearExecutionsAction {
-  { enabled: false }
+  { enabled: false, }
 }
 
 ///|

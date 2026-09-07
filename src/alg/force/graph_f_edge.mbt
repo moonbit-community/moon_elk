@@ -262,3 +262,6 @@ pub fn fedge_distribute_bendpoints(edge : FEdge) -> Unit {
     ignore(position.add(increment))
   }
 }
+
+///|
+pub extend FEdge with Eq::{not_equal, equal}

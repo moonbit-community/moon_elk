@@ -390,3 +390,9 @@ pub fn[C, T] DistanceMatcher::as_matcher(
     () => (),
   )
 }
+
+///|
+pub extend DistanceMatcherException with Debug::{to_repr}
+
+///|
+pub extend DistanceMatcherException with ToJson::{to_json}

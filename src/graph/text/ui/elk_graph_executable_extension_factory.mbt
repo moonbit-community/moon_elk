@@ -14,7 +14,7 @@ pub fn new_graph_text_ui_status(
   symbolic_name : String,
   message : String,
 ) -> GraphTextUiStatus {
-  { severity, symbolic_name, message }
+  { severity, symbolic_name, message, }
 }
 
 ///|
@@ -56,7 +56,7 @@ pub struct ElkGraphExecutableExtensionFactory {
 
 ///|
 pub fn new_elk_graph_executable_extension_factory() -> ElkGraphExecutableExtensionFactory {
-  { clazz_name: None, config: None }
+  { clazz_name: None, config: None, }
 }
 
 ///|
@@ -172,3 +172,9 @@ pub fn ElkGraphExecutableExtensionFactory::create(
       )
   }
 }
+
+///|
+pub extend GraphTextExecutableExtensionFactoryException with Debug::{to_repr}
+
+///|
+pub extend GraphTextExecutableExtensionFactoryException with ToJson::{to_json}

@@ -32,26 +32,38 @@ pub fn register_layering_phases(@runtime.LayeredPhaseRegistry) -> Unit
 pub(all) suberror BreadthFirstModelOrderLayererException {
   UnsupportedGraphException(String)
 } derive(ToJson, @debug.Debug)
+pub fn BreadthFirstModelOrderLayererException::to_json(Self) -> Json
+pub fn BreadthFirstModelOrderLayererException::to_repr(Self) -> @debug.Repr
 
 pub(all) suberror CoffmanGrahamLayererException {
   UnsupportedGraphException(String)
 } derive(ToJson, @debug.Debug)
+pub fn CoffmanGrahamLayererException::to_json(Self) -> Json
+pub fn CoffmanGrahamLayererException::to_repr(Self) -> @debug.Repr
 
 pub(all) suberror DepthFirstModelOrderLayererException {
   UnsupportedGraphException(String)
 } derive(ToJson, @debug.Debug)
+pub fn DepthFirstModelOrderLayererException::to_json(Self) -> Json
+pub fn DepthFirstModelOrderLayererException::to_repr(Self) -> @debug.Repr
 
 pub(all) suberror InteractiveLayererException {
   UnsupportedGraphException(String)
 } derive(ToJson, @debug.Debug)
+pub fn InteractiveLayererException::to_json(Self) -> Json
+pub fn InteractiveLayererException::to_repr(Self) -> @debug.Repr
 
 pub(all) suberror LongestPathLayererException {
   UnsupportedGraphException(String)
 } derive(ToJson, @debug.Debug)
+pub fn LongestPathLayererException::to_json(Self) -> Json
+pub fn LongestPathLayererException::to_repr(Self) -> @debug.Repr
 
 pub(all) suberror LongestPathSourceLayererException {
   UnsupportedGraphException(String)
 } derive(ToJson, @debug.Debug)
+pub fn LongestPathSourceLayererException::to_json(Self) -> Json
+pub fn LongestPathSourceLayererException::to_repr(Self) -> @debug.Repr
 
 // Types and methods
 

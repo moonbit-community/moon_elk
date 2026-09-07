@@ -65,6 +65,8 @@ pub fn[F, S, T] unique_triple_of(F, S, T) -> UniqueTriple[F, S, T]
 pub suberror ScanlineOverlapCheckException {
   ScanlineOverlapCheckException(String)
 } derive(ToJson, @debug.Debug)
+pub fn ScanlineOverlapCheckException::to_json(Self) -> Json
+pub fn ScanlineOverlapCheckException::to_repr(Self) -> @debug.Repr
 
 // Types and methods
 pub struct HullRectangleEventState {
@@ -179,8 +181,12 @@ pub struct TEdge {
   u : @core.KVector
   v : @core.KVector
 }
+pub fn TEdge::equal(Self, Self) -> Bool
 pub fn TEdge::equals(Self, Self) -> Bool
+pub fn TEdge::hash(Self) -> Int
 pub fn TEdge::hash_code(Self) -> Int
+pub fn TEdge::hash_combine(Self, Hasher) -> Unit
+pub fn TEdge::not_equal(Self, Self) -> Bool
 pub impl Eq for TEdge
 pub impl Hash for TEdge
 
@@ -194,10 +200,14 @@ pub struct TTriangle {
 }
 pub fn TTriangle::contains_edge(Self, TEdge) -> Bool
 pub fn TTriangle::contains_vertex(Self, @core.KVector) -> Bool
+pub fn TTriangle::equal(Self, Self) -> Bool
 pub fn TTriangle::equals(Self, Self) -> Bool
 pub fn TTriangle::get_circumcenter(Self) -> @core.KVector
+pub fn TTriangle::hash(Self) -> Int
 pub fn TTriangle::hash_code(Self) -> Int
+pub fn TTriangle::hash_combine(Self, Hasher) -> Unit
 pub fn TTriangle::in_circumcircle(Self, @core.KVector) -> Bool
+pub fn TTriangle::not_equal(Self, Self) -> Bool
 pub impl Eq for TTriangle
 pub impl Hash for TTriangle
 

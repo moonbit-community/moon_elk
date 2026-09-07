@@ -32,7 +32,7 @@ pub fn new_elk_graph_json_grammar_access() -> ElkGraphJsonGrammarAccess {
   rules["QualifiedIdValue"] = "QualifiedId"
   rules["NumberValue"] = "SIGNED_INT | FLOAT"
   rules["BooleanValue"] = "'true' | 'false'"
-  { grammar: graph_json_text_grammar_name, rules }
+  { grammar: graph_json_text_grammar_name, rules, }
 }
 
 ///|

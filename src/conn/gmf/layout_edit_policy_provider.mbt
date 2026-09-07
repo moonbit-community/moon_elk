@@ -8,7 +8,7 @@ pub struct LayoutEditPolicyProvider {
 
 ///|
 pub fn new_layout_edit_policy_provider() -> LayoutEditPolicyProvider {
-  { unit: () }
+  { unit: (), }
 }
 
 ///|

@@ -292,3 +292,9 @@ pub fn new_layer_constraint_preprocessor_layout_processor() -> @core.TypedLayout
 ] {
   @core.new_layout_processor(layer_constraint_preprocessor_process)
 }
+
+///|
+pub extend LayerConstraintPreprocessorException with Debug::{to_repr}
+
+///|
+pub extend LayerConstraintPreprocessorException with ToJson::{to_json}

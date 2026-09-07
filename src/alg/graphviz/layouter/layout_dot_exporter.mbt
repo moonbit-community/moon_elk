@@ -750,7 +750,7 @@ pub struct LayoutDotExporter {
 
 ///|
 pub fn new_layout_dot_exporter() -> LayoutDotExporter {
-  { base: @transform.new_dot_exporter() }
+  { base: @transform.new_dot_exporter(), }
 }
 
 ///|

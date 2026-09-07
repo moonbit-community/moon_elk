@@ -15,7 +15,7 @@ pub struct SporeElkGraphImporter {
 
 ///|
 pub fn new_spore_elk_graph_importer() -> SporeElkGraphImporter {
-  { graph: None, node_map: Map([]), elk_graph: None, spacing_node_node: 0.0 }
+  { graph: None, node_map: Map([]), elk_graph: None, spacing_node_node: 0.0, }
 }
 
 ///|
@@ -264,7 +264,7 @@ pub fn SporeElkGraphImporter::import_graph(
       ),
     )
     graph.vertices.push(node)
-    spore_node_entry_put(self.node_map, { vertex, node, elk_node })
+    spore_node_entry_put(self.node_map, { vertex, node, elk_node, })
   }
 
   match root_selection {

@@ -41,3 +41,9 @@ pub fn JsonImportException::get_cause(self : JsonImportException) -> String? {
     JsonImportException(_, cause) => cause
   }
 }
+
+///|
+pub extend JsonImportException with Debug::{to_repr}
+
+///|
+pub extend JsonImportException with ToJson::{to_json}

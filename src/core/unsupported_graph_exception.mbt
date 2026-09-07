@@ -6,14 +6,14 @@ pub(all) struct UnsupportedGraphException {
 
 ///|
 pub fn new_unsupported_graph_exception() -> UnsupportedGraphException {
-  { message: None, cause: None }
+  { message: None, cause: None, }
 }
 
 ///|
 pub fn new_unsupported_graph_exception_message(
   message : String,
 ) -> UnsupportedGraphException {
-  { message: Some(message), cause: None }
+  { message: Some(message), cause: None, }
 }
 
 ///|
@@ -21,7 +21,7 @@ pub fn new_unsupported_graph_exception_message_cause(
   message : String,
   cause : String,
 ) -> UnsupportedGraphException {
-  { message: Some(message), cause: Some(cause) }
+  { message: Some(message), cause: Some(cause), }
 }
 
 ///|

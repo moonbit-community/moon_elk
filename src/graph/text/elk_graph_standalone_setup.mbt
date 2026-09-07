@@ -5,7 +5,7 @@ pub struct ElkGraphStandaloneSetup {
 
 ///|
 pub fn new_elk_graph_standalone_setup() -> ElkGraphStandaloneSetup {
-  { marker: () }
+  { marker: (), }
 }
 
 ///|

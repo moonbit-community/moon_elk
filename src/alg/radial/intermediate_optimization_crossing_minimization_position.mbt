@@ -69,7 +69,7 @@ pub struct CrossingMinimizationPosition {
 
 ///|
 pub fn new_crossing_minimization_position() -> CrossingMinimizationPosition {
-  { evaluator: new_i_evaluation(crossing_minimization_position_evaluate) }
+  { evaluator: new_i_evaluation(crossing_minimization_position_evaluate), }
 }
 
 ///|

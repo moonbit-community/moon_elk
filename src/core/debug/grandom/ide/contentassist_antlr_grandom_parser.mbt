@@ -29,7 +29,7 @@ pub fn new_core_debug_grandom_ide_grammar_access() -> CoreDebugGRandomIdeGrammar
   rules["Float"] = "Integer '.' Integer"
   rules["Integer"] = "RULE_INT"
   rules["Formats"] = "'elkt' | 'elkg'"
-  { grammar: core_debug_grandom_ide_grammar_name, rules }
+  { grammar: core_debug_grandom_ide_grammar_name, rules, }
 }
 
 ///|

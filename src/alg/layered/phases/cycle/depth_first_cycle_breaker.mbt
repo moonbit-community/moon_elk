@@ -155,3 +155,9 @@ pub fn new_depth_first_cycle_breaker_layout_phase() -> @core.TypedLayoutProcesso
     depth_first_cycle_breaker_process, depth_first_cycle_breaker_configuration,
   )
 }
+
+///|
+pub extend DepthFirstCycleBreakerException with Debug::{to_repr}
+
+///|
+pub extend DepthFirstCycleBreakerException with ToJson::{to_json}

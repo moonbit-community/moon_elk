@@ -198,3 +198,9 @@ pub fn LayerTotalPortDistributor::as_initializable(
 ) -> IInitializable {
   self.as_i_sweep_port_distributor().as_initializable()
 }
+
+///|
+pub extend LayerTotalPortDistributorException with Debug::{to_repr}
+
+///|
+pub extend LayerTotalPortDistributorException with ToJson::{to_json}

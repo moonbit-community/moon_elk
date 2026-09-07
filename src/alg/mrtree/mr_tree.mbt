@@ -5,7 +5,7 @@ pub struct Mrtree {
 
 ///|
 pub fn new_mrtree() -> Mrtree {
-  { marker: 0 }
+  { marker: 0, }
 }
 
 ///|

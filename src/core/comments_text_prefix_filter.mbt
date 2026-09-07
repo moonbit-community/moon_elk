@@ -170,3 +170,9 @@ pub fn[C, T] TextPrefixFilter::as_filter(
     () => (),
   )
 }
+
+///|
+pub extend TextPrefixFilterException with Debug::{to_repr}
+
+///|
+pub extend TextPrefixFilterException with ToJson::{to_json}

@@ -13,7 +13,7 @@ let libavoid_server_pool_factory_ref : Ref[() -> LibavoidServer] = Ref(() => {
 
 ///|
 pub fn new_libavoid_server_pool() -> LibavoidServerPool {
-  { servers: [] }
+  { servers: [], }
 }
 
 ///|

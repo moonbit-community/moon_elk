@@ -119,3 +119,9 @@ pub impl Eq for TTriangle with fn equal(self : TTriangle, other : TTriangle) -> 
 pub impl Hash for TTriangle with fn hash_combine(self : TTriangle, hasher) -> Unit {
   hasher.combine(self.hash_code())
 }
+
+///|
+pub extend TTriangle with Eq::{not_equal, equal}
+
+///|
+pub extend TTriangle with Hash::{hash, hash_combine}

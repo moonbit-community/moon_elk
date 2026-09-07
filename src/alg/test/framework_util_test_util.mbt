@@ -137,7 +137,7 @@ pub fn new_test_class_constructor_signature(
   is_public : Bool,
   parameter_count : Int,
 ) -> TestClassConstructorSignature {
-  { is_public, parameter_count }
+  { is_public, parameter_count, }
 }
 
 ///|

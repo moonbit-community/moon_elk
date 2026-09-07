@@ -5,5 +5,5 @@ pub struct OnlyOnRootNode {
 
 ///|
 pub fn new_only_on_root_node() -> OnlyOnRootNode {
-  { marker: 0 }
+  { marker: 0, }
 }

@@ -208,7 +208,7 @@ pub fn new_sweep_copy(
     port_orders.push(layer_port_orders)
   }
 
-  { node_order, port_orders }
+  { node_order, port_orders, }
 }
 
 ///|
@@ -217,7 +217,7 @@ pub fn new_sweep_copy_from(sc : SweepCopy) -> SweepCopy {
     Some(order) => order
     None => []
   }
-  { node_order, port_orders: sc.port_orders.copy() }
+  { node_order, port_orders: sc.port_orders.copy(), }
 }
 
 ///|
@@ -356,3 +356,9 @@ fn SweepCopy::assert_correct_port_sides_raise(
 
   origin
 }
+
+///|
+pub extend SweepCopyException with Debug::{to_repr}
+
+///|
+pub extend SweepCopyException with ToJson::{to_json}

@@ -20,7 +20,7 @@ pub fn new_core_meta_output_configuration(
   description : String,
   output_directory : String,
 ) -> CoreMetaOutputConfiguration {
-  { id, description, output_directory }
+  { id, description, output_directory, }
 }
 
 ///|

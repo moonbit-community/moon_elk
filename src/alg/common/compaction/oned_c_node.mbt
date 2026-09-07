@@ -185,3 +185,6 @@ pub fn CNode::get_debug_svg(self : CNode) -> String {
   let text_svg = "<text x=\"\{text_x}\" y=\"\{text_y}\">(\{x.round()}, \{y.round()})\n\{self.to_string()}</text>"
   rect_svg + text_svg
 }
+
+///|
+pub extend CNode with Eq::{not_equal, equal}

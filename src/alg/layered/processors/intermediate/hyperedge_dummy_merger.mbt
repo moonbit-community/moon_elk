@@ -93,7 +93,7 @@ fn hyperedge_dummy_merger_check_merge_allowed(
     } else {
       curr_ports[0].get_id() == last_ports[0].get_id()
     }
-    return { allow_merge, same_source, same_target }
+    return { allow_merge, same_source, same_target, }
   }
 
   let eligible_for_source_merging = (

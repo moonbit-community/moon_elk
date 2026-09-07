@@ -26,7 +26,7 @@ pub fn new_graph_issue_node(
   message : String,
   severity : GraphIssueSeverity,
 ) -> GraphIssue {
-  { target: NodeIssueTarget(node), message, severity }
+  { target: NodeIssueTarget(node), message, severity, }
 }
 
 ///|
@@ -35,7 +35,7 @@ pub fn new_graph_issue_edge(
   message : String,
   severity : GraphIssueSeverity,
 ) -> GraphIssue {
-  { target: EdgeIssueTarget(edge), message, severity }
+  { target: EdgeIssueTarget(edge), message, severity, }
 }
 
 ///|

@@ -11,7 +11,7 @@ pub fn new_core_meta_validation_issue(
   feature : String,
   member_name : String?,
 ) -> CoreMetaValidationIssue {
-  { message, feature, member_name }
+  { message, feature, member_name, }
 }
 
 ///|

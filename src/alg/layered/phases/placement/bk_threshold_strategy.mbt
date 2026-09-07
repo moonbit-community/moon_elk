@@ -32,7 +32,7 @@ fn new_bk_postprocessable(
   free : @runtime.LNode,
   is_root : Bool,
 ) -> BkPostprocessable {
-  { free, is_root, has_edges: false, edge: None }
+  { free, is_root, has_edges: false, edge: None, }
 }
 
 ///|
@@ -605,3 +605,9 @@ pub fn BkThresholdStrategy::post_process(
     _ => ()
   }
 }
+
+///|
+pub extend BkThresholdStrategyException with Debug::{to_repr}
+
+///|
+pub extend BkThresholdStrategyException with ToJson::{to_json}

@@ -6,7 +6,7 @@ pub struct DotSubgraph {
 
 ///|
 pub fn dot_create_subgraph() -> DotSubgraph {
-  { name: None, statements: [] }
+  { name: None, statements: [], }
 }
 
 ///|

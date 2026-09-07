@@ -14,7 +14,7 @@ pub struct CrossingsCounter {
 
 ///|
 pub fn new_crossings_counter(port_positions : Array[Int]) -> CrossingsCounter {
-  { port_positions, index_tree: None, ends: [], node_cardinalities: [] }
+  { port_positions, index_tree: None, ends: [], node_cardinalities: [], }
 }
 
 ///|
@@ -358,7 +358,7 @@ fn CrossingsCounter::count_north_south_crossings_on_ports(
               .get_property_l_node(@runtime.internal_properties_port_dummy)
               .unwrap()
             for p in dummy.get_ports() {
-              targets_and_degrees.push({ target: p, degree: p.get_degree() })
+              targets_and_degrees.push({ target: p, degree: p.get_degree(), })
             }
           }
           LongEdge => {
@@ -372,7 +372,7 @@ fn CrossingsCounter::count_north_south_crossings_on_ports(
             }
             match other_port {
               Some(p) =>
-                targets_and_degrees.push({ target: p, degree: p.get_degree() })
+                targets_and_degrees.push({ target: p, degree: p.get_degree(), })
               None => ()
             }
           }

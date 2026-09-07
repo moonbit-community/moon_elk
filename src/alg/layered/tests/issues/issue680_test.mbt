@@ -64,7 +64,7 @@ fn issue680_test_graph() -> Issue680TestGraph {
   @graph.edge_add_target(edge2, @graph.make_port_shape(p2))
   @runtime.layered_test_update_containment(Some(edge2))
 
-  { graph, parent, child, p1, p2, child_p1, child_p2 }
+  { graph, parent, child, p1, p2, child_p1, child_p2, }
 }
 
 ///|

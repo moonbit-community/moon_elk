@@ -9,7 +9,7 @@ pub fn[T] new_igraph_importer(
   import_graph_fn : (T) -> FGraph raise,
   apply_layout_fn : (FGraph) -> Unit raise,
 ) -> IGraphImporter[T] {
-  { import_graph_fn, apply_layout_fn }
+  { import_graph_fn, apply_layout_fn, }
 }
 
 ///|

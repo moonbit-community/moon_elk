@@ -5,7 +5,7 @@ pub(all) struct MetaDataQuickfixProvider {
 
 ///|
 pub fn new_meta_data_quickfix_provider() -> MetaDataQuickfixProvider {
-  { unit: () }
+  { unit: (), }
 }
 
 ///|

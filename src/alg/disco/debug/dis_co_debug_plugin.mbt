@@ -39,7 +39,7 @@ pub fn new_dis_co_layout_listener(
   layout_done : (DisCoLayoutMapping, @core.IElkProgressMonitor) -> Unit,
 ) -> DisCoLayoutListener {
   dis_co_layout_listener_id_ref.val = dis_co_layout_listener_id_ref.val + 1
-  { id: dis_co_layout_listener_id_ref.val, layout_about_to_start, layout_done }
+  { id: dis_co_layout_listener_id_ref.val, layout_about_to_start, layout_done, }
 }
 
 ///|

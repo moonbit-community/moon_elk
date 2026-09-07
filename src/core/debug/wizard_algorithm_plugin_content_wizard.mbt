@@ -20,7 +20,7 @@ pub fn new_core_debug_wizard_project(
   id : String,
   natures? : Array[String] = [],
 ) -> CoreDebugWizardProject {
-  { id, folders: [], files: Map([]), natures: natures.copy() }
+  { id, folders: [], files: Map([]), natures: natures.copy(), }
 }
 
 ///|
@@ -102,7 +102,7 @@ pub fn new_algorithm_plugin_content_wizard(
   id : String,
   plug_in_name : String,
 ) -> AlgorithmPluginContentWizard {
-  { id, plug_in_name, algorithm_name: "", page: None }
+  { id, plug_in_name, algorithm_name: "", page: None, }
 }
 
 ///|

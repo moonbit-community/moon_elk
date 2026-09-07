@@ -17,7 +17,7 @@ pub(all) struct ShowLayoutViewHandler {
 
 ///|
 pub fn new_show_layout_view_handler() -> ShowLayoutViewHandler {
-  { last_error: None }
+  { last_error: None, }
 }
 
 ///|

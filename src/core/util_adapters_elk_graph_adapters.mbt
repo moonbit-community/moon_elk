@@ -519,7 +519,7 @@ pub(all) struct ElkGraphAdapter {
 
 ///|
 pub fn new_elk_graph_adapter(node : @graph.ElkNode) -> ElkGraphAdapter {
-  { element: node, child_nodes: None, volatile_id: 0 }
+  { element: node, child_nodes: None, volatile_id: 0, }
 }
 
 ///|
@@ -1292,7 +1292,7 @@ pub(all) struct ElkLabelAdapter {
 
 ///|
 pub fn new_elk_label_adapter(label : @graph.ElkLabel) -> ElkLabelAdapter {
-  { element: label, volatile_id: 0 }
+  { element: label, volatile_id: 0, }
 }
 
 ///|
@@ -1477,7 +1477,7 @@ pub(all) struct ElkEdgeAdapter {
 
 ///|
 pub fn new_elk_edge_adapter(edge : @graph.ElkEdge) -> ElkEdgeAdapter {
-  { element: edge, label_adapters: None }
+  { element: edge, label_adapters: None, }
 }
 
 ///|
@@ -1512,7 +1512,7 @@ pub(all) struct ElkPortComparator {
 
 ///|
 pub fn new_elk_port_comparator() -> ElkPortComparator {
-  { unit: () }
+  { unit: (), }
 }
 
 ///|

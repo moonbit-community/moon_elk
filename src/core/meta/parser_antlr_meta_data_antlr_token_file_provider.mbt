@@ -243,7 +243,7 @@ pub(all) struct MetaDataAntlrTokenFileProvider {
 
 ///|
 pub fn new_meta_data_antlr_token_file_provider() -> MetaDataAntlrTokenFileProvider {
-  { marker: () }
+  { marker: (), }
 }
 
 ///|

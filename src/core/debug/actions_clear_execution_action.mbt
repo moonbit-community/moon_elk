@@ -11,7 +11,7 @@ pub(all) struct ClearExecutionAction {
 pub fn new_clear_execution_action(
   view : AbstractLayoutDebugView,
 ) -> ClearExecutionAction {
-  { view, enabled: false }
+  { view, enabled: false, }
 }
 
 ///|

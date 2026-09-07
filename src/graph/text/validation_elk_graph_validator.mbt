@@ -37,7 +37,7 @@ pub fn new_elk_graph_validator(
   let value_converter = value_converter.unwrap_or(
     new_property_value_value_converter(metadata),
   )
-  { metadata, base, layout_option_validator, value_converter }
+  { metadata, base, layout_option_validator, value_converter, }
 }
 
 ///|

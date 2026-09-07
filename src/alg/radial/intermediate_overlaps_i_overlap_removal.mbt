@@ -7,7 +7,7 @@ pub struct IOverlapRemoval {
 pub fn new_i_overlap_removal(
   remove_overlaps : (@graph.ElkNode, @core.IElkProgressMonitor?) -> Unit raise,
 ) -> IOverlapRemoval {
-  { remove_overlaps_fn: remove_overlaps }
+  { remove_overlaps_fn: remove_overlaps, }
 }
 
 ///|

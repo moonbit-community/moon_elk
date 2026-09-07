@@ -12,7 +12,7 @@ priv struct JsonPropertyEntry {
 
 ///|
 pub fn new_map_property_holder() -> MapPropertyHolder {
-  { entries: None }
+  { entries: None, }
 }
 
 ///|

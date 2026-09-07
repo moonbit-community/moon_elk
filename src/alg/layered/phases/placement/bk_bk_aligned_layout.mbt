@@ -504,3 +504,9 @@ pub fn BKAlignedLayout::to_string(self : BKAlignedLayout) -> String {
 
   result
 }
+
+///|
+pub extend BKAlignedLayoutException with Debug::{to_repr}
+
+///|
+pub extend BKAlignedLayoutException with ToJson::{to_json}

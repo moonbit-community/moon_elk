@@ -6,7 +6,7 @@ pub struct RunFailure {
 
 ///|
 pub fn new_run_failure(description : String, message : String) -> RunFailure {
-  { description, message }
+  { description, message, }
 }
 
 ///|
@@ -29,7 +29,7 @@ pub struct RunNotifier {
 
 ///|
 pub fn new_run_notifier() -> RunNotifier {
-  { started: [], finished: [], ignored: [], failures: [] }
+  { started: [], finished: [], ignored: [], failures: [], }
 }
 
 ///|

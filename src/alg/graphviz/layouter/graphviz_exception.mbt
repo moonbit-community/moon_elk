@@ -37,3 +37,9 @@ pub fn GraphvizException::to_string(self : GraphvizException) -> String {
     GraphvizException(message, None) => message
   }
 }
+
+///|
+pub extend GraphvizException with Debug::{to_repr}
+
+///|
+pub extend GraphvizException with ToJson::{to_json}

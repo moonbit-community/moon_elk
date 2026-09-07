@@ -8,7 +8,7 @@ pub struct ElkGraphAdapterFactory {
 
 ///|
 pub fn new_elk_graph_adapter_factory() -> ElkGraphAdapterFactory {
-  { model_package: elk_graph_package_instance }
+  { model_package: elk_graph_package_instance, }
 }
 
 ///|

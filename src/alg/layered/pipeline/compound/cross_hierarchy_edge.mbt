@@ -75,7 +75,7 @@ pub fn new_cross_hierarchy_edge(
   graph : LGraph,
   port_type : PortType,
 ) -> CrossHierarchyEdge {
-  { new_edge, graph, port_type }
+  { new_edge, graph, port_type, }
 }
 
 ///|

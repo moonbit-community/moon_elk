@@ -576,3 +576,9 @@ pub fn mrtree_node_dummy(node : MrtreeNode) -> Bool {
 pub fn mrtree_node_origin(node : MrtreeNode) -> @graph.ElkNode? {
   node.data.origin
 }
+
+///|
+pub extend MrtreeNode with Eq::{not_equal, equal}
+
+///|
+pub extend MrtreeNode with Hash::{hash, hash_combine}

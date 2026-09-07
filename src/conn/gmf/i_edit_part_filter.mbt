@@ -8,7 +8,7 @@ pub struct IEditPartFilter {
 pub fn new_i_edit_part_filter(
   filter_fn : (GmfEditPart) -> Bool raise,
 ) -> IEditPartFilter {
-  { filter_fn: Some(filter_fn), accept_all: false }
+  { filter_fn: Some(filter_fn), accept_all: false, }
 }
 
 ///|
@@ -24,5 +24,5 @@ pub fn IEditPartFilter::filter(
 
 ///|
 pub fn new_i_edit_part_filter_default_impl() -> IEditPartFilter {
-  { filter_fn: None, accept_all: true }
+  { filter_fn: None, accept_all: true, }
 }

@@ -5,5 +5,5 @@ pub struct FailIfNotExecuted {
 
 ///|
 pub fn new_fail_if_not_executed() -> FailIfNotExecuted {
-  { marker: 0 }
+  { marker: 0, }
 }

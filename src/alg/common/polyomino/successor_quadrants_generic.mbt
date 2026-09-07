@@ -41,7 +41,7 @@ fn successor_quadrants_generic_mask(poly : Polyomino) -> SuccessorQuadrantsMask 
     pos_x = false
   }
 
-  { pos_x, pos_y, neg_x, neg_y }
+  { pos_x, pos_y, neg_x, neg_y, }
 }
 
 ///|

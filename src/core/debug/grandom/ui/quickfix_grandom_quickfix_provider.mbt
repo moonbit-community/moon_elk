@@ -5,5 +5,5 @@ pub(all) struct CoreDebugGRandomQuickfixProvider {
 
 ///|
 pub fn new_core_debug_grandom_quickfix_provider() -> CoreDebugGRandomQuickfixProvider {
-  { unit: () }
+  { unit: (), }
 }

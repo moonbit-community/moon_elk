@@ -6,7 +6,7 @@ pub struct RadiusExtensionOverlapRemoval {
 
 ///|
 pub fn new_radius_extension_overlap_removal() -> RadiusExtensionOverlapRemoval {
-  { base: new_abstract_radius_extension_compaction(), sorter: None }
+  { base: new_abstract_radius_extension_compaction(), sorter: None, }
 }
 
 ///|

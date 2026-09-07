@@ -14,7 +14,7 @@ pub fn new_rectpacking_block_row(
   y : Double,
   node_node_spacing : Double,
 ) -> BlockRow {
-  { x, y, width: 0.0, height: 0.0, node_node_spacing, nodes: [] }
+  { x, y, width: 0.0, height: 0.0, node_node_spacing, nodes: [], }
 }
 
 ///|

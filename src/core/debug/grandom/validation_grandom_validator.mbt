@@ -18,7 +18,7 @@ pub fn new_core_debug_grandom_validation_error(
   message : String,
   feature : String,
 ) -> CoreDebugGRandomValidationError {
-  { message, feature }
+  { message, feature, }
 }
 
 ///|

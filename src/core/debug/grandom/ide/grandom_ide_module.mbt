@@ -5,7 +5,7 @@ pub(all) struct CoreDebugGRandomIdeModule {
 
 ///|
 pub fn new_core_debug_grandom_ide_module() -> CoreDebugGRandomIdeModule {
-  { base: new_abstract_core_debug_grandom_ide_module() }
+  { base: new_abstract_core_debug_grandom_ide_module(), }
 }
 
 ///|

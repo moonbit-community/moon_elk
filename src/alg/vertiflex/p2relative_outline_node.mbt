@@ -11,7 +11,7 @@ pub fn new_outline_node(
   absolute_y : Double,
   next : OutlineNode?,
 ) -> OutlineNode {
-  { relative_x, absolute_y, next }
+  { relative_x, absolute_y, next, }
 }
 
 ///|

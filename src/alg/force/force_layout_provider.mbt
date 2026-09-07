@@ -24,7 +24,7 @@ pub struct ForceLayoutProvider {
 
 ///|
 pub fn new_force_layout_provider() -> ForceLayoutProvider {
-  { force_model: None, components_processor: new_components_processor() }
+  { force_model: None, components_processor: new_components_processor(), }
 }
 
 ///|

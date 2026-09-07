@@ -175,3 +175,12 @@ pub fn LayoutMapping::get_property(
 ) -> String? {
   self.properties.get(key)
 }
+
+///|
+pub extend LayoutMappingStatus with Debug::{to_repr}
+
+///|
+pub extend LayoutMappingStatus with Eq::{not_equal, equal}
+
+///|
+pub extend LayoutMappingStatus with Show::{to_string, output}

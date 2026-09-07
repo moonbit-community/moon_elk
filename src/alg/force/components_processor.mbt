@@ -5,7 +5,7 @@ pub struct ComponentsProcessor {
 
 ///|
 pub fn new_components_processor() -> ComponentsProcessor {
-  { _dummy: () }
+  { _dummy: (), }
 }
 
 ///|

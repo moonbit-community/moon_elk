@@ -5,7 +5,7 @@ pub struct GraphvizDotStandaloneSetup {
 
 ///|
 pub fn new_graphviz_dot_standalone_setup() -> GraphvizDotStandaloneSetup {
-  { marker: () }
+  { marker: (), }
 }
 
 ///|

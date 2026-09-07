@@ -16,7 +16,7 @@ fn t_edge_to_signed_int32(value : Int64) -> Int {
 
 ///|
 pub fn new_tedge(u : @core.KVector, v : @core.KVector) -> TEdge {
-  { u, v }
+  { u, v, }
 }
 
 ///|
@@ -41,3 +41,9 @@ pub impl Eq for TEdge with fn equal(self : TEdge, other : TEdge) -> Bool {
 pub impl Hash for TEdge with fn hash_combine(self : TEdge, hasher) -> Unit {
   hasher.combine(self.hash_code())
 }
+
+///|
+pub extend TEdge with Eq::{not_equal, equal}
+
+///|
+pub extend TEdge with Hash::{hash, hash_combine}

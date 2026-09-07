@@ -14,7 +14,7 @@ pub struct PhaseDescriptor {
 
 ///|
 pub fn new_phase_descriptor(phases : Array[PhaseId]) -> PhaseDescriptor {
-  { phases: phases.copy() }
+  { phases: phases.copy(), }
 }
 
 ///|

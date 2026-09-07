@@ -6,7 +6,7 @@ pub struct DotAttribute {
 
 ///|
 pub fn dot_create_attribute() -> DotAttribute {
-  { name: None, value: None }
+  { name: None, value: None, }
 }
 
 ///|

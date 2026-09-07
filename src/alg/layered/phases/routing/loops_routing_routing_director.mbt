@@ -88,7 +88,7 @@ pub struct RoutingDirector {
 
 ///|
 pub fn new_routing_director() -> RoutingDirector {
-  { port_penalties: None }
+  { port_penalties: None, }
 }
 
 ///|

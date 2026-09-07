@@ -305,3 +305,9 @@ pub fn new_layer_constraint_postprocessor_layout_processor() -> @core.TypedLayou
 ] {
   @core.new_layout_processor(layer_constraint_postprocessor_process)
 }
+
+///|
+pub extend LayerConstraintPostprocessorException with Debug::{to_repr}
+
+///|
+pub extend LayerConstraintPostprocessorException with ToJson::{to_json}

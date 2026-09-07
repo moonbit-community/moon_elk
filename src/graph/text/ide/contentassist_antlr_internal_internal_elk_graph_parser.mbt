@@ -11,7 +11,7 @@ pub fn new_internal_elk_graph_ide_parser(
   tokens : Array[@text.ElkGraphLexToken],
   grammar_access? : @text.ElkGraphGrammarAccess = @text.new_elk_graph_grammar_access(),
 ) -> InternalElkGraphIdeParser {
-  { metadata, tokens, grammar_access }
+  { metadata, tokens, grammar_access, }
 }
 
 ///|

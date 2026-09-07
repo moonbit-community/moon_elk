@@ -47,7 +47,7 @@ pub fn new_elk_graph_json_lex_token(
   token_name : String,
   lexeme : String,
 ) -> ElkGraphJsonLexToken {
-  { token_type, token_name, lexeme }
+  { token_type, token_name, lexeme, }
 }
 
 ///|

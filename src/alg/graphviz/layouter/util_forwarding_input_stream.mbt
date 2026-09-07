@@ -128,7 +128,7 @@ pub struct GraphvizByteArrayInputStream {
 pub fn new_graphviz_byte_array_input_stream(
   data : Array[Int],
 ) -> GraphvizByteArrayInputStream {
-  { data, index_ref: Ref(0), mark_ref: Ref(0), closed_ref: Ref(false) }
+  { data, index_ref: Ref(0), mark_ref: Ref(0), closed_ref: Ref(false), }
 }
 
 ///|
@@ -223,7 +223,7 @@ pub fn new_forwarding_input_stream(
   input_stream : GraphvizInputStream,
   output_stream : GraphvizOutputStream,
 ) -> ForwardingInputStream {
-  { input_stream, output_stream }
+  { input_stream, output_stream, }
 }
 
 ///|

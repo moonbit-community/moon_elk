@@ -6,7 +6,7 @@ pub struct DotPort {
 
 ///|
 pub fn dot_create_port() -> DotPort {
-  { name: None, compass_pt: None }
+  { name: None, compass_pt: None, }
 }
 
 ///|

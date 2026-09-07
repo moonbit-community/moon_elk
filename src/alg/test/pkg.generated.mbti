@@ -377,26 +377,38 @@ pub let vertiflex_algorithm_id : String
 pub(all) suberror AbstractPropertyDependentResourcePathException {
   IllegalStateException(String)
 } derive(ToJson, @debug.Debug)
+pub fn AbstractPropertyDependentResourcePathException::to_json(Self) -> Json
+pub fn AbstractPropertyDependentResourcePathException::to_repr(Self) -> @debug.Repr
 
 pub suberror AbstractResourcePathException {
   AbstractResourcePathException(String)
 } derive(ToJson, @debug.Debug)
+pub fn AbstractResourcePathException::to_json(Self) -> Json
+pub fn AbstractResourcePathException::to_repr(Self) -> @debug.Repr
 
 pub suberror BundleResourcePathException {
   BundleResourcePathException(String)
 } derive(ToJson, @debug.Debug)
+pub fn BundleResourcePathException::to_json(Self) -> Json
+pub fn BundleResourcePathException::to_repr(Self) -> @debug.Repr
 
 pub suberror LayoutTestRunnerException {
   LayoutTestRunnerException(String)
 } derive(ToJson, @debug.Debug)
+pub fn LayoutTestRunnerException::to_json(Self) -> Json
+pub fn LayoutTestRunnerException::to_repr(Self) -> @debug.Repr
 
 pub suberror ModelResourcePathException {
   ModelResourcePathException(String)
 } derive(ToJson, @debug.Debug)
+pub fn ModelResourcePathException::to_json(Self) -> Json
+pub fn ModelResourcePathException::to_repr(Self) -> @debug.Repr
 
 pub suberror ResultsResourcePathException {
   ResultsResourcePathException(String)
 } derive(ToJson, @debug.Debug)
+pub fn ResultsResourcePathException::to_json(Self) -> Json
+pub fn ResultsResourcePathException::to_repr(Self) -> @debug.Repr
 
 // Types and methods
 #alias(AbsoluteResourcePath)

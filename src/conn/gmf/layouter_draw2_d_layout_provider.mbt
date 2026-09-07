@@ -11,7 +11,7 @@ pub struct Draw2DLayoutProvider {
 
 ///|
 pub fn new_draw2d_layout_provider() -> Draw2DLayoutProvider {
-  { compound_mode: false }
+  { compound_mode: false, }
 }
 
 ///|

@@ -5,7 +5,7 @@ pub(all) struct AbstractMetaDataScopeProvider {
 
 ///|
 pub fn new_abstract_meta_data_scope_provider() -> AbstractMetaDataScopeProvider {
-  { marker: () }
+  { marker: (), }
 }
 
 ///|

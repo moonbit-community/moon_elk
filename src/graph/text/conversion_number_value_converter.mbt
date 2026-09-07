@@ -17,7 +17,7 @@ fn number_value_converter_raise_unit(
 
 ///|
 pub fn new_number_value_converter() -> NumberValueConverter {
-  { marker: () }
+  { marker: (), }
 }
 
 ///|
@@ -97,3 +97,9 @@ pub fn NumberValueConverter::to_value(
     }
   }
 }
+
+///|
+pub extend NumberValueConverterException with Debug::{to_repr}
+
+///|
+pub extend NumberValueConverterException with ToJson::{to_json}

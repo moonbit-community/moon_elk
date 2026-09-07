@@ -8,7 +8,7 @@ pub struct DisCoDebugDisplay {
 
 ///|
 pub fn new_dis_co_debug_display() -> DisCoDebugDisplay {
-  { id: 0 }
+  { id: 0, }
 }
 
 ///|
@@ -27,7 +27,7 @@ pub fn new_dis_co_debug_color(
   g : Int,
   b : Int,
 ) -> DisCoDebugColor {
-  { display, r, g, b, disposed: false }
+  { display, r, g, b, disposed: false, }
 }
 
 ///|
@@ -56,7 +56,7 @@ pub fn new_dis_co_debug_font(
   size : Int,
   style : Int,
 ) -> DisCoDebugFont {
-  { display, name, size, style, disposed: false }
+  { display, name, size, style, disposed: false, }
 }
 
 ///|
@@ -87,7 +87,7 @@ pub fn new_dis_co_debug_pattern(width : Int, height : Int) -> DisCoDebugPattern 
     alpha_data.push(0)
     index = index + 1
   }
-  { width: bounded_width, height: bounded_height, alpha_data }
+  { width: bounded_width, height: bounded_height, alpha_data, }
 }
 
 ///|
@@ -151,3 +151,6 @@ pub fn dis_co_debug_pattern_fill_rectangle(
     }
   }
 }
+
+///|
+pub extend DisCoDebugDisplay with Eq::{not_equal, equal}

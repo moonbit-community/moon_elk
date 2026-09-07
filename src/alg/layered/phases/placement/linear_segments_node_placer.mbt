@@ -67,7 +67,7 @@ priv struct LinearSegmentsState {
 
 ///|
 fn new_linear_segments_state() -> LinearSegmentsState {
-  { linear_segments: [], spacings: None }
+  { linear_segments: [], spacings: None, }
 }
 
 ///|

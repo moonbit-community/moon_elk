@@ -34,7 +34,7 @@ pub fn new_elk_graph_xmi_helper(
   metadata : OptionMetadata,
   resource : ElkGraphResource,
 ) -> ElkGraphXMIHelper {
-  { resource_uri: resource.get_uri(), metadata }
+  { resource_uri: resource.get_uri(), metadata, }
 }
 
 ///|

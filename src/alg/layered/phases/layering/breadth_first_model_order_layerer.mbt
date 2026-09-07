@@ -282,3 +282,9 @@ pub fn new_breadth_first_model_order_layerer_layout_phase() -> @core.TypedLayout
     breadth_first_model_order_layerer_process, breadth_first_model_order_layerer_configuration,
   )
 }
+
+///|
+pub extend BreadthFirstModelOrderLayererException with Debug::{to_repr}
+
+///|
+pub extend BreadthFirstModelOrderLayererException with ToJson::{to_json}

@@ -5,7 +5,7 @@ pub(all) struct PartialCoreDebugGRandomContentAssistParser {
 
 ///|
 pub fn new_partial_core_debug_grandom_content_assist_parser() -> PartialCoreDebugGRandomContentAssistParser {
-  { rule: None }
+  { rule: None, }
 }
 
 ///|

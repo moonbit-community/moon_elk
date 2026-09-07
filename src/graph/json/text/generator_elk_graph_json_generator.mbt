@@ -14,7 +14,7 @@ pub struct ElkGraphJsonGenerator {
 
 ///|
 pub fn new_elk_graph_json_generator() -> ElkGraphJsonGenerator {
-  { marker: () }
+  { marker: (), }
 }
 
 ///|

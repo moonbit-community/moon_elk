@@ -13,7 +13,7 @@ pub fn new_execution_info_model_listener(
 ) -> IExecutionInfoModelListener {
   execution_info_model_listener_id_ref.val = execution_info_model_listener_id_ref.val +
     1
-  { id: execution_info_model_listener_id_ref.val, execution_info_changed_fn }
+  { id: execution_info_model_listener_id_ref.val, execution_info_changed_fn, }
 }
 
 ///|

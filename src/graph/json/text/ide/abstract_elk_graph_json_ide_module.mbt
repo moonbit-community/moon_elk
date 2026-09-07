@@ -15,7 +15,7 @@ pub fn new_graph_json_text_ide_content_assist_lexer_binding(
   binding_name : String,
   lexer_class_name : String,
 ) -> GraphJsonTextIdeContentAssistLexerBinding {
-  { binding_name, lexer_class_name }
+  { binding_name, lexer_class_name, }
 }
 
 ///|
@@ -25,7 +25,7 @@ pub struct AbstractElkGraphJsonIdeModule {
 
 ///|
 pub fn new_abstract_elk_graph_json_ide_module() -> AbstractElkGraphJsonIdeModule {
-  { unit: () }
+  { unit: (), }
 }
 
 ///|

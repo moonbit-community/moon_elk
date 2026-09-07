@@ -20,7 +20,7 @@ pub fn new_dis_co_paint_rectangle(
   width : Int,
   height : Int,
 ) -> DisCoPaintRectangle {
-  { x, y, width, height, painted: false }
+  { x, y, width, height, painted: false, }
 }
 
 ///|

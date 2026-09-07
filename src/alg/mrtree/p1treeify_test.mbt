@@ -17,7 +17,7 @@ fn mrtree_build_cycle_fixture(search_order : String) -> MrtreeCycleFixture {
   ignore(new_mrtree_edge(n0, n1))
   ignore(new_mrtree_edge(n1, n2))
   let e20 = new_mrtree_edge(n2, n0)
-  { graph, n0, _n1: n1, n2, e20 }
+  { graph, n0, _n1: n1, n2, e20, }
 }
 
 ///|

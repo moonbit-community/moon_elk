@@ -371,3 +371,9 @@ pub fn new_greedy_cycle_breaker_layout_phase(
     greedy_cycle_breaker_configuration,
   )
 }
+
+///|
+pub extend GreedyCycleBreakerException with Debug::{to_repr}
+
+///|
+pub extend GreedyCycleBreakerException with ToJson::{to_json}

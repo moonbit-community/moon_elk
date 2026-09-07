@@ -10,7 +10,7 @@ pub fn new_progress_monitor_adapter(
   progress_monitor : @core.IElkProgressMonitor,
   max_hierarchy_levels? : Int = -1,
 ) -> ProgressMonitorAdapter {
-  { progress_monitor, submitted_work: 0, max_hierarchy_levels }
+  { progress_monitor, submitted_work: 0, max_hierarchy_levels, }
 }
 
 ///|

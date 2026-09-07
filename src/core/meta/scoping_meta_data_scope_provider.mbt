@@ -8,7 +8,7 @@ pub(all) struct MetaDataScopeProvider {
 pub fn new_meta_data_scope_provider(
   base? : AbstractMetaDataScopeProvider = new_abstract_meta_data_scope_provider(),
 ) -> MetaDataScopeProvider {
-  { base, delegate_scope_name: "imported_namespace_scope" }
+  { base, delegate_scope_name: "imported_namespace_scope", }
 }
 
 ///|

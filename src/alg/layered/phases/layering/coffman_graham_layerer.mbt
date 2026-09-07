@@ -389,3 +389,9 @@ pub fn new_coffman_graham_layerer_layout_phase() -> @core.TypedLayoutProcessor[
     coffman_graham_layerer_process, coffman_graham_layerer_configuration,
   )
 }
+
+///|
+pub extend CoffmanGrahamLayererException with Debug::{to_repr}
+
+///|
+pub extend CoffmanGrahamLayererException with ToJson::{to_json}

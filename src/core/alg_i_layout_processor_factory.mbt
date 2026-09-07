@@ -14,7 +14,7 @@ pub fn[G] new_layout_processor_factory(
   graph : G,
   create_fn : () -> TypedLayoutProcessor[G] raise,
 ) -> LayoutProcessorFactory {
-  { id, order, create_fn: () => bind_layout_processor(graph, create_fn()) }
+  { id, order, create_fn: () => bind_layout_processor(graph, create_fn()), }
 }
 
 ///|

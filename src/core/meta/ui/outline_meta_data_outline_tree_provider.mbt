@@ -11,7 +11,7 @@ pub fn new_core_meta_outline_node(
   label : String,
   children? : Array[CoreMetaOutlineNode] = [],
 ) -> CoreMetaOutlineNode {
-  { kind, label, children }
+  { kind, label, children, }
 }
 
 ///|
@@ -77,7 +77,7 @@ pub(all) struct MetaDataOutlineTreeProvider {
 
 ///|
 pub fn new_meta_data_outline_tree_provider() -> MetaDataOutlineTreeProvider {
-  { unit: () }
+  { unit: (), }
 }
 
 ///|

@@ -20,7 +20,7 @@ fn property_key_value_converter_raise_unit(
 pub fn new_property_key_value_converter(
   metadata : @core.OptionMetadata,
 ) -> PropertyKeyValueConverter {
-  { metadata, id_rule: "ID" }
+  { metadata, id_rule: "ID", }
 }
 
 ///|
@@ -185,3 +185,9 @@ pub fn PropertyKeyValueConverter::to_value(
     None => CustomProperty(text)
   }
 }
+
+///|
+pub extend PropertyKeyValueConverterException with Debug::{to_repr}
+
+///|
+pub extend PropertyKeyValueConverterException with ToJson::{to_json}

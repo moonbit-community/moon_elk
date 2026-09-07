@@ -66,3 +66,9 @@ pub fn mrtree_label_to_string(label : MrtreeLabel) -> String {
     "l_" + label_data.text
   }
 }
+
+///|
+pub extend MrtreeLabel with Debug::{to_repr}
+
+///|
+pub extend MrtreeLabel with Eq::{not_equal, equal}

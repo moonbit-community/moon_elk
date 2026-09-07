@@ -33,7 +33,7 @@ pub(all) struct SizeFilter[C, T] {
 
 ///|
 pub fn[C, T] new_size_filter() -> SizeFilter[C, T] {
-  { bounds_provider: None, max_area: -1.0 }
+  { bounds_provider: None, max_area: -1.0, }
 }
 
 ///|
@@ -120,3 +120,9 @@ pub fn[C, T] SizeFilter::as_filter(self : SizeFilter[C, T]) -> IFilter[C, T] {
     () => (),
   )
 }
+
+///|
+pub extend SizeFilterException with Debug::{to_repr}
+
+///|
+pub extend SizeFilterException with ToJson::{to_json}

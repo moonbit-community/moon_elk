@@ -142,7 +142,7 @@ let graphviz_layouter_preference_store_ref : Ref[
 
 ///|
 pub fn new_graphviz_layouter_preference_store() -> GraphvizLayouterPreferenceStore {
-  { preference_store: None }
+  { preference_store: None, }
 }
 
 ///|

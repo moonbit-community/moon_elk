@@ -9,7 +9,7 @@ pub fn[G] new_igraph_transformer(
   import_graph_fn : (G) -> DCGraph raise,
   apply_layout_fn : () -> Unit raise,
 ) -> IGraphTransformer[G] {
-  { import_graph_fn, apply_layout_fn }
+  { import_graph_fn, apply_layout_fn, }
 }
 
 ///|

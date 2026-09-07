@@ -13,7 +13,7 @@ pub(all) struct MetaDataLabelProvider {
 
 ///|
 pub fn new_meta_data_label_provider() -> MetaDataLabelProvider {
-  { unit: () }
+  { unit: (), }
 }
 
 ///|

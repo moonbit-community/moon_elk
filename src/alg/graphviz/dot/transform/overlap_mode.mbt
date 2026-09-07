@@ -68,3 +68,9 @@ pub fn overlap_mode_literal(mode : OverlapMode) -> String {
 pub fn overlap_mode_default() -> OverlapMode {
   OverlapPrism
 }
+
+///|
+pub extend OverlapModeException with Debug::{to_repr}
+
+///|
+pub extend OverlapModeException with ToJson::{to_json}

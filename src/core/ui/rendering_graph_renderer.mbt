@@ -26,7 +26,7 @@ pub fn new_core_ui_paint_rectangle(
   width : Int,
   height : Int,
 ) -> CoreUiPaintRectangle {
-  { x, y, width, height, painted: false }
+  { x, y, width, height, painted: false, }
 }
 
 ///|
@@ -102,7 +102,7 @@ pub(all) struct CoreUiGraphics {
 
 ///|
 pub fn new_core_ui_graphics() -> CoreUiGraphics {
-  { operations: [], alpha: 255, font: None }
+  { operations: [], alpha: 255, font: None, }
 }
 
 ///|

@@ -11,7 +11,7 @@ pub fn[C, T] new_explicit_attachment_provider(
   preprocess_fn : (IDataProvider[C, T], Bool) -> Unit,
   cleanup_fn : () -> Unit,
 ) -> IExplicitAttachmentProvider[C, T] {
-  { find_explicit_attachment_fn, preprocess_fn, cleanup_fn }
+  { find_explicit_attachment_fn, preprocess_fn, cleanup_fn, }
 }
 
 ///|

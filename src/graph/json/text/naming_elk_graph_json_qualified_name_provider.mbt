@@ -5,7 +5,7 @@ pub struct ElkGraphJsonQualifiedNameProvider {
 
 ///|
 pub fn new_elk_graph_json_qualified_name_provider() -> ElkGraphJsonQualifiedNameProvider {
-  { marker: () }
+  { marker: (), }
 }
 
 ///|

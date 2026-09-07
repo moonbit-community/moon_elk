@@ -5,7 +5,7 @@ pub(all) struct MetaDataStandaloneSetup {
 
 ///|
 pub fn new_meta_data_standalone_setup() -> MetaDataStandaloneSetup {
-  { marker: () }
+  { marker: (), }
 }
 
 ///|

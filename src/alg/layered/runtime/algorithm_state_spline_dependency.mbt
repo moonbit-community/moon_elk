@@ -30,7 +30,7 @@ pub fn new_spline_dependency(
   target : SplineSegment,
   weight : Int,
 ) -> SplineDependency {
-  let dependency = { source: Some(source), target: Some(target), weight }
+  let dependency = { source: Some(source), target: Some(target), weight, }
   source.outgoing.push(dependency)
   target.incoming.push(dependency)
   dependency

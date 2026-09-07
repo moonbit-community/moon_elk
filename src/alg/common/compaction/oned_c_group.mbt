@@ -190,3 +190,12 @@ pub fn CGroup::add_delta_normalized(self : CGroup, delta : Double) -> Unit {
   checked_cgroup(self)
   self.data.delta_normalized = self.data.delta_normalized + delta
 }
+
+///|
+pub extend CGroup with Eq::{not_equal, equal}
+
+///|
+pub extend CGroupException with Debug::{to_repr}
+
+///|
+pub extend CGroupException with ToJson::{to_json}

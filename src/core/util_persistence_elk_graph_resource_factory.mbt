@@ -8,7 +8,7 @@ pub(all) struct ElkGraphResourceFactory {
 pub fn new_elk_graph_resource_factory(
   metadata : OptionMetadata,
 ) -> ElkGraphResourceFactory {
-  { metadata, initialized: true }
+  { metadata, initialized: true, }
 }
 
 ///|

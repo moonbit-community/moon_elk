@@ -12,7 +12,7 @@ pub struct LayeredLayoutState {
 
 ///|
 pub fn new_layered_layout_state() -> LayeredLayoutState {
-  { random: None, first_random_boolean: None }
+  { random: None, first_random_boolean: None, }
 }
 
 ///|

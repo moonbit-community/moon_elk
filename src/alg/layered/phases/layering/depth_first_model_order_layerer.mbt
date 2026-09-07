@@ -415,3 +415,9 @@ pub fn new_depth_first_model_order_layerer_layout_phase() -> @core.TypedLayoutPr
     depth_first_model_order_layerer_process, depth_first_model_order_layerer_configuration,
   )
 }
+
+///|
+pub extend DepthFirstModelOrderLayererException with Debug::{to_repr}
+
+///|
+pub extend DepthFirstModelOrderLayererException with ToJson::{to_json}

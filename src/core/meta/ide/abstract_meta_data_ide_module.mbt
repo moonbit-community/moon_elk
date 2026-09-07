@@ -15,7 +15,7 @@ pub fn new_core_meta_ide_content_assist_lexer_binding(
   binding_name : String,
   lexer_class_name : String,
 ) -> CoreMetaIdeContentAssistLexerBinding {
-  { binding_name, lexer_class_name }
+  { binding_name, lexer_class_name, }
 }
 
 ///|
@@ -25,7 +25,7 @@ pub(all) struct AbstractCoreMetaIdeModule {
 
 ///|
 pub fn new_abstract_core_meta_ide_module() -> AbstractCoreMetaIdeModule {
-  { unit: () }
+  { unit: (), }
 }
 
 ///|

@@ -5,7 +5,7 @@ pub struct ElkGraphJsonIdeModule {
 
 ///|
 pub fn new_elk_graph_json_ide_module() -> ElkGraphJsonIdeModule {
-  { base: new_abstract_elk_graph_json_ide_module() }
+  { base: new_abstract_elk_graph_json_ide_module(), }
 }
 
 ///|

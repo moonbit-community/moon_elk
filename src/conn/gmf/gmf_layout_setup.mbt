@@ -31,7 +31,7 @@ pub struct GmfLayoutSetup {
 
 ///|
 pub fn new_gmf_layout_setup() -> GmfLayoutSetup {
-  { unit: () }
+  { unit: (), }
 }
 
 ///|
@@ -65,3 +65,6 @@ pub fn GmfLayoutSetup::create_injector(
   merged_bindings["ILayoutConfigurationStore.Provider"] = "GmfLayoutConfigurationStore.Provider"
   new_gmf_injector(bindings=merged_bindings)
 }
+
+///|
+pub extend GmfLayoutSetupObject with Debug::{to_repr}

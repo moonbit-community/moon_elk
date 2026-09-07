@@ -8,14 +8,14 @@ pub struct IRectangleStripOverlapRemovalStrategy {
 pub fn new_irectangle_strip_overlap_removal_strategy(
   remove_overlaps : (RectangleStripOverlapRemover) -> Double raise,
 ) -> IRectangleStripOverlapRemovalStrategy {
-  { remove_overlaps: Some(remove_overlaps), pure_remove_overlaps: None }
+  { remove_overlaps: Some(remove_overlaps), pure_remove_overlaps: None, }
 }
 
 ///|
 pub fn new_pure_irectangle_strip_overlap_removal_strategy(
   remove_overlaps : (RectangleStripOverlapRemover) -> Double,
 ) -> IRectangleStripOverlapRemovalStrategy {
-  { remove_overlaps: None, pure_remove_overlaps: Some(remove_overlaps) }
+  { remove_overlaps: None, pure_remove_overlaps: Some(remove_overlaps), }
 }
 
 ///|

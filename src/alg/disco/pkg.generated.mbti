@@ -66,6 +66,8 @@ pub fn register_disco_layout_algorithm(@core.LayoutRuntime) -> Unit
 pub suberror DCElementException {
   DCElementException(String)
 } derive(ToJson, @debug.Debug)
+pub fn DCElementException::to_json(Self) -> Json
+pub fn DCElementException::to_repr(Self) -> @debug.Repr
 
 // Types and methods
 pub enum CompactionStrategy {

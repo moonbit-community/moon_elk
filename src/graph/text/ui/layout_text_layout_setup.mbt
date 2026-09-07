@@ -5,7 +5,7 @@ pub struct TextLayoutSetup {
 
 ///|
 pub fn new_text_layout_setup() -> TextLayoutSetup {
-  { unit: () }
+  { unit: (), }
 }
 
 ///|
@@ -33,7 +33,7 @@ pub struct TextLayoutModule {
 
 ///|
 pub fn new_text_layout_module() -> TextLayoutModule {
-  { unit: () }
+  { unit: (), }
 }
 
 ///|

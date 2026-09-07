@@ -16,7 +16,7 @@ pub struct Point {
 
 ///|
 pub fn new_point(x : Double, y : Double) -> Point {
-  { x, y, quadrant: None, convex: true }
+  { x, y, quadrant: None, convex: true, }
 }
 
 ///|
@@ -25,7 +25,7 @@ pub fn new_point_in_quadrant(
   y : Double,
   quadrant : Quadrant,
 ) -> Point {
-  { x, y, quadrant: Some(quadrant), convex: true }
+  { x, y, quadrant: Some(quadrant), convex: true, }
 }
 
 ///|
@@ -72,5 +72,5 @@ pub fn is_one_left_one_right(q1 : Quadrant, q2 : Quadrant) -> Bool {
 
 ///|
 pub fn point_with_quadrant(point : Point, quadrant : Quadrant) -> Point {
-  { x: point.x, y: point.y, quadrant: Some(quadrant), convex: point.convex }
+  { x: point.x, y: point.y, quadrant: Some(quadrant), convex: point.convex, }
 }

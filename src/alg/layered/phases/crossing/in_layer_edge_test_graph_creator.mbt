@@ -5,7 +5,7 @@ pub struct GreedySwitchInLayerEdgeTestGraphCreator {
 
 ///|
 pub fn new_greedy_switch_in_layer_edge_test_graph_creator() -> GreedySwitchInLayerEdgeTestGraphCreator raise {
-  { base: new_greedy_switch_test_graph_creator() }
+  { base: new_greedy_switch_test_graph_creator(), }
 }
 
 ///|

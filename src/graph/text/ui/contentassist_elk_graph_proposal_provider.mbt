@@ -17,7 +17,7 @@ pub fn new_elk_graph_ui_proposal_provider(
   let ide_provider = ide_provider.unwrap_or(
     @ide.new_elk_graph_ide_proposal_provider(metadata),
   )
-  { base: new_abstract_elk_graph_proposal_provider(), ide_provider, grammar }
+  { base: new_abstract_elk_graph_proposal_provider(), ide_provider, grammar, }
 }
 
 ///|

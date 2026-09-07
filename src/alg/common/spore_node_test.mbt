@@ -63,15 +63,15 @@ priv struct SporeDistanceCase {
 ///|
 fn spore_distance_cases() -> Array[SporeDistanceCase] {
   [
-    { vector: new_kvector_xy(-20.0, 20.0), should_collide: true },
-    { vector: new_kvector_xy(-80.0, 0.0), should_collide: false },
-    { vector: new_kvector_xy(-20.0, 9.0), should_collide: false },
-    { vector: new_kvector_xy(0.0, 50.0), should_collide: false },
-    { vector: new_kvector_xy(-9.99, 50.0), should_collide: false },
-    { vector: new_kvector_xy(60.0, 60.0), should_collide: false },
-    { vector: new_kvector_xy(-30.0, 50.0), should_collide: true },
-    { vector: new_kvector_xy(-20.0, 130.0), should_collide: true },
-    { vector: new_kvector_xy(-20.0, -21.0), should_collide: false },
+    { vector: new_kvector_xy(-20.0, 20.0), should_collide: true, },
+    { vector: new_kvector_xy(-80.0, 0.0), should_collide: false, },
+    { vector: new_kvector_xy(-20.0, 9.0), should_collide: false, },
+    { vector: new_kvector_xy(0.0, 50.0), should_collide: false, },
+    { vector: new_kvector_xy(-9.99, 50.0), should_collide: false, },
+    { vector: new_kvector_xy(60.0, 60.0), should_collide: false, },
+    { vector: new_kvector_xy(-30.0, 50.0), should_collide: true, },
+    { vector: new_kvector_xy(-20.0, 130.0), should_collide: true, },
+    { vector: new_kvector_xy(-20.0, -21.0), should_collide: false, },
   ]
 }
 

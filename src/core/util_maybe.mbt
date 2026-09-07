@@ -5,12 +5,12 @@ pub(all) struct Maybe[T] {
 
 ///|
 pub fn[T] maybe_create() -> Maybe[T] {
-  { object: None }
+  { object: None, }
 }
 
 ///|
 pub fn[T] maybe_of(object : T) -> Maybe[T] {
-  { object: Some(object) }
+  { object: Some(object), }
 }
 
 ///|

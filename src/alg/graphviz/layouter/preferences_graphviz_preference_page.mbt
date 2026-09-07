@@ -130,7 +130,7 @@ pub struct GraphvizPreferencePage {
 pub fn new_graphviz_preference_page(
   metadata : @core.OptionMetadata,
 ) -> GraphvizPreferencePage {
-  { metadata, fields: [], preference_store: None }
+  { metadata, fields: [], preference_store: None, }
 }
 
 ///|

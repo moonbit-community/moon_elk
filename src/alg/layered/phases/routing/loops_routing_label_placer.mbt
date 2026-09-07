@@ -138,7 +138,7 @@ pub struct LabelPlacer {
 
 ///|
 pub fn new_label_placer() -> LabelPlacer {
-  { _reserved: 0 }
+  { _reserved: 0, }
 }
 
 ///|

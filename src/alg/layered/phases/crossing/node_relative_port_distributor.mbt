@@ -208,3 +208,9 @@ pub fn NodeRelativePortDistributor::as_initializable(
 ) -> IInitializable {
   self.as_i_sweep_port_distributor().as_initializable()
 }
+
+///|
+pub extend NodeRelativePortDistributorException with Debug::{to_repr}
+
+///|
+pub extend NodeRelativePortDistributorException with ToJson::{to_json}

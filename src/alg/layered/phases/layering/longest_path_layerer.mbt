@@ -173,3 +173,9 @@ pub fn new_longest_path_layerer_layout_phase() -> @core.TypedLayoutProcessor[
     longest_path_layerer_process, longest_path_layerer_configuration,
   )
 }
+
+///|
+pub extend LongestPathLayererException with Debug::{to_repr}
+
+///|
+pub extend LongestPathLayererException with ToJson::{to_json}

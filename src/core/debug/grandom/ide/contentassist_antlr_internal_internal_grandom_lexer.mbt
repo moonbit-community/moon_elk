@@ -46,7 +46,7 @@ pub fn new_core_debug_grandom_ide_lex_token(
   token_name : String,
   lexeme : String,
 ) -> CoreDebugGRandomIdeLexToken {
-  { token_type, token_name, lexeme }
+  { token_type, token_name, lexeme, }
 }
 
 ///|

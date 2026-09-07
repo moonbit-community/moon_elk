@@ -8,7 +8,7 @@ pub struct AbstractGraphvizDotSemanticSequencer {
 pub fn new_abstract_graphviz_dot_semantic_sequencer(
   grammar_access? : GraphvizDotGrammarAccess = new_graphviz_dot_grammar_access(),
 ) -> AbstractGraphvizDotSemanticSequencer {
-  { grammar_access, marker: () }
+  { grammar_access, marker: (), }
 }
 
 ///|

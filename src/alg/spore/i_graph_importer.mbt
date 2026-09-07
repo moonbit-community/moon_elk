@@ -11,7 +11,7 @@ pub fn[T] new_spore_igraph_importer(
   apply_positions_fn : (SporeGraph) -> Unit raise,
   update_graph_fn : (SporeGraph) -> Unit,
 ) -> SporeIGraphImporter[T] {
-  { import_graph_fn, apply_positions_fn, update_graph_fn }
+  { import_graph_fn, apply_positions_fn, update_graph_fn, }
 }
 
 ///|

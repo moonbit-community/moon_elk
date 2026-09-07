@@ -67,12 +67,12 @@ pub struct GmfPointList {
 
 ///|
 pub fn new_gmf_point(x : Int, y : Int) -> GmfPoint {
-  { x, y }
+  { x, y, }
 }
 
 ///|
 pub fn new_gmf_dimension(width : Int, height : Int) -> GmfDimension {
-  { width, height }
+  { width, height, }
 }
 
 ///|
@@ -82,7 +82,7 @@ pub fn new_gmf_insets(
   bottom? : Int = 0,
   left? : Int = 0,
 ) -> GmfInsets {
-  { top, right, bottom, left }
+  { top, right, bottom, left, }
 }
 
 ///|
@@ -92,7 +92,7 @@ pub fn new_gmf_rectangle(
   width? : Int = 0,
   height? : Int = 0,
 ) -> GmfRectangle {
-  { x, y, width, height }
+  { x, y, width, height, }
 }
 
 ///|
@@ -147,9 +147,9 @@ pub fn GmfPointList::reverse(self : GmfPointList) -> Unit {
 pub fn GmfPointList::copy(self : GmfPointList) -> GmfPointList {
   let copied : Array[GmfPoint] = []
   for point in self.points {
-    copied.push({ x: point.x, y: point.y })
+    copied.push({ x: point.x, y: point.y, })
   }
-  { points: copied }
+  { points: copied, }
 }
 
 ///|
@@ -260,7 +260,7 @@ pub struct GmfCommandStack {
 
 ///|
 pub fn new_gmf_command_stack() -> GmfCommandStack {
-  { executed_labels: [] }
+  { executed_labels: [], }
 }
 
 ///|
@@ -1154,7 +1154,7 @@ pub fn gmf_set_layout_element_shape(
   width : Double,
   height : Double,
 ) -> Unit {
-  gmf_layout_element_shape_store_ref.val[element] = { x, y, width, height }
+  gmf_layout_element_shape_store_ref.val[element] = { x, y, width, height, }
 }
 
 ///|
@@ -1186,3 +1186,60 @@ pub fn gmf_get_layout_element_edge(
 ) -> GmfLayoutElementEdge? {
   gmf_layout_element_edge_store_ref.val.get(element)
 }
+
+///|
+pub extend GmfDiagramPart with Debug::{to_repr}
+
+///|
+pub extend GmfDimension with Debug::{to_repr}
+
+///|
+pub extend GmfDimension with Eq::{not_equal, equal}
+
+///|
+pub extend GmfEditPartKind with Debug::{to_repr}
+
+///|
+pub extend GmfEditPartKind with Eq::{not_equal, equal}
+
+///|
+pub extend GmfFigureKind with Debug::{to_repr}
+
+///|
+pub extend GmfFigureKind with Eq::{not_equal, equal}
+
+///|
+pub extend GmfInsets with Debug::{to_repr}
+
+///|
+pub extend GmfInsets with Eq::{not_equal, equal}
+
+///|
+pub extend GmfLayoutElementEdge with Debug::{to_repr}
+
+///|
+pub extend GmfLayoutElementShape with Debug::{to_repr}
+
+///|
+pub extend GmfLayoutInvocation with Debug::{to_repr}
+
+///|
+pub extend GmfOperation with Debug::{to_repr}
+
+///|
+pub extend GmfOperation with Eq::{not_equal, equal}
+
+///|
+pub extend GmfPoint with Debug::{to_repr}
+
+///|
+pub extend GmfPoint with Eq::{not_equal, equal}
+
+///|
+pub extend GmfPointList with Debug::{to_repr}
+
+///|
+pub extend GmfRectangle with Debug::{to_repr}
+
+///|
+pub extend GmfRectangle with Eq::{not_equal, equal}

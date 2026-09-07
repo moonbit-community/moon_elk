@@ -36,7 +36,7 @@ pub fn new_core_ui_execution_event(
   selection? : CoreUiLayoutSelection = CoreUiLayoutSelectionNone,
   active_editor? : @service.ServiceWorkbenchPart? = None,
 ) -> CoreUiExecutionEvent {
-  { parameters, selection, active_editor }
+  { parameters, selection, active_editor, }
 }
 
 ///|
@@ -94,7 +94,7 @@ pub fn new_layout_handler(
   let invoke_layout_fn = invoke_layout_fn.unwrap_or(fn(invocation) raise {
     layout_handler_default_invoke(service, invocation)
   })
-  { invoke_layout_fn, last_invocation: None }
+  { invoke_layout_fn, last_invocation: None, }
 }
 
 ///|

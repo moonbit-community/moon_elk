@@ -61,7 +61,7 @@ pub fn new_random_graph_from_file(
   resource_path : AbsoluteResourcePath,
   graph : ElkNode,
 ) -> RandomGraphFromFile {
-  { resource_path, graph }
+  { resource_path, graph, }
 }
 
 ///|

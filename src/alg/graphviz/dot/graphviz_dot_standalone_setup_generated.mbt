@@ -33,7 +33,7 @@ pub struct GraphvizDotStandaloneSetupGenerated {
 
 ///|
 pub fn new_graphviz_dot_standalone_setup_generated() -> GraphvizDotStandaloneSetupGenerated {
-  { marker: () }
+  { marker: (), }
 }
 
 ///|

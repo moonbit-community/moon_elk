@@ -11,7 +11,7 @@ pub(all) struct RevealLogFolderAction {
 pub fn new_reveal_log_folder_action(
   view : AbstractLayoutDebugView,
 ) -> RevealLogFolderAction {
-  { view, enabled: false }
+  { view, enabled: false, }
 }
 
 ///|

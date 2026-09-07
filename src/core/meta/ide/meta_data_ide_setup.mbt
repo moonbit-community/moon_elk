@@ -9,7 +9,7 @@ pub fn new_core_meta_ide_injector(
   runtime_module : @meta.MetaDataRuntimeModule,
   ide_module : CoreMetaIdeModule,
 ) -> CoreMetaIdeInjector {
-  { runtime_module, ide_module }
+  { runtime_module, ide_module, }
 }
 
 ///|
@@ -33,7 +33,7 @@ pub(all) struct CoreMetaIdeSetup {
 
 ///|
 pub fn new_core_meta_ide_setup() -> CoreMetaIdeSetup {
-  { unit: () }
+  { unit: (), }
 }
 
 ///|

@@ -209,3 +209,6 @@ pub fn flabel_refresh_position(label : FLabel) -> Unit {
     }
   }
 }
+
+///|
+pub extend FLabel with Eq::{not_equal, equal}

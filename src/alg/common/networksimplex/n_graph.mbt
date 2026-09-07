@@ -114,7 +114,7 @@ fn int_max(left : Int, right : Int) -> Int {
 
 ///|
 pub fn new_ngraph() -> NGraph {
-  { nodes: [] }
+  { nodes: [], }
 }
 
 ///|
@@ -125,7 +125,7 @@ pub fn NGraph::write_debug_graph(self : NGraph, file_path : String) -> Unit {
 
 ///|
 pub fn nnode_of() -> NNodeBuilder {
-  { id: 0, origin: None, node_type: "" }
+  { id: 0, origin: None, node_type: "", }
 }
 
 ///|
@@ -174,7 +174,7 @@ pub fn NNodeBuilder::create(self : NNodeBuilder, graph : NGraph) -> NNode {
 
 ///|
 pub fn nedge_of() -> NEdgeBuilder {
-  { id: 0, origin: None, weight: 0.0, delta: 1, source: None, target: None }
+  { id: 0, origin: None, weight: 0.0, delta: 1, source: None, target: None, }
 }
 
 ///|
@@ -597,3 +597,18 @@ pub fn NGraph::is_acyclic(self : NGraph) -> Bool {
   }
   true
 }
+
+///|
+pub extend NEdge with Eq::{not_equal, equal}
+
+///|
+pub extend NNode with Eq::{not_equal, equal}
+
+///|
+pub extend NetworkSimplexException with Debug::{to_repr}
+
+///|
+pub extend NetworkSimplexException with Show::{to_string, output}
+
+///|
+pub extend NetworkSimplexException with ToJson::{to_json}

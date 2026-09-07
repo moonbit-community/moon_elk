@@ -5,7 +5,7 @@ pub struct JavaTEdgeSet {
 
 ///|
 pub fn new_java_tedge_set() -> JavaTEdgeSet {
-  { values: Set([]) }
+  { values: Set([]), }
 }
 
 ///|

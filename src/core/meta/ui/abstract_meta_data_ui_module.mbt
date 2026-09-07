@@ -12,7 +12,7 @@ pub fn new_core_meta_ui_lexer_binding(
   binding_name : String,
   class_name : String,
 ) -> CoreMetaUiLexerBinding {
-  { binding_name, class_name }
+  { binding_name, class_name, }
 }
 
 ///|

@@ -5,7 +5,7 @@ pub(all) struct DeprecatedLayoutOptionReplacer {
 
 ///|
 pub fn new_deprecated_layout_option_replacer() -> DeprecatedLayoutOptionReplacer {
-  { _dummy: 0 }
+  { _dummy: 0, }
 }
 
 ///|

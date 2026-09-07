@@ -8,7 +8,7 @@ pub(all) struct CoreDebugGRandomUiModule {
 pub fn new_core_debug_grandom_ui_module(
   plugin_id? : String = core_debug_grandom_ui_plugin_id,
 ) -> CoreDebugGRandomUiModule {
-  { plugin_id, base: new_abstract_core_debug_grandom_ui_module(plugin_id~) }
+  { plugin_id, base: new_abstract_core_debug_grandom_ui_module(plugin_id~), }
 }
 
 ///|

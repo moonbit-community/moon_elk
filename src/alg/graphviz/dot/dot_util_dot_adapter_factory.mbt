@@ -8,7 +8,7 @@ pub struct DotAdapterFactory {
 
 ///|
 pub fn new_dot_adapter_factory() -> DotAdapterFactory {
-  { model_package: dot_package_instance }
+  { model_package: dot_package_instance, }
 }
 
 ///|

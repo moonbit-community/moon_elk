@@ -11,7 +11,7 @@ pub struct ElkGraphJsonAntlrTokenFileProvider {
 
 ///|
 pub fn new_elk_graph_json_antlr_token_file_provider() -> ElkGraphJsonAntlrTokenFileProvider {
-  { marker: () }
+  { marker: (), }
 }
 
 ///|

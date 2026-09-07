@@ -97,7 +97,7 @@ fn nodespacing_capture_layered_labels(
 fn nodespacing_capture_layered_edge(
   edge : LEdgeAdapter,
 ) -> @nodespacing.NodeSpacingEdge {
-  { labels: nodespacing_capture_layered_labels(edge.get_labels()) }
+  { labels: nodespacing_capture_layered_labels(edge.get_labels()), }
 }
 
 ///|

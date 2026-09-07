@@ -7,7 +7,11 @@ pub struct DotEdgeTarget {
 
 ///|
 pub fn dot_create_edge_target() -> DotEdgeTarget {
-  { operator: DotEdgeOperatorDirected, target_subgraph: None, targetnode: None }
+  {
+    operator: DotEdgeOperatorDirected,
+    target_subgraph: None,
+    targetnode: None,
+  }
 }
 
 ///|

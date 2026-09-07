@@ -27,7 +27,7 @@ pub fn[C, T] new_bounds_provider(
   preprocess_fn : (IDataProvider[C, T], Bool) -> Unit,
   cleanup_fn : () -> Unit,
 ) -> IBoundsProvider[C, T] {
-  { bounds_for_comment_fn, bounds_for_target_fn, preprocess_fn, cleanup_fn }
+  { bounds_for_comment_fn, bounds_for_target_fn, preprocess_fn, cleanup_fn, }
 }
 
 ///|

@@ -480,3 +480,9 @@ pub fn[C : Eq, T : Eq] NodeReferenceMatcher::as_matcher(
     () => self.cleanup(),
   )
 }
+
+///|
+pub extend NodeReferenceMatcherException with Debug::{to_repr}
+
+///|
+pub extend NodeReferenceMatcherException with ToJson::{to_json}

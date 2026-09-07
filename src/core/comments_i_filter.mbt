@@ -11,7 +11,7 @@ pub fn[C, T] new_filter(
   preprocess_fn : (IDataProvider[C, T], Bool) -> Unit raise,
   cleanup_fn : () -> Unit raise,
 ) -> IFilter[C, T] {
-  { eligible_for_attachment_fn, preprocess_fn, cleanup_fn }
+  { eligible_for_attachment_fn, preprocess_fn, cleanup_fn, }
 }
 
 ///|

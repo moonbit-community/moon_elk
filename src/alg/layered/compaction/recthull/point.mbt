@@ -16,7 +16,7 @@ pub struct LayeredPoint {
 
 ///|
 pub fn new_layered_point(x : Double, y : Double) -> LayeredPoint {
-  { x, y, quadrant: None, convex: true }
+  { x, y, quadrant: None, convex: true, }
 }
 
 ///|
@@ -25,7 +25,7 @@ pub fn new_layered_point_in_quadrant(
   y : Double,
   quadrant : LayeredQuadrant,
 ) -> LayeredPoint {
-  { x, y, quadrant: Some(quadrant), convex: true }
+  { x, y, quadrant: Some(quadrant), convex: true, }
 }
 
 ///|
@@ -84,5 +84,5 @@ pub fn layered_point_with_quadrant(
   point : LayeredPoint,
   quadrant : LayeredQuadrant,
 ) -> LayeredPoint {
-  { x: point.x, y: point.y, quadrant: Some(quadrant), convex: point.convex }
+  { x: point.x, y: point.y, quadrant: Some(quadrant), convex: point.convex, }
 }

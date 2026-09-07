@@ -30,7 +30,7 @@ pub struct LayeredSimpleRowGraphPlacer {
 
 ///|
 pub fn new_layered_simple_row_graph_placer() -> LayeredSimpleRowGraphPlacer {
-  { base: new_layered_abstract_graph_placer() }
+  { base: new_layered_abstract_graph_placer(), }
 }
 
 ///|

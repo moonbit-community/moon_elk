@@ -9,7 +9,7 @@ pub fn[T] new_layered_igraph_transformer(
   import_graph : (T) -> LGraph? raise,
   apply_layout : (LGraph) -> Unit,
 ) -> LayeredIGraphTransformer[T] {
-  { import_graph_fn: import_graph, apply_layout_fn: apply_layout }
+  { import_graph_fn: import_graph, apply_layout_fn: apply_layout, }
 }
 
 ///|

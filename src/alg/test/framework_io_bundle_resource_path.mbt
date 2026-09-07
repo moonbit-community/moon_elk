@@ -75,3 +75,9 @@ pub fn new_bundle_resource_path(
     effective_file_path,
   )
 }
+
+///|
+pub extend BundleResourcePathException with Debug::{to_repr}
+
+///|
+pub extend BundleResourcePathException with ToJson::{to_json}

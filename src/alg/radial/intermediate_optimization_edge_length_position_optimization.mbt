@@ -37,7 +37,7 @@ pub struct EdgeLengthPositionOptimization {
 
 ///|
 pub fn new_edge_length_position_optimization() -> EdgeLengthPositionOptimization {
-  { evaluator: new_i_evaluation(edge_length_position_optimization_evaluate) }
+  { evaluator: new_i_evaluation(edge_length_position_optimization_evaluate), }
 }
 
 ///|

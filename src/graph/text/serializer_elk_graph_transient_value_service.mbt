@@ -5,7 +5,7 @@ pub struct ElkGraphTransientValueService {
 
 ///|
 pub fn new_elk_graph_transient_value_service() -> ElkGraphTransientValueService {
-  { marker: () }
+  { marker: (), }
 }
 
 ///|

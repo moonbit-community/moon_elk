@@ -335,7 +335,7 @@ pub fn core_debug_record_zip_output(
   file_name : String,
   entries : Array[String],
 ) -> Unit {
-  core_debug_zip_outputs_ref.val.push({ file_name, entries: entries.copy() })
+  core_debug_zip_outputs_ref.val.push({ file_name, entries: entries.copy(), })
 }
 
 ///|

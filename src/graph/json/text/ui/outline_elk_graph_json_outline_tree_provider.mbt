@@ -11,7 +11,7 @@ pub fn new_graph_json_text_outline_node(
   label : String,
   children? : Array[GraphJsonTextOutlineNode] = [],
 ) -> GraphJsonTextOutlineNode {
-  { kind, label, children }
+  { kind, label, children, }
 }
 
 ///|
@@ -21,7 +21,7 @@ pub struct ElkGraphJsonOutlineTreeProvider {
 
 ///|
 pub fn new_elk_graph_json_outline_tree_provider() -> ElkGraphJsonOutlineTreeProvider {
-  { unit: () }
+  { unit: (), }
 }
 
 ///|

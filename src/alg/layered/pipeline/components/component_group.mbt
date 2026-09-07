@@ -290,7 +290,7 @@ pub struct ComponentGroup {
 
 ///|
 pub fn new_component_group() -> ComponentGroup {
-  { components: Map([]) }
+  { components: Map([]), }
 }
 
 ///|

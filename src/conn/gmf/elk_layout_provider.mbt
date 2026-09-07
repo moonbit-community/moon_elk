@@ -8,7 +8,7 @@ pub struct ElkLayoutProvider {
 
 ///|
 pub fn new_elk_layout_provider() -> ElkLayoutProvider {
-  { unit: () }
+  { unit: (), }
 }
 
 ///|

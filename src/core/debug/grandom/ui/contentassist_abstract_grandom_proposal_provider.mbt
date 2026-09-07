@@ -21,7 +21,7 @@ pub fn new_core_debug_grandom_content_assist_context(
   root_model? : @grandom.CoreDebugGRandomRandGraph? = None,
   current_model_index? : Int? = None,
 ) -> CoreDebugGRandomContentAssistContext {
-  { root_model, current_model_index }
+  { root_model, current_model_index, }
 }
 
 ///|
@@ -31,7 +31,7 @@ pub(all) struct CoreDebugGRandomCompletionProposalAcceptor {
 
 ///|
 pub fn new_core_debug_grandom_completion_proposal_acceptor() -> CoreDebugGRandomCompletionProposalAcceptor {
-  { proposals: [] }
+  { proposals: [], }
 }
 
 ///|
@@ -56,7 +56,7 @@ pub(all) struct AbstractCoreDebugGRandomProposalProvider {
 
 ///|
 pub fn new_abstract_core_debug_grandom_proposal_provider() -> AbstractCoreDebugGRandomProposalProvider {
-  { unit: () }
+  { unit: (), }
 }
 
 ///|

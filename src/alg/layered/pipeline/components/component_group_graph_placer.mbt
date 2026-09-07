@@ -24,7 +24,7 @@ pub struct LayeredComponentGroupGraphPlacer {
 
 ///|
 pub fn new_layered_component_group_graph_placer() -> LayeredComponentGroupGraphPlacer {
-  { base: new_layered_abstract_graph_placer(), component_groups: [] }
+  { base: new_layered_abstract_graph_placer(), component_groups: [], }
 }
 
 ///|

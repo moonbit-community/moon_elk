@@ -139,7 +139,7 @@ pub struct GraphTextUiBundle {
 pub fn new_graph_text_ui_bundle(
   symbolic_name? : String = graph_text_ui_plugin_id,
 ) -> GraphTextUiBundle {
-  { symbolic_name, classes: Map([]) }
+  { symbolic_name, classes: Map([]), }
 }
 
 ///|
@@ -173,7 +173,7 @@ pub struct GraphTextUiInjector {
 
 ///|
 pub fn new_graph_text_ui_injector() -> GraphTextUiInjector {
-  { providers: Map([]) }
+  { providers: Map([]), }
 }
 
 ///|
@@ -212,7 +212,7 @@ let graph_text_activator_instance_ref : Ref[TextActivator?] = Ref(None)
 
 ///|
 pub fn new_text_activator() -> TextActivator {
-  { bundle: new_graph_text_ui_bundle(), injectors: Map([]) }
+  { bundle: new_graph_text_ui_bundle(), injectors: Map([]), }
 }
 
 ///|
@@ -340,3 +340,9 @@ pub fn TextActivator::register_injector_provider(
   injector.register_provider(class_name, provider)
   self.injectors[language_name] = injector
 }
+
+///|
+pub extend GraphTextActivatorException with Debug::{to_repr}
+
+///|
+pub extend GraphTextActivatorException with ToJson::{to_json}

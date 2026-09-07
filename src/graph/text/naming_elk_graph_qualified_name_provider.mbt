@@ -5,7 +5,7 @@ pub struct ElkGraphQualifiedNameProvider {
 
 ///|
 pub fn new_elk_graph_qualified_name_provider() -> ElkGraphQualifiedNameProvider {
-  { marker: () }
+  { marker: (), }
 }
 
 ///|

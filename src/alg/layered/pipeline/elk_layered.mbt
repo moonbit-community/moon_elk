@@ -978,15 +978,8 @@ pub fn ElkLayered::do_layout(
   monitor : @core.IElkProgressMonitor?,
 ) -> Unit raise {
   self.layout_state.clear()
-  try self.do_layout_inner(lgraph, monitor) catch {
-    error => {
-      self.layout_state.clear()
-      raise error
-    }
-  } noraise {
-    _ => ()
-  }
-  self.layout_state.clear()
+  defer self.layout_state.clear()
+  self.do_layout_inner(lgraph, monitor)
 }
 
 ///|
@@ -1049,15 +1042,8 @@ pub fn ElkLayered::do_compound_layout(
   monitor : @core.IElkProgressMonitor?,
 ) -> Unit raise {
   self.layout_state.clear()
-  try self.do_compound_layout_inner(lgraph, monitor) catch {
-    error => {
-      self.layout_state.clear()
-      raise error
-    }
-  } noraise {
-    _ => ()
-  }
-  self.layout_state.clear()
+  defer self.layout_state.clear()
+  self.do_compound_layout_inner(lgraph, monitor)
 }
 
 ///|
@@ -1087,7 +1073,7 @@ pub fn ElkLayered::prepare_layout_test(
       self.layout_state,
     )
   })
-  { graphs, plans, step: 0 }
+  { graphs, plans, step: 0, }
 }
 
 ///|
@@ -1175,3 +1161,9 @@ pub fn ElkLayered::set_test_controller(
 ) -> Unit {
   self.test_controller = test_controller
 }
+
+///|
+pub extend ElkLayeredTestExecutionException with Debug::{to_repr}
+
+///|
+pub extend ElkLayeredTestExecutionException with ToJson::{to_json}

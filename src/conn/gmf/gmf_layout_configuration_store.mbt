@@ -298,3 +298,12 @@ pub fn GmfLayoutConfigurationStore::get_editing_domain(
 ) -> GmfEditPart {
   self.edit_part
 }
+
+///|
+pub extend GmfLayoutOptionTarget with Debug::{to_repr}
+
+///|
+pub extend GmfLayoutOptionTarget with Eq::{not_equal, equal}
+
+///|
+pub extend GmfLayoutOptionTarget with Show::{to_string, output}

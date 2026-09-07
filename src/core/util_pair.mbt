@@ -6,12 +6,12 @@ pub(all) struct Pair[F, S] {
 
 ///|
 pub fn[F, S] pair_create() -> Pair[F, S] {
-  { first: None, second: None }
+  { first: None, second: None, }
 }
 
 ///|
 pub fn[F, S] pair_of(first : F, second : S) -> Pair[F, S] {
-  { first: Some(first), second: Some(second) }
+  { first: Some(first), second: Some(second), }
 }
 
 ///|

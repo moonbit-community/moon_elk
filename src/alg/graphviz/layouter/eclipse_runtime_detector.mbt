@@ -5,7 +5,7 @@ pub struct EclipseRuntimeDetector {
 
 ///|
 pub fn new_eclipse_runtime_detector() -> EclipseRuntimeDetector {
-  { marker: () }
+  { marker: (), }
 }
 
 ///|

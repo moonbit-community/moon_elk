@@ -33,7 +33,7 @@ fn issue682_test_graph(layout_direction : String) -> Issue682TestGraph {
   @graph.label_set_text(label, "foobar")
   @graph.label_set_dimensions(label, 23.0, 22.0)
 
-  { graph, parent, label }
+  { graph, parent, label, }
 }
 
 ///|

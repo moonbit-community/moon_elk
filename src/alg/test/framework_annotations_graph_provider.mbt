@@ -5,5 +5,5 @@ pub struct GraphProvider {
 
 ///|
 pub fn new_graph_provider() -> GraphProvider {
-  { marker: 0 }
+  { marker: 0, }
 }

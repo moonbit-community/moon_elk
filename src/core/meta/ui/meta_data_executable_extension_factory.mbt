@@ -26,7 +26,7 @@ pub fn new_core_meta_ui_status(
   symbolic_name : String,
   message : String,
 ) -> CoreMetaUiStatus {
-  { severity, symbolic_name, message }
+  { severity, symbolic_name, message, }
 }
 
 ///|
@@ -56,7 +56,7 @@ pub(all) struct MetaDataExecutableExtensionFactory {
 
 ///|
 pub fn new_meta_data_executable_extension_factory() -> MetaDataExecutableExtensionFactory {
-  { clazz_name: None, config: None }
+  { clazz_name: None, config: None, }
 }
 
 ///|

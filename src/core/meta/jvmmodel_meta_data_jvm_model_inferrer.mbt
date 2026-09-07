@@ -9,7 +9,7 @@ pub fn new_core_meta_inferred_type(
   qualified_name : String,
   members : Array[String],
 ) -> CoreMetaInferredType {
-  { qualified_name, members }
+  { qualified_name, members, }
 }
 
 ///|
@@ -19,7 +19,7 @@ pub(all) struct MetaDataJvmModelInferrer {
 
 ///|
 pub fn new_meta_data_jvm_model_inferrer() -> MetaDataJvmModelInferrer {
-  { marker: () }
+  { marker: (), }
 }
 
 ///|

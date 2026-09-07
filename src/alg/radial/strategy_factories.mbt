@@ -74,3 +74,9 @@ pub fn radial_sorting_strategy_create(
     ID => Some(new_id_sorter().as_i_radial_sorter())
   }
 }
+
+///|
+pub extend RadialCompactionStrategyException with Debug::{to_repr}
+
+///|
+pub extend RadialCompactionStrategyException with ToJson::{to_json}

@@ -6,7 +6,7 @@ pub(all) struct GraphValidator {
 
 ///|
 pub fn new_graph_validator(metadata : OptionMetadata) -> GraphValidator {
-  { metadata, issues: [] }
+  { metadata, issues: [], }
 }
 
 ///|

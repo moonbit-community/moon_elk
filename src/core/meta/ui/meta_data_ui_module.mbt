@@ -8,7 +8,7 @@ pub(all) struct MetaDataUiModule {
 pub fn new_meta_data_ui_module(
   plugin_id? : String = core_meta_ui_plugin_id,
 ) -> MetaDataUiModule {
-  { plugin_id, base: new_abstract_meta_data_ui_module(plugin_id~) }
+  { plugin_id, base: new_abstract_meta_data_ui_module(plugin_id~), }
 }
 
 ///|

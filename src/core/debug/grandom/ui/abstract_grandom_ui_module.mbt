@@ -12,7 +12,7 @@ pub fn new_core_debug_grandom_ui_lexer_binding(
   binding_name : String,
   class_name : String,
 ) -> CoreDebugGRandomUiLexerBinding {
-  { binding_name, class_name }
+  { binding_name, class_name, }
 }
 
 ///|

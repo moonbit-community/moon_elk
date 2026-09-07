@@ -6,7 +6,7 @@ pub struct LGraphElement {
 
 ///|
 pub fn new_l_graph_element() -> LGraphElement {
-  { id: 0, origin_identifier: None }
+  { id: 0, origin_identifier: None, }
 }
 
 ///|

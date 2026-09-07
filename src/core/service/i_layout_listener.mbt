@@ -30,7 +30,7 @@ pub fn new_layout_listener(
     ()
   },
 ) -> ILayoutListener {
-  { id: next_layout_listener_id(), layout_about_to_start_fn, layout_done_fn }
+  { id: next_layout_listener_id(), layout_about_to_start_fn, layout_done_fn, }
 }
 
 ///|

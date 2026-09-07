@@ -5,7 +5,7 @@ pub(all) struct PartialCoreMetaContentAssistParser {
 
 ///|
 pub fn new_partial_core_meta_content_assist_parser() -> PartialCoreMetaContentAssistParser {
-  { rule: None }
+  { rule: None, }
 }
 
 ///|

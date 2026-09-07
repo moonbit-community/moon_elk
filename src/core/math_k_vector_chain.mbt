@@ -29,17 +29,17 @@ pub(all) struct KVectorChain {
 
 ///|
 pub fn new_kvector_chain() -> KVectorChain {
-  { vectors: [] }
+  { vectors: [], }
 }
 
 ///|
 pub fn new_kvector_chain_from_array(vectors : Array[KVector]) -> KVectorChain {
-  { vectors: vectors.copy() }
+  { vectors: vectors.copy(), }
 }
 
 ///|
 pub fn new_kvector_chain_copy(chain : KVectorChain) -> KVectorChain {
-  { vectors: chain.vectors.copy() }
+  { vectors: chain.vectors.copy(), }
 }
 
 ///|

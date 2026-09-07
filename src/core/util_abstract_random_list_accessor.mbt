@@ -29,7 +29,7 @@ pub(all) struct AbstractRandomListAccessor[T] {
 pub fn[T] new_abstract_random_list_accessor(
   provide_default : () -> T,
 ) -> AbstractRandomListAccessor[T] {
-  { list: [], provide_default }
+  { list: [], provide_default, }
 }
 
 ///|

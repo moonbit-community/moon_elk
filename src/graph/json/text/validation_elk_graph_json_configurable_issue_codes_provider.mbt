@@ -8,7 +8,7 @@ pub struct ElkGraphJsonConfigurableIssueCodesProvider {
 
 ///|
 pub fn new_elk_graph_json_configurable_issue_codes_provider() -> ElkGraphJsonConfigurableIssueCodesProvider {
-  { marker: () }
+  { marker: (), }
 }
 
 ///|

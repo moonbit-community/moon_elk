@@ -5,7 +5,7 @@ pub struct DotGraphvizModel {
 
 ///|
 pub fn dot_create_graphviz_model() -> DotGraphvizModel {
-  { graphs: [] }
+  { graphs: [], }
 }
 
 ///|

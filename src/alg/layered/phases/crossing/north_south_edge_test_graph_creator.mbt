@@ -5,7 +5,7 @@ pub struct GreedySwitchNorthSouthEdgeTestGraphCreator {
 
 ///|
 pub fn new_greedy_switch_north_south_edge_test_graph_creator() -> GreedySwitchNorthSouthEdgeTestGraphCreator raise {
-  { base: new_greedy_switch_test_graph_creator() }
+  { base: new_greedy_switch_test_graph_creator(), }
 }
 
 ///|

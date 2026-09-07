@@ -5,7 +5,7 @@ pub struct MrtreeComponentsProcessor {
 
 ///|
 pub fn new_mrtree_components_processor() -> MrtreeComponentsProcessor {
-  { marker: 0 }
+  { marker: 0, }
 }
 
 ///|

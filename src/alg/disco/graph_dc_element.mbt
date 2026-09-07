@@ -124,3 +124,9 @@ pub fn DCElement::intersects(
   @core.intersects_rect_path(rect, self.shape) ||
   @core.contains_rect_path(rect, self.shape)
 }
+
+///|
+pub extend DCElementException with Debug::{to_repr}
+
+///|
+pub extend DCElementException with ToJson::{to_json}

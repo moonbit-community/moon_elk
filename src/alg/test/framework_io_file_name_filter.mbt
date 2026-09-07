@@ -12,7 +12,7 @@ pub fn new_file_name_filter(expression : String) -> FileNameFilter {
 pub fn new_file_name_filter_with_expressions(
   expressions : Array[String],
 ) -> FileNameFilter {
-  { expressions: expressions.copy() }
+  { expressions: expressions.copy(), }
 }
 
 ///|

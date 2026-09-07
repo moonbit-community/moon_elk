@@ -1155,3 +1155,9 @@ fn LibavoidServerCommunicator::determine_hierarchical_node_id(
     libavoid_communicator_node_compound_west
   }
 }
+
+///|
+pub extend LibavoidCommunicatorException with Debug::{to_repr}
+
+///|
+pub extend LibavoidCommunicatorException with ToJson::{to_json}

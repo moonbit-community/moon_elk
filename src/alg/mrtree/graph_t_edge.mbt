@@ -108,3 +108,6 @@ pub fn mrtree_edge_to_string(edge : MrtreeEdge) -> String {
   let edge_data = edge.data
   "\{mrtree_node_to_string(edge_data.source)}->\{mrtree_node_to_string(edge_data.target)}"
 }
+
+///|
+pub extend MrtreeEdge with Eq::{not_equal, equal}

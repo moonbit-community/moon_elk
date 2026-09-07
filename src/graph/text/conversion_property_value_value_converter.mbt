@@ -9,7 +9,7 @@ pub fn new_property_value_value_converter(
   metadata : @core.OptionMetadata,
   qualified_name_converter? : ElkGraphQualifiedNameConverter = new_elk_graph_qualified_name_converter(),
 ) -> PropertyValueValueConverter {
-  { metadata, qualified_name_converter }
+  { metadata, qualified_name_converter, }
 }
 
 ///|

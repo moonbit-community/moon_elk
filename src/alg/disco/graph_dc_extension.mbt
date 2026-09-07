@@ -24,7 +24,7 @@ pub fn new_dc_extension(
     ignore(offset.sub_xy(half_width, 0.0))
   }
 
-  let extension = { parent, direction, offset, width }
+  let extension = { parent, direction, offset, width, }
   parent.add_extension(extension)
   extension
 }

@@ -222,3 +222,9 @@ pub fn[T] AggregatedMatchDecider::as_decider(
 ) -> IDecider[T] {
   new_decider(heuristics => self.make_attachment_decision(heuristics))
 }
+
+///|
+pub extend AggregatedMatchDeciderException with Debug::{to_repr}
+
+///|
+pub extend AggregatedMatchDeciderException with ToJson::{to_json}

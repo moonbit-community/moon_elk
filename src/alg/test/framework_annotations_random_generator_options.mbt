@@ -5,5 +5,5 @@ pub struct RandomGeneratorOptions {
 
 ///|
 pub fn new_random_generator_options() -> RandomGeneratorOptions {
-  { marker: 0 }
+  { marker: 0, }
 }

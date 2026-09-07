@@ -52,7 +52,7 @@ pub fn GmfLayoutCommand::add_shape_layout(
   location : GmfPoint?,
   size : GmfDimension?,
 ) -> Unit {
-  self.shape_layouts.push({ view, location, size })
+  self.shape_layouts.push({ view, location, size, })
 }
 
 ///|

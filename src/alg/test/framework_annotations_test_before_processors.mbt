@@ -7,7 +7,7 @@ pub struct TestBeforeProcessors {
 pub fn new_test_before_processors(
   value : Array[TestBeforeProcessor],
 ) -> TestBeforeProcessors {
-  { value: value.copy() }
+  { value: value.copy(), }
 }
 
 ///|

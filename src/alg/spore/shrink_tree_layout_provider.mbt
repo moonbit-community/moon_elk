@@ -8,7 +8,7 @@ pub struct SporeShrinkTreeLayoutProvider {
 pub fn new_spore_shrink_tree_layout_provider(
   metadata : @core.OptionMetadata,
 ) -> SporeShrinkTreeLayoutProvider raise {
-  { metadata, shrink_tree: new_spore_shrink_tree() }
+  { metadata, shrink_tree: new_spore_shrink_tree(), }
 }
 
 ///|

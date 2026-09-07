@@ -8,7 +8,7 @@ pub(all) struct CoreUiDisplay {
 
 ///|
 pub fn new_core_ui_display() -> CoreUiDisplay {
-  { id: 0 }
+  { id: 0, }
 }
 
 ///|
@@ -27,7 +27,7 @@ pub fn new_core_ui_color(
   g : Int,
   b : Int,
 ) -> CoreUiColor {
-  { display, r, g, b, disposed: false }
+  { display, r, g, b, disposed: false, }
 }
 
 ///|
@@ -56,7 +56,7 @@ pub fn new_core_ui_font(
   size : Int,
   style : Int,
 ) -> CoreUiFont {
-  { display, name, size, style, disposed: false }
+  { display, name, size, style, disposed: false, }
 }
 
 ///|
@@ -373,3 +373,6 @@ pub fn GraphRenderingConfigurator::get_root_node_color(
 ) -> CoreUiColor? {
   self.root_node_color
 }
+
+///|
+pub extend CoreUiDisplay with Eq::{not_equal, equal}

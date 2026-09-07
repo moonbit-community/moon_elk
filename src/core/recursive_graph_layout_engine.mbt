@@ -17,7 +17,7 @@ pub fn new_recursive_graph_layout_engine(
   runtime : LayoutRuntime,
   session : LayoutSession,
 ) -> RecursiveGraphLayoutEngine {
-  { runtime, session }
+  { runtime, session, }
 }
 
 ///|

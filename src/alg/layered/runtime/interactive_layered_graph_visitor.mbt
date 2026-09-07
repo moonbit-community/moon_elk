@@ -1493,7 +1493,7 @@ pub fn interactive_layered_graph_visitor_set_interactive_options_and_pseudo_posi
 
 ///|
 pub fn new_interactive_layered_graph_visitor() -> InteractiveLayeredGraphVisitor {
-  { marker: 0 }
+  { marker: 0, }
 }
 
 ///|

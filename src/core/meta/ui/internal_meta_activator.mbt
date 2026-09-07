@@ -119,7 +119,7 @@ pub(all) struct CoreMetaUiBundle {
 pub fn new_core_meta_ui_bundle(
   symbolic_name? : String = core_meta_ui_plugin_id,
 ) -> CoreMetaUiBundle {
-  { symbolic_name, classes: Map([]) }
+  { symbolic_name, classes: Map([]), }
 }
 
 ///|
@@ -153,7 +153,7 @@ pub(all) struct CoreMetaUiInjector {
 
 ///|
 pub fn new_core_meta_ui_injector() -> CoreMetaUiInjector {
-  { providers: Map([]) }
+  { providers: Map([]), }
 }
 
 ///|
@@ -192,7 +192,7 @@ let core_meta_activator_instance_ref : Ref[MetaActivator?] = Ref(None)
 
 ///|
 pub fn new_meta_activator() -> MetaActivator {
-  { bundle: new_core_meta_ui_bundle(), injectors: Map([]) }
+  { bundle: new_core_meta_ui_bundle(), injectors: Map([]), }
 }
 
 ///|

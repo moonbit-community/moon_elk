@@ -25,7 +25,7 @@ pub struct DotImporterPropertyHolder {
 
 ///|
 fn new_dot_importer_property_holder() -> DotImporterPropertyHolder {
-  { layout_options: Map([]), def_width: None, def_height: None }
+  { layout_options: Map([]), def_width: None, def_height: None, }
 }
 
 ///|

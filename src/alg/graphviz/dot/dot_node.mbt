@@ -6,7 +6,7 @@ pub struct DotNode {
 
 ///|
 pub fn dot_create_node() -> DotNode {
-  { name: None, port: None }
+  { name: None, port: None, }
 }
 
 ///|

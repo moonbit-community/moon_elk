@@ -5,7 +5,7 @@ pub(all) struct CoreDebugGRandomProject {
 
 ///|
 pub fn new_core_debug_grandom_project() -> CoreDebugGRandomProject {
-  { files: Map([]) }
+  { files: Map([]), }
 }
 
 ///|
@@ -79,7 +79,7 @@ pub(all) struct CoreDebugGRandomGraphMaker {
 pub fn new_core_debug_grandom_graph_maker(
   rand_graph : @grandom.CoreDebugGRandomRandGraph,
 ) -> CoreDebugGRandomGraphMaker {
-  { configs: rand_graph.configs }
+  { configs: rand_graph.configs, }
 }
 
 ///|

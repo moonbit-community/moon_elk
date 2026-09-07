@@ -14,7 +14,7 @@ pub fn new_graph_json_text_ui_status(
   symbolic_name : String,
   message : String,
 ) -> GraphJsonTextUiStatus {
-  { severity, symbolic_name, message }
+  { severity, symbolic_name, message, }
 }
 
 ///|
@@ -56,7 +56,7 @@ pub struct ElkGraphJsonExecutableExtensionFactory {
 
 ///|
 pub fn new_elk_graph_json_executable_extension_factory() -> ElkGraphJsonExecutableExtensionFactory {
-  { clazz_name: None, config: None }
+  { clazz_name: None, config: None, }
 }
 
 ///|
@@ -173,4 +173,14 @@ pub fn ElkGraphJsonExecutableExtensionFactory::create(
         ),
       )
   }
+}
+
+///|
+pub extend GraphJsonTextExecutableExtensionFactoryException with Debug::{
+  to_repr,
+}
+
+///|
+pub extend GraphJsonTextExecutableExtensionFactoryException with ToJson::{
+  to_json,
 }

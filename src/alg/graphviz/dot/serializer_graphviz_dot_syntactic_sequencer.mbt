@@ -5,7 +5,7 @@ pub struct GraphvizDotSyntacticSequencer {
 
 ///|
 pub fn new_graphviz_dot_syntactic_sequencer() -> GraphvizDotSyntacticSequencer {
-  { base: new_abstract_graphviz_dot_syntactic_sequencer() }
+  { base: new_abstract_graphviz_dot_syntactic_sequencer(), }
 }
 
 ///|

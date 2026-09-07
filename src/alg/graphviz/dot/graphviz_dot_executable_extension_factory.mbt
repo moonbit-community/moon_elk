@@ -30,7 +30,7 @@ pub struct GraphvizDotExecutableExtensionFactory {
 
 ///|
 pub fn new_graphviz_dot_executable_extension_factory() -> GraphvizDotExecutableExtensionFactory {
-  { clazz_name: None, config: None }
+  { clazz_name: None, config: None, }
 }
 
 ///|
@@ -141,3 +141,9 @@ pub fn GraphvizDotExecutableExtensionFactory::create(
       )
   }
 }
+
+///|
+pub extend GraphvizDotExecutableExtensionFactoryException with Debug::{to_repr}
+
+///|
+pub extend GraphvizDotExecutableExtensionFactoryException with ToJson::{to_json}

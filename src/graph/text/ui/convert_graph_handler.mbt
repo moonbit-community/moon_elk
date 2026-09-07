@@ -11,7 +11,7 @@ pub struct GraphTextProject {
 
 ///|
 pub fn new_graph_text_project() -> GraphTextProject {
-  { files: Map([]) }
+  { files: Map([]), }
 }
 
 ///|
@@ -94,7 +94,7 @@ pub fn new_convert_graph_handler(
   metadata : @core.OptionMetadata,
   project? : GraphTextProject = new_graph_text_project(),
 ) -> ConvertGraphHandler {
-  { metadata, project, target_extension: "", errors: [] }
+  { metadata, project, target_extension: "", errors: [], }
 }
 
 ///|
@@ -226,3 +226,6 @@ pub fn ConvertGraphHandler::remove_unnecessary_layouts(
   ignore(self)
   graph
 }
+
+///|
+pub extend GraphTextSelectionItem with Debug::{to_repr}

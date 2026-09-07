@@ -8,7 +8,7 @@ pub(all) struct CompoundGraphElementVisitor {
 pub fn new_compound_graph_element_visitor(
   visitors? : Array[@core.IGraphElementVisitor] = [],
 ) -> CompoundGraphElementVisitor {
-  { graph_visitors: visitors, apply_to_full_graph_first: false }
+  { graph_visitors: visitors, apply_to_full_graph_first: false, }
 }
 
 ///|
@@ -16,7 +16,7 @@ pub fn new_compound_graph_element_visitor_with_mode(
   apply_to_full_graph_first : Bool,
   visitors? : Array[@core.IGraphElementVisitor] = [],
 ) -> CompoundGraphElementVisitor {
-  { graph_visitors: visitors, apply_to_full_graph_first }
+  { graph_visitors: visitors, apply_to_full_graph_first, }
 }
 
 ///|

@@ -9,7 +9,7 @@ pub fn new_graph_json_text_property_value_value_converter(
   metadata : @core.OptionMetadata,
   qualified_name_converter? : ElkGraphJsonQualifiedNameConverter = new_elk_graph_json_qualified_name_converter(),
 ) -> GraphJsonTextPropertyValueValueConverter {
-  { metadata, qualified_name_converter }
+  { metadata, qualified_name_converter, }
 }
 
 ///|

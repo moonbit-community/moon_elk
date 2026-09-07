@@ -18,7 +18,7 @@ pub fn new_elk_debug_plugin() -> ElkDebugPlugin {
       )
     },
   )
-  { model, layout_listener }
+  { model, layout_listener, }
 }
 
 ///|

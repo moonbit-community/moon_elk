@@ -37,7 +37,7 @@ pub(all) struct CoreUiImageRegistry {
 
 ///|
 pub fn new_core_ui_image_registry() -> CoreUiImageRegistry {
-  { images: Map([]) }
+  { images: Map([]), }
 }
 
 ///|
@@ -256,7 +256,7 @@ pub fn elk_ui_plugin_get_instance() -> ElkUiPlugin {
 pub fn elk_ui_plugin_get_image_descriptor(
   path : String,
 ) -> CoreUiImageDescriptor {
-  { plugin_id: elk_ui_plugin_id, path }
+  { plugin_id: elk_ui_plugin_id, path, }
 }
 
 ///|

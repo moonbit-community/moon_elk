@@ -5,7 +5,7 @@ pub struct ElkGraphJsonStandaloneSetup {
 
 ///|
 pub fn new_elk_graph_json_standalone_setup() -> ElkGraphJsonStandaloneSetup {
-  { marker: () }
+  { marker: (), }
 }
 
 ///|

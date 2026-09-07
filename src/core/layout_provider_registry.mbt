@@ -13,7 +13,7 @@ priv struct ProviderRegistry {
 
 ///|
 fn new_provider_registry() -> ProviderRegistry {
-  { elk_engine_layout_delegate: None }
+  { elk_engine_layout_delegate: None, }
 }
 
 ///|

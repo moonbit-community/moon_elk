@@ -9,7 +9,7 @@ pub fn new_layered_layout_provider(
   session : @core.LayoutSession,
   phase_registry : LayeredPhaseRegistry,
 ) -> LayeredLayoutProvider {
-  { elk_layered: new_elk_layered(runtime, session, phase_registry) }
+  { elk_layered: new_elk_layered(runtime, session, phase_registry), }
 }
 
 ///|

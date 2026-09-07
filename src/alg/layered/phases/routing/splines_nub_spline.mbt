@@ -27,7 +27,7 @@ fn new_polar_cp(
   control_point : @core.KVector,
   polar_coordinate : Array[Double],
 ) -> PolarCP {
-  { cp: control_point.clone(), polar_coordinate: polar_coordinate.copy() }
+  { cp: control_point.clone(), polar_coordinate: polar_coordinate.copy(), }
 }
 
 ///|
@@ -692,3 +692,9 @@ pub fn NubSpline::to_string(self : NubSpline) -> String {
 pub fn nub_spline_get_t_from_control_point(cp : PolarCP) -> Double {
   nub_spline_get_t_from_polar(cp.polar_coordinate)
 }
+
+///|
+pub extend NubSplineException with Debug::{to_repr}
+
+///|
+pub extend NubSplineException with ToJson::{to_json}

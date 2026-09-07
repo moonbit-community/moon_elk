@@ -13,7 +13,7 @@ pub fn new_elk_graph_resource(
   metadata : OptionMetadata,
   uri : String,
 ) -> ElkGraphResource {
-  { metadata, uri, encoding: elk_graph_resource_default_encoding }
+  { metadata, uri, encoding: elk_graph_resource_default_encoding, }
 }
 
 ///|

@@ -107,14 +107,20 @@ pub fn register_crossing_processors(@runtime.LayeredPhaseRegistry) -> Unit
 pub suberror LayerTotalPortDistributorException {
   LayerTotalPortDistributorException(String)
 } derive(ToJson, @debug.Debug)
+pub fn LayerTotalPortDistributorException::to_json(Self) -> Json
+pub fn LayerTotalPortDistributorException::to_repr(Self) -> @debug.Repr
 
 pub suberror NodeRelativePortDistributorException {
   NodeRelativePortDistributorException(String)
 } derive(ToJson, @debug.Debug)
+pub fn NodeRelativePortDistributorException::to_json(Self) -> Json
+pub fn NodeRelativePortDistributorException::to_repr(Self) -> @debug.Repr
 
 pub suberror SweepCopyException {
   SweepCopyException(String)
 } derive(ToJson, @debug.Debug)
+pub fn SweepCopyException::to_json(Self) -> Json
+pub fn SweepCopyException::to_repr(Self) -> @debug.Repr
 
 // Types and methods
 pub struct AbstractBarycenterPortDistributor {

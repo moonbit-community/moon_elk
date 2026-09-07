@@ -13,7 +13,7 @@ pub fn[T] new_instance_pool(
   factory : IFactory[T],
   limit? : Int = instance_pool_infinite,
 ) -> InstancePool[T] {
-  { factory, instances: [], limit }
+  { factory, instances: [], limit, }
 }
 
 ///|

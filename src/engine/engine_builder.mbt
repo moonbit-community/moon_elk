@@ -54,17 +54,10 @@ fn engine_json_layout_delegate(
     session,
   )
   let root = importer.transform(graph_obj)
-  let updated_model = try
+  let updated_model = {
+    defer @graph.dispose_graph(root)
     engine_layout_imported_graph(runtime, session, root, importer)
-  catch {
-    error => {
-      @graph.dispose_graph(root)
-      raise error
-    }
-  } noraise {
-    model => model
   }
-  @graph.dispose_graph(root)
   match updated_model {
     Some(model) => {
       graph_obj.clear()

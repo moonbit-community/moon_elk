@@ -5,5 +5,5 @@ pub struct RandomGeneratorFile {
 
 ///|
 pub fn new_random_generator_file() -> RandomGeneratorFile {
-  { marker: 0 }
+  { marker: 0, }
 }

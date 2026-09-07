@@ -23,7 +23,7 @@ pub fn new_core_ui_property_editor(
   kind : CoreUiPropertyEditorKind,
   validator? : (CoreUiValue) -> String? = _ => None,
 ) -> CoreUiPropertyEditor {
-  { kind, validator }
+  { kind, validator, }
 }
 
 ///|
@@ -48,7 +48,7 @@ pub fn new_layout_property_descriptor(
   option_data : @core.LayoutOptionData,
   element_targets : Array[@core.LayoutOptionTarget]?,
 ) -> LayoutPropertyDescriptor {
-  { source, option_data, element_targets, label_provider: None }
+  { source, option_data, element_targets, label_provider: None, }
 }
 
 ///|

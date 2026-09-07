@@ -6,7 +6,7 @@ pub struct DotNodeStatement {
 
 ///|
 pub fn dot_create_node_statement() -> DotNodeStatement {
-  { node: None, attributes: [] }
+  { node: None, attributes: [], }
 }
 
 ///|

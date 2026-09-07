@@ -9,7 +9,7 @@ pub fn[T] new_graph_from_method(
   method_name : String,
   provider_fn : (T) -> ElkNode,
 ) -> GraphFromMethod[T] {
-  { method_name, provider_fn }
+  { method_name, provider_fn, }
 }
 
 ///|

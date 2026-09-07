@@ -76,7 +76,7 @@ fn graph_arena_move_edge_slot(edge : ElkEdge, target : GraphArena) -> EdgeData {
   edge.arena = target
   edge.slot = target_slot
   edge.generation = 0
-  target.edges.push({ generation: 0, handle: edge, data: Some(data) })
+  target.edges.push({ generation: 0, handle: edge, data: Some(data), })
   data
 }
 
@@ -96,7 +96,11 @@ fn graph_arena_move_edge_section_slot(
   section.arena = target
   section.slot = target_slot
   section.generation = 0
-  target.edge_sections.push({ generation: 0, handle: section, data: Some(data) })
+  target.edge_sections.push({
+    generation: 0,
+    handle: section,
+    data: Some(data),
+  })
 }
 
 ///|
@@ -112,7 +116,7 @@ fn graph_arena_move_label_slot(label : ElkLabel, target : GraphArena) -> Unit {
   label.arena = target
   label.slot = target_slot
   label.generation = 0
-  target.labels.push({ generation: 0, handle: label, data: Some(data) })
+  target.labels.push({ generation: 0, handle: label, data: Some(data), })
 }
 
 ///|

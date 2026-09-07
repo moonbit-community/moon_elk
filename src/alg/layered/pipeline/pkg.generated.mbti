@@ -24,6 +24,8 @@ pub fn register_layered_layout_algorithm(@core.LayoutRuntime, @runtime.LayeredPh
 pub suberror ElkLayeredTestExecutionException {
   ElkLayeredTestExecutionException(String)
 } derive(ToJson, @debug.Debug)
+pub fn ElkLayeredTestExecutionException::to_json(Self) -> Json
+pub fn ElkLayeredTestExecutionException::to_repr(Self) -> @debug.Repr
 
 // Types and methods
 pub struct ElkLayered {

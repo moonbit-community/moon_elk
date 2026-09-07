@@ -9,7 +9,7 @@ pub fn[T] new_mrtree_igraph_importer(
   import_graph_fn : (T) -> MrtreeGraph raise,
   apply_layout_fn : (MrtreeGraph) -> Unit raise,
 ) -> MrtreeIGraphImporter[T] {
-  { import_graph_fn, apply_layout_fn }
+  { import_graph_fn, apply_layout_fn, }
 }
 
 ///|

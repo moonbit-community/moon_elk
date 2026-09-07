@@ -32,7 +32,7 @@ pub type GraphvizDotFormatter2 = (GraphvizDotFormatterRequest) -> String
 
 ///|
 pub fn new_graphviz_dot_formatter_request() -> GraphvizDotFormatterRequest {
-  { max_line_width: 0, format_undefined_hidden_regions_only: true, text: "" }
+  { max_line_width: 0, format_undefined_hidden_regions_only: true, text: "", }
 }
 
 ///|
@@ -96,7 +96,7 @@ pub fn new_graphviz_dot_serializer(
   formatter2_provider? : () -> GraphvizDotFormatter2 = graphviz_dot_serializer_default_formatter_provider,
   formatter_request_provider? : () -> GraphvizDotFormatterRequest = new_graphviz_dot_formatter_request,
 ) -> GraphvizDotSerializer {
-  { formatter2_provider, formatter_request_provider }
+  { formatter2_provider, formatter_request_provider, }
 }
 
 ///|

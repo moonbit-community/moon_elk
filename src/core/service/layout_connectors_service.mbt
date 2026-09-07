@@ -30,7 +30,7 @@ pub fn new_layout_connectors_service(
   runtime : @core.LayoutRuntime,
   session : @core.LayoutSession,
 ) -> LayoutConnectorsService {
-  { runtime, session, entries: [], layout_listeners: [] }
+  { runtime, session, entries: [], layout_listeners: [], }
 }
 
 ///|

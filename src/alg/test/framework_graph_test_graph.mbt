@@ -9,7 +9,7 @@ pub fn[T] new_test_graph(
   provide_graph_fn : (T) -> ElkNode,
   description : String,
 ) -> TestGraph[T] {
-  { provide_graph_fn, description }
+  { provide_graph_fn, description, }
 }
 
 ///|

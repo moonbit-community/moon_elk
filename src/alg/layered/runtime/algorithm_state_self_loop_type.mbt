@@ -110,3 +110,9 @@ pub fn self_loop_type_option_to_string(value : SelfLoopType?) -> String {
     None => "NONE"
   }
 }
+
+///|
+pub extend SelfLoopTypeException with Debug::{to_repr}
+
+///|
+pub extend SelfLoopTypeException with ToJson::{to_json}

@@ -5,7 +5,7 @@ pub struct JsonAdapter {
 
 ///|
 pub fn new_json_adapter() -> JsonAdapter {
-  { unit: () }
+  { unit: (), }
 }
 
 ///|

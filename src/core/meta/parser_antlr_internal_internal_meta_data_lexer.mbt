@@ -32,7 +32,7 @@ pub fn new_core_meta_lex_token(
   token_name : String,
   lexeme : String,
 ) -> CoreMetaLexToken {
-  { token_type, token_name, lexeme }
+  { token_type, token_name, lexeme, }
 }
 
 ///|

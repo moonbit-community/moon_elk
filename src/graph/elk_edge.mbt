@@ -343,3 +343,15 @@ pub fn edge_clear_junction_points(edge : ElkEdge) -> Unit {
   data.junction_points.clear()
   set_edge_data(edge, data)
 }
+
+///|
+pub extend ElkEdge with Debug::{to_repr}
+
+///|
+pub extend ElkEdge with Eq::{not_equal, equal}
+
+///|
+pub extend ElkEdge with Hash::{hash, hash_combine}
+
+///|
+pub extend ElkEdge with Show::{to_string, output}

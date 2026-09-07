@@ -13,7 +13,7 @@ pub fn[A, B, C, D] quadruple_of(
   third : C,
   fourth : D,
 ) -> Quadruple[A, B, C, D] {
-  { first, second, third, fourth }
+  { first, second, third, fourth, }
 }
 
 ///|

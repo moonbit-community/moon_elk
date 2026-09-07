@@ -5,7 +5,7 @@ pub struct PolyominoCompactor {
 
 ///|
 pub fn new_polyomino_compactor() -> PolyominoCompactor {
-  { unit: () }
+  { unit: (), }
 }
 
 ///|
@@ -60,7 +60,7 @@ fn polyomino_compactor_direction_stats(
     horizontal_count += 1
   }
 
-  { count, horizontal_count }
+  { count, horizontal_count, }
 }
 
 ///|

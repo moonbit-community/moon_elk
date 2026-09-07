@@ -941,3 +941,15 @@ pub fn node_outgoing_edges(node : ElkNode) -> Array[ElkEdge] {
   }
   outgoing
 }
+
+///|
+pub extend ElkNode with Debug::{to_repr}
+
+///|
+pub extend ElkNode with Eq::{not_equal, equal}
+
+///|
+pub extend ElkNode with Hash::{hash, hash_combine}
+
+///|
+pub extend ElkNode with Show::{to_string, output}

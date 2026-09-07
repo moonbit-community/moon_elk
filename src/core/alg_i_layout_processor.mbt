@@ -84,7 +84,7 @@ fn[G] bind_layout_processor(
   graph : G,
   processor : TypedLayoutProcessor[G],
 ) -> &RunnableLayoutProcessor {
-  BoundLayoutProcessor::{ graph, processor }
+  BoundLayoutProcessor::{ graph, processor, }
 }
 
 ///|

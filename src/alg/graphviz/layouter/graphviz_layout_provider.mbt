@@ -20,7 +20,7 @@ pub fn new_graphviz_layout_diagnostic(
   line : Int,
   message : String,
 ) -> GraphvizLayoutDiagnostic {
-  { line, message }
+  { line, message, }
 }
 
 ///|
@@ -47,14 +47,14 @@ pub struct GraphvizLayoutParseResult {
 pub fn new_graphviz_layout_parse_result(
   model : @dot.DotGraphvizModel,
 ) -> GraphvizLayoutParseResult {
-  { model: Some(model), errors: [] }
+  { model: Some(model), errors: [], }
 }
 
 ///|
 pub fn new_graphviz_layout_parse_result_with_errors(
   errors : Array[GraphvizLayoutDiagnostic],
 ) -> GraphvizLayoutParseResult {
-  { model: None, errors }
+  { model: None, errors, }
 }
 
 ///|
@@ -82,7 +82,7 @@ pub fn new_graphviz_layout_resource_set(
   serialize_fn : (@dot.DotGraphvizModel) -> Array[Int],
   parse_fn : (Array[Int]) -> GraphvizLayoutParseResult,
 ) -> GraphvizLayoutResourceSet {
-  { serialize_fn, parse_fn }
+  { serialize_fn, parse_fn, }
 }
 
 ///|

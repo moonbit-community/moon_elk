@@ -6,7 +6,7 @@ pub(all) struct ExecutionInfoModel {
 
 ///|
 pub fn new_execution_info_model() -> ExecutionInfoModel {
-  { executions: [], listeners: [] }
+  { executions: [], listeners: [], }
 }
 
 ///|

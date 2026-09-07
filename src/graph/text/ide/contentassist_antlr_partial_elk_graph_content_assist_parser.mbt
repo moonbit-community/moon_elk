@@ -5,7 +5,7 @@ pub struct PartialElkGraphContentAssistParser {
 
 ///|
 pub fn new_partial_elk_graph_content_assist_parser() -> PartialElkGraphContentAssistParser {
-  { rule: None }
+  { rule: None, }
 }
 
 ///|

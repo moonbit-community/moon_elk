@@ -15,7 +15,7 @@ pub fn new_elk_graph_json_semantic_sequencer(
     Some(value) => value
     None => new_graph_json_text_property_value_value_converter(metadata)
   }
-  { metadata, base, value_converter }
+  { metadata, base, value_converter, }
 }
 
 ///|

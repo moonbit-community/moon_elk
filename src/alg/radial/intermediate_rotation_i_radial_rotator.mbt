@@ -7,7 +7,7 @@ pub struct IRadialRotator {
 pub fn new_i_radial_rotator(
   rotate : (@graph.ElkNode) -> Unit,
 ) -> IRadialRotator {
-  { rotate_fn: rotate }
+  { rotate_fn: rotate, }
 }
 
 ///|

@@ -44,11 +44,11 @@ fn upsert_tree_node(
 ) -> Unit {
   for i in 0..<entries.length() {
     if entries[i].node.equals(node) {
-      entries[i] = { node, tree }
+      entries[i] = { node, tree, }
       return
     }
   }
-  entries.push({ node, tree })
+  entries.push({ node, tree, })
 }
 
 ///|
@@ -70,7 +70,7 @@ pub fn naive_minst_create_spanning_tree(
 ) -> Tree[@core.KVector] {
   let weighted_edges : Array[WeightedEdge] = []
   for edge in t_edges {
-    let weighted = { edge, weight: cost_function(edge) }
+    let weighted = { edge, weight: cost_function(edge), }
     let mut inserted = false
     for i in 0..<weighted_edges.length() {
       if weighted.weight < weighted_edges[i].weight {
@@ -88,7 +88,7 @@ pub fn naive_minst_create_spanning_tree(
     edges.push(weighted.edge)
   }
   let min_st = new_tree(root)
-  let tree_nodes : Array[TreeNodeEntry] = [{ node: root, tree: min_st }]
+  let tree_nodes : Array[TreeNodeEntry] = [{ node: root, tree: min_st, }]
   let svg = new_svg_image(debug_output_file)
   svg.add_groups(["e", "t"])
   for edge in edges {

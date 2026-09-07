@@ -1180,3 +1180,9 @@ pub fn get_individual_or_inherited(
     node.get_graph().get_property_double(property)
   }
 }
+
+///|
+pub extend LGraphUtilException with Debug::{to_repr}
+
+///|
+pub extend LGraphUtilException with ToJson::{to_json}

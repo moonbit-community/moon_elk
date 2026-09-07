@@ -125,3 +125,12 @@ pub fn MonitoredOperation::run_unmonitored(
 ) -> MonitoredOperationStatus {
   monitored_operation_run(self, @core.new_null_elk_progress_monitor())
 }
+
+///|
+pub extend MonitoredOperationStatus with Debug::{to_repr}
+
+///|
+pub extend MonitoredOperationStatus with Eq::{not_equal, equal}
+
+///|
+pub extend MonitoredOperationStatus with Show::{to_string, output}

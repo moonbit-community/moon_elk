@@ -46,7 +46,7 @@ pub fn new_graphviz_dot_lex_token(
   token_name : String,
   lexeme : String,
 ) -> GraphvizDotLexToken {
-  { token_type, token_name, lexeme }
+  { token_type, token_name, lexeme, }
 }
 
 ///|

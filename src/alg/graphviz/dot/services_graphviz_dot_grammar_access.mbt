@@ -26,7 +26,7 @@ pub fn new_graphviz_dot_grammar_access() -> GraphvizDotGrammarAccess {
   rules["GraphType"] = "'graph'|'digraph'"
   rules["AttributeType"] = "'graph'|'node'|'edge'"
   rules["EdgeOperator"] = "'->'|'--'"
-  { grammar: graphviz_dot_grammar_name, rules }
+  { grammar: graphviz_dot_grammar_name, rules, }
 }
 
 ///|

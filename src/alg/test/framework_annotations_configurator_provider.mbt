@@ -5,5 +5,5 @@ pub struct ConfiguratorProvider {
 
 ///|
 pub fn new_configurator_provider() -> ConfiguratorProvider {
-  { marker: 0 }
+  { marker: 0, }
 }

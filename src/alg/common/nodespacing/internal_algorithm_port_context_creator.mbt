@@ -54,3 +54,9 @@ pub fn port_context_creator_create_port_contexts(
     volatile_id += 1
   }
 }
+
+///|
+pub extend PortContextCreatorException with Debug::{to_repr}
+
+///|
+pub extend PortContextCreatorException with ToJson::{to_json}

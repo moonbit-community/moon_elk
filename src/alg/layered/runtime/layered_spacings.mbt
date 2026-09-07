@@ -84,7 +84,7 @@ pub fn layered_spacings_with_base_value(
       layered_spacings_base_spacing_option.get_default()
     factors.push((option, factor))
   }
-  { base_spacing, overwrite: false, factors }
+  { base_spacing, overwrite: false, factors, }
 }
 
 ///|
@@ -206,3 +206,9 @@ pub fn LayeredSpacingsBuilder::apply(
 ) -> Unit {
   self.build()(graph)
 }
+
+///|
+pub extend LayeredSpacingsException with Debug::{to_repr}
+
+///|
+pub extend LayeredSpacingsException with ToJson::{to_json}

@@ -363,3 +363,15 @@ pub fn edge_section_outgoing_sections(
 ) -> Array[ElkEdgeSection] {
   edge_section_data(section).outgoing_sections.copy()
 }
+
+///|
+pub extend ElkEdgeSection with Debug::{to_repr}
+
+///|
+pub extend ElkEdgeSection with Eq::{not_equal, equal}
+
+///|
+pub extend ElkEdgeSection with Hash::{hash, hash_combine}
+
+///|
+pub extend ElkEdgeSection with Show::{to_string, output}

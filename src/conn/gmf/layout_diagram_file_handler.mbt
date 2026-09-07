@@ -23,7 +23,7 @@ fn[T] layout_diagram_file_handler_raise(
 
 ///|
 pub fn new_layout_diagram_file_handler() -> LayoutDiagramFileHandler {
-  { unit: () }
+  { unit: (), }
 }
 
 ///|
@@ -95,3 +95,12 @@ pub fn LayoutDiagramFileHandler::execute(
   }
   processed
 }
+
+///|
+pub extend GmfSelectionItem with Debug::{to_repr}
+
+///|
+pub extend LayoutDiagramFileHandlerException with Debug::{to_repr}
+
+///|
+pub extend LayoutDiagramFileHandlerException with ToJson::{to_json}

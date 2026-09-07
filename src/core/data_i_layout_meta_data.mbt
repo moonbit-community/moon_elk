@@ -11,7 +11,7 @@ pub fn new_layout_meta_data(
   get_name_fn : () -> String,
   get_description_fn : () -> String,
 ) -> ILayoutMetaData {
-  { get_id_fn, get_name_fn, get_description_fn }
+  { get_id_fn, get_name_fn, get_description_fn, }
 }
 
 ///|

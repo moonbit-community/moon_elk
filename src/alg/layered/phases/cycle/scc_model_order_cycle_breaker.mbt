@@ -246,3 +246,9 @@ pub fn new_scc_model_order_cycle_breaker_layout_phase() -> @core.TypedLayoutProc
     scc_model_order_cycle_breaker_process, scc_model_order_cycle_breaker_configuration,
   )
 }
+
+///|
+pub extend SCCModelOrderCycleBreakerException with Debug::{to_repr}
+
+///|
+pub extend SCCModelOrderCycleBreakerException with ToJson::{to_json}

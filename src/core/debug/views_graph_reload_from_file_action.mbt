@@ -15,7 +15,7 @@ pub fn new_reload_from_file_action(
   session : @core.LayoutSession,
   view : LayoutGraphView,
 ) -> ReloadFromFileAction {
-  { runtime, session, view, enabled: false }
+  { runtime, session, view, enabled: false, }
 }
 
 ///|

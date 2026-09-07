@@ -140,7 +140,7 @@ pub fn node_label_and_size_calculator_process_single_node(
   )
   if apply_stuff {
     let node_output = input.output().nodes[0]
-    apply_elk_node_spacing_output(graph_adapter, { nodes: [node_output] })
+    apply_elk_node_spacing_output(graph_adapter, { nodes: [node_output], })
   }
   result
 }

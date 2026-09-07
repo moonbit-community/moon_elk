@@ -20,7 +20,7 @@ fn elk_graph_json_qualified_name_converter_raise_unit(
 
 ///|
 pub fn new_elk_graph_json_qualified_name_converter() -> ElkGraphJsonQualifiedNameConverter {
-  { id_rule: "ID" }
+  { id_rule: "ID", }
 }
 
 ///|
@@ -160,3 +160,9 @@ pub fn ElkGraphJsonQualifiedNameConverter::to_string(
   }
   parts.join(".")
 }
+
+///|
+pub extend ElkGraphJsonQualifiedNameConverterException with Debug::{to_repr}
+
+///|
+pub extend ElkGraphJsonQualifiedNameConverterException with ToJson::{to_json}

@@ -7,7 +7,7 @@ pub struct AbstractRadiusExtensionCompaction {
 
 ///|
 pub fn new_abstract_radius_extension_compaction() -> AbstractRadiusExtensionCompaction {
-  { compaction_step: 1, spacing: 0.0, root: None }
+  { compaction_step: 1, spacing: 0.0, root: None, }
 }
 
 ///|

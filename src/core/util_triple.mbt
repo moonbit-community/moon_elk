@@ -7,7 +7,7 @@ pub(all) struct Triple[F, S, T] {
 
 ///|
 pub fn[F, S, T] triple_of(first : F, second : S, third : T) -> Triple[F, S, T] {
-  { first, second, third }
+  { first, second, third, }
 }
 
 ///|

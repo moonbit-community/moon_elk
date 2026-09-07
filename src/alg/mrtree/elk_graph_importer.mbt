@@ -5,7 +5,7 @@ pub struct MrtreeElkGraphImporter {
 
 ///|
 pub fn new_mrtree_elk_graph_importer() -> MrtreeElkGraphImporter {
-  { marker: 0 }
+  { marker: 0, }
 }
 
 ///|

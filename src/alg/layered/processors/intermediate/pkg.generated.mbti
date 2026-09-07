@@ -165,16 +165,22 @@ pub fn vertical_segment_origin_key(VerticalSegment) -> String
 
 // Errors
 type CuttingUtilsException derive(ToJson, @debug.Debug)
+pub fn CuttingUtilsException::to_json(Self) -> Json
+pub fn CuttingUtilsException::to_repr(Self) -> @debug.Repr
 
 pub(all) suberror LayerConstraintPostprocessorException {
   UnsupportedConfigurationException(String)
   IllegalStateException(String)
 } derive(ToJson, @debug.Debug)
+pub fn LayerConstraintPostprocessorException::to_json(Self) -> Json
+pub fn LayerConstraintPostprocessorException::to_repr(Self) -> @debug.Repr
 
 pub(all) suberror LayerConstraintPreprocessorException {
   UnsupportedConfigurationException(String)
   IllegalStateException(String)
 } derive(ToJson, @debug.Debug)
+pub fn LayerConstraintPreprocessorException::to_json(Self) -> Json
+pub fn LayerConstraintPreprocessorException::to_repr(Self) -> @debug.Repr
 
 // Types and methods
 pub struct BiLinkedHashMultiMap[V] {

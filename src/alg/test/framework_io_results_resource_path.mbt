@@ -61,3 +61,9 @@ pub fn ensure_results_path_exists() -> Unit raise {
     core_debug_register_directory_for_test(path, [])
   }
 }
+
+///|
+pub extend ResultsResourcePathException with Debug::{to_repr}
+
+///|
+pub extend ResultsResourcePathException with ToJson::{to_json}

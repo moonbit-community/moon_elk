@@ -43,3 +43,9 @@ pub fn new_model_resource_path(file_path : String) -> ModelResourcePath raise {
     effective_file_path,
   )
 }
+
+///|
+pub extend ModelResourcePathException with Debug::{to_repr}
+
+///|
+pub extend ModelResourcePathException with ToJson::{to_json}

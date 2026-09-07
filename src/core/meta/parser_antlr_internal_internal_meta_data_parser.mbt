@@ -9,7 +9,7 @@ pub fn new_internal_meta_data_parser(
   tokens : Array[CoreMetaLexToken],
   grammar_access? : MetaDataGrammarAccess = new_meta_data_grammar_access(),
 ) -> InternalMetaDataParser {
-  { tokens, grammar_access }
+  { tokens, grammar_access, }
 }
 
 ///|

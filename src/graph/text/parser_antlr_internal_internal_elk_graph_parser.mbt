@@ -9,7 +9,7 @@ pub fn new_graph_text_pending_outgoing_section(
   source : @graph.ElkEdgeSection,
   target_id : String,
 ) -> GraphTextPendingOutgoingSection {
-  { source, target_id }
+  { source, target_id, }
 }
 
 ///|
@@ -25,7 +25,7 @@ pub fn new_internal_elk_graph_parser(
   tokens : Array[ElkGraphLexToken],
   grammar_access? : ElkGraphGrammarAccess = new_elk_graph_grammar_access(),
 ) -> InternalElkGraphParser {
-  { metadata, tokens, grammar_access }
+  { metadata, tokens, grammar_access, }
 }
 
 ///|

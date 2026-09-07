@@ -146,7 +146,7 @@ pub fn new_graphviz_dot_status(
   symbolic_name : String,
   message : String,
 ) -> GraphvizDotStatus {
-  { severity, symbolic_name, message }
+  { severity, symbolic_name, message, }
 }
 
 ///|
@@ -193,7 +193,7 @@ pub struct GraphvizDotBundle {
 pub fn new_graphviz_dot_bundle(
   symbolic_name? : String = graphviz_dot_plugin_id,
 ) -> GraphvizDotBundle {
-  { symbolic_name, class_registry: Map([]) }
+  { symbolic_name, class_registry: Map([]), }
 }
 
 ///|
@@ -229,7 +229,7 @@ pub struct GraphvizDotInjector {
 
 ///|
 pub fn new_graphviz_dot_injector() -> GraphvizDotInjector {
-  { providers: Map([]) }
+  { providers: Map([]), }
 }
 
 ///|
@@ -279,7 +279,7 @@ let graphviz_dot_activator_instance_ref : Ref[GraphvizDotActivator?] = Ref(None)
 
 ///|
 pub fn new_graphviz_dot_activator() -> GraphvizDotActivator {
-  { injectors: Map([]), bundle: new_graphviz_dot_bundle() }
+  { injectors: Map([]), bundle: new_graphviz_dot_bundle(), }
 }
 
 ///|
@@ -367,3 +367,9 @@ pub fn GraphvizDotActivator::register_injector_provider(
   self.bundle.register_class(class_name)
   self.injectors[language_name] = injector
 }
+
+///|
+pub extend GraphvizDotActivatorException with Debug::{to_repr}
+
+///|
+pub extend GraphvizDotActivatorException with ToJson::{to_json}

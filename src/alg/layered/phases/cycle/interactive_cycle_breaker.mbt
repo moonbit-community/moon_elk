@@ -144,3 +144,9 @@ pub fn new_interactive_cycle_breaker_layout_phase() -> @core.TypedLayoutProcesso
     interactive_cycle_breaker_process, interactive_cycle_breaker_configuration,
   )
 }
+
+///|
+pub extend InteractiveCycleBreakerException with Debug::{to_repr}
+
+///|
+pub extend InteractiveCycleBreakerException with ToJson::{to_json}

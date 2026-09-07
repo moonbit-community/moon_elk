@@ -17,7 +17,7 @@ pub struct GraphJsonTextProject {
 
 ///|
 pub fn new_graph_json_text_project() -> GraphJsonTextProject {
-  { files: Map([]) }
+  { files: Map([]), }
 }
 
 ///|
@@ -102,7 +102,7 @@ pub fn new_graph_json_text_convert_graph_handler(
   metadata : @core.OptionMetadata,
   project? : GraphJsonTextProject = new_graph_json_text_project(),
 ) -> GraphJsonTextConvertGraphHandler {
-  { metadata, project, target_extension: "", errors: [] }
+  { metadata, project, target_extension: "", errors: [], }
 }
 
 ///|
@@ -237,3 +237,6 @@ pub fn GraphJsonTextConvertGraphHandler::remove_unnecessary_layouts(
   ignore(self)
   graph
 }
+
+///|
+pub extend GraphJsonTextSelectionItem with Debug::{to_repr}

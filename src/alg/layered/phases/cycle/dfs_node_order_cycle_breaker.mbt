@@ -240,3 +240,9 @@ pub fn new_dfs_node_order_cycle_breaker_layout_phase() -> @core.TypedLayoutProce
     dfs_node_order_cycle_breaker_process, dfs_node_order_cycle_breaker_configuration,
   )
 }
+
+///|
+pub extend DfsNodeOrderCycleBreakerException with Debug::{to_repr}
+
+///|
+pub extend DfsNodeOrderCycleBreakerException with ToJson::{to_json}

@@ -53,3 +53,9 @@ pub fn neato_model_literal(model : NeatoModel) -> String {
 pub fn neato_model_default() -> NeatoModel {
   Shortpath
 }
+
+///|
+pub extend NeatoModelException with Debug::{to_repr}
+
+///|
+pub extend NeatoModelException with ToJson::{to_json}

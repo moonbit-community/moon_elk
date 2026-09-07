@@ -283,7 +283,7 @@ fn min_width_layerer_compute_min_width_layering(
     }
   }
 
-  { max_width, layers }
+  { max_width, layers, }
 }
 
 ///|

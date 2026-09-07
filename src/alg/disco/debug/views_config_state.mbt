@@ -41,7 +41,7 @@ let config_state_remove_level_number : Bool = false
 
 ///|
 pub fn new_config_state() -> ConfigState {
-  { lower_lvl: 0, upper_lvl: 0, max_depth: None, observers: [] }
+  { lower_lvl: 0, upper_lvl: 0, max_depth: None, observers: [], }
 }
 
 ///|

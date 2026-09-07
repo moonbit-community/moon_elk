@@ -236,7 +236,7 @@ fn network_simplex_layerer_initialize(
     }
   }
 
-  { graph, node_map }
+  { graph, node_map, }
 }
 
 ///|

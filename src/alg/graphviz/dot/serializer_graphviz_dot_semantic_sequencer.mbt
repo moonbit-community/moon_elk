@@ -5,7 +5,7 @@ pub struct GraphvizDotSemanticSequencer {
 
 ///|
 pub fn new_graphviz_dot_semantic_sequencer() -> GraphvizDotSemanticSequencer {
-  { base: new_abstract_graphviz_dot_semantic_sequencer() }
+  { base: new_abstract_graphviz_dot_semantic_sequencer(), }
 }
 
 ///|

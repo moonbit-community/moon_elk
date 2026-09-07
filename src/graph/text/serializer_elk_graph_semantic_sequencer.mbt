@@ -14,7 +14,7 @@ pub fn new_elk_graph_semantic_sequencer(
   let value_converter = value_converter.unwrap_or(
     new_property_value_value_converter(metadata),
   )
-  { metadata, base, value_converter }
+  { metadata, base, value_converter, }
 }
 
 ///|

@@ -77,7 +77,7 @@ pub struct BarycenterState {
 
 ///|
 pub fn new_barycenter_state(node : @runtime.LNode) -> BarycenterState {
-  { node, summed_weight: 0.0, degree: 0, barycenter: None, visited: false }
+  { node, summed_weight: 0.0, degree: 0, barycenter: None, visited: false, }
 }
 
 ///|

@@ -12,7 +12,7 @@ pub(all) struct CompressLogFolderAction {
 pub fn new_compress_log_folder_action(
   view : AbstractLayoutDebugView,
 ) -> CompressLogFolderAction {
-  { view, enabled: false, selected_output_file_name: None }
+  { view, enabled: false, selected_output_file_name: None, }
 }
 
 ///|

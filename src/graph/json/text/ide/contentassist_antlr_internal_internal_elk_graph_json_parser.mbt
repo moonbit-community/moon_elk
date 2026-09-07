@@ -11,7 +11,7 @@ pub fn new_internal_elk_graph_json_ide_parser(
   tokens : Array[@text.ElkGraphJsonLexToken],
   grammar_access? : @text.ElkGraphJsonGrammarAccess = @text.new_elk_graph_json_grammar_access(),
 ) -> InternalElkGraphJsonIdeParser {
-  { metadata, tokens, grammar_access }
+  { metadata, tokens, grammar_access, }
 }
 
 ///|

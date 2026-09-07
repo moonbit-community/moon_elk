@@ -8,7 +8,7 @@ pub struct Quadruplet {
 
 ///|
 pub fn new_quadruplet() -> Quadruplet {
-  { left: false, right: false, up: false, down: false }
+  { left: false, right: false, up: false, down: false, }
 }
 
 ///|
@@ -18,7 +18,7 @@ pub fn new_quadruplet_values(
   up : Bool,
   down : Bool,
 ) -> Quadruplet {
-  { left, right, up, down }
+  { left, right, up, down, }
 }
 
 ///|

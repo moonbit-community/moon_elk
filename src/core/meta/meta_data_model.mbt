@@ -85,7 +85,7 @@ pub(all) struct CoreMetaMdOptionSupport {
 
 ///|
 pub fn core_meta_create_md_model() -> CoreMetaMdModel {
-  { name: None, import_section: None, bundle: None }
+  { name: None, import_section: None, bundle: None, }
 }
 
 ///|
@@ -101,7 +101,7 @@ pub fn core_meta_create_md_bundle() -> CoreMetaMdBundle {
 
 ///|
 pub fn core_meta_create_md_group() -> CoreMetaMdGroup {
-  { name: None, documentation: None, children: [] }
+  { name: None, documentation: None, children: [], }
 }
 
 ///|
@@ -128,7 +128,7 @@ pub fn core_meta_create_md_option() -> CoreMetaMdOption {
 
 ///|
 pub fn core_meta_create_md_option_dependency() -> CoreMetaMdOptionDependency {
-  { target: None, target_name: None, value: None }
+  { target: None, target_name: None, value: None, }
 }
 
 ///|
@@ -164,7 +164,7 @@ pub fn core_meta_create_md_category() -> CoreMetaMdCategory {
 
 ///|
 pub fn core_meta_create_md_option_support() -> CoreMetaMdOptionSupport {
-  { option: None, option_name: None, value: None, documentation: None }
+  { option: None, option_name: None, value: None, documentation: None, }
 }
 
 ///|

@@ -6,7 +6,7 @@ pub struct GroupModelOrderCalculator {
 
 ///|
 pub fn new_group_model_order_calculator() -> GroupModelOrderCalculator {
-  { first_separate_nodes: 0, last_separate_nodes: 0 }
+  { first_separate_nodes: 0, last_separate_nodes: 0, }
 }
 
 ///|

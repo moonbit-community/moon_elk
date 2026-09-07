@@ -8,7 +8,7 @@ pub struct AbstractElkGraphScopeProvider {
 
 ///|
 pub fn new_abstract_elk_graph_scope_provider() -> AbstractElkGraphScopeProvider {
-  { marker: () }
+  { marker: (), }
 }
 
 ///|

@@ -35,7 +35,7 @@ fn new_rectangle_node(
   original_rectangle : @core.ElkRectangle,
   rectangle : @core.ElkRectangle,
 ) -> RectangleNode {
-  { data: { original_rectangle, rectangle, overlapping_nodes: [] } }
+  { data: { original_rectangle, rectangle, overlapping_nodes: [], }, }
 }
 
 ///|
@@ -298,3 +298,6 @@ pub fn RectangleStripOverlapRemover::remove_overlaps(
   }
   strip_size
 }
+
+///|
+pub extend RectangleNode with Eq::{not_equal, equal}

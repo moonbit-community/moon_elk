@@ -516,7 +516,7 @@ fn network_simplex_transform_fixed_pos_node(
     }
   }
 
-  { origin: node, is_flexible: false, head: single_node, tail: single_node }
+  { origin: node, is_flexible: false, head: single_node, tail: single_node, }
 }
 
 ///|
@@ -588,7 +588,7 @@ fn network_simplex_transform_fixed_order_node(
     .origin(node.get_handle().to_string())
     .node_type("flexible-tail")
     .create(state.n_graph)
-  let corners = { origin: node, is_flexible: true, head: top, tail: bottom }
+  let corners = { origin: node, is_flexible: true, head: top, tail: bottom, }
 
   let min_height = node.get_size().y
   let node_flexibility = network_simplex_node_flexibility_value(node)
@@ -719,7 +719,7 @@ fn network_simplex_transform_edge(
     .source(dummy)
     .target(network_simplex_require_port_rep(state, target_port)),
   )
-  state.edge_reps[edge.get_id()] = Some({ _origin: edge, left, right })
+  state.edge_reps[edge.get_id()] = Some({ _origin: edge, left, right, })
 }
 
 ///|
@@ -1627,3 +1627,9 @@ pub fn new_network_simplex_placer_layout_phase() -> @core.TypedLayoutProcessor[
     None
   })
 }
+
+///|
+pub extend NetworkSimplexPlacerException with Debug::{to_repr}
+
+///|
+pub extend NetworkSimplexPlacerException with ToJson::{to_json}

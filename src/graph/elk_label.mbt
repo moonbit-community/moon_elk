@@ -416,3 +416,15 @@ pub fn label_labels(parent : ElkLabel) -> Array[ElkLabel] {
   }
   labels
 }
+
+///|
+pub extend ElkLabel with Debug::{to_repr}
+
+///|
+pub extend ElkLabel with Eq::{not_equal, equal}
+
+///|
+pub extend ElkLabel with Hash::{hash, hash_combine}
+
+///|
+pub extend ElkLabel with Show::{to_string, output}

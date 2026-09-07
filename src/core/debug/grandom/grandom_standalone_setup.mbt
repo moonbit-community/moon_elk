@@ -5,7 +5,7 @@ pub(all) struct CoreDebugGRandomStandaloneSetup {
 
 ///|
 pub fn new_core_debug_grandom_standalone_setup() -> CoreDebugGRandomStandaloneSetup {
-  { unit: () }
+  { unit: (), }
 }
 
 ///|

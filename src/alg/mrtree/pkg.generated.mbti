@@ -401,6 +401,8 @@ pub fn MrtreeComponentsProcessor::split(Self, MrtreeGraph) -> Array[MrtreeGraph]
 pub struct MrtreeEdge {
   // private fields
 }
+pub fn MrtreeEdge::equal(Self, Self) -> Bool
+pub fn MrtreeEdge::not_equal(Self, Self) -> Bool
 pub impl Eq for MrtreeEdge
 
 pub struct MrtreeElkGraphImporter {
@@ -412,6 +414,8 @@ pub fn MrtreeElkGraphImporter::import_graph(Self, @graph.ElkNode) -> MrtreeGraph
 pub struct MrtreeGraph {
   // private fields
 }
+pub fn MrtreeGraph::equal(Self, Self) -> Bool
+pub fn MrtreeGraph::not_equal(Self, Self) -> Bool
 pub impl Eq for MrtreeGraph
 
 pub struct MrtreeIGraphImporter[T] {
@@ -438,6 +442,9 @@ pub enum MrtreeIntermediateProcessorStrategy {
 pub struct MrtreeLabel {
   // private fields
 }
+pub fn MrtreeLabel::equal(Self, Self) -> Bool
+pub fn MrtreeLabel::not_equal(Self, Self) -> Bool
+pub fn MrtreeLabel::to_repr(Self) -> @debug.Repr
 pub impl Eq for MrtreeLabel
 pub impl @debug.Debug for MrtreeLabel
 
@@ -459,6 +466,10 @@ pub fn MrtreeMultiLevelEdgeNodeNodeGap::on_last_node_side(Self) -> Bool
 pub struct MrtreeNode {
   // private fields
 }
+pub fn MrtreeNode::equal(Self, Self) -> Bool
+pub fn MrtreeNode::hash(Self) -> Int
+pub fn MrtreeNode::hash_combine(Self, Hasher) -> Unit
+pub fn MrtreeNode::not_equal(Self, Self) -> Bool
 pub impl Eq for MrtreeNode
 pub impl Hash for MrtreeNode
 

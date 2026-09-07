@@ -8,7 +8,7 @@ pub struct LayeredQuadruplet {
 
 ///|
 pub fn new_layered_quadruplet() -> LayeredQuadruplet {
-  { left: false, right: false, up: false, down: false }
+  { left: false, right: false, up: false, down: false, }
 }
 
 ///|
@@ -18,7 +18,7 @@ pub fn new_layered_quadruplet_with_values(
   up : Bool,
   down : Bool,
 ) -> LayeredQuadruplet {
-  { left, right, up, down }
+  { left, right, up, down, }
 }
 
 ///|

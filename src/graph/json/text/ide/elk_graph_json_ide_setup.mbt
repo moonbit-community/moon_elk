@@ -9,7 +9,7 @@ pub fn new_elk_graph_json_ide_injector(
   runtime_module : @text.ElkGraphJsonRuntimeModule,
   ide_module : ElkGraphJsonIdeModule,
 ) -> ElkGraphJsonIdeInjector {
-  { runtime_module, ide_module }
+  { runtime_module, ide_module, }
 }
 
 ///|
@@ -33,7 +33,7 @@ pub struct ElkGraphJsonIdeSetup {
 
 ///|
 pub fn new_elk_graph_json_ide_setup() -> ElkGraphJsonIdeSetup {
-  { unit: () }
+  { unit: (), }
 }
 
 ///|

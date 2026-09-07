@@ -195,3 +195,9 @@ pub fn node_label_cell_creator_create_node_label_cells(
     )
   }
 }
+
+///|
+pub extend NodeLabelCellCreatorException with Debug::{to_repr}
+
+///|
+pub extend NodeLabelCellCreatorException with ToJson::{to_json}

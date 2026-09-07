@@ -29,7 +29,7 @@ pub fn topdownpacking_grid_exception_message(
 
 ///|
 pub fn new_grid_elk_node(elk_node : @graph.ElkNode) -> GridElkNode {
-  { node: elk_node, grid: [], rows: 0, cols: 0 }
+  { node: elk_node, grid: [], rows: 0, cols: 0, }
 }
 
 ///|
@@ -221,3 +221,9 @@ pub fn GridElkNode::get_bool_property(
 ) -> Bool {
   @graph.node_get_bool_property(self.node, property)
 }
+
+///|
+pub extend TopdownpackingGridException with Debug::{to_repr}
+
+///|
+pub extend TopdownpackingGridException with ToJson::{to_json}

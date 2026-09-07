@@ -51,7 +51,7 @@ pub struct GraphvizDotAntlrTokenFileProvider {
 
 ///|
 pub fn new_graphviz_dot_antlr_token_file_provider() -> GraphvizDotAntlrTokenFileProvider {
-  { marker: () }
+  { marker: (), }
 }
 
 ///|

@@ -29,7 +29,7 @@ fn grid_cell_index(grid : TwoBitGrid, x : Int, y : Int) -> Int raise {
 
 ///|
 pub fn new_two_bit_grid(width : Int, height : Int) -> TwoBitGrid raise {
-  { x_size: width, y_size: height, cells: create_cells(width, height) }
+  { x_size: width, y_size: height, cells: create_cells(width, height), }
 }
 
 ///|
@@ -115,7 +115,7 @@ fn next_mod_ten(num : Int) -> Int {
 
 ///|
 pub fn TwoBitGrid::to_string(self : TwoBitGrid) -> String {
-  let builder = StringBuilder::new()
+  let builder = StringBuilder()
   builder.write_string(" ")
   let mut x_count = 0
   for _x = 0; _x < self.x_size; _x = _x + 1 {

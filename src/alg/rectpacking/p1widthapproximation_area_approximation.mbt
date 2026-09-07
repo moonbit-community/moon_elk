@@ -32,7 +32,7 @@ pub fn new_rectpacking_area_approximation(
   goal : RectpackingOptimizationGoal,
   last_place_shift : Bool,
 ) -> RectpackingAreaApproximation {
-  { aspect_ratio, goal, last_place_shift }
+  { aspect_ratio, goal, last_place_shift, }
 }
 
 ///|
@@ -397,3 +397,9 @@ pub fn RectpackingAreaApproximation::approx_bounding_box(
 
   current_values
 }
+
+///|
+pub extend RectpackingWidthApproximationException with Debug::{to_repr}
+
+///|
+pub extend RectpackingWidthApproximationException with ToJson::{to_json}

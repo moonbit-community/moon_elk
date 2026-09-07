@@ -13,7 +13,7 @@ fn[G] new_whitebox_layout_event(
   is_root : Bool,
   run_before : Bool,
 ) -> WhiteboxLayoutEvent[G] {
-  { processor_id, graph, is_root, run_before }
+  { processor_id, graph, is_root, run_before, }
 }
 
 ///|

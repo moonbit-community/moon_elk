@@ -8,7 +8,7 @@ pub(all) struct LayoutOptionValidator {
 pub fn new_layout_option_validator(
   metadata : OptionMetadata,
 ) -> LayoutOptionValidator {
-  { metadata, issues: [] }
+  { metadata, issues: [], }
 }
 
 ///|

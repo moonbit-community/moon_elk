@@ -48,14 +48,20 @@ pub fn register_node_placement_phases(@runtime.LayeredPhaseRegistry) -> Unit
 pub(all) suberror BKAlignedLayoutException {
   IllegalStateException(String)
 } derive(ToJson, @debug.Debug)
+pub fn BKAlignedLayoutException::to_json(Self) -> Json
+pub fn BKAlignedLayoutException::to_repr(Self) -> @debug.Repr
 
 pub suberror BkThresholdStrategyException {
   BkThresholdStrategyException(String)
 } derive(ToJson, @debug.Debug)
+pub fn BkThresholdStrategyException::to_json(Self) -> Json
+pub fn BkThresholdStrategyException::to_repr(Self) -> @debug.Repr
 
 pub suberror NetworkSimplexPlacerException {
   NetworkSimplexPlacerException(String)
 } derive(ToJson, @debug.Debug)
+pub fn NetworkSimplexPlacerException::to_json(Self) -> Json
+pub fn NetworkSimplexPlacerException::to_repr(Self) -> @debug.Repr
 
 // Types and methods
 pub struct BKAlignedLayout {

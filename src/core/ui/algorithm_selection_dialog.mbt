@@ -13,7 +13,7 @@ pub fn new_core_ui_algorithm_selection_listener(
 ) -> CoreUiAlgorithmSelectionListener {
   let id = core_ui_algorithm_selection_listener_id_ref.val
   core_ui_algorithm_selection_listener_id_ref.val = id + 1
-  { id, on_selection_fn }
+  { id, on_selection_fn, }
 }
 
 ///|
@@ -104,7 +104,7 @@ fn algorithm_selection_dialog_create_image_descriptor(
   bundle_id : String,
   path : String,
 ) -> CoreUiImageDescriptor {
-  { plugin_id: bundle_id, path: "scaled:" + path }
+  { plugin_id: bundle_id, path: "scaled:" + path, }
 }
 
 ///|

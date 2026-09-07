@@ -47,7 +47,7 @@ pub fn new_rectangle_values(
   if left > right {
     rectangle_raise("Left must be smaller or equal to right.")
   }
-  { top, right, bottom, left }
+  { top, right, bottom, left, }
 }
 
 ///|
@@ -62,7 +62,7 @@ pub fn new_rectangle_copy(rectangle : Rectangle) -> Rectangle {
 
 ///|
 pub fn new_rectangle_position(position : @core.KVector) -> Rectangle {
-  { top: position.y, right: position.x, bottom: position.y, left: position.x }
+  { top: position.y, right: position.x, bottom: position.y, left: position.x, }
 }
 
 ///|
@@ -268,3 +268,9 @@ pub fn Rectangle::to_string(self : Rectangle) -> String {
   rectangle_format_1_decimal(self.right) +
   "]"
 }
+
+///|
+pub extend RectangleException with Debug::{to_repr}
+
+///|
+pub extend RectangleException with ToJson::{to_json}

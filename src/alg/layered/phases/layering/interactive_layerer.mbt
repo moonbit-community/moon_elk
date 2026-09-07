@@ -277,3 +277,9 @@ pub fn new_interactive_layerer_layout_phase() -> @core.TypedLayoutProcessor[
     interactive_layerer_process, interactive_layerer_configuration,
   )
 }
+
+///|
+pub extend InteractiveLayererException with Debug::{to_repr}
+
+///|
+pub extend InteractiveLayererException with ToJson::{to_json}

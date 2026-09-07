@@ -78,7 +78,7 @@ pub fn new_graph_json_text_property_assignment(
   key : GraphJsonTextPropertyKey,
   value : GraphJsonTextPropertyValue,
 ) -> GraphJsonTextPropertyAssignment {
-  { key, value }
+  { key, value, }
 }
 
 ///|
@@ -105,7 +105,7 @@ pub fn new_graph_json_text_validation_issue(
   severity : GraphJsonTextIssueSeverity,
   code? : String? = None,
 ) -> GraphJsonTextValidationIssue {
-  { message, feature, severity, code }
+  { message, feature, severity, code, }
 }
 
 ///|
@@ -214,3 +214,15 @@ pub fn graph_json_text_shape_set_size(
       @graph.label_set_dimensions(label, width, height)
   }
 }
+
+///|
+pub extend GraphJsonTextListTransient with Debug::{to_repr}
+
+///|
+pub extend GraphJsonTextListTransient with Show::{to_string, output}
+
+///|
+pub extend GraphJsonTextPropertyValue with Debug::{to_repr}
+
+///|
+pub extend GraphJsonTextPropertyValue with Show::{to_string, output}

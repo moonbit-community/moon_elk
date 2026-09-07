@@ -319,7 +319,7 @@ pub struct ModelOrderComponentGroup {
 
 ///|
 pub fn new_model_order_component_group() -> ModelOrderComponentGroup {
-  { components: Map([]), component_order: [] }
+  { components: Map([]), component_order: [], }
 }
 
 ///|

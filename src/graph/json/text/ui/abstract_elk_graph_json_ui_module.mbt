@@ -12,7 +12,7 @@ pub fn new_graph_json_text_ui_lexer_binding(
   binding_name : String,
   class_name : String,
 ) -> GraphJsonTextUiLexerBinding {
-  { binding_name, class_name }
+  { binding_name, class_name, }
 }
 
 ///|

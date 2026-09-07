@@ -5,7 +5,7 @@ pub(all) struct MetaDataEditor {
 
 ///|
 pub fn new_meta_data_editor() -> MetaDataEditor {
-  { unit: () }
+  { unit: (), }
 }
 
 ///|

@@ -201,7 +201,7 @@ pub fn[T, N] new_graph_adapter(
   element_adapter : GraphElementAdapter[T],
   get_nodes_fn : () -> Array[N],
 ) -> GraphAdapter[T, N] {
-  { element_adapter, get_nodes_fn }
+  { element_adapter, get_nodes_fn, }
 }
 
 ///|
@@ -463,7 +463,7 @@ pub fn[T] new_label_adapter(
   get_side_fn : () -> LabelSide,
   get_text_fn : () -> String,
 ) -> LabelAdapter[T] {
-  { element_adapter, get_side_fn, get_text_fn }
+  { element_adapter, get_side_fn, get_text_fn, }
 }
 
 ///|
@@ -494,7 +494,7 @@ pub fn[T, L] new_edge_adapter(
   element : T,
   get_labels_fn : () -> Array[L],
 ) -> EdgeAdapter[T, L] {
-  { element, get_labels_fn }
+  { element, get_labels_fn, }
 }
 
 ///|

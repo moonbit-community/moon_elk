@@ -5,7 +5,7 @@ pub(all) struct MelkDocumentationGenerator {
 
 ///|
 pub fn new_melk_documentation_generator() -> MelkDocumentationGenerator {
-  { marker: () }
+  { marker: (), }
 }
 
 ///|

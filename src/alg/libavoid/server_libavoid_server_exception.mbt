@@ -6,14 +6,14 @@ pub struct LibavoidServerException {
 
 ///|
 pub fn new_libavoid_server_exception() -> LibavoidServerException {
-  { message: "", cause: None }
+  { message: "", cause: None, }
 }
 
 ///|
 pub fn new_libavoid_server_exception_with_message(
   message : String,
 ) -> LibavoidServerException {
-  { message, cause: None }
+  { message, cause: None, }
 }
 
 ///|
@@ -21,7 +21,7 @@ pub fn new_libavoid_server_exception_with_cause(
   message : String,
   cause : String,
 ) -> LibavoidServerException {
-  { message, cause: Some(cause) }
+  { message, cause: Some(cause), }
 }
 
 ///|

@@ -1084,7 +1084,7 @@ pub struct LEdgeAdapter {
 
 ///|
 pub fn new_l_edge_adapter(edge : LEdge) -> LEdgeAdapter {
-  { element: edge, label_adapters: None }
+  { element: edge, label_adapters: None, }
 }
 
 ///|
@@ -1112,7 +1112,7 @@ pub struct PortComparator {
 
 ///|
 pub fn new_port_comparator() -> PortComparator {
-  { unit: () }
+  { unit: (), }
 }
 
 ///|
@@ -1174,3 +1174,9 @@ pub fn PortComparator::compare(
       }
   }
 }
+
+///|
+pub extend LGraphAdapterException with Debug::{to_repr}
+
+///|
+pub extend LGraphAdapterException with ToJson::{to_json}

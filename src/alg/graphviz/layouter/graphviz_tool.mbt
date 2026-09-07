@@ -199,7 +199,7 @@ pub struct GraphvizWatchdog {
 
 ///|
 fn new_graphviz_watchdog() -> GraphvizWatchdog {
-  { running: true }
+  { running: true, }
 }
 
 ///|
@@ -218,7 +218,7 @@ pub fn new_graphviz_tool(
     Invalid => raise new_graphviz_exception("Invalid Graphviz command.")
     _ => ()
   }
-  { process: None, command: thecommand, watchdog: None, graphviz_stream: None }
+  { process: None, command: thecommand, watchdog: None, graphviz_stream: None, }
 }
 
 ///|
@@ -450,7 +450,7 @@ fn graphviz_stream_read(state : GraphvizStreamState) -> Int {
 
 ///|
 fn graphviz_stream_wrap(stream : GraphvizInputStream) -> GraphvizInputStream {
-  let state = { stream, depth: 0, finished: 0, buf: -1 }
+  let state = { stream, depth: 0, finished: 0, buf: -1, }
   let read_fn = () => graphviz_stream_read(state)
   let read_bytes_with_offset_fn = (bytes : Array[Int], off : Int, len : Int) => {
     if len <= 0 {

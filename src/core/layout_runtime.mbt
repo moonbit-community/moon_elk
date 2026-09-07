@@ -22,7 +22,7 @@ pub struct LayoutSession {
 
 ///|
 pub fn new_layout_session() -> LayoutSession {
-  { error: None }
+  { error: None, }
 }
 
 ///|

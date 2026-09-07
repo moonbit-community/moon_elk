@@ -36,7 +36,7 @@ pub struct BaseRoutingDirectionStrategy {
 pub fn new_base_routing_direction_strategy(
   strategy_type : RoutingDirectionStrategyType,
 ) -> BaseRoutingDirectionStrategy {
-  { strategy_type, created_junction_points: [] }
+  { strategy_type, created_junction_points: [], }
 }
 
 ///|

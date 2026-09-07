@@ -40,6 +40,8 @@ pub suberror JsonImportException {
 } derive(ToJson, @debug.Debug)
 pub fn JsonImportException::get_cause(Self) -> String?
 pub fn JsonImportException::get_message(Self) -> String?
+pub fn JsonImportException::to_json(Self) -> Json
+pub fn JsonImportException::to_repr(Self) -> @debug.Repr
 
 // Types and methods
 pub struct ElkGraphJsonExportBuilder {

@@ -145,3 +145,9 @@ pub fn[T, G] LayoutTestRunner::run(
     self.run_child(child, notifier)
   }
 }
+
+///|
+pub extend LayoutTestRunnerException with Debug::{to_repr}
+
+///|
+pub extend LayoutTestRunnerException with ToJson::{to_json}

@@ -294,7 +294,7 @@ fn mrtree_edge_router_handle_cycle_inducing_edge(
     )
   }
 
-  { side_one: side_one_edges, side_two: side_two_edges }
+  { side_one: side_one_edges, side_two: side_two_edges, }
 }
 
 ///|
@@ -658,7 +658,7 @@ fn mrtree_edge_router_avoid_overlap_special_edges(
   node_bendpoint_padding : Double,
   edge_end_texture_padding : Double,
 ) -> Unit {
-  let mut side_counts = { side_one: 0, side_two: 0 }
+  let mut side_counts = { side_one: 0, side_two: 0, }
   let node_gaps : Map[Int64, MrtreeMultiLevelEdgeNodeNodeGap] = Map([])
 
   let mut max_level = 0

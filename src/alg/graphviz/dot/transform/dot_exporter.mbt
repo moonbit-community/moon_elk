@@ -109,7 +109,7 @@ pub struct DotExporter {
 
 ///|
 pub fn new_dot_exporter() -> DotExporter {
-  { _dummy: () }
+  { _dummy: (), }
 }
 
 ///|
@@ -1574,3 +1574,9 @@ pub fn dot_exporter_parse_spline_points(
   result.set_second(target_point)
   result
 }
+
+///|
+pub extend DotExporterException with Debug::{to_repr}
+
+///|
+pub extend DotExporterException with ToJson::{to_json}

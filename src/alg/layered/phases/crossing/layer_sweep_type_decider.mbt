@@ -37,7 +37,7 @@ pub struct LayerSweepTypeDeciderNodeInfo {
 
 ///|
 pub fn new_layer_sweep_type_decider_node_info() -> LayerSweepTypeDeciderNodeInfo {
-  { connected_edges: 0, hierarchical_influence: 0, random_influence: 0 }
+  { connected_edges: 0, hierarchical_influence: 0, random_influence: 0, }
 }
 
 ///|
@@ -65,7 +65,7 @@ pub fn new_layer_sweep_type_decider(
   for _ in 0..<graph_data.current_node_order().length() {
     node_info.push([])
   }
-  { node_info, graph_data }
+  { node_info, graph_data, }
 }
 
 ///|

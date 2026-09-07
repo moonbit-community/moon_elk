@@ -5,5 +5,5 @@ pub(all) struct CoreDebugGRandomScopeProvider {
 
 ///|
 pub fn new_core_debug_grandom_scope_provider() -> CoreDebugGRandomScopeProvider {
-  { unit: () }
+  { unit: (), }
 }

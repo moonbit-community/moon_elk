@@ -9,7 +9,7 @@ pub fn new_core_debug_grandom_ide_injector(
   runtime_module : @grandom.CoreDebugGRandomRuntimeModule,
   ide_module : CoreDebugGRandomIdeModule,
 ) -> CoreDebugGRandomIdeInjector {
-  { runtime_module, ide_module }
+  { runtime_module, ide_module, }
 }
 
 ///|
@@ -33,7 +33,7 @@ pub(all) struct CoreDebugGRandomIdeSetup {
 
 ///|
 pub fn new_core_debug_grandom_ide_setup() -> CoreDebugGRandomIdeSetup {
-  { unit: () }
+  { unit: (), }
 }
 
 ///|

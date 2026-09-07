@@ -11,7 +11,7 @@ pub fn[F, S, T] unique_triple_of(
   second : S,
   third : T,
 ) -> UniqueTriple[F, S, T] {
-  { first, second, third }
+  { first, second, third, }
 }
 
 ///|

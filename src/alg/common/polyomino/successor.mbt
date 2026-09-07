@@ -6,7 +6,7 @@ pub struct PolyominoCoords {
 
 ///|
 pub fn new_polyomino_coords(x : Int, y : Int) -> PolyominoCoords {
-  { x, y }
+  { x, y, }
 }
 
 ///|
@@ -29,3 +29,9 @@ pub fn IPolyominoSuccessor::apply(
 ) -> PolyominoCoords {
   (self.apply)(coords, poly)
 }
+
+///|
+pub extend PolyominoCoords with Debug::{to_repr}
+
+///|
+pub extend PolyominoCoords with Eq::{not_equal, equal}

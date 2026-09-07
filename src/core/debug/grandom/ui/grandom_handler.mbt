@@ -14,7 +14,7 @@ pub(all) struct CoreDebugGRandomHandler {
 pub fn new_core_debug_grandom_handler(
   project? : CoreDebugGRandomProject = new_core_debug_grandom_project(),
 ) -> CoreDebugGRandomHandler {
-  { project, errors: [] }
+  { project, errors: [], }
 }
 
 ///|
@@ -60,3 +60,6 @@ pub fn CoreDebugGRandomHandler::get_errors(
 ) -> Array[String] {
   self.errors
 }
+
+///|
+pub extend CoreDebugGRandomSelectionItem with Debug::{to_repr}

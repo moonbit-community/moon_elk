@@ -36,26 +36,38 @@ pub fn register_cycle_breaking_phases(@runtime.LayeredPhaseRegistry) -> Unit
 pub(all) suberror DepthFirstCycleBreakerException {
   UnsupportedGraphException(String)
 } derive(ToJson, @debug.Debug)
+pub fn DepthFirstCycleBreakerException::to_json(Self) -> Json
+pub fn DepthFirstCycleBreakerException::to_repr(Self) -> @debug.Repr
 
 pub(all) suberror DfsNodeOrderCycleBreakerException {
   UnsupportedGraphException(String)
 } derive(ToJson, @debug.Debug)
+pub fn DfsNodeOrderCycleBreakerException::to_json(Self) -> Json
+pub fn DfsNodeOrderCycleBreakerException::to_repr(Self) -> @debug.Repr
 
 pub(all) suberror GreedyCycleBreakerException {
   UnsupportedGraphException(String)
 } derive(ToJson, @debug.Debug)
+pub fn GreedyCycleBreakerException::to_json(Self) -> Json
+pub fn GreedyCycleBreakerException::to_repr(Self) -> @debug.Repr
 
 pub(all) suberror InteractiveCycleBreakerException {
   UnsupportedGraphException(String)
 } derive(ToJson, @debug.Debug)
+pub fn InteractiveCycleBreakerException::to_json(Self) -> Json
+pub fn InteractiveCycleBreakerException::to_repr(Self) -> @debug.Repr
 
 pub(all) suberror ModelOrderCycleBreakerException {
   UnsupportedGraphException(String)
 } derive(ToJson, @debug.Debug)
+pub fn ModelOrderCycleBreakerException::to_json(Self) -> Json
+pub fn ModelOrderCycleBreakerException::to_repr(Self) -> @debug.Repr
 
 pub(all) suberror SCCModelOrderCycleBreakerException {
   UnsupportedGraphException(String)
 } derive(ToJson, @debug.Debug)
+pub fn SCCModelOrderCycleBreakerException::to_json(Self) -> Json
+pub fn SCCModelOrderCycleBreakerException::to_repr(Self) -> @debug.Repr
 
 // Types and methods
 pub struct GroupModelOrderCalculator {

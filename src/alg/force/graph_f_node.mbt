@@ -226,3 +226,6 @@ pub fn fnode_set_origin(node : FNode, origin : @graph.ElkNode) -> Unit {
 pub fn fnode_origin(node : FNode) -> @graph.ElkNode? {
   node.data.origin
 }
+
+///|
+pub extend FNode with Eq::{not_equal, equal}

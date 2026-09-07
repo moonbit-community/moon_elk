@@ -13,7 +13,7 @@ priv struct AlgorithmRegistry {
 
 ///|
 fn new_algorithm_registry() -> AlgorithmRegistry {
-  { handlers: Map([]) }
+  { handlers: Map([]), }
 }
 
 ///|

@@ -11,7 +11,7 @@ pub fn new_layout_graph_view_drop_adapter(
   session : @core.LayoutSession,
   layout_graph_view : LayoutGraphView,
 ) -> LayoutGraphViewDropAdapter {
-  { runtime, session, layout_graph_view }
+  { runtime, session, layout_graph_view, }
 }
 
 ///|

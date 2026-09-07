@@ -13,7 +13,7 @@ pub struct AbstractForceModelState {
 
 ///|
 pub fn new_abstract_force_model_state() -> AbstractForceModelState {
-  { random: @core.new_java_random_seeded_int(1), graph: None, disp_bound: 0.0 }
+  { random: @core.new_java_random_seeded_int(1), graph: None, disp_bound: 0.0, }
 }
 
 ///|

@@ -768,18 +768,26 @@ pub fn[F, S, T] triple_of(F, S, T) -> Triple[F, S, T]
 pub suberror AggregatedMatchDeciderException {
   AggregatedMatchDeciderException(String)
 } derive(ToJson, @debug.Debug)
+pub fn AggregatedMatchDeciderException::to_json(Self) -> Json
+pub fn AggregatedMatchDeciderException::to_repr(Self) -> @debug.Repr
 
 pub suberror AlignmentMatcherException {
   AlignmentMatcherException(String)
 } derive(ToJson, @debug.Debug)
+pub fn AlignmentMatcherException::to_json(Self) -> Json
+pub fn AlignmentMatcherException::to_repr(Self) -> @debug.Repr
 
 pub suberror DistanceMatcherException {
   DistanceMatcherException(String)
 } derive(ToJson, @debug.Debug)
+pub fn DistanceMatcherException::to_json(Self) -> Json
+pub fn DistanceMatcherException::to_repr(Self) -> @debug.Repr
 
 pub suberror ElkSpacingsException {
   ElkSpacingsException(String)
 } derive(ToJson, @debug.Debug)
+pub fn ElkSpacingsException::to_json(Self) -> Json
+pub fn ElkSpacingsException::to_repr(Self) -> @debug.Repr
 
 pub(all) suberror LayoutRuntimeSubError {
   UnsupportedGraph(String)
@@ -790,14 +798,20 @@ pub(all) suberror LayoutRuntimeSubError {
 pub suberror NodeReferenceMatcherException {
   NodeReferenceMatcherException(String)
 } derive(ToJson, @debug.Debug)
+pub fn NodeReferenceMatcherException::to_json(Self) -> Json
+pub fn NodeReferenceMatcherException::to_repr(Self) -> @debug.Repr
 
 pub suberror SizeFilterException {
   SizeFilterException(String)
 } derive(ToJson, @debug.Debug)
+pub fn SizeFilterException::to_json(Self) -> Json
+pub fn SizeFilterException::to_repr(Self) -> @debug.Repr
 
 pub suberror TextPrefixFilterException {
   TextPrefixFilterException(String)
 } derive(ToJson, @debug.Debug)
+pub fn TextPrefixFilterException::to_json(Self) -> Json
+pub fn TextPrefixFilterException::to_repr(Self) -> @debug.Repr
 
 // Types and methods
 pub(all) struct AbstractLayoutProvider {
@@ -1626,14 +1640,18 @@ pub fn KVector::bound(Self, Double, Double, Double, Double) -> Self raise
 pub fn KVector::clone(Self) -> Self
 pub fn KVector::distance(Self, Self) -> Double
 pub fn KVector::dot_product(Self, Self) -> Double
+pub fn KVector::equal(Self, Self) -> Bool
 pub fn KVector::equals(Self, Self) -> Bool
 pub fn KVector::equals_fuzzily(Self, Self, fuzzyness? : Double) -> Bool
+pub fn KVector::hash(Self) -> Int
 pub fn KVector::hash_code(Self) -> Int
+pub fn KVector::hash_combine(Self, Hasher) -> Unit
 pub fn KVector::is_infinite(Self) -> Bool
 pub fn KVector::is_nan(Self) -> Bool
 pub fn KVector::length(Self) -> Double
 pub fn KVector::negate(Self) -> Self
 pub fn KVector::normalize(Self) -> Self
+pub fn KVector::not_equal(Self, Self) -> Bool
 pub fn KVector::parse(Self, String) -> Unit raise
 pub fn KVector::reset(Self) -> Self
 pub fn KVector::rotate(Self, Double) -> Self

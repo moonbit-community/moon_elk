@@ -159,8 +159,8 @@ fn scanline_constraints_sweep(
   let points : Array[ScanlineTimestamp] = []
   for node in compactor.c_graph.c_nodes {
     if filter_fun(node) {
-      points.push({ node, low: true })
-      points.push({ node, low: false })
+      points.push({ node, low: true, })
+      points.push({ node, low: false, })
     }
   }
 
@@ -273,3 +273,9 @@ pub fn scanline_constraint_calculation(
 
 ///|
 pub let one_dimensional_compactor_scanline_constraints : IConstraintCalculationAlgorithm = scanline_constraint_calculation
+
+///|
+pub extend ScanlineConstraintCalculatorException with Debug::{to_repr}
+
+///|
+pub extend ScanlineConstraintCalculatorException with ToJson::{to_json}

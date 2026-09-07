@@ -25,7 +25,7 @@ pub fn new_random_graph_from_method(
   configurator_method_name : String,
   graph : ElkNode,
 ) -> RandomGraphFromMethod {
-  { configurator_method_name, graph }
+  { configurator_method_name, graph, }
 }
 
 ///|

@@ -5,7 +5,7 @@ pub(all) struct StringBuffer {
 
 ///|
 pub fn new_string_buffer() -> StringBuffer {
-  { value: "" }
+  { value: "", }
 }
 
 ///|

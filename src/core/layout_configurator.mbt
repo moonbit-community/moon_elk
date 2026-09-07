@@ -28,7 +28,11 @@ pub(all) struct LayoutConfigurator {
 
 ///|
 pub fn new_layout_configurator() -> LayoutConfigurator {
-  { element_option_map: Map([]), class_option_map: Map([]), option_filters: [] }
+  {
+    element_option_map: Map([]),
+    class_option_map: Map([]),
+    option_filters: [],
+  }
 }
 
 ///|

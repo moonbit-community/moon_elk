@@ -25,3 +25,9 @@ pub fn base_path_for_property(
       )
   }
 }
+
+///|
+pub extend AbstractPropertyDependentResourcePathException with Debug::{to_repr}
+
+///|
+pub extend AbstractPropertyDependentResourcePathException with ToJson::{to_json}

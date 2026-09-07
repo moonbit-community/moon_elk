@@ -182,7 +182,7 @@ pub struct BreakingPointInserterCut {
 
 ///|
 fn new_breaking_point_inserter_cut(index : Int) -> BreakingPointInserterCut {
-  { index, new_index: index, prev: None, suc: None, assigned: false }
+  { index, new_index: index, prev: None, suc: None, assigned: false, }
 }
 
 ///|

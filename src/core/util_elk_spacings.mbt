@@ -43,7 +43,7 @@ pub fn elk_spacings_with_base_value(
     let factor = option.get_default() / spacing_node_node.get_default()
     factors.push((option, factor))
   }
-  { base_spacing, overwrite: false, factors }
+  { base_spacing, overwrite: false, factors, }
 }
 
 ///|
@@ -199,3 +199,9 @@ pub fn ElkCoreSpacingsBuilder::to_visitor(
   let consumer = self.build()
   new_graph_element_visitor(element => consumer(element))
 }
+
+///|
+pub extend ElkSpacingsException with Debug::{to_repr}
+
+///|
+pub extend ElkSpacingsException with ToJson::{to_json}

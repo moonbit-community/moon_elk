@@ -7,7 +7,7 @@ pub struct DotEdgeStatement {
 
 ///|
 pub fn dot_create_edge_statement() -> DotEdgeStatement {
-  { source_node: None, edge_targets: [], attributes: [] }
+  { source_node: None, edge_targets: [], attributes: [], }
 }
 
 ///|

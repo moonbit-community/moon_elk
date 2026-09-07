@@ -20,7 +20,7 @@ pub fn new_graphviz_dot_runtime_module(
   injector_providers[graphviz_dot_serializer_class_name] = () => {
     GraphvizDotObjectSerializer(serializer_provider())
   }
-  { serializer_provider, injector_providers }
+  { serializer_provider, injector_providers, }
 }
 
 ///|

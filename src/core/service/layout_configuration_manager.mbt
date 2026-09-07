@@ -15,7 +15,7 @@ pub fn new_layout_configuration_manager(
     Some(resolver) => resolver
     None => @core.new_layout_algorithm_resolver(metadata)
   }
-  { metadata, config_provider, layout_algorithm_resolver }
+  { metadata, config_provider, layout_algorithm_resolver, }
 }
 
 ///|

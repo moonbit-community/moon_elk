@@ -5,7 +5,7 @@ pub(all) struct CoreMetaIdeModule {
 
 ///|
 pub fn new_core_meta_ide_module() -> CoreMetaIdeModule {
-  { base: new_abstract_core_meta_ide_module() }
+  { base: new_abstract_core_meta_ide_module(), }
 }
 
 ///|

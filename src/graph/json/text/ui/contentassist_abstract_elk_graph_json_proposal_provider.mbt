@@ -43,7 +43,7 @@ pub struct GraphJsonTextUiCompletionProposalAcceptor {
 
 ///|
 pub fn new_graph_json_text_ui_completion_proposal_acceptor() -> GraphJsonTextUiCompletionProposalAcceptor {
-  { proposals: [] }
+  { proposals: [], }
 }
 
 ///|
@@ -68,7 +68,7 @@ pub struct AbstractElkGraphJsonProposalProvider {
 
 ///|
 pub fn new_abstract_elk_graph_json_proposal_provider() -> AbstractElkGraphJsonProposalProvider {
-  { unit: () }
+  { unit: (), }
 }
 
 ///|

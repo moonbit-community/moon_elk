@@ -5,7 +5,7 @@ pub struct ElkGraphJsonDescriptionLabelProvider {
 
 ///|
 pub fn new_elk_graph_json_description_label_provider() -> ElkGraphJsonDescriptionLabelProvider {
-  { unit: () }
+  { unit: (), }
 }
 
 ///|

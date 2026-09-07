@@ -438,3 +438,9 @@ pub fn NodeContext::get_port_alignment(
   }
   node_context_parse_port_alignment(alignment_text)
 }
+
+///|
+pub extend NodeContextException with Debug::{to_repr}
+
+///|
+pub extend NodeContextException with ToJson::{to_json}

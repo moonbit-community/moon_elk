@@ -24,7 +24,7 @@ pub struct ElkGraphJsonStandaloneSetupGenerated {
 
 ///|
 pub fn new_elk_graph_json_standalone_setup_generated() -> ElkGraphJsonStandaloneSetupGenerated {
-  { marker: () }
+  { marker: (), }
 }
 
 ///|

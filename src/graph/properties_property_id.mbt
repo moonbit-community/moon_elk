@@ -34,3 +34,12 @@ pub fn property_id_from_string(id : String) -> PropertyId {
 pub fn option_id_from_string(id : String) -> OptionId {
   property_id_from_string(id)
 }
+
+///|
+pub extend PropertyId with Debug::{to_repr}
+
+///|
+pub extend PropertyId with Eq::{not_equal, equal}
+
+///|
+pub extend PropertyId with Hash::{hash, hash_combine}

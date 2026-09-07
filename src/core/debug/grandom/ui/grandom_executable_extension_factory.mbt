@@ -26,7 +26,7 @@ pub fn new_core_debug_grandom_ui_status(
   symbolic_name : String,
   message : String,
 ) -> CoreDebugGRandomUiStatus {
-  { severity, symbolic_name, message }
+  { severity, symbolic_name, message, }
 }
 
 ///|
@@ -56,7 +56,7 @@ pub(all) struct CoreDebugGRandomExecutableExtensionFactory {
 
 ///|
 pub fn new_core_debug_grandom_executable_extension_factory() -> CoreDebugGRandomExecutableExtensionFactory {
-  { clazz_name: None, config: None }
+  { clazz_name: None, config: None, }
 }
 
 ///|

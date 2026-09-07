@@ -11,7 +11,7 @@ pub fn[T] new_experimental_object(
   configuration : TestConfiguration[T],
   graph : TestGraph[T],
 ) -> ExperimentalObject[T] {
-  { layout_algorithm, configuration, graph }
+  { layout_algorithm, configuration, graph, }
 }
 
 ///|

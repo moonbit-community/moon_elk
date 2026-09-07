@@ -85,7 +85,7 @@ fn nodespacing_capture_elk_labels(
 
 ///|
 fn nodespacing_capture_elk_edge(edge : @core.ElkEdgeAdapter) -> NodeSpacingEdge {
-  { labels: nodespacing_capture_elk_labels(edge.get_labels()) }
+  { labels: nodespacing_capture_elk_labels(edge.get_labels()), }
 }
 
 ///|

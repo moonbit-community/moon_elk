@@ -33,7 +33,7 @@ pub(all) struct MetaDataStandaloneSetupGenerated {
 
 ///|
 pub fn new_meta_data_standalone_setup_generated() -> MetaDataStandaloneSetupGenerated {
-  { marker: () }
+  { marker: (), }
 }
 
 ///|

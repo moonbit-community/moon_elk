@@ -26,7 +26,7 @@ pub fn graph_identifier_generator_for_graph(
   graph : ElkNode,
 ) -> GraphIdentifierGenerator {
   checked_node(graph)
-  { graph, validate: false, generate: false, unique: false }
+  { graph, validate: false, generate: false, unique: false, }
 }
 
 ///|
@@ -193,7 +193,7 @@ fn collect_existing_node_identifiers(
 fn new_graph_identifier_state(graph : ElkNode) -> GraphIdentifierState {
   let ids : Map[String, Bool] = Map([])
   collect_existing_node_identifiers(graph, ids, false)
-  { current_ids: [0, 0, 0, 0, 0], existing_identifiers: ids }
+  { current_ids: [0, 0, 0, 0, 0], existing_identifiers: ids, }
 }
 
 ///|
@@ -418,7 +418,7 @@ fn pad_zeroes(value : String, length : Int) -> String {
   if value.length() >= length {
     return value
   }
-  let builder = StringBuilder::new()
+  let builder = StringBuilder()
   for index = 0; index < length - value.length(); index = index + 1 {
     ignore(index)
     builder.write_string("0")

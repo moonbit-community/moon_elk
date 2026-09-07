@@ -117,7 +117,7 @@ priv struct HorizontalGraphCompactorOriginLookup {
 
 ///|
 fn new_horizontal_graph_compactor_origin_lookup() -> HorizontalGraphCompactorOriginLookup {
-  { lnodes: Map([]), vertical_segments: Map([]) }
+  { lnodes: Map([]), vertical_segments: Map([]), }
 }
 
 ///|

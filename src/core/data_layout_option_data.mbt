@@ -69,7 +69,7 @@ pub fn new_layout_option_dependency(
   option_id : String,
   expected_value? : String? = None,
 ) -> LayoutOptionDependency {
-  { option_id, expected_value }
+  { option_id, expected_value, }
 }
 
 ///|

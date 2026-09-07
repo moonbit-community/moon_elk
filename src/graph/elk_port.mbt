@@ -299,3 +299,15 @@ pub fn port_outgoing_edges(port : ElkPort) -> Array[ElkEdge] {
   }
   outgoing
 }
+
+///|
+pub extend ElkPort with Debug::{to_repr}
+
+///|
+pub extend ElkPort with Eq::{not_equal, equal}
+
+///|
+pub extend ElkPort with Hash::{hash, hash_combine}
+
+///|
+pub extend ElkPort with Show::{to_string, output}

@@ -241,3 +241,9 @@ pub fn SelfLoopHolder::get_routing_slot_count(
 ) -> Array[Int] {
   self.routing_slot_count
 }
+
+///|
+pub extend SelfLoopHolderException with Debug::{to_repr}
+
+///|
+pub extend SelfLoopHolderException with ToJson::{to_json}

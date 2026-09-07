@@ -7,7 +7,7 @@ pub struct IRadialEdgeRouter {
 pub fn new_i_radial_edge_router(
   route_edges : (@graph.ElkNode) -> Unit,
 ) -> IRadialEdgeRouter {
-  { route_edges_fn: route_edges }
+  { route_edges_fn: route_edges, }
 }
 
 ///|

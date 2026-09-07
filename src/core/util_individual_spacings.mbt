@@ -29,7 +29,7 @@ pub struct IndividualSpacings {
 
 ///|
 pub fn new_individual_spacings() -> IndividualSpacings {
-  { entries: None }
+  { entries: None, }
 }
 
 ///|

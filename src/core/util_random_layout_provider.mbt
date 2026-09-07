@@ -402,7 +402,7 @@ fn random_layout_provider_randomize(
 
 ///|
 pub fn new_random_layout_provider() -> RandomLayoutProvider {
-  { initialized: true }
+  { initialized: true, }
 }
 
 ///|

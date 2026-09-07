@@ -204,7 +204,7 @@ fn box_layout_provider_mode_from_string(value : String) -> BoxPackingMode {
 ///|
 fn box_layout_provider_new_group_from_node(node : @graph.ElkNode) -> BoxGroup {
   @graph.node_set_location(node, 0.0, 0.0)
-  { node: Some(node), groups: [], size: new_kvector(), bottom: [], right: [] }
+  { node: Some(node), groups: [], size: new_kvector(), bottom: [], right: [], }
 }
 
 ///|
@@ -1133,7 +1133,7 @@ fn box_layout_provider_place_boxes_grouping(
 
 ///|
 pub fn new_box_layout_provider() -> BoxLayoutProvider {
-  { initialized: true }
+  { initialized: true, }
 }
 
 ///|

@@ -235,10 +235,14 @@ pub fn stress_majorization_exception_message(StressMajorizationException) -> Str
 pub suberror ForceImportException {
   UnsupportedGraph(String)
 } derive(ToJson, @debug.Debug)
+pub fn ForceImportException::to_json(Self) -> Json
+pub fn ForceImportException::to_repr(Self) -> @debug.Repr
 
 pub suberror StressMajorizationException {
   StressMajorizationException(String)
 } derive(ToJson, @debug.Debug)
+pub fn StressMajorizationException::to_json(Self) -> Json
+pub fn StressMajorizationException::to_repr(Self) -> @debug.Repr
 
 // Types and methods
 pub struct AbstractForceModelState {
@@ -273,11 +277,15 @@ pub fn ElkGraphImporter::import_graph(Self, @graph.ElkNode) -> FGraph raise
 pub struct FBendpoint {
   // private fields
 }
+pub fn FBendpoint::equal(Self, Self) -> Bool
+pub fn FBendpoint::not_equal(Self, Self) -> Bool
 pub impl Eq for FBendpoint
 
 pub struct FEdge {
   // private fields
 }
+pub fn FEdge::equal(Self, Self) -> Bool
+pub fn FEdge::not_equal(Self, Self) -> Bool
 pub impl Eq for FEdge
 
 pub struct FGraph {
@@ -326,11 +334,15 @@ pub fn FGraph::set_property(Self, @graph.IProperty[Bool], Bool) -> Unit
 pub struct FLabel {
   // private fields
 }
+pub fn FLabel::equal(Self, Self) -> Bool
+pub fn FLabel::not_equal(Self, Self) -> Bool
 pub impl Eq for FLabel
 
 pub struct FNode {
   // private fields
 }
+pub fn FNode::equal(Self, Self) -> Bool
+pub fn FNode::not_equal(Self, Self) -> Bool
 pub impl Eq for FNode
 
 pub enum FParticle {

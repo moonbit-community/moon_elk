@@ -168,14 +168,20 @@ pub fn new_property_value_value_converter(@core.OptionMetadata, qualified_name_c
 pub suberror ElkGraphQualifiedNameConverterException {
   ElkGraphQualifiedNameConverterException(String)
 } derive(ToJson, @debug.Debug)
+pub fn ElkGraphQualifiedNameConverterException::to_json(Self) -> Json
+pub fn ElkGraphQualifiedNameConverterException::to_repr(Self) -> @debug.Repr
 
 pub suberror NumberValueConverterException {
   NumberValueConverterException(String)
 } derive(ToJson, @debug.Debug)
+pub fn NumberValueConverterException::to_json(Self) -> Json
+pub fn NumberValueConverterException::to_repr(Self) -> @debug.Repr
 
 pub suberror PropertyKeyValueConverterException {
   PropertyKeyValueConverterException(String)
 } derive(ToJson, @debug.Debug)
+pub fn PropertyKeyValueConverterException::to_json(Self) -> Json
+pub fn PropertyKeyValueConverterException::to_repr(Self) -> @debug.Repr
 
 // Types and methods
 pub struct AbstractElkGraphRuntimeModule {
@@ -421,6 +427,9 @@ pub(all) enum GraphTextListTransient {
   ListTransientYes
   ListTransientNo
 } derive(@debug.Debug)
+pub fn GraphTextListTransient::output(Self, &Logger) -> Unit
+pub fn GraphTextListTransient::to_repr(Self) -> @debug.Repr
+pub fn GraphTextListTransient::to_string(Self) -> String
 pub impl Show for GraphTextListTransient
 
 pub struct GraphTextPendingOutgoingSection {
@@ -445,6 +454,9 @@ pub(all) enum GraphTextPropertyValue {
   BooleanValue(Bool)
   ProxyValue(String)
 } derive(@debug.Debug)
+pub fn GraphTextPropertyValue::output(Self, &Logger) -> Unit
+pub fn GraphTextPropertyValue::to_repr(Self) -> @debug.Repr
+pub fn GraphTextPropertyValue::to_string(Self) -> String
 pub impl Show for GraphTextPropertyValue
 
 pub(all) enum GraphTextShape {

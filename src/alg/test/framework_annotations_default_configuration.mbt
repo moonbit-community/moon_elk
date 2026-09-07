@@ -13,7 +13,7 @@ pub fn new_default_configuration(
   ports? : Bool = true,
   edge_labels? : Bool = false,
 ) -> DefaultConfiguration {
-  { edges, nodes, ports, edge_labels }
+  { edges, nodes, ports, edge_labels, }
 }
 
 ///|

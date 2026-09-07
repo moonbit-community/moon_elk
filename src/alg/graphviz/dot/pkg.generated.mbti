@@ -402,10 +402,14 @@ pub fn new_internal_graphviz_dot_parser(Array[GraphvizDotLexToken], grammar_acce
 pub suberror GraphvizDotActivatorException {
   IllegalArgumentException(String)
 } derive(ToJson, @debug.Debug)
+pub fn GraphvizDotActivatorException::to_json(Self) -> Json
+pub fn GraphvizDotActivatorException::to_repr(Self) -> @debug.Repr
 
 pub suberror GraphvizDotExecutableExtensionFactoryException {
   IllegalArgumentException(String)
 } derive(ToJson, @debug.Debug)
+pub fn GraphvizDotExecutableExtensionFactoryException::to_json(Self) -> Json
+pub fn GraphvizDotExecutableExtensionFactoryException::to_repr(Self) -> @debug.Repr
 
 // Types and methods
 pub struct AbstractGraphvizDotRuntimeModule {

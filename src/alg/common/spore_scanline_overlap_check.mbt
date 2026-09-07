@@ -28,7 +28,7 @@ pub fn new_scanline_overlap_check(
   dbg : SvgImage,
 ) -> ScanlineOverlapCheck {
   dbg.add_groups(["n", "o", "e"])
-  { overlap_handler, svg: dbg }
+  { overlap_handler, svg: dbg, }
 }
 
 ///|
@@ -196,8 +196,8 @@ pub fn ScanlineOverlapCheck::sweep(
 
   let points : Array[SporeTimestamp] = []
   for node in nodes {
-    points.push({ low: true, node })
-    points.push({ low: false, node })
+    points.push({ low: true, node, })
+    points.push({ low: false, node, })
     self.svg
     .g("n")
     .add_rect_from_elk(
@@ -223,3 +223,9 @@ pub fn ScanlineOverlapCheck::sweep(
 
   self.svg.isave()
 }
+
+///|
+pub extend ScanlineOverlapCheckException with Debug::{to_repr}
+
+///|
+pub extend ScanlineOverlapCheckException with ToJson::{to_json}

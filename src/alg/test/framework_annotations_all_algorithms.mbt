@@ -5,5 +5,5 @@ pub struct AllAlgorithms {
 
 ///|
 pub fn new_all_algorithms() -> AllAlgorithms {
-  { marker: 0 }
+  { marker: 0, }
 }

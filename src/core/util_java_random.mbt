@@ -54,12 +54,12 @@ pub struct JavaRandom {
 
 ///|
 pub fn new_java_random() -> JavaRandom {
-  { seed: java_random_scramble_seed(java_random_system_seed()) }
+  { seed: java_random_scramble_seed(java_random_system_seed()), }
 }
 
 ///|
 pub fn new_java_random_seeded(seed : Int64) -> JavaRandom {
-  { seed: java_random_scramble_seed(seed) }
+  { seed: java_random_scramble_seed(seed), }
 }
 
 ///|

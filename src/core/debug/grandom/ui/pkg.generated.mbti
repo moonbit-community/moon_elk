@@ -207,6 +207,7 @@ pub(all) enum CoreDebugGRandomSelectionItem {
   CoreDebugGRandomSelectionFile(String)
   CoreDebugGRandomSelectionOther
 } derive(@debug.Debug)
+pub fn CoreDebugGRandomSelectionItem::to_repr(Self) -> @debug.Repr
 
 pub(all) struct CoreDebugGRandomUiBundle {
   symbolic_name : String

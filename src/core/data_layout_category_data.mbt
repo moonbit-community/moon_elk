@@ -12,7 +12,7 @@ pub fn new_layout_category_data(
   name? : String = "",
   description? : String = "",
 ) -> LayoutCategoryData {
-  { id, name, description, layouters: [] }
+  { id, name, description, layouters: [], }
 }
 
 ///|

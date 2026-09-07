@@ -5,7 +5,7 @@ pub struct ElkGraphIdeModule {
 
 ///|
 pub fn new_elk_graph_ide_module() -> ElkGraphIdeModule {
-  { base: new_abstract_elk_graph_ide_module() }
+  { base: new_abstract_elk_graph_ide_module(), }
 }
 
 ///|

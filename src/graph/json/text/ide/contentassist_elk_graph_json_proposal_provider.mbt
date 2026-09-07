@@ -27,7 +27,7 @@ pub fn new_graph_json_text_ide_content_assist_entry(
   documentation? : String? = None,
   source? : String? = None,
 ) -> GraphJsonTextIdeContentAssistEntry {
-  { proposal, prefix, kind, label, description, documentation, source }
+  { proposal, prefix, kind, label, description, documentation, source, }
 }
 
 ///|
@@ -37,7 +37,7 @@ pub struct GraphJsonTextIdeCompletionProposalAcceptor {
 
 ///|
 pub fn new_graph_json_text_ide_completion_proposal_acceptor() -> GraphJsonTextIdeCompletionProposalAcceptor {
-  { entries: [] }
+  { entries: [], }
 }
 
 ///|
@@ -191,7 +191,7 @@ pub fn new_elk_graph_json_ide_proposal_provider(
   metadata : @core.OptionMetadata,
   grammar? : @text.ElkGraphJsonGrammarAccess = @text.new_elk_graph_json_grammar_access(),
 ) -> ElkGraphJsonIdeProposalProvider {
-  { metadata, grammar }
+  { metadata, grammar, }
 }
 
 ///|

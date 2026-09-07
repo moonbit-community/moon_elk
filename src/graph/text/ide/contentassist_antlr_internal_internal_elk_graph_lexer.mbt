@@ -7,7 +7,7 @@ pub struct InternalElkGraphIdeLexer {
 pub fn new_internal_elk_graph_ide_lexer(
   input : String,
 ) -> InternalElkGraphIdeLexer {
-  { delegate: @text.new_internal_elk_graph_lexer(input) }
+  { delegate: @text.new_internal_elk_graph_lexer(input), }
 }
 
 ///|

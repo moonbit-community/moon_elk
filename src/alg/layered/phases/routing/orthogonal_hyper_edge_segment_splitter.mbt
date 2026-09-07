@@ -10,7 +10,7 @@ fn new_hyper_edge_segment_splitter_free_area(
   start_position : Double,
   end_position : Double,
 ) -> HyperEdgeSegmentSplitterFreeArea {
-  { start_position, end_position, size: end_position - start_position }
+  { start_position, end_position, size: end_position - start_position, }
 }
 
 ///|
@@ -24,7 +24,7 @@ fn new_hyper_edge_segment_splitter_area_rating(
   dependencies : Int,
   crossings : Int,
 ) -> HyperEdgeSegmentSplitterAreaRating {
-  { dependencies, crossings }
+  { dependencies, crossings, }
 }
 
 ///|

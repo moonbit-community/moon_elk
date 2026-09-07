@@ -7,7 +7,7 @@ pub struct IRadialCompactor {
 pub fn new_i_radial_compactor(
   compact : (@graph.ElkNode) -> Unit raise,
 ) -> IRadialCompactor {
-  { compact_fn: compact }
+  { compact_fn: compact, }
 }
 
 ///|

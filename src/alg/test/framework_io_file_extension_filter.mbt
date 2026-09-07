@@ -20,7 +20,7 @@ pub fn new_file_extension_filter_with_extensions(
       normalized.push("." + extension)
     }
   }
-  { extensions: normalized }
+  { extensions: normalized, }
 }
 
 ///|

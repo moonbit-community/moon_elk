@@ -56,3 +56,6 @@ pub fn fbendpoint_size(bendpoint : FBendpoint) -> @core.KVector {
 pub fn fbendpoint_radius(bendpoint : FBendpoint) -> Double {
   fbendpoint_size(bendpoint).length() / 2.0
 }
+
+///|
+pub extend FBendpoint with Eq::{not_equal, equal}

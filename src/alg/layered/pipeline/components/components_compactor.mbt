@@ -6,7 +6,7 @@ pub struct LayeredComponentsCompactor {
 
 ///|
 pub fn new_layered_components_compactor() -> LayeredComponentsCompactor {
-  { offset: @core.new_kvector(), graph_size: @core.new_kvector() }
+  { offset: @core.new_kvector(), graph_size: @core.new_kvector(), }
 }
 
 ///|

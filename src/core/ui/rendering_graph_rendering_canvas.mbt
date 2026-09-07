@@ -45,7 +45,7 @@ pub fn new_core_ui_paint_event(
   height : Int,
   graphics : CoreUiGraphics,
 ) -> CoreUiPaintEvent {
-  { x, y, width, height, graphics }
+  { x, y, width, height, graphics, }
 }
 
 ///|
@@ -132,9 +132,9 @@ pub fn GraphRenderingCanvas::compute_size(
       if h_hint > height {
         height = h_hint
       }
-      { x: width, y: height }
+      { x: width, y: height, }
     }
-    None => { x: w_hint, y: h_hint }
+    None => { x: w_hint, y: h_hint, }
   }
 }
 

@@ -169,3 +169,9 @@ pub fn dis_co_graph_rendering_canvas_paint_control(
     None => ()
   }
 }
+
+///|
+pub extend DisCoGraphRenderingCanvasException with Debug::{to_repr}
+
+///|
+pub extend DisCoGraphRenderingCanvasException with ToJson::{to_json}

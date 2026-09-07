@@ -5,7 +5,7 @@ pub struct LayeredElkGraphTransformer {
 
 ///|
 pub fn new_layered_elk_graph_transformer() -> LayeredElkGraphTransformer {
-  { session: new_layered_transform_session() }
+  { session: new_layered_transform_session(), }
 }
 
 ///|

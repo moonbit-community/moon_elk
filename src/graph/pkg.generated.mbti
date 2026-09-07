@@ -445,6 +445,10 @@ pub(all) suberror ElkGraphUtilException {
   IllegalArgumentException(String)
   IllegalStateException(String)
 } derive(ToJson, @debug.Debug)
+pub fn ElkGraphUtilException::output(Self, &Logger) -> Unit
+pub fn ElkGraphUtilException::to_json(Self) -> Json
+pub fn ElkGraphUtilException::to_repr(Self) -> @debug.Repr
+pub fn ElkGraphUtilException::to_string(Self) -> String
 pub impl Show for ElkGraphUtilException
 
 // Types and methods
@@ -469,7 +473,14 @@ pub enum ElkConnectableShape {
 pub struct ElkEdge {
   // private fields
 }
+pub fn ElkEdge::equal(Self, Self) -> Bool
 pub fn ElkEdge::graph_arena(Self) -> GraphArena
+pub fn ElkEdge::hash(Self) -> Int
+pub fn ElkEdge::hash_combine(Self, Hasher) -> Unit
+pub fn ElkEdge::not_equal(Self, Self) -> Bool
+pub fn ElkEdge::output(Self, &Logger) -> Unit
+pub fn ElkEdge::to_repr(Self) -> @debug.Repr
+pub fn ElkEdge::to_string(Self) -> String
 pub impl Eq for ElkEdge
 pub impl Hash for ElkEdge
 pub impl Show for ElkEdge
@@ -479,7 +490,14 @@ pub impl @debug.Debug for ElkEdge
 pub struct ElkEdgeSection {
   // private fields
 }
+pub fn ElkEdgeSection::equal(Self, Self) -> Bool
 pub fn ElkEdgeSection::graph_arena(Self) -> GraphArena
+pub fn ElkEdgeSection::hash(Self) -> Int
+pub fn ElkEdgeSection::hash_combine(Self, Hasher) -> Unit
+pub fn ElkEdgeSection::not_equal(Self, Self) -> Bool
+pub fn ElkEdgeSection::output(Self, &Logger) -> Unit
+pub fn ElkEdgeSection::to_repr(Self) -> @debug.Repr
+pub fn ElkEdgeSection::to_string(Self) -> String
 pub impl Eq for ElkEdgeSection
 pub impl Hash for ElkEdgeSection
 pub impl Show for ElkEdgeSection
@@ -568,7 +586,14 @@ pub enum ElkGraphSwitchTarget {
 pub struct ElkLabel {
   // private fields
 }
+pub fn ElkLabel::equal(Self, Self) -> Bool
 pub fn ElkLabel::graph_arena(Self) -> GraphArena
+pub fn ElkLabel::hash(Self) -> Int
+pub fn ElkLabel::hash_combine(Self, Hasher) -> Unit
+pub fn ElkLabel::not_equal(Self, Self) -> Bool
+pub fn ElkLabel::output(Self, &Logger) -> Unit
+pub fn ElkLabel::to_repr(Self) -> @debug.Repr
+pub fn ElkLabel::to_string(Self) -> String
 pub impl Eq for ElkLabel
 pub impl Hash for ElkLabel
 pub impl Show for ElkLabel
@@ -585,7 +610,14 @@ pub enum ElkLabelParent {
 pub struct ElkNode {
   // private fields
 }
+pub fn ElkNode::equal(Self, Self) -> Bool
 pub fn ElkNode::graph_arena(Self) -> GraphArena
+pub fn ElkNode::hash(Self) -> Int
+pub fn ElkNode::hash_combine(Self, Hasher) -> Unit
+pub fn ElkNode::not_equal(Self, Self) -> Bool
+pub fn ElkNode::output(Self, &Logger) -> Unit
+pub fn ElkNode::to_repr(Self) -> @debug.Repr
+pub fn ElkNode::to_string(Self) -> String
 pub impl Eq for ElkNode
 pub impl Hash for ElkNode
 pub impl Show for ElkNode
@@ -604,7 +636,14 @@ pub fn ElkPersistentEntry::set_value(Self, String?) -> Unit
 pub struct ElkPort {
   // private fields
 }
+pub fn ElkPort::equal(Self, Self) -> Bool
 pub fn ElkPort::graph_arena(Self) -> GraphArena
+pub fn ElkPort::hash(Self) -> Int
+pub fn ElkPort::hash_combine(Self, Hasher) -> Unit
+pub fn ElkPort::not_equal(Self, Self) -> Bool
+pub fn ElkPort::output(Self, &Logger) -> Unit
+pub fn ElkPort::to_repr(Self) -> @debug.Repr
+pub fn ElkPort::to_string(Self) -> String
 pub impl Eq for ElkPort
 pub impl Hash for ElkPort
 pub impl Show for ElkPort
@@ -699,6 +738,11 @@ pub fn[T : Compare + @json.FromJson] PropertyHolderComparator::compare(Self[T], 
 pub struct PropertyId {
   // private fields
 } derive(Eq, Hash, @debug.Debug)
+pub fn PropertyId::equal(Self, Self) -> Bool
+pub fn PropertyId::hash(Self) -> Int
+pub fn PropertyId::hash_combine(Self, Hasher) -> Unit
+pub fn PropertyId::not_equal(Self, Self) -> Bool
+pub fn PropertyId::to_repr(Self) -> @debug.Repr
 
 // Type aliases
 pub type AdvancedPropertyValue = Unit

@@ -5,7 +5,7 @@ pub(all) struct MelkUniqueClassNameValidator {
 
 ///|
 pub fn new_melk_unique_class_name_validator() -> MelkUniqueClassNameValidator {
-  { src_segment: "src" }
+  { src_segment: "src", }
 }
 
 ///|

@@ -10,7 +10,7 @@ fn new_layout_configurator_graph_fixture() -> LayoutConfiguratorGraphFixture {
   let root = @graph.create_graph()
   let n1 = @graph.create_node(Some(root))
   let n2 = @graph.create_node(Some(root))
-  { root, n1, n2 }
+  { root, n1, n2, }
 }
 
 ///|

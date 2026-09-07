@@ -14,7 +14,7 @@ pub fn new_rectpacking_block_stack(
   y : Double,
   node_node_spacing : Double,
 ) -> BlockStack {
-  { blocks: [], x, y, width: 0.0, height: 0.0, node_node_spacing }
+  { blocks: [], x, y, width: 0.0, height: 0.0, node_node_spacing, }
 }
 
 ///|

@@ -20,7 +20,7 @@ fn graph_json_text_property_key_value_converter_raise_unit(
 pub fn new_graph_json_text_property_key_value_converter(
   metadata : @core.OptionMetadata,
 ) -> GraphJsonTextPropertyKeyValueConverter {
-  { metadata, id_rule: "ID" }
+  { metadata, id_rule: "ID", }
 }
 
 ///|
@@ -200,4 +200,12 @@ pub fn GraphJsonTextPropertyKeyValueConverter::to_value(
     Some(option_data) => GraphJsonTextLayoutOption(option_data)
     None => GraphJsonTextCustomProperty(id_suffix)
   }
+}
+
+///|
+pub extend GraphJsonTextPropertyKeyValueConverterException with Debug::{to_repr}
+
+///|
+pub extend GraphJsonTextPropertyKeyValueConverterException with ToJson::{
+  to_json,
 }

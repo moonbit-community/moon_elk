@@ -369,3 +369,12 @@ pub fn properties_skipping_nodes(
     filtered
   }
 }
+
+///|
+pub extend ElkGraphUtilException with Debug::{to_repr}
+
+///|
+pub extend ElkGraphUtilException with Show::{to_string, output}
+
+///|
+pub extend ElkGraphUtilException with ToJson::{to_json}

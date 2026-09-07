@@ -8,7 +8,7 @@ pub(all) struct LayoutUponLoadSettingAction {
 
 ///|
 pub fn new_layout_upon_load_setting_action() -> LayoutUponLoadSettingAction {
-  { checked: layout_upon_load_setting_action_should_layout_upon_load() }
+  { checked: layout_upon_load_setting_action_should_layout_upon_load(), }
 }
 
 ///|

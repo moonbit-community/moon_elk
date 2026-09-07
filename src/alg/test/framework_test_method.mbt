@@ -11,7 +11,7 @@ pub fn[T] new_blackbox_test_method(
   run_fn : (T, ElkNode) -> Unit,
   ignored? : Bool = false,
 ) -> BlackboxTestMethod[T] {
-  { method_name, ignored, run_fn }
+  { method_name, ignored, run_fn, }
 }
 
 ///|

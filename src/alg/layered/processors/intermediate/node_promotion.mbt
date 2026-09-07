@@ -528,7 +528,7 @@ fn node_promotion_promote_node(
 
   state.layers[node.get_id()] = node_layer_pos
   dummy_diff += state.degree_diff[node.get_id()][0]
-  { dummy_diff, max_width_not_exceeded }
+  { dummy_diff, max_width_not_exceeded, }
 }
 
 ///|

@@ -89,7 +89,7 @@ pub(all) struct TestController[G] {
 pub fn[G] new_test_controller(
   layout_algorithm_id : String,
 ) -> TestController[G] {
-  { layout_algorithm_id, current_layout_provider: None, listeners: [] }
+  { layout_algorithm_id, current_layout_provider: None, listeners: [], }
 }
 
 ///|

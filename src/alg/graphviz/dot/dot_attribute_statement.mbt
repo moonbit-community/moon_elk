@@ -6,7 +6,7 @@ pub struct DotAttributeStatement {
 
 ///|
 pub fn dot_create_attribute_statement() -> DotAttributeStatement {
-  { type_: DotAttributeTypeGraph, attributes: [] }
+  { type_: DotAttributeTypeGraph, attributes: [], }
 }
 
 ///|

@@ -8,7 +8,7 @@ pub struct DotGraph {
 
 ///|
 pub fn dot_create_graph() -> DotGraph {
-  { strict: false, type_: DotGraphTypeGraph, name: None, statements: [] }
+  { strict: false, type_: DotGraphTypeGraph, name: None, statements: [], }
 }
 
 ///|

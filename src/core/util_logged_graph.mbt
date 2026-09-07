@@ -15,5 +15,5 @@ pub fn new_logged_graph(
   tag : String,
   graph_type : LoggedGraphType,
 ) -> LoggedGraph {
-  { tag, graph_type }
+  { tag, graph_type, }
 }

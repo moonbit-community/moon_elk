@@ -5,7 +5,7 @@ pub(all) struct MetaDataDescriptionLabelProvider {
 
 ///|
 pub fn new_meta_data_description_label_provider() -> MetaDataDescriptionLabelProvider {
-  { unit: () }
+  { unit: (), }
 }
 
 ///|

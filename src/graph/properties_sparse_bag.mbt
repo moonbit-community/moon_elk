@@ -43,7 +43,7 @@ fn node_property_bag_set(
   external_id : String,
   value : NodePropertyValue,
 ) -> NodePropertyBag {
-  let result = bag.unwrap_or({ entries: [] })
+  let result = bag.unwrap_or({ entries: [], })
   for entry in result.entries {
     if entry.property_id == property_id &&
       node_property_value_same_kind(entry.value, value) {
@@ -51,7 +51,7 @@ fn node_property_bag_set(
       return result
     }
   }
-  result.entries.push({ property_id, external_id, value })
+  result.entries.push({ property_id, external_id, value, })
   result
 }
 
@@ -158,14 +158,14 @@ fn option_bag_set(
   external_id : String,
   value : String,
 ) -> OptionBag {
-  let result = bag.unwrap_or({ entries: [] })
+  let result = bag.unwrap_or({ entries: [], })
   for entry in result.entries {
     if entry.option_id == option_id {
       entry.value = value
       return result
     }
   }
-  result.entries.push({ option_id, external_id, value })
+  result.entries.push({ option_id, external_id, value, })
   result
 }
 

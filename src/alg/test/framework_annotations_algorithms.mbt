@@ -5,7 +5,7 @@ pub struct Algorithms {
 
 ///|
 pub fn new_algorithms(value : Array[Algorithm]) -> Algorithms {
-  { value: value.copy() }
+  { value: value.copy(), }
 }
 
 ///|

@@ -27,7 +27,7 @@ pub fn[T] new_configurator_test_configuration(
       _ => abort("Failed to apply layout configurator.")
     }
   })
-  { base, configurator_method_name }
+  { base, configurator_method_name, }
 }
 
 ///|

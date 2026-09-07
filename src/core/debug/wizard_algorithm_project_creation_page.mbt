@@ -8,7 +8,7 @@ pub(all) struct AlgorithmProjectCreationPage {
 pub fn new_algorithm_project_creation_page(
   plug_in_name : String,
 ) -> AlgorithmProjectCreationPage {
-  { plug_in_name, algorithm_name: plug_in_name }
+  { plug_in_name, algorithm_name: plug_in_name, }
 }
 
 ///|

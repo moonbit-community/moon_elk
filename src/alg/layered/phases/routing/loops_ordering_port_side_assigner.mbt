@@ -46,7 +46,7 @@ pub struct PortSideAssigner {
 
 ///|
 pub fn new_port_side_assigner() -> PortSideAssigner {
-  { _reserved: 0 }
+  { _reserved: 0, }
 }
 
 ///|

@@ -5,7 +5,7 @@ pub struct AbstractElkGraphJsonValidator {
 
 ///|
 pub fn new_abstract_elk_graph_json_validator() -> AbstractElkGraphJsonValidator {
-  { epackages: ["http://www.eclipse.org/elk/ElkGraphJson"] }
+  { epackages: ["http://www.eclipse.org/elk/ElkGraphJson"], }
 }
 
 ///|

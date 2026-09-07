@@ -196,7 +196,7 @@ pub struct PortRestorer {
 
 ///|
 pub fn new_port_restorer() -> PortRestorer {
-  { sl_loops_by_type: Map([]), target_areas: Map([]) }
+  { sl_loops_by_type: Map([]), target_areas: Map([]), }
 }
 
 ///|

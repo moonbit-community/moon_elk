@@ -168,7 +168,7 @@ pub(all) struct CoreDebugGRandomSize {
 
 ///|
 pub fn new_core_debug_grandom_size() -> CoreDebugGRandomSize {
-  { height: None, width: None }
+  { height: None, width: None, }
 }
 
 ///|
@@ -181,7 +181,7 @@ pub fn CoreDebugGRandomSize::set_height(
   self : CoreDebugGRandomSize,
   quantity : CoreDebugGRandomDoubleQuantity?,
 ) -> CoreDebugGRandomSize {
-  { height: quantity, width: self.width }
+  { height: quantity, width: self.width, }
 }
 
 ///|
@@ -189,7 +189,7 @@ pub fn CoreDebugGRandomSize::set_width(
   self : CoreDebugGRandomSize,
   quantity : CoreDebugGRandomDoubleQuantity?,
 ) -> CoreDebugGRandomSize {
-  { height: self.height, width: quantity }
+  { height: self.height, width: quantity, }
 }
 
 ///|
@@ -205,7 +205,7 @@ pub fn new_core_debug_grandom_flow(
   side : CoreDebugGRandomSide,
   amount? : CoreDebugGRandomDoubleQuantity? = None,
 ) -> CoreDebugGRandomFlow {
-  { flow_type, side, amount }
+  { flow_type, side, amount, }
 }
 
 ///|
@@ -219,7 +219,7 @@ pub(all) struct CoreDebugGRandomPorts {
 
 ///|
 pub fn new_core_debug_grandom_ports() -> CoreDebugGRandomPorts {
-  { labels: false, re_use: None, size: None, constraint: None, flow: [] }
+  { labels: false, re_use: None, size: None, constraint: None, flow: [], }
 }
 
 ///|
@@ -840,7 +840,7 @@ pub(all) struct CoreDebugGRandomRandGraph {
 pub fn new_core_debug_grandom_rand_graph(
   configs? : Array[CoreDebugGRandomConfiguration] = [],
 ) -> CoreDebugGRandomRandGraph {
-  { configs: configs.copy() }
+  { configs: configs.copy(), }
 }
 
 ///|
@@ -850,5 +850,5 @@ pub fn CoreDebugGRandomRandGraph::add_config(
 ) -> CoreDebugGRandomRandGraph {
   let next_configs = self.configs.copy()
   next_configs.push(config)
-  { configs: next_configs }
+  { configs: next_configs, }
 }

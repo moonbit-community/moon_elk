@@ -17,7 +17,7 @@ fn graph_json_text_number_value_converter_raise_unit(
 
 ///|
 pub fn new_graph_json_text_number_value_converter() -> GraphJsonTextNumberValueConverter {
-  { marker: () }
+  { marker: (), }
 }
 
 ///|
@@ -99,3 +99,9 @@ pub fn GraphJsonTextNumberValueConverter::to_value(
     }
   }
 }
+
+///|
+pub extend GraphJsonTextNumberValueConverterException with Debug::{to_repr}
+
+///|
+pub extend GraphJsonTextNumberValueConverterException with ToJson::{to_json}

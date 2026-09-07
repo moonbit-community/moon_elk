@@ -9,7 +9,7 @@ pub fn new_end_label_cell_label(
   elk_label : @graph.ElkLabel,
   l_label : LLabel,
 ) -> EndLabelCellLabel {
-  { elk_label, l_label }
+  { elk_label, l_label, }
 }
 
 ///|

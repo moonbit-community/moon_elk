@@ -127,7 +127,7 @@ pub(all) struct CoreDebugGRandomUiBundle {
 pub fn new_core_debug_grandom_ui_bundle(
   symbolic_name? : String = core_debug_grandom_ui_plugin_id,
 ) -> CoreDebugGRandomUiBundle {
-  { symbolic_name, classes: Map([]) }
+  { symbolic_name, classes: Map([]), }
 }
 
 ///|
@@ -163,7 +163,7 @@ pub(all) struct CoreDebugGRandomUiInjector {
 
 ///|
 pub fn new_core_debug_grandom_ui_injector() -> CoreDebugGRandomUiInjector {
-  { providers: Map([]) }
+  { providers: Map([]), }
 }
 
 ///|
@@ -206,7 +206,7 @@ let core_debug_grandom_activator_instance_ref : Ref[GrandomActivator?] = Ref(
 
 ///|
 pub fn new_grandom_activator() -> GrandomActivator {
-  { bundle: new_core_debug_grandom_ui_bundle(), injectors: Map([]) }
+  { bundle: new_core_debug_grandom_ui_bundle(), injectors: Map([]), }
 }
 
 ///|

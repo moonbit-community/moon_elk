@@ -17,7 +17,7 @@ pub fn new_diagram_layout_connector(
   apply_layout_fn? : (LayoutMapping, LayoutApplySettings) -> Unit = (_, _) => (),
   id? : String = "IDiagramLayoutConnector",
 ) -> IDiagramLayoutConnector {
-  { id, build_layout_graph_fn, apply_layout_fn }
+  { id, build_layout_graph_fn, apply_layout_fn, }
 }
 
 ///|

@@ -125,7 +125,7 @@ pub(all) struct CoreDebugGRandomProposalProvider {
 
 ///|
 pub fn new_core_debug_grandom_proposal_provider() -> CoreDebugGRandomProposalProvider {
-  { base: new_abstract_core_debug_grandom_proposal_provider() }
+  { base: new_abstract_core_debug_grandom_proposal_provider(), }
 }
 
 ///|

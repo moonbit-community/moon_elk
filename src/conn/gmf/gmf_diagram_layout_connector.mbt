@@ -15,7 +15,7 @@ pub fn new_gmf_connector_layout_settings(
   max_anim_time? : Int = 0,
   anim_time_factor? : Int = 0,
 ) -> GmfConnectorLayoutSettings {
-  { animate, zoom_to_fit, min_anim_time, max_anim_time, anim_time_factor }
+  { animate, zoom_to_fit, min_anim_time, max_anim_time, anim_time_factor, }
 }
 
 ///|
@@ -1040,3 +1040,15 @@ pub fn GmfDiagramLayoutConnector::apply_layout(
   )
   self.apply_layout_internal(mapping, mapping.animation_time)
 }
+
+///|
+pub extend GmfConnectorDiagramPart with Debug::{to_repr}
+
+///|
+pub extend GmfConnectorWorkbenchPart with Debug::{to_repr}
+
+///|
+pub extend GmfDiagramLayoutConnectorException with Debug::{to_repr}
+
+///|
+pub extend GmfDiagramLayoutConnectorException with ToJson::{to_json}

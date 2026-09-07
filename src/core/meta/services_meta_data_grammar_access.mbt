@@ -25,7 +25,7 @@ pub fn new_meta_data_grammar_access() -> MetaDataGrammarAccess {
   rules["MdGraphFeature"] = "self_loops | inside_self_loops | multi_edges | edge_labels | ports | compound | clusters | disconnected"
   rules["ArrayBrackets"] = "'[' ']'"
   rules["OpSingleAssign"] = "'='"
-  { grammar: core_meta_grammar_name, rules }
+  { grammar: core_meta_grammar_name, rules, }
 }
 
 ///|

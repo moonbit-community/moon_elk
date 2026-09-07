@@ -8,7 +8,7 @@ pub struct AbstractElkGraphJsonScopeProvider {
 
 ///|
 pub fn new_abstract_elk_graph_json_scope_provider() -> AbstractElkGraphJsonScopeProvider {
-  { marker: () }
+  { marker: (), }
 }
 
 ///|

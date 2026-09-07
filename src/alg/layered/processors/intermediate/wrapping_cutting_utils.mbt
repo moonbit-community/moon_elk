@@ -234,3 +234,9 @@ pub fn cutting_utils_insert_dummies(
 
   created_edges
 }
+
+///|
+pub extend CuttingUtilsException with Debug::{to_repr}
+
+///|
+pub extend CuttingUtilsException with ToJson::{to_json}

@@ -9,7 +9,7 @@ pub fn new_elk_graph_ide_injector(
   runtime_module : @text.ElkGraphRuntimeModule,
   ide_module : ElkGraphIdeModule,
 ) -> ElkGraphIdeInjector {
-  { runtime_module, ide_module }
+  { runtime_module, ide_module, }
 }
 
 ///|
@@ -33,7 +33,7 @@ pub struct ElkGraphIdeSetup {
 
 ///|
 pub fn new_elk_graph_ide_setup() -> ElkGraphIdeSetup {
-  { unit: () }
+  { unit: (), }
 }
 
 ///|

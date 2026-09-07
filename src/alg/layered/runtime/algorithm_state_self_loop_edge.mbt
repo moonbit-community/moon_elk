@@ -39,7 +39,7 @@ pub fn new_self_loop_edge(
     )
   }
 
-  let sl_edge = { l_edge, sl_hyper_loop: None, sl_source, sl_target }
+  let sl_edge = { l_edge, sl_hyper_loop: None, sl_source, sl_target, }
 
   sl_source.get_outgoing_sl_edges().push(sl_edge)
   sl_target.get_incoming_sl_edges().push(sl_edge)

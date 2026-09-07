@@ -204,14 +204,20 @@ pub fn vertical_port_placement_size_calculator_calculate_vertical_port_placement
 pub(all) suberror NodeContextException {
   UnsupportedConfigurationException(String)
 } derive(ToJson, @debug.Debug)
+pub fn NodeContextException::to_json(Self) -> Json
+pub fn NodeContextException::to_repr(Self) -> @debug.Repr
 
 pub(all) suberror NodeLabelCellCreatorException {
   IllegalArgumentException(String)
 } derive(ToJson, @debug.Debug)
+pub fn NodeLabelCellCreatorException::to_json(Self) -> Json
+pub fn NodeLabelCellCreatorException::to_repr(Self) -> @debug.Repr
 
 pub(all) suberror PortContextCreatorException {
   IllegalArgumentException(String)
 } derive(ToJson, @debug.Debug)
+pub fn PortContextCreatorException::to_json(Self) -> Json
+pub fn PortContextCreatorException::to_repr(Self) -> @debug.Repr
 
 // Types and methods
 #alias(AtomicCell)

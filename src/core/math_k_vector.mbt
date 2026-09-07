@@ -31,27 +31,27 @@ fn kvector_exception_message(err : KVectorException) -> String {
 
 ///|
 pub fn new_kvector() -> KVector {
-  { x: 0.0, y: 0.0 }
+  { x: 0.0, y: 0.0, }
 }
 
 ///|
 pub fn new_kvector_xy(thex : Double, they : Double) -> KVector {
-  { x: thex, y: they }
+  { x: thex, y: they, }
 }
 
 ///|
 pub fn new_kvector_copy(v : KVector) -> KVector {
-  { x: v.x, y: v.y }
+  { x: v.x, y: v.y, }
 }
 
 ///|
 pub fn new_kvector_between(start : KVector, end : KVector) -> KVector {
-  { x: end.x - start.x, y: end.y - start.y }
+  { x: end.x - start.x, y: end.y - start.y, }
 }
 
 ///|
 pub fn new_kvector_angle(angle : Double) -> KVector {
-  { x: @math.cos(angle), y: @math.sin(angle) }
+  { x: @math.cos(angle), y: @math.sin(angle), }
 }
 
 ///|
@@ -403,3 +403,9 @@ pub fn KVector::parse(self : KVector, string : String) -> Unit raise {
     "The given string contains parts that cannot be parsed as numbers.",
   )
 }
+
+///|
+pub extend KVector with Eq::{not_equal, equal}
+
+///|
+pub extend KVector with Hash::{hash, hash_combine}

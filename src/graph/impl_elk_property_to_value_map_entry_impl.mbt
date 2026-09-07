@@ -9,7 +9,7 @@ pub fn[T] new_elk_property_to_value_map_entry_impl(
   key? : IProperty[T]? = None,
   value? : T? = None,
 ) -> ElkPropertyToValueMapEntryImpl[T] {
-  { key, value }
+  { key, value, }
 }
 
 ///|

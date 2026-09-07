@@ -16,7 +16,7 @@ pub fn new_planar_grid(width : Int, height : Int) -> PlanarGrid raise {
 
 ///|
 pub fn new_empty_planar_grid() -> PlanarGrid raise {
-  { two_bit_grid: new_two_bit_grid(0, 0), x_center: 0, y_center: 0 }
+  { two_bit_grid: new_two_bit_grid(0, 0), x_center: 0, y_center: 0, }
 }
 
 ///|

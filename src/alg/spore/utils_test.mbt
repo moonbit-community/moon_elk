@@ -89,15 +89,15 @@ test "spore utils underlap and distance" {
   }
 
   let vectors : Array[SporeUtilsDistanceCase] = [
-    { vector: @core.new_kvector_xy(-20.0, 20.0), should_collide: true },
-    { vector: @core.new_kvector_xy(-80.0, 0.0), should_collide: false },
-    { vector: @core.new_kvector_xy(-20.0, 9.0), should_collide: false },
-    { vector: @core.new_kvector_xy(0.0, 50.0), should_collide: false },
-    { vector: @core.new_kvector_xy(-9.99, 50.0), should_collide: false },
-    { vector: @core.new_kvector_xy(60.0, 60.0), should_collide: false },
-    { vector: @core.new_kvector_xy(-30.0, 50.0), should_collide: true },
-    { vector: @core.new_kvector_xy(-20.0, 130.0), should_collide: true },
-    { vector: @core.new_kvector_xy(-20.0, -21.0), should_collide: false },
+    { vector: @core.new_kvector_xy(-20.0, 20.0), should_collide: true, },
+    { vector: @core.new_kvector_xy(-80.0, 0.0), should_collide: false, },
+    { vector: @core.new_kvector_xy(-20.0, 9.0), should_collide: false, },
+    { vector: @core.new_kvector_xy(0.0, 50.0), should_collide: false, },
+    { vector: @core.new_kvector_xy(-9.99, 50.0), should_collide: false, },
+    { vector: @core.new_kvector_xy(60.0, 60.0), should_collide: false, },
+    { vector: @core.new_kvector_xy(-30.0, 50.0), should_collide: true, },
+    { vector: @core.new_kvector_xy(-20.0, 130.0), should_collide: true, },
+    { vector: @core.new_kvector_xy(-20.0, -21.0), should_collide: false, },
   ]
 
   let root = @common.new_node(r1.get_center(), r1)

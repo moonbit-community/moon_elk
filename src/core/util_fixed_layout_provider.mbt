@@ -254,7 +254,7 @@ fn fixed_layout_provider_generate_junction_points(
 
 ///|
 pub fn new_fixed_layout_provider() -> FixedLayoutProvider {
-  { initialized: true }
+  { initialized: true, }
 }
 
 ///|

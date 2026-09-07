@@ -38,7 +38,7 @@ pub(all) struct BezierSpline {
 
 ///|
 pub fn new_bezier_spline() -> BezierSpline {
-  { curves: [] }
+  { curves: [], }
 }
 
 ///|

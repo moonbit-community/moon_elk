@@ -9,7 +9,7 @@ pub fn[T] new_factory(
   create_fn : () -> T,
   destroy_fn? : (T) -> Unit = _ => (),
 ) -> IFactory[T] {
-  { create_fn, destroy_fn }
+  { create_fn, destroy_fn, }
 }
 
 ///|

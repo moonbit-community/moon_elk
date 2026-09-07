@@ -98,12 +98,12 @@ fn checked_cgroup(group : CGroup) -> Unit {
 
 ///|
 fn copy_rect(rect : @core.ElkRectangle) -> @core.ElkRectangle {
-  { x: rect.x, y: rect.y, width: rect.width, height: rect.height }
+  { x: rect.x, y: rect.y, width: rect.width, height: rect.height, }
 }
 
 ///|
 fn copy_vec(vec : @core.KVector) -> @core.KVector {
-  { x: vec.x, y: vec.y }
+  { x: vec.x, y: vec.y, }
 }
 
 ///|
@@ -238,7 +238,7 @@ pub fn CNodeBuilder::create(self : CNodeBuilder, graph : CGraph) -> CNode raise 
       node_type: self.node_type,
       to_string_delegate: self.to_string_delegate,
       c_group: None,
-      c_group_offset: { x: 0.0, y: 0.0 },
+      c_group_offset: { x: 0.0, y: 0.0, },
       hitbox_pre_compaction: None,
       hitbox,
       constraints: [],
@@ -261,7 +261,7 @@ pub fn CNodeBuilder::create(self : CNodeBuilder, graph : CGraph) -> CNode raise 
 
 ///|
 pub fn cgroup_of() -> CGroupBuilder {
-  { nodes: [], reference: None, master: None }
+  { nodes: [], reference: None, master: None, }
 }
 
 ///|

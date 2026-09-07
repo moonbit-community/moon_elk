@@ -5,7 +5,7 @@ pub struct ElkGraphJsonQuickfixProvider {
 
 ///|
 pub fn new_elk_graph_json_quickfix_provider() -> ElkGraphJsonQuickfixProvider {
-  { unit: () }
+  { unit: (), }
 }
 
 ///|

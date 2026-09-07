@@ -9,7 +9,7 @@ pub struct DisCoLayoutProvider {
 pub fn new_dis_co_layout_provider(
   metadata : @core.OptionMetadata,
 ) -> DisCoLayoutProvider {
-  { metadata, result: None, component_spacing: 0.0 }
+  { metadata, result: None, component_spacing: 0.0, }
 }
 
 ///|

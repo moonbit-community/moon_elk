@@ -5,7 +5,7 @@ pub struct ElkGraphJsonTransientValueService {
 
 ///|
 pub fn new_elk_graph_json_transient_value_service() -> ElkGraphJsonTransientValueService {
-  { marker: () }
+  { marker: (), }
 }
 
 ///|

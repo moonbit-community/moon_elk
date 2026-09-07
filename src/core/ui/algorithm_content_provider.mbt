@@ -51,7 +51,7 @@ pub(all) struct AlgorithmContentProvider {
 pub fn new_algorithm_content_provider(
   metadata : @core.OptionMetadata,
 ) -> AlgorithmContentProvider {
-  { metadata, filter_map: Map([]), filter_value: "", best_filter_match: None }
+  { metadata, filter_map: Map([]), filter_value: "", best_filter_match: None, }
 }
 
 ///|

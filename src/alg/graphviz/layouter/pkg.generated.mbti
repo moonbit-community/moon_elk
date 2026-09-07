@@ -177,6 +177,8 @@ pub suberror GraphvizException {
 } derive(ToJson, @debug.Debug)
 pub fn GraphvizException::get_cause(Self) -> String?
 pub fn GraphvizException::get_message(Self) -> String
+pub fn GraphvizException::to_json(Self) -> Json
+pub fn GraphvizException::to_repr(Self) -> @debug.Repr
 pub fn GraphvizException::to_string(Self) -> String
 
 // Types and methods

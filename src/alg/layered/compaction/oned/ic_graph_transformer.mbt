@@ -9,7 +9,7 @@ pub fn[T] new_layered_c_graph_transformer(
   transform : (T) -> LayeredCGraph,
   apply_layout : () -> Unit,
 ) -> LayeredICGraphTransformer[T] {
-  { transform_fn: transform, apply_layout_fn: apply_layout }
+  { transform_fn: transform, apply_layout_fn: apply_layout, }
 }
 
 ///|

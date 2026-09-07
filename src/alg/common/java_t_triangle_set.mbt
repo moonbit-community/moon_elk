@@ -5,7 +5,7 @@ pub struct JavaTTriangleSet {
 
 ///|
 pub fn new_java_ttriangle_set() -> JavaTTriangleSet {
-  { values: Set([]) }
+  { values: Set([]), }
 }
 
 ///|

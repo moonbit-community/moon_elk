@@ -63,7 +63,7 @@ fn greedy_switch_processor_test_take_snapshot(
     snapshot_node_order.push(snapshot_layer_nodes)
     snapshot_port_orders.push(snapshot_layer_ports)
   }
-  { node_order: snapshot_node_order, port_orders: snapshot_port_orders }
+  { node_order: snapshot_node_order, port_orders: snapshot_port_orders, }
 }
 
 ///|

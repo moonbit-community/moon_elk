@@ -7,7 +7,7 @@ pub(all) struct InternalCoreMetaIdeLexer {
 pub fn new_internal_core_meta_ide_lexer(
   input : String,
 ) -> InternalCoreMetaIdeLexer {
-  { delegate: @meta.new_internal_meta_data_lexer(input) }
+  { delegate: @meta.new_internal_meta_data_lexer(input), }
 }
 
 ///|

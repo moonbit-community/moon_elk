@@ -15,7 +15,7 @@ pub(all) struct CoreMetaContentAssistContext {
 
 ///|
 pub fn new_core_meta_content_assist_context() -> CoreMetaContentAssistContext {
-  { unit: () }
+  { unit: (), }
 }
 
 ///|
@@ -25,7 +25,7 @@ pub(all) struct CoreMetaCompletionProposalAcceptor {
 
 ///|
 pub fn new_core_meta_completion_proposal_acceptor() -> CoreMetaCompletionProposalAcceptor {
-  { proposals: [] }
+  { proposals: [], }
 }
 
 ///|
@@ -50,7 +50,7 @@ pub(all) struct MetaDataProposalProvider {
 
 ///|
 pub fn new_meta_data_proposal_provider() -> MetaDataProposalProvider {
-  { unit: () }
+  { unit: (), }
 }
 
 ///|

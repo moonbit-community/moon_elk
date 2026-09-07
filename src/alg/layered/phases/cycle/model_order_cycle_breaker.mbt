@@ -139,3 +139,9 @@ pub fn new_model_order_cycle_breaker_layout_phase() -> @core.TypedLayoutProcesso
     model_order_cycle_breaker_process, model_order_cycle_breaker_configuration,
   )
 }
+
+///|
+pub extend ModelOrderCycleBreakerException with Debug::{to_repr}
+
+///|
+pub extend ModelOrderCycleBreakerException with ToJson::{to_json}

@@ -11,7 +11,7 @@ pub fn new_text_layout_mapping(
   parent_element : @graph.ElkNode,
   layout_graph : @graph.ElkNode,
 ) -> TextLayoutMapping {
-  { workbench_part, parent_element, layout_graph }
+  { workbench_part, parent_element, layout_graph, }
 }
 
 ///|
@@ -35,7 +35,7 @@ pub struct TextLayoutConnector {
 
 ///|
 pub fn new_text_layout_connector() -> TextLayoutConnector {
-  { unit: () }
+  { unit: (), }
 }
 
 ///|

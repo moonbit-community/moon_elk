@@ -9,7 +9,7 @@ pub fn new_internal_core_debug_grandom_parser(
   tokens : Array[CoreDebugGRandomIdeLexToken],
   grammar_access? : CoreDebugGRandomIdeGrammarAccess = new_core_debug_grandom_ide_grammar_access(),
 ) -> InternalCoreDebugGRandomParser {
-  { tokens, grammar_access }
+  { tokens, grammar_access, }
 }
 
 ///|

@@ -404,3 +404,6 @@ pub fn mrtree_graph_set_graph_ymax(graph : MrtreeGraph, value : Double) -> Unit 
 pub fn mrtree_graph_graph_ymax(graph : MrtreeGraph) -> Double {
   graph.data.graph_ymax
 }
+
+///|
+pub extend MrtreeGraph with Eq::{not_equal, equal}

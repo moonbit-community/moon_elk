@@ -74,7 +74,7 @@ pub fn new_graph_text_property_assignment(
   key : GraphTextPropertyKey,
   value : GraphTextPropertyValue,
 ) -> GraphTextPropertyAssignment {
-  { key, value }
+  { key, value, }
 }
 
 ///|
@@ -101,7 +101,7 @@ pub fn new_graph_text_validation_issue(
   severity : GraphTextIssueSeverity,
   code? : String? = None,
 ) -> GraphTextValidationIssue {
-  { message, feature, severity, code }
+  { message, feature, severity, code, }
 }
 
 ///|
@@ -205,3 +205,15 @@ pub fn graph_text_shape_set_size(
     ShapeLabel(label) => @graph.label_set_dimensions(label, width, height)
   }
 }
+
+///|
+pub extend GraphTextListTransient with Debug::{to_repr}
+
+///|
+pub extend GraphTextListTransient with Show::{to_string, output}
+
+///|
+pub extend GraphTextPropertyValue with Debug::{to_repr}
+
+///|
+pub extend GraphTextPropertyValue with Show::{to_string, output}

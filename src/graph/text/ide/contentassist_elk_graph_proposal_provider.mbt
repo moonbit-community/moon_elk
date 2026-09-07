@@ -27,7 +27,7 @@ pub fn new_graph_text_ide_content_assist_entry(
   documentation? : String? = None,
   source? : String? = None,
 ) -> GraphTextIdeContentAssistEntry {
-  { proposal, prefix, kind, label, description, documentation, source }
+  { proposal, prefix, kind, label, description, documentation, source, }
 }
 
 ///|
@@ -37,7 +37,7 @@ pub struct GraphTextIdeCompletionProposalAcceptor {
 
 ///|
 pub fn new_graph_text_ide_completion_proposal_acceptor() -> GraphTextIdeCompletionProposalAcceptor {
-  { entries: [] }
+  { entries: [], }
 }
 
 ///|
@@ -182,7 +182,7 @@ pub fn new_elk_graph_ide_proposal_provider(
   metadata : @core.OptionMetadata,
   grammar? : @text.ElkGraphGrammarAccess = @text.new_elk_graph_grammar_access(),
 ) -> ElkGraphIdeProposalProvider {
-  { metadata, grammar }
+  { metadata, grammar, }
 }
 
 ///|

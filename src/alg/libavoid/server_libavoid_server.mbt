@@ -173,3 +173,9 @@ pub fn LibavoidServer::is_canceled(self : LibavoidServer) -> Bool {
 pub fn LibavoidServer::get_input_bytes(self : LibavoidServer) -> Array[Int] {
   self.input_sink.get_bytes()
 }
+
+///|
+pub extend LibavoidServerStateException with Debug::{to_repr}
+
+///|
+pub extend LibavoidServerStateException with ToJson::{to_json}

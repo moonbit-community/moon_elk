@@ -28,7 +28,7 @@ pub fn new_elk_graph_grammar_access() -> ElkGraphGrammarAccess {
   rules["QualifiedIdValue"] = "QualifiedId"
   rules["NumberValue"] = "SIGNED_INT | FLOAT"
   rules["BooleanValue"] = "'true' | 'false'"
-  { grammar: graph_text_grammar_name, rules }
+  { grammar: graph_text_grammar_name, rules, }
 }
 
 ///|

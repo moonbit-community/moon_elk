@@ -18,12 +18,12 @@ pub fn new_elk_rectangle_xywh(
   width : Double,
   height : Double,
 ) -> ElkRectangle {
-  { x, y, width, height }
+  { x, y, width, height, }
 }
 
 ///|
 pub fn new_elk_rectangle_copy(rect : ElkRectangle) -> ElkRectangle {
-  { x: rect.x, y: rect.y, width: rect.width, height: rect.height }
+  { x: rect.x, y: rect.y, width: rect.width, height: rect.height, }
 }
 
 ///|

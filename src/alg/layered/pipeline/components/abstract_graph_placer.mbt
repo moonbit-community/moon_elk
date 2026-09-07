@@ -5,7 +5,7 @@ pub struct LayeredAbstractGraphPlacer {
 
 ///|
 pub fn new_layered_abstract_graph_placer() -> LayeredAbstractGraphPlacer {
-  { _dummy: () }
+  { _dummy: (), }
 }
 
 ///|

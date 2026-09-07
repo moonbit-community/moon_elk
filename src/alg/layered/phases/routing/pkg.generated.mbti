@@ -223,10 +223,14 @@ pub let splines_math_two_pi : Double
 pub(all) suberror NubSplineException {
   IllegalArgumentException(String)
 } derive(ToJson, @debug.Debug)
+pub fn NubSplineException::to_json(Self) -> Json
+pub fn NubSplineException::to_repr(Self) -> @debug.Repr
 
 pub suberror RectangleException {
   RectangleException(String)
 } derive(ToJson, @debug.Debug)
+pub fn RectangleException::to_json(Self) -> Json
+pub fn RectangleException::to_repr(Self) -> @debug.Repr
 
 // Types and methods
 pub struct AbstractSelfLoopRouter {

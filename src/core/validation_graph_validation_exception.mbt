@@ -6,14 +6,14 @@ pub(all) struct GraphValidationException {
 
 ///|
 pub fn new_graph_validation_exception() -> GraphValidationException {
-  { message: None, issues: None }
+  { message: None, issues: None, }
 }
 
 ///|
 pub fn new_graph_validation_exception_message(
   message : String,
 ) -> GraphValidationException {
-  { message: Some(message), issues: None }
+  { message: Some(message), issues: None, }
 }
 
 ///|
@@ -21,7 +21,7 @@ pub fn new_graph_validation_exception_message_issues(
   message : String,
   issues : Array[GraphIssue],
 ) -> GraphValidationException {
-  { message: Some(message), issues: Some(issues.copy()) }
+  { message: Some(message), issues: Some(issues.copy()), }
 }
 
 ///|

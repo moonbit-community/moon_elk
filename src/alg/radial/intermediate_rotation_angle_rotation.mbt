@@ -88,7 +88,7 @@ pub struct AngleRotation {
 
 ///|
 pub fn new_angle_rotation() -> AngleRotation {
-  { rotator: new_i_radial_rotator(angle_rotation_rotate) }
+  { rotator: new_i_radial_rotator(angle_rotation_rotate), }
 }
 
 ///|

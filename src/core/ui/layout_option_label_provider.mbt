@@ -12,7 +12,7 @@ pub fn new_layout_option_label_provider(
   metadata : @core.OptionMetadata,
   option_data : @core.LayoutOptionData,
 ) -> LayoutOptionLabelProvider {
-  { metadata, option_data }
+  { metadata, option_data, }
 }
 
 ///|

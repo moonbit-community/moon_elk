@@ -5,7 +5,7 @@ pub struct InteractiveMrtreeGraphVisitor {
 
 ///|
 pub fn new_interactive_mrtree_graph_visitor() -> InteractiveMrtreeGraphVisitor {
-  { marker: 0 }
+  { marker: 0, }
 }
 
 ///|

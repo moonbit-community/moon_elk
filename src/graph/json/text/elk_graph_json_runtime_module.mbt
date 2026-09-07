@@ -5,7 +5,7 @@ pub struct GraphJsonTextInjector {
 
 ///|
 pub fn new_graph_json_text_injector() -> GraphJsonTextInjector {
-  { providers: Map([]) }
+  { providers: Map([]), }
 }
 
 ///|

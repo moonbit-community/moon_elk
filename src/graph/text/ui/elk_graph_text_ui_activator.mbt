@@ -17,7 +17,7 @@ fn[T] graph_text_ui_activator_raise_illegal_argument(
 
 ///|
 pub fn new_elk_graph_text_ui_activator() -> ElkGraphTextUiActivator {
-  { base: new_text_activator() }
+  { base: new_text_activator(), }
 }
 
 ///|
@@ -78,3 +78,9 @@ pub fn ElkGraphTextUiActivator::create_injector(
   )
   injector
 }
+
+///|
+pub extend ElkGraphTextUiActivatorException with Debug::{to_repr}
+
+///|
+pub extend ElkGraphTextUiActivatorException with ToJson::{to_json}

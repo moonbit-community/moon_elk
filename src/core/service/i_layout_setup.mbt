@@ -17,7 +17,7 @@ pub fn new_layout_setup(
   supports_fn : (LayoutSetupObject) -> Bool,
   create_injector_fn : (CoreServiceInjector) -> CoreServiceInjector,
 ) -> ILayoutSetup {
-  { supports_fn, create_injector_fn }
+  { supports_fn, create_injector_fn, }
 }
 
 ///|
@@ -40,3 +40,6 @@ pub fn ILayoutSetup::create_injector(
 ) -> CoreServiceInjector {
   (self.create_injector_fn)(default_module)
 }
+
+///|
+pub extend LayoutSetupObject with Debug::{to_repr}

@@ -33,7 +33,7 @@ pub(all) struct CubicSplineInterpolator {
 
 ///|
 pub fn new_cubic_spline_interpolator() -> CubicSplineInterpolator {
-  { _dummy: () }
+  { _dummy: (), }
 }
 
 ///|

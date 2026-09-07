@@ -60,7 +60,7 @@ pub struct RectPackingSession {
 
 ///|
 pub fn new_rectpacking_session() -> RectPackingSession {
-  { rows: Map([]) }
+  { rows: Map([]), }
 }
 
 ///|

@@ -375,3 +375,9 @@ pub fn[C, T] AlignmentMatcher::as_matcher(
     () => (),
   )
 }
+
+///|
+pub extend AlignmentMatcherException with Debug::{to_repr}
+
+///|
+pub extend AlignmentMatcherException with ToJson::{to_json}

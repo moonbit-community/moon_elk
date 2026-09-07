@@ -457,3 +457,9 @@ fn one_dimensional_compactor_reverse_constraints(
 
   one_dimensional_compactor_calculate_constraints_for_groups(compactor)
 }
+
+///|
+pub extend OneDimensionalCompactorException with Debug::{to_repr}
+
+///|
+pub extend OneDimensionalCompactorException with ToJson::{to_json}

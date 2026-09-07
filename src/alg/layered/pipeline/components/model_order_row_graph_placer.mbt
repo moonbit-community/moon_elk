@@ -18,7 +18,7 @@ pub struct LayeredModelOrderRowGraphPlacer {
 
 ///|
 pub fn new_layered_model_order_row_graph_placer() -> LayeredModelOrderRowGraphPlacer {
-  { base: new_layered_abstract_graph_placer() }
+  { base: new_layered_abstract_graph_placer(), }
 }
 
 ///|

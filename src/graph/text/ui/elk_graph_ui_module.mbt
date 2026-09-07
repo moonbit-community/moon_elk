@@ -8,7 +8,7 @@ pub struct ElkGraphUiModule {
 pub fn new_elk_graph_ui_module(
   plugin_id? : String = graph_text_ui_plugin_id,
 ) -> ElkGraphUiModule {
-  { plugin_id, base: new_abstract_elk_graph_ui_module(plugin_id~) }
+  { plugin_id, base: new_abstract_elk_graph_ui_module(plugin_id~), }
 }
 
 ///|

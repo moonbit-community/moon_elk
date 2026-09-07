@@ -209,8 +209,8 @@ fn edge_aware_scanline_sweep(
   let points : Array[EdgeAwareScanlineTimestamp] = []
   for node in compactor.c_graph.c_nodes {
     if filter_fun(node) {
-      points.push({ node, low: true })
-      points.push({ node, low: false })
+      points.push({ node, low: true, })
+      points.push({ node, low: false, })
     }
   }
 

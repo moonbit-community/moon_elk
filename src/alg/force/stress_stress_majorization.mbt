@@ -337,3 +337,9 @@ pub fn StressMajorization::execute(self : StressMajorization) -> Unit {
     count += 1
   }
 }
+
+///|
+pub extend StressMajorizationException with Debug::{to_repr}
+
+///|
+pub extend StressMajorizationException with ToJson::{to_json}

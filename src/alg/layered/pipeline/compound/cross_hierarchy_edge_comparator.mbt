@@ -97,3 +97,9 @@ pub fn CrossHierarchyEdgeComparator::compare(
     level1 - level2
   }
 }
+
+///|
+pub extend CrossHierarchyEdgeComparatorException with Debug::{to_repr}
+
+///|
+pub extend CrossHierarchyEdgeComparatorException with ToJson::{to_json}

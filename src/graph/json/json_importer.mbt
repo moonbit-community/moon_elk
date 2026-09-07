@@ -1029,27 +1029,21 @@ fn JsonImporter::transform_in_arena(
   graph : Map[String, Json],
   arena : @graph.GraphArena,
 ) -> @graph.ElkNode raise {
-  try {
-    self.input_model = Some(graph)
-    self.node_id_map.clear()
-    self.port_id_map.clear()
-    self.node_json_map.clear()
-    self.port_json_map.clear()
-    self.edge_json_map.clear()
-    self.label_json_map.clear()
-    self.edge_original_parent_map.clear()
-    let root = arena.create_graph()
-    importer_transform_node(self, graph, root)
-    if !importer_has_error(self) {
-      importer_transform_edges(self, graph)
-    }
-    root
-  } catch {
-    error => {
-      arena.dispose()
-      raise error
-    }
+  errdefer arena.dispose()
+  self.input_model = Some(graph)
+  self.node_id_map.clear()
+  self.port_id_map.clear()
+  self.node_json_map.clear()
+  self.port_json_map.clear()
+  self.edge_json_map.clear()
+  self.label_json_map.clear()
+  self.edge_original_parent_map.clear()
+  let root = arena.create_graph()
+  importer_transform_node(self, graph, root)
+  if !importer_has_error(self) {
+    importer_transform_edges(self, graph)
   }
+  root
 }
 
 ///|

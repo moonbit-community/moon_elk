@@ -24,7 +24,7 @@ pub fn force_import_exception_message(err : ForceImportException) -> String {
 
 ///|
 pub fn new_elk_graph_importer() -> ElkGraphImporter {
-  { _dummy: () }
+  { _dummy: (), }
 }
 
 ///|
@@ -749,3 +749,9 @@ pub fn elk_graph_importer_as_igraph_importer(
     fn(force_graph) { importer.apply_layout(force_graph) },
   )
 }
+
+///|
+pub extend ForceImportException with Debug::{to_repr}
+
+///|
+pub extend ForceImportException with ToJson::{to_json}

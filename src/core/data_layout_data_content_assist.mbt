@@ -11,7 +11,7 @@ pub fn[T] new_layout_data_proposal(
   data : T,
   label? : String? = None,
 ) -> LayoutDataProposal[T] {
-  { proposal, label, data }
+  { proposal, label, data, }
 }
 
 ///|

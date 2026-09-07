@@ -11,7 +11,7 @@ pub fn new_algorithm_factory(
   create_algorithm_fn : () -> AbstractLayoutProvider,
   parameter? : String? = None,
 ) -> AlgorithmFactory {
-  { session, create_algorithm_fn, parameter }
+  { session, create_algorithm_fn, parameter, }
 }
 
 ///|

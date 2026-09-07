@@ -37,7 +37,7 @@ pub fn new_graphviz_output_stream(
   flush_fn : () -> Unit,
   close_fn : () -> Unit,
 ) -> GraphvizOutputStream {
-  { write_byte_fn, write_bytes_fn, flush_fn, close_fn }
+  { write_byte_fn, write_bytes_fn, flush_fn, close_fn, }
 }
 
 ///|
@@ -77,7 +77,7 @@ pub struct GraphvizByteArrayOutputStream {
 
 ///|
 pub fn new_graphviz_byte_array_output_stream() -> GraphvizByteArrayOutputStream {
-  { bytes_ref: Ref([]), flush_count_ref: Ref(0), closed_ref: Ref(false) }
+  { bytes_ref: Ref([]), flush_count_ref: Ref(0), closed_ref: Ref(false), }
 }
 
 ///|
@@ -144,7 +144,7 @@ pub fn new_forked_output_stream2(
   stream0 : GraphvizOutputStream,
   stream1 : GraphvizOutputStream,
 ) -> ForkedOutputStream {
-  { output_streams: [stream0, stream1] }
+  { output_streams: [stream0, stream1], }
 }
 
 ///|

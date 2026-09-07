@@ -689,3 +689,9 @@ pub fn LEdge::to_string(self : LEdge) -> String {
     })
   result
 }
+
+///|
+pub extend LEdgeException with Debug::{to_repr}
+
+///|
+pub extend LEdgeException with ToJson::{to_json}

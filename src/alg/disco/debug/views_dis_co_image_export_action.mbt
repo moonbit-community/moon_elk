@@ -18,7 +18,7 @@ pub fn new_dis_co_image_export_action(
   view : DisCoDebugView,
 ) -> DisCoImageExportAction {
   ignore(dis_co_image_export_action_id)
-  { view, selected_file_name: None }
+  { view, selected_file_name: None, }
 }
 
 ///|

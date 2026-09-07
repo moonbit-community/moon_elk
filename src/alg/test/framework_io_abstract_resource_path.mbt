@@ -258,3 +258,9 @@ pub fn AbstractResourcePath::list_resources(
 pub fn AbstractResourcePath::to_string(self : AbstractResourcePath) -> String {
   self.get_file()
 }
+
+///|
+pub extend AbstractResourcePathException with Debug::{to_repr}
+
+///|
+pub extend AbstractResourcePathException with ToJson::{to_json}

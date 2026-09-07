@@ -11,7 +11,7 @@ pub(all) struct SelectionIterator {
 
 ///|
 pub fn new_selection_iterator() -> SelectionIterator {
-  { visited: [] }
+  { visited: [], }
 }
 
 ///|

@@ -9,7 +9,7 @@ pub fn new_validating_graph_element_visitor(
   visit_fn : (@graph.ElkNode) -> Unit raise,
   get_issues_fn : () -> Array[GraphIssue],
 ) -> IValidatingGraphElementVisitor {
-  { visitor: new_graph_element_visitor(visit_fn), get_issues_fn }
+  { visitor: new_graph_element_visitor(visit_fn), get_issues_fn, }
 }
 
 ///|

@@ -10,14 +10,14 @@ pub fn new_i_radial_sorter(
   sort : (Array[@graph.ElkNode]) -> Unit raise,
   initialize? : (@graph.ElkNode) -> Unit raise,
 ) -> IRadialSorter {
-  { sort_fn: Some(sort), pure_sort_fn: None, initialize_fn: initialize }
+  { sort_fn: Some(sort), pure_sort_fn: None, initialize_fn: initialize, }
 }
 
 ///|
 pub fn new_pure_i_radial_sorter(
   sort : (Array[@graph.ElkNode]) -> Unit,
 ) -> IRadialSorter {
-  { sort_fn: None, pure_sort_fn: Some(sort), initialize_fn: None }
+  { sort_fn: None, pure_sort_fn: Some(sort), initialize_fn: None, }
 }
 
 ///|

@@ -9,7 +9,7 @@ pub fn new_bk_aligner(
   layered_graph : @runtime.LGraph,
   ni : NeighborhoodInformation,
 ) -> BKAligner {
-  { layered_graph, ni }
+  { layered_graph, ni, }
 }
 
 ///|

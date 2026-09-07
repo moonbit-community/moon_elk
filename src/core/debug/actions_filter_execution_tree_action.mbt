@@ -11,7 +11,7 @@ pub(all) struct FilterExecutionTreeAction {
 pub fn new_filter_execution_tree_action(
   view : AbstractLayoutDebugView,
 ) -> FilterExecutionTreeAction {
-  { view, checked: false }
+  { view, checked: false, }
 }
 
 ///|
