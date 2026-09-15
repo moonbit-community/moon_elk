@@ -1,4 +1,5 @@
 import {
+  "moonbitlang/core/debug",
   "moonbitlang/core/cmp",
   "moonbitlang/core/int",
   "Milky2018/moon_elk/core",
