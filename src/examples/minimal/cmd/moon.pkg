@@ -1,0 +1,5 @@
+import {
+  "Milky2018/moon_elk/examples/minimal" @example,
+}
+
+pkgtype(kind: "executable")

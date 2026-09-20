@@ -68,5 +68,10 @@ pub fn libavoid_server_pool_reset_for_test() -> Unit {
 pub fn libavoid_server_pool_set_factory_for_test(
   factory : () -> LibavoidServer,
 ) -> Unit {
+  libavoid_server_pool_set_factory(factory)
+}
+
+///|
+pub fn libavoid_server_pool_set_factory(factory : () -> LibavoidServer) -> Unit {
   libavoid_server_pool_factory_ref.val = factory
 }

@@ -144,3 +144,35 @@ pub fn libavoid_layout_provider_as_layout_provider(
     provider.layout(graph, monitor, session)
   })
 }
+
+///|
+pub fn register_libavoid_layout_algorithm(
+  runtime : @core.LayoutRuntime,
+) -> Unit {
+  runtime.register_layout_algorithm(libavoid_algorithm_id, (
+    _runtime,
+    session,
+    layout_graph,
+    progress_monitor,
+  ) => {
+    new_libavoid_layout_provider().layout(
+      layout_graph, progress_monitor, session,
+    )
+  })
+}
+
+///|
+pub fn add_libavoid_layout_algorithm_with_text_runner(
+  builder : @engine.EngineBuilder,
+  run_fn : (Array[Int], Int) -> String? raise,
+) -> @engine.EngineBuilder {
+  libavoid_server_set_default_transport(
+    Some(new_libavoid_server_transport_from_text_runner(run_fn)),
+  )
+  ignore(
+    builder.add_layout_algorithm(
+      "libavoid", libavoid_algorithm_id, register_libavoid_layout_algorithm,
+    ),
+  )
+  builder
+}

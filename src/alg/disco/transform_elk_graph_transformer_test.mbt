@@ -80,3 +80,36 @@ test "ElkGraphTransformer imports and applies offsets" {
     true,
   )
 }
+
+///|
+test "ElkGraphTransformer moves related ports after compaction" {
+  let root = @graph.create_graph()
+  @graph.node_set_dimensions(root, 60.0, 40.0)
+
+  let port = @graph.create_port(Some(root))
+  @graph.port_set_location(port, 56.0, 18.0)
+  @graph.port_set_dimensions(port, 4.0, 4.0)
+
+  let child = @graph.create_node(Some(root))
+  @graph.node_set_location(child, 100.0, 20.0)
+  @graph.node_set_dimensions(child, 10.0, 10.0)
+
+  let target_port = @graph.create_port(Some(child))
+  @graph.port_set_location(target_port, 0.0, 3.0)
+  @graph.port_set_dimensions(target_port, 4.0, 4.0)
+
+  let edge = @graph.create_edge(Some(root))
+  @graph.edge_add_source(edge, @graph.make_port_shape(port))
+  @graph.edge_add_target(edge, @graph.make_port_shape(target_port))
+  let section = @graph.create_edge_section(edge)
+  @graph.edge_section_set_start(section, 60.0, 20.0)
+  @graph.edge_section_set_end(section, 100.0, 25.0)
+
+  let transformer = new_elk_graph_transformer(component_spacing=4.0)
+  let graph = transformer.import_graph(root)
+  graph.get_components()[0].set_offset(@core.new_kvector_xy(5.0, 7.0))
+  transformer.apply_layout()
+
+  assert_eq(disco_transform_test_close(@graph.port_x(port), 56.0), true)
+  assert_eq(disco_transform_test_close(@graph.port_y(port), 25.0), true)
+}

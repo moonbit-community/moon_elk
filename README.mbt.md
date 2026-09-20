@@ -24,6 +24,15 @@ pub fn layout_json(input : String) -> String raise {
 }
 ```
 
+## Run the Minimal Example
+
+```sh
+moon run src/examples/minimal/cmd
+```
+
+The example uses the full in-process engine and prints the layout result as
+JSON.
+
 ### Minimal Input Example
 
 ```json
@@ -91,13 +100,26 @@ Supported by `new_elk_engine().layout`:
 - `box`
 - `random`
 - `vertiflex`
+- `disco`
+- `topdownpacking`
 
 Not supported (returns algorithm-not-found style errors):
 
-- `disco`
-- `topdownpacking`
 - `libavoid`
 - Graphviz family (`dot`, `neato`, `fdp`, `sfdp`, `twopi`, `circo`)
+
+Graphviz algorithms can be registered explicitly by a host runtime that
+provides a process factory and DOT serializer/parser. They remain excluded from
+the default in-process engine. `add_graphviz_layout_algorithms` registers
+`dot`, `neato`, `fdp`, `sfdp`, `twopi`, and `circo` on a custom
+`EngineBuilder`. When a synchronous text runner is available,
+`add_graphviz_layout_algorithms_with_text_runner` configures the process
+factory and registers the family in one step.
+
+Libavoid follows the same opt-in model. A host can configure a synchronous
+server factory and register `libavoid` explicitly on a custom `EngineBuilder`;
+it remains excluded from the default in-process engine.
+`add_libavoid_layout_algorithm_with_text_runner` combines both steps.
 
 ## Coordinate Semantics for Edges
 

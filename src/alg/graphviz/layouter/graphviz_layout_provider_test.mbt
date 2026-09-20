@@ -171,3 +171,123 @@ test "GraphvizLayoutProvider honors reuse-process preference and dispose stops t
   inspect(destroyed_ref.val, content="1")
   plugin.stop()
 }
+
+///|
+test "Graphviz registration installs an opt-in engine algorithm" {
+  graphviz_layout_provider_reset_runtime_for_test()
+  graphviz_tool_reset_runtime_for_test()
+  graphviz_tool_configure_environment(Some("/usr/bin/"))
+  graphviz_tool_set_executable_probe(_path => true)
+  graphviz_tool_set_process_factory(_args => {
+    Some(
+      graphviz_layout_provider_test_process(
+        graphviz_layout_provider_test_default_graph_bytes_for_test(),
+        Ref(0),
+      ),
+    )
+  })
+  graphviz_layout_provider_set_serializer(_model => [100, 111, 116])
+  graphviz_layout_provider_set_parser(_bytes => {
+    new_graphviz_layout_parse_result(graphviz_layout_provider_test_model())
+  })
+
+  let builder = @engine.new_engine_builder()
+  ignore(
+    builder.add_layout_algorithm("dot", "org.eclipse.elk.graphviz.dot", runtime => {
+      register_graphviz_layout_algorithm(runtime, "dot")
+    }),
+  )
+  let graph = Json::object({
+    "id": Json::string("root"),
+    "layoutOptions": Json::object({
+      "elk.algorithm": Json::string("org.eclipse.elk.graphviz.dot"),
+    }),
+    "children": Json::array([
+      Json::object({
+        "id": Json::string("node"),
+        "width": Json::number(20),
+        "height": Json::number(10),
+      }),
+    ]),
+  })
+
+  let output = builder.build().layout(graph~)
+  match output {
+    Object(fields) => assert_eq(fields["id"], Json::string("root"))
+    _ => fail("expected graph object")
+  }
+}
+
+///|
+test "Graphviz family helper registers every supported command" {
+  let builder = @engine.new_engine_builder()
+  let algorithms = add_graphviz_layout_algorithms(builder)
+    .build()
+    .known_layout_algorithms()
+  for command in ["dot", "neato", "fdp", "sfdp", "twopi", "circo"] {
+    assert_true(algorithms.contains(command))
+  }
+}
+
+///|
+test "Graphviz text runner executes through custom engine" {
+  graphviz_layout_provider_reset_runtime_for_test()
+  graphviz_tool_reset_runtime_for_test()
+  graphviz_tool_configure_environment(Some("/usr/bin/"))
+  graphviz_tool_set_executable_probe(_path => true)
+  graphviz_tool_set_process_factory(_args => {
+    Some(new_graphviz_process_from_text_runner(input => Some(input)))
+  })
+
+  let builder = @engine.new_engine_builder()
+  ignore(add_graphviz_layout_algorithms(builder))
+  let graph = Json::object({
+    "id": Json::string("root"),
+    "layoutOptions": Json::object({ "elk.algorithm": Json::string("dot") }),
+    "children": Json::array([
+      Json::object({
+        "id": Json::string("node"),
+        "width": Json::number(20),
+        "height": Json::number(10),
+      }),
+    ]),
+  })
+
+  let output = builder.build().layout(graph~)
+  match output {
+    Object(fields) => assert_eq(fields["id"], Json::string("root"))
+    _ => fail("expected graph object")
+  }
+}
+
+///|
+test "Graphviz text runner helper registers and executes" {
+  graphviz_layout_provider_reset_runtime_for_test()
+  graphviz_tool_reset_runtime_for_test()
+  graphviz_tool_configure_environment(Some("/usr/bin/"))
+  graphviz_tool_set_executable_probe(_path => true)
+
+  let builder = @engine.new_engine_builder()
+  ignore(
+    add_graphviz_layout_algorithms_with_text_runner(builder, (input, _args) => {
+      Some(input)
+    }),
+  )
+  let graph = Json::object({
+    "id": Json::string("root"),
+    "layoutOptions": Json::object({ "elk.algorithm": Json::string("neato") }),
+    "children": Json::array([
+      Json::object({
+        "id": Json::string("node"),
+        "width": Json::number(20),
+        "height": Json::number(10),
+      }),
+    ]),
+  })
+
+  let output = builder.build().layout(graph~)
+  match output {
+    Object(fields) => assert_eq(fields["id"], Json::string("root"))
+    _ => fail("expected graph object")
+  }
+}
