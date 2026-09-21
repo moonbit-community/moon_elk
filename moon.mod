@@ -13,3 +13,5 @@ license = "EPL-2.0"
 keywords = [ "elk", "layout" ]
 
 description = "A MoonBit port of Eclipse Layout Kernel (ELK)."
+
+warnings = "-test_unqualified_package"
