@@ -13,6 +13,20 @@ pub fn new_topdownpacking_layout_provider() -> TopdownpackingLayoutProvider rais
 }
 
 ///|
+pub fn register_topdownpacking_layout_algorithm(
+  runtime : @core.LayoutRuntime,
+) -> Unit {
+  runtime.register_layout_algorithm(topdownpacking_algorithm_id, (
+    _runtime,
+    _session,
+    layout_graph,
+    progress_monitor,
+  ) => {
+    new_topdownpacking_layout_provider().layout(layout_graph, progress_monitor)
+  })
+}
+
+///|
 pub fn TopdownpackingLayoutProvider::assemble_algorithm(
   self : TopdownpackingLayoutProvider,
   graph : GridElkNode,

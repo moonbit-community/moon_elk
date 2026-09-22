@@ -1,4 +1,7 @@
 ///|
+pub let libavoid_algorithm_id : String = "org.eclipse.elk.libavoid"
+
+///|
 pub let libavoid_option_edge_routing : @graph.IProperty[String] = @graph.new_property(
   "org.eclipse.elk.edgeRouting", "ORTHOGONAL",
 )

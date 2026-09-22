@@ -732,9 +732,19 @@ fn disco_transform_adjust_related_port(
   edge_point : @core.KVector,
   direction : DCDirection,
 ) -> Unit {
-  ignore(port)
-  ignore(edge_point)
-  ignore(direction)
+  if direction.is_horizontal() {
+    @graph.port_set_location(
+      port,
+      @graph.port_x(port),
+      edge_point.y - @graph.port_height(port) / 2.0,
+    )
+  } else {
+    @graph.port_set_location(
+      port,
+      edge_point.x - @graph.port_width(port) / 2.0,
+      @graph.port_y(port),
+    )
+  }
 }
 
 ///|

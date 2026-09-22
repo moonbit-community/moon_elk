@@ -34,6 +34,9 @@ pub fn new_engine_builder() -> @engine.EngineBuilder {
   .add_layout_algorithm(
     "disco", @disco.disco_algorithm_id, @disco.register_disco_layout_algorithm,
   )
+  .add_layout_algorithm(
+    "topdownpacking", @topdownpacking.topdownpacking_algorithm_id, @topdownpacking.register_topdownpacking_layout_algorithm,
+  )
 }
 
 ///|

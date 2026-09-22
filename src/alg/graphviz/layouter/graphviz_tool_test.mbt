@@ -153,3 +153,51 @@ test "panic GraphvizTool cleanup error raises GraphvizException message" {
   ignore(tool.output().read())
   tool.cleanup(graphviz_cleanup_error())
 }
+
+///|
+test "Graphviz text runner process adapts input and output streams" {
+  let captured_ref : Ref[String] = Ref("")
+  let process = new_graphviz_process_from_text_runner(input => {
+    captured_ref.val = input
+    Some("digraph { \"n1\"; }\n")
+  })
+  let input = process.get_output_stream()
+  for byte in [100, 105, 103, 114, 97, 112, 104] {
+    input.write(byte)
+  }
+  input.flush()
+
+  let output = process.get_input_stream()
+  let bytes : Array[Int] = []
+  let mut next = output.read()
+  while next >= 0 {
+    bytes.push(next)
+    next = output.read()
+  }
+  inspect(captured_ref.val, content="digraph")
+  debug_inspect(
+    bytes,
+    content=(
+      #|[
+      #|  100,
+      #|  105,
+      #|  103,
+      #|  114,
+      #|  97,
+      #|  112,
+      #|  104,
+      #|  32,
+      #|  123,
+      #|  32,
+      #|  34,
+      #|  110,
+      #|  49,
+      #|  34,
+      #|  59,
+      #|  32,
+      #|  125,
+      #|  10,
+      #|]
+    ),
+  )
+}

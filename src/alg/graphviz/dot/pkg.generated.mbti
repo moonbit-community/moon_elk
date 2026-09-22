@@ -290,7 +290,11 @@ pub fn graphviz_dot_object_serializer(GraphvizDotSerializer) -> GraphvizDotObjec
 
 pub fn graphviz_dot_object_tag(GraphvizDotObject) -> String
 
+pub fn graphviz_dot_parse_model_bytes(Array[Int]) -> DotGraphvizModel raise
+
 pub let graphviz_dot_plugin_id : String
+
+pub fn graphviz_dot_quote(String) -> String
 
 pub fn graphviz_dot_registered_epackage(String) -> String?
 
@@ -303,6 +307,10 @@ pub fn graphviz_dot_reset_registries_for_test() -> Unit
 pub let graphviz_dot_resource_factory_value : String
 
 pub let graphviz_dot_resource_service_provider_value : String
+
+pub fn graphviz_dot_serialize_model(DotGraphvizModel) -> String
+
+pub fn graphviz_dot_serialize_model_bytes(DotGraphvizModel) -> Array[Int]
 
 pub let graphviz_dot_serializer_class_name : String
 

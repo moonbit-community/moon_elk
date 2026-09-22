@@ -8,13 +8,13 @@ runs:
       if: runner.os != 'Windows'
       shell: bash
       run: |
-        curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash -s nightly
+        curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash -s latest
         echo "$HOME/.moon/bin" >> "$GITHUB_PATH"
 
     - name: Install MoonBit (Windows)
       if: runner.os == 'Windows'
       shell: pwsh
       run: |
-        $env:MOONBIT_INSTALL_VERSION = "nightly"
+        $env:MOONBIT_INSTALL_VERSION = "latest"
         irm https://cli.moonbitlang.com/install/powershell.ps1 | iex
         "$env:USERPROFILE\.moon\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append

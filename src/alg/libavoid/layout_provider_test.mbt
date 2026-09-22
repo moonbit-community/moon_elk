@@ -212,3 +212,191 @@ test "LibavoidLayoutProvider cancel layouting cancels mapped server" {
   inspect(server.is_canceled(), content="true")
   inspect(provider.cancel_layouting(root), content="false")
 }
+
+///|
+test "Libavoid cluster children preserve local x and y coordinates" {
+  let root = create_graph()
+  @graph.node_set_string_property(root, libavoid_option_direction, "RIGHT")
+
+  let cluster = @graph.create_node(Some(root))
+  @graph.node_set_location(cluster, 100.0, 200.0)
+  @graph.node_set_dimensions(cluster, 50.0, 50.0)
+  @graph.node_set_bool_property(cluster, libavoid_option_is_cluster, true)
+
+  let child = @graph.create_node(Some(cluster))
+  @graph.node_set_location(child, 5.0, 7.0)
+  @graph.node_set_dimensions(child, 10.0, 10.0)
+
+  let communicator = new_libavoid_server_communicator()
+  let server = new_libavoid_server()
+  server.set_output_data_for_test(Some(Map([])))
+  communicator.request_layout(
+    root,
+    new_elk_progress_monitor(),
+    server,
+    @core.new_layout_session(),
+  )
+
+  inspect(
+    libavoid_test_bytes_contains(
+      server.get_input_bytes(),
+      "NODE 6 105 207 115 217 0 0\n",
+    ),
+    content="true",
+  )
+}
+
+///|
+test "Libavoid registration installs an opt-in engine algorithm" {
+  libavoid_server_pool_reset_for_test()
+  let server = new_libavoid_server()
+  server.set_output_data_for_test(Some(Map([])))
+  libavoid_server_pool_set_factory(() => server)
+
+  let builder = @engine.new_engine_builder()
+  ignore(
+    builder.add_layout_algorithm(
+      "libavoid", libavoid_algorithm_id, register_libavoid_layout_algorithm,
+    ),
+  )
+  let graph = Json::object({
+    "id": Json::string("root"),
+    "layoutOptions": Json::object({
+      "elk.algorithm": Json::string(libavoid_algorithm_id),
+    }),
+    "children": Json::array([
+      Json::object({
+        "id": Json::string("node"),
+        "width": Json::number(20),
+        "height": Json::number(10),
+      }),
+    ]),
+  })
+
+  let output = builder.build().layout(graph~)
+  match output {
+    Object(fields) => assert_eq(fields["id"], Json::string("root"))
+    _ => fail("expected graph object")
+  }
+  libavoid_server_reset_runtime_for_test()
+}
+
+///|
+test "Libavoid text runner executes through custom engine" {
+  libavoid_server_pool_reset_for_test()
+  let server = new_libavoid_server()
+  server.set_transport(
+    Some(
+      new_libavoid_server_transport_from_text_runner((_input, _timeout) => {
+        Some("LAYOUT\nEDGE 1=10 20 30 40\nDONE\n")
+      }),
+    ),
+  )
+  libavoid_server_pool_set_factory(() => server)
+
+  let builder = @engine.new_engine_builder()
+  ignore(
+    builder.add_layout_algorithm(
+      "libavoid", libavoid_algorithm_id, register_libavoid_layout_algorithm,
+    ),
+  )
+  let graph = Json::object({
+    "id": Json::string("root"),
+    "layoutOptions": Json::object({
+      "elk.algorithm": Json::string(libavoid_algorithm_id),
+    }),
+    "children": Json::array([
+      Json::object({
+        "id": Json::string("n1"),
+        "x": Json::number(10),
+        "y": Json::number(20),
+        "width": Json::number(20),
+        "height": Json::number(10),
+      }),
+      Json::object({
+        "id": Json::string("n2"),
+        "x": Json::number(60),
+        "y": Json::number(20),
+        "width": Json::number(20),
+        "height": Json::number(10),
+      }),
+    ]),
+    "edges": Json::array([
+      Json::object({
+        "id": Json::string("e1"),
+        "sources": Json::array([Json::string("n1")]),
+        "targets": Json::array([Json::string("n2")]),
+      }),
+    ]),
+  })
+
+  let output = builder.build().layout(graph~)
+  guard output is Object(fields) else { fail("expected graph object") }
+  guard fields.get("edges") is Some(Array([Object(edge)])) else {
+    fail("expected one edge")
+  }
+  guard edge.get("sections") is Some(Array([Object(section)])) else {
+    fail("expected one edge section")
+  }
+  guard section.get("startPoint") is Some(Object(start)) else {
+    fail("expected start point")
+  }
+  guard section.get("endPoint") is Some(Object(end)) else {
+    fail("expected end point")
+  }
+  guard start.get("x") is Some(Number(start_x, ..)) else {
+    fail("expected start x")
+  }
+  guard start.get("y") is Some(Number(start_y, ..)) else {
+    fail("expected start y")
+  }
+  guard end.get("x") is Some(Number(end_x, ..)) else { fail("expected end x") }
+  guard end.get("y") is Some(Number(end_y, ..)) else { fail("expected end y") }
+  assert_eq(start_x.to_int(), 10)
+  assert_eq(start_y.to_int(), 20)
+  assert_eq(end_x.to_int(), 30)
+  assert_eq(end_y.to_int(), 40)
+}
+
+///|
+test "Libavoid text runner helper registers and executes" {
+  libavoid_server_pool_reset_for_test()
+  let builder = @engine.new_engine_builder()
+  ignore(
+    add_libavoid_layout_algorithm_with_text_runner(builder, (_input, _timeout) => {
+      Some("LAYOUT\nEDGE 1=1 2 3 4\nDONE\n")
+    }),
+  )
+  let graph = Json::object({
+    "id": Json::string("root"),
+    "layoutOptions": Json::object({
+      "elk.algorithm": Json::string(libavoid_algorithm_id),
+    }),
+    "children": Json::array([
+      Json::object({
+        "id": Json::string("n1"),
+        "width": Json::number(20),
+        "height": Json::number(10),
+      }),
+      Json::object({
+        "id": Json::string("n2"),
+        "width": Json::number(20),
+        "height": Json::number(10),
+      }),
+    ]),
+    "edges": Json::array([
+      Json::object({
+        "id": Json::string("e1"),
+        "sources": Json::array([Json::string("n1")]),
+        "targets": Json::array([Json::string("n2")]),
+      }),
+    ]),
+  })
+
+  let output = builder.build().layout(graph~)
+  match output {
+    Object(fields) => assert_eq(fields["id"], Json::string("root"))
+    _ => fail("expected graph object")
+  }
+  libavoid_server_reset_runtime_for_test()
+}

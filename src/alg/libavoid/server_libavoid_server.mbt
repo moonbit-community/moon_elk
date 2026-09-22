@@ -29,12 +29,18 @@ let libavoid_server_default_output_data_ref : Ref[Map[String, String]?] = Ref(
 )
 
 ///|
+let libavoid_server_default_transport_ref : Ref[LibavoidServerTransport?] = Ref(
+  None,
+)
+
+///|
 pub struct LibavoidServer {
   mut running : Bool
   mut canceled : Bool
   mut process_timeout : Int
   input_sink : @layouter.GraphvizByteArrayOutputStream
   mut output_data : Map[String, String]?
+  mut transport : LibavoidServerTransport?
 }
 
 ///|
@@ -45,6 +51,7 @@ pub fn new_libavoid_server() -> LibavoidServer {
     process_timeout: libavoid_server_process_def_timeout,
     input_sink: @layouter.new_graphviz_byte_array_output_stream(),
     output_data: libavoid_server_default_output_data_ref.val,
+    transport: libavoid_server_default_transport_ref.val,
   }
 }
 
@@ -58,6 +65,14 @@ pub fn libavoid_server_set_default_output_data_for_test(
 ///|
 pub fn libavoid_server_reset_runtime_for_test() -> Unit {
   libavoid_server_default_output_data_ref.val = Some(Map([]))
+  libavoid_server_default_transport_ref.val = None
+}
+
+///|
+pub fn libavoid_server_set_default_transport(
+  transport : LibavoidServerTransport?,
+) -> Unit {
+  libavoid_server_default_transport_ref.val = transport
 }
 
 ///|
@@ -121,7 +136,26 @@ pub fn LibavoidServer::read_output_data(
       "Libavoid server has not been initialized.",
     )
   }
-  self.output_data
+  if self.canceled {
+    return None
+  }
+  match self.transport {
+    Some(transport) => {
+      let output = try
+        transport.run(self.input_sink.get_bytes(), self.process_timeout)
+      catch {
+        err => {
+          libavoid_server_raise_illegal_state(err.to_string())
+          None
+        }
+      } noraise {
+        output => output
+      }
+      self.output_data = output
+      output
+    }
+    None => self.output_data
+  }
 }
 
 ///|
@@ -130,6 +164,14 @@ pub fn LibavoidServer::set_output_data_for_test(
   data : Map[String, String]?,
 ) -> Unit {
   self.output_data = data
+}
+
+///|
+pub fn LibavoidServer::set_transport(
+  self : LibavoidServer,
+  transport : LibavoidServerTransport?,
+) -> Unit {
+  self.transport = transport
 }
 
 ///|

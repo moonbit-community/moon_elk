@@ -254,6 +254,19 @@ pub fn graphviz_tool_set_environment_for_test(
   file_separator? : String = "/",
   path_separator? : String = ":",
 ) -> Unit {
+  graphviz_tool_configure_environment(
+    env_path,
+    file_separator~,
+    path_separator~,
+  )
+}
+
+///|
+pub fn graphviz_tool_configure_environment(
+  env_path : String?,
+  file_separator? : String = "/",
+  path_separator? : String = ":",
+) -> Unit {
   graphviz_tool_env_path_ref.val = env_path
   graphviz_tool_file_separator_ref.val = file_separator
   graphviz_tool_path_separator_ref.val = path_separator
@@ -264,6 +277,11 @@ pub fn graphviz_tool_set_environment_for_test(
 pub fn graphviz_tool_set_executable_probe_for_test(
   probe : (String) -> Bool,
 ) -> Unit {
+  graphviz_tool_set_executable_probe(probe)
+}
+
+///|
+pub fn graphviz_tool_set_executable_probe(probe : (String) -> Bool) -> Unit {
   graphviz_tool_exec_probe_ref.val = probe
 }
 
@@ -276,6 +294,13 @@ pub fn graphviz_tool_set_handle_exec_path_for_test(
 
 ///|
 pub fn graphviz_tool_set_process_factory_for_test(
+  factory : (Array[String]) -> GraphvizProcess?,
+) -> Unit {
+  graphviz_tool_set_process_factory(factory)
+}
+
+///|
+pub fn graphviz_tool_set_process_factory(
   factory : (Array[String]) -> GraphvizProcess?,
 ) -> Unit {
   graphviz_tool_process_factory_ref.val = factory

@@ -26,6 +26,8 @@ pub fn new_topdownpacking_left_right_top_down_node_placer_layout_phase() -> @cor
 
 pub fn new_topdownpacking_left_right_top_down_node_placer_node_arranger() -> INodeArranger
 
+pub fn register_topdownpacking_layout_algorithm(@core.LayoutRuntime) -> Unit
+
 pub let topdownpacking_algorithm_id : String
 
 pub fn topdownpacking_grid_exception_message(TopdownpackingGridException) -> String

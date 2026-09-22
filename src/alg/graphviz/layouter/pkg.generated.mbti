@@ -5,12 +5,17 @@ import {
   "Milky2018/moon_elk/alg/graphviz/dot",
   "Milky2018/moon_elk/alg/graphviz/dot/transform",
   "Milky2018/moon_elk/core",
+  "Milky2018/moon_elk/engine",
   "Milky2018/moon_elk/graph",
   "moonbitlang/core/debug",
   "moonbitlang/core/ref",
 }
 
 // Values
+pub fn add_graphviz_layout_algorithms(@engine.EngineBuilder) -> @engine.EngineBuilder
+
+pub fn add_graphviz_layout_algorithms_with_text_runner(@engine.EngineBuilder, (String, Array[String]) -> String?) -> @engine.EngineBuilder
+
 pub fn graphviz_cleanup_error() -> GraphvizToolCleanup
 
 pub fn graphviz_cleanup_normal() -> GraphvizToolCleanup
@@ -39,9 +44,15 @@ pub fn graphviz_layout_provider_reset_runtime_for_test() -> Unit
 
 pub let graphviz_layout_provider_reuse_process_default : Bool
 
+pub fn graphviz_layout_provider_set_parser((Array[Int]) -> GraphvizLayoutParseResult) -> Unit
+
 pub fn graphviz_layout_provider_set_parser_for_test((Array[Int]) -> GraphvizLayoutParseResult) -> Unit
 
+pub fn graphviz_layout_provider_set_resource_set_provider(() -> GraphvizLayoutResourceSet) -> Unit
+
 pub fn graphviz_layout_provider_set_resource_set_provider_for_test(() -> GraphvizLayoutResourceSet) -> Unit
+
+pub fn graphviz_layout_provider_set_serializer((@dot.DotGraphvizModel) -> Array[Int]) -> Unit
 
 pub fn graphviz_layout_provider_set_serializer_for_test((@dot.DotGraphvizModel) -> Array[Int]) -> Unit
 
@@ -93,6 +104,8 @@ pub let graphviz_option_overlap_mode : @graph.IProperty[String]
 
 pub let graphviz_preference_page_id : String
 
+pub fn graphviz_tool_configure_environment(String?, file_separator? : String, path_separator? : String) -> Unit
+
 pub fn graphviz_tool_current_timeout() -> Int
 
 pub fn graphviz_tool_get_dot_executable() -> String raise GraphvizException
@@ -117,11 +130,15 @@ pub fn graphviz_tool_set_default_locations_for_test(Array[String]) -> Unit
 
 pub fn graphviz_tool_set_environment_for_test(String?, file_separator? : String, path_separator? : String) -> Unit
 
+pub fn graphviz_tool_set_executable_probe((String) -> Bool) -> Unit
+
 pub fn graphviz_tool_set_executable_probe_for_test((String) -> Bool) -> Unit
 
 pub fn graphviz_tool_set_handle_exec_path_for_test(() -> Bool) -> Unit
 
 pub fn graphviz_tool_set_process_default_timeout_for_test(Int) -> Unit
+
+pub fn graphviz_tool_set_process_factory((Array[String]) -> GraphvizProcess?) -> Unit
 
 pub fn graphviz_tool_set_process_factory_for_test((Array[String]) -> GraphvizProcess?) -> Unit
 
@@ -167,9 +184,13 @@ pub fn new_graphviz_preference_store(String) -> GraphvizPreferenceStore
 
 pub fn new_graphviz_process(GraphvizOutputStream, GraphvizInputStream, GraphvizInputStream, destroy_fn? : () -> Unit, close_fn? : () -> Unit, exit_value_fn? : () -> Int?) -> GraphvizProcess
 
+pub fn new_graphviz_process_from_text_runner((String) -> String?) -> GraphvizProcess
+
 pub fn new_graphviz_tool(@transform.Command) -> GraphvizTool raise GraphvizException
 
 pub fn new_layout_dot_exporter() -> LayoutDotExporter
+
+pub fn register_graphviz_layout_algorithm(@core.LayoutRuntime, String) -> Unit
 
 // Errors
 pub suberror GraphvizException {

@@ -1,6 +1,6 @@
 name = "Milky2018/moon_elk"
 
-version = "0.2.4"
+version = "0.3.0"
 
 source = "src"
 
@@ -13,3 +13,5 @@ license = "EPL-2.0"
 keywords = [ "elk", "layout" ]
 
 description = "A MoonBit port of Eclipse Layout Kernel (ELK)."
+
+warnings = "-test_unqualified_package"

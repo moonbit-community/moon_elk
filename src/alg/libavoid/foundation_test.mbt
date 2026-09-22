@@ -98,3 +98,80 @@ test "LibavoidServerPool fetch release dispose and plugin stop interaction" {
   inspect(libavoid_plugin_get_default() is None, content="true")
   inspect(pool.size(), content="0")
 }
+
+///|
+test "LibavoidServer executes configured transport with protocol input" {
+  libavoid_server_reset_runtime_for_test()
+  let captured_input_ref : Ref[Array[Int]] = Ref([])
+  let captured_timeout_ref : Ref[Int] = Ref(0)
+  libavoid_server_set_default_transport(
+    Some(
+      new_libavoid_server_transport((input, timeout) => {
+        captured_input_ref.val = input
+        captured_timeout_ref.val = timeout
+        Some({ "PEDGEP 1": "1 2 3 4" })
+      }),
+    ),
+  )
+
+  let server = new_libavoid_server()
+  server.initialize()
+  let input = libavoid_server_input_or_abort(server)
+  input.write(65)
+  input.write(66)
+  input.flush()
+
+  let output = libavoid_server_read_output_data_or_abort(server)
+  debug_inspect(captured_input_ref.val, content="[65, 66]")
+  inspect(captured_timeout_ref.val, content="60000")
+  match output {
+    Some(data) => inspect(data["PEDGEP 1"], content="1 2 3 4")
+    None => abort("expected transport output")
+  }
+  libavoid_server_reset_runtime_for_test()
+}
+
+///|
+test "Libavoid server output parser reads LAYOUT blocks" {
+  let output = "DEBUG ignored\nLAYOUT\nPEDGEP 1=1 2 3 4\nEDGE 2=5 6 7 8\nDONE\n"
+  let parsed = libavoid_parse_server_output(output)
+  inspect(parsed["PEDGEP 1"], content="1 2 3 4")
+  inspect(parsed["EDGE 2"], content="5 6 7 8")
+}
+
+///|
+test "panic Libavoid server output parser reports ERROR blocks" {
+  ignore(libavoid_parse_server_output("ERROR\nfirst line\nsecond line\nDONE\n"))
+}
+
+///|
+test "Libavoid text runner transport parses server output" {
+  libavoid_server_reset_runtime_for_test()
+  let captured_input_ref : Ref[Array[Int]] = Ref([])
+  let captured_timeout_ref : Ref[Int] = Ref(0)
+  libavoid_server_set_default_transport(
+    Some(
+      new_libavoid_server_transport_from_text_runner((input, timeout) => {
+        captured_input_ref.val = input
+        captured_timeout_ref.val = timeout
+        Some("LAYOUT\nPEDGEP 1=4 5 6 7\nDONE\n")
+      }),
+    ),
+  )
+
+  let server = new_libavoid_server()
+  server.initialize()
+  let input = libavoid_server_input_or_abort(server)
+  input.write(71)
+  input.write(82)
+  input.flush()
+  let output = libavoid_server_read_output_data_or_abort(server)
+
+  debug_inspect(captured_input_ref.val, content="[71, 82]")
+  inspect(captured_timeout_ref.val, content="60000")
+  match output {
+    Some(data) => inspect(data["PEDGEP 1"], content="4 5 6 7")
+    None => abort("expected parsed transport output")
+  }
+  libavoid_server_reset_runtime_for_test()
+}

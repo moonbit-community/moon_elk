@@ -17,6 +17,7 @@ test "all composition advertises every installed in-process algorithm" {
       #|  "sporeCompaction",
       #|  "vertiflex",
       #|  "disco",
+      #|  "topdownpacking",
       #|]
     ),
   )

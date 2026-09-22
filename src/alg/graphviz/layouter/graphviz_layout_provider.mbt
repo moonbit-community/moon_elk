@@ -110,9 +110,9 @@ pub fn graphviz_layout_provider_test_default_graph_bytes_for_test() -> Array[
 
 ///|
 fn graphviz_layout_provider_default_serializer(
-  _model : @dot.DotGraphvizModel,
+  model : @dot.DotGraphvizModel,
 ) -> Array[Int] {
-  graphviz_layout_provider_test_default_graph_bytes_for_test()
+  @dot.graphviz_dot_serialize_model_bytes(model)
 }
 
 ///|
@@ -120,11 +120,15 @@ fn graphviz_layout_provider_default_parser(
   bytes : Array[Int],
 ) -> GraphvizLayoutParseResult {
   if bytes.is_empty() {
-    new_graphviz_layout_parse_result_with_errors([])
-  } else {
-    let model = @dot.dot_create_graphviz_model()
-    model.get_graphs().push(@dot.dot_create_graph())
-    new_graphviz_layout_parse_result(model)
+    return new_graphviz_layout_parse_result_with_errors([])
+  }
+  try @dot.graphviz_dot_parse_model_bytes(bytes) catch {
+    error =>
+      new_graphviz_layout_parse_result_with_errors([
+        new_graphviz_layout_diagnostic(0, error.to_string()),
+      ])
+  } noraise {
+    model => new_graphviz_layout_parse_result(model)
   }
 }
 
@@ -163,6 +167,13 @@ let graphviz_layout_provider_debug_bytes_ref : Ref[Map[String, Array[Int]]] = Re
 pub fn graphviz_layout_provider_set_serializer_for_test(
   serializer : (@dot.DotGraphvizModel) -> Array[Int],
 ) -> Unit {
+  graphviz_layout_provider_set_serializer(serializer)
+}
+
+///|
+pub fn graphviz_layout_provider_set_serializer(
+  serializer : (@dot.DotGraphvizModel) -> Array[Int],
+) -> Unit {
   graphviz_layout_provider_serializer_ref.val = serializer
 }
 
@@ -170,11 +181,25 @@ pub fn graphviz_layout_provider_set_serializer_for_test(
 pub fn graphviz_layout_provider_set_parser_for_test(
   parser : (Array[Int]) -> GraphvizLayoutParseResult,
 ) -> Unit {
+  graphviz_layout_provider_set_parser(parser)
+}
+
+///|
+pub fn graphviz_layout_provider_set_parser(
+  parser : (Array[Int]) -> GraphvizLayoutParseResult,
+) -> Unit {
   graphviz_layout_provider_parser_ref.val = parser
 }
 
 ///|
 pub fn graphviz_layout_provider_set_resource_set_provider_for_test(
+  provider : () -> GraphvizLayoutResourceSet,
+) -> Unit {
+  graphviz_layout_provider_set_resource_set_provider(provider)
+}
+
+///|
+pub fn graphviz_layout_provider_set_resource_set_provider(
   provider : () -> GraphvizLayoutResourceSet,
 ) -> Unit {
   graphviz_layout_provider_resource_set_provider_ref.val = provider
@@ -566,4 +591,49 @@ pub fn graphviz_layout_provider_as_layout_provider(
     initialize_fn=parameter => provider.initialize(parameter),
     dispose_fn=() => provider.dispose(),
   )
+}
+
+///|
+pub fn register_graphviz_layout_algorithm(
+  runtime : @core.LayoutRuntime,
+  command : String,
+) -> Unit {
+  runtime.register_layout_algorithm("org.eclipse.elk.graphviz." + command, (
+    _runtime,
+    _session,
+    layout_graph,
+    progress_monitor,
+  ) => {
+    let provider = new_graphviz_layout_provider()
+    provider.initialize(Some(command))
+    defer provider.dispose()
+    provider.layout(layout_graph, progress_monitor)
+  })
+}
+
+///|
+pub fn add_graphviz_layout_algorithms(
+  builder : @engine.EngineBuilder,
+) -> @engine.EngineBuilder {
+  for command in ["dot", "neato", "fdp", "sfdp", "twopi", "circo"] {
+    ignore(
+      builder.add_layout_algorithm(
+        command,
+        "org.eclipse.elk.graphviz." + command,
+        runtime => register_graphviz_layout_algorithm(runtime, command),
+      ),
+    )
+  }
+  builder
+}
+
+///|
+pub fn add_graphviz_layout_algorithms_with_text_runner(
+  builder : @engine.EngineBuilder,
+  run_fn : (String, Array[String]) -> String?,
+) -> @engine.EngineBuilder {
+  graphviz_tool_set_process_factory(args => {
+    Some(new_graphviz_process_from_text_runner(input => run_fn(input, args)))
+  })
+  add_graphviz_layout_algorithms(builder)
 }

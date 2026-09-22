@@ -1048,7 +1048,7 @@ fn LibavoidServerCommunicator::transform_cluster(
     self.transform_node_at(
       child,
       @graph.node_x(child) + x,
-      @graph.node_x(child) + y,
+      @graph.node_y(child) + y,
     )
   }
 }
