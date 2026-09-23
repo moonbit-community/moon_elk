@@ -18,10 +18,8 @@ jobs:
             os: ubuntu-latest
           - name: macos-arm64
             os: macos-14
-          # Temporarily disable Windows CI due to CreateProcessW command-length limit
-          # in moon check on this repository size.
-          # - name: windows-amd64
-          #   os: windows-latest
+          - name: windows-amd64
+            os: windows-latest
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -41,13 +39,15 @@ jobs:
 
       - name: Check (deny warnings)
         shell: bash
-        run: moon check --deny-warn
+        run: moon check --target all --deny-warn
 
       - name: Format Check
+        if: matrix.os == 'ubuntu-latest'
         shell: bash
         run: moon fmt --check src README.mbt.md moon.mod
 
       - name: Info Check
+        if: matrix.os == 'ubuntu-latest'
         shell: bash
         run: |
           if moon info --help | grep -q -- '--check'; then
@@ -63,43 +63,9 @@ jobs:
 
       - name: Test
         shell: bash
-        run: moon test
+        run: moon test --target all
 
       - name: Package
         if: matrix.os == 'ubuntu-latest'
         shell: bash
         run: moon package
-
-  targets:
-    name: ${{ matrix.os }}-${{ matrix.target }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os:
-          - ubuntu-latest
-          - macos-14
-        target:
-          - wasm
-          - wasm-gc
-          - js
-          - native
-    runs-on: ${{ matrix.os }}
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v5
-
-      - name: Setup MoonBit
-        uses: ./.github/actions/setup-moonbit
-
-      - name: Sync Dependencies
-        shell: bash
-        run: moon update
-
-      - name: Check Target (deny warnings)
-        shell: bash
-        run: moon check --deny-warn --target ${{ matrix.target }}
-
-      - name: Test Target
-        shell: bash
-        run: moon test --target ${{ matrix.target }}
