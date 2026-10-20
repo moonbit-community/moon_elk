@@ -66,7 +66,15 @@ jobs:
           trap 'rm -f "$credentials"' EXIT
           (umask 077; printf '%s\n' "$MOONCAKES_CREDENTIALS" > "$credentials")
           if [ "$DRY_RUN" = "true" ]; then
-            moon publish --dry-run
+            dry_run_log="$RUNNER_TEMP/mooncakes-dry-run.log"
+            if moon publish --dry-run > "$dry_run_log" 2>&1; then
+              cat "$dry_run_log"
+            else
+              cat "$dry_run_log"
+              # Some CLI versions treat the registry's successful HTTP 202 as an error.
+              # Accept only the explicit dry-run success response, not other failures.
+              grep -Fq 'Server status: 202 Accepted, detail: Dry run completed successfully. No changes were made.' "$dry_run_log"
+            fi
           else
             moon publish
           fi
