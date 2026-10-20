@@ -1,8 +1,8 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/core/meta/ui"
+package "moonbit-community/elk/core/meta/ui"
 
 import {
-  "bobzhang/elk/core/meta",
+  "moonbit-community/elk/core/meta",
 }
 
 // Values
@@ -22,7 +22,7 @@ pub fn core_meta_ui_object_tag(CoreMetaUiObject) -> String
 
 pub let core_meta_ui_plugin_id : String
 
-pub let core_meta_ui_status_error : Int
+pub let core_meta_ui_status_error : Int32
 
 pub fn meta_activator_get_instance() -> MetaActivator?
 
@@ -50,7 +50,7 @@ pub fn new_core_meta_ui_injector() -> CoreMetaUiInjector
 
 pub fn new_core_meta_ui_lexer_binding(String, String) -> CoreMetaUiLexerBinding
 
-pub fn new_core_meta_ui_status(Int, String, String) -> CoreMetaUiStatus
+pub fn new_core_meta_ui_status(Int32, String, String) -> CoreMetaUiStatus
 
 pub fn new_meta_activator() -> MetaActivator
 
@@ -184,7 +184,7 @@ pub(all) struct CoreMetaUiInjector {
   providers : Map[String, () -> CoreMetaUiObject]
 }
 pub fn CoreMetaUiInjector::get_instance(Self, String) -> CoreMetaUiObject?
-pub fn CoreMetaUiInjector::provider_count(Self) -> Int
+pub fn CoreMetaUiInjector::provider_count(Self) -> Int32
 pub fn CoreMetaUiInjector::register_provider(Self, String, () -> CoreMetaUiObject) -> Unit
 
 pub(all) struct CoreMetaUiLexerBinding {
@@ -198,7 +198,7 @@ pub(all) enum CoreMetaUiObject {
 }
 
 pub(all) struct CoreMetaUiStatus {
-  severity : Int
+  severity : Int32
   symbolic_name : String
   message : String
 }
@@ -213,7 +213,7 @@ pub fn MetaActivator::get_injector(Self, String) -> CoreMetaUiInjector
 pub fn MetaActivator::get_runtime_module(Self, String) -> @meta.MetaDataRuntimeModule
 pub fn MetaActivator::get_shared_state_module(Self) -> String
 pub fn MetaActivator::get_ui_module(Self, String) -> MetaDataUiModule
-pub fn MetaActivator::injector_count(Self) -> Int
+pub fn MetaActivator::injector_count(Self) -> Int32
 pub fn MetaActivator::register_bundle_class(Self, String) -> Unit
 pub fn MetaActivator::register_injector_provider(Self, String, String, () -> CoreMetaUiObject) -> Unit
 pub fn MetaActivator::start(Self) -> Unit

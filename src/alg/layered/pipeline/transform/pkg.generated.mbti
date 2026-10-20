@@ -1,9 +1,9 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/alg/layered/pipeline/transform"
+package "moonbit-community/elk/alg/layered/pipeline/transform"
 
 import {
-  "bobzhang/elk/alg/layered/runtime",
-  "bobzhang/elk/graph",
+  "moonbit-community/elk/alg/layered/runtime",
+  "moonbit-community/elk/graph",
 }
 
 // Values

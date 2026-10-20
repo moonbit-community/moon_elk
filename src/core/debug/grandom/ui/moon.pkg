@@ -1,5 +1,5 @@
 import {
-  "bobzhang/elk/core/debug/grandom",
-  "bobzhang/elk/core/debug/grandom/ide",
-  "bobzhang/elk/graph",
+  "moonbit-community/elk/core/debug/grandom",
+  "moonbit-community/elk/core/debug/grandom/ide",
+  "moonbit-community/elk/graph",
 }

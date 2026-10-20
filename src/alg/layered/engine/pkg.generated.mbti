@@ -1,8 +1,8 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/alg/layered/engine"
+package "moonbit-community/elk/alg/layered/engine"
 
 import {
-  "bobzhang/elk/alg/layered/runtime",
+  "moonbit-community/elk/alg/layered/runtime",
 }
 
 // Values

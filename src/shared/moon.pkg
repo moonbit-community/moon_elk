@@ -1,10 +1,10 @@
 import {
-  "bobzhang/elk/core",
-  "bobzhang/elk/graph",
-  "bobzhang/elk/alg/layered/options",
-  "bobzhang/elk/alg/radial/options" @radial_options,
-  "bobzhang/elk/alg/rectpacking/options" @rectpacking_options,
-  "bobzhang/elk/alg/spore",
-  "bobzhang/elk/alg/test",
-  "bobzhang/elk/alg/vertiflex",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/graph",
+  "moonbit-community/elk/alg/layered/options",
+  "moonbit-community/elk/alg/radial/options" @radial_options,
+  "moonbit-community/elk/alg/rectpacking/options" @rectpacking_options,
+  "moonbit-community/elk/alg/spore",
+  "moonbit-community/elk/alg/test",
+  "moonbit-community/elk/alg/vertiflex",
 } for "test"

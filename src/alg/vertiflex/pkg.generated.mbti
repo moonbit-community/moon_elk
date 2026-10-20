@@ -1,19 +1,19 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/alg/vertiflex"
+package "moonbit-community/elk/alg/vertiflex"
 
 import {
-  "bobzhang/elk/core",
-  "bobzhang/elk/graph",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/graph",
 }
 
 // Values
-pub const P1_NODE_Y_PLACEMENT : Int = 0
+pub const P1_NODE_Y_PLACEMENT : Int32 = 0
 
-pub const P2_NODE_RELATIVE_PLACEMENT : Int = 1
+pub const P2_NODE_RELATIVE_PLACEMENT : Int32 = 1
 
-pub const P3_NODE_ABSOLUTE_PLACEMENT : Int = 2
+pub const P3_NODE_ABSOLUTE_PLACEMENT : Int32 = 2
 
-pub const P4_EDGE_ROUTING : Int = 3
+pub const P4_EDGE_ROUTING : Int32 = 3
 
 pub fn new_outline_node(Double, Double, OutlineNode?) -> OutlineNode
 
@@ -61,7 +61,7 @@ pub fn vertiflex_internal_min_y(VertiFlexSession, @graph.ElkNode) -> Double
 
 pub fn vertiflex_internal_node_margins(@graph.ElkNode) -> @core.Spacing raise
 
-pub fn vertiflex_internal_node_model_order(VertiFlexSession, @graph.ElkNode) -> Int
+pub fn vertiflex_internal_node_model_order(VertiFlexSession, @graph.ElkNode) -> Int32
 
 pub fn vertiflex_internal_outline_max_depth(VertiFlexSession, @graph.ElkNode) -> Double
 
@@ -81,7 +81,7 @@ pub fn vertiflex_internal_set_min_x(VertiFlexSession, @graph.ElkNode, Double) ->
 
 pub fn vertiflex_internal_set_min_y(VertiFlexSession, @graph.ElkNode, Double) -> Unit
 
-pub fn vertiflex_internal_set_node_model_order(VertiFlexSession, @graph.ElkNode, Int) -> Unit
+pub fn vertiflex_internal_set_node_model_order(VertiFlexSession, @graph.ElkNode, Int32) -> Unit
 
 pub fn vertiflex_internal_set_outline_max_depth(VertiFlexSession, @graph.ElkNode, Double) -> Unit
 
@@ -159,6 +159,6 @@ pub struct VertiFlexSession {
 pub fn VertiFlexSession::clear(Self) -> Unit
 
 // Type aliases
-pub type VertiFlexLayoutPhases = Int
+pub type VertiFlexLayoutPhases = Int32
 
 // Traits

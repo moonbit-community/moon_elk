@@ -1,8 +1,8 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/alg/rectpacking/options"
+package "moonbit-community/elk/alg/rectpacking/options"
 
 import {
-  "bobzhang/elk/graph",
+  "moonbit-community/elk/graph",
 }
 
 // Values

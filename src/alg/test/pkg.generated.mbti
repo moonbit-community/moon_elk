@@ -1,13 +1,13 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/alg/test"
+package "moonbit-community/elk/alg/test"
 
 import {
-  "bobzhang/elk/core",
-  "bobzhang/elk/core/debug/grandom",
-  "bobzhang/elk/core/debug/grandom/ide",
-  "bobzhang/elk/graph",
-  "bobzhang/elk/graph/json",
-  "bobzhang/elk/graph/text",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/core/debug/grandom",
+  "moonbit-community/elk/core/debug/grandom/ide",
+  "moonbit-community/elk/graph",
+  "moonbit-community/elk/graph/json",
+  "moonbit-community/elk/graph/text",
   "moonbitlang/core/debug",
   "moonbitlang/core/random",
 }
@@ -243,7 +243,7 @@ pub fn new_test_before_processor(String) -> TestBeforeProcessor
 
 pub fn new_test_before_processors(Array[TestBeforeProcessor]) -> TestBeforeProcessors
 
-pub fn new_test_class_constructor_signature(Bool, Int) -> TestClassConstructorSignature
+pub fn new_test_class_constructor_signature(Bool, Int32) -> TestClassConstructorSignature
 
 pub fn[T] new_test_configuration(default_configuration? : DefaultConfiguration?, apply_base_configuration_fn? : (T, @graph.ElkNode) -> Unit) -> TestConfiguration[T]
 
@@ -443,7 +443,7 @@ pub struct Algorithms {
 pub fn Algorithms::get_value(Self) -> Array[Algorithm]
 
 pub struct AllAlgorithms {
-  marker : Int
+  marker : Int32
 }
 
 pub struct BlackboxTestMethod[T] {
@@ -456,11 +456,11 @@ pub fn[T] BlackboxTestMethod::invoke(Self[T], T, @graph.ElkNode) -> Unit
 pub fn[T] BlackboxTestMethod::is_ignored(Self[T]) -> Bool
 
 pub struct Configurator {
-  marker : Int
+  marker : Int32
 }
 
 pub struct ConfiguratorProvider {
-  marker : Int
+  marker : Int32
 }
 
 pub struct ConfiguratorTestConfiguration[T] {
@@ -483,7 +483,7 @@ pub fn DefaultConfiguration::nodes_enabled(Self) -> Bool
 pub fn DefaultConfiguration::ports_enabled(Self) -> Bool
 
 pub struct ExperimentRunner[T, G] {
-  runner_id : Int
+  runner_id : Int32
   create_test_instance_fn : () -> T
   experimental_object : ExperimentalObject[T]
   blackbox_tests : Array[BlackboxTestMethod[T]]
@@ -499,7 +499,7 @@ pub fn[T, G] ExperimentRunner::describe_whitebox_test(Self[T, G], WhiteboxTestMe
 pub fn[T, G] ExperimentRunner::get_blackbox_tests(Self[T, G]) -> Array[BlackboxTestMethod[T]]
 pub fn[T, G] ExperimentRunner::get_experimental_object(Self[T, G]) -> ExperimentalObject[T]
 pub fn[T, G] ExperimentRunner::get_name(Self[T, G]) -> String
-pub fn[T, G] ExperimentRunner::get_runner_id(Self[T, G]) -> Int
+pub fn[T, G] ExperimentRunner::get_runner_id(Self[T, G]) -> Int32
 pub fn[T, G] ExperimentRunner::get_whitebox_after_tests(Self[T, G], String) -> Array[WhiteboxTestMethod[T, G]]
 pub fn[T, G] ExperimentRunner::get_whitebox_before_tests(Self[T, G], String) -> Array[WhiteboxTestMethod[T, G]]
 pub fn[T, G] ExperimentRunner::get_whitebox_tests(Self[T, G]) -> Array[WhiteboxTestMethod[T, G]]
@@ -531,7 +531,7 @@ pub fn[T] ExperimentalObject::realize(Self[T], T) -> @graph.ElkNode raise
 pub fn[T] ExperimentalObject::to_string(Self[T]) -> String
 
 pub struct FailIfNotExecuted {
-  marker : Int
+  marker : Int32
 }
 
 pub struct FileExtensionFilter {
@@ -562,11 +562,11 @@ pub fn[T] GraphFromMethod::to_string(Self[T]) -> String
 pub fn[T] GraphFromMethod::to_test_graph(Self[T]) -> TestGraph[T]
 
 pub struct GraphProvider {
-  marker : Int
+  marker : Int32
 }
 
 pub struct GraphResourceProvider {
-  marker : Int
+  marker : Int32
 }
 
 pub enum GraphTestShape {
@@ -602,15 +602,15 @@ pub fn[T] MethodTestConfiguration::as_test_configuration(Self[T]) -> TestConfigu
 pub fn[T] MethodTestConfiguration::to_string(Self[T]) -> String
 
 pub struct OnlyOnRootNode {
-  marker : Int
+  marker : Int32
 }
 
 pub struct RandomGeneratorFile {
-  marker : Int
+  marker : Int32
 }
 
 pub struct RandomGeneratorOptions {
-  marker : Int
+  marker : Int32
 }
 
 pub struct RandomGraphFromFile {
@@ -683,7 +683,7 @@ pub fn TestBeforeProcessors::get_value(Self) -> Array[TestBeforeProcessor]
 
 pub struct TestClassConstructorSignature {
   is_public : Bool
-  parameter_count : Int
+  parameter_count : Int32
 }
 
 pub struct TestConfiguration[T] {

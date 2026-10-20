@@ -1,21 +1,21 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/alg/mrtree"
+package "moonbit-community/elk/alg/mrtree"
 
 import {
-  "bobzhang/elk/alg/mrtree/options",
-  "bobzhang/elk/core",
-  "bobzhang/elk/graph",
+  "moonbit-community/elk/alg/mrtree/options",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/graph",
   "moonbitlang/core/debug",
 }
 
 // Values
-pub const P1Treeification : Int = 0
+pub const P1Treeification : Int32 = 0
 
-pub const P2NodeOrdering : Int = 1
+pub const P2NodeOrdering : Int32 = 1
 
-pub const P3NodePlacement : Int = 2
+pub const P3NodePlacement : Int32 = 2
 
-pub const P4EdgeRouting : Int = 3
+pub const P4EdgeRouting : Int32 = 3
 
 pub fn interactive_mrtree_graph_visitor_set_interactive_options(@graph.ElkNode) -> Unit
 
@@ -77,7 +77,7 @@ pub fn mrtree_graph_origin(MrtreeGraph) -> @graph.ElkNode?
 
 pub fn mrtree_graph_padding(MrtreeGraph) -> @core.Spacing
 
-pub fn mrtree_graph_priority(MrtreeGraph) -> Int
+pub fn mrtree_graph_priority(MrtreeGraph) -> Int32
 
 pub fn mrtree_graph_removable_edges(MrtreeGraph) -> Array[MrtreeEdge]
 
@@ -103,7 +103,7 @@ pub fn mrtree_graph_set_graph_ymax(MrtreeGraph, Double) -> Unit
 
 pub fn mrtree_graph_set_graph_ymin(MrtreeGraph, Double) -> Unit
 
-pub fn mrtree_graph_set_priority(MrtreeGraph, Int) -> Unit
+pub fn mrtree_graph_set_priority(MrtreeGraph, Int32) -> Unit
 
 pub fn mrtree_graph_set_removable_edges(MrtreeGraph, Array[MrtreeEdge]) -> Unit
 
@@ -149,15 +149,15 @@ pub fn mrtree_node_compact_level_ascension(MrtreeNode) -> Bool
 
 pub fn mrtree_node_copy_properties_from_elk(MrtreeNode, @graph.ElkNode) -> Unit
 
-pub fn mrtree_node_descendants(MrtreeNode) -> Int
+pub fn mrtree_node_descendants(MrtreeNode) -> Int32
 
 pub fn mrtree_node_dummy(MrtreeNode) -> Bool
 
-pub fn mrtree_node_fan(MrtreeNode) -> Int
+pub fn mrtree_node_fan(MrtreeNode) -> Int32
 
 pub fn mrtree_node_graph(MrtreeNode) -> MrtreeGraph
 
-pub fn mrtree_node_id(MrtreeNode) -> Int
+pub fn mrtree_node_id(MrtreeNode) -> Int32
 
 pub fn mrtree_node_incoming_edges(MrtreeNode) -> Array[MrtreeEdge]
 
@@ -187,13 +187,13 @@ pub fn mrtree_node_parent(MrtreeNode) -> MrtreeNode?
 
 pub fn mrtree_node_position(MrtreeNode) -> @core.KVector
 
-pub fn mrtree_node_position_constraint(MrtreeNode) -> Int
+pub fn mrtree_node_position_constraint(MrtreeNode) -> Int32
 
-pub fn mrtree_node_position_in_level(MrtreeNode) -> Int
+pub fn mrtree_node_position_in_level(MrtreeNode) -> Int32
 
 pub fn mrtree_node_prelim(MrtreeNode) -> Double
 
-pub fn mrtree_node_priority(MrtreeNode) -> Int
+pub fn mrtree_node_priority(MrtreeNode) -> Int32
 
 pub fn mrtree_node_remove_incoming_edge(MrtreeNode, MrtreeEdge) -> Unit
 
@@ -209,13 +209,13 @@ pub fn mrtree_node_set_compact_constraints(MrtreeNode, Array[MrtreeNode]) -> Uni
 
 pub fn mrtree_node_set_compact_level_ascension(MrtreeNode, Bool) -> Unit
 
-pub fn mrtree_node_set_descendants(MrtreeNode, Int) -> Unit
+pub fn mrtree_node_set_descendants(MrtreeNode, Int32) -> Unit
 
 pub fn mrtree_node_set_dummy(MrtreeNode, Bool) -> Unit
 
-pub fn mrtree_node_set_fan(MrtreeNode, Int) -> Unit
+pub fn mrtree_node_set_fan(MrtreeNode, Int32) -> Unit
 
-pub fn mrtree_node_set_id(MrtreeNode, Int) -> Unit
+pub fn mrtree_node_set_id(MrtreeNode, Int32) -> Unit
 
 pub fn mrtree_node_set_internal_id(MrtreeNode, String) -> Unit
 
@@ -233,9 +233,9 @@ pub fn mrtree_node_set_modifier(MrtreeNode, Double) -> Unit
 
 pub fn mrtree_node_set_outgoing_edges(MrtreeNode, Array[MrtreeEdge]) -> Unit
 
-pub fn mrtree_node_set_position_constraint(MrtreeNode, Int) -> Unit
+pub fn mrtree_node_set_position_constraint(MrtreeNode, Int32) -> Unit
 
-pub fn mrtree_node_set_position_in_level(MrtreeNode, Int) -> Unit
+pub fn mrtree_node_set_position_in_level(MrtreeNode, Int32) -> Unit
 
 pub fn mrtree_node_set_prelim(MrtreeNode, Double) -> Unit
 
@@ -245,21 +245,21 @@ pub fn mrtree_node_set_right_sibling(MrtreeNode, MrtreeNode?) -> Unit
 
 pub fn mrtree_node_set_root(MrtreeNode, Bool) -> Unit
 
-pub fn mrtree_node_set_tree_level(MrtreeNode, Int) -> Unit
+pub fn mrtree_node_set_tree_level(MrtreeNode, Int32) -> Unit
 
-pub fn mrtree_node_set_xcoor(MrtreeNode, Int) -> Unit
+pub fn mrtree_node_set_xcoor(MrtreeNode, Int32) -> Unit
 
-pub fn mrtree_node_set_ycoor(MrtreeNode, Int) -> Unit
+pub fn mrtree_node_set_ycoor(MrtreeNode, Int32) -> Unit
 
 pub fn mrtree_node_size(MrtreeNode) -> @core.KVector
 
 pub fn mrtree_node_to_string(MrtreeNode) -> String
 
-pub fn mrtree_node_tree_level(MrtreeNode) -> Int
+pub fn mrtree_node_tree_level(MrtreeNode) -> Int32
 
-pub fn mrtree_node_xcoor(MrtreeNode) -> Int
+pub fn mrtree_node_xcoor(MrtreeNode) -> Int32
 
-pub fn mrtree_node_ycoor(MrtreeNode) -> Int
+pub fn mrtree_node_ycoor(MrtreeNode) -> Int32
 
 pub fn mrtree_order_balance_process(MrtreeGraph, @core.IElkProgressMonitor?) -> Unit raise
 
@@ -269,9 +269,9 @@ pub fn mrtree_shape_size(MrtreeShape) -> @core.KVector
 
 pub let mrtree_tree_layout_phase_descriptor : @core.PhaseDescriptor
 
-pub fn mrtree_tree_layout_phase_factory(Int, MrtreeGraph) -> @core.LayoutProcessorFactory
+pub fn mrtree_tree_layout_phase_factory(Int32, MrtreeGraph) -> @core.LayoutProcessorFactory
 
-pub fn mrtree_tree_util_depth(MrtreeNode) -> Int raise
+pub fn mrtree_tree_util_depth(MrtreeNode) -> Int32 raise
 
 pub fn mrtree_tree_util_direction_is_horizontal(String) -> Bool
 
@@ -291,7 +291,7 @@ pub fn mrtree_tree_util_get_first_point(MrtreeEdge) -> @core.KVector
 
 pub fn mrtree_tree_util_get_last_point(MrtreeEdge) -> @core.KVector
 
-pub fn mrtree_tree_util_get_left_most(Array[MrtreeNode], depth? : Int) -> MrtreeNode? raise
+pub fn mrtree_tree_util_get_left_most(Array[MrtreeNode], depth? : Int32) -> MrtreeNode? raise
 
 pub fn mrtree_tree_util_get_lowest_parent(MrtreeNode, MrtreeGraph) -> MrtreeNode? raise
 
@@ -303,11 +303,11 @@ pub fn mrtree_tree_util_get_root(MrtreeGraph) -> MrtreeNode?
 
 pub fn mrtree_tree_util_get_subtree(MrtreeNode) -> Array[MrtreeNode] raise
 
-pub fn mrtree_tree_util_get_unique_long(Int, Int) -> Int64
+pub fn mrtree_tree_util_get_unique_long(Int32, Int32) -> Int64
 
 pub fn mrtree_tree_util_is_cycle_inducing(MrtreeEdge, MrtreeGraph) -> Bool
 
-pub fn mrtree_tree_util_root_distance(MrtreeNode, MrtreeNode) -> Int raise
+pub fn mrtree_tree_util_root_distance(MrtreeNode, MrtreeNode) -> Int32 raise
 
 pub fn mrtree_tree_util_to_node_border(@core.KVector, @core.KVector, @core.KVector) -> Unit
 
@@ -359,7 +359,7 @@ pub fn new_mrtree_multi_level_edge_node_node_gap(MrtreeNode?, MrtreeNode?, @core
 
 pub fn new_mrtree_neighbors_processor_layout_processor() -> @core.TypedLayoutProcessor[MrtreeGraph]
 
-pub fn new_mrtree_node(Int, MrtreeGraph, label? : String) -> MrtreeNode
+pub fn new_mrtree_node(Int32, MrtreeGraph, label? : String) -> MrtreeNode
 
 pub fn new_mrtree_node_orderer_layout_phase() -> @core.TypedLayoutProcessor[MrtreeGraph]
 
@@ -383,17 +383,17 @@ pub fn register_mrtree_layout_algorithm(@core.LayoutRuntime) -> Unit
 
 // Types and methods
 pub struct InteractiveMrtreeGraphVisitor {
-  marker : Int
+  marker : Int32
 }
 pub fn InteractiveMrtreeGraphVisitor::visit(Self, @graph.ElkNode) -> Unit
 
 pub struct Mrtree {
-  marker : Int
+  marker : Int32
 }
 pub fn Mrtree::do_layout(Self, MrtreeGraph, @core.IElkProgressMonitor) -> MrtreeGraph raise
 
 pub struct MrtreeComponentsProcessor {
-  marker : Int
+  marker : Int32
 }
 pub fn MrtreeComponentsProcessor::pack(Self, Array[MrtreeGraph]) -> MrtreeGraph raise
 pub fn MrtreeComponentsProcessor::split(Self, MrtreeGraph) -> Array[MrtreeGraph] raise
@@ -406,7 +406,7 @@ pub fn MrtreeEdge::not_equal(Self, Self) -> Bool
 pub impl Eq for MrtreeEdge
 
 pub struct MrtreeElkGraphImporter {
-  marker : Int
+  marker : Int32
 }
 pub fn MrtreeElkGraphImporter::apply_layout(Self, MrtreeGraph) -> Unit raise
 pub fn MrtreeElkGraphImporter::import_graph(Self, @graph.ElkNode) -> MrtreeGraph raise
@@ -467,7 +467,7 @@ pub struct MrtreeNode {
   // private fields
 }
 pub fn MrtreeNode::equal(Self, Self) -> Bool
-pub fn MrtreeNode::hash(Self) -> Int
+pub fn MrtreeNode::hash(Self) -> Int32
 pub fn MrtreeNode::hash_combine(Self, Hasher) -> Unit
 pub fn MrtreeNode::not_equal(Self, Self) -> Bool
 pub impl Eq for MrtreeNode
@@ -485,6 +485,6 @@ pub struct MrtreeTreeLayoutProvider {
 pub fn MrtreeTreeLayoutProvider::layout(Self, @graph.ElkNode, @core.IElkProgressMonitor) -> Unit raise
 
 // Type aliases
-pub type MrtreeTreeLayoutPhases = Int
+pub type MrtreeTreeLayoutPhases = Int32
 
 // Traits

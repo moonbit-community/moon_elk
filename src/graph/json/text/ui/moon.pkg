@@ -1,6 +1,6 @@
 import {
-  "bobzhang/elk/core",
-  "bobzhang/elk/graph",
-  "bobzhang/elk/graph/json/text",
-  "bobzhang/elk/graph/json/text/ide",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/graph",
+  "moonbit-community/elk/graph/json/text",
+  "moonbit-community/elk/graph/json/text/ide",
 }

@@ -1,6 +1,6 @@
 import {
   "moonbitlang/core/double",
-  "bobzhang/elk/core",
-  "bobzhang/elk/alg/common/compaction",
-  "bobzhang/elk/alg/layered/compaction/oned",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/alg/common/compaction",
+  "moonbit-community/elk/alg/layered/compaction/oned",
 }

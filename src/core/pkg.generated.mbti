@@ -1,8 +1,8 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/core"
+package "moonbit-community/elk/core"
 
 import {
-  "bobzhang/elk/graph",
+  "moonbit-community/elk/graph",
   "moonbitlang/core/debug",
   "moonbitlang/core/random",
 }
@@ -36,7 +36,7 @@ pub fn apply_visitor(@graph.ElkNode, IGraphElementVisitor) -> Unit raise
 
 pub fn apply_visitors(@graph.ElkNode, Array[IGraphElementVisitor]) -> Unit raise
 
-pub fn approximate_bezier_segment(Int, Array[KVector]) -> Array[KVector] raise
+pub fn approximate_bezier_segment(Int32, Array[KVector]) -> Array[KVector] raise
 
 pub fn approximate_bezier_segment_auto(Array[KVector]) -> Array[KVector] raise
 
@@ -48,19 +48,19 @@ pub fn averaged(Array[Double]) -> Double
 
 pub fn averagef(Array[Double]) -> Double
 
-pub fn averagei(Array[Int]) -> Int
+pub fn averagei(Array[Int32]) -> Int32
 
 pub fn averagel(Array[Int64]) -> Int64
 
-pub fn binomiald(Int, Int) -> Double raise
+pub fn binomiald(Int32, Int32) -> Double raise
 
-pub fn binomiall(Int, Int) -> Int64 raise
+pub fn binomiall(Int32, Int32) -> Int64 raise
 
 pub fn boundd(Double, Double, Double) -> Double
 
 pub fn boundf(Double, Double, Double) -> Double
 
-pub fn boundi(Int, Int, Int) -> Int
+pub fn boundi(Int32, Int32, Int32) -> Int32
 
 pub fn boundl(Int64, Int64, Int64) -> Int64
 
@@ -162,13 +162,13 @@ pub fn elk_spacings_with_base_value(Double) -> ElkCoreSpacingsBuilder
 
 pub let elk_unknown_work : Double
 
-pub fn enum_based_factory_compare(LayoutProcessorFactory, LayoutProcessorFactory) -> Int
+pub fn enum_based_factory_compare(LayoutProcessorFactory, LayoutProcessorFactory) -> Int32
 
 pub let expand_nodes : @graph.IProperty[Bool]
 
-pub fn factd(Int) -> Double raise
+pub fn factd(Int32) -> Double raise
 
-pub fn factl(Int) -> Int64 raise
+pub fn factl(Int32) -> Int64 raise
 
 pub fn fixed_layout_provider_as_layout_provider(FixedLayoutProvider) -> AbstractLayoutProvider
 
@@ -176,7 +176,7 @@ pub fn get_point_on_bezier_segment(Double, Array[KVector]) -> KVector raise
 
 pub fn graph_issue_list_to_string(Array[GraphIssue]) -> String
 
-pub fn graph_issue_severity_get_user_string(Int) -> String
+pub fn graph_issue_severity_get_user_string(Int32) -> String
 
 pub fn greater_than(Double) -> ExclusiveLowerBound
 
@@ -190,7 +190,7 @@ pub fn individual_spacings_get_individual_or_inherited(@graph.ElkNode, @graph.IP
 
 pub let inside_self_loops_activate : @graph.IProperty[Bool]
 
-pub let instance_pool_infinite : Int
+pub let instance_pool_infinite : Int32
 
 pub let interactive : @graph.IProperty[Bool]
 
@@ -202,9 +202,9 @@ pub fn intersects_rect_line(ElkRectangle, KVector, KVector) -> Bool
 
 pub fn intersects_rect_path(ElkRectangle, KVectorChain) -> Bool
 
-pub let issue_error : Int
+pub let issue_error : Int32
 
-pub let issue_warning : Int
+pub let issue_warning : Int32
 
 pub fn kvector_chain_reverse(KVectorChain) -> KVectorChain
 
@@ -256,7 +256,7 @@ pub fn maxd(Array[Double]) -> Double
 
 pub fn maxf(Array[Double]) -> Double
 
-pub fn maxi(Array[Int]) -> Int
+pub fn maxi(Array[Int32]) -> Int32
 
 pub fn maxl(Array[Int64]) -> Int64
 
@@ -268,7 +268,7 @@ pub fn mind(Array[Double]) -> Double
 
 pub fn minf(Array[Double]) -> Double
 
-pub fn mini(Array[Int]) -> Int
+pub fn mini(Array[Int32]) -> Int32
 
 pub fn minl(Array[Int64]) -> Int64
 
@@ -306,7 +306,7 @@ pub fn[C, T] new_data_provider(() -> Array[C], () -> Array[T], (C) -> Array[T], 
 
 pub fn[C, T] new_data_provider_with_default_targets_for(() -> Array[C], () -> Array[T], () -> Array[IDataProvider[C, T]], (C, T) -> Unit) -> IDataProvider[C, T]
 
-pub fn[T] new_decider((Array[(T, Array[(Int, Double)])]) -> T? raise) -> IDecider[T]
+pub fn[T] new_decider((Array[(T, Array[(Int32, Double)])]) -> T? raise) -> IDecider[T]
 
 pub fn[T] new_default_factory(() -> T) -> DefaultFactory[T]
 
@@ -390,13 +390,13 @@ pub fn new_fixed_layout_provider() -> FixedLayoutProvider
 
 pub fn[T, N] new_graph_adapter(GraphElementAdapter[T], () -> Array[N]) -> GraphAdapter[T, N]
 
-pub fn[T] new_graph_element_adapter(T, () -> KVector, (KVector) -> Unit, () -> KVector, (KVector) -> Unit, (@graph.IProperty[Int]) -> Int, (@graph.IProperty[Int]) -> Bool, (@graph.IProperty[Bool]) -> Bool, (@graph.IProperty[Bool]) -> Bool, (@graph.IProperty[Double]) -> Double, (@graph.IProperty[Double]) -> Bool, (@graph.IProperty[String]) -> String, (@graph.IProperty[String]) -> Bool, (@graph.IProperty[Array[String]]) -> Array[String], (@graph.IProperty[Array[String]]) -> Bool) -> GraphElementAdapter[T]
+pub fn[T] new_graph_element_adapter(T, () -> KVector, (KVector) -> Unit, () -> KVector, (KVector) -> Unit, (@graph.IProperty[Int32]) -> Int32, (@graph.IProperty[Int32]) -> Bool, (@graph.IProperty[Bool]) -> Bool, (@graph.IProperty[Bool]) -> Bool, (@graph.IProperty[Double]) -> Double, (@graph.IProperty[Double]) -> Bool, (@graph.IProperty[String]) -> String, (@graph.IProperty[String]) -> Bool, (@graph.IProperty[Array[String]]) -> Array[String], (@graph.IProperty[Array[String]]) -> Bool) -> GraphElementAdapter[T]
 
 pub fn new_graph_element_visitor((@graph.ElkNode) -> Unit raise) -> IGraphElementVisitor
 
-pub fn new_graph_issue_edge(@graph.ElkEdge, String, Int) -> GraphIssue
+pub fn new_graph_issue_edge(@graph.ElkEdge, String, Int32) -> GraphIssue
 
-pub fn new_graph_issue_node(@graph.ElkNode, String, Int) -> GraphIssue
+pub fn new_graph_issue_node(@graph.ElkNode, String, Int32) -> GraphIssue
 
 pub fn new_graph_layout_engine((@graph.ElkNode, IElkProgressMonitor) -> Unit raise) -> IGraphLayoutEngine
 
@@ -416,13 +416,13 @@ pub fn new_individual_spacings() -> IndividualSpacings
 
 pub fn new_individual_spacings_from(IndividualSpacings) -> IndividualSpacings
 
-pub fn[T] new_instance_pool(IFactory[T], limit? : Int) -> InstancePool[T]
+pub fn[T] new_instance_pool(IFactory[T], limit? : Int32) -> InstancePool[T]
 
 pub fn new_java_random() -> JavaRandom
 
 pub fn new_java_random_seeded(Int64) -> JavaRandom
 
-pub fn new_java_random_seeded_int(Int) -> JavaRandom
+pub fn new_java_random_seeded_int(Int32) -> JavaRandom
 
 pub fn new_kvector() -> KVector
 
@@ -452,7 +452,7 @@ pub fn new_layout_configurator() -> LayoutConfigurator
 
 pub fn[T] new_layout_data_proposal(String, T, label? : String?) -> LayoutDataProposal[T]
 
-pub fn[G] new_layout_execution_listener((Int, G, Bool) -> Unit, (Int, G, Bool) -> Unit) -> ILayoutExecutionListener[G]
+pub fn[G] new_layout_execution_listener((Int32, G, Bool) -> Unit, (Int32, G, Bool) -> Unit) -> ILayoutExecutionListener[G]
 
 pub fn new_layout_meta_data(() -> String, () -> String, () -> String) -> ILayoutMetaData
 
@@ -472,7 +472,7 @@ pub fn[G] new_layout_phase((G, IElkProgressMonitor?) -> Unit raise, (G) -> Layou
 
 pub fn[G] new_layout_processor((G, IElkProgressMonitor?) -> Unit raise) -> TypedLayoutProcessor[G]
 
-pub fn[G] new_layout_processor_factory(Int, Int, G, () -> TypedLayoutProcessor[G] raise) -> LayoutProcessorFactory
+pub fn[G] new_layout_processor_factory(Int32, Int32, G, () -> TypedLayoutProcessor[G] raise) -> LayoutProcessorFactory
 
 pub fn new_layout_processor_plan(Array[&RunnableLayoutProcessor]) -> LayoutProcessorPlan
 
@@ -486,7 +486,7 @@ pub fn[C, T] new_matcher((C, T) -> Double raise, (C, T) -> Double raise, (IDataP
 
 pub fn[C, T] new_matcher_with_default_lifecycle((C, T) -> Double raise, (C, T) -> Double raise) -> IMatcher[C, T]
 
-pub fn[T, G, L, P, E] new_node_adapter(GraphElementAdapter[T], () -> G?, () -> Array[L], () -> Array[P], () -> Array[E], () -> Array[E], () -> Unit raise, ((P, P) -> Int raise) -> Unit raise, () -> Bool, () -> Spacing, (Spacing) -> Unit, () -> Spacing, (Spacing) -> Unit) -> NodeAdapter[T, G, L, P, E]
+pub fn[T, G, L, P, E] new_node_adapter(GraphElementAdapter[T], () -> G?, () -> Array[L], () -> Array[P], () -> Array[E], () -> Array[E], () -> Unit raise, ((P, P) -> Int32 raise) -> Unit raise, () -> Bool, () -> Spacing, (Spacing) -> Unit, () -> Spacing, (Spacing) -> Unit) -> NodeAdapter[T, G, L, P, E]
 
 pub fn[C, T] new_node_reference_matcher() -> NodeReferenceMatcher[C, T]
 
@@ -494,7 +494,7 @@ pub fn new_null_elk_progress_monitor() -> IElkProgressMonitor
 
 pub fn new_option_metadata() -> OptionMetadata
 
-pub fn new_phase_descriptor(Array[Int]) -> PhaseDescriptor
+pub fn new_phase_descriptor(Array[Int32]) -> PhaseDescriptor
 
 pub fn[T, L, E] new_port_adapter(GraphElementAdapter[T], () -> PortSide, () -> Array[L], () -> Spacing, (Spacing) -> Unit, () -> Array[E], () -> Array[E], () -> Bool) -> PortAdapter[T, L, E]
 
@@ -578,7 +578,7 @@ pub fn node_label_placement_outside_top_right() -> Array[NodeLabelPlacement]
 
 pub fn node_label_placement_to_string(NodeLabelPlacement) -> String
 
-pub fn node_label_placement_value_of(Int) -> NodeLabelPlacement
+pub fn node_label_placement_value_of(Int32) -> NodeLabelPlacement
 
 pub fn node_label_placement_values() -> Array[NodeLabelPlacement]
 
@@ -640,9 +640,9 @@ pub fn port_side_to_string(PortSide) -> String
 
 pub fn port_side_values() -> Array[PortSide]
 
-pub fn powd(Double, Int) -> Double
+pub fn powd(Double, Int32) -> Double
 
-pub fn powf(Double, Int) -> Double
+pub fn powf(Double, Int32) -> Double
 
 pub let priority : @graph.IProperty[Double]
 
@@ -656,7 +656,7 @@ pub fn[A, B, C, D] quadruple_of(A, B, C, D) -> Quadruple[A, B, C, D]
 
 pub fn random_layout_provider_as_layout_provider(RandomLayoutProvider) -> AbstractLayoutProvider
 
-pub let random_seed : @graph.IProperty[Int]
+pub let random_seed : @graph.IProperty[Int32]
 
 pub fn reset_layout_execution_listener_ids_for_test() -> Unit
 
@@ -700,7 +700,7 @@ pub let sides_south_west : Array[PortSide]
 
 pub let sides_west : Array[PortSide]
 
-pub fn signum(Double) -> Int
+pub fn signum(Double) -> Int32
 
 pub fn size_constraint_fixed() -> Array[SizeConstraint]
 
@@ -714,7 +714,7 @@ pub fn size_constraint_to_string(SizeConstraint) -> String
 
 pub fn size_options_to_string(SizeOptions) -> String
 
-pub fn size_options_value_of(Int) -> SizeOptions
+pub fn size_options_value_of(Int32) -> SizeOptions
 
 pub fn size_options_values() -> Array[SizeOptions]
 
@@ -754,13 +754,13 @@ pub fn topdown_size_approximator_from_string(String) -> TopdownSizeApproximator?
 
 pub fn topdown_size_approximator_to_string(TopdownSizeApproximator) -> String
 
-pub fn topdown_size_approximator_util_get_graph_size(@graph.ElkNode) -> Int
+pub fn topdown_size_approximator_util_get_graph_size(@graph.ElkNode) -> Int32
 
 pub fn topdown_size_approximator_util_get_size_category_multiplier(@graph.ElkNode) -> Double
 
-pub let topdown_size_categories : @graph.IProperty[Int]
+pub let topdown_size_categories : @graph.IProperty[Int32]
 
-pub let topdown_size_categories_hierarchical_node_weight : @graph.IProperty[Int]
+pub let topdown_size_categories_hierarchical_node_weight : @graph.IProperty[Int32]
 
 pub fn translate(@graph.ElkNode, KVector, KVector) -> Unit
 
@@ -849,10 +849,10 @@ pub(all) struct AbstractRandomListAccessor[T] {
   provide_default : () -> T
 }
 pub fn[T] AbstractRandomListAccessor::clear_list(Self[T]) -> Unit
-pub fn[T] AbstractRandomListAccessor::ensure_list_size(Self[T], Int) -> Unit
-pub fn[T] AbstractRandomListAccessor::get_list_item(Self[T], Int) -> T raise
-pub fn[T] AbstractRandomListAccessor::get_list_size(Self[T]) -> Int
-pub fn[T] AbstractRandomListAccessor::set_list_item(Self[T], Int, T) -> Unit raise
+pub fn[T] AbstractRandomListAccessor::ensure_list_size(Self[T], Int32) -> Unit
+pub fn[T] AbstractRandomListAccessor::get_list_item(Self[T], Int32) -> T raise
+pub fn[T] AbstractRandomListAccessor::get_list_size(Self[T]) -> Int32
+pub fn[T] AbstractRandomListAccessor::set_list_item(Self[T], Int32, T) -> Unit raise
 
 pub(all) struct AggregatedMatchDecider[T] {
   mut aggregator : (Array[Double]) -> Double raise
@@ -861,7 +861,7 @@ pub(all) struct AggregatedMatchDecider[T] {
   _phantom : T?
 }
 pub fn[T] AggregatedMatchDecider::as_decider(Self[T]) -> IDecider[T]
-pub fn[T] AggregatedMatchDecider::make_attachment_decision(Self[T], Array[(T, Array[(Int, Double)])]) -> T? raise
+pub fn[T] AggregatedMatchDecider::make_attachment_decision(Self[T], Array[(T, Array[(Int32, Double)])]) -> T? raise
 pub fn[T] AggregatedMatchDecider::with_aggregator(Self[T], (Array[Double]) -> Double raise) -> Self[T]
 pub fn[T] AggregatedMatchDecider::with_lower_attachment_boundary(Self[T], Double) -> Self[T] raise AggregatedMatchDeciderException
 pub fn[T] AggregatedMatchDecider::with_lower_boundary_included(Self[T], Bool) -> Self[T]
@@ -869,26 +869,26 @@ pub fn[T] AggregatedMatchDecider::with_lower_boundary_included(Self[T], Bool) ->
 pub(all) struct AlgorithmAssembler {
   mut enable_caching : Bool
   mut fail_on_missing_phase : Bool
-  mut processor_comparator : (LayoutProcessorFactory, LayoutProcessorFactory) -> Int
+  mut processor_comparator : (LayoutProcessorFactory, LayoutProcessorFactory) -> Int32
   phase_descriptor : PhaseDescriptor
-  number_of_phases : Int
+  number_of_phases : Int32
   configured_phases : Array[Bool]
   phase_accessor : AbstractRandomListAccessor[LayoutProcessorFactory?]
   additional_processors : LayoutProcessorConfiguration
-  cache : Array[(Int, &RunnableLayoutProcessor)]
+  cache : Array[(Int32, &RunnableLayoutProcessor)]
 }
 pub fn AlgorithmAssembler::add_processor_configuration(Self, LayoutProcessorConfiguration) -> Self raise
 pub fn AlgorithmAssembler::build(Self) -> LayoutProcessorPlan raise
 pub fn AlgorithmAssembler::clear_cache(Self) -> Self
-pub fn AlgorithmAssembler::count_configured_phases(Self) -> Int
+pub fn AlgorithmAssembler::count_configured_phases(Self) -> Int32
 pub fn AlgorithmAssembler::reset(Self) -> Self
 pub fn AlgorithmAssembler::retrieve_phase(Self, LayoutProcessorFactory) -> &RunnableLayoutProcessor raise
 pub fn AlgorithmAssembler::retrieve_processor(Self, LayoutProcessorFactory) -> &RunnableLayoutProcessor raise
 pub fn AlgorithmAssembler::retrieve_processors(Self, Array[LayoutProcessorFactory]) -> Array[&RunnableLayoutProcessor] raise
-pub fn AlgorithmAssembler::set_phase(Self, Int, LayoutProcessorFactory) -> Self raise
+pub fn AlgorithmAssembler::set_phase(Self, Int32, LayoutProcessorFactory) -> Self raise
 pub fn AlgorithmAssembler::with_caching(Self, Bool) -> Self
 pub fn AlgorithmAssembler::with_fail_on_missing_phase(Self, Bool) -> Self
-pub fn AlgorithmAssembler::with_processor_comparator(Self, (LayoutProcessorFactory, LayoutProcessorFactory) -> Int) -> Self
+pub fn AlgorithmAssembler::with_processor_comparator(Self, (LayoutProcessorFactory, LayoutProcessorFactory) -> Int32) -> Self
 
 pub(all) struct AlgorithmFactory {
   session : LayoutSession
@@ -946,7 +946,7 @@ pub fn BezierSpline::get_base_points(Self) -> Array[KVector]
 pub fn BezierSpline::get_curves(Self) -> Array[BezierCurve]
 pub fn BezierSpline::get_end_point(Self) -> KVector
 pub fn BezierSpline::get_inner_points(Self) -> Array[KVector]
-pub fn BezierSpline::get_polyline_apprx(Self, Int) -> Array[KVector] raise
+pub fn BezierSpline::get_polyline_apprx(Self, Int32) -> Array[KVector] raise
 pub fn BezierSpline::get_start_point(Self) -> KVector
 pub fn BezierSpline::to_string(Self) -> String
 
@@ -1021,7 +1021,7 @@ pub fn DefaultSelectionIterator::has_next(Self) -> Bool
 pub fn DefaultSelectionIterator::next(Self) -> SelectionGraphElement?
 
 pub(all) struct DeprecatedLayoutOptionReplacer {
-  _dummy : Int
+  _dummy : Int32
 }
 pub fn DeprecatedLayoutOptionReplacer::visit(Self, @graph.ElkNode) -> Unit
 
@@ -1126,26 +1126,26 @@ pub fn ElkEngine::terminate_worker(Self) -> Unit
 pub(all) struct ElkGraphAdapter {
   element : @graph.ElkNode
   mut child_nodes : Array[ElkNodeAdapter]?
-  mut volatile_id : Int
+  mut volatile_id : Int32
 }
 pub fn ElkGraphAdapter::get_graph(Self) -> @graph.ElkNode
 pub fn ElkGraphAdapter::get_nodes(Self) -> Array[ElkNodeAdapter]
 pub fn ElkGraphAdapter::get_position(Self) -> KVector
 pub fn ElkGraphAdapter::get_property_bool(Self, @graph.IProperty[Bool]) -> Bool
 pub fn ElkGraphAdapter::get_property_double(Self, @graph.IProperty[Double]) -> Double
-pub fn ElkGraphAdapter::get_property_int(Self, @graph.IProperty[Int]) -> Int
+pub fn ElkGraphAdapter::get_property_int(Self, @graph.IProperty[Int32]) -> Int32
 pub fn ElkGraphAdapter::get_property_string(Self, @graph.IProperty[String]) -> String
 pub fn ElkGraphAdapter::get_property_string_array(Self, @graph.IProperty[Array[String]]) -> Array[String]
 pub fn ElkGraphAdapter::get_size(Self) -> KVector
-pub fn ElkGraphAdapter::get_volatile_id(Self) -> Int
+pub fn ElkGraphAdapter::get_volatile_id(Self) -> Int32
 pub fn ElkGraphAdapter::has_property_bool(Self, @graph.IProperty[Bool]) -> Bool
 pub fn ElkGraphAdapter::has_property_double(Self, @graph.IProperty[Double]) -> Bool
-pub fn ElkGraphAdapter::has_property_int(Self, @graph.IProperty[Int]) -> Bool
+pub fn ElkGraphAdapter::has_property_int(Self, @graph.IProperty[Int32]) -> Bool
 pub fn ElkGraphAdapter::has_property_string(Self, @graph.IProperty[String]) -> Bool
 pub fn ElkGraphAdapter::has_property_string_array(Self, @graph.IProperty[Array[String]]) -> Bool
 pub fn ElkGraphAdapter::set_position(Self, KVector) -> Unit
 pub fn ElkGraphAdapter::set_size(Self, KVector) -> Unit
-pub fn ElkGraphAdapter::set_volatile_id(Self, Int) -> Unit
+pub fn ElkGraphAdapter::set_volatile_id(Self, Int32) -> Unit
 
 pub(all) struct ElkGraphDataProvider {
   graph : @graph.ElkNode
@@ -1202,27 +1202,27 @@ pub(all) enum ElkGraphXmiValue {
 
 pub(all) struct ElkLabelAdapter {
   element : @graph.ElkLabel
-  mut volatile_id : Int
+  mut volatile_id : Int32
 }
 pub fn ElkLabelAdapter::get_label(Self) -> @graph.ElkLabel
 pub fn ElkLabelAdapter::get_position(Self) -> KVector
 pub fn ElkLabelAdapter::get_property_bool(Self, @graph.IProperty[Bool]) -> Bool
 pub fn ElkLabelAdapter::get_property_double(Self, @graph.IProperty[Double]) -> Double
-pub fn ElkLabelAdapter::get_property_int(Self, @graph.IProperty[Int]) -> Int
+pub fn ElkLabelAdapter::get_property_int(Self, @graph.IProperty[Int32]) -> Int32
 pub fn ElkLabelAdapter::get_property_string(Self, @graph.IProperty[String]) -> String
 pub fn ElkLabelAdapter::get_property_string_array(Self, @graph.IProperty[Array[String]]) -> Array[String]
 pub fn ElkLabelAdapter::get_side(Self) -> LabelSide
 pub fn ElkLabelAdapter::get_size(Self) -> KVector
 pub fn ElkLabelAdapter::get_text(Self) -> String
-pub fn ElkLabelAdapter::get_volatile_id(Self) -> Int
+pub fn ElkLabelAdapter::get_volatile_id(Self) -> Int32
 pub fn ElkLabelAdapter::has_property_bool(Self, @graph.IProperty[Bool]) -> Bool
 pub fn ElkLabelAdapter::has_property_double(Self, @graph.IProperty[Double]) -> Bool
-pub fn ElkLabelAdapter::has_property_int(Self, @graph.IProperty[Int]) -> Bool
+pub fn ElkLabelAdapter::has_property_int(Self, @graph.IProperty[Int32]) -> Bool
 pub fn ElkLabelAdapter::has_property_string(Self, @graph.IProperty[String]) -> Bool
 pub fn ElkLabelAdapter::has_property_string_array(Self, @graph.IProperty[Array[String]]) -> Bool
 pub fn ElkLabelAdapter::set_position(Self, KVector) -> Unit
 pub fn ElkLabelAdapter::set_size(Self, KVector) -> Unit
-pub fn ElkLabelAdapter::set_volatile_id(Self, Int) -> Unit
+pub fn ElkLabelAdapter::set_volatile_id(Self, Int32) -> Unit
 
 pub(all) struct ElkNodeAdapter {
   parent_graph_adapter : ElkGraphAdapter?
@@ -1231,7 +1231,7 @@ pub(all) struct ElkNodeAdapter {
   mut port_adapters : Array[ElkPortAdapter]?
   mut incoming_edge_adapters : Array[ElkEdgeAdapter]?
   mut outgoing_edge_adapters : Array[ElkEdgeAdapter]?
-  mut volatile_id : Int
+  mut volatile_id : Int32
 }
 pub fn ElkNodeAdapter::get_graph(Self) -> ElkGraphAdapter?
 pub fn ElkNodeAdapter::get_incoming_edges(Self) -> Array[ElkEdgeAdapter]
@@ -1244,14 +1244,14 @@ pub fn ElkNodeAdapter::get_ports(Self) -> Array[ElkPortAdapter]
 pub fn ElkNodeAdapter::get_position(Self) -> KVector
 pub fn ElkNodeAdapter::get_property_bool(Self, @graph.IProperty[Bool]) -> Bool
 pub fn ElkNodeAdapter::get_property_double(Self, @graph.IProperty[Double]) -> Double
-pub fn ElkNodeAdapter::get_property_int(Self, @graph.IProperty[Int]) -> Int
+pub fn ElkNodeAdapter::get_property_int(Self, @graph.IProperty[Int32]) -> Int32
 pub fn ElkNodeAdapter::get_property_string(Self, @graph.IProperty[String]) -> String
 pub fn ElkNodeAdapter::get_property_string_array(Self, @graph.IProperty[Array[String]]) -> Array[String]
 pub fn ElkNodeAdapter::get_size(Self) -> KVector
-pub fn ElkNodeAdapter::get_volatile_id(Self) -> Int
+pub fn ElkNodeAdapter::get_volatile_id(Self) -> Int32
 pub fn ElkNodeAdapter::has_property_bool(Self, @graph.IProperty[Bool]) -> Bool
 pub fn ElkNodeAdapter::has_property_double(Self, @graph.IProperty[Double]) -> Bool
-pub fn ElkNodeAdapter::has_property_int(Self, @graph.IProperty[Int]) -> Bool
+pub fn ElkNodeAdapter::has_property_int(Self, @graph.IProperty[Int32]) -> Bool
 pub fn ElkNodeAdapter::has_property_string(Self, @graph.IProperty[String]) -> Bool
 pub fn ElkNodeAdapter::has_property_string_array(Self, @graph.IProperty[Array[String]]) -> Bool
 pub fn ElkNodeAdapter::is_compound_node(Self) -> Bool
@@ -1259,16 +1259,16 @@ pub fn ElkNodeAdapter::set_margin(Self, Spacing) -> Unit
 pub fn ElkNodeAdapter::set_padding(Self, Spacing) -> Unit
 pub fn ElkNodeAdapter::set_position(Self, KVector) -> Unit
 pub fn ElkNodeAdapter::set_size(Self, KVector) -> Unit
-pub fn ElkNodeAdapter::set_volatile_id(Self, Int) -> Unit
+pub fn ElkNodeAdapter::set_volatile_id(Self, Int32) -> Unit
 pub fn ElkNodeAdapter::sort_port_list(Self) -> Unit raise
-pub fn ElkNodeAdapter::sort_port_list_with(Self, (ElkPortAdapter, ElkPortAdapter) -> Int raise) -> Unit raise
+pub fn ElkNodeAdapter::sort_port_list_with(Self, (ElkPortAdapter, ElkPortAdapter) -> Int32 raise) -> Unit raise
 
 pub(all) struct ElkPortAdapter {
   element : @graph.ElkPort
   mut label_adapters : Array[ElkLabelAdapter]?
   mut incoming_edge_adapters : Array[ElkEdgeAdapter]?
   mut outgoing_edge_adapters : Array[ElkEdgeAdapter]?
-  mut volatile_id : Int
+  mut volatile_id : Int32
 }
 pub fn ElkPortAdapter::get_incoming_edges(Self) -> Array[ElkEdgeAdapter]
 pub fn ElkPortAdapter::get_labels(Self) -> Array[ElkLabelAdapter]
@@ -1278,27 +1278,27 @@ pub fn ElkPortAdapter::get_port(Self) -> @graph.ElkPort
 pub fn ElkPortAdapter::get_position(Self) -> KVector
 pub fn ElkPortAdapter::get_property_bool(Self, @graph.IProperty[Bool]) -> Bool
 pub fn ElkPortAdapter::get_property_double(Self, @graph.IProperty[Double]) -> Double
-pub fn ElkPortAdapter::get_property_int(Self, @graph.IProperty[Int]) -> Int
+pub fn ElkPortAdapter::get_property_int(Self, @graph.IProperty[Int32]) -> Int32
 pub fn ElkPortAdapter::get_property_string(Self, @graph.IProperty[String]) -> String
 pub fn ElkPortAdapter::get_property_string_array(Self, @graph.IProperty[Array[String]]) -> Array[String]
 pub fn ElkPortAdapter::get_side(Self) -> PortSide
 pub fn ElkPortAdapter::get_size(Self) -> KVector
-pub fn ElkPortAdapter::get_volatile_id(Self) -> Int
+pub fn ElkPortAdapter::get_volatile_id(Self) -> Int32
 pub fn ElkPortAdapter::has_compound_connections(Self) -> Bool
 pub fn ElkPortAdapter::has_property_bool(Self, @graph.IProperty[Bool]) -> Bool
 pub fn ElkPortAdapter::has_property_double(Self, @graph.IProperty[Double]) -> Bool
-pub fn ElkPortAdapter::has_property_int(Self, @graph.IProperty[Int]) -> Bool
+pub fn ElkPortAdapter::has_property_int(Self, @graph.IProperty[Int32]) -> Bool
 pub fn ElkPortAdapter::has_property_string(Self, @graph.IProperty[String]) -> Bool
 pub fn ElkPortAdapter::has_property_string_array(Self, @graph.IProperty[Array[String]]) -> Bool
 pub fn ElkPortAdapter::set_margin(Self, Spacing) -> Unit
 pub fn ElkPortAdapter::set_position(Self, KVector) -> Unit
 pub fn ElkPortAdapter::set_size(Self, KVector) -> Unit
-pub fn ElkPortAdapter::set_volatile_id(Self, Int) -> Unit
+pub fn ElkPortAdapter::set_volatile_id(Self, Int32) -> Unit
 
 pub(all) struct ElkPortComparator {
   unit : Unit
 }
-pub fn ElkPortComparator::compare(Self, @graph.ElkPort, @graph.ElkPort) -> Int raise
+pub fn ElkPortComparator::compare(Self, @graph.ElkPort, @graph.ElkPort) -> Int32 raise
 
 pub(all) struct ElkRectangle {
   mut x : Double
@@ -1315,7 +1315,7 @@ pub fn ElkRectangle::get_max_y(Self) -> Double
 pub fn ElkRectangle::get_position(Self) -> KVector
 pub fn ElkRectangle::get_top_left(Self) -> KVector
 pub fn ElkRectangle::get_top_right(Self) -> KVector
-pub fn ElkRectangle::hash_code(Self) -> Int
+pub fn ElkRectangle::hash_code(Self) -> Int32
 pub fn ElkRectangle::intersects(Self, Self) -> Bool
 pub fn ElkRectangle::move_by(Self, KVector) -> Unit
 pub fn ElkRectangle::set_rect(Self, Double, Double, Double, Double) -> Unit
@@ -1325,14 +1325,14 @@ pub fn ElkRectangle::union(Self, Self) -> Unit
 pub(all) struct ExclusiveLowerBound {
   exclusive_lower_bound : Double
 }
-pub fn ExclusiveLowerBound::compare_to(Self, Double) -> Int
+pub fn ExclusiveLowerBound::compare_to(Self, Double) -> Int32
 pub fn ExclusiveLowerBound::to_string(Self) -> String
 pub fn ExclusiveLowerBound::value(Self) -> Double
 
 pub(all) struct ExclusiveUpperBound {
   exclusive_upper_bound : Double
 }
-pub fn ExclusiveUpperBound::compare_to(Self, Double) -> Int
+pub fn ExclusiveUpperBound::compare_to(Self, Double) -> Int32
 pub fn ExclusiveUpperBound::to_string(Self) -> String
 pub fn ExclusiveUpperBound::value(Self) -> Double
 
@@ -1354,8 +1354,8 @@ pub(all) struct GraphElementAdapter[T] {
   set_size_fn : (KVector) -> Unit
   get_position_fn : () -> KVector
   set_position_fn : (KVector) -> Unit
-  get_property_int_fn : (@graph.IProperty[Int]) -> Int
-  has_property_int_fn : (@graph.IProperty[Int]) -> Bool
+  get_property_int_fn : (@graph.IProperty[Int32]) -> Int32
+  has_property_int_fn : (@graph.IProperty[Int32]) -> Bool
   get_property_bool_fn : (@graph.IProperty[Bool]) -> Bool
   has_property_bool_fn : (@graph.IProperty[Bool]) -> Bool
   get_property_double_fn : (@graph.IProperty[Double]) -> Double
@@ -1364,33 +1364,33 @@ pub(all) struct GraphElementAdapter[T] {
   has_property_string_fn : (@graph.IProperty[String]) -> Bool
   get_property_string_array_fn : (@graph.IProperty[Array[String]]) -> Array[String]
   has_property_string_array_fn : (@graph.IProperty[Array[String]]) -> Bool
-  mut volatile_id : Int
+  mut volatile_id : Int32
 }
 pub fn[T] GraphElementAdapter::get_element(Self[T]) -> T
 pub fn[T] GraphElementAdapter::get_position(Self[T]) -> KVector
 pub fn[T] GraphElementAdapter::get_property_bool(Self[T], @graph.IProperty[Bool]) -> Bool
 pub fn[T] GraphElementAdapter::get_property_double(Self[T], @graph.IProperty[Double]) -> Double
-pub fn[T] GraphElementAdapter::get_property_int(Self[T], @graph.IProperty[Int]) -> Int
+pub fn[T] GraphElementAdapter::get_property_int(Self[T], @graph.IProperty[Int32]) -> Int32
 pub fn[T] GraphElementAdapter::get_property_string(Self[T], @graph.IProperty[String]) -> String
 pub fn[T] GraphElementAdapter::get_property_string_array(Self[T], @graph.IProperty[Array[String]]) -> Array[String]
 pub fn[T] GraphElementAdapter::get_size(Self[T]) -> KVector
-pub fn[T] GraphElementAdapter::get_volatile_id(Self[T]) -> Int
+pub fn[T] GraphElementAdapter::get_volatile_id(Self[T]) -> Int32
 pub fn[T] GraphElementAdapter::has_property_bool(Self[T], @graph.IProperty[Bool]) -> Bool
 pub fn[T] GraphElementAdapter::has_property_double(Self[T], @graph.IProperty[Double]) -> Bool
-pub fn[T] GraphElementAdapter::has_property_int(Self[T], @graph.IProperty[Int]) -> Bool
+pub fn[T] GraphElementAdapter::has_property_int(Self[T], @graph.IProperty[Int32]) -> Bool
 pub fn[T] GraphElementAdapter::has_property_string(Self[T], @graph.IProperty[String]) -> Bool
 pub fn[T] GraphElementAdapter::has_property_string_array(Self[T], @graph.IProperty[Array[String]]) -> Bool
 pub fn[T] GraphElementAdapter::set_position(Self[T], KVector) -> Unit
 pub fn[T] GraphElementAdapter::set_size(Self[T], KVector) -> Unit
-pub fn[T] GraphElementAdapter::set_volatile_id(Self[T], Int) -> Unit
+pub fn[T] GraphElementAdapter::set_volatile_id(Self[T], Int32) -> Unit
 
 pub(all) struct GraphIssue {
   target : GraphIssueTarget
   message : String
-  severity : Int
+  severity : Int32
 }
 pub fn GraphIssue::get_message(Self) -> String
-pub fn GraphIssue::get_severity(Self) -> Int
+pub fn GraphIssue::get_severity(Self) -> Int32
 pub fn GraphIssue::to_string(Self) -> String
 
 pub(all) enum GraphIssueTarget {
@@ -1451,9 +1451,9 @@ pub fn[C, T] IDataProvider::provide_targets(Self[C, T]) -> Array[T]
 pub fn[C, T] IDataProvider::provide_targets_for(Self[C, T], C) -> Array[T]
 
 pub(all) struct IDecider[T] {
-  make_attachment_decision_fn : (Array[(T, Array[(Int, Double)])]) -> T? raise
+  make_attachment_decision_fn : (Array[(T, Array[(Int32, Double)])]) -> T? raise
 }
-pub fn[T] IDecider::make_attachment_decision(Self[T], Array[(T, Array[(Int, Double)])]) -> T? raise
+pub fn[T] IDecider::make_attachment_decision(Self[T], Array[(T, Array[(Int32, Double)])]) -> T? raise
 
 pub(all) struct IElkCancelIndicator {
   canceled : Bool
@@ -1469,7 +1469,7 @@ pub(all) struct IElkProgressMonitor {
   null_mode : Bool
   mut parent_monitor : IElkProgressMonitor?
   children : Array[IElkProgressMonitor]
-  mut max_levels : Int
+  mut max_levels : Int32
   mut closed : Bool
   mut total_work : Double
   mut completed_work : Double
@@ -1479,7 +1479,7 @@ pub(all) struct IElkProgressMonitor {
   mut record_execution_time : Bool
   mut execution_time : Double
   mut debug_folder : String
-  mut child_index : Int
+  mut child_index : Int32
 }
 pub fn IElkProgressMonitor::begin(Self, String, Double) -> Bool raise
 pub fn IElkProgressMonitor::done(Self) -> Unit raise
@@ -1501,7 +1501,7 @@ pub fn IElkProgressMonitor::sub_task(Self, Double) -> Self?
 pub fn IElkProgressMonitor::with_execution_time_measurement(Self, Bool) -> Self
 pub fn IElkProgressMonitor::with_log_persistence(Self, Bool) -> Self
 pub fn IElkProgressMonitor::with_logging(Self, Bool) -> Self
-pub fn IElkProgressMonitor::with_max_hierarchy_levels(Self, Int) -> Self
+pub fn IElkProgressMonitor::with_max_hierarchy_levels(Self, Int32) -> Self
 pub fn IElkProgressMonitor::worked(Self, Double) -> Unit
 
 pub(all) struct IExplicitAttachmentProvider[C, T] {
@@ -1545,13 +1545,13 @@ pub(all) struct ILabelManager {
 pub fn ILabelManager::manage_label_size(Self, String, Double) -> KVector?
 
 pub(all) struct ILayoutExecutionListener[G] {
-  id : Int
-  layout_processor_ready_fn : (Int, G, Bool) -> Unit
-  layout_processor_finished_fn : (Int, G, Bool) -> Unit
+  id : Int32
+  layout_processor_ready_fn : (Int32, G, Bool) -> Unit
+  layout_processor_finished_fn : (Int32, G, Bool) -> Unit
 }
-pub fn[G] ILayoutExecutionListener::layout_processor_finished(Self[G], Int, G, Bool) -> Unit
-pub fn[G] ILayoutExecutionListener::layout_processor_ready(Self[G], Int, G, Bool) -> Unit
-pub fn[G] ILayoutExecutionListener::listener_id(Self[G]) -> Int
+pub fn[G] ILayoutExecutionListener::layout_processor_finished(Self[G], Int32, G, Bool) -> Unit
+pub fn[G] ILayoutExecutionListener::layout_processor_ready(Self[G], Int32, G, Bool) -> Unit
+pub fn[G] ILayoutExecutionListener::listener_id(Self[G]) -> Int32
 
 pub(all) struct ILayoutMetaData {
   get_id_fn : () -> String
@@ -1568,14 +1568,14 @@ pub(all) struct ILayoutMetaDataProvider {
 pub fn ILayoutMetaDataProvider::apply(Self, LayoutMetaDataRegistry) -> Unit
 
 pub(all) struct IMatcher[C, T] {
-  id : Int
+  id : Int32
   raw_fn : (C, T) -> Double raise
   normalized_fn : (C, T) -> Double raise
   preprocess_fn : (IDataProvider[C, T], Bool) -> Unit raise
   cleanup_fn : () -> Unit raise
 }
 pub fn[C, T] IMatcher::cleanup(Self[C, T]) -> Unit raise
-pub fn[C, T] IMatcher::matcher_id(Self[C, T]) -> Int
+pub fn[C, T] IMatcher::matcher_id(Self[C, T]) -> Int32
 pub fn[C, T] IMatcher::normalized(Self[C, T], C, T) -> Double raise
 pub fn[C, T] IMatcher::preprocess(Self[C, T], IDataProvider[C, T], Bool) -> Unit raise
 pub fn[C, T] IMatcher::raw(Self[C, T], C, T) -> Double raise
@@ -1621,7 +1621,7 @@ pub fn IndividualSpacings::to_string(Self) -> String
 pub(all) struct InstancePool[T] {
   factory : IFactory[T]
   instances : Array[T]
-  limit : Int
+  limit : Int32
 }
 pub fn[T] InstancePool::clear(Self[T]) -> Unit
 pub fn[T] InstancePool::fetch(Self[T]) -> T
@@ -1631,7 +1631,7 @@ pub struct JavaRandom {
   mut seed : Int64
 }
 pub fn JavaRandom::double(Self) -> Double
-pub fn JavaRandom::int(Self, Int) -> Int raise
+pub fn JavaRandom::int(Self, Int32) -> Int32 raise
 
 pub(all) struct KVector {
   mut x : Double
@@ -1647,8 +1647,8 @@ pub fn KVector::dot_product(Self, Self) -> Double
 pub fn KVector::equal(Self, Self) -> Bool
 pub fn KVector::equals(Self, Self) -> Bool
 pub fn KVector::equals_fuzzily(Self, Self, fuzzyness? : Double) -> Bool
-pub fn KVector::hash(Self) -> Int
-pub fn KVector::hash_code(Self) -> Int
+pub fn KVector::hash(Self) -> Int32
+pub fn KVector::hash_code(Self) -> Int32
 pub fn KVector::hash_combine(Self, Hasher) -> Unit
 pub fn KVector::is_infinite(Self) -> Bool
 pub fn KVector::is_nan(Self) -> Bool
@@ -1678,7 +1678,7 @@ pub(all) struct KVectorChain {
   vectors : Array[KVector]
 }
 pub fn KVectorChain::add_all(Self, Array[KVector]) -> Unit
-pub fn KVectorChain::add_all_as_copies(Self, Int, Self) -> Unit raise
+pub fn KVectorChain::add_all_as_copies(Self, Int32, Self) -> Unit raise
 pub fn KVectorChain::add_first_vector(Self, KVector) -> Unit
 pub fn KVectorChain::add_first_xy(Self, Double, Double) -> Unit
 pub fn KVectorChain::add_first_zero(Self) -> Unit
@@ -1690,7 +1690,7 @@ pub fn KVectorChain::add_xy(Self, Double, Double) -> Unit
 pub fn KVectorChain::add_zero(Self) -> Unit
 pub fn KVectorChain::angle_on_line(Self, Double) -> Double raise
 pub fn KVectorChain::clear(Self) -> Unit
-pub fn KVectorChain::get(Self, Int) -> KVector
+pub fn KVectorChain::get(Self, Int32) -> KVector
 pub fn KVectorChain::has_infinite(Self) -> Bool
 pub fn KVectorChain::has_nan(Self) -> Bool
 pub fn KVectorChain::is_empty(Self) -> Bool
@@ -1701,9 +1701,9 @@ pub fn KVectorChain::parse(Self, String) -> Unit raise
 pub fn KVectorChain::point_on_line(Self, Double) -> KVector raise
 pub fn KVectorChain::scale(Self, Double) -> Self
 pub fn KVectorChain::scale_xy(Self, Double, Double) -> Self
-pub fn KVectorChain::size(Self) -> Int
+pub fn KVectorChain::size(Self) -> Int32
 pub fn KVectorChain::to_array(Self) -> Array[KVector]
-pub fn KVectorChain::to_array_from(Self, Int) -> Array[KVector] raise
+pub fn KVectorChain::to_array_from(Self, Int32) -> Array[KVector] raise
 pub fn KVectorChain::to_string(Self) -> String
 pub fn KVectorChain::total_length(Self) -> Double
 
@@ -1836,8 +1836,8 @@ pub fn LayoutOptionData::add_dependency(Self, String, expected_value? : String?)
 pub fn LayoutOptionData::get_choices(Self) -> Array[String]
 pub fn LayoutOptionData::get_dependencies(Self) -> Array[LayoutOptionDependency]
 pub fn LayoutOptionData::get_description(Self) -> String
-pub fn LayoutOptionData::get_enum_value(Self, Int) -> String
-pub fn LayoutOptionData::get_enum_value_count(Self) -> Int
+pub fn LayoutOptionData::get_enum_value(Self, Int32) -> String
+pub fn LayoutOptionData::get_enum_value_count(Self) -> Int32
 pub fn LayoutOptionData::get_group(Self) -> String
 pub fn LayoutOptionData::get_id(Self) -> String
 pub fn LayoutOptionData::get_lower_bound(Self) -> Double?
@@ -1864,7 +1864,7 @@ pub(all) struct LayoutOptionProxy {
   value : String
 }
 pub fn LayoutOptionProxy::equals(Self, Self) -> Bool
-pub fn LayoutOptionProxy::hash_code(Self) -> Int
+pub fn LayoutOptionProxy::hash_code(Self) -> Int32
 pub fn LayoutOptionProxy::resolve_value(Self, OptionMetadata, @graph.IProperty[String]?) -> String?
 pub fn LayoutOptionProxy::resolve_value_with_option(Self, LayoutOptionData?) -> String?
 pub fn LayoutOptionProxy::to_string(Self) -> String
@@ -1906,34 +1906,34 @@ pub fn LayoutOptionVisibility::to_string(Self) -> String
 
 pub(all) struct LayoutProcessorConfiguration {
   list_accessor : AbstractRandomListAccessor[Array[LayoutProcessorFactory]]
-  mut current_index : Int
+  mut current_index : Int32
 }
 pub fn LayoutProcessorConfiguration::add(Self, LayoutProcessorFactory) -> Self raise
-pub fn LayoutProcessorConfiguration::add_after(Self, Int, LayoutProcessorFactory) -> Self raise
+pub fn LayoutProcessorConfiguration::add_after(Self, Int32, LayoutProcessorFactory) -> Self raise
 pub fn LayoutProcessorConfiguration::add_all(Self, Self) -> Self raise
-pub fn LayoutProcessorConfiguration::add_before(Self, Int, LayoutProcessorFactory) -> Self raise
-pub fn LayoutProcessorConfiguration::after(Self, Int) -> Self
-pub fn LayoutProcessorConfiguration::before(Self, Int) -> Self
+pub fn LayoutProcessorConfiguration::add_before(Self, Int32, LayoutProcessorFactory) -> Self raise
+pub fn LayoutProcessorConfiguration::after(Self, Int32) -> Self
+pub fn LayoutProcessorConfiguration::before(Self, Int32) -> Self
 pub fn LayoutProcessorConfiguration::clear(Self) -> Self
-pub fn LayoutProcessorConfiguration::do_add(Self, Int, LayoutProcessorFactory) -> Unit raise
-pub fn LayoutProcessorConfiguration::processors(Self, Int) -> Array[LayoutProcessorFactory] raise
-pub fn LayoutProcessorConfiguration::processors_after(Self, Int) -> Array[LayoutProcessorFactory] raise
-pub fn LayoutProcessorConfiguration::processors_before(Self, Int) -> Array[LayoutProcessorFactory] raise
+pub fn LayoutProcessorConfiguration::do_add(Self, Int32, LayoutProcessorFactory) -> Unit raise
+pub fn LayoutProcessorConfiguration::processors(Self, Int32) -> Array[LayoutProcessorFactory] raise
+pub fn LayoutProcessorConfiguration::processors_after(Self, Int32) -> Array[LayoutProcessorFactory] raise
+pub fn LayoutProcessorConfiguration::processors_before(Self, Int32) -> Array[LayoutProcessorFactory] raise
 
 pub(all) struct LayoutProcessorFactory {
-  id : Int
-  order : Int
+  id : Int32
+  order : Int32
   create_fn : () -> &RunnableLayoutProcessor raise
 }
 pub fn LayoutProcessorFactory::create(Self) -> &RunnableLayoutProcessor raise
-pub fn LayoutProcessorFactory::factory_id(Self) -> Int
-pub fn LayoutProcessorFactory::factory_order(Self) -> Int
+pub fn LayoutProcessorFactory::factory_id(Self) -> Int32
+pub fn LayoutProcessorFactory::factory_order(Self) -> Int32
 
 pub struct LayoutProcessorPlan {
   processors : Array[&RunnableLayoutProcessor]
 }
 pub fn LayoutProcessorPlan::is_empty(Self) -> Bool
-pub fn LayoutProcessorPlan::length(Self) -> Int
+pub fn LayoutProcessorPlan::length(Self) -> Int32
 pub fn LayoutProcessorPlan::steps(Self) -> Array[&RunnableLayoutProcessor]
 
 pub struct LayoutRuntime {
@@ -1970,7 +1970,7 @@ pub(all) struct Maybe[T] {
 pub fn[T] Maybe::clear(Self[T]) -> Unit
 pub fn[T : Eq] Maybe::equals(Self[T], Self[T]) -> Bool
 pub fn[T] Maybe::get(Self[T]) -> T?
-pub fn[T : Hash] Maybe::hash_code(Self[T]) -> Int
+pub fn[T : Hash] Maybe::hash_code(Self[T]) -> Int32
 pub fn[T] Maybe::is_empty(Self[T]) -> Bool
 pub fn[T] Maybe::set(Self[T], T?) -> Unit
 pub fn[T : Show] Maybe::to_string(Self[T]) -> String
@@ -1983,7 +1983,7 @@ pub(all) struct NodeAdapter[T, G, L, P, E] {
   get_incoming_edges_fn : () -> Array[E]
   get_outgoing_edges_fn : () -> Array[E]
   sort_port_list_fn : () -> Unit raise
-  sort_port_list_with_fn : ((P, P) -> Int raise) -> Unit raise
+  sort_port_list_with_fn : ((P, P) -> Int32 raise) -> Unit raise
   is_compound_node_fn : () -> Bool
   get_padding_fn : () -> Spacing
   set_padding_fn : (Spacing) -> Unit
@@ -2002,7 +2002,7 @@ pub fn[T, G, L, P, E] NodeAdapter::is_compound_node(Self[T, G, L, P, E]) -> Bool
 pub fn[T, G, L, P, E] NodeAdapter::set_margin(Self[T, G, L, P, E], Spacing) -> Unit
 pub fn[T, G, L, P, E] NodeAdapter::set_padding(Self[T, G, L, P, E], Spacing) -> Unit
 pub fn[T, G, L, P, E] NodeAdapter::sort_port_list(Self[T, G, L, P, E]) -> Unit raise
-pub fn[T, G, L, P, E] NodeAdapter::sort_port_list_with(Self[T, G, L, P, E], (P, P) -> Int raise) -> Unit raise
+pub fn[T, G, L, P, E] NodeAdapter::sort_port_list_with(Self[T, G, L, P, E], (P, P) -> Int32 raise) -> Unit raise
 
 pub(all) enum NodeLabelPlacement {
   NodeLabelHLeft
@@ -2072,16 +2072,16 @@ pub fn[F, S] Pair::clear(Self[F, S]) -> Unit
 pub fn[F : Eq, S : Eq] Pair::equals(Self[F, S], Self[F, S]) -> Bool
 pub fn[F, S] Pair::get_first(Self[F, S]) -> F?
 pub fn[F, S] Pair::get_second(Self[F, S]) -> S?
-pub fn[F : Hash, S : Hash] Pair::hash_code(Self[F, S]) -> Int
+pub fn[F : Hash, S : Hash] Pair::hash_code(Self[F, S]) -> Int32
 pub fn[F, S] Pair::set_first(Self[F, S], F?) -> Unit
 pub fn[F, S] Pair::set_second(Self[F, S], S?) -> Unit
 pub fn[F : Show, S : Show] Pair::to_string(Self[F, S]) -> String
 
 pub struct PhaseDescriptor {
-  phases : Array[Int]
+  phases : Array[Int32]
 }
-pub fn PhaseDescriptor::phases(Self) -> Array[Int]
-pub fn PhaseDescriptor::size(Self) -> Int
+pub fn PhaseDescriptor::phases(Self) -> Array[Int32]
+pub fn PhaseDescriptor::size(Self) -> Int32
 
 pub(all) struct PortAdapter[T, L, E] {
   element_adapter : GraphElementAdapter[T]
@@ -2151,7 +2151,7 @@ pub fn[T] PropertyConstantsDelegator::add_delegate(Self, @graph.IProperty[T]) ->
 pub fn PropertyConstantsDelegator::get_individual_or_inherited_property(Self, @graph.ElkNode, @graph.IProperty[Double]) -> Double
 pub fn PropertyConstantsDelegator::get_property_bool(Self, @graph.ElkNode, @graph.IProperty[Bool]) -> Bool
 pub fn PropertyConstantsDelegator::get_property_double(Self, @graph.ElkNode, @graph.IProperty[Double]) -> Double
-pub fn PropertyConstantsDelegator::get_property_int(Self, @graph.ElkNode, @graph.IProperty[Int]) -> Int
+pub fn PropertyConstantsDelegator::get_property_int(Self, @graph.ElkNode, @graph.IProperty[Int32]) -> Int32
 pub fn PropertyConstantsDelegator::get_property_kvector(Self, @graph.ElkNode, @graph.IProperty[KVector]) -> KVector raise
 pub fn[T] PropertyConstantsDelegator::get_property_or_delegate(Self, @graph.IProperty[T]) -> @graph.IProperty[T]
 pub fn PropertyConstantsDelegator::get_property_string(Self, @graph.ElkNode, @graph.IProperty[String]) -> String
@@ -2170,7 +2170,7 @@ pub fn[A, B, C, D] Quadruple::get_first(Self[A, B, C, D]) -> A
 pub fn[A, B, C, D] Quadruple::get_fourth(Self[A, B, C, D]) -> D
 pub fn[A, B, C, D] Quadruple::get_second(Self[A, B, C, D]) -> B
 pub fn[A, B, C, D] Quadruple::get_third(Self[A, B, C, D]) -> C
-pub fn[A : Hash, B : Hash, C : Hash, D : Hash] Quadruple::hash_code(Self[A, B, C, D]) -> Int
+pub fn[A : Hash, B : Hash, C : Hash, D : Hash] Quadruple::hash_code(Self[A, B, C, D]) -> Int32
 pub fn[A : Show, B : Show, C : Show, D : Show] Quadruple::to_string(Self[A, B, C, D]) -> String
 
 pub(all) struct RandomLayoutProvider {
@@ -2248,7 +2248,7 @@ pub fn Spacing::get_left(Self) -> Double
 pub fn Spacing::get_right(Self) -> Double
 pub fn Spacing::get_top(Self) -> Double
 pub fn Spacing::get_vertical(Self) -> Double
-pub fn Spacing::hash_code(Self) -> Int
+pub fn Spacing::hash_code(Self) -> Int32
 pub fn Spacing::parse(Self, String) -> Unit raise
 pub fn Spacing::set_bottom(Self, Double) -> Unit
 pub fn Spacing::set_left(Self, Double) -> Unit
@@ -2268,10 +2268,10 @@ pub(all) struct TestController[G] {
 pub fn[G] TestController::add_layout_execution_listener(Self[G], ILayoutExecutionListener[G]) -> Unit
 pub fn[G] TestController::get_target_algorithm_id(Self[G]) -> String
 pub fn[G] TestController::install(Self[G], IWhiteBoxTestable[G]) -> Unit raise
-pub fn[G] TestController::notify_processor_finished(Self[G], G, Int) -> Unit
-pub fn[G] TestController::notify_processor_ready(Self[G], G, Int) -> Unit
-pub fn[G] TestController::notify_root_processor_finished(Self[G], G, Int) -> Unit
-pub fn[G] TestController::notify_root_processor_ready(Self[G], G, Int) -> Unit
+pub fn[G] TestController::notify_processor_finished(Self[G], G, Int32) -> Unit
+pub fn[G] TestController::notify_processor_ready(Self[G], G, Int32) -> Unit
+pub fn[G] TestController::notify_root_processor_finished(Self[G], G, Int32) -> Unit
+pub fn[G] TestController::notify_root_processor_ready(Self[G], G, Int32) -> Unit
 pub fn[G] TestController::remove_layout_execution_listener(Self[G], ILayoutExecutionListener[G]) -> Unit
 pub fn[G] TestController::targets(Self[G], LayoutAlgorithmData) -> Bool
 pub fn[G] TestController::uninstall(Self[G]) -> Unit
@@ -2315,11 +2315,11 @@ pub fn[F : Eq, S : Eq, T : Eq] Triple::equals(Self[F, S, T], Self[F, S, T]) -> B
 pub fn[F, S, T] Triple::get_first(Self[F, S, T]) -> F
 pub fn[F, S, T] Triple::get_second(Self[F, S, T]) -> S
 pub fn[F, S, T] Triple::get_third(Self[F, S, T]) -> T
-pub fn[F : Hash, S : Hash, T : Hash] Triple::hash_code(Self[F, S, T]) -> Int
+pub fn[F : Hash, S : Hash, T : Hash] Triple::hash_code(Self[F, S, T]) -> Int32
 pub fn[F : Show, S : Show, T : Show] Triple::to_string(Self[F, S, T]) -> String
 
 pub(all) struct TypedLayoutProcessor[G] {
-  id : Int
+  id : Int32
   process_fn : ((G, IElkProgressMonitor?) -> Unit raise)?
   pure_process_fn : ((G, IElkProgressMonitor?) -> Unit)?
   is_phase : Bool
@@ -2328,7 +2328,7 @@ pub(all) struct TypedLayoutProcessor[G] {
   get_pure_layout_processor_configuration_fn : ((G) -> LayoutProcessorConfiguration?)?
 }
 pub fn[G] TypedLayoutProcessor::get_layout_processor_configuration(Self[G], G) -> LayoutProcessorConfiguration? raise
-pub fn[G] TypedLayoutProcessor::instance_id(Self[G]) -> Int
+pub fn[G] TypedLayoutProcessor::instance_id(Self[G]) -> Int32
 pub fn[G] TypedLayoutProcessor::is_hierarchy_aware_layout_processor(Self[G]) -> Bool
 pub fn[G] TypedLayoutProcessor::is_layout_phase(Self[G]) -> Bool
 pub fn[G] TypedLayoutProcessor::process(Self[G], G, IElkProgressMonitor?) -> Unit raise
@@ -2355,13 +2355,13 @@ pub fn WrappedException::get_cause(Self) -> String
 pub fn WrappedException::get_message(Self) -> String?
 
 // Type aliases
-pub type DeciderHeuristicResult[T] = Array[(T, Array[(Int, Double)])]
+pub type DeciderHeuristicResult[T] = Array[(T, Array[(Int32, Double)])]
 
 pub type ElkEngineLayoutDelegate = (LayoutRuntime, LayoutSession, Map[String, Json], Map[String, Json]) -> Unit raise
 
 pub type ElkGraphBoundsProvider = IBoundsProvider[@graph.ElkNode, @graph.ElkNode]
 
-pub type GraphIssueSeverity = Int
+pub type GraphIssueSeverity = Int32
 
 pub type GraphValidationFunction = (@graph.ElkNode) -> Array[GraphIssue]
 
@@ -2369,14 +2369,14 @@ pub type LayoutConfiguratorElementClass = String
 
 pub type LayoutConfiguratorFilter = (@graph.ElkNode, @graph.IProperty[Double]) -> Bool
 
-pub type PhaseId = Int
+pub type PhaseId = Int32
 
 pub type RecursiveGraphLayoutHandler = (LayoutRuntime, LayoutSession, @graph.ElkNode, IElkProgressMonitor) -> Unit raise
 
 // Traits
 pub(open) trait RunnableLayoutProcessor {
   fn run(Self, IElkProgressMonitor?) -> Unit raise
-  fn instance_id(Self) -> Int
+  fn instance_id(Self) -> Int32
   fn is_layout_phase(Self) -> Bool
   fn is_hierarchy_aware_layout_processor(Self) -> Bool
   fn get_layout_processor_configuration(Self) -> LayoutProcessorConfiguration? raise

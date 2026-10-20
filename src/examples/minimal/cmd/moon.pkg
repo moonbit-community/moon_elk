@@ -1,5 +1,5 @@
 import {
-  "bobzhang/elk/examples/minimal" @example,
+  "moonbit-community/elk/examples/minimal" @example,
 }
 
 pkgtype(kind: "executable")

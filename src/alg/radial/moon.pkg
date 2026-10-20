@@ -1,12 +1,12 @@
 import {
   "moonbitlang/core/double",
   "moonbitlang/core/math",
-  "bobzhang/elk/jsmath",
-  "bobzhang/elk/core",
-  "bobzhang/elk/graph",
-  "bobzhang/elk/alg/radial/options" @radial_options,
+  "moonbit-community/elk/jsmath",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/graph",
+  "moonbit-community/elk/alg/radial/options" @radial_options,
 }
 
 import {
-  "bobzhang/elk/alg/test",
+  "moonbit-community/elk/alg/test",
 } for "test"

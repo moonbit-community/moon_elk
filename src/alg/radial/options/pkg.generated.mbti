@@ -1,8 +1,8 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/alg/radial/options"
+package "moonbit-community/elk/alg/radial/options"
 
 import {
-  "bobzhang/elk/graph",
+  "moonbit-community/elk/graph",
 }
 
 // Values
@@ -18,7 +18,7 @@ pub fn radial_compaction_strategy_from_string(String) -> RadialCompactionStrateg
 
 pub let radial_compactor : @graph.IProperty[String]
 
-pub fn radial_graph_compaction_step_size(@graph.ElkNode) -> Int
+pub fn radial_graph_compaction_step_size(@graph.ElkNode) -> Int32
 
 pub fn radial_graph_compaction_strategy(@graph.ElkNode) -> RadialCompactionStrategy
 

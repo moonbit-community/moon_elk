@@ -1,7 +1,7 @@
 import {
   "moonbitlang/core/cmp",
   "moonbitlang/core/string",
-  "bobzhang/elk/graph",
-  "bobzhang/elk/core",
-  "bobzhang/elk/alg/graphviz/dot",
+  "moonbit-community/elk/graph",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/alg/graphviz/dot",
 }

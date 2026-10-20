@@ -1,11 +1,11 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/alg/layered/pipeline"
+package "moonbit-community/elk/alg/layered/pipeline"
 
 import {
-  "bobzhang/elk/alg/layered/pipeline/components",
-  "bobzhang/elk/alg/layered/runtime",
-  "bobzhang/elk/core",
-  "bobzhang/elk/graph",
+  "moonbit-community/elk/alg/layered/pipeline/components",
+  "moonbit-community/elk/alg/layered/runtime",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/graph",
   "moonbitlang/core/debug",
 }
 
@@ -50,10 +50,10 @@ pub fn ElkLayered::set_test_controller(Self, @core.TestController[@runtime.LGrap
 pub struct ElkLayeredTestExecutionState {
   graphs : Array[@runtime.LGraph]
   plans : Array[@runtime.LayeredLayoutPlan]
-  mut step : Int
+  mut step : Int32
 }
 pub fn ElkLayeredTestExecutionState::get_graphs(Self) -> Array[@runtime.LGraph]
-pub fn ElkLayeredTestExecutionState::get_step(Self) -> Int
+pub fn ElkLayeredTestExecutionState::get_step(Self) -> Int32
 
 pub struct LayeredLayoutProvider {
   elk_layered : ElkLayered

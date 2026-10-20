@@ -1,9 +1,9 @@
 import {
   "moonbitlang/core/json" @core_json,
-  "bobzhang/elk/graph",
-  "bobzhang/elk/core",
+  "moonbit-community/elk/graph",
+  "moonbit-community/elk/core",
 }
 
 import {
-  "bobzhang/elk/engine/all" @all_engine,
+  "moonbit-community/elk/engine/all" @all_engine,
 } for "test"

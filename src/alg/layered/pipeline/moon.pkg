@@ -1,14 +1,14 @@
 import {
-  "bobzhang/elk/graph",
-  "bobzhang/elk/core",
-  "bobzhang/elk/alg/layered/options",
-  "bobzhang/elk/alg/layered/runtime",
-  "bobzhang/elk/alg/layered/pipeline/transform",
-  "bobzhang/elk/alg/layered/pipeline/components",
-  "bobzhang/elk/alg/layered/pipeline/compound",
+  "moonbit-community/elk/graph",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/alg/layered/options",
+  "moonbit-community/elk/alg/layered/runtime",
+  "moonbit-community/elk/alg/layered/pipeline/transform",
+  "moonbit-community/elk/alg/layered/pipeline/components",
+  "moonbit-community/elk/alg/layered/pipeline/compound",
 }
 
 import {
-  "bobzhang/elk/alg/test",
-  "bobzhang/elk/alg/layered/engine",
+  "moonbit-community/elk/alg/test",
+  "moonbit-community/elk/alg/layered/engine",
 } for "test"

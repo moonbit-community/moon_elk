@@ -1,14 +1,14 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/alg/disco/debug"
+package "moonbit-community/elk/alg/disco/debug"
 
 import {
-  "bobzhang/elk/alg/disco",
-  "bobzhang/elk/core",
-  "bobzhang/elk/graph",
+  "moonbit-community/elk/alg/disco",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/graph",
 }
 
 // Values
-pub fn base_grid_visibility_at(Int) -> BaseGridVisibility
+pub fn base_grid_visibility_at(Int32) -> BaseGridVisibility
 
 pub fn base_grid_visibility_to_string(BaseGridVisibility) -> String
 
@@ -22,17 +22,17 @@ pub fn config_state_draw_labels(ConfigState) -> Bool
 
 pub fn config_state_draw_poly_lines_black(ConfigState) -> Bool
 
-pub fn config_state_get_lower_lvl(ConfigState) -> Int
+pub fn config_state_get_lower_lvl(ConfigState) -> Int32
 
-pub fn config_state_get_max_depth(ConfigState) -> Int?
+pub fn config_state_get_max_depth(ConfigState) -> Int32?
 
-pub fn config_state_get_pattern_scale(ConfigState) -> Int
+pub fn config_state_get_pattern_scale(ConfigState) -> Int32
 
 pub fn config_state_get_scale(ConfigState) -> Double
 
 pub fn config_state_get_thickness_scale(ConfigState) -> Double
 
-pub fn config_state_get_upper_lvl(ConfigState) -> Int
+pub fn config_state_get_upper_lvl(ConfigState) -> Int32
 
 pub fn config_state_how_to_paint_grid(ConfigState) -> BaseGridVisibility
 
@@ -44,11 +44,11 @@ pub fn config_state_paint_parent_transparently(ConfigState) -> Bool
 
 pub fn config_state_remove_lvl(ConfigState) -> Bool
 
-pub fn config_state_set_depth(ConfigState, Int) -> Unit
+pub fn config_state_set_depth(ConfigState, Int32) -> Unit
 
-pub fn config_state_set_high(ConfigState, Int) -> Unit
+pub fn config_state_set_high(ConfigState, Int32) -> Unit
 
-pub fn config_state_set_low(ConfigState, Int) -> Unit
+pub fn config_state_set_low(ConfigState, Int32) -> Unit
 
 pub fn dis_co_debug_color_dispose(DisCoDebugColor) -> Unit
 
@@ -58,9 +58,9 @@ pub fn dis_co_debug_font_dispose(DisCoDebugFont) -> Unit
 
 pub fn dis_co_debug_font_is_disposed(DisCoDebugFont) -> Bool
 
-pub fn dis_co_debug_pattern_fill_rectangle(DisCoDebugPattern, Int, Int, Int, Int, Int) -> Unit
+pub fn dis_co_debug_pattern_fill_rectangle(DisCoDebugPattern, Int32, Int32, Int32, Int32, Int32) -> Unit
 
-pub fn dis_co_debug_pattern_get_alpha(DisCoDebugPattern, Int, Int) -> Int
+pub fn dis_co_debug_pattern_get_alpha(DisCoDebugPattern, Int32, Int32) -> Int32
 
 pub fn dis_co_debug_plugin_get_default() -> DisCoDebugPlugin?
 
@@ -70,7 +70,7 @@ pub fn dis_co_debug_plugin_start(DisCoDebugPlugin) -> Unit
 
 pub fn dis_co_debug_plugin_stop(DisCoDebugPlugin) -> Unit
 
-pub fn dis_co_debug_state_at(Int) -> State
+pub fn dis_co_debug_state_at(Int32) -> State
 
 pub fn dis_co_debug_state_to_string(State) -> String
 
@@ -90,19 +90,19 @@ pub fn dis_co_graph_renderer_bind_component_graph(DisCoGraphRenderer, @graph.Elk
 
 pub fn dis_co_graph_renderer_bind_polyominoes(DisCoGraphRenderer, @graph.ElkNode, Array[@disco.DCPolyomino]) -> Unit
 
-pub fn dis_co_graph_renderer_debug_bounds_cache_size(DisCoGraphRenderer) -> Int
+pub fn dis_co_graph_renderer_debug_bounds_cache_size(DisCoGraphRenderer) -> Int32
 
-pub fn dis_co_graph_renderer_debug_make_arrow(DisCoGraphRenderer, @core.KVector, @core.KVector) -> Array[Int]?
+pub fn dis_co_graph_renderer_debug_make_arrow(DisCoGraphRenderer, @core.KVector, @core.KVector) -> Array[Int32]?
 
-pub fn dis_co_graph_renderer_debug_painted_bounds_count(DisCoGraphRenderer) -> Int
+pub fn dis_co_graph_renderer_debug_painted_bounds_count(DisCoGraphRenderer) -> Int32
 
-pub fn dis_co_graph_renderer_debug_painted_poly_cell_count(DisCoGraphRenderer) -> Int
+pub fn dis_co_graph_renderer_debug_painted_poly_cell_count(DisCoGraphRenderer) -> Int32
 
-pub fn dis_co_graph_renderer_debug_painted_polygon_count(DisCoGraphRenderer) -> Int
+pub fn dis_co_graph_renderer_debug_painted_polygon_count(DisCoGraphRenderer) -> Int32
 
-pub fn dis_co_graph_renderer_debug_poly_cell_cache_size(DisCoGraphRenderer) -> Int
+pub fn dis_co_graph_renderer_debug_poly_cell_cache_size(DisCoGraphRenderer) -> Int32
 
-pub fn dis_co_graph_renderer_debug_polygon_cache_size(DisCoGraphRenderer) -> Int
+pub fn dis_co_graph_renderer_debug_polygon_cache_size(DisCoGraphRenderer) -> Int32
 
 pub fn dis_co_graph_renderer_dispose(DisCoGraphRenderer) -> Unit
 
@@ -128,7 +128,7 @@ pub fn dis_co_graph_rendering_canvas_get_display(DisCoGraphRenderingCanvas) -> D
 
 pub fn dis_co_graph_rendering_canvas_get_layout_graph(DisCoGraphRenderingCanvas) -> @graph.ElkNode?
 
-pub fn dis_co_graph_rendering_canvas_get_redraw_count(DisCoGraphRenderingCanvas) -> Int
+pub fn dis_co_graph_rendering_canvas_get_redraw_count(DisCoGraphRenderingCanvas) -> Int32
 
 pub fn dis_co_graph_rendering_canvas_get_renderer(DisCoGraphRenderingCanvas) -> DisCoGraphRenderer
 
@@ -186,11 +186,11 @@ pub fn dis_co_graph_rendering_configurator_get_port_label_font(DisCoGraphRenderi
 
 pub fn dis_co_graph_rendering_configurator_initialize(DisCoGraphRenderingConfigurator, Double) -> Unit
 
-pub fn dis_co_graph_rendering_fill_patterns_get_dc_extension_pattern(DisCoGraphRenderingFillPatterns, Int) -> DisCoDebugPattern raise
+pub fn dis_co_graph_rendering_fill_patterns_get_dc_extension_pattern(DisCoGraphRenderingFillPatterns, Int32) -> DisCoDebugPattern raise
 
-pub fn dis_co_graph_rendering_fill_patterns_get_polyomino_center_pattern(DisCoGraphRenderingFillPatterns, Int) -> DisCoDebugPattern raise
+pub fn dis_co_graph_rendering_fill_patterns_get_polyomino_center_pattern(DisCoGraphRenderingFillPatterns, Int32) -> DisCoDebugPattern raise
 
-pub fn dis_co_graph_rendering_fill_patterns_get_polyomino_extension_pattern(DisCoGraphRenderingFillPatterns, Int) -> DisCoDebugPattern raise
+pub fn dis_co_graph_rendering_fill_patterns_get_polyomino_extension_pattern(DisCoGraphRenderingFillPatterns, Int32) -> DisCoDebugPattern raise
 
 pub fn dis_co_image_export_action_check_file_name(String?) -> String?
 
@@ -212,15 +212,15 @@ pub fn dis_co_layout_connectors_remove_layout_listener(DisCoLayoutListener) -> U
 
 pub fn dis_co_layout_mapping_get_layout_graph(DisCoLayoutMapping) -> @graph.ElkNode?
 
-pub let dis_co_min_font_height : Int
+pub let dis_co_min_font_height : Int32
 
-pub let dis_co_swt_normal : Int
+pub let dis_co_swt_normal : Int32
 
-pub fn dropdown_int_range_action_apply_num(DropdownIntRangeAction, Int) -> Unit
+pub fn dropdown_int_range_action_apply_num(DropdownIntRangeAction, Int32) -> Unit
 
 pub fn dropdown_int_range_action_dispose(DropdownIntRangeAction) -> Unit
 
-pub fn dropdown_int_range_action_get_menu(DropdownIntRangeAction) -> Array[Int]
+pub fn dropdown_int_range_action_get_menu(DropdownIntRangeAction) -> Array[Int32]
 
 pub fn dropdown_int_range_action_get_text(DropdownIntRangeAction) -> String
 
@@ -230,13 +230,13 @@ pub fn dropdown_int_range_action_update(DropdownIntRangeAction, State) -> Unit
 
 pub fn new_config_state() -> ConfigState
 
-pub fn new_dis_co_debug_color(DisCoDebugDisplay, Int, Int, Int) -> DisCoDebugColor
+pub fn new_dis_co_debug_color(DisCoDebugDisplay, Int32, Int32, Int32) -> DisCoDebugColor
 
 pub fn new_dis_co_debug_display() -> DisCoDebugDisplay
 
-pub fn new_dis_co_debug_font(DisCoDebugDisplay, String, Int, Int) -> DisCoDebugFont
+pub fn new_dis_co_debug_font(DisCoDebugDisplay, String, Int32, Int32) -> DisCoDebugFont
 
-pub fn new_dis_co_debug_pattern(Int, Int) -> DisCoDebugPattern
+pub fn new_dis_co_debug_pattern(Int32, Int32) -> DisCoDebugPattern
 
 pub fn new_dis_co_debug_plugin() -> DisCoDebugPlugin
 
@@ -258,9 +258,9 @@ pub fn new_dis_co_layout_listener((DisCoLayoutMapping, @core.IElkProgressMonitor
 
 pub fn new_dis_co_layout_mapping(@graph.ElkNode?) -> DisCoLayoutMapping
 
-pub fn new_dis_co_paint_rectangle(Int, Int, Int, Int) -> DisCoPaintRectangle
+pub fn new_dis_co_paint_rectangle(Int32, Int32, Int32, Int32) -> DisCoPaintRectangle
 
-pub fn new_dropdown_int_range_action(ConfigState, String, Int, Int, Int, State, DisCoGraphRenderingCanvas) -> DropdownIntRangeAction
+pub fn new_dropdown_int_range_action(ConfigState, String, Int32, Int32, Int32, State, DisCoGraphRenderingCanvas) -> DropdownIntRangeAction
 
 pub fn new_selective_paint_toggle_action(String, String, String, DisCoGraphRenderingCanvas) -> SelectivePaintToggleAction
 
@@ -285,22 +285,22 @@ pub enum BaseGridVisibility {
 }
 
 pub struct ConfigState {
-  mut lower_lvl : Int
-  mut upper_lvl : Int
-  mut max_depth : Int?
+  mut lower_lvl : Int32
+  mut upper_lvl : Int32
+  mut max_depth : Int32?
   observers : Array[(State) -> Unit]
 }
 
 pub struct DisCoDebugColor {
   display : DisCoDebugDisplay
-  r : Int
-  g : Int
-  b : Int
+  r : Int32
+  g : Int32
+  b : Int32
   mut disposed : Bool
 }
 
 pub struct DisCoDebugDisplay {
-  id : Int
+  id : Int32
 } derive(Eq)
 pub fn DisCoDebugDisplay::equal(Self, Self) -> Bool
 pub fn DisCoDebugDisplay::not_equal(Self, Self) -> Bool
@@ -308,15 +308,15 @@ pub fn DisCoDebugDisplay::not_equal(Self, Self) -> Bool
 pub struct DisCoDebugFont {
   display : DisCoDebugDisplay
   name : String
-  size : Int
-  style : Int
+  size : Int32
+  style : Int32
   mut disposed : Bool
 }
 
 pub struct DisCoDebugPattern {
-  width : Int
-  height : Int
-  alpha_data : Array[Int]
+  width : Int32
+  height : Int32
+  alpha_data : Array[Int32]
 }
 
 pub struct DisCoDebugPlugin {
@@ -354,9 +354,9 @@ pub struct DisCoGraphRenderingCanvas {
   graph_renderer : DisCoGraphRenderer
   background_color : DisCoDebugColor
   display : DisCoDebugDisplay
-  mut redraw_count : Int
-  mut width : Int
-  mut height : Int
+  mut redraw_count : Int32
+  mut width : Int32
+  mut height : Int32
 }
 
 pub struct DisCoGraphRenderingConfigurator {
@@ -387,7 +387,7 @@ pub struct DisCoGraphRenderingConfigurator {
 pub struct DisCoGraphRenderingFillPatterns {
   config : DisCoGraphRenderingConfigurator
   display : DisCoDebugDisplay
-  scale : Int
+  scale : Int32
 }
 
 pub struct DisCoImageExportAction {
@@ -396,7 +396,7 @@ pub struct DisCoImageExportAction {
 }
 
 pub struct DisCoLayoutListener {
-  id : Int
+  id : Int32
   layout_about_to_start : (DisCoLayoutMapping, @core.IElkProgressMonitor) -> Unit
   layout_done : (DisCoLayoutMapping, @core.IElkProgressMonitor) -> Unit
 }
@@ -406,33 +406,33 @@ pub struct DisCoLayoutMapping {
 }
 
 pub struct DisCoPaintEvent {
-  x : Int
-  y : Int
-  width : Int
-  height : Int
+  x : Int32
+  y : Int32
+  width : Int32
+  height : Int32
 }
 
 pub struct DisCoPaintPolygon {
-  coords_scaled_and_rounded : Array[Int]
-  min_x : Int
-  min_y : Int
-  max_x : Int
-  max_y : Int
+  coords_scaled_and_rounded : Array[Int32]
+  min_x : Int32
+  min_y : Int32
+  max_x : Int32
+  max_y : Int32
   mut painted : Bool
 }
 
 pub struct DisCoPaintRectangle {
-  x : Int
-  y : Int
-  width : Int
-  height : Int
+  x : Int32
+  y : Int32
+  width : Int32
+  height : Int32
   mut painted : Bool
 }
 
 pub struct DropdownIntRangeAction {
-  mut menu : Array[Int]?
-  lb : Int
-  mut ub : Int
+  mut menu : Array[Int32]?
+  lb : Int32
+  mut ub : Int32
   label : String
   bound : State
   state : ConfigState

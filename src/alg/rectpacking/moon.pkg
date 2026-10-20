@@ -1,11 +1,11 @@
 import {
   "moonbitlang/core/cmp",
   "moonbitlang/core/double",
-  "bobzhang/elk/core",
-  "bobzhang/elk/graph",
-  "bobzhang/elk/alg/rectpacking/options" @rectpacking_options,
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/graph",
+  "moonbit-community/elk/alg/rectpacking/options" @rectpacking_options,
 }
 
 import {
-  "bobzhang/elk/alg/test",
+  "moonbit-community/elk/alg/test",
 } for "test"

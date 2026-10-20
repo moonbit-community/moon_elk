@@ -1,16 +1,16 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/core/debug/grandom"
+package "moonbit-community/elk/core/debug/grandom"
 
 import {
-  "bobzhang/elk/core",
-  "bobzhang/elk/graph",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/graph",
   "moonbitlang/core/random",
 }
 
 // Values
-pub let core_debug_grandom_blind_text_character_min_length : Int
+pub let core_debug_grandom_blind_text_character_min_length : Int32
 
-pub let core_debug_grandom_blind_text_character_range : Int
+pub let core_debug_grandom_blind_text_character_range : Int32
 
 pub fn core_debug_grandom_blind_text_generate() -> String
 
@@ -110,21 +110,21 @@ pub let core_debug_grandom_hierarchy_nodes_factor : @graph.IProperty[Double]
 
 pub let core_debug_grandom_hypernode_chance : @graph.IProperty[Double]
 
-pub let core_debug_grandom_incoming_east_side : @graph.IProperty[Int]
+pub let core_debug_grandom_incoming_east_side : @graph.IProperty[Int32]
 
-pub let core_debug_grandom_incoming_north_side : @graph.IProperty[Int]
+pub let core_debug_grandom_incoming_north_side : @graph.IProperty[Int32]
 
-pub let core_debug_grandom_incoming_south_side : @graph.IProperty[Int]
+pub let core_debug_grandom_incoming_south_side : @graph.IProperty[Int32]
 
-pub let core_debug_grandom_incoming_west_side : @graph.IProperty[Int]
+pub let core_debug_grandom_incoming_west_side : @graph.IProperty[Int32]
 
 pub let core_debug_grandom_isolated_nodes : @graph.IProperty[Bool]
 
-pub let core_debug_grandom_max_degree : @graph.IProperty[Int]
+pub let core_debug_grandom_max_degree : @graph.IProperty[Int32]
 
 pub let core_debug_grandom_max_hierarchy_level : @graph.IProperty[CoreDebugGRandomRandVal]
 
-pub let core_debug_grandom_max_width : @graph.IProperty[Int]
+pub let core_debug_grandom_max_width : @graph.IProperty[Int32]
 
 pub let core_debug_grandom_multi_edges : @graph.IProperty[Bool]
 
@@ -136,21 +136,21 @@ pub fn core_debug_grandom_nodes_exists(CoreDebugGRandomNodes?) -> Bool
 
 pub let core_debug_grandom_number_hierarchical_nodes : @graph.IProperty[CoreDebugGRandomRandVal]
 
-pub let core_debug_grandom_number_of_graphs : @graph.IProperty[Int]
+pub let core_debug_grandom_number_of_graphs : @graph.IProperty[Int32]
 
 pub let core_debug_grandom_number_of_nodes : @graph.IProperty[CoreDebugGRandomRandVal]
 
 pub fn core_debug_grandom_options_restrictions(CoreDebugGRandomConfiguration) -> Array[CoreDebugGRandomValidationError]
 
-pub let core_debug_grandom_outgoing_east_side : @graph.IProperty[Int]
+pub let core_debug_grandom_outgoing_east_side : @graph.IProperty[Int32]
 
 pub let core_debug_grandom_outgoing_edges : @graph.IProperty[CoreDebugGRandomRandVal]
 
-pub let core_debug_grandom_outgoing_north_side : @graph.IProperty[Int]
+pub let core_debug_grandom_outgoing_north_side : @graph.IProperty[Int32]
 
-pub let core_debug_grandom_outgoing_south_side : @graph.IProperty[Int]
+pub let core_debug_grandom_outgoing_south_side : @graph.IProperty[Int32]
 
-pub let core_debug_grandom_outgoing_west_side : @graph.IProperty[Int]
+pub let core_debug_grandom_outgoing_west_side : @graph.IProperty[Int32]
 
 pub let core_debug_grandom_partition_frac : @graph.IProperty[CoreDebugGRandomRandVal]
 
@@ -178,7 +178,7 @@ pub fn core_debug_grandom_random_graph_generator_generate(CoreDebugGRandomRandom
 
 pub fn core_debug_grandom_random_graph_generator_generate_from_configuration(CoreDebugGRandomRandomGraphGenerator, CoreDebugGRandomConfiguration) -> Array[@graph.ElkNode] raise
 
-pub let core_debug_grandom_randomization_seed : @graph.IProperty[Int]
+pub let core_debug_grandom_randomization_seed : @graph.IProperty[Int32]
 
 pub let core_debug_grandom_relative_edges : @graph.IProperty[CoreDebugGRandomRandVal]
 
@@ -238,18 +238,18 @@ pub fn new_core_debug_grandom_validation_error(String, String) -> CoreDebugGRand
 
 // Types and methods
 pub(all) struct CoreDebugGRandomConfiguration {
-  samples : Int
+  samples : Int32
   form : CoreDebugGRandomForm
   nodes : CoreDebugGRandomNodes?
   edges : CoreDebugGRandomEdges?
   m_w : Bool
-  max_width : Int?
+  max_width : Int32?
   m_d : Bool
-  max_degree : Int?
+  max_degree : Int32?
   p_f : Bool
   fraction : CoreDebugGRandomDoubleQuantity?
   hierarchy : CoreDebugGRandomHierarchy?
-  seed : Int?
+  seed : Int32?
   format : CoreDebugGRandomFormats?
   filename : String?
 }
@@ -260,9 +260,9 @@ pub fn CoreDebugGRandomConfiguration::set_format(Self, CoreDebugGRandomFormats?)
 pub fn CoreDebugGRandomConfiguration::set_fraction(Self, CoreDebugGRandomDoubleQuantity?) -> Self
 pub fn CoreDebugGRandomConfiguration::set_hierarchy(Self, CoreDebugGRandomHierarchy?) -> Self
 pub fn CoreDebugGRandomConfiguration::set_nodes(Self, CoreDebugGRandomNodes?) -> Self
-pub fn CoreDebugGRandomConfiguration::set_samples(Self, Int) -> Self
-pub fn CoreDebugGRandomConfiguration::set_seed(Self, Int?) -> Self
-pub fn CoreDebugGRandomConfiguration::set_tree_limits(Self, Int?, Int?) -> Self
+pub fn CoreDebugGRandomConfiguration::set_samples(Self, Int32) -> Self
+pub fn CoreDebugGRandomConfiguration::set_seed(Self, Int32?) -> Self
+pub fn CoreDebugGRandomConfiguration::set_tree_limits(Self, Int32?, Int32?) -> Self
 
 pub(all) enum CoreDebugGRandomConstraintType {
   ConstraintFree
@@ -335,7 +335,7 @@ pub(all) enum CoreDebugGRandomFormats {
 
 pub(all) struct CoreDebugGRandomGeneratorOptions {
   bool_values : Map[@graph.PropertyId, Bool]
-  int_values : Map[@graph.PropertyId, Int]
+  int_values : Map[@graph.PropertyId, Int32]
   double_values : Map[@graph.PropertyId, Double]
   string_values : Map[@graph.PropertyId, String]
   rand_values : Map[@graph.PropertyId, CoreDebugGRandomRandVal]
@@ -350,7 +350,7 @@ pub fn CoreDebugGRandomGeneratorOptions::get_double_property(Self, @graph.IPrope
 pub fn CoreDebugGRandomGeneratorOptions::get_edge_determination_property(Self, @graph.IProperty[CoreDebugGRandomEdgeDetermination]) -> CoreDebugGRandomEdgeDetermination
 pub fn CoreDebugGRandomGeneratorOptions::get_file_format_property(Self, @graph.IProperty[CoreDebugGRandomFileFormat]) -> CoreDebugGRandomFileFormat
 pub fn CoreDebugGRandomGeneratorOptions::get_graph_type_property(Self, @graph.IProperty[CoreDebugGRandomGraphType]) -> CoreDebugGRandomGraphType
-pub fn CoreDebugGRandomGeneratorOptions::get_int_property(Self, @graph.IProperty[Int]) -> Int
+pub fn CoreDebugGRandomGeneratorOptions::get_int_property(Self, @graph.IProperty[Int32]) -> Int32
 pub fn CoreDebugGRandomGeneratorOptions::get_optional_rand_property(Self, @graph.IProperty[CoreDebugGRandomRandVal?]) -> CoreDebugGRandomRandVal?
 pub fn CoreDebugGRandomGeneratorOptions::get_port_constraints_property(Self, @graph.IProperty[@core.PortConstraints]) -> @core.PortConstraints
 pub fn CoreDebugGRandomGeneratorOptions::get_rand_property(Self, @graph.IProperty[CoreDebugGRandomRandVal]) -> CoreDebugGRandomRandVal
@@ -360,7 +360,7 @@ pub fn CoreDebugGRandomGeneratorOptions::set_double_property(Self, @graph.IPrope
 pub fn CoreDebugGRandomGeneratorOptions::set_edge_determination_property(Self, @graph.IProperty[CoreDebugGRandomEdgeDetermination], CoreDebugGRandomEdgeDetermination) -> Unit
 pub fn CoreDebugGRandomGeneratorOptions::set_file_format_property(Self, @graph.IProperty[CoreDebugGRandomFileFormat], CoreDebugGRandomFileFormat) -> Unit
 pub fn CoreDebugGRandomGeneratorOptions::set_graph_type_property(Self, @graph.IProperty[CoreDebugGRandomGraphType], CoreDebugGRandomGraphType) -> Unit
-pub fn CoreDebugGRandomGeneratorOptions::set_int_property(Self, @graph.IProperty[Int], Int) -> Unit
+pub fn CoreDebugGRandomGeneratorOptions::set_int_property(Self, @graph.IProperty[Int32], Int32) -> Unit
 pub fn CoreDebugGRandomGeneratorOptions::set_optional_rand_property(Self, @graph.IProperty[CoreDebugGRandomRandVal?], CoreDebugGRandomRandVal?) -> Unit
 pub fn CoreDebugGRandomGeneratorOptions::set_port_constraints_property(Self, @graph.IProperty[@core.PortConstraints], @core.PortConstraints) -> Unit
 pub fn CoreDebugGRandomGeneratorOptions::set_quantities(Self, CoreDebugGRandomDoubleQuantity?, @graph.IProperty[CoreDebugGRandomRandVal]) -> Unit
@@ -427,24 +427,24 @@ pub(all) struct CoreDebugGRandomRandVal {
   use_min_max : Bool
   use_exact : Bool
 }
-pub fn CoreDebugGRandomRandVal::default_int(Self) -> Int
+pub fn CoreDebugGRandomRandVal::default_int(Self) -> Int32
 pub fn CoreDebugGRandomRandVal::default_val(Self) -> Double
 pub fn CoreDebugGRandomRandVal::float_val(Self, @random.Rand) -> Double raise
-pub fn CoreDebugGRandomRandVal::int_val(Self, @random.Rand) -> Int raise
+pub fn CoreDebugGRandomRandVal::int_val(Self, @random.Rand) -> Int32 raise
 pub fn CoreDebugGRandomRandVal::max(Self) -> Double
 pub fn CoreDebugGRandomRandVal::min(Self) -> Double
-pub fn CoreDebugGRandomRandVal::set_max(Self, Int) -> Unit
+pub fn CoreDebugGRandomRandVal::set_max(Self, Int32) -> Unit
 pub fn CoreDebugGRandomRandVal::set_mean(Self, Double) -> Unit
-pub fn CoreDebugGRandomRandVal::set_min(Self, Int) -> Unit
+pub fn CoreDebugGRandomRandVal::set_min(Self, Int32) -> Unit
 pub fn CoreDebugGRandomRandVal::set_stddv(Self, Double) -> Unit
 pub fn CoreDebugGRandomRandVal::val(Self, @random.Rand) -> Double raise
 
 pub(all) struct CoreDebugGRandomRandomGraphGenerator {
   mut options : CoreDebugGRandomGeneratorOptions
   mut random : @random.Rand
-  mut node_label_counter : Int
-  mut port_label_counter : Int
-  mut max_hierarchy_level : Int
+  mut node_label_counter : Int32
+  mut port_label_counter : Int32
+  mut max_hierarchy_level : Int32
 }
 
 pub(all) struct CoreDebugGRandomRuntimeModule {

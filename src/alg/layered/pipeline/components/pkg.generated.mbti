@@ -1,14 +1,14 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/alg/layered/pipeline/components"
+package "moonbit-community/elk/alg/layered/pipeline/components"
 
 import {
-  "bobzhang/elk/alg/layered/runtime",
-  "bobzhang/elk/core",
-  "bobzhang/elk/graph",
+  "moonbit-community/elk/alg/layered/runtime",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/graph",
 }
 
 // Values
-pub let layered_components_priority : @graph.IProperty[Int]
+pub let layered_components_priority : @graph.IProperty[Int32]
 
 pub let layered_components_separate_connected_components : @graph.IProperty[Bool]
 
@@ -38,7 +38,7 @@ pub fn new_model_order_component_group_with_component(@runtime.LGraph) -> ModelO
 
 // Types and methods
 pub struct ComponentGroup {
-  components : Map[Int, Array[@runtime.LGraph]]
+  components : Map[Int32, Array[@runtime.LGraph]]
 }
 pub fn ComponentGroup::add(Self, @runtime.LGraph) -> Bool
 pub fn ComponentGroup::can_add(Self, @runtime.LGraph) -> Bool
@@ -109,7 +109,7 @@ pub fn LayeredSimpleRowGraphPlacer::place_components(Self, Array[@runtime.LGraph
 pub fn LayeredSimpleRowGraphPlacer::sort_components(Self, Array[@runtime.LGraph], @runtime.LGraph) -> Unit
 
 pub struct ModelOrderComponentGroup {
-  components : Map[Int, Array[@runtime.LGraph]]
+  components : Map[Int32, Array[@runtime.LGraph]]
   component_order : Array[@runtime.LGraph]
 }
 pub fn ModelOrderComponentGroup::add(Self, @runtime.LGraph) -> Bool

@@ -1,9 +1,9 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/engine/all"
+package "moonbit-community/elk/engine/all"
 
 import {
-  "bobzhang/elk/core",
-  "bobzhang/elk/engine",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/engine",
 }
 
 // Values

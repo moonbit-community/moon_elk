@@ -1,9 +1,9 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/alg/layered/phases/placement"
+package "moonbit-community/elk/alg/layered/phases/placement"
 
 import {
-  "bobzhang/elk/alg/layered/runtime",
-  "bobzhang/elk/core",
+  "moonbit-community/elk/alg/layered/runtime",
+  "moonbit-community/elk/core",
   "moonbitlang/core/debug",
 }
 
@@ -20,7 +20,7 @@ pub fn bk_vdirection_is_up(BKVDirection) -> Bool
 
 pub fn neighborhood_information_build_for(@runtime.LGraph) -> NeighborhoodInformation
 
-pub fn new_bk_aligned_layout(@runtime.LGraph, Int, BKVDirection?, BKHDirection?) -> BKAlignedLayout
+pub fn new_bk_aligned_layout(@runtime.LGraph, Int32, BKVDirection?, BKHDirection?) -> BKAlignedLayout
 
 pub fn new_bk_aligner(@runtime.LGraph, NeighborhoodInformation) -> BKAligner
 
@@ -87,16 +87,16 @@ pub fn BKAlignedLayout::get_max_y(Self, @runtime.LNode) -> Double raise BKAligne
 pub fn BKAlignedLayout::get_min_y(Self, @runtime.LNode) -> Double raise BKAlignedLayoutException
 pub fn BKAlignedLayout::layout_size(Self) -> Double raise BKAlignedLayoutException
 pub fn BKAlignedLayout::require_align(Self, @runtime.LNode) -> @runtime.LNode raise BKAlignedLayoutException
-pub fn BKAlignedLayout::require_align_by_id(Self, Int) -> @runtime.LNode raise BKAlignedLayoutException
+pub fn BKAlignedLayout::require_align_by_id(Self, Int32) -> @runtime.LNode raise BKAlignedLayoutException
 pub fn BKAlignedLayout::require_hdir(Self) -> BKHDirection raise BKAlignedLayoutException
 pub fn BKAlignedLayout::require_root(Self, @runtime.LNode) -> @runtime.LNode raise BKAlignedLayoutException
-pub fn BKAlignedLayout::require_root_by_id(Self, Int) -> @runtime.LNode raise BKAlignedLayoutException
+pub fn BKAlignedLayout::require_root_by_id(Self, Int32) -> @runtime.LNode raise BKAlignedLayoutException
 pub fn BKAlignedLayout::require_sink(Self, @runtime.LNode) -> @runtime.LNode raise BKAlignedLayoutException
-pub fn BKAlignedLayout::require_sink_by_id(Self, Int) -> @runtime.LNode raise BKAlignedLayoutException
+pub fn BKAlignedLayout::require_sink_by_id(Self, Int32) -> @runtime.LNode raise BKAlignedLayoutException
 pub fn BKAlignedLayout::require_vdir(Self) -> BKVDirection raise BKAlignedLayoutException
 pub fn BKAlignedLayout::require_y(Self, @runtime.LNode) -> Double raise BKAlignedLayoutException
-pub fn BKAlignedLayout::require_y_by_id(Self, Int) -> Double raise BKAlignedLayoutException
-pub fn BKAlignedLayout::set_y_by_id(Self, Int, Double) -> Unit raise BKAlignedLayoutException
+pub fn BKAlignedLayout::require_y_by_id(Self, Int32) -> Double raise BKAlignedLayoutException
+pub fn BKAlignedLayout::set_y_by_id(Self, Int32, Double) -> Unit raise BKAlignedLayoutException
 pub fn BKAlignedLayout::shift_block(Self, @runtime.LNode, Double) -> Unit raise BKAlignedLayoutException
 pub fn BKAlignedLayout::to_string(Self) -> String
 
@@ -105,17 +105,17 @@ pub struct BKAligner {
   ni : NeighborhoodInformation
 }
 pub fn BKAligner::inside_block_shift(Self, BKAlignedLayout) -> Unit raise BKAlignedLayoutException
-pub fn BKAligner::vertical_alignment(Self, BKAlignedLayout, Map[Int, Bool]) -> Unit raise BKAlignedLayoutException
+pub fn BKAligner::vertical_alignment(Self, BKAlignedLayout, Map[Int32, Bool]) -> Unit raise BKAlignedLayoutException
 
 pub struct BKCompactor {
   layered_graph : @runtime.LGraph
   thresh_strategy : BkThresholdStrategy
   ni : NeighborhoodInformation
   spacings : @runtime.Spacings
-  class_nodes : Map[Int, @runtime.LNode]
-  class_outgoing : Map[Int, Array[(Int, Double)]]
-  class_indegree : Map[Int, Int]
-  class_shift : Map[Int, Double]
+  class_nodes : Map[Int32, @runtime.LNode]
+  class_outgoing : Map[Int32, Array[(Int32, Double)]]
+  class_indegree : Map[Int32, Int32]
+  class_shift : Map[Int32, Double]
 }
 pub fn BKCompactor::horizontal_compaction(Self, BKAlignedLayout) -> Unit raise
 
@@ -145,7 +145,7 @@ pub struct BkThresholdStrategy {
   kind : BkThresholdStrategyKind
   mut bal : BKAlignedLayout?
   mut ni : NeighborhoodInformation?
-  block_finished : Map[Int, Bool]
+  block_finished : Map[Int32, Bool]
   post_processables_queue : Array[BkPostprocessable]
   post_processables_stack : Array[BkPostprocessable]
 }
@@ -161,9 +161,9 @@ pub enum BkThresholdStrategyKind {
 }
 
 pub struct NeighborhoodInformation {
-  mut node_count : Int
-  mut layer_index : Array[Int]
-  mut node_index : Array[Int]
+  mut node_count : Int32
+  mut layer_index : Array[Int32]
+  mut node_index : Array[Int32]
   mut left_neighbors : Array[Array[(@runtime.LNode, @runtime.LEdge)]]
   mut right_neighbors : Array[Array[(@runtime.LNode, @runtime.LEdge)]]
 }

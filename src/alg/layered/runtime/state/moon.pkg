@@ -1,5 +1,5 @@
 import {
   "moonbitlang/core/int",
   "moonbitlang/core/random",
-  "bobzhang/elk/core",
+  "moonbit-community/elk/core",
 }

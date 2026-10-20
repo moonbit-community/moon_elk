@@ -1,8 +1,8 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/core/debug/grandom/ide"
+package "moonbit-community/elk/core/debug/grandom/ide"
 
 import {
-  "bobzhang/elk/core/debug/grandom",
+  "moonbit-community/elk/core/debug/grandom",
 }
 
 // Values
@@ -12,19 +12,19 @@ pub let core_debug_grandom_ide_grammar_name : String
 
 pub let core_debug_grandom_ide_language_name : String
 
-pub let core_debug_grandom_ide_rule_any_other : Int
+pub let core_debug_grandom_ide_rule_any_other : Int32
 
-pub let core_debug_grandom_ide_rule_id : Int
+pub let core_debug_grandom_ide_rule_id : Int32
 
-pub let core_debug_grandom_ide_rule_int : Int
+pub let core_debug_grandom_ide_rule_int : Int32
 
-pub let core_debug_grandom_ide_rule_ml_comment : Int
+pub let core_debug_grandom_ide_rule_ml_comment : Int32
 
-pub let core_debug_grandom_ide_rule_sl_comment : Int
+pub let core_debug_grandom_ide_rule_sl_comment : Int32
 
-pub let core_debug_grandom_ide_rule_string : Int
+pub let core_debug_grandom_ide_rule_string : Int32
 
-pub let core_debug_grandom_ide_rule_ws : Int
+pub let core_debug_grandom_ide_rule_ws : Int32
 
 pub let core_debug_grandom_ide_token_names : Array[String]
 
@@ -36,7 +36,7 @@ pub fn new_core_debug_grandom_ide_grammar_access() -> CoreDebugGRandomIdeGrammar
 
 pub fn new_core_debug_grandom_ide_injector(@grandom.CoreDebugGRandomRuntimeModule, CoreDebugGRandomIdeModule) -> CoreDebugGRandomIdeInjector
 
-pub fn new_core_debug_grandom_ide_lex_token(Int, String, String) -> CoreDebugGRandomIdeLexToken
+pub fn new_core_debug_grandom_ide_lex_token(Int32, String, String) -> CoreDebugGRandomIdeLexToken
 
 pub fn new_core_debug_grandom_ide_module() -> CoreDebugGRandomIdeModule
 
@@ -86,7 +86,7 @@ pub fn CoreDebugGRandomIdeInjector::get_ide_module(Self) -> CoreDebugGRandomIdeM
 pub fn CoreDebugGRandomIdeInjector::get_runtime_module(Self) -> @grandom.CoreDebugGRandomRuntimeModule
 
 pub(all) struct CoreDebugGRandomIdeLexToken {
-  token_type : Int
+  token_type : Int32
   token_name : String
   lexeme : String
 }

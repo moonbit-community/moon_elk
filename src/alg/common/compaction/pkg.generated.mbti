@@ -1,8 +1,8 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/alg/common/compaction"
+package "moonbit-community/elk/alg/common/compaction"
 
 import {
-  "bobzhang/elk/core",
+  "moonbit-community/elk/core",
   "moonbitlang/core/debug",
 }
 
@@ -49,11 +49,11 @@ pub fn quadratic_constraint_calculation(OneDimensionalCompactor) -> Unit raise
 
 pub fn scanline_constraint_calculation(OneDimensionalCompactor) -> Unit raise
 
-pub fn[T] scanline_execute(Array[T], (T, T) -> Int raise?, Array[(T) -> Unit]) -> Unit raise?
+pub fn[T] scanline_execute(Array[T], (T, T) -> Int32 raise?, Array[(T) -> Unit]) -> Unit raise?
 
-pub fn[T] scanline_execute_single(Array[T], (T, T) -> Int raise?, (T) -> Unit) -> Unit raise?
+pub fn[T] scanline_execute_single(Array[T], (T, T) -> Int32 raise?, (T) -> Unit) -> Unit raise?
 
-pub fn[T] scanline_execute_single_raise(Array[T], (T, T) -> Int raise?, (T) -> Unit raise) -> Unit raise
+pub fn[T] scanline_execute_single_raise(Array[T], (T, T) -> Int32 raise?, (T) -> Unit raise) -> Unit raise
 
 // Errors
 pub suberror CGroupException {
@@ -90,7 +90,7 @@ pub fn CGraph::nodes(Self) -> Array[CNode]
 pub fn CGraph::supports(Self, @core.Direction) -> Bool
 
 pub struct CGroup {
-  handle : Int
+  handle : Int32
   // private fields
 }
 pub fn CGroup::add_cnode(Self, CNode) -> Unit raise
@@ -102,18 +102,18 @@ pub fn CGroup::clear_incoming_constraints(Self) -> Unit
 pub fn CGroup::delta(Self) -> Double
 pub fn CGroup::delta_normalized(Self) -> Double
 pub fn CGroup::equal(Self, Self) -> Bool
-pub fn CGroup::id(Self) -> Int
+pub fn CGroup::id(Self) -> Int32
 pub fn CGroup::incoming_constraints(Self) -> Array[CNode]
 pub fn CGroup::master(Self) -> CNode?
 pub fn CGroup::not_equal(Self, Self) -> Bool
-pub fn CGroup::out_degree(Self) -> Int
-pub fn CGroup::out_degree_real(Self) -> Int
+pub fn CGroup::out_degree(Self) -> Int32
+pub fn CGroup::out_degree_real(Self) -> Int32
 pub fn CGroup::reference(Self) -> CNode?
 pub fn CGroup::remove_cnode(Self, CNode) -> Bool
-pub fn CGroup::set_id(Self, Int) -> Unit
+pub fn CGroup::set_id(Self, Int32) -> Unit
 pub fn CGroup::set_master(Self, CNode) -> Unit
-pub fn CGroup::set_out_degree(Self, Int) -> Unit
-pub fn CGroup::set_out_degree_real(Self, Int) -> Unit
+pub fn CGroup::set_out_degree(Self, Int32) -> Unit
+pub fn CGroup::set_out_degree_real(Self, Int32) -> Unit
 pub fn CGroup::set_reference(Self, CNode?) -> Unit
 pub fn CGroup::set_start_pos(Self, Double) -> Unit
 pub fn CGroup::start_pos(Self) -> Double
@@ -130,7 +130,7 @@ pub fn CGroupBuilder::nodes(Self, Array[CNode]) -> Self
 pub fn CGroupBuilder::reference(Self, CNode) -> Self
 
 pub struct CNode {
-  handle : Int
+  handle : Int32
   // private fields
 }
 pub fn CNode::add_constraint(Self, Self) -> Unit
@@ -142,7 +142,7 @@ pub fn CNode::get_debug_svg(Self) -> String
 pub fn CNode::group(Self) -> CGroup?
 pub fn CNode::hitbox(Self) -> @core.ElkRectangle
 pub fn CNode::hitbox_pre_compaction(Self) -> @core.ElkRectangle?
-pub fn CNode::id(Self) -> Int
+pub fn CNode::id(Self) -> Int32
 pub fn CNode::node_type(Self) -> String?
 pub fn CNode::not_equal(Self, Self) -> Bool
 pub fn CNode::origin(Self) -> String?
@@ -151,7 +151,7 @@ pub fn CNode::set_c_group_offset(Self, @core.KVector) -> Unit
 pub fn CNode::set_group(Self, CGroup?) -> Unit
 pub fn CNode::set_hitbox(Self, @core.ElkRectangle) -> Unit
 pub fn CNode::set_hitbox_pre_compaction(Self, @core.ElkRectangle?) -> Unit
-pub fn CNode::set_id(Self, Int) -> Unit
+pub fn CNode::set_id(Self, Int32) -> Unit
 pub fn CNode::set_node_type(Self, String?) -> Unit
 pub fn CNode::set_origin(Self, String?) -> Unit
 pub fn CNode::set_start_pos(Self, Double) -> Unit
@@ -162,7 +162,7 @@ pub fn CNode::to_string_delegate(Self) -> ((Self) -> String)?
 pub impl Eq for CNode
 
 pub struct CNodeBuilder {
-  mut id : Int
+  mut id : Int32
   mut origin : String?
   mut node_type : String?
   mut to_string_delegate : ((CNode) -> String)?
@@ -172,7 +172,7 @@ pub struct CNodeBuilder {
 pub fn CNodeBuilder::create(Self, CGraph) -> CNode raise
 pub fn CNodeBuilder::group_with(Self, CNode) -> Self
 pub fn CNodeBuilder::hitbox(Self, @core.ElkRectangle) -> Self
-pub fn CNodeBuilder::id(Self, Int) -> Self
+pub fn CNodeBuilder::id(Self, Int32) -> Self
 pub fn CNodeBuilder::node_type(Self, String) -> Self
 pub fn CNodeBuilder::origin(Self, String) -> Self
 pub fn CNodeBuilder::to_string_delegate(Self, (CNode) -> String) -> Self

@@ -2,12 +2,12 @@ import {
   "moonbitlang/core/cmp",
   "moonbitlang/core/double",
   "moonbitlang/core/debug",
-  "bobzhang/elk/core",
-  "bobzhang/elk/graph",
-  "bobzhang/elk/alg/mrtree/options" @mrtree_options,
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/graph",
+  "moonbit-community/elk/alg/mrtree/options" @mrtree_options,
 }
 
 import {
-  "bobzhang/elk/alg/test",
-  "bobzhang/elk/alg/layered/options",
+  "moonbit-community/elk/alg/test",
+  "moonbit-community/elk/alg/layered/options",
 } for "test"

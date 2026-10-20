@@ -168,7 +168,7 @@ Script:
 
 It runs:
 
-1. Core API path (`bobzhang/elk/core`, i.e. `new_elk_engine().layout`) via:
+1. Core API path (`moonbit-community/elk/core`, i.e. `new_elk_engine().layout`) via:
    - `src/diff/elkjs_core_compare_runner`
 2. elkjs (`elkjs/lib/elk.bundled.js`)
 3. Case set:

@@ -1,9 +1,9 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/alg/common/nodespacing"
+package "moonbit-community/elk/alg/common/nodespacing"
 
 import {
-  "bobzhang/elk/core",
-  "bobzhang/elk/graph",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/graph",
   "moonbitlang/core/debug",
 }
 
@@ -80,13 +80,13 @@ pub fn new_node_margin_calculator(@core.ElkGraphAdapter) -> NodeMarginCalculator
 
 pub fn new_node_margin_calculator_for_input(NodeSpacingInput) -> NodeMarginCalculator
 
-pub fn new_port_context(NodeContext, NodeSpacingPort, Int) -> PortContext
+pub fn new_port_context(NodeContext, NodeSpacingPort, Int32) -> PortContext
 
 pub fn new_strip_container_cell(Strip, Bool, Double) -> Cell
 
 pub fn node_context_add_port_context(NodeContext, @core.PortSide, PortContext) -> Unit
 
-pub fn node_context_compare_port_sides(@core.PortSide, @core.PortSide) -> Int
+pub fn node_context_compare_port_sides(@core.PortSide, @core.PortSide) -> Int32
 
 pub fn node_context_get_all_port_contexts(NodeContext) -> Array[PortContext]
 
@@ -270,7 +270,7 @@ pub fn Cell::get_vertical_alignment(Self) -> VerticalLabelAlignment
 pub fn Cell::has_labels(Self) -> Bool
 pub fn Cell::is_contributing_to_minimum_height(Self) -> Bool
 pub fn Cell::is_contributing_to_minimum_width(Self) -> Bool
-pub fn Cell::label_count(Self) -> Int
+pub fn Cell::label_count(Self) -> Int32
 pub fn Cell::layout_children_horizontally(Self) -> Unit
 pub fn Cell::layout_children_vertically(Self) -> Unit
 pub fn Cell::set_cell(Self, ContainerArea, Self?) -> Unit
@@ -408,7 +408,7 @@ pub(all) struct NodeSpacingLabel {
 }
 
 pub(all) struct NodeSpacingNode {
-  source_index : Int
+  source_index : Int32
   mut size : @core.KVector
   position : @core.KVector
   labels : Array[NodeSpacingLabel]
@@ -444,11 +444,11 @@ pub(all) struct NodeSpacingNode {
 }
 
 pub(all) struct NodeSpacingNodeOutput {
-  source_index : Int
+  source_index : Int32
   size : @core.KVector
   padding : @core.Spacing
   margin : @core.Spacing
-  port_order : Array[Int]
+  port_order : Array[Int32]
   ports : Array[NodeSpacingPortOutput]
   label_positions : Array[@core.KVector]
 }
@@ -458,7 +458,7 @@ pub(all) struct NodeSpacingOutput {
 }
 
 pub(all) struct NodeSpacingPort {
-  source_index : Int
+  source_index : Int32
   size : @core.KVector
   mut position : @core.KVector
   side : @core.PortSide
@@ -470,14 +470,14 @@ pub(all) struct NodeSpacingPort {
   border_offset : Double
   has_ratio_or_position : Bool
   ratio_or_position : Double
-  sort_index : Int?
-  mut volatile_id : Int
+  sort_index : Int32?
+  mut volatile_id : Int32
 }
 
 pub(all) struct NodeSpacingPortOutput {
-  source_index : Int
+  source_index : Int32
   position : @core.KVector
-  volatile_id : Int
+  volatile_id : Int32
   label_positions : Array[@core.KVector]
 }
 
@@ -486,7 +486,7 @@ pub struct PortContext {
   port : NodeSpacingPort
   port_position : @core.KVector
   labels_next_to_port : Bool
-  volatile_id : Int
+  volatile_id : Int32
   port_margin : @core.Spacing
   mut port_label_cell : Cell?
 }

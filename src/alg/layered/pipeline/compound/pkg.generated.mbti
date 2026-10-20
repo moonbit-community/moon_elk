@@ -1,10 +1,10 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/alg/layered/pipeline/compound"
+package "moonbit-community/elk/alg/layered/pipeline/compound"
 
 import {
-  "bobzhang/elk/alg/layered/options",
-  "bobzhang/elk/alg/layered/runtime",
-  "bobzhang/elk/core",
+  "moonbit-community/elk/alg/layered/options",
+  "moonbit-community/elk/alg/layered/runtime",
+  "moonbit-community/elk/core",
   "moonbitlang/core/debug",
 }
 
@@ -42,7 +42,7 @@ pub fn CrossHierarchyEdge::to_string(Self) -> String
 pub struct CrossHierarchyEdgeComparator {
   graph : @runtime.LGraph
 }
-pub fn CrossHierarchyEdgeComparator::compare(Self, CrossHierarchyEdge, CrossHierarchyEdge) -> Int raise CrossHierarchyEdgeComparatorException
+pub fn CrossHierarchyEdgeComparator::compare(Self, CrossHierarchyEdge, CrossHierarchyEdge) -> Int32 raise CrossHierarchyEdgeComparatorException
 
 // Type aliases
 

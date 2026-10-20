@@ -1,14 +1,14 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/alg/common/overlaps"
+package "moonbit-community/elk/alg/common/overlaps"
 
 import {
-  "bobzhang/elk/core",
+  "moonbit-community/elk/core",
 }
 
 // Values
 pub fn create_rectangle_strip_overlap_remover_for_direction(@core.Direction) -> RectangleStripOverlapRemover
 
-pub fn greedy_rectangle_strip_overlap_remover_compare_by_y_coordinate(RectangleNode, RectangleNode) -> Int
+pub fn greedy_rectangle_strip_overlap_remover_compare_by_y_coordinate(RectangleNode, RectangleNode) -> Int32
 
 pub fn greedy_rectangle_strip_overlap_remover_remove_overlaps(RectangleStripOverlapRemover) -> Double
 

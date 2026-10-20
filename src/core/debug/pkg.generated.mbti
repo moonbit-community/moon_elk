@@ -1,9 +1,9 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/core/debug"
+package "moonbit-community/elk/core/debug"
 
 import {
-  "bobzhang/elk/core",
-  "bobzhang/elk/graph",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/graph",
 }
 
 // Values
@@ -17,7 +17,7 @@ pub fn compress_log_folder_action_complete_file_name(String?) -> String?
 
 pub let compress_log_folder_action_id : String
 
-pub fn compress_log_folder_action_suggested_file_name(Array[Int]) -> String raise
+pub fn compress_log_folder_action_suggested_file_name(Array[Int32]) -> String raise
 
 pub fn core_debug_dialog_settings_section(String) -> CoreDebugDialogSettingsSection
 
@@ -83,51 +83,51 @@ pub fn elk_debug_plugin_start(ElkDebugPlugin) -> Unit
 
 pub fn elk_debug_plugin_stop(ElkDebugPlugin) -> Unit
 
-pub fn execution_info_from_progress_monitor(@core.IElkProgressMonitor) -> Int
+pub fn execution_info_from_progress_monitor(@core.IElkProgressMonitor) -> Int32
 
-pub fn execution_info_from_progress_monitor_and_file(@core.IElkProgressMonitor, String, Bool) -> Int
+pub fn execution_info_from_progress_monitor_and_file(@core.IElkProgressMonitor, String, Bool) -> Int32
 
-pub fn execution_info_get_children(Int) -> Array[Int] raise
+pub fn execution_info_get_children(Int32) -> Array[Int32] raise
 
-pub fn execution_info_get_creation_tick(Int) -> Int raise
+pub fn execution_info_get_creation_tick(Int32) -> Int32 raise
 
-pub fn execution_info_get_debug_folder(Int) -> String raise
+pub fn execution_info_get_debug_folder(Int32) -> String raise
 
-pub fn execution_info_get_execution_time_including_children(Int) -> Double raise
+pub fn execution_info_get_execution_time_including_children(Int32) -> Double raise
 
-pub fn execution_info_get_execution_time_local(Int) -> Double raise
+pub fn execution_info_get_execution_time_local(Int32) -> Double raise
 
-pub fn execution_info_get_file_name(Int) -> String? raise
+pub fn execution_info_get_file_name(Int32) -> String? raise
 
-pub fn execution_info_get_log_messages(Int) -> Array[String] raise
+pub fn execution_info_get_log_messages(Int32) -> Array[String] raise
 
-pub fn execution_info_get_logged_graphs(Int) -> Array[@core.LoggedGraph] raise
+pub fn execution_info_get_logged_graphs(Int32) -> Array[@core.LoggedGraph] raise
 
-pub fn execution_info_get_name(Int) -> String raise
+pub fn execution_info_get_name(Int32) -> String raise
 
-pub fn execution_info_get_parent(Int) -> Int? raise
+pub fn execution_info_get_parent(Int32) -> Int32? raise
 
-pub fn execution_info_has_descendants_with_log_messages(Int) -> Bool raise
+pub fn execution_info_has_descendants_with_log_messages(Int32) -> Bool raise
 
-pub fn execution_info_has_descendants_with_logged_graphs(Int) -> Bool raise
+pub fn execution_info_has_descendants_with_logged_graphs(Int32) -> Bool raise
 
-pub fn execution_info_has_log_messages(Int) -> Bool raise
+pub fn execution_info_has_log_messages(Int32) -> Bool raise
 
-pub fn execution_info_has_logged_graphs(Int) -> Bool raise
+pub fn execution_info_has_logged_graphs(Int32) -> Bool raise
 
-pub fn execution_info_is_execution_time_measured(Int) -> Bool raise
+pub fn execution_info_is_execution_time_measured(Int32) -> Bool raise
 
-pub fn execution_info_is_laid_out_after_load(Int) -> Bool raise
+pub fn execution_info_is_laid_out_after_load(Int32) -> Bool raise
 
-pub fn execution_info_is_loaded_from_file(Int) -> Bool raise
+pub fn execution_info_is_loaded_from_file(Int32) -> Bool raise
 
-pub fn execution_info_remove_child(Int, Int) -> Unit raise
+pub fn execution_info_remove_child(Int32, Int32) -> Unit raise
 
 pub fn execution_info_reset_for_test() -> Unit
 
-pub fn execution_info_set_debug_folder_for_test(Int, String) -> Unit raise
+pub fn execution_info_set_debug_folder_for_test(Int32, String) -> Unit raise
 
-pub fn execution_info_set_execution_time_for_test(Int, Bool, Double, Double) -> Unit raise
+pub fn execution_info_set_execution_time_for_test(Int32, Bool, Double, Double) -> Unit raise
 
 pub fn execution_time_display_local() -> ExecutionTimeDisplayMode
 
@@ -161,9 +161,9 @@ pub fn layout_upon_load_setting_action_should_layout_upon_load() -> Bool
 
 pub let load_graph_action_id : String
 
-pub fn load_graph_action_layout(@core.LayoutRuntime, @core.LayoutSession, String, @graph.ElkNode) -> Int raise
+pub fn load_graph_action_layout(@core.LayoutRuntime, @core.LayoutSession, String, @graph.ElkNode) -> Int32 raise
 
-pub fn load_graph_action_layout_internal(@core.LayoutRuntime, @core.LayoutSession, String, Bool, @graph.ElkNode) -> Int raise
+pub fn load_graph_action_layout_internal(@core.LayoutRuntime, @core.LayoutSession, String, Bool, @graph.ElkNode) -> Int32 raise
 
 pub fn load_graph_action_load_from_file(String) -> @graph.ElkNode raise
 
@@ -171,7 +171,7 @@ pub fn load_graph_action_run_file(@core.LayoutRuntime, @core.LayoutSession, Stri
 
 pub fn melk_template_build_file_content(String, String, String, String, String, String) -> String
 
-pub fn new_abstract_layout_debug_view(String, String, (Int) -> Bool) -> AbstractLayoutDebugView
+pub fn new_abstract_layout_debug_view(String, String, (Int32) -> Bool) -> AbstractLayoutDebugView
 
 pub fn new_algorithm_plugin_content_wizard(String, String) -> AlgorithmPluginContentWizard
 
@@ -245,12 +245,12 @@ pub(all) struct AbstractLayoutDebugView {
   preference_id : String
   model : ExecutionInfoModel
   tree_content_provider : ExecutionInfoContentProvider
-  tree_filter_fn : (Int) -> Bool
-  mut selected_execution_infos : Array[Int]
+  tree_filter_fn : (Int32) -> Bool
+  mut selected_execution_infos : Array[Int32]
   mut filter_enabled : Bool
   mut model_listener : IExecutionInfoModelListener?
   mut tree_expanded : Bool
-  mut refresh_count : Int
+  mut refresh_count : Int32
 }
 pub fn AbstractLayoutDebugView::attach_model_listener(Self) -> Unit
 pub fn AbstractLayoutDebugView::collapse_all_tree_viewer_elements(Self) -> Unit
@@ -259,18 +259,18 @@ pub fn AbstractLayoutDebugView::execution_info_changed(Self) -> Unit
 pub fn AbstractLayoutDebugView::expand_all_tree_viewer_elements(Self) -> Unit
 pub fn AbstractLayoutDebugView::get_model(Self) -> ExecutionInfoModel
 pub fn AbstractLayoutDebugView::get_preference_id(Self) -> String
-pub fn AbstractLayoutDebugView::get_refresh_count_for_test(Self) -> Int
-pub fn AbstractLayoutDebugView::get_selected_execution_infos(Self) -> Array[Int]
+pub fn AbstractLayoutDebugView::get_refresh_count_for_test(Self) -> Int32
+pub fn AbstractLayoutDebugView::get_selected_execution_infos(Self) -> Array[Int32]
 pub fn AbstractLayoutDebugView::get_view_id(Self) -> String
-pub fn AbstractLayoutDebugView::get_visible_children_for_test(Self, Int) -> Array[Int] raise
-pub fn AbstractLayoutDebugView::get_visible_root_infos_for_test(Self) -> Array[Int]
+pub fn AbstractLayoutDebugView::get_visible_children_for_test(Self, Int32) -> Array[Int32] raise
+pub fn AbstractLayoutDebugView::get_visible_root_infos_for_test(Self) -> Array[Int32]
 pub fn AbstractLayoutDebugView::is_filter_tree_enabled(Self) -> Bool
 pub fn AbstractLayoutDebugView::is_tree_expanded(Self) -> Bool
 pub fn AbstractLayoutDebugView::load_state(Self, CoreDebugDialogSettingsSection) -> Unit
 pub fn AbstractLayoutDebugView::persist_state(Self, CoreDebugDialogSettingsSection) -> Unit
 pub fn AbstractLayoutDebugView::retrieve_dialog_settings(Self) -> CoreDebugDialogSettingsSection
 pub fn AbstractLayoutDebugView::set_filter_tree(Self, Bool) -> Unit
-pub fn AbstractLayoutDebugView::set_selected_execution_infos(Self, Array[Int]) -> Unit
+pub fn AbstractLayoutDebugView::set_selected_execution_infos(Self, Array[Int32]) -> Unit
 pub fn AbstractLayoutDebugView::tree_selection_changed(Self) -> Unit
 
 pub(all) struct AlgorithmPluginContentWizard {
@@ -330,14 +330,14 @@ pub(all) struct CoreDebugDialogSettingsSection {
   section : String
 }
 pub fn CoreDebugDialogSettingsSection::get_bool(Self, String) -> Bool?
-pub fn CoreDebugDialogSettingsSection::get_int(Self, String) -> Int?
+pub fn CoreDebugDialogSettingsSection::get_int(Self, String) -> Int32?
 pub fn CoreDebugDialogSettingsSection::get_string(Self, String) -> String?
 pub fn CoreDebugDialogSettingsSection::put_bool(Self, String, Bool) -> Unit
-pub fn CoreDebugDialogSettingsSection::put_int(Self, String, Int) -> Unit
+pub fn CoreDebugDialogSettingsSection::put_int(Self, String, Int32) -> Unit
 pub fn CoreDebugDialogSettingsSection::put_string(Self, String, String) -> Unit
 
 pub(all) struct CoreDebugLayoutListener {
-  id : Int
+  id : Int32
   layout_about_to_start : (CoreDebugLayoutMapping, @core.IElkProgressMonitor) -> Unit
   layout_done : (CoreDebugLayoutMapping, @core.IElkProgressMonitor) -> Unit
 }
@@ -371,27 +371,27 @@ pub(all) struct ElkDebugPlugin {
 pub fn ElkDebugPlugin::get_model(Self) -> ExecutionInfoModel
 
 pub(all) struct ExecutionInfoContentProvider {
-  mut filter_fn : (Int) -> Bool
+  mut filter_fn : (Int32) -> Bool
   mut filter_is_default : Bool
 }
-pub fn ExecutionInfoContentProvider::get_children(Self, Int?) -> Array[Int] raise
-pub fn ExecutionInfoContentProvider::get_elements(Self, Array[Int]?) -> Array[Int]
-pub fn ExecutionInfoContentProvider::get_parent(Self, Int?) -> Int? raise
-pub fn ExecutionInfoContentProvider::has_children(Self, Int?) -> Bool raise
+pub fn ExecutionInfoContentProvider::get_children(Self, Int32?) -> Array[Int32] raise
+pub fn ExecutionInfoContentProvider::get_elements(Self, Array[Int32]?) -> Array[Int32]
+pub fn ExecutionInfoContentProvider::get_parent(Self, Int32?) -> Int32? raise
+pub fn ExecutionInfoContentProvider::has_children(Self, Int32?) -> Bool raise
 pub fn ExecutionInfoContentProvider::is_filtering(Self) -> Bool
-pub fn ExecutionInfoContentProvider::set_filter(Self, ((Int) -> Bool)?) -> Unit
+pub fn ExecutionInfoContentProvider::set_filter(Self, ((Int32) -> Bool)?) -> Unit
 
 pub(all) struct ExecutionInfoModel {
-  executions : Array[Int]
+  executions : Array[Int32]
   listeners : Array[IExecutionInfoModelListener]
 }
-pub fn ExecutionInfoModel::add_execution(Self, Int) -> Unit
+pub fn ExecutionInfoModel::add_execution(Self, Int32) -> Unit
 pub fn ExecutionInfoModel::add_execution_info_model_listener(Self, IExecutionInfoModelListener) -> Unit
-pub fn ExecutionInfoModel::get_execution_infos(Self) -> Array[Int]
+pub fn ExecutionInfoModel::get_execution_infos(Self) -> Array[Int32]
 pub fn ExecutionInfoModel::remove_all_execution_infos(Self) -> Unit
 pub fn ExecutionInfoModel::remove_execution_info_model_listener(Self, IExecutionInfoModelListener) -> Unit
-pub fn ExecutionInfoModel::remove_execution_infos(Self, Array[Int]) -> Unit raise
-pub fn ExecutionInfoModel::replace_execution(Self, Int, Int) -> Unit
+pub fn ExecutionInfoModel::remove_execution_infos(Self, Array[Int32]) -> Unit raise
+pub fn ExecutionInfoModel::replace_execution(Self, Int32, Int32) -> Unit
 
 pub(all) enum ExecutionTimeDisplayMode {
   NameDisplay
@@ -403,20 +403,20 @@ pub(all) struct ExecutionTimeLabelProvider {
   display_mode : ExecutionTimeDisplayMode
   element_image : String
 }
-pub fn ExecutionTimeLabelProvider::get_image(Self, Int) -> String?
-pub fn ExecutionTimeLabelProvider::get_text(Self, Int) -> String raise
+pub fn ExecutionTimeLabelProvider::get_image(Self, Int32) -> String?
+pub fn ExecutionTimeLabelProvider::get_text(Self, Int32) -> String raise
 
 pub(all) struct ExecutionTimeView {
   base : AbstractLayoutDebugView
-  mut name_column_width : Int
-  mut time_column_width : Int
-  mut local_time_column_width : Int
+  mut name_column_width : Int32
+  mut time_column_width : Int32
+  mut local_time_column_width : Int32
 }
 pub fn ExecutionTimeView::get_base(Self) -> AbstractLayoutDebugView
-pub fn ExecutionTimeView::get_column_widths_for_test(Self) -> (Int, Int, Int)
+pub fn ExecutionTimeView::get_column_widths_for_test(Self) -> (Int32, Int32, Int32)
 pub fn ExecutionTimeView::load_state(Self) -> Unit
 pub fn ExecutionTimeView::persist_state(Self) -> Unit
-pub fn ExecutionTimeView::set_column_widths_for_test(Self, Int, Int, Int) -> Unit
+pub fn ExecutionTimeView::set_column_widths_for_test(Self, Int32, Int32, Int32) -> Unit
 
 pub(all) struct ExpandExecutionTreeAction {
   view : AbstractLayoutDebugView
@@ -443,15 +443,15 @@ pub(all) struct GraphTreeLabelProvider {
   graph_image : String
   no_graph_image : String
 }
-pub fn GraphTreeLabelProvider::get_image(Self, Int) -> String raise
-pub fn GraphTreeLabelProvider::get_text(Self, Int) -> String raise
+pub fn GraphTreeLabelProvider::get_image(Self, Int32) -> String raise
+pub fn GraphTreeLabelProvider::get_text(Self, Int32) -> String raise
 
 pub(all) struct IExecutionInfoModelListener {
-  id : Int
+  id : Int32
   execution_info_changed_fn : () -> Unit
 }
 pub fn IExecutionInfoModelListener::execution_info_changed(Self) -> Unit
-pub fn IExecutionInfoModelListener::get_id(Self) -> Int
+pub fn IExecutionInfoModelListener::get_id(Self) -> Int32
 
 pub(all) struct ImageExportAction {
   view : LayoutGraphView
@@ -475,13 +475,13 @@ pub(all) struct LayoutGraphView {
 pub fn LayoutGraphView::get_base(Self) -> AbstractLayoutDebugView
 pub fn LayoutGraphView::get_canvas_graph_for_test(Self) -> @graph.ElkNode?
 pub fn LayoutGraphView::get_logged_graphs_for_test(Self) -> Array[@core.LoggedGraph]
-pub fn LayoutGraphView::get_selected_execution_infos(Self) -> Array[Int]
+pub fn LayoutGraphView::get_selected_execution_infos(Self) -> Array[Int32]
 pub fn LayoutGraphView::get_textual_graph_for_test(Self) -> String
 pub fn LayoutGraphView::is_showing_visual_graph_for_test(Self) -> Bool
 pub fn LayoutGraphView::list_selection_changed(Self) -> Unit
-pub fn LayoutGraphView::select_logged_graph_for_test(Self, Int) -> Unit
+pub fn LayoutGraphView::select_logged_graph_for_test(Self, Int32) -> Unit
 pub fn LayoutGraphView::set_canvas_graph_for_test(Self, @graph.ElkNode?) -> Unit
-pub fn LayoutGraphView::set_selected_execution_infos(Self, Array[Int]) -> Unit raise
+pub fn LayoutGraphView::set_selected_execution_infos(Self, Array[Int32]) -> Unit raise
 pub fn LayoutGraphView::show_logged_graph(Self, @core.LoggedGraph) -> Unit
 pub fn LayoutGraphView::tree_selection_changed(Self) -> Unit raise
 
@@ -499,7 +499,7 @@ pub(all) struct LayoutLogView {
 }
 pub fn LayoutLogView::get_base(Self) -> AbstractLayoutDebugView
 pub fn LayoutLogView::get_log_text(Self) -> String
-pub fn LayoutLogView::set_selected_execution_infos(Self, Array[Int]) -> Unit raise
+pub fn LayoutLogView::set_selected_execution_infos(Self, Array[Int32]) -> Unit raise
 pub fn LayoutLogView::tree_selection_changed(Self) -> Unit raise
 
 pub(all) struct LayoutUponLoadSettingAction {
@@ -522,8 +522,8 @@ pub(all) struct LogLabelProvider {
   log_image : String
   no_log_image : String
 }
-pub fn LogLabelProvider::get_image(Self, Int) -> String raise
-pub fn LogLabelProvider::get_text(Self, Int) -> String raise
+pub fn LogLabelProvider::get_image(Self, Int32) -> String raise
+pub fn LogLabelProvider::get_text(Self, Int32) -> String raise
 
 pub(all) struct PreferenceAction {
   preference_id : String
@@ -553,6 +553,6 @@ pub fn RevealLogFolderAction::run(Self) -> Unit raise
 pub fn RevealLogFolderAction::update_enablement(Self) -> Unit raise
 
 // Type aliases
-pub type ExecutionInfo = Int
+pub type ExecutionInfo = Int32
 
 // Traits

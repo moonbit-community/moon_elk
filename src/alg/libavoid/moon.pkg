@@ -1,12 +1,12 @@
 import {
   "moonbitlang/core/cmp",
   "moonbitlang/core/string",
-  "bobzhang/elk/graph",
-  "bobzhang/elk/core",
-  "bobzhang/elk/engine",
-  "bobzhang/elk/alg/graphviz/layouter",
+  "moonbit-community/elk/graph",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/engine",
+  "moonbit-community/elk/alg/graphviz/layouter",
 }
 
 import {
-  "bobzhang/elk/alg/test",
+  "moonbit-community/elk/alg/test",
 } for "test"

@@ -1,25 +1,25 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/alg/layered/runtime"
+package "moonbit-community/elk/alg/layered/runtime"
 
 import {
-  "bobzhang/elk/alg/common/nodespacing",
-  "bobzhang/elk/alg/layered/options",
-  "bobzhang/elk/alg/layered/runtime/state",
-  "bobzhang/elk/core",
-  "bobzhang/elk/graph",
+  "moonbit-community/elk/alg/common/nodespacing",
+  "moonbit-community/elk/alg/layered/options",
+  "moonbit-community/elk/alg/layered/runtime/state",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/graph",
   "moonbitlang/core/debug",
 }
 
 // Values
-pub const P1CycleBreaking : Int = 0
+pub const P1CycleBreaking : Int32 = 0
 
-pub const P2Layering : Int = 1
+pub const P2Layering : Int32 = 1
 
-pub const P3NodeOrdering : Int = 2
+pub const P3NodeOrdering : Int32 = 2
 
-pub const P4NodePlacement : Int = 3
+pub const P4NodePlacement : Int32 = 3
 
-pub const P5EdgeRouting : Int = 4
+pub const P5EdgeRouting : Int32 = 4
 
 pub fn adapt_l_graph(LGraph) -> LGraphAdapter
 
@@ -41,11 +41,11 @@ pub fn change_coord_system(@core.KVector, LGraph, LGraph) -> Unit
 
 pub fn compute_graph_properties(LGraph) -> Unit
 
-pub fn create_external_port_dummy(LPort, @core.PortConstraints, @core.PortSide, Int, @core.KVector?, @core.KVector?, @core.KVector, @core.Direction, LGraph) -> LNode raise LGraphUtilException
+pub fn create_external_port_dummy(LPort, @core.PortConstraints, @core.PortSide, Int32, @core.KVector?, @core.KVector?, @core.KVector, @core.Direction, LGraph) -> LNode raise LGraphUtilException
 
 pub fn create_port_for_edge(LNode, @core.KVector?, @options.PortType, LGraph) -> LPort raise
 
-pub fn debug_util_log_debug_graph(@core.IElkProgressMonitor, LGraph, Int, String) -> Unit
+pub fn debug_util_log_debug_graph(@core.IElkProgressMonitor, LGraph, Int32, String) -> Unit
 
 pub fn debug_util_log_debug_graph_linear_segments(@core.IElkProgressMonitor, LGraph, Array[LinearSegment], Array[Array[LinearSegment]]) -> Unit
 
@@ -65,17 +65,17 @@ pub fn get_external_port_position(LGraph, LNode, Double, Double) -> @core.KVecto
 
 pub fn get_individual_or_inherited(LNode, @graph.IProperty[Double]) -> Double
 
-pub fn get_minimal_model_order(LGraph) -> Int
+pub fn get_minimal_model_order(LGraph) -> Int32
 
 pub fn initialize_port(LPort, @core.PortConstraints, @core.Direction, @core.KVector?) -> Unit
 
-pub let interactive_layered_graph_visitor_last_layer_index : Int
+pub let interactive_layered_graph_visitor_last_layer_index : Int32
 
-pub let interactive_layered_graph_visitor_pseudo_position_spacing : Int
+pub let interactive_layered_graph_visitor_pseudo_position_spacing : Int32
 
 pub fn interactive_layered_graph_visitor_set_interactive_options_and_pseudo_positions(@graph.ElkNode) -> Unit
 
-pub fn intermediate_processor_strategy_ordinal(IntermediateProcessorStrategy) -> Int
+pub fn intermediate_processor_strategy_ordinal(IntermediateProcessorStrategy) -> Int32
 
 pub fn intermediate_processor_strategy_to_string(IntermediateProcessorStrategy) -> String
 
@@ -85,7 +85,7 @@ pub let internal_properties_barycenter_associates : @graph.IProperty[Array[LNode
 
 pub let internal_properties_bottom_comments : @graph.IProperty[Array[LNode]]
 
-pub let internal_properties_cb_num_model_order_groups : @graph.IProperty[Int]
+pub let internal_properties_cb_num_model_order_groups : @graph.IProperty[Int32]
 
 pub let internal_properties_comment_conn_port : @graph.IProperty[LPort?]
 
@@ -93,7 +93,7 @@ pub let internal_properties_compound_node : @graph.IProperty[Bool]
 
 pub let internal_properties_coordinate_system_origin : @graph.IProperty[LGraph?]
 
-pub let internal_properties_crossing_hint : @graph.IProperty[Int]
+pub let internal_properties_crossing_hint : @graph.IProperty[Int32]
 
 pub let internal_properties_cyclic : @graph.IProperty[Bool]
 
@@ -145,9 +145,9 @@ pub let internal_properties_long_edge_target_node : @graph.IProperty[LNode?]
 
 pub let internal_properties_max_edge_thickness : @graph.IProperty[Double]
 
-pub let internal_properties_max_model_order_nodes : @graph.IProperty[Int]
+pub let internal_properties_max_model_order_nodes : @graph.IProperty[Int32]
 
-pub let internal_properties_model_order : @graph.IProperty[Int]
+pub let internal_properties_model_order : @graph.IProperty[Int32]
 
 pub let internal_properties_origin_l_edge : @graph.IProperty[LEdge?]
 
@@ -183,13 +183,13 @@ pub let internal_properties_spline_ns_port_y_coord : @graph.IProperty[Double]
 
 pub let internal_properties_spline_surviving_edge : @graph.IProperty[LEdge?]
 
-pub let internal_properties_target_node_model_order : @graph.IProperty[Map[Int, Int]]
+pub let internal_properties_target_node_model_order : @graph.IProperty[Map[Int32, Int32]]
 
 pub let internal_properties_target_offset : @graph.IProperty[@core.KVector]
 
-pub let internal_properties_tarjan_id : @graph.IProperty[Int]
+pub let internal_properties_tarjan_id : @graph.IProperty[Int32]
 
-pub let internal_properties_tarjan_lowlink : @graph.IProperty[Int]
+pub let internal_properties_tarjan_lowlink : @graph.IProperty[Int32]
 
 pub let internal_properties_tarjan_on_stack : @graph.IProperty[Bool]
 
@@ -207,17 +207,17 @@ pub fn l_graph_util_exception_message(LGraphUtilException) -> String
 
 pub fn label_management_processor_do_manage_labels(@core.ILabelManager, Array[LLabel], Double, Double, Bool) -> @core.KVector
 
-pub fn layer_internal_handle(Layer) -> Int
+pub fn layer_internal_handle(Layer) -> Int32
 
 pub let layered_components_direction : @graph.IProperty[@core.Direction]
 
-pub fn layered_phase_constants() -> Array[Int]
+pub fn layered_phase_constants() -> Array[Int32]
 
 pub let layered_phase_descriptor : @core.PhaseDescriptor
 
 pub fn layered_phase_values() -> Array[String]
 
-pub fn layered_phases_to_string(Int) -> String
+pub fn layered_phases_to_string(Int32) -> String
 
 pub let layered_spacings_base_spacing_option : @graph.IProperty[Double]
 
@@ -231,13 +231,13 @@ pub fn layered_spacings_with_base_value(Double) -> LayeredSpacingsBuilder
 
 pub fn layered_test_update_containment(@graph.ElkEdge?) -> Unit
 
-pub fn ledge_internal_handle(LEdge) -> Int
+pub fn ledge_internal_handle(LEdge) -> Int32
 
-pub fn lnode_internal_handle(LNode) -> Int
+pub fn lnode_internal_handle(LNode) -> Int32
 
 pub fn lnode_port_side_equals(@core.PortSide, @core.PortSide) -> Bool
 
-pub fn lport_internal_handle(LPort) -> Int
+pub fn lport_internal_handle(LPort) -> Int32
 
 pub fn new_bp_info(LNode, LNode, LEdge, LEdge, LEdge) -> BPInfo
 
@@ -303,7 +303,7 @@ pub fn new_self_loop_holder(LNode) -> SelfLoopHolder
 
 pub fn new_self_loop_port(LPort) -> SelfLoopPort raise
 
-pub fn new_spline_dependency(SplineSegment, SplineSegment, Int) -> SplineDependency
+pub fn new_spline_dependency(SplineSegment, SplineSegment, Int32) -> SplineDependency
 
 pub fn new_spline_segment_hyper_edge(LPort, Array[@core.Pair[SplineSideToProcess, LEdge]], SplineSideToProcess) -> SplineSegment raise
 
@@ -427,7 +427,7 @@ pub(all) struct EndLabelCellLabel {
 }
 
 pub struct InteractiveLayeredGraphVisitor {
-  marker : Int
+  marker : Int32
 }
 pub fn InteractiveLayeredGraphVisitor::visit(Self, @graph.ElkNode) -> Unit
 
@@ -494,7 +494,7 @@ pub(all) enum IntermediateProcessorStrategy {
 
 pub struct LEdge {
   graph_element : LGraphElement
-  edge_handle : Int
+  edge_handle : Int32
   bend_points : @core.KVectorChain
   mut source : LPort?
   mut target : LPort?
@@ -505,14 +505,14 @@ pub fn LEdge::clear_property_kvector_chain(Self, @graph.IProperty[@core.KVectorC
 pub fn LEdge::copy_properties(Self, Self) -> Unit
 pub fn LEdge::get_bend_points(Self) -> @core.KVectorChain
 pub fn LEdge::get_designation(Self) -> String?
-pub fn LEdge::get_handle(Self) -> Int
-pub fn LEdge::get_id(Self) -> Int
+pub fn LEdge::get_handle(Self) -> Int32
+pub fn LEdge::get_id(Self) -> Int32
 pub fn LEdge::get_labels(Self) -> Array[LLabel]
 pub fn LEdge::get_other_node(Self, LNode) -> LNode raise LEdgeException
 pub fn LEdge::get_other_port(Self, LPort) -> LPort raise LEdgeException
 pub fn LEdge::get_property_bool(Self, @graph.IProperty[Bool]) -> Bool
 pub fn LEdge::get_property_double(Self, @graph.IProperty[Double]) -> Double
-pub fn LEdge::get_property_int(Self, @graph.IProperty[Int]) -> Int
+pub fn LEdge::get_property_int(Self, @graph.IProperty[Int32]) -> Int32
 pub fn LEdge::get_property_kvector(Self, @graph.IProperty[@core.KVector]) -> @core.KVector
 pub fn LEdge::get_property_kvector_chain(Self, @graph.IProperty[@core.KVectorChain]) -> @core.KVectorChain
 pub fn LEdge::get_property_l_edge(Self, @graph.IProperty[Self?]) -> Self?
@@ -522,7 +522,7 @@ pub fn LEdge::get_property_l_port(Self, @graph.IProperty[LPort?]) -> LPort?
 pub fn LEdge::get_source(Self) -> LPort?
 pub fn LEdge::get_target(Self) -> LPort?
 pub fn LEdge::has_property_double(Self, @graph.IProperty[Double]) -> Bool
-pub fn LEdge::has_property_int(Self, @graph.IProperty[Int]) -> Bool
+pub fn LEdge::has_property_int(Self, @graph.IProperty[Int32]) -> Bool
 pub fn LEdge::has_property_kvector(Self, @graph.IProperty[@core.KVector]) -> Bool
 pub fn LEdge::has_property_kvector_chain(Self, @graph.IProperty[@core.KVectorChain]) -> Bool
 pub fn LEdge::has_property_l_edge(Self, @graph.IProperty[Self?]) -> Bool
@@ -532,11 +532,11 @@ pub fn LEdge::has_property_l_port(Self, @graph.IProperty[LPort?]) -> Bool
 pub fn LEdge::is_in_layer_edge(Self) -> Bool
 pub fn LEdge::is_self_loop(Self) -> Bool
 pub fn LEdge::reverse(Self, LGraph, Bool) -> Unit
-pub fn LEdge::set_id(Self, Int) -> Unit
+pub fn LEdge::set_id(Self, Int32) -> Unit
 pub fn LEdge::set_origin_identifier(Self, String?) -> Unit
 pub fn LEdge::set_property_bool(Self, @graph.IProperty[Bool], Bool) -> Unit
 pub fn LEdge::set_property_double(Self, @graph.IProperty[Double], Double) -> Unit
-pub fn LEdge::set_property_int(Self, @graph.IProperty[Int], Int) -> Unit
+pub fn LEdge::set_property_int(Self, @graph.IProperty[Int32], Int32) -> Unit
 pub fn LEdge::set_property_kvector(Self, @graph.IProperty[@core.KVector], @core.KVector) -> Unit
 pub fn LEdge::set_property_kvector_chain(Self, @graph.IProperty[@core.KVectorChain], @core.KVectorChain) -> Unit
 pub fn LEdge::set_property_l_edge(Self, @graph.IProperty[Self?], Self?) -> Unit
@@ -554,8 +554,8 @@ pub struct LEdgeAdapter {
 pub fn LEdgeAdapter::get_labels(Self) -> Array[LLabelAdapter]
 
 pub struct LGraph {
-  mut id : Int
-  handle : Int
+  mut id : Int32
+  handle : Int32
   size : @core.KVector
   padding : @core.Spacing
   offset : @core.KVector
@@ -567,8 +567,8 @@ pub struct LGraph {
 pub fn LGraph::clear_property_string(Self, @graph.IProperty[String]) -> Unit
 pub fn LGraph::copy_properties(Self, Self) -> Unit
 pub fn LGraph::get_actual_size(Self) -> @core.KVector
-pub fn LGraph::get_handle(Self) -> Int
-pub fn LGraph::get_id(Self) -> Int
+pub fn LGraph::get_handle(Self) -> Int32
+pub fn LGraph::get_id(Self) -> Int32
 pub fn LGraph::get_layerless_nodes(Self) -> Array[LNode]
 pub fn LGraph::get_layers(Self) -> Array[Layer]
 pub fn LGraph::get_offset(Self) -> @core.KVector
@@ -582,7 +582,7 @@ pub fn LGraph::get_property_double(Self, @graph.IProperty[Double]) -> Double
 pub fn LGraph::get_property_elk_margin(Self, @graph.IProperty[@core.Spacing]) -> @core.Spacing
 pub fn LGraph::get_property_graph_properties_array(Self, @graph.IProperty[Array[@options.GraphProperties]]) -> Array[@options.GraphProperties]
 pub fn LGraph::get_property_i_label_manager(Self, @graph.IProperty[@core.ILabelManager?]) -> @core.ILabelManager?
-pub fn LGraph::get_property_int(Self, @graph.IProperty[Int]) -> Int
+pub fn LGraph::get_property_int(Self, @graph.IProperty[Int32]) -> Int32
 pub fn LGraph::get_property_l_node_array(Self, @graph.IProperty[Array[LNode]]) -> Array[LNode]
 pub fn LGraph::get_property_port_side_array(Self, @graph.IProperty[Array[@core.PortSide]]) -> Array[@core.PortSide]
 pub fn LGraph::get_property_spacings(Self, @graph.IProperty[Spacings?]) -> Spacings?
@@ -595,13 +595,13 @@ pub fn LGraph::has_property_cross_hierarchy_map_entry_array(Self, @graph.IProper
 pub fn LGraph::has_property_double(Self, @graph.IProperty[Double]) -> Bool
 pub fn LGraph::has_property_elk_margin(Self, @graph.IProperty[@core.Spacing]) -> Bool
 pub fn LGraph::has_property_i_label_manager(Self, @graph.IProperty[@core.ILabelManager?]) -> Bool
-pub fn LGraph::has_property_int(Self, @graph.IProperty[Int]) -> Bool
+pub fn LGraph::has_property_int(Self, @graph.IProperty[Int32]) -> Bool
 pub fn LGraph::has_property_l_node_array(Self, @graph.IProperty[Array[LNode]]) -> Bool
 pub fn LGraph::has_property_spacings(Self, @graph.IProperty[Spacings?]) -> Bool
 pub fn LGraph::has_property_spline_routing_mode(Self, @graph.IProperty[@options.SplineRoutingMode]) -> Bool
 pub fn LGraph::has_property_string(Self, @graph.IProperty[String]) -> Bool
 pub fn LGraph::has_property_string_array(Self, @graph.IProperty[Array[String]]) -> Bool
-pub fn LGraph::set_id(Self, Int) -> Unit
+pub fn LGraph::set_id(Self, Int32) -> Unit
 pub fn LGraph::set_offset_xy(Self, Double, Double) -> Unit
 pub fn LGraph::set_parent_node(Self, LNode?) -> Unit
 pub fn LGraph::set_property_bool(Self, @graph.IProperty[Bool], Bool) -> Unit
@@ -612,7 +612,7 @@ pub fn LGraph::set_property_double(Self, @graph.IProperty[Double], Double) -> Un
 pub fn LGraph::set_property_elk_margin(Self, @graph.IProperty[@core.Spacing], @core.Spacing) -> Unit
 pub fn LGraph::set_property_graph_properties_array(Self, @graph.IProperty[Array[@options.GraphProperties]], Array[@options.GraphProperties]) -> Unit
 pub fn LGraph::set_property_i_label_manager(Self, @graph.IProperty[@core.ILabelManager?], @core.ILabelManager?) -> Unit
-pub fn LGraph::set_property_int(Self, @graph.IProperty[Int], Int) -> Unit
+pub fn LGraph::set_property_int(Self, @graph.IProperty[Int32], Int32) -> Unit
 pub fn LGraph::set_property_l_node_array(Self, @graph.IProperty[Array[LNode]], Array[LNode]) -> Unit
 pub fn LGraph::set_property_port_side_array(Self, @graph.IProperty[Array[@core.PortSide]], Array[@core.PortSide]) -> Unit
 pub fn LGraph::set_property_spacings(Self, @graph.IProperty[Spacings?], Spacings?) -> Unit
@@ -634,28 +634,28 @@ pub fn LGraphAdapter::get_nodes(Self) -> Array[LNodeAdapter]
 pub fn LGraphAdapter::get_position(Self) -> @core.KVector raise
 pub fn LGraphAdapter::get_property_bool(Self, @graph.IProperty[Bool]) -> Bool
 pub fn LGraphAdapter::get_property_double(Self, @graph.IProperty[Double]) -> Double
-pub fn LGraphAdapter::get_property_int(Self, @graph.IProperty[Int]) -> Int
+pub fn LGraphAdapter::get_property_int(Self, @graph.IProperty[Int32]) -> Int32
 pub fn LGraphAdapter::get_property_string(Self, @graph.IProperty[String]) -> String
 pub fn LGraphAdapter::get_property_string_array(Self, @graph.IProperty[Array[String]]) -> Array[String]
 pub fn LGraphAdapter::get_size(Self) -> @core.KVector
-pub fn LGraphAdapter::get_volatile_id(Self) -> Int
+pub fn LGraphAdapter::get_volatile_id(Self) -> Int32
 pub fn LGraphAdapter::has_property_bool(Self, @graph.IProperty[Bool]) -> Bool
 pub fn LGraphAdapter::has_property_double(Self, @graph.IProperty[Double]) -> Bool
-pub fn LGraphAdapter::has_property_int(Self, @graph.IProperty[Int]) -> Bool
+pub fn LGraphAdapter::has_property_int(Self, @graph.IProperty[Int32]) -> Bool
 pub fn LGraphAdapter::has_property_string(Self, @graph.IProperty[String]) -> Bool
 pub fn LGraphAdapter::has_property_string_array(Self, @graph.IProperty[Array[String]]) -> Bool
 pub fn LGraphAdapter::set_position(Self, @core.KVector) -> Unit raise
 pub fn LGraphAdapter::set_size(Self, @core.KVector) -> Unit
-pub fn LGraphAdapter::set_volatile_id(Self, Int) -> Unit
+pub fn LGraphAdapter::set_volatile_id(Self, Int32) -> Unit
 
 pub struct LGraphElement {
-  mut id : Int
+  mut id : Int32
   mut origin_identifier : String?
 }
 pub fn LGraphElement::get_designation(Self) -> String?
-pub fn LGraphElement::get_id(Self) -> Int
+pub fn LGraphElement::get_id(Self) -> Int32
 pub fn LGraphElement::get_origin_identifier(Self) -> String?
-pub fn LGraphElement::set_id(Self, Int) -> Unit
+pub fn LGraphElement::set_id(Self, Int32) -> Unit
 pub fn LGraphElement::set_origin_identifier(Self, String?) -> Unit
 
 pub struct LLabel {
@@ -664,7 +664,7 @@ pub struct LLabel {
   // private fields
 }
 pub fn LLabel::get_designation(Self) -> String?
-pub fn LLabel::get_id(Self) -> Int
+pub fn LLabel::get_id(Self) -> Int32
 pub fn LLabel::get_origin_identifier(Self) -> String?
 pub fn LLabel::get_position(Self) -> @core.KVector
 pub fn LLabel::get_property_bool(Self, @graph.IProperty[Bool]) -> Bool
@@ -679,7 +679,7 @@ pub fn LLabel::has_property_l_edge(Self, @graph.IProperty[LEdge?]) -> Bool
 pub fn LLabel::has_property_label_side(Self, @graph.IProperty[@core.LabelSide]) -> Bool
 pub fn LLabel::has_property_string(Self, @graph.IProperty[String]) -> Bool
 pub fn LLabel::has_property_string_array(Self, @graph.IProperty[Array[String]]) -> Bool
-pub fn LLabel::set_id(Self, Int) -> Unit
+pub fn LLabel::set_id(Self, Int32) -> Unit
 pub fn LLabel::set_origin_identifier(Self, String?) -> Unit
 pub fn LLabel::set_property_bool(Self, @graph.IProperty[Bool], Bool) -> Unit
 pub fn LLabel::set_property_l_edge(Self, @graph.IProperty[LEdge?], LEdge?) -> Unit
@@ -699,18 +699,18 @@ pub fn LLabelAdapter::get_property_string_array(Self, @graph.IProperty[Array[Str
 pub fn LLabelAdapter::get_side(Self) -> @core.LabelSide
 pub fn LLabelAdapter::get_size(Self) -> @core.KVector
 pub fn LLabelAdapter::get_text(Self) -> String
-pub fn LLabelAdapter::get_volatile_id(Self) -> Int
+pub fn LLabelAdapter::get_volatile_id(Self) -> Int32
 pub fn LLabelAdapter::has_property_bool(Self, @graph.IProperty[Bool]) -> Bool
 pub fn LLabelAdapter::has_property_label_side(Self, @graph.IProperty[@core.LabelSide]) -> Bool
 pub fn LLabelAdapter::has_property_string(Self, @graph.IProperty[String]) -> Bool
 pub fn LLabelAdapter::has_property_string_array(Self, @graph.IProperty[Array[String]]) -> Bool
 pub fn LLabelAdapter::set_position(Self, @core.KVector) -> Unit
 pub fn LLabelAdapter::set_size(Self, @core.KVector) -> Unit
-pub fn LLabelAdapter::set_volatile_id(Self, Int) -> Unit
+pub fn LLabelAdapter::set_volatile_id(Self, Int32) -> Unit
 
 pub struct LNode {
   shape : LShape
-  node_handle : Int
+  node_handle : Int32
   mut graph : LGraph?
   mut layer : Layer?
   mut node_type : NodeType
@@ -719,7 +719,7 @@ pub struct LNode {
   mut nested_graph : LGraph?
   margin : @core.Spacing
   padding : @core.Spacing
-  port_side_indices : Map[Int, PortSideRange]
+  port_side_indices : Map[Int32, PortSideRange]
   mut port_sides_cached : Bool
   // private fields
 }
@@ -729,10 +729,10 @@ pub fn LNode::cache_port_sides(Self) -> Unit
 pub fn LNode::get_connected_edges(Self) -> Array[LEdge]
 pub fn LNode::get_designation(Self) -> String?
 pub fn LNode::get_graph(Self) -> LGraph
-pub fn LNode::get_handle(Self) -> Int
-pub fn LNode::get_id(Self) -> Int
+pub fn LNode::get_handle(Self) -> Int32
+pub fn LNode::get_id(Self) -> Int32
 pub fn LNode::get_incoming_edges(Self) -> Array[LEdge]
-pub fn LNode::get_index(Self) -> Int
+pub fn LNode::get_index(Self) -> Int32
 pub fn LNode::get_interactive_reference_point(Self) -> @core.KVector
 pub fn LNode::get_labels(Self) -> Array[LLabel]
 pub fn LNode::get_layer(Self) -> Layer?
@@ -749,8 +749,8 @@ pub fn LNode::get_position(Self) -> @core.KVector
 pub fn LNode::get_property_bool(Self, @graph.IProperty[Bool]) -> Bool
 pub fn LNode::get_property_double(Self, @graph.IProperty[Double]) -> Double
 pub fn LNode::get_property_elk_margin(Self, @graph.IProperty[@core.Spacing]) -> @core.Spacing
-pub fn LNode::get_property_int(Self, @graph.IProperty[Int]) -> Int
-pub fn LNode::get_property_int_int_map(Self, @graph.IProperty[Map[Int, Int]]) -> Map[Int, Int]
+pub fn LNode::get_property_int(Self, @graph.IProperty[Int32]) -> Int32
+pub fn LNode::get_property_int_int_map(Self, @graph.IProperty[Map[Int32, Int32]]) -> Map[Int32, Int32]
 pub fn LNode::get_property_kvector(Self, @graph.IProperty[@core.KVector]) -> @core.KVector
 pub fn LNode::get_property_l_edge(Self, @graph.IProperty[LEdge?]) -> LEdge?
 pub fn LNode::get_property_l_label_array(Self, @graph.IProperty[Array[LLabel]]) -> Array[LLabel]
@@ -766,8 +766,8 @@ pub fn LNode::get_type(Self) -> NodeType
 pub fn LNode::has_property_bool(Self, @graph.IProperty[Bool]) -> Bool
 pub fn LNode::has_property_double(Self, @graph.IProperty[Double]) -> Bool
 pub fn LNode::has_property_elk_margin(Self, @graph.IProperty[@core.Spacing]) -> Bool
-pub fn LNode::has_property_int(Self, @graph.IProperty[Int]) -> Bool
-pub fn LNode::has_property_int_int_map(Self, @graph.IProperty[Map[Int, Int]]) -> Bool
+pub fn LNode::has_property_int(Self, @graph.IProperty[Int32]) -> Bool
+pub fn LNode::has_property_int_int_map(Self, @graph.IProperty[Map[Int32, Int32]]) -> Bool
 pub fn LNode::has_property_kvector(Self, @graph.IProperty[@core.KVector]) -> Bool
 pub fn LNode::has_property_l_edge(Self, @graph.IProperty[LEdge?]) -> Bool
 pub fn LNode::has_property_l_label_array(Self, @graph.IProperty[Array[LLabel]]) -> Bool
@@ -781,14 +781,14 @@ pub fn LNode::has_property_string_array(Self, @graph.IProperty[Array[String]]) -
 pub fn LNode::is_inline_edge_label(Self) -> Bool
 pub fn LNode::remove_port(Self, LPort) -> Unit
 pub fn LNode::set_graph(Self, LGraph?) -> Unit
-pub fn LNode::set_id(Self, Int) -> Unit
+pub fn LNode::set_id(Self, Int32) -> Unit
 pub fn LNode::set_layer(Self, Layer?) -> Unit
 pub fn LNode::set_nested_graph(Self, LGraph?) -> Unit
 pub fn LNode::set_property_bool(Self, @graph.IProperty[Bool], Bool) -> Unit
 pub fn LNode::set_property_double(Self, @graph.IProperty[Double], Double) -> Unit
 pub fn LNode::set_property_elk_margin(Self, @graph.IProperty[@core.Spacing], @core.Spacing) -> Unit
-pub fn LNode::set_property_int(Self, @graph.IProperty[Int], Int) -> Unit
-pub fn LNode::set_property_int_int_map(Self, @graph.IProperty[Map[Int, Int]], Map[Int, Int]) -> Unit
+pub fn LNode::set_property_int(Self, @graph.IProperty[Int32], Int32) -> Unit
+pub fn LNode::set_property_int_int_map(Self, @graph.IProperty[Map[Int32, Int32]], Map[Int32, Int32]) -> Unit
 pub fn LNode::set_property_kvector(Self, @graph.IProperty[@core.KVector], @core.KVector) -> Unit
 pub fn LNode::set_property_l_edge(Self, @graph.IProperty[LEdge?], LEdge?) -> Unit
 pub fn LNode::set_property_l_label_array(Self, @graph.IProperty[Array[LLabel]], Array[LLabel]) -> Unit
@@ -821,14 +821,14 @@ pub fn LNodeAdapter::get_ports(Self) -> Array[LPortAdapter]
 pub fn LNodeAdapter::get_position(Self) -> @core.KVector
 pub fn LNodeAdapter::get_property_bool(Self, @graph.IProperty[Bool]) -> Bool
 pub fn LNodeAdapter::get_property_double(Self, @graph.IProperty[Double]) -> Double
-pub fn LNodeAdapter::get_property_int(Self, @graph.IProperty[Int]) -> Int
+pub fn LNodeAdapter::get_property_int(Self, @graph.IProperty[Int32]) -> Int32
 pub fn LNodeAdapter::get_property_string(Self, @graph.IProperty[String]) -> String
 pub fn LNodeAdapter::get_property_string_array(Self, @graph.IProperty[Array[String]]) -> Array[String]
 pub fn LNodeAdapter::get_size(Self) -> @core.KVector
-pub fn LNodeAdapter::get_volatile_id(Self) -> Int
+pub fn LNodeAdapter::get_volatile_id(Self) -> Int32
 pub fn LNodeAdapter::has_property_bool(Self, @graph.IProperty[Bool]) -> Bool
 pub fn LNodeAdapter::has_property_double(Self, @graph.IProperty[Double]) -> Bool
-pub fn LNodeAdapter::has_property_int(Self, @graph.IProperty[Int]) -> Bool
+pub fn LNodeAdapter::has_property_int(Self, @graph.IProperty[Int32]) -> Bool
 pub fn LNodeAdapter::has_property_string(Self, @graph.IProperty[String]) -> Bool
 pub fn LNodeAdapter::has_property_string_array(Self, @graph.IProperty[Array[String]]) -> Bool
 pub fn LNodeAdapter::is_compound_node(Self) -> Bool
@@ -836,14 +836,14 @@ pub fn LNodeAdapter::set_margin(Self, @core.Spacing) -> Unit
 pub fn LNodeAdapter::set_padding(Self, @core.Spacing) -> Unit
 pub fn LNodeAdapter::set_position(Self, @core.KVector) -> Unit
 pub fn LNodeAdapter::set_size(Self, @core.KVector) -> Unit
-pub fn LNodeAdapter::set_volatile_id(Self, Int) -> Unit
+pub fn LNodeAdapter::set_volatile_id(Self, Int32) -> Unit
 pub fn LNodeAdapter::sort_port_list(Self) -> Unit raise
 pub fn LNodeAdapter::sort_port_list_with(Self, PortComparator) -> Unit raise
-pub fn LNodeAdapter::sort_port_list_with_comparator(Self, (LPort, LPort) -> Int raise?) -> Unit raise?
+pub fn LNodeAdapter::sort_port_list_with_comparator(Self, (LPort, LPort) -> Int32 raise?) -> Unit raise?
 
 pub struct LPort {
   shape : LShape
-  port_handle : Int
+  port_handle : Int32
   mut owner : LNode?
   mut side : @core.PortSide
   anchor : @core.KVector
@@ -861,27 +861,27 @@ pub fn LPort::get_absolute_anchor(Self) -> @core.KVector
 pub fn LPort::get_anchor(Self) -> @core.KVector
 pub fn LPort::get_connected_edges(Self) -> Array[LEdge]
 pub fn LPort::get_connected_ports(Self) -> Array[Self]
-pub fn LPort::get_degree(Self) -> Int
+pub fn LPort::get_degree(Self) -> Int32
 pub fn LPort::get_designation(Self) -> String?
-pub fn LPort::get_handle(Self) -> Int
-pub fn LPort::get_id(Self) -> Int
+pub fn LPort::get_handle(Self) -> Int32
+pub fn LPort::get_id(Self) -> Int32
 pub fn LPort::get_incoming_edges(Self) -> Array[LEdge]
 pub fn LPort::get_labels(Self) -> Array[LLabel]
 pub fn LPort::get_margin(Self) -> @core.Spacing
-pub fn LPort::get_net_flow(Self) -> Int
+pub fn LPort::get_net_flow(Self) -> Int32
 pub fn LPort::get_node(Self) -> LNode?
 pub fn LPort::get_outgoing_edges(Self) -> Array[LEdge]
 pub fn LPort::get_position(Self) -> @core.KVector
 pub fn LPort::get_property_bool(Self, @graph.IProperty[Bool]) -> Bool
 pub fn LPort::get_property_double(Self, @graph.IProperty[Double]) -> Double
-pub fn LPort::get_property_int(Self, @graph.IProperty[Int]) -> Int
+pub fn LPort::get_property_int(Self, @graph.IProperty[Int32]) -> Int32
 pub fn LPort::get_property_l_node(Self, @graph.IProperty[LNode?]) -> LNode?
 pub fn LPort::get_property_l_port(Self, @graph.IProperty[Self?]) -> Self?
 pub fn LPort::get_side(Self) -> @core.PortSide
 pub fn LPort::get_size(Self) -> @core.KVector
 pub fn LPort::has_property_bool(Self, @graph.IProperty[Bool]) -> Bool
 pub fn LPort::has_property_double(Self, @graph.IProperty[Double]) -> Bool
-pub fn LPort::has_property_int(Self, @graph.IProperty[Int]) -> Bool
+pub fn LPort::has_property_int(Self, @graph.IProperty[Int32]) -> Bool
 pub fn LPort::has_property_l_node(Self, @graph.IProperty[LNode?]) -> Bool
 pub fn LPort::has_property_l_port(Self, @graph.IProperty[Self?]) -> Bool
 pub fn LPort::is_connected_to_external_nodes(Self) -> Bool
@@ -890,11 +890,11 @@ pub fn LPort::remove_incoming_edge(Self, LEdge) -> Unit
 pub fn LPort::remove_outgoing_edge(Self, LEdge) -> Unit
 pub fn LPort::set_connected_to_external_nodes(Self, Bool) -> Unit
 pub fn LPort::set_explicitly_supplied_port_anchor(Self, Bool) -> Unit
-pub fn LPort::set_id(Self, Int) -> Unit
+pub fn LPort::set_id(Self, Int32) -> Unit
 pub fn LPort::set_node(Self, LNode?) -> Unit
 pub fn LPort::set_property_bool(Self, @graph.IProperty[Bool], Bool) -> Unit
 pub fn LPort::set_property_double(Self, @graph.IProperty[Double], Double) -> Unit
-pub fn LPort::set_property_int(Self, @graph.IProperty[Int], Int) -> Unit
+pub fn LPort::set_property_int(Self, @graph.IProperty[Int32], Int32) -> Unit
 pub fn LPort::set_property_l_node(Self, @graph.IProperty[LNode?], LNode?) -> Unit
 pub fn LPort::set_property_l_port(Self, @graph.IProperty[Self?], Self?) -> Unit
 pub fn LPort::set_side(Self, @core.PortSide) -> Unit
@@ -915,20 +915,20 @@ pub fn LPortAdapter::get_outgoing_edges(Self) -> Array[LEdgeAdapter]
 pub fn LPortAdapter::get_position(Self) -> @core.KVector
 pub fn LPortAdapter::get_property_bool(Self, @graph.IProperty[Bool]) -> Bool
 pub fn LPortAdapter::get_property_double(Self, @graph.IProperty[Double]) -> Double
-pub fn LPortAdapter::get_property_int(Self, @graph.IProperty[Int]) -> Int
+pub fn LPortAdapter::get_property_int(Self, @graph.IProperty[Int32]) -> Int32
 pub fn LPortAdapter::get_property_l_node(Self, @graph.IProperty[LNode?]) -> LNode?
 pub fn LPortAdapter::get_side(Self) -> @core.PortSide
 pub fn LPortAdapter::get_size(Self) -> @core.KVector
-pub fn LPortAdapter::get_volatile_id(Self) -> Int
+pub fn LPortAdapter::get_volatile_id(Self) -> Int32
 pub fn LPortAdapter::has_compound_connections(Self) -> Bool
 pub fn LPortAdapter::has_property_bool(Self, @graph.IProperty[Bool]) -> Bool
 pub fn LPortAdapter::has_property_double(Self, @graph.IProperty[Double]) -> Bool
-pub fn LPortAdapter::has_property_int(Self, @graph.IProperty[Int]) -> Bool
+pub fn LPortAdapter::has_property_int(Self, @graph.IProperty[Int32]) -> Bool
 pub fn LPortAdapter::has_property_l_node(Self, @graph.IProperty[LNode?]) -> Bool
 pub fn LPortAdapter::set_margin(Self, @core.Spacing) -> Unit
 pub fn LPortAdapter::set_position(Self, @core.KVector) -> Unit
 pub fn LPortAdapter::set_size(Self, @core.KVector) -> Unit
-pub fn LPortAdapter::set_volatile_id(Self, Int) -> Unit
+pub fn LPortAdapter::set_volatile_id(Self, Int32) -> Unit
 
 pub struct LShape {
   graph_element : LGraphElement
@@ -936,26 +936,26 @@ pub struct LShape {
   size : @core.KVector
 }
 pub fn LShape::get_designation(Self) -> String?
-pub fn LShape::get_id(Self) -> Int
+pub fn LShape::get_id(Self) -> Int32
 pub fn LShape::get_origin_identifier(Self) -> String?
 pub fn LShape::get_position(Self) -> @core.KVector
 pub fn LShape::get_size(Self) -> @core.KVector
-pub fn LShape::set_id(Self, Int) -> Unit
+pub fn LShape::set_id(Self, Int32) -> Unit
 pub fn LShape::set_origin_identifier(Self, String?) -> Unit
 
 pub struct Layer {
   graph_element : LGraphElement
-  layer_handle : Int
+  layer_handle : Int32
   graph : LGraph
   size : @core.KVector
   nodes : Array[LNode]
 }
 pub fn Layer::get_graph(Self) -> LGraph
-pub fn Layer::get_id(Self) -> Int
-pub fn Layer::get_index(Self) -> Int
+pub fn Layer::get_id(Self) -> Int32
+pub fn Layer::get_index(Self) -> Int32
 pub fn Layer::get_nodes(Self) -> Array[LNode]
 pub fn Layer::get_size(Self) -> @core.KVector
-pub fn Layer::set_id(Self, Int) -> Unit
+pub fn Layer::set_id(Self, Int32) -> Unit
 pub fn Layer::to_string(Self) -> String
 
 pub struct LayeredLayoutPlan {
@@ -966,12 +966,12 @@ pub fn LayeredLayoutPlan::get_processors(Self) -> Array[&@core.RunnableLayoutPro
 pub fn LayeredLayoutPlan::get_state(Self) -> LayeredRunState
 
 pub struct LayeredPhaseRegistry {
-  cycle_breaking_factories : Map[String, (Int, Int, (LayeredRunState) -> @core.TypedLayoutProcessor[LGraph])]
-  layering_factories : Map[String, (Int, Int, (LayeredRunState) -> @core.TypedLayoutProcessor[LGraph])]
-  crossing_minimization_factories : Map[String, (Int, Int, (LayeredRunState) -> @core.TypedLayoutProcessor[LGraph])]
-  node_placement_factories : Map[String, (Int, Int, (LayeredRunState) -> @core.TypedLayoutProcessor[LGraph])]
-  edge_routing_factories : Map[String, (Int, Int, (LayeredRunState) -> @core.TypedLayoutProcessor[LGraph])]
-  intermediate_processor_factories : Map[Int, (Int, Int, (LayeredRunState) -> @core.TypedLayoutProcessor[LGraph])]
+  cycle_breaking_factories : Map[String, (Int32, Int32, (LayeredRunState) -> @core.TypedLayoutProcessor[LGraph])]
+  layering_factories : Map[String, (Int32, Int32, (LayeredRunState) -> @core.TypedLayoutProcessor[LGraph])]
+  crossing_minimization_factories : Map[String, (Int32, Int32, (LayeredRunState) -> @core.TypedLayoutProcessor[LGraph])]
+  node_placement_factories : Map[String, (Int32, Int32, (LayeredRunState) -> @core.TypedLayoutProcessor[LGraph])]
+  edge_routing_factories : Map[String, (Int32, Int32, (LayeredRunState) -> @core.TypedLayoutProcessor[LGraph])]
+  intermediate_processor_factories : Map[Int32, (Int32, Int32, (LayeredRunState) -> @core.TypedLayoutProcessor[LGraph])]
 }
 pub fn LayeredPhaseRegistry::crossing_minimization_phase_factory(Self, LGraph, String, state? : LayeredRunState) -> @core.LayoutProcessorFactory raise
 pub fn LayeredPhaseRegistry::cycle_breaking_phase_factory(Self, LGraph, String, state? : LayeredRunState) -> @core.LayoutProcessorFactory raise
@@ -979,21 +979,21 @@ pub fn LayeredPhaseRegistry::edge_routing_phase_factory(Self, LGraph, String, st
 pub fn LayeredPhaseRegistry::intermediate_processor_factory(Self, LGraph, IntermediateProcessorStrategy, state? : LayeredRunState) -> @core.LayoutProcessorFactory raise
 pub fn LayeredPhaseRegistry::layering_phase_factory(Self, LGraph, String, state? : LayeredRunState) -> @core.LayoutProcessorFactory raise
 pub fn LayeredPhaseRegistry::node_placement_phase_factory(Self, LGraph, String, state? : LayeredRunState) -> @core.LayoutProcessorFactory raise
-pub fn LayeredPhaseRegistry::register_crossing_minimization_phase(Self, String, Int, (LayeredRunState) -> @core.TypedLayoutProcessor[LGraph]) -> Unit
-pub fn LayeredPhaseRegistry::register_cycle_breaking_phase(Self, String, Int, () -> @core.TypedLayoutProcessor[LGraph]) -> Unit
-pub fn LayeredPhaseRegistry::register_edge_routing_phase(Self, String, Int, (LayeredRunState) -> @core.TypedLayoutProcessor[LGraph]) -> Unit
+pub fn LayeredPhaseRegistry::register_crossing_minimization_phase(Self, String, Int32, (LayeredRunState) -> @core.TypedLayoutProcessor[LGraph]) -> Unit
+pub fn LayeredPhaseRegistry::register_cycle_breaking_phase(Self, String, Int32, () -> @core.TypedLayoutProcessor[LGraph]) -> Unit
+pub fn LayeredPhaseRegistry::register_edge_routing_phase(Self, String, Int32, (LayeredRunState) -> @core.TypedLayoutProcessor[LGraph]) -> Unit
 pub fn LayeredPhaseRegistry::register_intermediate_processor(Self, IntermediateProcessorStrategy, () -> @core.TypedLayoutProcessor[LGraph]) -> Unit
-pub fn LayeredPhaseRegistry::register_layering_phase(Self, String, Int, () -> @core.TypedLayoutProcessor[LGraph]) -> Unit
-pub fn LayeredPhaseRegistry::register_node_placement_phase(Self, String, Int, () -> @core.TypedLayoutProcessor[LGraph]) -> Unit
-pub fn LayeredPhaseRegistry::register_stateful_cycle_breaking_phase(Self, String, Int, (LayeredRunState) -> @core.TypedLayoutProcessor[LGraph]) -> Unit
+pub fn LayeredPhaseRegistry::register_layering_phase(Self, String, Int32, () -> @core.TypedLayoutProcessor[LGraph]) -> Unit
+pub fn LayeredPhaseRegistry::register_node_placement_phase(Self, String, Int32, () -> @core.TypedLayoutProcessor[LGraph]) -> Unit
+pub fn LayeredPhaseRegistry::register_stateful_cycle_breaking_phase(Self, String, Int32, (LayeredRunState) -> @core.TypedLayoutProcessor[LGraph]) -> Unit
 pub fn LayeredPhaseRegistry::register_stateful_intermediate_processor(Self, IntermediateProcessorStrategy, (LayeredRunState) -> @core.TypedLayoutProcessor[LGraph]) -> Unit
 
 pub struct LayeredRunState {
   random_state : @state.LayeredLayoutState
-  end_label_cells : Map[Int, Array[EndLabelCell]]
-  breaking_points : Map[Int, BPInfo]
-  self_loop_holders : Map[Int, SelfLoopHolder]
-  spline_segments : Map[Int, Array[SplineSegment]]
+  end_label_cells : Map[Int32, Array[EndLabelCell]]
+  breaking_points : Map[Int32, BPInfo]
+  self_loop_holders : Map[Int32, SelfLoopHolder]
+  spline_segments : Map[Int32, Array[SplineSegment]]
 }
 pub fn LayeredRunState::clear(Self) -> Unit
 pub fn LayeredRunState::clear_end_label_cells(Self, LNode) -> Unit
@@ -1007,9 +1007,9 @@ pub fn LayeredRunState::has_end_label_cells(Self, LNode) -> Bool
 pub fn LayeredRunState::has_self_loop_holder(Self, LNode) -> Bool
 pub fn LayeredRunState::has_spline_segments(Self, LEdge) -> Bool
 pub fn LayeredRunState::initialize_graph_random(Self, LGraph) -> Unit
-pub fn LayeredRunState::initialize_random(Self, Int) -> Unit
+pub fn LayeredRunState::initialize_random(Self, Int32) -> Unit
 pub fn LayeredRunState::install_random(Self, @state.GreedySwitchMockRandom, Bool?) -> Unit
-pub fn LayeredRunState::random(Self, Int) -> @state.GreedySwitchMockRandom
+pub fn LayeredRunState::random(Self, Int32) -> @state.GreedySwitchMockRandom
 pub fn LayeredRunState::set_breaking_point(Self, LNode, BPInfo?) -> Unit
 pub fn LayeredRunState::set_end_label_cells(Self, LNode, Array[EndLabelCell]) -> Unit
 pub fn LayeredRunState::set_self_loop_holder(Self, LNode, SelfLoopHolder?) -> Unit
@@ -1031,12 +1031,12 @@ pub fn LayeredSpacingsBuilder::with_value(Self, @graph.IProperty[Double], Double
 
 pub(all) struct LinearSegment {
   nodes : Array[LNode]
-  mut id : Int
-  mut index_in_last_layer : Int
-  mut last_layer : Int
+  mut id : Int32
+  mut index_in_last_layer : Int32
+  mut last_layer : Int32
   mut deflection : Double
-  mut weight : Int
-  mut ref_segment_id : Int
+  mut weight : Int32
+  mut ref_segment_id : Int32
   mut _node_type : NodeType
 }
 
@@ -1054,42 +1054,42 @@ pub(all) enum NodeType {
 pub struct PortComparator {
   unit : Unit
 }
-pub fn PortComparator::compare(Self, LPort, LPort) -> Int raise
+pub fn PortComparator::compare(Self, LPort, LPort) -> Int32 raise
 
 type PortSideRange
 
 pub(all) struct SelfHyperLoop {
-  mut id : Int
+  mut id : Int32
   sl_holder : SelfLoopHolder
   sl_ports : Array[SelfLoopPort]
   sl_edges : Array[SelfLoopEdge]
   mut sl_labels : SelfHyperLoopLabels?
   mut self_loop_type : SelfLoopType?
-  sl_ports_by_side : Map[Int, Array[SelfLoopPort]]
+  sl_ports_by_side : Map[Int32, Array[SelfLoopPort]]
   mut leftmost_port : SelfLoopPort?
   mut rightmost_port : SelfLoopPort?
   occupied_port_sides : Array[@core.PortSide]
-  routing_slot : Array[Int]
+  routing_slot : Array[Int32]
 }
 pub fn SelfHyperLoop::add_self_loop_edge(Self, SelfLoopEdge) -> Unit raise
 pub fn SelfHyperLoop::compute_ports_per_side(Self) -> Unit raise SelfLoopTypeException
-pub fn SelfHyperLoop::get_id(Self) -> Int
+pub fn SelfHyperLoop::get_id(Self) -> Int32
 pub fn SelfHyperLoop::get_leftmost_port(Self) -> SelfLoopPort?
 pub fn SelfHyperLoop::get_occupied_port_sides(Self) -> Array[@core.PortSide]
 pub fn SelfHyperLoop::get_rightmost_port(Self) -> SelfLoopPort?
-pub fn SelfHyperLoop::get_routing_slot(Self, @core.PortSide) -> Int
+pub fn SelfHyperLoop::get_routing_slot(Self, @core.PortSide) -> Int32
 pub fn SelfHyperLoop::get_self_loop_type(Self) -> SelfLoopType?
 pub fn SelfHyperLoop::get_sl_edges(Self) -> Array[SelfLoopEdge]
 pub fn SelfHyperLoop::get_sl_holder(Self) -> SelfLoopHolder
 pub fn SelfHyperLoop::get_sl_labels(Self) -> SelfHyperLoopLabels?
 pub fn SelfHyperLoop::get_sl_ports(Self) -> Array[SelfLoopPort]
 pub fn SelfHyperLoop::get_sl_ports_by_side(Self, @core.PortSide) -> Array[SelfLoopPort]
-pub fn SelfHyperLoop::get_sl_ports_by_side_map(Self) -> Map[Int, Array[SelfLoopPort]]
+pub fn SelfHyperLoop::get_sl_ports_by_side_map(Self) -> Map[Int32, Array[SelfLoopPort]]
 pub fn SelfHyperLoop::has_sl_ports_on_side(Self, @core.PortSide) -> Bool
-pub fn SelfHyperLoop::set_id(Self, Int) -> Unit
+pub fn SelfHyperLoop::set_id(Self, Int32) -> Unit
 pub fn SelfHyperLoop::set_leftmost_port(Self, SelfLoopPort?) -> Unit
 pub fn SelfHyperLoop::set_rightmost_port(Self, SelfLoopPort?) -> Unit
-pub fn SelfHyperLoop::set_routing_slot(Self, @core.PortSide, Int) -> Unit
+pub fn SelfHyperLoop::set_routing_slot(Self, @core.PortSide, Int32) -> Unit
 
 pub(all) enum SelfHyperLoopLabelAlignment {
   Center
@@ -1099,7 +1099,7 @@ pub(all) enum SelfHyperLoopLabelAlignment {
 }
 
 pub(all) struct SelfHyperLoopLabels {
-  mut id : Int
+  mut id : Int32
   l_labels : Array[LLabel]
   size : @core.KVector
   position : @core.KVector
@@ -1114,14 +1114,14 @@ pub fn SelfHyperLoopLabels::apply_label_management(Self, @core.ILabelManager, Do
 pub fn SelfHyperLoopLabels::apply_placement(Self, @core.KVector) -> Unit
 pub fn SelfHyperLoopLabels::get_alignment(Self) -> SelfHyperLoopLabelAlignment?
 pub fn SelfHyperLoopLabels::get_alignment_reference_sl_port(Self) -> SelfLoopPort?
-pub fn SelfHyperLoopLabels::get_id(Self) -> Int
+pub fn SelfHyperLoopLabels::get_id(Self) -> Int32
 pub fn SelfHyperLoopLabels::get_l_labels(Self) -> Array[LLabel]
 pub fn SelfHyperLoopLabels::get_position(Self) -> @core.KVector
 pub fn SelfHyperLoopLabels::get_side(Self) -> @core.PortSide
 pub fn SelfHyperLoopLabels::get_size(Self) -> @core.KVector
 pub fn SelfHyperLoopLabels::set_alignment(Self, SelfHyperLoopLabelAlignment) -> Unit
 pub fn SelfHyperLoopLabels::set_alignment_reference_sl_port(Self, SelfLoopPort?) -> Unit
-pub fn SelfHyperLoopLabels::set_id(Self, Int) -> Unit
+pub fn SelfHyperLoopLabels::set_id(Self, Int32) -> Unit
 pub fn SelfHyperLoopLabels::set_side(Self, @core.PortSide) -> Unit
 
 pub(all) struct SelfLoopEdge {
@@ -1141,16 +1141,16 @@ pub fn SelfLoopEdge::set_sl_hyper_loop(Self, SelfHyperLoop) -> Unit raise
 pub(all) struct SelfLoopHolder {
   l_node : LNode
   sl_hyper_loops : Array[SelfHyperLoop]
-  sl_ports : Map[Int, SelfLoopPort]
-  sl_port_order : Array[Int]
+  sl_ports : Map[Int32, SelfLoopPort]
+  sl_port_order : Array[Int32]
   mut are_ports_hidden : Bool
-  routing_slot_count : Array[Int]
+  routing_slot_count : Array[Int32]
 }
 pub fn SelfLoopHolder::are_ports_hidden(Self) -> Bool
 pub fn SelfLoopHolder::get_l_node(Self) -> LNode
-pub fn SelfLoopHolder::get_routing_slot_count(Self) -> Array[Int]
+pub fn SelfLoopHolder::get_routing_slot_count(Self) -> Array[Int32]
 pub fn SelfLoopHolder::get_sl_hyper_loops(Self) -> Array[SelfHyperLoop]
-pub fn SelfLoopHolder::get_sl_port_map(Self) -> Map[Int, SelfLoopPort]
+pub fn SelfLoopHolder::get_sl_port_map(Self) -> Map[Int32, SelfLoopPort]
 pub fn SelfLoopHolder::set_ports_hidden(Self, Bool) -> Unit
 
 pub(all) struct SelfLoopPort {
@@ -1163,7 +1163,7 @@ pub(all) struct SelfLoopPort {
 pub fn SelfLoopPort::get_incoming_sl_edges(Self) -> Array[SelfLoopEdge]
 pub fn SelfLoopPort::get_l_port(Self) -> LPort
 pub fn SelfLoopPort::get_outgoing_sl_edges(Self) -> Array[SelfLoopEdge]
-pub fn SelfLoopPort::get_sl_net_flow(Self) -> Int
+pub fn SelfLoopPort::get_sl_net_flow(Self) -> Int32
 pub fn SelfLoopPort::had_only_self_loops(Self) -> Bool
 pub fn SelfLoopPort::is_hidden(Self) -> Bool
 pub fn SelfLoopPort::set_hidden(Self, Bool) -> Unit
@@ -1189,7 +1189,7 @@ pub fn Spacings::get_vertical_spacing_for_node_type(Self, NodeType, NodeType) ->
 pub(all) struct SplineDependency {
   mut source : SplineSegment?
   mut target : SplineSegment?
-  weight : Int
+  weight : Int32
 }
 pub fn SplineDependency::to_string(Self) -> String
 
@@ -1199,10 +1199,10 @@ pub(all) struct SplineSegment {
   right_ports : Array[LPort]
   outgoing : Array[SplineDependency]
   incoming : Array[SplineDependency]
-  mut mark : Int
-  mut inweight : Int
-  mut outweight : Int
-  mut rank : Int
+  mut mark : Int32
+  mut inweight : Int32
+  mut outweight : Int32
+  mut rank : Int32
   edges : Array[LEdge]
   mut is_straight : Bool
   bounding_box : @core.ElkRectangle
@@ -1218,9 +1218,9 @@ pub(all) struct SplineSegment {
   mut hyper_edge_top_y_pos : Double
   mut hyper_edge_bottom_y_pos : Double
   mut center_control_point_y : Double
-  edge_information : Map[Int, SplineSegmentEdgeInformation]
+  edge_information : Map[Int32, SplineSegmentEdgeInformation]
 }
-pub fn SplineSegment::compare_to(Self, Self) -> Int
+pub fn SplineSegment::compare_to(Self, Self) -> Int32
 pub fn SplineSegment::get_edge_information(Self, LEdge) -> SplineSegmentEdgeInformation?
 pub fn SplineSegment::is_hyper_edge(Self) -> Bool
 
@@ -1240,12 +1240,12 @@ pub(all) enum SplineSideToProcess {
 
 pub struct Tarjan {
   edges_to_be_reversed : Array[LEdge]
-  mut index : Int
+  mut index : Int32
   strongly_connected_components : Array[Array[LNode]]
   stack : Array[LNode]
-  node_to_scc_id : Map[Int, Int]
+  node_to_scc_id : Map[Int32, Int32]
 }
-pub fn Tarjan::get_node_to_scc_id(Self) -> Map[Int, Int]
+pub fn Tarjan::get_node_to_scc_id(Self) -> Map[Int32, Int32]
 pub fn Tarjan::get_strongly_connected_components(Self) -> Array[Array[LNode]]
 pub fn Tarjan::reset_tarjan(Self, LGraph) -> Unit
 pub fn Tarjan::strongly_connected(Self, LNode) -> Unit raise
@@ -1258,6 +1258,6 @@ pub using @core {type Spacing as LPadding}
 
 pub type LayeredIHierarchyAwareLayoutProcessor = Unit
 
-pub type LayeredPhases = Int
+pub type LayeredPhases = Int32
 
 // Traits

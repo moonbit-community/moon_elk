@@ -2,8 +2,8 @@ import {
   "moonbitlang/core/cmp",
   "moonbitlang/core/int",
   "moonbitlang/core/math",
-  "bobzhang/elk/core",
-  "bobzhang/elk/graph",
-  "bobzhang/elk/alg/disco",
-  "bobzhang/elk/alg/common/polyomino",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/graph",
+  "moonbit-community/elk/alg/disco",
+  "moonbit-community/elk/alg/common/polyomino",
 }

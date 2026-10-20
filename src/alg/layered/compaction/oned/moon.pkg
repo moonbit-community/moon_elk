@@ -1,4 +1,4 @@
 import {
-  "bobzhang/elk/core",
-  "bobzhang/elk/alg/common/compaction",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/alg/common/compaction",
 }

@@ -1,10 +1,10 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/alg/graphviz/dot/transform"
+package "moonbit-community/elk/alg/graphviz/dot/transform"
 
 import {
-  "bobzhang/elk/alg/graphviz/dot",
-  "bobzhang/elk/core",
-  "bobzhang/elk/graph",
+  "moonbit-community/elk/alg/graphviz/dot",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/graph",
   "moonbitlang/core/debug",
 }
 
@@ -115,7 +115,7 @@ pub fn dot_exporter_create_attribute_double(String, Double) -> @dot.DotAttribute
 
 pub fn dot_exporter_create_attribute_float(String, Float) -> @dot.DotAttribute
 
-pub fn dot_exporter_create_attribute_int(String, Int) -> @dot.DotAttribute
+pub fn dot_exporter_create_attribute_int(String, Int32) -> @dot.DotAttribute
 
 pub fn dot_exporter_create_attribute_map(Array[@dot.DotAttribute]) -> Map[String, String]
 
@@ -139,9 +139,9 @@ pub let dot_exporter_hierarchy : @graph.IProperty[Bool]
 
 pub fn dot_exporter_is_inside_graph(@graph.ElkNode, @graph.ElkNode) -> Bool
 
-pub let dot_exporter_next_edge_id : @graph.IProperty[Int]
+pub let dot_exporter_next_edge_id : @graph.IProperty[Int32]
 
-pub let dot_exporter_next_node_id : @graph.IProperty[Int]
+pub let dot_exporter_next_node_id : @graph.IProperty[Int32]
 
 pub fn dot_exporter_node_type_cluster() -> DotExporterNodeType
 
@@ -307,7 +307,7 @@ pub struct DotTransformationData[S, T] {
 pub fn[S, T] DotTransformationData::get_bool_property(Self[S, T], @graph.IProperty[Bool]) -> Bool
 pub fn[S, T] DotTransformationData::get_command_property(Self[S, T], @graph.IProperty[Command]) -> Command
 pub fn[S, T] DotTransformationData::get_graph_elem_map_property(Self[S, T], @graph.IProperty[Map[String, DotGraphElement]]) -> Map[String, DotGraphElement]
-pub fn[S, T] DotTransformationData::get_int_property(Self[S, T], @graph.IProperty[Int]) -> Int
+pub fn[S, T] DotTransformationData::get_int_property(Self[S, T], @graph.IProperty[Int32]) -> Int32
 pub fn[S, T] DotTransformationData::get_messages(Self[S, T]) -> Array[String]
 pub fn[S, T] DotTransformationData::get_source_graph(Self[S, T]) -> S?
 pub fn[S, T] DotTransformationData::get_string_property(Self[S, T], @graph.IProperty[String]) -> String
@@ -316,7 +316,7 @@ pub fn[S, T] DotTransformationData::log(Self[S, T], String) -> Unit
 pub fn[S, T] DotTransformationData::set_bool_property(Self[S, T], @graph.IProperty[Bool], Bool) -> Unit
 pub fn[S, T] DotTransformationData::set_command_property(Self[S, T], @graph.IProperty[Command], Command) -> Unit
 pub fn[S, T] DotTransformationData::set_graph_elem_map_property(Self[S, T], @graph.IProperty[Map[String, DotGraphElement]], Map[String, DotGraphElement]) -> Unit
-pub fn[S, T] DotTransformationData::set_int_property(Self[S, T], @graph.IProperty[Int], Int) -> Unit
+pub fn[S, T] DotTransformationData::set_int_property(Self[S, T], @graph.IProperty[Int32], Int32) -> Unit
 pub fn[S, T] DotTransformationData::set_source_graph(Self[S, T], S) -> Unit
 pub fn[S, T] DotTransformationData::set_string_property(Self[S, T], @graph.IProperty[String], String) -> Unit
 

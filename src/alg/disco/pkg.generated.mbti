@@ -1,11 +1,11 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/alg/disco"
+package "moonbit-community/elk/alg/disco"
 
 import {
-  "bobzhang/elk/alg/common",
-  "bobzhang/elk/alg/common/polyomino",
-  "bobzhang/elk/core",
-  "bobzhang/elk/graph",
+  "moonbit-community/elk/alg/common",
+  "moonbit-community/elk/alg/common/polyomino",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/graph",
   "moonbitlang/core/debug",
 }
 
@@ -80,17 +80,17 @@ pub struct DCComponent {
   mut changed : Bool
   mut bounds : @core.KVector
   mut min_corner_of_bounding_rectangle : @core.KVector
-  mut id : Int
+  mut id : Int32
 }
 pub fn DCComponent::add_element(Self, DCElement) -> Unit
 pub fn DCComponent::add_elements(Self, Array[DCElement]) -> Unit
 pub fn DCComponent::get_dimensions_of_bounding_rectangle(Self) -> @core.KVector
 pub fn DCComponent::get_elements(Self) -> Array[DCElement]
-pub fn DCComponent::get_id(Self) -> Int
+pub fn DCComponent::get_id(Self) -> Int32
 pub fn DCComponent::get_min_corner(Self) -> @core.KVector
 pub fn DCComponent::get_offset(Self) -> @core.KVector
 pub fn DCComponent::intersects(Self, @core.ElkRectangle) -> Bool
-pub fn DCComponent::set_id(Self, Int) -> Unit
+pub fn DCComponent::set_id(Self, Int32) -> Unit
 pub fn DCComponent::set_offset(Self, @core.KVector) -> Unit
 
 pub enum DCDirection {
@@ -155,30 +155,30 @@ pub fn DCGraph::set_polyomino_fill(Self, Bool) -> Unit
 pub struct DCPolyomino {
   polyomino : @polyomino.Polyomino
   representee : DCComponent
-  p_width : Int
-  p_height : Int
+  p_width : Int32
+  p_height : Int32
   cell_size_x : Double
   cell_size_y : Double
 }
 pub fn DCPolyomino::as_polyomino(Self) -> @polyomino.Polyomino
 pub fn DCPolyomino::get_cell_size_x(Self) -> Double
 pub fn DCPolyomino::get_cell_size_y(Self) -> Double
-pub fn DCPolyomino::get_center_x(Self) -> Int
-pub fn DCPolyomino::get_center_y(Self) -> Int
-pub fn DCPolyomino::get_id(Self) -> Int
+pub fn DCPolyomino::get_center_x(Self) -> Int32
+pub fn DCPolyomino::get_center_y(Self) -> Int32
+pub fn DCPolyomino::get_id(Self) -> Int32
 pub fn DCPolyomino::get_min_corner_on_canvas(Self) -> @core.KVector
 pub fn DCPolyomino::get_offset(Self) -> @core.KVector
-pub fn DCPolyomino::get_polyomino_extensions(Self) -> Array[@common.UniqueTriple[@polyomino.PolyominoDirection, Int, Int]]
+pub fn DCPolyomino::get_polyomino_extensions(Self) -> Array[@common.UniqueTriple[@polyomino.PolyominoDirection, Int32, Int32]]
 pub fn DCPolyomino::get_representee(Self) -> DCComponent
-pub fn DCPolyomino::get_x(Self) -> Int
-pub fn DCPolyomino::get_y(Self) -> Int
-pub fn DCPolyomino::height(Self) -> Int
-pub fn DCPolyomino::is_blocked(Self, Int, Int) -> Bool raise
-pub fn DCPolyomino::is_weakly_blocked(Self, Int, Int) -> Bool raise
-pub fn DCPolyomino::set_id(Self, Int) -> Unit
-pub fn DCPolyomino::set_x(Self, Int) -> Unit
-pub fn DCPolyomino::set_y(Self, Int) -> Unit
-pub fn DCPolyomino::width(Self) -> Int
+pub fn DCPolyomino::get_x(Self) -> Int32
+pub fn DCPolyomino::get_y(Self) -> Int32
+pub fn DCPolyomino::height(Self) -> Int32
+pub fn DCPolyomino::is_blocked(Self, Int32, Int32) -> Bool raise
+pub fn DCPolyomino::is_weakly_blocked(Self, Int32, Int32) -> Bool raise
+pub fn DCPolyomino::set_id(Self, Int32) -> Unit
+pub fn DCPolyomino::set_x(Self, Int32) -> Unit
+pub fn DCPolyomino::set_y(Self, Int32) -> Unit
+pub fn DCPolyomino::width(Self) -> Int32
 
 pub struct DisCoLayoutProvider {
   metadata : @core.OptionMetadata

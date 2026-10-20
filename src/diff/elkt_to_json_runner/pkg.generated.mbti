@@ -1,5 +1,5 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/diff/elkt_to_json_runner"
+package "moonbit-community/elk/diff/elkt_to_json_runner"
 
 // Values
 pub fn convert_elkt_to_json(String) -> String

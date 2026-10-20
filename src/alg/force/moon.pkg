@@ -1,12 +1,12 @@
 import {
   "moonbitlang/core/math",
   "moonbitlang/core/string",
-  "bobzhang/elk/alg/common/nodespacing",
-  "bobzhang/elk/alg/force/options" @force_options,
-  "bobzhang/elk/core",
-  "bobzhang/elk/graph",
+  "moonbit-community/elk/alg/common/nodespacing",
+  "moonbit-community/elk/alg/force/options" @force_options,
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/graph",
 }
 
 import {
-  "bobzhang/elk/alg/test",
+  "moonbit-community/elk/alg/test",
 } for "test"

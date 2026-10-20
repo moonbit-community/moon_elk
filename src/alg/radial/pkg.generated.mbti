@@ -1,17 +1,17 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/alg/radial"
+package "moonbit-community/elk/alg/radial"
 
 import {
-  "bobzhang/elk/alg/radial/options",
-  "bobzhang/elk/core",
-  "bobzhang/elk/graph",
+  "moonbit-community/elk/alg/radial/options",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/graph",
   "moonbitlang/core/debug",
 }
 
 // Values
-pub const P1_NODE_PLACEMENT : Int = 0
+pub const P1_NODE_PLACEMENT : Int32 = 0
 
-pub const P2_EDGE_ROUTING : Int = 1
+pub const P2_EDGE_ROUTING : Int32 = 1
 
 pub fn new_abstract_radius_extension_compaction() -> AbstractRadiusExtensionCompaction
 
@@ -79,7 +79,7 @@ pub fn radial_center_nodes_on_radi(@graph.ElkNode, Double, Double) -> Unit
 
 pub fn radial_compaction_strategy_create(@options.RadialCompactionStrategy) -> IRadialCompactor raise RadialCompactionStrategyException
 
-pub fn radial_create_polar_comparator(Double, Double) -> (@graph.ElkNode, @graph.ElkNode) -> Int raise
+pub fn radial_create_polar_comparator(Double, Double) -> (@graph.ElkNode, @graph.ElkNode) -> Int32 raise
 
 pub fn radial_find_largest_node_in_graph(@graph.ElkNode) -> Double
 
@@ -93,7 +93,7 @@ pub fn radial_get_next_level_node_set(Array[@graph.ElkNode]) -> Array[@graph.Elk
 
 pub fn radial_get_next_level_nodes(Array[@graph.ElkNode]) -> Array[@graph.ElkNode]
 
-pub fn radial_get_number_of_leaves(@graph.ElkNode) -> Int
+pub fn radial_get_number_of_leaves(@graph.ElkNode) -> Int32
 
 pub fn radial_get_successor_set(@graph.ElkNode) -> Array[@graph.ElkNode]
 
@@ -109,25 +109,25 @@ pub fn radial_internal_has_order_id(@graph.ElkNode) -> Bool
 
 pub fn radial_internal_node_margins(@graph.ElkNode) -> @core.Spacing raise
 
-pub fn radial_internal_order_id(@graph.ElkNode) -> Int
+pub fn radial_internal_order_id(@graph.ElkNode) -> Int32
 
 pub fn radial_internal_position(@graph.ElkNode) -> @core.KVector raise
 
 pub fn radial_internal_root(@graph.ElkNode) -> @graph.ElkNode?
 
-pub fn radial_internal_set_order_id(@graph.ElkNode, Int) -> Unit
+pub fn radial_internal_set_order_id(@graph.ElkNode, Int32) -> Unit
 
 pub fn radial_internal_set_position(@graph.ElkNode, @core.KVector) -> Unit
 
 pub let radial_layout_phase_descriptor : @core.PhaseDescriptor
 
-pub fn radial_layout_phase_factory(Int, @graph.ElkNode) -> @core.LayoutProcessorFactory
+pub fn radial_layout_phase_factory(Int32, @graph.ElkNode) -> @core.LayoutProcessorFactory
 
 pub fn radial_overlap_removal_strategy_create(@options.RadialOverlapRemovalStrategy) -> IOverlapRemoval
 
 pub fn radial_shift_closest_edge_to_radi(@graph.ElkNode, Double, Double) -> Unit
 
-pub fn radial_sort_nodes(Array[@graph.ElkNode], (@graph.ElkNode, @graph.ElkNode) -> Int raise?) -> Unit raise?
+pub fn radial_sort_nodes(Array[@graph.ElkNode], (@graph.ElkNode, @graph.ElkNode) -> Int32 raise?) -> Unit raise?
 
 pub fn radial_sorting_strategy_create(@options.RadialSortingStrategy) -> IRadialSorter?
 
@@ -144,17 +144,17 @@ pub fn RadialCompactionStrategyException::to_repr(Self) -> @debug.Repr
 
 // Types and methods
 pub struct AbstractRadiusExtensionCompaction {
-  mut compaction_step : Int
+  mut compaction_step : Int32
   mut spacing : Double
   mut root : @graph.ElkNode?
 }
-pub fn AbstractRadiusExtensionCompaction::compaction_step(Self) -> Int
+pub fn AbstractRadiusExtensionCompaction::compaction_step(Self) -> Int32
 pub fn AbstractRadiusExtensionCompaction::contract_layer(Self, Array[@graph.ElkNode], Bool) -> Unit
 pub fn AbstractRadiusExtensionCompaction::move_node(Self, @graph.ElkNode, Double) -> Unit
 pub fn AbstractRadiusExtensionCompaction::overlap(Self, @graph.ElkNode, @graph.ElkNode) -> Bool
 pub fn AbstractRadiusExtensionCompaction::overlap_layer(Self, Array[@graph.ElkNode]) -> Bool
 pub fn AbstractRadiusExtensionCompaction::root(Self) -> @graph.ElkNode?
-pub fn AbstractRadiusExtensionCompaction::set_compaction_step(Self, Int) -> Unit
+pub fn AbstractRadiusExtensionCompaction::set_compaction_step(Self, Int32) -> Unit
 pub fn AbstractRadiusExtensionCompaction::set_root(Self, @graph.ElkNode) -> Unit
 pub fn AbstractRadiusExtensionCompaction::set_spacing(Self, Double) -> Unit
 pub fn AbstractRadiusExtensionCompaction::spacing(Self) -> Double
@@ -251,10 +251,10 @@ pub fn IRadialSorter::initialize(Self, @graph.ElkNode) -> Unit raise
 pub fn IRadialSorter::sort(Self, Array[@graph.ElkNode]) -> Unit raise
 
 pub struct PolarCoordinateSorter {
-  comp_right : (@graph.ElkNode, @graph.ElkNode) -> Int raise
-  comp_left : (@graph.ElkNode, @graph.ElkNode) -> Int raise
-  comp_top : (@graph.ElkNode, @graph.ElkNode) -> Int raise
-  comp_bottom : (@graph.ElkNode, @graph.ElkNode) -> Int raise
+  comp_right : (@graph.ElkNode, @graph.ElkNode) -> Int32 raise
+  comp_left : (@graph.ElkNode, @graph.ElkNode) -> Int32 raise
+  comp_top : (@graph.ElkNode, @graph.ElkNode) -> Int32 raise
+  comp_bottom : (@graph.ElkNode, @graph.ElkNode) -> Int32 raise
   mut id_sorter : IDSorter?
 }
 pub fn PolarCoordinateSorter::as_i_radial_sorter(Self) -> IRadialSorter
@@ -297,6 +297,6 @@ pub fn StraightLineEdgeRouter::as_i_radial_edge_router(Self) -> IRadialEdgeRoute
 pub fn StraightLineEdgeRouter::route_edges(Self, @graph.ElkNode) -> Unit
 
 // Type aliases
-pub type RadialLayoutPhases = Int
+pub type RadialLayoutPhases = Int32
 
 // Traits

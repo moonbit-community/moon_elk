@@ -1,11 +1,11 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/graph/json/text/ui"
+package "moonbit-community/elk/graph/json/text/ui"
 
 import {
-  "bobzhang/elk/core",
-  "bobzhang/elk/graph",
-  "bobzhang/elk/graph/json/text",
-  "bobzhang/elk/graph/json/text/ide",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/graph",
+  "moonbit-community/elk/graph/json/text",
+  "moonbit-community/elk/graph/json/text/ide",
   "moonbitlang/core/debug",
 }
 
@@ -30,7 +30,7 @@ pub let graph_json_text_ui_extension_factory_guicekey : String
 
 pub let graph_json_text_ui_language_name : String
 
-pub let graph_json_text_ui_max_entries : Int
+pub let graph_json_text_ui_max_entries : Int32
 
 pub fn graph_json_text_ui_object_executable_extension(GraphJsonTextExecutableExtension) -> GraphJsonTextUiObject
 
@@ -40,7 +40,7 @@ pub fn graph_json_text_ui_object_tag(GraphJsonTextUiObject) -> String
 
 pub let graph_json_text_ui_plugin_id : String
 
-pub let graph_json_text_ui_status_error : Int
+pub let graph_json_text_ui_status_error : Int32
 
 pub fn new_abstract_elk_graph_json_proposal_provider() -> AbstractElkGraphJsonProposalProvider
 
@@ -90,7 +90,7 @@ pub fn new_graph_json_text_ui_injector() -> GraphJsonTextUiInjector
 
 pub fn new_graph_json_text_ui_lexer_binding(String, String) -> GraphJsonTextUiLexerBinding
 
-pub fn new_graph_json_text_ui_status(Int, String, String) -> GraphJsonTextUiStatus
+pub fn new_graph_json_text_ui_status(Int32, String, String) -> GraphJsonTextUiStatus
 
 // Errors
 pub(all) suberror ElkGraphJsonTextUiActivatorException {
@@ -276,7 +276,7 @@ pub fn ElkGraphJsonOutlineTreeProvider::create_outline(Self, @graph.ElkNode) -> 
 pub struct ElkGraphJsonQuickfixProvider {
   unit : Unit
 }
-pub fn ElkGraphJsonQuickfixProvider::remove_option(Self, Array[@text.GraphJsonTextPropertyAssignment], Int) -> Array[@text.GraphJsonTextPropertyAssignment]
+pub fn ElkGraphJsonQuickfixProvider::remove_option(Self, Array[@text.GraphJsonTextPropertyAssignment], Int32) -> Array[@text.GraphJsonTextPropertyAssignment]
 pub fn ElkGraphJsonQuickfixProvider::supports_issue(Self, String) -> Bool
 
 pub struct ElkGraphJsonUiModule {
@@ -313,7 +313,7 @@ pub fn GraphJsonTextActivator::get_injector(Self, String) -> GraphJsonTextUiInje
 pub fn GraphJsonTextActivator::get_runtime_module(Self, String) -> @text.ElkGraphJsonRuntimeModule raise GraphJsonTextActivatorException
 pub fn GraphJsonTextActivator::get_shared_state_module(Self) -> String
 pub fn GraphJsonTextActivator::get_ui_module(Self, String) -> ElkGraphJsonUiModule raise GraphJsonTextActivatorException
-pub fn GraphJsonTextActivator::injector_count(Self) -> Int
+pub fn GraphJsonTextActivator::injector_count(Self) -> Int32
 pub fn GraphJsonTextActivator::register_bundle_class(Self, String) -> Unit
 pub fn GraphJsonTextActivator::register_injector_provider(Self, String, String, () -> GraphJsonTextUiObject) -> Unit raise GraphJsonTextActivatorException
 pub fn GraphJsonTextActivator::start(Self) -> Unit
@@ -336,7 +336,7 @@ pub struct GraphJsonTextConvertGraphHandler {
 }
 pub fn GraphJsonTextConvertGraphHandler::convert(Self, String, String) -> Unit
 pub fn GraphJsonTextConvertGraphHandler::create_target(Self, String) -> String
-pub fn GraphJsonTextConvertGraphHandler::execute(Self, Array[GraphJsonTextSelectionItem], String) -> Int
+pub fn GraphJsonTextConvertGraphHandler::execute(Self, Array[GraphJsonTextSelectionItem], String) -> Int32
 pub fn GraphJsonTextConvertGraphHandler::get_errors(Self) -> Array[String]
 pub fn GraphJsonTextConvertGraphHandler::get_project(Self) -> GraphJsonTextProject
 pub fn GraphJsonTextConvertGraphHandler::is_valid_target_extension(Self, String) -> Bool
@@ -407,7 +407,7 @@ pub struct GraphJsonTextUiInjector {
   providers : Map[String, () -> GraphJsonTextUiObject]
 }
 pub fn GraphJsonTextUiInjector::get_instance(Self, String) -> GraphJsonTextUiObject?
-pub fn GraphJsonTextUiInjector::provider_count(Self) -> Int
+pub fn GraphJsonTextUiInjector::provider_count(Self) -> Int32
 pub fn GraphJsonTextUiInjector::register_provider(Self, String, () -> GraphJsonTextUiObject) -> Unit
 
 pub struct GraphJsonTextUiLexerBinding {
@@ -421,7 +421,7 @@ pub enum GraphJsonTextUiObject {
 }
 
 pub struct GraphJsonTextUiStatus {
-  severity : Int
+  severity : Int32
   symbolic_name : String
   message : String
 }

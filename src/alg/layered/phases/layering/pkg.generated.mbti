@@ -1,9 +1,9 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/alg/layered/phases/layering"
+package "moonbit-community/elk/alg/layered/phases/layering"
 
 import {
-  "bobzhang/elk/alg/layered/runtime",
-  "bobzhang/elk/core",
+  "moonbit-community/elk/alg/layered/runtime",
+  "moonbit-community/elk/core",
   "moonbitlang/core/debug",
 }
 

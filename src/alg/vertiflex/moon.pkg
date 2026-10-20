@@ -1,6 +1,6 @@
 import {
   "moonbitlang/core/cmp",
-  "bobzhang/elk/alg/radial",
-  "bobzhang/elk/core",
-  "bobzhang/elk/graph",
+  "moonbit-community/elk/alg/radial",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/graph",
 }

@@ -1,6 +1,6 @@
 import {
-  "bobzhang/elk/graph/json" @graph_json,
-  "bobzhang/elk/graph/text",
+  "moonbit-community/elk/graph/json" @graph_json,
+  "moonbit-community/elk/graph/text",
 }
 
 pkgtype(kind: "executable")

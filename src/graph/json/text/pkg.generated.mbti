@@ -1,9 +1,9 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/graph/json/text"
+package "moonbit-community/elk/graph/json/text"
 
 import {
-  "bobzhang/elk/core",
-  "bobzhang/elk/graph",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/graph",
   "moonbitlang/core/debug",
 }
 
@@ -42,29 +42,29 @@ pub let graph_json_text_grammar_name : String
 
 pub let graph_json_text_issue_code_prefix : String
 
-pub let graph_json_text_issue_error : Int
+pub let graph_json_text_issue_error : Int32
 
-pub let graph_json_text_issue_warning : Int
+pub let graph_json_text_issue_warning : Int32
 
 pub fn graph_json_text_label_owner_to_parent(GraphJsonTextLabelOwner) -> @graph.ElkLabelParent
 
-pub let graph_json_text_lexer_rule_any_other : Int
+pub let graph_json_text_lexer_rule_any_other : Int32
 
-pub let graph_json_text_lexer_rule_float : Int
+pub let graph_json_text_lexer_rule_float : Int32
 
-pub let graph_json_text_lexer_rule_id : Int
+pub let graph_json_text_lexer_rule_id : Int32
 
-pub let graph_json_text_lexer_rule_int : Int
+pub let graph_json_text_lexer_rule_int : Int32
 
-pub let graph_json_text_lexer_rule_ml_comment : Int
+pub let graph_json_text_lexer_rule_ml_comment : Int32
 
-pub let graph_json_text_lexer_rule_signed_int : Int
+pub let graph_json_text_lexer_rule_signed_int : Int32
 
-pub let graph_json_text_lexer_rule_sl_comment : Int
+pub let graph_json_text_lexer_rule_sl_comment : Int32
 
-pub let graph_json_text_lexer_rule_string : Int
+pub let graph_json_text_lexer_rule_string : Int32
 
-pub let graph_json_text_lexer_rule_ws : Int
+pub let graph_json_text_lexer_rule_ws : Int32
 
 pub let graph_json_text_lexer_token_names : Array[String]
 
@@ -114,7 +114,7 @@ pub fn new_elk_graph_json_antlr_token_file_provider() -> ElkGraphJsonAntlrTokenF
 
 pub fn new_elk_graph_json_configurable_issue_codes_provider() -> ElkGraphJsonConfigurableIssueCodesProvider
 
-pub fn new_elk_graph_json_formatter(indent_size? : Int) -> ElkGraphJsonFormatter
+pub fn new_elk_graph_json_formatter(indent_size? : Int32) -> ElkGraphJsonFormatter
 
 pub fn new_elk_graph_json_generator() -> ElkGraphJsonGenerator
 
@@ -122,7 +122,7 @@ pub fn new_elk_graph_json_grammar_access() -> ElkGraphJsonGrammarAccess
 
 pub fn new_elk_graph_json_json_text_util(@core.OptionMetadata) -> ElkGraphJsonJsonTextUtil
 
-pub fn new_elk_graph_json_lex_token(Int, String, String) -> ElkGraphJsonLexToken
+pub fn new_elk_graph_json_lex_token(Int32, String, String) -> ElkGraphJsonLexToken
 
 pub fn new_elk_graph_json_linker() -> ElkGraphJsonLinker
 
@@ -162,7 +162,7 @@ pub fn new_graph_json_text_property_key_value_converter(@core.OptionMetadata) ->
 
 pub fn new_graph_json_text_property_value_value_converter(@core.OptionMetadata, qualified_name_converter? : ElkGraphJsonQualifiedNameConverter) -> GraphJsonTextPropertyValueValueConverter
 
-pub fn new_graph_json_text_validation_issue(String, String, Int, code? : String?) -> GraphJsonTextValidationIssue
+pub fn new_graph_json_text_validation_issue(String, String, Int32, code? : String?) -> GraphJsonTextValidationIssue
 
 pub fn new_internal_elk_graph_json_lexer(String) -> InternalElkGraphJsonLexer
 
@@ -267,7 +267,7 @@ pub fn ElkGraphJsonConfigurableIssueCodesProvider::deprecated_model_part(Self) -
 pub fn ElkGraphJsonConfigurableIssueCodesProvider::issue_code_prefix(Self) -> String
 
 pub struct ElkGraphJsonFormatter {
-  indent_size : Int
+  indent_size : Int32
 }
 pub fn ElkGraphJsonFormatter::format(Self, @graph.ElkNode) -> String
 
@@ -310,7 +310,7 @@ pub struct ElkGraphJsonJsonTextUtil {
 pub fn ElkGraphJsonJsonTextUtil::get_algorithm(Self, GraphJsonTextElement) -> @core.LayoutAlgorithmData?
 
 pub struct ElkGraphJsonLexToken {
-  token_type : Int
+  token_type : Int32
   token_name : String
   lexeme : String
 }
@@ -508,7 +508,7 @@ pub(all) enum GraphJsonTextShape {
 pub struct GraphJsonTextValidationIssue {
   message : String
   feature : String
-  severity : Int
+  severity : Int32
   code : String?
 }
 
@@ -570,6 +570,6 @@ pub type ElkGraphJsonGeneratorContext = String
 
 pub type ElkGraphJsonResource = String
 
-pub type GraphJsonTextIssueSeverity = Int
+pub type GraphJsonTextIssueSeverity = Int32
 
 // Traits

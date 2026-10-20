@@ -1,8 +1,8 @@
 import {
-  "bobzhang/elk/core",
-  "bobzhang/elk/graph",
-  "bobzhang/elk/engine" @engine_builder,
-  "bobzhang/elk/alg/layered/options",
-  "bobzhang/elk/alg/layered/pipeline",
-  "bobzhang/elk/alg/layered/engine" @layered_phases,
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/graph",
+  "moonbit-community/elk/engine" @engine_builder,
+  "moonbit-community/elk/alg/layered/options",
+  "moonbit-community/elk/alg/layered/pipeline",
+  "moonbit-community/elk/alg/layered/engine" @layered_phases,
 }

@@ -1,5 +1,5 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/graph"
+package "moonbit-community/elk/graph"
 
 import {
   "moonbitlang/core/debug",
@@ -123,27 +123,27 @@ pub fn edge_sources(ElkEdge) -> Array[ElkConnectableShape]
 
 pub fn edge_targets(ElkEdge) -> Array[ElkConnectableShape]
 
-pub let elk_graph_elk_bend_point_classifier_id : Int
+pub let elk_graph_elk_bend_point_classifier_id : Int32
 
-pub let elk_graph_elk_connectable_shape_classifier_id : Int
+pub let elk_graph_elk_connectable_shape_classifier_id : Int32
 
-pub let elk_graph_elk_edge_classifier_id : Int
+pub let elk_graph_elk_edge_classifier_id : Int32
 
-pub let elk_graph_elk_edge_section_classifier_id : Int
+pub let elk_graph_elk_edge_section_classifier_id : Int32
 
-pub let elk_graph_elk_graph_element_classifier_id : Int
+pub let elk_graph_elk_graph_element_classifier_id : Int32
 
-pub let elk_graph_elk_label_classifier_id : Int
+pub let elk_graph_elk_label_classifier_id : Int32
 
-pub let elk_graph_elk_node_classifier_id : Int
+pub let elk_graph_elk_node_classifier_id : Int32
 
-pub let elk_graph_elk_port_classifier_id : Int
+pub let elk_graph_elk_port_classifier_id : Int32
 
-pub let elk_graph_elk_property_to_value_map_entry_classifier_id : Int
+pub let elk_graph_elk_property_to_value_map_entry_classifier_id : Int32
 
-pub let elk_graph_elk_shape_classifier_id : Int
+pub let elk_graph_elk_shape_classifier_id : Int32
 
-pub let elk_graph_emap_property_holder_classifier_id : Int
+pub let elk_graph_emap_property_holder_classifier_id : Int32
 
 pub let elk_graph_ename : String
 
@@ -153,15 +153,15 @@ pub let elk_graph_ens_uri : String
 
 pub let elk_graph_factory_instance : ElkGraphFactory
 
-pub let elk_graph_iproperty_classifier_id : Int
+pub let elk_graph_iproperty_classifier_id : Int32
 
-pub let elk_graph_iproperty_holder_classifier_id : Int
+pub let elk_graph_iproperty_holder_classifier_id : Int32
 
 pub fn elk_graph_package_id() -> String
 
 pub let elk_graph_package_instance : String
 
-pub let elk_graph_property_value_classifier_id : Int
+pub let elk_graph_property_value_classifier_id : Int32
 
 pub fn elk_reflect_clone(String, Json) -> Json?
 
@@ -305,7 +305,7 @@ pub fn node_clear_bool_property(ElkNode, IProperty[Bool]) -> Unit
 
 pub fn node_clear_double_property(ElkNode, IProperty[Double]) -> Unit
 
-pub fn node_clear_int_property(ElkNode, IProperty[Int]) -> Unit
+pub fn node_clear_int_property(ElkNode, IProperty[Int32]) -> Unit
 
 pub fn node_clear_string_property(ElkNode, IProperty[String]) -> Unit
 
@@ -321,7 +321,7 @@ pub fn node_get_bool_property(ElkNode, IProperty[Bool]) -> Bool
 
 pub fn node_get_double_property(ElkNode, IProperty[Double]) -> Double
 
-pub fn node_get_int_property(ElkNode, IProperty[Int]) -> Int
+pub fn node_get_int_property(ElkNode, IProperty[Int32]) -> Int32
 
 pub fn node_get_string_property(ElkNode, IProperty[String]) -> String
 
@@ -331,7 +331,7 @@ pub fn node_has_bool_property(ElkNode, IProperty[Bool]) -> Bool
 
 pub fn node_has_double_property(ElkNode, IProperty[Double]) -> Bool
 
-pub fn node_has_int_property(ElkNode, IProperty[Int]) -> Bool
+pub fn node_has_int_property(ElkNode, IProperty[Int32]) -> Bool
 
 pub fn node_has_string_property(ElkNode, IProperty[String]) -> Bool
 
@@ -349,7 +349,7 @@ pub fn node_individual_spacing_option_string_value(ElkNode, String) -> String?
 
 pub fn node_individual_spacing_option_string_value_by_option_id(ElkNode, PropertyId) -> String?
 
-pub fn node_int_property_entries(ElkNode) -> Array[(String, Int)]
+pub fn node_int_property_entries(ElkNode) -> Array[(String, Int32)]
 
 pub fn node_kvector_property_entries(ElkNode) -> Array[(String, String)]
 
@@ -377,7 +377,7 @@ pub fn node_set_identifier(ElkNode, String) -> Unit
 
 pub fn node_set_individual_spacing_option_string_by_id(ElkNode, String, String) -> Unit
 
-pub fn node_set_int_property(ElkNode, IProperty[Int], Int) -> Unit
+pub fn node_set_int_property(ElkNode, IProperty[Int32], Int32) -> Unit
 
 pub fn node_set_layout_option_string_by_id(ElkNode, String, String) -> Unit
 
@@ -475,7 +475,7 @@ pub struct ElkEdge {
 }
 pub fn ElkEdge::equal(Self, Self) -> Bool
 pub fn ElkEdge::graph_arena(Self) -> GraphArena
-pub fn ElkEdge::hash(Self) -> Int
+pub fn ElkEdge::hash(Self) -> Int32
 pub fn ElkEdge::hash_combine(Self, Hasher) -> Unit
 pub fn ElkEdge::not_equal(Self, Self) -> Bool
 pub fn ElkEdge::output(Self, &Logger) -> Unit
@@ -492,7 +492,7 @@ pub struct ElkEdgeSection {
 }
 pub fn ElkEdgeSection::equal(Self, Self) -> Bool
 pub fn ElkEdgeSection::graph_arena(Self) -> GraphArena
-pub fn ElkEdgeSection::hash(Self) -> Int
+pub fn ElkEdgeSection::hash(Self) -> Int32
 pub fn ElkEdgeSection::hash_combine(Self, Hasher) -> Unit
 pub fn ElkEdgeSection::not_equal(Self, Self) -> Bool
 pub fn ElkEdgeSection::output(Self, &Logger) -> Unit
@@ -588,7 +588,7 @@ pub struct ElkLabel {
 }
 pub fn ElkLabel::equal(Self, Self) -> Bool
 pub fn ElkLabel::graph_arena(Self) -> GraphArena
-pub fn ElkLabel::hash(Self) -> Int
+pub fn ElkLabel::hash(Self) -> Int32
 pub fn ElkLabel::hash_combine(Self, Hasher) -> Unit
 pub fn ElkLabel::not_equal(Self, Self) -> Bool
 pub fn ElkLabel::output(Self, &Logger) -> Unit
@@ -612,7 +612,7 @@ pub struct ElkNode {
 }
 pub fn ElkNode::equal(Self, Self) -> Bool
 pub fn ElkNode::graph_arena(Self) -> GraphArena
-pub fn ElkNode::hash(Self) -> Int
+pub fn ElkNode::hash(Self) -> Int32
 pub fn ElkNode::hash_combine(Self, Hasher) -> Unit
 pub fn ElkNode::not_equal(Self, Self) -> Bool
 pub fn ElkNode::output(Self, &Logger) -> Unit
@@ -638,7 +638,7 @@ pub struct ElkPort {
 }
 pub fn ElkPort::equal(Self, Self) -> Bool
 pub fn ElkPort::graph_arena(Self) -> GraphArena
-pub fn ElkPort::hash(Self) -> Int
+pub fn ElkPort::hash(Self) -> Int32
 pub fn ElkPort::hash_combine(Self, Hasher) -> Unit
 pub fn ElkPort::not_equal(Self, Self) -> Bool
 pub fn ElkPort::output(Self, &Logger) -> Unit
@@ -732,14 +732,14 @@ pub fn[T : ToJson] MapPropertyHolder::set_property(Self, IProperty[T], T?) -> Se
 pub struct PropertyHolderComparator[T] {
   property : IProperty[T]
 }
-pub fn[T : Compare + @json.FromJson] PropertyHolderComparator::compare(Self[T], MapPropertyHolder, MapPropertyHolder) -> Int
+pub fn[T : Compare + @json.FromJson] PropertyHolderComparator::compare(Self[T], MapPropertyHolder, MapPropertyHolder) -> Int32
 
 #alias(OptionId)
 pub struct PropertyId {
   // private fields
 } derive(Eq, Hash, @debug.Debug)
 pub fn PropertyId::equal(Self, Self) -> Bool
-pub fn PropertyId::hash(Self) -> Int
+pub fn PropertyId::hash(Self) -> Int32
 pub fn PropertyId::hash_combine(Self, Hasher) -> Unit
 pub fn PropertyId::not_equal(Self, Self) -> Bool
 pub fn PropertyId::to_repr(Self) -> @debug.Repr

@@ -1,5 +1,5 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/diff/elkjs_compare_runner"
+package "moonbit-community/elk/diff/elkjs_compare_runner"
 
 // Values
 pub fn layout_json(String) -> String raise

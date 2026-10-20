@@ -1,9 +1,9 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/alg/layered/options"
+package "moonbit-community/elk/alg/layered/options"
 
 import {
-  "bobzhang/elk/core",
-  "bobzhang/elk/graph",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/graph",
 }
 
 // Values
@@ -71,19 +71,19 @@ pub let layered_options_consider_model_order_crossing_counter_port_influence : @
 
 pub let layered_options_consider_model_order_group_model_order_cb_group_order_strategy : @graph.IProperty[String]
 
-pub let layered_options_consider_model_order_group_model_order_cb_preferred_source_id : @graph.IProperty[Int]
+pub let layered_options_consider_model_order_group_model_order_cb_preferred_source_id : @graph.IProperty[Int32]
 
-pub let layered_options_consider_model_order_group_model_order_cb_preferred_target_id : @graph.IProperty[Int]
+pub let layered_options_consider_model_order_group_model_order_cb_preferred_target_id : @graph.IProperty[Int32]
 
 pub let layered_options_consider_model_order_group_model_order_cm_enforced_group_orders : @graph.IProperty[String]
 
 pub let layered_options_consider_model_order_group_model_order_cm_group_order_strategy : @graph.IProperty[String]
 
-pub let layered_options_consider_model_order_group_model_order_component_group_id : @graph.IProperty[Int]
+pub let layered_options_consider_model_order_group_model_order_component_group_id : @graph.IProperty[Int32]
 
-pub let layered_options_consider_model_order_group_model_order_crossing_minimization_id : @graph.IProperty[Int]
+pub let layered_options_consider_model_order_group_model_order_crossing_minimization_id : @graph.IProperty[Int32]
 
-pub let layered_options_consider_model_order_group_model_order_cycle_breaking_id : @graph.IProperty[Int]
+pub let layered_options_consider_model_order_group_model_order_cycle_breaking_id : @graph.IProperty[Int32]
 
 pub let layered_options_consider_model_order_long_edge_strategy : @graph.IProperty[String]
 
@@ -93,7 +93,7 @@ pub let layered_options_consider_model_order_strategy : @graph.IProperty[String]
 
 pub let layered_options_crossing_minimization_force_node_model_order : @graph.IProperty[Bool]
 
-pub let layered_options_crossing_minimization_greedy_switch_activation_threshold : @graph.IProperty[Int]
+pub let layered_options_crossing_minimization_greedy_switch_activation_threshold : @graph.IProperty[Int32]
 
 pub let layered_options_crossing_minimization_greedy_switch_hierarchical_type : @graph.IProperty[String]
 
@@ -105,9 +105,9 @@ pub let layered_options_crossing_minimization_in_layer_pred_of : @graph.IPropert
 
 pub let layered_options_crossing_minimization_in_layer_succ_of : @graph.IProperty[String]
 
-pub let layered_options_crossing_minimization_position_choice_constraint : @graph.IProperty[Int]
+pub let layered_options_crossing_minimization_position_choice_constraint : @graph.IProperty[Int32]
 
-pub let layered_options_crossing_minimization_position_id : @graph.IProperty[Int]
+pub let layered_options_crossing_minimization_position_id : @graph.IProperty[Int32]
 
 pub let layered_options_crossing_minimization_semi_interactive : @graph.IProperty[Bool]
 
@@ -135,21 +135,21 @@ pub let layered_options_generate_position_and_layer_ids : @graph.IProperty[Bool]
 
 pub let layered_options_hierarchy_handling : @graph.IProperty[String]
 
-pub let layered_options_high_degree_nodes_threshold : @graph.IProperty[Int]
+pub let layered_options_high_degree_nodes_threshold : @graph.IProperty[Int32]
 
 pub let layered_options_high_degree_nodes_treatment : @graph.IProperty[Bool]
 
-pub let layered_options_high_degree_nodes_tree_height : @graph.IProperty[Int]
+pub let layered_options_high_degree_nodes_tree_height : @graph.IProperty[Int32]
 
 pub let layered_options_hypernode : @graph.IProperty[Bool]
 
-pub fn layered_options_int_list_contains(Array[Int], Int) -> Bool
+pub fn layered_options_int_list_contains(Array[Int32], Int32) -> Bool
 
 pub let layered_options_interactive_reference_point : @graph.IProperty[String]
 
 pub let layered_options_junction_points : @graph.IProperty[@core.KVectorChain]
 
-pub let layered_options_layer_unzipping_layer_split : @graph.IProperty[Int]
+pub let layered_options_layer_unzipping_layer_split : @graph.IProperty[Int32]
 
 pub let layered_options_layer_unzipping_minimize_edge_length : @graph.IProperty[Bool]
 
@@ -157,15 +157,15 @@ pub let layered_options_layer_unzipping_reset_on_long_edges : @graph.IProperty[B
 
 pub let layered_options_layer_unzipping_strategy : @graph.IProperty[String]
 
-pub let layered_options_layering_coffman_graham_layer_bound : @graph.IProperty[Int]
+pub let layered_options_layering_coffman_graham_layer_bound : @graph.IProperty[Int32]
 
-pub let layered_options_layering_layer_choice_constraint : @graph.IProperty[Int]
+pub let layered_options_layering_layer_choice_constraint : @graph.IProperty[Int32]
 
 pub let layered_options_layering_layer_constraint : @graph.IProperty[String]
 
-pub let layered_options_layering_layer_id : @graph.IProperty[Int]
+pub let layered_options_layering_layer_id : @graph.IProperty[Int32]
 
-pub let layered_options_layering_node_promotion_max_iterations : @graph.IProperty[Int]
+pub let layered_options_layering_node_promotion_max_iterations : @graph.IProperty[Int32]
 
 pub let layered_options_layering_node_promotion_strategy : @graph.IProperty[String]
 
@@ -187,27 +187,27 @@ pub let layered_options_node_placement_network_simplex_node_flexibility_default 
 
 pub let layered_options_node_placement_strategy : @graph.IProperty[String]
 
-pub fn layered_options_parse_int_list(String) -> Array[Int]
+pub fn layered_options_parse_int_list(String) -> Array[Int32]
 
 pub let layered_options_partitioning_activate : @graph.IProperty[Bool]
 
-pub let layered_options_partitioning_partition : @graph.IProperty[Int]
+pub let layered_options_partitioning_partition : @graph.IProperty[Int32]
 
 pub let layered_options_port_anchor : @graph.IProperty[@core.KVector]
 
 pub let layered_options_port_border_offset : @graph.IProperty[Double]
 
-pub let layered_options_port_index : @graph.IProperty[Int]
+pub let layered_options_port_index : @graph.IProperty[Int32]
 
 pub let layered_options_port_sorting_strategy : @graph.IProperty[String]
 
 pub let layered_options_position : @graph.IProperty[@core.KVector]
 
-pub let layered_options_priority_direction : @graph.IProperty[Int]
+pub let layered_options_priority_direction : @graph.IProperty[Int32]
 
-pub let layered_options_priority_shortness : @graph.IProperty[Int]
+pub let layered_options_priority_shortness : @graph.IProperty[Int32]
 
-pub let layered_options_priority_straightness : @graph.IProperty[Int]
+pub let layered_options_priority_straightness : @graph.IProperty[Int32]
 
 pub let layered_options_spacing_base_value : @graph.IProperty[Double]
 
@@ -223,7 +223,7 @@ pub let layered_options_spacing_node_node_between_layers : @graph.IProperty[Doub
 
 pub let layered_options_spacing_ports_surrounding : @graph.IProperty[@core.Spacing]
 
-pub let layered_options_thoroughness : @graph.IProperty[Int]
+pub let layered_options_thoroughness : @graph.IProperty[Int32]
 
 pub let layered_options_unnecessary_bendpoints : @graph.IProperty[Bool]
 
@@ -233,7 +233,7 @@ pub let layered_options_wrapping_correction_factor : @graph.IProperty[Double]
 
 pub let layered_options_wrapping_cutting_cuts : @graph.IProperty[String]
 
-pub let layered_options_wrapping_cutting_msd_freedom : @graph.IProperty[Int]
+pub let layered_options_wrapping_cutting_msd_freedom : @graph.IProperty[Int32]
 
 pub let layered_options_wrapping_cutting_strategy : @graph.IProperty[String]
 
@@ -253,7 +253,7 @@ pub fn layering_strategy_to_string(LayeringStrategy) -> String
 
 pub fn layering_strategy_values() -> Array[String]
 
-pub fn long_edge_ordering_strategy_return_values() -> Array[Int]
+pub fn long_edge_ordering_strategy_return_values() -> Array[Int32]
 
 pub fn node_flexibility_flags() -> Array[Bool]
 
@@ -429,7 +429,7 @@ pub(all) enum LongEdgeOrderingStrategy {
   DummyNodeUnder
   Equal
 }
-pub fn LongEdgeOrderingStrategy::return_value(Self) -> Int
+pub fn LongEdgeOrderingStrategy::return_value(Self) -> Int32
 
 pub(all) enum NodeFlexibility {
   NfNone

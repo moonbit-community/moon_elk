@@ -1,9 +1,9 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/engine/layered"
+package "moonbit-community/elk/engine/layered"
 
 import {
-  "bobzhang/elk/core",
-  "bobzhang/elk/engine",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/engine",
 }
 
 // Values

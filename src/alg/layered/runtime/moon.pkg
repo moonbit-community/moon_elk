@@ -2,14 +2,14 @@ import {
   "moonbitlang/core/cmp",
   "moonbitlang/core/int",
   "moonbitlang/core/string",
-  "bobzhang/elk/graph",
-  "bobzhang/elk/core",
-  "bobzhang/elk/alg/common/nodespacing",
-  "bobzhang/elk/alg/layered/options",
-  "bobzhang/elk/alg/layered/runtime/state",
+  "moonbit-community/elk/graph",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/alg/common/nodespacing",
+  "moonbit-community/elk/alg/layered/options",
+  "moonbit-community/elk/alg/layered/runtime/state",
 }
 
 import {
-  "bobzhang/elk/alg/test",
-  "bobzhang/elk/alg/layered/engine",
+  "moonbit-community/elk/alg/test",
+  "moonbit-community/elk/alg/layered/engine",
 } for "test"

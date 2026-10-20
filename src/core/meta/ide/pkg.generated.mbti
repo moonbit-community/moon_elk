@@ -1,8 +1,8 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/core/meta/ide"
+package "moonbit-community/elk/core/meta/ide"
 
 import {
-  "bobzhang/elk/core/meta",
+  "moonbit-community/elk/core/meta",
 }
 
 // Values

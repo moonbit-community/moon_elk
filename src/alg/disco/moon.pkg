@@ -1,10 +1,10 @@
 import {
   "moonbitlang/core/double",
   "moonbitlang/core/math",
-  "bobzhang/elk/jsmath",
+  "moonbit-community/elk/jsmath",
   "moonbitlang/core/string",
-  "bobzhang/elk/core",
-  "bobzhang/elk/graph",
-  "bobzhang/elk/alg/common",
-  "bobzhang/elk/alg/common/polyomino",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/graph",
+  "moonbit-community/elk/alg/common",
+  "moonbit-community/elk/alg/common/polyomino",
 }

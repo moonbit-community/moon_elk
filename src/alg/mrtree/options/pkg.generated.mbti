@@ -1,8 +1,8 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/alg/mrtree/options"
+package "moonbit-community/elk/alg/mrtree/options"
 
 import {
-  "bobzhang/elk/graph",
+  "moonbit-community/elk/graph",
 }
 
 // Values
@@ -100,7 +100,7 @@ pub let mrtree_spacing_edge_node : @graph.IProperty[Double]
 
 pub let mrtree_spacing_node_node : @graph.IProperty[Double]
 
-pub let mrtree_tree_level : @graph.IProperty[Int]
+pub let mrtree_tree_level : @graph.IProperty[Int32]
 
 pub fn mrtree_treeifying_order_from_string(String) -> MrtreeTreeifyingOrder
 

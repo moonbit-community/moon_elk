@@ -1,4 +1,4 @@
 import {
   "moonbitlang/core/double",
-  "bobzhang/elk/core",
+  "moonbit-community/elk/core",
 }

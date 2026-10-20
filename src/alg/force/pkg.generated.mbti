@@ -1,10 +1,10 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/alg/force"
+package "moonbit-community/elk/alg/force"
 
 import {
-  "bobzhang/elk/alg/force/options",
-  "bobzhang/elk/core",
-  "bobzhang/elk/graph",
+  "moonbit-community/elk/alg/force/options",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/graph",
   "moonbitlang/core/debug",
 }
 
@@ -19,7 +19,7 @@ pub fn abstract_force_model_initialize(AbstractForceModelState, FGraph) -> Unit
 
 pub fn abstract_force_model_iteration_done(AbstractForceModelState) -> Unit raise
 
-pub fn abstract_force_model_layout(AbstractForceModelState, FGraph, @core.IElkProgressMonitor, () -> Unit raise, (Int) -> Bool raise, (FParticle, FParticle) -> @core.KVector? raise, () -> Unit raise) -> Unit raise
+pub fn abstract_force_model_layout(AbstractForceModelState, FGraph, @core.IElkProgressMonitor, () -> Unit raise, (Int32) -> Bool raise, (FParticle, FParticle) -> @core.KVector? raise, () -> Unit raise) -> Unit raise
 
 pub fn abstract_force_model_random(AbstractForceModelState) -> @core.JavaRandom
 
@@ -47,7 +47,7 @@ pub fn fedge_get_bool_property(FEdge, @graph.IProperty[Bool]) -> Bool
 
 pub fn fedge_get_double_property(FEdge, @graph.IProperty[Double]) -> Double
 
-pub fn fedge_get_int_property(FEdge, @graph.IProperty[Int]) -> Int
+pub fn fedge_get_int_property(FEdge, @graph.IProperty[Int32]) -> Int32
 
 pub fn fedge_has_double_property(FEdge, @graph.IProperty[Double]) -> Bool
 
@@ -59,7 +59,7 @@ pub fn fedge_set_bool_property(FEdge, @graph.IProperty[Bool], Bool) -> Unit
 
 pub fn fedge_set_double_property(FEdge, @graph.IProperty[Double], Double) -> Unit
 
-pub fn fedge_set_int_property(FEdge, @graph.IProperty[Int], Int) -> Unit
+pub fn fedge_set_int_property(FEdge, @graph.IProperty[Int32], Int32) -> Unit
 
 pub fn fedge_set_origin(FEdge, @graph.ElkEdge) -> Unit
 
@@ -109,7 +109,7 @@ pub fn fnode_add_child(FNode, FNode) -> Unit
 
 pub fn fnode_children(FNode) -> Array[FNode]
 
-pub fn fnode_depth(FNode) -> Int
+pub fn fnode_depth(FNode) -> Int32
 
 pub fn fnode_displacement(FNode) -> @core.KVector
 
@@ -117,11 +117,11 @@ pub fn fnode_get_bool_property(FNode, @graph.IProperty[Bool]) -> Bool
 
 pub fn fnode_get_double_property(FNode, @graph.IProperty[Double]) -> Double
 
-pub fn fnode_get_int_property(FNode, @graph.IProperty[Int]) -> Int
+pub fn fnode_get_int_property(FNode, @graph.IProperty[Int32]) -> Int32
 
 pub fn fnode_has_bool_property(FNode, @graph.IProperty[Bool]) -> Bool
 
-pub fn fnode_id(FNode) -> Int
+pub fn fnode_id(FNode) -> Int32
 
 pub fn fnode_is_compound(FNode) -> Bool
 
@@ -139,9 +139,9 @@ pub fn fnode_set_bool_property(FNode, @graph.IProperty[Bool], Bool) -> Unit
 
 pub fn fnode_set_double_property(FNode, @graph.IProperty[Double], Double) -> Unit
 
-pub fn fnode_set_id(FNode, Int) -> Unit
+pub fn fnode_set_id(FNode, Int32) -> Unit
 
-pub fn fnode_set_int_property(FNode, @graph.IProperty[Int], Int) -> Unit
+pub fn fnode_set_int_property(FNode, @graph.IProperty[Int32], Int32) -> Unit
 
 pub fn fnode_set_origin(FNode, @graph.ElkNode) -> Unit
 
@@ -171,7 +171,7 @@ pub fn force_min(Double, Double) -> Double
 
 pub fn fparticle_displacement(FParticle) -> @core.KVector
 
-pub fn fparticle_get_int_property(FParticle, @graph.IProperty[Int]) -> Int
+pub fn fparticle_get_int_property(FParticle, @graph.IProperty[Int32]) -> Int32
 
 pub fn fparticle_position(FParticle) -> @core.KVector
 
@@ -259,14 +259,14 @@ pub fn ComponentsProcessor::split(Self, FGraph) -> Array[FGraph] raise
 
 pub struct EadesModel {
   state : AbstractForceModelState
-  mut max_iterations : Int
+  mut max_iterations : Int32
   mut spring_length : Double
   mut repulsion_factor : Double
 }
 pub fn EadesModel::calc_displacement(Self, FParticle, FParticle) -> @core.KVector raise
 pub fn EadesModel::initialize(Self, FGraph) -> Unit
 pub fn EadesModel::layout(Self, FGraph, @core.IElkProgressMonitor) -> Unit raise
-pub fn EadesModel::more_iterations(Self, Int) -> Bool
+pub fn EadesModel::more_iterations(Self, Int32) -> Bool
 
 pub struct ElkGraphImporter {
   _dummy : Unit
@@ -294,14 +294,14 @@ pub struct FGraph {
   labels : Array[FLabel]
   bendpoints : Array[FBendpoint]
   bool_properties : Map[@graph.PropertyId, Bool]
-  int_properties : Map[@graph.PropertyId, Int]
+  int_properties : Map[@graph.PropertyId, Int32]
   double_properties : Map[@graph.PropertyId, Double]
   model_properties : Map[@graph.PropertyId, @options.ForceModelStrategy]
   padding_properties : Map[@graph.PropertyId, @core.Spacing]
   node_properties : Map[@graph.PropertyId, @graph.ElkNode]
   random_properties : Map[@graph.PropertyId, @core.JavaRandom]
   vector_properties : Map[@graph.PropertyId, @core.KVector]
-  adjacency : Array[Array[Int]]
+  adjacency : Array[Array[Int32]]
 }
 pub fn FGraph::add_bendpoint(Self, FBendpoint) -> Unit
 pub fn FGraph::add_edge(Self, FEdge) -> Unit
@@ -309,10 +309,10 @@ pub fn FGraph::add_label(Self, FLabel) -> Unit
 pub fn FGraph::add_node(Self, FNode) -> Unit
 pub fn FGraph::calc_adjacency(Self) -> Unit
 pub fn FGraph::get_bendpoints(Self) -> Array[FBendpoint]
-pub fn FGraph::get_connection(Self, FParticle, FParticle) -> Int
+pub fn FGraph::get_connection(Self, FParticle, FParticle) -> Int32
 pub fn FGraph::get_double_property(Self, @graph.IProperty[Double]) -> Double
 pub fn FGraph::get_edges(Self) -> Array[FEdge]
-pub fn FGraph::get_int_property(Self, @graph.IProperty[Int]) -> Int
+pub fn FGraph::get_int_property(Self, @graph.IProperty[Int32]) -> Int32
 pub fn FGraph::get_internal_node_property(Self, @graph.IProperty[Unit]) -> @graph.ElkNode?
 pub fn FGraph::get_internal_random_property(Self, @graph.IProperty[Unit]) -> @core.JavaRandom?
 pub fn FGraph::get_internal_vector_property(Self, @graph.IProperty[Unit]) -> @core.KVector?
@@ -323,7 +323,7 @@ pub fn FGraph::get_padding_property(Self, @graph.IProperty[@core.Spacing]) -> @c
 pub fn FGraph::get_particles(Self) -> Array[FParticle]
 pub fn FGraph::get_property(Self, @graph.IProperty[Bool]) -> Bool
 pub fn FGraph::set_double_property(Self, @graph.IProperty[Double], Double) -> Unit
-pub fn FGraph::set_int_property(Self, @graph.IProperty[Int], Int) -> Unit
+pub fn FGraph::set_int_property(Self, @graph.IProperty[Int32], Int32) -> Unit
 pub fn FGraph::set_internal_node_property(Self, @graph.IProperty[Unit], @graph.ElkNode) -> Unit
 pub fn FGraph::set_internal_random_property(Self, @graph.IProperty[Unit], @core.JavaRandom) -> Unit
 pub fn FGraph::set_internal_vector_property(Self, @graph.IProperty[Unit], @core.KVector) -> Unit
@@ -372,7 +372,7 @@ pub fn FruchtermanReingoldModel::calc_displacement(Self, FParticle, FParticle) -
 pub fn FruchtermanReingoldModel::initialize(Self, FGraph) -> Unit
 pub fn FruchtermanReingoldModel::iteration_done(Self) -> Unit
 pub fn FruchtermanReingoldModel::layout(Self, FGraph, @core.IElkProgressMonitor) -> Unit raise
-pub fn FruchtermanReingoldModel::more_iterations(Self, Int) -> Bool
+pub fn FruchtermanReingoldModel::more_iterations(Self, Int32) -> Bool
 
 pub struct IGraphImporter[T] {
   import_graph_fn : (T) -> FGraph raise
@@ -394,9 +394,9 @@ pub struct StressMajorization {
   mut desired_edge_length : Double
   mut dimension : @options.StressDimension
   mut epsilon : Double
-  mut iteration_limit : Int
-  connected_edges : Map[Int, Array[FEdge]]
-  node_by_id : Map[Int, FNode]
+  mut iteration_limit : Int32
+  connected_edges : Map[Int32, Array[FEdge]]
+  node_by_id : Map[Int32, FNode]
 }
 pub fn StressMajorization::execute(Self) -> Unit
 pub fn StressMajorization::initialize(Self, FGraph) -> Unit raise

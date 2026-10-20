@@ -1,10 +1,10 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/alg/layered/runtime/state"
+package "moonbit-community/elk/alg/layered/runtime/state"
 
 // Values
 pub fn new_greedy_switch_mock_random() -> GreedySwitchMockRandom
 
-pub fn new_greedy_switch_mock_random_seeded(Int) -> GreedySwitchMockRandom
+pub fn new_greedy_switch_mock_random_seeded(Int32) -> GreedySwitchMockRandom
 
 pub fn new_greedy_switch_mock_random_seeded_int64(Int64) -> GreedySwitchMockRandom
 
@@ -21,31 +21,31 @@ pub struct GreedySwitchMockRandom {
   mut next_boolean_override : Bool?
 }
 pub fn GreedySwitchMockRandom::clear_next_boolean_override(Self) -> Unit
-pub fn GreedySwitchMockRandom::int(Self, Int) -> Int raise
+pub fn GreedySwitchMockRandom::int(Self, Int32) -> Int32 raise
 pub fn GreedySwitchMockRandom::next_boolean(Self) -> Bool
 pub fn GreedySwitchMockRandom::next_double(Self) -> Double
 pub fn GreedySwitchMockRandom::next_float(Self) -> Float
-pub fn GreedySwitchMockRandom::next_int(Self, Int) -> Int raise
+pub fn GreedySwitchMockRandom::next_int(Self, Int32) -> Int32 raise
 pub fn GreedySwitchMockRandom::next_long(Self) -> Int64
 pub fn GreedySwitchMockRandom::set_change_by(Self, Double) -> Unit
 pub fn GreedySwitchMockRandom::set_current(Self, Float) -> Unit
 pub fn GreedySwitchMockRandom::set_next_boolean(Self, Bool) -> Unit
 pub fn GreedySwitchMockRandom::set_seed(Self, Int64) -> Unit
-pub fn GreedySwitchMockRandom::set_seed_int(Self, Int) -> Unit
+pub fn GreedySwitchMockRandom::set_seed_int(Self, Int32) -> Unit
 
 pub struct LayeredLayoutState {
   mut random : GreedySwitchMockRandom?
-  graph_randoms : Map[Int, GreedySwitchMockRandom]
+  graph_randoms : Map[Int32, GreedySwitchMockRandom]
   mut first_random_boolean : Bool?
 }
 pub fn LayeredLayoutState::clear(Self) -> Unit
 pub fn LayeredLayoutState::first_random_boolean(Self) -> Bool?
-pub fn LayeredLayoutState::graph_random(Self, Int, Int) -> GreedySwitchMockRandom
-pub fn LayeredLayoutState::initialize_graph_random(Self, Int, Int) -> Unit
-pub fn LayeredLayoutState::initialize_random(Self, Int) -> Unit
+pub fn LayeredLayoutState::graph_random(Self, Int32, Int32) -> GreedySwitchMockRandom
+pub fn LayeredLayoutState::initialize_graph_random(Self, Int32, Int32) -> Unit
+pub fn LayeredLayoutState::initialize_random(Self, Int32) -> Unit
 pub fn LayeredLayoutState::install_random(Self, GreedySwitchMockRandom, Bool?) -> Unit
-pub fn LayeredLayoutState::random(Self, Int) -> GreedySwitchMockRandom
-pub fn LayeredLayoutState::share_graph_random(Self, Int, Int) -> Unit
+pub fn LayeredLayoutState::random(Self, Int32) -> GreedySwitchMockRandom
+pub fn LayeredLayoutState::share_graph_random(Self, Int32, Int32) -> Unit
 
 // Type aliases
 

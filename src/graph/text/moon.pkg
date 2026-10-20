@@ -1,5 +1,5 @@
 import {
   "moonbitlang/core/string",
-  "bobzhang/elk/core",
-  "bobzhang/elk/graph",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/graph",
 }

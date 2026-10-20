@@ -1,6 +1,6 @@
 import {
   "moonbitlang/core/math",
   "moonbitlang/core/random",
-  "bobzhang/elk/graph",
-  "bobzhang/elk/core",
+  "moonbit-community/elk/graph",
+  "moonbit-community/elk/core",
 }

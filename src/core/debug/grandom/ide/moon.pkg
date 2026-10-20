@@ -1,8 +1,8 @@
 import {
   "moonbitlang/core/string",
-  "bobzhang/elk/core/debug/grandom",
+  "moonbit-community/elk/core/debug/grandom",
 }
 
 import {
-  "bobzhang/elk/core/debug/grandom/ui",
+  "moonbit-community/elk/core/debug/grandom/ui",
 } for "test"

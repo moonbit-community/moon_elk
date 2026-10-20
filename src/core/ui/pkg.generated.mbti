@@ -1,10 +1,10 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/core/ui"
+package "moonbit-community/elk/core/ui"
 
 import {
-  "bobzhang/elk/core",
-  "bobzhang/elk/core/service",
-  "bobzhang/elk/graph",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/core/service",
+  "moonbit-community/elk/graph",
 }
 
 // Values
@@ -18,11 +18,11 @@ pub fn core_ui_elk_ui_util_get_option_data(@core.OptionMetadata, @core.LayoutAlg
 
 pub fn core_ui_elk_ui_util_get_option_data_from_providers(@core.OptionMetadata, Array[@core.LayoutAlgorithmData], String) -> @core.LayoutOptionData?
 
-pub fn core_ui_elk_ui_util_model_change_labels_for_domain(Int) -> Array[String]
+pub fn core_ui_elk_ui_util_model_change_labels_for_domain(Int32) -> Array[String]
 
 pub fn core_ui_elk_ui_util_reset_for_test() -> Unit
 
-pub fn core_ui_elk_ui_util_run_model_change(() -> Unit, editing_domain? : Int?, label? : String) -> Unit
+pub fn core_ui_elk_ui_util_run_model_change(() -> Unit, editing_domain? : Int32?, label? : String) -> Unit
 
 pub fn core_ui_font_dispose(CoreUiFont) -> Unit
 
@@ -58,7 +58,7 @@ pub let core_ui_messages_bundle_name : String
 
 pub fn core_ui_messages_get_string(String) -> String
 
-pub let core_ui_min_font_height : Int
+pub let core_ui_min_font_height : Int32
 
 pub let core_ui_param_layout_scope : String
 
@@ -72,7 +72,7 @@ pub fn core_ui_preference_initializer_initialize_default_preferences() -> Unit
 
 pub let core_ui_property_sheet_entry_filter_expert : String
 
-pub let core_ui_swt_normal : Int
+pub let core_ui_swt_normal : Int32
 
 pub let core_ui_val_diagram : String
 
@@ -80,7 +80,7 @@ pub let core_ui_val_selection : String
 
 pub fn core_ui_value_as_bool(CoreUiValue) -> Bool?
 
-pub fn core_ui_value_as_int(CoreUiValue) -> Int?
+pub fn core_ui_value_as_int(CoreUiValue) -> Int32?
 
 pub fn core_ui_value_as_string(CoreUiValue) -> String?
 
@@ -122,21 +122,21 @@ pub fn new_algorithm_selection_dialog(@core.OptionMetadata, String) -> Algorithm
 
 pub fn new_core_ui_algorithm_selection_listener((CoreUiLayoutMetaData) -> Unit) -> CoreUiAlgorithmSelectionListener
 
-pub fn new_core_ui_color(CoreUiDisplay, Int, Int, Int) -> CoreUiColor
+pub fn new_core_ui_color(CoreUiDisplay, Int32, Int32, Int32) -> CoreUiColor
 
 pub fn new_core_ui_display() -> CoreUiDisplay
 
-pub fn new_core_ui_execution_event(parameters? : Map[String, String], selection? : CoreUiLayoutSelection, active_editor? : Int?) -> CoreUiExecutionEvent
+pub fn new_core_ui_execution_event(parameters? : Map[String, String], selection? : CoreUiLayoutSelection, active_editor? : Int32?) -> CoreUiExecutionEvent
 
-pub fn new_core_ui_font(CoreUiDisplay, String, Int, Int) -> CoreUiFont
+pub fn new_core_ui_font(CoreUiDisplay, String, Int32, Int32) -> CoreUiFont
 
 pub fn new_core_ui_graphics() -> CoreUiGraphics
 
 pub fn new_core_ui_image_registry() -> CoreUiImageRegistry
 
-pub fn new_core_ui_paint_event(Int, Int, Int, Int, CoreUiGraphics) -> CoreUiPaintEvent
+pub fn new_core_ui_paint_event(Int32, Int32, Int32, Int32, CoreUiGraphics) -> CoreUiPaintEvent
 
-pub fn new_core_ui_paint_rectangle(Int, Int, Int, Int) -> CoreUiPaintRectangle
+pub fn new_core_ui_paint_rectangle(Int32, Int32, Int32, Int32) -> CoreUiPaintRectangle
 
 pub fn new_core_ui_preference_store() -> CoreUiPreferenceStore
 
@@ -182,17 +182,17 @@ pub fn new_validating_property_sheet_entry() -> ValidatingPropertySheetEntry
 pub(all) struct ActiveEditorSupportedTester {
   service : @service.LayoutConnectorsService
 }
-pub fn ActiveEditorSupportedTester::is_supported(Self, Int?) -> Bool
+pub fn ActiveEditorSupportedTester::is_supported(Self, Int32?) -> Bool
 
 pub(all) struct AlgorithmCellEditor {
   label_provider : LayoutOptionLabelProvider
   mut value : String
-  mut apply_count : Int
-  mut cancel_count : Int
+  mut apply_count : Int32
+  mut cancel_count : Int32
   mut next_dialog_result : String?
 }
 pub fn AlgorithmCellEditor::fire_apply_editor_value(Self) -> Unit
-pub fn AlgorithmCellEditor::get_counts_for_test(Self) -> (Int, Int)
+pub fn AlgorithmCellEditor::get_counts_for_test(Self) -> (Int32, Int32)
 pub fn AlgorithmCellEditor::get_value(Self) -> String
 pub fn AlgorithmCellEditor::on_double_click(Self) -> Unit
 pub fn AlgorithmCellEditor::open_dialog_box(Self) -> String?
@@ -247,20 +247,20 @@ pub fn AlgorithmSelectionDialog::update_filter_text(Self, String) -> Unit
 pub fn AlgorithmSelectionDialog::update_value(Self, CoreUiLayoutMetaData) -> Unit
 
 pub(all) struct CoreUiAlgorithmSelectionListener {
-  id : Int
+  id : Int32
   on_selection_fn : (CoreUiLayoutMetaData) -> Unit
 }
 
 pub(all) struct CoreUiColor {
   display : CoreUiDisplay
-  r : Int
-  g : Int
-  b : Int
+  r : Int32
+  g : Int32
+  b : Int32
   mut disposed : Bool
 }
 
 pub(all) struct CoreUiDisplay {
-  id : Int
+  id : Int32
 } derive(Eq)
 pub fn CoreUiDisplay::equal(Self, Self) -> Bool
 pub fn CoreUiDisplay::not_equal(Self, Self) -> Bool
@@ -268,25 +268,25 @@ pub fn CoreUiDisplay::not_equal(Self, Self) -> Bool
 pub(all) struct CoreUiExecutionEvent {
   parameters : Map[String, String]
   selection : CoreUiLayoutSelection
-  active_editor : Int?
+  active_editor : Int32?
 }
 pub fn CoreUiExecutionEvent::get_parameter(Self, String) -> String?
 
 pub(all) struct CoreUiFont {
   display : CoreUiDisplay
   name : String
-  size : Int
-  style : Int
+  size : Int32
+  style : Int32
   mut disposed : Bool
 }
 
 pub(all) struct CoreUiGraphics {
   operations : Array[String]
-  mut alpha : Int
+  mut alpha : Int32
   mut font : CoreUiFont?
 }
-pub fn CoreUiGraphics::font_height(Self) -> Int
-pub fn CoreUiGraphics::set_alpha(Self, Int) -> Unit
+pub fn CoreUiGraphics::font_height(Self) -> Int32
+pub fn CoreUiGraphics::set_alpha(Self, Int32) -> Unit
 pub fn CoreUiGraphics::set_font(Self, CoreUiFont?) -> Unit
 
 pub(all) struct CoreUiImageDescriptor {
@@ -300,11 +300,11 @@ pub(all) struct CoreUiImageRegistry {
 }
 pub fn CoreUiImageRegistry::get(Self, String) -> CoreUiImageDescriptor?
 pub fn CoreUiImageRegistry::put(Self, String, CoreUiImageDescriptor) -> Unit
-pub fn CoreUiImageRegistry::size(Self) -> Int
+pub fn CoreUiImageRegistry::size(Self) -> Int32
 
 pub(all) struct CoreUiLayoutInvocation {
-  editor : Int?
-  diagram_part : Int?
+  editor : Int32?
+  diagram_part : Int32?
   selection : CoreUiLayoutSelection
   animation : Bool
   progress_dialog : Bool
@@ -318,29 +318,29 @@ pub(all) enum CoreUiLayoutMetaData {
 
 pub(all) enum CoreUiLayoutSelection {
   CoreUiLayoutSelectionNone
-  CoreUiLayoutSelectionSingle(Int)
-  CoreUiLayoutSelectionMultiple(Array[Int])
+  CoreUiLayoutSelectionSingle(Int32)
+  CoreUiLayoutSelectionMultiple(Array[Int32])
 }
 
 pub(all) struct CoreUiPaintEvent {
-  x : Int
-  y : Int
-  width : Int
-  height : Int
+  x : Int32
+  y : Int32
+  width : Int32
+  height : Int32
   graphics : CoreUiGraphics
 }
 
 pub(all) struct CoreUiPaintRectangle {
-  x : Int
-  y : Int
-  width : Int
-  height : Int
+  x : Int32
+  y : Int32
+  width : Int32
+  height : Int32
   mut painted : Bool
 }
 
 pub(all) struct CoreUiPoint {
-  x : Int
-  y : Int
+  x : Int32
+  y : Int32
 }
 
 pub(all) struct CoreUiPreferenceStore {
@@ -377,7 +377,7 @@ pub(all) struct CoreUiShowLayoutViewEvent {
 
 pub(all) enum CoreUiValue {
   CoreUiStringValue(String)
-  CoreUiIntValue(Int)
+  CoreUiIntValue(Int32)
   CoreUiDoubleValue(Double)
   CoreUiBoolValue(Bool)
   CoreUiStringsValue(Array[String])
@@ -407,7 +407,7 @@ pub fn GraphRenderer::dispose(Self) -> Unit
 pub fn GraphRenderer::flush_cache(Self) -> Unit
 pub fn GraphRenderer::get_base_offset(Self) -> @core.KVector
 pub fn GraphRenderer::get_scale(Self) -> Double
-pub fn GraphRenderer::make_arrow_for_test(Self, @core.KVector, @core.KVector) -> Array[Int]?
+pub fn GraphRenderer::make_arrow_for_test(Self, @core.KVector, @core.KVector) -> Array[Int32]?
 pub fn GraphRenderer::mark_dirty(Self, CoreUiPaintRectangle?) -> Unit
 pub fn GraphRenderer::render(Self, @graph.ElkNode, CoreUiGraphics, CoreUiPaintRectangle) -> Unit
 pub fn GraphRenderer::set_base_offset(Self, @core.KVector?) -> Unit
@@ -418,26 +418,26 @@ pub(all) struct GraphRenderingCanvas {
   graph_renderer : GraphRenderer
   background_color : CoreUiColor
   display : CoreUiDisplay
-  mut redraw_count : Int
-  mut width : Int
-  mut height : Int
+  mut redraw_count : Int32
+  mut width : Int32
+  mut height : Int32
   mut mouse_interaction_enabled : Bool
   mut is_dragging : Bool
-  mut last_x : Int
-  mut last_y : Int
+  mut last_x : Int32
+  mut last_y : Int32
 }
 pub fn GraphRenderingCanvas::calculate_required_canvas_size_and_base_offset(Self, @graph.ElkNode?) -> @core.KVector
-pub fn GraphRenderingCanvas::compute_size(Self, Int, Int, _changed? : Bool) -> CoreUiPoint
+pub fn GraphRenderingCanvas::compute_size(Self, Int32, Int32, _changed? : Bool) -> CoreUiPoint
 pub fn GraphRenderingCanvas::dispose(Self) -> Unit
 pub fn GraphRenderingCanvas::get_display(Self) -> CoreUiDisplay
 pub fn GraphRenderingCanvas::get_layout_graph(Self) -> @graph.ElkNode?
-pub fn GraphRenderingCanvas::get_redraw_count(Self) -> Int
+pub fn GraphRenderingCanvas::get_redraw_count(Self) -> Int32
 pub fn GraphRenderingCanvas::get_renderer(Self) -> GraphRenderer
-pub fn GraphRenderingCanvas::get_size_for_test(Self) -> (Int, Int)
-pub fn GraphRenderingCanvas::handle_mouse_wheel(Self, Int, Int, Int) -> Unit
-pub fn GraphRenderingCanvas::mouse_down(Self, Int, Int) -> Unit
-pub fn GraphRenderingCanvas::mouse_move(Self, Int, Int) -> Unit
-pub fn GraphRenderingCanvas::mouse_up(Self, Int, Int) -> Unit
+pub fn GraphRenderingCanvas::get_size_for_test(Self) -> (Int32, Int32)
+pub fn GraphRenderingCanvas::handle_mouse_wheel(Self, Int32, Int32, Int32) -> Unit
+pub fn GraphRenderingCanvas::mouse_down(Self, Int32, Int32) -> Unit
+pub fn GraphRenderingCanvas::mouse_move(Self, Int32, Int32) -> Unit
+pub fn GraphRenderingCanvas::mouse_up(Self, Int32, Int32) -> Unit
 pub fn GraphRenderingCanvas::paint_control(Self, CoreUiPaintEvent) -> Unit
 pub fn GraphRenderingCanvas::pan(Self, @core.KVector) -> Unit
 pub fn GraphRenderingCanvas::redraw(Self) -> Unit
@@ -449,14 +449,14 @@ pub(all) struct GraphRenderingConfigurator {
   mut node_border_color : CoreUiColor?
   mut node_fill_color : CoreUiColor?
   mut node_label_font : CoreUiFont?
-  mut node_font_size : Int
+  mut node_font_size : Int32
   mut port_border_color : CoreUiColor?
   mut port_fill_color : CoreUiColor?
   mut port_label_font : CoreUiFont?
-  mut port_font_size : Int
+  mut port_font_size : Int32
   mut edge_color : CoreUiColor?
   mut edge_label_font : CoreUiFont?
-  mut edge_font_size : Int
+  mut edge_font_size : Int32
   mut label_border_color : CoreUiColor?
   mut label_fill_color : CoreUiColor?
   mut label_text_color : CoreUiColor?
@@ -574,29 +574,29 @@ pub(all) struct LayoutPropertySourceProvider {
   mut configuration_store_provider : @service.LayoutConfigurationStoreProvider?
   config_manager : @service.LayoutConfigurationManager
   layout_option_validator_provider : () -> @core.LayoutOptionValidator
-  mut workbench_part : Int?
+  mut workbench_part : Int32?
   config_stores : Array[@service.ILayoutConfigurationStore]
 }
 pub fn LayoutPropertySourceProvider::create_property_source(Self, @service.ILayoutConfigurationStore) -> LayoutPropertySource
 pub fn LayoutPropertySourceProvider::get_configuration_manager(Self) -> @service.LayoutConfigurationManager
 pub fn LayoutPropertySourceProvider::get_configuration_stores(Self) -> Array[@service.ILayoutConfigurationStore]
-pub fn LayoutPropertySourceProvider::get_property_source(Self, Int?) -> LayoutPropertySource?
-pub fn LayoutPropertySourceProvider::get_workbench_part(Self) -> Int?
+pub fn LayoutPropertySourceProvider::get_property_source(Self, Int32?) -> LayoutPropertySource?
+pub fn LayoutPropertySourceProvider::get_workbench_part(Self) -> Int32?
 pub fn LayoutPropertySourceProvider::set_configuration_store_provider(Self, @service.LayoutConfigurationStoreProvider?) -> Unit
-pub fn LayoutPropertySourceProvider::set_workbench_part(Self, Int?) -> Unit
+pub fn LayoutPropertySourceProvider::set_workbench_part(Self, Int32?) -> Unit
 
 pub(all) struct LayoutViewPart {
   mut current_prop_source_provider : LayoutPropertySourceProvider?
   mut categories_checked : Bool
   mut advanced_checked : Bool
-  mut refresh_count : Int
+  mut refresh_count : Int32
   mut selection_entries : Array[ValidatingPropertySheetEntry]
   mut focused : Bool
 }
 pub fn LayoutViewPart::create_part_control(Self) -> Unit
 pub fn LayoutViewPart::dispose(Self) -> Unit
 pub fn LayoutViewPart::get_property_source_provider(Self) -> LayoutPropertySourceProvider?
-pub fn LayoutViewPart::get_refresh_count(Self) -> Int
+pub fn LayoutViewPart::get_refresh_count(Self) -> Int32
 pub fn LayoutViewPart::get_selection(Self) -> Array[ValidatingPropertySheetEntry]
 pub fn LayoutViewPart::get_toolbar_state(Self) -> (Bool, Bool)
 pub fn LayoutViewPart::is_focused(Self) -> Bool
@@ -612,10 +612,10 @@ pub(all) struct MultipleOptionsCellEditor {
   decorated_item_values : Bool
   mut value : Array[String]
   mut next_dialog_result : Array[String]?
-  mut apply_count : Int
-  mut cancel_count : Int
+  mut apply_count : Int32
+  mut cancel_count : Int32
 }
-pub fn MultipleOptionsCellEditor::get_counts_for_test(Self) -> (Int, Int)
+pub fn MultipleOptionsCellEditor::get_counts_for_test(Self) -> (Int32, Int32)
 pub fn MultipleOptionsCellEditor::get_value(Self) -> Array[String]
 pub fn MultipleOptionsCellEditor::on_double_click(Self) -> Unit
 pub fn MultipleOptionsCellEditor::open_dialog_box(Self) -> Array[String]?

@@ -1,9 +1,9 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/alg/common"
+package "moonbit-community/elk/alg/common"
 
 import {
-  "bobzhang/elk/core",
-  "bobzhang/elk/graph",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/graph",
   "moonbitlang/core/debug",
   "moonbitlang/core/set",
 }
@@ -156,7 +156,7 @@ pub struct SvgImage {
   groups : Map[String, String]
   mut group_order : Array[String]
   file_name : String?
-  mut index : Int
+  mut index : Int32
   mut debug : Bool
   max_area : Double
   mut last_output : String
@@ -183,8 +183,8 @@ pub struct TEdge {
 }
 pub fn TEdge::equal(Self, Self) -> Bool
 pub fn TEdge::equals(Self, Self) -> Bool
-pub fn TEdge::hash(Self) -> Int
-pub fn TEdge::hash_code(Self) -> Int
+pub fn TEdge::hash(Self) -> Int32
+pub fn TEdge::hash_code(Self) -> Int32
 pub fn TEdge::hash_combine(Self, Hasher) -> Unit
 pub fn TEdge::not_equal(Self, Self) -> Bool
 pub impl Eq for TEdge
@@ -203,8 +203,8 @@ pub fn TTriangle::contains_vertex(Self, @core.KVector) -> Bool
 pub fn TTriangle::equal(Self, Self) -> Bool
 pub fn TTriangle::equals(Self, Self) -> Bool
 pub fn TTriangle::get_circumcenter(Self) -> @core.KVector
-pub fn TTriangle::hash(Self) -> Int
-pub fn TTriangle::hash_code(Self) -> Int
+pub fn TTriangle::hash(Self) -> Int32
+pub fn TTriangle::hash_code(Self) -> Int32
 pub fn TTriangle::hash_combine(Self, Hasher) -> Unit
 pub fn TTriangle::in_circumcircle(Self, @core.KVector) -> Bool
 pub fn TTriangle::not_equal(Self, Self) -> Bool

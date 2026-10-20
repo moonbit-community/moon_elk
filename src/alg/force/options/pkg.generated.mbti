@@ -1,9 +1,9 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/alg/force/options"
+package "moonbit-community/elk/alg/force/options"
 
 import {
-  "bobzhang/elk/core",
-  "bobzhang/elk/graph",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/graph",
 }
 
 // Values
@@ -13,7 +13,7 @@ pub let force_edge_labels_inline : @graph.IProperty[Bool]
 
 pub let force_interactive : @graph.IProperty[Bool]
 
-pub let force_iterations : @graph.IProperty[Int]
+pub let force_iterations : @graph.IProperty[Int32]
 
 pub let force_model : @graph.IProperty[ForceModelStrategy]
 
@@ -21,13 +21,13 @@ pub let force_omit_node_micro_layout : @graph.IProperty[Bool]
 
 pub let force_padding : @graph.IProperty[@core.Spacing]
 
-pub let force_priority : @graph.IProperty[Int]
+pub let force_priority : @graph.IProperty[Int32]
 
-pub let force_random_seed : @graph.IProperty[Int]
+pub let force_random_seed : @graph.IProperty[Int32]
 
 pub let force_repulsion : @graph.IProperty[Double]
 
-pub let force_repulsive_power : @graph.IProperty[Int]
+pub let force_repulsive_power : @graph.IProperty[Int32]
 
 pub let force_separate_connected_components : @graph.IProperty[Bool]
 
@@ -41,7 +41,7 @@ pub fn new_force_bool_option(String, Bool) -> @graph.IProperty[Bool]
 
 pub fn new_force_double_option(String, Double) -> @graph.IProperty[Double]
 
-pub fn new_force_int_option(String, Int) -> @graph.IProperty[Int]
+pub fn new_force_int_option(String, Int32) -> @graph.IProperty[Int32]
 
 pub fn new_force_model_option(String, ForceModelStrategy) -> @graph.IProperty[ForceModelStrategy]
 
@@ -49,9 +49,9 @@ pub fn new_force_padding_option(String, @core.Spacing) -> @graph.IProperty[@core
 
 pub let stress_desired_edge_length : @graph.IProperty[Double]
 
-pub let stress_dimension : @graph.IProperty[Int]
+pub let stress_dimension : @graph.IProperty[Int32]
 
-pub fn stress_dimension_from_int(Int) -> StressDimension
+pub fn stress_dimension_from_int(Int32) -> StressDimension
 
 pub let stress_epsilon : @graph.IProperty[Double]
 
@@ -59,7 +59,7 @@ pub let stress_fixed : @graph.IProperty[Bool]
 
 pub let stress_interactive : @graph.IProperty[Bool]
 
-pub let stress_iteration_limit : @graph.IProperty[Int]
+pub let stress_iteration_limit : @graph.IProperty[Int32]
 
 pub let stress_omit_node_micro_layout : @graph.IProperty[Bool]
 
@@ -82,7 +82,7 @@ pub type ForceBoolOption = @graph.IProperty[Bool]
 
 pub type ForceDoubleOption = @graph.IProperty[Double]
 
-pub type ForceIntOption = @graph.IProperty[Int]
+pub type ForceIntOption = @graph.IProperty[Int32]
 
 pub type ForceModelOption = @graph.IProperty[ForceModelStrategy]
 

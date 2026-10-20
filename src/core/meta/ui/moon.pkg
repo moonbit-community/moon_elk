@@ -1,7 +1,7 @@
 import {
-  "bobzhang/elk/core/meta",
+  "moonbit-community/elk/core/meta",
 }
 
 import {
-  "bobzhang/elk/core/meta/ide",
+  "moonbit-community/elk/core/meta/ide",
 } for "test"

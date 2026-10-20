@@ -1,50 +1,50 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/alg/graphviz/dot"
+package "moonbit-community/elk/alg/graphviz/dot"
 
 import {
   "moonbitlang/core/debug",
 }
 
 // Values
-pub let alg_graphviz_dot_dot_attribute_classifier_id : Int
+pub let alg_graphviz_dot_dot_attribute_classifier_id : Int32
 
-pub let alg_graphviz_dot_dot_attribute_feature_count : Int
+pub let alg_graphviz_dot_dot_attribute_feature_count : Int32
 
-pub let alg_graphviz_dot_dot_attribute_name_feature_id : Int
+pub let alg_graphviz_dot_dot_attribute_name_feature_id : Int32
 
-pub let alg_graphviz_dot_dot_attribute_statement_attributes_feature_id : Int
+pub let alg_graphviz_dot_dot_attribute_statement_attributes_feature_id : Int32
 
-pub let alg_graphviz_dot_dot_attribute_statement_classifier_id : Int
+pub let alg_graphviz_dot_dot_attribute_statement_classifier_id : Int32
 
-pub let alg_graphviz_dot_dot_attribute_statement_feature_count : Int
+pub let alg_graphviz_dot_dot_attribute_statement_feature_count : Int32
 
-pub let alg_graphviz_dot_dot_attribute_statement_type_feature_id : Int
+pub let alg_graphviz_dot_dot_attribute_statement_type_feature_id : Int32
 
-pub let alg_graphviz_dot_dot_attribute_type_classifier_id : Int
+pub let alg_graphviz_dot_dot_attribute_type_classifier_id : Int32
 
-pub let alg_graphviz_dot_dot_attribute_value_feature_id : Int
+pub let alg_graphviz_dot_dot_attribute_value_feature_id : Int32
 
-pub let alg_graphviz_dot_dot_edge_operator_classifier_id : Int
+pub let alg_graphviz_dot_dot_edge_operator_classifier_id : Int32
 
-pub let alg_graphviz_dot_dot_edge_statement_attributes_feature_id : Int
+pub let alg_graphviz_dot_dot_edge_statement_attributes_feature_id : Int32
 
-pub let alg_graphviz_dot_dot_edge_statement_classifier_id : Int
+pub let alg_graphviz_dot_dot_edge_statement_classifier_id : Int32
 
-pub let alg_graphviz_dot_dot_edge_statement_edge_targets_feature_id : Int
+pub let alg_graphviz_dot_dot_edge_statement_edge_targets_feature_id : Int32
 
-pub let alg_graphviz_dot_dot_edge_statement_feature_count : Int
+pub let alg_graphviz_dot_dot_edge_statement_feature_count : Int32
 
-pub let alg_graphviz_dot_dot_edge_statement_source_node_feature_id : Int
+pub let alg_graphviz_dot_dot_edge_statement_source_node_feature_id : Int32
 
-pub let alg_graphviz_dot_dot_edge_target_classifier_id : Int
+pub let alg_graphviz_dot_dot_edge_target_classifier_id : Int32
 
-pub let alg_graphviz_dot_dot_edge_target_feature_count : Int
+pub let alg_graphviz_dot_dot_edge_target_feature_count : Int32
 
-pub let alg_graphviz_dot_dot_edge_target_operator_feature_id : Int
+pub let alg_graphviz_dot_dot_edge_target_operator_feature_id : Int32
 
-pub let alg_graphviz_dot_dot_edge_target_target_subgraph_feature_id : Int
+pub let alg_graphviz_dot_dot_edge_target_target_subgraph_feature_id : Int32
 
-pub let alg_graphviz_dot_dot_edge_target_targetnode_feature_id : Int
+pub let alg_graphviz_dot_dot_edge_target_targetnode_feature_id : Int32
 
 pub let alg_graphviz_dot_dot_ename : String
 
@@ -52,65 +52,65 @@ pub let alg_graphviz_dot_dot_ens_prefix : String
 
 pub let alg_graphviz_dot_dot_ens_uri : String
 
-pub let alg_graphviz_dot_dot_graph_classifier_id : Int
+pub let alg_graphviz_dot_dot_graph_classifier_id : Int32
 
-pub let alg_graphviz_dot_dot_graph_feature_count : Int
+pub let alg_graphviz_dot_dot_graph_feature_count : Int32
 
-pub let alg_graphviz_dot_dot_graph_name_feature_id : Int
+pub let alg_graphviz_dot_dot_graph_name_feature_id : Int32
 
-pub let alg_graphviz_dot_dot_graph_statements_feature_id : Int
+pub let alg_graphviz_dot_dot_graph_statements_feature_id : Int32
 
-pub let alg_graphviz_dot_dot_graph_strict_feature_id : Int
+pub let alg_graphviz_dot_dot_graph_strict_feature_id : Int32
 
-pub let alg_graphviz_dot_dot_graph_type_classifier_id : Int
+pub let alg_graphviz_dot_dot_graph_type_classifier_id : Int32
 
-pub let alg_graphviz_dot_dot_graph_type_feature_id : Int
+pub let alg_graphviz_dot_dot_graph_type_feature_id : Int32
 
-pub let alg_graphviz_dot_dot_graphviz_model_classifier_id : Int
+pub let alg_graphviz_dot_dot_graphviz_model_classifier_id : Int32
 
-pub let alg_graphviz_dot_dot_graphviz_model_feature_count : Int
+pub let alg_graphviz_dot_dot_graphviz_model_feature_count : Int32
 
-pub let alg_graphviz_dot_dot_graphviz_model_graphs_feature_id : Int
+pub let alg_graphviz_dot_dot_graphviz_model_graphs_feature_id : Int32
 
-pub let alg_graphviz_dot_dot_node_classifier_id : Int
+pub let alg_graphviz_dot_dot_node_classifier_id : Int32
 
-pub let alg_graphviz_dot_dot_node_feature_count : Int
+pub let alg_graphviz_dot_dot_node_feature_count : Int32
 
-pub let alg_graphviz_dot_dot_node_name_feature_id : Int
+pub let alg_graphviz_dot_dot_node_name_feature_id : Int32
 
-pub let alg_graphviz_dot_dot_node_port_feature_id : Int
+pub let alg_graphviz_dot_dot_node_port_feature_id : Int32
 
-pub let alg_graphviz_dot_dot_node_statement_attributes_feature_id : Int
+pub let alg_graphviz_dot_dot_node_statement_attributes_feature_id : Int32
 
-pub let alg_graphviz_dot_dot_node_statement_classifier_id : Int
+pub let alg_graphviz_dot_dot_node_statement_classifier_id : Int32
 
-pub let alg_graphviz_dot_dot_node_statement_feature_count : Int
+pub let alg_graphviz_dot_dot_node_statement_feature_count : Int32
 
-pub let alg_graphviz_dot_dot_node_statement_node_feature_id : Int
+pub let alg_graphviz_dot_dot_node_statement_node_feature_id : Int32
 
-pub let alg_graphviz_dot_dot_port_classifier_id : Int
+pub let alg_graphviz_dot_dot_port_classifier_id : Int32
 
-pub let alg_graphviz_dot_dot_port_compass_pt_feature_id : Int
+pub let alg_graphviz_dot_dot_port_compass_pt_feature_id : Int32
 
-pub let alg_graphviz_dot_dot_port_feature_count : Int
+pub let alg_graphviz_dot_dot_port_feature_count : Int32
 
-pub let alg_graphviz_dot_dot_port_name_feature_id : Int
+pub let alg_graphviz_dot_dot_port_name_feature_id : Int32
 
-pub let alg_graphviz_dot_dot_statement_classifier_id : Int
+pub let alg_graphviz_dot_dot_statement_classifier_id : Int32
 
-pub let alg_graphviz_dot_dot_statement_feature_count : Int
+pub let alg_graphviz_dot_dot_statement_feature_count : Int32
 
-pub let alg_graphviz_dot_dot_subgraph_classifier_id : Int
+pub let alg_graphviz_dot_dot_subgraph_classifier_id : Int32
 
-pub let alg_graphviz_dot_dot_subgraph_feature_count : Int
+pub let alg_graphviz_dot_dot_subgraph_feature_count : Int32
 
-pub let alg_graphviz_dot_dot_subgraph_name_feature_id : Int
+pub let alg_graphviz_dot_dot_subgraph_name_feature_id : Int32
 
-pub let alg_graphviz_dot_dot_subgraph_statements_feature_id : Int
+pub let alg_graphviz_dot_dot_subgraph_statements_feature_id : Int32
 
 pub fn dot_attribute_type_edge() -> DotAttributeType
 
-pub fn dot_attribute_type_from_int(Int) -> DotAttributeType?
+pub fn dot_attribute_type_from_int(Int32) -> DotAttributeType?
 
 pub fn dot_attribute_type_from_name(String) -> DotAttributeType?
 
@@ -126,7 +126,7 @@ pub fn dot_attribute_type_node() -> DotAttributeType
 
 pub fn dot_attribute_type_to_string(DotAttributeType) -> String
 
-pub fn dot_attribute_type_value(DotAttributeType) -> Int
+pub fn dot_attribute_type_value(DotAttributeType) -> Int32
 
 pub fn dot_create_attribute() -> DotAttribute
 
@@ -152,7 +152,7 @@ pub fn dot_create_subgraph() -> DotSubgraph
 
 pub fn dot_edge_operator_directed() -> DotEdgeOperator
 
-pub fn dot_edge_operator_from_int(Int) -> DotEdgeOperator?
+pub fn dot_edge_operator_from_int(Int32) -> DotEdgeOperator?
 
 pub fn dot_edge_operator_from_name(String) -> DotEdgeOperator?
 
@@ -166,7 +166,7 @@ pub fn dot_edge_operator_to_string(DotEdgeOperator) -> String
 
 pub fn dot_edge_operator_undirected() -> DotEdgeOperator
 
-pub fn dot_edge_operator_value(DotEdgeOperator) -> Int
+pub fn dot_edge_operator_value(DotEdgeOperator) -> Int32
 
 pub fn dot_factory_impl_init() -> DotFactory
 
@@ -174,7 +174,7 @@ pub let dot_factory_instance : DotFactory
 
 pub fn dot_graph_type_digraph() -> DotGraphType
 
-pub fn dot_graph_type_from_int(Int) -> DotGraphType?
+pub fn dot_graph_type_from_int(Int32) -> DotGraphType?
 
 pub fn dot_graph_type_from_name(String) -> DotGraphType?
 
@@ -188,7 +188,7 @@ pub fn dot_graph_type_name(DotGraphType) -> String
 
 pub fn dot_graph_type_to_string(DotGraphType) -> String
 
-pub fn dot_graph_type_value(DotGraphType) -> Int
+pub fn dot_graph_type_value(DotGraphType) -> Int32
 
 pub fn dot_package_id() -> String
 
@@ -262,23 +262,23 @@ pub fn graphviz_dot_initialization_data_string(String) -> GraphvizDotInitializat
 
 pub let graphviz_dot_language_name : String
 
-pub let graphviz_dot_lexer_rule_any_other : Int
+pub let graphviz_dot_lexer_rule_any_other : Int32
 
-pub let graphviz_dot_lexer_rule_float : Int
+pub let graphviz_dot_lexer_rule_float : Int32
 
-pub let graphviz_dot_lexer_rule_id : Int
+pub let graphviz_dot_lexer_rule_id : Int32
 
-pub let graphviz_dot_lexer_rule_int : Int
+pub let graphviz_dot_lexer_rule_int : Int32
 
-pub let graphviz_dot_lexer_rule_ml_comment : Int
+pub let graphviz_dot_lexer_rule_ml_comment : Int32
 
-pub let graphviz_dot_lexer_rule_prec_line : Int
+pub let graphviz_dot_lexer_rule_prec_line : Int32
 
-pub let graphviz_dot_lexer_rule_sl_comment : Int
+pub let graphviz_dot_lexer_rule_sl_comment : Int32
 
-pub let graphviz_dot_lexer_rule_string : Int
+pub let graphviz_dot_lexer_rule_string : Int32
 
-pub let graphviz_dot_lexer_rule_ws : Int
+pub let graphviz_dot_lexer_rule_ws : Int32
 
 pub let graphviz_dot_lexer_token_names : Array[String]
 
@@ -290,7 +290,7 @@ pub fn graphviz_dot_object_serializer(GraphvizDotSerializer) -> GraphvizDotObjec
 
 pub fn graphviz_dot_object_tag(GraphvizDotObject) -> String
 
-pub fn graphviz_dot_parse_model_bytes(Array[Int]) -> DotGraphvizModel raise
+pub fn graphviz_dot_parse_model_bytes(Array[Int32]) -> DotGraphvizModel raise
 
 pub let graphviz_dot_plugin_id : String
 
@@ -310,15 +310,15 @@ pub let graphviz_dot_resource_service_provider_value : String
 
 pub fn graphviz_dot_serialize_model(DotGraphvizModel) -> String
 
-pub fn graphviz_dot_serialize_model_bytes(DotGraphvizModel) -> Array[Int]
+pub fn graphviz_dot_serialize_model_bytes(DotGraphvizModel) -> Array[Int32]
 
 pub let graphviz_dot_serializer_class_name : String
 
-pub let graphviz_dot_serializer_max_line_length : Int
+pub let graphviz_dot_serializer_max_line_length : Int32
 
 pub fn graphviz_dot_standalone_setup_do_setup() -> GraphvizDotInjector
 
-pub let graphviz_dot_status_error : Int
+pub let graphviz_dot_status_error : Int32
 
 pub fn new_abstract_graphviz_dot_runtime_module(properties? : Map[String, String]) -> AbstractGraphvizDotRuntimeModule
 
@@ -382,7 +382,7 @@ pub fn new_graphviz_dot_grammar_access() -> GraphvizDotGrammarAccess
 
 pub fn new_graphviz_dot_injector() -> GraphvizDotInjector
 
-pub fn new_graphviz_dot_lex_token(Int, String, String) -> GraphvizDotLexToken
+pub fn new_graphviz_dot_lex_token(Int32, String, String) -> GraphvizDotLexToken
 
 pub fn new_graphviz_dot_parser(grammar_access? : GraphvizDotGrammarAccess) -> GraphvizDotParser
 
@@ -398,7 +398,7 @@ pub fn new_graphviz_dot_standalone_setup() -> GraphvizDotStandaloneSetup
 
 pub fn new_graphviz_dot_standalone_setup_generated() -> GraphvizDotStandaloneSetupGenerated
 
-pub fn new_graphviz_dot_status(Int, String, String) -> GraphvizDotStatus
+pub fn new_graphviz_dot_status(Int32, String, String) -> GraphvizDotStatus
 
 pub fn new_graphviz_dot_syntactic_sequencer() -> GraphvizDotSyntacticSequencer
 
@@ -693,7 +693,7 @@ pub struct GraphvizDotActivator {
 pub fn GraphvizDotActivator::get_bundle(Self) -> GraphvizDotBundle
 pub fn GraphvizDotActivator::get_injector(Self, String) -> GraphvizDotInjector raise GraphvizDotActivatorException
 pub fn GraphvizDotActivator::get_runtime_module(Self, String) -> GraphvizDotRuntimeModule raise GraphvizDotActivatorException
-pub fn GraphvizDotActivator::injector_count(Self) -> Int
+pub fn GraphvizDotActivator::injector_count(Self) -> Int32
 pub fn GraphvizDotActivator::register_bundle_class(Self, String) -> Unit
 pub fn GraphvizDotActivator::register_injector_provider(Self, String, String, () -> GraphvizDotObject) -> Unit raise GraphvizDotActivatorException
 pub fn GraphvizDotActivator::start(Self) -> Unit
@@ -709,7 +709,7 @@ pub struct GraphvizDotBundle {
   symbolic_name : String
   class_registry : Map[String, Bool]
 }
-pub fn GraphvizDotBundle::class_count(Self) -> Int
+pub fn GraphvizDotBundle::class_count(Self) -> Int32
 pub fn GraphvizDotBundle::get_symbolic_name(Self) -> String
 pub fn GraphvizDotBundle::load_class(Self, String) -> Bool
 pub fn GraphvizDotBundle::register_class(Self, String) -> Unit
@@ -745,15 +745,15 @@ pub fn GraphvizDotFormatter::format_text(Self, String) -> String
 pub fn GraphvizDotFormatter::get_grammar_access(Self) -> GraphvizDotGrammarAccess
 
 pub struct GraphvizDotFormatterRequest {
-  mut max_line_width : Int
+  mut max_line_width : Int32
   mut format_undefined_hidden_regions_only : Bool
   mut text : String
 }
-pub fn GraphvizDotFormatterRequest::get_max_line_width(Self) -> Int
+pub fn GraphvizDotFormatterRequest::get_max_line_width(Self) -> Int32
 pub fn GraphvizDotFormatterRequest::get_text(Self) -> String
 pub fn GraphvizDotFormatterRequest::is_format_undefined_hidden_regions_only(Self) -> Bool
 pub fn GraphvizDotFormatterRequest::set_format_undefined_hidden_regions_only(Self, Bool) -> Unit
-pub fn GraphvizDotFormatterRequest::set_max_line_width(Self, Int) -> Unit
+pub fn GraphvizDotFormatterRequest::set_max_line_width(Self, Int32) -> Unit
 pub fn GraphvizDotFormatterRequest::set_text(Self, String) -> Unit
 
 pub struct GraphvizDotGrammarAccess {
@@ -781,11 +781,11 @@ pub struct GraphvizDotInjector {
 }
 pub fn GraphvizDotInjector::get_instance(Self, String) -> GraphvizDotObject?
 pub fn GraphvizDotInjector::provider_class_names(Self) -> Array[String]
-pub fn GraphvizDotInjector::provider_count(Self) -> Int
+pub fn GraphvizDotInjector::provider_count(Self) -> Int32
 pub fn GraphvizDotInjector::register_provider(Self, String, () -> GraphvizDotObject) -> Unit
 
 pub struct GraphvizDotLexToken {
-  token_type : Int
+  token_type : Int32
   token_name : String
   lexeme : String
 }
@@ -844,12 +844,12 @@ pub fn GraphvizDotStandaloneSetupGenerated::create_injector_and_do_emf_registrat
 pub fn GraphvizDotStandaloneSetupGenerated::register(Self, GraphvizDotInjector) -> Unit
 
 pub struct GraphvizDotStatus {
-  severity : Int
+  severity : Int32
   symbolic_name : String
   message : String
 }
 pub fn GraphvizDotStatus::get_message(Self) -> String
-pub fn GraphvizDotStatus::get_severity(Self) -> Int
+pub fn GraphvizDotStatus::get_severity(Self) -> Int32
 pub fn GraphvizDotStatus::get_symbolic_name(Self) -> String
 
 pub struct GraphvizDotSyntacticSequencer {

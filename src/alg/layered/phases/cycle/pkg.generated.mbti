@@ -1,9 +1,9 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/alg/layered/phases/cycle"
+package "moonbit-community/elk/alg/layered/phases/cycle"
 
 import {
-  "bobzhang/elk/alg/layered/runtime",
-  "bobzhang/elk/core",
+  "moonbit-community/elk/alg/layered/runtime",
+  "moonbit-community/elk/core",
   "moonbitlang/core/debug",
 }
 
@@ -71,11 +71,11 @@ pub fn SCCModelOrderCycleBreakerException::to_repr(Self) -> @debug.Repr
 
 // Types and methods
 pub struct GroupModelOrderCalculator {
-  mut first_separate_nodes : Int
-  mut last_separate_nodes : Int
+  mut first_separate_nodes : Int32
+  mut last_separate_nodes : Int32
 }
-pub fn GroupModelOrderCalculator::compute_constraint_group_model_order(Self, @runtime.LNode, Int, Int) -> Int
-pub fn GroupModelOrderCalculator::compute_constraint_model_order(Self, @runtime.LNode, Int) -> Int
+pub fn GroupModelOrderCalculator::compute_constraint_group_model_order(Self, @runtime.LNode, Int32, Int32) -> Int32
+pub fn GroupModelOrderCalculator::compute_constraint_model_order(Self, @runtime.LNode, Int32) -> Int32
 pub fn GroupModelOrderCalculator::reset_internal_counters(Self) -> Unit
 
 // Type aliases

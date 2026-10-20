@@ -1,7 +1,7 @@
 import {
   "moonbitlang/core/json",
-  "bobzhang/elk/core",
-  "bobzhang/elk/engine/all" @all_engine,
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/engine/all" @all_engine,
 }
 
 pkgtype(kind: "executable")

@@ -1,9 +1,9 @@
 import {
   "moonbitlang/core/cmp",
   "moonbitlang/core/double",
-  "bobzhang/elk/core",
-  "bobzhang/elk/graph",
-  "bobzhang/elk/alg/common/overlaps",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/graph",
+  "moonbit-community/elk/alg/common/overlaps",
 }
 
 import {

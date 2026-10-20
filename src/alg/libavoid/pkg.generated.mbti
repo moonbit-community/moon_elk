@@ -1,16 +1,16 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/alg/libavoid"
+package "moonbit-community/elk/alg/libavoid"
 
 import {
-  "bobzhang/elk/alg/graphviz/layouter",
-  "bobzhang/elk/core",
-  "bobzhang/elk/engine",
-  "bobzhang/elk/graph",
+  "moonbit-community/elk/alg/graphviz/layouter",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/engine",
+  "moonbit-community/elk/graph",
   "moonbitlang/core/debug",
 }
 
 // Values
-pub fn add_libavoid_layout_algorithm_with_text_runner(@engine.EngineBuilder, (Array[Int], Int) -> String? raise) -> @engine.EngineBuilder
+pub fn add_libavoid_layout_algorithm_with_text_runner(@engine.EngineBuilder, (Array[Int32], Int32) -> String? raise) -> @engine.EngineBuilder
 
 pub let libavoid_algorithm_id : String
 
@@ -56,7 +56,7 @@ pub let libavoid_option_perform_unifying_nudging_preprocessing_step : @graph.IPr
 
 pub let libavoid_option_port_direction_penalty : @graph.IProperty[Double]
 
-pub let libavoid_option_process_timeout : @graph.IProperty[Int]
+pub let libavoid_option_process_timeout : @graph.IProperty[Int32]
 
 pub let libavoid_option_reverse_direction_penalty : @graph.IProperty[Double]
 
@@ -88,7 +88,7 @@ pub fn libavoid_server_pool_set_factory(() -> LibavoidServer) -> Unit
 
 pub fn libavoid_server_pool_set_factory_for_test(() -> LibavoidServer) -> Unit
 
-pub let libavoid_server_process_def_timeout : Int
+pub let libavoid_server_process_def_timeout : Int32
 
 pub fn libavoid_server_reset_runtime_for_test() -> Unit
 
@@ -116,9 +116,9 @@ pub fn new_libavoid_server_exception_with_message(String) -> LibavoidServerExcep
 
 pub fn new_libavoid_server_pool() -> LibavoidServerPool
 
-pub fn new_libavoid_server_transport((Array[Int], Int) -> Map[String, String]? raise) -> LibavoidServerTransport
+pub fn new_libavoid_server_transport((Array[Int32], Int32) -> Map[String, String]? raise) -> LibavoidServerTransport
 
-pub fn new_libavoid_server_transport_from_text_runner((Array[Int], Int) -> String? raise) -> LibavoidServerTransport
+pub fn new_libavoid_server_transport_from_text_runner((Array[Int32], Int32) -> String? raise) -> LibavoidServerTransport
 
 pub fn register_libavoid_layout_algorithm(@core.LayoutRuntime) -> Unit
 
@@ -166,22 +166,22 @@ pub fn LibavoidPlugin::stop(Self, _context? : String) -> Unit
 pub struct LibavoidServer {
   mut running : Bool
   mut canceled : Bool
-  mut process_timeout : Int
+  mut process_timeout : Int32
   input_sink : @layouter.GraphvizByteArrayOutputStream
   mut output_data : Map[String, String]?
   mut transport : LibavoidServerTransport?
 }
 pub fn LibavoidServer::cancel_process(Self) -> Unit
 pub fn LibavoidServer::cleanup(Self, LibavoidServerCleanup) -> Unit
-pub fn LibavoidServer::get_input_bytes(Self) -> Array[Int]
-pub fn LibavoidServer::get_process_timeout(Self) -> Int
+pub fn LibavoidServer::get_input_bytes(Self) -> Array[Int32]
+pub fn LibavoidServer::get_process_timeout(Self) -> Int32
 pub fn LibavoidServer::initialize(Self) -> Unit
 pub fn LibavoidServer::input(Self) -> @layouter.GraphvizOutputStream raise LibavoidServerStateException
 pub fn LibavoidServer::is_canceled(Self) -> Bool
 pub fn LibavoidServer::is_running(Self) -> Bool
 pub fn LibavoidServer::read_output_data(Self) -> Map[String, String]? raise LibavoidServerStateException
 pub fn LibavoidServer::set_output_data_for_test(Self, Map[String, String]?) -> Unit
-pub fn LibavoidServer::set_process_timeout(Self, Int) -> Unit
+pub fn LibavoidServer::set_process_timeout(Self, Int32) -> Unit
 pub fn LibavoidServer::set_transport(Self, LibavoidServerTransport?) -> Unit
 
 pub enum LibavoidServerCleanup {
@@ -191,15 +191,15 @@ pub enum LibavoidServerCleanup {
 }
 
 pub struct LibavoidServerCommunicator {
-  node_id_map : Map[Int, @graph.ElkNode]
-  node_inverse_map : Map[@graph.ElkNode, Int]
-  port_id_map : Map[Int, @graph.ElkPort]
-  port_inverse_map : Map[@graph.ElkPort, Int]
-  edge_id_map : Map[Int, @graph.ElkEdge]
-  edge_inverse_map : Map[@graph.ElkEdge, Int]
-  mut node_id_counter : Int
-  mut port_id_counter : Int
-  mut edge_id_counter : Int
+  node_id_map : Map[Int32, @graph.ElkNode]
+  node_inverse_map : Map[@graph.ElkNode, Int32]
+  port_id_map : Map[Int32, @graph.ElkPort]
+  port_inverse_map : Map[@graph.ElkPort, Int32]
+  edge_id_map : Map[Int32, @graph.ElkEdge]
+  edge_inverse_map : Map[@graph.ElkEdge, Int32]
+  mut node_id_counter : Int32
+  mut port_id_counter : Int32
+  mut edge_id_counter : Int32
   lines : Array[String]
 }
 pub fn LibavoidServerCommunicator::request_layout(Self, @graph.ElkNode, @core.IElkProgressMonitor, LibavoidServer, @core.LayoutSession) -> Unit
@@ -218,12 +218,12 @@ pub struct LibavoidServerPool {
 pub fn LibavoidServerPool::dispose(Self) -> Unit
 pub fn LibavoidServerPool::fetch(Self) -> LibavoidServer
 pub fn LibavoidServerPool::release(Self, LibavoidServer) -> Unit
-pub fn LibavoidServerPool::size(Self) -> Int
+pub fn LibavoidServerPool::size(Self) -> Int32
 
 pub struct LibavoidServerTransport {
-  run_fn : (Array[Int], Int) -> Map[String, String]? raise
+  run_fn : (Array[Int32], Int32) -> Map[String, String]? raise
 }
-pub fn LibavoidServerTransport::run(Self, Array[Int], Int) -> Map[String, String]? raise
+pub fn LibavoidServerTransport::run(Self, Array[Int32], Int32) -> Map[String, String]? raise
 
 // Type aliases
 

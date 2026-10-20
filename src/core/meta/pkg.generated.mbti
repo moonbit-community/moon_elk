@@ -1,5 +1,5 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/core/meta"
+package "moonbit-community/elk/core/meta"
 
 // Values
 pub let core_meta_antlr_token_file_content : String
@@ -36,23 +36,23 @@ pub let core_meta_generator_class_name : String
 
 pub let core_meta_grammar_name : String
 
-pub let core_meta_lexer_rule_any_other : Int
+pub let core_meta_lexer_rule_any_other : Int32
 
-pub let core_meta_lexer_rule_id : Int
+pub let core_meta_lexer_rule_id : Int32
 
-pub let core_meta_lexer_rule_int : Int
+pub let core_meta_lexer_rule_int : Int32
 
-pub let core_meta_lexer_rule_ml_comment : Int
+pub let core_meta_lexer_rule_ml_comment : Int32
 
-pub let core_meta_lexer_rule_sl_comment : Int
+pub let core_meta_lexer_rule_sl_comment : Int32
 
-pub let core_meta_lexer_rule_string : Int
+pub let core_meta_lexer_rule_string : Int32
 
-pub let core_meta_lexer_rule_ws : Int
+pub let core_meta_lexer_rule_ws : Int32
 
-pub let core_meta_md_algorithm_classifier_id : Int
+pub let core_meta_md_algorithm_classifier_id : Int32
 
-pub let core_meta_md_bundle_classifier_id : Int
+pub let core_meta_md_bundle_classifier_id : Int32
 
 pub fn core_meta_md_bundle_member_algorithm(CoreMetaMdAlgorithm) -> CoreMetaMdBundleMember
 
@@ -64,7 +64,7 @@ pub fn core_meta_md_bundle_member_as_group_or_option(CoreMetaMdBundleMember) -> 
 
 pub fn core_meta_md_bundle_member_category(CoreMetaMdCategory) -> CoreMetaMdBundleMember
 
-pub let core_meta_md_bundle_member_classifier_id : Int
+pub let core_meta_md_bundle_member_classifier_id : Int32
 
 pub fn core_meta_md_bundle_member_group_or_option(CoreMetaMdGroupOrOption) -> CoreMetaMdBundleMember
 
@@ -74,9 +74,9 @@ pub let core_meta_md_bundle_member_name_feature : String
 
 pub fn core_meta_md_bundle_member_tag(CoreMetaMdBundleMember) -> String
 
-pub let core_meta_md_category_classifier_id : Int
+pub let core_meta_md_category_classifier_id : Int32
 
-pub let core_meta_md_graph_feature_classifier_id : Int
+pub let core_meta_md_graph_feature_classifier_id : Int32
 
 pub fn core_meta_md_graph_feature_clusters() -> CoreMetaMdGraphFeature
 
@@ -86,7 +86,7 @@ pub fn core_meta_md_graph_feature_disconnected() -> CoreMetaMdGraphFeature
 
 pub fn core_meta_md_graph_feature_edge_labels() -> CoreMetaMdGraphFeature
 
-pub fn core_meta_md_graph_feature_from_int(Int) -> CoreMetaMdGraphFeature?
+pub fn core_meta_md_graph_feature_from_int(Int32) -> CoreMetaMdGraphFeature?
 
 pub fn core_meta_md_graph_feature_from_name(String) -> CoreMetaMdGraphFeature?
 
@@ -106,15 +106,15 @@ pub fn core_meta_md_graph_feature_self_loops() -> CoreMetaMdGraphFeature
 
 pub fn core_meta_md_graph_feature_to_string(CoreMetaMdGraphFeature) -> String
 
-pub fn core_meta_md_graph_feature_value(CoreMetaMdGraphFeature) -> Int
+pub fn core_meta_md_graph_feature_value(CoreMetaMdGraphFeature) -> Int32
 
-pub let core_meta_md_group_classifier_id : Int
+pub let core_meta_md_group_classifier_id : Int32
 
 pub fn core_meta_md_group_or_option_as_group(CoreMetaMdGroupOrOption) -> CoreMetaMdGroup?
 
 pub fn core_meta_md_group_or_option_as_option(CoreMetaMdGroupOrOption) -> CoreMetaMdOption?
 
-pub let core_meta_md_group_or_option_classifier_id : Int
+pub let core_meta_md_group_or_option_classifier_id : Int32
 
 pub fn core_meta_md_group_or_option_group(CoreMetaMdGroup) -> CoreMetaMdGroupOrOption
 
@@ -122,19 +122,19 @@ pub fn core_meta_md_group_or_option_option(CoreMetaMdOption) -> CoreMetaMdGroupO
 
 pub fn core_meta_md_group_or_option_tag(CoreMetaMdGroupOrOption) -> String
 
-pub let core_meta_md_model_classifier_id : Int
+pub let core_meta_md_model_classifier_id : Int32
 
-pub let core_meta_md_option_classifier_id : Int
+pub let core_meta_md_option_classifier_id : Int32
 
-pub let core_meta_md_option_dependency_classifier_id : Int
+pub let core_meta_md_option_dependency_classifier_id : Int32
 
-pub let core_meta_md_option_support_classifier_id : Int
+pub let core_meta_md_option_support_classifier_id : Int32
 
-pub let core_meta_md_option_target_type_classifier_id : Int
+pub let core_meta_md_option_target_type_classifier_id : Int32
 
 pub fn core_meta_md_option_target_type_edges() -> CoreMetaMdOptionTargetType
 
-pub fn core_meta_md_option_target_type_from_int(Int) -> CoreMetaMdOptionTargetType?
+pub fn core_meta_md_option_target_type_from_int(Int32) -> CoreMetaMdOptionTargetType?
 
 pub fn core_meta_md_option_target_type_from_name(String) -> CoreMetaMdOptionTargetType?
 
@@ -154,7 +154,7 @@ pub fn core_meta_md_option_target_type_ports() -> CoreMetaMdOptionTargetType
 
 pub fn core_meta_md_option_target_type_to_string(CoreMetaMdOptionTargetType) -> String
 
-pub fn core_meta_md_option_target_type_value(CoreMetaMdOptionTargetType) -> Int
+pub fn core_meta_md_option_target_type_value(CoreMetaMdOptionTargetType) -> Int32
 
 pub let core_meta_meta_data_ename : String
 
@@ -200,7 +200,7 @@ pub fn new_core_meta_inferred_type(String, Array[String]) -> CoreMetaInferredTyp
 
 pub fn new_core_meta_injector(MetaDataRuntimeModule) -> CoreMetaInjector
 
-pub fn new_core_meta_lex_token(Int, String, String) -> CoreMetaLexToken
+pub fn new_core_meta_lex_token(Int32, String, String) -> CoreMetaLexToken
 
 pub fn new_core_meta_meta_data_factory() -> CoreMetaMetaDataFactory
 
@@ -304,7 +304,7 @@ pub(all) struct CoreMetaInjector {
 pub fn CoreMetaInjector::get_runtime_module(Self) -> MetaDataRuntimeModule
 
 pub(all) struct CoreMetaLexToken {
-  token_type : Int
+  token_type : Int32
   token_name : String
   lexeme : String
 }

@@ -1,18 +1,18 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/alg/topdownpacking"
+package "moonbit-community/elk/alg/topdownpacking"
 
 import {
-  "bobzhang/elk/core",
-  "bobzhang/elk/graph",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/graph",
   "moonbitlang/core/debug",
 }
 
 // Values
-pub const P1_NODE_ARRANGEMENT : Int = 0
+pub const P1_NODE_ARRANGEMENT : Int32 = 0
 
-pub const P2_WHITESPACE_ELIMINATION : Int = 1
+pub const P2_WHITESPACE_ELIMINATION : Int32 = 1
 
-pub fn[T] new_grid((Int, Int, T) -> Unit, (Int, Int) -> T, (Int) -> Array[T], (Int) -> Array[T], () -> Int, () -> Int, (Int, Int) -> Unit) -> Grid[T]
+pub fn[T] new_grid((Int32, Int32, T) -> Unit, (Int32, Int32) -> T, (Int32) -> Array[T], (Int32) -> Array[T], () -> Int32, () -> Int32, (Int32, Int32) -> Unit) -> Grid[T]
 
 pub fn new_grid_elk_node(@graph.ElkNode) -> GridElkNode
 
@@ -71,46 +71,46 @@ pub fn TopdownpackingGridException::to_repr(Self) -> @debug.Repr
 
 // Types and methods
 pub struct Grid[T] {
-  put_fn : (Int, Int, T) -> Unit
-  get_fn : (Int, Int) -> T
-  get_row_fn : (Int) -> Array[T]
-  get_column_fn : (Int) -> Array[T]
-  get_columns_fn : () -> Int
-  get_rows_fn : () -> Int
-  set_grid_size_fn : (Int, Int) -> Unit
+  put_fn : (Int32, Int32, T) -> Unit
+  get_fn : (Int32, Int32) -> T
+  get_row_fn : (Int32) -> Array[T]
+  get_column_fn : (Int32) -> Array[T]
+  get_columns_fn : () -> Int32
+  get_rows_fn : () -> Int32
+  set_grid_size_fn : (Int32, Int32) -> Unit
 }
-pub fn[T] Grid::get(Self[T], Int, Int) -> T
-pub fn[T] Grid::get_column(Self[T], Int) -> Array[T]
-pub fn[T] Grid::get_columns(Self[T]) -> Int
-pub fn[T] Grid::get_row(Self[T], Int) -> Array[T]
-pub fn[T] Grid::get_rows(Self[T]) -> Int
-pub fn[T] Grid::put(Self[T], Int, Int, T) -> Unit
-pub fn[T] Grid::set_grid_size(Self[T], Int, Int) -> Unit
+pub fn[T] Grid::get(Self[T], Int32, Int32) -> T
+pub fn[T] Grid::get_column(Self[T], Int32) -> Array[T]
+pub fn[T] Grid::get_columns(Self[T]) -> Int32
+pub fn[T] Grid::get_row(Self[T], Int32) -> Array[T]
+pub fn[T] Grid::get_rows(Self[T]) -> Int32
+pub fn[T] Grid::put(Self[T], Int32, Int32, T) -> Unit
+pub fn[T] Grid::set_grid_size(Self[T], Int32, Int32) -> Unit
 
 pub struct GridElkNode {
   node : @graph.ElkNode
   mut grid : Array[Array[@graph.ElkNode?]]
-  mut rows : Int
-  mut cols : Int
+  mut rows : Int32
+  mut cols : Int32
 }
-pub fn GridElkNode::get(Self, Int, Int) -> @graph.ElkNode? raise TopdownpackingGridException
+pub fn GridElkNode::get(Self, Int32, Int32) -> @graph.ElkNode? raise TopdownpackingGridException
 pub fn GridElkNode::get_bool_property(Self, @graph.IProperty[Bool]) -> Bool
 pub fn GridElkNode::get_children(Self) -> Array[@graph.ElkNode]
-pub fn GridElkNode::get_column(Self, Int) -> Array[@graph.ElkNode?] raise TopdownpackingGridException
-pub fn GridElkNode::get_columns(Self) -> Int
+pub fn GridElkNode::get_column(Self, Int32) -> Array[@graph.ElkNode?] raise TopdownpackingGridException
+pub fn GridElkNode::get_columns(Self) -> Int32
 pub fn GridElkNode::get_double_property(Self, @graph.IProperty[Double]) -> Double
 pub fn GridElkNode::get_height(Self) -> Double
 pub fn GridElkNode::get_identifier(Self) -> String
 pub fn GridElkNode::get_node(Self) -> @graph.ElkNode
-pub fn GridElkNode::get_row(Self, Int) -> Array[@graph.ElkNode?] raise TopdownpackingGridException
-pub fn GridElkNode::get_rows(Self) -> Int
+pub fn GridElkNode::get_row(Self, Int32) -> Array[@graph.ElkNode?] raise TopdownpackingGridException
+pub fn GridElkNode::get_rows(Self) -> Int32
 pub fn GridElkNode::get_string_property(Self, @graph.IProperty[String]) -> String
 pub fn GridElkNode::get_width(Self) -> Double
 pub fn GridElkNode::get_x(Self) -> Double
 pub fn GridElkNode::get_y(Self) -> Double
-pub fn GridElkNode::put(Self, Int, Int, @graph.ElkNode) -> Unit raise TopdownpackingGridException
+pub fn GridElkNode::put(Self, Int32, Int32, @graph.ElkNode) -> Unit raise TopdownpackingGridException
 pub fn GridElkNode::set_dimensions(Self, Double, Double) -> Unit
-pub fn GridElkNode::set_grid_size(Self, Int, Int) -> Unit
+pub fn GridElkNode::set_grid_size(Self, Int32, Int32) -> Unit
 pub fn GridElkNode::set_height(Self, Double) -> Unit
 pub fn GridElkNode::set_location(Self, Double, Double) -> Unit
 pub fn GridElkNode::set_width(Self, Double) -> Unit
@@ -138,6 +138,6 @@ pub enum WhitespaceEliminationStrategy {
 }
 
 // Type aliases
-pub type TopdownPackingPhases = Int
+pub type TopdownPackingPhases = Int32
 
 // Traits

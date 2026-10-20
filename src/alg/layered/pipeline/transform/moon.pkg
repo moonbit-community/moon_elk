@@ -1,9 +1,9 @@
 import {
   "moonbitlang/core/cmp",
   "moonbitlang/core/string",
-  "bobzhang/elk/graph",
-  "bobzhang/elk/core",
-  "bobzhang/elk/alg/common/nodespacing",
-  "bobzhang/elk/alg/layered/options",
-  "bobzhang/elk/alg/layered/runtime",
+  "moonbit-community/elk/graph",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/alg/common/nodespacing",
+  "moonbit-community/elk/alg/layered/options",
+  "moonbit-community/elk/alg/layered/runtime",
 }

@@ -1,5 +1,5 @@
 import {
-  "bobzhang/elk/core",
+  "moonbit-community/elk/core",
 }
 
 import {

@@ -1,6 +1,6 @@
 import {
   "moonbitlang/core/cmp",
   "moonbitlang/core/int",
-  "bobzhang/elk/core",
-  "bobzhang/elk/alg/common",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/alg/common",
 }

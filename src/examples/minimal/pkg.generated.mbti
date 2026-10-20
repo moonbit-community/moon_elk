@@ -1,5 +1,5 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/examples/minimal"
+package "moonbit-community/elk/examples/minimal"
 
 // Values
 pub fn layout_minimal_example() -> String raise

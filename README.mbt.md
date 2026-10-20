@@ -1,6 +1,16 @@
-# bobzhang/elk
+# moonbit-community/elk
 
 A MoonBit port of Eclipse Layout Kernel (ELK).
+
+This is the community-maintained continuation of `Milky2018/moon_elk` and
+`bobzhang/elk`. It incorporates bobzhang's changes through
+[`cb509224`](https://github.com/bobzhang/elk/commit/cb509224ab59bf472c12fc609a608f6fa11e8d6f).
+Use `moonbit-community/elk` for new dependencies and imports; the existing
+versions of `Milky2018/moon_elk` are deprecated.
+
+The layout compatibility baseline is elkjs 0.9.3 (ELK 0.9.1). Coordinates
+can differ from earlier versions targeting elkjs 0.8.2. The old issue #8,
+#9, and #12 parity tests remain skipped pending re-baselining.
 
 ## Imports
 
@@ -9,9 +19,9 @@ In `moon.pkg`, import the packages you use:
 ```moonbit
 import {
   "moonbitlang/core/json" @json,
-  "bobzhang/elk/core" @elk_core,
-  "bobzhang/elk/graph" @elk_graph,
-  "bobzhang/elk/graph/json" @elk_graph_json,
+  "moonbit-community/elk/engine/all" @elk,
+  "moonbit-community/elk/graph" @elk_graph,
+  "moonbit-community/elk/graph/json" @elk_graph_json,
 }
 ```
 
@@ -20,7 +30,7 @@ import {
 ```moonbit
 pub fn layout_json(input : String) -> String raise {
   let graph = @json.parse(input)
-  @elk_core.new_elk_engine().layout(graph~).stringify()
+  @elk.new_elk_engine().layout(graph~).stringify()
 }
 ```
 

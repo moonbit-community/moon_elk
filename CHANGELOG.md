@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.3.4 (moonbit-community/elk) - 2026-10-20
+
+- Continue maintenance under `moonbit-community/elk` in the community repository.
+- Incorporate all commits from `bobzhang/elk` through `cb509224`, preserving
+  their history and the elkjs 0.9.3 compatibility changes.
+- Deprecate all existing `Milky2018/moon_elk` releases in favor of the community
+  module.
+- Add a manual Mooncakes publishing workflow using the organization's
+  `MOONCAKES_MOONBIT_COMMUNITY_TOKEN` secret. The workflow defaults to a dry run;
+  disable `dry_run` to publish after validation.
+
 ## 0.3.4 - 2026-10-14
 
 Released from the fork `bobzhang/elk`. Every change brings the port closer

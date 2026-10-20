@@ -1,7 +1,7 @@
 import {
   "moonbitlang/core/double",
-  "bobzhang/elk/graph",
-  "bobzhang/elk/core",
-  "bobzhang/elk/alg/layered/options",
-  "bobzhang/elk/alg/layered/runtime",
+  "moonbit-community/elk/graph",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/alg/layered/options",
+  "moonbit-community/elk/alg/layered/runtime",
 }

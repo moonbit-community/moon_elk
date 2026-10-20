@@ -1,19 +1,19 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/alg/rectpacking"
+package "moonbit-community/elk/alg/rectpacking"
 
 import {
-  "bobzhang/elk/alg/rectpacking/options",
-  "bobzhang/elk/core",
-  "bobzhang/elk/graph",
+  "moonbit-community/elk/alg/rectpacking/options",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/graph",
   "moonbitlang/core/debug",
 }
 
 // Values
-pub const P1_WIDTH_APPROXIMATION : Int = 0
+pub const P1_WIDTH_APPROXIMATION : Int32 = 0
 
-pub const P2_PACKING : Int = 1
+pub const P2_PACKING : Int32 = 1
 
-pub const P3_WHITESPACE_ELIMINATION : Int = 2
+pub const P3_WHITESPACE_ELIMINATION : Int32 = 2
 
 pub fn new_interactive_rectpacking_graph_visitor() -> InteractiveRectPackingGraphVisitor
 
@@ -77,7 +77,7 @@ pub fn rectpacking_calculations_x_for_lpb(Double, Array[@graph.ElkNode], @graph.
 
 pub fn rectpacking_calculations_y_for_lpr(Double, Array[@graph.ElkNode], @graph.ElkNode, Double) -> Double
 
-pub fn rectpacking_compaction_compact(Int, Array[RectRow], Double, Double, Bool) -> (Bool, Bool)
+pub fn rectpacking_compaction_compact(Int32, Array[RectRow], Double, Double, Bool) -> (Bool, Bool)
 
 pub fn rectpacking_compute_scale_measure(Double, Double, Double) -> Double
 
@@ -111,7 +111,7 @@ pub let rectpacking_internal_target_width : @graph.IProperty[Double]
 
 pub fn rectpacking_layout_provider_as_layout_provider(RectPackingLayoutProvider) -> @core.AbstractLayoutProvider
 
-pub fn rectpacking_node_size_compare(@graph.ElkNode, @graph.ElkNode) -> Int
+pub fn rectpacking_node_size_compare(@graph.ElkNode, @graph.ElkNode) -> Int32
 
 pub fn rectpacking_packing_strategy_from_string(String) -> RectpackingPackingStrategy
 
@@ -187,7 +187,7 @@ pub struct BlockRow {
   nodes : Array[@graph.ElkNode]
 }
 pub fn BlockRow::add_rectangle(Self, @graph.ElkNode) -> Bool
-pub fn BlockRow::expand(Self, Double, Double, Int) -> Unit
+pub fn BlockRow::expand(Self, Double, Double, Int32) -> Unit
 pub fn BlockRow::remove_rectangle(Self, @graph.ElkNode, Bool) -> Unit
 pub fn BlockRow::update_row(Self) -> Unit
 
@@ -238,7 +238,7 @@ pub fn RectRow::expand(Self, Double, Double) -> Unit
 pub fn RectRow::first_block(Self) -> Block
 pub fn RectRow::last_block(Self) -> Block
 pub fn RectRow::notify_about_node_change(Self) -> Unit
-pub fn RectRow::number_of_assigned_blocks(Self) -> Int
+pub fn RectRow::number_of_assigned_blocks(Self) -> Int32
 pub fn RectRow::remove_block(Self, Block) -> Unit
 pub fn RectRow::reset_stacks(Self) -> Unit
 pub fn RectRow::set_y(Self, Double) -> Unit
@@ -307,7 +307,7 @@ pub enum RectpackingWidthApproximationStrategy {
 }
 
 // Type aliases
-pub type RectPackingLayoutPhases = Int
+pub type RectPackingLayoutPhases = Int32
 
 pub type RectpackingBestCandidateFilter = (Array[RectpackingDrawingData], Double, @core.Spacing) -> Array[RectpackingDrawingData]
 

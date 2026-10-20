@@ -1,8 +1,8 @@
 import {
-  "bobzhang/elk/core",
-  "bobzhang/elk/graph",
-  "bobzhang/elk/graph/json",
-  "bobzhang/elk/graph/text",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/graph",
+  "moonbit-community/elk/graph/json",
+  "moonbit-community/elk/graph/text",
 }
 
 pkgtype(kind: "executable")

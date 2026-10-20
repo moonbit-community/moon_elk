@@ -3,17 +3,17 @@ import {
   "moonbitlang/core/double",
   "moonbitlang/core/int",
   "moonbitlang/core/math",
-  "bobzhang/elk/graph",
-  "bobzhang/elk/core",
-  "bobzhang/elk/alg/common/compaction",
-  "bobzhang/elk/alg/common/networksimplex",
-  "bobzhang/elk/alg/common/nodespacing",
-  "bobzhang/elk/alg/common/overlaps",
-  "bobzhang/elk/alg/layered/options",
-  "bobzhang/elk/alg/layered/runtime",
+  "moonbit-community/elk/graph",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/alg/common/compaction",
+  "moonbit-community/elk/alg/common/networksimplex",
+  "moonbit-community/elk/alg/common/nodespacing",
+  "moonbit-community/elk/alg/common/overlaps",
+  "moonbit-community/elk/alg/layered/options",
+  "moonbit-community/elk/alg/layered/runtime",
 }
 
 import {
-  "bobzhang/elk/alg/test",
-  "bobzhang/elk/alg/layered/engine",
+  "moonbit-community/elk/alg/test",
+  "moonbit-community/elk/alg/layered/engine",
 } for "test"

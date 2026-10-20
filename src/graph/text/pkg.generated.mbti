@@ -1,9 +1,9 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/graph/text"
+package "moonbit-community/elk/graph/text"
 
 import {
-  "bobzhang/elk/core",
-  "bobzhang/elk/graph",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/graph",
   "moonbitlang/core/debug",
 }
 
@@ -42,29 +42,29 @@ pub let graph_text_file_extension : String
 
 pub let graph_text_grammar_name : String
 
-pub let graph_text_issue_error : Int
+pub let graph_text_issue_error : Int32
 
-pub let graph_text_issue_warning : Int
+pub let graph_text_issue_warning : Int32
 
 pub fn graph_text_label_owner_to_parent(GraphTextLabelOwner) -> @graph.ElkLabelParent
 
-pub let graph_text_lexer_rule_any_other : Int
+pub let graph_text_lexer_rule_any_other : Int32
 
-pub let graph_text_lexer_rule_float : Int
+pub let graph_text_lexer_rule_float : Int32
 
-pub let graph_text_lexer_rule_id : Int
+pub let graph_text_lexer_rule_id : Int32
 
-pub let graph_text_lexer_rule_int : Int
+pub let graph_text_lexer_rule_int : Int32
 
-pub let graph_text_lexer_rule_ml_comment : Int
+pub let graph_text_lexer_rule_ml_comment : Int32
 
-pub let graph_text_lexer_rule_signed_int : Int
+pub let graph_text_lexer_rule_signed_int : Int32
 
-pub let graph_text_lexer_rule_sl_comment : Int
+pub let graph_text_lexer_rule_sl_comment : Int32
 
-pub let graph_text_lexer_rule_string : Int
+pub let graph_text_lexer_rule_string : Int32
 
-pub let graph_text_lexer_rule_ws : Int
+pub let graph_text_lexer_rule_ws : Int32
 
 pub let graph_text_lexer_token_names : Array[String]
 
@@ -112,11 +112,11 @@ pub fn new_abstract_elk_graph_validator() -> AbstractElkGraphValidator
 
 pub fn new_elk_graph_antlr_token_file_provider() -> ElkGraphAntlrTokenFileProvider
 
-pub fn new_elk_graph_formatter(indent_size? : Int) -> ElkGraphFormatter
+pub fn new_elk_graph_formatter(indent_size? : Int32) -> ElkGraphFormatter
 
 pub fn new_elk_graph_grammar_access() -> ElkGraphGrammarAccess
 
-pub fn new_elk_graph_lex_token(Int, String, String) -> ElkGraphLexToken
+pub fn new_elk_graph_lex_token(Int32, String, String) -> ElkGraphLexToken
 
 pub fn new_elk_graph_linker() -> ElkGraphLinker
 
@@ -152,7 +152,7 @@ pub fn new_graph_text_pending_outgoing_section(@graph.ElkEdgeSection, String) ->
 
 pub fn new_graph_text_property_assignment(GraphTextPropertyKey, GraphTextPropertyValue) -> GraphTextPropertyAssignment
 
-pub fn new_graph_text_validation_issue(String, String, Int, code? : String?) -> GraphTextValidationIssue
+pub fn new_graph_text_validation_issue(String, String, Int32, code? : String?) -> GraphTextValidationIssue
 
 pub fn new_internal_elk_graph_lexer(String) -> InternalElkGraphLexer
 
@@ -257,7 +257,7 @@ pub fn ElkGraphAntlrTokenFileProvider::get_antlr_token_file(Self) -> String
 pub fn ElkGraphAntlrTokenFileProvider::get_antlr_token_file_path(Self) -> String
 
 pub struct ElkGraphFormatter {
-  indent_size : Int
+  indent_size : Int32
 }
 pub fn ElkGraphFormatter::format(Self, @graph.ElkNode) -> String
 
@@ -289,7 +289,7 @@ pub fn ElkGraphGrammarAccess::get_shape_layout_rule(Self) -> String
 pub fn ElkGraphGrammarAccess::get_string_value_rule(Self) -> String
 
 pub struct ElkGraphLexToken {
-  token_type : Int
+  token_type : Int32
   token_name : String
   lexeme : String
 }
@@ -468,7 +468,7 @@ pub(all) enum GraphTextShape {
 pub struct GraphTextValidationIssue {
   message : String
   feature : String
-  severity : Int
+  severity : Int32
   code : String?
 }
 
@@ -545,6 +545,6 @@ pub fn PropertyValueValueConverter::to_string(Self, GraphTextPropertyValue) -> S
 pub fn PropertyValueValueConverter::to_value(Self, String, property_key? : GraphTextPropertyKey?) -> GraphTextPropertyValue raise
 
 // Type aliases
-pub type GraphTextIssueSeverity = Int
+pub type GraphTextIssueSeverity = Int32
 
 // Traits

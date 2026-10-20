@@ -3,7 +3,7 @@ import {
   "moonbitlang/core/float",
   "moonbitlang/core/math",
   "moonbitlang/core/string",
-  "bobzhang/elk/graph",
-  "bobzhang/elk/core",
-  "bobzhang/elk/core/service",
+  "moonbit-community/elk/graph",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/core/service",
 }

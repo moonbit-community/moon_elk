@@ -1,9 +1,9 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/alg/layered/compaction/components"
+package "moonbit-community/elk/alg/layered/compaction/components"
 
 import {
-  "bobzhang/elk/alg/common/compaction",
-  "bobzhang/elk/core",
+  "moonbit-community/elk/alg/common/compaction",
+  "moonbit-community/elk/core",
 }
 
 // Values
@@ -53,7 +53,7 @@ pub fn[N, E] ComponentsToCGraphTransformer::is_locked(Self[N, E], @compaction.CN
 pub fn[N, E] ComponentsToCGraphTransformer::transform(Self[N, E], IConnectedComponents[N, E]) -> @compaction.CGraph raise
 
 pub struct IComponent[N, E] {
-  _instance_id : Int
+  _instance_id : Int32
   get_hull_fn : () -> Array[@core.ElkRectangle]
   get_external_extensions_fn : () -> Array[IExternalExtension[E]]
   get_external_extension_sides_fn : () -> Array[@core.PortSide]
@@ -71,7 +71,7 @@ pub fn[N, E] IConnectedComponents::get_components(Self[N, E]) -> Array[IComponen
 pub fn[N, E] IConnectedComponents::is_contains_external_extensions(Self[N, E]) -> Bool
 
 pub struct IExternalExtension[E] {
-  _instance_id : Int
+  _instance_id : Int32
   get_representative_fn : () -> E
   get_representor_fn : () -> @core.ElkRectangle
   get_placeholder_fn : () -> @core.ElkRectangle?

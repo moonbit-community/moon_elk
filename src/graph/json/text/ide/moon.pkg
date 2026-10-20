@@ -1,9 +1,9 @@
 import {
-  "bobzhang/elk/core",
-  "bobzhang/elk/graph",
-  "bobzhang/elk/graph/json/text",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/graph",
+  "moonbit-community/elk/graph/json/text",
 }
 
 import {
-  "bobzhang/elk/graph/json/text/ui",
+  "moonbit-community/elk/graph/json/text/ui",
 } for "test"

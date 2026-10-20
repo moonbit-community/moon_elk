@@ -2,12 +2,12 @@ import {
   "moonbitlang/core/cmp",
   "moonbitlang/core/double",
   "moonbitlang/core/random",
-  "bobzhang/elk/graph",
-  "bobzhang/elk/core",
-  "bobzhang/elk/alg/common",
-  "bobzhang/elk/alg/common/nodespacing",
+  "moonbit-community/elk/graph",
+  "moonbit-community/elk/core",
+  "moonbit-community/elk/alg/common",
+  "moonbit-community/elk/alg/common/nodespacing",
 }
 
 import {
-  "bobzhang/elk/alg/common/compaction",
+  "moonbit-community/elk/alg/common/compaction",
 } for "test"

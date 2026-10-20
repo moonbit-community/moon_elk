@@ -1,9 +1,9 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "bobzhang/elk/alg/layered/compaction/oned"
+package "moonbit-community/elk/alg/layered/compaction/oned"
 
 import {
-  "bobzhang/elk/alg/common/compaction",
-  "bobzhang/elk/core",
+  "moonbit-community/elk/alg/common/compaction",
+  "moonbit-community/elk/core",
 }
 
 // Values
