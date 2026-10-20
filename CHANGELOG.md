@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.3.4 (moonbit-community/elk) - 2026-10-20
+## 0.4.0 - 2026-10-20
 
 - Continue maintenance under `moonbit-community/elk` in the community repository.
 - Incorporate all commits from `bobzhang/elk` through `cb509224`, preserving
