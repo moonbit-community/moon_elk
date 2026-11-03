@@ -182,7 +182,7 @@ fn label_side_selector_apply_label_side_to_node(
     let mut port_pos = 0.0
     if label_side_selector_label_side_is_above(effective_side) {
       port_pos = label_dummy.get_size().y - (thickness / 2.0).ceil()
-    } else if effective_side is @core.LabelSide::Inline {
+    } else if effective_side is Inline {
       // The label dummy has a superfluous label-edge spacing.
       port_pos = (label_dummy.get_size().y - edge_label_spacing - thickness).ceil() /
         2.0
