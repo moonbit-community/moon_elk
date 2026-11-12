@@ -26,9 +26,10 @@ pub fn to_port_array(ports : Array[LPort]) -> Array[LPort] {
 }
 
 ///|
+#derive(Debug, ToJson)
 pub(all) suberror LGraphUtilException {
   IllegalStateException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] l_graph_util_raise_illegal_state(

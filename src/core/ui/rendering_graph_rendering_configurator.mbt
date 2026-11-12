@@ -2,9 +2,10 @@
 pub let core_ui_swt_normal : Int32 = 0
 
 ///|
+#derive(Eq)
 pub(all) struct CoreUiDisplay {
   id : Int32
-} derive(Eq)
+}
 
 ///|
 pub fn new_core_ui_display() -> CoreUiDisplay {

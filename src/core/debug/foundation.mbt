@@ -11,9 +11,10 @@ pub let core_debug_pref_debug_store : String = "org.eclipse.elk.core.debug.store
 pub let core_debug_pref_debug_execution_time : String = "org.eclipse.elk.core.debug.executionTime"
 
 ///|
+#derive(Debug, ToJson)
 priv suberror CoreDebugFoundationException {
   CoreDebugFoundationException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn core_debug_foundation_raise_unit(

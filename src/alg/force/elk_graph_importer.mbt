@@ -4,9 +4,10 @@ pub struct ElkGraphImporter {
 }
 
 ///|
+#derive(Debug, ToJson)
 pub suberror ForceImportException {
   UnsupportedGraph(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn force_import_raise_unsupported_graph(

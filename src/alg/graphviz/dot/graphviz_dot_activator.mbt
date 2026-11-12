@@ -5,9 +5,10 @@ pub let graphviz_dot_language_name : String = "org.eclipse.elk.alg.graphviz.dot.
 pub let graphviz_dot_plugin_id : String = "org.eclipse.elk.alg.graphviz.dot"
 
 ///|
+#derive(Debug, ToJson)
 pub suberror GraphvizDotActivatorException {
   IllegalArgumentException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] graphviz_dot_activator_raise_illegal_argument(

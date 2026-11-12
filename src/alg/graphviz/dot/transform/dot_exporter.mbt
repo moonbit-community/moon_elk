@@ -11,9 +11,10 @@ pub let dot_exporter_def_spacing_xlarge : Double = 60.0
 pub let dot_exporter_dpi : Float = 72.0
 
 ///|
+#derive(Debug, ToJson)
 pub suberror DotExporterException {
   DotExporterException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn dot_exporter_raise_unit(message : String) -> Unit raise DotExporterException {

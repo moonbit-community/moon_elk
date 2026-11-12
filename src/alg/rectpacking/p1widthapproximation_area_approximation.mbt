@@ -6,9 +6,10 @@ pub struct RectpackingAreaApproximation {
 }
 
 ///|
+#derive(Debug, ToJson)
 pub suberror RectpackingWidthApproximationException {
   RectpackingWidthApproximationException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] rectpacking_width_approximation_raise(

@@ -6,6 +6,7 @@ import {
   "moonbit-community/elk/core",
   "moonbit-community/elk/graph",
   "moonbitlang/core/debug",
+  "moonbitlang/core/json",
 }
 
 // Values
@@ -232,16 +233,18 @@ pub fn stress_layout_provider_as_layout_provider(StressLayoutProvider) -> @core.
 pub fn stress_majorization_exception_message(StressMajorizationException) -> String
 
 // Errors
+#derive(@debug.Debug, @json.ToJson)
 pub suberror ForceImportException {
   UnsupportedGraph(String)
-} derive(ToJson, @debug.Debug)
-pub fn ForceImportException::to_json(Self) -> Json
+}
+pub fn ForceImportException::to_json(Self) -> @json.Json
 pub fn ForceImportException::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug, @json.ToJson)
 pub suberror StressMajorizationException {
   StressMajorizationException(String)
-} derive(ToJson, @debug.Debug)
-pub fn StressMajorizationException::to_json(Self) -> Json
+}
+pub fn StressMajorizationException::to_json(Self) -> @json.Json
 pub fn StressMajorizationException::to_repr(Self) -> @debug.Repr
 
 // Types and methods

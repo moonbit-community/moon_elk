@@ -2,10 +2,11 @@
 pub let graph_json_text_ui_language_name : String = "org.eclipse.elk.graph.json.text.ElkGraphJson"
 
 ///|
+#derive(Debug, ToJson)
 pub suberror GraphJsonTextActivatorException {
   IllegalArgumentException(String)
   RuntimeException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] graph_json_text_activator_raise_illegal_argument(

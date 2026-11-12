@@ -1,8 +1,9 @@
 ///|
+#derive(Debug)
 pub(all) enum CoreDebugGRandomSelectionItem {
   CoreDebugGRandomSelectionFile(String)
   CoreDebugGRandomSelectionOther
-} derive(Debug)
+}
 
 ///|
 pub(all) struct CoreDebugGRandomHandler {

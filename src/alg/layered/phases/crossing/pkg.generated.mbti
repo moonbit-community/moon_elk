@@ -7,6 +7,7 @@ import {
   "moonbit-community/elk/alg/layered/runtime/state",
   "moonbit-community/elk/core",
   "moonbitlang/core/debug",
+  "moonbitlang/core/json",
   "moonbitlang/core/random",
 }
 
@@ -104,22 +105,25 @@ pub fn register_crossing_minimization_phases(@runtime.LayeredPhaseRegistry) -> U
 pub fn register_crossing_processors(@runtime.LayeredPhaseRegistry) -> Unit
 
 // Errors
+#derive(@debug.Debug, @json.ToJson)
 pub suberror LayerTotalPortDistributorException {
   LayerTotalPortDistributorException(String)
-} derive(ToJson, @debug.Debug)
-pub fn LayerTotalPortDistributorException::to_json(Self) -> Json
+}
+pub fn LayerTotalPortDistributorException::to_json(Self) -> @json.Json
 pub fn LayerTotalPortDistributorException::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug, @json.ToJson)
 pub suberror NodeRelativePortDistributorException {
   NodeRelativePortDistributorException(String)
-} derive(ToJson, @debug.Debug)
-pub fn NodeRelativePortDistributorException::to_json(Self) -> Json
+}
+pub fn NodeRelativePortDistributorException::to_json(Self) -> @json.Json
 pub fn NodeRelativePortDistributorException::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug, @json.ToJson)
 pub suberror SweepCopyException {
   SweepCopyException(String)
-} derive(ToJson, @debug.Debug)
-pub fn SweepCopyException::to_json(Self) -> Json
+}
+pub fn SweepCopyException::to_json(Self) -> @json.Json
 pub fn SweepCopyException::to_repr(Self) -> @debug.Repr
 
 // Types and methods

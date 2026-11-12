@@ -5,6 +5,7 @@ import {
   "moonbit-community/elk/core",
   "moonbit-community/elk/graph",
   "moonbitlang/core/debug",
+  "moonbitlang/core/json",
 }
 
 // Values
@@ -63,10 +64,11 @@ pub fn topdownpacking_whitespace_elimination_strategy_from_string(String) -> Whi
 pub fn topdownpacking_whitespace_elimination_strategy_phase_factory(WhitespaceEliminationStrategy, GridElkNode) -> @core.LayoutProcessorFactory
 
 // Errors
+#derive(@debug.Debug, @json.ToJson)
 pub suberror TopdownpackingGridException {
   TopdownpackingGridException(String)
-} derive(ToJson, @debug.Debug)
-pub fn TopdownpackingGridException::to_json(Self) -> Json
+}
+pub fn TopdownpackingGridException::to_json(Self) -> @json.Json
 pub fn TopdownpackingGridException::to_repr(Self) -> @debug.Repr
 
 // Types and methods

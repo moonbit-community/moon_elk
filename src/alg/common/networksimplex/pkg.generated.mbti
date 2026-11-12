@@ -4,6 +4,7 @@ package "moonbit-community/elk/alg/common/networksimplex"
 import {
   "moonbit-community/elk/core",
   "moonbitlang/core/debug",
+  "moonbitlang/core/json",
 }
 
 // Values
@@ -20,11 +21,12 @@ pub fn new_ngraph() -> NGraph
 pub fn nnode_of() -> NNodeBuilder
 
 // Errors
+#derive(@debug.Debug, @json.ToJson)
 pub(all) suberror NetworkSimplexException {
   NetworkSimplexException(String)
-} derive(ToJson, @debug.Debug)
+}
 pub fn NetworkSimplexException::output(Self, &Logger) -> Unit
-pub fn NetworkSimplexException::to_json(Self) -> Json
+pub fn NetworkSimplexException::to_json(Self) -> @json.Json
 pub fn NetworkSimplexException::to_repr(Self) -> @debug.Repr
 pub fn NetworkSimplexException::to_string(Self) -> String
 pub impl Show for NetworkSimplexException

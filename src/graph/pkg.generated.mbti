@@ -163,15 +163,15 @@ pub let elk_graph_package_instance : String
 
 pub let elk_graph_property_value_classifier_id : Int32
 
-pub fn elk_reflect_clone(String, Json) -> Json?
+pub fn elk_reflect_clone(String, @json.Json) -> @json.Json?
 
-pub fn elk_reflect_new_instance(String) -> Json?
+pub fn elk_reflect_new_instance(String) -> @json.Json?
 
-pub fn elk_reflect_register(String, new_fun? : (() -> Json)?, clone_fun? : ((Json) -> Json)?) -> Unit
+pub fn elk_reflect_register(String, new_fun? : (() -> @json.Json)?, clone_fun? : ((@json.Json) -> @json.Json)?) -> Unit
 
-pub fn elk_reflect_register_clone(String, (Json) -> Json) -> Unit
+pub fn elk_reflect_register_clone(String, (@json.Json) -> @json.Json) -> Unit
 
-pub fn elk_reflect_register_new_instance(String, () -> Json) -> Unit
+pub fn elk_reflect_register_new_instance(String, () -> @json.Json) -> Unit
 
 pub fn elk_reflect_reset_for_test() -> Unit
 
@@ -193,7 +193,7 @@ pub fn elk_switch_target_elk_node(ElkNode) -> ElkGraphSwitchTarget
 
 pub fn elk_switch_target_elk_port(ElkPort) -> ElkGraphSwitchTarget
 
-pub fn elk_switch_target_elk_property_to_value_map_entry(Json) -> ElkGraphSwitchTarget
+pub fn elk_switch_target_elk_property_to_value_map_entry(@json.Json) -> ElkGraphSwitchTarget
 
 pub fn elk_switch_target_elk_shape(ElkShape) -> ElkGraphSwitchTarget
 
@@ -271,7 +271,7 @@ pub fn new_elk_graph_factory_impl_in_arena(GraphArena) -> ElkGraphFactory
 
 pub fn new_elk_graph_package_impl() -> String
 
-pub fn[T] new_elk_graph_switch(case_i_property_holder? : (MapPropertyHolder) -> T?, case_e_map_property_holder? : (MapPropertyHolder) -> T?, case_elk_graph_element? : (ElkGraphElement) -> T?, case_elk_shape? : (ElkShape) -> T?, case_elk_label? : (ElkLabel) -> T?, case_elk_connectable_shape? : (ElkConnectableShape) -> T?, case_elk_node? : (ElkNode) -> T?, case_elk_port? : (ElkPort) -> T?, case_elk_edge? : (ElkEdge) -> T?, case_elk_bend_point? : (ElkBendPoint) -> T?, case_elk_edge_section? : (ElkEdgeSection) -> T?, case_elk_property_to_value_map_entry? : (Json) -> T?, default_case? : () -> T?) -> ElkGraphSwitch[T]
+pub fn[T] new_elk_graph_switch(case_i_property_holder? : (MapPropertyHolder) -> T?, case_e_map_property_holder? : (MapPropertyHolder) -> T?, case_elk_graph_element? : (ElkGraphElement) -> T?, case_elk_shape? : (ElkShape) -> T?, case_elk_label? : (ElkLabel) -> T?, case_elk_connectable_shape? : (ElkConnectableShape) -> T?, case_elk_node? : (ElkNode) -> T?, case_elk_port? : (ElkPort) -> T?, case_elk_edge? : (ElkEdge) -> T?, case_elk_bend_point? : (ElkBendPoint) -> T?, case_elk_edge_section? : (ElkEdgeSection) -> T?, case_elk_property_to_value_map_entry? : (@json.Json) -> T?, default_case? : () -> T?) -> ElkGraphSwitch[T]
 
 pub fn new_elk_label_impl(parent? : ElkLabelParent?) -> ElkLabel
 
@@ -440,13 +440,14 @@ pub fn property_id_from_string(String) -> PropertyId
 pub fn update_containment(ElkEdge?) -> Unit raise ElkGraphUtilException
 
 // Errors
+#derive(@debug.Debug, @json.ToJson)
 pub(all) suberror ElkGraphUtilException {
   NullPointerException(String)
   IllegalArgumentException(String)
   IllegalStateException(String)
-} derive(ToJson, @debug.Debug)
+}
 pub fn ElkGraphUtilException::output(Self, &Logger) -> Unit
-pub fn ElkGraphUtilException::to_json(Self) -> Json
+pub fn ElkGraphUtilException::to_json(Self) -> @json.Json
 pub fn ElkGraphUtilException::to_repr(Self) -> @debug.Repr
 pub fn ElkGraphUtilException::to_string(Self) -> String
 pub impl Show for ElkGraphUtilException
@@ -561,7 +562,7 @@ pub struct ElkGraphSwitch[T] {
   case_elk_edge_fn : (ElkEdge) -> T?
   case_elk_bend_point_fn : (ElkBendPoint) -> T?
   case_elk_edge_section_fn : (ElkEdgeSection) -> T?
-  case_elk_property_to_value_map_entry_fn : (Json) -> T?
+  case_elk_property_to_value_map_entry_fn : (@json.Json) -> T?
   default_case_fn : () -> T?
 }
 pub fn[T] ElkGraphSwitch::do_switch(Self[T], ElkGraphSwitchTarget) -> T?
@@ -579,7 +580,7 @@ pub enum ElkGraphSwitchTarget {
   ElkEdgeTarget(ElkEdge)
   ElkBendPointTarget(ElkBendPoint)
   ElkEdgeSectionTarget(ElkEdgeSection)
-  ElkPropertyToValueMapEntryTarget(Json)
+  ElkPropertyToValueMapEntryTarget(@json.Json)
 }
 
 #alias(ElkLabelImpl)
@@ -724,10 +725,10 @@ pub struct MapPropertyHolder {
   // private fields
 }
 pub fn MapPropertyHolder::copy_properties(Self, Self?) -> Self
-pub fn MapPropertyHolder::get_all_properties(Self) -> Map[String, Json]
+pub fn MapPropertyHolder::get_all_properties(Self) -> Map[String, @json.Json]
 pub fn[T : @json.FromJson] MapPropertyHolder::get_property(Self, IProperty[T]) -> T
 pub fn[T] MapPropertyHolder::has_property(Self, IProperty[T]) -> Bool
-pub fn[T : ToJson] MapPropertyHolder::set_property(Self, IProperty[T], T?) -> Self
+pub fn[T : @json.ToJson] MapPropertyHolder::set_property(Self, IProperty[T], T?) -> Self
 
 pub struct PropertyHolderComparator[T] {
   property : IProperty[T]
@@ -735,9 +736,10 @@ pub struct PropertyHolderComparator[T] {
 pub fn[T : Compare + @json.FromJson] PropertyHolderComparator::compare(Self[T], MapPropertyHolder, MapPropertyHolder) -> Int32
 
 #alias(OptionId)
+#derive(Eq, Hash, @debug.Debug)
 pub struct PropertyId {
   // private fields
-} derive(Eq, Hash, @debug.Debug)
+}
 pub fn PropertyId::equal(Self, Self) -> Bool
 pub fn PropertyId::hash(Self) -> Int32
 pub fn PropertyId::hash_combine(Self, Hasher) -> Unit
@@ -753,9 +755,9 @@ pub type ElkGraphPackage = String
 
 pub type ElkGraphPackageImpl = String
 
-pub type ElkReflectCloneFunction = (Json) -> Json
+pub type ElkReflectCloneFunction = (@json.Json) -> @json.Json
 
-pub type ElkReflectNewInstanceFunction = () -> Json
+pub type ElkReflectNewInstanceFunction = () -> @json.Json
 
 pub type ExperimentalPropertyValue = Unit
 

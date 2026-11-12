@@ -76,9 +76,10 @@ pub fn libavoid_server_set_default_transport(
 }
 
 ///|
+#derive(Debug, ToJson)
 pub suberror LibavoidServerStateException {
   LibavoidServerStateException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn libavoid_server_raise_illegal_state(

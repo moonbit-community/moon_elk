@@ -8,6 +8,7 @@ import {
   "moonbit-community/elk/core",
   "moonbit-community/elk/graph",
   "moonbitlang/core/debug",
+  "moonbitlang/core/json",
 }
 
 // Values
@@ -164,22 +165,25 @@ pub fn sort_by_input_model_processor_long_edge_target_node_preprocessing(@runtim
 pub fn vertical_segment_origin_key(VerticalSegment) -> String
 
 // Errors
-type CuttingUtilsException derive(ToJson, @debug.Debug)
-pub fn CuttingUtilsException::to_json(Self) -> Json
+#derive(@debug.Debug, @json.ToJson)
+type CuttingUtilsException
+pub fn CuttingUtilsException::to_json(Self) -> @json.Json
 pub fn CuttingUtilsException::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug, @json.ToJson)
 pub(all) suberror LayerConstraintPostprocessorException {
   UnsupportedConfigurationException(String)
   IllegalStateException(String)
-} derive(ToJson, @debug.Debug)
-pub fn LayerConstraintPostprocessorException::to_json(Self) -> Json
+}
+pub fn LayerConstraintPostprocessorException::to_json(Self) -> @json.Json
 pub fn LayerConstraintPostprocessorException::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug, @json.ToJson)
 pub(all) suberror LayerConstraintPreprocessorException {
   UnsupportedConfigurationException(String)
   IllegalStateException(String)
-} derive(ToJson, @debug.Debug)
-pub fn LayerConstraintPreprocessorException::to_json(Self) -> Json
+}
+pub fn LayerConstraintPreprocessorException::to_json(Self) -> @json.Json
 pub fn LayerConstraintPreprocessorException::to_repr(Self) -> @debug.Repr
 
 // Types and methods

@@ -10,9 +10,10 @@ let core_debug_grandom_hypernode_property : @graph.IProperty[Bool] = @graph.new_
 )
 
 ///|
+#derive(Debug, ToJson)
 priv suberror CoreDebugGrandomGeneratorException {
   CoreDebugGrandomGeneratorException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn core_debug_grandom_generator_raise_unit(

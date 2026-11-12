@@ -4,9 +4,10 @@ pub struct RadialLayoutProvider {
 }
 
 ///|
+#derive(Debug, ToJson)
 priv suberror RadialLayoutProviderException {
   UnsupportedConfiguration(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn radial_layout_provider_raise_unsupported_configuration(

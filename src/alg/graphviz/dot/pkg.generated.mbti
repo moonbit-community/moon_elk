@@ -3,6 +3,7 @@ package "moonbit-community/elk/alg/graphviz/dot"
 
 import {
   "moonbitlang/core/debug",
+  "moonbitlang/core/json",
 }
 
 // Values
@@ -407,16 +408,18 @@ pub fn new_internal_graphviz_dot_lexer(String) -> InternalGraphvizDotLexer
 pub fn new_internal_graphviz_dot_parser(Array[GraphvizDotLexToken], grammar_access? : GraphvizDotGrammarAccess) -> InternalGraphvizDotParser
 
 // Errors
+#derive(@debug.Debug, @json.ToJson)
 pub suberror GraphvizDotActivatorException {
   IllegalArgumentException(String)
-} derive(ToJson, @debug.Debug)
-pub fn GraphvizDotActivatorException::to_json(Self) -> Json
+}
+pub fn GraphvizDotActivatorException::to_json(Self) -> @json.Json
 pub fn GraphvizDotActivatorException::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug, @json.ToJson)
 pub suberror GraphvizDotExecutableExtensionFactoryException {
   IllegalArgumentException(String)
-} derive(ToJson, @debug.Debug)
-pub fn GraphvizDotExecutableExtensionFactoryException::to_json(Self) -> Json
+}
+pub fn GraphvizDotExecutableExtensionFactoryException::to_json(Self) -> @json.Json
 pub fn GraphvizDotExecutableExtensionFactoryException::to_repr(Self) -> @debug.Repr
 
 // Types and methods

@@ -15,9 +15,10 @@ pub fn new_option_metadata() -> OptionMetadata {
 }
 
 ///|
+#derive(Debug, ToJson)
 priv suberror LayoutMetaDataServiceException {
   LayoutMetaDataServiceException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn layout_meta_data_service_raise_unit(

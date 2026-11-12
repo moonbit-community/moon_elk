@@ -1,7 +1,8 @@
 ///|
+#derive(Debug, ToJson)
 priv suberror LongestPathCompactionException {
   UnsupportedGraphException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] longest_path_compaction_raise_unsupported_graph(

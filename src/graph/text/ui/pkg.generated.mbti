@@ -7,6 +7,7 @@ import {
   "moonbit-community/elk/graph/text",
   "moonbit-community/elk/graph/text/ide",
   "moonbitlang/core/debug",
+  "moonbitlang/core/json",
 }
 
 // Values
@@ -93,23 +94,26 @@ pub fn text_activator_get_instance() -> TextActivator?
 pub fn text_activator_reset_for_test() -> Unit
 
 // Errors
+#derive(@debug.Debug, @json.ToJson)
 pub(all) suberror ElkGraphTextUiActivatorException {
   IllegalArgumentException(String)
-} derive(ToJson, @debug.Debug)
-pub fn ElkGraphTextUiActivatorException::to_json(Self) -> Json
+}
+pub fn ElkGraphTextUiActivatorException::to_json(Self) -> @json.Json
 pub fn ElkGraphTextUiActivatorException::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug, @json.ToJson)
 pub suberror GraphTextActivatorException {
   IllegalArgumentException(String)
   RuntimeException(String)
-} derive(ToJson, @debug.Debug)
-pub fn GraphTextActivatorException::to_json(Self) -> Json
+}
+pub fn GraphTextActivatorException::to_json(Self) -> @json.Json
 pub fn GraphTextActivatorException::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug, @json.ToJson)
 pub suberror GraphTextExecutableExtensionFactoryException {
   IllegalArgumentException(String)
-} derive(ToJson, @debug.Debug)
-pub fn GraphTextExecutableExtensionFactoryException::to_json(Self) -> Json
+}
+pub fn GraphTextExecutableExtensionFactoryException::to_json(Self) -> @json.Json
 pub fn GraphTextExecutableExtensionFactoryException::to_repr(Self) -> @debug.Repr
 
 // Types and methods
@@ -346,10 +350,11 @@ pub fn GraphTextProject::list_files(Self) -> Array[String]
 pub fn GraphTextProject::read_file(Self, String) -> String?
 pub fn GraphTextProject::write_file(Self, String, String) -> Unit
 
+#derive(@debug.Debug)
 pub(all) enum GraphTextSelectionItem {
   GraphTextSelectionFile(String, String)
   GraphTextSelectionOther
-} derive(@debug.Debug)
+}
 pub fn GraphTextSelectionItem::to_repr(Self) -> @debug.Repr
 
 pub struct GraphTextUiBundle {

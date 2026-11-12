@@ -4,9 +4,10 @@ pub struct NumberValueConverter {
 }
 
 ///|
+#derive(Debug, ToJson)
 pub suberror NumberValueConverterException {
   NumberValueConverterException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn number_value_converter_raise_unit(

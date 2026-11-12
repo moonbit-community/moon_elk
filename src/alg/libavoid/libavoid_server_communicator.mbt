@@ -43,9 +43,10 @@ pub struct LibavoidServerCommunicator {
 }
 
 ///|
+#derive(Debug, ToJson)
 pub suberror LibavoidCommunicatorException {
   LibavoidCommunicatorException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] libavoid_communicator_raise(

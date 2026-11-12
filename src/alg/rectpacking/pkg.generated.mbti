@@ -6,6 +6,7 @@ import {
   "moonbit-community/elk/core",
   "moonbit-community/elk/graph",
   "moonbitlang/core/debug",
+  "moonbitlang/core/json",
 }
 
 // Values
@@ -138,10 +139,11 @@ pub fn rectpacking_width_approximation_strategy_phase_factory(RectpackingWidthAp
 pub fn register_rectpacking_layout_algorithm(@core.LayoutRuntime) -> Unit
 
 // Errors
+#derive(@debug.Debug, @json.ToJson)
 pub suberror RectpackingWidthApproximationException {
   RectpackingWidthApproximationException(String)
-} derive(ToJson, @debug.Debug)
-pub fn RectpackingWidthApproximationException::to_json(Self) -> Json
+}
+pub fn RectpackingWidthApproximationException::to_json(Self) -> @json.Json
 pub fn RectpackingWidthApproximationException::to_repr(Self) -> @debug.Repr
 
 // Types and methods

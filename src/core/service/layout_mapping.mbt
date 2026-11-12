@@ -8,12 +8,13 @@ pub type ServiceDiagramElement = Int32
 pub type ServiceGraphElement = @graph.ElkNode
 
 ///|
+#derive(Eq, Debug)
 pub(all) enum LayoutMappingStatus {
   OkStatus
   WarningStatus(String)
   ErrorStatus(String)
   CanceledStatus
-} derive(Eq, Debug)
+}
 
 ///|
 pub impl Show for LayoutMappingStatus with fn output(self, logger) {

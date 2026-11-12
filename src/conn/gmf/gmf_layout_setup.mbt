@@ -1,11 +1,12 @@
 ///|
+#derive(Debug)
 pub(all) enum GmfLayoutSetupObject {
   DiagramEditor
   GraphicalEditPart(GmfEditPart)
   AdaptableWithDiagramEditor
   Collection(Array[GmfLayoutSetupObject])
   Other
-} derive(Debug)
+}
 
 ///|
 pub struct GmfInjector {

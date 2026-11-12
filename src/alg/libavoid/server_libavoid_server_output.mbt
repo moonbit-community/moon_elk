@@ -6,9 +6,10 @@ priv enum LibavoidServerOutputState {
 }
 
 ///|
+#derive(Debug, ToJson)
 pub suberror LibavoidServerOutputException {
   LibavoidServerOutputException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] libavoid_server_output_raise(

@@ -12,9 +12,10 @@ pub struct StressMajorization {
 }
 
 ///|
+#derive(Debug, ToJson)
 pub suberror StressMajorizationException {
   StressMajorizationException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] stress_majorization_raise(

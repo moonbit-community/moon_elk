@@ -1,7 +1,8 @@
 ///|
+#derive(Debug, ToJson)
 pub(all) suberror SCCModelOrderCycleBreakerException {
   UnsupportedGraphException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] scc_model_order_cycle_breaker_raise_unsupported_graph(

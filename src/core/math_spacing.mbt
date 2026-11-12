@@ -1,7 +1,8 @@
 ///|
+#derive(Debug, ToJson)
 priv suberror SpacingParseException {
   SpacingParseException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn spacing_parse_raise_unit(

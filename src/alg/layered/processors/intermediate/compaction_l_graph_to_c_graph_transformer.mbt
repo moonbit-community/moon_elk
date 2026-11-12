@@ -1,7 +1,8 @@
 ///|
+#derive(Debug, ToJson)
 priv suberror LGraphToCGraphTransformerException {
   LGraphToCGraphTransformerException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] lgraph_to_cgraph_transformer_raise(

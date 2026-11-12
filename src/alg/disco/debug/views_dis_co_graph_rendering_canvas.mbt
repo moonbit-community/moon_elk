@@ -7,9 +7,10 @@ pub struct DisCoPaintEvent {
 }
 
 ///|
+#derive(Debug, ToJson)
 pub suberror DisCoGraphRenderingCanvasException {
   DisCoGraphRenderingCanvasException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn dis_co_graph_rendering_canvas_raise_unit(

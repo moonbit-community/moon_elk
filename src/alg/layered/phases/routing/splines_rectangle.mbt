@@ -7,9 +7,10 @@ pub struct Rectangle {
 }
 
 ///|
+#derive(Debug, ToJson)
 pub suberror RectangleException {
   RectangleException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] rectangle_raise(message : String) -> T raise RectangleException {

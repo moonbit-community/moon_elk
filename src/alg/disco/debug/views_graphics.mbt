@@ -2,9 +2,10 @@
 pub let dis_co_swt_normal : Int32 = 0
 
 ///|
+#derive(Eq)
 pub struct DisCoDebugDisplay {
   id : Int32
-} derive(Eq)
+}
 
 ///|
 pub fn new_dis_co_debug_display() -> DisCoDebugDisplay {

@@ -5,6 +5,7 @@ import {
   "moonbit-community/elk/alg/layered/runtime",
   "moonbit-community/elk/core",
   "moonbitlang/core/debug",
+  "moonbitlang/core/json",
 }
 
 // Values
@@ -45,22 +46,25 @@ pub fn new_simple_node_placer_layout_phase() -> @core.TypedLayoutProcessor[@runt
 pub fn register_node_placement_phases(@runtime.LayeredPhaseRegistry) -> Unit
 
 // Errors
+#derive(@debug.Debug, @json.ToJson)
 pub(all) suberror BKAlignedLayoutException {
   IllegalStateException(String)
-} derive(ToJson, @debug.Debug)
-pub fn BKAlignedLayoutException::to_json(Self) -> Json
+}
+pub fn BKAlignedLayoutException::to_json(Self) -> @json.Json
 pub fn BKAlignedLayoutException::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug, @json.ToJson)
 pub suberror BkThresholdStrategyException {
   BkThresholdStrategyException(String)
-} derive(ToJson, @debug.Debug)
-pub fn BkThresholdStrategyException::to_json(Self) -> Json
+}
+pub fn BkThresholdStrategyException::to_json(Self) -> @json.Json
 pub fn BkThresholdStrategyException::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug, @json.ToJson)
 pub suberror NetworkSimplexPlacerException {
   NetworkSimplexPlacerException(String)
-} derive(ToJson, @debug.Debug)
-pub fn NetworkSimplexPlacerException::to_json(Self) -> Json
+}
+pub fn NetworkSimplexPlacerException::to_json(Self) -> @json.Json
 pub fn NetworkSimplexPlacerException::to_repr(Self) -> @debug.Repr
 
 // Types and methods

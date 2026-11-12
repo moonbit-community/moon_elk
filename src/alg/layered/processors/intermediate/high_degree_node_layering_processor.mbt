@@ -2,9 +2,10 @@
 type HighDegreeEdgeSelector = (@runtime.LNode) -> Array[@runtime.LEdge]
 
 ///|
+#derive(Debug, ToJson)
 priv suberror HighDegreeNodeLayeringProcessorException {
   HighDegreeNodeLayeringProcessorException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] high_degree_node_layering_processor_raise(

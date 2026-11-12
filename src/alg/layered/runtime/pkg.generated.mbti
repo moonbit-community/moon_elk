@@ -8,6 +8,7 @@ import {
   "moonbit-community/elk/core",
   "moonbit-community/elk/graph",
   "moonbitlang/core/debug",
+  "moonbitlang/core/json",
 }
 
 // Values
@@ -346,42 +347,48 @@ pub fn to_node_array(Array[LNode]) -> Array[LNode]
 pub fn to_port_array(Array[LPort]) -> Array[LPort]
 
 // Errors
+#derive(@debug.Debug, @json.ToJson)
 pub(all) suberror LEdgeException {
   IllegalArgumentException(String)
   IllegalStateException(String)
-} derive(ToJson, @debug.Debug)
-pub fn LEdgeException::to_json(Self) -> Json
+}
+pub fn LEdgeException::to_json(Self) -> @json.Json
 pub fn LEdgeException::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug, @json.ToJson)
 pub suberror LGraphAdapterException {
   LGraphAdapterException(String)
-} derive(ToJson, @debug.Debug)
-pub fn LGraphAdapterException::to_json(Self) -> Json
+}
+pub fn LGraphAdapterException::to_json(Self) -> @json.Json
 pub fn LGraphAdapterException::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug, @json.ToJson)
 pub(all) suberror LGraphUtilException {
   IllegalStateException(String)
-} derive(ToJson, @debug.Debug)
-pub fn LGraphUtilException::to_json(Self) -> Json
+}
+pub fn LGraphUtilException::to_json(Self) -> @json.Json
 pub fn LGraphUtilException::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug, @json.ToJson)
 pub suberror LayeredSpacingsException {
   LayeredSpacingsException(String)
-} derive(ToJson, @debug.Debug)
-pub fn LayeredSpacingsException::to_json(Self) -> Json
+}
+pub fn LayeredSpacingsException::to_json(Self) -> @json.Json
 pub fn LayeredSpacingsException::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug, @json.ToJson)
 pub(all) suberror SelfLoopHolderException {
   UnsupportedConfigurationException(String)
   IllegalStateException(String)
-} derive(ToJson, @debug.Debug)
-pub fn SelfLoopHolderException::to_json(Self) -> Json
+}
+pub fn SelfLoopHolderException::to_json(Self) -> @json.Json
 pub fn SelfLoopHolderException::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug, @json.ToJson)
 pub(all) suberror SelfLoopTypeException {
   IllegalArgumentException(String)
-} derive(ToJson, @debug.Debug)
-pub fn SelfLoopTypeException::to_json(Self) -> Json
+}
+pub fn SelfLoopTypeException::to_json(Self) -> @json.Json
 pub fn SelfLoopTypeException::to_repr(Self) -> @debug.Repr
 
 // Types and methods

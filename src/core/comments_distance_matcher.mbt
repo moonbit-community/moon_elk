@@ -27,9 +27,10 @@ let distance_matcher_out_bottom_right : Int32 = distance_matcher_out_bottom |
   distance_matcher_out_right
 
 ///|
+#derive(Debug, ToJson)
 pub suberror DistanceMatcherException {
   DistanceMatcherException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] distance_matcher_raise(

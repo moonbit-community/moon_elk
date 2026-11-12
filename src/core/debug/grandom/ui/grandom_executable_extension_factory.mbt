@@ -2,9 +2,10 @@
 pub let core_debug_grandom_ui_status_error : Int32 = 4
 
 ///|
+#derive(Debug, ToJson)
 priv suberror CoreDebugGrandomExecutableExtensionFactoryException {
   CoreDebugGrandomExecutableExtensionFactoryException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn core_debug_grandom_executable_extension_factory_raise_unit(

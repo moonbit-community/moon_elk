@@ -26,9 +26,10 @@ let network_simplex_other : Int32 = 0
 let network_simplex_junction : Int32 = 2
 
 ///|
+#derive(Debug, ToJson)
 pub suberror NetworkSimplexPlacerException {
   NetworkSimplexPlacerException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] network_simplex_placer_raise(

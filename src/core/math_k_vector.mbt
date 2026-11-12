@@ -8,9 +8,10 @@ pub(all) struct KVector {
 let default_fuzzyness = 0.05
 
 ///|
+#derive(Debug, ToJson)
 priv suberror KVectorException {
   KVectorException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] kvector_raise(message : String) -> T raise KVectorException {

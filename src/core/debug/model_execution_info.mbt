@@ -2,9 +2,10 @@
 pub type ExecutionInfo = Int32
 
 ///|
+#derive(Debug, ToJson)
 priv suberror ExecutionInfoException {
   ExecutionInfoException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn execution_info_raise_unit(

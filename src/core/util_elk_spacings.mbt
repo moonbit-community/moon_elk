@@ -9,9 +9,10 @@ pub(all) struct ElkCoreSpacingsBuilder {
 }
 
 ///|
+#derive(Debug, ToJson)
 pub suberror ElkSpacingsException {
   ElkSpacingsException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] elk_spacings_raise(message : String) -> T raise ElkSpacingsException {

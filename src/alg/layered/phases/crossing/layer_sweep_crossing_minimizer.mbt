@@ -11,9 +11,10 @@ fn layer_sweep_cross_min_type_to_string(
 }
 
 ///|
+#derive(Debug, ToJson)
 priv suberror LayerSweepCrossingMinimizerException {
   IllegalStateException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] layer_sweep_crossing_minimizer_raise_illegal_state(

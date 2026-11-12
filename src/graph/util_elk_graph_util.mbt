@@ -1,9 +1,10 @@
 ///|
+#derive(Debug, ToJson)
 pub(all) suberror ElkGraphUtilException {
   NullPointerException(String)
   IllegalArgumentException(String)
   IllegalStateException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 pub impl Show for ElkGraphUtilException with fn output(self, logger) {

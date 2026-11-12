@@ -12,9 +12,10 @@ priv struct GreedyCycleBreakerState {
 }
 
 ///|
+#derive(Debug, ToJson)
 pub(all) suberror GreedyCycleBreakerException {
   UnsupportedGraphException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] greedy_cycle_breaker_raise_unsupported_graph(

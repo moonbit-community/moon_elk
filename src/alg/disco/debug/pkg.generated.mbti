@@ -5,6 +5,7 @@ import {
   "moonbit-community/elk/alg/disco",
   "moonbit-community/elk/core",
   "moonbit-community/elk/graph",
+  "moonbitlang/core/json",
 }
 
 // Values
@@ -271,10 +272,11 @@ pub fn selective_paint_toggle_action_is_checked(SelectivePaintToggleAction) -> B
 pub fn selective_paint_toggle_action_run(SelectivePaintToggleAction) -> Unit
 
 // Errors
+#derive(@moonbitlang/core/debug.Debug, @json.ToJson)
 pub suberror DisCoGraphRenderingCanvasException {
   DisCoGraphRenderingCanvasException(String)
-} derive(ToJson, @moonbitlang/core/debug.Debug)
-pub fn DisCoGraphRenderingCanvasException::to_json(Self) -> Json
+}
+pub fn DisCoGraphRenderingCanvasException::to_json(Self) -> @json.Json
 pub fn DisCoGraphRenderingCanvasException::to_repr(Self) -> @moonbitlang/core/debug.Repr
 
 // Types and methods
@@ -299,9 +301,10 @@ pub struct DisCoDebugColor {
   mut disposed : Bool
 }
 
+#derive(Eq)
 pub struct DisCoDebugDisplay {
   id : Int32
-} derive(Eq)
+}
 pub fn DisCoDebugDisplay::equal(Self, Self) -> Bool
 pub fn DisCoDebugDisplay::not_equal(Self, Self) -> Bool
 

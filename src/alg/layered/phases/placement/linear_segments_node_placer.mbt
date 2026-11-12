@@ -1,7 +1,8 @@
 ///|
+#derive(Debug, ToJson)
 priv suberror LinearSegmentsNodePlacerException {
   LinearSegmentsNodePlacerException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] linear_segments_raise(

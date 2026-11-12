@@ -5,6 +5,7 @@ import {
   "moonbit-community/elk/core",
   "moonbit-community/elk/graph",
   "moonbitlang/core/debug",
+  "moonbitlang/core/json",
 }
 
 // Values
@@ -169,22 +170,25 @@ pub fn new_internal_elk_graph_json_lexer(String) -> InternalElkGraphJsonLexer
 pub fn new_internal_elk_graph_json_parser(@core.OptionMetadata, Array[ElkGraphJsonLexToken], grammar_access? : ElkGraphJsonGrammarAccess) -> InternalElkGraphJsonParser
 
 // Errors
+#derive(@debug.Debug, @json.ToJson)
 pub suberror ElkGraphJsonQualifiedNameConverterException {
   ElkGraphJsonQualifiedNameConverterException(String)
-} derive(ToJson, @debug.Debug)
-pub fn ElkGraphJsonQualifiedNameConverterException::to_json(Self) -> Json
+}
+pub fn ElkGraphJsonQualifiedNameConverterException::to_json(Self) -> @json.Json
 pub fn ElkGraphJsonQualifiedNameConverterException::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug, @json.ToJson)
 pub suberror GraphJsonTextNumberValueConverterException {
   GraphJsonTextNumberValueConverterException(String)
-} derive(ToJson, @debug.Debug)
-pub fn GraphJsonTextNumberValueConverterException::to_json(Self) -> Json
+}
+pub fn GraphJsonTextNumberValueConverterException::to_json(Self) -> @json.Json
 pub fn GraphJsonTextNumberValueConverterException::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug, @json.ToJson)
 pub suberror GraphJsonTextPropertyKeyValueConverterException {
   GraphJsonTextPropertyKeyValueConverterException(String)
-} derive(ToJson, @debug.Debug)
-pub fn GraphJsonTextPropertyKeyValueConverterException::to_json(Self) -> Json
+}
+pub fn GraphJsonTextPropertyKeyValueConverterException::to_json(Self) -> @json.Json
 pub fn GraphJsonTextPropertyKeyValueConverterException::to_repr(Self) -> @debug.Repr
 
 // Types and methods
@@ -442,10 +446,11 @@ pub(all) enum GraphJsonTextLabelOwner {
   GraphJsonTextLabelOnLabel(@graph.ElkLabel)
 }
 
+#derive(@debug.Debug)
 pub(all) enum GraphJsonTextListTransient {
   GraphJsonTextListTransientYes
   GraphJsonTextListTransientNo
-} derive(@debug.Debug)
+}
 pub fn GraphJsonTextListTransient::output(Self, &Logger) -> Unit
 pub fn GraphJsonTextListTransient::to_repr(Self) -> @debug.Repr
 pub fn GraphJsonTextListTransient::to_string(Self) -> String
@@ -480,13 +485,14 @@ pub fn GraphJsonTextPropertyKeyValueConverter::initialize(Self, ElkGraphJsonGram
 pub fn GraphJsonTextPropertyKeyValueConverter::to_string(Self, GraphJsonTextPropertyKey?) -> String raise
 pub fn GraphJsonTextPropertyKeyValueConverter::to_value(Self, String) -> GraphJsonTextPropertyKey raise
 
+#derive(@debug.Debug)
 pub(all) enum GraphJsonTextPropertyValue {
   GraphJsonTextNullValue
   GraphJsonTextStringValue(String)
   GraphJsonTextNumberValue(Double)
   GraphJsonTextBooleanValue(Bool)
   GraphJsonTextProxyValue(String)
-} derive(@debug.Debug)
+}
 pub fn GraphJsonTextPropertyValue::output(Self, &Logger) -> Unit
 pub fn GraphJsonTextPropertyValue::to_repr(Self) -> @debug.Repr
 pub fn GraphJsonTextPropertyValue::to_string(Self) -> String

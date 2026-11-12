@@ -1,10 +1,11 @@
 ///|
+#derive(Debug)
 pub(all) enum LayoutSetupObject {
   WorkbenchPartObject(ServiceWorkbenchPart)
   DiagramPartObject(ServiceDiagramElement)
   SelectionObject(Array[ServiceDiagramElement])
   OtherObject
-} derive(Debug)
+}
 
 ///|
 pub(all) struct ILayoutSetup {

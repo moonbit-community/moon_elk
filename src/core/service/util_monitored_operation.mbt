@@ -1,10 +1,11 @@
 ///|
+#derive(Eq, Debug)
 pub(all) enum MonitoredOperationStatus {
   OperationOk
   OperationWarning
   OperationError
   OperationCanceled
-} derive(Eq, Debug)
+}
 
 ///|
 pub impl Show for MonitoredOperationStatus with fn output(self, logger) {

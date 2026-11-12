@@ -5,6 +5,7 @@ import {
   "moonbit-community/elk/alg/layered/runtime",
   "moonbit-community/elk/core",
   "moonbitlang/core/debug",
+  "moonbitlang/core/json",
 }
 
 // Values
@@ -33,40 +34,46 @@ pub fn new_scc_node_type_cycle_breaker_layout_phase() -> @core.TypedLayoutProces
 pub fn register_cycle_breaking_phases(@runtime.LayeredPhaseRegistry) -> Unit
 
 // Errors
+#derive(@debug.Debug, @json.ToJson)
 pub(all) suberror DepthFirstCycleBreakerException {
   UnsupportedGraphException(String)
-} derive(ToJson, @debug.Debug)
-pub fn DepthFirstCycleBreakerException::to_json(Self) -> Json
+}
+pub fn DepthFirstCycleBreakerException::to_json(Self) -> @json.Json
 pub fn DepthFirstCycleBreakerException::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug, @json.ToJson)
 pub(all) suberror DfsNodeOrderCycleBreakerException {
   UnsupportedGraphException(String)
-} derive(ToJson, @debug.Debug)
-pub fn DfsNodeOrderCycleBreakerException::to_json(Self) -> Json
+}
+pub fn DfsNodeOrderCycleBreakerException::to_json(Self) -> @json.Json
 pub fn DfsNodeOrderCycleBreakerException::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug, @json.ToJson)
 pub(all) suberror GreedyCycleBreakerException {
   UnsupportedGraphException(String)
-} derive(ToJson, @debug.Debug)
-pub fn GreedyCycleBreakerException::to_json(Self) -> Json
+}
+pub fn GreedyCycleBreakerException::to_json(Self) -> @json.Json
 pub fn GreedyCycleBreakerException::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug, @json.ToJson)
 pub(all) suberror InteractiveCycleBreakerException {
   UnsupportedGraphException(String)
-} derive(ToJson, @debug.Debug)
-pub fn InteractiveCycleBreakerException::to_json(Self) -> Json
+}
+pub fn InteractiveCycleBreakerException::to_json(Self) -> @json.Json
 pub fn InteractiveCycleBreakerException::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug, @json.ToJson)
 pub(all) suberror ModelOrderCycleBreakerException {
   UnsupportedGraphException(String)
-} derive(ToJson, @debug.Debug)
-pub fn ModelOrderCycleBreakerException::to_json(Self) -> Json
+}
+pub fn ModelOrderCycleBreakerException::to_json(Self) -> @json.Json
 pub fn ModelOrderCycleBreakerException::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug, @json.ToJson)
 pub(all) suberror SCCModelOrderCycleBreakerException {
   UnsupportedGraphException(String)
-} derive(ToJson, @debug.Debug)
-pub fn SCCModelOrderCycleBreakerException::to_json(Self) -> Json
+}
+pub fn SCCModelOrderCycleBreakerException::to_json(Self) -> @json.Json
 pub fn SCCModelOrderCycleBreakerException::to_repr(Self) -> @debug.Repr
 
 // Types and methods

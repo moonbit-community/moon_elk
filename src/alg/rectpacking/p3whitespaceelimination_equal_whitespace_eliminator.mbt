@@ -1,7 +1,8 @@
 ///|
+#derive(Debug, ToJson)
 priv suberror RectPackingEqualWhitespaceEliminatorException {
   UnsupportedConfiguration(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn rectpacking_raise_unsupported_configuration(

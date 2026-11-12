@@ -259,9 +259,10 @@ pub(all) struct CoreUiColor {
   mut disposed : Bool
 }
 
+#derive(Eq)
 pub(all) struct CoreUiDisplay {
   id : Int32
-} derive(Eq)
+}
 pub fn CoreUiDisplay::equal(Self, Self) -> Bool
 pub fn CoreUiDisplay::not_equal(Self, Self) -> Bool
 

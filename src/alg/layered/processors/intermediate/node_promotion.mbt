@@ -1,7 +1,8 @@
 ///|
+#derive(Debug, ToJson)
 priv suberror NodePromotionException {
   NodePromotionException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] node_promotion_raise(message : String) -> T raise NodePromotionException {

@@ -1,7 +1,8 @@
 ///|
+#derive(Debug, ToJson)
 priv suberror AlgorithmAssemblerException {
   AlgorithmAssemblerException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn algorithm_assembler_raise(

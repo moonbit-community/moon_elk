@@ -8,9 +8,10 @@ pub enum OverlapMode {
 }
 
 ///|
+#derive(Debug, ToJson)
 pub(all) suberror OverlapModeException {
   IllegalArgumentException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] overlap_mode_raise_illegal_argument(

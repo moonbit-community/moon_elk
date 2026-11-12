@@ -7,9 +7,10 @@ priv struct DfsNodeOrderCycleBreakerState {
 }
 
 ///|
+#derive(Debug, ToJson)
 pub(all) suberror DfsNodeOrderCycleBreakerException {
   UnsupportedGraphException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] dfs_node_order_cycle_breaker_raise_unsupported_graph(

@@ -1,7 +1,8 @@
 ///|
+#derive(Debug, ToJson)
 pub suberror JsonImportException {
   JsonImportException(String?, String?)
-} derive(Debug, ToJson)
+}
 
 ///|
 pub fn new_json_import_exception() -> JsonImportException {

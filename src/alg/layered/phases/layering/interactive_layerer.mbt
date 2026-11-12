@@ -24,9 +24,10 @@ fn interactive_layerer_layer_constraint_postprocessor_factory(
 }
 
 ///|
+#derive(Debug, ToJson)
 pub(all) suberror InteractiveLayererException {
   UnsupportedGraphException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] interactive_layerer_raise_unsupported_graph(

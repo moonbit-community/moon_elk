@@ -1,7 +1,8 @@
 ///|
+#derive(Debug, ToJson)
 priv suberror HypernodesProcessorException {
   UnsupportedGraphException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] hypernodes_processor_raise_unsupported_graph(

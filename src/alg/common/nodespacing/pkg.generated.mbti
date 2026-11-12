@@ -5,6 +5,7 @@ import {
   "moonbit-community/elk/core",
   "moonbit-community/elk/graph",
   "moonbitlang/core/debug",
+  "moonbitlang/core/json",
 }
 
 // Values
@@ -201,22 +202,25 @@ pub fn vertical_label_alignment_values() -> Array[VerticalLabelAlignment]
 pub fn vertical_port_placement_size_calculator_calculate_vertical_port_placement_size(NodeContext) -> Unit
 
 // Errors
+#derive(@debug.Debug, @json.ToJson)
 pub(all) suberror NodeContextException {
   UnsupportedConfigurationException(String)
-} derive(ToJson, @debug.Debug)
-pub fn NodeContextException::to_json(Self) -> Json
+}
+pub fn NodeContextException::to_json(Self) -> @json.Json
 pub fn NodeContextException::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug, @json.ToJson)
 pub(all) suberror NodeLabelCellCreatorException {
   IllegalArgumentException(String)
-} derive(ToJson, @debug.Debug)
-pub fn NodeLabelCellCreatorException::to_json(Self) -> Json
+}
+pub fn NodeLabelCellCreatorException::to_json(Self) -> @json.Json
 pub fn NodeLabelCellCreatorException::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug, @json.ToJson)
 pub(all) suberror PortContextCreatorException {
   IllegalArgumentException(String)
-} derive(ToJson, @debug.Debug)
-pub fn PortContextCreatorException::to_json(Self) -> Json
+}
+pub fn PortContextCreatorException::to_json(Self) -> @json.Json
 pub fn PortContextCreatorException::to_repr(Self) -> @debug.Repr
 
 // Types and methods

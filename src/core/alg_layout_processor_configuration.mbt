@@ -1,7 +1,8 @@
 ///|
+#derive(Debug, ToJson)
 priv suberror LayoutProcessorConfigurationException {
   LayoutProcessorConfigurationException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn layout_processor_configuration_raise(

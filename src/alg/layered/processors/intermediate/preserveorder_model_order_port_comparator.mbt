@@ -1,7 +1,8 @@
 ///|
+#derive(Debug, ToJson)
 priv suberror ModelOrderPortComparatorException {
   ModelOrderPortComparatorException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] model_order_port_raise(

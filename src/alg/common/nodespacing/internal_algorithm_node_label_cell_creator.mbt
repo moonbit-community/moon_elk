@@ -1,7 +1,8 @@
 ///|
+#derive(Debug, ToJson)
 pub(all) suberror NodeLabelCellCreatorException {
   IllegalArgumentException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] node_label_cell_creator_raise_illegal_argument(

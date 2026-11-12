@@ -1,8 +1,9 @@
 ///|
+#derive(Debug)
 pub(all) enum GraphTextSelectionItem {
   GraphTextSelectionFile(String, String)
   GraphTextSelectionOther
-} derive(Debug)
+}
 
 ///|
 pub struct GraphTextProject {

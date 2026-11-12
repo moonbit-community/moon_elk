@@ -8,9 +8,10 @@ let java_random_addend = 11L
 let java_random_mask = 281474976710655L
 
 ///|
+#derive(Debug, ToJson)
 priv suberror JavaRandomException {
   JavaRandomException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn java_random_raise_unit(message : String) -> Unit raise JavaRandomException {

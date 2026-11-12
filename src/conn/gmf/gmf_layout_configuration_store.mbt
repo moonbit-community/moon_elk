@@ -5,13 +5,14 @@ pub let gmf_layout_configuration_prefix : String = "layout:"
 pub let gmf_core_option_comment_box_id : String = "org.eclipse.elk.commentBox"
 
 ///|
+#derive(Eq, Debug)
 pub enum GmfLayoutOptionTarget {
   Ports
   Nodes
   Parents
   Edges
   Labels
-} derive(Eq, Debug)
+}
 
 ///|
 pub impl Show for GmfLayoutOptionTarget with fn output(self, logger) {

@@ -2,9 +2,10 @@
 let interactive_external_port_positioner_arbitrary_spacing = 10.0
 
 ///|
+#derive(Debug, ToJson)
 priv suberror InteractiveExternalPortPositionerException {
   InteractiveExternalPortPositionerException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] interactive_external_port_positioner_raise(

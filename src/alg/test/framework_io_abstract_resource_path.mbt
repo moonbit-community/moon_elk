@@ -8,9 +8,10 @@ pub let all_files_recursive_suffix : String = "/**/"
 pub type ResourcePathFilter = (String) -> Bool
 
 ///|
+#derive(Debug, ToJson)
 pub suberror AbstractResourcePathException {
   AbstractResourcePathException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn abstract_resource_path_raise_unit(

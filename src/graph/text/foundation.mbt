@@ -32,13 +32,14 @@ pub fn graph_text_property_key_to_layout_option(
 }
 
 ///|
+#derive(Debug)
 pub(all) enum GraphTextPropertyValue {
   NullValue
   StringValue(String)
   NumberValue(Double)
   BooleanValue(Bool)
   ProxyValue(String)
-} derive(Debug)
+}
 
 ///|
 pub impl Show for GraphTextPropertyValue with fn output(self, logger) {
@@ -105,10 +106,11 @@ pub fn new_graph_text_validation_issue(
 }
 
 ///|
+#derive(Debug)
 pub(all) enum GraphTextListTransient {
   ListTransientYes
   ListTransientNo
-} derive(Debug)
+}
 
 ///|
 pub impl Show for GraphTextListTransient with fn output(self, logger) {

@@ -5,9 +5,10 @@ pub struct PropertyKeyValueConverter {
 }
 
 ///|
+#derive(Debug, ToJson)
 pub suberror PropertyKeyValueConverterException {
   PropertyKeyValueConverterException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn property_key_value_converter_raise_unit(

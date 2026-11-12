@@ -11,9 +11,10 @@ let elk_progress_monitor_root_debug_folder_name = "logs"
 let elk_progress_monitor_debug_folder_counter_ref : Ref[Int32] = Ref(0)
 
 ///|
+#derive(Debug, ToJson)
 priv suberror ElkProgressMonitorException {
   ElkProgressMonitorException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn elk_progress_monitor_raise(

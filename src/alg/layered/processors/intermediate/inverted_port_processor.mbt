@@ -1,7 +1,8 @@
 ///|
+#derive(Debug, ToJson)
 priv suberror InvertedPortProcessorException {
   UnsupportedGraphException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] inverted_port_processor_raise_unsupported_graph(

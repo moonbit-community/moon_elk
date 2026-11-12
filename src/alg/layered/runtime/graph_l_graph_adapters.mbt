@@ -1,7 +1,8 @@
 ///|
+#derive(Debug, ToJson)
 pub suberror LGraphAdapterException {
   LGraphAdapterException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] l_graph_adapters_raise(

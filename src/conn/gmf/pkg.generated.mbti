@@ -5,6 +5,7 @@ import {
   "moonbit-community/elk/core",
   "moonbit-community/elk/graph",
   "moonbitlang/core/debug",
+  "moonbitlang/core/json",
 }
 
 // Values
@@ -283,16 +284,18 @@ pub let req_apply_layout : String
 pub fn reset_conn_gmf_foundation_for_test() -> Unit
 
 // Errors
+#derive(@debug.Debug, @json.ToJson)
 pub suberror GmfDiagramLayoutConnectorException {
   GmfDiagramLayoutConnectorException(String)
-} derive(ToJson, @debug.Debug)
-pub fn GmfDiagramLayoutConnectorException::to_json(Self) -> Json
+}
+pub fn GmfDiagramLayoutConnectorException::to_json(Self) -> @json.Json
 pub fn GmfDiagramLayoutConnectorException::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug, @json.ToJson)
 pub suberror LayoutDiagramFileHandlerException {
   LayoutDiagramFileHandlerException(String)
-} derive(ToJson, @debug.Debug)
-pub fn LayoutDiagramFileHandlerException::to_json(Self) -> Json
+}
+pub fn LayoutDiagramFileHandlerException::to_json(Self) -> @json.Json
 pub fn LayoutDiagramFileHandlerException::to_repr(Self) -> @debug.Repr
 
 // Types and methods
@@ -333,11 +336,12 @@ pub fn GmfCommandStack::execute(Self, GmfLayoutCommand) -> Unit raise
 pub fn GmfCommandStack::execution_count(Self) -> Int32
 pub fn GmfCommandStack::last_executed_label(Self) -> String?
 
+#derive(@debug.Debug)
 pub(all) enum GmfConnectorDiagramPart {
   DirectEditPart(Int32)
   Selection(Array[Int32])
   NoDiagramPart
-} derive(@debug.Debug)
+}
 pub fn GmfConnectorDiagramPart::to_repr(Self) -> @debug.Repr
 
 pub struct GmfConnectorLayoutSettings {
@@ -348,11 +352,12 @@ pub struct GmfConnectorLayoutSettings {
   anim_time_factor : Int32
 }
 
+#derive(@debug.Debug)
 pub(all) enum GmfConnectorWorkbenchPart {
   DiagramEditorWorkbenchPart(Int32)
   AdaptableWorkbenchPart(Int32)
   OtherWorkbenchPart
-} derive(@debug.Debug)
+}
 pub fn GmfConnectorWorkbenchPart::to_repr(Self) -> @debug.Repr
 
 pub struct GmfDiagramLayoutConnector {
@@ -366,17 +371,19 @@ pub fn GmfDiagramLayoutConnector::calc_animation_time(Self, GmfLayoutMapping, Gm
 pub fn GmfDiagramLayoutConnector::count_nodes(Self, @graph.ElkNode) -> Int32
 pub fn GmfDiagramLayoutConnector::transfer_layout(Self, GmfLayoutMapping) -> Unit raise
 
+#derive(@debug.Debug)
 pub enum GmfDiagramPart {
   NoPart
   Single(Int32)
   Multiple(Array[Int32])
-} derive(@debug.Debug)
+}
 pub fn GmfDiagramPart::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub struct GmfDimension {
   width : Int32
   height : Int32
-} derive(Eq, @debug.Debug)
+}
 pub fn GmfDimension::equal(Self, Self) -> Bool
 pub fn GmfDimension::not_equal(Self, Self) -> Bool
 pub fn GmfDimension::to_repr(Self) -> @debug.Repr
@@ -389,6 +396,7 @@ pub struct GmfEdgeLayoutData {
   target_terminal : String?
 }
 
+#derive(Eq, @debug.Debug)
 pub(all) enum GmfEditPartKind {
   GenericEditPart
   RootEditPart
@@ -402,11 +410,12 @@ pub(all) enum GmfEditPartKind {
   ConnectionEditPart
   LabelEditPart
   NoteEditPart
-} derive(Eq, @debug.Debug)
+}
 pub fn GmfEditPartKind::equal(Self, Self) -> Bool
 pub fn GmfEditPartKind::not_equal(Self, Self) -> Bool
 pub fn GmfEditPartKind::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) enum GmfFigureKind {
   Generic
   WrappingLabel
@@ -415,7 +424,7 @@ pub(all) enum GmfFigureKind {
   BorderedNodeFigure
   BorderItemContainer
   ConnectionFigure
-} derive(Eq, @debug.Debug)
+}
 pub fn GmfFigureKind::equal(Self, Self) -> Bool
 pub fn GmfFigureKind::not_equal(Self, Self) -> Bool
 pub fn GmfFigureKind::to_repr(Self) -> @debug.Repr
@@ -425,12 +434,13 @@ pub struct GmfInjector {
 }
 pub fn GmfInjector::binding_of(Self, String) -> String?
 
+#derive(Eq, @debug.Debug)
 pub struct GmfInsets {
   top : Int32
   right : Int32
   bottom : Int32
   left : Int32
-} derive(Eq, @debug.Debug)
+}
 pub fn GmfInsets::equal(Self, Self) -> Bool
 pub fn GmfInsets::not_equal(Self, Self) -> Bool
 pub fn GmfInsets::to_repr(Self) -> @debug.Repr
@@ -471,20 +481,22 @@ pub struct GmfLayoutEditPolicy {
 pub fn GmfLayoutEditPolicy::get_command(Self, ApplyLayoutRequest, Int32) -> GmfLayoutCommand? raise
 pub fn GmfLayoutEditPolicy::understands_request(Self, String) -> Bool
 
+#derive(@debug.Debug)
 pub struct GmfLayoutElementEdge {
   bends : GmfPointList
   source_terminal : String?
   target_terminal : String?
   junction_points : String?
-} derive(@debug.Debug)
+}
 pub fn GmfLayoutElementEdge::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug)
 pub struct GmfLayoutElementShape {
   x : Double
   y : Double
   width : Double
   height : Double
-} derive(@debug.Debug)
+}
 pub fn GmfLayoutElementShape::to_repr(Self) -> @debug.Repr
 
 pub struct GmfLayoutHint {
@@ -492,11 +504,12 @@ pub struct GmfLayoutHint {
 }
 pub fn GmfLayoutHint::get_graphical_edit_part(Self) -> Int32?
 
+#derive(@debug.Debug)
 pub struct GmfLayoutInvocation {
   diagram_part : GmfDiagramPart
   progress_dialog : Bool
   zoom_to_fit : Bool
-} derive(@debug.Debug)
+}
 pub fn GmfLayoutInvocation::to_repr(Self) -> @debug.Repr
 
 pub struct GmfLayoutMapping {
@@ -523,13 +536,14 @@ pub struct GmfLayoutNode {
 }
 pub fn GmfLayoutNode::get_node(Self) -> String
 
+#derive(Eq, @debug.Debug)
 pub enum GmfLayoutOptionTarget {
   Ports
   Nodes
   Parents
   Edges
   Labels
-} derive(Eq, @debug.Debug)
+}
 pub fn GmfLayoutOptionTarget::equal(Self, Self) -> Bool
 pub fn GmfLayoutOptionTarget::not_equal(Self, Self) -> Bool
 pub fn GmfLayoutOptionTarget::output(Self, &Logger) -> Unit
@@ -543,35 +557,39 @@ pub struct GmfLayoutSetup {
 pub fn GmfLayoutSetup::create_injector(Self, GmfInjector) -> GmfInjector
 pub fn GmfLayoutSetup::supports(Self, GmfLayoutSetupObject) -> Bool
 
+#derive(@debug.Debug)
 pub(all) enum GmfLayoutSetupObject {
   DiagramEditor
   GraphicalEditPart(Int32)
   AdaptableWithDiagramEditor
   Collection(Array[GmfLayoutSetupObject])
   Other
-} derive(@debug.Debug)
+}
 pub fn GmfLayoutSetupObject::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) enum GmfOperation {
   LayoutNodeOperation
   CreateEditPoliciesOperation
   Other(String)
-} derive(Eq, @debug.Debug)
+}
 pub fn GmfOperation::equal(Self, Self) -> Bool
 pub fn GmfOperation::not_equal(Self, Self) -> Bool
 pub fn GmfOperation::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub struct GmfPoint {
   x : Int32
   y : Int32
-} derive(Eq, @debug.Debug)
+}
 pub fn GmfPoint::equal(Self, Self) -> Bool
 pub fn GmfPoint::not_equal(Self, Self) -> Bool
 pub fn GmfPoint::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug)
 pub struct GmfPointList {
   points : Array[GmfPoint]
-} derive(@debug.Debug)
+}
 pub fn GmfPointList::add_point(Self, GmfPoint) -> Unit
 pub fn GmfPointList::copy(Self) -> Self
 pub fn GmfPointList::get_first_point(Self) -> GmfPoint
@@ -582,20 +600,22 @@ pub fn GmfPointList::reverse(Self) -> Unit
 pub fn GmfPointList::size(Self) -> Int32
 pub fn GmfPointList::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub struct GmfRectangle {
   x : Int32
   y : Int32
   width : Int32
   height : Int32
-} derive(Eq, @debug.Debug)
+}
 pub fn GmfRectangle::equal(Self, Self) -> Bool
 pub fn GmfRectangle::not_equal(Self, Self) -> Bool
 pub fn GmfRectangle::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug)
 pub(all) enum GmfSelectionItem {
   DiagramFile(String)
   OtherSelectionItem
-} derive(@debug.Debug)
+}
 pub fn GmfSelectionItem::to_repr(Self) -> @debug.Repr
 
 pub struct GmfShapeLayoutData {

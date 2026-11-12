@@ -1,7 +1,8 @@
 ///|
+#derive(Debug, ToJson)
 pub suberror SizeFilterException {
   SizeFilterException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] size_filter_raise(message : String) -> T raise SizeFilterException {

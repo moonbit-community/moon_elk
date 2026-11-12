@@ -1,7 +1,8 @@
 ///|
+#derive(Debug, ToJson)
 priv suberror SingleEdgeGraphWrapperException {
   SingleEdgeGraphWrapperException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] single_edge_graph_wrapper_raise(

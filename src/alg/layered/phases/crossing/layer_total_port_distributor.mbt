@@ -1,7 +1,8 @@
 ///|
+#derive(Debug, ToJson)
 pub suberror LayerTotalPortDistributorException {
   LayerTotalPortDistributorException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] layer_total_port_distributor_raise(

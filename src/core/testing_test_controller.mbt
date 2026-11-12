@@ -2,9 +2,10 @@
 let next_layout_execution_listener_id_ref : Ref[Int32] = Ref(0)
 
 ///|
+#derive(Debug, ToJson)
 priv suberror TestControllerException {
   TestControllerException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn test_controller_raise_unit(

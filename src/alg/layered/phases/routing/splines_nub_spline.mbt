@@ -5,9 +5,10 @@ pub let nub_spline_dim : Int32 = 3
 let nub_spline_epsilon : Double = 0.000001
 
 ///|
+#derive(Debug, ToJson)
 pub(all) suberror NubSplineException {
   IllegalArgumentException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] nub_spline_raise_illegal_argument(

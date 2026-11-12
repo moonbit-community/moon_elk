@@ -68,9 +68,10 @@ pub struct NEdgeBuilder {
 }
 
 ///|
+#derive(Debug, ToJson)
 pub(all) suberror NetworkSimplexException {
   NetworkSimplexException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 pub impl Show for NetworkSimplexException with fn output(self, logger) {

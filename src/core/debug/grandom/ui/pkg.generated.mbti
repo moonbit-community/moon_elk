@@ -203,10 +203,11 @@ pub(all) struct CoreDebugGRandomQuickfixProvider {
   unit : Unit
 }
 
+#derive(@debug.Debug)
 pub(all) enum CoreDebugGRandomSelectionItem {
   CoreDebugGRandomSelectionFile(String)
   CoreDebugGRandomSelectionOther
-} derive(@debug.Debug)
+}
 pub fn CoreDebugGRandomSelectionItem::to_repr(Self) -> @debug.Repr
 
 pub(all) struct CoreDebugGRandomUiBundle {

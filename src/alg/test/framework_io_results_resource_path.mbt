@@ -5,9 +5,10 @@ pub let results_resource_path_property : String = "RESULTS_PATH"
 pub type ResultsResourcePath = AbstractPropertyDependentResourcePath
 
 ///|
+#derive(Debug, ToJson)
 pub suberror ResultsResourcePathException {
   ResultsResourcePathException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn results_resource_path_raise_unit(

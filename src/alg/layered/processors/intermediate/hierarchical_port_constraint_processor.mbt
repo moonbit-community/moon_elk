@@ -1,7 +1,8 @@
 ///|
+#derive(Debug, ToJson)
 priv suberror HierarchicalPortConstraintProcessorException {
   UnsupportedGraphException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] hierarchical_port_constraint_raise_unsupported_graph(

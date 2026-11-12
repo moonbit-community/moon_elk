@@ -4,9 +4,10 @@ pub let label_dummy_switcher_include_label : @graph.IProperty[Bool] = @graph.new
 )
 
 ///|
+#derive(Debug, ToJson)
 priv suberror LabelDummySwitcherException {
   LabelDummySwitcherException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] label_dummy_switcher_raise(

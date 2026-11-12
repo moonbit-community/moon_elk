@@ -8,9 +8,10 @@ pub(all) enum SelfLoopType {
 }
 
 ///|
+#derive(Debug, ToJson)
 pub(all) suberror SelfLoopTypeException {
   IllegalArgumentException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] self_loop_type_raise_illegal_argument(

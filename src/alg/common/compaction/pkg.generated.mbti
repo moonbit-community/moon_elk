@@ -4,6 +4,7 @@ package "moonbit-community/elk/alg/common/compaction"
 import {
   "moonbit-community/elk/core",
   "moonbitlang/core/debug",
+  "moonbitlang/core/json",
 }
 
 // Values
@@ -56,23 +57,26 @@ pub fn[T] scanline_execute_single(Array[T], (T, T) -> Int32 raise?, (T) -> Unit)
 pub fn[T] scanline_execute_single_raise(Array[T], (T, T) -> Int32 raise?, (T) -> Unit raise) -> Unit raise
 
 // Errors
+#derive(@debug.Debug, @json.ToJson)
 pub suberror CGroupException {
   CGroupException(String)
-} derive(ToJson, @debug.Debug)
-pub fn CGroupException::to_json(Self) -> Json
+}
+pub fn CGroupException::to_json(Self) -> @json.Json
 pub fn CGroupException::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug, @json.ToJson)
 pub(all) suberror OneDimensionalCompactorException {
   IllegalStateException(String)
   IllegalArgumentException(String)
-} derive(ToJson, @debug.Debug)
-pub fn OneDimensionalCompactorException::to_json(Self) -> Json
+}
+pub fn OneDimensionalCompactorException::to_json(Self) -> @json.Json
 pub fn OneDimensionalCompactorException::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug, @json.ToJson)
 pub suberror ScanlineConstraintCalculatorException {
   ScanlineConstraintCalculatorException(String)
-} derive(ToJson, @debug.Debug)
-pub fn ScanlineConstraintCalculatorException::to_json(Self) -> Json
+}
+pub fn ScanlineConstraintCalculatorException::to_json(Self) -> @json.Json
 pub fn ScanlineConstraintCalculatorException::to_repr(Self) -> @debug.Repr
 
 // Types and methods

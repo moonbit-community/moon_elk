@@ -4,9 +4,10 @@ pub struct ElkGraphTextUiActivator {
 }
 
 ///|
+#derive(Debug, ToJson)
 pub(all) suberror ElkGraphTextUiActivatorException {
   IllegalArgumentException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] graph_text_ui_activator_raise_illegal_argument(

@@ -1,7 +1,8 @@
 ///|
+#derive(Debug, ToJson)
 priv suberror EdgeAndLayerConstraintEdgeReverserException {
   UnsupportedGraphException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] edge_and_layer_constraint_edge_reverser_raise_unsupported_graph(

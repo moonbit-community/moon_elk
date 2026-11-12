@@ -8,9 +8,10 @@ pub enum BkThresholdStrategyKind {
 }
 
 ///|
+#derive(Debug, ToJson)
 pub suberror BkThresholdStrategyException {
   BkThresholdStrategyException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] bk_threshold_strategy_raise(

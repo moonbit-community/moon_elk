@@ -5,6 +5,7 @@ import {
   "moonbit-community/elk/core",
   "moonbit-community/elk/graph",
   "moonbitlang/core/debug",
+  "moonbitlang/core/json",
   "moonbitlang/core/set",
 }
 
@@ -62,10 +63,11 @@ pub let spore_overlaps_existed : @graph.IProperty[Bool]
 pub fn[F, S, T] unique_triple_of(F, S, T) -> UniqueTriple[F, S, T]
 
 // Errors
+#derive(@debug.Debug, @json.ToJson)
 pub suberror ScanlineOverlapCheckException {
   ScanlineOverlapCheckException(String)
-} derive(ToJson, @debug.Debug)
-pub fn ScanlineOverlapCheckException::to_json(Self) -> Json
+}
+pub fn ScanlineOverlapCheckException::to_json(Self) -> @json.Json
 pub fn ScanlineOverlapCheckException::to_repr(Self) -> @debug.Repr
 
 // Types and methods

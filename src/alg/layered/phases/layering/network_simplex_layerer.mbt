@@ -2,9 +2,10 @@
 let network_simplex_layerer_iter_limit_factor = 4
 
 ///|
+#derive(Debug, ToJson)
 priv suberror NetworkSimplexLayererException {
   NetworkSimplexLayererException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] network_simplex_layerer_raise(

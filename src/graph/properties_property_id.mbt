@@ -4,10 +4,11 @@
 /// The external string is fingerprinted once when a property descriptor is
 /// created. Two independent hashes make accidental identity collisions
 /// negligible without introducing a process-global string interning registry.
+#derive(Eq, Hash, Debug)
 pub struct PropertyId {
   priv first : Int32
   priv second : Int32
-} derive(Eq, Hash, Debug)
+}
 
 ///|
 pub type OptionId = PropertyId

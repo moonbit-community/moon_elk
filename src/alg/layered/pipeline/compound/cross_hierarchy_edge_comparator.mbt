@@ -1,7 +1,8 @@
 ///|
+#derive(Debug, ToJson)
 pub(all) suberror CrossHierarchyEdgeComparatorException {
   CrossHierarchyEdgeComparatorException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] cross_hierarchy_edge_comparator_raise(

@@ -1,7 +1,8 @@
 ///|
+#derive(Debug, ToJson)
 priv suberror RandomListAccessorException {
   RandomListAccessorException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn random_list_accessor_raise(

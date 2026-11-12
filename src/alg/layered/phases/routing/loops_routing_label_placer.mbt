@@ -1,7 +1,8 @@
 ///|
+#derive(Debug, ToJson)
 priv suberror LabelPlacerException {
   IllegalStateException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] label_placer_raise_illegal_state(

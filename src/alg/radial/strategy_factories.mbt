@@ -9,9 +9,10 @@ pub fn radial_annulus_wedge_criteria_create(
 }
 
 ///|
+#derive(Debug, ToJson)
 pub(all) suberror RadialCompactionStrategyException {
   IllegalArgumentException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] radial_compaction_strategy_raise_illegal_argument(

@@ -19,9 +19,10 @@ fn port_context_creator_create_port_context(
 }
 
 ///|
+#derive(Debug, ToJson)
 pub(all) suberror PortContextCreatorException {
   IllegalArgumentException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] port_context_creator_raise_illegal_argument(

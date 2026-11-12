@@ -2,9 +2,10 @@
 let _fact_table_size = 21
 
 ///|
+#derive(Debug, ToJson)
 priv suberror ElkMathException {
   ElkMathException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] elk_math_raise(message : String) -> T raise ElkMathException {

@@ -5,9 +5,10 @@ pub let core_meta_ui_language_name : String = "org.eclipse.elk.core.meta.MetaDat
 pub let core_meta_ui_extension_factory_guicekey : String = "guicekey"
 
 ///|
+#derive(Debug, ToJson)
 priv suberror CoreMetaUiException {
   CoreMetaUiException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn core_meta_ui_raise_unit(message : String) -> Unit raise CoreMetaUiException {

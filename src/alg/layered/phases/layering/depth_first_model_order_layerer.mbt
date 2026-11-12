@@ -48,9 +48,10 @@ fn depth_first_model_order_layerer_baseline_processing_configuration(
 }
 
 ///|
+#derive(Debug, ToJson)
 pub(all) suberror DepthFirstModelOrderLayererException {
   UnsupportedGraphException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] depth_first_model_order_layerer_raise_unsupported_graph(

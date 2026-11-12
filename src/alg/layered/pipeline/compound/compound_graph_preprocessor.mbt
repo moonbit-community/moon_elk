@@ -1,7 +1,8 @@
 ///|
+#derive(Debug, ToJson)
 priv suberror CompoundGraphPreprocessorException {
   CompoundGraphPreprocessorException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] compound_graph_preprocessor_raise(

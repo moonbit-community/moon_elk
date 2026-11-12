@@ -2,9 +2,10 @@
 let north_south_port_preprocessor_use_new_approach : Bool = true
 
 ///|
+#derive(Debug, ToJson)
 priv suberror NorthSouthPortPreprocessorException {
   NorthSouthPortPreprocessorException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] north_south_port_preprocessor_raise(

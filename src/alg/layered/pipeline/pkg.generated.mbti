@@ -7,6 +7,7 @@ import {
   "moonbit-community/elk/core",
   "moonbit-community/elk/graph",
   "moonbitlang/core/debug",
+  "moonbitlang/core/json",
 }
 
 // Values
@@ -21,10 +22,11 @@ pub fn new_layered_layout_provider(@core.LayoutRuntime, @core.LayoutSession, @ru
 pub fn register_layered_layout_algorithm(@core.LayoutRuntime, @runtime.LayeredPhaseRegistry) -> Unit
 
 // Errors
+#derive(@debug.Debug, @json.ToJson)
 pub suberror ElkLayeredTestExecutionException {
   ElkLayeredTestExecutionException(String)
-} derive(ToJson, @debug.Debug)
-pub fn ElkLayeredTestExecutionException::to_json(Self) -> Json
+}
+pub fn ElkLayeredTestExecutionException::to_json(Self) -> @json.Json
 pub fn ElkLayeredTestExecutionException::to_repr(Self) -> @debug.Repr
 
 // Types and methods

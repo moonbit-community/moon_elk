@@ -12,13 +12,13 @@ pub fn elk_graph_json_for_elk_graph(@graph.ElkNode) -> ElkGraphJsonExportBuilder
 
 pub fn elk_graph_json_for_graph(String) -> ElkGraphJsonImportBuilder
 
-pub fn elk_graph_json_for_json_graph(Json) -> ElkGraphJsonImportBuilder
+pub fn elk_graph_json_for_json_graph(@moonbitlang/core/json.Json) -> ElkGraphJsonImportBuilder
 
-pub fn layout_algorithm_data_to_json(@core.LayoutAlgorithmData) -> Json
+pub fn layout_algorithm_data_to_json(@core.LayoutAlgorithmData) -> @moonbitlang/core/json.Json
 
-pub fn layout_category_data_to_json(@core.LayoutCategoryData) -> Json
+pub fn layout_category_data_to_json(@core.LayoutCategoryData) -> @moonbitlang/core/json.Json
 
-pub fn layout_option_data_to_json(@core.LayoutOptionData) -> Json
+pub fn layout_option_data_to_json(@core.LayoutOptionData) -> @moonbitlang/core/json.Json
 
 pub fn new_codec_metadata() -> @core.OptionMetadata
 
@@ -35,12 +35,13 @@ pub fn new_json_import_exception_message_cause(String, String) -> JsonImportExce
 pub fn new_json_importer(@core.OptionMetadata, @core.LayoutSession) -> JsonImporter
 
 // Errors
+#derive(@debug.Debug, @moonbitlang/core/json.ToJson)
 pub suberror JsonImportException {
   JsonImportException(String?, String?)
-} derive(ToJson, @debug.Debug)
+}
 pub fn JsonImportException::get_cause(Self) -> String?
 pub fn JsonImportException::get_message(Self) -> String?
-pub fn JsonImportException::to_json(Self) -> Json
+pub fn JsonImportException::to_json(Self) -> @moonbitlang/core/json.Json
 pub fn JsonImportException::to_repr(Self) -> @debug.Repr
 
 // Types and methods
@@ -65,7 +66,7 @@ pub struct ElkGraphJsonImportBuilder {
   metadata : @core.OptionMetadata
   session : @core.LayoutSession
   graph : String?
-  json_graph : Json?
+  json_graph : @moonbitlang/core/json.Json?
   importer_maybe : @core.Maybe[JsonImporter]?
   lenient : Bool
 }
@@ -77,50 +78,50 @@ pub fn ElkGraphJsonImportBuilder::to_elk(Self) -> @graph.ElkNode
 pub struct JsonAdapter {
   unit : Unit
 }
-pub fn JsonAdapter::add_json_arr_json(Self, Array[Json], Json) -> Unit
-pub fn JsonAdapter::add_json_obj_bool(Self, Map[String, Json], String, Bool) -> Unit
-pub fn JsonAdapter::add_json_obj_json(Self, Map[String, Json], String, Json) -> Unit
-pub fn JsonAdapter::add_json_obj_number(Self, Map[String, Json], String, Double) -> Unit
-pub fn JsonAdapter::add_json_obj_string(Self, Map[String, Json], String, String) -> Unit
-pub fn JsonAdapter::as_id(Self, Json) -> String raise JsonImportException
-pub fn JsonAdapter::get_id(Self, Map[String, Json]) -> String raise JsonImportException
-pub fn JsonAdapter::get_id_safe(Self, Map[String, Json]) -> String?
-pub fn JsonAdapter::get_json_arr(Self, Array[Json], Int32) -> Json?
-pub fn JsonAdapter::get_json_obj(Self, Map[String, Json], String) -> Json?
-pub fn JsonAdapter::has_json_obj(Self, Map[String, Json], String) -> Bool
+pub fn JsonAdapter::add_json_arr_json(Self, Array[@moonbitlang/core/json.Json], @moonbitlang/core/json.Json) -> Unit
+pub fn JsonAdapter::add_json_obj_bool(Self, Map[String, @moonbitlang/core/json.Json], String, Bool) -> Unit
+pub fn JsonAdapter::add_json_obj_json(Self, Map[String, @moonbitlang/core/json.Json], String, @moonbitlang/core/json.Json) -> Unit
+pub fn JsonAdapter::add_json_obj_number(Self, Map[String, @moonbitlang/core/json.Json], String, Double) -> Unit
+pub fn JsonAdapter::add_json_obj_string(Self, Map[String, @moonbitlang/core/json.Json], String, String) -> Unit
+pub fn JsonAdapter::as_id(Self, @moonbitlang/core/json.Json) -> String raise JsonImportException
+pub fn JsonAdapter::get_id(Self, Map[String, @moonbitlang/core/json.Json]) -> String raise JsonImportException
+pub fn JsonAdapter::get_id_safe(Self, Map[String, @moonbitlang/core/json.Json]) -> String?
+pub fn JsonAdapter::get_json_arr(Self, Array[@moonbitlang/core/json.Json], Int32) -> @moonbitlang/core/json.Json?
+pub fn JsonAdapter::get_json_obj(Self, Map[String, @moonbitlang/core/json.Json], String) -> @moonbitlang/core/json.Json?
+pub fn JsonAdapter::has_json_obj(Self, Map[String, @moonbitlang/core/json.Json], String) -> Bool
 pub fn JsonAdapter::implementation_error(Self) -> String
 pub fn JsonAdapter::is_int(Self, Double) -> Bool
-pub fn JsonAdapter::keys_json_obj(Self, Map[String, Json]) -> Array[String]
-pub fn JsonAdapter::new_json_array(Self) -> Array[Json]
-pub fn JsonAdapter::new_json_object(Self) -> Map[String, Json]
-pub fn JsonAdapter::opt_double(Self, Map[String, Json], String) -> Double?
-pub fn JsonAdapter::opt_json_array(Self, Map[String, Json], String) -> Array[Json]?
-pub fn JsonAdapter::opt_json_object(Self, Map[String, Json], String) -> Map[String, Json]?
-pub fn JsonAdapter::opt_string(Self, Map[String, Json], String) -> String?
-pub fn JsonAdapter::opt_string_at(Self, Array[Json], Int32) -> String?
-pub fn JsonAdapter::opt_string_value(Self, Json) -> String?
-pub fn JsonAdapter::remove_json_obj(Self, Map[String, Json], String) -> Unit
-pub fn JsonAdapter::size_json_arr(Self, Array[Json]) -> Int32
-pub fn JsonAdapter::to_json_array(Self, Json) -> Array[Json]
-pub fn JsonAdapter::to_json_number(Self, Double) -> Json
-pub fn JsonAdapter::to_json_object(Self, Json) -> Map[String, Json]
-pub fn JsonAdapter::to_json_string(Self, String) -> Json
+pub fn JsonAdapter::keys_json_obj(Self, Map[String, @moonbitlang/core/json.Json]) -> Array[String]
+pub fn JsonAdapter::new_json_array(Self) -> Array[@moonbitlang/core/json.Json]
+pub fn JsonAdapter::new_json_object(Self) -> Map[String, @moonbitlang/core/json.Json]
+pub fn JsonAdapter::opt_double(Self, Map[String, @moonbitlang/core/json.Json], String) -> Double?
+pub fn JsonAdapter::opt_json_array(Self, Map[String, @moonbitlang/core/json.Json], String) -> Array[@moonbitlang/core/json.Json]?
+pub fn JsonAdapter::opt_json_object(Self, Map[String, @moonbitlang/core/json.Json], String) -> Map[String, @moonbitlang/core/json.Json]?
+pub fn JsonAdapter::opt_string(Self, Map[String, @moonbitlang/core/json.Json], String) -> String?
+pub fn JsonAdapter::opt_string_at(Self, Array[@moonbitlang/core/json.Json], Int32) -> String?
+pub fn JsonAdapter::opt_string_value(Self, @moonbitlang/core/json.Json) -> String?
+pub fn JsonAdapter::remove_json_obj(Self, Map[String, @moonbitlang/core/json.Json], String) -> Unit
+pub fn JsonAdapter::size_json_arr(Self, Array[@moonbitlang/core/json.Json]) -> Int32
+pub fn JsonAdapter::to_json_array(Self, @moonbitlang/core/json.Json) -> Array[@moonbitlang/core/json.Json]
+pub fn JsonAdapter::to_json_number(Self, Double) -> @moonbitlang/core/json.Json
+pub fn JsonAdapter::to_json_object(Self, @moonbitlang/core/json.Json) -> Map[String, @moonbitlang/core/json.Json]
+pub fn JsonAdapter::to_json_string(Self, String) -> @moonbitlang/core/json.Json
 
 pub struct JsonImporter {
   metadata : @core.OptionMetadata
   session : @core.LayoutSession
-  mut input_model : Map[String, Json]?
+  mut input_model : Map[String, @moonbitlang/core/json.Json]?
   node_id_map : Map[String, @graph.ElkNode]
   port_id_map : Map[String, @graph.ElkPort]
-  node_json_map : Map[@graph.ElkNode, Map[String, Json]]
-  port_json_map : Map[@graph.ElkPort, Map[String, Json]]
-  edge_json_map : Map[@graph.ElkEdge, Map[String, Json]]
-  label_json_map : Map[@graph.ElkLabel, Map[String, Json]]
+  node_json_map : Map[@graph.ElkNode, Map[String, @moonbitlang/core/json.Json]]
+  port_json_map : Map[@graph.ElkPort, Map[String, @moonbitlang/core/json.Json]]
+  edge_json_map : Map[@graph.ElkEdge, Map[String, @moonbitlang/core/json.Json]]
+  label_json_map : Map[@graph.ElkLabel, Map[String, @moonbitlang/core/json.Json]]
   edge_original_parent_map : Map[@graph.ElkEdge, @graph.ElkNode]
 }
-pub fn JsonImporter::get_input_model(Self) -> Map[String, Json]?
+pub fn JsonImporter::get_input_model(Self) -> Map[String, @moonbitlang/core/json.Json]?
 pub fn JsonImporter::transfer_layout(Self, @graph.ElkNode) -> Unit raise
-pub fn JsonImporter::transform(Self, Map[String, Json]) -> @graph.ElkNode raise
+pub fn JsonImporter::transform(Self, Map[String, @moonbitlang/core/json.Json]) -> @graph.ElkNode raise
 
 // Type aliases
 

@@ -5,9 +5,10 @@ let spline_edge_router_max_vertical_diff_for_straight : Double = 0.2
 pub let spline_edge_router_spline_dimension : Int32 = 3
 
 ///|
+#derive(Debug, ToJson)
 priv suberror SplineEdgeRouterException {
   SplineEdgeRouterException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] spline_edge_router_raise(

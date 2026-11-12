@@ -7,6 +7,7 @@ import {
   "moonbit-community/elk/engine",
   "moonbit-community/elk/graph",
   "moonbitlang/core/debug",
+  "moonbitlang/core/json",
 }
 
 // Values
@@ -123,22 +124,25 @@ pub fn new_libavoid_server_transport_from_text_runner((Array[Int32], Int32) -> S
 pub fn register_libavoid_layout_algorithm(@core.LayoutRuntime) -> Unit
 
 // Errors
+#derive(@debug.Debug, @json.ToJson)
 pub suberror LibavoidCommunicatorException {
   LibavoidCommunicatorException(String)
-} derive(ToJson, @debug.Debug)
-pub fn LibavoidCommunicatorException::to_json(Self) -> Json
+}
+pub fn LibavoidCommunicatorException::to_json(Self) -> @json.Json
 pub fn LibavoidCommunicatorException::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug, @json.ToJson)
 pub suberror LibavoidServerOutputException {
   LibavoidServerOutputException(String)
-} derive(ToJson, @debug.Debug)
-pub fn LibavoidServerOutputException::to_json(Self) -> Json
+}
+pub fn LibavoidServerOutputException::to_json(Self) -> @json.Json
 pub fn LibavoidServerOutputException::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug, @json.ToJson)
 pub suberror LibavoidServerStateException {
   LibavoidServerStateException(String)
-} derive(ToJson, @debug.Debug)
-pub fn LibavoidServerStateException::to_json(Self) -> Json
+}
+pub fn LibavoidServerStateException::to_json(Self) -> @json.Json
 pub fn LibavoidServerStateException::to_repr(Self) -> @debug.Repr
 
 // Types and methods

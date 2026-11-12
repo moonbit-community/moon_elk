@@ -6,7 +6,6 @@ import {
   "moonbit-community/elk/core/debug/grandom",
   "moonbit-community/elk/core/debug/grandom/ide",
   "moonbit-community/elk/graph",
-  "moonbit-community/elk/graph/json",
   "moonbit-community/elk/graph/text",
   "moonbitlang/core/debug",
   "moonbitlang/core/random",
@@ -75,9 +74,9 @@ pub fn edge_set_identifier(@graph.ElkEdge, String) -> Unit
 
 pub fn edge_set_layout_option_string_by_id(@graph.ElkEdge, String, String) -> Unit
 
-pub fn elk_graph_json_for_elk_graph(@graph.ElkNode) -> @json.ElkGraphJsonExportBuilder
+pub fn elk_graph_json_for_elk_graph(@graph.ElkNode) -> @moonbit-community/elk/graph/json.ElkGraphJsonExportBuilder
 
-pub fn elk_graph_json_for_graph(String) -> @json.ElkGraphJsonImportBuilder
+pub fn elk_graph_json_for_graph(String) -> @moonbit-community/elk/graph/json.ElkGraphJsonImportBuilder
 
 pub fn ensure_results_path_exists() -> Unit raise
 
@@ -374,40 +373,46 @@ pub fn test_util_ensure_single_public_no_parameter_constructor(Array[TestClassCo
 pub let vertiflex_algorithm_id : String
 
 // Errors
+#derive(@debug.Debug, @moonbitlang/core/json.ToJson)
 pub(all) suberror AbstractPropertyDependentResourcePathException {
   IllegalStateException(String)
-} derive(ToJson, @debug.Debug)
-pub fn AbstractPropertyDependentResourcePathException::to_json(Self) -> Json
+}
+pub fn AbstractPropertyDependentResourcePathException::to_json(Self) -> @moonbitlang/core/json.Json
 pub fn AbstractPropertyDependentResourcePathException::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug, @moonbitlang/core/json.ToJson)
 pub suberror AbstractResourcePathException {
   AbstractResourcePathException(String)
-} derive(ToJson, @debug.Debug)
-pub fn AbstractResourcePathException::to_json(Self) -> Json
+}
+pub fn AbstractResourcePathException::to_json(Self) -> @moonbitlang/core/json.Json
 pub fn AbstractResourcePathException::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug, @moonbitlang/core/json.ToJson)
 pub suberror BundleResourcePathException {
   BundleResourcePathException(String)
-} derive(ToJson, @debug.Debug)
-pub fn BundleResourcePathException::to_json(Self) -> Json
+}
+pub fn BundleResourcePathException::to_json(Self) -> @moonbitlang/core/json.Json
 pub fn BundleResourcePathException::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug, @moonbitlang/core/json.ToJson)
 pub suberror LayoutTestRunnerException {
   LayoutTestRunnerException(String)
-} derive(ToJson, @debug.Debug)
-pub fn LayoutTestRunnerException::to_json(Self) -> Json
+}
+pub fn LayoutTestRunnerException::to_json(Self) -> @moonbitlang/core/json.Json
 pub fn LayoutTestRunnerException::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug, @moonbitlang/core/json.ToJson)
 pub suberror ModelResourcePathException {
   ModelResourcePathException(String)
-} derive(ToJson, @debug.Debug)
-pub fn ModelResourcePathException::to_json(Self) -> Json
+}
+pub fn ModelResourcePathException::to_json(Self) -> @moonbitlang/core/json.Json
 pub fn ModelResourcePathException::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug, @moonbitlang/core/json.ToJson)
 pub suberror ResultsResourcePathException {
   ResultsResourcePathException(String)
-} derive(ToJson, @debug.Debug)
-pub fn ResultsResourcePathException::to_json(Self) -> Json
+}
+pub fn ResultsResourcePathException::to_json(Self) -> @moonbitlang/core/json.Json
 pub fn ResultsResourcePathException::to_repr(Self) -> @debug.Repr
 
 // Types and methods

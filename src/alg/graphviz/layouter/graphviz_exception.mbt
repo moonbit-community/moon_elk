@@ -1,7 +1,8 @@
 ///|
+#derive(Debug, ToJson)
 pub suberror GraphvizException {
   GraphvizException(String, String?)
-} derive(Debug, ToJson)
+}
 
 ///|
 pub fn new_graphviz_exception(message : String) -> GraphvizException {

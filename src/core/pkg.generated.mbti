@@ -4,6 +4,7 @@ package "moonbit-community/elk/core"
 import {
   "moonbit-community/elk/graph",
   "moonbitlang/core/debug",
+  "moonbitlang/core/json",
   "moonbitlang/core/random",
 }
 
@@ -322,7 +323,7 @@ pub fn new_elk_cancel_indicator(canceled? : Bool) -> IElkCancelIndicator
 
 pub fn new_elk_edge_adapter(@graph.ElkEdge) -> ElkEdgeAdapter
 
-pub fn new_elk_engine(LayoutRuntime, default_layout_options? : Map[String, Json], algorithms? : Array[String], algorithm_aliases? : Map[String, String]) -> ElkEngine
+pub fn new_elk_engine(LayoutRuntime, default_layout_options? : Map[String, @json.Json], algorithms? : Array[String], algorithm_aliases? : Map[String, String]) -> ElkEngine
 
 pub fn new_elk_graph_adapter(@graph.ElkNode) -> ElkGraphAdapter
 
@@ -769,28 +770,32 @@ pub fn translate_xy(@graph.ElkNode, Double, Double) -> Unit
 pub fn[F, S, T] triple_of(F, S, T) -> Triple[F, S, T]
 
 // Errors
+#derive(@debug.Debug, @json.ToJson)
 pub suberror AggregatedMatchDeciderException {
   AggregatedMatchDeciderException(String)
-} derive(ToJson, @debug.Debug)
-pub fn AggregatedMatchDeciderException::to_json(Self) -> Json
+}
+pub fn AggregatedMatchDeciderException::to_json(Self) -> @json.Json
 pub fn AggregatedMatchDeciderException::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug, @json.ToJson)
 pub suberror AlignmentMatcherException {
   AlignmentMatcherException(String)
-} derive(ToJson, @debug.Debug)
-pub fn AlignmentMatcherException::to_json(Self) -> Json
+}
+pub fn AlignmentMatcherException::to_json(Self) -> @json.Json
 pub fn AlignmentMatcherException::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug, @json.ToJson)
 pub suberror DistanceMatcherException {
   DistanceMatcherException(String)
-} derive(ToJson, @debug.Debug)
-pub fn DistanceMatcherException::to_json(Self) -> Json
+}
+pub fn DistanceMatcherException::to_json(Self) -> @json.Json
 pub fn DistanceMatcherException::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug, @json.ToJson)
 pub suberror ElkSpacingsException {
   ElkSpacingsException(String)
-} derive(ToJson, @debug.Debug)
-pub fn ElkSpacingsException::to_json(Self) -> Json
+}
+pub fn ElkSpacingsException::to_json(Self) -> @json.Json
 pub fn ElkSpacingsException::to_repr(Self) -> @debug.Repr
 
 pub(all) suberror LayoutRuntimeSubError {
@@ -799,22 +804,25 @@ pub(all) suberror LayoutRuntimeSubError {
   JsonImport(String)
 }
 
+#derive(@debug.Debug, @json.ToJson)
 pub suberror NodeReferenceMatcherException {
   NodeReferenceMatcherException(String)
-} derive(ToJson, @debug.Debug)
-pub fn NodeReferenceMatcherException::to_json(Self) -> Json
+}
+pub fn NodeReferenceMatcherException::to_json(Self) -> @json.Json
 pub fn NodeReferenceMatcherException::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug, @json.ToJson)
 pub suberror SizeFilterException {
   SizeFilterException(String)
-} derive(ToJson, @debug.Debug)
-pub fn SizeFilterException::to_json(Self) -> Json
+}
+pub fn SizeFilterException::to_json(Self) -> @json.Json
 pub fn SizeFilterException::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug, @json.ToJson)
 pub suberror TextPrefixFilterException {
   TextPrefixFilterException(String)
-} derive(ToJson, @debug.Debug)
-pub fn TextPrefixFilterException::to_json(Self) -> Json
+}
+pub fn TextPrefixFilterException::to_json(Self) -> @json.Json
 pub fn TextPrefixFilterException::to_repr(Self) -> @debug.Repr
 
 // Types and methods
@@ -1115,12 +1123,12 @@ pub fn ElkEdgeAdapter::get_labels(Self) -> Array[ElkLabelAdapter]
 
 pub(all) struct ElkEngine {
   runtime : LayoutRuntime
-  default_layout_options : Map[String, Json]
+  default_layout_options : Map[String, @json.Json]
   algorithms : Array[String]
   algorithm_aliases : Map[String, String]
 }
 pub fn ElkEngine::known_layout_algorithms(Self) -> Array[String]
-pub fn ElkEngine::layout(Self, graph? : Json, layout_options? : Map[String, Json], logging? : Bool, measure_execution_time? : Bool) -> Json raise
+pub fn ElkEngine::layout(Self, graph? : @json.Json, layout_options? : Map[String, @json.Json], logging? : Bool, measure_execution_time? : Bool) -> @json.Json raise
 pub fn ElkEngine::terminate_worker(Self) -> Unit
 
 pub(all) struct ElkGraphAdapter {
@@ -1940,7 +1948,7 @@ pub struct LayoutRuntime {
   // private fields
 }
 pub fn LayoutRuntime::option_metadata(Self) -> OptionMetadata
-pub fn LayoutRuntime::register_elk_engine_layout_delegate(Self, (Self, LayoutSession, Map[String, Json], Map[String, Json]) -> Unit raise) -> Unit
+pub fn LayoutRuntime::register_elk_engine_layout_delegate(Self, (Self, LayoutSession, Map[String, @json.Json], Map[String, @json.Json]) -> Unit raise) -> Unit
 pub fn LayoutRuntime::register_layout_algorithm(Self, String, (Self, LayoutSession, @graph.ElkNode, IElkProgressMonitor) -> Unit raise) -> Unit
 
 pub struct LayoutSession {
@@ -2357,7 +2365,7 @@ pub fn WrappedException::get_message(Self) -> String?
 // Type aliases
 pub type DeciderHeuristicResult[T] = Array[(T, Array[(Int32, Double)])]
 
-pub type ElkEngineLayoutDelegate = (LayoutRuntime, LayoutSession, Map[String, Json], Map[String, Json]) -> Unit raise
+pub type ElkEngineLayoutDelegate = (LayoutRuntime, LayoutSession, Map[String, @json.Json], Map[String, @json.Json]) -> Unit raise
 
 pub type ElkGraphBoundsProvider = IBoundsProvider[@graph.ElkNode, @graph.ElkNode]
 

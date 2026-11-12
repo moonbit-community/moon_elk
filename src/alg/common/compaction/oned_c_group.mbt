@@ -10,9 +10,10 @@ pub impl Eq for CGroup with fn equal(self, other) {
 }
 
 ///|
+#derive(Debug, ToJson)
 pub suberror CGroupException {
   CGroupException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn c_group_raise_unit(message : String) -> Unit raise CGroupException {

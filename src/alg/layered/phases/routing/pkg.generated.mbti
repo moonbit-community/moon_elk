@@ -6,6 +6,7 @@ import {
   "moonbit-community/elk/alg/layered/runtime/state",
   "moonbit-community/elk/core",
   "moonbitlang/core/debug",
+  "moonbitlang/core/json",
 }
 
 // Values
@@ -220,16 +221,18 @@ pub let splines_math_three_half_pi : Double
 pub let splines_math_two_pi : Double
 
 // Errors
+#derive(@debug.Debug, @json.ToJson)
 pub(all) suberror NubSplineException {
   IllegalArgumentException(String)
-} derive(ToJson, @debug.Debug)
-pub fn NubSplineException::to_json(Self) -> Json
+}
+pub fn NubSplineException::to_json(Self) -> @json.Json
 pub fn NubSplineException::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug, @json.ToJson)
 pub suberror RectangleException {
   RectangleException(String)
-} derive(ToJson, @debug.Debug)
-pub fn RectangleException::to_json(Self) -> Json
+}
+pub fn RectangleException::to_json(Self) -> @json.Json
 pub fn RectangleException::to_repr(Self) -> @debug.Repr
 
 // Types and methods

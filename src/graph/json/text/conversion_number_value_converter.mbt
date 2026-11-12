@@ -4,9 +4,10 @@ pub struct GraphJsonTextNumberValueConverter {
 }
 
 ///|
+#derive(Debug, ToJson)
 pub suberror GraphJsonTextNumberValueConverterException {
   GraphJsonTextNumberValueConverterException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn graph_json_text_number_value_converter_raise_unit(

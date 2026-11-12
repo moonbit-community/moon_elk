@@ -36,9 +36,10 @@ fn longest_path_layerer_baseline_processing_configuration(
 }
 
 ///|
+#derive(Debug, ToJson)
 pub(all) suberror LongestPathLayererException {
   UnsupportedGraphException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] longest_path_layerer_raise_unsupported_graph(

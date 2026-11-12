@@ -5,10 +5,11 @@ let self_loop_holder_unvisited : Int32 = 0
 let self_loop_holder_visited : Int32 = 1
 
 ///|
+#derive(Debug, ToJson)
 pub(all) suberror SelfLoopHolderException {
   UnsupportedConfigurationException(String)
   IllegalStateException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 pub fn self_loop_holder_exception_message(

@@ -5,9 +5,10 @@ let layered_spacings_double_eq_epsilon = 0.0001
 pub let layered_spacings_base_spacing_option : @graph.IProperty[Double] = @core.spacing_node_node
 
 ///|
+#derive(Debug, ToJson)
 pub suberror LayeredSpacingsException {
   LayeredSpacingsException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] layered_spacings_raise(

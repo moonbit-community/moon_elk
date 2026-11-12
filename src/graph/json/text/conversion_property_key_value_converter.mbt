@@ -5,9 +5,10 @@ pub struct GraphJsonTextPropertyKeyValueConverter {
 }
 
 ///|
+#derive(Debug, ToJson)
 pub suberror GraphJsonTextPropertyKeyValueConverterException {
   GraphJsonTextPropertyKeyValueConverterException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn graph_json_text_property_key_value_converter_raise_unit(

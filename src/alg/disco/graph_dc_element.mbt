@@ -9,9 +9,10 @@ pub struct DCElement {
 }
 
 ///|
+#derive(Debug, ToJson)
 pub suberror DCElementException {
   DCElementException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] dc_element_raise(message : String) -> T raise DCElementException {

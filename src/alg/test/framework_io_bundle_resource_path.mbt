@@ -5,9 +5,10 @@ pub let bundle_resource_path_property : String = "ELK_REPO"
 pub type BundleResourcePath = AbstractPropertyDependentResourcePath
 
 ///|
+#derive(Debug, ToJson)
 pub suberror BundleResourcePathException {
   BundleResourcePathException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn bundle_resource_path_raise_unit(

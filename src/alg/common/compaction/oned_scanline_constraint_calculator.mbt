@@ -5,9 +5,10 @@ priv struct ScanlineTimestamp {
 }
 
 ///|
+#derive(Debug, ToJson)
 pub suberror ScanlineConstraintCalculatorException {
   ScanlineConstraintCalculatorException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn scanline_constraint_calculator_raise_unit(

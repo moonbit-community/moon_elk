@@ -164,9 +164,10 @@ pub fn node_context_compare_port_sides(
 }
 
 ///|
+#derive(Debug, ToJson)
 pub(all) suberror NodeContextException {
   UnsupportedConfigurationException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] node_context_raise_unsupported_configuration(

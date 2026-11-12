@@ -5,9 +5,10 @@ pub let model_resource_path_property : String = "MODELS_REPO"
 pub type ModelResourcePath = AbstractPropertyDependentResourcePath
 
 ///|
+#derive(Debug, ToJson)
 pub suberror ModelResourcePathException {
   ModelResourcePathException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn model_resource_path_raise_unit(

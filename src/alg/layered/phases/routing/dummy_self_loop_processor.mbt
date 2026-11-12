@@ -1,7 +1,8 @@
 ///|
+#derive(Debug, ToJson)
 priv suberror DummySelfLoopProcessorException {
   UnsupportedGraphException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] dummy_self_loop_processor_raise_unsupported_graph(

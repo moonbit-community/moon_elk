@@ -1,7 +1,8 @@
 ///|
+#derive(Debug, ToJson)
 priv suberror BreakingPointInserterException {
   BreakingPointInserterException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] breaking_point_inserter_raise(

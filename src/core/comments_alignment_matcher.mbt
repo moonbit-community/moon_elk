@@ -27,9 +27,10 @@ let alignment_matcher_out_bottom_right : Int32 = alignment_matcher_out_bottom |
   alignment_matcher_out_right
 
 ///|
+#derive(Debug, ToJson)
 pub suberror AlignmentMatcherException {
   AlignmentMatcherException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] alignment_matcher_raise(

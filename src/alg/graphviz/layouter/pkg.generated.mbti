@@ -8,6 +8,7 @@ import {
   "moonbit-community/elk/engine",
   "moonbit-community/elk/graph",
   "moonbitlang/core/debug",
+  "moonbitlang/core/json",
   "moonbitlang/core/ref",
 }
 
@@ -193,12 +194,13 @@ pub fn new_layout_dot_exporter() -> LayoutDotExporter
 pub fn register_graphviz_layout_algorithm(@core.LayoutRuntime, String) -> Unit
 
 // Errors
+#derive(@debug.Debug, @json.ToJson)
 pub suberror GraphvizException {
   GraphvizException(String, String?)
-} derive(ToJson, @debug.Debug)
+}
 pub fn GraphvizException::get_cause(Self) -> String?
 pub fn GraphvizException::get_message(Self) -> String
-pub fn GraphvizException::to_json(Self) -> Json
+pub fn GraphvizException::to_json(Self) -> @json.Json
 pub fn GraphvizException::to_repr(Self) -> @debug.Repr
 pub fn GraphvizException::to_string(Self) -> String
 

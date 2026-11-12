@@ -6,6 +6,7 @@ import {
   "moonbit-community/elk/core",
   "moonbit-community/elk/graph",
   "moonbitlang/core/debug",
+  "moonbitlang/core/json",
 }
 
 // Values
@@ -212,22 +213,25 @@ pub fn overlap_mode_parse(String) -> OverlapMode raise OverlapModeException
 pub fn overlap_mode_to_string(OverlapMode) -> String
 
 // Errors
+#derive(@debug.Debug, @json.ToJson)
 pub suberror DotExporterException {
   DotExporterException(String)
-} derive(ToJson, @debug.Debug)
-pub fn DotExporterException::to_json(Self) -> Json
+}
+pub fn DotExporterException::to_json(Self) -> @json.Json
 pub fn DotExporterException::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug, @json.ToJson)
 pub(all) suberror NeatoModelException {
   IllegalArgumentException(String)
-} derive(ToJson, @debug.Debug)
-pub fn NeatoModelException::to_json(Self) -> Json
+}
+pub fn NeatoModelException::to_json(Self) -> @json.Json
 pub fn NeatoModelException::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug, @json.ToJson)
 pub(all) suberror OverlapModeException {
   IllegalArgumentException(String)
-} derive(ToJson, @debug.Debug)
-pub fn OverlapModeException::to_json(Self) -> Json
+}
+pub fn OverlapModeException::to_json(Self) -> @json.Json
 pub fn OverlapModeException::to_repr(Self) -> @debug.Repr
 
 // Types and methods

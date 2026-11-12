@@ -7,9 +7,10 @@ pub struct GridElkNode {
 }
 
 ///|
+#derive(Debug, ToJson)
 pub suberror TopdownpackingGridException {
   TopdownpackingGridException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] topdownpacking_grid_raise(

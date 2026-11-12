@@ -1,7 +1,8 @@
 ///|
+#derive(Debug, ToJson)
 priv suberror MathParseException {
   MathParseException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] math_parse_raise(message : String) -> T raise MathParseException {

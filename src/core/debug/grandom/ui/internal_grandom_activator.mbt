@@ -5,9 +5,10 @@ pub let core_debug_grandom_ui_language_name : String = "org.eclipse.elk.core.deb
 pub let core_debug_grandom_ui_extension_factory_guicekey : String = "guicekey"
 
 ///|
+#derive(Debug, ToJson)
 priv suberror CoreDebugGrandomUiException {
   CoreDebugGrandomUiException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn core_debug_grandom_ui_raise_unit(

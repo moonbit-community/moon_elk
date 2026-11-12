@@ -7,6 +7,7 @@ import {
   "moonbit-community/elk/core",
   "moonbit-community/elk/graph",
   "moonbitlang/core/debug",
+  "moonbitlang/core/json",
 }
 
 // Values
@@ -63,10 +64,11 @@ pub fn[G] new_igraph_transformer((G) -> DCGraph raise, () -> Unit raise) -> IGra
 pub fn register_disco_layout_algorithm(@core.LayoutRuntime) -> Unit
 
 // Errors
+#derive(@debug.Debug, @json.ToJson)
 pub suberror DCElementException {
   DCElementException(String)
-} derive(ToJson, @debug.Debug)
-pub fn DCElementException::to_json(Self) -> Json
+}
+pub fn DCElementException::to_json(Self) -> @json.Json
 pub fn DCElementException::to_repr(Self) -> @debug.Repr
 
 // Types and methods

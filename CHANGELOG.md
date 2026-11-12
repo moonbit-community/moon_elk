@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.2 - 2026-11-12
+
+- Replace deprecated trailing `derive(...)` syntax with `#derive(...)` attributes
+  for compatibility with the current MoonBit toolchain.
+
 ## 0.4.0 - 2026-10-20
 
 - Continue maintenance under `moonbit-community/elk` in the community repository.

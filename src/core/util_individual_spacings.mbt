@@ -2,9 +2,10 @@
 let individual_spacings_serialized_option_separator = ";,;"
 
 ///|
+#derive(Debug, ToJson)
 priv suberror IndividualSpacingsException {
   IndividualSpacingsException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] individual_spacings_raise(

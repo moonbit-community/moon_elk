@@ -6,6 +6,7 @@ import {
   "moonbit-community/elk/alg/layered/runtime",
   "moonbit-community/elk/core",
   "moonbitlang/core/debug",
+  "moonbitlang/core/json",
 }
 
 // Values
@@ -20,10 +21,11 @@ pub fn new_cross_hierarchy_edge(@runtime.LEdge, @runtime.LGraph, @options.PortTy
 pub fn new_cross_hierarchy_edge_comparator(@runtime.LGraph) -> CrossHierarchyEdgeComparator
 
 // Errors
+#derive(@debug.Debug, @json.ToJson)
 pub(all) suberror CrossHierarchyEdgeComparatorException {
   CrossHierarchyEdgeComparatorException(String)
-} derive(ToJson, @debug.Debug)
-pub fn CrossHierarchyEdgeComparatorException::to_json(Self) -> Json
+}
+pub fn CrossHierarchyEdgeComparatorException::to_json(Self) -> @json.Json
 pub fn CrossHierarchyEdgeComparatorException::to_repr(Self) -> @debug.Repr
 
 // Types and methods

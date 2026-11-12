@@ -29,10 +29,11 @@ fn layer_constraint_preprocessor_is_relevant_node(
 }
 
 ///|
+#derive(Debug, ToJson)
 pub(all) suberror LayerConstraintPreprocessorException {
   UnsupportedConfigurationException(String)
   IllegalStateException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] layer_constraint_preprocessor_raise_unsupported_configuration(

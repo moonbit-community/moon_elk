@@ -1,7 +1,8 @@
 ///|
+#derive(Debug, ToJson)
 pub suberror NodeRelativePortDistributorException {
   NodeRelativePortDistributorException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] node_relative_port_distributor_raise(

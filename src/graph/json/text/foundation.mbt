@@ -36,13 +36,14 @@ pub fn graph_json_text_property_key_to_layout_option(
 }
 
 ///|
+#derive(Debug)
 pub(all) enum GraphJsonTextPropertyValue {
   GraphJsonTextNullValue
   GraphJsonTextStringValue(String)
   GraphJsonTextNumberValue(Double)
   GraphJsonTextBooleanValue(Bool)
   GraphJsonTextProxyValue(String)
-} derive(Debug)
+}
 
 ///|
 pub impl Show for GraphJsonTextPropertyValue with fn output(self, logger) {
@@ -109,10 +110,11 @@ pub fn new_graph_json_text_validation_issue(
 }
 
 ///|
+#derive(Debug)
 pub(all) enum GraphJsonTextListTransient {
   GraphJsonTextListTransientYes
   GraphJsonTextListTransientNo
-} derive(Debug)
+}
 
 ///|
 pub impl Show for GraphJsonTextListTransient with fn output(self, logger) {

@@ -1,8 +1,9 @@
 ///|
+#derive(Debug)
 pub(all) enum GmfSelectionItem {
   DiagramFile(String)
   OtherSelectionItem
-} derive(Debug)
+}
 
 ///|
 pub struct LayoutDiagramFileHandler {
@@ -10,9 +11,10 @@ pub struct LayoutDiagramFileHandler {
 }
 
 ///|
+#derive(Debug, ToJson)
 pub suberror LayoutDiagramFileHandlerException {
   LayoutDiagramFileHandlerException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] layout_diagram_file_handler_raise(

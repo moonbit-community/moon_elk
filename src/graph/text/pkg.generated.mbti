@@ -5,6 +5,7 @@ import {
   "moonbit-community/elk/core",
   "moonbit-community/elk/graph",
   "moonbitlang/core/debug",
+  "moonbitlang/core/json",
 }
 
 // Values
@@ -165,22 +166,25 @@ pub fn new_property_key_value_converter(@core.OptionMetadata) -> PropertyKeyValu
 pub fn new_property_value_value_converter(@core.OptionMetadata, qualified_name_converter? : ElkGraphQualifiedNameConverter) -> PropertyValueValueConverter
 
 // Errors
+#derive(@debug.Debug, @json.ToJson)
 pub suberror ElkGraphQualifiedNameConverterException {
   ElkGraphQualifiedNameConverterException(String)
-} derive(ToJson, @debug.Debug)
-pub fn ElkGraphQualifiedNameConverterException::to_json(Self) -> Json
+}
+pub fn ElkGraphQualifiedNameConverterException::to_json(Self) -> @json.Json
 pub fn ElkGraphQualifiedNameConverterException::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug, @json.ToJson)
 pub suberror NumberValueConverterException {
   NumberValueConverterException(String)
-} derive(ToJson, @debug.Debug)
-pub fn NumberValueConverterException::to_json(Self) -> Json
+}
+pub fn NumberValueConverterException::to_json(Self) -> @json.Json
 pub fn NumberValueConverterException::to_repr(Self) -> @debug.Repr
 
+#derive(@debug.Debug, @json.ToJson)
 pub suberror PropertyKeyValueConverterException {
   PropertyKeyValueConverterException(String)
-} derive(ToJson, @debug.Debug)
-pub fn PropertyKeyValueConverterException::to_json(Self) -> Json
+}
+pub fn PropertyKeyValueConverterException::to_json(Self) -> @json.Json
 pub fn PropertyKeyValueConverterException::to_repr(Self) -> @debug.Repr
 
 // Types and methods
@@ -423,10 +427,11 @@ pub(all) enum GraphTextLabelOwner {
   LabelOnLabel(@graph.ElkLabel)
 }
 
+#derive(@debug.Debug)
 pub(all) enum GraphTextListTransient {
   ListTransientYes
   ListTransientNo
-} derive(@debug.Debug)
+}
 pub fn GraphTextListTransient::output(Self, &Logger) -> Unit
 pub fn GraphTextListTransient::to_repr(Self) -> @debug.Repr
 pub fn GraphTextListTransient::to_string(Self) -> String
@@ -447,13 +452,14 @@ pub(all) enum GraphTextPropertyKey {
   CustomProperty(String)
 }
 
+#derive(@debug.Debug)
 pub(all) enum GraphTextPropertyValue {
   NullValue
   StringValue(String)
   NumberValue(Double)
   BooleanValue(Bool)
   ProxyValue(String)
-} derive(@debug.Debug)
+}
 pub fn GraphTextPropertyValue::output(Self, &Logger) -> Unit
 pub fn GraphTextPropertyValue::to_repr(Self) -> @debug.Repr
 pub fn GraphTextPropertyValue::to_string(Self) -> String

@@ -24,9 +24,10 @@ let elk_graph_adapters_label_side_property : @graph.IProperty[String] = @graph.n
 )
 
 ///|
+#derive(Debug, ToJson)
 priv suberror ElkGraphAdaptersException {
   ElkGraphAdaptersException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn elk_graph_adapters_raise_unit(

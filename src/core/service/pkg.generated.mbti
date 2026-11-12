@@ -256,12 +256,13 @@ pub fn LayoutMapping::set_parent_element(Self, Int32?) -> Unit
 pub fn LayoutMapping::set_property(Self, String, String) -> Unit
 pub fn LayoutMapping::set_status(Self, LayoutMappingStatus?) -> Unit
 
+#derive(Eq, @debug.Debug)
 pub(all) enum LayoutMappingStatus {
   OkStatus
   WarningStatus(String)
   ErrorStatus(String)
   CanceledStatus
-} derive(Eq, @debug.Debug)
+}
 pub fn LayoutMappingStatus::equal(Self, Self) -> Bool
 pub fn LayoutMappingStatus::not_equal(Self, Self) -> Bool
 pub fn LayoutMappingStatus::output(Self, &Logger) -> Unit
@@ -271,12 +272,13 @@ pub impl Show for LayoutMappingStatus
 
 type LayoutSetupEntry
 
+#derive(@debug.Debug)
 pub(all) enum LayoutSetupObject {
   WorkbenchPartObject(Int32)
   DiagramPartObject(Int32)
   SelectionObject(Array[Int32])
   OtherObject
-} derive(@debug.Debug)
+}
 pub fn LayoutSetupObject::to_repr(Self) -> @debug.Repr
 
 pub(all) struct MonitoredOperation {
@@ -295,12 +297,13 @@ pub fn MonitoredOperation::is_canceled(Self) -> Bool
 pub fn MonitoredOperation::run_monitored(Self) -> MonitoredOperationStatus
 pub fn MonitoredOperation::run_unmonitored(Self) -> MonitoredOperationStatus
 
+#derive(Eq, @debug.Debug)
 pub(all) enum MonitoredOperationStatus {
   OperationOk
   OperationWarning
   OperationError
   OperationCanceled
-} derive(Eq, @debug.Debug)
+}
 pub fn MonitoredOperationStatus::equal(Self, Self) -> Bool
 pub fn MonitoredOperationStatus::not_equal(Self, Self) -> Bool
 pub fn MonitoredOperationStatus::output(Self, &Logger) -> Unit

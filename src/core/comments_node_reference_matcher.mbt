@@ -1,7 +1,8 @@
 ///|
+#derive(Debug, ToJson)
 pub suberror NodeReferenceMatcherException {
   NodeReferenceMatcherException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn[T] node_reference_matcher_raise(

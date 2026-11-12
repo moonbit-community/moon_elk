@@ -6,6 +6,7 @@ import {
   "moonbit-community/elk/core",
   "moonbit-community/elk/graph",
   "moonbitlang/core/debug",
+  "moonbitlang/core/json",
 }
 
 // Values
@@ -136,10 +137,11 @@ pub fn radial_translation_strategy_create(@options.RadialTranslationStrategy) ->
 pub fn register_radial_layout_algorithm(@core.LayoutRuntime) -> Unit
 
 // Errors
+#derive(@debug.Debug, @json.ToJson)
 pub(all) suberror RadialCompactionStrategyException {
   IllegalArgumentException(String)
-} derive(ToJson, @debug.Debug)
-pub fn RadialCompactionStrategyException::to_json(Self) -> Json
+}
+pub fn RadialCompactionStrategyException::to_json(Self) -> @json.Json
 pub fn RadialCompactionStrategyException::to_repr(Self) -> @debug.Repr
 
 // Types and methods

@@ -5,9 +5,10 @@ pub(all) enum CoreDebugGRandomFileFormat {
 }
 
 ///|
+#derive(Debug, ToJson)
 priv suberror CoreDebugGrandomGeneratorOptionsException {
   CoreDebugGrandomGeneratorOptionsException(String)
-} derive(Debug, ToJson)
+}
 
 ///|
 fn core_debug_grandom_generator_options_raise_unit(

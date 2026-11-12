@@ -1,4 +1,5 @@
 ///|
+#derive(Eq, Debug)
 pub(all) enum GmfFigureKind {
   Generic
   WrappingLabel
@@ -7,9 +8,10 @@ pub(all) enum GmfFigureKind {
   BorderedNodeFigure
   BorderItemContainer
   ConnectionFigure
-} derive(Eq, Debug)
+}
 
 ///|
+#derive(Eq, Debug)
 pub(all) enum GmfEditPartKind {
   GenericEditPart
   RootEditPart
@@ -23,47 +25,53 @@ pub(all) enum GmfEditPartKind {
   ConnectionEditPart
   LabelEditPart
   NoteEditPart
-} derive(Eq, Debug)
+}
 
 ///|
+#derive(Eq, Debug)
 pub(all) enum GmfOperation {
   LayoutNodeOperation
   CreateEditPoliciesOperation
   Other(String)
-} derive(Eq, Debug)
+}
 
 ///|
+#derive(Eq, Debug)
 pub struct GmfPoint {
   x : Int32
   y : Int32
-} derive(Eq, Debug)
+}
 
 ///|
+#derive(Eq, Debug)
 pub struct GmfDimension {
   width : Int32
   height : Int32
-} derive(Eq, Debug)
+}
 
 ///|
+#derive(Eq, Debug)
 pub struct GmfInsets {
   top : Int32
   right : Int32
   bottom : Int32
   left : Int32
-} derive(Eq, Debug)
+}
 
 ///|
+#derive(Eq, Debug)
 pub struct GmfRectangle {
   x : Int32
   y : Int32
   width : Int32
   height : Int32
-} derive(Eq, Debug)
+}
 
 ///|
+#derive(Debug)
 pub struct GmfPointList {
   points : Array[GmfPoint]
-} derive(Debug)
+}
 
 ///|
 pub fn new_gmf_point(x : Int32, y : Int32) -> GmfPoint {
@@ -228,20 +236,22 @@ let gmf_view_store_ref : Ref[Array[GmfViewData]] = Ref([])
 let gmf_edit_part_store_ref : Ref[Array[GmfEditPartData]] = Ref([])
 
 ///|
+#derive(Debug)
 pub struct GmfLayoutElementShape {
   x : Double
   y : Double
   width : Double
   height : Double
-} derive(Debug)
+}
 
 ///|
+#derive(Debug)
 pub struct GmfLayoutElementEdge {
   bends : GmfPointList
   source_terminal : String?
   target_terminal : String?
   junction_points : String?
-} derive(Debug)
+}
 
 ///|
 let gmf_layout_element_shape_store_ref : Ref[Map[Int32, GmfLayoutElementShape]] = Ref(
@@ -1047,18 +1057,20 @@ pub fn GmfLayoutHint::get_graphical_edit_part(
 }
 
 ///|
+#derive(Debug)
 pub enum GmfDiagramPart {
   NoPart
   Single(GmfEditPart)
   Multiple(Array[GmfEditPart])
-} derive(Debug)
+}
 
 ///|
+#derive(Debug)
 pub struct GmfLayoutInvocation {
   diagram_part : GmfDiagramPart
   progress_dialog : Bool
   zoom_to_fit : Bool
-} derive(Debug)
+}
 
 ///|
 let gmf_last_layout_invocation_ref : Ref[GmfLayoutInvocation?] = Ref(None)
