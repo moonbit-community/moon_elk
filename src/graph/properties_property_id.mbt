@@ -17,7 +17,7 @@ pub type OptionId = PropertyId
 fn property_id_hash(text : String, base : Int64, modulus : Int64) -> Int32 {
   let mut hash = 0L
   for index in 0..<text.length() {
-    let code_unit = Int64::from_int(text[index].to_int() + 1)
+    let code_unit = (text[index].to_int() + 1).to_int64()
     hash = (hash * base + code_unit) % modulus
   }
   hash.to_int()

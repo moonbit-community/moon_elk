@@ -30,7 +30,7 @@ fn base_spacing_positions(layout_options : Map[String, Json]) -> String raise {
   for child in children {
     guard child
       is Object(
-        { "id": String(id), "x": Number(x, ..), "y": Number(y, ..), .. }
+        { "id": String(id), "x": Number(x, ..), "y": Number(y, ..), .. },
       ) else {
       fail("expected a positioned node")
     }

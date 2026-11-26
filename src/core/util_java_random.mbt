@@ -43,8 +43,8 @@ fn java_random_to_signed_int32(value : Int64) -> Int32 {
 ///|
 fn java_random_system_seed() -> Int64 {
   let source = @random.Rand()
-  let high = Int64::from_int(source.int(limit=@int.MAX_VALUE))
-  let low = Int64::from_int(source.int(limit=@int.MAX_VALUE))
+  let high = source.int(limit=@int.MAX_VALUE).to_int64()
+  let low = source.int(limit=@int.MAX_VALUE).to_int64()
   (high << 31) ^ low
 }
 
@@ -65,7 +65,7 @@ pub fn new_java_random_seeded(seed : Int64) -> JavaRandom {
 
 ///|
 pub fn new_java_random_seeded_int(seed : Int32) -> JavaRandom {
-  new_java_random_seeded(Int64::from_int(seed))
+  new_java_random_seeded(seed.to_int64())
 }
 
 ///|
@@ -82,8 +82,8 @@ fn JavaRandom::next_bits(self : JavaRandom, bits : Int32) -> Int32 {
 
 ///|
 pub fn JavaRandom::double(self : JavaRandom) -> Double {
-  let high = Int64::from_int(self.next_bits(26))
-  let low = Int64::from_int(self.next_bits(27))
+  let high = self.next_bits(26).to_int64()
+  let low = self.next_bits(27).to_int64()
   ((high << 27) + low).to_double() / 9007199254740992.0
 }
 
@@ -101,7 +101,7 @@ pub fn JavaRandom::int(self : JavaRandom, limit : Int32) -> Int32 raise {
     return 0
   }
   if (limit & -limit) == limit {
-    let product = Int64::from_int(limit) * Int64::from_int(self.next_bits(31))
+    let product = limit.to_int64() * self.next_bits(31).to_int64()
     return (product >> 31).to_int()
   }
   let mut bits = 0
@@ -110,9 +110,7 @@ pub fn JavaRandom::int(self : JavaRandom, limit : Int32) -> Int32 raise {
     bits = self.next_bits(31)
     value = bits % limit
     let probe = java_random_to_signed_int32(
-      Int64::from_int(bits) -
-      Int64::from_int(value) +
-      Int64::from_int(limit - 1),
+      bits.to_int64() - value.to_int64() + (limit - 1).to_int64(),
     )
     if probe >= 0 {
       return value

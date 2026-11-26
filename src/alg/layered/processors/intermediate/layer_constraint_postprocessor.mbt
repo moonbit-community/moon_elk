@@ -292,7 +292,7 @@ fn layer_constraint_postprocessor_process(
 ) -> Unit raise {
   layer_constraint_postprocessor_process_impl(layered_graph, progress_monitor) catch {
     LayerConstraintPostprocessorException::UnsupportedConfigurationException(
-      message
+      message,
     ) => @core.layout_runtime_raise_unsupported_configuration(message)
     LayerConstraintPostprocessorException::IllegalStateException(message) =>
       @core.layout_runtime_raise_unsupported_configuration(message)

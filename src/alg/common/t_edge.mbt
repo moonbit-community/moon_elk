@@ -28,7 +28,7 @@ pub fn TEdge::equals(self : TEdge, other : TEdge) -> Bool {
 ///|
 pub fn TEdge::hash_code(self : TEdge) -> Int32 {
   t_edge_to_signed_int32(
-    Int64::from_int(self.u.hash_code()) + Int64::from_int(self.v.hash_code()),
+    self.u.hash_code().to_int64() + self.v.hash_code().to_int64(),
   )
 }
 

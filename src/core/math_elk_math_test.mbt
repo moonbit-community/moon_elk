@@ -76,8 +76,8 @@ test "ElkMath testPathIntersects" {
 
 ///|
 test "ElkMath testFactl" {
-  assert_eq(factl(0), Int64::from_int(1))
-  assert_eq(factl(1), Int64::from_int(1))
+  assert_eq(factl(0), 1L)
+  assert_eq(factl(1), 1L)
   let expected_20 = try @string.parse_int64("2432902008176640000") catch {
     _ => abort("failed to parse int64 literal")
   } noraise {
@@ -127,9 +127,9 @@ test "ElkMath testFactdLittleIllegalArgumentException" {
 
 ///|
 test "ElkMath testBinomiall" {
-  assert_eq(binomiall(2, 0), Int64::from_int(1))
-  assert_eq(binomiall(20, 20), Int64::from_int(1))
-  assert_eq(binomiall(2, 1), Int64::from_int(2))
+  assert_eq(binomiall(2, 0), 1L)
+  assert_eq(binomiall(20, 20), 1L)
+  assert_eq(binomiall(2, 1), 2L)
 }
 
 ///|
@@ -263,24 +263,8 @@ test "ElkMath testMin" {
 
 ///|
 test "ElkMath testAverage" {
-  assert_eq(
-    averagel([
-      Int64::from_int(5),
-      Int64::from_int(8),
-      Int64::from_int(2),
-      Int64::from_int(1),
-    ]),
-    Int64::from_int(4),
-  )
-  assert_eq(
-    averagel([
-      Int64::from_int(5),
-      Int64::from_int(0),
-      Int64::from_int(2),
-      Int64::from_int(1),
-    ]),
-    Int64::from_int(2),
-  )
+  assert_eq(averagel([5L, 8L, 2L, 1L]), 4L)
+  assert_eq(averagel([5L, 0L, 2L, 1L]), 2L)
   assert_double_eq(averagef([5.0, 8.0, 2.0, 1.0]), 4.0, 0.0)
   assert_double_eq(averagef([5.0, 0.0, 2.0, 1.0]), 2.0, 0.0)
   assert_double_eq(averaged([5.0, 8.0, 2.0, 1.0]), 4.0, 0.0)

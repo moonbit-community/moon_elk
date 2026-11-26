@@ -87,9 +87,9 @@ pub fn TTriangle::equals(self : TTriangle, other : TTriangle) -> Bool {
 ///|
 pub fn TTriangle::hash_code(self : TTriangle) -> Int32 {
   t_triangle_to_signed_int32(
-    Int64::from_int(self.a.hash_code()) +
-    Int64::from_int(self.b.hash_code()) +
-    Int64::from_int(self.c.hash_code()),
+    self.a.hash_code().to_int64() +
+    self.b.hash_code().to_int64() +
+    self.c.hash_code().to_int64(),
   )
 }
 

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.3 - 2026-11-26
+
+- Replace deprecated `Int64::from_int` calls with `Int::to_int64` and
+  `Int64` literals.
+
 ## 0.4.2 - 2026-11-12
 
 - Replace deprecated trailing `derive(...)` syntax with `#derive(...)` attributes

@@ -90,7 +90,7 @@ pub fn CoreDebugGRandomExecutableExtension::set_initialization_data(
 pub(all) enum CoreDebugGRandomUiObject {
   CoreDebugGRandomUiObjectNamed(String)
   CoreDebugGRandomUiObjectExecutableExtension(
-    CoreDebugGRandomExecutableExtension
+    CoreDebugGRandomExecutableExtension,
   )
 }
 

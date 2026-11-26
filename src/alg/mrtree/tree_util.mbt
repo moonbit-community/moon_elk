@@ -225,7 +225,7 @@ pub fn mrtree_tree_util_is_cycle_inducing(
 
 ///|
 pub fn mrtree_tree_util_get_unique_long(a : Int32, b : Int32) -> Int64 {
-  (Int64::from_int(a) << 32) | (Int64::from_int(b) & 4294967295L)
+  (a.to_int64() << 32) | (b.to_int64() & 4294967295L)
 }
 
 ///|

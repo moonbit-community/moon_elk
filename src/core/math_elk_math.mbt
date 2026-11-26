@@ -24,10 +24,10 @@ fn factl_impl(x : Int32) -> Int64 raise ElkMathException {
   if x < 0 || x >= _fact_table_size {
     elk_math_raise("The input must be between 0 and \{_fact_table_size}")
   }
-  let mut result = Int64::from_int(1)
+  let mut result = 1L
   let mut i = 2
   while i <= x {
-    result = result * Int64::from_int(i)
+    result = result * i.to_int64()
     i = i + 1
   }
   result
@@ -40,7 +40,7 @@ pub fn factl(x : Int32) -> Int64 raise {
       layout_runtime_raise_unsupported_configuration(
         elk_math_exception_message(err),
       )
-      Int64::from_int(0)
+      0L
     }
   } noraise {
     value => value
@@ -82,10 +82,10 @@ fn binomiall_impl(n : Int32, k : Int32) -> Int64 raise ElkMathException {
     elk_math_raise("k must be smaller than n")
   }
   if k == 0 || k == n {
-    return Int64::from_int(1)
+    return 1L
   }
   if n == 0 {
-    return Int64::from_int(0)
+    return 0L
   }
   if n < _fact_table_size {
     return factl_impl(n) / (factl_impl(k) * factl_impl(n - k))
@@ -100,7 +100,7 @@ pub fn binomiall(n : Int32, k : Int32) -> Int64 raise {
       layout_runtime_raise_unsupported_configuration(
         elk_math_exception_message(err),
       )
-      Int64::from_int(0)
+      0L
     }
   } noraise {
     value => value
@@ -586,7 +586,7 @@ pub fn averagei(values : Array[Int32]) -> Int32 {
 
 ///|
 pub fn maxl(values : Array[Int64]) -> Int64 {
-  let mut max = Int64::from_int(@int.MIN_VALUE)
+  let mut max = @int.MIN_VALUE.to_int64()
   for value in values {
     if value > max {
       max = value
@@ -597,7 +597,7 @@ pub fn maxl(values : Array[Int64]) -> Int64 {
 
 ///|
 pub fn minl(values : Array[Int64]) -> Int64 {
-  let mut min = Int64::from_int(@int.MAX_VALUE)
+  let mut min = @int.MAX_VALUE.to_int64()
   for value in values {
     if value < min {
       min = value
@@ -608,11 +608,11 @@ pub fn minl(values : Array[Int64]) -> Int64 {
 
 ///|
 pub fn averagel(values : Array[Int64]) -> Int64 {
-  let mut avg = Int64::from_int(0)
+  let mut avg = 0L
   for value in values {
     avg = avg + value
   }
-  avg / Int64::from_int(values.length())
+  avg / values.length().to_int64()
 }
 
 ///|

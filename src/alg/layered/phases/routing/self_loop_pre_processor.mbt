@@ -126,7 +126,7 @@ fn self_loop_pre_processor_process(
 
     let sl_holder = @runtime.self_loop_holder_install(state, l_node) catch {
       @runtime.SelfLoopHolderException::UnsupportedConfigurationException(
-        message
+        message,
       ) => {
         @core.layout_runtime_raise_unsupported_configuration(message)
         continue

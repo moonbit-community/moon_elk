@@ -26,7 +26,7 @@ fn layered_layout_state_seeded_next_boolean(seed_value : Int32) -> Bool {
   let multiplier = 25214903917L
   let addend = 11L
   let mask = 281474976710655L
-  let mut seed = (Int64::from_int(seed_value) ^ multiplier) & mask
+  let mut seed = (seed_value.to_int64() ^ multiplier) & mask
   seed = (seed * multiplier + addend) & mask
   ((seed >> 47) & 1L) == 1L
 }

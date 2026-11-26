@@ -98,7 +98,7 @@ fn kvector_java_double_hash(value : Double) -> Int32 {
 
 ///|
 fn kvector_reverse_bits32(value : Int32) -> Int32 {
-  let mut x = Int64::from_int(value) & 4294967295L
+  let mut x = value.to_int64() & 4294967295L
   x = ((x & 1431655765L) << 1) | ((x >> 1) & 1431655765L)
   x = ((x & 858993459L) << 2) | ((x >> 2) & 858993459L)
   x = ((x & 252645135L) << 4) | ((x >> 4) & 252645135L)
@@ -112,7 +112,7 @@ pub fn KVector::hash_code(self : KVector) -> Int32 {
   let x_hash = kvector_java_double_hash(self.x)
   let y_hash = kvector_java_double_hash(self.y)
   kvector_to_signed_int32(
-    Int64::from_int(x_hash) + Int64::from_int(kvector_reverse_bits32(y_hash)),
+    x_hash.to_int64() + kvector_reverse_bits32(y_hash).to_int64(),
   )
 }
 
