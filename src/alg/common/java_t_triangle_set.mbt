@@ -16,7 +16,7 @@ pub fn JavaTTriangleSet::add(
   if self.values.contains(triangle) {
     false
   } else {
-    self.values.add(triangle)
+    self.values.insert(triangle)
     true
   }
 }

@@ -18,7 +18,7 @@ pub fn JavaTEdgeSet::add(self : JavaTEdgeSet, edge : TEdge) -> Bool {
   if self.values.contains(edge) {
     false
   } else {
-    self.values.add(edge)
+    self.values.insert(edge)
     true
   }
 }
